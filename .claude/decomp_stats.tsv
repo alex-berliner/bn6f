@@ -31,3 +31,10 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-25T23:50:19Z	sub_801BECC	pass	47	59.23	41	0	batch=9
 2026-05-25T23:50:19Z	sub_801A4D0	pass	47	59.23	41	0	batch=9
 2026-05-25T23:50:19Z	sub_801443C	pass	47	59.23	41	0	batch=9
+2026-05-25T23:58:20Z	getBattleHandAddr_8010018	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	GetBattleNaviStatsByte_AllianceFromBattleObject	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	GetBattleNaviStatsHword_AllianceFromBattleObject	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	SetBattleNaviStatsByte_AllianceFromBattleObject	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	SetBattleNaviStatsHword_AllianceFromBattleObject	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	GetNaviStats203CCE0Byte	pass	43	58.98	35	0	batch=7
+2026-05-25T23:58:20Z	battleSettings_setFlags_unkSettings	pass	43	58.98	35	0	batch=7
