@@ -64,6 +64,7 @@ sub_801FE5E:
 	mov pc, lr
 	thumb_func_end sub_801FE5E
 
+	.ifndef DECOMP_sub_801FE64
 	thumb_func_start sub_801FE64
 sub_801FE64:
 	ldr r1, off_80200D4 // =eStruct203F7D8
@@ -71,6 +72,12 @@ sub_801FE64:
 	strb r0, [r1]
 	mov pc, lr
 	thumb_func_end sub_801FE64
+	.else
+	thumb_func_start sub_801FE64
+sub_801FE64:
+	decomp_trampoline sub_801FE64_c, 0
+	thumb_func_end sub_801FE64
+	.endif
 
 	thumb_func_start sub_801FE6C
 sub_801FE6C:
