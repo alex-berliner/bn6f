@@ -30380,6 +30380,7 @@ sub_801E0BC:
 	pop {pc}
 	thumb_func_end sub_801E0BC
 
+	.ifndef DECOMP_sub_801E0C8
 	thumb_func_start sub_801E0C8
 sub_801E0C8:
 	push {r5,lr}
@@ -30387,6 +30388,12 @@ sub_801E0C8:
 	strh r0, [r5,#0x26] // (word_20352A6 - 0x2035280)
 	pop {r5,pc}
 	thumb_func_end sub_801E0C8
+	.else
+	thumb_func_start sub_801E0C8
+sub_801E0C8:
+	decomp_trampoline sub_801E0C8_c, 0
+	thumb_func_end sub_801E0C8
+	.endif
 
 	.ifndef DECOMP_sub_801E0D0
 	thumb_func_start sub_801E0D0
