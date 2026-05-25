@@ -77,4 +77,10 @@ temp/
 *.cfg
 *.rsync
 *.sym
-.claude/
+.claude/*
+# Keep project-scoped Claude artefacts that belong with the repo:
+# slash commands, cron history log, decomp stats. Exclude the huge
+# ephemeral worktrees agent isolation dir.
+!.claude/commands/
+!.claude/cron_history.md
+!.claude/decomp_stats.tsv
