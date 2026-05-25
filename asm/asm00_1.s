@@ -16423,6 +16423,7 @@ locret_800A702:
 	pop {pc}
 	thumb_func_end sub_800A6D8
 
+	.ifndef DECOMP_sub_800A704
 	thumb_func_start sub_800A704
 sub_800A704:
 	mov r0, r10
@@ -16430,6 +16431,12 @@ sub_800A704:
 	ldr r0, [r0,#oBattleState_Unk_40]
 	mov pc, lr
 	thumb_func_end sub_800A704
+	.else
+	thumb_func_start sub_800A704
+sub_800A704:
+	decomp_trampoline sub_800A704_c, 0
+	thumb_func_end sub_800A704
+	.endif
 
 	thumb_func_start sub_800A70C
 sub_800A70C:
