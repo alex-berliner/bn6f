@@ -8927,6 +8927,7 @@ sub_803D138:
 	.balign 4, 0x00
 	thumb_func_end sub_803D138
 
+	.ifndef DECOMP_sub_803D148
 	thumb_func_start sub_803D148
 sub_803D148:
 	push {r4-r7,lr}
@@ -8952,6 +8953,12 @@ loc_803D16A:
 locret_803D16E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803D148
+	.else
+	thumb_func_start sub_803D148
+sub_803D148:
+	decomp_trampoline sub_803D148_c, 32
+	thumb_func_end sub_803D148
+	.endif
 
 	thumb_local_start
 sub_803D170:
