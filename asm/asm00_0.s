@@ -1727,6 +1727,7 @@ CapIncrementGameTimeFrames:
 	thumb_func_end CapIncrementGameTimeFrames
 	.endif
 
+	.ifndef DECOMP_sub_8000E28
 	thumb_func_start sub_8000E28
 sub_8000E28:
 	mov r3, r10
@@ -1734,6 +1735,12 @@ sub_8000E28:
 	ldr r0, [r3,#0x18]
 	mov pc, lr
 	thumb_func_end sub_8000E28
+	.else
+	thumb_func_start sub_8000E28
+sub_8000E28:
+	decomp_trampoline sub_8000E28_c, 0
+	thumb_func_end sub_8000E28
+	.endif
 
 	thumb_func_start sub_8000E30
 sub_8000E30:
