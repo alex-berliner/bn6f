@@ -14390,6 +14390,7 @@ loc_802D1A2:
 	pop {r4,r7,pc}
 	thumb_func_end sub_802D184
 
+	.ifndef DECOMP_sub_802D1B4
 	thumb_func_start sub_802D1B4
 sub_802D1B4:
 	push {lr}
@@ -14397,6 +14398,12 @@ sub_802D1B4:
 	ldrb r0, [r0,#0xd]
 	pop {pc}
 	thumb_func_end sub_802D1B4
+	.else
+	thumb_func_start sub_802D1B4
+sub_802D1B4:
+	decomp_trampoline sub_802D1B4_c, 2
+	thumb_func_end sub_802D1B4
+	.endif
 
 	thumb_func_start sub_802D1BE
 sub_802D1BE:
