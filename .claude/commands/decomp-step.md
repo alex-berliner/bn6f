@@ -30,6 +30,7 @@ Choose **3-5** candidates. Each must meet ALL of:
 - Address ends in `0`, `4`, `8`, or `C` (4-aligned — `decomp_trampoline` only works there).
 - 4-12 thumb instructions.
 - Pure leaf or near-leaf. No `mov lr, pc; bx`, no `svc`, no flag-dependent callers (callers immediately doing `beq/bne` after the `bl`).
+- **Multi-return check:** if ASM writes both r0 AND r1 (and doesn't immediately overwrite r1), grep callers for use of r1 after the `bl`. If any does `cmp r1`, `mov X, r1`, etc., skip — a plain `return foo;` C version silently drops the r1 return and breaks those callers. (Cautionary tale: `screenFade_80062C8` looked trivial; npc.s caller does `cmp r1, #0; beq ...`.)
 
 One-liner to surface candidates:
 ```sh
