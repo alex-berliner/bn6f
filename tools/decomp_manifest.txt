@@ -514,3 +514,12 @@ InitializeOWPlayerObjectStruct
 Is_eStruct2001010_Initialized
 InitializeOverworldNPCObjectStructs
 Is_eScenarioEffectState2000780_Initialized
+sub_81421C8
+sub_81421D0
+sub_81421D8
+getField0x18OfScenarioEffectState2000780_81421e0
+sub_812EB78
+sub_8142990
+sub_8132664
+sub_803C2A0
+sub_803C558
