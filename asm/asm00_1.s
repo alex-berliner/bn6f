@@ -17048,6 +17048,7 @@ sub_800A9E2:
 	thumb_func_end sub_800A9E2
 	.endif
 
+	.ifndef DECOMP_battle_networkInvert
 	thumb_func_start battle_networkInvert
 battle_networkInvert:
 	mov r1, r10
@@ -17056,6 +17057,12 @@ battle_networkInvert:
 	eor r0, r2
 	mov pc, lr
 	thumb_func_end battle_networkInvert
+	.else
+	thumb_func_start battle_networkInvert
+battle_networkInvert:
+	decomp_trampoline battle_networkInvert_c, 2
+	thumb_func_end battle_networkInvert
+	.endif
 
 	thumb_local_start
 battle_clearEnemyFadeinList:

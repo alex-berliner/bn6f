@@ -523,3 +523,12 @@ sub_8142990
 sub_8132664
 sub_803C2A0
 sub_803C558
+battle_networkInvert
+SetAIData_Unk_44_Flag
+ClearAIDataUnk0x48Flag
+object_clearFlag
+object_setFlag2
+sub_801BEB8
+sub_801BECC
+sub_801A4D0
+sub_801443C
