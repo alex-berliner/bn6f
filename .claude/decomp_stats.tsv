@@ -10,3 +10,5 @@ ts	symbol	status	total_s	verify_s	retries	notes
 2026-05-25T15:40:53Z	sub_802D1B4	pass	71	57.79	0	batch=4
 2026-05-25T15:40:53Z	InitializeOWPlayerObjectStruct	pass	71	57.79	0	batch=4
 2026-05-25T15:40:53Z	Is_eStruct2001010_Initialized	pass	71	57.79	0	batch=4
+2026-05-25T15:46:56Z	InitializeOverworldNPCObjectStructs	pass	110	57.60	0	batch=2
+2026-05-25T15:46:56Z	Is_eScenarioEffectState2000780_Initialized	pass	110	57.60	0	batch=2
