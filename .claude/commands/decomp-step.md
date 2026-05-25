@@ -7,9 +7,9 @@ You are the **decomp workhorse**. The infrastructure is fast:
 - Per-fn cache means only changed-radius pairs replay.
 - There are thousands of candidate functions still in ASM.
 
-Goal each iteration: **a batch of 3-5 converted functions, committed individually, pushed.**
+Goal each iteration: **a batch of 8-12 converted functions, committed individually, pushed.**
 
-Verify is the bottleneck (~57s per run) — its cost is fixed regardless of how many fns are added between runs. Batching N conversions per verify cuts wall-time ~N×.
+Verify is the bottleneck (~57s per run) — its cost is fixed regardless of how many fns are added between runs. At batch=10, per-fn verify drops to ~6s and overhead dominates. Push toward 10+ when the candidate set is coherent (siblings, same pattern). Drop back to 4-5 if candidates are heterogeneous and a failure could cascade through suspect identification.
 
 Don't agonize. Don't deeply debug. If a batch goes red, pick out the failing fn(s), revert just those, and ship the rest. Move.
 
@@ -25,7 +25,7 @@ You'll write a stats row at the end. Don't skip this — running stats are what 
 
 ## Pick a batch (≤2 minutes)
 
-Choose **3-5** candidates. Each must meet ALL of:
+Choose **8-12** candidates (4-5 for heterogeneous sets). Each must meet ALL of:
 - Not in `tools/decomp_manifest.txt`.
 - Address ends in `0`, `4`, `8`, or `C` (4-aligned — `decomp_trampoline` only works there).
 - 4-12 thumb instructions.
