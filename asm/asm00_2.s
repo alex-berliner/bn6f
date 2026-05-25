@@ -2698,14 +2698,21 @@ loc_8010006:
 	pop {pc}
 	thumb_func_end getCurChipInBattleHand_8010004
 
+	.ifndef DECOMP_getBattleHandAddr_8010018
 	thumb_func_start getBattleHandAddr_8010018
 getBattleHandAddr_8010018:
-	mov r1, #0x50 
+	mov r1, #0x50
 	mul r0, r1
-	ldr r1, off_801021C // =byte_20349C0 
+	ldr r1, off_801021C // =byte_20349C0
 	add r0, r0, r1
 	mov pc, lr
 	thumb_func_end getBattleHandAddr_8010018
+	.else
+	thumb_func_start getBattleHandAddr_8010018
+getBattleHandAddr_8010018:
+	decomp_trampoline getBattleHandAddr_8010018_c, 2
+	thumb_func_end getBattleHandAddr_8010018
+	.endif
 
 	thumb_local_start
 sub_8010022:
@@ -10471,6 +10478,7 @@ loc_8013746:
 	thumb_func_end GetNaviStatsHword
 
 // FIX THESE NAMES
+	.ifndef DECOMP_SetBattleNaviStatsByte_AllianceFromBattleObject
 	thumb_func_start SetBattleNaviStatsByte_AllianceFromBattleObject
 SetBattleNaviStatsByte_AllianceFromBattleObject:
 	push {r6,r7,lr}
@@ -10481,7 +10489,14 @@ SetBattleNaviStatsByte_AllianceFromBattleObject:
 	strb r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsByte_AllianceFromBattleObject
+	.else
+	thumb_func_start SetBattleNaviStatsByte_AllianceFromBattleObject
+SetBattleNaviStatsByte_AllianceFromBattleObject:
+	decomp_trampoline SetBattleNaviStatsByte_AllianceFromBattleObject_c, 8
+	thumb_func_end SetBattleNaviStatsByte_AllianceFromBattleObject
+	.endif
 
+	.ifndef DECOMP_SetBattleNaviStatsHword_AllianceFromBattleObject
 	thumb_func_start SetBattleNaviStatsHword_AllianceFromBattleObject
 SetBattleNaviStatsHword_AllianceFromBattleObject:
 	push {r6,r7,lr}
@@ -10492,7 +10507,14 @@ SetBattleNaviStatsHword_AllianceFromBattleObject:
 	strh r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsHword_AllianceFromBattleObject
+	.else
+	thumb_func_start SetBattleNaviStatsHword_AllianceFromBattleObject
+SetBattleNaviStatsHword_AllianceFromBattleObject:
+	decomp_trampoline SetBattleNaviStatsHword_AllianceFromBattleObject_c, 8
+	thumb_func_end SetBattleNaviStatsHword_AllianceFromBattleObject
+	.endif
 
+	.ifndef DECOMP_GetBattleNaviStatsByte_AllianceFromBattleObject
 	thumb_func_start GetBattleNaviStatsByte_AllianceFromBattleObject
 GetBattleNaviStatsByte_AllianceFromBattleObject:
 	push {r6,lr}
@@ -10502,6 +10524,12 @@ GetBattleNaviStatsByte_AllianceFromBattleObject:
 	ldrb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject
+	.else
+	thumb_func_start GetBattleNaviStatsByte_AllianceFromBattleObject
+GetBattleNaviStatsByte_AllianceFromBattleObject:
+	decomp_trampoline GetBattleNaviStatsByte_AllianceFromBattleObject_c, 6
+	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject
+	.endif
 
 	thumb_local_start
 GetBattleNaviStatsByte_AllianceFromBattleObject_8013782:
@@ -10513,6 +10541,7 @@ GetBattleNaviStatsByte_AllianceFromBattleObject_8013782:
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject_8013782
 
+	.ifndef DECOMP_GetBattleNaviStatsHword_AllianceFromBattleObject
 	thumb_func_start GetBattleNaviStatsHword_AllianceFromBattleObject
 GetBattleNaviStatsHword_AllianceFromBattleObject:
 	push {r6,lr}
@@ -10522,6 +10551,12 @@ GetBattleNaviStatsHword_AllianceFromBattleObject:
 	ldrh r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsHword_AllianceFromBattleObject
+	.else
+	thumb_func_start GetBattleNaviStatsHword_AllianceFromBattleObject
+GetBattleNaviStatsHword_AllianceFromBattleObject:
+	decomp_trampoline GetBattleNaviStatsHword_AllianceFromBattleObject_c, 6
+	thumb_func_end GetBattleNaviStatsHword_AllianceFromBattleObject
+	.endif
 
 // (int a1, int a2, int a3) -> void
 	.ifndef DECOMP_SetCurPETNaviStatsByte
@@ -10737,6 +10772,7 @@ SetNaviStats203CCE0Hword:
 	thumb_func_end SetNaviStats203CCE0Hword
 	.endif
 
+	.ifndef DECOMP_GetNaviStats203CCE0Byte
 	thumb_func_start GetNaviStats203CCE0Byte
 GetNaviStats203CCE0Byte:
 	push {r6,lr}
@@ -10746,6 +10782,12 @@ GetNaviStats203CCE0Byte:
 	ldrb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetNaviStats203CCE0Byte
+	.else
+	thumb_func_start GetNaviStats203CCE0Byte
+GetNaviStats203CCE0Byte:
+	decomp_trampoline GetNaviStats203CCE0Byte_c, 6
+	thumb_func_end GetNaviStats203CCE0Byte
+	.endif
 
 	thumb_local_start
 sub_8013892:
