@@ -14569,14 +14569,21 @@ copyBattleSettingsTo_200AF60:
 	.endif
 
 // (int mask) -> void
+	.ifndef DECOMP_battleSettings_setFlags_unkSettings
 	thumb_func_start battleSettings_setFlags_unkSettings
 battleSettings_setFlags_unkSettings:
-	ldr r1, off_802D2EC // =BattleSettings_200AF60 
+	ldr r1, off_802D2EC // =BattleSettings_200AF60
 	ldr r2, [r1,#0x8] // BattleSettings.UnknownOptionalSettings
 	orr r2, r0
 	str r2, [r1,#0x8] // BattleSettings.UnknownOptionalSettings
 	mov pc, lr
 	thumb_func_end battleSettings_setFlags_unkSettings
+	.else
+	thumb_func_start battleSettings_setFlags_unkSettings
+battleSettings_setFlags_unkSettings:
+	decomp_trampoline battleSettings_setFlags_unkSettings_c, 2
+	thumb_func_end battleSettings_setFlags_unkSettings
+	.endif
 
 // (int mask) -> void
 	thumb_local_start
