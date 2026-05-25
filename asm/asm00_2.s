@@ -2406,6 +2406,7 @@ sub_800FE28:
 	pop {pc}
 	thumb_func_end sub_800FE28
 
+	.ifndef DECOMP_sub_800FE36
 	thumb_func_start sub_800FE36
 sub_800FE36:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -2425,6 +2426,12 @@ loc_800FE40:
 locret_800FE50:
 	mov pc, lr
 	thumb_func_end sub_800FE36
+	.else
+	thumb_func_start sub_800FE36
+sub_800FE36:
+	decomp_trampoline sub_800FE36_c, 18
+	thumb_func_end sub_800FE36
+	.endif
 
 	thumb_func_start sub_800FE52
 sub_800FE52:
