@@ -1561,6 +1561,7 @@ sub_8003A58:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003A58
 
+	.ifndef DECOMP_initMinigameEffect_8003a64
 	thumb_func_start initMinigameEffect_8003a64
 initMinigameEffect_8003a64:
 	push {r4-r7,lr}
@@ -1587,6 +1588,12 @@ initMinigameEffect_8003a64:
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	pop {r4-r7,pc}
 	thumb_func_end initMinigameEffect_8003a64
+	.else
+	thumb_func_start initMinigameEffect_8003a64
+initMinigameEffect_8003a64:
+	decomp_trampoline initMinigameEffect_8003a64_c, 36
+	thumb_func_end initMinigameEffect_8003a64
+	.endif
 
 	thumb_func_start endMinigameEffectMaybe_8003a90
 endMinigameEffectMaybe_8003a90:
