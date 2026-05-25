@@ -22,3 +22,12 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-25T23:41:07Z	sub_8132664	pass	38	58.41	32	0	batch=9
 2026-05-25T23:41:07Z	sub_803C2A0	pass	38	58.41	32	0	batch=9
 2026-05-25T23:41:07Z	sub_803C558	pass	38	58.41	32	0	batch=9
+2026-05-25T23:50:19Z	battle_networkInvert	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	SetAIData_Unk_44_Flag	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	ClearAIDataUnk0x48Flag	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	object_clearFlag	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	object_setFlag2	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	sub_801BEB8	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	sub_801BECC	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	sub_801A4D0	pass	47	59.23	41	0	batch=9
+2026-05-25T23:50:19Z	sub_801443C	pass	47	59.23	41	0	batch=9
