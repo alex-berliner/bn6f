@@ -7,8 +7,11 @@ You are the **decomp workhorse**. The infrastructure is fast:
 - Per-fn cache means only changed-radius pairs replay.
 - There are thousands of candidate functions still in ASM.
 
-Goal each iteration: **one converted function, committed and pushed.**
-Don't agonize. Don't deeply debug. If it doesn't go cleanly, revert and pick another. Move.
+Goal each iteration: **a batch of 3-5 converted functions, committed individually, pushed.**
+
+Verify is the bottleneck (~57s per run) — its cost is fixed regardless of how many fns are added between runs. Batching N conversions per verify cuts wall-time ~N×.
+
+Don't agonize. Don't deeply debug. If a batch goes red, pick out the failing fn(s), revert just those, and ship the rest. Move.
 
 ## Timing (record at iteration start)
 
@@ -20,9 +23,9 @@ date -u +%s > /tmp/decomp_step_start
 
 You'll write a stats row at the end. Don't skip this — running stats are what tell us if the workhorse is getting faster, slower, or stuck.
 
-## Pick (≤1 minute)
+## Pick a batch (≤2 minutes)
 
-Find a fn meeting ALL of:
+Choose **3-5** candidates. Each must meet ALL of:
 - Not in `tools/decomp_manifest.txt`.
 - Address ends in `0`, `4`, `8`, or `C` (4-aligned — `decomp_trampoline` only works there).
 - 4-12 thumb instructions.
@@ -36,74 +39,81 @@ Then cross-check against the manifest, the address (`tools/function_symbols.txt`
 
 If the first candidate looks tricky, **skip it** and pick another. Don't reason your way through an awkward one when there are thousands.
 
-## Convert (3-5 minutes)
+Prefer candidates that look like prior conversions you've shipped — twins of fns already in the manifest (same Toolkit-field pattern, same EWRAM-zero pattern) are very fast since you already know the offsets.
+
+## Convert each (3-5 minutes per fn)
+
+For every candidate in the batch:
 
 - Write `src/c/<lowercase_name>.c` — include `"types.h"`, match the ASM semantically. Use the r5/r10 register-asm pattern (`[[reference_struct_offsets]]` for byte offsets — don't re-grep `.inc` files).
 - Wrap the asm with `.ifndef DECOMP_<sym>` / `.else` / `decomp_trampoline <sym>_c, <pad>` / `.endif`. Pad = `original_byte_size - 8`.
 - Append `<sym>` to `tools/decomp_manifest.txt`.
 
-## Verify (~5-60s)
+Keep a mental (or actual) list of `(symbol, asm_file, c_file)` so you can later revert specific fns surgically.
 
-Capture the verify wall-clock — useful signal in the stats row:
-
-```sh
-/usr/bin/time -f "%e" -o /tmp/decomp_step_verify make verify
-```
-
-Three outcomes:
-
-- **Green (0 failed):** commit + push + compact + done. Move to next iteration.
-- **Red, obvious fix** (wrong offset, miscounted padding, u8 vs u16): fix it, re-verify. ONE retry.
-- **Red after retry, or non-obvious failure:** revert and pick another.
-  ```sh
-  git checkout asm/<file>.s tools/decomp_manifest.txt && rm src/c/<file>.c
-  ```
-  Then pick a new candidate. **Do not spend more than 5 minutes debugging a single function.** The pipeline is fast; throwput beats persistence on any individual fn.
-
-## Commit + push (1 minute)
-
-One-liner subject like the existing convention: `Convert sub_XXXXXXX — <one-line semantic>`.
-Body only if non-obvious. `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>` trailer.
+## Verify the batch (~57s)
 
 ```sh
-git add asm/<file>.s src/c/<new>.c tools/decomp_manifest.txt
-git commit -m "Convert <sym> — <one-line>"
-git push
+/usr/bin/time -f "%e" -o /tmp/decomp_step_verify make verify 2>&1 | tee /tmp/decomp_step_log
 ```
 
-## Stats — append a row before compact
+Inspect the log:
 
-Write one TSV row to `.claude/decomp_stats.tsv` capturing this
-iteration. Columns:
+- **Green (`0 failed` across all sessions):** all conversions are good. Skip to "Commit individually".
+- **Red:** parse the log for `[FAIL] <fn_name>:` lines AND `first failure: ...` lines. Each FAIL line names a fn whose pairs broke. That's your suspect set.
+
+  Some failing fns may be *callers* of a buggy new conversion (their radius includes a regressed callee). The buggy fn itself usually fails too. Look at the SHARED set of fns named in FAIL lines — anything in your batch that also appears there is a suspect.
+
+  For each suspect fn in your batch:
+  1. Try ONE obvious-fix attempt (wrong offset, miscounted pad, u8 vs u16 vs u32, missing `register asm("rN")`, signed-vs-unsigned).
+  2. If the obvious fix isn't apparent or doesn't help, **revert just that fn**:
+     ```sh
+     git checkout asm/<file>.s            # restores the pre-trampoline block + the matching manifest line
+     git checkout tools/decomp_manifest.txt
+     # re-apply OTHER batch members' manifest edits + asm edits if needed
+     rm src/c/<bad>.c
+     ```
+     A cleaner approach: keep each batch member's edits as a separate uncommitted diff (use `git stash` per fn) so you can re-apply selectively. Or just revert the whole batch and pick the survivors to re-apply.
+
+  3. Re-verify. If still red, revert another suspect. Iterate until green.
+  4. If you can't get to green after reverting all suspects in the batch, something else is broken — bail to the user.
+
+**Time budget for batch failure resolution: ≤10 minutes.** Beyond that, revert the whole batch and bail.
+
+## Commit individually + push (1-2 minutes total)
+
+Each surviving fn gets its OWN commit so history stays grep-able by symbol. The verify pass result is the same — we just chose the units of commit independently from the units of verification.
+
+```sh
+# Stage + commit per-fn
+for sym in <list_of_surviving_syms>; do
+  git add asm/<asm_file_for_$sym>.s src/c/<c_file_for_$sym>.c tools/decomp_manifest.txt
+  git commit -m "Convert $sym — <one-line>"
+done
+git push  # one push after all commits
+```
+
+The manifest gets added repeatedly across the per-fn commits — that's fine, git will only diff the relevant manifest line into each commit because the cumulative file already has all the new lines.
+
+## Stats — one row per fn in the batch
+
+Append one TSV row per fn to `.claude/decomp_stats.tsv`. Columns:
 
 ```
 ts	symbol	status	total_s	verify_s	retries	notes
 ```
 
-- `ts`: ISO 8601 UTC (`date -u +%Y-%m-%dT%H:%M:%SZ`)
-- `symbol`: the function name (or `-` if the iteration bailed before picking)
+- `ts`: ISO 8601 UTC (same `ts` for all rows in this batch — they share a verify)
+- `symbol`: function name
 - `status`: `pass` | `revert` | `bail`
-- `total_s`: `$(($(date -u +%s) - $(cat /tmp/decomp_step_start)))`
-- `verify_s`: contents of `/tmp/decomp_step_verify` (or `-` if you didn't reach verify)
-- `retries`: number of verify retries this iteration (0 on first-try pass)
-- `notes`: short reason on revert/bail (`bad alignment`, `unfamiliar pattern`, `agbcc miscompile?`); `-` on clean pass
+- `total_s`: `$(($(date -u +%s) - $(cat /tmp/decomp_step_start))) / batch_size` (amortised total iteration cost; lets running median reflect per-fn cost as batches grow)
+- `verify_s`: contents of `/tmp/decomp_step_verify`
+- `retries`: number of verify retries this iteration (0 on first-try green)
+- `notes`: `-` on pass, short reason on revert (`offset wrong`, `r5-asm clobber`, `pad miscount`), `bail: <why>` on bail
 
-Append, don't overwrite. Create the file with a header row if missing.
-One row per iteration — pass and revert both count.
-
-After appending, **glance at the last 10 rows**. If the trend is
-worsening (median total_s climbing, retry rate up), flag it to the
-user in your reply. Otherwise just append silently.
-
-```sh
-[ -f .claude/decomp_stats.tsv ] || \
-  printf 'ts\tsymbol\tstatus\ttotal_s\tverify_s\tretries\tnotes\n' \
-  > .claude/decomp_stats.tsv
-printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SYM" "$STATUS" \
-  "$TOTAL" "$VERIFY" "$RETRIES" "$NOTES" \
-  >> .claude/decomp_stats.tsv
-```
+Create the header row if the file is new. After appending, glance at
+the last ~10 rows — if median total_s is climbing or retry rate is
+up, flag it in your reply. Otherwise silent.
 
 ## Memory write — BEFORE compact
 
@@ -125,11 +135,14 @@ Most iterations have nothing to save. Skip unless a future-you would clearly ben
 
 - Reading the entire asm file. Use targeted grep/awk.
 - Trying to understand an unfamiliar pattern from scratch. Skip the candidate.
-- Debugging a verify failure for more than 5 minutes. Revert.
+- Debugging a single fn for more than 5 minutes after a batch failure. Revert that fn, ship the rest.
+- Picking a batch where multiple members touch the same asm block (their `.ifndef` wraps would collide). Always pick fns from distinct edit locations.
+- Picking a batch all in one tight call cluster. If they all call each other and one breaks, they ALL break — making suspect identification harder. Prefer diversity.
+- Batching > 5. Suspect identification gets confusing; the per-batch failure radius widens.
 - Writing long commit messages explaining the conversion. The diff is the doc.
-- Quoting verify output verbatim in your reply. State the result and move.
+- Quoting verify output verbatim in your reply. State counts and move.
 - Calling subagents. The work is sequential and cheap; no parallelism win.
-- Skipping the stats row. Every iteration writes one — pass, revert, or bail. The data is the only way to spot drift.
+- Skipping stats rows. Every fn — pass, revert, or bail — gets a row.
 
 ## Stop conditions
 
