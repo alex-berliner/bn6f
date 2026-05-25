@@ -6658,6 +6658,7 @@ sub_803C28A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C28A
 
+	.ifndef DECOMP_sub_803C2A0
 	thumb_func_start sub_803C2A0
 sub_803C2A0:
 	push {r4-r7,lr}
@@ -6665,6 +6666,12 @@ sub_803C2A0:
 	bl sub_803CB00
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2A0
+	.else
+	thumb_func_start sub_803C2A0
+sub_803C2A0:
+	decomp_trampoline sub_803C2A0_c, 2
+	thumb_func_end sub_803C2A0
+	.endif
 
 	.ifndef DECOMP_sub_803C2AA
 	thumb_func_start sub_803C2AA
@@ -7135,6 +7142,7 @@ off_803C554:
 	.word 0x200
 	thumb_func_end sub_803C530
 
+	.ifndef DECOMP_sub_803C558
 	thumb_func_start sub_803C558
 sub_803C558:
 	push {r4-r7,lr}
@@ -7142,6 +7150,12 @@ sub_803C558:
 	bl sub_81467A0
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C558
+	.else
+	thumb_func_start sub_803C558
+sub_803C558:
+	decomp_trampoline sub_803C558_c, 4
+	thumb_func_end sub_803C558
+	.endif
 
 	thumb_local_start
 sub_803C564:
