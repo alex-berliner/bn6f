@@ -15,6 +15,7 @@ Tracking ideas to speed up the verification harness (`bn6f-track` +
 | 08 | [Skip RECORD for uncalled functions](08-skip-uncalled-functions.md) | proposed |
 | 09 | [Skip IRQ-isolation for pure functions](09-skip-irq-isolation-for-pure-fns.md) | proposed |
 | 12 | [Binary-search bk2 divergence detector](12-binary-search-bk2-divergence.md) | proposed |
+| 15 | [Coverage strategies + incremental verify (D)](15-coverage-strategies.md) | proposed |
 
 ## Done
 
