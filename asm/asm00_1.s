@@ -676,6 +676,7 @@ InitializeStructsOfObjectType::
 	.word ActiveObjectBitfieldPointers
 	thumb_func_end InitializeStructsOfObjectType
 
+	.ifndef DECOMP_InitializeOWPlayerObjectStruct
 	thumb_func_start InitializeOWPlayerObjectStruct
 InitializeOWPlayerObjectStruct:
 	push {lr}
@@ -683,6 +684,12 @@ InitializeOWPlayerObjectStruct:
 	bl InitializeStructsOfObjectType
 	pop {pc}
 	thumb_func_end InitializeOWPlayerObjectStruct
+	.else
+	thumb_func_start InitializeOWPlayerObjectStruct
+InitializeOWPlayerObjectStruct:
+	decomp_trampoline InitializeOWPlayerObjectStruct_c, 2
+	thumb_func_end InitializeOWPlayerObjectStruct
+	.endif
 
 	thumb_local_start
 InitializeT1BattleObjectStructs:
@@ -1707,6 +1714,7 @@ locret_8003B1A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003AFA
 
+	.ifndef DECOMP_Is_eStruct2001010_Initialized
 	thumb_func_start Is_eStruct2001010_Initialized
 Is_eStruct2001010_Initialized:
 	ldr r1, off_8003B40 // =eStruct2001010
@@ -1714,6 +1722,12 @@ Is_eStruct2001010_Initialized:
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end Is_eStruct2001010_Initialized
+	.else
+	thumb_func_start Is_eStruct2001010_Initialized
+Is_eStruct2001010_Initialized:
+	decomp_trampoline Is_eStruct2001010_Initialized_c, 0
+	thumb_func_end Is_eStruct2001010_Initialized
+	.endif
 
 	thumb_local_start
 sub_8003B24:
