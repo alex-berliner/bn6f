@@ -226,6 +226,7 @@ off_812EC28:
 	.word word_2023FA0
 	thumb_func_end sub_812EC04
 
+	.ifndef DECOMP_sub_812EC2C
 	thumb_func_start sub_812EC2C
 sub_812EC2C:
 	push {r4-r7,lr}
@@ -240,6 +241,12 @@ sub_812EC2C:
 	mov r0, r4
 	pop {r4-r7,pc}
 	thumb_func_end sub_812EC2C
+	.else
+	thumb_func_start sub_812EC2C
+sub_812EC2C:
+	decomp_trampoline sub_812EC2C_c, 16
+	thumb_func_end sub_812EC2C
+	.endif
 
 	push {r4-r7,lr}
 	sub sp, sp, #0x1c
