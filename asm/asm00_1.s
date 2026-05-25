@@ -715,6 +715,7 @@ InitializeT4BattleObjectStructs:
 	pop {pc}
 	thumb_func_end InitializeT4BattleObjectStructs
 
+	.ifndef DECOMP_InitializeOverworldNPCObjectStructs
 	thumb_func_start InitializeOverworldNPCObjectStructs
 InitializeOverworldNPCObjectStructs:
 	push {lr}
@@ -722,6 +723,12 @@ InitializeOverworldNPCObjectStructs:
 	bl InitializeStructsOfObjectType
 	pop {pc}
 	thumb_func_end InitializeOverworldNPCObjectStructs
+	.else
+	thumb_func_start InitializeOverworldNPCObjectStructs
+InitializeOverworldNPCObjectStructs:
+	decomp_trampoline InitializeOverworldNPCObjectStructs_c, 2
+	thumb_func_end InitializeOverworldNPCObjectStructs
+	.endif
 
 	.ifndef DECOMP_InitializeOverworldMapObjectStructs
 	thumb_func_start InitializeOverworldMapObjectStructs
@@ -1513,6 +1520,7 @@ locret_80039CA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80039AA
 
+	.ifndef DECOMP_Is_eScenarioEffectState2000780_Initialized
 	thumb_func_start Is_eScenarioEffectState2000780_Initialized
 Is_eScenarioEffectState2000780_Initialized:
 	ldr r1, off_80039F0 // =eScenarioEffectState2000780
@@ -1520,6 +1528,12 @@ Is_eScenarioEffectState2000780_Initialized:
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end Is_eScenarioEffectState2000780_Initialized
+	.else
+	thumb_func_start Is_eScenarioEffectState2000780_Initialized
+Is_eScenarioEffectState2000780_Initialized:
+	decomp_trampoline Is_eScenarioEffectState2000780_Initialized_c, 0
+	thumb_func_end Is_eScenarioEffectState2000780_Initialized
+	.endif
 
 	thumb_func_start sub_80039D4
 sub_80039D4:

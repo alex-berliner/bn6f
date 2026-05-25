@@ -512,3 +512,5 @@ sub_801E71C
 sub_802D1B4
 InitializeOWPlayerObjectStruct
 Is_eStruct2001010_Initialized
+InitializeOverworldNPCObjectStructs
+Is_eScenarioEffectState2000780_Initialized
