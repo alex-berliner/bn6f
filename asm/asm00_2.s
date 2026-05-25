@@ -31302,6 +31302,7 @@ byte_801E700:
 	.byte 0x0, 0x5, 0x6, 0x7, 0x8, 0x9, 0x5, 0x6, 0x7, 0x8, 0x9, 0x14, 0x14, 0xF, 0x10, 0x11, 0x12, 0x13, 0xf, 0x10, 0x11, 0x12, 0x13, 0x16, 0x16, 0x0, 0x0, 0x0
 	thumb_func_end sub_801E6A8
 
+	.ifndef DECOMP_sub_801E71C
 	thumb_func_start sub_801E71C
 sub_801E71C:
 	push {r1,lr}
@@ -31309,6 +31310,12 @@ sub_801E71C:
 	strb r0, [r1,#0x12] // (byte_2035292 - 0x2035280)
 	pop {r1,pc}
 	thumb_func_end sub_801E71C
+	.else
+	thumb_func_start sub_801E71C
+sub_801E71C:
+	decomp_trampoline sub_801E71C_c, 0
+	thumb_func_end sub_801E71C
+	.endif
 
 	.ifndef DECOMP_sub_801E724
 	thumb_func_start sub_801E724

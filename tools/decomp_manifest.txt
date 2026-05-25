@@ -508,3 +508,7 @@ sub_800A70C
 sub_801E0C8
 sub_801FE64
 sub_801E658
+sub_801E71C
+sub_802D1B4
+InitializeOWPlayerObjectStruct
+Is_eStruct2001010_Initialized
