@@ -285,20 +285,38 @@ DECOMP_FN_ADDRS = $(shell awk 'NR==FNR { if ($$1 !~ /^[[:space:]]*#/ && NF>0) wa
 # frame).
 DEMOS_ROOT = tests/fixtures/demos
 
-verify: track-build $(FN_SYMS)
-	@set -e; \
-	for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
-		stem=$$(basename $$bk2 .bk2); \
-		input=$(DEMOS_ROOT)/bk2/$$stem.input; \
-		if [ ! -f $$input ]; then \
-			echo "verify: missing $$input (run tools/bk2_extract.py first)" >&2; \
-			exit 1; \
-		fi; \
-		frames=$$(( $$(stat -c %s $$input) / 4 )); \
-		echo; echo "=== verify bk2/$$stem  ($$frames frames) ==="; \
-		$(MAKE) --no-print-directory verify-state \
-			STATE_NAME=bk2/$$stem STATE_FRAMES=$$frames; \
-	done
+# Stable per-flavor ROM artefacts. `all` and `decompile` both write
+# the same $(ROM) path via the shared $(ELF) → $(ROM) rule, so we
+# pre-build both flavors serially and copy them to distinct names
+# before handing off to the verify orchestrator.
+ROM_ORIG_BUILT   = build/bn6f_orig.gba
+ROM_DECOMP_BUILT = build/bn6f_decomp.gba
+
+# Record-output cache. Per-function snapshots keyed on
+# (orig_rom_sha, bk2_sha). Steady-state decomp work (only the decomp
+# ROM changes between iterations) becomes a full cache hit and skips
+# the whole record pass.
+VERIFY_CACHE_DIR ?= .verify-cache
+
+# Cross-bk2 parallelism inside the orchestrator. One emulation thread
+# per bk2; the inner rayon pool (used by isolated runs and replay)
+# is shared, so we don't need to clamp like the old `make -j` fan-out
+# did. Defaults to nproc.
+VERIFY_PARALLEL ?= $(shell nproc)
+
+verify: track-build $(FN_SYMS) | build
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
+	@cp $(ROM) $(ROM_ORIG_BUILT)
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
+	@cp $(ROM) $(ROM_DECOMP_BUILT)
+	tools/bn6f-track/target/release/bn6f-track verify-all \
+		--orig $(abspath $(ROM_ORIG_BUILT)) \
+		--decomp $(abspath $(ROM_DECOMP_BUILT)) \
+		--symbols $(abspath $(FN_SYMS)) \
+		--demos-root $(abspath $(DEMOS_ROOT)) \
+		--cache-dir $(abspath $(VERIFY_CACHE_DIR)) \
+		--parallel $(VERIFY_PARALLEL) \
+		$(DECOMP_FN_ADDRS)
 
 # `verify-state` is the per-scene worker `verify` dispatches to.
 # Useful directly if you want to run a single bk2 (or some other
@@ -309,7 +327,6 @@ verify: track-build $(FN_SYMS)
 # Override STATE_FILE / STATE_INPUT explicitly to bypass auto-resolve
 # for ad-hoc demos outside the tree.
 STATE_NAME    ?=
-STATE_FRAMES  ?= 600
 STATE_SESSION  = tests/fixtures/calls/$(STATE_NAME)
 
 # Auto-resolve STATE_FILE: folder mode first (test has its own dir),
@@ -328,7 +345,26 @@ STATE_INPUT := $(firstword \
     $(wildcard $(DEMOS_ROOT)/$(STATE_NAME).input))
 endif
 
+# STATE_FRAMES default: derive from STATE_INPUT size (4 bytes per
+# frame of joypad state) when an input file exists, else 600. Set
+# explicitly on the command line to override for ad-hoc demos.
+ifndef STATE_FRAMES
+ifneq ($(strip $(STATE_INPUT)),)
+STATE_FRAMES := $(shell echo $$(( $$(stat -c %s $(STATE_INPUT)) / 4 )))
+else
+STATE_FRAMES := 600
+endif
+endif
+
+# Ad-hoc wrapper: ensure build prereqs are in place, then run the
+# verify body. The `verify` fan-out skips this wrapper and calls
+# verify-state-impl directly because re-evaluating the prereqs from
+# parallel workers races on clean-conditional-objs.
 verify-state: track-build $(FN_SYMS)
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory verify-state-impl
+
+.PHONY: verify-state-impl
+verify-state-impl:
 ifeq ($(strip $(STATE_NAME)),)
 	$(error STATE_NAME not set — e.g. make verify-state STATE_NAME=bk2/intro)
 endif
@@ -336,20 +372,24 @@ ifeq ($(strip $(STATE_FILE)),)
 	$(error no savestate found for "$(STATE_NAME)" — looked for $(DEMOS_ROOT)/$(STATE_NAME)/state.ss* and $(DEMOS_ROOT)/$(STATE_NAME).ss*)
 endif
 	@echo "[verify-state $(STATE_NAME)] state=$(STATE_FILE) input=$(or $(STATE_INPUT),<none>)"
+ifeq ($(strip $(ROM_ORIG_PREBUILT)),)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
+endif
 	@rm -rf $(STATE_SESSION)
 	@mkdir -p $(STATE_SESSION)
 	@tools/bn6f-track/target/release/bn6f-track record \
-		$(abspath $(ROM)) $(STATE_FRAMES) $(abspath $(FN_SYMS)) \
+		$(abspath $(or $(ROM_ORIG_PREBUILT),$(ROM))) $(STATE_FRAMES) $(abspath $(FN_SYMS)) \
 		$(abspath $(STATE_SESSION)) \
 		--state $(abspath $(STATE_FILE)) \
 		$(if $(STATE_INPUT),--input $(abspath $(STATE_INPUT)),) \
 		$(RECORD_FLAGS) $(DECOMP_FN_ADDRS)
 	@echo
 	@echo "[verify-state $(STATE_NAME)] building decompile ROM and replaying..."
+ifeq ($(strip $(ROM_DECOMP_PREBUILT)),)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
+endif
 	tools/bn6f-track/target/release/bn6f-track replay \
-		$(abspath $(ROM)) $(abspath $(STATE_SESSION)) $(REPLAY_FLAGS)
+		$(abspath $(or $(ROM_DECOMP_PREBUILT),$(ROM))) $(abspath $(STATE_SESSION)) $(REPLAY_FLAGS)
 
 # Convenience: list every test that's been authored under demos/.
 list-demos:

@@ -17,10 +17,29 @@
 // CopyBytes, ...) are fine with this.
 
 use std::fs::File;
-use std::io::{Read, Write};
+use std::io::{BufWriter, Read, Write};
 use std::path::Path;
 
 use crate::mgba_sys;
+
+/// zstd frame magic — leading 4 bytes of any zstandard-compressed stream.
+const ZSTD_MAGIC: [u8; 4] = [0x28, 0xB5, 0x2F, 0xFD];
+
+/// Compression level used for on-disk snapshots. Level 1 is the sweet
+/// spot: ~500 MB/s encode on guest RAM (mostly zero runs), ratio close
+/// to higher levels for this kind of data.
+const ZSTD_LEVEL: i32 = 1;
+
+/// Read a whole file, transparently decompressing zstd frames. Plain
+/// (uncompressed) files are returned as-is so older fixtures still load.
+fn read_maybe_compressed(path: &Path) -> std::io::Result<Vec<u8>> {
+    let raw = std::fs::read(path)?;
+    if raw.len() >= 4 && raw[..4] == ZSTD_MAGIC {
+        zstd::decode_all(&raw[..])
+    } else {
+        Ok(raw)
+    }
+}
 
 const EWRAM_BASE: u32 = 0x02000000;
 const EWRAM_SIZE: usize = 0x40000; // 256 KB
@@ -95,55 +114,65 @@ impl ExitDelta {
     }
 
     pub fn write_to(&self, path: &Path) -> std::io::Result<()> {
-        let mut f = File::create(path)?;
-        f.write_all(b"BNDL")?;
-        f.write_all(&1u32.to_le_bytes())?;
+        // Encode to an in-memory buffer first, then write a single
+        // zstd-compressed blob. The on-the-fly Encoder over a File is
+        // also fine, but the payload is small (a few KB typically) so
+        // in-memory keeps the call sites trivial.
+        let mut buf = Vec::with_capacity(4 + 4 + 18 * 4 + 8
+            + self.ewram_writes.len() * 5
+            + self.iwram_writes.len() * 5);
+        buf.extend_from_slice(b"BNDL");
+        buf.extend_from_slice(&1u32.to_le_bytes());
         for r in &self.regs {
-            f.write_all(&r.to_le_bytes())?;
+            buf.extend_from_slice(&r.to_le_bytes());
         }
-        f.write_all(&(self.ewram_writes.len() as u32).to_le_bytes())?;
+        buf.extend_from_slice(&(self.ewram_writes.len() as u32).to_le_bytes());
         for (addr, val) in &self.ewram_writes {
-            f.write_all(&addr.to_le_bytes())?;
-            f.write_all(&[*val])?;
+            buf.extend_from_slice(&addr.to_le_bytes());
+            buf.push(*val);
         }
-        f.write_all(&(self.iwram_writes.len() as u32).to_le_bytes())?;
+        buf.extend_from_slice(&(self.iwram_writes.len() as u32).to_le_bytes());
         for (addr, val) in &self.iwram_writes {
-            f.write_all(&addr.to_le_bytes())?;
-            f.write_all(&[*val])?;
+            buf.extend_from_slice(&addr.to_le_bytes());
+            buf.push(*val);
         }
+        let compressed = zstd::encode_all(&buf[..], ZSTD_LEVEL)?;
+        std::fs::write(path, &compressed)?;
         Ok(())
     }
 
     pub fn read_from(path: &Path) -> std::io::Result<Self> {
-        let mut f = File::open(path)?;
+        let bytes = read_maybe_compressed(path)?;
+        let mut cursor = &bytes[..];
         let mut magic = [0u8; 4];
-        f.read_exact(&mut magic)?;
+        cursor.read_exact(&mut magic)?;
         if &magic != b"BNDL" {
             return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "bad magic"));
         }
         let mut buf4 = [0u8; 4];
-        f.read_exact(&mut buf4)?;
+        cursor.read_exact(&mut buf4)?;
         let _version = u32::from_le_bytes(buf4);
         let mut regs = [0u32; 18];
         for r in regs.iter_mut() {
-            f.read_exact(&mut buf4)?;
+            cursor.read_exact(&mut buf4)?;
             *r = u32::from_le_bytes(buf4);
         }
-        let mut read_writes = || -> std::io::Result<Vec<(u32, u8)>> {
-            f.read_exact(&mut buf4)?;
-            let n = u32::from_le_bytes(buf4) as usize;
+        let read_writes = |c: &mut &[u8]| -> std::io::Result<Vec<(u32, u8)>> {
+            let mut len_buf = [0u8; 4];
+            c.read_exact(&mut len_buf)?;
+            let n = u32::from_le_bytes(len_buf) as usize;
             let mut v = Vec::with_capacity(n);
             for _ in 0..n {
                 let mut a = [0u8; 4];
                 let mut b = [0u8; 1];
-                f.read_exact(&mut a)?;
-                f.read_exact(&mut b)?;
+                c.read_exact(&mut a)?;
+                c.read_exact(&mut b)?;
                 v.push((u32::from_le_bytes(a), b[0]));
             }
             Ok(v)
         };
-        let ewram_writes = read_writes()?;
-        let iwram_writes = read_writes()?;
+        let ewram_writes = read_writes(&mut cursor)?;
+        let iwram_writes = read_writes(&mut cursor)?;
         Ok(ExitDelta { regs, ewram_writes, iwram_writes })
     }
 }
@@ -317,25 +346,28 @@ impl Snapshot {
     ///   iwram_len u32 + bytes
     ///   savestate_len u32 + bytes
     pub fn write_to(&self, path: &Path) -> std::io::Result<()> {
-        let mut f = File::create(path)?;
-        f.write_all(b"BNSS")?;
-        f.write_all(&2u32.to_le_bytes())?;
+        let f = File::create(path)?;
+        let mut enc = zstd::Encoder::new(BufWriter::new(f), ZSTD_LEVEL)?;
+        enc.write_all(b"BNSS")?;
+        enc.write_all(&2u32.to_le_bytes())?;
         for r in &self.regs {
-            f.write_all(&r.to_le_bytes())?;
+            enc.write_all(&r.to_le_bytes())?;
         }
-        f.write_all(&(self.ewram.len() as u32).to_le_bytes())?;
-        f.write_all(&self.ewram)?;
-        f.write_all(&(self.iwram.len() as u32).to_le_bytes())?;
-        f.write_all(&self.iwram)?;
-        f.write_all(&(self.savestate.len() as u32).to_le_bytes())?;
-        f.write_all(&self.savestate)?;
+        enc.write_all(&(self.ewram.len() as u32).to_le_bytes())?;
+        enc.write_all(&self.ewram)?;
+        enc.write_all(&(self.iwram.len() as u32).to_le_bytes())?;
+        enc.write_all(&self.iwram)?;
+        enc.write_all(&(self.savestate.len() as u32).to_le_bytes())?;
+        enc.write_all(&self.savestate)?;
+        enc.finish()?.flush()?;
         Ok(())
     }
 
     pub fn read_from(path: &Path) -> std::io::Result<Self> {
-        let mut f = File::open(path)?;
+        let bytes = read_maybe_compressed(path)?;
+        let mut cursor = &bytes[..];
         let mut magic = [0u8; 4];
-        f.read_exact(&mut magic)?;
+        cursor.read_exact(&mut magic)?;
         if &magic != b"BNSS" {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidData,
@@ -343,7 +375,7 @@ impl Snapshot {
             ));
         }
         let mut buf4 = [0u8; 4];
-        f.read_exact(&mut buf4)?;
+        cursor.read_exact(&mut buf4)?;
         let version = u32::from_le_bytes(buf4);
         if version != 2 {
             return Err(std::io::Error::new(
@@ -354,21 +386,21 @@ impl Snapshot {
 
         let mut regs = [0u32; 18];
         for r in regs.iter_mut() {
-            f.read_exact(&mut buf4)?;
+            cursor.read_exact(&mut buf4)?;
             *r = u32::from_le_bytes(buf4);
         }
-        f.read_exact(&mut buf4)?;
+        cursor.read_exact(&mut buf4)?;
         let elen = u32::from_le_bytes(buf4) as usize;
         let mut ewram = vec![0u8; elen];
-        f.read_exact(&mut ewram)?;
-        f.read_exact(&mut buf4)?;
+        cursor.read_exact(&mut ewram)?;
+        cursor.read_exact(&mut buf4)?;
         let ilen = u32::from_le_bytes(buf4) as usize;
         let mut iwram = vec![0u8; ilen];
-        f.read_exact(&mut iwram)?;
-        f.read_exact(&mut buf4)?;
+        cursor.read_exact(&mut iwram)?;
+        cursor.read_exact(&mut buf4)?;
         let slen = u32::from_le_bytes(buf4) as usize;
         let mut savestate = vec![0u8; slen];
-        f.read_exact(&mut savestate)?;
+        cursor.read_exact(&mut savestate)?;
         Ok(Snapshot { regs, ewram, iwram, savestate })
     }
 }
@@ -419,7 +451,8 @@ fn save_state_bytes(core: *mut mgba_sys::mCore) -> Vec<u8> {
 ///     followed by a vanilla mGBA savestate.  We sniff the header
 ///     and skip it before handing the rest to libmgba.
 pub fn load_savestate_file(core: *mut mgba_sys::mCore, path: &std::path::Path) -> Result<(), String> {
-    let bytes = std::fs::read(path).map_err(|e| format!("read {}: {e}", path.display()))?;
+    let bytes = read_maybe_compressed(path)
+        .map_err(|e| format!("read {}: {e}", path.display()))?;
     if bytes.starts_with(b"BNSS") {
         let snap = Snapshot::read_from(path).map_err(|e| format!("read BNSS {}: {e}", path.display()))?;
         return snap.restore(core);

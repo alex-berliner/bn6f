@@ -59,16 +59,16 @@ Smoke-tested with `intro.bk2` over 60 frames of `ZeroFillByWord`:
 
 Both demos are wired into the harness via `verify-state` (which
 auto-resolves `STATE_NAME=bk2/<stem>` to the `.ss` + `.input` siblings
-in this directory):
+in this directory, and derives `STATE_FRAMES` from the .input size):
 
 ```sh
-make verify-state STATE_NAME=bk2/intro                   STATE_FRAMES=6239
-make verify-state STATE_NAME=bk2/intro_to_end_tutorial   STATE_FRAMES=16441
+make verify-state STATE_NAME=bk2/intro
+make verify-state STATE_NAME=bk2/intro_to_end_tutorial
 ```
 
 Or, run every bk2 in this directory through to the END of the
-recording in one go (this is what `make verify` does — frame count
-is auto-derived from each .input):
+recording in one go (this is what `make verify` does, with each bk2
+fanned out in parallel via `make -j`):
 
 ```sh
 make verify

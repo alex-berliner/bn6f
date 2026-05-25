@@ -19,6 +19,7 @@ pub(crate) mod mgba_sys {
     include!(concat!(env!("OUT_DIR"), "/mgba_sys.rs"));
 }
 
+mod cache;
 mod snapshot;
 
 use std::cell::RefCell;
@@ -104,15 +105,18 @@ impl Core {
         let frameskip: i32 = std::env::var("BN6F_TRACK_FRAMESKIP")
             .ok()
             .and_then(|s| s.parse().ok())
-            .unwrap_or(9);
+            .unwrap_or(i32::MAX);
         unsafe {
             mgba_sys::mCoreConfigInit(&mut (*raw).config, port_name.as_ptr());
             // Frameskip: render 1 of every (N+1) frames. We never read
-            // the video buffer (no display, no screenshot capture); this
-            // disables ~N/(N+1) of the PPU work (per-scanline BG layer
-            // compositing + sprite + blending). Game timing is unaffected
-            // — frameskip gates only drawScanline/finishFrame in libmgba's
-            // video.c, not VBlank IRQ, vcount, or game-side frame callbacks.
+            // the video buffer (no display, no screenshot capture); set
+            // to i32::MAX so the per-frame `frameskipCounter` (signed
+            // decrement, reset on negative) effectively never reaches
+            // zero — the PPU's per-scanline draw / finishFrame path is
+            // skipped for the lifetime of the run. Game timing is
+            // unaffected: frameskip gates only drawScanline/finishFrame
+            // in libmgba's video.c, not VBlank IRQ, vcount, or
+            // game-side frame callbacks.
             //
             // Must be set BEFORE mCoreLoadConfig: _GBACoreLoadConfig in
             // libmgba propagates `core->opts.frameskip → gba->video.frameskip`
@@ -169,6 +173,40 @@ impl Core {
         }
         self.debugger = Some(dbg);
         self.dbg_module = Some(module);
+        // Sanity-check that the direct-read offsets used inside
+        // `custom_cb` (gprs[15] at i32 index 15, cpsr.packed at i32
+        // index 16 within ARMCore) still agree with libmgba's
+        // readRegister. If a future libmgba bump reorders ARMCore
+        // this trips loudly rather than silently producing garbage
+        // PCs in the hot path.
+        self.verify_cpu_layout();
+    }
+
+    /// Cross-check direct ARMCore field reads against libmgba's
+    /// readRegister. One-time at debugger attach, so the per-step hot
+    /// path stays branch-free.
+    fn verify_cpu_layout(&self) {
+        let core = self.raw;
+        unsafe {
+            let read = (*core).readRegister.expect("mCore.readRegister is null");
+            let mut pc_named: i32 = 0;
+            let mut cpsr_named: i32 = 0;
+            let pc_name = std::ffi::CString::new("r15").unwrap();
+            let cpsr_name = std::ffi::CString::new("cpsr").unwrap();
+            let _ = read(core, pc_name.as_ptr(), &mut pc_named);
+            let _ = read(core, cpsr_name.as_ptr(), &mut cpsr_named);
+            let cpu = (*core).cpu as *const i32;
+            let pc_direct = *cpu.add(15);
+            let cpsr_direct = *cpu.add(16);
+            assert_eq!(
+                pc_direct, pc_named,
+                "ARMCore.gprs[15] offset drift: direct={pc_direct:#x} named={pc_named:#x}",
+            );
+            assert_eq!(
+                cpsr_direct, cpsr_named,
+                "ARMCore.cpsr offset drift: direct={cpsr_direct:#x} named={cpsr_named:#x}",
+            );
+        }
     }
 
     /// Register a breakpoint at `address`. Returns the bp id (or -1 on
@@ -286,9 +324,74 @@ impl Drop for Core {
 // extern "C" fn aren't possible, and we don't want to extend the C
 // struct via #[repr(C)] subclassing here.
 
+/// Bitset over instruction-aligned addresses, used to answer "is this
+/// PC a known function entry?" in O(1) without going through a
+/// HashSet probe. Allocated once per record/track run, indexed by
+/// `(pc - base) >> 1` (Thumb-aware: 2-byte instruction alignment).
+///
+/// HashSet on the hot path was ~30-50 ns per call (hash + probe);
+/// this is ~2-5 ns (compare + shift + load + bittest). At billions
+/// of per-instruction callbacks per `make verify`, that adds up.
+struct EntryBitset {
+    base: u32,
+    /// Number of valid slot positions (= bits.len() * 64).
+    capacity: u32,
+    bits: Vec<u64>,
+}
+
+impl EntryBitset {
+    fn empty() -> Self {
+        Self { base: 0x08000000, capacity: 0, bits: Vec::new() }
+    }
+
+    /// Build from a slice of addresses. Anything outside the ROM
+    /// window [base, base + capacity*2) is silently dropped — the
+    /// addresses we care about (function entries) live in ROM.
+    fn from_addrs(addrs: &[u32]) -> Self {
+        const ROM_BASE: u32 = 0x08000000;
+        // Size to cover the highest in-ROM address with one slot of
+        // slop. 2-byte stride keeps Thumb half-words distinguishable.
+        let max_in_rom = addrs
+            .iter()
+            .copied()
+            .filter(|&a| a >= ROM_BASE)
+            .max()
+            .unwrap_or(ROM_BASE);
+        let span_bytes = max_in_rom - ROM_BASE + 4;
+        let slot_count = (span_bytes / 2) + 1;
+        let words = ((slot_count + 63) / 64) as usize;
+        let mut bits = vec![0u64; words];
+        for &a in addrs {
+            if a >= ROM_BASE {
+                let idx = (a - ROM_BASE) >> 1;
+                if idx < slot_count {
+                    bits[(idx >> 6) as usize] |= 1u64 << (idx & 63);
+                }
+            }
+        }
+        Self { base: ROM_BASE, capacity: slot_count, bits }
+    }
+
+    #[inline(always)]
+    fn contains(&self, pc: u32) -> bool {
+        if pc < self.base {
+            return false;
+        }
+        let idx = (pc - self.base) >> 1;
+        if idx >= self.capacity {
+            return false;
+        }
+        let word = unsafe { *self.bits.get_unchecked((idx >> 6) as usize) };
+        (word >> (idx & 63)) & 1 != 0
+    }
+}
+
 thread_local! {
-    /// Set of function-entry addresses (for O(1) "is this PC a function?").
-    static ENTRIES: RefCell<HashSet<u32>> = RefCell::new(HashSet::new());
+    /// Bitset of function-entry addresses (replaces a HashSet on the
+    /// per-instruction hot path). RefCell so record()/track() can
+    /// install it at startup, and custom_cb reads it billions of
+    /// times per run.
+    static ENTRIES: RefCell<EntryBitset> = RefCell::new(EntryBitset::empty());
     /// Map from function entry to (exclusive) end address — used to tell
     /// whether a branch-to-entry came from OUTSIDE the function (real
     /// call) or from INSIDE (loop iteration like start_copyMemory's
@@ -391,20 +494,18 @@ unsafe extern "C" fn custom_cb(module: *mut mgba_sys::mDebuggerModule) {
     // follow `module->p->core` back to the core.
     let dbg = unsafe { (*module).p };
     let core = unsafe { (*dbg).core };
-    let read = unsafe { (*core).readRegister.unwrap_unchecked() };
 
-    // The signed-i32 register reads get reinterpreted as unsigned —
-    // 32-bit ARM regs are width-equivalent.
-    let mut pc_i: i32 = 0;
-    let mut cpsr_i: i32 = 0;
-    PC_REG.with(|name| {
-        let _ = unsafe { read(core, name.as_ptr(), &mut pc_i) };
-    });
-    CPSR_REG.with(|name| {
-        let _ = unsafe { read(core, name.as_ptr(), &mut cpsr_i) };
-    });
-    let pc = pc_i as u32;
-    let cpsr = cpsr_i as u32;
+    // Read PC + CPSR directly from the ARMCore struct rather than
+    // going through (*core).readRegister — two function-pointer
+    // indirections + name-based dispatch per executed instruction is
+    // the dominant cost in this callback. ARMCore opens with
+    //   int32_t gprs[16]; union PSR cpsr; ...
+    // so gprs[15] is at offset 60 and cpsr.packed (the first member
+    // of the union) is at offset 64. Layout is verified once at
+    // attach time — see verify_cpu_layout.
+    let cpu = unsafe { (*core).cpu as *const i32 };
+    let pc = unsafe { *cpu.add(15) } as u32;
+    let cpsr = unsafe { *cpu.add(16) } as u32;
 
     // libmgba's own checkBreakpoints uses: pc_to_match = gprs[15] - instructionLength.
     // Use the same convention so our hits align with libmgba's bp-fire
@@ -437,7 +538,7 @@ unsafe extern "C" fn custom_cb(module: *mut mgba_sys::mDebuggerModule) {
 
 
         // 2. ENTRY detection: branch landed on a known function entry.
-        let is_entry = ENTRIES.with(|e| e.borrow().contains(&true_pc));
+        let is_entry = ENTRIES.with(|e| e.borrow().contains(true_pc));
         if is_entry {
             HITS.with(|h| {
                 *h.borrow_mut().entry(true_pc).or_insert(0) += 1;
@@ -483,12 +584,8 @@ unsafe extern "C" fn custom_cb(module: *mut mgba_sys::mDebuggerModule) {
                 };
 
                 if bl_call {
-                    let mut lr_i: i32 = 0;
-                    LR_REG.with(|name| {
-                        let _ = unsafe {
-                            read(core, name.as_ptr(), &mut lr_i)
-                        };
-                    });
+                    // r14 = gprs[14], direct read (see custom_cb hot path).
+                    let lr_i = unsafe { *cpu.add(14) };
                     let ret_addr = (lr_i as u32) & !1u32;
                     PENDING.with(|p| {
                         let mut p = p.borrow_mut();
@@ -678,11 +775,8 @@ fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input
     PENDING.with(|p| p.borrow_mut().clear());
     LAST_TRUE_PC.with(|c| *c.borrow_mut() = 0);
     ENTRIES.with(|e| {
-        let mut e = e.borrow_mut();
-        e.clear();
-        for &(addr, _) in &symbols {
-            e.insert(addr);
-        }
+        let addrs: Vec<u32> = symbols.iter().map(|(a, _)| *a).collect();
+        *e.borrow_mut() = EntryBitset::from_addrs(&addrs);
     });
     // Build FN_END: for each entry, the address of the next entry in
     // sorted order. Body = [entry, next_entry).
@@ -874,11 +968,8 @@ fn record(
     RECORD_DEDUP_SKIPPED.with(|c| *c.borrow_mut() = 0);
     RECORD_PER_FN_COUNT.with(|m| m.borrow_mut().clear());
     ENTRIES.with(|e| {
-        let mut e = e.borrow_mut();
-        e.clear();
-        for &(addr, _) in &symbols {
-            e.insert(addr);
-        }
+        let addrs: Vec<u32> = symbols.iter().map(|(a, _)| *a).collect();
+        *e.borrow_mut() = EntryBitset::from_addrs(&addrs);
     });
     FN_END.with(|m| {
         let mut m = m.borrow_mut();
@@ -1272,9 +1363,313 @@ fn describe_diff(d: &snapshot::DiffSummary) -> String {
     String::new()
 }
 
+// ---------------------------------------------------------------------
+// verify-all — orchestrator for the bk2 fleet.
+//
+// Replaces the prior make `-j` fan-out. Owns:
+//   • cache lookup/promote per (orig_rom, bk2, fn),
+//   • cross-bk2 parallelism (one record thread per bk2; shared
+//     rayon pool for the per-bk2 phase-2 pump),
+//   • single replay pass across all populated session dirs against
+//     the decomp ROM,
+//   • unified pass/fail reporting.
+//
+// The Makefile shrinks to: build orig.gba, build decomp.gba, hand off.
+// ---------------------------------------------------------------------
+
+/// Per-bk2 metadata derived from the demos tree. `state` and `input`
+/// follow the same resolution order the Makefile used: prefer a folder
+/// (`bk2/<stem>/state.ss*`, `bk2/<stem>/inputs.input`) then a flat
+/// sibling (`bk2/<stem>.ss*`, `bk2/<stem>.input`).
+struct Bk2Job {
+    stem: String,
+    bk2_path: std::path::PathBuf,
+    state_path: std::path::PathBuf,
+    input_path: std::path::PathBuf,
+    frame_count: u32,
+}
+
+fn discover_bk2_jobs(demos_root: &str) -> Result<Vec<Bk2Job>, String> {
+    let bk2_dir = std::path::Path::new(demos_root).join("bk2");
+    let mut bk2_files: Vec<std::path::PathBuf> = fs::read_dir(&bk2_dir)
+        .map_err(|e| format!("read_dir {}: {e}", bk2_dir.display()))?
+        .flatten()
+        .map(|e| e.path())
+        .filter(|p| p.extension().map(|x| x == "bk2").unwrap_or(false))
+        .collect();
+    bk2_files.sort();
+
+    let mut jobs = Vec::with_capacity(bk2_files.len());
+    for bk2 in bk2_files {
+        let stem = bk2.file_stem().unwrap().to_string_lossy().into_owned();
+        let folder = bk2_dir.join(&stem);
+
+        let state_path = first_existing(&[
+            folder.join("state.ss"),
+            folder.join("state.ss1"),
+            folder.join("state.ss2"),
+            bk2_dir.join(format!("{stem}.ss")),
+            bk2_dir.join(format!("{stem}.ss1")),
+            bk2_dir.join(format!("{stem}.ss2")),
+        ])
+        .ok_or_else(|| format!("no savestate for {stem}"))?;
+
+        let input_path = first_existing(&[
+            folder.join("inputs.input"),
+            bk2_dir.join(format!("{stem}.input")),
+        ])
+        .ok_or_else(|| format!("no .input file for {stem} (run tools/bk2_extract.py)"))?;
+
+        // .input is packed 4 bytes per frame.
+        let frame_count = (fs::metadata(&input_path)
+            .map_err(|e| format!("stat {}: {e}", input_path.display()))?
+            .len()
+            / 4) as u32;
+
+        jobs.push(Bk2Job { stem, bk2_path: bk2, state_path, input_path, frame_count });
+    }
+    Ok(jobs)
+}
+
+fn first_existing(candidates: &[std::path::PathBuf]) -> Option<std::path::PathBuf> {
+    candidates.iter().find(|p| p.exists()).cloned()
+}
+
+fn verify_all(
+    orig_rom: &str,
+    decomp_rom: &str,
+    symbols_path: &str,
+    targets_hex: &[String],
+    demos_root: &str,
+    cache_dir: &str,
+    parallel: usize,
+) {
+    eprintln!("=== bn6f-track verify-all ===");
+    eprintln!("orig:   {orig_rom}");
+    eprintln!("decomp: {decomp_rom}");
+    eprintln!("cache:  {cache_dir}");
+
+    let symbols = read_symbols(symbols_path).unwrap_or_else(|e| {
+        eprintln!("read_symbols: {e}");
+        process::exit(1);
+    });
+    let names: HashMap<u32, String> = symbols.iter().cloned().collect();
+
+    // Parse + resolve target addresses to names. A target that isn't in
+    // the symbol table is a hard error — caching by name needs a name.
+    let target_addrs: Vec<u32> = targets_hex
+        .iter()
+        .map(|s| {
+            let s = s.trim().strip_prefix("0x").unwrap_or(s);
+            u32::from_str_radix(s, 16).unwrap_or_else(|e| {
+                eprintln!("bad target addr {s}: {e}");
+                process::exit(1);
+            })
+        })
+        .collect();
+    let target_names: Vec<String> = target_addrs
+        .iter()
+        .map(|a| {
+            names.get(a).cloned().unwrap_or_else(|| {
+                eprintln!("target 0x{a:08X} has no symbol — can't cache it");
+                process::exit(1);
+            })
+        })
+        .collect();
+
+    let jobs = discover_bk2_jobs(demos_root).unwrap_or_else(|e| {
+        eprintln!("discover bk2: {e}");
+        process::exit(1);
+    });
+    eprintln!("bk2 fleet: {} demos, {} target functions", jobs.len(), target_addrs.len());
+
+    let orig_sha = cache::sha1_file_short(std::path::Path::new(orig_rom))
+        .unwrap_or_else(|e| { eprintln!("hash orig: {e}"); process::exit(1); });
+    eprintln!("orig sha: {orig_sha}");
+
+    // Phase A: per-bk2 record (cache-miss only). One thread per bk2 up
+    // to `parallel`. Each record's inner phase-2 pump uses rayon's
+    // global pool — work-steals across all bk2s concurrently.
+    //
+    // Important design choice: record writes directly into the cache
+    // directory (no staging into a session dir). The cache IS the
+    // session. Saves an O(N pairs) hardlink/copy round-trip on every
+    // partial-miss run (used to cost ~20s on a fleet of two bk2s);
+    // also keeps the on-disk layout to one source of truth.
+    use std::sync::Mutex;
+    let job_queue: Mutex<Vec<Bk2Job>> = Mutex::new(jobs);
+    let any_failure = std::sync::atomic::AtomicBool::new(false);
+    let bk2_cache_roots: Mutex<Vec<(String, std::path::PathBuf)>> =
+        Mutex::new(Vec::new());
+
+    std::thread::scope(|s| {
+        for _ in 0..parallel.max(1) {
+            let job_queue = &job_queue;
+            let target_addrs = &target_addrs;
+            let target_names = &target_names;
+            let symbols_path = &symbols_path;
+            let orig_sha = &orig_sha;
+            let bk2_cache_roots = &bk2_cache_roots;
+            let cache_dir = cache_dir;
+            let orig_rom = orig_rom;
+            let any_failure = &any_failure;
+            s.spawn(move || {
+                loop {
+                    let job = { job_queue.lock().unwrap().pop() };
+                    let Some(job) = job else { break; };
+                    match record_one_bk2_with_cache(
+                        orig_rom, symbols_path, &job, target_addrs,
+                        target_names, orig_sha, cache_dir,
+                    ) {
+                        Ok(root) => {
+                            bk2_cache_roots.lock().unwrap()
+                                .push((job.stem.clone(), root));
+                        }
+                        Err(e) => {
+                            eprintln!("[{}] record failed: {e}", job.stem);
+                            any_failure.store(true, std::sync::atomic::Ordering::Relaxed);
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    if any_failure.load(std::sync::atomic::Ordering::Relaxed) {
+        eprintln!("verify-all: one or more bk2 records failed");
+        process::exit(1);
+    }
+
+    // Phase B: replay every populated cache root vs decomp ROM.
+    // Collect all (cache_root, fn_name, seq) tuples up front and
+    // rayon-fan across the whole pool so per-fn parallelism is fully
+    // utilised (per-session par_iter would underutilise on small
+    // functions — ~1-30 pairs spread across nproc workers).
+    eprintln!("\n--- phase B: replay vs decomp ---");
+    let session_dirs: Vec<(String, std::path::PathBuf)> =
+        bk2_cache_roots.into_inner().unwrap();
+
+    use rayon::prelude::*;
+    let mut work: Vec<(String, std::path::PathBuf, String, usize)> = Vec::new();
+    let mut per_session_count: HashMap<String, (usize, usize)> = HashMap::new();
+    for (sname, cache_root) in &session_dirs {
+        per_session_count.entry(sname.clone()).or_insert((0, 0));
+        let Ok(rd) = fs::read_dir(cache_root) else { continue; };
+        for fn_entry in rd.flatten() {
+            let fn_path = fn_entry.path();
+            if !fn_path.is_dir() { continue; }
+            let fn_name = fn_entry.file_name().to_string_lossy().into_owned();
+            let Ok(sub_rd) = fs::read_dir(&fn_path) else { continue; };
+            for sub in sub_rd.flatten() {
+                let fname = sub.file_name().to_string_lossy().into_owned();
+                if let Some(seq_str) = fname.strip_suffix(".entry.bin") {
+                    if let Ok(seq) = seq_str.parse::<usize>() {
+                        work.push((sname.clone(), fn_path.clone(), fn_name.clone(), seq));
+                    }
+                }
+            }
+        }
+    }
+    eprintln!("phase B: {} pairs across {} sessions", work.len(), session_dirs.len());
+
+    let results: Vec<(String, bool)> = work.par_iter().map(|(sname, fn_dir, _fn_name, seq)| {
+        let entry_p = fn_dir.join(format!("{seq:04}.entry.bin"));
+        let exit_p  = fn_dir.join(format!("{seq:04}.exit.delta.bin"));
+        let ok = || -> Result<bool, String> {
+            let ee = snapshot::Snapshot::read_from(&entry_p).map_err(|e| e.to_string())?;
+            let ed = snapshot::ExitDelta::read_from(&exit_p).map_err(|e| e.to_string())?;
+            let ax = replay_single(decomp_rom, &ee, &ed)?;
+            Ok(snapshot::diff_delta(&ed, &ee, &ax).is_clean())
+        }();
+        (sname.clone(), ok.unwrap_or(false))
+    }).collect();
+
+    let mut grand_pairs = 0usize;
+    let mut grand_pass = 0usize;
+    let mut grand_fail = 0usize;
+    for (sname, ok) in results {
+        let e = per_session_count.entry(sname).or_insert((0, 0));
+        if ok { e.0 += 1 } else { e.1 += 1 }
+        grand_pairs += 1;
+        if ok { grand_pass += 1 } else { grand_fail += 1 }
+    }
+    for (name, (p, f)) in &per_session_count {
+        eprintln!("[{name}] {p}/{} pairs ({f} failed)", p + f);
+    }
+
+    println!("\nverify-all: {grand_pass}/{grand_pairs} pairs passed ({grand_fail} failed)");
+    if grand_fail > 0 {
+        process::exit(1);
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn record_one_bk2_with_cache(
+    orig_rom: &str,
+    symbols_path: &str,
+    job: &Bk2Job,
+    target_addrs: &[u32],
+    target_names: &[String],
+    orig_sha: &str,
+    cache_dir: &str,
+) -> Result<std::path::PathBuf, String> {
+    let bk2_sha = cache::sha1_file_short(&job.input_path)?;
+    let cache = cache::Bk2CacheDir::open(
+        std::path::Path::new(cache_dir), orig_sha, &bk2_sha,
+    ).map_err(|e| format!("open cache: {e}"))?;
+
+    // Split targets into cached vs uncached. `cached` doesn't need any
+    // action — replay walks the cache dir directly.
+    let mut cached_n = 0usize;
+    let mut uncached: Vec<(u32, String)> = Vec::new();
+    for (addr, name) in target_addrs.iter().zip(target_names.iter()) {
+        if cache.is_fn_cached(name) {
+            cached_n += 1;
+        } else {
+            uncached.push((*addr, name.clone()));
+        }
+    }
+    eprintln!(
+        "[{}] cache: {} hit, {} miss",
+        job.stem, cached_n, uncached.len()
+    );
+
+    if !uncached.is_empty() {
+        // record() writes directly into the cache root: pairs land in
+        // <cache_root>/<fn_name>/NNNN.{entry,exit.delta}.bin, matching
+        // the per-fn cache layout. No staging into a session dir, no
+        // post-promote step.
+        let uncached_hex: Vec<String> =
+            uncached.iter().map(|(a, _)| format!("{a:08X}")).collect();
+        record(
+            orig_rom,
+            job.frame_count,
+            symbols_path,
+            cache.root.to_str().unwrap(),
+            &uncached_hex,
+            job.input_path.to_str(),
+            job.state_path.to_str(),
+            /*dedup=*/ true,
+            /*progress=*/ 0,
+            /*verbose=*/ false,
+        );
+
+        // Stamp every uncached fn as "considered" so a target that was
+        // in RECORD_TARGETS but never fired in this bk2 still counts
+        // as cached on the next run. Without this, those targets show
+        // up as miss every run and the cache never fully warms.
+        for (_, name) in &uncached {
+            cache.mark_considered(name)
+                .map_err(|e| format!("mark considered {name}: {e}"))?;
+        }
+    }
+
+    Ok(cache.root.clone())
+}
+
 fn usage(prog: &str) -> ! {
     eprintln!(
-        "usage:\n  {prog} smoke  ROM [FRAMES]\n  {prog} track  ROM FRAMES SYMBOLS [OUTPUT]\n  {prog} record ROM FRAMES SYMBOLS SESSION_DIR [--input P] [--state P] [--no-dedup] [--progress N] [--verbose|-v] FN_ADDR [FN_ADDR...]\n  {prog} replay ROM SESSION_DIR [--verbose|-v]\n\nLegacy positional form (deprecated):\n  {prog} ROM FRAMES SYMBOLS [OUTPUT]   (= track)\n  {prog} ROM [FRAMES]                  (= smoke)"
+        "usage:\n  {prog} smoke  ROM [FRAMES]\n  {prog} track  ROM FRAMES SYMBOLS [OUTPUT]\n  {prog} record ROM FRAMES SYMBOLS SESSION_DIR [--input P] [--state P] [--no-dedup] [--progress N] [--verbose|-v] FN_ADDR [FN_ADDR...]\n  {prog} replay ROM SESSION_DIR [--verbose|-v]\n  {prog} verify-all --orig ROM --decomp ROM --symbols PATH --demos-root DIR --cache-dir DIR [--parallel N] FN_ADDR [FN_ADDR...]\n\nLegacy positional form (deprecated):\n  {prog} ROM FRAMES SYMBOLS [OUTPUT]   (= track)\n  {prog} ROM [FRAMES]                  (= smoke)"
     );
     process::exit(2);
 }
@@ -1383,6 +1778,42 @@ fn main() {
             let session_dir = args.get(3).unwrap_or_else(|| usage(&args[0]));
             let verbose = args[4..].iter().any(|a| a == "--verbose" || a == "-v");
             replay(rom, session_dir, verbose);
+        }
+        "verify-all" => {
+            let mut orig: Option<String> = None;
+            let mut decomp: Option<String> = None;
+            let mut symbols: Option<String> = None;
+            let mut demos_root: Option<String> = None;
+            let mut cache_dir: Option<String> = None;
+            let mut parallel: usize = std::thread::available_parallelism()
+                .map(|n| n.get()).unwrap_or(4);
+            let mut rest = &args[2..];
+            loop {
+                match rest.first().map(String::as_str) {
+                    Some("--orig") => { orig = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--decomp") => { decomp = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--symbols") => { symbols = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--demos-root") => { demos_root = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--cache-dir") => { cache_dir = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--parallel") => {
+                        parallel = rest.get(1).and_then(|s| s.parse().ok())
+                            .unwrap_or_else(|| { eprintln!("--parallel needs N"); usage(&args[0]); });
+                        rest = &rest[2..];
+                    }
+                    _ => break,
+                }
+            }
+            let orig = orig.unwrap_or_else(|| { eprintln!("--orig required"); usage(&args[0]); });
+            let decomp = decomp.unwrap_or_else(|| { eprintln!("--decomp required"); usage(&args[0]); });
+            let symbols = symbols.unwrap_or_else(|| { eprintln!("--symbols required"); usage(&args[0]); });
+            let demos_root = demos_root.unwrap_or_else(|| { eprintln!("--demos-root required"); usage(&args[0]); });
+            let cache_dir = cache_dir.unwrap_or_else(|| { eprintln!("--cache-dir required"); usage(&args[0]); });
+            if rest.is_empty() {
+                eprintln!("verify-all needs at least one FN_ADDR");
+                usage(&args[0]);
+            }
+            let targets: Vec<String> = rest.to_vec();
+            verify_all(&orig, &decomp, &symbols, &targets, &demos_root, &cache_dir, parallel);
         }
         // Legacy positional form: first positional is the ROM. We keep
         // this so existing Makefile targets and scripts continue to work.
