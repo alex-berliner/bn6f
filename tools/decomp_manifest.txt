@@ -499,3 +499,4 @@ initMinigameEffect_8003a64
 sub_811B010
 sub_812EC2C
 sub_800FE36
+sub_80AAB88

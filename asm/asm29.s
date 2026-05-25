@@ -11175,6 +11175,7 @@ off_80AAB84:
 	.word byte_8020B9C
 	thumb_func_end sub_80AAB68
 
+	.ifndef DECOMP_sub_80AAB88
 	thumb_func_start sub_80AAB88
 sub_80AAB88:
 	push {r5-r7,lr}
@@ -11193,6 +11194,12 @@ loc_80AAB92:
 	blt loc_80AAB92
 	pop {r5-r7,pc}
 	thumb_func_end sub_80AAB88
+	.else
+	thumb_func_start sub_80AAB88
+sub_80AAB88:
+	decomp_trampoline sub_80AAB88_c, 20
+	thumb_func_end sub_80AAB88
+	.endif
 
 	thumb_func_start sub_80AABA4
 sub_80AABA4:
