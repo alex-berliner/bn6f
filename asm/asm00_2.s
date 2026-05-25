@@ -31189,6 +31189,7 @@ dword_801E654:
 	.word 0x200000
 	thumb_func_end sub_801E5F8
 
+	.ifndef DECOMP_sub_801E658
 	thumb_func_start sub_801E658
 sub_801E658:
 	mov r0, #0
@@ -31196,6 +31197,12 @@ sub_801E658:
 	strb r0, [r1,#0x1e] // (byte_203529E - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801E658
+	.else
+	thumb_func_start sub_801E658
+sub_801E658:
+	decomp_trampoline sub_801E658_c, 0
+	thumb_func_end sub_801E658
+	.endif
 
 	thumb_func_start sub_801E660
 sub_801E660:
