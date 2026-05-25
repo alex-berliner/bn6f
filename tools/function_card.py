@@ -20,7 +20,7 @@ OBJDUMP = ROOT / "tools/binutils/bin/arm-none-eabi-objdump"
 ORIG_ELF = ROOT / "bn6f_orig.elf"
 ASM_DIR = ROOT / "asm"
 MANIFEST = ROOT / "tools/decomp_manifest.txt"
-DEFAULT_BASELINE = ROOT / "tests/fixtures/baseline_spam.txt"
+DEFAULT_BASELINE = ROOT / "build/track_hits.txt"  # produced by `make track`
 
 
 def _objdump_lines():

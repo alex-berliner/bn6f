@@ -24,7 +24,7 @@ OBJDUMP = ROOT / "tools/binutils/bin/arm-none-eabi-objdump"
 ASM_DIR = ROOT / "asm"
 MANIFEST = ROOT / "tools/decomp_manifest.txt"
 ORIG_ELF = ROOT / "bn6f_orig.elf"
-DEFAULT_BASELINE = ROOT / "tests/fixtures/baseline_test_fill_5s_rust.txt"
+DEFAULT_BASELINE = ROOT / "build/track_hits.txt"  # produced by `make track`
 BASELINE = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_BASELINE
 
 

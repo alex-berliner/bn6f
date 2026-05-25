@@ -67,10 +67,11 @@ make verify-state STATE_NAME=bk2/intro_to_end_tutorial   STATE_FRAMES=16441
 ```
 
 Or, run every bk2 in this directory through to the END of the
-recording in one go (frame count is auto-derived from each .input):
+recording in one go (this is what `make verify` does — frame count
+is auto-derived from each .input):
 
 ```sh
-make verify-bk2
+make verify
 ```
 
 `bk2/intro` is ~104 seconds of game time, `bk2/intro_to_end_tutorial`

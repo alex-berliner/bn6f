@@ -53,7 +53,7 @@ LDFLAGS = -Map $(BUILD_NAME).map
 LIB =
 CLIB = tools/agbcc/lib/libgcc.a
 
-.PHONY: setup-toolchain syms decompile orig validate function-symbols track track-build smoke verify verify-spam verify-state verify-bk2 list-demos clean-conditional-objs
+.PHONY: setup-toolchain syms decompile orig validate function-symbols track track-build smoke verify verify-state list-demos clean-conditional-objs
 
 # One-time toolchain install. Builds the agbcc submodule + gbagfx and
 # installs arm-none-eabi-{as,ld,objcopy,objdump} into tools/binutils/bin/
@@ -220,7 +220,7 @@ smoke: track-build $(ROM)
 
 # Function tracker: run FRAMES of no-input boot, hook every entry in
 # the symbol table, dump sorted hit counts. Overridable: FRAMES, TRACK_OUTPUT.
-TRACK_OUTPUT ?= tests/fixtures/baseline_test_fill_5s_rust.txt
+TRACK_OUTPUT ?= build/track_hits.txt
 track: track-build $(FN_SYMS) $(ROM)
 	@mkdir -p $(dir $(TRACK_OUTPUT))
 	tools/bn6f-track/target/release/bn6f-track \
@@ -229,22 +229,25 @@ track: track-build $(FN_SYMS) $(ROM)
 	@head -6 $(TRACK_OUTPUT)
 
 # Verify decompiled functions match the ASM oracle via per-call
-# (entry, exit) state diff. See issues/concerns/10 §"Implementation
-# notes (Rust function tracker)".
+# (entry, exit) state diff.  All fixtures live under
+# tests/fixtures/demos/bk2/ as BizHawk movies; each .bk2 ships with a
+# pre-extracted .ss + .input pair (run tools/bk2_extract.py to refresh
+# from the .bk2 file).  The top-level `verify` target plays every bk2
+# through to the end and diffs the (entry, exit) per-call snapshots
+# between the original ROM and the in-progress decompile build.
 #
-# Workflow:
-#   1. Build original ROM and run a 300-frame demo, capturing entry
-#      snapshots for every DECOMP_FN_ADDR. Compute "expected exits" via
-#      isolated (IRQ-disabled) re-runs on the original.
+# Workflow per bk2 (driven by `verify-state` under the hood):
+#   1. Build original ROM, restore the savestate, replay the input
+#      stream, and capture entry snapshots for every DECOMP_FN_ADDR.
+#      Compute "expected exits" via isolated (IRQ-disabled) re-runs.
 #   2. Build decompile ROM and replay each captured entry — also via
 #      isolated runs — capturing the "actual exit". Diff vs expected.
 #   3. Report pass/fail per function; exit nonzero on any mismatch.
 #
 # As more functions are converted, append their entry addresses to
 # DECOMP_FN_ADDRS.
-SESSION_DIR ?= tests/fixtures/calls/boot_idle
 
-# Verbosity for verify-*. Default quiet:
+# Verbosity for verify*. Default quiet:
 #   - record skips its per-target name dump (just prints the count)
 #   - replay only prints FAIL lines, not PASS lines
 #   - inner `make all` / `make decompile` run with -s (no recipe echo,
@@ -258,9 +261,9 @@ VERBOSE_FLAG = $(if $(filter-out 0,$(VERIFY_VERBOSE)),--verbose,)
 SUBMAKE_QUIET = $(if $(filter-out 0,$(VERIFY_VERBOSE)),,-s)
 
 # Hash-dedup of identical entry snapshots per target. Default on:
-# verify-spam in particular runs the same per-frame poll thousands of
-# times with identical state, all of which would test the same code
-# path. Set VERIFY_DEDUP=0 to keep every occurrence.
+# long bk2 runs hammer the same per-frame poll thousands of times
+# with identical state, all of which would test the same code path.
+# Set VERIFY_DEDUP=0 to keep every occurrence.
 VERIFY_DEDUP ?= 1
 
 # Frame-progress heartbeat during the emulation phase of record. 0
@@ -276,59 +279,37 @@ RECORD_FLAGS = \
 # (function-symbols depends on bn6f_orig.elf, which `verify` builds first.)
 DECOMP_FN_ADDRS = $(shell awk 'NR==FNR { if ($$1 !~ /^[[:space:]]*#/ && NF>0) want[$$1]=1; next } want[$$2] { print $$1 }' $(DECOMP_MANIFEST) $(FN_SYMS) 2>/dev/null)
 
+# Replay each bk2 demo through to the end and diff every call against
+# the original ROM.  Frame count for each bk2 is derived from its
+# .input file size (one u16 of joypad state packed as 4 bytes per
+# frame).
+DEMOS_ROOT = tests/fixtures/demos
+
 verify: track-build $(FN_SYMS)
-	@echo "[verify] building original ROM and recording fixtures..."
-	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
-	@rm -rf $(SESSION_DIR)
-	@mkdir -p $(SESSION_DIR)
-	@tools/bn6f-track/target/release/bn6f-track record \
-		$(abspath $(ROM)) 300 $(abspath $(FN_SYMS)) \
-		$(abspath $(SESSION_DIR)) $(RECORD_FLAGS) $(DECOMP_FN_ADDRS)
-	@echo
-	@echo "[verify] building decompile ROM and replaying..."
-	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
-	tools/bn6f-track/target/release/bn6f-track replay \
-		$(abspath $(ROM)) $(abspath $(SESSION_DIR)) $(REPLAY_FLAGS)
+	@set -e; \
+	for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
+		stem=$$(basename $$bk2 .bk2); \
+		input=$(DEMOS_ROOT)/bk2/$$stem.input; \
+		if [ ! -f $$input ]; then \
+			echo "verify: missing $$input (run tools/bk2_extract.py first)" >&2; \
+			exit 1; \
+		fi; \
+		frames=$$(( $$(stat -c %s $$input) / 4 )); \
+		echo; echo "=== verify bk2/$$stem  ($$frames frames) ==="; \
+		$(MAKE) --no-print-directory verify-state \
+			STATE_NAME=bk2/$$stem STATE_FRAMES=$$frames; \
+	done
 
-# Longer demo with scripted input. Records up to 50 entries per target
-# (cap is in bn6f-track to keep snapshot memory bounded), so cumulative
-# pair count is at most ~5000 here even with 100+ converted functions.
-SPAM_SESSION_DIR ?= tests/fixtures/calls/spam_start10s_b5m
-SPAM_INPUT_FILE  ?= tests/fixtures/input/spam_start10s_b5m.input
-
-verify-spam: track-build $(FN_SYMS)
-	@echo "[verify-spam] building original ROM and recording fixtures with input..."
-	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
-	@rm -rf $(SPAM_SESSION_DIR)
-	@mkdir -p $(SPAM_SESSION_DIR)
-	@tools/bn6f-track/target/release/bn6f-track record \
-		$(abspath $(ROM)) 18600 $(abspath $(FN_SYMS)) \
-		$(abspath $(SPAM_SESSION_DIR)) \
-		--input $(abspath $(SPAM_INPUT_FILE)) $(RECORD_FLAGS) \
-		$(DECOMP_FN_ADDRS)
-	@echo
-	@echo "[verify-spam] building decompile ROM and replaying..."
-	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
-	tools/bn6f-track/target/release/bn6f-track replay \
-		$(abspath $(ROM)) $(abspath $(SPAM_SESSION_DIR)) $(REPLAY_FLAGS)
-
-# Verify against a scene captured as an mGBA savestate (with optional
-# input replay). Used to extend coverage past boot_idle.
+# `verify-state` is the per-scene worker `verify` dispatches to.
+# Useful directly if you want to run a single bk2 (or some other
+# state-replay demo) on its own:
 #
-# Layout under tests/fixtures/demos/:
-#   <category>/<name>.ss         flat, basename-matched (preferred)
-#   <category>/<name>.input      same basename → same test
-#   <category>/<name>.md         freeform notes
-#   <category>/<name>/state.ss   folder graduation — used when a test
-#   <category>/<name>/inputs.*   outgrows the single-file form
+#   make verify-state STATE_NAME=bk2/intro STATE_FRAMES=6239
 #
-# Usage:
-#   make verify-state STATE_NAME=battle/megaman-vs-virus [STATE_FRAMES=600]
-# Override STATE_FILE / STATE_INPUT explicitly if you need to bypass
-# the auto-resolver (e.g. for one-off ad-hoc demos outside the tree).
+# Override STATE_FILE / STATE_INPUT explicitly to bypass auto-resolve
+# for ad-hoc demos outside the tree.
 STATE_NAME    ?=
 STATE_FRAMES  ?= 600
-DEMOS_ROOT     = tests/fixtures/demos
 STATE_SESSION  = tests/fixtures/calls/$(STATE_NAME)
 
 # Auto-resolve STATE_FILE: folder mode first (test has its own dir),
@@ -349,7 +330,7 @@ endif
 
 verify-state: track-build $(FN_SYMS)
 ifeq ($(strip $(STATE_NAME)),)
-	$(error STATE_NAME not set — e.g. make verify-state STATE_NAME=battle/megaman-vs-virus)
+	$(error STATE_NAME not set — e.g. make verify-state STATE_NAME=bk2/intro)
 endif
 ifeq ($(strip $(STATE_FILE)),)
 	$(error no savestate found for "$(STATE_NAME)" — looked for $(DEMOS_ROOT)/$(STATE_NAME)/state.ss* and $(DEMOS_ROOT)/$(STATE_NAME).ss*)
@@ -375,25 +356,3 @@ list-demos:
 	@find $(DEMOS_ROOT) \( -name '*.ss*' -o -name 'state.ss*' \) \
 		| sed -E 's|$(DEMOS_ROOT)/||; s|\.ss[0-9]*$$||; s|/state$$||' \
 		| sort -u
-
-# BK2 demos under tests/fixtures/demos/bk2/.  Each .bk2 ships with a
-# pre-extracted .ss + .input pair (run tools/bk2_extract.py to refresh
-# from the .bk2), and `verify-state` already auto-resolves them via
-# STATE_NAME=bk2/<stem>.  This convenience target loops over every
-# bk2/*.bk2 and plays it through to the END of the recording — the
-# frame count is read from the .input file size (one u16 packed as
-# 4 bytes per frame).
-verify-bk2: track-build $(FN_SYMS)
-	@set -e; \
-	for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
-		stem=$$(basename $$bk2 .bk2); \
-		input=$(DEMOS_ROOT)/bk2/$$stem.input; \
-		if [ ! -f $$input ]; then \
-			echo "verify-bk2: missing $$input (run tools/bk2_extract.py first)" >&2; \
-			exit 1; \
-		fi; \
-		frames=$$(( $$(stat -c %s $$input) / 4 )); \
-		echo; echo "=== verify-bk2 bk2/$$stem  ($$frames frames) ==="; \
-		$(MAKE) --no-print-directory verify-state \
-			STATE_NAME=bk2/$$stem STATE_FRAMES=$$frames; \
-	done
