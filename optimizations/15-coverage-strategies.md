@@ -1,6 +1,6 @@
 # Function-coverage strategies — comparison + proposal
 
-**Status:** discussion + new proposal (D)
+**Status:** D implemented; B still proposed
 **Impact:** ★★★ for (D), conditional for (B)
 **Effort:** varies
 
@@ -59,7 +59,7 @@ organically-curated coverage and pick up the unit-test-authoring
 burden (~489 functions). If auto-extracted from bk2s, you're back
 to A. **Net: no benefit, real cost.**
 
-### D — Incremental verification (NEW PROPOSAL)
+### D — Incremental verification (implemented)
 
 Layer on top of A: only re-run pairs whose function code has
 actually changed (transitively).
@@ -75,8 +75,29 @@ callees_closure_sha)`. On verify:
 3. Otherwise add to the work queue and run it. Record the result.
 
 Typical inner-loop change touches 1-3 fns × handful of callers.
-**Pair work queue shrinks from 9677 → ~5-30 pairs.** Expected
-steady-state verify: **~1s**.
+**Pair work queue shrinks from 9677 → ~5-50 pairs.** Measured
+results below.
+
+### Results
+
+`make verify` on the two-bk2 fleet, with D landed:
+
+| Scenario | Wall | Pairs run |
+|---|---|---|
+| Cold cache (first ever run) | 1:01.40 | 9677 |
+| Warm + nothing changed | **0:04.67** | **0** (all 347 fns trusted) |
+| One fn's pair_pass entry removed | 0:04.76 | 51 (that fn's pairs only) |
+| One fn's cache wiped, decomp unchanged | 0:55.78 | 0 (re-records but skips replay) |
+
+The "nothing changed" 4.67s is the floor — ROM build (~2s) + Rust
+startup + bk2/orig hashes + symbol/cache parse + the eager
+hash-everything-once setup. Phase B replay itself is now ~0s when
+incremental holds.
+
+The "one fn cache wiped" case correctly re-records but then skips
+the replay (the freshly-captured pairs are bit-identical to the
+prior green run's, against an unchanged decomp ROM, so the prior
+pass result still holds).
 
 ## Comparison matrix
 
@@ -85,32 +106,33 @@ steady-state verify: **~1s**.
 | **A** (current) | Each captured pair, independently | 62s | 8s | bk2-unvisited paths; inter-fn interactions |
 | **B** | First diverging frame in lockstep | ~10-20s | ~10-20s | downstream of first divergence |
 | **C** | (same as A) | (same) | (same) | (same) + curation cost |
-| **D** (= A + incremental) | Pairs in changed code radius | (same as A) | ~1s | same as A |
+| **D** (= A + incremental) | Pairs in changed code radius | (same as A) | **4.7s when nothing changed; ~5s + the changed-radius pairs otherwise** | same as A |
 
-## What D actually requires
+## How D was implemented
 
-Easy:
-- Per-fn byte ranges from the decomp ELF (`readelf -s` already
-  used by the build).
-- Per-pair result cache (just a sidecar JSON file in the cache dir).
-
-Hard:
-- **Callgraph closure** for each fn. Pair for fn X is "still passing"
-  iff X's bytes AND every fn X transitively calls have unchanged
-  bytes. Without this, byte-identity is unsafe: silently skips a
-  regressed pair when only the callee changed.
-
-  Implementation options:
-  - Static extraction from the decomp ELF: walk each fn's
-    instructions for `bl`/`b`/`bx` targets, recurse.
-  - Build-time metadata: emit per-`.o` a list of called symbols
-    (compiler can do this), aggregate at link.
-  - Empirical: during the orig-ROM record pass, track which fns
-    each fn calls (PENDING already has this info — we just don't
-    persist it).
-
-  Empirical extraction from the existing record pass is probably
-  cheapest — already running, has the data, just needs serialising.
+- **Callgraph capture during record.** New `CALLGRAPH` thread_local
+  in `main.rs`. At every BL detection in the per-instruction
+  callback we record `(caller_fn → callee_fn)`. Caller = top of
+  `PENDING` stack (so calls from top-level get dropped — they
+  don't contribute to any captured fn's radius).
+- **Persist to cache.** After each `record()` we translate the
+  addr-keyed map to fn-names (via the symbol table) and write
+  `<cache>/<orig>/<bk2>/callgraph.txt` — one `caller<TAB>csv` line
+  per caller. Stable / diffable / dep-free format.
+- **Radius hash per fn.** In phase B we read the decomp ROM bytes
+  once, build a `fn_name → (start, end_exclusive)` map from the
+  symbol table (end = next fn's start, same convention as `FN_END`),
+  and for each fn compute `sha1(concat(decomp_bytes[range] for fn
+  in sort(closure)))` where the closure is BFS over the callgraph.
+- **Per-pair-pass cache.** `<cache>/<orig>/<bk2>/pair_pass.txt`
+  stores `fn_name<TAB>radius_sha` for every fn whose pairs passed
+  on the last green run. On replay setup, a fn whose current
+  radius matches its prior entry is skipped entirely. After
+  replay, the file is updated: fresh radii for fully-passing fns;
+  failing fns get their entry removed (don't poison the cache).
+- **Missing-callgraph fallback.** If `callgraph.txt` doesn't exist
+  (cache predates this code) we disable incremental for that bk2
+  rather than risk over-skipping.
 
 ## Recommendation
 

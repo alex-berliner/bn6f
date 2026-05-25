@@ -93,5 +93,56 @@ impl Bk2CacheDir {
         }
         Ok(())
     }
+
+    /// Path to the forward-callgraph manifest written by record()
+    /// (caller_name TAB callee1,callee2,... per line). Used by
+    /// incremental verify to compute each fn's "code radius".
+    pub fn callgraph_path(&self) -> PathBuf {
+        self.root.join("callgraph.txt")
+    }
+
+    /// Path to the per-fn pass-cache: maps fn_name → sha hex of the
+    /// decomp ROM bytes covering its code radius (self + transitive
+    /// callees) at the time of its last green replay. If the current
+    /// radius hash matches the recorded one, all pairs for that fn
+    /// are skippable.
+    pub fn pair_pass_path(&self) -> PathBuf {
+        self.root.join("pair_pass.txt")
+    }
+}
+
+/// Read a simple `name\tcsv,values` text file into a Vec of pairs.
+/// Empty file / missing file → empty result. Used for callgraph
+/// and pair_pass storage — JSON would need a dep, KV format is
+/// trivial to parse.
+pub fn read_kv_csv(path: &Path) -> Vec<(String, Vec<String>)> {
+    let Ok(data) = fs::read_to_string(path) else { return Vec::new(); };
+    data.lines()
+        .filter(|l| !l.is_empty())
+        .filter_map(|l| {
+            let (k, v) = l.split_once('\t')?;
+            let vs: Vec<String> = if v.is_empty() {
+                Vec::new()
+            } else {
+                v.split(',').map(|s| s.to_string()).collect()
+            };
+            Some((k.to_string(), vs))
+        })
+        .collect()
+}
+
+/// Write the inverse of read_kv_csv. Sorted output for stable on-disk
+/// representation (so diffs against a previous green run are minimal).
+pub fn write_kv_csv(path: &Path, entries: &[(String, Vec<String>)]) -> std::io::Result<()> {
+    let mut sorted: Vec<&(String, Vec<String>)> = entries.iter().collect();
+    sorted.sort_by(|a, b| a.0.cmp(&b.0));
+    let mut out = String::new();
+    for (k, vs) in sorted {
+        out.push_str(k);
+        out.push('\t');
+        out.push_str(&vs.join(","));
+        out.push('\n');
+    }
+    fs::write(path, out)
 }
 

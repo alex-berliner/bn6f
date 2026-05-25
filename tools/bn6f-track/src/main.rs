@@ -406,6 +406,16 @@ thread_local! {
     static CALLS: RefCell<HashMap<u32, u64>> = RefCell::new(HashMap::new());
     /// Exit counts (matched returns).
     static EXITS: RefCell<HashMap<u32, u64>> = RefCell::new(HashMap::new());
+    /// Forward callgraph edges captured during the bk2 run: caller
+    /// fn_addr → set of callee fn_addrs it dispatched via BL. Drives
+    /// incremental verification — each fn's "code radius" is the
+    /// transitive closure of fns it calls; if no byte in that radius
+    /// changed in the decomp ROM since the last green run, its
+    /// captured pairs are still passing and can be skipped.
+    /// Edges where the caller is top-level (no PENDING parent) are
+    /// dropped — they don't contribute to any captured fn's radius.
+    static CALLGRAPH: RefCell<HashMap<u32, HashSet<u32>>>
+        = RefCell::new(HashMap::new());
     /// Pending-return stack: each (return_addr, fn_addr) gets pushed at
     /// a real call site and popped when control returns there. Bounded
     /// to keep pathological flow from leaking unbounded memory.
@@ -587,6 +597,21 @@ unsafe extern "C" fn custom_cb(module: *mut mgba_sys::mDebuggerModule) {
                     // r14 = gprs[14], direct read (see custom_cb hot path).
                     let lr_i = unsafe { *cpu.add(14) };
                     let ret_addr = (lr_i as u32) & !1u32;
+                    // Callgraph edge: caller = current top of PENDING
+                    // (the fn this call is nested inside). None if the
+                    // call originated top-level — those don't matter
+                    // for any captured fn's radius.
+                    let caller = PENDING.with(|p| {
+                        p.borrow().last().map(|&(_, fn_addr)| fn_addr)
+                    });
+                    if let Some(caller_addr) = caller {
+                        CALLGRAPH.with(|m| {
+                            m.borrow_mut()
+                                .entry(caller_addr)
+                                .or_default()
+                                .insert(true_pc);
+                        });
+                    }
                     PENDING.with(|p| {
                         let mut p = p.borrow_mut();
                         if p.len() < PENDING_MAX {
@@ -772,6 +797,7 @@ fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input
     HITS.with(|h| h.borrow_mut().clear());
     CALLS.with(|h| h.borrow_mut().clear());
     EXITS.with(|h| h.borrow_mut().clear());
+    CALLGRAPH.with(|m| m.borrow_mut().clear());
     PENDING.with(|p| p.borrow_mut().clear());
     LAST_TRUE_PC.with(|c| *c.borrow_mut() = 0);
     ENTRIES.with(|e| {
@@ -960,6 +986,7 @@ fn record(
     HITS.with(|h| h.borrow_mut().clear());
     CALLS.with(|h| h.borrow_mut().clear());
     EXITS.with(|h| h.borrow_mut().clear());
+    CALLGRAPH.with(|m| m.borrow_mut().clear());
     PENDING.with(|p| p.borrow_mut().clear());
     LAST_TRUE_PC.with(|c| *c.borrow_mut() = 0);
     RECORD_ENTRIES.with(|s| s.borrow_mut().clear());
@@ -1541,24 +1568,79 @@ fn verify_all(
     }
 
     // Phase B: replay every populated cache root vs decomp ROM.
-    // Collect all (cache_root, fn_name, seq) tuples up front and
-    // rayon-fan across the whole pool so per-fn parallelism is fully
-    // utilised (per-session par_iter would underutilise on small
-    // functions — ~1-30 pairs spread across nproc workers).
+    //
+    // Incremental verification (Opt D): for each fn in each cache root,
+    // compute the "code radius" sha = sha1 of decomp_rom bytes covering
+    // the fn AND every fn it transitively calls (per the callgraph
+    // captured during record). A fn whose radius sha matches its last
+    // green-replay sha (stored in `pair_pass.txt` next to the cache)
+    // is provably still passing — its bytes and every callee's bytes
+    // are unchanged since the last green run, so every captured pair
+    // for it will still pass. Skip those pairs entirely. On a typical
+    // edit touching 1-3 fns, this prunes ~9670 of 9677 pairs.
     eprintln!("\n--- phase B: replay vs decomp ---");
     let session_dirs: Vec<(String, std::path::PathBuf)> =
         bk2_cache_roots.into_inner().unwrap();
 
+    // One-time setup: decomp ROM bytes + per-fn (start, end_exclusive)
+    // ranges. End is the next fn's start in sorted symbol order (same
+    // convention as FN_END used during record).
+    let decomp_bytes = fs::read(decomp_rom).unwrap_or_else(|e| {
+        eprintln!("read decomp rom: {e}");
+        process::exit(1);
+    });
+    let fn_ranges = build_fn_ranges(&symbols);
+
     use rayon::prelude::*;
     let mut work: Vec<(String, std::path::PathBuf, String, usize)> = Vec::new();
     let mut per_session_count: HashMap<String, (usize, usize)> = HashMap::new();
+    // Per (session, fn): radius_sha used for the skip decision. After
+    // replay completes we record radius_sha back to disk only for fns
+    // whose pairs all passed.
+    let mut session_fn_radius: HashMap<(String, String), String> = HashMap::new();
+    let mut session_skipped: HashMap<String, usize> = HashMap::new();
+
     for (sname, cache_root) in &session_dirs {
         per_session_count.entry(sname.clone()).or_insert((0, 0));
+
+        // Load the bk2's callgraph + last-pass cache. Missing
+        // callgraph.txt (e.g. cache populated by an older version)
+        // disables incremental for this bk2 — safer than over-skipping.
+        let callgraph_path = cache_root.join("callgraph.txt");
+        let pair_pass_path = cache_root.join("pair_pass.txt");
+        let has_callgraph = callgraph_path.exists();
+        let callgraph: HashMap<String, Vec<String>> = cache::read_kv_csv(&callgraph_path)
+            .into_iter().collect();
+        let prior_pass: HashMap<String, String> = cache::read_kv_csv(&pair_pass_path)
+            .into_iter().filter_map(|(k, mut vs)| vs.pop().map(|v| (k, v)))
+            .collect();
+
         let Ok(rd) = fs::read_dir(cache_root) else { continue; };
         for fn_entry in rd.flatten() {
             let fn_path = fn_entry.path();
             if !fn_path.is_dir() { continue; }
             let fn_name = fn_entry.file_name().to_string_lossy().into_owned();
+
+            let radius_sha = if has_callgraph {
+                radius_sha_for(&fn_name, &callgraph, &fn_ranges, &decomp_bytes)
+            } else {
+                String::new()
+            };
+
+            // Skip if prior pass exists at the same radius sha. Empty
+            // sha (no callgraph data) never matches a real one, so
+            // this gracefully falls through to running all pairs.
+            if has_callgraph && !radius_sha.is_empty()
+                && prior_pass.get(&fn_name) == Some(&radius_sha)
+            {
+                *session_skipped.entry(sname.clone()).or_insert(0) += 1;
+                continue;
+            }
+
+            session_fn_radius.insert(
+                (sname.clone(), fn_name.clone()), radius_sha,
+            );
+
             let Ok(sub_rd) = fs::read_dir(&fn_path) else { continue; };
             for sub in sub_rd.flatten() {
                 let fname = sub.file_name().to_string_lossy().into_owned();
@@ -1570,9 +1652,13 @@ fn verify_all(
             }
         }
     }
-    eprintln!("phase B: {} pairs across {} sessions", work.len(), session_dirs.len());
+    let total_skipped: usize = session_skipped.values().sum();
+    eprintln!(
+        "phase B: {} pairs to run, {} fns skipped via incremental cache",
+        work.len(), total_skipped,
+    );
 
-    let results: Vec<(String, bool)> = work.par_iter().map(|(sname, fn_dir, _fn_name, seq)| {
+    let results: Vec<(String, String, bool)> = work.par_iter().map(|(sname, fn_dir, fn_name, seq)| {
         let entry_p = fn_dir.join(format!("{seq:04}.entry.bin"));
         let exit_p  = fn_dir.join(format!("{seq:04}.exit.delta.bin"));
         let ok = || -> Result<bool, String> {
@@ -1581,26 +1667,139 @@ fn verify_all(
             let ax = replay_single(decomp_rom, &ee, &ed)?;
             Ok(snapshot::diff_delta(&ed, &ee, &ax).is_clean())
         }();
-        (sname.clone(), ok.unwrap_or(false))
+        (sname.clone(), fn_name.clone(), ok.unwrap_or(false))
     }).collect();
 
+    // Tally per (session, fn) so we know which fns can be marked as
+    // "passed at this radius sha" for next-run skip eligibility.
+    let mut fn_pass: HashMap<(String, String), (usize, usize)> = HashMap::new();
     let mut grand_pairs = 0usize;
     let mut grand_pass = 0usize;
     let mut grand_fail = 0usize;
-    for (sname, ok) in results {
-        let e = per_session_count.entry(sname).or_insert((0, 0));
-        if ok { e.0 += 1 } else { e.1 += 1 }
+    for (sname, fn_name, ok) in results {
+        let e = per_session_count.entry(sname.clone()).or_insert((0, 0));
+        let f = fn_pass.entry((sname, fn_name)).or_insert((0, 0));
+        if ok { e.0 += 1; f.0 += 1; } else { e.1 += 1; f.1 += 1; }
         grand_pairs += 1;
         if ok { grand_pass += 1 } else { grand_fail += 1 }
     }
-    for (name, (p, f)) in &per_session_count {
-        eprintln!("[{name}] {p}/{} pairs ({f} failed)", p + f);
+
+    // Carry forward last-pass cache entries we skipped this run (they
+    // remain valid since we didn't touch the inputs), then merge in
+    // fresh passes from the just-completed run. Write back per bk2.
+    for (sname, cache_root) in &session_dirs {
+        let pair_pass_path = cache_root.join("pair_pass.txt");
+        let mut merged: HashMap<String, String> = cache::read_kv_csv(&pair_pass_path)
+            .into_iter().filter_map(|(k, mut vs)| vs.pop().map(|v| (k, v)))
+            .collect();
+        for ((sn, fn_name), (pass, fail)) in &fn_pass {
+            if sn != sname { continue; }
+            if *fail == 0 {
+                if let Some(radius) = session_fn_radius
+                    .get(&(sname.clone(), fn_name.clone()))
+                {
+                    if !radius.is_empty() {
+                        merged.insert(fn_name.clone(), radius.clone());
+                    }
+                }
+            } else {
+                // Don't poison the cache with a stale "pass" if this
+                // run regressed.
+                let _ = pass;
+                merged.remove(fn_name);
+            }
+        }
+        let entries: Vec<(String, Vec<String>)> = merged.into_iter()
+            .map(|(k, v)| (k, vec![v]))
+            .collect();
+        if let Err(e) = cache::write_kv_csv(&pair_pass_path, &entries) {
+            eprintln!("[{sname}] write pair_pass: {e}");
+        }
     }
 
-    println!("\nverify-all: {grand_pass}/{grand_pairs} pairs passed ({grand_fail} failed)");
+    for (name, (p, f)) in &per_session_count {
+        let skipped = session_skipped.get(name).copied().unwrap_or(0);
+        eprintln!(
+            "[{name}] {p}/{} pairs ({f} failed; {skipped} fns skipped)",
+            p + f,
+        );
+    }
+
+    if grand_pairs == 0 {
+        println!(
+            "\nverify-all: all {total_skipped} fns trusted via incremental cache (no pairs needed replay)"
+        );
+    } else {
+        println!(
+            "\nverify-all: {grand_pass}/{grand_pairs} pairs passed ({grand_fail} failed); {total_skipped} fns trusted via incremental cache"
+        );
+    }
     if grand_fail > 0 {
         process::exit(1);
     }
+}
+
+/// Build (start, end_exclusive) byte ranges per fn name from a sorted
+/// symbol list. End = next fn's start; tail fn extends to ROM end
+/// (we cap at u32::MAX; the decomp ROM read clips at its true length).
+fn build_fn_ranges(symbols: &[(u32, String)]) -> HashMap<String, (u32, u32)> {
+    let mut by_addr: Vec<(u32, String)> = symbols.to_vec();
+    by_addr.sort_by_key(|(a, _)| *a);
+    let mut out = HashMap::new();
+    for i in 0..by_addr.len() {
+        let (start, name) = (by_addr[i].0, by_addr[i].1.clone());
+        let end = by_addr.get(i + 1).map(|(a, _)| *a).unwrap_or(u32::MAX);
+        out.insert(name, (start, end));
+    }
+    out
+}
+
+/// Compute sha1 of the concatenated decomp-ROM bytes covering `fn_name`
+/// and every fn it transitively calls (per the captured callgraph).
+/// Sorting the closure makes the hash stable across callgraph
+/// permutations. Hex-truncated to 12 chars to match the rest of the
+/// cache's key conventions.
+fn radius_sha_for(
+    fn_name: &str,
+    callgraph: &HashMap<String, Vec<String>>,
+    fn_ranges: &HashMap<String, (u32, u32)>,
+    decomp_bytes: &[u8],
+) -> String {
+    const ROM_BASE: u32 = 0x08000000;
+    // BFS over callees.
+    let mut closure: Vec<String> = Vec::new();
+    let mut visited: HashSet<String> = HashSet::new();
+    let mut queue: Vec<String> = vec![fn_name.to_string()];
+    while let Some(cur) = queue.pop() {
+        if !visited.insert(cur.clone()) { continue; }
+        closure.push(cur.clone());
+        if let Some(callees) = callgraph.get(&cur) {
+            for c in callees {
+                if !visited.contains(c) {
+                    queue.push(c.clone());
+                }
+            }
+        }
+    }
+    closure.sort();
+
+    use sha1::{Digest, Sha1};
+    let mut h = Sha1::new();
+    for name in &closure {
+        let Some(&(start, end)) = fn_ranges.get(name) else { continue; };
+        if start < ROM_BASE { continue; }
+        let lo = (start - ROM_BASE) as usize;
+        let hi = (end.saturating_sub(ROM_BASE)) as usize;
+        let hi = hi.min(decomp_bytes.len());
+        if lo >= decomp_bytes.len() || lo >= hi { continue; }
+        h.update(&decomp_bytes[lo..hi]);
+    }
+    let digest = h.finalize();
+    let mut s = String::with_capacity(12);
+    for &b in &digest[..6] {
+        s.push_str(&format!("{b:02x}"));
+    }
+    s
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1662,6 +1861,27 @@ fn record_one_bk2_with_cache(
             cache.mark_considered(name)
                 .map_err(|e| format!("mark considered {name}: {e}"))?;
         }
+
+        // Persist the forward callgraph for incremental verify.
+        // Snapshot the thread_local CALLGRAPH (populated during record)
+        // and translate addrs → names so the file is portable across
+        // builds. Top-level / unknown callers/callees are dropped.
+        let symbols = read_symbols(symbols_path).map_err(|e| e.to_string())?;
+        let addr_to_name: HashMap<u32, String> =
+            symbols.into_iter().collect();
+        let edges: Vec<(String, Vec<String>)> = CALLGRAPH.with(|m| {
+            m.borrow().iter().filter_map(|(caller, callees)| {
+                let cname = addr_to_name.get(caller)?.clone();
+                let mut named: Vec<String> = callees.iter()
+                    .filter_map(|a| addr_to_name.get(a).cloned())
+                    .collect();
+                named.sort();
+                named.dedup();
+                Some((cname, named))
+            }).collect()
+        });
+        cache::write_kv_csv(&cache.callgraph_path(), &edges)
+            .map_err(|e| format!("write callgraph: {e}"))?;
     }
 
     Ok(cache.root.clone())
