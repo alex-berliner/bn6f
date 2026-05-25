@@ -25770,6 +25770,7 @@ locret_811AFFA:
 	strb r0, [r5,#9]
 locret_811B00E:
 	pop {r4-r7,pc}
+	.ifndef DECOMP_sub_811B010
 	thumb_func_start sub_811B010
 sub_811B010:
 	push {r4-r7,lr}
@@ -25784,6 +25785,12 @@ sub_811B010:
 locret_811B026:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811B010
+	.else
+	thumb_func_start sub_811B010
+sub_811B010:
+	decomp_trampoline sub_811B010_c, 16
+	thumb_func_end sub_811B010
+	.endif
 
 	thumb_local_start
 sub_811B028:

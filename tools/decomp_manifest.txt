@@ -496,3 +496,4 @@ sub_8111816
 sub_803D148
 initScenarioEffect_8003914
 initMinigameEffect_8003a64
+sub_811B010
