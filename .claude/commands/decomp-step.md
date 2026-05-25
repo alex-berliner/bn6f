@@ -31,6 +31,7 @@ Choose **3-5** candidates. Each must meet ALL of:
 - 4-12 thumb instructions.
 - Pure leaf or near-leaf. No `mov lr, pc; bx`, no `svc`, no flag-dependent callers (callers immediately doing `beq/bne` after the `bl`).
 - **Multi-return check:** if ASM writes both r0 AND r1 (and doesn't immediately overwrite r1), grep callers for use of r1 after the `bl`. If any does `cmp r1`, `mov X, r1`, etc., skip — a plain `return foo;` C version silently drops the r1 return and breaks those callers. (Cautionary tale: `screenFade_80062C8` looked trivial; npc.s caller does `cmp r1, #0; beq ...`.)
+- **No vtable callees.** If `.word <sym>` appears in any asm file (= sym is in a function-pointer table), it's called via `mov lr, pc; bx rN` indirection. That pattern sets `lr` WITHOUT the thumb bit; the original returns with `mov pc, lr` which preserves thumb mode, but agbcc-compiled C returns with `bx lr` which interworks based on lr's bit 0 — and `lr` has bit 0 = 0, so `bx lr` switches to ARM mode → caller's next instruction is misinterpreted → massive silent failures. Check: `grep ".word <sym>" asm/*.s` before picking. (Cautionary tale: `sub_81231E0` looked like a 4-instr trivial u16 write; vtable-dispatched from `asm32.s` table `off_81211D0`; entire cluster of 5 twins all blew up.)
 
 One-liner to surface candidates:
 ```sh
@@ -101,16 +102,17 @@ The manifest gets added repeatedly across the per-fn commits — that's fine, gi
 Append one TSV row per fn to `.claude/decomp_stats.tsv`. Columns:
 
 ```
-ts	symbol	status	total_s	verify_s	retries	notes
+ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 ```
 
 - `ts`: ISO 8601 UTC (same `ts` for all rows in this batch — they share a verify)
 - `symbol`: function name
 - `status`: `pass` | `revert` | `bail`
-- `total_s`: `$(($(date -u +%s) - $(cat /tmp/decomp_step_start))) / batch_size` (amortised total iteration cost; lets running median reflect per-fn cost as batches grow)
-- `verify_s`: contents of `/tmp/decomp_step_verify`
+- `total_s`: `(now - start) / batch_size` (amortised wall cost per fn)
+- `verify_s`: contents of `/tmp/decomp_step_verify` (per-fn share = `verify_s / batch_size`; record the unaccelerated verify time here — easier to reason about)
+- `overhead_s`: `total_s - (verify_s / batch_size)` — your own work per fn (picking, reading asm, writing C, debugging failures). **This is the lever you control.** If verify is 57s and you're spending 60s per fn on overhead, the verify isn't the bottleneck anymore — you are.
 - `retries`: number of verify retries this iteration (0 on first-try green)
-- `notes`: `-` on pass, short reason on revert (`offset wrong`, `r5-asm clobber`, `pad miscount`), `bail: <why>` on bail
+- `notes`: `-` on pass, short reason on revert (`offset wrong`, `r5-asm clobber`, `pad miscount`, `vtable callee`), `bail: <why>` on bail
 
 Create the header row if the file is new. After appending, glance at
 the last ~10 rows — if median total_s is climbing or retry rate is

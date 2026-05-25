@@ -1,14 +1,15 @@
-ts	symbol	status	total_s	verify_s	retries	notes
-2026-05-25T15:11:03Z	sub_801299C	pass	280	56.35	0	-
-2026-05-25T15:16:13Z	sub_80103EC	pass	177	56.62	0	-
-2026-05-25T15:20:37Z	sub_800A704	pass	148	56.89	0	-
-2026-05-25T15:23:38Z	sub_800A70C	pass	90	56.50	0	-
-2026-05-25T15:26:49Z	sub_801E0C8	pass	101	56.59	0	-
-2026-05-25T15:30:54Z	sub_801FE64	pass	107	56.44	0	-
-2026-05-25T15:33:31Z	sub_801E658	pass	84	57.00	0	-
-2026-05-25T15:40:53Z	sub_801E71C	pass	71	57.79	0	batch=4
-2026-05-25T15:40:53Z	sub_802D1B4	pass	71	57.79	0	batch=4
-2026-05-25T15:40:53Z	InitializeOWPlayerObjectStruct	pass	71	57.79	0	batch=4
-2026-05-25T15:40:53Z	Is_eStruct2001010_Initialized	pass	71	57.79	0	batch=4
-2026-05-25T15:46:56Z	InitializeOverworldNPCObjectStructs	pass	110	57.60	0	batch=2
-2026-05-25T15:46:56Z	Is_eScenarioEffectState2000780_Initialized	pass	110	57.60	0	batch=2
+ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
+2026-05-25T15:11:03Z	sub_801299C	pass	280	56.35	223	0	-
+2026-05-25T15:16:13Z	sub_80103EC	pass	177	56.62	120	0	-
+2026-05-25T15:20:37Z	sub_800A704	pass	148	56.89	91	0	-
+2026-05-25T15:23:38Z	sub_800A70C	pass	90	56.50	33	0	-
+2026-05-25T15:26:49Z	sub_801E0C8	pass	101	56.59	44	0	-
+2026-05-25T15:30:54Z	sub_801FE64	pass	107	56.44	50	0	-
+2026-05-25T15:33:31Z	sub_801E658	pass	84	57.00	27	0	-
+2026-05-25T15:40:53Z	sub_801E71C	pass	71	57.79	14	0	batch=4
+2026-05-25T15:40:53Z	sub_802D1B4	pass	71	57.79	14	0	batch=4
+2026-05-25T15:40:53Z	InitializeOWPlayerObjectStruct	pass	71	57.79	14	0	batch=4
+2026-05-25T15:40:53Z	Is_eStruct2001010_Initialized	pass	71	57.79	14	0	batch=4
+2026-05-25T15:46:56Z	InitializeOverworldNPCObjectStructs	pass	110	57.60	53	0	batch=2
+2026-05-25T15:46:56Z	Is_eScenarioEffectState2000780_Initialized	pass	110	57.60	53	0	batch=2
+2026-05-25T15:58:21Z	sub_81231E0-cluster	bail	525	58.57	468	1	vtable callee — mov lr,pc; bx rN can't tolerate bx lr
