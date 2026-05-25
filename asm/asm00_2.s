@@ -3227,6 +3227,7 @@ loc_80103E8:
 	pop {r4-r6,pc}
 	thumb_func_end battle_findPlayer
 
+	.ifndef DECOMP_sub_80103EC
 	thumb_func_start sub_80103EC
 sub_80103EC:
 	push {lr}
@@ -3234,6 +3235,12 @@ sub_80103EC:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	pop {pc}
 	thumb_func_end sub_80103EC
+	.else
+	thumb_func_start sub_80103EC
+sub_80103EC:
+	decomp_trampoline sub_80103EC_c, 4
+	thumb_func_end sub_80103EC
+	.endif
 
 	thumb_func_start sub_80103F8
 sub_80103F8:
