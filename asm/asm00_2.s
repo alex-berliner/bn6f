@@ -2645,6 +2645,7 @@ off_800FFE0:
 	.word byte_8020354
 	thumb_func_end sub_800FFAA
 
+	.ifndef DECOMP_SetAIData_Unk_44_Flag
 	thumb_func_start SetAIData_Unk_44_Flag
 SetAIData_Unk_44_Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -2653,6 +2654,12 @@ SetAIData_Unk_44_Flag:
 	str r1, [r3,#oAIData_Unk_44]
 	mov pc, lr
 	thumb_func_end SetAIData_Unk_44_Flag
+	.else
+	thumb_func_start SetAIData_Unk_44_Flag
+SetAIData_Unk_44_Flag:
+	decomp_trampoline SetAIData_Unk_44_Flag_c, 2
+	thumb_func_end SetAIData_Unk_44_Flag
+	.endif
 
 	thumb_func_start ClearAIData_Unk_44_Flag
 ClearAIData_Unk_44_Flag:
@@ -3103,6 +3110,7 @@ SetAIDataUnk0x48Flag:
 	mov pc, lr
 	thumb_func_end SetAIDataUnk0x48Flag
 
+	.ifndef DECOMP_ClearAIDataUnk0x48Flag
 	thumb_func_start ClearAIDataUnk0x48Flag
 ClearAIDataUnk0x48Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -3111,6 +3119,12 @@ ClearAIDataUnk0x48Flag:
 	str r1, [r3,#oAIData_Unk_48]
 	mov pc, lr
 	thumb_func_end ClearAIDataUnk0x48Flag
+	.else
+	thumb_func_start ClearAIDataUnk0x48Flag
+ClearAIDataUnk0x48Flag:
+	decomp_trampoline ClearAIDataUnk0x48Flag_c, 2
+	thumb_func_end ClearAIDataUnk0x48Flag
+	.endif
 
 	thumb_local_start
 sub_8010326:
@@ -12388,14 +12402,21 @@ sub_8014432:
 	mov pc, lr
 	thumb_func_end sub_8014432
 
+	.ifndef DECOMP_sub_801443C
 	thumb_func_start sub_801443C
 sub_801443C:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, dword_80144B8 // =0xffff 
+	ldr r0, dword_80144B8 // =0xffff
 	strh r0, [r3,#oAIData_Unk_32]
 	pop {pc}
 	thumb_func_end sub_801443C
+	.else
+	thumb_func_start sub_801443C
+sub_801443C:
+	decomp_trampoline sub_801443C_c, 2
+	thumb_func_end sub_801443C
+	.endif
 
 	thumb_func_start sub_8014446
 sub_8014446:
@@ -21867,6 +21888,7 @@ object_setFlag1:
 	thumb_func_end object_setFlag1
 
 // (int bitfield) -> void
+	.ifndef DECOMP_object_clearFlag
 	thumb_func_start object_clearFlag
 object_clearFlag:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -21875,6 +21897,12 @@ object_clearFlag:
 	str r2, [r1,#oCollisionData_ObjectFlags1]
 	mov pc, lr
 	thumb_func_end object_clearFlag
+	.else
+	thumb_func_start object_clearFlag
+object_clearFlag:
+	decomp_trampoline object_clearFlag_c, 2
+	thumb_func_end object_clearFlag
+	.endif
 
 // () -> int
 	thumb_func_start object_getFlag
@@ -21884,6 +21912,7 @@ object_getFlag:
 	mov pc, lr
 	thumb_func_end object_getFlag
 
+	.ifndef DECOMP_object_setFlag2
 	thumb_func_start object_setFlag2
 object_setFlag2:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -21892,6 +21921,12 @@ object_setFlag2:
 	str r2, [r1,#oCollisionData_ObjectFlags2]
 	mov pc, lr
 	thumb_func_end object_setFlag2
+	.else
+	thumb_func_start object_setFlag2
+object_setFlag2:
+	decomp_trampoline object_setFlag2_c, 2
+	thumb_func_end object_setFlag2
+	.endif
 
 	thumb_func_start object_clearFlag2
 object_clearFlag2:
@@ -22376,6 +22411,7 @@ locret_801A4CE:
 	pop {r4,pc}
 	thumb_func_end sub_801A4A6
 
+	.ifndef DECOMP_sub_801A4D0
 	thumb_func_start sub_801A4D0
 sub_801A4D0:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
@@ -22385,6 +22421,12 @@ sub_801A4D0:
 	strh r1, [r3,r0]
 	mov pc, lr
 	thumb_func_end sub_801A4D0
+	.else
+	thumb_func_start sub_801A4D0
+sub_801A4D0:
+	decomp_trampoline sub_801A4D0_c, 4
+	thumb_func_end sub_801A4D0
+	.endif
 
 	.ifndef DECOMP_sub_801A4DC
 	thumb_func_start sub_801A4DC
@@ -25822,6 +25864,7 @@ sub_801BE70:
 	thumb_func_end sub_801BE70
 	.endif
 
+	.ifndef DECOMP_sub_801BEB8
 	thumb_func_start sub_801BEB8
 sub_801BEB8:
 	ldr r1, off_801BFE8 // =eStruct2035280
@@ -25830,6 +25873,12 @@ sub_801BEB8:
 	str r2, [r1,#0x44] // (dword_20352C4 - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801BEB8
+	.else
+	thumb_func_start sub_801BEB8
+sub_801BEB8:
+	decomp_trampoline sub_801BEB8_c, 2
+	thumb_func_end sub_801BEB8
+	.endif
 
 	thumb_func_start sub_801BEC2
 sub_801BEC2:
@@ -25840,6 +25889,7 @@ sub_801BEC2:
 	mov pc, lr
 	thumb_func_end sub_801BEC2
 
+	.ifndef DECOMP_sub_801BECC
 	thumb_func_start sub_801BECC
 sub_801BECC:
 	ldr r1, off_801BFE8 // =eStruct2035280
@@ -25848,6 +25898,12 @@ sub_801BECC:
 	str r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801BECC
+	.else
+	thumb_func_start sub_801BECC
+sub_801BECC:
+	decomp_trampoline sub_801BECC_c, 2
+	thumb_func_end sub_801BECC
+	.endif
 
 	thumb_func_start sub_801BED6
 sub_801BED6:
