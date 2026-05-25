@@ -16438,6 +16438,7 @@ sub_800A704:
 	thumb_func_end sub_800A704
 	.endif
 
+	.ifndef DECOMP_sub_800A70C
 	thumb_func_start sub_800A70C
 sub_800A70C:
 	mov r0, r10
@@ -16445,6 +16446,12 @@ sub_800A70C:
 	ldrh r0, [r0,#oBattleState_Unk_38]
 	mov pc, lr
 	thumb_func_end sub_800A70C
+	.else
+	thumb_func_start sub_800A70C
+sub_800A70C:
+	decomp_trampoline sub_800A70C_c, 0
+	thumb_func_end sub_800A70C
+	.endif
 
 	thumb_local_start
 sub_800A714:
