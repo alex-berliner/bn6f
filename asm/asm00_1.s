@@ -1358,6 +1358,7 @@ Clear_eStruct2000780:
 	pop {r4-r7,pc}
 	thumb_func_end Clear_eStruct2000780
 
+	.ifndef DECOMP_initScenarioEffect_8003914
 	thumb_func_start initScenarioEffect_8003914
 initScenarioEffect_8003914:
 	push {r4-r7,lr}
@@ -1384,6 +1385,12 @@ initScenarioEffect_8003914:
 	strb r0, [r5,#0x3] // (byte_2000783 - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end initScenarioEffect_8003914
+	.else
+	thumb_func_start initScenarioEffect_8003914
+initScenarioEffect_8003914:
+	decomp_trampoline initScenarioEffect_8003914_c, 36
+	thumb_func_end initScenarioEffect_8003914
+	.endif
 
 	thumb_func_start endScenarioEffectMaybe_8003940
 endScenarioEffectMaybe_8003940:

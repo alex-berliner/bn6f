@@ -494,3 +494,4 @@ sub_810F090
 sub_81129EE
 sub_8111816
 sub_803D148
+initScenarioEffect_8003914
