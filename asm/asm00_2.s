@@ -8414,6 +8414,7 @@ loc_8012998:
 	thumb_func_end sub_8012956
 	.endif
 
+	.ifndef DECOMP_sub_801299C
 	thumb_func_start sub_801299C
 sub_801299C:
 	push {lr}
@@ -8422,6 +8423,12 @@ sub_801299C:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end sub_801299C
+	.else
+	thumb_func_start sub_801299C
+sub_801299C:
+	decomp_trampoline sub_801299C_c, 2
+	thumb_func_end sub_801299C
+	.endif
 
 	thumb_local_start
 sub_80129A6:
