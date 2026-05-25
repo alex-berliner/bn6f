@@ -4768,6 +4768,7 @@ off_8132660:
 	.word sSubmenu
 	thumb_func_end sub_8132648
 
+	.ifndef DECOMP_sub_8132664
 	thumb_func_start sub_8132664
 sub_8132664:
 	push {r4-r7,lr}
@@ -4775,6 +4776,12 @@ sub_8132664:
 	bl sub_81469DC
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132664
+	.else
+	thumb_func_start sub_8132664
+sub_8132664:
+	decomp_trampoline sub_8132664_c, 4
+	thumb_func_end sub_8132664
+	.endif
 
 	thumb_func_start sub_8132670
 sub_8132670:
