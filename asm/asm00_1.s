@@ -8213,6 +8213,7 @@ off_8006DE8:
 	.word 0x803ED90
 	thumb_func_end encryption_initAll_8006d00
 
+	.ifndef DECOMP_sub_8006DEC
 	thumb_func_start sub_8006DEC
 sub_8006DEC:
 	push {r4-r7,lr}
@@ -8221,6 +8222,12 @@ sub_8006DEC:
 	ldr r0, [r4,#oGameState_Unk_74]
 	pop {r4-r7,pc}
 	thumb_func_end sub_8006DEC
+	.else
+	thumb_func_start sub_8006DEC
+sub_8006DEC:
+	decomp_trampoline sub_8006DEC_c, 2
+	thumb_func_end sub_8006DEC
+	.endif
 
 	.ifndef DECOMP_encryption_8006df6
 	thumb_func_start encryption_8006df6
@@ -17224,6 +17231,7 @@ sub_800AAD6:
 	pop {r5,pc}
 	thumb_func_end sub_800AAD6
 
+	.ifndef DECOMP_sub_800AAE8
 	thumb_func_start sub_800AAE8
 sub_800AAE8:
 	mov r1, r10
@@ -17232,6 +17240,12 @@ sub_800AAE8:
 	strh r0, [r1,#oBattleState_Unk_3a]
 	mov pc, lr
 	thumb_func_end sub_800AAE8
+	.else
+	thumb_func_start sub_800AAE8
+sub_800AAE8:
+	decomp_trampoline sub_800AAE8_c, 2
+	thumb_func_end sub_800AAE8
+	.endif
 
 	thumb_local_start
 sub_800AAF2:

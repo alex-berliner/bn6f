@@ -539,3 +539,5 @@ SetBattleNaviStatsByte_AllianceFromBattleObject
 SetBattleNaviStatsHword_AllianceFromBattleObject
 GetNaviStats203CCE0Byte
 battleSettings_setFlags_unkSettings
+sub_8006DEC
+sub_800AAE8
