@@ -40,19 +40,15 @@ typedef u8             bool8;
 //
 // This wrapper saves the original (non-thumb-bit) lr, calls IMPL
 // via a normal BL (so IMPL's `bx lr` returns inside the wrapper),
-// then returns to the original caller via `mov pc, rN`.
+// then returns to the original caller via `mov pc, rN` (no
+// interworking) — preserves thumb mode.
 //
-// **Not yet verified.** Direct port of the documented ARMv4T
-// `mov pc, Rm` non-interworking semantics. Tested against
-// `sub_81231E0` (vtable callee via `off_81211D0` in asm32.s) and
-// the wrapper STILL produced verify failures across the radius.
-// Root cause TBD — possible suspects: agbcc's `__attribute__((naked))`
-// behavior, the trampoline's `bx r3` interaction, or `mov pc, r3`
-// not actually being non-interworking on ARM7TDMI as the manual
-// claims. Use with caution + verify carefully before relying on.
+// Verified against `sub_81231E0` (vtable callee via `off_81211D0`
+// in asm32.s) — passes after fixing a pool-leakage bug in
+// `decomp_trampoline` (see include/macros/function.inc).
 //
 // To use: grep `.word <sym>` asm/*.s — if hit, this wrapper is
-// nominally the right tool. Run verify and bisect on regression.
+// the right tool.
 #define DECOMP_VTABLE_WRAPPER(WRAPPER_NAME, IMPL_NAME)             \
     __attribute__((naked)) void WRAPPER_NAME(void)                 \
     {                                                              \
