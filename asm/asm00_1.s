@@ -17794,6 +17794,7 @@ dword_800AE8C:
 	.word 0x4900480
 	thumb_func_end sub_800AE54
 
+	.ifndef DECOMP_sub_800AE90
 	thumb_func_start sub_800AE90
 sub_800AE90:
 	push {r5-r7,lr}
@@ -17841,6 +17842,12 @@ locret_800AEE0:
 dword_800AEE4:
 	.word 0xD3CA
 	thumb_func_end sub_800AE90
+	.else
+	thumb_func_start sub_800AE90
+sub_800AE90:
+	decomp_trampoline sub_800AE90_c, 80
+	thumb_func_end sub_800AE90
+	.endif
 
 	thumb_local_start
 handleVariableDamageChip_800AEE8:
