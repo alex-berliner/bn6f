@@ -18511,6 +18511,7 @@ sub_800B3A2:
 	pop {pc}
 	thumb_func_end sub_800B3A2
 
+	.ifndef DECOMP_transferBattleHandNaviStats_800B3D8
 	thumb_func_start transferBattleHandNaviStats_800B3D8
 transferBattleHandNaviStats_800B3D8:
 	push {r4,lr}
@@ -18551,6 +18552,12 @@ loc_800B408:
 locret_800B426:
 	pop {r4,pc}
 	thumb_func_end transferBattleHandNaviStats_800B3D8
+	.else
+	thumb_func_start transferBattleHandNaviStats_800B3D8
+transferBattleHandNaviStats_800B3D8:
+	decomp_trampoline transferBattleHandNaviStats_800B3D8_c, 72
+	thumb_func_end transferBattleHandNaviStats_800B3D8
+	.endif
 
 	thumb_local_start
 sub_800B428:
