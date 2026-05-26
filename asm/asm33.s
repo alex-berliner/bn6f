@@ -59,7 +59,6 @@ sub_81231D4:
 	thumb_func_end sub_81231D4
 	.balign 4, 0
 
-	.ifndef DECOMP_sub_81231E0
 	thumb_func_start sub_81231E0
 sub_81231E0:
 	ldr r2, =word_200DCF0
@@ -67,12 +66,6 @@ sub_81231E0:
 	strh r1, [r2,#0xc]
 	mov pc, lr
 	thumb_func_end sub_81231E0
-	.else
-	thumb_func_start sub_81231E0
-sub_81231E0:
-	decomp_trampoline sub_81231E0_c, 0
-	thumb_func_end sub_81231E0
-	.endif
 	.balign 4, 0
 
 	thumb_func_start sub_81231E8
