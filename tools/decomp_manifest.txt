@@ -543,3 +543,4 @@ sub_8006DEC
 sub_800AAE8
 Initialize_eStruct200a6a0
 copy_800260C
+subsystem_launchMail

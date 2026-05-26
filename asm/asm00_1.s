@@ -6313,6 +6313,7 @@ sub_8005EA2:
 	.byte 0, 0
 	thumb_func_end sub_8005EA2
 
+	.ifndef DECOMP_subsystem_launchMail
 	thumb_func_start subsystem_launchMail
 subsystem_launchMail:
 	push {r4,r5,lr}
@@ -6344,6 +6345,12 @@ subsystem_launchMail:
 	mov r0, #0
 	pop {r4,r5,pc}
 	thumb_func_end subsystem_launchMail
+	.else
+	thumb_func_start subsystem_launchMail
+subsystem_launchMail:
+	decomp_trampoline subsystem_launchMail_c, 36
+	thumb_func_end subsystem_launchMail
+	.endif
 
 	.ifndef DECOMP_sub_8005EEC
 	thumb_func_start sub_8005EEC
