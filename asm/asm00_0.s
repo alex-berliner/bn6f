@@ -5660,6 +5660,7 @@ byte_80025CC::
 	thumb_func_end sub_80024CC
 
 /// tags: "#mcu, "
+	.ifndef DECOMP_copy_800260C
 	thumb_func_start copy_800260C
 copy_800260C:
 	push {r4,lr}
@@ -5699,6 +5700,12 @@ dword_8002648:
 off_800264C:
 	.word unk_200F388
 	thumb_func_end copy_800260C
+	.else
+	thumb_func_start copy_800260C
+copy_800260C:
+	decomp_trampoline copy_800260C_c, 60
+	thumb_func_end copy_800260C
+	.endif
 
 	.ifndef DECOMP_copyPalletesToIWRAM_8002650
 	thumb_func_start copyPalletesToIWRAM_8002650
