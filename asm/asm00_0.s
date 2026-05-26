@@ -5390,6 +5390,7 @@ off_8002464:
 	.word ePalette20097a0
 	thumb_func_end getPalleteAndTransition_80023E0
 
+	.ifndef DECOMP_Initialize_eStruct200a6a0
 	thumb_func_start Initialize_eStruct200a6a0
 Initialize_eStruct200a6a0:
 	push {r4-r7,lr}
@@ -5408,6 +5409,12 @@ Initialize_eStruct200a6a0:
 	strb r0, [r5]
 	pop {r4-r7,pc}
 	thumb_func_end Initialize_eStruct200a6a0
+	.else
+	thumb_func_start Initialize_eStruct200a6a0
+Initialize_eStruct200a6a0:
+	decomp_trampoline Initialize_eStruct200a6a0_c, 20
+	thumb_func_end Initialize_eStruct200a6a0
+	.endif
 
 	thumb_func_start run_eStruct200a6a0_Callback_8002484
 run_eStruct200a6a0_Callback_8002484:
