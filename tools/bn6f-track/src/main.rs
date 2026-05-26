@@ -1411,7 +1411,10 @@ fn describe_diff(d: &snapshot::DiffSummary) -> String {
 struct Bk2Job {
     stem: String,
     bk2_path: std::path::PathBuf,
-    state_path: std::path::PathBuf,
+    /// `None` means cold-boot (no savestate load, start from ROM reset).
+    /// Useful for exercising init-time code paths a post-boot savestate
+    /// would skip past.
+    state_path: Option<std::path::PathBuf>,
     input_path: std::path::PathBuf,
     frame_count: u32,
 }
@@ -1431,6 +1434,9 @@ fn discover_bk2_jobs(demos_root: &str) -> Result<Vec<Bk2Job>, String> {
         let stem = bk2.file_stem().unwrap().to_string_lossy().into_owned();
         let folder = bk2_dir.join(&stem);
 
+        // Savestate is optional: a bk2 without an .ss starts from
+        // cold ROM reset (covers boot-init paths a post-boot
+        // savestate would skip).
         let state_path = first_existing(&[
             folder.join("state.ss"),
             folder.join("state.ss1"),
@@ -1438,8 +1444,7 @@ fn discover_bk2_jobs(demos_root: &str) -> Result<Vec<Bk2Job>, String> {
             bk2_dir.join(format!("{stem}.ss")),
             bk2_dir.join(format!("{stem}.ss1")),
             bk2_dir.join(format!("{stem}.ss2")),
-        ])
-        .ok_or_else(|| format!("no savestate for {stem}"))?;
+        ]);
 
         let input_path = first_existing(&[
             folder.join("inputs.input"),
@@ -1847,7 +1852,7 @@ fn record_one_bk2_with_cache(
             cache.root.to_str().unwrap(),
             &uncached_hex,
             job.input_path.to_str(),
-            job.state_path.to_str(),
+            job.state_path.as_deref().and_then(|p| p.to_str()),
             /*dedup=*/ true,
             /*progress=*/ 0,
             /*verbose=*/ false,
