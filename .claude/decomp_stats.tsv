@@ -38,3 +38,8 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-25T23:58:20Z	SetBattleNaviStatsHword_AllianceFromBattleObject	pass	43	58.98	35	0	batch=7
 2026-05-25T23:58:20Z	GetNaviStats203CCE0Byte	pass	43	58.98	35	0	batch=7
 2026-05-25T23:58:20Z	battleSettings_setFlags_unkSettings	pass	43	58.98	35	0	batch=7
+2026-05-26T00:04:51Z	sub_8006DEC	pass	155	69.80	120	1	batch=5, 3 reverted (r5/r10 conflict?)
+2026-05-26T00:04:51Z	sub_800AAE8	pass	155	69.80	120	1	batch=5, 3 reverted (r5/r10 conflict?)
+2026-05-26T00:04:51Z	sub_8000E30	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
+2026-05-26T00:04:51Z	sub_801A7F4	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
+2026-05-26T00:04:51Z	sub_80101C4	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
