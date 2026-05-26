@@ -43,3 +43,4 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-26T00:04:51Z	sub_8000E30	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
 2026-05-26T00:04:51Z	sub_801A7F4	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
 2026-05-26T00:04:51Z	sub_80101C4	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
+2026-05-26T00:10:10Z	Initialize_eStruct200a6a0	pass	174	58.76	116	0	solo (13 instr)
