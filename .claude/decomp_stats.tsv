@@ -48,3 +48,4 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-26T00:19:37Z	subsystem_launchMail	pass	145	56.91	89	0	solo (20 instr, 44 bytes)
 2026-05-26T00:25:17Z	transferBattleHandNaviStats_800B3D8	pass	246	55.44	191	0	solo (34 instr, 80 bytes)
 2026-05-26T00:30:16Z	sub_800AE90	pass	184	56.38	128	0	solo (39 instr, 88 bytes) - medium
+2026-05-26T00:36:40Z	-	bail	268	-	268	0	candidate scan: 7 fns inspected, all had no-go patterns (vtable/multi-return/local-callee/svc/high-reg/shared-pool)
