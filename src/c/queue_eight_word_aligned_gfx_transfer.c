@@ -12,7 +12,7 @@ extern u32 fiveWordArr200B4B0[];
 // Entered via:
 //   * QueueEightWordAlignedGFXTransfer (sets type=4 via prelude)
 //   * loc_8000ACA (direct bl from 4 callers passing arbitrary type)
-void QueueEightWordAlignedGFXTransfer_c(u32 src, u32 dst, u32 size, u32 type)
+static void QueueEightWordAlignedGFXTransfer_impl(u32 src, u32 dst, u32 size, u32 type)
 {
     u32 count;
     u32 *entry;
@@ -33,3 +33,5 @@ void QueueEightWordAlignedGFXTransfer_c(u32 src, u32 dst, u32 size, u32 type)
     fieldC = (type == 0u) ? 0x84000000u : 0xFFFFFFFFu;
     entry[3] = fieldC;
 }
+
+DECOMP_VTABLE_WRAPPER(QueueEightWordAlignedGFXTransfer_c, QueueEightWordAlignedGFXTransfer_impl)

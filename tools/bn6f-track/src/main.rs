@@ -58,6 +58,76 @@ fn silence_libmgba_logger() {
     }
 }
 
+// Capturing logger for the `probe` subcommand. Forwards all log lines
+// to stderr along with level + category so we can spot "Jumped to
+// invalid address" and similar fault messages that the silent logger
+// would otherwise swallow.
+thread_local! {
+    static CAPTURED_LOGS: std::cell::RefCell<Vec<(mgba_sys::mLogLevel, String)>>
+        = std::cell::RefCell::new(Vec::new());
+}
+
+unsafe extern "C" {
+    fn vsnprintf(
+        s: *mut i8,
+        n: usize,
+        format: *const i8,
+        ap: *mut mgba_sys::__va_list_tag,
+    ) -> i32;
+}
+
+unsafe extern "C" fn capture_log(
+    _logger: *mut mgba_sys::mLogger,
+    _category: i32,
+    level: mgba_sys::mLogLevel,
+    fmt: *const i8,
+    args: *mut mgba_sys::__va_list_tag,
+) {
+    // FATAL=1, ERROR=2. Anything more verbose is noise during probing
+    // (per-instruction stub logs would blow out memory at trace speed).
+    if level > 2 {
+        return;
+    }
+    let mut buf = [0u8; 1024];
+    let n = unsafe {
+        vsnprintf(
+            buf.as_mut_ptr() as *mut _,
+            buf.len(),
+            fmt,
+            args,
+        )
+    };
+    let len = if n < 0 { 0 } else { (n as usize).min(buf.len() - 1) };
+    let msg = String::from_utf8_lossy(&buf[..len]).into_owned();
+    // Only first occurrence — repeats from the same trap point flood.
+    let mut should_set_trip = false;
+    CAPTURED_LOGS.with(|c| {
+        let mut c = c.borrow_mut();
+        if c.is_empty() {
+            should_set_trip = true;
+        }
+        if c.len() < 32 {
+            c.push((level, msg));
+        }
+    });
+    if should_set_trip {
+        PROBE_TRIPPED.with(|c| c.set(true));
+        PROBE_TRIP_REASON.with(|s| *s.borrow_mut() = "FATAL libmgba log".to_string());
+    }
+}
+
+static mut CAPTURE_LOGGER: mgba_sys::mLogger = mgba_sys::mLogger {
+    log: Some(capture_log),
+    filter: ptr::null_mut(),
+};
+
+fn install_capturing_logger() {
+    unsafe {
+        #[allow(static_mut_refs)]
+        mgba_sys::mLogSetDefaultLogger(&mut CAPTURE_LOGGER);
+    }
+}
+
 // ---------------------------------------------------------------------
 // Core wrapper
 // ---------------------------------------------------------------------
@@ -125,6 +195,51 @@ impl Core {
             mgba_sys::mCoreLoadConfig(raw);
         }
 
+        // Real-BIOS path: if BN6F_BIOS env or /home/alex/gbabiosworld.bin
+        // exists, point mGBA at it. With no BIOS, mGBA uses HLE (skips
+        // Nintendo logo, skips real cart-header check, native SVC
+        // handlers) — fine for game-side function verification but
+        // affects cold-boot graphics state (HLE doesn't clear VRAM
+        // exactly like real BIOS). Warm-boot replays via savestate
+        // are unaffected since post-BIOS state is captured in the
+        // savestate.
+        let bios = std::env::var("BN6F_BIOS").ok()
+            .or_else(|| {
+                let p = "/home/alex/gbabiosworld.bin";
+                std::path::Path::new(p).exists().then(|| p.to_string())
+            });
+        if let Some(bios_path) = bios {
+            let c_bios = CString::new(bios_path.clone()).map_err(|e| e.to_string())?;
+            let mode = CString::new("rb").unwrap();
+            let loaded = unsafe {
+                let vf = mgba_sys::VFileOpen(c_bios.as_ptr(), libc::O_RDONLY);
+                if vf.is_null() {
+                    eprintln!("warning: VFileOpen({bios_path}) returned null");
+                    let _ = mode;
+                    false
+                } else {
+                    let load = (*raw).loadBIOS.expect("loadBIOS");
+                    let ok = load(raw, vf, 0);
+                    if !ok {
+                        (*vf).close.expect("close")(vf);
+                    }
+                    ok
+                }
+            };
+            if loaded {
+                unsafe {
+                    let bios_key = CString::new("useBios").unwrap();
+                    mgba_sys::mCoreConfigSetIntValue(&mut (*raw).config, bios_key.as_ptr(), 1);
+                    let skip_key = CString::new("skipBios").unwrap();
+                    mgba_sys::mCoreConfigSetIntValue(&mut (*raw).config, skip_key.as_ptr(), 0);
+                    mgba_sys::mCoreLoadConfig(raw);
+                }
+                eprintln!("loaded real BIOS: {bios_path}");
+            } else {
+                eprintln!("warning: loadBIOS failed for {bios_path}, falling back to HLE");
+            }
+        }
+
         unsafe {
             let reset = (*raw).reset.expect("mCore.reset is null");
             reset(raw);
@@ -147,6 +262,27 @@ impl Core {
     /// We deliberately do NOT register breakpoints via libmgba —
     /// `checkBreakpoints` is still called per step but with an empty
     /// list it's a no-op.
+    fn attach_trace_debugger(&mut self) {
+        let mut dbg: Box<mgba_sys::mDebugger> = unsafe {
+            Box::new(MaybeUninit::zeroed().assume_init())
+        };
+        let mut module: Box<mgba_sys::mDebuggerModule> = unsafe {
+            Box::new(MaybeUninit::zeroed().assume_init())
+        };
+        module.type_ = mgba_sys::mDebuggerType_DEBUGGER_CUSTOM;
+        module.custom = Some(trace_cb);
+        module.needsCallback = true;
+        module.entered = Some(entered_cb);
+        unsafe {
+            mgba_sys::mDebuggerInit(&mut *dbg as *mut _);
+            mgba_sys::mDebuggerAttach(&mut *dbg as *mut _, self.raw);
+            mgba_sys::mDebuggerAttachModule(&mut *dbg as *mut _, &mut *module as *mut _);
+            (*dbg).state = mgba_sys::mDebuggerState_DEBUGGER_CALLBACK;
+        }
+        self.debugger = Some(dbg);
+        self.dbg_module = Some(module);
+    }
+
     fn attach_debugger(&mut self) {
         let mut dbg: Box<mgba_sys::mDebugger> = unsafe {
             Box::new(MaybeUninit::zeroed().assume_init())
@@ -292,6 +428,35 @@ impl Core {
             read_reg(self.raw, reg.as_ptr(), &mut out);
         }
         out as u32
+    }
+
+    fn read_reg_named(&self, name: &str) -> u32 {
+        let mut out: i32 = 0;
+        let reg = CString::new(name).unwrap();
+        unsafe {
+            let read_reg = (*self.raw).readRegister.expect("readRegister null");
+            read_reg(self.raw, reg.as_ptr(), &mut out);
+        }
+        out as u32
+    }
+
+    fn read_mem_u8(&self, addr: u32) -> u8 {
+        unsafe {
+            let r = (*self.raw).rawRead8.expect("rawRead8 null");
+            r(self.raw, addr, -1) as u8
+        }
+    }
+    fn read_mem_u16(&self, addr: u32) -> u16 {
+        unsafe {
+            let r = (*self.raw).rawRead16.expect("rawRead16 null");
+            r(self.raw, addr, -1) as u16
+        }
+    }
+    fn read_mem_u32(&self, addr: u32) -> u32 {
+        unsafe {
+            let r = (*self.raw).rawRead32.expect("rawRead32 null");
+            r(self.raw, addr, -1)
+        }
     }
 
     fn frame_counter(&self) -> u32 {
@@ -499,6 +664,75 @@ unsafe extern "C" fn entered_cb(
 /// immediate predecessor by instruction-length). This avoids counting
 /// every iteration of an internal loop whose body happens to sit one
 /// instruction past the entry.
+/// Probe-mode per-instruction callback. Maintains a ring buffer of
+/// recent (pc, instr_word) pairs and trips PROBE_TRIPPED on first PC
+/// outside any executable region. The main `custom_cb` does too much
+/// for cold-boot debugging; this one stays minimal.
+thread_local! {
+    static PROBE_RING: std::cell::RefCell<Vec<(u32, u32, bool)>>
+        = std::cell::RefCell::new(Vec::with_capacity(64));
+    static PROBE_TRIPPED: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+    static PROBE_INSTR_COUNT: std::cell::Cell<u64> = const { std::cell::Cell::new(0) };
+    static PROBE_LAST_PC: std::cell::Cell<u32> = const { std::cell::Cell::new(0) };
+    static PROBE_SAME_PC_COUNT: std::cell::Cell<u32> = const { std::cell::Cell::new(0) };
+    static PROBE_REGION_BASE: std::cell::Cell<u32> = const { std::cell::Cell::new(0) };
+    static PROBE_REGION_COUNT: std::cell::Cell<u32> = const { std::cell::Cell::new(0) };
+    static PROBE_TRIP_REASON: std::cell::RefCell<String> = const { std::cell::RefCell::new(String::new()) };
+}
+
+unsafe extern "C" fn trace_cb(module: *mut mgba_sys::mDebuggerModule) {
+    // Fast bail if already tripped.
+    if PROBE_TRIPPED.with(|c| c.get()) {
+        return;
+    }
+    let dbg = unsafe { (*module).p };
+    let core = unsafe { (*dbg).core };
+    let cpu = unsafe { (*core).cpu as *const i32 };
+    let pc = unsafe { *cpu.add(15) } as u32;
+    let cpsr = unsafe { *cpu.add(16) } as u32;
+    let thumb = (cpsr & (1 << 5)) != 0;
+    let instr_len: u32 = if thumb { 2 } else { 4 };
+    let true_pc = pc.wrapping_sub(instr_len);
+
+    let valid = matches!(true_pc,
+        0x00000000..=0x00003FFF |
+        0x02000000..=0x0203FFFF |
+        0x03000000..=0x03007FFF |
+        0x08000000..=0x09FFFFFF);
+
+    if !valid {
+        // Capture context only on trip (not every instruction).
+        let instr = 0;
+        PROBE_RING.with(|r| {
+            let mut r = r.borrow_mut();
+            if r.len() >= 64 { r.remove(0); }
+            r.push((true_pc, instr, thumb));
+        });
+        PROBE_TRIP_REASON.with(|s| *s.borrow_mut() = format!("invalid PC 0x{:08X}", true_pc));
+        PROBE_TRIPPED.with(|c| c.set(true));
+        unsafe { (*dbg).state = mgba_sys::mDebuggerState_DEBUGGER_PAUSED; }
+        return;
+    }
+
+    // Region-stuck detector: PC staying within a 256-byte window for
+    // many consecutive instructions → infinite loop in that function.
+    // Excludes BIOS (0x00000000-0x00003FFF) which legitimately loops
+    // (e.g. Halt at 0x00000240 waiting for vblank IRQ).
+    let total = PROBE_INSTR_COUNT.with(|c| {
+        let v = c.get() + 1; c.set(v); v
+    });
+    if total > 5_000_000 {
+        eprintln!("RUNAWAY: {} instrs, last PC 0x{:08X}", total, true_pc);
+        eprintln!("ring buffer (last 64 PCs):");
+        let ring = PROBE_RING.with(|r| r.borrow().clone());
+        for (pc, instr, t) in &ring {
+            let opc = if *t { *instr & 0xFFFF } else { *instr };
+            eprintln!("  0x{:08X}  {} 0x{:08X}", pc, if *t {"T"} else {"A"}, opc);
+        }
+        std::process::exit(2);
+    }
+}
+
 unsafe extern "C" fn custom_cb(module: *mut mgba_sys::mDebuggerModule) {
     // libmgba 0.11 passes the module pointer (not the orchestrator);
     // follow `module->p->core` back to the core.
@@ -738,6 +972,322 @@ fn read_symbols(path: &str) -> Result<Vec<(u32, String)>, String> {
 // ---------------------------------------------------------------------
 // Modes
 // ---------------------------------------------------------------------
+
+/// Run a ROM from cold boot for `frames` frames, capturing all
+/// libmgba log messages and the PC after each frame. Prints anything
+/// that looks like a fault (level >= WARN, or PC out of valid execute
+/// regions). Exits non-zero if any FATAL/ERROR log fired or PC drifted
+/// into a non-executable region.
+///
+/// Optional `input_path` provides per-frame joypad masks (same format
+/// as record/track --input). Defaults to all-zero input.
+fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
+    let core = Core::new(rom).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}");
+        process::exit(1);
+    });
+    // Optional savestate load (warm boot). Cold boot if None.
+    if let Some(p) = state_path {
+        let bytes = std::fs::read(p).expect("read savestate");
+        // BizHawk-wrapped savestates have a 4-byte prefix before the
+        // libmgba magic; strip it.
+        let stripped = if bytes.len() >= 8 {
+            let v_at_0 = u32::from_le_bytes(bytes[0..4].try_into().unwrap());
+            let v_at_4 = u32::from_le_bytes(bytes[4..8].try_into().unwrap());
+            if (v_at_0 & 0xFFFFFF00) != 0x01000000 && (v_at_4 & 0xFFFFFF00) == 0x01000000 {
+                &bytes[4..]
+            } else {
+                &bytes[..]
+            }
+        } else { &bytes[..] };
+        let ok = unsafe {
+            let vf = mgba_sys::VFileFromMemory(stripped.as_ptr() as *mut _, stripped.len());
+            let r = mgba_sys::mCoreLoadStateNamed(core.raw, vf, 0);
+            (*vf).close.expect("close")(vf);
+            r
+        };
+        if !ok {
+            eprintln!("loadState failed for {p}");
+            process::exit(1);
+        }
+    }
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    for _ in 0..frames {
+        unsafe {
+            set_keys(core.raw, 0);
+            run_frame(core.raw);
+        }
+    }
+    // Hash {IWRAM, EWRAM, VRAM, palette, OAM} plus CPU registers.
+    let mut h = sha1::Sha1::new();
+    use sha1::Digest;
+    // CPU regs (gprs[0..15] + cpsr).
+    let cpu = unsafe { (*core.raw).cpu as *const i32 };
+    for i in 0..17 {
+        let v = unsafe { *cpu.add(i) };
+        h.update(v.to_le_bytes());
+    }
+    // Memory regions via rawRead8.
+    let read8 = unsafe { (*core.raw).rawRead8.expect("rawRead8") };
+    let regions: [(u32, u32, &str); 5] = [
+        (0x02000000, 0x40000, "ewram"),
+        (0x03000000, 0x08000, "iwram"),
+        (0x05000000, 0x00400, "palette"),
+        (0x06000000, 0x18000, "vram"),
+        (0x07000000, 0x00400, "oam"),
+    ];
+    let mut region_hashes = Vec::new();
+    for &(base, len, name) in &regions {
+        let mut rh = sha1::Sha1::new();
+        let mut nonzero = 0u32;
+        let mut sample = Vec::new();
+        for off in 0..len {
+            let b = unsafe { read8(core.raw, base + off, -1) } as u8;
+            rh.update([b]);
+            if b != 0 { nonzero += 1; }
+            if off < 16 { sample.push(b); }
+        }
+        let h_short = format!("{:08x}", u32::from_be_bytes(rh.finalize()[..4].try_into().unwrap()));
+        let sample_hex: String = sample.iter().map(|b| format!("{:02x}", b)).collect::<Vec<_>>().join(" ");
+        region_hashes.push((name, h_short, nonzero, len, sample_hex));
+    }
+    let pc = core.pc();
+    let cpsr = unsafe { *cpu.add(16) } as u32;
+    let sp = unsafe { *cpu.add(13) } as u32;
+    let lr = unsafe { *cpu.add(14) } as u32;
+    let final_hash = format!("{:08x}", u32::from_be_bytes(h.finalize()[..4].try_into().unwrap()));
+    println!("rom={}", rom);
+    println!("state={}", state_path.unwrap_or("(cold boot)"));
+    println!("frames={frames}");
+    println!("pc=0x{pc:08X} cpsr=0x{cpsr:08X} sp=0x{sp:08X} lr=0x{lr:08X}");
+    for (name, h, nz, total, sample) in &region_hashes {
+        println!("{name}_sha={} nonzero={}/{} first16=[{}]", h, nz, total, sample);
+    }
+    println!("composite_sha={final_hash}");
+}
+
+fn framebuf(rom: &str, frames: u32, out_path: &str) {
+    install_capturing_logger();
+    CAPTURED_LOGS.with(|c| c.borrow_mut().clear());
+    let core = Core::new(rom).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}");
+        process::exit(1);
+    });
+    // We must DISABLE frameskip so the PPU actually renders.
+    // Core::new() sets BN6F_TRACK_FRAMESKIP=i32::MAX (no rendering)
+    // unless the env var overrides. Set it back to 0 here.
+    unsafe {
+        let cfg_key = std::ffi::CString::new("frameskip").unwrap();
+        let cfg_val = std::ffi::CString::new("0").unwrap();
+        mgba_sys::mCoreConfigSetIntValue(&mut (*core.raw).config, cfg_key.as_ptr(), 0);
+        let _ = cfg_val;
+        let reload = (*core.raw).reloadConfigOption.expect("reloadConfigOption");
+        reload(core.raw, cfg_key.as_ptr(), &mut (*core.raw).config);
+        let reset = (*core.raw).reset.expect("reset");
+        reset(core.raw);
+    }
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    for _ in 0..frames {
+        unsafe {
+            set_keys(core.raw, 0);
+            run_frame(core.raw);
+        }
+    }
+    // Read framebuffer: 256 stride × 160 rows of RGBA u32. GBA visible
+    // area is 240×160; we save the visible portion as PPM (P6 RGB).
+    let buf_ptr = core._video_buf.as_ptr() as *const u32;
+    let mut ppm = format!("P6\n240 160\n255\n").into_bytes();
+    for y in 0..160 {
+        for x in 0..240 {
+            let pix = unsafe { *buf_ptr.add(y * 256 + x) };
+            // libmgba BGR? RGB? Try ABGR layout: bits 0-7 = R, 8-15 = G, 16-23 = B.
+            ppm.push((pix & 0xFF) as u8);
+            ppm.push(((pix >> 8) & 0xFF) as u8);
+            ppm.push(((pix >> 16) & 0xFF) as u8);
+        }
+    }
+    std::fs::write(out_path, &ppm).expect("write ppm");
+    let logs = CAPTURED_LOGS.with(|c| c.borrow().clone());
+    let fatal = logs.iter().filter(|(l,_)| *l == 1).count();
+    let error = logs.iter().filter(|(l,_)| *l == 2).count();
+    eprintln!("framebuf: wrote {} ({}x{}). after {} frames. final PC=0x{:08X}",
+              out_path, 240, 160, frames, core.pc());
+    eprintln!("captured fatal/error: {fatal}/{error}");
+    for (lvl, msg) in logs.iter().take(5) {
+        eprintln!("  [lvl {}] {}", lvl, msg);
+    }
+}
+
+fn crashwatch(rom: &str, frames: u32, input_path: Option<&str>) {
+    install_capturing_logger();
+    CAPTURED_LOGS.with(|c| c.borrow_mut().clear());
+    eprintln!("=== bn6f-track crashwatch ===");
+    eprintln!("rom: {rom}");
+    eprintln!("frames: {frames}");
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => load_input_file(p),
+        None => Vec::new(),
+    };
+    let core = Core::new(rom).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}");
+        process::exit(1);
+    });
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    let t0 = Instant::now();
+    for i in 0..frames {
+        let mask = inputs.get(i as usize).copied().unwrap_or(0) as u32;
+        unsafe {
+            set_keys(core.raw, mask);
+            run_frame(core.raw);
+        }
+        if CAPTURED_LOGS.with(|c| c.borrow().iter().any(|(lvl,_)| *lvl == 1)) {
+            eprintln!("FATAL fired by frame {} — stopping", i + 1);
+            break;
+        }
+    }
+    let elapsed = t0.elapsed();
+    let logs = CAPTURED_LOGS.with(|c| c.borrow().clone());
+    let fatal = logs.iter().filter(|(l,_)| *l == 1).count();
+    let error = logs.iter().filter(|(l,_)| *l == 2).count();
+    eprintln!("wall: {:.3}s, final PC: 0x{:08X}", elapsed.as_secs_f64(), core.pc());
+    eprintln!("fatal/error captured: {fatal}/{error}");
+    if !logs.is_empty() {
+        eprintln!("first {} captured messages:", logs.len().min(10));
+        for (lvl, msg) in logs.iter().take(10) {
+            eprintln!("  [lvl {}] {}", lvl, msg);
+        }
+        // Exit non-zero only on FATAL (lvl 1). ERROR (lvl 2) is
+        // noteworthy but not necessarily a crash.
+        if fatal > 0 {
+            process::exit(2);
+        }
+    }
+}
+
+fn probe_cold_boot(rom: &str, frames: u32, input_path: Option<&str>) {
+    // Capture FATAL/ERROR logs so we can spot "Jumped to invalid
+    // address" even when mGBA's prefetch-abort path keeps PC inside a
+    // valid region (BIOS handler). trace_cb covers invalid-PC cases
+    // when libmgba does NOT abort-trap on its own.
+    install_capturing_logger();
+    CAPTURED_LOGS.with(|c| c.borrow_mut().clear());
+    eprintln!("=== bn6f-track probe (cold boot fault watch) ===");
+    eprintln!("rom: {rom}");
+    eprintln!("frames: {frames}");
+
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => {
+            let v = load_input_file(p);
+            eprintln!("input: {p}  ({} frames of joypad masks)", v.len());
+            v
+        }
+        None => Vec::new(),
+    };
+
+    let mut core = Core::new(rom).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}");
+        process::exit(1);
+    });
+    core.attach_trace_debugger();
+
+    let pc_in_executable = |pc: u32| -> bool {
+        matches!(pc,
+            0x00000000..=0x00003FFF |
+            0x02000000..=0x0203FFFF |
+            0x03000000..=0x03007FFF |
+            0x08000000..=0x09FFFFFF)
+    };
+
+    PROBE_RING.with(|r| r.borrow_mut().clear());
+    PROBE_TRIPPED.with(|c| c.set(false));
+    PROBE_INSTR_COUNT.with(|c| c.set(0));
+    PROBE_REGION_BASE.with(|c| c.set(0));
+    PROBE_REGION_COUNT.with(|c| c.set(0));
+
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let mut tripped_at: Option<u32> = None;
+    for i in 0..frames {
+        let mask = inputs.get(i as usize).copied().unwrap_or(0) as u32;
+        unsafe { set_keys(core.raw, mask); }
+        let dbg = core.debugger.as_mut().unwrap().as_mut();
+        unsafe { mgba_sys::mDebuggerRunFrame(dbg as *mut _); }
+        if PROBE_TRIPPED.with(|c| c.get()) {
+            tripped_at = Some(i);
+            break;
+        }
+        let count = PROBE_INSTR_COUNT.with(|c| c.get());
+        eprintln!("  frame {}/{}: PC = 0x{:08X}  total_instrs={}", i + 1, frames, core.pc(), count);
+    }
+
+    if let Some(f) = tripped_at {
+        let reason = PROBE_TRIP_REASON.with(|s| s.borrow().clone());
+        eprintln!("TRIPPED at frame {}: {}", f, reason);
+        let logs = CAPTURED_LOGS.with(|c| c.borrow().clone());
+        eprintln!("captured log lines ({}):", logs.len());
+        for (lvl, msg) in &logs {
+            eprintln!("  [lvl {}] {}", lvl, msg);
+        }
+        let ring = PROBE_RING.with(|r| r.borrow().clone());
+        eprintln!("  last {} instructions (oldest → newest):", ring.len());
+        for (pc, instr, thumb) in &ring {
+            let opc = if *thumb { *instr & 0xFFFF } else { *instr };
+            eprintln!("    0x{:08X}  {} 0x{:08X}", pc, if *thumb {"T"} else {"A"}, opc);
+        }
+        let regs = ["r0","r1","r2","r3","r4","r5","r6","r7",
+                    "r8","r9","r10","r11","r12","r13","r14","r15"];
+        eprintln!("  CPU registers at trip:");
+        for r in &regs {
+            let v = core.read_reg_named(r);
+            eprintln!("    {:<4} = 0x{:08X}", r, v);
+        }
+    }
+
+    let first_bad_pc: Option<(u32, u32)> = None;
+
+    let logs = CAPTURED_LOGS.with(|c| c.borrow().clone());
+    let mut fatal_or_error = 0usize;
+    let mut warn = 0usize;
+    let mut info = 0usize;
+    for (lvl, msg) in &logs {
+        // Level constants in libmgba: FATAL=1, ERROR=2, WARN=4, INFO=8,
+        // DEBUG=16, STUB=32, GAME_ERROR=64.
+        let lvl_name = match *lvl {
+            1 => "FATAL",
+            2 => "ERROR",
+            4 => "WARN",
+            8 => "INFO",
+            16 => "DEBUG",
+            32 => "STUB",
+            64 => "GAME_ERROR",
+            _ => "?",
+        };
+        if *lvl <= 2 {
+            fatal_or_error += 1;
+            eprintln!("  [{lvl_name}] {msg}");
+        } else if *lvl == 4 {
+            warn += 1;
+            // Print first 20 unique warns
+            if warn <= 20 { eprintln!("  [{lvl_name}] {msg}"); }
+        } else {
+            info += 1;
+        }
+    }
+    eprintln!(
+        "captured: {} fatal/error, {} warn, {} info+stub+debug",
+        fatal_or_error, warn, info,
+    );
+    if let Some((frame, pc)) = first_bad_pc {
+        eprintln!("BAD PC: at frame {}, PC = 0x{:08X} (not in any executable region)", frame, pc);
+    }
+    let final_pc = core.pc();
+    eprintln!("final PC: 0x{:08X}  in_exec={}", final_pc, pc_in_executable(final_pc));
+
+    let exit = if fatal_or_error > 0 || first_bad_pc.is_some() { 1 } else { 0 };
+    process::exit(exit);
+}
 
 fn smoke_test(rom: &str, frames: u32) {
     println!("=== bn6f-track smoke test ===");
@@ -1894,7 +2444,18 @@ fn record_one_bk2_with_cache(
 
 fn usage(prog: &str) -> ! {
     eprintln!(
-        "usage:\n  {prog} smoke  ROM [FRAMES]\n  {prog} track  ROM FRAMES SYMBOLS [OUTPUT]\n  {prog} record ROM FRAMES SYMBOLS SESSION_DIR [--input P] [--state P] [--no-dedup] [--progress N] [--verbose|-v] FN_ADDR [FN_ADDR...]\n  {prog} replay ROM SESSION_DIR [--verbose|-v]\n  {prog} verify-all --orig ROM --decomp ROM --symbols PATH --demos-root DIR --cache-dir DIR [--parallel N] FN_ADDR [FN_ADDR...]\n\nLegacy positional form (deprecated):\n  {prog} ROM FRAMES SYMBOLS [OUTPUT]   (= track)\n  {prog} ROM [FRAMES]                  (= smoke)"
+        "usage:\n\
+        \n  Recording / verification:\n\
+        \n    {prog} smoke      ROM [FRAMES]\n\
+        \n    {prog} track      ROM FRAMES SYMBOLS [OUTPUT]\n\
+        \n    {prog} record     ROM FRAMES SYMBOLS SESSION_DIR [--input P] [--state P] [--no-dedup] [--progress N] [-v] FN_ADDR...\n\
+        \n    {prog} replay     ROM SESSION_DIR [-v]\n\
+        \n    {prog} verify-all --orig ROM --decomp ROM --symbols PATH --demos-root DIR --cache-dir DIR [--parallel N] FN_ADDR...\n\
+        \n  Debug / divergence detection (cold-boot graphics + crash regressions):\n\
+        \n    {prog} crashwatch ROM FRAMES [--input PATH]\n                Capturing-logger smoke run — surfaces libmgba FATAL/ERROR\n                (e.g. \"Jumped to invalid address\") without per-instruction\n                tracing. Exits 2 on FATAL.\n\
+        \n    {prog} probe      ROM FRAMES [--input PATH]\n                Per-instruction trace with invalid-PC trip + recent-PC\n                ring buffer dump on first fault.\n\
+        \n    {prog} framebuf   ROM FRAMES OUT.PPM\n                Render ROM with PPU enabled, dump final 240x160 RGB\n                framebuffer to PPM. Bisect graphics regressions by\n                comparing unique-byte count between manifest variants.\n\
+        \n  See `tools/mgba-headless --help` for the standalone mGBA CLI built from\n  /tmp/mgba-build/mgba/build (true headless, mGBA 0.11, separate process)."
     );
     process::exit(2);
 }
@@ -1913,6 +2474,61 @@ fn main() {
             let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
             let frames: u32 = args.get(3).and_then(|s| s.parse().ok()).unwrap_or(60);
             smoke_test(rom, frames);
+        }
+        "probe" => {
+            // probe <rom> <frames> [--input <path>]
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let mut input_path: Option<&str> = None;
+            if args.get(4).map(String::as_str) == Some("--input") {
+                input_path = args.get(5).map(String::as_str);
+                if input_path.is_none() {
+                    eprintln!("--input needs a path");
+                    usage(&args[0]);
+                }
+            }
+            probe_cold_boot(rom, frames, input_path);
+        }
+        "bootstate" => {
+            // bootstate <rom> <frames> [--state PATH]
+            // Dumps per-frame snapshot: PC, CPSR, SP, LR, plus quick
+            // hashes of IWRAM and EWRAM. Use --state to load a savestate
+            // first (warm boot); omit for cold boot.
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let mut state: Option<&str> = None;
+            if args.get(4).map(String::as_str) == Some("--state") {
+                state = args.get(5).map(String::as_str);
+            }
+            bootstate(rom, frames, state);
+        }
+        "framebuf" => {
+            // framebuf <rom> <frames> <out.ppm>
+            // Runs ROM for <frames> frames, dumps the final framebuffer
+            // as a PPM (256x160 RGBA → RGB). Useful for "is the screen
+            // showing the game or a black-screen crash?"
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let out = args.get(4).unwrap_or_else(|| usage(&args[0]));
+            framebuf(rom, frames, out);
+        }
+        "crashwatch" => {
+            // crashwatch <rom> <frames> [--input <path>]
+            // Runs at smoke_test speed with the capturing logger
+            // installed — catches mGBA FATAL/ERROR logs (the actual
+            // "Jumped to invalid address" mechanism) without
+            // per-instruction trace overhead.
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let mut input_path: Option<&str> = None;
+            if args.get(4).map(String::as_str) == Some("--input") {
+                input_path = args.get(5).map(String::as_str);
+            }
+            crashwatch(rom, frames, input_path);
         }
         "track" => {
             // track <rom> <frames> <symbols> [output] [--input <path>]

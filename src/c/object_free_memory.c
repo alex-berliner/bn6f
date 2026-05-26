@@ -14,7 +14,7 @@ extern void sub_802FE6A_c(u32 idx);
  *     low two bits are set, clear them, also clear bits 1..5 of
  *     Unk_13 and call sub_802FE6A((Unk_13 & 0x3E) >> 1).
  */
-void object_freeMemory_c(void)
+static void object_freeMemory_impl(void)
 {
     register u8 *r5p asm("r5");
     u8 *bo;
@@ -51,3 +51,5 @@ void object_freeMemory_c(void)
     spr[0x13] = v13 & (u8) ~0x3eu;
     sub_802FE6A_c((u32)((v13 & 0x3eu) >> 1));
 }
+
+DECOMP_VTABLE_WRAPPER(object_freeMemory_c, object_freeMemory_impl)

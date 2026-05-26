@@ -13,7 +13,7 @@ extern void ZeroFillByWord_c(u32 *dst, u32 byte_count);
  *   - state[0]  = 1
  *   - state[3]  = 1
  */
-void initScenarioEffect_8003914_c(u32 idx)
+static void initScenarioEffect_8003914_impl(u32 idx)
 {
     u8 *p;
     u8 *jt;
@@ -27,3 +27,5 @@ void initScenarioEffect_8003914_c(u32 idx)
     p[0] = 1u;
     p[3] = 1u;
 }
+
+DECOMP_VTABLE_WRAPPER(initScenarioEffect_8003914_c, initScenarioEffect_8003914_impl)

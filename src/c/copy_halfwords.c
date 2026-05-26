@@ -1,12 +1,8 @@
 #include "types.h"
 
-// Original wrapped BIOS SWI_CpuSet for 16-bit halfword copy. Replaced
-// with a plain loop; the harness's banked-stack-skip handles the lack
-// of SVC stack writes.
-//
-// Args (matching ASM): r0=src, r1=dst, r2=byte_count. The ASM does
-// `lsr r2, #1` to derive halfword count.
-void CopyHalfwords_c(const u16 *src, u16 *dst, u32 byte_count)
+/* Dispatched from CopyJumpTable8000AA8 (asm00_0.s) via `mov lr, pc;
+   bx r3` — wrap with DECOMP_VTABLE_WRAPPER to preserve caller mode. */
+static void CopyHalfwords_impl(const u16 *src, u16 *dst, u32 byte_count)
 {
     u32 halfwords = byte_count >> 1;
     u32 i;
@@ -14,3 +10,5 @@ void CopyHalfwords_c(const u16 *src, u16 *dst, u32 byte_count)
         dst[i] = src[i];
     }
 }
+
+DECOMP_VTABLE_WRAPPER(CopyHalfwords_c, CopyHalfwords_impl)

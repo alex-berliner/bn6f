@@ -6,10 +6,12 @@
 // loop). We preserve that behavior; callers must pass count > 0.
 //
 // Args: r0=dst, r1=byte_count.
-void ZeroFillByByte_c(u8 *dst, u32 byte_count)
+static void ZeroFillByByte_impl(u8 *dst, u32 byte_count)
 {
     do {
         byte_count--;
         dst[byte_count] = 0;
     } while (byte_count != 0);
 }
+
+DECOMP_VTABLE_WRAPPER(ZeroFillByByte_c, ZeroFillByByte_impl)

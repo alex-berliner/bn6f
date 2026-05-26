@@ -1,12 +1,8 @@
 #include "types.h"
 
-// Original ASM called BIOS SWI_CpuFastSet, which copies in 8-word
-// (32-byte) chunks and requires the count be a multiple of 8 words.
-// A plain word loop produces the same memory outcome — if the caller
-// passes a non-multiple-of-8 count the BIOS would over- or under-copy
-// in implementation-defined ways; the C loop here matches the
-// implied contract (`byte_count / 4` words copied exactly).
-void CopyByEightWords_c(const u32 *src, u32 *dst, u32 byte_count)
+/* Dispatched from CopyJumpTable8000AA8 (asm00_0.s) via `mov lr, pc;
+   bx r3` — wrap with DECOMP_VTABLE_WRAPPER to preserve caller mode. */
+static void CopyByEightWords_impl(const u32 *src, u32 *dst, u32 byte_count)
 {
     u32 words = byte_count >> 2;
     u32 i;
@@ -14,3 +10,5 @@ void CopyByEightWords_c(const u32 *src, u32 *dst, u32 byte_count)
         dst[i] = src[i];
     }
 }
+
+DECOMP_VTABLE_WRAPPER(CopyByEightWords_c, CopyByEightWords_impl)

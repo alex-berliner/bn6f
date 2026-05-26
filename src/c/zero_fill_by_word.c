@@ -4,7 +4,7 @@
 // with a hardcoded zero source).
 //
 // Args: r0=dst, r1=byte_count.
-void ZeroFillByWord_c(u32 *dst, u32 byte_count)
+static void ZeroFillByWord_impl(u32 *dst, u32 byte_count)
 {
     u32 words = byte_count >> 2;
     u32 i;
@@ -12,3 +12,5 @@ void ZeroFillByWord_c(u32 *dst, u32 byte_count)
         dst[i] = 0;
     }
 }
+
+DECOMP_VTABLE_WRAPPER(ZeroFillByWord_c, ZeroFillByWord_impl)

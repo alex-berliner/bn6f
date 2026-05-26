@@ -9,7 +9,7 @@ static u32 sub_813D638_impl(void)
 DECOMP_FLAG_WRAPPER(sub_813D638_c, sub_813D638_impl)
 
 /* sub_813D750 — write hword 11 at eS200BC50+8. */
-void sub_813D750_c(void)
+static void sub_813D750_impl(void)
 {
     *(u16 *) 0x0200BC58u = 11u;
 }
@@ -19,3 +19,5 @@ void sub_813D760_c(void)
 {
     *(u8 *) 0x0200BC55u = 0u;
 }
+
+DECOMP_VTABLE_WRAPPER(sub_813D750_c, sub_813D750_impl)

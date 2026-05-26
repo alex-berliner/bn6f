@@ -63,6 +63,11 @@ bn6f.txt
 tools/agbcc/
 tools/binutils/
 
+# Headless mGBA binary — built from /tmp/mgba-build/mgba via
+# `cmake -DBUILD_HEADLESS=ON . && make mgba-headless`. Linux x86-64
+# only; rebuild per platform.
+tools/mgba-headless
+
 # Rust build artifacts under tools/bn6f-track
 tools/bn6f-track/target/
 

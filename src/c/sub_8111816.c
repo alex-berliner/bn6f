@@ -10,7 +10,7 @@ extern u32 GetRNG_c(void);
  *   +0x66 (byte) = PanelY
  *   +0x67..+0x69 (bytes) = 0
  */
-void sub_8111816_c(void)
+static void sub_8111816_impl(void)
 {
     register u8 *r5p asm("r5");
     u8 *bo;
@@ -28,3 +28,5 @@ void sub_8111816_c(void)
     bo[0x68] = 0u;
     bo[0x69] = 0u;
 }
+
+DECOMP_VTABLE_WRAPPER(sub_8111816_c, sub_8111816_impl)

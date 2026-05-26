@@ -5,7 +5,7 @@
    representation).  Powers of 10 are walked from 10^7 down to 10^0;
    for each power, we subtract while it fits and accumulate the
    quotient into the next nibble of the result. */
-u32 memory_bcdConvert_c(u32 val)
+static u32 memory_bcdConvert_impl(u32 val)
 {
     static const u32 powers[8] = {
         10000000u, 1000000u, 100000u, 10000u,
@@ -32,3 +32,5 @@ u32 memory_bcdConvert_c(u32 val)
     }
     return result;
 }
+
+DECOMP_VTABLE_WRAPPER(memory_bcdConvert_c, memory_bcdConvert_impl)

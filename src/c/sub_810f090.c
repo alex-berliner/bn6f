@@ -3,7 +3,7 @@
 /* r5 = ambient BO*.  If any of the 5 u16s at CollisionData[+0x82..
  * +0x8a] are non-zero AND ExtraVars[0] (word at +0x60) isn't 2, set
  * ExtraVars[1] (word at +0x64) = 1. */
-void sub_810F090_c(void)
+static void sub_810F090_impl(void)
 {
     register u8 *r5p asm("r5");
     u8 *bo;
@@ -23,3 +23,5 @@ void sub_810F090_c(void)
     if (*(u32 *)(bo + 0x60) == 2u) return;
     *(u32 *)(bo + 0x64) = 1u;
 }
+
+DECOMP_VTABLE_WRAPPER(sub_810F090_c, sub_810F090_impl)

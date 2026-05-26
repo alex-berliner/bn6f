@@ -4,7 +4,7 @@
 // 0x5000000 = word + fill). Plain word loop here.
 //
 // Args (matching ASM): r0=dst, r1=byte_count, r2=word.
-void WordFill_c(u32 *dst, u32 byte_count, u32 word)
+static void WordFill_impl(u32 *dst, u32 byte_count, u32 word)
 {
     u32 words = byte_count >> 2;
     u32 i;
@@ -12,3 +12,5 @@ void WordFill_c(u32 *dst, u32 byte_count, u32 word)
         dst[i] = word;
     }
 }
+
+DECOMP_VTABLE_WRAPPER(WordFill_c, WordFill_impl)

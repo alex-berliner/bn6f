@@ -6,7 +6,7 @@ extern void reqBBS_addBBSMessage_813e5dc_c(u32 flag);
    0x1820, 0x1860, 0x18A0, 0x18E0), call reqBBS_addBBSMessage
    with base + offset for offset in 0..30 — adding 6 * 31 = 186
    BBS-message slots in total. */
-void reqBBS_813E660_c(void)
+static void reqBBS_813E660_impl(void)
 {
     u32 *bases = (u32 *) 0x0813E68Cu;
     u32 bi, oi;
@@ -17,3 +17,5 @@ void reqBBS_813E660_c(void)
         }
     }
 }
+
+DECOMP_VTABLE_WRAPPER(reqBBS_813E660_c, reqBBS_813E660_impl)

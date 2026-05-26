@@ -6,7 +6,7 @@ extern void reqBBS_addRequest_813F9A0_c(u32 flag);
    *(u32 *)0x0813FA50 (= 0x1B60).  The outer loop only iterates once
    in this build — the original ASM keeps the loop1 scaffolding,
    presumably because earlier revisions ranged over multiple bases. */
-void sub_813FA24_c(void)
+static void sub_813FA24_impl(void)
 {
     u32 base = *(u32 *) 0x0813FA50u;
     u32 i;
@@ -14,3 +14,5 @@ void sub_813FA24_c(void)
         reqBBS_addRequest_813F9A0_c(base + i);
     }
 }
+
+DECOMP_VTABLE_WRAPPER(sub_813FA24_c, sub_813FA24_impl)

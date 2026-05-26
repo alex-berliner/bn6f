@@ -6,7 +6,7 @@
  *   - else sum the 5 u16s at CollisionData[+0x82..+0x8a]; if
  *     non-zero, set ExtraVars[0] (word at +0x60) = 1.
  */
-void sub_81129EE_c(void)
+static void sub_81129EE_impl(void)
 {
     register u8 *r5p asm("r5");
     u8 *bo;
@@ -27,3 +27,5 @@ void sub_81129EE_c(void)
     if (sum == 0u) return;
     *(u32 *)(bo + 0x60) = 1u;
 }
+
+DECOMP_VTABLE_WRAPPER(sub_81129EE_c, sub_81129EE_impl)

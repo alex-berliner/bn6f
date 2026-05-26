@@ -5,7 +5,7 @@ extern void ZeroFillByWord_c(u32 *dst, u32 byte_count);
 /* Twin of initScenarioEffect_8003914 — same shape but for the
  * minigame effect state at eStruct2001010 (0x02001010), with the
  * jump-table at off_80039F8 (0x080039F8). */
-void initMinigameEffect_8003a64_c(u32 idx)
+static void initMinigameEffect_8003a64_impl(u32 idx)
 {
     u8 *p;
     u8 *jt;
@@ -19,3 +19,5 @@ void initMinigameEffect_8003a64_c(u32 idx)
     p[0] = 1u;
     p[3] = 1u;
 }
+
+DECOMP_VTABLE_WRAPPER(initMinigameEffect_8003a64_c, initMinigameEffect_8003a64_impl)
