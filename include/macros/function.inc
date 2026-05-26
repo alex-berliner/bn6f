@@ -38,18 +38,30 @@
 	.endm
 
 	// Trampoline body for in-place decomp swap. Emits an 8-byte
-	// `ldr r3, =target+1; bx r3; .word target+1` (literal in pool),
-	// followed by `pad_bytes` of `nop` so the function occupies the
-	// same slot as the original ASM (downstream addresses unchanged).
+	// `ldr r3, [pc, #4]; bx r3; .word target+1` followed by
+	// `pad_bytes` of `nop` so the function occupies the same slot
+	// as the original ASM (downstream addresses unchanged).
+	//
+	// **Why we don't use `.pool`:** `.pool` flushes EVERY pending
+	// literal pool entry — including stale ones from earlier `ldr
+	// =sym` instructions in adjacent functions whose pools hadn't
+	// been emitted yet. That inserts unwanted 4-byte words between
+	// `bx r3` and our intended literal, growing the trampoline past
+	// the original function's size and shifting every downstream
+	// symbol. Using a private `\@`-namespaced label keeps our
+	// literal isolated; other pending pool entries stay pending and
+	// land in their original locations.
 	//
 	// Assumes the enclosing thumb_func_start put us on a 4-byte
 	// boundary — true for all the leaves we're converting so far.
-	// For 2-byte-aligned-only entries the .pool directive will insert
-	// an extra 2 bytes for alignment and pad_bytes needs adjustment.
+	// For 2-byte-aligned-only entries the literal placement needs
+	// 2 bytes of alignment and pad_bytes needs adjustment.
 	.macro decomp_trampoline target_name:req, pad_bytes=0
-	ldr r3, =\target_name + 1
+	ldr r3, pool_decomp_trampoline_\@
 	bx  r3
-	.pool
+	.balign 4, 0
+pool_decomp_trampoline_\@:
+	.word \target_name + 1
 	.if \pad_bytes > 0
 	.rept \pad_bytes / 2
 	nop
@@ -73,11 +85,13 @@
 	//   .pool                    ; literal lives here
 	.macro decomp_trampoline_r3safe target_name:req, pad_bytes=0
 	push {r0}
-	ldr  r0, =\target_name + 1
+	ldr  r0, pool_decomp_trampoline_r3safe_\@
 	mov  r12, r0
 	pop  {r0}
 	bx   r12
-	.pool
+	.balign 4, 0
+pool_decomp_trampoline_r3safe_\@:
+	.word \target_name + 1
 	.if \pad_bytes > 0
 	.rept \pad_bytes / 2
 	nop
