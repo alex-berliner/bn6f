@@ -546,3 +546,5 @@ copy_800260C
 subsystem_launchMail
 transferBattleHandNaviStats_800B3D8
 sub_800AE90
+sub_81231E0
+sub_81231E0
