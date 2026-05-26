@@ -29,4 +29,39 @@ typedef u8             bool8;
         );                                                        \
     }
 
+// Vtable-callee wrapper: when our function is dispatched via the
+// `mov lr, pc; bx rN` indirect-call pattern (e.g. through a function
+// pointer table referenced by `.word <sym>` in data), `lr` is set
+// WITHOUT the thumb bit. The original ASM returns via `mov pc, lr`,
+// which preserves the current execution mode regardless of lr's
+// bit 0. But agbcc-compiled C ends a leaf with `bx lr`, which
+// INTERWORKS based on lr's bit 0 -> switches to ARM mode on return
+// -> caller's next thumb instruction is decoded as ARM -> chaos.
+//
+// This wrapper saves the original (non-thumb-bit) lr, calls IMPL
+// via a normal BL (so IMPL's `bx lr` returns inside the wrapper),
+// then returns to the original caller via `mov pc, rN`.
+//
+// **Not yet verified.** Direct port of the documented ARMv4T
+// `mov pc, Rm` non-interworking semantics. Tested against
+// `sub_81231E0` (vtable callee via `off_81211D0` in asm32.s) and
+// the wrapper STILL produced verify failures across the radius.
+// Root cause TBD — possible suspects: agbcc's `__attribute__((naked))`
+// behavior, the trampoline's `bx r3` interaction, or `mov pc, r3`
+// not actually being non-interworking on ARM7TDMI as the manual
+// claims. Use with caution + verify carefully before relying on.
+//
+// To use: grep `.word <sym>` asm/*.s — if hit, this wrapper is
+// nominally the right tool. Run verify and bisect on regression.
+#define DECOMP_VTABLE_WRAPPER(WRAPPER_NAME, IMPL_NAME)             \
+    __attribute__((naked)) void WRAPPER_NAME(void)                 \
+    {                                                              \
+        asm volatile(                                              \
+            "push {lr}\n\t"                                        \
+            "bl " #IMPL_NAME "\n\t"                                \
+            "pop {r3}\n\t"                                         \
+            "mov pc, r3\n\t"                                       \
+        );                                                        \
+    }
+
 #endif
