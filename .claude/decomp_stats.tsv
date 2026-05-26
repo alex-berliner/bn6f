@@ -45,3 +45,4 @@ ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 2026-05-26T00:04:51Z	sub_80101C4	revert	155	69.80	120	1	verify failures - bisected to asm00_2 register-asm interactions
 2026-05-26T00:10:10Z	Initialize_eStruct200a6a0	pass	174	58.76	116	0	solo (13 instr)
 2026-05-26T00:15:09Z	copy_800260C	pass	173	58.76	115	0	solo (22 instr, 68 bytes)
+2026-05-26T00:19:37Z	subsystem_launchMail	pass	145	56.91	89	0	solo (20 instr, 44 bytes)
