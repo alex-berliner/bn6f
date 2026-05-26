@@ -29,12 +29,13 @@ C_OFILES = $(patsubst $(CSRCDIR)/%.c,$(CBUILDDIR)/%.o,$(C_SRCS))
 # defines rules to build and compress lz files
 include lz_assets.mk
 
+OBJ = build/
 OFILES = $(addprefix $(OBJ),$(SFILES:.s=.o))
-BUILD_NAME = bn6f
+BUILD_NAME = build/bn6f
 ROM = $(BUILD_NAME).gba
 ELF := $(ROM:.gba=.elf)
 SYM = $(ROM:.gba=.sym)
-NOGBASYM = bn6f_nogba.sym
+NOGBASYM = build/bn6f_nogba.sym
 
 # build flags
 COMPLIANCE_FLAGS = -g -I$(INC)
@@ -82,7 +83,7 @@ setup-toolchain:
 # TODO: INTEGRATE SCAN INCLUDES
 
 all: clean-conditional-objs $(ROM)
-	@$(SHA1SUM) -c $(BUILD_NAME).sha1
+	@$(SHA1SUM) -c bn6f.sha1
 
 # Modified ROM with C decompiled functions (does not match original SHA1).
 # Uses ld_script_decompile.ld which adds a .c_code section in the ROM fill area.
@@ -123,7 +124,7 @@ decompile: clean-conditional-objs $(DECOMP_FLAGS_FILE) $(C_OFILES) $(C_OFILES_LI
 # rebuilt every invocation so the flag set (target-specific ASFLAGS)
 # actually takes effect — otherwise a previous build's .o is reused.
 # rom.o aggregates all of asm/*.s.
-CONDITIONAL_OFILES = rom.o
+CONDITIONAL_OFILES = build/rom.o
 
 .PHONY: clean-conditional-objs
 clean-conditional-objs:
@@ -138,10 +139,10 @@ $(ROM): $(ELF)
 $(ELF): clean-conditional-objs $(OFILES)
 	$(LD) $(LDFLAGS) -o $@ -T ld_script.ld $(OFILES) $(LIB)
 
-bn6f_orig.elf: clean-conditional-objs $(OFILES)
+build/bn6f_orig.elf: clean-conditional-objs $(OFILES)
 	$(LD) $(LDFLAGS) -o $@ -T ld_script.ld $(OFILES) $(LIB)
 
-%.o: %.s
+build/%.o: %.s | build
 	$(AS) $(ASFLAGS) $< -o $@
 
 # C compilation: .c -> .i (cpp) -> .s (agbcc) -> .o (assembler)
@@ -157,17 +158,17 @@ $(CBUILDDIR)/%.s: $(CBUILDDIR)/%.i
 $(CBUILDDIR)/%.o: $(CBUILDDIR)/%.s
 	$(AS) $(ARCH) -g -I$(INC) $< -o $@
 
-orig: bn6f_orig.elf
-	@echo "Saved bn6f_orig.elf"
+orig: build/bn6f_orig.elf
+	@echo "Saved build/bn6f_orig.elf"
 
-validate: bn6f_orig.elf $(ELF)
-	$(PY) tools/validate_asm.py bn6f_orig.elf $(ELF)
+validate: build/bn6f_orig.elf $(ELF)
+	$(PY) tools/validate_asm.py build/bn6f_orig.elf $(ELF)
 
 assets: $(LZ_FILES) $(LZ_BINFILES)
 	
 
 checksum:
-	@$(SHA1SUM) -c $(BUILD_NAME).sha1
+	@$(SHA1SUM) -c bn6f.sha1
 
 fdiff:
 	$(PY) tools/fdiff.py $(BUILD_NAME).ign $(ROM) -s2
@@ -178,11 +179,9 @@ tail: $(ROM)
 	@echo "Updated tail.bin!"
 
 clean:
-	rm -f *.o
-	rm -f *.map
-	rm -f *.elf
+	rm -f build/*.o build/*.elf build/*.map build/*.gba build/*.sym build/*.dump
+	rm -f *.o *.map *.elf *.dump *.sym
 	rm -rf $(CBUILDDIR)
-	# rm -f *.gba
 	rm -f $(COMPRESSED_TEXT_ARCHIVES_DIR)/*.lz
 	rm -f $(COMPRESSED_TEXT_ARCHIVES_DIR)/*.bin
 
@@ -205,8 +204,8 @@ FN_SYMS = tools/function_symbols.txt
 # Extract function-entry symbols from bn6f_orig.elf.
 function-symbols: $(FN_SYMS)
 
-$(FN_SYMS): bn6f_orig.elf
-	$(OBJDUMP) -t bn6f_orig.elf | awk '/ F .text/ { print "0x" $$1, $$NF }' > $@
+$(FN_SYMS): build/bn6f_orig.elf
+	$(OBJDUMP) -t build/bn6f_orig.elf | awk '/ F .text/ { print "0x" $$1, $$NF }' > $@
 	@wc -l $@
 
 # Build the Rust function-tracker binary.
@@ -306,9 +305,9 @@ VERIFY_PARALLEL ?= $(shell nproc)
 
 verify: track-build $(FN_SYMS) | build
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
-	@cp $(ROM) $(ROM_ORIG_BUILT)
+	@cp -f $(ROM) $(ROM_ORIG_BUILT)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
-	@cp $(ROM) $(ROM_DECOMP_BUILT)
+	@cp -f $(ROM) $(ROM_DECOMP_BUILT)
 	tools/bn6f-track/target/release/bn6f-track verify-all \
 		--orig $(abspath $(ROM_ORIG_BUILT)) \
 		--decomp $(abspath $(ROM_DECOMP_BUILT)) \

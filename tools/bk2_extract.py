@@ -181,7 +181,7 @@ def extract(bk2_path: Path, out_prefix: Path, skip_state: bool) -> None:
         "states and strips the 4-byte header transparently, so you can\n"
         "use the extracted `.ss` directly:\n\n"
         "```\n"
-        f"bn6f-track record bn6f.gba <frames> tools/function_symbols.txt \\\n"
+        f"bn6f-track record build/bn6f.gba <frames> tools/function_symbols.txt \\\n"
         f"    <out_dir> --input {input_path.name} --state {state_path.name} \\\n"
         "    <addresses…>\n"
         "```\n"

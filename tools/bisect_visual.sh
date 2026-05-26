@@ -35,9 +35,9 @@ cp /tmp/m_test.txt "$MANIFEST"
 trap "cp /tmp/m_orig.txt $MANIFEST" EXIT
 
 make clean-conditional-objs >/dev/null 2>&1
-rm -f bn6f.elf bn6f.gba
+rm -f build/bn6f.elf build/bn6f.gba
 make decompile -s >/dev/null 2>&1
-cp bn6f.gba build/bn6f_decomp.gba
+cp build/bn6f.gba build/bn6f_decomp.gba
 
 tools/bn6f-track/target/release/bn6f-track framebuf \
     build/bn6f_decomp.gba 600 /tmp/bisect.ppm > /dev/null 2>&1

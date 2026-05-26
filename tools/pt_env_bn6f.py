@@ -12,7 +12,7 @@ pt.env(projPath=projPath)
 
 ## ROM Paths
 pt.env(ROMPath= '')
-pt.env(elfPath=projPath + 'bn6f.elf')
+pt.env(elfPath=projPath + 'build/bn6f.elf')
 
 ## search utils
 pt.env(compareBinPath= '')

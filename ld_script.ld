@@ -16,43 +16,43 @@ SECTIONS
     ewram_2000000 (NOLOAD) :
     ALIGN(4)
     {
-        ewram.o(ewram_2000000);
+        build/ewram.o(ewram_2000000);
     } >ewram_region
 
     OVERLAY . :
     {
-        ewram_battle { ewram.o(ewram_battle); }
-        ewram_2034000 { ewram.o(ewram_2034000); }
+        ewram_battle { build/ewram.o(ewram_battle); }
+        ewram_2034000 { build/ewram.o(ewram_2034000); }
     } >ewram_region
 
     iwram (NOLOAD) :
     ALIGN(4)
     {
-        iwram.o(.data);
+        build/iwram.o(.data);
     } >iwram_region
 
     vram_6000000 (NOLOAD) :
     ALIGN(4)
     {
-        vram.o(vram_6000000);
+        build/vram.o(vram_6000000);
     } >vram_region
     
     /* start of ROM */
 
     .text :
     {
-        rom.o(.text);
+        build/rom.o(.text);
     } >rom_region
 
     iwram_text :
     {
-        iwram.o(.text);
+        build/iwram.o(.text);
     } >iwram_region AT>rom_region
     
     .data :
     ALIGN(4)
     {
-        data.o(.data);
+        build/data.o(.data);
     } >rom_region
 
     .fill :
