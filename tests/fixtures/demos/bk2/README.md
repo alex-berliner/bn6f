@@ -25,7 +25,9 @@ tools/bk2_extract.py path/to/movie.bk2 [--out-prefix tests/fixtures/demos/<cat>/
 Writes three siblings next to `--out-prefix` (or alongside the .bk2 if
 omitted):
 
-- `<name>.input` — packed u16 LE per frame (matches `--input` parser)
+- `<name>.input` — packed `u16 LE joypad_mask + u16 LE pad`, 4 bytes
+  per frame. The `--input` parser strides 4 bytes and keeps only the
+  mask. Frame count = file size / 4.
 - `<name>.ss`    — raw decompressed `Core.bin` bytes (BizHawk-wrapped,
   prefix is auto-stripped by bn6f-track's snapshot loader)
 - `<name>.md`    — provenance + per-file usage notes
@@ -52,6 +54,8 @@ Smoke-tested with `intro.bk2` over 60 frames of `ZeroFillByWord`:
 
 ## Files
 
+- `coldboot.bk2`                — 417 frames, zero input, no savestate
+                                  (cold-boot stress test)
 - `intro.bk2`                   — short opening sequence (~6.2k frames)
 - `intro_to_end_tutorial.bk2`   — full tutorial playthrough (~16.4k frames)
 
@@ -78,3 +82,14 @@ make verify
 is ~4½ minutes — the harness emulates each end-to-end, so wall-clock
 is proportional to recorded length × the harness's per-frame cost
 (roughly 5× faster than realtime in practice).
+
+## Generating videos
+
+`make videos` plays each bk2 in this directory against orig, decomp,
+and decomp-with-empty-manifest, producing
+`build/videos/<stem>__{orig,decomp,nopatch}.mp4`. The `nopatch` flavor
+is the control case — any difference from `orig` is infrastructure,
+not a manifest entry.
+
+See [docs/debugging.md](../../../../docs/debugging.md) for when to use
+each video.

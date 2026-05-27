@@ -1,5 +1,11 @@
 ## Installation
 
+For the full toolchain layout, make-target reference, and build
+artifact paths see [docs/build.md](docs/build.md). This file covers
+the platform-specific setup steps.
+
+
+
 Run the following commands (first, see [this](#macos) if you are on **macOS** or [this](#old-windows) if you are on **old Windows**):
 
 	git clone --recurse-submodules https://github.com/dism-exe/bn6f

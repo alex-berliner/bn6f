@@ -1,10 +1,56 @@
-# Reverse Engineering
-- Document functions, files, or data by adding comments or changing symbol names in the asm and header files. (Make sure to refactor the symbol names so that all files remain in sync).
-- Document or identify structs, enums, etc. Check out `include/structs` and `constants/` as well as `structs/` for C structs. (used in `docs/decomps`)
-- Every asm file is associated with a header file in the inc folder, which defines its public symbols, and all external symbols it uses.
-- Make use of git grep or similar utilities as you parse through the repository
-- Make use of docs/decomps for some pseudocode, but take it with a grain of salt.
-- Label EWRAM and IWRAM symbols in `ewram.s` and `iwram.s`
+# Contributing
 
-# Validity Checking
-All changes must produce an identical ROM. make will give an error otherwise.
+This repo supports two contribution tracks. Pick the one matching what
+you're working on.
+
+## C decompilation
+
+Converting an ASM function to a verified C reimplementation. End-to-end
+guide:
+
+→ [docs/decomp-workflow.md](docs/decomp-workflow.md)
+
+Open blockers + work queue:
+
+→ [issues/decomp-blockers.md](issues/decomp-blockers.md)
+
+When verify fails:
+
+→ [docs/debugging.md](docs/debugging.md)
+
+## Pure disassembly / labelling
+
+Adding labels, symbol names, struct definitions, or pseudocode to the
+ASM side. The build must still produce a ROM matching the retail
+sha1 (`make all` succeeds).
+
+- Document functions, files, or data by adding comments or changing
+  symbol names in the asm and header files. Refactor so all files stay
+  in sync.
+- Document or identify structs, enums, etc. — see `include/structs/`,
+  `constants/`, and `structs/`.
+- Every asm file has a sibling header in `inc/` that defines its
+  public symbols and external references.
+- Label EWRAM and IWRAM symbols in `ewram.s` and `iwram.s`.
+- `docs/decomps/` has some pseudocode notes; treat as hints, not
+  ground truth.
+
+### Validity Checking
+
+All changes must produce an identical ROM:
+
+```
+make all
+```
+
+The sha1 check at the end of `make all` will fail if your edits drift
+from the retail bytes.
+
+## Both tracks
+
+Use `git grep` liberally — the codebase has consistent symbol naming
+once you know what you're looking for. Cross-reference against:
+
+- `docs/documenting/` — function/data documentation conventions
+- `issues/concerns/` — calling convention, ABI, IRQ, etc. reference docs
+- [docs/build.md](docs/build.md) — toolchain layout, what to do when the build breaks
