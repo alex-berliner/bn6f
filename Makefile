@@ -317,6 +317,49 @@ verify: track-build $(FN_SYMS) | build
 		--parallel $(VERIFY_PARALLEL) \
 		$(DECOMP_FN_ADDRS)
 
+# `make videos` — for each bk2 demo, produce three mp4s:
+#   <stem>__orig.mp4         orig ROM
+#   <stem>__decomp.mp4       decomp ROM with the full manifest
+#   <stem>__nopatch.mp4      decomp ROM with an empty manifest (every
+#                            DECOMP_* defsym off, so the build is
+#                            byte-equivalent to orig for the patched
+#                            functions but still uses ld_script_decompile)
+# Output dir: build/videos/ (override with VIDEO_DIR=...).
+ROM_DECOMP_NOPATCH = build/bn6f_decomp_nopatch.gba
+VIDEO_DIR ?= build/videos
+.PHONY: videos
+videos: track-build | build
+	@mkdir -p $(VIDEO_DIR)
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
+	@cp -f $(ROM) $(ROM_ORIG_BUILT)
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
+	@cp -f $(ROM) $(ROM_DECOMP_BUILT)
+	@# Build the no-patch flavor by emptying the manifest into a
+	@# tempfile, swapping it in, building, restoring. Manifest is
+	@# restored even on Ctrl-C via the trap.
+	@cp tools/decomp_manifest.txt build/decomp_manifest.bak
+	@awk '/^#|^$$/' build/decomp_manifest.bak > tools/decomp_manifest.txt
+	@trap 'mv build/decomp_manifest.bak tools/decomp_manifest.txt' EXIT INT TERM; \
+	  $(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile; \
+	  cp -f $(ROM) $(ROM_DECOMP_NOPATCH); \
+	  mv build/decomp_manifest.bak tools/decomp_manifest.txt
+	@for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
+	  stem=$$(basename $$bk2 .bk2); \
+	  inp=$(DEMOS_ROOT)/bk2/$$stem.input; \
+	  ss=$(DEMOS_ROOT)/bk2/$$stem.ss; \
+	  frames=$$(($$(stat -c%s $$inp) / 4)); \
+	  ss_arg=""; [ -s "$$ss" ] && ss_arg="--state $$ss"; \
+	  echo "[videos] $$stem ($$frames frames)"; \
+	  for flavor in orig:$(ROM_ORIG_BUILT) decomp:$(ROM_DECOMP_BUILT) nopatch:$(ROM_DECOMP_NOPATCH); do \
+	    name=$${flavor%%:*}; rom=$${flavor##*:}; \
+	    out=$(VIDEO_DIR)/$${stem}__$${name}.mp4; \
+	    tools/bn6f-track/target/release/bn6f-track recvideo \
+	      $$rom $$frames $$out --input $$inp $$ss_arg > /dev/null 2>&1 || \
+	      { echo "  FAIL: $$out"; continue; }; \
+	    printf "  %-50s %s\n" "$$(basename $$out)" "$$(stat -c%s $$out) bytes"; \
+	  done; \
+	done
+
 # `verify-state` is the per-scene worker `verify` dispatches to.
 # Useful directly if you want to run a single bk2 (or some other
 # state-replay demo) on its own:
