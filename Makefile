@@ -317,6 +317,37 @@ verify: track-build $(FN_SYMS) | build
 		--parallel $(VERIFY_PARALLEL) \
 		$(DECOMP_FN_ADDRS)
 
+# `make verify-strict` — the *authoritative* correctness check.
+# For each bk2, runs orig + decomp side-by-side in lockstep and stops
+# at the first frame where the visible state (CPU regs + RAM regions)
+# diverges. Catches mode-bit flips and other cross-call corruption
+# that `make verify`'s per-call snapshot oracle can miss.
+#
+# `make verify` is the fast-iteration check; `make verify-strict` is
+# the gate before claiming a patch is correct.
+.PHONY: verify-strict
+verify-strict: track-build | build
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
+	@cp -f $(ROM) $(ROM_ORIG_BUILT)
+	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
+	@cp -f $(ROM) $(ROM_DECOMP_BUILT)
+	@fail=0; \
+	for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
+	  stem=$$(basename $$bk2 .bk2); \
+	  inp=$(DEMOS_ROOT)/bk2/$$stem.input; \
+	  ss=$(DEMOS_ROOT)/bk2/$$stem.ss; \
+	  ss_arg=""; [ -s "$$ss" ] && ss_arg="--state $$ss"; \
+	  echo "=== lockstep $$stem ==="; \
+	  if tools/bn6f-track/target/release/bn6f-track lockstep \
+	      --orig $(ROM_ORIG_BUILT) --decomp $(ROM_DECOMP_BUILT) \
+	      --input $$inp $$ss_arg; then \
+	    echo "  GREEN"; \
+	  else \
+	    echo "  RED"; fail=1; \
+	  fi; \
+	done; \
+	exit $$fail
+
 # `make videos` — for each bk2 demo, produce three mp4s:
 #   <stem>__orig.mp4         orig ROM
 #   <stem>__decomp.mp4       decomp ROM with the full manifest

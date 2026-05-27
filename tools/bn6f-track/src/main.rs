@@ -541,6 +541,98 @@ impl Core {
     }
 }
 
+/// Hash of the full visible GBA state at a moment in time. Used by
+/// the lockstep divergence detector and `bootstate`.
+///
+/// Region hashes are sha1-first-4-bytes (one u32 each). The composite
+/// is sha1-first-4-bytes over CPU regs + every region byte. Composites
+/// compare-equal iff every component compares-equal. When they
+/// disagree the per-region fields show *where*.
+#[derive(Clone, PartialEq, Eq, Debug)]
+struct StateSnapshot {
+    cpu_regs: [i32; 17],   // gprs[0..15] + cpsr.packed
+    ewram_sha: u32,
+    iwram_sha: u32,
+    palette_sha: u32,
+    vram_sha: u32,
+    oam_sha: u32,
+    composite_sha: u32,
+}
+
+impl StateSnapshot {
+    fn capture(core: *mut mgba_sys::mCore) -> Self {
+        use sha1::Digest;
+        let mut composite = sha1::Sha1::new();
+        // CPU regs: gprs[0..15] + cpsr.packed at i32 offsets 0..17.
+        let cpu = unsafe { (*core).cpu as *const i32 };
+        let mut cpu_regs = [0i32; 17];
+        for i in 0..17 {
+            cpu_regs[i] = unsafe { *cpu.add(i) };
+            composite.update(cpu_regs[i].to_le_bytes());
+        }
+        // Memory regions via rawRead8. Note: deliberately INCLUDES
+        // 0x03007F00-0x03007FFF (banked SVC/IRQ stacks) — the old
+        // per-call snapshot harness skipped that region because C
+        // SWI-wrapper reimpls don't enter SVC mode, but lockstep is
+        // about whole-system divergence and the stack writes matter
+        // when something downstream reads them.
+        let read8 = unsafe { (*core).rawRead8.expect("rawRead8") };
+        let regions: [(u32, u32); 5] = [
+            (0x02000000, 0x40000),   // ewram
+            (0x03000000, 0x08000),   // iwram
+            (0x05000000, 0x00400),   // palette
+            (0x06000000, 0x18000),   // vram
+            (0x07000000, 0x00400),   // oam
+        ];
+        let mut region_shas = [0u32; 5];
+        for (i, &(base, len)) in regions.iter().enumerate() {
+            let mut rh = sha1::Sha1::new();
+            for off in 0..len {
+                let b = unsafe { read8(core, base + off, -1) } as u8;
+                rh.update([b]);
+                composite.update([b]);
+            }
+            region_shas[i] = u32::from_be_bytes(rh.finalize()[..4].try_into().unwrap());
+        }
+        Self {
+            cpu_regs,
+            ewram_sha:   region_shas[0],
+            iwram_sha:   region_shas[1],
+            palette_sha: region_shas[2],
+            vram_sha:    region_shas[3],
+            oam_sha:     region_shas[4],
+            composite_sha: u32::from_be_bytes(composite.finalize()[..4].try_into().unwrap()),
+        }
+    }
+
+    fn pc(&self)   -> u32 { self.cpu_regs[15] as u32 }
+    fn cpsr(&self) -> u32 { self.cpu_regs[16] as u32 }
+    fn sp(&self)   -> u32 { self.cpu_regs[13] as u32 }
+    fn lr(&self)   -> u32 { self.cpu_regs[14] as u32 }
+
+    /// Returns a short list of the components that differ. Used to
+    /// localize a divergence to a region without printing every diff.
+    fn diff_regions(&self, other: &StateSnapshot) -> Vec<&'static str> {
+        let mut out = Vec::new();
+        // CPU diffs broken down per-register so the report names r0..r12.
+        const REG_NAMES: [&str; 17] = [
+            "r0","r1","r2","r3","r4","r5","r6","r7",
+            "r8","r9","r10","r11","r12","sp","lr","pc","cpsr",
+        ];
+        for (i, name) in REG_NAMES.iter().enumerate() {
+            if self.cpu_regs[i] != other.cpu_regs[i] {
+                out.push(*name);
+            }
+        }
+        if self.ewram_sha   != other.ewram_sha   { out.push("ewram"); }
+        if self.iwram_sha   != other.iwram_sha   { out.push("iwram"); }
+        if self.palette_sha != other.palette_sha { out.push("palette"); }
+        if self.vram_sha    != other.vram_sha    { out.push("vram"); }
+        if self.oam_sha     != other.oam_sha     { out.push("oam"); }
+        out
+    }
+}
+
 impl Drop for Core {
     fn drop(&mut self) {
         // Drop debugger first (still references core); then deinit core.
@@ -1055,6 +1147,33 @@ fn read_symbols(path: &str) -> Result<Vec<(u32, String)>, String> {
 ///
 /// Optional `input_path` provides per-frame joypad masks (same format
 /// as record/track --input). Defaults to all-zero input.
+/// Load a savestate (BizHawk-wrapped or raw libmgba) into the core.
+/// Returns Err with a diagnostic message on failure.
+fn load_savestate(core: *mut mgba_sys::mCore, path: &str) -> Result<(), String> {
+    let bytes = std::fs::read(path)
+        .map_err(|e| format!("read savestate {path}: {e}"))?;
+    let stripped = if bytes.len() >= 8 {
+        let v_at_0 = u32::from_le_bytes(bytes[0..4].try_into().unwrap());
+        let v_at_4 = u32::from_le_bytes(bytes[4..8].try_into().unwrap());
+        if (v_at_0 & 0xFFFFFF00) != 0x01000000
+            && (v_at_4 & 0xFFFFFF00) == 0x01000000
+        {
+            &bytes[4..]
+        } else {
+            &bytes[..]
+        }
+    } else {
+        &bytes[..]
+    };
+    let ok = unsafe {
+        let vf = mgba_sys::VFileFromMemory(stripped.as_ptr() as *mut _, stripped.len());
+        let r = mgba_sys::mCoreLoadStateNamed(core, vf, 0);
+        (*vf).close.expect("close")(vf);
+        r
+    };
+    if ok { Ok(()) } else { Err(format!("loadState failed for {path}")) }
+}
+
 fn recvideo(rom: &str, frames: u32, out_path: &str,
             input_path: Option<&str>, state_path: Option<&str>) {
     let core = Core::new(rom).unwrap_or_else(|e| {
@@ -1062,20 +1181,10 @@ fn recvideo(rom: &str, frames: u32, out_path: &str,
         process::exit(1);
     });
     if let Some(p) = state_path {
-        let bytes = std::fs::read(p).expect("read savestate");
-        let stripped = if bytes.len() >= 8 {
-            let v_at_0 = u32::from_le_bytes(bytes[0..4].try_into().unwrap());
-            let v_at_4 = u32::from_le_bytes(bytes[4..8].try_into().unwrap());
-            if (v_at_0 & 0xFFFFFF00) != 0x01000000
-                && (v_at_4 & 0xFFFFFF00) == 0x01000000 { &bytes[4..] } else { &bytes[..] }
-        } else { &bytes[..] };
-        let ok = unsafe {
-            let vf = mgba_sys::VFileFromMemory(stripped.as_ptr() as *mut _, stripped.len());
-            let r = mgba_sys::mCoreLoadStateNamed(core.raw, vf, 0);
-            (*vf).close.expect("close")(vf);
-            r
-        };
-        if !ok { eprintln!("loadState failed for {p}"); process::exit(1); }
+        load_savestate(core.raw, p).unwrap_or_else(|e| {
+            eprintln!("{e}");
+            process::exit(1);
+        });
     }
     let inputs: Vec<u16> = match input_path {
         Some(p) => load_input_file(p),
@@ -1103,28 +1212,10 @@ fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
     });
     // Optional savestate load (warm boot). Cold boot if None.
     if let Some(p) = state_path {
-        let bytes = std::fs::read(p).expect("read savestate");
-        // BizHawk-wrapped savestates have a 4-byte prefix before the
-        // libmgba magic; strip it.
-        let stripped = if bytes.len() >= 8 {
-            let v_at_0 = u32::from_le_bytes(bytes[0..4].try_into().unwrap());
-            let v_at_4 = u32::from_le_bytes(bytes[4..8].try_into().unwrap());
-            if (v_at_0 & 0xFFFFFF00) != 0x01000000 && (v_at_4 & 0xFFFFFF00) == 0x01000000 {
-                &bytes[4..]
-            } else {
-                &bytes[..]
-            }
-        } else { &bytes[..] };
-        let ok = unsafe {
-            let vf = mgba_sys::VFileFromMemory(stripped.as_ptr() as *mut _, stripped.len());
-            let r = mgba_sys::mCoreLoadStateNamed(core.raw, vf, 0);
-            (*vf).close.expect("close")(vf);
-            r
-        };
-        if !ok {
-            eprintln!("loadState failed for {p}");
+        load_savestate(core.raw, p).unwrap_or_else(|e| {
+            eprintln!("{e}");
             process::exit(1);
-        }
+        });
     }
     let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
     let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
@@ -1134,52 +1225,137 @@ fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
             run_frame(core.raw);
         }
     }
-    // Hash {IWRAM, EWRAM, VRAM, palette, OAM} plus CPU registers.
-    let mut h = sha1::Sha1::new();
-    use sha1::Digest;
-    // CPU regs (gprs[0..15] + cpsr).
-    let cpu = unsafe { (*core.raw).cpu as *const i32 };
-    for i in 0..17 {
-        let v = unsafe { *cpu.add(i) };
-        h.update(v.to_le_bytes());
-    }
-    // Memory regions via rawRead8.
-    let read8 = unsafe { (*core.raw).rawRead8.expect("rawRead8") };
-    let regions: [(u32, u32, &str); 5] = [
-        (0x02000000, 0x40000, "ewram"),
-        (0x03000000, 0x08000, "iwram"),
-        (0x05000000, 0x00400, "palette"),
-        (0x06000000, 0x18000, "vram"),
-        (0x07000000, 0x00400, "oam"),
-    ];
-    let mut region_hashes = Vec::new();
-    for &(base, len, name) in &regions {
-        let mut rh = sha1::Sha1::new();
-        let mut nonzero = 0u32;
-        let mut sample = Vec::new();
-        for off in 0..len {
-            let b = unsafe { read8(core.raw, base + off, -1) } as u8;
-            rh.update([b]);
-            if b != 0 { nonzero += 1; }
-            if off < 16 { sample.push(b); }
-        }
-        let h_short = format!("{:08x}", u32::from_be_bytes(rh.finalize()[..4].try_into().unwrap()));
-        let sample_hex: String = sample.iter().map(|b| format!("{:02x}", b)).collect::<Vec<_>>().join(" ");
-        region_hashes.push((name, h_short, nonzero, len, sample_hex));
-    }
-    let pc = core.pc();
-    let cpsr = unsafe { *cpu.add(16) } as u32;
-    let sp = unsafe { *cpu.add(13) } as u32;
-    let lr = unsafe { *cpu.add(14) } as u32;
-    let final_hash = format!("{:08x}", u32::from_be_bytes(h.finalize()[..4].try_into().unwrap()));
+    let snap = StateSnapshot::capture(core.raw);
     println!("rom={}", rom);
     println!("state={}", state_path.unwrap_or("(cold boot)"));
     println!("frames={frames}");
-    println!("pc=0x{pc:08X} cpsr=0x{cpsr:08X} sp=0x{sp:08X} lr=0x{lr:08X}");
-    for (name, h, nz, total, sample) in &region_hashes {
-        println!("{name}_sha={} nonzero={}/{} first16=[{}]", h, nz, total, sample);
+    println!("pc=0x{:08X} cpsr=0x{:08X} sp=0x{:08X} lr=0x{:08X}",
+             snap.pc(), snap.cpsr(), snap.sp(), snap.lr());
+    println!("ewram_sha={:08x}",   snap.ewram_sha);
+    println!("iwram_sha={:08x}",   snap.iwram_sha);
+    println!("palette_sha={:08x}", snap.palette_sha);
+    println!("vram_sha={:08x}",    snap.vram_sha);
+    println!("oam_sha={:08x}",     snap.oam_sha);
+    println!("composite_sha={:08x}", snap.composite_sha);
+}
+
+/// Lockstep divergence detector. Loads orig + decomp ROMs into two
+/// Core instances, drives identical bk2 input into both frame by
+/// frame, and snapshots the full visible state (CPU regs + all RAM
+/// regions) after each frame. On the first frame where the
+/// snapshots differ, reports which frame, which regions, and the
+/// PC/CPSR/SP/LR for each side. Exits 0 if both runs are identical
+/// through the input log, non-zero on divergence.
+///
+/// This catches what the per-call snapshot oracle misses:
+/// - Mode-bit flips in untracked callers (CPSR differs)
+/// - Memory writes between tracked-function boundaries
+/// - Cycle-timing drift cascading into state divergence
+fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
+            state_path: Option<&str>, max_frames: Option<u32>) {
+    eprintln!("=== bn6f-track lockstep ===");
+    eprintln!("orig:   {orig_rom}");
+    eprintln!("decomp: {decomp_rom}");
+    eprintln!("input:  {input_path}");
+    if let Some(s) = state_path { eprintln!("state:  {s}"); }
+
+    let inputs = load_input_file(input_path);
+    let total = match max_frames {
+        Some(n) => (n as usize).min(inputs.len()),
+        None => inputs.len(),
+    };
+    eprintln!("frames: {} (input log has {})", total, inputs.len());
+
+    let orig = Core::new(orig_rom).unwrap_or_else(|e| {
+        eprintln!("Core::new(orig) failed: {e}");
+        process::exit(1);
+    });
+    let decomp = Core::new(decomp_rom).unwrap_or_else(|e| {
+        eprintln!("Core::new(decomp) failed: {e}");
+        process::exit(1);
+    });
+
+    if let Some(p) = state_path {
+        for (label, core) in [("orig", orig.raw), ("decomp", decomp.raw)] {
+            if let Err(e) = load_savestate(core, p) {
+                eprintln!("[{label}] {e}");
+                process::exit(1);
+            }
+        }
     }
-    println!("composite_sha={final_hash}");
+
+    let set_keys_o = unsafe { (*orig.raw).setKeys.expect("setKeys") };
+    let set_keys_d = unsafe { (*decomp.raw).setKeys.expect("setKeys") };
+    let run_frame_o = unsafe { (*orig.raw).runFrame.expect("runFrame") };
+    let run_frame_d = unsafe { (*decomp.raw).runFrame.expect("runFrame") };
+
+    let t0 = Instant::now();
+    let mut last_progress = 0usize;
+    for i in 0..total {
+        let mask = inputs[i] as u32;
+        unsafe {
+            set_keys_o(orig.raw, mask);
+            set_keys_d(decomp.raw, mask);
+            run_frame_o(orig.raw);
+            run_frame_d(decomp.raw);
+        }
+
+        // Hash-and-compare is the hot inner loop — checks 256+ KB of
+        // EWRAM + IWRAM + VRAM + palette + OAM per frame. ~50-100 ms
+        // per frame on this machine; on long bk2s consider sampling
+        // every Kth frame and only narrowing within K when a sample
+        // disagrees. For now we check every frame for precision.
+        let s_o = StateSnapshot::capture(orig.raw);
+        let s_d = StateSnapshot::capture(decomp.raw);
+        if s_o != s_d {
+            eprintln!("\n*** DIVERGENCE at frame {} ({:.2}s wall) ***",
+                      i + 1, t0.elapsed().as_secs_f64());
+            let diffs = s_o.diff_regions(&s_d);
+            eprintln!("differing components: {}", diffs.join(", "));
+            eprintln!();
+            eprintln!("  {:<8} {:>10} {:>10}", "field", "orig", "decomp");
+            eprintln!("  {:<8} {:>10} {:>10}", "------", "----------", "----------");
+            for (i, name) in ["r0","r1","r2","r3","r4","r5","r6","r7",
+                              "r8","r9","r10","r11","r12","sp","lr","pc","cpsr"]
+                              .iter().enumerate()
+            {
+                let o = s_o.cpu_regs[i] as u32;
+                let d = s_d.cpu_regs[i] as u32;
+                let mark = if o == d { " " } else { "*" };
+                eprintln!("  {} {:<6} {:>10x} {:>10x}", mark, name, o, d);
+            }
+            eprintln!();
+            eprintln!("  {:<8} {:>10} {:>10}", "region", "orig sha", "decomp sha");
+            eprintln!("  {:<8} {:>10} {:>10}", "------", "----------", "----------");
+            for (name, o, d) in [
+                ("ewram",   s_o.ewram_sha,   s_d.ewram_sha),
+                ("iwram",   s_o.iwram_sha,   s_d.iwram_sha),
+                ("palette", s_o.palette_sha, s_d.palette_sha),
+                ("vram",    s_o.vram_sha,    s_d.vram_sha),
+                ("oam",     s_o.oam_sha,     s_d.oam_sha),
+            ] {
+                let mark = if o == d { " " } else { "*" };
+                eprintln!("  {} {:<6} {:>10x} {:>10x}", mark, name, o, d);
+            }
+            eprintln!();
+            eprintln!("Frame {} is the first divergence. Earlier frames matched.", i + 1);
+            eprintln!("To narrow within the frame, re-run with --max-frames {}",
+                      i + 1);
+            eprintln!("and use `bn6f-track probe` against decomp at that frame to");
+            eprintln!("trace the failing instruction.");
+            process::exit(2);
+        }
+
+        if i.saturating_sub(last_progress) >= 60 {
+            eprintln!("  frame {}/{}  composite={:08x} ({:.1} fps)",
+                      i + 1, total, s_o.composite_sha,
+                      (i + 1) as f64 / t0.elapsed().as_secs_f64());
+            last_progress = i;
+        }
+    }
+
+    eprintln!("\nlockstep: green — orig and decomp produced identical state across all {} frames ({:.2}s wall)",
+              total, t0.elapsed().as_secs_f64());
 }
 
 fn framebuf(rom: &str, frames: u32, out_path: &str) {
@@ -2604,6 +2780,9 @@ fn usage(prog: &str) -> ! {
         \n    {prog} crashwatch ROM FRAMES [--input PATH]\n                Capturing-logger smoke run — surfaces libmgba FATAL/ERROR\n                (e.g. \"Jumped to invalid address\") without per-instruction\n                tracing. Exits 2 on FATAL.\n\
         \n    {prog} probe      ROM FRAMES [--input PATH]\n                Per-instruction trace with invalid-PC trip + recent-PC\n                ring buffer dump on first fault.\n\
         \n    {prog} framebuf   ROM FRAMES OUT.PPM\n                Render ROM with PPU enabled, dump final 240x160 RGB\n                framebuffer to PPM. Bisect graphics regressions by\n                comparing unique-byte count between manifest variants.\n\
+        \n    {prog} bootstate  ROM FRAMES [--state PATH]\n                Composite sha + per-region shas at frame N. Use to\n                bisect drift by comparing orig vs decomp side-by-side.\n\
+        \n    {prog} lockstep   --orig ROM --decomp ROM --input PATH [--state PATH] [--max-frames N]\n                Per-frame full-state divergence detector. Drives the\n                same input into both ROMs and stops at the first\n                frame where CPU regs or RAM regions diverge. The\n                authoritative correctness check — verify-all's\n                per-call snapshots can miss cross-call leaks (mode\n                bit flips, untracked-caller corruption), this can't.\n\
+        \n    {prog} recvideo   ROM FRAMES OUT.mp4 [--input PATH] [--state PATH]\n                Encode N frames to mp4 (libx264 CRF 28 + AAC).\n\
         \n  See `tools/mgba-headless --help` for the standalone mGBA CLI built from\n  /tmp/mgba-build/mgba/build (true headless, mGBA 0.11, separate process)."
     );
     process::exit(2);
@@ -2659,6 +2838,34 @@ fn main() {
                 }
             }
             recvideo(rom, frames, out, input_path, state_path);
+        }
+        "lockstep" => {
+            // lockstep --orig ROM --decomp ROM --input PATH [--state PATH] [--max-frames N]
+            // Per-frame full-state divergence detector. Reports the
+            // first frame where orig and decomp diverge.
+            let mut orig: Option<&str> = None;
+            let mut decomp: Option<&str> = None;
+            let mut input: Option<&str> = None;
+            let mut state: Option<&str> = None;
+            let mut max_frames: Option<u32> = None;
+            let mut i = 2;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--orig" => { orig = args.get(i+1).map(String::as_str); i += 2; }
+                    "--decomp" => { decomp = args.get(i+1).map(String::as_str); i += 2; }
+                    "--input" => { input = args.get(i+1).map(String::as_str); i += 2; }
+                    "--state" => { state = args.get(i+1).map(String::as_str); i += 2; }
+                    "--max-frames" => {
+                        max_frames = args.get(i+1).and_then(|s| s.parse().ok());
+                        i += 2;
+                    }
+                    _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
+                }
+            }
+            let orig = orig.unwrap_or_else(|| { eprintln!("--orig required"); usage(&args[0]); });
+            let decomp = decomp.unwrap_or_else(|| { eprintln!("--decomp required"); usage(&args[0]); });
+            let input = input.unwrap_or_else(|| { eprintln!("--input required"); usage(&args[0]); });
+            lockstep(orig, decomp, input, state, max_frames);
         }
         "bootstate" => {
             // bootstate <rom> <frames> [--state PATH]

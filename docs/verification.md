@@ -3,7 +3,34 @@
 Audience: anyone reading verify output, adding a new bk2 demo, or
 debugging a cache miss.
 
-## Model
+## Two checks, two levels of strictness
+
+`make verify` (per-call snapshot oracle) — fast iteration. Captures
+entry/exit state at every call to every tracked function during the
+orig ROM's bk2 playback, then replays each captured call against the
+decomp ROM and diffs the exit state. Catches bugs inside the function
+body. Misses bugs that *leak past* the function (mode-bit flip
+affecting the caller, cycle-timing drift, memory writes between
+tracked calls).
+
+`make verify-strict` (lockstep divergence detector) — authoritative.
+Runs orig + decomp side by side against each bk2's input, hashes
+the full visible state (every CPU register including CPSR, every
+byte of EWRAM/IWRAM/VRAM/palette/OAM) after each frame, stops at
+the first frame where the hashes disagree and reports which
+register/region diverged and the PC for each side. **This is the
+real correctness check.** Per-call can pass while verify-strict
+fails — when that happens it means the patch corrupts state in a
+way that doesn't appear inside the patched function's snapshot
+window.
+
+Workflow: use `make verify` for quick "did my edit break this
+specific function" feedback during development. Before claiming a
+batch of conversions is correct, run `make verify-strict`. If
+verify is green but verify-strict is red, there's a cross-call
+leak — see [debugging.md](debugging.md#harness-blind-spots).
+
+## Per-call snapshot model
 
 The harness verifies "decomp behaves the same as orig" at the
 **per-call** granularity, not per-frame or per-ROM-byte. For each
@@ -131,15 +158,89 @@ A failed pair prints the function name, the bk2, and the pair index:
 [intro/FooBar/3] expected EWRAM[0x02009a2c]=0x42 got 0x00
 ```
 
-## Why this model
+## Lockstep model (verify-strict)
 
-Per-call snapshots catch issues the harness's other signals miss
-(framebuf only sees screen, bootstate only checks at one frame), and
-they isolate which specific call diverged — invaluable for narrowing
-down a bug. They also let `make verify` parallelize across `(bk2,
-function, pair)` tuples.
+```
+orig ROM ──┐                    ┌─► capture state hash
+           ├─► step 1 frame ─►──┤
+bk2 input ─┤                    └─► compare ─► differ? stop + report
+           ├─► step 1 frame ─►──┐
+decomp ROM ┘                    └─► capture state hash
+```
 
-The model has blind spots — see [debugging.md](debugging.md#harness-blind-spots).
-Notably: a function whose internal mode-flip corrupts an untracked
-caller will pass per-call verification but produce a broken ROM at
-runtime. The video recording and bootstate diff catch those.
+The state hash includes the full CPU register file (gprs[0..15] +
+cpsr), all of EWRAM (256 KB), IWRAM (32 KB), VRAM (96 KB), palette
+RAM (1 KB), and OAM (1 KB). **Nothing visible to game code is
+excluded.** If decomp produces a different sequence of writes from
+orig — to any register or any RAM byte — the first frame where the
+state hashes disagree is the first frame where the regressions
+become observable.
+
+Output on divergence:
+
+```
+*** DIVERGENCE at frame 279 (1.83s wall) ***
+differing components: r0, r1, r2, r3, sp, lr, pc, iwram
+
+  field         orig     decomp
+  ------   ---------- ----------
+  *r0         2004220          0
+  *r1         2004220    20046a0
+  *r2             f1c        a9c
+  *r3               0    20046a0
+   r4               0          0
+   ...
+  *sp         3007dc8    3007de4
+  *lr         8006c4a    87fe8e7
+  *pc         80014f6    87fe8d4
+   cpsr      2000003f   2000003f
+
+  region     orig sha decomp sha
+  ------   ---------- ----------
+   ewram     9dfde8c6   9dfde8c6
+  *iwram     cc959ffd   28aaafc3
+   palette   60cacbf3   60cacbf3
+   vram      9f13a523   9f13a523
+   oam       60cacbf3   60cacbf3
+
+Frame 279 is the first divergence. Earlier frames matched.
+```
+
+The differing PC tells you exactly what code path each side is
+executing. In the example above, orig is at `0x080014F6` (an ASM
+function in the original ROM), decomp is at `0x087FE8D4` (inside
+the `.c_code` section — one of our C functions). That tells you
+*which conversion* caused the divergence: it's the C function
+containing PC `0x087FE8D4`. Find it with:
+
+```
+arm-none-eabi-nm --numeric-sort build/bn6f.elf | grep -B 1 '087fe8d'
+```
+
+Then either fix or revert that conversion.
+
+To trace deeper within the failing frame:
+
+```
+bn6f-track lockstep --orig ... --decomp ... --input ... --max-frames 279
+# then inspect decomp at frame 279 with probe:
+bn6f-track probe build/bn6f_decomp.gba 279 --input <input_path>
+```
+
+## Why two checks instead of one
+
+Per-call snapshots are O(K) per fn (K calls per fn), parallelize
+trivially, and isolate *which* call broke — invaluable during
+development. But they only sample at call boundaries.
+
+Lockstep is O(frames × state_size) — slower (~50-100 ms per frame
+for ~256 KB of state), but it sees everything. Use per-call as the
+fast feedback loop, lockstep as the gate.
+
+The model has blind spots even with lockstep — see
+[debugging.md](debugging.md#harness-blind-spots). Notably: cycle-
+timing drift can produce identical visible state at every frame
+boundary but different intra-frame behavior (e.g., a VRAM write
+happening 100 cycles earlier in decomp than orig). If the game
+re-reads the VRAM mid-frame it'll see the same data; if a peripheral
+samples mid-frame it might not. We don't catch that.

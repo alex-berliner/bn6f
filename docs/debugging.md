@@ -7,9 +7,25 @@ Audience: you ran something and it's broken. Find the right tool.
 ```
 Symptom                                  → Tool
 ─────────────────────────────────────────────────────────────────
-make verify fails                        → look at pair index, run
+ANY suspect patch                        → make verify-strict
+                                           (authoritative correctness;
+                                           catches what make verify misses)
+
+make verify-strict fails                 → divergence report names the
+                                           frame + PC + region. Decomp's
+                                           PC inside .c_code tells you
+                                           which C function caused it.
+                                           See lockstep below.
+
+make verify fails (per-call)             → look at pair index, run
                                            bn6f-track verify-all
-                                           with one address (per fn)
+                                           with one address (per fn).
+                                           ALSO run verify-strict before
+                                           assuming the fix is done.
+
+make verify GREEN but verify-strict RED  → cross-call leak — mode flip,
+                                           untracked caller corruption,
+                                           etc. See "Harness blind spots".
 
 make decompile fails (linker error)      → docs/build.md: trampoline
                                            PAD wrong, or function table
@@ -18,16 +34,14 @@ make decompile fails (linker error)      → docs/build.md: trampoline
 ROM crashes in interactive mGBA          → crashwatch
 ("Jumped to invalid address" or similar)
 
-ROM "hangs" but no crash log             → bootstate at frame 60/200/600
-(stuck on splash, screen frozen)           to find divergence frame
+ROM "hangs" but no crash log             → make verify-strict FIRST.
+(stuck on splash, screen frozen)           Then bootstate at frame N
                                          → recvideo for visual diff
                                          → make videos for full bk2 pair
 
-Screen blank / wrong sprites             → framebuf orig vs decomp
+Screen blank / wrong sprites             → make verify-strict
+                                         → framebuf orig vs decomp
                                          → bisect with tools/bisect_visual.sh
-
-Verify green but ROM still misbehaves    → harness blind spot
-                                           (see below)
 
 C compiler emits weird code              → arm-none-eabi-objdump
                                            build/c/<file>.o; compare to
@@ -35,6 +49,27 @@ C compiler emits weird code              → arm-none-eabi-objdump
 ```
 
 ## Tool reference
+
+### `bn6f-track lockstep --orig ROM --decomp ROM --input PATH [--state PATH] [--max-frames N]`
+
+The authoritative correctness check. Runs both ROMs side by side
+against the same bk2 inputs, snapshots full visible state (CPU regs
++ all RAM regions) after each frame, stops at the first divergent
+frame. Reports:
+
+- Which frame diverged
+- Which CPU registers and/or memory regions differ
+- Each side's PC, SP, LR, CPSR
+- Per-region sha1 (so you can localize: EWRAM diff = data state,
+  IWRAM diff = scratch + sound, VRAM diff = graphics, etc.)
+
+**This is the gate.** Per-call verify (`make verify`) can pass while
+lockstep fails — that means the patch corrupts state outside its
+own snapshot window. Always run lockstep before claiming a batch of
+conversions is correct.
+
+Usage in the make target: `make verify-strict` runs lockstep on all
+bk2s sequentially. Exit non-zero on the first failure.
 
 ### `bn6f-track crashwatch ROM FRAMES [--input PATH]`
 

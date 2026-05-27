@@ -176,11 +176,20 @@ the whole file at config time.
 
 ## Verifying
 
+Two checks. **Use both.**
+
 ```
-make verify
+make verify         # fast iteration: per-call snapshot oracle
+make verify-strict  # authoritative: per-frame lockstep state comparison
 ```
 
-The harness produces output like:
+`make verify` catches bugs inside the function body. `make verify-strict`
+catches bugs that leak past the function (mode-bit flips, untracked-
+caller corruption, anything the per-call snapshot window misses).
+**A patch that passes verify but fails verify-strict is broken** — see
+[debugging.md](debugging.md).
+
+`make verify` produces output like:
 
 ```
 [intro] 24/24 pairs (0 failed; 7 fns skipped)
@@ -195,6 +204,24 @@ A non-zero `failed` count is the trigger to debug. See
 The `skipped` count is the incremental-cache (Opt D) skipping pairs
 whose code-radius sha hasn't changed since the last green run —
 expected after a small edit.
+
+`make verify-strict` runs lockstep against each bk2. On divergence:
+
+```
+*** DIVERGENCE at frame 279 ***
+differing components: r0, r1, ..., iwram
+  *pc          80014f6    87fe8d4    <- decomp's PC is in .c_code
+  ...
+```
+
+The decomp PC tells you which C function caused the divergence. Map
+it via:
+
+```
+arm-none-eabi-nm --numeric-sort build/bn6f.elf | grep -B 1 087fe8d
+```
+
+Then fix or revert that conversion.
 
 ### Per-function verify
 
