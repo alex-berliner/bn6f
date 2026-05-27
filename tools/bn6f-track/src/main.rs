@@ -610,6 +610,23 @@ impl StateSnapshot {
     fn sp(&self)   -> u32 { self.cpu_regs[13] as u32 }
     fn lr(&self)   -> u32 { self.cpu_regs[14] as u32 }
 
+    /// True if any of the *persistent* state regions differ — EWRAM,
+    /// VRAM, palette, OAM. Excludes CPU registers and IWRAM, which
+    /// at frame boundaries pick up timing-drift noise: when the C
+    /// version of a function takes a different cycle count than orig,
+    /// at any given frame boundary the two CPUs are at different
+    /// positions inside the same call (different scratch regs, different
+    /// stack contents in IWRAM) even though the function's persistent
+    /// output is identical.
+    ///
+    /// Persistent-state divergence is the actual correctness signal.
+    fn persistent_diff(&self, other: &StateSnapshot) -> bool {
+        self.ewram_sha != other.ewram_sha
+            || self.vram_sha != other.vram_sha
+            || self.palette_sha != other.palette_sha
+            || self.oam_sha != other.oam_sha
+    }
+
     /// Returns a short list of the components that differ. Used to
     /// localize a divergence to a region without printing every diff.
     fn diff_regions(&self, other: &StateSnapshot) -> Vec<&'static str> {
@@ -1252,12 +1269,16 @@ fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
 /// - Memory writes between tracked-function boundaries
 /// - Cycle-timing drift cascading into state divergence
 fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
-            state_path: Option<&str>, max_frames: Option<u32>) {
+            state_path: Option<&str>, max_frames: Option<u32>,
+            all_state: bool) {
     eprintln!("=== bn6f-track lockstep ===");
     eprintln!("orig:   {orig_rom}");
     eprintln!("decomp: {decomp_rom}");
     eprintln!("input:  {input_path}");
     if let Some(s) = state_path { eprintln!("state:  {s}"); }
+    eprintln!("mode:   {}",
+              if all_state { "all-state (CPU regs + IWRAM + persistent — strict)" }
+              else { "persistent-only (EWRAM/VRAM/palette/OAM — drift-tolerant)" });
 
     let inputs = load_input_file(input_path);
     let total = match max_frames {
@@ -1307,7 +1328,12 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
         // disagrees. For now we check every frame for precision.
         let s_o = StateSnapshot::capture(orig.raw);
         let s_d = StateSnapshot::capture(decomp.raw);
-        if s_o != s_d {
+        let diverged = if all_state {
+            s_o != s_d
+        } else {
+            s_o.persistent_diff(&s_d)
+        };
+        if diverged {
             eprintln!("\n*** DIVERGENCE at frame {} ({:.2}s wall) ***",
                       i + 1, t0.elapsed().as_secs_f64());
             let diffs = s_o.diff_regions(&s_d);
@@ -2854,6 +2880,7 @@ fn main() {
             let mut input: Option<&str> = None;
             let mut state: Option<&str> = None;
             let mut max_frames: Option<u32> = None;
+            let mut all_state = false;
             let mut i = 2;
             while i < args.len() {
                 match args[i].as_str() {
@@ -2865,13 +2892,14 @@ fn main() {
                         max_frames = args.get(i+1).and_then(|s| s.parse().ok());
                         i += 2;
                     }
+                    "--all-state" => { all_state = true; i += 1; }
                     _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
                 }
             }
             let orig = orig.unwrap_or_else(|| { eprintln!("--orig required"); usage(&args[0]); });
             let decomp = decomp.unwrap_or_else(|| { eprintln!("--decomp required"); usage(&args[0]); });
             let input = input.unwrap_or_else(|| { eprintln!("--input required"); usage(&args[0]); });
-            lockstep(orig, decomp, input, state, max_frames);
+            lockstep(orig, decomp, input, state, max_frames, all_state);
         }
         "bootstate" => {
             // bootstate <rom> <frames> [--state PATH]

@@ -416,9 +416,13 @@ videos: track-build | build
 	  for flavor in orig:$(ROM_ORIG_BUILT) decomp:$(ROM_DECOMP_BUILT) nopatch:$(ROM_DECOMP_NOPATCH); do \
 	    name=$${flavor%%:*}; rom=$${flavor##*:}; \
 	    out=$(VIDEO_DIR)/$${stem}__$${name}.mp4; \
+	    raw=$(VIDEO_DIR)/.tmp_$${stem}__$${name}.mp4; \
 	    tools/bn6f-track/target/release/bn6f-track recvideo \
-	      $$rom $$frames $$out --input $$inp $$ss_arg > /dev/null 2>&1 || \
+	      $$rom $$frames $$raw --input $$inp $$ss_arg > /dev/null 2>&1 || \
 	      { echo "  FAIL: $$out"; continue; }; \
+	    : "${VIDEO_SPEED:=4}"; \
+	    ffmpeg -y -i $$raw -filter:v "setpts=PTS/$${VIDEO_SPEED:-4}" -an $$out > /dev/null 2>&1; \
+	    rm -f $$raw; \
 	    printf "  %-50s %s\n" "$$(basename $$out)" "$$(stat -c%s $$out) bytes"; \
 	  done; \
 	done
