@@ -127,8 +127,14 @@ decompile: clean-conditional-objs $(DECOMP_FLAGS_FILE) $(C_OFILES) $(C_OFILES_LI
 CONDITIONAL_OFILES = build/rom.o
 
 .PHONY: clean-conditional-objs
+# Force-rebuild rom.o AND the decomp-flags file every `make decompile`
+# / `make all`. The flags file's $(DECOMP_FLAGS_FILE) → $(DECOMP_MANIFEST)
+# dependency is timestamp-based and breaks when a stash/restore pattern
+# (e.g. `make videos`) uses mv on the manifest — the restored file
+# inherits the bak's older mtime and make considers flags.txt up to
+# date with empty content. Always regenerate.
 clean-conditional-objs:
-	@rm -f $(CONDITIONAL_OFILES)
+	@rm -f $(CONDITIONAL_OFILES) $(DECOMP_FLAGS_FILE)
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $(ELF) $(ROM)
@@ -325,27 +331,50 @@ verify: track-build $(FN_SYMS) | build
 #
 # `make verify` is the fast-iteration check; `make verify-strict` is
 # the gate before claiming a patch is correct.
+VERIFY_STRICT_LOG ?= build/verify-strict.log
 .PHONY: verify-strict
 verify-strict: track-build | build
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
 	@cp -f $(ROM) $(ROM_ORIG_BUILT)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
 	@cp -f $(ROM) $(ROM_DECOMP_BUILT)
-	@fail=0; \
+	@: > $(VERIFY_STRICT_LOG)
+	@fail=0; pass=0; total=0; results=""; \
 	for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
 	  stem=$$(basename $$bk2 .bk2); \
 	  inp=$(DEMOS_ROOT)/bk2/$$stem.input; \
 	  ss=$(DEMOS_ROOT)/bk2/$$stem.ss; \
 	  ss_arg=""; [ -s "$$ss" ] && ss_arg="--state $$ss"; \
-	  echo "=== lockstep $$stem ==="; \
-	  if tools/bn6f-track/target/release/bn6f-track lockstep \
+	  total=$$((total + 1)); \
+	  printf "[%d] %s..." "$$total" "$$stem"; \
+	  result=$$(tools/bn6f-track/target/release/bn6f-track lockstep \
 	      --orig $(ROM_ORIG_BUILT) --decomp $(ROM_DECOMP_BUILT) \
-	      --input $$inp $$ss_arg; then \
-	    echo "  GREEN"; \
+	      --input $$inp $$ss_arg 2>>$(VERIFY_STRICT_LOG) | grep ^RESULT:); \
+	  if echo "$$result" | grep -q "green"; then \
+	    pass=$$((pass + 1)); \
+	    frames=$$(echo "$$result" | sed -n 's/.*frames=\([0-9]*\).*/\1/p'); \
+	    printf " PASS (%s frames)\n" "$$frames"; \
+	    results="$$results\nPASS  $$stem  $$frames frames"; \
 	  else \
-	    echo "  RED"; fail=1; \
+	    fail=$$((fail + 1)); \
+	    frame=$$(echo "$$result" | sed -n 's/.*frame=\([0-9]*\).*/\1/p'); \
+	    dpc=$$(echo "$$result" | sed -n 's/.*decomp_pc=\(0x[0-9A-Fa-f]*\).*/\1/p'); \
+	    sym=$$(arm-none-eabi-nm --numeric-sort build/bn6f.elf | \
+	      python3 tools/addr_to_sym.py $$dpc); \
+	    printf " FAIL (frame %s, decomp PC %s = %s)\n" "$$frame" "$$dpc" "$$sym"; \
+	    results="$$results\nFAIL  $$stem  frame $$frame  $$dpc  $$sym"; \
 	  fi; \
 	done; \
+	echo; \
+	echo "=== verify-strict summary ==="; \
+	printf "$$results" | column -t -s '  '; \
+	echo; \
+	if [ $$fail -eq 0 ]; then \
+	  echo "ALL GREEN: $$pass/$$total bk2s passed"; \
+	else \
+	  echo "FAIL: $$fail of $$total bk2s diverged ($$pass passed)"; \
+	  echo "Full lockstep output in $(VERIFY_STRICT_LOG)"; \
+	fi; \
 	exit $$fail
 
 # `make videos` — for each bk2 demo, produce three mp4s:
@@ -370,10 +399,13 @@ videos: track-build | build
 	@# restored even on Ctrl-C via the trap.
 	@cp tools/decomp_manifest.txt build/decomp_manifest.bak
 	@awk '/^#|^$$/' build/decomp_manifest.bak > tools/decomp_manifest.txt
-	@trap 'mv build/decomp_manifest.bak tools/decomp_manifest.txt' EXIT INT TERM; \
+	@# Restore via cp+touch so the manifest's mtime is "now", not the
+	@# bak's. Without `touch` the timestamp inversion described in
+	@# clean-conditional-objs's comment leaves later builds using
+	@# stale flags. `trap` runs on Ctrl-C too.
+	@trap 'cp build/decomp_manifest.bak tools/decomp_manifest.txt && touch tools/decomp_manifest.txt && rm -f build/decomp_manifest.bak' EXIT INT TERM; \
 	  $(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile; \
-	  cp -f $(ROM) $(ROM_DECOMP_NOPATCH); \
-	  mv build/decomp_manifest.bak tools/decomp_manifest.txt
+	  cp -f $(ROM) $(ROM_DECOMP_NOPATCH)
 	@for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
 	  stem=$$(basename $$bk2 .bk2); \
 	  inp=$(DEMOS_ROOT)/bk2/$$stem.input; \

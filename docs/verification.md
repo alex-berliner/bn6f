@@ -176,7 +176,29 @@ orig — to any register or any RAM byte — the first frame where the
 state hashes disagree is the first frame where the regressions
 become observable.
 
-Output on divergence:
+`make verify-strict` aggregates the per-bk2 results into a summary
+table:
+
+```
+[1] coldboot... FAIL (frame 279, decomp PC 0x087FE8D4 = CopyWords_c+0x18)
+[2] intro... PASS (6239 frames)
+[3] intro_to_end_tutorial... PASS (16441 frames)
+
+=== verify-strict summary ===
+FAIL  coldboot               frame 279  0x087FE8D4  CopyWords_c+0x18
+PASS  intro                  6239 frames
+PASS  intro_to_end_tutorial  16441 frames
+
+FAIL: 1 of 3 bk2s diverged (2 passed)
+Full lockstep output in build/verify-strict.log
+```
+
+The FAIL row gives the bk2, the divergence frame, the decomp PC at
+that frame, and the nearest C symbol (`<fn>_c+0xN`) — the broken
+conversion. Per-bk2 detailed output is in `build/verify-strict.log`.
+
+Direct invocation of `bn6f-track lockstep` (without the wrapper)
+prints the full per-region diff table:
 
 ```
 *** DIVERGENCE at frame 279 (1.83s wall) ***

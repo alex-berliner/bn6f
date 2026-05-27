@@ -1343,6 +1343,11 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
                       i + 1);
             eprintln!("and use `bn6f-track probe` against decomp at that frame to");
             eprintln!("trace the failing instruction.");
+            // Machine-readable summary line for the make-target wrapper
+            // to aggregate across bk2s. Format is stable, suitable for
+            // grep + cut.
+            println!("RESULT: red frame={} total={} orig_pc=0x{:08X} decomp_pc=0x{:08X} components={}",
+                     i + 1, total, s_o.pc(), s_d.pc(), diffs.join(","));
             process::exit(2);
         }
 
@@ -1356,6 +1361,7 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
 
     eprintln!("\nlockstep: green — orig and decomp produced identical state across all {} frames ({:.2}s wall)",
               total, t0.elapsed().as_secs_f64());
+    println!("RESULT: green frames={}", total);
 }
 
 fn framebuf(rom: &str, frames: u32, out_path: &str) {
