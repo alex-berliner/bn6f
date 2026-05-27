@@ -96,7 +96,7 @@
 #endif
 
 #ifndef USE_FFMPEG
-/* #undef USE_FFMPEG */
+#define USE_FFMPEG
 #endif
 
 #ifndef USE_FREETYPE

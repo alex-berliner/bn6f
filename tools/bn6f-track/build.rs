@@ -56,6 +56,8 @@ fn main() {
         .allowlist_function("mDebugger.*")
         .allowlist_function("ARMDebugger.*")
         .allowlist_function("VFile.*")
+        .allowlist_function("FFmpegEncoder.*")
+        .allowlist_type("FFmpegEncoder")
         .allowlist_type("VFile")
         .allowlist_type("mCore")
         .allowlist_type("mPlatform")

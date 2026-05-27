@@ -248,6 +248,80 @@ impl Core {
         Ok(Core { raw, _video_buf: video_buf, debugger: None, dbg_module: None })
     }
 
+    /// Attach an FFmpeg encoder so each `runFrame` also pushes a video
+    /// (+ audio) sample to `out_path` (mp4). Caller is responsible for
+    /// keeping the returned Box alive for the recording's duration and
+    /// calling `stop_recording` to flush the trailer.
+    ///
+    /// Recording requires frameskip = 0 (otherwise the PPU's
+    /// finishFrame path doesn't fire and the encoder sees nothing).
+    /// We re-set the config value and call reloadConfigOption before
+    /// recording, then restore frameskip afterward — but the caller
+    /// must `reset()` between recording and non-recording runs since
+    /// the frameskip latches at load-config time.
+    fn start_recording(&self, out_path: &str) -> Option<Box<mgba_sys::FFmpegEncoder>> {
+        // Enable rendering for the duration of the recording.
+        unsafe {
+            let fs_key = CString::new("frameskip").unwrap();
+            mgba_sys::mCoreConfigSetIntValue(&mut (*self.raw).config, fs_key.as_ptr(), 0);
+            (*self.raw).opts.frameskip = 0;
+            let reload = (*self.raw).reloadConfigOption.expect("reloadConfigOption");
+            reload(self.raw, fs_key.as_ptr(), &mut (*self.raw).config);
+        }
+        let mut enc: Box<mgba_sys::FFmpegEncoder> = unsafe {
+            Box::new(MaybeUninit::zeroed().assume_init())
+        };
+        let out_c = CString::new(out_path).ok()?;
+        let vcodec = CString::new("libx264").unwrap();
+        let acodec = CString::new("aac").unwrap();
+        let container = CString::new("mp4").unwrap();
+        unsafe {
+            mgba_sys::FFmpegEncoderInit(&mut *enc as *mut _);
+            // FFmpegEncoder interprets a negative vbr as `crf = -vbr`
+            // (see ffmpeg-encoder.c). -28 = CRF 28, decent quality and
+            // ~10x smaller files than the default near-lossless setting.
+            if !mgba_sys::FFmpegEncoderSetVideo(
+                &mut *enc as *mut _, vcodec.as_ptr(), -28, 0,
+            ) {
+                eprintln!("FFmpegEncoderSetVideo failed");
+                return None;
+            }
+            if !mgba_sys::FFmpegEncoderSetAudio(
+                &mut *enc as *mut _, acodec.as_ptr(), 128_000,
+            ) {
+                eprintln!("FFmpegEncoderSetAudio failed");
+                return None;
+            }
+            if !mgba_sys::FFmpegEncoderSetContainer(
+                &mut *enc as *mut _, container.as_ptr(),
+            ) {
+                eprintln!("FFmpegEncoderSetContainer failed");
+                return None;
+            }
+            mgba_sys::FFmpegEncoderSetDimensions(&mut *enc as *mut _, 240, 160);
+            // FFmpegEncoderInit already populates the GBA defaults
+            // (VIDEO_TOTAL_LENGTH cycles / GBA_ARM7TDMI_FREQUENCY ≈ 59.73Hz).
+            // The args to SetInputFrameRate are (frame_cycles, cycles_per_sec),
+            // NOT (num, den) of fps — easy to get wrong, just leave alone.
+            mgba_sys::FFmpegEncoderSetInputSampleRate(&mut *enc as *mut _, 32_768);
+            if !mgba_sys::FFmpegEncoderOpen(&mut *enc as *mut _, out_c.as_ptr()) {
+                eprintln!("FFmpegEncoderOpen failed for {out_path}");
+                return None;
+            }
+            let set_av = (*self.raw).setAVStream.expect("setAVStream");
+            set_av(self.raw, &mut enc.d as *mut _);
+        }
+        Some(enc)
+    }
+
+    fn stop_recording(&self, mut enc: Box<mgba_sys::FFmpegEncoder>) {
+        unsafe {
+            let set_av = (*self.raw).setAVStream.expect("setAVStream");
+            set_av(self.raw, ptr::null_mut());
+            mgba_sys::FFmpegEncoderClose(&mut *enc as *mut _);
+        }
+    }
+
     /// Attach a custom debugger module in CALLBACK mode. The `custom`
     /// callback fires once per executed instruction; we use it to do
     /// our own O(1) PC dispatch instead of paying libmgba's per-bp
@@ -981,6 +1055,47 @@ fn read_symbols(path: &str) -> Result<Vec<(u32, String)>, String> {
 ///
 /// Optional `input_path` provides per-frame joypad masks (same format
 /// as record/track --input). Defaults to all-zero input.
+fn recvideo(rom: &str, frames: u32, out_path: &str,
+            input_path: Option<&str>, state_path: Option<&str>) {
+    let core = Core::new(rom).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}");
+        process::exit(1);
+    });
+    if let Some(p) = state_path {
+        let bytes = std::fs::read(p).expect("read savestate");
+        let stripped = if bytes.len() >= 8 {
+            let v_at_0 = u32::from_le_bytes(bytes[0..4].try_into().unwrap());
+            let v_at_4 = u32::from_le_bytes(bytes[4..8].try_into().unwrap());
+            if (v_at_0 & 0xFFFFFF00) != 0x01000000
+                && (v_at_4 & 0xFFFFFF00) == 0x01000000 { &bytes[4..] } else { &bytes[..] }
+        } else { &bytes[..] };
+        let ok = unsafe {
+            let vf = mgba_sys::VFileFromMemory(stripped.as_ptr() as *mut _, stripped.len());
+            let r = mgba_sys::mCoreLoadStateNamed(core.raw, vf, 0);
+            (*vf).close.expect("close")(vf);
+            r
+        };
+        if !ok { eprintln!("loadState failed for {p}"); process::exit(1); }
+    }
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => load_input_file(p),
+        None => Vec::new(),
+    };
+    let enc = core.start_recording(out_path).unwrap_or_else(|| {
+        eprintln!("start_recording failed for {out_path}");
+        process::exit(1);
+    });
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    let t0 = Instant::now();
+    for i in 0..frames {
+        let mask = inputs.get(i as usize).copied().unwrap_or(0) as u32;
+        unsafe { set_keys(core.raw, mask); run_frame(core.raw); }
+    }
+    core.stop_recording(enc);
+    eprintln!("wrote {out_path} ({} frames in {:.2}s)", frames, t0.elapsed().as_secs_f64());
+}
+
 fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
     let core = Core::new(rom).unwrap_or_else(|e| {
         eprintln!("Core::new failed: {e}");
@@ -1313,15 +1428,20 @@ fn smoke_test(rom: &str, frames: u32) {
 }
 
 fn load_input_file(path: &str) -> Vec<u16> {
+    // .input is 4 bytes per frame: u16 LE joypad mask + u16 LE pad.
+    // bk2_extract.py emits the pad for historical compat. Reading the
+    // file as 2-byte chunks (the old behavior) doubles the apparent
+    // frame count and zeros every odd frame — held buttons register
+    // as one-frame taps and playback runs at half speed.
     let bytes = fs::read(path).unwrap_or_else(|e| {
         eprintln!("read input {path}: {e}");
         process::exit(1);
     });
-    if bytes.len() % 2 != 0 {
-        eprintln!("input file {path} has odd byte count {}", bytes.len());
+    if bytes.len() % 4 != 0 {
+        eprintln!("input file {path} byte count {} not a multiple of 4", bytes.len());
         process::exit(1);
     }
-    bytes.chunks_exact(2).map(|c| u16::from_le_bytes([c[0], c[1]])).collect()
+    bytes.chunks_exact(4).map(|c| u16::from_le_bytes([c[0], c[1]])).collect()
 }
 
 fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input_path: Option<&str>) {
@@ -2025,11 +2145,40 @@ fn verify_all(
     demos_root: &str,
     cache_dir: &str,
     parallel: usize,
+    record_dir: Option<&str>,
 ) {
     eprintln!("=== bn6f-track verify-all ===");
     eprintln!("orig:   {orig_rom}");
     eprintln!("decomp: {decomp_rom}");
     eprintln!("cache:  {cache_dir}");
+    if let Some(d) = record_dir { eprintln!("record: {d}"); }
+
+    // --record-dir: before the per-function verify phases, run each bk2
+    // continuously through both orig and decomp ROMs while recording
+    // mp4. Per-bk2 outputs: <DIR>/<stem>__orig.mp4 + <stem>__decomp.mp4.
+    // Independent of cache hit/miss state — this is for visual debugging.
+    if let Some(dir) = record_dir {
+        if let Err(e) = std::fs::create_dir_all(dir) {
+            eprintln!("create record dir {dir}: {e}");
+            process::exit(1);
+        }
+        let jobs = discover_bk2_jobs(demos_root).unwrap_or_else(|e| {
+            eprintln!("discover bk2: {e}");
+            process::exit(1);
+        });
+        eprintln!("--- recording {} bk2 demos to {dir} ---", jobs.len());
+        for job in &jobs {
+            for (rom_path, suffix) in &[(orig_rom, "orig"), (decomp_rom, "decomp")] {
+                let out = format!("{}/{}__{}.mp4", dir, job.stem, suffix);
+                let state = job.state_path.as_deref().and_then(|p| p.to_str());
+                let input = job.input_path.to_str().unwrap();
+                let frames = job.frame_count;
+                eprintln!("  [{} / {}] {} frames -> {}", job.stem, suffix, frames, out);
+                recvideo(rom_path, frames, &out, Some(input), state);
+            }
+        }
+        eprintln!("--- recording done ---");
+    }
 
     let symbols = read_symbols(symbols_path).unwrap_or_else(|e| {
         eprintln!("read_symbols: {e}");
@@ -2490,6 +2639,27 @@ fn main() {
             }
             probe_cold_boot(rom, frames, input_path);
         }
+        "recvideo" => {
+            // recvideo <rom> <frames> <out.mp4> [--input PATH] [--state PATH]
+            // Plays ROM for <frames> frames (optionally with bk2-extracted
+            // input + savestate), encoding video to mp4 via libmgba's
+            // FFmpegEncoder.
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let out = args.get(4).unwrap_or_else(|| usage(&args[0]));
+            let mut input_path: Option<&str> = None;
+            let mut state_path: Option<&str> = None;
+            let mut i = 5;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--input" => { input_path = args.get(i+1).map(String::as_str); i += 2; }
+                    "--state" => { state_path = args.get(i+1).map(String::as_str); i += 2; }
+                    _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
+                }
+            }
+            recvideo(rom, frames, out, input_path, state_path);
+        }
         "bootstate" => {
             // bootstate <rom> <frames> [--state PATH]
             // Dumps per-frame snapshot: PC, CPSR, SP, LR, plus quick
@@ -2626,6 +2796,7 @@ fn main() {
             let mut symbols: Option<String> = None;
             let mut demos_root: Option<String> = None;
             let mut cache_dir: Option<String> = None;
+            let mut record_dir: Option<String> = None;
             let mut parallel: usize = std::thread::available_parallelism()
                 .map(|n| n.get()).unwrap_or(4);
             let mut rest = &args[2..];
@@ -2636,6 +2807,7 @@ fn main() {
                     Some("--symbols") => { symbols = rest.get(1).cloned(); rest = &rest[2..]; }
                     Some("--demos-root") => { demos_root = rest.get(1).cloned(); rest = &rest[2..]; }
                     Some("--cache-dir") => { cache_dir = rest.get(1).cloned(); rest = &rest[2..]; }
+                    Some("--record-dir") => { record_dir = rest.get(1).cloned(); rest = &rest[2..]; }
                     Some("--parallel") => {
                         parallel = rest.get(1).and_then(|s| s.parse().ok())
                             .unwrap_or_else(|| { eprintln!("--parallel needs N"); usage(&args[0]); });
@@ -2654,7 +2826,8 @@ fn main() {
                 usage(&args[0]);
             }
             let targets: Vec<String> = rest.to_vec();
-            verify_all(&orig, &decomp, &symbols, &targets, &demos_root, &cache_dir, parallel);
+            verify_all(&orig, &decomp, &symbols, &targets, &demos_root, &cache_dir, parallel,
+                       record_dir.as_deref());
         }
         // Legacy positional form: first positional is the ROM. We keep
         // this so existing Makefile targets and scripts continue to work.

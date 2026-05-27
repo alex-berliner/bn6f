@@ -67,6 +67,10 @@ tools/binutils/
 # `cmake -DBUILD_HEADLESS=ON . && make mgba-headless`. Linux x86-64
 # only; rebuild per platform.
 tools/mgba-headless
+# Vendored libmgba CLI extras + docs (rebuilt artifacts from
+# /tmp/mgba-build/install; not needed by the harness link path).
+tools/libmgba/bin/
+tools/libmgba/share/
 
 # Rust build artifacts under tools/bn6f-track
 tools/bn6f-track/target/
