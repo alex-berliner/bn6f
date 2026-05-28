@@ -233,6 +233,54 @@ ones.
 
 ---
 
+## 11. agbcc union/small-struct padding bug — OPEN
+
+**Symptom:** struct field accesses (e.g. `eToolkit->BattleStatePtr->Unk_32`)
+in C ports resolve to wrong byte offsets — typically 8 bytes too far.
+Found while debugging `battle_setFlags_c` / `battle_clearFlags_c` (May 2026).
+
+**Why:** agbcc (gcc 2.9-arm-000512) treats every C `union` and every
+small `struct` as having a minimum size of 4 bytes and 4-byte
+alignment. Auto-generated headers in `constants/headers/structs/`
+emit C unions wherever the .inc has `union ... nextu ... endu`,
+e.g. for fields that can be accessed as `u8 + u8` or `u16`. Each
+such union shifts every following field by +2 bytes in agbcc's
+layout. BattleState has 3 unions before offset 0x32 → all fields
+at and after offset 0x18 shift by +8.
+
+Verified via offsetof probe (`tools/agbcc/bin/agbcc -O2`):
+
+| field         | header says | agbcc says |
+|---------------|-------------|------------|
+| `Unk_32`      | 0x32        | 0x3a       |
+| `BattleSettings` | 0x3C     | 0x44       |
+| `sizeof`      | 0xF0        | 0xF8       |
+
+**Status:** open. Workaround applied per-function (raw pointer
+arithmetic with explicit byte offset, as `battle_getFlags_c` does)
+in any C port touching union-affected structs.
+
+**Affected structs** (have C unions emitted by struct_inc_to_h.py):
+BattleState, RenderInfo, CutsceneCameraInfo, CollisionData,
+OWObjectInteractionArea, BattleObjectsLinkedListSentinel,
+OverworldNPCObject. Anything else with `union ... nextu` in its .inc.
+
+**Unblock options:**
+(a) **Change `tools/struct_inc_to_h.py` to emit byte arrays for
+    union ranges** with accessor macros for each named alternate,
+    instead of C unions. Fixes everything at once; no agbcc behavior
+    change needed. Effort: half-day.
+(b) Add `__attribute__((packed))` to union types in generated headers.
+    Untested whether agbcc honors it correctly.
+(c) Continue per-function raw-offset workarounds. Doesn't scale.
+
+**Unblock estimate:** unblocks straightforward struct access in ~10%
+of decomp candidates.
+
+**Effort:** half-day for (a). Recommend (a).
+
+---
+
 ## 8. Typed struct accesses — OPEN
 
 **Symptom:** every conversion writes raw byte-offset pointer
