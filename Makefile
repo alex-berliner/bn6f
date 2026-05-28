@@ -424,19 +424,19 @@ videos: track-build | build
 	    name=$$(echo $$flavor | cut -d: -f1); \
 	    rom=$$(echo $$flavor | cut -d: -f2); \
 	    dir=$$(echo $$flavor | cut -d: -f3); \
-	    out=$$dir/$${stem}__$${name}.mkv; \
+	    out=$$dir/$${stem}__$${name}.mp4; \
 	    # Cache hit on orig/nopatch: skip render. decomp always renders. \
 	    if [ "$$name" != "decomp" ] && [ -s "$$out" ]; then \
 	      printf "  %-50s cached (%s bytes)\n" "$$(basename $$out)" "$$(stat -c%s $$out)"; \
 	      # Symlink cached into VIDEO_DIR so callers see all flavors there. \
-	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mkv; \
+	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mp4; \
 	      continue; \
 	    fi; \
 	    tools/bn6f-track/target/release/bn6f-track recvideo \
 	      $$rom $$frames $$out --input $$inp $$ss_arg > /dev/null 2>&1 || \
 	      { echo "  FAIL: $$out"; continue; }; \
 	    if [ "$$name" != "decomp" ]; then \
-	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mkv; \
+	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mp4; \
 	    fi; \
 	    printf "  %-50s %s\n" "$$(basename $$out)" "$$(stat -c%s $$out) bytes"; \
 	  done; \

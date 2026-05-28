@@ -272,26 +272,25 @@ impl Core {
             Box::new(MaybeUninit::zeroed().assume_init())
         };
         let out_c = CString::new(out_path).ok()?;
-        // FFV1 in Matroska — mGBA's FFmpeg encoder special-cases FFV1
-        // by automatically setting lossless=1 and crf=0 (see
-        // src/feature/ffmpeg/ffmpeg-encoder.c). That's the only path
-        // in the current API to truly lossless output.
-        //
-        // Why lossless: encoded-size diffs between orig and decomp are
-        // a useful correctness signal, but lossy codecs amplify tiny
-        // pixel differences via cascading rate-distortion decisions —
-        // a 5-pixel divergence at frame 100 can ripple into different
-        // macroblock partitioning across hundreds of subsequent frames.
-        // Lossless makes encoded-size delta scale linearly with
-        // pixel-difference count, so comparisons are honest.
-        let vcodec = CString::new("ffv1").unwrap();
-        let acodec = CString::new("flac").unwrap();
-        let container = CString::new("matroska").unwrap();
+        // libx264 CRF 28 mp4 — small files, viewable everywhere. We
+        // briefly used FFV1 lossless for an honest encoded-size diff
+        // signal during the agbcc-union-padding investigation, but
+        // lossless tutorial videos are 200+ MB each which is painful
+        // to download for review. libx264 is deterministic (identical
+        // input → identical output), so byte-equal video files between
+        // orig and decomp still mean pixel-equal frames. The lossy
+        // bias only matters when frames ARE different, and we have
+        // last-frame PPM byte compare + lockstep drift classifier as
+        // the honest correctness signals when we need them.
+        let vcodec = CString::new("libx264").unwrap();
+        let acodec = CString::new("aac").unwrap();
+        let container = CString::new("mp4").unwrap();
         unsafe {
             mgba_sys::FFmpegEncoderInit(&mut *enc as *mut _);
-            // vbr is ignored for FFV1 (codec is inherently lossless).
+            // vbr=-28 → CRF 28 (decent quality, ~10× smaller files
+            // than libx264's near-lossless default).
             if !mgba_sys::FFmpegEncoderSetVideo(
-                &mut *enc as *mut _, vcodec.as_ptr(), 0, 0,
+                &mut *enc as *mut _, vcodec.as_ptr(), -28, 0,
             ) {
                 eprintln!("FFmpegEncoderSetVideo failed");
                 return None;

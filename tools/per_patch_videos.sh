@@ -4,7 +4,7 @@
 # For each of the first 15 alphabetic patches:
 #   - build decomp ROM with ONLY that patch enabled
 #   - render orig + decomp videos for each bk2 fixture
-#   - place in build/videos/<patch>/<bk2>__{orig,decomp}.mkv (4x speed, no audio)
+#   - place in build/videos/<patch>/<bk2>__{orig,decomp}.mp4 (4x speed, no audio)
 #
 # Orig videos are rendered once and symlinked into each patch dir.
 set -u
@@ -14,11 +14,16 @@ OUT=build/videos
 mkdir -p "$OUT/_base"
 TRACK=tools/bn6f-track/target/release/bn6f-track
 
-# Patch set — every `.ifndef DECOMP_<sym>` in asm/*.s, first 15 alphabetic.
+# Patch set — every `.ifndef DECOMP_<sym>` in asm/*.s. Pass BATCH=N-M
+# to select alphabetic positions N through M (1-indexed, inclusive).
+# Default: first 15 (BATCH=1-15).
 grep -hoE "\.ifndef DECOMP_\S+" asm/*.s | sed 's/.*DECOMP_//' | sort -u \
   > /tmp/m_canonical_$$.txt
-mapfile -t ENTRIES < <(head -15 /tmp/m_canonical_$$.txt)
-echo "Loaded ${#ENTRIES[@]} patches: ${ENTRIES[0]} ... ${ENTRIES[-1]}"
+BATCH="${BATCH:-1-15}"
+BATCH_START="${BATCH%-*}"
+BATCH_END="${BATCH#*-}"
+mapfile -t ENTRIES < <(awk -v s=$BATCH_START -v e=$BATCH_END 'NR>=s && NR<=e' /tmp/m_canonical_$$.txt)
+echo "Loaded ${#ENTRIES[@]} patches (positions $BATCH_START-$BATCH_END): ${ENTRIES[0]} ... ${ENTRIES[-1]}"
 
 LIVE_ENTRIES=$(grep -cv "^#\|^$" tools/decomp_manifest.txt 2>/dev/null || echo 0)
 if [ "$LIVE_ENTRIES" -lt 100 ]; then
@@ -53,7 +58,7 @@ for bk2 in tests/fixtures/demos/bk2/*.bk2; do
   ss_arg=""
   [ -s "$ss" ] && ss_arg="--state $ss"
   frames=$(($(stat -c%s "$inp") / 4))
-  out=$OUT/_base/${stem}__orig.mkv
+  out=$OUT/_base/${stem}__orig.mp4
   if [ -s "$out" ]; then
     printf "  [orig/%s] cached (%s bytes)\n" "$stem" "$(stat -c%s "$out")"
   else
@@ -75,7 +80,7 @@ for fn in "${ENTRIES[@]}"; do
   mkdir -p "$outdir"
   for bk2 in tests/fixtures/demos/bk2/*.bk2; do
     stem=$(basename "$bk2" .bk2)
-    ln -sf "../_base/${stem}__orig.mkv" "$outdir/${stem}__orig.mkv"
+    ln -sf "../_base/${stem}__orig.mp4" "$outdir/${stem}__orig.mp4"
   done
   rom_out=$ROM_DIR/bn6f_${fn}.gba
   printf "  building decomp ROM for %-40s " "$fn"
@@ -102,7 +107,7 @@ for fn in "${ENTRIES[@]}"; do
     inp=tests/fixtures/demos/bk2/$stem.input
     ss=tests/fixtures/demos/bk2/$stem.ss
     frames=$(($(stat -c%s "$inp") / 4))
-    out=$OUT/$fn/${stem}__decomp.mkv
+    out=$OUT/$fn/${stem}__decomp.mp4
     rom=$ROM_DIR/bn6f_${fn}.gba
     echo "$rom|$frames|$inp|$ss|$out|$fn|$stem" >> "$JOBS"
   done
