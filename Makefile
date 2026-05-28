@@ -387,25 +387,28 @@ verify-strict: track-build | build
 # Output dir: build/videos/ (override with VIDEO_DIR=...).
 ROM_DECOMP_NOPATCH = build/bn6f_decomp_nopatch.gba
 VIDEO_DIR ?= build/videos
+# Cached per-bk2 reference videos (orig + nopatch) live here, shared
+# across `make videos` invocations. Stable across runs unless the orig
+# ROM or the bk2 fixtures change. Delete to force regen.
+VIDEO_CACHE ?= $(VIDEO_DIR)/_base
+# Set WITH_NOPATCH=1 to also render the empty-manifest decomp ROM as
+# a sanity-check flavor. Off by default — orig vs decomp is the
+# primary comparison and nopatch adds a ~30s decomp build per run.
+WITH_NOPATCH ?=
 .PHONY: videos
 videos: track-build | build
-	@mkdir -p $(VIDEO_DIR)
+	@mkdir -p $(VIDEO_DIR) $(VIDEO_CACHE)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory all
 	@cp -f $(ROM) $(ROM_ORIG_BUILT)
 	@$(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile
 	@cp -f $(ROM) $(ROM_DECOMP_BUILT)
-	@# Build the no-patch flavor by emptying the manifest into a
-	@# tempfile, swapping it in, building, restoring. Manifest is
-	@# restored even on Ctrl-C via the trap.
-	@cp tools/decomp_manifest.txt build/decomp_manifest.bak
-	@awk '/^#|^$$/' build/decomp_manifest.bak > tools/decomp_manifest.txt
-	@# Restore via cp+touch so the manifest's mtime is "now", not the
-	@# bak's. Without `touch` the timestamp inversion described in
-	@# clean-conditional-objs's comment leaves later builds using
-	@# stale flags. `trap` runs on Ctrl-C too.
-	@trap 'cp build/decomp_manifest.bak tools/decomp_manifest.txt && touch tools/decomp_manifest.txt && rm -f build/decomp_manifest.bak' EXIT INT TERM; \
+	@if [ -n "$(WITH_NOPATCH)" ]; then \
+	  cp tools/decomp_manifest.txt build/decomp_manifest.bak; \
+	  awk '/^#|^$$/' build/decomp_manifest.bak > tools/decomp_manifest.txt; \
+	  trap 'cp build/decomp_manifest.bak tools/decomp_manifest.txt && touch tools/decomp_manifest.txt && rm -f build/decomp_manifest.bak' EXIT INT TERM; \
 	  $(MAKE) $(SUBMAKE_QUIET) --no-print-directory decompile; \
-	  cp -f $(ROM) $(ROM_DECOMP_NOPATCH)
+	  cp -f $(ROM) $(ROM_DECOMP_NOPATCH); \
+	fi
 	@for bk2 in $(DEMOS_ROOT)/bk2/*.bk2; do \
 	  stem=$$(basename $$bk2 .bk2); \
 	  inp=$(DEMOS_ROOT)/bk2/$$stem.input; \
@@ -413,16 +416,28 @@ videos: track-build | build
 	  frames=$$(($$(stat -c%s $$inp) / 4)); \
 	  ss_arg=""; [ -s "$$ss" ] && ss_arg="--state $$ss"; \
 	  echo "[videos] $$stem ($$frames frames)"; \
-	  for flavor in orig:$(ROM_ORIG_BUILT) decomp:$(ROM_DECOMP_BUILT) nopatch:$(ROM_DECOMP_NOPATCH); do \
-	    name=$${flavor%%:*}; rom=$${flavor##*:}; \
-	    out=$(VIDEO_DIR)/$${stem}__$${name}.mp4; \
-	    raw=$(VIDEO_DIR)/.tmp_$${stem}__$${name}.mp4; \
+	  flavors="orig:$(ROM_ORIG_BUILT):$(VIDEO_CACHE) decomp:$(ROM_DECOMP_BUILT):$(VIDEO_DIR)"; \
+	  if [ -n "$(WITH_NOPATCH)" ]; then \
+	    flavors="$$flavors nopatch:$(ROM_DECOMP_NOPATCH):$(VIDEO_CACHE)"; \
+	  fi; \
+	  for flavor in $$flavors; do \
+	    name=$$(echo $$flavor | cut -d: -f1); \
+	    rom=$$(echo $$flavor | cut -d: -f2); \
+	    dir=$$(echo $$flavor | cut -d: -f3); \
+	    out=$$dir/$${stem}__$${name}.mkv; \
+	    # Cache hit on orig/nopatch: skip render. decomp always renders. \
+	    if [ "$$name" != "decomp" ] && [ -s "$$out" ]; then \
+	      printf "  %-50s cached (%s bytes)\n" "$$(basename $$out)" "$$(stat -c%s $$out)"; \
+	      # Symlink cached into VIDEO_DIR so callers see all flavors there. \
+	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mkv; \
+	      continue; \
+	    fi; \
 	    tools/bn6f-track/target/release/bn6f-track recvideo \
-	      $$rom $$frames $$raw --input $$inp $$ss_arg > /dev/null 2>&1 || \
+	      $$rom $$frames $$out --input $$inp $$ss_arg > /dev/null 2>&1 || \
 	      { echo "  FAIL: $$out"; continue; }; \
-	    : "${VIDEO_SPEED:=4}"; \
-	    ffmpeg -y -i $$raw -filter:v "setpts=PTS/$${VIDEO_SPEED:-4}" -an $$out > /dev/null 2>&1; \
-	    rm -f $$raw; \
+	    if [ "$$name" != "decomp" ]; then \
+	      ln -sf $$out $(VIDEO_DIR)/$${stem}__$${name}.mkv; \
+	    fi; \
 	    printf "  %-50s %s\n" "$$(basename $$out)" "$$(stat -c%s $$out) bytes"; \
 	  done; \
 	done
