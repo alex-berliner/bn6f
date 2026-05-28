@@ -29,6 +29,8 @@ invocations don't need `LD_LIBRARY_PATH`.
 | [`framebuf`](#framebuf) | Render frame N as PPM |
 | [`bootstate`](#bootstate) | Composite state hash at frame N |
 | [`recvideo`](#recvideo) | mp4 encode of N frames |
+| [`lockstep`](#lockstep) | Per-frame full-state divergence detector with drift-vs-bug classifier |
+| [`irqdump`](#irqdump) | Sample IE/IF/IME across a run to inventory which IRQs fire |
 
 ### smoke
 
@@ -158,6 +160,48 @@ bn6f-track recvideo ROM FRAMES OUT.mp4 [--input PATH] [--state PATH]
 
 Encodes FRAMES frames to mp4 (libx264 CRF 28, AAC 128k). Optional
 bk2-extracted input + savestate. ~600 fps including encode.
+
+### lockstep
+
+```
+bn6f-track lockstep --orig ROM --decomp ROM --input PATH \
+                    [--state PATH] [--max-frames N] [--all-state]
+```
+
+Runs orig + decomp side by side against the same input, snapshots
+the full visible state after every frame, stops at the first
+disagreement. Default mode filters to persistent state (EWRAM, VRAM,
+palette, OAM) so cycle-timing drift in IWRAM/CPU regs doesn't trip
+false positives; pass `--all-state` for strict mode.
+
+On divergence, auto-classifies the failure:
+
+- `class=drift` — likely trampoline cycle overhead pushed mainline
+  past a VBlank deadline. Expected for partial-trampolining; see
+  [docs/verification.md](../../docs/verification.md#drift-vs-bug-the-trampoline-cycle-overhead-problem).
+- `class=bug` — likely real C-port semantic issue.
+- `class=mixed` — ambiguous; inspect manually.
+
+Machine-readable summary on stdout:
+```
+RESULT: red frame=283 total=417 orig_pc=0x... decomp_pc=0x... class=drift pc_delta=N components=...
+RESULT: green frames=16441
+```
+
+### irqdump
+
+```
+bn6f-track irqdump ROM FRAMES [--input PATH] [--state PATH] [--every N]
+```
+
+Samples REG_IE (0x4000200), REG_IF (0x4000202), REG_IME (0x4000208)
+at end of every Nth frame (default 60). Prints which IRQ bits the
+game enables and counts how often each is pending at frame boundary.
+
+Use to verify which IRQs actually fire during gameplay. For BN6F:
+only **VBlank** fires; VCount/GamePak are enabled but never raised
+during normal play. That narrows the cycle-sensitive code surface
+to VBlank-relative timing.
 
 ## Environment
 

@@ -11,8 +11,13 @@ Falzar. Two build flavors live in the same source tree:
   not match the retail sha (extra `.c_code` section).
 
 Every C conversion is verified against the orig ROM by the harness
-under `tools/bn6f-track/` — per-call entry/exit register + memory
-snapshots are replayed against the decomp ROM and any divergence fails.
+under `tools/bn6f-track/`. Two checks: `make verify` (per-call
+entry/exit snapshot replay — fast, semantic correctness) and
+`make verify-strict` (full-state per-frame lockstep — divergences
+auto-classified as `drift` vs `bug`). See
+[docs/verification.md](docs/verification.md) for the trampoline-
+cycle-overhead caveat that produces unavoidable `drift`-class
+failures during incremental development.
 
 ## Quick start
 

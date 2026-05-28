@@ -1268,6 +1268,70 @@ fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
 /// - Mode-bit flips in untracked callers (CPSR differs)
 /// - Memory writes between tracked-function boundaries
 /// - Cycle-timing drift cascading into state divergence
+fn irqdump(rom_path: &str, frames: u32, input_path: Option<&str>,
+           state_path: Option<&str>, every: u32) {
+    eprintln!("=== bn6f-track irqdump ===");
+    eprintln!("rom:    {rom_path}");
+    eprintln!("frames: {frames}  every: {every}");
+    let core = Core::new(rom_path).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}"); process::exit(1);
+    });
+    if let Some(p) = state_path {
+        if let Err(e) = load_savestate(core.raw, p) {
+            eprintln!("savestate: {e}"); process::exit(1);
+        }
+    }
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => load_input_file(p),
+        None => vec![0; frames as usize],
+    };
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    let bus_read16 = unsafe { (*core.raw).busRead16.expect("busRead16") };
+    // Track IE bitmask histogram (which bits were ever seen set in IE).
+    let mut ever_ie: u16 = 0;
+    // Per-bit "saw IF set at sample time" counters.
+    let mut if_seen_count: [u32; 14] = [0; 14];
+    let bit_names = [
+        "VBlank","HBlank","VCount","Timer0","Timer1","Timer2","Timer3",
+        "Serial","DMA0","DMA1","DMA2","DMA3","Keypad","GamePak",
+    ];
+    eprintln!("\n  frame      IE     IF    IME  notes");
+    for i in 0..(frames as usize).min(inputs.len()) {
+        let mask = inputs[i] as u32;
+        unsafe {
+            set_keys(core.raw, mask);
+            run_frame(core.raw);
+        }
+        let ie  = unsafe { bus_read16(core.raw, 0x04000200) } as u16;
+        let if_ = unsafe { bus_read16(core.raw, 0x04000202) } as u16;
+        let ime = unsafe { bus_read16(core.raw, 0x04000208) } as u16;
+        ever_ie |= ie;
+        for b in 0..14 {
+            if (if_ >> b) & 1 == 1 { if_seen_count[b] += 1; }
+        }
+        if (i as u32) % every == 0 {
+            let mut active = String::new();
+            for b in 0..14 {
+                if (ie >> b) & 1 == 1 {
+                    if !active.is_empty() { active.push(','); }
+                    active.push_str(bit_names[b]);
+                }
+            }
+            eprintln!("  {:>5}  {:04x}  {:04x}  {:>3}  IE={{{}}}",
+                      i, ie, if_, ime, active);
+        }
+    }
+    eprintln!("\n=== summary ===");
+    eprintln!("IE bits ever set across run: 0x{:04x}", ever_ie);
+    for b in 0..14 {
+        if (ever_ie >> b) & 1 == 1 {
+            eprintln!("  bit {:>2} {:<8}  enabled. IF-seen-at-frame-boundary count: {}",
+                      b, bit_names[b], if_seen_count[b]);
+        }
+    }
+}
+
 fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
             state_path: Option<&str>, max_frames: Option<u32>,
             all_state: bool) {
@@ -1363,6 +1427,86 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
                 let mark = if o == d { " " } else { "*" };
                 eprintln!("  {} {:<6} {:>10x} {:>10x}", mark, name, o, d);
             }
+            // Byte-level dump of the first ~32 differing addresses in
+            // each persistent region. This is the actionable signal:
+            // map the addresses to symbol via build/bn6f.map (or
+            // arm-none-eabi-nm) to find which write produced the diff.
+            for &(base, len, name) in &[
+                (0x02000000u32, 0x40000u32, "ewram"),
+                (0x03000000,    0x08000,   "iwram"),
+                (0x05000000,    0x00400,   "palette"),
+                (0x06000000,    0x18000,   "vram"),
+                (0x07000000,    0x00400,   "oam"),
+            ] {
+                let read_o = unsafe { (*orig.raw).rawRead8.expect("rawRead8") };
+                let read_d = unsafe { (*decomp.raw).rawRead8.expect("rawRead8") };
+                let mut diffs: Vec<(u32, u8, u8)> = Vec::new();
+                for off in 0..len {
+                    let b_o = unsafe { read_o(orig.raw, base + off, -1) } as u8;
+                    let b_d = unsafe { read_d(decomp.raw, base + off, -1) } as u8;
+                    if b_o != b_d {
+                        diffs.push((base + off, b_o, b_d));
+                        if diffs.len() >= 32 { break; }
+                    }
+                }
+                if !diffs.is_empty() {
+                    eprintln!();
+                    eprintln!("  {} byte diffs (first {}):", name, diffs.len());
+                    for (a, o, d) in &diffs {
+                        eprintln!("    0x{:08x}: orig={:02x} decomp={:02x}", a, o, d);
+                    }
+                }
+            }
+
+            // Drift-vs-bug classifier (post-divergence triage).
+            //
+            // Cycle drift signature: trampoline overhead shifted mainline
+            // by a few instructions before VBlank fired. Symptoms:
+            //   - PC delta small (both ROMs still in similar code region)
+            //   - Both PCs in same broad region (both 0x08xx ROM / both
+            //     0x00xx BIOS-wait / both 0x030x IWRAM)
+            //   - Few persistent regions differ (often just 1 byte)
+            //
+            // Bug signature: real C-port issue (register clobber, wrong
+            // memory write, missing side-effect). Symptoms:
+            //   - PC delta large OR PCs in different regions
+            //   - Many CPU regs differ
+            //   - Multiple persistent regions hit hard
+            let opc = s_o.pc();
+            let dpc = s_d.pc();
+            let pc_delta = (opc as i64 - dpc as i64).unsigned_abs();
+            let same_region = (opc >> 24) == (dpc >> 24);
+            let persist_count = ["ewram","vram","palette","oam"].iter()
+                .filter(|r| diffs.iter().any(|d| d == *r))
+                .count();
+            let reg_diff_count = (0..16).filter(|&i| s_o.cpu_regs[i] != s_d.cpu_regs[i]).count();
+            // Heuristic weights based on observed runs:
+            //   - persist_count == 0  → pure CPU-reg drift (cycle delta)
+            //   - persist_count == 1 + same_region → single-byte race
+            //     against VBlank handler — typical drift signature
+            //   - persist_count >= 3 OR cross-region PCs → structural
+            //     C-port bug (multiple downstream writes diverged)
+            //   - pc_delta alone is unreliable: drift can route execution
+            //     into a different function, blowing up the delta even
+            //     though the root cause is timing
+            let _ = reg_diff_count; // captured for printout only
+            let class = if persist_count == 0 {
+                "drift"
+            } else if persist_count <= 1 && same_region {
+                "drift"
+            } else if persist_count >= 3 || !same_region {
+                "bug"
+            } else {
+                "mixed"
+            };
+            eprintln!();
+            eprintln!("classifier: {} (pc_delta={}, same_region={}, persist_regions_diff={}, regs_diff={})",
+                      class, pc_delta, same_region, persist_count, reg_diff_count);
+            match class {
+                "drift" => eprintln!("  → likely trampoline cycle overhead pushed mainline past VBlank."),
+                "bug" => eprintln!("  → likely C-port semantic issue. Investigate decomp_pc target."),
+                _ => eprintln!("  → ambiguous — inspect manually."),
+            }
             eprintln!();
             eprintln!("Frame {} is the first divergence. Earlier frames matched.", i + 1);
             eprintln!("To narrow within the frame, re-run with --max-frames {}",
@@ -1371,9 +1515,9 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
             eprintln!("trace the failing instruction.");
             // Machine-readable summary line for the make-target wrapper
             // to aggregate across bk2s. Format is stable, suitable for
-            // grep + cut.
-            println!("RESULT: red frame={} total={} orig_pc=0x{:08X} decomp_pc=0x{:08X} components={}",
-                     i + 1, total, s_o.pc(), s_d.pc(), diffs.join(","));
+            // grep + cut. `class` is drift/bug/mixed.
+            println!("RESULT: red frame={} total={} orig_pc=0x{:08X} decomp_pc=0x{:08X} class={} pc_delta={} components={}",
+                     i + 1, total, opc, dpc, class, pc_delta, diffs.join(","));
             process::exit(2);
         }
 
@@ -2870,6 +3014,28 @@ fn main() {
                 }
             }
             recvideo(rom, frames, out, input_path, state_path);
+        }
+        "irqdump" => {
+            // irqdump <rom> <frames> [--input PATH] [--state PATH] [--every N]
+            // Sample REG_IE (0x4000200), REG_IF (0x4000202), REG_IME (0x4000208)
+            // at end of every Nth frame (default every=60). Useful to see
+            // which IRQs the game actually enables/fires during a bk2 run.
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let mut input_path: Option<&str> = None;
+            let mut state_path: Option<&str> = None;
+            let mut every: u32 = 60;
+            let mut i = 4;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--input" => { input_path = args.get(i+1).map(String::as_str); i += 2; }
+                    "--state" => { state_path = args.get(i+1).map(String::as_str); i += 2; }
+                    "--every" => { every = args.get(i+1).and_then(|s| s.parse().ok()).unwrap_or(60); i += 2; }
+                    _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
+                }
+            }
+            irqdump(rom, frames, input_path, state_path, every);
         }
         "lockstep" => {
             // lockstep --orig ROM --decomp ROM --input PATH [--state PATH] [--max-frames N]

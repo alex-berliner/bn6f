@@ -46,12 +46,24 @@ static u32 addChipsToChipPackOffset_8021b5a_impl(u8 *p, u32 r1, u32 add_qty)
     return 2u;
 }
 
+/* The orig leaves all of r0..r3 in caller-readable state:
+ *   r0 = dst (unchanged from entry)
+ *   r1 = written byte value
+ *   r2 = add_qty (unchanged)
+ *   r3 = status
+ * Both ASM callers in asm02.s chain a `bl setUnkFieldOfChipCode...`
+ * right after, which uses r0 as its dst pointer — so r0 has to stay
+ * as the original dst, not get clobbered with the C return value.
+ * Save r0+r2 across the impl call, then reload r1 from *dst (matches
+ * orig's "r1 == byte just stored" exit state), and put status in r3. */
 __attribute__((naked)) void addChipsToChipPackOffset_8021b5a_c(void)
 {
     asm volatile(
-        "push {lr}\n\t"
+        "push {r0, r2, lr}\n\t"
         "bl addChipsToChipPackOffset_8021b5a_impl\n\t"
         "mov r3, r0\n\t"
+        "pop {r0, r2}\n\t"
+        "ldrb r1, [r0]\n\t"
         "pop {pc}\n\t"
     );
 }

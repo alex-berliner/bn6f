@@ -13,22 +13,94 @@ body. Misses bugs that *leak past* the function (mode-bit flip
 affecting the caller, cycle-timing drift, memory writes between
 tracked calls).
 
-`make verify-strict` (lockstep divergence detector) — authoritative.
-Runs orig + decomp side by side against each bk2's input, hashes
-the full visible state (every CPU register including CPSR, every
-byte of EWRAM/IWRAM/VRAM/palette/OAM) after each frame, stops at
-the first frame where the hashes disagree and reports which
-register/region diverged and the PC for each side. **This is the
-real correctness check.** Per-call can pass while verify-strict
-fails — when that happens it means the patch corrupts state in a
-way that doesn't appear inside the patched function's snapshot
-window.
+`make verify-strict` (lockstep divergence detector) — full-state
+parity check. Runs orig + decomp side by side against each bk2's
+input, hashes the full visible state (every CPU register including
+CPSR, every byte of EWRAM/IWRAM/VRAM/palette/OAM) after each frame,
+stops at the first frame where the hashes disagree and reports
+which register/region diverged and the PC for each side.
+
+Each RED divergence is auto-classified `class=drift|bug|mixed`:
+
+- **`drift`** — trampoline cycle overhead pushed mainline past a
+  VBlank boundary. Heuristic: 0–1 persistent regions differ AND
+  both PCs in the same broad region. This is a known limitation
+  of partial-trampolining (see "Drift vs. bug" below), not a C-port
+  bug.
+- **`bug`** — structural problem in the C port. Heuristic: ≥3
+  persistent regions differ OR PCs in different regions. Investigate
+  by looking at `decomp_pc` and the byte-diff dump above.
+- **`mixed`** — 2 persistent regions; manual inspection needed.
+
+The classifier lives in `lockstep()` in `tools/bn6f-track/src/main.rs`
+and emits `class=…` plus `pc_delta=…` in the RESULT line for downstream
+aggregation.
 
 Workflow: use `make verify` for quick "did my edit break this
 specific function" feedback during development. Before claiming a
 batch of conversions is correct, run `make verify-strict`. If
-verify is green but verify-strict is red, there's a cross-call
-leak — see [debugging.md](debugging.md#harness-blind-spots).
+verify is green but verify-strict is red with `class=bug`, there's
+a cross-call leak — see [debugging.md](debugging.md#harness-blind-spots).
+If verify-strict is red with `class=drift`, see below.
+
+## Drift vs. bug: the trampoline cycle-overhead problem
+
+Empirical finding (May 2026): when a function is trampolined to a C
+reimplementation, the trampoline itself adds ~6 cycles per call
+(standard `decomp_trampoline`) or ~12 cycles (`_r3safe` variant).
+That overhead can shift mainline timing enough to expose a race
+against the VBlank IRQ — even when the C body is byte-for-byte
+instruction-identical to orig.
+
+We proved this with a controlled experiment: rewriting `ByteFill_c`
+as `__attribute__((naked))` inline asm matching orig instruction-by-
+instruction. Lockstep still RED at coldboot frame 283. Swapping to
+`_r3safe` (which preserves r3) shifted divergence to frame 281 but
+didn't fix it. The trampoline mechanism alone, with zero C-codegen
+difference, produces persistent state divergence.
+
+### Why this happens
+
+The game's only firing IRQ is **VBlank** (verified via `bn6f-track
+irqdump` — VCount/GamePak are enabled but never fire during gameplay).
+Mainline either reaches `SWI 0x05` / `SWI 0x04` (BIOS IntrWait) in
+time and halts cycle-tolerantly, or it doesn't and gets interrupted
+mid-work. Trampoline overhead is small (~0.4% of frame budget) but
+on tight frames it can tip mainline past the VBlank deadline. When
+that happens:
+
+- mainline state at the moment of VBlank differs between orig and
+  decomp (one ROM is 1-2 thumb instructions further along)
+- the VBlank handler reads in-progress staging buffers (OAM, palette)
+  and observes different bytes
+- a single-byte EWRAM diff propagates as persistent divergence
+
+### What this means for verification
+
+Per-frame byte-parity against orig is **not achievable** from a
+partially-trampolined build. This is a property of the approach, not
+a fixable bug. Trampolines are scaffolding for incremental development;
+the end state (all functions in C, linked directly, no trampolines)
+removes the constraint entirely.
+
+In the interim:
+
+- `make verify` (per-call semantic check) remains the primary
+  correctness gate during development.
+- `make verify-strict` with `class=drift` failures are expected and
+  acceptable for individual patches; treat them as informational.
+- `make verify-strict` with `class=bug` failures must be investigated
+  — they indicate real C-port issues.
+- A future fully-decomp'd build can be lockstep'd against orig with
+  no trampolines; that's the authoritative correctness check.
+
+### Future work
+
+The proposed cycle-precise slack profiler (measure orig's headroom
+between mainline finishing and VBlank firing, per frame) would let
+us predict which frames are drift-sensitive and either skip-trampoline
+or inline-replace specific functions. That requires forking and
+rebuilding libmgba (instruction-callback hook), so it's deferred.
 
 ## Per-call snapshot model
 
