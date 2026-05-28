@@ -392,3 +392,26 @@ If goal is "maximize decompiled-fn throughput in next week":
    layer entirely" phase.
 
 Items 9 (tiny fns) and 7 (code-or-data embedding) are deferred.
+
+---
+
+## 12. Known-failing patches (last-frame PPM mismatch) — OPEN
+
+Patches that fail the last-frame PPM equality check on at least one bk2.
+Investigated 2+ cycles in autonomous loop and not yet resolved; skipped
+to keep batch validation moving. Revisit after the broader pass completes.
+
+- **cutsceneCamera_focusCameraOnPlayerMaybe_8036faa** (batch 46-60):
+  1666 bytes differ in `intro_to_end_tutorial` last frame. C codegen
+  was saving/restoring r10 around the bl to camera_writeUnk03_14_c
+  (gcc sees the `register u8 *r10p asm("r10")` pattern as needing
+  preservation across calls). Switching to absolute `eToolkit`
+  reference removed the save/restore but divergence persisted —
+  decomp final PC=0x00000068 (different BIOS handler) vs orig
+  0x080003A8 (IntrWait), suggesting a deeper execution-path
+  divergence not explained by cycle overhead. Function calls
+  camera_writeUnk03_14_80301b2_c which passes standalone; the call
+  chain or some argument-passing detail is the suspect.
+
+**Status:** open. Skipped during the batch sweep.
+
