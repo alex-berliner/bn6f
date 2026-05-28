@@ -22,7 +22,10 @@ TRACK=tools/bn6f-track/target/release/bn6f-track
 # DECOMP_<sym>` in asm/*.s. Same convention as per_patch_videos.sh.
 grep -hoE "\.ifndef DECOMP_\S+" asm/*.s | sed 's/.*DECOMP_//' | sort -u \
   > /tmp/m_canonical_$$.txt
-mapfile -t ENTRIES < <(head -15 /tmp/m_canonical_$$.txt)
+BATCH="${BATCH:-1-15}"
+BATCH_START="${BATCH%-*}"
+BATCH_END="${BATCH#*-}"
+mapfile -t ENTRIES < <(awk -v s=$BATCH_START -v e=$BATCH_END 'NR>=s && NR<=e' /tmp/m_canonical_$$.txt)
 echo "Loaded ${#ENTRIES[@]} patches: ${ENTRIES[0]} ... ${ENTRIES[-1]}"
 
 # Backup defensively (sanity-check live manifest isn't a partial stub).
