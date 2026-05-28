@@ -144,29 +144,13 @@ export -f run_job
 xargs -d '\n' -P "$PARALLEL" -I {} bash -c 'run_job "$@"' _ {} < "$JOBS"
 rm -rf "$ROM_DIR" "$JOBS"
 
-echo
-echo "=== phase 3: PSNR-based pixel comparison (decomp vs orig) ==="
-echo "PSNR=inf means pixel-identical decoded frames. <inf = real divergence."
-echo "libx264 mp4 byte-compare is unreliable (encoder isn't byte-deterministic),"
-echo "but the decoded pixels ARE deterministic — PSNR is the honest signal."
-echo
-printf "%-55s  %-12s\n" "patch / bk2" "PSNR (y avg)"
-printf -- "------------------------------------------------------------------\n"
-for d in $OUT/*/; do
-  patch=$(basename "$d")
-  [ "$patch" = "_base" ] && continue
-  for bk2 in tests/fixtures/demos/bk2/*.bk2; do
-    stem=$(basename "$bk2" .bk2)
-    orig=$OUT/_base/${stem}__orig.mp4
-    dec=$d/${stem}__decomp.mp4
-    [ -s "$orig" ] && [ -s "$dec" ] || continue
-    # ffmpeg PSNR — extract average y PSNR from log line
-    psnr=$(ffmpeg -y -i "$orig" -i "$dec" -lavfi psnr -f null - 2>&1 \
-           | awk '/Parsed_psnr/ { for(i=1;i<=NF;i++) if($i ~ /^average:/) print substr($i,9) }')
-    [ -z "$psnr" ] && psnr="??"
-    printf "%-55s  %s\n" "$patch / $stem" "$psnr"
-  done
-done
+# mp4 byte-compare is unreliable (libx264 isn't byte-deterministic across
+# runs). PSNR comparison was tried but recvideo's encoded frames don't
+# match framebuf's direct-emulator output — recvideo has some frame-output
+# bug worth tracking separately. For per-patch correctness, use
+# tools/per_patch_last_frame.sh (raw PPM compare via framebuf, reliable)
+# or `bn6f-track lockstep` (with drift classifier). The mp4s here are
+# for visual review only.
 
 echo
 echo "=== done. videos at $OUT/<NNNNNNN_patch>/ ==="
