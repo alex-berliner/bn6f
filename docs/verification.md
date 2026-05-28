@@ -106,12 +106,63 @@ Implemented via the public `mCore->step()` and `mTimingCurrentTime`
 APIs — no libmgba source mods needed (an earlier scoping was wrong
 about this). See `tools/bn6f-track/README.md#slack`.
 
-Practical use: run slack on the orig ROM with each bk2 fixture,
-identify frames with the most mainline_steps. Those are the frames
-where any added trampoline overhead (currently being trampolined or
-proposed) is most likely to push past the VBlank deadline. For
-high-density frames, either keep the function inlined (no trampoline)
-or accept the expected drift-class divergence.
+### Two-class divergence pattern (May 2026)
+
+Correlating the 12 patch failures from the per-patch survey against
+the orig's per-frame mainline_steps revealed **two distinct divergence
+classes**, both rooted in trampoline cycle drift:
+
+**Class A — local slack overrun (busy frames):**
+Failing frame is itself a high-mainline-step frame (68–81% of bk2 max).
+Trampoline overhead within that frame eats local slack, mainline runs
+past VBlank, handler interrupts in-progress work. Examples:
+
+| patch | bk2 | frame | mainline_steps | % of max |
+|---|---|---|---|---|
+| addChips | intro | 404 | 57305 | 78% |
+| camera_writeUnk03 | intro | 404 | 57305 | 78% |
+| ByteFill | coldboot | 283 | 49630 | 81% |
+| battle_clearFlags | tutorial | 11231 | 55339 | 73% |
+| battle_setFlags | tutorial | 9163 | 55268 | 73% |
+| battle_getFlags | tutorial | 7321 | 51806 | 68% |
+| battle_isTimeStop | tutorial | 7321 | 51806 | 68% |
+
+**Class B — scene-transition wells (delayed manifestation):**
+Failing frame has LOW mainline_steps (~4200, often 6% of bk2 max) and
+`first_mainline_pc = 0x03005B04` (the IWRAM IRQ master handler). These
+are scene-transition frames where mainline finishes quickly. The actual
+drift accumulated during the HEAVY frames preceding the transition;
+the transition is just where accumulated drift becomes observable
+(state machine takes a different branch). Examples:
+
+| patch | bk2 | frame | mainline_steps |
+|---|---|---|---|
+| CallBGScrollCallback0 | intro | 2939 | 4183 |
+| chatbox_8040818 | intro | 2939 | 4183 |
+| CallBGScrollCallback1 | intro | 284 | 4183 |
+| CapIncrementGameTimeFrames | intro | 284 | 4183 |
+| battle_networkInvert | tutorial | 9496 | 4214 |
+
+Notice: multiple distinct patches diverge at the SAME frame — strong
+signal that the frame itself (a scene-transition well) is the brittle
+point, not the specific patch. Same-frame clustering also confirms
+the harness is deterministic.
+
+### What the slack profiler does and doesn't predict
+
+- **Predicts well**: identifying high-step "busy" frames where Class A
+  failures will land. The slack curve directly maps onto these.
+- **Predicts indirectly**: scene-transition wells (Class B) — visible
+  as drops in the slack curve following sustained heavy frames.
+- **Doesn't predict**: which specific frame within a well will be the
+  manifestation point. That depends on accumulated drift crossing a
+  state-machine threshold and is not locally observable.
+
+The slack profiler is diagnostic, not predictive at frame granularity.
+But it lets us identify the *load pattern* of a bk2 — useful for
+deciding which functions are safe to trampoline (called only during
+low-step periods) vs. which need inline replacement (called heavily
+during high-step periods).
 
 ## Per-call snapshot model
 

@@ -1359,6 +1359,8 @@ fn slack(rom_path: &str, frames: u32, input_path: Option<&str>,
         for (bi, &edge) in bucket_edges.iter().enumerate() {
             if mainline_steps >= edge { buckets[bi] += 1; }
         }
+        // Every-frame machine-readable to stdout; sparse human view to stderr.
+        println!("{} {} {} 0x{:08X}", i, mainline_steps, halt_steps, first_mainline_pc);
         if i < 30 || i % 500 == 0 {
             eprintln!("  {:>5}  {:>14}  {:>10}  0x{:08X}",
                       i, mainline_steps, halt_steps, first_mainline_pc);
