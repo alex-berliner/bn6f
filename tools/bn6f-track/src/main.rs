@@ -1646,34 +1646,52 @@ fn lockstep(orig_rom: &str, decomp_rom: &str, input_path: &str,
     println!("RESULT: green frames={}", total);
 }
 
-fn framebuf(rom: &str, frames: u32, out_path: &str) {
+fn framebuf(rom: &str, frames: u32, out_path: &str,
+            input_path: Option<&str>, state_path: Option<&str>) {
     install_capturing_logger();
     CAPTURED_LOGS.with(|c| c.borrow_mut().clear());
     let core = Core::new(rom).unwrap_or_else(|e| {
         eprintln!("Core::new failed: {e}");
         process::exit(1);
     });
-    // We must DISABLE frameskip so the PPU actually renders.
-    // Core::new() sets BN6F_TRACK_FRAMESKIP=i32::MAX (no rendering)
-    // unless the env var overrides. Set it back to 0 here.
-    unsafe {
-        let cfg_key = std::ffi::CString::new("frameskip").unwrap();
-        let cfg_val = std::ffi::CString::new("0").unwrap();
-        mgba_sys::mCoreConfigSetIntValue(&mut (*core.raw).config, cfg_key.as_ptr(), 0);
-        let _ = cfg_val;
-        let reload = (*core.raw).reloadConfigOption.expect("reloadConfigOption");
-        reload(core.raw, cfg_key.as_ptr(), &mut (*core.raw).config);
-        let reset = (*core.raw).reset.expect("reset");
-        reset(core.raw);
+    // Two-phase rendering for speed: PPU off for frames 0..N-2 (we only
+    // care about state, not pixels), then PPU on for the final frame.
+    // On a 16441-frame bk2 this is ~30-60× faster than rendering every
+    // frame, since PPU output costs roughly 1-2 ms/frame.
+    if let Some(p) = state_path {
+        if let Err(e) = load_savestate(core.raw, p) {
+            eprintln!("savestate: {e}"); process::exit(1);
+        }
     }
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => load_input_file(p),
+        None => vec![0; frames as usize],
+    };
     let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
     let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
-    for _ in 0..frames {
+    let n = (frames as usize).min(inputs.len());
+    // Headless emulate frames 0..n-2 (Core::new() already set
+    // frameskip=max). Toggle to frameskip=0 immediately before the
+    // final frame so its pixels actually land in the framebuffer.
+    let set_frameskip = |val: i32| unsafe {
+        let cfg_key = std::ffi::CString::new("frameskip").unwrap();
+        mgba_sys::mCoreConfigSetIntValue(&mut (*core.raw).config, cfg_key.as_ptr(), val);
+        let reload = (*core.raw).reloadConfigOption.expect("reloadConfigOption");
+        reload(core.raw, cfg_key.as_ptr(), &mut (*core.raw).config);
+    };
+    for i in 0..n {
+        if i == n.saturating_sub(1) {
+            set_frameskip(0);
+        }
+        let mask = inputs[i] as u32;
         unsafe {
-            set_keys(core.raw, 0);
+            set_keys(core.raw, mask);
             run_frame(core.raw);
         }
     }
+    // Edge case: n == 0 (no frames requested) — still set frameskip=0
+    // in case caller dumps anyway. The framebuffer will be blank.
+    if n == 0 { set_frameskip(0); }
     // Read framebuffer: 256 stride × 160 rows of RGBA u32. GBA visible
     // area is 240×160; we save the visible portion as PPM (P6 RGB).
     let buf_ptr = core._video_buf.as_ptr() as *const u32;
@@ -3213,15 +3231,25 @@ fn main() {
             bootstate(rom, frames, state);
         }
         "framebuf" => {
-            // framebuf <rom> <frames> <out.ppm>
-            // Runs ROM for <frames> frames, dumps the final framebuffer
-            // as a PPM (256x160 RGBA → RGB). Useful for "is the screen
-            // showing the game or a black-screen crash?"
+            // framebuf <rom> <frames> <out.ppm> [--input PATH] [--state PATH]
+            // Runs ROM for <frames> frames (optionally with bk2-extracted
+            // input + savestate), dumps the final framebuffer as a PPM
+            // (240x160 RGB).
             let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
             let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
                 .unwrap_or_else(|| usage(&args[0]));
             let out = args.get(4).unwrap_or_else(|| usage(&args[0]));
-            framebuf(rom, frames, out);
+            let mut input_path: Option<&str> = None;
+            let mut state_path: Option<&str> = None;
+            let mut i = 5;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--input" => { input_path = args.get(i+1).map(String::as_str); i += 2; }
+                    "--state" => { state_path = args.get(i+1).map(String::as_str); i += 2; }
+                    _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
+                }
+            }
+            framebuf(rom, frames, out, input_path, state_path);
         }
         "crashwatch" => {
             // crashwatch <rom> <frames> [--input <path>]
