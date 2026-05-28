@@ -1935,7 +1935,7 @@ fn load_input_file(path: &str) -> Vec<u16> {
     bytes.chunks_exact(4).map(|c| u16::from_le_bytes([c[0], c[1]])).collect()
 }
 
-fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input_path: Option<&str>) {
+fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input_path: Option<&str>, state_path: Option<&str>) {
     eprintln!("=== bn6f-track function tracker ===");
     eprintln!("rom: {rom}");
     eprintln!("frames: {frames}");
@@ -1985,6 +1985,12 @@ fn track(rom: &str, frames: u32, symbols_path: &str, output: Option<&str>, input
         eprintln!("Core::new failed: {e}");
         process::exit(1);
     });
+    if let Some(p) = state_path {
+        if let Err(e) = load_savestate(core.raw, p) {
+            eprintln!("savestate: {e}"); process::exit(1);
+        }
+        eprintln!("loaded savestate: {p}");
+    }
     core.attach_debugger();
     let armed = symbols.len();
     eprintln!("armed {} hooks via O(1) PC dispatcher", armed);
@@ -3276,27 +3282,38 @@ fn main() {
             crashwatch(rom, frames, input_path);
         }
         "track" => {
-            // track <rom> <frames> <symbols> [output] [--input <path>]
+            // track <rom> <frames> <symbols> [output] [--input PATH] [--state PATH]
             let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
             let frames: u32 = args.get(3).and_then(|s| s.parse().ok()).unwrap_or(300);
             let symbols = args.get(4).unwrap_or_else(|| usage(&args[0]));
             let mut rest = &args[5..];
             let mut output: Option<&str> = None;
+            // Positional output filename if first remaining arg isn't a flag.
             if let Some(a) = rest.first() {
-                if a != "--input" {
+                if a != "--input" && a != "--state" {
                     output = Some(a.as_str());
                     rest = &rest[1..];
                 }
             }
             let mut input_path: Option<&str> = None;
-            if rest.first().map(String::as_str) == Some("--input") {
-                input_path = rest.get(1).map(String::as_str);
-                if input_path.is_none() {
-                    eprintln!("--input needs a path");
-                    usage(&args[0]);
+            let mut state_path: Option<&str> = None;
+            let mut i = 0;
+            while i < rest.len() {
+                match rest[i].as_str() {
+                    "--input" => {
+                        input_path = rest.get(i+1).map(String::as_str);
+                        if input_path.is_none() { eprintln!("--input needs a path"); usage(&args[0]); }
+                        i += 2;
+                    }
+                    "--state" => {
+                        state_path = rest.get(i+1).map(String::as_str);
+                        if state_path.is_none() { eprintln!("--state needs a path"); usage(&args[0]); }
+                        i += 2;
+                    }
+                    _ => { eprintln!("unknown arg: {}", rest[i]); usage(&args[0]); }
                 }
             }
-            track(rom, frames, symbols, output, input_path);
+            track(rom, frames, symbols, output, input_path, state_path);
         }
         "record" => {
             // record <rom> <frames> <symbols> <session_dir>
@@ -3410,7 +3427,7 @@ fn main() {
             let rom = &args[1];
             let frames: u32 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(60);
             match args.get(3) {
-                Some(symbols) => track(rom, frames, symbols, args.get(4).map(String::as_str), None),
+                Some(symbols) => track(rom, frames, symbols, args.get(4).map(String::as_str), None, None),
                 None => smoke_test(rom, frames),
             }
         }
