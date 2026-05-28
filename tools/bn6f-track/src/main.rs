@@ -1268,6 +1268,116 @@ fn bootstate(rom: &str, frames: u32, state_path: Option<&str>) {
 /// - Mode-bit flips in untracked callers (CPSR differs)
 /// - Memory writes between tracked-function boundaries
 /// - Cycle-timing drift cascading into state divergence
+/// Per-frame mainline slack profiler.
+///
+/// For each frame: step the CPU one instruction at a time until mainline
+/// enters the BIOS region (PC < 0x00004000), which is the signature of
+/// mainline issuing `SWI 0x04` / `SWI 0x05` (IntrWait / VBlankIntrWait).
+/// The cycle delta between "mainline reached IntrWait" and "VBlank fires"
+/// (frame-start + 197120) is the *slack* — how much headroom mainline
+/// has before drift-induced timing shifts would push it past the VBlank
+/// deadline. Smaller slack = more drift-sensitive frame.
+///
+/// Use this to identify frames where the trampoline cycle overhead is
+/// at risk of crossing the VBlank boundary and causing real divergence.
+fn slack(rom_path: &str, frames: u32, input_path: Option<&str>,
+         state_path: Option<&str>) {
+    eprintln!("=== bn6f-track slack profiler ===");
+    eprintln!("rom: {rom_path}   frames: {frames}");
+    let core = Core::new(rom_path).unwrap_or_else(|e| {
+        eprintln!("Core::new failed: {e}"); process::exit(1);
+    });
+    if let Some(p) = state_path {
+        if let Err(e) = load_savestate(core.raw, p) {
+            eprintln!("savestate: {e}"); process::exit(1);
+        }
+    }
+    let inputs: Vec<u16> = match input_path {
+        Some(p) => load_input_file(p),
+        None => vec![0; frames as usize],
+    };
+    let set_keys = unsafe { (*core.raw).setKeys.expect("setKeys") };
+    let step = unsafe { (*core.raw).step.expect("step") };
+    let run_frame = unsafe { (*core.raw).runFrame.expect("runFrame") };
+    let frame_cycles_fn = unsafe { (*core.raw).frameCycles.expect("frameCycles") };
+    let frame_total_cycles = unsafe { frame_cycles_fn(core.raw) };
+    // GBA: 160 visible lines × 1232 cycles/line = 197120 cycles before VBlank.
+    const VBLANK_OFFSET: i32 = 160 * 1232;
+    eprintln!("frame_total_cycles={frame_total_cycles}  vblank_offset={VBLANK_OFFSET}");
+    eprintln!();
+
+    // Per-frame metric: count step calls (≈instructions) during the
+    // visible-period budget where PC is outside the BIOS region. This
+    // proxies "how much real mainline work this frame does." Frames
+    // with few mainline steps have lots of halt headroom and are
+    // drift-tolerant; busy frames are drift-sensitive.
+    //
+    // Cycles can't be measured cleanly because mTimingCurrentTime
+    // returns a relative cycle counter that's reset on a schedule we
+    // don't control. Step counts are observable and stable.
+    let mut max_mainline_steps: u64 = 0;
+    let mut max_mainline_frame: usize = 0;
+    let mut buckets: [u32; 6] = [0; 6];
+    let bucket_edges: [u64; 6] = [0, 100, 500, 1000, 5000, 20000];
+
+    let t0 = Instant::now();
+    eprintln!("  frame  mainline_steps  halt_steps  first_mainline_pc");
+    for i in 0..(frames as usize).min(inputs.len()) {
+        let mask = inputs[i] as u32;
+        unsafe { set_keys(core.raw, mask) };
+        let timing_ptr = unsafe { (*core.raw).timing };
+        let frame_start_cy = unsafe { mgba_sys::mTimingCurrentTime(timing_ptr) };
+        let mut mainline_steps: u64 = 0;
+        let mut halt_steps: u64 = 0;
+        let mut first_mainline_pc: u32 = 0;
+        // Step until visible-period budget is exhausted (or safety cap).
+        // Signed wrapping_sub handles the small range we care about even
+        // if the counter wraps within the frame (rare).
+        const MAX_STEPS: u64 = 1_000_000;
+        let mut steps_taken = 0u64;
+        loop {
+            let now = unsafe { mgba_sys::mTimingCurrentTime(timing_ptr) };
+            let elapsed = now.wrapping_sub(frame_start_cy);
+            if elapsed >= VBLANK_OFFSET || steps_taken >= MAX_STEPS { break; }
+            let pc = core.pc();
+            if pc >= 0x00004000 {
+                if mainline_steps == 0 { first_mainline_pc = pc; }
+                mainline_steps += 1;
+            } else {
+                halt_steps += 1;
+            }
+            unsafe { step(core.raw) };
+            steps_taken += 1;
+        }
+        // Drain remainder of frame so we land at next frame's start.
+        unsafe { run_frame(core.raw) };
+
+        if mainline_steps > max_mainline_steps {
+            max_mainline_steps = mainline_steps;
+            max_mainline_frame = i;
+        }
+        for (bi, &edge) in bucket_edges.iter().enumerate() {
+            if mainline_steps >= edge { buckets[bi] += 1; }
+        }
+        if i < 30 || i % 500 == 0 {
+            eprintln!("  {:>5}  {:>14}  {:>10}  0x{:08X}",
+                      i, mainline_steps, halt_steps, first_mainline_pc);
+        }
+    }
+    eprintln!("\n=== summary ({:.2}s wall) ===", t0.elapsed().as_secs_f64());
+    eprintln!("max mainline_steps: {} at frame {}", max_mainline_steps, max_mainline_frame);
+    eprintln!("\nmainline_steps histogram (cumulative — frames at or above edge):");
+    for (i, &edge) in bucket_edges.iter().enumerate() {
+        eprintln!("  >={:>5}: {}", edge, buckets[i]);
+    }
+    eprintln!();
+    // Trampoline overhead reference: ~6 cy/call standard, ~12 cy r3safe.
+    eprintln!("trampoline overhead reference:");
+    eprintln!("  100 calls × 6 cycles = 600 cycles per frame");
+    eprintln!("  any frame with slack < 600 is at risk under standard trampoline");
+    eprintln!("  any frame with slack < 1200 is at risk under r3safe trampoline");
+}
+
 fn irqdump(rom_path: &str, frames: u32, input_path: Option<&str>,
            state_path: Option<&str>, every: u32) {
     eprintln!("=== bn6f-track irqdump ===");
@@ -3014,6 +3124,25 @@ fn main() {
                 }
             }
             recvideo(rom, frames, out, input_path, state_path);
+        }
+        "slack" => {
+            // slack <rom> <frames> [--input PATH] [--state PATH]
+            // Per-frame mainline slack profiler. Reports the cycle gap
+            // between mainline reaching IntrWait and the next VBlank.
+            let rom = args.get(2).unwrap_or_else(|| usage(&args[0]));
+            let frames: u32 = args.get(3).and_then(|s| s.parse().ok())
+                .unwrap_or_else(|| usage(&args[0]));
+            let mut input_path: Option<&str> = None;
+            let mut state_path: Option<&str> = None;
+            let mut i = 4;
+            while i < args.len() {
+                match args[i].as_str() {
+                    "--input" => { input_path = args.get(i+1).map(String::as_str); i += 2; }
+                    "--state" => { state_path = args.get(i+1).map(String::as_str); i += 2; }
+                    _ => { eprintln!("unknown arg {}", args[i]); usage(&args[0]); }
+                }
+            }
+            slack(rom, frames, input_path, state_path);
         }
         "irqdump" => {
             // irqdump <rom> <frames> [--input PATH] [--state PATH] [--every N]

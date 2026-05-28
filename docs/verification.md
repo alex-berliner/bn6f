@@ -94,13 +94,24 @@ In the interim:
 - A future fully-decomp'd build can be lockstep'd against orig with
   no trampolines; that's the authoritative correctness check.
 
-### Future work
+### Slack profiler (shipped)
 
-The proposed cycle-precise slack profiler (measure orig's headroom
-between mainline finishing and VBlank firing, per frame) would let
-us predict which frames are drift-sensitive and either skip-trampoline
-or inline-replace specific functions. That requires forking and
-rebuilding libmgba (instruction-callback hook), so it's deferred.
+`bn6f-track slack ROM FRAMES [--input ...] [--state ...]` measures
+per-frame mainline work by single-stepping the CPU through the
+visible-period budget and counting how many steps occur with PC
+outside BIOS. Use it to identify which frames have little headroom
+and would diverge first under trampoline overhead.
+
+Implemented via the public `mCore->step()` and `mTimingCurrentTime`
+APIs — no libmgba source mods needed (an earlier scoping was wrong
+about this). See `tools/bn6f-track/README.md#slack`.
+
+Practical use: run slack on the orig ROM with each bk2 fixture,
+identify frames with the most mainline_steps. Those are the frames
+where any added trampoline overhead (currently being trampolined or
+proposed) is most likely to push past the VBlank deadline. For
+high-density frames, either keep the function inlined (no trampoline)
+or accept the expected drift-class divergence.
 
 ## Per-call snapshot model
 

@@ -52,6 +52,7 @@ fn main() {
         // Only generate bindings for the symbols/types we name explicitly
         // — the full mGBA header set is huge and we don't need all of it.
         .allowlist_function("mCore.*")
+        .allowlist_function("mTiming.*")
         .allowlist_function("mLog.*")
         .allowlist_function("mDebugger.*")
         .allowlist_function("ARMDebugger.*")

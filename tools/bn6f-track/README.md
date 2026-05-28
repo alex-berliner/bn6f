@@ -31,6 +31,7 @@ invocations don't need `LD_LIBRARY_PATH`.
 | [`recvideo`](#recvideo) | mp4 encode of N frames |
 | [`lockstep`](#lockstep) | Per-frame full-state divergence detector with drift-vs-bug classifier |
 | [`irqdump`](#irqdump) | Sample IE/IF/IME across a run to inventory which IRQs fire |
+| [`slack`](#slack) | Per-frame mainline-step count; identifies drift-sensitive frames |
 
 ### smoke
 
@@ -202,6 +203,32 @@ Use to verify which IRQs actually fire during gameplay. For BN6F:
 only **VBlank** fires; VCount/GamePak are enabled but never raised
 during normal play. That narrows the cycle-sensitive code surface
 to VBlank-relative timing.
+
+### slack
+
+```
+bn6f-track slack ROM FRAMES [--input PATH] [--state PATH]
+```
+
+Per-frame "mainline work" profiler. For each frame, single-steps the
+CPU through the visible-period budget (197120 cycles before VBlank)
+and counts how many step calls had PC outside the BIOS region
+(0x00000000..0x00004000). High mainline-step count = busy frame =
+less slack before trampoline overhead would push past VBlank.
+
+Output per frame: `mainline_steps`, `halt_steps`, `first_mainline_pc`.
+Plus a histogram of mainline_steps across the run and the busiest
+frame index/PC.
+
+Use to predict which frames are drift-sensitive before running a
+full lockstep. A frame with 0 mainline_steps tolerates any trampoline
+overhead; a frame with 60K+ mainline_steps may be running close to
+the VBlank deadline already.
+
+Caveat: uses `mTimingCurrentTime` which returns a relative cycle
+counter. Within a single frame the value is monotonic and trustworthy;
+across-frame deltas may wrap. The metric is step-count, not cycles,
+to sidestep the wrap issue.
 
 ## Environment
 
