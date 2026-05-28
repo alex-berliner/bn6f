@@ -75,15 +75,26 @@ echo
 echo "=== phase 1: pre-build ${#ENTRIES[@]} per-patch decomp ROMs sequentially ==="
 ROM_DIR=/tmp/per_patch_roms_$$
 mkdir -p "$ROM_DIR"
+# Patch dir names are prefixed with their 7-digit alphabetic position
+# (e.g. 0000016_chatbox_8045F4C) so listings sort the same as the
+# canonical patch order, not lexicographically by function name.
+position_of() {
+  local fn=$1
+  awk -v target="$fn" 'NR>=1 { if ($0 == target) { print NR; exit } }' /tmp/m_canonical_$$.txt
+}
+declare -A DIR_OF
 for fn in "${ENTRIES[@]}"; do
-  outdir=$OUT/$fn
+  pos=$(position_of "$fn")
+  dirname=$(printf "%07d_%s" "$pos" "$fn")
+  DIR_OF[$fn]=$dirname
+  outdir=$OUT/$dirname
   mkdir -p "$outdir"
   for bk2 in tests/fixtures/demos/bk2/*.bk2; do
     stem=$(basename "$bk2" .bk2)
     ln -sf "../_base/${stem}__orig.mp4" "$outdir/${stem}__orig.mp4"
   done
   rom_out=$ROM_DIR/bn6f_${fn}.gba
-  printf "  building decomp ROM for %-40s " "$fn"
+  printf "  building decomp ROM for %-40s " "$dirname"
   cp "$HEADER" tools/decomp_manifest.txt
   echo "$fn" >> tools/decomp_manifest.txt
   touch tools/decomp_manifest.txt
@@ -102,14 +113,15 @@ echo "using $PARALLEL workers"
 JOBS=/tmp/per_patch_jobs_$$.txt
 : > "$JOBS"
 for fn in "${ENTRIES[@]}"; do
+  dirname="${DIR_OF[$fn]}"
   for bk2 in tests/fixtures/demos/bk2/*.bk2; do
     stem=$(basename "$bk2" .bk2)
     inp=tests/fixtures/demos/bk2/$stem.input
     ss=tests/fixtures/demos/bk2/$stem.ss
     frames=$(($(stat -c%s "$inp") / 4))
-    out=$OUT/$fn/${stem}__decomp.mp4
+    out=$OUT/$dirname/${stem}__decomp.mp4
     rom=$ROM_DIR/bn6f_${fn}.gba
-    echo "$rom|$frames|$inp|$ss|$out|$fn|$stem" >> "$JOBS"
+    echo "$rom|$frames|$inp|$ss|$out|$dirname|$stem" >> "$JOBS"
   done
 done
 total=$(wc -l < "$JOBS"); echo "$total jobs queued"
