@@ -1,0 +1,19 @@
+[package]
+name = "bn6f-validate"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "bn6f-validate"
+path = "src/main.rs"
+
+[dependencies]
+sha2 = "0.10"
+rayon = "1.10"
+
+[build-dependencies]
+bindgen = "0.69"
+
+[profile.release]
+opt-level = 3
+lto = "thin"

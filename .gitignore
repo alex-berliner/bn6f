@@ -94,3 +94,4 @@ temp/
 !.claude/cron_history.md
 !.claude/decomp_stats.tsv
 build/patch_bk2_xref.csv
+/tools/bn6f-validate/target/
