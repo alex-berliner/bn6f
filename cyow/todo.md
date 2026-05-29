@@ -155,5 +155,40 @@ first. Convert now → drift → revert → redo.
 - [ ] Does the linker script (`ld_script_decompile.ld`) already give us a
       relocation target region, or does that need new sections?
 
+## Feature 3 — Wrapper macros → NO RESOLUTION, demonstrator required
+
+**Verdict deferred.** Discussion raised the possibility that an agbcc
+epilogue change (emit mode-preserving `pop {pc}`/`mov pc, lr` instead of
+interworking `bx lr`) could eliminate the `DECOMP_VTABLE_WRAPPER` class
+entirely, optionally plus a fault-aware build linter. This is unverified
+and does NOT escape the methodology-revalidation step. No decision until
+a demonstrator proves the premise.
+
+### Build the epilogue demonstrator (gate before any agbcc decision)
+
+- [ ] Pick one vtable-dispatched function (e.g. the `sub_81231E0` class,
+      dispatched via `off_81211D0` in `asm/asm32.s`).
+- [ ] Produce **two binaries** of the same conversion:
+      - **OFF**: plain agbcc `bx lr` epilogue (no VTABLE wrapper).
+      - **ON**: mode-preserving epilogue (`pop {pc}`/`mov pc, lr`).
+- [ ] With OFF, **capture the actual failure** — validator diff,
+      first_diff_frame, wrong pixels, or crash. Not "it should fail" —
+      the real captured error, side by side.
+- [ ] With ON, show it passes.
+- [ ] Outcome gates the decision:
+      - reproduces OFF + fixed ON → epilogue direction proven; revisit
+        options A/B/C and the [[decomp_no_agbcc_fork]] memory.
+      - does not reproduce → premise wrong, wrappers stay; close it out.
+
+### Claims to re-verify if the demonstrator passes (do NOT trust on assertion)
+
+- [ ] That changing agbcc's epilogue can't affect the SHA-exact `make
+      all` (claim: that path is pure ASM, agbcc only runs in
+      `make decompile`). Verify empirically (`make all` still matches).
+- [ ] Whether an opt-in function attribute is enough, or a global codegen
+      change is needed.
+- [ ] Whether the fault-aware linter (option B) can reuse the pin census
+      and live in external tooling (no agbcc fork).
+
 ---
-_Last updated: 2026-05-29 14:33:26 -0400_
+_Last updated: 2026-05-29 15:11:14 -0400_
