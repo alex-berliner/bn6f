@@ -13,8 +13,10 @@ Audience: someone converting an ASM function to C in this repo.
    means the caller uses the indirect `mov lr, pc; bx rN` pattern and
    the C version must use `DECOMP_VTABLE_WRAPPER` (see [Wrapper macros](#wrapper-macros)).
 5. Add the symbol to `tools/decomp_manifest.txt`.
-6. `make verify -- <0xADDR>` and watch the output.
-7. If red, see [docs/debugging.md](debugging.md).
+6. Validate: `bn6f-validate run --patch <Sym>` — per-frame pixel-hash
+   of the patched ROM vs orig across the bk2 fixtures.
+7. If it fails, recheck PAD, wrapper macro, and arg/return types
+   (see [Common pitfalls](#common-pitfalls)).
 
 ## ASM gating
 
@@ -63,7 +65,7 @@ so the prologue/epilogue handle thumb ↔ ARM mode automatically — but
 see [LR-bit-bx hazard](#lr-bit-bx-hazard).
 
 **Don't** add error handling, bounds checks, or validation that the
-orig didn't do. The harness verifies behavior matches exactly — extra
+orig didn't do. The validator checks behavior matches exactly — extra
 defensive code will fail in subtle ways (e.g., orig overflows by
 design and the game depends on the wrap).
 
@@ -174,81 +176,54 @@ One symbol per line, no leading/trailing whitespace. Comments allowed
 (`#` at line start). The order doesn't matter; `make decompile` reads
 the whole file at config time.
 
-## Verifying
+## Validating
 
-Two checks. **Use both.**
-
-```
-make verify         # fast iteration: per-call snapshot oracle
-make verify-strict  # authoritative: per-frame lockstep state comparison
-```
-
-`make verify` catches bugs inside the function body. `make verify-strict`
-catches bugs that leak past the function (mode-bit flips, untracked-
-caller corruption, anything the per-call snapshot window misses).
-**A patch that passes verify but fails verify-strict is broken** — see
-[debugging.md](debugging.md).
-
-`make verify` produces output like:
+Validation is a single check: does the patched ROM render the same
+pixels as orig, every frame, on every bk2 fixture?
 
 ```
-[intro] 24/24 pairs (0 failed; 7 fns skipped)
-[coldboot] 0/0 pairs (0 failed; 142 fns skipped)
-[intro_to_end_tutorial] 41/41 pairs (0 failed; 12 fns skipped)
+# build the validator once
+(cd tools/bn6f-validate && cargo build --release)
+
+# validate just the function you added
+bn6f-validate run --patch FooBar
+
+# validate everything (orig vs each patch, parallel)
+bn6f-validate run -j 8
 ```
 
-`X/N pairs` = `passed/total` for each tracked function in each bk2.
-A non-zero `failed` count is the trigger to debug. See
-[docs/debugging.md](debugging.md).
-
-The `skipped` count is the incremental-cache (Opt D) skipping pairs
-whose code-radius sha hasn't changed since the last green run —
-expected after a small edit.
-
-`make verify-strict` runs lockstep against each bk2. On divergence:
+`run` builds the orig + per-patch ROMs, replays each `.bk2` in
+`tests/fixtures/demos/bk2/` through both under libmgba, SHA256-hashes
+the visible framebuffer per frame, and diffs the hash streams. A patch
+passes only if its hash stream is byte-identical to orig's on every
+fixture. Results land in `build/validate_results.csv`:
 
 ```
-*** DIVERGENCE at frame 279 ***
-differing components: r0, r1, ..., iwram
-  *pc          80014f6    87fe8d4    <- decomp's PC is in .c_code
-  ...
+rom_stem,bk2,verdict,first_diff_frame
+0000007_FooBar,intro,pass,
+0000007_FooBar,coldboot,pass,
+0000008_BazQux,intro,fail,279
 ```
 
-The decomp PC tells you which C function caused the divergence. Map
-it via:
+A `fail` with a `first_diff_frame` is the trigger to debug: that frame
+is where the patched ROM first diverged from orig. Render both to mp4
+for a visual look with `bn6f-validate run --patch BazQux --videos`
+(review only — the hashes are the correctness signal), then fix or
+revert that conversion.
 
-```
-arm-none-eabi-nm --numeric-sort build/bn6f.elf | grep -B 1 087fe8d
-```
+See [../tools/bn6f-validate/README.md](../tools/bn6f-validate/README.md)
+for the `hash` / `video` / `both` / `compare` subcommands used to drill
+into a single (ROM × bk2) pass.
 
-Then fix or revert that conversion.
-
-### Per-function verify
-
-To check just one function:
-
-```
-tools/bn6f-track/target/release/bn6f-track verify-all \
-    --orig build/bn6f_orig.gba \
-    --decomp build/bn6f_decomp.gba \
-    --symbols tools/function_symbols.txt \
-    --demos-root tests/fixtures/demos \
-    --cache-dir .verify-cache \
-    0x08000A3C
-```
-
-`0x08000A3C` is the orig address of the target. Find it with
-`arm-none-eabi-nm build/bn6f_orig.elf | grep FooBar`.
-
-## When verify is green
+## When validation is green
 
 Commit with a clear message. The conventional format in this repo:
 
 ```
 Convert N more leaves (category / category)
 
-- FooBar (0x08000920) : 350/350 pairs
-- BazQux (0x08000A3C) : 241/241 pairs
+- FooBar (0x08000920)
+- BazQux (0x08000A3C)
 
 Co-Authored-By: ...
 ```
@@ -258,10 +233,9 @@ Co-Authored-By: ...
 | Symptom | Likely cause |
 |---|---|
 | `make decompile` fails with `cannot find ewram.o` | linker script path drift; run from repo root |
-| verify red with N != orig pair count | trampoline size mismatch; recheck PAD |
-| verify red, all pairs fail | LR-bit-bx; needs `DECOMP_VTABLE_WRAPPER` |
-| verify green, ROM hangs interactively | mode flip in untracked caller; see [debugging.md](debugging.md) |
-| verify green, framebuf differs | timing drift from C-loop vs BIOS SWI; usually harmless until proven otherwise |
+| validate fails from frame 0 on every fixture | trampoline size mismatch (recheck PAD), or LR-bit-bx (needs `DECOMP_VTABLE_WRAPPER`) |
+| validate fails mid-run on one fixture | behavioural bug in the C body; `first_diff_frame` localises it |
+| validate passes but ROM misbehaves interactively | exercise a longer fixture; possible mode flip in an untracked caller |
 | ROM size > 16 MB | C functions overflowed `.c_code`; bump LENGTH in `ld_script_decompile.ld` |
 
 ## Where to look in the source
@@ -276,3 +250,6 @@ Co-Authored-By: ...
 | `ld_script_decompile.ld` | decomp build linker script (`.c_code` section) |
 | `issues/decomp-blockers.md` | open blockers preventing larger fn decomp |
 | `issues/concerns/` | reference docs for ABI, timing, IRQ, etc. |
+
+---
+_Last updated: 2026-05-29 12:48:16 -0400_

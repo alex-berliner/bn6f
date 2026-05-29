@@ -1,15 +1,20 @@
 ---
-description: One iteration of fast continuous ASM→C decomp. Pick a candidate, convert, verify, commit, push, compact. Designed to be driven by `/loop /decomp-step` — move fast, revert ruthlessly on failure, lean on the cache so each iteration is cheap.
+description: One iteration of fast continuous ASM→C decomp. Pick a candidate, convert, validate, commit, push, compact. Designed to be driven by `/loop /decomp-step` — move fast, revert ruthlessly on failure.
 ---
 
-You are the **decomp workhorse**. The infrastructure is fast:
-- Incremental verify means a green pass is ~5s.
-- Per-fn cache means only changed-radius pairs replay.
-- There are thousands of candidate functions still in ASM.
+You are the **decomp workhorse**. Builds are quick and there are
+thousands of candidate functions still in ASM.
+
+> **TODO — validation gate unset.** The old `make verify` per-call
+> oracle was removed. Validation now runs through `tools/bn6f-validate`
+> (per-frame pixel-hash vs orig across the bk2 fixtures). Wire the exact
+> command + cadence into the "Validate the batch" step below before
+> relying on this loop; the steps that referenced `make verify` are
+> flagged with TODOs.
 
 Goal each iteration: **a batch of 8-12 converted functions, committed individually, pushed.**
 
-Verify is the bottleneck (~57s per run) — its cost is fixed regardless of how many fns are added between runs. At batch=10, per-fn verify drops to ~6s and overhead dominates. Push toward 10+ when the candidate set is coherent (siblings, same pattern). Drop back to 4-5 if candidates are heterogeneous and a failure could cascade through suspect identification.
+Validation is the per-batch bottleneck and its cost is roughly fixed regardless of how many fns are added between runs, so batching amortises it. Push toward 10+ when the candidate set is coherent (siblings, same pattern). Drop back to 4-5 if candidates are heterogeneous and a failure could cascade through suspect identification.
 
 Don't agonize. Don't deeply debug. If a batch goes red, pick out the failing fn(s), revert just those, and ship the rest. Move.
 
@@ -53,18 +58,21 @@ For every candidate in the batch:
 
 Keep a mental (or actual) list of `(symbol, asm_file, c_file)` so you can later revert specific fns surgically.
 
-## Verify the batch (~57s)
+## Validate the batch
 
-```sh
-/usr/bin/time -f "%e" -o /tmp/decomp_step_verify make verify 2>&1 | tee /tmp/decomp_step_log
-```
+> **TODO — concrete command unset.** `make verify` no longer exists.
+> Run `tools/bn6f-validate` over the batch's patches and capture the
+> result + wall time here, writing `build/validate_results.csv`
+> (e.g. `bn6f-validate run --start <a> --end <b> -j 8`). Until this is
+> filled in, the loop has no automated gate — confirm the chosen
+> command before trusting a "green" pass.
 
-Inspect the log:
+Inspect `build/validate_results.csv`:
 
-- **Green (`0 failed` across all sessions):** all conversions are good. Skip to "Commit individually".
-- **Red:** parse the log for `[FAIL] <fn_name>:` lines AND `first failure: ...` lines. Each FAIL line names a fn whose pairs broke. That's your suspect set.
+- **Green (every patch row `pass` on every fixture):** all conversions are good. Skip to "Commit individually".
+- **Red:** each `fail` row names the patch (`rom_stem`) and the `first_diff_frame` where it diverged from orig. Anything in your batch with a `fail` row is a suspect.
 
-  Some failing fns may be *callers* of a buggy new conversion (their radius includes a regressed callee). The buggy fn itself usually fails too. Look at the SHARED set of fns named in FAIL lines — anything in your batch that also appears there is a suspect.
+  Some failures may be in *callers* of a buggy new conversion. The buggy fn itself usually fails too. Anything in your batch that shows a `fail` is a suspect.
 
   For each suspect fn in your batch:
   1. Try ONE obvious-fix attempt (wrong offset, miscounted pad, u8 vs u16 vs u32, missing `register asm("rN")`, signed-vs-unsigned).
@@ -77,14 +85,14 @@ Inspect the log:
      ```
      A cleaner approach: keep each batch member's edits as a separate uncommitted diff (use `git stash` per fn) so you can re-apply selectively. Or just revert the whole batch and pick the survivors to re-apply.
 
-  3. Re-verify. If still red, revert another suspect. Iterate until green.
+  3. Re-validate. If still red, revert another suspect. Iterate until green.
   4. If you can't get to green after reverting all suspects in the batch, something else is broken — bail to the user.
 
 **Time budget for batch failure resolution: ≤10 minutes.** Beyond that, revert the whole batch and bail.
 
 ## Commit individually + push (1-2 minutes total)
 
-Each surviving fn gets its OWN commit so history stays grep-able by symbol. The verify pass result is the same — we just chose the units of commit independently from the units of verification.
+Each surviving fn gets its OWN commit so history stays grep-able by symbol. The validation result is the same — we just chose the units of commit independently from the units of validation.
 
 ```sh
 # Stage + commit per-fn
@@ -105,13 +113,13 @@ Append one TSV row per fn to `.claude/decomp_stats.tsv`. Columns:
 ts	symbol	status	total_s	verify_s	overhead_s	retries	notes
 ```
 
-- `ts`: ISO 8601 UTC (same `ts` for all rows in this batch — they share a verify)
+- `ts`: ISO 8601 UTC (same `ts` for all rows in this batch — they share a validation run)
 - `symbol`: function name
 - `status`: `pass` | `revert` | `bail`
 - `total_s`: `(now - start) / batch_size` (amortised wall cost per fn)
-- `verify_s`: contents of `/tmp/decomp_step_verify` (per-fn share = `verify_s / batch_size`; record the unaccelerated verify time here — easier to reason about)
-- `overhead_s`: `total_s - (verify_s / batch_size)` — your own work per fn (picking, reading asm, writing C, debugging failures). **This is the lever you control.** If verify is 57s and you're spending 60s per fn on overhead, the verify isn't the bottleneck anymore — you are.
-- `retries`: number of verify retries this iteration (0 on first-try green)
+- `verify_s`: wall time of the batch's validation run (per-fn share = `verify_s / batch_size`). Capture path depends on the command you wire into "Validate the batch".
+- `overhead_s`: `total_s - (verify_s / batch_size)` — your own work per fn (picking, reading asm, writing C, debugging failures). **This is the lever you control.** If validation is, say, ~60s and you're spending 60s per fn on overhead, validation isn't the bottleneck anymore — you are.
+- `retries`: number of validation retries this iteration (0 on first-try green)
 - `notes`: `-` on pass, short reason on revert (`offset wrong`, `r5-asm clobber`, `pad miscount`, `vtable callee`), `bail: <why>` on bail
 
 Create the header row if the file is new. After appending, glance at
@@ -130,7 +138,7 @@ Most iterations have nothing to save. Skip unless a future-you would clearly ben
 
 ## Compact — last action
 
-`/compact`. This iteration's context (the asm searches, verify output, false starts) is no longer load-bearing — it's in git, manifest, memory, and cache. Free the tokens.
+`/compact`. This iteration's context (the asm searches, validation output, false starts) is no longer load-bearing — it's in git, manifest, and memory. Free the tokens.
 
 **Never compact before commit + memory write.** Compaction summarizes; specifics get lost.
 
@@ -143,7 +151,7 @@ Most iterations have nothing to save. Skip unless a future-you would clearly ben
 - Picking a batch all in one tight call cluster. If they all call each other and one breaks, they ALL break — making suspect identification harder. Prefer diversity.
 - Batching > 5. Suspect identification gets confusing; the per-batch failure radius widens.
 - Writing long commit messages explaining the conversion. The diff is the doc.
-- Quoting verify output verbatim in your reply. State counts and move.
+- Quoting validation output verbatim in your reply. State counts and move.
 - Calling subagents. The work is sequential and cheap; no parallelism win.
 - Skipping stats rows. Every fn — pass, revert, or bail — gets a row.
 
@@ -151,5 +159,8 @@ Most iterations have nothing to save. Skip unless a future-you would clearly ben
 
 Bail to the user (don't compact) when:
 - 3 consecutive candidates revert. Suggests a real issue (build broken, infra regression).
-- `make verify` itself errors (not just fails — actually errors, e.g. build error unrelated to your change).
+- the validation run itself errors (not just fails — actually errors, e.g. a build error unrelated to your change).
 - You hit a gotcha not covered in memory or this skill that's worth a human decision.
+
+---
+_Last updated: 2026-05-29 12:55:50 -0400_

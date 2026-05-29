@@ -5,7 +5,7 @@ you're working on.
 
 ## C decompilation
 
-Converting an ASM function to a verified C reimplementation. End-to-end
+Converting an ASM function to a validated C reimplementation. End-to-end
 guide:
 
 → [docs/decomp-workflow.md](docs/decomp-workflow.md)
@@ -14,9 +14,9 @@ Open blockers + work queue:
 
 → [issues/decomp-blockers.md](issues/decomp-blockers.md)
 
-When verify fails:
+How conversions are validated (per-frame pixel-hash vs orig):
 
-→ [docs/debugging.md](docs/debugging.md)
+→ [tools/bn6f-validate/README.md](tools/bn6f-validate/README.md)
 
 ## Pure disassembly / labelling
 
@@ -54,3 +54,6 @@ once you know what you're looking for. Cross-reference against:
 - `docs/documenting/` — function/data documentation conventions
 - `issues/concerns/` — calling convention, ABI, IRQ, etc. reference docs
 - [docs/build.md](docs/build.md) — toolchain layout, what to do when the build breaks
+
+---
+_Last updated: 2026-05-29 12:49:47 -0400_

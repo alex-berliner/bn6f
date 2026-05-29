@@ -12,11 +12,13 @@ loop.
 - ✅ #4 done — objdump cache in find_decomp_candidates.py + wrap_decomp.py
 - ✅ #5 done — `~/.claude/projects/.../memory/reference_struct_offsets.md`
   cheat sheet for Toolkit / GameState / sprite / chatbox / cutscene
-- 🚧 #6 — current per-function PASS/FAIL output already ≤2 lines each;
-  most of the bloat was elsewhere (`make decompile` lines)
 - ⏳ #1 — decompiler pre-pass (needs tooling install)
-- ⏳ #8 — batch-of-5–10 conversions per verify; happening informally already
 - ⏳ #9 — struct .inc → JSON dump; superseded by #5 memory entry
+
+(#6 and #8 dropped: they targeted the old per-function `make verify`
+harness, now replaced by `tools/bn6f-validate` — a whole-run per-frame
+pixel-hash, so there's no per-function PASS/FAIL stream to quieten and
+batching conversions is the default.)
 
 ---
 
@@ -45,17 +47,17 @@ the leaf majority.
 
 ---
 
-## 2. Quieten `make verify` output (biggest single waste)
+## 2. Quieten `make decompile` output (biggest single waste)
 
-Every verify run dumps the full assembler command line — 5 KB+ of
+Every decomp build dumps the full assembler command line — 5 KB+ of
 `--defsym DECOMP_X=1 --defsym DECOMP_Y=1 ...` flags, growing linearly
-with the manifest. That same blob ended up in the AI's context ~30
+with the manifest. That blob ended up in the AI's context dozens of
 times in a single session.
 
 Two ways to fix:
 
-- **Filter**: pipe verify output through `sed 's/--defsym DECOMP_[^ ]* //g'`
-  or `grep -vE 'defsym|^cpp|^tools/agbcc'`. Drops verify output to ~100
+- **Filter**: pipe build output through `sed 's/--defsym DECOMP_[^ ]* //g'`
+  or `grep -vE 'defsym|^cpp|^tools/agbcc'`. Drops build output to ~100
   lines.
 - **Source fix**: switch the Makefile to a per-build response file
   (`@flags.txt`) so the long flag list never appears on the command
@@ -110,29 +112,10 @@ tokens every time we touch an r10-using or struct-using function.
 
 ---
 
-## 6. Compact harness diff output
-
-Add a `--quiet` mode that emits one line per function:
-```
-PASS sub_X 240/240
-FAIL sub_X 0/240 at offset 4 (expected 0xAA got 0xBB)
-```
-Reduces `make verify` reads from ~800 lines to ~90.
-
----
-
 ## 7. (Same root cause as 2 — `--defsym` Makefile parameter)
 
 Move per-decomp flags out of the command line into a response file
 or env var so they stop being echoed in build output.
-
----
-
-## 8. Batch the per-function verify loop
-
-One wrap → one verify cycle was needed during the unstable early
-days of the harness. Now the patterns are stable; batches of 5–10
-conversions per verify are safer and cheaper.
 
 ---
 
@@ -147,5 +130,8 @@ offsets once, query it with a tiny script. ~50 tokens vs ~1000 per
 ## Priority pick
 
 If shipping one thing: **#1 (decompiler pre-pass) + #2 (quiet
-verify)** together. That alone probably halves per-function token
+build output)** together. That alone probably halves per-function token
 spend. Everything else is incremental.
+
+---
+_Last updated: 2026-05-29 12:52:42 -0400_

@@ -5,7 +5,7 @@ We pin a libmgba 0.11 build here because:
 - It can read savestates from mGBA 0.7 through 0.11 inclusive, which
   covers every BizHawk BK2 we throw at it (mainline Debian/Ubuntu
   still ships 0.10 → savestate v7 only).
-- The Rust FFI in `tools/bn6f-track/build.rs` defaults to this
+- The Rust FFI in `tools/bn6f-validate/build.rs` defaults to this
   directory; override with `MGBA_PREFIX=/usr` if you want the
   system copy instead.
 
@@ -27,12 +27,15 @@ cp -r /tmp/mgba-install/include/mgba-util  ./include/
 cp -P /tmp/mgba-install/lib/libmgba.so*    ./lib/
 ```
 
-After updating, force a rebuild of bn6f-track:
+After updating, force a rebuild of bn6f-validate:
 
 ```sh
-( cd ../bn6f-track && cargo clean && cargo build --release )
+( cd ../bn6f-validate && cargo clean && cargo build --release )
 ```
 
 If you update past 0.11 and the savestate version bumps again, the
-sniff logic in `tools/bn6f-track/src/snapshot.rs::strip_bizhawk_prefix`
-only checks the magic byte layout, so it'll keep working.
+savestate-magic sniff in `tools/bn6f-validate/src/main.rs` only checks
+the magic byte layout, so it'll keep working.
+
+---
+_Last updated: 2026-05-29 12:53:17 -0400_

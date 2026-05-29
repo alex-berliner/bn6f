@@ -4,7 +4,7 @@ This repo supports multiple Claude (or human) contributors working on
 decomp in parallel. The shape:
 
 ```
-master                ← merge target, must always pass `make verify`
+master                ← merge target, validation must always pass
 ├─ agent1-work        ← Agent 1's branch + worktree
 ├─ agent2-work        ← Agent 2's branch + worktree
 └─ ...
@@ -87,11 +87,12 @@ tools/claim.py --list
 
 Claims are sorted by symbol, same merge-friendly story as the manifest.
 
-### 4. `make verify` is the merge gate
-Before merging back to master, ALWAYS run `make verify` (or
-`make verify-state STATE_NAME=...` for scene-specific demos). A
-conversion that breaks an existing function is the worst-case
-failure mode in parallel work. The harness catches it.
+### 4. Validation is the merge gate
+Before merging back to master, ALWAYS run `bn6f-validate run` (scope it
+to your patches with `--patch <Sym>` or `--start/--end` while
+iterating). A conversion that breaks an existing function is the
+worst-case failure mode in parallel work; the per-frame pixel-hash
+catches it.
 
 ### 5. Rebase often
 Each agent should `git fetch && git rebase origin/master` at least
@@ -103,7 +104,7 @@ Smaller divergence = smaller conflicts.
 - `include/macros/function.inc`
 - `tools/wrap_decomp.py`, `tools/find_decomp_candidates.py`, `tools/claim.py`
 - `tools/decomp_manifest.txt` formatting (entries are fine)
-- `tools/bn6f-track/`
+- `tools/bn6f-validate/`
 
 If you need to change one of these, coordinate first (in a commit
 message that other agents will see at next rebase, or as an explicit
@@ -116,10 +117,13 @@ When spinning up a new agent, brief it with:
 2. Its file-ownership set (e.g. "only touch asm03_*.s and src/c/*.c
    you create yourself")
 3. Its branch + worktree path
-4. Reminder to: `claim.py` → wrap → write C → `make verify` →
-   release → commit
+4. Reminder to: `claim.py` → wrap → write C →
+   `bn6f-validate run --patch <Sym>` → release → commit
 5. How many functions to convert before stopping (probably 5-10 per
    batch so reviews stay small)
 
 See `token_todo.md` and `structs_plan.md` for the kinds of work
 agents can self-direct.
+
+---
+_Last updated: 2026-05-29 12:49:08 -0400_

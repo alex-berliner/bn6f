@@ -79,8 +79,8 @@ For longer functions paste the ASM verbatim. Don't paraphrase.
 ## Wrapper macros
 
 Three macros in `types.h`. Pick by the calling convention used by the
-function's callers in ASM. Wrong macro = silent failure (verify might
-pass but ROM corrupts state).
+function's callers in ASM. Wrong macro = silent failure (validation
+might pass but ROM corrupts state).
 
 ### `DECOMP_VTABLE_WRAPPER(WRAPPER, IMPL)`
 
@@ -117,8 +117,8 @@ wrapper. See `src/c/spawn_ow_player_object.c` for a worked example.
 ## What to avoid
 
 - **libc functions.** agbcc only links libgcc. Write the loop.
-- **Defensive code.** No bounds checks the orig didn't do. Verify
-  catches behavioral divergence; extra "safety" fails the check.
+- **Defensive code.** No bounds checks the orig didn't do. The
+  validator catches behavioral divergence; extra "safety" fails it.
 - **Comments that describe what the code does.** Names already do
   that. Comments here explain *why this isn't the same as orig* (e.g.
   a subtle ABI detail) or *what bug class triggered the wrapper*.
@@ -126,25 +126,23 @@ wrapper. See `src/c/spawn_ow_player_object.c` for a worked example.
   unit. Use `extern` declarations for ASM-side symbols, never include
   another `.c`.
 
-## Verifying
+## Validating
 
 ```
-make verify
+# build once, then validate the patch you added
+(cd tools/bn6f-validate && cargo build --release)
+bn6f-validate run --patch FooBar
 ```
 
-See [docs/verification.md](../../docs/verification.md). For a single
-function:
+`bn6f-validate run` per-frame pixel-hashes the patched ROM against orig
+across every bk2 fixture; a byte-identical hash stream means the C
+matches. See
+[docs/decomp-workflow.md](../../docs/decomp-workflow.md#validating) and
+[tools/bn6f-validate/README.md](../../tools/bn6f-validate/README.md).
 
-```
-addr=$(grep " FooBar$" tools/function_symbols.txt | awk '{print $1}')
-tools/bn6f-track/target/release/bn6f-track verify-all \
-    --orig build/bn6f_orig.gba \
-    --decomp build/bn6f_decomp.gba \
-    --symbols tools/function_symbols.txt \
-    --demos-root tests/fixtures/demos \
-    --cache-dir .verify-cache \
-    "$addr"
-```
+When validation is green, commit. When it fails, the `first_diff_frame`
+in `build/validate_results.csv` localises the divergence — recheck PAD,
+the wrapper macro, and arg/return types.
 
-When verify is green, commit. When red, see
-[docs/debugging.md](../../docs/debugging.md) for the decision tree.
+---
+_Last updated: 2026-05-29 12:48:44 -0400_

@@ -202,7 +202,7 @@ $(NOGBASYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0" | perl -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \4/g' > $@
 
 # ---------------------------------------------------------------------
-# Verification harness (Rust + libmgba — see issues/concerns/10)
+# Function-symbol extraction (orig-ROM function entry addresses)
 # ---------------------------------------------------------------------
 
 FN_SYMS = tools/function_symbols.txt

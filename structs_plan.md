@@ -126,7 +126,7 @@ For unknown / generic pointer types, leave `void *`. Drive this
 incrementally — refine whichever struct's pointers are needed for
 the next batch of conversions.
 
-Acceptance: each refinement compiles and `make verify` still passes.
+Acceptance: each refinement compiles and validation still passes.
 (It should — pointer types are erased at runtime, the compiled code
 is identical to the `void *` version.)
 
@@ -156,7 +156,7 @@ with typed access, while a follow-up sweep can catch the rest later.
 
 Acceptance: `src/c/*.c` no longer contains any `#define <X>
 (*(<T> **)0x0200...)` macros — all global-pointer accesses go through
-`eToolkit->X` style. `make verify` still passes.
+`eToolkit->X` style. validation still passes.
 
 ---
 
@@ -193,3 +193,6 @@ can be wired up so its decompiled output starts emitting
 `eToolkit->S2001c04_Ptr->GameTimeFrames` instead of
 `*(int*)(r10 + 0x40)` — making the Ghidra pre-pass workflow
 (see `token_todo.md` #1) substantially more useful.
+
+---
+_Last updated: 2026-05-29 12:52:16 -0400_
