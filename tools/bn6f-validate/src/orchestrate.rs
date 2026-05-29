@@ -156,6 +156,14 @@ pub fn run(args: RunArgs) -> Result<(), String> {
         })
         .collect();
     eprintln!("[phase 3] hashed in {:.0}s", t0.elapsed().as_secs_f64());
+    if args.videos {
+        let patch_rom_stems: Vec<String> = patch_roms
+            .iter()
+            .map(|(idx, p, _)| format!("{:07}_{}", idx, p))
+            .collect();
+        link_orig_videos_into_patch_dirs(&videos_dir, &patch_rom_stems, &bk2s);
+        eprintln!("[phase 3] symlinked orig videos into each patch dir");
+    }
     let hash_failures: Vec<_> = hash_results.iter().filter(|r| r.2 != 0).collect();
     if !hash_failures.is_empty() {
         eprintln!(
@@ -409,6 +417,23 @@ fn rom_stem(p: &Path) -> String {
         .unwrap_or_default()
 }
 
+/// Compute the output mp4 path for a given (rom_stem, bk2) under the
+/// per-patch-directory layout:
+///
+///   videos/_base/<bk2>__orig.mp4                       (orig render)
+///   videos/<NNNNNNN>_<name>/<bk2>__decomp.mp4          (patched render)
+///
+/// After all per-patch dirs exist, symlinks `<bk2>__orig.mp4` from
+/// `_base/` into each per-patch dir so a reviewer sees both flavors
+/// side-by-side without having to navigate.
+fn video_path_for(videos_dir: &Path, rom_stem: &str, bk2_stem: &str) -> PathBuf {
+    if rom_stem == "orig" {
+        videos_dir.join("_base").join(format!("{}__orig.mp4", bk2_stem))
+    } else {
+        videos_dir.join(rom_stem).join(format!("{}__decomp.mp4", bk2_stem))
+    }
+}
+
 fn hash_one(
     exe: &Path,
     rom: &Path,
@@ -430,7 +455,10 @@ fn hash_one(
         cmd.args(["--state", s.to_str().unwrap()]);
     }
     if let Some(vd) = videos_dir {
-        let vp = vd.join(format!("{}__{}.mp4", rs, bk2.stem));
+        let vp = video_path_for(vd, &rs, &bk2.stem);
+        if let Some(parent) = vp.parent() {
+            fs::create_dir_all(parent).ok();
+        }
         cmd.args(["--hashes", hash_out.to_str().unwrap()]);
         cmd.args(["--video", vp.to_str().unwrap()]);
     } else {
@@ -444,6 +472,36 @@ fn hash_one(
         .map(|s| s.code().unwrap_or(255))
         .unwrap_or(255);
     (rs, bk2.stem.clone(), rc, t0.elapsed().as_millis())
+}
+
+/// After all videos have been rendered, symlink the orig mp4s from
+/// `_base/` into each per-patch dir so they sit alongside the
+/// `__decomp.mp4` files. Skips silently if `_base` is missing or
+/// the symlink target already exists.
+fn link_orig_videos_into_patch_dirs(
+    videos_dir: &Path,
+    patch_rom_stems: &[String],
+    bk2s: &[Bk2],
+) {
+    let base = videos_dir.join("_base");
+    if !base.is_dir() {
+        return;
+    }
+    for rs in patch_rom_stems {
+        let dir = videos_dir.join(rs);
+        if !dir.is_dir() {
+            continue;
+        }
+        for b in bk2s {
+            let link = dir.join(format!("{}__orig.mp4", b.stem));
+            if link.exists() {
+                continue;
+            }
+            let target = std::path::PathBuf::from("..").join("_base").join(format!("{}__orig.mp4", b.stem));
+            // Best-effort; ignore failure (e.g. _base/<bk2>__orig.mp4 didn't render).
+            let _ = std::os::unix::fs::symlink(&target, &link);
+        }
+    }
 }
 
 fn compare_one(
