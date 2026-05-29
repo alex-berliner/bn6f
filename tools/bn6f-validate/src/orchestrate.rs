@@ -21,9 +21,7 @@ use std::time::Instant;
 #[derive(Clone)]
 struct Bk2 {
     stem: String,
-    input_path: PathBuf,
-    state_path: Option<PathBuf>,
-    frame_count: usize,
+    bk2_path: PathBuf,
 }
 
 pub struct RunArgs {
@@ -316,28 +314,16 @@ fn select_patches(all: &[String], args: &RunArgs) -> Result<Vec<String>, String>
 
 fn discover_bk2s(bk2_dir: &Path) -> Result<Vec<Bk2>, String> {
     let mut out = Vec::new();
-    let mut inps: Vec<_> = fs::read_dir(bk2_dir)
+    let mut bk2s: Vec<_> = fs::read_dir(bk2_dir)
         .map_err(|e| e.to_string())?
         .filter_map(|e| e.ok())
         .map(|e| e.path())
-        .filter(|p| p.extension().and_then(|s| s.to_str()) == Some("input"))
+        .filter(|p| p.extension().and_then(|s| s.to_str()) == Some("bk2"))
         .collect();
-    inps.sort();
-    for inp in inps {
-        let stem = inp.file_stem().unwrap().to_string_lossy().to_string();
-        let ss = bk2_dir.join(format!("{}.ss", stem));
-        let state_path = if ss.exists() && fs::metadata(&ss).map(|m| m.len() > 0).unwrap_or(false) {
-            Some(ss)
-        } else {
-            None
-        };
-        let frame_count = fs::metadata(&inp).map(|m| (m.len() / 4) as usize).unwrap_or(0);
-        out.push(Bk2 {
-            stem,
-            input_path: inp,
-            state_path,
-            frame_count,
-        });
+    bk2s.sort();
+    for bk2 in bk2s {
+        let stem = bk2.file_stem().unwrap().to_string_lossy().to_string();
+        out.push(Bk2 { stem, bk2_path: bk2 });
     }
     Ok(out)
 }
@@ -450,10 +436,7 @@ fn hash_one(
         cmd.arg("hash");
     }
     cmd.arg(rom);
-    cmd.args(["--input", bk2.input_path.to_str().unwrap()]);
-    if let Some(s) = &bk2.state_path {
-        cmd.args(["--state", s.to_str().unwrap()]);
-    }
+    cmd.args(["--bk2", bk2.bk2_path.to_str().unwrap()]);
     if let Some(vd) = videos_dir {
         let vp = video_path_for(vd, &rs, &bk2.stem);
         if let Some(parent) = vp.parent() {

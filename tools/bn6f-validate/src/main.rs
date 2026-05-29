@@ -96,8 +96,21 @@ impl Core {
         }
     }
 
-    fn load_savestate(&self, path: &str) -> Result<(), String> {
+    fn load_savestate_from_path(&self, path: &str) -> Result<(), String> {
         let bytes = strip_bk2_state_prefix(path)?;
+        self.load_savestate_from_bytes(&bytes, path)
+    }
+
+    /// Load a mGBA savestate from in-memory bytes. Strips the
+    /// BizHawk 4-byte prefix if present.
+    fn load_savestate_from_bytes(&self, raw: &[u8], src_label: &str) -> Result<(), String> {
+        let mut bytes = raw.to_vec();
+        fn looks_like_mgba_magic(b: &[u8]) -> bool {
+            b.len() >= 4 && b[1] == 0 && b[2] == 0 && b[3] == 0x01
+        }
+        if !looks_like_mgba_magic(&bytes) && bytes.len() >= 4 && looks_like_mgba_magic(&bytes[4..]) {
+            bytes.drain(..4);
+        }
         unsafe {
             let vf = mgba_sys::VFileFromMemory(
                 bytes.as_ptr() as *mut c_void,
@@ -106,14 +119,12 @@ impl Core {
             if vf.is_null() {
                 return Err("VFileFromMemory null".into());
             }
-            // Flags 0 → load everything except SavedataMask.
             let ok = mgba_sys::mCoreLoadStateNamed(self.raw, vf, 0);
             ((*vf).close.expect("vfile close"))(vf);
             if !ok {
-                return Err(format!("mCoreLoadStateNamed failed for {path}"));
+                return Err(format!("mCoreLoadStateNamed failed for {src_label}"));
             }
         }
-        // Keep `bytes` alive until VFileFromMemory finishes reading.
         drop(bytes);
         Ok(())
     }
@@ -184,30 +195,155 @@ fn load_input_file(path: &str) -> Result<Vec<u16>, String> {
         .collect())
 }
 
+/// Extract inputs + savestate bytes directly from a .bk2 file.
+///
+/// A .bk2 is a zip containing:
+///   - `Input Log.txt`   — text, one `|...|` line per frame in
+///                         BizHawk's button-bitmap format
+///   - `Core.bin.zst`    — zstd-compressed BizHawk-wrapped mGBA
+///                         savestate (4-byte prefix + state). Present
+///                         iff the recording started from a savestate;
+///                         coldboot.bk2 has no savestate.
+///
+/// LogKey format (header line in Input Log.txt):
+///   `LogKey:#Tilt X|Tilt Y|Tilt Z|Light Sensor|Up|Down|Left|Right|Start|Select|B|A|L|R|Power|`
+/// Per-frame line:
+///   `|    0,    0,    0,    0,UDLRSeBALR.|`
+/// We skip the 4 tilt/sensor numeric columns and read the button bitmap
+/// (one char per button, dot = unpressed, letter = pressed).
+fn load_bk2(path: &str) -> Result<(Vec<u16>, Option<Vec<u8>>), String> {
+    let file = fs::File::open(path).map_err(|e| format!("open {path}: {e}"))?;
+    let mut zip = zip::ZipArchive::new(file)
+        .map_err(|e| format!("bk2 {path} isn't a valid zip: {e}"))?;
+
+    // Read Input Log.txt
+    let input_log = {
+        let mut entry = zip
+            .by_name("Input Log.txt")
+            .map_err(|e| format!("bk2 {path} missing Input Log.txt: {e}"))?;
+        let mut s = String::new();
+        use std::io::Read;
+        entry
+            .read_to_string(&mut s)
+            .map_err(|e| format!("read Input Log.txt: {e}"))?;
+        s
+    };
+    let inputs = parse_input_log(&input_log)?;
+
+    // Read Core.bin.zst if present
+    let state = match zip.by_name("Core.bin.zst") {
+        Ok(mut entry) => {
+            let mut compressed = Vec::new();
+            use std::io::Read;
+            entry
+                .read_to_end(&mut compressed)
+                .map_err(|e| format!("read Core.bin.zst: {e}"))?;
+            let decoded = zstd::decode_all(&compressed[..])
+                .map_err(|e| format!("zstd decode Core.bin.zst: {e}"))?;
+            Some(decoded)
+        }
+        Err(_) => None,
+    };
+
+    Ok((inputs, state))
+}
+
+/// Parse BizHawk's Input Log.txt → per-frame GBA REG_KEYINPUT-style masks.
+///
+/// LogKey order: Up, Down, Left, Right, Start, Select, B, A, L, R, Power
+/// Our mask bits (REG_KEYINPUT, 0=pressed in hardware but mGBA's setKeys
+/// uses positive-logic: bit set = pressed):
+///   bit 0=A, 1=B, 2=Select, 3=Start, 4=Right, 5=Left, 6=Up, 7=Down, 8=R, 9=L
+fn parse_input_log(text: &str) -> Result<Vec<u16>, String> {
+    // (bizhawk_button_index_in_bitmap, our_bit_position)
+    // The 4 tilt/light columns precede the button bitmap, separated by
+    // a comma. We split on the comma after the last numeric column.
+    let bit_map: &[(usize, u32)] = &[
+        (0, 6), // Up
+        (1, 7), // Down
+        (2, 5), // Left
+        (3, 4), // Right
+        (4, 3), // Start
+        (5, 2), // Select
+        (6, 1), // B
+        (7, 0), // A
+        (8, 9), // L
+        (9, 8), // R
+        // index 10 = Power; no GBA mask bit, ignore.
+    ];
+
+    let mut out = Vec::new();
+    for line in text.lines() {
+        let line = line.trim();
+        if !line.starts_with('|') || !line.ends_with('|') {
+            continue;
+        }
+        // Strip leading `|` and trailing `|`, drop the 4 numeric columns
+        // (split on `,`, the button bitmap is the last segment), then
+        // read button chars.
+        let inner = &line[1..line.len() - 1];
+        let last_comma = match inner.rfind(',') {
+            Some(c) => c,
+            None => continue,
+        };
+        let bitmap = &inner[last_comma + 1..];
+        let chars: Vec<char> = bitmap.chars().collect();
+        let mut mask: u16 = 0;
+        for (idx, bit) in bit_map {
+            if let Some(c) = chars.get(*idx) {
+                if *c != '.' && *c != ' ' {
+                    mask |= 1 << bit;
+                }
+            }
+        }
+        out.push(mask);
+    }
+    Ok(out)
+}
+
+/// Resolve the (inputs, optional savestate bytes) tuple from either
+/// a bk2 file, or from a separate --input/--state pair (legacy).
+fn resolve_replay_source(
+    bk2_path: Option<&str>,
+    input_path: Option<&str>,
+    state_path: Option<&str>,
+) -> Result<(Vec<u16>, Option<Vec<u8>>, String), String> {
+    if let Some(p) = bk2_path {
+        let (inputs, state) = load_bk2(p)?;
+        return Ok((inputs, state, p.to_string()));
+    }
+    let ip = input_path.ok_or_else(|| "--input or --bk2 required".to_string())?;
+    let inputs = load_input_file(ip)?;
+    let state = match state_path {
+        Some(sp) => Some(fs::read(sp).map_err(|e| format!("read {sp}: {e}"))?),
+        None => None,
+    };
+    Ok((inputs, state, ip.to_string()))
+}
+
 /// Per-frame hashing pass.
 fn run_hash(
     rom: &str,
-    input_path: &str,
+    bk2_path: Option<&str>,
+    input_path: Option<&str>,
     state_path: Option<&str>,
     frames: Option<u32>,
     out: &str,
 ) -> Result<(), String> {
-    let inputs = load_input_file(input_path)?;
+    let (inputs, state_bytes, src_label) =
+        resolve_replay_source(bk2_path, input_path, state_path)?;
     let n = frames.map(|f| f as usize).unwrap_or(inputs.len()).min(inputs.len());
 
     let core = Core::new(rom)?;
-    if let Some(p) = state_path {
-        core.load_savestate(p)?;
+    if let Some(b) = &state_bytes {
+        core.load_savestate_from_bytes(b, &src_label)?;
     }
 
     let f = File::create(out).map_err(|e| format!("create {out}: {e}"))?;
     let mut w = BufWriter::new(f);
     writeln!(w, "# bn6f-validate hash run").map_err(|e| e.to_string())?;
     writeln!(w, "# rom: {rom}").ok();
-    writeln!(w, "# input: {input_path}").ok();
-    if let Some(p) = state_path {
-        writeln!(w, "# state: {p}").ok();
-    }
+    writeln!(w, "# source: {src_label}").ok();
     writeln!(w, "# frames: {n}").ok();
     writeln!(w, "# format: <frame_index> <sha256_hex>").ok();
 
@@ -241,17 +377,19 @@ fn hex32(b: &[u8; 32]) -> String {
 /// the encoder is non-deterministic; if you want both, use `both`.
 fn run_video(
     rom: &str,
-    input_path: &str,
+    bk2_path: Option<&str>,
+    input_path: Option<&str>,
     state_path: Option<&str>,
     frames: Option<u32>,
     out: &str,
 ) -> Result<(), String> {
-    let inputs = load_input_file(input_path)?;
+    let (inputs, state_bytes, src_label) =
+        resolve_replay_source(bk2_path, input_path, state_path)?;
     let n = frames.map(|f| f as usize).unwrap_or(inputs.len()).min(inputs.len());
 
     let core = Core::new(rom)?;
-    if let Some(p) = state_path {
-        core.load_savestate(p)?;
+    if let Some(b) = &state_bytes {
+        core.load_savestate_from_bytes(b, &src_label)?;
     }
     core.set_frameskip(0);
 
@@ -274,18 +412,20 @@ fn run_video(
 /// Single-pass hash + video.
 fn run_both(
     rom: &str,
-    input_path: &str,
+    bk2_path: Option<&str>,
+    input_path: Option<&str>,
     state_path: Option<&str>,
     frames: Option<u32>,
     hashes_out: &str,
     video_out: &str,
 ) -> Result<(), String> {
-    let inputs = load_input_file(input_path)?;
+    let (inputs, state_bytes, src_label) =
+        resolve_replay_source(bk2_path, input_path, state_path)?;
     let n = frames.map(|f| f as usize).unwrap_or(inputs.len()).min(inputs.len());
 
     let core = Core::new(rom)?;
-    if let Some(p) = state_path {
-        core.load_savestate(p)?;
+    if let Some(b) = &state_bytes {
+        core.load_savestate_from_bytes(b, &src_label)?;
     }
     core.set_frameskip(0);
 
@@ -294,10 +434,7 @@ fn run_both(
     let mut w = BufWriter::new(f);
     writeln!(w, "# bn6f-validate hash run").ok();
     writeln!(w, "# rom: {rom}").ok();
-    writeln!(w, "# input: {input_path}").ok();
-    if let Some(p) = state_path {
-        writeln!(w, "# state: {p}").ok();
-    }
+    writeln!(w, "# source: {src_label}").ok();
     writeln!(w, "# frames: {n}").ok();
     writeln!(w, "# format: <frame_index> <sha256_hex>").ok();
 
@@ -471,8 +608,8 @@ fn main() {
     }
     match args[1].as_str() {
         "hash" | "video" | "both" => {
-            // Common positional + flags parsing.
             let rom = args.get(2).unwrap_or_else(|| usage(&args[0])).clone();
+            let mut bk2_path: Option<String> = None;
             let mut input_path: Option<String> = None;
             let mut state_path: Option<String> = None;
             let mut frames: Option<u32> = None;
@@ -482,6 +619,7 @@ fn main() {
             let mut i = 3;
             while i < args.len() {
                 match args[i].as_str() {
+                    "--bk2"   => { bk2_path = args.get(i+1).cloned(); i += 2; }
                     "--input" => { input_path = args.get(i+1).cloned(); i += 2; }
                     "--state" => { state_path = args.get(i+1).cloned(); i += 2; }
                     "--frames" => {
@@ -497,21 +635,24 @@ fn main() {
                     }
                 }
             }
-            let inp = input_path.unwrap_or_else(|| {
-                eprintln!("--input required"); usage(&args[0]);
-            });
+            if bk2_path.is_none() && input_path.is_none() {
+                eprintln!("--bk2 or --input required");
+                usage(&args[0]);
+            }
             let res = match args[1].as_str() {
                 "hash" => {
                     let out = out.unwrap_or_else(|| {
                         eprintln!("--out required"); usage(&args[0]);
                     });
-                    run_hash(&rom, &inp, state_path.as_deref(), frames, &out)
+                    run_hash(&rom, bk2_path.as_deref(), input_path.as_deref(),
+                             state_path.as_deref(), frames, &out)
                 }
                 "video" => {
                     let out = out.unwrap_or_else(|| {
                         eprintln!("--out required"); usage(&args[0]);
                     });
-                    run_video(&rom, &inp, state_path.as_deref(), frames, &out)
+                    run_video(&rom, bk2_path.as_deref(), input_path.as_deref(),
+                              state_path.as_deref(), frames, &out)
                 }
                 "both" => {
                     let h = hashes_out.unwrap_or_else(|| {
@@ -520,7 +661,8 @@ fn main() {
                     let v = video_out.unwrap_or_else(|| {
                         eprintln!("--video required"); usage(&args[0]);
                     });
-                    run_both(&rom, &inp, state_path.as_deref(), frames, &h, &v)
+                    run_both(&rom, bk2_path.as_deref(), input_path.as_deref(),
+                             state_path.as_deref(), frames, &h, &v)
                 }
                 _ => unreachable!(),
             };

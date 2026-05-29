@@ -10,6 +10,8 @@ path = "src/main.rs"
 [dependencies]
 sha2 = "0.10"
 rayon = "1.10"
+zip = { version = "2.1", default-features = false, features = ["deflate"] }
+zstd = "0.13"
 
 [build-dependencies]
 bindgen = "0.69"
