@@ -808,6 +808,19 @@ CopyByEightWords:
 // Fill r0 with r2, where r2 is treated as a byte.
 // Size is in r1, in bytes.
 // Does a backwards fill for speed
+	.ifdef DECOMP_ByteFillCanary
+	// Harness mutation canary. Trampolines to ByteFillCanary_c
+	// (src/c/byte_fill_canary.c) — a deliberately-broken ByteFill
+	// used by tests/harness/canary.sh. Lives in the 7000000+ canary
+	// patch range so it never collides with the real ByteFill in
+	// build/ outputs.
+	thumb_func_start ByteFill
+ByteFill:
+	ldr r3, =ByteFillCanary_c + 1
+	bx  r3
+	.pool
+	thumb_func_end ByteFill
+	.else
 	.ifndef DECOMP_ByteFill
 	thumb_func_start ByteFill
 ByteFill:
@@ -827,6 +840,7 @@ ByteFill:
 	bx  r3
 	.pool
 	thumb_func_end ByteFill
+	.endif
 	.endif
 
 // Fill r0 with r2, where r2 is treated as a halfword.

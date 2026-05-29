@@ -264,6 +264,25 @@ fn git_root() -> Result<PathBuf, String> {
     ))
 }
 
+/// Canary patches live at indices starting at 7_000_001 so their build
+/// artifacts (build/roms/bn6f_7000001_*.gba, build/hashes/7000001_*.txt,
+/// build/videos/7000001_*/) never collide with real-patch outputs at
+/// indices 1..=528.  The trampolines for these are gated by `.ifdef`
+/// (rather than `.ifndef`) blocks in asm/*.s so canonical_patches()
+/// doesn't list them as real patches.
+fn canary_patches() -> Vec<(usize, String)> {
+    vec![
+        (7_000_001, "ByteFillCanary".to_string()),
+    ]
+}
+
+fn canary_index(name: &str) -> Option<usize> {
+    canary_patches()
+        .into_iter()
+        .find(|(_, n)| n == name)
+        .map(|(i, _)| i)
+}
+
 fn canonical_patches(root: &Path) -> Result<Vec<String>, String> {
     let asm = root.join("asm");
     let re = regex_lite::IfndefRe::new();
@@ -287,10 +306,12 @@ fn canonical_patches(root: &Path) -> Result<Vec<String>, String> {
 
 fn select_patches(all: &[String], args: &RunArgs) -> Result<Vec<String>, String> {
     if !args.patches.is_empty() {
+        let canaries: Vec<String> =
+            canary_patches().into_iter().map(|(_, n)| n).collect();
         let mut bad = Vec::new();
         let mut sel = Vec::new();
         for p in &args.patches {
-            if all.iter().any(|x| x == p) {
+            if all.iter().any(|x| x == p) || canaries.iter().any(|x| x == p) {
                 sel.push(p.clone());
             } else {
                 bad.push(p.clone());
@@ -329,6 +350,9 @@ fn discover_bk2s(bk2_dir: &Path) -> Result<Vec<Bk2>, String> {
 }
 
 fn global_index(all: &[String], name: &str) -> usize {
+    if let Some(i) = canary_index(name) {
+        return i;
+    }
     all.iter().position(|x| x == name).unwrap_or(0) + 1
 }
 
