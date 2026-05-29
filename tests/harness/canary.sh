@@ -49,8 +49,14 @@ trap cleanup EXIT INT TERM
 echo "[canary] injecting broken ByteFill source"
 cp "$BAD_C" "$ORIG_C"
 
-echo "[canary] running bn6f-validate run --patch ByteFill"
-"$VALIDATE" run --patch ByteFill -j 2 > /tmp/canary.log 2>&1
+VIDEO_FLAG=""
+if [ "${WITH_VIDEOS:-0}" = "1" ]; then
+    VIDEO_FLAG="--videos"
+    echo "[canary] WITH_VIDEOS=1 — will also render mp4s under build/videos/"
+fi
+
+echo "[canary] running bn6f-validate run --patch ByteFill $VIDEO_FLAG"
+"$VALIDATE" run --patch ByteFill -j 2 $VIDEO_FLAG > /tmp/canary.log 2>&1
 rc=$?
 if [ "$rc" -ne 0 ]; then
     echo "FAIL: validator exited non-zero ($rc) — likely a build error"
