@@ -190,5 +190,38 @@ a demonstrator proves the premise.
 - [ ] Whether the fault-aware linter (option B) can reuse the pin census
       and live in external tooling (no agbcc fork).
 
+## Feature 4 — Manifest/build flavors → RESTRUCTURE (JSON + one-time stub)
+
+Two conflated problems, solved separately. **Drift should be impossible
+by construction, not scanned for.**
+
+**A) symbol tracking → JSON manifest** with a per-record enabled flag
+(partial patch sets, no file moves/deletes).
+
+- [ ] Design JSON schema: `{asm_symbol, c_file, pad, wrapper_kind,
+      address, enabled}` per record.
+- [ ] Migrate the 534 active `decomp_manifest.txt` entries into it.
+- [ ] Rewire the Makefile to derive `--defsym` + c-ofile list from the
+      JSON instead of the flat file.
+
+**B) mechanical replacement → keep `.ifndef`, stub ALL gates once.**
+Keep the single `rom.o` (no object split — protects SHA-exact build;
+weak-symbol override is impossible in one translation unit).
+
+- [ ] One-time script wraps every `thumb_func_start` function in the
+      `.ifndef DECOMP_<sym> / orig / .else / decomp_trampoline
+      <sym>_c,<pad> / .endif` skeleton.
+- [ ] Auto-compute PAD from the ELF in that script (kills manual-pad
+      footgun tree-wide).
+- [ ] Handle the 1380 embedded-pool functions (body-extent parser, not
+      regex); handle the `.pool` flush hazard; 5 multi-entry funcs by hand.
+- [ ] Verify `make all` still SHA-matches after the bulk stub (whole
+      safety claim rests on `.else` being inert when undefined).
+- [ ] After this: per-conversion = add C file + flip JSON enabled. Never
+      hand-edit `.s` again.
+
+**Left as-is:** mtime/stash force-rebuild workaround; fixed `.c_code`
+region length.
+
 ---
-_Last updated: 2026-05-29 15:11:14 -0400_
+_Last updated: 2026-05-30 11:34:09 -0400_
