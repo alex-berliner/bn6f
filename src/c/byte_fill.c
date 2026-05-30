@@ -1,19 +1,21 @@
 #include "types.h"
 
-/* === DELIBERATELY BROKEN ByteFill ===
+/* ByteFill — fill `count` bytes at `dst` with `byte`.
  *
- * This is the canary used by tests/harness/canary.sh to verify that
- * bn6f-validate actually detects failures. We XOR the byte value
- * before writing — a 1-bit shift in every filled byte. Anywhere
- * ByteFill writes to a buffer the game later reads or renders, the
- * frames must diverge from orig.
+ * Original ASM (asm/asm00_0.s):
+ *   ByteFill:
+ *     sub  r1, #1          // count -= 1
+ *     strb r2, [r0,r1]     // dst[count] = byte
+ *     bne  ByteFill        // loop while count != 0
+ *     mov  pc, lr
+ * r0=dst, r1=count, r2=byte. Fills high index to low.
  *
- * If bn6f-validate run --patch ByteFill against this corrupted source
- * still reports PASS, the harness is broken and the canary fails.
+ * (The deliberately-broken XOR variant used by the harness self-test
+ * lives in byte_fill_canary.c — NOT here.)
  */
 void ByteFill_c(u8 *dst, u32 count, u8 byte)
 {
     while (count-- > 0) {
-        dst[count] = byte ^ 0x01;   /* canary divergence */
+        dst[count] = byte;
     }
 }
