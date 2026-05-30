@@ -11,13 +11,21 @@ Collides head-on with **06e** ("never HLE / always real BIOS, boot
 included"). Whether via HLE or SkipBios, the real boot path is not what
 these fixtures captured.
 
-## Verdict (expected: BAD → re-record)
-- [ ] Re-record all 3 fixtures with **SkipBios off** against the real
-      BIOS ([[gba_bios_path]]).
-- [ ] First verify `300C20DF...` equals the sha1 of the user's
-      `/home/alex/gbabiosworld.bin` before trusting it.
-- [ ] Coupled to 07d: the savestate-start fixtures can't simply flip the
-      flag (their savestates were made under SkipBios).
+## BIOS hash discrepancy (verified 2026-05-30)
+The canonical BIOS is the user's `/home/alex/gbabiosworld.bin`, sha1
+**`2ee2d42cf1c0f06efe1f4eac35a44a0c52d3c6f5`** ([[gba_bios_path]], source
+of truth). The fixtures name `300C20DF...` (the well-known retail GBA
+BIOS hash) — these **do not match**. So the current fixtures reference a
+*different* BIOS than the canonical dump, on top of being SkipBios.
+Per the user, `gbabiosworld.bin` wins; `300C20DF...` is the wrong value.
+
+## Verdict — BAD → re-record against the canonical BIOS
+- [ ] Re-record all 3 fixtures with **SkipBios off** against
+      `gbabiosworld.bin` (`2ee2d42c…`).
+- [ ] The harness real-BIOS gate (06e/07a) must check against
+      **`2ee2d42c…`**, NOT the `300C20DF…` currently in `fixtures.json`.
+- [ ] Coupled to 07d: savestate-start fixtures' savestates must be
+      regenerated from a real-(`2ee2d42c…`)-BIOS run, not just flag-flipped.
 
 ## Rating
 **BAD → re-record (same rule as 7a/06e).** (2026-05-30) HLE/SkipBios is
@@ -28,4 +36,4 @@ need to preserve the current tests (see 07d). Harness must additionally
 - [ ] Harness rejects any non-real-BIOS replay with an explicit failure.
 
 ---
-_Last updated: 2026-05-30 12:41:24 -0400_
+_Last updated: 2026-05-30 12:50:53 -0400_
