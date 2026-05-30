@@ -28,11 +28,12 @@ committed as the real conversion.
 ## Direction
 - [x] **FIXED 2026-05-30** — `src/c/byte_fill.c` now `dst[count] = byte;`
       (correct, matches orig ASM r0=dst/r1=count/r2=byte). XOR removed.
-- [ ] Confirm validation PASS (a `bn6f-validate run --patch ByteFill` was
-      kicked off; verify the csv row reads PASS — see
-      /tmp/bytefill_validate.log if still in this session).
-- [ ] If it had been PASSing while broken, investigate the coverage hole
-      (ties 06c) — but more likely it was never separately validated.
+- [x] **Validation confirmed.** Broken version: FAIL @ frame 17
+      (coldboot/intro), 6628 (tutorial) — so the corruption WAS visible,
+      the validator catches it (incidental real-canary). Fixed version:
+      **PASS on all 3 bk2s**. So ByteFill had simply never been validated
+      since the bad commit `0751da2a`; no coverage hole — it just shipped
+      unchecked.
 - [ ] (Process) canary + real impl sharing a body is the root cause;
       keep them clearly distinct.
 
@@ -41,4 +42,4 @@ committed as the real conversion.
 bug, now corrected in working tree.
 
 ---
-_Last updated: 2026-05-30 13:04:55 -0400_
+_Last updated: 2026-05-30 13:05:50 -0400_
