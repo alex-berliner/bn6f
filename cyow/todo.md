@@ -222,5 +222,52 @@ weak-symbol override is impossible in one translation unit). Keep the
 **Left as-is:** mtime/stash force-rebuild workaround; fixed `.c_code`
 region length.
 
+## Feature 6 — bn6f-validate (split into subfeatures)
+
+### 6a — Correctness oracle → CHANGE to memory/full-state diff
+- [ ] Move oracle from pixel-hash → **RAM / full-emulator-state byte
+      parity** (subsumes audio 06d).
+- [ ] Attack VBlank drift head-on via the Feature 2 relocation strategy
+      (no trampoline on hotpath → state parity achievable) rather than
+      working around it.
+- [ ] Decide state scope (full savestate vs scoped RAM regions; benign
+      divergence noise) and cadence (per-frame vs per-call boundary,
+      [[decomp_harness_dispatcher_verification]]).
+- [ ] Interim oracle until relocation lands?
+
+### 6b — Build matrix + result log → EXPAND
+- [ ] Run BOTH isolated per-patch builds AND the full combined all-patch
+      build; both first-class.
+- [ ] Index ranges: per-patch `0000001..NNNNNNN`; aggregates in a
+      separate range e.g. `1000000_all_patch` (canary already at 7000001).
+- [ ] `patch_result.log`: `id_symbol | verdict | suspected_reason`.
+      Decide extra columns (bk2, first_diff, duration, timestamp?) and
+      where "suspected reason" classification comes from.
+
+### 6c — bk2 metadata + call-coverage gating → BUILD IT (big deal)
+- [ ] Build step producing **per-bk2 metadata** in `build/` (non-persistent),
+      including **per-function call counts** per bk2 (same instrument as
+      the ⭐ hotpath identification item).
+- [ ] Cross-reference symbol-under-test vs whether it's actually called in
+      a bk2; **skip uncalled (symbol × bk2) cases** in the full run.
+- [ ] Surface "not covered by ANY fixture" as a distinct status.
+
+### 6d — Audio → SUBSUMED by 06a full-state parity
+- [ ] Confirm chosen state scope covers audio driver state (m4a RAM,
+      sound IO), else audio stays a blind spot.
+
+### 6e — BIOS → NEVER HLE
+- [ ] Require real BIOS ([[gba_bios_path]]) for all validation.
+- [ ] If a bk2 wasn't recorded against real BIOS, **fail all its tests**
+      with that explicit reason.
+- [ ] Audit/re-record the current 3 fixtures against real BIOS.
+
+### 6f — Parallel subprocess fan-out → GOOD (keep)
+
+### 6h — Videos → on-demand only
+- [ ] Off by default; behind a flag the user enables on request.
+- [ ] Optimize for small filesize (throwaway review artifacts).
+- [ ] Never load-bearing for pass/fail.
+
 ---
-_Last updated: 2026-05-30 11:36:55 -0400_
+_Last updated: 2026-05-30 12:11:36 -0400_
