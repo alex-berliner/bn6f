@@ -12,7 +12,8 @@ Conclusions and the running action list live in [todo.md](todo.md).
 1. [Candidate selection — what to decomp next](01-candidate-picker.md) — **BAD → deleted both, rebuild one**
 2. [Trampoline gating (`.ifndef DECOMP_<sym>`)](02-trampoline-gating.md) — **KEEP + new relocation strategy**
 3. [Wrapper macros (VTABLE / FLAG / naked)](03-wrapper-macros.md) — **NO RESOLUTION — agbcc-epilogue demonstrator required first**
-4. [Manifest + build flavors](04-manifest-build-flavors.md) — **RESTRUCTURE — JSON manifest + one-time stub-all-gates script (keep single .o)**
+4. [Manifest (tracking which symbols)](04-manifest.md) — **RESTRUCTURE → JSON manifest with per-record enabled flag**
+5. [ASM `.ifndef` gating (mechanical replacement)](05-asm-ifndef-gating.md) — **KEEP `.ifndef` + single .o; stub ALL gates once via script**
 
 ## Candidate feature backlog (not yet discussed)
 
@@ -27,4 +28,4 @@ Conclusions and the running action list live in [todo.md](todo.md).
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-30 11:33:45 -0400_
+_Last updated: 2026-05-30 11:36:44 -0400_

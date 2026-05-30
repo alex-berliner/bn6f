@@ -190,23 +190,22 @@ a demonstrator proves the premise.
 - [ ] Whether the fault-aware linter (option B) can reuse the pin census
       and live in external tooling (no agbcc fork).
 
-## Feature 4 — Manifest/build flavors → RESTRUCTURE (JSON + one-time stub)
+## Feature 4 — Manifest (tracking which symbols) → RESTRUCTURE to JSON
 
-Two conflated problems, solved separately. **Drift should be impossible
-by construction, not scanned for.**
-
-**A) symbol tracking → JSON manifest** with a per-record enabled flag
-(partial patch sets, no file moves/deletes).
+Drift should be **impossible by construction, not scanned for.**
 
 - [ ] Design JSON schema: `{asm_symbol, c_file, pad, wrapper_kind,
-      address, enabled}` per record.
+      address, enabled}` per record. `enabled` gives per-symbol on/off
+      for partial patch sets without moving/deleting files.
 - [ ] Migrate the 534 active `decomp_manifest.txt` entries into it.
 - [ ] Rewire the Makefile to derive `--defsym` + c-ofile list from the
       JSON instead of the flat file.
 
-**B) mechanical replacement → keep `.ifndef`, stub ALL gates once.**
+## Feature 5 — ASM `.ifndef` gating (mechanical replacement) → STUB ALL ONCE
+
 Keep the single `rom.o` (no object split — protects SHA-exact build;
-weak-symbol override is impossible in one translation unit).
+weak-symbol override is impossible in one translation unit). Keep the
+`.ifndef` gate but stop hand-editing it.
 
 - [ ] One-time script wraps every `thumb_func_start` function in the
       `.ifndef DECOMP_<sym> / orig / .else / decomp_trampoline
@@ -224,4 +223,4 @@ weak-symbol override is impossible in one translation unit).
 region length.
 
 ---
-_Last updated: 2026-05-30 11:34:09 -0400_
+_Last updated: 2026-05-30 11:36:55 -0400_
