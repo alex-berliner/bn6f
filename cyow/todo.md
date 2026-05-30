@@ -269,5 +269,37 @@ region length.
 - [ ] Optimize for small filesize (throwaway review artifacts).
 - [ ] Never load-bearing for pass/fail.
 
+## Feature 7 — bk2 fixtures + vendored libmgba (subfeatures)
+
+### 7a — bk2 format → GOOD + hard real-BIOS gate
+- [ ] Harness reads each bk2's BIOS provenance; **refuse to run HLE/
+      SkipBios replays** — fail with that explicit reason. HLE never.
+
+### 7b — fixtures.json → CHANGE to generated build artifact
+- [ ] Generate fixture metadata from the bk2s into `build/`
+      (non-persistent); make validation runs depend on it.
+- [ ] Merge with 06c per-bk2 call-count metadata (same artifact).
+- [ ] Retire committed `fixtures.json` (keep a small prose seed if needed).
+
+### 7c — SkipBios → BAD, re-record (same as 06e/7a)
+- [ ] User regenerates all fixtures with real BIOS (SkipBios off).
+- [ ] Harness enforces the gate so it can't regress.
+
+### 7d — savestate-start → KEEP (real BIOS ≠ coldboot)
+- Real BIOS does not require coldboot: savestate restores past-boot
+  state; only needs (1) real BIOS present at restore (gameplay SWIs),
+  (2) savestate captured from a real-BIOS run.
+- [ ] When regenerating, capture savestates from real-BIOS runs.
+
+### 7e — vendored .so → build artifact IF cheap
+- [ ] Evaluate effort of building libmgba 0.11 from pinned source into
+      `build/`/`tools/`. If low-effort, drop the committed 2.6 MB blob;
+      if it drags in heavy cmake/fetch deps, keep vendored. ([[feedback_libmgba_mod_permission]])
+
+### 7f — bindgen/MGBA_PREFIX → GOOD (no change)
+
+### 7g — corpus breadth → OK, user adds bk2s
+- [ ] Surface 06c coverage so new user-authored bk2s target real gaps.
+
 ---
-_Last updated: 2026-05-30 12:11:36 -0400_
+_Last updated: 2026-05-30 12:42:59 -0400_

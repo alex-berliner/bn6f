@@ -22,10 +22,17 @@ Conclusions and the running action list live in [todo.md](todo.md).
    - [06e BIOS](06e-bios.md) — **NEVER HLE; require real BIOS or fail all**
    - [06f parallel fan-out](06f-parallel-fanout.md) — **GOOD**
    - [06h videos](06h-videos.md) — **on-demand flag, informal, small filesize**
+7. [bk2 fixtures + vendored libmgba (overview)](07-fixtures-libmgba-overview.md) — split into subfeatures:
+   - [07a bk2 format](07a-bk2-format.md) — **GOOD + hard real-BIOS gate**
+   - [07b fixtures.json](07b-fixtures-json.md) — **CHANGE → generated build artifact**
+   - [07c SkipBios](07c-skipbios.md) — **BAD → re-record real BIOS**
+   - [07d savestate-start](07d-savestate-start.md) — **KEEP (real BIOS ≠ coldboot)**
+   - [07e vendored .so](07e-vendored-so.md) — **OK → build artifact if cheap**
+   - [07f bindgen/MGBA_PREFIX](07f-bindgen-prefix.md) — **GOOD**
+   - [07g corpus breadth](07g-corpus-breadth.md) — **OK → guide via 06c**
 
 ## Candidate feature backlog (not yet discussed)
 
-- bk2 fixtures + vendored libmgba 0.11
 - Harness divergence canary (`ByteFillCanary` + `canary.sh`)
 - `tools/wrap_decomp.py` automation
 - `tools/function_card.py` per-symbol summary
@@ -34,4 +41,4 @@ Conclusions and the running action list live in [todo.md](todo.md).
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-30 12:11:21 -0400_
+_Last updated: 2026-05-30 12:42:08 -0400_
