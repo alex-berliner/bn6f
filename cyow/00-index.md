@@ -37,6 +37,7 @@ Conclusions and the running action list live in [todo.md](todo.md).
    - [08d coverage](08d-coverage.md) — **more canaries later (validates harness, not ROM)**
    - [08e broken ByteFill](08e-broken-bytefill.md) — **FIXED + verified PASS on all 3 bk2s**
 9. [wrap_decomp.py automation](09-wrap-decomp.md) — **RETIRE — concerns go to Feature 5, written fresh (no code lift)**
+11. [agbcc toolchain / ABI constraint](11-agbcc-abi.md) — _in discussion; r10 global-register-variable fix verified, adopt regardless_
 
 ## Analyses (side investigations)
 
@@ -45,9 +46,8 @@ Conclusions and the running action list live in [todo.md](todo.md).
 ## Candidate feature backlog (not yet discussed)
 
 - `tools/function_card.py` per-symbol summary (skipped — pure tool, retire)
-- agbcc toolchain / ABI constraint (in discussion — Feature 11)
 - Ghidra pre-pass + token-reduction strategies
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-31 09:25:07 -0400_
+_Last updated: 2026-05-31 11:29:51 -0400_
