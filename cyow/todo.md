@@ -315,5 +315,29 @@ region length.
 ### 7g — corpus breadth → OK, user adds bk2s
 - [ ] Surface 06c coverage so new user-authored bk2s target real gaps.
 
+## Feature 11 — agbcc / ABI (in discussion, verdict pending)
+
+See [11-agbcc-abi.md](11-agbcc-abi.md). Constraint, not a tool.
+
+- [ ] Decide options 1/2/3 (extend agbcc / wrappers / modern compiler).
+      Leaning: option 3 for relocated clusters, wrappers as transitional
+      bridge, option 1 only if Feature 3 demonstrator proves a class dies.
+- [ ] Adopt **file-scope global register variable** for r10/r5 ambient
+      pointers (verified strict improvement: removes the capture hack +
+      spurious save/restore; unlocks `gToolkit->Field` typed access).
+      Scope per-file, NOT blanket `-ffixed-r10` (would disturb ~82 r10
+      scratch sites).
+- [ ] Prove it: full `make decompile` + validate on one GRV-converted r10
+      file (prototype only checked codegen shape, not a byte match).
+- [ ] Feature 3 epilogue demonstrator gates the option-1-vs-3 call.
+
+## Review status / remaining
+
+Reviewed 1–9 (+ Feature 11 in discussion). Side analysis:
+[origin-classification.md](origin-classification.md) (~96% generated).
+Skipped: 10 (`function_card.py` — pure tool, retire).
+Not yet discussed: Ghidra pre-pass, `make validate` (`validate_asm.py`),
+multi-agent layer (`claim.py`/AGENTS.md).
+
 ---
-_Last updated: 2026-05-31 08:13:02 -0400_
+_Last updated: 2026-05-31 11:32:03 -0400_
