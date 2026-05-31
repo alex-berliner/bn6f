@@ -42,6 +42,7 @@ Conclusions and the running action list live in [todo.md](todo.md).
 ## Analyses (side investigations)
 
 - [Origin classification — compiled vs hand-written](origin-classification.md) — **~96% generated / ~4% uncertain / ~0.2% hand; hand slice localized to boot+runtime+IRQ**
+- [History — how the ASM was originally split](history-asm-split.md) — **IDA Pro + LanHikari22's PseudoTerminal; manual address-range "game files" carved by recognition; TU-shaped but human-drawn**
 
 ## Candidate feature backlog (not yet discussed)
 
@@ -50,4 +51,4 @@ Conclusions and the running action list live in [todo.md](todo.md).
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-31 11:29:51 -0400_
+_Last updated: 2026-05-31 11:39:24 -0400_
