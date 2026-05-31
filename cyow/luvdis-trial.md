@@ -44,27 +44,52 @@ config** instead of depending on an un-reproducible IDA session.
 - GBA discovery is weak without seeding (no relocation metadata); the seed
   config is essential.
 
-## Open / not yet proven (the real gate)
+## Round-trip byte-match — TESTED, FAILED out of the box
 
-- **Round-trip byte-match.** Not yet confirmed the Luvdis output *assembles
-  to the identical ROM*. That's the decisive test — regenerate one module,
-  build `make all` (no DECOMP defined), require sha 0676ecd4. Cosmetic
-  diffs (pool-label names, literal symbolication) must not change emitted
-  bytes; needs the repo's macro/symbol conventions reconciled with
-  Luvdis's.
-- **PAD edge cases** the PoC ignores but Feature 5 must handle: shared
+Disassembled the whole code range (0x08000000–0x08150000) seeded with our
+symbols + `--default-mode byte`, merged Luvdis's two output files,
+assembled (agbasm, 0 errors), linked at 0x08000000 (defsym'd 27 external
+RAM/folded symbols), objcopy'd to binary, compared to ROM[0:0x150000]:
+
+- **NOT identical.** Output is **144 bytes larger**; first diff at byte 4.
+- Byte 4+ is the **Nintendo logo (data)**, which Luvdis decoded as
+  instructions — re-encoding produced different bytes. Data-as-code does
+  not round-trip.
+- ~90% of bytes differ, but most of that is **shift artifact** from the
+  144-byte size drift, not genuinely-wrong content. The real faults are
+  (1) mis-decoded data regions and (2) accumulated size/alignment drift.
+
+**Conclusion: Luvdis is a strong disassembly _aid_, NOT a turnkey
+byte-exact regenerator.** Its decoding of actual *code* is faithful
+(sound_8000630 matched op-for-op), but a naive whole-ROM
+disassemble→reassemble does not reproduce the cartridge. The thing that
+makes a disassembly byte-exact is the **data / pointer-table / ARM-region
+annotation** ("these bytes are data, don't decode them") — exactly the
+manual work the original IDA+PseudoTerminal effort did over years, and
+which Luvdis does NOT automate. "Reproducible from ROM + config" only holds
+*after* you already own a correct code/data map — the hard part this repo
+already paid for.
+
+## Other gaps
+
+- **PAD edge cases** the wrap PoC ignores but Feature 5 must handle: shared
   literal pools ([[09d]] concern), multi-entry funcs, ARM funcs,
-  `non_word_aligned` starts. Same concerns list already recorded for
-  Feature 5.
-- Clean the ~900 unresolved config addrs (nullsub_* map artifacts).
+  `non_word_aligned` starts.
+- ~900 unresolved config addrs (nullsub_* are folded locals @ real ROM
+  addresses the map hides; get them from the ELF, not the map).
 
-## Recommendation
+## Recommendation (revised down)
 
-Promising enough to pursue as the modernization path for Features 5 + the
-split's reproducibility. Next concrete step: prove the round-trip byte-match
-on a single module before committing to a full regeneration.
+Not the turnkey modernization first hoped. Realistic value is narrower:
+- as a **second-opinion / re-disassembly aid** for the still-coarse
+  `asmNN` files, cross-checked against the existing (already byte-exact)
+  tree — NOT as a wholesale regenerator;
+- the **auto-trampoline-wrap** idea ([[luvdis_wrap.py]]) is still good, but
+  it should run on the *existing* matching asm (which already has the
+  correct code/data boundaries), not on a fresh Luvdis dump.
 
 Tools added: `tools/gen_luvdis_config.py`, `tools/luvdis_wrap.py` (PoC).
+Round-trip scratch work in /tmp/rt (not committed).
 
 ---
-_Last updated: 2026-05-31 11:53:41 -0400_
+_Last updated: 2026-05-31 12:07:12 -0400_
