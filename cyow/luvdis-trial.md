@@ -58,6 +58,20 @@ RAM/folded symbols), objcopy'd to binary, compared to ROM[0:0x150000]:
 - ~90% of bytes differ, but most of that is **shift artifact** from the
   144-byte size drift, not genuinely-wrong content. The real faults are
   (1) mis-decoded data regions and (2) accumulated size/alignment drift.
+- **Re-tested with `--no-guess` + complete seed + `--default-mode byte`
+  (feed our function knowledge, suppress discovery): IDENTICAL failure** —
+  same 144-byte growth, same byte-4 divergence, same 1,238,728 diffs.
+
+**Can our existing knowledge fix it? No — Luvdis can't accept the half that
+matters.** Its config expresses only functions
+(`[arm_func|thumb_func] <addr>`); there is **no data-region annotation** —
+no way to say "these bytes are data, don't decode them." The existing tree
+knows both code AND data boundaries; Luvdis takes the code half and has
+nowhere to put the data half, which is exactly what makes a disassembly
+byte-exact. And feeding the full map would be circular anyway: the existing
+`asm/` tree already *is* the byte-exact disassembly (builds to 0676ecd4) —
+the knowledge that would make Luvdis correct is the knowledge that already
+makes the current tree correct. No new information to gain.
 
 **Conclusion: Luvdis is a strong disassembly _aid_, NOT a turnkey
 byte-exact regenerator.** Its decoding of actual *code* is faithful
@@ -92,4 +106,4 @@ Tools added: `tools/gen_luvdis_config.py`, `tools/luvdis_wrap.py` (PoC).
 Round-trip scratch work in /tmp/rt (not committed).
 
 ---
-_Last updated: 2026-05-31 12:07:12 -0400_
+_Last updated: 2026-05-31 12:26:26 -0400_
