@@ -30,15 +30,20 @@ Conclusions and the running action list live in [todo.md](todo.md).
    - [07e vendored .so](07e-vendored-so.md) — **OK → build artifact if cheap**
    - [07f bindgen/MGBA_PREFIX](07f-bindgen-prefix.md) — **GOOD**
    - [07g corpus breadth](07g-corpus-breadth.md) — **OK → guide via 06c**
+8. [Harness divergence canary (overview)](08-canary-overview.md) — split into subfeatures:
+   - [08a canary concept](08a-canary-concept.md) — **GOOD (high priority)**
+   - [08b static ifdef](08b-static-ifdef.md) — **GOOD**
+   - [08c CI wiring](08c-ci-wiring.md) — **BAD → fold canary into validator; delete `canary.sh`**
+   - [08d coverage](08d-coverage.md) — **more canaries later (validates harness, not ROM)**
+   - [08e broken ByteFill](08e-broken-bytefill.md) — **FIXED + verified PASS on all 3 bk2s**
+9. [wrap_decomp.py automation](09-wrap-decomp.md) — **RETIRE — concerns go to Feature 5, written fresh (no code lift)**
 
 ## Candidate feature backlog (not yet discussed)
 
-- Harness divergence canary (`ByteFillCanary` + `canary.sh`)
-- `tools/wrap_decomp.py` automation
 - `tools/function_card.py` per-symbol summary
 - agbcc toolchain / ABI constraint
 - Ghidra pre-pass + token-reduction strategies
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-30 12:42:08 -0400_
+_Last updated: 2026-05-31 08:13:18 -0400_

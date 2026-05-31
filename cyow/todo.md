@@ -219,6 +219,20 @@ weak-symbol override is impossible in one translation unit). Keep the
 - [ ] After this: per-conversion = add C file + flip JSON enabled. Never
       hand-edit `.s` again.
 
+### Concerns to solve fresh (surfaced by Feature 9 — do NOT lift its code)
+
+`wrap_decomp.py` already wrestles with these; reimplement them in the new
+stubber, don't copy from it.
+
+- [ ] Alignment-aware PAD: 8/10 (or 14/16 for 4-arg r3safe) by start
+      alignment, accounting for the trailing `.pool` balign — not `size−8`.
+- [ ] Shared literal pools kept addressable in the `.else` branch (the
+      `.pool` flush hazard above).
+- [ ] Multi-entry functions: gate only the shared tail.
+- [ ] Detect & refuse/flag unsafe conversions: flag-dependent callers AND
+      vtable (`.word <sym>`) membership ([[decomp_lr_bit_bx_bug]]).
+      Feature 9 does flags but NOT vtable — cover both here.
+
 **Left as-is:** mtime/stash force-rebuild workaround; fixed `.c_code`
 region length.
 
@@ -302,4 +316,4 @@ region length.
 - [ ] Surface 06c coverage so new user-authored bk2s target real gaps.
 
 ---
-_Last updated: 2026-05-30 12:42:59 -0400_
+_Last updated: 2026-05-31 08:13:02 -0400_
