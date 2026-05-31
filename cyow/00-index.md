@@ -43,6 +43,7 @@ Conclusions and the running action list live in [todo.md](todo.md).
 
 - [Origin classification — compiled vs hand-written](origin-classification.md) — **~96% generated / ~4% uncertain / ~0.2% hand; hand slice localized to boot+runtime+IRQ**
 - [History — how the ASM was originally split](history-asm-split.md) — **IDA Pro + LanHikari22's PseudoTerminal; manual address-range "game files" carved by recognition; TU-shaped but human-drawn**
+- [Luvdis trial — reproducible disasm + auto-trampoline-wrap](luvdis-trial.md) — **faithful re-disasm; seed config reproduces names+split; auto-gate w/ auto-PAD = Feature 5 for free. Round-trip byte-match not yet proven**
 
 ## Candidate feature backlog (not yet discussed)
 
@@ -51,4 +52,4 @@ Conclusions and the running action list live in [todo.md](todo.md).
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-31 11:39:24 -0400_
+_Last updated: 2026-05-31 11:53:47 -0400_
