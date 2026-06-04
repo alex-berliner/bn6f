@@ -1,5 +1,5 @@
 	.include "include/macros.inc"
 	.include "constants/constants.inc"
 
-	.include "iwram_data.s"
-	.include "iwram_code.s"
+	.include "src/iwram_data.s"
+	.include "src/iwram_code.s"

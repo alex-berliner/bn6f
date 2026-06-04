@@ -54,6 +54,7 @@ bn6f.txt
 # tools
 *.exe
 tools/agbcc/
+tools/agbcc-src/
 tools/binutils/
 *.pickle
 temp/
