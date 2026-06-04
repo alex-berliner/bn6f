@@ -14,7 +14,9 @@
 mod emu;
 mod sys;
 
-const DEFAULT_ROM: &str = "build/bn6f.gba";
+// Resolve the default ROM relative to this crate (tools/harness) so it works
+// from any cwd: <repo>/build/bn6f.gba. The crate lives at <repo>/tools/harness.
+const DEFAULT_ROM: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../build/bn6f.gba");
 const DEFAULT_BIOS: &str = "/home/alex/gbabiosworld.bin";
 
 fn main() {
