@@ -77,13 +77,13 @@ setup-toolchain:
 		echo "[setup-toolchain] libmgba already built."; \
 	else \
 		[ -f tools/mgba/CMakeLists.txt ] || git submodule update --init tools/mgba; \
-		cmake -S tools/mgba -B build/mgba -DCMAKE_BUILD_TYPE=Release \
+		cmake -S tools/mgba -B tools/mgba/build -DCMAKE_BUILD_TYPE=Release \
 			-DBUILD_SHARED=ON -DBUILD_STATIC=OFF \
 			-DBUILD_QT=OFF -DBUILD_SDL=OFF \
 			-DBUILD_GL=OFF -DBUILD_GLES2=OFF -DBUILD_GLES3=OFF \
 			-DUSE_FFMPEG=OFF -DUSE_EDITLINE=OFF \
 			-DCMAKE_INSTALL_PREFIX=$(CURDIR)/tools/libmgba || exit $$?; \
-		cmake --build build/mgba -j"$$(nproc)" && cmake --install build/mgba || exit $$?; \
+		cmake --build tools/mgba/build -j"$$(nproc)" && cmake --install tools/mgba/build || exit $$?; \
 		test -x tools/libmgba/lib/libmgba.so || { echo "setup-toolchain: libmgba build did not install" >&2; exit 1; }; \
 	fi
 	@$(MAKE) --no-print-directory bizhawk-dll
