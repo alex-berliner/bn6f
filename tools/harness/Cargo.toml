@@ -1,0 +1,19 @@
+# New validation harness, rebuilt from first principles (see cyow/ review).
+# Standalone crate — its own workspace so it isn't swallowed by anything.
+[package]
+name = "bn6f-harness"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[[bin]]
+name = "bn6f-harness"
+path = "src/main.rs"
+
+[build-dependencies]
+bindgen = "0.69"
+
+[profile.release]
+opt-level = 3
+lto = "thin"

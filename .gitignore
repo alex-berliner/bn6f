@@ -65,3 +65,4 @@ temp/
 *.cfg
 *.rsync
 *.sym
+tools/libmgba/

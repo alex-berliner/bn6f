@@ -32,9 +32,10 @@ verifiable "done", and we stop for review after each. Phase 0 first, in order.
 
 The foundation everything diffs against. No C, no manifest, no risk.
 
-- **B0 — substrate builds & loads.** Restore `tools/libmgba` [F7e], get
-  `tools/harness` compiling, run load-real-BIOS+ROM+reset. *Done:* prints
-  the correct ROM title under real BIOS.
+- **B0 — substrate builds & loads. ✓ DONE.** `tools/harness` compiles
+  against vendored libmgba, loads ROM + real BIOS, resets, reads title
+  "MEGAMAN6_FXX" off the bus; mGBA confirms "Official GBA BIOS detected"
+  (checksum 0xBAAE187F) — never-HLE verified at the substrate. [F7e, F6e]
 - **B1 — determinism + snapshot fidelity.** Run N frames, serialize full
   state, hash. Assert (a) same run twice → identical hash; (b)
   snapshot→restore→continue → identical hash. *Done:* both hold. [F6a]
@@ -135,9 +136,10 @@ anything but a non-authoritative aid [F14]; IDA-era tools deleted.
 
 ## Immediate next step
 
-**B0.** Needs `tools/libmgba` restored first
-(`git checkout e6bb4969 -- tools/libmgba`), then `tools/harness` builds and
-runs the load-BIOS+ROM scaffold.
+**B1 — determinism + snapshot fidelity.** Add to `tools/harness`: run N
+frames, serialize full state (mCore `serialize`), hash it; assert (a) same
+run twice → identical hash, (b) snapshot→restore→continue → identical hash.
+(`tools/libmgba` is restored on disk, gitignored as a vendored dep.)
 
 ---
-_Last updated: 2026-06-04 15:44:00 -0400_
+_Last updated: 2026-06-04 15:49:54 -0400_
