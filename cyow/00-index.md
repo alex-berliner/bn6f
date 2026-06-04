@@ -37,6 +37,7 @@ Conclusions and the running action list live in [todo.md](todo.md).
    - [08d coverage](08d-coverage.md) — **more canaries later (validates harness, not ROM)**
    - [08e broken ByteFill](08e-broken-bytefill.md) — **FIXED + verified PASS on all 3 bk2s**
 9. [wrap_decomp.py automation](09-wrap-decomp.md) — **RETIRE — concerns go to Feature 5, written fresh (no code lift)**
+10. [Multi-agent coordination (`AGENTS.md` + `claim.py`)](10-multiagent.md) — **PURGE NOW, REDESIGN LATER — 10b/10c collapse into F4/F5; rebuild 10a/10d/10e post-F4/F5**
 11. [agbcc toolchain / ABI constraint](11-agbcc-abi.md) — _in discussion; r10 global-register-variable fix verified, adopt regardless_
 
 ## Analyses (side investigations)
@@ -52,4 +53,4 @@ Conclusions and the running action list live in [todo.md](todo.md).
 - `make validate` static ELF check (`tools/validate_asm.py`)
 
 ---
-_Last updated: 2026-05-31 12:07:23 -0400_
+_Last updated: 2026-06-04 13:39:13 -0400_
