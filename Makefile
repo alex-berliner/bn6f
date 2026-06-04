@@ -50,7 +50,7 @@ ASDEBUGFLAGS = --agbasm-debug $(@:.o=.dump)
 LDFLAGS = -Map $(OBJ)$(BUILD_NAME).map -L$(LDDIR) -L$(OBJ)
 LIB =
 
-.PHONY: setup-toolchain syms assets checksum fdiff tail clean nogbasyms
+.PHONY: setup-toolchain bizhawk-dll syms assets checksum fdiff tail clean nogbasyms
 
 # One-time toolchain install: clones + builds the agbasm binutils fork and
 # agbcc, installing arm-none-eabi-{as,ld,objcopy,objdump} into tools/binutils
@@ -86,7 +86,30 @@ setup-toolchain:
 		cmake --build build/mgba -j"$$(nproc)" && cmake --install build/mgba || exit $$?; \
 		test -x tools/libmgba/lib/libmgba.so || { echo "setup-toolchain: libmgba build did not install" >&2; exit 1; }; \
 	fi
+	@$(MAKE) --no-print-directory bizhawk-dll
 	@echo "[setup-toolchain] done."
+
+# Optional: install the BizHawk-platform libmgba (built from the SAME pinned
+# tools/mgba tree) into a developer's BizHawk, so the bk2 recorder and the
+# harness replayer share one core revision. Set BIZHAWK to your BizHawk install
+# dir (env or make var); no-op if unset. Stock dll is backed up once as
+# libmgba.dll.so.bizhawk-stock.bak — revert by copying it back.
+#   make bizhawk-dll BIZHAWK=/home/you/bin/bizhawk
+BIZHAWK ?=
+BIZ_DLL_SRC = tools/mgba/src/platform/bizhawk/linux
+bizhawk-dll:
+	@if [ -z "$(BIZHAWK)" ]; then \
+		echo "[bizhawk-dll] BIZHAWK unset — skipping (set BIZHAWK=/path/to/bizhawk to install)"; \
+	elif [ ! -d "$(BIZHAWK)/dll" ]; then \
+		echo "[bizhawk-dll] '$(BIZHAWK)/dll' not found — is BIZHAWK a BizHawk install dir?" >&2; exit 1; \
+	else \
+		[ -f tools/mgba/CMakeLists.txt ] || git submodule update --init tools/mgba; \
+		$(MAKE) -C $(BIZ_DLL_SRC) -j"$$(nproc)" || exit $$?; \
+		[ -f "$(BIZHAWK)/dll/libmgba.dll.so.bizhawk-stock.bak" ] || cp "$(BIZHAWK)/dll/libmgba.dll.so" "$(BIZHAWK)/dll/libmgba.dll.so.bizhawk-stock.bak"; \
+		cp "$(BIZ_DLL_SRC)/libmgba.dll.so" "$(BIZHAWK)/dll/libmgba.dll.so"; \
+		$(MAKE) -C $(BIZ_DLL_SRC) clean >/dev/null 2>&1 || true; \
+		echo "[bizhawk-dll] installed our libmgba.dll.so into $(BIZHAWK)/dll (stock saved once as libmgba.dll.so.bizhawk-stock.bak)"; \
+	fi
 
 # TODO: INTEGRATE SCAN INCLUDES
 
