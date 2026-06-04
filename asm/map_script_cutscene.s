@@ -1416,8 +1416,7 @@ off_8036090:
 	.word eMapScriptState
 	thumb_func_end RunSecondaryContinuousMapScript
 
-	.ifndef DECOMP_ReadMapScriptByte
-	thumb_func_start ReadMapScriptByte
+	thumb_local_start
 /* (r6:uint offsetToValue, r7:u8 * curScriptCmdPtr) -> r4:u8 result
 	preserves: r6,r7
 	unused: r0-r3,r5,r8-r12*/
@@ -1427,15 +1426,8 @@ ReadMapScriptByte: // 8036094
 	ldrb r4, [r7]
 	pop {r7,pc}
 	thumb_func_end ReadMapScriptByte
-	.else
-	thumb_func_start ReadMapScriptByte
-ReadMapScriptByte:
-	decomp_trampoline ReadMapScriptByte_c, 0
-	thumb_func_end ReadMapScriptByte
-	.endif
 
-	.ifndef DECOMP_ReadMapScriptSignedByte
-	thumb_func_start ReadMapScriptSignedByte
+	thumb_local_start
 /* (r6:uint offsetToValue, r7:u8 * curScriptCmdPtr) -> r4:s8 result
 	preserves: r6,r7
 	unused: r0-r3,r5,r8-r12*/
@@ -1447,15 +1439,8 @@ ReadMapScriptSignedByte: // 803609C
 	asr r4, r4, #0x18
 	pop {r7,pc}
 	thumb_func_end ReadMapScriptSignedByte
-	.else
-	thumb_func_start ReadMapScriptSignedByte
-ReadMapScriptSignedByte:
-	decomp_trampoline ReadMapScriptSignedByte_c, 4
-	thumb_func_end ReadMapScriptSignedByte
-	.endif
 
-	.ifndef DECOMP_ReadMapScriptHalfword
-	thumb_func_start ReadMapScriptHalfword
+	thumb_local_start
 /* (r6:uint offsetToValue, r7:u8 * curScriptCmdPtr) -> r4:u16 result
 	spoils: r6
 	preserves: r7
@@ -1469,15 +1454,8 @@ ReadMapScriptHalfword: // 80360A8
 	orr r4, r6
 	pop {r7,pc}
 	thumb_func_end ReadMapScriptHalfword
-	.else
-	thumb_func_start ReadMapScriptHalfword
-ReadMapScriptHalfword:
-	decomp_trampoline ReadMapScriptHalfword_c, 6
-	thumb_func_end ReadMapScriptHalfword
-	.endif
 
-	.ifndef DECOMP_ReadMapScriptSignedHalfword
-	thumb_func_start ReadMapScriptSignedHalfword
+	thumb_local_start
 /* (r6:uint offsetToValue, r7:u8 * curScriptCmdPtr) -> r4:s16 result
 	spoils: r6
 	preserves: r7
@@ -1493,15 +1471,8 @@ ReadMapScriptSignedHalfword: // 80360B6
 	asr r4, r4, #0x10
 	pop {r7,pc}
 	thumb_func_end ReadMapScriptSignedHalfword
-	.else
-	thumb_func_start ReadMapScriptSignedHalfword
-ReadMapScriptSignedHalfword:
-	decomp_trampoline ReadMapScriptSignedHalfword_c, 8
-	thumb_func_end ReadMapScriptSignedHalfword
-	.endif
 
-	.ifndef DECOMP_ReadMapScriptWord
-	thumb_func_start ReadMapScriptWord
+	thumb_local_start
 /* (r6:uint offsetToValue, r7:u8 * curScriptCmdPtr) -> r4:u32 result
 	spoils: r6
 	preserves: r7
@@ -1521,15 +1492,9 @@ ReadMapScriptWord: // 80360C8
 	orr r4, r6
 	pop {r7,pc}
 	thumb_func_end ReadMapScriptWord
-	.else
-	thumb_func_start ReadMapScriptWord
-ReadMapScriptWord:
-	decomp_trampoline ReadMapScriptWord_c, 18
-	thumb_func_end ReadMapScriptWord
-	.endif
 
 	.balign 4, 0
-off_80360E4::
+off_80360E4:
 	.word dword_80362A4
 	.word dword_80362EC
 	.word dword_80362A4
@@ -2409,7 +2374,6 @@ dword_8036D8C:
 	.word 0xFFFFFFFF
 	.word 0xFFFFFFFF
 
-	.ifndef DECOMP_playCertainMapMusicBasedOnEventByte_8036e44
 	thumb_func_start playCertainMapMusicBasedOnEventByte_8036e44
 playCertainMapMusicBasedOnEventByte_8036e44:
 	push {r4-r7,lr}
@@ -2442,14 +2406,7 @@ locret_8036E72:
 	pop {r4-r7,pc}
 	.pool // 8036E74
 	thumb_func_end playCertainMapMusicBasedOnEventByte_8036e44
-	.else
-	thumb_func_start playCertainMapMusicBasedOnEventByte_8036e44
-playCertainMapMusicBasedOnEventByte_8036e44:
-	decomp_trampoline playCertainMapMusicBasedOnEventByte_8036e44_c, 44
-	thumb_func_end playCertainMapMusicBasedOnEventByte_8036e44
-	.endif
 
-	.ifndef DECOMP_PlayMapMusic
 	thumb_func_start PlayMapMusic
 PlayMapMusic: // () -> ()
 	push {r4-r7,lr}
@@ -2459,12 +2416,6 @@ PlayMapMusic: // () -> ()
 	bl PlayMusic // (song: u8) -> ()
 	pop {r4-r7,pc}
 	thumb_func_end PlayMapMusic
-	.else
-	thumb_func_start PlayMapMusic
-PlayMapMusic:
-	decomp_trampoline PlayMapMusic_c, 6
-	thumb_func_end PlayMapMusic
-	.endif
 
 	thumb_func_start sub_8036E86
 sub_8036E86:
@@ -2475,7 +2426,6 @@ sub_8036E86:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8036E86
 
-	.ifndef DECOMP_StartCutscene
 	thumb_func_start StartCutscene
 // r0 - cutscene script to run
 // r1 - parameter
@@ -2506,19 +2456,7 @@ off_8036EC4:
 	.word 0x4000000
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end StartCutscene
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start StartCutscene
-StartCutscene:
-	decomp_trampoline StartCutscene_c, 44
-off_8036EC4:
-	.word 0x4000000
-	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end StartCutscene
-	.endif
 
-	.ifndef DECOMP_cutscene_8036ED4
 	thumb_func_start cutscene_8036ED4
 cutscene_8036ED4:
 	push {r4-r7,lr}
@@ -2541,14 +2479,7 @@ cutscene_8036ED4:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}
 	thumb_func_end cutscene_8036ED4
-	.else
-	thumb_func_start cutscene_8036ED4
-cutscene_8036ED4:
-	decomp_trampoline cutscene_8036ED4_c, 34
-	thumb_func_end cutscene_8036ED4
-	.endif
 
-	.ifndef DECOMP_cutscene_8036EFE
 	thumb_func_start cutscene_8036EFE
 cutscene_8036EFE:
 	push {r4-r7,lr}
@@ -2569,19 +2500,7 @@ cutscene_8036EFE:
 off_8036F20:
 	.word DummyCutsceneScript
 	thumb_func_end cutscene_8036EFE
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start cutscene_8036EFE
-cutscene_8036EFE:
-	decomp_trampoline cutscene_8036EFE_c, 24
-	.balign 4, 0
-off_8036F20:
-	.word DummyCutsceneScript
-	thumb_func_end cutscene_8036EFE
-	.endif
 
-	.ifndef DECOMP_clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	thumb_func_start clearCutsceneScriptPosIfMagicValue0x1_8036F24
 clearCutsceneScriptPosIfMagicValue0x1_8036F24:
 	mov r1, r10
@@ -2595,14 +2514,7 @@ clearCutsceneScriptPosIfMagicValue0x1_8036F24:
 .doNotClearCutsceneScript
 	mov pc, lr
 	thumb_func_end clearCutsceneScriptPosIfMagicValue0x1_8036F24
-	.else
-	thumb_func_start clearCutsceneScriptPosIfMagicValue0x1_8036F24
-clearCutsceneScriptPosIfMagicValue0x1_8036F24:
-	decomp_trampoline clearCutsceneScriptPosIfMagicValue0x1_8036F24_c, 10
-	thumb_func_end clearCutsceneScriptPosIfMagicValue0x1_8036F24
-	.endif
 
-	.ifndef DECOMP_IsCutsceneScriptNonNull
 	thumb_func_start IsCutsceneScriptNonNull
 IsCutsceneScriptNonNull: // () -> !zf
 	mov r0, r10
@@ -2611,12 +2523,6 @@ IsCutsceneScriptNonNull: // () -> !zf
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end IsCutsceneScriptNonNull
-	.else
-	thumb_func_start IsCutsceneScriptNonNull
-IsCutsceneScriptNonNull:
-	decomp_trampoline IsCutsceneScriptNonNull_c, 0
-	thumb_func_end IsCutsceneScriptNonNull
-	.endif
 
 // () -> zf
 	thumb_func_start cutscene_checkOriginalCutsceneScriptPos_8036F40
@@ -2684,7 +2590,6 @@ TryCutsceneSkip:
 	pop {r4-r7,pc}
 	thumb_func_end TryCutsceneSkip
 
-	.ifndef DECOMP_SetCutsceneCameraScript
 	thumb_func_start SetCutsceneCameraScript
 SetCutsceneCameraScript:
 	push {lr}
@@ -2696,14 +2601,7 @@ SetCutsceneCameraScript:
 	bl camera_writeUnk03_14_80301b2
 	pop {pc}
 	thumb_func_end SetCutsceneCameraScript
-	.else
-	thumb_func_start SetCutsceneCameraScript
-SetCutsceneCameraScript:
-	decomp_trampoline SetCutsceneCameraScript_c, 10
-	thumb_func_end SetCutsceneCameraScript
-	.endif
 
-	.ifndef DECOMP_cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 	thumb_func_start cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
 	push {lr}
@@ -2715,12 +2613,6 @@ cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
 	bl camera_writeUnk03_14_80301b2
 	pop {pc}
 	thumb_func_end cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
-	.else
-	thumb_func_start cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
-cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
-	decomp_trampoline cutsceneCamera_focusCameraOnPlayerMaybe_8036faa_c, 8
-	thumb_func_end cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
-	.endif
 
 	thumb_local_start
 RunCutsceneCameraCommand:
@@ -3816,9 +3708,9 @@ CutsceneCommandJumptable:
 	.word CutsceneCmd_jump_if_req_bbs_master_rank+1
   // 0x200
 	.word CutsceneCmd_if_in_real_world_jump_else_jump+1
-DummyCutsceneScript::
+DummyCutsceneScript:
 	.word 0x11
-byte_8037694::
+byte_8037694:
 	.byte 0x0, 0xFF, 0xFF, 0xFF, 0x48, 0xFF, 0x34, 0xFF, 0x54, 0xFF
 	.byte 0x57, 0xFF, 0xFF, 0xFF, 0x4B, 0xFF, 0x35, 0xFF, 0x56
 	.byte 0xFF, 0x55, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF

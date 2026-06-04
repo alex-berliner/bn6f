@@ -2705,7 +2705,6 @@ off_810F088:
 	.word 0x90
 	thumb_func_end sub_810F040
 
-	.ifndef DECOMP_sub_810F090
 	thumb_func_start sub_810F090
 sub_810F090:
 	push {r4,lr}
@@ -2734,12 +2733,6 @@ sub_810F090:
 locret_810F0BE:
 	pop {r4,pc}
 	thumb_func_end sub_810F090
-	.else
-	thumb_func_start sub_810F090
-sub_810F090:
-	decomp_trampoline sub_810F090_c, 40
-	thumb_func_end sub_810F090
-	.endif
 
 	thumb_local_start
 sub_810F0C0:
@@ -7294,7 +7287,6 @@ loc_8111812:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81117DA
 
-	.ifndef DECOMP_sub_8111816
 	thumb_func_start sub_8111816
 sub_8111816:
 	push {r4,lr}
@@ -7321,12 +7313,6 @@ sub_8111816:
 	strb r0, [r5,r1]
 	pop {r4,pc}
 	thumb_func_end sub_8111816
-	.else
-	thumb_func_start sub_8111816
-sub_8111816:
-	decomp_trampoline sub_8111816_c, 38
-	thumb_func_end sub_8111816
-	.endif
 
 	thumb_func_start sub_8111846
 sub_8111846:
@@ -9328,7 +9314,6 @@ byte_81129E8:
 	.byte 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E
 	thumb_func_end sub_8112968
 
-	.ifndef DECOMP_sub_81129EE
 	thumb_func_start sub_81129EE
 sub_81129EE:
 	push {lr}
@@ -9357,12 +9342,6 @@ sub_81129EE:
 locret_8112A1C:
 	pop {pc}
 	thumb_func_end sub_81129EE
-	.else
-	thumb_func_start sub_81129EE
-sub_81129EE:
-	decomp_trampoline sub_81129EE_c, 38
-	thumb_func_end sub_81129EE
-	.endif
 
 	thumb_local_start
 sub_8112A1E:
@@ -16476,7 +16455,6 @@ loc_8116874:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8116834
 
-	.ifndef DECOMP_sub_8116878
 	thumb_func_start sub_8116878
 sub_8116878:
 	push {lr}
@@ -16495,21 +16473,6 @@ dword_811688C:
 dword_8116890:
 	.word 0xF880080
 	thumb_func_end sub_8116878
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8116878
-sub_8116878:
-	decomp_trampoline sub_8116878_c, 8
-	.balign 4, 0x00
-dword_8116888:
-	.word 0x4000
-dword_811688C:
-	.word 0x10000
-dword_8116890:
-	.word 0xF880080
-	thumb_func_end sub_8116878
-	.endif
 
 	thumb_func_start sub_8116894
 sub_8116894:
@@ -17750,7 +17713,6 @@ loc_81171EE:
 	.balign 4, 0x00
 	thumb_func_end sub_81171D4
 
-	.ifndef DECOMP_sub_81171F4
 	thumb_func_start sub_81171F4
 sub_81171F4:
 	push {r4-r7,lr}
@@ -17774,12 +17736,6 @@ loc_8117214:
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	thumb_func_end sub_81171F4
-	.else
-	thumb_func_start sub_81171F4
-sub_81171F4:
-	decomp_trampoline sub_81171F4_c, 28
-	thumb_func_end sub_81171F4
-	.endif
 
 	thumb_func_start sub_8117218
 sub_8117218:
@@ -22645,7 +22601,6 @@ sub_8119804:
 	pop {pc}
 	thumb_func_end sub_8119804
 
-	.ifndef DECOMP_sub_811980C
 	thumb_func_start sub_811980C
 sub_811980C:
 	push {r4-r7,lr}
@@ -22674,12 +22629,6 @@ loc_8119830:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_811980C
-	.else
-	thumb_func_start sub_811980C
-sub_811980C:
-	decomp_trampoline sub_811980C_c, 40
-	thumb_func_end sub_811980C
-	.endif
 
 	thumb_func_start sub_811983C
 sub_811983C:
@@ -23253,7 +23202,6 @@ locret_8119C70:
 	.balign 4, 0x00
 	thumb_func_end sub_8119C58
 
-	.ifndef DECOMP_sub_8119C74
 	thumb_func_start sub_8119C74
 sub_8119C74:
 	push {r4-r7,lr}
@@ -23274,12 +23222,6 @@ loc_8119C8E:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8119C74
-	.else
-	thumb_func_start sub_8119C74
-sub_8119C74:
-	decomp_trampoline sub_8119C74_c, 24
-	thumb_func_end sub_8119C74
-	.endif
 
 	thumb_func_start sub_8119C94
 sub_8119C94:
@@ -23912,7 +23854,6 @@ sub_811A1EC:
 	pop {pc}
 	thumb_func_end sub_811A1EC
 
-	.ifndef DECOMP_sub_811A1F4
 	thumb_func_start sub_811A1F4
 sub_811A1F4:
 	push {r4,lr}
@@ -23939,12 +23880,6 @@ loc_811A216:
 	add sp, sp, #0x10
 	pop {r4,pc}
 	thumb_func_end sub_811A1F4
-	.else
-	thumb_func_start sub_811A1F4
-sub_811A1F4:
-	decomp_trampoline sub_811A1F4_c, 36
-	thumb_func_end sub_811A1F4
-	.endif
 
 	thumb_func_start sub_811A220
 sub_811A220:
@@ -25770,7 +25705,6 @@ locret_811AFFA:
 	strb r0, [r5,#9]
 locret_811B00E:
 	pop {r4-r7,pc}
-	.ifndef DECOMP_sub_811B010
 	thumb_func_start sub_811B010
 sub_811B010:
 	push {r4-r7,lr}
@@ -25785,12 +25719,6 @@ sub_811B010:
 locret_811B026:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811B010
-	.else
-	thumb_func_start sub_811B010
-sub_811B010:
-	decomp_trampoline sub_811B010_c, 16
-	thumb_func_end sub_811B010
-	.endif
 
 	thumb_local_start
 sub_811B028:
@@ -26360,7 +26288,6 @@ loc_811B486:
 	.balign 4, 0x00
 	thumb_func_end sub_811B46C
 
-	.ifndef DECOMP_sub_811B48C
 	thumb_func_start sub_811B48C
 sub_811B48C:
 	push {r4-r7,lr}
@@ -26381,12 +26308,6 @@ loc_811B4A6:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_811B48C
-	.else
-	thumb_func_start sub_811B48C
-sub_811B48C:
-	decomp_trampoline sub_811B48C_c, 24
-	thumb_func_end sub_811B48C
-	.endif
 
 	thumb_func_start sub_811B4AC
 sub_811B4AC:
@@ -27315,7 +27236,6 @@ loc_811BBEC:
 	.word word_2023FA0
 	thumb_func_end sub_811BBB8
 
-	.ifndef DECOMP_sub_811BC00
 	thumb_func_start sub_811BC00
 sub_811BC00:
 	push {r4-r7,lr}
@@ -27337,12 +27257,6 @@ loc_811BC20:
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 	thumb_func_end sub_811BC00
-	.else
-	thumb_func_start sub_811BC00
-sub_811BC00:
-	decomp_trampoline sub_811BC00_c, 28
-	thumb_func_end sub_811BC00
-	.endif
 
 	thumb_func_start sub_811BC24
 sub_811BC24:
@@ -32609,7 +32523,6 @@ byte_811EBDA:
 	.byte 0x4, 0x4, 0x4, 0x4, 0x4, 0x0
 	thumb_func_end sub_811EA28
 
-	.ifndef DECOMP_TestPETMenuDataFlag
 	thumb_func_start TestPETMenuDataFlag
 TestPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
@@ -32617,15 +32530,8 @@ TestPETMenuDataFlag:
 	tst r1, r0
 	mov pc, lr
 	thumb_func_end TestPETMenuDataFlag
-	.else
-	thumb_func_start TestPETMenuDataFlag
-TestPETMenuDataFlag:
-	decomp_trampoline TestPETMenuDataFlag_c, 0
-	thumb_func_end TestPETMenuDataFlag
-	.endif
 
-	.ifndef DECOMP_SetPETMenuDataFlag
-	thumb_func_start SetPETMenuDataFlag
+	thumb_local_start
 SetPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
 	ldrb r1, [r2,#0x5] // (eFlags200DF25 - 0x200df20)
@@ -32634,14 +32540,7 @@ SetPETMenuDataFlag:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end SetPETMenuDataFlag
-	.else
-	thumb_func_start SetPETMenuDataFlag
-SetPETMenuDataFlag:
-	decomp_trampoline SetPETMenuDataFlag_c, 4
-	thumb_func_end SetPETMenuDataFlag
-	.endif
 
-	.ifndef DECOMP_ClearPETMenuDataFlag
 	thumb_func_start ClearPETMenuDataFlag
 ClearPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
@@ -32651,14 +32550,7 @@ ClearPETMenuDataFlag:
 	mov pc, lr
 	.byte 0, 0
 	thumb_func_end ClearPETMenuDataFlag
-	.else
-	thumb_func_start ClearPETMenuDataFlag
-ClearPETMenuDataFlag:
-	decomp_trampoline ClearPETMenuDataFlag_c, 4
-	thumb_func_end ClearPETMenuDataFlag
-	.endif
 
-	.ifndef DECOMP_sub_811EC00
 	thumb_func_start sub_811EC00
 sub_811EC00:
 	push {lr}
@@ -32671,12 +32563,6 @@ sub_811EC00:
 	pop {pc}
 	.balign 4, 0
 	thumb_func_end sub_811EC00
-	.else
-	thumb_func_start sub_811EC00
-sub_811EC00:
-	decomp_trampoline sub_811EC00_c, 8
-	thumb_func_end sub_811EC00
-	.endif
 
 	thumb_func_start sub_811EC10
 sub_811EC10:
@@ -34074,7 +33960,6 @@ JumpTable811F7A0:
 	.word NULL
 	thumb_func_end SubMenuControl
 
-	.ifndef DECOMP_IsButtonPressed
 	thumb_func_start IsButtonPressed
 // (joypad_enum_t key) -> !zf
 IsButtonPressed:
@@ -34085,12 +33970,6 @@ IsButtonPressed:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end IsButtonPressed
-	.else
-	thumb_func_start IsButtonPressed
-IsButtonPressed:
-	decomp_trampoline IsButtonPressed_c, 4
-	thumb_func_end IsButtonPressed
-	.endif
 
 	thumb_func_start sub_811F7F8
 sub_811F7F8:
@@ -34592,7 +34471,6 @@ sub_811FB64:
 	pop {pc}
 	thumb_func_end sub_811FB64
 
-	.ifndef DECOMP_sub_811FB78
 	thumb_func_start sub_811FB78
 sub_811FB78:
 	mov r1, r10
@@ -34602,12 +34480,6 @@ sub_811FB78:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end sub_811FB78
-	.else
-	thumb_func_start sub_811FB78
-sub_811FB78:
-	decomp_trampoline sub_811FB78_c, 4
-	thumb_func_end sub_811FB78
-	.endif
 
 	thumb_func_start sub_811FB84
 sub_811FB84: // (a0: u32?, a1: usize) -> u32?
@@ -34958,7 +34830,6 @@ loc_811FE2A:
 	.balign 4, 0x00
 	thumb_func_end sub_811FDB8
 
-	.ifndef DECOMP_sub_811FE34
 	thumb_func_start sub_811FE34
 sub_811FE34:
 	push {lr}
@@ -34971,16 +34842,6 @@ off_811FE40:
 off_811FE44:
 	.word 0x3C
 	thumb_func_end sub_811FE34
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_811FE34
-sub_811FE34:
-	decomp_trampoline sub_811FE34_c, 8
-off_811FE44:
-	.word 0x3C
-	thumb_func_end sub_811FE34
-	.endif
 
 	thumb_local_start
 sub_811FE48:
@@ -35140,7 +35001,6 @@ byte_811FF60:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x8, 0x4, 0x6, 0x7, 0x5, 0x9, 0xA, 0x0
 	thumb_func_end sub_811FF54
 
-	.ifndef DECOMP_sub_811FF6C
 	thumb_func_start sub_811FF6C
 sub_811FF6C:
 	push {lr}
@@ -35151,12 +35011,6 @@ sub_811FF6C:
 byte_811FF78:
 	.byte 0x0, 0xA0, 0x0, 0x0, 0x3A, 0x1, 0x0, 0x0
 	thumb_func_end sub_811FF6C
-	.else
-	thumb_func_start sub_811FF6C
-sub_811FF6C:
-	decomp_trampoline sub_811FF6C_c, 12
-	thumb_func_end sub_811FF6C
-	.endif
 
 	thumb_local_start
 sub_811FF80:
@@ -36354,7 +36208,6 @@ off_81207BC:
 	.word unk_20343E0
 	thumb_func_end sub_8120740
 
-	.ifndef DECOMP_sub_81207C4
 	thumb_func_start sub_81207C4
 sub_81207C4:
 	push {r4-r7,lr}
@@ -36386,12 +36239,6 @@ loc_81207EA:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	thumb_func_end sub_81207C4
-	.else
-	thumb_func_start sub_81207C4
-sub_81207C4:
-	decomp_trampoline sub_81207C4_c, 44
-	thumb_func_end sub_81207C4
-	.endif
 
 	thumb_func_start sub_81207F8
 sub_81207F8:
@@ -37033,7 +36880,6 @@ word_8120C8E:
 word_8120C90:
 	.hword 0x2220
 	.balign 4, 0x00
-	.ifndef DECOMP_sub_8120C94
 	thumb_func_start sub_8120C94
 sub_8120C94:
 	push {r4-r7,lr}
@@ -37064,12 +36910,6 @@ loc_8120CAE:
 	blt loc_8120CAA
 	pop {r4-r7,pc}
 	thumb_func_end sub_8120C94
-	.else
-	thumb_func_start sub_8120C94
-sub_8120C94:
-	decomp_trampoline sub_8120C94_c, 44
-	thumb_func_end sub_8120C94
-	.endif
 
 	thumb_func_start sub_8120CC8
 sub_8120CC8:
@@ -37523,7 +37363,6 @@ off_8121128:
 	.byte 0x0
 	thumb_func_end sub_8121108
 
-	.ifndef DECOMP_sub_8121144
 	thumb_func_start sub_8121144
 sub_8121144:
 	push {r4-r7,lr}
@@ -37535,12 +37374,6 @@ sub_8121144:
 off_8121150:
 	.word word_200DCF0
 	thumb_func_end sub_8121144
-	.else
-	thumb_func_start sub_8121144
-sub_8121144:
-	decomp_trampoline sub_8121144_c, 8
-	thumb_func_end sub_8121144
-	.endif
 
 	thumb_func_start sub_8121154
 sub_8121154:

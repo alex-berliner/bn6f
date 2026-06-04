@@ -10193,7 +10193,6 @@ off_81284A0:
 	.word unk_2028590
 	thumb_func_end sub_812848C
 
-	.ifndef DECOMP_sub_81284A4
 	thumb_func_start sub_81284A4
 sub_81284A4:
 	ldr r0, off_81284B0 // =byte_2000FE0 
@@ -10205,12 +10204,6 @@ sub_81284A4:
 off_81284B0:
 	.word byte_2000FE0
 	thumb_func_end sub_81284A4
-	.else
-	thumb_func_start sub_81284A4
-sub_81284A4:
-	decomp_trampoline sub_81284A4_c, 8
-	thumb_func_end sub_81284A4
-	.endif
 
 	thumb_local_start
 sub_81284B4:
@@ -15527,7 +15520,6 @@ loc_812AF58:
 	.balign 4, 0x00
 	thumb_func_end sub_812AF3C
 
-	.ifndef DECOMP_sub_812AF78
 	thumb_func_start sub_812AF78
 sub_812AF78:
 	push {lr}
@@ -15537,12 +15529,6 @@ sub_812AF78:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_812AF78
-	.else
-	thumb_func_start sub_812AF78
-sub_812AF78:
-	decomp_trampoline sub_812AF78_c, 4
-	thumb_func_end sub_812AF78
-	.endif
 
 	thumb_func_start sub_812AF84
 sub_812AF84:
@@ -15557,7 +15543,6 @@ sub_812AF84:
 	pop {pc}
 	thumb_func_end sub_812AF84
 
-	.ifndef DECOMP_sub_812AF98
 	thumb_func_start sub_812AF98
 sub_812AF98:
 	push {lr}
@@ -15567,14 +15552,7 @@ sub_812AF98:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_812AF98
-	.else
-	thumb_func_start sub_812AF98
-sub_812AF98:
-	decomp_trampoline sub_812AF98_c, 4
-	thumb_func_end sub_812AF98
-	.endif
 
-	.ifndef DECOMP_sub_812AFA4
 	thumb_func_start sub_812AFA4
 sub_812AFA4:
 	push {lr}
@@ -15584,12 +15562,6 @@ sub_812AFA4:
 	pop {pc}
 	.byte 0, 0
 	thumb_func_end sub_812AFA4
-	.else
-	thumb_func_start sub_812AFA4
-sub_812AFA4:
-	decomp_trampoline sub_812AFA4_c, 4
-	thumb_func_end sub_812AFA4
-	.endif
 
 	thumb_local_start
 sub_812AFB0:

@@ -712,7 +712,6 @@ off_813E5D8:
 	.word unk_2033A00
 	thumb_func_end reqBBS_uncomp_813E5A0
 
-	.ifndef DECOMP_reqBBS_addBBSMessage_813e5dc
 	thumb_func_start reqBBS_addBBSMessage_813e5dc
 reqBBS_addBBSMessage_813e5dc:
 	push {r3,r7,lr}
@@ -743,14 +742,7 @@ reqBBS_addBBSMessage_813e5dc:
 	str r0, [r1,r3]
 	pop {r3,r7,pc}
 	thumb_func_end reqBBS_addBBSMessage_813e5dc
-	.else
-	thumb_func_start reqBBS_addBBSMessage_813e5dc
-reqBBS_addBBSMessage_813e5dc:
-	decomp_trampoline reqBBS_addBBSMessage_813e5dc_c, 50
-	thumb_func_end reqBBS_addBBSMessage_813e5dc
-	.endif
 
-	.ifndef DECOMP_reqBBS_813E616
 	thumb_func_start reqBBS_813E616
 reqBBS_813E616:
 	push {lr}
@@ -773,12 +765,6 @@ reqBBS_813E616:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end reqBBS_813E616
-	.else
-	thumb_func_start reqBBS_813E616
-reqBBS_813E616:
-	decomp_trampoline reqBBS_813E616_c, 20
-	thumb_func_end reqBBS_813E616
-	.endif
 
 	thumb_local_start
 reqBBS_dead_813E634:
@@ -810,7 +796,6 @@ reqBBS_dead_813E634:
 	pop {r4,pc}
 	thumb_func_end reqBBS_dead_813E634
 
-	.ifndef DECOMP_reqBBS_813E660
 	thumb_func_start reqBBS_813E660
 reqBBS_813E660:
 	push {r4,r5,lr}
@@ -863,40 +848,6 @@ off_813E6C8:
 off_813E6CC:
 	.word unk_2000FF0
 	thumb_func_end reqBBS_813E660
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start reqBBS_813E660
-reqBBS_813E660:
-	decomp_trampoline reqBBS_813E660_c, 36
-byte_813E68C:
-	.byte 0xA0, 0x17, 0x0, 0x0, 0xE0, 0x17, 0x0, 0x0, 0x20, 0x18, 0x0
-	.byte 0x0, 0x60, 0x18, 0x0, 0x0, 0xA0, 0x18, 0x0, 0x0, 0xE0, 0x18
-	.byte 0x0, 0x0
-off_813E6A4:
-	.word 0x17A0
-off_813E6A8:
-	.word 0x19A0
-off_813E6AC:
-	.word byte_2001400
-off_813E6B0:
-	.word unk_2000FC0
-off_813E6B4:
-	.word byte_2001400
-byteCount:
-	.word 0x200
-off_813E6BC:
-	.word unk_2000FC0
-off_813E6C0:
-	.word unk_2000FF0
-off_813E6C4:
-	.word byte_2001400
-off_813E6C8:
-	.word unk_2000FC0
-off_813E6CC:
-	.word unk_2000FF0
-	thumb_func_end reqBBS_813E660
-	.endif
 
 	thumb_local_start
 reqBBS_vram_813E6D0:
@@ -1696,7 +1647,6 @@ dword_813EE40:
 	.word 0x1010101, 0x2020101, 0x2020202, 0xFF
 	thumb_func_end reqBBS_813EDE4
 
-	.ifndef DECOMP_reqBBS_813EE58
 	thumb_func_start reqBBS_813EE58
 reqBBS_813EE58:
 	push {r5,lr}
@@ -1788,12 +1738,6 @@ dword_813EEEC:
 off_813EEF0:
 	.word eStructArr2008450
 	thumb_func_end reqBBS_813EE58
-	.else
-	thumb_func_start reqBBS_813EE58
-reqBBS_813EE58:
-	decomp_trampoline reqBBS_813EE58_c, 148
-	thumb_func_end reqBBS_813EE58
-	.endif
 
 	thumb_local_start
 reqBBS_813EEF4:
@@ -1924,7 +1868,7 @@ byte_813F32C:
 	.byte 0x61, 0xEA, 0x61, 0xEC, 0x61, 0xEE, 0x61, 0xE1, 0x61
 	.byte 0xE3, 0x61, 0xE5, 0x61, 0xE7, 0x61, 0xE9, 0x61, 0xEB
 	.byte 0x61, 0xED, 0x61, 0xEF, 0x61
-reqBBS_textualPointers::
+reqBBS_textualPointers:
 	.word reqBBS_requestNames_textualData
 	.word reqBBS_requestInfo_textOffsets
 byte_813F354:
@@ -2707,7 +2651,6 @@ off_813F99C:
 	.word unk_2033A00
 	thumb_func_end reqBBS_copyTextDataToRAM
 
-	.ifndef DECOMP_reqBBS_addRequest_813F9A0
 	thumb_func_start reqBBS_addRequest_813F9A0
 reqBBS_addRequest_813F9A0:
 	push {r3,r7,lr}
@@ -2738,14 +2681,7 @@ reqBBS_addRequest_813F9A0:
 	str r0, [r1,r3]
 	pop {r3,r7,pc}
 	thumb_func_end reqBBS_addRequest_813F9A0
-	.else
-	thumb_func_start reqBBS_addRequest_813F9A0
-reqBBS_addRequest_813F9A0:
-	decomp_trampoline reqBBS_addRequest_813F9A0_c, 50
-	thumb_func_end reqBBS_addRequest_813F9A0
-	.endif
 
-	.ifndef DECOMP_reqBBS_initMemory_813F9DA
 	thumb_func_start reqBBS_initMemory_813F9DA
 reqBBS_initMemory_813F9DA:
 	push {lr}
@@ -2768,12 +2704,6 @@ reqBBS_initMemory_813F9DA:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end reqBBS_initMemory_813F9DA
-	.else
-	thumb_func_start reqBBS_initMemory_813F9DA
-reqBBS_initMemory_813F9DA:
-	decomp_trampoline reqBBS_initMemory_813F9DA_c, 20
-	thumb_func_end reqBBS_initMemory_813F9DA
-	.endif
 
 	thumb_local_start
 reqBBS_dead_initMemory_813F9F8:
@@ -2805,7 +2735,6 @@ reqBBS_dead_initMemory_813F9F8:
 	pop {r4,pc}
 	thumb_func_end reqBBS_dead_initMemory_813F9F8
 
-	.ifndef DECOMP_sub_813FA24
 	thumb_func_start sub_813FA24
 sub_813FA24:
 	push {r4,r5,lr}
@@ -2834,12 +2763,6 @@ off_813FA4C:
 dword_813FA50:
 	.word 0x1B60
 	thumb_func_end sub_813FA24
-	.else
-	thumb_func_start sub_813FA24
-sub_813FA24:
-	decomp_trampoline sub_813FA24_c, 40
-	thumb_func_end sub_813FA24
-	.endif
 
 	thumb_local_start
 reqBBS_813FA54:
@@ -4378,7 +4301,6 @@ dword_81406E4:
 	.word 0x1010101, 0x2020101, 0x2020202, 0xFF
 	thumb_func_end reqBBS_animateCursor
 
-	.ifndef DECOMP_reqBBS_81406FC
 	thumb_func_start reqBBS_81406FC
 reqBBS_81406FC:
 	push {r5,lr}
@@ -4470,15 +4392,8 @@ dword_8140790:
 off_8140794:
 	.word eStructArr2008450
 	thumb_func_end reqBBS_81406FC
-	.else
-	thumb_func_start reqBBS_81406FC
-reqBBS_81406FC:
-	decomp_trampoline reqBBS_81406FC_c, 148
-	thumb_func_end reqBBS_81406FC
-	.endif
 
 // () -> u8
-	.ifndef DECOMP_reqBBS_getRequestBBSRank
 	thumb_func_start reqBBS_getRequestBBSRank
 reqBBS_getRequestBBSRank:
 	push {r4-r7,lr}
@@ -4490,12 +4405,6 @@ reqBBS_getRequestBBSRank:
 dword_81407A4:
 	.word 0xE
 	thumb_func_end reqBBS_getRequestBBSRank
-	.else
-	thumb_func_start reqBBS_getRequestBBSRank
-reqBBS_getRequestBBSRank:
-	decomp_trampoline reqBBS_getRequestBBSRank_c, 8
-	thumb_func_end reqBBS_getRequestBBSRank
-	.endif
 
 	thumb_local_start
 reqBBS_81407A8:
@@ -4533,7 +4442,6 @@ dword_81407D4:
 	.word 0xD
 	thumb_func_end reqBBS_81407C8
 
-	.ifndef DECOMP_reqBBS_81407D8
 	thumb_func_start reqBBS_81407D8
 reqBBS_81407D8:
 	push {r4-r7,lr}
@@ -4567,12 +4475,6 @@ loc_8140814:
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end reqBBS_81407D8
-	.else
-	thumb_func_start reqBBS_81407D8
-reqBBS_81407D8:
-	decomp_trampoline reqBBS_81407D8_c, 56
-	thumb_func_end reqBBS_81407D8
-	.endif
 	.balign 4, 0
 dword_8140818:
 	.word 0xD
@@ -4582,7 +4484,7 @@ dword_8140820:
 	.word 0xF
 off_8140824:
 	.word byte_8140828
-byte_8140828::
+byte_8140828:
 	.byte 0xA, 0x19, 0x23, 0x4B, 0x0, 0x0, 0x0, 0x0
 
 	thumb_local_start
@@ -4604,8 +4506,7 @@ loc_8140846:
 	thumb_func_end reqBBS_dead_8140830
 
 
-	.ifndef DECOMP_reqBBS_814084C
-	thumb_func_start reqBBS_814084C
+	thumb_local_start
 reqBBS_814084C:
 	push {r4-r7,lr}
 	ldr r1, off_8140864 // =reqBBS_textualPointers 
@@ -4624,12 +4525,6 @@ locret_8140862:
 off_8140864:
 	.word reqBBS_textualPointers
 	thumb_func_end reqBBS_814084C
-	.else
-	thumb_func_start reqBBS_814084C
-reqBBS_814084C:
-	decomp_trampoline reqBBS_814084C_c, 20
-	thumb_func_end reqBBS_814084C
-	.endif
 
 	thumb_local_start
 reqBBS_8140868:
@@ -4684,7 +4579,6 @@ off_81408B0:
 	.word reqBBS_textualPointers
 	thumb_func_end reqBBS_81408A0
 
-	.ifndef DECOMP_reqBBS_81408B4
 	thumb_func_start reqBBS_81408B4
 reqBBS_81408B4:
 	push {r4-r7,lr}
@@ -4698,12 +4592,6 @@ reqBBS_81408B4:
 off_81408C4:
 	.word reqBBS_textualPointers
 	thumb_func_end reqBBS_81408B4
-	.else
-	thumb_func_start reqBBS_81408B4
-reqBBS_81408B4:
-	decomp_trampoline reqBBS_81408B4_c, 12
-	thumb_func_end reqBBS_81408B4
-	.endif
 
 	thumb_local_start
 reqBBS_81408C8:
@@ -4792,7 +4680,6 @@ off_8140970:
 	.word 0x110
 	thumb_func_end reqBBS_81408F0
 
-	.ifndef DECOMP_reqBBS_8140974
 	thumb_func_start reqBBS_8140974
 reqBBS_8140974:
 	push {r4-r7,lr}
@@ -4804,14 +4691,7 @@ reqBBS_8140974:
 dword_8140980:
 	.word 0xF
 	thumb_func_end reqBBS_8140974
-	.else
-	thumb_func_start reqBBS_8140974
-reqBBS_8140974:
-	decomp_trampoline reqBBS_8140974_c, 8
-	thumb_func_end reqBBS_8140974
-	.endif
 
-	.ifndef DECOMP_reqBBS_8140984
 	thumb_func_start reqBBS_8140984
 reqBBS_8140984:
 	push {r4-r7,lr}
@@ -4854,36 +4734,6 @@ off_81409C8:
 off_81409CC:
 	.word eReqBBSGui
 	thumb_func_end reqBBS_8140984
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start reqBBS_8140984
-reqBBS_8140984:
-	decomp_trampoline reqBBS_8140984_c, 24
-off_81409A4:
-	.word eReqBBSGui
-off_81409A8:
-	.word eReqBBSGui
-off_81409AC:
-	.word eReqBBSGui
-off_81409B0:
-	.word eReqBBSGui
-off_81409B4:
-	.word eReqBBSGui
-off_81409B8:
-	.word eReqBBSGui
-off_81409BC:
-	.word eReqBBSGui
-off_81409C0:
-	.word byte_813F380
-off_81409C4:
-	.word eReqBBSGui
-off_81409C8:
-	.word eReqBBSGui
-off_81409CC:
-	.word eReqBBSGui
-	thumb_func_end reqBBS_8140984
-	.endif
 
 // (int a1) -> int
 	thumb_func_start reqBBS_81409D0
@@ -4920,7 +4770,6 @@ reqBBS_81409F4:
 	.byte 0, 0
 	thumb_func_end reqBBS_81409F4
 
-	.ifndef DECOMP_reqBBS_setFlag_e17b0f7_8140A00
 	thumb_func_start reqBBS_setFlag_e17b0f7_8140A00
 reqBBS_setFlag_e17b0f7_8140A00:
 	// entry 17, byte 0, flag 7
@@ -4930,12 +4779,6 @@ reqBBS_setFlag_e17b0f7_8140A00:
 	bl SetEventFlagFromImmediate
 	pop {pc}
 	thumb_func_end reqBBS_setFlag_e17b0f7_8140A00
-	.else
-	thumb_func_start reqBBS_setFlag_e17b0f7_8140A00
-reqBBS_setFlag_e17b0f7_8140A00:
-	decomp_trampoline reqBBS_setFlag_e17b0f7_8140A00_c, 4
-	thumb_func_end reqBBS_setFlag_e17b0f7_8140A00
-	.endif
 
 	thumb_func_start reqBBS_clearFlag_8140A0C
 reqBBS_clearFlag_8140A0C:

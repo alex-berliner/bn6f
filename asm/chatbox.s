@@ -1583,7 +1583,6 @@ byte_8040808:
 	.byte 0x4, 0x0, 0x4, 0x0, 0x0
 	thumb_func_end chatbox_selectCompTextByMap_80407C8
 
-	.ifndef DECOMP_chatbox_8040818
 	thumb_func_start chatbox_8040818
 chatbox_8040818:
 	push {r5,lr}
@@ -1596,12 +1595,6 @@ chatbox_8040818:
 	pop {r5,pc}
 	.balign 4, 0x00
 	thumb_func_end chatbox_8040818
-	.else
-	thumb_func_start chatbox_8040818
-chatbox_8040818:
-	decomp_trampoline chatbox_8040818_c, 12
-	thumb_func_end chatbox_8040818
-	.endif
 
 	thumb_local_start
 chatbox_804082C:
@@ -1739,7 +1732,6 @@ chatbox_clearFlags_3e:
 
 // (int mask) -> void
 //
-	.ifndef DECOMP_chatbox_maskFlags_3e
 	thumb_func_start chatbox_maskFlags_3e
 chatbox_maskFlags_3e:
 	push {r1}
@@ -1749,12 +1741,6 @@ chatbox_maskFlags_3e:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end chatbox_maskFlags_3e
-	.else
-	thumb_func_start chatbox_maskFlags_3e
-chatbox_maskFlags_3e:
-	decomp_trampoline chatbox_maskFlags_3e_c, 4
-	thumb_func_end chatbox_maskFlags_3e
-	.endif
 
 	thumb_local_start
 chatbox_ED_select_8040944:
@@ -10409,7 +10395,6 @@ byte_8045EB0:
 	.word 0x20
 	thumb_func_end chatbox_8043A5C
 
-	.ifndef DECOMP_chatbox_8045ED0
 	thumb_func_start chatbox_8045ED0
 chatbox_8045ED0:
 	push {r1,lr}
@@ -10419,12 +10404,6 @@ chatbox_8045ED0:
 off_8045ED8:
 	.word byte_8043CA4
 	thumb_func_end chatbox_8045ED0
-	.else
-	thumb_func_start chatbox_8045ED0
-chatbox_8045ED0:
-	decomp_trampoline chatbox_8045ED0_c, 4
-	thumb_func_end chatbox_8045ED0
-	.endif
 
 	thumb_func_start chatbox_8045EDC
 chatbox_8045EDC:
@@ -10474,7 +10453,6 @@ sub_8045F0C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8045F0C
 
-	.ifndef DECOMP_chatbox_set_eFlags2009F38
 	thumb_func_start chatbox_set_eFlags2009F38
 chatbox_set_eFlags2009F38:
 	push {r1,r2}
@@ -10486,15 +10464,8 @@ chatbox_set_eFlags2009F38:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end chatbox_set_eFlags2009F38
-	.else
-	thumb_func_start chatbox_set_eFlags2009F38
-chatbox_set_eFlags2009F38:
-	decomp_trampoline chatbox_set_eFlags2009F38_c, 8
-	thumb_func_end chatbox_set_eFlags2009F38
-	.endif
 
 // (int a1) ->
-	.ifndef DECOMP_chatbox_clear_eFlags2009F38
 	thumb_func_start chatbox_clear_eFlags2009F38
 chatbox_clear_eFlags2009F38:
 	push {r1,r2}
@@ -10506,15 +10477,8 @@ chatbox_clear_eFlags2009F38:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end chatbox_clear_eFlags2009F38
-	.else
-	thumb_func_start chatbox_clear_eFlags2009F38
-chatbox_clear_eFlags2009F38:
-	decomp_trampoline chatbox_clear_eFlags2009F38_c, 8
-	thumb_func_end chatbox_clear_eFlags2009F38
-	.endif
 
 
-	.ifndef DECOMP_chatbox_mask_eFlags2009F38
 	thumb_func_start chatbox_mask_eFlags2009F38
 chatbox_mask_eFlags2009F38: // (int flag) -> int
 	push {r1}
@@ -10526,19 +10490,8 @@ chatbox_mask_eFlags2009F38: // (int flag) -> int
 off_8045F48:
 	.word eFlags2009F38
 	thumb_func_end chatbox_mask_eFlags2009F38
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start chatbox_mask_eFlags2009F38
-chatbox_mask_eFlags2009F38:
-	decomp_trampoline chatbox_mask_eFlags2009F38_c, 4
-off_8045F48:
-	.word eFlags2009F38
-	thumb_func_end chatbox_mask_eFlags2009F38
-	.endif
 
 
-	.ifndef DECOMP_chatbox_8045F4C
 	thumb_func_start chatbox_8045F4C
 chatbox_8045F4C:
 	push {r1}
@@ -10552,12 +10505,6 @@ chatbox_8045F4C:
 off_8045F5C:
 	.word eFlags2009F38
 	thumb_func_end chatbox_8045F4C
-	.else
-	thumb_func_start chatbox_8045F4C
-chatbox_8045F4C:
-	decomp_trampoline chatbox_8045F4C_c, 12
-	thumb_func_end chatbox_8045F4C
-	.endif
 
 	thumb_local_start
 chatbox_8045F60:

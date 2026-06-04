@@ -114,24 +114,17 @@ off_812EB74:
 	.word 0xBC
 	thumb_func_end sub_812EAC4
 
-	.ifndef DECOMP_sub_812EB78
 	thumb_func_start sub_812EB78
 sub_812EB78:
 	push {lr}
 	// a1
-	ldr r0, off_812EB84 // =byte_812DA94
+	ldr r0, off_812EB84 // =byte_812DA94 
 	bl sub_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_812EB84:
 	.word byte_812DA94
 	thumb_func_end sub_812EB78
-	.else
-	thumb_func_start sub_812EB78
-sub_812EB78:
-	decomp_trampoline sub_812EB78_c, 8
-	thumb_func_end sub_812EB78
-	.endif
 
 	thumb_func_start sub_812EB88
 sub_812EB88:
@@ -233,7 +226,6 @@ off_812EC28:
 	.word word_2023FA0
 	thumb_func_end sub_812EC04
 
-	.ifndef DECOMP_sub_812EC2C
 	thumb_func_start sub_812EC2C
 sub_812EC2C:
 	push {r4-r7,lr}
@@ -248,12 +240,6 @@ sub_812EC2C:
 	mov r0, r4
 	pop {r4-r7,pc}
 	thumb_func_end sub_812EC2C
-	.else
-	thumb_func_start sub_812EC2C
-sub_812EC2C:
-	decomp_trampoline sub_812EC2C_c, 16
-	thumb_func_end sub_812EC2C
-	.endif
 
 	push {r4-r7,lr}
 	sub sp, sp, #0x1c

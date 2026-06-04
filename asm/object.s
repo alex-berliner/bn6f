@@ -939,7 +939,6 @@ sub_800BF5C:
 	mov pc, lr
 	thumb_func_end sub_800BF5C
 
-	.ifndef DECOMP_zeroFill_800BF66
 	thumb_func_start zeroFill_800BF66
 zeroFill_800BF66:
 	push {lr}
@@ -961,25 +960,6 @@ off_800BF80:
 off_800BF84:
 	.word byte_203CF00
 	thumb_func_end zeroFill_800BF66
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start zeroFill_800BF66
-zeroFill_800BF66:
-	decomp_trampoline zeroFill_800BF66_c, 4
-	.balign 4, 0
-dword_800BF74:
-	.word 0x10000
-off_800BF78:
-	.word 0x171
-off_800BF7C:
-	.word 0x100
-off_800BF80:
-	.word byte_203CF00
-off_800BF84:
-	.word byte_203CF00
-	thumb_func_end zeroFill_800BF66
-	.endif
 
 	thumb_func_start sub_800BF88
 sub_800BF88:
@@ -2625,7 +2605,6 @@ locret_800CC34:
 	pop {r4-r6,pc}
 	thumb_func_end object_setPanelAlliance
 
-	.ifndef DECOMP_object_setPanelAllianceTimerLong
 	thumb_func_start object_setPanelAllianceTimerLong
 object_setPanelAllianceTimerLong:
 	mov r1, #8
@@ -2636,14 +2615,7 @@ object_setPanelAllianceTimerLong:
 	strh r2, [r1,#6]
 	mov pc, lr
 	thumb_func_end object_setPanelAllianceTimerLong
-	.else
-	thumb_func_start object_setPanelAllianceTimerLong
-object_setPanelAllianceTimerLong:
-	decomp_trampoline object_setPanelAllianceTimerLong_c, 4
-	thumb_func_end object_setPanelAllianceTimerLong
-	.endif
 
-	.ifndef DECOMP_object_setPanelAllianceTimerShort
 	thumb_func_start object_setPanelAllianceTimerShort
 object_setPanelAllianceTimerShort:
 	mov r1, #8
@@ -2654,12 +2626,6 @@ object_setPanelAllianceTimerShort:
 	strh r2, [r1,#6]
 	mov pc, lr
 	thumb_func_end object_setPanelAllianceTimerShort
-	.else
-	thumb_func_start object_setPanelAllianceTimerShort
-object_setPanelAllianceTimerShort:
-	decomp_trampoline object_setPanelAllianceTimerShort_c, 6
-	thumb_func_end object_setPanelAllianceTimerShort
-	.endif
 
 	thumb_func_start object_setPanelTypeBlink
 object_setPanelTypeBlink:
@@ -2683,7 +2649,6 @@ object_isCurrentPanelValid:
 	pop {pc}
 	thumb_func_end object_isCurrentPanelValid
 
-	.ifndef DECOMP_object_isValidPanel
 	thumb_func_start object_isValidPanel
 object_isValidPanel:
 	sub r0, #1
@@ -2698,12 +2663,6 @@ loc_800CC82:
 	mov r0, #0
 	mov pc, lr
 	thumb_func_end object_isValidPanel
-	.else
-	thumb_func_start object_isValidPanel
-object_isValidPanel:
-	decomp_trampoline object_isValidPanel_c, 10
-	thumb_func_end object_isValidPanel
-	.endif
 
 	thumb_func_start object_checkPanelParameters
 // r0 = panelx
@@ -5244,7 +5203,6 @@ byte_800E6C8:
 	.byte 0x0, 0x0, 0x80, 0xB
 	thumb_func_end sub_800E680
 
-	.ifndef DECOMP_IsR2BetweenR0AndR1
 	thumb_func_start IsR2BetweenR0AndR1
 // return (r0 <= r1 && r2 > r0 && r2 <= r1) || (r0 > r1 && r2 > r1 && r2 <= r0)
 // if (r0 <= r1) {
@@ -5272,14 +5230,7 @@ IsR2BetweenR0AndR1:
 	mov r0, r3
 	mov pc, lr
 	thumb_func_end IsR2BetweenR0AndR1
-	.else
-	thumb_func_start IsR2BetweenR0AndR1
-IsR2BetweenR0AndR1:
-	decomp_trampoline IsR2BetweenR0AndR1_c, 24
-	thumb_func_end IsR2BetweenR0AndR1
-	.endif
 
-	.ifndef DECOMP_sub_800E708
 	thumb_func_start sub_800E708
 sub_800E708:
 	mov r3, #0
@@ -5306,12 +5257,6 @@ loc_800E72C:
 	mov r0, r3
 	mov pc, lr
 	thumb_func_end sub_800E708
-	.else
-	thumb_func_start sub_800E708
-sub_800E708:
-	decomp_trampoline sub_800E708_c, 32
-	thumb_func_end sub_800E708
-	.endif
 
 	thumb_func_start sub_800E730
 sub_800E730:
@@ -5770,7 +5715,6 @@ locret_800EA8E:
 	pop {pc}
 	thumb_func_end sub_800EA4E
 
-	.ifndef DECOMP_sub_800EA90
 	thumb_func_start sub_800EA90
 sub_800EA90:
 	push {r4,lr}
@@ -5797,12 +5741,6 @@ loc_800EA9C:
 locret_800EAB8:
 	pop {r4,pc}
 	thumb_func_end sub_800EA90
-	.else
-	thumb_func_start sub_800EA90
-sub_800EA90:
-	decomp_trampoline sub_800EA90_c, 34
-	thumb_func_end sub_800EA90
-	.endif
 
 	thumb_func_start sub_800EABA
 sub_800EABA:
@@ -6173,7 +6111,6 @@ off_800ECF0:
 	.word 0x0
 	thumb_func_end sub_800EC80
 
-	.ifndef DECOMP_sub_800ED00
 	thumb_func_start sub_800ED00
 sub_800ED00:
 	ldr r0, off_800ED20 // =eAIData 
@@ -6200,14 +6137,7 @@ dword_800ED24:
 off_800ED28:
 	.word eUsedAIDataBitfield
 	thumb_func_end sub_800ED00
-	.else
-	thumb_func_start sub_800ED00
-sub_800ED00:
-	decomp_trampoline sub_800ED00_c, 36
-	thumb_func_end sub_800ED00
-	.endif
 
-	.ifndef DECOMP_object_createAIData
 	thumb_func_start object_createAIData
 object_createAIData: // () -> Nullable<* AIData>
 	push {r4,r5,lr}
@@ -6282,11 +6212,5 @@ off_800ED78:
 off_800ED7C:
 	.word eUsedAIDataBitfield
 	thumb_func_end object_createAIData
-	.else
-	thumb_func_start object_createAIData
-object_createAIData:
-	decomp_trampoline object_createAIData_c, 76
-	thumb_func_end object_createAIData
-	.endif
 
 /*For debugging purposes, connect comment at any range!*/

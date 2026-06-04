@@ -1909,7 +1909,6 @@ dword_809E048:
 	.word 0xD80
 	thumb_func_end sub_809E01C
 
-	.ifndef DECOMP_sub_809E04C
 	thumb_func_start sub_809E04C
 sub_809E04C:
 	push {r0,r1,lr}
@@ -1925,18 +1924,7 @@ off_809E05C:
 off_809E060:
 	.word eStruct2000aa0
 	thumb_func_end sub_809E04C
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_809E04C
-sub_809E04C:
-	decomp_trampoline sub_809E04C_c, 12
-off_809E060:
-	.word eStruct2000aa0
-	thumb_func_end sub_809E04C
-	.endif
 
-	.ifndef DECOMP_spawnOWPlayerObjectForEnterMap_809e064
 	thumb_func_start spawnOWPlayerObjectForEnterMap_809e064
 spawnOWPlayerObjectForEnterMap_809e064:
 	push {r4,r6,r7,lr}
@@ -1959,12 +1947,6 @@ spawnOWPlayerObjectForEnterMap_809e064:
 locret_809E088:
 	pop {r4,r6,r7,pc}
 	thumb_func_end spawnOWPlayerObjectForEnterMap_809e064
-	.else
-	thumb_func_start spawnOWPlayerObjectForEnterMap_809e064
-spawnOWPlayerObjectForEnterMap_809e064:
-	decomp_trampoline spawnOWPlayerObjectForEnterMap_809e064_c, 30
-	thumb_func_end spawnOWPlayerObjectForEnterMap_809e064
-	.endif
 
 	thumb_local_start
 sub_809E08A:
@@ -1976,7 +1958,6 @@ sub_809E08A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E08A
 
-	.ifndef DECOMP_SetPlayerCanMoveEventFlag
 	thumb_func_start SetPlayerCanMoveEventFlag
 SetPlayerCanMoveEventFlag:
 	push {lr}
@@ -1985,12 +1966,6 @@ SetPlayerCanMoveEventFlag:
 	bl SetEventFlagFromImmediate
 	pop {pc}
 	thumb_func_end SetPlayerCanMoveEventFlag
-	.else
-	thumb_func_start SetPlayerCanMoveEventFlag
-SetPlayerCanMoveEventFlag:
-	decomp_trampoline SetPlayerCanMoveEventFlag_c, 4
-	thumb_func_end SetPlayerCanMoveEventFlag
-	.endif
 
 // () -> void
 	thumb_local_start
@@ -2051,7 +2026,6 @@ locret_809E0FA:
 	pop {pc}
 	thumb_func_end owPlayer_809E0C8
 
-	.ifndef DECOMP_owPlayer_809E0FC
 	thumb_func_start owPlayer_809E0FC
 owPlayer_809E0FC:
 	ldr r3, off_809E138 // =eStruct200ace0 
@@ -2067,14 +2041,7 @@ owPlayer_809E0FC:
 off_809E110:
 	.word byte_809CF5C
 	thumb_func_end owPlayer_809E0FC
-	.else
-	thumb_func_start owPlayer_809E0FC
-owPlayer_809E0FC:
-	decomp_trampoline owPlayer_809E0FC_c, 16
-	thumb_func_end owPlayer_809E0FC
-	.endif
 
-	.ifndef DECOMP_owPlayer_809E114
 	thumb_func_start owPlayer_809E114
 owPlayer_809E114:
 	ldr r3, off_809E138 // =eStruct200ace0 
@@ -2085,14 +2052,7 @@ owPlayer_809E114:
 	str r0, [r3,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
 	mov pc, lr
 	thumb_func_end owPlayer_809E114
-	.else
-	thumb_func_start owPlayer_809E114
-owPlayer_809E114:
-	decomp_trampoline owPlayer_809E114_c, 6
-	thumb_func_end owPlayer_809E114
-	.endif
 
-	.ifndef DECOMP_owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 	thumb_func_start owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 owPlayer_unlockPlayerAfterNonNPCDialogue_809E122:
 	push {lr}
@@ -2108,19 +2068,7 @@ owPlayer_unlockPlayerAfterNonNPCDialogue_809E122:
 off_809E138:
 	.word eStruct200ace0
 	thumb_func_end owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
-owPlayer_unlockPlayerAfterNonNPCDialogue_809E122:
-	decomp_trampoline owPlayer_unlockPlayerAfterNonNPCDialogue_809E122_c, 12
-	.balign 4, 0
-off_809E138:
-	.word eStruct200ace0
-	thumb_func_end owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
-	.endif
 
-	.ifndef DECOMP_owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	thumb_func_start owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
 	push {lr}
@@ -2130,14 +2078,7 @@ owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
 	bl SetEventFlagFromImmediate
 	pop {pc}
 	thumb_func_end owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-	.else
-	thumb_func_start owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
-	decomp_trampoline owPlayer_setS200ace0_fixedAnimationSelect_809e13c_c, 8
-	thumb_func_end owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-	.endif
 
-	.ifndef DECOMP_sub_809E14C
 	thumb_func_start sub_809E14C
 sub_809E14C:
 	push {r4-r7,lr}
@@ -2153,12 +2094,6 @@ loc_809E164:
 	strb r4, [r7,#oS200ace0_Unk_1c] // (byte_200ACFC - 0x200ace0)
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E14C
-	.else
-	thumb_func_start sub_809E14C
-sub_809E14C:
-	decomp_trampoline sub_809E14C_c, 20
-	thumb_func_end sub_809E14C
-	.endif
 
 	thumb_local_start
 sub_809E168:
@@ -2262,7 +2197,6 @@ owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8
 	pop {r7}
 	thumb_func_end owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8
 
-	.ifndef DECOMP_owPlayer_offsetS200ace0Coords_809e1fa
 	thumb_func_start owPlayer_offsetS200ace0Coords_809e1fa
 owPlayer_offsetS200ace0Coords_809e1fa:
 	push {r7,lr}
@@ -2281,19 +2215,7 @@ owPlayer_offsetS200ace0Coords_809e1fa:
 off_809E214:
 	.word eStruct200ace0
 	thumb_func_end owPlayer_offsetS200ace0Coords_809e1fa
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start owPlayer_offsetS200ace0Coords_809e1fa
-owPlayer_offsetS200ace0Coords_809e1fa:
-	decomp_trampoline owPlayer_offsetS200ace0Coords_809e1fa_c, 16
-	.balign 4, 0x00
-off_809E214:
-	.word eStruct200ace0
-	thumb_func_end owPlayer_offsetS200ace0Coords_809e1fa
-	.endif
 
-	.ifndef DECOMP_owPlayer_809e218
 	thumb_func_start owPlayer_809e218
 owPlayer_809e218:
 	ldr r3, =eStruct200ace0 
@@ -2305,26 +2227,13 @@ locret_809E222:
 	mov pc, lr
 	.pool // 809E224
 	thumb_func_end owPlayer_809e218
-	.else
-	thumb_func_start owPlayer_809e218
-owPlayer_809e218:
-	decomp_trampoline owPlayer_809e218_c, 8
-	thumb_func_end owPlayer_809e218
-	.endif
 
-	.ifndef DECOMP_returnZero_809E228
 	thumb_func_start returnZero_809E228
 returnZero_809E228:
 	mov r0, #0
 	mov pc, lr
 	.word eStruct200ace0
 	thumb_func_end returnZero_809E228
-	.else
-	thumb_func_start returnZero_809E228
-returnZero_809E228:
-	decomp_trampoline returnZero_809E228_c, 0
-	thumb_func_end returnZero_809E228
-	.endif
 
 	thumb_func_start owPlayer_setInteractionLocked_809e230
 owPlayer_setInteractionLocked_809e230:
@@ -2451,7 +2360,6 @@ owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2:
 	mov r1, #DEFAULT_OW_PLAYER_NAVI_VERTICAL_COMPRESS
 	mov r2, #DEFAULT_OW_PLAYER_NAVI_ROTATION
 
-	.ifndef DECOMP_owPlayer_setS2000aa0_param0x0to0x2_809e2c8
 	thumb_func_start owPlayer_setS2000aa0_param0x0to0x2_809e2c8
 owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
 	ldr r3, off_809E430 // =eStruct2000aa0 
@@ -2460,12 +2368,6 @@ owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
 	strb r2, [r3,#oS2000aa0_OWPlayerNaviRotation] // (byte_2000AA2 - 0x2000aa0)
 	mov pc, lr
 	thumb_func_end owPlayer_setS2000aa0_param0x0to0x2_809e2c8
-	.else
-	thumb_func_start owPlayer_setS2000aa0_param0x0to0x2_809e2c8
-owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
-	decomp_trampoline owPlayer_setS2000aa0_param0x0to0x2_809e2c8_c, 2
-	thumb_func_end owPlayer_setS2000aa0_param0x0to0x2_809e2c8
-	.endif
 	thumb_func_end owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2
 
 	thumb_local_start
@@ -2477,7 +2379,6 @@ sub_809E2D2:
 	mov pc, lr
 	thumb_func_end sub_809E2D2
 
-	.ifndef DECOMP_owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
 	thumb_func_start owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
 owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc:
 	push {r4,lr}
@@ -2493,12 +2394,6 @@ owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc:
 	strb r4, [r3,#oS2000aa0_OWPlayerNaviRotation] // (byte_2000AA2 - 0x2000aa0)
 	pop {r4,pc}
 	thumb_func_end owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
-	.else
-	thumb_func_start owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
-owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc:
-	decomp_trampoline owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc_c, 16
-	thumb_func_end owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
-	.endif
 
 	thumb_func_start SetDefaultOWPlayerNaviColorShader
 SetDefaultOWPlayerNaviColorShader:
@@ -2624,7 +2519,6 @@ sub_809E3AA:
 	mov pc, lr
 	thumb_func_end sub_809E3AA
 
-	.ifndef DECOMP_sub_809E3B2
 	thumb_func_start sub_809E3B2
 sub_809E3B2:
 	push {r4-r7,lr}
@@ -2637,14 +2531,7 @@ sub_809E3B2:
 	strh r0, [r4,#0x18] // (dword_2000AB8 - 0x2000aa0)
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E3B2
-	.else
-	thumb_func_start sub_809E3B2
-sub_809E3B2:
-	decomp_trampoline sub_809E3B2_c, 8
-	thumb_func_end sub_809E3B2
-	.endif
 
-	.ifndef DECOMP_sub_809E3C4
 	thumb_func_start sub_809E3C4
 sub_809E3C4:
 	push {r4-r7,lr}
@@ -2657,12 +2544,6 @@ sub_809E3C4:
 	strb r0, [r4,#0xb] // (byte_2000AAB - 0x2000aa0)
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E3C4
-	.else
-	thumb_func_start sub_809E3C4
-sub_809E3C4:
-	decomp_trampoline sub_809E3C4_c, 10
-	thumb_func_end sub_809E3C4
-	.endif
 
 	thumb_local_start
 sub_809E3D6:
@@ -2753,7 +2634,6 @@ MakeOWPlayerInvisible:
 	mov pc, lr
 	thumb_func_end MakeOWPlayerInvisible
 
-	.ifndef DECOMP_sub_809E462
 	thumb_func_start sub_809E462
 sub_809E462:
 	push {lr}
@@ -2763,12 +2643,6 @@ sub_809E462:
 	tst r0, r0
 	pop {pc}
 	thumb_func_end sub_809E462
-	.else
-	thumb_func_start sub_809E462
-sub_809E462:
-	decomp_trampoline sub_809E462_c, 2
-	thumb_func_end sub_809E462
-	.endif
 
 	thumb_local_start
 sub_809E46E:

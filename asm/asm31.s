@@ -815,7 +815,6 @@ locret_80B87EE:
 	pop {r5,pc}
 	thumb_func_end sub_80B87AC
 
-	.ifndef DECOMP_sub_80B87F0
 	thumb_func_start sub_80B87F0
 sub_80B87F0:
 	ldrb r2, [r0,#9]
@@ -828,12 +827,6 @@ sub_80B87F0:
 locret_80B87FE:
 	mov pc, lr
 	thumb_func_end sub_80B87F0
-	.else
-	thumb_func_start sub_80B87F0
-sub_80B87F0:
-	decomp_trampoline sub_80B87F0_c, 8
-	thumb_func_end sub_80B87F0
-	.endif
 
 	thumb_local_start
 sub_80B8800:
@@ -9760,7 +9753,6 @@ locret_80BC9BC:
 	pop {pc}
 	thumb_func_end spawnSnakearmRelatedObject_t1_0x1c_80BC998
 
-	.ifndef DECOMP_snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE
 	thumb_func_start snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE
 snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE:
 	tst r0, r0 // null object check
@@ -9775,12 +9767,6 @@ snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE:
 .done
 	mov pc, lr
 	thumb_func_end snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE
-	.else
-	thumb_func_start snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE
-snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE:
-	decomp_trampoline snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE_c, 10
-	thumb_func_end snakearmRelated_setAnim2CurAction8IfCurActionNot8_80BC9BE
-	.endif
 
 	thumb_local_start
 UpdateBattleObjectSpriteIfStatusPermits:
@@ -26127,7 +26113,6 @@ locret_80C408E:
 	mov pc, lr
 	thumb_func_end sub_80C4086
 
-	.ifndef DECOMP_sub_80C4090
 	thumb_func_start sub_80C4090
 sub_80C4090:
 	tst r0, r0
@@ -26138,12 +26123,6 @@ locret_80C4098:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end sub_80C4090
-	.else
-	thumb_func_start sub_80C4090
-sub_80C4090:
-	decomp_trampoline sub_80C4090_c, 4
-	thumb_func_end sub_80C4090
-	.endif
 
 	thumb_local_start
 sub_80C409C:
@@ -27612,7 +27591,6 @@ locret_80C4C38:
 	pop {pc}
 	thumb_func_end SpawnCounterPinkRingMaybe_80C4C12
 
-	.ifndef DECOMP_sub_80C4C3A
 	thumb_func_start sub_80C4C3A
 sub_80C4C3A:
 	mov r1, #8
@@ -27622,12 +27600,6 @@ sub_80C4C3A:
 	str r1, [r2]
 	mov pc, lr
 	thumb_func_end sub_80C4C3A
-	.else
-	thumb_func_start sub_80C4C3A
-sub_80C4C3A:
-	decomp_trampoline sub_80C4C3A_c, 2
-	thumb_func_end sub_80C4C3A
-	.endif
 
 	thumb_local_start
 sub_80C4C46:
@@ -73272,7 +73244,6 @@ locret_80DA9FC:
 	pop {pc}
 	thumb_func_end sub_80DA9DC
 
-	.ifndef DECOMP_sub_80DA9FE
 	thumb_func_start sub_80DA9FE
 sub_80DA9FE:
 	push {r4,lr}
@@ -73297,22 +73268,6 @@ dword_80DAA20:
 dword_80DAA24:
 	.word 0x3F800000
 	thumb_func_end sub_80DA9FE
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_80DA9FE
-sub_80DA9FE:
-	decomp_trampoline sub_80DA9FE_c, 16
-dword_80DAA18:
-	.word 0x100100C
-dword_80DAA1C:
-	.word 0xE0F0300
-dword_80DAA20:
-	.word 0xFF80000
-dword_80DAA24:
-	.word 0x3F800000
-	thumb_func_end sub_80DA9FE
-	.endif
 
 	thumb_func_start t3_0xaa_80DAA28
 t3_0xaa_80DAA28:

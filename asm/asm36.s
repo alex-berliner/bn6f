@@ -262,7 +262,6 @@ off_813024C:
 	.word dword_86B7AE0
 	thumb_func_end sub_8130208
 
-	.ifndef DECOMP_sub_8130250
 	thumb_func_start sub_8130250
 sub_8130250:
 	push {r4-r7,lr}
@@ -298,12 +297,6 @@ off_8130288:
 dword_813028C:
 	.word 0xB860
 	thumb_func_end sub_8130250
-	.else
-	thumb_func_start sub_8130250
-sub_8130250:
-	decomp_trampoline sub_8130250_c, 56
-	thumb_func_end sub_8130250
-	.endif
 
 	thumb_local_start
 sub_8130290:
@@ -4390,7 +4383,6 @@ off_813242C:
 	.word unk_2033800
 	thumb_func_end sub_81323B0
 
-	.ifndef DECOMP_sub_8132430
 	thumb_func_start sub_8132430
 sub_8132430:
 	push {r4-r7,lr}
@@ -4461,14 +4453,7 @@ loc_81324A4:
 	mov r0, r7
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132430
-	.else
-	thumb_func_start sub_8132430
-sub_8132430:
-	decomp_trampoline sub_8132430_c, 112
-	thumb_func_end sub_8132430
-	.endif
 
-	.ifndef DECOMP_sub_81324A8
 	thumb_func_start sub_81324A8
 sub_81324A8:
 	push {r4-r7,lr}
@@ -4551,14 +4536,7 @@ loc_8132532:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81324A8
-	.else
-	thumb_func_start sub_81324A8
-sub_81324A8:
-	decomp_trampoline sub_81324A8_c, 136
-	thumb_func_end sub_81324A8
-	.endif
 
-	.ifndef DECOMP_sub_8132538
 	thumb_func_start sub_8132538
 sub_8132538:
 	push {r4-r7,lr}
@@ -4641,12 +4619,6 @@ loc_81325BC:
 	mov r0, r7
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132538
-	.else
-	thumb_func_start sub_8132538
-sub_8132538:
-	decomp_trampoline sub_8132538_c, 128
-	thumb_func_end sub_8132538
-	.endif
 
 	thumb_func_start sub_81325C0
 sub_81325C0:
@@ -4672,7 +4644,6 @@ sub_81325CC:
 	pop {r4,pc}
 	thumb_func_end sub_81325CC
 
-	.ifndef DECOMP_sub_81325E4
 	thumb_func_start sub_81325E4
 sub_81325E4:
 	ldr r1, off_81325EC // =dword_81325F0
@@ -4684,14 +4655,7 @@ off_81325EC:
 dword_81325F0:
 	.word 0x100C08
 	thumb_func_end sub_81325E4
-	.else
-	thumb_func_start sub_81325E4
-sub_81325E4:
-	decomp_trampoline sub_81325E4_c, 8
-	thumb_func_end sub_81325E4
-	.endif
 
-	.ifndef DECOMP_sub_81325F4
 	thumb_func_start sub_81325F4
 sub_81325F4:
 	ldr r1, off_81325FC // =byte_8132600
@@ -4707,12 +4671,6 @@ byte_8132600:
 dword_8132610:
 	.word 0x1C1814
 	thumb_func_end sub_81325F4
-	.else
-	thumb_func_start sub_81325F4
-sub_81325F4:
-	decomp_trampoline sub_81325F4_c, 24
-	thumb_func_end sub_81325F4
-	.endif
 
 	thumb_func_start sub_8132614
 sub_8132614:
@@ -4768,7 +4726,6 @@ off_8132660:
 	.word sSubmenu
 	thumb_func_end sub_8132648
 
-	.ifndef DECOMP_sub_8132664
 	thumb_func_start sub_8132664
 sub_8132664:
 	push {r4-r7,lr}
@@ -4776,12 +4733,6 @@ sub_8132664:
 	bl sub_81469DC
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132664
-	.else
-	thumb_func_start sub_8132664
-sub_8132664:
-	decomp_trampoline sub_8132664_c, 4
-	thumb_func_end sub_8132664
-	.endif
 
 	thumb_func_start sub_8132670
 sub_8132670:
@@ -10803,7 +10754,6 @@ off_81355D4:
 	.word 0x3C0
 	thumb_func_end sub_8135500
 
-	.ifndef DECOMP_sub_81355D8
 	thumb_func_start sub_81355D8
 sub_81355D8:
 	mov r1, #0
@@ -10821,12 +10771,6 @@ loc_81355E4:
 off_81355E8:
 	.word sSubmenu
 	thumb_func_end sub_81355D8
-	.else
-	thumb_func_start sub_81355D8
-sub_81355D8:
-	decomp_trampoline sub_81355D8_c, 12
-	thumb_func_end sub_81355D8
-	.endif
 
 	thumb_local_start
 sub_81355EC:
@@ -15012,7 +14956,6 @@ off_81376B4:
 	.word TextScriptNaviCustDialog
 	thumb_func_end RunTextScriptNaviCustDialog
 
-	.ifndef DECOMP_setUnkFieldOfChipCodeInChipPack_81376b8
 	thumb_func_start setUnkFieldOfChipCodeInChipPack_81376b8
 setUnkFieldOfChipCodeInChipPack_81376b8:
 	ldr r2, off_8137710 // =byte_20065B4 
@@ -15026,14 +14969,7 @@ setUnkFieldOfChipCodeInChipPack_81376b8:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end setUnkFieldOfChipCodeInChipPack_81376b8
-	.else
-	thumb_func_start setUnkFieldOfChipCodeInChipPack_81376b8
-setUnkFieldOfChipCodeInChipPack_81376b8:
-	decomp_trampoline setUnkFieldOfChipCodeInChipPack_81376b8_c, 12
-	thumb_func_end setUnkFieldOfChipCodeInChipPack_81376b8
-	.endif
 
-	.ifndef DECOMP_sub_81376CC
 	thumb_func_start sub_81376CC
 sub_81376CC:
 	ldr r2, off_8137710 // =byte_20065B4 
@@ -15045,12 +14981,6 @@ sub_81376CC:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end sub_81376CC
-	.else
-	thumb_func_start sub_81376CC
-sub_81376CC:
-	decomp_trampoline sub_81376CC_c, 8
-	thumb_func_end sub_81376CC
-	.endif
 
 	sub r0, r0, r1
 	lsl r1, r1, #1
@@ -15058,7 +14988,6 @@ sub_81376CC:
 	mov r2, #0
 	strh r2, [r0,#4]
 	mov pc, lr
-	.ifndef DECOMP_sub_81376E8
 	thumb_func_start sub_81376E8
 sub_81376E8:
 	mov r1, r10
@@ -15075,14 +15004,7 @@ loc_81376F0:
 	bgt loc_81376F0
 	mov pc, lr
 	thumb_func_end sub_81376E8
-	.else
-	thumb_func_start sub_81376E8
-sub_81376E8:
-	decomp_trampoline sub_81376E8_c, 16
-	thumb_func_end sub_81376E8
-	.endif
 
-	.ifndef DECOMP_sub_8137700
 	thumb_func_start sub_8137700
 sub_8137700:
 	ldr r1, off_8137710 // =byte_20065B4 
@@ -15098,18 +15020,6 @@ off_8137710:
 off_8137714:
 	.word 0x140
 	thumb_func_end sub_8137700
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8137700
-sub_8137700:
-	decomp_trampoline sub_8137700_c, 8
-off_8137710:
-	.word byte_20065B4
-off_8137714:
-	.word 0x140
-	thumb_func_end sub_8137700
-	.endif
 
 	thumb_func_start GiveFolder
 // r0 0X: folder to give
@@ -15221,7 +15131,6 @@ loc_81377E8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8137790
 
-	.ifndef DECOMP_isFolderSlotInUse_81377EC
 	thumb_func_start isFolderSlotInUse_81377EC
 isFolderSlotInUse_81377EC:
 	push {lr}
@@ -15241,12 +15150,6 @@ loc_8137804:
 	mov r0, r1
 	pop {pc}
 	thumb_func_end isFolderSlotInUse_81377EC
-	.else
-	thumb_func_start isFolderSlotInUse_81377EC
-isFolderSlotInUse_81377EC:
-	decomp_trampoline isFolderSlotInUse_81377EC_c, 20
-	thumb_func_end isFolderSlotInUse_81377EC
-	.endif
 
 	thumb_func_start sub_8137808
 sub_8137808:
@@ -15312,7 +15215,6 @@ off_8137880:
 	.word unk_20018EC
 	thumb_func_end takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C
 
-	.ifndef DECOMP_sub_8137884
 	thumb_func_start sub_8137884
 sub_8137884:
 	ldr r1, off_813788C // =unk_20018EC 
@@ -15322,12 +15224,6 @@ sub_8137884:
 off_813788C:
 	.word unk_20018EC
 	thumb_func_end sub_8137884
-	.else
-	thumb_func_start sub_8137884
-sub_8137884:
-	decomp_trampoline sub_8137884_c, 4
-	thumb_func_end sub_8137884
-	.endif
 
 	thumb_func_start sub_8137890
 sub_8137890:

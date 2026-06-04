@@ -1,6 +1,5 @@
 
 // (int chip_idx) -> ChipData*
-	.ifndef DECOMP_getChip8021DA8
 	thumb_func_start getChip8021DA8
 // exe6g: 8021eb8	
 getChip8021DA8: // (which_chip: i32) -> *const ChipData
@@ -14,14 +13,7 @@ getChip8021DA8: // (which_chip: i32) -> *const ChipData
 off_8021AB0: 
   .word ChipDataArr_8021DA8 // [*const ChipData; 206]
 	thumb_func_end getChip8021DA8
-	.else
-	thumb_func_start getChip8021DA8
-getChip8021DA8:
-	decomp_trampoline getChip8021DA8_c, 8
-	thumb_func_end getChip8021DA8
-	.endif
 
-	.ifndef DECOMP_sub_8021AB4
 	thumb_func_start sub_8021AB4
 sub_8021AB4:
 	push {r4,r6,r7,lr}
@@ -45,18 +37,11 @@ loc_8021ACC:
 	blt loc_8021ACC
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8021AB4
-	.else
-	thumb_func_start sub_8021AB4
-sub_8021AB4:
-	decomp_trampoline sub_8021AB4_c, 36
-	thumb_func_end sub_8021AB4
-	.endif
 
 /* (r0:u16 bitfield) -> r0:u16 upper9Bits, r1:u16 lower9Bits
    preserves: lr
    clobbers: r2
    ignores: r3-r12*/
-	.ifndef DECOMP_split9BitsFromBitfield_8021AE0
 	thumb_func_start split9BitsFromBitfield_8021AE0
 split9BitsFromBitfield_8021AE0: // 8021AE0
 	// splits bitfield into lower and upper 9 bits, and returns those in r0, r1
@@ -69,14 +54,7 @@ split9BitsFromBitfield_8021AE0: // 8021AE0
 .Mask9Bits:
 	.hword 0x01FF
 	thumb_func_end split9BitsFromBitfield_8021AE0
-	.else
-	thumb_func_start split9BitsFromBitfield_8021AE0
-split9BitsFromBitfield_8021AE0:
-	decomp_trampoline split9BitsFromBitfield_8021AE0_c, 6
-	thumb_func_end split9BitsFromBitfield_8021AE0
-	.endif
 
-	.ifndef DECOMP_GiveChips
 	thumb_func_start GiveChips
 GiveChips:
 	push {r4,lr}
@@ -107,14 +85,7 @@ loc_8021B00:
 	mov r0, r3
 	pop {r4,pc}
 	thumb_func_end GiveChips
-	.else
-	thumb_func_start GiveChips
-GiveChips:
-	decomp_trampoline GiveChips_c, 50
-	thumb_func_end GiveChips
-	.endif
 
-	.ifndef DECOMP_sub_8021B2A
 	thumb_func_start sub_8021B2A
 sub_8021B2A:
 	push {lr}
@@ -140,15 +111,8 @@ loc_8021B3C:
 	mov r0, r3
 	pop {pc}
 	thumb_func_end sub_8021B2A
-	.else
-	thumb_func_start sub_8021B2A
-sub_8021B2A:
-	decomp_trampoline sub_8021B2A_c, 38
-	thumb_func_end sub_8021B2A
-	.endif
 
-	.ifndef DECOMP_addChipsToChipPackOffset_8021b5a
-	thumb_func_start addChipsToChipPackOffset_8021b5a
+	thumb_local_start
 addChipsToChipPackOffset_8021b5a:
 	mov r3, #1
 	ldrb r1, [r0]
@@ -167,22 +131,10 @@ loc_8021B6E:
 off_8021B74:
 	.word 0x1E20
 	thumb_func_end addChipsToChipPackOffset_8021b5a
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start addChipsToChipPackOffset_8021b5a
-addChipsToChipPackOffset_8021b5a:
-	decomp_trampoline addChipsToChipPackOffset_8021b5a_c, 16
-	.balign 4, 0
-off_8021B74:
-	.word 0x1E20
-	thumb_func_end addChipsToChipPackOffset_8021b5a
-	.endif
 
 // (int idx, int searchItem, int off) -> void*
 // [break (E7FE)]
 //   When getting an item; like from mayl, or when loading shops
-	.ifndef DECOMP_sub_8021B78
 	thumb_func_start sub_8021B78
 sub_8021B78:
 	push {lr}
@@ -199,15 +151,8 @@ loc_8021B84:
 	// return itemRef
 	pop {pc}
 	thumb_func_end sub_8021B78
-	.else
-	thumb_func_start sub_8021B78
-sub_8021B78:
-	decomp_trampoline sub_8021B78_c, 18
-	thumb_func_end sub_8021B78
-	.endif
 
 // (int idx, int searchItem, int off) -> void*
-	.ifndef DECOMP_TakeChips
 	thumb_func_start TakeChips
 // returns in r0
 // - 0 if taking chips was successful
@@ -239,12 +184,6 @@ loc_8021BBC:
 	mov r0, r3
 	pop {r4,pc}
 	thumb_func_end TakeChips
-	.else
-	thumb_func_start TakeChips
-TakeChips:
-	decomp_trampoline TakeChips_c, 36
-	thumb_func_end TakeChips
-	.endif
 
 	thumb_func_start GetChipCountOfCode
 GetChipCountOfCode:
@@ -343,7 +282,6 @@ dword_8021C64:
 	.word 0x1FF
 	thumb_func_end sub_8021C02
 
-	.ifndef DECOMP_zeroFill_e2002230
 	thumb_func_start zeroFill_e2002230
 zeroFill_e2002230:
 	push {lr}
@@ -358,15 +296,8 @@ zeroFill_e2002230:
 dword_8021C78:
 	.word 0xF00
 	thumb_func_end zeroFill_e2002230
-	.else
-	thumb_func_start zeroFill_e2002230
-zeroFill_e2002230:
-	decomp_trampoline zeroFill_e2002230_c, 12
-	thumb_func_end zeroFill_e2002230
-	.endif
 
 // (int chip_idx, int searchItem, int off) -> void*
-	.ifndef DECOMP_getOffsetToQuantityOfChipCodeMaybe_8021c7c
 	thumb_func_start getOffsetToQuantityOfChipCodeMaybe_8021c7c
 // returns:
 // r0 - offset to chip code quantity
@@ -400,12 +331,6 @@ loc_8021C9A:
 	// return Toolkit.unk_4C + (12*r2_off) + r3_itemIdx
 	pop {r4,r7,pc}
 	thumb_func_end getOffsetToQuantityOfChipCodeMaybe_8021c7c
-	.else
-	thumb_func_start getOffsetToQuantityOfChipCodeMaybe_8021c7c
-getOffsetToQuantityOfChipCodeMaybe_8021c7c:
-	decomp_trampoline getOffsetToQuantityOfChipCodeMaybe_8021c7c_c, 36
-	thumb_func_end getOffsetToQuantityOfChipCodeMaybe_8021c7c
-	.endif
 
 	thumb_func_start sub_8021CA8
 sub_8021CA8:
@@ -462,7 +387,6 @@ off_8021D04:
 	.word 0x140
 	thumb_func_end sub_8021CA8
 
-	.ifndef DECOMP_sub_8021D08
 	thumb_func_start sub_8021D08
 sub_8021D08:
 	push {lr}
@@ -471,14 +395,7 @@ sub_8021D08:
 	bl ZeroFillByHalfword
 	pop {pc}
 	thumb_func_end sub_8021D08
-	.else
-	thumb_func_start sub_8021D08
-sub_8021D08:
-	decomp_trampoline sub_8021D08_c, 4
-	thumb_func_end sub_8021D08
-	.endif
 
-	.ifndef DECOMP_sub_8021D14
 	thumb_func_start sub_8021D14
 sub_8021D14:
 	push {lr}
@@ -494,12 +411,6 @@ sub_8021D14:
 locret_8021D28:
 	pop {pc}
 	thumb_func_end sub_8021D14
-	.else
-	thumb_func_start sub_8021D14
-sub_8021D14:
-	decomp_trampoline sub_8021D14_c, 14
-	thumb_func_end sub_8021D14
-	.endif
 
 	thumb_local_start
 sub_8021D2A:
@@ -511,7 +422,6 @@ sub_8021D2A:
 	mov pc, lr
 	thumb_func_end sub_8021D2A
 
-	.ifndef DECOMP_sub_8021D36
 	thumb_func_start sub_8021D36
 sub_8021D36:
 	push {lr}
@@ -537,12 +447,6 @@ sub_8021D36:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8021D36
-	.else
-	thumb_func_start sub_8021D36
-sub_8021D36:
-	decomp_trampoline sub_8021D36_c, 44
-	thumb_func_end sub_8021D36
-	.endif
 
 off_8021D6C:
 	.word unk_2000AF0

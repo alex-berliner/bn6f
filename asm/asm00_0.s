@@ -23,7 +23,6 @@ call_m4a_2_814F00C:
 	pop {pc}
 	thumb_func_end call_m4a_2_814F00C
 
-	.ifndef DECOMP_PlaySoundEffect
 	thumb_func_start PlaySoundEffect
 // (enum SoundEffect idx) -> void
 // this can play any song in the song array but
@@ -33,14 +32,7 @@ PlaySoundEffect:
 	bl m4a_800061E // () -> void
 	pop {r1-r7,pc}
 	thumb_func_end PlaySoundEffect
-	.else
-	thumb_func_start PlaySoundEffect
-PlaySoundEffect:
-	decomp_trampoline PlaySoundEffect_c, 0
-	thumb_func_end PlaySoundEffect
-	.endif
 
-	.ifndef DECOMP_PlayMusic
 	thumb_func_start PlayMusic
 PlayMusic: // (song: u8) -> ()
 	push {r1-r7,lr}
@@ -59,14 +51,7 @@ loc_80005EC:
 locret_80005F0:
 	pop {r1-r7,pc}
 	thumb_func_end PlayMusic
-	.else
-	thumb_func_start PlayMusic
-PlayMusic:
-	decomp_trampoline PlayMusic_c, 22
-	thumb_func_end PlayMusic
-	.endif
 
-	.ifndef DECOMP_music_80005F2
 	thumb_func_start music_80005F2
 music_80005F2: // (bg_music_indicator: u8) -> ()
 	push {r1-r7,lr}
@@ -87,14 +72,7 @@ loc_8000604:
 locret_8000608:
 	pop {r1-r7,pc}
 	thumb_func_end music_80005F2
-	.else
-	thumb_func_start music_80005F2
-music_80005F2:
-	decomp_trampoline music_80005F2_c, 14
-	thumb_func_end music_80005F2
-	.endif
 
-	.ifndef DECOMP_sub_800060A
 	thumb_func_start sub_800060A
 sub_800060A:
 	push {r1-r7,lr}
@@ -108,16 +86,9 @@ loc_8000616:
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r1-r7,pc}
 	thumb_func_end sub_800060A
-	.else
-	thumb_func_start sub_800060A
-sub_800060A:
-	decomp_trampoline sub_800060A_c, 10
-	thumb_func_end sub_800060A
-	.endif
 
 // () -> void
-	.ifndef DECOMP_m4a_800061E
-	thumb_func_start m4a_800061E
+	thumb_local_start
 m4a_800061E:
 	push {lr}
 	mov r1, r10
@@ -128,15 +99,8 @@ m4a_800061E:
 	mov r10, r1
 	pop {pc}
 	thumb_func_end m4a_800061E
-	.else
-	thumb_func_start m4a_800061E
-m4a_800061E:
-	decomp_trampoline m4a_800061E_c, 8
-	thumb_func_end m4a_800061E
-	.endif
 
-	.ifndef DECOMP_sound_8000630
-	thumb_func_start sound_8000630
+	thumb_local_start
 sound_8000630:
 	push {lr}
 	mov r1, r10
@@ -147,12 +111,6 @@ sound_8000630:
 	mov r10, r1
 	pop {pc}
 	thumb_func_end sound_8000630
-	.else
-	thumb_func_start sound_8000630
-sound_8000630:
-	decomp_trampoline sound_8000630_c, 10
-	thumb_func_end sound_8000630
-	.endif
 
 	thumb_func_start sound_8000642
 sound_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
@@ -201,7 +159,6 @@ sound_8000672:
 	pop {r4-r7,pc}
 	thumb_func_end sound_8000672
 
-	.ifndef DECOMP_sound_800068A
 	thumb_func_start sound_800068A
 sound_800068A:
 	push {r4-r7,lr}
@@ -216,12 +173,6 @@ sound_800068A:
 	mov r10, r2
 	pop {r4-r7,pc}
 	thumb_func_end sound_800068A
-	.else
-	thumb_func_start sound_800068A
-sound_800068A:
-	decomp_trampoline sound_800068A_c, 14
-	thumb_func_end sound_800068A
-	.endif
 
 	thumb_func_start sound_80006A2
 sound_80006A2:
@@ -273,7 +224,7 @@ loc_80006B0:
 	.balign 4, 0
 off_8000700:
 	.word off_8000704
-off_8000704::
+off_8000704:
 	// 0x00 (0x00)
 	.word byte_2010690
 	// 0x04 (0x01)
@@ -341,7 +292,6 @@ off_8000704::
 	thumb_func_end sound_80006A2
 
 // () -> void
-	.ifndef DECOMP_musicGameState_8000784
 	thumb_func_start musicGameState_8000784
 musicGameState_8000784:
 	push {r7,lr}
@@ -358,12 +308,6 @@ musicGameState_8000784:
 	pop {r7,pc}
 	.byte 0, 0
 	thumb_func_end musicGameState_8000784
-	.else
-	thumb_func_start musicGameState_8000784
-musicGameState_8000784:
-	decomp_trampoline musicGameState_8000784_c, 20
-	thumb_func_end musicGameState_8000784
-	.endif
 
 	thumb_local_start
 sub_80007A0:
@@ -377,7 +321,6 @@ sub_80007A0:
 	pop {r1-r7,pc}
 	thumb_func_end sub_80007A0
 
-	.ifndef DECOMP_zeroFill_80007B2
 	thumb_func_start zeroFill_80007B2
 zeroFill_80007B2:
 	push {lr}
@@ -388,12 +331,6 @@ zeroFill_80007B2:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end zeroFill_80007B2
-	.else
-	thumb_func_start zeroFill_80007B2
-zeroFill_80007B2:
-	decomp_trampoline zeroFill_80007B2_c, 2
-	thumb_func_end zeroFill_80007B2
-	.endif
 
 	thumb_func_start sub_80007BE
 sub_80007BE:
@@ -440,8 +377,7 @@ off_8000804:
 	.word loc_80007E8+1
 	thumb_func_end sub_80007BE
 
-	.ifndef DECOMP_sound_8000808
-	thumb_func_start sound_8000808
+	thumb_local_start
 sound_8000808: // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	push {r4-r7,lr}
 	ldr r5, dword_200A490_p
@@ -459,12 +395,6 @@ loc_8000814:
 locret_8000820:
 	pop {r4-r7,pc}
 	thumb_func_end sound_8000808
-	.else
-	thumb_func_start sound_8000808
-sound_8000808:
-	decomp_trampoline_r3safe sound_8000808_c, 10
-	thumb_func_end sound_8000808
-	.endif
 
 // (struct ? *a5, unk8 bgMusInd_a0, unk8 a1, unk8 *a2) -> ?
 	thumb_local_start
@@ -579,7 +509,6 @@ off_80008B0:
 /// Size is in r1, in bytes.
 /// Does a backwards fill for speed
 /// tags: "#mod_memory, "
-	.ifndef DECOMP_ZeroFillByByte
 	thumb_func_start ZeroFillByByte
 ZeroFillByByte: // (mut_mem: *mut (), num_bytes: usize) -> ()
 	push {r0-r2,lr}
@@ -592,17 +521,10 @@ loc_loop_80008B8:
 
 	pop {r0-r2,pc}
 	thumb_func_end ZeroFillByByte
-	.else
-	thumb_func_start ZeroFillByByte
-ZeroFillByByte:
-	decomp_trampoline ZeroFillByByte_c, 4
-	thumb_func_end ZeroFillByByte
-	.endif
 
 // Fill r0 with zero, using halfwords.
 // Size is in r1, in bytes.
 // Source, destination, and size must be halfword compatible
-	.ifndef DECOMP_ZeroFillByHalfword
 	thumb_func_start ZeroFillByHalfword
 ZeroFillByHalfword:
 	push {r0-r3,lr}
@@ -621,17 +543,10 @@ ZeroFillByHalfword:
 .HalfwordFillCpuSetMask_80008DC:
 	.word 0x1000000
 	thumb_func_end ZeroFillByHalfword
-	.else
-	thumb_func_start ZeroFillByHalfword
-ZeroFillByHalfword:
-	decomp_trampoline ZeroFillByHalfword_c, 24
-	thumb_func_end ZeroFillByHalfword
-	.endif
 
 /// Fill r0 with zero, using words.
 /// Size is in r1, in bytes.
 /// Source, destination, and size must be word compatible
-	.ifndef DECOMP_ZeroFillByWord
 	thumb_func_start ZeroFillByWord
 ZeroFillByWord: // (mut_mem: *mut (), num_bytes: usize) -> ()
 	push {r0-r3,lr}
@@ -650,12 +565,6 @@ ZeroFillByWord: // (mut_mem: *mut (), num_bytes: usize) -> ()
 .WordFillCpuSetMask_80008FC:
 	.word 0x5000000
 	thumb_func_end ZeroFillByWord
-	.else
-	thumb_func_start ZeroFillByWord
-ZeroFillByWord:
-	decomp_trampoline ZeroFillByWord_c, 24
-	thumb_func_end ZeroFillByWord
-	.endif
 
 // (int a1, int a2) -> void
 // Fill r0 with zero, in blocks of eight words.
@@ -664,7 +573,6 @@ ZeroFillByWord:
 // even though the size specified is converted to a word count
 // Source and destination must be word compatible
 // Size must be a multiple of eight words
-	.ifndef DECOMP_ZeroFillByEightWords
 	thumb_func_start ZeroFillByEightWords
 ZeroFillByEightWords:
 	push {r0-r3,lr}
@@ -683,17 +591,10 @@ ZeroFillByEightWords:
 .FillCpuFastSetMask_800091C:
 	.word 0x1000000
 	thumb_func_end ZeroFillByEightWords
-	.else
-	thumb_func_start ZeroFillByEightWords
-ZeroFillByEightWords:
-	decomp_trampoline ZeroFillByEightWords_c, 24
-	thumb_func_end ZeroFillByEightWords
-	.endif
 
 // (u8 *src, u8 *dest, int byteCount) -> void
 
 // Copy r2 bytes from r0 to r1, in units of bytes.
-	.ifndef DECOMP_CopyBytes
 	thumb_func_start CopyBytes
 CopyBytes:
 	sub r2, #1
@@ -702,26 +603,12 @@ CopyBytes:
 	bne CopyBytes
 	mov pc, lr
 	thumb_func_end CopyBytes
-	.else
-	// Trampoline — original is 10 bytes (5 Thumb instructions). Same
-	// 10-byte slot: ldr+bx+literal (8 bytes) plus 2 bytes of nop
-	// keep the function size identical so downstream addresses don't
-	// shift.
-	thumb_func_start CopyBytes
-CopyBytes:
-	ldr r3, =CopyBytes_c + 1
-	bx  r3
-	.pool
-	nop
-	thumb_func_end CopyBytes
-	.endif
 
 // (u16 *src, u16 *dest, int halfwordCount) -> void
 
 // Copy r2 bytes from r0 to r1, in units of halfwords.
 // Note that size is specified in bytes, which is then converted to halfword count in function
 // Source, destination, and size must be halfword compatible.
-	.ifndef DECOMP_CopyHalfwords
 	thumb_func_start CopyHalfwords
 CopyHalfwords:
 	push {r0-r3,lr}
@@ -734,24 +621,14 @@ CopyHalfwords:
 .HalfwordCopyCpuSetMask_8000938:
 	.word 0x0
 	thumb_func_end CopyHalfwords
-	.else
-	// CopyHalfwords is at 0x0800092A — 2-byte aligned but NOT 4-aligned,
-	// so .pool emits 2 alignment bytes before the literal (10-byte
-	// trampoline). Pad another 8 bytes to fill the 18-byte slot.
-	thumb_func_start CopyHalfwords
-CopyHalfwords:
-	decomp_trampoline CopyHalfwords_c, 8
-	thumb_func_end CopyHalfwords
-	.endif
 
 /// Copy r2 bytes from r0 to r1, in units of words.
 /// Note r2 represents byte count, which is then converted to word count in function
 /// Source, destination, and size must be word compatible.
-	.ifndef DECOMP_CopyWords
 	thumb_func_start CopyWords
 CopyWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	push {r0-r3,lr}
-
+  
 	ldr r3, .WordCopyCpuSetMask_800094C
 
   // let num_words: u32 = size / 4;
@@ -766,12 +643,6 @@ CopyWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 .WordCopyCpuSetMask_800094C:
 	.word 0x4000000
 	thumb_func_end CopyWords
-	.else
-	thumb_func_start CopyWords
-CopyWords:
-	decomp_trampoline CopyWords_c, 12
-	thumb_func_end CopyWords
-	.endif
 
 // Copy r2 bytes from r0 to r1, in units of eight words, rounded up.
 // Note r2 represents byte count, which is then converted to word count in function
@@ -779,7 +650,6 @@ CopyWords:
 // up the word count to a multiple of eight words.
 // Source and destination must be word compatible.
 // Size must be a multiple of eight words
-	.ifndef DECOMP_CopyByEightWords
 	thumb_func_start CopyByEightWords
 CopyByEightWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	push {r0-r3,lr}
@@ -797,31 +667,11 @@ CopyByEightWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 .CopyFastCpuSetMask_8000960:
 	.word 0x0
 	thumb_func_end CopyByEightWords
-	.else
-	thumb_func_start CopyByEightWords
-CopyByEightWords:
-	decomp_trampoline CopyByEightWords_c, 12
-	thumb_func_end CopyByEightWords
-	.endif
 
 // (u8 *mem, int byteCount, u8 byte) -> void
 // Fill r0 with r2, where r2 is treated as a byte.
 // Size is in r1, in bytes.
 // Does a backwards fill for speed
-	.ifdef DECOMP_ByteFillCanary
-	// Harness mutation canary. Trampolines to ByteFillCanary_c
-	// (src/c/byte_fill_canary.c) — a deliberately-broken ByteFill
-	// used by tests/harness/canary.sh. Lives in the 7000000+ canary
-	// patch range so it never collides with the real ByteFill in
-	// build/ outputs.
-	thumb_func_start ByteFill
-ByteFill:
-	ldr r3, =ByteFillCanary_c + 1
-	bx  r3
-	.pool
-	thumb_func_end ByteFill
-	.else
-	.ifndef DECOMP_ByteFill
 	thumb_func_start ByteFill
 ByteFill:
 	// byteCount
@@ -830,23 +680,10 @@ ByteFill:
 	bne ByteFill
 	mov pc, lr
 	thumb_func_end ByteFill
-	.else
-	// Decompiled trampoline — same 8-byte slot, jumps to src/c/byte_fill.c.
-	// `bx r3` is a tail call: LR untouched, C version's `bx lr` returns
-	// straight to ByteFill's caller. +1 on the literal sets the Thumb bit.
-	thumb_func_start ByteFill
-ByteFill:
-	ldr r3, =ByteFill_c + 1
-	bx  r3
-	.pool
-	thumb_func_end ByteFill
-	.endif
-	.endif
 
 // Fill r0 with r2, where r2 is treated as a halfword.
 // Size is in r1, in bytes.
 // Source, destination, and size must be halfword compatible
-	.ifndef DECOMP_HalfwordFill
 	thumb_func_start HalfwordFill
 HalfwordFill:
 	push {r0-r3,lr}
@@ -865,17 +702,10 @@ HalfwordFill:
 .HalfwordFillCpuSetMask_8000988:
 	.word 0x1000000
 	thumb_func_end HalfwordFill
-	.else
-	thumb_func_start HalfwordFill
-HalfwordFill:
-	decomp_trampoline HalfwordFill_c, 24
-	thumb_func_end HalfwordFill
-	.endif
 
 // Fill r0 with r2, where r2 is treated as a word.
 // Size is in r1, in bytes.
 // Source, destination, and size must be word compatible
-	.ifndef DECOMP_WordFill
 	thumb_func_start WordFill
 WordFill:
 	push {r0-r3,lr}
@@ -894,12 +724,6 @@ WordFill:
 .WordFillCpuSetMask_80009A8:
 	.word 0x5000000
 	thumb_func_end WordFill
-	.else
-	thumb_func_start WordFill
-WordFill:
-	decomp_trampoline WordFill_c, 24
-	thumb_func_end WordFill
-	.endif
 
 // Fill r0 with r2, where r2 is treated as a word.
 // Size is in r1, in bytes.
@@ -907,7 +731,6 @@ WordFill:
 // even though the size specified is converted to a word count
 // Source and destination must be word compatible
 // Size must be a multiple of eight words
-	.ifndef DECOMP_FillByEightWords
 	thumb_func_start FillByEightWords
 FillByEightWords:
 	push {r0-r3,lr}
@@ -926,12 +749,6 @@ FillByEightWords:
 .FillCpuFastSetMask_80009C8:
 	.word 0x1000000
 	thumb_func_end FillByEightWords
-	.else
-	thumb_func_start FillByEightWords
-FillByEightWords:
-	decomp_trampoline FillByEightWords_c, 24
-	thumb_func_end FillByEightWords
-	.endif
 
 	thumb_local_start
 
@@ -1002,7 +819,6 @@ dword_8000A38:
 	.word 0x80000000
 	thumb_func_end memory_80009FC
 
-	.ifndef DECOMP_clearWord_e200AC1C
 	thumb_func_start clearWord_e200AC1C
 clearWord_e200AC1C:
 	ldr r0, off_8000B10 // =dword_200AC1C
@@ -1010,14 +826,6 @@ clearWord_e200AC1C:
 	str r1, [r0]
 	mov pc, lr
 	thumb_func_end clearWord_e200AC1C
-	.else
-	thumb_func_start clearWord_e200AC1C
-clearWord_e200AC1C:
-	ldr r3, =clearWord_e200AC1C_c + 1
-	bx  r3
-	.pool
-	thumb_func_end clearWord_e200AC1C
-	.endif
 
 	thumb_func_start ProcessGFXTransferQueue
 ProcessGFXTransferQueue:
@@ -1108,7 +916,6 @@ QueueEightWordAlignedGFXTransfer: // (queued_src: *const (), mut_queued_dest: *m
 // r2 - queued size
 // r3 - copy type (preset)
 // preserves r0-r2
-	.ifndef DECOMP_QueueEightWordAlignedGFXTransfer
 loc_8000ACA: // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32, copy_type: int) -> ()
 	push {r4-r7}
 	mov r7, r3
@@ -1154,19 +961,6 @@ off_8000B14:
 	thumb_func_end QueueByteAlignedGFXTransfer
 	thumb_func_end QueueHwordAlignedGFXTransfer
 	thumb_func_end QueueWordAlignedGFXTransfer
-	.else
-	// Literal pool kept in both branches (shared with other fns).
-loc_8000ACA:
-	decomp_trampoline_r3safe QueueEightWordAlignedGFXTransfer_c, 56
-off_8000B10:
-	.word dword_200AC1C
-off_8000B14:
-	.word fiveWordArr200B4B0
-	thumb_func_end QueueUnk00GFXTransfer
-	thumb_func_end QueueByteAlignedGFXTransfer
-	thumb_func_end QueueHwordAlignedGFXTransfer
-	thumb_func_end QueueWordAlignedGFXTransfer
-	.endif
 	thumb_func_end QueueEightWordAlignedGFXTransfer
 
 
@@ -1205,7 +999,6 @@ locret_8000B2E:
 
 // For the uncompressed tuple3[0] case, it just copies tuple3[0] into tuple3[1] by tuple3[2] bytes, also routing to copies appropriately.
 // It terminates when it encounters a NULL after processing triplets.
-	.ifndef DECOMP_decompAndCopyData
 	thumb_func_start decompAndCopyData
 decompAndCopyData:
 	push {r4-r7,lr}
@@ -1302,12 +1095,6 @@ continue_advance3Elements_8000B88:
 ret_reachedTerminator_8000B8C:
 	pop {r4-r7,pc}
 	thumb_func_end decompAndCopyData
-	.else
-	thumb_func_start decompAndCopyData
-decompAndCopyData:
-	decomp_trampoline decompAndCopyData_c, 86
-	thumb_func_end decompAndCopyData
-	.endif
 
 // (u32 *dataRefs) -> void
 // [break] open PET
@@ -1383,7 +1170,6 @@ off_8000BFC:
 	thumb_func_end unused_8000BEC
 
 // converts a number to BCD for printing?
-	.ifndef DECOMP_memory_bcdConvert
 	thumb_func_start memory_bcdConvert
 memory_bcdConvert: 
 	push {r4,r7,lr}
@@ -1431,14 +1217,7 @@ dword_8000C54:
 dword_8000C58:
 	.word 0x99999999
 	thumb_func_end memory_bcdConvert
-	.else
-	thumb_func_start memory_bcdConvert
-memory_bcdConvert:
-	decomp_trampoline memory_bcdConvert_c, 84
-	thumb_func_end memory_bcdConvert
-	.endif
 
-	.ifndef DECOMP_sub_8000C5C
 	thumb_func_start sub_8000C5C
 // get num bcd digits?
 sub_8000C5C:
@@ -1469,12 +1248,6 @@ loc_8000C6E:
 	mov r0, r1
 	mov pc, lr
 	thumb_func_end sub_8000C5C
-	.else
-	thumb_func_start sub_8000C5C
-sub_8000C5C:
-	decomp_trampoline sub_8000C5C_c, 14
-	thumb_func_end sub_8000C5C
-	.endif
 
 // FILE segment shifts to RNG here
 
@@ -1714,7 +1487,6 @@ off_8000E0C:
 	.word 0x3C
 	thumb_func_end sub_8000DE0
 
-	.ifndef DECOMP_CapIncrementGameTimeFrames
 	thumb_func_start CapIncrementGameTimeFrames
 CapIncrementGameTimeFrames: // () -> void
 	mov r3, r10
@@ -1734,14 +1506,7 @@ loc_8000E20:
 dword_8000E24:
 	.word 0x14988F0
 	thumb_func_end CapIncrementGameTimeFrames
-	.else
-	thumb_func_start CapIncrementGameTimeFrames
-CapIncrementGameTimeFrames:
-	decomp_trampoline CapIncrementGameTimeFrames_c, 16
-	thumb_func_end CapIncrementGameTimeFrames
-	.endif
 
-	.ifndef DECOMP_sub_8000E28
 	thumb_func_start sub_8000E28
 sub_8000E28:
 	mov r3, r10
@@ -1749,12 +1514,6 @@ sub_8000E28:
 	ldr r0, [r3,#0x18]
 	mov pc, lr
 	thumb_func_end sub_8000E28
-	.else
-	thumb_func_start sub_8000E28
-sub_8000E28:
-	decomp_trampoline sub_8000E28_c, 0
-	thumb_func_end sub_8000E28
-	.endif
 
 	thumb_func_start sub_8000E30
 sub_8000E30:
@@ -1765,7 +1524,6 @@ sub_8000E30:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000E30
 
-	.ifndef DECOMP_sub_8000E3A
 	thumb_func_start sub_8000E3A
 sub_8000E3A:
 	push {r4-r7,lr}
@@ -1814,12 +1572,6 @@ loc_8000E8C:
 	mov r0, r2
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000E3A
-	.else
-	thumb_func_start sub_8000E3A
-sub_8000E3A:
-	decomp_trampoline sub_8000E3A_c, 76
-	thumb_func_end sub_8000E3A
-	.endif
 
 	thumb_local_start
 unused_8000E90:
@@ -2008,7 +1760,6 @@ locret_8000FAA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000F86
 
-	.ifndef DECOMP_sub_8000FAC
 	thumb_func_start sub_8000FAC
 sub_8000FAC:
 	push {r4-r7,lr}
@@ -2040,12 +1791,6 @@ loc_8000FDC:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000FAC
-	.else
-	thumb_func_start sub_8000FAC
-sub_8000FAC:
-	decomp_trampoline sub_8000FAC_c, 50
-	thumb_func_end sub_8000FAC
-	.endif
 
 	thumb_local_start
 sub_8000FE6:
@@ -2228,7 +1973,6 @@ GetMaxAndCurHPForCurPETNavi_80010D4: // (which_navi: u8) -> (u16, u16)
 	pop {r4-r7,pc}
 	thumb_func_end GetMaxAndCurHPForCurPETNavi_80010D4
 
-	.ifndef DECOMP_sub_80010EC
 	thumb_func_start sub_80010EC
 sub_80010EC:
 	push {r4-r7,lr}
@@ -2246,12 +1990,6 @@ loc_80010FE:
 	bl SetCurPETNaviStatsHword
 	pop {r4-r7,pc}
 	thumb_func_end sub_80010EC
-	.else
-	thumb_func_start sub_80010EC
-sub_80010EC:
-	decomp_trampoline sub_80010EC_c, 22
-	thumb_func_end sub_80010EC
-	.endif
 
 	thumb_local_start
 sub_800110A:
@@ -2297,7 +2035,6 @@ sub_8001154:
 	thumb_func_end sub_8001154
 
 // () -> void
-	.ifndef DECOMP_sub_8001158
 	thumb_func_start sub_8001158
 sub_8001158:
 	push {r4-r7,lr}
@@ -2315,14 +2052,7 @@ loc_800115C:
 locret_8001170:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8001158
-	.else
-	thumb_func_start sub_8001158
-sub_8001158:
-	decomp_trampoline sub_8001158_c, 18
-	thumb_func_end sub_8001158
-	.endif
 
-	.ifndef DECOMP_sub_8001172
 	thumb_func_start sub_8001172
 sub_8001172:
 	mov r3, r10
@@ -2331,12 +2061,6 @@ sub_8001172:
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end sub_8001172
-	.else
-	thumb_func_start sub_8001172
-sub_8001172:
-	decomp_trampoline sub_8001172_c, 0
-	thumb_func_end sub_8001172
-	.endif
 
 	thumb_func_start calcAngle_800117C
 calcAngle_800117C:
@@ -2399,7 +2123,6 @@ loc_80011D0:
 	pop {pc}
 	thumb_func_end sub_80011C0
 
-	.ifndef DECOMP_sub_80011D6
 	thumb_func_start sub_80011D6
 sub_80011D6:
 	sub r0, r0, r2
@@ -2417,12 +2140,6 @@ loc_80011EC:
 	mov r0, #0
 	mov pc, lr
 	thumb_func_end sub_80011D6
-	.else
-	thumb_func_start sub_80011D6
-sub_80011D6:
-	decomp_trampoline sub_80011D6_c, 16
-	thumb_func_end sub_80011D6
-	.endif
 
 	thumb_local_start
 sub_80011F0:
@@ -2639,7 +2356,6 @@ math_getThrowSpeeds:
 	pop {r4-r6,pc}
 	thumb_func_end math_getThrowSpeeds
 
-	.ifndef DECOMP_sub_8001382
 	thumb_func_start sub_8001382
 sub_8001382:
 	mov r1, r10
@@ -2649,12 +2365,6 @@ sub_8001382:
 	str r2, [r1,#oBattleState_Unk_5c]
 	mov pc, lr
 	thumb_func_end sub_8001382
-	.else
-	thumb_func_start sub_8001382
-sub_8001382:
-	decomp_trampoline sub_8001382_c, 2
-	thumb_func_end sub_8001382
-	.endif
 
 	thumb_local_start
 sub_800138E:
@@ -2857,7 +2567,6 @@ sub_80014D4:
 /* (r0:uint * src, r1:uint * dest, r2:int size) -> void
    preserves: r0-r7,lr
    ignores: r4-r12*/
-	.ifndef DECOMP_copyWords_80014EC
 	thumb_func_start copyWords_80014EC
 copyWords_80014EC: // 80014EC
 	push {r0-r7,lr}
@@ -2886,15 +2595,8 @@ copyWords_80014EC: // 80014EC
 	bge .reverseCopyLoop
 	pop {r0-r7,pc}
 	thumb_func_end copyWords_80014EC
-	.else
-	thumb_func_start copyWords_80014EC
-copyWords_80014EC:
-	decomp_trampoline copyWords_80014EC_c, 32
-	thumb_func_end copyWords_80014EC
-	.endif
 
 /// tags: "#mod_rng, "
-	.ifndef DECOMP_SeedRNG
 	thumb_func_start SeedRNG
 SeedRNG: // () -> ()
 	ldr r0, rng_8001594 // =0xa338244f
@@ -2902,17 +2604,8 @@ SeedRNG: // () -> ()
 	str r0, [r1]
 	mov pc, lr
 	thumb_func_end SeedRNG
-	.else
-	thumb_func_start SeedRNG
-SeedRNG:
-	ldr r3, =SeedRNG_c + 1
-	bx  r3
-	.pool
-	thumb_func_end SeedRNG
-	.endif
 
 /// tags: "#mod_rng, "
-	.ifndef DECOMP_GetRNG
 	thumb_func_start GetRNG
 GetRNG: // () -> u32?
 	push {r7,lr}
@@ -2927,15 +2620,8 @@ GetRNG: // () -> u32?
 	str r0, [r7]
 	pop {r7,pc}
 	thumb_func_end GetRNG
-	.else
-	thumb_func_start GetRNG
-GetRNG:
-	decomp_trampoline GetRNG_c, 14
-	thumb_func_end GetRNG
-	.endif
 
 /// tags: "#mod_rng, "
-	.ifndef DECOMP_GetPositiveSignedRNG
 	thumb_func_start GetPositiveSignedRNG
 GetPositiveSignedRNG:
 	push {r7,lr}
@@ -2952,15 +2638,8 @@ GetPositiveSignedRNG:
 	lsr r0, r0, #1
 	pop {r7,pc}
 	thumb_func_end GetPositiveSignedRNG
-	.else
-	thumb_func_start GetPositiveSignedRNG
-GetPositiveSignedRNG:
-	decomp_trampoline GetPositiveSignedRNG_c, 16
-	thumb_func_end GetPositiveSignedRNG
-	.endif
 
 /// tags: "#mod.rng, "
-	.ifndef DECOMP_GetRNGSecondary
 	thumb_func_start GetRNGSecondary
 GetRNGSecondary: // () -> void
 	push {r7,lr}
@@ -2975,15 +2654,8 @@ GetRNGSecondary: // () -> void
 	str r0, [r7]
 	pop {r7,pc}
 	thumb_func_end GetRNGSecondary
-	.else
-	thumb_func_start GetRNGSecondary
-GetRNGSecondary:
-	decomp_trampoline GetRNGSecondary_c, 14
-	thumb_func_end GetRNGSecondary
-	.endif
 
 /// tags: "#mod.rng, "
-	.ifndef DECOMP_GetPositiveSignedRNGSecondary
 	thumb_func_start GetPositiveSignedRNGSecondary
 GetPositiveSignedRNGSecondary:
 	push {r7,lr}
@@ -3000,12 +2672,6 @@ GetPositiveSignedRNGSecondary:
 	lsr r0, r0, #1
 	pop {r7,pc}
 	thumb_func_end GetPositiveSignedRNGSecondary
-	.else
-	thumb_func_start GetPositiveSignedRNGSecondary
-GetPositiveSignedRNGSecondary:
-	decomp_trampoline GetPositiveSignedRNGSecondary_c, 16
-	thumb_func_end GetPositiveSignedRNGSecondary
-	.endif
 
 /// tags: "#mod.rng, #dead, "
 	thumb_local_start
@@ -3040,7 +2706,6 @@ off_80015B0:
 	.word dword_20018E8
 	thumb_func_end dead_rng_800157C
 
-	.ifndef DECOMP_sub_80015B4
 	thumb_func_start sub_80015B4
 sub_80015B4:
 	push {lr}
@@ -3056,14 +2721,7 @@ dword_80015C8:
 dword_80015CC:
 	.word 0x2000
 	thumb_func_end sub_80015B4
-	.else
-	thumb_func_start sub_80015B4
-sub_80015B4:
-	decomp_trampoline sub_80015B4_c, 20
-	thumb_func_end sub_80015B4
-	.endif
 
-	.ifndef DECOMP_copyToVRAMAndClear_iBGTileIdBlocks_Ptr
 	thumb_func_start copyToVRAMAndClear_iBGTileIdBlocks_Ptr
 copyToVRAMAndClear_iBGTileIdBlocks_Ptr:
 	push {lr}
@@ -3089,16 +2747,9 @@ dword_80015F4:
 fill:
 	.word 0x2FF02FF
 	thumb_func_end copyToVRAMAndClear_iBGTileIdBlocks_Ptr
-	.else
-	thumb_func_start copyToVRAMAndClear_iBGTileIdBlocks_Ptr
-copyToVRAMAndClear_iBGTileIdBlocks_Ptr:
-	decomp_trampoline copyToVRAMAndClear_iBGTileIdBlocks_Ptr_c, 36
-	thumb_func_end copyToVRAMAndClear_iBGTileIdBlocks_Ptr
-	.endif
 
 /// Disabling this causes a lot of glitchy overlayed graphics from logo screen and throughout.
 /// Game remains functional. In the net the background is very glitchy and animating you can't see MegaMan
-	.ifndef DECOMP_sub_80015FC
 	thumb_func_start sub_80015FC
 sub_80015FC:
 	ldr r1, off_8001614 // =byte_8001618
@@ -3119,7 +2770,7 @@ sub_80015FC:
 	.balign 4, 0x00
 off_8001614:
 	.word byte_8001618
-byte_8001618::
+byte_8001618:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8, 0x3C, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x8, 0x3C, 0x1, 0x3D, 0x0, 0x0, 0x0, 0x0, 0x8, 0x3C, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0xB, 0x3F
@@ -3136,32 +2787,7 @@ byte_8001618::
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F, 0x8, 0x3C, 0x3, 0xE1, 0x2, 0x3E, 0x1, 0x3F
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
 	thumb_func_end sub_80015FC
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_80015FC
-sub_80015FC:
-	decomp_trampoline sub_80015FC_c, 20
-byte_8001618::
-	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8, 0x3C, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	.byte 0x8, 0x3C, 0x1, 0x3D, 0x0, 0x0, 0x0, 0x0, 0x8, 0x3C, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0xB, 0x3F
-	.byte 0x8, 0x3C, 0x83, 0x3D, 0x82, 0x3E, 0x8D, 0x3F, 0x8, 0x3C, 0x83, 0x3D, 0xE, 0x3E, 0x8D, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x0, 0x0, 0x0, 0x0
-	.byte 0x8, 0x3C, 0x83, 0x3D, 0x2, 0x3E, 0x81, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x5E, 0x81, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x85, 0x3F, 0x8, 0x3C, 0x83, 0x3D, 0x2, 0x3E, 0x9, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0xA, 0x3E, 0x9, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x1, 0x3E, 0x8, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x5, 0x3F, 0x8, 0x3C, 0x3, 0xE1, 0x2, 0x3E, 0x1, 0x3F
-	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
-	thumb_func_end sub_80015FC
-	.endif
 
-	.ifndef DECOMP_map_8001708
 	thumb_func_start map_8001708
 map_8001708: // (map_group: u8, map_number: u8) -> ()
 	push {lr}
@@ -3193,14 +2819,7 @@ off_8001724:
 off_8001728:
 	.word off_8033878 // [Nullable<*const [u8]>; REAL_WORLD_NUM_GROUPS]
 	thumb_func_end map_8001708
-	.else
-	thumb_func_start map_8001708
-map_8001708:
-	decomp_trampoline map_8001708_c, 28
-	thumb_func_end map_8001708
-	.endif
 
-	.ifndef DECOMP_render_800172C
 	thumb_func_start render_800172C
 render_800172C:
 	push {r4-r7,lr}
@@ -3244,14 +2863,7 @@ off_8001770:
 off_8001774:
 	.word ColorSpecialEffectsSelection
 	thumb_func_end render_800172C
-	.else
-	thumb_func_start render_800172C
-render_800172C:
-	decomp_trampoline render_800172C_c, 68
-	thumb_func_end render_800172C
-	.endif
 
-	.ifndef DECOMP_SetRenderInfoLCDControl
 	thumb_func_start SetRenderInfoLCDControl
 SetRenderInfoLCDControl: // (a_00: u16) -> ()
 	mov r1, r10
@@ -3259,12 +2871,6 @@ SetRenderInfoLCDControl: // (a_00: u16) -> ()
 	strh r0, [r1,#oRenderInfo_Unk_00]
 	mov pc, lr
 	thumb_func_end SetRenderInfoLCDControl
-	.else
-	thumb_func_start SetRenderInfoLCDControl
-SetRenderInfoLCDControl:
-	decomp_trampoline SetRenderInfoLCDControl_c, 0
-	thumb_func_end SetRenderInfoLCDControl
-	.endif
 
 	thumb_func_start GetRenderInfoLCDControl
 GetRenderInfoLCDControl: // () -> u16
@@ -3274,7 +2880,6 @@ GetRenderInfoLCDControl: // () -> u16
 	mov pc, lr
 	thumb_func_end GetRenderInfoLCDControl
 
-	.ifndef DECOMP_renderInfo_8001788
 	thumb_func_start renderInfo_8001788
 renderInfo_8001788: // () -> ()
 	mov r0, r10
@@ -3290,14 +2895,7 @@ renderInfo_8001788: // () -> ()
 	strh r1, [r0,#oRenderInfo_Unk_18]
 	mov pc, lr
 	thumb_func_end renderInfo_8001788
-	.else
-	thumb_func_start renderInfo_8001788
-renderInfo_8001788:
-	decomp_trampoline renderInfo_8001788_c, 16
-	thumb_func_end renderInfo_8001788
-	.endif
 
-	.ifndef DECOMP_renderInfo_80017A0
 	thumb_func_start renderInfo_80017A0
 renderInfo_80017A0: // () -> ()
 	mov r0, r10
@@ -3306,14 +2904,7 @@ renderInfo_80017A0: // () -> ()
 	strh r1, [r0,#oRenderInfo_Unk_02]
 	mov pc, lr
 	thumb_func_end renderInfo_80017A0
-	.else
-	thumb_func_start renderInfo_80017A0
-renderInfo_80017A0:
-	decomp_trampoline renderInfo_80017A0_c, 2
-	thumb_func_end renderInfo_80017A0
-	.endif
 
-	.ifndef DECOMP_zeroFillVRAM
 	thumb_func_start zeroFillVRAM
 zeroFillVRAM: // () -> ()
 	push {lr}
@@ -3340,14 +2931,7 @@ dword_80017D8:
 dword_80017DC:
 	.word 0x600C000
 	thumb_func_end zeroFillVRAM
-	.else
-	thumb_func_start zeroFillVRAM
-zeroFillVRAM:
-	decomp_trampoline zeroFillVRAM_c, 44
-	thumb_func_end zeroFillVRAM
-	.endif
 
-	.ifndef DECOMP_ZeroFill_byte_3001960
 	thumb_func_start ZeroFill_byte_3001960
 ZeroFill_byte_3001960:
 	push {lr}
@@ -3356,14 +2940,7 @@ ZeroFill_byte_3001960:
 	bl ZeroFillByHalfword
 	pop {pc}
 	thumb_func_end ZeroFill_byte_3001960
-	.else
-	thumb_func_start ZeroFill_byte_3001960
-ZeroFill_byte_3001960:
-	decomp_trampoline ZeroFill_byte_3001960_c, 4
-	thumb_func_end ZeroFill_byte_3001960
-	.endif
 
-	.ifndef DECOMP_main_zeroFill_80017EC
 	thumb_func_start main_zeroFill_80017EC
 main_zeroFill_80017EC:
 	push {lr}
@@ -3380,21 +2957,7 @@ off_8001800:
 dword_8001804:
 	.word 0x5000000
 	thumb_func_end main_zeroFill_80017EC
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start main_zeroFill_80017EC
-main_zeroFill_80017EC:
-	decomp_trampoline main_zeroFill_80017EC_c, 12
-	.balign 4, 0
-off_8001800:
-	.word palette_3001960
-dword_8001804:
-	.word 0x5000000
-	thumb_func_end main_zeroFill_80017EC
-	.endif
 
-	.ifndef DECOMP_copyPalletesToIWRAM_8001808
 	thumb_func_start copyPalletesToIWRAM_8001808
 copyPalletesToIWRAM_8001808:
 	push {lr}
@@ -3410,14 +2973,7 @@ off_8001818:
 dword_800181C:
 	.word 0x5000000
 	thumb_func_end copyPalletesToIWRAM_8001808
-	.else
-	thumb_func_start copyPalletesToIWRAM_8001808
-copyPalletesToIWRAM_8001808:
-	decomp_trampoline copyPalletesToIWRAM_8001808_c, 16
-	thumb_func_end copyPalletesToIWRAM_8001808
-	.endif
 
-	.ifndef DECOMP_zeroFill_e2009740
 	thumb_func_start zeroFill_e2009740
 zeroFill_e2009740:
 	push {lr}
@@ -3429,14 +2985,7 @@ zeroFill_e2009740:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end zeroFill_e2009740
-	.else
-	thumb_func_start zeroFill_e2009740
-zeroFill_e2009740:
-	decomp_trampoline zeroFill_e2009740_c, 6
-	thumb_func_end zeroFill_e2009740
-	.endif
 
-	.ifndef DECOMP_zeroFill_e200F3A0
 	thumb_func_start zeroFill_e200F3A0
 zeroFill_e200F3A0:
 	push {lr}
@@ -3448,14 +2997,7 @@ zeroFill_e200F3A0:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end zeroFill_e200F3A0
-	.else
-	thumb_func_start zeroFill_e200F3A0
-zeroFill_e200F3A0:
-	decomp_trampoline zeroFill_e200F3A0_c, 4
-	thumb_func_end zeroFill_e200F3A0
-	.endif
 
-	.ifndef DECOMP_ZeroFillGFX30025c0
 	thumb_func_start ZeroFillGFX30025c0
 ZeroFillGFX30025c0:
 	push {lr}
@@ -3468,14 +3010,7 @@ ZeroFillGFX30025c0:
 dword_800184C:
 	.word 0x2000
 	thumb_func_end ZeroFillGFX30025c0
-	.else
-	thumb_func_start ZeroFillGFX30025c0
-ZeroFillGFX30025c0:
-	decomp_trampoline ZeroFillGFX30025c0_c, 12
-	thumb_func_end ZeroFillGFX30025c0
-	.endif
 
-	.ifndef DECOMP_copyMemory_8001850
 	thumb_func_start copyMemory_8001850
 copyMemory_8001850:
 	push {lr}
@@ -3500,12 +3035,6 @@ off_8001874:
 off_8001878:
 	.word unk_3001B40
 	thumb_func_end copyMemory_8001850
-	.else
-	thumb_func_start copyMemory_8001850
-copyMemory_8001850:
-	decomp_trampoline copyMemory_8001850_c, 36
-	thumb_func_end copyMemory_8001850
-	.endif
 
 	thumb_func_start sub_800187C
 sub_800187C:
@@ -3695,7 +3224,6 @@ dword_8001990:
 	.word nullsub_38+1
 	thumb_func_end SetDummyBGScrollCallbacks
 
-	.ifndef DECOMP_CallBGScrollCallback0
 	thumb_func_start CallBGScrollCallback0
 CallBGScrollCallback0:
 	push {lr}
@@ -3705,14 +3233,7 @@ CallBGScrollCallback0:
 	bx r0
 	pop {pc}
 	thumb_func_end CallBGScrollCallback0
-	.else
-	thumb_func_start CallBGScrollCallback0
-CallBGScrollCallback0:
-	decomp_trampoline CallBGScrollCallback0_c, 4
-	thumb_func_end CallBGScrollCallback0
-	.endif
 
-	.ifndef DECOMP_CallBGScrollCallback1
 	thumb_func_start CallBGScrollCallback1
 CallBGScrollCallback1:
 	push {lr}
@@ -3724,16 +3245,6 @@ CallBGScrollCallback1:
 off_80019AC:
 	.word eBGScrollCallbacks
 	thumb_func_end CallBGScrollCallback1
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start CallBGScrollCallback1
-CallBGScrollCallback1:
-	decomp_trampoline CallBGScrollCallback1_c, 4
-off_80019AC:
-	.word eBGScrollCallbacks
-	thumb_func_end CallBGScrollCallback1
-	.endif
 
 	thumb_func_start nullsub_35
 nullsub_35:
@@ -3942,7 +3453,6 @@ off_8001AB8:
 	.word unk_200DF40
 	thumb_func_end nullsub_39
 
-	.ifndef DECOMP_zeroFill_e20094C0
 	thumb_func_start zeroFill_e20094C0
 zeroFill_e20094C0:
 	push {lr}
@@ -3956,12 +3466,6 @@ zeroFill_e20094C0:
 off_8001B08:
 	.word 0x1B0
 	thumb_func_end zeroFill_e20094C0
-	.else
-	thumb_func_start zeroFill_e20094C0
-zeroFill_e20094C0:
-	decomp_trampoline zeroFill_e20094C0_c, 8
-	thumb_func_end zeroFill_e20094C0
-	.endif
 
 	thumb_local_start
 sub_8001B0C:
@@ -4034,7 +3538,6 @@ off_8001B68:
 	.word off_8001C24
 	thumb_func_end LoadGFXAnim
 
-	.ifndef DECOMP_TerminateGFXAnim
 	thumb_func_start TerminateGFXAnim
 TerminateGFXAnim:
 	push {r4-r7,lr}
@@ -4049,14 +3552,7 @@ TerminateGFXAnim:
 	bl Terminate_ePalette20097a0_Transform
 	pop {r4-r7,pc}
 	thumb_func_end TerminateGFXAnim
-	.else
-	thumb_func_start TerminateGFXAnim
-TerminateGFXAnim:
-	decomp_trampoline TerminateGFXAnim_c, 16
-	thumb_func_end TerminateGFXAnim
-	.endif
 
-	.ifndef DECOMP_IsGFXAnimActive
 	thumb_func_start IsGFXAnimActive
 IsGFXAnimActive:
 	push {r4-r7,lr}
@@ -4068,12 +3564,6 @@ IsGFXAnimActive:
 	tst r0, r0
 	pop {r4-r7,pc}
 	thumb_func_end IsGFXAnimActive
-	.else
-	thumb_func_start IsGFXAnimActive
-IsGFXAnimActive:
-	decomp_trampoline IsGFXAnimActive_c, 8
-	thumb_func_end IsGFXAnimActive
-	.endif
 
 	thumb_func_start ProcessGFXAnims
 ProcessGFXAnims:
@@ -5208,7 +4698,6 @@ LoadGFXAnims: // (gfx_anim_data_arr: * FFStop32<[GFXAnimScript]>) -> ()
 	pop {r5,pc}
 	thumb_func_end LoadGFXAnims
 
-	.ifndef DECOMP_zeroFill_e20097A0
 	thumb_func_start zeroFill_e20097A0
 zeroFill_e20097A0:
 	push {lr}
@@ -5222,14 +4711,7 @@ zeroFill_e20097A0:
 off_8002374:
 	.word 0x108
 	thumb_func_end zeroFill_e20097A0
-	.else
-	thumb_func_start zeroFill_e20097A0
-zeroFill_e20097A0:
-	decomp_trampoline zeroFill_e20097A0_c, 8
-	thumb_func_end zeroFill_e20097A0
-	.endif
 
-	.ifndef DECOMP_sub_8002378
 	thumb_func_start sub_8002378
 sub_8002378:
 	push {r5-r7,lr}
@@ -5251,14 +4733,7 @@ loc_8002396:
 	strb r3, [r7,#oPalette20097a0_Unk_00]
 	pop {r5-r7,pc}
 	thumb_func_end sub_8002378
-	.else
-	thumb_func_start sub_8002378
-sub_8002378:
-	decomp_trampoline_r3safe sub_8002378_c, 18
-	thumb_func_end sub_8002378
-	.endif
 
-	.ifndef DECOMP_Terminate_ePalette20097a0_Transform
 	thumb_func_start Terminate_ePalette20097a0_Transform
 Terminate_ePalette20097a0_Transform:
 	ldr r2, off_8002464 // =ePalette20097a0
@@ -5269,14 +4744,7 @@ Terminate_ePalette20097a0_Transform:
 	strb r0, [r2,#oPalette20097a0_Unk_00]
 	mov pc, lr
 	thumb_func_end Terminate_ePalette20097a0_Transform
-	.else
-	thumb_func_start Terminate_ePalette20097a0_Transform
-Terminate_ePalette20097a0_Transform:
-	decomp_trampoline Terminate_ePalette20097a0_Transform_c, 4
-	thumb_func_end Terminate_ePalette20097a0_Transform
-	.endif
 
-	.ifndef DECOMP_sub_80023A8
 	thumb_func_start sub_80023A8
 sub_80023A8:
 	push {lr}
@@ -5290,12 +4758,6 @@ sub_80023A8:
 off_80023B4:
 	.word 0xd8
 	thumb_func_end sub_80023A8
-	.else
-	thumb_func_start sub_80023A8
-sub_80023A8:
-	decomp_trampoline sub_80023A8_c, 8
-	thumb_func_end sub_80023A8
-	.endif
 
 	thumb_local_start
 sub_80023B8:
@@ -5397,7 +4859,6 @@ off_8002464:
 	.word ePalette20097a0
 	thumb_func_end getPalleteAndTransition_80023E0
 
-	.ifndef DECOMP_Initialize_eStruct200a6a0
 	thumb_func_start Initialize_eStruct200a6a0
 Initialize_eStruct200a6a0:
 	push {r4-r7,lr}
@@ -5416,12 +4877,6 @@ Initialize_eStruct200a6a0:
 	strb r0, [r5]
 	pop {r4-r7,pc}
 	thumb_func_end Initialize_eStruct200a6a0
-	.else
-	thumb_func_start Initialize_eStruct200a6a0
-Initialize_eStruct200a6a0:
-	decomp_trampoline Initialize_eStruct200a6a0_c, 20
-	thumb_func_end Initialize_eStruct200a6a0
-	.endif
 
 	thumb_func_start run_eStruct200a6a0_Callback_8002484
 run_eStruct200a6a0_Callback_8002484:
@@ -5444,7 +4899,6 @@ loc_8002498:
 	pop {r4-r7,pc}
 	thumb_func_end run_eStruct200a6a0_Callback_8002484
 
-	.ifndef DECOMP_zeroFill_80024A2
 	thumb_func_start zeroFill_80024A2
 zeroFill_80024A2:
 	push {r4-r7,lr}
@@ -5455,14 +4909,7 @@ zeroFill_80024A2:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r4-r7,pc}
 	thumb_func_end zeroFill_80024A2
-	.else
-	thumb_func_start zeroFill_80024A2
-zeroFill_80024A2:
-	decomp_trampoline zeroFill_80024A2_c, 2
-	thumb_func_end zeroFill_80024A2
-	.endif
 
-	.ifndef DECOMP_sub_80024AE
 	thumb_func_start sub_80024AE
 sub_80024AE:
 	push {r4-r7,lr}
@@ -5476,14 +4923,7 @@ sub_80024AE:
 locret_80024BE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80024AE
-	.else
-	thumb_func_start sub_80024AE
-sub_80024AE:
-	decomp_trampoline sub_80024AE_c, 8
-	thumb_func_end sub_80024AE
-	.endif
 
-	.ifndef DECOMP_Is_eStruct200a6a0_Initialized
 	thumb_func_start Is_eStruct200a6a0_Initialized
 Is_eStruct200a6a0_Initialized:
 	ldr r1, off_80024C8 // =eStruct200a6a0
@@ -5493,16 +4933,6 @@ Is_eStruct200a6a0_Initialized:
 off_80024C8:
 	.word eStruct200a6a0
 	thumb_func_end Is_eStruct200a6a0_Initialized
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start Is_eStruct200a6a0_Initialized
-Is_eStruct200a6a0_Initialized:
-	decomp_trampoline Is_eStruct200a6a0_Initialized_c, 0
-off_80024C8:
-	.word eStruct200a6a0
-	thumb_func_end Is_eStruct200a6a0_Initialized
-	.endif
 
 	thumb_local_start
 sub_80024CC:
@@ -5656,7 +5086,7 @@ byte_80025C9:
 	.byte 0x16
 byte_80025CA:
 	.byte 0x2, 0xFF
-byte_80025CC::
+byte_80025CC:
 	.byte 0x0, 0x0, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F
 	.byte 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F
 	.byte 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F, 0xFF, 0x7F
@@ -5667,7 +5097,6 @@ byte_80025CC::
 	thumb_func_end sub_80024CC
 
 /// tags: "#mcu, "
-	.ifndef DECOMP_copy_800260C
 	thumb_func_start copy_800260C
 copy_800260C:
 	push {r4,lr}
@@ -5707,14 +5136,7 @@ dword_8002648:
 off_800264C:
 	.word unk_200F388
 	thumb_func_end copy_800260C
-	.else
-	thumb_func_start copy_800260C
-copy_800260C:
-	decomp_trampoline copy_800260C_c, 60
-	thumb_func_end copy_800260C
-	.endif
 
-	.ifndef DECOMP_copyPalletesToIWRAM_8002650
 	thumb_func_start copyPalletesToIWRAM_8002650
 copyPalletesToIWRAM_8002650:
 	push {lr}
@@ -5730,12 +5152,6 @@ off_8002660:
 dword_8002664:
 	.word 0x5000200
 	thumb_func_end copyPalletesToIWRAM_8002650
-	.else
-	thumb_func_start copyPalletesToIWRAM_8002650
-copyPalletesToIWRAM_8002650:
-	decomp_trampoline copyPalletesToIWRAM_8002650_c, 16
-	thumb_func_end copyPalletesToIWRAM_8002650
-	.endif
 
 	thumb_func_start copy_8002668
 copy_8002668:
@@ -5752,7 +5168,6 @@ copy_8002668:
 call_8002676:
 	push {lr}
 
-	.ifndef DECOMP_copy_8002668
 loc_8002678:
 	ldr r0, off_8002684 // =byte_80025CC
 	ldr r1, off_8002688 // =byte_3001730
@@ -5769,15 +5184,6 @@ off_800268C:
 	.word dword_86A5500
 off_8002690:
 	.word byte_3001710
-	.else
-	// Literal pool kept in both branches (shared with other fns).
-loc_8002678:
-	decomp_trampoline copy_8002668_c, 12
-off_800268C:
-	.word dword_86A5500
-off_8002690:
-	.word byte_3001710
-	.endif
 	thumb_func_end copy_8002668
 
 	thumb_func_start sub_8002694

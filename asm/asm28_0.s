@@ -4063,7 +4063,7 @@ dword_809C0E8:
   .word 0x1D20
 dword_809C0EC: 
   .word 0x1DA0
-off_809C0F0::
+off_809C0F0: 
   .word dword_809C108
 	.word off_809C140
 off_809C0F8: 
@@ -4136,7 +4136,7 @@ byte_809C2AC:
 	.byte 0x4, 0x80, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0x8, 0x4, 0x40, 0x0, 0x0, 0x0, 0x0
 	.byte 0xFF, 0x0, 0x0, 0x8, 0x4, 0x60, 0x0, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x8, 0x4, 0x80
 	.byte 0x0, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x8
-byte_809C354::
+byte_809C354:
 	cs_disable_cutscene_skip_script
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
@@ -4552,7 +4552,6 @@ off_809C93C:
 	.word eCutsceneState
 	thumb_func_end sub_809C890
 
-	.ifndef DECOMP_sub_809C940
 	thumb_func_start sub_809C940
 sub_809C940:
 	push {r4-r7,lr}
@@ -4566,12 +4565,6 @@ sub_809C940:
 off_809C950:
 	.word eCutsceneState
 	thumb_func_end sub_809C940
-	.else
-	thumb_func_start sub_809C940
-sub_809C940:
-	decomp_trampoline sub_809C940_c, 12
-	thumb_func_end sub_809C940
-	.endif
 
 	thumb_local_start
 sub_809C954:
@@ -4586,7 +4579,6 @@ sub_809C954:
 	.balign 4, 0x00
 	thumb_func_end sub_809C954
 
-	.ifndef DECOMP_sub_809C968
 	thumb_func_start sub_809C968
 sub_809C968:
 	push {r4-r7,lr}
@@ -4684,12 +4676,6 @@ off_809CA38:
 off_809CA3C:
 	.word byte_809C354 // CutsceneScript
 	thumb_func_end sub_809C968
-	.else
-	thumb_func_start sub_809C968
-sub_809C968:
-	decomp_trampoline sub_809C968_c, 208
-	thumb_func_end sub_809C968
-	.endif
 
 	thumb_func_start sub_809CA40
 sub_809CA40:
@@ -5221,7 +5207,7 @@ byte_809CE84:
 	.byte 0x0
 byte_809CEAC:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0x4, 0x34, 0x3, 0x2
-byte_809CEB4::
+byte_809CEB4:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_pause byte1=0xFF byte2=0x10
@@ -5268,7 +5254,6 @@ cutscenescript_809CF28:
 
 	thumb_func_end sub_809CE40
 
-	.ifndef DECOMP_sub_809CF2C
 	thumb_func_start sub_809CF2C
 sub_809CF2C:
 	push {r4-r7,lr}
@@ -5295,11 +5280,5 @@ dword_809CF54:
 off_809CF58:
 	.word eReqBBSGui
 	thumb_func_end sub_809CF2C
-	.else
-	thumb_func_start sub_809CF2C
-sub_809CF2C:
-	decomp_trampoline sub_809CF2C_c, 40
-	thumb_func_end sub_809CF2C
-	.endif
 
 /*For debugging purposes, connect comment at any range!*/

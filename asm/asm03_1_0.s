@@ -81,7 +81,7 @@ dword_8033852: // [u8; UNDERNET_NUM_MAPS]
 byte_8033856: // [u8; GRAVEYARD_NUM_MAPS]
 	.byte 0x4, 0x4, 0x4
 	.balign 4, 0
-off_803385C::
+off_803385C: // [*const [u8]; REAL_WORLD_NUM_GROUPS]
 	.word word_80338D4 // [u8; ACDC_TOWN_NUM_MAPS]
 	.word byte_80338D6 // [u8; CENTRAL_TOWN_NUM_MAPS]
 	.word byte_80338DB // [u8; CYBER_ACADEMY_NUM_MAPS]
@@ -89,7 +89,7 @@ off_803385C::
 	.word byte_80338EB // [u8; GREEN_TOWN_NUM_MAPS]
 	.word dword_80338F0 // [u8; SKY_TOWN_NUM_MAPS]
 	.word byte_80338F4 // [u8; EXPO_SITE_NUM_MAPS]
-off_8033878::
+off_8033878: // [Nullable<*const [u8]>; REAL_WORLD_NUM_GROUPS]
 	.word word_80338FA // [u8; ROBOT_CONTROL_COMP_NUM_MAPS]
 	.word byte_80338FC // [u8; AQUARIUM_COMP_NUM_MAPS]
 	.word byte_80338FF // [u8; JUDGETREE_COMP_NUM_MAPS]
@@ -198,7 +198,6 @@ triggerSomeUpdateForInternetOrRealWorld_8033948:
 	pop {r4-r7,pc}
 	thumb_func_end triggerSomeUpdateForInternetOrRealWorld_8033948
 
-	.ifndef DECOMP_gfxTransfer_8033978
 	thumb_func_start gfxTransfer_8033978
 gfxTransfer_8033978: // () -> ()
 	push {r4-r7,lr}
@@ -250,12 +249,6 @@ off_80339C4:
 off_80339C8:
 	.word byte_86C1F20
 	thumb_func_end gfxTransfer_8033978
-	.else
-	thumb_func_start gfxTransfer_8033978
-gfxTransfer_8033978:
-	decomp_trampoline gfxTransfer_8033978_c, 76
-	thumb_func_end gfxTransfer_8033978
-	.endif
 
 	thumb_func_start dispatch_80339CC
 dispatch_80339CC: // () -> ()
@@ -720,8 +713,7 @@ locret_8033D9E:
 	pop {pc}
 	thumb_func_end sub_8033D88
 
-	.ifndef DECOMP_gfxTransfer_8033DA0
-	thumb_func_start gfxTransfer_8033DA0
+	thumb_local_start
 gfxTransfer_8033DA0: // (a0: u32?) -> ()
 	push {r4-r7,lr}
 	mov r6, r0
@@ -751,7 +743,7 @@ loc_8033DBC:
 	.balign 4, 0
 off_8033DD0:
 	.word off_8033DD4
-off_8033DD4::
+off_8033DD4:
 	.word byte_86C18A0
 	.word byte_86C18E0
 	.word byte_86C1920
@@ -768,30 +760,6 @@ off_8033DD4::
 off_8033E08:
 	.word byte_30016D0
 	thumb_func_end gfxTransfer_8033DA0
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start gfxTransfer_8033DA0
-gfxTransfer_8033DA0:
-	decomp_trampoline gfxTransfer_8033DA0_c, 44
-off_8033DD4::
-	.word byte_86C18A0
-	.word byte_86C18E0
-	.word byte_86C1920
-	.word byte_86C1960
-	.word byte_86C19A0
-	.word byte_86C19E0
-	.word byte_86C18E0
-	.word byte_86C1920
-	.word byte_86C1960
-	.word byte_86C19A0
-	.word byte_86C19E0
-	.word byte_86C1A60
-	.word byte_86C1A20
-off_8033E08:
-	.word byte_30016D0
-	thumb_func_end gfxTransfer_8033DA0
-	.endif
 
 	thumb_local_start
 sub_8033E0C:
@@ -1008,7 +976,6 @@ dword_8033FBC:
 	.word 0xC7AC
 	thumb_func_end sub_8033F80
 
-	.ifndef DECOMP_doPETEffect_8033fc0
 	thumb_func_start doPETEffect_8033fc0
 doPETEffect_8033fc0:
 	push {r5,lr}
@@ -1031,12 +998,6 @@ locret_8033FD4:
 off_8033FD8:
 	.word eS2011E30
 	thumb_func_end doPETEffect_8033fc0
-	.else
-	thumb_func_start doPETEffect_8033fc0
-doPETEffect_8033fc0:
-	decomp_trampoline doPETEffect_8033fc0_c, 20
-	thumb_func_end doPETEffect_8033fc0
-	.endif
 
 	thumb_func_start sub_8033FDC
 sub_8033FDC:
@@ -1189,7 +1150,6 @@ loc_8034140:
 	pop {r4-r7,pc}
 	thumb_func_end navi_80340F6
 
-	.ifndef DECOMP_sub_80341AA
 	thumb_func_start sub_80341AA
 sub_80341AA:
 	push {lr}
@@ -1200,12 +1160,6 @@ sub_80341AA:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end sub_80341AA
-	.else
-	thumb_func_start sub_80341AA
-sub_80341AA:
-	decomp_trampoline sub_80341AA_c, 2
-	thumb_func_end sub_80341AA
-	.endif
 
 	thumb_func_start ho_jackIn_80341B6
 ho_jackIn_80341B6:
@@ -2009,7 +1963,6 @@ cutscene_8034BB8:
 	pop {r4-r7,pc}
 	thumb_func_end cutscene_8034BB8
 
-	.ifndef DECOMP_sub_8034C36
 	thumb_func_start sub_8034C36
 sub_8034C36:
 	push {r4-r7,lr}
@@ -2034,12 +1987,6 @@ loc_8034C6A:
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_8034C36
-	.else
-	thumb_func_start sub_8034C36
-sub_8034C36:
-	decomp_trampoline sub_8034C36_c, 46
-	thumb_func_end sub_8034C36
-	.endif
 
 	thumb_local_start
 sub_8034C6E:
@@ -2063,8 +2010,7 @@ loc_8034C98:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8034C6E
 
-	.ifndef DECOMP_IsNotSlipRunningAndNotInCutscene
-	thumb_func_start IsNotSlipRunningAndNotInCutscene
+	thumb_local_start
 IsNotSlipRunningAndNotInCutscene:
 	push {r4-r7,lr}
 	movflag EVENT_IN_SLIPRUN_STATE
@@ -2078,12 +2024,6 @@ IsNotSlipRunningAndNotInCutscene:
 	mov r0, #FALSE
 	pop {r4-r7,pc}
 	thumb_func_end IsNotSlipRunningAndNotInCutscene
-	.else
-	thumb_func_start IsNotSlipRunningAndNotInCutscene
-IsNotSlipRunningAndNotInCutscene:
-	decomp_trampoline IsNotSlipRunningAndNotInCutscene_c, 18
-	thumb_func_end IsNotSlipRunningAndNotInCutscene
-	.endif
 
 	thumb_local_start
 sub_8034CB6:
@@ -2812,7 +2752,6 @@ word_80351EC:
 	.hword 0
 	thumb_func_end enableGhostNavi_80351C8
 
-	.ifndef DECOMP_sub_803522E
 	thumb_func_start sub_803522E
 sub_803522E:
 	push {r4-r7,lr}
@@ -2855,12 +2794,6 @@ word_8035250:
 	.hword 0xff
 	.hword 0xff
 	thumb_func_end sub_803522E
-	.else
-	thumb_func_start sub_803522E
-sub_803522E:
-	decomp_trampoline sub_803522E_c, 60
-	thumb_func_end sub_803522E
-	.endif
 
 	thumb_local_start
 ghostNaviCheck_8035274:
@@ -2931,7 +2864,6 @@ off_8035328:
 	.word byte_80990B8 // CutsceneScript
 	thumb_func_end ghostNaviCheck_8035274
 
-	.ifndef DECOMP_initGameProgressBuffer_803532c
 	thumb_func_start initGameProgressBuffer_803532c
 initGameProgressBuffer_803532c:
 	push {r4-r7,lr}
@@ -2956,12 +2888,6 @@ loc_8035334:
 off_8035350:
 	.word byte_8037694
 	thumb_func_end initGameProgressBuffer_803532c
-	.else
-	thumb_func_start initGameProgressBuffer_803532c
-initGameProgressBuffer_803532c:
-	decomp_trampoline initGameProgressBuffer_803532c_c, 32
-	thumb_func_end initGameProgressBuffer_803532c
-	.endif
 
 	thumb_func_start loadGameProgressFromGameProgressBuffer_8035354
 loadGameProgressFromGameProgressBuffer_8035354:
@@ -2991,7 +2917,6 @@ off_8035378:
 	.word gameProgressBuffer_20010f0
 	thumb_func_end storeGameProgressToGameProgressBuffer_8035364
 
-	.ifndef DECOMP_sub_803537C
 	thumb_func_start sub_803537C
 sub_803537C:
 	push {r4-r7,lr}
@@ -3022,7 +2947,7 @@ locret_80353B0:
 	.balign 4, 0
 off_80353B4:
 	.word word_80353B8
-word_80353B8::
+word_80353B8:
 	.hword 0x90, 0x29
 	.byte 0x90, 0x1, 0x2A, 0x0
 	.byte 0x90, 0x2, 0x2B, 0x0
@@ -3033,24 +2958,6 @@ word_80353B8::
 	.byte 0x93, 0x1, 0x30, 0x0
 	.byte 0x0, 0x0
 	thumb_func_end sub_803537C
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_803537C
-sub_803537C:
-	decomp_trampoline sub_803537C_c, 52
-word_80353B8::
-	.hword 0x90, 0x29
-	.byte 0x90, 0x1, 0x2A, 0x0
-	.byte 0x90, 0x2, 0x2B, 0x0
-	.byte 0x91, 0x0, 0x2C, 0x0
-	.byte 0x91, 0x1, 0x2D, 0x0
-	.byte 0x91, 0x2, 0x2E, 0x0
-	.byte 0x93, 0x0, 0x2F, 0x0
-	.byte 0x93, 0x1, 0x30, 0x0
-	.byte 0x0, 0x0
-	thumb_func_end sub_803537C
-	.endif
 
 	thumb_local_start
 sub_80353DA:
@@ -3145,7 +3052,6 @@ byte_80354D4:
 	.byte 0x0, 0x0
 	thumb_func_end sub_8035424
 
-	.ifndef DECOMP_testSetClearFlags_803553c
 	thumb_func_start testSetClearFlags_803553c
 testSetClearFlags_803553c:
 	push {r4-r7,lr}
@@ -3185,14 +3091,7 @@ loc_803559C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end testSetClearFlags_803553c
-	.else
-	thumb_func_start testSetClearFlags_803553c
-testSetClearFlags_803553c:
-	decomp_trampoline testSetClearFlags_803553c_c, 100
-	thumb_func_end testSetClearFlags_803553c
-	.endif
 
-	.ifndef DECOMP_clearSetFlags_80355a8
 	thumb_func_start clearSetFlags_80355a8
 clearSetFlags_80355a8:
 	push {r4-r7,lr}
@@ -3211,14 +3110,7 @@ clearSetFlags_80355a8:
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end clearSetFlags_80355a8
-	.else
-	thumb_func_start clearSetFlags_80355a8
-clearSetFlags_80355a8:
-	decomp_trampoline clearSetFlags_80355a8_c, 46
-	thumb_func_end clearSetFlags_80355a8
-	.endif
 
-	.ifndef DECOMP_sub_80355DE
 	thumb_func_start sub_80355DE
 sub_80355DE:
 	ldr r1, off_80355E8 // =byte_80984C8
@@ -3229,12 +3121,6 @@ sub_80355DE:
 off_80355E8:
 	.word byte_80984C8
 	thumb_func_end sub_80355DE
-	.else
-	thumb_func_start sub_80355DE
-sub_80355DE:
-	decomp_trampoline sub_80355DE_c, 4
-	thumb_func_end sub_80355DE
-	.endif
 
 	thumb_func_start sub_80355EC
 sub_80355EC:
@@ -3364,7 +3250,6 @@ applyLayerEffectToOWObject_8035694:
 	.pool // Struct8034460
 	thumb_func_end applyLayerEffectToOWObject_8035694
 
-	.ifndef DECOMP_sub_80356EC
 	thumb_func_start sub_80356EC
 sub_80356EC:
 	push {r4-r7,lr}
@@ -3375,12 +3260,6 @@ sub_80356EC:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r4-r7,pc}
 	thumb_func_end sub_80356EC
-	.else
-	thumb_func_start sub_80356EC
-sub_80356EC:
-	decomp_trampoline sub_80356EC_c, 4
-	thumb_func_end sub_80356EC
-	.endif
 
 	thumb_func_start sub_80356F8
 sub_80356F8:
@@ -3428,7 +3307,6 @@ locret_8035736:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8035714
 
-	.ifndef DECOMP_sub_8035738
 	thumb_func_start sub_8035738
 sub_8035738:
 	push {r4-r7,lr}
@@ -3450,12 +3328,6 @@ loc_803574C:
 locret_8035754:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8035738
-	.else
-	thumb_func_start sub_8035738
-sub_8035738:
-	decomp_trampoline sub_8035738_c, 22
-	thumb_func_end sub_8035738
-	.endif
 
 	thumb_local_start
 sub_8035756:

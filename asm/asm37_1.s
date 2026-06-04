@@ -708,7 +708,6 @@ dword_81420C4:
 	.word 0x404080
 	thumb_func_end sub_81420B0
 
-	.ifndef DECOMP_sub_81420C8
 	thumb_func_start sub_81420C8
 sub_81420C8:
 	push {r4-r7,lr}
@@ -734,12 +733,6 @@ loc_81420EC:
 	mov r0, r6
 	pop {r4-r7,pc}
 	thumb_func_end sub_81420C8
-	.else
-	thumb_func_start sub_81420C8
-sub_81420C8:
-	decomp_trampoline sub_81420C8_c, 32
-	thumb_func_end sub_81420C8
-	.endif
 
 	thumb_func_start sub_81420F0
 sub_81420F0:
@@ -888,65 +881,37 @@ loc_81421C4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421B2
 
-	.ifndef DECOMP_sub_81421C8
 	thumb_func_start sub_81421C8
 sub_81421C8:
 	push {r4-r7,lr}
-	ldr r5, off_8142308 // =eScenarioEffectState2000780
+	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	strb r0, [r5,#0xb] // (byte_200078B - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421C8
-	.else
-	thumb_func_start sub_81421C8
-sub_81421C8:
-	decomp_trampoline sub_81421C8_c, 0
-	thumb_func_end sub_81421C8
-	.endif
 
-	.ifndef DECOMP_sub_81421D0
 	thumb_func_start sub_81421D0
 sub_81421D0:
 	push {r4-r7,lr}
-	ldr r5, off_8142308 // =eScenarioEffectState2000780
+	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	ldrb r0, [r5,#0xb] // (byte_200078B - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421D0
-	.else
-	thumb_func_start sub_81421D0
-sub_81421D0:
-	decomp_trampoline sub_81421D0_c, 0
-	thumb_func_end sub_81421D0
-	.endif
 
-	.ifndef DECOMP_sub_81421D8
 	thumb_func_start sub_81421D8
 sub_81421D8:
 	push {r4-r7,lr}
-	ldr r0, off_8142308 // =eScenarioEffectState2000780
+	ldr r0, off_8142308 // =eScenarioEffectState2000780 
 	add r0, #0x18
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421D8
-	.else
-	thumb_func_start sub_81421D8
-sub_81421D8:
-	decomp_trampoline sub_81421D8_c, 0
-	thumb_func_end sub_81421D8
-	.endif
 
-	.ifndef DECOMP_getField0x18OfScenarioEffectState2000780_81421e0
 	thumb_func_start getField0x18OfScenarioEffectState2000780_81421e0
 getField0x18OfScenarioEffectState2000780_81421e0:
 	push {r4-r7,lr}
-	ldr r0, off_8142308 // =eScenarioEffectState2000780
+	ldr r0, off_8142308 // =eScenarioEffectState2000780 
 	ldr r0, [r0,#0x18] // (byte_2000798 - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end getField0x18OfScenarioEffectState2000780_81421e0
-	.else
-	thumb_func_start getField0x18OfScenarioEffectState2000780_81421e0
-getField0x18OfScenarioEffectState2000780_81421e0:
-	decomp_trampoline getField0x18OfScenarioEffectState2000780_81421e0_c, 0
-	thumb_func_end getField0x18OfScenarioEffectState2000780_81421e0
-	.endif
 
 	thumb_local_start
 sub_81421E8:
@@ -1713,7 +1678,6 @@ byte_8142980:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
 	thumb_func_end sub_8142952
 
-	.ifndef DECOMP_sub_8142990
 	thumb_func_start sub_8142990
 sub_8142990:
 	push {r4-r7,lr}
@@ -1721,12 +1685,6 @@ sub_8142990:
 	bl sub_8142816
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142990
-	.else
-	thumb_func_start sub_8142990
-sub_8142990:
-	decomp_trampoline sub_8142990_c, 4
-	thumb_func_end sub_8142990
-	.endif
 
 	thumb_local_start
 sub_814299C:
@@ -2060,7 +2018,6 @@ loc_8142C16:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142BFA
 
-	.ifndef DECOMP_sub_8142C20
 	thumb_func_start sub_8142C20
 sub_8142C20:
 	push {r4-r7,lr}
@@ -2085,12 +2042,6 @@ loc_8142C38:
 	tst r0, r0
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142C20
-	.else
-	thumb_func_start sub_8142C20
-sub_8142C20:
-	decomp_trampoline sub_8142C20_c, 30
-	thumb_func_end sub_8142C20
-	.endif
 
 	thumb_func_start sub_8142C46
 sub_8142C46:
@@ -2132,7 +2083,6 @@ sub_8142C90:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142C90
 
-	.ifndef DECOMP_sub_8142C94
 	thumb_func_start sub_8142C94
 sub_8142C94:
 	push {lr}
@@ -2149,12 +2099,6 @@ dword_8142CA8:
 off_8142CAC:
 	.word 0x420
 	thumb_func_end sub_8142C94
-	.else
-	thumb_func_start sub_8142C94
-sub_8142C94:
-	decomp_trampoline sub_8142C94_c, 20
-	thumb_func_end sub_8142C94
-	.endif
 
 	thumb_func_start sub_8142CB0
 sub_8142CB0:
@@ -3992,7 +3936,6 @@ loc_8143E62:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143DEA
 
-	.ifndef DECOMP_sub_8143E68
 	thumb_func_start sub_8143E68
 sub_8143E68:
 	push {r4-r7,lr}
@@ -4020,12 +3963,6 @@ off_8143E90:
 byte_8143E94:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
 	thumb_func_end sub_8143E68
-	.else
-	thumb_func_start sub_8143E68
-sub_8143E68:
-	decomp_trampoline sub_8143E68_c, 52
-	thumb_func_end sub_8143E68
-	.endif
 
 	thumb_func_start sub_8143EA4
 sub_8143EA4:

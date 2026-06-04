@@ -550,7 +550,6 @@ sub_8003440:
 	.word eBattleObjectsLinkedListStart
 	thumb_func_end sub_8003440
 
-	.ifndef DECOMP_object_freeMemory
 	thumb_func_start object_freeMemory
 object_freeMemory:
 	push {r5,lr}
@@ -581,15 +580,9 @@ object_freeMemory:
 .ActiveObjectBitfieldPointers_p:
 	.word ActiveObjectBitfieldPointers
 	thumb_func_end object_freeMemory
-	.else
-	thumb_func_start object_freeMemory
-object_freeMemory:
-	decomp_trampoline object_freeMemory_c, 48
-	thumb_func_end object_freeMemory
-	.endif
 
 	thumb_local_start
-InitializeStructsOfObjectType::
+InitializeStructsOfObjectType:
 	push {r4,r7,lr}
 	ldr r7, .ObjectInitializationTable_p
 	lsl r1, r0, #4
@@ -676,7 +669,6 @@ InitializeStructsOfObjectType::
 	.word ActiveObjectBitfieldPointers
 	thumb_func_end InitializeStructsOfObjectType
 
-	.ifndef DECOMP_InitializeOWPlayerObjectStruct
 	thumb_func_start InitializeOWPlayerObjectStruct
 InitializeOWPlayerObjectStruct:
 	push {lr}
@@ -684,12 +676,6 @@ InitializeOWPlayerObjectStruct:
 	bl InitializeStructsOfObjectType
 	pop {pc}
 	thumb_func_end InitializeOWPlayerObjectStruct
-	.else
-	thumb_func_start InitializeOWPlayerObjectStruct
-InitializeOWPlayerObjectStruct:
-	decomp_trampoline InitializeOWPlayerObjectStruct_c, 2
-	thumb_func_end InitializeOWPlayerObjectStruct
-	.endif
 
 	thumb_local_start
 InitializeT1BattleObjectStructs:
@@ -715,7 +701,6 @@ InitializeT4BattleObjectStructs:
 	pop {pc}
 	thumb_func_end InitializeT4BattleObjectStructs
 
-	.ifndef DECOMP_InitializeOverworldNPCObjectStructs
 	thumb_func_start InitializeOverworldNPCObjectStructs
 InitializeOverworldNPCObjectStructs:
 	push {lr}
@@ -723,14 +708,7 @@ InitializeOverworldNPCObjectStructs:
 	bl InitializeStructsOfObjectType
 	pop {pc}
 	thumb_func_end InitializeOverworldNPCObjectStructs
-	.else
-	thumb_func_start InitializeOverworldNPCObjectStructs
-InitializeOverworldNPCObjectStructs:
-	decomp_trampoline InitializeOverworldNPCObjectStructs_c, 2
-	thumb_func_end InitializeOverworldNPCObjectStructs
-	.endif
 
-	.ifndef DECOMP_InitializeOverworldMapObjectStructs
 	thumb_func_start InitializeOverworldMapObjectStructs
 InitializeOverworldMapObjectStructs:
 	push {lr}
@@ -738,12 +716,6 @@ InitializeOverworldMapObjectStructs:
 	bl InitializeStructsOfObjectType
 	pop {pc}
 	thumb_func_end InitializeOverworldMapObjectStructs
-	.else
-	thumb_func_start InitializeOverworldMapObjectStructs
-InitializeOverworldMapObjectStructs:
-	decomp_trampoline InitializeOverworldMapObjectStructs_c, 0
-	thumb_func_end InitializeOverworldMapObjectStructs
-	.endif
 
 
 	thumb_func_start SpawnObjectsFromList
@@ -1084,7 +1056,6 @@ off_8003788:
 	.word byte_2036830
 	thumb_func_end object_800372A
 
-	.ifndef DECOMP_ZeroFillObjectInteractionAreas_800378C
 	thumb_func_start ZeroFillObjectInteractionAreas_800378C
 ZeroFillObjectInteractionAreas_800378C: // () -> ()
 	push {lr}
@@ -1107,14 +1078,7 @@ off_80037A4:
 off_80037A8:
 	.word eNumOWObjectInteractionAreas
 	thumb_func_end ZeroFillObjectInteractionAreas_800378C
-	.else
-	thumb_func_start ZeroFillObjectInteractionAreas_800378C
-ZeroFillObjectInteractionAreas_800378C:
-	decomp_trampoline ZeroFillObjectInteractionAreas_800378C_c, 24
-	thumb_func_end ZeroFillObjectInteractionAreas_800378C
-	.endif
 
-	.ifndef DECOMP_createOWObjectInteractionArea_80037ac
 	thumb_func_start createOWObjectInteractionArea_80037ac
 // something to do with interacting with npcs? maybe other objects too
 // r0 - x coordinate
@@ -1168,12 +1132,6 @@ createOWObjectInteractionArea_80037ac:
 	.balign 4, 0
 	.pool // 80037EC
 	thumb_func_end createOWObjectInteractionArea_80037ac
-	.else
-	thumb_func_start createOWObjectInteractionArea_80037ac
-createOWObjectInteractionArea_80037ac:
-	decomp_trampoline_r3safe createOWObjectInteractionArea_80037ac_c, 56
-	thumb_func_end createOWObjectInteractionArea_80037ac
-	.endif
 
 	thumb_func_start checkOWObjectInteractions_80037f4
 // something to do with interacting with npcs? maybe other objects too
@@ -1372,7 +1330,6 @@ Clear_eStruct2000780:
 	pop {r4-r7,pc}
 	thumb_func_end Clear_eStruct2000780
 
-	.ifndef DECOMP_initScenarioEffect_8003914
 	thumb_func_start initScenarioEffect_8003914
 initScenarioEffect_8003914:
 	push {r4-r7,lr}
@@ -1399,12 +1356,6 @@ initScenarioEffect_8003914:
 	strb r0, [r5,#0x3] // (byte_2000783 - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end initScenarioEffect_8003914
-	.else
-	thumb_func_start initScenarioEffect_8003914
-initScenarioEffect_8003914:
-	decomp_trampoline initScenarioEffect_8003914_c, 36
-	thumb_func_end initScenarioEffect_8003914
-	.endif
 
 	thumb_func_start endScenarioEffectMaybe_8003940
 endScenarioEffectMaybe_8003940:
@@ -1429,7 +1380,6 @@ endScenarioEffectMaybe_8003940:
 	pop {r4-r7,pc}
 	thumb_func_end endScenarioEffectMaybe_8003940
 
-	.ifndef DECOMP_sub_8003962
 	thumb_func_start sub_8003962
 sub_8003962:
 	push {r4-r7,lr}
@@ -1447,12 +1397,6 @@ loc_8003974:
 	strb r0, [r5,#0x3] // (byte_2000783 - 0x2000780)
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003962
-	.else
-	thumb_func_start sub_8003962
-sub_8003962:
-	decomp_trampoline sub_8003962_c, 14
-	thumb_func_end sub_8003962
-	.endif
 
 	thumb_local_start
 sub_800397A:
@@ -1479,7 +1423,6 @@ locret_8003998:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003984
 
-	.ifndef DECOMP_sub_800399A
 	thumb_func_start sub_800399A
 sub_800399A:
 	push {r4-r7,lr}
@@ -1491,12 +1434,6 @@ sub_800399A:
 	strb r0, [r5]
 	pop {r4-r7,pc}
 	thumb_func_end sub_800399A
-	.else
-	thumb_func_start sub_800399A
-sub_800399A:
-	decomp_trampoline sub_800399A_c, 6
-	thumb_func_end sub_800399A
-	.endif
 
 	thumb_local_start
 sub_80039AA:
@@ -1520,7 +1457,6 @@ locret_80039CA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80039AA
 
-	.ifndef DECOMP_Is_eScenarioEffectState2000780_Initialized
 	thumb_func_start Is_eScenarioEffectState2000780_Initialized
 Is_eScenarioEffectState2000780_Initialized:
 	ldr r1, off_80039F0 // =eScenarioEffectState2000780
@@ -1528,12 +1464,6 @@ Is_eScenarioEffectState2000780_Initialized:
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end Is_eScenarioEffectState2000780_Initialized
-	.else
-	thumb_func_start Is_eScenarioEffectState2000780_Initialized
-Is_eScenarioEffectState2000780_Initialized:
-	decomp_trampoline Is_eScenarioEffectState2000780_Initialized_c, 0
-	thumb_func_end Is_eScenarioEffectState2000780_Initialized
-	.endif
 
 	thumb_func_start sub_80039D4
 sub_80039D4:
@@ -1582,7 +1512,6 @@ sub_8003A58:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003A58
 
-	.ifndef DECOMP_initMinigameEffect_8003a64
 	thumb_func_start initMinigameEffect_8003a64
 initMinigameEffect_8003a64:
 	push {r4-r7,lr}
@@ -1609,12 +1538,6 @@ initMinigameEffect_8003a64:
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	pop {r4-r7,pc}
 	thumb_func_end initMinigameEffect_8003a64
-	.else
-	thumb_func_start initMinigameEffect_8003a64
-initMinigameEffect_8003a64:
-	decomp_trampoline initMinigameEffect_8003a64_c, 36
-	thumb_func_end initMinigameEffect_8003a64
-	.endif
 
 	thumb_func_start endMinigameEffectMaybe_8003a90
 endMinigameEffectMaybe_8003a90:
@@ -1637,7 +1560,6 @@ endMinigameEffectMaybe_8003a90:
 	pop {r4-r7,pc}
 	thumb_func_end endMinigameEffectMaybe_8003a90
 
-	.ifndef DECOMP_zeroFill_8003AB2
 	thumb_func_start zeroFill_8003AB2
 zeroFill_8003AB2:
 	push {r4-r7,lr}
@@ -1655,12 +1577,6 @@ loc_8003AC4:
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	pop {r4-r7,pc}
 	thumb_func_end zeroFill_8003AB2
-	.else
-	thumb_func_start zeroFill_8003AB2
-zeroFill_8003AB2:
-	decomp_trampoline zeroFill_8003AB2_c, 14
-	thumb_func_end zeroFill_8003AB2
-	.endif
 
 	thumb_local_start
 sub_8003ACA:
@@ -1687,7 +1603,6 @@ locret_8003AE8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003AD4
 
-	.ifndef DECOMP_sub_8003AEA
 	thumb_func_start sub_8003AEA
 sub_8003AEA:
 	push {r4-r7,lr}
@@ -1699,12 +1614,6 @@ sub_8003AEA:
 	strb r0, [r5]
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003AEA
-	.else
-	thumb_func_start sub_8003AEA
-sub_8003AEA:
-	decomp_trampoline sub_8003AEA_c, 6
-	thumb_func_end sub_8003AEA
-	.endif
 
 	thumb_local_start
 sub_8003AFA:
@@ -1728,7 +1637,6 @@ locret_8003B1A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003AFA
 
-	.ifndef DECOMP_Is_eStruct2001010_Initialized
 	thumb_func_start Is_eStruct2001010_Initialized
 Is_eStruct2001010_Initialized:
 	ldr r1, off_8003B40 // =eStruct2001010
@@ -1736,12 +1644,6 @@ Is_eStruct2001010_Initialized:
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end Is_eStruct2001010_Initialized
-	.else
-	thumb_func_start Is_eStruct2001010_Initialized
-Is_eStruct2001010_Initialized:
-	decomp_trampoline Is_eStruct2001010_Initialized_c, 0
-	thumb_func_end Is_eStruct2001010_Initialized
-	.endif
 
 	thumb_local_start
 sub_8003B24:
@@ -1768,7 +1670,6 @@ off_8003B48:
 	.word owPlayer_main+1
 	thumb_func_end sub_8003B24
 
-	.ifndef DECOMP_SpawnOWPlayerObject
 	thumb_func_start SpawnOWPlayerObject
 SpawnOWPlayerObject:
 	push {r0-r4,lr}
@@ -1804,12 +1705,6 @@ loc_8003B82:
 	mov r5, #0
 	pop {r0-r4,pc}
 	thumb_func_end SpawnOWPlayerObject
-	.else
-	thumb_func_start SpawnOWPlayerObject
-SpawnOWPlayerObject:
-	decomp_trampoline_r3safe SpawnOWPlayerObject_c, 42
-	thumb_func_end SpawnOWPlayerObject
-	.endif
 
 	thumb_func_start FreeOWPlayerObject
 FreeOWPlayerObject:
@@ -2158,7 +2053,6 @@ off_8003E94:
 	.word sub_3006440+1
 	thumb_func_end sub_8003E18
 
-	.ifndef DECOMP_sub_8003E98
 	thumb_func_start sub_8003E98
 sub_8003E98:
 	push {lr}
@@ -2400,246 +2294,6 @@ T3BattleObjectJumptable:
 	.word t3_0xd3_80DFE40+1 // 0xd3
 	.word t3_0xd4_80DFFB8+1 // 0xd4
 	thumb_func_end sub_8003E98
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8003E98
-sub_8003E98:
-	decomp_trampoline sub_8003E98_c, 6
-loc_8003EA6:
-	mov r1, r3
-	add r1, #oT1BattleObject_SpriteData
-	mov r2, #0
-	str r2, [r1,#0x24]
-	add r3, #oT1BattleObject_Size
-	add r0, #1
-	cmp r0, #0x20
-	blt loc_8003EA6
-	mov pc, lr
-	.balign 4, 0
-off_8003EB8:
-	.word eT1BattleObject0
-off_8003EBC:
-	.word byte_2036778
-off_8003EC0:
-	.word dword_2039A10
-// JP: 0x8003ea8
-T3BattleObjectJumptable:
-	.word t3_0x0_80C4E58+1 // 0x0
-	.word t3_0x1_80C50B8+1 // 0x1
-	.word t3_0x2_80C51AC+1 // 0x2
-	.word battle_t3id3_main_80c52b0+1 // 0x3
-	.word t3_0x4_80C53C0+1 // 0x4
-	.word t3_0x5_80C55B0+1 // 0x5
-	.word t3_0x6_80C57C0+1 // 0x6
-	.word t3_0x7_80C5A34+1 // 0x7
-	.word t3_0x8_80C5BB0+1 // 0x8
-	.word t3_0x9_80C5DDC+1 // 0x9
-	.word t3_0xa_80C5F60+1 // 0xa
-	.word t3_0xb_80C60A8+1 // 0xb
-	.word t3_0x0_80C4E58+1 // 0xc
-	.word t3_0x0_80C4E58+1 // 0xd
-	.word t3_0xe_80C6280+1 // 0xe
-	.word t3_0xf_80C6414+1 // 0xf
-	.word cornfiestaRelatedObject_80C6580+1 // 0x10
-	.word t3_0x11_80C67F8+1 // 0x11
-	.word t3_0x12_80C6946+1 // 0x12
-	.word t3_0x0_80C4E58+1 // 0x13
-	.word t3_0x0_80C4E58+1 // 0x14
-	.word t3_0x0_80C4E58+1 // 0x15
-	.word t3_0x16_80C6B40+1 // 0x16
-	.word t3_0x17_80C6DCC+1 // 0x17
-	.word t3_0x18_80C7074+1 // 0x18
-	.word t3_0x19_80C71A4+1 // 0x19
-	.word t3_0x1a_80C740C+1 // 0x1a
-	.word t3_0x1b_80C793C+1 // 0x1b
-	.word t3_0x1c_80C7C18+1 // 0x1c
-	.word t3_0x1d_80C7D78+1 // 0x1d
-	.word t3_0x1e_80C7F40+1 // 0x1e
-	.word t3_0x1f_80C8098+1 // 0x1f
-	.word t3_0x20_80C81CC+1 // 0x20
-	.word t3_0x21_80C8388+1 // 0x21
-	.word t3_0x22_80C853C+1 // 0x22
-	.word t3_0x23_80C86D8+1 // 0x23
-	.word t3_0x24_80C882C+1 // 0x24
-	.word t3_0x25_80C8AA4+1 // 0x25
-	.word t3_0x26_80C8C74+1 // 0x26
-	.word t3_0x27_80C8E08+1 // 0x27
-	.word t3_0x28_80C8FFC+1 // 0x28
-	.word t3_0x29_80C91A0+1 // 0x29
-	.word battle_BDT_main_80c93cc+1 // 0x2a
-	.word t3_0x2b_80C96A0+1 // 0x2b
-	.word nullsub_101+1 // 0x2c
-	.word nullsub_94+1 // 0x2d
-	.word t3_0x2e_80C9824+1 // 0x2e
-	.word t3_0x2f_80C9BC4+1 // 0x2f
-	.word t3_0x30_80C9D00+1 // 0x30
-	.word t3_0x31_80C9F78+1 // 0x31
-	.word t3_0x32_80CA2A8+1 // 0x32
-	.word t3_0x33_80CA544+1 // 0x33
-	.word t3_0x34_80CA6B8+1 // 0x34
-	.word t3_0x35_80CA938+1 // 0x35
-	.word t3_0x36_80CAB68+1 // 0x36
-	.word t3_0x37_80CAD28+1 // 0x37
-	.word t3_0x38_80CAEF0+1 // 0x38
-	.word t3_0x39_80CB0DC+1 // 0x39
-	.word t3_0x3a_80CB284+1 // 0x3a
-	.word t3_0x3b_80CB49C+1 // 0x3b
-	.word t3_0x3c_80CB6F8+1 // 0x3c
-	.word t3_0x3d_80CB900+1 // 0x3d
-	.word t3_0x3e_80CBB44+1 // 0x3e
-	.word t3_0x3f_80CC044+1 // 0x3f
-	.word t3_0x40_80CC0E8+1 // 0x40
-	.word t3_0x41_80CC4C4+1 // 0x41
-	.word t3_0x42_80CC5A8+1 // 0x42
-	.word t3_0x43_80CC76C+1 // 0x43
-	.word t3_0x44_80CC944+1 // 0x44
-	.word t3_0x45_80CCA40+1 // 0x45
-	.word t3_0x46_80CCC48+1 // 0x46
-	.word t3_0x47_80CCD70+1 // 0x47
-	.word t3_0x48_80CCFDC+1 // 0x48
-	.word t3_0x49_80CD2EC+1 // 0x49
-	.word t3_0x4a_80CD4EC+1 // 0x4a
-	.word t3_0x4b_80CD8EC+1 // 0x4b
-	.word t3_0x4c_80CDD44+1 // 0x4c
-	.word t3_0x4d_80CDF84+1 // 0x4d
-	.word t3_0x4e_80CE118+1 // 0x4e
-	.word t3_0x4f_80CE24C+1 // 0x4f
-	.word t3_0x50_80CE530+1 // 0x50
-	.word t3_0x51_80CE70C+1 // 0x51
-	.word t3_0x52_80CE81C+1 // 0x52
-	.word t3_0x53_80CEB00+1 // 0x53
-	.word t3_0x54_80CEE78+1 // 0x54
-	.word t3_0x55_80CF0D0+1 // 0x55
-	.word t3_0x56_80CF3BE+1 // 0x56
-	.word t3_0x57_80CF5C8+1 // 0x57
-	.word t3_0x58_80CF7F0+1 // 0x58
-	.word t3_0x59_80CF954+1 // 0x59
-	.word t3_0x5a_80CFC08+1 // 0x5a
-	.word t3_0x5b_80CFCF8+1 // 0x5b
-	.word t3_0x5c_80CFEC4+1 // 0x5c
-	.word t3_0x5d_80D00A0+1 // 0x5d
-	.word t3_0x5e_80D0268+1 // 0x5e
-	.word t3_0x5f_80D0394+1 // 0x5f
-	.word t3_0x60_80D0500+1 // 0x60
-	.word t3_0x61_80D0610+1 // 0x61
-	.word t3_0x62_80D07CC+1 // 0x62
-	.word t3_0x63_80D0AA8+1 // 0x63
-	.word t3_0x64_80D0D7C+1 // 0x64
-	.word t3_0x65_80D0F8C+1 // 0x65
-	.word t3_0x66_80D1218+1 // 0x66
-	.word t3_0x67_80D1514+1 // 0x67
-	.word t3_0x68_80D17A4+1 // 0x68
-	.word t3_0x69_80D18D8+1 // 0x69
-	.word t3_0x6a_80D1A08+1 // 0x6a
-	.word t3_0x6b_80D1B48+1 // 0x6b
-	.word t3_0x6c_80D1C20+1 // 0x6c
-	.word t3_0x6d_80D2034+1 // 0x6d
-	.word t3_0x6e_80D2290+1 // 0x6e
-	.word t3_0x6f_80D2460+1 // 0x6f
-	.word t3_0x70_80D25D4+1 // 0x70
-	.word t3_0x71_80D2A94+1 // 0x71
-	.word t3_0x72_80D2BDC+1 // 0x72
-	.word t3_0x73_80D2EBC+1 // 0x73
-	.word riskyHoneyObject_80D30D0+1 // 0x74
-	.word t3_0x75_80D34CC+1 // 0x75
-	.word t3_0x76_80D385C+1 // 0x76
-	.word t3_0x77_80D39BC+1 // 0x77
-	.word t3_0x78_80D4088+1 // 0x78
-	.word t3_0x79_80D4440+1 // 0x79
-	.word t3_0x7a_80D46B8+1 // 0x7a
-	.word t3_0x7b_80D4A28+1 // 0x7b
-	.word t3_0x7c_80D4B68+1 // 0x7c
-	.word t3_0x7d_80D4C84+1 // 0x7d
-	.word t3_0x7e_80D5028+1 // 0x7e
-	.word t3_0x7f_80D5138+1 // 0x7f
-	.word t3_0x80_80D535C+1 // 0x80
-	.word t3_0x81_80D5580+1 // 0x81
-	.word dollThunderObject_80D5740+1 // 0x82
-	.word t3_0x83_80D58B4+1 // 0x83
-	.word t3_0x84_80D5ABC+1 // 0x84
-	.word t3_0x85_80D5C48+1 // 0x85
-	.word t3_0x86_80D5D54+1 // 0x86
-	.word t3_0x87_80D5F08+1 // 0x87
-	.word t3_0x88_80D622C+1 // 0x88
-	.word t3_0x89_80D655C+1 // 0x89
-	.word t3_0x8a_80D67EC+1 // 0x8a
-	.word t3_0x8b_80D6924+1 // 0x8b
-	.word t3_0x8c_80D6A20+1 // 0x8c
-	.word t3_0x8d_80D6BD4+1 // 0x8d
-	.word t3_0x8e_80D6D80+1 // 0x8e
-	.word t3_0x8f_80D6EE0+1 // 0x8f
-	.word t3_0x90_80D7068+1 // 0x90
-	.word t3_0x91_80D7278+1 // 0x91
-	.word t3_0x92_80D7400+1 // 0x92
-	.word t3_0x93_80D75FC+1 // 0x93
-	.word t3_0x94_80D7ACC+1 // 0x94
-	.word t3_0x95_80D7DE4+1 // 0x95
-	.word t3_0x96_80D807C+1 // 0x96
-	.word t3_0x97_80D825C+1 // 0x97
-	.word t3_0x98_80D8444+1 // 0x98
-	.word t3_0x99_80D8620+1 // 0x99
-	.word t3_0x9a_80D879C+1 // 0x9a
-	.word airspinObject_80D88E0+1 // 0x9b
-	.word t3_0x9c_80D8C5C+1 // 0x9c
-	.word eraseBeamObject_80D8E10+1 // 0x9d
-	.word t3_0x9e_80D8FC4+1 // 0x9e
-	.word t3_0x9f_80D9154+1 // 0x9f
-	.word t3_0xa0_80D9350+1 // 0xa0
-	.word t3_0xa1_80D96A4+1 // 0xa1
-	.word t3_0xa2_80D954C+1 // 0xa2
-	.word t3_0xa3_80D984C+1 // 0xa3
-	.word t3_0xa4_80D9A50+1 // 0xa4
-	.word t3_0xa5_80D9D4C+1 // 0xa5
-	.word t3_0xa6_80DA050+1 // 0xa6
-	.word t3_0xa7_80DA470+1 // 0xa7
-	.word t3_0xa8_80DA5FC+1 // 0xa8
-	.word t3_0xa9_80DA80C+1 // 0xa9
-	.word t3_0xaa_80DAA28+1 // 0xaa
-	.word t3_0xab_80DACE4+1 // 0xab
-	.word t3_0xac_80DAE94+1 // 0xac
-	.word t3_0xad_80DB0E4+1 // 0xad
-	.word t3_0xae_80DB304+1 // 0xae
-	.word t3_0xaf_80DB570+1 // 0xaf
-	.word t3_0xb0_80DB6A4+1 // 0xb0
-	.word t3_0xb1_80DB8CC+1 // 0xb1
-	.word t3_0xb2_80DB994+1 // 0xb2
-	.word t3_0xb3_80DBB40+1 // 0xb3
-	.word t3_0xb4_80DBCEC+1 // 0xb4
-	.word t3_0xb5_80DBEE6+1 // 0xb5
-	.word t3_0xb6_80DC0E8+1 // 0xb6
-	.word t3_0xb7_80DC260+1 // 0xb7
-	.word t3_0xb8_80DC3F8+1 // 0xb8
-	.word t3_0xb9_80DC4FC+1 // 0xb9
-	.word t3_0xba_80DC5F8+1 // 0xba
-	.word t3_0xbb_80DC70C+1 // 0xbb
-	.word t3_0xbc_80DCB1C+1 // 0xbc
-	.word t3_0xbd_80DCCD4+1 // 0xbd
-	.word t3_0xbe_80DCE38+1 // 0xbe
-	.word t3_0xbf_80DCEF4+1 // 0xbf
-	.word t3_0xc0_80DD0AC+1 // 0xc0
-	.word t3_0xc1_80DD34C+1 // 0xc1
-	.word t3_0xc2_80DD764+1 // 0xc2
-	.word t3_0xc3_80DD940+1 // 0xc3
-	.word t3_0xc4_80DDA84+1 // 0xc4
-	.word t3_0xc5_80DDC10+1 // 0xc5
-	.word t3_0xc6_80DDDF0+1 // 0xc6
-	.word t3_0xc7_80DE000+1 // 0xc7
-	.word t3_0xc8_80DE13C+1 // 0xc8
-	.word t3_0xc9_80DE404+1 // 0xc9
-	.word t3_0xca_80DE7F4+1 // 0xca
-	.word sandwormObject_80DEA7C+1 // 0xcb
-	.word t3_0xcc_80DEE60+1 // 0xcc
-	.word t3_0xcd_80DF0A4+1 // 0xcd
-	.word t3_0xce_80DF188+1 // 0xce
-	.word t3_0xcf_80DF328+1 // 0xcf
-	.word t3_0xd0_80DF4FC+1 // 0xd0
-	.word t3_0xd1_80DF90C+1 // 0xd1
-	.word t3_0xd2_80DFC38+1 // 0xd2
-	.word t3_0xd3_80DFE40+1 // 0xd3
-	.word t3_0xd4_80DFFB8+1 // 0xd4
-	thumb_func_end sub_8003E98
-	.endif
 
 	thumb_local_start
 sub_8004218:
@@ -2712,7 +2366,6 @@ off_8004294:
 	.word sub_3006440+1
 	thumb_func_end sub_8004218
 
-	.ifndef DECOMP_sub_8004298
 	thumb_func_start sub_8004298
 sub_8004298:
 	push {lr}
@@ -2722,12 +2375,6 @@ sub_8004298:
 	mov r0, #0x30
 	ldr r3, off_80042BC // =eT3BattleObject0_LinkedList
 	thumb_func_end sub_8004298
-	.else
-	thumb_func_start sub_8004298
-sub_8004298:
-	decomp_trampoline sub_8004298_c, 6
-	thumb_func_end sub_8004298
-	.endif
 
 	thumb_local_start
 sub_80042A6:
@@ -2969,7 +2616,6 @@ off_800458C:
 	.word sub_3006440+1
 	thumb_func_end sub_8004510
 
-	.ifndef DECOMP_sub_8004590
 	thumb_func_start sub_8004590
 sub_8004590:
 	push {lr}
@@ -2977,12 +2623,6 @@ sub_8004590:
 	bl sub_80028C0
 	pop {pc}
 	thumb_func_end sub_8004590
-	.else
-	thumb_func_start sub_8004590
-sub_8004590:
-	decomp_trampoline sub_8004590_c, 2
-	thumb_func_end sub_8004590
-	.endif
 
 	thumb_local_start
 dead_800459A:
@@ -3009,7 +2649,6 @@ off_80045BC:
 	.word npc_dispatch_809E570+1 // (self: * OverworldNPCObject $r5) -> ()
 	thumb_func_end dead_800459A
 
-	.ifndef DECOMP_SpawnOverworldNPCObject
 	thumb_func_start SpawnOverworldNPCObject
 SpawnOverworldNPCObject:
 	push {r0-r4,lr}
@@ -3049,12 +2688,6 @@ loc_80045FE:
 	mov r5, #0
 	pop {r0-r4,pc}
 	thumb_func_end SpawnOverworldNPCObject
-	.else
-	thumb_func_start SpawnOverworldNPCObject
-SpawnOverworldNPCObject:
-	decomp_trampoline_r3safe SpawnOverworldNPCObject_c, 50
-	thumb_func_end SpawnOverworldNPCObject
-	.endif
 
 	thumb_func_start FreeOverworldNPCObject
 FreeOverworldNPCObject:
@@ -3244,7 +2877,6 @@ sub_80046F8:
 	pop {pc}
 	thumb_func_end sub_80046F8
 
-	.ifndef DECOMP_sub_8004702
 	thumb_func_start sub_8004702
 sub_8004702:
 	mov r0, #0
@@ -3315,69 +2947,6 @@ off_8004724:
 	.word sub_80AA2D8+1
 	.word sub_80AA374+1
 	thumb_func_end sub_8004702
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8004702
-sub_8004702:
-	decomp_trampoline sub_8004702_c, 12
-	.balign 4, 0
-off_8004718:
-	.word eActiveOverworldNPCObjectsBitfield
-off_800471C:
-	.word eOverworldNPCObjects
-off_8004720:
-	.word byte_2006530
-off_8004724:
-	.word ho_80A4984+1
-	.word sub_80A4A98+1
-	.word sub_80A4BDC+1
-	.word sub_80A51C4+1
-	.word sub_80A5428+1
-	.word sub_80A54F0+1
-	.word sub_80A57AC+1
-	.word sub_80A5AD4+1
-	.word sub_80A6A16+1
-	.word sub_80A6E98+1
-	.word sub_80A72B4+1
-	.word sub_80A77A8+1
-	.word sub_80A781C+1
-	.word sub_80A78B8+1
-	.word sub_80A7C84+1
-	.word sub_80A7D90+1
-	.word sub_80A8208+1
-	.word sub_80A8394+1
-	.word sub_80A8654+1
-	.word sub_80A8728+1
-	.word sub_80A87F0+1
-	.word 0x0
-	.word sub_80A8870+1
-	.word sub_80A89DC+1
-	.word sub_80A8AB4+1
-	.word 0x0
-	.word sub_80A8E74+1
-	.word sub_80A92B8+1
-	.word sub_80A9430+1
-	.word sub_80A9658+1
-	.word sub_80A9824+1
-	.word sub_80A98D4+1
-	.word sub_80A9A0C+1
-	.word 0x0
-	.word 0x0
-	.word 0x0
-	.word 0x0
-	.word sub_80A9B70+1
-	.word 0x0
-	.word sub_80A9D10+1
-	.word sub_80A9ECC+1
-	.word sub_80A9F58+1
-	.word sub_80AA058+1
-	.word sub_80AA140+1
-	.word sub_80AA1E0+1
-	.word sub_80AA2D8+1
-	.word sub_80AA374+1
-	thumb_func_end sub_8004702
-	.endif
 
 	thumb_func_start SpawnOverworldMapObject
 SpawnOverworldMapObject:
@@ -4160,7 +3729,6 @@ byte_8004D34:
 
 /// breaks on reset
 /// breaks on "Continue" via load_game_802F756
-	.ifndef DECOMP_sub_8004D48
 	thumb_func_start sub_8004D48
 sub_8004D48:
 	push {r4-r7,lr}
@@ -4251,12 +3819,6 @@ off_8004DE8:
 off_8004DEC:
 	.word dword_20096D0
 	thumb_func_end sub_8004D48
-	.else
-	thumb_func_start sub_8004D48
-sub_8004D48:
-	decomp_trampoline sub_8004D48_c, 160
-	thumb_func_end sub_8004D48
-	.endif
 
 // Breaking on this pauses right on ^R on game boot
 	thumb_func_start initNewGameData_8004DF0
@@ -6313,7 +5875,6 @@ sub_8005EA2:
 	.byte 0, 0
 	thumb_func_end sub_8005EA2
 
-	.ifndef DECOMP_subsystem_launchMail
 	thumb_func_start subsystem_launchMail
 subsystem_launchMail:
 	push {r4,r5,lr}
@@ -6345,15 +5906,8 @@ subsystem_launchMail:
 	mov r0, #0
 	pop {r4,r5,pc}
 	thumb_func_end subsystem_launchMail
-	.else
-	thumb_func_start subsystem_launchMail
-subsystem_launchMail:
-	decomp_trampoline subsystem_launchMail_c, 36
-	thumb_func_end subsystem_launchMail
-	.endif
 
-	.ifndef DECOMP_sub_8005EEC
-	thumb_func_start sub_8005EEC
+	thumb_local_start
 sub_8005EEC:
 	push {r4-r7,lr}
 	mov r4, r10
@@ -6366,14 +5920,7 @@ sub_8005EEC:
 	strb r2, [r4,#oWarp2011bb0_MapGroupTransitionType]
 	pop {r4-r7,pc}
 	thumb_func_end sub_8005EEC
-	.else
-	thumb_func_start sub_8005EEC
-sub_8005EEC:
-	decomp_trampoline sub_8005EEC_c, 12
-	thumb_func_end sub_8005EEC
-	.endif
 
-	.ifndef DECOMP_warp_setSubsystemIndexTo0x10AndOthers_8005f00
 	thumb_func_start warp_setSubsystemIndexTo0x10AndOthers_8005f00
 // just pure warp
 warp_setSubsystemIndexTo0x10AndOthers_8005f00:
@@ -6389,12 +5936,6 @@ warp_setSubsystemIndexTo0x10AndOthers_8005f00:
 	bl sub_8035738
 	pop {r4-r7,pc}
 	thumb_func_end warp_setSubsystemIndexTo0x10AndOthers_8005f00
-	.else
-	thumb_func_start warp_setSubsystemIndexTo0x10AndOthers_8005f00
-warp_setSubsystemIndexTo0x10AndOthers_8005f00:
-	decomp_trampoline warp_setSubsystemIndexTo0x10AndOthers_8005f00_c, 12
-	thumb_func_end warp_setSubsystemIndexTo0x10AndOthers_8005f00
-	.endif
 
 	thumb_func_start warp_setSubsystemIndexTo0x14AndOthers_8005f14
 // warp with extra effects? e.g. jack in animation
@@ -6412,8 +5953,7 @@ warp_setSubsystemIndexTo0x14AndOthers_8005f14:
 	pop {r4-r7,pc}
 	thumb_func_end warp_setSubsystemIndexTo0x14AndOthers_8005f14
 
-	.ifndef DECOMP_sub_8005F28
-	thumb_func_start sub_8005F28
+	thumb_local_start
 sub_8005F28:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Warp2011bb0_Ptr]
@@ -6421,12 +5961,6 @@ sub_8005F28:
 	cmp r1, #0
 	mov pc, lr
 	thumb_func_end sub_8005F28
-	.else
-	thumb_func_start sub_8005F28
-sub_8005F28:
-	decomp_trampoline sub_8005F28_c, 2
-	thumb_func_end sub_8005F28
-	.endif
 
 	thumb_func_start warp_8005f32
 warp_8005f32:
@@ -6455,7 +5989,6 @@ sub_8005F40:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8005F40
 
-	.ifndef DECOMP_sub_8005F6C
 	thumb_func_start sub_8005F6C
 sub_8005F6C:
 	push {r4-r7,lr}
@@ -6463,12 +5996,6 @@ sub_8005F6C:
 	bl cleareMemory_802FF2C
 	pop {r4-r7,pc}
 	thumb_func_end sub_8005F6C
-	.else
-	thumb_func_start sub_8005F6C
-sub_8005F6C:
-	decomp_trampoline sub_8005F6C_c, 4
-	thumb_func_end sub_8005F6C
-	.endif
 
 	thumb_local_start
 sub_8005F78:
@@ -6538,7 +6065,7 @@ off_8005FB4:
 	.word sub_800647C+1
 	thumb_func_end sub_8005F84
 
-off_8006040::
+off_8006040:
 	fade_params_struct [
 		unk_00_ptr: iPalette3001B60,
 		unk_04_ptr: iPallete3001750,
@@ -6862,7 +6389,6 @@ SetScreenFade:
 	b loc_8006276
 loc_8006274:
 	mov r3, #0x20
-	.ifndef DECOMP_SetScreenFade
 loc_8006276:
 	push {r5,lr}
 	cmp r0, #0xff
@@ -6906,10 +6432,6 @@ locret_80062C0:
 	.balign 4, 0x00
 off_80062C4:
 	.word off_8006040
-	.else
-loc_8006276:
-	decomp_trampoline_r3safe SetScreenFade_c, 68
-	.endif
 	thumb_func_end SetScreenFade
 
 	thumb_func_start screenFade_80062C8
@@ -6960,26 +6482,13 @@ IsScreenFadeActive:
 	thumb_func_start isScreenFadeActive_80062FC
 isScreenFadeActive_80062FC:
 	mov r3, #oScreenFade_Size
-	.ifndef DECOMP_IsScreenFadeActive
 IsScreenFadeActive_common:
-	ldr r0, off_80063BC // =eScreenFade
+	ldr r0, off_80063BC // =eScreenFade 
 	add r0, r0, r3
 	ldrb r0, [r0,#oScreenFade_Unk_03] // (byte_200A443 - 0x200a440)
 	mov r1, #1
 	cmp r0, r1
 	mov pc, lr
-	.else
-	// Custom 12-byte inline trampoline: standard `decomp_trampoline` would
-	// clobber r3 (which the prelude just set), so park r3 in r12 first.
-	// r12 is APCS scratch and not in the harness's must-match set.
-	// IsScreenFadeActive_c reads it back and applies the `cmp r0, #1`
-	// flag-set that callers' `beq`/`bne` depend on.
-IsScreenFadeActive_common:
-	mov r12, r3
-	ldr r3, =IsScreenFadeActive_c + 1
-	bx r3
-	.pool
-	.endif
 	thumb_func_end IsScreenFadeActive
 	thumb_func_end isScreenFadeActive_80062FC
 
@@ -7009,8 +6518,7 @@ off_800632C:
 	.word off_8005FB4
 	thumb_func_end subsystem_triggerTransition_800630A
 
-	.ifndef DECOMP_sub_8006330
-	thumb_func_start sub_8006330
+	thumb_local_start
 sub_8006330:
 	push {r5,lr}
 	ldr r5, off_80063BC // =eScreenFade
@@ -7024,15 +6532,8 @@ sub_8006330:
 	bl Terminate_ePalette20097a0_Transform
 	pop {r5,pc}
 	thumb_func_end sub_8006330
-	.else
-	thumb_func_start sub_8006330
-sub_8006330:
-	decomp_trampoline sub_8006330_c, 20
-	thumb_func_end sub_8006330
-	.endif
 
-	.ifndef DECOMP_sub_800634C
-	thumb_func_start sub_800634C
+	thumb_local_start
 sub_800634C:
 	push {r5,lr}
 	ldr r5, off_80063BC // =eScreenFade
@@ -7048,12 +6549,6 @@ sub_800634C:
 	strb r0, [r5,#0xd]
 	pop {r5,pc}
 	thumb_func_end sub_800634C
-	.else
-	thumb_func_start sub_800634C
-sub_800634C:
-	decomp_trampoline sub_800634C_c, 18
-	thumb_func_end sub_800634C
-	.endif
 
 	thumb_local_start
 sub_8006366:
@@ -7498,7 +6993,6 @@ off_800690C:
 	.word 0x500
 	thumb_func_end sub_80068EC
 
-	.ifndef DECOMP_sub_8006910
 	thumb_func_start sub_8006910
 sub_8006910:
 	push {lr}
@@ -7510,17 +7004,6 @@ sub_8006910:
 off_800691C:
 	.word byte_20081B0
 	thumb_func_end sub_8006910
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8006910
-sub_8006910:
-	decomp_trampoline sub_8006910_c, 4
-	.balign 4, 0x00
-off_800691C:
-	.word byte_20081B0
-	thumb_func_end sub_8006910
-	.endif
 
 	thumb_func_start sub_8006920
 sub_8006920:
@@ -8019,7 +7502,6 @@ RandomizeExtraToolkitPointers: // () -> ?
 	bx r0
 	thumb_func_end RandomizeExtraToolkitPointers
 
-	.ifndef DECOMP_SetExtraToolkitPointers
 	thumb_func_start SetExtraToolkitPointers
 SetExtraToolkitPointers:
 	push {r4-r7,lr}
@@ -8052,26 +7534,13 @@ ToolkitExtraPtrs_eUnusedExtraToolkitPtrsOffset_p:
 ToolkitExtraPtrs_ToolkitExtraPtrsMemorySize_p:	.word TOOLKIT_EXTRA_PTRS_MEMORY_SIZE
 ToolkitExtraPtrs_copyWords_80014EC_p:			 .word copyWords_80014EC+1
 	thumb_func_end SetExtraToolkitPointers
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start SetExtraToolkitPointers
-SetExtraToolkitPointers:
-	decomp_trampoline SetExtraToolkitPointers_c, 32
-ToolkitExtraPtrs_eToolkitExtraPtrsMemory_p:	   .word eToolkitExtraPtrsMemory
-ToolkitExtraPtrs_eUnusedExtraToolkitPtrsOffset_p:
-	.word eUnusedExtraToolkitPtrsOffset
-ToolkitExtraPtrs_ToolkitExtraPtrsMemorySize_p:	.word TOOLKIT_EXTRA_PTRS_MEMORY_SIZE
-ToolkitExtraPtrs_copyWords_80014EC_p:			 .word copyWords_80014EC+1
-	thumb_func_end SetExtraToolkitPointers
-	.endif
 
 	// unused?
 	.word eToolkit
 
 ToolkitExtraPtrsOffsets_p:
 	.word ToolkitExtraPtrsOffsets
-ToolkitExtraPtrsOffsets::
+ToolkitExtraPtrsOffsets:
 	.word 0x0
 	.word 0x84
 	.word 0x108
@@ -8220,7 +7689,6 @@ off_8006DE8:
 	.word 0x803ED90
 	thumb_func_end encryption_initAll_8006d00
 
-	.ifndef DECOMP_sub_8006DEC
 	thumb_func_start sub_8006DEC
 sub_8006DEC:
 	push {r4-r7,lr}
@@ -8229,14 +7697,7 @@ sub_8006DEC:
 	ldr r0, [r4,#oGameState_Unk_74]
 	pop {r4-r7,pc}
 	thumb_func_end sub_8006DEC
-	.else
-	thumb_func_start sub_8006DEC
-sub_8006DEC:
-	decomp_trampoline sub_8006DEC_c, 2
-	thumb_func_end sub_8006DEC
-	.endif
 
-	.ifndef DECOMP_encryption_8006df6
 	thumb_func_start encryption_8006df6
 encryption_8006df6:
 	push {r4-r7,lr}
@@ -8253,15 +7714,8 @@ loc_8006DFE:
 	str r7, [r0,#0x4] // (dword_2001064 - 0x2001060)
 	pop {r4-r7,pc}
 	thumb_func_end encryption_8006df6
-	.else
-	thumb_func_start encryption_8006df6
-encryption_8006df6:
-	decomp_trampoline encryption_8006df6_c, 14
-	thumb_func_end encryption_8006df6
-	.endif
 
 // (u8 *mem, int size) -> void
-	.ifndef DECOMP_encryption_save_memSetFlags_8006E0E
 	thumb_func_start encryption_save_memSetFlags_8006E0E
 encryption_save_memSetFlags_8006E0E:
 	push {r4-r7,lr}
@@ -8279,14 +7733,7 @@ encryption_save_memSetFlags_8006E0E:
 	str r7, [r0,#4]
 	pop {r4-r7,pc}
 	thumb_func_end encryption_save_memSetFlags_8006E0E
-	.else
-	thumb_func_start encryption_save_memSetFlags_8006E0E
-encryption_save_memSetFlags_8006E0E:
-	decomp_trampoline encryption_save_memSetFlags_8006E0E_c, 14
-	thumb_func_end encryption_save_memSetFlags_8006E0E
-	.endif
 
-	.ifndef DECOMP_encryption_8006e26
 	thumb_func_start encryption_8006e26
 encryption_8006e26:
 	push {r4-r7,lr}
@@ -8302,19 +7749,7 @@ loc_8006E2A:
 off_8006E38:
 	.word eUnusedExtraToolkitPtrsOffset
 	thumb_func_end encryption_8006e26
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start encryption_8006e26
-encryption_8006e26:
-	decomp_trampoline encryption_8006e26_c, 8
-	.balign 4, 0
-off_8006E38:
-	.word eUnusedExtraToolkitPtrsOffset
-	thumb_func_end encryption_8006e26
-	.endif
 
-	.ifndef DECOMP_encryption_8006e3c
 	thumb_func_start encryption_8006e3c
 encryption_8006e3c:
 	push {r1-r7,lr}
@@ -8328,14 +7763,7 @@ encryption_8006e3c:
 	strb r1, [r7,r0]
 	pop {r1-r7,pc}
 	thumb_func_end encryption_8006e3c
-	.else
-	thumb_func_start encryption_8006e3c
-encryption_8006e3c:
-	decomp_trampoline encryption_8006e3c_c, 12
-	thumb_func_end encryption_8006e3c
-	.endif
 
-	.ifndef DECOMP_encryption_navicustMaybe_8006e50
 	thumb_func_start encryption_navicustMaybe_8006e50
 encryption_navicustMaybe_8006e50:
 	push {r1-r7,lr}
@@ -8356,20 +7784,8 @@ locret_8006E68:
 off_8006E6C:
 	.word byte_20004E0
 	thumb_func_end encryption_navicustMaybe_8006e50
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start encryption_navicustMaybe_8006e50
-encryption_navicustMaybe_8006e50:
-	decomp_trampoline encryption_navicustMaybe_8006e50_c, 20
-	.balign 4, 0
-off_8006E6C:
-	.word byte_20004E0
-	thumb_func_end encryption_navicustMaybe_8006e50
-	.endif
 
 // (int idx_20008A0) -> void
-	.ifndef DECOMP_encryption_applyPack_8006e70
 	thumb_func_start encryption_applyPack_8006e70
 encryption_applyPack_8006e70:
 	push {r1-r7,lr}
@@ -8383,12 +7799,6 @@ encryption_applyPack_8006e70:
 	strb r1, [r7,r0]
 	pop {r1-r7,pc}
 	thumb_func_end encryption_applyPack_8006e70
-	.else
-	thumb_func_start encryption_applyPack_8006e70
-encryption_applyPack_8006e70:
-	decomp_trampoline encryption_applyPack_8006e70_c, 12
-	thumb_func_end encryption_applyPack_8006e70
-	.endif
 
 	thumb_func_start encryption_testPack_8006e84
 encryption_testPack_8006e84:
@@ -8517,7 +7927,6 @@ loc_8006F50:
 	pop {r1-r7,pc}
 	thumb_func_end sub_8006F1E
 
-	.ifndef DECOMP_encryption_zenny_8006f54
 	thumb_func_start encryption_zenny_8006f54
 encryption_zenny_8006f54:
 	push {r0-r7,lr}
@@ -8540,12 +7949,6 @@ loc_8006F68:
 	str r0, [r1]
 	pop {r0-r7,pc}
 	thumb_func_end encryption_zenny_8006f54
-	.else
-	thumb_func_start encryption_zenny_8006f54
-encryption_zenny_8006f54:
-	decomp_trampoline encryption_zenny_8006f54_c, 28
-	thumb_func_end encryption_zenny_8006f54
-	.endif
 
 	thumb_func_start encryption_zenny_8006f78
 encryption_zenny_8006f78:
@@ -8579,7 +7982,6 @@ off_8006FA8:
 	.word dword_2000060
 	thumb_func_end encryption_zenny_8006f78
 
-	.ifndef DECOMP_encryption_bugfrags_8006fac
 	thumb_func_start encryption_bugfrags_8006fac
 encryption_bugfrags_8006fac:
 	push {r0-r7,lr}
@@ -8602,12 +8004,6 @@ loc_8006FC0:
 	str r0, [r1]
 	pop {r0-r7,pc}
 	thumb_func_end encryption_bugfrags_8006fac
-	.else
-	thumb_func_start encryption_bugfrags_8006fac
-encryption_bugfrags_8006fac:
-	decomp_trampoline encryption_bugfrags_8006fac_c, 28
-	thumb_func_end encryption_bugfrags_8006fac
-	.endif
 
 	thumb_func_start encryption_bugfrags_8006fd0
 encryption_bugfrags_8006fd0:
@@ -8912,7 +8308,6 @@ assign_flags32_20093A4: // (flags32 val) -> void
 	mov pc, lr
 	thumb_func_end assign_flags32_20093A4
 
-	.ifndef DECOMP_reset_flags32_20093A4
 	thumb_func_start reset_flags32_20093A4
 reset_flags32_20093A4: // () -> void
 	ldr r1, off_80071D0 // =flags32_20093A4
@@ -8932,26 +8327,6 @@ off_80071CC:
 off_80071D0:
 	.word flags32_20093A4
 	thumb_func_end reset_flags32_20093A4
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start reset_flags32_20093A4
-reset_flags32_20093A4:
-	decomp_trampoline reset_flags32_20093A4_c, 0
-off_80071BC:
-	.word flags32_20093A4
-off_80071C0:
-	.word flags32_20093A4
-off_80071C4:
-	.word flags32_20093A4
-off_80071C8:
-	.word flags32_20093A4
-off_80071CC:
-	.word flags32_20093A4
-off_80071D0:
-	.word flags32_20093A4
-	thumb_func_end reset_flags32_20093A4
-	.endif
 
 	thumb_func_start initBattleStructsAndVram_80071D4
 initBattleStructsAndVram_80071D4:
@@ -15349,7 +14724,6 @@ off_8009FF4:
 	.word byte_3000EA8
 	thumb_func_end sub_8009FCC
 
-	.ifndef DECOMP_sub_8009FF8
 	thumb_func_start sub_8009FF8
 sub_8009FF8:
 	push {r4,r6,r7,lr}
@@ -15372,12 +14746,6 @@ off_800A014:
 off_800A018:
 	.word byte_3000EA8
 	thumb_func_end sub_8009FF8
-	.else
-	thumb_func_start sub_8009FF8
-sub_8009FF8:
-	decomp_trampoline sub_8009FF8_c, 28
-	thumb_func_end sub_8009FF8
-	.endif
 
 	thumb_local_start
 sub_800A01C:
@@ -15467,7 +14835,6 @@ off_800A094:
 	.word dword_2036820
 	thumb_func_end sub_800A07C
 
-	.ifndef DECOMP_battle_isTimeStop
 	thumb_func_start battle_isTimeStop
 battle_isTimeStop:
 	push {lr}
@@ -15476,12 +14843,6 @@ battle_isTimeStop:
 	and r0, r1
 	pop {pc}
 	thumb_func_end battle_isTimeStop
-	.else
-	thumb_func_start battle_isTimeStop
-battle_isTimeStop:
-	decomp_trampoline battle_isTimeStop_c, 4
-	thumb_func_end battle_isTimeStop
-	.endif
 
 	thumb_func_start battle_isTimeStopPauseOrBattleFlags0x20_800a0a4
 battle_isTimeStopPauseOrBattleFlags0x20_800a0a4:
@@ -15514,7 +14875,6 @@ sub_800A0C6:
 	mov pc, lr
 	thumb_func_end sub_800A0C6
 
-	.ifndef DECOMP_sub_800A0D6
 	thumb_func_start sub_800A0D6
 sub_800A0D6:
 	lsl r0, r0, #3
@@ -15533,16 +14893,6 @@ sub_800A0D6:
 off_800A0F0:
 	.word dword_2036820
 	thumb_func_end sub_800A0D6
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_800A0D6
-sub_800A0D6:
-	decomp_trampoline sub_800A0D6_c, 16
-off_800A0F0:
-	.word dword_2036820
-	thumb_func_end sub_800A0D6
-	.endif
 
 	thumb_local_start
 sub_800A0F4:
@@ -15832,7 +15182,6 @@ sub_800A2D0:
 	mov pc, lr
 	thumb_func_end sub_800A2D0
 
-	.ifndef DECOMP_battle_setFlags
 	thumb_func_start battle_setFlags
 battle_setFlags:
 	mov r1, r10
@@ -15842,14 +15191,7 @@ battle_setFlags:
 	strh r2, [r1,#oBattleState_Unk_32]
 	mov pc, lr
 	thumb_func_end battle_setFlags
-	.else
-	thumb_func_start battle_setFlags
-battle_setFlags:
-	decomp_trampoline battle_setFlags_c, 4
-	thumb_func_end battle_setFlags
-	.endif
 
-	.ifndef DECOMP_battle_clearFlags
 	thumb_func_start battle_clearFlags
 battle_clearFlags:
 	mov r1, r10
@@ -15859,14 +15201,7 @@ battle_clearFlags:
 	strh r2, [r1,#oBattleState_Unk_32]
 	mov pc, lr
 	thumb_func_end battle_clearFlags
-	.else
-	thumb_func_start battle_clearFlags
-battle_clearFlags:
-	decomp_trampoline battle_clearFlags_c, 4
-	thumb_func_end battle_clearFlags
-	.endif
 
-	.ifndef DECOMP_battle_getFlags
 	thumb_func_start battle_getFlags
 // 0x2 - cust gauge full
 // 0x4 - timestop
@@ -15876,12 +15211,6 @@ battle_getFlags:
 	ldrh r0, [r1,#oBattleState_Unk_32]
 	mov pc, lr
 	thumb_func_end battle_getFlags
-	.else
-	thumb_func_start battle_getFlags
-battle_getFlags:
-	decomp_trampoline battle_getFlags_c, 0
-	thumb_func_end battle_getFlags
-	.endif
 
 	thumb_local_start
 sub_800A2F8: // () -> ()
@@ -16465,7 +15794,6 @@ locret_800A702:
 	pop {pc}
 	thumb_func_end sub_800A6D8
 
-	.ifndef DECOMP_sub_800A704
 	thumb_func_start sub_800A704
 sub_800A704:
 	mov r0, r10
@@ -16473,14 +15801,7 @@ sub_800A704:
 	ldr r0, [r0,#oBattleState_Unk_40]
 	mov pc, lr
 	thumb_func_end sub_800A704
-	.else
-	thumb_func_start sub_800A704
-sub_800A704:
-	decomp_trampoline sub_800A704_c, 0
-	thumb_func_end sub_800A704
-	.endif
 
-	.ifndef DECOMP_sub_800A70C
 	thumb_func_start sub_800A70C
 sub_800A70C:
 	mov r0, r10
@@ -16488,12 +15809,6 @@ sub_800A70C:
 	ldrh r0, [r0,#oBattleState_Unk_38]
 	mov pc, lr
 	thumb_func_end sub_800A70C
-	.else
-	thumb_func_start sub_800A70C
-sub_800A70C:
-	decomp_trampoline sub_800A70C_c, 0
-	thumb_func_end sub_800A70C
-	.endif
 
 	thumb_local_start
 sub_800A714:
@@ -16523,7 +15838,6 @@ getBattleSettingsFromList1: // (int battleSettingsIdx) -> BattleSettings*
 	mov pc, lr
 	thumb_func_end getBattleSettingsFromList1
 
-	.ifndef DECOMP_isSameSubsystem_800A732
 	thumb_func_start isSameSubsystem_800A732
 isSameSubsystem_800A732: // () -> !zf
 	push {r4,lr}
@@ -16544,12 +15858,6 @@ loc_800A748:
 off_800A750:
 	.word eStruct203F7D8
 	thumb_func_end isSameSubsystem_800A732
-	.else
-	thumb_func_start isSameSubsystem_800A732
-isSameSubsystem_800A732:
-	decomp_trampoline isSameSubsystem_800A732_c, 24
-	thumb_func_end isSameSubsystem_800A732
-	.endif
 
 	thumb_local_start
 sub_800A754:
@@ -16637,7 +15945,6 @@ loc_800A7C4:
 	.byte 0, 0
 	thumb_func_end sub_800A7A6
 
-	.ifndef DECOMP_IsCurSubsystemInUse
 	thumb_func_start IsCurSubsystemInUse
 IsCurSubsystemInUse: // () -> (bool, !zf)
 	mov r0, #FALSE
@@ -16652,12 +15959,6 @@ loc_800A7DE:
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end IsCurSubsystemInUse
-	.else
-	thumb_func_start IsCurSubsystemInUse
-IsCurSubsystemInUse:
-	decomp_trampoline IsCurSubsystemInUse_c, 10
-	thumb_func_end IsCurSubsystemInUse
-	.endif
 
 	thumb_func_start sub_800A7E2
 sub_800A7E2:
@@ -16836,7 +16137,6 @@ byte_800A8EC:
 	.byte 0xAC, 0xB0, 0xB4, 0xB8
 	thumb_func_end sub_800A8D4
 
-	.ifndef DECOMP_sub_800A8F8
 	thumb_func_start sub_800A8F8
 sub_800A8F8:
 	push {r4,lr}
@@ -16848,14 +16148,7 @@ loc_800A904:
 	mov r0, r4
 	pop {r4,pc}
 	thumb_func_end sub_800A8F8
-	.else
-	thumb_func_start sub_800A8F8
-sub_800A8F8:
-	decomp_trampoline sub_800A8F8_c, 8
-	thumb_func_end sub_800A8F8
-	.endif
 
-	.ifndef DECOMP_sub_800A908
 	thumb_func_start sub_800A908
 sub_800A908:
 	mov r0, #0
@@ -16897,48 +16190,6 @@ off_800A94C:
 off_800A950:
 	.word dword_2000B30
 	thumb_func_end sub_800A908
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_800A908
-sub_800A908:
-	decomp_trampoline sub_800A908_c, 0
-off_800A910:
-	.word dword_2033000
-off_800A914:
-	.word word_2033040
-off_800A918:
-	.word dword_2033000
-dword_800A91C:
-	.word dword_2033000+2
-off_800A920:
-	.word word_2033040
-off_800A924:
-	.word dword_2033000
-off_800A928:
-	.word word_2033040
-off_800A92C:
-	.word dword_2033000
-off_800A930:
-	.word word_2033040
-off_800A934:
-	.word dword_2033000
-off_800A938:
-	.word dword_2033000
-dword_800A93C:
-	.word 0x8C9F
-off_800A940:
-	.word battleSettingsList0
-off_800A944:
-	.word BattleSettingsList1
-off_800A948:
-	.word flags32_20093A4
-off_800A94C:
-	.word 0x100
-off_800A950:
-	.word dword_2000B30
-	thumb_func_end sub_800A908
-	.endif
 
 	thumb_local_start
 sub_800A954:
@@ -17046,7 +16297,6 @@ clearBattleStateUnk11Flag_800A9D6: // (flags: flags8) -> ()
 	mov pc, lr
 	thumb_func_end clearBattleStateUnk11Flag_800A9D6
 
-	.ifndef DECOMP_sub_800A9E2
 	thumb_func_start sub_800A9E2
 sub_800A9E2:
 	mov r3, r10
@@ -17055,14 +16305,7 @@ sub_800A9E2:
 	ldrb r0, [r3,r0]
 	mov pc, lr
 	thumb_func_end sub_800A9E2
-	.else
-	thumb_func_start sub_800A9E2
-sub_800A9E2:
-	decomp_trampoline sub_800A9E2_c, 0
-	thumb_func_end sub_800A9E2
-	.endif
 
-	.ifndef DECOMP_battle_networkInvert
 	thumb_func_start battle_networkInvert
 battle_networkInvert:
 	mov r1, r10
@@ -17071,12 +16314,6 @@ battle_networkInvert:
 	eor r0, r2
 	mov pc, lr
 	thumb_func_end battle_networkInvert
-	.else
-	thumb_func_start battle_networkInvert
-battle_networkInvert:
-	decomp_trampoline battle_networkInvert_c, 2
-	thumb_func_end battle_networkInvert
-	.endif
 
 	thumb_local_start
 battle_clearEnemyFadeinList:
@@ -17238,7 +16475,6 @@ sub_800AAD6:
 	pop {r5,pc}
 	thumb_func_end sub_800AAD6
 
-	.ifndef DECOMP_sub_800AAE8
 	thumb_func_start sub_800AAE8
 sub_800AAE8:
 	mov r1, r10
@@ -17247,12 +16483,6 @@ sub_800AAE8:
 	strh r0, [r1,#oBattleState_Unk_3a]
 	mov pc, lr
 	thumb_func_end sub_800AAE8
-	.else
-	thumb_func_start sub_800AAE8
-sub_800AAE8:
-	decomp_trampoline sub_800AAE8_c, 2
-	thumb_func_end sub_800AAE8
-	.endif
 
 	thumb_local_start
 sub_800AAF2:
@@ -17292,7 +16522,6 @@ sub_800AB22:
 	pop {pc}
 	thumb_func_end sub_800AB22
 
-	.ifndef DECOMP_sub_800AB2E
 	thumb_func_start sub_800AB2E
 sub_800AB2E:
 	mov r3, #0x10
@@ -17302,14 +16531,7 @@ sub_800AB2E:
 	strb r2, [r3,r1]
 	mov pc, lr
 	thumb_func_end sub_800AB2E
-	.else
-	thumb_func_start sub_800AB2E
-sub_800AB2E:
-	decomp_trampoline sub_800AB2E_c, 2
-	thumb_func_end sub_800AB2E
-	.endif
 
-	.ifndef DECOMP_sub_800AB3A
 	thumb_func_start sub_800AB3A
 sub_800AB3A:
 	mov r3, #0x10
@@ -17319,14 +16541,7 @@ sub_800AB3A:
 	ldrb r0, [r3,r1]
 	mov pc, lr
 	thumb_func_end sub_800AB3A
-	.else
-	thumb_func_start sub_800AB3A
-sub_800AB3A:
-	decomp_trampoline sub_800AB3A_c, 2
-	thumb_func_end sub_800AB3A
-	.endif
 
-	.ifndef DECOMP_sub_800AB46
 	thumb_func_start sub_800AB46
 sub_800AB46:
 	mov r3, #0x10
@@ -17342,12 +16557,6 @@ loc_800AB58:
 	strb r0, [r3,r1]
 	mov pc, lr
 	thumb_func_end sub_800AB46
-	.else
-	thumb_func_start sub_800AB46
-sub_800AB46:
-	decomp_trampoline sub_800AB46_c, 12
-	thumb_func_end sub_800AB46
-	.endif
 
 	thumb_local_start
 sub_800AB5C:
@@ -17794,7 +17003,6 @@ dword_800AE8C:
 	.word 0x4900480
 	thumb_func_end sub_800AE54
 
-	.ifndef DECOMP_sub_800AE90
 	thumb_func_start sub_800AE90
 sub_800AE90:
 	push {r5-r7,lr}
@@ -17842,12 +17050,6 @@ locret_800AEE0:
 dword_800AEE4:
 	.word 0xD3CA
 	thumb_func_end sub_800AE90
-	.else
-	thumb_func_start sub_800AE90
-sub_800AE90:
-	decomp_trampoline sub_800AE90_c, 80
-	thumb_func_end sub_800AE90
-	.endif
 
 	thumb_local_start
 handleVariableDamageChip_800AEE8:
@@ -18159,8 +17361,7 @@ dword_800B10C:
 	.word 0x185
 	thumb_func_end someChipHandValidationHappensHere_800B090
 
-	.ifndef DECOMP_sub_800B110
-	thumb_func_start sub_800B110
+	thumb_local_start
 sub_800B110:
 	push {r4,lr}
 	ldr r4, off_800B124 // =word_800B128
@@ -18177,7 +17378,7 @@ locret_800B122:
 	.balign 4, 0
 off_800B124:
 	.word word_800B128
-word_800B128::
+word_800B128:
 	.hword 0x195
 	.hword 0x196
 	.byte 0x97, 0x1, 0x98, 0x1, 0x99, 0x1, 0x9A, 0x1, 0x0, 0x0, 0x0, 0x0
@@ -18188,24 +17389,6 @@ dword_800B13C:
 dword_800B140:
 	.word 0x1555
 	thumb_func_end sub_800B110
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_800B110
-sub_800B110:
-	decomp_trampoline sub_800B110_c, 16
-word_800B128::
-	.hword 0x195
-	.hword 0x196
-	.byte 0x97, 0x1, 0x98, 0x1, 0x99, 0x1, 0x9A, 0x1, 0x0, 0x0, 0x0, 0x0
-off_800B138:
-	.word byte_20349C0
-dword_800B13C:
-	.word 0x4000
-dword_800B140:
-	.word 0x1555
-	thumb_func_end sub_800B110
-	.endif
 
 	thumb_local_start
 sub_800B144:
@@ -18518,7 +17701,6 @@ sub_800B3A2:
 	pop {pc}
 	thumb_func_end sub_800B3A2
 
-	.ifndef DECOMP_transferBattleHandNaviStats_800B3D8
 	thumb_func_start transferBattleHandNaviStats_800B3D8
 transferBattleHandNaviStats_800B3D8:
 	push {r4,lr}
@@ -18559,12 +17741,6 @@ loc_800B408:
 locret_800B426:
 	pop {r4,pc}
 	thumb_func_end transferBattleHandNaviStats_800B3D8
-	.else
-	thumb_func_start transferBattleHandNaviStats_800B3D8
-transferBattleHandNaviStats_800B3D8:
-	decomp_trampoline transferBattleHandNaviStats_800B3D8_c, 72
-	thumb_func_end transferBattleHandNaviStats_800B3D8
-	.endif
 
 	thumb_local_start
 sub_800B428:
@@ -18597,7 +17773,6 @@ sub_800B444:
 	pop {pc}
 	thumb_func_end sub_800B444
 
-	.ifndef DECOMP_sub_800B460
 	thumb_func_start sub_800B460
 sub_800B460:
 	mov r0, #0
@@ -18607,14 +17782,7 @@ sub_800B460:
 	str r0, [r1]
 	mov pc, lr
 	thumb_func_end sub_800B460
-	.else
-	thumb_func_start sub_800B460
-sub_800B460:
-	decomp_trampoline sub_800B460_c, 4
-	thumb_func_end sub_800B460
-	.endif
 
-	.ifndef DECOMP_sub_800B46C
 	thumb_func_start sub_800B46C
 sub_800B46C:
 	mov r3, r0
@@ -18631,12 +17799,6 @@ sub_800B46C:
 locret_800B482:
 	mov pc, lr
 	thumb_func_end sub_800B46C
-	.else
-	thumb_func_start sub_800B46C
-sub_800B46C:
-	decomp_trampoline sub_800B46C_c, 16
-	thumb_func_end sub_800B46C
-	.endif
 
 	thumb_local_start
 sub_800B484:
@@ -19058,7 +18220,6 @@ locret_800B732:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800B6F2
 
-	.ifndef DECOMP_sub_800B734
 	thumb_func_start sub_800B734
 sub_800B734:
 	ldr r0, off_800B86C // =word_2000FA0
@@ -19083,12 +18244,6 @@ loc_800B73A:
 locret_800B758:
 	mov pc, lr
 	thumb_func_end sub_800B734
-	.else
-	thumb_func_start sub_800B734
-sub_800B734:
-	decomp_trampoline sub_800B734_c, 30
-	thumb_func_end sub_800B734
-	.endif
 
 	thumb_local_start
 sub_800B75A:

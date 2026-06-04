@@ -1,5 +1,4 @@
 
-	.ifndef DECOMP_sub_800ED80
 	thumb_func_start sub_800ED80
 sub_800ED80:
 	ldr r1, [r0,#oAIData_Unk_7c]
@@ -11,12 +10,6 @@ sub_800ED80:
 off_800ED8C:
 	.word eUsedAIDataBitfield
 	thumb_func_end sub_800ED80
-	.else
-	thumb_func_start sub_800ED80
-sub_800ED80:
-	decomp_trampoline sub_800ED80_c, 8
-	thumb_func_end sub_800ED80
-	.endif
 
 	thumb_func_start sub_800ED90
 sub_800ED90:
@@ -1066,7 +1059,6 @@ loc_800F482:
 	pop {pc}
 	thumb_func_end sub_800F46C
 
-	.ifndef DECOMP_sub_800F486
 	thumb_func_start sub_800F486
 sub_800F486:
 	cmp r0, #0xd3
@@ -1083,12 +1075,6 @@ loc_800F49A:
 	mov r0, #0
 	mov pc, lr
 	thumb_func_end sub_800F486
-	.else
-	thumb_func_start sub_800F486
-sub_800F486:
-	decomp_trampoline sub_800F486_c, 14
-	thumb_func_end sub_800F486
-	.endif
 
 	thumb_func_start sub_800F49E
 sub_800F49E:
@@ -2406,7 +2392,6 @@ sub_800FE28:
 	pop {pc}
 	thumb_func_end sub_800FE28
 
-	.ifndef DECOMP_sub_800FE36
 	thumb_func_start sub_800FE36
 sub_800FE36:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -2426,12 +2411,6 @@ loc_800FE40:
 locret_800FE50:
 	mov pc, lr
 	thumb_func_end sub_800FE36
-	.else
-	thumb_func_start sub_800FE36
-sub_800FE36:
-	decomp_trampoline sub_800FE36_c, 18
-	thumb_func_end sub_800FE36
-	.endif
 
 	thumb_func_start sub_800FE52
 sub_800FE52:
@@ -2645,7 +2624,6 @@ off_800FFE0:
 	.word byte_8020354
 	thumb_func_end sub_800FFAA
 
-	.ifndef DECOMP_SetAIData_Unk_44_Flag
 	thumb_func_start SetAIData_Unk_44_Flag
 SetAIData_Unk_44_Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -2654,12 +2632,6 @@ SetAIData_Unk_44_Flag:
 	str r1, [r3,#oAIData_Unk_44]
 	mov pc, lr
 	thumb_func_end SetAIData_Unk_44_Flag
-	.else
-	thumb_func_start SetAIData_Unk_44_Flag
-SetAIData_Unk_44_Flag:
-	decomp_trampoline SetAIData_Unk_44_Flag_c, 2
-	thumb_func_end SetAIData_Unk_44_Flag
-	.endif
 
 	thumb_func_start ClearAIData_Unk_44_Flag
 ClearAIData_Unk_44_Flag:
@@ -2698,21 +2670,14 @@ loc_8010006:
 	pop {pc}
 	thumb_func_end getCurChipInBattleHand_8010004
 
-	.ifndef DECOMP_getBattleHandAddr_8010018
 	thumb_func_start getBattleHandAddr_8010018
 getBattleHandAddr_8010018:
-	mov r1, #0x50
+	mov r1, #0x50 
 	mul r0, r1
-	ldr r1, off_801021C // =byte_20349C0
+	ldr r1, off_801021C // =byte_20349C0 
 	add r0, r0, r1
 	mov pc, lr
 	thumb_func_end getBattleHandAddr_8010018
-	.else
-	thumb_func_start getBattleHandAddr_8010018
-getBattleHandAddr_8010018:
-	decomp_trampoline getBattleHandAddr_8010018_c, 2
-	thumb_func_end getBattleHandAddr_8010018
-	.endif
 
 	thumb_local_start
 sub_8010022:
@@ -3117,7 +3082,6 @@ SetAIDataUnk0x48Flag:
 	mov pc, lr
 	thumb_func_end SetAIDataUnk0x48Flag
 
-	.ifndef DECOMP_ClearAIDataUnk0x48Flag
 	thumb_func_start ClearAIDataUnk0x48Flag
 ClearAIDataUnk0x48Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -3126,12 +3090,6 @@ ClearAIDataUnk0x48Flag:
 	str r1, [r3,#oAIData_Unk_48]
 	mov pc, lr
 	thumb_func_end ClearAIDataUnk0x48Flag
-	.else
-	thumb_func_start ClearAIDataUnk0x48Flag
-ClearAIDataUnk0x48Flag:
-	decomp_trampoline ClearAIDataUnk0x48Flag_c, 2
-	thumb_func_end ClearAIDataUnk0x48Flag
-	.endif
 
 	thumb_local_start
 sub_8010326:
@@ -3248,7 +3206,6 @@ loc_80103E8:
 	pop {r4-r6,pc}
 	thumb_func_end battle_findPlayer
 
-	.ifndef DECOMP_sub_80103EC
 	thumb_func_start sub_80103EC
 sub_80103EC:
 	push {lr}
@@ -3256,12 +3213,6 @@ sub_80103EC:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	pop {pc}
 	thumb_func_end sub_80103EC
-	.else
-	thumb_func_start sub_80103EC
-sub_80103EC:
-	decomp_trampoline sub_80103EC_c, 4
-	thumb_func_end sub_80103EC
-	.endif
 
 	thumb_func_start sub_80103F8
 sub_80103F8:
@@ -4387,7 +4338,6 @@ byte_8010CB8:
 	.byte 0x0, 0x24, 0x0, 0x0, 0x0, 0x26, 0x0, 0x0, 0x0, 0x28, 0x0, 0x0
 	thumb_func_end sub_8010C76
 
-	.ifndef DECOMP_sub_8010CE0
 	thumb_func_start sub_8010CE0
 sub_8010CE0:
 	push {r4,lr}
@@ -4409,12 +4359,6 @@ loc_8010D00:
 	mov r0, r1
 	pop {r4,pc}
 	thumb_func_end sub_8010CE0
-	.else
-	thumb_func_start sub_8010CE0
-sub_8010CE0:
-	decomp_trampoline sub_8010CE0_c, 28
-	thumb_func_end sub_8010CE0
-	.endif
 
 	thumb_local_start
 sub_8010D04:
@@ -4437,7 +4381,6 @@ sub_8010D18:
 	mov pc, lr
 	thumb_func_end sub_8010D18
 
-	.ifndef DECOMP_sub_8010D20
 	thumb_func_start sub_8010D20
 sub_8010D20:
 	push {r4,lr}
@@ -4469,38 +4412,6 @@ off_8010D50:
 off_8010D54:
 	.word dword_203CDF0
 	thumb_func_end sub_8010D20
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8010D20
-sub_8010D20:
-	decomp_trampoline sub_8010D20_c, 0
-off_8010D28:
-	.word 0x3E9
-off_8010D2C:
-	.word byte_203EB00
-off_8010D30:
-	.word byte_8020E54
-off_8010D34:
-	.word 0x1500
-off_8010D38:
-	.word 0x1F4
-dword_8010D3C:
-	.word 0x3E7
-dword_8010D40:
-	.word 0x3FF
-off_8010D44:
-	.word unk_20018C0
-off_8010D48:
-	.word byte_8020E54
-off_8010D4C:
-	.word byte_8020E54
-off_8010D50:
-	.word byte_80212D4
-off_8010D54:
-	.word dword_203CDF0
-	thumb_func_end sub_8010D20
-	.endif
 
 	thumb_local_start
 sub_8010D58:
@@ -5674,7 +5585,6 @@ object_setAttack5:
 	mov r2, #5
 	b loc_8011698
 
-	.ifndef DECOMP_object_setAttack2
 loc_8011698:
 	push {lr}
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5686,10 +5596,6 @@ loc_8011698:
 	strb r2, [r1,#oAIAttackVars_Unk_1c]
 	bl sub_801011A
 	pop {pc}
-	.else
-loc_8011698:
-	decomp_trampoline object_setAttack_common_c, 14
-	.endif
 	thumb_func_end object_setAttack2
 	thumb_func_end object_setAttack3
 	thumb_func_end object_setAttack4
@@ -8147,7 +8053,6 @@ word_8012790:
 	.hword 0x601
 	thumb_func_end sub_801273E
 
-	.ifndef DECOMP_sub_8012792
 	thumb_func_start sub_8012792
 sub_8012792:
 	push {r4,r6,r7,lr}
@@ -8177,12 +8082,6 @@ loc_80127BC:
 	mov r0, #0xff
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8012792
-	.else
-	thumb_func_start sub_8012792
-sub_8012792:
-	decomp_trampoline sub_8012792_c, 36
-	thumb_func_end sub_8012792
-	.endif
 
 	thumb_local_start
 useChipRelated_80127C0: // called when you use a chip
@@ -8388,7 +8287,6 @@ loc_8012952:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80128FC
 
-	.ifndef DECOMP_sub_8012956
 	thumb_func_start sub_8012956
 sub_8012956:
 	ldrb r3, [r0]
@@ -8430,19 +8328,7 @@ loc_8012998:
 	mov r0, #0
 	mov pc, lr
 	thumb_func_end sub_8012956
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_8012956
-sub_8012956:
-	decomp_trampoline sub_8012956_c, 56
-loc_8012998:
-	mov r0, #0
-	mov pc, lr
-	thumb_func_end sub_8012956
-	.endif
 
-	.ifndef DECOMP_sub_801299C
 	thumb_func_start sub_801299C
 sub_801299C:
 	push {lr}
@@ -8451,12 +8337,6 @@ sub_801299C:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	thumb_func_end sub_801299C
-	.else
-	thumb_func_start sub_801299C
-sub_801299C:
-	decomp_trampoline sub_801299C_c, 2
-	thumb_func_end sub_801299C
-	.endif
 
 	thumb_local_start
 sub_80129A6:
@@ -9888,7 +9768,6 @@ off_80133E8:
 	.word byte_8021369
 	thumb_func_end sub_8013396
 
-	.ifndef DECOMP_sub_80133EC
 	thumb_func_start sub_80133EC
 sub_80133EC:
 	push {r5,r6,lr}
@@ -9913,21 +9792,10 @@ off_8013410:
 	.word byte_801341B
 byte_8013414:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0xB
-byte_801341B::
+byte_801341B:
 	.byte 0x0, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB
 	thumb_func_end sub_80133EC
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_80133EC
-sub_80133EC:
-	decomp_trampoline sub_80133EC_c, 39
-byte_801341B::
-	.byte 0x0, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB
-	thumb_func_end sub_80133EC
-	.endif
 
-	.ifndef DECOMP_sub_8013422
 	thumb_func_start sub_8013422
 sub_8013422:
 	push {lr}
@@ -9941,15 +9809,8 @@ sub_8013422:
 off_8013434:
 	.word eBattleNaviStats0
 	thumb_func_end sub_8013422
-	.else
-	thumb_func_start sub_8013422
-sub_8013422:
-	decomp_trampoline sub_8013422_c, 12
-	thumb_func_end sub_8013422
-	.endif
 
 // (void *struct) -> void
-	.ifndef DECOMP_initNaviStats_WithDefaultStatsMaybe_8013438
 	thumb_func_start initNaviStats_WithDefaultStatsMaybe_8013438
 initNaviStats_WithDefaultStatsMaybe_8013438:
 	push {r4,lr}
@@ -10028,14 +9889,7 @@ loc_80134B8:
 	strb r0, [r4,r1]
 	pop {r4,pc}
 	thumb_func_end initNaviStats_WithDefaultStatsMaybe_8013438
-	.else
-	thumb_func_start initNaviStats_WithDefaultStatsMaybe_8013438
-initNaviStats_WithDefaultStatsMaybe_8013438:
-	decomp_trampoline initNaviStats_WithDefaultStatsMaybe_8013438_c, 136
-	thumb_func_end initNaviStats_WithDefaultStatsMaybe_8013438
-	.endif
 
-	.ifndef DECOMP_sub_80134C8
 	thumb_func_start sub_80134C8
 sub_80134C8:
 	push {r4,lr}
@@ -10111,12 +9965,6 @@ sub_80134C8:
 off_8013550:
 	.word 0x1F4
 	thumb_func_end sub_80134C8
-	.else
-	thumb_func_start sub_80134C8
-sub_80134C8:
-	decomp_trampoline sub_80134C8_c, 132
-	thumb_func_end sub_80134C8
-	.endif
 
 	thumb_func_start sub_8013554
 sub_8013554:
@@ -10282,7 +10130,6 @@ loc_8013678:
 	thumb_func_end sub_80135E8
 
 // (int idx) -> void*
-	.ifndef DECOMP_GetBattleNaviStatsAddr
 	thumb_func_start GetBattleNaviStatsAddr
 GetBattleNaviStatsAddr: // (alliance: bool) -> * NaviStats
 	mov r1, #oNaviStats_Size
@@ -10293,12 +10140,6 @@ GetBattleNaviStatsAddr: // (alliance: bool) -> * NaviStats
 // 801368C
 	.pool
 	thumb_func_end GetBattleNaviStatsAddr
-	.else
-	thumb_func_start GetBattleNaviStatsAddr
-GetBattleNaviStatsAddr:
-	decomp_trampoline GetBattleNaviStatsAddr_c, 4
-	thumb_func_end GetBattleNaviStatsAddr
-	.endif
 
 	thumb_local_start
 GetBattleNaviStats203CB10Addr:
@@ -10344,7 +10185,6 @@ SetBattleNaviStatsHword:
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsHword
 
-	.ifndef DECOMP_GetBattleNaviStatsByte
 	thumb_func_start GetBattleNaviStatsByte
 GetBattleNaviStatsByte:
 	push {r6,lr}
@@ -10353,14 +10193,7 @@ GetBattleNaviStatsByte:
 	ldrb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte
-	.else
-	thumb_func_start GetBattleNaviStatsByte
-GetBattleNaviStatsByte:
-	decomp_trampoline GetBattleNaviStatsByte_c, 4
-	thumb_func_end GetBattleNaviStatsByte
-	.endif
 
-	.ifndef DECOMP_GetBattleNaviStatsSignedByte
 	thumb_func_start GetBattleNaviStatsSignedByte
 GetBattleNaviStatsSignedByte:
 	push {r6,lr}
@@ -10369,14 +10202,7 @@ GetBattleNaviStatsSignedByte:
 	ldrsb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsSignedByte
-	.else
-	thumb_func_start GetBattleNaviStatsSignedByte
-GetBattleNaviStatsSignedByte:
-	decomp_trampoline GetBattleNaviStatsSignedByte_c, 4
-	thumb_func_end GetBattleNaviStatsSignedByte
-	.endif
 
-	.ifndef DECOMP_GetBattleNaviStatsHword
 	thumb_func_start GetBattleNaviStatsHword
 GetBattleNaviStatsHword:
 	push {r6,lr}
@@ -10385,14 +10211,7 @@ GetBattleNaviStatsHword:
 	ldrh r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsHword
-	.else
-	thumb_func_start GetBattleNaviStatsHword
-GetBattleNaviStatsHword:
-	decomp_trampoline GetBattleNaviStatsHword_c, 4
-	thumb_func_end GetBattleNaviStatsHword
-	.endif
 
-	.ifndef DECOMP_SetNaviStatsByte
 	thumb_func_start SetNaviStatsByte
 // (bool structSel, int a2, u8 a3) -> void
 SetNaviStatsByte:
@@ -10410,12 +10229,6 @@ loc_80136F6:
 	strb r2, [r3,r1]
 	mov pc, lr
 	thumb_func_end SetNaviStatsByte
-	.else
-	thumb_func_start SetNaviStatsByte
-SetNaviStatsByte:
-	decomp_trampoline SetNaviStatsByte_c, 12
-	thumb_func_end SetNaviStatsByte
-	.endif
 
 	thumb_func_start GetNaviStatsByte
 GetNaviStatsByte:
@@ -10478,7 +10291,6 @@ loc_8013746:
 	thumb_func_end GetNaviStatsHword
 
 // FIX THESE NAMES
-	.ifndef DECOMP_SetBattleNaviStatsByte_AllianceFromBattleObject
 	thumb_func_start SetBattleNaviStatsByte_AllianceFromBattleObject
 SetBattleNaviStatsByte_AllianceFromBattleObject:
 	push {r6,r7,lr}
@@ -10489,14 +10301,7 @@ SetBattleNaviStatsByte_AllianceFromBattleObject:
 	strb r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsByte_AllianceFromBattleObject
-	.else
-	thumb_func_start SetBattleNaviStatsByte_AllianceFromBattleObject
-SetBattleNaviStatsByte_AllianceFromBattleObject:
-	decomp_trampoline SetBattleNaviStatsByte_AllianceFromBattleObject_c, 8
-	thumb_func_end SetBattleNaviStatsByte_AllianceFromBattleObject
-	.endif
 
-	.ifndef DECOMP_SetBattleNaviStatsHword_AllianceFromBattleObject
 	thumb_func_start SetBattleNaviStatsHword_AllianceFromBattleObject
 SetBattleNaviStatsHword_AllianceFromBattleObject:
 	push {r6,r7,lr}
@@ -10507,14 +10312,7 @@ SetBattleNaviStatsHword_AllianceFromBattleObject:
 	strh r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsHword_AllianceFromBattleObject
-	.else
-	thumb_func_start SetBattleNaviStatsHword_AllianceFromBattleObject
-SetBattleNaviStatsHword_AllianceFromBattleObject:
-	decomp_trampoline SetBattleNaviStatsHword_AllianceFromBattleObject_c, 8
-	thumb_func_end SetBattleNaviStatsHword_AllianceFromBattleObject
-	.endif
 
-	.ifndef DECOMP_GetBattleNaviStatsByte_AllianceFromBattleObject
 	thumb_func_start GetBattleNaviStatsByte_AllianceFromBattleObject
 GetBattleNaviStatsByte_AllianceFromBattleObject:
 	push {r6,lr}
@@ -10524,12 +10322,6 @@ GetBattleNaviStatsByte_AllianceFromBattleObject:
 	ldrb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject
-	.else
-	thumb_func_start GetBattleNaviStatsByte_AllianceFromBattleObject
-GetBattleNaviStatsByte_AllianceFromBattleObject:
-	decomp_trampoline GetBattleNaviStatsByte_AllianceFromBattleObject_c, 6
-	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject
-	.endif
 
 	thumb_local_start
 GetBattleNaviStatsByte_AllianceFromBattleObject_8013782:
@@ -10541,7 +10333,6 @@ GetBattleNaviStatsByte_AllianceFromBattleObject_8013782:
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte_AllianceFromBattleObject_8013782
 
-	.ifndef DECOMP_GetBattleNaviStatsHword_AllianceFromBattleObject
 	thumb_func_start GetBattleNaviStatsHword_AllianceFromBattleObject
 GetBattleNaviStatsHword_AllianceFromBattleObject:
 	push {r6,lr}
@@ -10551,15 +10342,8 @@ GetBattleNaviStatsHword_AllianceFromBattleObject:
 	ldrh r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsHword_AllianceFromBattleObject
-	.else
-	thumb_func_start GetBattleNaviStatsHword_AllianceFromBattleObject
-GetBattleNaviStatsHword_AllianceFromBattleObject:
-	decomp_trampoline GetBattleNaviStatsHword_AllianceFromBattleObject_c, 6
-	thumb_func_end GetBattleNaviStatsHword_AllianceFromBattleObject
-	.endif
 
 // (int a1, int a2, int a3) -> void
-	.ifndef DECOMP_SetCurPETNaviStatsByte
 	thumb_func_start SetCurPETNaviStatsByte
 SetCurPETNaviStatsByte:
 	push {lr}
@@ -10574,15 +10358,8 @@ SetCurPETNaviStatsByte:
 	strb r2, [r3,r1]
 	pop {pc}
 	thumb_func_end SetCurPETNaviStatsByte
-	.else
-	thumb_func_start SetCurPETNaviStatsByte
-SetCurPETNaviStatsByte:
-	decomp_trampoline SetCurPETNaviStatsByte_c, 14
-	thumb_func_end SetCurPETNaviStatsByte
-	.endif
 
 // (int a1, int a2) -> u8
-	.ifndef DECOMP_GetCurPETNaviStatsByte
 	thumb_func_start GetCurPETNaviStatsByte
 GetCurPETNaviStatsByte:
 	push {lr}
@@ -10597,12 +10374,6 @@ GetCurPETNaviStatsByte:
 	ldrb r0, [r3,r1]
 	pop {pc}
 	thumb_func_end GetCurPETNaviStatsByte
-	.else
-	thumb_func_start GetCurPETNaviStatsByte
-GetCurPETNaviStatsByte:
-	decomp_trampoline GetCurPETNaviStatsByte_c, 14
-	thumb_func_end GetCurPETNaviStatsByte
-	.endif
 
 	thumb_local_start
 GetCurPetNaviStatsSignedByte:
@@ -10619,7 +10390,6 @@ GetCurPetNaviStatsSignedByte:
 	pop {pc}
 	thumb_func_end GetCurPetNaviStatsSignedByte
 
-	.ifndef DECOMP_SetCurPETNaviStatsHword
 	thumb_func_start SetCurPETNaviStatsHword
 // (int structSelectIdx, int structOffset, u16 val) -> void
 SetCurPETNaviStatsHword:
@@ -10636,14 +10406,7 @@ SetCurPETNaviStatsHword:
 	strh r2, [r3,r1]
 	pop {pc}
 	thumb_func_end SetCurPETNaviStatsHword
-	.else
-	thumb_func_start SetCurPETNaviStatsHword
-SetCurPETNaviStatsHword:
-	decomp_trampoline SetCurPETNaviStatsHword_c, 14
-	thumb_func_end SetCurPETNaviStatsHword
-	.endif
 
-	.ifndef DECOMP_GetCurPETNaviStatsHword
 	thumb_func_start GetCurPETNaviStatsHword
 GetCurPETNaviStatsHword: // (which_navi: u8, which_stat: u8) -> u16
 	push {lr}
@@ -10665,12 +10428,6 @@ GetCurPETNaviStatsHword: // (which_navi: u8, which_stat: u8) -> u16
 
 	pop {pc}
 	thumb_func_end GetCurPETNaviStatsHword
-	.else
-	thumb_func_start GetCurPETNaviStatsHword
-GetCurPETNaviStatsHword:
-	decomp_trampoline GetCurPETNaviStatsHword_c, 14
-	thumb_func_end GetCurPETNaviStatsHword
-	.endif
 
 	thumb_func_start GetBattleNaviStats203CB10Byte
 GetBattleNaviStats203CB10Byte:
@@ -10717,7 +10474,6 @@ initNaviStats203CCE0_8013846:
 	pop {r4,pc}
 	thumb_func_end initNaviStats203CCE0_8013846
 
-	.ifndef DECOMP_GetNaviStats203CCE0Addr
 	thumb_func_start GetNaviStats203CCE0Addr
 GetNaviStats203CCE0Addr:
 	mov r1, #oNaviStats_Size
@@ -10729,14 +10485,7 @@ GetNaviStats203CCE0Addr:
 off_8013860:
 	.word eNaviStats203CCE0
 	thumb_func_end GetNaviStats203CCE0Addr
-	.else
-	thumb_func_start GetNaviStats203CCE0Addr
-GetNaviStats203CCE0Addr:
-	decomp_trampoline GetNaviStats203CCE0Addr_c, 8
-	thumb_func_end GetNaviStats203CCE0Addr
-	.endif
 
-	.ifndef DECOMP_SetNaviStats203CCE0Byte
 	thumb_func_start SetNaviStats203CCE0Byte
 SetNaviStats203CCE0Byte:
 	push {r6,r7,lr}
@@ -10747,14 +10496,7 @@ SetNaviStats203CCE0Byte:
 	strb r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetNaviStats203CCE0Byte
-	.else
-	thumb_func_start SetNaviStats203CCE0Byte
-SetNaviStats203CCE0Byte:
-	decomp_trampoline SetNaviStats203CCE0Byte_c, 8
-	thumb_func_end SetNaviStats203CCE0Byte
-	.endif
 
-	.ifndef DECOMP_SetNaviStats203CCE0Hword
 	thumb_func_start SetNaviStats203CCE0Hword
 SetNaviStats203CCE0Hword:
 	push {r6,r7,lr}
@@ -10765,14 +10507,7 @@ SetNaviStats203CCE0Hword:
 	strh r7, [r0,r6]
 	pop {r6,r7,pc}
 	thumb_func_end SetNaviStats203CCE0Hword
-	.else
-	thumb_func_start SetNaviStats203CCE0Hword
-SetNaviStats203CCE0Hword:
-	decomp_trampoline SetNaviStats203CCE0Hword_c, 8
-	thumb_func_end SetNaviStats203CCE0Hword
-	.endif
 
-	.ifndef DECOMP_GetNaviStats203CCE0Byte
 	thumb_func_start GetNaviStats203CCE0Byte
 GetNaviStats203CCE0Byte:
 	push {r6,lr}
@@ -10782,12 +10517,6 @@ GetNaviStats203CCE0Byte:
 	ldrb r0, [r0,r6]
 	pop {r6,pc}
 	thumb_func_end GetNaviStats203CCE0Byte
-	.else
-	thumb_func_start GetNaviStats203CCE0Byte
-GetNaviStats203CCE0Byte:
-	decomp_trampoline GetNaviStats203CCE0Byte_c, 6
-	thumb_func_end GetNaviStats203CCE0Byte
-	.endif
 
 	thumb_local_start
 sub_8013892:
@@ -11158,7 +10887,6 @@ loc_8013B4A:
 	thumb_func_end sub_8013B20
 
 // (bool a1, int a2) -> void
-	.ifndef DECOMP_init_8013B4E
 	thumb_func_start init_8013B4E
 init_8013B4E:
 	push {r4,r6,r7,lr}
@@ -11174,15 +10902,8 @@ loc_8013B56:
 	add r7, r7, r0
 	b loc_8013B6E
 	thumb_func_end init_8013B4E
-	.else
-	thumb_func_start init_8013B4E
-init_8013B4E:
-	decomp_trampoline init_8013B4E_c, 12
-	thumb_func_end init_8013B4E
-	.endif
 
 // (int idx, int a2) -> void
-	.ifndef DECOMP_init_8013B64
 	thumb_func_start init_8013B64
 init_8013B64:
 	push {r4,r6,r7,lr}
@@ -11244,68 +10965,6 @@ loc_8013B6E:
 	strb r0, [r7,r1]
 	pop {r4,r6,r7,pc}
 	thumb_func_end init_8013B64
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start init_8013B64
-init_8013B64:
-	decomp_trampoline init_8013B64_c, 2
-loc_8013B6E:
-	mov r0, r7
-	bl initNaviStats_WithDefaultStatsMaybe_8013438 // (void *struct) -> void
-	mov r0, #0x10
-	mul r0, r4
-	ldr r6, off_8013CB4 // =byte_80210DD 
-	add r6, r6, r0
-	mov r1, #oNaviStats_NaviIndex 
-	strb r4, [r7,r1]
-	ldrb r0, [r6]
-	add r0, r0, r0
-	mov r1, #oNaviStats_CurHP 
-	strh r0, [r7,r1]
-	mov r1, #oNaviStats_MaxHP 
-	strh r0, [r7,r1]
-	mov r1, #oNaviStats_MaxBaseHP 
-	strh r0, [r7,r1]
-	ldrb r0, [r6,#1]
-	mov r1, #oNaviStats_SuperArmor 
-	strb r0, [r7,r1]
-	ldrb r0, [r6,#2]
-	strb r0, [r7,#oNaviStats_FloatShoes]
-	ldrb r0, [r6,#3]
-	strb r0, [r7,#oNaviStats_AirShoes]
-	ldrb r0, [r6,#4]
-	mov r1, #oNaviStats_UnderShirt
-	strb r0, [r7,r1]
-	ldrb r0, [r6,#5]
-	strb r0, [r7,#oNaviStats_FstBarr]
-	ldrb r0, [r6,#6]
-	strb r0, [r7,#oNaviStats_MegaLevel]
-	ldrb r0, [r6,#7]
-	strb r0, [r7,#oNaviStats_GigaLevel]
-	ldrb r0, [r6,#8]
-	strb r0, [r7,#oNaviStats_BButton]
-	ldrb r0, [r6,#9]
-	strb r0, [r7,#oNaviStats_BPwrAtk]
-	ldrb r0, [r6,#0xa]
-	strb r0, [r7,#oNaviStats_BLeftAbility]
-	ldrb r0, [r6,#0xb]
-	mov r1, #0x46 
-	strh r0, [r7,r1]
-	ldrb r0, [r6,#0xc]
-	mov r1, #0x4a 
-	strh r0, [r7,r1]
-	ldrb r0, [r6,#0xd]
-	mov r1, #0x48 
-	strh r0, [r7,r1]
-	ldrb r0, [r6,#0xe]
-	strb r0, [r7]
-	ldrb r0, [r6,#0xf]
-	mov r1, #0x39 
-	strb r0, [r7,r1]
-	pop {r4,r6,r7,pc}
-	thumb_func_end init_8013B64
-	.endif
 
 	thumb_local_start
 sub_8013BDA:
@@ -11911,7 +11570,7 @@ GetNaviStatsAddrGivenCurPETNavi:
 	// 8014030
 	.pool
 	.balign 4, 0
-CurPETNaviToNaviStatsIndexTable::
+CurPETNaviToNaviStatsIndexTable:
 	.byte 0x0, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1
 	thumb_func_end GetNaviStatsAddrGivenCurPETNavi
 
@@ -12444,21 +12103,14 @@ sub_8014432:
 	mov pc, lr
 	thumb_func_end sub_8014432
 
-	.ifndef DECOMP_sub_801443C
 	thumb_func_start sub_801443C
 sub_801443C:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, dword_80144B8 // =0xffff
+	ldr r0, dword_80144B8 // =0xffff 
 	strh r0, [r3,#oAIData_Unk_32]
 	pop {pc}
 	thumb_func_end sub_801443C
-	.else
-	thumb_func_start sub_801443C
-sub_801443C:
-	decomp_trampoline sub_801443C_c, 2
-	thumb_func_end sub_801443C
-	.endif
 
 	thumb_func_start sub_8014446
 sub_8014446:
@@ -13068,7 +12720,6 @@ off_8014828:
 	.word unk_203A990
 	thumb_func_end sub_80147E4
 
-	.ifndef DECOMP_sub_801482C
 	thumb_func_start sub_801482C
 sub_801482C:
 	ldr r1, off_8014838 // =dword_20367F0 
@@ -13080,12 +12731,6 @@ sub_801482C:
 off_8014838:
 	.word dword_20367F0
 	thumb_func_end sub_801482C
-	.else
-	thumb_func_start sub_801482C
-sub_801482C:
-	decomp_trampoline sub_801482C_c, 8
-	thumb_func_end sub_801482C
-	.endif
 
 	thumb_func_start sub_801483C
 sub_801483C:
@@ -15126,7 +14771,6 @@ sub_8015940:
 	pop {r5,pc}
 	thumb_func_end sub_8015940
 
-	.ifndef DECOMP_sub_8015952
 	thumb_func_start sub_8015952
 sub_8015952:
 	push {r4,lr}
@@ -15136,12 +14780,6 @@ sub_8015952:
 	strb r2, [r4,#0x3] // (byte_203CED3 - 0x203ced0)
 	pop {r4,pc}
 	thumb_func_end sub_8015952
-	.else
-	thumb_func_start sub_8015952
-sub_8015952:
-	decomp_trampoline sub_8015952_c, 2
-	thumb_func_end sub_8015952
-	.endif
 
 	thumb_local_start
 sub_801595E:
@@ -15585,7 +15223,6 @@ sub_8015C2C:
 	pop {pc}
 	thumb_func_end sub_8015C2C
 
-	.ifndef DECOMP_ZeroAllNaviStatsMood
 	thumb_func_start ZeroAllNaviStatsMood
 ZeroAllNaviStatsMood:
 	push {r4,lr}
@@ -15600,12 +15237,6 @@ ZeroAllNaviStatsMood:
 	blt .setNaviMoodLoop
 	pop {r4,pc}
 	thumb_func_end ZeroAllNaviStatsMood
-	.else
-	thumb_func_start ZeroAllNaviStatsMood
-ZeroAllNaviStatsMood:
-	decomp_trampoline ZeroAllNaviStatsMood_c, 12
-	thumb_func_end ZeroAllNaviStatsMood
-	.endif
 
 	thumb_func_start sub_8015C48
 sub_8015C48:
@@ -21930,7 +21561,6 @@ object_setFlag1:
 	thumb_func_end object_setFlag1
 
 // (int bitfield) -> void
-	.ifndef DECOMP_object_clearFlag
 	thumb_func_start object_clearFlag
 object_clearFlag:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -21939,12 +21569,6 @@ object_clearFlag:
 	str r2, [r1,#oCollisionData_ObjectFlags1]
 	mov pc, lr
 	thumb_func_end object_clearFlag
-	.else
-	thumb_func_start object_clearFlag
-object_clearFlag:
-	decomp_trampoline object_clearFlag_c, 2
-	thumb_func_end object_clearFlag
-	.endif
 
 // () -> int
 	thumb_func_start object_getFlag
@@ -21954,7 +21578,6 @@ object_getFlag:
 	mov pc, lr
 	thumb_func_end object_getFlag
 
-	.ifndef DECOMP_object_setFlag2
 	thumb_func_start object_setFlag2
 object_setFlag2:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -21963,12 +21586,6 @@ object_setFlag2:
 	str r2, [r1,#oCollisionData_ObjectFlags2]
 	mov pc, lr
 	thumb_func_end object_setFlag2
-	.else
-	thumb_func_start object_setFlag2
-object_setFlag2:
-	decomp_trampoline object_setFlag2_c, 2
-	thumb_func_end object_setFlag2
-	.endif
 
 	thumb_func_start object_clearFlag2
 object_clearFlag2:
@@ -22453,7 +22070,6 @@ locret_801A4CE:
 	pop {r4,pc}
 	thumb_func_end sub_801A4A6
 
-	.ifndef DECOMP_sub_801A4D0
 	thumb_func_start sub_801A4D0
 sub_801A4D0:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
@@ -22463,14 +22079,7 @@ sub_801A4D0:
 	strh r1, [r3,r0]
 	mov pc, lr
 	thumb_func_end sub_801A4D0
-	.else
-	thumb_func_start sub_801A4D0
-sub_801A4D0:
-	decomp_trampoline sub_801A4D0_c, 4
-	thumb_func_end sub_801A4D0
-	.endif
 
-	.ifndef DECOMP_sub_801A4DC
 	thumb_func_start sub_801A4DC
 sub_801A4DC:
 	push {r4,r5,lr}
@@ -22498,12 +22107,6 @@ loc_801A502:
 	mov r0, r3
 	pop {r4,r5,pc}
 	thumb_func_end sub_801A4DC
-	.else
-	thumb_func_start sub_801A4DC
-sub_801A4DC:
-	decomp_trampoline sub_801A4DC_c, 34
-	thumb_func_end sub_801A4DC
-	.endif
 
 	thumb_local_start
 sub_801A506:
@@ -25781,7 +25384,6 @@ AddRandomVarianceToTwoCoords:
 	pop {r4,r6,r7,pc}
 	thumb_func_end AddRandomVarianceToTwoCoords
 
-	.ifndef DECOMP_sub_801BE04
 	thumb_func_start sub_801BE04
 sub_801BE04:
 	sub r0, r0, r2
@@ -25809,12 +25411,6 @@ loc_801BE24:
 	orr r0, r1
 	mov pc, lr
 	thumb_func_end sub_801BE04
-	.else
-	thumb_func_start sub_801BE04
-sub_801BE04:
-	decomp_trampoline sub_801BE04_c, 28
-	thumb_func_end sub_801BE04
-	.endif
 
 	thumb_func_start nullsub_10
 nullsub_10:
@@ -25856,7 +25452,6 @@ off_801BE6C:
 	.word byte_8019C34
 	thumb_func_end sub_801BE2A
 
-	.ifndef DECOMP_sub_801BE70
 	thumb_func_start sub_801BE70
 sub_801BE70:
 	push {lr}
@@ -25899,14 +25494,7 @@ off_801BEB0:
 off_801BEB4:
 	.word dword_20367E0
 	thumb_func_end sub_801BE70
-	.else
-	thumb_func_start sub_801BE70
-sub_801BE70:
-	decomp_trampoline sub_801BE70_c, 64
-	thumb_func_end sub_801BE70
-	.endif
 
-	.ifndef DECOMP_sub_801BEB8
 	thumb_func_start sub_801BEB8
 sub_801BEB8:
 	ldr r1, off_801BFE8 // =eStruct2035280
@@ -25915,12 +25503,6 @@ sub_801BEB8:
 	str r2, [r1,#0x44] // (dword_20352C4 - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801BEB8
-	.else
-	thumb_func_start sub_801BEB8
-sub_801BEB8:
-	decomp_trampoline sub_801BEB8_c, 2
-	thumb_func_end sub_801BEB8
-	.endif
 
 	thumb_func_start sub_801BEC2
 sub_801BEC2:
@@ -25931,7 +25513,6 @@ sub_801BEC2:
 	mov pc, lr
 	thumb_func_end sub_801BEC2
 
-	.ifndef DECOMP_sub_801BECC
 	thumb_func_start sub_801BECC
 sub_801BECC:
 	ldr r1, off_801BFE8 // =eStruct2035280
@@ -25940,12 +25521,6 @@ sub_801BECC:
 	str r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801BECC
-	.else
-	thumb_func_start sub_801BECC
-sub_801BECC:
-	decomp_trampoline sub_801BECC_c, 2
-	thumb_func_end sub_801BECC
-	.endif
 
 	thumb_func_start sub_801BED6
 sub_801BED6:
@@ -29850,7 +29425,6 @@ locret_801DCCA:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801DC7C
 
-	.ifndef DECOMP_sub_801DCCC
 	thumb_func_start sub_801DCCC
 sub_801DCCC:
 	sub sp, sp, #8
@@ -29881,12 +29455,6 @@ loc_801DCF8:
 	add sp, sp, #8
 	mov pc, lr
 	thumb_func_end sub_801DCCC
-	.else
-	thumb_func_start sub_801DCCC
-sub_801DCCC:
-	decomp_trampoline sub_801DCCC_c, 40
-	thumb_func_end sub_801DCCC
-	.endif
 
 	thumb_local_start
 sub_801DCFC:
@@ -30250,7 +29818,6 @@ sub_801DF8C:
 	mov pc, lr
 	thumb_func_end sub_801DF8C
 
-	.ifndef DECOMP_ClearCustGauge
 	thumb_func_start ClearCustGauge
 ClearCustGauge:
 	push {lr}
@@ -30261,14 +29828,7 @@ ClearCustGauge:
 	bl battle_clearFlags
 	pop {pc}
 	thumb_func_end ClearCustGauge
-	.else
-	thumb_func_start ClearCustGauge
-ClearCustGauge:
-	decomp_trampoline ClearCustGauge_c, 6
-	thumb_func_end ClearCustGauge
-	.endif
 
-	.ifndef DECOMP_SetCustGauge
 	thumb_func_start SetCustGauge
 SetCustGauge:
 	push {r1,lr}
@@ -30284,14 +29844,7 @@ loc_801DFAC:
 dword_801DFB4:
 	.word 0x4000
 	thumb_func_end SetCustGauge
-	.else
-	thumb_func_start SetCustGauge
-SetCustGauge:
-	decomp_trampoline SetCustGauge_c, 12
-	thumb_func_end SetCustGauge
-	.endif
 
-	.ifndef DECOMP_sub_801DFB8
 	thumb_func_start sub_801DFB8
 sub_801DFB8:
 	push {lr}
@@ -30309,12 +29862,6 @@ loc_801DFC8:
 dword_801DFCC:
 	.word 0x4000
 	thumb_func_end sub_801DFB8
-	.else
-	thumb_func_start sub_801DFB8
-sub_801DFB8:
-	decomp_trampoline sub_801DFB8_c, 16
-	thumb_func_end sub_801DFB8
-	.endif
 
 	thumb_local_start
 sub_801DFD0:
@@ -30478,7 +30025,6 @@ sub_801E0BC:
 	pop {pc}
 	thumb_func_end sub_801E0BC
 
-	.ifndef DECOMP_sub_801E0C8
 	thumb_func_start sub_801E0C8
 sub_801E0C8:
 	push {r5,lr}
@@ -30486,14 +30032,7 @@ sub_801E0C8:
 	strh r0, [r5,#0x26] // (word_20352A6 - 0x2035280)
 	pop {r5,pc}
 	thumb_func_end sub_801E0C8
-	.else
-	thumb_func_start sub_801E0C8
-sub_801E0C8:
-	decomp_trampoline sub_801E0C8_c, 0
-	thumb_func_end sub_801E0C8
-	.endif
 
-	.ifndef DECOMP_sub_801E0D0
 	thumb_func_start sub_801E0D0
 sub_801E0D0:
 	push {lr}
@@ -30503,16 +30042,6 @@ sub_801E0D0:
 off_801E0D8:
 	.word eStruct2035280
 	thumb_func_end sub_801E0D0
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_801E0D0
-sub_801E0D0:
-	decomp_trampoline sub_801E0D0_c, 0
-off_801E0D8:
-	.word eStruct2035280
-	thumb_func_end sub_801E0D0
-	.endif
 
 	thumb_local_start
 sub_801E0DC:
@@ -31287,7 +30816,6 @@ dword_801E654:
 	.word 0x200000
 	thumb_func_end sub_801E5F8
 
-	.ifndef DECOMP_sub_801E658
 	thumb_func_start sub_801E658
 sub_801E658:
 	mov r0, #0
@@ -31295,12 +30823,6 @@ sub_801E658:
 	strb r0, [r1,#0x1e] // (byte_203529E - 0x2035280)
 	mov pc, lr
 	thumb_func_end sub_801E658
-	.else
-	thumb_func_start sub_801E658
-sub_801E658:
-	decomp_trampoline sub_801E658_c, 0
-	thumb_func_end sub_801E658
-	.endif
 
 	thumb_func_start sub_801E660
 sub_801E660:
@@ -31400,7 +30922,6 @@ byte_801E700:
 	.byte 0x0, 0x5, 0x6, 0x7, 0x8, 0x9, 0x5, 0x6, 0x7, 0x8, 0x9, 0x14, 0x14, 0xF, 0x10, 0x11, 0x12, 0x13, 0xf, 0x10, 0x11, 0x12, 0x13, 0x16, 0x16, 0x0, 0x0, 0x0
 	thumb_func_end sub_801E6A8
 
-	.ifndef DECOMP_sub_801E71C
 	thumb_func_start sub_801E71C
 sub_801E71C:
 	push {r1,lr}
@@ -31408,14 +30929,7 @@ sub_801E71C:
 	strb r0, [r1,#0x12] // (byte_2035292 - 0x2035280)
 	pop {r1,pc}
 	thumb_func_end sub_801E71C
-	.else
-	thumb_func_start sub_801E71C
-sub_801E71C:
-	decomp_trampoline sub_801E71C_c, 0
-	thumb_func_end sub_801E71C
-	.endif
 
-	.ifndef DECOMP_sub_801E724
 	thumb_func_start sub_801E724
 sub_801E724:
 	push {r5,lr}
@@ -31432,12 +30946,6 @@ loc_801E730:
 	strb r0, [r5,#0x13] // (byte_2035293 - 0x2035280)
 	pop {r5,pc}
 	thumb_func_end sub_801E724
-	.else
-	thumb_func_start sub_801E724
-sub_801E724:
-	decomp_trampoline sub_801E724_c, 16
-	thumb_func_end sub_801E724
-	.endif
 
 	thumb_local_start
 sub_801E73C:
@@ -31457,7 +30965,6 @@ sub_801E748:
 	pop {pc}
 	thumb_func_end sub_801E748
 
-	.ifndef DECOMP_sub_801E754
 	thumb_func_start sub_801E754
 sub_801E754:
 	push {r1,r2,lr}
@@ -31485,19 +30992,7 @@ locret_801E778:
 off_801E77C:
 	.word eStruct2035280
 	thumb_func_end sub_801E754
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_801E754
-sub_801E754:
-	decomp_trampoline sub_801E754_c, 32
-	.balign 4, 0
-off_801E77C:
-	.word eStruct2035280
-	thumb_func_end sub_801E754
-	.endif
 
-	.ifndef DECOMP_sub_801E780
 	thumb_func_start sub_801E780
 sub_801E780:
 	ldr r2, off_801E924 // =byte_2036840 
@@ -31512,12 +31007,6 @@ loc_801E78C:
 locret_801E790:
 	mov pc, lr
 	thumb_func_end sub_801E780
-	.else
-	thumb_func_start sub_801E780
-sub_801E780:
-	decomp_trampoline sub_801E780_c, 10
-	thumb_func_end sub_801E780
-	.endif
 
 	thumb_func_start sub_801E792
 sub_801E792:

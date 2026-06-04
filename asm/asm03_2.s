@@ -693,7 +693,6 @@ off_804646C:
 	thumb_func_end sub_8046450
 
 // () -> void
-	.ifndef DECOMP_sub_804657C
 	thumb_func_start sub_804657C
 sub_804657C:
 	push {r4-r7,lr}
@@ -717,12 +716,6 @@ loc_804658A:
 off_804659C:
 	.word 0x528
 	thumb_func_end sub_804657C
-	.else
-	thumb_func_start sub_804657C
-sub_804657C:
-	decomp_trampoline sub_804657C_c, 28
-	thumb_func_end sub_804657C
-	.endif
 
 // (void *a1) -> void
 	thumb_func_start sub_80465A0
@@ -908,7 +901,6 @@ loc_80466BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80466AA
 
-	.ifndef DECOMP_getStructFrom2008450
 	thumb_func_start getStructFrom2008450
 getStructFrom2008450:
 	ldr r1, off_80466D4 // =eStructArr2008450 
@@ -922,17 +914,6 @@ getStructFrom2008450:
 off_80466D4:
 	.word eStructArr2008450
 	thumb_func_end getStructFrom2008450
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start getStructFrom2008450
-getStructFrom2008450:
-	decomp_trampoline getStructFrom2008450_c, 8
-	.balign 4, 0x00
-off_80466D4:
-	.word eStructArr2008450
-	thumb_func_end getStructFrom2008450
-	.endif
 
 	thumb_local_start
 sub_80466D8:
@@ -1062,7 +1043,6 @@ off_804679C:
 	.word sub_811E9A0+1
 	thumb_func_end sub_80466D8
 
-	.ifndef DECOMP_sub_80467D8
 	thumb_func_start sub_80467D8
 sub_80467D8:
 	push {r4-r7,lr}
@@ -1086,12 +1066,6 @@ loc_80467E6:
 off_80467F8:
 	.word 0x1B8
 	thumb_func_end sub_80467D8
-	.else
-	thumb_func_start sub_80467D8
-sub_80467D8:
-	decomp_trampoline sub_80467D8_c, 28
-	thumb_func_end sub_80467D8
-	.endif
 
 	thumb_func_start sub_80467FC
 sub_80467FC:
@@ -1269,7 +1243,6 @@ loc_8046910:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046900
 
-	.ifndef DECOMP_sub_804691A
 	thumb_func_start sub_804691A
 sub_804691A:
 	ldr r1, off_8046928 // =byte_2011860 
@@ -1282,16 +1255,6 @@ sub_804691A:
 off_8046928:
 	.word byte_2011860
 	thumb_func_end sub_804691A
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_804691A
-sub_804691A:
-	decomp_trampoline sub_804691A_c, 4
-off_8046928:
-	.word byte_2011860
-	thumb_func_end sub_804691A
-	.endif
 
 	thumb_local_start
 sub_804692C:
@@ -3716,7 +3679,7 @@ off_8047D98:
 	.word byte_2019A00
 off_8047D9C:
 	.word byte_2011C10
-byte_8047DA0::
+byte_8047DA0:
 	.byte 0x1
 byte_8047DA1:
 	.byte 0x1
@@ -4058,7 +4021,6 @@ loc_8048C5C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8048C24
 
-	.ifndef DECOMP_copy_8048C68
 	thumb_func_start copy_8048C68
 copy_8048C68:
 	push {lr}
@@ -4089,14 +4051,7 @@ loc_8048C90:
 locret_8048C96:
 	pop {pc}
 	thumb_func_end copy_8048C68
-	.else
-	thumb_func_start copy_8048C68
-copy_8048C68:
-	decomp_trampoline copy_8048C68_c, 40
-	thumb_func_end copy_8048C68
-	.endif
 
-	.ifndef DECOMP_copy_8048C98
 	thumb_func_start copy_8048C98
 copy_8048C98:
 	push {lr}
@@ -4130,19 +4085,6 @@ off_8048CC4:
 dword_8048CC8:
 	.word 0xE80
 	thumb_func_end copy_8048C98
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start copy_8048C98
-copy_8048C98:
-	decomp_trampoline copy_8048C98_c, 36
-	.balign 4, 0
-off_8048CC4:
-	.word byte_8047DA0
-dword_8048CC8:
-	.word 0xE80
-	thumb_func_end copy_8048C98
-	.endif
 
 	thumb_local_start
 sub_8048CCC:
@@ -6172,7 +6114,6 @@ off_8049CF4:
 	.word word_2001800
 	thumb_func_end sub_8049CBC
 
-	.ifndef DECOMP_sub_8049CF8
 	thumb_func_start sub_8049CF8
 sub_8049CF8:
 	push {r4-r7,lr}
@@ -6208,12 +6149,6 @@ sub_8049CF8:
 	strb r1, [r0,#0x14] // (byte_200183C - 0x2001828)
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049CF8
-	.else
-	thumb_func_start sub_8049CF8
-sub_8049CF8:
-	decomp_trampoline sub_8049CF8_c, 58
-	thumb_func_end sub_8049CF8
-	.endif
 
 	thumb_local_start
 sub_8049D3A:
@@ -6290,7 +6225,6 @@ sub_8049D98:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049D98
 
-	.ifndef DECOMP_sub_8049DA0
 	thumb_func_start sub_8049DA0
 sub_8049DA0:
 	push {r4-r7,lr}
@@ -6310,14 +6244,7 @@ off_8049DBC:
 off_8049DC0:
 	.word unk_2001828
 	thumb_func_end sub_8049DA0
-	.else
-	thumb_func_start sub_8049DA0
-sub_8049DA0:
-	decomp_trampoline sub_8049DA0_c, 28
-	thumb_func_end sub_8049DA0
-	.endif
 
-	.ifndef DECOMP_sub_8049DC4
 	thumb_func_start sub_8049DC4
 sub_8049DC4:
 	push {r4-r7,lr}
@@ -6331,12 +6258,6 @@ sub_8049DC4:
 	bl sub_803C168
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049DC4
-	.else
-	thumb_func_start sub_8049DC4
-sub_8049DC4:
-	decomp_trampoline sub_8049DC4_c, 16
-	thumb_func_end sub_8049DC4
-	.endif
 
 	thumb_func_start sub_8049DDC
 sub_8049DDC:
@@ -6907,7 +6828,6 @@ off_804A248:
 	.word eS200A290
 	thumb_func_end sub_804A230
 
-	.ifndef DECOMP_sub_804A24C
 	thumb_func_start sub_804A24C
 sub_804A24C:
 	push {r4-r7,lr}
@@ -6941,38 +6861,6 @@ byte_804A2B0:
 	.byte 0x16, 0x0, 0x0, 0x0, 0x16, 0x1, 0x1, 0x0, 0x16, 0x2, 0x2, 0x0, 0x4, 0x3
 	.byte 0x0, 0x2, 0x4, 0x4, 0x1, 0x2, 0x4, 0x5, 0x2, 0x2, 0xFF, 0xFF, 0xFF, 0xFF
 	thumb_func_end sub_804A24C
-	.else
-	// Literal pool is shared with other functions — keep it
-	// in both branches so its labels stay at the same address.
-	thumb_func_start sub_804A24C
-sub_804A24C:
-	decomp_trampoline sub_804A24C_c, 4
-	.balign 4, 0
-off_804A258:
-	.word dword_804A25C
-dword_804A25C:
-	.word 0x402000
-off_804A260:
-	.word unk_2001850
-byte_804A264:
-	.byte 0xB0, 0xC3, 0xB1, 0xC3, 0xB2, 0xC3, 0xB3, 0xC3, 0xB4
-	.byte 0xC3, 0xB5, 0xC3, 0xB6, 0xC3, 0xB7, 0xC3, 0xB8, 0xC3
-	.byte 0xB9, 0xC3, 0xBA, 0xC3, 0xBB, 0xC3, 0xBC, 0xC3, 0xBD
-	.byte 0xC3, 0xBE, 0xC3, 0xBF, 0xC3, 0xC0, 0xC3, 0xC1, 0xC3
-	.byte 0xC2, 0xC3, 0xC3, 0xC3, 0xC4, 0xC3, 0xC5, 0xC3, 0xC6
-	.byte 0xC3, 0xC7, 0xC3, 0xC8, 0xC3, 0xC9, 0xC3, 0xCA, 0xC3
-	.byte 0xCB, 0xC3
-byte_804A29C:
-	.byte 0x48, 0xC2, 0x44, 0xC2, 0x40, 0xC2, 0xFF, 0xFF
-byte_804A2A4:
-	.byte 0x50, 0xC2, 0x4F, 0xC2, 0x4E, 0xC2, 0xFF, 0xFF
-dword_804A2AC:
-	.word 0xFF060606
-byte_804A2B0:
-	.byte 0x16, 0x0, 0x0, 0x0, 0x16, 0x1, 0x1, 0x0, 0x16, 0x2, 0x2, 0x0, 0x4, 0x3
-	.byte 0x0, 0x2, 0x4, 0x4, 0x1, 0x2, 0x4, 0x5, 0x2, 0x2, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_804A24C
-	.endif
 
 	thumb_func_start sub_804A2CC
 sub_804A2CC:

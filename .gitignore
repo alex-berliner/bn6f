@@ -2,7 +2,6 @@
 *.o
 *.map
 *.elf
-build/
 
 # ROMS and ROM related files
 *.gba
@@ -48,12 +47,6 @@ tags
 baserom.txt
 bn6f.txt
 *.txt
-# but keep tracker baselines (parity-check fixtures for the harness)
-!tests/fixtures/*.txt
-# and the decomp manifest (drives the decompile build)
-!tools/decomp_manifest.txt
-# and hand-curated demo scenes (savestates + input replays, NOTES.md)
-!tests/fixtures/demos/**
 
 # asmdiff.sh
 *.dump
@@ -62,36 +55,8 @@ bn6f.txt
 *.exe
 tools/agbcc/
 tools/binutils/
-
-# Headless mGBA binary — built from /tmp/mgba-build/mgba via
-# `cmake -DBUILD_HEADLESS=ON . && make mgba-headless`. Linux x86-64
-# only; rebuild per platform.
-tools/mgba-headless
-# Vendored libmgba CLI extras + docs (rebuilt artifacts from
-# /tmp/mgba-build/install; not needed by the harness link path).
-tools/libmgba/bin/
-tools/libmgba/share/
-
-# Rust build artifacts under tools/bn6f-track
-tools/bn6f-track/target/
-
-# Per-bk2 record sessions — entry snapshots, exit deltas, and
-# `.recorded` markers. All regenerable: `make verify` rebuilds them
-# from the oracle ROM via `bn6f-track verify-all`, which keeps a
-# durable cache under `.verify-cache/` (also gitignored below).
-tests/fixtures/calls/
-.verify-cache/
 *.pickle
 temp/
 *.cfg
 *.rsync
 *.sym
-.claude/*
-# Keep project-scoped Claude artefacts that belong with the repo:
-# slash commands, cron history log, decomp stats. Exclude the huge
-# ephemeral worktrees agent isolation dir.
-!.claude/commands/
-!.claude/cron_history.md
-!.claude/decomp_stats.tsv
-build/patch_bk2_xref.csv
-/tools/bn6f-validate/target/
