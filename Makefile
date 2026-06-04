@@ -69,6 +69,23 @@ setup-toolchain:
 	fi
 	@$(MAKE) -C tools/gbagfx
 	@test -x $(GBAGFX) || { echo "setup-toolchain: gbagfx build did not produce $(GBAGFX)" >&2; exit 1; }
+	@# Validation harness emulator: build libmgba from the pinned mgba submodule
+	@# (alex-berliner/mgba @ BizHawk 2.11.1's commit + our hooks) into
+	@# tools/libmgba. Minimal shared build — no frontends/ffmpeg. See
+	@# docs/development_plan.md / the harness_libmgba_pin decision.
+	@if [ -x tools/libmgba/lib/libmgba.so ]; then \
+		echo "[setup-toolchain] libmgba already built."; \
+	else \
+		[ -f tools/mgba/CMakeLists.txt ] || git submodule update --init tools/mgba; \
+		cmake -S tools/mgba -B build/mgba -DCMAKE_BUILD_TYPE=Release \
+			-DBUILD_SHARED=ON -DBUILD_STATIC=OFF \
+			-DBUILD_QT=OFF -DBUILD_SDL=OFF \
+			-DBUILD_GL=OFF -DBUILD_GLES2=OFF -DBUILD_GLES3=OFF \
+			-DUSE_FFMPEG=OFF -DUSE_EDITLINE=OFF \
+			-DCMAKE_INSTALL_PREFIX=$(CURDIR)/tools/libmgba || exit $$?; \
+		cmake --build build/mgba -j"$$(nproc)" && cmake --install build/mgba || exit $$?; \
+		test -x tools/libmgba/lib/libmgba.so || { echo "setup-toolchain: libmgba build did not install" >&2; exit 1; }; \
+	fi
 	@echo "[setup-toolchain] done."
 
 # TODO: INTEGRATE SCAN INCLUDES

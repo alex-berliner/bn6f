@@ -1,0 +1,4 @@
+[submodule "tools/mgba"]
+	path = tools/mgba
+	url = https://github.com/alex-berliner/mgba.git
+	branch = bn6f-harness
