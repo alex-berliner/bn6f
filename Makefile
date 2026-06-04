@@ -10,14 +10,14 @@ PY = py
 
 # project paths
 SRC = src
-ASMDIR = asm
-BIN = bin
+ASMDIR = src/asm
+BIN = $(ASMDIR)/bin
 CONST = constants
-INC = include
+INC = src/asm/include
 LDDIR = ld
 OBJ = build/
 
-# project files (translation units live in $(SRC), include their parts via -I.)
+# project files (translation units live in $(ASMDIR), include their parts via -I$(ASMDIR))
 SFILES = rom.s data.s ewram.s iwram.s vram.s
 
 # to keep track of compressed files and to build decompressed versions into them
@@ -32,9 +32,11 @@ SYM = $(OBJ)$(BUILD_NAME).sym
 NOGBASYM = $(OBJ)bn6f_nogba.sym
 
 # build flags
-# -I. lets the $(SRC) translation units resolve their root-relative
-#  .include paths ("asm/...", "data/...", "include/...", "src/...").
-COMPLIANCE_FLAGS = -g -I$(INC) -I.
+# -I.       : resolves "include/...", "constants/...", "src/..." from repo root
+# -I$(ASMDIR): resolves the content includes under src/asm/ ("asm/..." ->
+#              src/asm/asm, "data/..." -> src/asm/data, "maps/..." -> src/asm/maps,
+#              and the TUs' sibling includes "iwram_data.s" etc.)
+COMPLIANCE_FLAGS = -g -I$(INC) -I. -I$(ASMDIR)
 WFLAGS =
 ARCH = -mcpu=arm7tdmi -march=armv4t -mthumb -mthumb-interwork
 CDEBUG =
@@ -80,7 +82,7 @@ $(ROM): $(ELF)
 $(ELF): $(OFILES)
 	$(LD) $(LDFLAGS) -o $(ELF) -T $(LDDIR)/ld_script.ld $(LIB)
 
-$(OBJ)%.o: $(SRC)/%.s
+$(OBJ)%.o: $(ASMDIR)/%.s
 	@mkdir -p $(OBJ)
 	$(AS) $(ASFLAGS) $< -o $@
 
@@ -94,7 +96,7 @@ fdiff:
 
 tail: $(ROM)
 	@# Create tail.bin using the tail location in current elf then compile again
-	$(PY) tools/gen_obj_tail.py $(ELF) _$(ROM) bin/tail.bin 'tail'
+	$(PY) tools/gen_obj_tail.py $(ELF) _$(ROM) $(BIN)/tail.bin 'tail'
 	@echo "Updated tail.bin!"
 
 clean:

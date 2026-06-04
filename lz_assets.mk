@@ -1,4 +1,4 @@
-COMPRESSED_TEXT_ARCHIVES_DIR = data/textscript/compressed
+COMPRESSED_TEXT_ARCHIVES_DIR = src/asm/data/textscript/compressed
 LZ_SFILES = $(wildcard $(COMPRESSED_TEXT_ARCHIVES_DIR)/*.s)
 LZ_OFILES = $(LZ_SFILES:.s=.o)
 LZ_BINFILES = $(LZ_OFILES:.o=.s.bin)
