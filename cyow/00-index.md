@@ -39,6 +39,9 @@ Conclusions and the running action list live in [todo.md](todo.md).
 9. [wrap_decomp.py automation](09-wrap-decomp.md) — **RETIRE — concerns go to Feature 5, written fresh (no code lift)**
 10. [Multi-agent coordination (`AGENTS.md` + `claim.py`)](10-multiagent.md) — **PURGE NOW, REDESIGN LATER — 10b/10c collapse into F4/F5; rebuild 10a/10d/10e post-F4/F5**
 11. [agbcc toolchain / ABI constraint](11-agbcc-abi.md) — _in discussion; r10 global-register-variable fix verified, adopt regardless_
+12. [function_card.py per-symbol summary](12-function-card.md) — **SUBSUME — field set becomes the batch metadata artifact schema; no standalone tool**
+13. [validate_asm.py / `make validate`](13-validate-asm.md) — **RETIRE — lossy static oracle can false-PASS; runtime oracle is ground truth**
+14. [Ghidra pre-pass](14-ghidra-prepass.md) — **KEEP as optional non-authoritative display; never a gate**
 
 ## Analyses (side investigations)
 
@@ -48,9 +51,7 @@ Conclusions and the running action list live in [todo.md](todo.md).
 
 ## Candidate feature backlog (not yet discussed)
 
-- `tools/function_card.py` per-symbol summary (skipped — pure tool, retire)
-- Ghidra pre-pass + token-reduction strategies
-- `make validate` static ELF check (`tools/validate_asm.py`)
+- _(all discussed — see Features 12–14 above)_
 
 ---
-_Last updated: 2026-06-04 13:39:13 -0400_
+_Last updated: 2026-06-04 13:44:16 -0400_
