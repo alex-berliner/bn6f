@@ -64,7 +64,7 @@ setup-toolchain:
 		echo "[setup-toolchain] toolchain already present."; \
 	else \
 		[ -d $(AGBCC_SRC) ] || git clone --branch $(AGBCC_BRANCH) --recursive $(AGBCC_URL) $(AGBCC_SRC); \
-		$(MAKE) -C $(AGBCC_SRC) -j"$$(nproc)" && $(MAKE) -C $(AGBCC_SRC) install prefix=$(CURDIR) || exit $$?; \
+		$(MAKE) -C $(AGBCC_SRC) && $(MAKE) -C $(AGBCC_SRC) install prefix=$(CURDIR) || exit $$?; \
 		test -x $(AS) || { echo "setup-toolchain: $(AS) still missing after install" >&2; exit 1; }; \
 	fi
 	@$(MAKE) -C tools/gbagfx
@@ -73,7 +73,7 @@ setup-toolchain:
 	@# (alex-berliner/mgba @ BizHawk 2.11.1's commit + our hooks) into
 	@# tools/libmgba. Minimal shared build — no frontends/ffmpeg. See
 	@# docs/development_plan.md / the harness_libmgba_pin decision.
-	@if [ -x tools/libmgba/lib/libmgba.so ]; then \
+	@if [ -f tools/libmgba/lib/libmgba.so ]; then \
 		echo "[setup-toolchain] libmgba already built."; \
 	else \
 		[ -f tools/mgba/CMakeLists.txt ] || git submodule update --init tools/mgba; \
@@ -84,7 +84,7 @@ setup-toolchain:
 			-DUSE_FFMPEG=OFF -DUSE_EDITLINE=OFF \
 			-DCMAKE_INSTALL_PREFIX=$(CURDIR)/tools/libmgba || exit $$?; \
 		cmake --build tools/mgba/build -j"$$(nproc)" && cmake --install tools/mgba/build || exit $$?; \
-		test -x tools/libmgba/lib/libmgba.so || { echo "setup-toolchain: libmgba build did not install" >&2; exit 1; }; \
+		test -f tools/libmgba/lib/libmgba.so || { echo "setup-toolchain: libmgba build did not install" >&2; exit 1; }; \
 	fi
 	@$(MAKE) --no-print-directory bizhawk-dll
 	@echo "[setup-toolchain] done."
