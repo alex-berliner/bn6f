@@ -147,6 +147,21 @@ fn run() -> Result<(), String> {
         let (n, dir) = spec.split_once(':').expect("--png-every N:dir");
         (n.parse().expect("--png-every N must be a number"), dir.to_string())
     });
+    // Per-frame frame-hash trace (the oracle's regression artifact, D1): one
+    // hex observable_hash per frame. `--check-trace` replays and reports the
+    // first frame that diverges from a stored trace instead of writing one.
+    let trace_out = arg(&args, "--trace");
+    let check_trace: Option<Vec<u64>> = arg(&args, "--check-trace")
+        .map(|p| -> Result<Vec<u64>, String> {
+            std::fs::read_to_string(&p)
+                .map_err(|e| format!("{p}: {e}"))?
+                .lines()
+                .filter(|l| !l.trim().is_empty() && !l.starts_with('#'))
+                .map(|l| u64::from_str_radix(l.trim().trim_start_matches("0x"), 16).map_err(|e| e.to_string()))
+                .collect()
+        })
+        .transpose()?;
+    let mut trace: Vec<u64> = Vec::new();
 
     let mut next_change = 0usize;
     for frame in 0..script.end {
@@ -155,11 +170,38 @@ fn run() -> Result<(), String> {
             next_change += 1;
         }
         core.run_frame();
+        if trace_out.is_some() || check_trace.is_some() {
+            let h = core.observable_hash();
+            if let Some(expected) = &check_trace {
+                let want = expected.get(frame as usize).copied();
+                if want != Some(h) {
+                    return Err(format!(
+                        "trace mismatch at frame {frame}: got {h:#018x}, expected {}",
+                        want.map(|w| format!("{w:#018x}")).unwrap_or_else(|| "(past end of trace)".into())
+                    ));
+                }
+            }
+            trace.push(h);
+        }
         if let Some((n, dir)) = &png_every {
             if (frame + 1) % n == 0 {
                 write_png(&format!("{dir}/f{:06}.png", frame + 1), core.frame_pixels())?;
             }
         }
+    }
+    if let Some(p) = &trace_out {
+        let body: String = trace.iter().map(|h| format!("{h:016x}\n")).collect();
+        std::fs::write(p, body).map_err(|e| format!("{p}: {e}"))?;
+    }
+    if let Some(expected) = &check_trace {
+        if expected.len() != trace.len() {
+            return Err(format!(
+                "trace length mismatch: replay {} frames, stored {}",
+                trace.len(),
+                expected.len()
+            ));
+        }
+        println!("trace OK: {} frames match {script_path}", trace.len());
     }
 
     if let Some(p) = arg(&args, "--png") {
