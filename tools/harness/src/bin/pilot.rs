@@ -16,7 +16,7 @@
 //!         [--png out.png] [--png-every N:dir] [--rom path] [--bios path]
 
 use bn6f_harness::emu::{Core, Snapshot, VIDEO_H, VIDEO_W};
-use bn6f_harness::{bios, DEFAULT_ROM};
+use bn6f_harness::{bios, symbols, DEFAULT_ROM};
 
 fn key_bit(name: &str) -> Result<u16, String> {
     Ok(match name {
@@ -143,6 +143,15 @@ fn run() -> Result<(), String> {
         core.load_state(&Snapshot::from_bytes(&bytes))?;
     }
 
+    // --profile <out.tsv>: count instruction executions across the run, then
+    // emit per-function call counts joined to the symbol map, with a coverage
+    // summary. reset() doesn't execute instructions, so enabling here (before
+    // the first frame) counts the entire run including boot.
+    let profile_out = arg(&args, "--profile");
+    if profile_out.is_some() {
+        core.enable_profiling();
+    }
+
     let png_every: Option<(u64, String)> = arg(&args, "--png-every").map(|spec| {
         let (n, dir) = spec.split_once(':').expect("--png-every N:dir");
         (n.parse().expect("--png-every N must be a number"), dir.to_string())
@@ -210,10 +219,43 @@ fn run() -> Result<(), String> {
     if let Some(p) = arg(&args, "--save-state") {
         std::fs::write(&p, core.save_state()?.bytes()).map_err(|e| format!("{p}: {e}"))?;
     }
+    if let Some(out) = &profile_out {
+        emit_profile(&core, out)?;
+    }
+
     println!(
         "pilot: ran {} frames of {script_path}; state hash {:#018x}",
         script.end,
         core.state_hash()?
     );
+    Ok(())
+}
+
+/// Join execution counts to the function map, write `<addr> <count> <name>`
+/// for every function (sorted hottest-first), and print a coverage summary.
+fn emit_profile(core: &Core, out: &str) -> Result<(), String> {
+    let fns = symbols::load(symbols::DEFAULT_MAP)?;
+    let mut rows: Vec<(u32, u32, &str)> = fns
+        .iter()
+        .map(|f| (core.exec_count(f.addr), f.addr, f.name.as_str()))
+        .collect();
+    rows.sort_by(|a, b| b.0.cmp(&a.0).then(a.1.cmp(&b.1)));
+
+    let body: String = rows
+        .iter()
+        .map(|(count, addr, name)| format!("{addr:08x}\t{count}\t{name}\n"))
+        .collect();
+    std::fs::write(out, body).map_err(|e| format!("{out}: {e}"))?;
+
+    let covered = rows.iter().filter(|r| r.0 > 0).count();
+    let total = rows.len();
+    println!(
+        "profile: {covered}/{total} functions covered ({:.1}%) -> {out}",
+        100.0 * covered as f64 / total as f64
+    );
+    println!("  hottest:");
+    for (count, addr, name) in rows.iter().take(8) {
+        println!("    {count:>10}  {addr:08x}  {name}");
+    }
     Ok(())
 }

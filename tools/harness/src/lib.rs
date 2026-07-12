@@ -39,6 +39,20 @@ mod tests {
 
     const TITLE: &str = "MEGAMAN6_FXX";
 
+    // libmgba's exec hook (used by profiling) is a process global, and cargo
+    // runs tests in parallel. A profiling core executing while any other core
+    // executes would race on that global / the counter buffers. Gate it:
+    // normal runs take a shared lock, profiling takes an exclusive one, so no
+    // core executes concurrently with a profiling core (normal runs still
+    // parallelize with each other).
+    static EXEC: std::sync::RwLock<()> = std::sync::RwLock::new(());
+    fn run_guard() -> std::sync::RwLockReadGuard<'static, ()> {
+        EXEC.read().unwrap_or_else(|e| e.into_inner())
+    }
+    fn profile_guard() -> std::sync::RwLockWriteGuard<'static, ()> {
+        EXEC.write().unwrap_or_else(|e| e.into_inner())
+    }
+
     /// ROM + verified-BIOS paths, or None to skip (CI has no BIOS by design;
     /// locally, missing fixtures are an error, not a skip).
     fn fixtures() -> Option<(String, String)> {
@@ -95,6 +109,7 @@ mod tests {
     // B1a: determinism — two cold boots running the same N frames agree.
     #[test]
     fn b1_same_run_twice_same_hash() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let hash = |()| {
             let mut core = boot(&rom, &bios);
@@ -111,6 +126,7 @@ mod tests {
     // so both are canonicalized before comparing (see emu::canonical_state).
     #[test]
     fn b1_snapshot_restore_continue_same_hash() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot(&rom, &bios);
         for _ in 0..45 {
@@ -137,6 +153,7 @@ mod tests {
     // measured — if this ever grows teeth, this test is the tripwire).
     #[test]
     fn b1_canonicalization_idempotent() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot(&rom, &bios);
         for _ in 0..45 {
@@ -150,6 +167,7 @@ mod tests {
     // B1c: sensitivity self-test — the hash must actually track state.
     #[test]
     fn b1_hash_changes_across_frames() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot(&rom, &bios);
         for _ in 0..45 {
@@ -201,6 +219,7 @@ mod tests {
     // matching return.
     #[test]
     fn b2_run_to_pc_entry_and_return() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot(&rom, &bios);
         // Pipeline-math pin: from reset the first instruction is the ARM
@@ -237,6 +256,7 @@ mod tests {
     // validator (see development plan).
     #[test]
     fn b3_identity_differential_and_mutants() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot(&rom, &bios);
         for _ in 0..240 {
@@ -290,6 +310,7 @@ mod tests {
     // anything — same input ⇒ same trace.)
     #[test]
     fn oracle_trace_deterministic() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let trace = |()| -> Vec<u64> {
             let mut core = boot_with_video(&rom, &bios);
@@ -310,6 +331,7 @@ mod tests {
     // on the variety across a span, not on one frame vs the next.)
     #[test]
     fn oracle_tracks_display() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot_with_video(&rom, &bios);
         let distinct: std::collections::HashSet<u64> = (0..600)
@@ -327,6 +349,7 @@ mod tests {
     // pokes: GBA OAM/PAL ignore/mirror 8-bit writes.
     #[test]
     fn oracle_catches_compositor_corruption() {
+        let _g = run_guard();
         let Some((rom, bios)) = fixtures() else { return };
         let mut core = boot_with_video(&rom, &bios);
         for _ in 0..2000 {
@@ -345,6 +368,55 @@ mod tests {
             core.bus_write16(addr, orig); // restore, so cases are independent
             assert_eq!(core.observable_hash(), base, "{label} restore left residue");
         }
+    }
+
+    // Profiler: after a run, the exec-hook has counted real coverage —
+    // many functions hit, a known boot function (SetInterruptCallback) hit,
+    // and at least one IWRAM-resident routine (0x03xxxxxx) hit.
+    #[test]
+    fn profiler_counts_coverage() {
+        let _g = profile_guard();
+        let Some((rom, bios)) = fixtures() else { return };
+        if !crate::symbols::default_exists() {
+            assert!(std::env::var_os("CI").is_some(), "run `make funcmap`");
+            return;
+        }
+        let fns = crate::symbols::load(crate::symbols::DEFAULT_MAP).expect("map");
+        let mut core = boot_with_video(&rom, &bios);
+        core.enable_profiling();
+        for _ in 0..900 {
+            core.run_frame();
+        }
+        let covered = fns.iter().filter(|f| core.exec_count(f.addr) > 0).count();
+        assert!(covered > 100, "only {covered} functions covered over 900 frames");
+        assert!(core.exec_count(0x0800_024c) > 0, "SetInterruptCallback never ran");
+        assert!(
+            fns.iter().any(|f| f.is_iwram() && core.exec_count(f.addr) > 0),
+            "no IWRAM-resident function counted"
+        );
+    }
+
+    // The exec hook is observation-only: a profiled run must produce exactly
+    // the same machine state as an unprofiled one. (If counting ever perturbs
+    // timing/state, this is the tripwire.)
+    #[test]
+    fn profiling_does_not_perturb_state() {
+        let _g = profile_guard();
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut profiled = boot_with_video(&rom, &bios);
+        profiled.enable_profiling();
+        for _ in 0..300 {
+            profiled.run_frame();
+        }
+        let hp = profiled.canonical_hash().expect("hash profiled");
+        profiled.disable_profiling();
+
+        let mut plain = boot_with_video(&rom, &bios);
+        for _ in 0..300 {
+            plain.run_frame();
+        }
+        let hu = plain.canonical_hash().expect("hash plain");
+        assert_eq!(hp, hu, "profiling perturbed emulation state");
     }
 
     // Pure self-test of the BIOS gate's checksum (runs everywhere, no files).

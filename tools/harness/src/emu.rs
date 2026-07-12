@@ -44,11 +44,23 @@ const OBSERVABLE_REGS: &[u16] = &[
     0x90, 0x92, 0x94, 0x96, 0x98, 0x9A, 0x9C, 0x9E, // wave RAM
 ];
 
+/// ROM address region and span our profiler counts (8 MiB at 0x08000000).
+pub const ROM_BASE: u32 = 0x0800_0000;
+pub const ROM_SIZE: usize = 0x0080_0000;
+/// IWRAM (32 KiB at 0x03000000) — where the copied-at-runtime routines run.
+pub const IWRAM_BASE: u32 = 0x0300_0000;
+pub const IWRAM_SIZE: usize = 0x0000_8000;
+
 pub struct Core {
     raw: *mut sys::mCore,
     // Video buffer registered with the core (must outlive it once installed;
     // mGBA renders into it every frame). None until install_video_buffer.
     video: Option<Box<[u32]>>,
+    // Per-instruction execution counters (halfword-indexed), installed into
+    // libmgba's global exec hook. Must outlive the hook: cleared in Drop
+    // before these free. Present only while profiling.
+    exec_rom: Option<Box<[u32]>>,
+    exec_iwram: Option<Box<[u32]>>,
 }
 
 impl Core {
@@ -74,7 +86,7 @@ impl Core {
         unsafe { sys::mCoreInitConfig(raw, std::ptr::null()) };
 
         // Invariant established (non-null + initialized): wrap it.
-        let mut core = Core { raw, video: None };
+        let mut core = Core { raw, video: None, exec_rom: None, exec_iwram: None };
 
         // Second invariant: the platform is GBA, so `(*raw).cpu` is an
         // ARMCore — that's what lets pc()/lr()/cpsr() cast it safely.
@@ -304,6 +316,56 @@ impl Core {
         h
     }
 
+    /// Start counting instruction executions per address (ROM + IWRAM), via
+    /// libmgba's observation-only exec hook. Idempotent-ish: re-enabling
+    /// resets the counters. Only one profiling Core may be active at a time
+    /// (the hook is a process global). Counting does not perturb emulation —
+    /// a profiled run is byte-identical to an unprofiled one.
+    pub fn enable_profiling(&mut self) {
+        let mut rom = vec![0u32; ROM_SIZE >> 1].into_boxed_slice();
+        let mut iwram = vec![0u32; IWRAM_SIZE >> 1].into_boxed_slice();
+        // SAFETY: the buffers live in self and outlive the hook — Drop clears
+        // the hook (NULLs) before they free. Lengths are the slice lengths.
+        unsafe {
+            sys::ARMSetExecCounts(
+                rom.as_mut_ptr(),
+                rom.len(),
+                iwram.as_mut_ptr(),
+                iwram.len(),
+            );
+        }
+        self.exec_rom = Some(rom);
+        self.exec_iwram = Some(iwram);
+    }
+
+    /// Stop counting and release the counter buffers.
+    pub fn disable_profiling(&mut self) {
+        // SAFETY: clears the global hook so it no longer points at our buffers.
+        unsafe { sys::ARMSetExecCounts(std::ptr::null_mut(), 0, std::ptr::null_mut(), 0) };
+        self.exec_rom = None;
+        self.exec_iwram = None;
+    }
+
+    /// Execution count for the instruction at `addr` (0 if not counted /
+    /// profiling off). For a function entry this is its call count. Thumb
+    /// bit is ignored.
+    pub fn exec_count(&self, addr: u32) -> u32 {
+        let addr = addr & !1;
+        match addr >> 24 {
+            0x08 => self
+                .exec_rom
+                .as_ref()
+                .and_then(|b| b.get(((addr - ROM_BASE) as usize) >> 1).copied())
+                .unwrap_or(0),
+            0x03 => self
+                .exec_iwram
+                .as_ref()
+                .and_then(|b| b.get(((addr - IWRAM_BASE) as usize) >> 1).copied())
+                .unwrap_or(0),
+            _ => 0,
+        }
+    }
+
     /// Set the entire GBA keypad state (bit 0 = A, 1 = B, 2 = Select,
     /// 3 = Start, 4 = Right, 5 = Left, 6 = Up, 7 = Down, 8 = R, 9 = L).
     pub fn set_keys(&mut self, keys: u16) {
@@ -464,6 +526,12 @@ impl Snapshot {
 
 impl Drop for Core {
     fn drop(&mut self) {
+        // Clear the global exec hook BEFORE our counter buffers free, so it
+        // never dangles. Safe to call unconditionally.
+        if self.exec_rom.is_some() {
+            // SAFETY: detaches the hook from our (about-to-drop) buffers.
+            unsafe { sys::ARMSetExecCounts(std::ptr::null_mut(), 0, std::ptr::null_mut(), 0) };
+        }
         // SAFETY: type invariant — raw is a valid core; deinit frees it once.
         if let Some(deinit) = unsafe { (*self.raw).deinit } {
             // SAFETY: deinit is the core's own teardown, called once at drop.

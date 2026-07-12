@@ -38,6 +38,7 @@ fn main() {
         .allowlist_function("VFileFromMemory")
         .allowlist_function("VFileOpen")
         .allowlist_function("mLog.*")
+        .allowlist_function("ARMSetExecCounts")
         .allowlist_type("mCore")
         .allowlist_type("VFile")
         .allowlist_type("mCoreConfig")
