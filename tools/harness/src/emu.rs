@@ -15,6 +15,35 @@ use std::ffi::CString;
 pub const VIDEO_W: usize = 240;
 pub const VIDEO_H: usize = 160;
 
+/// getMemoryBlock ids (GBA region enums).
+const BLOCK_PALETTE: usize = 0x5;
+const BLOCK_VRAM: usize = 0x6;
+const BLOCK_OAM: usize = 0x7;
+
+/// Readable display + sound registers that define observable output but that
+/// the framebuffer alone doesn't pin down (config bits, audio). Offsets from
+/// 0x04000000, 16-bit each. Deliberately EXCLUDES timing/status (DISPSTAT,
+/// VCOUNT), timers, DMA, and serial — the frame-hash oracle stays
+/// timing-independent [D1]. Write-only regs (scroll/affine/window/mosaic/
+/// blendY) are absent here on purpose: their *visible* effect is already in
+/// the framebuffer. Every entry earns its place; see the oracle mutation
+/// tests. Known residual gap: an off-screen change via a write-only reg
+/// (scroll set so wrong content *would* show but is off-screen, VRAM
+/// unchanged) — covered by the strict full-state oracle during the overlap
+/// era, documented in the development plan.
+const OBSERVABLE_REGS: &[u16] = &[
+    0x00, // DISPCNT
+    0x08, 0x0A, 0x0C, 0x0E, // BG0-3 CNT
+    0x48, 0x4A, // WININ, WINOUT
+    0x50, 0x52, // BLDCNT, BLDALPHA
+    0x60, 0x62, 0x64, // SOUND1
+    0x68, 0x6C, // SOUND2
+    0x70, 0x72, 0x74, // SOUND3
+    0x78, 0x7C, // SOUND4
+    0x80, 0x82, 0x84, 0x88, // SOUNDCNT_LO/HI/X, SOUNDBIAS
+    0x90, 0x92, 0x94, 0x96, 0x98, 0x9A, 0x9C, 0x9E, // wave RAM
+];
+
 pub struct Core {
     raw: *mut sys::mCore,
     // Video buffer registered with the core (must outlive it once installed;
@@ -233,6 +262,48 @@ impl Core {
         self.video.as_deref().expect("install_video_buffer first")
     }
 
+    /// Borrow a core memory block (VRAM/OAM/PAL) as raw bytes.
+    fn mem_block(&self, id: usize) -> &[u8] {
+        let mut size: usize = 0;
+        // SAFETY: type invariant; getMemoryBlock is the core's own fn ptr.
+        let get = unsafe { (*self.raw).getMemoryBlock }.expect("getMemoryBlock is null");
+        // SAFETY: get returns a pointer into the (live) core owning `size`
+        // bytes, valid for the core's lifetime; we borrow it for &self.
+        let ptr = unsafe { get(self.raw, id, &mut size) } as *const u8;
+        assert!(!ptr.is_null(), "no memory block {id}");
+        // SAFETY: ptr/size come straight from mGBA for this block.
+        unsafe { std::slice::from_raw_parts(ptr, size) }
+    }
+
+    /// Read a 16-bit value off the CPU bus (write-only regs read as 0).
+    pub fn bus_read16(&self, addr: u32) -> u16 {
+        // SAFETY: type invariant; busRead16 is the core's own fn ptr.
+        let read = unsafe { (*self.raw).busRead16 }.expect("busRead16 is null");
+        // SAFETY: any u32 address is valid input to the bus reader.
+        unsafe { read(self.raw, addr) as u16 }
+    }
+
+    /// FNV-1a fingerprint of the **observable** machine state: the rendered
+    /// frame + VRAM + OAM + palette + the readable display/sound registers.
+    /// Pointer-free, so it survives relocation — this is the permanent
+    /// oracle [D1]. Requires install_video_buffer.
+    pub fn observable_hash(&self) -> u64 {
+        // Framebuffer as native-endian bytes (deterministic on one host).
+        let px = self.frame_pixels();
+        // SAFETY: reinterpreting [u32] as [u8]; same allocation, 4× len.
+        let px_bytes =
+            unsafe { std::slice::from_raw_parts(px.as_ptr() as *const u8, px.len() * 4) };
+        let mut h = crate::fnv1a64_update(crate::FNV_OFFSET, px_bytes);
+        h = crate::fnv1a64_update(h, self.mem_block(BLOCK_VRAM));
+        h = crate::fnv1a64_update(h, self.mem_block(BLOCK_OAM));
+        h = crate::fnv1a64_update(h, self.mem_block(BLOCK_PALETTE));
+        for &off in OBSERVABLE_REGS {
+            let v = self.bus_read16(0x0400_0000 + off as u32);
+            h = crate::fnv1a64_update(h, &v.to_le_bytes());
+        }
+        h
+    }
+
     /// Set the entire GBA keypad state (bit 0 = A, 1 = B, 2 = Select,
     /// 3 = Start, 4 = Right, 5 = Left, 6 = Up, 7 = Down, 8 = R, 9 = L).
     pub fn set_keys(&mut self, keys: u16) {
@@ -257,6 +328,15 @@ impl Core {
         let w = unsafe { (*self.raw).busWrite8 }.expect("busWrite8 is null");
         // SAFETY: bus write on a valid core; any u32 address is a valid
         // bus target (unmapped writes are ignored by the bus).
+        unsafe { w(self.raw, addr, v) };
+    }
+
+    /// Write a halfword on the CPU bus. Seeded-fault injection — and the
+    /// right width for OAM/PAL/VRAM, which ignore or mirror 8-bit writes.
+    pub fn bus_write16(&mut self, addr: u32, v: u16) {
+        // SAFETY: type invariant; busWrite16 is the core's own fn ptr.
+        let w = unsafe { (*self.raw).busWrite16 }.expect("busWrite16 is null");
+        // SAFETY: bus write on a valid core; any u32 address is valid.
         unsafe { w(self.raw, addr, v) };
     }
 

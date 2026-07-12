@@ -17,13 +17,19 @@ pub const DEFAULT_ROM: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../build/
 
 /// FNV-1a 64-bit. Deterministic across runs/processes (unlike std's SipHash),
 /// no dependencies; plenty for state fingerprints (we compare, never store).
-pub fn fnv1a64(data: &[u8]) -> u64 {
-    let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+pub const FNV_OFFSET: u64 = 0xcbf2_9ce4_8422_2325;
+
+/// Fold more bytes into a running FNV-1a hash (start from `FNV_OFFSET`).
+pub fn fnv1a64_update(mut h: u64, data: &[u8]) -> u64 {
     for &b in data {
         h ^= b as u64;
         h = h.wrapping_mul(0x0000_0100_0000_01b3);
     }
     h
+}
+
+pub fn fnv1a64(data: &[u8]) -> u64 {
+    fnv1a64_update(FNV_OFFSET, data)
 }
 
 #[cfg(test)]
@@ -268,6 +274,76 @@ mod tests {
         core.run_to_pc(ret, BUDGET).expect("run to return");
         core.bus_write8(0x0200_4000, core.bus_read8(0x0200_4000) ^ 0xFF);
         assert_ne!(core.canonical_hash().expect("hash"), a, "EWRAM poke went undetected");
+    }
+
+    fn boot_with_video(rom: &str, bios: &str) -> Core {
+        let mut core = Core::new(rom).expect("core");
+        core.install_video_buffer();
+        core.load_bios(bios).expect("bios");
+        core.reset().expect("reset");
+        core
+    }
+
+    // Oracle determinism: the per-frame observable trace is reproducible.
+    // (The permanent oracle must itself be deterministic before it can judge
+    // anything — same input ⇒ same trace.)
+    #[test]
+    fn oracle_trace_deterministic() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let trace = |()| -> Vec<u64> {
+            let mut core = boot_with_video(&rom, &bios);
+            (0..400)
+                .map(|_| {
+                    core.run_frame();
+                    core.observable_hash()
+                })
+                .collect()
+        };
+        assert_eq!(trace(()), trace(()));
+    }
+
+    // Oracle sensitivity: the observable hash tracks the displayed frame.
+    // Over the animated boot (BIOS splash → GAME BOY logo → title), the
+    // trace must take many distinct values — a stuck/blind hash would not.
+    // (A single static dialogue frame can legitimately repeat, so we assert
+    // on the variety across a span, not on one frame vs the next.)
+    #[test]
+    fn oracle_tracks_display() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut core = boot_with_video(&rom, &bios);
+        let distinct: std::collections::HashSet<u64> = (0..600)
+            .map(|_| {
+                core.run_frame();
+                core.observable_hash()
+            })
+            .collect();
+        assert!(distinct.len() > 20, "observable hash barely varies over boot: {} distinct", distinct.len());
+    }
+
+    // Oracle mutation suite v0 — "never trust a check you haven't watched
+    // fail." Corrupting any single compositor input (a VRAM tile byte, an
+    // OAM attribute, a palette color) must move the observable hash. 16-bit
+    // pokes: GBA OAM/PAL ignore/mirror 8-bit writes.
+    #[test]
+    fn oracle_catches_compositor_corruption() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut core = boot_with_video(&rom, &bios);
+        for _ in 0..2000 {
+            core.run_frame();
+        }
+        let base = core.observable_hash();
+
+        for (label, addr) in [
+            ("VRAM tile", 0x0600_0000u32),
+            ("OAM attr", 0x0700_0010u32),
+            ("palette color", 0x0500_0020u32),
+        ] {
+            let orig = core.bus_read16(addr);
+            core.bus_write16(addr, orig ^ 0x5A5A);
+            assert_ne!(core.observable_hash(), base, "{label} corruption not caught");
+            core.bus_write16(addr, orig); // restore, so cases are independent
+            assert_eq!(core.observable_hash(), base, "{label} restore left residue");
+        }
     }
 
     // Pure self-test of the BIOS gate's checksum (runs everywhere, no files).
