@@ -19,9 +19,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev clang libclang-dev
 
+      # The cache key must track the mgba submodule commit: libmgba is built
+      # from it, and a pin bump (e.g. a new observation patch) doesn't touch
+      # .gitmodules. Record its SHA so a bump busts the cache and rebuilds.
+      - name: Record toolchain inputs
+        run: git -C tools/mgba rev-parse HEAD > .mgba-sha
+
       # setup-toolchain is idempotent: a cache hit makes it a no-op.
-      # Bump the -v1 suffix to bust the cache when the mgba submodule pin
-      # or the agbcc branch changes without touching these files.
       - name: Cache toolchain
         uses: actions/cache@v4
         with:
@@ -30,7 +34,7 @@ jobs:
             tools/agbcc
             tools/agbcc-src
             tools/libmgba
-          key: toolchain-${{ runner.os }}-${{ hashFiles('Makefile', '.gitmodules') }}-v1
+          key: toolchain-${{ runner.os }}-${{ hashFiles('Makefile', '.gitmodules', '.mgba-sha') }}-v2
 
       - name: Build toolchain (agbasm binutils, gbagfx, libmgba)
         run: make setup-toolchain

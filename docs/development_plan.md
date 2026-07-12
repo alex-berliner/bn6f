@@ -135,32 +135,30 @@ verifiable "done", and we stop for review after each.
   Mutation suite passes (VRAM tile / OAM attr / palette color each move the
   hash). Trace record/check shipped in pilot (`--trace`/`--check-trace`);
   the nightly-regression artifact of D1. [D1]
-- **Call-boundary harvester + ⭐ profiler — DESIGNED 2026-07-12, next brick;
-  needs a libmgba exec-hook patch (NOT stock breakpoints).** Investigated
-  the stock-mGBA debugger path first and **ruled it out on performance**:
-  attaching an embedder-allocated `mDebuggerModule` (DEBUGGER_CUSTOM — note
-  `mDebuggerCreateModule` refuses CUSTOM and frees; allocate it yourself)
-  with hardware breakpoints works functionally, but `mDebuggerRunTimeout`
-  switches from the fast `runLoop` to per-instruction `core->step +
-  checkBreakpoints` the moment any breakpoint is armed, and ARM's
-  `checkBreakpoints` (`src/arm/debugger/debugger.c:202`) is a **linear scan
-  of the whole breakpoint list every instruction**. With ~2,751 entries over
-  a full fixture that is ~10¹² comparisons — hours+. Dead end for whole-
-  fixture profiling. FFI would only be crossed per-frame + per-hit (fine);
-  the killer is the O(breakpoints × instructions) C-side cost.
-  **Correct mechanism:** a thin observation patch to the vendored libmgba
-  (allowed; consistent with the observation-only pin), hooking the ARM
-  interpreter's instruction dispatch to do an O(1) lookup — `counts[pc>>1]++`
-  over a flat array sized to ROM — with the counter buffer read out to Rust
-  after the run (no per-instruction FFI). Rebuild libmgba, regen bindings.
-  Function-entry set from a symbol map (2,751 `func_start` labels from source
-  joined to `build/bn6f.sym` addresses — authoritative count is 2,751; the
-  objdump F-flag column is positionally unreliable, use source). Profiler =
-  per-`(symbol×fixture)` hit counts → coverage set, hot ranking, cold list
-  (cold ⇒ Phase 4 synthetic mode). Harvester extends the same hook to
-  snapshot full state at entry/return into the per-symbol corpus [D4]. Land
-  as its own reviewed brick (libmgba patch + bindings + Rust profiler).
-  [⭐, F6c, F7b, F12, D4]
+- **⭐ Profiler. ✓ DONE 2026-07-12** (libmgba exec-hook + coverage/hotness).
+  **Ruled out stock breakpoints first** on performance: with any breakpoint
+  armed `mDebuggerRunTimeout` drops from `runLoop` to per-instruction
+  `core->step + checkBreakpoints`, and ARM's `checkBreakpoints`
+  (`src/arm/debugger/debugger.c:202`) linear-scans the whole list every
+  instruction — ~10¹² comparisons over a fixture with 2,751 entries. Built
+  the correct mechanism instead: an observation-only patch to the vendored
+  libmgba (`ARMSetExecCounts`, `src/arm/arm.c`; fork `bn6f-harness`) doing
+  O(1) `counts[pc>>1]++` for the ROM (0x08) **and** IWRAM (0x03) regions in
+  ThumbStep/ARMStep — reads gprs, writes a caller-owned buffer, touches no
+  emulated state (proven: profiled run's state hash == unprofiled's, test
+  `profiling_does_not_perturb_state`). `emu::Core::{enable_profiling,
+  exec_count}` own the buffers (hook cleared in Drop). Symbol map = 2,751
+  `func_start` labels joined to `build/bn6f.sym` (`make funcmap` →
+  `build/bn6f_functions.tsv`; objdump F-flag column unreliable, use source).
+  `pilot --profile out.tsv` → per-function call counts + coverage summary.
+  **First real numbers** (fixture 02, boot→living room): 423/2,751 covered
+  (15.4%); hottest `TestEventFlag` + sprite updaters; **0 of 19 battle-named
+  functions hit → a battle fixture is required** for hot-path coverage.
+  [⭐, F6c, F7b, F12]
+- **Call-boundary harvester — next brick.** Extend the same exec hook (or a
+  sibling entry/return hook) to snapshot full state at each call boundary
+  into the per-symbol corpus [D4]. The profiler already gives the coverage
+  and hot ranking that pick which symbols to harvest first.
 - **Candidate selector** — one canonical tool, every gate in code: leaf
   (mod BIOS/converted), no flag-dependent callers, alignment, corpus size
   ≥ threshold. Address-taken symbols (the `.word sym+1` set, ~1,012 fns)
@@ -258,4 +256,4 @@ compositor inputs is a different, stricter thing]; IDA-era tools.
 B1** in `tools/harness` as `cargo test`s.
 
 ---
-_Last updated: 2026-07-12 14:02:41 -0400_
+_Last updated: 2026-07-12 15:01:04 -0400_
