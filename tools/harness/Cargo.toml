@@ -11,6 +11,9 @@ edition = "2021"
 name = "bn6f-harness"
 path = "src/main.rs"
 
+[dependencies]
+png = "0.17"
+
 [build-dependencies]
 bindgen = "0.69"
 

@@ -11,8 +11,15 @@
 use crate::sys;
 use std::ffi::CString;
 
+/// GBA LCD dimensions (fixed).
+pub const VIDEO_W: usize = 240;
+pub const VIDEO_H: usize = 160;
+
 pub struct Core {
     raw: *mut sys::mCore,
+    // Video buffer registered with the core (must outlive it once installed;
+    // mGBA renders into it every frame). None until install_video_buffer.
+    video: Option<Box<[u32]>>,
 }
 
 impl Core {
@@ -38,7 +45,7 @@ impl Core {
         unsafe { sys::mCoreInitConfig(raw, std::ptr::null()) };
 
         // Invariant established (non-null + initialized): wrap it.
-        let mut core = Core { raw };
+        let mut core = Core { raw, video: None };
 
         // Second invariant: the platform is GBA, so `(*raw).cpu` is an
         // ARMCore — that's what lets pc()/lr()/cpsr() cast it safely.
@@ -207,6 +214,34 @@ impl Core {
         self.gpr(14)
     }
 
+    /// Register a frame buffer with the core so it renders video. Call
+    /// before `reset()`. Pixel format: 32-bit XRGB (mGBA desktop default).
+    pub fn install_video_buffer(&mut self) {
+        let buf = vec![0u32; VIDEO_W * VIDEO_H].into_boxed_slice();
+        self.video = Some(buf);
+        let ptr = self.video.as_mut().unwrap().as_mut_ptr();
+        // SAFETY: type invariant; setVideoBuffer is the core's own fn ptr.
+        let f = unsafe { (*self.raw).setVideoBuffer }.expect("setVideoBuffer is null");
+        // SAFETY: the buffer is owned by self and lives as long as the core
+        // (dropped only in Core::drop, after deinit); stride is in pixels.
+        unsafe { f(self.raw, ptr, VIDEO_W) };
+    }
+
+    /// The last rendered frame (32-bit XRGB), row-major 240×160.
+    /// Panics if install_video_buffer was never called.
+    pub fn frame_pixels(&self) -> &[u32] {
+        self.video.as_deref().expect("install_video_buffer first")
+    }
+
+    /// Set the entire GBA keypad state (bit 0 = A, 1 = B, 2 = Select,
+    /// 3 = Start, 4 = Right, 5 = Left, 6 = Up, 7 = Down, 8 = R, 9 = L).
+    pub fn set_keys(&mut self, keys: u16) {
+        // SAFETY: type invariant; setKeys is the core's own fn ptr.
+        let f = unsafe { (*self.raw).setKeys }.expect("setKeys is null");
+        // SAFETY: plain keypad-state write on a valid core.
+        unsafe { f(self.raw, keys as u32) };
+    }
+
     /// Overwrite general-purpose register `n` (0..=14). Seeded-fault
     /// injection for the mutation suite — never used on a happy path.
     /// r15 is refused: raw PC writes would desync the prefetch pipeline.
@@ -320,6 +355,18 @@ pub struct Snapshot {
 }
 
 impl Snapshot {
+    /// Rebuild a snapshot from raw bytes (e.g. a state file written from
+    /// `bytes()`). Validity is checked by the core at `load_state` time.
+    pub fn from_bytes(bytes: &[u8]) -> Snapshot {
+        let mut buf = vec![0u64; bytes.len().div_ceil(8)];
+        // SAFETY: buf owns >= bytes.len() writable bytes; copying u8s into
+        // zeroed u64 storage is always valid.
+        unsafe {
+            std::ptr::copy_nonoverlapping(bytes.as_ptr(), buf.as_mut_ptr() as *mut u8, bytes.len());
+        }
+        Snapshot { buf, len: bytes.len() }
+    }
+
     pub fn bytes(&self) -> &[u8] {
         // SAFETY: buf owns >= len bytes, all initialized (zero-filled at
         // alloc, then written by saveState); u64 storage reads fine as bytes.
