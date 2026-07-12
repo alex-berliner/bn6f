@@ -41,6 +41,9 @@ jobs:
       - name: Build ROM and verify SHA1
         run: make all -j"$(nproc)"
 
+      - name: Generate function map (profiler index)
+        run: make funcmap
+
       # BIOS-dependent harness tests skip themselves when no BIOS is
       # present and CI=true (GitHub sets CI). Locally they are mandatory.
       - name: Harness tests

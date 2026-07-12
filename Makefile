@@ -151,6 +151,14 @@ syms: $(SYM)
 $(SYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0[23689]" | perl -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@
 
+# Authoritative function map for the harness profiler: every func_start label
+# joined to its linked address (build/bn6f_functions.tsv). See scripts.
+FUNCMAP = $(OBJ)bn6f_functions.tsv
+funcmap: $(FUNCMAP)
+
+$(FUNCMAP): $(SYM) scripts/gen_function_map.py
+	python3 scripts/gen_function_map.py
+
 nogbasyms: $(NOGBASYM)
 
 $(NOGBASYM): $(ELF)

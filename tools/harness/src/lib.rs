@@ -9,6 +9,7 @@
 
 pub mod bios;
 pub mod emu;
+pub mod symbols;
 pub mod sys;
 
 /// Default ROM: <repo>/build/bn6f.gba, resolved relative to this crate
