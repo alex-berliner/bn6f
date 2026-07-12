@@ -135,24 +135,32 @@ verifiable "done", and we stop for review after each.
   Mutation suite passes (VRAM tile / OAM attr / palette color each move the
   hash). Trace record/check shipped in pilot (`--trace`/`--check-trace`);
   the nightly-regression artifact of D1. [D1]
-- **Call-boundary harvester + ⭐ profiler — DESIGNED 2026-07-12, next brick.**
-  Mechanism reverse-engineered from stock mGBA (no bizinterface needed):
-  attach an embedder-allocated `mDebuggerModule` (type `DEBUGGER_CUSTOM` —
-  note `mDebuggerCreateModule` *refuses* CUSTOM and frees, so allocate the
-  module ourselves), `mDebuggerAttach(dbg, core)` + `mDebuggerAttachModule`,
-  then `platform->setBreakpoint(platform, module, {addr, BREAKPOINT_HARDWARE})`
-  at every function entry. Drive with `mDebuggerRunFrame`; on a hit,
-  `mDebuggerEnter` sets `module->isPaused=true` and calls our `entered(module,
-  reason, info)` — record `info->address`, set `isPaused=false` to auto-
-  resume. Function entries come from a symbol map (2751 `func_start` labels
-  from source joined to `build/bn6f.sym` addresses; authoritative count 2751
-  — objdump's F-flag column is positionally unreliable, use source). Profiler
-  = per-`(symbol×fixture)` hit counts → coverage set, hot ranking, cold list
-  (cold ⇒ Phase 4 synthetic mode). Harvester extends the same `entered` hook
-  to snapshot full state at entry/return into the per-symbol corpus [D4].
-  Biggest single FFI chunk in the project; land it as its own reviewed brick
-  (C→Rust callback + `mDebugger`/`mDebuggerModule`/`mBreakpoint` bindings)
-  rather than bolted onto another commit. [⭐, F6c, F7b, F12, D4]
+- **Call-boundary harvester + ⭐ profiler — DESIGNED 2026-07-12, next brick;
+  needs a libmgba exec-hook patch (NOT stock breakpoints).** Investigated
+  the stock-mGBA debugger path first and **ruled it out on performance**:
+  attaching an embedder-allocated `mDebuggerModule` (DEBUGGER_CUSTOM — note
+  `mDebuggerCreateModule` refuses CUSTOM and frees; allocate it yourself)
+  with hardware breakpoints works functionally, but `mDebuggerRunTimeout`
+  switches from the fast `runLoop` to per-instruction `core->step +
+  checkBreakpoints` the moment any breakpoint is armed, and ARM's
+  `checkBreakpoints` (`src/arm/debugger/debugger.c:202`) is a **linear scan
+  of the whole breakpoint list every instruction**. With ~2,751 entries over
+  a full fixture that is ~10¹² comparisons — hours+. Dead end for whole-
+  fixture profiling. FFI would only be crossed per-frame + per-hit (fine);
+  the killer is the O(breakpoints × instructions) C-side cost.
+  **Correct mechanism:** a thin observation patch to the vendored libmgba
+  (allowed; consistent with the observation-only pin), hooking the ARM
+  interpreter's instruction dispatch to do an O(1) lookup — `counts[pc>>1]++`
+  over a flat array sized to ROM — with the counter buffer read out to Rust
+  after the run (no per-instruction FFI). Rebuild libmgba, regen bindings.
+  Function-entry set from a symbol map (2,751 `func_start` labels from source
+  joined to `build/bn6f.sym` addresses — authoritative count is 2,751; the
+  objdump F-flag column is positionally unreliable, use source). Profiler =
+  per-`(symbol×fixture)` hit counts → coverage set, hot ranking, cold list
+  (cold ⇒ Phase 4 synthetic mode). Harvester extends the same hook to
+  snapshot full state at entry/return into the per-symbol corpus [D4]. Land
+  as its own reviewed brick (libmgba patch + bindings + Rust profiler).
+  [⭐, F6c, F7b, F12, D4]
 - **Candidate selector** — one canonical tool, every gate in code: leaf
   (mod BIOS/converted), no flag-dependent callers, alignment, corpus size
   ≥ threshold. Address-taken symbols (the `.word sym+1` set, ~1,012 fns)
@@ -250,4 +258,4 @@ compositor inputs is a different, stricter thing]; IDA-era tools.
 B1** in `tools/harness` as `cargo test`s.
 
 ---
-_Last updated: 2026-07-12 13:59:17 -0400_
+_Last updated: 2026-07-12 14:02:41 -0400_
