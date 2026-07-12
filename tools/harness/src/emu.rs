@@ -39,6 +39,16 @@ impl Core {
 
         // Invariant established (non-null + initialized): wrap it.
         let mut core = Core { raw };
+
+        // Second invariant: the platform is GBA, so `(*raw).cpu` is an
+        // ARMCore — that's what lets pc()/lr()/cpsr() cast it safely.
+        // SAFETY: type invariant; platform is the core's own fn ptr.
+        let platform = unsafe { (*raw).platform }.ok_or("mCore.platform is null")?;
+        // SAFETY: pure query on a valid core.
+        if unsafe { platform(raw) } != sys::mPlatform_mPLATFORM_GBA {
+            return Err("core is not a GBA core".into());
+        }
+
         core.set_config_int("useBios", 1); // require the real BIOS...
         core.set_config_int("skipBios", 0); // ...never HLE
         core.load_rom(rom_path)?;
@@ -154,6 +164,73 @@ impl Core {
     /// FNV-1a fingerprint of the full serialized state.
     pub fn state_hash(&mut self) -> Result<u64, String> {
         Ok(crate::fnv1a64(self.save_state()?.bytes()))
+    }
+
+    /// The GBA's ARM7TDMI. Valid because `new()` asserted mPLATFORM_GBA.
+    fn arm(&self) -> *mut sys::ARMCore {
+        // SAFETY: type invariant + the platform assert in new(): on a GBA
+        // core, `cpu` points at the (initialized) ARMCore for the core's
+        // whole lifetime.
+        unsafe { (*self.raw).cpu as *mut sys::ARMCore }
+    }
+
+    /// CPSR, raw. Bit 5 = Thumb, low 5 bits = privilege mode.
+    pub fn cpsr(&self) -> u32 {
+        // SAFETY: arm() is valid; `packed` reads the whole PSR union.
+        unsafe { (*self.arm()).__bindgen_anon_1.__bindgen_anon_1.cpsr.packed as u32 }
+    }
+
+    pub fn is_thumb(&self) -> bool {
+        self.cpsr() & 0x20 != 0
+    }
+
+    /// General-purpose register `n` (0..=15). r15 is the raw pipeline PC.
+    pub fn gpr(&self, n: usize) -> u32 {
+        assert!(n < 16, "gpr index {n}");
+        // SAFETY: arm() is valid; gprs is a fixed [i32; 16].
+        unsafe { (*self.arm()).__bindgen_anon_1.__bindgen_anon_1.gprs[n] as u32 }
+    }
+
+    /// Address of the next instruction the CPU will execute.
+    ///
+    /// At an instruction boundary mGBA keeps r15 one fetch ahead (ARMWritePC
+    /// leaves r15 = target + width; the second pipeline advance happens
+    /// inside the step), so exec = r15 - width. Pinned empirically by the B2
+    /// test: pc() == 0x00000000 at reset.
+    pub fn pc(&self) -> u32 {
+        let width = if self.is_thumb() { 2 } else { 4 };
+        self.gpr(15).wrapping_sub(width)
+    }
+
+    /// Link register (return address as the CPU sees it, Thumb bit included).
+    pub fn lr(&self) -> u32 {
+        self.gpr(14)
+    }
+
+    /// Execute exactly one CPU instruction (events included, mGBA `step`).
+    pub fn step(&mut self) {
+        // SAFETY: type invariant; step is the core's own fn ptr.
+        let f = unsafe { (*self.raw).step }.expect("step is null");
+        // SAFETY: stepping a valid, ROM-loaded, reset core.
+        unsafe { f(self.raw) };
+    }
+
+    /// Step until the next instruction to execute is at `target` (Thumb bit
+    /// ignored). Checks before stepping, so a core already at `target` takes
+    /// 0 steps. Returns the number of steps taken; errors if `max_steps`
+    /// isn't enough — never runs unbounded.
+    pub fn run_to_pc(&mut self, target: u32, max_steps: u64) -> Result<u64, String> {
+        let target = target & !1;
+        for taken in 0..=max_steps {
+            if self.pc() == target {
+                return Ok(taken);
+            }
+            self.step();
+        }
+        Err(format!(
+            "run_to_pc: {target:#010x} not reached within {max_steps} steps (pc now {:#010x})",
+            self.pc()
+        ))
     }
 
     /// Serialize in *canonical* form: save → load → save.

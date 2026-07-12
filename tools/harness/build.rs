@@ -42,6 +42,7 @@ fn main() {
         .allowlist_type("VFile")
         .allowlist_type("mCoreConfig")
         .allowlist_type("mPlatform")
+        .allowlist_type("ARMCore")
         .allowlist_var("mLOG_.*")
         .derive_default(true)
         .layout_tests(false)

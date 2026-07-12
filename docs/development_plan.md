@@ -96,9 +96,13 @@ verifiable "done", and we stop for review after each.
   cross-restore comparisons (B3's differential included) must compare
   **canonical states** (save→load→save; idempotence pinned by test). No
   masking — derived fields are compared in recomputed form. [F6a, D1]
-- **B2 — execution control.** Stop the core exactly at a target PC (entry)
-  and at its matching return. *Done (as tests):* break at a known function's
-  entry and return.
+- **B2 — execution control. ✓ DONE 2026-07-12** — pc()/lr()/cpsr()/step()
+  + bounded run_to_pc() over the bound ARMCore. Test discovers a genuine BL
+  boundary symbol-free (LR writeback + unchanged privilege mode + real
+  branch), then proves run_to_pc stops at that entry from a restored
+  snapshot in *exactly* the scanned step count, and reaches the matching
+  return. Pipeline convention pinned: at boundaries r15 = exec + width
+  (pc() == 0 at reset).
 - **B3 — differential atom (identity + first masks).** snapshot pre → run to
   return → hash A; restore → run again → hash B; assert A==B. Then the first
   masked compare: mask spec v0 = cycle/timer counters + IWRAM below SP,

@@ -154,6 +154,61 @@ mod tests {
         assert_ne!(n, n1, "state hash blind: N and N+1 frames hash equal");
     }
 
+    // B2: execution control — stop exactly at a chosen PC, twice over.
+    //
+    // Symbol-free: scan forward from a snapshot for the first genuine call
+    // (BL writeback: LR becomes call-site + width, privilege mode unchanged
+    // — rejects IRQ entry, whose LR is banked with a mode switch — and the
+    // branch actually left fall-through — rejects `pop {lr}`), requiring an
+    // entry PC not already executed in the scan window. Determinism then
+    // guarantees the first occurrence of that entry is at exactly step k,
+    // so run_to_pc from the restored snapshot must stop there in exactly k
+    // steps. Finally the callee must come back to the matching return.
+    #[test]
+    fn b2_run_to_pc_entry_and_return() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut core = boot(&rom, &bios);
+        // Pipeline-math pin: from reset the first instruction is the ARM
+        // reset vector at 0x00000000.
+        assert_eq!(core.pc(), 0, "pc() pipeline adjustment wrong at reset");
+
+        for _ in 0..240 {
+            core.run_frame();
+        }
+        let snap = core.save_state().expect("snapshot");
+
+        let mut seen = std::collections::HashSet::new();
+        let mut found = None;
+        let mut steps: u64 = 0;
+        for _ in 0..200_000u64 {
+            let (pc0, lr0, cpsr0) = (core.pc(), core.lr(), core.cpsr());
+            let width = if core.is_thumb() { 2u32 } else { 4u32 };
+            seen.insert(pc0);
+            core.step();
+            steps += 1;
+            let (pc1, lr1, cpsr1) = (core.pc(), core.lr(), core.cpsr());
+            if lr1 != lr0
+                && (cpsr1 & 0x1F) == (cpsr0 & 0x1F)
+                && (lr1 & !1) == pc0.wrapping_add(width)
+                && pc1 != (lr1 & !1)
+                && !seen.contains(&pc1)
+            {
+                found = Some((pc1, lr1 & !1, steps));
+                break;
+            }
+        }
+        let (entry, ret, k) = found.expect("no clean BL boundary in 200k steps");
+
+        core.load_state(&snap).expect("restore");
+        let taken = core.run_to_pc(entry, k + 16).expect("seek entry");
+        assert_eq!(taken, k, "run_to_pc did not stop at the scanned boundary");
+        assert_eq!(core.pc(), entry);
+
+        let taken_ret = core.run_to_pc(ret, 5_000_000).expect("seek matching return");
+        assert!(taken_ret > 0, "return seek took zero steps");
+        assert_eq!(core.pc(), ret);
+    }
+
     // Pure self-test of the BIOS gate's checksum (runs everywhere, no files).
     #[test]
     fn crc32_known_vector() {
