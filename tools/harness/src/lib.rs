@@ -154,33 +154,21 @@ mod tests {
         assert_ne!(n, n1, "state hash blind: N and N+1 frames hash equal");
     }
 
-    // B2: execution control — stop exactly at a chosen PC, twice over.
-    //
-    // Symbol-free: scan forward from a snapshot for the first genuine call
-    // (BL writeback: LR becomes call-site + width, privilege mode unchanged
-    // — rejects IRQ entry, whose LR is banked with a mode switch — and the
-    // branch actually left fall-through — rejects `pop {lr}`), requiring an
-    // entry PC not already executed in the scan window. Determinism then
-    // guarantees the first occurrence of that entry is at exactly step k,
-    // so run_to_pc from the restored snapshot must stop there in exactly k
-    // steps. Finally the callee must come back to the matching return.
-    #[test]
-    fn b2_run_to_pc_entry_and_return() {
-        let Some((rom, bios)) = fixtures() else { return };
-        let mut core = boot(&rom, &bios);
-        // Pipeline-math pin: from reset the first instruction is the ARM
-        // reset vector at 0x00000000.
-        assert_eq!(core.pc(), 0, "pc() pipeline adjustment wrong at reset");
-
-        for _ in 0..240 {
-            core.run_frame();
-        }
-        let snap = core.save_state().expect("snapshot");
-
+    /// Step forward to the first *genuine* call boundary and stop there.
+    ///
+    /// A step counts as a call when: LR changed to call-site + width
+    /// (BL writeback; the Thumb BL pair's first half writes a far-off
+    /// value and is rejected), privilege mode is unchanged (rejects IRQ
+    /// entry, whose LR is banked with a mode switch), the branch actually
+    /// left fall-through (rejects `pop {lr}`), and the callee entry was
+    /// never executed in the scan window (so, by determinism, its first
+    /// occurrence is at exactly the returned step count).
+    ///
+    /// Returns (entry, return_address, steps_from_start).
+    fn first_clean_call(core: &mut Core, max_steps: u64) -> Option<(u32, u32, u64)> {
         let mut seen = std::collections::HashSet::new();
-        let mut found = None;
         let mut steps: u64 = 0;
-        for _ in 0..200_000u64 {
+        for _ in 0..max_steps {
             let (pc0, lr0, cpsr0) = (core.pc(), core.lr(), core.cpsr());
             let width = if core.is_thumb() { 2u32 } else { 4u32 };
             seen.insert(pc0);
@@ -193,11 +181,31 @@ mod tests {
                 && pc1 != (lr1 & !1)
                 && !seen.contains(&pc1)
             {
-                found = Some((pc1, lr1 & !1, steps));
-                break;
+                return Some((pc1, lr1 & !1, steps));
             }
         }
-        let (entry, ret, k) = found.expect("no clean BL boundary in 200k steps");
+        None
+    }
+
+    // B2: execution control — stop exactly at a chosen PC, twice over.
+    // Determinism guarantees the scanned entry's first occurrence is at
+    // exactly step k, so run_to_pc from the restored snapshot must stop
+    // there in exactly k steps; then the callee must come back to the
+    // matching return.
+    #[test]
+    fn b2_run_to_pc_entry_and_return() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut core = boot(&rom, &bios);
+        // Pipeline-math pin: from reset the first instruction is the ARM
+        // reset vector at 0x00000000.
+        assert_eq!(core.pc(), 0, "pc() pipeline adjustment wrong at reset");
+
+        for _ in 0..240 {
+            core.run_frame();
+        }
+        let snap = core.save_state().expect("snapshot");
+        let (entry, ret, k) =
+            first_clean_call(&mut core, 200_000).expect("no clean BL boundary in 200k steps");
 
         core.load_state(&snap).expect("restore");
         let taken = core.run_to_pc(entry, k + 16).expect("seek entry");
@@ -207,6 +215,59 @@ mod tests {
         let taken_ret = core.run_to_pc(ret, 5_000_000).expect("seek matching return");
         assert!(taken_ret > 0, "return seek took zero steps");
         assert_eq!(core.pc(), ret);
+    }
+
+    // B3: the differential atom, proven on identity and on seeded faults.
+    //
+    // Snapshot at a real function's entry → run to its return → canonical
+    // hash A; restore → run again → hash B; A must equal B (the machinery
+    // itself introduces no divergence). Then mutation suite v0: the same
+    // differential must go RED on a poked return register, an IWRAM byte,
+    // and an EWRAM byte — "never trust a check you haven't watched fail."
+    //
+    // Timing masks are intentionally absent here: no drifted code exists
+    // yet to watch a mask fail against; they arrive with the Phase 2
+    // validator (see development plan).
+    #[test]
+    fn b3_identity_differential_and_mutants() {
+        let Some((rom, bios)) = fixtures() else { return };
+        let mut core = boot(&rom, &bios);
+        for _ in 0..240 {
+            core.run_frame();
+        }
+        let (_, ret, _) =
+            first_clean_call(&mut core, 200_000).expect("no clean BL boundary in 200k steps");
+        // The scan parked us exactly at the callee's entry: this snapshot is
+        // the differential's pre-state.
+        let at_entry = core.save_state().expect("entry snapshot");
+        const BUDGET: u64 = 5_000_000;
+
+        let mut run_leg = |core: &mut Core| -> u64 {
+            core.load_state(&at_entry).expect("restore");
+            core.run_to_pc(ret, BUDGET).expect("run to return");
+            core.canonical_hash().expect("hash")
+        };
+        let a = run_leg(&mut core);
+        let b = run_leg(&mut core);
+        assert_eq!(a, b, "identity differential diverged");
+
+        // Mutant 1: corrupted return value (the archetypal conversion bug).
+        core.load_state(&at_entry).expect("restore");
+        core.run_to_pc(ret, BUDGET).expect("run to return");
+        core.set_gpr(0, core.gpr(0) ^ 1);
+        assert_ne!(core.canonical_hash().expect("hash"), a, "r0 poke went undetected");
+
+        // Mutant 2: single flipped IWRAM byte.
+        core.load_state(&at_entry).expect("restore");
+        core.run_to_pc(ret, BUDGET).expect("run to return");
+        core.bus_write8(0x0300_1000, core.bus_read8(0x0300_1000) ^ 0xFF);
+        assert_ne!(core.canonical_hash().expect("hash"), a, "IWRAM poke went undetected");
+
+        // Mutant 3: single flipped EWRAM byte.
+        core.load_state(&at_entry).expect("restore");
+        core.run_to_pc(ret, BUDGET).expect("run to return");
+        core.bus_write8(0x0200_4000, core.bus_read8(0x0200_4000) ^ 0xFF);
+        assert_ne!(core.canonical_hash().expect("hash"), a, "EWRAM poke went undetected");
     }
 
     // Pure self-test of the BIOS gate's checksum (runs everywhere, no files).

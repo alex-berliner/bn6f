@@ -103,12 +103,15 @@ verifiable "done", and we stop for review after each.
   snapshot in *exactly* the scanned step count, and reaches the matching
   return. Pipeline convention pinned: at boundaries r15 = exec + width
   (pc() == 0 at reset).
-- **B3 — differential atom (identity + first masks).** snapshot pre → run to
-  return → hash A; restore → run again → hash B; assert A==B. Then the first
-  masked compare: mask spec v0 = cycle/timer counters + IWRAM below SP,
-  each mask entry documented and paired with a seeded fault it still
-  catches (mutation suite v0: poke a register / skip a store post-restore ⇒
-  compare must fail). [F6a, D1]
+- **B3 — differential atom. ✓ DONE 2026-07-12** — snapshot at a real
+  function's entry → run to its matching return → canonical hash A;
+  restore → run again → hash B; A==B (identity). Mutation suite v0 in the
+  same test: a poked r0 (wrong return value), a flipped IWRAM byte, and a
+  flipped EWRAM byte each turn the differential red. **Amendment:** mask
+  spec v0 (cycle/timer counters, IWRAM below SP) moves to the Phase 2
+  validator — no drifted code exists yet to watch a mask fail against, and
+  the never-trust-an-unfailed-check principle applies to masks too. [F6a,
+  D1]
 
 ## Phase 1 — fixtures, coverage, harvesting (the shared truth)
 

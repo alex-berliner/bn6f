@@ -207,6 +207,24 @@ impl Core {
         self.gpr(14)
     }
 
+    /// Overwrite general-purpose register `n` (0..=14). Seeded-fault
+    /// injection for the mutation suite — never used on a happy path.
+    /// r15 is refused: raw PC writes would desync the prefetch pipeline.
+    pub fn set_gpr(&mut self, n: usize, v: u32) {
+        assert!(n < 15, "set_gpr: refusing r{n} (r15 would desync the pipeline)");
+        // SAFETY: arm() is valid; gprs is a plain [i32; 16] field.
+        unsafe { (*self.arm()).__bindgen_anon_1.__bindgen_anon_1.gprs[n] = v as i32 };
+    }
+
+    /// Write one byte on the CPU bus. Seeded-fault injection.
+    pub fn bus_write8(&mut self, addr: u32, v: u8) {
+        // SAFETY: type invariant; busWrite8 is the core's own fn ptr.
+        let w = unsafe { (*self.raw).busWrite8 }.expect("busWrite8 is null");
+        // SAFETY: bus write on a valid core; any u32 address is a valid
+        // bus target (unmapped writes are ignored by the bus).
+        unsafe { w(self.raw, addr, v) };
+    }
+
     /// Execute exactly one CPU instruction (events included, mGBA `step`).
     pub fn step(&mut self) {
         // SAFETY: type invariant; step is the core's own fn ptr.
