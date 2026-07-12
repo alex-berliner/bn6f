@@ -19,6 +19,7 @@ impl Core {
     /// Create an mGBA core for `rom_path` (mGBA dispatches by file content),
     /// initialize it, require the real BIOS (no HLE skip), and load the ROM.
     pub fn new(rom_path: &str) -> Result<Self, String> {
+        silence_default_logger();
         let rom_c = CString::new(rom_path).map_err(|e| e.to_string())?;
 
         // SAFETY: mCoreFind takes a valid C string; returns a core ptr or null.
@@ -67,7 +68,11 @@ impl Core {
     }
 
     /// Load the BIOS image from `path` (biosID 0 = the only GBA BIOS).
+    ///
+    /// Gate, not convention: refuses anything that fails the never-HLE check
+    /// (official-BIOS size + CRC32) before the core ever sees it. [F6e, F7c]
     pub fn load_bios(&mut self, path: &str) -> Result<(), String> {
+        crate::bios::verify(path)?;
         let p = CString::new(path).map_err(|e| e.to_string())?;
         // SAFETY: type invariant; loadBIOS is the core's own optional fn ptr.
         let load = unsafe { (*self.raw).loadBIOS }.ok_or("mCore.loadBIOS is null")?;
@@ -100,6 +105,81 @@ impl Core {
         unsafe { read(self.raw, addr) as u8 }
     }
 
+    /// Advance emulation by exactly one video frame.
+    pub fn run_frame(&mut self) {
+        // SAFETY: type invariant; runFrame is the core's own fn ptr.
+        let f = unsafe { (*self.raw).runFrame }.expect("runFrame is null");
+        // SAFETY: running one frame on a valid, ROM-loaded, reset core.
+        unsafe { f(self.raw) };
+    }
+
+    /// Size in bytes of the core's serialized full state.
+    pub fn state_size(&self) -> usize {
+        // SAFETY: type invariant; stateSize is the core's own fn ptr.
+        let f = unsafe { (*self.raw).stateSize }.expect("stateSize is null");
+        // SAFETY: pure query on a valid core.
+        unsafe { f(self.raw) }
+    }
+
+    /// Serialize the full machine state (CPU, memories, IO, timers, video,
+    /// audio — the raw mCore state struct; savedata lives outside it).
+    pub fn save_state(&mut self) -> Result<Snapshot, String> {
+        let len = self.state_size();
+        let mut buf = vec![0u64; len.div_ceil(8)];
+        // SAFETY: type invariant; saveState is the core's own fn ptr.
+        let f = unsafe { (*self.raw).saveState }.ok_or("mCore.saveState is null")?;
+        // SAFETY: buf provides >= len writable bytes, 8-aligned (Vec<u64>) —
+        // the serializer stores through typed pointers into it.
+        if !unsafe { f(self.raw, buf.as_mut_ptr() as *mut std::os::raw::c_void) } {
+            return Err("saveState() returned false".into());
+        }
+        Ok(Snapshot { buf, len })
+    }
+
+    /// Restore a state previously produced by `save_state` on a same-ROM core.
+    pub fn load_state(&mut self, snap: &Snapshot) -> Result<(), String> {
+        let want = self.state_size();
+        if snap.len != want {
+            return Err(format!("snapshot size {} != core state size {want}", snap.len));
+        }
+        // SAFETY: type invariant; loadState is the core's own fn ptr.
+        let f = unsafe { (*self.raw).loadState }.ok_or("mCore.loadState is null")?;
+        // SAFETY: snap.buf holds len initialized, 8-aligned bytes to read from.
+        if !unsafe { f(self.raw, snap.buf.as_ptr() as *const std::os::raw::c_void) } {
+            return Err("loadState() returned false".into());
+        }
+        Ok(())
+    }
+
+    /// FNV-1a fingerprint of the full serialized state.
+    pub fn state_hash(&mut self) -> Result<u64, String> {
+        Ok(crate::fnv1a64(self.save_state()?.bytes()))
+    }
+
+    /// Serialize in *canonical* form: save → load → save.
+    ///
+    /// mGBA's deserializer recomputes a handful of derived audio-scheduler
+    /// fields instead of trusting the image (PSG ch1/ch2 envelope timing and
+    /// last-update stamps — serialize.h offsets 0x00130–0x00153; measured: 8
+    /// bytes differ, nothing propagates). A state that has crossed a restore
+    /// therefore never byte-matches one that hasn't, even when emulation is
+    /// identical. Canonicalizing both sides before comparing keeps parity
+    /// exact over all authoritative state — nothing is masked; the derived
+    /// fields are compared in recomputed form. The extra load is a real
+    /// restore, so this mutates nothing observable (asserted by the
+    /// idempotence test in lib.rs).
+    pub fn canonical_state(&mut self) -> Result<Snapshot, String> {
+        let s = self.save_state()?;
+        self.load_state(&s)?;
+        self.save_state()
+    }
+
+    /// FNV-1a fingerprint of the canonical serialized state — use this
+    /// whenever the states being compared may differ in restore history.
+    pub fn canonical_hash(&mut self) -> Result<u64, String> {
+        Ok(crate::fnv1a64(self.canonical_state()?.bytes()))
+    }
+
     /// Cartridge-header game title (offset 0x0A0, up to 12 bytes) read off the
     /// bus — confirms the ROM is genuinely mapped, not merely accepted by load.
     pub fn rom_title(&self) -> String {
@@ -112,6 +192,51 @@ impl Core {
             bytes.push(b);
         }
         String::from_utf8_lossy(&bytes).into_owned()
+    }
+}
+
+/// mGBA's default logger prints every core message to stdout; route it to a
+/// no-op instead so harness/test output stays readable. Idempotent.
+fn silence_default_logger() {
+    static ONCE: std::sync::Once = std::sync::Once::new();
+    ONCE.call_once(|| {
+        unsafe extern "C" fn noop(
+            _logger: *mut sys::mLogger,
+            _category: std::os::raw::c_int,
+            _level: sys::mLogLevel,
+            _format: *const std::os::raw::c_char,
+            _args: *mut sys::__va_list_tag,
+        ) {
+        }
+        static mut SILENT: sys::mLogger = sys::mLogger {
+            log: Some(noop as _),
+            filter: std::ptr::null_mut(),
+        };
+        // SAFETY: SILENT lives for the program; mGBA only calls its fn ptr.
+        unsafe { sys::mLogSetDefaultLogger(std::ptr::addr_of_mut!(SILENT)) };
+    });
+}
+
+/// Full serialized core state. Storage is `Vec<u64>` so the buffer is
+/// 8-aligned — the mGBA serializer reads/writes it through typed pointers.
+pub struct Snapshot {
+    buf: Vec<u64>,
+    len: usize,
+}
+
+impl Snapshot {
+    pub fn bytes(&self) -> &[u8] {
+        // SAFETY: buf owns >= len bytes, all initialized (zero-filled at
+        // alloc, then written by saveState); u64 storage reads fine as bytes.
+        unsafe { std::slice::from_raw_parts(self.buf.as_ptr() as *const u8, self.len) }
+    }
+
+    pub fn len(&self) -> usize {
+        self.len
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
     }
 }
 

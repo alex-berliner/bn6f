@@ -1,28 +1,23 @@
-//! bn6f-harness — validation harness, built from first principles.
+//! bn6f-harness CLI — boots the substrate and prints its vitals.
 //!
-//! B0 (current): create an mGBA core, load the ROM and the *real* BIOS, reset,
-//! and confirm the ROM is mapped by reading its title off the bus. No frames,
-//! hashing, or traces yet — those are later bricks.
-//!
-//! All `unsafe` lives in the `emu` wrapper over libmgba's FFI (`sys`); this
-//! file is safe Rust orchestration only.
+//! The real guarantees live in `cargo test` (B0/B1 bricks); this binary is a
+//! quick smoke run of the same library surface.
 //!
 //! Usage:
 //!   bn6f-harness [ROM] [BIOS]
-//!   defaults: ROM=build/bn6f.gba  BIOS=/home/alex/gbabiosworld.bin
+//!   ROM default:  <repo>/build/bn6f.gba
+//!   BIOS default: $BN6F_BIOS, else the documented local fallback; whatever
+//!   resolves must pass the never-HLE gate (official size + CRC32) to load.
 
-mod emu;
-mod sys;
-
-// Resolve the default ROM relative to this crate (tools/harness) so it works
-// from any cwd: <repo>/build/bn6f.gba. The crate lives at <repo>/tools/harness.
-const DEFAULT_ROM: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../build/bn6f.gba");
-const DEFAULT_BIOS: &str = "/home/alex/gbabiosworld.bin";
+use bn6f_harness::{bios, emu};
 
 fn main() {
     let mut args = std::env::args().skip(1);
-    let rom = args.next().unwrap_or_else(|| DEFAULT_ROM.into());
-    let bios = args.next().unwrap_or_else(|| DEFAULT_BIOS.into());
+    let rom = args.next().unwrap_or_else(|| bn6f_harness::DEFAULT_ROM.into());
+    let bios = args.next().or_else(bios::find).unwrap_or_else(|| {
+        eprintln!("error: no BIOS found — set BN6F_BIOS or pass a path as arg 2");
+        std::process::exit(1);
+    });
 
     if let Err(e) = run(&rom, &bios) {
         eprintln!("error: {e}");
@@ -35,9 +30,14 @@ fn run(rom: &str, bios: &str) -> Result<(), String> {
     core.load_bios(bios)?;
     core.reset()?;
 
-    println!("OK: core up, ROM + real BIOS loaded, reset complete.");
+    println!("OK: core up, ROM + verified real BIOS loaded, reset complete.");
     println!("  rom:   {rom}");
-    println!("  bios:  {bios}");
+    println!("  bios:  {bios} (official, crc32 verified)");
     println!("  title: {:?}", core.rom_title());
+
+    for _ in 0..60 {
+        core.run_frame();
+    }
+    println!("  state: {} bytes, hash {:#018x} after 60 frames", core.state_size(), core.state_hash()?);
     Ok(())
 }

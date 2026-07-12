@@ -75,19 +75,27 @@ verifiable "done", and we stop for review after each.
 
 ## Phase 0 — hygiene + harness substrate
 
-- **P0 — publish & guard the baseline.** Push `master` (70 commits are
-  local-only). Add CI: `make all` + `sha1sum -c bn6f.sha1` + `cargo test`
-  on every push. *Done:* remote up to date, CI green.
+- **P0 — publish & guard the baseline. ✓ DONE 2026-07-12** — master pushed
+  (origin switched to SSH for workflow-file pushes); CI runs setup-toolchain
+  (cached) + `make assets` + `make all`/sha1 + `cargo test` on every push.
 - **B0 — substrate builds & loads. ✓ DONE** (`9663d4d9`) — loads ROM + real
-  BIOS, reads title off the bus. Retrofit: turn its claims into `cargo
-  test`s (title == `MEGAMAN6_FXX`; BIOS file checksum-verified, path from
-  env var with the hardcoded default removed; wrong/absent BIOS ⇒ explicit
-  refusal). [F7e, F6e]
-- **B1 — determinism + snapshot fidelity.** Bind `mgba/core/serialize.h`
-  (wrapper.h + build.rs), add frame stepping + full-state serialize + hash.
-  *Done (as tests):* same N-frame run twice ⇒ identical hash;
-  snapshot→restore→continue ⇒ identical hash; and a sensitivity self-test:
-  N vs N+1 frames ⇒ different hash. [F6a]
+  BIOS, reads title off the bus. **Retrofit ✓ DONE 2026-07-12:** claims are
+  `cargo test`s (title == `MEGAMAN6_FXX`; wrong BIOS ⇒ explicit "never-HLE
+  gate" refusal). BIOS identity = size + IEEE CRC32 `0x81977335` (No-Intro;
+  nb: mGBA's logged `0xBAAE187F` is its internal checksum, not CRC32),
+  enforced inside `Core::load_bios` so an unverified BIOS cannot boot a
+  core. Path: `BN6F_BIOS` env var, else a documented local fallback — the
+  guarantee lives in the checksum gate, not the path. [F7e, F6e]
+- **B1 — determinism + snapshot fidelity. ✓ DONE 2026-07-12** (as tests):
+  same N-frame run twice ⇒ identical hash; snapshot→restore→continue ⇒
+  identical canonical hash; sensitivity self-test (N vs N+1 frames ⇒
+  different hash). **Finding — canonical form:** mGBA's deserializer
+  recomputes derived audio-scheduler fields (PSG ch1/ch2 envelope/update
+  stamps, serialize.h 0x00130–0x00153; 8 bytes, non-propagating), so a
+  state that crossed a restore never byte-matches one that didn't. All
+  cross-restore comparisons (B3's differential included) must compare
+  **canonical states** (save→load→save; idempotence pinned by test). No
+  masking — derived fields are compared in recomputed form. [F6a, D1]
 - **B2 — execution control.** Stop the core exactly at a target PC (entry)
   and at its matching return. *Done (as tests):* break at a known function's
   entry and return.
@@ -210,4 +218,4 @@ compositor inputs is a different, stricter thing]; IDA-era tools.
 B1** in `tools/harness` as `cargo test`s.
 
 ---
-_Last updated: 2026-07-12 12:37:04 -0400_
+_Last updated: 2026-07-12 12:53:22 -0400_
