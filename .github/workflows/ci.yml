@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev clang libclang-dev
+
+      # setup-toolchain is idempotent: a cache hit makes it a no-op.
+      # Bump the -v1 suffix to bust the cache when the mgba submodule pin
+      # or the agbcc branch changes without touching these files.
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools/binutils
+            tools/agbcc
+            tools/agbcc-src
+            tools/libmgba
+          key: toolchain-${{ runner.os }}-${{ hashFiles('Makefile', '.gitmodules') }}-v1
+
+      - name: Build toolchain (agbasm binutils, gbagfx, libmgba)
+        run: make setup-toolchain
+
+      - name: Build compressed assets
+        run: make assets -j"$(nproc)"
+
+      - name: Build ROM and verify SHA1
+        run: make all -j"$(nproc)"
+
+      # BIOS-dependent harness tests skip themselves when no BIOS is
+      # present and CI=true (GitHub sets CI). Locally they are mandatory.
+      - name: Harness tests
+        working-directory: tools/harness
+        run: cargo test --verbose
