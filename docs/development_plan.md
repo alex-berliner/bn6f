@@ -115,19 +115,44 @@ verifiable "done", and we stop for review after each.
 
 ## Phase 1 — fixtures, coverage, harvesting (the shared truth)
 
-- **Fixtures:** record real-BIOS bk2s in BizHawk (`make bizhawk-dll`; same
-  pinned mgba core as the harness) covering boot, menus, overworld, battle
-  variety, shops, net areas. Harness replays each bk2 and its frame-hash
-  trace is stored as a build artifact. *Done:* replay is deterministic and
-  BizHawk-consistent. [F7a-d]
-- **Frame-hash oracle v0:** per-frame hash of VRAM/OAM/PAL + display/sound
-  registers during replay; plus its own mutation suite (corrupt a tile /
-  an OAM entry / a palette color ⇒ trace must differ). [D1]
-- **Call-boundary harvester:** on replay, snapshot at every function
-  entry/return; per-symbol corpus on disk. The ⭐ profiler falls out of the
-  same instrumentation: call counts, per-`(symbol × fixture)` coverage,
-  ranked hot list, and the cold-function list (no corpus ⇒ Phase 4
-  synthetic mode). [⭐, F6c, F7b, F12, D4]
+- **Fixtures. ✓ IN PROGRESS 2026-07-12** — recorded *by the harness itself*,
+  no BizHawk/human needed: `tools/harness/src/bin/pilot.rs` drives the
+  keypad and renders frames to PNG so a run can be watched and steered.
+  A from-cold-boot input script IS the recording (deterministic vs ROM +
+  real BIOS; verified bit-identical on replay). Seed fixtures in
+  `fixtures/`: `01_boot_to_bedroom`, `02_boot_to_livingroom`. Still to
+  record: battle (hot path), shops, net areas — same method, gated on the
+  harvester's coverage report saying where the gaps are. BizHawk `.bk2`
+  import stays roadmap for human-recorded runs. [F7a-d]
+- **Frame-hash oracle v0. ✓ DONE 2026-07-12** — `Core::observable_hash()`:
+  FNV-1a over the rendered framebuffer + VRAM + OAM + PAL + curated readable
+  display/sound registers. Framebuffer captures the write-only regs'
+  (scroll/affine/window/mosaic/blend) *visible* effect that bus reads can't
+  see; VRAM/OAM/PAL add off-screen corruption pixel-hashing misses — strictly
+  stronger than either. Timing/status/timer/DMA/serial excluded (stays
+  timing-free); the one residual gap (off-screen write-only-reg change) is
+  covered by the strict oracle during overlap, documented at the reg list.
+  Mutation suite passes (VRAM tile / OAM attr / palette color each move the
+  hash). Trace record/check shipped in pilot (`--trace`/`--check-trace`);
+  the nightly-regression artifact of D1. [D1]
+- **Call-boundary harvester + ⭐ profiler — DESIGNED 2026-07-12, next brick.**
+  Mechanism reverse-engineered from stock mGBA (no bizinterface needed):
+  attach an embedder-allocated `mDebuggerModule` (type `DEBUGGER_CUSTOM` —
+  note `mDebuggerCreateModule` *refuses* CUSTOM and frees, so allocate the
+  module ourselves), `mDebuggerAttach(dbg, core)` + `mDebuggerAttachModule`,
+  then `platform->setBreakpoint(platform, module, {addr, BREAKPOINT_HARDWARE})`
+  at every function entry. Drive with `mDebuggerRunFrame`; on a hit,
+  `mDebuggerEnter` sets `module->isPaused=true` and calls our `entered(module,
+  reason, info)` — record `info->address`, set `isPaused=false` to auto-
+  resume. Function entries come from a symbol map (2751 `func_start` labels
+  from source joined to `build/bn6f.sym` addresses; authoritative count 2751
+  — objdump's F-flag column is positionally unreliable, use source). Profiler
+  = per-`(symbol×fixture)` hit counts → coverage set, hot ranking, cold list
+  (cold ⇒ Phase 4 synthetic mode). Harvester extends the same `entered` hook
+  to snapshot full state at entry/return into the per-symbol corpus [D4].
+  Biggest single FFI chunk in the project; land it as its own reviewed brick
+  (C→Rust callback + `mDebugger`/`mDebuggerModule`/`mBreakpoint` bindings)
+  rather than bolted onto another commit. [⭐, F6c, F7b, F12, D4]
 - **Candidate selector** — one canonical tool, every gate in code: leaf
   (mod BIOS/converted), no flag-dependent callers, alignment, corpus size
   ≥ threshold. Address-taken symbols (the `.word sym+1` set, ~1,012 fns)
@@ -225,4 +250,4 @@ compositor inputs is a different, stricter thing]; IDA-era tools.
 B1** in `tools/harness` as `cargo test`s.
 
 ---
-_Last updated: 2026-07-12 12:53:22 -0400_
+_Last updated: 2026-07-12 13:59:17 -0400_
