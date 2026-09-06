@@ -2657,6 +2657,11 @@ GetAIData_Unk_44_Flag:
 	thumb_func_end GetAIData_Unk_44_Flag
 
 	thumb_func_start getCurChipInBattleHand_8010004
+//! The chip the navi is about to use. Each combatant's battle-hand lives at
+//! byte_20349C0 + alliance*0x50 (see getBattleHandAddr_8010018); [0] is the
+//! running pick count and the next chip id is the u16 at +2 + 2*count. Both
+//! sub_800FC7C (advance the count) and this read the same record, so the navi
+//! fires a chip, then the count moves to the next.
 getCurChipInBattleHand_8010004:
 	push {lr}
 loc_8010006:

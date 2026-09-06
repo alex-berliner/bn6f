@@ -15003,6 +15003,10 @@ locret_800A18C:
 	thumb_func_end sub_800A152
 
 	thumb_func_start battle_isBattleOver
+//! Returns 0 (not over) only while the battle is still live: the win has not
+//! been declared AND the player is still alive AND the battle hasn't been
+//! forced over -- Unk_12 (win-all-enemies-deleted) and Unk_13 (player alive)
+//! must both be set, and Unk_0b must be clear. Otherwise the fight is over.
 battle_isBattleOver:
 	mov r0, #1
 	mov r3, r10
