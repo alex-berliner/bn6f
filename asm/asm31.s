@@ -29513,6 +29513,17 @@ off_80C5C94:
 	.word sub_80C5D84+1
 	thumb_func_end sub_80C5C40
 
+// The flight of a thrown chip object (battle object type 3 sub-type 8), used
+// by MiniBomb, EnergBom, MegEnBom, BigBomb and the three seeds.
+// On the first frame it copies the three words of byte_80C5D58 into the
+// velocity fields -- +0x40 X velocity (multiplied by object_getFrontDirection),
+// +0x44 gravity, +0x48 Z velocity -- and sets Timer to 0x28.
+// Every frame after: ZVelocity += gravity FIRST, then X += XVelocity and
+// Z += ZVelocity. That order matters: the position moves by the velocity of
+// the frame it is already in. t3_0x7a (VDoll, loc_80D4848) does the opposite.
+// Measured by dumping EWRAM once per frame through a MiniBomb's flight: it
+// leaves the navi's hand at Z 0x300000 with XVelocity 0x2E666 and ZVelocity
+// 0x20666, losing 0x2800 a frame, and Timer runs 40 down to 0.
 	thumb_local_start
 sub_80C5C9C:
 	push {r4,r6,r7,lr}
@@ -29606,6 +29617,10 @@ loc_80C5D52:
 	mov r9, r0
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
+// The launch that sub_80C5C9C reads: three words, X velocity 0x0002E666,
+// gravity 0xFFFFD800 and Z velocity 0x00020666. The `ldmia r7!, {r1-r3}`
+// above takes exactly those three; the words after them are not reached
+// through this label from here.
 byte_80C5D58:
 	.byte 0x66, 0xE6, 0x2, 0x0, 0x0, 0xD8, 0xFF, 0xFF, 0x66, 0x6, 0x2
 	.byte 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6
@@ -60526,6 +60541,16 @@ loc_80D481E:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	b locret_80D486E
+// VDoll's doll in flight, and NOTE THE ORDER: X, Y and Z each move by their
+// velocity FIRST and gravity (dword_80D4A18 = 0xFFFFE000) is added to
+// ZVelocity afterwards. A bomb (sub_80C5C9C) and BugBomb (sub_80D9E94) do it
+// the other way round. It is half a step of difference and it is worth a
+// pixel wherever the arc is steep.
+// Measured by dumping EWRAM once per frame through a VDoll's flight: the doll
+// leaves the hand at Z 0x300000 with XVelocity 0x1EEEE and ZVelocity 0x2F333,
+// losing 0x2000 a frame over the 0x3c frames Timer2 is seeded with above.
+// FlshBom's ball (off_80EB6F8[14], sub_80D9CC2) reads back the same way round:
+// 0x2E666 across, 0x28CCC up, 0x3000 a frame down, over 40 frames.
 loc_80D4848:
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -71716,6 +71741,16 @@ off_80D9E88:
 	.word sub_80D9F84+1
 	thumb_func_end sub_80D9E24
 
+// BugBomb's ball in flight (t3_0xa5_80D9D4C's moving state). Same shape as
+// the bomb's sub_80C5C9C -- gravity into ZVelocity first, then X, Y and Z by
+// their velocities -- but the gravity is the constant dword_80D9F28 rather
+// than an object field, there is a Y velocity, and it lands early when Z
+// falls to zero as well as when Timer runs out.
+// Measured by dumping EWRAM once per frame through a BugBomb's flight: it
+// leaves the hand at Z 0x300000 with XVelocity 0x2C000 and ZVelocity 0x26062,
+// losing 0x2800 a frame, and Timer runs 42 down to 0. The same read-out gives
+// BlkBomb and LilBolr an identical 0x2C000 across and 0x2236E up, with the
+// same 0x2800 pull, so those two are thrown by one launcher exactly.
 	thumb_local_start
 sub_80D9E94:
 	push {r4,r6,r7,lr}
@@ -108877,6 +108912,10 @@ off_80EB6F0:
 	.word off_80EB6F8
 off_80EB6F4:
 	.word byte_80EB738
+// Spawners for a thrown chip, indexed by the chip's SUBFAMILY (the byte the
+// attack setup puts in oAIAttackVars_Unk_03). 0-2, 4, 5, 10, 11 and 15 are
+// MiniBomb's sub_80C5DBC (MiniBomb, EnergBom, MegEnBom, BigBomb); 3 is
+// LilBolr's, 7 BugBomb's, 8 VDoll's, 9/12/13 the seeds' and 14 FlshBom's.
 off_80EB6F8:
 	.word sub_80C5DBC+1
 	.word sub_80C5DBC+1
