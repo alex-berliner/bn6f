@@ -31102,6 +31102,17 @@ loc_801E830:
 	pop {pc}
 	thumb_func_end sub_801E828
 
+// Upload the battle result BANNER ("ENEMY DELETED" and friends) into the
+// OBJ tiles at 0x6016E00. Five 32x16 objects, one per outer iteration:
+// the inner loop makes four pairs of 0x20-byte transfers (top row at r1,
+// bottom row at r1+0x80) and steps r1 by 0x20, so each object covers
+// 0x100 bytes and the five span 0x6016E00..0x6017300. The glyph pointers
+// come from the caller's list at r4+4, skipping the terminator
+// byte_801FDC0. Then, if [r5,#8] says so, the trailing counter is drawn
+// from off_801FD64 into 0x6017300 and byte_86F2900 goes to the palette
+// staging buffer byte_30016B0.
+// NOTE: 0x6016E00 is shared with the chip-name popup (sub_801E95C); the
+// two are unrelated routines that happen to write the same tile region.
 	thumb_local_start
 sub_801E838:
 	push {r4-r7,lr}
@@ -31256,6 +31267,25 @@ off_801E958:
 	.word byte_801FDC0
 	thumb_func_end sub_801E914
 
+// Build the CHIP NAME POPUP -- the banner that names the chip just used,
+// eight 8x16 objects at screen (28,32) in OBJ palette 11, with the chip's
+// damage figure beside it.
+// Arguments: r3 = chip id (kept at [r5,#4]), r1 and r2 = the two figures to
+// show beside the name, r4 = player index, r5 = the popup's state block.
+// sub_801EA5A uses that player index (read back off the stack as [sp,#8],
+// the saved r4) to pick the text buffer and OBJ tile destination.
+// renderTextGfx_8045F8C renders the name into the buffer with the fixed
+// battle font dword_86B7AE0 and returns its length in glyphs, kept at
+// [r5,#9]. Then, only if the chip's flag byte (ChipData+9) has bit 1 set:
+// bit 0x8000 of the first figure is stripped and sets the flag [r5,#0xc]
+// (which widens the layout by 0x10 below), bits 0x7800 are masked off, and
+// what is left is BCD-converted and queued through sub_801EA34; the second
+// figure follows the same path into the second destination. The tail
+// computes the popup's x origin at [r5,#2] from 0xf minus the total glyph
+// count, and queues the palette staging transfers in off_801EAB0.
+// Returns 0 on the path that draws.
+// Only caller: sub_801E8CC, which saves and restores its own r0 around the
+// call and so ignores the return value.
 	thumb_local_start
 sub_801E95C:
 	push {r4-r7,lr}
@@ -31360,6 +31390,13 @@ loc_801E9FC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_801E95C
 
+// Queue four decimal digits of a chip's power figure into OBJ tiles.
+// r4 is the packed value: four nibbles of digit index, each selecting a
+// glyph pointer from off_801FD90. r1 is the destination of the rightmost
+// digit; each digit is two 0x20-byte transfers (top at r1, bottom at
+// r1+0x80) and r1 then steps back 0x20, so the digits are laid right to
+// left. Destinations come from dword_801EA7C / dword_801EA88 (0x6017060
+// and 0x6017160 for player one, 0x60174E0 and 0x60175E0 for player two).
 	thumb_local_start
 sub_801EA34:
 	push {r6,lr}
@@ -31382,6 +31419,11 @@ loc_801EA3C:
 	pop {r6,pc}
 	thumb_func_end sub_801EA34
 
+// Pick the chip-name popup's text buffer and OBJ tile destination for a
+// player index. It is read as [sp,#8], which is the r4 its caller
+// sub_801E95C has just pushed: 0 (the local player) gets byte_203EDA0 ->
+// 0x6016E00, 1 gets byte_203EFA0 -> 0x6017280. Returns them in r2 and r3
+// for renderTextGfx_8045F8C. Leaf, returns with `mov pc, lr`.
 	thumb_local_start
 sub_801EA5A:
 	ldr r2, [sp,#8]
