@@ -53,6 +53,13 @@
 	def_struct_offsets s_20364C0_struct, oS20364C0
 
 	// Calling it Extra for now until we understand why the conflicting references
+  // Unk_40 (the same word as unk_2036500) is the window's OWN FRAME COUNTER, and
+  // it is the phase of the highlight bracket's blink. sub_8026B04 seeds it to
+  // 0x78 and counts it down by 0xc through the slide-in, sub_8026CCC increments
+  // it once a frame while the window is interactive and zeroes it again when a
+  // chip is selected, and sub_8028820 reduces it to `(x >> 3) & 1` and adds that
+  // to base tile 0xb764 to pick between the two bracket tiles. Its value is
+  // therefore "frames since THIS window opened" and means nothing across windows.
   .equiv oS20364C0_Extra_Unk_40, 0x40 // u32
   .equiv oS20364C0_Extra_Unk_44, 0x44 // flags32
   .equiv oS20364C0_Extra_Size, 0x48

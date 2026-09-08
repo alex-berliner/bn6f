@@ -10367,6 +10367,15 @@ sub_800801C:
 	.balign 4, 0
 off_8008034:
 	.word off_8008038
+// THE GENERIC BANNER SEQUENCER's state table, indexed by dword_203CA70 as a
+// PRE-MULTIPLIED byte offset (0, 4, 8, ...), not a state number. It is not an
+// end-of-battle pipeline: the same table runs BATTLE START!, TURN START!,
+// ENEMY DELETED, MEGAMAN DELETED and the result messages, which is why the
+// entries look unrelated to each other.
+// Entries 6-9 (sub_800834A, sub_80083E4, sub_8008452, sub_8008492) are a
+// SIBLING BRANCH, reached only where sub_800A152() returns 7 -- a different
+// battle outcome. They never run on the ordinary path where the last enemy
+// is deleted, and cost that path no frames.
 off_8008038:
 	.word sub_800840C+1
 	.word sub_8008064+1
@@ -10577,6 +10586,15 @@ loc_80081EE:
 	mov r2, #SONG_WINNER_0
 	mov r4, #0x5e
 	b loc_8008206
+// The countdown that has to expire before the battle can leave this state is
+// NOT a constant 0x66. r4 starts at 0x5e (94) and only becomes 0x66 (102) when
+// bit 2 of GetBattleEffects() -- BATTLE_EFFECT_SHOW_RESULTS -- is CLEAR; the
+// two branches also pick different victory songs. A normal field encounter has
+// that bit set (see data/BattleSettings.s), so a field battle counts 94, and
+// anything derived from 102 will be eight frames long.
+// It is stored at [r5,#8] and the state also needs the banner itself to report
+// idle (sub_801E754) before it will advance, but the banner is done well inside
+// 94 frames, so the countdown is what binds.
 loc_80081F4:
 	bl GetBattleEffects // () -> int
 	mov r4, #0x5e 

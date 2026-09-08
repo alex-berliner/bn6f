@@ -879,6 +879,17 @@ off_8026AA4:
 	thumb_func_end custMenuMainMaybe_8026A88
 
 	thumb_local_start
+// State 0x00 of the chip window: THE SLIDE-IN, and the seed of the blink
+// counter. On first entry (Unk_02 == 0) it plays SOUND_SELECT_79 and writes
+// 0x78 to BOTH the render info's +0x18 and the struct's own +0x40; every
+// call after subtracts 0xc from +0x40 and reveals that much more of the
+// window. 0x78 / 0xc is exactly ten, so the counter lands on 0 rather than
+// crossing it, and on THAT SAME CALL -- not the next one -- the tenth, it
+// writes 4 to JumpOffset01 (loc_8026BE0 below) and hands over to state 0x04.
+// A reimplementation that spends an extra frame reaching its open state will
+// look identical, because the window is fully revealed either way; the only
+// thing that can see the difference is sub_8028820's bracket, which counts
+// from here.
 sub_8026B04: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
@@ -1132,6 +1143,13 @@ dword_8026CC8:
 	thumb_func_end sub_8026BF4
 
 	thumb_local_start
+// State 0x04 of the chip window: the interactive wait, and the only thing that
+// advances the blink counter. Note the ORDER at the bottom of the loop: it
+// draws (sub_8028820 among others) with the counter it already has and only
+// then does `ldr r0,[r5,#0x40] / add r0,#1 / str`. So the value visible on
+// frame N is the value the counter held BEFORE frame N's increment.
+// When sub_802A220 reports a selection it zeroes +0x40 again on the way out,
+// so the counter never carries across two windows.
 sub_8026CCC: // (self: * S20364C0 $r5) -> ()
 	push {r7,lr}
 
@@ -4787,6 +4805,22 @@ off_802881C:
 	.word unk_3001A80
 	thumb_func_end sub_80287D2
 
+// Draws the highlight bracket around the chip the cursor is on, and BLINKS it.
+// r5 is eS20364C0 (0x020364C0), the chip-window struct.
+//
+// The blink is not a hide/show: it is TWO TILES a pixel apart at the corners.
+// `ldr r5,[r5,#0x40]` takes the window's own frame counter (0x02036500,
+// oS20364C0_Extra_Unk_40) and `lsr #3 / and #1` reduces it to one bit, which is
+// added to base tile 0xb764 -- so 0xb764 for eight frames, 0xb765 for the next
+// eight, forever, and the second is the same bracket shrunk a pixel at each
+// corner. A swap costs 92 pixels on screen.
+//
+// The counter it reads is entirely window-relative: sub_8026B04 seeds it to
+// 0x78 and counts it down by 0xc during the slide-in, sub_8026CCC increments it
+// once a frame while the window is interactive, and it is re-zeroed when the
+// selection ends. So the phase of the blink says how long THIS window has been
+// open and nothing else. In a save state taken mid-window it is simply some
+// large number, and its low four bits are the only part that shows.
 	thumb_local_start
 sub_8028820:
 	push {r4-r6,lr}

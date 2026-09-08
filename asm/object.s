@@ -10,6 +10,10 @@ sub_800B884:
 	thumb_func_end sub_800B884
 
 	thumb_local_start
+// Reads byte 1 of an alliance's slot in byte_203CF00 (sub_800BF5C indexes it by
+// alliance * 0x50). It is a synchronisation byte between the two sides' popup
+// announcers, not a property of any chip; sub_800B89C zeroes it and
+// object_drawChipName waits on it. Callers pass the OPPOSING alliance.
 sub_800B892:
 	push {lr}
 	bl sub_800BF5C
@@ -180,6 +184,21 @@ locret_800B9AE:
 	pop {pc}
 	thumb_func_end sub_800B97E
 
+// Raises the chip-name popup. WHAT IT DOES NOT DO is decide, from the chip,
+// whether a chip gets a name popup at all -- there is no chip-category test
+// and no ChipData flag gating the draw here.
+// The gate is sub_800B892(Alliance ^ 1), i.e. byte_203CF00[opposing * 0x50 + 1]
+// (via sub_800BF5C): a per-alliance announcer-slot byte that serialises the two
+// sides so both popups do not animate at once. Values 0 and 3 mean "go";
+// anything else simply returns and retries next frame, with no state change.
+// ChipData+9 bit 1 is read further down, but BOTH branches reach the draw --
+// the bit only decides whether Damage and Unk_32 ride along as a number beside
+// the name, which is how the trap and obstacle chips show their damage.
+// So WHICH chips get a popup is not a runtime test: it is which object the
+// chip's use spawns. This routine appears exactly 16 times in the ROM, always
+// as the second entry of a phase table shaped
+//   [object_dimScreen, object_drawChipName, <the chip's own effect>,
+//    object_undimScreen]
 	thumb_func_start object_drawChipName
 object_drawChipName:
 	push {lr}
@@ -930,6 +949,8 @@ loc_800BF50:
 	pop {r4,pc}
 	thumb_func_end sub_800BF16
 
+// alliance -> &byte_203CF00[alliance * 0x50]. The per-alliance announcer block
+// that sub_800B892/sub_800B89C/sub_800B8C2 read and write byte 1 of.
 	thumb_func_start sub_800BF5C
 sub_800BF5C:
 	mov r1, #0x50 
