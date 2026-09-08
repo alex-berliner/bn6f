@@ -1,6 +1,17 @@
 
 	thumb_func_start t1_0x0_80B81EC
 // some sort of generic function for enemies?
+// bn project, AUDIT wave 3c "inert-enemy" (2026-09-08): confirmed NOT
+// enemy-specific -- this is the SHARED entry T1BattleObjectJumptable[0]
+// (asm00_1.s ~8592-ish, "// JP: 0x8003c80") dispatches EVERY T1-category
+// battle object to, traced live (tools/mgba_capture.c's --trace-pc): a
+// PAUSED capture's MegaMan object (r5 == 0x0203a9b0) and its Mettaur
+// (r5 == 0x0203ab60) both land here with r0 == this function's own address
+// (0x080b81ed) -- patching THIS function would break MegaMan too. It reads
+// oBattleObject_AIDataPtr->ActorType and picks one of three handlers below
+// (virus/navi/player); the "virus" one is where the bn project's own
+// inert-enemy patch actually goes -- see battleObject_dispatch_8108F50's
+// own comment, below in this file.
 t1_0x0_80B81EC:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -169250,10 +169261,37 @@ sub_8108F28:
 	thumb_func_end sub_8108F28
 
 	thumb_local_start
+// bn project, AUDIT wave 3c "inert-enemy" (2026-09-08): the "virus" branch
+// of t1_0x0_80B81EC's ActorType dispatch (this file, line ~4) -- ONE
+// caller (grepped), so this is the per-object handler for every enemy,
+// not just the Mettaur. Sub-dispatches again by oBattleObject_CurState
+// (init/update/destroy, the 3-entry table right below) and then
+// unconditionally calls sub_8016E64, which the disassembly's own PRIOR
+// comment there already documents as driving enemy attack animations.
+// tools/patch_sterile.py's --inert-enemy (opt-in, 4th patch) stubs this
+// function's own entry (push {lr}, bytes 00 B5 -> bx lr, 70 47) the same
+// shape as the project's other 3 patches, on the theory that an
+// already-alive enemy's own death/dissolve transition (the corpse this
+// whole ticket chain is chasing out) is gated somewhere in this function's
+// CurState sub-dispatch. MEASURED, NOT SUFFICIENT: the enemy's sprite
+// freezes (confirmed live -- an idle Mettaur's own breathing animation,
+// which normally varies its OAM pixel count frame to frame, goes exactly
+// static) but does NOT stop being drawn (511px/frame of frozen sprite +
+// HP digits remain, visually confirmed via a decoded frame -- so whatever
+// uploads its OAM runs on a path this patch does not touch), AND it
+// breaks chip-firing entirely (MegaMan's own CurState/CurAction bytes,
+// 0x0203a9b0+8/+9, stay (0x04,0x08) through an A-press that fires cleanly
+// on the SAME script without this patch) -- so every chip/popup capture
+// against this patch gets WORSE, not better (cannon 14388->98398, popup
+// 107511->171154, chip-areagrab 103467->168174; see the bn repo's own
+// ticket report for the harness numbers). Left in the tree as a real,
+// working, OPT-IN patch (--inert-enemy) and an honestly-reported dead
+// end for THIS specific mechanism -- the actual death/dissolve gate and
+// whatever independently drives OAM upload are still unfound.
 battleObject_dispatch_8108F50:
 	push {lr}
 
-	ldr r1, off_8108F64 // =off_8108F68 
+	ldr r1, off_8108F64 // =off_8108F68
 	ldrb r0, [r5,#oBattleObject_CurState]
 	ldr r1, [r1,r0]
 	mov lr, pc
