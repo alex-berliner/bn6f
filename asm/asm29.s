@@ -10097,34 +10097,39 @@ sub_80AA4B8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA4B8
 
-	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested, NOT
-	// fully resolved -- left for whoever picks this up): from
-	// tools/states.py's "overworld_net" state (a net-area "CentralArea1"
-	// overworld save, MapGroup 0x90), forcing this function's gate every
-	// frame (Unk_12/Unk_14 cheat per TRANSFER.md 7aw) reliably rolled a
-	// wild encounter within ~100 frames EARLY IN ONE SESSION (confirmed
-	// repeatedly, several scripts, several ROM builds) but produced ZERO
-	// encounters over as many as 1500 frames LATER IN THE SAME SESSION,
-	// same recipe. Checked directly, not guessed: oGameState_MapGroup
-	// unchanged (0x90, still >=0x80, this function's own first gate) after
-	// a failed walk; byte_8020CE4 indexed for this exact MapGroup/
-	// MapNumber pair reads 5 (not 7 -- 7ba/7aw's own "no encounters"
-	// value) directly in the ROM file; the row-16/category-5 threshold
-	// (byte_8020C5C+0x80+5) reads 12 of 31, a normal-looking rate; the
-	// SAME walk fails identically on the completely unpatched real ROM
-	// (rules out the capture harness's sterile patches); ePrimaryRngSeed
-	// (asm00_0.s:2610's GetRNG, EWRAM 0x020013f0) visibly advances every
-	// frame when watched, with values under the threshold recurring, and
-	// no encounter follows regardless. NOT settled: whether the --watch'd
-	// RNG value is actually the one THIS function's own `bl GetRNG` (a few
-	// lines below) consumes -- GetRNG is tagged broadly enough elsewhere
-	// (ewram.s "#mod_rng") that other per-frame callers plausibly clobber
-	// what a frame-boundary watch sees -- or whether the forced constant
-	// Unk_12/Unk_14 cheat values themselves (not the held direction 7aw
-	// warns about) walk a correlated RNG stride the same way one held
-	// direction does. A `--trace-pc` on this function's own `bl GetRNG`
-	// call site or the `cmp r2,r3; bge` roll comparison a few lines below,
-	// reading r2/r3 live, would settle which.
+	// bn project note (AUDIT wave 3c "fresh-state" ticket; RESOLVED by the
+	// wave 3c/3d "encounter-roll" ticket that picked this up -- the
+	// question the previous note left open, "would settle which", is
+	// answered below). `--trace-pc` on this function's own `bl GetRNG`
+	// (live-verified ROM address 0x080AA51E) and the `cmp r2,r3; bge` roll
+	// comparison a few lines below (live-verified: r2 -- the masked draw --
+	// and r3 -- the threshold -- both settled by ROM 0x080AA52A) shows the
+	// forced Unk_12/Unk_14 cheat itself is the correlated stride, not a
+	// watch-aliasing artifact: with the cheat rewriting both every frame
+	// from load, NOTHING on this code path perturbs GetRNG's state between
+	// one frame's draw and the next, so the roll's outcome is fixed at
+	// load and does not change with more frames or a different held/
+	// cycled direction (measured, one build: masked draw 6 vs threshold 12
+	// -- row 16, category 5, matches this note's own figure -- succeeds on
+	// the very first frame evaluated, every single time, deterministically
+	// picking whichever EnemySetup table entry belongs to the CURRENT map
+	// position rather than one reached by actually walking). This is
+	// TRANSFER.md 7aw's own held-direction orbit trap, walked through the
+	// accumulator cheat instead of through input. Separately, this
+	// function's OWN gate is not the only one that has to be open: its
+	// sole caller, checkThenStartBattle_8005A8C (asm00_1.s), requires
+	// GameState.SubsystemIndex == 4 first (live-verified: watching
+	// SubsystemIndex across a walk shows it move to 8, then 12, the moment
+	// a roll here succeeds and StartBattle fires -- SubsystemIndex 8/12
+	// are gamestate_OnMapUpdate_8005268's own documented dispatch values a
+	// few functions below). A tools/mgba_capture.c `--poke-at frame:addr:
+	// value` (a ONE-SHOT write instead of --cheat's every-frame one) fixes
+	// the trap in the harness: forcing the accumulator open on a single
+	// swept frame instead of every frame restores genuine frame-to-frame
+	// variation in the sampled draw (live-verified: sweeping the poked
+	// frame by 1 flips between roll success and failure and lands on many
+	// distinct nearby EnemySetup table entries, not the same one
+	// repeatedly).
 	thumb_func_start sub_80AA4C0
 sub_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
