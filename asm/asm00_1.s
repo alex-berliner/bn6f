@@ -8538,6 +8538,23 @@ sub_8007338:
 	.word 0x100000
 	thumb_func_end sub_8007338
 
+	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
+	// oBattleSettings_EnemySetupArrPtr is a plain ROM pointer here, not a
+	// RAM copy -- confirmed for one specific wild encounter (a net-area
+	// "CentralArea1" random battle, tools/states.py's own "overworld_net"
+	// state) by walking eToolkit -> BattleStatePtr -> this BattleSettings
+	// -> EnemySetupArrPtr live and diffing the target bytes against
+	// /tmp/bn6f_real.gba's own file bytes at the matching offset: 0 diff.
+	// (copyBattleSettingsTo_200AF60 elsewhere in the disassembly copies the
+	// 0x10-byte BattleSettings STRUCT itself to a fixed RAM scratch address
+	// for a different purpose -- it does not follow this pointer to also
+	// duplicate the EnemySetup array, so the array stays in ROM either
+	// way.) This makes a one-byte ROM data patch a legitimate way to alter
+	// one specific encounter's own enemy list (retype/terminate its
+	// EnemySetup entries) without touching any code path or needing a
+	// per-frame RAM cheat -- see the bn repo's patch_sterile.py
+	// --empty-net-encounter for the worked example (ROM 0x080b5306 for
+	// that one encounter: MegaMan, two Mettaur entries, terminator).
 	thumb_local_start
 sub_8007358: // () -> ()
 	push {lr}
