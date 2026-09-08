@@ -171073,6 +171073,35 @@ loc_8109FD0:
 	pop {pc}
 	thumb_func_end sub_8109FC4
 
+	// bn/reference wt/zero-layers (2026-09-08): this is the Mettaur's OWN
+	// per-frame AI dispatch -- a 5-state machine (off_8109FF0's table:
+	// sub_810A004 hop-toward-row/attack-decide, sub_810A080 wind-up,
+	// sub_810A0BA wait -- itself two sub-states, one of them RNG-gated via
+	// GetPositiveSignedRNG at sub_810A0EE -- sub_810A126 HP/range-gated
+	// attack choice, sub_810A204 not read past this ticket). Its own
+	// re-arm/wait counts are TABLE-DRIVEN (byte_8109F46 = { 0x1e, 0x18,
+	// 0x12, 0xc, 0x12, 0xc }, indexed by oAIData_Version_16 at
+	// sub_810A080/sub_810A0D4), not the flat 0x1e (30) every state uses.
+	// bn's own src/ai.rs (Style::Mettaur) reimplements this as ONE state
+	// with a flat METTAUR_PAUSE=0x1e re-arm and no RNG -- explicitly
+	// documented there as "a first pass on fixed timers, not the game's
+	// own planner". Measured against the real ROM (bn's own zero-layers
+	// ticket, harness.py's `mettaur`/`wave` checks, STERILE+PAUSED+ALIVE+
+	// Start@10 vs a real Mettaur fixture): the mismatch is NOT random
+	// noise or a one-off transition -- it is a clean, repeating pattern
+	// confined to the enemy's own screen box (43,70)-(77,113), literally
+	// alternating a fixed ~766px "on" region against zero for several
+	// frames at a stretch, exactly the signature of a periodic cycle
+	// running on the wrong period/phase rather than a positional or
+	// palette bug. `wave`'s own much larger residue (288491px, every one
+	// of 90 frames nonzero, dominated by BG3 panel-lighting at 244980px)
+	// uses the SAME real Mettaur and is not yet independently
+	// root-caused, but is the same enemy and the same simplified AI, so
+	// this state machine (RNG included -- GetPositiveSignedRNG's own
+	// algorithm/seed is not matched either) is the most likely shared
+	// cause for both. Reimplementing all five states faithfully, RNG
+	// included, is a real project of its own -- not attempted this
+	// ticket; left here as the concrete next step rather than a guess.
 	thumb_local_start
 sub_8109FD6:
 	push {r4,r6,r7,lr}
