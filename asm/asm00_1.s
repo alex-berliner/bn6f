@@ -8630,6 +8630,33 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	pop {pc}
 	thumb_func_end spawnMegaMan_80073CC
 
+	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
+	// patching this function's entry (push {r5,lr} -> bx lr, "never spawn
+	// the enemy") only produces a clean empty-field battle when loaded from
+	// a save state whose spawn already ran on the UNPATCHED ROM. Triggering
+	// a genuinely fresh encounter on the patched ROM (real overworld input,
+	// no save state in the way) instead runs the normal white-hold intro
+	// (matches an unpatched capture frame for frame) and then crashes to
+	// the console's own cold-boot logo 9-13 frames into the battle -- right
+	// around when a virus would first materialise on an unpatched ROM.
+	// Isolated by A/B test to this patch specifically (a control ROM with
+	// only the isBattleOver/banner patches runs the identical encounter
+	// with no crash) and to something other than the loop_800736C dispatch
+	// loop just above (its own `add r6, #4` after the `bx r1` call never
+	// reads r0, exactly as the caller comment below says) -- a
+	// --trace-pc on RunBattleObjectLogic's own per-object dispatch call
+	// (asm00_1.s, the `bx r0` after the Type/Index jumptable lookup) never
+	// fires during the crash window, so the fault is in the one-time init
+	// path, not steady-state per-frame logic. CANDIDATE MECHANISM, not
+	// confirmed further: sub_800768C below (called at the end of this
+	// function, entirely skipped when patched) is what actually calls
+	// object_spawnType1 to allocate the BattleObject; whatever loc_80076DA
+	// does with a successful spawn (register it live, size an actor list,
+	// ...) never happens either, while the SpawnBattleObjectUsingBattleEnt-
+	// ityConfig_8007368 caller's later CopyWords (oBattleState_BattleActors
+	// -> oBattleState_AliveBattleActors) still runs unconditionally off the
+	// EnemySetup's original count. Not traced further -- see the bn repo's
+	// tools/states.py "emptyfield_start" entry for the live measurements.
 	thumb_local_start
 spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	push {r5,lr}
