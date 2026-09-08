@@ -12383,6 +12383,17 @@ sub_802C348:
 	mov pc, lr
 	thumb_func_end sub_802C348
 
+	// bn AUDIT wave 3d "bg3-merge": this is the RESULT window's INIT only --
+	// zero-fills eS20364C0 (0x20 bytes, reused from the chip window's own
+	// struct type), copies a few fields in from r4, sets Unk_06 to 0xe2
+	// (the low byte of -30, START_X in the bn repo's results.rs) and queues
+	// the window's static GFX via QueueEightWordAlignedGFXTransfer -- it
+	// does not touch RenderInfoPtr (see RenderInfo.inc's own comment on
+	// Unk_18/BG3HOFS), so the slide-in itself is animated somewhere else,
+	// not found this ticket (grepped this function and its neighbours
+	// sub_802C170-sub_802C4E8 for a RenderInfoPtr write or a per-frame
+	// eS20364C0+0x06 increment/decrement and found neither -- the actual
+	// per-frame tick function is elsewhere in the ROM).
 	thumb_func_start sub_802C34E
 sub_802C34E:
 	push {r4-r7,lr}
