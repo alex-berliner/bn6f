@@ -27861,6 +27861,18 @@ loc_80C4FBA:
 loc_80C4FD4:
 	bl object_setPanelType
 	b loc_80C4FF0
+// The DEFAULT arm of the hit switch above, and it is easy to misread. The switch
+// selected this arm using Param1 (read into r2 back at the top of the switch),
+// but this arm does NOT set the panel to Param1: it OVERWRITES r2 with a byte
+// taken from the shot's related object before calling object_setPanelType. So
+// Param1 chooses the branch and contributes nothing to the type.
+// Worth spelling out because the plain buster and the charge shot both come
+// through here -- the buster with Param1 0x1d, the charge shot with 1 from
+// byte_80EBD34[oAIAttackVars_Unk_03] -- and neither of those values is one of
+// the cracking/breaking cases (7, 0x15, 0x16) handled above. Measured on the
+// real ROM: a full charge shot lands, the panel's ReserverObjectPtr and flags
+// update as they should, and its Type stays PANEL_NORMAL for 140 frames after.
+// The 0xff test is the only thing that can skip the call.
 loc_80C4FDA:
 	push {r0,r1}
 	bl object_isPanelSolid
