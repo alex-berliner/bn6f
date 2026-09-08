@@ -8538,6 +8538,23 @@ sub_8007338:
 	.word 0x100000
 	thumb_func_end sub_8007338
 
+	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
+	// oBattleSettings_EnemySetupArrPtr is a plain ROM pointer here, not a
+	// RAM copy -- confirmed for one specific wild encounter (a net-area
+	// "CentralArea1" random battle, tools/states.py's own "overworld_net"
+	// state) by walking eToolkit -> BattleStatePtr -> this BattleSettings
+	// -> EnemySetupArrPtr live and diffing the target bytes against
+	// /tmp/bn6f_real.gba's own file bytes at the matching offset: 0 diff.
+	// (copyBattleSettingsTo_200AF60 elsewhere in the disassembly copies the
+	// 0x10-byte BattleSettings STRUCT itself to a fixed RAM scratch address
+	// for a different purpose -- it does not follow this pointer to also
+	// duplicate the EnemySetup array, so the array stays in ROM either
+	// way.) This makes a one-byte ROM data patch a legitimate way to alter
+	// one specific encounter's own enemy list (retype/terminate its
+	// EnemySetup entries) without touching any code path or needing a
+	// per-frame RAM cheat -- see the bn repo's patch_sterile.py
+	// --empty-net-encounter for the worked example (ROM 0x080b5306 for
+	// that one encounter: MegaMan, two Mettaur entries, terminator).
 	thumb_local_start
 sub_8007358: // () -> ()
 	push {lr}
@@ -8630,6 +8647,33 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	pop {pc}
 	thumb_func_end spawnMegaMan_80073CC
 
+	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
+	// patching this function's entry (push {r5,lr} -> bx lr, "never spawn
+	// the enemy") only produces a clean empty-field battle when loaded from
+	// a save state whose spawn already ran on the UNPATCHED ROM. Triggering
+	// a genuinely fresh encounter on the patched ROM (real overworld input,
+	// no save state in the way) instead runs the normal white-hold intro
+	// (matches an unpatched capture frame for frame) and then crashes to
+	// the console's own cold-boot logo 9-13 frames into the battle -- right
+	// around when a virus would first materialise on an unpatched ROM.
+	// Isolated by A/B test to this patch specifically (a control ROM with
+	// only the isBattleOver/banner patches runs the identical encounter
+	// with no crash) and to something other than the loop_800736C dispatch
+	// loop just above (its own `add r6, #4` after the `bx r1` call never
+	// reads r0, exactly as the caller comment below says) -- a
+	// --trace-pc on RunBattleObjectLogic's own per-object dispatch call
+	// (asm00_1.s, the `bx r0` after the Type/Index jumptable lookup) never
+	// fires during the crash window, so the fault is in the one-time init
+	// path, not steady-state per-frame logic. CANDIDATE MECHANISM, not
+	// confirmed further: sub_800768C below (called at the end of this
+	// function, entirely skipped when patched) is what actually calls
+	// object_spawnType1 to allocate the BattleObject; whatever loc_80076DA
+	// does with a successful spawn (register it live, size an actor list,
+	// ...) never happens either, while the SpawnBattleObjectUsingBattleEnt-
+	// ityConfig_8007368 caller's later CopyWords (oBattleState_BattleActors
+	// -> oBattleState_AliveBattleActors) still runs unconditionally off the
+	// EnemySetup's original count. Not traced further -- see the bn repo's
+	// tools/states.py "emptyfield_start" entry for the live measurements.
 	thumb_local_start
 // bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): the ONLY caller in
 // this disassembly is SpawnBattleObjectUsingBattleEntityConfig_8007368's own

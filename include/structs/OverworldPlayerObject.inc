@@ -1,5 +1,25 @@
 // not done
 
+// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested): in the
+// net/cyber overworld ("CentralArea1"), a live oOWPlayerObject instance at
+// EWRAM 0x02009f40 responded to held directional input exactly where this
+// struct's ACTIVE macro (below, not the commented-out draft further down)
+// says X/Y live -- base+0x1c and base+0x20 -- confirming those two fields
+// over an UNVERIFIED assumption from an earlier session (peeking them as
+// 16-bit reads at a different map/context gave "implausible values in the
+// billions", consistent with X/Y actually being the u32s this macro
+// declares rather than u16s, not with the offsets being wrong). Precisely:
+// held Right and Down alike incremented base+0x1e/0x1f (X's own upper
+// 16 bits, i.e. the whole-tile part of a fixed-point X) by exactly 1/frame,
+// wrapping u16; held Down alone (not Right) also incremented base+0x22/0x23
+// (Y's upper 16 bits) the same way -- consistent with this map's isometric/
+// diagonal tile grid, where a single cardinal press does not necessarily
+// move along a single logical axis. base+0x1c/0x1d and base+0x20/0x21 (the
+// LOWER 16 bits of X/Y, presumably sub-tile fraction) were not read. Not
+// confirmed for any other map (the real-world house/overworld this same
+// struct presumably also backs, per the project's own coldboot-handover
+// notes, was not re-tested against this same base address this session).
+
 	.macro overworld_player_object_struct, label=oOWPlayerObject, struct_entry=label_struct_entry, set_struct_start_address=set_struct_start_address
     // type: struct OWPlayerObject
 	set_struct_label \struct_entry, \label

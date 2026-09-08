@@ -10097,6 +10097,34 @@ sub_80AA4B8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA4B8
 
+	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested, NOT
+	// fully resolved -- left for whoever picks this up): from
+	// tools/states.py's "overworld_net" state (a net-area "CentralArea1"
+	// overworld save, MapGroup 0x90), forcing this function's gate every
+	// frame (Unk_12/Unk_14 cheat per TRANSFER.md 7aw) reliably rolled a
+	// wild encounter within ~100 frames EARLY IN ONE SESSION (confirmed
+	// repeatedly, several scripts, several ROM builds) but produced ZERO
+	// encounters over as many as 1500 frames LATER IN THE SAME SESSION,
+	// same recipe. Checked directly, not guessed: oGameState_MapGroup
+	// unchanged (0x90, still >=0x80, this function's own first gate) after
+	// a failed walk; byte_8020CE4 indexed for this exact MapGroup/
+	// MapNumber pair reads 5 (not 7 -- 7ba/7aw's own "no encounters"
+	// value) directly in the ROM file; the row-16/category-5 threshold
+	// (byte_8020C5C+0x80+5) reads 12 of 31, a normal-looking rate; the
+	// SAME walk fails identically on the completely unpatched real ROM
+	// (rules out the capture harness's sterile patches); ePrimaryRngSeed
+	// (asm00_0.s:2610's GetRNG, EWRAM 0x020013f0) visibly advances every
+	// frame when watched, with values under the threshold recurring, and
+	// no encounter follows regardless. NOT settled: whether the --watch'd
+	// RNG value is actually the one THIS function's own `bl GetRNG` (a few
+	// lines below) consumes -- GetRNG is tagged broadly enough elsewhere
+	// (ewram.s "#mod_rng") that other per-frame callers plausibly clobber
+	// what a frame-boundary watch sees -- or whether the forced constant
+	// Unk_12/Unk_14 cheat values themselves (not the held direction 7aw
+	// warns about) walk a correlated RNG stride the same way one held
+	// direction does. A `--trace-pc` on this function's own `bl GetRNG`
+	// call site or the `cmp r2,r3; bge` roll comparison a few lines below,
+	// reading r2/r3 live, would settle which.
 	thumb_func_start sub_80AA4C0
 sub_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
