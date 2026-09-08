@@ -31369,6 +31369,26 @@ off_80C6AF0:
 	.word byte_80C68D4
 	.word 0, 0
 	.byte 0, 0, 0, 0
+// THE SHOCKWAVE'S PER-HOP TABLE: 16 rows of 4 bytes, indexed by Param1 * 4
+// (sub_80C6B64: `ldrb r4,[r5,#Param1] / mov r0,#4 / mul r4,r0`, asm31.s:31411-31416).
+// Each row is read as:
+//   +0  sprite_load's size argument. It is 3 in every row -- constant, not data.
+//   +1  CurAnim, and sprite_setAnimation right after (asm31.s:31427-31430).
+//   +2  Timer: HOW LONG THE SEGMENT DWELLS on its panel before hopping
+//       (asm31.s:31432-31433). Row 0 is 0x16, and the rows run 0x16, 0x10, 0xb,
+//       6, ... down to 6 for the top four rows.
+//   +3  the panel effect, handed to sub_80C6CFC (asm31.s:31604-31611):
+//       0xff does nothing, 3 calls object_crackPanel, 1 breaks, anything else is
+//       an object_setPanelType with that value. Only rows 4 and 5 are non-0xff.
+//
+// PARAM1 IS THE VIRUS'S VERSION TIER, AND IT DOES NOT CHANGE BETWEEN HOPS. A hop
+// respawns the wave through sub_80C6CE4 -> object_spawnType3 ->
+// SpawnBattleObjectCommon, which copies the WHOLE Params word from the old
+// segment into the new one (`str r4,[r5,#oBattleObject_Params]`, asm00_1.s:254).
+// So every hop of one attack reads the SAME row, including the last, and a
+// Version 0 Mettaur is on row 0 -- dwell 0x16, animation 0, no panel effect --
+// from its first hop to its last. The short-dwell rows at the top of the table
+// are reachable only by a Param1 >= 12 virus, never by a later hop of a low one.
 byte_80C6B00:
 	.byte 0x3, 0x0, 0x16, 0xFF, 0x3, 0x1, 0x10, 0xFF, 0x3, 0x1, 0xB, 0xFF
 	.byte 0x3, 0x2, 0x6, 0xFF, 0x3, 0x1, 0x10, 0x3, 0x3, 0x2, 0x6, 0x4

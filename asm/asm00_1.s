@@ -251,6 +251,11 @@ loc_80032A6:
 	str r1, [r5,#oBattleObject_X]
 	str r2, [r5,#oBattleObject_Y]
 	str r3, [r5,#oBattleObject_Z]
+	// The WHOLE Params word -- Param1 through Param4 -- is copied from the
+	// spawning context into the new object. Where an object respawns itself to
+	// move (the Mettaur's shockwave hopping a panel, sub_80C6CE4 in asm31.s),
+	// that means its Params are INHERITED across the hop, so anything indexed by
+	// Param1 is fixed for the whole attack rather than varying hop to hop.
 	str r4, [r5,#oBattleObject_Params]
 
 loc_80032C8:
