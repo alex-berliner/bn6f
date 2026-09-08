@@ -8631,6 +8631,23 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	thumb_func_end spawnMegaMan_80073CC
 
 	thumb_local_start
+// bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): the ONLY caller in
+// this disassembly is SpawnBattleObjectUsingBattleEntityConfig_8007368's own
+// dispatch table (off_80073A0+4, type nibble 0x04), which in turn is called
+// exactly once per battle via sub_8007358 (called from 4 near-identical
+// battle-FSM init states -- see this file's line ~12807/13421/13908/14317).
+// So "patch the function that spawns the encounter's enemy" resolves to
+// patching THIS function's own entry point (push {r5,lr}, bytes 20 B5 ->
+// bx lr, 70 47 -- turns it into a no-op the same way the ENEMY DELETED
+// banner routine is neutered elsewhere in this project's canon patches) --
+// tools/patch_sterile.py's third patch, in the `bn` repo (not this one).
+// Return value in r0 is never read by the dispatch loop after the call, so
+// leaving it unset is safe. CAVEAT, measured: this only stops FUTURE
+// spawns -- an existing save state whose battle already spawned the enemy
+// (i.e. every state this project has today) is unaffected by the patch,
+// since the spawn already ran on whatever ROM built that state. A state
+// that shows a genuinely empty field needs a save captured from a real
+// battle-start reached AFTER the patch, i.e. real input from a cold boot.
 spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	push {r5,lr}
 
@@ -13034,6 +13051,34 @@ locret_8009388:
 	thumb_func_end sub_8009338
 
 	thumb_local_start
+// bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): MegaMan's own
+// "process a chip-use request" handler (a prior session's finding, this
+// session traced it live). someChipHandValidationHappensHere_800B090
+// (this file, line ~17330) is a PASS-THROUGH: it saves r0 on entry
+// (push {r0-r7,lr}) and restores the SAME r0 on return (pop {r0-r7,pc}) --
+// its only effect is a possible side-effect write of the "bug chip" 0x185
+// into the hand slot when validation fails, never the return value -- so
+// the `cmp r0, #6` two lines below is really comparing sub_800801C's own
+// return (the "generic banner sequencer" step result, TRANSFER.md 7bf)
+// unchanged. TRACED LIVE (tools/mgba_capture.c's --trace-pc, this ticket)
+// on a save state past the deleted Mettaur's full dissolve (frame 110),
+// with an A-press at every frame of a 30-frame capture: r0 read 0x0 at
+// EVERY hit of this compare, never 6 -- so `bne loc_80093B0` always took
+// the branch and the immediate-6 patch a prior session tried (0x06 ->
+// 0xFF at ROM 0x80093A2) could never have mattered here, since the value
+// it guards was never 6 to begin with. Two lines further, `cmp r0, #0 /
+// beq locret_800945A` (loc_80093B0, not shown here) then returns
+// immediately without acting on any pending input, for the SAME r0 == 0 --
+// and a same-shape live trace of a WORKING press (PAUSED, enemy immortal,
+// Start@10,A@40) shows MegaMan's own CurState/CurAction bytes (0x0203a9b0
+// +8/+9) move from (0x04,0x08) to (0x04,0x14) right after the press, while
+// the refused (post-dissolve-reload) capture holds (0x04,0x08) for all 30
+// traced frames regardless of the A-press. So the actual second gate is
+// upstream of this compare -- inside sub_800801C's own state after a
+// reload, or in the code past loc_80093B0's r0-nonzero branch (unread by
+// this session, out of time) -- not the `cmp r0, #6` itself. Left
+// unresolved for whoever picks this up next; the trace mode is
+// tools/mgba_capture.c's --trace-pc/--trace-steps in the `bn` repo.
 sub_800938A:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
