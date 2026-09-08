@@ -29031,12 +29031,29 @@ byte_801D9B4:
 	.byte 0xB3, 0xD2, 0xB5, 0xD2
 	thumb_func_end sub_801D814
 
+	// bn/reference wt/zero-layers (2026-09-08): 0x1f09 staged into
+	// oRenderInfo_Unk_0a here is a BGxCNT value (priority=1, char base
+	// block=0, screen base block=31) -- peeked live on real hardware via
+	// mgba_capture --peek 0x0400000e (BG3CNT) from both
+	// /tmp/pausedwithcannon.state (normal battle HUD) and
+	// /tmp/chipselect.state (chip-select window open): BOTH read 0x1f09,
+	// and isolating BG3 alone (--only-bg 3) on each shows the HP/CUSTOM
+	// gauge HUD in the first case and the chip-select window (plus the HP
+	// box, still drawn) in the second -- the same hardware background,
+	// same tilemap, reused/overwritten by whichever of the two is active
+	// rather than each getting its own layer. BG0CNT/BG1CNT/BG2CNT read
+	// 0x1c08/0x1d03/0x1e02 on both states too (BG0 unused/blank in every
+	// state checked including a RESULT-window capture; BG1 the backdrop,
+	// priority 3; BG2 the field panels, priority 2) -- this project's own
+	// bn game (src/battle.rs) assigns its four background layers by call
+	// order into agb's GraphicsFrame, not by an explicit index, and did
+	// not match this assignment before AUDIT wave 3c's zero-layers ticket.
 	thumb_func_start sub_801DA24
 sub_801DA24:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	ldr r0, dword_801DA44 // =0x1f09 
+	ldr r0, dword_801DA44 // =0x1f09
 	strh r0, [r1,#oRenderInfo_Unk_0a]
 	// dataList
 	ldr r0, off_801DA40 // =off_801ECB4 
@@ -29823,6 +29840,27 @@ sub_801DF8C:
 	mov pc, lr
 	thumb_func_end sub_801DF8C
 
+	// bn/reference wt/zero-layers (2026-09-08): the CUSTOM gauge's flow
+	// animation (the bar's 4-tile cycle and the L/R marker's cyan<->orange
+	// blink drawn once word_20352A0 == 0x4000) reads eStruct2035280+0x00,
+	// NOT documented as a struct field here (this file finds only one
+	// static write to that byte, sub_801E474's "mov r0, #0x3f; strb r0,
+	// [r1]" -- unrelated, that call site is battle-start banner/text
+	// rendering, not the gauge). Measured live instead, from a real
+	// battle's own frame 0 (/tmp/battlestart.state) through the gauge's
+	// first natural fill-to-full transition: +0x00 reads 0 for every
+	// frame the gauge is below 0x4000, then reads exactly 1 on the SAME
+	// frame word_20352A0 first reads 0x4000, incrementing by 1 every
+	// frame after (wrapping at 112 = lcm(28,16), matching a separate
+	// mid-cycle capture's own hash-matched bar/marker periods). So +0x00
+	// is a "frames the gauge has stood full" counter that zeros on
+	// refill and starts at 1 on the first full frame -- likely written by
+	// whichever code increments it each frame the gauge-full flag from
+	// battle_clearFlags/dispatch_801DACC's own #0x4000 flag (see
+	// sub_802A0F8 below) is set, not found by static grep here (no
+	// symbol resolves a per-frame write to this offset). See bn's own
+	// src/hudtiles.rs (BAR_EXTRA/MARKER_EXTRA) for the derived bar/marker
+	// formulas this counter drives.
 	thumb_func_start ClearCustGauge
 ClearCustGauge:
 	push {lr}
