@@ -3269,6 +3269,21 @@ nullsub_36:
 	mov pc, lr
 	thumb_func_end nullsub_36
 
+// The battle backdrop's diagonal scroll, and the only clock its phase has.
+// Counter0 falls by 8 and Counter1 by 4 every frame, and each is `lsr #4`
+// before it is written to the render info -- so the picture moves half a
+// pixel across and a quarter down per frame, which is the 3:2 in the name.
+// eBGScrollCBCounters (0x02009690 / 0x02009694) is zeroed once, at battle
+// init, and never again, so its value is exactly "frames since this battle
+// started": a save state taken mid-battle carries the elapsed count and a
+// state taken at a battle's first frame reads 0/0 in both words. Measured
+// on two states: one reads 0/0, the other -63128/-31564, and 63128/8 =
+// 31564/4 = 7891 frames exactly.
+// The picture's VISUAL period is 896 frames, not the 1024 the register
+// modulus suggests (4096/8 = 512 across, 4096/4 = 1024 down): the 32x32
+// tile motif repeats within the map at x+128, which takes an eighth off.
+// Confirmed by comparing a frame against itself 896, 1792, ... 7168 frames
+// later -- exact matches at every multiple and nowhere between.
 	thumb_func_start BGScrollCB_BG1Diagonal3to2Scroll
 BGScrollCB_BG1Diagonal3to2Scroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
