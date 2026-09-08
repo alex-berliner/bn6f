@@ -1179,6 +1179,16 @@ sprite_clearFinalPalette:
 	mov pc, lr
 	thumb_func_end sprite_clearFinalPalette
 
+// Returns the current animation frame's parameters, and the masking in the
+// middle is the whole point: bits 0x80 ("this is the last frame") and 0x40
+// are BIC'd out of the returned flags UNLESS Unk_01 -- the frame's own
+// remaining duration counter -- has already reached 0.
+// So a caller polling for 0x80 does not learn "the last frame has been
+// reached". It learns "the last frame has been reached AND has already been
+// held for its full authored duration", which is a strictly later frame.
+// Anything that destroys an object when it sees 0x80 therefore still shows
+// that final frame for as long as the animation asks for; treating the bit
+// as an immediate destroy signal drops the frame entirely.
 	thumb_func_start sprite_getFrameParameters
 sprite_getFrameParameters:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
