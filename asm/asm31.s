@@ -171140,6 +171140,118 @@ loc_8109FD0:
 	// cause for both. Reimplementing all five states faithfully, RNG
 	// included, is a real project of its own -- not attempted this
 	// ticket; left here as the concrete next step rather than a guess.
+	//
+	// bn/reference wt/mettaur-ai (2026-09-08): the concrete next step above,
+	// done. THE FULL MACHINE, one level up from sub_8109FD6's own 5-state
+	// table: `ForMettaur_8109EF4` (170982-171012, indexed by
+	// `oBattleObject_CurAction`, one word per action 0x00..0x0C) is the
+	// Mettaur's per-object dispatch. 0x00-0x07 are shared spawn/idle
+	// plumbing (RunSpawnAnimationMaybe_8016380 etc, not Mettaur-specific).
+	// 0x08 is THIS function, sub_8109FD6, the decision loop. 0x09 is
+	// sub_8109CBC, a plain "count oAIAttackVars_Unk_10 down to 0, then
+	// object_exitAttackState" waiter -- what sub_810A004's own
+	// oBattleObject_Param4==0 branch (below) arms with 0x1e (30) for the
+	// Mettaur's ONE-TIME post-spawn pause before its first ever decision.
+	// 0x0A is the HOP executor (sub_8109CE6/off_8109CF8, 170701-170808):
+	// four raw-byte-indexed sub-steps (Unk_00 values 0/4/8/0xc, NOT
+	// scaled -- `ldr r1,[r1,r0]` adds the byte directly) -- reserve the
+	// target panel and spawn a dust effect (spawn_t1_0x0_EffectObject) for
+	// 3 frames, commit PanelX/PanelY for 3 more, clear the moving flag and
+	// arm byte_8109F46[Version] frames of cooldown, then set Unk_1a=1 and
+	// object_exitAttackState. 0x0B is the ATTACK executor
+	// (sub_8109DD2/off_8109DE4, 170826-170918): sub_8109DEC holds anim 1 for
+	// a 0x40-frame countdown, calls object_setCounterTime(0x1e) when it
+	// reads 0x32, spawns the shockwave via sub_80C6CE4 when it reads 0x1b,
+	// zeroes CurAnim when it reaches 0, THEN sub_8109E4A holds a SEPARATE
+	// 0x28 (40) frame recovery before object_exitAttackState -- bn's own
+	// src/actor.rs `SWING` had `recover: 0`, letting bn's Mettaur re-attack
+	// as soon as the 0x40-frame pose ended (roughly DOUBLE the real 64+40
+	// cadence) -- the dominant cause of both residues above, per this
+	// ticket's own measurement. 0x0C is the GUARD executor
+	// (sub_8109E7A/off_8109E8C, 170920-170992): only ever entered from
+	// sub_810A004's `Version != 0` "being hit" branch, so a Version-0
+	// Mettaur (this project's only kind) never reaches it -- confirms bn's
+	// own "a first-version Mettaur never guards" comment in src/ai.rs.
+	//
+	// sub_8109FD6's OWN 5 states, off_8109FF0 (171195-171201; every address
+	// below still asm31.s):
+	//   [0] sub_810A004 (171204-171271): the Param4==0 spawn-pause gate
+	//     (arms CurAction 9's 0x1e wait, ABOVE), then two status-flag gates
+	//     -- OBJECT_FLAGS_IMMOBILIZED (bit 14, 0x4000: freeze, return) and
+	//     OBJECT_FLAGS_BLIND|CONFUSED (bits 13/15, 0xa000: go to state [2])
+	//     -- then a row compare against the OTHER alliance's own reference
+	//     object (sub_80103F8, its PanelY at +0x13): equal -> state [3];
+	//     otherwise -> state [1].
+	//   [1] sub_810A080 (171274-171308): arms a hop toward the target row
+	//     (sub_810A21A, one panel, the SAME direction every time -- no
+	//     RNG) via CurAction 0xA, then waits for AIAttackVars_Unk_1a (set
+	//     by the HOP executor's own last step) before returning to [0].
+	//   [2] sub_810A0BA/sub_810A0D4/sub_810A0EE (171311-171376): UNREACHED
+	//     without BLIND/CONFUSED (this project has no chip that sets
+	//     either, or IMMOBILIZED). sub_810A0D4 arms a RANDOM-direction hop
+	//     (sub_810A254, 171553-171579: GetPositiveSignedRNG()&1 picks which
+	//     neighbour row to try first, dword_810A2A4's own byte sequence 01
+	//     FF 01 00 gives the two try-orders, +1 first or -1 first, each
+	//     falling back to the other on an invalid panel). sub_810A0EE then
+	//     ROLLS: GetPositiveSignedRNG()&0xf, <2 (2/16) -> state [3]
+	//     immediately, else arms a flat 0x32 (50) frame idle wait before
+	//     returning to [0]. THE ONLY RNG THE METTAUR'S OWN DECISION LOOP
+	//     EVER DRAWS FROM, and it is provably dead code for every fixture
+	//     this project has (see the RNG section below).
+	//   [3] sub_810A126 (171379-171451): sub_800ED90's own "equipped
+	//     ability" gate (r3 != 0) is the ONLY way to reach state [4]
+	//     (sub_810A204, 171501-171514, a flat 0x28-frame wait before
+	//     forcing CurAction 0xC, GUARD) -- not modelled in bn, and not
+	//     reachable by a Mettaur with no equipped item (this project's
+	//     only kind). The normal path (loc_810A184..) reads
+	//     byte_8109F40[Version] into AIAttackVars_Unk_0c (a "family" tag
+	//     passed to sub_80C6CE4, presumably cosmetic/audio -- not traced
+	//     further) and byte_8109F28[Version] (a packed u32, low 16 bits =
+	//     {10,30,50,70,50,100} for Version 0..5 -- Version 0's 10 matches
+	//     bn's own WAVE_DAMAGE) into AIAttackVars_Damage, then
+	//     object_setAttack0(0xb) -> CurAction 0xB, the ATTACK executor
+	//     above.
+	//
+	// THE RNG. GetRNG/GetPositiveSignedRNG (asm00_0.s:2609-2640;
+	// GetPositiveSignedRNG clears the sign bit, `lsl r0,#1; lsr r0,#1`,
+	// after the same step): `seed = rotl(seed,1).wrapping_add(1) ^
+	// 0x873ca9e5`, state ePrimaryRngSeed (ewram.s:262, EWRAM 0x020013f0).
+	// SEPARATE from GetRNGSecondary/eSecondaryRngSeed (ewram.s:241, EWRAM
+	// 0x02001120, asm00_0.s:2643-2656 -- the SAME formula, a different
+	// stream; bn's own deck::Rng already reimplements the secondary one for
+	// the folder shuffle).
+	//
+	// VERIFIED against the real ROM (this ticket, standalone script, not
+	// committed): `--watch 0x020013f0:4:<file>` on
+	// tools/mgba_capture/bn6f_sterile.gba, `--loadstate
+	// /tmp/pausedwithcannon.state --cheat 0x0203ab84:0xffff --cheat
+	// 0x0203ab86:0xffff --script Start@10` (the EXACT STERILE+PAUSED+ALIVE
+	// recipe both bn's `mettaur` and `wave` harness rows use) over 220
+	// frames. Every one of 219 consecutive transitions equals the formula
+	// above applied to the previous value, bit for bit -- zero mismatches,
+	// and frame 0 reads 0xdd340be4. TWO findings from this:
+	//   1. The formula is confirmed correct (independent of the
+	//      disassembly reading -- this is a direct hardware measurement).
+	//   2. The register advances by EXACTLY ONE step every single rendered
+	//      frame, with NO exceptions across the whole window -- which,
+	//      combined with state [2] above being the Mettaur's ONLY RNG draw
+	//      and being gated on BLIND/CONFUSED/IMMOBILIZED (never set in this
+	//      capture: PAUSED's Mettaur is undamaged, unafflicted, and Version
+	//      0), means state [2] NEVER fires in this window: if it had, some
+	//      frame would show TWO steps instead of one. So there IS a
+	//      per-frame RNG advance independent of the Mettaur's own AI (as
+	//      bn's own ticket brief expected), but its CALLER was not pinned
+	//      down here -- every `bl GetRNG`/`bl GetPositiveSignedRNG` site
+	//      grepped across asm31.s/asm00_1.s/asm00_2.s/asm32.s/etc, and none
+	//      is an obviously-unconditional once-a-frame tick (most sit inside
+	//      specific effects, e.g. AddRandomVarianceToTwoCoords,
+	//      asm00_2.s:25360, or per-hit/per-pick weighted rolls, which
+	//      plainly do not run every frame regardless of state). Reported
+	//      honestly rather than guessed at (bn's own AUDIT pair 15): the
+	//      FORMULA and its per-frame CADENCE are both directly measured
+	//      facts either way, and that is what bn's `rng` fixture field
+	//      (FIXTURE.md +58) needs to stay in lockstep with the real ROM,
+	//      caller or no caller found.
 	thumb_local_start
 sub_8109FD6:
 	push {r4,r6,r7,lr}
