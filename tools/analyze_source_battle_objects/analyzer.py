@@ -608,7 +608,7 @@ def sub_80103F8_hack_battle_obj_null(opcode_params, funcstate, src_file, filelin
     return False
 
 def sub_8109D08_bx_callback_fix(opcode_params, funcstate, src_file, fileline):
-    funcstate.regs["r1"].set_new_reg(analyzer.RegisterInfo(datatypes.ROMPointer([syms["sub_810A21A"], syms["sub_810A254"]], syms["off_810A2B0"]).wrap(), fileline))
+    funcstate.regs["r1"].set_new_reg(analyzer.RegisterInfo(datatypes.ROMPointer([syms["MettaurHopTowardTargetRow_810A21A"], syms["MettaurHopRandomRow_810A254"]], syms["off_810A2B0"]).wrap(), fileline))
     return True
 
 def check_bl_sub_80BC3B8(opcode_params, funcstate, src_file, fileline):
@@ -712,7 +712,7 @@ def read_battle_object_jumptables():
         0x8107E66: (FunctionSpecificCallback(opcodes.tst_opcode, sub_8107E66_hack_push_lr),), # sub_8107E66
         0x80F0700: (FunctionSpecificCallback(opcodes.pop_opcode, sub_80F0700_hack_pop_balance),), # sub_80F0700
         0x80103F8: (FunctionSpecificCallback(opcodes.mov_imm_opcode, sub_80103F8_hack_battle_obj_null),), # sub_80103F8
-        0x8109D08: (FunctionSpecificCallback(opcodes.bx_opcode, sub_8109D08_bx_callback_fix),), # sub_8109D08
+        0x8109D08: (FunctionSpecificCallback(opcodes.bx_opcode, sub_8109D08_bx_callback_fix),), # MettaurHopReservePanel_8109D08
         0x810A94C: (FunctionSpecificCallback(opcodes.bl_opcode, check_bl_sub_80BC3B8),),
         0x800ebd4: (FunctionSpecificCallback(opcodes.ldr_rb_imm_opcode, hack_battle_state_field_0x80_object_read),), # object_getEnemyByNameRange
         0x800d3fe: (FunctionSpecificCallback(opcodes.add_sp_opcode, object_get_panel_region_set_correct_return_value),), # object_getPanelRegion

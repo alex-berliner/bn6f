@@ -132256,7 +132256,7 @@ void sub_8109BC0()
 
 
 // 0x8109cbc
-void sub_8109CBC()
+void MettaurWaitThenExitAttack_8109CBC()
 {
     int v0; // r5
     int v1; // r7
@@ -132280,16 +132280,16 @@ void sub_8109CBC()
 
 
 // 0x8109ce6
-int sub_8109CE6()
+int MettaurHopExec_8109CE6()
 {
     unsigned __int8 *v0; // r7
 
-    return (*(&off_8109CF8 + *v0))();
+    return (*(&MettaurHopSteps_8109CF8 + *v0))();
 }
 
 
 // 0x8109d08
-void __fastcall sub_8109D08(int a1)
+void __fastcall MettaurHopReservePanel_8109D08(int a1)
 {
     Battle *v1; // r5
     int v2; // r7
@@ -132320,7 +132320,7 @@ void __fastcall sub_8109D08(int a1)
 
 
 // 0x8109d70
-void __usercall sub_8109D70(Battle *obj@<R5>, void *p7@<R7>)
+void __usercall MettaurHopCommitPanel_8109D70(Battle *obj@<R5>, void *p7@<R7>)
 {
     int v2; // r0
     int v3; // r0
@@ -132344,7 +132344,7 @@ void __usercall sub_8109D70(Battle *obj@<R5>, void *p7@<R7>)
 
 
 // 0x8109d98
-int sub_8109D98()
+int MettaurHopArmCooldown_8109D98()
 {
     _WORD *v0; // r7
     int result; // r0
@@ -132364,7 +132364,7 @@ int sub_8109D98()
 
 
 // 0x8109dba
-void sub_8109DBA()
+void MettaurHopFinish_8109DBA()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -132382,16 +132382,16 @@ void sub_8109DBA()
 
 
 // 0x8109dd2
-int sub_8109DD2()
+int MettaurAttackExec_8109DD2()
 {
     unsigned __int8 *v0; // r7
 
-    return (*(&off_8109DE4 + *v0))();
+    return (*(&MettaurAttackSteps_8109DE4 + *v0))();
 }
 
 
 // 0x8109dec
-int sub_8109DEC()
+int MettaurAttackSwing_8109DEC()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -132436,7 +132436,7 @@ int sub_8109DEC()
 
 
 // 0x8109e4a
-void sub_8109E4A()
+void MettaurAttackRecover_8109E4A()
 {
     int v0; // r5
     int v1; // r7
@@ -132460,11 +132460,11 @@ void sub_8109E4A()
 
 
 // 0x8109e7a
-int sub_8109E7A()
+int MettaurGuardExec_8109E7A()
 {
     unsigned __int8 *v0; // r7
 
-    return (*(&off_8109E8C + *v0))();
+    return (*(&MettaurGuardSteps_8109E8C + *v0))();
 }
 
 
@@ -132617,16 +132617,16 @@ int sub_8109FC4()
 
 
 // 0x8109fd6
-int sub_8109FD6()
+int MettaurDecide_8109FD6()
 {
     int v0; // r5
 
-    return (*(&off_8109FF0 + *(*(v0 + 88) + 128)))();
+    return (*(&MettaurDecideStates_8109FF0 + *(*(v0 + 88) + 128)))();
 }
 
 
 // 0x810a004
-void sub_810A004()
+void MettaurDecideCheckStatusAndRow_810A004()
 {
     int v0; // r4
     int v1; // r5
@@ -132672,7 +132672,7 @@ void sub_810A004()
 
 
 // 0x810a080
-signed int sub_810A080()
+signed int MettaurDecideArmHopToRow_810A080()
 {
     int v0; // r4
     int v1; // r6
@@ -132690,8 +132690,8 @@ signed int sub_810A080()
     }
     else
     {
-        *(v2 + 40) = sub_810A21A;
-        *(v2 + 24) = byte_8109F46[*(v0 + 22)];
+        *(v2 + 40) = MettaurHopTowardTargetRow_810A21A;
+        *(v2 + 24) = MettaurHopCooldownByVersion_8109F46[*(v0 + 22)];
         object_setAttack0();
         result = 4;
         *(v1 + 2) = 4;
@@ -132701,24 +132701,24 @@ signed int sub_810A080()
 
 
 // 0x810a0ba
-int sub_810A0BA()
+int MettaurDecideConfused_810A0BA()
 {
     int v0; // r6
 
-    return (*(&off_810A0CC + *(v0 + 2)))();
+    return (*(&MettaurDecideConfusedSteps_810A0CC + *(v0 + 2)))();
 }
 
 
 // 0x810a0d4
-signed int sub_810A0D4()
+signed int MettaurConfusedArmRandomHop_810A0D4()
 {
     int v0; // r4
     int v1; // r6
     int v2; // r7
     signed int result; // r0
 
-    *(v2 + 40) = sub_810A254;
-    *(v2 + 24) = byte_8109F46[*(v0 + 22)];
+    *(v2 + 40) = MettaurHopRandomRow_810A254;
+    *(v2 + 24) = MettaurHopCooldownByVersion_8109F46[*(v0 + 22)];
     object_setAttack0();
     result = 4;
     *(v1 + 2) = 4;
@@ -132727,7 +132727,7 @@ signed int sub_810A0D4()
 
 
 // 0x810a0ee
-int sub_810A0EE()
+int MettaurConfusedRollAttack_810A0EE()
 {
     int v0; // r6
     char v1; // r0
@@ -132759,7 +132759,7 @@ int sub_810A0EE()
 
 
 // 0x810a126
-int sub_810A126()
+int MettaurDecideChooseAttack_810A126()
 {
     int v0; // r4
     int v1; // r5
@@ -132800,8 +132800,8 @@ LABEL_8:
         }
     }
     v8 = *(v9 + 22);
-    *(v3 + 12) = byte_8109F40[v8];
-    *(v3 + 8) = *&byte_8109F28[4 * v8];
+    *(v3 + 12) = MettaurWaveFamilyByVersion_8109F40[v8];
+    *(v3 + 8) = *&MettaurWaveDamageByVersion_8109F28[4 * v8];
     *(v3 + 48) = v1 + 96;
     object_setAttack0();
     *v2 = 0;
@@ -132867,7 +132867,7 @@ LABEL_12:
 
 
 // 0x810a204
-int sub_810A204()
+int MettaurDecideArmGuard_810A204()
 {
     _BYTE *v0; // r6
     int result; // r0
@@ -132885,7 +132885,7 @@ int sub_810A204()
 
 
 // 0x810a21a
-BOOL sub_810A21A()
+BOOL MettaurHopTowardTargetRow_810A21A()
 {
     unsigned __int8 *v0; // r5
     int v1; // r0
@@ -132917,7 +132917,7 @@ BOOL sub_810A21A()
 
 
 // 0x810a254
-int sub_810A254()
+int MettaurHopRandomRow_810A254()
 {
     int v0; // r5
     int v1; // r2
@@ -132931,7 +132931,7 @@ int sub_810A254()
     int v9; // r3
 
     GetPositiveSignedRNG();
-    v3 = &dword_810A2A4 + (v2 & 1);
+    v3 = &MettaurRandomHopRowOrders_810A2A4 + (v2 & 1);
     while ( 1 )
     {
         result = *v3++;

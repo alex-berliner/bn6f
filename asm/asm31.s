@@ -170674,7 +170674,7 @@ byte_8109BFC:
 	thumb_func_end sub_8109BC0
 
 	thumb_local_start
-sub_8109CBC:
+MettaurWaitThenExitAttack_8109CBC:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170695,28 +170695,28 @@ loc_8109CE0:
 	bl object_exitAttackState
 locret_8109CE4:
 	pop {pc}
-	thumb_func_end sub_8109CBC
+	thumb_func_end MettaurWaitThenExitAttack_8109CBC
 
 	thumb_local_start
-sub_8109CE6:
+MettaurHopExec_8109CE6:
 	push {lr}
-	ldr r1, off_8109CF4 // =off_8109CF8
+	ldr r1, off_8109CF4 // =MettaurHopSteps_8109CF8
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	pop {pc}
 off_8109CF4:
-	.word off_8109CF8
-off_8109CF8:
-	.word sub_8109D08+1
-	.word sub_8109D70+1
-	.word sub_8109D98+1
-	.word sub_8109DBA+1
-	thumb_func_end sub_8109CE6
+	.word MettaurHopSteps_8109CF8
+MettaurHopSteps_8109CF8:
+	.word MettaurHopReservePanel_8109D08+1
+	.word MettaurHopCommitPanel_8109D70+1
+	.word MettaurHopArmCooldown_8109D98+1
+	.word MettaurHopFinish_8109DBA+1
+	thumb_func_end MettaurHopExec_8109CE6
 
 	thumb_local_start
-sub_8109D08:
+MettaurHopReservePanel_8109D08:
 	push {r4,r6,r7,lr}
 	bl object_canMove
 	beq loc_8109D52
@@ -170762,10 +170762,10 @@ off_8109D5C:
 byte_8109D60:
 	.byte 0x10, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x80
 	.byte 0x0, 0x88, 0xF
-	thumb_func_end sub_8109D08
+	thumb_func_end MettaurHopReservePanel_8109D08
 
 	thumb_local_start
-sub_8109D70:
+MettaurHopCommitPanel_8109D70:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170784,10 +170784,10 @@ sub_8109D70:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8109D96:
 	pop {pc}
-	thumb_func_end sub_8109D70
+	thumb_func_end MettaurHopCommitPanel_8109D70
 
 	thumb_local_start
-sub_8109D98:
+MettaurHopArmCooldown_8109D98:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170804,10 +170804,10 @@ sub_8109D98:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8109DB8:
 	pop {pc}
-	thumb_func_end sub_8109D98
+	thumb_func_end MettaurHopArmCooldown_8109D98
 
 	thumb_local_start
-sub_8109DBA:
+MettaurHopFinish_8109DBA:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170820,26 +170820,26 @@ sub_8109DBA:
 	bl object_exitAttackState
 locret_8109DD0:
 	pop {pc}
-	thumb_func_end sub_8109DBA
+	thumb_func_end MettaurHopFinish_8109DBA
 
 	thumb_local_start
-sub_8109DD2:
+MettaurAttackExec_8109DD2:
 	push {r6,lr}
-	ldr r1, off_8109DE0 // =off_8109DE4
+	ldr r1, off_8109DE0 // =MettaurAttackSteps_8109DE4
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	pop {r6,pc}
 off_8109DE0:
-	.word off_8109DE4
-off_8109DE4:
-	.word sub_8109DEC+1
-	.word sub_8109E4A+1
-	thumb_func_end sub_8109DD2
+	.word MettaurAttackSteps_8109DE4
+MettaurAttackSteps_8109DE4:
+	.word MettaurAttackSwing_8109DEC+1
+	.word MettaurAttackRecover_8109E4A+1
+	thumb_func_end MettaurAttackExec_8109DD2
 
 	thumb_local_start
-sub_8109DEC:
+MettaurAttackSwing_8109DEC:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -170887,10 +170887,10 @@ loc_8109E38:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8109E48:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8109DEC
+	thumb_func_end MettaurAttackSwing_8109DEC
 
 	thumb_local_start
-sub_8109E4A:
+MettaurAttackRecover_8109E4A:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -170914,24 +170914,24 @@ loc_8109E5A:
 	bl object_exitAttackState
 locret_8109E78:
 	pop {pc}
-	thumb_func_end sub_8109E4A
+	thumb_func_end MettaurAttackRecover_8109E4A
 
 	thumb_local_start
-sub_8109E7A:
+MettaurGuardExec_8109E7A:
 	push {r6,lr}
-	ldr r1, off_8109E88 // =off_8109E8C
+	ldr r1, off_8109E88 // =MettaurGuardSteps_8109E8C
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	pop {r6,pc}
 off_8109E88:
-	.word off_8109E8C
-off_8109E8C:
+	.word MettaurGuardSteps_8109E8C
+MettaurGuardSteps_8109E8C:
 	.word sub_8109E98+1
 	.word sub_8109EC4+1
 	.word sub_8109EE4+1
-	thumb_func_end sub_8109E7A
+	thumb_func_end MettaurGuardExec_8109E7A
 
 	thumb_local_start
 sub_8109E98:
@@ -171017,23 +171017,23 @@ ForMettaur_8109EF4:
 	.word sub_8109F96+1
 	// 0x20 (0x08) (CurAction -via setAttack-> 0x09, 0x0a, 0x0b, 0x0c, )
 	// triggered immediately start of battle following CurAction 0x01
-	.word sub_8109FD6+1
+	.word MettaurDecide_8109FD6+1
 	// 0x24 (0x09)
-	.word sub_8109CBC+1
+	.word MettaurWaitThenExitAttack_8109CBC+1
 	// 0x28 (0x0A)
-	// setting this to sub_8109FD6+1 (0x08) causes mettaurs not to move up/down to player and always attack taking turns between mettaurs
-	.word sub_8109CE6+1
+	// setting this to MettaurDecide_8109FD6+1 (0x08) causes mettaurs not to move up/down to player and always attack taking turns between mettaurs
+	.word MettaurHopExec_8109CE6+1
 	// 0x2C (0x0B)
-	// setting this to sub_8109FD6+1 (0x08) causes mettaurs to track player movement but not attack
-	.word sub_8109DD2+1
+	// setting this to MettaurDecide_8109FD6+1 (0x08) causes mettaurs to track player movement but not attack
+	.word MettaurAttackExec_8109DD2+1
 	// 0x30 (0x0C)
-	.word sub_8109E7A+1
-byte_8109F28:
+	.word MettaurGuardExec_8109E7A+1
+MettaurWaveDamageByVersion_8109F28:
 	.byte 0xA, 0x0, 0xA, 0x0, 0x1E, 0x0, 0xA, 0x0, 0x32, 0x0, 0xA, 0x0, 0x46
 	.byte 0x0, 0xA, 0x0, 0x32, 0x0, 0xA, 0x0, 0x64, 0x0, 0xA, 0x0
-byte_8109F40:
+MettaurWaveFamilyByVersion_8109F40:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x5
-byte_8109F46:
+MettaurHopCooldownByVersion_8109F46:
 	.byte 0x1E, 0x18, 0x12, 0xC, 0x12, 0xC
 	thumb_func_end sub_8109EE4
 
@@ -171130,14 +171130,14 @@ loc_8109FD0:
 	thumb_func_end sub_8109FC4
 
 	// bn/reference wt/zero-layers (2026-09-08): this is the Mettaur's OWN
-	// per-frame AI dispatch -- a 5-state machine (off_8109FF0's table:
-	// sub_810A004 hop-toward-row/attack-decide, sub_810A080 wind-up,
-	// sub_810A0BA wait -- itself two sub-states, one of them RNG-gated via
-	// GetPositiveSignedRNG at sub_810A0EE -- sub_810A126 HP/range-gated
-	// attack choice, sub_810A204 not read past this ticket). Its own
-	// re-arm/wait counts are TABLE-DRIVEN (byte_8109F46 = { 0x1e, 0x18,
+	// per-frame AI dispatch -- a 5-state machine (MettaurDecideStates_8109FF0's table:
+	// MettaurDecideCheckStatusAndRow_810A004 hop-toward-row/attack-decide, MettaurDecideArmHopToRow_810A080 wind-up,
+	// MettaurDecideConfused_810A0BA wait -- itself two sub-states, one of them RNG-gated via
+	// GetPositiveSignedRNG at MettaurConfusedRollAttack_810A0EE -- MettaurDecideChooseAttack_810A126 HP/range-gated
+	// attack choice, MettaurDecideArmGuard_810A204 not read past this ticket). Its own
+	// re-arm/wait counts are TABLE-DRIVEN (MettaurHopCooldownByVersion_8109F46 = { 0x1e, 0x18,
 	// 0x12, 0xc, 0x12, 0xc }, indexed by oAIData_Version_16 at
-	// sub_810A080/sub_810A0D4), not the flat 0x1e (30) every state uses.
+	// MettaurDecideArmHopToRow_810A080/MettaurConfusedArmRandomHop_810A0D4), not the flat 0x1e (30) every state uses.
 	// bn's own src/ai.rs (Style::Mettaur) reimplements this as ONE state
 	// with a flat METTAUR_PAUSE=0x1e re-arm and no RNG -- explicitly
 	// documented there as "a first pass on fixed timers, not the game's
@@ -171160,71 +171160,71 @@ loc_8109FD0:
 	// ticket; left here as the concrete next step rather than a guess.
 	//
 	// bn/reference wt/mettaur-ai (2026-09-08): the concrete next step above,
-	// done. THE FULL MACHINE, one level up from sub_8109FD6's own 5-state
+	// done. THE FULL MACHINE, one level up from MettaurDecide_8109FD6's own 5-state
 	// table: `ForMettaur_8109EF4` (170982-171012, indexed by
 	// `oBattleObject_CurAction`, one word per action 0x00..0x0C) is the
 	// Mettaur's per-object dispatch. 0x00-0x07 are shared spawn/idle
 	// plumbing (RunSpawnAnimationMaybe_8016380 etc, not Mettaur-specific).
-	// 0x08 is THIS function, sub_8109FD6, the decision loop. 0x09 is
-	// sub_8109CBC, a plain "count oAIAttackVars_Unk_10 down to 0, then
-	// object_exitAttackState" waiter -- what sub_810A004's own
+	// 0x08 is THIS function, MettaurDecide_8109FD6, the decision loop. 0x09 is
+	// MettaurWaitThenExitAttack_8109CBC, a plain "count oAIAttackVars_Unk_10 down to 0, then
+	// object_exitAttackState" waiter -- what MettaurDecideCheckStatusAndRow_810A004's own
 	// oBattleObject_Param4==0 branch (below) arms with 0x1e (30) for the
 	// Mettaur's ONE-TIME post-spawn pause before its first ever decision.
-	// 0x0A is the HOP executor (sub_8109CE6/off_8109CF8, 170701-170808):
+	// 0x0A is the HOP executor (MettaurHopExec_8109CE6/MettaurHopSteps_8109CF8, 170701-170808):
 	// four raw-byte-indexed sub-steps (Unk_00 values 0/4/8/0xc, NOT
 	// scaled -- `ldr r1,[r1,r0]` adds the byte directly) -- reserve the
 	// target panel and spawn a dust effect (spawn_t1_0x0_EffectObject) for
 	// 3 frames, commit PanelX/PanelY for 3 more, clear the moving flag and
-	// arm byte_8109F46[Version] frames of cooldown, then set Unk_1a=1 and
+	// arm MettaurHopCooldownByVersion_8109F46[Version] frames of cooldown, then set Unk_1a=1 and
 	// object_exitAttackState. 0x0B is the ATTACK executor
-	// (sub_8109DD2/off_8109DE4, 170826-170918): sub_8109DEC holds anim 1 for
+	// (MettaurAttackExec_8109DD2/MettaurAttackSteps_8109DE4, 170826-170918): MettaurAttackSwing_8109DEC holds anim 1 for
 	// a 0x40-frame countdown, calls object_setCounterTime(0x1e) when it
 	// reads 0x32, spawns the shockwave via sub_80C6CE4 when it reads 0x1b,
-	// zeroes CurAnim when it reaches 0, THEN sub_8109E4A holds a SEPARATE
+	// zeroes CurAnim when it reaches 0, THEN MettaurAttackRecover_8109E4A holds a SEPARATE
 	// 0x28 (40) frame recovery before object_exitAttackState -- bn's own
 	// src/actor.rs `SWING` had `recover: 0`, letting bn's Mettaur re-attack
 	// as soon as the 0x40-frame pose ended (roughly DOUBLE the real 64+40
 	// cadence) -- the dominant cause of both residues above, per this
 	// ticket's own measurement. 0x0C is the GUARD executor
-	// (sub_8109E7A/off_8109E8C, 170920-170992): only ever entered from
-	// sub_810A004's `Version != 0` "being hit" branch, so a Version-0
+	// (MettaurGuardExec_8109E7A/MettaurGuardSteps_8109E8C, 170920-170992): only ever entered from
+	// MettaurDecideCheckStatusAndRow_810A004's `Version != 0` "being hit" branch, so a Version-0
 	// Mettaur (this project's only kind) never reaches it -- confirms bn's
 	// own "a first-version Mettaur never guards" comment in src/ai.rs.
 	//
-	// sub_8109FD6's OWN 5 states, off_8109FF0 (171195-171201; every address
+	// MettaurDecide_8109FD6's OWN 5 states, MettaurDecideStates_8109FF0 (171195-171201; every address
 	// below still asm31.s):
-	//   [0] sub_810A004 (171204-171271): the Param4==0 spawn-pause gate
+	//   [0] MettaurDecideCheckStatusAndRow_810A004 (171204-171271): the Param4==0 spawn-pause gate
 	//     (arms CurAction 9's 0x1e wait, ABOVE), then two status-flag gates
 	//     -- OBJECT_FLAGS_IMMOBILIZED (bit 14, 0x4000: freeze, return) and
 	//     OBJECT_FLAGS_BLIND|CONFUSED (bits 13/15, 0xa000: go to state [2])
 	//     -- then a row compare against the OTHER alliance's own reference
 	//     object (sub_80103F8, its PanelY at +0x13): equal -> state [3];
 	//     otherwise -> state [1].
-	//   [1] sub_810A080 (171274-171308): arms a hop toward the target row
-	//     (sub_810A21A, one panel, the SAME direction every time -- no
+	//   [1] MettaurDecideArmHopToRow_810A080 (171274-171308): arms a hop toward the target row
+	//     (MettaurHopTowardTargetRow_810A21A, one panel, the SAME direction every time -- no
 	//     RNG) via CurAction 0xA, then waits for AIAttackVars_Unk_1a (set
 	//     by the HOP executor's own last step) before returning to [0].
-	//   [2] sub_810A0BA/sub_810A0D4/sub_810A0EE (171311-171376): UNREACHED
+	//   [2] MettaurDecideConfused_810A0BA/MettaurConfusedArmRandomHop_810A0D4/MettaurConfusedRollAttack_810A0EE (171311-171376): UNREACHED
 	//     without BLIND/CONFUSED (this project has no chip that sets
-	//     either, or IMMOBILIZED). sub_810A0D4 arms a RANDOM-direction hop
-	//     (sub_810A254, 171553-171579: GetPositiveSignedRNG()&1 picks which
-	//     neighbour row to try first, dword_810A2A4's own byte sequence 01
+	//     either, or IMMOBILIZED). MettaurConfusedArmRandomHop_810A0D4 arms a RANDOM-direction hop
+	//     (MettaurHopRandomRow_810A254, 171553-171579: GetPositiveSignedRNG()&1 picks which
+	//     neighbour row to try first, MettaurRandomHopRowOrders_810A2A4's own byte sequence 01
 	//     FF 01 00 gives the two try-orders, +1 first or -1 first, each
-	//     falling back to the other on an invalid panel). sub_810A0EE then
+	//     falling back to the other on an invalid panel). MettaurConfusedRollAttack_810A0EE then
 	//     ROLLS: GetPositiveSignedRNG()&0xf, <2 (2/16) -> state [3]
 	//     immediately, else arms a flat 0x32 (50) frame idle wait before
 	//     returning to [0]. THE ONLY RNG THE METTAUR'S OWN DECISION LOOP
 	//     EVER DRAWS FROM, and it is provably dead code for every fixture
 	//     this project has (see the RNG section below).
-	//   [3] sub_810A126 (171379-171451): sub_800ED90's own "equipped
+	//   [3] MettaurDecideChooseAttack_810A126 (171379-171451): sub_800ED90's own "equipped
 	//     ability" gate (r3 != 0) is the ONLY way to reach state [4]
-	//     (sub_810A204, 171501-171514, a flat 0x28-frame wait before
+	//     (MettaurDecideArmGuard_810A204, 171501-171514, a flat 0x28-frame wait before
 	//     forcing CurAction 0xC, GUARD) -- not modelled in bn, and not
 	//     reachable by a Mettaur with no equipped item (this project's
 	//     only kind). The normal path (loc_810A184..) reads
-	//     byte_8109F40[Version] into AIAttackVars_Unk_0c (a "family" tag
+	//     MettaurWaveFamilyByVersion_8109F40[Version] into AIAttackVars_Unk_0c (a "family" tag
 	//     passed to sub_80C6CE4, presumably cosmetic/audio -- not traced
-	//     further) and byte_8109F28[Version] (a packed u32, low 16 bits =
+	//     further) and MettaurWaveDamageByVersion_8109F28[Version] (a packed u32, low 16 bits =
 	//     {10,30,50,70,50,100} for Version 0..5 -- Version 0's 10 matches
 	//     bn's own WAVE_DAMAGE) into AIAttackVars_Damage, then
 	//     object_setAttack0(0xb) -> CurAction 0xB, the ATTACK executor
@@ -171271,12 +171271,12 @@ loc_8109FD0:
 	//      (FIXTURE.md +58) needs to stay in lockstep with the real ROM,
 	//      caller or no caller found.
 	thumb_local_start
-sub_8109FD6:
+MettaurDecide_8109FD6:
 	push {r4,r6,r7,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	mov r6, #0x80
 	add r6, r6, r4
-	ldr r1, off_8109FEC // =off_8109FF0
+	ldr r1, off_8109FEC // =MettaurDecideStates_8109FF0
 	ldrb r0, [r6,#oAIState_Unk_00]
 	ldr r1, [r1,r0]
 	mov lr, pc
@@ -171284,17 +171284,64 @@ sub_8109FD6:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0x00
 off_8109FEC:
-	.word off_8109FF0
-off_8109FF0:
-	.word sub_810A004+1
-	.word sub_810A080+1
-	.word sub_810A0BA+1
-	.word sub_810A126+1
-	.word sub_810A204+1
-	thumb_func_end sub_8109FD6
+	.word MettaurDecideStates_8109FF0
+
+	// The Mettaur's own decision states. oAIState_Unk_00 holds a PRE-MULTIPLIED
+	// byte offset into MettaurDecideStates_8109FF0 (0, 4, 8, ...), not a state
+	// number; oAIState_Unk_02 is the sub-state within a state and oAIState_Unk_08
+	// its wait counter. (bn wt/mettaur-ai, see docs/renames.md)
+	.equiv METTAUR_DECIDE_CHECK_STATUS_AND_ROW, 0x00
+	.equiv METTAUR_DECIDE_ARM_HOP_TO_ROW,       0x04
+	.equiv METTAUR_DECIDE_CONFUSED,             0x08
+	.equiv METTAUR_DECIDE_CHOOSE_ATTACK,        0x0c
+	.equiv METTAUR_DECIDE_ARM_GUARD,            0x10
+
+	// oBattleObject_CurAction values this AI hands to object_setAttack0; they
+	// index ForMettaur_8109EF4 as CurAction * 4.
+	.equiv METTAUR_ACTION_DECIDE,           0x08
+	.equiv METTAUR_ACTION_POST_SPAWN_WAIT,  0x09
+	.equiv METTAUR_ACTION_HOP,              0x0a
+	.equiv METTAUR_ACTION_ATTACK,           0x0b
+	.equiv METTAUR_ACTION_GUARD,            0x0c
+
+	// Frame counts and the one roll the decision loop makes. Every one of these
+	// was measured against the real ROM by the bn project's wt/mettaur-ai ticket.
+	.equiv METTAUR_POST_SPAWN_PAUSE_FRAMES,   0x1e // 30, CurAction 9's one-time wait
+	.equiv METTAUR_CONFUSED_IDLE_FRAMES,      0x32 // 50
+	.equiv METTAUR_CONFUSED_ROLL_MASK,        0x0f // GetPositiveSignedRNG() & 0xf
+	.equiv METTAUR_CONFUSED_ROLL_ATTACK_MAX,  2    // draw < 2 of 16 -> attack now
+	.equiv METTAUR_ATTACK_POSE_FRAMES,        0x40 // 64, the wind-up pose
+	.equiv METTAUR_ATTACK_COUNTER_FRAME,      0x32 // object_setCounterTime fires here
+	.equiv METTAUR_ATTACK_SHOCKWAVE_FRAME,    0x1b // sub_80C6CE4 spawns the wave here
+	.equiv METTAUR_ATTACK_RECOVER_FRAMES,     0x28 // 40, AFTER the pose
+	.equiv METTAUR_GUARD_WAIT_FRAMES,         0x28 // 40 before CurAction -> GUARD
+	.equiv METTAUR_HOP_RESERVE_FRAMES,        3    // dust + panel reserve
+	.equiv METTAUR_HOP_COMMIT_FRAMES,         3    // panel commit
+
+// The five decision states, indexed by oAIState_Unk_00 (already * 4).
+MettaurDecideStates_8109FF0:
+	// METTAUR_DECIDE_CHECK_STATUS_AND_ROW (0x00): post-spawn pause gate, the
+	// IMMOBILIZED / BLIND|CONFUSED status gates, then the row compare against the
+	// other alliance's reference object -- same row goes to CHOOSE_ATTACK, a
+	// different row to ARM_HOP_TO_ROW.
+	.word MettaurDecideCheckStatusAndRow_810A004+1
+	// METTAUR_DECIDE_ARM_HOP_TO_ROW (0x04): one panel toward the target row, the
+	// same direction every time (no RNG), then wait for the hop to report done.
+	.word MettaurDecideArmHopToRow_810A080+1
+	// METTAUR_DECIDE_CONFUSED (0x08): only reachable with BLIND or CONFUSED set;
+	// random-direction hop, then the only RNG roll this AI ever makes.
+	.word MettaurDecideConfused_810A0BA+1
+	// METTAUR_DECIDE_CHOOSE_ATTACK (0x0c): equipped-ability gate, otherwise the
+	// per-Version wave family/damage and CurAction -> METTAUR_ACTION_ATTACK.
+	.word MettaurDecideChooseAttack_810A126+1
+	// METTAUR_DECIDE_ARM_GUARD (0x10): a flat wait, then CurAction -> GUARD. Only
+	// reachable from the equipped-ability branch, so a Version 0 Mettaur never
+	// gets here.
+	.word MettaurDecideArmGuard_810A204+1
+	thumb_func_end MettaurDecide_8109FD6
 
 	thumb_local_start
-sub_810A004:
+MettaurDecideCheckStatusAndRow_810A004:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl sub_800AA06
@@ -171361,18 +171408,18 @@ locret_810A078:
 	.balign 4, 0
 dword_810A07C:
 	.word 0xA000
-	thumb_func_end sub_810A004
+	thumb_func_end MettaurDecideCheckStatusAndRow_810A004
 
 	thumb_local_start
-sub_810A080:
+MettaurDecideArmHopToRow_810A080:
 	push {lr}
 	ldrb r0, [r6,#oAIState_Unk_02]
 	tst r0, r0
 	bne loc_810A0A0
-	ldr r0, off_810A2A8 // =sub_810A21A+1
+	ldr r0, off_810A2A8 // =MettaurHopTowardTargetRow_810A21A+1
 	str r0, [r7,#oAIAttackVars_Unk_28]
 	ldrb r0, [r4,#oAIData_Version_16]
-	ldr r1, off_810A2AC // =byte_8109F46
+	ldr r1, off_810A2AC // =MettaurHopCooldownByVersion_8109F46
 	ldrb r1, [r0,r1]
 	strh r1, [r7,#oAIAttackVars_Unk_18]
 
@@ -171398,31 +171445,31 @@ loc_810A0B0:
 	strh r0, [r6,#oAIState_Unk_02]
 locret_810A0B8:
 	pop {pc}
-	thumb_func_end sub_810A080
+	thumb_func_end MettaurDecideArmHopToRow_810A080
 
 	thumb_local_start
-sub_810A0BA:
+MettaurDecideConfused_810A0BA:
 	push {lr}
-	ldr r1, off_810A0C8 // =off_810A0CC
+	ldr r1, off_810A0C8 // =MettaurDecideConfusedSteps_810A0CC
 	ldrb r0, [r6,#oAIState_Unk_02]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	pop {pc}
 off_810A0C8:
-	.word off_810A0CC
-off_810A0CC:
-	.word sub_810A0D4+1
-	.word sub_810A0EE+1
-	thumb_func_end sub_810A0BA
+	.word MettaurDecideConfusedSteps_810A0CC
+MettaurDecideConfusedSteps_810A0CC:
+	.word MettaurConfusedArmRandomHop_810A0D4+1
+	.word MettaurConfusedRollAttack_810A0EE+1
+	thumb_func_end MettaurDecideConfused_810A0BA
 
 	thumb_local_start
-sub_810A0D4:
+MettaurConfusedArmRandomHop_810A0D4:
 	push {lr}
-	ldr r0, off_810A2B0 // =sub_810A254+1
+	ldr r0, off_810A2B0 // =MettaurHopRandomRow_810A254+1
 	str r0, [r7,#oAIAttackVars_Unk_28]
 	ldrb r0, [r4,#oAIData_Version_16]
-	ldr r1, off_810A2B4 // =byte_8109F46
+	ldr r1, off_810A2B4 // =MettaurHopCooldownByVersion_8109F46
 	ldrb r1, [r0,r1]
 	strh r1, [r7,#oAIAttackVars_Unk_18]
 
@@ -171432,10 +171479,10 @@ sub_810A0D4:
 	mov r0, #4
 	strh r0, [r6,#oAIState_Unk_02]
 	pop {pc}
-	thumb_func_end sub_810A0D4
+	thumb_func_end MettaurConfusedArmRandomHop_810A0D4
 
 	thumb_local_start
-sub_810A0EE:
+MettaurConfusedRollAttack_810A0EE:
 	push {lr}
 	ldrb r0, [r6,#oAIState_Unk_03]
 	cmp r0, #0
@@ -171466,10 +171513,10 @@ loc_810A114:
 	strh r0, [r6,#oAIState_Unk_02]
 locret_810A124:
 	pop {pc}
-	thumb_func_end sub_810A0EE
+	thumb_func_end MettaurConfusedRollAttack_810A0EE
 
 	thumb_local_start
-sub_810A126:
+MettaurDecideChooseAttack_810A126:
 	push {r4,lr}
 	sub sp, sp, #4
 	str r4, [sp]
@@ -171517,11 +171564,11 @@ loc_810A17A:
 loc_810A184:
 	ldr r4, [sp]
 	ldrb r0, [r4,#oAIData_Version_16]
-	ldr r1, off_810A2B8 // =byte_8109F40
+	ldr r1, off_810A2B8 // =MettaurWaveFamilyByVersion_8109F40
 	ldrb r1, [r1,r0]
 	strb r1, [r7,#oAIAttackVars_Unk_0c]
 	lsl r0, r0, #2
-	ldr r1, off_810A2BC // =byte_8109F28
+	ldr r1, off_810A2BC // =MettaurWaveDamageByVersion_8109F28
 	ldr r0, [r1,r0]
 	str r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x60
@@ -171541,7 +171588,7 @@ loc_810A1AA:
 	.balign 4, 0
 off_810A1B0:
 	.word 0x12C
-	thumb_func_end sub_810A126
+	thumb_func_end MettaurDecideChooseAttack_810A126
 
 	thumb_local_start
 sub_810A1B4:
@@ -171591,7 +171638,7 @@ dword_810A200:
 	thumb_func_end sub_810A1B4
 
 	thumb_local_start
-sub_810A204:
+MettaurDecideArmGuard_810A204:
 	push {lr}
 	ldrb r0, [r6,#oAIState_Unk_02]
 	add r0, #1
@@ -171604,10 +171651,10 @@ sub_810A204:
 	strh r0, [r6,#oAIState_Unk_02]
 locret_810A218:
 	pop {pc}
-	thumb_func_end sub_810A204
+	thumb_func_end MettaurDecideArmGuard_810A204
 
 	thumb_local_start
-sub_810A21A:
+MettaurHopTowardTargetRow_810A21A:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -171638,15 +171685,15 @@ loc_810A23A:
 	mov r1, r6
 locret_810A252:
 	pop {r4,r6,pc}
-	thumb_func_end sub_810A21A
+	thumb_func_end MettaurHopTowardTargetRow_810A21A
 
 	thumb_local_start
-sub_810A254:
+MettaurHopRandomRow_810A254:
 	push {r4,r6,r7,lr}
 	bl GetPositiveSignedRNG
 	mov r1, #1
 	and r0, r1
-	ldr r4, off_810A2A0 // =dword_810A2A4
+	ldr r4, off_810A2A0 // =MettaurRandomHopRowOrders_810A2A4
 	add r4, r4, r0
 loc_810A262:
 	mov r0, #0
@@ -171675,21 +171722,21 @@ byte_810A290:
 	.byte 0x10, 0x0, 0x0, 0x0, 0xA0, 0x0, 0x88, 0xF, 0x30, 0x0, 0x0, 0x0, 0x80
 	.byte 0x0, 0x88, 0xF
 off_810A2A0:
-	.word dword_810A2A4
-dword_810A2A4:
+	.word MettaurRandomHopRowOrders_810A2A4
+MettaurRandomHopRowOrders_810A2A4:
 	.word 0x1FF01
 off_810A2A8:
-	.word sub_810A21A+1
+	.word MettaurHopTowardTargetRow_810A21A+1
 off_810A2AC:
-	.word byte_8109F46
+	.word MettaurHopCooldownByVersion_8109F46
 off_810A2B0:
-	.word sub_810A254+1
+	.word MettaurHopRandomRow_810A254+1
 off_810A2B4:
-	.word byte_8109F46
+	.word MettaurHopCooldownByVersion_8109F46
 off_810A2B8:
-	.word byte_8109F40
+	.word MettaurWaveFamilyByVersion_8109F40
 off_810A2BC:
-	.word byte_8109F28
+	.word MettaurWaveDamageByVersion_8109F28
 byte_810A2C0:
 	.byte 0x4, 0x2, 0x1, 0x0, 0x2, 0x0, 0x0, 0x1
 byte_810A2C8:
@@ -171720,7 +171767,7 @@ byte_810A2EC:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_810A254
+	thumb_func_end MettaurHopRandomRow_810A254
 
 	thumb_local_start
 sub_810A3AC:
