@@ -27,7 +27,7 @@ byte_807A040::
 	.byte 0x5C, 0x1, 0x0, 0x0, 0x0, 0x0, 0x88, 0x1, 0x8, 0x5, 0x0, 0x0, 0xC0, 0x0
 	.byte 0x0, 0x0, 0xF2, 0xFF, 0x0, 0x0, 0x0, 0x0
 off_807A080::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x09
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x09
 	gfx_anim_data_ptr ptr=byte_807A178 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807A1C0 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807A178 delay=0x00000004
@@ -163,7 +163,7 @@ byte_807A4B0::
 	gfx_anim_loop
 
 off_807A4E0::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x10
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x10
 	gfx_anim_data_ptr ptr=byte_807A5D8 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807A620 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807A5D8 delay=0x00000004

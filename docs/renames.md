@@ -333,7 +333,7 @@ the 107-frame offset from the sequencer edge, is written above
 |---|---|---|
 | `off_807FB98` | `BattleBackdropGFXAnimScript_807FB98` | "the script is off_807FB98 (data/dat20.s:140-172): TEN 4-frame entries, then NINETEEN 8-frame entries, a 192-frame loop" — TODO_ARCHIVE.md:364 (A7), VERIFIED EXACT against a live dump; src/backdrop.rs:69 |
 | `byte_807FE40` … `byte_807FDF8` | `BattleBackdropTiles0_807FE40` … `Tiles6_807FDF8` | "FRAMES[0]=E40, [1]=CD8, [2]=C90, [3]=D20, [4]=D68, [5]=DB0, [6]=DF8" — TODO_ARCHIVE.md:317 (A7); src/backdrop.rs:74-76 |
-| `dword_8617488` | `BattleBackdropTileBlob_8617488` | "slice those tiles out of the blob at dword_8617488" — TODO_ARCHIVE.md:328 (A7); src/backdrop.rs:36 |
+| `dword_8617488` | `GFXAnimTileBlob_8617488` | "slice those tiles out of the blob at dword_8617488" — TODO_ARCHIVE.md:328 (A7); src/backdrop.rs:36. NOT named for the backdrop: this disassembly shows the same blob is the gfx_src of five more GFXAnim scripts, the warp animations in maps/CentralArea, GreenArea, SeasideArea and SkyACDCArea. |
 | `sub_8001C94` | `applyGFXAnimStepTiles_8001C94` | "the per-element glyph tile assembler + ONE queued QueueEightWordAlignedGFXTransfer … it writes char-block art, never the BG1 map" — TODO.md:407 (F36c, which REFUTES the "BG1 seam transition" reading several earlier tickets assumed); src/backdrop.rs:27 |
 | `byte_8156D6C` | `ToneDataSoundBuster6A_8156D6C` | "type 0x9 = square1, duty 0 = 12.5%, sweep byte 0x1F …" — src/battle.rs:80 |
 | `byte_81B82EC` / `dword_81B82FC` | `SongTrackSoundBuster6A_81B82EC` / `SongHeaderSoundBuster6A_81B82FC` | "its song header (dword_81B82FC) is one track"; "That song's single TRACK" — src/battle.rs:79 |

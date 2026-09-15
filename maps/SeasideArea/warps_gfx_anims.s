@@ -41,7 +41,7 @@ byte_807500C::
 	gfx_anim_loop
 
 off_807505C::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6008040 index=0x03 num_tiles=0x24 buffer_index=0x06
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6008040 index=0x03 num_tiles=0x24 buffer_index=0x06
 	gfx_anim_data_ptr ptr=byte_8075154 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807519C delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_8075154 delay=0x00000004

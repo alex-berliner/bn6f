@@ -142,11 +142,11 @@ byte_807FB78::
 // entries, then NINETEEN 8-frame entries -- a BATTLE_BACKDROP_ART_PERIOD
 // (192) frame loop, not the uniform 8-frames-forever the port first assumed.
 // Each entry names one of the seven 36-index tile tables below, which index
-// BattleBackdropTileBlob_8617488; the copy itself is 36 tiles into 0x06000040,
+// GFXAnimTileBlob_8617488; the copy itself is 36 tiles into 0x06000040,
 // drained mid-frame by ProcessGFXTransferQueue. The art's first entry starts
 // exactly one frame before the scroll counters' zero at battle init.
 BattleBackdropGFXAnimScript_807FB98::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x05
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x05
 	gfx_anim_data_ptr ptr=BattleBackdropTiles2_807FC90 delay=0x00000004
 	gfx_anim_data_ptr ptr=BattleBackdropTiles1_807FCD8 delay=0x00000004
 	gfx_anim_data_ptr ptr=BattleBackdropTiles2_807FC90 delay=0x00000004
@@ -226,7 +226,7 @@ BattleBackdropTiles0_807FE40::
 	.byte 0x16, 0x0, 0x89, 0x0, 0x18, 0x0, 0x24, 0x0, 0x25, 0x0, 0x1B, 0x0, 0x0, 0x0, 0x1C, 0x0
 	.byte 0x1D, 0x0, 0x1E, 0x0, 0x1F, 0x0, 0x0, 0x0
 off_807FE88::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x06
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x06
 	gfx_anim_data_ptr ptr=byte_807FF80 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807FFC8 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_807FF80 delay=0x00000004
@@ -339,7 +339,7 @@ byte_8080268::
 	.byte 0x0, 0x2A, 0x0, 0x2B, 0x0, 0x2E, 0x0, 0x11, 0x0, 0x2C, 0x0, 0x2D, 0x0
 	.byte 0x12, 0x0, 0x11, 0x0, 0xD, 0x0, 0xD, 0x0, 0x13, 0x0, 0x14, 0x0
 off_80802A8::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x08
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x08
 	gfx_anim_data_ptr ptr=byte_80803A0 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_80803E8 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_80803A0 delay=0x00000004
@@ -455,7 +455,7 @@ dword_80805B8::
 dword_80805BC::
 	.word 0x30002
 off_80805C0::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x09
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x09
 	gfx_anim_data_ptr ptr=byte_80806B8 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_8080700 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_80806B8 delay=0x00000004
@@ -624,7 +624,7 @@ byte_8080A8C::
 	.byte 0x12, 0x0, 0x13, 0x0, 0x14, 0x0, 0x15, 0x0, 0x16, 0x0, 0x17
 	.byte 0x0, 0x18, 0x0, 0x19, 0x0, 0x1A, 0x0, 0x0, 0x0
 off_8080AA0::
-	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x10
+	gfx_anim_4bit_tile_copy gfx_src=GFXAnimTileBlob_8617488 gfx_dest=unk_6000040 index=0x00 num_tiles=0x24 buffer_index=0x10
 	gfx_anim_data_ptr ptr=byte_8080B98 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_8080BE0 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_8080B98 delay=0x00000004
