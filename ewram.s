@@ -2641,7 +2641,7 @@ dword_2035274:: // 0x2035274
 	.space 12
 eStruct2035280:: // 0x2035280
 	s_2035280_struct eStruct2035280
-dword_20352E0:: // 0x20352e0
+eQueuedChipIconSlots_20352E0:: // 0x20352e0
 	.space 4
 dword_20352E4:: // 0x20352e4
 	.space 44
@@ -3037,7 +3037,7 @@ dword_203CA4C:: // 0x203ca4c
 	.space 4
 byte_203CA50:: // 0x203ca50
 	.space 32
-dword_203CA70:: // 0x203ca70
+eBattleSequencerState_203CA70:: // 0x203ca70
 	.space 4
 byte_203CA74:: // 0x203ca74
 	.space 6

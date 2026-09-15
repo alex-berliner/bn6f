@@ -220,7 +220,7 @@ object_drawChipName:
 loc_800B9D4:
 	mov r0, #1
 	lsl r0, r0, #0x10
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -243,12 +243,12 @@ loc_800B9F8:
 	bne loc_800BA12
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	b loc_800BA1A
 loc_800BA12:
 	mov r3, r0
 	mov r0, #0x50
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_800BA1A:
 	mov r0, #0x74
 	add r0, #0xff
@@ -257,7 +257,7 @@ loc_800BA1A:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BA88
 loc_800BA28:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_800BA88
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -329,7 +329,7 @@ sub_800BA8A:
 	b locret_800BB9E
 loc_800BAB8:
 	ldr r0, dword_800BBA0 // =0x10000
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	ldr r0, dword_800BBA0 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
@@ -352,12 +352,12 @@ loc_800BAD8:
 	bne loc_800BAF2
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	b loc_800BAFA
 loc_800BAF2:
 	mov r3, r0
 	mov r0, #0x50
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_800BAFA:
 	mov r0, #0x74
 	add r0, #0xff
@@ -370,10 +370,10 @@ loc_800BB08:
 	bl battle_networkInvert
 	tst r0, r0
 	bne loc_800BB18
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	b loc_800BB1C
 loc_800BB18:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 loc_800BB1C:
 	tst r0, r0
 	bne locret_800BB9E
@@ -467,7 +467,7 @@ sub_800BBA8:
 	b locret_800BC86
 loc_800BBCC:
 	ldr r0, dword_800BF74 // =0x10000
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	ldr r0, dword_800BF74 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
@@ -497,14 +497,14 @@ loc_800BBEC:
 loc_800BC08:
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	b loc_800BC1E
 loc_800BC12:
 	ldr r3, off_800BF78 // =0x171
 	mov r1, #0
 	mov r2, #0
 	mov r0, #0x50
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_800BC1E:
 	mov r0, #0x74
 	add r0, #0xff
@@ -513,7 +513,7 @@ loc_800BC1E:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BC86
 loc_800BC2C:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_800BC86
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -811,12 +811,12 @@ sub_800BE2C:
 	bne loc_800BE56
 	mov r3, r0
 	mov r0, #0x4c 
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	b loc_800BE5E
 loc_800BE56:
 	mov r3, r0
 	mov r0, #0x50 
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_800BE5E:
 	mov r0, #0x74 
 	add r0, #0xff
@@ -825,7 +825,7 @@ loc_800BE5E:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BED8
 loc_800BE6C:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_800BED8
 	ldrb r0, [r5,#oBattleObject_Alliance]

@@ -543,7 +543,7 @@ loc_8026858:
 	ldr r0, off_8026998 // =0x400 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_802699C // =0x20130 
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r4, #0
 	ldr r5, off_8026BF0 // =eS20364C0 
 	mov r0, r10
@@ -907,7 +907,7 @@ sub_8026B04: // (self: * S20364C0 $r5) -> ()
 	strh r0, [r1,#0x18]
 
 	mov r0, #0
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 
 	mov r0, #0x80
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -976,7 +976,7 @@ loc_8026B8C:
 	mov r1, r0
 	mov r0, #0x78 
 	sub r0, r0, r1
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 	pop {r0}
 	cmp r0, #0
 	bne loc_8026BE8
@@ -1114,7 +1114,7 @@ loc_8026C5C: // endif
 	mov r1, r0
 	mov r0, #0x78 
 	sub r0, r0, r1
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 	pop {r0}
 	cmp r0, #0x78 
 	bne loc_8026C7E
@@ -1200,7 +1200,7 @@ sub_8026D06: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0x78 
 	strh r0, [r3,#0x18]
 	mov r0, #0
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 	ldr r0, off_8026DA8 // =0x2000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	bl sub_8029D80
@@ -1231,7 +1231,7 @@ loc_8026D5C:
 	mov r0, #0
 	strh r0, [r3,#0x18]
 	mov r0, #0x78 
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 	push {r4,r5}
 	// j
 	mov r0, #0
@@ -1314,14 +1314,14 @@ loc_8026DEC:
 	tst r0, r1
 	beq loc_8026E14
 	ldr r0, off_8026E48 // =0x1000 
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	ldr r0, off_8026E48 // =0x1000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 loc_8026E14:
 	mov r0, #2
 	bl dispatch_801DA48
 	mov r0, #2
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldrb r0, [r5,#0xc]
 	cmp r0, #0xff
 	beq loc_8026E3C
@@ -3338,14 +3338,14 @@ sub_8027D78:
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0
 	strh r0, [r1,#0x18]
-	bl sub_801E71C
+	bl setChipWindowSlideX_801E71C
 	mov r0, #0x80
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #0
 	mov r1, #0
 	bl sub_801E0A0
 	ldr r0, off_8027E14 // =0x400 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, off_8027E14 // =0x400 
 	bl dispatch_801DA48
 	bl sub_800A97A
@@ -3377,7 +3377,7 @@ loc_8027DD4:
 	ldr r0, dword_8027E18 // =0x20000 
 	bl dispatch_801DA48
 	ldr r0, dword_8027E18 // =0x20000 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	b locret_8027E10
 loc_8027DEA:
 	bl ClearCustGauge
@@ -3387,13 +3387,13 @@ loc_8027DEA:
 	mov r0, #0x20 
 	bl dispatch_801DA48
 	mov r0, #0x20 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	b locret_8027E10
 loc_8027E04:
 	mov r0, #0x10
 	bl dispatch_801DA48
 	mov r0, #0x10
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 locret_8027E10:
 	pop {pc}
 	.balign 4, 0
@@ -9246,7 +9246,7 @@ sub_802A934:
 	ldr r0, dword_802A96C // =0x820080 
 	bl dispatch_801DA48
 	ldr r0, dword_802A96C // =0x820080 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, dword_802A970 // =0x4 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r1, r10
@@ -10992,7 +10992,7 @@ loc_802B7BC:
 	bne loc_802B7CE
 	mov r0, #0x34 
 loc_802B7CE:
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -11009,7 +11009,7 @@ sub_802B7E0:
 	ldrb r0, [r5,#2]
 	cmp r0, #0
 	bne loc_802B7F4
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #2
 	bne locret_802B80A
 	mov r0, #1
@@ -11253,7 +11253,7 @@ dword_802B9B4:
 	thumb_local_start
 sub_802B9B8:
 	push {lr}
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_802B9D2
 	mov r0, #0x18
@@ -13548,7 +13548,7 @@ sub_802CBCC:
 	mov r1, r3
 loc_802CBE2:
 	mov r0, #0x28 
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -17250,7 +17250,7 @@ sub_802E790:
 	tst r0, r0
 	bne loc_802E7C8
 	ldr r0, dword_802E94C // =0x80000 
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	ldr r0, dword_802E94C // =0x80000 
 	bl sub_801BEC2
 loc_802E7C8:
@@ -17292,7 +17292,7 @@ loc_802E80C:
 	tst r0, r0
 	bne loc_802E822
 	ldr r0, dword_802E94C // =0x80000 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, dword_802E94C // =0x80000 
 	bl sub_801BEB8
 loc_802E822:

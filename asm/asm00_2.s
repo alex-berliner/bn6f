@@ -25501,7 +25501,7 @@ sub_801BE70:
 	sub r2, #1
 	strh r2, [r1,#0x26] // (word_20352A6 - 0x2035280)
 	// memBlock
-	ldr r0, off_801BEA8 // =dword_20352E0 
+	ldr r0, off_801BEA8 // =eQueuedChipIconSlots_20352E0 
 	// size
 	mov r1, #0x30 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -25520,7 +25520,7 @@ sub_801BE70:
 	pop {pc}
 	.balign 4, 0
 off_801BEA8:
-	.word dword_20352E0
+	.word eQueuedChipIconSlots_20352E0
 off_801BEAC:
 	.word byte_203EB50
 off_801BEB0:
@@ -25547,30 +25547,30 @@ sub_801BEC2:
 	mov pc, lr
 	thumb_func_end sub_801BEC2
 
-	thumb_func_start sub_801BECC
-sub_801BECC:
+	thumb_func_start setBattleHudElements_801BECC
+setBattleHudElements_801BECC:
 	ldr r1, off_801BFE8 // =eStruct2035280
-	ldr r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r2, [r1,#oStruct2035280_HudElementMask]
 	orr r2, r0
-	str r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
+	str r2, [r1,#oStruct2035280_HudElementMask]
 	mov pc, lr
-	thumb_func_end sub_801BECC
+	thumb_func_end setBattleHudElements_801BECC
 
-	thumb_func_start sub_801BED6
-sub_801BED6:
+	thumb_func_start clearBattleHudElements_801BED6
+clearBattleHudElements_801BED6:
 	ldr r1, off_801BFE8 // =eStruct2035280
-	ldr r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r2, [r1,#oStruct2035280_HudElementMask]
 	bic r2, r0
-	str r2, [r1,#0x40] // (dword_20352C0 - 0x2035280)
+	str r2, [r1,#oStruct2035280_HudElementMask]
 	mov pc, lr
-	thumb_func_end sub_801BED6
+	thumb_func_end clearBattleHudElements_801BED6
 
-	thumb_func_start sub_801BEE0
-sub_801BEE0:
+	thumb_func_start updateBattleHudElements_801BEE0
+updateBattleHudElements_801BEE0:
 	push {r5-r7,lr}
 	ldr r5, off_801BFE8 // =eStruct2035280
-	ldr r6, off_801BF00 // =off_801BF04 
-	ldr r7, [r5,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r6, off_801BF00 // =BattleHudUpdateHandlers_801BF04 
+	ldr r7, [r5,#oStruct2035280_HudElementMask]
 loc_801BEE8:
 	lsr r7, r7, #1
 	bcs loc_801BEF2
@@ -25587,13 +25587,13 @@ locret_801BEFC:
 	pop {r5-r7,pc}
 	.balign 4, 0
 off_801BF00:
-	.word off_801BF04
-off_801BF04:
+	.word BattleHudUpdateHandlers_801BF04
+BattleHudUpdateHandlers_801BF04:
 	.word sub_801BFEE+1
-	.word sub_801BFF8+1
+	.word updateQueuedChipIcons_801BFF8+1
 	.word sub_801C168+1
 	.word sub_801C368+1
-	.word sub_801C470+1
+	.word updateCustGauge_801C470+1
 	.word sub_801C4AE+1
 	.word nullsub_58+1
 	.word sub_801C840+1
@@ -25603,7 +25603,7 @@ off_801BF04:
 	.word nullsub_58+1
 	.word sub_801CA28+1
 	.word nullsub_58+1
-	.word sub_801CADC+1
+	.word updateEmotionWindow_801CADC+1
 	.word sub_801CE28+1
 	.word sub_801D1D8+1
 	.word sub_801C5F4+1
@@ -25613,13 +25613,13 @@ off_801BF04:
 	.word sub_801D548+1
 	.word sub_801D590+1
 	.word sub_801D71A+1
-	thumb_func_end sub_801BEE0
+	thumb_func_end updateBattleHudElements_801BEE0
 
-	thumb_func_start sub_801BF64
-sub_801BF64:
+	thumb_func_start drawBattleHudElements_801BF64
+drawBattleHudElements_801BF64:
 	push {r5-r7,lr}
 	ldr r5, off_801BFE8 // =eStruct2035280
-	ldr r6, off_801BF84 // =off_801BF88 
+	ldr r6, off_801BF84 // =BattleHudDrawHandlers_801BF88 
 	ldr r7, [r5,#0x44] // (dword_20352C4 - 0x2035280)
 loc_801BF6C:
 	lsr r7, r7, #1
@@ -25637,15 +25637,15 @@ locret_801BF80:
 	pop {r5-r7,pc}
 	.balign 4, 0
 off_801BF84:
-	.word off_801BF88
-off_801BF88:
+	.word BattleHudDrawHandlers_801BF88
+BattleHudDrawHandlers_801BF88:
 	.word sub_801C06E+1
-	.word sub_801C078+1
+	.word drawQueuedChipIcons_801C078+1
 	.word sub_801C202+1
 	.word sub_801C416+1
-	.word sub_801C4E4+1
+	.word drawCustGauge_801C4E4+1
 	.word sub_801C576+1
-	.word sub_801C6EE+1
+	.word drawQueuedChipName_801C6EE+1
 	.word sub_801C906+1
 	.word nullsub_58+1
 	.word sub_801C9E4+1
@@ -25653,7 +25653,7 @@ off_801BF88:
 	.word nullsub_58+1
 	.word sub_801CA34+1
 	.word sub_801CA80+1
-	.word sub_801CDEC+1
+	.word drawEmotionWindow_801CDEC+1
 	.word sub_801CF0E+1
 	.word sub_801D1F6+1
 	.word sub_801C640+1
@@ -25665,7 +25665,7 @@ off_801BF88:
 	.word sub_801D792+1
 off_801BFE8:
 	.word eStruct2035280
-	thumb_func_end sub_801BF64
+	thumb_func_end drawBattleHudElements_801BF64
 
 	thumb_local_start
 nullsub_58:
@@ -25676,23 +25676,23 @@ nullsub_58:
 sub_801BFEE:
 	push {lr}
 	mov r0, #1
-	bl sub_801C002
+	bl updateQueuedChipIcon_801C002
 	pop {pc}
 	thumb_func_end sub_801BFEE
 
 	thumb_local_start
-sub_801BFF8:
+updateQueuedChipIcons_801BFF8:
 	push {lr}
 	mov r0, #0
-	bl sub_801C002
+	bl updateQueuedChipIcon_801C002
 	pop {pc}
-	thumb_func_end sub_801BFF8
+	thumb_func_end updateQueuedChipIcons_801BFF8
 
 	thumb_local_start
-sub_801C002:
+updateQueuedChipIcon_801C002:
 	push {r4,r6,r7,lr}
 	push {r0}
-	ldr r4, off_801C148 // =dword_20352E0 
+	ldr r4, off_801C148 // =eQueuedChipIconSlots_20352E0 
 	mov r6, #6
 	ldr r7, dword_801C14C // =0x6016a00 
 loc_801C00C:
@@ -25744,29 +25744,29 @@ loc_801C062:
 	bne loc_801C00C
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801C002
+	thumb_func_end updateQueuedChipIcon_801C002
 
 	thumb_local_start
 sub_801C06E:
 	push {lr}
 	mov r0, #1
-	bl sub_801C082
+	bl drawQueuedChipIcon_801C082
 	pop {pc}
 	thumb_func_end sub_801C06E
 
 	thumb_local_start
-sub_801C078:
+drawQueuedChipIcons_801C078:
 	push {lr}
 	mov r0, #0
-	bl sub_801C082
+	bl drawQueuedChipIcon_801C082
 	pop {pc}
-	thumb_func_end sub_801C078
+	thumb_func_end drawQueuedChipIcons_801C078
 
 	thumb_local_start
-sub_801C082:
+drawQueuedChipIcon_801C082:
 	push {r4-r7,lr}
 	push {r0}
-	ldr r4, off_801C148 // =dword_20352E0 
+	ldr r4, off_801C148 // =eQueuedChipIconSlots_20352E0 
 	mov r6, #6
 	ldr r7, dword_801C158 // =0xab50 
 loc_801C08C:
@@ -25862,7 +25862,7 @@ loc_801C13A:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_801C148:
-	.word dword_20352E0
+	.word eQueuedChipIconSlots_20352E0
 dword_801C14C:
 	.word 0x6016A00
 dword_801C150:
@@ -25877,7 +25877,7 @@ off_801C160:
 	.word dword_872CE94
 dword_801C164:
 	.word 0x100000
-	thumb_func_end sub_801C082
+	thumb_func_end drawQueuedChipIcon_801C082
 
 	thumb_local_start
 sub_801C168:
@@ -26318,7 +26318,7 @@ off_801C46C:
 	thumb_func_end sub_801C416
 
 	thumb_local_start
-sub_801C470:
+updateCustGauge_801C470:
 	push {lr}
 	bl battle_isPaused
 	bne locret_801C4AC
@@ -26345,7 +26345,7 @@ sub_801C470:
 	bl PlaySoundEffect
 locret_801C4AC:
 	pop {pc}
-	thumb_func_end sub_801C470
+	thumb_func_end updateCustGauge_801C470
 
 	thumb_local_start
 sub_801C4AE:
@@ -26377,7 +26377,7 @@ off_801C4E0:
 	thumb_func_end sub_801C4AE
 
 	thumb_local_start
-sub_801C4E4:
+drawCustGauge_801C4E4:
 	push {r4-r6,lr}
 	bl sub_800A97A
 	cmp r0, #0
@@ -26408,7 +26408,7 @@ loc_801C500:
 	bl call_sub_3005EBA
 	mov r0, #8
 	and r0, r6
-	ldr r3, off_801C6BC // =byte_801C6C0
+	ldr r3, off_801C6BC // =CustGaugeMarkerTiles_801C6C0
 	add r3, r3, r0
 	mov r0, #0xd
 	mov r1, #1
@@ -26449,7 +26449,7 @@ loc_801C55C:
 	bl sub_800187C
 locret_801C574:
 	pop {r4-r6,pc}
-	thumb_func_end sub_801C4E4
+	thumb_func_end drawCustGauge_801C4E4
 
 	thumb_local_start
 sub_801C576:
@@ -26624,8 +26624,8 @@ dword_801C6B4:
 dword_801C6B8:
 	.word 0x9232
 off_801C6BC:
-	.word byte_801C6C0
-byte_801C6C0:
+	.word CustGaugeMarkerTiles_801C6C0
+CustGaugeMarkerTiles_801C6C0:
 	.byte 0x36, 0x92, 0x37, 0x92, 0x38, 0x92, 0x39, 0x92, 0x3A
 	.byte 0x92, 0x3B, 0x92, 0x3C, 0x92, 0x3D, 0x92
 off_801C6D0:
@@ -26656,7 +26656,7 @@ byte_801C6E8:
 // (F34 driver chain) lands on a different frame than the canon, so the
 // ramp appears as warp integrated residue.
 	thumb_local_start
-sub_801C6EE:
+drawQueuedChipName_801C6EE:
 	push {r4-r7,lr}
 	mov r0, #0
 	push {r0}
@@ -26824,7 +26824,7 @@ dword_801C838:
 	.word 0xD1D2
 off_801C83C:
 	.word eStruct2035280
-	thumb_func_end sub_801C6EE
+	thumb_func_end drawQueuedChipName_801C6EE
 
 	thumb_local_start
 sub_801C840:
@@ -27099,7 +27099,7 @@ sub_801CA0C:
 	bne locret_801CA26
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #8
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -27223,7 +27223,7 @@ dword_801CAD8:
 	thumb_func_end sub_801CA80
 
 	thumb_local_start
-sub_801CADC:
+updateEmotionWindow_801CADC:
 	push {lr}
 	ldrb r0, [r5,#0x17]
 	cmp r0, #0xff
@@ -27274,7 +27274,7 @@ loc_801CB30:
 	strb r0, [r5,#0x15]
 	bl sub_801CC94
 	pop {pc}
-	thumb_func_end sub_801CADC
+	thumb_func_end updateEmotionWindow_801CADC
 
 	thumb_local_start
 sub_801CB38:
@@ -27591,7 +27591,7 @@ byte_801CDDC:
 	thumb_func_end sub_801CC94
 
 	thumb_local_start
-sub_801CDEC:
+drawEmotionWindow_801CDEC:
 	push {r4-r6,lr}
 	ldrb r0, [r5,#0xf]
 	cmp r0, #6
@@ -27621,7 +27621,7 @@ dword_801CE20:
 	.word 0x40200012
 dword_801CE24:
 	.word 0xCBBC
-	thumb_func_end sub_801CDEC
+	thumb_func_end drawEmotionWindow_801CDEC
 
 	thumb_local_start
 sub_801CE28:
@@ -27752,7 +27752,7 @@ sub_801CEFA:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0xf
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #0xf
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -28143,7 +28143,7 @@ sub_801D1D8:
 	bne locret_801D1F4
 	mov r0, #1
 	lsl r0, r0, #0x10
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -28549,7 +28549,7 @@ sub_801D514:
 	strh r0, [r5,#0x32]
 	bne loc_801D526
 	ldr r0, dword_801D544 // =0x100000 
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	b loc_801D53A
 loc_801D526:
 	mov r1, #0xf
@@ -28580,7 +28580,7 @@ sub_801D548:
 	bne locret_801D562
 	mov r0, #1
 	lsl r0, r0, #0x15
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #0x15
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -29088,8 +29088,8 @@ byte_801D9B4:
 	// bn game (src/battle.rs) assigns its four background layers by call
 	// order into agb's GraphicsFrame, not by an explicit index, and did
 	// not match this assignment before AUDIT wave 3c's zero-layers ticket.
-	thumb_func_start sub_801DA24
-sub_801DA24:
+	thumb_func_start initChipWindowBg3_801DA24
+initChipWindowBg3_801DA24:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
@@ -29107,7 +29107,7 @@ off_801DA40:
 	.word off_801ECB4
 dword_801DA44:
 	.word 0x1F09
-	thumb_func_end sub_801DA24
+	thumb_func_end initChipWindowBg3_801DA24
 
 	thumb_func_start dispatch_801DA48
 dispatch_801DA48:
@@ -29283,7 +29283,7 @@ sub_801DB84:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
-	ldr r4, off_801DC5C // =dword_20352E0 
+	ldr r4, off_801DC5C // =eQueuedChipIconSlots_20352E0 
 	mov r3, #6
 loc_801DB90:
 	ldrb r2, [r4]
@@ -29296,7 +29296,7 @@ loc_801DB9C:
 	add r4, #8
 	sub r3, #1
 	bne loc_801DB90
-	ldr r4, off_801DC5C // =dword_20352E0 
+	ldr r4, off_801DC5C // =eQueuedChipIconSlots_20352E0 
 	mov r3, #6
 loc_801DBA6:
 	ldrb r2, [r4]
@@ -29328,7 +29328,7 @@ locret_801DBD2:
 	thumb_func_start sub_801DBD4
 sub_801DBD4:
 	push {r4,r6,r7,lr}
-	ldr r4, off_801DC5C // =dword_20352E0 
+	ldr r4, off_801DC5C // =eQueuedChipIconSlots_20352E0 
 	mov r3, #6
 loc_801DBDA:
 	ldrb r2, [r4]
@@ -29363,7 +29363,7 @@ sub_801DC06:
 	sub sp, sp, #8
 	str r0, [sp]
 	str r1, [sp,#4]
-	ldr r4, off_801DC5C // =dword_20352E0 
+	ldr r4, off_801DC5C // =eQueuedChipIconSlots_20352E0 
 	mov r3, #6
 loc_801DC12:
 	ldrb r2, [r4]
@@ -29392,7 +29392,7 @@ loc_801DC32:
 	thumb_func_start sub_801DC36
 sub_801DC36:
 	push {r4,r6,r7,lr}
-	ldr r4, off_801DC5C // =dword_20352E0 
+	ldr r4, off_801DC5C // =eQueuedChipIconSlots_20352E0 
 	mov r3, #6
 loc_801DC3C:
 	ldrb r2, [r4]
@@ -29415,7 +29415,7 @@ locret_801DC58:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_801DC5C:
-	.word dword_20352E0
+	.word eQueuedChipIconSlots_20352E0
 	thumb_func_end sub_801DC36
 
 	thumb_local_start
@@ -29481,7 +29481,7 @@ loc_801DCAC:
 	strb r0, [r6,#8]
 	strb r0, [r6,#9]
 	mov r0, #4
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #0
 locret_801DCCA:
 	pop {r4,r6,r7,pc}
@@ -29613,7 +29613,7 @@ sub_801DD88:
 	ldr r0, off_801DDA0 // =off_801DDA4 
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void
 	mov r0, #8
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #8
 	bl dispatch_801DA48
 	pop {pc}
@@ -29791,7 +29791,7 @@ sub_801DED0:
 	ldr r2, off_801DF74 // =0x380 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #0x10
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #0x10
 	bl dispatch_801DA48
 	pop {pc}
@@ -29806,7 +29806,7 @@ sub_801DEEE:
 	ldr r2, off_801DF74 // =0x380 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #0x20 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #0x20 
 	bl dispatch_801DA48
 	pop {pc}
@@ -29821,7 +29821,7 @@ sub_801DF0C:
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void
 	mov r0, #1
 	lsl r0, r0, #0x11
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x11
 	bl dispatch_801DA48
@@ -29845,7 +29845,7 @@ sub_801DF32:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #1
 	lsl r0, r0, #0x11
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x11
 	bl dispatch_801DA48
@@ -29906,7 +29906,7 @@ ClearCustGauge:
 	push {lr}
 	ldr r1, off_801E0D8 // =eStruct2035280
 	mov r0, #0
-	strh r0, [r1,#0x20] // (word_20352A0 - 0x2035280)
+	strh r0, [r1,#oStruct2035280_CustGaugeValue]
 	mov r0, #0x12
 	bl battle_clearFlags
 	pop {pc}
@@ -29915,47 +29915,47 @@ ClearCustGauge:
 	thumb_func_start SetCustGauge
 SetCustGauge:
 	push {r1,lr}
-	ldr r1, dword_801DFB4 // =0x4000 
+	ldr r1, dword_801DFB4 // =CUST_GAUGE_FULL
 	cmp r0, r1
 	ble loc_801DFAC
 	mov r0, r1
 loc_801DFAC:
 	ldr r1, off_801E0D8 // =eStruct2035280
-	strh r0, [r1,#0x20] // (word_20352A0 - 0x2035280)
+	strh r0, [r1,#oStruct2035280_CustGaugeValue]
 	pop {r1,pc}
 	.balign 4, 0
 dword_801DFB4:
-	.word 0x4000
+	.word CUST_GAUGE_FULL
 	thumb_func_end SetCustGauge
 
-	thumb_func_start sub_801DFB8
-sub_801DFB8:
+	thumb_func_start AddToCustGauge_801DFB8
+AddToCustGauge_801DFB8:
 	push {lr}
 	ldr r2, off_801E0D8 // =eStruct2035280
-	ldrh r1, [r2,#0x20] // (word_20352A0 - 0x2035280)
+	ldrh r1, [r2,#oStruct2035280_CustGaugeValue]
 	add r0, r0, r1
-	ldr r1, dword_801DFCC // =0x4000 
+	ldr r1, dword_801DFCC // =CUST_GAUGE_FULL
 	cmp r0, r1
 	ble loc_801DFC8
 	mov r0, r1
 loc_801DFC8:
-	strh r0, [r2,#0x20] // (word_20352A0 - 0x2035280)
+	strh r0, [r2,#oStruct2035280_CustGaugeValue]
 	pop {pc}
 	.balign 4, 0
 dword_801DFCC:
-	.word 0x4000
-	thumb_func_end sub_801DFB8
+	.word CUST_GAUGE_FULL
+	thumb_func_end AddToCustGauge_801DFB8
 
 	thumb_local_start
 sub_801DFD0:
 	push {lr}
 	ldr r2, off_801E0D8 // =eStruct2035280
-	ldrh r1, [r2,#0x20] // (word_20352A0 - 0x2035280)
+	ldrh r1, [r2,#oStruct2035280_CustGaugeValue]
 	sub r1, r1, r0
 	bge loc_801DFDC
 	mov r1, #0
 loc_801DFDC:
-	strh r1, [r2,#0x20] // (word_20352A0 - 0x2035280)
+	strh r1, [r2,#oStruct2035280_CustGaugeValue]
 	pop {pc}
 	.word 0x4000
 	thumb_func_end sub_801DFD0
@@ -29963,7 +29963,7 @@ loc_801DFDC:
 	thumb_func_start sub_801DFE4
 sub_801DFE4:
 	ldr r0, off_801E0D8 // =eStruct2035280
-	ldrh r0, [r0,#0x20] // (word_20352A0 - 0x2035280)
+	ldrh r0, [r0,#oStruct2035280_CustGaugeValue]
 	mov pc, lr
 	thumb_func_end sub_801DFE4
 
@@ -29996,7 +29996,7 @@ sub_801E006:
 sub_801E012:
 	push {r4,r6,r7,lr}
 	mov r0, #0x40 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #0x40 
 	bl dispatch_801DA48
 	pop {r4,r6,r7,pc}
@@ -30092,7 +30092,7 @@ sub_801E0A0:
 	strb r0, [r3,#0x1] // (byte_2035281 - 0x2035280)
 	strb r1, [r3,#0x2] // (byte_2035282 - 0x2035280)
 	mov r0, #0x80
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #0x80
 	bl dispatch_801DA48
 	pop {pc}
@@ -30201,7 +30201,7 @@ sub_801E15C:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0x10
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -30311,7 +30311,7 @@ sub_801E228:
 loc_801E230:
 	mov r7, r0
 	ldr r6, off_801E4AC // =eStruct2035280
-	ldr r1, [r6,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r1, [r6,#oStruct2035280_HudElementMask]
 	mov r0, #1
 	lsl r0, r0, #8
 	tst r1, r0
@@ -30333,7 +30333,7 @@ loc_801E242:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #8
 	bl dispatch_801DA48
@@ -30344,7 +30344,7 @@ loc_801E242:
 sub_801E270:
 	push {r4-r7,lr}
 	ldr r6, off_801E4AC // =eStruct2035280
-	ldr r0, [r6,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r0, [r6,#oStruct2035280_HudElementMask]
 	mov r1, #1
 	lsl r1, r1, #8
 	tst r0, r1
@@ -30371,7 +30371,7 @@ loc_801E28C:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #8
 	bl dispatch_801DA48
@@ -30384,7 +30384,7 @@ sub_801E2BA:
 	push {r4-r7,lr}
 	push {r0}
 	ldr r6, off_801E4AC // =eStruct2035280
-	ldr r0, [r6,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r0, [r6,#oStruct2035280_HudElementMask]
 	mov r1, #1
 	lsl r1, r1, #8
 	tst r0, r1
@@ -30419,7 +30419,7 @@ loc_801E2F0:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #8
 	bl dispatch_801DA48
@@ -30428,7 +30428,7 @@ loc_801E312:
 	pop {r4-r7,pc}
 	push {r4-r7,lr}
 	ldr r6, off_801E4AC // =eStruct2035280
-	ldr r0, [r6,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r0, [r6,#oStruct2035280_HudElementMask]
 	mov r1, #1
 	lsl r1, r1, #8
 	tst r0, r1
@@ -30452,7 +30452,7 @@ loc_801E32C:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #8
 	bl dispatch_801DA48
@@ -30471,7 +30471,7 @@ sub_801E35A:
 	bl call_sub_3005EBA
 	mov r0, #1
 	lsl r0, r0, #0xb
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	pop {r4,r5,pc}
 	thumb_func_end sub_801E35A
 
@@ -30514,7 +30514,7 @@ sub_801E398:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #0xb
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0xb
 	bl dispatch_801DA48
@@ -30580,7 +30580,7 @@ sub_801E408:
 	bl renderTextGfx_8045F8C
 	mov r0, #1
 	lsl r0, r0, #0x14
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x14
 	bl dispatch_801DA48
@@ -30638,7 +30638,7 @@ sub_801E474:
 	strb r0, [r1]
 	mov r0, #1
 	lsl r0, r0, #0xc
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0xc
 	bl dispatch_801DA48
@@ -30856,7 +30856,7 @@ sub_801E5F8:
 	push {r4,r5,lr}
 	ldr r5, off_801E77C // =eStruct2035280
 	mov r0, #0
-	strb r0, [r5,#0x12] // (byte_2035292 - 0x2035280)
+	strb r0, [r5,#oStruct2035280_ChipWindowSlideX]
 	mov r0, #0xff
 	strb r0, [r5,#0x13] // (byte_2035293 - 0x2035280)
 	strb r0, [r5,#0x17] // (eStruct2035280_NaviStatusGfxIdx17 - 0x2035280)
@@ -30889,7 +30889,7 @@ loc_801E63E:
 	strb r4, [r5,#0x1e] // (byte_203529E - 0x2035280)
 	mov r0, #1
 	lsl r0, r0, #0xe
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0xe
 	bl dispatch_801DA48
@@ -31005,18 +31005,18 @@ byte_801E700:
 	.byte 0x0, 0x5, 0x6, 0x7, 0x8, 0x9, 0x5, 0x6, 0x7, 0x8, 0x9, 0x14, 0x14, 0xF, 0x10, 0x11, 0x12, 0x13, 0xf, 0x10, 0x11, 0x12, 0x13, 0x16, 0x16, 0x0, 0x0, 0x0
 	thumb_func_end sub_801E6A8
 
-	thumb_func_start sub_801E71C
-sub_801E71C:
-// bn T7d (2026-09-15): this strb r0, [r1,#0x12] in sub_801E71C is the
+	thumb_func_start setChipWindowSlideX_801E71C
+setChipWindowSlideX_801E71C:
+// bn T7d (2026-09-15): this strb r0, [r1,#0x12] in setChipWindowSlideX_801E71C is the
 // post-window banner composite corrector; src/battle.rs carries the named
 // canon-predicate on the eStruct2035280+0x12 byte that the window-close
 // banner cycle depends on. It is one of the three fitted edges named in
 // T7d's windowclose_full trace scenario.
 	push {r1,lr}
 	ldr r1, off_801E77C // =eStruct2035280
-	strb r0, [r1,#0x12] // (byte_2035292 - 0x2035280)
+	strb r0, [r1,#oStruct2035280_ChipWindowSlideX]
 	pop {r1,pc}
-	thumb_func_end sub_801E71C
+	thumb_func_end setChipWindowSlideX_801E71C
 
 	thumb_func_start sub_801E724
 sub_801E724:
@@ -31053,11 +31053,11 @@ sub_801E748:
 	pop {pc}
 	thumb_func_end sub_801E748
 
-	thumb_func_start sub_801E754
-sub_801E754:
+	thumb_func_start isBannerBusy_801E754
+isBannerBusy_801E754:
 	push {r1,r2,lr}
 	ldr r2, off_801E77C // =eStruct2035280
-	ldr r1, [r2,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r1, [r2,#oStruct2035280_HudElementMask]
 	mov r0, #1
 	lsl r0, r0, #0xf
 	and r0, r1
@@ -31079,7 +31079,7 @@ locret_801E778:
 	.balign 4, 0
 off_801E77C:
 	.word eStruct2035280
-	thumb_func_end sub_801E754
+	thumb_func_end isBannerBusy_801E754
 
 	thumb_func_start sub_801E780
 sub_801E780:
@@ -31096,8 +31096,8 @@ locret_801E790:
 	mov pc, lr
 	thumb_func_end sub_801E780
 
-	thumb_func_start sub_801E792
-sub_801E792:
+	thumb_func_start spawnBannerRecord_801E792
+spawnBannerRecord_801E792:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -31105,7 +31105,7 @@ sub_801E792:
 	str r2, [sp,#8]
 	str r3, [sp,#0xc]
 	ldr r3, off_801E824 // =eStruct2035280
-	ldr r3, [r3,#0x40] // (dword_20352C0 - 0x2035280)
+	ldr r3, [r3,#oStruct2035280_HudElementMask]
 	mov r0, #1
 	lsl r0, r0, #0xf
 	tst r0, r3
@@ -31150,7 +31150,7 @@ loc_801E7D8:
 	bx r6
 	mov r0, #1
 	lsl r0, r0, #0xf
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0xf
 	bl dispatch_801DA48
@@ -31171,7 +31171,7 @@ loc_801E81C:
 	.balign 4, 0
 off_801E824:
 	.word eStruct2035280
-	thumb_func_end sub_801E792
+	thumb_func_end spawnBannerRecord_801E792
 
 	thumb_local_start
 sub_801E828:
@@ -31181,7 +31181,7 @@ sub_801E828:
 	mov r1, #0x63 
 loc_801E830:
 	strb r1, [r5,#9]
-	bl sub_801E838
+	bl uploadBannerText_801E838
 	pop {pc}
 	thumb_func_end sub_801E828
 
@@ -31194,10 +31194,10 @@ loc_801E830:
 // byte_801FDC0. Then, if [r5,#8] says so, the trailing counter is drawn
 // from off_801FD64 into 0x6017300 and byte_86F2900 goes to the palette
 // staging buffer byte_30016B0.
-// NOTE: 0x6016E00 is shared with the chip-name popup (sub_801E95C); the
+// NOTE: 0x6016E00 is shared with the chip-name popup (buildChipNamePopup_801E95C); the
 // two are unrelated routines that happen to write the same tile region.
 	thumb_local_start
-sub_801E838:
+uploadBannerText_801E838:
 	push {r4-r7,lr}
 	add r7, r4, #4
 	mov r4, #5
@@ -31270,14 +31270,14 @@ loc_801E8C0:
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_801E838
+	thumb_func_end uploadBannerText_801E838
 
 	thumb_local_start
 sub_801E8CC:
 	push {r4,lr}
 	mov r4, #0
 	push {r0}
-	bl sub_801E95C
+	bl buildChipNamePopup_801E95C
 	pop {r0}
 	cmp r0, #0x50 
 	bne locret_801E8E8
@@ -31297,7 +31297,7 @@ sub_801E8EA:
 	mov r3, #0
 	strb r3, [r5,#0xe]
 	bl sub_801E8FA
-	bl sub_801E838
+	bl uploadBannerText_801E838
 	pop {pc}
 	thumb_func_end sub_801E8EA
 
@@ -31355,14 +31355,14 @@ off_801E958:
 // damage figure beside it.
 // Arguments: r3 = chip id (kept at [r5,#4]), r1 and r2 = the two figures to
 // show beside the name, r4 = player index, r5 = the popup's state block.
-// sub_801EA5A uses that player index (read back off the stack as [sp,#8],
+// getChipNamePopupBuffers_801EA5A uses that player index (read back off the stack as [sp,#8],
 // the saved r4) to pick the text buffer and OBJ tile destination.
 // renderTextGfx_8045F8C renders the name into the buffer with the fixed
 // battle font dword_86B7AE0 and returns its length in glyphs, kept at
 // [r5,#9]. Then, only if the chip's flag byte (ChipData+9) has bit 1 set:
 // bit 0x8000 of the first figure is stripped and sets the flag [r5,#0xc]
 // (which widens the layout by 0x10 below), bits 0x7800 are masked off, and
-// what is left is BCD-converted and queued through sub_801EA34; the second
+// what is left is BCD-converted and queued through queueChipPowerDigits_801EA34; the second
 // figure follows the same path into the second destination. The tail
 // computes the popup's x origin at [r5,#2] from 0xf minus the total glyph
 // count, and queues the palette staging transfers in off_801EAB0.
@@ -31370,7 +31370,7 @@ off_801E958:
 // Only caller: sub_801E8CC, which saves and restores its own r0 around the
 // call and so ignores the return value.
 	thumb_local_start
-sub_801E95C:
+buildChipNamePopup_801E95C:
 	push {r4-r7,lr}
 	mov r6, #0
 	strb r6, [r5,#7]
@@ -31382,7 +31382,7 @@ sub_801E95C:
 	push {r1,r2,r4,r5}
 	ldrh r0, [r5,#4]
 	bl sub_8027D10
-	bl sub_801EA5A
+	bl getChipNamePopupBuffers_801EA5A
 	mov r4, #8
 	mov r5, #1
 	ldr r6, off_801EAA0 // =dword_86B7AE0 
@@ -31423,7 +31423,7 @@ loc_801E9A6:
 	orr r4, r1
 	ldr r1, off_801EA78 // =dword_801EA7C 
 	ldr r1, [r1,r6]
-	bl sub_801EA34
+	bl queueChipPowerDigits_801EA34
 	pop {r0,r4,r5}
 	ldr r1, dword_801EAE8 // =0x7800 
 	bic r0, r1
@@ -31441,7 +31441,7 @@ loc_801E9A6:
 	orr r4, r1
 	ldr r1, off_801EA84 // =dword_801EA88 
 	ldr r1, [r1,r6]
-	bl sub_801EA34
+	bl queueChipPowerDigits_801EA34
 	pop {r4}
 loc_801E9FC:
 	ldrb r1, [r5,#9]
@@ -31471,7 +31471,7 @@ loc_801E9FC:
 	pop {r1-r3,r5}
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_801E95C
+	thumb_func_end buildChipNamePopup_801E95C
 
 // Queue four decimal digits of a chip's power figure into OBJ tiles.
 // r4 is the packed value: four nibbles of digit index, each selecting a
@@ -31481,7 +31481,7 @@ loc_801E9FC:
 // left. Destinations come from dword_801EA7C / dword_801EA88 (0x6017060
 // and 0x6017160 for player one, 0x60174E0 and 0x60175E0 for player two).
 	thumb_local_start
-sub_801EA34:
+queueChipPowerDigits_801EA34:
 	push {r6,lr}
 	ldr r6, off_801EA74 // =off_801FD90 
 	mov r7, #4
@@ -31500,15 +31500,15 @@ loc_801EA3C:
 	sub r7, #1
 	bne loc_801EA3C
 	pop {r6,pc}
-	thumb_func_end sub_801EA34
+	thumb_func_end queueChipPowerDigits_801EA34
 
 // Pick the chip-name popup's text buffer and OBJ tile destination for a
 // player index. It is read as [sp,#8], which is the r4 its caller
-// sub_801E95C has just pushed: 0 (the local player) gets byte_203EDA0 ->
+// buildChipNamePopup_801E95C has just pushed: 0 (the local player) gets byte_203EDA0 ->
 // 0x6016E00, 1 gets byte_203EFA0 -> 0x6017280. Returns them in r2 and r3
 // for renderTextGfx_8045F8C. Leaf, returns with `mov pc, lr`.
 	thumb_local_start
-sub_801EA5A:
+getChipNamePopupBuffers_801EA5A:
 	ldr r2, [sp,#8]
 	cmp r2, #1
 	beq loc_801EA66
@@ -31570,7 +31570,7 @@ dword_801EAE4:
 	.word 0x8000
 dword_801EAE8:
 	.word 0x7800
-	thumb_func_end sub_801EA5A
+	thumb_func_end getChipNamePopupBuffers_801EA5A
 
 	thumb_local_start
 sub_801EAEC:
@@ -31619,12 +31619,12 @@ sub_801EB18:
 	strb r4, [r5,#0x8] // (byte_2036858 - 0x2036850)
 	mov r4, #1
 	mov r3, r0
-	bl sub_801E95C
+	bl buildChipNamePopup_801E95C
 	mov r4, #0x3c 
 	strb r4, [r5,#0x7] // (byte_2036857 - 0x2036850)
 	mov r0, #1
 	lsl r0, r0, #0x10
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DA48
@@ -31692,7 +31692,7 @@ sub_801EB9C:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #1
 	lsl r0, r0, #0x12
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x12
 	bl dispatch_801DA48
@@ -31749,7 +31749,7 @@ off_801EBFC:
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	ldr r0, dword_801EC20 // =0x80000 
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, dword_801EC20 // =0x80000 
 	bl dispatch_801DA48
 	mov r0, #0
@@ -31795,7 +31795,7 @@ sub_801EC44:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #1
 	lsl r0, r0, #0x15
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r0, #1
 	lsl r0, r0, #0x15
 	bl dispatch_801DA48

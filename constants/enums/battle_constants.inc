@@ -26,6 +26,48 @@
 
 	.equiv BATTLE_ACTORS_PER_SIDE, 4
 
+	// --- The battle sequencer -------------------------------------------------
+	// eBattleSequencerState_203CA70's low byte is a PRE-MULTIPLIED byte offset
+	// into a handler table, not a state number, so these are 0, 4, 8, ... The
+	// banner sequencer (stepBannerSequencer_800801C / BannerSequencerStates_8008038)
+	// runs the same table for BATTLE START!, TURN START!, ENEMY DELETED,
+	// MEGAMAN DELETED and the result messages.
+	// Canon's own run over one battle, measured by the bn project (T7c/T7d):
+	// 0x1C for frames 0..10, 0x08 11..41, 0x20 42..43, 0x24 44..143,
+	// 0x00 144..146, 0x04 147..206, 0x08 207..315, then 0x0C.
+	.equiv BATTLE_SEQ_SETTLE,          0x00 // post-window settle
+	.equiv BATTLE_SEQ_BANNER_WAIT,     0x04 // holds until isBannerBusy_801E754 reads 0
+	.equiv BATTLE_SEQ_FIGHT,           0x08 // the fight itself
+	.equiv BATTLE_SEQ_WIN_COUNT,       0x0c // the RESULT countdown
+	.equiv BATTLE_SEQ_LOSE_COUNT,      0x10
+	.equiv BATTLE_SEQ_MESSAGE_COUNT,   0x14
+	.equiv BATTLE_SEQ_18,              0x18
+	.equiv BATTLE_SEQ_1C,              0x1c // the value a PAUSED battle loads with
+	.equiv BATTLE_SEQ_WINDOW_OPENING,  0x20 // chip window sliding in
+	.equiv BATTLE_SEQ_WINDOW_OPEN,     0x24 // chip window up
+
+	// The four states in which the player executor early-returns without acting
+	// (playerObject_update_80EA484 / dispatchBattleFsm_8009158; bn T7q/T7r).
+
+	// --- eBattleState.Index_01, the battle FSM ---------------------------------
+	// Also a pre-multiplied byte offset, into BattleFsmStates_80091BC.
+	// Observed run: 0x00 -> 0x04 -> 0x08 -> 0x0C, parking at 0x0C, which is the
+	// state that drives the banner sequencer (bn T9c/T9d, measured).
+	.equiv BATTLE_FSM_STATE_00,        0x00
+	.equiv BATTLE_FSM_STATE_04,        0x04
+	.equiv BATTLE_FSM_STATE_08,        0x08 // gates on isChipWindowReady_8026A28
+	.equiv BATTLE_FSM_STATE_0C,        0x0c // runs the banner sequencer every frame
+
+	// --- The CUSTOM gauge -------------------------------------------------------
+	.equiv CUST_GAUGE_FULL,            0x4000 // Struct2035280.CustGaugeValue's cap
+	// CustGaugeFlowCounter wraps here: lcm(28, 16), the bar's 4-tile cycle at one
+	// step per 7 frames against the marker's 8-frame blink (bn F6/wt/zero-layers).
+	.equiv CUST_GAUGE_FLOW_PERIOD,     112
+	// The chip window's slide runs RenderInfo.BG3HOfs_18 between these, by
+	// CHIP_WINDOW_SLIDE_STEP a call, so exactly ten calls either way.
+	.equiv CHIP_WINDOW_SLIDE_FROM,     0x78
+	.equiv CHIP_WINDOW_SLIDE_STEP,     0xc
+
 	enum_start // type: enum BattleMode
 	enum BATTLE_MODE_NORMAL // 0
 	enum BATTLE_MODE_CROSSOVER // 1

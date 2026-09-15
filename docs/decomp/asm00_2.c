@@ -18210,7 +18210,7 @@ int __fastcall sub_801BE70(int a1, int a2, int a3, int a4)
     ZeroFillByWord(&eStruct2035280, 96);
     word_20352A2 = 32;
     word_20352A6 = -1;
-    ZeroFillByWord(&dword_20352E0, 48);
+    ZeroFillByWord(&eQueuedChipIconSlots_20352E0, 48);
     ZeroFillByWord(&byte_203EB50, 80);
     dword_203CA48[0] = 0;
     dword_203CA4C = 0;
@@ -18237,7 +18237,7 @@ int __fastcall sub_801BEC2(int result)
 
 
 // 0x801becc
-int __fastcall sub_801BECC(int result)
+int __fastcall setBattleHudElements_801BECC(int result)
 {
     dword_20352C0 |= result;
     return result;
@@ -18245,7 +18245,7 @@ int __fastcall sub_801BECC(int result)
 
 
 // 0x801bed6
-int __fastcall sub_801BED6(int result)
+int __fastcall clearBattleHudElements_801BED6(int result)
 {
     dword_20352C0 &= ~result;
     return result;
@@ -18254,14 +18254,14 @@ int __fastcall sub_801BED6(int result)
 
 // 0x801bee0
 // () ->
-int sub_801BEE0()
+int updateBattleHudElements_801BEE0()
 {
     int (**v0)(void); // r6
     unsigned int v1; // r7
     char v2; // cf
     int result; // r0
 
-    v0 = &off_801BF04;
+    v0 = &BattleHudUpdateHandlers_801BF04;
     v1 = dword_20352C0;
     while ( 1 )
     {
@@ -18283,7 +18283,7 @@ int sub_801BEE0()
 
 
 // 0x801bf64
-int sub_801BF64()
+int drawBattleHudElements_801BF64()
 {
     int (**v0)(void); // r6
     unsigned int v1; // r7
@@ -18321,19 +18321,19 @@ void nullsub_58()
 // 0x801bfee
 int sub_801BFEE()
 {
-    return sub_801C002(1);
+    return updateQueuedChipIcon_801C002(1);
 }
 
 
 // 0x801bff8
-int sub_801BFF8()
+int updateQueuedChipIcons_801BFF8()
 {
-    return sub_801C002(0);
+    return updateQueuedChipIcon_801C002(0);
 }
 
 
 // 0x801c002
-int __fastcall sub_801C002(int a1)
+int __fastcall updateQueuedChipIcon_801C002(int a1)
 {
     int *v1; // r4
     signed int v2; // r6
@@ -18346,7 +18346,7 @@ int __fastcall sub_801C002(int a1)
     int v9; // [sp+0h] [bp-14h]
 
     v9 = a1;
-    v1 = &dword_20352E0;
+    v1 = &eQueuedChipIconSlots_20352E0;
     v2 = 6;
     v3 = 100755968;
     do
@@ -18388,19 +18388,19 @@ int __fastcall sub_801C002(int a1)
 // 0x801c06e
 int sub_801C06E()
 {
-    return sub_801C082(1);
+    return drawQueuedChipIcon_801C082(1);
 }
 
 
 // 0x801c078
-int sub_801C078()
+int drawQueuedChipIcons_801C078()
 {
-    return sub_801C082(0);
+    return drawQueuedChipIcon_801C082(0);
 }
 
 
 // 0x801c082
-int __fastcall sub_801C082(int a1)
+int __fastcall drawQueuedChipIcon_801C082(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -18421,7 +18421,7 @@ int __fastcall sub_801C082(int a1)
     int v17; // [sp+0h] [bp-18h]
 
     v17 = a1;
-    v3 = &dword_20352E0;
+    v3 = &eQueuedChipIconSlots_20352E0;
     v4 = 6;
     v5 = -21680;
     do
@@ -18787,7 +18787,7 @@ int __noreturn sub_801C416()
 
 
 // 0x801c470
-int sub_801C470()
+int updateCustGauge_801C470()
 {
     int v0; // r5
     int result; // r0
@@ -18848,7 +18848,7 @@ int sub_801C4AE()
 
 
 // 0x801c4e4
-int __fastcall sub_801C4E4(int a1)
+int __fastcall drawCustGauge_801C4E4(int a1)
 {
     unsigned __int8 *v1; // r5
     int result; // r0
@@ -18874,7 +18874,7 @@ int __fastcall sub_801C4E4(int a1)
             *v1 = v4;
             __asm { SVC         6 }
             call_sub_3005EBA(7, 1, 3, (v4 & 3) - 28110);
-            result = sub_80018E0(13, 1, 3, &byte_801C6C0[v4 & 8]);
+            result = sub_80018E0(13, 1, 3, &CustGaugeMarkerTiles_801C6C0[v4 & 8]);
         }
     }
     return result;
@@ -18977,7 +18977,7 @@ int __fastcall sub_801C640(int a1)
 
 
 // 0x801c6ee
-void __noreturn sub_801C6EE()
+void __noreturn drawQueuedChipName_801C6EE()
 {
     int v0; // r0
     int v1; // r1
@@ -19263,7 +19263,7 @@ int sub_801CA0C()
     *(v0 + 11) = result;
     if ( !result )
     {
-        sub_801BED6(256);
+        clearBattleHudElements_801BED6(256);
         result = dispatch_801DACC(256);
     }
     return result;
@@ -19352,10 +19352,10 @@ int __fastcall sub_801CA80(int result)
 
 
 // 0x801cadc
-int sub_801CADC() { // could not decompile
+int updateEmotionWindow_801CADC() { // could not decompile
     asm(".func\
     .thumb_func\
-    sub_801CADC:\
+    updateEmotionWindow_801CADC:\
         push {lr}\
         ldrb r0, [r5,#0x17]\
         cmp r0, #0xff\
@@ -19406,7 +19406,7 @@ int sub_801CADC() { // could not decompile
         strb r0, [r5,#0x15]\
         bl sub_801CC94\
         pop {pc}\
-    .endfunc // sub_801CADC"
+    .endfunc // updateEmotionWindow_801CADC"
     );
 }
 
@@ -19610,7 +19610,7 @@ LABEL_8:
 
 
 // 0x801cdec
-int sub_801CDEC()
+int drawEmotionWindow_801CDEC()
 {
     int v0; // r5
     int result; // r0
@@ -19729,7 +19729,7 @@ signed int sub_801CED2()
 // 0x801cefa
 int sub_801CEFA()
 {
-    sub_801BED6(0x8000);
+    clearBattleHudElements_801BED6(0x8000);
     return dispatch_801DACC(0x8000);
 }
 
@@ -19908,7 +19908,7 @@ int sub_801D1D8()
     v0 = byte_2036857-- == 1;
     if ( v0 )
     {
-        sub_801BED6(0x10000);
+        clearBattleHudElements_801BED6(0x10000);
         result = dispatch_801DACC(0x10000);
     }
     return result;
@@ -20107,7 +20107,7 @@ int sub_801D514()
     }
     else
     {
-        sub_801BED6(0x100000);
+        clearBattleHudElements_801BED6(0x100000);
     }
     return dispatch_801DACC(0x100000);
 }
@@ -20123,7 +20123,7 @@ int sub_801D548()
     *(v0 + 27) = result;
     if ( !result )
     {
-        sub_801BED6(0x200000);
+        clearBattleHudElements_801BED6(0x200000);
         result = dispatch_801DACC(0x200000);
     }
     return result;
@@ -20354,7 +20354,7 @@ signed int __fastcall sub_801D814(int a1)
 
 
 // 0x801da24
-u32 sub_801DA24()
+u32 initChipWindowBg3_801DA24()
 {
     int v0; // r10
     u32 result; // r0
@@ -20463,14 +20463,14 @@ int sub_801DB84()
     char v6; // r1
 
     result = battle_networkInvert(*(v0 + 22));
-    v2 = &dword_20352E0;
+    v2 = &eQueuedChipIconSlots_20352E0;
     v3 = 6;
     while ( !*v2 || v2[1] != v0 )
     {
         v2 += 2;
         if ( !--v3 )
         {
-            v4 = &dword_20352E0;
+            v4 = &eQueuedChipIconSlots_20352E0;
             v5 = 6;
             while ( *v4 )
             {
@@ -20500,7 +20500,7 @@ int sub_801DBD4()
     int result; // r0
     char v4; // r1
 
-    v1 = &dword_20352E0;
+    v1 = &eQueuedChipIconSlots_20352E0;
     v2 = 6;
     while ( !*v1 || v1[1] != v0 )
     {
@@ -20522,7 +20522,7 @@ signed int __fastcall sub_801DC06(signed int result, char a2)
     int *v3; // r4
     signed int v4; // r3
 
-    v3 = &dword_20352E0;
+    v3 = &eQueuedChipIconSlots_20352E0;
     v4 = 6;
     while ( !*v3 || v3[1] != v2 )
     {
@@ -20544,7 +20544,7 @@ signed int sub_801DC36()
     signed int v2; // r3
     signed int result; // r0
 
-    v1 = &dword_20352E0;
+    v1 = &eQueuedChipIconSlots_20352E0;
     v2 = 6;
     while ( !*v1 || v1[1] != v0 )
     {
@@ -20607,7 +20607,7 @@ signed int __fastcall sub_801DC7C(char a1, char a2)
     *(v3 + 3) = v2;
     v3[8] = 0;
     v3[9] = 0;
-    sub_801BECC(4);
+    setBattleHudElements_801BECC(4);
     return 0;
 }
 
@@ -20708,7 +20708,7 @@ int sub_801DD7C()
 int sub_801DD88()
 {
     decomp_initGfx_8000B8E(&off_801DDA4);
-    sub_801BECC(8);
+    setBattleHudElements_801BECC(8);
     return dispatch_801DA48(8);
 }
 
@@ -20775,7 +20775,7 @@ int sub_801DED0()
 {
     ClearCustGauge();
     (loc_8000AC8)(dword_86E489C, 100713536, &dword_380);
-    sub_801BECC(16);
+    setBattleHudElements_801BECC(16);
     return dispatch_801DA48(16);
 }
 
@@ -20785,7 +20785,7 @@ int sub_801DEEE()
 {
     ClearCustGauge();
     (loc_8000AC8)(dword_86E489C, 100713536, &dword_380);
-    sub_801BECC(32);
+    setBattleHudElements_801BECC(32);
     return dispatch_801DA48(32);
 }
 
@@ -20797,7 +20797,7 @@ int sub_801DF0C()
 
     ClearCustGauge();
     decomp_initGfx_8000B8E(&off_801DF60);
-    sub_801BECC(0x20000);
+    setBattleHudElements_801BECC(0x20000);
     dispatch_801DA48(0x20000);
     result = 0;
     byte_2035298 = 0;
@@ -20812,7 +20812,7 @@ int sub_801DF32()
     ClearCustGauge();
     decomp_initGfx_8000B8E(&off_801DF60);
     (loc_8000AC8)(dword_86E1C78, byte_3001B00, 32);
-    sub_801BECC(0x20000);
+    setBattleHudElements_801BECC(0x20000);
     return dispatch_801DA48(0x20000);
 }
 
@@ -20844,7 +20844,7 @@ signed int __fastcall SetCustGauge(signed int result)
 
 
 // 0x801dfb8
-int __fastcall sub_801DFB8(int a1)
+int __fastcall AddToCustGauge_801DFB8(int a1)
 {
     int result; // r0
 
@@ -20894,7 +20894,7 @@ int sub_801E006()
 // 0x801e012
 int sub_801E012()
 {
-    sub_801BECC(64);
+    setBattleHudElements_801BECC(64);
     return dispatch_801DA48(64);
 }
 
@@ -20939,7 +20939,7 @@ int __fastcall sub_801E0A0(char a1, char a2)
     word_20352A4 = *(dword_20352C8 + 36);
     byte_2035281 = a1;
     byte_2035282 = a2;
-    sub_801BECC(128);
+    setBattleHudElements_801BECC(128);
     return dispatch_801DA48(128);
 }
 
@@ -21013,7 +21013,7 @@ int sub_801E15C()
     int v0; // r1
     int v1; // r2
 
-    sub_801BED6(0x10000);
+    clearBattleHudElements_801BED6(0x10000);
     dispatch_801DACC(0x10000);
     decomp_initGfx_8000B8E(&off_801E188);
     dispatch_801DA48(512);
@@ -21074,7 +21074,7 @@ int __fastcall __noreturn sub_801E228(signed int a1)
     byte_203528B = 60;
     byte_203528C = 0;
     renderTextGfx_8045F8C(TextScript86F0374, v1, byte_203C4E0, 100701536);
-    sub_801BECC(256);
+    setBattleHudElements_801BECC(256);
     return dispatch_801DA48(256);
 }
 
@@ -21094,7 +21094,7 @@ int sub_801E270()
     byte_203528B = 60;
     byte_203528C = 1;
     renderTextGfx_8045F8C(TextScript86F0374, 14, byte_203C4E0, 100701536);
-    sub_801BECC(256);
+    setBattleHudElements_801BECC(256);
     return dispatch_801DA48(256);
 }
 
@@ -21120,7 +21120,7 @@ int __fastcall sub_801E2BA(int a1)
     if ( !v4 )
         v2 = 16;
     renderTextGfx_8045F8C(TextScript86F0374, v2, byte_203C4E0, 100701536);
-    sub_801BECC(256);
+    setBattleHudElements_801BECC(256);
     dispatch_801DA48(256);
     return v4;
 }
@@ -21130,7 +21130,7 @@ int __fastcall sub_801E2BA(int a1)
 int __noreturn sub_801E35A()
 {
     call_sub_3005EBA(11, 0, 3, 0);
-    return sub_801BED6(2048);
+    return clearBattleHudElements_801BED6(2048);
 }
 
 
@@ -21146,7 +21146,7 @@ int __noreturn sub_801E376()
 int __fastcall __noreturn sub_801E398(int a1)
 {
     renderTextGfx_8045F8C(TextScript86F0374, a1 + 3, byte_203C4E0, 100701536);
-    sub_801BECC(2048);
+    setBattleHudElements_801BECC(2048);
     return dispatch_801DA48(2048);
 }
 
@@ -21172,7 +21172,7 @@ int __noreturn sub_801E408()
 {
     word_20352B2 = 50;
     renderTextGfx_8045F8C(TextScript86F0374, 18, byte_203C4E0, 100702432);
-    sub_801BECC(0x100000);
+    setBattleHudElements_801BECC(0x100000);
     return dispatch_801DA48(0x100000);
 }
 
@@ -21198,7 +21198,7 @@ int __fastcall sub_801E474(int a1)
     byte_203528B = a1;
     decomp_initGfx_8000B8E(off_801E4A0[a1]);
     eStruct2035280 = 63;
-    sub_801BECC(4096);
+    setBattleHudElements_801BECC(4096);
     return dispatch_801DA48(4096);
 }
 
@@ -21379,7 +21379,7 @@ int sub_801E5F8()
         }
     }
     byte_203529E = v0;
-    sub_801BECC(0x4000);
+    setBattleHudElements_801BECC(0x4000);
     return dispatch_801DA48(0x4000);
 }
 
@@ -21455,7 +21455,7 @@ int sub_801E6A8()
 
 
 // 0x801e71c
-int __fastcall sub_801E71C(int result)
+int __fastcall setChipWindowSlideX_801E71C(int result)
 {
     byte_2035292 = result;
     return result;
@@ -21495,7 +21495,7 @@ int sub_801E748()
 
 
 // 0x801e754
-int sub_801E754()
+int isBannerBusy_801E754()
 {
     int result; // r0
 
@@ -21532,12 +21532,12 @@ int __fastcall sub_801E828(int a1, signed int a2)
     if ( a2 > 99 )
         LOBYTE(a2) = 99;
     *(v2 + 9) = a2;
-    return sub_801E838();
+    return uploadBannerText_801E838();
 }
 
 
 // 0x801e838
-int sub_801E838()
+int uploadBannerText_801E838()
 {
     int v0; // r4
     int v1; // r5
@@ -21597,7 +21597,7 @@ int sub_801E838()
 // 0x801e8cc
 void __fastcall __noreturn sub_801E8CC(int a1, unsigned int a2, int a3, __int16 a4)
 {
-    sub_801E95C(a1, a2, a3, a4);
+    buildChipNamePopup_801E95C(a1, a2, a3, a4);
 }
 
 
@@ -21608,7 +21608,7 @@ int sub_801E8EA()
 
     *(v0 + 14) = 0;
     sub_801E8FA();
-    return sub_801E838();
+    return uploadBannerText_801E838();
 }
 
 
@@ -21639,7 +21639,7 @@ signed int sub_801E914()
 
 
 // 0x801e95c
-int __fastcall __noreturn sub_801E95C(int a1, unsigned int a2, int a3, __int16 a4)
+int __fastcall __noreturn buildChipNamePopup_801E95C(int a1, unsigned int a2, int a3, __int16 a4)
 {
     int v4; // r5
     void *v5; // r0
@@ -21668,7 +21668,7 @@ int __fastcall __noreturn sub_801E95C(int a1, unsigned int a2, int a3, __int16 a
     v18 = a2;
     v19 = a3;
     sub_8027D10(*(v4 + 4));
-    sub_801EA5A();
+    getChipNamePopupBuffers_801EA5A();
     *(v21 + 9) = renderTextGfx_8045F8C(v5, v6, v7, v8);
     v9 = getChip8021DA8(*(v21 + 4));
     v10 = v18;
@@ -21686,13 +21686,13 @@ int __fastcall __noreturn sub_801E95C(int a1, unsigned int a2, int a3, __int16 a
             v13 = memory_bcdConvert(v12);
             v14 = sub_8000C5C(v13);
             *(v21 + 10) = v14;
-            sub_801EA34(4 * v14, dword_801EA7C[v20]);
+            queueChipPowerDigits_801EA34(4 * v14, dword_801EA7C[v20]);
             if ( v19 & 0xFFFF87FF )
             {
                 v15 = memory_bcdConvert(v19 & 0xFFFF87FF);
                 v16 = sub_8000C5C(v15);
                 *(v21 + 11) = v16 + 1;
-                sub_801EA34(4 * v16, dword_801EA88[v20]);
+                queueChipPowerDigits_801EA34(4 * v16, dword_801EA88[v20]);
             }
         }
     }
@@ -21704,7 +21704,7 @@ int __fastcall __noreturn sub_801E95C(int a1, unsigned int a2, int a3, __int16 a
 
 
 // 0x801ea34
-int __fastcall sub_801EA34(int a1, int a2)
+int __fastcall queueChipPowerDigits_801EA34(int a1, int a2)
 {
     unsigned int v2; // r4
     signed int v3; // r7
@@ -21731,7 +21731,7 @@ int __fastcall sub_801EA34(int a1, int a2)
 
 
 // 0x801ea5a
-void sub_801EA5A()
+void getChipNamePopupBuffers_801EA5A()
 {
     ;
 }
@@ -21763,7 +21763,7 @@ void __fastcall __noreturn sub_801EB18(int a1, unsigned int a2, int a3)
 {
     word_2036852 = 8312;
     byte_2036858 = byte_801F556[0];
-    sub_801E95C(a1, a2, a3, a1);
+    buildChipNamePopup_801E95C(a1, a2, a3, a1);
 }
 
 
@@ -21832,7 +21832,7 @@ signed int sub_801EC44()
 
     (loc_8000AC8)(&dword_86E994C, 100756736, 192);
     (loc_8000AC8)(dword_86E9A0C, byte_30016F0, 32);
-    sub_801BECC(0x200000);
+    setBattleHudElements_801BECC(0x200000);
     dispatch_801DA48(0x200000);
     result = 60;
     byte_203529B = 60;

@@ -73202,7 +73202,7 @@ sub_80DA908:
 	bl battle_isBattleOver
 	tst r0, r0
 	beq locret_80DA954
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #0
 	beq locret_80DA954
 	cmp r0, #2
@@ -104088,7 +104088,7 @@ sub_80E8E34:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x40 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -107148,7 +107148,7 @@ off_80EA478:
 // gate on seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04} used by T7q PARTIAL
 // f80b72f to early-return Update::Nothing in src/battle.rs's Actor::update /
 // t1_player_entry; this is the canonical cite on the player side that
-// complements sub_8009158's dispatcher gate (asm00_1.s:12760) on the
+// complements dispatchBattleFsm_8009158's dispatcher gate (asm00_1.s:12760) on the
 // battle-state side, both needed for the SEQ_08 chain T7r documents.
 	thumb_func_end playerObject_main_80EA460
 

@@ -9787,7 +9787,7 @@ loc_8007A9A:
 	bl camera_802FFF4
 	bl panel_800BFC4
 	bl setChipsForPlayerObjects_800FDC0
-	bl sub_801BEE0
+	bl updateBattleHudElements_801BEE0
 	bl sub_802CEC8
 	bl handleVariableDamageChip_800AEE8
 	mov r7, r10
@@ -9833,7 +9833,7 @@ loc_8007B10:
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl drawBattleHudElements_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8
@@ -9847,18 +9847,18 @@ loc_8007B10:
 off_8007B4C:
 	.word off_8007B50
 off_8007B50:
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
 	.word sub_800961C+1
 	.word sub_80099A4+1
-	.word sub_8009158+1
+	.word dispatchBattleFsm_8009158+1
 	.word sub_8009C94+1
-	.word sub_8009158+1
-	.word sub_8009158+1
+	.word dispatchBattleFsm_8009158+1
+	.word dispatchBattleFsm_8009158+1
 	thumb_func_end battle_update_8007A44
 
 	thumb_local_start
@@ -10228,7 +10228,7 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl drawBattleHudElements_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8
@@ -10254,7 +10254,7 @@ sub_8007EB8:
 	bl sub_81440D8 // static () -> void
 	bl sub_801FE64
 	ldr r0, dword_800800C // =0x280000
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	ldr r0, dword_800800C // =0x280000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #5
@@ -10345,7 +10345,7 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl drawBattleHudElements_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8
@@ -10444,11 +10444,11 @@ off_8008018:
 // SEQ_08 -> SEQ_20 -> SEQ_24 -> SEQ_00 -> SEQ_04 -> SEQ_08 chain; fitted
 // SEQ04_FRAMES=60 in src/battle.rs:~2724 leave-predicate is parked at
 // the wrong seq scenario, and banner_at 30-frame countdown defeats the
-// banner_idle check from this dispatcher's off_8008038 table.
-sub_800801C:
+// banner_idle check from this dispatcher's BannerSequencerStates_8008038 table.
+stepBannerSequencer_800801C:
 	push {r5,lr}
-	ldr r5, off_8008060 // =dword_203CA70
-	ldr r1, off_8008034 // =off_8008038
+	ldr r5, off_8008060 // =eBattleSequencerState_203CA70
+	ldr r1, off_8008034 // =BannerSequencerStates_8008038
 	ldrb r0, [r5]
 	ldr r1, [r1,r0]
 	mov lr, pc
@@ -10458,38 +10458,55 @@ sub_800801C:
 	pop {r5,pc}
 	.balign 4, 0
 off_8008034:
-	.word off_8008038
-// THE GENERIC BANNER SEQUENCER's state table, indexed by dword_203CA70 as a
+	.word BannerSequencerStates_8008038
+// THE GENERIC BANNER SEQUENCER's state table, indexed by eBattleSequencerState_203CA70 as a
 // PRE-MULTIPLIED byte offset (0, 4, 8, ...), not a state number. It is not an
 // end-of-battle pipeline: the same table runs BATTLE START!, TURN START!,
 // ENEMY DELETED, MEGAMAN DELETED and the result messages, which is why the
 // entries look unrelated to each other.
-// Entries 6-9 (sub_800834A, sub_80083E4, sub_8008452, sub_8008492) are a
-// SIBLING BRANCH, reached only where sub_800A152() returns 7 -- a different
+// Entries 6-9 (bannerSeqState18_800834A, bannerSeqState1C_80083E4, bannerSeqState20WindowOpening_8008452, bannerSeqState24WindowOpen_8008492) are a
+// SIBLING BRANCH, reached only where getBattleOutcome_800A152() returns 7 -- a different
 // battle outcome. They never run on the ordinary path where the last enemy
 // is deleted, and cost that path no frames.
-// bn T7r (2026-09-15): the off_8008038 table indexed here (carried at
+// bn T7r (2026-09-15): the BannerSequencerStates_8008038 table indexed here (carried at
 // src/battle.rs:1173-1179 + :3260-3277) drives the SEQ_20->SEQ_24->SEQ_00
 // ->SEQ_04->SEQ_08 chain on the windowclose_full trace scenario scripted
 // with gauge=1 + scripted A@170 (drops mm_state_action/anim/timer
 // 101/86/302 -> 76/78/270).
-off_8008038:
-	.word sub_800840C+1
-	.word sub_8008064+1
-	.word sub_80080D2+1
-	.word sub_80081A4+1
-	.word sub_800825A+1
-	.word sub_80082DC+1
-	.word sub_800834A+1
-	.word sub_80083E4+1
-	.word sub_8008452+1
-	.word sub_8008492+1
+BannerSequencerStates_8008038:
+	// BATTLE_SEQ_SETTLE: the post-window settle; leaves to BANNER_WAIT on
+	// isChipWindowSlideIdle_801483C plus the [r5+2] latch.
+	.word bannerSeqState00Settle_800840C+1
+	// BATTLE_SEQ_BANNER_WAIT: arms timers 0x1e and 0x293 at entry, and writes
+	// FIGHT only once isBannerBusy_801E754 reads 0.
+	.word bannerSeqState04BannerWait_8008064+1
+	// BATTLE_SEQ_FIGHT: the fight. Refreshes the two alliance players' AIData
+	// from the joypad mirror every frame (sub_8012DFC twice, no other object),
+	// and writes WINDOW_OPENING right after PauseBattle to open the chip window.
+	.word bannerSeqState08Fight_80080D2+1
+	// BATTLE_SEQ_WIN_COUNT: the RESULT countdown -- 94 frames normally, 102 when
+	// BATTLE_EFFECT_SHOW_RESULTS is clear -- then the HUD teardown.
+	.word bannerSeqState0CWinCount_80081A4+1
+	// BATTLE_SEQ_LOSE_COUNT
+	.word bannerSeqState10LoseCount_800825A+1
+	// BATTLE_SEQ_MESSAGE_COUNT
+	.word bannerSeqState14MessageCount_80082DC+1
+	// BATTLE_SEQ_18
+	.word bannerSeqState18_800834A+1
+	// BATTLE_SEQ_1C: the state a PAUSED battle loads in; on Start it writes FIGHT.
+	.word bannerSeqState1C_80083E4+1
+	// BATTLE_SEQ_WINDOW_OPENING: holds while sub_802D6C4 reports the two players'
+	// entry machines busy, then hands over to WINDOW_OPEN.
+	.word bannerSeqState20WindowOpening_8008452+1
+	// BATTLE_SEQ_WINDOW_OPEN: holds while the chip window is up. It never writes
+	// the state word itself -- its body only touches [r5,#2] and [r5,#4].
+	.word bannerSeqState24WindowOpen_8008492+1
 off_8008060:
-	.word dword_203CA70
-	thumb_func_end sub_800801C
+	.word eBattleSequencerState_203CA70
+	thumb_func_end stepBannerSequencer_800801C
 
 	thumb_local_start
-sub_8008064:
+bannerSeqState04BannerWait_8008064:
 	push {lr}
 	mov r0, #0
 	bl sub_8012DFC
@@ -10497,7 +10514,7 @@ sub_8008064:
 	bl sub_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
-// bn T7d (2026-09-15): this bne loc_80080B2 in sub_8008064 is one of the
+// bn T7d (2026-09-15): this bne loc_80080B2 in bannerSeqState04BannerWait_8008064 is one of the
 // three fitted edges; src/battle.rs's windowclose_full trace carries the
 // named canon-predicate for the byte-[r5,#3] exit condition that arms
 // timer 0x1e at the next instruction (mov r0, #0x1e, strh r0, [r5,#8]).
@@ -10535,9 +10552,9 @@ loc_80080A6:
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#oBattleState_Unk_07]
 sub_80080AE:
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_80080B2:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80080D0
 	mov r0, #0xff
@@ -10547,7 +10564,7 @@ loc_80080B2:
 	lsl r0, r0, #8
 	add r0, #0xff
 	bl sub_801E0C8
-// bn T7u (2026-09-15): sub_8008064 here is the SEQ_04 -> SEQ_08 leave
+// bn T7u (2026-09-15): bannerSeqState04BannerWait_8008064 here is the SEQ_04 -> SEQ_08 leave
 // predicate that arms timers 0x1e and 0x293 at entry and returns 0 when
 // the banner composite is idle; src/battle.rs:2615-2655 carries the rust
 // gauge_pause=60 chime but the fitted SEQ04_FRAMES=60 at ~:2724 parks at
@@ -10556,10 +10573,10 @@ loc_80080B2:
 	str r0, [r5]
 locret_80080D0:
 	pop {pc}
-	thumb_func_end sub_8008064
+	thumb_func_end bannerSeqState04BannerWait_8008064
 
 	thumb_local_start
-sub_80080D2:
+bannerSeqState08Fight_80080D2:
 	push {lr}
 	mov r0, #0
 	bl sub_8012DFC
@@ -10575,7 +10592,7 @@ sub_80080D2:
 	beq loc_80080FE
 	bl sub_800AB7C
 loc_80080FE:
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #1
 	bne loc_8008122
 	mov r1, r10
@@ -10647,10 +10664,10 @@ loc_8008184:
 	mov r0, #1
 	bl sub_802E070
 	ldrh r1, [r0,#0x28]
-// bn T7d (2026-09-15): this loc_800819A's bl PauseBattle in sub_80080D2
+// bn T7d (2026-09-15): this loc_800819A's bl PauseBattle in bannerSeqState08Fight_80080D2
 // is one of the three fitted edges; src/battle.rs carries the named
 // canon-predicate for the pause-state entry on the window-close banner
-// cycle. The 144..206 byte-identical canonical block of off_8008038 lands
+// cycle. The 144..206 byte-identical canonical block of BannerSequencerStates_8008038 lands
 // at this entry in the windowclose_full trace scenario.
 	ldr r2, off_80084D0 // =0x2900
 	sub r1, r1, r2
@@ -10661,10 +10678,10 @@ loc_800819A:
 	str r0, [r5]
 locret_80081A2:
 	pop {pc}
-	thumb_func_end sub_80080D2
+	thumb_func_end bannerSeqState08Fight_80080D2
 
 	thumb_local_start
-sub_80081A4:
+bannerSeqState0CWinCount_80081A4:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -10673,7 +10690,7 @@ sub_80081A4:
 loc_80081AE:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_80084D4 // =0xe4c53
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	bl sub_800A7E2
 	bl sub_8014040
 	mov r0, r10
@@ -10709,7 +10726,7 @@ loc_80081EE:
 // that bit set (see data/BattleSettings.s), so a field battle counts 94, and
 // anything derived from 102 will be eight frames long.
 // It is stored at [r5,#8] and the state also needs the banner itself to report
-// idle (sub_801E754) before it will advance, but the banner is done well inside
+// idle (isBannerBusy_801E754) before it will advance, but the banner is done well inside
 // 94 frames, so the countdown is what binds.
 loc_80081F4:
 	bl GetBattleEffects // () -> int
@@ -10733,18 +10750,18 @@ loc_8008206:
 	mov r6, r0
 	b loc_800822C
 loc_8008222:
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #7
 	bne loc_800822C
 	mov r6, #0x14
 loc_800822C:
 	mov r0, r6
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008232:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008258
 	mov r0, #8
@@ -10760,10 +10777,10 @@ loc_8008232:
 	bl eStruct200A008_setUnk02
 locret_8008258:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80081A4
+	thumb_func_end bannerSeqState0CWinCount_80081A4
 
 	thumb_local_start
-sub_800825A:
+bannerSeqState10LoseCount_800825A:
 	push {r4,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -10771,7 +10788,7 @@ sub_800825A:
 	ldr r0, dword_80084D4 // =0xe4c53
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_80084D4 // =0xe4c53
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_Unk_0d]
@@ -10795,21 +10812,21 @@ loc_8008298:
 	mov r4, #0x5e
 loc_800829A:
 	strh r4, [r5,#8]
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	mov r4, r0
 	bl sub_800A8B2
 	cmp r4, #7
 	bne loc_80082AC
 	mov r0, #0x18
 loc_80082AC:
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80082B4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80082DA
 	mov r0, #8
@@ -10825,10 +10842,10 @@ loc_80082B4:
 	bl eStruct200A008_setUnk02
 locret_80082DA:
 	pop {r4,pc}
-	thumb_func_end sub_800825A
+	thumb_func_end bannerSeqState10LoseCount_800825A
 
 	thumb_local_start
-sub_80082DC:
+bannerSeqState14MessageCount_80082DC:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -10836,18 +10853,18 @@ sub_80082DC:
 	ldr r0, dword_80084D4 // =0xe4c53
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_80084D4 // =0xe4c53
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x66
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_80082FE:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008348
 	ldrh r0, [r5,#8]
@@ -10881,10 +10898,10 @@ loc_8008338:
 	strb r0, [r5,#4]
 locret_8008348:
 	pop {pc}
-	thumb_func_end sub_80082DC
+	thumb_func_end bannerSeqState14MessageCount_80082DC
 
 	thumb_local_start
-sub_800834A:
+bannerSeqState18_800834A:
 	push {lr}
 	ldr r1, off_8008358 // =off_800835C
 	ldrb r0, [r5,#2]
@@ -10897,7 +10914,7 @@ off_8008358:
 off_800835C:
 	.word sub_8008364+1
 	.word sub_800838A+1
-	thumb_func_end sub_800834A
+	thumb_func_end bannerSeqState18_800834A
 
 	thumb_local_start
 sub_8008364:
@@ -10973,7 +10990,7 @@ locret_80083E2:
 	thumb_func_end sub_800838A
 
 	thumb_local_start
-sub_80083E4:
+bannerSeqState1C_80083E4:
 	push {lr}
 	ldrb r0, [r5,#5]
 	bl sub_800A07C
@@ -10991,10 +11008,10 @@ locret_8008400:
 	.word dword_2036820
 off_8008408:
 	.word 0x200
-	thumb_func_end sub_80083E4
+	thumb_func_end bannerSeqState1C_80083E4
 
 	thumb_local_start
-sub_800840C:
+bannerSeqState00Settle_800840C:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -11026,10 +11043,10 @@ loc_8008438:
 	str r0, [r5]
 locret_8008450:
 	pop {pc}
-	thumb_func_end sub_800840C
+	thumb_func_end bannerSeqState00Settle_800840C
 
 	thumb_local_start
-sub_8008452:
+bannerSeqState20WindowOpening_8008452:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #5
@@ -11058,10 +11075,10 @@ loc_800848C:
 	str r0, [r5]
 locret_8008490:
 	pop {pc}
-	thumb_func_end sub_8008452
+	thumb_func_end bannerSeqState20WindowOpening_8008452
 
 	thumb_local_start
-sub_8008492:
+bannerSeqState24WindowOpen_8008492:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #5
@@ -11084,20 +11101,20 @@ loc_80084BA:
 	strb r0, [r5,#4]
 locret_80084BE:
 	pop {pc}
-	thumb_func_end sub_8008492
+	thumb_func_end bannerSeqState24WindowOpen_8008492
 
 	thumb_local_start
 sub_80084C0:
 	push {r5,lr}
 	// memBlock
-	ldr r0, off_80084CC // =dword_203CA70
+	ldr r0, off_80084CC // =eBattleSequencerState_203CA70
 	// size
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r5,pc}
 	.balign 4, 0
 off_80084CC:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 off_80084D0:
 	.word 0x2900
 dword_80084D4:
@@ -11119,7 +11136,7 @@ off_80084EC:
 	thumb_local_start
 sub_80084F0:
 	push {r5,lr}
-	ldr r5, off_8008524 // =dword_203CA70
+	ldr r5, off_8008524 // =eBattleSequencerState_203CA70
 	ldr r1, off_8008504 // =off_8008508
 	ldrb r0, [r5]
 	ldr r1, [r1,r0]
@@ -11139,7 +11156,7 @@ off_8008508:
 	.word sub_8008840+1
 	.word sub_8008900+1
 off_8008524:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 	thumb_func_end sub_80084F0
 
 	thumb_local_start
@@ -11160,9 +11177,9 @@ sub_8008528:
 	strb r0, [r5,#3]
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008550:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_800855C
 	mov r0, #4
@@ -11189,7 +11206,7 @@ sub_800855E:
 	beq loc_800858E
 	bl sub_800AB7C
 loc_800858E:
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #1
 	bne loc_80085A6
 	mov r1, r10
@@ -11231,9 +11248,9 @@ loc_80085DC:
 	bl battle_isTimeStop
 	bne loc_80085E8
 	mov r0, #0xd
-	bl sub_801DFB8
+	bl AddToCustGauge_801DFB8
 loc_80085E8:
-	bl sub_800A21C
+	bl isCustGaugeFullAndBattleLive_800A21C
 	cmp r0, #0
 	beq locret_80085FC
 	cmp r0, #1
@@ -11285,7 +11302,7 @@ loc_800863A:
 	ldr r0, dword_8008938 // =0x820080
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8008938 // =0x820080
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	pop {r0-r2}
 	b loc_8008656
 loc_800864C:
@@ -11336,7 +11353,7 @@ sub_8008688:
 	ldr r0, dword_800893C // =0x824c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_800893C // =0x824c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	bl sub_800A7E2
 	bl sub_8014040
 	mov r0, r10
@@ -11362,12 +11379,12 @@ sub_8008688:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 .loc_80086DC:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne .ret
 	mov r0, #8
@@ -11408,13 +11425,13 @@ sub_8008716:
 	tst r0, r0
 	bne loc_800872C
 	mov r0, #0x58
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_800872C:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008738
 	mov r0, #0xc
@@ -11458,7 +11475,7 @@ sub_8008764:
 	ldr r0, dword_800893C // =0x824c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_800893C // =0x824c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_Unk_0d]
@@ -11483,14 +11500,14 @@ loc_80087A2:
 loc_80087A4:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80087B0:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80087D6
 	mov r0, #8
@@ -11517,18 +11534,18 @@ sub_80087D8:
 	ldr r0, dword_800893C // =0x824c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_800893C // =0x824c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x66
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_80087FA:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_800883E
 	ldrh r0, [r5,#8]
@@ -11590,15 +11607,15 @@ sub_8008864:
 	ldr r0, dword_800893C // =0x824c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_800893C // =0x824c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008886:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008892
 	mov r0, #4
@@ -11635,13 +11652,13 @@ sub_80088B2:
 	tst r0, r0
 	bne loc_80088C8
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80088C8:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80088D4
 	mov r0, #0xc
@@ -11701,14 +11718,14 @@ off_8008924:
 sub_8008928:
 	push {lr}
 	// memBlock
-	ldr r0, off_8008934 // =dword_203CA70
+	ldr r0, off_8008934 // =eBattleSequencerState_203CA70
 	// size
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8008934:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 dword_8008938:
 	.word 0x820080
 dword_800893C:
@@ -11722,7 +11739,7 @@ off_8008940:
 	thumb_local_start
 sub_8008950:
 	push {r5,lr}
-	ldr r5, off_8008988 // =dword_203CA70
+	ldr r5, off_8008988 // =eBattleSequencerState_203CA70
 	ldr r1, off_8008968 // =off_800896C
 	ldrb r0, [r5]
 	ldr r1, [r1,r0]
@@ -11743,7 +11760,7 @@ off_800896C:
 	.word sub_8008C58+1
 	.word sub_8008D18+1
 off_8008988:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 	thumb_func_end sub_8008950
 
 	thumb_local_start
@@ -11767,9 +11784,9 @@ sub_800898C:
 	bl SetCustGauge
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_80089BE:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80089CA
 	mov r0, #4
@@ -11795,7 +11812,7 @@ sub_80089CC:
 	beq loc_80089F8
 	bl sub_800AB7C
 loc_80089F8:
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #1
 	bne loc_8008A16
 	mov r1, r10
@@ -11836,7 +11853,7 @@ loc_8008A34:
 	bl sub_801E15C
 	b locret_8008A60
 loc_8008A4C:
-	bl sub_800A21C
+	bl isCustGaugeFullAndBattleLive_800A21C
 	cmp r0, #0
 	beq locret_8008A60
 	cmp r0, #1
@@ -11883,7 +11900,7 @@ sub_8008AA0:
 	ldr r0, dword_8008D54 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8008D54 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	bl sub_800A7E2
 	bl sub_8014040
 	mov r0, r10
@@ -11909,12 +11926,12 @@ loc_8008AE6:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008AF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008B0E
 	mov r0, #8
@@ -11955,13 +11972,13 @@ sub_8008B2E:
 	tst r0, r0
 	bne loc_8008B44
 	mov r0, #0x58
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008B44:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008B50
 	mov r0, #0xc
@@ -12005,7 +12022,7 @@ sub_8008B7C:
 	ldr r0, dword_8008D54 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8008D54 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_Unk_0d]
@@ -12030,14 +12047,14 @@ loc_8008BBA:
 loc_8008BBC:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008BC8:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008BEE
 	mov r0, #8
@@ -12064,18 +12081,18 @@ sub_8008BF0:
 	ldr r0, dword_8008D54 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8008D54 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x66
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008C12:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008C56
 	ldrh r0, [r5,#8]
@@ -12137,15 +12154,15 @@ sub_8008C7C:
 	ldr r0, dword_8008D54 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8008D54 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008C9E:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008CAA
 	mov r0, #4
@@ -12182,13 +12199,13 @@ sub_8008CCA:
 	tst r0, r0
 	bne loc_8008CE0
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008CE0:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008CEC
 	mov r0, #0xc
@@ -12248,14 +12265,14 @@ off_8008D3C:
 sub_8008D40:
 	push {lr}
 	// memBlock
-	ldr r0, off_8008D4C // =dword_203CA70
+	ldr r0, off_8008D4C // =eBattleSequencerState_203CA70
 	// size
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8008D4C:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 dword_8008D50:
 	.word 0x4000
 dword_8008D54:
@@ -12268,7 +12285,7 @@ off_8008D58:
 	thumb_local_start
 sub_8008D60:
 	push {r5,lr}
-	ldr r5, off_8008D98 // =dword_203CA70
+	ldr r5, off_8008D98 // =eBattleSequencerState_203CA70
 	ldr r1, off_8008D78 // =off_8008D7C
 	ldrb r0, [r5]
 	ldr r1, [r1,r0]
@@ -12289,7 +12306,7 @@ off_8008D7C:
 	.word sub_8009058+1
 	.word sub_8009118+1
 off_8008D98:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 	thumb_func_end sub_8008D60
 
 	thumb_local_start
@@ -12313,9 +12330,9 @@ sub_8008D9C:
 	bl SetCustGauge
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008DCE:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008DDA
 	mov r0, #4
@@ -12341,7 +12358,7 @@ sub_8008DDC:
 	beq loc_8008E08
 	bl sub_800AB7C
 loc_8008E08:
-	bl sub_800A152
+	bl getBattleOutcome_800A152
 	cmp r0, #1
 	bne loc_8008E20
 	mov r1, r10
@@ -12380,7 +12397,7 @@ loc_8008E3E:
 	bl sub_801E15C
 	b locret_8008E6A
 loc_8008E56:
-	bl sub_800A21C
+	bl isCustGaugeFullAndBattleLive_800A21C
 	cmp r0, #0
 	beq locret_8008E6A
 	cmp r0, #1
@@ -12427,7 +12444,7 @@ sub_8008EA0:
 	ldr r0, dword_8009150 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8009150 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	bl sub_800A7E2
 	bl sub_8014040
 	mov r0, r10
@@ -12453,12 +12470,12 @@ loc_8008EE6:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8008EF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008F0E
 	mov r0, #8
@@ -12499,13 +12516,13 @@ sub_8008F2E:
 	tst r0, r0
 	bne loc_8008F44
 	mov r0, #0x58
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008F44:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008F50
 	mov r0, #0xc
@@ -12549,7 +12566,7 @@ sub_8008F7C:
 	ldr r0, dword_8009150 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8009150 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_Unk_0d]
@@ -12574,14 +12591,14 @@ loc_8008FBA:
 loc_8008FBC:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008FC8:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8008FEE
 	mov r0, #8
@@ -12608,18 +12625,18 @@ sub_8008FF0:
 	ldr r0, dword_8009150 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8009150 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x66
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 loc_8009012:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_8009056
 	ldrh r0, [r5,#8]
@@ -12681,15 +12698,15 @@ sub_800907C:
 	ldr r0, dword_8009150 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, dword_8009150 // =0x4c43
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_800909E:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80090AA
 	mov r0, #4
@@ -12726,13 +12743,13 @@ sub_80090CA:
 	tst r0, r0
 	bne loc_80090E0
 	mov r0, #0x1c
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80090E0:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	cmp r0, #0
 	bne locret_80090EC
 	mov r0, #0xc
@@ -12792,29 +12809,29 @@ off_800913C:
 sub_8009140:
 	push {lr}
 	// memBlock
-	ldr r0, off_800914C // =dword_203CA70
+	ldr r0, off_800914C // =eBattleSequencerState_203CA70
 	// size
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.balign 4, 0
 off_800914C:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 dword_8009150:
 	.word 0x4C43
 off_8009154:
 	.word 0x400
 	thumb_func_end sub_8009140
 
-// bn T7r (2026-09-15): sub_8009158 dispatcher carries the seq.state gate
+// bn T7r (2026-09-15): dispatchBattleFsm_8009158 dispatcher carries the seq.state gate
 // in src/battle.rs Actor::update / t1_player_entry, early-returning
 // Update::Nothing when seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04}
-// (cite T7q PARTIAL f80b72f); sub_8008452 / sub_8008... chain hands
-// off to sub_800A21C's gauge-full path on the SEQ_04 -> SEQ_08 edge.
+// (cite T7q PARTIAL f80b72f); bannerSeqState20WindowOpening_8008452 / sub_8008... chain hands
+// off to isCustGaugeFullAndBattleLive_800A21C's gauge-full path on the SEQ_04 -> SEQ_08 edge.
 	thumb_local_start
-sub_8009158:
+dispatchBattleFsm_8009158:
 	push {lr}
-	ldr r1, off_80091B8 // =off_80091BC
+	ldr r1, off_80091B8 // =BattleFsmStates_80091BC
 
 	ldrb r0, [r5,#oBattleState_Index_01]
 	ldr r1, [r1,r0]
@@ -12861,38 +12878,44 @@ locret_80091B6:
 	pop {pc}
 	.balign 4, 0
 off_80091B8:
-	.word off_80091BC
-off_80091BC:
-	// 0x00
-	.word sub_80091F0+1
-	// 0x04
-	.word sub_80092A0+1
-	// 0x08
-	.word sub_8009338+1
-	// 0x0C
-	.word sub_800938A+1
+	.word BattleFsmStates_80091BC
+// eBattleState.Index_01 selects a row here, and like the banner sequencer's own
+// state word it is a PRE-MULTIPLIED byte offset (0, 4, 8, ...), not an index.
+// A battle walks 0x00 -> 0x04 -> 0x08 -> 0x0C and parks at 0x0C, which is the
+// state that runs the banner sequencer every frame (bn T9c/T9d, measured live).
+BattleFsmStates_80091BC:
+	// BATTLE_FSM_STATE_00
+	.word battleFsmState00_80091F0+1
+	// BATTLE_FSM_STATE_04
+	.word battleFsmState04_80092A0+1
+	// BATTLE_FSM_STATE_08: gates on isChipWindowReady_8026A28 returning non-zero,
+	// so it parks here for as long as the chip window's own FSM parks at 4.
+	.word battleFsmState08_8009338+1
+	// BATTLE_FSM_STATE_0C: the battle's steady state -- the only caller of
+	// stepBannerSequencer_800801C.
+	.word battleFsmState0C_800938A+1
 	// 0x10
-	.word sub_800945C+1
+	.word battleFsmState10_800945C+1
 	// 0x14
-	.word sub_80094DA+1
+	.word battleFsmState14_80094DA+1
 	// 0x18
-	.word sub_800951E+1
+	.word battleFsmState18_800951E+1
 	// 0x1C
-	.word sub_8009552+1
+	.word battleFsmState1C_8009552+1
 	// 0x20
-	.word sub_8009594+1
+	.word battleFsmState20_8009594+1
 	// 0x24
-	.word sub_80095C8+1
+	.word battleFsmState24_80095C8+1
 dword_80091E4:
 	.word 0xFFFF
 off_80091E8:
 	.word 0x100
 dword_80091EC:
 	.word 0x11A
-	thumb_func_end sub_8009158
+	thumb_func_end dispatchBattleFsm_8009158
 
 	thumb_local_start
-sub_80091F0:
+battleFsmState00_80091F0:
 	push {r4,r6,r7,lr}
 
 	ldrb r0, [r5,#oBattleState_Unk_03]
@@ -12972,7 +12995,7 @@ loc_800924E: // endif
 	bl dispatch_801DA48
 
 	mov r0, #1
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 
 	mov r4, #4
 	movflag EVENT_1735
@@ -12990,17 +13013,17 @@ locret_8009276:
 	.balign 4, 0
 off_8009278:
 	.word 0x400
-	thumb_func_end sub_80091F0
+	thumb_func_end battleFsmState00_80091F0
 
 	thumb_local_start
 sub_800927C:
 	push {lr}
 	ldr r0, off_800929C // =0x484
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, off_800929C // =0x484
 	bl dispatch_801DA48
 	bl sub_801E5F8
-	bl sub_801DA24
+	bl initChipWindowBg3_801DA24
 	mov r0, #0
 	mov r1, #0
 	bl sub_801E0A0
@@ -13011,7 +13034,7 @@ off_800929C:
 	thumb_func_end sub_800927C
 
 	thumb_local_start
-sub_80092A0:
+battleFsmState04_80092A0:
 	push {lr}
 	ldr r1, off_80092B0 // =off_80092B4
 	ldrb r0, [r5,#oBattleState_Unk_02]
@@ -13026,7 +13049,7 @@ off_80092B4:
 	.word sub_80092C0+1
 	.word sub_80092F0+1
 	.word sub_8009314+1
-	thumb_func_end sub_80092A0
+	thumb_func_end battleFsmState04_80092A0
 
 	thumb_local_start
 sub_80092C0:
@@ -13067,12 +13090,12 @@ sub_80092F0:
 	bne loc_8009306
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009312
 loc_8009306:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_8009312
 	mov r0, #8
@@ -13106,16 +13129,16 @@ locret_8009336:
 	thumb_func_end sub_8009314
 
 	thumb_local_start
-sub_8009338:
+battleFsmState08_8009338:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	cmp r0, #0
 	bne loc_800934E
 	mov r0, #4
-// bn T9d (2026-09-15): Index_01 parks 0x08 here at sub_8009338's beq
+// bn T9d (2026-09-15): Index_01 parks 0x08 here at battleFsmState08_8009338's beq
 // (lines 13065-13067 in this disassembly) because eS20364C0.JumpOffset00
 // parks at 4; sequencer moves only on hand-played PAUSED root, so no
-// dword_203CA70 writer on either battlestart route -- mettaur's live
+// eBattleSequencerState_203CA70 writer on either battlestart route -- mettaur's live
 // canon is PAUSED, not battlestart (harness.py:958), no row premise broken.
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
@@ -13152,7 +13175,7 @@ loc_8009380:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_8009388:
 	pop {pc}
-	thumb_func_end sub_8009338
+	thumb_func_end battleFsmState08_8009338
 
 	thumb_local_start
 // bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): MegaMan's own
@@ -13162,7 +13185,7 @@ locret_8009388:
 // (push {r0-r7,lr}) and restores the SAME r0 on return (pop {r0-r7,pc}) --
 // its only effect is a possible side-effect write of the "bug chip" 0x185
 // into the hand slot when validation fails, never the return value -- so
-// the `cmp r0, #6` two lines below is really comparing sub_800801C's own
+// the `cmp r0, #6` two lines below is really comparing stepBannerSequencer_800801C's own
 // return (the "generic banner sequencer" step result, TRANSFER.md 7bf)
 // unchanged. TRACED LIVE (tools/mgba_capture.c's --trace-pc, this ticket)
 // on a save state past the deleted Mettaur's full dissolve (frame 110),
@@ -13178,12 +13201,12 @@ locret_8009388:
 // +8/+9) move from (0x04,0x08) to (0x04,0x14) right after the press, while
 // the refused (post-dissolve-reload) capture holds (0x04,0x08) for all 30
 // traced frames regardless of the A-press. So the actual second gate is
-// upstream of this compare -- inside sub_800801C's own state after a
+// upstream of this compare -- inside stepBannerSequencer_800801C's own state after a
 // reload, or in the code past loc_80093B0's r0-nonzero branch (unread by
 // this session, out of time) -- not the `cmp r0, #6` itself. Left
 // unresolved for whoever picks this up next; the trace mode is
 // tools/mgba_capture.c's --trace-pc/--trace-steps in the `bn` repo.
-sub_800938A:
+battleFsmState0C_800938A:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13192,7 +13215,7 @@ sub_800938A:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_800939A:
-	bl sub_800801C
+	bl stepBannerSequencer_800801C
 	bl someChipHandValidationHappensHere_800B090
 	cmp r0, #6
 	bne loc_80093B0
@@ -13278,10 +13301,10 @@ loc_8009454:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_800945A:
 	pop {r4,pc}
-	thumb_func_end sub_800938A
+	thumb_func_end battleFsmState0C_800938A
 
 	thumb_local_start
-sub_800945C:
+battleFsmState10_800945C:
 	push {lr}
 	ldr r1, off_800946C // =off_8009470
 	ldrb r0, [r5,#oBattleState_Unk_02]
@@ -13295,7 +13318,7 @@ off_800946C:
 off_8009470:
 	.word sub_8009478+1
 	.word sub_80094B6+1
-	thumb_func_end sub_800945C
+	thumb_func_end battleFsmState10_800945C
 
 	thumb_local_start
 sub_8009478:
@@ -13357,7 +13380,7 @@ locret_80094D8:
 	thumb_func_end sub_80094B6
 
 	thumb_local_start
-sub_80094DA:
+battleFsmState14_80094DA:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13393,10 +13416,10 @@ loc_8009508:
 
 locret_800951C:
 	pop {pc}
-	thumb_func_end sub_80094DA
+	thumb_func_end battleFsmState14_80094DA
 
 	thumb_local_start
-sub_800951E:
+battleFsmState18_800951E:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13423,10 +13446,10 @@ loc_800954A:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_8009550:
 	pop {pc}
-	thumb_func_end sub_800951E
+	thumb_func_end battleFsmState18_800951E
 
 	thumb_local_start
-sub_8009552:
+battleFsmState1C_8009552:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13462,10 +13485,10 @@ loc_800958C:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_8009592:
 	pop {pc}
-	thumb_func_end sub_8009552
+	thumb_func_end battleFsmState1C_8009552
 
 	thumb_local_start
-sub_8009594:
+battleFsmState20_8009594:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13492,10 +13515,10 @@ loc_80095C0:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_80095C6:
 	pop {pc}
-	thumb_func_end sub_8009594
+	thumb_func_end battleFsmState20_8009594
 
 	thumb_local_start
-sub_80095C8:
+battleFsmState24_80095C8:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13520,7 +13543,7 @@ locret_80095F4:
 	pop {pc}
 	.balign 4, 0x00
 	.pool
-	thumb_func_end sub_80095C8
+	thumb_func_end battleFsmState24_80095C8
 
 	thumb_local_start
 sub_800961C:
@@ -13601,7 +13624,7 @@ loc_80096B6:
 	mov r0, #1
 	bl dispatch_801DA48
 	mov r0, #1
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r4, #4
 	movflag EVENT_1735
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -13619,10 +13642,10 @@ locret_80096DE:
 sub_80096E0:
 	push {lr}
 	ldr r0, off_8009700 // =0x404
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, off_8009700 // =0x404
 	bl dispatch_801DA48
-	bl sub_801DA24
+	bl initChipWindowBg3_801DA24
 	bl sub_801DF0C
 	mov r0, #0
 	bl SetCustGauge
@@ -13720,12 +13743,12 @@ sub_8009784:
 	bne loc_800979A
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_80097A6
 loc_800979A:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_80097A6
 	mov r0, #8
@@ -14088,7 +14111,7 @@ loc_8009A3E:
 	mov r0, #1
 	bl dispatch_801DA48
 	mov r0, #1
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r4, #4
 	movflag EVENT_1735
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -14106,10 +14129,10 @@ locret_8009A66:
 sub_8009A68:
 	push {lr}
 	ldr r0, off_8009A84 // =0x404
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, off_8009A84 // =0x404
 	bl dispatch_801DA48
-	bl sub_801DA24
+	bl initChipWindowBg3_801DA24
 	mov r0, #0
 	mov r1, #0
 	bl sub_801E0A0
@@ -14176,12 +14199,12 @@ sub_8009AD8:
 	bne loc_8009AEE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009AFA
 loc_8009AEE:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_8009AFA
 	mov r0, #8
@@ -14497,7 +14520,7 @@ loc_8009D2E:
 	mov r0, #1
 	bl dispatch_801DA48
 	mov r0, #1
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	mov r4, #4
 	movflag EVENT_1735
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -14515,10 +14538,10 @@ locret_8009D56:
 sub_8009D58:
 	push {lr}
 	ldr r0, off_8009D74 // =0x404
-	bl sub_801BECC
+	bl setBattleHudElements_801BECC
 	ldr r0, off_8009D74 // =0x404
 	bl dispatch_801DA48
-	bl sub_801DA24
+	bl initChipWindowBg3_801DA24
 	mov r0, #0
 	mov r1, #0
 	bl sub_801E0A0
@@ -14585,12 +14608,12 @@ sub_8009DC8:
 	bne loc_8009DDE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl spawnBannerRecord_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009DEA
 loc_8009DDE:
-	bl sub_801E754
+	bl isBannerBusy_801E754
 	tst r0, r0
 	bne locret_8009DEA
 	mov r0, #8
@@ -15137,8 +15160,8 @@ sub_800A142:
 	mov pc, lr
 	thumb_func_end sub_800A142
 
-	thumb_func_start sub_800A152
-sub_800A152:
+	thumb_func_start getBattleOutcome_800A152
+getBattleOutcome_800A152:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A18A
@@ -15172,7 +15195,7 @@ loc_800A18A:
 	mov r0, #0
 locret_800A18C:
 	pop {pc}
-	thumb_func_end sub_800A152
+	thumb_func_end getBattleOutcome_800A152
 
 	thumb_func_start battle_isBattleOver
 //! Returns 0 (not over) only while the battle is still live: the win has not
@@ -15259,13 +15282,13 @@ loc_800A218:
 	pop {pc}
 	thumb_func_end sub_800A1D0
 
-// bn T7r (2026-09-15): sub_800A21C is the gauge-full -> PauseBattle path
+// bn T7r (2026-09-15): isCustGaugeFullAndBattleLive_800A21C is the gauge-full -> PauseBattle path
 // (L is debug-only); src/battle.rs:2615-2655 carries the rust counterpart
-// gauge_pause=60 chime. It pairs with sub_8009158's dispatcher as the
+// gauge_pause=60 chime. It pairs with dispatchBattleFsm_8009158's dispatcher as the
 // SEQ_04 -> SEQ_08 leave predicate in the sequencer chain that T7r
 // documented on the windowclose_full trace.
 	thumb_local_start
-sub_800A21C:
+isCustGaugeFullAndBattleLive_800A21C:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A23A
@@ -15284,7 +15307,7 @@ loc_800A23A:
 	.balign 4, 0
 dword_800A240:
 	.word 0x4000
-	thumb_func_end sub_800A21C
+	thumb_func_end isCustGaugeFullAndBattleLive_800A21C
 
 	thumb_local_start
 sub_800A244:
@@ -16773,7 +16796,7 @@ zeroFill_800AB70:
 	thumb_local_start
 sub_800AB7C:
 	push {r4,lr}
-	ldr r4, off_800AC18 // =dword_203CA70
+	ldr r4, off_800AC18 // =eBattleSequencerState_203CA70
 	bl battle_isPaused
 	tst r0, r0
 	bne loc_800ABAC
@@ -16804,7 +16827,7 @@ loc_800ABB8:
 	ldr r0, off_800AC1C // =0x800
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, off_800AC1C // =0x800
-	bl sub_801BED6
+	bl clearBattleHudElements_801BED6
 	pop {r4,pc}
 	thumb_func_end sub_800AB7C
 
@@ -16850,7 +16873,7 @@ off_800AC10:
 off_800AC14:
 	.word byte_203EAE0
 off_800AC18:
-	.word dword_203CA70
+	.word eBattleSequencerState_203CA70
 off_800AC1C:
 	.word 0x800
 	thumb_func_end sub_800ABC6

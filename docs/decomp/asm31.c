@@ -57452,7 +57452,7 @@ signed int sub_80DA908()
     result = battle_isBattleOver();
     if ( result )
     {
-        result = sub_800A152();
+        result = getBattleOutcome_800A152();
         if ( result )
         {
             if ( result == 2 )
@@ -81196,7 +81196,7 @@ void sub_80E8E34()
     {
         *(v0 + 11) = 1;
         dispatch_801DACC(256);
-        sub_801BED6(256);
+        clearBattleHudElements_801BED6(256);
         dispatch_801DACC(64);
         v1 = *(v0 + 96);
         v2 = *(v0 + 100);
