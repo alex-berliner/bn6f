@@ -666,7 +666,7 @@ off_800F22C:
 	.word off_800F230
 off_800F230:
 	// virus
-	.word off_81090D0
+	.word AIEnemyStruct1Ptrs_81090D0
 	// navi
 	.word off_80F24D8
 	// player
@@ -679,12 +679,19 @@ off_800F230:
 	.equiv enemy_getStruct2_struct_Unk_02, 0x02 // u8
 	.equiv enemy_getStruct2_struct_UnkFlags_03, 0x03 // u8
 	.equiv enemy_getStruct2_struct_ElemDamage, 0x04 // u16
+	// A Struct2 record is one row per Version, six bytes apart; ElemHP and
+	// ElemDamage each pack an element in the high nibble and the figure in the
+	// low 12 bits (bn T10, spot-checked against poked HP: Mettaur 0x0028,
+	// Gunner 0x003C -- element 0, 40 and 60 HP).
+	.equiv enemy_getStruct2_struct_RowStride, 0x06
+	.equiv ENEMY_ELEM_FIGURE_MASK, 0xfff
+	.equiv ENEMY_ELEM_SHIFT, 12
 
 // bn T10 (2026-09-15): elem_hp = low 12 bits, element = high nibble of
 // `.hword 0xXYYY`. Carried into docs/SCOPE.md and docs/inventory/
 // enemies.{json,md} via tools/inventory.py + tools/rom_enemy_tables.py;
 // the spot-check Mettaur 0x0028 / Gunner 0x003C on poked HP confirms
-// the canon's slots via off_8109150 in T12's table.
+// the canon's slots via AIEnemyStruct2Ptrs_8109150 in T12's table.
 // where for elem_hp and elem_dmg, in a `.hword 0xXYYY` `X` is likely elem and `YYY` is hp/damage.
 	thumb_func_start enemy_getStruct2
 enemy_getStruct2:
@@ -715,7 +722,7 @@ off_800F25C:
 	.word off_800F260
 off_800F260:
 	// virus
-	.word off_8109150
+	.word AIEnemyStruct2Ptrs_8109150
 	// navi
 	.word off_80F253C
 	// player
@@ -17120,7 +17127,7 @@ byte_8016BDC:
 	thumb_func_end sub_8016B72
 
 	thumb_local_start
-sub_8016BFC:
+runAIAttackDuringTimestop_8016BFC:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PreventAnim]
 	tst r0, r0
@@ -17165,7 +17172,7 @@ loc_8016C44:
 	strh r0, [r5,#oBattleObject_Z16]
 locret_8016C4C:
 	pop {pc}
-	thumb_func_end sub_8016BFC
+	thumb_func_end runAIAttackDuringTimestop_8016BFC
 
 	thumb_func_start sub_8016C4E
 sub_8016C4E:
@@ -17439,8 +17446,8 @@ dword_8016E60:
 	.word 0x101000
 	thumb_func_end sub_8016E3C
 
-	thumb_func_start sub_8016E64
-sub_8016E64:
+	thumb_func_start runEnemyAttackAnim_8016E64
+runEnemyAttackAnim_8016E64:
 	push {lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #8
@@ -17487,7 +17494,7 @@ locret_8016EBE:
 	.balign 4, 0
 dword_8016EC0:
 	.word 0x80110C00
-	thumb_func_end sub_8016E64
+	thumb_func_end runEnemyAttackAnim_8016E64
 
 	thumb_func_start sub_8016EC4
 sub_8016EC4:
@@ -19989,13 +19996,21 @@ off_80182B0:
 GetVerActorTyAndAIIdx_80182B4: // (enemy_idx: u16) -> *const (version: u8, actor_type: ActorType, ai_index: u8)
 	mov r1, #3
 	mul r1, r0
-	ldr r0, off_80182C0 // =byte_80182C4
+	ldr r0, off_80182C0 // =VerActorTyAIIdxTable_80182C4
 	add r0, r0, r1
 	mov pc, lr
 	.byte 0, 0
 off_80182C0:
-	.word byte_80182C4
-byte_80182C4:
+	.word VerActorTyAIIdxTable_80182C4
+// THE ENEMY IDENTITY TABLE: 452 three-byte rows indexed by enemy_idx, read as
+// &VerActorTyAIIdxTable_80182C4[3 * enemy_idx] by GetVerActorTyAndAIIdx_80182B4.
+// Each row is (Version, ActorType, AIIndex); the AIIndex then selects this
+// enemy's row of the four parallel tables at AIThinkTables_8109050 (asm31.s).
+// Row count and tail established by bn T12 (bound taken from the next label,
+// getBattleArmPositionMaybe_8018810): the last row is idx 0x1C3, and rows
+// 0x1B3..0x1C3 are ACTOR_TYPE_PLAYER with AIIndex 0x21..0x30, which have no
+// think and no act entry at all.
+VerActorTyAIIdxTable_80182C4:
 	// Version, ActorType,        AIIndex
 	.byte 0x00, ACTOR_TYPE_VIRUS, 0x00 // 0x0
 
@@ -20447,11 +20462,11 @@ byte_80182C4:
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x1f // 0x1b2
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x20 // 0x1b3
 // bn T12 (2026-09-15): this row (idx 0x1b4 = 436) is near the inferred
-// tail of byte_80182C4 (452 identity rows; last row idx 0x1C3 v=0x00/
+// tail of VerActorTyAIIdxTable_80182C4 (452 identity rows; last row idx 0x1C3 v=0x00/
 // PLAYER/AI=0x30, no filler). tools/rom_enemy_tables.py uses the bound
-// from getBattleArmPositionMaybe_8018810 to land off_8109150's elem_hp
+// from getBattleArmPositionMaybe_8018810 to land AIEnemyStruct2Ptrs_8109150's elem_hp
 // u16 @0x00 with spot-check Mettaur 0x0028 / Gunner 0x003C. The four
-// 0x80-byte tables off_8109050/0x90D0/0x9150/0x91D0 are next per T12.
+// 0x80-byte tables AIThinkTables_8109050/0x90D0/0x9150/0x91D0 are next per T12.
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x21 // 0x1b4
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x22 // 0x1b5
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x23 // 0x1b6
@@ -23978,7 +23993,7 @@ loc_801B36E: // endif
 
 loc_801B376: // else
 
-	bl sub_8016BFC
+	bl runAIAttackDuringTimestop_8016BFC
 
 locret_801B37A: // endif
 	add sp, sp, #4

@@ -6722,16 +6722,16 @@ int sub_8112F34()
 
 
 // 0x8112f4e
-int sub_8112F4E()
+int gunnerAttackExec_8112F4E()
 {
     unsigned __int8 *v0; // r7
 
-    return (*(&off_8112F60 + *v0))();
+    return (*(&GunnerAttackSteps_8112F60 + *v0))();
 }
 
 
 // 0x8112f70
-int sub_8112F70()
+int gunnerAttackAimCursor_8112F70()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -6761,7 +6761,7 @@ int sub_8112F70()
 
 
 // 0x8112fba
-u32 *sub_8112FBA()
+u32 *gunnerAttackLockCursor_8112FBA()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -6791,7 +6791,7 @@ u32 *sub_8112FBA()
 
 
 // 0x8113002
-int sub_8113002()
+int gunnerAttackFireShots_8113002()
 {
     int v0; // r7
     int v1; // r0
@@ -6830,7 +6830,7 @@ int sub_8113002()
 
 
 // 0x8113038
-void ai_8113038()
+void gunnerAttackRecover_8113038()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -6854,39 +6854,39 @@ void ai_8113038()
 
 
 // 0x81130e4
-int sub_81130E4()
+int gunnerMaterialize04_81130E4()
 {
-    sub_8113114();
+    gunnerClearRelatedObject_8113114();
     return sub_8016B02();
 }
 
 
 // 0x81130f0
-int sub_81130F0()
+int gunnerMaterialize05_81130F0()
 {
-    sub_8113114();
+    gunnerClearRelatedObject_8113114();
     return sub_8016CE8();
 }
 
 
 // 0x81130fc
-int sub_81130FC()
+int gunnerMaterialize06_81130FC()
 {
-    sub_8113114();
+    gunnerClearRelatedObject_8113114();
     return sub_8016B36();
 }
 
 
 // 0x8113108
-int sub_8113108()
+int gunnerMaterialize07_8113108()
 {
-    sub_8113114();
+    gunnerClearRelatedObject_8113114();
     return sub_8016B72();
 }
 
 
 // 0x8113114
-int sub_8113114()
+int gunnerClearRelatedObject_8113114()
 {
     int v0; // r4
     int v1; // r5
@@ -6931,7 +6931,7 @@ int sub_8113148()
 
 
 // 0x8113162
-void __fastcall sub_8113162(int a1, int a2, int a3)
+void __fastcall gunnerRowCheck_8113162(int a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r5

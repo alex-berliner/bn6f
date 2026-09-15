@@ -10,12 +10,12 @@
 // (0x080b81ed) -- patching THIS function would break MegaMan too. It reads
 // oBattleObject_AIDataPtr->ActorType and picks one of three handlers below
 // (virus/navi/player); the "virus" one is where the bn project's own
-// inert-enemy patch actually goes -- see battleObject_dispatch_8108F50's
+// inert-enemy patch actually goes -- see virusObject_dispatch_8108F50's
 // own comment, below in this file.
 t1_0x0_80B81EC:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, off_80B8200 // =off_80B8204 
+	ldr r1, off_80B8200 // =T1ActorTypeHandlers_80B8204 
 	ldrb r0, [r4,#oAIData_ActorType]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
@@ -24,12 +24,12 @@ t1_0x0_80B81EC:
 	pop {r4,pc}
 	.balign 4, 0x00
 off_80B8200:
-	.word off_80B8204
-off_80B8204:
+	.word T1ActorTypeHandlers_80B8204
+T1ActorTypeHandlers_80B8204:
   // virus
-	.word battleObject_dispatch_8108F50+1
+	.word virusObject_dispatch_8108F50+1
   // navi
-	.word sub_80F2330+1
+	.word naviObject_dispatch_80F2330+1
   // player
 	.word playerObject_main_80EA460+1
 	thumb_func_end t1_0x0_80B81EC
@@ -31381,26 +31381,26 @@ off_80C6AF0:
 	.word 0, 0
 	.byte 0, 0, 0, 0
 // THE SHOCKWAVE'S PER-HOP TABLE: 16 rows of 4 bytes, indexed by Param1 * 4
-// (sub_80C6B64: `ldrb r4,[r5,#Param1] / mov r0,#4 / mul r4,r0`, asm31.s:31411-31416).
+// (shockwaveSegmentInit_80C6B64: `ldrb r4,[r5,#Param1] / mov r0,#4 / mul r4,r0`, asm31.s:31411-31416).
 // Each row is read as:
 //   +0  sprite_load's size argument. It is 3 in every row -- constant, not data.
 //   +1  CurAnim, and sprite_setAnimation right after (asm31.s:31427-31430).
 //   +2  Timer: HOW LONG THE SEGMENT DWELLS on its panel before hopping
 //       (asm31.s:31432-31433). Row 0 is 0x16, and the rows run 0x16, 0x10, 0xb,
 //       6, ... down to 6 for the top four rows.
-//   +3  the panel effect, handed to sub_80C6CFC (asm31.s:31604-31611):
+//   +3  the panel effect, handed to applyShockwavePanelEffect_80C6CFC (asm31.s:31604-31611):
 //       0xff does nothing, 3 calls object_crackPanel, 1 breaks, anything else is
 //       an object_setPanelType with that value. Only rows 4 and 5 are non-0xff.
 //
 // PARAM1 IS THE VIRUS'S VERSION TIER, AND IT DOES NOT CHANGE BETWEEN HOPS. A hop
-// respawns the wave through sub_80C6CE4 -> object_spawnType3 ->
+// respawns the wave through spawnShockwaveSegment_80C6CE4 -> object_spawnType3 ->
 // SpawnBattleObjectCommon, which copies the WHOLE Params word from the old
 // segment into the new one (`str r4,[r5,#oBattleObject_Params]`, asm00_1.s:254).
 // So every hop of one attack reads the SAME row, including the last, and a
 // Version 0 Mettaur is on row 0 -- dwell 0x16, animation 0, no panel effect --
 // from its first hop to its last. The short-dwell rows at the top of the table
 // are reachable only by a Param1 >= 12 virus, never by a later hop of a low one.
-byte_80C6B00:
+ShockwaveHopTable_80C6B00:
 	.byte 0x3, 0x0, 0x16, 0xFF, 0x3, 0x1, 0x10, 0xFF, 0x3, 0x1, 0xB, 0xFF
 	.byte 0x3, 0x2, 0x6, 0xFF, 0x3, 0x1, 0x10, 0x3, 0x3, 0x2, 0x6, 0x4
 	.byte 0x3, 0x0, 0x18, 0xFF, 0x3, 0x1, 0x10, 0xFF, 0x3, 0x1, 0xB, 0xFF
@@ -31412,7 +31412,7 @@ byte_80C6B00:
 	thumb_func_start t3_0x16_80C6B40
 t3_0x16_80C6B40:
 	push {lr}
-	ldr r1, off_80C6B54 // =off_80C6B58 
+	ldr r1, off_80C6B54 // =ShockwaveSegmentStates_80C6B58 
 	ldrb r0, [r5,#oBattleObject_CurState]
 	ldr r1, [r1,r0]
 	mov lr, pc
@@ -31421,15 +31421,15 @@ t3_0x16_80C6B40:
 	pop {pc}
 	.balign 4, 0
 off_80C6B54:
-	.word off_80C6B58
-off_80C6B58:
-	.word sub_80C6B64+1
-	.word sub_80C6C14+1
+	.word ShockwaveSegmentStates_80C6B58
+ShockwaveSegmentStates_80C6B58:
+	.word shockwaveSegmentInit_80C6B64+1
+	.word shockwaveSegmentUpdate_80C6C14+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x16_80C6B40
 
 	thumb_local_start
-sub_80C6B64:
+shockwaveSegmentInit_80C6B64:
 	push {r4,r7,lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -31443,7 +31443,7 @@ sub_80C6B64:
 	ldrb r4, [r5,#oBattleObject_Param1]
 	mov r0, #4
 	mul r4, r0
-	ldr r0, off_80C6C10 // =byte_80C6B00
+	ldr r0, off_80C6C10 // =ShockwaveHopTable_80C6B00
 	add r4, r4, r0
 	str r4, [r5,#oBattleObject_ExtraVars]
 	mov r1, #0x10
@@ -31471,7 +31471,7 @@ sub_80C6B64:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r4,#3]
-	bl sub_80C6CFC
+	bl applyShockwavePanelEffect_80C6CFC
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_createCollisionData
 	mov r7, r0
@@ -31503,11 +31503,11 @@ loc_80C6C0A:
 	pop {r4,r7,pc}
 	.balign 4, 0
 off_80C6C10:
-	.word byte_80C6B00
-	thumb_func_end sub_80C6B64
+	.word ShockwaveHopTable_80C6B00
+	thumb_func_end shockwaveSegmentInit_80C6B64
 
 	thumb_local_start
-sub_80C6C14:
+shockwaveSegmentUpdate_80C6C14:
 	push {r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -31538,17 +31538,17 @@ loc_80C6C40:
 off_80C6C54:
 	.word off_80C6C58
 off_80C6C58:
-	.word sub_80C6C6A+1
-	.word sub_80C6CBA+1
+	.word shockwaveSegmentHop_80C6C6A+1
+	.word shockwaveSegmentDepart_80C6CBA+1
 loc_80C6C60:
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {r7,pc}
-	thumb_func_end sub_80C6C14
+	thumb_func_end shockwaveSegmentUpdate_80C6C14
 
 	thumb_local_start
-sub_80C6C6A:
+shockwaveSegmentHop_80C6C6A:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -31576,7 +31576,7 @@ loc_80C6C98:
 	mov r3, #0
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	bl sub_80C6CE4
+	bl spawnShockwaveSegment_80C6CE4
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
 loc_80C6CA6:
@@ -31589,10 +31589,10 @@ loc_80C6CA6:
 	bl object_clearCollisionRegion // () -> void
 locret_80C6CB8:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80C6C6A
+	thumb_func_end shockwaveSegmentHop_80C6C6A
 
 	thumb_local_start
-sub_80C6CBA:
+shockwaveSegmentDepart_80C6CBA:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #0xc
@@ -31615,10 +31615,10 @@ loc_80C6CD6:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C6CE2:
 	pop {pc}
-	thumb_func_end sub_80C6CBA
+	thumb_func_end shockwaveSegmentDepart_80C6CBA
 
 	thumb_local_start
-sub_80C6CE4:
+spawnShockwaveSegment_80C6CE4:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0x16
@@ -31630,10 +31630,10 @@ sub_80C6CE4:
 	bl BasicBattleObjectInitialize
 locret_80C6CFA:
 	pop {pc}
-	thumb_func_end sub_80C6CE4
+	thumb_func_end spawnShockwaveSegment_80C6CE4
 
 	thumb_local_start
-sub_80C6CFC:
+applyShockwavePanelEffect_80C6CFC:
 	push {lr}
 	cmp r2, #0xff
 	bne loc_80C6D04
@@ -31651,7 +31651,7 @@ loc_80C6D0E:
 loc_80C6D18:
 	bl object_setPanelType
 	pop {pc}
-	thumb_func_end sub_80C6CFC
+	thumb_func_end applyShockwavePanelEffect_80C6CFC
 
 	thumb_local_start
 sub_80C6D1E:
@@ -92641,7 +92641,7 @@ off_80E3C08:
 	.word off_80E3C0C
 off_80E3C0C:
 	.word sub_80E3C14+1
-	.word sub_80E3CC4+1
+	.word lockOnCursor_update_80E3CC4+1
 	thumb_func_end sub_80E3BEA
 
 	thumb_local_start
@@ -92732,7 +92732,7 @@ byte_80E3CB4:
 	thumb_func_end sub_80E3C14
 
 	thumb_local_start
-sub_80E3CC4:
+lockOnCursor_update_80E3CC4:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -92757,7 +92757,7 @@ loc_80E3CDE:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80E3CF0:
 	pop {r4,pc}
-	thumb_func_end sub_80E3CC4
+	thumb_func_end lockOnCursor_update_80E3CC4
 
 	thumb_func_start sub_80E3CF2
 sub_80E3CF2:
@@ -113086,7 +113086,7 @@ sub_80ED6CA:
 	ldrb r2, [r7,#oAIAttackVars_Unk_02]
 	ldr r4, [r7,#oAIAttackVars_Unk_0c]
 	mov r3, #0
-	bl sub_80C6CE4
+	bl spawnShockwaveSegment_80C6CE4
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80ED6CA
 
@@ -123301,7 +123301,7 @@ byte_80F2328:
 	thumb_func_end sub_80F22F8
 
 	thumb_local_start
-sub_80F2330:
+naviObject_dispatch_80F2330:
 	push {lr}
 	ldr r1, off_80F2344 // =off_80F2348 
 	ldrb r0, [r5,#oBattleObject_CurState]
@@ -123317,7 +123317,7 @@ off_80F2348:
 	.word sub_8016F56+1
 	.word sub_80F2354+1
 	.word sub_8016C4E+1
-	thumb_func_end sub_80F2330
+	thumb_func_end naviObject_dispatch_80F2330
 
 	thumb_local_start
 sub_80F2354:
@@ -169272,7 +169272,7 @@ sub_8108F28:
 // caller (grepped), so this is the per-object handler for every enemy,
 // not just the Mettaur. Sub-dispatches again by oBattleObject_CurState
 // (init/update/destroy, the 3-entry table right below) and then
-// unconditionally calls sub_8016E64, which the disassembly's own PRIOR
+// unconditionally calls runEnemyAttackAnim_8016E64, which the disassembly's own PRIOR
 // comment there already documents as driving enemy attack animations.
 // tools/patch_sterile.py's --inert-enemy (opt-in, 4th patch) stubs this
 // function's own entry (push {lr}, bytes 00 B5 -> bx lr, 70 47) the same
@@ -169294,30 +169294,30 @@ sub_8108F28:
 // working, OPT-IN patch (--inert-enemy) and an honestly-reported dead
 // end for THIS specific mechanism -- the actual death/dissolve gate and
 // whatever independently drives OAM upload are still unfound.
-battleObject_dispatch_8108F50:
+virusObject_dispatch_8108F50:
 	push {lr}
 
-	ldr r1, off_8108F64 // =off_8108F68
+	ldr r1, off_8108F64 // =VirusObjectStateHandlers_8108F68
 	ldrb r0, [r5,#oBattleObject_CurState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 
 	// disabling this causes enemy attack animations to cease playing
-	bl sub_8016E64
+	bl runEnemyAttackAnim_8016E64
 
 	pop {pc}
 	.balign 4, 0
 off_8108F64:
-	.word off_8108F68
-off_8108F68:
+	.word VirusObjectStateHandlers_8108F68
+VirusObjectStateHandlers_8108F68:
 	.word sub_8016F56+1
-	.word battle_8108F74+1
+	.word virusObject_update_8108F74+1
 	.word sub_8016C4E+1
-	thumb_func_end battleObject_dispatch_8108F50
+	thumb_func_end virusObject_dispatch_8108F50
 
 	thumb_local_start
-battle_8108F74:
+virusObject_update_8108F74:
 	push {r4,lr}
 	bl sub_81095D0
 	bl sub_801ABB8
@@ -169401,16 +169401,16 @@ loc_8109020:
 	lsl r4, r0, #2
 
 // bn T12 (2026-09-15): the CurAction-indexed state-HANDLER TABLE
-// pointers dispatch via off_8109050 (think: 32 distinct handler tables,
+// pointers dispatch via AIThinkTables_8109050 (think: 32 distinct handler tables,
 // 2 named For*) to battle_801B1C4 here -- tools/rom_enemy_tables.py emits
 // docs/inventory/enemies.md cross-referencing the think word table via
 // the dispatcher that passes it as an argument. battle_801B1C4 carries
-// this through to the per-type state-machine execution from off_81091D0.
-	ldr r1, off_8109048 // =off_8109050 
+// this through to the per-type state-machine execution from AIActHandlers_81091D0.
+	ldr r1, off_8109048 // =AIThinkTables_8109050 
 	ldr r0, [r1,r4]
 	bl battle_801B1C4
 
-	ldr r0, off_810904C // =off_81091D0 
+	ldr r0, off_810904C // =AIActHandlers_81091D0 
 	ldr r0, [r0,r4]
 	mov lr, pc
 	bx r0
@@ -169426,10 +169426,22 @@ locret_8109046:
 	pop {r4,pc}
 	.balign 4, 0
 off_8109048:
-	.word off_8109050
+	.word AIThinkTables_8109050
 off_810904C:
-	.word off_81091D0
-off_8109050:
+	.word AIActHandlers_81091D0
+
+	// FOUR PARALLEL 32-WORD TABLES, all indexed by oAIData_AIIndex * 4 and laid
+	// out back to back: AIThinkTables_8109050, AIEnemyStruct1Ptrs_81090D0,
+	// AIEnemyStruct2Ptrs_8109150, AIActHandlers_81091D0, bounded by off_8109250.
+	// A think word is NOT a routine -- it is a pointer to that AI's own
+	// CurAction-indexed handler table, handed to battle_801B1C4 as an argument.
+	// An act word IS called (`mov lr,pc; bx r0`), and 21 of the 32 are nullsub_13.
+	// Known-answer checks (bn T12, both PASS): enemy_idx 0x01..0x04 resolve
+	// through VerActorTyAIIdxTable_80182C4 to AIIndex 0x01 -> ForMettaur_8109EF4,
+	// and enemy_idx 0x85 to AIIndex 0x17 -> ForGunner_8113078.
+	.equiv NUM_AI_INDICES, 0x20
+
+AIThinkTables_8109050:
 	// 0x00
 	.word off_8109B74
 	// 0x04 Mettaur
@@ -169494,7 +169506,7 @@ off_8109050:
 	.word off_81163F0
 	// 0x7C
 	.word off_81166B0
-off_81090D0:
+AIEnemyStruct1Ptrs_81090D0:
 	// 0x00
 	.word byte_8109A78
 	// 0x04 Mettaur
@@ -169559,7 +169571,7 @@ off_81090D0:
 	.word byte_81162F8
 	// 0x7C
 	.word byte_81165BC
-off_8109150:
+AIEnemyStruct2Ptrs_8109150:
 	// 0x00
 	.word byte_8109A80
 	// 0x04 Mettaur
@@ -169624,7 +169636,7 @@ off_8109150:
 	.word byte_8116300
 	// 0x7C
 	.word byte_81165C4
-off_81091D0:
+AIActHandlers_81091D0:
 	// 0x00
 	.word nullsub_13+1
 	// 0x04 Mettaur
@@ -169865,7 +169877,7 @@ off_8109550:
 	.word nullsub_13+1, nullsub_13+1, nullsub_13+1, nullsub_13+1
 	.word nullsub_13+1, nullsub_13+1, nullsub_13+1, nullsub_13+1
 	.word nullsub_13+1, nullsub_13+1, nullsub_13+1, nullsub_13+1
-	thumb_func_end battle_8108F74
+	thumb_func_end virusObject_update_8108F74
 
 	thumb_local_start
 sub_81095D0:
@@ -170872,7 +170884,7 @@ loc_8109E1A:
 	mov r3, #0
 	ldrb r4, [r7,#oAIAttackVars_Unk_0c]
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80C6CE4
+	bl spawnShockwaveSegment_80C6CE4
 	mov r0, #1
 	ldr r1, [r7,#oAIAttackVars_Unk_30]
 	str r0, [r1]
@@ -170992,7 +171004,7 @@ locret_8109EF2:
 	.balign 4, 0
 // bn T12 (2026-09-15): ForMettaur_8109EF4 is the named think handler for
 // AI 0x01 (idx 0x01..0x04) -- one of 32 distinct handler tables dispatch
-// indexed by AIIndex * 4 against off_8109050; src/objects.rs Style::Mettaur
+// indexed by AIIndex * 4 against AIThinkTables_8109050; src/objects.rs Style::Mettaur
 // arm calls into this for the Mettaur's per-action update. tools/rom_enemy_tables.py
 // emits the named FOR entries; known-answer check idx 0x01..0x04 -> AI 0x01
 // confirms the layout.
@@ -171179,7 +171191,7 @@ loc_8109FD0:
 	// object_exitAttackState. 0x0B is the ATTACK executor
 	// (MettaurAttackExec_8109DD2/MettaurAttackSteps_8109DE4, 170826-170918): MettaurAttackSwing_8109DEC holds anim 1 for
 	// a 0x40-frame countdown, calls object_setCounterTime(0x1e) when it
-	// reads 0x32, spawns the shockwave via sub_80C6CE4 when it reads 0x1b,
+	// reads 0x32, spawns the shockwave via spawnShockwaveSegment_80C6CE4 when it reads 0x1b,
 	// zeroes CurAnim when it reaches 0, THEN MettaurAttackRecover_8109E4A holds a SEPARATE
 	// 0x28 (40) frame recovery before object_exitAttackState -- bn's own
 	// src/actor.rs `SWING` had `recover: 0`, letting bn's Mettaur re-attack
@@ -171223,7 +171235,7 @@ loc_8109FD0:
 	//     reachable by a Mettaur with no equipped item (this project's
 	//     only kind). The normal path (loc_810A184..) reads
 	//     MettaurWaveFamilyByVersion_8109F40[Version] into AIAttackVars_Unk_0c (a "family" tag
-	//     passed to sub_80C6CE4, presumably cosmetic/audio -- not traced
+	//     passed to spawnShockwaveSegment_80C6CE4, presumably cosmetic/audio -- not traced
 	//     further) and MettaurWaveDamageByVersion_8109F28[Version] (a packed u32, low 16 bits =
 	//     {10,30,50,70,50,100} for Version 0..5 -- Version 0's 10 matches
 	//     bn's own WAVE_DAMAGE) into AIAttackVars_Damage, then
@@ -171312,7 +171324,7 @@ off_8109FEC:
 	.equiv METTAUR_CONFUSED_ROLL_ATTACK_MAX,  2    // draw < 2 of 16 -> attack now
 	.equiv METTAUR_ATTACK_POSE_FRAMES,        0x40 // 64, the wind-up pose
 	.equiv METTAUR_ATTACK_COUNTER_FRAME,      0x32 // object_setCounterTime fires here
-	.equiv METTAUR_ATTACK_SHOCKWAVE_FRAME,    0x1b // sub_80C6CE4 spawns the wave here
+	.equiv METTAUR_ATTACK_SHOCKWAVE_FRAME,    0x1b // spawnShockwaveSegment_80C6CE4 spawns the wave here
 	.equiv METTAUR_ATTACK_RECOVER_FRAMES,     0x28 // 40, AFTER the pose
 	.equiv METTAUR_GUARD_WAIT_FRAMES,         0x28 // 40 before CurAction -> GUARD
 	.equiv METTAUR_HOP_RESERVE_FRAMES,        3    // dust + panel reserve
@@ -175273,7 +175285,7 @@ sub_810C0E4:
 	mov r3, #0
 	ldrb r4, [r7,#oAIAttackVars_Unk_03]
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80C6CE4
+	bl spawnShockwaveSegment_80C6CE4
 	ldrb r0, [r7,#oAIAttackVars_Unk_0e]
 	cmp r0, #0
 	beq loc_810C120

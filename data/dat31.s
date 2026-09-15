@@ -375,11 +375,11 @@ dword_810C6E8::
 dword_810C6EC::
 	.word 0xC000000
 // bn T12 (2026-09-15): this off_810C6F0 dispatch table is one of the 32
-// CurAction-indexed think handler tables (dispatched from off_8109050
+// CurAction-indexed think handler tables (dispatched from AIThinkTables_8109050
 // via battle_801B1C4 in asm31.s:169405); tools/rom_enemy_tables.py emits
 // the docs/inventory/enemies.md cross-reference, and the corresponding
-// act handler table off_81091D0[idx] sits next to the byte_80182C4
-// identity table at asm00_2.s:20449. ai_8113038 in T12's 32-tables
+// act handler table AIActHandlers_81091D0[idx] sits next to the VerActorTyAIIdxTable_80182C4
+// identity table at asm00_2.s:20449. gunnerAttackRecover_8113038 in T12's 32-tables
 // coverage unifies with the four entry suffix-less nullsub_* entries.
 off_810C6F0::
 	.word RunSpawnAnimationMaybe_8016380+1

@@ -9955,25 +9955,40 @@ sub_8112F34:
 	thumb_func_end sub_8112F34
 
 	thumb_local_start
-sub_8112F4E:
+gunnerAttackExec_8112F4E:
 	push {lr}
-	ldr r1, off_8112F5C // =off_8112F60
+	ldr r1, off_8112F5C // =GunnerAttackSteps_8112F60
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	pop {pc}
 off_8112F5C:
-	.word off_8112F60
-off_8112F60:
-	.word sub_8112F70+1
-	.word sub_8112FBA+1
-	.word sub_8113002+1
-	.word ai_8113038+1
-	thumb_func_end sub_8112F4E
+	.word GunnerAttackSteps_8112F60
+	// The attack's four sub-states, indexed by oAIAttackVars_Unk_00 (again a
+	// pre-multiplied byte offset: 0, 4, 8, 0xc).
+	.equiv GUNNER_ATTACK_AIM,     0x00
+	.equiv GUNNER_ATTACK_LOCK,    0x04
+	.equiv GUNNER_ATTACK_FIRE,    0x08
+	.equiv GUNNER_ATTACK_RECOVER, 0x0c
+	// Measured against the real ROM by the bn project (docs/coverage/gunner.md:39-41).
+	.equiv GUNNER_SHOTS,          3
+	.equiv GUNNER_SHOT_GAP,       10 // frames between shots
+	.equiv GUNNER_RECOVER_FRAMES, 24
+	.equiv GUNNER_LOCK_FRAMES,    24 // the lock-on cursor holds this long
+GunnerAttackSteps_8112F60:
+	// GUNNER_ATTACK_AIM: arms CurAnim 1 and walks the lock-on cursor out.
+	.word gunnerAttackAimCursor_8112F70+1
+	// GUNNER_ATTACK_LOCK: cursor locked; CurAnim 2 and the shot's spawn params.
+	.word gunnerAttackLockCursor_8112FBA+1
+	// GUNNER_ATTACK_FIRE: GUNNER_SHOTS shots, GUNNER_SHOT_GAP frames apart.
+	.word gunnerAttackFireShots_8113002+1
+	// GUNNER_ATTACK_RECOVER: GUNNER_RECOVER_FRAMES, then out.
+	.word gunnerAttackRecover_8113038+1
+	thumb_func_end gunnerAttackExec_8112F4E
 
 	thumb_local_start
-sub_8112F70:
+gunnerAttackAimCursor_8112F70:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -10011,10 +10026,10 @@ loc_8112F86:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8112FB8:
 	pop {r4,pc}
-	thumb_func_end sub_8112F70
+	thumb_func_end gunnerAttackAimCursor_8112F70
 
 	thumb_local_start
-sub_8112FBA:
+gunnerAttackLockCursor_8112FBA:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	cmp r0, #1
@@ -10049,10 +10064,10 @@ loc_8112FF8:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8113000:
 	pop {pc}
-	thumb_func_end sub_8112FBA
+	thumb_func_end gunnerAttackLockCursor_8112FBA
 
 	thumb_local_start
-sub_8113002:
+gunnerAttackFireShots_8113002:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -10081,10 +10096,10 @@ loc_811302C:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8113036:
 	pop {pc}
-	thumb_func_end sub_8113002
+	thumb_func_end gunnerAttackFireShots_8113002
 
 	thumb_local_start
-ai_8113038:
+gunnerAttackRecover_8113038:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -10114,37 +10129,44 @@ loc_8113060:
 locret_811306C:
 	pop {r4,pc}
 	.balign 4, 0
-	thumb_func_end ai_8113038
+	thumb_func_end gunnerAttackRecover_8113038
 
 dword_8113070:
 	.word 0x2810
 dword_8113074:
 	.word 0x12810
+// The Gunner's own CurAction-indexed handler table (AIIndex 0x17, enemy_idx
+// 0x85), reached through AIThinkTables_8109050. Roles per
+// /home/box/Code/bn/docs/coverage/gunner.md:23-48 and src/gunner.rs.
 ForGunner_8113078:
-	// 0x00 (0x00) (CurAction -> 0x01)
+	// 0x00 (0x00) (CurAction -> 0x01) -- spawn anim
 	.word RunSpawnAnimationMaybe_8016380+1
-	// 0x04 (0x01) (CurAction -> 0x08)
+	// 0x04 (0x01) (CurAction -> 0x08) -- spawn arming
 	.word sub_80165B8+1
-	// 0x08 (0x02)
+	// 0x08 (0x02) -- idle
 	// disabling this causes game to freeze on Gunner being hit a deadly hit (that would cause its HP to go to 0)
 	.word sub_80165C2+1
-	// 0x0C (0x03)
+	// 0x0C (0x03) -- hit reaction
 	.word sub_80166AE+1
-	// 0x10 (0x04)
-	.word sub_81130E4+1
+	// 0x10..0x1C (0x04..0x07) -- the four materialize steps; each clears
+	// RelatedObject1Ptr and delegates to the shared appear routines.
+	.word gunnerMaterialize04_81130E4+1
 	// 0x14 (0x05)
-	.word sub_81130F0+1
+	.word gunnerMaterialize05_81130F0+1
 	// 0x18 (0x06)
-	.word sub_81130FC+1
+	.word gunnerMaterialize06_81130FC+1
 	// 0x1C (0x07)
-	.word sub_8113108+1
-	// 0x20 (0x08)
+	.word gunnerMaterialize07_8113108+1
+	// 0x20 (0x08) -- the AI tick; gunnerRowCheck_8113162 is what moves
+	// CurAction to 0x0A once an opponent stands ahead in this row.
 	.word sub_8113124+1
-	// 0x24 (0x09)
+	// 0x24 (0x09) -- wait / recover
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	// 0x28 (0x0A)
-	.word sub_8112F4E+1
-	// 0x2C (0x0B)
+	// 0x28 (0x0A) -- THE ATTACK, itself a four-step machine over
+	// GunnerAttackSteps_8112F60 indexed by oAIAttackVars_Unk_00.
+	.word gunnerAttackExec_8112F4E+1
+	// 0x2C (0x0B) -- guard / cleanup, and a state dispatcher over
+	// oAIAttackVars_Unk_00 in its own right. It is NOT the materialize.
 	.word sub_8112D9C+1
 byte_81130A8:
 	.byte 0x0, 0x0, 0x3, 0x0, 0x0, 0x50, 0x1, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x50, 0x2
@@ -10162,39 +10184,39 @@ byte_81130DE:
 	.byte 0x0, 0x0, 0x1, 0x1, 0x1, 0x1
 
 	thumb_local_start
-sub_81130E4:
+gunnerMaterialize04_81130E4:
 	push {lr}
-	bl sub_8113114
+	bl gunnerClearRelatedObject_8113114
 	bl sub_8016B02
 	pop {pc}
-	thumb_func_end sub_81130E4
+	thumb_func_end gunnerMaterialize04_81130E4
 
 	thumb_local_start
-sub_81130F0:
+gunnerMaterialize05_81130F0:
 	push {lr}
-	bl sub_8113114
+	bl gunnerClearRelatedObject_8113114
 	bl sub_8016CE8
 	pop {pc}
-	thumb_func_end sub_81130F0
+	thumb_func_end gunnerMaterialize05_81130F0
 
 	thumb_local_start
-sub_81130FC:
+gunnerMaterialize06_81130FC:
 	push {lr}
-	bl sub_8113114
+	bl gunnerClearRelatedObject_8113114
 	bl sub_8016B36
 	pop {pc}
-	thumb_func_end sub_81130FC
+	thumb_func_end gunnerMaterialize06_81130FC
 
 	thumb_local_start
-sub_8113108:
+gunnerMaterialize07_8113108:
 	push {lr}
-	bl sub_8113114
+	bl gunnerClearRelatedObject_8113114
 	bl sub_8016B72
 	pop {pc}
-	thumb_func_end sub_8113108
+	thumb_func_end gunnerMaterialize07_8113108
 
 	thumb_local_start
-sub_8113114:
+gunnerClearRelatedObject_8113114:
 	push {lr}
 	ldrb r0, [r4,#oAIData_Version_16]
 	mov r1, #1
@@ -10204,7 +10226,7 @@ loc_811311E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	pop {pc}
-	thumb_func_end sub_8113114
+	thumb_func_end gunnerClearRelatedObject_8113114
 
 	thumb_local_start
 sub_8113124:
@@ -10230,7 +10252,7 @@ off_8113144:
 
 off_8113148:
 	.word sub_8113154+1
-	.word sub_8113162+1
+	.word gunnerRowCheck_8113162+1
 	.word sub_81131A2+1
 
 	thumb_local_start
@@ -10245,7 +10267,7 @@ sub_8113154:
 	thumb_func_end sub_8113154
 
 	thumb_local_start
-sub_8113162:
+gunnerRowCheck_8113162:
 	push {lr}
 	ldrb r0, [r5,#0x13]
 	bl sub_810971A
@@ -10279,7 +10301,7 @@ sub_8113162:
 
 locret_81131A0:
 	pop {pc}
-	thumb_func_end sub_8113162
+	thumb_func_end gunnerRowCheck_8113162
 
 	thumb_local_start
 sub_81131A2:

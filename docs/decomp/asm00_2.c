@@ -12619,7 +12619,7 @@ int sub_8016B72()
 
 
 // 0x8016bfc
-int sub_8016BFC()
+int runAIAttackDuringTimestop_8016BFC()
 {
     int v0; // r5
     int v1; // r1
@@ -12889,7 +12889,7 @@ int sub_8016E3C()
 
 
 // 0x8016e64
-void sub_8016E64()
+void runEnemyAttackAnim_8016E64()
 {
     Battle *v0; // r5
     char v1; // zf
@@ -14739,7 +14739,7 @@ int sub_801823C()
 // 0x80182b4
 char *__fastcall GetVerActorTyAndAIIdx_80182B4(int a1)
 {
-    return &byte_80182C4[3 * a1];
+    return &VerActorTyAIIdxTable_80182C4[3 * a1];
 }
 
 
@@ -17118,7 +17118,7 @@ LABEL_40:
     if ( object_getFlag() & 0x100 || (battle_isTimeStop(), v9) )
         result = RunAIAttack(v17);
     else
-        result = sub_8016BFC();
+        result = runAIAttackDuringTimestop_8016BFC();
     return result;
 }
 

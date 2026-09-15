@@ -233,3 +233,62 @@ the file. These field renames also replaced 25 raw `[rX,#0xNN]` accesses across
 `Unk_10` -> `BG1HOfs_10`, `Unk_12` -> `BG1VOfs_12`, `Unk_14` -> `BG2HOfs_14`,
 `Unk_16` -> `BG2VOfs_16`, `Unk_18` -> `BG3HOfs_18`, `Unk_1a` -> `BG3VOfs_1a`
 (each as `oRenderInfo_<new>`).
+
+## Enemy identity, the per-AIIndex tables, the virus dispatch, the Gunner and the shockwave
+
+| old | new | evidence |
+|---|---|---|
+| `byte_80182C4` | `VerActorTyAIIdxTable_80182C4` | "the enemy identity table: 3-byte records `version, ACTOR_TYPE_*, ai_index`, indexed by enemy id" — docs/recon/T10.md:21; TODO_ARCHIVE.md:2976 (T12); src/gunner.rs:269 |
+| `off_8109050` | `AIThinkTables_8109050` | "think off_8109050 32 words … Think words are CurAction-indexed state-HANDLER TABLE pointers … not routines" — TODO_ARCHIVE.md:2976 (T12); docs/coverage/plan-interpreters.md:266 |
+| `off_81090D0` | `AIEnemyStruct1Ptrs_81090D0` | "virus sub-table off_81090D0 (32 ptrs; MettaurEnemyStruct1_8109BD0 at idx 1, GunnerEnemyStruct1_8112B94 at 0x5C)" — docs/recon/T10.md:22 |
+| `off_8109150` | `AIEnemyStruct2Ptrs_8109150` | "off_8109150 -> elem_hp u16 @0x00 with spot-checks Mettaur 0x0028 and Gunner 0x003C" — TODO_ARCHIVE.md:2976 (T12); docs/recon/T10.md:23 |
+| `off_81091D0` | `AIActHandlers_81091D0` | "act off_81091D0 … called via bx r0" — TODO_ARCHIVE.md:2976 (T12) |
+| `off_80B8204` | `T1ActorTypeHandlers_80B8204` | "It reads oBattleObject_AIDataPtr->ActorType and picks one of three handlers below (virus/navi/player)" — this repo's own AUDIT wave 3c note at t1_0x0_80B81EC; docs/coverage/plan-interpreters.md:258 |
+| `battleObject_dispatch_8108F50` | `virusObject_dispatch_8108F50` | CORRECTION of an over-broad existing name: "the 'virus' branch of t1_0x0_80B81EC's ActorType dispatch … ONE caller" — this repo's own note; "virus dispatch: CurState 3-table then unconditionally sub_8016E64" — plan-interpreters.md:261 |
+| `off_8108F68` | `VirusObjectStateHandlers_8108F68` | "the CurState 3-table off_8108F68 -- sub_8016F56 / battle_8108F74 / sub_8016C4E" — src/objects.rs:119 |
+| `battle_8108F74` | `virusObject_update_8108F74` | "per-frame enemy body: sub_81095D0, sub_801ABB8, NameID gates, then AIIndex -> battle_801B1C4 + behavior table + attack table" — plan-interpreters.md:262 |
+| `sub_80F2330` | `naviObject_dispatch_80F2330` | "navi -> sub_80F2330" arm of the same three-way — plan-interpreters.md:258; src/objects.rs:126 |
+| `sub_8016E64` | `runEnemyAttackAnim_8016E64` | "the dispatch tail: the attack-anim driver sub_8016E64" — src/objects.rs:163; plan-interpreters.md:261; and this repo's own older comment "disabling this causes enemy attack animations to cease playing" |
+| `sub_8016BFC` | `runAIAttackDuringTimestop_8016BFC` | "then the RunAIAttack tail (or sub_8016BFC in timestop)" — src/objects.rs:108; plan-interpreters.md:263 |
+| `sub_81130E4` `sub_81130F0` `sub_81130FC` `sub_8113108` | `gunnerMaterialize04_…` … `07_…` | "0x10-0x1C \| sub_81130E4/0F0/0FC/108+1 \| materialize" — docs/coverage/gunner.md:29; each body clears RelatedObject1Ptr then delegates to a shared appear routine |
+| `sub_8113114` | `gunnerClearRelatedObject_8113114` | the body those four share |
+| `sub_8112F4E` | `gunnerAttackExec_8112F4E` | "The CurAction 0x0A arm (the ATTACK the gunner actually fires) is itself a 4-arm state machine dispatched through off_8112F60" — gunner.md:44-48 |
+| `off_8112F60` | `GunnerAttackSteps_8112F60` | same |
+| `sub_8112F70` | `gunnerAttackAimCursor_8112F70` | "0=sub_8112F70 (aim cursor)" — gunner.md:47; src/gunner.rs:385. CONTESTED: TODO_ARCHIVE.md:3410 (T9k, an unmerged NEGATIVE ticket) calls it "spawn projectile". The detailed reading wins; the index is kept in the table's comment either way. |
+| `sub_8112FBA` | `gunnerAttackLockCursor_8112FBA` | "4=sub_8112FBA (cursor locked, fire setup)" — gunner.md:47; src/gunner.rs:388 (same T9k caveat) |
+| `sub_8113002` | `gunnerAttackFireShots_8113002` | "8=sub_8113002 (firing 3 shots 10 frames apart)" — gunner.md:47-48; src/gunner.rs:391 |
+| `ai_8113038` | `gunnerAttackRecover_8113038` | "12=ai_8113038 (recover 24 frames)" — gunner.md:48 |
+| `sub_8113162` | `gunnerRowCheck_8113162` | "the gunner's CurAction transitions to 0x0A via sub_8113162's row-check"; "attacks only when an opponent stands somewhere ahead in its row" — gunner.md:74-75; src/gunner.rs:5 |
+| `sub_80E3CC4` | `lockOnCursor_update_80E3CC4` | "The lock-on CURSOR's update (t4_0x30_80E3B70): moves at the version's speed … locks 24 frames and hands the panel back" — src/gunner.rs:35 |
+| `byte_80C6B00` | `ShockwaveHopTable_80C6B00` | "THE SHOCKWAVE'S PER-HOP TABLE: 16 rows of 4 bytes, indexed by Param1 * 4" — this repo's own note; TODO_ARCHIVE.md:46 (A1) |
+| `off_80C6B58` / `sub_80C6B64` | `ShockwaveSegmentStates_80C6B58` / `shockwaveSegmentInit_80C6B64` | "state 0 sub_80C6B64 loads the sprite then falls through to object_updateSprite the same frame" — TODO_ARCHIVE.md:2053 (F25d); src/battle.rs:3514 |
+| `sub_80C6C14` | `shockwaveSegmentUpdate_80C6C14` | "object_highlightCurrentCollisionPanels is called unconditionally from sub_80C6C14 … the CurState-1 handler" — TODO_ARCHIVE.md:89 (A3); src/battle.rs:3519 |
+| `sub_80C6C6A` | `shockwaveSegmentHop_80C6C6A` | "the old segment's sub_80C6C6A spawns it" — src/shot.rs:51,60 |
+| `sub_80C6CBA` | `shockwaveSegmentDepart_80C6CBA` | "the old one stays put and keeps looping until its own animation reports its last frame" — src/shot.rs:101 |
+| `sub_80C6CE4` | `spawnShockwaveSegment_80C6CE4` | "spawns a whole new object on the next panel" — src/shot.rs:99; and the Mettaur swing calls it at counter 0x1b |
+| `sub_80C6CFC` | `applyShockwavePanelEffect_80C6CFC` | "+3 the panel effect, handed to sub_80C6CFC: 0xff does nothing, 3 calls object_crackPanel, 1 breaks" — this repo's own note on the hop table |
+
+New vocabulary: a header block above `AIThinkTables_8109050` describing the four
+parallel 32-word tables, what a think word actually is, and T12's two
+known-answer checks, plus `NUM_AI_INDICES`; a header on
+`VerActorTyAIIdxTable_80182C4` giving the row shape, the 452 rows and the
+PLAYER tail with no think/act entry; `enemy_getStruct2_struct_RowStride`,
+`ENEMY_ELEM_FIGURE_MASK` and `ENEMY_ELEM_SHIFT` beside `enemy_getStruct2`;
+a role comment on every row of `ForGunner_8113078`; and
+`GUNNER_ATTACK_AIM/LOCK/FIRE/RECOVER` plus the measured
+`GUNNER_SHOTS`/`GUNNER_SHOT_GAP`/`GUNNER_RECOVER_FRAMES`/`GUNNER_LOCK_FRAMES`.
+
+### Left alone here, deliberately
+
+- `sub_8112D9C` — gunner.md calls it the CurAction 0x2C "guard/cleanup",
+  `docs/coverage/opening_integrated.md:104` calls it a state dispatcher that is
+  explicitly NOT the materialize, and `docs/trace/t9g/README.md:117-119` calls it
+  a 234-frame heartbeat. All three may be the same thing, but no source commits,
+  so it keeps its address name and the table now carries all three readings.
+- `sub_80165B8`, `sub_80165C2`, `sub_80166AE`, `sub_8016B02`, `sub_8016CE8`,
+  `sub_8016B36`, `sub_8016B72`, `RunSpawnAnimationMaybe_8016380` — these sit in
+  several AIs' CurAction tables at once, so the per-enemy role names the docs
+  give them (e.g. "the Gunner's idle") would be wrong on the symbol.
+- `off_810C6F0` and the other 29 unnamed think tables — `docs/inventory/enemies.md`
+  maps each to an AIIndex but not to an enemy, so there is no descriptive name to
+  give them; the new header on `AIThinkTables_8109050` says how to read the index.

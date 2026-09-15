@@ -1,7 +1,7 @@
 // 0x80b81ec
 int __usercall t1_0x0_80B81EC@<R0>(Battle *obj@<R5>)
 {
-    return (*(&off_80B8204 + obj->ai->naviVirusIndicator))();
+    return (*(&T1ActorTypeHandlers_80B8204 + obj->ai->naviVirusIndicator))();
 }
 
 
@@ -25571,13 +25571,13 @@ void t3_0x16_80C6B40()
 {
     int v0; // r5
 
-    (*(&off_80C6B58 + *(v0 + 8)))();
+    (*(&ShockwaveSegmentStates_80C6B58 + *(v0 + 8)))();
     object_updateSprite();
 }
 
 
 // 0x80c6b64
-signed int sub_80C6B64()
+signed int shockwaveSegmentInit_80C6B64()
 {
     int v0; // r5
     char *v1; // r4
@@ -25595,7 +25595,7 @@ signed int sub_80C6B64()
         return object_freeMemory();
     if ( !(object_getPanelParameters(*(v0 + 18), *(v0 + 19)) & 0x10) )
         return object_freeMemory();
-    v1 = &byte_80C6B00[4 * *(v0 + 4)];
+    v1 = &ShockwaveHopTable_80C6B00[4 * *(v0 + 4)];
     *(v0 + 96) = v1;
     sprite_load(v0, 128, 16, *v1);
     sprite_noShadow(v0);
@@ -25610,7 +25610,7 @@ signed int sub_80C6B64()
     sprite_setPallete(0);
     v3 = object_getFlip(v0);
     sprite_setFlip(v0, v3);
-    sub_80C6CFC(*(v0 + 18), *(v0 + 19), v1[3]);
+    applyShockwavePanelEffect_80C6CFC(*(v0 + 18), *(v0 + 19), v1[3]);
     object_setCoordinatesFromPanels(v0);
     v4 = object_createCollisionData();
     if ( !v4 )
@@ -25630,7 +25630,7 @@ signed int sub_80C6B64()
 
 
 // 0x80c6c14
-int __noreturn sub_80C6C14()
+int __noreturn shockwaveSegmentUpdate_80C6C14()
 {
     int v0; // r5
     int v1; // r0
@@ -25658,7 +25658,7 @@ int __noreturn sub_80C6C14()
 
 
 // 0x80c6c6a
-int sub_80C6C6A()
+int shockwaveSegmentHop_80C6C6A()
 {
     int v0; // r5
     int v1; // r0
@@ -25688,7 +25688,7 @@ int sub_80C6C6A()
         }
         v6 = *(v0 + 4);
         v7 = *(v0 + 44);
-        sub_80C6CE4(v3, v4, v5, 0);
+        spawnShockwaveSegment_80C6CE4(v3, v4, v5, 0);
         *(v0 + 9) = 4;
     }
     result = sprite_getFrameParameters();
@@ -25702,7 +25702,7 @@ int sub_80C6C6A()
 
 
 // 0x80c6cba
-int sub_80C6CBA()
+int shockwaveSegmentDepart_80C6CBA()
 {
     int v0; // r5
     int result; // r0
@@ -25729,7 +25729,7 @@ int sub_80C6CBA()
 
 
 // 0x80c6ce4
-int __fastcall sub_80C6CE4(char a1, int a2, int a3, int a4)
+int __fastcall spawnShockwaveSegment_80C6CE4(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -25747,7 +25747,7 @@ int __fastcall sub_80C6CE4(char a1, int a2, int a3, int a4)
 
 
 // 0x80c6cfc
-int __fastcall sub_80C6CFC(int result, int a2, signed int a3)
+int __fastcall applyShockwavePanelEffect_80C6CFC(int result, int a2, signed int a3)
 {
     if ( a3 != 255 )
     {
@@ -72229,7 +72229,7 @@ LABEL_18:
 
 
 // 0x80e3cc4
-int __fastcall sub_80E3CC4(int a1, int a2, int a3)
+int __fastcall lockOnCursor_update_80E3CC4(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -87714,7 +87714,7 @@ int __fastcall sub_80ED6CA(char a1, int a2)
 
     v4 = *(v3 + 8) + *(v3 + 6);
     v5 = *(v3 + 12);
-    return sub_80C6CE4(a1 + *(v2 + 18), a2 + *(v2 + 19), *(v3 + 2), 0);
+    return spawnShockwaveSegment_80C6CE4(a1 + *(v2 + 18), a2 + *(v2 + 19), *(v3 + 2), 0);
 }
 
 
@@ -96194,7 +96194,7 @@ int sub_80F22F8()
 
 
 // 0x80f2330
-void sub_80F2330()
+void naviObject_dispatch_80F2330()
 {
     int v0; // r5
 
@@ -131561,17 +131561,17 @@ int sub_8108F28()
 
 
 // 0x8108f50
-void battleObject_dispatch_8108F50()
+void virusObject_dispatch_8108F50()
 {
     int v0; // r5
 
-    (*(&off_8108F68 + *(v0 + oBattleObject_CurState)))();
-    sub_8016E64();
+    (*(&VirusObjectStateHandlers_8108F68 + *(v0 + oBattleObject_CurState)))();
+    runEnemyAttackAnim_8016E64();
 }
 
 
 // 0x8108f74
-int __noreturn battle_8108F74()
+int __noreturn virusObject_update_8108F74()
 {
     int v0; // r5
     signed int v1; // r0
@@ -131641,8 +131641,8 @@ LABEL_13:
     }
 LABEL_21:
     v9 = *(*(v0 + 88) + 1);
-    battle_801B1C4(off_8109050[v9]);
-    v10 = (*(&off_81091D0 + v9 * 4))();
+    battle_801B1C4(AIThinkTables_8109050[v9]);
+    v10 = (*(&AIActHandlers_81091D0 + v9 * 4))();
     object_presentCollisionData(v10, v11);
     result = *(v0 + 9);
     if ( result != 7 )
@@ -132420,7 +132420,7 @@ int MettaurAttackSwing_8109DEC()
         v3 = object_getFrontDirection(v0);
         v4 = *(v1 + 12);
         v5 = *(v1 + 8);
-        sub_80C6CE4(v3 + v0->panelX, v0->panelY, v6, 0);
+        spawnShockwaveSegment_80C6CE4(v3 + v0->panelX, v0->panelY, v6, 0);
         **(v1 + 48) = 1;
     }
     result = *(v1 + 16) - 1;
@@ -135463,7 +135463,7 @@ int __fastcall sub_810C0E4(int a1, int a2, int a3)
             v6 = object_getFrontDirection(v3);
             v7 = *(v4 + 3);
             v8 = *(v4 + 8);
-            sub_80C6CE4(v6 + v3->panelX, v3->panelY, v9, 0);
+            spawnShockwaveSegment_80C6CE4(v6 + v3->panelX, v3->panelY, v9, 0);
             if ( *(v4 + 14) )
                 sub_810C14A();
         }
