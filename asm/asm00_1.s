@@ -10464,10 +10464,18 @@ off_8008034:
 // end-of-battle pipeline: the same table runs BATTLE START!, TURN START!,
 // ENEMY DELETED, MEGAMAN DELETED and the result messages, which is why the
 // entries look unrelated to each other.
-// Entries 6-9 (bannerSeqState18_800834A, bannerSeqState1C_80083E4, bannerSeqState20WindowOpening_8008452, bannerSeqState24WindowOpen_8008492) are a
-// SIBLING BRANCH, reached only where getBattleOutcome_800A152() returns 7 -- a different
-// battle outcome. They never run on the ordinary path where the last enemy
-// is deleted, and cost that path no frames.
+// Entries 6-9 (bannerSeqState18_800834A, bannerSeqState1C_80083E4,
+// bannerSeqState20WindowOpening_8008452, bannerSeqState24WindowOpen_8008492) were
+// read as a SIBLING BRANCH, reached only where getBattleOutcome_800A152() returns
+// 7 -- a different battle outcome -- and never run on the ordinary path where the
+// last enemy is deleted.
+//   CORRECTION (bn T7c/T7u, measured): that holds for entries 6 and 7 only.
+//   Entries 8 and 9 -- states BATTLE_SEQ_WINDOW_OPENING and
+//   BATTLE_SEQ_WINDOW_OPEN -- are squarely on the ordinary path: the fight state
+//   writes 0x20 right after its own `bl PauseBattle` (loc_800819A below) and the
+//   measured run of a whole battle reads 0x08 -> 0x20 -> 0x24 -> 0x00 -> 0x04 ->
+//   0x08. Note also that the older reading numbers ENTRIES while the bn project
+//   numbers STATES; entry N is state N*4.
 // bn T7r (2026-09-15): the BannerSequencerStates_8008038 table indexed here (carried at
 // src/battle.rs:1173-1179 + :3260-3277) drives the SEQ_20->SEQ_24->SEQ_00
 // ->SEQ_04->SEQ_08 chain on the windowclose_full trace scenario scripted

@@ -417,3 +417,77 @@ same sequencer state word with its own table.
 | `sub_8002694` / `sub_3006440` | `emitObjectSpriteOam_8002694` / `emitObjEntry_3006440` | "reached via sub_8002694 -> sub_3006440"; "Emit iff (ObjectSprite.Unk_03 & 0x02) != 0 && (ObjectSprite.Unk_03 & 0x10) == 0" — docs/recon/F39a.md:26,40 |
 | `sub_80466D8` | `getSpriteDrawGateFlags_80466D8` | "return byte of sub_80466D8 bit 0x40 skips the palette+affine loads … bit 0x80 skips only sub_8002818; bit 0x20 gates sub_8002874" — docs/recon/F39a.md:43 |
 | `sub_801BC24` | `object_updateSpriteRebindOnly_801BC24` | "the rebind-only variant -- on a changed animation it rebinds and returns WITHOUT ticking" — src/spr.rs:485; docs/coverage/plan-interpreters.md:58 |
+
+## Contradictions found between the sources
+
+Recorded here because a later reader will hit them too. Where the disassembly's
+own older comment was the losing side, a CORRECTION line was added beside it
+rather than deleting what it said.
+
+1. `BannerSequencerStates_8008038` entries 6-9. This repo's own note said all
+   four "never run on the ordinary path"; T7c's measured run of a whole battle
+   and this file's own `mov r0, #0x20` after `bl PauseBattle` put entries 8 and 9
+   on it. Corrected in place. The same passage also shows two numbering
+   conventions over one table — `TODO_ARCHIVE.md:774` (C2) counts ENTRIES,
+   `TODO_ARCHIVE.md:3071` (T7c) counts STATES; entry N is state N*4.
+2. `sub_8001C94`. Several ticket premises (F36b, F37i-l) call it a BG1 scroll
+   seam handler on a 60-frame cadence and conflate it with
+   `BGScrollCB_BG1Diagonal3to2Scroll`, a different routine 480 lines earlier.
+   `TODO.md:407` (F36c) refutes both: it assembles per-element glyph tiles and
+   queues one transfer of char-block art, and never touches the BG1 map. The
+   name follows F36c.
+3. `sub_801C6EE` carries three roles across the docs — HUD element 6 (chip name
+   and damage), "the BG3 slide", and "the canon per-sprite palette source". The
+   third is refuted by its own ticket's result (`TODO.md:355`, which redirects to
+   `stageObjPalette_8002818`). The name follows the first, which is measured.
+4. `sub_801641A`: F38d says the appearing state has "per-step y motion" here;
+   F38e read the body and refutes it. The refutation is already a note in the file.
+5. `sub_8112F70` / `sub_8112FBA`: `docs/coverage/gunner.md:47` and `src/gunner.rs`
+   say aim cursor / cursor locked; `TODO_ARCHIVE.md:3410` (T9k, an unmerged
+   NEGATIVE) says spawn projectile / buster cursor. Named after the first; the
+   table comment keeps the sub-state index so either reading resolves.
+6. `sub_800FE12`: `src/battle.rs:66` describes it as reading the AI data's version
+   byte; the body reads that byte and then indexes a caller-supplied per-Version
+   u16 table with it, special-casing Version 4. Named after the body.
+7. `eStruct2035280+0x12`: T7d calls it a "post-window banner composite corrector",
+   F33 measured it as the chip window's slide position and predicted -117980 px
+   from that reading. Named after F33; both readings kept at the routine.
+8. `sub_801483C`: `TODO_ARCHIVE.md:3071` (T7c) reads it as the gate the sequencer's
+   settle state waits on and `src/battle.rs:2627` as "the slide-out idle";
+   `docs/coverage/battlestart_gunner.md:40-42` records the surrounding narrative as
+   REFUTED by T9c's verifier. Left unnamed.
+9. `sub_800938A`: F5's premise says it "forces CurState back to idle when the
+   banner sequencer returns 6"; F5's own result says the `cmp r0,#6` it hangs on
+   "is irrelevant". Named for its FSM state (0x0C) instead, which both agree on.
+10. `sub_80C7EC8`: one ticket (T7v) calls it an RNG-cadence mirror that ticks once
+   per frame in its Why and a death-debris spawner in its Result. Named after the
+   Result, which `docs/coverage/battle_full.md:1503` corroborates.
+11. `dword_8617488` was named for the battle backdrop by both the bn docs and the
+   port; this disassembly shows four overworld areas' warp animations use the same
+   blob. Named `GFXAnimTileBlob_8617488` instead.
+
+## Deliberately left unnamed
+
+- `sub_801483C`, `sub_8112D9C`, `sub_800834A`'s role, `sub_8029110` — sources
+  disagree or hedge (see above, and the per-section notes).
+- `sub_80084F0` and `off_8008508` — a second dispatcher over the same sequencer
+  state word; no source names its seven states. A comment now records the sharing.
+- The shared CurAction helpers `sub_80165B8`, `sub_80165C2`, `sub_80166AE`,
+  `sub_8016B02`, `sub_8016CE8`, `sub_8016B36`, `sub_8016B72` — several AIs' tables
+  point at each, so the per-enemy roles the docs give them would be wrong on the
+  symbol.
+- `off_810C6F0` and the other 29 unnamed think tables — `docs/inventory/enemies.md`
+  maps each to an AIIndex but not to an enemy.
+- `sub_8016F56`, `sub_8016C4E`, `sub_81095D0`, `sub_801ABB8`, `sub_8003400`,
+  `sub_80AA824`, `sub_80AA6A4`, `sub_8009C1C` and the rest of the bare
+  cross-references — cited with no role stated anywhere. (`sub_8009C1C` in
+  particular is attributed to ticket F11, whose own result never mentions it.)
+- `byte_81130A8` / `byte_81130C6` — both cited as "the cursor's LOCK duration (24
+  frames)"; nothing says which is which.
+- `comp_825BFC4` — the Gunner's compressed sprite. Renaming it would mean renaming
+  `data/sprites/comp_825BFC4.lz77` and its `.incbin`, which is a different change.
+- `sub_800B8C2` — the note names it alongside the announcer-slot accessors, but its
+  body compares byte 0, not the sync byte at byte 1, and no source says what for.
+- The ~1,650 rows of `docs/coverage/battle_full.md` and `mettaur.md` that are pure
+  hotness rankings. They carry file/line and call counts, which is useful for
+  deciding what to read next, but no role.
