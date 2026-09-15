@@ -8692,6 +8692,27 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 // since the spawn already ran on whatever ROM built that state. A state
 // that shows a genuinely empty field needs a save captured from a real
 // battle-start reached AFTER the patch, i.e. real input from a cold boot.
+// bn F38i (2026-09-15): opening integrated was already 0/0/40 on main
+// HEAD at this routine. Actual canon PAL_OBJ slot pin is in sub_8002818
+// (sprite.s:254-303); agb's try_allocate_shared at src/spr.rs:701-761
+// cannot replicate a fitted slot (forbidden by F38e BLOCKED).
+// bn F38h (2026-09-15): per-enemy panel triple (5,1)/(5,3)/(6,2) at ROM
+// 0x080b5354 is masked here into unused descriptor offsets 56-62; the
+// 72499/2691 -> 25829/931 reduction in src/fixture.rs is the headlined
+// gain, with PAL_OBJ alloc order in src/spr.rs:701-761 named as residual.
+// bn F38g (2026-09-15): same panel-byte cherry-pick as F38f reintroduces
+// the 64->67-byte descriptor (FIXTURE_SIZE +17, TRACE_OFFSET +4 in
+// src/main.rs + tools/harness.py); cursor fixture state is not in
+// tools/states.py and /tmp/chipselect.state is hand-captured, so cursor
+// 1/1/170 -> 26/25/170 has no regen path.
+// bn F38f (2026-09-15): the 64->67 byte descriptor (FIXTURE_SIZE +17,
+// TRACE_OFFSET +4 in src/main.rs + tools/harness.py) regressed cursor
+// 1/1/170 -> 26/25/170; panel bytes (5,1)/(5,3)/(6,2) read here match
+// canon at ROM 0x080b5354, but cursor state files are sized for 64.
+// bn F38e (2026-09-15): the per-enemy panel triple lives in this routine's
+// descriptor, but src/fixture.rs is outside F38e's allowed files; a
+// hardcoded triple violates "never a fitted panel triple". Per-enemy
+// panels at 0x080b5354 confirmed as 0x15/0x35/0x26 = (5,1)/(5,3)/(6,2).
 spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	push {r5,lr}
 
@@ -10419,6 +10440,11 @@ off_8008018:
 	thumb_func_end sub_8007FD2
 
 	thumb_local_start
+// bn T7u (2026-09-15): the chip-select window dispatcher here kicks the
+// SEQ_08 -> SEQ_20 -> SEQ_24 -> SEQ_00 -> SEQ_04 -> SEQ_08 chain; fitted
+// SEQ04_FRAMES=60 in src/battle.rs:~2724 leave-predicate is parked at
+// the wrong seq scenario, and banner_at 30-frame countdown defeats the
+// banner_idle check from this dispatcher's off_8008038 table.
 sub_800801C:
 	push {r5,lr}
 	ldr r5, off_8008060 // =dword_203CA70
@@ -10442,6 +10468,11 @@ off_8008034:
 // SIBLING BRANCH, reached only where sub_800A152() returns 7 -- a different
 // battle outcome. They never run on the ordinary path where the last enemy
 // is deleted, and cost that path no frames.
+// bn T7r (2026-09-15): the off_8008038 table indexed here (carried at
+// src/battle.rs:1173-1179 + :3260-3277) drives the SEQ_20->SEQ_24->SEQ_00
+// ->SEQ_04->SEQ_08 chain on the windowclose_full trace scenario scripted
+// with gauge=1 + scripted A@170 (drops mm_state_action/anim/timer
+// 101/86/302 -> 76/78/270).
 off_8008038:
 	.word sub_800840C+1
 	.word sub_8008064+1
@@ -10466,6 +10497,10 @@ sub_8008064:
 	bl sub_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
+// bn T7d (2026-09-15): this bne loc_80080B2 in sub_8008064 is one of the
+// three fitted edges; src/battle.rs's windowclose_full trace carries the
+// named canon-predicate for the byte-[r5,#3] exit condition that arms
+// timer 0x1e at the next instruction (mov r0, #0x1e, strh r0, [r5,#8]).
 	bne loc_80080B2
 	mov r0, #0x1e
 	strh r0, [r5,#8]
@@ -10486,6 +10521,11 @@ loc_8008096:
 	mov r1, #8
 	tst r0, r1
 	bne loc_80080A6
+// bn T7c (2026-09-15): the chip-window open path here -- loc_80080A6 /
+// sub_80080AE -- is where the resolved-end sequence narrows to
+// matches!(state, SEQ_0C | SEQ_10); DISSOLVE_FRAMES (canon blow->0x0C
+// +35, ours +34) and start_state==1 opening at SEQ_0C live in
+// src/battle.rs; battle_full sequencer 173/540 still diverges.
 	mov r0, #0
 	mov r1, #0
 	b sub_80080AE
@@ -10507,6 +10547,11 @@ loc_80080B2:
 	lsl r0, r0, #8
 	add r0, #0xff
 	bl sub_801E0C8
+// bn T7u (2026-09-15): sub_8008064 here is the SEQ_04 -> SEQ_08 leave
+// predicate that arms timers 0x1e and 0x293 at entry and returns 0 when
+// the banner composite is idle; src/battle.rs:2615-2655 carries the rust
+// gauge_pause=60 chime but the fitted SEQ04_FRAMES=60 at ~:2724 parks at
+// the wrong seq scenario, letting the banner_at 30-frame countdown win.
 	mov r0, #8
 	str r0, [r5]
 locret_80080D0:
@@ -10602,6 +10647,11 @@ loc_8008184:
 	mov r0, #1
 	bl sub_802E070
 	ldrh r1, [r0,#0x28]
+// bn T7d (2026-09-15): this loc_800819A's bl PauseBattle in sub_80080D2
+// is one of the three fitted edges; src/battle.rs carries the named
+// canon-predicate for the pause-state entry on the window-close banner
+// cycle. The 144..206 byte-identical canonical block of off_8008038 lands
+// at this entry in the windowclose_full trace scenario.
 	ldr r2, off_80084D0 // =0x2900
 	sub r1, r1, r2
 	strh r1, [r0,#0x28]
@@ -12756,6 +12806,11 @@ off_8009154:
 	.word 0x400
 	thumb_func_end sub_8009140
 
+// bn T7r (2026-09-15): sub_8009158 dispatcher carries the seq.state gate
+// in src/battle.rs Actor::update / t1_player_entry, early-returning
+// Update::Nothing when seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04}
+// (cite T7q PARTIAL f80b72f); sub_8008452 / sub_8008... chain hands
+// off to sub_800A21C's gauge-full path on the SEQ_04 -> SEQ_08 edge.
 	thumb_local_start
 sub_8009158:
 	push {lr}
@@ -13057,6 +13112,11 @@ sub_8009338:
 	cmp r0, #0
 	bne loc_800934E
 	mov r0, #4
+// bn T9d (2026-09-15): Index_01 parks 0x08 here at sub_8009338's beq
+// (lines 13065-13067 in this disassembly) because eS20364C0.JumpOffset00
+// parks at 4; sequencer moves only on hand-played PAUSED root, so no
+// dword_203CA70 writer on either battlestart route -- mettaur's live
+// canon is PAUSED, not battlestart (harness.py:958), no row premise broken.
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
 	strb r0, [r5,#oBattleState_Unk_03]
@@ -15199,6 +15259,11 @@ loc_800A218:
 	pop {pc}
 	thumb_func_end sub_800A1D0
 
+// bn T7r (2026-09-15): sub_800A21C is the gauge-full -> PauseBattle path
+// (L is debug-only); src/battle.rs:2615-2655 carries the rust counterpart
+// gauge_pause=60 chime. It pairs with sub_8009158's dispatcher as the
+// SEQ_04 -> SEQ_08 leave predicate in the sequencer chain that T7r
+// documented on the windowclose_full trace.
 	thumb_local_start
 sub_800A21C:
 	push {lr}

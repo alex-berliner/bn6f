@@ -10420,6 +10420,13 @@ loc_80AA670:
 	tst r4, r4
 	bne loc_80AA678
 	mov r0, #0
+// bn T9b (2026-09-15): this ldr of iCurrFrame in sub_80AA4C0 is the
+// frame-60 one-shot poke target -- 0x0200a210:0x371 (value -1, same mod-12
+// class as 5) makes the roll pick BattleSettings record index 6 =
+// 0x080b4bd8 and slots populate at frame 148 with slot0 panel 0x0205 /
+// NameID 0x0001 / HP 0x0028 (Mettaur) and slot1 panel 0x0306 / NameID
+// 0x0085 / HP 0x003c (Gunner). The poke-at-61:0x02001b9c approach
+// doesn't work because the enemy list is built inside frame 60.
 	b loc_80AA68E
 loc_80AA678:
 	ldr r0, off_80AA884 // =iCurrFrame 

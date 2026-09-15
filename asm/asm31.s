@@ -107144,6 +107144,12 @@ off_80EA478:
 	.word playerObject_init_80172F0+1
 	.word playerObject_update_80EA484+1
 	.word sub_8016C4E+1
+// bn T7r (2026-09-15): playerObject_update_80EA484 carries the per-frame
+// gate on seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04} used by T7q PARTIAL
+// f80b72f to early-return Update::Nothing in src/battle.rs's Actor::update /
+// t1_player_entry; this is the canonical cite on the player side that
+// complements sub_8009158's dispatcher gate (asm00_1.s:12760) on the
+// battle-state side, both needed for the SEQ_08 chain T7r documents.
 	thumb_func_end playerObject_main_80EA460
 
 	thumb_local_start
@@ -169394,6 +169400,12 @@ loc_8109020:
 	ldrb r0, [r0,#oAIData_AIIndex]
 	lsl r4, r0, #2
 
+// bn T12 (2026-09-15): the CurAction-indexed state-HANDLER TABLE
+// pointers dispatch via off_8109050 (think: 32 distinct handler tables,
+// 2 named For*) to battle_801B1C4 here -- tools/rom_enemy_tables.py emits
+// docs/inventory/enemies.md cross-referencing the think word table via
+// the dispatcher that passes it as an argument. battle_801B1C4 carries
+// this through to the per-type state-machine execution from off_81091D0.
 	ldr r1, off_8109048 // =off_8109050 
 	ldr r0, [r1,r4]
 	bl battle_801B1C4
@@ -170978,6 +170990,12 @@ sub_8109EE4:
 locret_8109EF2:
 	pop {pc}
 	.balign 4, 0
+// bn T12 (2026-09-15): ForMettaur_8109EF4 is the named think handler for
+// AI 0x01 (idx 0x01..0x04) -- one of 32 distinct handler tables dispatch
+// indexed by AIIndex * 4 against off_8109050; src/objects.rs Style::Mettaur
+// arm calls into this for the Mettaur's per-action update. tools/rom_enemy_tables.py
+// emits the named FOR entries; known-answer check idx 0x01..0x04 -> AI 0x01
+// confirms the layout.
 // indexed by CurAction * 4
 ForMettaur_8109EF4: 
 	// 0x00 (0x00) (CurAction -> 0x01)

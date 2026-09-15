@@ -827,6 +827,12 @@ clearWord_e200AC1C:
 	mov pc, lr
 	thumb_func_end clearWord_e200AC1C
 
+// bn F37l (2026-09-15): this mid-frame GFXTransfer drain lands tiles
+// during scanline emission; src/backdrop.rs lacks sub-frame tile replace
+// infra (HBlank callback / mid-scanline drain queue), so BNBD's
+// pre-transformed 7-step GFXAnim at sub_8001C94 leaves a 1 px residue at
+// scanline y=5 on k=97 because show_step's replace_tile loop writes all
+// 36 tiles before scanline 0.
 	thumb_func_start ProcessGFXTransferQueue
 ProcessGFXTransferQueue:
 	push {lr}
@@ -3748,6 +3754,11 @@ off_8001C90:
 	.word eMapTilesState200be70
 	thumb_func_end sub_8001C52
 
+// bn F37l (2026-09-15): per-element handlers here write per-tile bytes
+// into the EWRAM buffer mid-frame; the 1 px residue at scanline y=5 on
+// k=97 is the queue-vs-loop timing mismatch with src/backdrop.rs, not the
+// byte transform itself -- BNBD already holds the 7 pre-transformed GFXAnim
+// steps in show_step's replace_tile loop covering all 36 tiles pre-scanline.
 	thumb_local_start
 sub_8001C94: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {r4,r7,lr}

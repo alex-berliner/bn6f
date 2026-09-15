@@ -11541,6 +11541,11 @@ off_802BCB0:
 	.word byte_802BB7A
 	.word byte_802BB80
 	.word byte_802BB86
+// bn T10 (2026-09-15): off_802BCB0's terminator .word NULL at the 64th
+// PA pointer is the signal tools/inventory.py subtracts from the raw PA
+// count to land on 63 PA records; named in docs/SCOPE.md's generated
+// "## Per-item tables" text as the trailing NULL the PA pointer array
+// carries to mark its length.
 	.word byte_802BB8C
 	.word byte_802BB92
 	.word NULL
@@ -15110,6 +15115,11 @@ sub_802D6C4:
 	beq loc_802D6DE
 	ldr r0, [r5,#0x8] // (dword_203C978 - 0x203c970)
 	bl sub_802DD10
+// bn T7d (2026-09-15): the chip-banner table dispatched here via
+// sub_802DD10 / sub_802DD1E in loc_802D6DE drives tools/states.py's
+// windowclose_full scenario; src/battle.rs's named canon-predicates for
+// the SEQ_04->SEQ_08 transition trace through this call, with the canon
+// row range 144..206 byte-identical to the stored battle_full record.
 loc_802D6DE:
 	ldr r0, [r5,#0xc] // (dword_203C97C - 0x203c970)
 	bl sub_802DD1E

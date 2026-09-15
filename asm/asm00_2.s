@@ -680,6 +680,11 @@ off_800F230:
 	.equiv enemy_getStruct2_struct_UnkFlags_03, 0x03 // u8
 	.equiv enemy_getStruct2_struct_ElemDamage, 0x04 // u16
 
+// bn T10 (2026-09-15): elem_hp = low 12 bits, element = high nibble of
+// `.hword 0xXYYY`. Carried into docs/SCOPE.md and docs/inventory/
+// enemies.{json,md} via tools/inventory.py + tools/rom_enemy_tables.py;
+// the spot-check Mettaur 0x0028 / Gunner 0x003C on poked HP confirms
+// the canon's slots via off_8109150 in T12's table.
 // where for elem_hp and elem_dmg, in a `.hword 0xXYYY` `X` is likely elem and `YYY` is hp/damage.
 	thumb_func_start enemy_getStruct2
 enemy_getStruct2:
@@ -16097,12 +16102,30 @@ locret_8016418:
 	pop {pc}
 	thumb_func_end sub_80163B4
 
+// bn F38h (2026-09-15): this routine does NOT do per-step y motion --
+// only Timer/Timer2 decrement + mosaic+alpha setters; F38e parsed the
+// body here as the canonical answer to "where does per-step y motion
+// happen" and concluded it does not, leaving the 24-px position delta
+// to the panel triple bug at spawnEnemy_80073E2 (asm00_1.s:8695).
+// bn F38f (2026-09-15): F38f did NOT modify sub_801641A's body; the
+// descriptor size change (FIXTURE_SIZE +17, TRACE_OFFSET +4) that caused
+// F38f's revert came from src/fixture.rs / src/main.rs / tools/harness.py
+// edits only.
+// bn F38e (2026-09-15): per-step y-motion is absent from this routine's
+// body; Timer/Timer2 decrement + mosaic+alpha setters are the ONLY
+// operations, ruling out a missing call here as the 24-px delta cause.
+// 16101-16136 named in F38e's failed analysis as the suspected per-step
+// y setter.
 	thumb_local_start
 sub_801641A:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
+// bn F38e (2026-09-15): the bne locret_801645E here is the only leave
+// branch on Timer reaching zero; no positional write exists in this
+// routine -- the 24-px delta is fully explained by the panel triple bug
+// at spawnEnemy_80073E2 (asm00_1.s:8695), not a missing call here.
 	bne locret_801645E
 	mov r0, #2
 	strh r0, [r5,#oBattleObject_Timer]
@@ -20423,6 +20446,12 @@ byte_80182C4:
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x1e // 0x1b1
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x1f // 0x1b2
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x20 // 0x1b3
+// bn T12 (2026-09-15): this row (idx 0x1b4 = 436) is near the inferred
+// tail of byte_80182C4 (452 identity rows; last row idx 0x1C3 v=0x00/
+// PLAYER/AI=0x30, no filler). tools/rom_enemy_tables.py uses the bound
+// from getBattleArmPositionMaybe_8018810 to land off_8109150's elem_hp
+// u16 @0x00 with spot-check Mettaur 0x0028 / Gunner 0x003C. The four
+// 0x80-byte tables off_8109050/0x90D0/0x9150/0x91D0 are next per T12.
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x21 // 0x1b4
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x22 // 0x1b5
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x23 // 0x1b6
@@ -26615,6 +26644,17 @@ byte_801C6E8:
 	.byte 0x6A, 0x1, 0x69, 0x1, 0x8F, 0x0
 	thumb_func_end sub_801C640
 
+// bn F38i (2026-09-15): this BG3 slide routine is paired with the panel
+// triple at spawnEnemy_80073E2 (asm00_1.s:8695) for the F38h opening
+// integrated objective; F38i named it as adjacent canon to the per-enemy
+// panel assignment but the actual PAL_OBJ slot pin lives in sub_8002818
+// (sprite.s:254-303), not here -- src/spr.rs:701-761's try_allocate_shared
+// is what cannot replicate a fitted PAL_OBJ slot.
+// bn F36a (2026-09-15): this writes the queued chip name + damage + slide
+// tiles to BG3 map rows 0x12/0x13 (screen y=144..159); 100% of warp
+// 40628 lives on k=24..29 in this 6-frame ramp. src/battle.rs's BG3 slide
+// (F34 driver chain) lands on a different frame than the canon, so the
+// ramp appears as warp integrated residue.
 	thumb_local_start
 sub_801C6EE:
 	push {r4-r7,lr}
@@ -30967,6 +31007,11 @@ byte_801E700:
 
 	thumb_func_start sub_801E71C
 sub_801E71C:
+// bn T7d (2026-09-15): this strb r0, [r1,#0x12] in sub_801E71C is the
+// post-window banner composite corrector; src/battle.rs carries the named
+// canon-predicate on the eStruct2035280+0x12 byte that the window-close
+// banner cycle depends on. It is one of the three fitted edges named in
+// T7d's windowclose_full trace scenario.
 	push {r1,lr}
 	ldr r1, off_801E77C // =eStruct2035280
 	strb r0, [r1,#0x12] // (byte_2035292 - 0x2035280)
