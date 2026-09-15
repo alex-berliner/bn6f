@@ -531,7 +531,7 @@ decompSprites_80029A8:
 	ldr r5, off_8002BF0 // =byte_200DCA0
 	ldr r1, [r5,#0x4c] // (dword_200DCEC - 0x200dca0)
 	ldr r4, off_8002BC0 // =SpritePointersList
-	ldr r6, off_8002BC8 // =dword_2033000
+	ldr r6, off_8002BC8 // =ePAScratch_2033000
 	mov r7, r0
 loc_80029BC:
 	ldrb r0, [r7]
@@ -636,7 +636,7 @@ sprite_decompress:
 	ldr r5, off_8002BF0 // =byte_200DCA0
 	ldr r1, [r5,#0x4c] // (dword_200DCEC - 0x200dca0)
 	ldr r4, off_8002BC0 // =SpritePointersList
-	ldr r6, off_8002BC8 // =dword_2033000
+	ldr r6, off_8002BC8 // =ePAScratch_2033000
 	lsl r2, r0, #0x18
 	lsr r2, r2, #0x16
 	lsr r3, r0, #8
@@ -752,7 +752,7 @@ sprite_decompressTemp:
 	bl sub_8002BCC
 	ldr r1, [r5,#0x4c] // (dword_200DCEC - 0x200dca0)
 	ldr r4, off_8002BC0 // =SpritePointersList
-	ldr r6, off_8002BC8 // =dword_2033000
+	ldr r6, off_8002BC8 // =ePAScratch_2033000
 	mov r3, r5
 	add r3, #4
 	mov r9, r1
@@ -820,7 +820,7 @@ off_8002BC0:
 dword_8002BC4:
 	.word 0x2040000
 off_8002BC8:
-	.word dword_2033000
+	.word ePAScratch_2033000
 	thumb_func_end sprite_decompressTemp
 
 	thumb_local_start

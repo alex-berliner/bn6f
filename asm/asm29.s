@@ -11216,7 +11216,7 @@ sub_80AABA4:
 	str r4, [sp,#4]
 	str r4, [sp,#8]
 	ldr r5, off_80AAC78 // =unk_2036750 
-	ldr r6, off_80AAC80 // =dword_2033000 
+	ldr r6, off_80AAC80 // =ePAScratch_2033000 
 loc_80AABB8:
 	lsr r0, r4, #3
 	ldrb r0, [r5,r0]
@@ -11327,7 +11327,7 @@ off_80AAC78:
 off_80AAC7C:
 	.word 0x140
 off_80AAC80:
-	.word dword_2033000
+	.word ePAScratch_2033000
 	.word 0x2201
 off_80AAC88:
 	.word 0x201
@@ -11425,7 +11425,7 @@ loc_80AAD26:
 loc_80AAD30:
 	str r0, [sp]
 	str r5, [sp,#4]
-	ldr r6, off_80AAE74 // =dword_2033000 
+	ldr r6, off_80AAE74 // =ePAScratch_2033000 
 	mov r0, #0xc
 	mul r0, r5
 	add r6, r6, r0
@@ -11513,7 +11513,7 @@ loc_80AADB6:
 	bne loc_80AADB6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk2002230_Ptr]
-	ldr r1, off_80AAE7C // =dword_2033000 
+	ldr r1, off_80AAE7C // =ePAScratch_2033000 
 	ldr r2, off_80AAE80 // =0xf00 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, r10
@@ -11534,7 +11534,7 @@ loc_80AADE4:
 	sub r4, #1
 	bne loc_80AADE4
 	mov r4, #0
-	ldr r7, off_80AAE84 // =dword_2033000 
+	ldr r7, off_80AAE84 // =ePAScratch_2033000 
 loc_80AADFC:
 	// idx
 	mov r0, r4
@@ -11607,15 +11607,15 @@ off_80AAE6C:
 off_80AAE70:
 	.word 0x140
 off_80AAE74:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_80AAE78:
 	.word dword_203300C
 off_80AAE7C:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_80AAE80:
 	.word 0xF00
 off_80AAE84:
-	.word dword_2033000
+	.word ePAScratch_2033000
 dword_80AAE88:
 	.word 0x137
 off_80AAE8C:

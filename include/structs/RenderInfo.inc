@@ -15,7 +15,7 @@
 	// Unk_18/Unk_1a BG3HOFS/BG3VOFS (0x0400001c/0x0400001e). Confirmed live
 	// against the real ROM (mgba_capture --watch, base struct at
 	// eRenderInfo == 0x0200ac40 per ewram.s so Unk_18 is 0x0200ac58): while
-	// the chip window (sub_8026B04/sub_8026BF4, this struct's own
+	// the chip window (chipWindowState00SlideIn_8026B04/chipWindowState08SlideOut_8026BF4, this struct's own
 	// Unk_18 write at asm03_0.s:907/974/1111) slides in/out, EWRAM
 	// 0x0200ac58 counts exactly the 0x78->0 (or reverse) sequence those
 	// functions write, in lock-step with the window's own visible motion
@@ -34,15 +34,15 @@
 	u16 Unk_00 // loc=0x0
 	u16 Unk_02 // loc=0x2
 	struct_org 0xa
-	u16 Unk_0a // loc=0xa -- BG3CNT (0x0400000e)
-	u16 Unk_0c // loc=0xc -- BG0HOFS (0x04000010)
-	u16 Unk_0e // loc=0xe -- BG0VOFS (0x04000012)
-	u16 Unk_10 // loc=0x10 -- BG1HOFS (0x04000014)
-	u16 Unk_12 // loc=0x12 -- BG1VOFS (0x04000016)
-	u16 Unk_14 // loc=0x14 -- BG2HOFS (0x04000018)
-	u16 Unk_16 // loc=0x16 -- BG2VOFS (0x0400001a)
-	u16 Unk_18 // loc=0x18 -- BG3HOFS (0x0400001c)
-	u16 Unk_1a // loc=0x1a -- BG3VOFS (0x0400001e)
+	u16 BG3Control_0a // loc=0xa
+	u16 BG0HOfs_0c // loc=0xc
+	u16 BG0VOfs_0e // loc=0xe
+	u16 BG1HOfs_10 // loc=0x10
+	u16 BG1VOfs_12 // loc=0x12
+	u16 BG2HOfs_14 // loc=0x14
+	u16 BG2VOfs_16 // loc=0x16
+	u16 BG3HOfs_18 // loc=0x18
+	u16 BG3VOfs_1a // loc=0x1a
 	struct_org 0x40
 	u0 Size // loc=0x40
 	restore_struct_label

@@ -1169,7 +1169,7 @@ sub_8039198:
 	push {lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x14]
+	ldrh r0, [r3,#oRenderInfo_BG2HOfs_14]
 	sub r0, #9
 	strh r0, [r3,#0x14]
 	pop {pc}
@@ -2968,7 +2968,7 @@ sub_803A25C:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r7,#0x14]
+	strh r0, [r7,#oRenderInfo_BG2HOfs_14]
 	strh r0, [r7,#0x18]
 	ldr r0, off_803A29C // =byte_87E672C
 	ldr r1, off_803A2A0 // =unk_3001AE0
@@ -4867,7 +4867,7 @@ sub_803B184:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
 	mov r0, #4
-	strh r0, [r3,#0x12]
+	strh r0, [r3,#oRenderInfo_BG1VOfs_12]
 	strh r0, [r3,#0x16]
 	strh r0, [r3,#0x1a]
 	bl copyData_803B45C
@@ -5100,7 +5100,7 @@ copyData_803B3C8:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x16]
+	ldrh r0, [r3,#oRenderInfo_BG2VOfs_16]
 	sub r0, #4
 	strh r0, [r3,#0x16]
 	ldrh r0, [r3,#0x14]
@@ -6679,7 +6679,7 @@ sub_803C2F0:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x14]
+	ldrh r0, [r3,#oRenderInfo_BG2HOfs_14]
 	add r0, #0xa
 	strh r0, [r3,#0x14]
 	pop {r4-r7,pc}
@@ -13994,7 +13994,7 @@ sub_803FC14:
 	push {r4,r6,r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x10]
+	ldrh r0, [r3,#oRenderInfo_BG1HOfs_10]
 	sub r0, #4
 	strh r0, [r3,#0x10]
 	ldr r3, off_803FCE0 // =eDecompBuffer2013A00

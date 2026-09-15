@@ -2080,7 +2080,7 @@ loc_8047188:
 	bl sub_8047800
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r7,#0x10]
+	ldrh r6, [r7,#oRenderInfo_BG1HOfs_10]
 	sub r6, #1
 	strh r6, [r7,#0x10]
 	ldrh r6, [r7,#0x12]
@@ -5828,7 +5828,7 @@ copyData_8049A18:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x16]
+	ldrh r0, [r3,#oRenderInfo_BG2VOfs_16]
 	sub r0, #4
 	strh r0, [r3,#0x16]
 	ldrh r0, [r3,#0x14]
@@ -6627,7 +6627,7 @@ copyData_804A0AC:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#0x16]
+	ldrh r0, [r3,#oRenderInfo_BG2VOfs_16]
 	sub r0, #4
 	strh r0, [r3,#0x16]
 	ldrh r0, [r3,#0x14]
@@ -9644,7 +9644,7 @@ sub_804C1D4:
 	ldrb r2, [r2,r0]
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r4,#0x14]
+	ldrh r0, [r4,#oRenderInfo_BG2HOfs_14]
 	ldrb r3, [r5,#0x15]
 	add r3, r3, r1
 	strb r3, [r5,#0x15]
@@ -9765,7 +9765,7 @@ sub_804C298:
 	strb r0, [r3,#0x17] // (byte_2000AD7 - 0x2000ac0)
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r2,#0x14]
+	ldrh r0, [r2,#oRenderInfo_BG2HOfs_14]
 	strh r0, [r3,#0x1a] // (word_2000ADA - 0x2000ac0)
 	ldrh r0, [r2,#0x16]
 	strh r0, [r3,#0x1c] // (word_2000ADC - 0x2000ac0)
@@ -9798,7 +9798,7 @@ sub_804C2D0:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
 	ldrh r0, [r3,#0x1a] // (word_2000ADA - 0x2000ac0)
-	strh r0, [r2,#0x14]
+	strh r0, [r2,#oRenderInfo_BG2HOfs_14]
 	ldrh r0, [r3,#0x1c] // (word_2000ADC - 0x2000ac0)
 	strh r0, [r2,#0x16]
 	mov r2, r10
@@ -9864,7 +9864,7 @@ sub_804C348:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804C3B4 // =0x1f09 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	mov r0, #0
 	strh r0, [r1,#0x1a]
 	strh r0, [r1,#0x18]
@@ -9992,7 +9992,7 @@ sub_804C43C:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804C474 // =0x1f82 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_Unk200f3a0_Ptr]
 	mov r0, #0x3f 
@@ -10111,7 +10111,7 @@ sub_804C53C:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804C5B4 // =0x1f09 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	bl SetDummyBGScrollCallbacks
 	ldrb r0, [r5,#0xc]
 	tst r0, r0
@@ -10369,7 +10369,7 @@ sub_804C72C:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804C76C // =0x1f09 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	bl sub_804C844
 	mov r0, #4
 	strb r0, [r5,#0x10]
@@ -10641,7 +10641,7 @@ sub_804CB0C:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804CB5C // =0x1f09 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	mov r0, #0
 	strh r0, [r1,#0x1a]
 	strh r0, [r1,#0x18]
@@ -10760,7 +10760,7 @@ sub_804CBDC:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_804CC38 // =0x1f09 
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	ldr r1, [r4,#oToolkit_Unk2009740_Ptr]
 	mov r0, #0x48 
 	strb r0, [r1]
@@ -10954,7 +10954,7 @@ sub_804CD5C:
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
 	ldr r0, byte_804CDC4 // =0x9
-	strh r0, [r1,#0xa]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	mov r0, #0
 	strh r0, [r1,#0x1a]
 	strh r0, [r1,#0x18]
@@ -11039,7 +11039,7 @@ sub_804CE0C:
 	ldrb r2, [r1,#1]
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r4,#0x18]
+	ldrh r0, [r4,#oRenderInfo_BG3HOfs_18]
 	ldrb r3, [r5,#0x13]
 	add r3, r3, r1
 	strb r3, [r5,#0x13]

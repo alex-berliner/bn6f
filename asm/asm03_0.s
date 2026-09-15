@@ -562,7 +562,7 @@ loc_8026858:
 	bl sub_8029EC8
 	mov r4, r0
 loc_8026898:
-	ldr r0, off_80269A0 // =byte_86E625C 
+	ldr r0, off_80269A0 // =ChipWindowMap_86E625C 
 	tst r4, r4
 	beq loc_80268A0
 	ldr r0, off_80269A4 // =byte_86E64B4 
@@ -571,7 +571,7 @@ loc_80268A0:
 	ldr r2, off_80269A8 // =0x258 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r2, #0x9b
-	ldr r6, off_80269AC // =byte_8027B2C 
+	ldr r6, off_80269AC // =ChipWindowMapPatches_8027B2C 
 loc_80268AC:
 	ldr r0, dword_80269B0 // =0xfff 
 	and r0, r2
@@ -583,7 +583,7 @@ loc_80268AC:
 	ldrb r3, [r6,#2]
 	ldrb r4, [r6,#3]
 	ldrb r5, [r6,#5]
-	bl sub_8027CCC
+	bl applyChipWindowMapPatches_8027CCC
 	add r6, #6
 	ldrb r0, [r6]
 	cmp r0, #0xff
@@ -649,8 +649,8 @@ loc_8026936:
 	strb r0, [r5,#0xc] // (byte_20364CC - 0x20364c0)
 loc_802694C:
 	bl sub_802A49C
-	bl sub_802A40C
-	bl sub_802945A
+	bl getChipsOfferedPerWindow_802A40C
+	bl packDeckEntries_802945A
 	bl sub_802A646
 	bl sub_8027D58
 	strb r0, [r5,#0x5] // (dword_20364C4+1 - 0x20364c0)
@@ -661,7 +661,7 @@ loc_802694C:
 loc_802696E:
 	ldr r0, dword_80269B4 // =0x1ff 
 	push {r1}
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldr r0, [sp]
 	mov r1, #0
 	mov r2, #1
@@ -669,7 +669,7 @@ loc_802696E:
 	pop {r1}
 	sub r1, #1
 	bpl loc_802696E
-	bl sub_8028476
+	bl drawChipCard_8028476
 	bl sub_8015940
 	bl sub_802A0EC
 	pop {r4-r7,pc}
@@ -681,13 +681,13 @@ off_8026998:
 dword_802699C:
 	.word 0x20130
 off_80269A0:
-	.word byte_86E625C
+	.word ChipWindowMap_86E625C
 off_80269A4:
 	.word byte_86E64B4
 off_80269A8:
 	.word 0x258
 off_80269AC:
-	.word byte_8027B2C
+	.word ChipWindowMapPatches_8027B2C
 dword_80269B0:
 	.word 0xFFF
 dword_80269B4:
@@ -757,8 +757,8 @@ locret_8026A26:
 	pop {r5,pc}
 	thumb_func_end sub_80269E2
 
-	thumb_func_start sub_8026A28
-sub_8026A28:
+	thumb_func_start isChipWindowReady_8026A28
+isChipWindowReady_8026A28:
 	push {r5,lr}
 	ldr r5, off_8026BF0 // =eS20364C0 
 	ldr r1, off_8026A38 // =off_8026A3C 
@@ -773,15 +773,15 @@ sub_8026A28:
 off_8026A38:
 	.word off_8026A3C
 off_8026A3C:
-	.word sub_8026A50+1 // (self: * S20364C0 $r5) -> u8
+	.word chipWindowReadyState00_8026A50+1 // (self: * S20364C0 $r5) -> u8
 	.word custMenuMainMaybe_8026A88+1 // (self: * S20364C0 $r5) -> u8
-	.word sub_8026A6C+1 // (self: * S20364C0 $r5) -> u8
+	.word chipWindowReadyState08_8026A6C+1 // (self: * S20364C0 $r5) -> u8
 	.word 0x100
 	.word eStruct200F360
-	thumb_func_end sub_8026A28
+	thumb_func_end isChipWindowReady_8026A28
 
 	thumb_local_start
-sub_8026A50: // (self: * S20364C0 $r5) -> u8
+chipWindowReadyState00_8026A50: // (self: * S20364C0 $r5) -> u8
 	push {lr}
 	bl sub_802FE48
 	strb r0, [r5,#oS20364C0_Unk_0e]
@@ -794,10 +794,10 @@ sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	str r0, [r5]
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8026A50
+	thumb_func_end chipWindowReadyState00_8026A50
 
 	thumb_local_start
-sub_8026A6C: // (self: * S20364C0 $r5) -> u8
+chipWindowReadyState08_8026A6C: // (self: * S20364C0 $r5) -> u8
 	push {lr}
 	bl sub_8027D78
 	ldrb r0, [r5,#0xe]
@@ -807,13 +807,13 @@ sub_8026A6C: // (self: * S20364C0 $r5) -> u8
 	bl sub_802A0F8
 	ldrb r0, [r5,#4]
 	pop {pc}
-	thumb_func_end sub_8026A6C
+	thumb_func_end chipWindowReadyState08_8026A6C
 
 	thumb_local_start
 custMenuMainMaybe_8026A88: // (self: * S20364C0 $r5) -> u8
 	push {r5,lr}
 	ldr r5, off_8026BF0 // =eS20364C0 
-	ldr r1, off_8026AA0 // =off_8026AA4 
+	ldr r1, off_8026AA0 // =ChipWindowStates_8026AA4 
 
 	ldrb r0, [r5,#oS20364C0_JumpOffset01]
 	ldr r1, [r1,r0]
@@ -826,56 +826,68 @@ custMenuMainMaybe_8026A88: // (self: * S20364C0 $r5) -> u8
 	pop {r5,pc}
 	.balign 4, 0
 off_8026AA0:
-	.word off_8026AA4
-off_8026AA4:
-	// 0x00
-	.word sub_8026B04+1 // (self: * S20364C0 $r5) -> ()
-	// 0x04
-	.word sub_8026CCC+1 // (self: * S20364C0 $r5) -> ()
-	// 0x08
-	.word sub_8026BF4+1 // (self: * S20364C0 $r5) -> ()
+	.word ChipWindowStates_8026AA4
+// The chip window's own state table. eS20364C0.JumpOffset01 selects a row and,
+// like the battle sequencer's state word, it is a PRE-MULTIPLIED byte offset --
+// which is why the code writes 4, 0x2c or 0x40 into it rather than 1, 11 or 16.
+// Names carry that value. Three rows are confirmed against their writers:
+// state 0x00's handler writes 4 to reach 0x04 (loc_8026BE0 below) and 0x2c to
+// reach 0x2C (loc_8026BD6), and state 0x04's writes 0x40 on a selection.
+ChipWindowStates_8026AA4:
+	// 0x00 -- THE SLIDE-IN, and the seed of the bracket blink counter. Plays
+	// SOUND_SELECT_79, writes CHIP_WINDOW_SLIDE_FROM to both RenderInfo's
+	// BG3HOfs_18 and the struct's own WindowFrameCounter, then takes
+	// CHIP_WINDOW_SLIDE_STEP off it per call -- exactly ten calls to zero.
+	.word chipWindowState00SlideIn_8026B04+1 // (self: * S20364C0 $r5) -> ()
+	// 0x04 -- the interactive wait, and the only state that advances the blink
+	// counter. Leaves to 0x40 when pollChipWindowSelection_802A220 reports a pick.
+	.word chipWindowState04Interactive_8026CCC+1 // (self: * S20364C0 $r5) -> ()
+	// 0x08 -- the slide-out: the same ten steps the other way, clearing each
+	// vacated column with ChipWindowBlankTile_8026C88 and panning the camera by
+	// ChipWindowCameraPanStep_8026CC8 a call.
+	.word chipWindowState08SlideOut_8026BF4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x0C
-	.word sub_8026D06+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState0C_8026D06+1 // (self: * S20364C0 $r5) -> ()
 	// 0x10
-	.word sub_8026DB0+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState10_8026DB0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x14
-	.word sub_8026DC4+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState14_8026DC4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x18
-	.word sub_8026E4C+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState18_8026E4C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x1C
-	.word sub_8026E98+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState1C_8026E98+1 // (self: * S20364C0 $r5) -> ()
 	// 0x20
-	.word sub_8026FC0+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState20_8026FC0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x24
-	.word sub_8027044+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState24_8027044+1 // (self: * S20364C0 $r5) -> ()
 	// 0x28
-	.word sub_80271F8+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState28_80271F8+1 // (self: * S20364C0 $r5) -> ()
 	// 0x2C
-	.word sub_802728C+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState2C_802728C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x30
-	.word sub_80273A4+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState30_80273A4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x34
-	.word sub_80273EC+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState34_80273EC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x38
-	.word sub_8027406+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState38_8027406+1 // (self: * S20364C0 $r5) -> ()
 	// 0x3C
-	.word sub_802753E+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState3C_802753E+1 // (self: * S20364C0 $r5) -> ()
 	// 0x40
-	.word sub_8027548+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState40Selected_8027548+1 // (self: * S20364C0 $r5) -> ()
 	// 0x44
-	.word sub_80275EC+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState44_80275EC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x48
-	.word sub_802770C+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState48_802770C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x4C
-	.word sub_8027834+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState4C_8027834+1 // (self: * S20364C0 $r5) -> ()
 	// 0x50
-	.word sub_802790C+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState50_802790C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x54
-	.word sub_802794A+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState54_802794A+1 // (self: * S20364C0 $r5) -> ()
 	// 0x58
-	.word sub_8026E78+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState58_8026E78+1 // (self: * S20364C0 $r5) -> ()
 	// 0x5C
-	.word sub_8027A58+1 // (self: * S20364C0 $r5) -> ()
+	.word chipWindowState5C_8027A58+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenuMainMaybe_8026A88
 
 	thumb_local_start
@@ -888,9 +900,9 @@ off_8026AA4:
 // writes 4 to JumpOffset01 (loc_8026BE0 below) and hands over to state 0x04.
 // A reimplementation that spends an extra frame reaching its open state will
 // look identical, because the window is fully revealed either way; the only
-// thing that can see the difference is sub_8028820's bracket, which counts
+// thing that can see the difference is drawChipCursorBracket_8028820's bracket, which counts
 // from here.
-sub_8026B04: // (self: * S20364C0 $r5) -> ()
+chipWindowState00SlideIn_8026B04: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
 	ldrb r0, [r5,#oS20364C0_Unk_02]
@@ -904,7 +916,7 @@ sub_8026B04: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 
 	mov r0, #0x78 
-	strh r0, [r1,#0x18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 
 	mov r0, #0
 	bl setChipWindowSlideX_801E71C
@@ -964,14 +976,14 @@ loc_8026B5A:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
 	ldr r1, [r2,#0x34]
-	ldr r3, dword_8026CC8 // =0x18000 
+	ldr r3, ChipWindowCameraPanStep_8026CC8 // =0x18000 
 	sub r1, r1, r3
 	str r1, [r2,#0x34]
 loc_8026B8C:
 	str r0, [r5,#0x40]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#0x18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 	push {r0}
 	mov r1, r0
 	mov r0, #0x78 
@@ -1008,7 +1020,7 @@ loc_8026BC2:
 	bge loc_8026BE0
 loc_8026BD6:
 
-	// 0x00: trigger sub_802728C via custMenuMainMaybe_8026A88
+	// 0x00: trigger chipWindowState2C_802728C via custMenuMainMaybe_8026A88
 	mov r0, #0x2c 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -1018,7 +1030,7 @@ loc_8026BD6:
 	b loc_8026BE8
 loc_8026BE0:
 
-	// 0x00: trigger sub_8026CCC via custMenuMainMaybe_8026A88
+	// 0x00: trigger chipWindowState04Interactive_8026CCC via custMenuMainMaybe_8026A88
 	mov r0, #4
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -1026,15 +1038,15 @@ loc_8026BE0:
 	strh r0, [r5,#oS20364C0_Unk_02]
 
 loc_8026BE8:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8026BF0:
 	.word eS20364C0
-	thumb_func_end sub_8026B04
+	thumb_func_end chipWindowState00SlideIn_8026B04
 
 	thumb_local_start
-sub_8026BF4: // (self: * S20364C0 $r5) -> ()
+chipWindowState08SlideOut_8026BF4: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
 	ldrb r0, [r5,#oS20364C0_Unk_02]
@@ -1043,7 +1055,7 @@ sub_8026BF4: // (self: * S20364C0 $r5) -> ()
 
 	// set to NULL
 	str r0, [r5,#oS20364C0_Extra_Unk_44]
-	str r0, [r5,#oS20364C0_Extra_Unk_40]
+	str r0, [r5,#oS20364C0_Extra_WindowFrameCounter]
 
 	mov r0, #TRUE
 	strb r0, [r5,#oS20364C0_Unk_02]
@@ -1051,14 +1063,14 @@ sub_8026BF4: // (self: * S20364C0 $r5) -> ()
 	ldr r0, off_8026CC4 // =0x2000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 
-	bl sub_8029D80
+	bl blankChipNameStrip_8029D80
 
 	mov r0, #BATTLE_STATE_UNK_11_FLAG_UNK_BIT_02
 	bl clearBattleStateUnk11Flag_800A9D6 // (flags: flags8) -> ()
 
 loc_8026C14: // endif
 
-	ldr r0, [r5,#oS20364C0_Extra_Unk_40]
+	ldr r0, [r5,#oS20364C0_Extra_WindowFrameCounter]
 	add r0, #0xc
 	push {r0,r4-r7}
 	mov r7, r5
@@ -1080,7 +1092,7 @@ loop_8026C28:
 	// tileBlock32x32
 	mov r2, #3
 	// tileIds
-	ldr r3, off_8026C84 // =byte_8026C88
+	ldr r3, off_8026C84 // =ChipWindowBlankTile_8026C88
 	mov r4, #1
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -1099,7 +1111,7 @@ loop_8026C28:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
 	ldr r1, [r2,#0x34]
-	ldr r3, dword_8026CC8 // =0x18000 
+	ldr r3, ChipWindowCameraPanStep_8026CC8 // =0x18000 
 	add r1, r1, r3
 	str r1, [r2,#0x34]
 
@@ -1108,7 +1120,7 @@ loc_8026C5C: // endif
 	str r0, [r5,#0x40]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#0x18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 
 	push {r0}
 	mov r1, r0
@@ -1126,40 +1138,40 @@ loc_8026C5C: // endif
 
 loc_8026C7E: // endif
 
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8026C84:
-	.word byte_8026C88
-byte_8026C88:
+	.word ChipWindowBlankTile_8026C88
+ChipWindowBlankTile_8026C88:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_8026CC4:
 	.word 0x2000
-dword_8026CC8:
+ChipWindowCameraPanStep_8026CC8:
 	.word 0x18000
-	thumb_func_end sub_8026BF4
+	thumb_func_end chipWindowState08SlideOut_8026BF4
 
 	thumb_local_start
 // State 0x04 of the chip window: the interactive wait, and the only thing that
 // advances the blink counter. Note the ORDER at the bottom of the loop: it
-// draws (sub_8028820 among others) with the counter it already has and only
+// draws (drawChipCursorBracket_8028820 among others) with the counter it already has and only
 // then does `ldr r0,[r5,#0x40] / add r0,#1 / str`. So the value visible on
 // frame N is the value the counter held BEFORE frame N's increment.
-// When sub_802A220 reports a selection it zeroes +0x40 again on the way out,
+// When pollChipWindowSelection_802A220 reports a selection it zeroes +0x40 again on the way out,
 // so the counter never carries across two windows.
-sub_8026CCC: // (self: * S20364C0 $r5) -> ()
+chipWindowState04Interactive_8026CCC: // (self: * S20364C0 $r5) -> ()
 	push {r7,lr}
 
-	bl sub_802A220
+	bl pollChipWindowSelection_802A220
 	cmp r0, #0xff
 	beq loc_8026CE6
 
 	strh r0, [r5,#oS20364C0_Unk_38]
 
-	// 0x04: trigger sub_8027548 via custMenuMainMaybe_8026A88
+	// 0x04: trigger chipWindowState40Selected_8027548 via custMenuMainMaybe_8026A88
 	mov r0, #0x40 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -1174,8 +1186,8 @@ loc_8026CE6:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_JoypadPtr]
 	bl custMenuSomeHandler_8028B74 // (self: * S20364C0 $r5) -> ()
-	bl sub_8028820
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipCursorBracket_8028820
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	bl sub_8029D34
 	ldr r0, [r5,#0x40]
@@ -1183,10 +1195,10 @@ loc_8026CE6:
 	str r0, [r5,#0x40]
 locret_8026D04:
 	pop {r7,pc}
-	thumb_func_end sub_8026CCC
+	thumb_func_end chipWindowState04Interactive_8026CCC
 
 	thumb_local_start
-sub_8026D06: // (self: * S20364C0 $r5) -> ()
+chipWindowState0C_8026D06: // (self: * S20364C0 $r5) -> ()
 	push {r4,r5,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
@@ -1203,7 +1215,7 @@ sub_8026D06: // (self: * S20364C0 $r5) -> ()
 	bl setChipWindowSlideX_801E71C
 	ldr r0, off_8026DA8 // =0x2000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
-	bl sub_8029D80
+	bl blankChipNameStrip_8029D80
 	mov r0, #0
 	mov r1, #0
 	mov r2, #3
@@ -1221,7 +1233,7 @@ loc_8026D46:
 	cmp r0, #0
 	bne loc_8026D5C
 	push {r3}
-	bl sub_802A220
+	bl pollChipWindowSelection_802A220
 	pop {r3}
 	cmp r0, #0xff
 	beq locret_8026DA6
@@ -1245,7 +1257,7 @@ loc_8026D5C:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4,r5}
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	mov r0, #SOUND_CUR_MOVE_80
 	bl PlaySoundEffect
 	mov r0, r10
@@ -1257,7 +1269,7 @@ loc_8026D5C:
 	bl dispatch_801DA48
 	b locret_8026DA6
 loc_8026D9A:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -1269,10 +1281,10 @@ off_8026DA8:
 	.word 0x2000
 off_8026DAC:
 	.word unk_2035000
-	thumb_func_end sub_8026D06
+	thumb_func_end chipWindowState0C_8026D06
 
 	thumb_local_start
-sub_8026DB0: // (self: * S20364C0 $r5) -> ()
+chipWindowState10_8026DB0: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	bl sub_802B734
 	cmp r0, #0
@@ -1283,10 +1295,10 @@ sub_8026DB0: // (self: * S20364C0 $r5) -> ()
 	strh r0, [r5,#2]
 locret_8026DC2:
 	pop {pc}
-	thumb_func_end sub_8026DB0
+	thumb_func_end chipWindowState10_8026DB0
 
 	thumb_local_start
-sub_8026DC4: // (self: * S20364C0 $r5) -> ()
+chipWindowState14_8026DC4: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -1346,16 +1358,16 @@ dword_8026E44:
 	.word 0x56789123
 off_8026E48:
 	.word 0x1000
-	thumb_func_end sub_8026DC4
+	thumb_func_end chipWindowState14_8026DC4
 
 	thumb_local_start
-sub_8026E4C: // (self: * S20364C0 $r5) -> ()
+chipWindowState18_8026E4C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	cmp r0, #0
 	beq loc_8026E64
-	bl sub_802A220
+	bl pollChipWindowSelection_802A220
 	cmp r0, #0xff
 	beq loc_8026E72
 	bl chatbox_8040818
@@ -1367,12 +1379,12 @@ loc_8026E64:
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8026E72:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
-	thumb_func_end sub_8026E4C
+	thumb_func_end chipWindowState18_8026E4C
 
 	thumb_local_start
-sub_8026E78: // (self: * S20364C0 $r5) -> ()
+chipWindowState58_8026E78: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1385,12 +1397,12 @@ sub_8026E78: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8026E92:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
-	thumb_func_end sub_8026E78
+	thumb_func_end chipWindowState58_8026E78
 
 	thumb_local_start
-sub_8026E98: // (self: * S20364C0 $r5) -> ()
+chipWindowState1C_8026E98: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	mov r4, #0
 	bl GetBattleEffects // () -> int
@@ -1404,7 +1416,7 @@ loc_8026EA8:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {r4,pc}
 	.balign 4, 0
 off_8026EB8:
@@ -1413,7 +1425,7 @@ off_8026EBC:
 	.word sub_8026EC8+1
 	.word sub_8026F1A+1
 	.word sub_8026FAA+1
-	thumb_func_end sub_8026E98
+	thumb_func_end chipWindowState1C_8026E98
 
 	thumb_local_start
 sub_8026EC8:
@@ -1468,7 +1480,7 @@ sub_8026F1A:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	cmp r0, #0
 	beq loc_8026F34
-	bl sub_802A220
+	bl pollChipWindowSelection_802A220
 	cmp r0, #0xff
 	beq locret_8026FA8
 	bl chatbox_8040818
@@ -1478,7 +1490,7 @@ loc_8026F34:
 	cmp r0, #1
 	beq loc_8026FA0
 	mov r0, #0xff
-	ldr r1, off_802700C // =byte_20366C0 
+	ldr r1, off_802700C // =eSelectedChipCodes_20366C0 
 	strb r0, [r1]
 	bl GetBattleSettingsUnk01
 	mov r4, r0
@@ -1552,7 +1564,7 @@ locret_8026FBE:
 	thumb_func_end sub_8026FAA
 
 	thumb_local_start
-sub_8026FC0: // (self: * S20364C0 $r5) -> ()
+chipWindowState20_8026FC0: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	mov r4, #0
 	bl GetBattleEffects // () -> int
@@ -1592,7 +1604,7 @@ locret_8027004:
 off_8027008:
 	.word TextScriptBattleRunDialog
 off_802700C:
-	.word byte_20366C0
+	.word eSelectedChipCodes_20366C0
 off_8027010:
 	.word off_8027014
 off_8027014:
@@ -1615,17 +1627,17 @@ off_802703C:
 	.word dword_20349A0
 dword_8027040:
 	.word 0x200000
-	thumb_func_end sub_8026FC0
+	thumb_func_end chipWindowState20_8026FC0
 
 	thumb_local_start
-sub_8027044: // (self: * S20364C0 $r5) -> ()
+chipWindowState24_8027044: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_802705C // =off_8027060 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -1639,7 +1651,7 @@ off_8027060:
 	.word sub_8027134+1
 	.word sub_8027150+1
 	.word sub_80271C2+1
-	thumb_func_end sub_8027044
+	thumb_func_end chipWindowState24_8027044
 
 	thumb_local_start
 sub_802707C:
@@ -1785,7 +1797,7 @@ loc_8027164:
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	mov r1, r3
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	pop {r2,r3}
 	sub r3, #1
 	b loc_8027164
@@ -1850,14 +1862,14 @@ off_80271F4:
 	thumb_func_end sub_80271C2
 
 	thumb_local_start
-sub_80271F8: // (self: * S20364C0 $r5) -> ()
+chipWindowState28_80271F8: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027210 // =off_8027214 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -1866,7 +1878,7 @@ off_8027210:
 off_8027214:
 	.word sub_802721C+1
 	.word sub_802723A+1
-	thumb_func_end sub_80271F8
+	thumb_func_end chipWindowState28_80271F8
 
 	thumb_local_start
 sub_802721C:
@@ -1910,7 +1922,7 @@ sub_802723A:
 	mov r2, #1
 loc_802726A:
 	strb r2, [r0,#7]
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -1928,7 +1940,7 @@ locret_802728A:
 	thumb_func_end sub_802723A
 
 	thumb_local_start
-sub_802728C: // (self: * S20364C0 $r5) -> ()
+chipWindowState2C_802728C: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	ldr r4, [r5,#0x40]
 	ldr r1, off_80272A0 // =off_80272A4 
@@ -1936,7 +1948,7 @@ sub_802728C: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {r4,pc}
 	.balign 4, 0
 off_80272A0:
@@ -1947,7 +1959,7 @@ off_80272A4:
 	.word sub_8027320+1
 	.word sub_8027332+1
 	.word sub_8027394+1
-	thumb_func_end sub_802728C
+	thumb_func_end chipWindowState2C_802728C
 
 	thumb_local_start
 sub_80272B8:
@@ -2090,7 +2102,7 @@ sub_8027394:
 	thumb_func_end sub_8027394
 
 	thumb_local_start
-sub_80273A4: // (self: * S20364C0 $r5) -> ()
+chipWindowState30_80273A4: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	ldr r4, [r5,#0x40]
 	ldr r1, off_80273B4 // =off_80273B8 
@@ -2107,7 +2119,7 @@ off_80273B8:
 	.word sub_8027320+1
 	.word sub_8027332+1
 	.word sub_80273E4+1
-	thumb_func_end sub_80273A4
+	thumb_func_end chipWindowState30_80273A4
 
 	thumb_local_start
 sub_80273CC:
@@ -2134,7 +2146,7 @@ sub_80273E4:
 	thumb_func_end sub_80273E4
 
 	thumb_local_start
-sub_80273EC: // (self: * S20364C0 $r5) -> ()
+chipWindowState34_80273EC: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2145,12 +2157,12 @@ sub_80273EC: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8027400:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
-	thumb_func_end sub_80273EC
+	thumb_func_end chipWindowState34_80273EC
 
 	thumb_local_start
-sub_8027406: // (self: * S20364C0 $r5) -> ()
+chipWindowState38_8027406: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	mov r0, #8
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -2160,7 +2172,7 @@ sub_8027406: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {r4,pc}
 	.balign 4, 0
@@ -2170,7 +2182,7 @@ off_8027428:
 	.word sub_8027434+1
 	.word sub_8027458+1
 	.word sub_802750C+1
-	thumb_func_end sub_8027406
+	thumb_func_end chipWindowState38_8027406
 
 	thumb_local_start
 sub_8027434:
@@ -2241,12 +2253,12 @@ loc_802748E:
 	sub r1, #1
 	strb r1, [r5,#8]
 	ldr r0, dword_8027504 // =0x1ff 
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
 	bl sub_8029CD4
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #0x97
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -2270,7 +2282,7 @@ loc_80274E4:
 	strb r1, [r0,#7]
 	b locret_8027500
 loc_80274F0:
-	bl sub_802945A
+	bl packDeckEntries_802945A
 	bl sub_80294E0
 	bl sub_802A61A
 	mov r0, #8
@@ -2312,23 +2324,23 @@ loc_8027526:
 	thumb_func_end sub_802750C
 
 	thumb_local_start
-sub_802753E: // (self: * S20364C0 $r5) -> ()
+chipWindowState3C_802753E: // (self: * S20364C0 $r5) -> ()
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
 	strh r0, [r5,#2]
 	mov pc, lr
-	thumb_func_end sub_802753E
+	thumb_func_end chipWindowState3C_802753E
 
 	thumb_local_start
-sub_8027548: // (self: * S20364C0 $r5) -> ()
+chipWindowState40Selected_8027548: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027560 // =off_8027564 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -2339,7 +2351,7 @@ off_8027564:
 	.word sub_8027580+1
 	.word sub_802759E+1
 	.word sub_80275D8+1
-	thumb_func_end sub_8027548
+	thumb_func_end chipWindowState40Selected_8027548
 
 	thumb_local_start
 sub_8027574:
@@ -2416,14 +2428,14 @@ locret_80275EA:
 	thumb_func_end sub_80275D8
 
 	thumb_local_start
-sub_80275EC: // (self: * S20364C0 $r5) -> ()
+chipWindowState44_80275EC: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027600 // =off_8027604 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8027600:
@@ -2434,7 +2446,7 @@ off_8027604:
 	.word sub_8027658+1
 	.word sub_8027672+1
 	.word sub_80276D6+1
-	thumb_func_end sub_80275EC
+	thumb_func_end chipWindowState44_80275EC
 
 	thumb_local_start
 sub_8027618:
@@ -2514,7 +2526,7 @@ loc_8027686:
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	mov r1, r3
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	pop {r2,r3}
 	sub r3, #1
 	b loc_8027686
@@ -2529,7 +2541,7 @@ loc_80276AA:
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	mov r1, #0
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	bl sub_8028E32
 	mov r0, #0x60 
 	mov r1, #8
@@ -2571,14 +2583,14 @@ off_8027708:
 	thumb_func_end sub_80276D6
 
 	thumb_local_start
-sub_802770C: // (self: * S20364C0 $r5) -> ()
+chipWindowState48_802770C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027720 // =off_8027724 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8027720:
@@ -2589,7 +2601,7 @@ off_8027724:
 	.word sub_802777C+1
 	.word sub_8027796+1
 	.word sub_8027806+1
-	thumb_func_end sub_802770C
+	thumb_func_end chipWindowState48_802770C
 
 	thumb_local_start
 sub_8027738:
@@ -2675,7 +2687,7 @@ loc_80277B6:
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	mov r1, r3
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	pop {r2,r3}
 	sub r3, #1
 	b loc_80277B6
@@ -2685,7 +2697,7 @@ loc_80277DA:
 	strb r6, [r1]
 	bl sub_802A034
 	mov r1, #0
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	mov r0, #0xb
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
 	mov r1, #2
@@ -2726,7 +2738,7 @@ locret_802782E:
 	thumb_func_end sub_8027806
 
 	thumb_local_start
-sub_8027834: // (self: * S20364C0 $r5) -> ()
+chipWindowState4C_8027834: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -2779,7 +2791,7 @@ loc_8027884:
 	ldrb r3, [r6,#2]
 	ldrb r4, [r6,#3]
 	ldrb r5, [r6,#5]
-	bl sub_8027CCC
+	bl applyChipWindowMapPatches_8027CCC
 	add r6, #6
 	ldrb r0, [r6]
 	cmp r0, #0xff
@@ -2810,7 +2822,7 @@ loc_80278C8:
 	strb r0, [r5,#1]
 	mov r0, #0
 	strh r0, [r5,#2]
-	bl sub_802794A // (self: * S20364C0 $r5) -> ()
+	bl chipWindowState54_802794A // (self: * S20364C0 $r5) -> ()
 	b locret_80278DA
 loc_80278D6:
 	bl sub_80279C8
@@ -2834,10 +2846,10 @@ off_8027904:
 	.word byte_8027B4A
 dword_8027908:
 	.word 0xFFF
-	thumb_func_end sub_8027834
+	thumb_func_end chipWindowState4C_8027834
 
 	thumb_local_start
-sub_802790C: // (self: * S20364C0 $r5) -> ()
+chipWindowState50_802790C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -2856,19 +2868,19 @@ loc_8027922:
 	ble loc_8027940
 	bl sub_80279FC
 	bl sub_80279C8
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8027940:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
-	thumb_func_end sub_802790C
+	thumb_func_end chipWindowState50_802790C
 
 	thumb_local_start
-sub_802794A: // (self: * S20364C0 $r5) -> ()
+chipWindowState54_802794A: // (self: * S20364C0 $r5) -> ()
 	push {r7,lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -2935,12 +2947,12 @@ off_80279C0:
 	.word 0x50
 dword_80279C4:
 	.word 0x55
-	thumb_func_end sub_802794A
+	thumb_func_end chipWindowState54_802794A
 
 	thumb_local_start
 sub_80279C8:
 	push {r4,lr}
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	bl sub_8029D34
 	mov r4, #4
@@ -2972,7 +2984,7 @@ sub_80279FC:
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	push {r4-r6}
 	mov r2, #0x9b
-	ldr r6, off_8027A50 // =byte_8027B2C 
+	ldr r6, off_8027A50 // =ChipWindowMapPatches_8027B2C 
 loc_8027A0E:
 	ldr r0, dword_8027A54 // =0xfff 
 	and r0, r2
@@ -2984,7 +2996,7 @@ loc_8027A0E:
 	ldrb r3, [r6,#2]
 	ldrb r4, [r6,#3]
 	ldrb r5, [r6,#5]
-	bl sub_8027CCC
+	bl applyChipWindowMapPatches_8027CCC
 	add r6, #6
 	ldrb r0, [r6]
 	cmp r0, #0xff
@@ -3010,20 +3022,20 @@ off_8027A48:
 off_8027A4C:
 	.word 0x258
 off_8027A50:
-	.word byte_8027B2C
+	.word ChipWindowMapPatches_8027B2C
 dword_8027A54:
 	.word 0xFFF
 	thumb_func_end sub_80279FC
 
 	thumb_local_start
-sub_8027A58: // (self: * S20364C0 $r5) -> ()
+chipWindowState5C_8027A58: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027A70 // =off_8027A74 
 	ldrb r0, [r5,#2]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl drawChipWindowMark_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -3034,7 +3046,7 @@ off_8027A74:
 	.word sub_8027A90+1
 	.word sub_8027AAE+1
 	.word sub_8027ADE+1
-	thumb_func_end sub_8027A58
+	thumb_func_end chipWindowState5C_8027A58
 
 	thumb_local_start
 sub_8027A84:
@@ -3078,7 +3090,7 @@ sub_8027AAE:
 	bl sub_802A088
 	bl sub_80279FC
 	bl sub_80279C8
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #0x92
 	bl PlaySoundEffect
 	mov r0, #0xc
@@ -3095,7 +3107,7 @@ sub_8027ADE:
 	bne locret_8027B1A
 	bl sub_80279FC
 	bl sub_80279C8
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -3123,7 +3135,7 @@ off_8027B1C:
 off_8027B24:
 	.word unk_2035000
 	.word dword_20349A0
-byte_8027B2C:
+ChipWindowMapPatches_8027B2C:
 	.byte 0x2
 byte_8027B2D:
 	.byte 0x1
@@ -3219,7 +3231,7 @@ dword_8027CC8:
 	thumb_func_end sub_8027ADE
 
 	thumb_local_start
-sub_8027CCC:
+applyChipWindowMapPatches_8027CCC:
 	push {r0,r1,r3-r7,lr}
 	mov r6, #1
 	cmp r5, #1
@@ -3260,7 +3272,7 @@ loc_8027D06:
 	.balign 4, 0
 off_8027D0C:
 	.word unk_2035000
-	thumb_func_end sub_8027CCC
+	thumb_func_end applyChipWindowMapPatches_8027CCC
 
 	thumb_func_start sub_8027D10
 sub_8027D10:
@@ -3337,7 +3349,7 @@ sub_8027D78:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r1,#0x18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 	bl setChipWindowSlideX_801E71C
 	mov r0, #0x80
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -3425,8 +3437,8 @@ sub_8027E2C:
 	// size
 	mov r1, #0x90
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_802A40C
-	bl sub_8027E90
+	bl getChipsOfferedPerWindow_802A40C
+	bl initChipWindowSlots_8027E90
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#oBattleState_Unk_17]
@@ -3436,7 +3448,7 @@ sub_8027E2C:
 	strb r0, [r4,#4]
 loc_8027E52:
 	ldrb r6, [r5,#6]
-	bl sub_8027EE8
+	bl offerDeckChipsToWindow_8027EE8
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#oBattleState_Unk_0d]
@@ -3462,11 +3474,11 @@ loc_8027E74:
 	thumb_func_end sub_8027E2C
 
 	thumb_local_start
-sub_8027E90:
+initChipWindowSlots_8027E90:
 	push {r6,lr}
 	mov r3, #0xc
 	mov r2, r4
-	ldr r1, off_8027EE4 // =dword_802A7CC 
+	ldr r1, off_8027EE4 // =ChipWindowSlotTemplate_802A7CC 
 
 loc_8027E98:
 	ldr r0, [r1]
@@ -3509,11 +3521,11 @@ locret_8027EE0:
 	pop {r6,pc}
 	.balign 4, 0
 off_8027EE4:
-	.word dword_802A7CC
-	thumb_func_end sub_8027E90
+	.word ChipWindowSlotTemplate_802A7CC
+	thumb_func_end initChipWindowSlots_8027E90
 
 	thumb_local_start
-sub_8027EE8:
+offerDeckChipsToWindow_8027EE8:
 	push {r4,r6,lr}
 	ldrb r3, [r5,#5]
 	cmp r3, #0
@@ -3538,7 +3550,7 @@ locret_8027F0A:
 	.balign 4, 0
 off_8027F0C:
 	.word eBattleFolder
-	thumb_func_end sub_8027EE8
+	thumb_func_end offerDeckChipsToWindow_8027EE8
 
 	thumb_local_start
 sub_8027F10:
@@ -3935,7 +3947,7 @@ sub_80281A8:
 	and r0, r2
 	cmp r0, r2
 	bne loc_80281B6
-	ldr r0, off_80281C0 // =byte_86E601C 
+	ldr r0, off_80281C0 // =EmptyChipIcon_86E601C 
 	pop {r1,r2,pc}
 loc_80281B6:
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
@@ -3943,7 +3955,7 @@ loc_80281B6:
 	pop {r1,r2,pc}
 	.balign 4, 0
 off_80281C0:
-	.word byte_86E601C
+	.word EmptyChipIcon_86E601C
 	thumb_func_end sub_80281A8
 
 	thumb_local_start
@@ -3957,7 +3969,7 @@ sub_80281C4:
 	thumb_func_end sub_80281C4
 
 	thumb_local_start
-sub_80281D4:
+drawChipWindowSlotRow_80281D4:
 	push {r1,r2,lr}
 	mov r2, #0x80
 	mul r2, r1
@@ -3965,7 +3977,7 @@ sub_80281D4:
 	add r1, r1, r2
 	bl sub_80281C4
 	pop {r1,r2,pc}
-	thumb_func_end sub_80281D4
+	thumb_func_end drawChipWindowSlotRow_80281D4
 
 	thumb_local_start
 sub_80281E4:
@@ -3987,14 +3999,14 @@ off_8028200:
 	thumb_func_end sub_80281E4
 
 	thumb_local_start
-sub_8028204:
+drawChipWindowCodeLetters_8028204:
 	push {r2,r3,lr}
 	bl sub_8028214
 	mov r2, #0x40 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	add r1, #0x40 
 	pop {r2,r3,pc}
-	thumb_func_end sub_8028204
+	thumb_func_end drawChipWindowCodeLetters_8028204
 
 	thumb_local_start
 sub_8028214:
@@ -4007,7 +4019,7 @@ sub_8028214:
 	mov r0, #0x1b
 loc_8028222:
 	lsl r0, r0, #6
-	ldr r2, off_8028230 // =dword_86E591C 
+	ldr r2, off_8028230 // =ChipCodeGlyphs_86E591C 
 	add r0, r0, r2
 	pop {r2,pc}
 loc_802822A:
@@ -4015,7 +4027,7 @@ loc_802822A:
 	pop {r2,pc}
 	.balign 4, 0
 off_8028230:
-	.word dword_86E591C
+	.word ChipCodeGlyphs_86E591C
 off_8028234:
 	.word byte_802A700
 	thumb_func_end sub_8028214
@@ -4060,7 +4072,7 @@ loc_8028260:
 	bl sub_80283B0
 	b locret_8028282
 loc_802827E:
-	bl sub_80283C8
+	bl pickChipIconPaletteBank_80283C8
 locret_8028282:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8028250
@@ -4083,7 +4095,7 @@ loc_8028298:
 	ldrh r0, [r0]
 	bl getChipID_802A54E // (int a1) -> int
 	lsr r0, r0, #9
-	bl sub_8028204
+	bl drawChipWindowCodeLetters_8028204
 	pop {r4,pc}
 	thumb_func_end sub_8028284
 
@@ -4149,22 +4161,22 @@ loc_80282FC:
 	ldrh r0, [r0]
 	bl getChipID_802A54E // (int a1) -> int
 	lsr r0, r0, #9
-	bl sub_8028204
+	bl drawChipWindowCodeLetters_8028204
 	pop {pc}
 	thumb_func_end sub_80282E8
 
 	thumb_local_start
-sub_8028310:
+drawEmptyChipIcon_8028310:
 	push {lr}
 	ldr r0, dword_80283AC // =0x1ff 
 	bl sub_80281C4
 	mov r0, #0x1d
-	bl sub_8028204
+	bl drawChipWindowCodeLetters_8028204
 	pop {pc}
-	thumb_func_end sub_8028310
+	thumb_func_end drawEmptyChipIcon_8028310
 
 	thumb_local_start
-sub_8028320:
+drawChipWindowOkBox_8028320:
 	push {lr}
 	cmp r7, #1
 	bne loc_8028334
@@ -4181,7 +4193,7 @@ loc_8028334:
 	add r1, #0xc0
 locret_802833E:
 	pop {pc}
-	thumb_func_end sub_8028320
+	thumb_func_end drawChipWindowOkBox_8028320
 
 	thumb_local_start
 sub_8028340:
@@ -4219,8 +4231,8 @@ off_8028370:
 	.word sub_80282E8+1
 	.word sub_8028340+1
 	.word nullsub_14+1
-	.word sub_8028310+1
-	.word sub_8028320+1
+	.word drawEmptyChipIcon_8028310+1
+	.word drawChipWindowOkBox_8028320+1
 off_80283A0:
 	.word byte_86E79CC
 off_80283A4:
@@ -4234,7 +4246,7 @@ dword_80283AC:
 	thumb_local_start
 sub_80283B0:
 	push {r4,r5,lr}
-	bl sub_80283C8
+	bl pickChipIconPaletteBank_80283C8
 	// j
 	mov r0, #0
 	// i
@@ -4250,7 +4262,7 @@ sub_80283B0:
 	thumb_func_end sub_80283B0
 
 	thumb_local_start
-sub_80283C8:
+pickChipIconPaletteBank_80283C8:
 	push {r4,r5,lr}
 	mov r0, #0
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -4284,7 +4296,7 @@ loc_8028400:
 	ldr r4, off_8028438 // =off_802843C 
 	lsl r0, r6, #2
 	ldr r4, [r4,r0]
-	ldr r1, off_802846C // =byte_8028470
+	ldr r1, off_802846C // =ChipIconPaletteBanks_8028470
 	ldrh r2, [r1,r2]
 	ldr r1, dword_8028464 // =0x3ff 
 	ldrh r0, [r4]
@@ -4325,13 +4337,13 @@ dword_8028464:
 off_8028468:
 	.word unk_2035186
 off_802846C:
-	.word byte_8028470
-byte_8028470:
+	.word ChipIconPaletteBanks_8028470
+ChipIconPaletteBanks_8028470:
 	.byte 0x0, 0xB0, 0x0, 0xC0, 0x0, 0x90
-	thumb_func_end sub_80283C8
+	thumb_func_end pickChipIconPaletteBank_80283C8
 
 	thumb_local_start
-sub_8028476:
+drawChipCard_8028476:
 	push {lr}
 	ldrb r0, [r5,#7]
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -4361,7 +4373,7 @@ loc_80284AA:
 	ldr r0, [r0,#8]
 	ldrh r0, [r0]
 	bl getChipID_802A54E // (int a1) -> int
-	bl sub_80284E2
+	bl drawChipCardPicture_80284E2
 	b locret_80284E0
 loc_80284B8:
 	bl sub_80286D4
@@ -4385,10 +4397,10 @@ loc_80284DA:
 	b locret_80284E0
 locret_80284E0:
 	pop {pc}
-	thumb_func_end sub_8028476
+	thumb_func_end drawChipCard_8028476
 
 	thumb_local_start
-sub_80284E2:
+drawChipCardPicture_80284E2:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -4526,7 +4538,7 @@ loc_80285DC:
 loc_80285FA:
 	add sp, sp, #0x10
 	pop {r4,pc}
-	thumb_func_end sub_80284E2
+	thumb_func_end drawChipCardPicture_80284E2
 
 	thumb_local_start
 sub_80285FE:
@@ -4556,7 +4568,7 @@ sub_80285FE:
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 loc_802863A:
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {r4,pc}
 	.balign 4, 0
 off_8028640:
@@ -4611,7 +4623,7 @@ loc_8028692:
 	thumb_func_end sub_802868C
 
 	thumb_local_start
-sub_802869E:
+drawChipCardDamageRow_802869E:
 	push {lr}
 	ldr r1, dword_80286C0 // =0x6009aa0 
 	ldr r0, off_80286D0 // =byte_802A6C0 
@@ -4637,7 +4649,7 @@ off_80286CC:
 	.word byte_802A680
 off_80286D0:
 	.word byte_802A6C0
-	thumb_func_end sub_802869E
+	thumb_func_end drawChipCardDamageRow_802869E
 
 	thumb_local_start
 sub_80286D4:
@@ -4660,7 +4672,7 @@ loc_80286E4:
 	ldr r1, off_80287FC // =unk_3001AA0 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {pc}
 	.balign 4, 0
 off_8028704:
@@ -4693,7 +4705,7 @@ sub_802871C:
 	ldr r1, off_80287FC // =unk_3001AA0 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {pc}
 	.balign 4, 0
 off_802874C:
@@ -4714,7 +4726,7 @@ sub_8028754:
 	ldr r1, off_80287FC // =unk_3001AA0 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {pc}
 	.balign 4, 0
 off_8028774:
@@ -4735,7 +4747,7 @@ sub_802877C:
 	ldr r1, off_80287FC // =unk_3001AA0 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {pc}
 	.balign 4, 0
 off_802879C:
@@ -4763,7 +4775,7 @@ loc_80287AE:
 	ldr r1, off_80287FC // =unk_3001AA0 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	bl sub_802869E
+	bl drawChipCardDamageRow_802869E
 	pop {r0}
 	pop {pc}
 	thumb_func_end sub_80287A4
@@ -4810,19 +4822,19 @@ off_802881C:
 //
 // The blink is not a hide/show: it is TWO TILES a pixel apart at the corners.
 // `ldr r5,[r5,#0x40]` takes the window's own frame counter (0x02036500,
-// oS20364C0_Extra_Unk_40) and `lsr #3 / and #1` reduces it to one bit, which is
+// oS20364C0_Extra_WindowFrameCounter) and `lsr #3 / and #1` reduces it to one bit, which is
 // added to base tile 0xb764 -- so 0xb764 for eight frames, 0xb765 for the next
 // eight, forever, and the second is the same bracket shrunk a pixel at each
 // corner. A swap costs 92 pixels on screen.
 //
-// The counter it reads is entirely window-relative: sub_8026B04 seeds it to
-// 0x78 and counts it down by 0xc during the slide-in, sub_8026CCC increments it
+// The counter it reads is entirely window-relative: chipWindowState00SlideIn_8026B04 seeds it to
+// 0x78 and counts it down by 0xc during the slide-in, chipWindowState04Interactive_8026CCC increments it
 // once a frame while the window is interactive, and it is re-zeroed when the
 // selection ends. So the phase of the blink says how long THIS window has been
 // open and nothing else. In a save state taken mid-window it is simply some
 // large number, and its low four bits are the only part that shows.
 	thumb_local_start
-sub_8028820:
+drawChipCursorBracket_8028820:
 	push {r4-r6,lr}
 	ldrb r0, [r5,#7]
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -4861,22 +4873,22 @@ dword_8028864:
 off_8028868:
 	.word jt_802886C
 jt_802886C:
-	.word sub_8028894+1
-	.word sub_80288D0+1
+	.word placeSlotCursorBracket_8028894+1
+	.word placeOkCursorBracket_80288D0+1
 	.word sub_8028904+1
 	.word sub_8028968+1
 	.word sub_8028938+1
 	.word sub_8028938+1
-	.word sub_8028894+1
-	.word sub_8028894+1
+	.word placeSlotCursorBracket_8028894+1
+	.word placeSlotCursorBracket_8028894+1
 	.word sub_8028938+1
 	.word sub_8028938+1
-	thumb_func_end sub_8028820
+	thumb_func_end drawChipCursorBracket_8028820
 
 	thumb_local_start
-sub_8028894:
+placeSlotCursorBracket_8028894:
 	push {lr}
-	ldr r6, off_80288AC // =byte_80288B0
+	ldr r6, off_80288AC // =SlotCursorBracketCorners_80288B0
 	mov r1, #0
 	ldrb r0, [r5,#7]
 	cmp r0, #5
@@ -4890,30 +4902,30 @@ loc_80288A4:
 	pop {pc}
 	.balign 4, 0
 off_80288AC:
-	.word byte_80288B0
-byte_80288B0:
+	.word SlotCursorBracketCorners_80288B0
+SlotCursorBracketCorners_80288B0:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xE, 0x10, 0xE, 0x0, 0xE, 0x30, 0xE
 	.byte 0x0, 0x0, 0x20, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0xC, 0x10, 0xC, 0x0
 	.byte 0xC, 0x30, 0xC, 0x0, 0x1, 0x20
-	thumb_func_end sub_8028894
+	thumb_func_end placeSlotCursorBracket_8028894
 
 	thumb_local_start
-sub_80288D0:
+placeOkCursorBracket_80288D0:
 	push {lr}
 	mov r0, #0x58 
 	mov r1, #0x70 
 	add r0, #3
 	sub r1, #2
-	ldr r6, off_80288E0 // =byte_80288E4
+	ldr r6, off_80288E0 // =OkCursorBracketCorners_80288E4
 	pop {pc}
 	.byte 0, 0
 off_80288E0:
-	.word byte_80288E4
-byte_80288E4:
+	.word OkCursorBracketCorners_80288E4
+OkCursorBracketCorners_80288E4:
 	.byte 0x2, 0x0, 0x1, 0x0, 0x2, 0x0, 0x16, 0x10, 0x14, 0x0, 0x16, 0x30
 	.byte 0x14, 0x0, 0x1, 0x20, 0x4, 0x0, 0x3, 0x0, 0x4, 0x0, 0x14, 0x10
 	.byte 0x12, 0x0, 0x14, 0x30, 0x12, 0x0, 0x3, 0x20
-	thumb_func_end sub_80288D0
+	thumb_func_end placeOkCursorBracket_80288D0
 
 	thumb_local_start
 sub_8028904:
@@ -5232,7 +5244,7 @@ custMenuSomeHandler_8028B74: // (self: * S20364C0 $r5) -> ()
 	bgt loc_8028BBE
 loc_8028BB4:
 
-	// trigger sub_8027834 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState4C_8027834 via custMenuMainMaybe_8026A88
 	mov r0, #0x4c 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5267,7 +5279,7 @@ loc_8028BD8:
 	mov r0, #SOUND_MENU_CUR_MOVE
 	bl PlaySoundEffect
 loc_8028BE6:
-	bl sub_8028476
+	bl drawChipCard_8028476
 	b locret_8028C96
 loc_8028BEC:
 	ldrh r0, [r7,#oJoypad_Pressed]
@@ -5301,7 +5313,7 @@ loc_8028C18:
 	bl sub_8029B1C
 	cmp r0, #0
 	bne locret_8028C96
-	bl sub_8029032
+	bl undoChipPick_8029032
 	b locret_8028C96
 loc_8028C2C:
 	mov r1, #8
@@ -5314,7 +5326,7 @@ loc_8028C36:
 	tst r0, r1
 	beq loc_8028C46
 
-	// trigger sub_8026D06 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState0C_8026D06 via custMenuMainMaybe_8026A88
 	mov r0, #0xc
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5347,7 +5359,7 @@ loc_8028C60:
 	mov r0, #0x9c
 	bl PlaySoundEffect
 
-	// trigger sub_8026E4C via custMenuMainMaybe_8026A88
+	// trigger chipWindowState18_8026E4C via custMenuMainMaybe_8026A88
 	mov r0, #0x18
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5363,7 +5375,7 @@ loc_8028C80:
 	cmp r0, #1
 	beq locret_8028C96
 
-	// trigger sub_8026E98 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState1C_8026E98 via custMenuMainMaybe_8026A88
 	mov r0, #0x1c
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5378,7 +5390,7 @@ off_8028C98:
 off_8028C9C:
 	.word sub_8028CCC+1
 	.word custMenuPressOK_8028D3A+1
-	.word sub_8028D6C+1
+	.word addChipPick_8028D6C+1
 	.word sub_8028DBC+1
 	.word sub_8028DD6+1
 	.word sub_8028DD6+1
@@ -5411,7 +5423,7 @@ sub_8028CCC:
 	bl getChipID_802A54E // (int a1) -> int
 	ldrb r1, [r5,#8]
 	sub r1, #1
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldrb r0, [r5,#8]
 	sub r0, #1
 	mov r1, #1
@@ -5449,7 +5461,7 @@ locret_8028D38:
 custMenuPressOK_8028D3A:
 	push {lr}
 	bl sub_8029110
-	bl sub_80293F8
+	bl blankPickedDeckSlots_80293F8
 
 	ldrb r0, [r5,#oS20364C0_Unk_19]
 	tst r0, r0
@@ -5467,7 +5479,7 @@ loc_8028D50:
 
 loc_8028D5A: // endif
 
-	// trigger sub_8026BF4 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState08SlideOut_8026BF4 via custMenuMainMaybe_8026A88
 	mov r0, #8
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5482,7 +5494,7 @@ loc_8028D5A: // endif
 	thumb_func_end custMenuPressOK_8028D3A
 
 	thumb_local_start
-sub_8028D6C:
+addChipPick_8028D6C:
 	push {lr}
 	ldrb r0, [r4,#7]
 	cmp r0, #0
@@ -5503,7 +5515,7 @@ sub_8028D6C:
 	bl sub_802A034
 	ldrb r1, [r5,#8]
 	sub r1, #1
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldrb r0, [r5,#8]
 	sub r0, #1
 	mov r1, #1
@@ -5512,7 +5524,7 @@ sub_8028D6C:
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 
-	// trigger sub_802770C via custMenuMainMaybe_8026A88
+	// trigger chipWindowState48_802770C via custMenuMainMaybe_8026A88
 	mov r0, #0x48 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5527,7 +5539,7 @@ loc_8028DB2:
 	mov r0, #1
 locret_8028DBA:
 	pop {pc}
-	thumb_func_end sub_8028D6C
+	thumb_func_end addChipPick_8028D6C
 
 	thumb_local_start
 sub_8028DBC:
@@ -5561,7 +5573,7 @@ loc_8028DE0:
 	cmp r0, #0
 	bne loc_8028DFA
 
-	// trigger sub_80271F8 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState28_80271F8 via custMenuMainMaybe_8026A88
 	mov r0, #0x28 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5616,7 +5628,7 @@ nullsub_59:
 	thumb_local_start
 sub_8028E32:
 	push {lr}
-	bl sub_8028E4C
+	bl canChipJoinPicks_8028E4C
 	bl updateCustomScreen_WhenUnselectingChip_8028EC8 // () -> void
 	bl sub_8028F48
 	bl sub_8028F84
@@ -5626,7 +5638,7 @@ sub_8028E32:
 	thumb_func_end sub_8028E32
 
 	thumb_local_start
-sub_8028E4C:
+canChipJoinPicks_8028E4C:
 	push {r4,r6,r7,lr}
 	mov r6, #0
 	sub r6, #1
@@ -5693,7 +5705,7 @@ loc_8028EC2:
 	strh r6, [r5,#0x20]
 	strb r7, [r5,#9]
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8028E4C
+	thumb_func_end canChipJoinPicks_8028E4C
 
 // () -> void
 	thumb_local_start
@@ -5923,7 +5935,7 @@ locret_8029030:
 	thumb_func_end sub_8028FC0
 
 	thumb_local_start
-sub_8029032:
+undoChipPick_8029032:
 	push {r4,lr}
 	ldrb r0, [r5,#8]
 	cmp r0, #0
@@ -5960,7 +5972,7 @@ loc_8029066:
 	sub r1, #1
 	strb r1, [r5,#8]
 	ldr r0, dword_8029108 // =0x1ff 
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
@@ -5991,7 +6003,7 @@ loc_80290C2:
 	sub r1, #1
 	strb r1, [r5,#8]
 	ldr r0, dword_8029108 // =0x1ff 
-	bl sub_80281D4
+	bl drawChipWindowSlotRow_80281D4
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
@@ -6013,7 +6025,7 @@ loc_80290F2:
 	strb r0, [r4,#7]
 loc_80290F6:
 	bl sub_8028E32
-	bl sub_8028476
+	bl drawChipCard_8028476
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 locret_8029104:
@@ -6023,7 +6035,7 @@ dword_8029108:
 	.word 0x1FF
 dword_802910C:
 	.word 0x55
-	thumb_func_end sub_8029032
+	thumb_func_end undoChipPick_8029032
 
 	thumb_local_start
 sub_8029110:
@@ -6033,12 +6045,12 @@ sub_8029110:
 	strb r0, [r5,#oS20364C0_Unk_0b]
 
 	// memBlock
-	ldr r0, off_80293D4 // =dword_2033000 
+	ldr r0, off_80293D4 // =ePAScratch_2033000 
 	// size
 	mov r1, #0x48 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	ldr r4, off_80293D4 // =dword_2033000 
-	ldr r6, off_80293CC // =byte_20366C0 
+	ldr r4, off_80293D4 // =ePAScratch_2033000 
+	ldr r6, off_80293CC // =eSelectedChipCodes_20366C0 
 	mov r3, #6
 	mov r0, #0
 	sub r0, #1
@@ -6049,14 +6061,14 @@ loc_8029128:
 	add r6, #2
 	sub r3, #1
 	bne loc_8029128
-	ldr r4, off_80293D4 // =dword_2033000 
+	ldr r4, off_80293D4 // =ePAScratch_2033000 
 
 	ldrb r7, [r5,#oS20364C0_NumChipsSelected]
 	cmp r7, #0
 	beq loc_80291E6
 
 	mov r6, #0x48 
-	ldr r3, off_80293CC // =byte_20366C0 
+	ldr r3, off_80293CC // =eSelectedChipCodes_20366C0 
 loc_8029140:
 	ldrb r0, [r5,r6]
 	push {r3}
@@ -6114,10 +6126,10 @@ loc_80291AC:
 	add r6, #1
 	sub r7, #1
 	bne loc_8029140
-	ldr r0, off_80293CC // =byte_20366C0 
+	ldr r0, off_80293CC // =eSelectedChipCodes_20366C0 
 	add r0, #0x32 
 	mov r1, #0
-	bl sub_8029520
+	bl matchPARecipes_8029520
 	cmp r0, #0
 	beq loc_80291E2
 	push {r0-r2}
@@ -6129,7 +6141,7 @@ loc_80291AC:
 	bl sub_80292CC
 	pop {r0-r2}
 	lsr r1, r1, #1
-	ldr r3, off_80293CC // =byte_20366C0 
+	ldr r3, off_80293CC // =eSelectedChipCodes_20366C0 
 	add r3, #0x32 
 	bl sub_802B6F2
 	mov r0, #0x10
@@ -6137,8 +6149,8 @@ loc_80291AC:
 loc_80291E2:
 	bl sub_8029224
 loc_80291E6:
-	ldr r2, off_80293D4 // =dword_2033000 
-	ldr r6, off_80293CC // =byte_20366C0 
+	ldr r2, off_80293D4 // =ePAScratch_2033000 
+	ldr r6, off_80293CC // =eSelectedChipCodes_20366C0 
 	ldr r4, off_80293D0 // =byte_20366FE 
 	mov r0, #0
 
@@ -6177,7 +6189,7 @@ loc_8029202:
 	thumb_local_start
 sub_8029224:
 	push {r4,r6,r7,lr}
-	ldr r4, off_80293D4 // =dword_2033000 
+	ldr r4, off_80293D4 // =ePAScratch_2033000 
 	add r4, #2
 	mov r7, #0
 	sub r7, #1
@@ -6276,7 +6288,7 @@ locret_80292CA:
 	thumb_local_start
 sub_80292CC:
 	push {r4,r6,r7,lr}
-	ldr r4, off_80293D4 // =dword_2033000 
+	ldr r4, off_80293D4 // =ePAScratch_2033000 
 	add r4, r4, r1
 	lsl r3, r2, #1
 	add r6, r4, r3
@@ -6326,7 +6338,7 @@ loc_802930E:
 	thumb_local_start
 sub_8029328:
 	push {r4,lr}
-	ldr r4, off_80293D4 // =dword_2033000 
+	ldr r4, off_80293D4 // =ePAScratch_2033000 
 	add r4, r4, r1
 	add r4, #0x3c 
 	mov r3, #0xfe
@@ -6421,11 +6433,11 @@ sub_80293B0:
 	pop {r0-r4,pc}
 	.balign 4, 0
 off_80293CC:
-	.word byte_20366C0
+	.word eSelectedChipCodes_20366C0
 off_80293D0:
 	.word byte_20366FE
 off_80293D4:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_80293D8:
 	.word 0x190
 	.word byte_20349C0
@@ -6444,7 +6456,7 @@ dword_80293F4:
 	thumb_func_end sub_80293B0
 
 	thumb_local_start
-sub_80293F8:
+blankPickedDeckSlots_80293F8:
 	push {r4,r6,r7,lr}
 	mov r7, #0
 	sub r7, #1
@@ -6498,10 +6510,10 @@ loc_8029452:
 	bne loc_8029406
 locret_8029458:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80293F8
+	thumb_func_end blankPickedDeckSlots_80293F8
 
 	thumb_local_start
-sub_802945A:
+packDeckEntries_802945A:
 	push {r4,r6,r7,lr}
 	ldr r3, off_8029510 // =eBattleFolder 
 	mov r4, #0
@@ -6529,7 +6541,7 @@ loc_802947E:
 	bne loc_802947E
 locret_8029486:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_802945A
+	thumb_func_end packDeckEntries_802945A
 
 	thumb_local_start
 sub_8029488:
@@ -6628,7 +6640,7 @@ sub_8029514:
 	thumb_func_end sub_8029514
 
 	thumb_local_start
-sub_8029520:
+matchPARecipes_8029520:
 	push {r4-r7,lr}
 	sub sp, sp, #0x20
 	mov r7, sp
@@ -6660,11 +6672,11 @@ loc_802954C:
 	blt loc_80295B0
 	mov r6, #0
 loc_8029556:
-	ldr r4, off_80295B4 // =off_802BCB0 
+	ldr r4, off_80295B4 // =PARecipePtrsA_802BCB0 
 	ldr r0, [r7,#0x1c]
 	cmp r0, #0
 	beq loc_8029560
-	ldr r4, off_80295B8 // =off_802BC60 
+	ldr r4, off_80295B8 // =PARecipePtrsB_802BC60 
 loc_8029560:
 	ldr r3, [r4]
 	cmp r3, #0
@@ -6673,7 +6685,7 @@ loc_8029560:
 	cmp r5, r2
 	blt loc_80295A2
 	ldrb r0, [r3,#1]
-	ldr r1, off_80295BC // =off_80295C0 
+	ldr r1, off_80295BC // =PAMatchers_80295C0 
 	ldr r0, [r1,r0]
 	mov lr, pc
 	bx r0
@@ -6712,18 +6724,18 @@ loc_80295B0:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80295B4:
-	.word off_802BCB0
+	.word PARecipePtrsA_802BCB0
 off_80295B8:
-	.word off_802BC60
+	.word PARecipePtrsB_802BC60
 off_80295BC:
-	.word off_80295C0
-off_80295C0:
-	.word sub_80295C8+1
-	.word sub_802961A+1
-	thumb_func_end sub_8029520
+	.word PAMatchers_80295C0
+PAMatchers_80295C0:
+	.word paMatchCodeId_80295C8+1
+	.word paMatchExact_802961A+1
+	thumb_func_end matchPARecipes_8029520
 
 	thumb_local_start
-sub_80295C8:
+paMatchCodeId_80295C8:
 	push {r2,r4-r6,lr}
 	mov r5, r2
 	ldrh r1, [r3,#4]
@@ -6771,10 +6783,10 @@ loc_8029616:
 	mov r0, #0
 locret_8029618:
 	pop {r2,r4-r6,pc}
-	thumb_func_end sub_80295C8
+	thumb_func_end paMatchCodeId_80295C8
 
 	thumb_local_start
-sub_802961A:
+paMatchExact_802961A:
 	push {r2,r4,r7,lr}
 	mov r4, r3
 	add r4, #4
@@ -6795,7 +6807,7 @@ loc_8029638:
 	mov r0, #0
 locret_802963A:
 	pop {r2,r4,r7,pc}
-	thumb_func_end sub_802961A
+	thumb_func_end paMatchExact_802961A
 
 	thumb_local_start
 sub_802963C:
@@ -6859,7 +6871,7 @@ sub_8029688:
 	ldrb r0, [r1,r0]
 	str r0, [sp]
 loc_80296A2:
-	ldr r7, off_8029784 // =dword_2033000 
+	ldr r7, off_8029784 // =ePAScratch_2033000 
 	ldr r6, off_80298D4 // =eBattleFolder 
 	ldrb r4, [r5,#6]
 	cmp r4, #0
@@ -6921,7 +6933,7 @@ loc_802970A:
 loc_802970C:
 	cmp r2, #0
 	beq loc_802977E
-	ldr r0, off_8029784 // =dword_2033000 
+	ldr r0, off_8029784 // =ePAScratch_2033000 
 	mov r7, r0
 	mov r1, r2
 	bl ShuffleHwordList_SecondaryRNG
@@ -6986,7 +6998,7 @@ loc_802977E:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_8029784:
-	.word dword_2033000
+	.word ePAScratch_2033000
 	thumb_func_end sub_8029688
 
 	thumb_local_start
@@ -7694,7 +7706,7 @@ off_8029C04:
 	thumb_func_end sub_8029BE6
 
 	thumb_local_start
-sub_8029C08: // (self: * S20364C0 $r5) -> ()
+drawChipWindowMark_8029C08: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
 	ldrb r0, [r5,#oS20364C0_JumpOffset01]
@@ -7710,7 +7722,7 @@ loc_8029C14:
 loc_8029C18:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	ldrh r1, [r1,#0x18]
+	ldrh r1, [r1,#oRenderInfo_BG3HOfs_18]
 	cmp r1, #0x67 
 	bgt locret_8029C9A
 loc_8029C22:
@@ -7795,7 +7807,7 @@ byte_8029CAC:
 	.byte 0xD8, 0x38, 0xE0, 0x39, 0xE8, 0x3A, 0xEC, 0x3B, 0xF0
 	.byte 0x3C, 0xF4, 0x3D, 0xF8, 0x3E, 0xFB, 0x3F, 0xFE, 0x40
 	.byte 0x0, 0x40, 0x0, 0x0
-	thumb_func_end sub_8029C08
+	thumb_func_end drawChipWindowMark_8029C08
 
 	thumb_local_start
 sub_8029CD4:
@@ -7860,7 +7872,7 @@ sub_8029D34:
 	and r0, r1
 	cmp r0, #0x1c
 	blt loc_8029D4E
-	bl sub_8029D80
+	bl blankChipNameStrip_8029D80
 	b locret_8029D5E
 loc_8029D4E:
 	// j
@@ -7887,7 +7899,7 @@ byte_8029D64:
 	thumb_func_end sub_8029D34
 
 	thumb_local_start
-sub_8029D80:
+blankChipNameStrip_8029D80:
 	push {r4,r5,lr}
 	mov r0, #0xf
 	mov r1, #4
@@ -7897,7 +7909,7 @@ sub_8029D80:
 	mov r5, #2
 	bl call_sub_3005EBA
 	pop {r4,r5,pc}
-	thumb_func_end sub_8029D80
+	thumb_func_end blankChipNameStrip_8029D80
 
 	thumb_local_start
 sub_8029D94:
@@ -8395,7 +8407,7 @@ locret_802A21E:
 	thumb_func_end sub_802A210
 
 	thumb_local_start
-sub_802A220:
+pollChipWindowSelection_802A220:
 	push {r4,r6,r7,lr}
 	mov r4, #0xff
 	movflag EVENT_163
@@ -8466,7 +8478,7 @@ dword_802A2A8:
 	.word 0x200000
 off_802A2AC:
 	.word dword_20349A0
-	thumb_func_end sub_802A220
+	thumb_func_end pollChipWindowSelection_802A220
 
 	thumb_local_start
 sub_802A2B0: // (self: * S20364C0 $r5) -> ()
@@ -8665,7 +8677,7 @@ byte_802A400:
 	thumb_func_end sub_802A3CC
 
 	thumb_local_start
-sub_802A40C:
+getChipsOfferedPerWindow_802A40C:
 	push {r4,r6,r7,lr}
 	mov r7, #0
 	mov r6, r10
@@ -8739,7 +8751,7 @@ loc_802A470:
 loc_802A498:
 	strb r0, [r5,#6]
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_802A40C
+	thumb_func_end getChipsOfferedPerWindow_802A40C
 
 	thumb_local_start
 sub_802A49C:
@@ -8800,11 +8812,11 @@ off_802A4F8:
 	thumb_local_start
 sub_802A4FC:
 	push {r4,r6,r7,lr}
-	ldr r0, off_802A534 // =byte_20366C0 
+	ldr r0, off_802A534 // =eSelectedChipCodes_20366C0 
 	ldrb r0, [r0]
 	cmp r0, #0xff
 	beq locret_802A532
-	ldr r4, off_802A534 // =byte_20366C0 
+	ldr r4, off_802A534 // =eSelectedChipCodes_20366C0 
 	mov r0, #0x32 
 	add r4, r4, r0
 	mov r6, #0xff
@@ -8831,7 +8843,7 @@ locret_802A532:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_802A534:
-	.word byte_20366C0
+	.word eSelectedChipCodes_20366C0
 off_802A538:
 	.word dword_20367E0
 	thumb_func_end sub_802A4FC
@@ -9093,7 +9105,7 @@ off_802A744:
 
 /// Seems to feed into the first word of most entries in unk_20365C0
 /// [u32; 12]
-dword_802A7CC:
+ChipWindowSlotTemplate_802A7CC:
 	.word 0x10A050A
 	.word 0x200060A
 	.word 0x301070A
@@ -9252,7 +9264,7 @@ sub_802A934:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 loc_802A966:
 	mov r0, #1
 	strb r0, [r5,#4]
@@ -10071,7 +10083,7 @@ sub_802AF6C:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0x78 
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 	mov r0, #SOUND_SELECT_79
 	bl PlaySoundEffect
 	mov r0, #0xf
@@ -10114,7 +10126,7 @@ loc_802AFAE:
 	str r0, [r5,#0x38]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 	cmp r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_802AF6C
@@ -10161,7 +10173,7 @@ loc_802AFF8:
 	str r0, [r5,#0x38]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG3HOfs_18]
 	cmp r0, #0x78 
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -11318,7 +11330,7 @@ off_802BA14:
 sub_802BA18:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r0,#oRenderInfo_Unk_18]
+	ldrh r0, [r0,#oRenderInfo_BG3HOfs_18]
 	asr r0, r0, #3
 	add r0, #1
 	mov pc, lr
@@ -11478,7 +11490,7 @@ byte_802BC4C:
 	.byte 0x3, 0x4, 0x55, 0x1, 0x32, 0x0, 0x32, 0x0, 0x33, 0x0
 byte_802BC56:
 	.byte 0x3, 0x4, 0x54, 0x1, 0x13, 0x0, 0x13, 0x0, 0x4A, 0x0
-off_802BC60:
+PARecipePtrsB_802BC60:
 	.word byte_802BB98
 	.word byte_802BBA2
 	.word byte_802BBAC
@@ -11499,7 +11511,7 @@ off_802BC60:
 	.word byte_802BC42
 	.word byte_802BC4C
 	.word byte_802BC56
-off_802BCB0:
+PARecipePtrsA_802BCB0:
 	.word byte_802BA60
 	.word byte_802BA6A
 	.word byte_802BA74
@@ -11541,7 +11553,7 @@ off_802BCB0:
 	.word byte_802BB7A
 	.word byte_802BB80
 	.word byte_802BB86
-// bn T10 (2026-09-15): off_802BCB0's terminator .word NULL at the 64th
+// bn T10 (2026-09-15): PARecipePtrsA_802BCB0's terminator .word NULL at the 64th
 // PA pointer is the signal tools/inventory.py subtracts from the raw PA
 // count to land on 63 PA records; named in docs/SCOPE.md's generated
 // "## Per-item tables" text as the trailing NULL the PA pointer array
@@ -11659,7 +11671,7 @@ sub_802BE0C:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r3,#oRenderInfo_Unk_18]
+	strh r0, [r3,#oRenderInfo_BG3HOfs_18]
 	mov r1, #0
 	bl sub_801E0A0
 	mov r0, #4
@@ -11748,7 +11760,7 @@ sub_802BED4:
 	tst r0, r0
 	bne loc_802BEE8
 
-	// trigger sub_8026BF4 via custMenuMainMaybe_8026A88
+	// trigger chipWindowState08SlideOut_8026BF4 via custMenuMainMaybe_8026A88
 	mov r0, #8
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -20597,14 +20609,14 @@ sub_8030136:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_10]
+	ldrh r6, [r0,#oRenderInfo_BG1HOfs_10]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_12]
+	ldrh r7, [r0,#oRenderInfo_BG1VOfs_12]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_10]
-	strh r7, [r0,#oRenderInfo_Unk_12]
-	strh r6, [r0,#oRenderInfo_Unk_14]
-	strh r7, [r0,#oRenderInfo_Unk_16]
+	strh r6, [r0,#oRenderInfo_BG1HOfs_10]
+	strh r7, [r0,#oRenderInfo_BG1VOfs_12]
+	strh r6, [r0,#oRenderInfo_BG2HOfs_14]
+	strh r7, [r0,#oRenderInfo_BG2VOfs_16]
 	mov pc, lr
 	thumb_func_end sub_8030136
 
@@ -20619,12 +20631,12 @@ sub_8030158:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_14]
+	ldrh r6, [r0,#oRenderInfo_BG2HOfs_14]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_16]
+	ldrh r7, [r0,#oRenderInfo_BG2VOfs_16]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_14]
-	strh r7, [r0,#oRenderInfo_Unk_16]
+	strh r6, [r0,#oRenderInfo_BG2HOfs_14]
+	strh r7, [r0,#oRenderInfo_BG2VOfs_16]
 	push {r1,r4}
 	bl sub_80269E2
 	pop {r1,r4}
@@ -20632,12 +20644,12 @@ sub_8030158:
 	bne locret_8030192
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_18]
+	ldrh r6, [r0,#oRenderInfo_BG3HOfs_18]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_1a]
+	ldrh r7, [r0,#oRenderInfo_BG3VOfs_1a]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_18]
-	strh r7, [r0,#oRenderInfo_Unk_1a]
+	strh r6, [r0,#oRenderInfo_BG3HOfs_18]
+	strh r7, [r0,#oRenderInfo_BG3VOfs_1a]
 locret_8030192:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8030158
@@ -20652,12 +20664,12 @@ sub_8030194:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_10]
+	ldrh r6, [r0,#oRenderInfo_BG1HOfs_10]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_12]
+	ldrh r7, [r0,#oRenderInfo_BG1VOfs_12]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_10]
-	strh r7, [r0,#oRenderInfo_Unk_12]
+	strh r6, [r0,#oRenderInfo_BG1HOfs_10]
+	strh r7, [r0,#oRenderInfo_BG1VOfs_12]
 	mov pc, lr
 	thumb_func_end sub_8030194
 
@@ -20856,13 +20868,13 @@ sub_80302F8:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
-	strh r1, [r3,#oRenderInfo_Unk_14]
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BG1HOfs_10]
+	strh r1, [r3,#oRenderInfo_BG2HOfs_14]
+	strh r1, [r3,#oRenderInfo_BG3HOfs_18]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
-	strh r2, [r3,#oRenderInfo_Unk_16]
-	strh r2, [r3,#oRenderInfo_Unk_1a]
+	strh r2, [r3,#oRenderInfo_BG1VOfs_12]
+	strh r2, [r3,#oRenderInfo_BG2VOfs_16]
+	strh r2, [r3,#oRenderInfo_BG3VOfs_1a]
 	mov pc, lr
 	thumb_func_end sub_80302F8
 
@@ -20875,14 +20887,14 @@ sub_8030316:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
-	strh r1, [r3,#oRenderInfo_Unk_14]
+	strh r1, [r3,#oRenderInfo_BG1HOfs_10]
+	strh r1, [r3,#oRenderInfo_BG2HOfs_14]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
-	strh r2, [r3,#oRenderInfo_Unk_16]
+	strh r2, [r3,#oRenderInfo_BG1VOfs_12]
+	strh r2, [r3,#oRenderInfo_BG2VOfs_16]
 	mov r1, #0
-	strh r1, [r3,#oRenderInfo_Unk_18]
-	strh r1, [r3,#oRenderInfo_Unk_1a]
+	strh r1, [r3,#oRenderInfo_BG3HOfs_18]
+	strh r1, [r3,#oRenderInfo_BG3VOfs_1a]
 	mov pc, lr
 	thumb_func_end sub_8030316
 
@@ -20895,18 +20907,18 @@ sub_8030336:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
-	strh r1, [r3,#oRenderInfo_Unk_14]
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BG1HOfs_10]
+	strh r1, [r3,#oRenderInfo_BG2HOfs_14]
+	strh r1, [r3,#oRenderInfo_BG3HOfs_18]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
-	strh r2, [r3,#oRenderInfo_Unk_16]
-	strh r2, [r3,#oRenderInfo_Unk_1a]
+	strh r2, [r3,#oRenderInfo_BG1VOfs_12]
+	strh r2, [r3,#oRenderInfo_BG2VOfs_16]
+	strh r2, [r3,#oRenderInfo_BG3VOfs_1a]
 	mov r1, #0
-	strh r1, [r3,#oRenderInfo_Unk_10]
-	strh r1, [r3,#oRenderInfo_Unk_12]
-	strh r1, [r3,#oRenderInfo_Unk_18]
-	strh r1, [r3,#oRenderInfo_Unk_1a]
+	strh r1, [r3,#oRenderInfo_BG1HOfs_10]
+	strh r1, [r3,#oRenderInfo_BG1VOfs_12]
+	strh r1, [r3,#oRenderInfo_BG3HOfs_18]
+	strh r1, [r3,#oRenderInfo_BG3VOfs_1a]
 	mov pc, lr
 	thumb_func_end sub_8030336
 
@@ -20921,10 +20933,10 @@ sub_803035E:
 	lsl r4, r4, #1
 	add r4, #1
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
+	strh r1, [r3,#oRenderInfo_BG1HOfs_10]
 	sub r2, #8
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
+	strh r2, [r3,#oRenderInfo_BG1VOfs_12]
 	mov pc, lr
 	thumb_func_end sub_803035E
 

@@ -16,7 +16,7 @@ off_801ECB4::
 	.word dword_86B7BA0
 	.word 0x600BA80
 	.word 0x40
-	.word dword_86E1D38
+	.word ChipWindowTiles_86E1D38
 	.word 0x6008020
 	.word 0x10E0
 	.word byte_86E2E18

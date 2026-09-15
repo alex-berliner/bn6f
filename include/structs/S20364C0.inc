@@ -43,7 +43,7 @@
 	u16 Unk_3a // loc=0x3a
 
 	// sub_8026840 implies 0x70, but this conflicts with unk_2036500 which has references. So up to conflict is 0x40
-  // But we do see uses in sub_8026B04 of 0x40 and 0x44
+  // But we do see uses in chipWindowState00SlideIn_8026B04 of 0x40 and 0x44
 	struct_org 0x40
 	u0 Size // loc=0x40
 
@@ -54,13 +54,13 @@
 
 	// Calling it Extra for now until we understand why the conflicting references
   // Unk_40 (the same word as unk_2036500) is the window's OWN FRAME COUNTER, and
-  // it is the phase of the highlight bracket's blink. sub_8026B04 seeds it to
-  // 0x78 and counts it down by 0xc through the slide-in, sub_8026CCC increments
+  // it is the phase of the highlight bracket's blink. chipWindowState00SlideIn_8026B04 seeds it to
+  // 0x78 and counts it down by 0xc through the slide-in, chipWindowState04Interactive_8026CCC increments
   // it once a frame while the window is interactive and zeroes it again when a
-  // chip is selected, and sub_8028820 reduces it to `(x >> 3) & 1` and adds that
+  // chip is selected, and drawChipCursorBracket_8028820 reduces it to `(x >> 3) & 1` and adds that
   // to base tile 0xb764 to pick between the two bracket tiles. Its value is
   // therefore "frames since THIS window opened" and means nothing across windows.
-  .equiv oS20364C0_Extra_Unk_40, 0x40 // u32
+  .equiv oS20364C0_Extra_WindowFrameCounter, 0x40 // u32
   .equiv oS20364C0_Extra_Unk_44, 0x44 // flags32
   .equiv oS20364C0_Extra_Size, 0x48
 

@@ -169,3 +169,67 @@ sequencer states, with canon's own measured run over one battle),
   state-0x08 handler's own `mov r0, #0x20` put entries 8 and 9 squarely on it.
   Entries 8/9 are named for their state; entries 6/7 are named for their state
   and nothing more.
+
+## Chip-select window, its art and Program Advance (`asm/asm03_0.s`)
+
+`eS20364C0.JumpOffset01` selects a row of `ChipWindowStates_8026AA4` and is, like
+the battle sequencer's state word, a PRE-MULTIPLIED byte offset — which is why
+the code writes 4, 0x2c and 0x40 into it. The handlers are named for that value.
+Three rows are confirmed against their own writers inside this file (state 0x00
+writes 4 and 0x2c; state 0x04 writes 0x40 on a pick), and
+`docs/coverage/battlestart_gunner.md:79-92` walks the same machine live.
+
+| old | new | evidence |
+|---|---|---|
+| `sub_8026A28` | `isChipWindowReady_8026A28` | "the 'window ready' signal sub_8026A28 gates on … dispatches on eS20364C0's top FSM byte JumpOffset00" — docs/coverage/battlestart_gunner.md:79-99 |
+| `sub_8026A50` / `sub_8026A6C` | `chipWindowReadyState00_8026A50` / `chipWindowReadyState08_8026A6C` | "state 0 sub_8026A50 returns 0 (and self-advances to 4) … state 8 sub_8026A6C returns Unk_04" — battlestart_gunner.md:81-84 |
+| `off_8026AA4` | `ChipWindowStates_8026AA4` | the table `custMenuMainMaybe_8026A88` dispatches JumpOffset01 through |
+| `sub_8026B04` | `chipWindowState00SlideIn_8026B04` | "State 0x00 of the chip window: THE SLIDE-IN" — this repo's own note; src/custom.rs:6; TODO_ARCHIVE.md:1742 (F18) |
+| `sub_8026CCC` | `chipWindowState04Interactive_8026CCC` | "State 0x04 of the chip window: the interactive wait" — this repo's own note |
+| `sub_8026BF4` | `chipWindowState08SlideOut_8026BF4` | "the window SLIDE-OUT routine: 0 -> 0x78 at 0xc, clears vacated columns with the blank tile" — src/custom.rs:1091; TODO_ARCHIVE.md:1552 (F3) |
+| `sub_8027548` | `chipWindowState40Selected_8027548` | reached by the `JumpOffset01 = 0x40` write state 0x04 makes on a pick — docs/coverage/battlestart_gunner.md:100-102 and the code itself |
+| the other 20 rows | `chipWindowStateXX_…` | their row in `ChipWindowStates_8026AA4` (state value = row offset), the scheme confirmed by the three writers above |
+| `byte_8026C88` | `ChipWindowBlankTile_8026C88` | "clears the columns the window has vacated with the blank tile (byte_8026C88)" — src/custom.rs:710; TODO_ARCHIVE.md:1552 (F3) |
+| `dword_8026CC8` | `ChipWindowCameraPanStep_8026CC8` | "every slide-out call adds dword_8026CC8 = 0x18000 to the camera's y at Camera+0x34" — src/custom.rs:1096; TODO_ARCHIVE.md:2119 (F29) |
+| `sub_8029D80` | `blankChipNameStrip_8029D80` | "CopyBackgroundTiles of tile 0 over the 7x2 chip-NAME region" — src/battle.rs:2602; TODO_ARCHIVE.md:1741 (F18) |
+| `sub_8029C08` | `drawChipWindowMark_8029C08` | "queues the regular-chip MARK during the slide; returns early once RenderInfo+0x18 passes 0x67" — src/custom.rs:153; TODO_ARCHIVE.md:2629 (F37f) |
+| `sub_8028820` | `drawChipCursorBracket_8028820` | "Draws the highlight bracket around the chip the cursor is on, and BLINKS it" — this repo's own note; src/custom.rs:107; TODO_ARCHIVE.md:76 (A2) |
+| `sub_802A220` | `pollChipWindowSelection_802A220` | "When sub_802A220 reports a selection it zeroes +0x40 again on the way out" — this repo's own note; docs/coverage/battlestart_gunner.md:103-105 |
+| `sub_8028894` / `sub_80288D0` | `placeSlotCursorBracket_8028894` / `placeOkCursorBracket_80288D0` | "the SLOT cursor-bracket placement … the OK cursor-bracket placement (0x58, 0x6b)" — src/custom.rs:296-302 |
+| `byte_80288B0` / `byte_80288E4` | `SlotCursorBracketCorners_80288B0` / `OkCursorBracketCorners_80288E4` | "byte_80288B0 for a slot, byte_80288E4 for OK … four words each of dy, 0, dx, flags" — src/custom.rs:305 |
+| `byte_86E625C` / `dword_86E1D38` | `ChipWindowMap_86E625C` / `ChipWindowTiles_86E1D38` | "the 15x20 map byte_86E625C in palette bank 9"; "The tiles are dword_86E1D38" — src/custom.rs:4,7 |
+| `byte_8027B2C` / `sub_8027CCC` | `ChipWindowMapPatches_8027B2C` / `applyChipWindowMapPatches_8027CCC` | "the game overwrites 27 rectangles with running VRAM tile ids (byte_8027B2C via sub_8027CCC) … eight bytes: x, y, w, h, bank and the column-major flag" — src/custom.rs:10,237 |
+| `dword_802A7CC` / `sub_8027E90` | `ChipWindowSlotTemplate_802A7CC` / `initChipWindowSlots_8027E90` | "sub_8027E90 copies the template dword_802A7CC into the twelve per-slot records" — src/custom.rs:92 |
+| `sub_80281D4` | `drawChipWindowSlotRow_80281D4` | "Draws the offered chips' icons/code letters in the first slot row" — src/custom.rs:973 |
+| `sub_8028204` / `dword_86E591C` | `drawChipWindowCodeLetters_8028204` / `ChipCodeGlyphs_86E591C` | "The blank code glyph, dword_86E591C[0x1b] (sub_8028204)" — src/custom.rs:224 |
+| `sub_8028310` / `byte_86E601C` | `drawEmptyChipIcon_8028310` / `EmptyChipIcon_86E601C` | "the empty icon byte_86E601C where there is no chip (sub_8028310)" — src/custom.rs:14 |
+| `sub_8028320` | `drawChipWindowOkBox_8028320` | "the live OK box (sub_8028320)" — src/custom.rs:17 |
+| `sub_80283C8` / `byte_8028470` | `pickChipIconPaletteBank_80283C8` / `ChipIconPaletteBanks_8028470` | "maps the slot record's selectable byte through byte_8028470 to bank 11 or 12" — src/custom.rs:78 |
+| `sub_8028476` | `drawChipCard_8028476` | "sub_8028476 draws nothing for the empty slot types" — src/custom.rs:997 |
+| `sub_80284E2` | `drawChipCardPicture_80284E2` | "A card picture is 7 x 6 tiles (sub_80284E2 copies 0x540 bytes)" — src/chips.rs:10 |
+| `sub_802869E` | `drawChipCardDamageRow_802869E` | "sub_802869E draws the row" (the card's attack-power row) — src/custom.rs:1285 |
+| `sub_8028D6C` / `sub_8028E4C` / `sub_8029032` | `addChipPick_8028D6C` / `canChipJoinPicks_8028E4C` / `undoChipPick_8029032` | "A on a slot ADDS it … while the pick fits sub_8028E4C's rule"; "B undoes the last pick" — src/custom.rs:32-34; src/chips.rs:13 |
+| `sub_802A40C` | `getChipsOfferedPerWindow_802A40C` | "Chips offered per window: the base count before Custom parts (sub_802A40C)" — src/custom.rs:86 |
+| `sub_8027EE8` / `sub_802945A` / `sub_80293F8` | `offerDeckChipsToWindow_8027EE8` / `packDeckEntries_802945A` / `blankPickedDeckSlots_80293F8` | src/deck.rs:8-10 |
+| `off_802BCB0` / `off_802BC60` | `PARecipePtrsA_802BCB0` / `PARecipePtrsB_802BC60` | "43 pointers byte_802BA60..byte_802BB92, terminated .word NULL"; "20 pointers byte_802BB98..byte_802BC56" — docs/recon/T10.md:14 |
+| `off_80295C0` / `sub_80295C8` / `sub_802961A` | `PAMatchers_80295C0` / `paMatchCodeId_80295C8` / `paMatchExact_802961A` | "code-id extraction sub_80295C8 … exact-match sub_802961A" — docs/recon/T10.md:15 |
+| `sub_8029520` | `matchPARecipes_8029520` | "sub_8029520 walks recipe lists" — docs/recon/T10.md:13 |
+| `dword_2033000` / `byte_20366C0` | `ePAScratch_2033000` / `eSelectedChipCodes_20366C0` | "scratch dword_2033000 (zeroed 0x48 bytes)"; "selected-chip code array" — docs/recon/T10.md:10,18 |
+
+`oS20364C0_Extra_Unk_40` -> `oS20364C0_Extra_WindowFrameCounter`, on the note
+already in `include/structs/S20364C0.inc` ("the window's OWN FRAME COUNTER, and
+it is the phase of the highlight bracket's blink") and `TODO_ARCHIVE.md:76` (A2).
+
+## RenderInfo's BG registers (`include/structs/RenderInfo.inc`)
+
+`render_800172C` copies this struct's +0x04..+0x3c straight to BG0CNT onward, so
+every offset here is a known hardware register. The mapping was worked out and
+then confirmed live (`--watch` on 0x0200ac58 through a chip-window slide) by the
+bn project's AUDIT wave 3d "bg3-merge" ticket, whose note is still at the head of
+the file. These field renames also replaced 25 raw `[rX,#0xNN]` accesses across
+`asm/asm03_0.s`, `asm03_1_1.s`, `asm03_2.s`, `asm36.s` and `asm00_0.s`.
+
+`Unk_0a` -> `BG3Control_0a`, `Unk_0c` -> `BG0HOfs_0c`, `Unk_0e` -> `BG0VOfs_0e`,
+`Unk_10` -> `BG1HOfs_10`, `Unk_12` -> `BG1VOfs_12`, `Unk_14` -> `BG2HOfs_14`,
+`Unk_16` -> `BG2VOfs_16`, `Unk_18` -> `BG3HOfs_18`, `Unk_1a` -> `BG3VOfs_1a`
+(each as `oRenderInfo_<new>`).

@@ -2489,7 +2489,7 @@ unk_2032A04:: // 0x2032a04
 	.space 764
 unk_2032D00:: // 0x2032d00
 	.space 768
-dword_2033000:: // 0x2033000
+ePAScratch_2033000:: // 0x2033000
 	.space 4
 word_2033004:: // 0x2033004
 	.space 2
@@ -2694,7 +2694,7 @@ dword_203666C:: // 0x203666c
 	.space 8
 word_2036674:: // 0x2036674
 	.space 76
-byte_20366C0:: // 0x20366c0
+eSelectedChipCodes_20366C0:: // 0x20366c0
 	.space 2
 word_20366C2:: // 0x20366c2
 	.space 12

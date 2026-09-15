@@ -8345,7 +8345,7 @@ initBattleStructsAndVram_80071D4:
 	push {r0}
 
 	// memBlock
-	ldr r0, off_8007320 // =dword_2033000
+	ldr r0, off_8007320 // =ePAScratch_2033000
 	// size
 	ldr r1, Word_8007324 // =0x6aa0
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -8506,10 +8506,10 @@ off_8007310:
 	.word eS20364C0
 Word_8007314:
 	.word 0x6014000
-	.word dword_2033000
+	.word ePAScratch_2033000
 	.word 0xD000
 off_8007320:
-	.word dword_2033000
+	.word ePAScratch_2033000
 Word_8007324:
 	.word 0x6AA0
 off_8007328:
@@ -13145,7 +13145,7 @@ battleFsmState08_8009338:
 	strb r0, [r5,#oBattleState_Unk_03]
 	bl sub_8026840
 loc_800934E:
-	bl sub_8026A28
+	bl isChipWindowReady_8026A28
 	cmp r0, #0
 	beq locret_8009388
 	cmp r0, #2
@@ -15804,14 +15804,14 @@ loc_800A5A8:
 	add r4, #1
 	cmp r4, #0x1e
 	blt loc_800A582
-	ldr r0, off_800A918 // =dword_2033000
+	ldr r0, off_800A918 // =ePAScratch_2033000
 	mov r1, r5 // r5 = num non-gigas
 	beq loc_800A5D2
 	mov r2, r5
 	ldr r3, [sp,#4]
 	tst r3, r3
 	beq loc_800A5C4
-	ldr r0, dword_800A91C // =dword_2033000+2
+	ldr r0, dword_800A91C // =ePAScratch_2033000+2
 // reg?
 	sub r1, #1
 	sub r2, #1
@@ -15843,7 +15843,7 @@ loc_800A5E8:
 	svc 6
 	mov r3, #0xa
 	add r3, r3, r1
-	ldr r0, off_800A924 // =dword_2033000
+	ldr r0, off_800A924 // =ePAScratch_2033000
 	mov r1, r5
 	add r2, r4, r4
 	ldr r7, off_800A928 // =word_2033040
@@ -15866,7 +15866,7 @@ loc_800A612:
 	svc 6
 	mov r3, #8
 	add r3, r3, r1
-	ldr r0, off_800A92C // =dword_2033000
+	ldr r0, off_800A92C // =ePAScratch_2033000
 	mov r1, r5
 	add r2, r4, r4
 	ldr r7, off_800A930 // =word_2033040
@@ -15890,7 +15890,7 @@ loc_800A634:
 	mov r2, #0x45
 	strb r1, [r3,r2]
 	lsl r1, r1, #1
-	ldr r0, off_800A934 // =dword_2033000
+	ldr r0, off_800A934 // =ePAScratch_2033000
 	ldrh r3, [r0,#0x38] // (word_2033038 - 0x2033000)
 	ldrh r4, [r0,r1]
 	strh r4, [r0,#0x38] // (word_2033038 - 0x2033000)
@@ -15902,7 +15902,7 @@ loc_800A634:
 	strh r3, [r0,r1]
 loc_800A664:
 	// src
-	ldr r0, off_800A938 // =dword_2033000
+	ldr r0, off_800A938 // =ePAScratch_2033000
 	// dest
 	ldr r1, [sp]
 	// halfwordCount
@@ -16365,27 +16365,27 @@ sub_800A908:
 	str r0, [r1]
 	mov pc, lr
 off_800A910:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_800A914:
 	.word word_2033040
 off_800A918:
-	.word dword_2033000
+	.word ePAScratch_2033000
 dword_800A91C:
-	.word dword_2033000+2
+	.word ePAScratch_2033000+2
 off_800A920:
 	.word word_2033040
 off_800A924:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_800A928:
 	.word word_2033040
 off_800A92C:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_800A930:
 	.word word_2033040
 off_800A934:
-	.word dword_2033000
+	.word ePAScratch_2033000
 off_800A938:
-	.word dword_2033000
+	.word ePAScratch_2033000
 dword_800A93C:
 	.word 0x8C9F
 off_800A940:
@@ -17887,7 +17887,7 @@ loc_800B334:
 	thumb_func_start sub_800B3A2
 sub_800B3A2:
 	push {lr}
-	ldr r0, off_800B600 // =byte_20366C0
+	ldr r0, off_800B600 // =eSelectedChipCodes_20366C0
 	ldr r1, off_800B604 // =dword_203CBE4
 	mov r2, #0x50
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
@@ -18218,7 +18218,7 @@ off_800B5F8:
 off_800B5FC:
 	.word byte_203F664
 off_800B600:
-	.word byte_20366C0
+	.word eSelectedChipCodes_20366C0
 off_800B604:
 	.word dword_203CBE4
 dword_800B608:

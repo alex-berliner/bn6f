@@ -29072,7 +29072,7 @@ byte_801D9B4:
 	thumb_func_end sub_801D814
 
 	// bn/reference wt/zero-layers (2026-09-08): 0x1f09 staged into
-	// oRenderInfo_Unk_0a here is a BGxCNT value (priority=1, char base
+	// oRenderInfo_BG3Control_0a here is a BGxCNT value (priority=1, char base
 	// block=0, screen base block=31) -- peeked live on real hardware via
 	// mgba_capture --peek 0x0400000e (BG3CNT) from both
 	// /tmp/pausedwithcannon.state (normal battle HUD) and
@@ -29094,7 +29094,7 @@ initChipWindowBg3_801DA24:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_801DA44 // =0x1f09
-	strh r0, [r1,#oRenderInfo_Unk_0a]
+	strh r0, [r1,#oRenderInfo_BG3Control_0a]
 	// dataList
 	ldr r0, off_801DA40 // =off_801ECB4 
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void

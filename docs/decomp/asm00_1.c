@@ -5122,7 +5122,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     int v50; // r3
 
     v5 = a1;
-    ZeroFillByWord(dword_2033000, 27296);
+    ZeroFillByWord(ePAScratch_2033000, 27296);
     ZeroFillByWord(&unk_2039ADC, 12804);
     ZeroFillByWord(byte_203CDA8, sub_3258);
     SetPrimaryToolkitPointersWrapper();
@@ -8598,7 +8598,7 @@ int battleFsmState08_8009338()
         *(v0 + 3) = 1;
         sub_8026840(1, v1, v2, v3);
     }
-    result = sub_8026A28();
+    result = isChipWindowReady_8026A28();
     if ( result )
     {
         if ( result == 2 )
@@ -10911,19 +10911,19 @@ void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
         if ( *(getChip8021DA8(*v4 & 0x1FF) + offsetof(ChipData, elemIdx)) == 2 )
             word_2033040[v6++] = *v4;
         else
-            *(dword_2033000 + v5++) = *v4;
+            *(ePAScratch_2033000 + v5++) = *v4;
         ++v4;
         ++v7;
     }
     while ( v7 < 30 );
-    v8 = dword_2033000;
+    v8 = ePAScratch_2033000;
     v9 = v5;
     if ( v5 )
     {
         v10 = v5;
         if ( v20 )
         {
-            v8 = dword_2033000 + 2;
+            v8 = ePAScratch_2033000 + 2;
             v9 = v5 - 1;
             v10 = v5 - 1;
         }
@@ -10944,7 +10944,7 @@ void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
             {
                 GetPositiveSignedRNGSecondary();
                 __asm { SVC         6 }
-                v5 = sub_800A672(dword_2033000, v5, word_2033040[v16++], 19);
+                v5 = sub_800A672(ePAScratch_2033000, v5, word_2033040[v16++], 19);
             }
             while ( v16 < v6 );
         }
@@ -10955,7 +10955,7 @@ void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
             {
                 GetPositiveSignedRNGSecondary();
                 __asm { SVC         6 }
-                v5 = sub_800A672(dword_2033000, v5, word_2033040[v11++], v5 - 2);
+                v5 = sub_800A672(ePAScratch_2033000, v5, word_2033040[v11++], v5 - 2);
             }
             while ( v11 < v6 );
         }
@@ -10972,7 +10972,7 @@ void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
         word_203303A = word_203302A;
         word_203302A = v18;
     }
-    CopyHalfwords(dword_2033000, v19, 60);
+    CopyHalfwords(ePAScratch_2033000, v19, 60);
 }
 
 
@@ -12459,7 +12459,7 @@ int sub_800B3A2()
     int v0; // r10
     char *v1; // r0
 
-    CopyWords(&byte_20366C0, &dword_203CBE4, 0x50u);
+    CopyWords(&eSelectedChipCodes_20366C0, &dword_203CBE4, 0x50u);
     dword_203CBE0[0] = 1450742051;
     v1 = sub_8013682(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
     CopyWords(v1, byte_203CC34, 0x64u);

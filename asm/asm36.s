@@ -13314,7 +13314,7 @@ sub_8136A0C:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	mov r1, #0
-	strh r1, [r0,#0x18]
+	strh r1, [r0,#oRenderInfo_BG3HOfs_18]
 	strh r1, [r0,#0x1a]
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk200f3a0_Ptr]
@@ -13431,7 +13431,7 @@ sub_8136B10:
 	push {r4-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
-	ldrh r1, [r2,#0x18]
+	ldrh r1, [r2,#oRenderInfo_BG3HOfs_18]
 	sub r1, r1, r0
 	strh r1, [r2,#0x18]
 	mov r0, r10
@@ -13463,7 +13463,7 @@ sub_8136B48:
 	push {r4-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
-	ldrh r1, [r2,#0x18]
+	ldrh r1, [r2,#oRenderInfo_BG3HOfs_18]
 	sub r1, r1, r0
 	strh r1, [r2,#0x18]
 	pop {r4-r7,pc}
@@ -16892,7 +16892,7 @@ loc_81385CA:
 	strb r1, [r5,#0xc]
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
-	strh r1, [r2,#0x12]
+	strh r1, [r2,#oRenderInfo_BG1VOfs_12]
 loc_81385DC:
 	ldrb r2, [r5,#8]
 	cmp r2, #0
