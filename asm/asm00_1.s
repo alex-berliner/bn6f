@@ -13364,11 +13364,11 @@ sub_80094B6:
 	tst r0, r0
 	bne loc_80094C8
 	ldr r0, =unk_2035260
-	bl sub_802C34E
+	bl showResultWindow_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_80094C8:
-	bl sub_802BD60
+	bl resultWindowDriver_802BD60
 	tst r0, r0
 	bne locret_80094D8
 	mov r0, #0x14
@@ -13955,11 +13955,11 @@ sub_8009916:
 	tst r0, r0
 	bne loc_8009928
 	ldr r0, off_800999C // =unk_2035260
-	bl sub_802C34E
+	bl showResultWindow_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009928:
-	bl sub_802BD60
+	bl resultWindowDriver_802BD60
 	tst r0, r0
 	bne locret_8009938
 	mov r0, #0x14
@@ -14364,11 +14364,11 @@ sub_8009C06:
 	tst r0, r0
 	bne loc_8009C18
 	ldr r0, off_8009C8C // =unk_2035260
-	bl sub_802C34E
+	bl showResultWindow_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009C18:
-	bl sub_802BD60
+	bl resultWindowDriver_802BD60
 	tst r0, r0
 	bne locret_8009C28
 	mov r0, #0x14
@@ -14817,11 +14817,11 @@ sub_8009F3A:
 	tst r0, r0
 	bne loc_8009F4C
 	ldr r0, off_8009FC4 // =unk_2035260
-	bl sub_802C34E
+	bl showResultWindow_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009F4C:
-	bl sub_802BD60
+	bl resultWindowDriver_802BD60
 	tst r0, r0
 	bne locret_8009F5C
 	mov r0, #0x14
@@ -16735,7 +16735,7 @@ sub_800AB22:
 sub_800AB2E:
 	mov r3, #0x10
 	mul r0, r3
-	ldr r3, off_800AC04 // =byte_203EAE0
+	ldr r3, off_800AC04 // =eBustingCounters_203EAE0
 	add r3, r3, r0
 	strb r2, [r3,r1]
 	mov pc, lr
@@ -16745,7 +16745,7 @@ sub_800AB2E:
 sub_800AB3A:
 	mov r3, #0x10
 	mul r0, r3
-	ldr r3, off_800AC08 // =byte_203EAE0
+	ldr r3, off_800AC08 // =eBustingCounters_203EAE0
 	add r3, r3, r0
 	ldrb r0, [r3,r1]
 	mov pc, lr
@@ -16755,7 +16755,7 @@ sub_800AB3A:
 sub_800AB46:
 	mov r3, #0x10
 	mul r0, r3
-	ldr r3, off_800AC0C // =byte_203EAE0
+	ldr r3, off_800AC0C // =eBustingCounters_203EAE0
 	add r3, r3, r0
 	ldrb r0, [r3,r1]
 	add r0, r0, r2
@@ -16771,7 +16771,7 @@ loc_800AB58:
 sub_800AB5C:
 	mov r3, #0x10
 	mul r0, r3
-	ldr r3, off_800AC10 // =byte_203EAE0
+	ldr r3, off_800AC10 // =eBustingCounters_203EAE0
 	add r3, r3, r0
 	ldrb r0, [r3,r1]
 	sub r0, r0, r2
@@ -16786,7 +16786,7 @@ loc_800AB6C:
 zeroFill_800AB70:
 	push {lr}
 	// memBlock
-	ldr r0, off_800AC14 // =byte_203EAE0
+	ldr r0, off_800AC14 // =eBustingCounters_203EAE0
 	// size
 	mov r1, #0x20
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -16863,15 +16863,15 @@ off_800ABFC:
 off_800AC00:
 	.word word_2000FA0
 off_800AC04:
-	.word byte_203EAE0
+	.word eBustingCounters_203EAE0
 off_800AC08:
-	.word byte_203EAE0
+	.word eBustingCounters_203EAE0
 off_800AC0C:
-	.word byte_203EAE0
+	.word eBustingCounters_203EAE0
 off_800AC10:
-	.word byte_203EAE0
+	.word eBustingCounters_203EAE0
 off_800AC14:
-	.word byte_203EAE0
+	.word eBustingCounters_203EAE0
 off_800AC18:
 	.word eBattleSequencerState_203CA70
 off_800AC1C:
@@ -16879,7 +16879,7 @@ off_800AC1C:
 	thumb_func_end sub_800ABC6
 
 	thumb_local_start
-sub_800AC20:
+computeBustingLevel_800AC20:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x14
 	ldr r2, dword_800ADD8 // =0x18f
@@ -16901,7 +16901,7 @@ loc_800AC2C:
 	ldr r2, [sp]
 	mov r1, #0xc
 	mul r1, r2
-	ldr r7, off_800ADD0 // =off_800ADDC
+	ldr r7, off_800ADD0 // =BustingLevelTimeGates_800ADDC
 	add r7, r7, r1
 	mov r2, #0
 loc_800AC52:
@@ -16915,7 +16915,7 @@ loc_800AC52:
 loc_800AC60:
 	ldr r1, [sp]
 	lsl r1, r1, #2
-	ldr r7, off_800ADD4 // =byte_800AE00
+	ldr r7, off_800ADD4 // =BustingLevelTimeBases_800AE00
 	add r7, r7, r1
 	ldrb r0, [r7,r2]
 	str r0, [sp,#4]
@@ -17114,22 +17114,22 @@ loc_800ADC8:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_800ADD0:
-	.word off_800ADDC
+	.word BustingLevelTimeGates_800ADDC
 off_800ADD4:
-	.word byte_800AE00
+	.word BustingLevelTimeBases_800AE00
 dword_800ADD8:
 	.word 0x18F
-off_800ADDC:
+BustingLevelTimeGates_800ADDC:
 	.word 0x500
 	.word 0x1200
 	.word 0x3600
 	.word 0x3000
 	.word 0x4000, 0x5000, 0x3000, 0x4500, 0x10000
-byte_800AE00:
+BustingLevelTimeBases_800AE00:
 	.byte 0x6, 0x5, 0x4, 0x3
 	.byte 0xA, 0x8, 0x6, 0x4
 	.byte 0xA, 0x8, 0x6, 0x4
-	thumb_func_end sub_800AC20
+	thumb_func_end computeBustingLevel_800AC20
 
 	thumb_local_start
 sub_800AE0C:
@@ -17380,7 +17380,7 @@ loc_800AFA0:
 loc_800AFB2:
 	mov r0, #2
 loc_800AFB4:
-	bl sub_800AC20
+	bl computeBustingLevel_800AC20
 	pop {pc}
 	thumb_func_end sub_800AF84
 

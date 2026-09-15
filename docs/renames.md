@@ -292,3 +292,37 @@ a role comment on every row of `ForGunner_8113078`; and
 - `off_810C6F0` and the other 29 unnamed think tables — `docs/inventory/enemies.md`
   maps each to an AIIndex but not to an enemy, so there is no descriptive name to
   give them; the new header on `AIThinkTables_8109050` says how to read the index.
+
+## The RESULT window and the busting level (`asm/asm03_0.s`, `asm/asm00_1.s`)
+
+Evidence throughout: `/home/box/Code/bn/src/results.rs` (the port of this whole
+window, which cites each routine as it reproduces it) and the F8/F21/F21c/F21d/
+F34/T7w ticket results, which timed the chain frame by frame against captures.
+
+| old | new | evidence |
+|---|---|---|
+| `sub_802C34E` | `showResultWindow_802C34E` | "puts up the RESULT window after the last enemy is deleted, or the LOSER window when the player is … redrawn from column -30" — src/results.rs:3; and this repo's own AUDIT wave 3d note |
+| `sub_802BD60` | `resultWindowDriver_802BD60` | "driver sub_802BD60" — TODO_ARCHIVE.md:1816 (F21); "the slide's tilemap redraw -- CopyBackgroundTiles(...), not a scroll" — src/results.rs:713 |
+| `sub_802BE36` | `resultWindowSlideTick_802BE36` | "the slide tick sub_802BE36 adds 2 to that signed byte"; "16 px/frame is exactly results::SLIDE_STEP" — src/results.rs:59; TODO.md:432 (T7w) |
+| `sub_802BED4` / `sub_802BEFC` | `resultWindowHandover_802BED4` / `resultWindowArmPrompt_802BEFC` | "the one-frame handover state after the slide"; "sets [r5,#3]=8 so sub_802BF0C starts blinking" — src/results.rs:183,186 |
+| `sub_802BF0C` | `resultWindowWaitForA_802BF0C` | "The WAIT state: blinks the prompt on bit 3 of the global frame counter and rewrites the ten cells every frame" — src/results.rs:795; TODO_ARCHIVE.md:2355 (F34) |
+| `sub_802C810` | `drawResultPrompt_802C810` | "Writes the ten cells at window (2,14)" — src/results.rs:126 |
+| `sub_802C4B6` | `blitResultWindowRect_802C4B6` | "The rectangle blit helper (x, y, src, w, h)" — src/results.rs:128 |
+| `byte_802C834` / `byte_802C848` | `ResultPromptBlankRun_802C834` / `ResultPromptPressARun_802C848` | "Ten copies of tile 0xc4 … the flat window face run, state 0"; "Tiles 0xba..0xc3 … the PRESS A BUTTON prompt run, state 1" — src/results.rs:129,131 |
+| `sub_802C280` | `dismissResultWindow_802C280` | "waits for A or Start, holds 0x14 more frames, then fades the screen out" — src/results.rs:7 |
+| `sub_802C4E8` | `drawResultClearTime_802C4E8` | "Draws the clear TIME: five BCD digits right-to-left at row 4" — src/results.rs:10 |
+| `byte_802C538` | `ResultClearTimeDigitCols_802C538` | "DIGIT_COLS … provenance: derived -- sub_802C4E8; byte_802C538" — src/results.rs:106 |
+| `dword_802C548` | `ResultClearTimeCap_802C548` | "The clear time is capped at 9'59\"99 (dword_802C548)" — src/results.rs:89 |
+| `sub_802C6EC` | `drawResultLevel_802C6EC` | "Draws the LEVEL readout at row 6 cols 16-20" — src/results.rs:192 |
+| `sub_802C044` | `revealResultReward_802C044` | "draws the 42 coin tiles one per frame in PrimaryRNG-shuffled order" — src/results.rs:284; TODO_ARCHIVE.md:1816 (F21) |
+| `sub_802C0A4` | `countResultRewardCooldown_802C0A4` | "Counts that 0x1e cooldown down, ending in the actual grant plus jingle" — src/results.rs:293 |
+| `sub_802CA5C` | `enqueueResultMark_802CA5C` | "Enqueues the RESULT mark object at ([r5+6]*8+13) & 0x1ff" — src/results.rs:372; TODO_ARCHIVE.md:1583 (F8) |
+| `dword_8732814` / `dword_8733394` | `ResultWindowPalettes_8732814` / `ResultRewardPalette_8733394` | "96 B (window banks 9-11) and 32 B (reward bank 12)" — src/results.rs:42 |
+| `byte_203EAE0` | `eBustingCounters_203EAE0` | "the game's per-alliance counters (byte_203EAE0; sub_800AC20)" — src/results.rs:206 |
+| `sub_800AC20` | `computeBustingLevel_800AC20` | "The busting-level scorer (time base, hits, moves, multi-deletions, counter hits)" — src/results.rs:206 |
+| `off_800ADDC` / `byte_800AE00` | `BustingLevelTimeGates_800ADDC` / `BustingLevelTimeBases_800AE00` | "Time gives a base of 6/5/4/3 at or under 5.00, 12.00 and 36.00 seconds (off_800ADDC, byte_800AE00)" — src/results.rs:218 |
+
+New vocabulary: the whole driver chain, in order with what each link does and
+the 107-frame offset from the sequencer edge, is written above
+`resultWindowDriver_802BD60`, together with `RESULT_SLIDE_STEP_COLUMNS`,
+`RESULT_REWARD_TILES` and `RESULT_REWARD_COOLDOWN_FRAMES`.

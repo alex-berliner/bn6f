@@ -8775,10 +8775,10 @@ int sub_80094B6()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        showResultWindow_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = resultWindowDriver_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -9339,10 +9339,10 @@ int sub_8009916()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        showResultWindow_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = resultWindowDriver_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -9718,10 +9718,10 @@ int sub_8009C06()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        showResultWindow_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = resultWindowDriver_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -10136,10 +10136,10 @@ int sub_8009F3A()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        showResultWindow_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = resultWindowDriver_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -11700,7 +11700,7 @@ int __fastcall sub_800AB2E(int a1, int a2, char a3)
     int result; // r0
 
     result = 16 * a1;
-    byte_203EAE0[result + a2] = a3;
+    eBustingCounters_203EAE0[result + a2] = a3;
     return result;
 }
 
@@ -11708,7 +11708,7 @@ int __fastcall sub_800AB2E(int a1, int a2, char a3)
 // 0x800ab3a
 int __fastcall sub_800AB3A(int a1, int a2)
 {
-    return byte_203EAE0[16 * a1 + a2];
+    return eBustingCounters_203EAE0[16 * a1 + a2];
 }
 
 
@@ -11718,7 +11718,7 @@ int __fastcall sub_800AB46(int a1, int a2, int a3)
     char *v3; // r3
     int result; // r0
 
-    v3 = &byte_203EAE0[16 * a1];
+    v3 = &eBustingCounters_203EAE0[16 * a1];
     result = v3[a2] + a3;
     if ( result > 255 )
         result = 255;
@@ -11735,7 +11735,7 @@ int __fastcall sub_800AB5C(int a1, int a2, int a3)
     unsigned __int8 v5; // vf
     int result; // r0
 
-    v3 = &byte_203EAE0[16 * a1];
+    v3 = &eBustingCounters_203EAE0[16 * a1];
     v4 = v3[a2];
     v5 = __OFSUB__(v4, a3);
     result = v4 - a3;
@@ -11749,7 +11749,7 @@ int __fastcall sub_800AB5C(int a1, int a2, int a3)
 // 0x800ab70
 void __fastcall zeroFill_800AB70(int a1, int a2, int a3, int a4)
 {
-    ZeroFillByWord(byte_203EAE0, 32);
+    ZeroFillByWord(eBustingCounters_203EAE0, 32);
 }
 
 
@@ -11796,7 +11796,7 @@ int __fastcall sub_800ABC6(int a1, int a2)
 
 
 // 0x800ac20
-signed int __fastcall sub_800AC20(int a1, int a2)
+signed int __fastcall computeBustingLevel_800AC20(int a1, int a2)
 {
     int v2; // r10
     unsigned int v3; // r2
@@ -11850,7 +11850,7 @@ signed int __fastcall sub_800AC20(int a1, int a2)
     {
         v5 = sub_800A704();
         v6 = memory_bcd_8000D84(v5);
-        v7 = &(&off_800ADDC)[3 * v34];
+        v7 = &(&BustingLevelTimeGates_800ADDC)[3 * v34];
         v8 = 0;
         do
         {
@@ -11860,8 +11860,8 @@ signed int __fastcall sub_800AC20(int a1, int a2)
             ++v8;
         }
         while ( v8 < 3 );
-        _VF = __OFADD__(byte_800AE00, 4 * v34);
-        v35 = byte_800AE00[4 * v34 + v8];
+        _VF = __OFADD__(BustingLevelTimeBases_800AE00, 4 * v34);
+        v35 = BustingLevelTimeBases_800AE00[4 * v34 + v8];
     }
     _CF = v36 & 1;
     v37 = v36 >> 1;
@@ -12191,7 +12191,7 @@ signed int __fastcall sub_800AF84(int a1)
         if ( v3 & 1 )
             v4 = 1;
     }
-    return sub_800AC20(v4, v5);
+    return computeBustingLevel_800AC20(v4, v5);
 }
 
 

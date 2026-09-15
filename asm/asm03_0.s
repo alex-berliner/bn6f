@@ -11563,8 +11563,26 @@ PARecipePtrsA_802BCB0:
 	.word NULL
 	thumb_func_end sub_802BA34
 
-	thumb_func_start sub_802BD60
-sub_802BD60:
+	// THE RESULT/LOSER WINDOW'S DRIVER. The chain the bn project traced and timed
+	// against the real ROM (F21/F21d/F34/T7w) is:
+	//   showResultWindow_802C34E     -- put the window up, from column -30
+	//   resultWindowDriver_802BD60   -- this, one CopyBackgroundTiles block a frame
+	//   resultWindowSlideTick_802BE36-- +RESULT_SLIDE_STEP_COLUMNS a tick, and the
+	//                                   clear time and level get drawn
+	//   resultWindowHandover_802BED4 -> resultWindowArmPrompt_802BEFC
+	//   resultWindowWaitForA_802BF0C -- blinks the prompt on bit 3 of the global
+	//                                   frame counter, rewriting all ten cells
+	//                                   every frame through drawResultPrompt_802C810
+	//   revealResultReward_802C044   -- 42 coin tiles, one a frame, RNG-shuffled
+	//   countResultRewardCooldown_802C0A4 -- RESULT_REWARD_COOLDOWN_FRAMES, then grant
+	//   dismissResultWindow_802C280  -- A or Start, 0x14 more frames, then fade
+	// bannerSeqState0CWinCount_80081A4's own 94-frame count plus a 13-frame
+	// hand-off is what puts the first slide tick 107 frames after the edge.
+	.equiv RESULT_SLIDE_STEP_COLUMNS,     2  // 16 px a frame
+	.equiv RESULT_REWARD_TILES,           42
+	.equiv RESULT_REWARD_COOLDOWN_FRAMES, 0x1e
+	thumb_func_start resultWindowDriver_802BD60
+resultWindowDriver_802BD60:
 	push {r5,lr}
 	ldr r5, off_802BDAC // =eS20364C0 
 	mov r0, #1
@@ -11606,7 +11624,7 @@ off_802BDAC:
 	.word eS20364C0
 off_802BDB0:
 	.word unk_2034B30
-	thumb_func_end sub_802BD60
+	thumb_func_end resultWindowDriver_802BD60
 
 	thumb_local_start
 sub_802BDB4:
@@ -11626,7 +11644,7 @@ sub_802BDC0:
 	mov lr, pc
 	bx r1
 	bl sub_802C85C
-	bl sub_802CA5C
+	bl enqueueResultMark_802CA5C
 	pop {pc}
 	.balign 4, 0
 off_802BDD8:
@@ -11634,7 +11652,7 @@ off_802BDD8:
 off_802BDDC:
 	.word sub_802BDF0+1
 	.word sub_802BE90+1
-	.word sub_802C280+1
+	.word dismissResultWindow_802C280+1
 	.word sub_802C2D0+1
 	.word sub_802C328+1
 	thumb_func_end sub_802BDC0
@@ -11653,7 +11671,7 @@ off_802BE00:
 	.word off_802BE04
 off_802BE04:
 	.word sub_802BE0C+1
-	.word sub_802BE36+1
+	.word resultWindowSlideTick_802BE36+1
 	thumb_func_end sub_802BDF0
 
 	thumb_local_start
@@ -11680,7 +11698,7 @@ sub_802BE0C:
 	thumb_func_end sub_802BE0C
 
 	thumb_local_start
-sub_802BE36:
+resultWindowSlideTick_802BE36:
 	push {lr}
 	mov r1, #6
 	ldrsb r0, [r5,r1]
@@ -11701,9 +11719,9 @@ loc_802BE50:
 	mov r1, #0
 	ldr r0, [r5,#0x1c]
 	ldrb r1, [r5,#0xe]
-	bl sub_802C4E8
+	bl drawResultClearTime_802C4E8
 	ldrb r0, [r5,#8]
-	bl sub_802C6EC
+	bl drawResultLevel_802C6EC
 locret_802BE66:
 	pop {pc}
 	.balign 4, 0
@@ -11713,7 +11731,7 @@ byte_802BE6C:
 	.byte 0x0, 0x5, 0x0, 0x0, 0x0, 0x12, 0x0, 0x0, 0x0, 0x36, 0x0, 0x0, 0x0, 0x30
 	.byte 0x0, 0x0, 0x0, 0x40, 0x0, 0x0, 0x0, 0x50, 0x0, 0x0, 0x0, 0x30, 0x0, 0x0
 	.byte 0x0, 0x45, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0
-	thumb_func_end sub_802BE36
+	thumb_func_end resultWindowSlideTick_802BE36
 
 	thumb_local_start
 sub_802BE90:
@@ -11747,13 +11765,13 @@ sub_802BEB4:
 off_802BEC4:
 	.word off_802BEC8
 off_802BEC8:
-	.word sub_802BED4+1
-	.word sub_802BEFC+1
-	.word sub_802BF0C+1
+	.word resultWindowHandover_802BED4+1
+	.word resultWindowArmPrompt_802BEFC+1
+	.word resultWindowWaitForA_802BF0C+1
 	thumb_func_end sub_802BEB4
 
 	thumb_local_start
-sub_802BED4:
+resultWindowHandover_802BED4:
 	push {lr}
 
 	bl sub_802C8D4
@@ -11785,10 +11803,10 @@ loc_802BEF4:
 	strb r0, [r5,#oS20364C0_Unk_03]
 locret_802BEFA:
 	pop {pc}
-	thumb_func_end sub_802BED4
+	thumb_func_end resultWindowHandover_802BED4
 
 	thumb_local_start
-sub_802BEFC:
+resultWindowArmPrompt_802BEFC:
 	push {lr}
 	ldrb r0, [r5,#0xb]
 	sub r0, #1
@@ -11798,10 +11816,10 @@ sub_802BEFC:
 	strb r0, [r5,#3]
 locret_802BF0A:
 	pop {pc}
-	thumb_func_end sub_802BEFC
+	thumb_func_end resultWindowArmPrompt_802BEFC
 
 	thumb_local_start
-sub_802BF0C:
+resultWindowWaitForA_802BF0C:
 	push {lr}
 	ldr r7, off_802BF48 // =dword_2036820 
 	ldrh r0, [r7,#0x4] // (dword_2036824 - 0x2036820)
@@ -11821,7 +11839,7 @@ loc_802BF28:
 loc_802BF2A:
 	strh r0, [r5,#2]
 	mov r0, #0
-	bl sub_802C810
+	bl drawResultPrompt_802C810
 	b locret_802BF44
 loc_802BF34:
 	mov r7, r10
@@ -11830,13 +11848,13 @@ loc_802BF34:
 	mov r1, #8
 	and r0, r1
 	lsr r0, r0, #3
-	bl sub_802C810
+	bl drawResultPrompt_802C810
 locret_802BF44:
 	pop {pc}
 	.balign 4, 0
 off_802BF48:
 	.word dword_2036820
-	thumb_func_end sub_802BF0C
+	thumb_func_end resultWindowWaitForA_802BF0C
 
 	thumb_local_start
 sub_802BF4C:
@@ -11852,8 +11870,8 @@ off_802BF5C:
 	.word off_802BF60
 off_802BF60:
 	.word sub_802BF6C+1
-	.word sub_802C044+1
-	.word sub_802C0A4+1
+	.word revealResultReward_802C044+1
+	.word countResultRewardCooldown_802C0A4+1
 	thumb_func_end sub_802BF4C
 
 	thumb_local_start
@@ -11888,7 +11906,7 @@ loc_802BFA2:
 	cmp r0, #1
 	bne loc_802BFAC
 	ldr r0, off_802C014 // =dword_8732E54 
-	ldr r1, off_802C018 // =dword_8733394 
+	ldr r1, off_802C018 // =ResultRewardPalette_8733394 
 	b loc_802BFE4
 loc_802BFAC:
 	cmp r0, #2
@@ -11949,7 +11967,7 @@ off_802C010:
 off_802C014:
 	.word dword_8732E54
 off_802C018:
-	.word dword_8733394
+	.word ResultRewardPalette_8733394
 off_802C01C:
 	.word unk_2035320
 off_802C020:
@@ -11973,7 +11991,7 @@ dword_802C040:
 	thumb_func_end sub_802BF6C
 
 	thumb_local_start
-sub_802C044:
+revealResultReward_802C044:
 	push {lr}
 	sub sp, sp, #0x74
 	mov r6, sp
@@ -12005,7 +12023,7 @@ loc_802C060:
 	mov r2, r6
 	mov r3, #1
 	mov r4, #1
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r0,r5}
 	add r0, #1
 	strb r0, [r5,#0xb]
@@ -12021,10 +12039,10 @@ loc_802C09A:
 	.balign 4, 0
 off_802C0A0:
 	.word unk_2035320
-	thumb_func_end sub_802C044
+	thumb_func_end revealResultReward_802C044
 
 	thumb_local_start
-sub_802C0A4:
+countResultRewardCooldown_802C0A4:
 	push {lr}
 	ldrb r0, [r5,#0xb]
 	sub r0, #1
@@ -12127,7 +12145,7 @@ dword_802C168:
 	.word 0xFFFFFFFF
 dword_802C16C:
 	.word 0x136
-	thumb_func_end sub_802C0A4
+	thumb_func_end countResultRewardCooldown_802C0A4
 
 	thumb_local_start
 sub_802C170:
@@ -12241,7 +12259,7 @@ loc_802C22C:
 	add r2, r6, #4
 	mov r3, #7
 	mov r4, #6
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	mov r0, #4
 	strh r0, [r5,#2]
 	mov r0, #0x1e
@@ -12265,7 +12283,7 @@ loc_802C244:
 	mov r2, r6
 	mov r3, #1
 	mov r4, #1
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r0,r5}
 	add r0, #1
 	strb r0, [r5,#0xb]
@@ -12282,7 +12300,7 @@ off_802C27C:
 	thumb_func_end sub_802C218
 
 	thumb_local_start
-sub_802C280:
+dismissResultWindow_802C280:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12325,7 +12343,7 @@ locret_802C2C8:
 	.balign 4, 0
 off_802C2CC:
 	.word dword_2036820
-	thumb_func_end sub_802C280
+	thumb_func_end dismissResultWindow_802C280
 
 	thumb_local_start
 sub_802C2D0:
@@ -12408,11 +12426,11 @@ sub_802C348:
 	// does not touch RenderInfoPtr (see RenderInfo.inc's own comment on
 	// Unk_18/BG3HOFS), so the slide-in itself is animated somewhere else,
 	// not found this ticket (grepped this function and its neighbours
-	// sub_802C170-sub_802C4E8 for a RenderInfoPtr write or a per-frame
+	// sub_802C170-drawResultClearTime_802C4E8 for a RenderInfoPtr write or a per-frame
 	// eS20364C0+0x06 increment/decrement and found neither -- the actual
 	// per-frame tick function is elsewhere in the ROM).
-	thumb_func_start sub_802C34E
-sub_802C34E:
+	thumb_func_start showResultWindow_802C34E
+showResultWindow_802C34E:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
@@ -12501,7 +12519,7 @@ off_802C3FC:
 off_802C420:
 	.word off_802C424
 off_802C424:
-	.word dword_8732814
+	.word ResultWindowPalettes_8732814
 off_802C428:
 	.word unk_3001A80
 off_802C42C:
@@ -12527,7 +12545,7 @@ dword_802C458:
 	.word 0x6014000
 off_802C45C:
 	.word byte_30016B0
-	thumb_func_end sub_802C34E
+	thumb_func_end showResultWindow_802C34E
 
 	thumb_local_start
 sub_802C460:
@@ -12585,7 +12603,7 @@ loc_802C4B2:
 	thumb_func_end sub_802C490
 
 	thumb_local_start
-sub_802C4B6:
+blitResultWindowRect_802C4B6:
 	push {r5-r7,lr}
 	ldr r7, off_802C4E4 // =unk_2034B30 
 	mov r5, #0x18
@@ -12614,16 +12632,16 @@ loc_802C4CA:
 	.balign 4, 0
 off_802C4E4:
 	.word unk_2034B30
-	thumb_func_end sub_802C4B6
+	thumb_func_end blitResultWindowRect_802C4B6
 
 	thumb_local_start
-sub_802C4E8:
+drawResultClearTime_802C4E8:
 	push {r5,lr}
 	sub sp, sp, #4
 	mov r6, sp
 	push {r1}
 	bl memory_bcd_8000D84
-	ldr r1, dword_802C548 // =0x95999 
+	ldr r1, ResultClearTimeCap_802C548 // =0x95999 
 	cmp r0, r1
 	ble loc_802C4FC
 	mov r0, r1
@@ -12634,7 +12652,7 @@ loc_802C4FC:
 	ldr r4, off_802C544 // =0xa0 
 	orr r4, r1
 	mov r3, #0
-	ldr r7, off_802C540 // =byte_802C538
+	ldr r7, off_802C540 // =ResultClearTimeDigitCols_802C538
 loc_802C50A:
 	mov r1, #0xf
 	and r1, r0
@@ -12650,7 +12668,7 @@ loc_802C50A:
 	mov r2, r6
 	mov r3, #1
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r0,r3,r4,r6,r7}
 	lsr r0, r0, #4
 	add r3, #1
@@ -12659,15 +12677,15 @@ loc_802C50A:
 	add sp, sp, #4
 	pop {r5,pc}
 	.balign 4, 0
-byte_802C538:
+ResultClearTimeDigitCols_802C538:
 	.byte 0x14, 0x13, 0x11, 0x10, 0xE, 0x0, 0x0, 0x0
 off_802C540:
-	.word byte_802C538
+	.word ResultClearTimeDigitCols_802C538
 off_802C544:
 	.word 0xA0
-dword_802C548:
+ResultClearTimeCap_802C548:
 	.word 0x95999
-	thumb_func_end sub_802C4E8
+	thumb_func_end drawResultClearTime_802C4E8
 
 	thumb_local_start
 sub_802C54C:
@@ -12763,7 +12781,7 @@ sub_802C5B0:
 	ldr r2, off_802C6C0 // =byte_802C6C4
 	mov r3, #0xa
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r6}
 	add sp, sp, #0x70
 	pop {r4-r7,pc}
@@ -12813,7 +12831,7 @@ loc_802C61C:
 	ldr r2, off_802C6C0 // =byte_802C6C4
 	mov r3, #0xa
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	add sp, sp, #8
 	pop {r5,pc}
 	thumb_func_end sub_802C5E6
@@ -12862,7 +12880,7 @@ loc_802C67C:
 	ldr r2, off_802C6C0 // =byte_802C6C4
 	mov r3, #0xa
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	add sp, sp, #8
 	pop {r5,pc}
 	.balign 4, 0
@@ -12889,7 +12907,7 @@ byte_802C6C4:
 	thumb_func_end sub_802C646
 
 	thumb_local_start
-sub_802C6EC:
+drawResultLevel_802C6EC:
 	push {r4-r6,lr}
 	sub sp, sp, #0x1c
 	cmp r0, #0xb
@@ -12941,13 +12959,13 @@ loc_802C72E:
 	add r2, sp, #0
 	mov r3, #5
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	add sp, sp, #0x1c
 	pop {r4-r6,pc}
 	.balign 4, 0
 dword_802C758:
 	.word 0x90A0
-	thumb_func_end sub_802C6EC
+	thumb_func_end drawResultLevel_802C6EC
 
 	thumb_local_start
 sub_802C75C:
@@ -12973,7 +12991,7 @@ sub_802C75C:
 	ldr r2, off_802C7E8 // =byte_802C7EC 
 	mov r3, #9
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r0,r1,r6}
 	push {r0,r1,r6}
 	ldr r2, dword_802C7E0 // =0x91e4 
@@ -12985,7 +13003,7 @@ sub_802C75C:
 	mov r2, r6
 	mov r3, #1
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r0,r1,r6}
 	ldr r0, off_802C7D8 // =TextScript86EF71C 
 	ldr r2, off_802C7E4 // =unk_2035520 
@@ -13027,7 +13045,7 @@ byte_802C7EC:
 	thumb_func_end sub_802C75C
 
 	thumb_local_start
-sub_802C810:
+drawResultPrompt_802C810:
 	push {r5,lr}
 	ldr r2, off_802C828 // =off_802C82C 
 	lsl r0, r0, #2
@@ -13036,23 +13054,23 @@ sub_802C810:
 	mov r1, #0xe
 	mov r3, #0xa
 	mov r4, #1
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 	pop {r5,pc}
 	.balign 4, 0
 off_802C828:
 	.word off_802C82C
 off_802C82C:
-	.word byte_802C834
-	.word byte_802C848
-byte_802C834:
+	.word ResultPromptBlankRun_802C834
+	.word ResultPromptPressARun_802C848
+ResultPromptBlankRun_802C834:
 	.byte 0xC4, 0x90, 0xC4, 0x90, 0xC4, 0x90, 0xC4, 0x90, 0xC4
 	.byte 0x90, 0xC4, 0x90, 0xC4, 0x90, 0xC4, 0x90, 0xC4, 0x90
 	.byte 0xC4, 0x90
-byte_802C848:
+ResultPromptPressARun_802C848:
 	.byte 0xBA, 0x90, 0xBB, 0x90, 0xBC, 0x90, 0xBD, 0x90, 0xBE
 	.byte 0x90, 0xBF, 0x90, 0xC0, 0x90, 0xC1, 0x90, 0xC2, 0x90
 	.byte 0xC3, 0x90
-	thumb_func_end sub_802C810
+	thumb_func_end drawResultPrompt_802C810
 
 	thumb_local_start
 sub_802C85C:
@@ -13073,7 +13091,7 @@ sub_802C85C:
 	mov r1, #4
 	mov r3, #4
 	mov r4, #2
-	bl sub_802C4B6
+	bl blitResultWindowRect_802C4B6
 locret_802C882:
 	pop {pc}
 	.balign 4, 0
@@ -13339,7 +13357,7 @@ loc_802CA50:
 	thumb_func_end sub_802CA1E
 
 	thumb_local_start
-sub_802CA5C:
+enqueueResultMark_802CA5C:
 	push {lr}
 	mov r0, #6
 	ldrsb r0, [r5,r0]
@@ -13358,7 +13376,7 @@ sub_802CA5C:
 	mov r3, #0
 	bl sub_8009FF8
 	pop {pc}
-	thumb_func_end sub_802CA5C
+	thumb_func_end enqueueResultMark_802CA5C
 
 	thumb_func_start sub_802CA82
 sub_802CA82:

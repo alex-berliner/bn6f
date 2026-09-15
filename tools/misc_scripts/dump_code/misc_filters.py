@@ -2,7 +2,7 @@ import sys
 from typing import Dict, List, Tuple
 
 # Expects lines like
-# LAN - GBAStore32 PC=sub_802BD60+0C, addr=eS20364C0+18
+# LAN - GBAStore32 PC=resultWindowDriver_802BD60+0C, addr=eS20364C0+18
 # LAN - GBALoad16 PC=loc_8028D50, addr=eS20364C0+3A
 def transform_gbastoreload_logs_to_struct_fields(inp: str):
     for line in inp.split("\n"):

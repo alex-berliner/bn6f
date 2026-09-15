@@ -7818,7 +7818,7 @@ void __fastcall sub_802BA34(int a1, int a2, int a3, __int16 a4)
 
 
 // 0x802bd60
-int sub_802BD60()
+int resultWindowDriver_802BD60()
 {
     BYTE1(dword_20364C4) = 1;
     dword_20364D8 = sub_802C8EA();
@@ -7850,7 +7850,7 @@ int sub_802BDC0()
 
     (*(&off_802BDDC + *(v0 + 1)))();
     sub_802C85C();
-    return sub_802CA5C();
+    return enqueueResultMark_802CA5C();
 }
 
 
@@ -7880,7 +7880,7 @@ signed int __noreturn sub_802BE0C()
 
 
 // 0x802be36
-int sub_802BE36()
+int resultWindowSlideTick_802BE36()
 {
     int v0; // r5
     int v1; // r0
@@ -7897,8 +7897,8 @@ int sub_802BE36()
     result = *(v0 + 4);
     if ( result != 2 )
     {
-        sub_802C4E8(*(v0 + 28), *(v0 + 14));
-        result = sub_802C6EC(*(v0 + 8));
+        drawResultClearTime_802C4E8(*(v0 + 28), *(v0 + 14));
+        result = drawResultLevel_802C6EC(*(v0 + 8));
     }
     return result;
 }
@@ -7923,7 +7923,7 @@ int sub_802BEB4()
 
 
 // 0x802bed4
-signed int sub_802BED4()
+signed int resultWindowHandover_802BED4()
 {
     int v0; // r5
     int v1; // r0
@@ -7952,7 +7952,7 @@ signed int sub_802BED4()
 
 
 // 0x802befc
-int sub_802BEFC()
+int resultWindowArmPrompt_802BEFC()
 {
     int v0; // r5
     int result; // r0
@@ -7969,20 +7969,20 @@ int sub_802BEFC()
 
 
 // 0x802bf0c
-int sub_802BF0C()
+int resultWindowWaitForA_802BF0C()
 {
     int v0; // r5
     int v1; // r10
     signed __int16 v2; // r0
 
     if ( !((dword_2036824 | dword_203682C) & 1) )
-        return sub_802C810((**(v1 + oToolkit_CurFramePtr) & 8u) >> 3);
+        return drawResultPrompt_802C810((**(v1 + oToolkit_CurFramePtr) & 8u) >> 3);
     if ( *(v0 + 12) <= 1 )
         v2 = 4;
     else
         v2 = 12;
     *(v0 + 2) = v2;
-    return sub_802C810(0);
+    return drawResultPrompt_802C810(0);
 }
 
 
@@ -8032,7 +8032,7 @@ signed int sub_802BF6C()
     if ( v2 == 1 )
     {
         v5 = dword_8732E54;
-        v6 = dword_8733394;
+        v6 = ResultRewardPalette_8733394;
         goto LABEL_19;
     }
     if ( v2 != 2 )
@@ -8082,7 +8082,7 @@ LABEL_19:
 
 
 // 0x802c044
-int sub_802C044()
+int revealResultReward_802C044()
 {
     int v0; // r5
     int v1; // r0
@@ -8101,7 +8101,7 @@ int sub_802C044()
         v4 = byte_2035320[v1];
         LOWORD(v10) = *(&v10 + v4 + 2);
         __asm { SVC         6 }
-        sub_802C4B6(21, v4 + 10, &v10, 1);
+        blitResultWindowRect_802C4B6(21, v4 + 10, &v10, 1);
         *(v0 + 11) = v3 + 1;
         result = (v3 + 1) & 3;
         if ( result == 3 )
@@ -8118,7 +8118,7 @@ int sub_802C044()
 
 
 // 0x802c0a4
-int sub_802C0A4()
+int countResultRewardCooldown_802C0A4()
 {
     int v0; // r5
     int result; // r0
@@ -8254,7 +8254,7 @@ signed int sub_802C218()
     int v2; // [sp+4h] [bp-74h]
 
     sub_802C59C(&v2);
-    sub_802C4B6(14, 10, &v2, 7);
+    blitResultWindowRect_802C4B6(14, 10, &v2, 7);
     *(v0 + 2) = 4;
     result = 30;
     *(v0 + 11) = 30;
@@ -8263,7 +8263,7 @@ signed int sub_802C218()
 
 
 // 0x802c280
-int sub_802C280()
+int dismissResultWindow_802C280()
 {
     int v0; // r5
     int result; // r0
@@ -8368,7 +8368,7 @@ int sub_802C348()
 
 
 // 0x802c34e
-int __fastcall sub_802C34E(int a1)
+int __fastcall showResultWindow_802C34E(int a1)
 {
     int v1; // r10
     int v2; // r4
@@ -8392,7 +8392,7 @@ int __fastcall sub_802C34E(int a1)
         *(&off_802C3FC + 3 * dword_20364C4),
         *(&off_802C3FC + 3 * dword_20364C4 + 1),
         *(&off_802C3FC + 3 * dword_20364C4 + 2));
-    (loc_8000AC8)(dword_8732814, &unk_3001A80, &off_5D + 3);
+    (loc_8000AC8)(ResultWindowPalettes_8732814, &unk_3001A80, &off_5D + 3);
     (loc_8000AC8)(dword_8732874, 100701184, dword_5E0);
     v3 = getPETNaviSelect();
     v4 = sub_8028164(v3);
@@ -8439,7 +8439,7 @@ signed int __fastcall sub_802C490(signed int result)
 
 
 // 0x802c4b6
-int __fastcall sub_802C4B6(int a1, int a2, _WORD *a3, int a4)
+int __fastcall blitResultWindowRect_802C4B6(int a1, int a2, _WORD *a3, int a4)
 {
     int v4; // r4
     int v5; // r0
@@ -8473,7 +8473,7 @@ int __fastcall sub_802C4B6(int a1, int a2, _WORD *a3, int a4)
 
 
 // 0x802c4e8
-int __fastcall sub_802C4E8(signed int a1, int a2)
+int __fastcall drawResultClearTime_802C4E8(signed int a1, int a2)
 {
     int result; // r0
     int v3; // r3
@@ -8494,7 +8494,7 @@ int __fastcall sub_802C4E8(signed int a1, int a2)
         v8 = v7 + 1;
         v4 = result;
         v5 = v3;
-        sub_802C4B6(byte_802C538[v3], 4, &v7, 1);
+        blitResultWindowRect_802C4B6(ResultClearTimeDigitCols_802C538[v3], 4, &v7, 1);
         result = v4 >> 4;
         v3 = v5 + 1;
     }
@@ -8564,7 +8564,7 @@ int __fastcall __noreturn sub_802C5B0(int a1)
 
     *(tk->unk_200A220 + 2) = a1;
     renderTextGfx_8045F8C(&TextScriptBattleDialog8736D74, 5, byte_2035320, 100711040);
-    return sub_802C4B6(2, 12, byte_802C6C4, 10);
+    return blitResultWindowRect_802C4B6(2, 12, byte_802C6C4, 10);
 }
 
 
@@ -8584,7 +8584,7 @@ int __fastcall __noreturn sub_802C5E6(int a1)
         renderTextGfx_8045F8C(&TextScriptBattleDialog8736D74, 6, &unk_20354E0, 100711488);
     }
     renderTextGfx_8045F8C(&TextScriptBattleDialog8736D74, 1, byte_2035320, 100711040);
-    return sub_802C4B6(2, 12, byte_802C6C4, 10);
+    return blitResultWindowRect_802C4B6(2, 12, byte_802C6C4, 10);
 }
 
 
@@ -8609,12 +8609,12 @@ int __fastcall __noreturn sub_802C646(int a1)
         v5 = 4;
     }
     renderTextGfx_8045F8C(&TextScriptBattleDialog8736D74, v5 + 6, byte_2035320, 100711040);
-    return sub_802C4B6(2, 12, byte_802C6C4, 10);
+    return blitResultWindowRect_802C4B6(2, 12, byte_802C6C4, 10);
 }
 
 
 // 0x802c6ec
-int __fastcall sub_802C6EC(signed int a1)
+int __fastcall drawResultLevel_802C6EC(signed int a1)
 {
     signed int v1; // r3
     int *v2; // r2
@@ -8664,7 +8664,7 @@ int __fastcall sub_802C6EC(signed int a1)
         v3 = __OFSUB__(v7--, 1);
     }
     while ( !(((v7 < 0) ^ v3) | (v7 == 0)) );
-    return sub_802C4B6(16, 6, &v10, 5);
+    return blitResultWindowRect_802C4B6(16, 6, &v10, 5);
 }
 
 
@@ -8676,18 +8676,18 @@ int __fastcall __noreturn sub_802C75C(unsigned int a1, int a2)
 
     v2 = a2;
     renderTextGfx_8045F8C(*(&off_802C7C4 + (a1 >> 8)), a1, byte_2035320, 100711040);
-    sub_802C4B6(2, 12, byte_802C7EC, 9);
+    blitResultWindowRect_802C4B6(2, 12, byte_802C7EC, 9);
     *v4 = -28188;
     v4[1] = -28187;
-    sub_802C4B6(11, 12, v4, 1);
+    blitResultWindowRect_802C4B6(11, 12, v4, 1);
     return renderTextGfx_8045F8C(TextScript86EF71C, v2, &unk_2035520, 100711552);
 }
 
 
 // 0x802c810
-int __fastcall sub_802C810(int a1)
+int __fastcall drawResultPrompt_802C810(int a1)
 {
-    return sub_802C4B6(2, 14, off_802C82C[a1], 10);
+    return blitResultWindowRect_802C4B6(2, 14, off_802C82C[a1], 10);
 }
 
 
@@ -8700,7 +8700,7 @@ int sub_802C85C()
 
     result = *(v0 + 15);
     if ( *(v0 + 15) )
-        result = sub_802C4B6(10, 4, off_802C888[(**(v1 + oToolkit_CurFramePtr) & 0x10u) >> 4], 4);
+        result = blitResultWindowRect_802C4B6(10, 4, off_802C888[(**(v1 + oToolkit_CurFramePtr) & 0x10u) >> 4], 4);
     return result;
 }
 
@@ -8924,7 +8924,7 @@ int __fastcall sub_802CA1E(int a1)
 
 
 // 0x802ca5c
-int sub_802CA5C()
+int enqueueResultMark_802CA5C()
 {
     int v0; // r5
 

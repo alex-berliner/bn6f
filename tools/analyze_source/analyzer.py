@@ -849,7 +849,7 @@ battle_object_specific_callbacks = {
     0x81023C0: (FunctionSpecificCallback(opcodes.bl_opcode, sub_81023C0_sub_8102428_skip_bl_sub_8102CF8),), # sub_81023C0
     0x8102428: (FunctionSpecificCallback(opcodes.bl_opcode, sub_81023C0_sub_8102428_skip_bl_sub_8102CF8),), # sub_8102428
     0x800B090: (FunctionSpecificCallback(opcodes.cmp_reg_opcode, sub_800B090_ignore_cmp),), # sub_800B090
-    0x802C280: (FunctionSpecificCallback(opcodes.pop_opcode, fix_misaligned_pop_pc),), # sub_802C280
+    0x802C280: (FunctionSpecificCallback(opcodes.pop_opcode, fix_misaligned_pop_pc),), # dismissResultWindow_802C280
     0x8007C50: (FunctionSpecificCallback(opcodes.bl_opcode, sub_8007C50_skip_sub_803C754),), # sub_8007C50
 
     # I think some ldr thinks a primitive is a pointer (just see the asm code)

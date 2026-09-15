@@ -179,7 +179,7 @@ known offsets from https://pastebin.com/grDF80Vp
 0x1b - multi delete count
 0x3c - battle bits(?)
 
-byte_203EAE0 - another battle struct
+eBustingCounters_203EAE0 - another battle struct
 two entries of size 0x10, one for each alliance
 0x20 bytes total
 known offsets from https://pastebin.com/grDF80Vp

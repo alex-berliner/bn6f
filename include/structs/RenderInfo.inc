@@ -21,14 +21,14 @@
 	// functions write, in lock-step with the window's own visible motion
 	// -- one hardware BG, dragging the HP box along with it (see
 	// battle.rs's own hud_bg field in the bn repo for why the Rust port
-	// now matches that). The RESULT window (sub_802C34E onward,
+	// now matches that). The RESULT window (showResultWindow_802C34E onward,
 	// asm03_0.s:12386+) does NOT: watched 0x0200ac4c-0x0200ac5b (this
 	// struct's own Unk_0c..Unk_1a, all four BGs' H/VOFS) across a full
 	// result_arrival capture and every one read a constant 0 throughout
 	// (BG1/Unk_10's own backdrop drift excepted) even while the window
 	// visibly slides in at sub-pixel precision -- so RESULT's own slide is
 	// NOT a BGxHOFS scroll of any of the four hardware backgrounds. Which
-	// function actually animates it (not sub_802C34E, which only zero-
+	// function actually animates it (not showResultWindow_802C34E, which only zero-
 	// fills eS20364C0 and queues the window's static GFX transfers once)
 	// was not located this ticket.
 	u16 Unk_00 // loc=0x0

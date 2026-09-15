@@ -3186,7 +3186,7 @@ word_203EADC:: // 0x203eadc
 	.space 2
 word_203EADE:: // 0x203eade
 	.space 2
-byte_203EAE0:: // 0x203eae0
+eBustingCounters_203EAE0:: // 0x203eae0
 	.space 32
 byte_203EB00:: // 0x203eb00
 	.space 40
