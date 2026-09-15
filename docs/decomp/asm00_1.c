@@ -1061,7 +1061,7 @@ int sub_8003BF4()
 			v5 = v1;
 			sub_30061E8();
 			sub_3006028(0);
-			sub_3006440(2, 96);
+			emitObjEntry_3006440(2, 96);
 			v0 = v4;
 			v1 = v5;
 		}
@@ -1130,7 +1130,7 @@ int sub_8003E18()
 		{
 			sub_30061E8();
 			sub_3006028(1);
-			sub_3006440(2, 64);
+			emitObjEntry_3006440(2, 64);
 		}
 		else
 		{
@@ -1169,7 +1169,7 @@ int sub_8004218()
 		{
 			sub_30061E8();
 			sub_3006028(3);
-			sub_3006440(2, 64);
+			emitObjEntry_3006440(2, 64);
 		}
 		else
 		{
@@ -1222,7 +1222,7 @@ int sub_8004510()
 		{
 			sub_30061E8();
 			sub_3006028(4);
-			sub_3006440(2, 64);
+			emitObjEntry_3006440(2, 64);
 		}
 		else
 		{
@@ -1359,7 +1359,7 @@ int npc_init_800467C()
 			v5 = v1;
 			sub_30061E8();
 			sub_3006028(2);
-			sub_3006440(2, 96);
+			emitObjEntry_3006440(2, 96);
 			v0 = v4;
 			v1 = v5;
 		}
@@ -1597,7 +1597,7 @@ int sub_8004934()
 			v5 = v1;
 			sub_30061E8();
 			sub_3006028(5);
-			sub_3006440(2, 96);
+			emitObjEntry_3006440(2, 96);
 			v0 = v4;
 			v1 = v5;
 		}
@@ -5849,7 +5849,7 @@ int sub_80079F0()
 
     v1 = sub_802D26A();
     sub_800BF88(*(v0 + 6), v1);
-    sub_800A3E4();
+    buildBattleFolder_800A3E4();
     *(v0 + 1) = 8;
     result = 0;
     *(v0 + 2) = 0;
@@ -6442,8 +6442,8 @@ int bannerSeqState04BannerWait_8008064()
     int v3; // r1
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 8) = 30;
@@ -6494,8 +6494,8 @@ int bannerSeqState08Fight_80080D2()
     char *v10; // r0
     char v11; // [sp-4h] [bp-8h]
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     sub_800AE0C();
@@ -6959,8 +6959,8 @@ int sub_8008528()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -6990,8 +6990,8 @@ int sub_800855E()
     char v6; // zf
 
     sub_80085FE();
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     sub_800AE0C();
@@ -7468,8 +7468,8 @@ int sub_800898C()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -7499,8 +7499,8 @@ int sub_80089CC()
     int result; // r0
     signed int v5; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     sub_800AE0C();
@@ -7926,8 +7926,8 @@ int sub_8008D9C()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -7957,8 +7957,8 @@ int sub_8008DDC()
     int result; // r0
     signed int v5; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    refreshAIDataFromJoypad_8012DFC(0);
+    refreshAIDataFromJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     sub_800AE0C();
@@ -10730,13 +10730,13 @@ void __fastcall sub_800A318(int a1)
             v12 = 1;
             *(*(v1 + oToolkit_S2034880_Ptr) + 68) = 1;
         }
-        sub_800A570(byte_203CDB0, v8, v12);
+        shuffleBattleFolder_800A570(byte_203CDB0, v8, v12);
     }
 }
 
 
 // 0x800a3e4
-void sub_800A3E4()
+void buildBattleFolder_800A3E4()
 {
     int v0; // r10
     signed int v1; // r7
@@ -10824,7 +10824,7 @@ void sub_800A3E4()
     if ( !v1 )
         sub_800A7EA(v7);
     if ( v3 & 0x80 )
-        sub_800A570(byte_203CDB0, *(*(v0 + oToolkit_S2034880_Ptr) + 23), *(*(v0 + oToolkit_S2034880_Ptr) + 68));
+        shuffleBattleFolder_800A570(byte_203CDB0, *(*(v0 + oToolkit_S2034880_Ptr) + 23), *(*(v0 + oToolkit_S2034880_Ptr) + 68));
 }
 
 
@@ -10881,7 +10881,7 @@ int __fastcall sub_800A540(int a1, int a2)
 
 
 // 0x800a570
-void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
+void __fastcall shuffleBattleFolder_800A570(__int16 *a1, int a2, int a3)
 {
     int v3; // r10
     __int16 *v4; // r7

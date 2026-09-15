@@ -1338,7 +1338,7 @@ sub_80B8BA0:
 locret_80B8BD0:
 	pop {pc}
 	.balign 4, 0
-byte_80B8BD4:
+TempObjectRecords_80B8BD4:
 	.byte 0xC, 0x1, 0x0, 0x0, 0x7, 0xC, 0x1, 0x1, 0x0, 0x7, 0xC, 0x1, 0x2, 0x0, 0x7
 	.byte 0xC, 0x0, 0x0, 0x0, 0x0, 0xC, 0x2, 0x0, 0x0, 0x0, 0xC, 0x6, 0x0, 0x0, 0x10
 	.byte 0xC, 0x3, 0x0, 0x0, 0x0, 0xC, 0x3B, 0x0, 0x0, 0xD, 0xC, 0x3B, 0x3, 0x0, 0xD
@@ -1383,7 +1383,7 @@ sub_80B8CF8:
 	ldrb r0, [r5,#oBattleObject_Param1]
 	mov r1, #5
 	mul r0, r1
-	ldr r4, off_80B8E88 // =byte_80B8BD4
+	ldr r4, off_80B8E88 // =TempObjectRecords_80B8BD4
 	add r4, r4, r0
 	ldrb r1, [r4]
 	ldrb r2, [r4,#1]
@@ -1565,7 +1565,7 @@ locret_80B8E60:
 
 	thumb_local_start
 sub_80B8E62:
-	ldr r2, off_80B8E9C // =byte_80B8BD4
+	ldr r2, off_80B8E9C // =TempObjectRecords_80B8BD4
 	mov r1, #5
 	mul r0, r1
 	add r2, r2, r0
@@ -1595,7 +1595,7 @@ locret_80B8E84:
 	mov pc, lr
 	.balign 4, 0x00
 off_80B8E88:
-	.word byte_80B8BD4
+	.word TempObjectRecords_80B8BD4
 dword_80B8E8C:
 	.word 0x1AC
 dword_80B8E90:
@@ -1605,7 +1605,7 @@ dword_80B8E94:
 dword_80B8E98:
 	.word 0x1B6
 off_80B8E9C:
-	.word byte_80B8BD4
+	.word TempObjectRecords_80B8BD4
 	thumb_func_end sub_80B8E7C
 
 	thumb_func_start t1_0x6_80B8EA0
@@ -27690,7 +27690,7 @@ off_80C4C78:
 	thumb_func_start t3_0x0_80C4E58
 t3_0x0_80C4E58:
 	push {lr}
-	ldr r1, off_80C4E6C // =off_80C4E70 
+	ldr r1, off_80C4E6C // =StraightShotStates_80C4E70 
 	ldrb r0, [r5,#oBattleObject_CurState]
 	ldr r1, [r1,r0]
 	mov lr, pc
@@ -27699,15 +27699,15 @@ t3_0x0_80C4E58:
 	pop {pc}
 	.balign 4, 0
 off_80C4E6C:
-	.word off_80C4E70
-off_80C4E70:
-	.word sub_80C4E7C+1
-	.word sub_80C4F02+1
+	.word StraightShotStates_80C4E70
+StraightShotStates_80C4E70:
+	.word straightShotInit_80C4E7C+1
+	.word straightShotTravel_80C4F02+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x0_80C4E58
 
 	thumb_local_start
-sub_80C4E7C:
+straightShotInit_80C4E7C:
 	push {r7,lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	mov r1, #0xc
@@ -27764,12 +27764,12 @@ loc_80C4EF4:
 	bl object_presentCollisionData
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80C4F02
+	bl straightShotTravel_80C4F02
 	pop {r7,pc}
-	thumb_func_end sub_80C4E7C
+	thumb_func_end straightShotInit_80C4E7C
 
 	thumb_local_start
-sub_80C4F02:
+straightShotTravel_80C4F02:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -27901,7 +27901,7 @@ loc_80C4FF0:
 loc_80C4FF8:
 	bl object_presentCollisionData
 	pop {pc}
-	thumb_func_end sub_80C4F02
+	thumb_func_end straightShotTravel_80C4F02
 
 	thumb_func_start sub_80C4FFE
 sub_80C4FFE:
@@ -30655,7 +30655,7 @@ locret_80C6546:
 	thumb_func_end sub_80C6536
 
 	thumb_local_start
-sub_80C6548:
+spawnAreaGrabOrb_80C6548:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0xf
@@ -30678,7 +30678,7 @@ dword_80C656C:
 	.word 0x1000000
 byte_80C6570:
 	.byte 0x1, 0xFF, 0x5, 0xA, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_80C6548
+	thumb_func_end spawnAreaGrabOrb_80C6548
 
 	thumb_func_start cornfiestaRelatedObject_80C6580
 cornfiestaRelatedObject_80C6580:
@@ -31243,12 +31243,12 @@ loc_80C69D8:
 off_80C69FC:
 	.word off_80C6A00
 off_80C6A00:
-	.word sub_80C6A08+1
+	.word vulcanSeedTravel_80C6A08+1
 	.word sub_80C6A34+1
 	thumb_func_end sub_80C69AC
 
 	thumb_local_start
-sub_80C6A08:
+vulcanSeedTravel_80C6A08:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -31268,7 +31268,7 @@ sub_80C6A08:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C6A32:
 	pop {pc}
-	thumb_func_end sub_80C6A08
+	thumb_func_end vulcanSeedTravel_80C6A08
 
 	thumb_local_start
 sub_80C6A34:
@@ -31283,12 +31283,12 @@ sub_80C6A34:
 off_80C6A44:
 	.word off_80C6A48
 off_80C6A48:
-	.word sub_80C6A50+1
+	.word vulcanSeedHitSpark_80C6A50+1
 	.word sub_80C6AAC+1
 	thumb_func_end sub_80C6A34
 
 	thumb_local_start
-sub_80C6A50:
+vulcanSeedHitSpark_80C6A50:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
 	bl sub_80C6AB8
@@ -31333,7 +31333,7 @@ loc_80C6AA6:
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {r4,r7,pc}
-	thumb_func_end sub_80C6A50
+	thumb_func_end vulcanSeedHitSpark_80C6A50
 
 	thumb_local_start
 sub_80C6AAC:
@@ -60502,7 +60502,7 @@ sub_80D4754:
 loc_80D4786:
 	ldr r0, off_80D4798 // =off_80D479C 
 	bl sub_801B394
-	bl sub_801BC24
+	bl object_updateSpriteRebindOnly_801BC24
 	bl object_presentCollisionData
 	pop {pc}
 	.balign 4, 0
@@ -80595,7 +80595,7 @@ loc_80DE098:
 	bl PlaySoundEffect
 	mov r0, #5
 	mov r4, r0
-	bl sub_801A7CC
+	bl barrierTakeDamage_801A7CC
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r6,#oAIData_Unk_60]
 	tst r0, r0
@@ -85178,7 +85178,7 @@ dword_80E0390:
 	.word 0x40000
 dword_80E0394:
 	.word 0xFFF80000
-byte_80E0398:
+EffectObjectRows_80E0398:
 	.byte 0x14, 0x0, 0x0, 0x0, 0x14, 0x2, 0x0, 0x0, 0x14, 0x2, 0x1, 0x0, 0x14
 	.byte 0x3, 0x0, 0x0, 0xC, 0x2D, 0x0, 0x0, 0x14, 0xA, 0x0, 0x0, 0xC, 0x12
 	.byte 0x0, 0x0, 0x14, 0x5, 0x0, 0x0, 0x14, 0x5, 0x2, 0x0, 0x14, 0x5, 0x3
@@ -85240,7 +85240,7 @@ sub_80E0568:
 	push {r7,lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	lsl r0, r0, #2
-	ldr r7, off_80E0634 // =byte_80E0398
+	ldr r7, off_80E0634 // =EffectObjectRows_80E0398
 	add r7, r7, r0
 	ldrb r1, [r7]
 	ldrb r2, [r7,#1]
@@ -85351,7 +85351,7 @@ locret_80E0630:
 	mov pc, lr
 	.balign 4, 0x00
 off_80E0634:
-	.word byte_80E0398
+	.word EffectObjectRows_80E0398
 	thumb_func_end sub_80E0616
 
 	thumb_func_start t4_0x2_80E0638
@@ -85514,12 +85514,12 @@ off_80E0740:
 off_80E0744:
 	.word object_dimScreen+1
 	.word object_drawChipName+1
-	.word sub_80E0754+1
+	.word areaGrabMoveBoundary_80E0754+1
 	.word object_undimScreen+1
 	thumb_func_end sub_80E0730
 
 	thumb_local_start
-sub_80E0754:
+areaGrabMoveBoundary_80E0754:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -85534,7 +85534,7 @@ sub_80E0754:
 	ldrh r2, [r5,#oBattleObject_Unk_32]
 	add r6, r6, r2
 	ldrb r2, [r5,#oBattleObject_Element]
-	bl sub_80C6548
+	bl spawnAreaGrabOrb_80C6548
 	tst r0, r0
 	beq loc_80E0782
 	ldrb r3, [r0,#oObjectHeader_Flags]
@@ -85554,7 +85554,7 @@ loc_80E0784:
 	ldrb r2, [r5,#oBattleObject_Element]
 loc_80E0796:
 	push {r0-r2}
-	bl sub_80C6548
+	bl spawnAreaGrabOrb_80C6548
 	tst r0, r0
 	beq loc_80E07A8
 	ldrb r1, [r0,#oObjectHeader_Flags]
@@ -85587,7 +85587,7 @@ locret_80E07C8:
 byte_80E07D0:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0
-	thumb_func_end sub_80E0754
+	thumb_func_end areaGrabMoveBoundary_80E0754
 
 	thumb_func_start sub_80E07E0
 sub_80E07E0:
@@ -92509,7 +92509,7 @@ sub_80E3AFC:
 	ldrb r4, [r5,#oBattleObject_Param1]
 	mov r0, r4
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801A7CC
+	bl barrierTakeDamage_801A7CC
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r6,#oAIData_Unk_60]
 	tst r0, r0
@@ -94629,7 +94629,7 @@ t4_0x3c_80E4A1C:
 	bl sub_801BCD0
 	b locret_80E4A38
 loc_80E4A34:
-	bl sub_801BC24
+	bl object_updateSpriteRebindOnly_801BC24
 locret_80E4A38:
 	pop {pc}
 	.balign 4, 0
@@ -105231,7 +105231,7 @@ sub_80E95D8:
 	bl PlaySoundEffect
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801265A
+	bl getBusterDamage_801265A
 	cmp r0, #5
 	bge loc_80E9634
 	mov r4, #5
@@ -105859,7 +105859,7 @@ t4_0x89_80E9AF0:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_801BC24
+	bl object_updateSpriteRebindOnly_801BC24
 	pop {pc}
 	.balign 4, 0
 off_80E9B04:
@@ -107155,9 +107155,9 @@ off_80EA478:
 	thumb_local_start
 playerObject_update_80EA484:
 	push {r4,lr}
-	bl sub_8012E74
-	bl sub_8013DA0
-	bl sub_801AC6C
+	bl readPlayerInput_8012E74
+	bl playerAiTick_8013DA0
+	bl playerStateDispatch_801AC6C
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r0,#oAIData_AIIndex]
 	lsl r4, r0, #2
@@ -107212,8 +107212,8 @@ PlayerObjectAIAttackJumptables:
 off_80EA52C:
 	.word RunSpawnAnimationMaybe_8016380+1 // 0x0
 	.word sub_8017888+1 // battle start function 2? // 0x01
-	.word sub_80173F4+1 // on delete? // 0x02
-	.word sub_80174FE+1 // on flinch // 0x03
+	.word playerDeleteAction_80173F4+1 // on delete? // 0x02
+	.word playerFlinchAction_80174FE+1 // on flinch // 0x03
 	.word sub_80175B8+1 // on paralyze // 0x04
 	.word sub_80178B6+1 // on push // 0x05
 	.word sub_8017688+1 // on freeze? // 0x06
@@ -107222,8 +107222,8 @@ off_80EA52C:
 off_80EA550:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107234,8 +107234,8 @@ off_80EA550:
 off_80EA57C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107246,8 +107246,8 @@ off_80EA57C:
 off_80EA5A8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107258,8 +107258,8 @@ off_80EA5A8:
 off_80EA5D4:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107270,8 +107270,8 @@ off_80EA5D4:
 off_80EA600:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107282,8 +107282,8 @@ off_80EA600:
 off_80EA62C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107294,8 +107294,8 @@ off_80EA62C:
 off_80EA658:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107306,8 +107306,8 @@ off_80EA658:
 off_80EA684:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107318,8 +107318,8 @@ off_80EA684:
 off_80EA6B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107330,8 +107330,8 @@ off_80EA6B0:
 off_80EA6DC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107344,8 +107344,8 @@ off_80EA6DC:
 off_80EA710:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
-	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word playerDeleteAction_80173F4+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -107441,7 +107441,7 @@ JumpTable80EA7B0:
 	.word playerAI_sub_80F0354+1
 	.word playerAI_sub_80F0354+1
 	.word playerAI_sub_80F0354+1
-off_80EA814:
+PlayerEnemyStruct1Ptrs_80EA814:
 	// 0x00
 	.word MegaManEnemyStruct1_80F02C0
 	// 0x04
@@ -107540,7 +107540,7 @@ off_80EA814:
 	.word byte_80F02F7
 	// 0xC0
 	.word byte_80F02FC
-off_80EA8D8:
+PlayerEnemyStruct2Ptrs_80EA8D8:
 	// 0x00
 	.word byte_80F0304
 	// 0x04
@@ -107667,11 +107667,11 @@ AIAttackJumptable:
 	.word sub_80EB04C+1 // 0x10
 	.word sub_80EB436+1 // 0x11
 	.word sub_80EB628+1 // 0x12
-	.word sub_80EB776+1 // 0x13
+	.word swordAttack_80EB776+1 // 0x13
 	.word sub_80EBC0E+1 // 0x14
 	.word sub_80EBD9C+1 // 0x15
 	.word megamanChargeShotAiAttack_80EBE00+1 // 0x16
-	.word sub_80EBF10+1 // 0x17
+	.word vulcanAttack_80EBF10+1 // 0x17
 	.word sub_80EC02A+1 // 0x18
 	.word sub_80EC0E6+1 // 0x19
 	.word sub_80EC1F0+1 // 0x1a
@@ -107681,7 +107681,7 @@ AIAttackJumptable:
 	.word sub_80EC5BC+1 // 0x1e
 	.word sub_80EC7A6+1 // 0x1f
 	.word sub_80EC844+1 // 0x20
-	.word sub_80EC884+1 // 0x21
+	.word airShotAttack_80EC884+1 // 0x21
 	.word sub_80EC960+1 // 0x22
 	.word sub_80ECA34+1 // 0x23
 	.word sub_80ECACA+1 // 0x24
@@ -108109,15 +108109,15 @@ locret_80EB06C:
 off_80EB070:
 	.word off_80EB074
 off_80EB074:
-	.word sub_80EB088+1
-	.word sub_80EB128+1
-	.word sub_80EB194+1
-	.word sub_80EB1C4+1
+	.word naviMoveLeave_80EB088+1
+	.word naviMoveTravel_80EB128+1
+	.word naviMoveArrive_80EB194+1
+	.word naviMoveRecover_80EB1C4+1
 	.word sub_80EB1F8+1
 	thumb_func_end sub_80EB04C
 
 	thumb_local_start
-sub_80EB088:
+naviMoveLeave_80EB088:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0x16
@@ -108191,10 +108191,10 @@ loc_80EB122:
 	bl sub_801171C
 locret_80EB126:
 	pop {pc}
-	thumb_func_end sub_80EB088
+	thumb_func_end naviMoveLeave_80EB088
 
 	thumb_local_start
-sub_80EB128:
+naviMoveTravel_80EB128:
 	push {r4,r6,lr}
 	mov r0, #0xf
 	bl ClearAIDataUnk0x48Flag
@@ -108241,10 +108241,10 @@ locret_80EB188:
 	pop {r4,r6,pc}
 	.balign 4, 0x00
 	.byte 0xE0, 0x83, 0x0, 0x0, 0x14, 0x0, 0x1, 0x1
-	thumb_func_end sub_80EB128
+	thumb_func_end naviMoveTravel_80EB128
 
 	thumb_local_start
-sub_80EB194:
+naviMoveArrive_80EB194:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -108267,10 +108267,10 @@ loc_80EB1BE:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_80EB1C2:
 	pop {pc}
-	thumb_func_end sub_80EB194
+	thumb_func_end naviMoveArrive_80EB194
 
 	thumb_local_start
-sub_80EB1C4:
+naviMoveRecover_80EB1C4:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -108297,7 +108297,7 @@ loc_80EB1F2:
 	bl sub_801171C
 locret_80EB1F6:
 	pop {pc}
-	thumb_func_end sub_80EB1C4
+	thumb_func_end naviMoveRecover_80EB1C4
 
 	thumb_local_start
 sub_80EB1F8:
@@ -108733,7 +108733,7 @@ loc_80EB528:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	str r0, [r1,#oAIData_Unk_68]
 	bl object_exitAttackState
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r4, r0
 	bl sub_80103A8
 	mov r2, r0
@@ -108866,12 +108866,12 @@ sub_80EB628:
 off_80EB638:
 	.word off_80EB63C
 off_80EB63C:
-	.word sub_80EB644+1
+	.word miniBombAttack_80EB644+1
 	.word sub_80EB758+1
 	thumb_func_end sub_80EB628
 
 	thumb_local_start
-sub_80EB644:
+miniBombAttack_80EB644:
 	push {r4,r6,r7,lr}
 	mov r0, r8
 	push {r0}
@@ -108884,7 +108884,7 @@ sub_80EB644:
 	push {r7}
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
 	add r0, r0, r0
-	ldr r4, off_80EB6F4 // =byte_80EB738 
+	ldr r4, off_80EB6F4 // =HeldBombObjectBySubfamily_80EB738 
 	ldrh r4, [r4,r0]
 	mov r1, #3
 	cmp r0, #0x1e
@@ -108960,7 +108960,7 @@ loc_80EB6EA:
 off_80EB6F0:
 	.word ThrownChipSpawnersBySubfamily_80EB6F8
 off_80EB6F4:
-	.word byte_80EB738
+	.word HeldBombObjectBySubfamily_80EB738
 // Spawners for a thrown chip, indexed by the chip's SUBFAMILY (the byte the
 // attack setup puts in oAIAttackVars_Unk_03). 0-2, 4, 5, 10, 11 and 15 are
 // MiniBomb's spawnThrownBomb_80C5DBC (MiniBomb, EnergBom, MegEnBom, BigBomb); 3 is
@@ -108982,11 +108982,11 @@ ThrownChipSpawnersBySubfamily_80EB6F8:
 	.word sub_80CE44E+1
 	.word sub_80D9CC2+1
 	.word spawnThrownBomb_80C5DBC+1
-byte_80EB738:
+HeldBombObjectBySubfamily_80EB738:
 	.byte 0x4, 0x0, 0x4, 0x2, 0xE, 0x0, 0x4, 0x0, 0x2D, 0x0, 0x4, 0x0, 0x2D, 0x0, 0x4
 	.byte 0x4, 0x4, 0x0, 0x25, 0x8, 0x4, 0x6, 0x4, 0x0, 0x24, 0x8, 0x26, 0x8, 0x2E, 0x2
 	.byte 0x4, 0x0
-	thumb_func_end sub_80EB644
+	thumb_func_end miniBombAttack_80EB644
 
 	thumb_local_start
 sub_80EB758:
@@ -109009,7 +109009,7 @@ locret_80EB774:
 	thumb_func_end sub_80EB758
 
 	thumb_local_start
-sub_80EB776:
+swordAttack_80EB776:
 	push {lr}
 	ldr r1, off_80EB784 // =off_80EB788 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -109025,7 +109025,7 @@ off_80EB788:
 	.word sub_80EB862+1
 	.word sub_80EBB98+1
 	.word sub_80EBBE2+1
-	thumb_func_end sub_80EB776
+	thumb_func_end swordAttack_80EB776
 
 	thumb_local_start
 sub_80EB79C:
@@ -109173,7 +109173,7 @@ loc_80EB88E:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r7,#oAIAttackVars_Unk_03]
 	lsl r2, r2, #2
-	ldr r3, off_80EB9F4 // =byte_80EBA18
+	ldr r3, off_80EB9F4 // =SwordHitShapeBySubfamily_80EBA18
 	ldr r3, [r3,r2]
 	mov r2, #0xa
 	bl nullsub_12
@@ -109239,7 +109239,7 @@ loc_80EB93E:
 	ldrb r3, [r7,#oAIAttackVars_Unk_03]
 	push {r0,r1,r3}
 	lsl r3, r3, #2
-	ldr r4, off_80EB9F4 // =byte_80EBA18
+	ldr r4, off_80EB9F4 // =SwordHitShapeBySubfamily_80EBA18
 	ldr r4, [r4,r3]
 	ldrb r2, [r7,#oAIAttackVars_Unk_02]
 	ldr r6, [r7,#oAIAttackVars_Damage]
@@ -109265,7 +109265,7 @@ loc_80EB992:
 	push {r0,r1,r3}
 	bl object_getFlip // () -> int
 	lsl r4, r0, #8
-	ldr r2, off_80EB9F8 // =byte_80EBAD8 
+	ldr r2, off_80EB9F8 // =SwordArcBySubfamily_80EBAD8 
 	ldrb r0, [r2,r3]
 	add r4, r4, r0
 	cmp r3, #0xc
@@ -109315,9 +109315,9 @@ loc_80EB9EE:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_80EB9F4:
-	.word byte_80EBA18
+	.word SwordHitShapeBySubfamily_80EBA18
 off_80EB9F8:
-	.word byte_80EBAD8
+	.word SwordArcBySubfamily_80EBAD8
 off_80EB9FC:
 	.word off_80EBA00
 off_80EBA00:
@@ -109331,7 +109331,7 @@ dword_80EBA10:
 	.word 0x101001E
 dword_80EBA14:
 	.word 0x1E
-byte_80EBA18:
+SwordHitShapeBySubfamily_80EBA18:
 	.byte 0x1, 0xFF, 0x5, 0x7, 0x4, 0xFF, 0x5, 0x7, 0x2, 0xFF, 0x5, 0x7, 0x4, 0xFF
 	.byte 0x5, 0x7, 0x2, 0xFF, 0x5, 0x7, 0x11, 0xFF, 0x5, 0x7, 0x11, 0xFF, 0x5, 0x7
 	.byte 0x11, 0xFF, 0x5, 0x7, 0x2, 0xFF, 0x5, 0x7, 0x6, 0xFF, 0x5, 0x7, 0xB, 0xFF
@@ -109349,7 +109349,7 @@ byte_80EBA98:
 	.byte 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0
 	.byte 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x10, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0
-byte_80EBAD8:
+SwordArcBySubfamily_80EBAD8:
 	.byte 0x18, 0x16, 0x17, 0x19, 0x1A, 0x1B, 0x1C, 0x28, 0x2D
 	.byte 0x25, 0x5F, 0x1B, 0x16, 0x16, 0x16, 0x16
 	thumb_func_end sub_80EB862
@@ -109404,7 +109404,7 @@ loc_80EBB30:
 sub_80EBB34:
 	push {r4,r7,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
-	ldr r7, off_80EBB60 // =byte_80EBB64 
+	ldr r7, off_80EBB60 // =SwordObjectBySubfamily_80EBB64 
 	ldrb r7, [r7,r0]
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r4,#oAIData_ActorType]
@@ -109427,8 +109427,8 @@ loc_80EBB58:
 	.word 0x0
 	.balign 4, 0
 off_80EBB60:
-	.word byte_80EBB64
-byte_80EBB64:
+	.word SwordObjectBySubfamily_80EBB64
+SwordObjectBySubfamily_80EBB64:
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x19, 0x1A, 0x1B
 	.byte 0x1C, 0x0, 0x3, 0x3, 0x0
 	thumb_func_end sub_80EBB34
@@ -109529,12 +109529,12 @@ sub_80EBC0E:
 off_80EBC1C:
 	.word off_80EBC20
 off_80EBC20:
-	.word sub_80EBC28+1
+	.word cannonAttack_80EBC28+1
 	.word sub_80EBD3C+1
 	thumb_func_end sub_80EBC0E
 
 	thumb_local_start
-sub_80EBC28:
+cannonAttack_80EBC28:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -109658,7 +109658,7 @@ byte_80EBD2C:
 	.byte 0x0, 0x1, 0x2, 0x1E, 0x0, 0x1, 0x2, 0x0
 byte_80EBD34:
 	.byte 0x1, 0x1, 0x1, 0x1, 0xC, 0xC, 0xC, 0x0
-	thumb_func_end sub_80EBC28
+	thumb_func_end cannonAttack_80EBC28
 
 	thumb_local_start
 sub_80EBD3C:
@@ -109894,7 +109894,7 @@ loc_80EBED6:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	str r0, [r1,#oAIData_Unk_68]
 	bl object_exitAttackState
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r4, r0
 	bl sub_80103A8
 	mov r2, r0
@@ -109906,7 +109906,7 @@ locret_80EBF0E:
 	thumb_func_end sub_80EBEB2
 
 	thumb_local_start
-sub_80EBF10:
+vulcanAttack_80EBF10:
 	push {lr}
 	ldr r1, off_80EBF20 // =off_80EBF24 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -109919,9 +109919,9 @@ off_80EBF20:
 	.word off_80EBF24
 off_80EBF24:
 	.word sub_80EBF30+1
-	.word sub_80EBF6E+1
+	.word vulcanFireShots_80EBF6E+1
 	.word sub_80EBFF4+1
-	thumb_func_end sub_80EBF10
+	thumb_func_end vulcanAttack_80EBF10
 
 	thumb_local_start
 sub_80EBF30:
@@ -109957,14 +109957,14 @@ locret_80EBF6C:
 	thumb_func_end sub_80EBF30
 
 	thumb_local_start
-sub_80EBF6E:
+vulcanFireShots_80EBF6E:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x14
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
 	bne loc_80EBF98
 	ldrb r1, [r7,#oAIAttackVars_Unk_03]
-	ldr r2, off_80EBFE4 // =dword_80EBFEC
+	ldr r2, off_80EBFE4 // =VulcanShotsBySubfamily_80EBFEC
 	ldrb r1, [r2,r1]
 	strh r1, [r7,#oAIAttackVars_Unk_12]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -109988,7 +109988,7 @@ loc_80EBF98:
 	bl GetPositiveSignedRNG
 	mov r1, #3
 	and r0, r1
-	ldr r1, off_80EBFE8 // =dword_80EBFF0
+	ldr r1, off_80EBFE8 // =VulcanShotFanOffsets_80EBFF0
 	ldrb r3, [r1,r0]
 	lsl r3, r3, #0x10
 	push {r3}
@@ -110016,14 +110016,14 @@ loc_80EBFE0:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_80EBFE4:
-	.word dword_80EBFEC
+	.word VulcanShotsBySubfamily_80EBFEC
 off_80EBFE8:
-	.word dword_80EBFF0
-dword_80EBFEC:
+	.word VulcanShotFanOffsets_80EBFF0
+VulcanShotsBySubfamily_80EBFEC:
 	.word 0xA050403
-dword_80EBFF0:
+VulcanShotFanOffsets_80EBFF0:
 	.word 0x20181008
-	thumb_func_end sub_80EBF6E
+	thumb_func_end vulcanFireShots_80EBF6E
 
 	thumb_local_start
 sub_80EBFF4:
@@ -110706,7 +110706,7 @@ loc_80EC510:
 	ldr r0, [r0,#oAIData_Unk_68]
 	bl sub_80B8E58
 	bl object_exitAttackState
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r4, r0
 	bl sub_80103A8
 	mov r2, r0
@@ -110934,7 +110934,7 @@ loc_80EC6D6:
 	cmp r0, #0
 	beq locret_80EC706
 	bl sub_80EC792
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r4, r0
 	bl sub_80103A8
 	mov r2, r0
@@ -111112,7 +111112,7 @@ sub_80EC844:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
 	add r0, r0, r0
-	ldr r4, off_80EC86C // =byte_80EC870
+	ldr r4, off_80EC86C // =RecovHealBySubfamily_80EC870
 	add r4, r4, r0
 	ldrh r0, [r4]
 	mov r1, #1
@@ -111128,14 +111128,14 @@ loc_80EC85A:
 	pop {r4,pc}
 	.balign 4, 0
 off_80EC86C:
-	.word byte_80EC870
-byte_80EC870:
+	.word RecovHealBySubfamily_80EC870
+RecovHealBySubfamily_80EC870:
 	.byte 0xA, 0x0, 0x1E, 0x0, 0x32, 0x0, 0x50, 0x0, 0x78, 0x0, 0x96, 0x0
 	.byte 0xC8, 0x0, 0x2C, 0x1, 0xE8, 0x3, 0x0, 0x0
 	thumb_func_end sub_80EC844
 
 	thumb_local_start
-sub_80EC884:
+airShotAttack_80EC884:
 	push {lr}
 	ldr r1, off_80EC894 // =off_80EC898 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -111149,7 +111149,7 @@ off_80EC894:
 off_80EC898:
 	.word sub_80EC8A0+1
 	.word sub_80EC90E+1
-	thumb_func_end sub_80EC884
+	thumb_func_end airShotAttack_80EC884
 
 	thumb_local_start
 sub_80EC8A0:
@@ -113237,7 +113237,7 @@ loc_80ED7D6:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	str r0, [r1,#oAIData_Unk_68]
 	bl object_exitAttackState
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r4, r0
 	bl sub_80103A8
 	mov r2, r0
@@ -119162,7 +119162,7 @@ loc_80F051A:
 	mov r0, #1
 	pop {r4,r6,r7,pc}
 loc_80F0526:
-	bl sub_800FB54
+	bl useChipFromHand_800FB54
 	ldr r3, dword_80F06E4 // =0xffff 
 	cmp r0, r3
 	bne loc_80F057C
@@ -119170,7 +119170,7 @@ loc_80F0526:
 	cmp r0, #0
 	beq loc_80F0552
 	push {r0}
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r1, r0
 	pop {r0}
 	push {r0,r1}
@@ -119192,7 +119192,7 @@ loc_80F0564:
 	cmp r0, #0
 	beq loc_80F0578
 	push {r0}
-	bl sub_8010332
+	bl getNaviMoveRecoveryFrames_8010332
 	mov r1, r0
 	pop {r0}
 	bl sub_80116D8
@@ -123003,7 +123003,7 @@ off_80F2108:
 off_80F210C:
 	.word sub_80F2124+1
 	.word sub_80F2142+1
-	.word sub_80F2180+1
+	.word shotImpact_80F2180+1
 	.word sub_80F21FC+1
 	.word sub_80F222C+1
 	.word sub_80F2268+1
@@ -123062,7 +123062,7 @@ locret_80F217E:
 	thumb_func_end sub_80F2142
 
 	thumb_local_start
-sub_80F2180:
+shotImpact_80F2180:
 	push {r4,r6,lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -123122,7 +123122,7 @@ off_80F21EC:
 	.word byte_80F21F0
 byte_80F21F0:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x32, 0x0, 0x46, 0x0, 0x0, 0x0
-	thumb_func_end sub_80F2180
+	thumb_func_end shotImpact_80F2180
 
 	thumb_local_start
 sub_80F21FC:
@@ -123341,7 +123341,7 @@ loc_80F2378:
 	ldr r1, off_80F23A0 // =off_80F23AC
 	ldr r0, [r1,r4]
 	bl ai_eventuallyRunsAIAttack_801AF44
-	ldr r0, off_80F23A8 // =off_80F25A0
+	ldr r0, off_80F23A8 // =NaviActHandlers_80F25A0
 	ldr r0, [r0,r4]
 	mov lr, pc
 	bx r0
@@ -123363,7 +123363,7 @@ off_80F23A0:
 off_80F23A4:
 	.word off_80F2474
 off_80F23A8:
-	.word off_80F25A0
+	.word NaviActHandlers_80F25A0
 off_80F23AC:
 	.word off_80F29B0
 	.word off_80F2B14
@@ -123442,7 +123442,7 @@ off_80F2474:
 	.word nullsub_106+1
 	.word nullsub_106+1
 	.word nullsub_106+1
-off_80F24D8:
+NaviEnemyStruct1Ptrs_80F24D8:
 	// 0x00
 	.word byte_80F28C4
 	// 0x04
@@ -123493,7 +123493,7 @@ off_80F24D8:
 	.word byte_81067FC
 	// 0x60
 	.word byte_8107B24
-off_80F253C:
+NaviEnemyStruct2Ptrs_80F253C:
 	// 0x00
 	.word byte_80F28CC
 	// 0x04
@@ -123544,7 +123544,7 @@ off_80F253C:
 	.word byte_8106804
 	// 0x60
 	.word byte_8107B2C
-off_80F25A0:
+NaviActHandlers_80F25A0:
 	.word sub_80F2A1E+1
 	.word nullsub_106+1
 	.word nullsub_106+1
@@ -123791,7 +123791,7 @@ off_80F29B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -123885,7 +123885,7 @@ off_80F2B14:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -124259,14 +124259,14 @@ sub_80F2DDC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F2E30 // =byte_80F2E3C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -124305,14 +124305,14 @@ sub_80F2E54:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F2EA0 // =byte_80F2EAC
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -125772,7 +125772,7 @@ off_80F39CC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -126076,14 +126076,14 @@ sub_80F3C2C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F3C80 // =byte_80F3C8C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -126122,14 +126122,14 @@ sub_80F3CA4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F3CF0 // =byte_80F3CFC
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -127599,7 +127599,7 @@ off_80F4894:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -127986,14 +127986,14 @@ sub_80F4B74:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F4BEC // =byte_80F4BF8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -128009,14 +128009,14 @@ sub_80F4B74:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F4BEC // =byte_80F4BF8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -129660,7 +129660,7 @@ off_80F58F8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -129898,14 +129898,14 @@ sub_80F5AD4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F5B4C // =byte_80F5B58
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -129923,14 +129923,14 @@ sub_80F5B02:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F5B4C // =byte_80F5B58
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -131083,7 +131083,7 @@ off_80F6454:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -131341,14 +131341,14 @@ sub_80F663C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F66B4 // =byte_80F66C0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -131364,14 +131364,14 @@ sub_80F663C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F66B4 // =byte_80F66C0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -133272,7 +133272,7 @@ off_80F763C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -133638,14 +133638,14 @@ sub_80F78FA:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F794C // =byte_80F7958
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -133684,14 +133684,14 @@ sub_80F7970:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F79BC // =byte_80F79C8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -135012,7 +135012,7 @@ off_80F83F4:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -135315,14 +135315,14 @@ sub_80F865C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F86D4 // =byte_80F86E0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -135338,14 +135338,14 @@ sub_80F865C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F86D4 // =byte_80F86E0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -136482,7 +136482,7 @@ off_80F8FAC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -136812,14 +136812,14 @@ sub_80F9222:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F929C // =byte_80F92A8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -136835,14 +136835,14 @@ sub_80F9222:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F929C // =byte_80F92A8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -138141,7 +138141,7 @@ off_80F9D40:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -138503,14 +138503,14 @@ sub_80F9FEC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FA070 // =byte_80FA080
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -138528,14 +138528,14 @@ sub_80FA01A:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FA070 // =byte_80FA080
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -140155,7 +140155,7 @@ off_80FAD9C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -140532,14 +140532,14 @@ sub_80FB062:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FB0DC // =byte_80FB0E8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -140555,14 +140555,14 @@ sub_80FB062:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FB0DC // =byte_80FB0E8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -141673,7 +141673,7 @@ off_80FB9A0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80FBC8A+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -142477,14 +142477,14 @@ sub_80FBF92:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FC024 // =byte_80FC038
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -142500,14 +142500,14 @@ sub_80FBF92:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FC024 // =byte_80FC038
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -144656,7 +144656,7 @@ off_80FD104:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -145007,14 +145007,14 @@ sub_80FD3CC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FD420 // =byte_80FD42C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -145053,14 +145053,14 @@ sub_80FD444:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FD490 // =byte_80FD49C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -146230,7 +146230,7 @@ off_80FDDB0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -146526,14 +146526,14 @@ sub_80FDFE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FE038 // =byte_80FE044
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -146572,14 +146572,14 @@ sub_80FE05C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FE0A8 // =byte_80FE0B4
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -147585,7 +147585,7 @@ off_80FE890:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -148016,14 +148016,14 @@ sub_80FEBE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FEC5C // =byte_80FEC68
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -148039,14 +148039,14 @@ sub_80FEBE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FEC5C // =byte_80FEC68
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -149622,7 +149622,7 @@ off_80FF8B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -149929,14 +149929,14 @@ sub_80FFAF8:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FFB64 // =byte_80FFB6C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -149954,14 +149954,14 @@ sub_80FFB26:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FFB64 // =byte_80FFB6C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -150871,7 +150871,7 @@ off_81002A8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -151405,14 +151405,14 @@ sub_810067E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8100710 // =byte_8100724
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -151428,14 +151428,14 @@ sub_810067E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8100710 // =byte_8100724
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -153065,7 +153065,7 @@ off_8101328:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -153665,14 +153665,14 @@ sub_810176E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8101800 // =byte_8101814
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -153690,14 +153690,14 @@ sub_810179C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8101800 // =byte_8101814
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -153779,7 +153779,7 @@ off_8101940:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -154552,10 +154552,10 @@ sub_8101F2A:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0f]
 	ldr r0, off_8102194 // =byte_8101994
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102198 // =byte_810199C
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154580,10 +154580,10 @@ sub_8101F70:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0f]
 	ldr r0, off_81021AC // =byte_81019B4
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021B0 // =byte_81019BC
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154602,10 +154602,10 @@ sub_8101FAE:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_34]
 	ldr r0, off_81021BC // =byte_81019CC
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021C0 // =byte_81019D4
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154628,10 +154628,10 @@ sub_8101FE4:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0d]
 	ldr r0, off_81021D0 // =byte_81019E4
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021D4 // =byte_81019EC
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154655,10 +154655,10 @@ sub_8102016:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
 	ldr r0, off_81021E4 // =byte_8101A00
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021E8 // =byte_8101A08
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_0d]
@@ -154685,10 +154685,10 @@ sub_810205C:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_34]
 	ldr r0, off_81021F4 // =byte_8101A18
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021F8 // =byte_8101A20
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -154723,10 +154723,10 @@ sub_810209E:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_3c]
 	ldr r0, off_810220C // =byte_8101A38
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102210 // =byte_8101A40
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -154761,10 +154761,10 @@ sub_81020F0:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_3c]
 	ldr r0, off_8102224 // =byte_8101A58
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102228 // =byte_8101A60
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -158634,7 +158634,7 @@ loc_8103DB4:
 	thumb_local_start
 sub_8103DFA:
 	push {r4,lr}
-	bl sub_80174FE
+	bl playerFlinchAction_80174FE
 	mov r0, #0x41 
 	strb r0, [r5,#oBattleObject_CurAnim]
 	pop {r4,pc}
@@ -158963,14 +158963,14 @@ sub_810407E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8104128 // =byte_8104144
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -158988,14 +158988,14 @@ sub_81040AC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8104128 // =byte_8104144
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -161709,7 +161709,7 @@ locret_8105616:
 	thumb_local_start
 sub_8105618:
 	push {r4,lr}
-	bl sub_80174FE
+	bl playerFlinchAction_80174FE
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
 	pop {r4,pc}
@@ -162035,14 +162035,14 @@ sub_810588E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8105920 // =byte_8105934
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -162058,14 +162058,14 @@ sub_810588E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8105920 // =byte_8105934
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -164162,7 +164162,7 @@ off_81068E8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -164700,14 +164700,14 @@ sub_8106CEA:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8106D88 // =byte_8106DA0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -164725,14 +164725,14 @@ sub_8106D18:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8106D88 // =byte_8106DA0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -166658,7 +166658,7 @@ off_8107C10:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word playerFlinchAction_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -167353,14 +167353,14 @@ sub_8108124:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_81081C0 // =byte_81081D8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -167378,14 +167378,14 @@ sub_8108152:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_81081C0 // =byte_81081D8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl readPerVersionHword_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -172761,7 +172761,7 @@ sub_810ABFE:
 	cmp r0, #0xff
 	beq locret_810AC24
 	push {r0}
-	bl sub_801A7CC
+	bl barrierTakeDamage_801A7CC
 	pop {r4}
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #0x60 

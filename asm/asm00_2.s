@@ -668,9 +668,9 @@ off_800F230:
 	// virus
 	.word AIEnemyStruct1Ptrs_81090D0
 	// navi
-	.word off_80F24D8
+	.word NaviEnemyStruct1Ptrs_80F24D8
 	// player
-	.word off_80EA814
+	.word PlayerEnemyStruct1Ptrs_80EA814
 	thumb_func_end enemy_getStruct1
 
 // struct {elem_hp: u16, unk_02: u16, elem_damage: u16}
@@ -724,9 +724,9 @@ off_800F260:
 	// virus
 	.word AIEnemyStruct2Ptrs_8109150
 	// navi
-	.word off_80F253C
+	.word NaviEnemyStruct2Ptrs_80F253C
 	// player
-	.word off_80EA8D8
+	.word PlayerEnemyStruct2Ptrs_80EA8D8
 	thumb_func_end enemy_getStruct2
 
 	thumb_func_start sub_800F26C
@@ -2003,8 +2003,8 @@ BusterWalkStopPanelMask_800FB4C:
 	.byte 0x80, 0x0, 0x88, 0xD, 0x80, 0x0, 0x88, 0xE
 	thumb_func_end countFreePanelsAheadForBuster_800FAF6
 
-	thumb_func_start sub_800FB54
-sub_800FB54:
+	thumb_func_start useChipFromHand_800FB54
+useChipFromHand_800FB54:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #oAIData_AttackVars
@@ -2115,7 +2115,7 @@ off_800FC28:
 	.word 0x1000
 dword_800FC2C:
 	.word 0xFFFF
-	thumb_func_end sub_800FB54
+	thumb_func_end useChipFromHand_800FB54
 
 	thumb_func_start sub_800FC30
 sub_800FC30:
@@ -2378,8 +2378,12 @@ loc_800FE0C:
 	pop {r4,pc}
 	thumb_func_end setChipsForPlayerObject_800FDEA
 
-	thumb_func_start sub_800FE12
-sub_800FE12:
+	// Reads one row out of a per-Version u16 table: r0 is the table base, the row
+	// is oAIData_Version_16, and Version 4 is special-cased to row 4 scaled by
+	// oAIData_Unk_0c. This is what puts "the version column" in front of every
+	// per-version damage/HP figure the bn project measured (src/battle.rs:66).
+	thumb_func_start readPerVersionHword_800FE12
+readPerVersionHword_800FE12:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	ldrb r2, [r1,#oAIData_Version_16]
 	cmp r2, #4
@@ -2392,7 +2396,7 @@ loc_800FE20:
 	ldrh r0, [r0,#8]
 	mul r0, r2
 	mov pc, lr
-	thumb_func_end sub_800FE12
+	thumb_func_end readPerVersionHword_800FE12
 
 	thumb_func_start sub_800FE28
 sub_800FE28:
@@ -3122,8 +3126,8 @@ GetAIDataUnk0x48Flag:
 	mov pc, lr
 	thumb_func_end GetAIDataUnk0x48Flag
 
-	thumb_func_start sub_8010332
-sub_8010332:
+	thumb_func_start getNaviMoveRecoveryFrames_8010332
+getNaviMoveRecoveryFrames_8010332:
 	push {r4,lr}
 	bl GetBattleMode
 	cmp r0, #9
@@ -3151,7 +3155,7 @@ locret_8010360:
 	.balign 4, 0
 off_8010364:
 	.word byte_8020FE0
-	thumb_func_end sub_8010332
+	thumb_func_end getNaviMoveRecoveryFrames_8010332
 
 	thumb_local_start
 sub_8010368:
@@ -5729,7 +5733,7 @@ calledOnBAtkProbInit_8011764:
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
-	ldr r1, off_80117D0 // =off_80117D4 
+	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
 	ldrb r0, [r6,#oAIData_BButton]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
@@ -5744,7 +5748,7 @@ sub_801177A:
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
-	ldr r1, off_80117D0 // =off_80117D4 
+	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
 	ldrb r0, [r6,#oAIData_Unk_04]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
@@ -5758,7 +5762,7 @@ sub_8011790:
 	push {r6,r7,lr}
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
-	ldr r1, off_80117D0 // =off_80117D4 
+	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
 	ldrb r0, [r6,#oAIData_BLeftAbility]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
@@ -5773,7 +5777,7 @@ sub_80117A4:
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
-	ldr r1, off_80117D0 // =off_80117D4 
+	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
 	ldrb r0, [r6,#oAIData_BPwrAtk]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
@@ -5788,7 +5792,7 @@ sub_80117BA:
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
-	ldr r1, off_80117D0 // =off_80117D4 
+	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
 	mov lr, pc
@@ -5796,8 +5800,8 @@ sub_80117BA:
 	pop {r6,r7,pc}
 	.byte 0, 0
 off_80117D0:
-	.word off_80117D4
-off_80117D4:
+	.word ChargeShotHandlersByTransformation_80117D4
+ChargeShotHandlersByTransformation_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x0
 	.word busterBugChargeShotDamageCalcHappensHere_8011A7E+1 // 0x1
 	.word sub_8011ADA+1 // 0x2
@@ -5969,7 +5973,7 @@ loc_8011A3A:
 	bl busterBugChargeShotDamageCalcHappensHere_8011A7E
 	pop {r4,pc}
 loc_8011A44:
-	bl sub_801265A
+	bl getBusterDamage_801265A
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6069,7 +6073,7 @@ sub_8011ADA:
 	thumb_local_start
 sub_8011AF2:
 	push {lr}
-	bl sub_801265A
+	bl getBusterDamage_801265A
 	cmp r0, #5
 	ble loc_8011AFE
 	mov r0, #5
@@ -6116,7 +6120,7 @@ loc_8011B3E:
 	thumb_local_start
 sub_8011B4A:
 	push {lr}
-	bl sub_801265A
+	bl getBusterDamage_801265A
 	cmp r0, #5
 	ble loc_8011B56
 	mov r0, #5
@@ -7909,7 +7913,7 @@ sub_801263A:
 sub_8012642:
 	push {lr}
 	push {r0,r1}
-	bl sub_801265A
+	bl getBusterDamage_801265A
 	mov r2, r0
 	cmp r2, #5
 	ble loc_8012652
@@ -7921,8 +7925,8 @@ loc_8012652:
 	pop {pc}
 	thumb_func_end sub_8012642
 
-	thumb_func_start sub_801265A
-sub_801265A:
+	thumb_func_start getBusterDamage_801265A
+getBusterDamage_801265A:
 	push {lr}
 	mov r1, #oNaviStats_NaviIndex
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -7975,7 +7979,7 @@ dword_80126DC:
 	.word 0x17E
 off_80126E0:
 	.word 0x11E
-	thumb_func_end sub_801265A
+	thumb_func_end getBusterDamage_801265A
 
 	thumb_func_start somethingWriteChipParams_80126E4
 somethingWriteChipParams_80126E4:
@@ -8935,7 +8939,7 @@ locret_8012DB6:
 	thumb_local_start
 sub_8012DB8:
 	push {lr}
-	ldr r3, off_8012DD0 // =byte_8012DD4
+	ldr r3, off_8012DD0 // =MoveDestinationFilterMask_8012DD4
 	bl GetAllianceDependentPanelParamArgs
 	bl sub_8015C94
 	cmp r0, #0
@@ -8946,8 +8950,8 @@ locret_8012DCC:
 	pop {pc}
 	.balign 4, 0
 off_8012DD0:
-	.word byte_8012DD4
-byte_8012DD4:
+	.word MoveDestinationFilterMask_8012DD4
+MoveDestinationFilterMask_8012DD4:
 	.byte 0x20, 0x0, 0x0, 0x0, 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xA0, 0x0
 	.byte 0x0, 0x0
 dword_8012DE4:
@@ -8964,8 +8968,8 @@ dword_8012DF8:
 	.word 0x1C3
 	thumb_func_end sub_8012DB8
 
-	thumb_func_start sub_8012DFC
-sub_8012DFC:
+	thumb_func_start refreshAIDataFromJoypad_8012DFC
+refreshAIDataFromJoypad_8012DFC:
 	push {r4,r6,lr}
 	mov r7, r0
 	bl sub_8010022
@@ -9027,10 +9031,10 @@ loc_8012E64:
 	.balign 4, 0
 off_8012E70:
 	.word dword_2036820
-	thumb_func_end sub_8012DFC
+	thumb_func_end refreshAIDataFromJoypad_8012DFC
 
-	thumb_func_start sub_8012E74
-sub_8012E74:
+	thumb_func_start readPlayerInput_8012E74
+readPlayerInput_8012E74:
 	push {r4,r6,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	bl battle_isBattleOver
@@ -9050,7 +9054,7 @@ loc_8012E90:
 	strh r1, [r4,#oAIData_JoypadUp]
 	pop {r4,r6,pc}
 	.word dword_2036820
-	thumb_func_end sub_8012E74
+	thumb_func_end readPlayerInput_8012E74
 
 	thumb_local_start
 sub_8012EA0:
@@ -10570,7 +10574,7 @@ loc_80138D2:
 	cmp r0, #0
 	beq loc_80138F2
 	push {r0}
-	bl sub_801A7CC
+	bl barrierTakeDamage_801A7CC
 	pop {r4}
 	push {r7}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -10932,7 +10936,7 @@ loc_8013B6E:
 	bl initNaviStats_WithDefaultStatsMaybe_8013438 // (void *struct) -> void
 	mov r0, #0x10
 	mul r0, r4
-	ldr r6, off_8013CB4 // =byte_80210DD 
+	ldr r6, off_8013CB4 // =NaviBaseHpByRow_80210DD 
 	add r6, r6, r0
 	mov r1, #oNaviStats_NaviIndex 
 	strb r4, [r7,r1]
@@ -10992,7 +10996,7 @@ sub_8013BDA:
 	bl initNaviStats_WithDefaultStatsMaybe_8013438 // (void *struct) -> void
 	mov r0, #0x10
 	mul r0, r4
-	ldr r6, off_8013CB8 // =byte_80210DD 
+	ldr r6, off_8013CB8 // =NaviBaseHpByRow_80210DD 
 	add r6, r6, r0
 	mov r1, #0x29 
 	strb r4, [r7,r1]
@@ -11088,9 +11092,9 @@ off_8013CAC:
 dword_8013CB0:
 	.word 0x100000
 off_8013CB4:
-	.word byte_80210DD
+	.word NaviBaseHpByRow_80210DD
 off_8013CB8:
-	.word byte_80210DD
+	.word NaviBaseHpByRow_80210DD
 off_8013CBC:
 	.word dword_802F0A8
 dword_8013CC0:
@@ -11201,8 +11205,8 @@ loc_8013D92:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8013D5E
 
-	thumb_func_start sub_8013DA0
-sub_8013DA0:
+	thumb_func_start playerAiTick_8013DA0
+playerAiTick_8013DA0:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x10
 	bl battle_isPaused
@@ -11284,7 +11288,7 @@ byte_8013E44:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x2, 0x3
 dword_8013E54:
 	.word 0xFF003C99
-	thumb_func_end sub_8013DA0
+	thumb_func_end playerAiTick_8013DA0
 
 	thumb_local_start
 sub_8013E58:
@@ -17810,7 +17814,7 @@ off_80170D8:
 	.word off_80170DC
 off_80170DC:
 	.word sub_80170E4+1
-	.word sub_8017122+1
+	.word enemyNaviDeathBlink_8017122+1
 	thumb_func_end sub_80170C4
 
 	thumb_local_start
@@ -17840,7 +17844,7 @@ loc_8017118:
 	thumb_func_end sub_80170E4
 
 	thumb_local_start
-sub_8017122:
+enemyNaviDeathBlink_8017122:
 	push {r4,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -17901,7 +17905,7 @@ loc_801719C:
 	bl sprite_forceWhitePalette
 locret_80171A4:
 	pop {r4,r7,pc}
-	thumb_func_end sub_8017122
+	thumb_func_end enemyNaviDeathBlink_8017122
 
 	thumb_func_start sub_80171A6
 sub_80171A6:
@@ -18160,8 +18164,8 @@ locret_80173F2:
 	pop {r4,r7,pc}
 	thumb_func_end playerObject_init_80172F0
 
-	thumb_func_start sub_80173F4
-sub_80173F4:
+	thumb_func_start playerDeleteAction_80173F4
+playerDeleteAction_80173F4:
 	push {lr}
 	bl sprite_forceWhitePalette
 	ldr r1, off_8017408 // =off_801740C 
@@ -18178,7 +18182,7 @@ off_801740C:
 	.word sub_801746E+1
 	.word sub_80174AA+1
 	.word sub_80174BE+1
-	thumb_func_end sub_80173F4
+	thumb_func_end playerDeleteAction_80173F4
 
 	thumb_local_start
 sub_801741C:
@@ -18293,8 +18297,8 @@ loc_80174E0:
 	pop {pc}
 	thumb_func_end sub_80174BE
 
-	thumb_func_start sub_80174FE
-sub_80174FE:
+	thumb_func_start playerFlinchAction_80174FE
+playerFlinchAction_80174FE:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -18371,7 +18375,7 @@ dword_80175B0:
 	.word 0x400400
 dword_80175B4:
 	.word 0x20005F
-	thumb_func_end sub_80174FE
+	thumb_func_end playerFlinchAction_80174FE
 
 	thumb_func_start sub_80175B8
 sub_80175B8:
@@ -22575,8 +22579,8 @@ off_801A7C8:
 	.word 0x4B0
 	thumb_func_end sub_801A77A
 
-	thumb_func_start sub_801A7CC
-sub_801A7CC:
+	thumb_func_start barrierTakeDamage_801A7CC
+barrierTakeDamage_801A7CC:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	strb r0, [r3,#oCollisionData_Barrier]
 	ldr r1, off_801A7F0 // =byte_8020B8C 
@@ -22584,7 +22588,7 @@ sub_801A7CC:
 	strb r1, [r3,#oCollisionData_Unk_14]
 	mov r1, #6
 	mul r0, r1
-	ldr r1, off_801A7EC // =byte_8020B2C 
+	ldr r1, off_801A7EC // =BarrierHpByType_8020B2C 
 	add r0, r0, r1
 	ldrh r1, [r0]
 	strb r1, [r3,#oCollisionData_Unk_16]
@@ -22595,10 +22599,10 @@ sub_801A7CC:
 	mov pc, lr
 	.balign 4, 0
 off_801A7EC:
-	.word byte_8020B2C
+	.word BarrierHpByType_8020B2C
 off_801A7F0:
 	.word byte_8020B8C
-	thumb_func_end sub_801A7CC
+	thumb_func_end barrierTakeDamage_801A7CC
 
 	thumb_func_start sub_801A7F4
 sub_801A7F4:
@@ -22612,7 +22616,7 @@ sub_801A7F4:
 	thumb_func_end sub_801A7F4
 
 	thumb_local_start
-sub_801A802:
+barrierBreak_801A802:
 	push {r4,r6,lr}
 	bl battle_isPaused
 	beq loc_801A80C
@@ -22840,7 +22844,7 @@ loc_801A96E:
 	str r1, [r4,#oCollisionData_FlagsFromCollision]
 locret_801A9A2:
 	pop {r4,r6,pc}
-	thumb_func_end sub_801A802
+	thumb_func_end barrierBreak_801A802
 
 	thumb_local_start
 sub_801A9A4:
@@ -22878,7 +22882,7 @@ sub_801A9B8:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AA3C
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl sub_8010230
@@ -22933,7 +22937,7 @@ sub_801AA48:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AABE
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl sub_8010230
@@ -22974,7 +22978,7 @@ sub_801AAC0:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AB3E
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl GetBattleMode
@@ -23019,7 +23023,7 @@ sub_801AB40:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801ABB6
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl sub_8010230
@@ -23063,7 +23067,7 @@ sub_801ABB8:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AC6A
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl sub_801A6D6
@@ -23112,8 +23116,8 @@ locret_801AC6A:
 	pop {r4,r7,pc}
 	thumb_func_end sub_801ABB8
 
-	thumb_func_start sub_801AC6C
-sub_801AC6C:
+	thumb_func_start playerStateDispatch_801AC6C
+playerStateDispatch_801AC6C:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -23130,7 +23134,7 @@ sub_801AC6C:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AD10
-	bl sub_801A802
+	bl barrierBreak_801A802
 	bl sub_801A186
 	bl sub_801A36A
 	bl sub_8010230
@@ -23169,7 +23173,7 @@ loc_801ACEC:
 	bl object_spawnHiteffect
 locret_801AD10:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AC6C
+	thumb_func_end playerStateDispatch_801AC6C
 
 	thumb_func_start sub_801AD12
 sub_801AD12:
@@ -25150,8 +25154,8 @@ locret_801BC22:
 	pop {pc}
 	thumb_func_end object_updateSpriteTimestop
 
-	thumb_func_start sub_801BC24
-sub_801BC24:
+	thumb_func_start object_updateSpriteRebindOnly_801BC24
+object_updateSpriteRebindOnly_801BC24:
 	push {lr}
 	bl battle_isPaused
 	bne locret_801BC62
@@ -25182,7 +25186,7 @@ loc_801BC5E:
 	bl sprite_update
 locret_801BC62:
 	pop {pc}
-	thumb_func_end sub_801BC24
+	thumb_func_end object_updateSpriteRebindOnly_801BC24
 
 	thumb_func_start UpdateBattleObjectSprite
 UpdateBattleObjectSprite:
@@ -29895,27 +29899,19 @@ sub_801DF8C:
 	mov pc, lr
 	thumb_func_end sub_801DF8C
 
-	// bn/reference wt/zero-layers (2026-09-08): the CUSTOM gauge's flow
-	// animation (the bar's 4-tile cycle and the L/R marker's cyan<->orange
-	// blink drawn once word_20352A0 == 0x4000) reads eStruct2035280+0x00,
-	// NOT documented as a struct field here (this file finds only one
-	// static write to that byte, sub_801E474's "mov r0, #0x3f; strb r0,
-	// [r1]" -- unrelated, that call site is battle-start banner/text
-	// rendering, not the gauge). Measured live instead, from a real
-	// battle's own frame 0 (/tmp/battlestart.state) through the gauge's
-	// first natural fill-to-full transition: +0x00 reads 0 for every
-	// frame the gauge is below 0x4000, then reads exactly 1 on the SAME
-	// frame word_20352A0 first reads 0x4000, incrementing by 1 every
-	// frame after (wrapping at 112 = lcm(28,16), matching a separate
-	// mid-cycle capture's own hash-matched bar/marker periods). So +0x00
-	// is a "frames the gauge has stood full" counter that zeros on
-	// refill and starts at 1 on the first full frame -- likely written by
-	// whichever code increments it each frame the gauge-full flag from
-	// battle_clearFlags/dispatch_801DACC's own #0x4000 flag (see
-	// sub_802A0F8 below) is set, not found by static grep here (no
-	// symbol resolves a per-frame write to this offset). See bn's own
-	// src/hudtiles.rs (BAR_EXTRA/MARKER_EXTRA) for the derived bar/marker
-	// formulas this counter drives.
+	// bn/reference wt/zero-layers (2026-09-08): Struct2035280.CustGaugeFlowCounter
+	// -- the counter drawCustGauge_801C4E4 derives both the bar's 4-tile cycle and
+	// the L/R marker's cyan<->orange blink from -- has NO writer anywhere in this
+	// disassembly that a static grep can find. (The one static write to that byte,
+	// sub_801E474's "mov r0, #0x3f; strb r0, [r1]", is battle-start banner/text
+	// rendering, not the gauge.) Its behaviour was measured live instead, from a
+	// real battle's frame 0 (/tmp/battlestart.state) through the gauge's first
+	// natural fill-to-full transition, and that measurement is what the field's own
+	// comment in include/structs/Struct2035280.inc now records, wrap included.
+	// The unfound writer is presumably driven by the gauge-full flag that
+	// battle_clearFlags/dispatch_801DACC carry as #CUST_GAUGE_FULL (see
+	// sub_802A0F8 below). See bn's own src/hudtiles.rs (BAR_EXTRA/MARKER_EXTRA)
+	// for the bar/marker formulas this counter drives.
 	thumb_func_start ClearCustGauge
 ClearCustGauge:
 	push {lr}
@@ -31022,11 +31018,16 @@ byte_801E700:
 
 	thumb_func_start setChipWindowSlideX_801E71C
 setChipWindowSlideX_801E71C:
-// bn T7d (2026-09-15): this strb r0, [r1,#0x12] in setChipWindowSlideX_801E71C is the
-// post-window banner composite corrector; src/battle.rs carries the named
-// canon-predicate on the eStruct2035280+0x12 byte that the window-close
-// banner cycle depends on. It is one of the three fitted edges named in
-// T7d's windowclose_full trace scenario.
+// bn T7d (2026-09-15): the byte this writes is one of the three fitted edges in
+// T7d's windowclose_full trace scenario -- src/battle.rs carries the named
+// canon-predicate on it, and the window-close banner cycle depends on it. T7d
+// read it as a "post-window banner composite corrector"; F33 later measured what
+// the value actually IS -- the chip window's own slide position, which
+// drawEmotionWindow_801CDEC adds into the emotion window's OAM x -- and predicted
+// -117980 px from that to the pixel. This routine's only callers pass
+// CHIP_WINDOW_SLIDE_FROM minus the window's slide counter (asm03_0.s:979), so the
+// field name follows F33; T7d's reading is kept here because the two describe the
+// same byte from different ends and only F33's has a measurement behind it.
 	push {r1,lr}
 	ldr r1, off_801E77C // =eStruct2035280
 	strb r0, [r1,#oStruct2035280_ChipWindowSlideX]

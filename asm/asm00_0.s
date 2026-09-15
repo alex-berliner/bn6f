@@ -5237,16 +5237,16 @@ off_8002690:
 	.word byte_3001710
 	thumb_func_end copy_8002668
 
-	thumb_func_start sub_8002694
-sub_8002694:
+	thumb_func_start emitObjectSpriteOam_8002694
+emitObjectSpriteOam_8002694:
 	push {lr}
-	ldr r2, off_80026A0 // =sub_3006440+1
+	ldr r2, off_80026A0 // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {pc}
 	.balign 4, 0x00
 off_80026A0:
-	.word sub_3006440+1
-	thumb_func_end sub_8002694
+	.word emitObjEntry_3006440+1
+	thumb_func_end emitObjectSpriteOam_8002694
 
 /*For debugging purposes, connect comment at any range!*/

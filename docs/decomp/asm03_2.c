@@ -467,7 +467,7 @@ int sub_80465F8()
         if ( result & 2 )
         {
             v4 = *v0;
-            sub_80466D8();
+            getSpriteDrawGateFlags_80466D8();
             v3 = v4;
             if ( !(v4 & 0x40) )
             {
@@ -479,7 +479,7 @@ int sub_80465F8()
                 if ( v3 & 0x20 )
                     loadObjAffineMatrix_8002874();
             }
-            sub_8002694(0, 0);
+            emitObjectSpriteOam_8002694(0, 0);
         }
         v0 += 88;
         ++v1;
@@ -563,7 +563,7 @@ int __fastcall getStructFrom2008450(int a1)
 
 
 // 0x80466d8
-signed int sub_80466D8()
+signed int getSpriteDrawGateFlags_80466D8()
 {
     int v0; // r5
     int v1; // r12
@@ -733,7 +733,7 @@ int sub_8046854()
                 if ( v3 & 0x20 )
                     loadObjAffineMatrix_8002874();
             }
-            sub_8002694(0, 0);
+            emitObjectSpriteOam_8002694(0, 0);
         }
         v0 += 88;
         ++v1;

@@ -964,7 +964,7 @@ LABEL_13:
             *(v7 + 3) = v3;
             stageObjPalette_8002818();
             loadObjAffineMatrix_8002874();
-            sub_8002694(0, 3);
+            emitObjectSpriteOam_8002694(0, 3);
         }
     }
     return result;

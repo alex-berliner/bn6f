@@ -356,7 +356,7 @@ the 107-frame offset from the sequencer edge, is written above
 | `sub_8002818` | `stageObjPalette_8002818` | "stages a 16-colour palette into the IWRAM OBJ-palette mirror at slot Unk_15 >> 4; not an allocator" — docs/recon/F39a.md:161 |
 | `byte_3001550` | `iObjPaletteMirror_3001550` | "0x03001550 holds 16 x 32 bytes: an IWRAM mirror of the 16 OBJ palettes" — docs/recon/F39a.md:162 |
 | `sub_3005EF0` / `off_3005F20` | `blendStagedObjPalette_3005EF0` / `ObjPaletteBlendModes_3005F20` | "a colour-blend of the 16 staged words in place, not an allocator: r0 = blend param, r2 = jump index into off_3005F20" — docs/recon/F39a.md:163 |
-| `sub_8002874` | `loadObjAffineMatrix_8002874` | "affine-matrix load (gated by sub_80466D8 bit 0x20)" — docs/recon/F39a.md:43 |
+| `sub_8002874` | `loadObjAffineMatrix_8002874` | "affine-matrix load (gated by getSpriteDrawGateFlags_80466D8 bit 0x20)" — docs/recon/F39a.md:43 |
 | `sub_801641A` | `materializeObject_801641A` | "the materialize/appear phase handler: Timer/Timer2 countdown, mosaic+alpha ramp … teardown -> phase 8" — docs/recon/F39a.md:46; docs/coverage/opening_integrated.md:170; and the `// bn F38e/F38h` notes already at the routine, which also record that it does NOT move y |
 | `sub_801A5EE` | `applyMercyInvulnerability_801A5EE` | "the flash timer is seeded to 0x78 in the post-hit invulnerability handler"; "canon's routine (sub_801A5EE) sets the 120" — src/actor.rs:223; TODO_ARCHIVE.md:1691 (F14) |
 | `sub_80EB450` / `sub_80EB502` | `busterFirePhase_80EB450` / `busterHoldPhase_80EB502` | "sub_80EB450 is the FIRE phase and leaves after 5 ticks"; "then sub_80EB502 HOLDS for Unk_12 frames" — src/actor.rs:64-66; TODO_ARCHIVE.md:2274 (F31b) |
@@ -382,3 +382,38 @@ nineteen entry shape and the one-frame offset from the scroll's zero; the index
 formula and the three measured predictions on `BusterHoldFramesByRapid_80209CC`;
 and a comment on `sub_80084F0` recording that it is a SECOND dispatcher over the
 same sequencer state word with its own table.
+
+## Player/navi core, the chip attack families and OBJ emission
+
+| old | new | evidence |
+|---|---|---|
+| `sub_8012E74` / `sub_8013DA0` / `sub_801AC6C` | `readPlayerInput_8012E74` / `playerAiTick_8013DA0` / `playerStateDispatch_801AC6C` | "the per-tick work (input read sub_8012E74, AI tick sub_8013DA0 …)"; "state-machine dispatch sub_801AC6C" — src/objects.rs:63-64; docs/coverage/battle_full.md:1546 |
+| `sub_8012DFC` | `refreshAIDataFromJoypad_8012DFC` | "input refresh sub_8012DFC … runs from 0x08, never from 0x0C"; "refreshes the TWO alliance players' AIData" — TODO_ARCHIVE.md:2567 (F33d), :1433 (F5) |
+| `sub_800FB54` | `useChipFromHand_800FB54` | "CurAction 0x08->0x14 at 0x0801169A via sub_800FB54 -> object_setAttack2" — TODO_ARCHIVE.md:1487 (F5b), measured with --watch-write |
+| `sub_80EB088` / `sub_80EB128` / `sub_80EB194` / `sub_80EB1C4` | `naviMoveLeave_…` / `Travel` / `Arrive` / `Recover` | "the move state machine, which runs one step per frame across sub_80EB088 -> sub_80EB128 -> sub_80EB194 -> sub_80EB1C4 … 4 leaving frames, 5 arriving" — src/actor.rs:36 |
+| `sub_8010332` | `getNaviMoveRecoveryFrames_8010332` | "The recovery length is per-navi and defaults to 4" — src/actor.rs:38; the body returns 4 when the NaviStats byte is 0 |
+| `byte_8012DD4` | `MoveDestinationFilterMask_8012DD4` | "the game's destination filter rejects by the panel's reserve and occupant flags (byte_8012DD4 …)" — src/actor.rs:776 |
+| `sub_8017122` | `enemyNaviDeathBlink_8017122` | "An enemy navi blinks white for 0x5a frames" — src/actor.rs:236 |
+| `sub_80174FE` / `sub_80173F4` | `playerFlinchAction_80174FE` / `playerDeleteAction_80173F4` | "flinch 0x03 (sub_80174FE, PlayerObjectAIAttackJumptables[3])"; "Jumptable [2] — the DELETE CurAction 0x02" — src/actor.rs:644,647; the tables in this repo already comment the flinch slot |
+| `sub_801A7CC` / `sub_801A802` / `byte_8020B2C` | `barrierTakeDamage_801A7CC` / `barrierBreak_801A802` / `BarrierHpByType_8020B2C` | "A Barrier chip's remaining HP … hits are taken off it"; "and it breaks at zero"; "Barrier's HP for type 1 is 10 (byte_8020B2C)" — src/actor.rs:377-378; src/battle.rs:650 |
+| `sub_801265A` | `getBusterDamage_801265A` | "Buster damage is Attack + 1 for MegaMan" — src/battle.rs:70 |
+| `byte_80210DD` | `NaviBaseHpByRow_80210DD` | "byte_80210DD (data/dat01.s:295) row 0 gives 50 * 2 = 100" — src/battle.rs:52 |
+| `sub_800FE12` | `readPerVersionHword_800FE12` | "The version column comes from the AI data's version byte (sub_800FE12)" — src/battle.rs:66. NOTE: the body does more than read the byte — it indexes a caller-supplied per-Version u16 table with it, special-casing Version 4. The name follows the body; a comment at the routine spells the special case out. |
+| `sub_80F2180` | `shotImpact_80F2180` | "played from the shot-impact handler sub_80F2180" — docs/coverage/audio-buster.md:26 |
+| `sub_800A3E4` / `sub_800A570` | `buildBattleFolder_800A3E4` / `shuffleBattleFolder_800A570` | "The game builds it once in the battle intro (sub_800A3E4) by copying the PET navi's folder into eBattleFolder"; "shuffling it with the secondary generator (sub_800A570)" — src/deck.rs:3,7 |
+| `off_80F24D8` / `off_80F253C` / `off_80F25A0` | `NaviEnemyStruct1Ptrs_…` / `NaviEnemyStruct2Ptrs_…` / `NaviActHandlers_…` | "navi sub-tables off_80F24D8 (EnemyStruct1 …) … off_80F253C … Entry routines off_80F25A0" — docs/recon/T10.md:30 |
+| `off_80EA814` / `off_80EA8D8` | `PlayerEnemyStruct1Ptrs_80EA814` / `PlayerEnemyStruct2Ptrs_80EA8D8` | "player tables off_80EA814 (EnemyStruct1 …)" — docs/recon/T10.md:38 |
+| `off_80117D4` | `ChargeShotHandlersByTransformation_80117D4` | "charge-shot dispatch off_80117D4", with a 25-row TF_* table — docs/SCOPE.md:781-810 |
+| `sub_80EB644` / `byte_80EB738` | `miniBombAttack_80EB644` / `HeldBombObjectBySubfamily_80EB738` | "MiniBomb (attack family 0x12, sub_80EB644)"; "The held object takes byte_80EB738's packed row" — src/battle.rs:450,858 |
+| `sub_80EB776` / `byte_80EBA18` / `byte_80EBAD8` / `byte_80EBB64` | `swordAttack_80EB776` / `SwordHitShapeBySubfamily_…` / `SwordArcBySubfamily_…` / `SwordObjectBySubfamily_…` | "The swords (attack family 0x13, sub_80EB776)"; "The hit shape is byte_80EBA18's first byte per subfamily"; "The arc's animation is byte_80EBAD8 per subfamily"; "The sword object is byte_80B8BD4's row … (byte_80EBB64)" — src/battle.rs:250,4173,4193,3093 |
+| `sub_80EBC28` | `cannonAttack_80EBC28` | "Cannon and HiCannon (attack family 0x14, sub_80EBC28)" — src/battle.rs:472 |
+| `sub_80EBF10` / `sub_80EBF6E` / `dword_80EBFEC` / `dword_80EBFF0` | `vulcanAttack_80EBF10` / `vulcanFireShots_80EBF6E` / `VulcanShotsBySubfamily_…` / `VulcanShotFanOffsets_…` | "Vulcan1 (attack family 0x17, sub_80EBF10)"; "Vulcan fires every 0xa frames, sub_80EBF6E"; "Shots per Vulcan, from the subfamily (dword_80EBFEC = 0xA050403)"; "the per-shot vertical FAN bytes 0x20181008" — src/battle.rs:490,497,4354; src/shot.rs:89 |
+| `sub_80EC884` / `byte_80EC870` | `airShotAttack_80EC884` / `RecovHealBySubfamily_80EC870` | "AirShot (attack family 0x21, sub_80EC884)"; "the amounts are byte_80EC870, one per subfamily" — src/battle.rs:620,643 |
+| `sub_80E0754` / `sub_80C6548` | `areaGrabMoveBoundary_80E0754` / `spawnAreaGrabOrb_80C6548` | "AreaGrab moves the boundary a column at a time (sub_80E0754)"; "AreaGrab's steal orb: the type-3 object 0xf (sub_80C6548 -> t3_0xf_80C6414)" — src/field.rs:209; src/battle.rs:690 |
+| `byte_80B8BD4` | `TempObjectRecords_80B8BD4` | "The temp-attack/effect OBJECT RECORD table: one row per effect giving [effect list, index, anim, palette, …]" — src/shot.rs:29 |
+| `byte_80E0398` | `EffectObjectRows_80E0398` | "The type-4 EFFECT ROW table (row 3 the deletion effect, row 6 the heal, rows 0x16-0x1a the sword arcs/blades)" — src/battle.rs:4101 |
+| `off_80C4E70` / `sub_80C4E7C` / `sub_80C4F02` | `StraightShotStates_80C4E70` / `straightShotInit_80C4E7C` / `straightShotTravel_80C4F02` | "state 0 is sub_80C4E7C (off_80C4E70), which is what loads the sprite and its animation data"; "decrements Timer and moves one panel once it drops below zero" — src/shot.rs:205-206, :6; TODO_ARCHIVE.md:2136 (F31) |
+| `sub_80C6A08` / `sub_80C6A50` | `vulcanSeedTravel_80C6A08` / `vulcanSeedHitSpark_80C6A50` | "t3_0x12_80C6946 into sub_80C6A08: one panel a frame, stopped by the first thing it hits"; "only the hit spark sub_80C6A50 shows" — src/objects.rs:215,217 |
+| `sub_8002694` / `sub_3006440` | `emitObjectSpriteOam_8002694` / `emitObjEntry_3006440` | "reached via sub_8002694 -> sub_3006440"; "Emit iff (ObjectSprite.Unk_03 & 0x02) != 0 && (ObjectSprite.Unk_03 & 0x10) == 0" — docs/recon/F39a.md:26,40 |
+| `sub_80466D8` | `getSpriteDrawGateFlags_80466D8` | "return byte of sub_80466D8 bit 0x40 skips the palette+affine loads … bit 0x80 skips only sub_8002818; bit 0x20 gates sub_8002874" — docs/recon/F39a.md:43 |
+| `sub_801BC24` | `object_updateSpriteRebindOnly_801BC24` | "the rebind-only variant -- on a changed animation it rebinds and returns WITHOUT ticking" — src/spr.rs:485; docs/coverage/plan-interpreters.md:58 |

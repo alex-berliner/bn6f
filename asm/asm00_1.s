@@ -1817,7 +1817,7 @@ loc_8003C04:
 	mov r0, #2
 	mov r1, #0x60
 	add r5, #0x90
-	ldr r2, off_8003C6C // =sub_3006440+1
+	ldr r2, off_8003C6C // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {r0,r1,r5}
@@ -1855,7 +1855,7 @@ off_8003C64:
 off_8003C68:
 	.word sub_30061E8+1
 off_8003C6C:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end sub_8003BF4
 
 	thumb_local_start
@@ -2018,7 +2018,7 @@ loc_8003E28:
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x90
-	ldr r2, off_8003E94 // =sub_3006440+1
+	ldr r2, off_8003E94 // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2055,7 +2055,7 @@ off_8003E8C:
 off_8003E90:
 	.word sub_30061E8+1
 off_8003E94:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end sub_8003E18
 
 	thumb_func_start sub_8003E98
@@ -2331,7 +2331,7 @@ loc_8004228:
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x90
-	ldr r2, off_8004294 // =sub_3006440+1
+	ldr r2, off_8004294 // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2368,7 +2368,7 @@ off_800428C:
 off_8004290:
 	.word sub_30061E8+1
 off_8004294:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end sub_8004218
 
 	thumb_func_start sub_8004298
@@ -2581,7 +2581,7 @@ loc_8004520:
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x80
-	ldr r2, off_800458C // =sub_3006440+1
+	ldr r2, off_800458C // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2618,7 +2618,7 @@ off_8004584:
 off_8004588:
 	.word sub_30061E8+1
 off_800458C:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end sub_8004510
 
 	thumb_func_start sub_8004590
@@ -2823,7 +2823,7 @@ loop_800468C:
 	mov r1, #0x60
 	add r5, #oOverworldNPCObject_SizeBeforeObjectSprite
 
-	ldr r2, off_80046F4 // =sub_3006440+1
+	ldr r2, off_80046F4 // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 
@@ -2871,7 +2871,7 @@ off_80046EC:
 off_80046F0:
 	.word sub_30061E8+1
 off_80046F4:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end npc_init_800467C
 
 	thumb_local_start
@@ -3196,7 +3196,7 @@ loc_8004944:
 	mov r0, #2
 	mov r1, #0x60
 	add r5, #0x40
-	ldr r2, off_80049AC // =sub_3006440+1
+	ldr r2, off_80049AC // =emitObjEntry_3006440+1
 	mov lr, pc
 	bx r2
 	pop {r0,r1,r5}
@@ -3234,7 +3234,7 @@ off_80049A4:
 off_80049A8:
 	.word sub_30061E8+1
 off_80049AC:
-	.word sub_3006440+1
+	.word emitObjEntry_3006440+1
 	thumb_func_end sub_8004934
 
 	thumb_local_start
@@ -9682,7 +9682,7 @@ sub_80079F0:
 	ldrb r0, [r5,#oBattleState_BattleField]
 	bl sub_800BF88
 
-	bl sub_800A3E4
+	bl buildBattleFolder_800A3E4
 
 	// trigger sub_80079D0 via sub_8007978
 	mov r0, #8
@@ -10440,11 +10440,11 @@ off_8008018:
 	thumb_func_end sub_8007FD2
 
 	thumb_local_start
-// bn T7u (2026-09-15): the chip-select window dispatcher here kicks the
-// SEQ_08 -> SEQ_20 -> SEQ_24 -> SEQ_00 -> SEQ_04 -> SEQ_08 chain; fitted
-// SEQ04_FRAMES=60 in src/battle.rs:~2724 leave-predicate is parked at
-// the wrong seq scenario, and banner_at 30-frame countdown defeats the
-// banner_idle check from this dispatcher's BannerSequencerStates_8008038 table.
+// bn T7u (2026-09-15): this is where the chain
+// SEQ_08 -> SEQ_20 -> SEQ_24 -> SEQ_00 -> SEQ_04 -> SEQ_08 is driven from. Still
+// open on the port's side: the fitted SEQ04_FRAMES=60 in src/battle.rs:~2724 is
+// parked at the wrong seq scenario, so its banner_at 30-frame countdown defeats
+// the banner_idle check this table's BATTLE_SEQ_BANNER_WAIT arm makes.
 stepBannerSequencer_800801C:
 	push {r5,lr}
 	ldr r5, off_8008060 // =eBattleSequencerState_203CA70
@@ -10481,7 +10481,7 @@ BannerSequencerStates_8008038:
 	// FIGHT only once isBannerBusy_801E754 reads 0.
 	.word bannerSeqState04BannerWait_8008064+1
 	// BATTLE_SEQ_FIGHT: the fight. Refreshes the two alliance players' AIData
-	// from the joypad mirror every frame (sub_8012DFC twice, no other object),
+	// from the joypad mirror every frame (refreshAIDataFromJoypad_8012DFC twice, no other object),
 	// and writes WINDOW_OPENING right after PauseBattle to open the chip window.
 	.word bannerSeqState08Fight_80080D2+1
 	// BATTLE_SEQ_WIN_COUNT: the RESULT countdown -- 94 frames normally, 102 when
@@ -10509,9 +10509,9 @@ off_8008060:
 bannerSeqState04BannerWait_8008064:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 // bn T7d (2026-09-15): this bne loc_80080B2 in bannerSeqState04BannerWait_8008064 is one of the
@@ -10564,11 +10564,9 @@ loc_80080B2:
 	lsl r0, r0, #8
 	add r0, #0xff
 	bl sub_801E0C8
-// bn T7u (2026-09-15): bannerSeqState04BannerWait_8008064 here is the SEQ_04 -> SEQ_08 leave
-// predicate that arms timers 0x1e and 0x293 at entry and returns 0 when
-// the banner composite is idle; src/battle.rs:2615-2655 carries the rust
-// gauge_pause=60 chime but the fitted SEQ04_FRAMES=60 at ~:2724 parks at
-// the wrong seq scenario, letting the banner_at 30-frame countdown win.
+// bn T7u (2026-09-15): src/battle.rs:2615-2655 carries the rust counterpart of
+// this arm's gauge_pause=60 chime, but the fitted SEQ04_FRAMES=60 at ~:2724 parks
+// at the wrong seq scenario, letting the banner_at 30-frame countdown win.
 	mov r0, #8
 	str r0, [r5]
 locret_80080D0:
@@ -10579,9 +10577,9 @@ locret_80080D0:
 bannerSeqState08Fight_80080D2:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -11171,9 +11169,9 @@ off_8008524:
 sub_8008528:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008550
@@ -11201,9 +11199,9 @@ sub_800855E:
 	push {lr}
 	bl sub_80085FE
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -11775,9 +11773,9 @@ off_8008988:
 sub_800898C:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_80089BE
@@ -11807,9 +11805,9 @@ locret_80089CA:
 sub_80089CC:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -12321,9 +12319,9 @@ off_8008D98:
 sub_8008D9C:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008DCE
@@ -12353,9 +12351,9 @@ locret_8008DDA:
 sub_8008DDC:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl refreshAIDataFromJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -15553,7 +15551,7 @@ loc_800A3CE:
 	ldr r0, off_800A3E0 // =eBattleFolder
 	mov r1, r7
 	mov r2, r6
-	bl sub_800A570
+	bl shuffleBattleFolder_800A570
 locret_800A3D8:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -15564,7 +15562,7 @@ off_800A3E0:
 	thumb_func_end sub_800A318
 
 	thumb_local_start
-sub_800A3E4:
+buildBattleFolder_800A3E4:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	mov r0, #0xff
@@ -15686,7 +15684,7 @@ loc_800A4B6:
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	mov r3, #0x44
 	ldrb r2, [r2,r3]
-	bl sub_800A570
+	bl shuffleBattleFolder_800A570
 loc_800A4D2:
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
@@ -15695,7 +15693,7 @@ off_800A4D8:
 	.word dword_802137C
 off_800A4DC:
 	.word eBattleFolder
-	thumb_func_end sub_800A3E4
+	thumb_func_end buildBattleFolder_800A3E4
 
 	thumb_local_start
 sub_800A4E0:
@@ -15777,7 +15775,7 @@ off_800A56C:
 
 	thumb_local_start
 // eBattleFolder = some buffer
-sub_800A570: // shuffle folder
+shuffleBattleFolder_800A570: // shuffle folder
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -15918,7 +15916,7 @@ loc_800A664:
 	bl CopyHalfwords // (u16 *src, u16 *dest, int halfwordCount) -> void
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
-	thumb_func_end sub_800A570
+	thumb_func_end shuffleBattleFolder_800A570
 
 	thumb_local_start
 // r0 = main shuffled folder ptr

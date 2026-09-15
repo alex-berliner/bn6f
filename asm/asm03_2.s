@@ -795,7 +795,7 @@ loc_804660C:
 	beq loc_8046652
 	push {r0,r4,r5,r7}
 	add r5, #0x20 
-	bl sub_80466D8
+	bl getSpriteDrawGateFlags_80466D8
 	pop {r0,r4,r5,r7}
 	mov r1, #0x40 
 	tst r0, r1
@@ -820,7 +820,7 @@ loc_8046644:
 	add r5, #0x20 
 	mov r0, r4
 	mov r1, #0
-	bl sub_8002694
+	bl emitObjectSpriteOam_8002694
 	pop {r4,r5,r7}
 loc_8046652:
 	add r5, #0x58 
@@ -916,7 +916,7 @@ off_80466D4:
 	thumb_func_end getStructFrom2008450
 
 	thumb_local_start
-sub_80466D8:
+getSpriteDrawGateFlags_80466D8:
 	push {r5,lr}
 	mov r1, #0xc
 	ldrsh r1, [r5,r1]
@@ -1041,7 +1041,7 @@ off_804679C:
 	.word sub_811E858+1
 	.word sub_811E914+1
 	.word sub_811E9A0+1
-	thumb_func_end sub_80466D8
+	thumb_func_end getSpriteDrawGateFlags_80466D8
 
 	thumb_func_start sub_80467D8
 sub_80467D8:
@@ -1164,7 +1164,7 @@ loc_804689A:
 	add r5, #0x20 
 	mov r0, #0
 	mov r1, #0
-	bl sub_8002694
+	bl emitObjectSpriteOam_8002694
 	pop {r5,r7}
 loc_80468A8:
 	add r5, #0x58 

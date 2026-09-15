@@ -1280,8 +1280,8 @@ off_300643C:
 	.word byte_20098A8
 	thumb_func_end sub_3006428
 
-	thumb_func_start sub_3006440
-sub_3006440:
+	thumb_func_start emitObjEntry_3006440
+emitObjEntry_3006440:
 	push {lr}
 	ldrb r7, [r5,#3]
 	mov r2, #0x10
@@ -1457,7 +1457,7 @@ off_300658C:
 	.word dword_20096D0
 off_3006590:
 	.word unk_3002400
-	thumb_func_end sub_3006440
+	thumb_func_end emitObjEntry_3006440
 
 	thumb_local_start
 sub_3006594:

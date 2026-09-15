@@ -1378,7 +1378,7 @@ int __fastcall countFreePanelsAheadForBuster_800FAF6(int a1, int a2, int a3)
 
 
 // 0x800fb54
-signed int __usercall sub_800FB54@<R0>(Battle *obj@<R5>, int a1@<R0>)
+signed int __usercall useChipFromHand_800FB54@<R0>(Battle *obj@<R5>, int a1@<R0>)
 {
     u8 *v2; // r7
     int v3; // r0
@@ -1653,7 +1653,7 @@ int setChipsForPlayerObject_800FDEA()
 
 
 // 0x800fe12
-int __fastcall sub_800FE12(int a1)
+int __fastcall readPerVersionHword_800FE12(int a1)
 {
     int v1; // r5
     int v2; // r1
@@ -2316,7 +2316,7 @@ int GetAIDataUnk0x48Flag()
 
 
 // 0x8010332
-signed int __fastcall sub_8010332(int a1)
+signed int __fastcall getNaviMoveRecoveryFrames_8010332(int a1)
 {
     int v1; // r0
     signed int result; // r0
@@ -4063,7 +4063,7 @@ int calledOnBAtkProbInit_8011764()
 {
     int v0; // r5
 
-    return (*(&off_80117D4 + *(*(v0 + 88) + 6)))();
+    return (*(&ChargeShotHandlersByTransformation_80117D4 + *(*(v0 + 88) + 6)))();
 }
 
 
@@ -4072,7 +4072,7 @@ int sub_801177A()
 {
     int v0; // r5
 
-    return (*(&off_80117D4 + *(*(v0 + 88) + 4)))();
+    return (*(&ChargeShotHandlersByTransformation_80117D4 + *(*(v0 + 88) + 4)))();
 }
 
 
@@ -4081,7 +4081,7 @@ int sub_8011790()
 {
     int v0; // r6
 
-    return (*(&off_80117D4 + *(v0 + 8)))();
+    return (*(&ChargeShotHandlersByTransformation_80117D4 + *(v0 + 8)))();
 }
 
 
@@ -4090,7 +4090,7 @@ int sub_80117A4()
 {
     int v0; // r5
 
-    return (*(&off_80117D4 + *(*(v0 + 88) + 7)))();
+    return (*(&ChargeShotHandlersByTransformation_80117D4 + *(*(v0 + 88) + 7)))();
 }
 
 
@@ -4101,7 +4101,7 @@ int __fastcall sub_80117BA(int a1)
     int v2; // r6
 
     v2 = *(v1 + 88);
-    return (*(&off_80117D4 + a1))();
+    return (*(&ChargeShotHandlersByTransformation_80117D4 + a1))();
 }
 
 
@@ -4131,7 +4131,7 @@ int __fastcall megamanChargeShotBPwrAtk_init_8011A26(int a1)
         case 2:
             return busterBugChargeShotDamageCalcHappensHere_8011A7E(2);
     }
-    *(v1 + 8) = sub_801265A(v2);
+    *(v1 + 8) = getBusterDamage_801265A(v2);
     *(v1 + 2) = 0;
     *(v1 + 4) = 0;
     *(v1 + 6) = 0;
@@ -4227,7 +4227,7 @@ signed int __fastcall sub_8011AF2(int a1)
     int v6; // r0
     char v7; // r1
 
-    v3 = sub_801265A(a1);
+    v3 = getBusterDamage_801265A(a1);
     if ( v3 > 5 )
         LOWORD(v3) = 5;
     *(v2 + 8) = v3;
@@ -4262,7 +4262,7 @@ signed int __fastcall sub_8011B4A(int a1)
     int v6; // r0
     char v7; // r1
 
-    v3 = sub_801265A(a1);
+    v3 = getBusterDamage_801265A(a1);
     if ( v3 > 5 )
         LOWORD(v3) = 5;
     *(v2 + 8) = v3;
@@ -5733,7 +5733,7 @@ int __fastcall sub_8012642(int a1, int a2)
 
     v4 = a1;
     v5 = a2;
-    v2 = sub_801265A(a1);
+    v2 = getBusterDamage_801265A(a1);
     if ( v2 > 5 )
         v2 = 5;
     return v4 + v5 * v2;
@@ -5741,7 +5741,7 @@ int __fastcall sub_8012642(int a1, int a2)
 
 
 // 0x801265a
-int __fastcall sub_801265A(int a1)
+int __fastcall getBusterDamage_801265A(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -6458,7 +6458,7 @@ void __fastcall __noreturn sub_8012DB8(int a1, int a2, int a3)
 
 
 // 0x8012dfc
-signed int __fastcall sub_8012DFC(int a1)
+signed int __fastcall refreshAIDataFromJoypad_8012DFC(int a1)
 {
     int v1; // r7
     _WORD *v2; // r4
@@ -6518,7 +6518,7 @@ signed int __fastcall sub_8012DFC(int a1)
 
 
 // 0x8012e74
-signed int sub_8012E74()
+signed int readPlayerInput_8012E74()
 {
     int v0; // r5
     _WORD *v1; // r4
@@ -7576,7 +7576,7 @@ void sub_8013892()
     v4 = sub_8013774(v2, 6);
     if ( v4 )
     {
-        sub_801A7CC(v4);
+        barrierTakeDamage_801A7CC(v4);
         v4 = sub_80E0D98(*(v0 + 88), v5, v6, v7);
     }
     if ( !sub_8013774(v4, 33) )
@@ -7860,7 +7860,7 @@ int __fastcall init_8013B64(int a1, int a2)
     v2 = a2;
     v3 = sub_8013682(a1);
     initNaviStats_WithDefaultStatsMaybe_8013438(v3, v4, v5, v6);
-    v7 = &byte_80210DD[16 * v2];
+    v7 = &NaviBaseHpByRow_80210DD[16 * v2];
     v3[41] = v2;
     v8 = 2 * *v7;
     *(v3 + 32) = v8;
@@ -7898,7 +7898,7 @@ int __fastcall sub_8013BDA(int a1, int a2, int a3, int a4)
     v4 = a1;
     v5 = a2;
     initNaviStats_WithDefaultStatsMaybe_8013438(a1, a2, a3, a4);
-    v6 = &byte_80210DD[16 * v5];
+    v6 = &NaviBaseHpByRow_80210DD[16 * v5];
     *(v4 + 41) = v5;
     v7 = *&byte_802F0A8[2 * v5];
     *(v4 + 64) = v7;
@@ -8027,7 +8027,7 @@ int __fastcall sub_8013D5E(int a1)
 
 
 // 0x8013da0
-char *sub_8013DA0()
+char *playerAiTick_8013DA0()
 {
     int v0; // r5
     char *result; // r0
@@ -13114,7 +13114,7 @@ signed int __fastcall sub_80170E4(int a1)
 
 
 // 0x8017122
-int sub_8017122()
+int enemyNaviDeathBlink_8017122()
 {
     int v0; // r5
     int result; // r0
@@ -13411,7 +13411,7 @@ int __noreturn playerObject_init_80172F0()
 
 
 // 0x80173f4
-int sub_80173F4()
+int playerDeleteAction_80173F4()
 {
     int v0; // r5
 
@@ -13535,7 +13535,7 @@ signed int sub_80174BE()
 
 
 // 0x80174fe
-int __usercall sub_80174FE@<R0>(Battle *obj@<R5>)
+int __usercall playerFlinchAction_80174FE@<R0>(Battle *obj@<R5>)
 {
     int v1; // r0
     int v2; // r1
@@ -16077,7 +16077,7 @@ int __fastcall sub_801A77A(int result)
 
 
 // 0x801a7cc
-char *__fastcall sub_801A7CC(int a1)
+char *__fastcall barrierTakeDamage_801A7CC(int a1)
 {
     int v1; // r5
     int v2; // r3
@@ -16086,7 +16086,7 @@ char *__fastcall sub_801A7CC(int a1)
     v2 = *(v1 + 84);
     *(v2 + 6) = a1;
     *(v2 + 20) = byte_8020B8C[a1];
-    result = &byte_8020B2C[6 * a1];
+    result = &BarrierHpByType_8020B2C[6 * a1];
     *(v2 + 22) = *result;
     *(v2 + 23) = *(result + 1);
     *(v2 + 26) = *(result + 2);
@@ -16108,7 +16108,7 @@ int sub_801A7F4()
 
 
 // 0x801a802
-int sub_801A802()
+int barrierBreak_801A802()
 {
     int v0; // r5
     int result; // r0
@@ -16321,7 +16321,7 @@ int sub_801A9B8()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
+                barrierBreak_801A802();
                 sub_801A186();
                 sub_801A36A();
                 sub_8010230();
@@ -16366,7 +16366,7 @@ int sub_801AA48()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
+                barrierBreak_801A802();
                 sub_801A186();
                 sub_801A36A();
                 sub_8010230();
@@ -16409,7 +16409,7 @@ int sub_801AAC0()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
+                barrierBreak_801A802();
                 sub_801A186();
                 sub_801A36A();
                 if ( sub_802D234() != 10 )
@@ -16453,7 +16453,7 @@ int sub_801AB40()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
+                barrierBreak_801A802();
                 sub_801A186();
                 sub_801A36A();
                 sub_8010230();
@@ -16500,7 +16500,7 @@ int sub_801ABB8()
                 result = object_getFlag();
                 if ( !(result & 0x100) )
                 {
-                    sub_801A802();
+                    barrierBreak_801A802();
                     sub_801A186();
                     sub_801A36A();
                     v3 = sub_801A6D6();
@@ -16538,7 +16538,7 @@ int sub_801ABB8()
 
 
 // 0x801ac6c
-int sub_801AC6C()
+int playerStateDispatch_801AC6C()
 {
     int v0; // r5
     int v1; // r7
@@ -16561,7 +16561,7 @@ int sub_801AC6C()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
+                barrierBreak_801A802();
                 sub_801A186();
                 sub_801A36A();
                 sub_8010230();
@@ -17855,7 +17855,7 @@ void object_updateSpriteTimestop()
 
 
 // 0x801bc24
-void sub_801BC24()
+void object_updateSpriteRebindOnly_801BC24()
 {
     Battle *v0; // r5
     char v1; // zf

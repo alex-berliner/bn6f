@@ -1055,7 +1055,7 @@ void __noreturn sub_80B8CF8()
     int v6; // r0
     signed int v7; // r1
 
-    v1 = &byte_80B8BD4[5 * *(v0 + 4)];
+    v1 = &TempObjectRecords_80B8BD4[5 * *(v0 + 4)];
     sprite_load(v0, 128, *v1, v1[1]);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
@@ -1197,7 +1197,7 @@ int __fastcall sub_80B8E62(int a1)
     int result; // r0
     int v3; // r1
 
-    v1 = &byte_80B8BD4[5 * a1];
+    v1 = &TempObjectRecords_80B8BD4[5 * a1];
     result = *v1;
     v3 = v1[1];
     return result;
@@ -22647,13 +22647,13 @@ void t3_0x0_80C4E58()
 {
     int v0; // r5
 
-    (*(&off_80C4E70 + *(v0 + 8)))();
+    (*(&StraightShotStates_80C4E70 + *(v0 + 8)))();
     object_updateSprite();
 }
 
 
 // 0x80c4e7c
-int sub_80C4E7C()
+int straightShotInit_80C4E7C()
 {
     int v0; // r5
     _BYTE *v1; // r7
@@ -22691,14 +22691,14 @@ int sub_80C4E7C()
             v5 = sub_801A4D0(v5, v6);
         object_presentCollisionData(v5, v6);
         *(v0 + 8) = 4;
-        sub_80C4F02();
+        straightShotTravel_80C4F02();
     }
     return object_freeMemory();
 }
 
 
 // 0x80c4f02
-void __noreturn sub_80C4F02()
+void __noreturn straightShotTravel_80C4F02()
 {
     int v0; // r5
     int v1; // r1
@@ -24975,7 +24975,7 @@ int sub_80C6536()
 
 
 // 0x80c6548
-int __fastcall sub_80C6548(char a1, int a2, int a3, int a4)
+int __fastcall spawnAreaGrabOrb_80C6548(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -25441,7 +25441,7 @@ void __noreturn sub_80C69AC()
 
 
 // 0x80c6a08
-signed int sub_80C6A08()
+signed int vulcanSeedTravel_80C6A08()
 {
     int v0; // r5
     signed int result; // r0
@@ -25471,7 +25471,7 @@ int sub_80C6A34()
 
 
 // 0x80c6a50
-signed int __fastcall sub_80C6A50(int a1)
+signed int __fastcall vulcanSeedHitSpark_80C6A50(int a1)
 {
     int v1; // r5
     _BYTE *v2; // r7
@@ -47806,7 +47806,7 @@ void __noreturn sub_80D4754()
         object_clearCollisionRegion();
     }
     sub_801B394(&off_80D479C);
-    sub_801BC24();
+    object_updateSpriteRebindOnly_801BC24();
     object_presentCollisionData(v3, v4);
 }
 
@@ -62955,7 +62955,7 @@ int __usercall sub_80DE088@<R0>(Battle *obj@<R5>)
         v3 = battle_findPlayer(obj->Alliance);
         object_addHP(v3, 300);
         PlaySoundEffect(138, v4, v5);
-        sub_801A7CC(5);
+        barrierTakeDamage_801A7CC(5);
         v9 = v3->ai->unk_60;
         if ( v9 )
             v9 = sub_80E0DC0(v9);
@@ -66196,7 +66196,7 @@ void __noreturn sub_80E0568()
     unsigned __int8 *v1; // r7
     u8 v2; // r0
 
-    v1 = &byte_80E0398[4 * *(v0 + 4)];
+    v1 = &EffectObjectRows_80E0398[4 * *(v0 + 4)];
     sprite_load(v0, 128, *v1, v1[1]);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
@@ -66393,7 +66393,7 @@ int sub_80E0730()
 
 
 // 0x80e0754
-int sub_80E0754()
+int areaGrabMoveBoundary_80E0754()
 {
     int v0; // r5
     char v1; // r0
@@ -66416,7 +66416,7 @@ int sub_80E0754()
         {
             v5 = *(v0 + 22);
             v6 = *(v0 + 44) + *(v0 + 50);
-            v7 = sub_80C6548(v1, v2, *(v0 + 14), v3);
+            v7 = spawnAreaGrabOrb_80C6548(v1, v2, *(v0 + 14), v3);
             if ( v7 )
                 *v7 |= 0x10u;
         }
@@ -72059,7 +72059,7 @@ int sub_80E3AFC()
         v10 = v0;
         v1 = *(v0 + 4);
         v2 = *(v0 + 76);
-        sub_801A7CC(v1);
+        barrierTakeDamage_801A7CC(v1);
         v6 = *(*(v2 + 88) + 96);
         if ( v6 )
             v6 = sub_80E0DC0(v6);
@@ -73731,7 +73731,7 @@ void t4_0x3c_80E4A1C()
     if ( *(v0 + 8) == 8 )
         sub_801BCD0();
     else
-        sub_801BC24();
+        object_updateSpriteRebindOnly_801BC24();
 }
 
 
@@ -82202,7 +82202,7 @@ int __fastcall sub_80E95D8(int a1, int a2, int a3)
         v13 = PlaySoundEffect(281, v11, v12);
         v29 = v3;
         v14 = v3->parent;
-        v15 = sub_801265A(v13);
+        v15 = getBusterDamage_801265A(v13);
         if ( v15 < 5 )
         {
             v16 = 5 - v15;
@@ -82694,7 +82694,7 @@ void t4_0x89_80E9AF0()
     int v0; // r5
 
     (*(&off_80E9B08 + *(v0 + 8)))();
-    sub_801BC24();
+    object_updateSpriteRebindOnly_801BC24();
 }
 
 
@@ -83700,9 +83700,9 @@ void __usercall playerObject_update_80EA484(Battle *obj@<R5>)
     int v4; // r1
     char v5; // zf
 
-    sub_8012E74();
-    sub_8013DA0();
-    sub_801AC6C();
+    readPlayerInput_8012E74();
+    playerAiTick_8013DA0();
+    playerStateDispatch_801AC6C();
     v1 = obj->ai->AI_index;
     ai_eventuallyRunsAIAttack_801AF44(PlayerObjectAIAttackJumptables[v1]);
     (playerObjectUpdateJumptable_80EA93C[v1])();
@@ -84055,7 +84055,7 @@ signed int sub_80EB04C()
 
 
 // 0x80eb088
-void sub_80EB088()
+void naviMoveLeave_80EB088()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84122,7 +84122,7 @@ LABEL_14:
 
 
 // 0x80eb128
-int sub_80EB128()
+int naviMoveTravel_80EB128()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84161,7 +84161,7 @@ int sub_80EB128()
 
 
 // 0x80eb194
-int sub_80EB194()
+int naviMoveArrive_80EB194()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -84184,7 +84184,7 @@ int sub_80EB194()
 
 
 // 0x80eb1c4
-void sub_80EB1C4()
+void naviMoveRecover_80EB1C4()
 {
     int v0; // r4
     Battle *v1; // r5
@@ -84544,7 +84544,7 @@ void busterHoldPhase_80EB502()
                     v0->parent = 0;
                     v0->ai->unk_68 = 0;
                     object_exitAttackState(v0);
-                    v10 = sub_8010332(v9);
+                    v10 = getNaviMoveRecoveryFrames_8010332(v9);
                     v11 = v10;
                     v12 = sub_80103A8(v10);
                     sub_80116AE(v8, v11, v12);
@@ -84619,7 +84619,7 @@ int sub_80EB628()
 
 
 // 0x80eb644
-int sub_80EB644()
+int miniBombAttack_80EB644()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84652,7 +84652,7 @@ int sub_80EB644()
             if ( v3 == 28 )
                 v4 = 3 * *(v1 + 12);
         }
-        v5 = *&byte_80EB738[v3] | (v4 << 24);
+        v5 = *&HeldBombObjectBySubfamily_80EB738[v3] | (v4 << 24);
         spawn_t1_0x5_tempAttackObject_80B8E30(v3);
         PlaySoundEffect(178, v6, v7);
         object_setFlag1(0x400000);
@@ -84702,7 +84702,7 @@ void sub_80EB758()
 
 
 // 0x80eb776
-int sub_80EB776()
+int swordAttack_80EB776()
 {
     unsigned __int8 *v0; // r7
 
@@ -84803,7 +84803,7 @@ int sub_80EB862()
         object_getFrontDirection(v0);
         v9 = v0->panelX;
         v10 = v0->panelY;
-        v11 = *&byte_80EBA18[4 * *(v1 + 3)];
+        v11 = *&SwordHitShapeBySubfamily_80EBA18[4 * *(v1 + 3)];
         nullsub_12();
         *(v1 + 1) = 4;
     }
@@ -84820,9 +84820,9 @@ int sub_80EB862()
     }
     if ( *(v1 + 16) == 12 )
     {
-        v15 = *&byte_80EBA18[4 * *(v1 + 3) + 64];
+        v15 = *&SwordHitShapeBySubfamily_80EBA18[4 * *(v1 + 3) + 64];
         v16 = object_getFrontDirection(v0);
-        v17 = *&byte_80EBA18[4 * *(v1 + 3)];
+        v17 = *&SwordHitShapeBySubfamily_80EBA18[4 * *(v1 + 3)];
         v31 = v16 + v0->panelX;
         v32 = v0->panelY;
         v18 = *(v1 + 8) + *(v1 + 6);
@@ -84835,7 +84835,7 @@ int sub_80EB862()
         }
         v20 = v19;
         v21 = object_getFlip(v0);
-        v23 = (v21 << 8) + byte_80EBAD8[v22];
+        v23 = (v21 << 8) + SwordArcBySubfamily_80EBAD8[v22];
         v24 = object_getCoordinatesForPanels(v20);
         spawn_t1_0x0_EffectObject(v0, v24, v24, v25, 0x100000);
     }
@@ -84921,7 +84921,7 @@ int sub_80EBB34()
     v2 = *(v0 + 88);
     v3 = *v2;
     v4 = v2[1];
-    return byte_80EBB64[*(v1 + 3)];
+    return SwordObjectBySubfamily_80EBB64[*(v1 + 3)];
 }
 
 
@@ -84986,7 +84986,7 @@ int sub_80EBC0E()
 
 
 // 0x80ebc28
-int __fastcall sub_80EBC28(int a1, int a2, int a3)
+int __fastcall cannonAttack_80EBC28(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7
@@ -85247,7 +85247,7 @@ int sub_80EBEB2()
                 v0->parent = 0;
                 v0->ai->unk_68 = 0;
                 object_exitAttackState(v0);
-                v9 = sub_8010332(v8);
+                v9 = getNaviMoveRecoveryFrames_8010332(v8);
                 v10 = v9;
                 v11 = sub_80103A8(v9);
                 result = sub_80116AE(v7, v10, v11);
@@ -85259,7 +85259,7 @@ int sub_80EBEB2()
 
 
 // 0x80ebf10
-int sub_80EBF10()
+int vulcanAttack_80EBF10()
 {
     unsigned __int8 *v0; // r7
 
@@ -85305,7 +85305,7 @@ int sub_80EBF30()
 
 
 // 0x80ebf6e
-int sub_80EBF6E()
+int vulcanFireShots_80EBF6E()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -85323,7 +85323,7 @@ int sub_80EBF6E()
 
     if ( !*(v1 + 1) )
     {
-        *(v1 + 18) = *(&dword_80EBFEC + *(v1 + 3));
+        *(v1 + 18) = *(&VulcanShotsBySubfamily_80EBFEC + *(v1 + 3));
         ++*(v0->ai->unk_68 + 16);
         object_setAnimation(v0);
         *(v1 + 16) = 0;
@@ -85337,7 +85337,7 @@ int sub_80EBF6E()
     {
         *(v1 + 16) = 10;
         GetPositiveSignedRNG();
-        v6 = *(&dword_80EBFF0 + (v5 & 3)) << 16;
+        v6 = *(&VulcanShotFanOffsets_80EBFF0 + (v5 & 3)) << 16;
         v7 = object_getFrontDirection(v0);
         v8 = *(v1 + 12);
         v9 = *(v1 + 8) + *(v1 + 6);
@@ -85864,7 +85864,7 @@ int __fastcall sub_80EC490(int a1, int a2, int a3)
                         v3->parent = 0;
                         sub_80B8E58(v3->ai->unk_68);
                         object_exitAttackState(v3);
-                        v11 = sub_8010332(v10);
+                        v11 = getNaviMoveRecoveryFrames_8010332(v10);
                         v12 = v11;
                         v13 = sub_80103A8(v11);
                         result = sub_80116AE(v9, v12, v13);
@@ -86032,7 +86032,7 @@ void sub_80EC67E()
                 if ( sub_800F964(v9) )
                 {
                     sub_80EC792();
-                    v12 = sub_8010332(v11);
+                    v12 = getNaviMoveRecoveryFrames_8010332(v11);
                     v13 = v12;
                     v14 = sub_80103A8(v12);
                     sub_80116AE(v10, v13, v14);
@@ -86130,7 +86130,7 @@ signed int __usercall sub_80EC844@<R0>(ChatBoxPropreties *cb@<R5>, void *r7@<R7>
 {
     signed int result; // r0
 
-    sub_800E2FC(cb, *&byte_80EC870[2 * *(r7 + 3)], 1);
+    sub_800E2FC(cb, *&RecovHealBySubfamily_80EC870[2 * *(r7 + 3)], 1);
     sub_800AB46(cb->unk_16, 5, 1);
     object_exitAttackState(cb);
     return result;
@@ -86138,7 +86138,7 @@ signed int __usercall sub_80EC844@<R0>(ChatBoxPropreties *cb@<R5>, void *r7@<R7>
 
 
 // 0x80ec884
-int __usercall sub_80EC884@<R0>(void *r7@<R7>)
+int __usercall airShotAttack_80EC884@<R0>(void *r7@<R7>)
 {
     return (*(&off_80EC898 + *r7))();
 }
@@ -87851,7 +87851,7 @@ void sub_80ED7A2()
                     v0->parent = 0;
                     v0->ai->unk_68 = 0;
                     object_exitAttackState(v0);
-                    v11 = sub_8010332(v10);
+                    v11 = getNaviMoveRecoveryFrames_8010332(v10);
                     v12 = v11;
                     v13 = sub_80103A8(v11);
                     sub_80116AE(v9, v12, v13);
@@ -92629,7 +92629,7 @@ LABEL_34:
         object_setAttack1();
         return 1;
     }
-    v7 = sub_800FB54(obj, v16);
+    v7 = useChipFromHand_800FB54(obj, v16);
     if ( v7 != 0xFFFF )
     {
 LABEL_61:
@@ -92670,7 +92670,7 @@ LABEL_61:
     if ( v17 )
     {
         v18 = v17;
-        v19 = sub_8010332(v17);
+        v19 = getNaviMoveRecoveryFrames_8010332(v17);
         v20 = v18;
         v21 = v18;
         LOWORD(v18) = v19;
@@ -92686,7 +92686,7 @@ LABEL_61:
         if ( v1->unk_1A )
         {
             v23 = v1->unk_1A;
-            v24 = sub_8010332(v1->unk_1A);
+            v24 = getNaviMoveRecoveryFrames_8010332(v1->unk_1A);
             sub_80116D8(v23, v24);
         }
         result = 0;
@@ -95990,7 +95990,7 @@ int sub_80F2142()
 
 
 // 0x80f2180
-int sub_80F2180()
+int shotImpact_80F2180()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -96217,7 +96217,7 @@ void sub_80F2354()
     if ( sub_802D234() == 10 )
         sub_800E9FA();
     ai_eventuallyRunsAIAttack_801AF44(off_80F23AC[v1 / 4]);
-    (*(&off_80F25A0 + v1))();
+    (*(&NaviActHandlers_80F25A0 + v1))();
     v2 = *(v0 + 88);
     v3 = *(v2 + 25);
     if ( *(v2 + 25) )
@@ -96528,8 +96528,8 @@ int __fastcall sub_80F2DDC(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F2E18[8 * a1]);
-    result = sub_800FE12(&byte_80F2E3C[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F2E18[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F2E3C[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -96542,8 +96542,8 @@ int __fastcall sub_80F2E54(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80F2E88[8 * a1]);
-    return (sub_800FE12(&byte_80F2EAC[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80F2E88[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80F2EAC[8 * v1]) << 16) | v2;
 }
 
 
@@ -97982,8 +97982,8 @@ int __fastcall sub_80F3C2C(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F3C68[8 * a1]);
-    result = sub_800FE12(&byte_80F3C8C[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F3C68[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F3C8C[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -97996,8 +97996,8 @@ int __fastcall sub_80F3CA4(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80F3CD8[8 * a1]);
-    return (sub_800FE12(&byte_80F3CFC[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80F3CD8[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80F3CFC[8 * v1]) << 16) | v2;
 }
 
 
@@ -99397,8 +99397,8 @@ int __fastcall sub_80F4B74(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F4BD4[8 * a1]);
-    result = sub_800FE12(&byte_80F4BF8[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F4BD4[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F4BF8[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -100892,8 +100892,8 @@ int __fastcall sub_80F5AD4(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F5B34[8 * a1]);
-    result = sub_800FE12(&byte_80F5B58[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F5B34[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F5B58[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -100906,8 +100906,8 @@ int __fastcall sub_80F5B02(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80F5B34[8 * a1]);
-    return (sub_800FE12(&byte_80F5B58[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80F5B34[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80F5B58[8 * v1]) << 16) | v2;
 }
 
 
@@ -102061,8 +102061,8 @@ int __fastcall sub_80F663C(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F669C[8 * a1]);
-    result = sub_800FE12(&byte_80F66C0[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F669C[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F66C0[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -103446,8 +103446,8 @@ int __fastcall sub_80F78FA(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F7934[8 * a1]);
-    result = sub_800FE12(&byte_80F7958[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F7934[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F7958[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -103460,8 +103460,8 @@ int __fastcall sub_80F7970(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80F79A4[8 * a1]);
-    return (sub_800FE12(&byte_80F79C8[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80F79A4[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80F79C8[8 * v1]) << 16) | v2;
 }
 
 
@@ -104711,8 +104711,8 @@ int __fastcall sub_80F865C(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F86BC[8 * a1]);
-    result = sub_800FE12(&byte_80F86E0[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F86BC[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F86E0[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -105910,8 +105910,8 @@ int __fastcall sub_80F9222(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80F9284[8 * a1]);
-    result = sub_800FE12(&byte_80F92A8[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80F9284[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80F92A8[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -107160,8 +107160,8 @@ int __fastcall sub_80F9FEC(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FA050[8 * a1]);
-    result = sub_800FE12(&byte_80FA080[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FA050[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FA080[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -107174,8 +107174,8 @@ int __fastcall sub_80FA01A(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80FA050[8 * a1]);
-    return (sub_800FE12(&byte_80FA080[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80FA050[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80FA080[8 * v1]) << 16) | v2;
 }
 
 
@@ -108726,8 +108726,8 @@ int __fastcall sub_80FB062(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FB0C4[8 * a1]);
-    result = sub_800FE12(&byte_80FB0E8[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FB0C4[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FB0E8[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -110079,8 +110079,8 @@ int __fastcall sub_80FBF92(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FBFFC[8 * a1]);
-    result = sub_800FE12(&byte_80FC038[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FBFFC[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FC038[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -112096,8 +112096,8 @@ int __fastcall sub_80FD3CC(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FD408[8 * a1]);
-    result = sub_800FE12(&byte_80FD42C[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FD408[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FD42C[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -112110,8 +112110,8 @@ int __fastcall sub_80FD444(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80FD478[8 * a1]);
-    return (sub_800FE12(&byte_80FD49C[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80FD478[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80FD49C[8 * v1]) << 16) | v2;
 }
 
 
@@ -113331,8 +113331,8 @@ int __fastcall sub_80FDFE4(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FE020[8 * a1]);
-    result = sub_800FE12(&byte_80FE044[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FE020[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FE044[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -113345,8 +113345,8 @@ int __fastcall sub_80FE05C(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80FE090[8 * a1]);
-    return (sub_800FE12(&byte_80FE0B4[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80FE090[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80FE0B4[8 * v1]) << 16) | v2;
 }
 
 
@@ -114422,8 +114422,8 @@ int __fastcall sub_80FEBE4(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FEC44[8 * a1]);
-    result = sub_800FE12(&byte_80FEC68[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FEC44[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FEC68[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -115943,8 +115943,8 @@ int __fastcall sub_80FFAF8(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_80FFB54[8 * a1]);
-    result = sub_800FE12(&byte_80FFB6C[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_80FFB54[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_80FFB6C[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -115957,8 +115957,8 @@ int __fastcall sub_80FFB26(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_80FFB54[8 * a1]);
-    return (sub_800FE12(&byte_80FFB6C[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_80FFB54[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_80FFB6C[8 * v1]) << 16) | v2;
 }
 
 
@@ -116994,8 +116994,8 @@ int __fastcall sub_810067E(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_81006E8[8 * a1]);
-    result = sub_800FE12(&byte_8100724[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_81006E8[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_8100724[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -118894,8 +118894,8 @@ int __fastcall sub_810176E(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_81017D8[8 * a1]);
-    result = sub_800FE12(&byte_8101814[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_81017D8[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_8101814[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -118908,8 +118908,8 @@ int __fastcall sub_810179C(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_81017D8[8 * a1]);
-    return (sub_800FE12(&byte_8101814[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_81017D8[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_8101814[8 * v1]) << 16) | v2;
 }
 
 
@@ -119346,8 +119346,8 @@ void sub_8101F2A()
     *(v0 + 13) = sub_800FE28(&dword_8101988);
     *(v0 + 14) = sub_800FE28(&dword_810198C);
     *(v0 + 15) = sub_800FE28(&dword_8101990);
-    *(v0 + 8) = sub_800FE12(byte_8101994);
-    *(v0 + 10) = sub_800FE12(byte_810199C);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_8101994);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_810199C);
     *(v0 + 2) = 0;
     object_setAttack0();
 }
@@ -119362,8 +119362,8 @@ void sub_8101F70()
     *(v0 + 13) = sub_800FE28(&dword_81019A8);
     *(v0 + 14) = sub_800FE28(&dword_81019AC);
     *(v0 + 15) = sub_800FE28(&dword_81019B0);
-    *(v0 + 8) = sub_800FE12(byte_81019B4);
-    *(v0 + 10) = sub_800FE12(byte_81019BC);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_81019B4);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_81019BC);
     *(v0 + 2) = 0;
     object_setAttack0();
 }
@@ -119376,8 +119376,8 @@ void sub_8101FAE()
 
     *(v0 + 48) = sub_800FE28(&dword_81019C4);
     *(v0 + 52) = sub_800FE28(&dword_81019C8);
-    *(v0 + 8) = sub_800FE12(byte_81019CC);
-    *(v0 + 10) = sub_800FE12(byte_81019D4);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_81019CC);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_81019D4);
     *(v0 + 2) = 0;
     *(v0 + 12) = byte_100;
     *(v0 + 3) = 0;
@@ -119392,8 +119392,8 @@ void sub_8101FE4()
 
     *(v0 + 12) = sub_800FE28(&dword_81019DC);
     *(v0 + 13) = sub_800FE28(&dword_81019E0);
-    *(v0 + 8) = sub_800FE12(byte_81019E4);
-    *(v0 + 10) = sub_800FE12(byte_81019EC);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_81019E4);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_81019EC);
     *(v0 + 2) = 0;
     *(v0 + 3) = 1;
     object_setAttack0();
@@ -119408,8 +119408,8 @@ void sub_8102016()
     *(v0 + 48) = sub_800FE28(&dword_81019F4);
     *(v0 + 52) = sub_800FE28(&dword_81019F8);
     *(v0 + 12) = sub_800FE28(&dword_81019FC);
-    *(v0 + 8) = sub_800FE12(byte_8101A00);
-    *(v0 + 10) = sub_800FE12(byte_8101A08);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_8101A00);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_8101A08);
     *(v0 + 13) = 4;
     *(v0 + 14) = 1;
     *(v0 + 15) = 0;
@@ -119426,8 +119426,8 @@ void sub_810205C()
 
     *(v0 + 48) = sub_800FE28(&dword_8101A10);
     *(v0 + 52) = sub_800FE28(&dword_8101A14);
-    *(v0 + 8) = sub_800FE12(byte_8101A18);
-    *(v0 + 10) = sub_800FE12(byte_8101A20);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_8101A18);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_8101A20);
     *(v0 + 12) = 0;
     *(v0 + 13) = 1;
     *(v0 + 14) = 1;
@@ -119447,8 +119447,8 @@ void sub_810209E()
     *(v0 + 52) = sub_800FE28(&dword_8101A2C);
     *(v0 + 56) = sub_800FE28(&dword_8101A30);
     *(v0 + 60) = sub_800FE28(&dword_8101A34);
-    *(v0 + 8) = sub_800FE12(byte_8101A38);
-    *(v0 + 10) = sub_800FE12(byte_8101A40);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_8101A38);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_8101A40);
     *(v0 + 12) = 4;
     *(v0 + 13) = *(v0 + 56);
     *(v0 + 14) = 8;
@@ -119468,8 +119468,8 @@ void sub_81020F0()
     *(v0 + 52) = sub_800FE28(&dword_8101A4C);
     *(v0 + 56) = sub_800FE28(&dword_8101A50);
     *(v0 + 60) = sub_800FE28(&dword_8101A54);
-    *(v0 + 8) = sub_800FE12(byte_8101A58);
-    *(v0 + 10) = sub_800FE12(byte_8101A60);
+    *(v0 + 8) = readPerVersionHword_800FE12(byte_8101A58);
+    *(v0 + 10) = readPerVersionHword_800FE12(byte_8101A60);
     *(v0 + 12) = 2;
     *(v0 + 13) = 13;
     *(v0 + 14) = *(v0 + 56);
@@ -122526,7 +122526,7 @@ signed int sub_8103DFA()
     Battle *v0; // r5
     signed int result; // r0
 
-    sub_80174FE(v0);
+    playerFlinchAction_80174FE(v0);
     result = 65;
     v0->currAnimation = 65;
     return result;
@@ -122763,8 +122763,8 @@ int __fastcall sub_810407E(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_81040F0[8 * a1]);
-    result = sub_800FE12(&byte_8104144[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_81040F0[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_8104144[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -122777,8 +122777,8 @@ int __fastcall sub_81040AC(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_81040F0[8 * a1]);
-    return (sub_800FE12(&byte_8104144[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_81040F0[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_8104144[8 * v1]) << 16) | v2;
 }
 
 
@@ -125054,7 +125054,7 @@ int __usercall sub_8105618@<R0>(Battle *obj@<R5>)
 {
     int result; // r0
 
-    sub_80174FE(obj);
+    playerFlinchAction_80174FE(obj);
     result = 20;
     obj->currAnimation = 20;
     return result;
@@ -125291,8 +125291,8 @@ int __fastcall sub_810588E(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_81058F8[8 * a1]);
-    result = sub_800FE12(&byte_8105934[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_81058F8[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_8105934[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -127593,8 +127593,8 @@ int __fastcall sub_8106CEA(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_8106D58[8 * a1]);
-    result = sub_800FE12(&byte_8106DA0[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_8106D58[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_8106DA0[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -127607,8 +127607,8 @@ int __fastcall sub_8106D18(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_8106D58[8 * a1]);
-    return (sub_800FE12(&byte_8106DA0[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_8106D58[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_8106DA0[8 * v1]) << 16) | v2;
 }
 
 
@@ -129855,8 +129855,8 @@ int __fastcall sub_8108124(int a1)
     int result; // r0
 
     v2 = a1;
-    v3 = sub_800FE12(&byte_8108190[8 * a1]);
-    result = sub_800FE12(&byte_81081D8[8 * v2]) << 16;
+    v3 = readPerVersionHword_800FE12(&byte_8108190[8 * a1]);
+    result = readPerVersionHword_800FE12(&byte_81081D8[8 * v2]) << 16;
     *(*(v1 + 88) + 168) = v3 | result;
     return result;
 }
@@ -129869,8 +129869,8 @@ int __fastcall sub_8108152(int a1)
     int v2; // r6
 
     v1 = a1;
-    v2 = sub_800FE12(&byte_8108190[8 * a1]);
-    return (sub_800FE12(&byte_81081D8[8 * v1]) << 16) | v2;
+    v2 = readPerVersionHword_800FE12(&byte_8108190[8 * a1]);
+    return (readPerVersionHword_800FE12(&byte_81081D8[8 * v1]) << 16) | v2;
 }
 
 
@@ -133694,7 +133694,7 @@ int sub_810ABFE()
     result = byte_810AC2C[*(*(v0 + 88) + 22)];
     if ( result != 255 )
     {
-        v2 = sub_801A7CC(result);
+        v2 = barrierTakeDamage_801A7CC(result);
         v3 = *(v0 + 88) + 96;
         sub_80E0D98(v2, v4, v5, v6);
         result = PlaySoundEffect(137, v7, v8);

@@ -14706,7 +14706,7 @@ loc_802D37A:
 	beq loc_802D3A0
 	mov r0, #4
 	bl SetAIData_Unk_44_Flag
-	bl sub_800FB54
+	bl useChipFromHand_800FB54
 	ldr r3, dword_802D628 // =0xffff 
 	cmp r0, r3
 	beq loc_802D3A0

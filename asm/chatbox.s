@@ -2114,7 +2114,7 @@ loc_8040C0C:
 	bl loadObjAffineMatrix_8002874
 	mov r0, #0
 	mov r1, #3
-	bl sub_8002694
+	bl emitObjectSpriteOam_8002694
 locret_8040C24:
 	pop {r4-r6,pc}
 	.balign 4, 0

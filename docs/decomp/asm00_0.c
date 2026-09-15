@@ -3068,9 +3068,9 @@ void copy_8002668()
 
 
 // 0x8002694
-void __fastcall __noreturn sub_8002694(int a1, int a2)
+void __fastcall __noreturn emitObjectSpriteOam_8002694(int a1, int a2)
 {
-    sub_3006440(a1, a2);
+    emitObjEntry_3006440(a1, a2);
 }
 
 

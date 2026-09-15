@@ -723,7 +723,7 @@ void sub_3006428()
 
 
 // 0x3006440
-int __fastcall sub_3006440(int result, int a2)
+int __fastcall emitObjEntry_3006440(int result, int a2)
 {
     int v2; // r5
     int v3; // r1
