@@ -44,7 +44,7 @@ byte_3000EA8:: // 0x3000ea8
 iObjectAttr3001150:: // 0x3001150
 	// type: struct{u32 unk0, u16 unk1, u8 unk2, u8 unk3} [128]
 	.space 1024
-byte_3001550:: // 0x3001550
+iObjPaletteMirror_3001550:: // 0x3001550
 	.space 28
 byte_300156C:: // 0x300156c
 	.space 4

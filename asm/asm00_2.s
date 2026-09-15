@@ -1911,8 +1911,8 @@ byte_800FAA4:
 	.byte 0x0, 0x2, 0x1, 0x4, 0x3, 0x0, 0x0, 0x0
 	thumb_func_end playerObject_checkDirectionButtons_800FA54
 
-	thumb_func_start sub_800FAAC
-sub_800FAAC:
+	thumb_func_start getBusterHoldLength_800FAAC
+getBusterHoldLength_800FAAC:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #8
 	mov r4, r0
@@ -1932,10 +1932,10 @@ sub_800FAAC:
 	mov r2, r0
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
-	bl sub_800FAF6
+	bl countFreePanelsAheadForBuster_800FAF6
 	add sp, sp, #8
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800FAAC
+	thumb_func_end getBusterHoldLength_800FAAC
 
 	thumb_func_start sub_800FAE0
 sub_800FAE0:
@@ -1952,8 +1952,8 @@ locret_800FAF4:
 	pop {r4,pc}
 	thumb_func_end sub_800FAE0
 
-	thumb_func_start sub_800FAF6
-sub_800FAF6:
+	thumb_func_start countFreePanelsAheadForBuster_800FAF6
+countFreePanelsAheadForBuster_800FAF6:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #8
 	str r2, [sp,#4]
@@ -1969,7 +1969,7 @@ loc_800FB0A:
 	bl object_getPanelParameters
 	tst r0, r0
 	beq loc_800FB2C
-	ldr r1, off_800FB48 // =byte_800FB4C 
+	ldr r1, off_800FB48 // =BusterWalkStopPanelMask_800FB4C 
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	lsl r2, r2, #2
 	ldr r1, [r1,r2]
@@ -1990,18 +1990,18 @@ loc_800FB34:
 	mov r2, #6
 	mul r1, r2
 	add r1, r1, r0
-	ldr r0, off_800FB44 // =byte_80209CC
+	ldr r0, off_800FB44 // =BusterHoldFramesByRapid_80209CC
 	ldrb r0, [r0,r1]
 	add sp, sp, #8
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_800FB44:
-	.word byte_80209CC
+	.word BusterHoldFramesByRapid_80209CC
 off_800FB48:
-	.word byte_800FB4C
-byte_800FB4C:
+	.word BusterWalkStopPanelMask_800FB4C
+BusterWalkStopPanelMask_800FB4C:
 	.byte 0x80, 0x0, 0x88, 0xD, 0x80, 0x0, 0x88, 0xE
-	thumb_func_end sub_800FAF6
+	thumb_func_end countFreePanelsAheadForBuster_800FAF6
 
 	thumb_func_start sub_800FB54
 sub_800FB54:
@@ -2159,8 +2159,8 @@ locret_800FC7A:
 	pop {r4,r7,pc}
 	thumb_func_end sub_800FC30
 
-	thumb_func_start sub_800FC7C
-sub_800FC7C:
+	thumb_func_start advanceBattleHandChipIndex_800FC7C
+advanceBattleHandChipIndex_800FC7C:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getBattleHandAddr_8010018
@@ -2178,7 +2178,7 @@ sub_800FC7C:
 	strb r0, [r3]
 locret_800FC9C:
 	pop {pc}
-	thumb_func_end sub_800FC7C
+	thumb_func_end advanceBattleHandChipIndex_800FC7C
 
 	thumb_func_start sub_800FC9E
 sub_800FC9E:
@@ -2670,9 +2670,9 @@ GetAIData_Unk_44_Flag:
 
 	thumb_func_start getCurChipInBattleHand_8010004
 //! The chip the navi is about to use. Each combatant's battle-hand lives at
-//! byte_20349C0 + alliance*0x50 (see getBattleHandAddr_8010018); [0] is the
+//! eBattleHands_20349C0 + alliance*0x50 (see getBattleHandAddr_8010018); [0] is the
 //! running pick count and the next chip id is the u16 at +2 + 2*count. Both
-//! sub_800FC7C (advance the count) and this read the same record, so the navi
+//! advanceBattleHandChipIndex_800FC7C (advance the count) and this read the same record, so the navi
 //! fires a chip, then the count moves to the next.
 getCurChipInBattleHand_8010004:
 	push {lr}
@@ -2691,7 +2691,7 @@ loc_8010006:
 getBattleHandAddr_8010018:
 	mov r1, #0x50 
 	mul r0, r1
-	ldr r1, off_801021C // =byte_20349C0 
+	ldr r1, off_801021C // =eBattleHands_20349C0 
 	add r0, r0, r1
 	mov pc, lr
 	thumb_func_end getBattleHandAddr_8010018
@@ -2959,7 +2959,7 @@ loc_8010216:
 	pop {r4,pc}
 	.balign 4, 0
 off_801021C:
-	.word byte_20349C0
+	.word eBattleHands_20349C0
 off_8010220:
 	.word 0x200
 off_8010224:
@@ -16049,7 +16049,7 @@ off_80163A4:
 	.word off_80163A8
 off_80163A8:
 	.word sub_80163B4+1
-	.word sub_801641A+1
+	.word materializeObject_801641A+1
 	.word sub_8016460+1
 	thumb_func_end sub_8016396
 
@@ -16114,7 +16114,7 @@ locret_8016418:
 // body here as the canonical answer to "where does per-step y motion
 // happen" and concluded it does not, leaving the 24-px position delta
 // to the panel triple bug at spawnEnemy_80073E2 (asm00_1.s:8695).
-// bn F38f (2026-09-15): F38f did NOT modify sub_801641A's body; the
+// bn F38f (2026-09-15): F38f did NOT modify materializeObject_801641A's body; the
 // descriptor size change (FIXTURE_SIZE +17, TRACE_OFFSET +4) that caused
 // F38f's revert came from src/fixture.rs / src/main.rs / tools/harness.py
 // edits only.
@@ -16124,7 +16124,7 @@ locret_8016418:
 // 16101-16136 named in F38e's failed analysis as the suspected per-step
 // y setter.
 	thumb_local_start
-sub_801641A:
+materializeObject_801641A:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
@@ -16163,7 +16163,7 @@ loc_801644C:
 
 locret_801645E:
 	pop {pc}
-	thumb_func_end sub_801641A
+	thumb_func_end materializeObject_801641A
 
 	thumb_local_start
 sub_8016460:
@@ -19031,7 +19031,7 @@ loc_8017B4A:
 	bl loc_800BF30
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl sub_800B8EE
-	bl sub_800FC7C
+	bl advanceBattleHandChipIndex_800FC7C
 loc_8017B5E:
 	ldr r0, off_8017C98 // =0x80c 
 	bl ClearAIData_Unk_44_Flag
@@ -22293,7 +22293,7 @@ sub_801A5E2:
 	thumb_func_end sub_801A5E2
 
 	thumb_local_start
-sub_801A5EE:
+applyMercyInvulnerability_801A5EE:
 	push {r6,lr}
 	bl battle_getFlags
 	mov r1, #1
@@ -22337,7 +22337,7 @@ locret_801A642:
 	.balign 4, 0
 dword_801A644:
 	.word 0x202
-	thumb_func_end sub_801A5EE
+	thumb_func_end applyMercyInvulnerability_801A5EE
 
 	thumb_local_start
 sub_801A648:
@@ -23655,7 +23655,7 @@ loc_801B11E:
 	lsl r0, r0, #0xe
 	bl object_clearFlag2
 loc_801B126:
-	bl sub_801A5EE
+	bl applyMercyInvulnerability_801A5EE
 	bl sub_800E730
 	bl sub_8010162
 	bl sub_8014326
@@ -26662,7 +26662,7 @@ byte_801C6E8:
 // bn F38i (2026-09-15): this BG3 slide routine is paired with the panel
 // triple at spawnEnemy_80073E2 (asm00_1.s:8695) for the F38h opening
 // integrated objective; F38i named it as adjacent canon to the per-enemy
-// panel assignment but the actual PAL_OBJ slot pin lives in sub_8002818
+// panel assignment but the actual PAL_OBJ slot pin lives in stageObjPalette_8002818
 // (sprite.s:254-303), not here -- src/spr.rs:701-761's try_allocate_shared
 // is what cannot replicate a fitted PAL_OBJ slot.
 // bn F36a (2026-09-15): this writes the queued chip name + damage + slide

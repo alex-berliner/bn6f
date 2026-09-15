@@ -1843,7 +1843,7 @@ loc_8003C4C:
 	cmp r1, r0
 	blt loc_8003C04
 	mov r0, #0
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -1862,7 +1862,7 @@ off_8003C6C:
 sub_8003C70:
 	push {lr}
 	mov r0, #0
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	thumb_func_end sub_8003C70
 
@@ -2043,7 +2043,7 @@ loc_8003E76:
 	b loc_8003E28
 loc_8003E7A:
 	mov r0, #1
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2062,7 +2062,7 @@ off_8003E94:
 sub_8003E98:
 	push {lr}
 	mov r0, #1
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	mov r0, #0
 	ldr r3, off_8003EB8 // =eT1BattleObject0
@@ -2356,7 +2356,7 @@ loc_8004276:
 	b loc_8004228
 loc_800427A:
 	mov r0, #3
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2375,7 +2375,7 @@ off_8004294:
 sub_8004298:
 	push {lr}
 	mov r0, #3
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	mov r0, #0x30
 	ldr r3, off_80042BC // =eT3BattleObject0_LinkedList
@@ -2606,7 +2606,7 @@ loc_800456E:
 	b loc_8004520
 loc_8004572:
 	mov r0, #4
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2625,7 +2625,7 @@ off_800458C:
 sub_8004590:
 	push {lr}
 	mov r0, #4
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	thumb_func_end sub_8004590
 
@@ -2858,7 +2858,7 @@ loc_80046D4:
 	blt loop_800468C
 
 	mov r0, #2
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 
 	pop {r4-r6}
 	mov r8, r4
@@ -2878,7 +2878,7 @@ off_80046F4:
 sub_80046F8:
 	push {lr}
 	mov r0, #2
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	thumb_func_end sub_80046F8
 
@@ -3222,7 +3222,7 @@ loc_800498C:
 	cmp r1, r0
 	blt loc_8004944
 	mov r0, #5
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -3241,7 +3241,7 @@ off_80049AC:
 sub_80049B0:
 	push {lr}
 	mov r0, #5
-	bl sub_80028C0
+	bl storeObjectOamSlot_80028C0
 	pop {pc}
 	thumb_func_end sub_80049B0
 
@@ -5293,7 +5293,7 @@ checkThenStartBattle_8005A8C: // () -> ()
 	bne locret_8005AF2
 
   // Try to get battle settings to start battle or return
-	bl sub_80AA4C0 // () -> (* BattleSettings, zf)
+	bl rollRandomEncounter_80AA4C0 // () -> (* BattleSettings, zf)
 	beq locret_8005AF2 // if none return
 
 	mov r1, #1
@@ -8693,7 +8693,7 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 // that shows a genuinely empty field needs a save captured from a real
 // battle-start reached AFTER the patch, i.e. real input from a cold boot.
 // bn F38i (2026-09-15): opening integrated was already 0/0/40 on main
-// HEAD at this routine. Actual canon PAL_OBJ slot pin is in sub_8002818
+// HEAD at this routine. Actual canon PAL_OBJ slot pin is in stageObjPalette_8002818
 // (sprite.s:254-303); agb's try_allocate_shared at src/spr.rs:701-761
 // cannot replicate a fitted slot (forbidden by F38e BLOCKED).
 // bn F38h (2026-09-15): per-enemy panel triple (5,1)/(5,3)/(6,2) at ROM
@@ -11134,6 +11134,14 @@ off_80084EC:
 	thumb_func_end sub_80084C0
 
 	thumb_local_start
+// A SECOND dispatcher over the SAME eBattleSequencerState_203CA70 word, with its
+// own seven-entry table (off_8008508) instead of BannerSequencerStates_8008038.
+// It is reached from a different battle-FSM state (sub_800980E) than the banner
+// sequencer is (battleFsmState0C_800938A), so which table a given value of the
+// state word selects depends on which FSM state is running. No source the bn
+// project produced names these seven states, so they keep their address names;
+// sub_800855E is the one the port does describe -- the fight state's per-frame
+// body, which adds to the CUSTOM gauge and opens every frame with UnpauseBattle.
 sub_80084F0:
 	push {r5,lr}
 	ldr r5, off_8008524 // =eBattleSequencerState_203CA70
@@ -16403,7 +16411,7 @@ off_800A950:
 	thumb_local_start
 sub_800A954:
 	push {lr}
-	ldr r0, off_800ABF0 // =byte_20349C0
+	ldr r0, off_800ABF0 // =eBattleHands_20349C0
 	bl sub_800A964
 	ldr r0, off_800ABF4 // =byte_2034A10
 	bl sub_800A964
@@ -16853,7 +16861,7 @@ sub_800ABC6:
 	pop {r4,pc}
 	.balign 4, 0
 off_800ABF0:
-	.word byte_20349C0
+	.word eBattleHands_20349C0
 off_800ABF4:
 	.word byte_2034A10
 off_800ABF8:
@@ -17263,7 +17271,7 @@ dword_800AEE4:
 	thumb_local_start
 handleVariableDamageChip_800AEE8:
 	push {r4-r6,lr}
-	ldr r4, off_800B138 // =byte_20349C0
+	ldr r4, off_800B138 // =eBattleHands_20349C0
 	ldrb r0, [r4]
 	add r0, r0, r0
 	add r0, #2
@@ -17592,7 +17600,7 @@ word_800B128:
 	.hword 0x196
 	.byte 0x97, 0x1, 0x98, 0x1, 0x99, 0x1, 0x9A, 0x1, 0x0, 0x0, 0x0, 0x0
 off_800B138:
-	.word byte_20349C0
+	.word eBattleHands_20349C0
 dword_800B13C:
 	.word 0x4000
 dword_800B140:
@@ -17918,7 +17926,7 @@ transferBattleHandNaviStats_800B3D8:
 	cmp r1, #0xff
 	beq loc_800B3EC
 	mov r0, r4
-	ldr r1, off_800B620 // =byte_20349C0
+	ldr r1, off_800B620 // =eBattleHands_20349C0
 	mov r2, #0x50
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 loc_800B3EC:
@@ -18234,7 +18242,7 @@ off_800B618:
 off_800B61C:
 	.word byte_203F4A4
 off_800B620:
-	.word byte_20349C0
+	.word eBattleHands_20349C0
 off_800B624:
 	.word byte_203F5A4
 off_800B628:

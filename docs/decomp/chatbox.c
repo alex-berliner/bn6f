@@ -962,8 +962,8 @@ LABEL_13:
             }
             sprite_chatbox_80026D6();
             *(v7 + 3) = v3;
-            sub_8002818();
-            sub_8002874();
+            stageObjPalette_8002818();
+            loadObjAffineMatrix_8002874();
             sub_8002694(0, 3);
         }
     }
@@ -3082,7 +3082,7 @@ int chatbox_804244C()
     chatbox_setflags_3e(1);
     if ( !*(v0 + 4) )
     {
-        v2 = sub_80AA5F4(*(v0 + 4), v1, 31);
+        v2 = selectEncounterTableForMap_80AA5F4(*(v0 + 4), v1, 31);
         StartBattle(v2, 1);
         engine_setScreeneffect(44, 16);
         *(v0 + 4) = 1;

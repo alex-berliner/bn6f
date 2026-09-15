@@ -22145,7 +22145,7 @@ loc_8119478:
 	ldr r1, [r1,r2]
 	ldrb r0, [r1]
 	lsl r0, r0, #5
-	ldr r1, off_811965C // =byte_3001550
+	ldr r1, off_811965C // =iObjPaletteMirror_3001550
 	add r1, r1, r0
 	mov r2, #0x20
 	ldr r0, [r7,#0x28]
@@ -22166,7 +22166,7 @@ loc_8119478:
 	ldr r1, [r1,r2]
 	ldrb r0, [r1]
 	lsl r0, r0, #5
-	ldr r1, off_811965C // =byte_3001550
+	ldr r1, off_811965C // =iObjPaletteMirror_3001550
 	add r1, r1, r0
 	mov r2, #0x20
 	ldr r0, off_8119668 // =byte_86E587C
@@ -22187,7 +22187,7 @@ loc_8119478:
 	ldr r1, [r1,r2]
 	ldrb r0, [r1]
 	lsl r0, r0, #5
-	ldr r1, off_811965C // =byte_3001550
+	ldr r1, off_811965C // =iObjPaletteMirror_3001550
 	add r1, r1, r0
 	mov r2, #0x20
 	ldr r0, off_8119674 // =dword_86E43DC
@@ -22373,7 +22373,7 @@ dword_8119654:
 off_8119658:
 	.word 0x100
 off_811965C:
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 off_8119660:
 	.word dword_86E2E98
 dword_8119664:
@@ -23648,7 +23648,7 @@ dword_811A048:
 off_811A04C:
 	.word vObjectTiles
 	.byte 0x0, 0x1, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word dword_86E2E98
 	.word 0x800
 	.word byte_86E587C

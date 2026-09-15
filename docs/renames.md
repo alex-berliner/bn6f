@@ -326,3 +326,59 @@ New vocabulary: the whole driver chain, in order with what each link does and
 the 107-frame offset from the sequencer edge, is written above
 `resultWindowDriver_802BD60`, together with `RESULT_SLIDE_STEP_COLUMNS`,
 `RESULT_REWARD_TILES` and `RESULT_REWARD_COOLDOWN_FRAMES`.
+
+## Backdrop, audio, sprites/palettes, panels, the buster and thrown chips
+
+| old | new | evidence |
+|---|---|---|
+| `off_807FB98` | `BattleBackdropGFXAnimScript_807FB98` | "the script is off_807FB98 (data/dat20.s:140-172): TEN 4-frame entries, then NINETEEN 8-frame entries, a 192-frame loop" — TODO_ARCHIVE.md:364 (A7), VERIFIED EXACT against a live dump; src/backdrop.rs:69 |
+| `byte_807FE40` … `byte_807FDF8` | `BattleBackdropTiles0_807FE40` … `Tiles6_807FDF8` | "FRAMES[0]=E40, [1]=CD8, [2]=C90, [3]=D20, [4]=D68, [5]=DB0, [6]=DF8" — TODO_ARCHIVE.md:317 (A7); src/backdrop.rs:74-76 |
+| `dword_8617488` | `BattleBackdropTileBlob_8617488` | "slice those tiles out of the blob at dword_8617488" — TODO_ARCHIVE.md:328 (A7); src/backdrop.rs:36 |
+| `sub_8001C94` | `applyGFXAnimStepTiles_8001C94` | "the per-element glyph tile assembler + ONE queued QueueEightWordAlignedGFXTransfer … it writes char-block art, never the BG1 map" — TODO.md:407 (F36c, which REFUTES the "BG1 seam transition" reading several earlier tickets assumed); src/backdrop.rs:27 |
+| `byte_8156D6C` | `ToneDataSoundBuster6A_8156D6C` | "type 0x9 = square1, duty 0 = 12.5%, sweep byte 0x1F …" — src/battle.rs:80 |
+| `byte_81B82EC` / `dword_81B82FC` | `SongTrackSoundBuster6A_81B82EC` / `SongHeaderSoundBuster6A_81B82FC` | "its song header (dword_81B82FC) is one track"; "That song's single TRACK" — src/battle.rs:79 |
+| `dword_8156D78` | `ToneDataSoundHit6B_8156D78` | "The ToneData (voicegroup entry) that points at that sample" — this repo's own note |
+| `byte_81597A0` | `WaveDataSoundHit6B_81597A0` | "SOUND_HIT_6B's SAMPLE: an M4A/MP2K WaveData, 16-byte header then raw PCM" — this repo's own note; TODO_ARCHIVE.md:757 (B3a) |
+| `byte_81B8308` / `dword_81B8318` | `SongTrackSoundHit6B_81B8308` / `SongHeaderSoundHit6B_81B8318` | "The SongHeader for SOUND_HIT_6B … this header -> voicegroup -> wave" — this repo's own note; TODO_ARCHIVE.md:649 (B3c) |
+| `sub_80BCF7A` | `playBusterFireSound_80BCF7A` | "SOUND_BUSTER_6A (id 0x6A …, played at the fire phase by sub_80BCF7A)" — TODO_ARCHIVE.md:3211 (T13) |
+| `sub_800BF5C` | `getAllianceAnnouncerBlock_800BF5C` | "alliance -> &byte_203CF00[alliance * 0x50]" — this repo's own note |
+| `byte_203CF00` | `eAllianceAnnouncerBlocks_203CF00` | same |
+| `sub_800B892` | `getChipNamePopupSyncByte_800B892` | "a synchronisation byte between the two sides' popup announcers, not a property of any chip" — this repo's own note; TODO_ARCHIVE.md:799 (C4) |
+| `sub_800B89C` | `clearAllianceAnnouncerSlot_800B89C` | "sub_800B89C zeroes it" — same note; the body zeroes byte 1 and the word at +8 |
+| `byte_20349C0` | `eBattleHands_20349C0` | "Each combatant's battle-hand lives at byte_20349C0 + alliance*0x50" — this repo's own note; src/battle.rs:1278 |
+| `sub_800FC7C` | `advanceBattleHandChipIndex_800FC7C` | "sub_800FC7C advances the count" — same note; src/battle.rs:1280 |
+| `sub_800C01C` | `buildPanelTileLayout_800C01C` | "Produces the field's panel TILE LAYOUT" — src/field.rs:6 |
+| `sub_800C0BA` | `drawPanelHighlight_800C0BA` | "a solid block of one tile over a panel for a single frame" — src/field.rs:38 |
+| `sub_800C380` | `tickPanels_800C380` | "the per-frame PANEL TICK (Type vs Animation…)" — src/field.rs:195 |
+| `sub_800C488` | `tickBrokenPanelRegen_800C488` | "The broken-panel REGEN timer: 0x258 frames (0x1e0 in battle mode 1)" — src/field.rs:178; TODO_ARCHIVE.md:604 (B2) |
+| `byte_203CB04` | `ePanelTickCounter_203CB04` | "counter byte_203CB04 (reload 0x8c)" — docs/recon/T10.md:46 |
+| `sub_80028C0` | `storeObjectOamSlot_80028C0` | "is **not** the player. It is three instructions — store one byte of dword_200F340 into byte_200F389[r0] — i.e. OAM-slot bookkeeping" — docs/coverage/plan-interpreters.md:61-65 (a recorded refutation) |
+| `sub_8002818` | `stageObjPalette_8002818` | "stages a 16-colour palette into the IWRAM OBJ-palette mirror at slot Unk_15 >> 4; not an allocator" — docs/recon/F39a.md:161 |
+| `byte_3001550` | `iObjPaletteMirror_3001550` | "0x03001550 holds 16 x 32 bytes: an IWRAM mirror of the 16 OBJ palettes" — docs/recon/F39a.md:162 |
+| `sub_3005EF0` / `off_3005F20` | `blendStagedObjPalette_3005EF0` / `ObjPaletteBlendModes_3005F20` | "a colour-blend of the 16 staged words in place, not an allocator: r0 = blend param, r2 = jump index into off_3005F20" — docs/recon/F39a.md:163 |
+| `sub_8002874` | `loadObjAffineMatrix_8002874` | "affine-matrix load (gated by sub_80466D8 bit 0x20)" — docs/recon/F39a.md:43 |
+| `sub_801641A` | `materializeObject_801641A` | "the materialize/appear phase handler: Timer/Timer2 countdown, mosaic+alpha ramp … teardown -> phase 8" — docs/recon/F39a.md:46; docs/coverage/opening_integrated.md:170; and the `// bn F38e/F38h` notes already at the routine, which also record that it does NOT move y |
+| `sub_801A5EE` | `applyMercyInvulnerability_801A5EE` | "the flash timer is seeded to 0x78 in the post-hit invulnerability handler"; "canon's routine (sub_801A5EE) sets the 120" — src/actor.rs:223; TODO_ARCHIVE.md:1691 (F14) |
+| `sub_80EB450` / `sub_80EB502` | `busterFirePhase_80EB450` / `busterHoldPhase_80EB502` | "sub_80EB450 is the FIRE phase and leaves after 5 ticks"; "then sub_80EB502 HOLDS for Unk_12 frames" — src/actor.rs:64-66; TODO_ARCHIVE.md:2274 (F31b) |
+| `sub_800FAAC` / `sub_800FAF6` | `getBusterHoldLength_800FAAC` / `countFreePanelsAheadForBuster_800FAF6` | "it reads the navi's Rapid stat and hands it with the FRONT panel to sub_800FAF6"; "walks forward while the panel is valid and unmasked, caps the count at 5" — src/actor.rs:69-71 |
+| `byte_80209CC` | `BusterHoldFramesByRapid_80209CC` | "byte_80209CC[Rapid*6 + min(free panels ahead,5)] … three exact predictions" — TODO_ARCHIVE.md:2274 (F31b) |
+| `byte_800FB4C` | `BusterWalkStopPanelMask_800FB4C` | "The alliance MASK of panel parameters that stops the forward walk" — src/actor.rs:476 |
+| `sub_80C5C9C` | `thrownBombObject_update_80C5C9C` | "The flight of a thrown chip object (battle object type 3 sub-type 8)" — this repo's own note; src/battle.rs:971 |
+| `byte_80C5D58` | `ThrownBombLaunchParams_80C5D58` | "three words, X velocity 0x0002E666, gravity 0xFFFFD800 and Z velocity 0x00020666" — this repo's own note; src/battle.rs:750 |
+| `sub_80C5DBC` | `spawnThrownBomb_80C5DBC` | "MiniBomb's THROWN-BOMB spawn (t3_0x8_80C5BB0): 4 px ahead, 0x30 up" — src/battle.rs:746 |
+| `dword_80C5D7C` | `ThrownBombLandRegionByParam1_80C5D7C` | "the region byte dword_80C5D7C[Param1] is 1 for MiniBomb and 0xf for BigBomb" — src/battle.rs:945 |
+| `off_80EB6F8` | `ThrownChipSpawnersBySubfamily_80EB6F8` | "Spawners for a thrown chip, indexed by the chip's SUBFAMILY" — this repo's own note; src/battle.rs:907 |
+| `sub_80D47C0` / `dword_80D4A18` | `vDollObject_update_80D47C0` / `VDollGravity_80D4A18` | "VDoll's doll in flight … gravity (dword_80D4A18 = 0xFFFFE000)" — this repo's own note; src/battle.rs:349 |
+| `sub_80D9E94` / `dword_80D9F28` | `bugBombObject_update_80D9E94` / `BugBombGravity_80D9F28` | "BugBomb's ball in flight … the gravity is the constant dword_80D9F28" — this repo's own note; src/battle.rs:341 |
+| `sub_80C7EC8` | `spawnDeathDebris_80C7EC8` | "the falling-body/debris spawner … Calls bl GetRNG twice" — docs/coverage/battle_full.md:1503 |
+| `sub_80AA4C0` | `rollRandomEncounter_80AA4C0` | "the enemy list is built inside frame 60 by sub_80AA4C0 from the settings pointer" — TODO_ARCHIVE.md:3036 (T9c); and the encounter-roll note already at the routine in this repo |
+| `sub_80AA5F4` | `selectEncounterTableForMap_80AA5F4` | "encounter selection at map-group/map-number level (0x10-stride records, 0xff terminator)" — docs/recon/T10.md:62 |
+| `byte_80B5347` / `byte_80B5354` | `EnemySetupMettaurGunner_80B5347` / `EnemySetupThreeMettaur_80B5354` | "BattleSettings record 6 … setup byte_80B5347: … Mettaur + Gunner"; "byte_80B5354, the three-Mettaur record" — TODO_ARCHIVE.md:3038 (T9c), :3098 (T9b), both verified by a sweep |
+
+New vocabulary: `BATTLE_BACKDROP_SCROLL_X_STEP`/`_Y_STEP`/`_SHIFT`/`_PERIOD` (896,
+measured frame-against-frame) and `BATTLE_BACKDROP_ART_PERIOD` (192) above the
+scroll callback; a header on the backdrop's GFXAnim script giving its ten-then-
+nineteen entry shape and the one-frame offset from the scroll's zero; the index
+formula and the three measured predictions on `BusterHoldFramesByRapid_80209CC`;
+and a comment on `sub_80084F0` recording that it is a SECOND dispatcher over the
+same sequencer state word with its own table.

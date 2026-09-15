@@ -251,8 +251,8 @@ byte_8002810:
 	.byte 0xFF, 0x2, 0x0, 0x0, 0xFF, 0x2, 0x0, 0x0
 	thumb_func_end sub_80027F4
 
-	thumb_func_start sub_8002818
-sub_8002818:
+	thumb_func_start stageObjPalette_8002818
+stageObjPalette_8002818:
 	push {lr}
 	ldr r0, [r5,#0x34]
 	tst r0, r0
@@ -270,7 +270,7 @@ loc_800282A:
 	add r0, r0, r1
 	ldrb r1, [r5,#0x15]
 	lsr r1, r1, #4
-	ldr r3, off_8002868 // =byte_3001550
+	ldr r3, off_8002868 // =iObjPaletteMirror_3001550
 	lsl r1, r1, #5
 	add r3, r3, r1
 	mov r6, #0
@@ -289,17 +289,17 @@ loc_8002840:
 	lsl r2, r2, #2
 	mov r6, #0x20
 	mov r7, r3
-	ldr r1, off_8002864 // =sub_3005EF0+1
+	ldr r1, off_8002864 // =blendStagedObjPalette_3005EF0+1
 	mov lr, pc
 	bx r1
 locret_8002862:
 	pop {pc}
 	.balign 4, 0
 off_8002864:
-	.word sub_3005EF0+1
+	.word blendStagedObjPalette_3005EF0+1
 off_8002868:
-	.word byte_3001550
-	thumb_func_end sub_8002818
+	.word iObjPaletteMirror_3001550
+	thumb_func_end stageObjPalette_8002818
 
 	thumb_func_start sub_800286C
 sub_800286C:
@@ -309,8 +309,8 @@ sub_800286C:
 	mov pc, lr
 	thumb_func_end sub_800286C
 
-	thumb_func_start sub_8002874
-sub_8002874:
+	thumb_func_start loadObjAffineMatrix_8002874
+loadObjAffineMatrix_8002874:
 	push {r5,lr}
 	ldr r2, [r5,#0x24]
 	ldr r0, [r5,#0x1c]
@@ -332,7 +332,7 @@ locret_8002896:
 	.balign 4, 0
 dword_8002898:
 	.word 0x6010000
-	thumb_func_end sub_8002874
+	thumb_func_end loadObjAffineMatrix_8002874
 
 	thumb_func_start sprite_resetObjVars_800289C
 sprite_resetObjVars_800289C:
@@ -355,8 +355,8 @@ off_80028BC:
 	.word 0x388
 	thumb_func_end sprite_resetObjVars_800289C
 
-	thumb_func_start sub_80028C0
-sub_80028C0:
+	thumb_func_start storeObjectOamSlot_80028C0
+storeObjectOamSlot_80028C0:
 	ldr r1, off_80028CC // =dword_200F340
 	ldr r1, [r1]
 	ldr r2, off_80028D0 // =byte_200F389
@@ -367,7 +367,7 @@ off_80028CC:
 	.word dword_200F340
 off_80028D0:
 	.word byte_200F389
-	thumb_func_end sub_80028C0
+	thumb_func_end storeObjectOamSlot_80028C0
 
 	thumb_func_start initUncompSpriteState_80028d4
 initUncompSpriteState_80028d4: // (a0: *const ?) -> ()

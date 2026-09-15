@@ -4992,7 +4992,7 @@ initRefs_803B244:
 	.word 0x100
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word byte_87E5000
@@ -5079,7 +5079,7 @@ initRefs_803B310:
 	.word DecompBuf_2027A00
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word dword_87E660C
@@ -5144,7 +5144,7 @@ initRefs_803B404:
 	.word 0x100
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word NULL
@@ -5213,7 +5213,7 @@ initRefs_803B490:
 	.word 0x100
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word NULL

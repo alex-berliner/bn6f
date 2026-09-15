@@ -8834,7 +8834,7 @@ int sub_80BCF58()
 
 
 // 0x80bcf7a
-int __fastcall sub_80BCF7A(int a1, int a2, int a3)
+int __fastcall playBusterFireSound_80BCF7A(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -20037,7 +20037,7 @@ void sub_80C33CA()
             v0 = battle_findPlayer(*(v0 + 22) ^ 1);
             if ( v0 )
             {
-                sub_800FC7C();
+                advanceBattleHandChipIndex_800FC7C();
                 v0 = v1;
             }
         }
@@ -20261,7 +20261,7 @@ int sub_80C35CE()
     {
         *(v0 + 16) = 2;
         if ( battle_findPlayer(*(v0 + 22) ^ 1) )
-            sub_800FC7C();
+            advanceBattleHandChipIndex_800FC7C();
         PlaySoundEffect(294, v5, v6);
         result = 12;
         *(v0 + 10) = 12;
@@ -24109,7 +24109,7 @@ LABEL_6:
 
 
 // 0x80c5c9c
-int sub_80C5C9C()
+int thrownBombObject_update_80C5C9C()
 {
     int v0; // r5
     int v1; // r9
@@ -24191,7 +24191,7 @@ signed int sub_80C5D84()
 
 
 // 0x80c5dbc
-int __fastcall sub_80C5DBC(int a1, int a2, int a3, int a4)
+int __fastcall spawnThrownBomb_80C5DBC(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -27508,7 +27508,7 @@ void __noreturn sub_80C7E24()
     object_spawnCollisionEffect();
     if ( *(*(v0 + 84) + 112) )
     {
-        sub_80C7EC8();
+        spawnDeathDebris_80C7EC8();
         object_clearCollisionRegion();
         v1 = *(v0 + 96);
         if ( v1 )
@@ -27555,7 +27555,7 @@ int sub_80C7E6C()
 
 
 // 0x80c7ec8
-int sub_80C7EC8()
+int spawnDeathDebris_80C7EC8()
 {
     int v0; // r5
     int v1; // r3
@@ -47812,7 +47812,7 @@ void __noreturn sub_80D4754()
 
 
 // 0x80d47c0
-int sub_80D47C0()
+int vDollObject_update_80D47C0()
 {
     int v0; // r5
     int result; // r0
@@ -56380,7 +56380,7 @@ LABEL_9:
 
 
 // 0x80d9e94
-int sub_80D9E94()
+int bugBombObject_update_80D9E94()
 {
     int v0; // r5
     int v1; // r0
@@ -83970,7 +83970,7 @@ void sub_80EAF36()
         return;
     if ( *(v2 + 34) && sub_800FC30() != 0xFFFF )
     {
-        sub_800FC7C();
+        advanceBattleHandChipIndex_800FC7C();
         v4 = v2 + 30;
         *v4 = 4;
         *(v4 + 4) = 0;
@@ -84447,7 +84447,7 @@ int sub_80EB436()
 
 
 // 0x80eb450
-int __fastcall sub_80EB450(int a1, int a2, int a3)
+int __fastcall busterFirePhase_80EB450(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7
@@ -84475,7 +84475,7 @@ int __fastcall sub_80EB450(int a1, int a2, int a3)
     {
         PlaySoundEffect(106, a2, a3);
         if ( *(v4 + 3) != 2 )
-            sub_800FAAC(*(v4 + 12), *(v4 + 8), v6, 1572864);
+            getBusterHoldLength_800FAAC(*(v4 + 12), *(v4 + 8), v6, 1572864);
         PlaySoundEffect(255, v5, v6);
         v7 = v4;
         v8 = *(v4 + 8);
@@ -84499,7 +84499,7 @@ int __fastcall sub_80EB450(int a1, int a2, int a3)
 
 
 // 0x80eb502
-void sub_80EB502()
+void busterHoldPhase_80EB502()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84661,7 +84661,7 @@ int sub_80EB644()
     }
     if ( *(v1 + 16) == 9 )
     {
-        v8 = *(&off_80EB6F8 + *(v1 + 3));
+        v8 = *(&ThrownChipSpawnersBySubfamily_80EB6F8 + *(v1 + 3));
         v9 = (object_getFrontDirection(v0) << 18) + v0->x;
         v10 = v0->y;
         v11 = v0->z + 3145728;
@@ -85117,7 +85117,7 @@ void sub_80EBD9C()
         v8 = *(v1 + 20);
         v9 = v2;
         v11 = v5(v0->panelX, v0->panelY, v6);
-        if ( !*(sub_800BF5C(v0->Alliance) + 2) )
+        if ( !*(getAllianceAnnouncerBlock_800BF5C(v0->Alliance) + 2) )
         {
             v10 = 0;
             if ( *(v9 + 20) >= &byte_170 )
@@ -85190,7 +85190,7 @@ int __fastcall sub_80EBE54(int a1, int a2, int a3)
     if ( *(v4 + 16) == 1 )
     {
         PlaySoundEffect(106, a2, a3);
-        sub_800FAAC(*(v4 + 12), *(v4 + 8), v5, 1572864);
+        getBusterHoldLength_800FAAC(*(v4 + 12), *(v4 + 8), v5, 1572864);
     }
     result = *(v4 + 16) + 1;
     *(v4 + 16) = result;
@@ -85740,7 +85740,7 @@ void sub_80EC350()
     v6 = *(v1 + 20) + (*(v1 + 6) << 16);
     v7 = v9;
     v10 = sub_80E192C(v0->panelX, v0->panelY, v2, v3);
-    if ( !*(sub_800BF5C(v0->Alliance) + 2) )
+    if ( !*(getAllianceAnnouncerBlock_800BF5C(v0->Alliance) + 2) )
     {
         v8 = 0;
         if ( *(v7 + 20) >= &byte_170 )
@@ -85842,7 +85842,7 @@ int __fastcall sub_80EC490(int a1, int a2, int a3)
     {
         PlaySoundEffect(185, a2, a3);
         GetPositiveSignedRNG();
-        sub_800FAAC(*(&dword_80EC5B4 + (v5 & 1)), *(v4 + 8) + *(v4 + 6), *(v4 + 6), *(&dword_80EC5B0 + (v5 & 3)) << 16);
+        getBusterHoldLength_800FAAC(*(&dword_80EC5B4 + (v5 & 1)), *(v4 + 8) + *(v4 + 6), *(v4 + 6), *(&dword_80EC5B0 + (v5 & 3)) << 16);
     }
     v6 = *(v4 + 16) + 1;
     *(v4 + 16) = v6;
@@ -87824,7 +87824,7 @@ void sub_80ED7A2()
     if ( !*(v1 + 1) )
     {
         v2 = sub_8013774(*(v1 + 1), 2);
-        *(v1 + 16) = sub_800FAF6(v0->panelX, v0->panelY, v2);
+        *(v1 + 16) = countFreePanelsAheadForBuster_800FAF6(v0->panelX, v0->panelY, v2);
         *(v1 + 1) = 4;
     }
     v3 = *(v1 + 16);
@@ -92660,7 +92660,7 @@ LABEL_61:
                 }
             }
             if ( !v1->attackVarRegion[27] && v1->attackVarRegion[28] != 5 )
-                sub_800FC7C();
+                advanceBattleHandChipIndex_800FC7C();
         }
         if ( !battle_networkInvert(obj->Alliance) )
             dispatch_801DACC(64);

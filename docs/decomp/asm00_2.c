@@ -1312,7 +1312,7 @@ signed int __fastcall playerObject_checkDirectionButtons_800FA54(int a1)
 
 
 // 0x800faac
-int __fastcall __noreturn sub_800FAAC(int a1, int a2, int a3, int a4)
+int __fastcall __noreturn getBusterHoldLength_800FAAC(int a1, int a2, int a3, int a4)
 {
     Battle *v4; // r5
     int v5; // r7
@@ -1326,7 +1326,7 @@ int __fastcall __noreturn sub_800FAAC(int a1, int a2, int a3, int a4)
     v7 = v4->panelY;
     sub_80C4FFE(v6, v7, v8, v5);
     v9 = sub_80136CC(v4->Alliance, 2);
-    return sub_800FAF6(v6, v7, v9);
+    return countFreePanelsAheadForBuster_800FAF6(v6, v7, v9);
 }
 
 
@@ -1346,7 +1346,7 @@ u32 sub_800FAE0()
 
 
 // 0x800faf6
-int __fastcall sub_800FAF6(int a1, int a2, int a3)
+int __fastcall countFreePanelsAheadForBuster_800FAF6(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r6
@@ -1365,7 +1365,7 @@ int __fastcall sub_800FAF6(int a1, int a2, int a3)
     while ( 1 )
     {
         v7 = object_getPanelParameters(v4, v5);
-        if ( !v7 || v7 & *&byte_800FB4C[4 * v3->Alliance] )
+        if ( !v7 || v7 & *&BusterWalkStopPanelMask_800FB4C[4 * v3->Alliance] )
             break;
         ++v10;
         v4 += v6;
@@ -1373,7 +1373,7 @@ int __fastcall sub_800FAF6(int a1, int a2, int a3)
     v8 = v10;
     if ( v10 > 5 )
         v8 = 5;
-    return byte_80209CC[6 * v11 + v8];
+    return BusterHoldFramesByRapid_80209CC[6 * v11 + v8];
 }
 
 
@@ -1487,7 +1487,7 @@ int sub_800FC30()
 
 
 // 0x800fc7c
-signed int sub_800FC7C()
+signed int advanceBattleHandChipIndex_800FC7C()
 {
     int v0; // r5
     char *v1; // r0
@@ -1909,7 +1909,7 @@ int getCurChipInBattleHand_8010004()
 // 0x8010018
 char *__fastcall getBattleHandAddr_8010018(int a1)
 {
-    return &byte_20349C0[80 * a1];
+    return &eBattleHands_20349C0[80 * a1];
 }
 
 
@@ -11888,7 +11888,7 @@ int sub_80163B4()
 
 
 // 0x801641a
-int sub_801641A()
+int materializeObject_801641A()
 {
     unsigned __int8 *v0; // r5
     int result; // r0
@@ -14032,7 +14032,7 @@ int sub_8017AB4()
         }
         (loc_800BF30)(*(v0 + 22), 0, v3);
         sub_800B8EE(*(v0 + 22));
-        sub_800FC7C();
+        advanceBattleHandChipIndex_800FC7C();
 LABEL_13:
         sub_800FFEE(&loc_80C);
     }
@@ -15816,7 +15816,7 @@ int sub_801A5E2()
 
 
 // 0x801a5ee
-int sub_801A5EE()
+int applyMercyInvulnerability_801A5EE()
 {
     int v0; // r5
     int result; // r0
@@ -16969,7 +16969,7 @@ LABEL_48:
                             object_setAttack0();
                         object_clearFlag2(0x4000);
                     }
-                    sub_801A5EE();
+                    applyMercyInvulnerability_801A5EE();
                     v10 = sub_800E730();
                     sub_8010162(v10);
                     sub_8014326();

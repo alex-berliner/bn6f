@@ -473,11 +473,11 @@ int sub_80465F8()
             {
                 if ( !(v4 & 0x80) )
                 {
-                    sub_8002818();
+                    stageObjPalette_8002818();
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
-                    sub_8002874();
+                    loadObjAffineMatrix_8002874();
             }
             sub_8002694(0, 0);
         }
@@ -727,11 +727,11 @@ int sub_8046854()
             {
                 if ( !(v4 & 0x80) )
                 {
-                    sub_8002818();
+                    stageObjPalette_8002818();
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
-                    sub_8002874();
+                    loadObjAffineMatrix_8002874();
             }
             sub_8002694(0, 0);
         }

@@ -203,7 +203,7 @@ signed int sub_80027F4()
 
 
 // 0x8002818
-int sub_8002818()
+int stageObjPalette_8002818()
 {
     int v0; // r5
     int v1; // r0
@@ -219,12 +219,12 @@ int sub_8002818()
     v4 = 0;
     do
     {
-        *&byte_3001550[v3 + v4] = *(result + v4);
+        *&iObjPaletteMirror_3001550[v3 + v4] = *(result + v4);
         v4 += 4;
     }
     while ( v4 < 32 );
     if ( *(v0 + 6) )
-        result = sub_3005EF0(*(v0 + 6) & 0x7FFF, sub_3005EF0, 4 * (*(v0 + 6) >> 15));
+        result = blendStagedObjPalette_3005EF0(*(v0 + 6) & 0x7FFF, blendStagedObjPalette_3005EF0, 4 * (*(v0 + 6) >> 15));
     return result;
 }
 
@@ -241,7 +241,7 @@ int *sub_800286C()
 
 
 // 0x8002874
-_DWORD *sub_8002874()
+_DWORD *loadObjAffineMatrix_8002874()
 {
     int v0; // r5
     _DWORD *result; // r0
@@ -265,7 +265,7 @@ void __fastcall sprite_resetObjVars_800289C(int a1, int a2, int a3, int a4)
 
 
 // 0x80028c0
-int __fastcall sub_80028C0(int result)
+int __fastcall storeObjectOamSlot_80028C0(int result)
 {
     byte_200F389[result] = dword_200F340;
     return result;

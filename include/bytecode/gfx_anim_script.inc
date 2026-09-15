@@ -105,6 +105,6 @@
 	// gfx_anim_data data=0x8594ad0, delay=6
 	// ...
 	// gfx_anim_end
-	// gfx_anim_4bit_tile_copy gfx_src=dword_8617488, gfx_dest=0x6008040, index=0, num_tiles=36, buffer_index=8
+	// gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488, gfx_dest=0x6008040, index=0, num_tiles=36, buffer_index=8
 	// gfx_anim_manual_pal_transform transform_type=0xc, dest=0x3001b60, index=0xf, num_pals=0xe
 	// gfx_anim_8bit_tile_copy gfx_src=0x850d034, gfx_dest=0x60079c0, index=0x2, num_tiles=15, buffer_index=13

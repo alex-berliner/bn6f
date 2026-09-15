@@ -805,7 +805,7 @@ loc_804660C:
 	bne loc_8046634
 	push {r0,r4,r5,r7}
 	add r5, #0x20 
-	bl sub_8002818
+	bl stageObjPalette_8002818
 	pop {r0,r4,r5,r7}
 loc_8046634:
 	mov r1, #0x20 
@@ -813,7 +813,7 @@ loc_8046634:
 	beq loc_8046644
 	push {r4,r5,r7}
 	add r5, #0x20 
-	bl sub_8002874
+	bl loadObjAffineMatrix_8002874
 	pop {r4,r5,r7}
 loc_8046644:
 	push {r4,r5,r7}
@@ -1149,7 +1149,7 @@ loc_8046862:
 	bne loc_804688A
 	push {r0,r5,r7}
 	add r5, #0x20 
-	bl sub_8002818
+	bl stageObjPalette_8002818
 	pop {r0,r5,r7}
 loc_804688A:
 	mov r1, #0x20 
@@ -1157,7 +1157,7 @@ loc_804688A:
 	beq loc_804689A
 	push {r5,r7}
 	add r5, #0x20 
-	bl sub_8002874
+	bl loadObjAffineMatrix_8002874
 	pop {r5,r7}
 loc_804689A:
 	push {r5,r7}
@@ -5872,7 +5872,7 @@ initRefs_8049A54:
 	.word 0x100
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word NULL
@@ -5951,7 +5951,7 @@ byte_8049AD8:
 	.word DecompBuf_2027A00
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word dword_87F28DC
@@ -6675,7 +6675,7 @@ byte_804A0E8:
 	.word 0x100
 
 	.word dword_86A5500
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word 0x20
 
 	.word NULL

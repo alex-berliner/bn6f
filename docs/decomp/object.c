@@ -9,12 +9,12 @@ int object_timefreezeEnd()
     if ( *(v0 + 11) )
         return object_freeMemory();
     sub_800B884(*(v0 + 22));
-    result = sub_800B892(*(v0 + 22) ^ 1);
+    result = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
     if ( result == 5 || !result )
     {
         if ( sub_800B8D8(*(v0 + 22)) )
         {
-            v2 = sub_800BF5C(*(v0 + 22) ^ 1);
+            v2 = getAllianceAnnouncerBlock_800BF5C(*(v0 + 22) ^ 1);
             v3 = *(v2 + 2);
             if ( v3 )
             {
@@ -22,12 +22,12 @@ int object_timefreezeEnd()
                 *(v3 + 11) = 4;
             }
             *(v2 + 3) = 0;
-            sub_800B89C(*(v0 + 22) ^ 1);
+            clearAllianceAnnouncerSlot_800B89C(*(v0 + 22) ^ 1);
             battle_clearFlags(4);
         }
         sub_800B884(*(v0 + 22));
-        sub_800B89C(*(v0 + 22));
-        *(sub_800BF5C(*(v0 + 22)) + 3) = 0;
+        clearAllianceAnnouncerSlot_800B89C(*(v0 + 22));
+        *(getAllianceAnnouncerBlock_800BF5C(*(v0 + 22)) + 3) = 0;
         result = object_freeMemory();
     }
     return result;
@@ -113,20 +113,20 @@ int sub_800BE2C()
         result = isBannerBusy_801E754();
         if ( !result )
         {
-            sub_800B89C(*(v0 + 22));
+            clearAllianceAnnouncerSlot_800B89C(*(v0 + 22));
             v4 = *(v0 + 22) ^ 1;
             *(v0 + 22) = v4;
             sub_800B8AC(v4);
             sub_800B884(*(v0 + 22));
-            v5 = *(sub_800BF5C(*(v0 + 22)) + 2);
+            v5 = *(getAllianceAnnouncerBlock_800BF5C(*(v0 + 22)) + 2);
             if ( v5 )
             {
                 *(v5 + 8) = 8;
                 *(v5 + 11) = 4;
             }
             v6 = *(v0 + 22);
-            sub_800BF5C(0)[3] = v6;
-            sub_800BF5C(1)[3] = v6;
+            getAllianceAnnouncerBlock_800BF5C(0)[3] = v6;
+            getAllianceAnnouncerBlock_800BF5C(1)[3] = v6;
             sub_802CE78(*(v0 + 22));
             if ( v7 )
             {
@@ -162,12 +162,12 @@ BOOL sub_800BEDA()
     char *v3; // r0
     BOOL result; // r0
 
-    v1 = sub_800BF5C(*(v0 + 22));
+    v1 = getAllianceAnnouncerBlock_800BF5C(*(v0 + 22));
     v2 = *(v1 + 3);
     result = 0;
     if ( (!v2 || v2 == v0) && (!v1[1] || v1[1] == 3) )
     {
-        v3 = sub_800BF5C(*(v0 + 22) ^ 1);
+        v3 = getAllianceAnnouncerBlock_800BF5C(*(v0 + 22) ^ 1);
         if ( !v3[2] && v3[1] == 2 )
             result = 1;
     }
@@ -190,10 +190,10 @@ char *__fastcall sub_800BF16(int a1, char a2, int a3)
     v8 = a2;
     v9 = a3;
     v5 = a1;
-    sub_800BF5C(0)[3] = a1;
-    sub_800BF5C(1)[3] = v5;
+    getAllianceAnnouncerBlock_800BF5C(0)[3] = a1;
+    getAllianceAnnouncerBlock_800BF5C(1)[3] = v5;
     sub_800B8AC(v4);
-    result = sub_800BF5C(v4);
+    result = getAllianceAnnouncerBlock_800BF5C(v4);
     v7 = *(result + 2);
     if ( v7 )
     {
@@ -209,16 +209,16 @@ char *__fastcall sub_800BF16(int a1, char a2, int a3)
 
 
 // 0x800bf5c
-char *__fastcall sub_800BF5C(int a1)
+char *__fastcall getAllianceAnnouncerBlock_800BF5C(int a1)
 {
-    return &byte_203CF00[80 * a1];
+    return &eAllianceAnnouncerBlocks_203CF00[80 * a1];
 }
 
 
 // 0x800bf66
 void __fastcall zeroFill_800BF66(int a1, int a2, int a3, int a4)
 {
-    ZeroFillByWord(byte_203CF00, 160);
+    ZeroFillByWord(eAllianceAnnouncerBlocks_203CF00, 160);
 }
 
 
@@ -228,7 +228,7 @@ signed int __fastcall sub_800BF88(int a1, unsigned int a2)
     signed int result; // r0
 
     sub_800C4BC(a1, a2);
-    *byte_203CB04 = 140;
+    *ePanelTickCounter_203CB04 = 140;
     byte_2036742 = 0;
     byte_2036744 = 0;
     byte_2036746 = 0;
@@ -264,7 +264,7 @@ int panel_800BFC4()
 
 
 // 0x800c01c
-void __fastcall sub_800C01C(int a1, int a2, signed int a3, int a4)
+void __fastcall buildPanelTileLayout_800C01C(int a1, int a2, signed int a3, int a4)
 {
     int v4; // r10
     int v5; // r6
@@ -290,7 +290,7 @@ void __fastcall sub_800C01C(int a1, int a2, signed int a3, int a4)
 
 
 // 0x800c0ba
-void __fastcall __noreturn sub_800C0BA(int a1, int a2, int a3)
+void __fastcall __noreturn drawPanelHighlight_800C0BA(int a1, int a2, int a3)
 {
     int v3; // r10
 
@@ -355,7 +355,7 @@ void sub_800C192()
 
 
 // 0x800c380
-void __fastcall sub_800C380(int a1, int a2)
+void __fastcall tickPanels_800C380(int a1, int a2)
 {
     int v2; // r7
     int v3; // r4
@@ -397,7 +397,7 @@ void __fastcall sub_800C380(int a1, int a2)
                 *(v2 + 6) = v11;
                 break;
             case 3:
-                sub_800C488(3);
+                tickBrokenPanelRegen_800C488(3);
                 *(v2 + 14) = v6;
                 *(v2 + 18) = &loc_708;
                 v12 = *(v2 + 24);
@@ -408,25 +408,25 @@ void __fastcall sub_800C380(int a1, int a2)
                 }
                 break;
             case 8:
-                sub_800C488(8);
+                tickBrokenPanelRegen_800C488(8);
                 *(v2 + 14) = v7;
                 *(v2 + 18) = &loc_708;
                 v13 = 140;
                 if ( *(v2 + 10) > 3 )
                     v13 = 70;
-                if ( *byte_203CB04 == v13 )
+                if ( *ePanelTickCounter_203CB04 == v13 )
                     sub_80C5B76(*(v2 + 10), *(v2 + 11), 0, 0);
                 break;
             default:
                 if ( v5 < 9 || v5 > 12 )
                 {
-                    sub_800C488(v5);
+                    tickBrokenPanelRegen_800C488(v5);
                     *(v2 + 14) = v9;
                     *(v2 + 18) = &loc_708;
                 }
                 else
                 {
-                    sub_800C488(v5);
+                    tickBrokenPanelRegen_800C488(v5);
                     *(v2 + 14) = v8;
                     v14 = *(v2 + 18) - 1;
                     *(v2 + 18) = v14;
@@ -447,7 +447,7 @@ void __fastcall sub_800C380(int a1, int a2)
 
 
 // 0x800c488
-void __fastcall sub_800C488(int a1)
+void __fastcall tickBrokenPanelRegen_800C488(int a1)
 {
     sub_802D234();
 }
@@ -512,7 +512,7 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
             v8[12] = v13;
             v8[10] = v7;
             v8[11] = v6;
-            sub_800C488(v13);
+            tickBrokenPanelRegen_800C488(v13);
             *(v8 + 7) = v14;
             *(v8 + 9) = &loc_708;
             ++v7;
@@ -549,14 +549,14 @@ int sub_800C5E0()
         {
             if ( !*v0 )
             {
-                sub_800C01C(v2, v3, 255, 0);
+                buildPanelTileLayout_800C01C(v2, v3, 255, 0);
                 v7 = v0[7];
                 sub_800C138(v0[10], v0[11] + 1);
             }
             if ( v0[13] )
             {
                 v0[13] = 0;
-                sub_800C01C(v2, v3, v0[8], v0[9]);
+                buildPanelTileLayout_800C01C(v2, v3, v0[8], v0[9]);
             }
             else
             {
@@ -564,9 +564,9 @@ int sub_800C5E0()
                 if ( v0[1] )
                 {
                     v0[1] = 0;
-                    sub_800C0BA(v2, v3, v6 - 1);
+                    drawPanelHighlight_800C0BA(v2, v3, v6 - 1);
                 }
-                sub_800C01C(v2, v3, v0[6], v0[7]);
+                buildPanelTileLayout_800C01C(v2, v3, v0[6], v0[7]);
             }
             result = v0[12];
             if ( v0[12] )

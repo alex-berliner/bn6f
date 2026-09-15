@@ -830,7 +830,7 @@ clearWord_e200AC1C:
 // bn F37l (2026-09-15): this mid-frame GFXTransfer drain lands tiles
 // during scanline emission; src/backdrop.rs lacks sub-frame tile replace
 // infra (HBlank callback / mid-scanline drain queue), so BNBD's
-// pre-transformed 7-step GFXAnim at sub_8001C94 leaves a 1 px residue at
+// pre-transformed 7-step GFXAnim at applyGFXAnimStepTiles_8001C94 leaves a 1 px residue at
 // scanline y=5 on k=97 because show_step's replace_tile loop writes all
 // 36 tiles before scanline 0.
 	thumb_func_start ProcessGFXTransferQueue
@@ -3290,6 +3290,18 @@ nullsub_36:
 // tile motif repeats within the map at x+128, which takes an eighth off.
 // Confirmed by comparing a frame against itself 896, 1792, ... 7168 frames
 // later -- exact matches at every multiple and nowhere between.
+	.equiv BATTLE_BACKDROP_SCROLL_X_STEP,   8   // Counter0 falls by this a frame
+	.equiv BATTLE_BACKDROP_SCROLL_Y_STEP,   4   // Counter1 by this
+	.equiv BATTLE_BACKDROP_SCROLL_SHIFT,    4   // both are >>4 into BG1H/VOFS
+	// The picture's VISUAL period, measured frame-against-frame on the real ROM
+	// (exact matches at every multiple of 896 and nowhere between). It is not the
+	// 1024 the register modulus suggests: the 32x32 motif repeats at x+128.
+	.equiv BATTLE_BACKDROP_SCROLL_PERIOD,   896
+	// The art's own period, from BattleBackdropGFXAnimScript_807FB98's schedule
+	// (ten 4-frame entries then nineteen 8-frame entries). The two clocks only
+	// realign every lcm(192, 896) = 2688 frames.
+	.equiv BATTLE_BACKDROP_ART_PERIOD,      192
+
 	thumb_func_start BGScrollCB_BG1Diagonal3to2Scroll
 BGScrollCB_BG1Diagonal3to2Scroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
@@ -3687,7 +3699,7 @@ off_8001C24:
    // 0x0 copy palette
 	.word sub_8001C44+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x4 copy 0x20 sized tiles
-	.word sub_8001C94+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+	.word applyGFXAnimStepTiles_8001C94+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x8 ???
 	.word sub_8001C52+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
   // 0xc manual palette transform
@@ -3760,7 +3772,7 @@ off_8001C90:
 // byte transform itself -- BNBD already holds the 7 pre-transformed GFXAnim
 // steps in show_step's replace_tile loop covering all 36 tiles pre-scanline.
 	thumb_local_start
-sub_8001C94: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+applyGFXAnimStepTiles_8001C94: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {r4,r7,lr}
 
 	// read pointer
@@ -3834,7 +3846,7 @@ off_8001CEC:
 	.word sub_8001D86+1
 	.word sub_8001EAE+1
 	.word sub_8001ED0+1
-	thumb_func_end sub_8001C94
+	thumb_func_end applyGFXAnimStepTiles_8001C94
 
 	thumb_local_start
 sub_8001CFC: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
@@ -4836,7 +4848,7 @@ getPalleteAndTransition_80023E0:
 	mov r2, #0x20
 	lsl r2, r2, #4
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
-	ldr r0, off_8002444 // =byte_3001550
+	ldr r0, off_8002444 // =iObjPaletteMirror_3001550
 	ldr r1, off_8002448 // =iPallete3001750
 	mov r2, #0x20
 	lsl r2, r2, #4
@@ -4882,14 +4894,14 @@ off_800243C:
 off_8002440:
 	.word iPalette3001B60
 off_8002444:
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 off_8002448:
 	.word iPallete3001750
 off_800244C:
 	.word byte_8002450
 byte_8002450:
-	.word sub_3005EF0+1
-	.word sub_3005EF0+1
+	.word blendStagedObjPalette_3005EF0+1
+	.word blendStagedObjPalette_3005EF0+1
 	.word sub_3005F78+1
 	.word sub_3005F78+1
 off_8002460:

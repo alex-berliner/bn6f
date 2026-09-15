@@ -505,16 +505,16 @@ loc_3005EDE:
 	mov pc, lr
 	thumb_func_end sub_3005EBA
 
-	thumb_func_start sub_3005EF0
+	thumb_func_start blendStagedObjPalette_3005EF0
 // r0 - some param
 // r2 - jumptable index
 // r6 - num palettes
-sub_3005EF0:
+blendStagedObjPalette_3005EF0:
 	push {r5,lr}
 	cmp r6, #0
 	ble locret_3005F18
 	mov r12, r0
-	ldr r1, off_3005F1C // =off_3005F20
+	ldr r1, off_3005F1C // =ObjPaletteBlendModes_3005F20
 	ldr r2, [r1,r2]
 	mov r9, r2
 	ldr r2, dword_3005F28 // =0x7bde
@@ -535,8 +535,8 @@ locret_3005F18:
 	pop {r5,pc}
 	.balign 4, 0
 off_3005F1C:
-	.word off_3005F20
-off_3005F20:
+	.word ObjPaletteBlendModes_3005F20
+ObjPaletteBlendModes_3005F20:
 	.word sub_3005F34+1
 	.word sub_3005F56+1
 dword_3005F28:
@@ -545,7 +545,7 @@ dword_3005F2C:
 	.word 0x8420
 dword_3005F30:
 	.word 0x3DEF
-	thumb_func_end sub_3005EF0
+	thumb_func_end blendStagedObjPalette_3005EF0
 
 	thumb_local_start
 sub_3005F34:
@@ -830,7 +830,7 @@ loc_3006128:
 	lsl r2, r2, #2
 	mov r6, #0x20 
 	push {r7}
-	bl sub_3005EF0
+	bl blendStagedObjPalette_3005EF0
 	pop {r0}
 loc_3006140:
 	mov r8, r5
@@ -838,7 +838,7 @@ loc_3006140:
 	ldr r4, [r7]
 	cmp r4, #0xf
 	bge loc_3006196
-	ldr r5, off_30061A4 // =byte_3001550
+	ldr r5, off_30061A4 // =iObjPaletteMirror_3001550
 	mov r1, #0
 loc_300614E:
 	cmp r1, r4
@@ -892,7 +892,7 @@ off_300619C:
 off_30061A0:
 	.word dword_200F340
 off_30061A4:
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	thumb_func_end sub_3006108
 
 	thumb_local_start

@@ -3,44 +3,44 @@
 sub_800B884:
 	push {lr}
 	push {r1}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	pop {r1}
 	strb r1, [r0,#1]
 	pop {pc}
 	thumb_func_end sub_800B884
 
 	thumb_local_start
-// Reads byte 1 of an alliance's slot in byte_203CF00 (sub_800BF5C indexes it by
+// Reads byte 1 of an alliance's slot in eAllianceAnnouncerBlocks_203CF00 (getAllianceAnnouncerBlock_800BF5C indexes it by
 // alliance * 0x50). It is a synchronisation byte between the two sides' popup
-// announcers, not a property of any chip; sub_800B89C zeroes it and
+// announcers, not a property of any chip; clearAllianceAnnouncerSlot_800B89C zeroes it and
 // object_drawChipName waits on it. Callers pass the OPPOSING alliance.
-sub_800B892:
+getChipNamePopupSyncByte_800B892:
 	push {lr}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldrb r0, [r0,#1]
 	pop {pc}
-	thumb_func_end sub_800B892
+	thumb_func_end getChipNamePopupSyncByte_800B892
 
 	thumb_local_start
-sub_800B89C:
+clearAllianceAnnouncerSlot_800B89C:
 	push {lr}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	mov r1, #0
 	strb r1, [r0,#1]
 	mov r1, #0
 	str r1, [r0,#8]
 	pop {pc}
-	thumb_func_end sub_800B89C
+	thumb_func_end clearAllianceAnnouncerSlot_800B89C
 
 	thumb_local_start
 sub_800B8AC:
 	push {r4,lr}
 	mov r4, r0
 	mov r0, #0
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0]
 	mov r0, #1
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0]
 	pop {r4,pc}
 	thumb_func_end sub_800B8AC
@@ -49,7 +49,7 @@ sub_800B8AC:
 sub_800B8C2:
 	push {lr}
 	push {r0}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldrb r1, [r0]
 	pop {r2}
 	mov r0, #0
@@ -64,7 +64,7 @@ locret_800B8D6:
 sub_800B8D8:
 	push {lr}
 	push {r0}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldrb r1, [r0,#3]
 	pop {r2}
 	mov r0, #0
@@ -187,8 +187,8 @@ locret_800B9AE:
 // Raises the chip-name popup. WHAT IT DOES NOT DO is decide, from the chip,
 // whether a chip gets a name popup at all -- there is no chip-category test
 // and no ChipData flag gating the draw here.
-// The gate is sub_800B892(Alliance ^ 1), i.e. byte_203CF00[opposing * 0x50 + 1]
-// (via sub_800BF5C): a per-alliance announcer-slot byte that serialises the two
+// The gate is getChipNamePopupSyncByte_800B892(Alliance ^ 1), i.e. eAllianceAnnouncerBlocks_203CF00[opposing * 0x50 + 1]
+// (via getAllianceAnnouncerBlock_800BF5C): a per-alliance announcer-slot byte that serialises the two
 // sides so both popups do not animate at once. Values 0 and 3 mean "go";
 // anything else simply returns and retries next frame, with no state change.
 // ChipData+9 bit 1 is read further down, but BOTH branches reach the draw --
@@ -211,7 +211,7 @@ object_drawChipName:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #3
 	beq loc_800B9D4
 	cmp r0, #0
@@ -267,7 +267,7 @@ loc_800BA28:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #0
 	beq loc_800BA56
 	cmp r0, #5
@@ -281,7 +281,7 @@ loc_800BA56:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldrb r1, [r0,#2]
 	tst r1, r1
 	bne loc_800BA7E
@@ -312,7 +312,7 @@ sub_800BA8A:
 	tst r0, r0
 	bne loc_800BB08
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #4
 	beq loc_800BAB8
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -321,7 +321,7 @@ sub_800BA8A:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #3
 	beq loc_800BAB8
 	cmp r0, #0
@@ -384,7 +384,7 @@ loc_800BB1C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #0
 	beq loc_800BB46
 	cmp r0, #5
@@ -398,7 +398,7 @@ loc_800BB46:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r1, [r0,#0xc]
 	ldrh r2, [r1,#0x24]
 	tst r2, r2
@@ -459,7 +459,7 @@ sub_800BBA8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #3
 	beq loc_800BBCC
 	cmp r0, #0
@@ -523,7 +523,7 @@ loc_800BC2C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #0
 	beq loc_800BC5A
 	cmp r0, #5
@@ -537,7 +537,7 @@ loc_800BC5A:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r1, [r0,#0xc]
 	ldrh r2, [r1,#0x24]
 	tst r2, r2
@@ -567,7 +567,7 @@ object_undimScreen:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #5
 	beq loc_800BCA4
 	cmp r0, #0
@@ -600,7 +600,7 @@ sub_800BCC0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #5
 	beq loc_800BCDC
 	cmp r0, #0
@@ -632,7 +632,7 @@ sub_800BCF6:
 	ldrb r0, [r5,#0x16]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #5
 	beq loc_800BD1A
 	cmp r0, #0
@@ -673,7 +673,7 @@ loc_800BD42:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl getChipNamePopupSyncByte_800B892
 	cmp r0, #5
 	beq loc_800BD5E
 	cmp r0, #0
@@ -687,7 +687,7 @@ loc_800BD5E:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r1, [r0,#8]
 	tst r1, r1
 	beq loc_800BD80
@@ -701,7 +701,7 @@ loc_800BD80:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B89C
+	bl clearAllianceAnnouncerSlot_800B89C
 	mov r0, #4
 	bl battle_clearFlags
 loc_800BD94:
@@ -709,9 +709,9 @@ loc_800BD94:
 	mov r1, #0
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B89C
+	bl clearAllianceAnnouncerSlot_800B89C
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	mov r2, #0
 	str r2, [r0,#0xc]
 	bl object_freeMemory
@@ -829,7 +829,7 @@ loc_800BE6C:
 	tst r0, r0
 	bne locret_800BED8
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B89C
+	bl clearAllianceAnnouncerSlot_800B89C
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
@@ -839,7 +839,7 @@ loc_800BE6C:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r3, [r0,#8]
 	tst r3, r3
 	beq loc_800BEA2
@@ -851,10 +851,10 @@ loc_800BEA2:
 	push {r4}
 	ldrb r4, [r5,#oBattleObject_Alliance]
 	mov r0, #0
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0,#3]
 	mov r0, #1
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0,#3]
 	pop {r4}
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -880,7 +880,7 @@ locret_800BED8:
 sub_800BEDA:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r2, [r0,#0xc]
 	tst r2, r2
 	beq loc_800BEEC
@@ -897,7 +897,7 @@ loc_800BEF8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldrb r2, [r0,#2]
 	tst r2, r2
 	bne loc_800BF12
@@ -917,10 +917,10 @@ sub_800BF16:
 	push {r0-r2}
 	mov r4, r0
 	mov r0, #0
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0,#3]
 	mov r0, #1
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	strb r4, [r0,#3]
 	pop {r0-r2}
 	b loc_800BF32
@@ -931,7 +931,7 @@ loc_800BF32:
 	bl sub_800B8AC
 	pop {r0-r2}
 	push {r1,r2}
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r3, [r0,#8]
 	tst r3, r3
 	pop {r1,r2}
@@ -949,22 +949,22 @@ loc_800BF50:
 	pop {r4,pc}
 	thumb_func_end sub_800BF16
 
-// alliance -> &byte_203CF00[alliance * 0x50]. The per-alliance announcer block
-// that sub_800B892/sub_800B89C/sub_800B8C2 read and write byte 1 of.
-	thumb_func_start sub_800BF5C
-sub_800BF5C:
+// alliance -> &eAllianceAnnouncerBlocks_203CF00[alliance * 0x50]. The per-alliance announcer block
+// that getChipNamePopupSyncByte_800B892/clearAllianceAnnouncerSlot_800B89C/sub_800B8C2 read and write byte 1 of.
+	thumb_func_start getAllianceAnnouncerBlock_800BF5C
+getAllianceAnnouncerBlock_800BF5C:
 	mov r1, #0x50 
 	mul r0, r1
-	ldr r1, off_800BF80 // =byte_203CF00 
+	ldr r1, off_800BF80 // =eAllianceAnnouncerBlocks_203CF00 
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_800BF5C
+	thumb_func_end getAllianceAnnouncerBlock_800BF5C
 
 	thumb_func_start zeroFill_800BF66
 zeroFill_800BF66:
 	push {lr}
 	// memBlock
-	ldr r0, off_800BF84 // =byte_203CF00 
+	ldr r0, off_800BF84 // =eAllianceAnnouncerBlocks_203CF00 
 	// size
 	mov r1, #0xa0
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -977,16 +977,16 @@ off_800BF78:
 off_800BF7C:
 	.word 0x100
 off_800BF80:
-	.word byte_203CF00
+	.word eAllianceAnnouncerBlocks_203CF00
 off_800BF84:
-	.word byte_203CF00
+	.word eAllianceAnnouncerBlocks_203CF00
 	thumb_func_end zeroFill_800BF66
 
 	thumb_func_start sub_800BF88
 sub_800BF88:
 	push {r4,r6,r7,lr}
 	bl sub_800C4BC
-	ldr r0, off_800C1F8 // =byte_203CB04 
+	ldr r0, off_800C1F8 // =ePanelTickCounter_203CB04 
 	mov r1, #0x8c
 	str r1, [r0]
 	ldr r7, off_800BFC0 // =byte_2036740 
@@ -1024,7 +1024,7 @@ panel_800BFC4:
 	bl battle_isTimeStop
 	bne locret_800C016
 	bl sub_800C746
-	ldr r0, off_800C1FC // =byte_203CB04 
+	ldr r0, off_800C1FC // =ePanelTickCounter_203CB04 
 	ldr r1, [r0]
 	sub r1, #1
 	str r1, [r0]
@@ -1039,7 +1039,7 @@ loc_800BFEA:
 loc_800BFEC:
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C380
+	bl tickPanels_800C380
 	mov r0, #0
 	ldrb r1, [r7,#oPanelData_Type]
 	cmp r1, #3
@@ -1065,7 +1065,7 @@ off_800C018:
 	thumb_func_end panel_800BFC4
 
 	thumb_local_start
-sub_800C01C:
+buildPanelTileLayout_800C01C:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1136,10 +1136,10 @@ byte_800C08C:
 byte_800C0AA:
 	.byte 0xFB, 0x0, 0x5, 0xA, 0xF, 0x14, 0x19, 0x1E, 0x1E, 0x19
 	.byte 0x14, 0xF, 0xA, 0x5, 0x0, 0xFB
-	thumb_func_end sub_800C01C
+	thumb_func_end buildPanelTileLayout_800C01C
 
 	thumb_local_start
-sub_800C0BA:
+drawPanelHighlight_800C0BA:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1177,7 +1177,7 @@ off_800C0F4:
 	.word dword_86E0478
 off_800C0FC:
 	.word byte_800C0AA
-	thumb_func_end sub_800C0BA
+	thumb_func_end drawPanelHighlight_800C0BA
 
 	thumb_local_start
 sub_800C100:
@@ -1310,9 +1310,9 @@ off_800C1DC:
 	.word dword_800C340
 	.word 0x0
 off_800C1F8:
-	.word byte_203CB04
+	.word ePanelTickCounter_203CB04
 off_800C1FC:
-	.word byte_203CB04
+	.word ePanelTickCounter_203CB04
 dword_800C200:
 	.word 0x30A02
 	.word unk_30019A0
@@ -1418,7 +1418,7 @@ dword_800C340:
 	thumb_func_end sub_800C192
 
 	thumb_local_start
-sub_800C380:
+tickPanels_800C380:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r5, r1
@@ -1435,7 +1435,7 @@ loc_800C38E:
 loc_800C398:
 	cmp r0, #3
 	bne loc_800C3A8
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1443,7 +1443,7 @@ loc_800C398:
 loc_800C3A8:
 	cmp r0, #8
 	bne loc_800C3B8
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1453,11 +1453,11 @@ loc_800C3B8:
 	blt loc_800C3C8
 	cmp r0, #0xc
 	bgt loc_800C3C8
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	b loc_800C45C
 loc_800C3C8:
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1473,7 +1473,7 @@ loc_800C3D4:
 	mov r0, r4
 	mov r1, r5
 	bl object_updatePanelParameters
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	pop {r4-r7,pc}
 loc_800C3F2:
@@ -1505,14 +1505,14 @@ loc_800C402:
 	mov r0, r4
 	mov r1, r5
 	bl object_updatePanelParameters
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	mov r0, #0x97
 	bl PlaySoundEffect
 locret_800C436:
 	pop {r4-r7,pc}
 loc_800C438:
-	ldr r0, off_800C4B8 // =byte_203CB04 
+	ldr r0, off_800C4B8 // =ePanelTickCounter_203CB04 
 	ldr r1, [r0]
 	mov r2, #0x8c
 	ldrb r0, [r7,#0xa]
@@ -1556,10 +1556,10 @@ loc_800C484:
 	strb r2, [r7,#6]
 locret_800C486:
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C380
+	thumb_func_end tickPanels_800C380
 
 	thumb_local_start
-sub_800C488:
+tickBrokenPanelRegen_800C488:
 	push {r0,r2,r3,lr}
 	bl GetBattleMode
 	ldr r1, off_800C498 // =0x258 
@@ -1582,8 +1582,8 @@ off_800C4B0:
 off_800C4B4:
 	.word 0x708
 off_800C4B8:
-	.word byte_203CB04
-	thumb_func_end sub_800C488
+	.word ePanelTickCounter_203CB04
+	thumb_func_end tickBrokenPanelRegen_800C488
 
 	thumb_local_start
 sub_800C4BC:
@@ -1668,7 +1668,7 @@ loc_800C53C:
 	strb r0, [r7,#0xc]
 	strb r4, [r7,#0xa]
 	strb r5, [r7,#0xb]
-	bl sub_800C488
+	bl tickBrokenPanelRegen_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C58C // =0x708 
 	strh r1, [r7,#0x12]
@@ -1728,13 +1728,13 @@ loc_800C5EA:
 	mov r1, r5
 	ldrb r2, [r7,#6]
 	ldrb r3, [r7,#7]
-	bl sub_800C01C
+	bl buildPanelTileLayout_800C01C
 	b loc_800C662
 	mov r0, r4
 	mov r1, r5
 	ldrb r2, [r7,#2]
 	ldrb r3, [r7,#3]
-	bl sub_800C01C
+	bl buildPanelTileLayout_800C01C
 	b loc_800C662
 loc_800C626:
 	mov r0, #0
@@ -1743,7 +1743,7 @@ loc_800C626:
 	mov r1, r5
 	ldrb r2, [r7,#8]
 	ldrb r3, [r7,#9]
-	bl sub_800C01C
+	bl buildPanelTileLayout_800C01C
 	b loc_800C662
 loc_800C638:
 	sub r2, r0, #1
@@ -1751,14 +1751,14 @@ loc_800C638:
 	strb r0, [r7,#1]
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C0BA
+	bl drawPanelHighlight_800C0BA
 	b loc_800C662
 loc_800C648:
 	mov r0, r4
 	mov r1, r5
 	mov r2, #0xff
 	mov r3, #0
-	bl sub_800C01C
+	bl buildPanelTileLayout_800C01C
 	ldrb r0, [r7,#0xa]
 	ldrb r1, [r7,#0xb]
 	add r1, #1

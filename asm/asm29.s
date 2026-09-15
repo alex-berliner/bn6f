@@ -10130,8 +10130,8 @@ sub_80AA4B8:
 	// frame by 1 flips between roll success and failure and lands on many
 	// distinct nearby EnemySetup table entries, not the same one
 	// repeatedly).
-	thumb_func_start sub_80AA4C0
-sub_80AA4C0: // () -> (* BattleSettings, zf)
+	thumb_func_start rollRandomEncounter_80AA4C0
+rollRandomEncounter_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
 
 	mov r7, r10
@@ -10245,7 +10245,7 @@ loc_80AA54E: // endif
 	blt loc_80AA56E
 
 	mov r2, #0x40 
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	tst r0, r0
 	beq loc_80AA56E
 
@@ -10263,7 +10263,7 @@ loc_80AA56E: // endif
 	bne loc_80AA584
 
 	mov r2, #0x20 
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	tst r0, r0
 	bne locGotBattleSettings_80AA59E
 
@@ -10274,12 +10274,12 @@ loc_80AA584: // endif
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 
 	mov r2, r0
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	tst r0, r0
 	bne locGotBattleSettings_80AA59E
 
 	mov r2, #0x1f
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 
 locGotBattleSettings_80AA59E: // success getting battle settings
 
@@ -10322,7 +10322,7 @@ locret_80AA5DC:
 	tst r0, r0
 	pop {r4,r6,r7,pc}
 	.word byte_8020CE4
-	thumb_func_end sub_80AA4C0
+	thumb_func_end rollRandomEncounter_80AA4C0
 
 	thumb_func_start chooseRandomEncounterMaybe_80aa5e4
 chooseRandomEncounterMaybe_80aa5e4:
@@ -10330,13 +10330,13 @@ chooseRandomEncounterMaybe_80aa5e4:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
 	mov r2, #0x1f
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	str r0, [r7,#oGameState_CurBattleDataPtr]
 	pop {r7,pc}
 	thumb_func_end chooseRandomEncounterMaybe_80aa5e4
 
-	thumb_func_start sub_80AA5F4
-sub_80AA5F4: // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	thumb_func_start selectEncounterTableForMap_80AA5F4
+selectEncounterTableForMap_80AA5F4: // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	push {r4-r7,lr}
 	sub sp, sp, #0xec
 	str r2, [sp,#0xe8]
@@ -10420,7 +10420,7 @@ loc_80AA670:
 	tst r4, r4
 	bne loc_80AA678
 	mov r0, #0
-// bn T9b (2026-09-15): this ldr of iCurrFrame in sub_80AA4C0 is the
+// bn T9b (2026-09-15): this ldr of iCurrFrame in rollRandomEncounter_80AA4C0 is the
 // frame-60 one-shot poke target -- 0x0200a210:0x371 (value -1, same mod-12
 // class as 5) makes the roll pick BattleSettings record index 6 =
 // 0x080b4bd8 and slots populate at frame 148 with slot0 panel 0x0205 /
@@ -10454,7 +10454,7 @@ off_80AA69C:
 	.word off_8020180
 off_80AA6A0:
 	.word off_8020188
-	thumb_func_end sub_80AA5F4
+	thumb_func_end selectEncounterTableForMap_80AA5F4
 
 	thumb_local_start
 sub_80AA6A4:

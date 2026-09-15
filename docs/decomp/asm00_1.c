@@ -1081,14 +1081,14 @@ int sub_8003BF4()
 		v2 += 200;
 	}
 	while ( v1 < v0 );
-	return sub_80028C0(0);
+	return storeObjectOamSlot_80028C0(0);
 }
 
 
 // 0x8003c70
 int sub_8003C70()
 {
-	return sub_80028C0(0);
+	return storeObjectOamSlot_80028C0(0);
 }
 
 
@@ -1139,14 +1139,14 @@ int sub_8003E18()
 				sub_30061E8();
 		}
 	}
-	return sub_80028C0(1);
+	return storeObjectOamSlot_80028C0(1);
 }
 
 
 // 0x8003e98
 int sub_8003E98()
 {
-	return sub_80028C0(1);
+	return storeObjectOamSlot_80028C0(1);
 }
 
 
@@ -1178,14 +1178,14 @@ int sub_8004218()
 				sub_30061E8();
 		}
 	}
-	return sub_80028C0(3);
+	return storeObjectOamSlot_80028C0(3);
 }
 
 
 // 0x8004298
 int sub_8004298()
 {
-	return sub_80028C0(3);
+	return storeObjectOamSlot_80028C0(3);
 }
 
 
@@ -1231,14 +1231,14 @@ int sub_8004510()
 				sub_30061E8();
 		}
 	}
-	return sub_80028C0(4);
+	return storeObjectOamSlot_80028C0(4);
 }
 
 
 // 0x8004590
 int sub_8004590()
 {
-	return sub_80028C0(4);
+	return storeObjectOamSlot_80028C0(4);
 }
 
 
@@ -1379,14 +1379,14 @@ int npc_init_800467C()
 		v2 += 216;
 	}
 	while ( v1 < v0 );
-	return sub_80028C0(2);
+	return storeObjectOamSlot_80028C0(2);
 }
 
 
 // 0x80046f8
 int sub_80046F8()
 {
-	return sub_80028C0(2);
+	return storeObjectOamSlot_80028C0(2);
 }
 
 
@@ -1617,14 +1617,14 @@ int sub_8004934()
 		structArr += 30;
 	}
 	while ( v1 < v0 );
-	return sub_80028C0(5);
+	return storeObjectOamSlot_80028C0(5);
 }
 
 
 // 0x80049b0
 int sub_80049B0()
 {
-	return sub_80028C0(5);
+	return storeObjectOamSlot_80028C0(5);
 }
 
 
@@ -3186,7 +3186,7 @@ void checkThenStartBattle_8005A8C()
                                         chatbox_mask_eFlags2009F38(128);
                                         if ( v1 )
                                         {
-                                            v2 = sub_80AA4C0();
+                                            v2 = rollRandomEncounter_80AA4C0();
                                             if ( !v1 )
                                             {
                                                 StartBattle(v2, 1);
@@ -11405,7 +11405,7 @@ void __fastcall sub_800A954(int a1, int a2, int a3, int a4)
     int v5; // r2
     int v6; // r3
 
-    sub_800A964(byte_20349C0, a2, a3, a4);
+    sub_800A964(eBattleHands_20349C0, a2, a3, a4);
     sub_800A964(byte_2034A10, v4, v5, v6);
 }
 
@@ -12111,7 +12111,7 @@ char *handleVariableDamageChip_800AEE8()
     int v3; // r6
     char *result; // r0
 
-    v0 = &byte_20349C0[2 * byte_20349C0[0] + 2];
+    v0 = &eBattleHands_20349C0[2 * eBattleHands_20349C0[0] + 2];
     v1 = *v0;
     if ( *(getChip8021DA8(v1) + 9) & 0x80 )
         *(v0 + 6) = sub_80109A4(v1, 0);
@@ -12472,7 +12472,7 @@ int sub_800B3A2()
 void __fastcall transferBattleHandNaviStats_800B3D8(int a1)
 {
     if ( byte_203F4A4[0] != 255 )
-        CopyWords(byte_203F4A4, byte_20349C0, 0x50u);
+        CopyWords(byte_203F4A4, eBattleHands_20349C0, 0x50u);
     if ( sub_802D246() & 8 && byte_203F5A4[0] != 255 )
         CopyWords(byte_203F5A4, byte_2034A10, 0x50u);
     CopyWords(byte_203F4F4, byte_203CE00, 0x64u);
@@ -12929,25 +12929,25 @@ char *__fastcall sub_800B884(int a1)
     char *result; // r0
     char v2; // [sp+0h] [bp-8h]
 
-    result = sub_800BF5C(a1);
+    result = getAllianceAnnouncerBlock_800BF5C(a1);
     result[1] = v2;
     return result;
 }
 
 
 // 0x800b892
-int __fastcall sub_800B892(int a1)
+int __fastcall getChipNamePopupSyncByte_800B892(int a1)
 {
-    return sub_800BF5C(a1)[1];
+    return getAllianceAnnouncerBlock_800BF5C(a1)[1];
 }
 
 
 // 0x800b89c
-char *__fastcall sub_800B89C(int a1)
+char *__fastcall clearAllianceAnnouncerSlot_800B89C(int a1)
 {
     char *result; // r0
 
-    result = sub_800BF5C(a1);
+    result = getAllianceAnnouncerBlock_800BF5C(a1);
     result[1] = 0;
     *(result + 2) = 0;
     return result;
@@ -12961,8 +12961,8 @@ char *__fastcall sub_800B8AC(char a1)
     char *result; // r0
 
     v1 = a1;
-    *sub_800BF5C(0) = a1;
-    result = sub_800BF5C(1);
+    *getAllianceAnnouncerBlock_800BF5C(0) = a1;
+    result = getAllianceAnnouncerBlock_800BF5C(1);
     *result = v1;
     return result;
 }
@@ -12976,7 +12976,7 @@ signed int __fastcall sub_800B8C2(int a1)
     signed int result; // r0
 
     v1 = a1;
-    v2 = *sub_800BF5C(a1);
+    v2 = *getAllianceAnnouncerBlock_800BF5C(a1);
     result = 0;
     if ( v2 == v1 )
         result = 1;
@@ -12992,7 +12992,7 @@ signed int __fastcall sub_800B8D8(int a1)
     signed int result; // r0
 
     v1 = a1;
-    v2 = sub_800BF5C(a1)[3];
+    v2 = getAllianceAnnouncerBlock_800BF5C(a1)[3];
     result = 0;
     if ( v2 == v1 )
         result = 1;
@@ -13101,10 +13101,10 @@ char *object_drawChipName()
         result = isBannerBusy_801E754();
         if ( !result )
         {
-            if ( sub_800B8C2(*(v0 + 22)) || (v7 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
+            if ( sub_800B8C2(*(v0 + 22)) || (v7 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
             {
                 sub_800B884(*(v0 + 22));
-                v8 = sub_800BF5C(*(v0 + 22));
+                v8 = getAllianceAnnouncerBlock_800BF5C(*(v0 + 22));
                 if ( v8[2] || *(*(v8 + 3) + 36) )
                 {
                     *(v0 + 9) += 4;
@@ -13127,7 +13127,7 @@ char *object_drawChipName()
     else
     {
         sub_800B884(*(v0 + 22));
-        result = sub_800B892(*(v0 + 22) ^ 1);
+        result = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
         if ( result == &byte_0[3] || !result )
         {
             clearBattleHudElements_801BED6(0x10000);
@@ -13179,10 +13179,10 @@ char *sub_800BA8A()
             result = isBannerBusy_801E754();
         if ( !result )
         {
-            if ( sub_800B8C2(*(v0 + 22)) || (v7 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
+            if ( sub_800B8C2(*(v0 + 22)) || (v7 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
             {
                 sub_800B884(*(v0 + 22));
-                if ( *(*(sub_800BF5C(*(v0 + 22)) + 3) + 36) )
+                if ( *(*(getAllianceAnnouncerBlock_800BF5C(*(v0 + 22)) + 3) + 36) )
                 {
                     if ( *(v0 + 48) - 221 <= 0x3B && sub_802CE78(*(v0 + 22) ^ 1) == 186 )
                     {
@@ -13211,8 +13211,8 @@ char *sub_800BA8A()
             }
         }
     }
-    else if ( sub_800B892(*(v0 + 22)) == 4
-                 || (sub_800B884(*(v0 + 22)), result = sub_800B892(*(v0 + 22) ^ 1), result == &byte_0[3])
+    else if ( getChipNamePopupSyncByte_800B892(*(v0 + 22)) == 4
+                 || (sub_800B884(*(v0 + 22)), result = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1), result == &byte_0[3])
                  || !result )
     {
         clearBattleHudElements_801BED6(0x10000);
@@ -13264,10 +13264,10 @@ char *sub_800BBA8()
         result = isBannerBusy_801E754();
         if ( !result )
         {
-            if ( sub_800B8C2(*(v0 + 22)) || (v14 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v14 == 5 )
+            if ( sub_800B8C2(*(v0 + 22)) || (v14 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1)) == 0 || v14 == 5 )
             {
                 sub_800B884(*(v0 + 22));
-                if ( *(*(sub_800BF5C(*(v0 + 22)) + 3) + 36) )
+                if ( *(*(getAllianceAnnouncerBlock_800BF5C(*(v0 + 22)) + 3) + 36) )
                     *(v0 + 9) += 4;
                 else
                     *(v0 + 9) += 8;
@@ -13283,7 +13283,7 @@ char *sub_800BBA8()
     else
     {
         sub_800B884(*(v0 + 22));
-        result = sub_800B892(*(v0 + 22) ^ 1);
+        result = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
         if ( result == &byte_0[3] || !result )
         {
             clearBattleHudElements_801BED6(0x10000);
@@ -13341,7 +13341,7 @@ LABEL_5:
             return result;
         goto LABEL_6;
     }
-    v1 = sub_800B892(*(v0 + 22) ^ 1);
+    v1 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
     if ( v1 == 5 || !v1 )
     {
         engine_setScreeneffect(56, 4);
@@ -13370,7 +13370,7 @@ LABEL_5:
             return result;
         goto LABEL_6;
     }
-    v1 = sub_800B892(*(v0 + 22) ^ 1);
+    v1 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
     if ( v1 == 5 || !v1 )
     {
         engine_setScreeneffect(116, 128);
@@ -13393,7 +13393,7 @@ int sub_800BCF6()
 
     if ( !*(v0 + 11) )
     {
-        v1 = sub_800B892(*(v0 + 22) ^ 1);
+        v1 = getChipNamePopupSyncByte_800B892(*(v0 + 22) ^ 1);
         if ( v1 != 5 && v1 )
             engine_setScreeneffect(60, byte_100);
         else

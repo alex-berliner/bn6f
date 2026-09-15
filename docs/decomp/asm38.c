@@ -262,7 +262,7 @@ int __fastcall sub_3005EBA(int result, int a2, int a3, __int16 a4)
 
 
 // 0x3005ef0
-int __fastcall sub_3005EF0(int result, int a2, int a3)
+int __fastcall blendStagedObjPalette_3005EF0(int result, int a2, int a3)
 {
     int v3; // r6
     int v4; // r7
@@ -440,7 +440,7 @@ void sub_3006108()
             *&(*v3)[v4] = *(v2 + v4);
         }
         while ( v4 );
-        sub_3005EF0(*(v0 + 6), v1, 4 * (*(v0 + 6) >> 15));
+        blendStagedObjPalette_3005EF0(*(v0 + 6), v1, 4 * (*(v0 + 6) >> 15));
         v2 = v3;
     }
     v5 = v0;

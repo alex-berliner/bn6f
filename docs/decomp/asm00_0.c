@@ -2439,7 +2439,7 @@ int __fastcall sub_8001C52(int a1)
 
 
 // 0x8001c94
-int __fastcall sub_8001C94(int *a1)
+int __fastcall applyGFXAnimStepTiles_8001C94(int *a1)
 {
     int v1; // r7
     int v2; // r6
@@ -2855,7 +2855,7 @@ void __cdecl getPalleteAndTransition_80023E0()
     int v6; // r6
 
     CopyByEightWords(palette_3001960, iPalette3001B60, 0x200u);
-    CopyByEightWords(byte_3001550, iPallete3001750, 0x200u);
+    CopyByEightWords(iObjPaletteMirror_3001550, iPallete3001750, 0x200u);
     v1 = ePalette20097a0;
     do
     {

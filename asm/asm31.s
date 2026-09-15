@@ -10496,7 +10496,7 @@ off_80BCF48:
 	.word off_80BCF4C
 off_80BCF4C:
 	.word sub_80BCF58+1
-	.word sub_80BCF7A+1
+	.word playBusterFireSound_80BCF7A+1
 	.word sub_80BCFF6+1
 	thumb_func_end sub_80BCF3A
 
@@ -10524,7 +10524,7 @@ locret_80BCF78:
 	thumb_func_end sub_80BCF58
 
 	thumb_local_start
-sub_80BCF7A:
+playBusterFireSound_80BCF7A:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -10582,7 +10582,7 @@ loc_80BCFF0:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 locret_80BCFF4:
 	pop {pc}
-	thumb_func_end sub_80BCF7A
+	thumb_func_end playBusterFireSound_80BCF7A
 
 	thumb_local_start
 sub_80BCFF6:
@@ -24307,7 +24307,7 @@ sub_80C33CA:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_80C33F4
-	bl sub_800FC7C
+	bl advanceBattleHandChipIndex_800FC7C
 	pop {r5}
 loc_80C33F4:
 	mov r0, #3
@@ -24595,7 +24595,7 @@ sub_80C35CE:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_80C3616
-	bl sub_800FC7C
+	bl advanceBattleHandChipIndex_800FC7C
 loc_80C3616:
 	pop {r5}
 	mov r0, #0x27 
@@ -29532,13 +29532,13 @@ loc_80C5C7C:
 off_80C5C90:
 	.word off_80C5C94
 off_80C5C94:
-	.word sub_80C5C9C+1
+	.word thrownBombObject_update_80C5C9C+1
 	.word sub_80C5D84+1
 	thumb_func_end sub_80C5C40
 
 // The flight of a thrown chip object (battle object type 3 sub-type 8), used
 // by MiniBomb, EnergBom, MegEnBom, BigBomb and the three seeds.
-// On the first frame it copies the three words of byte_80C5D58 into the
+// On the first frame it copies the three words of ThrownBombLaunchParams_80C5D58 into the
 // velocity fields -- +0x40 X velocity (multiplied by object_getFrontDirection),
 // +0x44 gravity, +0x48 Z velocity -- and sets Timer to 0x28.
 // Every frame after: ZVelocity += gravity FIRST, then X += XVelocity and
@@ -29548,7 +29548,7 @@ off_80C5C94:
 // leaves the navi's hand at Z 0x300000 with XVelocity 0x2E666 and ZVelocity
 // 0x20666, losing 0x2800 a frame, and Timer runs 40 down to 0.
 	thumb_local_start
-sub_80C5C9C:
+thrownBombObject_update_80C5C9C:
 	push {r4,r6,r7,lr}
 	mov r0, r9
 	push {r0}
@@ -29556,7 +29556,7 @@ sub_80C5C9C:
 	tst r0, r0
 	bne loc_80C5CC0
 	bl object_getFrontDirection // () -> int
-	ldr r7, off_80C5D70 // =byte_80C5D58
+	ldr r7, off_80C5D70 // =ThrownBombLaunchParams_80C5D58
 	ldmia r7!, {r1-r3}
 	mul r1, r0
 	mov r7, #0x40 
@@ -29601,7 +29601,7 @@ loc_80C5CC0:
 	tst r0, r0
 	beq loc_80C5D36
 	ldrb r0, [r5,#oBattleObject_Param1]
-	ldr r6, off_80C5D78 // =dword_80C5D7C 
+	ldr r6, off_80C5D78 // =ThrownBombLandRegionByParam1_80C5D7C 
 	ldrb r3, [r6,r0]
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
 	strb r3, [r7,#oCollisionData_Region]
@@ -29640,25 +29640,25 @@ loc_80C5D52:
 	mov r9, r0
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
-// The launch that sub_80C5C9C reads: three words, X velocity 0x0002E666,
+// The launch that thrownBombObject_update_80C5C9C reads: three words, X velocity 0x0002E666,
 // gravity 0xFFFFD800 and Z velocity 0x00020666. The `ldmia r7!, {r1-r3}`
 // above takes exactly those three; the words after them are not reached
 // through this label from here.
-byte_80C5D58:
+ThrownBombLaunchParams_80C5D58:
 	.byte 0x66, 0xE6, 0x2, 0x0, 0x0, 0xD8, 0xFF, 0xFF, 0x66, 0x6, 0x2
 	.byte 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6
 	.byte 0x2, 0x0
 off_80C5D70:
-	.word byte_80C5D58
+	.word ThrownBombLaunchParams_80C5D58
 off_80C5D74:
 	.word dword_80C5D80
 off_80C5D78:
-	.word dword_80C5D7C
-dword_80C5D7C:
+	.word ThrownBombLandRegionByParam1_80C5D7C
+ThrownBombLandRegionByParam1_80C5D7C:
 	.word 0xF000001
 dword_80C5D80:
 	.word 0x0
-	thumb_func_end sub_80C5C9C
+	thumb_func_end thrownBombObject_update_80C5C9C
 
 	thumb_local_start
 sub_80C5D84:
@@ -29692,7 +29692,7 @@ loc_80C5DB6:
 	thumb_func_end sub_80C5D84
 
 	thumb_local_start
-sub_80C5DBC:
+spawnThrownBomb_80C5DBC:
 	push {lr}
 	push {r5}
 	mov r0, #8
@@ -29709,7 +29709,7 @@ sub_80C5DBC:
 locret_80C5DD8:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80C5DBC
+	thumb_func_end spawnThrownBomb_80C5DBC
 
 	thumb_func_start t3_0x9_80C5DDC
 t3_0x9_80C5DDC:
@@ -33946,7 +33946,7 @@ sub_80C7E24:
 	ldr r0, [r1,#oCollisionData_FlagsFromCollision]
 	tst r0, r0
 	beq loc_80C7E50
-	bl sub_80C7EC8
+	bl spawnDeathDebris_80C7EC8
 	bl object_clearCollisionRegion // () -> void
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	tst r0, r0
@@ -34000,7 +34000,7 @@ loc_80C7E86:
 	bgt locret_80C7EC2
 	bl object_isCurrentPanelSolid
 	beq loc_80C7EA2
-	bl sub_80C7EC8
+	bl spawnDeathDebris_80C7EC8
 	b loc_80C7EAE
 loc_80C7EA2:
 	mov r0, #0x34 
@@ -34027,7 +34027,7 @@ dword_80C7EC4:
 	thumb_func_end sub_80C7E6C
 
 	thumb_local_start
-sub_80C7EC8:
+spawnDeathDebris_80C7EC8:
 	push {lr}
 	mov r3, #0
 	ldr r6, off_80C7EFC // =dword_80C7F00 
@@ -34061,7 +34061,7 @@ byte_80C7F04:
 	.byte 0x0, 0x80, 0x2, 0x0, 0x0, 0x80, 0xFF, 0xFF, 0x0, 0x0, 0x3, 0x0, 0x0
 	.byte 0x0, 0x1, 0x0, 0x0, 0x80, 0x2, 0x0, 0x0, 0x80, 0xFF, 0xFF, 0x0, 0x80
 	.byte 0x1, 0x0
-	thumb_func_end sub_80C7EC8
+	thumb_func_end spawnDeathDebris_80C7EC8
 
 	thumb_func_start sub_80C7F20
 sub_80C7F20:
@@ -60509,7 +60509,7 @@ loc_80D4786:
 off_80D4798:
 	.word off_80D479C
 off_80D479C:
-	.word sub_80D47C0+1
+	.word vDollObject_update_80D47C0+1
 	.word sub_80165B8+1
 	.word sub_80D4888+1
 	.word sub_80166AE+1
@@ -60521,7 +60521,7 @@ off_80D479C:
 	thumb_func_end sub_80D4754
 
 	thumb_local_start
-sub_80D47C0:
+vDollObject_update_80D47C0:
 	push {r4,r6,lr}
 	bl battle_isTimeStop
 	bne locret_80D486E
@@ -60537,7 +60537,7 @@ sub_80D47C0:
 	mov r4, #0x3c 
 	mov r0, #0x34 
 	add r0, r0, r5
-	ldr r6, dword_80D4A18 // =0xffffe000 
+	ldr r6, VDollGravity_80D4A18 // =0xffffe000 
 	bl math_getThrowSpeeds
 	str r0, [r5,#oBattleObject_XVelocity]
 	str r1, [r5,#oBattleObject_YVelocity]
@@ -60585,14 +60585,14 @@ loc_80D481E:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	b locret_80D486E
 // VDoll's doll in flight, and NOTE THE ORDER: X, Y and Z each move by their
-// velocity FIRST and gravity (dword_80D4A18 = 0xFFFFE000) is added to
-// ZVelocity afterwards. A bomb (sub_80C5C9C) and BugBomb (sub_80D9E94) do it
+// velocity FIRST and gravity (VDollGravity_80D4A18 = 0xFFFFE000) is added to
+// ZVelocity afterwards. A bomb (thrownBombObject_update_80C5C9C) and BugBomb (bugBombObject_update_80D9E94) do it
 // the other way round. It is half a step of difference and it is worth a
 // pixel wherever the arc is steep.
 // Measured by dumping EWRAM once per frame through a VDoll's flight: the doll
 // leaves the hand at Z 0x300000 with XVelocity 0x1EEEE and ZVelocity 0x2F333,
 // losing 0x2000 a frame over the 0x3c frames Timer2 is seeded with above.
-// FlshBom's ball (off_80EB6F8[14], sub_80D9CC2) reads back the same way round:
+// FlshBom's ball (ThrownChipSpawnersBySubfamily_80EB6F8[14], sub_80D9CC2) reads back the same way round:
 // 0x2E666 across, 0x28CCC up, 0x3000 a frame down, over 40 frames.
 loc_80D4848:
 	ldr r1, [r5,#oBattleObject_XVelocity]
@@ -60607,14 +60607,14 @@ loc_80D4848:
 	ldr r0, [r5,#oBattleObject_Z]
 	add r0, r0, r1
 	str r0, [r5,#oBattleObject_Z]
-	ldr r0, dword_80D4A18 // =0xffffe000 
+	ldr r0, VDollGravity_80D4A18 // =0xffffe000 
 	add r1, r1, r0
 	str r1, [r5,#oBattleObject_ZVelocity]
 	bl object_setPanelsFromCoordinates
 	bl object_updateCollisionPanels
 locret_80D486E:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80D47C0
+	thumb_func_end vDollObject_update_80D47C0
 
 	thumb_local_start
 sub_80D4870:
@@ -60830,7 +60830,7 @@ sub_80D49F6:
 	bl sub_80D49CC
 	pop {pc}
 	.balign 4, 0
-dword_80D4A18:
+VDollGravity_80D4A18:
 	.word 0xFFFFE000
 off_80D4A1C:
 	.word 0x4000000
@@ -71779,14 +71779,14 @@ locret_80D9E82:
 off_80D9E84:
 	.word off_80D9E88
 off_80D9E88:
-	.word sub_80D9E94+1
+	.word bugBombObject_update_80D9E94+1
 	.word sub_80D9F2C+1
 	.word sub_80D9F84+1
 	thumb_func_end sub_80D9E24
 
 // BugBomb's ball in flight (t3_0xa5_80D9D4C's moving state). Same shape as
-// the bomb's sub_80C5C9C -- gravity into ZVelocity first, then X, Y and Z by
-// their velocities -- but the gravity is the constant dword_80D9F28 rather
+// the bomb's thrownBombObject_update_80C5C9C -- gravity into ZVelocity first, then X, Y and Z by
+// their velocities -- but the gravity is the constant BugBombGravity_80D9F28 rather
 // than an object field, there is a Y velocity, and it lands early when Z
 // falls to zero as well as when Timer runs out.
 // Measured by dumping EWRAM once per frame through a BugBomb's flight: it
@@ -71795,7 +71795,7 @@ off_80D9E88:
 // BlkBomb and LilBolr an identical 0x2C000 across and 0x2236E up, with the
 // same 0x2800 pull, so those two are thrown by one launcher exactly.
 	thumb_local_start
-sub_80D9E94:
+bugBombObject_update_80D9E94:
 	push {r4,r6,r7,lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
@@ -71804,7 +71804,7 @@ sub_80D9E94:
 	mov r7, r5
 	add r7, #0x40 
 	ldmia r7!, {r3,r4,r6}
-	ldr r0, dword_80D9F28 // =0xffffd800 
+	ldr r0, BugBombGravity_80D9F28 // =0xffffd800 
 	add r6, r6, r0
 	str r6, [r5,#oBattleObject_ZVelocity]
 	mov r7, r5
@@ -71866,9 +71866,9 @@ loc_80D9F06:
 	strb r0, [r5,#oBattleObject_CurState]
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
-dword_80D9F28:
+BugBombGravity_80D9F28:
 	.word 0xFFFFD800
-	thumb_func_end sub_80D9E94
+	thumb_func_end bugBombObject_update_80D9E94
 
 	thumb_local_start
 sub_80D9F2C:
@@ -107981,7 +107981,7 @@ sub_80EAF36:
 	ldr r3, dword_80EB048 // =0xffff 
 	cmp r0, r3
 	beq loc_80EAF80
-	bl sub_800FC7C
+	bl advanceBattleHandChipIndex_800FC7C
 	mov r1, #0x1e
 	add r1, r1, r7
 	mov r0, #4
@@ -108607,12 +108607,12 @@ sub_80EB436:
 off_80EB444:
 	.word jt_80EB448
 jt_80EB448:
-	.word sub_80EB450+1
-	.word sub_80EB502+1
+	.word busterFirePhase_80EB450+1
+	.word busterHoldPhase_80EB502+1
 	thumb_func_end sub_80EB436
 
 	thumb_local_start
-sub_80EB450:
+busterFirePhase_80EB450:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -108659,7 +108659,7 @@ loc_80EB4B0:
 	ldr r1, [r7,#oAIAttackVars_Damage]
 	mov r3, #0x18
 	lsl r3, r3, #0x10
-	bl sub_800FAAC
+	bl getBusterHoldLength_800FAAC
 	strh r0, [r7,#oAIAttackVars_Unk_12]
 	mov r4, #5
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
@@ -108671,14 +108671,14 @@ loc_80EB4B0:
 	ldr r1, [r7,#oAIAttackVars_Damage]
 	mov r3, #0x18
 	lsl r3, r3, #0x10
-	bl sub_800FAAC
+	bl getBusterHoldLength_800FAAC
 	mov r0, #0xff
 	strb r0, [r7,#oAIAttackVars_Unk_0d]
 	ldrh r0, [r7,#oAIAttackVars_Unk_0c]
 	ldr r1, [r7,#oAIAttackVars_Damage]
 	mov r3, #0x18
 	lsl r3, r3, #0x10
-	bl sub_800FAAC
+	bl getBusterHoldLength_800FAAC
 loc_80EB4E6:
 	push {r7}
 	mov r7, #0x4c 
@@ -108695,10 +108695,10 @@ loc_80EB4F2:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_80EB500:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80EB450
+	thumb_func_end busterFirePhase_80EB450
 
 	thumb_local_start
-sub_80EB502:
+busterHoldPhase_80EB502:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -108742,7 +108742,7 @@ loc_80EB528:
 	bl sub_80116AE
 locret_80EB560:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80EB502
+	thumb_func_end busterHoldPhase_80EB502
 
 	thumb_local_start
 sub_80EB562:
@@ -108917,7 +108917,7 @@ loc_80EB69A:
 	bne loc_80EB6DC
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
 	lsl r0, r0, #2
-	ldr r1, off_80EB6F0 // =off_80EB6F8 
+	ldr r1, off_80EB6F0 // =ThrownChipSpawnersBySubfamily_80EB6F8 
 	ldr r0, [r1,r0]
 	mov r8, r0
 	push {r7}
@@ -108958,30 +108958,30 @@ loc_80EB6EA:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_80EB6F0:
-	.word off_80EB6F8
+	.word ThrownChipSpawnersBySubfamily_80EB6F8
 off_80EB6F4:
 	.word byte_80EB738
 // Spawners for a thrown chip, indexed by the chip's SUBFAMILY (the byte the
 // attack setup puts in oAIAttackVars_Unk_03). 0-2, 4, 5, 10, 11 and 15 are
-// MiniBomb's sub_80C5DBC (MiniBomb, EnergBom, MegEnBom, BigBomb); 3 is
+// MiniBomb's spawnThrownBomb_80C5DBC (MiniBomb, EnergBom, MegEnBom, BigBomb); 3 is
 // LilBolr's, 7 BugBomb's, 8 VDoll's, 9/12/13 the seeds' and 14 FlshBom's.
-off_80EB6F8:
-	.word sub_80C5DBC+1
-	.word sub_80C5DBC+1
-	.word sub_80C5DBC+1
+ThrownChipSpawnersBySubfamily_80EB6F8:
+	.word spawnThrownBomb_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
 	.word sub_80D7A96+1
-	.word sub_80C5DBC+1
-	.word sub_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
 	.word sub_80CD886+1
 	.word sub_80D9FA8+1
 	.word sub_80D49F6+1
 	.word sub_80CE44E+1
-	.word sub_80C5DBC+1
-	.word sub_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
 	.word sub_80CE44E+1
 	.word sub_80CE44E+1
 	.word sub_80D9CC2+1
-	.word sub_80C5DBC+1
+	.word spawnThrownBomb_80C5DBC+1
 byte_80EB738:
 	.byte 0x4, 0x0, 0x4, 0x2, 0xE, 0x0, 0x4, 0x0, 0x2D, 0x0, 0x4, 0x0, 0x2D, 0x0, 0x4
 	.byte 0x4, 0x4, 0x0, 0x25, 0x8, 0x4, 0x6, 0x4, 0x0, 0x24, 0x8, 0x26, 0x8, 0x2E, 0x2
@@ -109734,7 +109734,7 @@ sub_80EBD9C:
 	pop {r7}
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r0, [r0,#8]
 	tst r0, r0
 	pop {r0}
@@ -109837,7 +109837,7 @@ loc_80EBE76:
 	ldrh r1, [r7,#oAIAttackVars_Damage]
 	mov r3, #0x18
 	lsl r3, r3, #0x10
-	bl sub_800FAAC
+	bl getBusterHoldLength_800FAAC
 	strh r0, [r7,#oAIAttackVars_Unk_12]
 	push {r7}
 	mov r0, #0
@@ -110493,7 +110493,7 @@ sub_80EC350: // EXE6G: 0x80f3020
 	pop {r7}
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl getAllianceAnnouncerBlock_800BF5C
 	ldr r0, [r0,#8]
 	tst r0, r0
 	pop {r0}
@@ -110667,7 +110667,7 @@ loc_80EC4BC:
 	ldr r1, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 	add r1, r1, r2
-	bl sub_800FAAC
+	bl getBusterHoldLength_800FAAC
 	push {r7}
 	mov r4, #5
 	mov r7, #0x4c 
@@ -113207,7 +113207,7 @@ sub_80ED7A2:
 	mov r2, r0
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_800FAF6
+	bl countFreePanelsAheadForBuster_800FAF6
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_01]
@@ -119251,7 +119251,7 @@ loc_80F05DE:
 	ldrb r0, [r3,#oAIAttackVars_Unk_1c]
 	cmp r0, #5
 	beq loc_80F05F2
-	bl sub_800FC7C
+	bl advanceBattleHandChipIndex_800FC7C
 loc_80F05F2:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert

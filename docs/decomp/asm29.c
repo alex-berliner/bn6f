@@ -7300,7 +7300,7 @@ int sub_80AA4B8()
 
 
 // 0x80aa4c0
-unsigned int sub_80AA4C0()
+unsigned int rollRandomEncounter_80AA4C0()
 {
     int v0; // r10
     int v1; // r7
@@ -7359,15 +7359,15 @@ unsigned int sub_80AA4C0()
                     {
                         if ( HIWORD(dword_2000B30)
                             || dword_2000B30 < 8
-                            || (result = sub_80AA5F4(dword_2000B30, &dword_2000B30, 64)) == 0 )
+                            || (result = selectEncounterTableForMap_80AA5F4(dword_2000B30, &dword_2000B30, 64)) == 0 )
                         {
                             GetPositiveSignedRNG();
                             __asm { SVC         6 }
                             v17 = getPETNaviSelect();
                             v18 = GetCurPETNaviStatsByte(v17);
-                            result = sub_80AA5F4(v18, v19, v18);
+                            result = selectEncounterTableForMap_80AA5F4(v18, v19, v18);
                             if ( !result )
-                                result = sub_80AA5F4(0, v20, 31);
+                                result = selectEncounterTableForMap_80AA5F4(0, v20, 31);
                         }
                         else
                         {
@@ -7409,14 +7409,14 @@ int __fastcall chooseRandomEncounterMaybe_80aa5e4(int a1, int a2)
     int result; // r0
 
     v3 = *(v2 + oToolkit_GameStatePtr);
-    result = sub_80AA5F4(a1, a2, 31);
+    result = selectEncounterTableForMap_80AA5F4(a1, a2, 31);
     *(v3 + oGameState_CurBattleDataPtr) = result;
     return result;
 }
 
 
 // 0x80aa5f4
-int __fastcall sub_80AA5F4(int a1, int a2, int a3)
+int __fastcall selectEncounterTableForMap_80AA5F4(int a1, int a2, int a3)
 {
     int v3; // r10
     int (*(**v5)[22])[49]; // r3

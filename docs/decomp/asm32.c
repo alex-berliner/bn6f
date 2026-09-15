@@ -14653,11 +14653,11 @@ int __fastcall sub_8119438(int a1, int a2, int a3, int a4)
         ++v14;
     }
     while ( v14 < 6 );
-    CopyWords(v7[10], &byte_3001550[32 * *off_8119170[*(v4 + 5)]], 0x20u);
+    CopyWords(v7[10], &iObjPaletteMirror_3001550[32 * *off_8119170[*(v4 + 5)]], 0x20u);
     (loc_8000AC8)(&dword_86E2E98[16 * *(v4 + 12)], v23 + 512, 64);
-    CopyWords(byte_86E587C, &byte_3001550[32 * *off_8119304[*(v4 + 5)]], 0x20u);
+    CopyWords(byte_86E587C, &iObjPaletteMirror_3001550[32 * *off_8119304[*(v4 + 5)]], 0x20u);
     (loc_8000AC8)(&dword_86E3B9C[32 * *(v7 + 6)], v23 + 528, 128);
-    CopyWords(dword_86E43DC, &byte_3001550[32 * *off_8119330[*(v4 + 5)]], 0x20u);
+    CopyWords(dword_86E43DC, &iObjPaletteMirror_3001550[32 * *off_8119330[*(v4 + 5)]], 0x20u);
     v19 = *(v7 + 13);
     if ( *(v7 + 9) & 0x10 )
     {

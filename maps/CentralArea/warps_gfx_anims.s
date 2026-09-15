@@ -26,7 +26,7 @@ off_8071620::
 	.byte 0x18, 0x3, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x1E, 0x0, 0x0, 0x0, 0x40
 	.byte 0x0
 off_8071680::
-	gfx_anim_4bit_tile_copy gfx_src=dword_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x05
+	gfx_anim_4bit_tile_copy gfx_src=BattleBackdropTileBlob_8617488 gfx_dest=unk_6008040 index=0x00 num_tiles=0x24 buffer_index=0x05
 	gfx_anim_data_ptr ptr=byte_8071778 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_80717C0 delay=0x00000004
 	gfx_anim_data_ptr ptr=byte_8071778 delay=0x00000004

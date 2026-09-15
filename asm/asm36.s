@@ -4813,7 +4813,7 @@ dword_8132718:
 	.word eGuiSprite2022FA0
 	.word eDecompBuffer2013A00
 	.word comp_86DBD64 + COMPRESSED_PTR_FLAG
-	.word byte_3001550
+	.word iObjPaletteMirror_3001550
 	.word eDecompBuffer2013A00
 	.word comp_86DBD7C + COMPRESSED_PTR_FLAG
 	.word 0x3001570

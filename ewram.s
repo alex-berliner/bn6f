@@ -2590,7 +2590,7 @@ byte_20349B0:: // 0x20349b0
 	.space 1
 byte_20349B1:: // 0x20349b1
 	.space 15
-byte_20349C0:: // 0x20349c0
+eBattleHands_20349C0:: // 0x20349c0
 	.space 64
 eDecompressionBuf2034A00:: // 0x2034a00
 	.space 4
@@ -3049,7 +3049,7 @@ dword_203CA7C:: // 0x203ca7c
 	.space 4
 byte_203CA80:: // 0x203ca80
 	.space 132
-byte_203CB04:: // 0x203cb04
+ePanelTickCounter_203CB04:: // 0x203cb04
 	.space 12
 	navi_stats_struct eBattleNaviStats203CB10 // 0x203cb10
 	navi_stats_struct eBattleNaviStats203CB74 // 0x203cb74
@@ -3120,7 +3120,7 @@ dword_203CED4:: // 0x203ced4
 	.space 4
 byte_203CED8:: // 0x203ced8
 	.space 40
-byte_203CF00:: // 0x203cf00
+eAllianceAnnouncerBlocks_203CF00:: // 0x203cf00
 	.space 160
 dword_203CFA0:: // 0x203cfa0
 	.space 4

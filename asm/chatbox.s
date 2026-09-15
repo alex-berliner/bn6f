@@ -2110,8 +2110,8 @@ loc_8040C0C:
 	bl sprite_chatbox_80026D6
 	strh r6, [r5,#6]
 	pop {r7}
-	bl sub_8002818
-	bl sub_8002874
+	bl stageObjPalette_8002818
+	bl loadObjAffineMatrix_8002874
 	mov r0, #0
 	mov r1, #3
 	bl sub_8002694
@@ -5499,7 +5499,7 @@ chatbox_804244C:
 loc_804245C:
 	push {r4,r5}
 	mov r2, #0x1f
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl selectEncounterTableForMap_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	mov r1, #1
 	bl StartBattle // (BattleSettings *r0Bt, bool r1) -> void
 	mov r0, #0x2c

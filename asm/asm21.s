@@ -423,7 +423,7 @@ off_8081290:
 	.word off_807FAC0
 	.word 0xFFFFFFFF
 off_8081298:
-	.word off_807FB98
+	.word BattleBackdropGFXAnimScript_807FB98
 	.word 0xFFFFFFFF
 off_80812A0:
 	.word off_807F900

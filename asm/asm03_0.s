@@ -6440,7 +6440,7 @@ off_80293D4:
 	.word ePAScratch_2033000
 off_80293D8:
 	.word 0x190
-	.word byte_20349C0
+	.word eBattleHands_20349C0
 dword_80293E0:
 	.word 0xC
 dword_80293E4:
