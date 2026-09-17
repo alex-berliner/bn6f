@@ -118974,6 +118974,10 @@ loc_80F037A:
 	bne loc_80F03A0
 	mov r0, #2
 	bl dispatch_801DA48
+// bn T88 (2026-09-17): T88 RESOLVED-ALREADY: the 9..0 Timer tail here at
+// playerAI_sub_80F0354 is attributed by T67's commit 2d7ce09
+// (src/actor.rs PHASE_ARM_FRAMES=10 + TIMER_SENTINEL=1) — T88 confirmed
+// T67's model supersedes T66's. T67's src/actor.rs carries the phase handler.
 	mov r0, #0xa
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #0x10
@@ -171384,10 +171388,19 @@ loc_810A01E:
 	b locret_810A078
 loc_810A038:
 	bl object_getFlag // () -> int
+// bn T84 (2026-09-17): T84 BLOCKED; the 0x4000 (bit 14, lsl #0xe) mask
+// here at asm31.s:171386-171390 is the IMMOBILIZED bit-test. Additive const
+// OBJECT_FLAGS_IMMOBILIZED=0x4000 landed at src/objects.rs:352 area
+// (linker-dropped). T84a gates-flip against this mask with fixture.rs field.
 	mov r1, #1
 	lsl r1, r1, #0xe
 	tst r0, r1
 	bne locret_810A078
+// bn T83 (2026-09-17): T83 NEGATIVE refuted the 0xc000 ticket pattern —
+// this gate tests 0xa000 (BLIND|CONFUSED = 0x2000|0x8000) per
+// CollisionData.inc:16-18. T83a recommends flipping against 0xa000 in
+// src/objects.rs:352+430 (additive const OBJECT_FLAGS_BLIND_OR_CONFUSED
+// already landed); no confused harness row exists.
 	ldr r1, dword_810A07C // =0xa000
 	tst r0, r1
 	beq loc_810A054

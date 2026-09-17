@@ -14587,6 +14587,9 @@ battleSettings_setUnkOptSettings:
 	mov pc, lr
 	thumb_func_end battleSettings_setUnkOptSettings
 
+// bn T97 (2026-09-17): battleSettings_setBackground is the writer for
+// BattleSettings.background (+0x4 = 0x0200AF64), the UI-arming field for
+// the chip-trade UI. doc only: docs/coverage/netbattle.md (no src/ change).
 // (u8 background) -> void
 	thumb_func_start battleSettings_setBackground
 battleSettings_setBackground:

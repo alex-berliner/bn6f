@@ -1863,6 +1863,11 @@ loc_800FA50:
 	pop {pc}
 	thumb_func_end sub_800FA20
 
+// bn T81 (2026-09-17): T81 NEGATIVE refuted T72 PARTIAL's scaffolding
+// claim — git log shows commit 462ccda was worklog-only, no Style::Confused
+// variant or set_confused in src/. The flags1 & 0x8000 test inside
+// playerObject_checkDirectionButtons_800FA54 is the reader for CONFUSED.
+// src/objects.rs:352 BLIND_OR_CONFUSED const false is the current gate.
 	thumb_func_start playerObject_checkDirectionButtons_800FA54
 playerObject_checkDirectionButtons_800FA54:
 	push {r6,r7,lr}
@@ -11360,6 +11365,12 @@ sub_8013ECC:
 
 	thumb_local_start
 sub_8013ED6:
+// bn T81 (2026-09-17): T81 NEGATIVE refuted T72 PARTIAL's scaffolding
+// claim — no Style::Confused variant in src/ai.rs, no set_confused in
+// src/battle.rs/src/fixture.rs. The BlindTimer store here at +0x20 is
+// the BLIND setter (T64's mirror site at src/battle.rs:~5193); CONFUSED
+// requires T82 prereqs (navi Style/kind, sequencer-stuck). carried by
+// docs/coverage/statuses.md (no src/ change).
 	push {lr}
 	ldr r0, off_80141BC // =0x12c 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -18347,6 +18358,12 @@ loc_8017554:
 	bl sub_800AB46
 	mov r0, #0x17
 	strh r0, [r5,#oBattleObject_Timer]
+// bn T89 (2026-09-17): T89 confirmed the seq.state gate is already on main
+// via commit 8ad8067 (src/objects.rs:74-91 PLAYER_EXECUTOR_GATED_STATE_00/
+// 04/20/24 + src/objects.rs:186-188 t1_player_entry early-return
+// Update::Nothing; src/battle.rs:3524 t1_player_entry(&mut self.megaman,
+// self.seq.state) gate wired). The Timer underflow here at PC 0x08017586
+// strh feeds the T66 sentinel logic that the gate now guards.
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 loc_8017582:
@@ -19962,6 +19979,11 @@ loc_8018266:
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
 	lsl r3, r3, #0x10
+// bn T87 (2026-09-17): this site sits in the encounter-X16/19 routine just
+// before GetVerActorTyAndAIIdx_80182B4 (line 19999); ai_index byte at
+// +0x04 of VerActorTyAIIdxTable_80182C4 = ai 1, and the live trio
+// NameIDs 0x0001/0x0085/0x2000 are ai 1/7/17 (not ai 4). carried by
+// tools/inventory.py and tools/states.py (no src/ change).
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
 	mov r0, #0x34 
@@ -21624,6 +21646,12 @@ object_clearFlag:
 	thumb_func_end object_clearFlag
 
 // () -> int
+// bn T83 (2026-09-17): object_getFlag reads oCollisionData_ObjectFlags1
+// (+0x3c); T83 NEGATIVE refuted the 0xc000 bit-pattern claim — the actual
+// gate at asm31.s:171395-171397 tests 0xa000 (BLIND|CONFUSED). Per
+// CollisionData.inc:16-18, BLIND=0x2000 and CONFUSED=0x8000. T83a
+// recommended to flip against 0xa000. src/objects.rs:352 area carries
+// the additive const OBJECT_FLAGS_BLIND_OR_CONFUSED.
 	thumb_func_start object_getFlag
 object_getFlag:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -23885,6 +23913,11 @@ loc_801B298: // endif
 
 loc_801B2CA: // endif
 
+// bn T84 (2026-09-17): T84 BLOCKED; landed additive const
+// OBJECT_FLAGS_IMMOBILIZED=0x4000 at src/objects.rs:352 area
+// (linker-dropped). The 0x4000 mask is bit 14 (lsl #0xe) confirmed at
+// asm31.s:171386-171390. T84a recommended to gate-flip against 0x4000
+// with src/fixture.rs field added; docs/coverage/statuses.md NOT written.
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
 

@@ -2015,6 +2015,10 @@ loc_8039B04:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039AE4
 
+// bn T97 (2026-09-17): sub_8039B0A is the netbattle per-trade-byte routine;
+// payload write at libs.s:5713/5715 (sub_81469BC), exchanged pair at
+// 0x201015B/C. Distinct from overworld subsystem_launchChipTrader at
+// asm00_1.s:5694. doc only: docs/coverage/netbattle.md (no src/ change).
 	thumb_local_start
 sub_8039B0A:
 	push {r4-r7,lr}

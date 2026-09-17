@@ -5691,6 +5691,10 @@ subsystem_launchShop:
 	pop {r4-r7,pc}
 	thumb_func_end subsystem_launchShop
 
+// bn T97 (2026-09-17): subsystem_launchChipTrader here is the overworld chip
+// trader entry point; distinguished from netbattle's per-trade-byte routine
+// sub_8039B0A at asm03_1_1.s:2018. doc only: docs/coverage/netbattle.md
+// (no src/ change).
 	thumb_func_start subsystem_launchChipTrader
 subsystem_launchChipTrader:
 	push {r4,r5,lr}

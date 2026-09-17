@@ -2460,6 +2460,20 @@ off_80B4B38::
 	.word byte_80B4B78
 	.word byte_80B4B78
 	.word byte_80B4B78
+// bn T87 (2026-09-17): CentralArea1 record list byte_80B4B78 here; T87
+// measured 452 identity rows -> 257 virus rows -> 187 distinct
+// (ai_index, version) pairs, where CentralArea1's records 12/13 carry
+// record[7]==1 and are gated by sub_80AA6EC at asm29.s:10493. carried by
+// docs/coverage/mettaur.md and tools/states.py (no src/ change).
+// bn T92 (2026-09-17): T92 closed NEGATIVE because records 12/13 of this
+// list are gate-gated and the lever alone cannot field them — T92a is
+// recommended to scan T65 records directly without depending on T87.md.
+// carried by docs/worklog/T92.md (no src/ change).
+// bn T58 (2026-09-17): T58 PARTIAL census of this list — CentralArea1
+// record list byte_80B4B78; records 12/13 with record[7]==1 cannot be
+// lever-fielded (gated by sub_80AA6EC), so Mettaur v4/v5 specifically
+// closed NEGATIVE. carried by docs/coverage/mettaur.md and tools/states.py
+// (no src/ change).
 byte_80B4B78::
 	.byte 0x0, 0x14, 0x15, 0x0, 0xFF, 0x0, 0x38, 0x0, 0xE2, 0x49, 0x0
 	.byte 0x0

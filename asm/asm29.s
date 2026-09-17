@@ -10489,6 +10489,23 @@ sub_80AA6E8:
 	mov pc, lr
 	thumb_func_end sub_80AA6E8
 
+// bn T87 (2026-09-17): sub_80AA6EC is the gate routine T58 named as gating
+// records 12/13 of CentralArea1's 0x080b4b78 list; record[7]==1 records
+// cannot be lever-fielded alone, so ai_index-4 ranks v4/v5 stay NEGATIVE.
+// carried by docs/coverage/mettaur.md and tools/states.py (no src/ change).
+// bn T92 (2026-09-17): T92 closed NEGATIVE because no measurable output
+// was produced — the gate here stands in the way of lever-fielding
+// CentralArea1 records 12/13, blocking T92's intended port. carried by
+// docs/worklog/T92.md and tools/states.py (no src/ change).
+// bn T90 (2026-09-17): T90's ai_index-4 rank-0 census (rec0 0x080b4334,
+// rec7=0, gate-free; formation ptr 0x080b478d byte-matches T87) routes
+// through this gate, which leaves rec0/rec7=0 records fieldable and
+// rec7=1 records blocked. carried by docs/worklog/T90.md and tools/states.py
+// (no src/ change).
+// bn T58 (2026-09-17): sub_80AA6EC is the gate T58's step 5 measured as
+// blocking Mettaur v4/v5 specifically: CentralArea1 list at 0x080b4b78,
+// records 12/13 with record[7]==1 cannot be lever-fielded. carried by
+// docs/coverage/mettaur.md and tools/states.py (no src/ change).
 	thumb_local_start
 sub_80AA6EC:
 	push {r4-r7,lr}
