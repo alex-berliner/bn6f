@@ -15184,7 +15184,7 @@ off_802D710:
 sub_802D714:
 	push {lr}
 	ldr r1, off_802D728 // =off_802D72C 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_AttackStage]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15202,7 +15202,7 @@ off_802D72C:
 	thumb_local_start
 sub_802D738:
 	push {lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackLatch]
 	tst r0, r0
 	bne loc_802D78A
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -15226,20 +15226,20 @@ sub_802D738:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_BusterBarrelPtr]
 	mov r0, #1
 	bl object_setCollisionRegion
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackLatch]
 loc_802D78A:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_AttackWait]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	bgt locret_802D796
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_AttackStage]
 locret_802D796:
 	pop {pc}
 	.balign 4, 0
@@ -15375,7 +15375,7 @@ loc_802D8C0:
 	bl sub_8014216
 	bl object_clearInvulnerableTime
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_AttackStage]
 	pop {r4,pc}
 	.balign 4, 0
 off_802D8EC:
@@ -15385,17 +15385,17 @@ off_802D8EC:
 	thumb_local_start
 sub_802D8F0:
 	push {lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackLatch]
 	tst r0, r0
 	bne loc_802D900
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackLatch]
 loc_802D900:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_AttackWait]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	bge locret_802D924
 	mov r0, #0
 	bl sub_801E0D0
@@ -15414,7 +15414,7 @@ locret_802D924:
 sub_802D926:
 	push {lr}
 	ldr r1, off_802D940 // =off_802D944 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_AttackStage]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15436,7 +15436,7 @@ off_802D944:
 	thumb_local_start
 sub_802D950:
 	push {lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackLatch]
 	tst r0, r0
 	bne loc_802D9A2
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -15460,21 +15460,21 @@ sub_802D950:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_BusterBarrelPtr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	str r0, [r1,#oAIData_Unk_5c]
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackLatch]
 loc_802D9A2:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_AttackWait]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	bgt locret_802D9AE
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_AttackStage]
 locret_802D9AE:
 	pop {pc}
 	thumb_func_end sub_802D950
@@ -15547,24 +15547,24 @@ sub_802D9B0:
 	bl sub_8014216
 	bl object_clearInvulnerableTime
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_AttackStage]
 	pop {r4,pc}
 	thumb_func_end sub_802D9B0
 
 	thumb_local_start
 sub_802DA78:
 	push {lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackLatch]
 	tst r0, r0
 	bne loc_802DA88
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackLatch]
 loc_802DA88:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_AttackWait]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_AttackWait]
 	bge locret_802DAA6
 	mov r0, #0
 	bl sub_801E0D0

@@ -1674,7 +1674,7 @@ _sprite_loadAnimationData:
 	ldr r2, [r1]
 	add r3, r2, r1
 	str r3, [r5,#oObjectSprite_Unk_1c]
-	ldrb r0, [r5,#oObjectSprite_Unk_00]
+	ldrb r0, [r5,#oObjectSprite_CurAnim]
 	lsl r0, r0, #2
 	ldr r2, [r3,#8]
 	add r1, r1, r2
@@ -1687,7 +1687,7 @@ _sprite_loadAnimationData:
 	strb r2, [r5,#oObjectSprite_Unk_02]
 	b loc_3006778
 loc_300675A:
-	ldrb r0, [r5,#oObjectSprite_Unk_00]
+	ldrb r0, [r5,#oObjectSprite_CurAnim]
 	lsl r0, r0, #2
 	ldr r1, [r5,#oObjectSprite_Unk_18]
 	ldr r2, [r1,r0]

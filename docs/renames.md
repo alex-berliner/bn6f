@@ -491,3 +491,26 @@ rather than deleting what it said.
 - The ~1,650 rows of `docs/coverage/battle_full.md` and `mettaur.md` that are pure
   hotness rankings. They carry file/line and call counts, which is useful for
   deciding what to read next, but no role.
+
+## D10 — Field renames (2026-09-17)
+
+From src/*.rs comments and the bn notes already in the asm/data files.
+Each row is a struct-field rename; the old `Unk_<offset>` and the new
+name, with the sentence that states the role. Each rename is applied to
+the .inc definition and every asm/data use.
+
+| struct | old field | new field | evidence | use sites |
+|---|---|---|---|---|
+| `oAIData` | `Unk_68` | `BusterBarrelPtr` | battle.rs:157 — "the barrel in oAIData_Unk_68 (sub_80EB562/sub_80EB572, asm31.s:108743-108750, spawned on the fire phase's FIRST tick)" | 116 |
+| `oAIState` | `Unk_00` | `DecideState` | objects.rs:243 — "decide = oAIState_Unk_00, the off_8109FF0 decision-table index" | 181 |
+| `oAIState` | `Unk_02` | `DecideSubState` | objects.rs:244 — "decide_sub = oAIState_Unk_02, sub_810A0BA's sub-state (0 = the hop arm sub_810A0D4, 4 = the roll/wait arm sub_810A0EE)" | 65 |
+| `oAIState` | `Unk_03` | `DecideLatch` | objects.rs:246 — "latch = oAIState_Unk_03, sub_810A0EE's one-shot latch: 0 rolls this frame, 1 counts wander_wait down" | 16 |
+| `oAIState` | `Unk_08` | `WanderWait` | objects.rs:250 — "wander_wait = oAIState_Unk_08, the losing roll's idle counter" | 25 |
+| `oAIAttackVars` | `Unk_00` | `AttackStage` | gunner.rs:321 — "oAIAttackVars_Unk_00 (asm32.s:9961): the CurAction-indexed stage within the current CurAction's arm" | 1157 |
+| `oAIAttackVars` | `Unk_01` | `AttackLatch` | gunner.rs:324 — "oAIAttackVars_Unk_01 (asm32.s:10060): the per-state one-shot latch (set on first call, cleared on exit — sub_8113002/ai_8113038)" | 1450 |
+| `oAIAttackVars` | `Unk_0e` | `ShotsCount` | gunner.rs:390 — "stage 4 (sub_8112FBA): RelatedObject1Ptr == 1 (cursor locked) arms CurAnim = 2, the per-shot seed object (dword_8113074 = 0x12810), and oAIAttackVars_Unk_0e = 3 (SHOTS)" | 132 |
+| `oAIAttackVars` | `Unk_10` | `AttackWait` | objects.rs:251 — "wait = oAIAttackVars_Unk_10, the CurAction-9 waiter's countdown" | 2727 |
+| `oAIAttackVars` | `Unk_18` | `AttackRecoverWait` | gunner.rs:330 — "oAIAttackVars_Unk_18 (asm32.s:10109): the CurAction-0x0A recover counter (24 frames, decremented bgt-style)" | 285 |
+| `oAIAttackVars` | `Unk_1a` | `HopDone` | objects.rs:254 — "hop_done = oAIAttackVars_Unk_1a, the hop executor's report: 1 on the commit step (sub_8109DBA), 0 on the refused-move step" | 129 |
+| `oObjectSprite` | `Unk_00` | `CurAnim` | spr.rs:427 — "Write the pending animation index (Unk_00): the port of sprite_setAnimation (reference/bn6f/asm/sprite.s:1131 -- strb r0, [r3,#oObjectSprite_Unk_00] after the header-offset shift)" | 7 |
+| `oChatbox` | `Unk_05` | `CbStackDepth` | script.rs:1225 — "CB_NESTED: usize = 0x5; // provenance: derived -- oChatbox_Unk_05, ts_end's stack depth, Chatbox.inc:18" | 26 |

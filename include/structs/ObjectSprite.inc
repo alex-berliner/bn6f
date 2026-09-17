@@ -3,7 +3,7 @@
     // type: struct ObjectSprite
 	set_struct_label \struct_entry, \label
 \label:
-	u8 Unk_00 // loc=0x0
+	u8 CurAnim // loc=0x0
 	u8 Unk_01 // loc=0x1
 	u8 Unk_02 // loc=0x2
 	u8 Unk_03 // loc=0x3

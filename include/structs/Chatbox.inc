@@ -15,7 +15,7 @@
 	u8 CurrLine // loc=0x2
 	u8 Unk_03 // loc=0x3
 	u8 TextScriptState_04 // loc=0x4
-	u8 Unk_05 // loc=0x5
+	u8 CbStackDepth // loc=0x5
 	u8 Und_06 // loc=0x6
 	u8 MugshotPaletteIdx // loc=0x7
 	u8 TextScriptPrintSpeed // loc=0x8

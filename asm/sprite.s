@@ -99,7 +99,7 @@ sprite_initialize:
 	str r0, [r5,#oObjectSprite_Unk_18]
 	mov r0, #0
 	strb r0, [r5,#oObjectSprite_Unk_03]
-	strb r0, [r5,#oObjectSprite_Unk_00]
+	strb r0, [r5,#oObjectSprite_CurAnim]
 	str r0, [r5,#oObjectSprite_Unk_24]
 	strb r0, [r5,#oObjectSprite_Unk_04]
 	strh r0, [r5,#oObjectSprite_Unk_0a]
@@ -1122,7 +1122,7 @@ sprite_setAnimationAlt:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	strb r0, [r3,#oObjectSprite_Unk_00]
+	strb r0, [r3,#oObjectSprite_CurAnim]
 	mov pc, lr
 	thumb_func_end sprite_setAnimationAlt
 
@@ -1133,7 +1133,7 @@ sprite_setAnimation:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	strb r0, [r3,#oObjectSprite_Unk_00]
+	strb r0, [r3,#oObjectSprite_CurAnim]
 	mov pc, lr
 	thumb_func_end sprite_setAnimation
 
@@ -1202,8 +1202,8 @@ sprite_getFrameParameters:
 	mov r1, #0xc0
 	bic r0, r1
 loc_8002DFE:
-	ldrb r1, [r3,#oObjectSprite_Unk_00]
-	ldrb r2, [r3,#oObjectSprite_Unk_00]
+	ldrb r1, [r3,#oObjectSprite_CurAnim]
+	ldrb r2, [r3,#oObjectSprite_CurAnim]
 	mov pc, lr
 	thumb_func_end sprite_getFrameParameters
 

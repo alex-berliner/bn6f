@@ -2436,18 +2436,18 @@ chatbox_E5_nop: // (&self@r5, char *script@r4) -> int
 	thumb_local_start
 chatbox_E6_end: // (&self@r5, char *script@r4) -> int
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	
 	tst r0, r0
 	beq .if_8040EB2
-	// if (self->oChatbox_Unk_05)
+	// if (self->oChatbox_CbStackDepth)
 		sub r0, #1
 		ldr r1, dword_8040EF0 // =0x140
 		mov r2, #4
 		mul r2, r0
 		add r1, r1, r2
 		ldr r4, [r5,r1]
-		strb r0, [r5,#oChatbox_Unk_05]
+		strb r0, [r5,#oChatbox_CbStackDepth]
 		mov r0, #1
 		pop {pc}
 .if_8040EB2:
@@ -4875,9 +4875,9 @@ jt_FA_print_8041F7C:
 	thumb_local_start
 chatbox_8041FB4:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldr r0, off_8042060 // =off_8042064
 	ldrb r1, [r4,#2]
 	ldrb r2, [r4,#3]
@@ -4953,7 +4953,7 @@ loc_8042014:
 	add r4, #4
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_80420B8 // =0x140
 	mov r2, #4
@@ -4991,9 +4991,9 @@ off_80420B8:
 	thumb_local_start
 chatbox_80420BC:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	bl GetCurPETNavi // () -> u8
 	mov r1, r0
 	ldr r0, off_8042114 // =off_8042118
@@ -5021,7 +5021,7 @@ chatbox_80420BC:
 	add r4, #3
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_8042120 // =0x140
 	mov r2, #4
@@ -5051,9 +5051,9 @@ chatbox_8042124:
 	thumb_local_start
 chatbox_8042128:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldrb r0, [r4,#3]
 	tst r0, r0
 	beq loc_8042140
@@ -5081,7 +5081,7 @@ loc_8042148:
 	add r4, #4
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_8042180 // =0x140
 	mov r2, #4
@@ -5102,9 +5102,9 @@ off_8042180:
 	thumb_local_start
 chatbox_8042184:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldr r0, off_80421D4 // =off_8043C8C
 	ldrb r1, [r4,#3]
 	lsl r1, r1, #2
@@ -5124,7 +5124,7 @@ chatbox_8042184:
 	add r4, #4
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_80421D0 // =0x140
 	mov r2, #4
@@ -5147,9 +5147,9 @@ off_80421D4:
 	thumb_local_start
 chatbox_80421D8:
 	push {r7,lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldrb r3, [r4,#2]
 	add r3, #0x4c
 	ldr r0, [r5,r3]
@@ -5174,7 +5174,7 @@ chatbox_80421D8:
 	add r4, #3
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_8042228 // =0x140
 	mov r2, #4
@@ -5193,9 +5193,9 @@ off_8042228:
 	thumb_local_start
 chatbox_804222C:
 	push {r7,lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldrb r0, [r4,#2]
 	lsl r0, r0, #3
 	ldr r1, off_8042288 // =byte_8043B54
@@ -5222,7 +5222,7 @@ chatbox_804222C:
 	add r4, #3
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_8042280 // =0x140
 	mov r2, #4
@@ -7192,9 +7192,9 @@ off_8043034:
 	thumb_local_start
 dead_804303C:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldr r0, off_8043084 // =off_8043088
 	ldrb r2, [r4,#2]
 	ldrb r1, [r4,#1]
@@ -7241,9 +7241,9 @@ off_8043088:
 	thumb_local_start
 chatbox_80430A0:
 	push {lr}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	add r0, #1
-	strb r0, [r5,#oChatbox_Unk_05]
+	strb r0, [r5,#oChatbox_CbStackDepth]
 	ldr r0, off_80430F8 // =byte_80430FC
 	ldrb r2, [r4,#2]
 	ldrb r1, [r4,#1]
@@ -7273,7 +7273,7 @@ loc_80430B4:
 	add r4, #3
 	str r4, [r5,#oChatbox_Unk_44]
 	push {r0}
-	ldrb r0, [r5,#oChatbox_Unk_05]
+	ldrb r0, [r5,#oChatbox_CbStackDepth]
 	sub r0, #1
 	ldr r1, off_8043124 // =0x140
 	mov r2, #4

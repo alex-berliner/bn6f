@@ -66,7 +66,7 @@
 	u32 Unk_60 // loc=0x60
 
 	struct_org 0x68
-	u32 Unk_68 // loc=0x68
+	u32 BusterBarrelPtr // loc=0x68
 	u32 Unk_6c // loc=0x6c
 	u32 Unk_70 // loc=0x70
 	u32 Unk_74 // loc=0x74
@@ -89,15 +89,15 @@
     // type: struct AIState
 	\set_struct_start_address \label
 	set_struct_label \struct_entry, \label
-	u8 Unk_00 // loc=0x0
+	u8 DecideState // loc=0x0
 	u8 Unk_01 // loc=0x1
-	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 DecideSubState // loc=0x2
+	u8 DecideLatch // loc=0x3
 	u8 Unk_04 // loc=0x4
 	u8 Unk_05 // loc=0x5
 	u8 Unk_06 // loc=0x6
 	u8 Unk_07 // loc=0x7
-	u16 Unk_08 // loc=0x8
+	u16 WanderWait // loc=0x8
 	.space 0x2
 	u8 Unk_0c // loc=0xc
 	u8 Unk_0d // loc=0xd
@@ -113,8 +113,8 @@
     // type: struct AIAttackVars
 	\set_struct_start_address \label
 	set_struct_label \struct_entry, \label
-	u8 Unk_00 // loc=0x0
-	u8 Unk_01 // loc=0x1
+	u8 AttackStage // loc=0x0
+	u8 AttackLatch // loc=0x1
 	u8 Unk_02 // loc=0x2
 	u8 Unk_03 // loc=0x3
 	u8 Unk_04 // loc=0x4
@@ -124,15 +124,15 @@
 	u16 Unk_0a // loc=0xa
 	u8 Unk_0c // loc=0xc
 	u8 Unk_0d // loc=0xd
-	u8 Unk_0e // loc=0xe
+	u8 ShotsCount // loc=0xe
 	u8 Unk_0f // loc=0xf
-	u16 Unk_10 // loc=0x10
+	u16 AttackWait // loc=0x10
 	u16 Unk_12 // loc=0x12
 	u16 Unk_14 // loc=0x14
 	u8 Unk_16 // loc=0x16
 	u8 Unk_17 // loc=0x17
-	u16 Unk_18 // loc=0x18
-	u8 Unk_1a // loc=0x1a
+	u16 AttackRecoverWait // loc=0x18
+	u8 HopDone // loc=0x1a
 	u8 Unk_1b // loc=0x1b
 	u8 Unk_1c // loc=0x1c
 	u8 Unk_1d // loc=0x1d
