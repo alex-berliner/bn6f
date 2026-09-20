@@ -11,6 +11,15 @@
 	u8 MB, \mb // loc=0x8
 	u8 EffectFlags, \effect_flags // loc=0x9
 	u8 StaminaDamageCounterFrames, \stamina_damage_counter_frames // loc=0xa
+	// AttackFamily is the value the user's BattleObject carries in CurAction (+0x9)
+	// while this chip's attack runs: useChipFromHand_800FB54 calls
+	// useChipRelated_80127C0, whose return value is this byte (`ldrb r0, [r4,#0xb]`,
+	// asm00_2.s:8286), and object_setAttack2 stores that return into CurAction
+	// (loc_8011698, asm00_2.s:5625). Measured on the cartridge: firing chip 0xB1,
+	// whose AttackFamily is 0x15, moves MegaMan's CurAction from 0x08 to 0x15 on the
+	// same frame, written by that one instruction. Across the first 420 entries of
+	// ChipDataArr_8021DA8 the byte takes 50 distinct values, 0x15 being the most
+	// common (84 chips).
 	u8 AttackFamily, \attack_family // loc=0xb
 	u8 AttackSubFamily, \attack_subfamily // loc=0xc
 	u8 DarkSoulUsage, \dark_soul_usage // loc=0xd
