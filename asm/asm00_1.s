@@ -5691,10 +5691,8 @@ subsystem_launchShop:
 	pop {r4-r7,pc}
 	thumb_func_end subsystem_launchShop
 
-// bn T97 (2026-09-17): subsystem_launchChipTrader here is the overworld chip
-// trader entry point; distinguished from netbattle's per-trade-byte routine
-// sub_8039B0A at asm03_1_1.s:2018. doc only: docs/coverage/netbattle.md
-// (no src/ change).
+// subsystem_launchChipTrader is the overworld chip trader's entry point, distinct from
+// netbattle's per-trade-byte routine sub_8039B0A (asm03_1_1.s:2018).
 	thumb_func_start subsystem_launchChipTrader
 subsystem_launchChipTrader:
 	push {r4,r5,lr}
@@ -8542,23 +8540,13 @@ sub_8007338:
 	.word 0x100000
 	thumb_func_end sub_8007338
 
-	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
-	// oBattleSettings_EnemySetupArrPtr is a plain ROM pointer here, not a
-	// RAM copy -- confirmed for one specific wild encounter (a net-area
-	// "CentralArea1" random battle, tools/states.py's own "overworld_net"
-	// state) by walking eToolkit -> BattleStatePtr -> this BattleSettings
-	// -> EnemySetupArrPtr live and diffing the target bytes against
-	// /tmp/bn6f_real.gba's own file bytes at the matching offset: 0 diff.
-	// (copyBattleSettingsTo_200AF60 elsewhere in the disassembly copies the
-	// 0x10-byte BattleSettings STRUCT itself to a fixed RAM scratch address
-	// for a different purpose -- it does not follow this pointer to also
-	// duplicate the EnemySetup array, so the array stays in ROM either
-	// way.) This makes a one-byte ROM data patch a legitimate way to alter
-	// one specific encounter's own enemy list (retype/terminate its
-	// EnemySetup entries) without touching any code path or needing a
-	// per-frame RAM cheat -- see the bn repo's patch_sterile.py
-	// --empty-net-encounter for the worked example (ROM 0x080b5306 for
-	// that one encounter: MegaMan, two Mettaur entries, terminator).
+// sub_800EC80 carries only ActorType-0 identities in the reachable data (a ROM walk over
+// 0x080a0000..0x08100000 found no navi quads), so this EnemySetup array never yields a navi.
+	// oBattleSettings_EnemySetupArrPtr is a plain ROM pointer, not a RAM copy: for a CentralArea1
+	// random battle the bytes it points at, read live, equal the cartridge's bytes at that offset.
+	// copyBattleSettingsTo_200AF60 copies the 0x10-byte BattleSettings struct itself to a fixed RAM
+	// address, but it does not follow this pointer, so the EnemySetup array stays in ROM. (For that
+	// encounter the array is at ROM 0x080b5306: MegaMan, two Mettaur entries, terminator.)
 	thumb_local_start
 sub_8007358: // () -> ()
 	push {lr}
@@ -8651,72 +8639,18 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	pop {pc}
 	thumb_func_end spawnMegaMan_80073CC
 
-	// bn project note (AUDIT wave 3c "fresh-state" ticket, live-tested):
-	// patching this function's entry (push {r5,lr} -> bx lr, "never spawn
-	// the enemy") only produces a clean empty-field battle when loaded from
-	// a save state whose spawn already ran on the UNPATCHED ROM. Triggering
-	// a genuinely fresh encounter on the patched ROM (real overworld input,
-	// no save state in the way) instead runs the normal white-hold intro
-	// (matches an unpatched capture frame for frame) and then crashes to
-	// the console's own cold-boot logo 9-13 frames into the battle -- right
-	// around when a virus would first materialise on an unpatched ROM.
-	// Isolated by A/B test to this patch specifically (a control ROM with
-	// only the isBattleOver/banner patches runs the identical encounter
-	// with no crash) and to something other than the loop_800736C dispatch
-	// loop just above (its own `add r6, #4` after the `bx r1` call never
-	// reads r0, exactly as the caller comment below says) -- a
-	// --trace-pc on RunBattleObjectLogic's own per-object dispatch call
-	// (asm00_1.s, the `bx r0` after the Type/Index jumptable lookup) never
-	// fires during the crash window, so the fault is in the one-time init
-	// path, not steady-state per-frame logic. CANDIDATE MECHANISM, not
-	// confirmed further: sub_800768C below (called at the end of this
-	// function, entirely skipped when patched) is what actually calls
-	// object_spawnType1 to allocate the BattleObject; whatever loc_80076DA
-	// does with a successful spawn (register it live, size an actor list,
-	// ...) never happens either, while the SpawnBattleObjectUsingBattleEnt-
-	// ityConfig_8007368 caller's later CopyWords (oBattleState_BattleActors
-	// -> oBattleState_AliveBattleActors) still runs unconditionally off the
-	// EnemySetup's original count. Not traced further -- see the bn repo's
-	// tools/states.py "emptyfield_start" entry for the live measurements.
+	// sub_800768C, called at the end of this function, is what calls object_spawnType1 to
+	// allocate the BattleObject. The caller, SpawnBattleObjectUsingBattleEntityConfig_8007368, later
+	// copies oBattleState_BattleActors to oBattleState_AliveBattleActors (CopyWords) unconditionally,
+	// off the EnemySetup's own count. loop_800736C's `add r6, #4` after the `bx r1` call never reads r0.
 	thumb_local_start
-// bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): the ONLY caller in
-// this disassembly is SpawnBattleObjectUsingBattleEntityConfig_8007368's own
-// dispatch table (off_80073A0+4, type nibble 0x04), which in turn is called
-// exactly once per battle via sub_8007358 (called from 4 near-identical
-// battle-FSM init states -- see this file's line ~12807/13421/13908/14317).
-// So "patch the function that spawns the encounter's enemy" resolves to
-// patching THIS function's own entry point (push {r5,lr}, bytes 20 B5 ->
-// bx lr, 70 47 -- turns it into a no-op the same way the ENEMY DELETED
-// banner routine is neutered elsewhere in this project's canon patches) --
-// tools/patch_sterile.py's third patch, in the `bn` repo (not this one).
-// Return value in r0 is never read by the dispatch loop after the call, so
-// leaving it unset is safe. CAVEAT, measured: this only stops FUTURE
-// spawns -- an existing save state whose battle already spawned the enemy
-// (i.e. every state this project has today) is unaffected by the patch,
-// since the spawn already ran on whatever ROM built that state. A state
-// that shows a genuinely empty field needs a save captured from a real
-// battle-start reached AFTER the patch, i.e. real input from a cold boot.
-// bn F38i (2026-09-15): opening integrated was already 0/0/40 on main
-// HEAD at this routine. Actual canon PAL_OBJ slot pin is in stageObjPalette_8002818
-// (sprite.s:254-303); agb's try_allocate_shared at src/spr.rs:701-761
-// cannot replicate a fitted slot (forbidden by F38e BLOCKED).
-// bn F38h (2026-09-15): per-enemy panel triple (5,1)/(5,3)/(6,2) at ROM
-// 0x080b5354 is masked here into unused descriptor offsets 56-62; the
-// 72499/2691 -> 25829/931 reduction in src/fixture.rs is the headlined
-// gain, with PAL_OBJ alloc order in src/spr.rs:701-761 named as residual.
-// bn F38g (2026-09-15): same panel-byte cherry-pick as F38f reintroduces
-// the 64->67-byte descriptor (FIXTURE_SIZE +17, TRACE_OFFSET +4 in
-// src/main.rs + tools/harness.py); cursor fixture state is not in
-// tools/states.py and /tmp/chipselect.state is hand-captured, so cursor
-// 1/1/170 -> 26/25/170 has no regen path.
-// bn F38f (2026-09-15): the 64->67 byte descriptor (FIXTURE_SIZE +17,
-// TRACE_OFFSET +4 in src/main.rs + tools/harness.py) regressed cursor
-// 1/1/170 -> 26/25/170; panel bytes (5,1)/(5,3)/(6,2) read here match
-// canon at ROM 0x080b5354, but cursor state files are sized for 64.
-// bn F38e (2026-09-15): the per-enemy panel triple lives in this routine's
-// descriptor, but src/fixture.rs is outside F38e's allowed files; a
-// hardcoded triple violates "never a fitted panel triple". Per-enemy
-// panels at 0x080b5354 confirmed as 0x15/0x35/0x26 = (5,1)/(5,3)/(6,2).
+// The only caller is SpawnBattleObjectUsingBattleEntityConfig_8007368's dispatch table
+// (off_80073A0+4, type nibble 0x04), which runs once per battle via sub_8007358, itself called
+// from four near-identical battle-FSM init states (this file, lines ~12807/13421/13908/14317).
+// The dispatch loop never reads r0 after the call.
+// The per-enemy panels in this encounter's descriptor at ROM 0x080b5354 are 0x15/0x35/0x26 =
+// (5,1)/(5,3)/(6,2). The OBJ palette slot is chosen in stageObjPalette_8002818 (sprite.s:254-303).
+// No reachable EnemySetup quad in ROM has ActorType 1 (navi), so a navi never reaches this spawner.
 spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	push {r5,lr}
 
@@ -9592,6 +9526,7 @@ sub_800794C:
 	thumb_func_end sub_800794C
 
 	thumb_local_start
+// This battle-FSM dispatcher indexes off_800798C by the state byte oBattleState_Unk_02.
 sub_8007978:
 	push {lr}
 	ldr r1, off_8007988 // =off_800798C
@@ -9638,6 +9573,8 @@ sub_80079A8:
 loc_80079B8:
 	bl sub_803DD60
 loc_80079BC:
+// The single store to oBattleState_Unk_0d: sub_80079A8 writes it, and it selects the WIN vs
+// LOSE result-window variant.
 	strb r0, [r5,#oBattleState_Unk_0d]
 	ldr r1, off_80079CC // =eCamera+76
 	strb r0, [r1]
@@ -10444,11 +10381,8 @@ off_8008018:
 	thumb_func_end sub_8007FD2
 
 	thumb_local_start
-// bn T7u (2026-09-15): this is where the chain
-// SEQ_08 -> SEQ_20 -> SEQ_24 -> SEQ_00 -> SEQ_04 -> SEQ_08 is driven from. Still
-// open on the port's side: the fitted SEQ04_FRAMES=60 in src/battle.rs:~2724 is
-// parked at the wrong seq scenario, so its banner_at 30-frame countdown defeats
-// the banner_idle check this table's BATTLE_SEQ_BANNER_WAIT arm makes.
+// The sequencer chain 0x08 -> 0x20 -> 0x24 -> 0x00 -> 0x04 -> 0x08 of
+// eBattleSequencerState_203CA70 is driven from here.
 stepBannerSequencer_800801C:
 	push {r5,lr}
 	ldr r5, off_8008060 // =eBattleSequencerState_203CA70
@@ -10464,27 +10398,15 @@ stepBannerSequencer_800801C:
 off_8008034:
 	.word BannerSequencerStates_8008038
 // THE GENERIC BANNER SEQUENCER's state table, indexed by eBattleSequencerState_203CA70 as a
-// PRE-MULTIPLIED byte offset (0, 4, 8, ...), not a state number. It is not an
-// end-of-battle pipeline: the same table runs BATTLE START!, TURN START!,
-// ENEMY DELETED, MEGAMAN DELETED and the result messages, which is why the
-// entries look unrelated to each other.
-// Entries 6-9 (bannerSeqState18_800834A, bannerSeqState1C_80083E4,
-// bannerSeqState20WindowOpening_8008452, bannerSeqState24WindowOpen_8008492) were
-// read as a SIBLING BRANCH, reached only where getBattleOutcome_800A152() returns
-// 7 -- a different battle outcome -- and never run on the ordinary path where the
-// last enemy is deleted.
-//   CORRECTION (bn T7c/T7u, measured): that holds for entries 6 and 7 only.
-//   Entries 8 and 9 -- states BATTLE_SEQ_WINDOW_OPENING and
-//   BATTLE_SEQ_WINDOW_OPEN -- are squarely on the ordinary path: the fight state
-//   writes 0x20 right after its own `bl PauseBattle` (loc_800819A below) and the
-//   measured run of a whole battle reads 0x08 -> 0x20 -> 0x24 -> 0x00 -> 0x04 ->
-//   0x08. Note also that the older reading numbers ENTRIES while the bn project
-//   numbers STATES; entry N is state N*4.
-// bn T7r (2026-09-15): the BannerSequencerStates_8008038 table indexed here (carried at
-// src/battle.rs:1173-1179 + :3260-3277) drives the SEQ_20->SEQ_24->SEQ_00
-// ->SEQ_04->SEQ_08 chain on the windowclose_full trace scenario scripted
-// with gauge=1 + scripted A@170 (drops mm_state_action/anim/timer
-// 101/86/302 -> 76/78/270).
+// PRE-MULTIPLIED byte offset (0, 4, 8, ...), not a state number; entry N is state N*4. It is not
+// an end-of-battle pipeline: the same table runs BATTLE START!, TURN START!, ENEMY DELETED,
+// MEGAMAN DELETED and the result messages, which is why the entries look unrelated to each other.
+// Entries 6 and 7 (bannerSeqState18_800834A, bannerSeqState1C_80083E4) are a sibling branch,
+// reached only where getBattleOutcome_800A152() returns 7. Entries 8 and 9
+// (bannerSeqState20WindowOpening_8008452, bannerSeqState24WindowOpen_8008492; states
+// BATTLE_SEQ_WINDOW_OPENING and BATTLE_SEQ_WINDOW_OPEN) are on the ordinary path: the fight state
+// writes 0x20 right after its own `bl PauseBattle` (loc_800819A below), and a whole battle reads
+// 0x08 -> 0x20 -> 0x24 -> 0x00 -> 0x04 -> 0x08.
 BannerSequencerStates_8008038:
 	// BATTLE_SEQ_SETTLE: the post-window settle; leaves to BANNER_WAIT on
 	// isChipWindowSlideIdle_801483C plus the [r5+2] latch.
@@ -10526,10 +10448,8 @@ bannerSeqState04BannerWait_8008064:
 	bl refreshAIDataFromJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
-// bn T7d (2026-09-15): this bne loc_80080B2 in bannerSeqState04BannerWait_8008064 is one of the
-// three fitted edges; src/battle.rs's windowclose_full trace carries the
-// named canon-predicate for the byte-[r5,#3] exit condition that arms
-// timer 0x1e at the next instruction (mov r0, #0x1e, strh r0, [r5,#8]).
+// This bne loc_80080B2 in bannerSeqState04BannerWait_8008064 is the exit on byte [r5,#3];
+// the next instruction arms timer 0x1e (mov r0, #0x1e; strh r0, [r5,#8]).
 	bne loc_80080B2
 	mov r0, #0x1e
 	strh r0, [r5,#8]
@@ -10550,11 +10470,8 @@ loc_8008096:
 	mov r1, #8
 	tst r0, r1
 	bne loc_80080A6
-// bn T7c (2026-09-15): the chip-window open path here -- loc_80080A6 /
-// sub_80080AE -- is where the resolved-end sequence narrows to
-// matches!(state, SEQ_0C | SEQ_10); DISSOLVE_FRAMES (canon blow->0x0C
-// +35, ours +34) and start_state==1 opening at SEQ_0C live in
-// src/battle.rs; battle_full sequencer 173/540 still diverges.
+// The chip-window open path: loc_80080A6 / sub_80080AE. The state reaches 0x0C 35 frames
+// after the blow that ends the battle.
 	mov r0, #0
 	mov r1, #0
 	b sub_80080AE
@@ -10576,9 +10493,6 @@ loc_80080B2:
 	lsl r0, r0, #8
 	add r0, #0xff
 	bl sub_801E0C8
-// bn T7u (2026-09-15): src/battle.rs:2615-2655 carries the rust counterpart of
-// this arm's gauge_pause=60 chime, but the fitted SEQ04_FRAMES=60 at ~:2724 parks
-// at the wrong seq scenario, letting the banner_at 30-frame countdown win.
 	mov r0, #8
 	str r0, [r5]
 locret_80080D0:
@@ -10674,11 +10588,8 @@ loc_8008184:
 	mov r0, #1
 	bl sub_802E070
 	ldrh r1, [r0,#0x28]
-// bn T7d (2026-09-15): this loc_800819A's bl PauseBattle in bannerSeqState08Fight_80080D2
-// is one of the three fitted edges; src/battle.rs carries the named
-// canon-predicate for the pause-state entry on the window-close banner
-// cycle. The 144..206 byte-identical canonical block of BannerSequencerStates_8008038 lands
-// at this entry in the windowclose_full trace scenario.
+// loc_800819A's bl PauseBattle in bannerSeqState08Fight_80080D2 is the pause-state entry of
+// the window-close banner cycle.
 	ldr r2, off_80084D0 // =0x2900
 	sub r1, r1, r2
 	strh r1, [r0,#0x28]
@@ -11148,10 +11059,9 @@ off_80084EC:
 // own seven-entry table (off_8008508) instead of BannerSequencerStates_8008038.
 // It is reached from a different battle-FSM state (sub_800980E) than the banner
 // sequencer is (battleFsmState0C_800938A), so which table a given value of the
-// state word selects depends on which FSM state is running. No source the bn
-// project produced names these seven states, so they keep their address names;
-// sub_800855E is the one the port does describe -- the fight state's per-frame
-// body, which adds to the CUSTOM gauge and opens every frame with UnpauseBattle.
+// state word selects depends on which FSM state is running. These seven states keep their
+// address names. sub_800855E is the fight state's per-frame body, which adds to the CUSTOM gauge
+// and opens every frame with UnpauseBattle.
 sub_80084F0:
 	push {r5,lr}
 	ldr r5, off_8008524 // =eBattleSequencerState_203CA70
@@ -12841,11 +12751,9 @@ off_8009154:
 	.word 0x400
 	thumb_func_end sub_8009140
 
-// bn T7r (2026-09-15): dispatchBattleFsm_8009158 dispatcher carries the seq.state gate
-// in src/battle.rs Actor::update / t1_player_entry, early-returning
-// Update::Nothing when seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04}
-// (cite T7q PARTIAL f80b72f); bannerSeqState20WindowOpening_8008452 / sub_8008... chain hands
-// off to isCustGaugeFullAndBattleLive_800A21C's gauge-full path on the SEQ_04 -> SEQ_08 edge.
+// dispatchBattleFsm_8009158: the player does not act while eBattleSequencerState_203CA70 is
+// 0x20, 0x24, 0x00 or 0x04. The chain hands off to isCustGaugeFullAndBattleLive_800A21C's
+// gauge-full path on the 0x04 -> 0x08 edge.
 	thumb_local_start
 dispatchBattleFsm_8009158:
 	push {lr}
@@ -12900,7 +12808,7 @@ off_80091B8:
 // eBattleState.Index_01 selects a row here, and like the banner sequencer's own
 // state word it is a PRE-MULTIPLIED byte offset (0, 4, 8, ...), not an index.
 // A battle walks 0x00 -> 0x04 -> 0x08 -> 0x0C and parks at 0x0C, which is the
-// state that runs the banner sequencer every frame (bn T9c/T9d, measured live).
+// state that runs the banner sequencer every frame (measured).
 BattleFsmStates_80091BC:
 	// BATTLE_FSM_STATE_00
 	.word battleFsmState00_80091F0+1
@@ -13153,11 +13061,8 @@ battleFsmState08_8009338:
 	cmp r0, #0
 	bne loc_800934E
 	mov r0, #4
-// bn T9d (2026-09-15): Index_01 parks 0x08 here at battleFsmState08_8009338's beq
-// (lines 13065-13067 in this disassembly) because eS20364C0.JumpOffset00
-// parks at 4; sequencer moves only on hand-played PAUSED root, so no
-// eBattleSequencerState_203CA70 writer on either battlestart route -- mettaur's live
-// canon is PAUSED, not battlestart (harness.py:958), no row premise broken.
+// Index_01 holds at 0x08 at battleFsmState08_8009338's beq (lines 13065-13067) while
+// eS20364C0.JumpOffset00 holds at 4.
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
 	strb r0, [r5,#oBattleState_Unk_03]
@@ -13196,34 +13101,14 @@ locret_8009388:
 	thumb_func_end battleFsmState08_8009338
 
 	thumb_local_start
-// bn project, AUDIT wave 3c "zero-enemy" (2026-09-08): MegaMan's own
-// "process a chip-use request" handler (a prior session's finding, this
-// session traced it live). someChipHandValidationHappensHere_800B090
-// (this file, line ~17330) is a PASS-THROUGH: it saves r0 on entry
-// (push {r0-r7,lr}) and restores the SAME r0 on return (pop {r0-r7,pc}) --
-// its only effect is a possible side-effect write of the "bug chip" 0x185
-// into the hand slot when validation fails, never the return value -- so
-// the `cmp r0, #6` two lines below is really comparing stepBannerSequencer_800801C's own
-// return (the "generic banner sequencer" step result, TRANSFER.md 7bf)
-// unchanged. TRACED LIVE (tools/mgba_capture.c's --trace-pc, this ticket)
-// on a save state past the deleted Mettaur's full dissolve (frame 110),
-// with an A-press at every frame of a 30-frame capture: r0 read 0x0 at
-// EVERY hit of this compare, never 6 -- so `bne loc_80093B0` always took
-// the branch and the immediate-6 patch a prior session tried (0x06 ->
-// 0xFF at ROM 0x80093A2) could never have mattered here, since the value
-// it guards was never 6 to begin with. Two lines further, `cmp r0, #0 /
-// beq locret_800945A` (loc_80093B0, not shown here) then returns
-// immediately without acting on any pending input, for the SAME r0 == 0 --
-// and a same-shape live trace of a WORKING press (PAUSED, enemy immortal,
-// Start@10,A@40) shows MegaMan's own CurState/CurAction bytes (0x0203a9b0
-// +8/+9) move from (0x04,0x08) to (0x04,0x14) right after the press, while
-// the refused (post-dissolve-reload) capture holds (0x04,0x08) for all 30
-// traced frames regardless of the A-press. So the actual second gate is
-// upstream of this compare -- inside stepBannerSequencer_800801C's own state after a
-// reload, or in the code past loc_80093B0's r0-nonzero branch (unread by
-// this session, out of time) -- not the `cmp r0, #6` itself. Left
-// unresolved for whoever picks this up next; the trace mode is
-// tools/mgba_capture.c's --trace-pc/--trace-steps in the `bn` repo.
+// MegaMan's handler for a chip-use request. someChipHandValidationHappensHere_800B090 is a
+// pass-through: it saves r0 on entry (push {r0-r7,lr}) and restores the same r0 on return
+// (pop {r0-r7,pc}); its only effect is a possible write of the bug chip 0x185 into the hand slot
+// when validation fails. So the `cmp r0, #6` two lines below compares stepBannerSequencer_800801C's
+// own return, unchanged. After the last enemy had been deleted and dissolved, r0 read 0 at every
+// hit of this compare, so `bne loc_80093B0` was always taken and loc_80093B0's
+// `cmp r0, #0 / beq locret_800945A` returned without acting on input. On a press that does fire,
+// MegaMan's CurState/CurAction (0x0203a9b0 +8/+9) go from (0x04,0x08) to (0x04,0x14).
 battleFsmState0C_800938A:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
@@ -13381,6 +13266,9 @@ sub_80094B6:
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
 	bne loc_80094C8
+// Results-entry gate on oBattleState_Unk_03. Writing the player's HP word alone does not fire
+// the defeat gate; setting the player's CurState (0x0203a9b8) to CUR_STATE_DESTROY (8) takes the
+// sequencer to 0x04000010 (the LOSE end state, 0x10) within 5 frames.
 	ldr r0, =unk_2035260
 	bl showResultWindow_802C34E
 	mov r0, #4
@@ -15300,11 +15188,9 @@ loc_800A218:
 	pop {pc}
 	thumb_func_end sub_800A1D0
 
-// bn T7r (2026-09-15): isCustGaugeFullAndBattleLive_800A21C is the gauge-full -> PauseBattle path
-// (L is debug-only); src/battle.rs:2615-2655 carries the rust counterpart
-// gauge_pause=60 chime. It pairs with dispatchBattleFsm_8009158's dispatcher as the
-// SEQ_04 -> SEQ_08 leave predicate in the sequencer chain that T7r
-// documented on the windowclose_full trace.
+// isCustGaugeFullAndBattleLive_800A21C is the gauge-full -> PauseBattle path (L is
+// debug-only). With dispatchBattleFsm_8009158's gate it forms the leave condition of the
+// sequencer's 0x04 -> 0x08 edge.
 	thumb_local_start
 isCustGaugeFullAndBattleLive_800A21C:
 	push {lr}
@@ -16047,6 +15933,8 @@ sub_800A714:
 	thumb_func_end sub_800A714
 
 // (int battleSettingsIdx) -> BattleSettings*
+// The roll's OPT path adopts a battle record ungated through Unk_28 (0x02001c2c) and
+// OptCurBattleDataPtr (0x02001c30); record 163 (0x080AA54A, asm29.s:10233) is fielded this way.
 	thumb_func_start getBattleSettingsFromList0
 getBattleSettingsFromList0:
 	mov r1, #0x10
@@ -16720,6 +16608,8 @@ sub_800AAF2:
 	thumb_func_end sub_800AAF2
 
 	thumb_local_start
+// sub_800AAFC fills the best-time halfword tables unk_2000260/unk_20018C0 (20 entries each)
+// with 0/0xFFFF; both read all 0xFFFF in the battles watched.
 sub_800AAFC:
 	push {r4,lr}
 	mov r4, r0
@@ -17510,6 +17400,8 @@ loc_800B074:
 	bne loc_800B080
 	mov r1, #0xff
 loc_800B080:
+// The 0x19B folder gate here (tooManyGigasMegasAntiCheatHappensHere_800B022) is one of the
+// reader gates that bound the reachable chip set to 237 ids (1..202 and 221..255).
 	ldr r2, dword_800B104 // =0x19b
 	cmp r0, r2
 	blt loc_800B088
@@ -17986,6 +17878,9 @@ off_800B440:
 	thumb_func_end sub_800B428
 
 	thumb_local_start
+// sub_800B444 copies the battle-stats record byte_203F4A4 (level +1, clear-time +4, reward +8,
+// latched by sub_801FF18 at asm01.s:49) into the results slot unk_2035260; the rank byte proper
+// is eS20364C0+0x0e, written via sub_802C97E (asm03_0.s:13232).
 sub_800B444:
 	push {lr}
 	ldr r0, off_800B648 // =byte_203F4A4

@@ -32,9 +32,8 @@
 	// banner sequencer (stepBannerSequencer_800801C / BannerSequencerStates_8008038)
 	// runs the same table for BATTLE START!, TURN START!, ENEMY DELETED,
 	// MEGAMAN DELETED and the result messages.
-	// Canon's own run over one battle, measured by the bn project (T7c/T7d):
-	// 0x1C for frames 0..10, 0x08 11..41, 0x20 42..43, 0x24 44..143,
-	// 0x00 144..146, 0x04 147..206, 0x08 207..315, then 0x0C.
+	// Measured over one battle: 0x1C for frames 0..10, 0x08 11..41, 0x20 42..43,
+	// 0x24 44..143, 0x00 144..146, 0x04 147..206, 0x08 207..315, then 0x0C.
 	.equiv BATTLE_SEQ_SETTLE,          0x00 // post-window settle
 	.equiv BATTLE_SEQ_BANNER_WAIT,     0x04 // holds until isBannerBusy_801E754 reads 0
 	.equiv BATTLE_SEQ_FIGHT,           0x08 // the fight itself
@@ -47,12 +46,12 @@
 	.equiv BATTLE_SEQ_WINDOW_OPEN,     0x24 // chip window up
 
 	// The four states in which the player executor early-returns without acting
-	// (playerObject_update_80EA484 / dispatchBattleFsm_8009158; bn T7q/T7r).
+	// (playerObject_update_80EA484 / dispatchBattleFsm_8009158).
 
 	// --- eBattleState.Index_01, the battle FSM ---------------------------------
 	// Also a pre-multiplied byte offset, into BattleFsmStates_80091BC.
 	// Observed run: 0x00 -> 0x04 -> 0x08 -> 0x0C, parking at 0x0C, which is the
-	// state that drives the banner sequencer (bn T9c/T9d, measured).
+	// state that drives the banner sequencer.
 	.equiv BATTLE_FSM_STATE_00,        0x00
 	.equiv BATTLE_FSM_STATE_04,        0x04
 	.equiv BATTLE_FSM_STATE_08,        0x08 // gates on isChipWindowReady_8026A28
@@ -61,7 +60,7 @@
 	// --- The CUSTOM gauge -------------------------------------------------------
 	.equiv CUST_GAUGE_FULL,            0x4000 // Struct2035280.CustGaugeValue's cap
 	// CustGaugeFlowCounter wraps here: lcm(28, 16), the bar's 4-tile cycle at one
-	// step per 7 frames against the marker's 8-frame blink (bn F6/wt/zero-layers).
+	// step per 7 frames against the marker's 8-frame blink.
 	.equiv CUST_GAUGE_FLOW_PERIOD,     112
 	// The chip window's slide runs RenderInfo.BG3HOfs_18 between these, by
 	// CHIP_WINDOW_SLIDE_STEP a call, so exactly ten calls either way.

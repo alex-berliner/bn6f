@@ -3821,10 +3821,9 @@ off_813D644:
 	.word byte_2009470
 	thumb_func_end sub_813D638
 
-// bn T97 (2026-09-17): sub_813D648 is the netbattle wireless-arm routine;
-// rfu_REQBN_softReset_and_checkID is called first, then checked against 1
-// for ID match; pairs with handshake libSIO814469C at libs.s:799-807
-// (SIOCNT|=0x80). doc only: docs/coverage/netbattle.md (no src/ change).
+// sub_813D648 is the netbattle wireless-arm routine: rfu_REQBN_softReset_and_checkID is
+// called first and its result checked against 1 for an ID match; it pairs with the handshake
+// libSIO814469C at libs.s:799-807 (SIOCNT|=0x80).
 	thumb_func_start sub_813D648
 sub_813D648:
 	push {lr}

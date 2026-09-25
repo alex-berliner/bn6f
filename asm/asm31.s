@@ -1,17 +1,11 @@
 
 	thumb_func_start t1_0x0_80B81EC
 // some sort of generic function for enemies?
-// bn project, AUDIT wave 3c "inert-enemy" (2026-09-08): confirmed NOT
-// enemy-specific -- this is the SHARED entry T1BattleObjectJumptable[0]
-// (asm00_1.s ~8592-ish, "// JP: 0x8003c80") dispatches EVERY T1-category
-// battle object to, traced live (tools/mgba_capture.c's --trace-pc): a
-// PAUSED capture's MegaMan object (r5 == 0x0203a9b0) and its Mettaur
-// (r5 == 0x0203ab60) both land here with r0 == this function's own address
-// (0x080b81ed) -- patching THIS function would break MegaMan too. It reads
-// oBattleObject_AIDataPtr->ActorType and picks one of three handlers below
-// (virus/navi/player); the "virus" one is where the bn project's own
-// inert-enemy patch actually goes -- see virusObject_dispatch_8108F50's
-// own comment, below in this file.
+// Not enemy-specific: this is the SHARED entry that T1BattleObjectJumptable[0]
+// (asm00_1.s ~8592, "// JP: 0x8003c80") dispatches EVERY T1-category battle object to. MegaMan
+// (r5 == 0x0203a9b0) and a Mettaur (r5 == 0x0203ab60) both land here with r0 == 0x080b81ed.
+// It reads oBattleObject_AIDataPtr->ActorType and picks one of three handlers below
+// (virus/navi/player).
 t1_0x0_80B81EC:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -107144,12 +107138,9 @@ off_80EA478:
 	.word playerObject_init_80172F0+1
 	.word playerObject_update_80EA484+1
 	.word sub_8016C4E+1
-// bn T7r (2026-09-15): playerObject_update_80EA484 carries the per-frame
-// gate on seq.state in {SEQ_20, SEQ_24, SEQ_00, SEQ_04} used by T7q PARTIAL
-// f80b72f to early-return Update::Nothing in src/battle.rs's Actor::update /
-// t1_player_entry; this is the canonical cite on the player side that
-// complements dispatchBattleFsm_8009158's dispatcher gate (asm00_1.s:12760) on the
-// battle-state side, both needed for the SEQ_08 chain T7r documents.
+// playerObject_update_80EA484 carries the per-frame gate on the player side: it does not act
+// while eBattleSequencerState_203CA70 is 0x20, 0x24, 0x00 or 0x04. It complements
+// dispatchBattleFsm_8009158's gate (asm00_1.s:12760) on the battle-state side.
 	thumb_func_end playerObject_main_80EA460
 
 	thumb_local_start
@@ -118974,10 +118965,7 @@ loc_80F037A:
 	bne loc_80F03A0
 	mov r0, #2
 	bl dispatch_801DA48
-// bn T88 (2026-09-17): T88 RESOLVED-ALREADY: the 9..0 Timer tail here at
-// playerAI_sub_80F0354 is attributed by T67's commit 2d7ce09
-// (src/actor.rs PHASE_ARM_FRAMES=10 + TIMER_SENTINEL=1) — T88 confirmed
-// T67's model supersedes T66's. T67's src/actor.rs carries the phase handler.
+// The Timer here in playerAI_sub_80F0354 runs 9 down to 0.
 	mov r0, #0xa
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #0x10
@@ -169271,33 +169259,11 @@ sub_8108F28:
 	thumb_func_end sub_8108F28
 
 	thumb_local_start
-// bn project, AUDIT wave 3c "inert-enemy" (2026-09-08): the "virus" branch
-// of t1_0x0_80B81EC's ActorType dispatch (this file, line ~4) -- ONE
-// caller (grepped), so this is the per-object handler for every enemy,
-// not just the Mettaur. Sub-dispatches again by oBattleObject_CurState
-// (init/update/destroy, the 3-entry table right below) and then
-// unconditionally calls runEnemyAttackAnim_8016E64, which the disassembly's own PRIOR
-// comment there already documents as driving enemy attack animations.
-// tools/patch_sterile.py's --inert-enemy (opt-in, 4th patch) stubs this
-// function's own entry (push {lr}, bytes 00 B5 -> bx lr, 70 47) the same
-// shape as the project's other 3 patches, on the theory that an
-// already-alive enemy's own death/dissolve transition (the corpse this
-// whole ticket chain is chasing out) is gated somewhere in this function's
-// CurState sub-dispatch. MEASURED, NOT SUFFICIENT: the enemy's sprite
-// freezes (confirmed live -- an idle Mettaur's own breathing animation,
-// which normally varies its OAM pixel count frame to frame, goes exactly
-// static) but does NOT stop being drawn (511px/frame of frozen sprite +
-// HP digits remain, visually confirmed via a decoded frame -- so whatever
-// uploads its OAM runs on a path this patch does not touch), AND it
-// breaks chip-firing entirely (MegaMan's own CurState/CurAction bytes,
-// 0x0203a9b0+8/+9, stay (0x04,0x08) through an A-press that fires cleanly
-// on the SAME script without this patch) -- so every chip/popup capture
-// against this patch gets WORSE, not better (cannon 14388->98398, popup
-// 107511->171154, chip-areagrab 103467->168174; see the bn repo's own
-// ticket report for the harness numbers). Left in the tree as a real,
-// working, OPT-IN patch (--inert-enemy) and an honestly-reported dead
-// end for THIS specific mechanism -- the actual death/dissolve gate and
-// whatever independently drives OAM upload are still unfound.
+// The "virus" branch of t1_0x0_80B81EC's ActorType dispatch (this file, line ~4) -- one
+// caller, so this is the per-object handler for every enemy, not just the Mettaur. It
+// sub-dispatches by oBattleObject_CurState (init/update/destroy, the 3-entry table right below)
+// and then unconditionally calls runEnemyAttackAnim_8016E64. Skipping this function freezes an
+// enemy's animation but not its drawing: its OAM upload runs on another path.
 virusObject_dispatch_8108F50:
 	push {lr}
 
@@ -169404,12 +169370,9 @@ loc_8109020:
 	ldrb r0, [r0,#oAIData_AIIndex]
 	lsl r4, r0, #2
 
-// bn T12 (2026-09-15): the CurAction-indexed state-HANDLER TABLE
-// pointers dispatch via AIThinkTables_8109050 (think: 32 distinct handler tables,
-// 2 named For*) to battle_801B1C4 here -- tools/rom_enemy_tables.py emits
-// docs/inventory/enemies.md cross-referencing the think word table via
-// the dispatcher that passes it as an argument. battle_801B1C4 carries
-// this through to the per-type state-machine execution from AIActHandlers_81091D0.
+// The CurAction-indexed handler tables that AIThinkTables_8109050 points to (32 distinct
+// tables, 2 named For*) are dispatched here through battle_801B1C4, which receives the table as
+// an argument.
 	ldr r1, off_8109048 // =AIThinkTables_8109050 
 	ldr r0, [r1,r4]
 	bl battle_801B1C4
@@ -169440,9 +169403,8 @@ off_810904C:
 	// A think word is NOT a routine -- it is a pointer to that AI's own
 	// CurAction-indexed handler table, handed to battle_801B1C4 as an argument.
 	// An act word IS called (`mov lr,pc; bx r0`), and 21 of the 32 are nullsub_13.
-	// Known-answer checks (bn T12, both PASS): enemy_idx 0x01..0x04 resolve
-	// through VerActorTyAIIdxTable_80182C4 to AIIndex 0x01 -> ForMettaur_8109EF4,
-	// and enemy_idx 0x85 to AIIndex 0x17 -> ForGunner_8113078.
+	// Examples: enemy_idx 0x01..0x04 resolve through VerActorTyAIIdxTable_80182C4 to
+	// AIIndex 0x01 -> ForMettaur_8109EF4, and enemy_idx 0x85 to AIIndex 0x17 -> ForGunner_8113078.
 	.equiv NUM_AI_INDICES, 0x20
 
 AIThinkTables_8109050:
@@ -171006,12 +170968,8 @@ sub_8109EE4:
 locret_8109EF2:
 	pop {pc}
 	.balign 4, 0
-// bn T12 (2026-09-15): ForMettaur_8109EF4 is the named think handler for
-// AI 0x01 (idx 0x01..0x04) -- one of 32 distinct handler tables dispatch
-// indexed by AIIndex * 4 against AIThinkTables_8109050; src/objects.rs Style::Mettaur
-// arm calls into this for the Mettaur's per-action update. tools/rom_enemy_tables.py
-// emits the named FOR entries; known-answer check idx 0x01..0x04 -> AI 0x01
-// confirms the layout.
+// ForMettaur_8109EF4 is the think handler table for AI 0x01 (enemy_idx 0x01..0x04), one of
+// the 32 handler tables indexed by AIIndex * 4 through AIThinkTables_8109050.
 // indexed by CurAction * 4
 ForMettaur_8109EF4: 
 	// 0x00 (0x00) (CurAction -> 0x01)
@@ -171145,147 +171103,84 @@ loc_8109FD0:
 	pop {pc}
 	thumb_func_end sub_8109FC4
 
-	// bn/reference wt/zero-layers (2026-09-08): this is the Mettaur's OWN
-	// per-frame AI dispatch -- a 5-state machine (MettaurDecideStates_8109FF0's table:
-	// MettaurDecideCheckStatusAndRow_810A004 hop-toward-row/attack-decide, MettaurDecideArmHopToRow_810A080 wind-up,
-	// MettaurDecideConfused_810A0BA wait -- itself two sub-states, one of them RNG-gated via
-	// GetPositiveSignedRNG at MettaurConfusedRollAttack_810A0EE -- MettaurDecideChooseAttack_810A126 HP/range-gated
-	// attack choice, MettaurDecideArmGuard_810A204 not read past this ticket). Its own
-	// re-arm/wait counts are TABLE-DRIVEN (MettaurHopCooldownByVersion_8109F46 = { 0x1e, 0x18,
-	// 0x12, 0xc, 0x12, 0xc }, indexed by oAIData_Version_16 at
-	// MettaurDecideArmHopToRow_810A080/MettaurConfusedArmRandomHop_810A0D4), not the flat 0x1e (30) every state uses.
-	// bn's own src/ai.rs (Style::Mettaur) reimplements this as ONE state
-	// with a flat METTAUR_PAUSE=0x1e re-arm and no RNG -- explicitly
-	// documented there as "a first pass on fixed timers, not the game's
-	// own planner". Measured against the real ROM (bn's own zero-layers
-	// ticket, harness.py's `mettaur`/`wave` checks, STERILE+PAUSED+ALIVE+
-	// Start@10 vs a real Mettaur fixture): the mismatch is NOT random
-	// noise or a one-off transition -- it is a clean, repeating pattern
-	// confined to the enemy's own screen box (43,70)-(77,113), literally
-	// alternating a fixed ~766px "on" region against zero for several
-	// frames at a stretch, exactly the signature of a periodic cycle
-	// running on the wrong period/phase rather than a positional or
-	// palette bug. `wave`'s own much larger residue (288491px, every one
-	// of 90 frames nonzero, dominated by BG3 panel-lighting at 244980px)
-	// uses the SAME real Mettaur and is not yet independently
-	// root-caused, but is the same enemy and the same simplified AI, so
-	// this state machine (RNG included -- GetPositiveSignedRNG's own
-	// algorithm/seed is not matched either) is the most likely shared
-	// cause for both. Reimplementing all five states faithfully, RNG
-	// included, is a real project of its own -- not attempted this
-	// ticket; left here as the concrete next step rather than a guess.
+	// The Mettaur's own per-frame AI dispatch -- a 5-state machine (MettaurDecideStates_8109FF0's
+	// table: MettaurDecideCheckStatusAndRow_810A004 hop-toward-row/attack-decide,
+	// MettaurDecideArmHopToRow_810A080 wind-up, MettaurDecideConfused_810A0BA wait -- itself two
+	// sub-states, one of them RNG-gated via GetPositiveSignedRNG at MettaurConfusedRollAttack_810A0EE --
+	// MettaurDecideChooseAttack_810A126 HP/range-gated attack choice, MettaurDecideArmGuard_810A204).
+	// Its re-arm/wait counts are TABLE-DRIVEN (MettaurHopCooldownByVersion_8109F46 = { 0x1e, 0x18,
+	// 0x12, 0xc, 0x12, 0xc }, indexed by oAIData_Version_16 at MettaurDecideArmHopToRow_810A080 /
+	// MettaurConfusedArmRandomHop_810A0D4), not a flat 0x1e (30).
 	//
-	// bn/reference wt/mettaur-ai (2026-09-08): the concrete next step above,
-	// done. THE FULL MACHINE, one level up from MettaurDecide_8109FD6's own 5-state
-	// table: `ForMettaur_8109EF4` (170982-171012, indexed by
-	// `oBattleObject_CurAction`, one word per action 0x00..0x0C) is the
-	// Mettaur's per-object dispatch. 0x00-0x07 are shared spawn/idle
-	// plumbing (RunSpawnAnimationMaybe_8016380 etc, not Mettaur-specific).
-	// 0x08 is THIS function, MettaurDecide_8109FD6, the decision loop. 0x09 is
-	// MettaurWaitThenExitAttack_8109CBC, a plain "count oAIAttackVars_AttackWait down to 0, then
-	// object_exitAttackState" waiter -- what MettaurDecideCheckStatusAndRow_810A004's own
-	// oBattleObject_Param4==0 branch (below) arms with 0x1e (30) for the
-	// Mettaur's ONE-TIME post-spawn pause before its first ever decision.
-	// 0x0A is the HOP executor (MettaurHopExec_8109CE6/MettaurHopSteps_8109CF8, 170701-170808):
-	// four raw-byte-indexed sub-steps (Unk_00 values 0/4/8/0xc, NOT
-	// scaled -- `ldr r1,[r1,r0]` adds the byte directly) -- reserve the
-	// target panel and spawn a dust effect (spawn_t1_0x0_EffectObject) for
-	// 3 frames, commit PanelX/PanelY for 3 more, clear the moving flag and
-	// arm MettaurHopCooldownByVersion_8109F46[Version] frames of cooldown, then set Unk_1a=1 and
-	// object_exitAttackState. 0x0B is the ATTACK executor
-	// (MettaurAttackExec_8109DD2/MettaurAttackSteps_8109DE4, 170826-170918): MettaurAttackSwing_8109DEC holds anim 1 for
-	// a 0x40-frame countdown, calls object_setCounterTime(0x1e) when it
-	// reads 0x32, spawns the shockwave via spawnShockwaveSegment_80C6CE4 when it reads 0x1b,
-	// zeroes CurAnim when it reaches 0, THEN MettaurAttackRecover_8109E4A holds a SEPARATE
-	// 0x28 (40) frame recovery before object_exitAttackState -- bn's own
-	// src/actor.rs `SWING` had `recover: 0`, letting bn's Mettaur re-attack
-	// as soon as the 0x40-frame pose ended (roughly DOUBLE the real 64+40
-	// cadence) -- the dominant cause of both residues above, per this
-	// ticket's own measurement. 0x0C is the GUARD executor
-	// (MettaurGuardExec_8109E7A/MettaurGuardSteps_8109E8C, 170920-170992): only ever entered from
-	// MettaurDecideCheckStatusAndRow_810A004's `Version != 0` "being hit" branch, so a Version-0
-	// Mettaur (this project's only kind) never reaches it -- confirms bn's
-	// own "a first-version Mettaur never guards" comment in src/ai.rs.
+	// THE FULL MACHINE, one level up from MettaurDecide_8109FD6's 5-state table: ForMettaur_8109EF4
+	// (170982-171012, indexed by oBattleObject_CurAction, one word per action 0x00..0x0C) is the
+	// Mettaur's per-object dispatch. 0x00-0x07 are shared spawn/idle plumbing
+	// (RunSpawnAnimationMaybe_8016380 etc, not Mettaur-specific). 0x08 is THIS function,
+	// MettaurDecide_8109FD6, the decision loop. 0x09 is MettaurWaitThenExitAttack_8109CBC, a plain
+	// "count oAIAttackVars_AttackWait down to 0, then object_exitAttackState" waiter -- what
+	// MettaurDecideCheckStatusAndRow_810A004's oBattleObject_Param4==0 branch (below) arms with 0x1e
+	// (30) for the Mettaur's ONE-TIME post-spawn pause before its first decision.
+	// 0x0A is the HOP executor (MettaurHopExec_8109CE6/MettaurHopSteps_8109CF8, 170701-170808): four
+	// raw-byte-indexed sub-steps (Unk_00 values 0/4/8/0xc, NOT scaled -- `ldr r1,[r1,r0]` adds the
+	// byte directly) -- reserve the target panel and spawn a dust effect (spawn_t1_0x0_EffectObject)
+	// for 3 frames, commit PanelX/PanelY for 3 more, clear the moving flag and arm
+	// MettaurHopCooldownByVersion_8109F46[Version] frames of cooldown, then set Unk_1a=1 and
+	// object_exitAttackState.
+	// 0x0B is the ATTACK executor (MettaurAttackExec_8109DD2/MettaurAttackSteps_8109DE4,
+	// 170826-170918): MettaurAttackSwing_8109DEC holds anim 1 for a 0x40-frame countdown, calls
+	// object_setCounterTime(0x1e) when it reads 0x32, spawns the shockwave via
+	// spawnShockwaveSegment_80C6CE4 when it reads 0x1b, zeroes CurAnim when it reaches 0, THEN
+	// MettaurAttackRecover_8109E4A holds a SEPARATE 0x28 (40) frame recovery before
+	// object_exitAttackState.
+	// 0x0C is the GUARD executor (MettaurGuardExec_8109E7A/MettaurGuardSteps_8109E8C, 170920-170992):
+	// only ever entered from MettaurDecideCheckStatusAndRow_810A004's `Version != 0` "being hit"
+	// branch, so a Version-0 Mettaur never reaches it.
 	//
-	// MettaurDecide_8109FD6's OWN 5 states, MettaurDecideStates_8109FF0 (171195-171201; every address
-	// below still asm31.s):
+	// MettaurDecide_8109FD6's OWN 5 states, MettaurDecideStates_8109FF0 (171195-171201; every
+	// address below is asm31.s):
 	//   [0] MettaurDecideCheckStatusAndRow_810A004 (171204-171271): the Param4==0 spawn-pause gate
 	//     (arms CurAction 9's 0x1e wait, ABOVE), then two status-flag gates
 	//     -- OBJECT_FLAGS_IMMOBILIZED (bit 14, 0x4000: freeze, return) and
 	//     OBJECT_FLAGS_BLIND|CONFUSED (bits 13/15, 0xa000: go to state [2])
 	//     -- then a row compare against the OTHER alliance's own reference
-	//     object (sub_80103F8, its PanelY at +0x13): equal -> state [3];
-	//     otherwise -> state [1].
+	//     object (sub_80103F8, its PanelY at +0x13): equal -> state [3]; otherwise -> state [1].
 	//   [1] MettaurDecideArmHopToRow_810A080 (171274-171308): arms a hop toward the target row
-	//     (MettaurHopTowardTargetRow_810A21A, one panel, the SAME direction every time -- no
-	//     RNG) via CurAction 0xA, then waits for AIAttackVars_Unk_1a (set
-	//     by the HOP executor's own last step) before returning to [0].
-	//   [2] MettaurDecideConfused_810A0BA/MettaurConfusedArmRandomHop_810A0D4/MettaurConfusedRollAttack_810A0EE (171311-171376): UNREACHED
-	//     without BLIND/CONFUSED (this project has no chip that sets
-	//     either, or IMMOBILIZED). MettaurConfusedArmRandomHop_810A0D4 arms a RANDOM-direction hop
+	//     (MettaurHopTowardTargetRow_810A21A, one panel, the SAME direction every time -- no RNG)
+	//     via CurAction 0xA, then waits for AIAttackVars_Unk_1a (set by the HOP executor's last
+	//     step) before returning to [0].
+	//   [2] MettaurDecideConfused_810A0BA/MettaurConfusedArmRandomHop_810A0D4/
+	//     MettaurConfusedRollAttack_810A0EE (171311-171376): reached only with BLIND or CONFUSED.
+	//     MettaurConfusedArmRandomHop_810A0D4 arms a RANDOM-direction hop
 	//     (MettaurHopRandomRow_810A254, 171553-171579: GetPositiveSignedRNG()&1 picks which
-	//     neighbour row to try first, MettaurRandomHopRowOrders_810A2A4's own byte sequence 01
-	//     FF 01 00 gives the two try-orders, +1 first or -1 first, each
-	//     falling back to the other on an invalid panel). MettaurConfusedRollAttack_810A0EE then
-	//     ROLLS: GetPositiveSignedRNG()&0xf, <2 (2/16) -> state [3]
-	//     immediately, else arms a flat 0x32 (50) frame idle wait before
-	//     returning to [0]. THE ONLY RNG THE METTAUR'S OWN DECISION LOOP
-	//     EVER DRAWS FROM, and it is provably dead code for every fixture
-	//     this project has (see the RNG section below).
-	//   [3] MettaurDecideChooseAttack_810A126 (171379-171451): sub_800ED90's own "equipped
-	//     ability" gate (r3 != 0) is the ONLY way to reach state [4]
-	//     (MettaurDecideArmGuard_810A204, 171501-171514, a flat 0x28-frame wait before
-	//     forcing CurAction 0xC, GUARD) -- not modelled in bn, and not
-	//     reachable by a Mettaur with no equipped item (this project's
-	//     only kind). The normal path (loc_810A184..) reads
+	//     neighbour row to try first; MettaurRandomHopRowOrders_810A2A4's byte sequence 01 FF 01 00
+	//     gives the two try-orders, +1 first or -1 first, each falling back to the other on an
+	//     invalid panel). MettaurConfusedRollAttack_810A0EE then ROLLS: GetPositiveSignedRNG()&0xf,
+	//     <2 (2/16) -> state [3] immediately, else arms a flat 0x32 (50) frame idle wait before
+	//     returning to [0]. This is the only RNG the Mettaur's decision loop ever draws from.
+	//   [3] MettaurDecideChooseAttack_810A126 (171379-171451): sub_800ED90's "equipped ability"
+	//     gate (r3 != 0) is the ONLY way to reach state [4] (MettaurDecideArmGuard_810A204,
+	//     171501-171514, a flat 0x28-frame wait before forcing CurAction 0xC, GUARD), so a Mettaur
+	//     with no equipped item never reaches it. The normal path (loc_810A184..) reads
 	//     MettaurWaveFamilyByVersion_8109F40[Version] into AIAttackVars_Unk_0c (a "family" tag
-	//     passed to spawnShockwaveSegment_80C6CE4, presumably cosmetic/audio -- not traced
-	//     further) and MettaurWaveDamageByVersion_8109F28[Version] (a packed u32, low 16 bits =
-	//     {10,30,50,70,50,100} for Version 0..5 -- Version 0's 10 matches
-	//     bn's own WAVE_DAMAGE) into AIAttackVars_Damage, then
-	//     object_setAttack0(0xb) -> CurAction 0xB, the ATTACK executor
-	//     above.
+	//     passed to spawnShockwaveSegment_80C6CE4, presumably cosmetic/audio -- not traced further)
+	//     and MettaurWaveDamageByVersion_8109F28[Version] (a packed u32, low 16 bits =
+	//     {10,30,50,70,50,100} for Version 0..5) into AIAttackVars_Damage, then
+	//     object_setAttack0(0xb) -> CurAction 0xB, the ATTACK executor above.
 	//
-	// THE RNG. GetRNG/GetPositiveSignedRNG (asm00_0.s:2609-2640;
-	// GetPositiveSignedRNG clears the sign bit, `lsl r0,#1; lsr r0,#1`,
-	// after the same step): `seed = rotl(seed,1).wrapping_add(1) ^
-	// 0x873ca9e5`, state ePrimaryRngSeed (ewram.s:262, EWRAM 0x020013f0).
-	// SEPARATE from GetRNGSecondary/eSecondaryRngSeed (ewram.s:241, EWRAM
-	// 0x02001120, asm00_0.s:2643-2656 -- the SAME formula, a different
-	// stream; bn's own deck::Rng already reimplements the secondary one for
-	// the folder shuffle).
+	// THE RNG. GetRNG/GetPositiveSignedRNG (asm00_0.s:2609-2640; GetPositiveSignedRNG clears the
+	// sign bit, `lsl r0,#1; lsr r0,#1`, after the same step): seed = (rotl(seed,1) + 1) ^
+	// 0x873ca9e5, state ePrimaryRngSeed (ewram.s:262, EWRAM 0x020013f0). SEPARATE from
+	// GetRNGSecondary/eSecondaryRngSeed (ewram.s:241, EWRAM 0x02001120, asm00_0.s:2643-2656 -- the
+	// SAME formula, a different stream).
 	//
-	// VERIFIED against the real ROM (this ticket, standalone script, not
-	// committed): `--watch 0x020013f0:4:<file>` on
-	// tools/mgba_capture/bn6f_sterile.gba, `--loadstate
-	// /tmp/pausedwithcannon.state --cheat 0x0203ab84:0xffff --cheat
-	// 0x0203ab86:0xffff --script Start@10` (the EXACT STERILE+PAUSED+ALIVE
-	// recipe both bn's `mettaur` and `wave` harness rows use) over 220
-	// frames. Every one of 219 consecutive transitions equals the formula
-	// above applied to the previous value, bit for bit -- zero mismatches,
-	// and frame 0 reads 0xdd340be4. TWO findings from this:
-	//   1. The formula is confirmed correct (independent of the
-	//      disassembly reading -- this is a direct hardware measurement).
-	//   2. The register advances by EXACTLY ONE step every single rendered
-	//      frame, with NO exceptions across the whole window -- which,
-	//      combined with state [2] above being the Mettaur's ONLY RNG draw
-	//      and being gated on BLIND/CONFUSED/IMMOBILIZED (never set in this
-	//      capture: PAUSED's Mettaur is undamaged, unafflicted, and Version
-	//      0), means state [2] NEVER fires in this window: if it had, some
-	//      frame would show TWO steps instead of one. So there IS a
-	//      per-frame RNG advance independent of the Mettaur's own AI (as
-	//      bn's own ticket brief expected), but its CALLER was not pinned
-	//      down here -- every `bl GetRNG`/`bl GetPositiveSignedRNG` site
-	//      grepped across asm31.s/asm00_1.s/asm00_2.s/asm32.s/etc, and none
-	//      is an obviously-unconditional once-a-frame tick (most sit inside
-	//      specific effects, e.g. AddRandomVarianceToTwoCoords,
-	//      asm00_2.s:25360, or per-hit/per-pick weighted rolls, which
-	//      plainly do not run every frame regardless of state). Reported
-	//      honestly rather than guessed at (bn's own AUDIT pair 15): the
-	//      FORMULA and its per-frame CADENCE are both directly measured
-	//      facts either way, and that is what bn's `rng` fixture field
-	//      (FIXTURE.md +58) needs to stay in lockstep with the real ROM,
-	//      caller or no caller found.
+	// Measured on the real ROM over 220 frames of a battle against an undamaged, unafflicted
+	// Version-0 Mettaur: every one of 219 consecutive values of 0x020013f0 is the formula above
+	// applied to the previous one, and the seed advances by EXACTLY ONE step every frame. State [2]
+	// never fires there (it would show as two steps in one frame). So there is a per-frame RNG
+	// advance independent of the Mettaur's AI, but its caller is not pinned down: none of the
+	// `bl GetRNG`/`bl GetPositiveSignedRNG` sites in asm31.s/asm00_1.s/asm00_2.s/asm32.s is an
+	// obviously unconditional once-a-frame tick (most sit inside specific effects, e.g.
+	// AddRandomVarianceToTwoCoords, asm00_2.s:25360, or per-hit/per-pick weighted rolls).
 	thumb_local_start
 MettaurDecide_8109FD6:
 	push {r4,r6,r7,lr}
@@ -171305,7 +171200,7 @@ off_8109FEC:
 	// The Mettaur's own decision states. oAIState_DecideState holds a PRE-MULTIPLIED
 	// byte offset into MettaurDecideStates_8109FF0 (0, 4, 8, ...), not a state
 	// number; oAIState_DecideSubState is the sub-state within a state and oAIState_WanderWait
-	// its wait counter. (bn wt/mettaur-ai, see docs/renames.md)
+	// its wait counter.
 	.equiv METTAUR_DECIDE_CHECK_STATUS_AND_ROW, 0x00
 	.equiv METTAUR_DECIDE_ARM_HOP_TO_ROW,       0x04
 	.equiv METTAUR_DECIDE_CONFUSED,             0x08
@@ -171320,8 +171215,7 @@ off_8109FEC:
 	.equiv METTAUR_ACTION_ATTACK,           0x0b
 	.equiv METTAUR_ACTION_GUARD,            0x0c
 
-	// Frame counts and the one roll the decision loop makes. Every one of these
-	// was measured against the real ROM by the bn project's wt/mettaur-ai ticket.
+	// Frame counts and the one roll the decision loop makes, all measured against the real ROM.
 	.equiv METTAUR_POST_SPAWN_PAUSE_FRAMES,   0x1e // 30, CurAction 9's one-time wait
 	.equiv METTAUR_CONFUSED_IDLE_FRAMES,      0x32 // 50
 	.equiv METTAUR_CONFUSED_ROLL_MASK,        0x0f // GetPositiveSignedRNG() & 0xf
@@ -171388,19 +171282,12 @@ loc_810A01E:
 	b locret_810A078
 loc_810A038:
 	bl object_getFlag // () -> int
-// bn T84 (2026-09-17): T84 BLOCKED; the 0x4000 (bit 14, lsl #0xe) mask
-// here at asm31.s:171386-171390 is the IMMOBILIZED bit-test. Additive const
-// OBJECT_FLAGS_IMMOBILIZED=0x4000 landed at src/objects.rs:352 area
-// (linker-dropped). T84a gates-flip against this mask with fixture.rs field.
+// The 0x4000 mask here (bit 14, lsl #0xe, asm31.s:171386-171390) is the IMMOBILIZED test.
 	mov r1, #1
 	lsl r1, r1, #0xe
 	tst r0, r1
 	bne locret_810A078
-// bn T83 (2026-09-17): T83 NEGATIVE refuted the 0xc000 ticket pattern —
-// this gate tests 0xa000 (BLIND|CONFUSED = 0x2000|0x8000) per
-// CollisionData.inc:16-18. T83a recommends flipping against 0xa000 in
-// src/objects.rs:352+430 (additive const OBJECT_FLAGS_BLIND_OR_CONFUSED
-// already landed); no confused harness row exists.
+// This gate tests 0xa000 (BLIND|CONFUSED = 0x2000|0x8000, CollisionData.inc:16-18).
 	ldr r1, dword_810A07C // =0xa000
 	tst r0, r1
 	beq loc_810A054

@@ -138,9 +138,8 @@ byte_807FB78::
 	.byte 0x0, 0x8, 0x0, 0x2C, 0x0, 0x2D, 0x0, 0xA, 0x0, 0xB, 0x0, 0xC, 0x0, 0xD, 0x0
 	.byte 0xE, 0x0
 // THE BATTLE BACKDROP'S ART ANIMATION. Read entry by entry against the live
-// eGFXAnimStates slot by the bn project (A7, VERIFIED EXACT): TEN 4-frame
-// entries, then NINETEEN 8-frame entries -- a BATTLE_BACKDROP_ART_PERIOD
-// (192) frame loop, not the uniform 8-frames-forever the port first assumed.
+// eGFXAnimStates slot: TEN 4-frame entries, then NINETEEN 8-frame entries -- a
+// BATTLE_BACKDROP_ART_PERIOD (192) frame loop.
 // Each entry names one of the seven 36-index tile tables below, which index
 // GFXAnimTileBlob_8617488; the copy itself is 36 tiles into 0x06000040,
 // drained mid-frame by ProcessGFXTransferQueue. The art's first entry starts

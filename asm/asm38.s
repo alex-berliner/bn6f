@@ -3474,18 +3474,23 @@ loc_30073B6:
 	mov r2, #0xff
 	and r2, r1
 	beq loc_30073CC
+// Inside sub_3007218, the additive damage model: r4 starts at 1 here and grows by 1 per
+// weakness hit; the final mul at 3508 gives x2 for one weakness, x3 for two.
 	mov r2, #0xa4
 	strh r1, [r6,r2]
 loc_30073CC:
 	mov r4, #1
 	ldrb r0, [r6,#oCollisionData_PrimaryElement]
 	ldrb r1, [r7,#oCollisionData_PrimaryElement]
+// Primary-weakness addend: the table is 25 bytes at ROM 0x081d7944 (byte_3007444), indexed
+// defender_elem*5 + attacker_elem; the cells are extra-hit counts (0/1), not factors.
 	bl getPrimaryElementWeaknessMultipler_3007432
 	add r4, r4, r0
 	ldrb r0, [r6,#oCollisionData_SecondaryElementWeakness]
 	ldrb r1, [r7,#oCollisionData_SecondaryElement]
 	bl getSecondaryElementWeaknessMultipler_30074e2
 	add r4, r4, r0
+// The multiplier-minus-one store: multiplier = 1 + primary + secondary.
 	mov r0, #oCollisionData_DamageMultiplier
 	sub r1, r4, #1
 	strb r1, [r6,r0]
@@ -3530,6 +3535,7 @@ locret_3007430:
 	thumb_local_start
 // r0 - defending element
 // r1 - attacking element
+// The 5-stride cell read itself (mov #5; mul; add; ldrb from byte_3007444).
 getPrimaryElementWeaknessMultipler_3007432:
 	mov r2, #5
 	mul r0, r2
@@ -3631,6 +3637,7 @@ loc_30074DE:
 	thumb_local_start
 // r0 - weakness bitfield
 // r1 - attacking element bitfield
+// The secondary bitfield routine (3634-3692): weakness bits & attacker bits != 0 adds 1.
 getSecondaryElementWeaknessMultipler_30074e2:
 	mov r2, #0
 	tst r0, r1
@@ -4202,6 +4209,9 @@ loc_30078CE:
 	pop {r4,r5,pc}
 	thumb_func_end sub_30078C8
 
+// _object_updatePanelParameters re-ORs the 13-word type table into oPanelData_Flags every
+// frame. object_panel_setPoison uses a masked template: guard Flags&0x10, then
+// (Flags & ~0x3f5f) | 0x114.
 	thumb_func_start _object_updatePanelParameters
 _object_updatePanelParameters:
 	push {r4-r7,lr}
@@ -4210,6 +4220,8 @@ _object_updatePanelParameters:
 	bl _object_getPanelDataOffset
 	tst r0, r0
 	beq locret_300791C
+// The Type-read/word-OR idiom (4213-4219): word_3007924 (IWRAM copy of 0x081D7E24, 13 words)
+// is indexed type*4 and OR-ed into Flags every frame.
 	ldrb r1, [r0,#oPanelData_Type]
 	strb r1, [r0,#oPanelData_Animation]
 	lsl r2, r1, #2
@@ -4311,6 +4323,8 @@ _object_setPanelType:
 	mov r4, r0
 	mov r5, r1
 	mov r6, r2
+// _object_setPanelType's head. sub_80E6CAA is the 0x8 writer here; live poison bypasses this
+// setter through setPoison's own template.
 	bl _object_getPanelDataOffset
 	ldrb r3, [r0,#oPanelData_Type]
 	tst r3, r3

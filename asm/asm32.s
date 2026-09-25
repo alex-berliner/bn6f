@@ -9971,7 +9971,7 @@ off_8112F5C:
 	.equiv GUNNER_ATTACK_LOCK,    0x04
 	.equiv GUNNER_ATTACK_FIRE,    0x08
 	.equiv GUNNER_ATTACK_RECOVER, 0x0c
-	// Measured against the real ROM by the bn project (docs/coverage/gunner.md:39-41).
+	// Measured against the real ROM.
 	.equiv GUNNER_SHOTS,          3
 	.equiv GUNNER_SHOT_GAP,       10 // frames between shots
 	.equiv GUNNER_RECOVER_FRAMES, 24
@@ -10136,8 +10136,7 @@ dword_8113070:
 dword_8113074:
 	.word 0x12810
 // The Gunner's own CurAction-indexed handler table (AIIndex 0x17, enemy_idx
-// 0x85), reached through AIThinkTables_8109050. Roles per
-// /home/box/Code/bn/docs/coverage/gunner.md:23-48 and src/gunner.rs.
+// 0x85), reached through AIThinkTables_8109050.
 ForGunner_8113078:
 	// 0x00 (0x00) (CurAction -> 0x01) -- spawn anim
 	.word RunSpawnAnimationMaybe_8016380+1

@@ -10097,39 +10097,14 @@ sub_80AA4B8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA4B8
 
-	// bn project note (AUDIT wave 3c "fresh-state" ticket; RESOLVED by the
-	// wave 3c/3d "encounter-roll" ticket that picked this up -- the
-	// question the previous note left open, "would settle which", is
-	// answered below). `--trace-pc` on this function's own `bl GetRNG`
-	// (live-verified ROM address 0x080AA51E) and the `cmp r2,r3; bge` roll
-	// comparison a few lines below (live-verified: r2 -- the masked draw --
-	// and r3 -- the threshold -- both settled by ROM 0x080AA52A) shows the
-	// forced Unk_12/Unk_14 cheat itself is the correlated stride, not a
-	// watch-aliasing artifact: with the cheat rewriting both every frame
-	// from load, NOTHING on this code path perturbs GetRNG's state between
-	// one frame's draw and the next, so the roll's outcome is fixed at
-	// load and does not change with more frames or a different held/
-	// cycled direction (measured, one build: masked draw 6 vs threshold 12
-	// -- row 16, category 5, matches this note's own figure -- succeeds on
-	// the very first frame evaluated, every single time, deterministically
-	// picking whichever EnemySetup table entry belongs to the CURRENT map
-	// position rather than one reached by actually walking). This is
-	// TRANSFER.md 7aw's own held-direction orbit trap, walked through the
-	// accumulator cheat instead of through input. Separately, this
-	// function's OWN gate is not the only one that has to be open: its
-	// sole caller, checkThenStartBattle_8005A8C (asm00_1.s), requires
-	// GameState.SubsystemIndex == 4 first (live-verified: watching
-	// SubsystemIndex across a walk shows it move to 8, then 12, the moment
-	// a roll here succeeds and StartBattle fires -- SubsystemIndex 8/12
-	// are gamestate_OnMapUpdate_8005268's own documented dispatch values a
-	// few functions below). A tools/mgba_capture.c `--poke-at frame:addr:
-	// value` (a ONE-SHOT write instead of --cheat's every-frame one) fixes
-	// the trap in the harness: forcing the accumulator open on a single
-	// swept frame instead of every frame restores genuine frame-to-frame
-	// variation in the sampled draw (live-verified: sweeping the poked
-	// frame by 1 flips between roll success and failure and lands on many
-	// distinct nearby EnemySetup table entries, not the same one
-	// repeatedly).
+	// This function's `bl GetRNG` is at ROM 0x080AA51E; the roll is the `cmp r2, r3; bge` a few
+	// lines below, r2 the masked draw and r3 the threshold, both settled by 0x080AA52A. Nothing else
+	// on this path steps GetRNG between one frame's draw and the next, so with Unk_12/Unk_14 held
+	// fixed every frame the roll's outcome never changes (in one measured case, masked draw 6 vs
+	// threshold 12: row 16, category 5), and the EnemySetup entry picked is the one for the current
+	// map position. The sole caller, checkThenStartBattle_8005A8C (asm00_1.s), also requires
+	// GameState.SubsystemIndex == 4; when a roll here succeeds and StartBattle fires, SubsystemIndex
+	// moves to 8, then 12 (gamestate_OnMapUpdate_8005268's dispatch values).
 	thumb_func_start rollRandomEncounter_80AA4C0
 rollRandomEncounter_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
@@ -10420,13 +10395,10 @@ loc_80AA670:
 	tst r4, r4
 	bne loc_80AA678
 	mov r0, #0
-// bn T9b (2026-09-15): this ldr of iCurrFrame in rollRandomEncounter_80AA4C0 is the
-// frame-60 one-shot poke target -- 0x0200a210:0x371 (value -1, same mod-12
-// class as 5) makes the roll pick BattleSettings record index 6 =
-// 0x080b4bd8 and slots populate at frame 148 with slot0 panel 0x0205 /
-// NameID 0x0001 / HP 0x0028 (Mettaur) and slot1 panel 0x0306 / NameID
-// 0x0085 / HP 0x003c (Gunner). The poke-at-61:0x02001b9c approach
-// doesn't work because the enemy list is built inside frame 60.
+// This ldr of iCurrFrame (0x0200a210) in rollRandomEncounter_80AA4C0 feeds the roll: a frame
+// count in the same mod-12 class as 5 picks BattleSettings record 6 (0x080b4bd8), which fields
+// slot 0 at panel 0x0205 with NameID 0x0001 / HP 0x0028 (Mettaur) and slot 1 at panel 0x0306
+// with NameID 0x0085 / HP 0x003c (Gunner). The enemy list is built within the frame of the roll.
 	b loc_80AA68E
 loc_80AA678:
 	ldr r0, off_80AA884 // =iCurrFrame 
@@ -10489,23 +10461,9 @@ sub_80AA6E8:
 	mov pc, lr
 	thumb_func_end sub_80AA6E8
 
-// bn T87 (2026-09-17): sub_80AA6EC is the gate routine T58 named as gating
-// records 12/13 of CentralArea1's 0x080b4b78 list; record[7]==1 records
-// cannot be lever-fielded alone, so ai_index-4 ranks v4/v5 stay NEGATIVE.
-// carried by docs/coverage/mettaur.md and tools/states.py (no src/ change).
-// bn T92 (2026-09-17): T92 closed NEGATIVE because no measurable output
-// was produced — the gate here stands in the way of lever-fielding
-// CentralArea1 records 12/13, blocking T92's intended port. carried by
-// docs/worklog/T92.md and tools/states.py (no src/ change).
-// bn T90 (2026-09-17): T90's ai_index-4 rank-0 census (rec0 0x080b4334,
-// rec7=0, gate-free; formation ptr 0x080b478d byte-matches T87) routes
-// through this gate, which leaves rec0/rec7=0 records fieldable and
-// rec7=1 records blocked. carried by docs/worklog/T90.md and tools/states.py
-// (no src/ change).
-// bn T58 (2026-09-17): sub_80AA6EC is the gate T58's step 5 measured as
-// blocking Mettaur v4/v5 specifically: CentralArea1 list at 0x080b4b78,
-// records 12/13 with record[7]==1 cannot be lever-fielded. carried by
-// docs/coverage/mettaur.md and tools/states.py (no src/ change).
+// sub_80AA6EC gates the records of CentralArea1's list at 0x080b4b78: records with
+// record[7]==1 (records 12 and 13, Mettaur versions 4 and 5) are blocked, records with
+// record[7]==0 pass.
 	thumb_local_start
 sub_80AA6EC:
 	push {r4-r7,lr}

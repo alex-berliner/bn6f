@@ -145,9 +145,8 @@ byte_802083F::
 	.byte 0x0
 // THE BUSTER'S HOLD LENGTH, indexed Rapid * 6 + min(free panels ahead, 5) by
 // getBusterHoldLength_800FAAC / countFreePanelsAheadForBuster_800FAF6. The full
-// pose is busterFirePhase_80EB450's five fire ticks plus this. Predicted and
-// then measured at three columns on the real ROM: 29 / 25 / 21 frames at
-// columns 1 / 2 / 3, Rapid row 0 (bn F31b).
+// pose is busterFirePhase_80EB450's five fire ticks plus this. Measured at three columns on the
+// real ROM: 29 / 25 / 21 frames at columns 1 / 2 / 3, Rapid row 0.
 BusterHoldFramesByRapid_80209CC::
 	.byte 0x4, 0x8, 0xC, 0x10, 0x14, 0x18, 0x3, 0x7, 0xA, 0xE, 0x11
 	.byte 0x14, 0x3, 0x6, 0x9, 0xC, 0xF, 0x11, 0x2, 0x4, 0x6, 0x8

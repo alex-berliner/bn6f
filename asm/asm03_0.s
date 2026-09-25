@@ -4824,15 +4824,13 @@ off_802881C:
 // `ldr r5,[r5,#0x40]` takes the window's own frame counter (0x02036500,
 // oS20364C0_Extra_WindowFrameCounter) and `lsr #3 / and #1` reduces it to one bit, which is
 // added to base tile 0xb764 -- so 0xb764 for eight frames, 0xb765 for the next
-// eight, forever, and the second is the same bracket shrunk a pixel at each
-// corner. A swap costs 92 pixels on screen.
+// eight, forever, and the second is the same bracket shrunk a pixel at each corner.
 //
 // The counter it reads is entirely window-relative: chipWindowState00SlideIn_8026B04 seeds it to
 // 0x78 and counts it down by 0xc during the slide-in, chipWindowState04Interactive_8026CCC increments it
 // once a frame while the window is interactive, and it is re-zeroed when the
 // selection ends. So the phase of the blink says how long THIS window has been
-// open and nothing else. In a save state taken mid-window it is simply some
-// large number, and its low four bits are the only part that shows.
+// open and nothing else.
 	thumb_local_start
 drawChipCursorBracket_8028820:
 	push {r4-r6,lr}
@@ -11553,18 +11551,14 @@ PARecipePtrsA_802BCB0:
 	.word byte_802BB7A
 	.word byte_802BB80
 	.word byte_802BB86
-// bn T10 (2026-09-15): PARecipePtrsA_802BCB0's terminator .word NULL at the 64th
-// PA pointer is the signal tools/inventory.py subtracts from the raw PA
-// count to land on 63 PA records; named in docs/SCOPE.md's generated
-// "## Per-item tables" text as the trailing NULL the PA pointer array
-// carries to mark its length.
+// PARecipePtrsA_802BCB0 ends in a .word NULL terminator as its 64th pointer, so it holds 63
+// PA records.
 	.word byte_802BB8C
 	.word byte_802BB92
 	.word NULL
 	thumb_func_end sub_802BA34
 
-	// THE RESULT/LOSER WINDOW'S DRIVER. The chain the bn project traced and timed
-	// against the real ROM (F21/F21d/F34/T7w) is:
+	// THE RESULT/LOSER WINDOW'S DRIVER. The chain, traced and timed against the real ROM:
 	//   showResultWindow_802C34E     -- put the window up, from column -30
 	//   resultWindowDriver_802BD60   -- this, one CopyBackgroundTiles block a frame
 	//   resultWindowSlideTick_802BE36-- +RESULT_SLIDE_STEP_COLUMNS a tick, and the
@@ -12418,17 +12412,12 @@ sub_802C348:
 	mov pc, lr
 	thumb_func_end sub_802C348
 
-	// bn AUDIT wave 3d "bg3-merge": this is the RESULT window's INIT only --
-	// zero-fills eS20364C0 (0x20 bytes, reused from the chip window's own
-	// struct type), copies a few fields in from r4, sets Unk_06 to 0xe2
-	// (the low byte of -30, START_X in the bn repo's results.rs) and queues
-	// the window's static GFX via QueueEightWordAlignedGFXTransfer -- it
-	// does not touch RenderInfoPtr (see RenderInfo.inc's own comment on
-	// Unk_18/BG3HOFS), so the slide-in itself is animated somewhere else,
-	// not found this ticket (grepped this function and its neighbours
-	// sub_802C170-drawResultClearTime_802C4E8 for a RenderInfoPtr write or a per-frame
-	// eS20364C0+0x06 increment/decrement and found neither -- the actual
-	// per-frame tick function is elsewhere in the ROM).
+	// This is the RESULT window's INIT only: it zero-fills eS20364C0 (0x20 bytes, reusing the
+	// chip window's struct type), copies a few fields in from r4, sets Unk_06 to 0xe2 (the low byte
+	// of -30) and queues the window's static GFX via QueueEightWordAlignedGFXTransfer. It does not
+	// touch RenderInfoPtr (see RenderInfo.inc's comment on Unk_18/BG3HOFS), so the slide-in is
+	// animated elsewhere: neither this function nor its neighbours sub_802C170..drawResultClearTime_802C4E8
+	// write RenderInfoPtr or step eS20364C0+0x06 per frame.
 	thumb_func_start showResultWindow_802C34E
 showResultWindow_802C34E:
 	push {r4-r7,lr}
@@ -14587,9 +14576,8 @@ battleSettings_setUnkOptSettings:
 	mov pc, lr
 	thumb_func_end battleSettings_setUnkOptSettings
 
-// bn T97 (2026-09-17): battleSettings_setBackground is the writer for
-// BattleSettings.background (+0x4 = 0x0200AF64), the UI-arming field for
-// the chip-trade UI. doc only: docs/coverage/netbattle.md (no src/ change).
+// battleSettings_setBackground writes BattleSettings.background (+0x4 = 0x0200AF64), the
+// UI-arming field for the chip-trade UI.
 // (u8 background) -> void
 	thumb_func_start battleSettings_setBackground
 battleSettings_setBackground:
@@ -15148,11 +15136,7 @@ sub_802D6C4:
 	beq loc_802D6DE
 	ldr r0, [r5,#0x8] // (dword_203C978 - 0x203c970)
 	bl sub_802DD10
-// bn T7d (2026-09-15): the chip-banner table dispatched here via
-// sub_802DD10 / sub_802DD1E in loc_802D6DE drives tools/states.py's
-// windowclose_full scenario; src/battle.rs's named canon-predicates for
-// the SEQ_04->SEQ_08 transition trace through this call, with the canon
-// row range 144..206 byte-identical to the stored battle_full record.
+// The chip-banner table is dispatched here via sub_802DD10 / sub_802DD1E in loc_802D6DE.
 loc_802D6DE:
 	ldr r0, [r5,#0xc] // (dword_203C97C - 0x203c970)
 	bl sub_802DD1E

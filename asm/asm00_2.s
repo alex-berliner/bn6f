@@ -640,6 +640,8 @@ off_800F210:
 	.equiv enemy_getStruct1_struct_Unk_03, 0x03 // u8
 	.equiv enemy_getStruct1_struct_Unk_04, 0x04 // u8
 	.equiv enemy_getStruct1_struct_Element, 0x05 // u8
+// Struct1 offset +0x06 is the defender's secondary-element weakness byte, read by
+// getSecondaryElementWeaknessMultipler_30074e2.
 	.equiv enemy_getStruct1_struct_SecondaryElementWeakness, 0x06 // u8
 	.equiv enemy_getStruct1_struct_HasShadow, 0x07 // bool
 
@@ -681,17 +683,13 @@ off_800F230:
 	.equiv enemy_getStruct2_struct_ElemDamage, 0x04 // u16
 	// A Struct2 record is one row per Version, six bytes apart; ElemHP and
 	// ElemDamage each pack an element in the high nibble and the figure in the
-	// low 12 bits (bn T10, spot-checked against poked HP: Mettaur 0x0028,
-	// Gunner 0x003C -- element 0, 40 and 60 HP).
+	// low 12 bits (Mettaur 0x0028, Gunner 0x003C: element 0, 40 and 60 HP).
 	.equiv enemy_getStruct2_struct_RowStride, 0x06
 	.equiv ENEMY_ELEM_FIGURE_MASK, 0xfff
 	.equiv ENEMY_ELEM_SHIFT, 12
 
-// bn T10 (2026-09-15): elem_hp = low 12 bits, element = high nibble of
-// `.hword 0xXYYY`. Carried into docs/SCOPE.md and docs/inventory/
-// enemies.{json,md} via tools/inventory.py + tools/rom_enemy_tables.py;
-// the spot-check Mettaur 0x0028 / Gunner 0x003C on poked HP confirms
-// the canon's slots via AIEnemyStruct2Ptrs_8109150 in T12's table.
+// Each `.hword 0xXYYY`: element in the high nibble, HP in the low 12 bits. Reached through
+// AIEnemyStruct2Ptrs_8109150.
 // where for elem_hp and elem_dmg, in a `.hword 0xXYYY` `X` is likely elem and `YYY` is hp/damage.
 	thumb_func_start enemy_getStruct2
 enemy_getStruct2:
@@ -1863,11 +1861,8 @@ loc_800FA50:
 	pop {pc}
 	thumb_func_end sub_800FA20
 
-// bn T81 (2026-09-17): T81 NEGATIVE refuted T72 PARTIAL's scaffolding
-// claim — git log shows commit 462ccda was worklog-only, no Style::Confused
-// variant or set_confused in src/. The flags1 & 0x8000 test inside
-// playerObject_checkDirectionButtons_800FA54 is the reader for CONFUSED.
-// src/objects.rs:352 BLIND_OR_CONFUSED const false is the current gate.
+// The flags1 & 0x8000 test inside playerObject_checkDirectionButtons_800FA54 is the reader
+// for CONFUSED.
 	thumb_func_start playerObject_checkDirectionButtons_800FA54
 playerObject_checkDirectionButtons_800FA54:
 	push {r6,r7,lr}
@@ -2033,6 +2028,8 @@ loc_800FB74:
 	tst r4, r1
 	beq loc_800FBEE
 	mov r0, r5
+// useChipFromHand_800FB54's chip-record read here is one of the gates that bound the
+// reachable chip set (237 ids).
 	bl sub_800EDD0
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrb r0, [r0,#6]
@@ -2386,7 +2383,7 @@ loc_800FE0C:
 	// Reads one row out of a per-Version u16 table: r0 is the table base, the row
 	// is oAIData_Version_16, and Version 4 is special-cased to row 4 scaled by
 	// oAIData_Unk_0c. This is what puts "the version column" in front of every
-	// per-version damage/HP figure the bn project measured (src/battle.rs:66).
+	// per-version damage/HP figure.
 	thumb_func_start readPerVersionHword_800FE12
 readPerVersionHword_800FE12:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -2735,6 +2732,8 @@ loc_8010050:
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r4, #0
+// The TF gate before the byte_80203EA cross-form palette-row read (rows
+// {0,2,7,9,d,13,5,11,b,f,15}).
 	cmp r0, #0
 	beq loc_801006A
 	cmp r0, #0xb
@@ -2786,6 +2785,8 @@ byte_80100A8:
 	.byte 0x10, 0xBD, 0xFF, 0xF7, 0x2D, 0xFE, 0x10, 0xBD
 	thumb_func_end sub_801002C
 
+// sub_80100EC applies the cross-form palette row (byte_80203EA[TF]); all ten crosses share the
+// base body set byte_800FCBC.
 	thumb_func_start sub_80100EC
 sub_80100EC:
 	push {lr}
@@ -5786,6 +5787,8 @@ sub_80117A4:
 	ldrb r0, [r6,#oAIData_BPwrAtk]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
+// Charge-shot dispatch tail by transformation: the real handlers are the 148 cells of
+// ChargeShotHandlersByTransformation_80117D4, not sub_8011818/sub_80118A4.
 	mov lr, pc
 	bx r1
 	pop {r6,r7,pc}
@@ -5798,6 +5801,8 @@ sub_80117BA:
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
 	ldr r1, off_80117D0 // =ChargeShotHandlersByTransformation_80117D4 
+// The tf*4 index into ChargeShotHandlersByTransformation_80117D4. The charged muzzle flash is
+// not seeded here.
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
 	mov lr, pc
@@ -5806,6 +5811,8 @@ sub_80117BA:
 	.byte 0, 0
 off_80117D0:
 	.word ChargeShotHandlersByTransformation_80117D4
+// The 148-cell transformation -> charge-shot table. Cell 0x11 (sub_8011CB4) only seeds attack
+// vars; the charged muzzle flash is a separate OBJ.
 ChargeShotHandlersByTransformation_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x0
 	.word busterBugChargeShotDamageCalcHappensHere_8011A7E+1 // 0x1
@@ -6336,6 +6343,8 @@ sub_8011CA8:
 	thumb_func_end sub_8011CA8
 
 	thumb_local_start
+// Cell 0x11's body start. The aim-pose arm object stays up one frame after the attack-arm
+// parts appear.
 sub_8011CB4:
 	push {r4,lr}
 	mov r0, #0
@@ -7930,6 +7939,8 @@ loc_8012652:
 	pop {pc}
 	thumb_func_end sub_8012642
 
+// getBusterDamage_801265A = NaviIndex + stats[1] + byte_80126A4 + a tf-table term, with an
+// emotion override (0x1e + 0x14*min(x,5)).
 	thumb_func_start getBusterDamage_801265A
 getBusterDamage_801265A:
 	push {lr}
@@ -10626,6 +10637,9 @@ loc_8013938:
 	b loc_8013956
 	thumb_func_end sub_801390C
 
+// sub_801393A reads and writes the super-armour flag. With it set, HP still drops (damage is
+// unconditional, see battle_801B1C4) but CurAction stays 0x08 and the flinch/knockback is
+// suppressed.
 	thumb_func_start sub_801393A
 sub_801393A:
 	push {r6,r7,lr}
@@ -10679,6 +10693,8 @@ loc_8013992:
 	b loc_80139AC
 loc_80139A8:
 	bl object_clearFlag // (int bitfield) -> void
+// The lsl #0x11 + r2=#0x23 (NaviStats+0x23 SuperArmor) + tst r1,r1 sequence is a boolean gate,
+// not a product. Bit 21 is ANGER. The flag is read at the 0x220000 readers below.
 loc_80139AC:
 	mov r0, #1
 	lsl r0, r0, #0x11
@@ -10734,6 +10750,8 @@ locret_80139F4:
 	thumb_local_start
 sub_80139F6:
 	push {r4,lr}
+// Head of sub_80139F6's AIData+0xa4 path (10739-10846), which re-arms the stat copy. An
+// armoured hit hides the player for 2 frames.
 	sub sp, sp, #8
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0xa4
@@ -10839,6 +10857,8 @@ loc_8013ACA:
 	ldr r1, [sp]
 	cmp r1, #0x64 
 	bge loc_8013ADC
+// The re-apply call after SetBattleNaviStatsByte. Damage lands regardless of super armour
+// (HP 60->50 in one measured hit); only the flinch action is gated.
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_801393A
 	bl sub_801469C
@@ -10953,6 +10973,8 @@ loc_8013B6E:
 	strh r0, [r7,r1]
 	mov r1, #oNaviStats_MaxBaseHP 
 	strh r0, [r7,r1]
+// init_8013B64 copies the SuperArmor stat byte from the PET into the battle (AIData+1 ->
+// oNaviStats_SuperArmor).
 	ldrb r0, [r6,#1]
 	mov r1, #oNaviStats_SuperArmor 
 	strb r0, [r7,r1]
@@ -11365,12 +11387,7 @@ sub_8013ECC:
 
 	thumb_local_start
 sub_8013ED6:
-// bn T81 (2026-09-17): T81 NEGATIVE refuted T72 PARTIAL's scaffolding
-// claim — no Style::Confused variant in src/ai.rs, no set_confused in
-// src/battle.rs/src/fixture.rs. The BlindTimer store here at +0x20 is
-// the BLIND setter (T64's mirror site at src/battle.rs:~5193); CONFUSED
-// requires T82 prereqs (navi Style/kind, sequencer-stuck). carried by
-// docs/coverage/statuses.md (no src/ change).
+// The BlindTimer store here at +0x20 is the BLIND setter.
 	push {lr}
 	ldr r0, off_80141BC // =0x12c 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -12319,6 +12336,9 @@ JumpTable8014550:
 	.word nullsub_56+1
 	.word sub_80145C2+1
 	.word SetObjectAirshoeFlag+1
+// This JumpTable8014550 word dispatches SetObjectSuperArmorFlag by BLeftAbility index 9, not
+// by the NaviStats+0x23 slot. The flag is written via object_setFlag1 below; the readers are
+// sub_801AEB0/sub_801AF0E.
 	.word SetObjectSuperArmorFlag+1
 	.word nullsub_4+1
 	.word sub_80145EC+1
@@ -12395,6 +12415,8 @@ SetObjectAirshoeFlag:
 
 	thumb_local_start
 // (BattleObject *obj@R5) -> void
+// SetObjectSuperArmorFlag. An armoured hit hides the player for 2 frames. The r0=#1 below
+// feeds object_setFlag1 (bit 0x11, the 0x220000 family), the only flag set on this route.
 SetObjectSuperArmorFlag:
 	push {lr}
 	mov r0, #1
@@ -15139,6 +15161,8 @@ possiblyGetBattleEmotion_8015B64: // (alliance: bool) -> (res0: enum8?, transfor
 
 	mov r0, #5
 
+// oAIData_Unk_36 (0x020340B6) read here is the emotion value that byte_801E6F4 maps to a
+// face slot.
 	ldrh r3, [r4,#oAIData_Unk_36]
 	tst r3, r3
 	bne loc_8015BA2 /*+20*/
@@ -16032,6 +16056,8 @@ byte_801636C:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_801632C
 
+// AI 0x04's think-table slot 0 (off_810B2D0[0]): the spawn-hold handler, idle at CurAction
+// 0x00.
 	thumb_func_start RunSpawnAnimationMaybe_8016380
 RunSpawnAnimationMaybe_8016380:
 	push {lr}
@@ -16124,30 +16150,16 @@ locret_8016418:
 	pop {pc}
 	thumb_func_end sub_80163B4
 
-// bn F38h (2026-09-15): this routine does NOT do per-step y motion --
-// only Timer/Timer2 decrement + mosaic+alpha setters; F38e parsed the
-// body here as the canonical answer to "where does per-step y motion
-// happen" and concluded it does not, leaving the 24-px position delta
-// to the panel triple bug at spawnEnemy_80073E2 (asm00_1.s:8695).
-// bn F38f (2026-09-15): F38f did NOT modify materializeObject_801641A's body; the
-// descriptor size change (FIXTURE_SIZE +17, TRACE_OFFSET +4) that caused
-// F38f's revert came from src/fixture.rs / src/main.rs / tools/harness.py
-// edits only.
-// bn F38e (2026-09-15): per-step y-motion is absent from this routine's
-// body; Timer/Timer2 decrement + mosaic+alpha setters are the ONLY
-// operations, ruling out a missing call here as the 24-px delta cause.
-// 16101-16136 named in F38e's failed analysis as the suspected per-step
-// y setter.
+// materializeObject_801641A does no per-step y motion: its only operations are the
+// Timer/Timer2 decrements and the mosaic and alpha setters.
 	thumb_local_start
 materializeObject_801641A:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
-// bn F38e (2026-09-15): the bne locret_801645E here is the only leave
-// branch on Timer reaching zero; no positional write exists in this
-// routine -- the 24-px delta is fully explained by the panel triple bug
-// at spawnEnemy_80073E2 (asm00_1.s:8695), not a missing call here.
+// The bne locret_801645E here is the only exit, taken until Timer reaches zero; the
+// routine writes no position.
 	bne locret_801645E
 	mov r0, #2
 	strh r0, [r5,#oBattleObject_Timer]
@@ -18106,6 +18118,8 @@ playerObject_init_80172F0:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
+// The form-init pair (sub_801002C + sprite_setPalette) seeds the base body set before the
+// cross-form palette row is selected.
 	bl sub_801002C
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -18290,6 +18304,8 @@ sub_80174BE:
 	mov r1, r0
 	bl sprite_setMosaicSize
 	pop {r0}
+// The tail of the flinch alpha ramp (sprite_setAlpha_8002c7a of the negated offset), the
+// flinch visual. Super armour suppresses exactly this action (CurAction stays 0x08).
 	sub r0, #0x10
 	neg r0, r0
 	bl sprite_setAlpha_8002c7a
@@ -18306,6 +18322,8 @@ loc_80174E0:
 	mov r0, #8
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {pc}
+// End of the flinch-action setter, just before playerFlinchAction_80174FE (next line), whose
+// panel move never runs under super armour.
 	thumb_func_end sub_80174BE
 
 	thumb_func_start playerFlinchAction_80174FE
@@ -18358,12 +18376,7 @@ loc_8017554:
 	bl sub_800AB46
 	mov r0, #0x17
 	strh r0, [r5,#oBattleObject_Timer]
-// bn T89 (2026-09-17): T89 confirmed the seq.state gate is already on main
-// via commit 8ad8067 (src/objects.rs:74-91 PLAYER_EXECUTOR_GATED_STATE_00/
-// 04/20/24 + src/objects.rs:186-188 t1_player_entry early-return
-// Update::Nothing; src/battle.rs:3524 t1_player_entry(&mut self.megaman,
-// self.seq.state) gate wired). The Timer underflow here at PC 0x08017586
-// strh feeds the T66 sentinel logic that the gate now guards.
+// The strh at PC 0x08017586 here is where Timer underflows.
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 loc_8017582:
@@ -18756,6 +18769,8 @@ sub_80178D4:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
+// sub_80178D4's object_getFlag test of bit 0xb here (with oAIData_BusterBarrelPtr stored just
+// above) is the push-time guard on flinching.
 	str r0, [r1,#oAIData_BusterBarrelPtr]
 	bl object_getFlag // () -> int
 	mov r2, #2
@@ -19979,11 +19994,7 @@ loc_8018266:
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
 	lsl r3, r3, #0x10
-// bn T87 (2026-09-17): this site sits in the encounter-X16/19 routine just
-// before GetVerActorTyAndAIIdx_80182B4 (line 19999); ai_index byte at
-// +0x04 of VerActorTyAIIdxTable_80182C4 = ai 1, and the live trio
-// NameIDs 0x0001/0x0085/0x2000 are ai 1/7/17 (not ai 4). carried by
-// tools/inventory.py and tools/states.py (no src/ change).
+// This site sits in the routine just before GetVerActorTyAndAIIdx_80182B4 (line 19999).
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
 	mov r0, #0x34 
@@ -20019,6 +20030,8 @@ off_80182B0:
 // If we change the data here, the virus that ends up spawning will be different. In sprite, AI, attack pattern, HP, etc.
 // Only the name of the original virus remains
 	thumb_func_start GetVerActorTyAndAIIdx_80182B4
+// The identity row reader: byte_80182C4[3*idx] = (Version, ActorType, AIIndex). Mettaur is
+// AIIndex 0x01, Gunner 0x17.
 GetVerActorTyAndAIIdx_80182B4: // (enemy_idx: u16) -> *const (version: u8, actor_type: ActorType, ai_index: u8)
 	mov r1, #3
 	mul r1, r0
@@ -20032,10 +20045,9 @@ off_80182C0:
 // &VerActorTyAIIdxTable_80182C4[3 * enemy_idx] by GetVerActorTyAndAIIdx_80182B4.
 // Each row is (Version, ActorType, AIIndex); the AIIndex then selects this
 // enemy's row of the four parallel tables at AIThinkTables_8109050 (asm31.s).
-// Row count and tail established by bn T12 (bound taken from the next label,
-// getBattleArmPositionMaybe_8018810): the last row is idx 0x1C3, and rows
-// 0x1B3..0x1C3 are ACTOR_TYPE_PLAYER with AIIndex 0x21..0x30, which have no
-// think and no act entry at all.
+// Row count and tail (bound taken from the next label, getBattleArmPositionMaybe_8018810):
+// the last row is idx 0x1C3, and rows 0x1B3..0x1C3 are ACTOR_TYPE_PLAYER with AIIndex
+// 0x21..0x30, which have no think and no act entry at all.
 VerActorTyAIIdxTable_80182C4:
 	// Version, ActorType,        AIIndex
 	.byte 0x00, ACTOR_TYPE_VIRUS, 0x00 // 0x0
@@ -20487,12 +20499,8 @@ VerActorTyAIIdxTable_80182C4:
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x1e // 0x1b1
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x1f // 0x1b2
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x20 // 0x1b3
-// bn T12 (2026-09-15): this row (idx 0x1b4 = 436) is near the inferred
-// tail of VerActorTyAIIdxTable_80182C4 (452 identity rows; last row idx 0x1C3 v=0x00/
-// PLAYER/AI=0x30, no filler). tools/rom_enemy_tables.py uses the bound
-// from getBattleArmPositionMaybe_8018810 to land AIEnemyStruct2Ptrs_8109150's elem_hp
-// u16 @0x00 with spot-check Mettaur 0x0028 / Gunner 0x003C. The four
-// 0x80-byte tables AIThinkTables_8109050/0x90D0/0x9150/0x91D0 are next per T12.
+// This row (idx 0x1b4 = 436) is near the tail of VerActorTyAIIdxTable_80182C4 (452 rows;
+// the last, idx 0x1C3, is Version 0x00 / PLAYER / AI 0x30, with no filler after it).
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x21 // 0x1b4
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x22 // 0x1b5
 	.byte 0x00, ACTOR_TYPE_PLAYER, 0x23 // 0x1b6
@@ -21355,6 +21363,8 @@ sub_8019F8C:
 	thumb_local_start
 sub_8019F9E:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
+// The setter storing Struct1's secondary-element weakness into
+// oCollisionData_SecondaryElementWeakness.
 	strb r0, [r1,#oCollisionData_SecondaryElementWeakness]
 	mov pc, lr
 	thumb_func_end sub_8019F9E
@@ -21627,6 +21637,8 @@ sub_801A146:
 
 // (int a1) -> void
 	thumb_func_start object_setFlag1
+// object_setFlag1: ORs into CollisionDataPtr->ObjectFlags1. The super-armour flag is set
+// through it (21629-21636), and sub_801AEB0 reads it for the flinch gate.
 object_setFlag1:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r2, [r1,#oCollisionData_ObjectFlags1]
@@ -21646,12 +21658,9 @@ object_clearFlag:
 	thumb_func_end object_clearFlag
 
 // () -> int
-// bn T83 (2026-09-17): object_getFlag reads oCollisionData_ObjectFlags1
-// (+0x3c); T83 NEGATIVE refuted the 0xc000 bit-pattern claim — the actual
-// gate at asm31.s:171395-171397 tests 0xa000 (BLIND|CONFUSED). Per
-// CollisionData.inc:16-18, BLIND=0x2000 and CONFUSED=0x8000. T83a
-// recommended to flip against 0xa000. src/objects.rs:352 area carries
-// the additive const OBJECT_FLAGS_BLIND_OR_CONFUSED.
+// object_getFlag reads oCollisionData_ObjectFlags1 (+0x3c). The status gate at
+// asm31.s:171395-171397 tests 0xa000 (BLIND|CONFUSED); per CollisionData.inc:16-18,
+// BLIND=0x2000 and CONFUSED=0x8000.
 	thumb_func_start object_getFlag
 object_getFlag:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -23401,6 +23410,8 @@ sub_801AEB0:
 	push {r4,r7,lr}
 	ldrb r4, [r7,#oCollisionData_HitModifierFinal]
 	bl object_getFlag // () -> int
+// sub_801AEB0's 0x220000 (superarmor|anger) reader, one of the two suppression sites (with
+// sub_801AF0E at 23451). object_subtractHP has already run by here, so damage is unconditional.
 	ldr r1, dword_801AF40 // =0x220000 superarmor or anger
 	tst r0, r1
 	bne loc_801AECA
@@ -23752,6 +23763,8 @@ dword_801B1C0:
 	thumb_func_end ai_eventuallyRunsAIAttack_801AF44
 
 	thumb_func_start battle_801B1C4
+// battle_801B1C4, the common per-object path: its object_subtractHP call precedes every flag
+// test, so damage is unconditional and only the flinch action is suppressed.
 battle_801B1C4:
 	push {r6,r7,lr}
 
@@ -23913,11 +23926,7 @@ loc_801B298: // endif
 
 loc_801B2CA: // endif
 
-// bn T84 (2026-09-17): T84 BLOCKED; landed additive const
-// OBJECT_FLAGS_IMMOBILIZED=0x4000 at src/objects.rs:352 area
-// (linker-dropped). The 0x4000 mask is bit 14 (lsl #0xe) confirmed at
-// asm31.s:171386-171390. T84a recommended to gate-flip against 0x4000
-// with src/fixture.rs field added; docs/coverage/statuses.md NOT written.
+// OBJECT_FLAGS_IMMOBILIZED is 0x4000, bit 14 (built with lsl #0xe at asm31.s:171386-171390).
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
 
@@ -25564,6 +25573,7 @@ sub_801BE70:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	ldr r0, off_801BEB0 // =dword_203CA48 
 	mov r1, #0
+// The dword_203CA48 zeroing here is battle emotion bookkeeping.
 	str r1, [r0]
 	str r1, [r0,#0x4] // (dword_203CA4C - 0x203ca48)
 	ldr r1, off_801BEB4 // =dword_20367E0 
@@ -25573,6 +25583,8 @@ sub_801BE70:
 	.balign 4, 0
 off_801BEA8:
 	.word eQueuedChipIconSlots_20352E0
+// byte_203EB50 is read past here. 0x0203528F is the emotion window's blink countdown, not a
+// grant flag.
 off_801BEAC:
 	.word byte_203EB50
 off_801BEB0:
@@ -26348,6 +26360,7 @@ sub_801C416:
 dword_801C444:
 	.word 0x600C980
 dword_801C448:
+// This 0x600CA40 (OBJ VRAM) pointer sits in the pool of the charged-shot code.
 	.word 0x600CA40
 off_801C44C:
 	.word off_801D8D8
@@ -26696,17 +26709,8 @@ byte_801C6E8:
 	.byte 0x6A, 0x1, 0x69, 0x1, 0x8F, 0x0
 	thumb_func_end sub_801C640
 
-// bn F38i (2026-09-15): this BG3 slide routine is paired with the panel
-// triple at spawnEnemy_80073E2 (asm00_1.s:8695) for the F38h opening
-// integrated objective; F38i named it as adjacent canon to the per-enemy
-// panel assignment but the actual PAL_OBJ slot pin lives in stageObjPalette_8002818
-// (sprite.s:254-303), not here -- src/spr.rs:701-761's try_allocate_shared
-// is what cannot replicate a fitted PAL_OBJ slot.
-// bn F36a (2026-09-15): this writes the queued chip name + damage + slide
-// tiles to BG3 map rows 0x12/0x13 (screen y=144..159); 100% of warp
-// 40628 lives on k=24..29 in this 6-frame ramp. src/battle.rs's BG3 slide
-// (F34 driver chain) lands on a different frame than the canon, so the
-// ramp appears as warp integrated residue.
+// This writes the queued chip name, damage and slide tiles to BG3 map rows 0x12/0x13
+// (screen y=144..159) over a 6-frame ramp.
 	thumb_local_start
 drawQueuedChipName_801C6EE:
 	push {r4-r7,lr}
@@ -27386,6 +27390,8 @@ loc_801CB94:
 	strb r1, [r5,#0xe]
 	mov r1, #0xc
 	strb r1, [r5,#0x13]
+// The cmp #5 here only skips blink bookkeeping; loc_801CBBE below is the actual face upload,
+// so a transformation-resolved slot-5 face is still drawn.
 loc_801CBA2:
 	cmp r0, #5
 	bge loc_801CBBE
@@ -27547,10 +27553,14 @@ loc_801CCC8:
 	and r1, r0
 	add r1, #1
 	strb r1, [r5,#0x1d]
+// The 0xc store into +0xf is one of sub_801CC94's blink-countdown arms: 0x0203528F is a
+// 12-frame RNG-gated blink countdown, not a face byte.
 	mov r0, #0xc
 	strb r0, [r5,#0xf]
 loc_801CCD8:
 	mov r1, #0x14
+// Inside sub_801CC94's blink/timer arms. The face-slot halfword is at +0x10, and off_801CD08
+// nearby holds the 23 slot deltas.
 loc_801CCDA:
 	strh r1, [r5,#0x38]
 	b locret_801CD00
@@ -27643,10 +27653,16 @@ byte_801CDDC:
 	thumb_func_end sub_801CC94
 
 	thumb_local_start
+// drawEmotionWindow's head; 27646-27676 is the draw path over the 23-slot face bank and its
+// palettes.
 drawEmotionWindow_801CDEC:
 	push {r4-r6,lr}
 	ldrb r0, [r5,#0xf]
+// The cmp #6/#5 pair is the skip/flash gate on 0x0203528F, not the face index: writing 5
+// there blanks the face.
 	cmp r0, #6
+// The beq on byte==6 is the same gate; the byte is the blink countdown. The counter popup's
+// 60-frame countdown decrements at 0x0801CA12.
 	beq locret_801CE14
 	cmp r0, #5
 	beq locret_801CE14
@@ -29123,23 +29139,13 @@ byte_801D9B4:
 	.byte 0xB3, 0xD2, 0xB5, 0xD2
 	thumb_func_end sub_801D814
 
-	// bn/reference wt/zero-layers (2026-09-08): 0x1f09 staged into
-	// oRenderInfo_BG3Control_0a here is a BGxCNT value (priority=1, char base
-	// block=0, screen base block=31) -- peeked live on real hardware via
-	// mgba_capture --peek 0x0400000e (BG3CNT) from both
-	// /tmp/pausedwithcannon.state (normal battle HUD) and
-	// /tmp/chipselect.state (chip-select window open): BOTH read 0x1f09,
-	// and isolating BG3 alone (--only-bg 3) on each shows the HP/CUSTOM
-	// gauge HUD in the first case and the chip-select window (plus the HP
-	// box, still drawn) in the second -- the same hardware background,
-	// same tilemap, reused/overwritten by whichever of the two is active
-	// rather than each getting its own layer. BG0CNT/BG1CNT/BG2CNT read
-	// 0x1c08/0x1d03/0x1e02 on both states too (BG0 unused/blank in every
-	// state checked including a RESULT-window capture; BG1 the backdrop,
-	// priority 3; BG2 the field panels, priority 2) -- this project's own
-	// bn game (src/battle.rs) assigns its four background layers by call
-	// order into agb's GraphicsFrame, not by an explicit index, and did
-	// not match this assignment before AUDIT wave 3c's zero-layers ticket.
+	// 0x1f09 staged into oRenderInfo_BG3Control_0a here is a BGxCNT value (priority=1, char
+	// base block=0, screen base block=31). BG3CNT reads 0x1f09 both in the normal battle HUD and
+	// with the chip-select window open: BG3 alone shows the HP/CUSTOM gauge HUD in the first case
+	// and the chip-select window (plus the HP box, still drawn) in the second -- one hardware
+	// background and tilemap, reused by whichever of the two is active. BG0CNT/BG1CNT/BG2CNT read
+	// 0x1c08/0x1d03/0x1e02 in both (BG0 unused/blank in every state checked, including the RESULT
+	// window; BG1 the backdrop, priority 3; BG2 the field panels, priority 2).
 	thumb_func_start initChipWindowBg3_801DA24
 initChipWindowBg3_801DA24:
 	push {lr}
@@ -29932,19 +29938,13 @@ sub_801DF8C:
 	mov pc, lr
 	thumb_func_end sub_801DF8C
 
-	// bn/reference wt/zero-layers (2026-09-08): Struct2035280.CustGaugeFlowCounter
-	// -- the counter drawCustGauge_801C4E4 derives both the bar's 4-tile cycle and
-	// the L/R marker's cyan<->orange blink from -- has NO writer anywhere in this
-	// disassembly that a static grep can find. (The one static write to that byte,
-	// sub_801E474's "mov r0, #0x3f; strb r0, [r1]", is battle-start banner/text
-	// rendering, not the gauge.) Its behaviour was measured live instead, from a
-	// real battle's frame 0 (/tmp/battlestart.state) through the gauge's first
-	// natural fill-to-full transition, and that measurement is what the field's own
-	// comment in include/structs/Struct2035280.inc now records, wrap included.
-	// The unfound writer is presumably driven by the gauge-full flag that
-	// battle_clearFlags/dispatch_801DACC carry as #CUST_GAUGE_FULL (see
-	// sub_802A0F8 below). See bn's own src/hudtiles.rs (BAR_EXTRA/MARKER_EXTRA)
-	// for the bar/marker formulas this counter drives.
+	// Struct2035280.CustGaugeFlowCounter -- the counter drawCustGauge_801C4E4 derives both the
+	// bar's 4-tile cycle and the L/R marker's cyan<->orange blink from -- has no writer anywhere in
+	// this disassembly that a static grep can find. (The one static write to that byte, sub_801E474's
+	// "mov r0, #0x3f; strb r0, [r1]", is battle-start banner/text rendering, not the gauge.) Its
+	// behaviour was measured live, and the field's comment in include/structs/Struct2035280.inc
+	// records it, wrap included. The unfound writer is presumably driven by the gauge-full flag that
+	// battle_clearFlags/dispatch_801DACC carry as #CUST_GAUGE_FULL (see sub_802A0F8 below).
 	thumb_func_start ClearCustGauge
 ClearCustGauge:
 	push {lr}
@@ -30971,6 +30971,8 @@ loc_801E678:
 	bne loc_801E696
 	add r6, #1
 	b loc_801E696
+// Head of the byte_801E700 lookup (transformation -> base face slot, 25 entries + 3 pad),
+// with the +5 cross / +1 adjustments following.
 loc_801E684:
 	cmp r4, #1
 	blt loc_801E696
@@ -31041,6 +31043,8 @@ locret_801E6EE:
 	pop {r4,r6,pc}
 off_801E6F0:
 	.word byte_801E6F4
+// byte_801E6F4: 6 entries + 2 pad, [0,2,3,1,5,4], emotion enum -> face slot, reached via
+// sub_801CB38 -> possiblyGetBattleEmotion_8015B54.
 byte_801E6F4:
 	.byte 0x0, 0x2, 0x3, 0x1, 0x5, 0x4, 0x0, 0x0
 off_801E6FC:
@@ -31051,16 +31055,9 @@ byte_801E700:
 
 	thumb_func_start setChipWindowSlideX_801E71C
 setChipWindowSlideX_801E71C:
-// bn T7d (2026-09-15): the byte this writes is one of the three fitted edges in
-// T7d's windowclose_full trace scenario -- src/battle.rs carries the named
-// canon-predicate on it, and the window-close banner cycle depends on it. T7d
-// read it as a "post-window banner composite corrector"; F33 later measured what
-// the value actually IS -- the chip window's own slide position, which
-// drawEmotionWindow_801CDEC adds into the emotion window's OAM x -- and predicted
-// -117980 px from that to the pixel. This routine's only callers pass
-// CHIP_WINDOW_SLIDE_FROM minus the window's slide counter (asm03_0.s:979), so the
-// field name follows F33; T7d's reading is kept here because the two describe the
-// same byte from different ends and only F33's has a measurement behind it.
+// The byte this writes is the chip window's own slide position, which
+// drawEmotionWindow_801CDEC adds into the emotion window's OAM x. This routine's only callers
+// pass CHIP_WINDOW_SLIDE_FROM minus the window's slide counter (asm03_0.s:979).
 	push {r1,lr}
 	ldr r1, off_801E77C // =eStruct2035280
 	strb r0, [r1,#oStruct2035280_ChipWindowSlideX]
@@ -31102,6 +31099,7 @@ sub_801E748:
 	pop {pc}
 	thumb_func_end sub_801E748
 
+// isBannerBusy_801E754: the 44-byte banner-idle predicate.
 	thumb_func_start isBannerBusy_801E754
 isBannerBusy_801E754:
 	push {r1,r2,lr}
