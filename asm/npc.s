@@ -198,6 +198,9 @@ off_809E6C4:
 	.word OW_NPC_UNK_FLAGS_60_SHADOW_FLAG_0x100
 	thumb_func_end npc_standard_809E5E2
 
+// symdb: NPC action 0: count Timer down; at zero let the script continue (npc_enableScript0x19_809f516); then the secondary script.
+// symdb: (r5 = NPC) -> Timer -= 1 (16-bit); flags as sub r0,#1; npc_runSecondaryScriptMaybe_809ebf8
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_waitTimer_809e6c8.yaml
 	thumb_local_start
 npc_waitTimer_809e6c8:
 	push {lr}
@@ -211,6 +214,10 @@ npc_waitTimer_809e6c8:
 	pop {pc}
 	thumb_func_end npc_waitTimer_809e6c8
 
+// symdb: NPC action 1: run the current movement step (jt_809E6F0 by MovementFlag_0a), then the secondary script.
+// symdb: (r5 = NPC) -> r0 = MovementFlag_0a, r7 = jt_809E6F0[it] (0 walk init, 4 walk update, 8 vertical,
+// symdb: 12 diagonal); call; npc_runSecondaryScriptMaybe_809ebf8
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_doNonCutsceneMovement_809E6DC.yaml
 	thumb_local_start
 npc_doNonCutsceneMovement_809E6DC:
 	push {lr}
@@ -235,6 +242,13 @@ off_809E700:
 // movement seems to be done in values of 8?
 // speed to timer calculation:
 // timer = ((0x80000 / speed) + 0xfff) / 0x1000
+// symdb: Start one 8-pixel walking step in MovementDirection.
+// symdb: (r5 = NPC) -> Unk_70/Unk_74 = X/Y + NPCMovementIterationDeltas[dir] << 16 (the step's target);
+// symdb: Timer = ceil(0x80000 / MovementSpeed / 0x1000) (SWI_Div); DeltaX/Y =
+// symdb: NPCMovementSubiterationDeltas[dir] * speed << 12, DeltaZ = 0; MovementFlag_0a = 4; Next* =
+// symdb: position + delta; sub_809F5B0; leaves r0 = Z, r1 = 0, r3 = 1, r4 = speed, r7 = subiteration
+// symdb: delta entry
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_nonCutsceneMovementInit_809E704.yaml
 npc_nonCutsceneMovementInit_809E704:
 	push {lr}
 
@@ -382,6 +396,13 @@ dword_809E7D4:
 	.word 0xFFF
 	thumb_func_end npc_nonCutsceneMovementInit_809E704
 
+// symdb: Walk one frame: unless blocked, move to Next*; when the step ends, snap to its target and start the next step or finish the walk.
+// symdb: (r5 = NPC) -> unless UnkFlags_60 0x10 (no collision), sub_809F638 != 0 means blocked
+// symdb: (sub_809F5B0 only); else X/Y/Z = Next*; Timer -= 1; at 0: X/Y = Unk_70/74, MovementDistance -=
+// symdb: 1, then npc_enableScript0x19_809f516 (done) or npc_nonCutsceneMovementInit_809E704; otherwise
+// symdb: Next* += Delta*, and unless UnkFlags_60 0x200 Z = NextZ = checkZCoordModifiers_8031612(Coords)
+// symdb: << 16; sub_809F5B0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_nonCutsceneMovementUpdate_809E7D8.yaml
 	thumb_local_start
 npc_nonCutsceneMovementUpdate_809E7D8:
 	push {lr}
@@ -444,6 +465,10 @@ loc_809E848:
 	pop {pc}
 	thumb_func_end npc_nonCutsceneMovementUpdate_809E7D8
 
+// symdb: Vertical move: for MovementSpeed frames raise (MovementDistance 0) or lower Z16 by byte 6 per frame.
+// symdb: (r5 = NPC) -> frames = MovementSpeed: 0 -> npc_enableScript0x19_809f516; else frames-1, Z16 +-=
+// symdb: byte6; r0 = frames-1, r1 = new Z16, r2 = byte6, flags of the add/sub
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_doVerticalMovement_809e84e.yaml
 	thumb_local_start
 npc_doVerticalMovement_809e84e:
 	push {lr}
@@ -489,6 +514,12 @@ npc_doVerticalMovement_809e84e:
 // 02 - down left
 // 03 - down right
 // byte4 - velocity of horizontal movement
+// symdb: Diagonal move: for MovementSpeed frames move X16 or Y16 by byte 7 and Z16 by 1.
+// symdb: (r5 = NPC) -> frames = MovementSpeed: 0 -> npc_enableScript0x19_809f516; else frames-1; axis =
+// symdb: byte_809E8C4[byte 6] {field X16/Y16, add/subtract}: field +-= byte 7; Z16 += 1 if
+// symdb: MovementDistance == 0 else -= 1; r0 = byte 7, r1 = new Z16, r2 = field offset, flags of the Z
+// symdb: add/sub
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_doDiagonalMovement_809E878.yaml
 npc_doDiagonalMovement_809E878:
 	push {lr}
 
