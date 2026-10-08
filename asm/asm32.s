@@ -5010,10 +5010,8 @@ byte_8110500:
 	.byte 0x1E, 0x3C, 0x50, 0x64, 0x46, 0x6E
 	thumb_func_end sub_81104B2
 
-loc_8110506:
-	push {r2,r4,r5,r7}
-	push {r2,r4,r5,r7}
-	push {r2,r4,r5,r7}
+byte_8110506:
+	.byte 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4
 byte_811050C:
 	.byte 0x3C, 0x3C, 0x3C, 0x3C, 0x3C, 0x3C
 byte_8110512:
@@ -5084,7 +5082,7 @@ sub_8110574:
 	mov r0, #1
 	strb r0, [r6,#oAIState_Unk_02]
 	ldrb r1, [r4,#oAIData_Version_16]
-	ldr r0, off_8110610 // =loc_8110506
+	ldr r0, off_8110610 // =byte_8110506
 	ldrb r0, [r0,r1]
 	strh r0, [r6,#oAIState_Unk_08]
 	bl object_getFlag // () -> int
@@ -5159,7 +5157,7 @@ sub_811060A:
 	str r0, [r5,#oBattleObject_ExtraVars]
 	mov pc, lr
 off_8110610:
-	.word loc_8110506
+	.word byte_8110506
 byte_8110614:
 	.byte 0x0, 0x20, 0x0, 0x0
 byte_8110618:
@@ -18349,7 +18347,7 @@ off_811773C:
 	.word off_8117740
 off_8117740:
 	.word sub_811774C+1
-	.word loc_8117764+1
+	.word sub_8117764+1
 	.word sub_8117768+1
 	thumb_func_end sub_81176D0
 
@@ -18370,9 +18368,12 @@ off_8117760:
 	.word unk_201C400
 	thumb_func_end sub_811774C
 
-loc_8117764:
+	thumb_local_start
+sub_8117764:
 	mov r0, #9
 	mov pc, lr
+	thumb_func_end sub_8117764
+
 	thumb_local_start
 sub_8117768:
 	push {lr}
@@ -22756,68 +22757,16 @@ dword_8119900:
 	.word 0x40000000
 	thumb_func_end sub_81198E8
 
-loc_8119904:
-	mov r1, #0xc0
-	mov r1, #0xc2
-	mov r1, #0xc4
-	mov r1, #0xc6
-	mov r1, #0xc8
-	mov r1, #0xca
-	mov r1, #0xcc
-	mov r1, #0xce
-	mov r1, #0xd0
-	mov r1, #0xd2
-	mov r1, #0xc1
-	mov r1, #0xc3
-	mov r1, #0xc5
-	mov r1, #0xc7
-	mov r1, #0xc9
-	mov r1, #0xcb
-	mov r1, #0xcd
-	mov r1, #0xcf
-	mov r1, #0xd1
-	mov r1, #0xd3
-loc_811992C:
-	mov r1, #0xd4
-	mov r1, #0xd5
-	mov r1, #0xd6
-	mov r1, #0xd7
-	mov r1, #0xd8
-	mov r1, #0xd9
-	mov r1, #0xda
-	mov r1, #0xdb
-	mov r1, #0xdc
-	mov r1, #0xdd
-	mov r1, #0xde
-	mov r1, #0xdf
-	mov r1, #0xe0
-	mov r1, #0xe1
-	mov r1, #0xe2
-	mov r1, #0xe3
-	mov r1, #0xe4
-	mov r1, #0xe5
-	mov r1, #0xe6
-	mov r1, #0xe7
-	mov r1, #0xe8
-	mov r1, #0xe9
-	mov r1, #0xea
-	mov r1, #0xeb
-	mov r1, #0xec
-	mov r1, #0xed
-	mov r1, #0xee
-	mov r1, #0xef
-	mov r1, #0xf0
-	mov r1, #0xf1
-	mov r1, #0xf2
-	mov r1, #0xf3
-	mov r1, #0xf4
-	mov r1, #0xf5
-	mov r1, #0xf6
-	mov r1, #0xf7
-	mov r1, #0xf8
-	mov r1, #0xf9
-	mov r1, #0xfa
-	mov r1, #0xfb
+hword_8119904:
+	.hword 0x21C0, 0x21C2, 0x21C4, 0x21C6, 0x21C8, 0x21CA, 0x21CC, 0x21CE
+	.hword 0x21D0, 0x21D2, 0x21C1, 0x21C3, 0x21C5, 0x21C7, 0x21C9, 0x21CB
+	.hword 0x21CD, 0x21CF, 0x21D1, 0x21D3
+hword_811992C:
+	.hword 0x21D4, 0x21D5, 0x21D6, 0x21D7, 0x21D8, 0x21D9, 0x21DA, 0x21DB
+	.hword 0x21DC, 0x21DD, 0x21DE, 0x21DF, 0x21E0, 0x21E1, 0x21E2, 0x21E3
+	.hword 0x21E4, 0x21E5, 0x21E6, 0x21E7, 0x21E8, 0x21E9, 0x21EA, 0x21EB
+	.hword 0x21EC, 0x21ED, 0x21EE, 0x21EF, 0x21F0, 0x21F1, 0x21F2, 0x21F3
+	.hword 0x21F4, 0x21F5, 0x21F6, 0x21F7, 0x21F8, 0x21F9, 0x21FA, 0x21FB
 	thumb_func_start sub_811997C
 sub_811997C:
 	push {lr}
@@ -22967,7 +22916,7 @@ loc_8119A76:
 	// tileBlock32x32
 	mov r2, #0
 	// tileIds
-	ldr r3, off_8119A9C // =loc_8119904
+	ldr r3, off_8119A9C // =hword_8119904
 	mov r4, #0xa
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -22983,14 +22932,14 @@ locret_8119A9A:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8119A9C:
-	.word loc_8119904
+	.word hword_8119904
 	thumb_func_end sub_8119A48
 
 	thumb_local_start
 sub_8119AA0:
 	push {r4-r7,lr}
 	// tileIds
-	ldr r3, off_8119AC8 // =loc_811992C
+	ldr r3, off_8119AC8 // =hword_811992C
 	mov r4, #0
 loc_8119AA6:
 	push {r0-r4}
@@ -23013,7 +22962,7 @@ locret_8119AC4:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8119AC8:
-	.word loc_811992C
+	.word hword_811992C
 	thumb_func_end sub_8119AA0
 
 	thumb_func_start sub_8119ACC
