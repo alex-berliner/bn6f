@@ -606,7 +606,7 @@ loc_81235E8:
 	ldrb r1, [r1,#5]
 	mov r2, #0
 	ldrb r3, [r5,#0xc]
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	ldrb r1, [r5,#0xc]
 	cmp r0, r1
 	beq loc_8123628
@@ -760,7 +760,7 @@ loc_812374A:
 	mov r1, r4
 	mov r2, #1
 	ldrh r3, [r5,#0x20]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x20]
 loc_812375C:
 	bl sub_8123D70
@@ -1967,7 +1967,7 @@ loc_8124112:
 	ble loc_8124128
 	mov r2, #1
 	ldrh r3, [r5,#0x14]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x14]
 loc_8124128:
 	bl sub_81244EC
@@ -7373,7 +7373,7 @@ loc_8126E36:
 	ldrb r1, [r5,#0xf]
 	mov r2, #2
 	ldrb r3, [r5,#0x10]
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	ldrb r1, [r5,#0x10]
 	strb r1, [r5,#0x11]
 	cmp r0, r1
@@ -9093,7 +9093,7 @@ loc_8127C34:
 	mov r1, #4
 	mov r2, #1
 	ldrh r3, [r5,#0x2a]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x2a]
 loc_8127C46:
 	bl sub_8127F90
@@ -10467,7 +10467,7 @@ loc_812884E:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
 	ldrh r0, [r0,#oJoypad_LowSensitivityHeld]
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	ldrb r1, [r5,#0xd]
 	cmp r0, r1
 	beq loc_8128866
@@ -11802,7 +11802,7 @@ sub_812933C:
 	mov r2, #1
 	ldrb r3, [r5,#0xd]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_8129388
 	strb r0, [r5,#0xd]
@@ -11937,7 +11937,7 @@ sub_8129454:
 	mov r2, #1
 	ldrb r3, [r5,#0xd]
 	mov r4, r3
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	cmp r4, r0
 	beq loc_8129480
 	strb r0, [r5,#0xd]
@@ -11953,7 +11953,7 @@ loc_8129480:
 	ldrb r3, [r5,#0xd]
 	lsr r3, r3, #1
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_81294B2
 	lsl r0, r0, #1
@@ -12243,7 +12243,7 @@ sub_81296D8:
 	mov r2, #1
 	ldrb r3, [r5,#0xe]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_81296F8
 	strb r0, [r5,#0xe]
@@ -12472,7 +12472,7 @@ sub_8129870:
 	mov r2, #1
 	ldrb r3, [r5,#0x12]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_8129890
 	strb r0, [r5,#0x12]
@@ -12649,7 +12649,7 @@ sub_81299B0:
 	mov r2, #1
 	ldrb r3, [r5,#0x12]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_81299D0
 	strb r0, [r5,#0x12]
@@ -12864,7 +12864,7 @@ sub_8129B34:
 	mov r2, #1
 	ldrb r3, [r5,#0x12]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_8129B5A
 	strb r0, [r5,#0x12]
@@ -13107,7 +13107,7 @@ sub_8129D00:
 	mov r2, #1
 	ldrb r3, [r5,#0x13]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_8129D22
 	strb r0, [r5,#0x13]

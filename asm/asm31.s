@@ -85190,7 +85190,7 @@ sub_80E0568:
 	tst r0, r0
 	beq loc_80E05BA
 	mov r0, #0
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 loc_80E05BA:
 	bl sub_80E0616
 	mov r0, #CUR_STATE_UPDATE
@@ -86517,7 +86517,7 @@ sub_80E0FC0:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_update
 	ldrb r0, [r5,#oBattleObject_Unk_0c]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0xa
 	strh r0, [r5,#oBattleObject_Timer]
 	bl object_getFlip // () -> int
@@ -88230,7 +88230,7 @@ sub_80E1BDC:
 	tst r0, r0
 	bne loc_80E1BF2
 	mov r0, #0
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0x16
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #4
@@ -88313,7 +88313,7 @@ sub_80E1C66:
 	mov r1, #0
 	bl sub_80E1CB0
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #8
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #4

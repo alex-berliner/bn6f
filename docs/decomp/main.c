@@ -26,7 +26,7 @@ void __noreturn main_()
         copyPalletesToIWRAM_8002650();
         sprite_resetObjVars_800289C(v1, v2, v3, v4);
         copyToVRAMAndClear_iBGTileIdBlocks_Ptr();
-        main_static_80003E4();
+        main_updateJoypad_80003E4();
         ++*tk->currFrame;
         CapIncrementGameTimeFrames();
         (*(&main_subsystemJumpTable + *tk->jo_gameSubsysSel))();
@@ -66,7 +66,7 @@ void __cdecl main_pollGeneralLCDStatus_STAT_LYC_()
 
 
 // 0x80003e4
-Joystick *main_static_80003E4()
+Joystick *main_updateJoypad_80003E4()
 {
     Toolkit *tk; // r10
     Joystick *joystick; // r0

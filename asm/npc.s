@@ -87,7 +87,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
 // symdb: on new hidden pieces, copy the shown values to the Update fields,
 // symdb: npc_createInteractionAreas_809F526, layer = LayerPriorityOverride or
-// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
+// symdb: applyLayerEffectToOWObject_8035694, sprite_setPriority_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_standard_809E5E2.yaml
 	thumb_local_start
 npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
@@ -175,7 +175,7 @@ loc_809E66E:
 	add r0, #oOverworldNPCObject_Coords
 	bl applyLayerEffectToOWObject_8035694
 loc_809E690:
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r0, [r5,#oOverworldNPCObject_UnkFlags_60]
 	mov r1, #OW_NPC_UNK_FLAGS_60_0x40
 	tst r0, r1

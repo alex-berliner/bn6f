@@ -544,7 +544,7 @@ sub_812D748:
 	mov r1, #7
 	mov r2, #1
 	ldrh r3, [r7,#0x34]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r7,#0x34]
 loc_812D76E:
 	bl sub_812D78C

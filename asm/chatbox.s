@@ -2110,7 +2110,7 @@ loc_8040C0C:
 	bl sprite_chatbox_80026D6
 	strh r6, [r5,#6]
 	pop {r7}
-	bl sub_8002818
+	bl sprite_loadPalette_8002818
 	bl sub_8002874
 	mov r0, #0
 	mov r1, #3

@@ -483,7 +483,7 @@ void sub_812DFAC()
 
     *(v0 + 16) = 19;
     v2 = *(v0 + 20);
-    v3 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 7, 1, v2);
+    v3 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 7, 1, v2);
     if ( v2 != v3 )
         *(v0 + 20) = v3;
     v4 = sub_803EAE4();
@@ -594,7 +594,7 @@ void sub_812E08C()
     {
         v4 = *(*(v1 + oToolkit_JoypadPtr) + 2);
         v5 = *(v0 + 21);
-        sub_811FA0C();
+        menu_moveCursorLeftRight_811FA0C();
         if ( v5 != v6 )
         {
             *(v0 + 21) = v6;

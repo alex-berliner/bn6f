@@ -203,7 +203,7 @@ signed int sub_80027F4()
 
 
 // 0x8002818
-int sub_8002818()
+int sprite_loadPalette_8002818()
 {
     int v0; // r5
     int v1; // r0
@@ -796,7 +796,7 @@ int sub_8002E04()
 
 
 // 0x8002e14
-int __fastcall sub_8002E14(int a1)
+int __fastcall sprite_setPriority_8002E14(int a1)
 {
     int v1; // r5
     unsigned int v2; // r3

@@ -293,7 +293,7 @@ void sub_812D748()
 	{
 		sub_812D7A4();
 		if ( v2 )
-			*(v1 + 26) = sub_811FA22(*(*(v0 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 26));
+			*(v1 + 26) = menu_moveCursorUpDown_811FA22(*(*(v0 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 26));
 		sub_812D78C();
 	}
 }

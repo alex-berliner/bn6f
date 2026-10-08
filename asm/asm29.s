@@ -49,7 +49,7 @@ sub_80A49B0:
 	bl applyLayerEffectToOWObject_8035694
 	str r6, [r5,#0x14]
 loc_80A49E8:
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r0, [r7,#4]
 	bl sprite_setUnk0x2c
 	ldrb r0, [r7,#8]
@@ -327,7 +327,7 @@ sub_80A4BFC:
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
 	str r6, [r5,#0x14]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r5,#4]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -530,7 +530,7 @@ sub_80A51F8:
 	ldrb r2, [r7,#7]
 	bl sprite_load // (int a1, int a2, int a3) ->
 	ldrb r0, [r7,#0xc]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r7,#8]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -760,7 +760,7 @@ sub_80A5448:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r7,#3]
 	strb r0, [r5,#5]
 	mov r0, #4
@@ -870,7 +870,7 @@ loc_80A552A:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r0, [r5,#0xc]
 	ldr r1, [r5,#0x10]
 	str r0, [r5,#0x24]
@@ -1223,7 +1223,7 @@ sub_80A57D0:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	bl sub_80A5890
@@ -1644,7 +1644,7 @@ sub_80A5AF8:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r4,#7]
 	strb r0, [r5,#6]
 	mov r0, #1
@@ -2766,7 +2766,7 @@ loc_80A6A94:
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
 	str r4, [r5,#0x14]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sprite_update
 	pop {pc}
 	.balign 4, 0
@@ -3339,7 +3339,7 @@ sub_80A6EBC:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #1
 	bl sprite_setPalette // (int pallete) -> void
 	bl sub_80A70C0
@@ -3865,7 +3865,7 @@ sub_80A72D8:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r4]
@@ -4536,7 +4536,7 @@ sub_80A77C8:
 	ldrb r0, [r5,#5]
 	bl sprite_setPalette // (int pallete) -> void
 	ldrb r0, [r5,#6]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sprite_update
@@ -4627,7 +4627,7 @@ loc_80A788A:
 loc_80A788E:
 	strb r4, [r5]
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r5,#4]
 	ldrb r1, [r5,#5]
 	cmp r0, r1
@@ -4683,7 +4683,7 @@ sub_80A78E0:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	str r0, [r5,#0x24]
 	mov r0, #4
@@ -5191,7 +5191,7 @@ sub_80A7CA4:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #1
 	bl sprite_setPalette // (int pallete) -> void
 	push {r4-r7}
@@ -5343,7 +5343,7 @@ sub_80A7DB8:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_80A7E14
@@ -5772,7 +5772,7 @@ sub_80A822C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sub_80A82A4
 	mov r4, r0
 	ldrh r0, [r4]
@@ -5870,7 +5870,7 @@ loc_80A82EE:
 	beq loc_80A830C
 	mov r4, #1
 	mov r0, #3
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 loc_80A830C:
 	mov r0, r4
 	pop {r4,pc}
@@ -5977,7 +5977,7 @@ sub_80A83B8:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	movflag EVENT_9FF
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_9D7
@@ -6389,7 +6389,7 @@ loc_80A86EA:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r2, [r5,#0x14]
 	mov r0, #0xc
 	lsl r0, r0, #0x10
@@ -6452,7 +6452,7 @@ loc_80A8754:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r0, [r5,#0x14]
 	ldrb r1, [r7,#3]
 	lsl r1, r1, #0x10
@@ -6539,7 +6539,7 @@ sub_80A8814:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_80A8848
@@ -6607,7 +6607,7 @@ sub_80A8894:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	str r0, [r5,#0x28]
 	ldr r0, [r5,#0xc]
@@ -6810,7 +6810,7 @@ loc_80A8A62:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8A50
@@ -7109,7 +7109,7 @@ sub_80A8C98:
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
 	str r4, [r5,#0x14]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8C98
 
@@ -7354,7 +7354,7 @@ sub_80A8E9C:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sub_80A90B0
 	movflag EVENT_BFB
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -7804,13 +7804,13 @@ sub_80A91F4:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A9208
 	mov r0, #1
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	b locret_80A9214
 loc_80A9208:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 locret_80A9214:
 	pop {pc}
 	.balign 4, 0x00
@@ -7940,7 +7940,7 @@ sub_80A92E0:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldrb r0, [r5,#5]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r6,#0x1c]
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
@@ -7960,7 +7960,7 @@ sub_80A931C:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A933E
 	mov r0, #3
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #8
 	strb r0, [r5,#8]
 	mov r0, #SOUND_HIT_6B
@@ -7991,7 +7991,7 @@ sub_80A9360:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9360
@@ -8134,7 +8134,7 @@ sub_80A9458:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #2
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sub_80A9570
 	mov r4, r0
 	ldrh r0, [r4]
@@ -8318,13 +8318,13 @@ sub_80A95EC:
 	cmp r2, #0
 	bne loc_80A9604
 	mov r0, #3
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	b locret_80A9610
 loc_80A9604:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 locret_80A9610:
 	pop {r4,pc}
 	.balign 4, 0x00
@@ -8405,7 +8405,7 @@ sub_80A9680:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	str r0, [r5,#0x24]
 	bl sub_80A97F4
@@ -8864,7 +8864,7 @@ sub_80A9A2C:
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
 	str r6, [r5,#0x14]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r5,#4]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -8992,7 +8992,7 @@ loc_80A9BCE:
 	bl applyLayerEffectToOWObject_8035694
 	str r6, [r5,#0x14]
 loc_80A9BF6:
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r0, [r7,#8]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -9174,7 +9174,7 @@ sub_80A9D30:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	strh r0, [r5,#0x24]
 	strh r0, [r5,#0x26]
@@ -9411,7 +9411,7 @@ sub_80A9EEC:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #SOUND_LOG_OUT_76
 	bl PlaySoundEffect
 	mov r0, #4
@@ -9478,7 +9478,7 @@ sub_80A9F78:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldrb r0, [r5,#7]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldrb r0, [r5,#4]
@@ -9599,7 +9599,7 @@ sub_80AA078:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_removeShadow
 	ldrb r0, [r5,#7]
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldrb r0, [r5,#4]
@@ -9720,7 +9720,7 @@ sub_80AA160:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_80AA194
@@ -9800,7 +9800,7 @@ sub_80AA204:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldr r0, [r5,#0xc]
 	ldr r1, [r5,#0x10]
 	ldr r2, [r5,#0x14]
@@ -9953,7 +9953,7 @@ loc_80AA33E:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -10040,7 +10040,7 @@ loc_80AA3E6:
 	mov r0, r5
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
-	bl sub_8002E14
+	bl sprite_setPriority_8002E14
 	ldrb r1, [r4,#4]
 locret_80AA400:
 	pop {r5-r7,pc}

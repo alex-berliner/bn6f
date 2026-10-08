@@ -249,7 +249,7 @@ void __noreturn sub_81235A4()
                 v10 = *(*(v1 + oToolkit_JoypadPtr) + 4);
                 v11 = *(*(v1 + oToolkit_Unk2001c04_Ptr) + 5);
                 v12 = *(v0 + 12);
-                sub_811FA0C();
+                menu_moveCursorLeftRight_811FA0C();
                 if ( v13 != *(v0 + 12) )
                 {
                     *(v0 + 12) = v13;
@@ -356,7 +356,7 @@ int sub_812368C()
         v14 = 3;
         if ( sub_8123E08() )
             v14 = 1;
-        v13 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 4), v14, 1, *(v0 + 32));
+        v13 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 4), v14, 1, *(v0 + 32));
         *(v0 + 32) = v13;
         return sub_8123D70(v13);
     }
@@ -937,7 +937,7 @@ void submenu_subchip_81240D0()
             v9 = *(*(v1 + oToolkit_JoypadPtr) + 4);
             v10 = *(v0 + 12);
             if ( v10 > 1 )
-                *(v0 + 20) = sub_811FA22(v9, v10, 1, *(v0 + 20));
+                *(v0 + 20) = menu_moveCursorUpDown_811FA22(v9, v10, 1, *(v0 + 20));
         }
         else
         {
@@ -4166,7 +4166,7 @@ int sub_8126E10()
             v5 = *(*(v1 + oToolkit_JoypadPtr) + 4);
             v6 = v0[15];
             v7 = v0[16];
-            sub_811FA0C();
+            menu_moveCursorLeftRight_811FA0C();
             v10 = v0[16];
             v0[17] = v10;
             if ( v8 != v10 )
@@ -5076,7 +5076,7 @@ void __noreturn sub_8127BE4()
         JoypadKeyPressed();
         if ( v4 )
         {
-            *(v0 + 42) = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 4), 4, 1, *(v0 + 42));
+            *(v0 + 42) = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 4), 4, 1, *(v0 + 42));
         }
         else
         {
@@ -5839,7 +5839,7 @@ void sub_8128800()
             *(v0 + 32);
             v5 = *(v0 + 13);
             v6 = *(*(v1 + oToolkit_JoypadPtr) + 4);
-            sub_811FA0C();
+            menu_moveCursorLeftRight_811FA0C();
             if ( v7 == *(v0 + 13) )
             {
                 v8 = *(v0 + 30);
@@ -6558,7 +6558,7 @@ int sub_812933C()
     if ( !v2 )
     {
         v3 = v0[13];
-        v4 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v3);
+        v4 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v3);
         if ( v3 == v4 )
         {
             JoypadKeyPressed();
@@ -6659,10 +6659,10 @@ void sub_8129454()
     IsPaletteFadeActive();
     if ( !v2 )
     {
-        if ( v0[13] == 2 || (v3 = *(*(v1 + oToolkit_JoypadPtr) + 2), v4 = v0[13], sub_811FA0C(), v4 == v5) )
+        if ( v0[13] == 2 || (v3 = *(*(v1 + oToolkit_JoypadPtr) + 2), v4 = v0[13], menu_moveCursorLeftRight_811FA0C(), v4 == v5) )
         {
             v6 = v0[13] >> 1;
-            v7 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v6);
+            v7 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v6);
             if ( v6 == v7 )
             {
                 JoypadKeyPressed();
@@ -6903,7 +6903,7 @@ void sub_81296D8()
     int v8; // r2
 
     v2 = v0[14];
-    v3 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
+    v3 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
     if ( v2 == v3 )
     {
         JoypadKeyPressed();
@@ -7110,7 +7110,7 @@ void sub_8129870()
     int v8; // r2
 
     v2 = v0[18];
-    v3 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
+    v3 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
     if ( v2 == v3 )
     {
         JoypadKeyPressed();
@@ -7263,7 +7263,7 @@ void sub_81299B0()
     int v8; // r2
 
     v2 = v0[18];
-    v3 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
+    v3 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 3, 1, v2);
     if ( v2 == v3 )
     {
         JoypadKeyPressed();
@@ -7448,7 +7448,7 @@ void sub_8129B34()
     if ( !v2 )
     {
         v3 = v0[18];
-        v4 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v3);
+        v4 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), 2, 1, v3);
         if ( v3 == v4 )
         {
             JoypadKeyPressed();
@@ -7651,7 +7651,7 @@ void sub_8129D00()
     int v8; // r2
 
     v2 = v0[19];
-    v3 = sub_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), v0[32], 1, v2);
+    v3 = menu_moveCursorUpDown_811FA22(*(*(v1 + oToolkit_JoypadPtr) + 2), v0[32], 1, v2);
     if ( v2 == v3 )
     {
         JoypadKeyPressed();

@@ -962,7 +962,7 @@ LABEL_13:
             }
             sprite_chatbox_80026D6();
             *(v7 + 3) = v3;
-            sub_8002818();
+            sprite_loadPalette_8002818();
             sub_8002874();
             sub_8002694(0, 3);
         }

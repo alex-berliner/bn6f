@@ -20,7 +20,7 @@ main_gameRoutine:
 	bl copyPalletesToIWRAM_8002650
 	bl sprite_resetObjVars_800289C
 	bl copyToVRAMAndClear_iBGTileIdBlocks_Ptr
-	bl main_static_80003E4
+	bl main_updateJoypad_80003E4
 
   // advance cur frame
 	mov r0, r10
@@ -158,7 +158,7 @@ off_80003E0:
 	thumb_func_end main_pollGeneralLCDStatus_STAT_LYC_
 
 	thumb_local_start
-main_static_80003E4:
+main_updateJoypad_80003E4:
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_JoypadPtr]
 	ldrb r7, [r0,#oJoypad_LowSensitivityTimer]
@@ -221,7 +221,7 @@ off_800044C:
 	.word KeyStatus
 dword_8000450:
 	.word 0x3FF
-	thumb_func_end main_static_80003E4
+	thumb_func_end main_updateJoypad_80003E4
 
 	thumb_local_start
 main_static_screen_fade_8000454:

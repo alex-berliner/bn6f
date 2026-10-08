@@ -636,7 +636,7 @@ sub_812DFAC::
 	mov r2, #1
 	ldrb r3, [r5,#0x14]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_812DFCA
 	strb r0, [r5,#0x14]
@@ -755,7 +755,7 @@ loc_812E0AC::
 	mov r2, #1
 	ldrb r3, [r5,#0x15]
 	mov r4, r3
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	cmp r4, r0
 	beq loc_812E0C6
 	strb r0, [r5,#0x15]

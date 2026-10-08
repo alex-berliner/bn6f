@@ -456,7 +456,7 @@ loc_81303A2:
 	add r1, #1
 	mov r2, #0
 	ldrb r3, [r5,#0xc]
-	bl sub_811FA0C
+	bl menu_moveCursorLeftRight_811FA0C
 	ldrb r1, [r5,#0xc]
 	cmp r0, r1
 	beq loc_81303C4
@@ -2363,7 +2363,7 @@ loc_813126C:
 	mov r2, #1
 	ldrb r3, [r5,#0xc]
 	mov r4, r3
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	cmp r4, r0
 	beq loc_8131292
 	strb r0, [r5,#0xc]
@@ -3981,7 +3981,7 @@ loc_81320DE:
 	mov r2, #1
 	ldrb r3, [r5,#0xd]
 	push {r3}
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	pop {r3}
 	cmp r3, r0
 	beq loc_81320F8
@@ -7098,7 +7098,7 @@ sub_8133944:
 	mov r1, #7
 	mov r2, #1
 	ldrh r3, [r5,#0x34]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x34]
 loc_8133964:
 	bl sub_813471C

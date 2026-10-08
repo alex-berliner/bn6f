@@ -251,8 +251,8 @@ byte_8002810:
 	.byte 0xFF, 0x2, 0x0, 0x0, 0xFF, 0x2, 0x0, 0x0
 	thumb_func_end sub_80027F4
 
-	thumb_func_start sub_8002818
-sub_8002818:
+	thumb_func_start sprite_loadPalette_8002818
+sprite_loadPalette_8002818:
 	push {lr}
 	ldr r0, [r5,#0x34]
 	tst r0, r0
@@ -299,7 +299,7 @@ off_8002864:
 	.word palette_addOrSubtractColor+1
 off_8002868:
 	.word byte_3001550
-	thumb_func_end sub_8002818
+	thumb_func_end sprite_loadPalette_8002818
 
 	thumb_func_start sub_800286C
 sub_800286C:
@@ -1212,8 +1212,8 @@ sub_8002E04:
 	mov pc, lr
 	thumb_func_end sub_8002E04
 
-	thumb_func_start sub_8002E14
-sub_8002E14:
+	thumb_func_start sprite_setPriority_8002E14
+sprite_setPriority_8002E14:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
@@ -1225,7 +1225,7 @@ sub_8002E14:
 	orr r1, r0
 	strb r1, [r3,#oObjectSprite_Unk_15]
 	mov pc, lr
-	thumb_func_end sub_8002E14
+	thumb_func_end sprite_setPriority_8002E14
 
 	thumb_local_start
 sub_8002E2A:

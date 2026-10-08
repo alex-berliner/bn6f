@@ -805,7 +805,7 @@ loc_804660C:
 	bne loc_8046634
 	push {r0,r4,r5,r7}
 	add r5, #0x20 
-	bl sub_8002818
+	bl sprite_loadPalette_8002818
 	pop {r0,r4,r5,r7}
 loc_8046634:
 	mov r1, #0x20 
@@ -1149,7 +1149,7 @@ loc_8046862:
 	bne loc_804688A
 	push {r0,r5,r7}
 	add r5, #0x20 
-	bl sub_8002818
+	bl sprite_loadPalette_8002818
 	pop {r0,r5,r7}
 loc_804688A:
 	mov r1, #0x20 
@@ -7146,7 +7146,7 @@ sub_804A514:
 	mov r1, #7
 	mov r2, #1
 	ldrh r3, [r5,#0x34]
-	bl sub_811FA22
+	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x34]
 loc_804A534:
 	bl sub_804AE50

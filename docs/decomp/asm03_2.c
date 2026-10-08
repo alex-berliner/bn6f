@@ -473,7 +473,7 @@ int sub_80465F8()
             {
                 if ( !(v4 & 0x80) )
                 {
-                    sub_8002818();
+                    sprite_loadPalette_8002818();
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
@@ -727,7 +727,7 @@ int sub_8046854()
             {
                 if ( !(v4 & 0x80) )
                 {
-                    sub_8002818();
+                    sprite_loadPalette_8002818();
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
@@ -4320,7 +4320,7 @@ void __fastcall __noreturn sub_804A514(int a1)
     }
     sub_804AE04();
     if ( v3 )
-        *(v1 + 52) = sub_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
+        *(v1 + 52) = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
     sub_804AE50();
 }
 

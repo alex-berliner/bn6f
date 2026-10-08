@@ -257,7 +257,7 @@ void __noreturn sub_8130370()
 		v2 = *(*(v0 + oToolkit_JoypadPtr) + 4);
 		v3 = *(*(v0 + oToolkit_Unk2001c04_Ptr) + 5);
 		v4 = v1[12];
-		sub_811FA0C();
+		menu_moveCursorLeftRight_811FA0C();
 		if ( v5 != v1[12] )
 		{
 			v1[12] = v5;
@@ -1547,7 +1547,7 @@ void sub_8131210()
             goto LABEL_13;
 LABEL_10:
         v6 = v4[12];
-        v7 = sub_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 3, 1, v6);
+        v7 = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 3, 1, v6);
         if ( v6 != v7 )
         {
             v4[12] = v7;
@@ -2452,7 +2452,7 @@ int __fastcall sub_81320AC(int a1)
             return result;
         }
         v5 = *(v1 + 13);
-        result = sub_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 2), v3, 1, v5);
+        result = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 2), v3, 1, v5);
         if ( v5 != result )
             *(v1 + 13) = result;
     }
@@ -4400,7 +4400,7 @@ void __fastcall __noreturn sub_8133944(int a1)
     }
     sub_81347A4();
     if ( v4 )
-        *(v1 + 52) = sub_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
+        *(v1 + 52) = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
     sub_813471C();
 }
 
