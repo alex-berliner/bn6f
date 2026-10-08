@@ -1,4 +1,8 @@
 
+// symdb: Run an overworld NPC's current state (init, standard, or in a chatbox).
+// symdb: (r5 = NPC) -> r0 = CurState (byte offset), r7 = jt_809E580[CurState]; calls it; everything else
+// symdb: passes through
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_dispatch_809E570.yaml
 	thumb_func_start npc_dispatch_809E570
 npc_dispatch_809E570: // (self: * OverworldNPCObject $r5) -> ()
 	push {lr}
@@ -17,6 +21,13 @@ off_809E58C:
 	.word jt_809E580
 	thumb_func_end npc_dispatch_809E570
 
+// symdb: NPC state 0: set up a freshly spawned NPC and run the standard state once.
+// symdb: (r5 = NPC) -> setNPCScript_809F506(UnkFlags_60, the script pointer its spawner left there);
+// symdb: clears the per-NPC fields (hidden pieces, movement direction, palette, flags, interaction areas,
+// symdb: centre offsets); NPCSprite/AnimationSelect (and their Update copies) = 0xFF; CurState =
+// symdb: standard; CollisionRadius 4, ZReach 8; sprite_load(0x80, 0x1C, 0xA0), sprite_loadAnimationData,
+// symdb: npc_standard_809E5E2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_init_809E590.yaml
 	thumb_local_start
 npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 	push {lr}
@@ -69,6 +80,15 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 	pop {pc}
 	thumb_func_end npc_init_809E590
 
+// symdb: NPC state 4, every frame: run the script and current action, then update the sprite, interaction areas and layer.
+// symdb: (r5 = NPC) -> if ChatTriggered: sub_809F5FC; else npc_runPrimaryScript_809ebdc,
+// symdb: NPCCurActionJumptable[CurAction], sprite_setFlip(mirrored), on a new NPCSprite:
+// symdb: sprite_load(0x80, category, sprite) + shadow mode (UnkFlags_60 0x80/0x100), on a new
+// symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
+// symdb: on new hidden pieces, copy the shown values to the Update fields,
+// symdb: npc_createInteractionAreas_809F526, layer = LayerPriorityOverride or
+// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_standard_809E5E2.yaml
 	thumb_local_start
 npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
 	push {lr}
