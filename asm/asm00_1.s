@@ -2786,8 +2786,8 @@ off_8004678:
 	.word off_80045BC
 	thumb_func_end TryUpdateEachOverworldNPCObject_800461E
 
-	thumb_func_start npc_init_800467C
-npc_init_800467C:
+	thumb_func_start npc_drawSprites_800467C
+npc_drawSprites_800467C:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2872,7 +2872,7 @@ off_80046F0:
 	.word sprite_projectAndCull+1
 off_80046F4:
 	.word sprite_queueFramePieces+1
-	thumb_func_end npc_init_800467C
+	thumb_func_end npc_drawSprites_800467C
 
 	thumb_local_start
 sub_80046F8:
@@ -4386,7 +4386,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4409,7 +4409,7 @@ battle_init_80052D8: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4494,7 +4494,7 @@ sub_800536E: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4544,7 +4544,7 @@ sub_80053E4: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4597,7 +4597,7 @@ loc_8005474:
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4682,7 +4682,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4721,7 +4721,7 @@ sub_80055CE: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4760,7 +4760,7 @@ sub_8005642: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4800,7 +4800,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4839,7 +4839,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4878,7 +4878,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4917,7 +4917,7 @@ sub_8005814: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
@@ -4941,7 +4941,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934

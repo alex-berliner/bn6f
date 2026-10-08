@@ -17314,7 +17314,7 @@ sub_8138848:
 	bl sub_800286C
 	bl sub_8003BF4
 	bl sub_8003E98
-	bl npc_init_800467C
+	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
 	bl sub_8004934
