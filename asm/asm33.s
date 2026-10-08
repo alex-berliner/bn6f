@@ -9586,7 +9586,8 @@ loc_812802C:
 	ldr r3, dword_81280CC // =0x6004320 
 	add r3, r3, r7
 	mov r4, #8
-	.word 0x4E152501
+	mov r5, #1
+	ldr r6, off_81280BC // =dword_86A5D60
 	mov r7, #0
 	bl renderTextGfx_8045F8C
 	pop {r3-r7}
