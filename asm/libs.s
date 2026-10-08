@@ -4914,22 +4914,31 @@ sub_8146474:
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
 	cmp r0, #2
-	bhi byte_81464A0
+	bhi loc_81464A0
 	mov r0, #7
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
 	bl sub_81461B0
 	mov r0, #7
-	b byte_81464AE
+	b loc_81464AE
 	.balign 4, 0
 off_814649C:
 	.word eStruct200FE00
-byte_81464A0:
-	.byte 0x0, 0x2A, 0x2, 0xD0, 0x1, 0x20, 0xC8, 0x72, 0x0, 0xE0, 0xCB
-	.byte 0x72, 0x0, 0x20
-byte_81464AE:
-	.byte 0x2, 0xBC, 0x8, 0x47, 0x0, 0x0
+loc_81464A0:
+	cmp r2, #0
+	beq loc_81464AA
+	mov r0, #1
+	strb r0, [r1,#0xb]
+	b loc_81464AC
+loc_81464AA:
+	strb r3, [r1,#0xb]
+loc_81464AC:
+	mov r0, #0
+loc_81464AE:
+	pop {r1}
+	bx r1
+	.balign 4, 0
 	thumb_func_end sub_8146474
 
 	thumb_local_start
@@ -5005,25 +5014,42 @@ off_8146520:
 	.word jpt_8146518
 jpt_8146518:
 	// jump table for switch statement
-	.word byte_8146540
-	.word byte_8146548
-	.word byte_8146552
-	.word byte_8146552
-	.word byte_8146558
-	.word byte_8146558
-	.word byte_814655E
-byte_8146540:
-	.byte 0x3, 0x20, 0xD0, 0x71, 0x9, 0x20, 0xD, 0xE0
-byte_8146548:
-	.byte 0x2, 0x20, 0xD0, 0x71, 0x1, 0x20, 0x50, 0x83, 0x9, 0xE0
-byte_8146552:
-	.byte 0x2, 0x20, 0xD0, 0x71, 0x6, 0xE0
-byte_8146558:
-	.byte 0x28, 0x20, 0x50, 0x83, 0x3, 0xE0
-byte_814655E:
-	.byte 0x28, 0x20, 0x50, 0x83, 0xA, 0x20, 0x10, 0x71
+	.word loc_8146540
+	.word loc_8146548
+	.word loc_8146552
+	.word loc_8146552
+	.word loc_8146558
+	.word loc_8146558
+	.word loc_814655E
+loc_8146540:
+	mov r0, #3
+	strb r0, [r2,#7]
+	mov r0, #9
+	b loc_8146564
+loc_8146548:
+	mov r0, #2
+	strb r0, [r2,#7]
+	mov r0, #1
+	strh r0, [r2,#0x1a]
+	b def_8146518
+loc_8146552:
+	mov r0, #2
+	strb r0, [r2,#7]
+	b def_8146518
+loc_8146558:
+	mov r0, #0x28
+	strh r0, [r2,#0x1a]
+	b def_8146518
+loc_814655E:
+	mov r0, #0x28
+	strh r0, [r2,#0x1a]
+	mov r0, #0xa
+loc_8146564:
+	strb r0, [r2,#4]
 def_8146518:
-	.byte 0x1, 0xBC, 0x0, 0x47, 0x0, 0x0
+	pop {r0}
+	bx r0
+	.balign 4, 0
 	thumb_func_end sub_81464FC
 
 	thumb_func_start sub_814656C
@@ -21178,7 +21204,8 @@ sub_814E248:
 	ldr r0, off_814E25C // =Channel1Sweepregister_NR10_ 
 	add r0, r0, r3
 	bl loc_814E0D2
-	.word 0x47607003
+	strb r3, [r0]
+	bx r12
 	.balign 4, 0
 off_814E25C:
 	.word Channel1Sweepregister_NR10_

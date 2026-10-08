@@ -1953,7 +1953,7 @@ loc_812D1D4::
 	cmp r0, #8
 	bge locret_812D1F4
 	bl sub_812D8C8
-	.byte 0x7, 0xE0
+	b locret_812D1F4
 loc_812D1E4::
 	cmp r0, #0x10
 	beq locret_812D1F4
