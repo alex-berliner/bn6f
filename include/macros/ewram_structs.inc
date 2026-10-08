@@ -56,7 +56,7 @@ b = {-0xfe,0xfe}
 a = {-0xfe,0xfe}
 -0xfe -> -0x7f
 
-void __fastcall sub_8030B1E(int a1, int a2)
+void __fastcall findFirstEntryWithId_8030B1E(int a1, int a2)
 {
   int v2; // r5
   int lowerBound; // r2

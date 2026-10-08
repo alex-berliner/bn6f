@@ -1,5 +1,5 @@
 // 0x809f526
-int __usercall sub_809F526@<R0>(OverworldNPCObject *obj@<R5>)
+int __usercall npc_createInteractionAreas_809F526@<R0>(OverworldNPCObject *obj@<R5>)
 {
     int v1; // r7
     int v2; // r0

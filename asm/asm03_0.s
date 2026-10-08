@@ -21399,8 +21399,8 @@ loc_8030622:
 	b loc_8030600
 	thumb_func_end sub_80305E4
 
-	thumb_func_start sub_8030628
-sub_8030628:
+	thumb_func_start setBGTileIdsBlocks1And2_8030628
+setBGTileIdsBlocks1And2_8030628:
 	push {r0,r1}
 	mov r2, #1
 
@@ -21424,7 +21424,7 @@ loop_803062C:
 	ble loop_803062C
 
 	mov pc, lr
-	thumb_func_end sub_8030628
+	thumb_func_end setBGTileIdsBlocks1And2_8030628
 
 	thumb_local_start
 sub_8030646:
@@ -22106,7 +22106,7 @@ sub_8030B0C:
 	thumb_func_end sub_8030B0C
 
 	thumb_local_start
-sub_8030B1E:
+findFirstEntryWithId_8030B1E:
 	push {lr}
 	ldrh r2, [r5,#oUnk_Ex2011a20_Unk_04]
 	cmp r2, #0
@@ -22166,7 +22166,7 @@ sub_8030B1E:
 	.align 1, 0
 	mov r2, #NULL
 	pop {pc}
-	thumb_func_end sub_8030B1E
+	thumb_func_end findFirstEntryWithId_8030B1E
 
 	thumb_func_start checkCollision_8030b6a
 checkCollision_8030b6a:
@@ -22199,7 +22199,7 @@ loc_8030B98: .align 1, 0
 	cmp r2, r1
 	beq loc_8030C0E
 	ldrh r1, [r2]
-	bl sub_8030B1E
+	bl findFirstEntryWithId_8030B1E
 	cmp r2, #0
 	bne loc_8030BB0
 loc_8030BA8: .align 1, 0
@@ -23636,8 +23636,8 @@ checkZCoordModifiers_8031612:
 	ldr r5, off_8031780 // =dword_2011A20
 	ldr r2, off_8031688 // =dword_200F3D0 
 	str r0, [r2]
-	bl sub_80316F8
-	bl sub_8030B1E
+	bl getOWObjectGridCellIndex_80316F8
+	bl findFirstEntryWithId_8030B1E
 	cmp r2, #0
 	beq loc_8031678
 	mov r3, #0
@@ -23727,7 +23727,7 @@ dword_8031690:
 	thumb_func_end checkZCoordModifiers_8031612
 
 	thumb_local_start
-sub_80316F8:
+getOWObjectGridCellIndex_80316F8:
 	mov r2, #oOWObjectCoords_X
 	ldrsh r1, [r0,r2]
 	mov r2, #oOWObjectCoords_Y
@@ -23770,7 +23770,7 @@ sub_80316F8:
 	// return value
 	ldrh r1, [r5,#oUnk_Ex2011a20_Unk_08]
 	mov pc, lr
-	thumb_func_end sub_80316F8
+	thumb_func_end getOWObjectGridCellIndex_80316F8
 
 	thumb_local_start
 sub_803172E:
@@ -24016,8 +24016,8 @@ checkLayerPriority_80318b0:
 	ldr r5, off_8031994 // =dword_2013940 
 	ldr r2, off_8031910 // =dword_200F3D0 
 	str r0, [r2]
-	bl sub_80316F8
-	bl sub_8030B1E
+	bl getOWObjectGridCellIndex_80316F8
+	bl findFirstEntryWithId_8030B1E
 	cmp r2, #0
 	beq loc_8031904
 	.balign 4, 0
@@ -24253,8 +24253,8 @@ checkCoordinateTrigger_8031a7a: // (coords: * ?) -> ?
 	ldr r5, off_8031B90 // =dword_2013920 
 	ldr r2, off_8031B08 // =dword_200F3D0 
 	str r0, [r2]
-	bl sub_80316F8
-	bl sub_8030B1E
+	bl getOWObjectGridCellIndex_80316F8
+	bl findFirstEntryWithId_8030B1E
 	cmp r2, #NULL
 	beq loc_8031AF6
 loc_8031A96:

@@ -147,7 +147,7 @@ loc_809E66E:
 	strh r0, [r5,#oOverworldNPCObject_NPCSpriteUpdate]
 	ldr r0, [r5,#oOverworldNPCObject_HiddenOAMPieces]
 	str r0, [r5,#oOverworldNPCObject_HiddenOAMPiecesUpdate]
-	bl sub_809F526
+	bl npc_createInteractionAreas_809F526
 	ldr r0, [r5,#oOverworldNPCObject_LayerPriorityOverride]
 	tst r0, r0
 	bne loc_809E690
@@ -875,7 +875,7 @@ npc_inChatbox_809EADA: // (self: * OverworldNPCObject $r5) -> ()
 	mov lr, pc
 	bx r7
 	bl sprite_update
-	bl sub_809F526
+	bl npc_createInteractionAreas_809F526
 	ldr r0, [r5,#oOverworldNPCObject_UnkFlags_60]
 	mov r1, #OW_NPC_UNK_FLAGS_60_0x40 
 	tst r0, r1
@@ -2882,7 +2882,7 @@ npc_disableScript0x19_809f51e:
 	thumb_func_end npc_disableScript0x19_809f51e
 
 	thumb_local_start
-sub_809F526:
+npc_createInteractionAreas_809F526:
 	push {r7,lr}
 
 	ldr r7, [r5, #oOverworldNPCObject_UnkFlags_60]
@@ -2962,7 +2962,7 @@ dword_809F5A8:
 	.word OW_OBJECT_INTERACTION_AREA_FLAG_0x400000
 dword_809F5AC:
 	.word (OW_OBJECT_INTERACTION_AREA_FLAG_0x200000 | OW_OBJECT_INTERACTION_AREA_FLAG_0x800000)
-	thumb_func_end sub_809F526
+	thumb_func_end npc_createInteractionAreas_809F526
 
 	thumb_local_start
 // movement/interaction related

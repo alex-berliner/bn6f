@@ -1487,292 +1487,292 @@ off_8032F88:: // Nullable<[*const [[*const Fn; 3]]>; INTERNET_NUM_GROUPS]
 	.word off_80334DC // [[*const Fn; 3]; UNDERNET_NUM_MAPS]
 	.word off_803350C // [[*const Fn; 3]; GRAVEYARD_NUM_MAPS]
 off_8032FE4:: // [[*const Fn; 3]; ACDC_TOWN_NUM_MAPS]
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8032FFC:: // [[*const Fn; 3]; CENTRAL_TOWN_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033038:: // [[*const Fn; 3]; CYBER_ACADEMY_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x05
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x06
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x07
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x08
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x09
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0A
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
 off_80330BC:: // [[*const Fn; 3]; SEASIDE_TOWN_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80330F8:: // [[*const Fn; 3]; GREEN_TOWN_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033134:: // [[*const Fn; 3]; SKY_TOWN_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033164:: // [[*const Fn; 3]; EXPO_SITE_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x05
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80331AC:: // [[*const Fn; 3]; ROBOT_CONTROL_COMP_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80331C4:: // [[*const Fn; 3]; AQUARIUM_COMP_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80331E8:: // [[*const Fn; 3]; JUDGETREE_COMP_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_803320C:: // [[*const Fn; 3]; MR_WEATHER_COMP_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033230:: // [[*const Fn; 3]; PAVILION_COMP_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_803326C:: // [[*const Fn; 3]; HOMEPAGES_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
@@ -1782,273 +1782,273 @@ off_803326C:: // [[*const Fn; 3]; HOMEPAGES_NUM_MAPS]
   .word NULL
 
   // 0x05
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x06
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 jt_big_80332C0:: // [[*const Fn; 3]; COMPS_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x05
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x06
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x07
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x08
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x09
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0A
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0B
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0C
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0D
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0E
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0F
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
 off_8033380:: // [[*const Fn; 3]; COMPS_2_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x04
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x05
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x06
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x07
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x08
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x09
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0A
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0B
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0C
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0D
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x0E
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
   
   // 0x0F
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033440:: // [[*const Fn; 3]; CENTRAL_AREA_NUM_MAPS]
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033464:: // [[*const Fn; 3]; SEASIDE_AREA_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_8033488:: // [[*const Fn; 3]; GREEN_AREA_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80334A0:: // [[*const Fn; 3]; UNDERGROUND_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80334B8:: // [[*const Fn; 3]; SKY_ACDC_AREA_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_80334DC:: // [[*const Fn; 3]; UNDERNET_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x03
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 off_803350C:: // [[*const Fn; 3]; GRAVEYARD_NUM_MAPS]
   // 0x00
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x01
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 
   // 0x02
-	.word sub_8030628+1
+	.word setBGTileIdsBlocks1And2_8030628+1
 	.word sub_8030808+1
 	.word sub_803086C+1
 pt_8033530:: // [*const [*const ([u32; 4]?, LZ77Compressed<?>)]; REAL_WORLD_NUM_GROUPS]

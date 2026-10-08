@@ -95,7 +95,7 @@ void npc_standard_809E5E2()
     *(v0 + 21) = *(v0 + 20);
     *(v0 + 62) = *(v0 + 60);
     *(v0 + 108) = *(v0 + 104);
-    sub_809F526();
+    npc_createInteractionAreas_809F526();
     v4 = *(v0 + 100);
     if ( !v4 )
         v4 = sub_8035694((v0 + 36));
@@ -479,7 +479,7 @@ void npc_inChatbox_809EADA()
 
     (*(&off_809EAFC + *(v0 + 9)))();
     sprite_update(v0);
-    sub_809F526();
+    npc_createInteractionAreas_809F526();
     if ( *(v0 + 96) & 0x40 )
         sub_809F922();
 }

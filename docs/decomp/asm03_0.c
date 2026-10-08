@@ -14362,7 +14362,7 @@ int sub_80305E4() { // could not decompile
 }
 
 // 0x8030628
-void __fastcall sub_8030628(int a1, int a2, int a3, int a4)
+void __fastcall setBGTileIdsBlocks1And2_8030628(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r10
@@ -14812,7 +14812,7 @@ signed int __fastcall sub_8030B0C(_DWORD *a1)
 
 
 // 0x8030b1e
-void __fastcall sub_8030B1E(int a1, int a2)
+void __fastcall findFirstEntryWithId_8030B1E(int a1, int a2)
 {
     int v2; // r5
     int v3; // r2
@@ -14877,7 +14877,7 @@ LABEL_2:
     dword_2011D20 = &word_2011D28;
     while ( v2 != dword_2011D24 )
     {
-        sub_8030B1E(a1, *v2);
+        findFirstEntryWithId_8030B1E(a1, *v2);
         if ( v4 )
         {
             while ( v3 == *v4 )
@@ -15708,8 +15708,8 @@ int __fastcall checkZCoordModifiers_8031612(int a1)
     int result; // r0
 
     dword_200F3D0 = a1;
-    v1 = sub_80316F8(a1);
-    sub_8030B1E(v1, v2);
+    v1 = getOWObjectGridCellIndex_80316F8(a1);
+    findFirstEntryWithId_8030B1E(v1, v2);
     if ( !v5 )
         goto LABEL_16;
     v6 = 0;
@@ -15730,7 +15730,7 @@ LABEL_16:
 
 
 // 0x80316f8
-int __fastcall sub_80316F8(int result)
+int __fastcall getOWObjectGridCellIndex_80316F8(int result)
 {
     int v1; // r5
     int v2; // r2
@@ -15940,8 +15940,8 @@ int __fastcall checkLayerPriority_80318b0(int a1)
     int v8; // r6
 
     dword_200F3D0 = a1;
-    v1 = sub_80316F8(a1);
-    sub_8030B1E(v1, v2);
+    v1 = getOWObjectGridCellIndex_80316F8(a1);
+    findFirstEntryWithId_8030B1E(v1, v2);
     if ( v5 )
     {
         while ( v4 == *v5 )
@@ -16127,8 +16127,8 @@ signed int __fastcall checkCoordinateTrigger_8031a7a(int a1)
     unsigned __int16 *v16; // [sp-4h] [bp-24h]
 
     dword_200F3D0 = a1;
-    v1 = sub_80316F8(a1);
-    sub_8030B1E(v1, v2);
+    v1 = getOWObjectGridCellIndex_80316F8(a1);
+    findFirstEntryWithId_8030B1E(v1, v2);
     if ( v5 )
     {
         while ( v4 == *v5 )
