@@ -21303,8 +21303,8 @@ off_803057C:
 	.word eDecompBuffer2013A00
 	thumb_func_end sub_8030540
 
-	thumb_func_start sub_8030580
-sub_8030580:
+	thumb_func_start scrollBGTileMapToCamera_8030580
+scrollBGTileMapToCamera_8030580:
 	push {r4-r7,lr}
 	mov r1, r8
 	mov r2, r9
@@ -21326,13 +21326,13 @@ sub_8030580:
 	bgt loc_80305B2
 	sub r2, r2, r0
 	push {r0,r1}
-	bl sub_803066E
+	bl drawBGTileMapLeftColumns_803066E
 	pop {r0,r1}
 	b loc_80305BC
 loc_80305B2:
 	sub r2, r0, r2
 	push {r0,r1}
-	bl sub_80306C8
+	bl drawBGTileMapRightColumns_80306C8
 	pop {r0,r1}
 loc_80305BC:
 	mov r4, #0x6 // (word_200BE76 - 0x200be70)
@@ -21341,11 +21341,11 @@ loc_80305BC:
 	beq loc_80305D4
 	bgt loc_80305CE
 	sub r2, r2, r1
-	bl sub_8030722
+	bl drawBGTileMapTopRows_8030722
 	b loc_80305D4
 loc_80305CE:
 	sub r2, r1, r2
-	bl sub_803077C
+	bl drawBGTileMapBottomRows_803077C
 loc_80305D4:
 	pop {r1-r3}
 	mov r8, r1
@@ -21355,10 +21355,10 @@ loc_80305D4:
 	.balign 4, 0
 off_80305E0:
 	.word eMapTilesState200be70
-	thumb_func_end sub_8030580
+	thumb_func_end scrollBGTileMapToCamera_8030580
 
 	thumb_local_start
-sub_80305E4:
+getMapCellTileIds_80305E4:
 	cmp r0, #0
 	bge loc_80305EA
 	b loc_8030622
@@ -21400,7 +21400,7 @@ loc_8030622:
 	mov r0, #0
 	mov r1, #0
 	b loc_8030600
-	thumb_func_end sub_80305E4
+	thumb_func_end getMapCellTileIds_80305E4
 
 // symdb: Write two tile ids into BG tile-id blocks 1 and 2 at the same (column, row).
 // symdb: (r0 = tile id for block 1, r1 = tile id for block 2, r3 = column, r4 = row, r10 = toolkit) ->
@@ -21463,7 +21463,7 @@ sub_803065A:
 	thumb_func_end sub_803065A
 
 	thumb_local_start
-sub_803066E:
+drawBGTileMapLeftColumns_803066E:
 	push {lr}
 	strh r0, [r5,#4]
 	cmp r2, #5
@@ -21487,7 +21487,7 @@ loc_8030682:
 	lsr r7, r7, #1
 	add r0, r0, r6
 	add r1, r1, r7
-	bl sub_80305E4
+	bl getMapCellTileIds_80305E4
 	mov r4, r9
 	mov r3, r8
 	sub r3, #0x20 
@@ -21511,10 +21511,10 @@ loc_8030682:
 	bgt loc_803067E
 locret_80306C6:
 	pop {pc}
-	thumb_func_end sub_803066E
+	thumb_func_end drawBGTileMapLeftColumns_803066E
 
 	thumb_local_start
-sub_80306C8:
+drawBGTileMapRightColumns_80306C8:
 	push {lr}
 	strh r0, [r5,#4]
 	cmp r2, #5
@@ -21538,7 +21538,7 @@ loc_80306DC:
 	lsr r7, r7, #1
 	add r0, r0, r6
 	add r1, r1, r7
-	bl sub_80305E4
+	bl getMapCellTileIds_80305E4
 	mov r4, r9
 	mov r3, r8
 	add r3, #0x1e
@@ -21562,10 +21562,10 @@ loc_80306DC:
 	bgt loc_80306D8
 locret_8030720:
 	pop {pc}
-	thumb_func_end sub_80306C8
+	thumb_func_end drawBGTileMapRightColumns_80306C8
 
 	thumb_local_start
-sub_8030722:
+drawBGTileMapTopRows_8030722:
 	push {lr}
 	strh r1, [r5,#6]
 	cmp r2, #5
@@ -21589,7 +21589,7 @@ loc_8030736:
 	lsr r7, r7, #1
 	add r0, r0, r6
 	add r1, r1, r7
-	bl sub_80305E4
+	bl getMapCellTileIds_80305E4
 	mov r4, r9
 	mov r3, r8
 	sub r4, #0x20 
@@ -21613,10 +21613,10 @@ loc_8030736:
 	bgt loc_8030732
 locret_803077A:
 	pop {pc}
-	thumb_func_end sub_8030722
+	thumb_func_end drawBGTileMapTopRows_8030722
 
 	thumb_local_start
-sub_803077C:
+drawBGTileMapBottomRows_803077C:
 	push {lr}
 	strh r1, [r5,#6]
 	cmp r2, #5
@@ -21640,7 +21640,7 @@ loc_8030790:
 	lsr r7, r7, #1
 	add r0, r0, r6
 	add r1, r1, r7
-	bl sub_80305E4
+	bl getMapCellTileIds_80305E4
 	mov r4, r9
 	mov r3, r8
 	add r4, #0x14
@@ -21665,7 +21665,7 @@ loc_8030790:
 locret_80307D4:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803077C
+	thumb_func_end drawBGTileMapBottomRows_803077C
 
 	thumb_func_start sub_80307D8
 sub_80307D8:
@@ -21726,7 +21726,7 @@ loc_8030824:
 	mov r8, r3
 	mov r9, r4
 loc_803083E:
-	bl sub_80305E4
+	bl getMapCellTileIds_80305E4
 	mov r3, r8
 	mov r4, r9
 	mov r6, #0x1f

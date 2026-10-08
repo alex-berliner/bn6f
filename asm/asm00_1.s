@@ -4398,7 +4398,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl sub_8003AFA
 	bl checkOWObjectInteractions_80037f4
 	bl camera_802FFF4
-	bl sub_8030580
+	bl scrollBGTileMapToCamera_8030580
 	bl sub_80027B4
 	bl sub_800286C
 	bl sub_8003BF4

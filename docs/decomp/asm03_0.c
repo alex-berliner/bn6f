@@ -14271,7 +14271,7 @@ int __fastcall sub_8030540(_DWORD *a1)
 
 
 // 0x8030580
-int sub_8030580()
+int scrollBGTileMapToCamera_8030580()
 {
     int v0; // r10
     int v1; // r3
@@ -14289,13 +14289,13 @@ int sub_8030580()
         {
             v4 = *(v1 + 4) >> 3;
             v5 = *(v1 + 6) >> 3;
-            sub_803066E(result, v3, word_200BE74 - result);
+            drawBGTileMapLeftColumns_803066E(result, v3, word_200BE74 - result);
         }
         else
         {
             v4 = *(v1 + 4) >> 3;
             v5 = *(v1 + 6) >> 3;
-            sub_80306C8(result, v3, result - word_200BE74);
+            drawBGTileMapRightColumns_80306C8(result, v3, result - word_200BE74);
         }
         result = v4;
         v3 = v5;
@@ -14303,19 +14303,19 @@ int sub_8030580()
     if ( v3 != word_200BE76 )
     {
         if ( v3 <= word_200BE76 )
-            result = sub_8030722(result, v3, word_200BE76 - v3);
+            result = drawBGTileMapTopRows_8030722(result, v3, word_200BE76 - v3);
         else
-            result = sub_803077C(result, v3, v3 - word_200BE76);
+            result = drawBGTileMapBottomRows_803077C(result, v3, v3 - word_200BE76);
     }
     return result;
 }
 
 
 // 0x80305e4
-int sub_80305E4() { // could not decompile
+int getMapCellTileIds_80305E4() { // could not decompile
     asm(".func\
     .thumb_func\
-    sub_80305E4:\
+    getMapCellTileIds_80305E4:\
         cmp r0, #0\
         bge loc_80305EA\
         b loc_8030622\
@@ -14357,7 +14357,7 @@ int sub_80305E4() { // could not decompile
         mov r0, #0\
         mov r1, #0\
         b loc_8030600\
-    .endfunc // sub_80305E4"
+    .endfunc // getMapCellTileIds_80305E4"
     );
 }
 
@@ -14398,7 +14398,7 @@ __int64 __fastcall sub_803065A(__int64 result, int a2, int a3)
 
 
 // 0x803066e
-int __fastcall sub_803066E(int result, int a2, int a3)
+int __fastcall drawBGTileMapLeftColumns_803066E(int result, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     signed int v4; // r7
@@ -14420,7 +14420,7 @@ int __fastcall sub_803066E(int result, int a2, int a3)
             v8 = a3;
             v5 = result;
             v6 = a2;
-            v7 = sub_80305E4(result - 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
+            v7 = getMapCellTileIds_80305E4(result - 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
             (*(v3 + 6))(v7);
             a3 = v8;
             result = v5;
@@ -14438,7 +14438,7 @@ int __fastcall sub_803066E(int result, int a2, int a3)
 
 
 // 0x80306c8
-int __fastcall sub_80306C8(int result, int a2, int a3)
+int __fastcall drawBGTileMapRightColumns_80306C8(int result, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     signed int v4; // r7
@@ -14460,7 +14460,7 @@ int __fastcall sub_80306C8(int result, int a2, int a3)
             v8 = a3;
             v5 = result;
             v6 = a2;
-            v7 = sub_80305E4(result + 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
+            v7 = getMapCellTileIds_80305E4(result + 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
             (*(v3 + 6))(v7);
             a3 = v8;
             result = v5;
@@ -14478,7 +14478,7 @@ int __fastcall sub_80306C8(int result, int a2, int a3)
 
 
 // 0x8030722
-int __fastcall sub_8030722(int result, int a2, int a3)
+int __fastcall drawBGTileMapTopRows_8030722(int result, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     signed int v4; // r7
@@ -14500,7 +14500,7 @@ int __fastcall sub_8030722(int result, int a2, int a3)
             v8 = a3;
             v5 = result;
             v6 = a2;
-            v7 = sub_80305E4(result - 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
+            v7 = getMapCellTileIds_80305E4(result - 15 + (*v3 >> 1), a2 - 10 + (v3[1] >> 1));
             (*(v3 + 6))(v7);
             a3 = v8;
             a2 = v6;
@@ -14518,7 +14518,7 @@ int __fastcall sub_8030722(int result, int a2, int a3)
 
 
 // 0x803077c
-int __fastcall sub_803077C(int result, int a2, int a3)
+int __fastcall drawBGTileMapBottomRows_803077C(int result, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     signed int v4; // r7
@@ -14540,7 +14540,7 @@ int __fastcall sub_803077C(int result, int a2, int a3)
             v8 = a3;
             v5 = result;
             v6 = a2;
-            v7 = sub_80305E4(result - 15 + (*v3 >> 1), a2 + 10 + (v3[1] >> 1));
+            v7 = getMapCellTileIds_80305E4(result - 15 + (*v3 >> 1), a2 + 10 + (v3[1] >> 1));
             (*(v3 + 6))(v7);
             a3 = v8;
             a2 = v6;
@@ -14603,7 +14603,7 @@ int sub_8030808()
             v7 = result;
             v10 = v5;
             v8 = v3;
-            v9 = sub_80305E4(v3 - 15 + (*v0 >> 1), v4 - 10 + (v0[1] >> 1));
+            v9 = getMapCellTileIds_80305E4(v3 - 15 + (*v0 >> 1), v4 - 10 + (v0[1] >> 1));
             (*(v0 + 6))(v9);
             v3 = v8 + 1;
             v5 = v10;

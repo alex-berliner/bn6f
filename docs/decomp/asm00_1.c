@@ -2344,7 +2344,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     sub_8003AFA();
     checkOWObjectInteractions_80037f4();
     camera_802FFF4();
-    sub_8030580();
+    scrollBGTileMapToCamera_8030580();
     sub_80027B4();
     sub_800286C();
     sub_8003BF4();

@@ -77381,7 +77381,7 @@ void sub_80E6BA6()
     v1 = 0;
     while ( 1 )
     {
-        v2 = &dword_80E6BD4 + 2 * v1;
+        v2 = &paletteByParam1_80E6BD4 + 2 * v1;
         if ( *v2 == *(v0 + 4) )
             break;
         if ( ++v1 > 3 )

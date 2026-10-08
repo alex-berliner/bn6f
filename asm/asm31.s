@@ -99271,7 +99271,7 @@ sub_80E6BA6:
 loc_80E6BAA:
 	mov r0, r3
 	lsl r0, r0, #1
-	ldr r1, off_80E6BD0 // =dword_80E6BD4
+	ldr r1, off_80E6BD0 // =paletteByParam1_80E6BD4
 	add r1, r1, r0
 	ldrb r0, [r1,#1]
 	ldrb r1, [r1]
@@ -99291,8 +99291,8 @@ locret_80E6BCE:
 	pop {pc}
 	.balign 4, 0
 off_80E6BD0:
-	.word dword_80E6BD4
-dword_80E6BD4: // u8 [4][2]: (Param1, palette) pairs that sub_80E6BA6 looks up
+	.word paletteByParam1_80E6BD4
+paletteByParam1_80E6BD4: // u8 [4][2]: (Param1, palette) pairs that sub_80E6BA6 looks up
 	.byte 1, 2
 	.byte 2, 4
 	.byte 4, 6
