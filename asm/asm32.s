@@ -28835,6 +28835,9 @@ sub_811CC60:
 	mov pc, lr
 	thumb_func_end sub_811CC60
 
+// symdb: Return the word at r5 + 0xC.
+// symdb: (r5) -> r0 = [r5 + 0xC]
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811CC68.yaml
 	thumb_local_start
 sub_811CC68:
 	ldr r0, [r5,#0xc]
@@ -34220,6 +34223,10 @@ off_811FA08:
 	.word 0x100
 	thumb_func_end sub_811F91C
 
+// symdb: Menu cursor: move one entry left/right with the d-pad (keys 0x20/0x10), clamping or wrapping, with the cursor sound.
+// symdb: (r0 = pressed keys, r1 = entry count, r2 = mode: bit 0 wrap, bit 1 silent, r3 = index) -> r0 =
+// symdb: new index
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_moveCursorLeftRight_811FA0C.yaml
 	thumb_func_start menu_moveCursorLeftRight_811FA0C
 menu_moveCursorLeftRight_811FA0C:
 	push {r4-r7,lr}
@@ -34235,6 +34242,10 @@ menu_moveCursorLeftRight_811FA0C:
 	b menu_moveCursor_811FA36
 	thumb_func_end menu_moveCursorLeftRight_811FA0C
 
+// symdb: Menu cursor: move one entry up/down with the d-pad (keys 0x40/0x80), clamping or wrapping, with the cursor sound.
+// symdb: (r0 = pressed keys, r1 = entry count, r2 = mode: bit 0 wrap, bit 1 silent, r3 = index) -> r0 =
+// symdb: new index; C = V = 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_moveCursorUpDown_811FA22.yaml
 	thumb_func_start menu_moveCursorUpDown_811FA22
 menu_moveCursorUpDown_811FA22:
 	push {r4-r7,lr}
@@ -34247,6 +34258,9 @@ menu_moveCursorUpDown_811FA22:
 	str r2, [sp,#0xc]
 	mov r4, #2
 	bic r2, r4
+// symdb: Shared body of the menu cursor movers: entered with their frame on the stack; pops it and returns to their caller.
+// symdb: (r0 = keys, r1 = count, r2 = wrap, r3 = index; frame at sp) -> r0 = new index
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_moveCursor_811FA36.yaml
 menu_moveCursor_811FA36:
 	mov r4, r3
 	mov r6, #0
@@ -35431,6 +35445,10 @@ dword_81202B0:
 	.word 0x200
 	thumb_func_end sub_8120280
 
+// symdb: Expand a text string into pairs of font tile indices (two u16 arrays), offset by a base tile.
+// symdb: (r0 = string, r2/r3 = left/right tile arrays, r4 = base tile, r5 = slots) -> bytes < 0xE4
+// symdb: characters, 0xE4 widened, 0xE5 skipped, >= 0xE6 ends
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81202B4.yaml
 	thumb_func_start sub_81202B4
 sub_81202B4:
 	push {r4-r7,lr}

@@ -157,6 +157,10 @@ off_80003E0:
 	.word GeneralLCDStatus_STAT_LYC_
 	thumb_func_end main_pollGeneralLCDStatus_STAT_LYC_
 
+// symdb: Update the toolkit's Joypad struct from KeyStatus: held, newly pressed, auto-repeat, previous keys, per-key hold counters.
+// symdb: (r10 = toolkit) -> Joypad +0 held, +2 new, +4 repeat, +6 previous, +8..+0x11 hold counters,
+// symdb: +0x13 repeat timer; r2/r4-r7 as the original
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/main_updateJoypad_80003E4.yaml
 	thumb_local_start
 main_updateJoypad_80003E4:
 	mov r7, r10

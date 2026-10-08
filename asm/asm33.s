@@ -8912,6 +8912,10 @@ off_8127AC8:
 	.word dword_8127980
 	thumb_func_end sub_8127A1C
 
+// symdb: Email menu state 1 (HandleEmailMenu81279F8's table): run the sub-state handler (off_8127AF8 by byte 2), then the common updates.
+// symdb: (r5 = menu state) -> handler entered with r0 = handler, r1 = sub-state (sub_8127B94 reads r1);
+// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, sub_80465F8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127ACC.yaml
 	thumb_local_start
 sub_8127ACC:
 	push {lr}

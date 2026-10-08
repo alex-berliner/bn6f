@@ -20338,6 +20338,9 @@ loc_814D948:
 
 	thumb_func_start libSave_CopyToGamePak
 // (u8 *p, u8 *pGamePak, int size) -> void
+// symdb: Copy r2 bytes from r0 to r1 with Game Pak waitstate WS0 forced to 3; returns r3 = -1.
+// symdb: (r0 = source, r1 = destination, r2 = count) -> r3 = -1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/libSave_CopyToGamePak.yaml
 libSave_CopyToGamePak:
 	push {r4,r5,lr}
 	mov r5, r0

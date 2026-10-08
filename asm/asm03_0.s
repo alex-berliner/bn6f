@@ -3386,6 +3386,9 @@ dword_8027E18:
 	thumb_func_end sub_8027D78
 
 // (int a1) -> void*
+// symdb: Return the address of active-chip entry r0 (12 bytes per entry).
+// symdb: (r0 = slot) -> r0 = &activeChips[slot], r1 = activeChips
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getLocOfActiveChips_8027E1C.yaml
 	thumb_local_start
 getLocOfActiveChips_8027E1C:
 	mov r1, #0xc
@@ -24377,6 +24380,9 @@ dword_8031B78:
 	.word 0x16EF
 	thumb_func_end checkCoordinateTrigger_8031a7a
 
+// symdb: With r0 == 1, return byte 1 of the structure at [[dword_2013920] + 0x14]; otherwise 0.
+// symdb: (r0 = query) -> r0 = byte or 0; r5 = object table, r2 = structure (as the original)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031B7C.yaml
 	thumb_local_start
 sub_8031B7C:
 	ldr r5, off_8031B90 // =dword_2013920 
@@ -24506,6 +24512,9 @@ sub_8031C42:
 	pop {pc}
 	thumb_func_end sub_8031C42
 
+// symdb: Call sub_8031B7C with r0 = 1 and return its results.
+// symdb: () -> as sub_8031B7C(1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C5A.yaml
 	thumb_local_start
 sub_8031C5A:
 	push {lr}

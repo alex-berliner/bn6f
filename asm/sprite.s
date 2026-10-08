@@ -24,6 +24,10 @@ off_80026C0:
 	.word _sprite_loadAnimationData+1
 	thumb_func_end sprite_loadAnimationData_spritePtrProvidedDirectly
 
+// symdb: Run _sprite_update on the object's sprite struct (header + (byte 2 & 0xF0)).
+// symdb: (r5 = object header) -> during the call r3 = sprite offset, r4 = _sprite_update, r5 = sprite;
+// symdb: r4/r5 restored
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_update.yaml
 	thumb_func_start sprite_update
 sprite_update:
 	push {r4,r5,lr}
@@ -251,6 +255,11 @@ byte_8002810:
 	.byte 0xFF, 0x2, 0x0, 0x0, 0xFF, 0x2, 0x0, 0x0
 	thumb_func_end sub_80027F4
 
+// symdb: Copy the sprite's 16-colour palette into its slot of the sprite palette buffer byte_3001550 (slot = high nibble of byte 0x15), applying the colour effect in halfword 6.
+// symdb: (r5 = sprite) -> source = field 0x34, or [[0x1C] + 4] + 4 + [0x18]; skip (byte 4 + byte 5) *
+// symdb: 0x20 bytes of tiles; copy 0x20 bytes to byte_3001550 + slot * 0x20; halfword 6 != 0:
+// symdb: palette_addOrSubtractColor(colour = bits 0-14, add/subtract = bit 15, 0x20 bytes)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_loadPalette_8002818.yaml
 	thumb_func_start sprite_loadPalette_8002818
 sprite_loadPalette_8002818:
 	push {lr}
@@ -355,9 +364,9 @@ off_80028BC:
 	.word 0x388
 	thumb_func_end sprite_resetObjVars_800289C
 
-// symdb: Record the low byte of dword_200F340 in slot r0 of byte_200F389 (called after each sprite group is queued).
+// symdb: Record the sprite palette count (dword_200F340) in slot r0 of byte_200F389, after each sprite group is queued.
 // symdb: (r0 = slot) -> byte_200F389[r0] = (u8)dword_200F340; r1 = dword_200F340, r2 = &byte_200F389
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80028C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80028C0.yaml
 	thumb_func_start sub_80028C0
 sub_80028C0:
 	ldr r1, off_80028CC // =dword_200F340
@@ -1099,6 +1108,9 @@ locret_8002D7E:
 	thumb_func_end sprite_makeUnscalable
 
 // (int pallete) -> void
+// symdb: Store r0 (palette index) in byte 4 of the object's sprite struct.
+// symdb: (r0 = palette, r5 = object header) -> sprite byte 4 = r0; r3 = sprite; flags of the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setPalette.yaml
 	thumb_func_start sprite_setPalette
 sprite_setPalette:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1212,6 +1224,10 @@ sub_8002E04:
 	mov pc, lr
 	thumb_func_end sub_8002E04
 
+// symdb: Set the sprite's OAM priority: bits 2-3 of sprite byte 0x15 = r0 (0-3).
+// symdb: (r0 = priority, r5 = object header) -> byte 0x15 = (byte & ~0xC) | r0 << 2; r0 = r0 << 2, r1 =
+// symdb: new byte, r2 = 0xC, r3 = sprite
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setPriority_8002E14.yaml
 	thumb_func_start sprite_setPriority_8002E14
 sprite_setPriority_8002E14:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1437,6 +1453,10 @@ sub_8002F3E:
 	.hword 0x2000
 	thumb_func_end sub_8002F3E
 
+// symdb: Set the sprite's flip bits (mask 0x30) in sprite bytes 0x13 and 0x16 from r0 (NPCs pass 1 when mirrored).
+// symdb: (r0 = flip, r5 = object header) -> byte 0x13 bits 4-5 = r0 << 4, byte 0x16 bits 4-5 copied from
+// symdb: it; r0 = 0x30, r1 = byte 0x16, r2 = flip bits, r3 = sprite
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setFlip.yaml
 	thumb_func_start sprite_setFlip
 sprite_setFlip:
 	ldrb r3, [r5,#oObjectHeader_SpriteOffset]

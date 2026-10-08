@@ -1240,6 +1240,9 @@ dword_8003890:
 
 	thumb_local_start
 // check if two objects' interaction areas overlap?
+// symdb: Test whether two overworld interaction areas overlap: circles on X/Y, then the lower one's Z reach must reach the other.
+// symdb: (r0 = area A, r1 = area B; halfwords x, y, z, radius, z reach) -> r0 = 1 overlap, 0 not
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/checkOWObjectInteractionAreasOverlap_8003894.yaml
 checkOWObjectInteractionAreasOverlap_8003894:
 	push {lr}
 	// r2 = aX - bX
@@ -6717,6 +6720,9 @@ off_8006478:
 	.word eScreenFade
 	thumb_func_end sub_8006444
 
+// symdb: Step an effect counter (+6 by +4, up to the limit at +0xA, clearing byte 3 when reached) and apply its grey shade through two sub_8002378 calls.
+// symdb: (r5 = effect work area)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800647C.yaml
 	thumb_local_start
 sub_800647C:
 	push {r4-r7,lr}
@@ -12985,6 +12991,9 @@ locret_8009336:
 	pop {pc}
 	thumb_func_end sub_8009314
 
+// symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (sub_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
+// symdb: (r5 = battle state)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009338.yaml
 	thumb_local_start
 sub_8009338:
 	push {lr}
@@ -15232,6 +15241,9 @@ battle_clearFlags:
 	thumb_func_start battle_getFlags
 // 0x2 - cust gauge full
 // 0x4 - timestop
+// symdb: Return the halfword at oBattleState_Unk_32 of the battle state.
+// symdb: () -> r0 = battle state halfword 0x32
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getFlags.yaml
 battle_getFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]

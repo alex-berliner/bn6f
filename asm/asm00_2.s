@@ -27129,6 +27129,9 @@ dword_801CA7C:
 	.word 0x30200
 	thumb_func_end sub_801CA34
 
+// symdb: Draw up to 4 two-row strips of 9 tiles with CopyBackgroundTiles, at columns 0x1E - [table at r5 + 0x28] (0xFF ends the table).
+// symdb: (r5 = struct with a halfword column table at +0x28)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CA80.yaml
 	thumb_local_start
 sub_801CA80:
 	push {r4-r7,lr}

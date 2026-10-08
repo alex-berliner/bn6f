@@ -1173,6 +1173,9 @@ off_8000BFC:
 	thumb_func_end unused_8000BEC
 
 // converts a number to BCD for printing?
+// symdb: Convert r0 to 8-digit packed BCD; values of 100000000 and above give 0x99999999.
+// symdb: (r0 = value) -> r0 = r2 = BCD (in range); r0 = 0x99999999, r1 = 99999999 otherwise
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/memory_bcdConvert.yaml
 	thumb_func_start memory_bcdConvert
 memory_bcdConvert: 
 	push {r4,r7,lr}
@@ -3890,6 +3893,9 @@ off_8001D54:
 	.word sub_80021CE+1
 	thumb_func_end sub_8001CFC
 
+// symdb: Copy 8 words (0x20 bytes) from r4 to r5.
+// symdb: (r4 = source, r5 = destination) -> r0 = last word
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8001D64.yaml
 	thumb_local_start
 sub_8001D64:
 	ldr r0, [r4]
@@ -4728,6 +4734,10 @@ off_8002374:
 	.word 0x108
 	thumb_func_end zeroFill_e20097A0
 
+// symdb: Fill slot r3 of the software palette table ePalette20097a0 (only when r1 and r2 are nonzero); its flag byte says whether it was filled.
+// symdb: (r0 byte, r1 = palette data, r2 = colour count, r3 = slot, r4 word) -> slot fields 1/4/2/8 =
+// symdb: r0/r1/r2/r4; byte 0 = r3 = filled
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002378.yaml
 	thumb_func_start sub_8002378
 sub_8002378:
 	push {r5-r7,lr}

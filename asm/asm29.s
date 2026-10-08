@@ -1,4 +1,7 @@
 
+// symdb: Overworld map object dispatcher: find the object's data in OverworldMapObjects (by ObjectID) and call the handler selected by byte 8.
+// symdb: (r5 = OverworldMapObject) -> r7 = data block; handler's results returned
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ho_80A4984.yaml
 	thumb_func_start ho_80A4984
 ho_80A4984:
 	push {lr}

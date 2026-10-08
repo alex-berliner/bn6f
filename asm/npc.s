@@ -87,7 +87,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
 // symdb: on new hidden pieces, copy the shown values to the Update fields,
 // symdb: npc_createInteractionAreas_809F526, layer = LayerPriorityOverride or
-// symdb: applyLayerEffectToOWObject_8035694, sprite_setPriority_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
+// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_standard_809E5E2.yaml
 	thumb_local_start
 npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
@@ -867,6 +867,10 @@ npc_runNativeCallback_809ea74:
 	thumb_local_start
 // wait for the value of a cutscene var to equal the given value
 // set in a npc command earlier
+// symdb: NPC action: wait until cutscene variable CutsceneVarIndexToWaitFor equals CutsceneVarValueToWaitFor, then let the primary script continue; run the secondary script every frame.
+// symdb: (r5 = NPC, r10 = toolkit) -> byte [CutsceneStatePtr + index] == value:
+// symdb: npc_enableScript0x19_809f516; then npc_runSecondaryScriptMaybe_809ebf8; r4/r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_waitCutsceneVar_809ea82.yaml
 npc_waitCutsceneVar_809ea82:
 	push {r4,r7,lr}
 	mov r4, r10
@@ -1092,6 +1096,11 @@ npc_runPrimaryScript_809ebdc:
 	pop {pc}
 	thumb_func_end npc_runPrimaryScript_809ebdc
 
+// symdb: Run the NPC's secondary script (UnkNPCScriptPtr_5c) command by command until one stops it (TerminateScript_1f); once stopped, count its timer down instead.
+// symdb: (r5 = NPC) -> each command from NPCCommandsJumptable entered with r0 = opcode * 4, r6 = script,
+// symdb: r7 = handler; the r6 it returns is stored back; stopped: npc_decrementSecondaryTimer_809ec1c; no
+// symdb: script: nothing
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_runSecondaryScriptMaybe_809ebf8.yaml
 	thumb_local_start
 npc_runSecondaryScriptMaybe_809ebf8:
 	push {lr}
@@ -1229,6 +1238,9 @@ NPCCommand_end:
 // 0x02 destination1
 // jump to another script
 // destination1 - script to jump to
+// symdb: NPC script command 0x02: continue the script at the 32-bit address operand.
+// symdb: (r6 = script) -> r6 = ReadNPCScriptWord(r6 + 1); flags as adds r6, r0, #0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump.yaml
 NPCCommand_jump:
 	push {lr}
 	add r0, r6, #1
@@ -1436,6 +1448,10 @@ NPCCommand_set_npc_palette_index:
 // 0x10 byte1
 // wait a given number of frames for this npc's script
 // byte1 - number of frames to wait
+// symdb: NPC script command 0x10: stop moving and wait byte 1 frames, suspending the primary script.
+// symdb: (r5 = NPC, r6 = script) -> CurAction = 0 (stop), MovementFlag_0a/Unk_0b = 0, Timer = byte 1,
+// symdb: npc_disableScript0x19_809f51e; r6 += 2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_pause.yaml
 NPCCommand_pause:
 	push {lr}
 	mov r0, #MOVEMENT_FLAG_STOP
@@ -2916,6 +2932,9 @@ setNPCScript_809F506: // (self: *mut OverworldNPCObject $r5, script: *const NPCS
 	pop {pc}
 	thumb_func_end setNPCScript_809F506
 
+// symdb: Let the NPC's primary script run again (TerminateScript_19 = 0).
+// symdb: (r5 = NPC) -> r0 = 0, flags of 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_enableScript0x19_809f516.yaml
 	thumb_local_start
 npc_enableScript0x19_809f516:
 	push {lr}
@@ -2924,6 +2943,9 @@ npc_enableScript0x19_809f516:
 	pop {pc}
 	thumb_func_end npc_enableScript0x19_809f516
 
+// symdb: Suspend the NPC's primary script (TerminateScript_19 = 1) while an action runs.
+// symdb: (r5 = NPC) -> r0 = 1, flags of 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_disableScript0x19_809f51e.yaml
 	thumb_local_start
 npc_disableScript0x19_809f51e:
 	push {lr}
@@ -3133,6 +3155,9 @@ ReadNPCScriptHalfword:
 	thumb_func_end ReadNPCScriptHalfword
 
 // (void* a1) -> int
+// symdb: Read a 32-bit little-endian word from an NPC script (operands are unaligned).
+// symdb: (r0 = address) -> r0 = word; r1/r2/r3 = bytes 0/1/2 shifted into place (as the original)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadNPCScriptWord.yaml
 	thumb_local_start
 ReadNPCScriptWord:
 	ldrb r1, [r0]
