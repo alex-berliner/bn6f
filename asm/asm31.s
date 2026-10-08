@@ -114933,13 +114933,13 @@ sub_80EE50C:
 	strb r0, [r5,#oBattleObject_PanelX]
 	strb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
-	thumb_func_end sub_80EE50C
 
 	bl object_updateCollisionPanels
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0x10
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 	pop {pc}
+	thumb_func_end sub_80EE50C
 	thumb_local_start
 sub_80EE532:
 	push {lr}
@@ -150584,9 +150584,9 @@ sub_8100070:
 	ldrb r1, [r0,#0x13]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl object_getClosestPanelMatchingRowFiltered
-	thumb_func_end sub_8100070
 
 	pop {pc}
+	thumb_func_end sub_8100070
 	thumb_local_start
 sub_810007C:
 	push {r4,r6,r7,lr}
@@ -173721,10 +173721,10 @@ sub_810B646:
 	ldr r3, off_810B77C // =byte_810B6E0
 	bl GetAllianceDependentPanelParamArgs
 	bl object_checkPanelParameters
-	thumb_func_end sub_810B646
 
 	cmp r0, #0
 	pop {r0,r1,pc}
+	thumb_func_end sub_810B646
 	thumb_local_start
 sub_810B65E:
 	push {r4,r7,lr}

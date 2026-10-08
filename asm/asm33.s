@@ -3204,7 +3204,6 @@ sub_8124C30:
 	mov lr, pc
 	bx r0
 	mov r0, #0
-	thumb_func_end sub_8124C30
 
 	pop {pc}
 off_8124C40:
@@ -3230,6 +3229,7 @@ off_8124C44:
 	.word sub_8125170+1
 	.word sub_8125198+1
 	.word sub_81251F4+1
+	thumb_func_end sub_8124C30
 	thumb_local_start
 sub_8124C94:
 	push {lr}
@@ -13518,7 +13518,6 @@ sub_812A008:
 	push {lr}
 	bl sub_812B504
 	bl start_800027C
-	thumb_func_end sub_812A008
 
 	bl sub_81465BC
 	tst r0, r0
@@ -13530,6 +13529,7 @@ sub_812A008:
 	strh r0, [r5,#0x28]
 locret_812A026:
 	pop {pc}
+	thumb_func_end sub_812A008
 	thumb_local_start
 sub_812A028:
 	push {lr}
@@ -15578,10 +15578,10 @@ sub_812AFB0:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_812AFB0
 
 	bl sub_812B4AC
 	pop {r4-r7,pc}
+	thumb_func_end sub_812AFB0
 	thumb_func_start sub_812AFC8
 sub_812AFC8:
 	push {r4-r7,lr}
@@ -16487,7 +16487,6 @@ loc_812B71A:
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	bl sub_812AFC8
-	thumb_func_end sub_812B708
 
 	ldr r0, off_812B754 // =byte_8129150
 	bl sub_80465A0 // (void *a1) -> void
@@ -16497,6 +16496,7 @@ off_812B750:
 	.word unk_20251A0
 off_812B754:
 	.word byte_8129150
+	thumb_func_end sub_812B708
 	thumb_local_start
 sub_812B758:
 	push {r4,lr}

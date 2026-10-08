@@ -536,7 +536,6 @@ loc_812EE4E:
 	mov r4, #8
 	mov r5, #2
 	bl call_sub_3005EBA
-	thumb_func_end sub_812EE20
 
 	pop {r3}
 	mov r0, r7
@@ -546,6 +545,7 @@ loc_812EE4E:
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
+	thumb_func_end sub_812EE20
 	thumb_func_start sub_812EE78
 sub_812EE78:
 	push {r4-r7,lr}
@@ -646,7 +646,6 @@ sub_812EF20:
 	mov r0, r1
 	mov r2, #0x90
 	bl sub_812EF60
-	thumb_func_end sub_812EF20
 
 	mov r0, r4
 	mov r1, #9
@@ -659,6 +658,7 @@ sub_812EF20:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	.word unk_2024F90
+	thumb_func_end sub_812EF20
 	thumb_local_start
 sub_812EF60:
 	push {r4-r7,lr}
@@ -671,7 +671,6 @@ sub_812EF60:
 	ldr r6, off_812EF9C // =dword_86A5D60 
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	thumb_func_end sub_812EF60
 
 	bl sub_812EFA4
 	mov r0, #3
@@ -694,6 +693,7 @@ off_812EF9C:
 	.word dword_86A5D60
 off_812EFA0:
 	.word unk_2025A70
+	thumb_func_end sub_812EF60
 	thumb_local_start
 sub_812EFA4:
 	push {r4-r7,lr}

@@ -464,7 +464,6 @@ loc_81303A2:
 	bl sub_81304BC
 loc_81303C4:
 	bl sub_81304EC
-	thumb_func_end sub_8130370
 
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
@@ -497,6 +496,7 @@ off_81303FC:
 	.word dword_8130400
 dword_8130400:
 	.word 0x140A00
+	thumb_func_end sub_8130370
 	thumb_local_start
 sub_8130404:
 	ldr r0, off_8130408 // =unk_2037780 
@@ -1374,7 +1374,6 @@ loc_8130B08:
 	b locret_8130B2C
 loc_8130B12:
 	bl sub_8131570
-	thumb_func_end sub_8130A04
 
 	bl sub_8131458
 	mov r0, #0x30 
@@ -1388,6 +1387,7 @@ loc_8130B12:
 locret_8130B2C:
 	pop {r4-r7,pc}
 	.byte 0, 0
+	thumb_func_end sub_8130A04
 	thumb_local_start
 sub_8130B30:
 	push {r4-r7,lr}
@@ -1458,12 +1458,12 @@ loc_8130BB2:
 	b locret_8130BC4
 loc_8130BBC:
 	bl sub_8131570
-	thumb_func_end sub_8130B30
 
 	bl sub_8131458
 locret_8130BC4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
+	thumb_func_end sub_8130B30
 	thumb_local_start
 sub_8130BC8:
 	push {r4-r7,lr}
@@ -1719,10 +1719,10 @@ loc_8130DC4:
 	b loc_8130DC6
 loc_8130DC6:
 	bl sub_8131570
-	thumb_func_end sub_8130D40
 
 	bl sub_8131458
 	pop {r4-r7,pc}
+	thumb_func_end sub_8130D40
 	thumb_local_start
 sub_8130DD0:
 	push {r4-r7,lr}
@@ -1870,7 +1870,6 @@ sub_8130EDC:
 	mov lr, pc
 	bx r0
 	ldrb r0, [r5,#0x16]
-	thumb_func_end sub_8130EDC
 
 	tst r0, r0
 	beq locret_8130F06
@@ -1893,6 +1892,7 @@ off_8130F0C:
 	.word sub_8130F1C+1
 	.word sub_8130F78+1
 	.word sub_8130FC4+1
+	thumb_func_end sub_8130EDC
 	thumb_local_start
 sub_8130F1C:
 	push {r4-r7,lr}
@@ -2176,10 +2176,10 @@ loc_8131144:
 	b loc_8131146
 loc_8131146:
 	bl sub_8131570
-	thumb_func_end sub_8131068
 
 	bl sub_8131458
 	pop {pc}
+	thumb_func_end sub_8131068
 	thumb_local_start
 sub_8131150:
 	push {r4-r7,lr}
@@ -2455,7 +2455,6 @@ loc_8131348:
 loc_8131350:
 	bl sub_8131400
 	bl sub_8131440
-	thumb_func_end sub_81312FC
 
 	mov r0, #0
 	ldr r1, off_813138C // =dword_8129180 
@@ -2480,6 +2479,7 @@ dword_8131388:
 	.word 0x1F40
 off_813138C:
 	.word dword_8129180
+	thumb_func_end sub_81312FC
 	thumb_local_start
 sub_8131390:
 	push {r4,lr}
@@ -2576,11 +2576,11 @@ sub_8131440:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8131440
 
 	pop {r4-r7,pc}
 off_8131454:
 	.word unk_2021DA0
+	thumb_func_end sub_8131440
 	thumb_local_start
 sub_8131458:
 	push {r4-r7,lr}
@@ -2694,7 +2694,6 @@ loc_81314FC:
 	ldr r6, off_8131544 // =dword_86A5D60 
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	thumb_func_end sub_81314E4
 
 	ldr r0, [sp]
 	add r0, #1
@@ -2724,6 +2723,7 @@ byte_8131560:
 	.byte 0x94, 0x0, 0x9C, 0x0, 0xC0, 0x0, 0x90, 0x0
 byte_8131568:
 	.byte 0x9C, 0x0, 0xC8, 0x0, 0xB0, 0x0, 0x90, 0x0
+	thumb_func_end sub_81314E4
 	thumb_local_start
 sub_8131570:
 	push {r4-r7,lr}
@@ -5114,7 +5114,6 @@ sub_8132980:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8132980
 
 	pop {r4-r7,pc}
 off_8132994:
@@ -5141,6 +5140,7 @@ off_81329AC:
 	.balign 4, 0x00
 off_81329C4:
 	.word 0x410
+	thumb_func_end sub_8132980
 	thumb_func_start sub_81329C8
 sub_81329C8:
 	push {r4-r7,lr}
@@ -5209,7 +5209,6 @@ loc_8132A2C:
 	mov r2, #2
 	mov r3, #7
 	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
-	thumb_func_end sub_8132A14
 
 	lsr r6, r6, #4
 	sub r7, #7
@@ -5218,6 +5217,7 @@ loc_8132A2C:
 	.balign 4, 0x00
 dword_8132A4C:
 	.word 0x1000
+	thumb_func_end sub_8132A14
 	thumb_func_start sub_8132A50
 sub_8132A50:
 	push {r4-r7,lr}
@@ -5472,11 +5472,11 @@ ExitSaveMenu8132CA0:
 	bl sub_811F708
 loc_8132CB2:
 	bl saveMenuTextGfx_8132F4C
-	thumb_func_end ExitSaveMenu8132CA0
 
 /// breaks on entering Save submenu and continues in it before confirming save.
 /// If disabled, game crashes on entering save menu
 	pop {pc}
+	thumb_func_end ExitSaveMenu8132CA0
 	thumb_local_start
 saveMenu_config_textscript_8132CB8:
 	push {r4-r7,lr}
@@ -5545,7 +5545,6 @@ loc_8132CD4:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 
-	thumb_func_end saveMenu_config_textscript_8132CB8
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -5593,6 +5592,7 @@ off_8132D90:
 	.word eTextScript201BA00
 	.word eDecompBuffer2013A00
 	.word 0x0
+	thumb_func_end saveMenu_config_textscript_8132CB8
 	thumb_local_start
 saveMenu_8132D9C:
 	push {r4-r7,lr}
@@ -5988,7 +5988,6 @@ loc_813306A:
 	sub r0, r0, r4
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8132FD0
 
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
@@ -6006,6 +6005,7 @@ dword_81330A4:
 	.word 0x30B270
 off_81330A8:
 	.word eDecompBuffer2013A00
+	thumb_func_end sub_8132FD0
 	thumb_local_start
 sub_81330AC:
 	push {r4-r7,lr}
@@ -6207,7 +6207,6 @@ loc_81332D6:
 	b loc_8133338
 loc_81332F2:
 	bl sub_8133EC0
-	thumb_func_end sub_8133228
 
 	bl sub_81355D8
 	beq loc_813330A
@@ -6282,6 +6281,7 @@ off_8133398:
 	.word unk_20251A0
 off_813339C:
 	.word unk_20376AC
+	thumb_func_end sub_8133228
 	thumb_local_start
 sub_81333A0:
 	push {lr}
@@ -6292,7 +6292,6 @@ sub_81333A0:
 	bx r0
 	bl sub_81340FC
 	bl sub_8134490
-	thumb_func_end sub_81333A0
 
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
@@ -6325,6 +6324,7 @@ off_81333EC:
 	.word sub_8133434+1
 	.word sub_8133484+1
 	.word sub_8133788+1
+	thumb_func_end sub_81333A0
 	thumb_local_start
 sub_8133400:
 	push {lr}
@@ -6338,7 +6338,6 @@ loc_8133410:
 	bl sub_8134594
 	bl sub_8134538
 	bl sub_81341A0
-	thumb_func_end sub_8133400
 
 	bl sub_81353DC
 	mov r0, #5
@@ -6349,6 +6348,7 @@ loc_8133410:
 	bl sub_81353F0
 	pop {pc}
 	.balign 4, 0x00
+	thumb_func_end sub_8133400
 	thumb_local_start
 sub_8133434:
 	push {lr}
@@ -6396,7 +6396,6 @@ sub_8133484:
 	mov lr, pc
 	bx r0
 	bl sub_81341A0
-	thumb_func_end sub_8133484
 
 	bl sub_8134594
 	bl sub_8134538
@@ -6416,6 +6415,7 @@ off_81334B8:
 	.word sub_8133540+1
 	.word sub_81335EC+1
 	.word sub_8133770+1
+	thumb_func_end sub_8133484
 	thumb_local_start
 sub_81334C8:
 	push {r4,lr}
@@ -6902,7 +6902,6 @@ loc_8133830:
 	bl sub_8117D10
 loc_8133864:
 	bl sub_81341A0
-	thumb_func_end sub_81337E8
 
 	bl sub_8134594
 	bl sub_8134538
@@ -6917,6 +6916,7 @@ loc_8133864:
 	.balign 4, 0x00
 off_8133888:
 	.word sSubmenu
+	thumb_func_end sub_81337E8
 	thumb_local_start
 sub_813388C:
 	push {lr}
@@ -6945,11 +6945,11 @@ loc_81338BA:
 	bl sub_8133E7C
 loc_81338C6:
 	bl sub_8134310
-	thumb_func_end sub_813388C
 
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
+	thumb_func_end sub_813388C
 	thumb_local_start
 sub_81338D4:
 	push {r4-r7,lr}
@@ -6985,7 +6985,6 @@ loc_813390A:
 loc_813390E:
 	mov r5, r7
 	bl sub_8133E88
-	thumb_func_end sub_81338D4
 
 	bl sub_8134594
 	bl sub_81345B0
@@ -7002,6 +7001,7 @@ loc_813390E:
 	bl sub_81353F0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
+	thumb_func_end sub_81338D4
 	thumb_local_start
 sub_8133944:
 	push {lr}
@@ -7026,7 +7026,6 @@ loc_813396C:
 	bl sub_8134538
 	bl sub_8134548
 	bl sub_81341A0
-	thumb_func_end sub_8133944
 
 	bl sub_8134310
 	bl sub_81353DC
@@ -7038,6 +7037,7 @@ loc_813396C:
 	bl sub_81353F0
 	pop {pc}
 	.balign 4, 0x00
+	thumb_func_end sub_8133944
 	thumb_local_start
 sub_813399C:
 	push {lr}
@@ -7681,7 +7681,6 @@ sub_8133E88:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8133E88
 
 	mov r1, #0x18
 	ldrsh r1, [r7,r1]
@@ -7696,6 +7695,7 @@ sub_8133E88:
 	bl sub_8134138
 	pop {r4-r7,pc}
 	.byte 0xF0, 0xFF, 0xFF, 0xFF, 0xB6, 0x1, 0x0, 0x0
+	thumb_func_end sub_8133E88
 	thumb_local_start
 sub_8133EC0:
 	push {r4-r7,lr}
@@ -7745,7 +7745,6 @@ loc_8133EDC:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8133EC0
 
 	mov r0, #0
 	mov r1, #2
@@ -7863,6 +7862,7 @@ off_81340A0:
 	.word unk_2020A20
 	.word eDecompBuffer2013A00
 	.word NULL
+	thumb_func_end sub_8133EC0
 	thumb_local_start
 sub_81340AC:
 	push {r4-r7,lr}
@@ -8033,7 +8033,6 @@ sub_81341A0:
 	mov r4, #8
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_81341A0
 
 	ldrh r0, [r7,#0x24]
 	ldr r1, off_81342E0 // =word_202A020 
@@ -8192,6 +8191,7 @@ off_8134308:
 	.word unk_20345C4
 dword_813430C:
 	.word 0x34F
+	thumb_func_end sub_81341A0
 	thumb_local_start
 sub_8134310:
 	push {r4-r7,lr}
@@ -8217,7 +8217,6 @@ sub_8134310:
 	mov r4, #8
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8134310
 
 	ldrh r0, [r7,#0x2e]
 	ldr r1, off_8134458 // =unk_202A3E0 
@@ -8381,6 +8380,7 @@ off_8134488:
 	.word eTileIds20347A0
 off_813448C:
 	.word 0x200
+	thumb_func_end sub_8134310
 	thumb_local_start
 sub_8134490:
 	push {r4-r7,lr}
@@ -8417,7 +8417,6 @@ loc_81344B8:
 	mov r4, #0xf
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8134490
 
 	mov r0, #0xa
 	ldr r1, off_8134520 // =unk_2034814 
@@ -8463,6 +8462,7 @@ dword_8134528:
 	.word 0xC20016
 	.word unk_20018EC
 	.byte 0x60, 0x71, 0x0, 0x0, 0x16, 0x0, 0xB6, 0x0
+	thumb_func_end sub_8134490
 	thumb_local_start
 sub_8134538:
 	push {lr}
@@ -8752,12 +8752,12 @@ loc_813472C:
 	mov r4, #8
 	mov r5, #0x11
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_813471C
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 off_813473C:
 	.word unk_203486C
+	thumb_func_end sub_813471C
 	thumb_local_start
 sub_8134740:
 	push {r4,lr}
@@ -10914,7 +10914,6 @@ sub_81356F4:
 	bl sub_813B9E0
 	str r0, [r5,#0x44]
 	bl sub_8135B94
-	thumb_func_end sub_81356F4
 
 	bl sub_813BAA8
 	bl sub_813676C
@@ -10934,6 +10933,7 @@ dword_81357BC:
 	.word 0xDF40
 off_81357C0:
 	.word byte_8135628
+	thumb_func_end sub_81356F4
 	thumb_local_start
 sub_81357C4:
 	push {lr}
@@ -11477,7 +11477,6 @@ loc_8135BB4:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8135B94
 
 	mov r0, #1
 	mov r1, #2
@@ -11627,6 +11626,7 @@ off_8135D80:
 	.word unk_201C380
 	.word byte_201C780
 	.word unk_201CB80
+	thumb_func_end sub_8135B94
 	thumb_local_start
 sub_8135D8C:
 	push {lr}
@@ -11870,10 +11870,10 @@ sub_8135F18:
 	lsr r1, r1, #2
 	mov r0, r1
 	bl sub_8135F34
-	thumb_func_end sub_8135F18
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
+	thumb_func_end sub_8135F18
 	thumb_local_start
 sub_8135F34:
 	push {r4-r7,lr}
@@ -11886,7 +11886,6 @@ sub_8135F34:
 	ldr r6, off_8135F80 // =dword_86A5D60 
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	thumb_func_end sub_8135F34
 
 	mov r0, #0x12
 	mov r1, #0xd
@@ -11896,6 +11895,7 @@ sub_8135F34:
 	mov r5, #6
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
+	thumb_func_end sub_8135F34
 	thumb_local_start
 sub_8135F5C:
 	push {r4-r7,lr}
@@ -11906,7 +11906,6 @@ sub_8135F5C:
 	mov r4, #0xa
 	mov r5, #6
 	bl call_sub_3005EBA
-	thumb_func_end sub_8135F5C
 
 	pop {r4-r7,pc}
 off_8135F70:
@@ -11921,6 +11920,7 @@ off_8135F80:
 	.word dword_86A5D60
 off_8135F84:
 	.word byte_813565C
+	thumb_func_end sub_8135F5C
 	thumb_local_start
 chatbox_runScript_803FD9C_on_eTextScript201D280:
 	push {r4,lr}
@@ -12082,7 +12082,6 @@ sub_81360B4:
 	bl sub_81362B8
 	bl sub_81362F8
 	bl sub_8135F18
-	thumb_func_end sub_81360B4
 
 	mov r0, #0
 	bl sub_813660C
@@ -12092,6 +12091,7 @@ sub_81360B4:
 	bl PlaySoundEffect
 	pop {pc}
 	.balign 4, 0x00
+	thumb_func_end sub_81360B4
 	thumb_local_start
 sub_81360DC:
 	push {lr}
@@ -12099,7 +12099,6 @@ sub_81360DC:
 	strb r0, [r5,#2]
 	bl sub_81362F8
 	bl sub_8135F18
-	thumb_func_end sub_81360DC
 
 	mov r0, #0
 	bl sub_813660C
@@ -12109,6 +12108,7 @@ sub_81360DC:
 	bl PlaySoundEffect
 	pop {pc}
 	.byte 0, 0
+	thumb_func_end sub_81360DC
 	thumb_local_start
 sub_8136100:
 	push {lr}
@@ -13134,7 +13134,6 @@ sub_813686C:
 	strb r1, [r0,#1]
 	mov r0, #0
 	bl sub_8136B58
-	thumb_func_end sub_813686C
 
 	pop {r4-r7,pc}
 	.byte 0, 0
@@ -13144,6 +13143,7 @@ off_81368C4:
 	.word byte_81368C8
 byte_81368C8:
 	.byte 0xF6, 0x0, 0x0, 0x0, 0xFC, 0x0, 0x0, 0x0, 0xFC, 0x0, 0x0, 0x0
+	thumb_func_end sub_813686C
 	thumb_local_start
 sub_81368D4:
 	push {lr}
@@ -13488,9 +13488,9 @@ sub_8136B58:
 	mov r4, #0x20 
 	mov r5, #3
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8136B58
 
 	pop {r4-r7,pc}
+	thumb_func_end sub_8136B58
 	thumb_local_start
 sub_8136B74:
 	push {r4-r7,lr}
@@ -13503,7 +13503,6 @@ sub_8136B74:
 	mov r4, #0x20 
 	mov r5, #3
 	bl call_sub_3005EBA
-	thumb_func_end sub_8136B74
 
 	pop {r4-r7,pc}
 off_8136B8C:
@@ -13515,6 +13514,7 @@ off_8136B98:
 	.word dword_8136B9C
 dword_8136B9C:
 	.word 0xA0B0B
+	thumb_func_end sub_8136B74
 	thumb_local_start
 sub_8136BA0:
 	push {r4-r7,lr}
@@ -13527,7 +13527,6 @@ sub_8136BA0:
 	ldr r6, off_8136BD4 // =dword_86A5D60 
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	thumb_func_end sub_8136BA0
 
 	mov r0, #0x12
 	mov r1, #0xd
@@ -13547,15 +13546,16 @@ off_8136BD4:
 	.word dword_86A5D60
 off_8136BD8:
 	.word byte_813565C
+	thumb_func_end sub_8136BA0
 	thumb_local_start
 sub_8136BDC:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#2]
 	bl sub_8135F18
-	thumb_func_end sub_8136BDC
 
 	pop {pc}
+	thumb_func_end sub_8136BDC
 	thumb_local_start
 sub_8136BE8:
 	push {lr}
@@ -14854,7 +14854,6 @@ sub_81375F4:
 	mov r4, #1
 	mov r5, #2
 	bl loc_8001048
-	thumb_func_end sub_81375F4
 
 	pop {r4,r5,pc}
 off_8137608:
@@ -14863,6 +14862,7 @@ byte_813760C:
 	.byte 0x0, 0x0, 0x0, 0x40, 0x0, 0x0, 0x0, 0x50
 dword_8137614:
 	.word 0x2E40
+	thumb_func_end sub_81375F4
 	thumb_local_start
 sub_8137618:
 	push {r4-r7,lr}
@@ -15271,7 +15271,6 @@ sub_81378D4:
 	bl sub_80015FC
 	bl sub_8046664 // () -> void
 	bl sub_8137ACC
-	thumb_func_end sub_81378D4
 
 	mov r0, #0
 	strb r0, [r5,#0xc]
@@ -15323,6 +15322,7 @@ off_813795C:
 	.word dword_81378A0
 off_8137960:
 	.word sSubmenu
+	thumb_func_end sub_81378D4
 	thumb_local_start
 sub_8137964:
 	push {lr}
@@ -15335,7 +15335,6 @@ sub_8137964:
 	bl sub_80465F8 // () -> void
 	bl sub_81380E0
 	mov r0, #0
-	thumb_func_end sub_8137964
 
 	pop {pc}
 off_8137980:
@@ -15344,6 +15343,7 @@ off_8137984:
 	.word sub_8137990+1
 	.word sub_81379A0+1
 	.word sub_8137A1C+1
+	thumb_func_end sub_8137964
 	thumb_local_start
 sub_8137990:
 	push {lr}
@@ -15543,7 +15543,6 @@ loc_8137AE8:
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8137ACC
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -15607,6 +15606,7 @@ off_8137BC0:
 	.word byte_30016D0
 	.word 0x20
 	.word NULL
+	thumb_func_end sub_8137ACC
 	thumb_local_start
 sub_8137BF0:
 	push {r4-r7,lr}
@@ -15705,7 +15705,6 @@ sub_8137D20:
 	mov r1, #4
 	ldr r2, off_8137D48 // =byte_2017A00 
 	bl sub_8137DA4
-	thumb_func_end sub_8137D20
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -15713,6 +15712,7 @@ off_8137D48:
 	.word byte_2017A00
 off_8137D4C:
 	.word unk_201CF00
+	thumb_func_end sub_8137D20
 	thumb_local_start
 sub_8137D50:
 	push {r4-r7,lr}
@@ -15769,9 +15769,9 @@ sub_8137DA4:
 	mov r4, #8
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8137DA4
 
 	pop {r4-r7,pc}
+	thumb_func_end sub_8137DA4
 	thumb_local_start
 sub_8137DB4:
 	push {r4-r7,lr}
@@ -15789,7 +15789,6 @@ sub_8137DB4:
 	mov r1, #4
 	ldr r2, off_8137DDC // =unk_2017AE0 
 	bl sub_8137E3C
-	thumb_func_end sub_8137DB4
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -15797,6 +15796,7 @@ off_8137DDC:
 	.word unk_2017AE0
 off_8137DE0:
 	.word unk_201CF00
+	thumb_func_end sub_8137DB4
 	thumb_local_start
 sub_8137DE4:
 	push {r4-r7,lr}
@@ -15855,9 +15855,9 @@ sub_8137E3C:
 	mov r4, #7
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8137E3C
 
 	pop {r4-r7,pc}
+	thumb_func_end sub_8137E3C
 	thumb_local_start
 sub_8137E4C:
 	push {r4-r7,lr}
@@ -15875,7 +15875,6 @@ sub_8137E4C:
 	mov r1, #4
 	ldr r2, off_8137E74 // =unk_2017BA4 
 	bl sub_8137EE0
-	thumb_func_end sub_8137E4C
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -15883,6 +15882,7 @@ off_8137E74:
 	.word unk_2017BA4
 off_8137E78:
 	.word unk_201CF00
+	thumb_func_end sub_8137E4C
 	thumb_local_start
 sub_8137E7C:
 	push {r4-r7,lr}
@@ -15947,9 +15947,9 @@ sub_8137EE0:
 	mov r4, #7
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_8137EE0
 
 	pop {r4-r7,pc}
+	thumb_func_end sub_8137EE0
 	thumb_local_start
 sub_8137EF0:
 	push {r4-r7,lr}
@@ -16034,7 +16034,6 @@ sub_8137F5C:
 	mov r1, #4
 	ldr r2, off_8137F84 // =unk_2017C68 
 	bl sub_813808C
-	thumb_func_end sub_8137F5C
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -16042,6 +16041,7 @@ off_8137F84:
 	.word unk_2017C68
 off_8137F88:
 	.word unk_201CF00
+	thumb_func_end sub_8137F5C
 	thumb_local_start
 sub_8137F8C:
 	push {r4-r7,lr}
@@ -16163,9 +16163,9 @@ sub_813808C:
 	mov r4, #3
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	thumb_func_end sub_813808C
 
 	pop {r4-r7,pc}
+	thumb_func_end sub_813808C
 	thumb_local_start
 sub_813809C:
 	push {r4-r7,lr}
@@ -16619,7 +16619,6 @@ sub_81383F4:
 	mov lr, pc
 	bx r0
 	ldr r0, off_813841C // =off_8138420 
-	thumb_func_end sub_81383F4
 
 	ldrb r1, [r5,#3]
 	ldr r0, [r0,r1]
@@ -16638,6 +16637,7 @@ off_8138420:
 	.word sub_8138600+1
 	.word sub_81386EC+1
 	.word sub_81386F0+1
+	thumb_func_end sub_81383F4
 	thumb_local_start
 sub_813842C:
 	push {lr}
@@ -16686,7 +16686,6 @@ sub_8138478:
 	pop {r0-r7}
 	bl sub_81384AC
 	bl sub_8138890
-	thumb_func_end sub_8138478
 
 	ldrb r0, [r5,#0xd]
 	add r0, #1
@@ -16697,6 +16696,7 @@ sub_8138478:
 	str r3, [r5,#0x18]
 	mov r0, #0
 	pop {pc}
+	thumb_func_end sub_8138478
 	thumb_local_start
 sub_81384AC:
 	push {r3-r7,lr}
@@ -16708,7 +16708,6 @@ sub_81384AC:
 	ldr r0, off_81384CC // =eDecompBuffer2014A00 
 	ldr r2, off_81384C4 // =0x600 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	thumb_func_end sub_81384AC
 
 	pop {r3-r7,pc}
 	.balign 4, 0x00
@@ -16726,6 +16725,7 @@ dword_81384D8:
 	.word 0x6000000
 off_81384DC:
 	.word byte_2017A00
+	thumb_func_end sub_81384AC
 	thumb_local_start
 sub_81384E0:
 	push {lr}
@@ -16775,7 +16775,6 @@ sub_8138514:
 sub_8138528:
 	push {lr}
 	bl sub_8138908
-	thumb_func_end sub_8138528
 
 	add r3, #1
 	str r3, [r5,#0x18]
@@ -16784,6 +16783,7 @@ sub_8138528:
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0x00
+	thumb_func_end sub_8138528
 	thumb_local_start
 sub_813853C:
 	push {lr}
@@ -16794,9 +16794,9 @@ sub_813853C:
 	ldrb r0, [r5,#0xb]
 	str r0, [r2,#0xc]
 	bl sub_8138478
-	thumb_func_end sub_813853C
 
 	pop {pc}
+	thumb_func_end sub_813853C
 	thumb_local_start
 sub_8138550:
 	push {lr}
@@ -16805,9 +16805,9 @@ sub_8138550:
 	ldrh r0, [r5,#0xe]
 	str r0, [r2,#8]
 	bl sub_8138478
-	thumb_func_end sub_8138550
 
 	pop {pc}
+	thumb_func_end sub_8138550
 	thumb_local_start
 sub_8138560:
 	push {lr}
@@ -16816,9 +16816,9 @@ sub_8138560:
 	ldrh r0, [r5,#0x10]
 	str r0, [r2,#8]
 	bl sub_8138478
-	thumb_func_end sub_8138560
 
 	pop {pc}
+	thumb_func_end sub_8138560
 	thumb_local_start
 sub_8138570:
 	push {lr}
@@ -16827,9 +16827,9 @@ sub_8138570:
 	ldrh r0, [r5,#0x12]
 	str r0, [r2,#8]
 	bl sub_8138478
-	thumb_func_end sub_8138570
 
 	pop {pc}
+	thumb_func_end sub_8138570
 	thumb_local_start
 sub_8138580:
 	push {lr}
@@ -17284,7 +17284,6 @@ loc_81388AA:
 	mov r4, #0x20 
 	mov r5, #2
 	bl call_sub_3005EBA
-	thumb_func_end sub_8138890
 
 	pop {r1}
 	ldrb r0, [r6,#2]
@@ -17295,6 +17294,7 @@ loc_81388AA:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	add sp, sp, #0x60
 	pop {r3-r7,pc}
+	thumb_func_end sub_8138890
 	thumb_local_start
 sub_81388EE:
 	push {r4,r5,lr}
@@ -17308,9 +17308,9 @@ sub_81388EE:
 	mov r4, #0x20 
 	mov r5, #2
 	bl call_sub_3005EBA
-	thumb_func_end sub_81388EE
 
 	pop {r4,r5,pc}
+	thumb_func_end sub_81388EE
 	thumb_local_start
 sub_8138908:
 	push {r3-r5,lr}

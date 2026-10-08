@@ -2430,11 +2430,11 @@ reqBBS_813F7B0:
 	strb r1, [r0,#6]
 loc_813F802:
 	bl reqBBS_813F8F0
-	thumb_func_end reqBBS_813F7B0
 
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0x00
+	thumb_func_end reqBBS_813F7B0
 	thumb_local_start
 reqBBS_813F80C:
 	push {lr}
@@ -2475,7 +2475,6 @@ loc_813F846:
 	strb r0, [r5]
 loc_813F856:
 	bl reqBBS_813F8F0
-	thumb_func_end reqBBS_813F80C
 
 	mov r0, #0
 	pop {pc}
@@ -2484,6 +2483,7 @@ off_813F860:
 	.word reqBBS_eTextScript // TextScriptArchive
 dword_813F864:
 	.word 0x5F40
+	thumb_func_end reqBBS_813F80C
 	thumb_local_start
 reqBBS_813F868:
 	push {lr}
@@ -2564,7 +2564,6 @@ reqBBS_813F8F0:
 	bl sub_80465F8 // () -> void
 	ldrh r0, [r5,#0x24]
 	bl reqBBS_renderRequestNames
-	thumb_func_end reqBBS_813F8F0
 
 	bl reqBBS_81405E8
 	ldrh r0, [r5,#0x1e]
@@ -2613,6 +2612,7 @@ dword_813F95C:
 	.word 0x20002
 dword_813F960:
 	.word 0xC000
+	thumb_func_end reqBBS_813F8F0
 	thumb_local_start
 reqBBS_copyTextDataToRAM:
 	push {r5,lr}
@@ -3105,7 +3105,6 @@ loc_813FCF0:
 	pop {pc}
 loc_813FD00:
 	bl reqBBS_813F8F0
-	thumb_func_end reqBBS_813FC8C
 
 	bl reqBBS_813FEB0
 	mov r0, #0
@@ -3113,6 +3112,7 @@ loc_813FD00:
 off_813FD0C:
 	.word reqBBS_eTextScript // TextScriptArchive
 	.word reqBBS_eRequestEntriesIDs
+	thumb_func_end reqBBS_813FC8C
 	thumb_local_start
 reqBBS_813FD14:
 	push {lr}

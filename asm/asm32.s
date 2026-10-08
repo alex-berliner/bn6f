@@ -1628,7 +1628,6 @@ sub_810E6F6:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
-	thumb_func_end sub_810E6F6
 
 	mov r0, #0x77
 	ldrb r0, [r5,r0]
@@ -1644,6 +1643,7 @@ sub_810E6F6:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	pop {r4-r7,pc}
+	thumb_func_end sub_810E6F6
 	thumb_local_start
 sub_810E746:
 	push {r4-r7,lr}
@@ -7045,7 +7045,6 @@ byte_8111640:
 sub_8111650:
 	push {r4-r7,lr}
 	bl sub_8015C48
-	thumb_func_end sub_8111650
 
 	tst r0, r0
 	beq locret_8111672
@@ -7062,6 +7061,7 @@ sub_8111650:
 	pop {r0,r1}
 locret_8111672:
 	pop {r4-r7,pc}
+	thumb_func_end sub_8111650
 	thumb_local_start
 sub_8111674:
 	push {r4-r7,lr}
@@ -7104,10 +7104,10 @@ loc_81116C4:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
-	thumb_func_end sub_8111674
 
 	pop {r0,r1}
 	pop {r4-r7,pc}
+	thumb_func_end sub_8111674
 	thumb_local_start
 sub_81116D2:
 	push {r4-r7,lr}
@@ -11318,11 +11318,11 @@ sub_8113AB8:
 	mov r2, #0x65
 	ldrb r1, [r5,r2]
 	bl object_removePanelReserve
-	thumb_func_end sub_8113AB8
 
 	mov r0, #0x24
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 	pop {r4-r7,pc}
+	thumb_func_end sub_8113AB8
 	thumb_local_start
 sub_8113B20:
 	push {r4-r7,lr}
@@ -11918,10 +11918,10 @@ loc_8113FB2:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
-	thumb_func_end sub_8113F94
 
 	pop {r0,r1}
 	pop {r4-r7,pc}
+	thumb_func_end sub_8113F94
 	thumb_local_start
 sub_8113FC0:
 	push {r4-r7,lr}
@@ -11983,10 +11983,10 @@ sub_8114030:
 	ldr r3, off_81143AC // =byte_8114160
 	bl GetAllianceDependentPanelParamArgs
 	bl sub_8015C94
-	thumb_func_end sub_8114030
 
 	pop {r4-r7,pc}
 	.byte 0, 0
+	thumb_func_end sub_8114030
 	thumb_local_start
 sub_8114040:
 	push {r4-r7,lr}
@@ -14859,7 +14859,6 @@ sub_811592A:
 	ldr r3, off_811594C // =byte_8115938
 	bl GetAllianceDependentPanelParamArgs
 	bl sub_8015C94
-	thumb_func_end sub_811592A
 
 	pop {r4-r7,pc}
 byte_8115938:
@@ -14893,6 +14892,7 @@ byte_81159A4:
 	.byte 0x6, 0x6, 0x6, 0x6, 0x6, 0x6
 byte_81159AA:
 	.byte 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4
+	thumb_func_end sub_811592A
 	thumb_func_start sub_81159B0
 sub_81159B0:
 	push {r4,r6,lr}
@@ -21657,7 +21657,6 @@ sub_8118FE4:
 	mov lr, pc
 	bx r0
 	ldrb r0, [r5,#4]
-	thumb_func_end sub_8118FE4
 
 	ldrb r1, [r5,#0xc]
 	cmp r0, r1
@@ -21674,6 +21673,7 @@ off_811900C:
 off_8119010:
 	.word sub_8119018+1
 	.word sub_8119084+1
+	thumb_func_end sub_8118FE4
 	thumb_local_start
 sub_8119018:
 	push {r4-r7,lr}
@@ -24976,7 +24976,6 @@ sub_811AA14:
 	mov lr, pc
 	bx r0
 	ldrb r0, [r5,#4]
-	thumb_func_end sub_811AA14
 
 	ldrb r1, [r5,#0xc]
 	cmp r0, r1
@@ -24994,6 +24993,7 @@ off_811AA40:
 off_811AA44:
 	.word sub_811AA4C+1
 	.word sub_811AAB8+1
+	thumb_func_end sub_811AA14
 	thumb_local_start
 sub_811AA4C:
 	push {r4-r7,lr}
@@ -25442,7 +25442,6 @@ sub_811ADC0:
 	bx r0
 	bl sprite_update
 	ldrb r0, [r5]
-	thumb_func_end sub_811ADC0
 
 	mov r1, #2
 	tst r0, r1
@@ -25461,6 +25460,7 @@ off_811ADF4:
 	.word sub_811AE00+1
 	.word sub_811AE04+1
 	.word sub_811AE2C+1
+	thumb_func_end sub_811ADC0
 	thumb_local_start
 sub_811AE00:
 	push {lr}
@@ -27019,7 +27019,6 @@ sub_811BA58:
 	mov lr, pc
 	bx r0
 	ldrb r1, [r5,#9]
-	thumb_func_end sub_811BA58
 
 	cmp r1, #4
 	beq loc_811BA76
@@ -27034,6 +27033,7 @@ off_811BA7C:
 off_811BA80:
 	.word sub_811BA88+1
 	.word sub_811BAC4+1
+	thumb_func_end sub_811BA58
 	thumb_local_start
 sub_811BA88:
 	push {r4-r7,lr}
