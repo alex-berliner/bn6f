@@ -1802,17 +1802,17 @@ loc_8003C04:
 	push {r0,r1,r5}
 	mov r0, r5
 	add r0, #0x1c
-	ldr r1, off_8003C68 // =sub_30061E8+1
+	ldr r1, off_8003C68 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	mov r0, #0
-	ldr r1, off_8003C64 // =sub_3006028+1
+	ldr r1, off_8003C64 // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 	mov r0, #2
 	mov r1, #0x60
 	add r5, #0x90
-	ldr r2, off_8003C6C // =sub_3006440+1
+	ldr r2, off_8003C6C // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {r0,r1,r5}
@@ -1828,7 +1828,7 @@ loc_8003C30:
 	push {r0,r1,r5}
 	mov r0, r5
 	add r0, #0x1c
-	ldr r1, off_8003C68 // =sub_30061E8+1
+	ldr r1, off_8003C68 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r0,r1,r5}
@@ -1846,11 +1846,11 @@ loc_8003C4C:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8003C64:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_8003C68:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_8003C6C:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003BF4
 
 	thumb_local_start
@@ -2003,17 +2003,17 @@ loc_8003E28:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8003E90 // =sub_30061E8+1
+	ldr r1, off_8003E90 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	mov r0, #1
-	ldr r1, off_8003E8C // =sub_3006028+1
+	ldr r1, off_8003E8C // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x90
-	ldr r2, off_8003E94 // =sub_3006440+1
+	ldr r2, off_8003E94 // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2029,7 +2029,7 @@ loc_8003E5A:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8003E90 // =sub_30061E8+1
+	ldr r1, off_8003E90 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r4,r6,r7}
@@ -2046,11 +2046,11 @@ loc_8003E7A:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8003E8C:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_8003E90:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_8003E94:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003E18
 
 	thumb_func_start sub_8003E98
@@ -2316,17 +2316,17 @@ loc_8004228:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8004290 // =sub_30061E8+1
+	ldr r1, off_8004290 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	mov r0, #3
-	ldr r1, off_800428C // =sub_3006028+1
+	ldr r1, off_800428C // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x90
-	ldr r2, off_8004294 // =sub_3006440+1
+	ldr r2, off_8004294 // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2342,7 +2342,7 @@ loc_800425A:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8004290 // =sub_30061E8+1
+	ldr r1, off_8004290 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r4,r6,r7}
@@ -2359,11 +2359,11 @@ loc_800427A:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_800428C:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_8004290:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_8004294:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8004218
 
 	thumb_func_start sub_8004298
@@ -2566,17 +2566,17 @@ loc_8004520:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8004588 // =sub_30061E8+1
+	ldr r1, off_8004588 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	mov r0, #4
-	ldr r1, off_8004584 // =sub_3006028+1
+	ldr r1, off_8004584 // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 	mov r0, #2
 	mov r1, #0x40
 	add r5, #0x80
-	ldr r2, off_800458C // =sub_3006440+1
+	ldr r2, off_800458C // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {r4,r6,r7}
@@ -2592,7 +2592,7 @@ loc_8004552:
 	push {r4,r6,r7}
 	mov r0, r5
 	add r0, #0x34
-	ldr r1, off_8004588 // =sub_30061E8+1
+	ldr r1, off_8004588 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r4,r6,r7}
@@ -2609,11 +2609,11 @@ loc_8004572:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8004584:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_8004588:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_800458C:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8004510
 
 	thumb_func_start sub_8004590
@@ -2804,13 +2804,13 @@ loop_800468C:
 	mov r0, r5
 	add r0, #0x24
 
-	ldr r1, off_80046F0 // =sub_30061E8+1
+	ldr r1, off_80046F0 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 
 	mov r0, #2
 
-	ldr r1, off_80046EC // =sub_3006028+1
+	ldr r1, off_80046EC // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 
@@ -2818,7 +2818,7 @@ loop_800468C:
 	mov r1, #0x60
 	add r5, #oOverworldNPCObject_SizeBeforeObjectSprite
 
-	ldr r2, off_80046F4 // =sub_3006440+1
+	ldr r2, off_80046F4 // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 
@@ -2840,7 +2840,7 @@ loc_80046B8:
 	push {r0,r1,r5}
 	mov r0, r5
 	add r0, #0x24
-	ldr r1, off_80046F0 // =sub_30061E8+1
+	ldr r1, off_80046F0 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r0,r1,r5}
@@ -2862,11 +2862,11 @@ loc_80046D4:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80046EC:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_80046F0:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_80046F4:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end npc_init_800467C
 
 	thumb_local_start
@@ -3181,17 +3181,17 @@ loc_8004944:
 	push {r0,r1,r5}
 	mov r0, r5
 	add r0, #0xc
-	ldr r1, off_80049A8 // =sub_30061E8+1
+	ldr r1, off_80049A8 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	mov r0, #5
-	ldr r1, off_80049A4 // =sub_3006028+1
+	ldr r1, off_80049A4 // =sprite_ensureGfxResident+1
 	mov lr, pc
 	bx r1
 	mov r0, #2
 	mov r1, #0x60
 	add r5, #0x40
-	ldr r2, off_80049AC // =sub_3006440+1
+	ldr r2, off_80049AC // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {r0,r1,r5}
@@ -3207,7 +3207,7 @@ loc_8004970:
 	push {r0,r1,r5}
 	mov r0, r5
 	add r0, #0xc
-	ldr r1, off_80049A8 // =sub_30061E8+1
+	ldr r1, off_80049A8 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r1
 	pop {r0,r1,r5}
@@ -3225,11 +3225,11 @@ loc_800498C:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80049A4:
-	.word sub_3006028+1
+	.word sprite_ensureGfxResident+1
 off_80049A8:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 off_80049AC:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8004934
 
 	thumb_local_start
@@ -9746,7 +9746,7 @@ loc_8007B10:
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8
@@ -10141,7 +10141,7 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8
@@ -10258,7 +10258,7 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	bl sub_8004218
 	bl sub_8004510
 	bl sub_800C5E0
-	bl sub_801BF64
+	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70
 	bl sub_80046F8

@@ -13478,7 +13478,7 @@ char *sub_802FDB0()
     int v3; // r3
     char *result; // r0
 
-    CopyWords(&off_802FD70, &tupleArr_3002590, 0x20u);
+    CopyWords(&off_802FD70, &iSpriteLayerLists, 0x20u);
     v0 = -1;
     v1 = &off_802FD70;
     v2 = 4;
@@ -13489,9 +13489,9 @@ char *sub_802FDB0()
         --v2;
     }
     while ( v2 > 0 );
-    ZeroFillByEightWords(iObjectAttr3001150, &byte_400);
-    result = byte_3001950;
-    *byte_3001950 = 0;
+    ZeroFillByEightWords(iSpritePool, &byte_400);
+    result = iSpritePoolUsed;
+    *iSpritePoolUsed = 0;
     return result;
 }
 
@@ -13499,7 +13499,7 @@ char *sub_802FDB0()
 // 0x802fe0c
 void copyObjAttributesToIWRAM_802FE0C()
 {
-    CopyByEightWords(&iObjectAttr3001D70, 0x7000000, &byte_400);
+    CopyByEightWords(&iOamShadow, 0x7000000, &byte_400);
 }
 
 
@@ -13507,14 +13507,14 @@ void copyObjAttributesToIWRAM_802FE0C()
 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 signed int __fastcall sub_802FE28(signed int a1, __int16 a2, int a3, int a4)
 {
-    return sub_30068E8(a1, a2, a3, a4);
+    return sprite_queueOamEntry(a1, a2, a3, a4);
 }
 
 
 // 0x802fe38
 int __fastcall sub_802FE38(int a1, int a2)
 {
-    return sub_3006920(a1, a2);
+    return sprite_queueOamEntries(a1, a2);
 }
 
 

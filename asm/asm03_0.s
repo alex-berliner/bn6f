@@ -19992,7 +19992,7 @@ loc_802FDB6:
 	push {r4,lr}
     mov r4, r0
     
-    ldr r1, off_802FE08 // =tupleArr_3002590 
+    ldr r1, off_802FE08 // =iSpriteLayerLists 
 	mov r2, #0x20 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	
@@ -20010,11 +20010,11 @@ loc_802FDCE:
 	cmp r4, #0
 	bgt loc_802FDCE
 	
-    ldr r0, off_802FE04 // =iObjectAttr3001150 
+    ldr r0, off_802FE04 // =iSpritePool 
 	ldr r1, off_802FDFC // =0x400 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 
-	ldr r0, off_802FE00 // =byte_3001950 
+	ldr r0, off_802FE00 // =iSpritePoolUsed 
 	mov r1, #0
 	str r1, [r0]
 	pop {r4,pc}
@@ -20027,24 +20027,24 @@ off_802FDF4:
 off_802FDFC:
 	.word 0x400
 off_802FE00:
-	.word byte_3001950
+	.word iSpritePoolUsed
 off_802FE04:
-	.word iObjectAttr3001150
+	.word iSpritePool
 off_802FE08:
-	.word tupleArr_3002590
+	.word iSpriteLayerLists
 	thumb_func_end sub_802FDB0
 
 	thumb_func_start copyObjAttributesToIWRAM_802FE0C
 copyObjAttributesToIWRAM_802FE0C:
 	push {lr}
-	ldr r0, off_802FE1C // =iObjectAttr3001D70
+	ldr r0, off_802FE1C // =iOamShadow
 	ldr r1, dword_802FE20 // =0x7000000 
 	ldr r2, off_802FE24 // =0x400 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {pc}
 	.balign 4, 0
 off_802FE1C:
-	.word iObjectAttr3001D70
+	.word iOamShadow
 dword_802FE20:
 	.word 0x7000000
 off_802FE24:
@@ -20055,25 +20055,25 @@ off_802FE24:
 	thumb_func_start sub_802FE28
 sub_802FE28:
 	push {r4,lr}
-	ldr r4, off_802FE34 // =sub_30068E8+1 
+	ldr r4, off_802FE34 // =sprite_queueOamEntry+1 
 	mov lr, pc
 	bx r4
 	pop {r4,pc}
 	.balign 4, 0x00
 off_802FE34:
-	.word sub_30068E8+1
+	.word sprite_queueOamEntry+1
 	thumb_func_end sub_802FE28
 
 	thumb_local_start
 sub_802FE38:
 	push {r4,lr}
-	ldr r4, off_802FE44 // =sub_3006920+1 
+	ldr r4, off_802FE44 // =sprite_queueOamEntries+1 
 	mov lr, pc
 	bx r4
 	pop {r4,pc}
 	.balign 4, 0x00
 off_802FE44:
-	.word sub_3006920+1
+	.word sprite_queueOamEntries+1
 	thumb_func_end sub_802FE38
 
 	thumb_func_start sub_802FE48

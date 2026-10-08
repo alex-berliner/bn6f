@@ -41,7 +41,7 @@ off_3000EA4:: // 0x3000ea4
 	.space 4
 byte_3000EA8:: // 0x3000ea8
 	.space 680
-iObjectAttr3001150:: // 0x3001150
+iSpritePool:: // 0x3001150
 	// type: struct{u32 unk0, u16 unk1, u8 unk2, u8 unk3} [128]
 	.space 1024
 byte_3001550:: // 0x3001550
@@ -94,7 +94,7 @@ iPalette3001890:: // 0x3001890
 	.space 0x60
 iPalette30018F0:: // 0x30018f0
 	.space 0x60
-byte_3001950:: // 0x3001950
+iSpritePoolUsed:: // 0x3001950
 	.space 16
 palette_3001960:: // 0x3001960
 	.space 32
@@ -144,7 +144,7 @@ iPalette3001C80:: // 0x3001c80
 	.space 0xe0
 dword_3001D60:: // 0x3001d60
 	.space 16
-iObjectAttr3001D70:: // 0x3001d70
+iOamShadow:: // 0x3001d70
 	// type: struct{u32 unk0, u16 unk1, u8 unk2, u8 unk3} [128]
 	.space 128*8
 unk_3002170:: // 0x3002170
@@ -165,7 +165,7 @@ unk_3002400:: // 0x3002400
 	.space 384
 unk_3002580:: // 0x3002580
 	.space 16
-tupleArr_3002590:: // 0x3002590
+iSpriteLayerLists:: // 0x3002590
 	// type: struct{u8 *p0, int len} [4]
 	.space 4*8
 unk_30025B0:: // 0x30025b0
@@ -175,7 +175,7 @@ unk_30025B0:: // 0x30025b0
 iBGTileIdBlocks:: // 0x30025c0
 	// type: u16[32][32][4]
 	.space 4*2*32*32
-byte_30045C0:: // 0x30045c0
+iSoundInfo:: // 0x30045c0
 	.space 2688
 byte_3005040:: // 0x3005040
 	.space 156
@@ -256,7 +256,7 @@ off_30055F8:: // 0x30055f8
 	.space 4
 off_30055FC:: // 0x30055fc
 	.space 4
-byte_3005600:: // 0x3005600
+iCgbChannels:: // 0x3005600
 	.space 40
 unk_3005628:: // 0x3005628
 	.space 12

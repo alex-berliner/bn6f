@@ -37,7 +37,7 @@ void __noreturn main_()
         chatbox_onUpdate();
         CallBGScrollCallback0();
         ProcessGFXAnims();
-        copyTo_iObjectAttr3001D70_3006814();
+        sprite_buildOamShadow();
         main_static_screen_fade_8000454();
     }
 }
@@ -221,9 +221,9 @@ __int16 *__cdecl main_static_8000570()
 {
     __int16 *result; // r0
 
-    sub_814E8A0();
+    m4aSoundInit();
     sub_814EE2C(9634829);
-    SetInterruptCallback(8, sub_3005D78);
+    SetInterruptCallback(8, sound_vcountCallback);
     result = &GeneralLCDStatus_STAT_LYC_;
     GeneralLCDStatus_STAT_LYC_ = GeneralLCDStatus_STAT_LYC_ | 0x5020;
     return result;

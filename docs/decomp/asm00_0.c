@@ -6,9 +6,9 @@ int call_m4aSoundMain()
 
 
 // 0x80005c4
-int call_m4a_2_814F00C()
+int call_m4aSoundVSync()
 {
-    return m4a_2_814F00C();
+    return m4aSoundVSync();
 }
 
 
@@ -3070,7 +3070,7 @@ void copy_8002668()
 // 0x8002694
 void __fastcall __noreturn sub_8002694(int a1, int a2)
 {
-    sub_3006440(a1, a2);
+    sprite_queueFramePieces(a1, a2);
 }
 
 

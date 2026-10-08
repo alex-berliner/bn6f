@@ -17,7 +17,7 @@ sub_800ED90:
 	mov r5, r0
 
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_800EDC6
 
@@ -54,7 +54,7 @@ sub_800EDD0:
 	str r1, [sp]
 	mov r5, r0
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_800EE1A
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -98,7 +98,7 @@ sub_800EE26:
 	push {r5-r7,lr}
 	mov r5, r0
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_800EE8E
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -208,7 +208,7 @@ sub_800EF02:
 	push {r5-r7,lr}
 	mov r6, r0
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_800EF2A
 	mov r0, r6
@@ -745,15 +745,15 @@ loc_800F286:
 	pop {pc}
 	thumb_func_end sub_800F26C
 
-	thumb_func_start sub_800F29C
-sub_800F29C:
+	thumb_func_start unpackVerActorTyAndAIIdx_800F29C
+unpackVerActorTyAndAIIdx_800F29C:
 	push {lr}
 	bl GetVerActorTyAndAIIdx_80182B4 // (enemy_idx: u16) -> *const (version: u8, actor_type: ActorType, ai_index: u8)
 	ldrb r2, [r0]
 	ldrb r1, [r0,#2]
 	ldrb r0, [r0,#1]
 	pop {pc}
-	thumb_func_end sub_800F29C
+	thumb_func_end unpackVerActorTyAndAIIdx_800F29C
 
 	thumb_func_start sub_800F2AA
 sub_800F2AA:
@@ -3191,7 +3191,7 @@ loc_80103CC:
 	tst r5, r5
 	beq loc_80103DC
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	beq loc_80103E8
 loc_80103DC:
@@ -3238,7 +3238,7 @@ loc_8010414:
 	cmp r0, #8
 	beq loc_8010454
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	beq loc_8010432
 	cmp r0, #0
@@ -11945,7 +11945,7 @@ locret_8014324:
 sub_8014326:
 	push {r4,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne locret_80143A4
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -18923,7 +18923,7 @@ sub_8017AB4:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x50
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_8017B64
 	bl GetBattleEffects // () -> int
@@ -24832,7 +24832,7 @@ loc_801BA3A:
 	push {r1}
 	mov r4, #0x6d 
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_801BA58
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -25581,8 +25581,8 @@ off_801BF04:
 	.word sub_801D71A+1
 	thumb_func_end sub_801BEE0
 
-	thumb_func_start sub_801BF64
-sub_801BF64:
+	thumb_func_start runFlaggedCallbacks_801BF64
+runFlaggedCallbacks_801BF64:
 	push {r5-r7,lr}
 	ldr r5, off_801BFE8 // =eStruct2035280
 	ldr r6, off_801BF84 // =off_801BF88 
@@ -25631,7 +25631,7 @@ off_801BF88:
 	.word sub_801D792+1
 off_801BFE8:
 	.word eStruct2035280
-	thumb_func_end sub_801BF64
+	thumb_func_end runFlaggedCallbacks_801BF64
 
 	thumb_local_start
 nullsub_58:

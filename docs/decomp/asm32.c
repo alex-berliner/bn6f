@@ -8387,7 +8387,7 @@ int __fastcall sub_8114316(int a1)
         {
             if ( *(v6 + 8) != 8 )
             {
-                v7 = sub_800F29C(*(v6 + 40));
+                v7 = unpackVerActorTyAndAIIdx_800F29C(*(v6 + 40));
                 if ( v7 == 2 || !v7 || v7 == 1 )
                 {
                     v8 = object_getFlag();

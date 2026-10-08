@@ -21608,7 +21608,7 @@ off_814E25C:
 	thumb_func_end sub_814E248
 
 	thumb_local_start
-sub_814E260:
+MPlayMain:
 	ldr r2, dword_814E4D8 // =0x68736d53 
 
 	ldr r3, [r0,#0x34]
@@ -21951,7 +21951,7 @@ loc_814E4BC:
 	mov r10, r2
 	mov r11, r3
 	pop {r3}
-	thumb_func_end sub_814E260
+	thumb_func_end MPlayMain
 
 	thumb_local_start
 sub_814E4CC:
@@ -22546,8 +22546,8 @@ dword_814E89C:
 	.word 0x68736D53
 	thumb_func_end sub_814E87C
 
-	thumb_func_start sub_814E8A0
-sub_814E8A0:
+	thumb_func_start m4aSoundInit
+m4aSoundInit:
 	push {r4-r6,lr}
 	ldr r0, off_814E8F4 // =SoundMainRAM+1 
 	mov r1, #2
@@ -22557,9 +22557,9 @@ sub_814E8A0:
 	ldr r2, off_814E8FC // =0x4000100
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 
-	ldr r0, off_814E900 // =byte_30045C0 
+	ldr r0, off_814E900 // =iSoundInfo 
 	bl sub_814ECC8
-	ldr r0, off_814E904 // =byte_3005600 
+	ldr r0, off_814E904 // =iCgbChannels 
 	bl sub_814EB84
 	ldr r0, dword_814E908 // =0x93f400 
 	bl sub_814EE2C
@@ -22568,7 +22568,7 @@ sub_814E8A0:
 	lsr r0, r0, #0x10
 	cmp r0, #0
 	beq loc_814E8EE
-	ldr r5, off_814E910 // =off_8158278 
+	ldr r5, off_814E910 // =gMPlayTable 
 	mov r6, r0
 loc_814E8D2:
 	ldr r4, [r5]
@@ -22596,18 +22596,18 @@ off_814E8F8:
 off_814E8FC:
 	.word 0x4000100
 off_814E900:
-	.word byte_30045C0
+	.word iSoundInfo
 off_814E904:
-	.word byte_3005600
+	.word iCgbChannels
 dword_814E908:
 	.word 0x93F400
 dword_814E90C:
 	.word 0x20
 off_814E910:
-	.word off_8158278
+	.word gMPlayTable
 off_814E914:
 	.word byte_2010B90
-	thumb_func_end sub_814E8A0
+	thumb_func_end m4aSoundInit
 
 	thumb_func_start m4aSoundMain
 m4aSoundMain:
@@ -22622,7 +22622,7 @@ m4aSoundMain:
 m4a_SongNumStart: // (idx: u16) -> ()
 	push {lr}
 	lsl r0, r0, #16 // erases upper 16-bit
-	ldr r3, off_814E948 // =off_8158278 
+	ldr r3, off_814E948 // =gMPlayTable 
 	ldr r1, off_814E94C // =sound_MusicTable 
 	lsr r0, r0, #13 // a 16-bit * 8
 	add r0, r0, r1
@@ -22631,7 +22631,7 @@ m4a_SongNumStart: // (idx: u16) -> ()
 	lsl r1, r2, #1
 	add r1, r1, r2
 	lsl r1, r1, #2 // (unk_04 * 3) * 4
-	add r1, r1, r3 // off_8158278 + unk_04 * 12
+	add r1, r1, r3 // gMPlayTable + unk_04 * 12
 	ldr r2, [r1] /*+16*/
 
 	ldr r1, [r0,#oSound_MusicTable_Tup_Ptr_00]
@@ -22641,7 +22641,7 @@ m4a_SongNumStart: // (idx: u16) -> ()
 	bx r0
 	.balign 4, 0
 off_814E948:
-	.word off_8158278
+	.word gMPlayTable
 off_814E94C:
 	.word sound_MusicTable
 	thumb_func_end m4a_SongNumStart
@@ -22650,7 +22650,7 @@ off_814E94C:
 sub_814E950:
 	push {lr}
 	lsl r0, r0, #0x10
-	ldr r3, off_814E97C // =off_8158278 
+	ldr r3, off_814E97C // =gMPlayTable 
 	ldr r1, off_814E980 // =sound_MusicTable 
 	lsr r0, r0, #0xd
 	add r0, r0, r1
@@ -22670,7 +22670,7 @@ sub_814E950:
 	b loc_814E998
 	.balign 4, 0
 off_814E97C:
-	.word off_8158278
+	.word gMPlayTable
 off_814E980:
 	.word sound_MusicTable
 loc_814E984:
@@ -22693,7 +22693,7 @@ loc_814E998:
 sub_814E99C:
 	push {lr}
 	lsl r0, r0, #0x10
-	ldr r3, off_814E9C8 // =off_8158278 
+	ldr r3, off_814E9C8 // =gMPlayTable 
 	ldr r1, off_814E9CC // =sound_MusicTable 
 	lsr r0, r0, #0xd
 	add r0, r0, r1
@@ -22713,7 +22713,7 @@ sub_814E99C:
 	b loc_814E9EC
 	.balign 4, 0
 off_814E9C8:
-	.word off_8158278
+	.word gMPlayTable
 off_814E9CC:
 	.word sound_MusicTable
 loc_814E9D0:
@@ -22739,7 +22739,7 @@ loc_814E9EC:
 sub_814E9F0:
 	push {lr}
 	lsl r0, r0, #0x10
-	ldr r3, off_814EA1C // =off_8158278 
+	ldr r3, off_814EA1C // =gMPlayTable 
 	ldr r1, off_814EA20 // =sound_MusicTable 
 	lsr r0, r0, #0xd
 	add r0, r0, r1
@@ -22760,7 +22760,7 @@ loc_814EA16:
 	bx r0
 	.balign 4, 0
 off_814EA1C:
-	.word off_8158278
+	.word gMPlayTable
 off_814EA20:
 	.word sound_MusicTable
 	thumb_func_end sub_814E9F0
@@ -22769,7 +22769,7 @@ off_814EA20:
 sub_814EA24:
 	push {lr}
 	lsl r0, r0, #0x10
-	ldr r3, off_814EA50 // =off_8158278 
+	ldr r3, off_814EA50 // =gMPlayTable 
 	ldr r1, off_814EA54 // =sound_MusicTable 
 	lsr r0, r0, #0xd
 	add r0, r0, r1
@@ -22790,7 +22790,7 @@ loc_814EA4A:
 	bx r0
 	.balign 4, 0
 off_814EA50:
-	.word off_8158278
+	.word gMPlayTable
 off_814EA54:
 	.word sound_MusicTable
 	thumb_func_end sub_814EA24
@@ -22803,7 +22803,7 @@ sub_814EA58:
 	lsr r0, r0, #0x10
 	cmp r0, #0
 	beq loc_814EA76
-	ldr r5, off_814EA80 // =off_8158278 
+	ldr r5, off_814EA80 // =gMPlayTable 
 	mov r4, r0
 loc_814EA68:
 	ldr r0, [r5]
@@ -22820,7 +22820,7 @@ loc_814EA76:
 dword_814EA7C:
 	.word 0x20
 off_814EA80:
-	.word off_8158278
+	.word gMPlayTable
 	thumb_func_end sub_814EA58
 
 	thumb_local_start
@@ -22840,7 +22840,7 @@ sub_814EA90:
 	lsr r0, r0, #0x10
 	cmp r0, #0
 	beq loc_814EAAE
-	ldr r5, off_814EAB8 // =off_8158278 
+	ldr r5, off_814EAB8 // =gMPlayTable 
 	mov r4, r0
 loc_814EAA0:
 	ldr r0, [r5]
@@ -22857,7 +22857,7 @@ loc_814EAAE:
 dword_814EAB4:
 	.word 0x20
 off_814EAB8:
-	.word off_8158278
+	.word gMPlayTable
 	thumb_func_end sub_814EA90
 
 	thumb_local_start
@@ -23608,8 +23608,8 @@ off_814F008:
 	.word Timer0Control
 	thumb_func_end sub_814EF94
 
-	thumb_func_start m4a_2_814F00C
-m4a_2_814F00C:
+	thumb_func_start m4aSoundVSync
+m4aSoundVSync:
 	push {lr}
 	ldr r0, off_814F070 // =byte_3007FF0 
 	ldr r2, [r0]
@@ -23677,7 +23677,7 @@ off_814F084:
 	.word DMA1Control
 off_814F088:
 	.word DMA2Control
-	thumb_func_end m4a_2_814F00C
+	thumb_func_end m4aSoundVSync
 
 	thumb_local_start
 sub_814F08C:
@@ -23729,7 +23729,7 @@ loc_814F0D4:
 	str r0, [r5,#0x20]
 loc_814F0E4:
 	str r7, [r5,#0x24]
-	ldr r0, off_814F100 // =sub_814E260+1 
+	ldr r0, off_814F100 // =MPlayMain+1 
 	str r0, [r5,#0x20]
 	ldr r0, dword_814F0FC // =0x68736d53 
 	str r0, [r5]
@@ -23744,7 +23744,7 @@ off_814F0F8:
 dword_814F0FC:
 	.word 0x68736D53
 off_814F100:
-	.word sub_814E260+1
+	.word MPlayMain+1
 	thumb_func_end sub_814F08C
 
 	thumb_local_start

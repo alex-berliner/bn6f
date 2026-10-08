@@ -1127,7 +1127,7 @@ sub_80B8A3C:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80B8A66
 	push {r5}
@@ -1175,7 +1175,7 @@ loc_80B8A70:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -1281,7 +1281,7 @@ sub_80B8B6E:
 	bge locret_80B8B9E
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -6203,7 +6203,7 @@ sub_80BAF74:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80BAF9E
 	push {r5}
@@ -6251,7 +6251,7 @@ loc_80BAFA8:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -6406,7 +6406,7 @@ sub_80BB10C:
 	bge locret_80BB13C
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -6651,7 +6651,7 @@ sub_80BB2C4:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80BB2EE
 	push {r5}
@@ -6699,7 +6699,7 @@ loc_80BB2F8:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -6866,7 +6866,7 @@ sub_80BB46A:
 	bge locret_80BB49A
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -9990,7 +9990,7 @@ sub_80BCB74:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80BCB9E
 	push {r5}
@@ -10038,7 +10038,7 @@ loc_80BCBA8:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -10145,7 +10145,7 @@ loc_80BCCA6:
 	bge locret_80BCCDA
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
@@ -10242,7 +10242,7 @@ loc_80BCD52:
 loc_80BCD5E:
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80BCD86
 	push {r5}
@@ -10311,7 +10311,7 @@ loc_80BCDF8:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -10608,7 +10608,7 @@ loc_80BD030:
 	bge locret_80BD062
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -11157,7 +11157,7 @@ loc_80BD3CC:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldrb r0, [r5,#oBattleObject_Param1]
@@ -11901,7 +11901,7 @@ locret_80BD982:
 sub_80BD984:
 	push {r4,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -12247,7 +12247,7 @@ loc_80BDBE6:
 	b loc_80BDC30
 loc_80BDC00:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80BDC26
 	push {r5}
@@ -12308,7 +12308,7 @@ loc_80BDC76:
 	cmp r0, #0
 	bne loc_80BDC98
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 loc_80BDC98:
@@ -12581,7 +12581,7 @@ loc_80BDE78:
 	tst r0, r0
 	bne loc_80BDEA6
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -12931,7 +12931,7 @@ loc_80BE10A:
 	strh r0, [r5,#oBattleObject_Timer]
 	bgt locret_80BE12A
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -13320,7 +13320,7 @@ sub_80BE3C4:
 	cmp r0, #0
 	bne loc_80BE3D8
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 loc_80BE3D8:
@@ -13874,7 +13874,7 @@ sub_80BE7BC:
 	ldrb r0, [r1,r0]
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 loc_80BE810:
@@ -14316,7 +14316,7 @@ loc_80BEB5A:
 	strb r0, [r1]
 loc_80BEB7E:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	mov r0, #CUR_STATE_DESTROY
@@ -15124,7 +15124,7 @@ loc_80BF134:
 	strb r0, [r1]
 loc_80BF14E:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	mov r0, #CUR_STATE_DESTROY
@@ -16011,7 +16011,7 @@ loc_80BF730:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	mov r0, #CUR_STATE_UPDATE
@@ -16746,7 +16746,7 @@ locret_80BFCB0:
 sub_80BFCB2:
 	push {r4,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
@@ -19243,7 +19243,7 @@ sub_80C0E24:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	str r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #2
 	bne loc_80C0ED8
@@ -19359,7 +19359,7 @@ loc_80C0F10:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oBattleObject_Param4]
@@ -23790,7 +23790,7 @@ sub_80C3024:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80C304E
 	push {r5}
@@ -23836,13 +23836,13 @@ loc_80C3058:
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	str r0, [r5,#oBattleObject_ExtraVars+0xc]
 	str r1, [r5,#oBattleObject_ExtraVars+0x10]
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -24003,7 +24003,7 @@ loc_80C31C0:
 	bge locret_80C31EE
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -27061,7 +27061,7 @@ sub_80C4848:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80C4872
 	push {r5}
@@ -27110,7 +27110,7 @@ loc_80C487C:
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #0
@@ -27249,7 +27249,7 @@ loc_80C49B4:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -27294,7 +27294,7 @@ loc_80C4A0E:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -27386,7 +27386,7 @@ loc_80C4ABC:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -27620,7 +27620,7 @@ sub_80C4C52:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r0,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r1, #0x23 
 	blt locret_80C4C76
 	mov r0, r1
@@ -86833,7 +86833,7 @@ sub_80E121C:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80E12B0
 	push {r5}
@@ -86867,7 +86867,7 @@ sub_80E121C:
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80E129C
 	push {r5}
@@ -86908,7 +86908,7 @@ sub_80E12BA:
 	beq loc_80E12E4
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80E12DE
 	mov r0, r4
@@ -86932,7 +86932,7 @@ loc_80E12E8:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	ldrb r0, [r5,#oBattleObject_Param4]
@@ -86940,7 +86940,7 @@ loc_80E12E8:
 	bne loc_80E1328
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	bne loc_80E1322
 	mov r0, r4
@@ -91298,7 +91298,7 @@ sub_80E32D8:
 	mov r0, #0x80
 	bl sprite_load // (int a1, int a2, int a3) ->
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #0
 	bl sub_8010DF6
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
@@ -91416,7 +91416,7 @@ sub_80E33D2:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_80E33E8:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	mov r2, #1
 	bl sub_8011044
 	bl object_freeMemory

@@ -224,11 +224,11 @@ off_3005D74:
 	.word sub_80068E0+1
 	thumb_func_end sub_3005D24
 
-	thumb_func_start sub_3005D78
-sub_3005D78:
+	thumb_func_start sound_vcountCallback
+sound_vcountCallback:
 	push {lr}
 	push {lr}
-	ldr r0, off_3005D94 // =call_m4a_2_814F00C+1
+	ldr r0, off_3005D94 // =call_m4aSoundVSync+1
 	mov lr, pc
 	bx r0
 	pop {r0}
@@ -242,8 +242,8 @@ sub_3005D78:
 off_3005D90:
 	.word call_m4aSoundMain+1
 off_3005D94:
-	.word call_m4a_2_814F00C+1
-	thumb_func_end sub_3005D78
+	.word call_m4aSoundVSync+1
+	thumb_func_end sound_vcountCallback
 
 	thumb_local_start
 nullsub_24:
@@ -505,11 +505,11 @@ loc_3005EDE:
 	mov pc, lr
 	thumb_func_end sub_3005EBA
 
-	thumb_func_start sub_3005EF0
+	thumb_func_start palette_addOrSubtractColor
 // r0 - some param
 // r2 - jumptable index
 // r6 - num palettes
-sub_3005EF0:
+palette_addOrSubtractColor:
 	push {r5,lr}
 	cmp r6, #0
 	ble locret_3005F18
@@ -545,7 +545,7 @@ dword_3005F2C:
 	.word 0x8420
 dword_3005F30:
 	.word 0x3DEF
-	thumb_func_end sub_3005EF0
+	thumb_func_end palette_addOrSubtractColor
 
 	thumb_local_start
 sub_3005F34:
@@ -589,8 +589,8 @@ sub_3005F56:
 	mov pc, lr
 	thumb_func_end sub_3005F56
 
-	thumb_func_start sub_3005F78
-sub_3005F78:
+	thumb_func_start palette_fadeTowardWhiteOrBlack
+palette_fadeTowardWhiteOrBlack:
 	push {r5,lr}
 	cmp r6, #0
 	ble locret_3005FAA
@@ -619,7 +619,7 @@ loc_3005F9C:
 	bge loc_3005F9C
 locret_3005FAA:
 	pop {r5,pc}
-	thumb_func_end sub_3005F78
+	thumb_func_end palette_fadeTowardWhiteOrBlack
 off_3005FAC:
 	.word dword_3005FB0
 dword_3005FB0:
@@ -689,8 +689,8 @@ sub_3005FFA:
 	thumb_func_end sub_3005FFA
 
 
-	thumb_func_start sub_3006028
-sub_3006028:
+	thumb_func_start sprite_ensureGfxResident
+sprite_ensureGfxResident:
 	push {r5,lr}
 	ldrb r7, [r5,#2]
 	lsr r7, r7, #4
@@ -800,7 +800,7 @@ dword_3006100:
 	.word 0x6010000
 off_3006104:
 	.word QueueEightWordAlignedGFXTransfer+1 // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	thumb_func_end sub_3006028
+	thumb_func_end sprite_ensureGfxResident
 
 	thumb_local_start
 sub_3006108:
@@ -830,7 +830,7 @@ loc_3006128:
 	lsl r2, r2, #2
 	mov r6, #0x20 
 	push {r7}
-	bl sub_3005EF0
+	bl palette_addOrSubtractColor
 	pop {r0}
 loc_3006140:
 	mov r8, r5
@@ -938,8 +938,8 @@ off_30061E4:
 	.word dword_200A890
 	thumb_func_end sub_30061C8
 
-	thumb_func_start sub_30061E8
-sub_30061E8:
+	thumb_func_start sprite_projectAndCull
+sprite_projectAndCull:
 	push {r5,lr}
 	mov r1, r10
 	push {r1}
@@ -1105,7 +1105,7 @@ off_3006310:
 off_3006314:
 	.word sub_300631C+1
 	.word sub_300638C+1
-	thumb_func_end sub_30061E8
+	thumb_func_end sprite_projectAndCull
 
 	thumb_local_start
 sub_300631C:
@@ -1280,8 +1280,8 @@ off_300643C:
 	.word byte_20098A8
 	thumb_func_end sub_3006428
 
-	thumb_func_start sub_3006440
-sub_3006440:
+	thumb_func_start sprite_queueFramePieces
+sprite_queueFramePieces:
 	push {lr}
 	ldrb r7, [r5,#3]
 	mov r2, #0x10
@@ -1446,7 +1446,7 @@ loc_3006576:
 	ldr r1, [sp,#0xc]
 	tst r1, r1
 	beq loc_3006582
-	bl sub_3006920
+	bl sprite_queueOamEntries
 loc_3006582:
 	ldr r0, [sp,#4]
 	str r0, [r5,#0x28]
@@ -1457,7 +1457,7 @@ off_300658C:
 	.word dword_20096D0
 off_3006590:
 	.word unk_3002400
-	thumb_func_end sub_3006440
+	thumb_func_end sprite_queueFramePieces
 
 	thumb_local_start
 sub_3006594:
@@ -1792,8 +1792,8 @@ loc_30067F8:
 	.balign 4, 0x00
 	thumb_func_end _sprite_update
 
-	thumb_func_start copyTo_iObjectAttr3001D70_3006814
-copyTo_iObjectAttr3001D70_3006814: // () -> void
+	thumb_func_start sprite_buildOamShadow
+sprite_buildOamShadow: // () -> void
 	push {r4-r7,lr}
 	// backup r12
 	mov r0, r12
@@ -1805,11 +1805,11 @@ copyTo_iObjectAttr3001D70_3006814: // () -> void
 	// void *v1End: r3
 	// struct{u8 *p0, int len} v4[4]: r6
 	// s1 *v5: r7
-	ldr r0, off_30068C0 // =iObjectAttr3001D70
+	ldr r0, off_30068C0 // =iOamShadow
 	ldr r2, off_30068C4 // =unk_30025B0
 	ldr r3, off_30068C8 // =unk_3002170
-	ldr r6, off_30068CC // =tupleArr_3002590
-	ldr r7, off_30068D0 // =iObjectAttr3001150
+	ldr r6, off_30068CC // =iSpriteLayerLists
+	ldr r7, off_30068D0 // =iSpritePool
 	mov r12, r7
 
 .loop1
@@ -1893,7 +1893,7 @@ copyTo_iObjectAttr3001D70_3006814: // () -> void
 	// unk *v7: r0
 	// s1 v1[128]: r1
 	ldr r0, off_30068D8 // =word_200A6F0
-	ldr r1, off_30068C0 // =iObjectAttr3001D70
+	ldr r1, off_30068C0 // =iOamShadow
 
 // for (i=20; i>=0; i--)
 	mov r3, #0x20
@@ -1931,7 +1931,7 @@ copyTo_iObjectAttr3001D70_3006814: // () -> void
 	cmp r4, #0
 	bgt .loop30068A0
 
-	ldr r0, off_30068E4 // =byte_3001950
+	ldr r0, off_30068E4 // =iSpritePoolUsed
 	mov r1, #0
 	str r1, [r0]
 
@@ -1942,15 +1942,15 @@ copyTo_iObjectAttr3001D70_3006814: // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_30068C0:
-	.word iObjectAttr3001D70
+	.word iOamShadow
 off_30068C4:
 	.word unk_30025B0
 off_30068C8:
 	.word unk_3002170
 off_30068CC:
-	.word tupleArr_3002590
+	.word iSpriteLayerLists
 off_30068D0:
-	.word iObjectAttr3001150
+	.word iSpritePool
 off_30068D4:
 	.word dword_200B1A8
 off_30068D8:
@@ -1960,17 +1960,17 @@ off_30068DC:
 off_30068E0:
 	.word WordFill+1
 off_30068E4:
-	.word byte_3001950
-	thumb_func_end copyTo_iObjectAttr3001D70_3006814
+	.word iSpritePoolUsed
+	thumb_func_end sprite_buildOamShadow
 
-	thumb_func_start sub_30068E8
-sub_30068E8:
+	thumb_func_start sprite_queueOamEntry
+sprite_queueOamEntry:
 	push {r4-r7,lr}
-	ldr r5, off_3006994 // =byte_3001950
+	ldr r5, off_3006994 // =iSpritePoolUsed
 	ldr r6, [r5]
 	cmp r6, #0x80
 	bge locret_300691E
-	ldr r4, off_300699C // =tupleArr_3002590
+	ldr r4, off_300699C // =iSpriteLayerLists
 	lsl r7, r2, #3
 	add r4, r4, r7
 	ldr r7, [r4,#4]
@@ -1985,7 +1985,7 @@ sub_30068E8:
 	ldrb r7, [r4]
 	strb r6, [r4]
 	lsl r6, r6, #3
-	ldr r5, off_3006998 // =iObjectAttr3001150
+	ldr r5, off_3006998 // =iSpritePool
 	add r5, r5, r6
 	str r0, [r5]
 	strh r1, [r5,#4]
@@ -1994,24 +1994,24 @@ sub_30068E8:
 	strb r0, [r5,#6]
 locret_300691E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_30068E8
+	thumb_func_end sprite_queueOamEntry
 
-	thumb_func_start sub_3006920
-sub_3006920:
+	thumb_func_start sprite_queueOamEntries
+sprite_queueOamEntries:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
 	mov r6, r12
 	push {r4-r6}
 	sub sp, sp, #8
-	ldr r5, off_3006994 // =byte_3001950
+	ldr r5, off_3006994 // =iSpritePoolUsed
 	ldr r6, [r5]
 	mov r8, r5
 	add r1, r1, r6
 	cmp r1, #0x80
 	bge loc_3006988
 	sub r1, r1, r6
-	ldr r3, off_3006998 // =iObjectAttr3001150
+	ldr r3, off_3006998 // =iSpritePool
 	mov r12, r3
 loc_300693E:
 	str r0, [sp]
@@ -2021,7 +2021,7 @@ loc_300693E:
 	ldrb r2, [r0,#6]
 	ldrh r1, [r0,#4]
 	ldr r0, [r0]
-	ldr r4, off_300699C // =tupleArr_3002590
+	ldr r4, off_300699C // =iSpriteLayerLists
 	lsl r7, r2, #3
 	add r4, r4, r7
 	ldr r7, [r4,#4]
@@ -2060,14 +2060,14 @@ loc_3006988:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_3006994:
-	.word byte_3001950
+	.word iSpritePoolUsed
 off_3006998:
-	.word iObjectAttr3001150
+	.word iSpritePool
 off_300699C:
-	.word tupleArr_3002590
+	.word iSpriteLayerLists
 byte_30069A0::
 	.byte 0x4, 0x4, 0x4, 0x0, 0x4, 0x0, 0x4, 0x4
-	thumb_func_end sub_3006920
+	thumb_func_end sprite_queueOamEntries
 
 	thumb_local_start
 sub_30069A8:

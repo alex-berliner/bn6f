@@ -10248,7 +10248,7 @@ void __fastcall sub_814E248(int a1, int a2)
 
 
 // 0x814e260
-_DWORD *__fastcall sub_814E260(_DWORD *result, int a2)
+_DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
 {
     int v2; // r8
     int v3; // r9
@@ -10934,7 +10934,7 @@ int __fastcall sub_814E87C(int a1, __int16 a2)
 
 
 // 0x814e8a0
-int sub_814E8A0()
+int m4aSoundInit()
 {
     char (**v0)[64]; // r5
     signed int v1; // r6
@@ -10942,10 +10942,10 @@ int sub_814E8A0()
     int v4; // [sp+Ch] [bp-4h]
 
     SWI_CpuSet((&SoundMainRAM & 0xFFFFFFFE), byte_3005700, Timer0Counter_Reload);
-    sub_814ECC8(byte_30045C0);
-    sub_814EB84(byte_3005600);
+    sub_814ECC8(iSoundInfo);
+    sub_814EB84(iCgbChannels);
     sub_814EE2C(9696256);
-    v0 = &off_8158278;
+    v0 = &gMPlayTable;
     v1 = 32;
     do
     {
@@ -10977,7 +10977,7 @@ int __fastcall m4a_SongNumStart(int a1)
     int v2; // [sp+0h] [bp-4h]
 
     sound_814F104(
-        *(&off_8158278 + 3 * *(&sound_MusicTable[1] + (8 * a1 & 0x7FFFF))),
+        *(&gMPlayTable + 3 * *(&sound_MusicTable[1] + (8 * a1 & 0x7FFFF))),
         *(sound_MusicTable + (8 * a1 & 0x7FFFF)));
     return v2;
 }
@@ -10991,7 +10991,7 @@ int __fastcall sub_814E950(int a1)
     int v4; // [sp+0h] [bp-4h]
 
     v1 = (sound_MusicTable + (8 * a1 & 0x7FFFF));
-    v2 = *(&off_8158278 + 3 * *(v1 + 2));
+    v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
     {
         if ( !*(v2 + 4) || *(v2 + 4) < 0 )
@@ -10999,7 +10999,7 @@ int __fastcall sub_814E950(int a1)
     }
     else
     {
-        sound_814F104(*(&off_8158278 + 3 * *(v1 + 2)), *v1);
+        sound_814F104(*(&gMPlayTable + 3 * *(v1 + 2)), *v1);
     }
     return v4;
 }
@@ -11013,7 +11013,7 @@ int __fastcall sub_814E99C(int a1)
     int v4; // [sp+0h] [bp-4h]
 
     v1 = (sound_MusicTable + (8 * a1 & 0x7FFFF));
-    v2 = *(&off_8158278 + 3 * *(v1 + 2));
+    v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
     {
         if ( *(v2 + 4) )
@@ -11028,7 +11028,7 @@ int __fastcall sub_814E99C(int a1)
     }
     else
     {
-        sound_814F104(*(&off_8158278 + 3 * *(v1 + 2)), *v1);
+        sound_814F104(*(&gMPlayTable + 3 * *(v1 + 2)), *v1);
     }
     return v4;
 }
@@ -11042,7 +11042,7 @@ int __fastcall sub_814E9F0(int a1)
     int v4; // [sp+0h] [bp-4h]
 
     v1 = sound_MusicTable + (8 * a1 & 0x7FFFF);
-    v2 = *(&off_8158278 + 3 * *(v1 + 2));
+    v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
         sub_814F1E8(v2, *v2, v2);
     return v4;
@@ -11057,7 +11057,7 @@ int __fastcall sub_814EA24(int a1)
     int v4; // [sp+0h] [bp-4h]
 
     v1 = sound_MusicTable + (8 * a1 & 0x7FFFF);
-    v2 = *(&off_8158278 + 3 * *(v1 + 2));
+    v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
         sub_814E85C(v2);
     return v4;
@@ -11071,7 +11071,7 @@ int __fastcall sub_814EA58(int a1, int a2, int a3)
     signed int v4; // r4
     int v6; // [sp+8h] [bp-4h]
 
-    v3 = &off_8158278;
+    v3 = &gMPlayTable;
     v4 = 32;
     do
     {
@@ -11101,7 +11101,7 @@ int sub_814EA90()
     signed int v1; // r4
     int v3; // [sp+8h] [bp-4h]
 
-    v0 = &off_8158278;
+    v0 = &gMPlayTable;
     v1 = 32;
     do
     {
@@ -11459,7 +11459,7 @@ int sub_814EF94()
 
 
 // 0x814f00c
-int m4a_2_814F00C()
+int m4aSoundVSync()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -11506,7 +11506,7 @@ int __fastcall sub_814F08C(int a1, _BYTE *a2, unsigned __int8 a3)
                 v6[8] = 0;
             }
             v6[9] = v3;
-            v6[8] = sub_814E260;
+            v6[8] = MPlayMain;
             *v6 = 1752395091;
             *(v3 + 52) = 1752395091;
         }

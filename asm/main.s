@@ -52,7 +52,7 @@ loc_800032A:
 	bl chatbox_onUpdate // () -> void
 	bl CallBGScrollCallback0
 	bl ProcessGFXAnims
-	ldr r0, off_8000344 // =copyTo_iObjectAttr3001D70_3006814+1
+	ldr r0, off_8000344 // =sprite_buildOamShadow+1
 	mov lr, pc
 	bx r0	
 
@@ -61,7 +61,7 @@ loc_800032A:
 	b main_gameRoutine
 	.balign 4, 0
 off_8000344:
-	.word copyTo_iObjectAttr3001D70_3006814+1 // () -> void
+	.word sprite_buildOamShadow+1 // () -> void
 off_8000348:
 	.word main_subsystemJumpTable
 main_subsystemJumpTable: 
@@ -372,11 +372,11 @@ off_800056C:
 	thumb_local_start
 main_static_8000570:
 	push {lr}
-	bl sub_814E8A0
+	bl m4aSoundInit
 	ldr r0, dword_800059C // =0x93040d
 	bl sub_814EE2C
 	mov r0, #8
-	ldr r1, off_80005A8 // =sub_3005D78+1
+	ldr r1, off_80005A8 // =sound_vcountCallback+1
 	bl SetInterruptCallback
 	ldr r0, off_80005A0 // =GeneralLCDStatus_STAT_LYC_
 	ldrh r1, [r0]
@@ -396,7 +396,7 @@ off_80005A0:
 	.word GeneralLCDStatus_STAT_LYC_
 	.word off_3000E70
 off_80005A8:
-	.word sub_3005D78+1
+	.word sound_vcountCallback+1
 	thumb_func_end main_static_8000570
 
 /*For debugging purposes, connect comment at any range!*/

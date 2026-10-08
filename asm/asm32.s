@@ -4681,7 +4681,7 @@ loc_81101B8:
 	cmp r0, #8
 	beq loc_8110202
 	ldrh r0, [r5, #0x28]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	beq loc_81101D6
 	cmp r0, #0
@@ -12377,7 +12377,7 @@ loc_8114332:
 	cmp r0, #8
 	beq loc_8114382
 	ldrh r0, [r5,#0x28]
-	bl sub_800F29C
+	bl unpackVerActorTyAndAIIdx_800F29C
 	cmp r0, #2
 	beq loc_8114350
 	cmp r0, #0

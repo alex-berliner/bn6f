@@ -224,7 +224,7 @@ int sub_8002818()
     }
     while ( v4 < 32 );
     if ( *(v0 + 6) )
-        result = sub_3005EF0(*(v0 + 6) & 0x7FFF, sub_3005EF0, 4 * (*(v0 + 6) >> 15));
+        result = palette_addOrSubtractColor(*(v0 + 6) & 0x7FFF, palette_addOrSubtractColor, 4 * (*(v0 + 6) >> 15));
     return result;
 }
 
@@ -644,7 +644,7 @@ int __fastcall sub_8002CF6(int a1)
 // 0x8002d06
 int __noreturn sub_8002D06()
 {
-    return sub_30061E8();
+    return sprite_projectAndCull();
 }
 
 

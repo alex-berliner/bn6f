@@ -60,7 +60,7 @@ int __fastcall sub_3005D24(int result)
 
 
 // 0x3005d78
-int sub_3005D78()
+int sound_vcountCallback()
 {
     int (*v1)(void); // [sp+4h] [bp-4h]
 
@@ -262,7 +262,7 @@ int __fastcall sub_3005EBA(int result, int a2, int a3, __int16 a4)
 
 
 // 0x3005ef0
-int __fastcall sub_3005EF0(int result, int a2, int a3)
+int __fastcall palette_addOrSubtractColor(int result, int a2, int a3)
 {
     int v3; // r6
     int v4; // r7
@@ -316,7 +316,7 @@ int __fastcall sub_3005F56(int a1, int a2, int a3, unsigned int a4)
 
 
 // 0x3005f78
-int __fastcall sub_3005F78(int a1, int a2, int a3)
+int __fastcall palette_fadeTowardWhiteOrBlack(int a1, int a2, int a3)
 {
     int v3; // r6
     int v4; // r7
@@ -345,7 +345,7 @@ int __fastcall sub_3005F78(int a1, int a2, int a3)
 
 
 // 0x3006028
-void __fastcall sub_3006028(int result)
+void __fastcall sprite_ensureGfxResident(int result)
 {
     int v1; // r5
     unsigned int v2; // r5
@@ -440,7 +440,7 @@ void sub_3006108()
             *&(*v3)[v4] = *(v2 + v4);
         }
         while ( v4 );
-        sub_3005EF0(*(v0 + 6), v1, 4 * (*(v0 + 6) >> 15));
+        palette_addOrSubtractColor(*(v0 + 6), v1, 4 * (*(v0 + 6) >> 15));
         v2 = v3;
     }
     v5 = v0;
@@ -519,7 +519,7 @@ void sub_30061C8()
 
 
 // 0x30061e8
-int sub_30061E8()
+int sprite_projectAndCull()
 {
     char *v0; // r5
     signed int v1; // r6
@@ -723,7 +723,7 @@ void sub_3006428()
 
 
 // 0x3006440
-int __fastcall sub_3006440(int result, int a2)
+int __fastcall sprite_queueFramePieces(int result, int a2)
 {
     int v2; // r5
     int v3; // r1
@@ -796,7 +796,7 @@ LABEL_7:
             }
         }
         if ( v20 )
-            sub_3006920(off_3006590, v20);
+            sprite_queueOamEntries(off_3006590, v20);
         result = v18;
         *(v2 + 40) = v18;
     }
@@ -945,7 +945,7 @@ LABEL_8:
 
 
 // 0x3006814
-int copyTo_iObjectAttr3001D70_3006814()
+int sprite_buildOamShadow()
 {
     int v0; // r12
     int *v1; // r0
@@ -1039,7 +1039,7 @@ LABEL_9:
 
 
 // 0x30068e8
-signed int __fastcall sub_30068E8(signed int result, __int16 a2, int a3, int a4)
+signed int __fastcall sprite_queueOamEntry(signed int result, __int16 a2, int a3, int a4)
 {
     int v4; // r6
     int *v5; // r4
@@ -1070,7 +1070,7 @@ signed int __fastcall sub_30068E8(signed int result, __int16 a2, int a3, int a4)
 
 
 // 0x3006920
-int __fastcall sub_3006920(int result, int a2)
+int __fastcall sprite_queueOamEntries(int result, int a2)
 {
     char (*v2)[16]; // r5
     int v3; // r6

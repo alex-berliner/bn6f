@@ -16,12 +16,12 @@ dword_80005BC:
 	.balign 4, 0
 	thumb_func_end call_m4aSoundMain
 
-	thumb_func_start call_m4a_2_814F00C
-call_m4a_2_814F00C:
+	thumb_func_start call_m4aSoundVSync
+call_m4aSoundVSync:
 	push {lr}
-	bl m4a_2_814F00C
+	bl m4aSoundVSync
 	pop {pc}
-	thumb_func_end call_m4a_2_814F00C
+	thumb_func_end call_m4aSoundVSync
 
 	thumb_func_start PlaySoundEffect
 // (enum SoundEffect idx) -> void
@@ -4862,10 +4862,10 @@ off_8002448:
 off_800244C:
 	.word byte_8002450
 byte_8002450:
-	.word sub_3005EF0+1
-	.word sub_3005EF0+1
-	.word sub_3005F78+1
-	.word sub_3005F78+1
+	.word palette_addOrSubtractColor+1
+	.word palette_addOrSubtractColor+1
+	.word palette_fadeTowardWhiteOrBlack+1
+	.word palette_fadeTowardWhiteOrBlack+1
 off_8002460:
 	.word 0x108
 off_8002464:
@@ -5202,13 +5202,13 @@ off_8002690:
 	thumb_func_start sub_8002694
 sub_8002694:
 	push {lr}
-	ldr r2, off_80026A0 // =sub_3006440+1
+	ldr r2, off_80026A0 // =sprite_queueFramePieces+1
 	mov lr, pc
 	bx r2
 	pop {pc}
 	.balign 4, 0x00
 off_80026A0:
-	.word sub_3006440+1
+	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8002694
 
 /*For debugging purposes, connect comment at any range!*/

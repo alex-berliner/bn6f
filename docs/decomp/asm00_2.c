@@ -19,7 +19,7 @@ int __fastcall sub_800ED90(int a1)
     int v8; // r3
 
     v1 = a1;
-    if ( sub_800F29C(*(a1 + 40)) == 2 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(*(a1 + 40)) == 2 )
     {
         v2 = getBattleHandAddr_8010018(*(v1 + 22));
         v3 = &v2[2 * *v2 + 2];
@@ -54,7 +54,7 @@ int __fastcall sub_800EDD0(int a1, int a2)
 
     v12 = a2;
     v2 = a1;
-    if ( sub_800F29C(*(a1 + 40)) == 2 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(*(a1 + 40)) == 2 )
     {
         v3 = getBattleHandAddr_8010018(*(v2 + 22));
         v4 = v3;
@@ -88,7 +88,7 @@ int __fastcall sub_800EE26(int a1)
     int v9; // [sp-8h] [bp-18h]
 
     v2 = a1;
-    if ( sub_800F29C(*(a1 + 40)) == 2 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(*(a1 + 40)) == 2 )
     {
         v3 = sub_802E070(*(v2 + 22));
         sub_800EE98();
@@ -161,7 +161,7 @@ int __fastcall sub_800EF02(int a1)
     int v4; // r3
 
     v2 = a1;
-    if ( sub_800F29C(*(v1 + 40)) == 2 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(*(v1 + 40)) == 2 )
     {
         sub_800EF34(v2, 0);
         sub_80109A4(v2, *(v1 + 22));
@@ -430,7 +430,7 @@ int __fastcall sub_800F26C(int a1)
 
 
 // 0x800f29c
-int __fastcall sub_800F29C(int a1)
+int __fastcall unpackVerActorTyAndAIIdx_800F29C(int a1)
 {
     char *v1; // r0
     int v2; // r2
@@ -2386,7 +2386,7 @@ u32 __fastcall battle_findPlayer(int a1)
         v4 = *v2;
         if ( *v2 )
         {
-            if ( sub_800F29C(*(v4 + 40)) == 2 )
+            if ( unpackVerActorTyAndAIIdx_800F29C(*(v4 + 40)) == 2 )
                 break;
         }
         if ( ++v3 >= 4 )
@@ -2434,7 +2434,7 @@ int __fastcall sub_80103F8(int a1)
         {
             if ( *(v6 + 8) != 8 )
             {
-                v7 = sub_800F29C(*(v6 + 40));
+                v7 = unpackVerActorTyAndAIIdx_800F29C(*(v6 + 40));
                 if ( v7 == 2 || !v7 || v7 == 1 )
                 {
                     v9 = sub_8010460(*(v6 + 18), *(v6 + 19), v8, &v12);
@@ -8666,7 +8666,7 @@ int sub_8014326()
     int v5; // r0
     unsigned __int8 v6; // vf
 
-    result = sub_800F29C(*(v0 + 40));
+    result = unpackVerActorTyAndAIIdx_800F29C(*(v0 + 40));
     if ( result == 2 )
     {
         v2 = *(v0 + 88);
@@ -14012,7 +14012,7 @@ int sub_8017AB4()
     unsigned __int8 v12; // [sp+2h] [bp-5Eh]
     unsigned __int8 v13; // [sp+3h] [bp-5Dh]
 
-    if ( sub_800F29C(*(v0 + 40)) == 2 && sub_802D246() & 8 && sub_800FFFE() & &loc_800 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(*(v0 + 40)) == 2 && sub_802D246() & 8 && sub_800FFFE() & &loc_800 )
     {
         if ( !sub_800BEDA() )
             goto LABEL_13;
@@ -17640,7 +17640,7 @@ LABEL_12:
     object_subtractHP(v0, v2);
     v11 = v4;
     v5 = 109;
-    if ( sub_800F29C(v0->nameID) == 2 )
+    if ( unpackVerActorTyAndAIIdx_800F29C(v0->nameID) == 2 )
     {
         battle_networkInvert(v0->Alliance);
         if ( v8 )
@@ -18283,7 +18283,7 @@ int sub_801BEE0()
 
 
 // 0x801bf64
-int sub_801BF64()
+int runFlaggedCallbacks_801BF64()
 {
     int (**v0)(void); // r6
     unsigned int v1; // r7

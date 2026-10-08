@@ -3905,7 +3905,7 @@ byte_8158271::
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 // gMPlayTable: struct {MusicPlayerInfo *info; MusicPlayerTrack *tracks;
 // u8 numTracks; u8 pad; u16 unk;} [0x20], used by m4aSoundInit
-off_8158278::
+gMPlayTable::
 	.word byte_2010690, unk_2006E08
 	.byte 0x3, 0x0
 	.hword 0x1
@@ -50968,7 +50968,7 @@ off_81CA450::
 	.word byte_81580A1
 	.word byte_81580A1
 	.word byte_81580A1
-	// This pointer would mess up the array in off_8158278
+	// This pointer would mess up the array in gMPlayTable
 	.word 0x8158285
 	.word byte_81580A1
 	// This pointer would mess up pointers in sound_MusicTable

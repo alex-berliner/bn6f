@@ -289,14 +289,14 @@ loc_8002840:
 	lsl r2, r2, #2
 	mov r6, #0x20
 	mov r7, r3
-	ldr r1, off_8002864 // =sub_3005EF0+1
+	ldr r1, off_8002864 // =palette_addOrSubtractColor+1
 	mov lr, pc
 	bx r1
 locret_8002862:
 	pop {pc}
 	.balign 4, 0
 off_8002864:
-	.word sub_3005EF0+1
+	.word palette_addOrSubtractColor+1
 off_8002868:
 	.word byte_3001550
 	thumb_func_end sub_8002818
@@ -1019,12 +1019,12 @@ sub_8002CF6:
 	thumb_local_start
 sub_8002D06:
 	push {r5,lr}
-	ldr r3, off_8002D10 // =sub_30061E8+1
+	ldr r3, off_8002D10 // =sprite_projectAndCull+1
 	mov lr, pc
 	bx r3
 	pop {r5,pc}
 off_8002D10:
-	.word sub_30061E8+1
+	.word sprite_projectAndCull+1
 	thumb_func_end sub_8002D06
 
 	thumb_func_start sprite_makeScalable
