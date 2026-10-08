@@ -225,7 +225,7 @@ int npc_doVerticalMovement_809e84e()
 
 
 // 0x809e878
-int npc_809E878()
+int npc_doDiagonalMovement_809E878()
 {
     int v0; // r5
     int v1; // r1

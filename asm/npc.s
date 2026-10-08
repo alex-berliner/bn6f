@@ -226,7 +226,7 @@ jt_809E6F0:
 	.word npc_nonCutsceneMovementInit_809E704+1
 	.word npc_nonCutsceneMovementUpdate_809E7D8+1
 	.word npc_doVerticalMovement_809e84e+1
-	.word npc_809E878+1
+	.word npc_doDiagonalMovement_809E878+1
 off_809E700:
 	.word jt_809E6F0
 	thumb_func_end npc_doNonCutsceneMovement_809E6DC
@@ -489,7 +489,7 @@ npc_doVerticalMovement_809e84e:
 // 02 - down left
 // 03 - down right
 // byte4 - velocity of horizontal movement
-npc_809E878:
+npc_doDiagonalMovement_809E878:
 	push {lr}
 
 	ldrb r0, [r5,#oOverworldNPCObject_MovementSpeed]
@@ -541,7 +541,7 @@ byte_809E8C4
 	.byte oOverworldNPCObject_Y16, 0
 	.byte oOverworldNPCObject_X16, 1
 	.byte oOverworldNPCObject_Y16, 1
-	thumb_func_end npc_809E878
+	thumb_func_end npc_doDiagonalMovement_809E878
 
 	thumb_local_start
 npc_doHopMovement_809e8cc:
