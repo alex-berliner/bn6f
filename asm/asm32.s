@@ -19201,7 +19201,7 @@ sub_8117D4C:
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	bl sub_800306C
-	ldr r0, off_8117DC0 // =loc_8117DC4
+	ldr r0, off_8117DC0 // =byte_8117DC4
 	ldrb r1, [r5,#3]
 	ldrb r0, [r0,r1]
 	bl sub_800304A
@@ -19227,12 +19227,11 @@ off_8117DB4:
 off_8117DBC:
 	.word unk_20251B0
 off_8117DC0:
-	.word loc_8117DC4
+	.word byte_8117DC4
+byte_8117DC4:
+	.byte 2, 3, 4, 0
 	thumb_func_end sub_8117D4C
 
-loc_8117DC4:
-	lsl r2, r0, #0xc
-	lsl r4, r0, #0
 	thumb_local_start
 sub_8117DC8:
 	push {lr}

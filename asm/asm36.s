@@ -10384,7 +10384,7 @@ sub_8135314:
 	mov r4, #0
 loc_8135328:
 	ldrb r0, [r5,#0xc]
-	ldr r1, off_81353B0 // =loc_81353B4 
+	ldr r1, off_81353B0 // =byte_81353B4 
 	ldrb r1, [r1,r0]
 	add r1, r1, r4
 	mov r7, r1
@@ -10447,12 +10447,13 @@ off_81353A4:
 byte_81353A8:
 	.byte 0x20, 0x0, 0x0, 0x0, 0x40, 0x0, 0x0, 0x0
 off_81353B0:
-	.word loc_81353B4
+	.word byte_81353B4
+byte_81353B4:
+	.byte 0x56, 0x58, 0x5a, 0
 	thumb_func_end sub_8135314
 
-loc_81353B4:
-	ldr r6, [r2,r1]
-	lsl r2, r3, #1
+	thumb_local_start
+sub_81353B8:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -10469,6 +10470,7 @@ loc_81353B4:
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 	.balign 4, 0x00
+	thumb_func_end sub_81353B8
 	thumb_local_start
 sub_81353DC:
 	push {r4,lr}
