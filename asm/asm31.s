@@ -99292,9 +99292,11 @@ locret_80E6BCE:
 	.balign 4, 0
 off_80E6BD0:
 	.word dword_80E6BD4
-dword_80E6BD4:
-	.word 0x4020201
-	.word loc_8030604
+dword_80E6BD4: // u8 [4][2]: (Param1, palette) pairs that sub_80E6BA6 looks up
+	.byte 1, 2
+	.byte 2, 4
+	.byte 4, 6
+	.byte 3, 8
 	thumb_func_end sub_80E6BA6
 
 	thumb_func_start t4_0x56_80E6BDC
