@@ -11649,7 +11649,7 @@ CommMenuJumpTable81291FC:
   // 0x18
 	.word sub_812B5C8+1
   // 0x1C
-	.word byte_8130905
+	.word sub_8130904+1
   // 0x20
 	.word sub_812B80C+1
   // 0x24

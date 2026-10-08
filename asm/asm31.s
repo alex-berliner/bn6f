@@ -138394,7 +138394,7 @@ sub_80F9FA6:
 	mov r0, #3
 	bl sub_80FA01A
 	str r0, [r7,#oAIAttackVars_Unk_30]
-	ldr r0, off_80FA0AC // =byte_80FAAD5
+	ldr r0, off_80FA0AC // =sub_80FAAD4+1
 	str r0, [r7,#oAIAttackVars_Unk_28]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -138484,7 +138484,7 @@ off_80FA0A4:
 off_80FA0A8:
 	.word sub_80FAAAC+1
 off_80FA0AC:
-	.word byte_80FAAD5
+	.word sub_80FAAD4+1
 	thumb_func_end sub_80FA01A
 
 	thumb_local_start
@@ -139817,18 +139817,59 @@ locret_80FAAC8:
 off_80FAACC:
 	.word byte_80FAAD0
 byte_80FAAD0:
-	.byte 0x1, 0x2, 0x6, 0x2, 0xD0
-byte_80FAAD5:
-	.byte 0xB5, 0x89, 0xB0, 0xC0, 0x7C, 0x2, 0x90, 0x0, 0x92, 0x1
-	.byte 0x93, 0x1, 0x26, 0xA9, 0x7D, 0x9, 0x42, 0x0, 0xD0, 0x6
-	.byte 0x26, 0x13, 0xF7, 0xEE, 0xFB, 0x4, 0x1C, 0x30, 0x1C, 0x2
-	.byte 0x99, 0x0, 0x9A, 0x1, 0x9B, 0x12, 0xF7, 0xE0, 0xFA, 0x0
-	.byte 0x42, 0x13, 0xD1, 0x0, 0x9A, 0x1, 0x9B, 0x3, 0xAF, 0x12
-	.byte 0xF7, 0xAD, 0xF9, 0x6, 0x1C, 0x36, 0x42, 0x9, 0xD0, 0x6
-	.byte 0xF7, 0xF, 0xFD, 0x31, 0x1C, 0x6, 0xDF, 0x3, 0xA8, 0x40
-	.byte 0x5C, 0x1, 0x9, 0x40, 0x7, 0x40, 0xF, 0x1, 0xE0, 0x0
-	.byte 0x20, 0xFF, 0xE7, 0x9, 0xB0, 0xD0, 0xBD
+	.byte 0x1, 0x2, 0x6, 0x2
 	thumb_func_end sub_80FAAAC
+
+// AI callback (oAIAttackVars_Unk_28, set by sub_80FA01A; previously
+// disassembled as data bytes). r0 = object, r2/r3 = panel filters; returns
+// a random matching panel (r0 = x, r1 = y), or 0 if the first panel in
+// front of it already matches or none does.
+	thumb_local_start
+sub_80FAAD4:
+	push {r4,r6,r7,lr}
+	sub sp, sp, #0x24
+	ldrb r0, [r0,#0x13]
+	str r0, [sp,#8]
+	str r2, [sp]
+	str r3, [sp,#4]
+	mov r6, #1
+	ldrb r1, [r5,#0x16]
+	tst r1, r1
+	beq loc_80FAAEA
+	mov r6, #6
+loc_80FAAEA:
+	bl object_getFrontDirection
+	add r4, r0, #0
+	add r0, r6, #0
+	ldr r1, [sp,#8]
+	ldr r2, [sp]
+	ldr r3, [sp,#4]
+	bl object_getFirstPanelInDirectionFiltered
+	tst r0, r0
+	bne loc_80FAB28
+	ldr r2, [sp]
+	ldr r3, [sp,#4]
+	add r7, sp, #0xc
+	bl object_getPanelsExceptCurrentFiltered
+	add r6, r0, #0
+	tst r6, r6
+	beq loc_80FAB24
+	bl GetPositiveSignedRNG
+	add r1, r6, #0
+	svc 6
+	add r0, sp, #0xc
+	ldrb r0, [r0,r1]
+	lsr r1, r0, #4
+	lsl r0, r0, #0x1d
+	lsr r0, r0, #0x1d
+	b loc_80FAB28
+loc_80FAB24:
+	mov r0, #0
+	b loc_80FAB28
+loc_80FAB28:
+	add sp, sp, #0x24
+	pop {r4,r6,r7,pc}
+	thumb_func_end sub_80FAAD4
 
 	thumb_local_start
 sub_80FAB2C:
@@ -142247,7 +142288,7 @@ sub_80FBE60:
 	strb r0, [r7,#oAIAttackVars_Unk_02]
 	mov r0, #0
 	bl sub_80FBF92
-	ldr r0, off_80FC064 // =byte_80FCD71
+	ldr r0, off_80FC064 // =sub_80FCD70+1
 	str r0, [r7,#oAIAttackVars_Unk_28]
 	bl sub_80FBD04
 	strh r0, [r7,#oAIAttackVars_Unk_18]
@@ -142458,7 +142499,7 @@ byte_80FC058:
 off_80FC060:
 	.word judgemanChoosePanel_80FCCBC+1
 off_80FC064:
-	.word byte_80FCD71
+	.word sub_80FCD70+1
 off_80FC068:
 	.word sub_80FCD92+1
 off_80FC06C:
@@ -144169,13 +144210,32 @@ off_80FCD60:
 	.word byte_80FCD64
 byte_80FCD64:
 	.byte 0xFF, 0xFE, 0x0, 0xFE, 0x1, 0xFE, 0xFF, 0x2, 0x0, 0x2, 0x1, 0x2
-	.byte 0x10
-byte_80FCD71:
-	.byte 0xB5, 0x4, 0x1C, 0xA8, 0x7D, 0xE1, 0x7C, 0x10, 0xF7
-	.byte 0x85, 0xF9, 0x0, 0x42, 0x7, 0xD0, 0xA2, 0x7C, 0x12
-	.byte 0x1A, 0x0, 0x2A, 0x0, 0xDA, 0x52, 0x42, 0x3, 0x2A
-	.byte 0x0, 0xDD, 0x0, 0x20, 0x10, 0xBD
 	thumb_func_end judgemanChoosePanel_80FCCBC
+
+// AI callback (oAIAttackVars_Unk_28, set by sub_80FBE60; previously
+// disassembled as data bytes). r0 = object; returns r0 = 0 unless the
+// closest matching panel in its row is within 3 columns.
+	thumb_local_start
+sub_80FCD70:
+	push {r4,lr}
+	add r4, r0, #0
+	ldrb r0, [r5,#0x16]
+	ldrb r1, [r4,#0x13]
+	bl object_getClosestPanelMatchingRowFiltered
+	tst r0, r0
+	beq locret_80FCD90
+	ldrb r2, [r4,#0x12]
+	sub r2, r2, r0
+	cmp r2, #0
+	bge loc_80FCD8A
+	neg r2, r2
+loc_80FCD8A:
+	cmp r2, #3
+	ble locret_80FCD90
+	mov r0, #0
+locret_80FCD90:
+	pop {r4,pc}
+	thumb_func_end sub_80FCD70
 
 	thumb_local_start
 sub_80FCD92:
@@ -153133,10 +153193,19 @@ sub_8101456:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8101456
 
+// (previously unlabeled; no known callers)
+	thumb_local_start
+sub_8101462:
 	push {lr}
 	pop {pc}
+	thumb_func_end sub_8101462
+
+	thumb_local_start
+sub_8101466:
 	push {lr}
 	pop {pc}
+	thumb_func_end sub_8101466
+
 	thumb_local_start
 sub_810146A:
 	push {lr}
