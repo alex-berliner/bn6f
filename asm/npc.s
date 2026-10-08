@@ -2881,6 +2881,12 @@ npc_disableScript0x19_809f51e:
 	pop {pc}
 	thumb_func_end npc_disableScript0x19_809f51e
 
+// symdb: Rebuild an NPC's interaction areas for this frame (its footprint and its talk range).
+// symdb: (r5 = NPC object) -> if active: area 1 = footprint (flag 0x20000 unless collision is disabled by
+// symdb: UnkFlags_60 bit 2), area 2 = interaction range (skipped if UnkFlags_60 has bit 2 or 0x10);
+// symdb: positions = coords + centre offsets, Z from checkZCoordModifiers_8031612 when InteractionLocked;
+// symdb: then clears Unk_50/Unk_58; r5, r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_createInteractionAreas_809F526.yaml
 	thumb_local_start
 npc_createInteractionAreas_809F526:
 	push {r7,lr}

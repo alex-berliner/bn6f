@@ -1088,6 +1088,11 @@ off_80037A8:
 // r4 - flags?
 // r5 - flags?
 // r6 - memory address to write success value
+// symdb: Append one interaction area (rounded position, kind, three payload words) to the overworld interaction-area array.
+// symdb: (r0, r1, r2 = x, y, z in 16.16, r3 = kind, r4-r6 = payload) -> entry {xy packed (y high), z |
+// symdb: kind<<16, r4, r5, r6} at eOWObjectInteractionArea_0_X[count]; dropped when count >= 32; r1/r2 =
+// symdb: the packed words, r3 = kind<<16; flags from cmp count,#32 or the count increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/createOWObjectInteractionArea_80037ac.yaml
 createOWObjectInteractionArea_80037ac:
 	push {r7,lr}
 

@@ -3201,6 +3201,11 @@ off_8035688:
 
 	thumb_func_start applyLayerEffectToOWObject_8035694
 // r0 - coords
+// symdb: Decide which layer an overworld object draws on: a per-map region table first, else checkLayerPriority_80318b0.
+// symdb: (r0 = object coords, r10 = toolkit) -> r0 = Unk_0c of the first Struct8034460 record of the
+// symdb: current map (GameState.MapId) whose signed X/Y/Z bounds contain the object (equal X bounds: only
+// symdb: Z is tested), else checkLayerPriority_80318b0(object); r4-r9, r12 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/applyLayerEffectToOWObject_8035694.yaml
 applyLayerEffectToOWObject_8035694:
 	push {r4-r7,lr}
 	mov r5, r0

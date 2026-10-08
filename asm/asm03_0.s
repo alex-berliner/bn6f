@@ -21399,6 +21399,11 @@ loc_8030622:
 	b loc_8030600
 	thumb_func_end sub_80305E4
 
+// symdb: Write two tile ids into BG tile-id blocks 1 and 2 at the same (column, row).
+// symdb: (r0 = tile id for block 1, r1 = tile id for block 2, r3 = column, r4 = row, r10 = toolkit) ->
+// symdb: u16 stores at [toolkit+oToolkit_iBGTileIdBlocks_Ptr] + block*0x800 + row*0x40 + column*2; r0 =
+// symdb: r1, r2 = 3, r6 = row<<6, r7 = last block entry base; flags from cmp r2,#2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/setBGTileIdsBlocks1And2_8030628.yaml
 	thumb_func_start setBGTileIdsBlocks1And2_8030628
 setBGTileIdsBlocks1And2_8030628:
 	push {r0,r1}
@@ -22105,6 +22110,10 @@ sub_8030B0C:
 	mov pc, lr
 	thumb_func_end sub_8030B0C
 
+// symdb: Binary-search a sorted {u16 id, u16 offset} table for an id and return its first entry.
+// symdb: (r1 = id, r5 = table header {u32 base; u16 count at +4}) -> r2 = address of the first entry with
+// symdb: that id, or 0; r8 = base, r3 = final upper bound, r7 = last compared id
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/findFirstEntryWithId_8030B1E.yaml
 	thumb_local_start
 findFirstEntryWithId_8030B1E:
 	push {lr}
@@ -23726,6 +23735,10 @@ dword_8031690:
 	.word NULL // 0x19
 	thumb_func_end checkZCoordModifiers_8031612
 
+// symdb: Turn an overworld object's position into a cell index of the layer-region grid.
+// symdb: (r0 = object coords, r5 = grid header (Ex2011a20)) -> [r5+8] = (unk06 & ~1) * (y/8 + unk07/2) +
+// symdb: x/8 + unk06/2; [r5+0xC] = x & ~7, [r5+0x10] = y & ~7; r1 = the index, r3 = 7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getOWObjectGridCellIndex_80316F8.yaml
 	thumb_local_start
 getOWObjectGridCellIndex_80316F8:
 	mov r2, #oOWObjectCoords_X
@@ -24006,6 +24019,12 @@ sub_803189C:
 	.byte 0, 0
 	thumb_func_end sub_803189C
 
+// symdb: Find the layer-region record covering an object's cell and height, and run its kind's handler.
+// symdb: (r0 = object) -> records the object at dword_200F3D0; cell = sub_80316F8, first entry =
+// symdb: sub_8030B1E; for each entry of that cell whose record {s8 top; u8; u8 height; u8 kind} spans the
+// symdb: object's Y (+0xA), stores the record at [dword_2013940+0x14] and calls the kind's handler; r0 =
+// symdb: 2 if none matched, else the handler's r0; r4-r9, r12 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkLayerPriority_80318b0.yaml
 	thumb_func_start checkLayerPriority_80318b0
 checkLayerPriority_80318b0:
 	push {r4-r7,lr}
