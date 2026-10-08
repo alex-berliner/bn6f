@@ -1709,6 +1709,9 @@ Flags804091C:
 	thumb_func_end chatbox_config_80408D0
 
 // (int mask) -> void
+// symdb: Set bits in the chatbox's 16-bit flag word.
+// symdb: (r0 = bits, r5 = chatbox) -> oChatbox_flags_3E |= r0; nz from the new word; r1 kept
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setflags_3e.yaml
 	thumb_local_start
 chatbox_setflags_3e:
 	push {r1}
@@ -1720,6 +1723,9 @@ chatbox_setflags_3e:
 	thumb_func_end chatbox_setflags_3e
 
 // (int mask) -> void
+// symdb: Clear bits in the chatbox's 16-bit flag word.
+// symdb: (r0 = bits, r5 = chatbox) -> oChatbox_flags_3E &= ~r0; r1 kept; no flags promised
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clearFlags_3e.yaml
 	thumb_local_start
 chatbox_clearFlags_3e:
 	push {r1}
@@ -1732,6 +1738,9 @@ chatbox_clearFlags_3e:
 
 // (int mask) -> void
 //
+// symdb: Test bits of the chatbox's 16-bit flag word: which of the given bits are set.
+// symdb: (r0 = bits, r5 = chatbox) -> r0 = r0 & oChatbox_flags_3E; nz from it; r1 kept
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_maskFlags_3e.yaml
 	thumb_func_start chatbox_maskFlags_3e
 chatbox_maskFlags_3e:
 	push {r1}
