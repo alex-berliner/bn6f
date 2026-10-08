@@ -16,6 +16,9 @@ dword_80005BC:
 	.balign 4, 0
 	thumb_func_end call_m4aSoundMain
 
+// symdb: Calls m4aSoundVSync (a ROM-resident wrapper the IWRAM VCount callback uses).
+// symdb: () -> m4aSoundVSync()
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/call_m4aSoundVSync.yaml
 	thumb_func_start call_m4aSoundVSync
 call_m4aSoundVSync:
 	push {lr}

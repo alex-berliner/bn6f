@@ -21607,6 +21607,10 @@ off_814E25C:
 	.word Channel1Sweepregister_NR10_
 	thumb_func_end sub_814E248
 
+// symdb: MPlayMain: the m4a music player sequencer, run once per frame for the player chain.
+// symdb: (r0 = MusicPlayerInfo) -> locks itself, runs the next chained player, advances its song (tempo
+// symdb: ticks, gate times, track commands, LFO), pushes volume/pitch to its channels; promises r4-r11
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MPlayMain.yaml
 	thumb_local_start
 MPlayMain:
 	ldr r2, dword_814E4D8 // =0x68736d53 
@@ -22546,6 +22550,10 @@ dword_814E89C:
 	.word 0x68736D53
 	thumb_func_end sub_814E87C
 
+// symdb: m4aSoundInit: initialise the m4a sound engine and open the music players.
+// symdb: () -> SoundInit, CGB channel driver, SoundMode, then MPlayOpen for the 0x20 players of
+// symdb: gMPlayTable
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4aSoundInit.yaml
 	thumb_func_start m4aSoundInit
 m4aSoundInit:
 	push {r4-r6,lr}
@@ -23608,6 +23616,10 @@ off_814F008:
 	.word Timer0Control
 	thumb_func_end sub_814EF94
 
+// symdb: m4aSoundVSync: per-frame restart of the sound FIFO DMAs.
+// symdb: () -> if SoundInfo is valid: count down pcmDmaCounter; at 0 reload it and restart DMA1/DMA2
+// symdb: (control 0x84400004)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4aSoundVSync.yaml
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync:
 	push {lr}

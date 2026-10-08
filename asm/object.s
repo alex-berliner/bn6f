@@ -1537,6 +1537,9 @@ locret_800C486:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800C380
 
+// symdb: r1 = 480 in battle mode 1, else 600, keeping r0/r2/r3 (likely a timer length in frames).
+// symdb: () -> r1 = GetBattleMode() == 1 ? 0x1E0 : 0x258; r0, r2, r3 preserved
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800C488.yaml
 	thumb_local_start
 sub_800C488:
 	push {r0,r2,r3,lr}
@@ -2142,6 +2145,10 @@ loc_800C906:
 	pop {pc}
 	thumb_func_end object_getPanelParameters
 
+// symdb: Long-call thunk to _object_getPanelDataOffset (out of bl range).
+// symdb: (r0, r1 = arguments, passed through) -> results of _object_getPanelDataOffset; lr ends as
+// symdb: 0x0800C912 (the thunk's own pop {pc})
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelDataOffset.yaml
 	thumb_func_start object_getPanelDataOffset
 object_getPanelDataOffset:
 	push {lr}
@@ -2649,6 +2656,10 @@ object_isCurrentPanelValid:
 	pop {pc}
 	thumb_func_end object_isCurrentPanelValid
 
+// symdb: Is a 1-based (column, row) inside the 6x3 battle grid?
+// symdb: (r0 = column 1..6, r1 = row 1..3) -> r0 = 1 if valid else 0; r1 -= 1 once the column passed; N/Z
+// symdb: from r0, C/V from the last compare
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_isValidPanel.yaml
 	thumb_func_start object_isValidPanel
 object_isValidPanel:
 	sub r0, #1

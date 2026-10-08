@@ -41,6 +41,8 @@ off_3000EA4:: // 0x3000ea4
 	.space 4
 byte_3000EA8:: // 0x3000ea8
 	.space 680
+// symdb: The sprite pool: 128 queued OAM entries {attr01, attr2, 0xFF, next}.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iSpritePool.yaml
 iSpritePool:: // 0x3001150
 	// type: struct{u32 unk0, u16 unk1, u8 unk2, u8 unk3} [128]
 	.space 1024
@@ -94,6 +96,8 @@ iPalette3001890:: // 0x3001890
 	.space 0x60
 iPalette30018F0:: // 0x30018f0
 	.space 0x60
+// symdb: Number of sprite pool entries used this frame.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iSpritePoolUsed.yaml
 iSpritePoolUsed:: // 0x3001950
 	.space 16
 palette_3001960:: // 0x3001960
@@ -144,6 +148,8 @@ iPalette3001C80:: // 0x3001c80
 	.space 0xe0
 dword_3001D60:: // 0x3001d60
 	.space 16
+// symdb: The OAM shadow: 128 OBJ attribute sets copied to OAM.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iOamShadow.yaml
 iOamShadow:: // 0x3001d70
 	// type: struct{u32 unk0, u16 unk1, u8 unk2, u8 unk3} [128]
 	.space 128*8
@@ -165,6 +171,8 @@ unk_3002400:: // 0x3002400
 	.space 384
 unk_3002580:: // 0x3002580
 	.space 16
+// symdb: Sprite layer lists: per layer {u8 *heads, u32 count}.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iSpriteLayerLists.yaml
 iSpriteLayerLists:: // 0x3002590
 	// type: struct{u8 *p0, int len} [4]
 	.space 4*8
@@ -175,6 +183,8 @@ unk_30025B0:: // 0x30025b0
 iBGTileIdBlocks:: // 0x30025c0
 	// type: u16[32][32][4]
 	.space 4*2*32*32
+// symdb: The m4a SoundInfo (gSoundInfo).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iSoundInfo.yaml
 iSoundInfo:: // 0x30045c0
 	.space 2688
 byte_3005040:: // 0x3005040
@@ -256,6 +266,8 @@ off_30055F8:: // 0x30055f8
 	.space 4
 off_30055FC:: // 0x30055fc
 	.space 4
+// symdb: The m4a CGB channel array (4 CgbChannel structs, 0x40 bytes each).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iCgbChannels.yaml
 iCgbChannels:: // 0x3005600
 	.space 40
 unk_3005628:: // 0x3005628

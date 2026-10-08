@@ -686,6 +686,8 @@ ePalette20097a0:: // 0x20097a0
 	palette_20097a0_struct ePalette20097a0_21
 ePalette20097a0End:: // 0x20098a8
 
+// symdb: Sprite placement settings; byte 1 selects the camera projection (0 isometric, 4 side view).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20098A8.yaml
 byte_20098A8:: // 0x20098a8
 	.space 1
 byte_20098A9:: // 0x20098a9

@@ -14388,6 +14388,10 @@ off_802D230:
 	.word dword_2006740
 	thumb_func_end sub_802D1EC
 
+// symdb: The current battle's mode, from the battle state's settings.
+// symdb: (r10 = toolkit) -> r0 = GetBattleModeFromBattleSettings([[toolkit + oToolkit_BattleStatePtr] +
+// symdb: oBattleState_BattleSettings])
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleMode.yaml
 	thumb_func_start GetBattleMode
 GetBattleMode:
 	push {lr}
@@ -18335,6 +18339,10 @@ dword_802F10C:
 /* (r0:u8 flagUpper, r1:u8 flagLower) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Set one event (story progress) flag (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte) -> sets the flag; r0 = the byte with the flag's bit
+// symdb: set, r1 = mask, r3 = byte address; N/Z from the new byte (orr), C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetEventFlagFromImmediate.yaml
 	thumb_func_start SetEventFlagFromImmediate
 SetEventFlagFromImmediate:
 // merge r0 and r1 into a halfword
@@ -18350,6 +18358,10 @@ SetEventFlagFromImmediate:
 /* (r0:u16 flagToSet) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Set one event (story progress) flag
+// symdb: (r0 = flag) -> sets the flag; r0 = the byte with the flag's bit set, r1 = mask, r3 = byte
+// symdb: address; N/Z from the new byte (orr), C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetEventFlag.yaml
 	thumb_func_start SetEventFlag
 SetEventFlag:
 	mov r3, r10
@@ -18377,6 +18389,11 @@ SetEventFlag:
 /* (r0:u8 flagUpper, r1:u8 flagLower) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11-r12 */
+// symdb: Clear one event (story progress) flag (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte) -> clears the flag; r0 = the byte with the bit
+// symdb: cleared, r1 = mask, r3 = byte address; N/Z from the new byte (bic), C = 0, V from the address
+// symdb: add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearEventFlagFromImmediate.yaml
 	thumb_func_start ClearEventFlagFromImmediate
 ClearEventFlagFromImmediate: // (flag: u16) -> ()
 	lsl r0, r0, #8
@@ -18389,6 +18406,10 @@ ClearEventFlagFromImmediate: // (flag: u16) -> ()
 /* (r0:u16 flagToClear) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Clear one event (story progress) flag
+// symdb: (r0 = flag) -> clears the flag; r0 = the byte with the bit cleared, r1 = mask, r3 = byte
+// symdb: address; N/Z from the new byte (bic), C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearEventFlag.yaml
 	thumb_func_start ClearEventFlag
 ClearEventFlag:
 	mov r3, r10
@@ -18417,6 +18438,11 @@ ClearEventFlag:
 /* (r0:u8 flagUpper, r1:u8 flagLower) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Toggle one event (story progress) flag (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte) -> toggles the flag; r0 = the byte with the bit
+// symdb: flipped, r1 = mask, r3 = byte address; N/Z from the new byte (eor), C = 0, V from the address
+// symdb: add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ToggleEventFlagFromImmediate.yaml
 	thumb_func_start ToggleEventFlagFromImmediate
 ToggleEventFlagFromImmediate:
 	lsl r0, r0, #8
@@ -18430,6 +18456,10 @@ ToggleEventFlagFromImmediate:
 /* (r0:u16 flagToToggle) -> void
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Toggle one event (story progress) flag
+// symdb: (r0 = flag) -> toggles the flag; r0 = the byte with the bit flipped, r1 = mask, r3 = byte
+// symdb: address; N/Z from the new byte (eor), C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ToggleEventFlag.yaml
 	thumb_func_start ToggleEventFlag
 ToggleEventFlag:
 	mov r3, r10
@@ -18457,6 +18487,10 @@ ToggleEventFlag:
 /* (r0:u8 eventGroupOffset, r1:u8 byteAndFlagOffset) -> !zf
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Test one event (story progress) flag (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte) -> Z clear if the flag is set (tst r0, r1); r0 = the
+// symdb: flag's byte, r1 = mask, r3 = byte address; C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestEventFlagFromImmediate.yaml
 	thumb_func_start TestEventFlagFromImmediate
 TestEventFlagFromImmediate: // (flag: u16) -> !zf
 	lsl r0, r0, #8
@@ -18471,6 +18505,10 @@ TestEventFlagFromImmediate: // (flag: u16) -> !zf
 /* (r0:u16 flagToTest) -> !zf
    clobbers: r0,r1,r3
    ignores: r2,r4-r9,r11,r12 */
+// symdb: Test one event (story progress) flag
+// symdb: (r0 = flag) -> Z clear if the flag is set (tst r0, r1); r0 = the flag's byte, r1 = mask, r3 =
+// symdb: byte address; C = 0, V from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestEventFlag.yaml
 	thumb_func_start TestEventFlag
 TestEventFlag: // (flag: u16) -> !zf
 	mov r3, r10
@@ -18498,6 +18536,12 @@ TestEventFlag: // (flag: u16) -> !zf
    preserves: r4,r5,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Set a run of consecutive event flags (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte, r2 = count) -> sets flags first .. first + count - 1
+// symdb: (at least one: the loop is `sub r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 =
+// symdb: counter after the loop, r3 = last byte address; NZCV from the last `sub r2, #1`; r4, r5
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetEventFlagRangeFromImmediate.yaml
 	thumb_func_start SetEventFlagRangeFromImmediate
 SetEventFlagRangeFromImmediate:
 	lsl r0, r0, #8
@@ -18513,6 +18557,11 @@ SetEventFlagRangeFromImmediate:
    preserves: r4,r5,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Set a run of consecutive event flags
+// symdb: (r0 = flag, r2 = count) -> sets flags first .. first + count - 1 (at least one: the loop is `sub
+// symdb: r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 = counter after the loop, r3 = last
+// symdb: byte address; NZCV from the last `sub r2, #1`; r4, r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetEventFlagRange.yaml
 	thumb_func_start SetEventFlagRange
 SetEventFlagRange:
 	push {r4,r5,lr}
@@ -18556,6 +18605,12 @@ SetEventFlagRange:
    preserves: r4,r5,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Clear a run of consecutive event flags (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte, r2 = count) -> clears flags first .. first + count - 1
+// symdb: (at least one: the loop is `sub r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 =
+// symdb: counter after the loop, r3 = last byte address; NZCV from the last `sub r2, #1`; r4, r5
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearEventFlagRangeFromImmediate.yaml
 	thumb_func_start ClearEventFlagRangeFromImmediate
 ClearEventFlagRangeFromImmediate:
 	lsl r0, r0, #8
@@ -18570,6 +18625,11 @@ ClearEventFlagRangeFromImmediate:
    preserves: r4,r5,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Clear a run of consecutive event flags
+// symdb: (r0 = flag, r2 = count) -> clears flags first .. first + count - 1 (at least one: the loop is
+// symdb: `sub r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 = counter after the loop, r3 =
+// symdb: last byte address; NZCV from the last `sub r2, #1`; r4, r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearEventFlagRange.yaml
 	thumb_func_start ClearEventFlagRange
 ClearEventFlagRange:
 	push {r4,r5,lr}
@@ -18613,6 +18673,12 @@ ClearEventFlagRange:
    preserves: r4,r5,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Toggle a run of consecutive event flags (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte, r2 = count) -> toggles flags first .. first + count -
+// symdb: 1 (at least one: the loop is `sub r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 =
+// symdb: counter after the loop, r3 = last byte address; NZCV from the last `sub r2, #1`; r4, r5
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ToggleEventFlagRangeFromImmediate.yaml
 	thumb_local_start
 ToggleEventFlagRangeFromImmediate:
 	lsl r0, r0, #8
@@ -18627,6 +18693,11 @@ ToggleEventFlagRangeFromImmediate:
    preserves: r4,r5
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Toggle a run of consecutive event flags
+// symdb: (r0 = flag, r2 = count) -> toggles flags first .. first + count - 1 (at least one: the loop is
+// symdb: `sub r2,#1; bgt`); r0 = last byte's new value, r1 = last mask, r2 = counter after the loop, r3 =
+// symdb: last byte address; NZCV from the last `sub r2, #1`; r4, r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ToggleEventFlagRange.yaml
 	thumb_local_start
 ToggleEventFlagRange:
 	push {r4,r5,lr}
@@ -18670,6 +18741,11 @@ ToggleEventFlagRange:
    preserves: r4-r7,lr
    clobbers: r0-r3
    ignores: r6-r9,r11,r12*/
+// symdb: Test a run of consecutive event flags (flag as two bytes)
+// symdb: (r0 = flag high byte, r1 = flag low byte, r2 = count) -> r0 = 1 if every flag in the range is
+// symdb: set, else 0; Z from r0 (tst r0, r0); C/V from cmp(set count, count); r1 = last mask, r2 = loop
+// symdb: counter after `sub r2,#1; bgt` (0 for count >= 1), r3 = last byte address; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestEventFlagRangeFromImmediate.yaml
 	thumb_func_start TestEventFlagRangeFromImmediate
 TestEventFlagRangeFromImmediate:
 	lsl r0, r0, #8
@@ -18684,6 +18760,11 @@ TestEventFlagRangeFromImmediate:
    preserves: r4-r7,lr
    clobbers: r0-r3
    ignores: r8-r9,r11,r12*/
+// symdb: Test a run of consecutive event flags
+// symdb: (r0 = flag, r2 = count) -> r0 = 1 if every flag in the range is set, else 0; Z from r0 (tst r0,
+// symdb: r0); C/V from cmp(set count, count); r1 = last mask, r2 = loop counter after `sub r2,#1; bgt` (0
+// symdb: for count >= 1), r3 = last byte address; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestEventFlagRange.yaml
 	thumb_func_start TestEventFlagRange
 TestEventFlagRange:
 	push {r4-r7,lr}

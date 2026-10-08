@@ -3905,6 +3905,8 @@ byte_8158271::
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 // gMPlayTable: struct {MusicPlayerInfo *info; MusicPlayerTrack *tracks;
 // u8 numTracks; u8 pad; u16 unk;} [0x20], used by m4aSoundInit
+// symdb: gMPlayTable: the 0x20 music players {info, tracks, numTracks, pad, unk}.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gMPlayTable.yaml
 gMPlayTable::
 	.word byte_2010690, unk_2006E08
 	.byte 0x3, 0x0

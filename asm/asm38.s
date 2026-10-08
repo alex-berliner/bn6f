@@ -224,6 +224,9 @@ off_3005D74:
 	.word sub_80068E0+1
 	thumb_func_end sub_3005D24
 
+// symdb: The sound engine's VCount interrupt callback: m4aSoundVSync, then m4aSoundMain.
+// symdb: (called by the interrupt dispatcher) -> call_m4aSoundVSync(); call_m4aSoundMain()
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_vcountCallback.yaml
 	thumb_func_start sound_vcountCallback
 sound_vcountCallback:
 	push {lr}
@@ -509,6 +512,10 @@ loc_3005EDE:
 // r0 - some param
 // r2 - jumptable index
 // r6 - num palettes
+// symdb: Palette effects 0/1: saturating add or subtract a constant colour to every entry of a BGR555 buffer.
+// symdb: (r0 = colour, r2 = effect id * 4 (0 add, 4 subtract), r6 = buffer size in bytes, r7 = buffer) ->
+// symdb: entries replaced last to first; promises r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_addOrSubtractColor.yaml
 palette_addOrSubtractColor:
 	push {r5,lr}
 	cmp r6, #0
@@ -589,6 +596,10 @@ sub_3005F56:
 	mov pc, lr
 	thumb_func_end sub_3005F56
 
+// symdb: Palette effects 2/3: fade every entry toward white or black with per-channel factors.
+// symdb: (r0 = factor_r | factor_g << 5 | factor_b << 10, r2 = effect id * 4 (12 = toward black), r6 =
+// symdb: size, r7 = buffer) -> entries replaced; promises r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_fadeTowardWhiteOrBlack.yaml
 	thumb_func_start palette_fadeTowardWhiteOrBlack
 palette_fadeTowardWhiteOrBlack:
 	push {r5,lr}
@@ -689,6 +700,10 @@ sub_3005FFA:
 	thumb_func_end sub_3005FFA
 
 
+// symdb: Make sure an object's sprite tiles are in OBJ VRAM and its palette has an OBJ palette slot.
+// symdb: (r0 = tile allocator index, r5 = object) -> tiles cached by graphics pointer (a miss allocates
+// symdb: tiles and queues a DMA upload); palette shared by content among 15 slots; promises r5, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_ensureGfxResident.yaml
 	thumb_func_start sprite_ensureGfxResident
 sprite_ensureGfxResident:
 	push {r5,lr}
@@ -938,6 +953,10 @@ off_30061E4:
 	.word dword_200A890
 	thumb_func_end sub_30061C8
 
+// symdb: Project an object's world position to the screen (through the camera mode) and mark which pieces of its frame are on screen.
+// symdb: (r0 = position, r5 = object; r10 = toolkit) -> sprite struct fields: screen X/Y, visibility
+// symdb: flags (+0x03), on-screen piece mask (+0x28); promises r5, r10 only
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_projectAndCull.yaml
 	thumb_func_start sprite_projectAndCull
 sprite_projectAndCull:
 	push {r5,lr}
@@ -1280,6 +1299,10 @@ off_300643C:
 	.word byte_20098A8
 	thumb_func_end sub_3006428
 
+// symdb: Queue the visible pieces of a sprite's current animation frame as OAM entries.
+// symdb: (r0 = layer, r1 = list position bias, r5 = sprite) -> pieces become OAM attribute sets (mirrored
+// symdb: or affine), collected and linked into the layer lists; promises r5, r10, r11
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_queueFramePieces.yaml
 	thumb_func_start sprite_queueFramePieces
 sprite_queueFramePieces:
 	push {lr}
@@ -1792,6 +1815,10 @@ loc_30067F8:
 	.balign 4, 0x00
 	thumb_func_end _sprite_update
 
+// symdb: Build this frame's OAM shadow from the sprite layer lists.
+// symdb: () -> layers emitted in order, each list from its head, until 128 entries; unused entries
+// symdb: hidden; affine parameters interleaved; per-frame queues reset
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_buildOamShadow.yaml
 	thumb_func_start sprite_buildOamShadow
 sprite_buildOamShadow: // () -> void
 	push {r4-r7,lr}
@@ -1963,6 +1990,11 @@ off_30068E4:
 	.word iSpritePoolUsed
 	thumb_func_end sprite_buildOamShadow
 
+// symdb: Queue one OAM entry into a sprite layer's list.
+// symdb: (r0 = attr01, r1 = attr2, r2 = layer, r3 = list position) -> r0 = 0xFF if queued; flags as the
+// symdb: original (pool full: cmp n,#0x80; position out of range: cmp r3,len or cmp r3,#0; queued:
+// symdb: N=Z=C=V=0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntry.yaml
 	thumb_func_start sprite_queueOamEntry
 sprite_queueOamEntry:
 	push {r4-r7,lr}
@@ -1996,6 +2028,9 @@ locret_300691E:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_queueOamEntry
 
+// symdb: Queue several prepared OAM entries, all or none if the sprite pool would overflow.
+// symdb: (r0 = entries, r1 = count) -> linked into the layer lists; promises r4-r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntries.yaml
 	thumb_func_start sprite_queueOamEntries
 sprite_queueOamEntries:
 	push {r4-r7,lr}
@@ -3530,6 +3565,9 @@ locret_3007430:
 	thumb_local_start
 // r0 - defending element
 // r1 - attacking element
+// symdb: Look up the 5x5 element weakness table.
+// symdb: (r0 = attacker element 0..4, r1 = defender element 0..4) -> r0 = byte_3007444[r0 * 5 + r1]
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getPrimaryElementWeaknessMultipler_3007432.yaml
 getPrimaryElementWeaknessMultipler_3007432:
 	mov r2, #5
 	mul r0, r2

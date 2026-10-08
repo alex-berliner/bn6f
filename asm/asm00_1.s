@@ -14840,6 +14840,9 @@ off_800A094:
 	.word dword_2036820
 	thumb_func_end sub_800A07C
 
+// symdb: Is a time-stop effect freezing the battle (battle flags bit 2)?
+// symdb: () -> r0 = battle flags & 4 (nonzero: time stopped), r1 = 4, N/Z from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_isTimeStop.yaml
 	thumb_func_start battle_isTimeStop
 battle_isTimeStop:
 	push {lr}

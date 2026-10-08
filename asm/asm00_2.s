@@ -745,6 +745,10 @@ loc_800F286:
 	pop {pc}
 	thumb_func_end sub_800F26C
 
+// symdb: Unpack an enemy's {version, actor type, AI index} record into registers.
+// symdb: (r0 = enemy index) -> r0 = actor type, r1 = AI index, r2 = version (bytes 1, 2, 0 of the record
+// symdb: GetVerActorTyAndAIIdx_80182B4 returns)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/unpackVerActorTyAndAIIdx_800F29C.yaml
 	thumb_func_start unpackVerActorTyAndAIIdx_800F29C
 unpackVerActorTyAndAIIdx_800F29C:
 	push {lr}
@@ -10313,6 +10317,9 @@ SetBattleNaviStatsHword_AllianceFromBattleObject:
 	pop {r6,r7,pc}
 	thumb_func_end SetBattleNaviStatsHword_AllianceFromBattleObject
 
+// symdb: Read one NaviStats byte for the battle object's side (alliance).
+// symdb: (r1 = stat offset, r5 = battle object) -> r0 = NaviStats(alliance of r5)[r1]
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleNaviStatsByte_AllianceFromBattleObject.yaml
 	thumb_func_start GetBattleNaviStatsByte_AllianceFromBattleObject
 GetBattleNaviStatsByte_AllianceFromBattleObject:
 	push {r6,lr}
@@ -25581,6 +25588,9 @@ off_801BF04:
 	.word sub_801D71A+1
 	thumb_func_end sub_801BEE0
 
+// symdb: Run the callbacks whose bits are set in eStruct2035280+0x44, lowest bit first.
+// symdb: (r10) -> for each set bit k of [eStruct2035280 + 0x44]: call off_801BF88[k]; r5-r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/runFlaggedCallbacks_801BF64.yaml
 	thumb_func_start runFlaggedCallbacks_801BF64
 runFlaggedCallbacks_801BF64:
 	push {r5-r7,lr}
