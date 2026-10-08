@@ -145280,7 +145280,7 @@ loc_80FD6C2:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80FD6EA
 	ldrb r4, [r7,#oAIAttackVars_Unk_03]
-	ldr r0, off_80FD6EC // =dword_80FD6F0
+	ldr r0, off_80FD6EC // =byte_80FD6F0
 	ldrb r0, [r0,r4]
 	lsl r0, r0, #8
 	orr r4, r0
@@ -145297,9 +145297,10 @@ locret_80FD6EA:
 	pop {r4,r6,pc}
 	.balign 4, 0
 off_80FD6EC:
-	.word dword_80FD6F0
-dword_80FD6F0:
-	.word 0x80A0C0E
+	.word byte_80FD6F0
+byte_80FD6F0:
+	// indexed with ldrb; not a pointer
+	.byte 0xE, 0xC, 0xA, 0x8
 	thumb_func_end sub_80FD6A6
 
 	thumb_local_start

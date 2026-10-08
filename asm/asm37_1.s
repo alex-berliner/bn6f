@@ -3498,7 +3498,7 @@ locret_8143B14:
 off_8143B18:
 	.word dword_8143B1C // [*const CutsceneScript; 2]
 dword_8143B1C: // [*const CutsceneScript; 2]
-  .word 0x8092C78
+	.word cutscenescript_8092C78
 	.word byte_8092A98
 off_8143B24:
 	.word byte_8092DE8 // CutsceneScript

@@ -7648,7 +7648,7 @@ loc_8006D74:
 	b loc_8006D70
 loc_8006D8C:
 	ldr r4, off_8006DDC // =dword_2000060
-	ldr r6, off_8006DE0 // =0x802412C
+	ldr r6, dword_8006DE0 // =0x802412C (XOR key)
 loc_8006D90:
 	bl GetRNG // () -> u32?
 	lsl r0, r0, #0xc
@@ -7659,7 +7659,7 @@ loc_8006D90:
 	str r0, [r4]
 	bl encryption_zenny_8006f54
 	ldr r4, off_8006DE4 // =dword_20018B8
-	ldr r6, off_8006DE8 // =0x803ED90
+	ldr r6, dword_8006DE8 // =0x803ED90 (XOR key)
 loc_8006DA8:
 	bl GetRNG // () -> u32?
 	lsl r0, r0, #0xc
@@ -7686,12 +7686,12 @@ dword_8006DD8:
 	.word 0x4
 off_8006DDC:
 	.word dword_2000060
-off_8006DE0:
-	.word 0x802412C
+dword_8006DE0:
+	.word 0x802412C // encryption key constant, not a pointer
 off_8006DE4:
 	.word dword_20018B8
-off_8006DE8:
-	.word 0x803ED90
+dword_8006DE8:
+	.word 0x803ED90 // encryption key constant, not a pointer
 	thumb_func_end encryption_initAll_8006d00
 
 	thumb_func_start sub_8006DEC

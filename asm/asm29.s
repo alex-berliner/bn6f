@@ -3066,7 +3066,7 @@ sub_80A6CFC:
 	push {lr}
 	push {r0}
 	bl GetCurPETNavi // () -> u8
-	ldr r2, dword_80A6D34 // =PETNaviToNPCSpriteTable
+	ldr r2, off_80A6D34 // =PETNaviToNPCSpriteTable
 	ldrb r2, [r2,r0]
 	mov r0, #0x80
 	mov r1, #0x18
@@ -3085,8 +3085,8 @@ sub_80A6CFC:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0
-dword_80A6D34:
-	.word 0x809D328
+off_80A6D34:
+	.word PETNaviToNPCSpriteTable
 	thumb_func_end sub_80A6CFC
 
 	thumb_local_start
