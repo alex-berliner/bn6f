@@ -99292,6 +99292,8 @@ locret_80E6BCE:
 	.balign 4, 0
 off_80E6BD0:
 	.word paletteByParam1_80E6BD4
+// symdb: Four (Param1, palette) byte pairs that sub_80E6BA6 looks up to set a battle object's related sprite's palette.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/paletteByParam1_80E6BD4.yaml
 paletteByParam1_80E6BD4: // u8 [4][2]: (Param1, palette) pairs that sub_80E6BA6 looks up
 	.byte 1, 2
 	.byte 2, 4

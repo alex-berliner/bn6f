@@ -21303,6 +21303,11 @@ off_803057C:
 	.word eDecompBuffer2013A00
 	thumb_func_end sub_8030540
 
+// symdb: Each overworld frame, scroll the BG tile map's 32x32 window to the camera: draw the columns, then rows, that came into view.
+// symdb: (r10 = toolkit) -> u16 stores into the BG tile-id blocks through the map's callbacks; restores
+// symdb: r4-r9, r12; r1/r2/r3 = the r8/r9/r12 it was given; c, v as its last compare (or the redraw
+// symdb: callback's)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scrollBGTileMapToCamera_8030580.yaml
 	thumb_func_start scrollBGTileMapToCamera_8030580
 scrollBGTileMapToCamera_8030580:
 	push {r4-r7,lr}
@@ -21357,6 +21362,11 @@ off_80305E0:
 	.word eMapTilesState200be70
 	thumb_func_end scrollBGTileMapToCamera_8030580
 
+// symdb: Read a map cell's tile ids from the decompressed tilemap's two layers (cell (0, 0) when off the map).
+// symdb: (r0 = map x, r1 = map y, r5 = eMapTilesState200be70) -> r0 = id in the layer at +4, r1 = id in
+// symdb: the layer at +8; r2 = r0, r3 = tilemap, r4 = 0, r6 = y * row bytes, r7 = row bytes; flags from
+// symdb: cmp r4,#0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getMapCellTileIds_80305E4.yaml
 	thumb_local_start
 getMapCellTileIds_80305E4:
 	cmp r0, #0
@@ -21462,6 +21472,10 @@ sub_803065A:
 	mov pc, lr
 	thumb_func_end sub_803065A
 
+// symdb: Draw the left-edge columns of the BG tile map's window that scrolled into view (camera moved left).
+// symdb: (r0 = camera tile x, r1 = camera tile y, r2 = tiles moved, r5 = eMapTilesState200be70) -> window
+// symdb: entries through the put-tile-ids callback, or a full redraw when it moved 5 or more
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawBGTileMapLeftColumns_803066E.yaml
 	thumb_local_start
 drawBGTileMapLeftColumns_803066E:
 	push {lr}
@@ -21513,6 +21527,10 @@ locret_80306C6:
 	pop {pc}
 	thumb_func_end drawBGTileMapLeftColumns_803066E
 
+// symdb: Draw the right-edge columns of the BG tile map's window that scrolled into view (camera moved right).
+// symdb: (r0 = camera tile x, r1 = camera tile y, r2 = tiles moved, r5 = eMapTilesState200be70) -> window
+// symdb: entries through the put-tile-ids callback, or a full redraw when it moved 5 or more
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawBGTileMapRightColumns_80306C8.yaml
 	thumb_local_start
 drawBGTileMapRightColumns_80306C8:
 	push {lr}
@@ -21564,6 +21582,10 @@ locret_8030720:
 	pop {pc}
 	thumb_func_end drawBGTileMapRightColumns_80306C8
 
+// symdb: Draw the top-edge rows of the BG tile map's window that scrolled into view (camera moved up).
+// symdb: (r0 = camera tile x, r1 = camera tile y, r2 = tiles moved, r5 = eMapTilesState200be70) -> window
+// symdb: entries through the put-tile-ids callback, or a full redraw when it moved 5 or more
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawBGTileMapTopRows_8030722.yaml
 	thumb_local_start
 drawBGTileMapTopRows_8030722:
 	push {lr}
@@ -21615,6 +21637,10 @@ locret_803077A:
 	pop {pc}
 	thumb_func_end drawBGTileMapTopRows_8030722
 
+// symdb: Draw the bottom-edge rows of the BG tile map's window that scrolled into view (camera moved down).
+// symdb: (r0 = camera tile x, r1 = camera tile y, r2 = tiles moved, r5 = eMapTilesState200be70) -> window
+// symdb: entries through the put-tile-ids callback, or a full redraw when it moved 5 or more
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawBGTileMapBottomRows_803077C.yaml
 	thumb_local_start
 drawBGTileMapBottomRows_803077C:
 	push {lr}
