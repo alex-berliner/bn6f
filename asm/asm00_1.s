@@ -2714,6 +2714,13 @@ FreeOverworldNPCObject:
 // [break] continuously called
 // [disable] - NPCs are no longer loaded, if they were already loaded, they are not interactable. Some are exceptions, like Central Robo Dog.
 // - Scenes don't seem to load, either
+// symdb: Run every active overworld NPC's update handler, once per frame.
+// symdb: () -> unless event flag EVENT_NPC_OBJECTS_DISABLED (0x1701) is set: for each NPC in
+// symdb: eOverworldNPCObjects (16 x 0xD8 bytes) with OBJECT_FLAG_ACTIVE, and not (GameState.BattlePaused
+// symdb: and no OBJECT_FLAG_PAUSE_UPDATE): call off_80045BC[ObjectHeader.Index] with r5 = NPC, r0 =
+// symdb: handler, r1 = Index*4, flags N=0 Z=(Index==0) C=0; r4-r9, r12 preserved; r2 = whatever the last
+// symdb: handler left
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TryUpdateEachOverworldNPCObject_800461E.yaml
 	thumb_func_start TryUpdateEachOverworldNPCObject_800461E
 TryUpdateEachOverworldNPCObject_800461E: // () -> ()
 	push {r4-r7,lr}
@@ -2786,6 +2793,13 @@ off_8004678:
 	.word off_80045BC
 	thumb_func_end TryUpdateEachOverworldNPCObject_800461E
 
+// symdb: Draw the overworld NPCs' sprites (misnamed: not an init routine).
+// symdb: () -> for each of the 16 NPCs: OBJECT_FLAG_VISIBLE: sprite_projectAndCull(r0 = NPC+0x24, r5 =
+// symdb: NPC), sprite_ensureGfxResident(2), sprite_queueFramePieces(layer 2, bias 0x60, r5 = NPC+0xA0);
+// symdb: else: on-screen piece mask (sprite+0x24) = 0, and if OBJECT_FLAG_ACTIVE still
+// symdb: sprite_projectAndCull. Then sub_80028C0(2). Exit: C=1, V=0 (the loop's last cmp), r3 = last
+// symdb: path's, r4-r9/r12 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_drawSprites_800467C.yaml
 	thumb_func_start npc_drawSprites_800467C
 npc_drawSprites_800467C:
 	push {r4-r7,lr}
