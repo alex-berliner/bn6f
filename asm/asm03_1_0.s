@@ -2540,7 +2540,7 @@ off_8035050:
 	.word UnkInternetMapGroupJumptable_8034784
 	thumb_func_end sub_8035028
 
-// symdb: Checks that the player has normal control and no cutscene is active, then starts the one-time "notification" cutscene (guarded by event flag 0x171A); returns 0 if it started, 1 otherwise.
+// symdb: Checks that the player has normal control and no cutscene is active, then starts the "notification" cutscene (the comm-error text) if event flag 0x171A requests it; returns 0 if it started, 1 otherwise.
 // symdb: int tryStartNotificationCutscene(void); // returns 0 = cutscene started, 1 = blocked; preserves
 // symdb: r2,r4-r7; reads GameState via toolkit in r10
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/tryStartNotificationCutscene_8035054.yaml
