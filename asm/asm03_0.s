@@ -21720,6 +21720,12 @@ off_8030804:
 	.word eMapTilesState200be70
 	thumb_func_end sub_80307D8
 
+// symdb: Move the 32x32 BG tile-id window to the camera's tile and redraw every cell through the map's tile-id callbacks.
+// symdb: static WindowCell redraw_window(u32 camera, u32 tiles) -> the loop's final carried state (tiles,
+// symdb: cell x, cell y); adapter: in r5 = eMapTilesState200be70, r10 = toolkit (the adapter reads the
+// symdb: camera pointer from it); out r0 = r1 = 32, r3 = window x, r4 = window y + 32, Z set (cmp 32,
+// symdb: 32); r2/r5/r6/r7 and lr keep the last callback's leftovers, r10-r12 untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/redrawBGTileIdsWindowCellByCell_8030808.yaml
 	thumb_func_start redrawBGTileIdsWindowCellByCell_8030808
 redrawBGTileIdsWindowCellByCell_8030808:
 	push {lr}
@@ -21776,6 +21782,11 @@ loc_803083E:
 	pop {pc}
 	thumb_func_end redrawBGTileIdsWindowCellByCell_8030808
 
+// symdb: The maps' whole-window redraw callback (+0x20): redraw both tilemap layers straight into the 32x32 window at the given camera tile.
+// symdb: static void redraw_from_tilemap(u32 tiles, u32 window_x, u32 window_y); adapter: in r0/r1 =
+// symdb: camera tile, r5 = eMapTilesState200be70; out r8/r9 = the window origin, r4-r7 restored, Z set
+// symdb: (cmp 32, 32); r0-r3 and lr keep the last row call's leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/redrawBGTileMapWholeWindow_803086C.yaml
 	thumb_func_start redrawBGTileMapWholeWindow_803086C
 redrawBGTileMapWholeWindow_803086C:
 	push {r4-r7,lr}
@@ -21797,6 +21808,12 @@ redrawBGTileMapWholeWindow_803086C:
 	pop {r4-r7,pc}
 	thumb_func_end redrawBGTileMapWholeWindow_803086C
 
+// symdb: Copy one tilemap layer's 32 rows into the window, filling the rows that fall off the map with tile 0.
+// symdb: static void copy_layer_rows(u32 layer_data, u32 layer, u32 map_width, u32 map_height, u32
+// symdb: window_x, u32 window_y); adapter: in r0/r1 = layer data / layer, r2/r3 = map width / height,
+// symdb: r8/r9 = window origin; out Z set (cmp 32, 32), r4-r7 restored; r0-r3 and lr keep the last row
+// symdb: call's leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyTilemapLayerRowsToWindow_8030892.yaml
 	thumb_local_start
 copyTilemapLayerRowsToWindow_8030892:
 	push {r4-r7,lr}
