@@ -2431,7 +2431,7 @@ int __fastcall sub_8001C52(int a1)
         v4 = __OFSUB__(v3--, 1);
     }
     while ( !(((v3 < 0) ^ v4) | (v3 == 0)) );
-    sub_8030808();
+    redrawBGTileIdsWindowCellByCell_8030808();
     result = 0;
     *v1 = 0;
     return result;

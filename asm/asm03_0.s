@@ -21709,7 +21709,7 @@ sub_80307D8:
 	asr r0, r0, #3
 	asr r1, r1, #3
 	ldr r5, off_8030804 // =eMapTilesState200be70
-	bl sub_803086C
+	bl redrawBGTileMapWholeWindow_803086C
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -21720,8 +21720,8 @@ off_8030804:
 	.word eMapTilesState200be70
 	thumb_func_end sub_80307D8
 
-	thumb_func_start sub_8030808
-sub_8030808:
+	thumb_func_start redrawBGTileIdsWindowCellByCell_8030808
+redrawBGTileIdsWindowCellByCell_8030808:
 	push {lr}
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_CameraPtr]
@@ -21774,10 +21774,10 @@ loc_803083E:
 	cmp r1, #0x20 
 	blt loc_8030820
 	pop {pc}
-	thumb_func_end sub_8030808
+	thumb_func_end redrawBGTileIdsWindowCellByCell_8030808
 
-	thumb_func_start sub_803086C
-sub_803086C:
+	thumb_func_start redrawBGTileMapWholeWindow_803086C
+redrawBGTileMapWholeWindow_803086C:
 	push {r4-r7,lr}
 	mov r8, r0
 	mov r9, r1
@@ -21787,18 +21787,18 @@ sub_803086C:
 	mov r1, #1
 	ldrb r2, [r5]
 	ldrb r3, [r5,#1]
-	bl sub_8030892
+	bl copyTilemapLayerRowsToWindow_8030892
 	ldr r0, [r4,#8]
 	add r0, r0, r4
 	mov r1, #2
 	ldrb r2, [r5]
 	ldrb r3, [r5,#1]
-	bl sub_8030892
+	bl copyTilemapLayerRowsToWindow_8030892
 	pop {r4-r7,pc}
-	thumb_func_end sub_803086C
+	thumb_func_end redrawBGTileMapWholeWindow_803086C
 
 	thumb_local_start
-sub_8030892:
+copyTilemapLayerRowsToWindow_8030892:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r2, [sp]
@@ -21927,7 +21927,7 @@ EnterMap_UnkMapGroupJumptable:
 	.word nullsub_61+1
 UnkMapGroupRangeLoadGFXAnimsJumptable:
 	.word nullsub_62+1
-	thumb_func_end sub_8030892
+	thumb_func_end copyTilemapLayerRowsToWindow_8030892
 
 	thumb_local_start
 nullsub_61:

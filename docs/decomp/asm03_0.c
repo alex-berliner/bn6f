@@ -14568,12 +14568,12 @@ void sub_80307D8()
     v1 = *(v0 + oToolkit_CameraPtr);
     v2 = *(v1 + 6);
     v3 = *(v1 + 4) >> 3;
-    sub_803086C();
+    redrawBGTileMapWholeWindow_803086C();
 }
 
 
 // 0x8030808
-int sub_8030808()
+int redrawBGTileIdsWindowCellByCell_8030808()
 {
     unsigned __int8 *v0; // r5
     int v1; // r10
@@ -14620,19 +14620,19 @@ int sub_8030808()
 
 
 // 0x803086c
-void sub_803086C()
+void redrawBGTileMapWholeWindow_803086C()
 {
     unsigned __int8 *v0; // r5
     int v1; // r4
 
     v1 = *(v0 + 3);
-    sub_8030892(*(v1 + 4) + v1, 1, *v0, v0[1]);
-    sub_8030892(*(v1 + 8) + v1, 2, *v0, v0[1]);
+    copyTilemapLayerRowsToWindow_8030892(*(v1 + 4) + v1, 1, *v0, v0[1]);
+    copyTilemapLayerRowsToWindow_8030892(*(v1 + 8) + v1, 2, *v0, v0[1]);
 }
 
 
 // 0x8030892
-void __fastcall sub_8030892(int a1, int a2, unsigned int a3, unsigned int a4)
+void __fastcall copyTilemapLayerRowsToWindow_8030892(int a1, int a2, unsigned int a3, unsigned int a4)
 {
     int v4; // r8
     int v5; // r9
