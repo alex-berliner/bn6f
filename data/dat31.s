@@ -537,7 +537,7 @@ sub_810C820::
 	beq loc_810C84C
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810C8C8 // =0x12c 
 	cmp r0, r1
 	blt loc_810C84C
@@ -1371,7 +1371,7 @@ loc_810CF68::
 	bgt loc_810CF8E
 	b loc_810CF7E
 loc_810CF74::
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810D004 // =0x12c
 	cmp r0, r1
 	blt loc_810CF8E
@@ -2276,7 +2276,7 @@ loc_810D836::
 	ldr r0, [r0]
 	cmp r0, #0
 	beq loc_810D888
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	ldr r1, [r7,#oAIAttackVars_Unk_28]
 	str r0, [r1]

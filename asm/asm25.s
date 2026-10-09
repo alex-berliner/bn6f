@@ -144,7 +144,7 @@ loc_808F954:
 	bl owPlayer_enableWallCollision_809e248
 	mov r4, #0
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
-	bl sub_809E3B2
+	bl resetStruct2000aa0State_809E3B2
 	ldrh r0, [r5,#0x12] // (word_2000322 - 0x2000310)
 	lsl r0, r0, #0x10
 	ldrh r1, [r5,#0x14] // (dword_2000324 - 0x2000310)
@@ -428,7 +428,7 @@ sub_808FB68:
 	bl owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188
 	bl owPlayer_setInteractionLocked_809e230
 	bl reqBBS_clearFlag_8140A0C
-	bl sub_809E3B2
+	bl resetStruct2000aa0State_809E3B2
 	ldr r0, dword_808FB9C // =0x1ae 
 	bl PlaySoundEffect
 	mov r0, #0

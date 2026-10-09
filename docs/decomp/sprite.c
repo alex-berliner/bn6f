@@ -49,7 +49,7 @@ int __usercall sprite_load@<R0>(Battle *obj@<R5>, char a1@<R0>, int spriteTypeId
     v7 = a1;
     v8_spriteListIdx = spriteTypeIdx;
     v3_spriteIdx = spriteIdx;
-    sprite = sub_8002986((spriteTypeIdx << 8) | spriteIdx);
+    sprite = lookupValueForIdInTableAt_200DCA0_8002986((spriteTypeIdx << 8) | spriteIdx);
     if ( !sprite )
     {
         sprite = (*(SpritePointersList + v8_spriteListIdx))[v3_spriteIdx];
@@ -164,7 +164,7 @@ signed int sub_80027C4()
 
 
 // 0x80027d4
-signed int sub_80027D4()
+signed int palette_InitTransferState_80027D4()
 {
     signed int result; // r0
 
@@ -331,7 +331,7 @@ signed int __fastcall uncompSprite_8002906(unsigned __int8 *a1)
 
 
 // 0x8002986
-int __fastcall sub_8002986(int a1)
+int __fastcall lookupValueForIdInTableAt_200DCA0_8002986(int a1)
 {
     signed int i; // r2
 
@@ -691,7 +691,7 @@ int sprite_makeUnscalable()
         *(v1 + 17) = result & 0xFC;
         v3 = (*(v1 + 19) & 0x3Eu) >> 1;
         *(v1 + 19) &= 0xC1u;
-        result = sub_802FE6A(v3);
+        result = flags_clearFlagWordBit_802FE6A(v3);
     }
     return result;
 }
@@ -964,7 +964,7 @@ signed int sprite_clearMosaic()
 
 
 // 0x8002f3e
-unsigned int __fastcall sub_8002F3E(int a1)
+unsigned int __fastcall obj_getSpriteFlag10AndRenderInfoHigh_8002F3E(int a1)
 {
     int v1; // r10
     int v2; // r2
@@ -1059,7 +1059,7 @@ unsigned int __fastcall sub_8002FD4(char a1)
 
 
 // 0x8002fec
-int __fastcall sub_8002FEC(int result)
+int __fastcall object_writeSubstructField30_8002FEC(int result)
 {
     int v1; // r5
 
@@ -1124,7 +1124,7 @@ int __fastcall sub_800302A(char a1)
 
 
 // 0x800304a
-int __fastcall sub_800304A(int a1)
+int __fastcall sprite_setSubEntryPaletteBank_800304A(int a1)
 {
     int v1; // r5
     unsigned int v2; // r3
@@ -1138,7 +1138,7 @@ int __fastcall sub_800304A(int a1)
 
 
 // 0x8003060
-int __fastcall sub_8003060(int result)
+int __fastcall sprite_setSubRecordFieldA_8003060(int result)
 {
     int v1; // r5
 
@@ -1148,7 +1148,7 @@ int __fastcall sub_8003060(int result)
 
 
 // 0x800306c
-int __fastcall sub_800306C(__int16 a1)
+int __fastcall slotList_storeHalfwordAndClearField_800306C(__int16 a1)
 {
     int v1; // r5
     unsigned int v2; // r3

@@ -70,7 +70,7 @@ sprite_load:
 	push {r0-r2}
 	lsl r0, r1, #8
 	orr r0, r2
-	bl sub_8002986
+	bl lookupValueForIdInTableAt_200DCA0_8002986
 	pop {r1-r3}
 	tst r0, r0
 	beq loc_8002708
@@ -210,8 +210,8 @@ sub_80027C4:
 	mov pc, lr
 	thumb_func_end sub_80027C4
 
-	thumb_func_start sub_80027D4
-sub_80027D4:
+	thumb_func_start palette_InitTransferState_80027D4
+palette_InitTransferState_80027D4:
 	ldr r1, off_8002804 // =byte_20098A8
 	mov r0, #4
 	strb r0, [r1,#0x1] // (byte_20098A9 - 0x20098a8)
@@ -220,7 +220,7 @@ sub_80027D4:
 	ldr r0, dword_800280C // =0x2ff
 	strh r0, [r1,#0x2] // (word_20098AA - 0x20098a8)
 	mov pc, lr
-	thumb_func_end sub_80027D4
+	thumb_func_end palette_InitTransferState_80027D4
 
 	thumb_func_start sub_80027E4
 sub_80027E4:
@@ -511,7 +511,7 @@ loc_800297C:
 	thumb_func_end uncompSprite_8002906
 
 	thumb_local_start
-sub_8002986:
+lookupValueForIdInTableAt_200DCA0_8002986:
 	push {r5,lr}
 	ldr r5, off_8002BF0 // =byte_200DCA0
 	mov r2, #0
@@ -531,7 +531,7 @@ loc_800299E:
 	blt loc_800298C
 	mov r0, #0
 	pop {r5,pc}
-	thumb_func_end sub_8002986
+	thumb_func_end lookupValueForIdInTableAt_200DCA0_8002986
 
 	thumb_func_start decompSprites_80029A8
 decompSprites_80029A8:
@@ -1102,7 +1102,7 @@ loc_8002D60:
 	lsr r0, r0, #1
 	bic r2, r1
 	strb r2, [r5,#oObjectSprite_Unk_13]
-	bl sub_802FE6A
+	bl flags_clearFlagWordBit_802FE6A
 locret_8002D7E:
 	pop {r5,pc}
 	thumb_func_end sprite_makeUnscalable
@@ -1434,8 +1434,8 @@ sprite_clearMosaic:
 	mov pc, lr
 	thumb_func_end sprite_clearMosaic
 
-	thumb_func_start sub_8002F3E
-sub_8002F3E:
+	thumb_func_start obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
+obj_getSpriteFlag10AndRenderInfoHigh_8002F3E:
 	ldrb r3, [r0,#oObjectHeader_SpriteOffset]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
@@ -1451,7 +1451,7 @@ sub_8002F3E:
 	lsr r0, r0, #8
 	mov pc, lr
 	.hword 0x2000
-	thumb_func_end sub_8002F3E
+	thumb_func_end obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 
 // symdb: Set the sprite's flip bits (mask 0x30) in sprite bytes 0x13 and 0x16 from r0 (NPCs pass 1 when mirrored).
 // symdb: (r0 = flip, r5 = object header) -> byte 0x13 bits 4-5 = r0 << 4, byte 0x16 bits 4-5 copied from
@@ -1559,15 +1559,15 @@ sub_8002FD4:
 	.hword 0x2000
 	thumb_func_end sub_8002FD4
 
-	thumb_func_start sub_8002FEC
-sub_8002FEC:
+	thumb_func_start object_writeSubstructField30_8002FEC
+object_writeSubstructField30_8002FEC:
 	ldrb r3, [r5,#2]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
 	str r0, [r3,#0x30]
 	mov pc, lr
-	thumb_func_end sub_8002FEC
+	thumb_func_end object_writeSubstructField30_8002FEC
 
 	thumb_local_start
 sub_8002FF8:
@@ -1626,8 +1626,8 @@ sub_800302A:
 	mov pc, lr
 	thumb_func_end sub_800302A
 
-	thumb_func_start sub_800304A
-sub_800304A:
+	thumb_func_start sprite_setSubEntryPaletteBank_800304A
+sprite_setSubEntryPaletteBank_800304A:
 	ldrb r3, [r5,#2]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
@@ -1639,20 +1639,20 @@ sub_800304A:
 	orr r1, r0
 	strb r1, [r3,#0x15]
 	mov pc, lr
-	thumb_func_end sub_800304A
+	thumb_func_end sprite_setSubEntryPaletteBank_800304A
 
-	thumb_func_start sub_8003060
-sub_8003060:
+	thumb_func_start sprite_setSubRecordFieldA_8003060
+sprite_setSubRecordFieldA_8003060:
 	ldrb r3, [r5,#2]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
 	strb r0, [r3,#0xa]
 	mov pc, lr
-	thumb_func_end sub_8003060
+	thumb_func_end sprite_setSubRecordFieldA_8003060
 
-	thumb_func_start sub_800306C
-sub_800306C:
+	thumb_func_start slotList_storeHalfwordAndClearField_800306C
+slotList_storeHalfwordAndClearField_800306C:
 	ldrb r3, [r5,#2]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
@@ -1661,7 +1661,7 @@ sub_800306C:
 	mov r0, #0
 	str r0, [r3,#0x24]
 	mov pc, lr
-	thumb_func_end sub_800306C
+	thumb_func_end slotList_storeHalfwordAndClearField_800306C
 
 	thumb_func_start sprite_setCoordinates
 sprite_setCoordinates:

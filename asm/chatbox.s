@@ -2676,21 +2676,21 @@ off_8040FD8:
 chatbox_EB_msgboxJumpTable:
 	.word chatbox_804103E+1
 	.word chatbox_8041090+1
-	.word chatbox_80410F8+1
+	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
 	.word chatbox_804103E+1
 	.word chatbox_8041090+1
-	.word chatbox_80410F8+1
+	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
 	.word chatbox_804103E+1
 	.word chatbox_8041090+1
-	.word chatbox_80410F8+1
+	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
 	.word chatbox_804103E+1
 	.word chatbox_8041090+1
-	.word chatbox_80410F8+1
+	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
-	.word chatbox_80410F8+1
+	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
 dword_8041024:
 	.word 0x1D2
@@ -2807,7 +2807,7 @@ Flags80410F4:
 	thumb_func_end chatbox_8041090
 
 	thumb_local_start
-chatbox_80410F8:
+chatbox_closeAndReset_80410F8:
 	push {lr}
 	ldr r0, off_8041108 // =0x101
 	bl chatbox_clearFlags_3e // (int mask) -> void
@@ -2818,7 +2818,7 @@ chatbox_80410F8:
 	.balign 4, 0
 off_8041108:
 	.word 0x101
-	thumb_func_end chatbox_80410F8
+	thumb_func_end chatbox_closeAndReset_80410F8
 
 	thumb_local_start
 chatbox_804110C:
@@ -2919,7 +2919,7 @@ off_8041184:
 	.word chatbox_80411E8+1
 	.word chatbox_8041200+1
 	.word NULL
-	.word chatbox_8041218+1
+	.word chatbox_cmdSetEventFlag_8041218+1
 	.word chatbox_80411D4+1
 	.word chatbox_80411E0+1
 	.word chatbox_804122C+1
@@ -3010,7 +3010,7 @@ chatbox_8041200:
 	thumb_func_end chatbox_8041200
 
 	thumb_local_start
-chatbox_8041218:
+chatbox_cmdSetEventFlag_8041218:
 	push {lr}
 	ldrb r0, [r4,#2]
 	lsl r0, r0, #2
@@ -3021,7 +3021,7 @@ chatbox_8041218:
 	add r4, #3
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_8041218
+	thumb_func_end chatbox_cmdSetEventFlag_8041218
 
 	thumb_local_start
 chatbox_804122C:
@@ -4506,7 +4506,7 @@ loc_8041CD8:
 	bl PlaySoundEffect
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	pop {r4,r5}
 	add r4, #4
 	mov r0, #1
@@ -5362,7 +5362,7 @@ chatbox_8042328:
 	push {lr}
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
-	bl sound_800068A
+	bl sound_dispatchCueHandler_800068A
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
 	mov r0, #0x63
@@ -5802,7 +5802,7 @@ off_8042624:
 	.word chatbox_80426A8+1
 	.word chatbox_80426C4+1
 	.word chatbox_80426D4+1
-	.word chatbox_80426E0+1
+	.word chatbox_setFlag0x1000AndAdvanceStep_80426E0+1
 	.word NULL
 	.word chatbox_80426F4+1
 	.word chatbox_804271C+1
@@ -5887,7 +5887,7 @@ chatbox_80426D4:
 	thumb_func_end chatbox_80426D4
 
 	thumb_local_start
-chatbox_80426E0:
+chatbox_setFlag0x1000AndAdvanceStep_80426E0:
 	push {lr}
 	// mask
 	ldr r0, dword_80426F0 // =0x1000
@@ -5898,7 +5898,7 @@ chatbox_80426E0:
 	.balign 4, 0
 dword_80426F0:
 	.word 0x1000
-	thumb_func_end chatbox_80426E0
+	thumb_func_end chatbox_setFlag0x1000AndAdvanceStep_80426E0
 
 	thumb_local_start
 chatbox_80426F4:
@@ -6358,7 +6358,7 @@ chatbox_8042A14:
 	push {r1,r2}
 	bl memory_bcdConvert
 	mov r8, r0
-	bl sub_8000C5C
+	bl countHexDigits_8000C5C
 	pop {r1,r2}
 	mov r6, #0x40
 	tst r1, r6
@@ -6478,7 +6478,7 @@ loc_8042AE8:
 	push {r4,r5}
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	pop {r4,r5}
 	cmp r0, #1
 	beq loc_8042B02

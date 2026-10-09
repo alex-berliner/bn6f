@@ -10,7 +10,7 @@ sub_810D970:
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	cmp r0, #0
 	beq loc_810D986
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 loc_810D986:
 	bl sub_80165C2
 	pop {pc}
@@ -225,7 +225,7 @@ sub_810DAF0:
 	beq loc_810DB1C
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810DCF0 // =0x12c
 	cmp r0, r1
 	blt loc_810DB1C
@@ -1216,7 +1216,7 @@ sub_810E34A:
 	beq loc_810E376
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810E3DC // =0x12c
 	cmp r0, r1
 	blt loc_810E376
@@ -1338,8 +1338,8 @@ off_810E4E8:
 sub_810E4F0:
 	push {r4,r6,lr}
 	bl object_clearCollisionRegion // () -> void
-	bl sub_801A5E2
-	bl sub_80101C4
+	bl battle_ClearObjectCollisionResult_801A5E2
+	bl battle_resetCollisionState_80101C4
 	bl sub_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
@@ -1347,7 +1347,7 @@ sub_810E4F0:
 	strh r0, [r5,#oBattleObject_Chip]
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801A7F4
+	bl battle_clearAIDataAndBarrier_801A7F4
 	mov r0, r5
 	bl RemoveGivenAliveBattleActorFromList
 	bl sub_801DD34
@@ -1551,7 +1551,7 @@ sub_810E666:
 	bl sub_801BD3C
 	pop {r4-r7}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 loc_810E6A6:
@@ -1811,7 +1811,7 @@ loc_810E8B8:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	cmp r0, #NULL
 	beq locret_810E8C6
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 locret_810E8C6:
@@ -1867,11 +1867,11 @@ off_810E914:
 sub_810E928:
 	push {lr}
 	bl object_clearCollisionRegion // () -> void
-	bl sub_801A5E2
-	bl sub_801A284
-	bl sub_801A29A
+	bl battle_ClearObjectCollisionResult_801A5E2
+	bl battle_object_clearFlagsAndCollisionCounter_801A284
+	bl battleObject_clearHitFlags_801A29A
 	bl sub_801A2B0
-	bl sub_80101C4
+	bl battle_resetCollisionState_80101C4
 	bl sub_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
@@ -1879,9 +1879,9 @@ sub_810E928:
 	strh r0, [r5,#oBattleObject_Chip]
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801A7F4
+	bl battle_clearAIDataAndBarrier_801A7F4
 	bl sub_802EF5C
-	bl sub_802CDD0
+	bl battle_ClearAllianceTargetSlotIfSelf_802CDD0
 	bl sub_810EB42
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -1979,7 +1979,7 @@ sub_810E9D4:
 	mov r7, #0
 	bl sub_801BD3C
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 loc_810EA18:
@@ -1995,7 +1995,7 @@ loc_810EA26:
 	strh r0, [r5,#oBattleObject_Timer]
 	bge loc_810EA38
 	ldr r0, [r5,#oBattleObject_ExtraVars]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0x10
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 loc_810EA38:
@@ -2856,7 +2856,7 @@ sub_810F1B6:
 	beq loc_810F1E2
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810F1FC // =0x12c
 	cmp r0, r1
 	blt loc_810F1E2
@@ -4961,13 +4961,13 @@ loc_8110488:
 	ldr r0, [r2]
 	mov r1, #0
 	str r1, [r2]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	ldr r2, [r7,#oAIAttackVars_Unk_34]
 	add r2, #4
 	ldr r0, [r2]
 	mov r1, #0
 	str r1, [r2]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #3
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0xc
@@ -5027,14 +5027,14 @@ sub_8110518:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0xc]
 	cmp r0, #0
 	beq loc_8110532
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0xc]
 loc_8110532:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	cmp r0, #0
 	beq loc_8110540
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 loc_8110540:
@@ -5050,7 +5050,7 @@ sub_8110546:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0xc]
 	cmp r0, #NULL
 	beq locret_811055A
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0xc]
 locret_811055A:
@@ -8200,7 +8200,7 @@ sub_8111FAE:
 	beq loc_8111FDA
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_8111FF4 // =0x12c
 	cmp r0, r1
 	blt loc_8111FDA
@@ -8891,7 +8891,7 @@ sub_8112600:
 	beq loc_811262C
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_81126D4 // =0x12c
 	cmp r0, r1
 	blt loc_811262C
@@ -8914,7 +8914,7 @@ sub_8112630:
 	cmp r0, #0
 	beq locret_8112646
 	ldr r0, [r5,#oBattleObject_ExtraVars+0x10]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0x10]
 locret_8112646:
@@ -9646,7 +9646,7 @@ sub_8112CF4:
 	ldr r4, dword_8113070 // =0x2810
 	bl sub_80C4038
 	str r0, [r7,#0x30]
-	bl sub_80C4086
+	bl battle_SetObjectExtraFlag14_80C4086
 	ldrb r1, [r7,#0xe]
 	mov r2, #0xa
 	mul r1, r2
@@ -9684,7 +9684,7 @@ loc_8112D3E:
 	b locret_8112D5E
 loc_8112D54:
 	ldr r0, [r7,#0x30]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0xc
 	strh r0, [r7]
 locret_8112D5E:
@@ -9817,7 +9817,7 @@ sub_8112E34:
 	ldr r4, dword_8113074 // =0x12810
 	bl sub_80C4038
 	str r0, [r7,#oAIAttackVars_Unk_30]
-	bl sub_80C4086
+	bl battle_SetObjectExtraFlag14_80C4086
 	ldrb r1, [r7,#oAIAttackVars_Unk_0e]
 	mov r2, #0xa
 	mul r1, r2
@@ -9870,7 +9870,7 @@ loc_8112E90:
 	b locret_8112EC2
 loc_8112EB8:
 	ldr r0, [r7,#oAIAttackVars_Unk_30]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0xc
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8112EC2:
@@ -10028,7 +10028,7 @@ sub_8112FBA:
 	ldr r4, dword_8113074 // =0x12810
 	bl sub_80C4038
 	str r0, [r7,#oAIAttackVars_Unk_30]
-	bl sub_80C4086
+	bl battle_SetObjectExtraFlag14_80C4086
 	ldrb r1, [r7,#oAIAttackVars_Unk_0e]
 	mov r2, #0xa
 	mul r1, r2
@@ -10074,7 +10074,7 @@ loc_8113016:
 	b locret_8113036
 loc_811302C:
 	ldr r0, [r7,#oAIAttackVars_Unk_30]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0xc
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8113036:
@@ -10227,12 +10227,12 @@ off_8113144:
 	thumb_func_end sub_8113124
 
 off_8113148:
-	.word sub_8113154+1
+	.word battle_packObjStateBitToAttrCode_8113154+1
 	.word sub_8113162+1
 	.word sub_81131A2+1
 
 	thumb_local_start
-sub_8113154:
+battle_packObjStateBitToAttrCode_8113154:
 	ldrb r0, [r4,#0x16]
 	mov r1, #1
 	and r0, r1
@@ -10240,7 +10240,7 @@ sub_8113154:
 	add r0, #4
 	strb r0, [r6]
 	mov pc, lr
-	thumb_func_end sub_8113154
+	thumb_func_end battle_packObjStateBitToAttrCode_8113154
 
 	thumb_local_start
 sub_8113162:
@@ -10693,7 +10693,7 @@ loc_8113576:
 	mov r0, #3
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 	mov r0, #8
@@ -10780,7 +10780,7 @@ sub_811363C:
 	beq loc_8113654
 	bl sub_80B8A0A
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 loc_8113654:
 	bl sub_80165C2
 	pop {pc}
@@ -16057,7 +16057,7 @@ sub_8116470:
 	mov r1, #2
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_811648A
 	mov r0, #1
@@ -16266,7 +16266,7 @@ sub_81166F2:
 	mov r1, #2
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_811670C
 	mov r0, #1
@@ -16502,15 +16502,15 @@ sub_81168B4:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8116900 // =0x390
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0xc8
@@ -16572,15 +16572,15 @@ sub_8116944:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xc
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_81169A4 // =0x2d4
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0
@@ -16806,16 +16806,16 @@ loc_8116B24:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xd
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #1
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8116B8C // =off_8116B90
 	ldr r0, [r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0
@@ -16945,7 +16945,7 @@ sub_8116C38:
 	thumb_local_start
 sub_8116C40:
 	push {r4-r6,lr}
-	bl sub_8116CD4
+	bl record_getNthSubRecordPtr_8116CD4
 	mov r4, r0
 	mov r0, #0x16
 	mov r1, #2
@@ -17015,7 +17015,7 @@ loc_8116C8E:
 	strb r2, [r5,#0xd]
 loc_8116CBA:
 	mov r0, r6
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, r4
 	bl sprite_setPalette // (int pallete) -> void
 	pop {r4-r6,pc}
@@ -17027,14 +17027,14 @@ byte_8116CCC:
 	thumb_func_end sub_8116C78
 
 	thumb_local_start
-sub_8116CD4:
+record_getNthSubRecordPtr_8116CD4:
 	ldrb r0, [r5,#2]
 	lsr r0, r0, #4
 	lsl r0, r0, #4
 	add r0, r0, r5
 	mov pc, lr
 	.byte 0, 0
-	thumb_func_end sub_8116CD4
+	thumb_func_end record_getNthSubRecordPtr_8116CD4
 
 	thumb_func_start sub_8116CE0
 sub_8116CE0:
@@ -17068,15 +17068,15 @@ sub_8116D00:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xc
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_8116D5C // =0x38b
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	ldr r0, dword_8116D60 // =0x11a
@@ -17254,19 +17254,19 @@ loc_8116E3C:
 	ldr r0, [r0,r1]
 	lsl r2, r4, #2
 	ldr r0, [r0,r2]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r0, off_8116EE8 // =off_8116EEC
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	ldrb r0, [r0,r4]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_8116EF8 // =off_8116EFC
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	ldrb r0, [r0,r4]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_8116F34
@@ -17340,10 +17340,10 @@ off_8116F48:
 	.word jt_8116F4C
 jt_8116F4C:
 	.word sub_8116F60+1
-	.word sub_8116F8C+1
+	.word battle_objectUpdateWithFieldC_8116F8C+1
 	.word sub_8116F9C+1
 	.word sub_8116F60+1
-	.word sub_8116F8C+1
+	.word battle_objectUpdateWithFieldC_8116F8C+1
 	thumb_func_end sub_8116F34
 
 	thumb_local_start
@@ -17371,14 +17371,14 @@ locret_8116F88:
 	thumb_func_end sub_8116F60
 
 	thumb_local_start
-sub_8116F8C:
+battle_objectUpdateWithFieldC_8116F8C:
 	push {lr}
 	bl sub_81170AC
 	ldrh r0, [r5,#0xc]
 	bl sub_81170C0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8116F8C
+	thumb_func_end battle_objectUpdateWithFieldC_8116F8C
 
 	thumb_local_start
 sub_8116F9C:
@@ -17640,16 +17640,16 @@ loc_811713E:
 	ldrb r1, [r5,#4]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xa
 	ldrb r1, [r5,#4]
 	cmp r1, #2
 	blt loc_811717E
 	mov r0, #4
 loc_811717E:
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_81171B4
@@ -17765,9 +17765,9 @@ sub_8117238:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #8
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_8117278 // =0x380
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -17857,16 +17857,16 @@ loc_81172E8:
 	bl sprite_noShadow // () -> void
 	ldrb r0, [r5,#3]
 	add r0, #1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r0, [r5,#3]
 	lsl r0, r0, #6
 	ldr r1, off_8117340 // =0x100
 	add r0, r0, r1
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r0, [r5,#6]
 	ldrb r1, [r5,#7]
 	bl sprite_setCoordinates
@@ -17967,16 +17967,16 @@ sub_8117424:
 	mov r0, #5
 	ldrb r1, [r5,#5]
 	add r0, r0, r1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r0, [r5,#5]
 	lsl r0, r0, #4
 	ldr r1, off_8117484 // =0x200
 	add r0, r0, r1
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	mov r1, #0
 	bl sprite_setCoordinates
@@ -18209,12 +18209,12 @@ sub_81175F0:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r0, [r5,#3]
 	lsl r0, r0, #2
 	ldr r1, off_811763C // =byte_8117640
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldrb r0, [r5,#5]
@@ -18346,13 +18346,13 @@ byte_8117724:
 off_811773C:
 	.word off_8117740
 off_8117740:
-	.word sub_811774C+1
+	.word battle_getObjectPairOddByteClamped8_811774C+1
 	.word sub_8117764+1
 	.word sub_8117768+1
 	thumb_func_end sub_81176D0
 
 	thumb_local_start
-sub_811774C:
+battle_getObjectPairOddByteClamped8_811774C:
 	ldr r0, off_8117760 // =unk_201C400
 	ldrb r1, [r5,#4]
 	lsl r1, r1, #1
@@ -18366,7 +18366,7 @@ locret_811775C:
 	.byte 0, 0
 off_8117760:
 	.word unk_201C400
-	thumb_func_end sub_811774C
+	thumb_func_end battle_getObjectPairOddByteClamped8_811774C
 
 	thumb_local_start
 sub_8117764:
@@ -18425,11 +18425,11 @@ sub_81177A4:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #8
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_81177E8 // =0x40
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #4
@@ -18612,11 +18612,11 @@ sub_81178FC:
 	mov r0, #9
 	ldrb r1, [r5,#4]
 	add r0, r0, r1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_8117948 // =0x180
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #4
@@ -18767,19 +18767,19 @@ sub_8117A14:
 	mov r0, r4
 	ldrb r7, [r5]
 	mov r1, r7
-	bl sub_8117AA0
+	bl folder_CountChipsOfCodeOrSkipEntry_8117AA0
 	mov r0, r4
 	ldrb r7, [r5,#1]
 	mov r1, r7
-	bl sub_8117AA0
+	bl folder_CountChipsOfCodeOrSkipEntry_8117AA0
 	mov r0, r4
 	ldrb r7, [r5,#2]
 	mov r1, r7
-	bl sub_8117AA0
+	bl folder_CountChipsOfCodeOrSkipEntry_8117AA0
 	mov r0, r4
 	ldrb r7, [r5,#3]
 	mov r1, r7
-	bl sub_8117AA0
+	bl folder_CountChipsOfCodeOrSkipEntry_8117AA0
 	ldr r0, off_8117A7C // =unk_2016300
 	ldr r1, dword_8117A80 // =0x6013b40
 	mov r2, #0x20
@@ -18813,7 +18813,7 @@ off_8117A9C:
 	thumb_func_end sub_8117A84
 
 	thumb_local_start
-sub_8117AA0:
+folder_CountChipsOfCodeOrSkipEntry_8117AA0:
 	push {lr}
 	cmp r1, #0x1a
 	bgt loc_8117AB0
@@ -18823,7 +18823,7 @@ sub_8117AA0:
 loc_8117AB0:
 	add r6, #0x40
 	pop {pc}
-	thumb_func_end sub_8117AA0
+	thumb_func_end folder_CountChipsOfCodeOrSkipEntry_8117AA0
 
 	thumb_local_start
 sub_8117AB4:
@@ -18996,15 +18996,15 @@ sub_8117BE8:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #9
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8117C40 // =0x170
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r0, off_8117C44 // =0xd4
 	ldr r1, dword_8117C48 // =0xc
 	bl sprite_setCoordinates
@@ -19201,13 +19201,13 @@ sub_8117D4C:
 	ldrb r1, [r5,#3]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r0, off_8117DC0 // =byte_8117DC4
 	ldrb r1, [r5,#3]
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x78
 	mov r1, #0x28
 	ldrb r2, [r5,#3]
@@ -19404,9 +19404,9 @@ sub_8117EE8:
 	ldrb r1, [r5,#4]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0
@@ -19847,7 +19847,7 @@ loc_8118280:
 	ldrb r1, [r5,#0xe]
 	lsr r1, r1, #1
 	add r0, r0, r1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, r4
 	ldrb r1, [r5,#0xe]
 	add r0, r0, r1
@@ -19990,11 +19990,11 @@ sub_8118368:
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_81183BC // =0x1c0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #8
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0xe6
@@ -20618,11 +20618,11 @@ sub_811880C:
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811886C // =0x1d8
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #7
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
@@ -21122,11 +21122,11 @@ sub_8118BC8:
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8118C24 // =0x1e0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #6
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
@@ -21351,11 +21351,11 @@ sub_8118D84:
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8118DD8 // =0x200
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #5
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
@@ -21513,11 +21513,11 @@ sub_8118EA8:
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, off_8118F00 // =0x220
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	bl sprite_setObjWindowMode
@@ -21593,10 +21593,10 @@ sub_8118F44:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_8118F98 // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	bl sub_81190E0
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r2, off_8118FA0 // =byte_8118FA4
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
@@ -21638,15 +21638,15 @@ sub_8118FC0:
 off_8118FD4:
 	.word off_8118FD8
 off_8118FD8:
-	.word sub_8118FE0+1
+	.word nullsub_8118FE0+1
 	.word sub_8118FE4+1
 	thumb_func_end sub_8118FC0
 
 	thumb_local_start
-sub_8118FE0:
+nullsub_8118FE0:
 	push {lr}
 	pop {pc}
-	thumb_func_end sub_8118FE0
+	thumb_func_end nullsub_8118FE0
 
 	thumb_local_start
 sub_8118FE4:
@@ -21773,7 +21773,7 @@ sub_81190E0:
 	ldr r0, off_81190F0 // =off_81190F4
 	ldrb r1, [r5,#4]
 	ldr r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	pop {pc}
 	.balign 4, 0
 off_81190F0:
@@ -22039,26 +22039,26 @@ loc_81193AA:
 	ldr r1, [r1,r0]
 	lsl r0, r4, #2
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r1, off_8119634 // =off_8119170
 	ldrb r0, [r5,#5]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
 	ldrb r0, [r1,r4]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_8119644 // =off_8119228
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	ldrb r0, [r0,r4]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	tst r4, r4
 	bne loc_8119420
 	ldr r0, off_8119648 // =off_811924C
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_8002FEC
+	bl object_writeSubstructField30_8002FEC
 loc_8119420:
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -22270,7 +22270,7 @@ sub_8119594:
 loc_81195BA:
 	bl memory_bcdConvert
 	mov r4, r0
-	bl sub_8000C5C
+	bl countHexDigits_8000C5C
 	mov r6, r0
 loc_81195C6:
 	mov r0, #0xf
@@ -22403,7 +22403,7 @@ off_81196B4:
 off_81196B8:
 	.word sub_81196C4+1
 	.word sub_811979C+1
-	.word sub_8119800+1
+	.word nullStub_8119800+1
 	thumb_func_end sub_81196A0
 
 	thumb_local_start
@@ -22423,7 +22423,7 @@ off_81196DC:
 	.word sub_81196F0+1
 	.word sub_8119730+1
 	.word sub_811974C+1
-	.word sub_811975C+1
+	.word npc_stepChainSetState0x10_811975C+1
 	.word sub_811976C+1
 	thumb_func_end sub_81196C4
 
@@ -22493,14 +22493,14 @@ sub_811974C:
 	thumb_func_end sub_811974C
 
 	thumb_local_start
-sub_811975C:
+npc_stepChainSetState0x10_811975C:
 	push {lr}
 	bl sub_8119438
 	mov r0, #0x10
 	strb r0, [r5,#9]
 	bl sub_811976C
 	pop {pc}
-	thumb_func_end sub_811975C
+	thumb_func_end npc_stepChainSetState0x10_811975C
 
 	thumb_local_start
 sub_811976C:
@@ -22589,10 +22589,10 @@ byte_81197F8:
 	thumb_func_end sub_81197B4
 
 	thumb_local_start
-sub_8119800:
+nullStub_8119800:
 	push {lr}
 	pop {pc}
-	thumb_func_end sub_8119800
+	thumb_func_end nullStub_8119800
 
 	thumb_local_start
 sub_8119804:
@@ -22979,7 +22979,7 @@ off_8119ADC:
 	.word off_8119AE0
 off_8119AE0:
 	.word sub_8119AEC+1
-	.word sub_8119BD0+1
+	.word sprite_applyComputedPaletteAndUpdate_8119BD0+1
 	.word sub_8119BE0+1
 	thumb_func_end sub_8119ACC
 
@@ -23028,14 +23028,14 @@ loc_8119B30:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_8119B6C // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_8119BD0
+	bl sprite_applyComputedPaletteAndUpdate_8119BD0
 	pop {r4,pc}
 	.balign 4, 0
 dword_8119B6C:
@@ -23054,13 +23054,13 @@ byte_8119B74:
 	thumb_func_end sub_8119AEC
 
 	thumb_local_start
-sub_8119BD0:
+sprite_applyComputedPaletteAndUpdate_8119BD0:
 	push {lr}
 	bl sub_8119C08
 	bl sprite_setPalette // (int pallete) -> void
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_8119BD0
+	thumb_func_end sprite_applyComputedPaletteAndUpdate_8119BD0
 
 	thumb_local_start
 sub_8119BE0:
@@ -23250,13 +23250,13 @@ loc_8119D86:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, byte_8119DC8 // =0x0
-	bl sub_8002FEC
+	bl object_writeSubstructField30_8002FEC
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_8119DBC // =0x20
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_8119DE8
@@ -23301,7 +23301,7 @@ loc_8119E1A:
 	bl sprite_getMosaicScalingParameters
 	bl sprite_setAlpha
 	mov r0, r6
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -23375,19 +23375,19 @@ loc_8119E76:
 	ldr r1, [r1,r0]
 	lsl r0, r4, #2
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r1, off_811A00C // =off_811A010
 	ldrb r0, [r5,#5]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
 	ldrb r0, [r1,r4]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811A028 // =off_811A02C
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	ldrb r0, [r0,r4]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0xff
@@ -23638,7 +23638,7 @@ off_811A0DC:
 off_811A0E0:
 	.word sub_811A0F4+1
 	.word sub_811A11C+1
-	.word sub_811A138+1
+	.word npc_ClearBusyFlagAndResetState_811A138+1
 	.word sub_811A148+1
 	.word sub_811A160+1
 	thumb_func_end sub_811A0CC
@@ -23686,7 +23686,7 @@ sub_811A11C:
 	thumb_func_end sub_811A11C
 
 	thumb_local_start
-sub_811A138:
+npc_ClearBusyFlagAndResetState_811A138:
 	push {lr}
 	ldrb r0, [r5]
 	mov r1, #2
@@ -23695,7 +23695,7 @@ sub_811A138:
 	mov r0, #0xc
 	strb r0, [r5,#9]
 	pop {pc}
-	thumb_func_end sub_811A138
+	thumb_func_end npc_ClearBusyFlagAndResetState_811A138
 
 	thumb_local_start
 sub_811A148:
@@ -23761,7 +23761,7 @@ off_811A1AC:
 	thumb_local_start
 sub_811A1B0:
 	push {lr}
-	bl sub_811A24C
+	bl submenu_compareCursorBytes_811A24C
 	bne loc_811A1C2
 	ldr r1, [r5,#0x14]
 	ldrb r0, [r1]
@@ -23856,7 +23856,7 @@ loc_811A240:
 	thumb_func_end sub_811A220
 
 	thumb_local_start
-sub_811A24C:
+submenu_compareCursorBytes_811A24C:
 	push {lr}
 
 	ldrb r0, [r5,#5]
@@ -23878,7 +23878,7 @@ locret_811A260:
 	.balign 4, 0
 off_811A264:
 	.word sSubmenu
-	thumb_func_end sub_811A24C
+	thumb_func_end submenu_compareCursorBytes_811A24C
 
 	thumb_local_start
 sub_811A268:
@@ -24080,11 +24080,11 @@ sub_811A3AC:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_811A3E8 // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #8
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	pop {r4,r5,pc}
 	.balign 4, 0
 dword_811A3E8:
@@ -24173,13 +24173,13 @@ loc_811A45C:
 	ldrb r0, [r5,#4]
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r1, off_811A4C4 // =off_811A4D8
 	ldrb r0, [r5,#4]
 	ldrb r0, [r1,r0]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	bl sub_811A5BC
 	ldrb r0, [r5,#4]
 	tst r0, r0
@@ -24624,11 +24624,11 @@ sub_811A7AC:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811A800 // =0x1d0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r2, [r5,#4]
 	ldr r1, off_811A808 // =byte_811A810
 	ldrb r0, [r1,r2]
@@ -24730,11 +24730,11 @@ sub_811A878:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811A8C8 // =0x1d0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x78
 	mov r1, #0x50
 	mov r2, #6
@@ -24885,10 +24885,10 @@ sub_811A998:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_811A9EC // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	bl sub_811AB14
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r2, off_811A9F4 // =byte_811A9F8
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
@@ -25042,7 +25042,7 @@ sub_811AB14:
 	ldr r0, off_811AB24 // =off_811AB28
 	ldrb r1, [r5,#4]
 	ldr r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	pop {pc}
 	.balign 4, 0
 off_811AB24:
@@ -25109,11 +25109,11 @@ sub_811AB7C:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_811ABC0 // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #2
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_811ABC8
@@ -25353,11 +25353,11 @@ sub_811AD58:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811ADAC // =0xa0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	ldrb r2, [r5,#3]
@@ -25945,11 +25945,11 @@ loc_811B232:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811B270 // =0x130
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #5
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	bl sub_811B298
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -26094,11 +26094,11 @@ sub_811B35C:
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811B3A8 // =0x210
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
@@ -26169,7 +26169,7 @@ off_811B404:
 	.word jt_811B408
 jt_811B408:
 	.word sub_811B414+1
-	.word sub_811B45C+1
+	.word sprite_updateWrapper_811B45C+1
 	.word sub_811B464+1
 	thumb_func_end sub_811B3F4
 
@@ -26189,14 +26189,14 @@ sub_811B414:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811B458 // =0xc0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #6
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811B45C
+	bl sprite_updateWrapper_811B45C
 	pop {r4,pc}
 	.balign 4, 0
 off_811B458:
@@ -26204,11 +26204,11 @@ off_811B458:
 	thumb_func_end sub_811B414
 
 	thumb_local_start
-sub_811B45C:
+sprite_updateWrapper_811B45C:
 	push {lr}
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811B45C
+	thumb_func_end sprite_updateWrapper_811B45C
 
 	thumb_local_start
 sub_811B464:
@@ -26294,13 +26294,13 @@ sub_811B4CC:
 	ldrb r1, [r5,#4]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldrb r0, [r5,#4]
 	mov r1, #0
 	add r0, r0, r1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0
@@ -26913,7 +26913,7 @@ sub_811B9D8:
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r0, [r5,#4]
 	tst r0, r0
 	beq loc_811BA1C
@@ -26922,7 +26922,7 @@ sub_811B9D8:
 	mov r4, r0
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, r4
 	mov r1, #0xb
 	add r0, r0, r1
@@ -26931,10 +26931,10 @@ loc_811BA1C:
 	ldr r1, off_811BA48 // =off_811BA4C
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xb
 loc_811BA28:
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r4, #4
@@ -27277,11 +27277,11 @@ sub_811BC68:
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #8
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sub_811BD34
@@ -27435,7 +27435,7 @@ sub_811BDCC:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_811BE90
+	bl object_checkStatusFlag_811BE90
 	beq locret_811BDE2
 	bl sprite_update
 locret_811BDE2:
@@ -27497,7 +27497,7 @@ sub_811BE1C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #4
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r1, [r5,#0xc]
 	cmp r1, #0x17
 	bne loc_811BE60
@@ -27516,13 +27516,13 @@ loc_811BE60:
 loc_811BE64:
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811BEF8 // =0x120
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#0xc]
 	ldr r0, off_811BF04 // =byte_811BFB6
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r2, [r5,#0xc]
 	lsl r2, r2, #2
 	ldr r1, off_811BF00 // =byte_811BF0C
@@ -27535,14 +27535,14 @@ locret_811BE8E:
 	thumb_func_end sub_811BE1C
 
 	thumb_local_start
-sub_811BE90:
+object_checkStatusFlag_811BE90:
 	ldr r0, [r5,#0xc]
 	ldr r2, off_811BEFC // =byte_811BF94
 	ldrb r0, [r2,r0]
 	tst r0, r0
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_811BE90
+	thumb_func_end object_checkStatusFlag_811BE90
 
 	thumb_local_start
 sub_811BE9C:
@@ -27648,13 +27648,13 @@ sub_811C01C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, off_811C070 // =0x1f8
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r1, off_811C074 // =dword_811C078
@@ -27721,11 +27721,11 @@ sub_811C0AC:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, off_811C0F4 // =0x3c0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xf
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #1
 	bl sprite_setPriority_8002E14
 	mov r0, #0x78
@@ -27796,15 +27796,15 @@ sub_811C13C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811C188 // =0x390
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r0, #0xd8
@@ -27852,7 +27852,7 @@ off_811C1BC:
 	.word off_811C1C0
 off_811C1C0:
 	.word sub_811C1CC+1
-	.word sub_811C22C+1
+	.word sprite_updateAnimPassthrough_811C22C+1
 	.word sub_811C234+1
 	thumb_func_end sub_811C1AC
 
@@ -27873,18 +27873,18 @@ sub_811C1CC:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811C21C // =0xf0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #5
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
 	ldr r0, off_811C224 // =0x78
 	ldr r1, off_811C228 // =0x28
 	ldrb r2, [r5,#3]
 	bl sub_811C23C
-	bl sub_811C22C
+	bl sprite_updateAnimPassthrough_811C22C
 	pop {r4,pc}
 	.balign 4, 0
 off_811C21C:
@@ -27898,11 +27898,11 @@ off_811C228:
 	thumb_func_end sub_811C1CC
 
 	thumb_local_start
-sub_811C22C:
+sprite_updateAnimPassthrough_811C22C:
 	push {lr}
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811C22C
+	thumb_func_end sprite_updateAnimPassthrough_811C22C
 
 	thumb_local_start
 sub_811C234:
@@ -28019,11 +28019,11 @@ loc_811C2D8:
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_811C31C // =0x0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	lsr r0, r4, #2
 	bl sub_811C440
 loc_811C316:
@@ -28238,13 +28238,13 @@ loc_811C584:
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811C5CC // =byte_811C5D0
 	ldr r0, [r0,r4]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r0, off_811C614 // =byte_811C61B
 	lsr r1, r4, #2
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	lsr r0, r4, #2
 	bl sub_811C620
 loc_811C5C8:
@@ -28548,23 +28548,23 @@ sub_811CA1C:
 	mov r0, #0
 	ldrb r1, [r5,#4]
 	add r0, r0, r1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r0, [r5,#4]
 	mov r1, #0x30
 	mul r0, r1
 	ldr r1, off_811CA8C // =0x80
 	add r0, r0, r1
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	mov r1, #0
 	bl sprite_setCoordinates
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811CC4E
+	bl object_SetStateHandler_811CC4E
 	tst r0, r0
 	beq loc_811CA84
 	bl sub_811CA94
@@ -28707,7 +28707,7 @@ loc_811CB4E:
 	strb r0, [r5,#9]
 	str r0, [r5,#0x10]
 	mov r0, #0xe
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 loc_811CB9C:
@@ -28735,7 +28735,7 @@ loc_811CBB4:
 	strb r0, [r5,#9]
 	str r0, [r5,#0x10]
 	mov r0, #4
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 loc_811CBCC:
@@ -28762,7 +28762,7 @@ sub_811CBD0:
 	mov r2, r1
 	bl sprite_setScaleParameters
 	mov r0, #0xa
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811CBD0
@@ -28770,7 +28770,7 @@ sub_811CBD0:
 	thumb_local_start
 sub_811CC02:
 	push {lr}
-	bl sub_811CC4E
+	bl object_SetStateHandler_811CC4E
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811CC02
@@ -28783,7 +28783,7 @@ sub_811CC0C:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	mov r0, #4
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811CC0C
@@ -28796,7 +28796,7 @@ sub_811CC26:
 	orr r0, r1
 	strb r0, [r5]
 	mov r0, #2
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811CC26
@@ -28809,13 +28809,13 @@ sub_811CC3A:
 	bic r0, r1
 	strb r0, [r5]
 	mov r0, #2
-	bl sub_811CC60
+	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811CC3A
 
 	thumb_local_start
-sub_811CC4E:
+object_SetStateHandler_811CC4E:
 	ldrb r0, [r5,#4]
 	ldr r1, off_811CC5C // =off_811C9C0
 	lsl r0, r0, #2
@@ -28825,15 +28825,15 @@ sub_811CC4E:
 	.balign 4, 0x00
 off_811CC5C:
 	.word off_811C9C0
-	thumb_func_end sub_811CC4E
+	thumb_func_end object_SetStateHandler_811CC4E
 
 	thumb_local_start
-sub_811CC60:
+counter_addU32_r5Plus0C_811CC60:
 	ldr r1, [r5,#0xc]
 	add r0, r0, r1
 	str r0, [r5,#0xc]
 	mov pc, lr
-	thumb_func_end sub_811CC60
+	thumb_func_end counter_addU32_r5Plus0C_811CC60
 
 // symdb: Return the word at r5 + 0xC.
 // symdb: (r5) -> r0 = [r5 + 0xC]
@@ -29466,7 +29466,7 @@ sub_811D0EC:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x1e
 	strb r0, [r5,#0xc]
 	mov r0, #8
@@ -29780,13 +29780,13 @@ loc_811D320:
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811D38C // =byte_811D390
 	ldr r0, [r0,r6]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	lsr r1, r6, #2
 	ldr r0, off_811D3E8 // =byte_811D40B
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #3
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r1, off_811D3EC // =byte_811D3FC
 	ldrh r0, [r1,r6]
 	add r2, r6, #2
@@ -29868,11 +29868,11 @@ sub_811D410:
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811D45C // =0x180
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #5
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x78
 	mov r1, #0x70
 	bl sub_811DC00
@@ -29915,16 +29915,16 @@ sub_811D464:
 	beq loc_811D4A2
 	ldr r0, off_811D4E0 // =0x200
 loc_811D4A2:
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	ldrb r1, [r5,#4]
 	cmp r1, #1
 	beq loc_811D4B0
 	mov r0, #6
 loc_811D4B0:
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #4
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x78
 	mov r1, #0x80
 	bl sub_811DC00
@@ -29987,15 +29987,15 @@ sub_811D530:
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	ldr r0, off_811D5C4 // =byte_811D5E8
 	ldrb r1, [r5,#5]
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D5C8 // =byte_811D5ED
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r1, off_811D5D0 // =byte_811D5D4
 	ldrb r2, [r5,#5]
 	lsl r2, r2, #2
@@ -30193,19 +30193,19 @@ loc_811D70A:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #4
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D780 // =byte_811D7C4
 	ldrb r0, [r0,r1]
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811D770 // =0x1a0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D77C // =byte_811D7BA
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r2, [r5,#5]
 	lsl r2, r2, #2
 	ldr r1, off_811D778 // =byte_811D788
@@ -30272,19 +30272,19 @@ loc_811D7E6:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #5
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D868 // =byte_811D88E
 	ldrb r0, [r0,r1]
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811D858 // =0x1e0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D864 // =byte_811D889
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r2, [r5,#6]
 	lsl r2, r2, #2
 	ldr r1, off_811D860 // =byte_811D87C
@@ -30359,7 +30359,7 @@ loc_811D8AA:
 	ldr r0, off_811D91C // =byte_811D945
 	ldrb r1, [r5,#5]
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D924 // =byte_811D94F
 	ldrb r0, [r0,r1]
@@ -30368,13 +30368,13 @@ loc_811D8AA:
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D920 // =byte_811D94A
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r1, off_811D928 // =byte_811D92C
 	ldrb r2, [r5,#5]
 	lsl r2, r2, #2
@@ -30435,20 +30435,20 @@ sub_811D954:
 	ldr r0, off_811D9E4 // =byte_811D9F8
 	ldrb r1, [r5,#5]
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811D9B8 // =off_811D9BC
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#5]
 	ldr r0, off_811D9D8 // =dword_811D9F0
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r1, off_811D9D4 // =word_811D9EC
 	ldrh r0, [r1]
 	strh r0, [r5,#0x1a]
@@ -30515,20 +30515,20 @@ sub_811DA00:
 	ldr r0, off_811DA64 // =byte_811DA68
 	ldrb r1, [r5,#5]
 	ldrb r0, [r0,r1]
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811DA64 // =byte_811DA68
 	ldrb r1, [r5,#5]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #3
 	bl sprite_setPriority_8002E14
 	ldrb r1, [r5,#5]
 	ldr r0, off_811DA80 // =byte_811DA8E
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0x80
 	mov r1, #0x90
 	bl sprite_setCoordinates
@@ -30569,15 +30569,15 @@ sub_811DA94:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #6
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811DAE4 // =0x320
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r0, dword_811DAEC // =0x193
 	bl PlaySoundEffect
 	mov r0, #0xf3
@@ -30607,15 +30607,15 @@ sub_811DAF0:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #6
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811DB4C // =0x320
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldrb r2, [r5,#5]
 	lsl r2, r2, #2
 	ldr r3, off_811DB54 // =byte_811DB58
@@ -30661,15 +30661,15 @@ sub_811DB7C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xc
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, off_811DBC0 // =0x3a0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	mov r0, #1
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r0, off_811DBC8 // =0x38
 	ldr r1, off_811DBCC // =0x8c
 	bl sprite_setCoordinates
@@ -30845,13 +30845,13 @@ loc_811DCBC:
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	ldr r0, off_811DD0C // =0x80
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #1
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811DE10 // =byte_811DE36
 	lsr r1, r4, #2
 	ldrb r0, [r0,r1]
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	lsr r0, r4, #2
 	bl sub_811DE74
 loc_811DD06:
@@ -30980,13 +30980,13 @@ sub_811DF40:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	ldr r0, off_811DF90 // =0x270
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #1
 	bl sprite_setPriority_8002E14
 	mov r0, #0xd2
@@ -31116,11 +31116,11 @@ sub_811E048:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E08C // =0x298
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #1
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -31293,11 +31293,11 @@ sub_811E18C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E1D0 // =0x258
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #1
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -31410,11 +31410,11 @@ sub_811E26C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E2B0 // =0x290
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -31550,11 +31550,11 @@ sub_811E384:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E3C8 // =0x280
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -31641,13 +31641,13 @@ sub_811E438:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, off_811E488 // =0x280
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xc
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #2
 	bl sprite_setPriority_8002E14
 	bl sub_811E51C
@@ -31828,13 +31828,13 @@ sub_811E59C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, off_811E5E8 // =0x280
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xa
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0xd8
@@ -31911,13 +31911,13 @@ sub_811E63C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	ldr r0, off_811E688 // =0x2a8
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0xdc
@@ -31996,11 +31996,11 @@ sub_811E6E4:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E728 // =0x1f0
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -32123,11 +32123,11 @@ sub_811E7F8:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xb
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E83C // =0x230
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -32191,11 +32191,11 @@ sub_811E87C:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xf
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E8C0 // =0x290
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -32280,11 +32280,11 @@ sub_811E938:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xf
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811E97C // =0x2a8
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -32351,11 +32351,11 @@ sub_811E9C4:
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
 	mov r0, #0xf
-	bl sub_800304A
+	bl sprite_setSubEntryPaletteBank_800304A
 	ldr r0, off_811EA08 // =0x250
-	bl sub_800306C
+	bl slotList_storeHalfwordAndClearField_800306C
 	mov r0, #0
-	bl sub_8003060
+	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 	mov r0, #0
@@ -32512,8 +32512,8 @@ ClearPETMenuDataFlag:
 	.byte 0, 0
 	thumb_func_end ClearPETMenuDataFlag
 
-	thumb_func_start sub_811EC00
-sub_811EC00:
+	thumb_func_start pet_ClearMenuData_811EC00
+pet_ClearMenuData_811EC00:
 	push {lr}
 	// memBlock
 	ldr r0, off_811EC4C // =ePETMenuData
@@ -32523,7 +32523,7 @@ sub_811EC00:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.balign 4, 0
-	thumb_func_end sub_811EC00
+	thumb_func_end pet_ClearMenuData_811EC00
 
 	thumb_func_start sub_811EC10
 sub_811EC10:
@@ -34431,8 +34431,8 @@ dword_811FB60:
 	.word 0xFFFF
 	thumb_func_end sub_811FAF4
 
-	thumb_func_start sub_811FB64
-sub_811FB64:
+	thumb_func_start submenu_ConfirmExitAndFade_811FB64
+submenu_ConfirmExitAndFade_811FB64:
 	push {lr}
 	strb r0, [r5,#1]
 	mov r0, #SOUND_EXIT_SUBMENU
@@ -34441,17 +34441,17 @@ sub_811FB64:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	pop {pc}
-	thumb_func_end sub_811FB64
+	thumb_func_end submenu_ConfirmExitAndFade_811FB64
 
-	thumb_func_start sub_811FB78
-sub_811FB78:
+	thumb_func_start clearS2001c04Byte6_811FB78
+clearS2001c04Byte6_811FB78:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_S2001c04_Ptr]
 	mov r0, #0
 	strb r0, [r1,#6]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_811FB78
+	thumb_func_end clearS2001c04Byte6_811FB78
 
 	thumb_func_start sub_811FB84
 sub_811FB84: // (a0: u32?, a1: usize) -> u32?
@@ -37339,8 +37339,8 @@ off_8121128:
 	.byte 0x0
 	thumb_func_end sub_8121108
 
-	thumb_func_start sub_8121144
-sub_8121144:
+	thumb_func_start clearWorkArea_200DCF0_8121144
+clearWorkArea_200DCF0_8121144:
 	push {r4-r7,lr}
 	ldr r0, off_8121150 // =word_200DCF0
 	mov r1, #0x18
@@ -37349,12 +37349,12 @@ sub_8121144:
 	.balign 4, 0
 off_8121150:
 	.word word_200DCF0
-	thumb_func_end sub_8121144
+	thumb_func_end clearWorkArea_200DCF0_8121144
 
 	thumb_func_start sub_8121154
 sub_8121154:
 	push {r4-r7,lr}
-	bl sub_8121144
+	bl clearWorkArea_200DCF0_8121144
 	mov r1, r10
 	ldr r1, [r1,#0x40]
 	ldr r4, [r1,#0x30]

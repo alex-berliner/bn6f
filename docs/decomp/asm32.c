@@ -10,7 +10,7 @@ int sub_810D970()
         *(v0 + 108) = 0;
         v1 = *(v0 + 104);
         if ( v1 )
-            v1 = sub_80C4072(v1);
+            v1 = battle_ResetObjectTimerTo8_80C4072(v1);
     }
     return sub_80165C2(v1);
 }
@@ -219,7 +219,7 @@ signed int sub_810DAF0()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -897,7 +897,7 @@ signed int sub_810E34A()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -970,13 +970,13 @@ signed int sub_810E4F0()
     signed int result; // r0
 
     object_clearCollisionRegion();
-    sub_801A5E2();
-    sub_80101C4(v0);
+    battle_ClearObjectCollisionResult_801A5E2();
+    battle_resetCollisionState_80101C4(v0);
     sub_801DC36();
     v0->chipsHeld = 0;
     v0->chip = -1;
     v0->parent = 0;
-    sub_801A7F4();
+    battle_clearAIDataAndBarrier_801A7F4();
     RemoveGivenAliveBattleActorFromList(v0);
     sub_801DD34();
     sub_800AAE8();
@@ -1144,7 +1144,7 @@ unsigned int __fastcall sub_810E666(int a1, int a2, int a3)
         object_spawnCollisionRegion(*(v3 + 18), *(v3 + 19), 2, 0);
         v7 = v5[22] ^ v5[23];
         sub_801BD3C(v5[18], v5[19], 50, 16);
-        sub_80C4072(*(v3 + 100));
+        battle_ResetObjectTimerTo8_80C4072(*(v3 + 100));
         *(v3 + 100) = 0;
     }
     v8 = *(v4 + 18) + 1;
@@ -1315,7 +1315,7 @@ int sub_810E854()
                 result = *(v0 + 100);
                 if ( result )
                 {
-                    sub_80C4072(result);
+                    battle_ResetObjectTimerTo8_80C4072(result);
                     result = 0;
                     *(v0 + 100) = 0;
                 }
@@ -1369,18 +1369,18 @@ signed int __noreturn sub_810E928()
     signed int result; // r0
 
     object_clearCollisionRegion();
-    sub_801A5E2();
-    sub_801A284();
-    sub_801A29A();
+    battle_ClearObjectCollisionResult_801A5E2();
+    battle_object_clearFlagsAndCollisionCounter_801A284();
+    battleObject_clearHitFlags_801A29A();
     sub_801A2B0();
-    sub_80101C4(v0);
+    battle_resetCollisionState_80101C4(v0);
     sub_801DC36();
     *(v0 + 26) = 0;
     *(v0 + 42) = -1;
     *(v0 + 76) = 0;
-    v1 = sub_801A7F4();
+    v1 = battle_clearAIDataAndBarrier_801A7F4();
     sub_802EF5C(v1);
-    sub_802CDD0();
+    battle_ClearAllianceTargetSlotIfSelf_802CDD0();
     sub_810EB42();
     object_reservePanel(*(v0 + 18), *(v0 + 19));
     *(v0 + 108) = 1;
@@ -1461,7 +1461,7 @@ unsigned int __fastcall sub_810E9D4(int a1, int a2, int a3)
         object_spawnCollisionRegion(*(v4 + 18), *(v4 + 19), 2, 0);
         v6 = *(v4 + 22) ^ *(v4 + 23);
         sub_801BD3C(*(v4 + 18), *(v4 + 19), 50, 16);
-        sub_80C4072(*(v4 + 100));
+        battle_ResetObjectTimerTo8_80C4072(*(v4 + 100));
         *(v4 + 100) = 0;
     }
     if ( *(v4 + 32) == 20 )
@@ -1471,7 +1471,7 @@ unsigned int __fastcall sub_810E9D4(int a1, int a2, int a3)
     *(v4 + 32) = v7;
     if ( (v7 < 0) ^ v8 )
     {
-        sub_80C4072(*(v4 + 96));
+        battle_ResetObjectTimerTo8_80C4072(*(v4 + 96));
         *(v4 + 10) = 16;
     }
     return sub_810EB5C();
@@ -1965,7 +1965,7 @@ signed int sub_810F1B6()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -3264,11 +3264,11 @@ int sub_811046A()
         v5 = *(v1 + 40);
         v6 = *v5;
         *v5 = 0;
-        sub_80C4072(v6);
+        battle_ResetObjectTimerTo8_80C4072(v6);
         v7 = (*(v1 + 52) + 4);
         v8 = *v7;
         *v7 = 0;
-        sub_80C4072(v8);
+        battle_ResetObjectTimerTo8_80C4072(v8);
         *(v0 + 16) = 3;
         result = 12;
         *v1 = 12;
@@ -3305,13 +3305,13 @@ int sub_8110518()
         v2 = *(v0 + 108);
         if ( v2 )
         {
-            sub_80C4072(v2);
+            battle_ResetObjectTimerTo8_80C4072(v2);
             *(v0 + 108) = 0;
         }
         v1 = *(v0 + 100);
         if ( v1 )
         {
-            sub_80C4072(v1);
+            battle_ResetObjectTimerTo8_80C4072(v1);
             v1 = 0;
             *(v0 + 100) = 0;
         }
@@ -3330,7 +3330,7 @@ int sub_8110546()
     result = *(v0 + 108);
     if ( result )
     {
-        sub_80C4072(result);
+        battle_ResetObjectTimerTo8_80C4072(result);
         result = 0;
         *(v0 + 108) = 0;
     }
@@ -5381,7 +5381,7 @@ signed int sub_8111FAE()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -5931,7 +5931,7 @@ signed int sub_8112600()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -5953,7 +5953,7 @@ int sub_8112630()
     result = *(v0 + 112);
     if ( result )
     {
-        sub_80C4072(*(v0 + 112));
+        battle_ResetObjectTimerTo8_80C4072(*(v0 + 112));
         result = 0;
         *(v0 + 112) = 0;
     }
@@ -6451,7 +6451,7 @@ int sub_8112CF4()
         *(v0 + 16) = 2;
         v5 = sub_80C4038(0, 0, 0, 0);
         *(v1 + 48) = v5;
-        *(sub_80C4086(v5) + 32) = 10 * *(v1 + 14);
+        *(battle_SetObjectExtraFlag14_80C4086(v5) + 32) = 10 * *(v1 + 14);
         object_setCounterTime(30);
         result = 8;
         *v1 = 8;
@@ -6490,7 +6490,7 @@ int sub_8112D2A()
         }
         else
         {
-            sub_80C4072(*(v0 + 48));
+            battle_ResetObjectTimerTo8_80C4072(*(v0 + 48));
             result = 12;
             *v0 = 12;
         }
@@ -6596,7 +6596,7 @@ u32 *sub_8112E34()
         *(v1 + 40) = 0;
         v3 = sub_80C4038(0, 0, 0, 0);
         *(v1 + 48) = v3;
-        *(sub_80C4086(v3) + 32) = 10 * *(v1 + 14);
+        *(battle_SetObjectExtraFlag14_80C4086(v3) + 32) = 10 * *(v1 + 14);
         *(v1 + 52) = object_getFrontDirection(v0);
         object_setCounterTime(30);
         result = &dword_8;
@@ -6650,7 +6650,7 @@ int __fastcall sub_8112E7C(int a1, int a2, int a3)
         }
         else
         {
-            sub_80C4072(*(v3 + 48));
+            battle_ResetObjectTimerTo8_80C4072(*(v3 + 48));
             result = 12;
             *v3 = 12;
         }
@@ -6775,7 +6775,7 @@ u32 *sub_8112FBA()
         *(v1 + 40) = 0;
         v3 = sub_80C4038(0, 0, 0, 0);
         *(v1 + 48) = v3;
-        *(sub_80C4086(v3) + 32) = 10 * *(v1 + 14);
+        *(battle_SetObjectExtraFlag14_80C4086(v3) + 32) = 10 * *(v1 + 14);
         *(v1 + 52) = object_getFrontDirection(v0);
         object_setCounterTime(30);
         result = &dword_8;
@@ -6820,7 +6820,7 @@ int sub_8113002()
         }
         else
         {
-            sub_80C4072(*(v0 + 48));
+            battle_ResetObjectTimerTo8_80C4072(*(v0 + 48));
             result = 12;
             *v0 = 12;
         }
@@ -7182,7 +7182,7 @@ int sub_8113510()
         else
         {
             *(v0 + 16) = 3;
-            sub_80C4072(*(v0 + 104));
+            battle_ResetObjectTimerTo8_80C4072(*(v0 + 104));
             *(v0 + 104) = 0;
             result = 8;
             *v1 = 8;
@@ -7238,7 +7238,7 @@ int sub_811363C()
         if ( v1 )
         {
             sub_80B8A0A(v1);
-            v1 = sub_80C4072(*(v0 + 104));
+            v1 = battle_ResetObjectTimerTo8_80C4072(*(v0 + 104));
         }
     }
     return sub_80165C2(v1);
@@ -10611,7 +10611,7 @@ unsigned int sub_8116470()
     unsigned int result; // r0
 
     *v0 &= 0xFDu;
-    v1 = sub_800139A();
+    v1 = battle_getStateUnk5c_800139A();
     v2 = __CFSHR__(v1, 2);
     result = v1 >> 2;
     if ( v2 )
@@ -10752,7 +10752,7 @@ unsigned int sub_81166F2()
     unsigned int result; // r0
 
     *v0 &= 0xFDu;
-    v1 = sub_800139A();
+    v1 = battle_getStateUnk5c_800139A();
     v2 = __CFSHR__(v1, 2);
     result = v1 >> 2;
     if ( v2 )
@@ -10933,11 +10933,11 @@ void __fastcall __noreturn sub_81168B4(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(0);
+    sprite_setSubEntryPaletteBank_800304A(0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(&dword_390);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(&dword_390);
+    sprite_setSubRecordFieldA_8003060(0);
     v2->currState = 4;
     sprite_setCoordinates(200, 7);
     sub_8116904();
@@ -10981,11 +10981,11 @@ void __fastcall __noreturn sub_8116944(int a1, int a2)
     sprite_setAnimation(v2, *(v2 + 4));
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(12);
+    sprite_setSubEntryPaletteBank_800304A(12);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(0);
-    sub_800306C(724);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(724);
+    sprite_setSubRecordFieldA_8003060(0);
     *(v2 + 8) = 4;
     v3 = 0;
     v4 = 1;
@@ -11147,11 +11147,11 @@ void __noreturn sub_8116B00()
     sprite_setAnimation(v0, v3);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(13);
+    sprite_setSubEntryPaletteBank_800304A(13);
     sprite_setPallete(1);
     sprite_setPriority_8002E14(0);
-    sub_800306C(dword_350);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(dword_350);
+    sprite_setSubRecordFieldA_8003060(0);
     *(v0 + 8) = 4;
     *(v0 + 9) = 0;
     v4 = 32;
@@ -11248,7 +11248,7 @@ int sub_8116C40()
     signed int v5; // r3
     int v6; // r2
 
-    v2 = sub_8116CD4();
+    v2 = record_getNthSubRecordPtr_8116CD4();
     result = 22;
     v4 = -2;
     v5 = 0;
@@ -11316,13 +11316,13 @@ void sub_8116C78()
             v0[13] = byte_8116CCC[v9 + 1];
         }
     }
-    sub_800304A(v3);
+    sprite_setSubEntryPaletteBank_800304A(v3);
     sprite_setPallete(v2);
 }
 
 
 // 0x8116cd4
-unsigned int sub_8116CD4()
+unsigned int record_getNthSubRecordPtr_8116CD4()
 {
     int v0; // r5
 
@@ -11355,11 +11355,11 @@ void __fastcall __noreturn sub_8116D00(int a1, int a2)
     sprite_setAnimation(v2, v3);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(12);
+    sprite_setSubEntryPaletteBank_800304A(12);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(0);
-    sub_800306C(907);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(907);
+    sprite_setSubRecordFieldA_8003060(0);
     *(v2 + 8) = 4;
     v4 = (byte_119 + 1);
     v5 = 0;
@@ -11476,9 +11476,9 @@ void __noreturn sub_8116E30()
     sprite_noShadow(v0);
     sprite_setPallete(byte_8116F1D[v2]);
     sprite_setPriority_8002E14((*off_8116EB8[*(v0 + 5)])[v2]);
-    sub_800306C(off_8116EC8[*(v0 + 5)][v2]);
-    sub_800304A((*off_8116EEC[*(v0 + 5)])[v2]);
-    sub_8003060((*off_8116EFC[*(v0 + 5)])[v2]);
+    slotList_storeHalfwordAndClearField_800306C(off_8116EC8[*(v0 + 5)][v2]);
+    sprite_setSubEntryPaletteBank_800304A((*off_8116EEC[*(v0 + 5)])[v2]);
+    sprite_setSubRecordFieldA_8003060((*off_8116EFC[*(v0 + 5)])[v2]);
     *(v0 + 8) = 4;
     sub_8116F34();
 }
@@ -11512,7 +11512,7 @@ void __noreturn sub_8116F60()
 
 
 // 0x8116f8c
-int sub_8116F8C()
+int battle_objectUpdateWithFieldC_8116F8C()
 {
     int v0; // r5
 
@@ -11684,12 +11684,12 @@ void __noreturn sub_8117130()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(off_8117198[*(v0 + 4)]);
+    slotList_storeHalfwordAndClearField_800306C(off_8117198[*(v0 + 4)]);
     v2 = 10;
     if ( *(v0 + 4) >= 2 )
         v2 = 4;
-    sub_800304A(v2);
-    sub_8003060(3);
+    sprite_setSubEntryPaletteBank_800304A(v2);
+    sprite_setSubRecordFieldA_8003060(3);
     *(v0 + 8) = 4;
     sub_81171B4();
 }
@@ -11778,8 +11778,8 @@ void __noreturn sub_8117238()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(8);
-    sub_800306C(&dword_380);
+    sprite_setSubEntryPaletteBank_800304A(8);
+    slotList_storeHalfwordAndClearField_800306C(&dword_380);
     sprite_setPriority_8002E14(2);
     sprite_setCoordinates(0, 0);
     v0->currState = 4;
@@ -11844,10 +11844,10 @@ void __fastcall __noreturn sub_81172D0(int a1, void *a2)
     sprite_setAnimation(v2, *(v2 + 5) & 0x7F);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(*(v2 + 3) + 1);
-    sub_800306C(&byte_100[64 * *(v2 + 3)]);
+    sprite_setSubEntryPaletteBank_800304A(*(v2 + 3) + 1);
+    slotList_storeHalfwordAndClearField_800306C(&byte_100[64 * *(v2 + 3)]);
     sprite_setPriority_8002E14(3);
-    sub_8003060(4);
+    sprite_setSubRecordFieldA_8003060(4);
     sprite_setCoordinates(*(v2 + 6), *(v2 + 7));
     if ( *(v2 + 5) & 0x80 )
         sprite_setFlip(v2, 1);
@@ -11893,10 +11893,10 @@ void __noreturn sub_8117424()
     sprite_noShadow(v0);
     sprite_makeScalable();
     sprite_setScaleParameters(0, 128, 128);
-    sub_800304A(*(v0 + 5) + 5);
-    sub_800306C(&byte_200[16 * *(v0 + 5)]);
+    sprite_setSubEntryPaletteBank_800304A(*(v0 + 5) + 5);
+    slotList_storeHalfwordAndClearField_800306C(&byte_200[16 * *(v0 + 5)]);
     sprite_setPriority_8002E14(3);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setCoordinates(0, 0);
     *(v0 + 8) = 4;
     sub_81175AC();
@@ -12077,8 +12077,8 @@ void __noreturn sub_81175F0()
     sprite_setAnimation(v0, *(v0 + 4));
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(0);
-    sub_800306C(*&byte_8117640[4 * *(v0 + 3)]);
+    sprite_setSubEntryPaletteBank_800304A(0);
+    slotList_storeHalfwordAndClearField_800306C(*&byte_8117640[4 * *(v0 + 3)]);
     sprite_setPriority_8002E14(2);
     sprite_setCoordinates(*(v0 + 5), *(v0 + 6));
     *(v0 + 8) = 4;
@@ -12161,7 +12161,7 @@ signed int sub_81176D0()
 
 
 // 0x811774c
-signed int sub_811774C()
+signed int battle_getObjectPairOddByteClamped8_811774C()
 {
     int v0; // r5
     signed int result; // r0
@@ -12207,9 +12207,9 @@ void __noreturn sub_81177A4()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(8);
-    sub_800306C(&byte_40);
-    sub_8003060(1);
+    sprite_setSubEntryPaletteBank_800304A(8);
+    slotList_storeHalfwordAndClearField_800306C(&byte_40);
+    sprite_setSubRecordFieldA_8003060(1);
     sprite_setPriority_8002E14(0);
     *(v0 + 8) = 4;
     sub_81177EC();
@@ -12349,9 +12349,9 @@ void __noreturn sub_81178FC()
     sprite_setAnimation(v0, v1);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(*(v0 + 4) + 9);
-    sub_800306C(&byte_180);
-    sub_8003060(1);
+    sprite_setSubEntryPaletteBank_800304A(*(v0 + 4) + 9);
+    slotList_storeHalfwordAndClearField_800306C(&byte_180);
+    sprite_setSubRecordFieldA_8003060(1);
     sprite_setPriority_8002E14(0);
     *(v0 + 8) = 4;
     sub_811794C();
@@ -12443,10 +12443,10 @@ int __fastcall sub_8117A14(int a1, int a2, int a3, int a4)
     sub_8117A84(v5[2]);
     sub_8117A84(v5[3]);
     v6 = *(v4 + 2);
-    sub_8117AA0(v6, *v5);
-    sub_8117AA0(v6, v5[1]);
-    sub_8117AA0(v6, v5[2]);
-    sub_8117AA0(v6, v5[3]);
+    folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, *v5);
+    folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[1]);
+    folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[2]);
+    folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[3]);
     return (loc_8000AC8)(&unk_2016300, 100744000, 512);
 }
 
@@ -12462,7 +12462,7 @@ void __fastcall sub_8117A84(signed int a1)
 
 
 // 0x8117aa0
-void __fastcall sub_8117AA0(signed int result, int a2)
+void __fastcall folder_CountChipsOfCodeOrSkipEntry_8117AA0(signed int result, int a2)
 {
     int v2; // r0
 
@@ -12577,11 +12577,11 @@ void __noreturn sub_8117BE8()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(9);
+    sprite_setSubEntryPaletteBank_800304A(9);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&byte_170);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(&byte_170);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setCoordinates(&loc_D4, 12);
     v0->currState = 4;
     v0->currAction = 0;
@@ -12725,9 +12725,9 @@ int __noreturn sub_8117D4C()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(*(&off_8117DB4 + *(v0 + 3)));
-    sub_800304A(*(&dword_8117DC4 + *(v0 + 3)));
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(*(&off_8117DB4 + *(v0 + 3)));
+    sprite_setSubEntryPaletteBank_800304A(*(&dword_8117DC4 + *(v0 + 3)));
+    sprite_setSubRecordFieldA_8003060(3);
     sprite_setCoordinates(120, 32 * *(v0 + 3) + 40);
     *(v0 + 8) = 4;
     return sub_8117DC8();
@@ -12857,8 +12857,8 @@ void __noreturn sub_8117EE8()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(off_8117F44[*(v0 + 4)]);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(off_8117F44[*(v0 + 4)]);
+    sprite_setSubRecordFieldA_8003060(3);
     *(v0 + 8) = 4;
     *(v0 + 9) = 0;
     *(v0 + 10) = 0;
@@ -13152,7 +13152,7 @@ void sub_8118234()
             v0[13] = byte_811829C[v8 + 1];
         }
     }
-    sub_800304A(v2 + (v0[14] >> 1));
+    sprite_setSubEntryPaletteBank_800304A(v2 + (v0[14] >> 1));
     sprite_setPallete(v1 + v0[14]);
 }
 
@@ -13260,9 +13260,9 @@ void __noreturn sub_8118368()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(&byte_1C0);
-    sub_8003060(1);
-    sub_800304A(8);
+    slotList_storeHalfwordAndClearField_800306C(&byte_1C0);
+    sprite_setSubRecordFieldA_8003060(1);
+    sprite_setSubEntryPaletteBank_800304A(8);
     v0->currState = 4;
     sprite_setCoordinates(230, 20 * *(v1 + 32) + 27);
     v0->pad_0C[0] = 0;
@@ -13727,9 +13727,9 @@ void __noreturn sub_811880C()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(dword_1D8);
-    sub_8003060(3);
-    sub_800304A(7);
+    slotList_storeHalfwordAndClearField_800306C(dword_1D8);
+    sprite_setSubRecordFieldA_8003060(3);
+    sprite_setSubEntryPaletteBank_800304A(7);
     sprite_setPallete(0);
     v0->currState = 4;
     v0->unk_0D = -1;
@@ -14121,9 +14121,9 @@ void __noreturn sub_8118BC8()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(&byte_1E0);
-    sub_8003060(4);
-    sub_800304A(6);
+    slotList_storeHalfwordAndClearField_800306C(&byte_1E0);
+    sprite_setSubRecordFieldA_8003060(4);
+    sprite_setSubEntryPaletteBank_800304A(6);
     sprite_setPallete(0);
     v0->currState = 4;
     sprite_setCoordinates(128, 20 * *(v1 + 32) + 27);
@@ -14267,9 +14267,9 @@ void __noreturn sub_8118D84()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(byte_200);
-    sub_8003060(4);
-    sub_800304A(5);
+    slotList_storeHalfwordAndClearField_800306C(byte_200);
+    sprite_setSubRecordFieldA_8003060(4);
+    sprite_setSubEntryPaletteBank_800304A(5);
     sprite_setPallete(0);
     v0->currState = 4;
     sprite_setCoordinates(128, 20 * *(v1 + 32) + 27);
@@ -14368,9 +14368,9 @@ void __noreturn sub_8118EA8()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(0);
-    sub_800306C(byte_220);
-    sub_8003060(4);
-    sub_800304A(4);
+    slotList_storeHalfwordAndClearField_800306C(byte_220);
+    sprite_setSubRecordFieldA_8003060(4);
+    sprite_setSubEntryPaletteBank_800304A(4);
     sprite_setPallete(0);
     sprite_setObjWindowMode();
     v0->currState = 4;
@@ -14419,9 +14419,9 @@ void __noreturn sub_8118F44()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(0);
+    slotList_storeHalfwordAndClearField_800306C(0);
     sub_81190E0();
-    sub_8003060(4);
+    sprite_setSubRecordFieldA_8003060(4);
     sprite_setCoordinates(*&byte_8118FA4[4 * *(v0 + 5)], *&byte_8118FA4[4 * *(v0 + 5) + 2]);
     *(v0 + 8) = 4;
     sub_8118FC0();
@@ -14439,7 +14439,7 @@ void __noreturn sub_8118FC0()
 
 
 // 0x8118fe0
-void sub_8118FE0()
+void nullsub_8118FE0()
 {
     ;
 }
@@ -14517,7 +14517,7 @@ int sub_81190E0()
 {
     int v0; // r5
 
-    return sub_800304A(*(off_81190F4 + *(v0 + 4)));
+    return sprite_setSubEntryPaletteBank_800304A(*(off_81190F4 + *(v0 + 4)));
 }
 
 
@@ -14588,11 +14588,11 @@ void __fastcall __noreturn sub_8119384(int a1, int a2, int a3, int a4)
     sprite_noShadow(v4);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(*(off_8119208[*(v4 + 5)] + v7));
-    sub_800306C(off_8119128[*(v4 + 5)][v7]);
-    sub_800304A(*(off_8119170[*(v4 + 5)] + v7));
-    sub_8003060(*(off_8119228[*(v4 + 5)] + v7));
+    slotList_storeHalfwordAndClearField_800306C(off_8119128[*(v4 + 5)][v7]);
+    sprite_setSubEntryPaletteBank_800304A(*(off_8119170[*(v4 + 5)] + v7));
+    sprite_setSubRecordFieldA_8003060(*(off_8119228[*(v4 + 5)] + v7));
     if ( !v7 )
-        sub_8002FEC(off_811924C[*(v4 + 5)]);
+        object_writeSubstructField30_8002FEC(off_811924C[*(v4 + 5)]);
     *(v4 + 8) = 4;
     *(v4 + 16) = 255;
     *(v4 + 13) = -1;
@@ -14713,7 +14713,7 @@ void __fastcall sub_8119594(int a1, int a2, int a3, int a4)
     else
     {
         v7 = memory_bcdConvert(v10);
-        v6 = sub_8000C5C(v7);
+        v6 = countHexDigits_8000C5C(v7);
     }
     do
     {
@@ -14831,7 +14831,7 @@ signed int sub_811974C()
 
 
 // 0x811975c
-int __fastcall sub_811975C(int a1, int a2, int a3, int a4)
+int __fastcall npc_stepChainSetState0x10_811975C(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -14899,7 +14899,7 @@ void sub_81197B4()
 
 
 // 0x8119800
-void sub_8119800()
+void nullStub_8119800()
 {
     ;
 }
@@ -15230,16 +15230,16 @@ void __noreturn sub_8119AEC()
     v6 = sub_8119C08();
     sprite_setPallete(v6);
     sprite_setPriority_8002E14(2);
-    sub_800306C(0);
-    sub_800304A(0);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(0);
+    sprite_setSubEntryPaletteBank_800304A(0);
+    sprite_setSubRecordFieldA_8003060(3);
     v0->currState = 4;
-    sub_8119BD0(4);
+    sprite_applyComputedPaletteAndUpdate_8119BD0(4);
 }
 
 
 // 0x8119bd0
-void __fastcall __noreturn sub_8119BD0(int a1)
+void __fastcall __noreturn sprite_applyComputedPaletteAndUpdate_8119BD0(int a1)
 {
     Battle *v1; // r5
     int v2; // r0
@@ -15390,10 +15390,10 @@ void __noreturn sub_8119D74()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_8002FEC(0);
+    object_writeSubstructField30_8002FEC(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(32);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(32);
+    sprite_setSubRecordFieldA_8003060(3);
     *(v0 + 8) = 4;
     sub_8119DE8();
 }
@@ -15420,7 +15420,7 @@ void __noreturn sub_8119DE8()
     v0->objFlags = v3;
     v5 = sprite_getMosaicScalingParameters(v2);
     (sprite_setAlpha)(v5);
-    v6 = sub_8002F3E(v2);
+    v6 = obj_getSpriteFlag10AndRenderInfoHigh_8002F3E(v2);
     (loc_8002F02)(v6);
     sprite_update(v0);
 }
@@ -15464,9 +15464,9 @@ void __fastcall __noreturn sub_8119E60(int a1, int a2, int a3, int a4)
     sprite_noShadow(v4);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(LOBYTE(dword_811A024[*(v4 + 5)]));
-    sub_800306C((&off_8119FD0)[*(v4 + 5)][v7]);
-    sub_800304A(*((&off_811A010)[*(v4 + 5)] + v7));
-    sub_8003060(*((&off_811A02C)[*(v4 + 5)] + v7));
+    slotList_storeHalfwordAndClearField_800306C((&off_8119FD0)[*(v4 + 5)][v7]);
+    sprite_setSubEntryPaletteBank_800304A(*((&off_811A010)[*(v4 + 5)] + v7));
+    sprite_setSubRecordFieldA_8003060(*((&off_811A02C)[*(v4 + 5)] + v7));
     *(v4 + 8) = 4;
     *(v4 + 16) = 255;
     *(v4 + 13) = -1;
@@ -15584,7 +15584,7 @@ signed int sub_811A11C()
 
 
 // 0x811a138
-signed int sub_811A138()
+signed int npc_ClearBusyFlagAndResetState_811A138()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -15645,7 +15645,7 @@ void sub_811A1B0()
     char v3; // r6
     unsigned __int8 *v4; // r0
 
-    sub_811A24C();
+    submenu_compareCursorBytes_811A24C();
     if ( !v1 || !(**(v0 + 20) & 2) )
     {
         v2 = *(v0 + 14);
@@ -15731,7 +15731,7 @@ int __fastcall sub_811A220(int a1, __int16 a2, int a3)
 
 
 // 0x811a24c
-int sub_811A24C()
+int submenu_compareCursorBytes_811A24C()
 {
     int v0; // r5
     int result; // r0
@@ -15875,9 +15875,9 @@ int __noreturn sub_811A3AC()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(0);
-    sub_800304A(8);
-    return sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(0);
+    sprite_setSubEntryPaletteBank_800304A(8);
+    return sprite_setSubRecordFieldA_8003060(3);
 }
 
 
@@ -15918,9 +15918,9 @@ void __noreturn sub_811A434()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(*&byte_811A4BC[4 * *(v0 + 4)]);
-    sub_800304A(*(&off_811A4D8 + *(v0 + 4)));
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(*&byte_811A4BC[4 * *(v0 + 4)]);
+    sprite_setSubEntryPaletteBank_800304A(*(&off_811A4D8 + *(v0 + 4)));
+    sprite_setSubRecordFieldA_8003060(3);
     sub_811A5BC();
     if ( *(v0 + 4) )
         sub_811A640();
@@ -16167,9 +16167,9 @@ void __noreturn sub_811A7AC()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&byte_1D0);
-    sub_800304A(10);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(&byte_1D0);
+    sprite_setSubEntryPaletteBank_800304A(10);
+    sprite_setSubRecordFieldA_8003060(3);
     sub_811A838(byte_811A810[*(v0 + 4)], byte_811A813[*(v0 + 4)], 6);
     *(v0 + 8) = 4;
     sub_811A818();
@@ -16346,9 +16346,9 @@ void __noreturn sub_811A998()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(0);
+    slotList_storeHalfwordAndClearField_800306C(0);
     sub_811AB14();
-    sub_8003060(4);
+    sprite_setSubRecordFieldA_8003060(4);
     sprite_setCoordinates(*&byte_811A9F8[4 * *(v0 + 5)], *&byte_811A9F8[4 * *(v0 + 5) + 2]);
     *(v0 + 8) = 4;
     sub_811AA14();
@@ -16427,7 +16427,7 @@ int sub_811AB14()
 {
     int v0; // r5
 
-    return sub_800304A(*(off_811AB28 + *(v0 + 4)));
+    return sprite_setSubEntryPaletteBank_800304A(*(off_811AB28 + *(v0 + 4)));
 }
 
 
@@ -16452,9 +16452,9 @@ void __noreturn sub_811AB7C()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(0);
-    sub_800304A(0);
-    sub_8003060(2);
+    slotList_storeHalfwordAndClearField_800306C(0);
+    sprite_setSubEntryPaletteBank_800304A(0);
+    sprite_setSubRecordFieldA_8003060(2);
     v0->currState = 4;
     sub_811ABC8();
 }
@@ -16603,9 +16603,9 @@ void __noreturn sub_811AD58()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&loc_A0);
-    sub_800304A(2);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(&loc_A0);
+    sprite_setSubEntryPaletteBank_800304A(2);
+    sprite_setSubRecordFieldA_8003060(3);
     v0->currState = 4;
     sub_811AE5C(*&byte_811ADB8[4 * v0->objMemIndex], *&byte_811ADB8[4 * v0->objMemIndex + 2], v0->objMemIndex);
     sub_811ADC0();
@@ -16903,9 +16903,9 @@ void __noreturn sub_811B20C()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&dword_130);
-    sub_800304A(2);
-    sub_8003060(5);
+    slotList_storeHalfwordAndClearField_800306C(&dword_130);
+    sprite_setSubEntryPaletteBank_800304A(2);
+    sprite_setSubRecordFieldA_8003060(5);
     sub_811B298();
     *(v0 + 8) = 4;
     *(v0 + 12) = 0;
@@ -17000,9 +17000,9 @@ void __noreturn sub_811B35C()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(0);
-    sub_800306C(byte_210);
-    sub_8003060(2);
-    sub_800304A(10);
+    slotList_storeHalfwordAndClearField_800306C(byte_210);
+    sprite_setSubRecordFieldA_8003060(2);
+    sprite_setSubEntryPaletteBank_800304A(10);
     sprite_setPallete(0);
     v0->currState = 4;
     sprite_setCoordinates(32, 80);
@@ -17059,16 +17059,16 @@ void __fastcall __noreturn sub_811B414(int a1, int a2)
     sprite_noShadow(v2);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&loc_C0);
-    sub_800304A(6);
-    sub_8003060(4);
+    slotList_storeHalfwordAndClearField_800306C(&loc_C0);
+    sprite_setSubEntryPaletteBank_800304A(6);
+    sprite_setSubRecordFieldA_8003060(4);
     v2->currState = 4;
-    sub_811B45C();
+    sprite_updateWrapper_811B45C();
 }
 
 
 // 0x811b45c
-void __noreturn sub_811B45C()
+void __noreturn sprite_updateWrapper_811B45C()
 {
     Battle *v0; // r5
 
@@ -17490,19 +17490,19 @@ void __noreturn sub_811B9D8()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(3);
-    sub_8003060(1);
+    sprite_setSubRecordFieldA_8003060(1);
     if ( *(v0 + 4) )
     {
         v1 = *(v0 + 3);
-        sub_800306C(*(&off_811BA4C + v1));
+        slotList_storeHalfwordAndClearField_800306C(*(&off_811BA4C + v1));
         v2 = v1 + 11;
     }
     else
     {
-        sub_800306C(*(&off_811BA4C + *(v0 + 4)));
+        slotList_storeHalfwordAndClearField_800306C(*(&off_811BA4C + *(v0 + 4)));
         v2 = 11;
     }
-    sub_800304A(v2);
+    sprite_setSubEntryPaletteBank_800304A(v2);
     *(v0 + 8) = 4;
     v3 = 4;
     if ( !*(v0 + 4) )
@@ -17765,9 +17765,9 @@ void __noreturn sub_811BC68()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C((&off_811BCBC)[*(v0 + 5)]);
-    sub_800304A(8);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C((&off_811BCBC)[*(v0 + 5)]);
+    sprite_setSubEntryPaletteBank_800304A(8);
+    sprite_setSubRecordFieldA_8003060(3);
     *(v0 + 8) = 4;
     sub_811BD34();
 }
@@ -17860,7 +17860,7 @@ void sub_811BDCC()
     char v1; // zf
 
     (*(&off_811BDE8 + v0->currAction))();
-    sub_811BE90();
+    object_checkStatusFlag_811BE90();
     if ( !v1 )
         sprite_update(v0);
 }
@@ -17915,7 +17915,7 @@ int __fastcall sub_811BE1C(int a1)
         sprite_setAnimation(v1, 0);
         sprite_loadAnimationData(v1);
         sprite_noShadow(v1);
-        sub_800304A(4);
+        sprite_setSubEntryPaletteBank_800304A(4);
         v3 = v1->pad_0C[0];
         if ( v3 == 23 )
         {
@@ -17925,9 +17925,9 @@ int __fastcall sub_811BE1C(int a1)
                 v5 = 12;
 LABEL_7:
                 sprite_setPallete(v5);
-                sub_800306C(&dword_120);
+                slotList_storeHalfwordAndClearField_800306C(&dword_120);
                 sprite_setPriority_8002E14(2);
-                sub_8003060(byte_811BFB6[v1->pad_0C[0]]);
+                sprite_setSubRecordFieldA_8003060(byte_811BFB6[v1->pad_0C[0]]);
                 return sprite_setCoordinates(*&byte_811BF0C[4 * v1->pad_0C[0]], *&byte_811BF0C[4 * v1->pad_0C[0] + 2]);
             }
             v3 = 23;
@@ -17940,7 +17940,7 @@ LABEL_7:
 
 
 // 0x811be90
-int sub_811BE90()
+int object_checkStatusFlag_811BE90()
 {
     int v0; // r5
 
@@ -18002,10 +18002,10 @@ void __noreturn sub_811C01C()
     sprite_setAnimation(v0, *(v0 + 4) + 8);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800306C(dword_1F8);
-    sub_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(dword_1F8);
+    sprite_setSubEntryPaletteBank_800304A(11);
     sprite_setPallete(0);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setCoordinates(*(&dword_811C078 + 2 * *(v0 + 4)), *(&dword_811C078 + 2 * *(v0 + 4) + 1));
     *(v0 + 8) = 4;
@@ -18048,9 +18048,9 @@ void __fastcall __noreturn sub_811C0AC(int a1, int a2)
     sprite_setAnimation(v2, 4u);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800306C(&dword_3C0);
-    sub_800304A(15);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(&dword_3C0);
+    sprite_setSubEntryPaletteBank_800304A(15);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(1);
     sprite_setCoordinates(120, v2->objParams);
     v2->currState = 4;
@@ -18100,11 +18100,11 @@ void __fastcall __noreturn sub_811C13C(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(0);
+    sprite_setSubEntryPaletteBank_800304A(0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(3);
-    sub_800306C(&dword_390);
-    sub_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(&dword_390);
+    sprite_setSubRecordFieldA_8003060(0);
     v2->currState = 4;
     sprite_setCoordinates(216, 7);
     sub_811C18C();
@@ -18149,17 +18149,17 @@ void __noreturn sub_811C1CC()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&loc_F0);
-    sub_800304A(5);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(&loc_F0);
+    sprite_setSubEntryPaletteBank_800304A(5);
+    sprite_setSubRecordFieldA_8003060(3);
     v0->currState = 4;
     sub_811C23C(&dword_78, dword_28, v0->objMemIndex);
-    sub_811C22C();
+    sprite_updateAnimPassthrough_811C22C();
 }
 
 
 // 0x811c22c
-void __noreturn sub_811C22C()
+void __noreturn sprite_updateAnimPassthrough_811C22C()
 {
     Battle *v0; // r5
 
@@ -18265,9 +18265,9 @@ int __fastcall sub_811C2A8(int a1, int a2)
         sprite_noShadow(v5);
         sprite_setPallete(0);
         sprite_setPriority_8002E14(0);
-        sub_800306C(0);
-        sub_800304A(0);
-        sub_8003060(3);
+        slotList_storeHalfwordAndClearField_800306C(0);
+        sprite_setSubEntryPaletteBank_800304A(0);
+        sprite_setSubRecordFieldA_8003060(3);
         result = sub_811C440(v6 >> 2);
     }
     return result;
@@ -18392,9 +18392,9 @@ int __fastcall sub_811C554(int a1, int a2)
         sprite_noShadow(v5);
         sprite_setPallete(0);
         sprite_setPriority_8002E14(2);
-        sub_800306C(*&byte_811C5D0[v6]);
-        sub_800304A(byte_811C61B[v6 >> 2]);
-        sub_8003060(3);
+        slotList_storeHalfwordAndClearField_800306C(*&byte_811C5D0[v6]);
+        sprite_setSubEntryPaletteBank_800304A(byte_811C61B[v6 >> 2]);
+        sprite_setSubRecordFieldA_8003060(3);
         result = sub_811C620(v6 >> 2);
     }
     return result;
@@ -18512,13 +18512,13 @@ void __noreturn sub_811CA1C()
     sprite_noShadow(v0);
     sprite_makeScalable();
     sprite_setScaleParameters(0, 128, 128);
-    sub_800304A(*(v0 + 4));
-    sub_800306C(&byte_80[48 * *(v0 + 4)]);
+    sprite_setSubEntryPaletteBank_800304A(*(v0 + 4));
+    slotList_storeHalfwordAndClearField_800306C(&byte_80[48 * *(v0 + 4)]);
     sprite_setPriority_8002E14(0);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setCoordinates(0, 0);
     *(v0 + 8) = 4;
-    if ( sub_811CC4E() )
+    if ( object_SetStateHandler_811CC4E() )
         sub_811CA94();
     else
         sprite_clearScaleCounterAndMakeUnscalable_804668A();
@@ -18604,7 +18604,7 @@ signed int sub_811CAEC()
         return 0;
     *(v0 + 9) = 0;
     *(v0 + 16) = 0;
-    sub_811CC60(14);
+    counter_addU32_r5Plus0C_811CC60(14);
     return 1;
 }
 
@@ -18628,7 +18628,7 @@ signed int sub_811CBA0()
         return 0;
     *(v0 + 9) = 0;
     *(v0 + 16) = 0;
-    sub_811CC60(4);
+    counter_addU32_r5Plus0C_811CC60(4);
     return 1;
 }
 
@@ -18648,7 +18648,7 @@ signed int sub_811CBD0()
     v3 = *(v2 + 8);
     *(v0 + 26) = v3;
     sprite_setScaleParameters(0, v3 >> 8, v3 >> 8);
-    sub_811CC60(10);
+    counter_addU32_r5Plus0C_811CC60(10);
     return 1;
 }
 
@@ -18656,7 +18656,7 @@ signed int sub_811CBD0()
 // 0x811cc02
 signed int sub_811CC02()
 {
-    sub_811CC4E();
+    object_SetStateHandler_811CC4E();
     return 1;
 }
 
@@ -18670,7 +18670,7 @@ signed int __fastcall __noreturn sub_811CC0C(int a1)
     v2 = sub_811CC68();
     sprite_setAnimation(v1, *(v2 + 2));
     sprite_loadAnimationData(v1);
-    sub_811CC60(4);
+    counter_addU32_r5Plus0C_811CC60(4);
     return 1;
 }
 
@@ -18681,7 +18681,7 @@ signed int sub_811CC26()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    sub_811CC60(2);
+    counter_addU32_r5Plus0C_811CC60(2);
     return 1;
 }
 
@@ -18692,13 +18692,13 @@ signed int sub_811CC3A()
     _BYTE *v0; // r5
 
     *v0 &= 0xFDu;
-    sub_811CC60(2);
+    counter_addU32_r5Plus0C_811CC60(2);
     return 1;
 }
 
 
 // 0x811cc4e
-int sub_811CC4E()
+int object_SetStateHandler_811CC4E()
 {
     int v0; // r5
     int result; // r0
@@ -18710,7 +18710,7 @@ int sub_811CC4E()
 
 
 // 0x811cc60
-int __fastcall sub_811CC60(int a1)
+int __fastcall counter_addU32_r5Plus0C_811CC60(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -19202,7 +19202,7 @@ int __fastcall sub_811D0EC(int a1, int a2)
         sprite_loadAnimationData(v2);
         sprite_noShadow(v2);
         sprite_setPriority_8002E14(2);
-        sub_8003060(3);
+        sprite_setSubRecordFieldA_8003060(3);
         v2->pad_0C[0] = 30;
         result = 8;
         v2->currAction = 8;
@@ -19461,9 +19461,9 @@ signed int __noreturn sub_811D2F8()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(*&byte_811D390[v2]);
-    sub_800304A(byte_811D40B[v2 >> 2]);
-    sub_8003060(3);
+    slotList_storeHalfwordAndClearField_800306C(*&byte_811D390[v2]);
+    sprite_setSubEntryPaletteBank_800304A(byte_811D40B[v2 >> 2]);
+    sprite_setSubRecordFieldA_8003060(3);
     sub_811DC00(*&byte_811D3FC[v2], *&byte_811D3FC[v2 + 2]);
     *(v0 + 26) = v8;
     *(v0 + 30) = v9;
@@ -19492,9 +19492,9 @@ signed int __noreturn sub_811D410()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
-    sub_800306C(&byte_180);
-    sub_800304A(3);
-    sub_8003060(5);
+    slotList_storeHalfwordAndClearField_800306C(&byte_180);
+    sprite_setSubEntryPaletteBank_800304A(3);
+    sprite_setSubRecordFieldA_8003060(5);
     sub_811DC00(120, 112);
     sprite_setCoordinates(v1, v2);
     result = 21;
@@ -19523,12 +19523,12 @@ int __noreturn sub_811D464()
     v1 = byte_100;
     if ( *(v0 + 4) != 1 )
         v1 = byte_200;
-    sub_800306C(v1);
+    slotList_storeHalfwordAndClearField_800306C(v1);
     v2 = 2;
     if ( *(v0 + 4) != 1 )
         v2 = 6;
-    sub_800304A(v2);
-    sub_8003060(4);
+    sprite_setSubEntryPaletteBank_800304A(v2);
+    sprite_setSubRecordFieldA_8003060(4);
     sub_811DC00(120, 128);
     sprite_setCoordinates(v3, v4);
     v5 = 16;
@@ -19551,9 +19551,9 @@ int __noreturn sub_811D530()
     sprite_noShadow(v0);
     sprite_setPallete(byte_811D5F2[*(v0 + 5)]);
     sprite_setPriority_8002E14(3);
-    sub_800306C(*&byte_811D598[4 * *(v0 + 5)]);
-    sub_800304A(byte_811D5E8[*(v0 + 5)]);
-    sub_8003060(byte_811D5ED[*(v0 + 5)]);
+    slotList_storeHalfwordAndClearField_800306C(*&byte_811D598[4 * *(v0 + 5)]);
+    sprite_setSubEntryPaletteBank_800304A(byte_811D5E8[*(v0 + 5)]);
+    sprite_setSubRecordFieldA_8003060(byte_811D5ED[*(v0 + 5)]);
     return sprite_setCoordinates(*&byte_811D5D4[4 * *(v0 + 5)], *&byte_811D5D4[4 * *(v0 + 5) + 2]);
 }
 
@@ -19675,11 +19675,11 @@ signed int sub_811D6F4()
         sprite_setAnimation(v0, 0);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_800304A(4);
+        sprite_setSubEntryPaletteBank_800304A(4);
         sprite_setPallete(byte_811D7C4[*(v0 + 5)]);
-        sub_800306C(&loc_1A0);
+        slotList_storeHalfwordAndClearField_800306C(&loc_1A0);
         sprite_setPriority_8002E14(2);
-        sub_8003060(byte_811D7BA[*(v0 + 5)]);
+        sprite_setSubRecordFieldA_8003060(byte_811D7BA[*(v0 + 5)]);
         sub_811DC00(*&byte_811D788[4 * *(v0 + 5)] + 120, *&byte_811D788[4 * *(v0 + 5) + 2] + 128);
         sprite_setCoordinates(v2, v3);
         *(v0 + 12) = 16;
@@ -19712,11 +19712,11 @@ signed int sub_811D7D0()
         sprite_setAnimation(v0, 0);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_800304A(5);
+        sprite_setSubEntryPaletteBank_800304A(5);
         sprite_setPallete(byte_811D88E[*(v0 + 5)]);
-        sub_800306C(&byte_1E0);
+        slotList_storeHalfwordAndClearField_800306C(&byte_1E0);
         sprite_setPriority_8002E14(2);
-        sub_8003060(byte_811D889[*(v0 + 5)]);
+        sprite_setSubRecordFieldA_8003060(byte_811D889[*(v0 + 5)]);
         sub_811DC00(*&byte_811D87C[4 * *(v0 + 6)], *&byte_811D87C[4 * *(v0 + 6) + 2]);
         *(v0 + 26) = v3;
         *(v0 + 30) = v4;
@@ -19750,11 +19750,11 @@ signed int sub_811D894()
         sprite_setAnimation(v0, 0);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_800304A(byte_811D945[*(v0 + 5)]);
+        sprite_setSubEntryPaletteBank_800304A(byte_811D945[*(v0 + 5)]);
         sprite_setPallete(byte_811D94F[*(v0 + 5)]);
-        sub_800306C(*(&off_811D904 + *(v0 + 5)));
+        slotList_storeHalfwordAndClearField_800306C(*(&off_811D904 + *(v0 + 5)));
         sprite_setPriority_8002E14(3);
-        sub_8003060(byte_811D94A[*(v0 + 5)]);
+        sprite_setSubRecordFieldA_8003060(byte_811D94A[*(v0 + 5)]);
         result = sprite_setCoordinates(*&byte_811D92C[4 * *(v0 + 5)], *&byte_811D92C[4 * *(v0 + 5) + 2]);
     }
     else
@@ -19780,11 +19780,11 @@ signed int __noreturn sub_811D954()
     sprite_setAnimation(v0, v1);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(byte_811D9F8[*(v0 + 5)]);
+    sprite_setSubEntryPaletteBank_800304A(byte_811D9F8[*(v0 + 5)]);
     sprite_setPallete(0);
-    sub_800306C(off_811D9BC[*(v0 + 5)]);
+    slotList_storeHalfwordAndClearField_800306C(off_811D9BC[*(v0 + 5)]);
     sprite_setPriority_8002E14(2);
-    sub_8003060(*(&dword_811D9F0 + *(v0 + 5)));
+    sprite_setSubRecordFieldA_8003060(*(&dword_811D9F0 + *(v0 + 5)));
     *(v0 + 26) = 128;
     *(v0 + 30) = 96;
     sprite_setCoordinates(128, 96);
@@ -19811,11 +19811,11 @@ int sub_811DA00()
         sprite_setAnimation(v0, *(&dword_811DA90 + *(v0 + 5)));
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_800304A(byte_811DA68[*(v0 + 5)]);
+        sprite_setSubEntryPaletteBank_800304A(byte_811DA68[*(v0 + 5)]);
         sprite_setPallete(0);
-        sub_800306C(*&byte_811DA68[4 * *(v0 + 5)]);
+        slotList_storeHalfwordAndClearField_800306C(*&byte_811DA68[4 * *(v0 + 5)]);
         sprite_setPriority_8002E14(3);
-        sub_8003060(byte_811DA8E[*(v0 + 5)]);
+        sprite_setSubRecordFieldA_8003060(byte_811DA8E[*(v0 + 5)]);
         result = sprite_setCoordinates(128, 144);
     }
     return result;
@@ -19836,11 +19836,11 @@ int __fastcall __noreturn sub_811DA94(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(6);
+    sprite_setSubEntryPaletteBank_800304A(6);
     sprite_setPallete(0);
-    sub_800306C(&byte_320);
+    slotList_storeHalfwordAndClearField_800306C(&byte_320);
     sprite_setPriority_8002E14(2);
-    sub_8003060(1);
+    sprite_setSubRecordFieldA_8003060(1);
     PlaySoundEffect(403, v3, v4);
     PlaySoundEffect(243, v5, v6);
     return sprite_setCoordinates(192, 100);
@@ -19858,11 +19858,11 @@ int __fastcall __noreturn sub_811DAF0(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(6);
+    sprite_setSubEntryPaletteBank_800304A(6);
     sprite_setPallete(0);
-    sub_800306C(&byte_320);
+    slotList_storeHalfwordAndClearField_800306C(&byte_320);
     sprite_setPriority_8002E14(2);
-    sub_8003060(1);
+    sprite_setSubRecordFieldA_8003060(1);
     sprite_setCoordinates(*&byte_811DB58[4 * *(v2 + 5)] + 176, *&byte_811DB58[4 * *(v2 + 5) + 2] + 108);
     result = *(&off_811DB74 + *(v2 + 5));
     *(v2 + 12) = result;
@@ -19880,11 +19880,11 @@ int __fastcall __noreturn sub_811DB7C(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(12);
+    sprite_setSubEntryPaletteBank_800304A(12);
     sprite_setPallete(0);
-    sub_800306C(dword_3A0);
+    slotList_storeHalfwordAndClearField_800306C(dword_3A0);
     sprite_setPriority_8002E14(2);
-    sub_8003060(1);
+    sprite_setSubRecordFieldA_8003060(1);
     return sprite_setCoordinates(byte_38, &word_8C);
 }
 
@@ -20006,9 +20006,9 @@ int __fastcall sub_811DC88(int a1, int a2)
             sprite_noShadow(v5);
             sprite_setPallete(byte_811DE54[v6 >> 2]);
             sprite_setPriority_8002E14(0);
-            sub_800306C(byte_80);
-            sub_800304A(1);
-            sub_8003060(byte_811DE36[v6 >> 2]);
+            slotList_storeHalfwordAndClearField_800306C(byte_80);
+            sprite_setSubEntryPaletteBank_800304A(1);
+            sprite_setSubRecordFieldA_8003060(byte_811DE36[v6 >> 2]);
             result = sub_811DE74(v6 >> 2);
         }
     }
@@ -20059,10 +20059,10 @@ void __noreturn sub_811DF40()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(11);
+    sprite_setSubEntryPaletteBank_800304A(11);
     sprite_setPallete(0);
-    sub_8003060(0);
-    sub_800306C(dword_270);
+    sprite_setSubRecordFieldA_8003060(0);
+    slotList_storeHalfwordAndClearField_800306C(dword_270);
     sprite_setPriority_8002E14(1);
     sprite_setCoordinates(210, 10);
     v0->currAction = 0;
@@ -20167,9 +20167,9 @@ void __fastcall __noreturn sub_811E048(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(11);
-    sub_800306C(&dword_298);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(&dword_298);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(1);
     sprite_setPallete(0);
     v2->currState = 4;
@@ -20291,9 +20291,9 @@ void __fastcall __noreturn sub_811E18C(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(10);
-    sub_800306C(dword_258);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(10);
+    slotList_storeHalfwordAndClearField_800306C(dword_258);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(1);
     sprite_setPallete(0);
     v2->currState = 4;
@@ -20368,9 +20368,9 @@ void __noreturn sub_811E26C()
     sprite_setAnimation(v0, v1);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(11);
-    sub_800306C(&dword_290);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(&dword_290);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     *(v0 + 8) = 4;
@@ -20462,9 +20462,9 @@ void __fastcall __noreturn sub_811E384(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800304A(10);
-    sub_800306C(dword_280);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(10);
+    slotList_storeHalfwordAndClearField_800306C(dword_280);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v2->currState = 4;
@@ -20530,10 +20530,10 @@ void __fastcall __noreturn sub_811E438(int a1, int a2)
     sprite_setAnimation(v2, 1u);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800306C(dword_280);
-    sub_800304A(12);
+    slotList_storeHalfwordAndClearField_800306C(dword_280);
+    sprite_setSubEntryPaletteBank_800304A(12);
     sprite_setPallete(0);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(2);
     sub_811E51C();
     sub_811E548();
@@ -20667,10 +20667,10 @@ void __fastcall __noreturn sub_811E59C(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800306C(dword_280);
-    sub_800304A(10);
+    slotList_storeHalfwordAndClearField_800306C(dword_280);
+    sprite_setSubEntryPaletteBank_800304A(10);
     sprite_setPallete(0);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setCoordinates(216, 14);
     v2->currState = 4;
@@ -20724,10 +20724,10 @@ void __fastcall __noreturn sub_811E63C(int a1, int a2)
     sprite_setAnimation(v2, 0);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
-    sub_800306C(dword_2A8);
-    sub_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(dword_2A8);
+    sprite_setSubEntryPaletteBank_800304A(11);
     sprite_setPallete(0);
-    sub_8003060(0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setCoordinates(220, 44);
     v2->currState = 4;
@@ -20781,9 +20781,9 @@ void __noreturn sub_811E6E4()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(11);
-    sub_800306C(byte_1F0);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(byte_1F0);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
@@ -20864,9 +20864,9 @@ void __noreturn sub_811E7F8()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(11);
-    sub_800306C(&dword_230);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(11);
+    slotList_storeHalfwordAndClearField_800306C(&dword_230);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
@@ -20910,9 +20910,9 @@ void __noreturn sub_811E87C()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(15);
-    sub_800306C(&dword_290);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(15);
+    slotList_storeHalfwordAndClearField_800306C(&dword_290);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
@@ -20968,9 +20968,9 @@ void __noreturn sub_811E938()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(15);
-    sub_800306C(dword_2A8);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(15);
+    slotList_storeHalfwordAndClearField_800306C(dword_2A8);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
@@ -21016,9 +21016,9 @@ void __noreturn sub_811E9C4()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_800304A(15);
-    sub_800306C(&dword_250);
-    sub_8003060(0);
+    sprite_setSubEntryPaletteBank_800304A(15);
+    slotList_storeHalfwordAndClearField_800306C(&dword_250);
+    sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
@@ -21085,7 +21085,7 @@ int __fastcall sub_811EBF4(int result)
 
 
 // 0x811ec00
-void __fastcall sub_811EC00(int a1, int a2, int a3, int a4)
+void __fastcall pet_ClearMenuData_811EC00(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&ePETMenuData, 24);
 }
@@ -22212,7 +22212,7 @@ unsigned int __fastcall sub_811FAF4(int a1, unsigned int a2, int a3, int *a4)
 
 
 // 0x811fb64
-int __fastcall sub_811FB64(char a1, int a2, int a3)
+int __fastcall submenu_ConfirmExitAndFade_811FB64(char a1, int a2, int a3)
 {
     int v3; // r5
 
@@ -22223,7 +22223,7 @@ int __fastcall sub_811FB64(char a1, int a2, int a3)
 
 
 // 0x811fb78
-int sub_811FB78()
+int clearS2001c04Byte6_811FB78()
 {
     int v0; // r10
     int result; // r0

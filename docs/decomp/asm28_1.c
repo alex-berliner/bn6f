@@ -60,7 +60,7 @@ int sub_809F5B0()
 
 
 // 0x809f5fc
-int sub_809F5FC()
+int npc_beginChatboxState_809F5FC()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -96,7 +96,7 @@ int sub_809F612()
 
 
 // 0x809f638
-signed int sub_809F638()
+signed int npc_overworld_CheckStateFlags50000_809F638()
 {
     int v0; // r5
     signed int result; // r0

@@ -3368,7 +3368,7 @@ CutsceneCameraCmd_clear_event_flag:
 
 	thumb_local_start
 // 0x48 byte1 byte2
-// call sound_800068A with r0=byte1 and r1=byte2
+// call sound_dispatchCueHandler_800068A with r0=byte1 and r1=byte2
 CutsceneCameraCmd_sound_cmd_80373fc:
 	push {lr}
 	push {r1}
@@ -3378,7 +3378,7 @@ CutsceneCameraCmd_sound_cmd_80373fc:
 	mov r0, #1
 	bl ReadCutsceneCameraScriptByte
 	mov r1, r4
-	bl sound_800068A
+	bl sound_dispatchCueHandler_800068A
 	pop {r1}
 	mov r0, #1
 	add r1, #3
@@ -5343,7 +5343,7 @@ CutsceneCmd_call_native_with_return_value:
 	thumb_local_start
 // the following commands are related to warping
 // 0x4c &0x40
-// literal interpretation: call warp_8005f32 and warp_setSubsystemIndexTo0x10AndOthers_8005f00
+// literal interpretation: call warp_getCurrentWarpEntry_8005f32 and warp_setSubsystemIndexTo0x10AndOthers_8005f00
 
 // 0x4c &0x20 ptr2
 // literal interpretation: [eCutsceneState_Unk_34] = word2
@@ -5399,7 +5399,7 @@ CutsceneCmd_warp_cmd_8038040:
 	mov r0, #1
 	pop {pc}
 .subcmd0x40
-	bl warp_8005f32
+	bl warp_getCurrentWarpEntry_8005f32
 	bl warp_setSubsystemIndexTo0x10AndOthers_8005f00
 	add r7, #2
 	mov r0, #1
@@ -5472,7 +5472,7 @@ MapScriptCutsceneCmd_sound_cmd_80380ea:
 
 	thumb_local_start
 // 0x33/0x50 byte1 byte2
-// call sound_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
+// call sound_dispatchCueHandler_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
 MapScriptCutsceneCmd_sound_cmd_803810e:
 	push {lr}
 	mov r6, #1
@@ -5481,7 +5481,7 @@ MapScriptCutsceneCmd_sound_cmd_803810e:
 	mov r6, #2
 	bl ReadMapScriptByte
 	mov r0, r4
-	bl sound_800068A
+	bl sound_dispatchCueHandler_800068A
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
 	mov r0, #0x63

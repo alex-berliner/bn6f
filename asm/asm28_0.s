@@ -1277,10 +1277,10 @@ sub_809A260:
 	bl doPETEffect_8033fc0
 	bl copyMemory_8001850
 	bl gfxTransfer_8033978 // () -> ()
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1608,10 +1608,10 @@ sub_809A4EC:
 	bl doPETEffect_8033fc0
 	bl copyMemory_8001850
 	bl gfxTransfer_8033978 // () -> ()
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A4EC
@@ -2244,10 +2244,10 @@ dword_809AA00:
 	thumb_local_start
 sub_809AA04:
 	push {r4-r7,lr}
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	mov r0, #1
 	bl doPETEffect_8033fc0
 	mov r0, #0
@@ -2661,10 +2661,10 @@ sub_809AD4C:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #1
 	bl doPETEffect_8033fc0
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -4932,7 +4932,7 @@ loc_809CC3C:
 	mov r6, #0
 loc_809CC3E:
 	mov r0, r4
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 	strb r4, [r5,#8]
 	tst r4, r4
 	beq loc_809CC52
@@ -5051,10 +5051,10 @@ sub_809CD44:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl doPETEffect_8033fc0
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_809CD44
@@ -5092,7 +5092,7 @@ loc_809CD9C:
 	mov r6, #0
 loc_809CD9E:
 	mov r0, r4
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 	strb r4, [r5,#8]
 	movflag EVENT_163
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()

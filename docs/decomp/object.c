@@ -14,7 +14,7 @@ int object_timefreezeEnd()
     {
         if ( sub_800B8D8(*(v0 + 22)) )
         {
-            v2 = sub_800BF5C(*(v0 + 22) ^ 1);
+            v2 = byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22) ^ 1);
             v3 = *(v2 + 2);
             if ( v3 )
             {
@@ -22,12 +22,12 @@ int object_timefreezeEnd()
                 *(v3 + 11) = 4;
             }
             *(v2 + 3) = 0;
-            sub_800B89C(*(v0 + 22) ^ 1);
+            battle_resetObjAnimState_800B89C(*(v0 + 22) ^ 1);
             battle_clearFlags(4);
         }
         sub_800B884(*(v0 + 22));
-        sub_800B89C(*(v0 + 22));
-        *(sub_800BF5C(*(v0 + 22)) + 3) = 0;
+        battle_resetObjAnimState_800B89C(*(v0 + 22));
+        *(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 3) = 0;
         result = object_freeMemory();
     }
     return result;
@@ -49,7 +49,7 @@ signed int sub_800BDD0()
     int v0; // r5
     signed int result; // r0
 
-    if ( *(v0 + 48) - 221 <= 0x3B && sub_802CE78(*(v0 + 22) ^ 1) == 186 )
+    if ( *(v0 + 48) - 221 <= 0x3B && getTable2036720EntryFields_802CE78(*(v0 + 22) ^ 1) == 186 )
     {
         sub_800B884(*(v0 + 22));
         sub_800ABC6(*(v0 + 18), *(v0 + 19));
@@ -113,21 +113,21 @@ int sub_800BE2C()
         result = sub_801E754();
         if ( !result )
         {
-            sub_800B89C(*(v0 + 22));
+            battle_resetObjAnimState_800B89C(*(v0 + 22));
             v4 = *(v0 + 22) ^ 1;
             *(v0 + 22) = v4;
-            sub_800B8AC(v4);
+            writeByteToWorkSlots0And1_800B8AC(v4);
             sub_800B884(*(v0 + 22));
-            v5 = *(sub_800BF5C(*(v0 + 22)) + 2);
+            v5 = *(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 2);
             if ( v5 )
             {
                 *(v5 + 8) = 8;
                 *(v5 + 11) = 4;
             }
             v6 = *(v0 + 22);
-            sub_800BF5C(0)[3] = v6;
-            sub_800BF5C(1)[3] = v6;
-            sub_802CE78(*(v0 + 22));
+            byte_203CF00_getEntryPtr_800BF5C(0)[3] = v6;
+            byte_203CF00_getEntryPtr_800BF5C(1)[3] = v6;
+            getTable2036720EntryFields_802CE78(*(v0 + 22));
             if ( v7 )
             {
                 *(v0 + 18) = *(v7 + 18);
@@ -162,12 +162,12 @@ BOOL sub_800BEDA()
     char *v3; // r0
     BOOL result; // r0
 
-    v1 = sub_800BF5C(*(v0 + 22));
+    v1 = byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22));
     v2 = *(v1 + 3);
     result = 0;
     if ( (!v2 || v2 == v0) && (!v1[1] || v1[1] == 3) )
     {
-        v3 = sub_800BF5C(*(v0 + 22) ^ 1);
+        v3 = byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22) ^ 1);
         if ( !v3[2] && v3[1] == 2 )
             result = 1;
     }
@@ -190,10 +190,10 @@ char *__fastcall sub_800BF16(int a1, char a2, int a3)
     v8 = a2;
     v9 = a3;
     v5 = a1;
-    sub_800BF5C(0)[3] = a1;
-    sub_800BF5C(1)[3] = v5;
-    sub_800B8AC(v4);
-    result = sub_800BF5C(v4);
+    byte_203CF00_getEntryPtr_800BF5C(0)[3] = a1;
+    byte_203CF00_getEntryPtr_800BF5C(1)[3] = v5;
+    writeByteToWorkSlots0And1_800B8AC(v4);
+    result = byte_203CF00_getEntryPtr_800BF5C(v4);
     v7 = *(result + 2);
     if ( v7 )
     {
@@ -209,7 +209,7 @@ char *__fastcall sub_800BF16(int a1, char a2, int a3)
 
 
 // 0x800bf5c
-char *__fastcall sub_800BF5C(int a1)
+char *__fastcall byte_203CF00_getEntryPtr_800BF5C(int a1)
 {
     return &byte_203CF00[80 * a1];
 }
@@ -473,7 +473,7 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
     unsigned int v17; // [sp+4h] [bp-18h]
 
     v17 = a2;
-    v16 = sub_800C6D6(a1);
+    v16 = getTable12Record_800D730_800C6D6(a1);
     v2 = sub_800C8C2(0);
     ZeroFillByWord(v2, 64);
     v3 = sub_800C8C2(0);
@@ -495,7 +495,7 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
         v7 = 0;
         do
         {
-            v8 = sub_800C6E0(v7, v6);
+            v8 = battle_getPanelDataPtr_800C6E0(v7, v6);
             *v8 = byte_800C590[8 * v6 + v7];
             v9 = object_isValidPanel(v7, v6);
             LOBYTE(v10) = 0;
@@ -615,14 +615,14 @@ signed int sub_800C67C()
 
 
 // 0x800c6d6
-char *__fastcall sub_800C6D6(int a1)
+char *__fastcall getTable12Record_800D730_800C6D6(int a1)
 {
     return &byte_800D730[12 * a1];
 }
 
 
 // 0x800c6e0
-char *__fastcall sub_800C6E0(int a1, int a2)
+char *__fastcall battle_getPanelDataPtr_800C6E0(int a1, int a2)
 {
     return &byte_2039AE0[32 * (a1 + 8 * a2)];
 }
@@ -693,7 +693,7 @@ int __fastcall sub_800C81E(int result, unsigned int a2, char a3)
         v6 >>= 1;
         if ( v7 )
         {
-            v8 = sub_800C6E0(result, v4);
+            v8 = battle_getPanelDataPtr_800C6E0(result, v4);
             v8[3] = v5;
             v8[16] = 90;
             object_updatePanelParameters(v3, v4);
@@ -755,7 +755,7 @@ void __fastcall __noreturn sub_800C878(unsigned int a1, char a2)
             *v3 = a2;
         }
     }
-    v5 = sub_800C6E0(0, 0);
+    v5 = battle_getPanelDataPtr_800C6E0(0, 0);
     v5[4] = *sub_800C8C2(0);
     object_updatePanelParameters(0, 0);
 }
@@ -2768,7 +2768,7 @@ signed int __usercall sub_800E2FC@<R0>(Battle *obj@<R5>, int HP@<R0>, int a2@<R1
     int v8; // r0
 
     vHP = HP;
-    if ( a2 && sub_802CE78(obj->Alliance ^ 1) == 189 )
+    if ( a2 && getTable2036720EntryFields_802CE78(obj->Alliance ^ 1) == 189 )
     {
         v8 = sub_80E37D2(obj->panelX, obj->panelY, 0, v4);
         sub_800BF16(obj->Alliance, 1, v8);
@@ -2797,7 +2797,7 @@ signed int __fastcall sub_800E360(int a1, int a2)
     int v6; // r0
 
     v3 = a1;
-    if ( a2 && sub_802CE78(v2->Alliance ^ 1) == 189 )
+    if ( a2 && getTable2036720EntryFields_802CE78(v2->Alliance ^ 1) == 189 )
     {
         v6 = sub_80E37D2(v2->panelX, v2->panelY, 0, v4);
         sub_800BF16(v2->Alliance, 1, v6);
@@ -3773,7 +3773,7 @@ int __fastcall sub_800EC80(int a1)
     int v7; // [sp+0h] [bp-14h]
 
     v7 = a1;
-    v1 = sub_8000E30();
+    v1 = stub_returnZero_8000E30();
     v2 = sub_8014150();
     if ( v2 > v1 )
         v1 = v2;

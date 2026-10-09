@@ -106,7 +106,7 @@ signed int __fastcall sub_808F900(int a1)
     {
         owPlayer_enableWallCollision_809e248();
         byte_2000312 = 0;
-        sub_809E3B2();
+        resetStruct2000aa0State_809E3B2();
         sub_809E188(word_2000322 << 16, dword_2000324 << 16, 0x400000);
         sub_809E13C(byte_200031F);
         sub_809E2AE(byte_2000320);
@@ -305,7 +305,7 @@ signed int __fastcall sub_808FB68(int a1)
         sub_809E188(v1, SHIDWORD(v1), 0);
         owPlayer_setInteractionLocked_809e230();
         reqBBS_clearFlag_8140A0C();
-        sub_809E3B2();
+        resetStruct2000aa0State_809E3B2();
         PlaySoundEffect(430, v4, v5);
         result = 0;
     }

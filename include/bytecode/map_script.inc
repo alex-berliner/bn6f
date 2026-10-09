@@ -676,7 +676,7 @@
 // shared command
 	enum ms_sound_cmd_803810e_cmd // 0x33
 // 0x33/0x50 byte1 byte2
-// call sound_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
+// call sound_dispatchCueHandler_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
 	.macro ms_sound_cmd_803810e byte1:req byte2:req
 	.byte ms_sound_cmd_803810e_cmd
 	.byte \byte1

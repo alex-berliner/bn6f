@@ -95,7 +95,7 @@ end_cutscenescript_8089E26:
 sub_8089E28:
 	push {r4-r7, lr}
 	bl sub_809E31A
-	bl sub_809E3B2
+	bl resetStruct2000aa0State_809E3B2
 	bl reqBBS_clearFlag_8140A0C
 	movflag EVENT_701
 	bl ClearEventFlagFromImmediate
@@ -381,7 +381,7 @@ loc_808A0A2:
 sub_808A0A6:
 	push {r4-r7, lr}
 	bl sub_809E31A
-	bl sub_809E3B2
+	bl resetStruct2000aa0State_809E3B2
 	bl reqBBS_clearFlag_8140A0C
 	ldrb r0, [r7, #4]
 	bl SetOWPlayerFacingDirection

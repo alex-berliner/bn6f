@@ -183,7 +183,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     zeroFill_80007B2();
     SetDummyBGScrollCallbacks();
     zeroFill_80024A2();
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
     sub_80015B4();
     copy_800260C();

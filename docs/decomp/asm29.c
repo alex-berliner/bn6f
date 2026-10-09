@@ -7562,7 +7562,7 @@ signed int sub_80AA756()
 
 
 // 0x80aa764
-signed int sub_80AA764()
+signed int isEventFlag212Set_80AA764()
 {
     signed int v0; // r4
     char v1; // zf

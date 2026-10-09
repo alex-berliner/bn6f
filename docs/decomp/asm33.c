@@ -270,7 +270,7 @@ void __noreturn sub_81235A4()
     }
     else
     {
-        sub_811FB64(8, v2, v3);
+        submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
         PlaySoundEffect(131, v5, v6);
     }
     sub_8123AB8();
@@ -955,7 +955,7 @@ void submenu_subchip_81240D0()
     }
     else
     {
-        sub_811FB64(8, v2, v3);
+        submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
     }
     sub_81244EC();
 }
@@ -2341,7 +2341,7 @@ int __fastcall sub_8125594(int a1, int a2, int a3)
 
     v5 = *(v4 + oToolkit_JoypadPtr);
     if ( v5[1] & 0xA )
-        return sub_812580C(52, 10, a3);
+        return menu_confirmExitAndFade_812580C(52, 10, a3);
     if ( v5[2] & 0x10 )
     {
         *(v3 + 2) = 4;
@@ -2384,7 +2384,7 @@ int __fastcall sub_81255F8(int a1, int a2, int a3)
 
     v5 = *(v4 + oToolkit_JoypadPtr);
     if ( v5[1] & 0xA )
-        return sub_812580C(56, 10, a3);
+        return menu_confirmExitAndFade_812580C(56, 10, a3);
     v7 = v5[2];
     if ( v7 & 0x10 )
     {
@@ -2437,7 +2437,7 @@ int __fastcall sub_8125678(int a1, int a2, int a3)
 
     v5 = *(v4 + oToolkit_JoypadPtr);
     if ( v5[1] & 0xA )
-        return sub_812580C(60, 10, a3);
+        return menu_confirmExitAndFade_812580C(60, 10, a3);
     v7 = v5[2];
     if ( v7 & 0x10 )
     {
@@ -2495,7 +2495,7 @@ int __fastcall sub_8125704(int a1, int a2, int a3)
 
     v5 = *(v4 + oToolkit_JoypadPtr);
     if ( v5[1] & 0xA )
-        return sub_812580C(64, 10, a3);
+        return menu_confirmExitAndFade_812580C(64, 10, a3);
     v7 = v5[2];
     if ( v7 & 0x10 )
     {
@@ -2549,7 +2549,7 @@ int __fastcall sub_8125784(int a1, int a2, int a3)
     v5 = *(v4 + oToolkit_JoypadPtr);
     v6 = v5[1];
     if ( v6 & 0xA )
-        return sub_812580C(68, 10, a3);
+        return menu_confirmExitAndFade_812580C(68, 10, a3);
     if ( v6 & 1 )
         return sub_81266E0();
     if ( v5[2] & 0x20 )
@@ -2592,7 +2592,7 @@ int __fastcall sub_8125784(int a1, int a2, int a3)
 
 
 // 0x812580c
-int __fastcall sub_812580C(char a1, int a2, int a3)
+int __fastcall menu_confirmExitAndFade_812580C(char a1, int a2, int a3)
 {
     int v3; // r5
 
@@ -4181,7 +4181,7 @@ int sub_8126E10()
     }
     else
     {
-        sub_811FB64(8, v2, v3);
+        submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
         chatbox_set_eFlags2009F38(64);
     }
     if ( v0[16] == 1 )
@@ -5026,7 +5026,7 @@ void sub_8127B18()
         if ( !*(v0 + 30) )
         {
 LABEL_2:
-            sub_811FB64(8, v2, v3);
+            submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
             return;
         }
         sub_8128318();
@@ -5868,7 +5868,7 @@ void sub_8128800()
     }
     else
     {
-        sub_811FB64(8, v2, v3);
+        submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
     }
     sub_8128B4C();
     sub_8128B98();
@@ -6529,7 +6529,7 @@ int sub_81292D8()
     {
         sub_8046664();
         *(v0 + 2) = 4;
-        sub_803EBAC(4, v3, v4, v5);
+        clearStruct200BC30_803EBAC(4, v3, v4, v5);
         sub_80465A0(byte_8129158);
         sub_812AFB0();
     }
@@ -6568,7 +6568,7 @@ int sub_812933C()
                 if ( !v2 )
                 {
                     PlaySoundEffect(131, v9, v10);
-                    sub_811FB64(64, v11, v12);
+                    submenu_ConfirmExitAndFade_811FB64(64, v11, v12);
                     engine_setScreeneffect(12, 16);
                 }
             }
@@ -6595,7 +6595,7 @@ int sub_812933C()
         {
             v0[13] = v4;
             v5 = *(&dword_81293FC + v4);
-            v6 = sub_8006DEC();
+            v6 = gameState_GetUnk74_8006DEC();
             if ( v6 & 1 && v5 == 90 )
             {
                 v5 = 95;
@@ -6628,7 +6628,7 @@ int sub_8129400()
         sub_8046664();
         *(v0 + 13) = 0;
         *(v0 + 2) = 12;
-        sub_803EBAC(12, v2, v3, v4);
+        clearStruct200BC30_803EBAC(12, v2, v3, v4);
         sub_80465A0(byte_8129168);
         sub_812AFB0();
     }
@@ -7925,7 +7925,7 @@ unsigned int sub_8129F28()
 // 0x8129f48
 void __noreturn sub_8129F48()
 {
-    start_8000288();
+    crt0_entry_trampoline_8000288();
 }
 
 
@@ -8981,11 +8981,11 @@ LABEL_47:
                         *(v0 + 38) = 16;
                         return sub_812B26C();
                     }
-                    sub_803F4EC(0);
+                    setByte_200AD04_803F4EC(0);
                 }
             }
             if ( eStruct200BC30_getJumpOffset00() )
-                sub_803F4EC(0);
+                setByte_200AD04_803F4EC(0);
             if ( *(v0 + 19) == 1 )
             {
                 v15 = 0;
@@ -9504,7 +9504,7 @@ int sub_812AF18()
     sub_812AF3C();
     decompAndCopyData(&off_812B08C);
     loadDecompressedAsset_812AF78();
-    sub_812AF84();
+    textScript_loadAndRunEmbeddedArchive_812AF84();
     sprite_decompInitRefs_812AF98();
     sub_812AFA4();
     return chatbox_8040818();
@@ -9555,7 +9555,7 @@ void loadDecompressedAsset_812AF78()
 
 
 // 0x812af84
-void sub_812AF84()
+void textScript_loadAndRunEmbeddedArchive_812AF84()
 {
     decompAndCopyData(byte_812B168);
     sub_8123300(off_812AFE4, eTextScript201BA20, eDecompBuffer2013A00);
@@ -9988,7 +9988,7 @@ int sub_812B640()
         sub_80035A2(0x21u);
         sub_8004702();
         zeroFill_80024A2();
-        sub_8003962();
+        scenario_initEffectState_8003962();
         zeroFill_8003AB2();
         RandomizeExtraToolkitPointers();
         ClearEventFlagFromImmediate(23, 45);
@@ -10033,7 +10033,7 @@ void sub_812B698()
         }
         sub_8005F40(v1, v2, v3, v4);
         zeroFill_80024A2();
-        sub_8003962();
+        scenario_initEffectState_8003962();
         zeroFill_8003AB2();
         *(v0 + 2) = 12;
         sub_80010BE(*(v0 + 26));

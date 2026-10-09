@@ -608,7 +608,7 @@ sub_80B863A:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -638,7 +638,7 @@ sub_80B86A4:
 	push {lr}
 	bl sub_80B8800
 	bl sub_80B8810
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80B86C2
 	mov r0, #4
@@ -1035,7 +1035,7 @@ sub_80B8932:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
@@ -8763,7 +8763,7 @@ loc_80BC1FE:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -8793,7 +8793,7 @@ off_80BC258:
 sub_80BC268:
 	push {lr}
 	bl sub_80BC424
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80BC282
 	mov r0, #4
@@ -9287,7 +9287,7 @@ loc_80BC5BA:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -9427,7 +9427,7 @@ sub_80BC670:
 	ldr r1, [r5,#oBattleObject_Z]
 	add r0, r0, r1
 	str r0, [r5,#oBattleObject_Z]
-	bl sub_8010DD0
+	bl battle_objectNameIdToPopupHandler_8010DD0
 	ldrb r1, [r5,#oBattleObject_Param1]
 	cmp r1, #6
 	bne loc_80BC718
@@ -9530,7 +9530,7 @@ loc_80BC816:
 	bl object_updateSprite
 	b locret_80BC842
 loc_80BC81C:
-	bl sub_8011020
+	bl battle_getObjectNameID_8011020
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_getCoordinatesForPanels // (int a1, int a2) -> (int n1, int n2)
@@ -9871,7 +9871,7 @@ sub_80BCA72:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -10539,7 +10539,7 @@ sub_80BCF7A:
 	add r7, r7, r5
 	bl spawn_t1_0x5_tempAttackObject_80B8E30
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	bl sub_80BD24C
 	bl sub_80BD2D8
 	mov r0, #4
@@ -12522,7 +12522,7 @@ loc_80BDE06:
 	add r7, r7, r5
 	bl spawn_t1_0x5_tempAttackObject_80B8E30
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	bl object_getFrontDirection // () -> int
 	ldrb r1, [r5,#oBattleObject_PanelX]
 	add r0, r0, r1
@@ -12530,7 +12530,7 @@ loc_80BDE06:
 	ldr r3, dword_80BDEB8 // =0x100000 
 	mov r4, #0x1d
 	ldr r6, dword_80BDEBC // =0x83001e 
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 	ldrb r1, [r0,#oObjectHeader_Flags]
 	mov r2, #0x10
 	orr r1, r2
@@ -12764,7 +12764,7 @@ sub_80BDFA6:
 	mov r2, #0
 	strb r1, [r0,#oAIData_ActorType]
 	strb r2, [r0,#oAIData_AIIndex]
-	bl sub_80EBB78
+	bl battle_getSpecialActorSlotIfAiMatches_80EBB78
 	mov r4, r0
 	lsl r4, r4, #8
 	add r4, #1
@@ -13536,7 +13536,7 @@ snakearmRelatedObject_t1_0x22_update_80BE55C:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -17030,7 +17030,7 @@ sub_80BFE8C:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -17172,7 +17172,7 @@ sub_80BFFC0:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -17203,7 +17203,7 @@ off_80C001C:
 sub_80C0030:
 	push {lr}
 	bl sub_80C00CE
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80C004A
 	mov r0, #4
@@ -17473,7 +17473,7 @@ sub_80C01D8:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -19497,7 +19497,7 @@ loc_80C1024:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -19527,7 +19527,7 @@ off_80C106C:
 sub_80C1078:
 	push {lr}
 	bl sub_80C10FE
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80C1092
 	mov r0, #4
@@ -19761,7 +19761,7 @@ sub_80C1204:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -26005,7 +26005,7 @@ loc_80C3FC8:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
@@ -26083,15 +26083,15 @@ locret_80C4070:
 	pop {r4,pc}
 	thumb_func_end sub_80C4038
 
-	thumb_func_start sub_80C4072
-sub_80C4072:
+	thumb_func_start battle_ResetObjectTimerTo8_80C4072
+battle_ResetObjectTimerTo8_80C4072:
 	tst r0, r0
 	beq locret_80C407A
 	mov r1, #8
 	str r1, [r0,#8]
 locret_80C407A:
 	mov pc, lr
-	thumb_func_end sub_80C4072
+	thumb_func_end battle_ResetObjectTimerTo8_80C4072
 
 	thumb_func_start sub_80C407C
 sub_80C407C:
@@ -26103,15 +26103,15 @@ locret_80C4084:
 	mov pc, lr
 	thumb_func_end sub_80C407C
 
-	thumb_func_start sub_80C4086
-sub_80C4086:
+	thumb_func_start battle_SetObjectExtraFlag14_80C4086
+battle_SetObjectExtraFlag14_80C4086:
 	tst r0, r0
 	beq locret_80C408E
 	mov r1, #1
 	str r1, [r0,#oBattleObject_ExtraVars+0x14]
 locret_80C408E:
 	mov pc, lr
-	thumb_func_end sub_80C4086
+	thumb_func_end battle_SetObjectExtraFlag14_80C4086
 
 	thumb_func_start sub_80C4090
 sub_80C4090:
@@ -26238,7 +26238,7 @@ sub_80C4146:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -26498,7 +26498,7 @@ loc_80C4444:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -26567,8 +26567,8 @@ locret_80C44D0:
 	mov pc, lr
 	thumb_func_end sub_80C44C8
 
-	thumb_func_start sub_80C44D2
-sub_80C44D2:
+	thumb_func_start battle_EndObjectCurrentAnim_80C44D2
+battle_EndObjectCurrentAnim_80C44D2:
 	push {r5,lr}
 	tst r0, r0
 	beq locret_80C44E2
@@ -26578,7 +26578,7 @@ sub_80C44D2:
 	bl sub_801BCD0
 locret_80C44E2:
 	pop {r5,pc}
-	thumb_func_end sub_80C44D2
+	thumb_func_end battle_EndObjectCurrentAnim_80C44D2
 
 	thumb_local_start
 sub_80C44E4:
@@ -26730,7 +26730,7 @@ loc_80C45B8:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -26757,7 +26757,7 @@ sub_80C461C:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
 	bl sprite_setAlpha
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80C464A
 	ldrb r0, [r5,#oBattleObject_Param3]
@@ -26972,7 +26972,7 @@ sub_80C4766:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -27274,7 +27274,7 @@ sub_80C49E4:
 	bl sub_80E1352
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_80101C4
+	bl battle_resetCollisionState_80101C4
 	pop {r5}
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_Timer]
@@ -27724,7 +27724,7 @@ loc_80C4EB0:
 	ldrb r0, [r7,#3]
 	strb r0, [r5,#oBattleObject_Element]
 	bl object_setCoordinatesFromPanels // () -> void
-	bl sub_80C5090
+	bl battle_objectStepUpOntoElevatedPanel_80C5090
 	mov r0, #1
 	strh r0, [r5,#oBattleObject_Timer2]
 	bl object_createCollisionData
@@ -27802,7 +27802,7 @@ loc_80C4F2A:
 	b loc_80C4FF0
 loc_80C4F5E:
 	bl object_setCoordinatesFromPanels // () -> void
-	bl sub_80C5090
+	bl battle_objectStepUpOntoElevatedPanel_80C5090
 	bl object_updateCollisionPanels
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
@@ -27880,8 +27880,8 @@ loc_80C4FF8:
 	pop {pc}
 	thumb_func_end sub_80C4F02
 
-	thumb_func_start sub_80C4FFE
-sub_80C4FFE:
+	thumb_func_start battle_SpawnAndInitObjectType3_80C4FFE
+battle_SpawnAndInitObjectType3_80C4FFE:
 	push {lr}
 	push {r0-r2,r5,r6}
 	mov r0, #0
@@ -27892,7 +27892,7 @@ sub_80C4FFE:
 	bl BasicBattleObjectInitialize
 locret_80C5012:
 	pop {pc}
-	thumb_func_end sub_80C4FFE
+	thumb_func_end battle_SpawnAndInitObjectType3_80C4FFE
 
 	thumb_local_start
 sub_80C5014:
@@ -27957,7 +27957,7 @@ dword_80C508C:
 	thumb_func_end sub_80C5050
 
 	thumb_local_start
-sub_80C5090:
+battle_objectStepUpOntoElevatedPanel_80C5090:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #0x1d
@@ -27976,7 +27976,7 @@ dword_80C50A8:
 	.word 0x10000
 byte_80C50AC:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	thumb_func_end sub_80C5090
+	thumb_func_end battle_objectStepUpOntoElevatedPanel_80C5090
 
 	thumb_func_start t3_0x1_80C50B8
 t3_0x1_80C50B8:
@@ -30523,8 +30523,8 @@ off_80C6490:
 	.word off_80C6494
 off_80C6494:
 	.word sub_80C64A0+1
-	.word sub_80C6524+1
-	.word sub_80C6536+1
+	.word battleObject_PlayHurtAnimAndSetAction8_80C6524+1
+	.word battle_destroyObjectOnFrameFlag_80C6536+1
 	thumb_func_end sub_80C647C
 
 	thumb_local_start
@@ -30592,7 +30592,7 @@ byte_80C6514:
 	thumb_func_end sub_80C64A0
 
 	thumb_local_start
-sub_80C6524:
+battleObject_PlayHurtAnimAndSetAction8_80C6524:
 	push {lr}
 	mov r0, #1
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -30601,10 +30601,10 @@ sub_80C6524:
 	mov r0, #8
 	strb r0, [r5,#oBattleObject_CurAction]
 	pop {pc}
-	thumb_func_end sub_80C6524
+	thumb_func_end battleObject_PlayHurtAnimAndSetAction8_80C6524
 
 	thumb_local_start
-sub_80C6536:
+battle_destroyObjectOnFrameFlag_80C6536:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -30614,7 +30614,7 @@ sub_80C6536:
 	strb r0, [r5,#oBattleObject_CurState]
 locret_80C6546:
 	pop {pc}
-	thumb_func_end sub_80C6536
+	thumb_func_end battle_destroyObjectOnFrameFlag_80C6536
 
 	thumb_local_start
 sub_80C6548:
@@ -36366,7 +36366,7 @@ sub_80C90DC:
 	ldrh r0, [r4,#oBattleObject_NameID]
 	bl sub_800F26C
 	mov r2, #0x1b
-	bl sub_8018842
+	bl getIndexedSignedBytePair_8018842
 	lsl r6, r0, #0x10
 	lsl r7, r1, #0x10
 	bl object_getFrontDirection // () -> int
@@ -39163,7 +39163,7 @@ loc_80CA680:
 	thumb_func_end sub_80CA61A
 
 	thumb_local_start
-sub_80CA686:
+battle_spawnAndInitObject0x33_80CA686:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0x33 
@@ -39174,12 +39174,12 @@ sub_80CA686:
 	bl BasicBattleObjectInitialize
 locret_80CA69A:
 	pop {pc}
-	thumb_func_end sub_80CA686
+	thumb_func_end battle_spawnAndInitObject0x33_80CA686
 
 	thumb_local_start
 sub_80CA69C:
 	push {lr}
-	bl sub_80CA686
+	bl battle_spawnAndInitObject0x33_80CA686
 	cmp r0, #0
 	beq locret_80CA6AE
 	ldrb r1, [r0]
@@ -39812,18 +39812,18 @@ t3_0x36_80CAB68:
 off_80CAB78:
 	.word off_80CAB7C
 off_80CAB7C:
-	.word sub_80CAB88+1
+	.word battle_object_SetStateUpdatePhase_80CAB88+1
 	.word sub_80CAB90+1
 	.word sub_80CAC44+1
 	thumb_func_end t3_0x36_80CAB68
 
 	thumb_local_start
-sub_80CAB88:
+battle_object_SetStateUpdatePhase_80CAB88:
 	push {lr}
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_80CAB88
+	thumb_func_end battle_object_SetStateUpdatePhase_80CAB88
 
 	thumb_local_start
 sub_80CAB90:
@@ -57984,7 +57984,7 @@ sub_80D34EC:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sub_80B8A0A
 	ldr r0, [r5,#oBattleObject_ExtraVars+0xc]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 	bl object_genericDestroy
 	pop {pc}
 	thumb_func_end sub_80D34EC
@@ -66962,7 +66962,7 @@ sub_80D79AC:
 	mov r7, #0
 	bl sub_801BD3C
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
-	bl sub_80C4072
+	bl battle_ResetObjectTimerTo8_80C4072
 loc_80D79E0:
 	ldrh r0, [r5,#oBattleObject_Timer2]
 	cmp r0, #0x14
@@ -73103,7 +73103,7 @@ off_80DA8DC:
 	thumb_local_start
 sub_80DA8EC:
 	push {lr}
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80DA906
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -85192,7 +85192,7 @@ sub_80E0568:
 	mov r0, #0
 	bl sprite_setPriority_8002E14
 loc_80E05BA:
-	bl sub_80E0616
+	bl battle_MirrorRelatedObjectFlag1_80E0616
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {r7,pc}
@@ -85205,7 +85205,7 @@ sub_80E05C4:
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
 	beq loc_80E05E4
-	bl sub_80E0616
+	bl battle_MirrorRelatedObjectFlag1_80E0616
 	bl sprite_getFrameParameters
 	mov r1, #0x80
 	tst r0, r1
@@ -85255,7 +85255,7 @@ sub_80E060E:
 	thumb_func_end sub_80E060E
 
 	thumb_local_start
-sub_80E0616:
+battle_MirrorRelatedObjectFlag1_80E0616:
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq locret_80E0630
@@ -85274,7 +85274,7 @@ locret_80E0630:
 	.balign 4, 0x00
 off_80E0634:
 	.word byte_80E0398
-	thumb_func_end sub_80E0616
+	thumb_func_end battle_MirrorRelatedObjectFlag1_80E0616
 
 	thumb_func_start t4_0x2_80E0638
 t4_0x2_80E0638:
@@ -85330,7 +85330,7 @@ sub_80E0684:
 	tst r0, r0
 	bne loc_80E06C8
 	mov r0, #0x10
-	bl sub_8001382
+	bl battle_orStateFlags5c_8001382
 	bl GetBattleEffects // () -> int
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
@@ -85363,7 +85363,7 @@ loc_80E06C8:
 	tst r0, r0
 	bne locret_80E06DA
 	mov r0, #1
-	bl sub_8001382
+	bl battle_orStateFlags5c_8001382
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80E06DA:
@@ -85381,7 +85381,7 @@ sub_80E06E0:
 	tst r0, r0
 	bne locret_80E06F6
 	mov r0, #2
-	bl sub_8001382
+	bl battle_orStateFlags5c_8001382
 	bl object_freeMemory
 locret_80E06F6:
 	pop {pc}
@@ -85954,7 +85954,7 @@ loc_80E0BF6:
 	bl sub_800F26C
 	ldr r2, [r5,#oBattleObject_ExtraVars]
 	ldrb r2, [r2,#4]
-	bl sub_8018842
+	bl getIndexedSignedBytePair_8018842
 	mul r0, r6
 	lsl r0, r0, #0x10
 	lsl r1, r1, #0x10
@@ -87843,7 +87843,7 @@ sub_80E192C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	cmp r0, #0xbd
 	pop {r0-r3}
 	beq loc_80E1968
@@ -87924,15 +87924,15 @@ t4_0x11_80E19BC:
 	pop {pc}
 	.balign 4, 0x00
 JumpTable80E19CC:
-	.word sub_80E19DC+1
+	.word battle_objectSetTimerFromParam1Table_80E19DC+1
 	.word sub_80E19F4+1
-	.word sub_80E1A5E+1
+	.word battle_object_freeWithPhaseReset_80E1A5E+1
 JumpTable80E19CC_p:
 	.word JumpTable80E19CC
 	thumb_func_end t4_0x11_80E19BC
 
 	thumb_local_start
-sub_80E19DC:
+battle_objectSetTimerFromParam1Table_80E19DC:
 	push {lr}
 	ldr r7, off_80E19EC // =dword_80E19F0 
 	ldrb r0, [r5,#oBattleObject_Param1]
@@ -87945,7 +87945,7 @@ off_80E19EC:
 	.word dword_80E19F0
 dword_80E19F0:
 	.word 0x205A20
-	thumb_func_end sub_80E19DC
+	thumb_func_end battle_objectSetTimerFromParam1Table_80E19DC
 
 	thumb_local_start
 sub_80E19F4:
@@ -88011,13 +88011,13 @@ locret_80E1A5C:
 	thumb_func_end sub_80E1A0C
 
 	thumb_local_start
-sub_80E1A5E:
+battle_object_freeWithPhaseReset_80E1A5E:
 	push {lr}
 	mov r0, #1
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	bl object_freeMemory
 	pop {pc}
-	thumb_func_end sub_80E1A5E
+	thumb_func_end battle_object_freeWithPhaseReset_80E1A5E
 
 	thumb_func_start sub_80E1A6A
 sub_80E1A6A:
@@ -88401,7 +88401,7 @@ off_80E1D08:
 off_80E1D0C:
 	.word sub_80E1D18+1
 	.word sub_80E1D54+1
-	.word sub_80E1D72+1
+	.word battle_objectFreeWrapper_80E1D72+1
 	thumb_func_end t4_0x14_80E1CF8
 
 	thumb_local_start
@@ -88451,11 +88451,11 @@ locret_80E1D70:
 	thumb_func_end sub_80E1D54
 
 	thumb_local_start
-sub_80E1D72:
+battle_objectFreeWrapper_80E1D72:
 	push {lr}
 	bl object_freeMemory
 	pop {pc}
-	thumb_func_end sub_80E1D72
+	thumb_func_end battle_objectFreeWrapper_80E1D72
 
 	thumb_func_start sub_80E1D7A
 sub_80E1D7A:
@@ -89365,7 +89365,7 @@ sub_80E23E8:
 loc_80E23FA:
 	bl sub_801DF8C
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802E070
+	bl getEntryPtr_2036120_1D0_802E070
 	ldr r1, off_80E24DC // =0x1e0 
 	mov r2, #0
 	ldrb r3, [r5,#oBattleObject_Param1]
@@ -89378,7 +89378,7 @@ loc_80E2414:
 	strh r1, [r0,#0x3a]
 	strh r2, [r0,#0x3c]
 loc_80E2418:
-	bl sub_800A8F8
+	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
 	beq loc_80E2448
 	bl GetBattleEffects // () -> int
@@ -89388,7 +89388,7 @@ loc_80E2418:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802E070
+	bl getEntryPtr_2036120_1D0_802E070
 	ldr r1, off_80E24E0 // =0x438 
 	mov r2, #0
 	ldrb r3, [r5,#oBattleObject_Param1]
@@ -89412,7 +89412,7 @@ loc_80E2448:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 loc_80E2460:
-	bl sub_800A8F8
+	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
 	beq loc_80E247C
 	bl GetBattleEffects // () -> int
@@ -93159,7 +93159,7 @@ sub_80E403E:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -93962,7 +93962,7 @@ byte_80E45E8:
 	thumb_local_start
 sub_80E45F8:
 	push {lr}
-	bl sub_800A8F8
+	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
 	beq locret_80E4610
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -93978,7 +93978,7 @@ locret_80E4610:
 	thumb_local_start
 sub_80E4612:
 	push {lr}
-	bl sub_800A8F8
+	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
 	beq locret_80E462E
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -94634,7 +94634,7 @@ sub_80E4AAE:
 	add r0, r0, r5
 	stmia r0!, {r1-r3}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -98585,7 +98585,7 @@ sub_80E667C:
 	b loc_80E6704
 loc_80E66F6:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802E070
+	bl getEntryPtr_2036120_1D0_802E070
 	ldrh r3, [r0,#0x36]
 	ldrb r2, [r5,#oBattleObject_Param2]
 	add r3, r3, r2
@@ -100233,7 +100233,7 @@ loc_80E7314:
 	str r4, [r5,#oBattleObject_ExtraVars]
 	bl sub_800F26C
 	mov r2, #0x1b
-	bl sub_8018842
+	bl getIndexedSignedBytePair_8018842
 	lsl r6, r0, #0x10
 	lsl r7, r1, #0x10
 	bl object_getFrontDirection // () -> int
@@ -100957,7 +100957,7 @@ sub_80E7816:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -101175,7 +101175,7 @@ sub_80E79CE:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -101390,7 +101390,7 @@ loc_80E7B62:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -103039,7 +103039,7 @@ sub_80E86F6:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -103172,7 +103172,7 @@ sub_80E8802:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -103398,7 +103398,7 @@ sub_80E89BA:
 	bl sprite_getFinalPalette
 	bl sprite_setFinalPalette
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r1, [r0,#oBattleObject_DirectionFlip]
@@ -104014,7 +104014,7 @@ sub_80E8E34:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #1
 	lsl r0, r0, #8
-	bl sub_801BED6
+	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, #0x40 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -105211,7 +105211,7 @@ loc_80E9686:
 	strb r1, [r0,#0x1b]
 	strb r1, [r0,#0x1c]
 	strb r1, [r0,#0x1d]
-	bl sub_80107C0
+	bl battle_IsNoCustomPlusActive_80107C0
 	mov r1, #0x10
 	mov r2, #2
 	bl object_updateCollisionData
@@ -105846,7 +105846,7 @@ sub_80E9B56:
 	add r0, r0, r5
 	stmia r0!, {r1-r3}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_8002F3E
+	bl obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 	bl loc_8002F02
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -106896,7 +106896,7 @@ loc_80EA326:
 	ldr r5, [r4]
 	tst r5, r5
 	beq loc_80EA33A
-	bl sub_801A67E
+	bl battle_resetFlashingInvisTimer_801A67E
 	ldr r0, dword_80EA360 // =0x202 
 	bl object_clearFlag // (int bitfield) -> void
 	add r4, #4
@@ -108082,14 +108082,14 @@ loc_80EB0CC:
 	ldrb r1, [r7,#oAIAttackVars_Unk_17]
 	ldrb r2, [r5,#oBattleObject_PanelX]
 	ldrb r3, [r5,#oBattleObject_PanelY]
-	bl sub_801BE04
+	bl calc8DirBitmaskTowardsPoint_801BE04
 	bl SetAIDataUnk0x48Flag
 	mov r0, #OBJECT_FLAGS_CANNOT_SLIDE
 	bl object_setFlag1 // (int a1) -> void
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
 	mov r2, #1
-	bl sub_800AB46
+	bl tableAddSaturatedByte_800AB46
 	bl sub_80F02A2
 	tst r0, r0
 	beq loc_80EB10A
@@ -108655,7 +108655,7 @@ loc_80EB528:
 	bl object_exitAttackState
 	bl sub_8010332
 	mov r4, r0
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	mov r0, r6
 	mov r1, r4
@@ -108937,7 +108937,7 @@ off_80EB784:
 	.word off_80EB788
 off_80EB788:
 	.word sub_80EB79C+1
-	.word sub_80EB84C+1
+	.word aiAttack_BeginAttackSequence_80EB84C+1
 	.word sub_80EB862+1
 	.word sub_80EBB98+1
 	.word sub_80EBBE2+1
@@ -109026,7 +109026,7 @@ dword_80EB848:
 	thumb_func_end sub_80EB79C
 
 	thumb_local_start
-sub_80EB84C:
+aiAttack_BeginAttackSequence_80EB84C:
 	mov r0, #1
 	ldrb r1, [r7,#oAIAttackVars_Unk_03]
 	cmp r1, #0xb
@@ -109039,7 +109039,7 @@ loc_80EB856:
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 	mov pc, lr
-	thumb_func_end sub_80EB84C
+	thumb_func_end aiAttack_BeginAttackSequence_80EB84C
 
 	thumb_local_start
 sub_80EB862:
@@ -109066,7 +109066,7 @@ loc_80EB88C:
 loc_80EB88E:
 	bl PlaySoundEffect
 	push {r7}
-	bl sub_80EBB78
+	bl battle_getSpecialActorSlotIfAiMatches_80EBB78
 	mov r4, r0
 	lsl r4, r4, #0x10
 	bl sub_80EBAE8
@@ -109350,7 +109350,7 @@ byte_80EBB64:
 	thumb_func_end sub_80EBB34
 
 	thumb_local_start
-sub_80EBB78:
+battle_getSpecialActorSlotIfAiMatches_80EBB78:
 	push {r4,r7,lr}
 	mov r7, #0
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -109368,7 +109368,7 @@ sub_80EBB78:
 loc_80EBB94:
 	mov r0, r7
 	pop {r4,r7,pc}
-	thumb_func_end sub_80EBB78
+	thumb_func_end battle_getSpecialActorSlotIfAiMatches_80EBB78
 
 	thumb_local_start
 sub_80EBB98:
@@ -109548,7 +109548,7 @@ loc_80EBCDC:
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 	add r6, r6, r2
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 loc_80EBD06:
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	add r0, #1
@@ -109650,7 +109650,7 @@ sub_80EBD9C:
 	pop {r7}
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r0, [r0,#8]
 	tst r0, r0
 	pop {r0}
@@ -109812,7 +109812,7 @@ loc_80EBED6:
 	bl object_exitAttackState
 	bl sub_8010332
 	mov r4, r0
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	mov r0, r6
 	mov r1, r4
@@ -110409,7 +110409,7 @@ sub_80EC350: // EXE6G: 0x80f3020
 	pop {r7}
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r0, [r0,#8]
 	tst r0, r0
 	pop {r0}
@@ -110624,7 +110624,7 @@ loc_80EC510:
 	bl object_exitAttackState
 	bl sub_8010332
 	mov r4, r0
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	mov r0, r6
 	mov r1, r4
@@ -110852,7 +110852,7 @@ loc_80EC6D6:
 	bl sub_80EC792
 	bl sub_8010332
 	mov r4, r0
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	mov r0, r6
 	mov r1, r4
@@ -111039,7 +111039,7 @@ loc_80EC85A:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #5
 	mov r2, #1
-	bl sub_800AB46
+	bl tableAddSaturatedByte_800AB46
 	bl object_exitAttackState
 	pop {r4,pc}
 	.balign 4, 0
@@ -111108,7 +111108,7 @@ loc_80EC8DE:
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 	add r6, r6, r2
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 loc_80EC8FE:
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	add r0, #1
@@ -111231,7 +111231,7 @@ loc_80EC9CE:
 	add r1, r1, r3
 	mov r4, #5
 	mov r3, #0
-	bl sub_80CA686
+	bl battle_spawnAndInitObject0x33_80CA686
 	pop {r0-r2,r4}
 	add r4, #2
 	b loc_80EC9CE
@@ -112343,7 +112343,7 @@ loc_80ED206:
 	mov r3, #0x14
 	lsl r3, r3, #0x10
 	mov r4, #6
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 	b loc_80ED226
 loc_80ED216:
 	b loc_80ED226
@@ -112737,7 +112737,7 @@ loc_80ED4FA:
 	push {r0-r2}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
-	bl sub_800AB3A
+	bl table_GetByte16Row_203EAE0_800AB3A
 	mov r7, r0
 	pop {r0-r2}
 	mov r3, #0
@@ -113155,7 +113155,7 @@ loc_80ED7D6:
 	bl object_exitAttackState
 	bl sub_8010332
 	mov r4, r0
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	mov r0, r6
 	mov r1, r4
@@ -114835,7 +114835,7 @@ loc_80EE43E:
 	mov r0, #0xb
 loc_80EE452:
 	push {r7}
-	bl sub_80EBB78
+	bl battle_getSpecialActorSlotIfAiMatches_80EBB78
 	mov r4, r0
 	lsl r4, r4, #0x10
 	bl sub_80EBAE8
@@ -117803,7 +117803,7 @@ loc_80EFA9E:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	strh r0, [r1,#oCollisionData_SelfDamage]
 	mov r0, #0
-	bl sub_8019F86
+	bl battle_SetObjectHitModifier_8019F86
 	mov r0, #0x88
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -117926,9 +117926,9 @@ loc_80EFBBE:
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_clearInvulnerableTime
 	bl sub_80142C2
-	bl sub_80107C0
+	bl battle_IsNoCustomPlusActive_80107C0
 	mov r0, r3
-	bl sub_8019F86
+	bl battle_SetObjectHitModifier_8019F86
 	mov r0, #1
 	bl object_setCollisionRegion
 	bl object_exitAttackState
@@ -118642,7 +118642,7 @@ loc_80F016A:
 	ldr r0, [r0,#oAIData_Unk_68]
 	bl sub_80B8E7C
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 loc_80F0178:
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_UNK_BIT_22_BIT
@@ -118673,7 +118673,7 @@ loc_80F0188:
 	lsl r3, r3, #0x10
 	ldrh r4, [r7,#oAIAttackVars_Unk_0c]
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 	push {r7}
 	mov r4, #5
 	mov r7, #0x4c 
@@ -118932,7 +118932,7 @@ loc_80F03D2:
 	b locret_80F0604
 loc_80F03EA:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802E070
+	bl getEntryPtr_2036120_1D0_802E070
 	ldrh r1, [r0,#0x30]
 	cmp r1, #0
 	bne loc_80F0406
@@ -119086,7 +119086,7 @@ loc_80F0526:
 	mov r1, r0
 	pop {r0}
 	push {r0,r1}
-	bl sub_80103A8
+	bl battle_GetAllianceFactionFromBattleObject_80103A8
 	mov r2, r0
 	pop {r0,r1}
 	bl sub_80116AE
@@ -119192,7 +119192,7 @@ sub_80F0608:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #5
 	bne loc_80F0632
-	bl sub_800F49E
+	bl battle_getObjectAllianceTeam_800F49E
 	cmp r0, #0xff
 	beq loc_80F068C
 	ldr r1, off_80F06F0 // =byte_8021300 
@@ -119278,7 +119278,7 @@ locret_80F06BA:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
 	beq locret_80F06CC
-	bl sub_80144C0
+	bl battle_beginTurnOpenProcess_80144C0
 locret_80F06CC:
 	pop {r7,pc}
 	thumb_local_start
@@ -119287,7 +119287,7 @@ sub_80F06CE:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
 	beq locret_80F06DA
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 locret_80F06DA:
 	pop {pc}
 off_80F06DC:
@@ -119318,7 +119318,7 @@ sub_80F0700:
 	// error: jumping to the middle of a routine with a different stack balance
 	// again, works out due to previous calls having pc pushes on the stack
 	beq loc_80F073E
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	pop {pc}
 	thumb_func_end sub_80F0700
 
@@ -123838,7 +123838,7 @@ sub_80F2B6C:
 	blt loc_80F2BBE
 	ldrb r0, [r6,#oAIState_Unk_05]
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -123853,7 +123853,7 @@ sub_80F2B6C:
 	str r0, [r7,#oAIAttackVars_Unk_30]
 	mov r0, #0xa
 	bl object_setAttack0
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	cmp r0, #0
 	beq loc_80F2BB8
 	ldrb r0, [r6,#oAIState_Unk_05]
@@ -123902,7 +123902,7 @@ sub_80F2BEE:
 	and r0, r1
 	cmp r0, #6
 	bge loc_80F2C32
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	bl sub_80F2D64
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -123923,7 +123923,7 @@ sub_80F2BEE:
 	bl object_setAttack0
 	b loc_80F2C70
 loc_80F2C32:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	bl sub_80F2D88
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -123965,7 +123965,7 @@ sub_80F2C82:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
 	beq loc_80F2C92
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	b loc_80F2C92
 	thumb_func_end sub_80F2C82
 
@@ -124173,14 +124173,14 @@ sub_80F2DDC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F2E30 // =byte_80F2E3C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -124219,14 +124219,14 @@ sub_80F2E54:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F2EA0 // =byte_80F2EAC
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -125730,7 +125730,7 @@ sub_80F3A24:
 	blt loc_80F3A56
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -125756,7 +125756,7 @@ loc_80F3A5C:
 	blt loc_80F3ACE
 	cmp r0, #8
 	blt loc_80F3AF6
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80F3D14 // =sub_80F45B8+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -125771,7 +125771,7 @@ loc_80F3A5C:
 	bl object_setAttack4
 	b locret_80F3B1E
 loc_80F3A94:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -125796,7 +125796,7 @@ loc_80F3A94:
 	bl object_setAttack0
 	b locret_80F3B1E
 loc_80F3ACE:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -125813,7 +125813,7 @@ loc_80F3ACE:
 	bl object_setAttack0
 	b locret_80F3B1E
 loc_80F3AF6:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -125836,7 +125836,7 @@ locret_80F3B1E:
 	thumb_local_start
 sub_80F3B24:
 	push {r4,r6,r7,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	mov r4, r0
 	mov r0, #0
 	bl sub_80F3CA4
@@ -125990,14 +125990,14 @@ sub_80F3C2C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F3C80 // =byte_80F3C8C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -126036,14 +126036,14 @@ sub_80F3CA4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F3CF0 // =byte_80F3CFC
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -127812,7 +127812,7 @@ sub_80F4AB2:
 	thumb_local_start
 sub_80F4AC6:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -127838,7 +127838,7 @@ sub_80F4AC6:
 	thumb_local_start
 sub_80F4AFE:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -127863,7 +127863,7 @@ sub_80F4AFE:
 	thumb_local_start
 sub_80F4B34:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -127897,14 +127897,14 @@ sub_80F4B74:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F4BEC // =byte_80F4BF8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -127920,14 +127920,14 @@ sub_80F4B74:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F4BEC // =byte_80F4BF8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -129608,7 +129608,7 @@ off_80F5944:
 	thumb_local_start
 sub_80F594C:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_80F59E0 // =dword_80F59E4
 	ldrb r0, [r1,r0]
 	ldrb r1, [r6,#oAIState_Unk_04]
@@ -129627,7 +129627,7 @@ sub_80F594C:
 	ldrb r0, [r6,#oAIState_Unk_05]
 	add r0, #1
 	strb r0, [r6,#oAIState_Unk_05]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -129656,7 +129656,7 @@ loc_80F59B4:
 	ldrb r0, [r6,#oAIState_Unk_04]
 	add r0, #1
 	strb r0, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80F5B74 // =sub_80F60C4+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -129696,7 +129696,7 @@ loc_80F59F8:
 	thumb_local_start
 sub_80F59FE:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	mov r4, r0
 	mov r0, #1
 	bl sub_80F5B02
@@ -129780,7 +129780,7 @@ dword_80F5A9C:
 	thumb_local_start
 sub_80F5AA0:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -129811,14 +129811,14 @@ sub_80F5AD4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F5B4C // =byte_80F5B58
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -129836,14 +129836,14 @@ sub_80F5B02:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F5B4C // =byte_80F5B58
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -131108,7 +131108,7 @@ sub_80F651C:
 	beq locret_80F6548
 	ldr r0, off_80F66D8 // =0x100 
 	bl object_clearFlag2
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	lsl r0, r0, #2
 	ldr r1, off_80F654C // =off_80F6550 
 	ldr r0, [r1,r0]
@@ -131172,7 +131172,7 @@ dword_80F65A0:
 	thumb_local_start
 sub_80F65A4:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#3]
 	ldr r0, off_80F66DC // =sub_80F6FD0+1 
 	str r0, [r7,#0x28]
@@ -131189,7 +131189,7 @@ sub_80F65A4:
 	thumb_local_start
 sub_80F65C4:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -131210,7 +131210,7 @@ sub_80F65C4:
 	thumb_local_start
 sub_80F65EE:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -131233,7 +131233,7 @@ sub_80F65EE:
 	thumb_local_start
 sub_80F661E:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -131254,14 +131254,14 @@ sub_80F663C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F66B4 // =byte_80F66C0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -131277,14 +131277,14 @@ sub_80F663C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F66B4 // =byte_80F66C0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -133450,7 +133450,7 @@ byte_80F7828:
 	thumb_local_start
 sub_80F7830:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80F79E4 // =sub_80F811A+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -133469,7 +133469,7 @@ sub_80F7830:
 	thumb_local_start
 sub_80F7856:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -133492,7 +133492,7 @@ sub_80F7856:
 	thumb_local_start
 sub_80F7886:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -133523,7 +133523,7 @@ sub_80F78C4:
 	push {lr}
 	strb r0, [r7,#oAIAttackVars_Unk_16]
 	strb r1, [r7,#oAIAttackVars_Unk_17]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -133551,14 +133551,14 @@ sub_80F78FA:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F794C // =byte_80F7958
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -133597,14 +133597,14 @@ sub_80F7970:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F79BC // =byte_80F79C8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -134973,7 +134973,7 @@ loc_80F8458:
 	blt loc_80F8518
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_80F8538 // =dword_80F853C
 	ldrb r0, [r1,r0]
 	ldrb r1, [r6,#oAIState_Unk_05]
@@ -134985,7 +134985,7 @@ loc_80F8458:
 	bl sub_80F8610
 	cmp r0, #3
 	bge loc_80F84AC
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -135004,7 +135004,7 @@ loc_80F8458:
 	bl object_setAttack0
 	b locret_80F8534
 loc_80F84AC:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -135028,7 +135028,7 @@ loc_80F84AC:
 loc_80F84E0:
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_05]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -135053,7 +135053,7 @@ loc_80F8518:
 	ldrb r0, [r6,#oAIState_Unk_04]
 	add r0, #1
 	strb r0, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80F8704 // =sub_80F8CF8+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -135073,7 +135073,7 @@ dword_80F853C:
 	thumb_local_start
 sub_80F8540:
 	push {r4,r6,r7,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	mov r4, r0
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -135230,14 +135230,14 @@ sub_80F865C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F86D4 // =byte_80F86E0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -135253,14 +135253,14 @@ sub_80F865C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F86D4 // =byte_80F86E0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -136634,7 +136634,7 @@ sub_80F9154:
 	thumb_local_start
 sub_80F9168:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -136672,13 +136672,13 @@ sub_80F91A2:
 loc_80F91B8:
 	str r0, [r5,#oBattleObject_ExtraVars]
 	mov r4, r0
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	cmp r0, #0
 	beq loc_80F91C6
 	add r4, #4
 loc_80F91C6:
 	strb r4, [r7,#oAIAttackVars_Unk_0d]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -136701,7 +136701,7 @@ loc_80F91C6:
 	thumb_local_start
 sub_80F91F6:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -136727,14 +136727,14 @@ sub_80F9222:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F929C // =byte_80F92A8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -136750,14 +136750,14 @@ sub_80F9222:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80F929C // =byte_80F92A8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -138138,7 +138138,7 @@ sub_80F9DE4:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
 	beq loc_80F9DF4
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	b loc_80F9DF4
 	thumb_func_end sub_80F9DE4
 
@@ -138336,7 +138336,7 @@ sub_80F9F24:
 	thumb_local_start
 sub_80F9F44:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -138359,7 +138359,7 @@ sub_80F9F44:
 	thumb_local_start
 sub_80F9F76:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -138382,7 +138382,7 @@ sub_80F9F76:
 	thumb_local_start
 sub_80F9FA6:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -138418,14 +138418,14 @@ sub_80F9FEC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FA070 // =byte_80FA080
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -138443,14 +138443,14 @@ sub_80FA01A:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FA070 // =byte_80FA080
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -140402,7 +140402,7 @@ sub_80FAFA0:
 	thumb_local_start
 sub_80FAFB4:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -140431,7 +140431,7 @@ sub_80FAFB4:
 	thumb_local_start
 sub_80FAFF2:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -140456,7 +140456,7 @@ sub_80FAFF2:
 	thumb_local_start
 sub_80FB028:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -140488,14 +140488,14 @@ sub_80FB062:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FB0DC // =byte_80FB0E8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -140511,14 +140511,14 @@ sub_80FB062:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FB0DC // =byte_80FB0E8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -141669,7 +141669,7 @@ off_80FB9F8:
 	thumb_local_start
 sub_80FBA0C:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_80FBA1C // =dword_80FBA20
 	ldrb r0, [r1,r0]
 	strb r0, [r6,#oAIState_Unk_00]
@@ -142286,7 +142286,7 @@ sub_80FBE4C:
 	thumb_local_start
 sub_80FBE60:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -142316,7 +142316,7 @@ sub_80FBE9C:
 	push {r4,lr}
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -142349,7 +142349,7 @@ sub_80FBE9C:
 	thumb_local_start
 sub_80FBEE8:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -142377,7 +142377,7 @@ sub_80FBEE8:
 	thumb_local_start
 sub_80FBF24:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -142400,7 +142400,7 @@ sub_80FBF24:
 	thumb_local_start
 sub_80FBF54:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -142433,14 +142433,14 @@ sub_80FBF92:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FC024 // =byte_80FC038
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -142456,14 +142456,14 @@ sub_80FBF92:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FC024 // =byte_80FC038
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -144689,7 +144689,7 @@ loc_80FD184:
 	ldrb r1, [r6,#oAIState_Unk_05]
 	add r1, #1
 	strb r1, [r6,#oAIState_Unk_05]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -144708,7 +144708,7 @@ loc_80FD184:
 	bl object_setAttack0
 	b locret_80FD23E
 loc_80FD1B8:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -144729,7 +144729,7 @@ loc_80FD1B8:
 	bl object_setAttack0
 	b locret_80FD23E
 loc_80FD1EC:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -144749,7 +144749,7 @@ loc_80FD216:
 	ldrb r1, [r6,#oAIState_Unk_04]
 	add r1, #1
 	strb r1, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80FD4C0 // =sub_80FDA62+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -144945,7 +144945,7 @@ loc_80FD372:
 sub_80FD376:
 	push {r4,lr}
 	mov r4, #0
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	cmp r0, #0
 	beq loc_80FD394
 	bl GetPositiveSignedRNG
@@ -144982,14 +144982,14 @@ sub_80FD3CC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FD420 // =byte_80FD42C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -145028,14 +145028,14 @@ sub_80FD444:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FD490 // =byte_80FD49C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -146256,7 +146256,7 @@ sub_80FDE04:
 	and r0, r1
 	cmp r0, #6
 	blt loc_80FDE3C
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	bl sub_80FDF98
 	strh r0, [r7,#oAIAttackVars_Unk_18]
@@ -146264,7 +146264,7 @@ sub_80FDE04:
 	bl object_setAttack0
 	b locret_80FDEC2
 loc_80FDE3C:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -146285,7 +146285,7 @@ loc_80FDE3C:
 loc_80FDE6C:
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_05]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -146302,7 +146302,7 @@ loc_80FDE94:
 	ldrb r0, [r6,#oAIState_Unk_04]
 	add r0, #1
 	strb r0, [r6,#oAIState_Unk_04]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	ldr r0, off_80FE0CC // =sub_80FE4D0+1 
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -146325,7 +146325,7 @@ locret_80FDEC2:
 	thumb_local_start
 sub_80FDEC4:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	mov r4, r0
 	mov r0, #2
 	bl sub_80FE05C
@@ -146501,14 +146501,14 @@ sub_80FDFE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FE038 // =byte_80FE044
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -146547,14 +146547,14 @@ sub_80FE05C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FE0A8 // =byte_80FE0B4
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -146764,7 +146764,7 @@ off_80FE22C:
 	.word off_80FE230
 off_80FE230:
 	.word sub_80FE240+1
-	.word sub_80FE284+1
+	.word battle_aiAttackWindupTick_80FE284+1
 	.word sub_80FE2A8+1
 	.word sub_80FE30C+1
 	thumb_func_end sub_80FE21E
@@ -146809,7 +146809,7 @@ dword_80FE280:
 	thumb_func_end sub_80FE240
 
 	thumb_local_start
-sub_80FE284:
+battle_aiAttackWindupTick_80FE284:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -146830,7 +146830,7 @@ loc_80FE29A:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_80FE2A6:
 	pop {pc}
-	thumb_func_end sub_80FE284
+	thumb_func_end battle_aiAttackWindupTick_80FE284
 
 	thumb_local_start
 sub_80FE2A8:
@@ -147844,7 +147844,7 @@ dword_80FEAB8:
 	thumb_local_start
 sub_80FEABC:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	lsl r0, r0, #1
 	ldr r1, off_80FEACC // =byte_80FEAD0 
 	ldrh r0, [r1,r0]
@@ -147896,7 +147896,7 @@ sub_80FEAFC:
 	thumb_local_start
 sub_80FEB20:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -147928,7 +147928,7 @@ sub_80FEB20:
 	thumb_local_start
 sub_80FEB64:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -147955,7 +147955,7 @@ sub_80FEB64:
 	thumb_local_start
 sub_80FEB9E:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -147991,14 +147991,14 @@ sub_80FEBE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FEC5C // =byte_80FEC68
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -148014,14 +148014,14 @@ sub_80FEBE4:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FEC5C // =byte_80FEC68
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -149398,12 +149398,12 @@ sub_80FF668:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
 	beq loc_80FF674
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 loc_80FF674:
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	tst r0, r0
 	beq locret_80FF67E
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 locret_80FF67E:
 	pop {pc}
 	thumb_func_end sub_80FF668
@@ -149678,7 +149678,7 @@ loc_80FF94C:
 loc_80FF95E:
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_06]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -149700,7 +149700,7 @@ loc_80FF95E:
 	bl object_setAttack0
 	b locret_80FFA18
 loc_80FF998:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -149721,7 +149721,7 @@ loc_80FF998:
 	bl object_setAttack0
 	b locret_80FFA18
 loc_80FF9CC:
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -149903,14 +149903,14 @@ sub_80FFAF8:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FFB64 // =byte_80FFB6C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -149928,14 +149928,14 @@ sub_80FFB26:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_80FFB64 // =byte_80FFB6C
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -150883,7 +150883,7 @@ off_8100304:
 	thumb_local_start
 sub_8100308:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_8100398 // =dword_810039C
 	ldrb r0, [r1,r0]
 	ldrb r1, [r6,#oAIState_Unk_04]
@@ -151256,7 +151256,7 @@ sub_8100570:
 	thumb_local_start
 sub_8100580:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -151274,7 +151274,7 @@ sub_8100580:
 	thumb_local_start
 sub_81005A6:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -151299,7 +151299,7 @@ sub_81005A6:
 	thumb_local_start
 sub_81005DE:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -151324,7 +151324,7 @@ sub_81005DE:
 	thumb_local_start
 sub_8100614:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -151350,7 +151350,7 @@ sub_8100614:
 	thumb_local_start
 sub_810064C:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -151378,14 +151378,14 @@ sub_810067E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8100710 // =byte_8100724
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -151401,14 +151401,14 @@ sub_810067E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8100710 // =byte_8100724
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -153164,7 +153164,7 @@ loc_8101420:
 loc_810142A:
 	mov r0, r4
 	bl sub_810161A
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	cmp r0, #1
 	blt locret_8101448
 	mov r1, #8
@@ -153224,7 +153224,7 @@ sub_8101472:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
 	beq locret_8101482
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 locret_8101482:
 	pop {pc}
 	thumb_func_end sub_8101472
@@ -153477,7 +153477,7 @@ sub_8101606:
 sub_810161A:
 	push {r4,lr}
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -153504,7 +153504,7 @@ sub_8101652:
 	push {r4,lr}
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -153529,7 +153529,7 @@ sub_8101652:
 	thumb_local_start
 sub_810168C:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -153556,7 +153556,7 @@ sub_810168C:
 	thumb_local_start
 sub_81016C8:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -153581,7 +153581,7 @@ sub_81016C8:
 	thumb_local_start
 sub_81016FE:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -153640,14 +153640,14 @@ sub_810176E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8101800 // =byte_8101814
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -153665,14 +153665,14 @@ sub_810179C:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8101800 // =byte_8101814
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -154527,10 +154527,10 @@ sub_8101F2A:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0f]
 	ldr r0, off_8102194 // =byte_8101994
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102198 // =byte_810199C
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154555,10 +154555,10 @@ sub_8101F70:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0f]
 	ldr r0, off_81021AC // =byte_81019B4
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021B0 // =byte_81019BC
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154577,10 +154577,10 @@ sub_8101FAE:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_34]
 	ldr r0, off_81021BC // =byte_81019CC
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021C0 // =byte_81019D4
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154603,10 +154603,10 @@ sub_8101FE4:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0d]
 	ldr r0, off_81021D0 // =byte_81019E4
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021D4 // =byte_81019EC
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -154630,10 +154630,10 @@ sub_8102016:
 	bl sub_800FE28
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
 	ldr r0, off_81021E4 // =byte_8101A00
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021E8 // =byte_8101A08
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_0d]
@@ -154660,10 +154660,10 @@ sub_810205C:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_34]
 	ldr r0, off_81021F4 // =byte_8101A18
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021F8 // =byte_8101A20
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -154698,10 +154698,10 @@ sub_810209E:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_3c]
 	ldr r0, off_810220C // =byte_8101A38
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102210 // =byte_8101A40
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -154736,10 +154736,10 @@ sub_81020F0:
 	bl sub_800FE28
 	str r0, [r7,#oAIAttackVars_Unk_3c]
 	ldr r0, off_8102224 // =byte_8101A58
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102228 // =byte_8101A60
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -154774,7 +154774,7 @@ sub_8102146:
 sub_810214A:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	pop {pc}
 	thumb_func_end sub_810214A
 
@@ -154782,7 +154782,7 @@ sub_810214A:
 sub_8102154:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
-	bl sub_80C44D2
+	bl battle_EndObjectCurrentAnim_80C44D2
 	pop {pc}
 	.balign 4, 0
 off_8102160:
@@ -156650,7 +156650,7 @@ locret_8102EBE:
 sub_8102EC0:
 	push {r4,r6,lr}
 	mov r4, r0
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	lsr r0, r0, #3
 	bcc locret_8102EE0
 loc_8102ECC:
@@ -158530,7 +158530,7 @@ locret_8103D4A:
 	thumb_local_start
 sub_8103D4C:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	lsl r0, r0, #1
 	ldr r1, off_8103DB0 // =byte_8103DB4 
 	ldrh r0, [r1,r0]
@@ -158809,7 +158809,7 @@ sub_8103F54:
 	thumb_local_start
 sub_8103F80:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -158834,7 +158834,7 @@ sub_8103F80:
 	thumb_local_start
 sub_8103FB4:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -158859,7 +158859,7 @@ sub_8103FB4:
 	thumb_local_start
 sub_8103FE8:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -158883,7 +158883,7 @@ sub_8103FE8:
 	thumb_local_start
 sub_810401C:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -158908,7 +158908,7 @@ sub_810401C:
 	thumb_local_start
 sub_8104050:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -158935,14 +158935,14 @@ sub_810407E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8104128 // =byte_8104144
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -158960,14 +158960,14 @@ sub_81040AC:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8104128 // =byte_8104144
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -161593,7 +161593,7 @@ locret_8105552:
 	thumb_local_start
 sub_8105554:
 	push {r4,r6,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	lsl r0, r0, #1
 	ldr r1, off_81055C8 // =byte_81055CC 
 	ldrh r0, [r1,r0]
@@ -161871,7 +161871,7 @@ sub_8105770:
 	thumb_local_start
 sub_8105784:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -161900,7 +161900,7 @@ sub_8105784:
 	thumb_local_start
 sub_81057C0:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -161925,7 +161925,7 @@ sub_81057C0:
 	thumb_local_start
 sub_81057F4:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -161950,7 +161950,7 @@ sub_81057F4:
 	thumb_local_start
 sub_8105828:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -161975,7 +161975,7 @@ sub_8105828:
 	thumb_local_start
 sub_810585C:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -162004,14 +162004,14 @@ sub_810588E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8105920 // =byte_8105934
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -162027,14 +162027,14 @@ sub_810588E:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8105920 // =byte_8105934
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -164168,7 +164168,7 @@ off_8106940:
 	thumb_local_start
 sub_810694C:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_810695C // =off_8106960
 	ldrb r0, [r1,r0]
 	strb r0, [r6,#oAIState_Unk_00]
@@ -164539,7 +164539,7 @@ sub_8106BB8:
 	thumb_func_end sub_8106BB8
 
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#3]
 	mov r0, #1
 	strb r0, [r7,#2]
@@ -164562,7 +164562,7 @@ sub_8106BB8:
 	thumb_local_start
 sub_8106C0E:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -164580,7 +164580,7 @@ sub_8106C0E:
 	thumb_local_start
 sub_8106C34:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -164606,7 +164606,7 @@ sub_8106C34:
 	thumb_local_start
 sub_8106C6C:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -164635,7 +164635,7 @@ sub_8106C6C:
 	thumb_local_start
 sub_8106CAC:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -164668,14 +164668,14 @@ sub_8106CEA:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8106D88 // =byte_8106DA0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -164693,14 +164693,14 @@ sub_8106D18:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_8106D88 // =byte_8106DA0
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -166588,7 +166588,7 @@ sub_8107B06:
 	lsl r3, r3, #0x10
 	mov r4, #0x1c
 	ldr r6, [r7,#oAIAttackVars_Unk_30]
-	bl sub_80C4FFE
+	bl battle_SpawnAndInitObjectType3_80C4FFE
 	pop {r4,r6,pc}
 	.balign 4, 0
 off_8107B20:
@@ -166667,7 +166667,7 @@ off_8107C68:
 	thumb_local_start
 sub_8107C7C:
 	push {lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	ldr r1, off_8107C8C // =dword_8107C90
 	ldrb r0, [r1,r0]
 	strb r0, [r6,#oAIState_Unk_00]
@@ -167190,7 +167190,7 @@ sub_8107FF4:
 	thumb_local_start
 sub_8108014:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -167213,7 +167213,7 @@ sub_8108014:
 	thumb_local_start
 sub_8108046:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -167232,7 +167232,7 @@ sub_8108046:
 	thumb_local_start
 sub_810806E:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -167258,7 +167258,7 @@ sub_810806E:
 	thumb_local_start
 sub_81080A6:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -167287,7 +167287,7 @@ sub_81080A6:
 	thumb_local_start
 sub_81080E6:
 	push {r4,lr}
-	bl sub_800FE36
+	bl battle_getAiDifficultyTier_800FE36
 	strb r0, [r7,#oAIAttackVars_Unk_03]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -167320,14 +167320,14 @@ sub_8108124:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_81081C0 // =byte_81081D8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r6, r0
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -167345,14 +167345,14 @@ sub_8108152:
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	mov r6, r0
 	mov r0, r4
 	ldr r1, off_81081C0 // =byte_81081D8
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
-	bl sub_800FE12
+	bl battle_aiGetVersionedTableEntry_800FE12
 	lsl r0, r0, #0x10
 	orr r0, r6
 	pop {r4,r6,pc}
@@ -170932,13 +170932,13 @@ ForMettaur_8109EF4:
 	.word sub_8109F4C+1
 	// 0x08 (0x02)
 	// disabling this causes game to freeze on mettaur getting hit
-	.word sub_8109F6A+1
+	.word battle_objectTickWithExtraHandler_8109F6A+1
 	// 0x0C (0x03)
 	.word sub_80166AE+1
 	// 0x10 (0x04)
 	.word sub_8109F7E+1
 	// 0x14 (0x05)
-	.word sub_8109FC4+1
+	.word battle_object_updatePhaseTick_8109FC4+1
 	// 0x18 (0x06)
 	.word sub_8109F8A+1
 	// 0x1C (0x07)
@@ -170986,7 +170986,7 @@ loc_8109F64:
 	thumb_func_end sub_8109F4C
 
 	thumb_local_start
-sub_8109F6A:
+battle_objectTickWithExtraHandler_8109F6A:
 	push {lr}
 
 	ldrb r0, [r5,#oBattleObject_CurPhase]
@@ -170998,7 +170998,7 @@ sub_8109F6A:
 loc_8109F78:
 	bl sub_80165C2
 	pop {pc}
-	thumb_func_end sub_8109F6A
+	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
 	thumb_local_start
 sub_8109F7E:
@@ -171045,7 +171045,7 @@ locret_8109FC2:
 	thumb_func_end sub_8109FA2
 
 	thumb_local_start
-sub_8109FC4:
+battle_object_updatePhaseTick_8109FC4:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -171055,7 +171055,7 @@ sub_8109FC4:
 loc_8109FD0:
 	bl sub_8016CE8
 	pop {pc}
-	thumb_func_end sub_8109FC4
+	thumb_func_end battle_object_updatePhaseTick_8109FC4
 
 	thumb_local_start
 sub_8109FD6:
@@ -171287,7 +171287,7 @@ loc_810A152:
 	bl sub_800F322
 	b loc_810A17A
 loc_810A162:
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810A1B0 // =0x12c
 	cmp r0, r1
 	blt loc_810A184
@@ -171949,7 +171949,7 @@ sub_810A6F4:
 	beq loc_810A720
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810A830 // =0x12c 
 	cmp r0, r1
 	blt loc_810A720
@@ -173645,7 +173645,7 @@ sub_810B54C:
 	beq loc_810B580
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810B770 // =0x12c 
 	cmp r0, r1
 	blt loc_810B580
@@ -174674,7 +174674,7 @@ sub_810BDC4:
 	beq loc_810BDF0
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, dword_810BEC8 // =0x12c
 	cmp r0, r1
 	blt loc_810BDF0
@@ -175189,7 +175189,7 @@ sub_810C282:
 	beq loc_810C2AE
 	lsl r4, r0, #0x17
 	lsr r4, r4, #0x17
-	bl sub_800A704
+	bl battle_getStateUnk40_800A704
 	ldr r1, off_810C34C // =0x12c 
 	cmp r0, r1
 	blt loc_810C2AE

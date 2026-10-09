@@ -1677,15 +1677,15 @@ loc_8144CA4:
 	.byte 0x95, 0x9, 0x0, 0x0, 0x94, 0x9, 0x0, 0x0, 0xFF, 0xEF, 0x0, 0x0
 	thumb_func_end sub_8144C90
 
-	thumb_func_start sub_8144CE0
-sub_8144CE0:
+	thumb_func_start timer_IsEnabled_8144CE0
+timer_IsEnabled_8144CE0:
 	ldr r0, off_8144CE8 // =eTimerEnable200F460 
 	ldrb r0, [r0,#0x1] // (byte_200F461 - 0x200f460)
 	bx lr
 	.balign 4, 0x00
 off_8144CE8:
 	.word eTimerEnable200F460
-	thumb_func_end sub_8144CE0
+	thumb_func_end timer_IsEnabled_8144CE0
 
 	thumb_local_start
 sub_8144CEC:
@@ -21504,8 +21504,8 @@ sub_814E190:
 	.byte 0, 0
 	thumb_func_end sub_814E190
 
-	thumb_func_start sub_814E1C0
-sub_814E1C0:
+	thumb_func_start battleObj_runUpdateAndSetActive_814E1C0
+battleObj_runUpdateAndSetActive_814E1C0:
 	mov r12, lr
 	bl sub_814E0D0
 	strb r3, [r1,#0x12]
@@ -21515,10 +21515,10 @@ sub_814E1C0:
 	strb r3, [r1]
 	bx r12
 	.balign 4, 0x00
-	thumb_func_end sub_814E1C0
+	thumb_func_end battleObj_runUpdateAndSetActive_814E1C0
 
-	thumb_func_start sub_814E1D4
-sub_814E1D4:
+	thumb_func_start sprite_moveYUp64AndMarkDirty_814E1D4
+sprite_moveYUp64AndMarkDirty_814E1D4:
 	mov r12, lr
 	bl sub_814E0D0
 	sub r3, #0x40 
@@ -21528,7 +21528,7 @@ sub_814E1D4:
 	orr r3, r2
 	strb r3, [r1]
 	bx r12
-	thumb_func_end sub_814E1D4
+	thumb_func_end sprite_moveYUp64AndMarkDirty_814E1D4
 
 	thumb_func_start sub_814E1E8
 sub_814E1E8:
@@ -21581,8 +21581,8 @@ loc_814E232:
 	bx r12
 	thumb_func_end sub_814E21C
 
-	thumb_func_start sub_814E234
-sub_814E234:
+	thumb_func_start chatbox_PrintBuffer_WriteNextGlyph_814E234
+chatbox_PrintBuffer_WriteNextGlyph_814E234:
 	mov r12, lr
 	bl sub_814E0D0
 	sub r3, #0x40 
@@ -21592,7 +21592,7 @@ sub_814E234:
 	orr r3, r2
 	strb r3, [r1]
 	bx r12
-	thumb_func_end sub_814E234
+	thumb_func_end chatbox_PrintBuffer_WriteNextGlyph_814E234
 
 	thumb_func_start sub_814E248
 sub_814E248:
@@ -22418,19 +22418,19 @@ loc_814E7B6:
 	thumb_func_end sub_814E7A4
 
 	thumb_local_start
-sub_814E7C0:
+streamReadNextByte_814E7C0:
 	ldr r2, [r1,#0x40]
 	add r3, r2, #1
 	str r3, [r1,#0x40]
 	ldrb r3, [r2]
 	bx lr
 	.balign 4, 0x00
-	thumb_func_end sub_814E7C0
+	thumb_func_end streamReadNextByte_814E7C0
 
 	thumb_func_start sub_814E7CC
 sub_814E7CC:
 	mov r12, lr
-	bl sub_814E7C0
+	bl streamReadNextByte_814E7C0
 	strb r3, [r1,#0x19]
 	cmp r3, #0
 	bne loc_814E7DC
@@ -22443,7 +22443,7 @@ loc_814E7DC:
 	thumb_func_start sub_814E7E0
 sub_814E7E0:
 	mov r12, lr
-	bl sub_814E7C0
+	bl streamReadNextByte_814E7C0
 	strb r3, [r1,#0x17]
 	cmp r3, #0
 	bne loc_814E7F0
@@ -22530,8 +22530,8 @@ dword_814E878:
 	.word 0x7FFFFFFF
 	thumb_func_end sub_814E85C
 
-	thumb_func_start sub_814E87C
-sub_814E87C:
+	thumb_func_start battle_smashFx_SetParams_814E87C
+battle_smashFx_SetParams_814E87C:
 	push {lr}
 	mov r2, r0
 	lsl r1, r1, #0x10
@@ -22551,7 +22551,7 @@ loc_814E896:
 	.balign 4, 0
 dword_814E89C:
 	.word 0x68736D53
-	thumb_func_end sub_814E87C
+	thumb_func_end battle_smashFx_SetParams_814E87C
 
 // symdb: m4aSoundInit: initialise the m4a sound engine and open the music players.
 // symdb: () -> SoundInit, CGB channel driver, SoundMode, then MPlayOpen for the 0x20 players of
@@ -22876,7 +22876,7 @@ sub_814EABC:
 	push {lr}
 	lsl r1, r1, #0x10
 	lsr r1, r1, #0x10
-	bl sub_814E87C
+	bl battle_smashFx_SetParams_814E87C
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
@@ -25705,25 +25705,25 @@ sub_814FE20:
 	.balign 4, 0x00
 	thumb_func_end sub_814FE20
 
-	thumb_func_start sub_814FE34
-sub_814FE34:
+	thumb_func_start text_ReadNextChar_814FE34
+text_ReadNextChar_814FE34:
 	ldr r0, [r1,#0x40]
 	ldrb r2, [r0]
 	strb r2, [r1,#0x1e]
 	add r0, #1
 	str r0, [r1,#0x40]
 	bx lr
-	thumb_func_end sub_814FE34
+	thumb_func_end text_ReadNextChar_814FE34
 
-	thumb_func_start sub_814FE40
-sub_814FE40:
+	thumb_func_start readNextStreamByte_814FE40
+readNextStreamByte_814FE40:
 	ldr r0, [r1,#0x40]
 	ldrb r2, [r0]
 	strb r2, [r1,#0x1f]
 	add r0, #1
 	str r0, [r1,#0x40]
 	bx lr
-	thumb_func_end sub_814FE40
+	thumb_func_end readNextStreamByte_814FE40
 
 	thumb_func_start sub_814FE4C
 sub_814FE4C:

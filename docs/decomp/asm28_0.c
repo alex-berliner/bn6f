@@ -365,10 +365,10 @@ int __fastcall sub_809A260(int a1, int a2, int a3)
     doPETEffect_8033fc0(1, a2, a3);
     copyMemory_8001850();
     gfxTransfer_8033978();
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_800399A();
-    sub_8003AEA();
+    scenario_ClearEffectActiveFlag_800399A();
+    event_ackNewFlagByte_8003AEA();
     return 0;
 }
 
@@ -554,10 +554,10 @@ int sub_809A4EC()
     doPETEffect_8033fc0(1, v0, v1);
     copyMemory_8001850();
     gfxTransfer_8033978();
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_800399A();
-    sub_8003AEA();
+    scenario_ClearEffectActiveFlag_800399A();
+    event_ackNewFlagByte_8003AEA();
     return 0;
 }
 
@@ -1001,10 +1001,10 @@ int __fastcall sub_809AA04(int a1, int a2, int a3, int a4)
     int v4; // r1
     int v5; // r2
 
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_800399A();
-    sub_8003AEA();
+    scenario_ClearEffectActiveFlag_800399A();
+    event_ackNewFlagByte_8003AEA();
     doPETEffect_8033fc0(1, v4, v5);
     return 0;
 }
@@ -1286,10 +1286,10 @@ int sub_809AD4C()
     ClearEventFlagFromImmediate(0, 245);
     ClearEventFlagFromImmediate(23, 37);
     doPETEffect_8033fc0(1, v0, v1);
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_800399A();
-    sub_8003AEA();
+    scenario_ClearEffectActiveFlag_800399A();
+    event_ackNewFlagByte_8003AEA();
     return 0;
 }
 
@@ -2219,7 +2219,7 @@ signed int sub_809CC00()
             return 1;
         }
     }
-    sub_803F4EC(v4);
+    setByte_200AD04_803F4EC(v4);
     *(v0 + 8) = v4;
     if ( v4 )
         chatbox_runScript(&eTextScript2033404, 34);
@@ -2305,10 +2305,10 @@ int sub_809CD34()
 int __fastcall sub_809CD44(int a1, int a2, int a3)
 {
     doPETEffect_8033fc0(1, a2, a3);
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_800399A();
-    sub_8003AEA();
+    scenario_ClearEffectActiveFlag_800399A();
+    event_ackNewFlagByte_8003AEA();
     return 0;
 }
 
@@ -2329,7 +2329,7 @@ signed int sub_809CD60()
         sub_803F560();
         if ( v5 || (v4 = 0, !word_200AD04[1]) )
         {
-            sub_803F4EC(v4);
+            setByte_200AD04_803F4EC(v4);
             *(v0 + 8) = v4;
             ClearEventFlagFromImmediate(1, 99);
             chatbox_runScript(&eTextScript2033404, 49);
@@ -2629,7 +2629,7 @@ unsigned int sub_809D348()
     if ( !*(v0 + 22) )
         v5 = sub_8035694((v0 + 28));
     sprite_setPriority_8002E14(v5);
-    if ( sub_809DFA0() && !s_2011C50_ptr_1C_isNull() )
+    if ( owPlayer_isMoving_809DFA0() && !s_2011C50_ptr_1C_isNull() )
     {
         v6 = *(v0 + 19);
         v7 = tk->unk_2001C04;
@@ -2672,10 +2672,10 @@ int sub_809D470()
         v0[20] = v0[16];
         v0[10] = 4;
     }
-    sub_809DB50();
+    event_TestPlayerAdvanceForward_809DB50();
     if ( !v2 )
         return sub_809E004(20);
-    if ( sub_809DAF8() )
+    if ( overworldObj_testStateBit10_809DAF8() )
         return sub_809E004(4);
     if ( sub_809DB02() )
         return sub_809E004(8);
@@ -2774,7 +2774,7 @@ int sub_809D5C4()
     int v6; // r1
     int v7; // r2
 
-    if ( sub_809DDCC() )
+    if ( owPlayer_TickCountdownOrWait_809DDCC() )
     {
         checkZCoordModifiers_8031612(v0 + 28);
         v1 = 0;
@@ -2833,13 +2833,13 @@ LABEL_8:
     }
     if ( sub_809DED4() )
         return sub_809E004(12);
-    sub_809DB50();
+    event_TestPlayerAdvanceForward_809DB50();
     if ( !v2 )
     {
         sub_809E004(20);
         return sub_809DE30();
     }
-    if ( sub_809DAF8() )
+    if ( overworldObj_testStateBit10_809DAF8() )
     {
         sub_809E004(4);
     }
@@ -2895,7 +2895,7 @@ signed int sub_809D730()
     int v2; // r1
     int v3; // r2
 
-    if ( sub_809DDCC() )
+    if ( owPlayer_TickCountdownOrWait_809DDCC() )
     {
         *(v0 + 28) += *(v0 + 56);
         *(v0 + 32) += *(v0 + 60);
@@ -3245,7 +3245,7 @@ LABEL_15:
 
 
 // 0x809daf8
-int sub_809DAF8()
+int overworldObj_testStateBit10_809DAF8()
 {
     int v0; // r5
 
@@ -3286,7 +3286,7 @@ int sub_809DB02()
 
 
 // 0x809db50
-int sub_809DB50()
+int event_TestPlayerAdvanceForward_809DB50()
 {
     int result; // r0
     char v1; // zf
@@ -3343,7 +3343,7 @@ int __fastcall sub_809DBC4(_DWORD *a1, _DWORD *a2)
 
 
 // 0x809ddcc
-signed int sub_809DDCC()
+signed int owPlayer_TickCountdownOrWait_809DDCC()
 {
     int v0; // r5
     signed int result; // r0
@@ -3529,7 +3529,7 @@ int __fastcall sub_809DF44(int a1, int a2)
 
 
 // 0x809dfa0
-signed int sub_809DFA0()
+signed int owPlayer_isMoving_809DFA0()
 {
     _DWORD *v0; // r5
     signed int result; // r0
@@ -3549,7 +3549,7 @@ int sub_809DFC0()
     int result; // r0
 
     v1 = *(v0 + 9);
-    if ( v1 != 4 && v1 != 8 || sub_809DFA0() )
+    if ( v1 != 4 && v1 != 8 || owPlayer_isMoving_809DFA0() )
     {
         result = 0;
         *(v0 + 86) = 0;
@@ -3608,7 +3608,7 @@ signed int sub_809E01C()
 
 
 // 0x809e04c
-void sub_809E04C()
+void owPlayer_ClearStateBytes_D_E_F_809E04C()
 {
     eOWPlayerObject[13] = 0;
     eOWPlayerObject[14] = 0;
@@ -4167,7 +4167,7 @@ int sub_809E3AA()
 
 
 // 0x809e3b2
-int sub_809E3B2()
+int resetStruct2000aa0State_809E3B2()
 {
     int result; // r0
 

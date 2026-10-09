@@ -47,7 +47,7 @@ PlayMusic: // (song: u8) -> ()
 	strb r0, [r7,#oGameState_BGMusicIndicator]
 	cmp r0, #0x63
 	bne loc_80005EC
-	bl sound_8000630
+	bl sound_dispatchTask_8000630
 	b locret_80005F0
 loc_80005EC:
 	bl m4a_800061E // () -> void
@@ -67,7 +67,7 @@ music_80005F2: // (bg_music_indicator: u8) -> ()
 	cmp r0, #0x63
 	bne loc_8000604
 
-	bl sound_8000630
+	bl sound_dispatchTask_8000630
 
 	b locret_8000608
 loc_8000604:
@@ -104,7 +104,7 @@ m4a_800061E:
 	thumb_func_end m4a_800061E
 
 	thumb_local_start
-sound_8000630:
+sound_dispatchTask_8000630:
 	push {lr}
 	mov r1, r10
 	push {r1}
@@ -113,10 +113,10 @@ sound_8000630:
 	pop {r1}
 	mov r10, r1
 	pop {pc}
-	thumb_func_end sound_8000630
+	thumb_func_end sound_dispatchTask_8000630
 
-	thumb_func_start sound_8000642
-sound_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
+	thumb_func_start sound_dispatchSoundRequest_8000642
+sound_dispatchSoundRequest_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
 	push {r4-r7,lr}
 
 	lsl r0, r0, #2
@@ -130,7 +130,7 @@ sound_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
 	pop {r3}
 	mov r10, r3
 	pop {r4-r7,pc}
-	thumb_func_end sound_8000642
+	thumb_func_end sound_dispatchSoundRequest_8000642
 
 	thumb_func_start sound_800065A
 sound_800065A:
@@ -162,20 +162,20 @@ sound_8000672:
 	pop {r4-r7,pc}
 	thumb_func_end sound_8000672
 
-	thumb_func_start sound_800068A
-sound_800068A:
+	thumb_func_start sound_dispatchCueHandler_800068A
+sound_dispatchCueHandler_800068A:
 	push {r4-r7,lr}
 	ldr r7, off_8000700 // =off_8000704
 	lsl r0, r0, #2
 	ldr r0, [r7,r0]
 	mov r2, r10
 	push {r2}
-	ldr r3, off_8000880 // =sub_814E87C+1
+	ldr r3, off_8000880 // =battle_smashFx_SetParams_814E87C+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r2}
 	mov r10, r2
 	pop {r4-r7,pc}
-	thumb_func_end sound_800068A
+	thumb_func_end sound_dispatchCueHandler_800068A
 
 	thumb_func_start sound_80006A2
 sound_80006A2:
@@ -480,7 +480,7 @@ off_8000878:
 off_800087C:
 	.word sub_814F988+1
 off_8000880:
-	.word sub_814E87C+1
+	.word battle_smashFx_SetParams_814E87C+1
 off_8000884:
 	.word m4a_SongNumStart+1 // (idx: u16) -> ()
 off_8000888:
@@ -1224,9 +1224,9 @@ dword_8000C58:
 	.word 0x99999999
 	thumb_func_end memory_bcdConvert
 
-	thumb_func_start sub_8000C5C
+	thumb_func_start countHexDigits_8000C5C
 // get num bcd digits?
-sub_8000C5C:
+countHexDigits_8000C5C:
 	mov r1, #1
 
   // 0 if (a0)
@@ -1253,7 +1253,7 @@ loc_8000C64:
 loc_8000C6E:
 	mov r0, r1
 	mov pc, lr
-	thumb_func_end sub_8000C5C
+	thumb_func_end countHexDigits_8000C5C
 
 // FILE segment shifts to RNG here
 
@@ -1521,14 +1521,14 @@ sub_8000E28:
 	mov pc, lr
 	thumb_func_end sub_8000E28
 
-	thumb_func_start sub_8000E30
-sub_8000E30:
+	thumb_func_start stub_returnZero_8000E30
+stub_returnZero_8000E30:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r0, r4
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8000E30
+	thumb_func_end stub_returnZero_8000E30
 
 	thumb_func_start sub_8000E3A
 sub_8000E3A:
@@ -2362,15 +2362,15 @@ math_getThrowSpeeds:
 	pop {r4-r6,pc}
 	thumb_func_end math_getThrowSpeeds
 
-	thumb_func_start sub_8001382
-sub_8001382:
+	thumb_func_start battle_orStateFlags5c_8001382
+battle_orStateFlags5c_8001382:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldr r2, [r1,#oBattleState_Unk_5c]
 	orr r2, r0
 	str r2, [r1,#oBattleState_Unk_5c]
 	mov pc, lr
-	thumb_func_end sub_8001382
+	thumb_func_end battle_orStateFlags5c_8001382
 
 	thumb_local_start
 sub_800138E:
@@ -2382,21 +2382,21 @@ sub_800138E:
 	mov pc, lr
 	thumb_func_end sub_800138E
 
-	thumb_func_start sub_800139A
-sub_800139A:
+	thumb_func_start battle_getStateUnk5c_800139A
+battle_getStateUnk5c_800139A:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldr r0, [r0,#oBattleState_Unk_5c]
 	mov pc, lr
-	thumb_func_end sub_800139A
+	thumb_func_end battle_getStateUnk5c_800139A
 
-	thumb_func_start sub_80013A2
-sub_80013A2:
+	thumb_func_start battle_SetStateUnk5c_80013A2
+battle_SetStateUnk5c_80013A2:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	str r0, [r1,#oBattleState_Unk_5c]
 	mov pc, lr
-	thumb_func_end sub_80013A2
+	thumb_func_end battle_SetStateUnk5c_80013A2
 
 	thumb_local_start
 sub_80013AA:
@@ -3055,8 +3055,8 @@ off_8001878:
 	.word unk_3001B40
 	thumb_func_end copyMemory_8001850
 
-	thumb_func_start sub_800187C
-sub_800187C:
+	thumb_func_start bgmap_WriteTileIdAtBlock_800187C
+bgmap_WriteTileIdAtBlock_800187C:
 	lsl r0, r0, #1
 	lsl r1, r1, #6
 	lsl r2, r2, #0xb
@@ -3067,7 +3067,7 @@ sub_800187C:
 	add r1, r1, r0
 	strh r3, [r1]
 	mov pc, lr
-	thumb_func_end sub_800187C
+	thumb_func_end bgmap_WriteTileIdAtBlock_800187C
 
 	thumb_func_start sub_8001890
 sub_8001890:
@@ -3418,7 +3418,7 @@ BGScrollCB_BG3FastLeftScroll:
 	thumb_local_start
 BGScrollCB_BG1AccelToVeryFastDownScroll:
 	push {lr}
-	bl sub_800139A
+	bl battle_getStateUnk5c_800139A
 	mov r1, #0x10
 	tst r0, r1
 	beq locret_8001AAC
@@ -3670,7 +3670,7 @@ byte_8001C08:
 	.word 0x8
 off_8001C24:
    // 0x0 copy palette
-	.word sub_8001C44+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+	.word sprite_QueueAnimFrameGfxUpload_8001C44+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x4 copy 0x20 sized tiles
 	.word sub_8001C94+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x8 ???
@@ -3688,14 +3688,14 @@ off_8001C40:
 	thumb_func_end ProcessGFXAnims
 
 	thumb_local_start
-sub_8001C44: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+sprite_QueueAnimFrameGfxUpload_8001C44: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
 	ldr r0, [r0,#oGFXAnimData_ParamNext - oGFXAnimData_ParamNext]
 	ldr r1, [r7,#oGFXAnimState_Param0]
 	ldr r2, [r7,#oGFXAnimState_Param1]
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {pc}
-	thumb_func_end sub_8001C44
+	thumb_func_end sprite_QueueAnimFrameGfxUpload_8001C44
 
 	thumb_local_start
 sub_8001C52: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
@@ -4771,8 +4771,8 @@ Terminate_ePalette20097a0_Transform:
 	mov pc, lr
 	thumb_func_end Terminate_ePalette20097a0_Transform
 
-	thumb_func_start sub_80023A8
-sub_80023A8:
+	thumb_func_start palette_clearEPalette20097a0_80023A8
+palette_clearEPalette20097a0_80023A8:
 	push {lr}
 	// memBlock
 	ldr r0, off_8002464 // =ePalette20097a0
@@ -4783,7 +4783,7 @@ sub_80023A8:
 	.balign 4, 0
 off_80023B4:
 	.word 0xd8
-	thumb_func_end sub_80023A8
+	thumb_func_end palette_clearEPalette20097a0_80023A8
 
 	thumb_local_start
 sub_80023B8:
@@ -4936,8 +4936,8 @@ zeroFill_80024A2:
 	pop {r4-r7,pc}
 	thumb_func_end zeroFill_80024A2
 
-	thumb_func_start sub_80024AE
-sub_80024AE:
+	thumb_func_start event_runArmedCallback_80024AE
+event_runArmedCallback_80024AE:
 	push {r4-r7,lr}
 	ldr r5, off_80024C8 // =eStruct200a6a0
 	ldrb r0, [r5]
@@ -4948,7 +4948,7 @@ sub_80024AE:
 	bx r0
 locret_80024BE:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80024AE
+	thumb_func_end event_runArmedCallback_80024AE
 
 	thumb_func_start Is_eStruct200a6a0_Initialized
 Is_eStruct200a6a0_Initialized:

@@ -48,7 +48,7 @@ sub_8038630:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl initGfx_80386CC
 	mov r0, #0x63
@@ -339,7 +339,7 @@ sub_8038B04:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl decomp_initGfx_8038F30 // () -> void
 	bl sub_8038F74
@@ -2442,7 +2442,7 @@ sub_8039E80:
 	bl chatbox_8040818
 	bl copyMemory_8001850
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl RandomizeExtraToolkitPointers // () -> ?
 	mov r0, #0
@@ -8063,7 +8063,7 @@ sub_803CBD0:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl copyData_803CC60
 	mov r0, #0x63
@@ -8227,7 +8227,7 @@ sub_803CCFC:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl sub_803CD58
 	mov r0, #0x63
@@ -8293,10 +8293,10 @@ sub_803CD74:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0x75
 	mov r1, #4
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	mov r0, #0
 	mov r1, #1
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803CD94:
@@ -8307,7 +8307,7 @@ off_803CD94:
 GiveItem:
 	push {r4-r7,lr}
 	push {r0,r1}
-	bl encryption_8006e3c
+	bl encryption_copyByteXor6fToToolkitBuffer_8006e3c
 	pop {r0,r1}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_KeyItemsPtr]
@@ -8356,8 +8356,8 @@ loc_803CDE4:
 	pop {r4-r7,pc}
 	thumb_func_end GiveItem
 
-	thumb_func_start sub_803CDF8
-sub_803CDF8:
+	thumb_func_start keyItems_RemoveFromInventoryAndGive_803CDF8
+keyItems_RemoveFromInventoryAndGive_803CDF8:
 	push {lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_KeyItemsPtr]
@@ -8365,7 +8365,7 @@ sub_803CDF8:
 	strb r3, [r2,r0]
 	bl GiveItem
 	pop {pc}
-	thumb_func_end sub_803CDF8
+	thumb_func_end keyItems_RemoveFromInventoryAndGive_803CDF8
 
 	thumb_func_start TakeItem
 TakeItem:
@@ -8813,7 +8813,7 @@ sub_803D118:
 	mov r4, r2
 	bl sub_803D148
 	mov r1, r4
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	pop {r4,pc}
 	thumb_func_end sub_803D118
 
@@ -8998,7 +8998,7 @@ loc_803D212:
 
 	bl sub_8005F40
 
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 
 	bl sub_80027C4
 
@@ -9645,7 +9645,7 @@ sub_803DEB4:
 	bl sub_8144250
 	str r0, [r7,#0x48] // (dword_2009A18 - 0x20099d0)
 	push {r0}
-	bl sub_8144CE0
+	bl timer_IsEnabled_8144CE0
 	cmp r0, #5
 	pop {r0}
 	bne loc_803DED6
@@ -9654,7 +9654,7 @@ sub_803DEB4:
 loc_803DED6:
 	sub sp, sp, #0x10
 	str r0, [sp]
-	bl sub_8144CE0
+	bl timer_IsEnabled_8144CE0
 	cmp r0, #1
 	bne loc_803DEFE
 	movflag EVENT_172F
@@ -11157,13 +11157,13 @@ init_eStartScreenAnimationControl200B1A0_2:
 	.balign 4, 0x00
 	thumb_func_end init_eStartScreenAnimationControl200B1A0_2
 
-	thumb_func_start sub_803E928
-sub_803E928:
+	thumb_func_start startScreen_IsTitleAnimationFinished_803E928
+startScreen_IsTitleAnimationFinished_803E928:
 	ldr r0, off_803E960 // =eStartScreenAnimationControl200B1A0
 	ldrb r0, [r0]
 	cmp r0, #2
 	mov pc, lr
-	thumb_func_end sub_803E928
+	thumb_func_end startScreen_IsTitleAnimationFinished_803E928
 
 	thumb_func_start startScreen_TstZero
 startScreen_TstZero: // () -> !zf
@@ -11204,7 +11204,7 @@ startScreen_AnimatePressStart_803E938:
 	b .ret
 .blinkingState803E958
   // no change noticed on disable
-	bl sub_803EA1C
+	bl runPendingWorkIfFlagged_803EA1C
 .ret:
 	pop {r4,pc}
 	.balign 4, 0
@@ -11283,7 +11283,7 @@ loc_803E9E4:
 	mov r6, #0
 loc_803E9E6:
 	mov r0, r4
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 	tst r4, r4
 	beq loc_803EA0A
 	movflag EVENT_1E3
@@ -11306,7 +11306,7 @@ off_803EA18:
 	thumb_func_end startScreen_AnimatePressStart_803E978
 
 	thumb_local_start
-sub_803EA1C:
+runPendingWorkIfFlagged_803EA1C:
 	push {r4-r7,lr}
 	bl notZero_eByte200AD04
 	beq locret_803EA28
@@ -11314,10 +11314,10 @@ sub_803EA1C:
 locret_803EA28:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803EA1C
+	thumb_func_end runPendingWorkIfFlagged_803EA1C
 
-	thumb_func_start sub_803EA2C
-sub_803EA2C:
+	thumb_func_start net_isLinkConnected_803EA2C
+net_isLinkConnected_803EA2C:
 	push {lr}
 	mov r0, #0
 	ldr r1, off_803EA3C // =eLinkState
@@ -11330,7 +11330,7 @@ locret_803EA3A:
 	.balign 4, 0
 off_803EA3C:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803EA2C
+	thumb_func_end net_isLinkConnected_803EA2C
 
 	thumb_local_start
 sub_803EA40:
@@ -11560,8 +11560,8 @@ locret_803EBAA:
 	pop {r4,pc}
 	thumb_func_end sub_803EB60
 
-	thumb_func_start sub_803EBAC
-sub_803EBAC:
+	thumb_func_start clearStruct200BC30_803EBAC
+clearStruct200BC30_803EBAC:
 	push {lr}
 	// memBlock
 	ldr r0, off_803EBF8 // =eStruct200BC30
@@ -11569,7 +11569,7 @@ sub_803EBAC:
 	mov r1, #0x20
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
-	thumb_func_end sub_803EBAC
+	thumb_func_end clearStruct200BC30_803EBAC
 
 	thumb_func_start sub_803EBB8
 sub_803EBB8:
@@ -12949,13 +12949,13 @@ loc_803F4E8:
 	pop {pc}
 	thumb_func_end sub_803F4D4
 
-	thumb_func_start sub_803F4EC
-sub_803F4EC:
+	thumb_func_start setByte_200AD04_803F4EC
+setByte_200AD04_803F4EC:
 	push {lr}
 	ldr r1, off_803F55C // =word_200AD04
 	strb r0, [r1]
 	pop {pc}
-	thumb_func_end sub_803F4EC
+	thumb_func_end setByte_200AD04_803F4EC
 
 	thumb_local_start
 sub_803F4F4:
@@ -13025,7 +13025,7 @@ sub_803F530:
 	mov r6, #0
 loc_803F552:
 	mov r0, r4
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 loc_803F558:
 	tst r6, r6
 	pop {r4,r6,pc}
@@ -13238,7 +13238,7 @@ sub_803F6B0:
 	ldr r0, off_803F73C // =eStruct200F360
 	mov r1, #0x20
 	bl ZeroFillByHalfword
-	bl start_8000288
+	bl crt0_entry_trampoline_8000288
 	mov r0, #0
 	bl sub_803DE88
 	bl sub_803DEAC
@@ -13362,13 +13362,13 @@ loc_803F7A2:
 	ldrb r0, [r7,#oOWPlayerObject_FacingDirection]
 	str r0, [r6,#oGameState_FacingDirectionAfterWarp]
 loc_803F7C2:
-	bl encryption_8006e26
-	bl sub_803F8B2
-	bl sub_803F894
+	bl rollRngSeedIntoExtraToolkitPtrs_8006e26
+	bl info_copyTimestampToWorkArea_803F8B2
+	bl s2001c04_ComputeChecksumOfEwramRegion_803F894
 	bl sub_803FB04
 	ldr r0, off_803F888 // =timer_2000000
 	ldr r1, dword_803F890 // =0x6710
-	bl encryption_8006df6
+	bl encryption_xorBufferWithKey_8006df6
 	mov r7, #0
 loc_803F7DC:
 	ldr r0, off_803F888 // =timer_2000000
@@ -13405,7 +13405,7 @@ loc_803F814:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_S2001c04_Ptr]
 	ldr r4, [r4,#0x68]
-	bl sub_803F894
+	bl s2001c04_ComputeChecksumOfEwramRegion_803F894
 	cmp r0, r4
 	bne loc_803F7C2
 	movflag EVENT_1704
@@ -13433,7 +13433,7 @@ sub_803F838: // () -> !zf
 	bl SetExtraToolkitPointers
 	bl sub_803F8C4
 	bne loc_803F870
-	bl sub_803F8F4
+	bl infoText_IsTimestampUnchanged_803F8F4
 	bne loc_803F870
 	mov r4, #FALSE
 	movflag EVENT_1704
@@ -13459,7 +13459,7 @@ dword_803F890:
 	thumb_func_end sub_803F838
 
 	thumb_local_start
-sub_803F894:
+s2001c04_ComputeChecksumOfEwramRegion_803F894:
 	push {r1-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_S2001c04_Ptr]
@@ -13476,10 +13476,10 @@ loc_803F8A4:
 	add r0, #0x18
 	str r0, [r7,#0x68]
 	pop {r1-r7,pc}
-	thumb_func_end sub_803F894
+	thumb_func_end s2001c04_ComputeChecksumOfEwramRegion_803F894
 
 	thumb_local_start
-sub_803F8B2:
+info_copyTimestampToWorkArea_803F8B2:
 	push {lr}
 	ldr r0, off_803F914 // =EXE6_InfoText_timestamp
 	mov r1, r10
@@ -13488,7 +13488,7 @@ sub_803F8B2:
 	mov r2, #0x14
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	pop {pc}
-	thumb_func_end sub_803F8B2
+	thumb_func_end info_copyTimestampToWorkArea_803F8B2
 
 	thumb_local_start
 sub_803F8C4:
@@ -13522,7 +13522,7 @@ dword_803F8F0:
 	thumb_func_end sub_803F8C4
 
 	thumb_local_start
-sub_803F8F4:
+infoText_IsTimestampUnchanged_803F8F4:
 	push {r1-r7,lr}
 	ldr r0, off_803F914 // =EXE6_InfoText_timestamp
 	mov r1, r10
@@ -13544,7 +13544,7 @@ loc_803F910:
 	.balign 4, 0
 off_803F914:
 	.word EXE6_InfoText_timestamp
-	thumb_func_end sub_803F8F4
+	thumb_func_end infoText_IsTimestampUnchanged_803F8F4
 
 	thumb_local_start
 sub_803F918:
@@ -13767,7 +13767,7 @@ sub_803FAB4:
 	mov r7, #0
 	mov r6, #0
 loc_803FABA:
-	bl sub_803FAEE
+	bl rng_FillSeedBuffer_803FAEE
 	ldr r0, off_803FB1C // =dword_20067C0
 	ldr r1, dword_803FB20 // =0xe007f80
 	ldr r2, off_803FB24 // =0x80
@@ -13795,7 +13795,7 @@ loc_803FAEA:
 	thumb_func_end sub_803FAB4
 
 	thumb_local_start
-sub_803FAEE:
+rng_FillSeedBuffer_803FAEE:
 	push {r4-r7,lr}
 	mov r7, #0
 	ldr r6, off_803FB24 // =0x80
@@ -13807,7 +13807,7 @@ loc_803FAF6:
 	cmp r7, r6
 	blt loc_803FAF6
 	pop {r4-r7,pc}
-	thumb_func_end sub_803FAEE
+	thumb_func_end rng_FillSeedBuffer_803FAEE
 
 	thumb_local_start
 sub_803FB04:
@@ -14038,7 +14038,7 @@ byte_803FC50:
 copyTileData_803FC64:
 	push {r5,lr}
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	// initRefs
 	ldr r0, off_803FCA0 // =initRefs803FCA4

@@ -330,7 +330,7 @@ loc_80004C0:
 	bl zeroFill_80007B2
 	bl SetDummyBGScrollCallbacks
 	bl zeroFill_80024A2
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 	bl sub_80015B4
 	bl copy_800260C

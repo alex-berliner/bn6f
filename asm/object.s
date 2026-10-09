@@ -3,7 +3,7 @@
 sub_800B884:
 	push {lr}
 	push {r1}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	pop {r1}
 	strb r1, [r0,#1]
 	pop {pc}
@@ -12,40 +12,40 @@ sub_800B884:
 	thumb_local_start
 sub_800B892:
 	push {lr}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r0, [r0,#1]
 	pop {pc}
 	thumb_func_end sub_800B892
 
 	thumb_local_start
-sub_800B89C:
+battle_resetObjAnimState_800B89C:
 	push {lr}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	mov r1, #0
 	strb r1, [r0,#1]
 	mov r1, #0
 	str r1, [r0,#8]
 	pop {pc}
-	thumb_func_end sub_800B89C
+	thumb_func_end battle_resetObjAnimState_800B89C
 
 	thumb_local_start
-sub_800B8AC:
+writeByteToWorkSlots0And1_800B8AC:
 	push {r4,lr}
 	mov r4, r0
 	mov r0, #0
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0]
 	mov r0, #1
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0]
 	pop {r4,pc}
-	thumb_func_end sub_800B8AC
+	thumb_func_end writeByteToWorkSlots0And1_800B8AC
 
 	thumb_local_start
 sub_800B8C2:
 	push {lr}
 	push {r0}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r1, [r0]
 	pop {r2}
 	mov r0, #0
@@ -60,7 +60,7 @@ locret_800B8D6:
 sub_800B8D8:
 	push {lr}
 	push {r0}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r1, [r0,#3]
 	pop {r2}
 	mov r0, #0
@@ -201,7 +201,7 @@ object_drawChipName:
 loc_800B9D4:
 	mov r0, #1
 	lsl r0, r0, #0x10
-	bl sub_801BED6
+	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -262,7 +262,7 @@ loc_800BA56:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r1, [r0,#2]
 	tst r1, r1
 	bne loc_800BA7E
@@ -310,7 +310,7 @@ sub_800BA8A:
 	b locret_800BB9E
 loc_800BAB8:
 	ldr r0, dword_800BBA0 // =0x10000
-	bl sub_801BED6
+	bl flags_clearBits_eStruct2035280_801BED6
 	ldr r0, dword_800BBA0 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
@@ -379,7 +379,7 @@ loc_800BB46:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r1, [r0,#0xc]
 	ldrh r2, [r1,#0x24]
 	tst r2, r2
@@ -403,7 +403,7 @@ loc_800BB72:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	cmp r0, #0xba
 	beq loc_800BB94
 loc_800BB88:
@@ -448,7 +448,7 @@ sub_800BBA8:
 	b locret_800BC86
 loc_800BBCC:
 	ldr r0, dword_800BF74 // =0x10000
-	bl sub_801BED6
+	bl flags_clearBits_eStruct2035280_801BED6
 	ldr r0, dword_800BF74 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
@@ -518,7 +518,7 @@ loc_800BC5A:
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r1, [r0,#0xc]
 	ldrh r2, [r1,#0x24]
 	tst r2, r2
@@ -668,7 +668,7 @@ loc_800BD5E:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r1, [r0,#8]
 	tst r1, r1
 	beq loc_800BD80
@@ -682,7 +682,7 @@ loc_800BD80:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B89C
+	bl battle_resetObjAnimState_800B89C
 	mov r0, #4
 	bl battle_clearFlags
 loc_800BD94:
@@ -690,9 +690,9 @@ loc_800BD94:
 	mov r1, #0
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B89C
+	bl battle_resetObjAnimState_800B89C
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	mov r2, #0
 	str r2, [r0,#0xc]
 	bl object_freeMemory
@@ -727,7 +727,7 @@ sub_800BDD0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	cmp r0, #0xba
 	beq loc_800BDF4
 loc_800BDE8:
@@ -810,17 +810,17 @@ loc_800BE6C:
 	tst r0, r0
 	bne locret_800BED8
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B89C
+	bl battle_resetObjAnimState_800B89C
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
 	strb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B8AC
+	bl writeByteToWorkSlots0And1_800B8AC
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
 	bl sub_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r3, [r0,#8]
 	tst r3, r3
 	beq loc_800BEA2
@@ -832,14 +832,14 @@ loc_800BEA2:
 	push {r4}
 	ldrb r4, [r5,#oBattleObject_Alliance]
 	mov r0, #0
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0,#3]
 	mov r0, #1
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0,#3]
 	pop {r4}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	mov r0, r3
 	beq loc_800BEC8
 	ldrh r1, [r0,#0x12]
@@ -861,7 +861,7 @@ locret_800BED8:
 sub_800BEDA:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r2, [r0,#0xc]
 	tst r2, r2
 	beq loc_800BEEC
@@ -878,7 +878,7 @@ loc_800BEF8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r2, [r0,#2]
 	tst r2, r2
 	bne loc_800BF12
@@ -898,10 +898,10 @@ sub_800BF16:
 	push {r0-r2}
 	mov r4, r0
 	mov r0, #0
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0,#3]
 	mov r0, #1
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	strb r4, [r0,#3]
 	pop {r0-r2}
 	b loc_800BF32
@@ -909,10 +909,10 @@ loc_800BF30:
 	push {r4,lr}
 loc_800BF32:
 	push {r0-r2}
-	bl sub_800B8AC
+	bl writeByteToWorkSlots0And1_800B8AC
 	pop {r0-r2}
 	push {r1,r2}
-	bl sub_800BF5C
+	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r3, [r0,#8]
 	tst r3, r3
 	pop {r1,r2}
@@ -930,14 +930,14 @@ loc_800BF50:
 	pop {r4,pc}
 	thumb_func_end sub_800BF16
 
-	thumb_func_start sub_800BF5C
-sub_800BF5C:
+	thumb_func_start byte_203CF00_getEntryPtr_800BF5C
+byte_203CF00_getEntryPtr_800BF5C:
 	mov r1, #0x50 
 	mul r0, r1
 	ldr r1, off_800BF80 // =byte_203CF00 
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_800BF5C
+	thumb_func_end byte_203CF00_getEntryPtr_800BF5C
 
 	thumb_func_start zeroFill_800BF66
 zeroFill_800BF66:
@@ -1572,7 +1572,7 @@ sub_800C4BC:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp,#4]
-	bl sub_800C6D6
+	bl getTable12Record_800D730_800C6D6
 	str r0, [sp]
 	mov r0, #0
 	bl sub_800C8C2
@@ -1610,7 +1610,7 @@ loc_800C504:
 loc_800C506:
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C6E0
+	bl battle_getPanelDataPtr_800C6E0
 	mov r7, r0
 	mov r0, #8
 	mul r0, r5
@@ -1814,16 +1814,16 @@ loc_800C6CE:
 	thumb_func_end sub_800C67C
 
 	thumb_local_start
-sub_800C6D6:
+getTable12Record_800D730_800C6D6:
 	mov r1, #0xc
 	mul r0, r1
 	ldr r1, off_800C8D4 // =byte_800D730 
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_800C6D6
+	thumb_func_end getTable12Record_800D730_800C6D6
 
 	thumb_local_start
-sub_800C6E0:
+battle_getPanelDataPtr_800C6E0:
 	mov r2, #8
 	mul r1, r2
 	add r0, r0, r1
@@ -1832,7 +1832,7 @@ sub_800C6E0:
 	ldr r1, off_800C8D8 // =ePanelData
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_800C6E0
+	thumb_func_end battle_getPanelDataPtr_800C6E0
 
 	thumb_local_start
 sub_800C6F0:
@@ -2014,7 +2014,7 @@ loc_800C828:
 	bcc loc_800C842
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C6E0
+	bl battle_getPanelDataPtr_800C6E0
 	strb r6, [r0,#3]
 	mov r1, #0x5a 
 	strb r1, [r0,#0x10]
@@ -2080,7 +2080,7 @@ loc_800C896:
 loc_800C898:
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C6E0
+	bl battle_getPanelDataPtr_800C6E0
 	mov r7, r0
 	mov r0, r4
 	bl sub_800C8C2
@@ -4701,7 +4701,7 @@ sub_800E2FC:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	mov r7, r0
 	cmp r0, #0xbd
 	beq loc_800E330
@@ -4750,7 +4750,7 @@ sub_800E360:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CE78
+	bl getTable2036720EntryFields_802CE78
 	mov r7, r0
 	cmp r0, #0xbd
 	beq loc_800E38E
@@ -6057,7 +6057,7 @@ locret_800EC7E:
 sub_800EC80: // (enemy_idx: u16) -> u16
 	push {r4,r5,r7,lr}
 	push {r0}
-	bl sub_8000E30
+	bl stub_returnZero_8000E30
 	mov r7, r0
 
 	bl sub_8014150

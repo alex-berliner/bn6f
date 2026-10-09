@@ -1117,7 +1117,7 @@ int sub_812CDF4()
     {
         v3 = eStruct200BC30_getJumpOffset00();
         v4 = sub_803EA50();
-        sub_803EBAC(v4, v5, v6, v7);
+        clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
         *(v0 + 12) = 12;
@@ -1160,7 +1160,7 @@ int sub_812CE50()
 LABEL_8:
         v3 = eStruct200BC30_getJumpOffset00();
         v4 = sub_803EA50();
-        sub_803EBAC(v4, v5, v6, v7);
+        clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
         *(v0 + 12) = 8;
@@ -1638,7 +1638,7 @@ void sub_812D310()
 {
     sub_812AF3C();
     loadDecompressedAsset_812AF78();
-    sub_812AF84();
+    textScript_loadAndRunEmbeddedArchive_812AF84();
     decompAndCopyData(byte_812D32C);
 }
 

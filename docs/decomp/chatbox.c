@@ -1401,7 +1401,7 @@ signed int chatbox_8041090()
 
 
 // 0x80410f8
-signed int chatbox_80410F8()
+signed int chatbox_closeAndReset_80410F8()
 {
     int v0; // r5
 
@@ -1507,7 +1507,7 @@ unsigned int chatbox_8041200()
 
 
 // 0x8041218
-unsigned int chatbox_8041218()
+unsigned int chatbox_cmdSetEventFlag_8041218()
 {
     int v0; // r4
     int v1; // r5
@@ -2500,7 +2500,7 @@ signed int __fastcall chatbox_F4_unk(int a1, int a2, int a3, int a4)
             return 1;
         case 2u:
             PlaySoundEffect(115, v7, a3);
-            sub_803CDF8(v4[2], v4[3]);
+            keyItems_RemoveFromInventoryAndGive_803CDF8(v4[2], v4[3]);
             result = 1;
             break;
         default:
@@ -2980,7 +2980,7 @@ signed int chatbox_8042328()
     int v0; // r4
     int v1; // r10
 
-    sound_800068A(*(v0 + 2), *(v0 + 3));
+    sound_dispatchCueHandler_800068A(*(v0 + 2), *(v0 + 3));
     *(*(v1 + oToolkit_GameStatePtr) + oGameState_BGMusicIndicator) = 99;
     return 1;
 }
@@ -3348,7 +3348,7 @@ int __cdecl chatbox_80426D4()
 
 
 // 0x80426e0
-int __cdecl chatbox_80426E0()
+int __cdecl chatbox_setFlag0x1000AndAdvanceStep_80426E0()
 {
     chatbox_setflags_3e(4096);
     return 1;
@@ -3480,7 +3480,7 @@ signed int __fastcall __spoils<R0,R2,R3,R12> chatbox_8042A14(int a1, int a2, boo
 
     v3 = a3;
     v4 = memory_bcdConvert(a1);
-    v5 = sub_8000C5C(v4);
+    v5 = countHexDigits_8000C5C(v4);
     v6 = v3;
     v7 = (v14 & 0x40) != 0;
     v8 = v14 & 0xF;
@@ -3586,7 +3586,7 @@ LABEL_18:
         v8 = v0[v14 + 4];
         goto LABEL_18;
     }
-    if ( sub_803CDF8(v0[2], v0[3]) != 1 )
+    if ( keyItems_RemoveFromInventoryAndGive_803CDF8(v0[2], v0[3]) != 1 )
         PlaySoundEffect(115, v9, v10);
     return 1;
 }

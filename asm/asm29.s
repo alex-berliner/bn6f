@@ -10435,7 +10435,7 @@ JumpTable80AA6B8:
 	.word alwaysTrue_80AA6E8+1
 	.word sub_80AA6EC+1
 	.word sub_80AA756+1
-	.word sub_80AA764+1
+	.word isEventFlag212Set_80AA764+1
 	.word sub_80AA778+1
 	.word sub_80AA78C+1
 	.word sub_80AA7AC+1
@@ -10525,7 +10525,7 @@ locret_80AA762:
 	thumb_func_end sub_80AA756
 
 	thumb_local_start
-sub_80AA764:
+isEventFlag212Set_80AA764:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_212
@@ -10535,7 +10535,7 @@ sub_80AA764:
 loc_80AA774:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA764
+	thumb_func_end isEventFlag212Set_80AA764
 
 	thumb_local_start
 sub_80AA778:

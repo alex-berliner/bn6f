@@ -1461,7 +1461,7 @@ sub_812E61C::
 	mov r4, r0
 	bl sub_803EA50
 	mov r6, r0
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
@@ -1518,7 +1518,7 @@ loc_812E6A2::
 	mov r4, r0
 	bl sub_803EA50
 	mov r6, r0
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6

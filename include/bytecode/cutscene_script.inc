@@ -1308,7 +1308,7 @@
 	enum cs_warp_cmd_8038040_cmd // 0x4c
 // the following commands are related to warping
 // 0x4c &0x40
-// literal interpretation: call warp_8005f32 and warp_setSubsystemIndexTo0x10AndOthers_8005f00
+// literal interpretation: call warp_getCurrentWarpEntry_8005f32 and warp_setSubsystemIndexTo0x10AndOthers_8005f00
 	.macro cs_warp_cmd_8038040_0
 	.byte cs_warp_cmd_8038040_cmd
 	.byte 0x40
@@ -1371,7 +1371,7 @@
 // shared command
 	enum cs_sound_cmd_803810e_cmd // 0x50
 // 0x33/0x50 byte1 byte2
-// call sound_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
+// call sound_dispatchCueHandler_800068A with r0=byte1, r1=byte2 then do [eGameState_BGMusicIndicator] = 0x63
 	.macro cs_sound_cmd_803810e byte1:req byte2:req
 	.byte cs_sound_cmd_803810e_cmd
 	.byte \byte1

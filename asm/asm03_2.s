@@ -534,7 +534,7 @@ sub_80463A0:
 	mov lr, pc
 	bx r6
 	mov r8, r0
-	ldr r6, off_8046448 // =sub_8000C5C+1 
+	ldr r6, off_8046448 // =countHexDigits_8000C5C+1 
 	mov lr, pc
 	bx r6
 	mov r7, r0
@@ -612,7 +612,7 @@ loc_804643C:
 off_8046444:
 	.word memory_bcdConvert+1
 off_8046448:
-	.word sub_8000C5C+1
+	.word countHexDigits_8000C5C+1
 off_804644C:
 	.word byte_200A220
 	thumb_func_end sub_80463A0
@@ -2335,7 +2335,7 @@ sub_8047384:
 	bne loc_80473B8
 	mov r0, r9
 	ldrb r1, [r7,#4]
-	bl sub_8047456
+	bl battleFindEntryByFieldByte_8047456
 	beq loc_80473DA
 loc_80473B8:
 	// memBlock
@@ -2390,7 +2390,7 @@ loc_80473F6:
 	bne loc_8047422
 	ldrb r0, [r6,#4]
 	ldrb r1, [r7,#4]
-	bl sub_8047456
+	bl battleFindEntryByFieldByte_8047456
 	bne loc_8047422
 loc_8047418:
 	add r6, #8
@@ -2441,7 +2441,7 @@ loc_8047452:
 	thumb_func_end findRecordWithHalfwordAtOffset2_804743C
 
 	thumb_local_start
-sub_8047456:
+battleFindEntryByFieldByte_8047456:
 	push {r3-r7,lr}
 	mov r6, #0
 	mov r3, #0
@@ -2464,7 +2464,7 @@ off_8047474:
 	.word byte_2011C10
 off_8047478:
 	.word byte_8047DA0
-	thumb_func_end sub_8047456
+	thumb_func_end battleFindEntryByFieldByte_8047456
 
 	thumb_local_start
 copyData_804747C:
@@ -3109,7 +3109,7 @@ sub_8047950:
 	ldrb r1, [r5,#5]
 	tst r1, r1
 	bne loc_8047988
-	bl sub_8047A80
+	bl menu_showDialogOnUnselect_8047A80
 	b loc_8047A64
 loc_8047976:
 	ldrh r1, [r5,#0x12]
@@ -3254,7 +3254,7 @@ locret_8047A7E:
 	thumb_func_end sub_8047950
 
 	thumb_local_start
-sub_8047A80:
+menu_showDialogOnUnselect_8047A80:
 	push {lr}
 	mov r0, #0x14
 	strb r0, [r5]
@@ -3264,7 +3264,7 @@ sub_8047A80:
 	mov r0, #SOUND_UNSELECT_68
 	bl PlaySoundEffect
 	pop {pc}
-	thumb_func_end sub_8047A80
+	thumb_func_end menu_showDialogOnUnselect_8047A80
 
 	thumb_local_start
 sub_8047A96:
@@ -7120,10 +7120,10 @@ sub_804A460:
 	str r0, [r7,#0x30] // (dword_200ACB0 - 0x200ac80)
 	strh r0, [r7,#0x4] // (word_200AC84 - 0x200ac80)
 	strh r0, [r7,#0x6] // (word_200AC86 - 0x200ac80)
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_800399A
-	bl sub_8003AEA
+	bl scenario_ClearEffectActiveFlag_800399A
+	bl event_ackNewFlagByte_8003AEA
 	b loc_804A4CC
 loc_804A4AA:
 	bl sub_804A970

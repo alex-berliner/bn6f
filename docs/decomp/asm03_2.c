@@ -336,7 +336,7 @@ int __fastcall sub_80463A0(int a1)
 
     v17 = a1;
     v1 = memory_bcdConvert(*&byte_200A220[4 * *(a1 + 1) + 8]);
-    v2 = sub_8000C5C(v1);
+    v2 = countHexDigits_8000C5C(v1);
     v3 = 4 * (v2 - 1);
     v4 = *(v17 + 2);
     if ( v4 >= 128 )
@@ -1174,7 +1174,7 @@ LABEL_5:
         if ( !v8 )
             goto LABEL_5;
         v9 = v6[4];
-        sub_8047456(v3);
+        battleFindEntryByFieldByte_8047456(v3);
         if ( !v8 )
             goto LABEL_5;
     }
@@ -1210,7 +1210,7 @@ signed int __fastcall sub_80473E6(int a1, int a2, int a3)
             if ( !v10 )
                 break;
             v11 = v8[4];
-            sub_8047456(v7[4]);
+            battleFindEntryByFieldByte_8047456(v7[4]);
             if ( !v10 )
                 break;
         }
@@ -1245,7 +1245,7 @@ int __fastcall findRecordWithHalfwordAtOffset2_804743C(int result)
 
 
 // 0x8047456
-int __fastcall sub_8047456(int result)
+int __fastcall battleFindEntryByFieldByte_8047456(int result)
 {
     int v1; // r4
     int v2; // r7
@@ -1543,7 +1543,7 @@ signed int __fastcall sub_8047950(int a1, int a2, int a3)
         v7 = *(v3 + 5);
         if ( !*(v3 + 5) )
         {
-            sub_8047A80();
+            menu_showDialogOnUnselect_8047A80();
             goto LABEL_37;
         }
         goto LABEL_7;
@@ -1648,7 +1648,7 @@ LABEL_37:
 
 
 // 0x8047a80
-int sub_8047A80()
+int menu_showDialogOnUnselect_8047A80()
 {
     int v0; // r5
     int v1; // r1

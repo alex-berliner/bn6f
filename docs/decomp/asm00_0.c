@@ -34,7 +34,7 @@ int __fastcall PlaySong(int result, int a2, int a3)
     {
         *(v4 + oGameState_BGMusicIndicator) = result;
         if ( result == 99 )
-            result = sound_8000630(99, v5, a3);
+            result = sound_dispatchTask_8000630(99, v5, a3);
         else
             result = m4a_800061E(result, v5, a3);
     }
@@ -50,7 +50,7 @@ int __fastcall music_80005F2(int a1, int a2, int a3)
 
     *(*(v3 + oToolkit_GameStatePtr) + oGameState_BGMusicIndicator) = a1;
     if ( a1 == 99 )
-        result = sound_8000630(99, a2, a3);
+        result = sound_dispatchTask_8000630(99, a2, a3);
     else
         result = m4a_800061E(a1, a2, a3);
     return result;
@@ -80,7 +80,7 @@ int __fastcall m4a_800061E(int a1, int a2, int a3)
 
 
 // 0x8000630
-int __fastcall sound_8000630(int a1, int a2, int a3)
+int __fastcall sound_dispatchTask_8000630(int a1, int a2, int a3)
 {
     int v3; // r10
 
@@ -89,7 +89,7 @@ int __fastcall sound_8000630(int a1, int a2, int a3)
 
 
 // 0x8000642
-int __fastcall sound_8000642(int a1, int a2, int a3)
+int __fastcall sound_dispatchSoundRequest_8000642(int a1, int a2, int a3)
 {
     return sound_8000808(off_8000704[a1], a2, a3, sub_814F9AC);
 }
@@ -110,11 +110,11 @@ int __fastcall sound_8000672(int a1, int a2, int a3)
 
 
 // 0x800068a
-int __fastcall sound_800068A(int a1, int a2)
+int __fastcall sound_dispatchCueHandler_800068A(int a1, int a2)
 {
     int v2; // r10
 
-    return sound_8000808(off_8000704[a1], a2, v2, sub_814E87C);
+    return sound_8000808(off_8000704[a1], a2, v2, battle_smashFx_SetParams_814E87C);
 }
 
 
@@ -734,7 +734,7 @@ signed int __fastcall memory_bcdConvert(int a1)
 
 
 // 0x8000c5c
-signed int __fastcall sub_8000C5C(unsigned int a1)
+signed int __fastcall countHexDigits_8000C5C(unsigned int a1)
 {
     signed int v1; // r1
 
@@ -979,7 +979,7 @@ int sub_8000E28()
 
 
 // 0x8000e30
-int sub_8000E30()
+int stub_returnZero_8000E30()
 {
     return 0;
 }
@@ -1596,7 +1596,7 @@ int __fastcall math_getThrowSpeeds(_DWORD *a1, int a2, int a3)
 
 
 // 0x8001382
-int __fastcall sub_8001382(int result)
+int __fastcall battle_orStateFlags5c_8001382(int result)
 {
     int v1; // r10
 
@@ -1616,7 +1616,7 @@ int __fastcall sub_800138E(int result)
 
 
 // 0x800139a
-int sub_800139A()
+int battle_getStateUnk5c_800139A()
 {
     int v0; // r10
 
@@ -1625,7 +1625,7 @@ int sub_800139A()
 
 
 // 0x80013a2
-int __fastcall sub_80013A2(int result)
+int __fastcall battle_SetStateUnk5c_80013A2(int result)
 {
     int v1; // r10
 
@@ -1990,7 +1990,7 @@ void copyMemory_8001850()
 
 
 // 0x800187c
-int __fastcall sub_800187C(int a1, int a2, int a3, __int16 a4)
+int __fastcall bgmap_WriteTileIdAtBlock_800187C(int a1, int a2, int a3, __int16 a4)
 {
     int v4; // r10
     int result; // r0
@@ -2278,7 +2278,7 @@ int BGScrollCB_BG1AccelToVeryFastDownScroll()
     int result; // r0
     int v2; // r2
 
-    result = sub_800139A();
+    result = battle_getStateUnk5c_800139A();
     if ( result & 0x10 )
     {
         v2 = eBGScrollCBCounters - 1024;
@@ -2405,7 +2405,7 @@ void __cdecl ProcessGFXAnims()
 
 
 // 0x8001c44
-int __fastcall sub_8001C44(_DWORD *a1)
+int __fastcall sprite_QueueAnimFrameGfxUpload_8001C44(_DWORD *a1)
 {
     int v1; // r7
 
@@ -2810,7 +2810,7 @@ int __fastcall Terminate_ePalette20097a0_Transform(int a1)
 
 
 // 0x80023a8
-void __fastcall sub_80023A8(int a1, int a2, int a3, int a4)
+void __fastcall palette_clearEPalette20097a0_80023A8(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(ePalette20097a0, &loc_D8);
 }
@@ -2915,7 +2915,7 @@ void __fastcall zeroFill_80024A2()
 
 
 // 0x80024ae
-int sub_80024AE()
+int event_runArmedCallback_80024AE()
 {
     int result; // r0
 

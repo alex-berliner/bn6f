@@ -1944,7 +1944,7 @@ loc_8130F4E:
 	mov r4, r0
 	bl sub_803EA50
 	mov r6, r0
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
@@ -6474,7 +6474,7 @@ loc_8133458:
 	b locret_8133482
 loc_8133478:
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	mov r0, #4
 	strb r0, [r5,#2]
 locret_8133482:
@@ -7410,7 +7410,7 @@ loc_8133BD4:
 	b locret_8133C0A
 loc_8133BFC:
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	mov r0, #0
 	strb r0, [r5,#2]
 	mov r0, #1
@@ -11743,7 +11743,7 @@ sub_8135D8C:
 	push {lr}
 	ldr r0, off_8135D98 // =0x14c 
 	mov r1, #1
-	bl sub_803CDF8
+	bl keyItems_RemoveFromInventoryAndGive_803CDF8
 	pop {pc}
 	.balign 4, 0
 off_8135D98:
@@ -15282,8 +15282,8 @@ loc_8137804:
 	pop {pc}
 	thumb_func_end isFolderSlotInUse_81377EC
 
-	thumb_func_start sub_8137808
-sub_8137808:
+	thumb_func_start clearChipGiftRecordAndTakeChipsSlot0_8137808
+clearChipGiftRecordAndTakeChipsSlot0_8137808:
 	push {r4,lr}
 	ldr r0, off_8137880 // =unk_20018EC 
 	mov r4, r0
@@ -15292,7 +15292,7 @@ sub_8137808:
 	mov r0, #0
 	bl takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C
 	pop {r4,pc}
-	thumb_func_end sub_8137808
+	thumb_func_end clearChipGiftRecordAndTakeChipsSlot0_8137808
 
 	thumb_local_start
 takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C:
@@ -17203,7 +17203,7 @@ sub_8138700:
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #0x1f
 	mov r1, #0xe
-	bl sound_800068A
+	bl sound_dispatchCueHandler_800068A
 	mov r0, #0xe0
 	strh r0, [r5,#4]
 	mov r4, #8
@@ -17313,7 +17313,7 @@ sub_81387D8:
 
 	bl copy_800260C
 	bl sub_8005F40
-	bl sub_8005F6C
+	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027F4
 	bl copy_8002668
 	bl sub_80303F2
@@ -17337,7 +17337,7 @@ sub_81387D8:
 	bl SetCameraXYZ
 
 	bl zeroFill_80024A2
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 	bl sub_802F0D8
 	bl sub_802F0F4

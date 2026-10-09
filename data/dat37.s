@@ -46115,8 +46115,8 @@ off_81C0418::
 	.word sub_814E168+1
 	.word sub_814E17C+1
 	.word sub_814E190+1
-	.word sub_814E1C0+1
-	.word sub_814E1D4+1
+	.word battleObj_runUpdateAndSetActive_814E1C0+1
+	.word sprite_moveYUp64AndMarkDirty_814E1D4+1
 	.word sub_814E1E8+1
 	.word sub_814E1FC+1
 	.word sub_814E7CC+1
@@ -46125,7 +46125,7 @@ off_81C0418::
 	.word sub_814E21C+1
 	.word ply_fine+1
 	.word ply_fine+1
-	.word sub_814E234+1
+	.word chatbox_PrintBuffer_WriteNextGlyph_814E234+1
 	.word ply_fine+1
 	.word ply_fine+1
 	.word ply_fine+1
@@ -46220,8 +46220,8 @@ off_81C06C0::
 	.word sub_814FDF8+1
 	.word sub_814FE0C+1
 	.word sub_814FE20+1
-	.word sub_814FE34+1
-	.word sub_814FE40+1
+	.word text_ReadNextChar_814FE34+1
+	.word readNextStreamByte_814FE40+1
 	.word sub_814FE4C+1
 	.word sub_814FE60+1
 	.byte 0x19, 0x15, 0x1A, 0xD2, 0x80, 0xF6, 0x13, 0xF3, 0xED

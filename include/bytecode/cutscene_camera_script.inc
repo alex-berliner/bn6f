@@ -187,7 +187,7 @@
 
 	enum ccs_sound_cmd_80373fc_cmd // 0x48
 // 0x48 byte1 byte2
-// call sound_800068A with r0=byte1 and r1=byte2
+// call sound_dispatchCueHandler_800068A with r0=byte1 and r1=byte2
 	.macro ccs_sound_cmd_80373fc byte1:req byte2:req
 	.byte ccs_sound_cmd_80373fc_cmd
 	.byte \byte1

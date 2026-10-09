@@ -93,7 +93,7 @@ int __noreturn crt0_start_800027C()
 
 
 // 0x8000288
-int __noreturn start_8000288()
+int __noreturn crt0_entry_trampoline_8000288()
 {
     int v1; // [sp+0h] [bp-4h]
 

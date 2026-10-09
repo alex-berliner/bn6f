@@ -560,7 +560,7 @@ sub_81235A4:
 	bl IsButtonPressed
 	beq loc_81235BC
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	b loc_8123628
@@ -1938,7 +1938,7 @@ submenu_subchip_81240D0: // (struct UnkSubMenu* state_a5) -> void
 	bl IsButtonPressed
 	beq loc_81240E2
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	b loc_8124128
 loc_81240E2:
 	ldrb r0, [r5,#0xc]
@@ -4317,7 +4317,7 @@ sub_8125594:
 	tst r1, r0
 	beq loc_81255AC
 	mov r0, #0x34 
-	bl sub_812580C
+	bl menu_confirmExitAndFade_812580C
 	b locret_81255F2
 loc_81255AC:
 	ldrh r0, [r7,#4]
@@ -4372,7 +4372,7 @@ sub_81255F8:
 	tst r1, r0
 	beq loc_8125610
 	mov r0, #0x38 
-	bl sub_812580C
+	bl menu_confirmExitAndFade_812580C
 	b locret_8125670
 loc_8125610:
 	ldrh r0, [r7,#4]
@@ -4441,7 +4441,7 @@ sub_8125678:
 	tst r1, r0
 	beq loc_8125690
 	mov r0, #0x3c 
-	bl sub_812580C
+	bl menu_confirmExitAndFade_812580C
 	b locret_81256FC
 loc_8125690:
 	ldrh r0, [r7,#4]
@@ -4518,7 +4518,7 @@ sub_8125704:
 	tst r1, r0
 	beq loc_812571C
 	mov r0, #0x40 
-	bl sub_812580C
+	bl menu_confirmExitAndFade_812580C
 	b locret_812577C
 loc_812571C:
 	ldrh r0, [r7,#4]
@@ -4587,7 +4587,7 @@ sub_8125784:
 	tst r1, r0
 	beq loc_812579C
 	mov r0, #0x44 
-	bl sub_812580C
+	bl menu_confirmExitAndFade_812580C
 	b locret_8125804
 loc_812579C:
 	mov r1, #1
@@ -4652,7 +4652,7 @@ off_8125808:
 	thumb_func_end sub_8125784
 
 	thumb_local_start
-sub_812580C:
+menu_confirmExitAndFade_812580C:
 	push {lr}
 	strb r0, [r5,#2]
 	mov r0, #SOUND_EXIT_SUBMENU
@@ -4661,7 +4661,7 @@ sub_812580C:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	pop {pc}
-	thumb_func_end sub_812580C
+	thumb_func_end menu_confirmExitAndFade_812580C
 
 	thumb_local_start
 sub_8125820:
@@ -7371,7 +7371,7 @@ sub_8126E10:
 	bl IsButtonPressed
 	beq loc_8126E28
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	mov r0, #0x40 
 	bl chatbox_set_eFlags2009F38
 	b loc_8126E68
@@ -8983,7 +8983,7 @@ sub_8127B18:
 	beq loc_8127B2A
 loc_8127B22:
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	b locret_8127B8E
 loc_8127B2A:
 	mov r0, #JOYPAD_A
@@ -10474,7 +10474,7 @@ loc_812881C:
 	beq loc_8128834
 loc_812882C:
 	mov r0, #8
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	b loc_81288B0
 loc_8128834:
 	mov r1, #2
@@ -11779,7 +11779,7 @@ sub_81292D8:
 	bl sub_8046664 // () -> void
 	mov r0, #4
 	strb r0, [r5,#2]
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	// a1
 	ldr r0, off_8129338 // =byte_8129158
 	bl sub_80465A0 // (void *a1) -> void
@@ -11794,7 +11794,7 @@ sub_81292D8:
 	ldrb r1, [r5,#0xd]
 	add r0, r0, r1
 	mov r4, r0
-	bl sub_8006DEC
+	bl gameState_GetUnk74_8006DEC
 	mov r1, #1
 	tst r0, r1
 	beq loc_8129324
@@ -11838,7 +11838,7 @@ sub_812933C:
 	ldr r1, off_81293F8 // =dword_81293FC 
 	ldrb r0, [r1,r0]
 	mov r4, r0
-	bl sub_8006DEC
+	bl gameState_GetUnk74_8006DEC
 	mov r1, #1
 	tst r0, r1
 	beq loc_8129374
@@ -11886,7 +11886,7 @@ loc_81293B8:
 loc_81293C2:
 	bl PlaySoundEffect
 	mov r0, #0x40 
-	bl sub_811FB64
+	bl submenu_ConfirmExitAndFade_811FB64
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -11923,7 +11923,7 @@ sub_8129400:
 	strb r0, [r5,#0xd]
 	mov r0, #0xc
 	strb r0, [r5,#2]
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	// a1
 	ldr r0, off_8129448 // =byte_8129168
 	bl sub_80465A0 // (void *a1) -> void
@@ -13450,7 +13450,7 @@ off_8129F40:
 	thumb_local_start
 sub_8129F48:
 	push {lr}
-	bl start_8000288
+	bl crt0_entry_trampoline_8000288
 	mov r0, #4
 	strb r0, [r5,#2]
 	bl sub_803DE88
@@ -14822,7 +14822,7 @@ loc_812AA04:
 	cmp r1, #0
 	bne loc_812AA10
 	mov r0, #0
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 	b loc_812AA14
 loc_812AA10:
 	mov r0, #0x27 
@@ -14832,7 +14832,7 @@ loc_812AA14:
 	cmp r0, #0
 	beq loc_812AA22
 	mov r0, #0
-	bl sub_803F4EC
+	bl setByte_200AD04_803F4EC
 loc_812AA22:
 	ldrb r0, [r5,#0x13]
 	cmp r0, #1
@@ -15507,7 +15507,7 @@ sub_812AF18:
 	ldr r0, off_812B088 // =off_812B08C
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	bl loadDecompressedAsset_812AF78
-	bl sub_812AF84
+	bl textScript_loadAndRunEmbeddedArchive_812AF84
 	bl sprite_decompInitRefs_812AF98
 	bl sub_812AFA4
 	bl chatbox_8040818
@@ -15564,8 +15564,8 @@ loadDecompressedAsset_812AF78:
 	.balign 4, 0x00
 	thumb_func_end loadDecompressedAsset_812AF78
 
-	thumb_func_start sub_812AF84
-sub_812AF84:
+	thumb_func_start textScript_loadAndRunEmbeddedArchive_812AF84
+textScript_loadAndRunEmbeddedArchive_812AF84:
 	push {lr}
 	// initRefs
 	ldr r0, off_812B164 // =byte_812B168
@@ -15575,7 +15575,7 @@ sub_812AF84:
 	ldr r2, off_812B01C // =eDecompBuffer2013A00
 	bl sub_8123300
 	pop {pc}
-	thumb_func_end sub_812AF84
+	thumb_func_end textScript_loadAndRunEmbeddedArchive_812AF84
 
 // symdb: Decompresses and copies the packed initRefs data blob (byte_812B1A0) via decompAndCopyData, likely initializing a sprite/animation resource set.
 // symdb: void sub_812AF98(void); // no meaningful inputs; calls decompAndCopyData with r0 = &byte_812B1A0
@@ -16436,7 +16436,7 @@ loc_812B652:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
 	bl zeroFill_80024A2
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 	bl RandomizeExtraToolkitPointers // () -> ?
 	movflag EVENT_172D
@@ -16485,7 +16485,7 @@ loc_812B6D4:
 loc_812B6D8:
 	bl sub_8005F40
 	bl zeroFill_80024A2
-	bl sub_8003962
+	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 	mov r0, #0xc
 	strb r0, [r5,#2]

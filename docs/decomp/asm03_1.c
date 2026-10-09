@@ -3404,7 +3404,7 @@ signed int __fastcall CutsceneCameraCmd_sound_cmd_80373fc(int a1, int a2)
 
     v2 = sub_803744C(2, a2);
     v4 = sub_803744C(1, v3);
-    sound_800068A(v4, v2);
+    sound_dispatchCueHandler_800068A(v4, v2);
     return 1;
 }
 
@@ -4600,7 +4600,7 @@ signed int sub_803810E()
 
     ReadMapScriptByte(1, v0);
     v2 = ReadMapScriptByte(2, v0);
-    sound_800068A(v2, v3);
+    sound_dispatchCueHandler_800068A(v2, v3);
     *(*(v1 + oToolkit_GameStatePtr) + oGameState_BGMusicIndicator) = 99;
     return 1;
 }
@@ -5227,7 +5227,7 @@ signed int __fastcall __noreturn sub_8038630(int a1)
     renderInfo_8001788();
     renderInfo_80017A0();
     sub_8005F40(v2, v3, v4, v5);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     v6 = sub_80027C4();
     initGfx_80386CC(v6, v7, v8, v9);
     music_80005F2(99, v10, v11);
@@ -5368,7 +5368,7 @@ void __fastcall __noreturn sub_8038B04(int a1, int a2, int a3, int a4)
     renderInfo_8001788();
     renderInfo_80017A0();
     sub_8005F40(v8, v9, v10, v11);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     decomp_initGfx_8038F30();
     sub_8038F74();
@@ -6919,7 +6919,7 @@ int __fastcall sub_8039E80(int a1)
         chatbox_8040818();
         copyMemory_8001850();
         sub_8005F40(v2, v3, v4, v5);
-        sub_8005F6C();
+        runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         RandomizeExtraToolkitPointers();
         v6 = getBattleSettingsFromList0(0);
@@ -10900,7 +10900,7 @@ void __fastcall __noreturn sub_803CBD0(int a1)
     renderInfo_8001788();
     renderInfo_80017A0();
     sub_8005F40(v1, v2, v3, v4);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     v5 = sub_80027C4();
     copyData_803CC60(v5, v6, v7, v8);
 }
@@ -11019,7 +11019,7 @@ signed int __fastcall __noreturn sub_803CCFC(int a1)
     renderInfo_8001788();
     renderInfo_80017A0();
     sub_8005F40(v2, v3, v4, v5);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     v6 = sub_80027C4();
     sub_803CD58(v6, v7, v8, v9);
     music_80005F2(99, v10, v11);
@@ -11076,8 +11076,8 @@ int __fastcall sub_803CD74(int a1, int a2, int a3, int a4)
     int v4; // r10
 
     ZeroFillByWord(*(v4 + oToolkit_Unk2003134_Ptr), byte_190);
-    sub_803CDF8(117, 4);
-    return sub_803CDF8(0, 1);
+    keyItems_RemoveFromInventoryAndGive_803CDF8(117, 4);
+    return keyItems_RemoveFromInventoryAndGive_803CDF8(0, 1);
 }
 
 
@@ -11138,7 +11138,7 @@ signed int __fastcall GiveItem(signed int a1, int a2)
 
 
 // 0x803cdf8
-signed int __fastcall sub_803CDF8(signed int a1, int a2)
+signed int __fastcall keyItems_RemoveFromInventoryAndGive_803CDF8(signed int a1, int a2)
 {
     int v2; // r10
 
@@ -11540,7 +11540,7 @@ signed int __fastcall sub_803D118(int a1, int a2, int a3)
 
     v3 = a3;
     v4 = sub_803D148(a1, a2);
-    return sub_803CDF8(v4, v3);
+    return keyItems_RemoveFromInventoryAndGive_803CDF8(v4, v3);
 }
 
 
@@ -11661,7 +11661,7 @@ void __noreturn sub_803D1FC()
     renderInfo_80017A0();
     v3 = engine_setScreeneffect(v1, 255);
     sub_8005F40(v3, v4, v5, v6);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     v7 = sub_80027C4();
     logoScreen_loadLogoTiles_803D2B8(v7, v8, v9, v10);
 }
@@ -11986,9 +11986,9 @@ signed int sub_803DEB4()
     v0 = 1;
     dword_2009A18 = sub_8144250(sCamera.pad_56, &byte_200DD10, &unk_2009480);
     v5 = dword_2009A18;
-    if ( sub_8144CE0() == 5 )
+    if ( timer_IsEnabled_8144CE0() == 5 )
         return 4;
-    v1 = sub_8144CE0();
+    v1 = timer_IsEnabled_8144CE0();
     if ( v1 == 1 )
     {
         TestEventFlagFromImmediate(23, 47);
@@ -13055,7 +13055,7 @@ signed int init_eStartScreenAnimationControl200B1A0_2()
 
 
 // 0x803e928
-int sub_803E928()
+int startScreen_IsTitleAnimationFinished_803E928()
 {
     return eStartScreenAnimationControl200B1A0;
 }
@@ -13085,7 +13085,7 @@ int startScreen_AnimationControl_803E938()
     }
     else if ( eStartScreenAnimationControl200B1A0 == 2 )
     {
-        result = sub_803EA1C(2);
+        result = runPendingWorkIfFlagged_803EA1C(2);
     }
     else
     {
@@ -13157,7 +13157,7 @@ signed int startScreen_AnimatePressStart_803E978()
                 }
                 v0 = 0;
             }
-            sub_803F4EC(v6);
+            setByte_200AD04_803F4EC(v6);
             if ( v6 )
             {
                 TestEventFlagFromImmediate(1, 227);
@@ -13181,7 +13181,7 @@ signed int startScreen_AnimatePressStart_803E978()
 
 
 // 0x803ea1c
-int __fastcall sub_803EA1C(int a1)
+int __fastcall runPendingWorkIfFlagged_803EA1C(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -13194,7 +13194,7 @@ int __fastcall sub_803EA1C(int a1)
 
 
 // 0x803ea2c
-signed int sub_803EA2C()
+signed int net_isLinkConnected_803EA2C()
 {
     signed int result; // r0
 
@@ -13411,7 +13411,7 @@ signed int sub_803EB60()
 
 
 // 0x803ebac
-void __fastcall sub_803EBAC(int a1, int a2, int a3, int a4)
+void __fastcall clearStruct200BC30_803EBAC(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&eStruct200BC30, 32);
 }
@@ -14295,7 +14295,7 @@ char *sub_803F4D4()
 
 
 // 0x803f4ec
-int __fastcall sub_803F4EC(int result)
+int __fastcall setByte_200AD04_803F4EC(int result)
 {
     LOBYTE(word_200AD04[0]) = result;
     return result;
@@ -14356,7 +14356,7 @@ int sub_803F530()
         v2 = 1;
         sub_803F560();
         if ( v1 || (v2 = 0, result = word_200AD04[1] - 1, v1 = word_200AD04[1] == 1, --word_200AD04[1], v1) )
-            result = sub_803F4EC(v2);
+            result = setByte_200AD04_803F4EC(v2);
     }
     return result;
 }
@@ -14496,7 +14496,7 @@ __int64 sub_803F674()
 void __fastcall sub_803F6B0(int a1, int a2, int a3, int a4)
 {
     ZeroFillByHalfword(&eStruct200F360, 0x20u, a3, a4);
-    start_8000288();
+    crt0_entry_trampoline_8000288();
 }
 
 
@@ -14555,8 +14555,8 @@ signed int sub_803F79E()
         do
         {
             save_8006E26();
-            sub_803F8B2();
-            v2 = sub_803F894();
+            info_copyTimestampToWorkArea_803F8B2();
+            v2 = s2001c04_ComputeChecksumOfEwramRegion_803F894();
             sub_803FB04(v2);
             sub_8006DF6(&timer_2000000, 26384);
             v3 = 0;
@@ -14576,7 +14576,7 @@ signed int sub_803F79E()
             save_memSetFlags_8006E0E(&timer_2000000, 26384);
             v5 = *(*(v0 + oToolkit_Unk2001c04_Ptr) + 104);
         }
-        while ( sub_803F894() != v5 );
+        while ( s2001c04_ComputeChecksumOfEwramRegion_803F894() != v5 );
         SetEventFlagFromImmediate(23, 4);
         result = 0;
     }
@@ -14600,7 +14600,7 @@ signed int sub_803F838()
     save_memSetFlags_8006E0E(&timer_2000000, 26384);
     SetExtraToolkitPointers();
     sub_803F8C4();
-    if ( v0 && (sub_803F8F4(), v0) )
+    if ( v0 && (infoText_IsTimestampUnchanged_803F8F4(), v0) )
     {
         v1 = 0;
         SetEventFlagFromImmediate(23, 4);
@@ -14617,7 +14617,7 @@ signed int sub_803F838()
 
 
 // 0x803f894
-int sub_803F894()
+int s2001c04_ComputeChecksumOfEwramRegion_803F894()
 {
     int v0; // r10
     int v1; // r7
@@ -14643,7 +14643,7 @@ int sub_803F894()
 
 
 // 0x803f8b2
-int sub_803F8B2()
+int info_copyTimestampToWorkArea_803F8B2()
 {
     int v0; // r10
 
@@ -14677,7 +14677,7 @@ BOOL sub_803F8C4()
 
 
 // 0x803f8f4
-signed int sub_803F8F4()
+signed int infoText_IsTimestampUnchanged_803F8F4()
 {
     int v0; // r10
     signed int v1; // r2
@@ -14870,7 +14870,7 @@ BOOL sub_803FAB4()
     v1 = 0;
     do
     {
-        sub_803FAEE();
+        rng_FillSeedBuffer_803FAEE();
         libSave_CopyToGamePak(dword_20067C0, 0xE007F80, byte_80);
         v3 = v0;
         if ( !sub_814D9C4(dword_20067C0, 234913664, byte_80) )
@@ -14883,7 +14883,7 @@ BOOL sub_803FAB4()
 
 
 // 0x803faee
-void sub_803FAEE()
+void rng_FillSeedBuffer_803FAEE()
 {
     signed int v0; // r7
     int v1; // r0
@@ -15048,7 +15048,7 @@ int sub_803FC14()
 void __fastcall __noreturn copyTileData_803FC64(int a1, int a2, int a3, int a4)
 {
     sub_8005F40(a1, a2, a3, a4);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     decompAndCopyData(&initRefs803FCA4);
     ZeroFillGFX30025c0();

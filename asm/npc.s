@@ -81,7 +81,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 	thumb_func_end npc_init_809E590
 
 // symdb: NPC state 4, every frame: run the script and current action, then update the sprite, interaction areas and layer.
-// symdb: (r5 = NPC) -> if ChatTriggered: sub_809F5FC; else npc_runPrimaryScript_809ebdc,
+// symdb: (r5 = NPC) -> if ChatTriggered: npc_beginChatboxState_809F5FC; else npc_runPrimaryScript_809ebdc,
 // symdb: NPCCurActionJumptable[CurAction], sprite_setFlip(mirrored), on a new NPCSprite:
 // symdb: sprite_load(0x80, category, sprite) + shadow mode (UnkFlags_60 0x80/0x100), on a new
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
@@ -95,7 +95,7 @@ npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
 	ldrb r0, [r5,#oOverworldNPCObject_ChatTriggered]
 	tst r0, r0
 	beq loc_809E5F0
-	bl sub_809F5FC
+	bl npc_beginChatboxState_809F5FC
 	b loc_809E658
 loc_809E5F0:
 	bl npc_runPrimaryScript_809ebdc
@@ -397,7 +397,7 @@ dword_809E7D4:
 	thumb_func_end npc_nonCutsceneMovementInit_809E704
 
 // symdb: Walk one frame: unless blocked, move to Next*; when the step ends, snap to its target and start the next step or finish the walk.
-// symdb: (r5 = NPC) -> unless UnkFlags_60 0x10 (no collision), sub_809F638 != 0 means blocked
+// symdb: (r5 = NPC) -> unless UnkFlags_60 0x10 (no collision), npc_overworld_CheckStateFlags50000_809F638 != 0 means blocked
 // symdb: (sub_809F5B0 only); else X/Y/Z = Next*; Timer -= 1; at 0: X/Y = Unk_70/74, MovementDistance -=
 // symdb: 1, then npc_enableScript0x19_809f516 (done) or npc_nonCutsceneMovementInit_809E704; otherwise
 // symdb: Next* += Delta*, and unless UnkFlags_60 0x200 Z = NextZ = checkZCoordModifiers_8031612(Coords)
@@ -410,7 +410,7 @@ npc_nonCutsceneMovementUpdate_809E7D8:
 	mov r1, #OW_NPC_UNK_FLAGS_60_DISABLE_COLLISION_0x10
 	tst r0, r1
 	bne loc_809E7EA
-	bl sub_809F638
+	bl npc_overworld_CheckStateFlags50000_809F638
 	tst r0, r0
 	bne loc_809E848
 loc_809E7EA:
@@ -3092,7 +3092,7 @@ dword_809F5F8:
 	thumb_func_end sub_809F5B0
 
 	thumb_local_start
-sub_809F5FC:
+npc_beginChatboxState_809F5FC:
 	push {lr}
 	ldrb r0, [r5,#oOverworldNPCObject_CurAction]
 	strb r0, [r5,#oOverworldNPCObject_Unk_1d]
@@ -3104,7 +3104,7 @@ sub_809F5FC:
 	strb r0, [r5,#oOverworldNPCObject_CurAction]
 	strh r0, [r5,#oOverworldNPCObject_MovementFlag_0a_Unk_0b]
 	pop {pc}
-	thumb_func_end sub_809F5FC
+	thumb_func_end npc_beginChatboxState_809F5FC
 
 	thumb_local_start
 sub_809F612:
@@ -3129,7 +3129,7 @@ loc_809F632:
 	thumb_func_end sub_809F612
 
 	thumb_local_start
-sub_809F638:
+npc_overworld_CheckStateFlags50000_809F638:
 	push {lr}
 	mov r0, #0
 	ldr r2, dword_809F648 // =0x50000 
@@ -3142,7 +3142,7 @@ locret_809F646:
 	.balign 4, 0
 dword_809F648:
 	.word 0x50000
-	thumb_func_end sub_809F638
+	thumb_func_end npc_overworld_CheckStateFlags50000_809F638
 
 // (u8 bitfield_arr[2]) -> u16
 	thumb_local_start

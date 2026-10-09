@@ -193,7 +193,7 @@ sub_801FF18:
 	and r2, r1
 	beq loc_801FF52
 	mov r0, #0
-	bl sub_800A0D6
+	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_20399F6 - 0x20399f0)
 	strb r1, [r6,#oBattleState_Unk_14]
 	ldrh r1, [r5,#0xc] // (word_20399FC - 0x20399f0)
@@ -222,7 +222,7 @@ loc_801FF52:
 	beq loc_801FF84
 loc_801FF66:
 	mov r0, #1
-	bl sub_800A0D6
+	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_2039A06 - 0x2039a00)
 	strb r1, [r6,#oBattleState_Unk_15]
 	ldrh r1, [r5,#0xc] // (word_2039A0C - 0x2039a00)
@@ -256,7 +256,7 @@ loc_801FF84:
 	mov r1, #1
 	tst r0, r1
 	beq loc_801FFC6
-	bl sub_803EA2C
+	bl net_isLinkConnected_803EA2C
 	tst r0, r0
 	bne loc_801FFD2
 	mov r0, #0x3 // (eStruct203F7D8+3 - 0x203f7d8)
@@ -309,7 +309,7 @@ loc_801FFEA:
 	and r2, r1
 	beq loc_802001C
 	mov r0, #0
-	bl sub_800A0D6
+	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_20399F6 - 0x20399f0)
 	strb r1, [r6,#oBattleState_Unk_14]
 	ldrh r1, [r5,#0xc] // (word_20399FC - 0x20399f0)
@@ -338,7 +338,7 @@ loc_802001C:
 	beq loc_802004E
 loc_8020030:
 	mov r0, #1
-	bl sub_800A0D6
+	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_2039A06 - 0x2039a00)
 	strb r1, [r6,#oBattleState_Unk_15]
 	ldrh r1, [r5,#0xc] // (word_2039A0C - 0x2039a00)

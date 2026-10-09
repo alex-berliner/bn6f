@@ -1250,7 +1250,7 @@ int sub_8130F1C()
     {
         v3 = eStruct200BC30_getJumpOffset00();
         v4 = sub_803EA50();
-        sub_803EBAC(v4, v5, v6, v7);
+        clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
         *(v0 + 12) = 8;
@@ -3847,7 +3847,7 @@ int __fastcall sub_8133434(int a1)
             }
             else
             {
-                sub_811FB64(8, v4, v5);
+                submenu_ConfirmExitAndFade_811FB64(8, v4, v5);
                 result = 4;
                 v1[2] = 4;
             }
@@ -4624,7 +4624,7 @@ void sub_8133BB4()
         }
         else if ( *(v0 + 23) == 30 )
         {
-            sub_811FB64(8, 30, v3);
+            submenu_ConfirmExitAndFade_811FB64(8, 30, v3);
             *(v0 + 2) = 0;
         }
         else
@@ -7188,7 +7188,7 @@ void __noreturn sub_8135B94()
 // 0x8135d8c
 signed int sub_8135D8C()
 {
-    return sub_803CDF8(&dword_14C, 1);
+    return keyItems_RemoveFromInventoryAndGive_803CDF8(&dword_14C, 1);
 }
 
 
@@ -9770,7 +9770,7 @@ signed int __fastcall isFolderSlotInUse_81377EC(unsigned int a1)
 
 
 // 0x8137808
-int sub_8137808()
+int clearChipGiftRecordAndTakeChipsSlot0_8137808()
 {
     ZeroFillByByte(&unk_20018EC, 4);
     return takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C(0);
@@ -10978,7 +10978,7 @@ int sub_8138700()
         if ( *(*(v1 + oToolkit_JoypadPtr) + 2) )
         {
             engine_setScreeneffect(12, 8);
-            sound_800068A(31, 14);
+            sound_dispatchCueHandler_800068A(31, 14);
             *(v0 + 4) = 224;
             *v0 = 8;
             result = 0;
@@ -11074,7 +11074,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
     *(*(v4 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     copy_800260C();
     sub_8005F40(v5, v6, v7, v8);
-    sub_8005F6C();
+    runSetupStepAndClearWorkArea_8005F6C();
     sub_80027F4();
     copy_8002668();
     sub_80303F2();
@@ -11083,7 +11083,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
     sub_80301B2(0, v9);
     SetCameraXYZ(0, 0, 0);
     zeroFill_80024A2();
-    sub_8003962();
+    scenario_initEffectState_8003962();
     zeroFill_8003AB2();
     sub_802F0D8(v10, v11, v12, v13);
     sub_802F0F4(v14, v15, v16, v17);

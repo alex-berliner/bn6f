@@ -363,7 +363,7 @@ signed int sub_810C820()
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
-        if ( sub_800A704() >= byte_12C )
+        if ( battle_getStateUnk40_800A704() >= byte_12C )
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
@@ -1489,7 +1489,7 @@ int sub_810D808()
         v9 = **(v12 + 40);
         if ( v9 )
         {
-            sub_80C4072(v9);
+            battle_ResetObjectTimerTo8_80C4072(v9);
             **(v12 + 40) = 0;
         }
         **(v12 + 48) = 1;

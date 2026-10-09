@@ -1318,7 +1318,7 @@ int sub_812FD10()
     {
         v3 = eStruct200BC30_getJumpOffset00();
         v4 = sub_803EA50();
-        sub_803EBAC(v4, v5, v6, v7);
+        clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
         *(v0 + 12) = 12;
@@ -1361,7 +1361,7 @@ int sub_812FD6C()
 LABEL_8:
         v3 = eStruct200BC30_getJumpOffset00();
         v4 = sub_803EA50();
-        sub_803EBAC(v4, v5, v6, v7);
+        clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
         *(v0 + 12) = 8;

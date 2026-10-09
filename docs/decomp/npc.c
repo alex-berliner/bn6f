@@ -52,7 +52,7 @@ void npc_standard_809E5E2()
 
     if ( *(v0 + 24) )
     {
-        sub_809F5FC();
+        npc_beginChatboxState_809F5FC();
     }
     else
     {
@@ -168,7 +168,7 @@ int npc_nonCutsceneMovementUpdate_809E7D8()
     int result; // r0
     int v4; // r0
 
-    if ( !(*(v0 + 96) & 0x10) && sub_809F638() )
+    if ( !(*(v0 + 96) & 0x10) && npc_overworld_CheckStateFlags50000_809F638() )
         return sub_809F5B0();
     *(v0 + 36) = *(v0 + 48);
     *(v0 + 40) = *(v0 + 52);

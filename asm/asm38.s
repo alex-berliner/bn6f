@@ -2555,7 +2555,7 @@ loc_3006CF2:
 	mov lr, pc
 	bx r6
 	mov r8, r0
-	ldr r6, off_3006D9C // =sub_8000C5C+1
+	ldr r6, off_3006D9C // =countHexDigits_8000C5C+1
 	mov lr, pc
 	bx r6
 	mov r7, r0
@@ -2642,7 +2642,7 @@ loc_3006D92:
 off_3006D98:
 	.word memory_bcdConvert+1
 off_3006D9C:
-	.word sub_8000C5C+1
+	.word countHexDigits_8000C5C+1
 off_3006DA0:
 	.word off_8043C8C
 	thumb_func_end sub_3006CD0
@@ -3658,7 +3658,7 @@ sub_30074BA:
 loc_30074D4:
 	mov r4, #1
 	ldr r5, [r6,#oCollisionData_ParentObjectPtr]
-	ldr r0, off_3007548 // =sub_801A29A+1
+	ldr r0, off_3007548 // =battleObject_clearHitFlags_801A29A+1
 	mov lr, pc
 	bx r0
 loc_30074DE:
@@ -3724,7 +3724,7 @@ dword_3007540:
 dword_3007544:
 	.word 0x80000000
 off_3007548:
-	.word sub_801A29A+1
+	.word battleObject_clearHitFlags_801A29A+1
 dword_300754C:
 	.word 0x2000
 	thumb_func_end getSecondaryElementWeaknessMultipler_30074e2

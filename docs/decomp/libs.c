@@ -669,7 +669,7 @@ int sub_8144BF0()
 
 
 // 0x8144ce0
-int sub_8144CE0()
+int timer_IsEnabled_8144CE0()
 {
     return byte_200F461;
 }
@@ -10138,7 +10138,7 @@ int __fastcall sub_814E190(int a1, _DWORD *a2)
 
 
 // 0x814e1c0
-int __fastcall sub_814E1C0(int a1, int a2)
+int __fastcall battleObj_runUpdateAndSetActive_814E1C0(int a1, int a2)
 {
     _BYTE *v2; // r1
     char v3; // r3
@@ -10152,7 +10152,7 @@ int __fastcall sub_814E1C0(int a1, int a2)
 
 
 // 0x814e1d4
-int __fastcall sub_814E1D4(int a1, int a2)
+int __fastcall sprite_moveYUp64AndMarkDirty_814E1D4(int a1, int a2)
 {
     char v2; // r3
     _BYTE *v3; // r1
@@ -10224,7 +10224,7 @@ int __fastcall sub_814E21C(int a1, int a2)
 
 
 // 0x814e234
-int __fastcall sub_814E234(int a1, int a2)
+int __fastcall chatbox_PrintBuffer_WriteNextGlyph_814E234(int a1, int a2)
 {
     char v2; // r3
     _BYTE *v3; // r1
@@ -10841,7 +10841,7 @@ void __fastcall sub_814E7A4(int a1, _BYTE *a2)
 
 
 // 0x814e7c0
-void __fastcall sub_814E7C0(int a1, int a2)
+void __fastcall streamReadNextByte_814E7C0(int a1, int a2)
 {
     unsigned __int8 *v2; // r2
     int v3; // r3
@@ -10860,7 +10860,7 @@ int __fastcall sub_814E7CC(int a1, int a2)
     int (*v4)(void); // r12
     int v5; // r3
 
-    sub_814E7C0(a1, a2);
+    streamReadNextByte_814E7C0(a1, a2);
     v3[25] = v5;
     if ( !v5 )
         sub_814E7A4(v2, v3);
@@ -10876,7 +10876,7 @@ int __fastcall sub_814E7E0(int a1, int a2)
     int (*v4)(void); // r12
     int v5; // r3
 
-    sub_814E7C0(a1, a2);
+    streamReadNextByte_814E7C0(a1, a2);
     v3[23] = v5;
     if ( !v5 )
         sub_814E7A4(v2, v3);
@@ -10919,7 +10919,7 @@ int __fastcall sub_814E85C(int a1)
 
 
 // 0x814e87c
-int __fastcall sub_814E87C(int a1, __int16 a2)
+int __fastcall battle_smashFx_SetParams_814E87C(int a1, __int16 a2)
 {
     int v3; // [sp+0h] [bp-4h]
 
@@ -11119,7 +11119,7 @@ int __fastcall sub_814EABC(int a1, __int16 a2)
 {
     int v3; // [sp+0h] [bp-4h]
 
-    sub_814E87C(a1, a2);
+    battle_smashFx_SetParams_814E87C(a1, a2);
     return v3;
 }
 
@@ -12640,7 +12640,7 @@ int __fastcall sub_814FE20(int a1, int a2)
 
 
 // 0x814fe34
-_BYTE *__fastcall sub_814FE34(int a1, int a2)
+_BYTE *__fastcall text_ReadNextChar_814FE34(int a1, int a2)
 {
     _BYTE *v2; // r0
     _BYTE *result; // r0
@@ -12654,7 +12654,7 @@ _BYTE *__fastcall sub_814FE34(int a1, int a2)
 
 
 // 0x814fe40
-_BYTE *__fastcall sub_814FE40(int a1, int a2)
+_BYTE *__fastcall readNextStreamByte_814FE40(int a1, int a2)
 {
     _BYTE *v2; // r0
     _BYTE *result; // r0

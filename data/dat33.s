@@ -1462,7 +1462,7 @@ sub_812CDF4::
 	mov r4, r0
 	bl sub_803EA50
 	mov r6, r0
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
@@ -1519,7 +1519,7 @@ loc_812CE7A::
 	mov r4, r0
 	bl sub_803EA50
 	mov r6, r0
-	bl sub_803EBAC
+	bl clearStruct200BC30_803EBAC
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
@@ -2098,7 +2098,7 @@ sub_812D310::
 	push {lr}
 	bl sub_812AF3C
 	bl loadDecompressedAsset_812AF78
-	bl sub_812AF84
+	bl textScript_loadAndRunEmbeddedArchive_812AF84
 	// initRefs
 	ldr r0, off_812D328 // =byte_812D32C 
 	bl decompAndCopyData // (u32 *initRefs) -> void

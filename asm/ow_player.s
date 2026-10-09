@@ -332,7 +332,7 @@ loc_809D3FC:
 	bl applyLayerEffectToOWObject_8035694
 loc_809D40A:
 	bl sprite_setPriority_8002E14
-	bl sub_809DFA0
+	bl owPlayer_isMoving_809DFA0
 	tst r0, r0
 	beq loc_809D446
 	bl IsCutsceneScriptNonNull // () -> !zf
@@ -389,13 +389,13 @@ sub_809D470:
 	mov r0, #4
 	strb r0, [r5,#oOWPlayerObject_Unk_0a]
 loc_809D484:
-	bl sub_809DB50
+	bl event_TestPlayerAdvanceForward_809DB50
 	beq loc_809D492
 	mov r0, #0x14
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	pop {r4,pc}
 loc_809D492:
-	bl sub_809DAF8
+	bl overworldObj_testStateBit10_809DAF8
 	tst r0, r0
 	beq loc_809D4A2
 	mov r0, #4
@@ -471,13 +471,13 @@ loc_809D520:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b loc_809D54E
 loc_809D530:
-	bl sub_809DB50
+	bl event_TestPlayerAdvanceForward_809DB50
 	beq loc_809D53E
 	mov r0, #0x14
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b locret_809D552
 loc_809D53E:
-	bl sub_809DAF8
+	bl overworldObj_testStateBit10_809DAF8
 	tst r0, r0
 	bne loc_809D54E
 	mov r0, #0
@@ -553,7 +553,7 @@ off_809D5BC:
 	thumb_local_start
 sub_809D5C4:
 	push {lr}
-	bl sub_809DDCC
+	bl owPlayer_TickCountdownOrWait_809DDCC
 	tst r0, r0
 	beq loc_809D60C
 	mov r0, #0x1c
@@ -639,14 +639,14 @@ loc_809D668:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b locret_809D6AE
 loc_809D678:
-	bl sub_809DB50
+	bl event_TestPlayerAdvanceForward_809DB50
 	beq loc_809D68A
 	mov r0, #0x14
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	bl sub_809DE30
 	b locret_809D6AE
 loc_809D68A:
-	bl sub_809DAF8
+	bl overworldObj_testStateBit10_809DAF8
 	tst r0, r0
 	beq loc_809D69A
 	mov r0, #4
@@ -731,7 +731,7 @@ off_809D728:
 	thumb_local_start
 sub_809D730:
 	push {lr}
-	bl sub_809DDCC
+	bl owPlayer_TickCountdownOrWait_809DDCC
 	tst r0, r0
 	beq loc_809D750
 	ldr r0, [r5,#oOWPlayerObject_Unk_38]
@@ -789,7 +789,7 @@ locret_809D796:
 	.balign 4, 0
 off_809D798:
 	.word sub_809D7A8+1
-	.word sub_809D7C8+1
+	.word ow_player_setCounterTalkStateAfterNpcInteract_809D7C8+1
 	.word sub_809D7D8+1
 off_809D7A4:
 	.word off_809D798
@@ -817,7 +817,7 @@ locret_809D7C6:
 	thumb_func_end sub_809D7A8
 
 	thumb_local_start
-sub_809D7C8:
+ow_player_setCounterTalkStateAfterNpcInteract_809D7C8:
 	push {lr}
 	ldr r7, [r5,#oOWPlayerObject_interactedNPCObject_58]
 	ldrb r0, [r7,#oOverworldNPCObject_MovementFlag_0a]
@@ -827,7 +827,7 @@ sub_809D7C8:
 	strb r0, [r5,#oOWPlayerObject_Unk_0a]
 locret_809D7D6:
 	pop {pc}
-	thumb_func_end sub_809D7C8
+	thumb_func_end ow_player_setCounterTalkStateAfterNpcInteract_809D7C8
 
 	thumb_local_start
 sub_809D7D8:
@@ -1247,13 +1247,13 @@ off_809DAF4:
 	thumb_func_end sub_809D9E0
 
 	thumb_local_start
-sub_809DAF8:
+overworldObj_testStateBit10_809DAF8:
 	mov r3, #0x4c 
 	ldrh r0, [r5,r3]
 	mov r1, #0x10
 	and r0, r1
 	mov pc, lr
-	thumb_func_end sub_809DAF8
+	thumb_func_end overworldObj_testStateBit10_809DAF8
 
 	thumb_local_start
 sub_809DB02:
@@ -1289,7 +1289,7 @@ loc_809DB4A:
 	thumb_func_end sub_809DB02
 
 	thumb_local_start
-sub_809DB50:
+event_TestPlayerAdvanceForward_809DB50:
 	push {lr}
 	movflag EVENT_1717_PLAYER_ADVANCE_FORWARD
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1297,7 +1297,7 @@ sub_809DB50:
 	mov r0, #0
 locret_809DB5E:
 	pop {pc}
-	thumb_func_end sub_809DB50
+	thumb_func_end event_TestPlayerAdvanceForward_809DB50
 
 	thumb_local_start
 sub_809DB60:
@@ -1572,7 +1572,7 @@ byte_809DDB4:
 	thumb_func_end sub_809DBC4
 
 	thumb_local_start
-sub_809DDCC:
+owPlayer_TickCountdownOrWait_809DDCC:
 	push {lr}
 	mov r0, #0
 	ldrh r1, [r5,#oOWPlayerObject_Unk_18]
@@ -1593,7 +1593,7 @@ locret_809DDE8:
 	.balign 4, 0
 dword_809DDEC:
 	.word 0xC00000
-	thumb_func_end sub_809DDCC
+	thumb_func_end owPlayer_TickCountdownOrWait_809DDCC
 
 	thumb_local_start
 sub_809DDF0:
@@ -1801,7 +1801,7 @@ off_809DF9C:
 	thumb_func_end sub_809DF44
 
 	thumb_local_start
-sub_809DFA0:
+owPlayer_isMoving_809DFA0:
 	push {lr}
 	mov r0, #1
 	ldr r1, [r5,#oOWPlayerObject_X]
@@ -1819,7 +1819,7 @@ sub_809DFA0:
 	mov r0, #0
 locret_809DFBE:
 	pop {pc}
-	thumb_func_end sub_809DFA0
+	thumb_func_end owPlayer_isMoving_809DFA0
 
 	thumb_local_start
 sub_809DFC0:
@@ -1830,7 +1830,7 @@ sub_809DFC0:
 	cmp r0, #8
 	bne loc_809DFD4
 loc_809DFCC:
-	bl sub_809DFA0
+	bl owPlayer_isMoving_809DFA0
 	tst r0, r0
 	beq loc_809DFDC
 loc_809DFD4:
@@ -1909,8 +1909,8 @@ dword_809E048:
 	.word 0xD80
 	thumb_func_end sub_809E01C
 
-	thumb_func_start sub_809E04C
-sub_809E04C:
+	thumb_func_start owPlayer_ClearStateBytes_D_E_F_809E04C
+owPlayer_ClearStateBytes_D_E_F_809E04C:
 	push {r0,r1,lr}
 	ldr r0, off_809E05C // =eOWPlayerObject 
 	mov r1, #0
@@ -1923,7 +1923,7 @@ off_809E05C:
 	.word eOWPlayerObject
 off_809E060:
 	.word eStruct2000aa0
-	thumb_func_end sub_809E04C
+	thumb_func_end owPlayer_ClearStateBytes_D_E_F_809E04C
 
 	thumb_func_start spawnOWPlayerObjectForEnterMap_809e064
 spawnOWPlayerObjectForEnterMap_809e064:
@@ -2519,8 +2519,8 @@ sub_809E3AA:
 	mov pc, lr
 	thumb_func_end sub_809E3AA
 
-	thumb_func_start sub_809E3B2
-sub_809E3B2:
+	thumb_func_start resetStruct2000aa0State_809E3B2
+resetStruct2000aa0State_809E3B2:
 	push {r4-r7,lr}
 	ldr r4, off_809E430 // =eStruct2000aa0 
 	mov r0, #0
@@ -2530,7 +2530,7 @@ sub_809E3B2:
 	strh r0, [r4,#0x14] // (dword_2000AB4 - 0x2000aa0)
 	strh r0, [r4,#0x18] // (dword_2000AB8 - 0x2000aa0)
 	pop {r4-r7,pc}
-	thumb_func_end sub_809E3B2
+	thumb_func_end resetStruct2000aa0State_809E3B2
 
 	thumb_func_start sub_809E3C4
 sub_809E3C4:

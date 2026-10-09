@@ -123,7 +123,7 @@ int __fastcall sub_801FF18(int result)
         v2 = *(v1 + oToolkit_S2034880_Ptr);
         if ( word_20399F2 & 0xFC00 )
         {
-            sub_800A0D6(0, word_20399F2);
+            input_recordStateChangeForEntry_800A0D6(0, word_20399F2);
             *(v2 + 20) = byte_20399F6;
             word_203614C = word_20399FC;
             if ( !((byte_20399F4 < 0) ^ v3) )
@@ -132,7 +132,7 @@ int __fastcall sub_801FF18(int result)
         v4 = eStruct203F7D8[0];
         if ( !eStruct203F7D8[0] || (v4 = word_2039A02, word_2039A02 & 0xFC00) )
         {
-            sub_800A0D6(1, v4);
+            input_recordStateChangeForEntry_800A0D6(1, v4);
             *(v2 + 21) = byte_2039A06;
             word_203631C = word_2039A0C;
             if ( !((byte_2039A04 < 0) ^ v3) )
@@ -143,7 +143,7 @@ int __fastcall sub_801FF18(int result)
         word_203678C = sub_803F740(4);
         if ( !(eStruct203F7D8[2] & 1) )
             goto LABEL_16;
-        result = sub_803EA2C();
+        result = net_isLinkConnected_803EA2C();
         if ( result )
             return result;
         v3 = __OFSUB__(eStruct203F7D8[3], 1);
@@ -189,7 +189,7 @@ int __fastcall sub_801FFD6(int result)
             v3 = *(v2 + oToolkit_S2034880_Ptr);
             if ( word_20399F2 & 0xFC00 )
             {
-                sub_800A0D6(0, word_20399F2);
+                input_recordStateChangeForEntry_800A0D6(0, word_20399F2);
                 *(v3 + 20) = byte_20399F6;
                 word_203614C = word_20399FC;
                 result = byte_20399F4;
@@ -202,7 +202,7 @@ int __fastcall sub_801FFD6(int result)
             v5 = eStruct203F7D8[0];
             if ( !eStruct203F7D8[0] || (v5 = word_2039A02, word_2039A02 & 0xFC00) )
             {
-                sub_800A0D6(1, v5);
+                input_recordStateChangeForEntry_800A0D6(1, v5);
                 *(v3 + 21) = byte_2039A06;
                 word_203631C = word_2039A0C;
                 result = byte_2039A04;
