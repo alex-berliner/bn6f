@@ -144,7 +144,7 @@ sub_812EB92:
 loc_812EB9A:
 	push {r1,r2}
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	pop {r1,r2}
 	bne locret_812EBAC
 	mov r0, r4
@@ -164,7 +164,7 @@ sub_812EBB8:
 	mov r1, #1
 	push {r1}
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	pop {r1}
 	bne locret_812EBD0
 	mov r2, #0xb4
@@ -185,7 +185,7 @@ sub_812EBD8:
 	mov r6, r1
 	bl sub_80465A0 // (void *a1) -> void
 	mov r0, r6
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_812EBFE
 	mov r5, r1
 	ldr r0, [sp]
@@ -418,7 +418,7 @@ loc_812ED6A:
 	mov r1, #0x30 
 loc_812ED8A:
 	mov r0, r1
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 locret_812ED90:
 	pop {pc}
 	.balign 4, 0x00

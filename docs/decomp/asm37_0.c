@@ -767,7 +767,7 @@ int __fastcall sub_813BC98(int a1)
 
 
 // 0x813bd0c
-void getWorkAreaPtr_2006CF8()
+void getWorkAreaPtr_2006CF8_813BD0C()
 {
     ;
 }
@@ -781,7 +781,7 @@ void sub_813BD10()
 
 
 // 0x813bd14
-void getWorkAreaPtr_2006CC0()
+void getWorkAreaPtr_2006CC0_813BD14()
 {
     ;
 }
@@ -1604,7 +1604,7 @@ int applyNavicustPrograms_813C684()
 
     ZeroFillByByte(byte_2006DD8, 8);
     v1 = 6;
-    getWorkAreaPtr_2006CF8();
+    getWorkAreaPtr_2006CF8_813BD0C();
     do
     {
         if ( *(v0 + v1) )
@@ -1649,7 +1649,7 @@ LABEL_8:
     }
     while ( v8 < 49 );
     v10 = 0;
-    getWorkAreaPtr_2006CC0();
+    getWorkAreaPtr_2006CC0_813BD14();
     do
     {
         if ( *(v0 + v10) )

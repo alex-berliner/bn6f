@@ -2175,7 +2175,7 @@ void __cdecl initNewGameData_8004DF0()
     sub_80AA004(0);
     sub_80AA104(0);
     sub_802D638();
-    clearWorkBuffer_2000DC0();
+    clearWorkBuffer_2000DC0_80356EC();
     *&gs->MapSelect = byte_100;
     gs->unk_44 = byte_100;
     *&gs->pad_48[oGameState_Unk_10] = byte_100;
@@ -2194,7 +2194,7 @@ void __cdecl initNewGameData_8004DF0()
     gs->unk_30 = 4;
     gs->unk_40 = 4;
     *&gs->pad_48[oGameState_LastMapGroup] = 4;
-    v13 = gameProgress_resetBuffer_803532c();
+    v13 = initGameProgressBuffer_803532c();
     sub_8021D36(v13, v14, v15, v16);
     ZeroFillByWord(*(v2 + oToolkit_S_Chip_2002178_Ptr), 180);
     zeroFill_e2002230();
@@ -2514,7 +2514,7 @@ int __fastcall sub_80053E4(int a1)
     {
         chatbox_8040818();
         v4 = sub_80035A2(0x25u);
-        clearWorkBuffer_2011A40(v4, v5, v6, v7);
+        clearWorkBuffer_2011A40_80341AA(v4, v5, v6, v7);
         v8 = *v1;
         *v8 = 8;
         sub_8005F40(v8, 8, v9, v10);
@@ -3820,7 +3820,7 @@ _BYTE *sub_8005F84()
     SetRenderInfoLCDControl(&byte_40);
     sub_809F68C();
     chatbox_8040818();
-    chatbox_clearEventFlags2009F38(64);
+    chatbox_clear_eFlags2009F38(64);
     **v0 = 4;
     result = *(v0 + oToolkit_GameStatePtr);
     *result = 0;

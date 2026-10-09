@@ -4091,7 +4091,7 @@ initNewGameData_8004DF0:
 
 	bl sub_802D638
 
-	bl clearWorkBuffer_2000DC0
+	bl clearWorkBuffer_2000DC0_80356EC
 
 	ldr r0, off_80050E4 // =0x100
 	strh r0, [r5,#oGameState_MapGroup]
@@ -4119,7 +4119,7 @@ initNewGameData_8004DF0:
 	str r0, [r5,#oGameState_SavedRealWorldFacingDirection]
 	str r0, [r5,#0x54]
 
-	bl gameProgress_resetBuffer_803532c
+	bl initGameProgressBuffer_803532c
 
 	bl sub_8021D36
 
@@ -4254,7 +4254,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl sub_802F0D8
 	bl sub_802F0F4
 	bl cutscene_8036EFE
-	bl cutscene_clearScriptPosIfDummyValue_8036F24
+	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl sub_809F90C
 
 	movflag EVENT_1731
@@ -4375,7 +4375,7 @@ off_8005264:
 gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	push {lr}
 
-	bl cutscene_clearScriptPosIfDummyValue_8036F24
+	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 
 	bl cutscene_8034BB8
 
@@ -4571,7 +4571,7 @@ sub_80053E4: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl clearWorkBuffer_2011A40
+	bl clearWorkBuffer_2011A40_80341AA
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
 	mov r1, #8
@@ -6035,7 +6035,7 @@ sub_8005F84:
 	bl sub_809F68C
 	bl chatbox_8040818
 	mov r0, #0x40
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
 	mov r1, #4

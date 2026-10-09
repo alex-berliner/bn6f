@@ -542,7 +542,7 @@ int navi_80340F6()
 
 
 // 0x80341aa
-void __fastcall clearWorkBuffer_2011A40(int a1, int a2, int a3, int a4)
+void __fastcall clearWorkBuffer_2011A40_80341AA(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&byte_2011A40, 12);
 }
@@ -1558,7 +1558,7 @@ int ghostNaviCheck_8035274()
 
 
 // 0x803532c
-int gameProgress_resetBuffer_803532c()
+int initGameProgressBuffer_803532c()
 {
     int v0; // r10
     char *v1; // r6
@@ -1782,7 +1782,7 @@ int __fastcall sub_8035694(int *a1)
 
 
 // 0x80356ec
-void __fastcall clearWorkBuffer_2000DC0()
+void __fastcall clearWorkBuffer_2000DC0_80356EC()
 {
     ZeroFillByWord(&dword_2000DC0, byte_100);
 }
@@ -3962,9 +3962,9 @@ signed int sub_8037A7C()
 
     ReadMapScriptByte(2, v0);
     if ( ReadMapScriptByte(1, v0) == 1 )
-        chatbox_clearEventFlags2009F38(v1);
+        chatbox_clear_eFlags2009F38(v1);
     else
-        chatbox_setEventFlags2009F38(v1);
+        chatbox_set_eFlags2009F38(v1);
     return 1;
 }
 
@@ -15063,7 +15063,7 @@ void __cdecl clearChatboxAndEvent()
     Toolkit *tk; // r10
 
     ZeroFillByWord(tk->chatbox, &dword_230);
-    chatbox_clearEventFlags2009F38(200);
+    chatbox_clear_eFlags2009F38(200);
 }
 
 

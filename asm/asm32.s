@@ -17435,7 +17435,7 @@ sub_8116FDC:
 	add r7, r4, #3
 loc_8116FEE:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811704A
 	mov r5, r1
 	ldr r3, [sp,#0xc]
@@ -17518,7 +17518,7 @@ sub_8117084:
 	add r6, r2, #3
 loc_8117090:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_81170A6
 	ldr r0, [sp]
 	strh r0, [r1,#0xc]
@@ -17699,7 +17699,7 @@ sub_81171D4:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_81171EE
 	mov r5, r1
 	ldr r0, [sp]
@@ -17717,7 +17717,7 @@ sub_81171F4:
 	sub sp, sp, #8
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8117214
 	ldrb r2, [r1,#6]
 	mov r3, #2
@@ -19146,7 +19146,7 @@ sub_8117D10:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_8117D28
 	tst r6, r6
 	bne loc_8117D24
@@ -21786,7 +21786,7 @@ off_81190F4:
 sub_81190F8:
 	push {r4,r5,lr}
 	mov r4, #0
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8119110
 	mov r5, r1
 	bl sprite_getFrameParameters
@@ -21804,7 +21804,7 @@ loc_8119110:
 	thumb_func_start sub_8119118
 sub_8119118:
 	push {lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_8119124
 	mov r0, #8
 	strb r0, [r1,#8]
@@ -22613,7 +22613,7 @@ sub_811980C:
 	add r7, r4, #3
 loc_811981C:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8119830
 	ldr r0, [sp]
 	strh r0, [r1,#0xe]
@@ -22636,7 +22636,7 @@ sub_811983C:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811984E
 	ldr r0, [sp]
 	strb r0, [r1,#0x13]
@@ -22657,7 +22657,7 @@ sub_8119854:
 	add r7, r4, #3
 loc_8119862:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8119874
 	mov r5, r1
 	ldr r0, [sp]
@@ -23076,7 +23076,7 @@ sub_8119BE8:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8119C02
 	mov r5, r1
 	ldr r0, [sp]
@@ -23156,7 +23156,7 @@ sub_8119C74:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8119C8E
 	mov r0, #0x23
 	ldr r2, [sp]
@@ -23277,7 +23277,7 @@ byte_8119DC8:
 sub_8119DE8:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	mov r6, r1
 	add r1, #0x20
 	ldrh r0, [r1,#0xc]
@@ -23813,7 +23813,7 @@ sub_811A1F4:
 	mov r4, r2
 loc_811A202:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811A216
 	ldr r0, [sp]
 	strh r0, [r1,#0xe]
@@ -23840,7 +23840,7 @@ sub_811A220:
 	add r7, r4, #4
 loc_811A22E:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811A240
 	mov r5, r1
 	ldr r0, [sp]
@@ -24101,7 +24101,7 @@ off_811A3EC:
 	mov r4, r2
 	add r7, r4, #4
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811A410
 	mov r5, r1
 	ldr r0, [sp]
@@ -24376,7 +24376,7 @@ sub_811A610:
 	push {r4,r5,lr}
 	mov r4, r0
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811A63C
 	ldrb r0, [r1]
 	mov r2, #8
@@ -24684,7 +24684,7 @@ sub_811A838:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811A852
 	mov r5, r1
 	ldr r0, [sp]
@@ -24785,7 +24785,7 @@ sub_811A8F4:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811A90E
 	mov r5, r1
 	ldr r0, [sp]
@@ -24802,7 +24802,7 @@ sub_811A914:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	mov r5, r1
 	lsl r4, r4, #2
 	ldr r1, off_811A934 // =byte_811A938
@@ -24824,7 +24824,7 @@ sub_811A940:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	mov r5, r1
 	mov r0, r4
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -24842,7 +24842,7 @@ locret_811A964:
 	thumb_func_start sub_811A968
 sub_811A968:
 	push {r4-r7,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	mov r5, r1
 	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
 	pop {r4-r7,pc}
@@ -25053,7 +25053,7 @@ off_811AB28:
 
 	push {r4,r5,lr}
 	mov r4, #0
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811AB44
 	mov r5, r1
 	bl sprite_getFrameParameters
@@ -25067,7 +25067,7 @@ loc_811AB44:
 	pop {r4,r5,pc}
 	.balign 4, 0x00
 	push {lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811AB58
 	mov r0, #8
 	strb r0, [r1,#8]
@@ -25290,7 +25290,7 @@ sub_811AD04:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811AD16
 	strh r4, [r1,#0xc]
 	mov r0, #0
@@ -25307,7 +25307,7 @@ sub_811AD18:
 	str r1, [sp,#4]
 	str r2, [sp,#8]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811AD34
 	mov r5, r1
 	ldr r0, [sp]
@@ -25478,7 +25478,7 @@ sub_811AE5C:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811AE76
 	mov r5, r1
 	ldr r0, [sp]
@@ -25497,7 +25497,7 @@ sub_811AE7C:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811AEF4
 	mov r5, r1
 	mov r1, #1
@@ -25628,7 +25628,7 @@ off_811AFD4:
 	thumb_func_end sub_811AE7C
 
 	push {r4-r7,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811AFFA
 	mov r5, r1
 	mov r0, #0x23
@@ -25644,7 +25644,7 @@ off_811AFD4:
 locret_811AFFA:
 	pop {r4-r7,pc}
 	push {r4-r7,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811B00E
 	mov r5, r1
 	mov r0, #0x23
@@ -25656,7 +25656,7 @@ locret_811B00E:
 	thumb_func_start sub_811B010
 sub_811B010:
 	push {r4-r7,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811B026
 	mov r5, r1
 	ldrb r0, [r5,#0x11]
@@ -26043,7 +26043,7 @@ byte_811B304:
 sub_811B314:
 	push {r4,r5,lr}
 	mov r4, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811B336
 	ldrb r0, [r1]
 	mov r2, #8
@@ -26224,7 +26224,7 @@ sub_811B46C:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811B486
 	mov r5, r1
 	ldr r0, [sp]
@@ -26242,7 +26242,7 @@ sub_811B48C:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811B4A6
 	mov r0, #0x23
 	ldr r2, [sp]
@@ -27203,7 +27203,7 @@ sub_811BC00:
 	str r2, [sp,#8]
 	str r3, [sp,#0xc]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811BC20
 	ldr r0, [sp]
 	strh r0, [r1,#0xe]
@@ -27224,7 +27224,7 @@ sub_811BC24:
 	str r1, [sp,#4]
 	str r2, [sp,#8]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811BC40
 	mov r5, r1
 	ldr r0, [sp]
@@ -27363,7 +27363,7 @@ sub_811BD3C:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811BD5E
 	mov r5, r1
 	ldr r0, [sp]
@@ -27468,7 +27468,7 @@ sub_811BDFC:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811BE16
 	mov r5, r1
 	ldr r0, [sp]
@@ -27580,7 +27580,7 @@ sub_811BED4:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811BEF4
 	mov r0, #1
 	tst r4, r4
@@ -27918,7 +27918,7 @@ sub_811C23C:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811C256
 	mov r5, r1
 	ldr r0, [sp]
@@ -27984,7 +27984,7 @@ sub_811C2A8:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811C316
 	mov r5, r1
 	mov r1, #0x23
@@ -28118,7 +28118,7 @@ byte_811C460:
 	thumb_func_start sub_811C4D8
 sub_811C4D8:
 	push {lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811C4E4
 	mov r0, #1
 	strb r0, [r1]
@@ -28187,7 +28187,7 @@ sub_811C53C:
 	thumb_local_start
 sub_811C544:
 	push {r5,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811C550
 	mov r0, #1
 	strb r0, [r1,#0x12]
@@ -28202,7 +28202,7 @@ sub_811C554:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811C5C8
 	mov r5, r1
 	mov r1, #0x23
@@ -29733,7 +29733,7 @@ sub_811D2E0:
 	thumb_local_start
 sub_811D2E8:
 	push {r5,lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811D2F6
 	mov r5, r1
 	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
@@ -30071,7 +30071,7 @@ sub_811D634:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r0, r2
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811D64E
 	mov r5, r1
 	bl sub_811D6CC
@@ -30093,7 +30093,7 @@ sub_811D66C:
 	str r0, [sp]
 	mov r0, r1
 	mov r6, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811D692
 	mov r5, r1
 	ldr r0, [sp]
@@ -30122,7 +30122,7 @@ sub_811D69C:
 	str r0, [sp]
 	mov r0, r1
 	mov r6, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811D6C2
 	mov r5, r1
 	ldr r0, [sp]
@@ -30707,7 +30707,7 @@ sub_811DBD0:
 	thumb_func_start sub_811DBF0
 sub_811DBF0:
 	push {lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811DBFC
 	mov r0, #0xc
 	strb r0, [r1,#0xc]
@@ -30804,7 +30804,7 @@ sub_811DC88:
 	sub sp, sp, #4
 	str r0, [sp]
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_811DD06
 	mov r5, r1
 	mov r1, #1
@@ -30938,7 +30938,7 @@ byte_811DE94:
 	thumb_func_start sub_811DF0C
 sub_811DF0C:
 	push {lr}
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_811DF18
 	mov r0, #1
 	strb r0, [r1]
@@ -33813,7 +33813,7 @@ sub_811F728:
 	bl chatbox_8040818
 
 	mov r0, #0x40
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 
 	pop {pc}
 	thumb_func_end sub_811F728
@@ -36966,7 +36966,7 @@ loc_8120D46:
 	b loc_8120D9A
 loc_8120D64:
 	mov r0, #0x22
-	bl folder_findSlotInUseIndex_81377EC
+	bl isFolderSlotInUse_81377EC
 	mov r2, r0
 	cmp r2, #3
 	bge loc_8120D8A

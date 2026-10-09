@@ -189,7 +189,7 @@ int sub_8130290()
 	int result; // r0
 	char v1; // zf
 
-	result = getStructEntryFlag2008450(0);
+	result = getStructFrom2008450(0);
 	if ( v1 )
 		result = sub_81302D0(byte_812F04C, 0, 64);
 	return result;
@@ -202,7 +202,7 @@ int sub_81302B0()
 	int result; // r0
 	char v1; // zf
 
-	result = getStructEntryFlag2008450(1);
+	result = getStructFrom2008450(1);
 	if ( v1 )
 		result = sub_81302D0(byte_812F054, 1, 176);
 	return result;
@@ -220,7 +220,7 @@ int __fastcall sub_81302D0(void *a1, int a2, int a3)
 	v6 = a3;
 	v3 = a2;
 	sub_80465A0(a1);
-	result = getStructEntryFlag2008450(v3);
+	result = getStructFrom2008450(v3);
 	if ( !v5 )
 		result = sprite_setCoordinates(v6, 68);
 	return result;
@@ -299,7 +299,7 @@ void sub_8130424()
 	{
 		if ( eStruct200BC30_getRef()[14] == 2 )
 			v1 = 48;
-		chatbox_runScript_eTextScript201BA20(v1);
+		chatbox_runScript_803FD9C_on_eTextScript201BA20(v1);
 	}
 }
 
@@ -567,14 +567,14 @@ signed int __fastcall sub_81307BC(int a1)
 
 	if ( sub_8130780(a1) )
 	{
-		chatbox_runScript_eTextScript201BA20(62);
+		chatbox_runScript_803FD9C_on_eTextScript201BA20(62);
 	}
 	else
 	{
 		result = sub_8120DAC(v2);
 		if ( !result )
 			return result;
-		chatbox_runScript_eTextScript201BA20(63);
+		chatbox_runScript_803FD9C_on_eTextScript201BA20(63);
 	}
 	v1[73] = v1[2];
 	v1[2] = 28;
@@ -791,7 +791,7 @@ LABEL_27:
 							*(v0 + 38) = 0;
 							*(v0 + 42) = -295;
 							sub_8131C04();
-							chatbox_runScript_eTextScript201BA20(65);
+							chatbox_runScript_803FD9C_on_eTextScript201BA20(65);
 						}
 						else
 						{
@@ -811,7 +811,7 @@ LABEL_27:
 					*(v0 + 16) = 4;
 					if ( v12 != 2 )
 					{
-						chatbox_runScript_eTextScript201BA20(64);
+						chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
 						v13 = 3;
 						if ( *(v0 + 38) == 8 )
 							v13 = 4;
@@ -959,7 +959,7 @@ int sub_8130BC8()
 				if ( *(v12 + 10) == 65244 )
 				{
 					*(v0 + 2) = 4;
-					chatbox_runScript_eTextScript201BA20(104);
+					chatbox_runScript_803FD9C_on_eTextScript201BA20(104);
 					*(v0 + 27) |= 0x20u;
 				}
 			}
@@ -1199,7 +1199,7 @@ LABEL_22:
     sub_813188C(1);
     *(v0 + 2) = 48;
     *(v0 + 31) = 24;
-    chatbox_runScript_eTextScript201BA20(65);
+    chatbox_runScript_803FD9C_on_eTextScript201BA20(65);
     *(v0 + 40) = 240;
 }
 
@@ -1488,7 +1488,7 @@ int sub_8131150()
             v2 = *(v0 + 31);
             *(v0 + 2) = v2;
             if ( v2 == 4 )
-                chatbox_runScript_eTextScript201BA20(104);
+                chatbox_runScript_803FD9C_on_eTextScript201BA20(104);
             else
                 chatbox_8040818();
         }
@@ -1535,7 +1535,7 @@ void sub_8131210()
         if ( !v5 )
         {
             *(v3 + 27) &= 0xDFu;
-            chatbox_runScript_eTextScript201BA20(*(&dword_81312D4 + v4[12]));
+            chatbox_runScript_803FD9C_on_eTextScript201BA20(*(&dword_81312D4 + v4[12]));
         }
         return;
     }
@@ -1551,7 +1551,7 @@ LABEL_10:
         if ( v6 != v7 )
         {
             v4[12] = v7;
-            chatbox_runScript_eTextScript201BA20(*(&dword_81312D4 + v7));
+            chatbox_runScript_803FD9C_on_eTextScript201BA20(*(&dword_81312D4 + v7));
             sub_81314E4();
         }
         goto LABEL_13;
@@ -1567,7 +1567,7 @@ LABEL_13:
     JoypadKeyPressed();
     if ( v5 )
         return;
-    chatbox_runScript_eTextScript201BA20(105);
+    chatbox_runScript_803FD9C_on_eTextScript201BA20(105);
     v9 = 4;
     if ( *(v3 + 17) )
     {
@@ -1680,7 +1680,7 @@ void sub_81313C0()
     {
         if ( eStruct200BC30_getRef()[14] == 2 )
             v1 = 48;
-        chatbox_runScript_eTextScript201BA20(v1);
+        chatbox_runScript_803FD9C_on_eTextScript201BA20(v1);
     }
 }
 
@@ -1930,7 +1930,7 @@ signed int __fastcall sub_8131768(int a1, int a2, int a3)
     *(v3 + 38) = 0;
     *(v3 + 42) = -292;
     PlaySoundEffect(131, 65244, a3);
-    chatbox_runScript_eTextScript201BA20(104);
+    chatbox_runScript_803FD9C_on_eTextScript201BA20(104);
     result = 32;
     *(v3 + 27) |= 0x20u;
     return result;
@@ -1943,7 +1943,7 @@ signed int sub_813178C()
     int v0; // r5
     signed int result; // r0
 
-    chatbox_runScript_eTextScript201BA20(103);
+    chatbox_runScript_803FD9C_on_eTextScript201BA20(103);
     *(v0 + 2) = 12;
     *(v0 + 3) = 0;
     result = 65242;
@@ -2616,7 +2616,7 @@ void sub_8132194()
 
 
 // 0x8132280
-void __fastcall chatbox_runScript_eTextScript201BA20(int a1)
+void __fastcall chatbox_runScript_803FD9C_on_eTextScript201BA20(int a1)
 {
     chatbox_runScript_803FD9C(eTextScript201BA20, a1);
 }
@@ -3412,7 +3412,7 @@ void __noreturn SaveMenuOpenUpdate8132C50()
     IsPaletteFadeActive();
     if ( !v1 )
     {
-        chatbox_clearEventFlags2009F38(64);
+        chatbox_clear_eFlags2009F38(64);
         *(v0 + 2) = 4;
     }
     saveMenuTextGfx_8132F4C();
@@ -3430,7 +3430,7 @@ void __noreturn SaveMenuUpdate8132C68()
     {
         *(v0 + 1) = 8;
         engine_setScreeneffect(12, 12);
-        chatbox_setEventFlags2009F38(64);
+        chatbox_set_eFlags2009F38(64);
     }
     saveMenuTextGfx_8132F4C();
 }
@@ -3444,7 +3444,7 @@ void __noreturn ExitSaveMenu8132CA0()
     IsPaletteFadeActive();
     if ( !v0 )
     {
-        chatbox_setEventFlags2009F38(64);
+        chatbox_set_eFlags2009F38(64);
         sub_811F708();
     }
     saveMenuTextGfx_8132F4C();
@@ -4712,7 +4712,7 @@ signed int sub_8133C9C()
     int v10; // r1
     int v11; // r2
 
-    getStructEntryFlag2008450(4);
+    getStructFrom2008450(4);
     if ( !v3 && *(v0 + 32) + *(v0 + 36) == *(v0 + 28) )
     {
         *(v1 + 8) = 8;
@@ -4788,7 +4788,7 @@ signed int sub_8133D64()
     v1 = 5;
     do
     {
-        getStructEntryFlag2008450(v1);
+        getStructFrom2008450(v1);
         if ( v2 )
             break;
         ++v1;
@@ -4941,7 +4941,7 @@ int sub_81340AC()
     v1 = 0;
     do
     {
-        result = getStructEntryFlag2008450(v1);
+        result = getStructFrom2008450(v1);
         if ( !v4 )
         {
             if ( !v1 )
@@ -4964,7 +4964,7 @@ int sub_81340DC()
     char v1; // zf
 
     sub_80465A0(byte_813314C);
-    result = getStructEntryFlag2008450(3);
+    result = getStructFrom2008450(3);
     if ( !v1 )
         result = sprite_setCoordinates(192, 3);
     return result;
@@ -5983,7 +5983,7 @@ int __fastcall sub_8134F88(int result)
 
     if ( result == *(v1 + 28) )
     {
-        result = getStructEntryFlag2008450(4);
+        result = getStructFrom2008450(4);
         if ( !v3 )
         {
             *(v2 + 8) = 8;
@@ -6033,7 +6033,7 @@ int sub_8134FE0()
     v1 = 0;
     do
     {
-        getStructEntryFlag2008450(*&byte_8135024[v1 * 4]);
+        getStructFrom2008450(*&byte_8135024[v1 * 4]);
         if ( !v3 )
             *(v2 + 8) = 8;
         *&(&off_8135018)[v1][v0] = 0xFFFF;
@@ -6909,7 +6909,7 @@ int __fastcall sub_81359A0(int a1, int a2, int a3)
     v5 = *(v3 + 48);
     *(v3 + 50) = v5;
     sub_813652C(v5, a2, a3);
-    getStructEntryFlag2008450(10);
+    getStructFrom2008450(10);
     if ( v6 )
     {
         if ( *(v3 + 48) )
@@ -7127,7 +7127,7 @@ int sub_8135B54()
     if ( !v3 )
     {
         chatbox_8040818();
-        chatbox_clearEventFlags2009F38(64);
+        chatbox_clear_eFlags2009F38(64);
         v4 = *v0;
         ZeroFillByWord(*(v1 + oToolkit_SubmenuPtr), 128);
         if ( v4 == 40 )
@@ -9700,7 +9700,7 @@ int __fastcall GiveFolder(signed int a1)
     v2 = a1;
     v3 = off_8137868[a1 & 0xF];
     v4 = 1;
-    v5 = folder_findSlotInUseIndex_81377EC(a1);
+    v5 = isFolderSlotInUse_81377EC(a1);
     if ( v5 == 3 )
     {
         v4 = 0;
@@ -9753,7 +9753,7 @@ signed int sub_8137790()
 
 
 // 0x81377ec
-signed int __fastcall folder_findSlotInUseIndex_81377EC(unsigned int a1)
+signed int __fastcall isFolderSlotInUse_81377EC(unsigned int a1)
 {
     unsigned int v1; // r0
     int v2; // r1
@@ -9791,7 +9791,7 @@ signed int __fastcall takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C(un
     signed int v9; // [sp-4h] [bp-18h]
 
     v2 = a1;
-    result = folder_findSlotInUseIndex_81377EC(a1);
+    result = isFolderSlotInUse_81377EC(a1);
     v4 = result;
     if ( result == 3 )
     {
@@ -9993,7 +9993,7 @@ signed int sub_8137A7C()
     if ( !v2 )
     {
         chatbox_8040818();
-        chatbox_clearEventFlags2009F38(64);
+        chatbox_clear_eFlags2009F38(64);
         ClearEventFlagRangeFromImmediate(0, 191, 19);
         TestEventFlagFromImmediate(23, 16);
         if ( !v2 )

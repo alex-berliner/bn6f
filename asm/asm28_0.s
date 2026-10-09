@@ -4427,7 +4427,7 @@ sub_809C7A0:
 	strb r2, [r5,#0x13]
 	str r1, [r5,#0x3c]
 	mov r0, r1
-	bl cutscene_setCameraScript
+	bl SetCutsceneCameraScript
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0

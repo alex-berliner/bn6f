@@ -342,7 +342,7 @@ loc_80004C0:
 	bl initNewGameData_8004DF0
 	bl sub_8004D48
 	bl cutscene_8036ED4
-	bl cutscene_clearScriptPosIfDummyValue_8036F24
+	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl zeroFill_e20094C0
 	bl zeroFill_e20097A0
 	bl zeroFill_e2009740

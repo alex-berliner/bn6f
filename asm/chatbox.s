@@ -289,7 +289,7 @@ chatbox_onUpdate: // () -> void
 .if_803FEC2
 
 	ldr r0, off_803FF28 // =0x338
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 
 	// int flag: r0
 	mov r0, #0x40
@@ -1038,7 +1038,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	ldr r1, off_80404A0 // =eFlags2009F38
 	str r0, [r1]
 	mov r0, #0x80
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	bl chatbox_8045F60
 	// mask
 	ldr r0, Flags8040494 // =FLAGS_3E_HIDE_CHATBOX
@@ -1196,7 +1196,7 @@ chatbox_reqBBS_80404C0:
 	ldr r1, off_80405D8 // =eFlags2009F38
 	str r0, [r1]
 	mov r0, #0x80
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	bl chatbox_8045F60
 	// mask
 	ldr r0, Flags80405D4 // =FLAGS_3E_HIDE_CHATBOX
@@ -1352,7 +1352,7 @@ dead_80405F8:
 	ldr r1, off_8040710 // =eFlags2009F38
 	str r0, [r1]
 	mov r0, #0x80
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	bl chatbox_8045F60
 	// mask
 	ldr r0, Flags804070C // =FLAGS_3E_HIDE_CHATBOX
@@ -1598,7 +1598,7 @@ chatbox_8040818:
 	mov r0, #0
 	strb r0, [r5,#oChatbox_Visible]
 	mov r0, #0xc8
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	pop {r5,pc}
 	.balign 4, 0x00
 	thumb_func_end chatbox_8040818
@@ -2490,7 +2490,7 @@ loc_8040ECA:
 	pop {pc}
 loc_8040EDC:
 	mov r0, #0x80
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	mov r0, #0
 	strb r0, [r5,#oChatbox_Visible]
 	strb r0, [r5,#oChatbox_TextScriptState_04]
@@ -3247,9 +3247,9 @@ loc_804139A:
 	mov r0, #0x50
 	bl chatbox_clearFlags_3e // (int mask) -> void
 	mov r0, #7
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
 	mov r1, #0x80
 	ldrb r1, [r5,r1]
@@ -3257,7 +3257,7 @@ loc_804139A:
 	cmp r0, r1
 	bne loc_80413C0
 	mov r0, #0x10
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
 loc_80413C0:
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
@@ -3288,7 +3288,7 @@ loc_80413EE:
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78] // ChatBoxPropreties.unk_78
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0
 	pop {r3,pc}
 loc_8041400:
@@ -3300,15 +3300,15 @@ loc_8041400:
 	tst r1, r2
 	bne loc_8041448
 	ldr r0, off_804147C // =0x110
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #7
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	mov r0, #0x80 // ChatBoxPropreties.unk_80
 	ldr r0, [r5,r0]
 	strb r0, [r5,#oChatbox_Unk_12] // ChatBoxPropreties.unk_12
 	sub r0, #1
 	strb r0, [r5,#oChatbox_ChoiceCursorPos]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0x80
 	bl chatbox_maskFlags_3e // (int mask) -> void
 
@@ -3342,7 +3342,7 @@ loc_8041448:
 	pop {r3,pc}
 loc_8041468:
 	ldr r0, off_8041478 // =0x130
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	ldrb r0, [r4,#1]
 	ldrb r1, [r4,#2]
 	add r4, r4, r0
@@ -3421,7 +3421,7 @@ loc_8041500:
 	mov r0, #FLAGS_3E_UNK_0001
 	bl chatbox_setflags_3e // (int mask) -> void
 	mov r0, #8
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0
 	pop {pc}
 loc_8041510:
@@ -4367,7 +4367,7 @@ dword_8041BD4:
 chatbox_F2_clearmsgbox:
 	push {lr}
 	ldr r0, Flags8041C50 // =0x200
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	ldrb r2, [r5,#oChatbox_TextScriptPrintSpeed]
 	tst r2, r2
 	beq loc_8041BF2
@@ -4438,17 +4438,17 @@ chatbox_F3_control:
 	beq loc_8041C64
 loc_8041C64:
 	ldrb r0, [r4,#2]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	add r4, #3
 	b loc_8041C80
 loc_8041C6E:
 	mov r0, #0x40
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	add r4, #2
 	b loc_8041C80
 loc_8041C78:
 	mov r0, #0x40
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	add r4, #2
 loc_8041C80:
 	mov r0, #1
@@ -6850,16 +6850,16 @@ loc_8042DBA:
 	mov r0, #FLAGS_3E_UNK_0010 | FLAGS_3E_UNK_0001
 	bl chatbox_clearFlags_3e // (int mask) -> void
 	mov r0, #7
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	ldrb r0, [r5,#0x13]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0
 	strb r0, [r5,#4]
 	strh r0, [r5,#0xc]
 	mov r0, #4
 	str r0, [r5,#0x78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	add r4, #2
 	mov r0, #0
 	pop {pc}
@@ -6937,7 +6937,7 @@ loc_8042E66:
 	mov r0, #4
 	str r0, [r5,#0x78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r2, #1
 	ldrb r1, [r4,#1]
 	cmp r1, #3
@@ -7519,16 +7519,16 @@ loc_8043276:
 	mov r0, #FLAGS_3E_UNK_0010 | FLAGS_3E_UNK_0001
 	bl chatbox_clearFlags_3e // (int mask) -> void
 	mov r0, #7
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0
 	strb r0, [r5,#oChatbox_TextScriptState_04]
 	strh r0, [r5,#oChatbox_BoxYX]
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	add r4, #2
 	mov r0, #0
 	pop {pc}
@@ -7779,7 +7779,7 @@ loc_804345A:
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r2, #1
 	ldrb r1, [r4,#1]
 	cmp r1, #3
@@ -8020,7 +8020,7 @@ loc_804362C:
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r2, #1
 	ldrb r0, [r4,#5]
 	mov r1, #0x80
@@ -8295,7 +8295,7 @@ loc_8043832:
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r2, #1
 	ldrb r1, [r4,#1]
 	cmp r1, #3
@@ -8533,16 +8533,16 @@ loc_8043A04:
 	mov r0, #FLAGS_3E_UNK_0010 | FLAGS_3E_UNK_0001
 	bl chatbox_clearFlags_3e // (int mask) -> void
 	mov r0, #7
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	mov r0, #0
 	strb r0, [r5,#oChatbox_TextScriptState_04]
 	strh r0, [r5,#oChatbox_BoxYX]
 	mov r0, #4
 	str r0, [r5,#oChatbox_Unk_78]
 	mov r0, #0x20
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	add r4, #2
 	mov r0, #0
 	pop {pc}
@@ -10494,9 +10494,9 @@ sub_8045F0C:
 // symdb: ORs the given bits into the eFlags2009F38 event-flag word, leaving the new value in the NZ flags.
 // symdb: void chatbox_set_eFlags2009F38(u32 bits /*r0*/); // sets flags NZ per the resulting word;
 // symdb: preserves r1, r2
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setEventFlags2009F38.yaml
-	thumb_func_start chatbox_setEventFlags2009F38
-chatbox_setEventFlags2009F38:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_set_eFlags2009F38.yaml
+	thumb_func_start chatbox_set_eFlags2009F38
+chatbox_set_eFlags2009F38:
 	push {r1,r2}
 	ldr r1, off_8045F48 // =eFlags2009F38
 	ldr r2, [r1]
@@ -10505,15 +10505,15 @@ chatbox_setEventFlags2009F38:
 	pop {r1,r2}
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end chatbox_setEventFlags2009F38
+	thumb_func_end chatbox_set_eFlags2009F38
 
 // (int a1) ->
 // symdb: Clears the selected bits of the chatbox/event flag word at 0x2009F38 (e.g. dismissing per-dialogue state).
 // symdb: void chatbox_clear_eFlags2009F38(u32 mask /* r0 */); returns flags NZ = new flag word, r1-r2
 // symdb: preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clearEventFlags2009F38.yaml
-	thumb_func_start chatbox_clearEventFlags2009F38
-chatbox_clearEventFlags2009F38:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clear_eFlags2009F38.yaml
+	thumb_func_start chatbox_clear_eFlags2009F38
+chatbox_clear_eFlags2009F38:
 	push {r1,r2}
 	ldr r1, off_8045F48 // =eFlags2009F38
 	ldr r2, [r1]
@@ -10522,7 +10522,7 @@ chatbox_clearEventFlags2009F38:
 	pop {r1,r2}
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end chatbox_clearEventFlags2009F38
+	thumb_func_end chatbox_clear_eFlags2009F38
 
 
 	thumb_func_start chatbox_mask_eFlags2009F38

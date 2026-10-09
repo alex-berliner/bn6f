@@ -14108,7 +14108,7 @@ clearChatboxAndEvent:
 	ldr r1, off_803FD04 // =0x230
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0xc8
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	pop {pc}
 	.balign 4, 0
 off_803FD04:

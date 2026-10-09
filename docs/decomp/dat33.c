@@ -153,7 +153,7 @@ int sub_812C3BC()
                             *(v0 + 16) = 4;
                             if ( v12 != 2 )
                             {
-                                chatbox_runScript_eTextScript201BA20(64);
+                                chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
                                 v13 = 3;
                                 if ( *(v0 + 38) == 8 )
                                     v13 = 4;
@@ -352,7 +352,7 @@ void sub_812C5D0()
                             return;
                         if ( !*(v6 + 8) && *(v6 + 10) == 65243 )
                         {
-                            chatbox_runScript_eTextScript201BA20(64);
+                            chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
                             sub_812DA60();
                             return;
                         }
@@ -374,7 +374,7 @@ void sub_812C5D0()
                             else
                             {
                                 v12 = v11;
-                                chatbox_runScript_eTextScript201BA20(64);
+                                chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
                                 *(v0 + 2) = 36;
                                 *(v0 + 27) &= 0xEFu;
                                 *(v0 + 16) = 4;
@@ -676,7 +676,7 @@ LABEL_14:
                             *(v0 + 40) = v23;
                             if ( v23 >= 180 )
                             {
-                                chatbox_runScript_eTextScript201BA20(64);
+                                chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
                                 sub_812DA60();
                             }
                             return;
@@ -1092,7 +1092,7 @@ signed int sub_812CDAC()
         GiveChips(v6, (v5 << 17) >> 26, 1);
     sub_8120AB8();
     sub_803F798();
-    chatbox_runScript_eTextScript201BA20(61);
+    chatbox_runScript_803FD9C_on_eTextScript201BA20(61);
     PlaySoundEffect(115, v7, v8);
     result = 8;
     *(v0 + 12) = 8;
@@ -1286,7 +1286,7 @@ LABEL_23:
                         if ( v11 <= 2 )
                         {
                             v12 = v11;
-                            chatbox_runScript_eTextScript201BA20(64);
+                            chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
                             *(v0 + 2) = 36;
                             *(v0 + 27) |= 0x10u;
                             *(v0 + 16) = 4;

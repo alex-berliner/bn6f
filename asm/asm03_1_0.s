@@ -1152,9 +1152,9 @@ loc_8034140:
 
 // symdb: Zero-fills a 12-byte work buffer at 0x2011A40, presumably to reset some subsystem's scratch state before reuse.
 // symdb: void sub_80341AA(void); // callers' r2/r3 are untouched pass-throughs; clobbers r0, r1, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2011A40.yaml
-	thumb_func_start clearWorkBuffer_2011A40
-clearWorkBuffer_2011A40:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2011A40_80341AA.yaml
+	thumb_func_start clearWorkBuffer_2011A40_80341AA
+clearWorkBuffer_2011A40_80341AA:
 	push {lr}
 	// memBlock
 	ldr r0, off_80341F4 // =byte_2011A40
@@ -1162,7 +1162,7 @@ clearWorkBuffer_2011A40:
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
-	thumb_func_end clearWorkBuffer_2011A40
+	thumb_func_end clearWorkBuffer_2011A40_80341AA
 
 	thumb_func_start ho_jackIn_80341B6
 ho_jackIn_80341B6:
@@ -2874,11 +2874,11 @@ off_8035328:
 	thumb_func_end ghostNaviCheck_8035274
 
 // symdb: Resets the game-progress flag buffer to the default table values and clears the current progress state in the game state struct.
-// symdb: void gameProgress_resetBuffer_803532c(void); // inputs r4-r7,r10 (preserved except r7 used as
+// symdb: void initGameProgressBuffer_803532c(void); // inputs r4-r7,r10 (preserved except r7 used as
 // symdb: scratch), outputs r3=0x19 (entries copied); clobbers r0,r1,r3,r6,r7 and NZCV
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gameProgress_resetBuffer_803532c.yaml
-	thumb_func_start gameProgress_resetBuffer_803532c
-gameProgress_resetBuffer_803532c:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initGameProgressBuffer_803532c.yaml
+	thumb_func_start initGameProgressBuffer_803532c
+initGameProgressBuffer_803532c:
 	push {r4-r7,lr}
 	ldr r6, off_8035350 // =byte_8037694
 	ldr r7, off_8035378 // =gameProgressBuffer_20010f0
@@ -2900,7 +2900,7 @@ loc_8035334:
 	.balign 4, 0
 off_8035350:
 	.word byte_8037694
-	thumb_func_end gameProgress_resetBuffer_803532c
+	thumb_func_end initGameProgressBuffer_803532c
 
 	thumb_func_start loadGameProgressFromGameProgressBuffer_8035354
 loadGameProgressFromGameProgressBuffer_8035354:
@@ -3275,9 +3275,9 @@ applyLayerEffectToOWObject_8035694:
 
 // symdb: Zero-fills the 0x100-byte work buffer at IWRAM 0x2000DC0 word-wise.
 // symdb: void sub_80356EC(void); /* no inputs, no meaningful outputs */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2000DC0.yaml
-	thumb_func_start clearWorkBuffer_2000DC0
-clearWorkBuffer_2000DC0:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2000DC0_80356EC.yaml
+	thumb_func_start clearWorkBuffer_2000DC0_80356EC
+clearWorkBuffer_2000DC0_80356EC:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_8035784 // =dword_2000DC0
@@ -3285,7 +3285,7 @@ clearWorkBuffer_2000DC0:
 	ldr r1, off_8035788 // =0x100
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end clearWorkBuffer_2000DC0
+	thumb_func_end clearWorkBuffer_2000DC0_80356EC
 
 	thumb_func_start sub_80356F8
 sub_80356F8:

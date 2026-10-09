@@ -914,9 +914,9 @@ loc_80466BA:
 // symdb: Returns the first byte (an in-use/status flag) of entry `index` of the fixed 0x58-byte struct array at eStructArr2008450, with NZ flags set from that byte.
 // symdb: u8 getStructFrom2008450(u32 index); /* r0 in: entry index; r0 out: flag byte, NZ set from it; r1
 // symdb: out: entry address, r2 out: 0x58*index; C/V left from the base+offset ADDS */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getStructEntryFlag2008450.yaml
-	thumb_func_start getStructEntryFlag2008450
-getStructEntryFlag2008450:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getStructFrom2008450.yaml
+	thumb_func_start getStructFrom2008450
+getStructFrom2008450:
 	ldr r1, off_80466D4 // =eStructArr2008450 
 	mov r2, #0x58 
 	mul r2, r0
@@ -927,7 +927,7 @@ getStructEntryFlag2008450:
 	.balign 4, 0x00
 off_80466D4:
 	.word eStructArr2008450
-	thumb_func_end getStructEntryFlag2008450
+	thumb_func_end getStructFrom2008450
 
 	thumb_local_start
 sub_80466D8:
@@ -1579,7 +1579,7 @@ sub_8046D4C:
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
 	bl sub_804754C
-	bl copy_table_80469F0_to_202F800
+	bl copy_table_80469F0_to_202F800_8047CEC
 	mov r0, #0
 	ldr r1, off_8046DCC // =byte_2019A00 
 	bl sub_8047594
@@ -1748,7 +1748,7 @@ loc_8046E9E:
 	b loc_8046ECE
 loc_8046EBC:
 	mov r0, #0x40 
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	ldr r0, [r5,#0x24]
 	mov r1, #3
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -2087,7 +2087,7 @@ sub_8047134:
 	strh r0, [r5,#0x12]
 loc_8047174:
 	bl menu_clampListScrollAfterCountChange_8047CB6
-	bl copy_table_80469F0_to_202F800
+	bl copy_table_80469F0_to_202F800_8047CEC
 	ldrh r0, [r5,#0x18]
 	ldr r1, off_80471F4 // =byte_2019A00 
 	bl sub_8047594
@@ -3620,16 +3620,16 @@ locret_8047CEA:
 // symdb: Copies a fixed 0x168-word data table from ROM (byte_80469F0) into a fixed EWRAM work buffer (byte_202F800).
 // symdb: void sub_8047CEC(void) /* in: none (lr only); out: none; preserves r3; clobbers r0-r2, lr, NZC
 // symdb: */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copy_table_80469F0_to_202F800.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copy_table_80469F0_to_202F800_8047CEC.yaml
 	thumb_local_start
-copy_table_80469F0_to_202F800:
+copy_table_80469F0_to_202F800_8047CEC:
 	push {lr}
 	ldr r0, off_8047D74 // =byte_80469F0
 	ldr r1, off_8047D6C // =byte_202F800 
 	ldr r2, off_8047D70 // =0x168 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {pc}
-	thumb_func_end copy_table_80469F0_to_202F800
+	thumb_func_end copy_table_80469F0_to_202F800_8047CEC
 
 	thumb_local_start
 sub_8047CFA:
@@ -8628,7 +8628,7 @@ sub_804AF84:
 	mov r6, #0
 loc_804AF8E:
 	mov r0, r6
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_804AFA8
 	tst r6, r6
 	bne loc_804AF9C

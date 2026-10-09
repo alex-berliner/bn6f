@@ -556,7 +556,7 @@ int sub_80466AA()
 
 
 // 0x80466c4
-int __fastcall getStructEntryFlag2008450(int a1)
+int __fastcall getStructFrom2008450(int a1)
 {
     return eStructArr2008450[88 * a1];
 }
@@ -1082,7 +1082,7 @@ void __noreturn sub_8047134()
         *(v6 + 18) = sub_8047B88(0, v3, v4, 0);
     }
     menu_clampListScrollAfterCountChange_8047CB6();
-    copy_table_80469F0_to_202F800();
+    copy_table_80469F0_to_202F800_8047CEC();
     sub_8047594(*(v6 + 24), byte_2019A00);
 }
 
@@ -1956,7 +1956,7 @@ void sub_8047CDC()
 
 
 // 0x8047cec
-void copy_table_80469F0_to_202F800()
+void copy_table_80469F0_to_202F800_8047CEC()
 {
     CopyWords(byte_80469F0, byte_202F800, dword_168);
 }
@@ -5128,7 +5128,7 @@ int sub_804AF84()
     v1 = 0;
     do
     {
-        result = getStructEntryFlag2008450(v1);
+        result = getStructFrom2008450(v1);
         if ( !v4 )
         {
             if ( !v1 )

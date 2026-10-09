@@ -11578,7 +11578,7 @@ int __fastcall sub_8116FDC(signed int a1, __int16 a2, int a3)
     v4 = a3 + 3;
     do
     {
-        getStructEntryFlag2008450(v3);
+        getStructFrom2008450(v3);
         if ( !v6 )
         {
             v7 = v5;
@@ -11620,7 +11620,7 @@ int __fastcall sub_8117084(__int16 a1, int a2, int a3)
     v4 = a3 + 3;
     do
     {
-        result = getStructEntryFlag2008450(v3);
+        result = getStructFrom2008450(v3);
         if ( v7 )
             break;
         *(v6 + 12) = v8;
@@ -11726,7 +11726,7 @@ int __fastcall sub_81171D4(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -11744,7 +11744,7 @@ int __fastcall sub_81171F4(int a1, int a2)
     int v7; // [sp+0h] [bp-1Ch]
 
     v7 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         v5 = *(v3 + 6);
@@ -12688,7 +12688,7 @@ int __fastcall sub_8117D10(int a1, int a2)
     char v5; // zf
 
     v2 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v5 )
     {
         if ( v2 )
@@ -14528,7 +14528,7 @@ signed int __fastcall sub_81190F8(int a1)
     char v2; // zf
 
     v1 = 0;
-    getStructEntryFlag2008450(a1);
+    getStructFrom2008450(a1);
     if ( !v2 && sprite_getFrameParameters() & 0xC0 )
         v1 = 1;
     return v1;
@@ -14542,7 +14542,7 @@ int __fastcall sub_8119118(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = 8;
@@ -14931,7 +14931,7 @@ int __fastcall sub_811980C(__int16 a1, char a2, int a3, int a4)
     v5 = a3 + 3;
     do
     {
-        result = getStructEntryFlag2008450(v4);
+        result = getStructFrom2008450(v4);
         if ( !v8 )
         {
             *(v7 + 14) = v9;
@@ -14955,7 +14955,7 @@ int __fastcall sub_811983C(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         result = v5;
@@ -14981,7 +14981,7 @@ int __fastcall sub_8119854(int a1, __int16 a2, int a3)
     v4 = a3 + 3;
     do
     {
-        result = getStructEntryFlag2008450(v3);
+        result = getStructFrom2008450(v3);
         if ( !v6 )
             result = sprite_setCoordinates(v7, v8);
         ++v3;
@@ -15267,7 +15267,7 @@ int __fastcall sub_8119BE8(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -15326,7 +15326,7 @@ int __fastcall sub_8119C74(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         result = 35;
@@ -15410,7 +15410,7 @@ void __noreturn sub_8119DE8()
     int v5; // r0
     unsigned int v6; // r0
 
-    getStructEntryFlag2008450(0);
+    getStructFrom2008450(0);
     v2 = v1;
     sprite_setCoordinates(*(v1 + 44), *(v1 + 46));
     v3 = *v2 | 0x80;
@@ -15689,7 +15689,7 @@ int __fastcall sub_811A1F4(__int16 a1, char a2, int a3, int a4)
     v4 = a3;
     do
     {
-        result = getStructEntryFlag2008450(v4);
+        result = getStructFrom2008450(v4);
         if ( !v7 )
         {
             *(v6 + 14) = v8;
@@ -15720,7 +15720,7 @@ int __fastcall sub_811A220(int a1, __int16 a2, int a3)
     v4 = a3 + 4;
     do
     {
-        result = getStructEntryFlag2008450(v3);
+        result = getStructFrom2008450(v3);
         if ( !v6 )
             result = sprite_setCoordinates(v7, v8);
         ++v3;
@@ -16032,7 +16032,7 @@ int __fastcall sub_811A610(int a1, int a2)
     Battle *v6; // r5
 
     v2 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v5 )
     {
         result = v4->objFlags;
@@ -16209,7 +16209,7 @@ int __fastcall sub_811A838(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16272,7 +16272,7 @@ int __fastcall sub_811A8F4(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16287,7 +16287,7 @@ int __fastcall sub_811A914(int a1, int a2)
     unsigned __int8 *v4; // r5
 
     v2 = a1;
-    getStructEntryFlag2008450(a2);
+    getStructFrom2008450(a2);
     v4 = v3;
     sprite_setUnk0x2c(*&byte_811A938[4 * v2]);
     return *v4;
@@ -16303,7 +16303,7 @@ int __fastcall __noreturn sub_811A940(int a1, int a2)
     int result; // r0
 
     v2 = a1;
-    getStructEntryFlag2008450(a2);
+    getStructFrom2008450(a2);
     v4 = v3;
     sprite_setAnimation(v3, v2);
     sprite_loadAnimationData(v4);
@@ -16317,7 +16317,7 @@ int __fastcall __noreturn sub_811A940(int a1, int a2)
 // 0x811a968
 int __fastcall sub_811A968(int a1)
 {
-    getStructEntryFlag2008450(a1);
+    getStructFrom2008450(a1);
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
@@ -16554,7 +16554,7 @@ int __fastcall sub_811AD04(__int16 a1, int a2, int a3)
     char v6; // zf
 
     v3 = a1;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v6 )
     {
         *(v5 + 12) = v3;
@@ -16575,7 +16575,7 @@ int __fastcall sub_811AD18(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16693,7 +16693,7 @@ int __fastcall sub_811AE5C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16716,7 +16716,7 @@ int __fastcall sub_811AE7C(int a1, int a2)
 
     v10 = a1;
     v11 = a2;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -16747,7 +16747,7 @@ int __fastcall sub_811AFD8(int a1)
     char v3; // zf
     _BYTE *v4; // r5
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         v4 = v2;
@@ -16769,7 +16769,7 @@ int __fastcall sub_811AFFC(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         *v2 = 35;
@@ -16787,7 +16787,7 @@ int __fastcall sub_811B010(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = *(v2 + 17);
@@ -16964,7 +16964,7 @@ int __fastcall sub_811B314(int a1, char a2)
     Battle *v6; // r5
 
     v2 = a2;
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v5 )
     {
         result = v4->objFlags;
@@ -17093,7 +17093,7 @@ int __fastcall sub_811B46C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17109,7 +17109,7 @@ int __fastcall sub_811B48C(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         result = 35;
@@ -17715,7 +17715,7 @@ int __fastcall sub_811BC00(__int16 a1, int a2, int a3, __int16 a4)
     v7 = a1;
     v8 = a2;
     v9 = a4;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v6 )
     {
         *(v5 + 14) = v7;
@@ -17737,7 +17737,7 @@ int __fastcall sub_811BC24(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17890,7 +17890,7 @@ int __fastcall sub_811BDFC(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17977,7 +17977,7 @@ int __fastcall sub_811BED4(int a1, int a2)
     char v5; // zf
 
     v2 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v5 )
     {
         result = 1;
@@ -18184,7 +18184,7 @@ int __fastcall sub_811C23C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -18244,7 +18244,7 @@ int __fastcall sub_811C2A8(int a1, int a2)
     int v11; // [sp+0h] [bp-10h]
 
     v11 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -18288,7 +18288,7 @@ int __fastcall sub_811C4D8(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -18346,7 +18346,7 @@ int __fastcall sub_811C544(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -18371,7 +18371,7 @@ int __fastcall sub_811C554(int a1, int a2)
     int v11; // [sp+0h] [bp-10h]
 
     v11 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -19420,7 +19420,7 @@ int __fastcall sub_811D2E8(int a1)
     int result; // r0
     char v2; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v2 )
         result = sprite_clearScaleCounterAndMakeUnscalable_804668A();
     return result;
@@ -19581,7 +19581,7 @@ int __fastcall sub_811D634(int a1, int a2, int a3)
     int result; // r0
     char v4; // zf
 
-    result = getStructEntryFlag2008450(a3);
+    result = getStructFrom2008450(a3);
     if ( !v4 )
     {
         sub_811D6CC();
@@ -19601,7 +19601,7 @@ int __fastcall sub_811D66C(int a1, int a2)
 
     v9 = a1;
     v2 = a2;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !_ZF )
     {
         result = 100 * v9;
@@ -19624,7 +19624,7 @@ int __fastcall sub_811D69C(int a1, int a2)
 
     v9 = a1;
     v2 = a2;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !_ZF )
     {
         result = 100 * v9;
@@ -19909,7 +19909,7 @@ int __fastcall sub_811DBF0(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = 12;
@@ -19982,7 +19982,7 @@ int __fastcall sub_811DC88(int a1, int a2)
     int v10; // [sp+0h] [bp-10h]
 
     v10 = a1;
-    result = getStructEntryFlag2008450(a2);
+    result = getStructFrom2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -20030,7 +20030,7 @@ int __fastcall sub_811DF0C(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructEntryFlag2008450(a1);
+    result = getStructFrom2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -21837,7 +21837,7 @@ int sub_811F728()
     sub_80015FC(6);
     sub_809F68C();
     chatbox_8040818();
-    return chatbox_clearEventFlags2009F38(64);
+    return chatbox_clear_eFlags2009F38(64);
 }
 
 
@@ -23889,7 +23889,7 @@ int __fastcall sub_8120D10(int a1)
         }
         else
         {
-            v5 = folder_findSlotInUseIndex_81377EC(0x22u);
+            v5 = isFolderSlotInUse_81377EC(0x22u);
             if ( v5 >= 3 || !v9 && (v6 = v5, v7 = sub_8137890(v5), sub_8120DAC(v7), LOBYTE(v5) = v6, !v8) )
             {
                 GiveFolder(34);

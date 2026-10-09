@@ -219,7 +219,7 @@ loc_812C418::
 	cmp r0, #2
 	beq loc_812C4C2
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r1, #3
 	ldrh r0, [r5,#0x26]
 	cmp r0, #8
@@ -471,7 +471,7 @@ loc_812C62C::
 	cmp r1, r2
 	bne loc_812C664
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	bl sub_812DA60
 	b locret_812C704
 loc_812C664::
@@ -495,7 +495,7 @@ loc_812C672::
 	bgt loc_812C6B8
 	push {r0}
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	pop {r0}
 	mov r1, #0x24 
 	strb r1, [r5,#2]
@@ -875,7 +875,7 @@ loc_812C954::
 	cmp r0, #0xb4
 	blt loc_812C984
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	bl sub_812DA60
 	b locret_812CA58
 loc_812C984::
@@ -1444,7 +1444,7 @@ loc_812CDDA::
 	bl sub_8120AB8
 	bl sub_803F798
 	mov r0, #0x3d 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #SOUND_UNK_73
 	bl PlaySoundEffect
 	mov r0, #8
@@ -1638,7 +1638,7 @@ loc_812CF46::
 	bgt loc_812CF9E
 	push {r0}
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	pop {r0}
 	mov r1, #0x24 
 	strb r1, [r5,#2]
@@ -2019,7 +2019,7 @@ loc_812D220::
 	mov r0, #0
 	strb r0, [r5,#3]
 	mov r0, #0x3c 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0
 	strb r0, [r5,#0x14]
 	bl sub_81325CC

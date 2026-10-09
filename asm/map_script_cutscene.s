@@ -2514,9 +2514,9 @@ off_8036F20:
 // symdb: If the cutscene script position holds the magic dummy value 1, clears both the current and saved script positions to NULL.
 // symdb: void cutscene_clearScriptPosIfDummyValue(Toolkit *toolkit @ r10); returns cutscene state ptr in
 // symdb: r1; flags C,V set from cmp(scriptPos, 1), NZ reflect comparison; clobbers r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_clearScriptPosIfDummyValue_8036F24.yaml
-	thumb_func_start cutscene_clearScriptPosIfDummyValue_8036F24
-cutscene_clearScriptPosIfDummyValue_8036F24:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearCutsceneScriptPosIfMagicValue0x1_8036F24.yaml
+	thumb_func_start clearCutsceneScriptPosIfMagicValue0x1_8036F24
+clearCutsceneScriptPosIfMagicValue0x1_8036F24:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_CutsceneStatePtr]
 	ldr r0, [r1,#oCutsceneState_CutsceneScriptPos] // s_02011C50.ptr_1C
@@ -2527,7 +2527,7 @@ cutscene_clearScriptPosIfDummyValue_8036F24:
 	str r0, [r1,#oCutsceneState_originalCutsceneScriptPos_40] // s_02011C50.unk_40
 .doNotClearCutsceneScript
 	mov pc, lr
-	thumb_func_end cutscene_clearScriptPosIfDummyValue_8036F24
+	thumb_func_end clearCutsceneScriptPosIfMagicValue0x1_8036F24
 
 	thumb_func_start IsCutsceneScriptNonNull
 IsCutsceneScriptNonNull: // () -> !zf
@@ -2607,9 +2607,9 @@ TryCutsceneSkip:
 // symdb: Points the cutscene camera engine at a new camera script and resets its command timer so playback starts from the beginning.
 // symdb: void SetCutsceneCameraScript(void* cameraScript /* r0 */); clobbers r0, NZ flags; r1/r2 left as
 // symdb: set by camera_writeUnk03_14_80301b2
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_setCameraScript.yaml
-	thumb_func_start cutscene_setCameraScript
-cutscene_setCameraScript:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetCutsceneCameraScript.yaml
+	thumb_func_start SetCutsceneCameraScript
+SetCutsceneCameraScript:
 	push {lr}
 	ldr r1, =eCutsceneCameraInfo
 	str r0, [r1,#oCutsceneCameraInfo_CutsceneCameraScriptPtr]
@@ -2618,7 +2618,7 @@ cutscene_setCameraScript:
 	mov r0, #0
 	bl camera_writeUnk03_14_80301b2
 	pop {pc}
-	thumb_func_end cutscene_setCameraScript
+	thumb_func_end SetCutsceneCameraScript
 
 	thumb_func_start cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
@@ -3606,7 +3606,7 @@ CutsceneCommandJumptable:
   // 0x0E8
 	.word CutsceneCmd_run_text_script+1
   // 0x0EC
-	.word CutsceneCmd_chatbox_show_8037a70+1
+	.word CutsceneCmd_chatbox_cmd_8037a70+1
   // 0x0F0
 	.word CutsceneCmd_set_or_clear_chatbox_flags+1
   // 0x0F4
@@ -3787,7 +3787,7 @@ CutsceneCmd_pause:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
 	add r0, #CUTSCENE_FLAG_SCRIPT_1_PAUSED
-	bl cutscene_TestFlag
+	bl TestCutsceneFlag
 	bne .scriptPauseAlreadyInitialized
 
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
@@ -3840,7 +3840,7 @@ CutsceneCmd_long_pause:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
 	add r0, #CUTSCENE_FLAG_SCRIPT_1_PAUSED_LONG
-	bl cutscene_TestFlag
+	bl TestCutsceneFlag
 	bne .scriptPauseAlreadyInitialized
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
 	add r0, #CUTSCENE_FLAG_SCRIPT_1_PAUSED_LONG
@@ -4440,14 +4440,14 @@ CutsceneCmd_run_text_script:
 // ex. called after getting a chip from the numbertrader
 // symdb: Cutscene chatbox command that opens/shows the message box, advances the script cursor, and signals completion.
 // symdb: Next CutsceneCmd_chatbox_cmd_8037a70(u32 script_ptr_r1, u32 r2, u32 r5, u32* r7_cursor, u32 r10)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_chatbox_show_8037a70.yaml
-CutsceneCmd_chatbox_show_8037a70:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_chatbox_cmd_8037a70.yaml
+CutsceneCmd_chatbox_cmd_8037a70:
 	push {lr}
 	bl chatbox_8040818
 	add r7, #1
 	mov r0, #1
 	pop {pc}
-	thumb_func_end CutsceneCmd_chatbox_show_8037a70
+	thumb_func_end CutsceneCmd_chatbox_cmd_8037a70
 
 	thumb_local_start
 // 0x3c byte1 byte2
@@ -4463,10 +4463,10 @@ CutsceneCmd_set_or_clear_chatbox_flags:
 	bl ReadMapScriptByte
 	cmp r4, #1
 	beq .clearChatboxFlags
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	b .done
 .clearChatboxFlags
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 .done
 	add r7, #3
 	mov r0, #1
@@ -4650,7 +4650,7 @@ CutsceneCmd_ow_player_coord_special:
 	beq .waitCommand
 .lessThanEight
 	mov r0, #CUTSCENE_FLAG_8
-	bl cutscene_TestFlag
+	bl TestCutsceneFlag
 	bne .flagAlreadySet
 	mov r0, #CUTSCENE_FLAG_8
 	bl SetCutsceneFlag
@@ -4721,7 +4721,7 @@ CutsceneCmd_move_player_in_facing_direction:
 	bl GetOWPlayerFacingDirection
 	mov r3, r0
 	mov r0, #CUTSCENE_FLAG_8
-	bl cutscene_TestFlag
+	bl TestCutsceneFlag
 	bne .flagAlreadySet
 	mov r0, #CUTSCENE_FLAG_8
 	bl SetCutsceneFlag
@@ -4859,7 +4859,7 @@ CutsceneCmd_transform_player_navi_sprite:
 	pop {pc}
 .subcmdTwo // set transform offset
 	mov r0, #CUTSCENE_FLAG_9
-	bl cutscene_TestFlag
+	bl TestCutsceneFlag
 	bne .flagAlreadySet
 	mov r0, #CUTSCENE_FLAG_9
 	bl SetCutsceneFlag
@@ -5547,7 +5547,7 @@ CutsceneCmd_run_or_stop_cutscene_camera_script:
 	bl ReadMapScriptWord
 	str r4, [r5,#oCutsceneState_CutsceneCameraScriptPtr]
 	mov r0, r4
-	bl cutscene_setCameraScript
+	bl SetCutsceneCameraScript
 	mov r0, #TRUE
 	strb r0, [r5,#oCutsceneState_CutsceneCameraScriptActive]
 	add r7, #6
@@ -6340,9 +6340,9 @@ ClearCutsceneFlag:
 // symdb: u32 TestCutsceneFlag(u32 flagNumber /*r0*/, struct CutsceneState *state /*r5*/); returns flag
 // symdb: word in r0, Z clear iff flag set (N also from mask result), C from the shift barrel shifter; r1
 // symdb: preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_TestFlag.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestCutsceneFlag.yaml
 	thumb_local_start
-cutscene_TestFlag:
+TestCutsceneFlag:
 	push {r1}
 	mov r1, #1
 	lsl r1, r0
@@ -6352,4 +6352,4 @@ cutscene_TestFlag:
 	mov pc, lr
 	// file boundary?
 	.byte 0, 0
-	thumb_func_end cutscene_TestFlag
+	thumb_func_end TestCutsceneFlag

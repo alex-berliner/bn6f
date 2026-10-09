@@ -77,10 +77,10 @@ loc_8021B00:
 	bl getOffsetToQuantityOfChipCodeMaybe_8021c7c // (int chip_idx, int searchItem, int off) -> void*
 	mov r4, r3
 	pop {r2}
-	bl chipPack_addChipsToSlotCount_8021b5a
+	bl addChipsToChipPackOffset_8021b5a
 	push {r3}
 	mov r1, r4
-	bl chipPack_stampEntryWithTrayCountAndDecrement_81376b8
+	bl setUnkFieldOfChipCodeInChipPack_81376b8
 	pop {r3}
 	mov r0, r3
 	pop {r4,pc}
@@ -107,7 +107,7 @@ loc_8021B3C:
 	push {r2}
 	bl getOffsetToQuantityOfChipCodeMaybe_8021c7c // (int chip_idx, int searchItem, int off) -> void*
 	pop {r2}
-	bl chipPack_addChipsToSlotCount_8021b5a
+	bl addChipsToChipPackOffset_8021b5a
 	mov r0, r3
 	pop {pc}
 	thumb_func_end sub_8021B2A
@@ -115,9 +115,9 @@ loc_8021B3C:
 // symdb: Adds a number of chips to a chip pack slot's count byte, capping the count at 99 and reporting the outcome.
 // symdb: int addChipsToSlotCount(u8* slotCount /* r0 */, int amount /* r2 */); // returns r1 = new count,
 // symdb: r3 = status: 0 added fully, 1 slot already full, 2 clamped to 99; clobbers nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipPack_addChipsToSlotCount_8021b5a.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/addChipsToChipPackOffset_8021b5a.yaml
 	thumb_local_start
-chipPack_addChipsToSlotCount_8021b5a:
+addChipsToChipPackOffset_8021b5a:
 	mov r3, #1
 	ldrb r1, [r0]
 	cmp r1, #99
@@ -134,7 +134,7 @@ loc_8021B6E:
 	.balign 4, 0
 off_8021B74:
 	.word 0x1E20
-	thumb_func_end chipPack_addChipsToSlotCount_8021b5a
+	thumb_func_end addChipsToChipPackOffset_8021b5a
 
 // (int idx, int searchItem, int off) -> void*
 // [break (E7FE)]

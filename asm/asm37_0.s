@@ -871,14 +871,14 @@ loc_813BD02:
 	thumb_func_end sub_813BC98
 
 // symdb: Trivial getter that returns the address of a work buffer at 0x2006CF8 in r7 for its caller.
-// symdb: void getWorkAreaPtr_2006CF8(void) /* out: r7 = &unk_2006CF8; only lr is read, nothing else
+// symdb: void getWorkAreaPtr_2006CF8_813BD0C(void) /* out: r7 = &unk_2006CF8; only lr is read, nothing else
 // symdb: touched */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CF8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CF8_813BD0C.yaml
 	thumb_local_start
-getWorkAreaPtr_2006CF8:
+getWorkAreaPtr_2006CF8_813BD0C:
 	ldr r7, off_813BD18 // =unk_2006CF8 
 	mov pc, lr
-	thumb_func_end getWorkAreaPtr_2006CF8
+	thumb_func_end getWorkAreaPtr_2006CF8_813BD0C
 
 // symdb: Tiny getter that loads the base address of the work/RAM area at 0x2006C88 into r7 for the caller.
 // symdb: void sub_813BD10(void); // out: r7 = 0x2006C88
@@ -890,10 +890,10 @@ sub_813BD10:
 	thumb_func_end sub_813BD10
 
 // symdb: Tiny helper that loads the base address of the IWRAM data block at 0x2006CC0 into r7 (a work-area/global-struct pointer getter).
-// symdb: void getWorkAreaPtr_2006CC0(void); // out: r7 = &unk_2006CC0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CC0.yaml
+// symdb: void getWorkAreaPtr_2006CC0_813BD14(void); // out: r7 = &unk_2006CC0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CC0_813BD14.yaml
 	thumb_local_start
-getWorkAreaPtr_2006CC0:
+getWorkAreaPtr_2006CC0_813BD14:
 	ldr r7, off_813BD20 // =unk_2006CC0 
 	mov pc, lr
 off_813BD18:
@@ -902,7 +902,7 @@ off_813BD1C:
 	.word unk_2006C88
 off_813BD20:
 	.word unk_2006CC0
-	thumb_func_end getWorkAreaPtr_2006CC0
+	thumb_func_end getWorkAreaPtr_2006CC0_813BD14
 
 	thumb_local_start
 sub_813BD24:
@@ -2046,7 +2046,7 @@ applyNavicustPrograms_813C684:
 	mov r1, #8
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r6, #6
-	bl getWorkAreaPtr_2006CF8
+	bl getWorkAreaPtr_2006CF8_813BD0C
 	str r7, [sp]
 loc_813C698:
 	ldr r7, [sp]
@@ -2107,7 +2107,7 @@ loc_813C702:
 	cmp r6, #0x31 
 	blt loc_813C6E2
 	mov r6, #0
-	bl getWorkAreaPtr_2006CC0
+	bl getWorkAreaPtr_2006CC0_813BD14
 	str r7, [sp]
 loc_813C710:
 	ldr r7, [sp]

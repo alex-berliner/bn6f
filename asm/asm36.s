@@ -304,7 +304,7 @@ sub_8130290:
 	mov r1, #0
 	push {r1}
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	pop {r1}
 	bne locret_81302A8
 	mov r2, #0x40 
@@ -323,7 +323,7 @@ sub_81302B0:
 	mov r1, #1
 	push {r1}
 	mov r0, r1
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	pop {r1}
 	bne locret_81302C8
 	mov r2, #0xb0
@@ -344,7 +344,7 @@ sub_81302D0:
 	mov r6, r1
 	bl sub_80465A0 // (void *a1) -> void
 	mov r0, r6
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_81302EE
 	mov r5, r1
 	ldr r0, [sp]
@@ -549,7 +549,7 @@ loc_8130436:
 	mov r1, #0x30 
 loc_813045C:
 	mov r0, r1
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 locret_8130462:
 	pop {pc}
 	thumb_func_end sub_8130424
@@ -1029,11 +1029,11 @@ sub_81307BC:
 	tst r0, r0
 	beq locret_81307F0
 	mov r0, #0x3f 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	b loc_81307DE
 loc_81307D8:
 	mov r0, #0x3e 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 loc_81307DE:
 	ldrb r0, [r5,#2]
 	mov r1, #0x49 
@@ -1340,7 +1340,7 @@ loc_8130A62:
 	beq loc_8130B08
 	push {r0}
 	mov r0, #0x40 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	pop {r0}
 	mov r1, #3
 	ldrh r0, [r5,#0x26]
@@ -1383,7 +1383,7 @@ loc_8130ADA:
 	strh r1, [r5,#0x2a]
 	bl sub_8131C04
 	mov r0, #0x41 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	b loc_8130B08
 loc_8130AFA:
 	bl sub_81313C0
@@ -1404,7 +1404,7 @@ loc_8130B12:
 	mov r0, #4
 	strb r0, [r5,#0x1f]
 	mov r0, #0x41 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0xf0
 	strh r0, [r5,#0x28]
 locret_8130B2C:
@@ -1563,7 +1563,7 @@ loc_8130C50:
 	mov r0, #4
 	strb r0, [r5,#2]
 	mov r0, #0x68 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	ldrb r1, [r5,#0x1b]
 	mov r2, #0x20 
 	orr r1, r2
@@ -1856,7 +1856,7 @@ loc_8130EA0:
 	mov r0, #0x18
 	strb r0, [r5,#0x1f]
 	mov r0, #0x41 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0xf0
 	strh r0, [r5,#0x28]
 locret_8130EB8:
@@ -2239,7 +2239,7 @@ loc_813117E:
 	b loc_813119C
 loc_813118C:
 	mov r0, #0x68 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	b loc_813119C
 loc_8131194:
 	bl sub_81313C0
@@ -2329,7 +2329,7 @@ sub_8131210:
 	ldrb r0, [r5,#0xc]
 	ldr r1, off_81312D0 // =dword_81312D4
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	b locret_81312C8
 loc_813123E:
 	bl sub_803DD60
@@ -2369,7 +2369,7 @@ loc_813126C:
 	strb r0, [r5,#0xc]
 	ldr r1, off_81312D0 // =dword_81312D4
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	bl sub_81314E4
 	b locret_81312C8
 loc_8131292:
@@ -2380,7 +2380,7 @@ loc_8131292:
 	bl IsButtonPressed
 	beq locret_81312C8
 	mov r0, #0x69 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r1, #4
 	ldrb r0, [r7,#0x11]
 	tst r0, r0
@@ -2491,7 +2491,7 @@ loc_8131350:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #0x68 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	ldrb r1, [r5,#0x1b]
 	mov r0, #0x20 
 	orr r1, r0
@@ -2554,7 +2554,7 @@ loc_81313D2:
 	mov r1, #0x30 
 loc_81313F6:
 	mov r0, r1
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 locret_81313FC:
 	pop {pc}
 	.byte 0, 0
@@ -3036,7 +3036,7 @@ sub_8131768:
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	mov r0, #0x68 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	ldrb r1, [r5,#0x1b]
 	mov r0, #0x20 
 	orr r1, r0
@@ -3051,7 +3051,7 @@ dword_8131788:
 sub_813178C:
 	push {lr}
 	mov r0, #0x67 
-	bl chatbox_runScript_eTextScript201BA20
+	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0xc
 	strb r0, [r5,#2]
 	mov r0, #0
@@ -4200,10 +4200,10 @@ dword_813227C:
 	thumb_func_end sub_8132194
 
 // symdb: Chatbox wrapper that runs text script archive eTextScript201BA20 starting at a caller-supplied script index.
-// symdb: void chatbox_runScript_eTextScript201BA20(u32 scriptIdx /* r0 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_eTextScript201BA20.yaml
-	thumb_func_start chatbox_runScript_eTextScript201BA20
-chatbox_runScript_eTextScript201BA20:
+// symdb: void chatbox_runScript_803FD9C_on_eTextScript201BA20(u32 scriptIdx /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_803FD9C_on_eTextScript201BA20.yaml
+	thumb_func_start chatbox_runScript_803FD9C_on_eTextScript201BA20
+chatbox_runScript_803FD9C_on_eTextScript201BA20:
 	push {lr}
 	mov r1, r0
 	ldr r0, off_813228C // =eTextScript201BA20
@@ -4212,7 +4212,7 @@ chatbox_runScript_eTextScript201BA20:
 	.balign 4, 0
 off_813228C:
 	.word eTextScript201BA20
-	thumb_func_end chatbox_runScript_eTextScript201BA20
+	thumb_func_end chatbox_runScript_803FD9C_on_eTextScript201BA20
 
 	thumb_func_start sub_8132290
 sub_8132290:
@@ -5475,7 +5475,7 @@ OpenSaveMenu8132BA8:
 	bl chatbox_runScript_803FD9C // (TextScriptArchive *archive, u8 scriptIdx) -> void
 
 	mov r0, #0x40 
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 
 	pop {pc}
 	.balign 4, 0
@@ -5510,7 +5510,7 @@ SaveMenuOpenUpdate8132C50:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8132C62
 	mov r0, #0x40 
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	mov r0, #4
 	strb r0, [r5,#2]
 loc_8132C62:
@@ -5538,7 +5538,7 @@ loc_8132C82:
 	mov r1, #0xc
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #0x40 
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	b loc_8132C96
 loc_8132C96:
 	bl saveMenuTextGfx_8132F4C
@@ -5554,7 +5554,7 @@ ExitSaveMenu8132CA0:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8132CB2
 	mov r0, #0x40 
-	bl chatbox_setEventFlags2009F38
+	bl chatbox_set_eFlags2009F38
 	bl sub_811F708
 loc_8132CB2:
 	bl saveMenuTextGfx_8132F4C
@@ -7502,7 +7502,7 @@ locret_8133C98:
 sub_8133C9C:
 	push {r4,lr}
 	mov r0, #4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8133CD2
 	mov r4, r1
 	ldrh r0, [r5,#0x20]
@@ -7609,7 +7609,7 @@ sub_8133D64:
 	mov r4, #5
 loc_8133D68:
 	mov r0, r4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8133D76
 	add r4, #1
 	cmp r4, #6
@@ -7969,7 +7969,7 @@ sub_81340AC:
 	mov r6, #0
 loc_81340B6:
 	mov r0, r6
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_81340D0
 	tst r6, r6
 	bne loc_81340C4
@@ -7997,7 +7997,7 @@ sub_81340DC:
 	ldr r0, off_81340F8 // =byte_813314C
 	bl sub_80465A0 // (void *a1) -> void
 	mov r0, #3
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_81340F6
 	mov r5, r1
 	mov r0, #0xc0
@@ -9967,7 +9967,7 @@ sub_8134F88:
 	cmp r0, r1
 	bne locret_8134FA8
 	mov r0, #4
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq locret_8134FA8
 	mov r0, #8
 	strb r0, [r1,#8]
@@ -10021,7 +10021,7 @@ sub_8134FE0:
 loc_8134FE4:
 	ldr r0, off_8135020 // =byte_8135024
 	ldr r0, [r0,r4]
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	beq loc_8134FF2
 	mov r0, #8
 	strb r0, [r1,#8]
@@ -11293,7 +11293,7 @@ sub_81359A0:
 	strh r0, [r5,#0x32]
 	bl sub_813652C
 	mov r0, #0xa
-	bl getStructEntryFlag2008450
+	bl getStructFrom2008450
 	bne loc_8135A08
 	ldrh r0, [r5,#0x30]
 	tst r0, r0
@@ -11515,7 +11515,7 @@ sub_8135B54:
 	beq locret_8135B90
 	bl chatbox_8040818
 	mov r0, #0x40 
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	ldrb r4, [r5]
 	mov r0, r10
 	// memBlock
@@ -15070,9 +15070,9 @@ off_81376B4:
 // symdb: Stamps a chip-pack entry's halfword field with the current selection-tray counter at byte_20065B4 and then decrements that counter.
 // symdb: void chipPack_stampEntryWithTrayCountAndDecrement(u8* packBase /*r0*/, u32 chipIndex /*r1*/); //
 // symdb: returns r1 = chipIndex*2, r2 = &byte_20065B4, clobbers r0/r3 and flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipPack_stampEntryWithTrayCountAndDecrement_81376b8.yaml
-	thumb_func_start chipPack_stampEntryWithTrayCountAndDecrement_81376b8
-chipPack_stampEntryWithTrayCountAndDecrement_81376b8:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setUnkFieldOfChipCodeInChipPack_81376b8.yaml
+	thumb_func_start setUnkFieldOfChipCodeInChipPack_81376b8
+setUnkFieldOfChipCodeInChipPack_81376b8:
 	ldr r2, off_8137710 // =byte_20065B4 
 	ldrh r3, [r2]
 	sub r0, r0, r1
@@ -15083,7 +15083,7 @@ chipPack_stampEntryWithTrayCountAndDecrement_81376b8:
 	strh r3, [r2]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end chipPack_stampEntryWithTrayCountAndDecrement_81376b8
+	thumb_func_end setUnkFieldOfChipCodeInChipPack_81376b8
 
 // symdb: Returns the u16 at [r0 + r1*2 + 4], i.e. entry r1 of the u16 array that begins 4 bytes into the table passed in r0.
 // symdb: int loadU16FromTableEntry(const u16* table /*r0*/, int index /*r1*/) -> u16 value /*r0*/
@@ -15161,7 +15161,7 @@ GiveFolder:
 	ldr r4, [r1,r0]
 	mov r6, #1
 	mov r0, r7
-	bl folder_findSlotInUseIndex_81377EC
+	bl isFolderSlotInUse_81377EC
 	mov r1, r0
 	cmp r1, #3
 	bne loc_813773E
@@ -15261,9 +15261,9 @@ loc_81377E8:
 // symdb: int folder_findSlotInUseIndex(u32 packedChipData /* slot in high nibble of r0 */); // returns
 // symdb: 0-2 = matching entry index, 3 = not in use; also leaves r2 = last compared entry's slot nibble,
 // symdb: r3 = table address
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/folder_findSlotInUseIndex_81377EC.yaml
-	thumb_func_start folder_findSlotInUseIndex_81377EC
-folder_findSlotInUseIndex_81377EC:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/isFolderSlotInUse_81377EC.yaml
+	thumb_func_start isFolderSlotInUse_81377EC
+isFolderSlotInUse_81377EC:
 	push {lr}
 	lsr r0, r0, #4
 	ldr r3, off_8137880 // =unk_20018EC 
@@ -15280,7 +15280,7 @@ loc_81377F4:
 loc_8137804:
 	mov r0, r1
 	pop {pc}
-	thumb_func_end folder_findSlotInUseIndex_81377EC
+	thumb_func_end isFolderSlotInUse_81377EC
 
 	thumb_func_start sub_8137808
 sub_8137808:
@@ -15298,7 +15298,7 @@ sub_8137808:
 takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C:
 	push {r4-r7,lr}
 	mov r4, r0
-	bl folder_findSlotInUseIndex_81377EC
+	bl isFolderSlotInUse_81377EC
 	mov r1, r0
 	cmp r1, #3
 	beq loc_8137858
@@ -15603,7 +15603,7 @@ sub_8137A7C:
 	beq loc_8137AC8
 	bl chatbox_8040818
 	mov r0, #0x40 
-	bl chatbox_clearEventFlags2009F38 // (int a1) ->
+	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	movflag EVENT_BF
 	mov r2, #0x13
 	bl ClearEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
@@ -17342,7 +17342,7 @@ sub_81387D8:
 	bl sub_802F0D8
 	bl sub_802F0F4
 	bl cutscene_8036EFE
-	bl cutscene_clearScriptPosIfDummyValue_8036F24
+	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl sub_809F90C
 
 	mov r0, #0x25 
