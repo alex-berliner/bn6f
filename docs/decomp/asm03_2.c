@@ -1083,7 +1083,7 @@ void __noreturn sub_8047134()
     }
     menu_clampListScrollAfterCountChange_8047CB6();
     copy_table_80469F0_to_202F800_8047CEC();
-    sub_8047594(*(v6 + 24), byte_2019A00);
+    drawChipListFiveRows_8047594(*(v6 + 24), byte_2019A00);
 }
 
 
@@ -1292,7 +1292,7 @@ int __noreturn sub_804758C()
 
 
 // 0x8047594
-void __fastcall __noreturn sub_8047594(int a1, int a2)
+void __fastcall __noreturn drawChipListFiveRows_8047594(int a1, int a2)
 {
     unsigned __int8 *v2; // r7
     int v3; // r3
@@ -1309,26 +1309,26 @@ void __fastcall __noreturn sub_8047594(int a1, int a2)
     v2 = (a2 + 8 * a1);
     v3 = *v2;
     if ( v3 == 1 )
-        sub_804760E(0, *(v2 + 1));
+        drawPlainChipRow_804760E(0, *(v2 + 1));
     if ( v3 == 2 )
     {
         v4 = v2[1];
         v5 = v2[5];
-        sub_8047CFA(0, *(v2 + 1), v2[4]);
-        sub_8047664(v6, v7, v8, v9);
+        dimUnownedChipStrip_8047CFA(0, *(v2 + 1), v2[4]);
+        drawCodedChipRow_8047664(v6, v7, v8, v9);
     }
     if ( v3 == 3 )
     {
         v10 = v2[5];
-        sub_8047CFA(0, *(v2 + 1), v2[4]);
+        dimUnownedChipStrip_8047CFA(0, *(v2 + 1), v2[4]);
         sub_8047708(v11, v12);
     }
-    sub_8047760(0);
+    drawBlankChipRow_8047760(0);
 }
 
 
 // 0x804760e
-void __fastcall __noreturn sub_804760E(int a1, int a2)
+void __fastcall __noreturn drawPlainChipRow_804760E(int a1, int a2)
 {
     int v2; // [sp+0h] [bp-18h]
     int v3; // [sp+4h] [bp-14h]
@@ -1339,7 +1339,7 @@ void __fastcall __noreturn sub_804760E(int a1, int a2)
 
 
 // 0x8047664
-void __fastcall __noreturn sub_8047664(int a1, unsigned int a2, int a3, int a4)
+void __fastcall __noreturn drawCodedChipRow_8047664(int a1, unsigned int a2, int a3, int a4)
 {
     int v4; // ST08_4
     int v5; // r3
@@ -1388,7 +1388,7 @@ void __fastcall __noreturn sub_8047708(int a1, unsigned int a2)
 
 
 // 0x8047760
-void __fastcall __noreturn sub_8047760(int a1)
+void __fastcall __noreturn drawBlankChipRow_8047760(int a1)
 {
     int v1; // r5
 
@@ -1963,7 +1963,7 @@ void copy_table_80469F0_to_202F800_8047CEC()
 
 
 // 0x8047cfa
-void __fastcall sub_8047CFA(int a1, signed int a2, int a3)
+void __fastcall dimUnownedChipStrip_8047CFA(int a1, signed int a2, int a3)
 {
     __int16 v3; // r4
     int v4; // r6

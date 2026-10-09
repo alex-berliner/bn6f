@@ -10082,7 +10082,7 @@ loc_8007B10:
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
-	bl sub_800C5E0
+	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70
@@ -10489,7 +10489,7 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
-	bl sub_800C5E0
+	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70
@@ -10606,7 +10606,7 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
-	bl sub_800C5E0
+	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl sub_802E156
 	bl sub_8003C70

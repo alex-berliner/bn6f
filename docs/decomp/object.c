@@ -264,7 +264,7 @@ int panel_800BFC4()
 
 
 // 0x800c01c
-void __fastcall sub_800C01C(int a1, int a2, signed int a3, int a4)
+void __fastcall drawPanel_800C01C(int a1, int a2, signed int a3, int a4)
 {
     int v4; // r10
     int v5; // r6
@@ -290,7 +290,7 @@ void __fastcall sub_800C01C(int a1, int a2, signed int a3, int a4)
 
 
 // 0x800c0ba
-void __fastcall __noreturn sub_800C0BA(int a1, int a2, int a3)
+void __fastcall __noreturn drawPanelOverlay_800C0BA(int a1, int a2, int a3)
 {
     int v3; // r10
 
@@ -299,7 +299,7 @@ void __fastcall __noreturn sub_800C0BA(int a1, int a2, int a3)
 
 
 // 0x800c100
-void __fastcall __noreturn sub_800C100(int a1, int a2, int a3)
+void __fastcall __noreturn drawPanelUnderStrip_800C100(int a1, int a2, int a3)
 {
     int v3; // r10
     int v4; // r4
@@ -319,7 +319,7 @@ void __fastcall __noreturn sub_800C138(int a1, int a2)
 
 
 // 0x800c192
-void sub_800C192()
+void stepPanelTileAnimations_800C192()
 {
     int *i; // r7
     unsigned __int8 *v1; // r6
@@ -526,7 +526,7 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
 
 
 // 0x800c5e0
-int sub_800C5E0()
+int updateBattlePanels_800C5E0()
 {
     char *v0; // r7
     signed int v1; // r6
@@ -537,7 +537,7 @@ int sub_800C5E0()
     int v6; // r0
     int v7; // r2
 
-    sub_800C192();
+    stepPanelTileAnimations_800C192();
     v0 = byte_2039AE0;
     v1 = 0;
     do
@@ -549,14 +549,14 @@ int sub_800C5E0()
         {
             if ( !*v0 )
             {
-                sub_800C01C(v2, v3, 255, 0);
+                drawPanel_800C01C(v2, v3, 255, 0);
                 v7 = v0[7];
                 sub_800C138(v0[10], v0[11] + 1);
             }
             if ( v0[13] )
             {
                 v0[13] = 0;
-                sub_800C01C(v2, v3, v0[8], v0[9]);
+                drawPanel_800C01C(v2, v3, v0[8], v0[9]);
             }
             else
             {
@@ -564,13 +564,13 @@ int sub_800C5E0()
                 if ( v0[1] )
                 {
                     v0[1] = 0;
-                    sub_800C0BA(v2, v3, v6 - 1);
+                    drawPanelOverlay_800C0BA(v2, v3, v6 - 1);
                 }
-                sub_800C01C(v2, v3, v0[6], v0[7]);
+                drawPanel_800C01C(v2, v3, v0[6], v0[7]);
             }
             result = v0[12];
             if ( v0[12] )
-                sub_800C100(v2, v3 + 1, v0[7]);
+                drawPanelUnderStrip_800C100(v2, v3 + 1, v0[7]);
         }
         v0 += 32;
         ++v1;

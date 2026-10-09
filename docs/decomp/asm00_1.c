@@ -5951,7 +5951,7 @@ int battle_update_8007A44()
     sub_8003E18();
     sub_8004218();
     sub_8004510();
-    sub_800C5E0();
+    updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     sub_802E156();
     sub_8003C70();
@@ -6262,7 +6262,7 @@ signed int sub_8007E62()
     sub_8003E18();
     sub_8004218();
     sub_8004510();
-    sub_800C5E0();
+    updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     sub_802E156();
     sub_8003C70();
@@ -6367,7 +6367,7 @@ signed int __fastcall sub_8007F4E(int a1)
     sub_8003E18();
     sub_8004218();
     sub_8004510();
-    sub_800C5E0();
+    updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     sub_802E156();
     sub_8003C70();

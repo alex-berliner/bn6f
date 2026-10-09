@@ -20599,8 +20599,8 @@ sub_814DA6C:
 	bx lr
 	nop 
 
-	thumb_func_start sub_814DA9C, 2
-sub_814DA9C:
+	thumb_func_start divsi3_814DA9C, 2
+divsi3_814DA9C:
 	cmp r1, #0
 	beq loc_814DB24
 	push {r4}
@@ -20688,7 +20688,7 @@ loc_814DB26:
 	mov r0, #0
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_814DA9C
+	thumb_func_end divsi3_814DA9C
 
 	thumb_local_start
 nullsub_1:
@@ -23200,7 +23200,7 @@ sub_814EB84:
 	str r0, [r1,#0x70] // (off_30055E0 - 0x3005570)
 	ldr r0, off_814EC74 // =sub_814E758+1 
 	str r0, [r1,#0x74] // (off_30055E4 - 0x3005570)
-	ldr r0, off_814EC78 // =sub_814EDC0+1 
+	ldr r0, off_814EC78 // =SampleFreqSet_814EDC0+1 
 	str r0, [r1,#0x78] // (off_30055E8 - 0x3005570)
 	ldr r0, off_814EC7C // =sub_814E4DC+1 
 	str r0, [r1,#0x7c] // (off_30055EC - 0x3005570)
@@ -23278,7 +23278,7 @@ off_814EC70:
 off_814EC74:
 	.word sub_814E758+1
 off_814EC78:
-	.word sub_814EDC0+1
+	.word SampleFreqSet_814EDC0+1
 off_814EC7C:
 	.word sub_814E4DC+1
 off_814EC80:
@@ -23409,7 +23409,7 @@ loc_814ECF2:
 	str r4, [r5,#0x34]
 	mov r0, #0x80
 	lsl r0, r0, #0xb
-	bl sub_814EDC0
+	bl SampleFreqSet_814EDC0
 	ldr r0, dword_814EDBC // =0x68736d53 
 	str r0, [r5]
 	add sp, sp, #4
@@ -23451,11 +23451,11 @@ dword_814EDBC:
 	.word 0x68736D53
 	thumb_func_end sub_814ECC8
 
-	thumb_func_start sub_814EDC0
-sub_814EDC0:
+	thumb_func_start SampleFreqSet_814EDC0
+SampleFreqSet_814EDC0:
 	push {r4,r5,lr}
 	mov r4, r0
-	bl sub_814EF14
+	bl m4aSoundVSyncOff_814EF14
 	ldr r0, off_814EE18 // =byte_3007FF0 
 	ldr r5, [r0]
 	mov r0, #0xf0
@@ -23472,23 +23472,23 @@ sub_814EDC0:
 	mov r0, #0xc6
 	lsl r0, r0, #3
 	mov r1, r4
-	bl sub_814DA9C
+	bl divsi3_814DA9C
 	strb r0, [r5,#0xb]
 	ldr r0, dword_814EE20 // =0x91d1b 
 	mul r0, r4
 	ldr r1, dword_814EE24 // =0x1388 
 	add r0, r0, r1
 	ldr r1, dword_814EE28 // =0x2710 
-	bl sub_814DA9C
+	bl divsi3_814DA9C
 	mov r1, r0
 	str r1, [r5,#0x14]
 	mov r0, #0x80
 	lsl r0, r0, #0x11
-	bl sub_814DA9C
+	bl divsi3_814DA9C
 	add r0, #1
 	asr r0, r0, #1
 	str r0, [r5,#0x18]
-	bl sub_814EF94
+	bl m4aSoundVSyncOn_814EF94
 	pop {r4,r5}
 	pop {r0}
 	bx r0
@@ -23503,7 +23503,7 @@ dword_814EE24:
 	.word 0x1388
 dword_814EE28:
 	.word 0x2710
-	thumb_func_end sub_814EDC0
+	thumb_func_end SampleFreqSet_814EDC0
 
 	thumb_func_start sub_814EE2C
 sub_814EE2C:
@@ -23573,7 +23573,7 @@ loc_814EE9A:
 	cmp r3, #0
 	beq loc_814EEAA
 	mov r0, r3
-	bl sub_814EDC0
+	bl SampleFreqSet_814EDC0
 loc_814EEAA:
 	ldr r0, dword_814EEB8 // =0x68736d53 
 	str r0, [r4]
@@ -23641,7 +23641,7 @@ dword_814EF10:
 	thumb_func_end sub_814EEC0
 
 	thumb_local_start
-sub_814EF14:
+m4aSoundVSyncOff_814EF14:
 	push {lr}
 	sub sp, sp, #4
 	ldr r0, off_814EF78 // =byte_3007FF0 
@@ -23709,10 +23709,10 @@ off_814EF8C:
 	.word DMA1Control
 dword_814EF90:
 	.word 0x5000318
-	thumb_func_end sub_814EF14
+	thumb_func_end m4aSoundVSyncOff_814EF14
 
 	thumb_local_start
-sub_814EF94:
+m4aSoundVSyncOn_814EF94:
 	push {r4,lr}
 	ldr r0, off_814EFF0 // =byte_3007FF0 
 	ldr r2, [r0]
@@ -23751,7 +23751,7 @@ loc_814EFD0:
 	bne loc_814EFD0
 	ldr r4, off_814F000 // =Timer0Counter_Reload 
 	ldr r0, dword_814F004 // =0x44940 
-	bl sub_814DA9C
+	bl divsi3_814DA9C
 	neg r0, r0
 	strh r0, [r4]
 	ldr r1, off_814F008 // =Timer0Control 
@@ -23776,7 +23776,7 @@ dword_814F004:
 	.word 0x44940
 off_814F008:
 	.word Timer0Control
-	thumb_func_end sub_814EF94
+	thumb_func_end m4aSoundVSyncOn_814EF94
 
 // symdb: m4aSoundVSync: per-frame restart of the sound FIFO DMAs.
 // symdb: () -> if SoundInfo is valid: count down pcmDmaCounter; at 0 reload it and restart DMA1/DMA2

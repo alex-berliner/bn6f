@@ -11229,7 +11229,7 @@ int __fastcall sub_814EB84(_BYTE *a1)
         off_30055BC = sub_814E7E0;
         off_30055E0 = sub_814FD54;
         off_30055E4 = sub_814E758;
-        off_30055E8 = sub_814EDC0;
+        off_30055E8 = SampleFreqSet_814EDC0;
         off_30055EC = sub_814E4DC;
         off_30055F0 = sub_814F228;
         off_30055F4 = sub_814F2F0;
@@ -11303,14 +11303,14 @@ int __fastcall sub_814ECC8(_DWORD *a1)
     v1[15] = nullsub_23;
     sub_814E09C(&off_3005570);
     v1[13] = &off_3005570;
-    sub_814EDC0(0x40000);
+    SampleFreqSet_814EDC0(0x40000);
     *v1 = 1752395091;
     return v4;
 }
 
 
 // 0x814edc0
-int __fastcall sub_814EDC0(int a1)
+int __fastcall SampleFreqSet_814EDC0(int a1)
 {
     int v1; // r4
     int v2; // r5
@@ -11320,7 +11320,7 @@ int __fastcall sub_814EDC0(int a1)
     int v7; // [sp+8h] [bp-4h]
 
     v1 = a1;
-    sub_814EF14();
+    m4aSoundVSyncOff_814EF14();
     v2 = *byte_3007FF0;
     v3 = (v1 & 0xF0000u) >> 16;
     *(*byte_3007FF0 + 8) = v3;
@@ -11330,7 +11330,7 @@ int __fastcall sub_814EDC0(int a1)
     v5 = (597275 * v4 + 5000) / 10000;
     *(v2 + 20) = v5;
     *(v2 + 24) = (0x1000000 / v5 + 1) >> 1;
-    sub_814EF94();
+    m4aSoundVSyncOn_814EF94();
     return v7;
 }
 
@@ -11369,7 +11369,7 @@ int __fastcall sub_814EE2C(int a1)
         if ( v1 & 0xB00000 )
             HIBYTE(SoundPWMControl) = HIBYTE(SoundPWMControl) & 0x3F | ((v1 & 0x300000u) >> 14);
         if ( v1 & 0xF0000 )
-            sub_814EDC0(v1 & 0xF0000);
+            SampleFreqSet_814EDC0(v1 & 0xF0000);
         *v2 = 1752395091;
     }
     return v6;
@@ -11406,7 +11406,7 @@ int sub_814EEC0()
 
 
 // 0x814ef14
-int sub_814EF14()
+int m4aSoundVSyncOff_814EF14()
 {
     int v0; // r2
     int v2; // [sp+0h] [bp-8h]
@@ -11431,7 +11431,7 @@ int sub_814EF14()
 
 
 // 0x814ef94
-int sub_814EF94()
+int m4aSoundVSyncOn_814EF94()
 {
     _DWORD *v0; // r2
     int v1; // r3

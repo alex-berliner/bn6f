@@ -1602,7 +1602,7 @@ sub_8046D4C:
 	bl copy_table_80469F0_to_202F800_8047CEC
 	mov r0, #0
 	ldr r1, off_8046DCC // =byte_2019A00 
-	bl sub_8047594
+	bl drawChipListFiveRows_8047594
 	bl sub_804758C
 	bl background_LoadAreaTiles_8047800
 	// a1
@@ -2118,7 +2118,7 @@ loc_8047174:
 	bl copy_table_80469F0_to_202F800_8047CEC
 	ldrh r0, [r5,#0x18]
 	ldr r1, off_80471F4 // =byte_2019A00 
-	bl sub_8047594
+	bl drawChipListFiveRows_8047594
 	bl sub_8047834
 loc_8047188:
 	bl sub_804758C
@@ -2634,7 +2634,7 @@ sub_804758C:
 	thumb_func_end sub_804758C
 
 	thumb_local_start
-sub_8047594:
+drawChipListFiveRows_8047594:
 	push {r5,r6,lr}
 	mov r7, r1
 	mov r1, #8
@@ -2646,7 +2646,7 @@ loc_80475A0:
 	cmp r3, #1
 	bne loc_80475BA
 	ldrh r1, [r7,#2]
-	bl sub_804760E
+	bl drawPlainChipRow_804760E
 	ldrh r1, [r7,#6]
 	ldrb r2, [r7,#1]
 	ldrh r3, [r7,#2]
@@ -2661,8 +2661,8 @@ loc_80475BA:
 	ldrb r3, [r7,#1]
 	ldrb r4, [r7,#5]
 	mov r6, #0
-	bl sub_8047CFA
-	bl sub_8047664
+	bl dimUnownedChipStrip_8047CFA
+	bl drawCodedChipRow_8047664
 	ldrh r1, [r7,#6]
 	ldrb r2, [r7,#1]
 	ldrh r3, [r7,#2]
@@ -2676,7 +2676,7 @@ loc_80475DE:
 	ldrb r2, [r7,#4]
 	ldrb r4, [r7,#5]
 	mov r6, #1
-	bl sub_8047CFA
+	bl dimUnownedChipStrip_8047CFA
 	bl sub_8047708
 	ldrh r1, [r7,#6]
 	ldrb r2, [r7,#1]
@@ -2685,17 +2685,17 @@ loc_80475DE:
 	bl sub_8047790
 	b loc_8047604
 loc_8047600:
-	bl sub_8047760
+	bl drawBlankChipRow_8047760
 loc_8047604:
 	add r7, #8
 	add r0, #1
 	cmp r0, #5
 	blt loc_80475A0
 	pop {r5,r6,pc}
-	thumb_func_end sub_8047594
+	thumb_func_end drawChipListFiveRows_8047594
 
 	thumb_local_start
-sub_804760E:
+drawPlainChipRow_804760E:
 	push {r0,r5,r7,lr}
 	mov r4, #0x40 
 	lsl r4, r4, #4
@@ -2737,10 +2737,10 @@ dword_804765C:
 	.word 0x6008600
 off_8047660:
 	.word dword_86A5D60
-	thumb_func_end sub_804760E
+	thumb_func_end drawPlainChipRow_804760E
 
 	thumb_local_start
-sub_8047664:
+drawCodedChipRow_8047664:
 	push {r0,r5,r7,lr}
 	mov r4, #0x40 
 	lsl r4, r4, #4
@@ -2820,7 +2820,7 @@ off_8047700:
 	.word dword_86A5D60
 dword_8047704:
 	.word 0x1E20
-	thumb_func_end sub_8047664
+	thumb_func_end drawCodedChipRow_8047664
 
 	thumb_local_start
 sub_8047708:
@@ -2869,7 +2869,7 @@ off_804775C:
 	thumb_func_end sub_8047708
 
 	thumb_local_start
-sub_8047760:
+drawBlankChipRow_8047760:
 	push {r0,r5,r7,lr}
 	mov r4, #0x40 
 	lsl r4, r4, #4
@@ -2893,7 +2893,7 @@ dword_8047788:
 	.word 0x6008400
 off_804778C:
 	.word dword_86A5D60
-	thumb_func_end sub_8047760
+	thumb_func_end drawBlankChipRow_8047760
 
 	thumb_local_start
 sub_8047790:
@@ -3686,7 +3686,7 @@ copy_table_80469F0_to_202F800_8047CEC:
 	thumb_func_end copy_table_80469F0_to_202F800_8047CEC
 
 	thumb_local_start
-sub_8047CFA:
+dimUnownedChipStrip_8047CFA:
 	push {r0-r7,lr}
 	lsl r5, r4, #0xd
 	tst r6, r6
@@ -3760,7 +3760,7 @@ dword_8047D7C:
 	.word 0x4000
 dword_8047D80:
 	.word 0xFFF
-	thumb_func_end sub_8047CFA
+	thumb_func_end dimUnownedChipStrip_8047CFA
 
 	thumb_func_start sub_8047D84
 sub_8047D84:

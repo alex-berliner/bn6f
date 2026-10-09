@@ -1087,7 +1087,7 @@ off_800C018:
 	thumb_func_end panel_800BFC4
 
 	thumb_local_start
-sub_800C01C:
+drawPanel_800C01C:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1158,10 +1158,10 @@ byte_800C08C:
 byte_800C0AA:
 	.byte 0xFB, 0x0, 0x5, 0xA, 0xF, 0x14, 0x19, 0x1E, 0x1E, 0x19
 	.byte 0x14, 0xF, 0xA, 0x5, 0x0, 0xFB
-	thumb_func_end sub_800C01C
+	thumb_func_end drawPanel_800C01C
 
 	thumb_local_start
-sub_800C0BA:
+drawPanelOverlay_800C0BA:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1199,10 +1199,10 @@ off_800C0F4:
 	.word dword_86E0478
 off_800C0FC:
 	.word byte_800C0AA
-	thumb_func_end sub_800C0BA
+	thumb_func_end drawPanelOverlay_800C0BA
 
 	thumb_local_start
-sub_800C100:
+drawPanelUnderStrip_800C100:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1234,7 +1234,7 @@ sub_800C100:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	add sp, sp, #0x28
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C100
+	thumb_func_end drawPanelUnderStrip_800C100
 
 	thumb_local_start
 sub_800C138:
@@ -1282,7 +1282,7 @@ byte_800C182:
 	thumb_func_end sub_800C138
 
 	thumb_local_start
-sub_800C192:
+stepPanelTileAnimations_800C192:
 	push {r4-r7,lr}
 	ldr r5, off_800C1D8 // =byte_2036740 
 	ldr r7, off_800C1D4 // =off_800C1DC 
@@ -1437,7 +1437,7 @@ dword_800C340:
 	.word 0xA
 	.word byte_86E0878
 	.word 0xA
-	thumb_func_end sub_800C192
+	thumb_func_end stepPanelTileAnimations_800C192
 
 	thumb_local_start
 sub_800C380:
@@ -1727,10 +1727,10 @@ byte_800C5B8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_800C4BC
 
-	thumb_func_start sub_800C5E0
-sub_800C5E0:
+	thumb_func_start updateBattlePanels_800C5E0
+updateBattlePanels_800C5E0:
 	push {r4-r7,lr}
-	bl sub_800C192
+	bl stepPanelTileAnimations_800C192
 	ldr r7, off_800C8CC // =ePanelData
 	mov r6, #0
 loc_800C5EA:
@@ -1753,13 +1753,13 @@ loc_800C5EA:
 	mov r1, r5
 	ldrb r2, [r7,#6]
 	ldrb r3, [r7,#7]
-	bl sub_800C01C
+	bl drawPanel_800C01C
 	b loc_800C662
 	mov r0, r4
 	mov r1, r5
 	ldrb r2, [r7,#2]
 	ldrb r3, [r7,#3]
-	bl sub_800C01C
+	bl drawPanel_800C01C
 	b loc_800C662
 loc_800C626:
 	mov r0, #0
@@ -1768,7 +1768,7 @@ loc_800C626:
 	mov r1, r5
 	ldrb r2, [r7,#8]
 	ldrb r3, [r7,#9]
-	bl sub_800C01C
+	bl drawPanel_800C01C
 	b loc_800C662
 loc_800C638:
 	sub r2, r0, #1
@@ -1776,14 +1776,14 @@ loc_800C638:
 	strb r0, [r7,#1]
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C0BA
+	bl drawPanelOverlay_800C0BA
 	b loc_800C662
 loc_800C648:
 	mov r0, r4
 	mov r1, r5
 	mov r2, #0xff
 	mov r3, #0
-	bl sub_800C01C
+	bl drawPanel_800C01C
 	ldrb r0, [r7,#0xa]
 	ldrb r1, [r7,#0xb]
 	add r1, #1
@@ -1797,14 +1797,14 @@ loc_800C662:
 	mov r0, r4
 	add r1, r5, #1
 	ldrb r2, [r7,#7]
-	bl sub_800C100
+	bl drawPanelUnderStrip_800C100
 loc_800C672:
 	add r7, #0x20 
 	add r6, #1
 	cmp r6, #0x28 
 	blt loc_800C5EA
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C5E0
+	thumb_func_end updateBattlePanels_800C5E0
 
 	thumb_local_start
 sub_800C67C:
