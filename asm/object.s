@@ -1086,6 +1086,11 @@ off_800C018:
 	.word ePanelData1_1
 	thumb_func_end panel_800BFC4
 
+// symdb: draws one battle field panel's 5x3 block of BG tiles from its tile-set family
+// symdb: static void draw_panel(u32 column, u32 row, u32 art, u32 side); adapter: in r0=column, r1=row,
+// symdb: r2=art, r3=side, r10=toolkit; out r1-r7 (r4-r7 preserved, r1-r3 as iCopyBackgroundTiles leaves
+// symdb: them)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawPanel_800C01C.yaml
 	thumb_local_start
 drawPanel_800C01C:
 	push {r4-r7,lr}
@@ -1160,6 +1165,10 @@ byte_800C0AA:
 	.byte 0x14, 0xF, 0xA, 0x5, 0x0, 0xFB
 	thumb_func_end drawPanel_800C01C
 
+// symdb: draws one of two fixed overlays (5x3 tiles) over a panel
+// symdb: static void draw_panel_overlay(u32 column, u32 row, u32 which); adapter: in r0=column, r1=row,
+// symdb: r2=which, r10=toolkit; out r1-r7 (r4-r7 preserved, r1-r3 as CopyBackgroundTiles leaves them)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawPanelOverlay_800C0BA.yaml
 	thumb_local_start
 drawPanelOverlay_800C0BA:
 	push {r4-r7,lr}
@@ -1201,6 +1210,11 @@ off_800C0FC:
 	.word byte_800C0AA
 	thumb_func_end drawPanelOverlay_800C0BA
 
+// symdb: draws the one-tile-high strip just below a panel (5x1 tiles)
+// symdb: static void draw_panel_strip(u32 column, u32 row, u32 side); adapter: in r0=column, r1=row
+// symdb: (already +1 from the panel row), r2=side, r10=toolkit; out r1-r3, r6, r7 (r4-r7 preserved, r1-r3
+// symdb: as CopyBackgroundTiles leaves them)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawPanelUnderStrip_800C100.yaml
 	thumb_local_start
 drawPanelUnderStrip_800C100:
 	push {r4-r7,lr}
@@ -1281,6 +1295,9 @@ byte_800C182:
 	.byte 0x14, 0xF, 0xA, 0x5, 0x0, 0xFB
 	thumb_func_end sub_800C138
 
+// symdb: steps the animated panel tile sets, copying each due frame into IWRAM
+// symdb: static void advance_panel_animations(void); adapter: no inputs, out r2 and r3 only
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stepPanelTileAnimations_800C192.yaml
 	thumb_local_start
 stepPanelTileAnimations_800C192:
 	push {r4-r7,lr}
@@ -1727,6 +1744,10 @@ byte_800C5B8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_800C4BC
 
+// symdb: per-frame update: steps the panel animations, then redraws every panel slot
+// symdb: static void update_panels(void); adapter: in r10=toolkit, out v, r1-r7 (r4-r7 preserved); flags
+// symdb: left as the final cmp r6, #0x28
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/updateBattlePanels_800C5E0.yaml
 	thumb_func_start updateBattlePanels_800C5E0
 updateBattlePanels_800C5E0:
 	push {r4-r7,lr}
@@ -4125,6 +4146,8 @@ loc_800D586:
 	add sp, sp, #0x14
 	pop {pc}
 	thumb_func_end sub_800D53C
+
+// symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 
 // symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 

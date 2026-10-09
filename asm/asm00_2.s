@@ -740,6 +740,8 @@ off_800F260:
 
 // symdb: Given an enemy ID, returns a small set of per-enemy display parameters: a fixed 5-byte table record for IDs 0xCD..0xFF, otherwise the first two bytes of the enemy's own struct with the rest zeroed.
 
+// symdb: Given an enemy ID, returns a small set of per-enemy display parameters: a fixed 5-byte table record for IDs 0xCD..0xFF, otherwise the first two bytes of the enemy's own struct with the rest zeroed.
+
 // symdb: u32x5 enemy_getVisualParams(u32 id /* r0 */); in: r0 = enemy ID; out: r0..r3 = bytes 0-3 of the
 // symdb: record (r4 = byte 4 on the table path, untouched garbage on the struct path); flags clobbered.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
@@ -25510,6 +25512,8 @@ loc_801BABA:
 	mov r0, r4
 	pop {r4,pc}
 	thumb_func_end battle_object_postAction4CheckClearFlags_801BA92
+
+// symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 
 // symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 

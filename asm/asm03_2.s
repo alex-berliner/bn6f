@@ -2633,6 +2633,12 @@ sub_804758C:
 	pop {r5,pc}
 	thumb_func_end sub_804758C
 
+// symdb: draws five rows of a chip list (name, code letter, value strip) from an array of 8-byte entries
+// symdb: static u32 draw_chip_list_rows(u32 first, u32 entries, u32 menu, u32 toolkit) returns the entry
+// symdb: pointer one past the last row; adapter: in r0 = index of the first entry to show, r1 = entry
+// symdb: array, r5 = screen state, r10 = toolkit, r6 saved; out r0 = 5, r5 = screen state, r6 restored,
+// symdb: r7 = one past the last entry, r2/r4 keep the last render's leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawChipListFiveRows_8047594.yaml
 	thumb_local_start
 drawChipListFiveRows_8047594:
 	push {r5,r6,lr}
@@ -2694,6 +2700,11 @@ loc_8047604:
 	pop {r5,r6,pc}
 	thumb_func_end drawChipListFiveRows_8047594
 
+// symdb: draws a plain chip row: 8 name tiles plus one blank tile in the code column
+// symdb: static void draw_plain_chip_row(u32 slot, u32 chip, u32 menu); adapter: in r0 = screen row slot,
+// symdb: r1 = char index into the fixed script, r5 = screen state, r7 kept; out r0/r5/r7 restored, r6
+// symdb: keeps the last render's leftover
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawPlainChipRow_804760E.yaml
 	thumb_local_start
 drawPlainChipRow_804760E:
 	push {r0,r5,r7,lr}
@@ -2739,6 +2750,11 @@ off_8047660:
 	.word dword_86A5D60
 	thumb_func_end drawPlainChipRow_804760E
 
+// symdb: draws a coded chip row: the name from the banked chip-name tables, then its code letter
+// symdb: static void draw_coded_chip_row(u32 slot, u32 chip, u32 code, u32 has_code, u32 menu); adapter:
+// symdb: in r0 = slot, r1 = chip id (bank << 8 | index), r2 = code letter, r3 = has-code flag, r5 =
+// symdb: screen state, r7 kept; out r0/r5/r7 restored, r6 keeps the render's leftover
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawCodedChipRow_8047664.yaml
 	thumb_local_start
 drawCodedChipRow_8047664:
 	push {r0,r5,r7,lr}
@@ -2868,6 +2884,10 @@ off_804775C:
 	.word dword_86A5D60
 	thumb_func_end sub_8047708
 
+// symdb: clears a row: 16 blank tiles across the whole name area
+// symdb: static void draw_blank_chip_row(u32 slot, u32 menu); adapter: in r0 = slot, r5 = screen state,
+// symdb: r7 kept; out r0/r5/r7 restored, r2/r4 keep the render's leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawBlankChipRow_8047760.yaml
 	thumb_local_start
 drawBlankChipRow_8047760:
 	push {r0,r5,r7,lr}
@@ -2895,6 +2915,12 @@ off_804778C:
 	.word dword_86A5D60
 	thumb_func_end drawBlankChipRow_8047760
 
+// symdb: draws the row's 7-tile strip and publishes the entry's value halfword
+// symdb: static void draw_chip_row_strip(u32 slot, u32 value, u32 has_code, u32 chip, u32 palette, u32
+// symdb: menu, u32 toolkit); adapter: in r0 = slot, r1 = the entry's value halfword, r2 = has-code, r3 =
+// symdb: chip id, r4 = palette, r5 = screen state, r7 kept, r10 = toolkit; out r0/r5/r7 restored, r2/r4
+// symdb: keep the render's leftovers
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8047790.yaml
 	thumb_local_start
 sub_8047790:
 	push {r0,r5,r7,lr}
@@ -3685,6 +3711,12 @@ copy_table_80469F0_to_202F800_8047CEC:
 	pop {pc}
 	thumb_func_end copy_table_80469F0_to_202F800_8047CEC
 
+// symdb: greys out a row's strip tilemap when the player owns none of the chip
+// symdb: static void dim_unowned_chip_strip(u32 slot, u32 entry, u32 chip, u32 code, u32 palette, u32
+// symdb: branch_byte, bool secret); adapter: in r0 = slot, r1 = chip id, r2 = code, r3 rides along to the
+// symdb: counter call, r4 = palette, r6 = count the secret collection, r7 = entry; out r0-r7 all as they
+// symdb: came (the original pushes and pops them)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dimUnownedChipStrip_8047CFA.yaml
 	thumb_local_start
 dimUnownedChipStrip_8047CFA:
 	push {r0-r7,lr}

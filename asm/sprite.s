@@ -1276,6 +1276,8 @@ sprite_clearFinalPalette:
 
 // symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 
+// symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
+
 // symdb: void sprite_getFrameParameters(ObjectHeader* header /* r5 */) — out: r0 = attribute byte
 // symdb: (sprite+2, with 0xC0 flip bits cleared when flag byte nonzero), r1 = r2 = frame/tile index byte
 // symdb: (sprite+0), r3 = sprite data address; flags out: c = 1, v = 0, nz per the flag byte at sprite+1.

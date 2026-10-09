@@ -20599,6 +20599,11 @@ sub_814DA6C:
 	bx lr
 	nop 
 
+// symdb: libgcc's __divsi3, the signed 32-bit division helper the ROM's sound setup divides through; a zero divisor calls the __div0 nullsub and returns 0.
+// symdb: static Division divide_signed(s32 numerator, s32 denominator) ->     Division { s32 quotient;
+// symdb: u32 r1, r2, r3, r12; } Next sub_814DA9C: in r0/r1 = numerator/denominator (r2/r3/r12 scratch on
+// symdb: the zero path); out r0 quotient, r1/r2/r3/r12 the division loop's state, nz/c/v, r4 preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/divsi3_814DA9C.yaml
 	thumb_func_start divsi3_814DA9C, 2
 divsi3_814DA9C:
 	cmp r1, #0
@@ -23451,6 +23456,11 @@ dword_814EDBC:
 	.word 0x68736D53
 	thumb_func_end sub_814ECC8
 
+// symdb: m4a's SampleFreqSet: turns a sound id's rate group into pcmDmaPeriod, pcmFreq and divFreq and restarts the PCM DMA.
+// symdb: static VsyncOnRegisters sample_freq_set(u32 sound_id) (runs sound_vsync_off inside and returns
+// symdb: what sound_vsync_on leaves) Next sub_814EDC0: in r0 sound id, r4/r5 preserved, lr; out r0 the
+// symdb: popped return word, r1/r2/r3/r12 from m4aSoundVSyncOn, r4/r5 restored, nz/c/v.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/SampleFreqSet_814EDC0.yaml
 	thumb_func_start SampleFreqSet_814EDC0
 SampleFreqSet_814EDC0:
 	push {r4,r5,lr}
@@ -23640,6 +23650,11 @@ dword_814EF10:
 	.word 0x68736D53
 	thumb_func_end sub_814EEC0
 
+// symdb: m4a's m4aSoundVSyncOff: takes the PCM DMA off — releases the block's ident, stops Timer 0, stops the repeating PCM DMAs, sets both DMA controls to 32-bit and zero-fills the PCM buffer.
+// symdb: static VsyncOffRegisters sound_vsync_off(void) ->     VsyncOffRegisters { u32 r2, r3; } Next
+// symdb: sub_814EF14: in lr; out r2/r3 as the original leaves them; r0, r1, LR and the flags are
+// symdb: documented scratch.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4aSoundVSyncOff_814EF14.yaml
 	thumb_local_start
 m4aSoundVSyncOff_814EF14:
 	push {lr}
@@ -23711,6 +23726,11 @@ dword_814EF90:
 	.word 0x5000318
 	thumb_func_end m4aSoundVSyncOff_814EF14
 
+// symdb: m4a's m4aSoundVSyncOn: restarts the PCM DMA — re-enables DMA1/DMA2, clears the DMA counter, takes the ident back and reloads and starts Timer 0 at the start of line 159.
+// symdb: static VsyncOnRegisters sound_vsync_on(u32 incoming_r1, u32 incoming_r12) Next sub_814EF94: in
+// symdb: r4 preserved, r1/r12 (kept only when nothing is done), lr; out r0 the popped return word,
+// symdb: r1/r2/r3/r12, r4 restored, nz/c/v.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4aSoundVSyncOn_814EF94.yaml
 	thumb_local_start
 m4aSoundVSyncOn_814EF94:
 	push {r4,lr}
