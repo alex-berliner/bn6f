@@ -871,7 +871,7 @@ loc_813BD02:
 	thumb_func_end sub_813BC98
 
 // symdb: Trivial getter that returns the address of a work buffer at 0x2006CF8 in r7 for its caller.
-// symdb: void getWorkAreaPtr_2006CF8_813BD0C(void) /* out: r7 = &unk_2006CF8; only lr is read, nothing else
+// symdb: void getWorkAreaPtr_2006CF8(void) /* out: r7 = &unk_2006CF8; only lr is read, nothing else
 // symdb: touched */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CF8_813BD0C.yaml
 	thumb_local_start
@@ -890,7 +890,7 @@ sub_813BD10:
 	thumb_func_end sub_813BD10
 
 // symdb: Tiny helper that loads the base address of the IWRAM data block at 0x2006CC0 into r7 (a work-area/global-struct pointer getter).
-// symdb: void getWorkAreaPtr_2006CC0_813BD14(void); // out: r7 = &unk_2006CC0
+// symdb: void getWorkAreaPtr_2006CC0(void); // out: r7 = &unk_2006CC0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CC0_813BD14.yaml
 	thumb_local_start
 getWorkAreaPtr_2006CC0_813BD14:

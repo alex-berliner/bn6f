@@ -4200,7 +4200,7 @@ dword_813227C:
 	thumb_func_end sub_8132194
 
 // symdb: Chatbox wrapper that runs text script archive eTextScript201BA20 starting at a caller-supplied script index.
-// symdb: void chatbox_runScript_803FD9C_on_eTextScript201BA20(u32 scriptIdx /* r0 */)
+// symdb: void chatbox_runScript_eTextScript201BA20(u32 scriptIdx /* r0 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_803FD9C_on_eTextScript201BA20.yaml
 	thumb_func_start chatbox_runScript_803FD9C_on_eTextScript201BA20
 chatbox_runScript_803FD9C_on_eTextScript201BA20:

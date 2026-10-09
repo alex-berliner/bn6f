@@ -2874,7 +2874,7 @@ off_8035328:
 	thumb_func_end ghostNaviCheck_8035274
 
 // symdb: Resets the game-progress flag buffer to the default table values and clears the current progress state in the game state struct.
-// symdb: void initGameProgressBuffer_803532c(void); // inputs r4-r7,r10 (preserved except r7 used as
+// symdb: void gameProgress_resetBuffer_803532c(void); // inputs r4-r7,r10 (preserved except r7 used as
 // symdb: scratch), outputs r3=0x19 (entries copied); clobbers r0,r1,r3,r6,r7 and NZCV
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initGameProgressBuffer_803532c.yaml
 	thumb_func_start initGameProgressBuffer_803532c
