@@ -6294,6 +6294,10 @@ locret_8126402:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81263D0
 
+// symdb: Blits a horizontal strip of background tiles, 8 tiles wide, into tile block 2, either from a caller-supplied tile id table or as a plain fill depending on a flag.
+// symdb: void bg_drawTileStripTileBlock2_8126404(u32 j /*r0*/, u32 i /*r1*/, const u16 *tileIds /*r2*/,
+// symdb: u32 iSize /*r3*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_drawTileStripTileBlock2_8126404.yaml
 	thumb_local_start
 bg_drawTileStripTileBlock2_8126404:
 	push {r4-r7,lr}
@@ -16337,6 +16341,10 @@ off_812B500:
 	.word byte_8129150
 	thumb_func_end sub_812B4AC
 
+// symdb: If bit 4 (0x10) of the flag byte at [r5+0x1B] is set, calls the draw/render helper sub_811FAF4 with a fixed argument block; otherwise returns immediately.
+// symdb: void sub_812B504(void* obj /*r5*/); clobbers r0-r3, preserved r4; flags on early-exit path come
+// symdb: from tst of (byte & 0x10)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_drawIfFlagSet_812B504.yaml
 	thumb_local_start
 sprite_drawIfFlagSet_812B504:
 	push {r4,lr}

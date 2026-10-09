@@ -109,6 +109,10 @@ sprite8002728:
 	thumb_func_end sprite_load
 
 // (void *a1) -> void
+// symdb: Resets an object's sprite state — zeroes animation/position/timer fields, invalidates the current frame, and sets the default 8x8 cell size.
+// symdb: void sprite_init(u32 firstResource /* r0, sprite resource id/base */, SpriteObj* obj /* r5 */);
+// symdb: returns c/v from r0+4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_initialize.yaml
 	thumb_local_start
 sprite_initialize:
 	add r0, #4
@@ -1127,6 +1131,10 @@ loc_8002D4E:
 	pop {r5,pc}
 	thumb_func_end sub_8002D20
 
+// symdb: Strips the "scalable" state from an object's sprite, clearing its scale bits and the matching sprite flag-word bit.
+// symdb: void sprite_makeUnscalable(ObjectHeader* r5); clobbers r0-r3 and NZCV; preserves r5; flags are
+// symdb: caller-visible (see quirks)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_makeUnscalable.yaml
 	thumb_func_start sprite_makeUnscalable
 sprite_makeUnscalable:
 	push {r5,lr}
@@ -1251,6 +1259,8 @@ sprite_clearFinalPalette:
 	strb r0, [r3,#oObjectSprite_Unk_15]
 	mov pc, lr
 	thumb_func_end sprite_clearFinalPalette
+
+// symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 
 // symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 

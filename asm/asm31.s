@@ -73334,6 +73334,10 @@ locret_80DA9FC:
 	pop {pc}
 	thumb_func_end battle_spawnTypeA9ObjectAtPanel_80DA9DC
 
+// symdb: Returns a randomly chosen halfword from one 16-byte entry of the table at byte_80211A0, selected by an RNG roll masked to 0-7.
+// symdb: u16 pickRandomHalfwordFromTableEntry(u32 entryIndex /*r0*/); clobbers r0-r3,lr and flags;
+// symdb: preserves r4,r7; r4/r7 listed as caller inputs but not actually read
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rng_pickRandomHalfwordFromTableEntry_80DA9FE.yaml
 	thumb_func_start rng_pickRandomHalfwordFromTableEntry_80DA9FE
 rng_pickRandomHalfwordFromTableEntry_80DA9FE:
 	push {r4,lr}
@@ -86550,6 +86554,11 @@ sub_80E0F28:
 	mov pc, lr
 	thumb_func_end sub_80E0F28
 
+// symdb: Switches a battle object's animation-state slot to 0x15 or 8 depending on the selector, and reloads its sprite (0x80, anim 0x14) only when the state actually changed.
+// symdb: void battle_setExtraAnimState(int selector /*r0*/, BattleObject* obj /*r5*/); clobbers r0-r3, lr
+// symdb: and flags; preserves r4/r5; r3 holds the sprite_noShadow return value (or the old slot value on
+// symdb: the no-change path)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setExtraAnimState_80E0F2E.yaml
 	thumb_local_start
 battle_setExtraAnimState_80E0F2E:
 	push {lr}
@@ -92695,6 +92704,12 @@ sub_80E3B94:
 	pop {r4,pc}
 	thumb_func_end sub_80E3B94
 
+// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
+
+// symdb: void sub_80E3BEA(battle object in r5); clobbers r0-r3, lr (and flags); does not return to this
+// symdb: function's caller until the selected action handler returns; handler entered with r0 =
+// symdb: CurAction, r1 = its jump-table entry (thumb address), r2 = whatever sub_80E3D1A last left there
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdatePosAndRunAction_80E3BEA.yaml
 	thumb_local_start
 battle_objectUpdatePosAndRunAction_80E3BEA:
 	push {lr}
@@ -108318,6 +108333,10 @@ locret_80EB188:
 	.byte 0xE0, 0x83, 0x0, 0x0, 0x14, 0x0, 0x1, 0x1
 	thumb_func_end sub_80EB128
 
+// symdb: Per-frame tick of an AI attack action's countdown; when the timer expires it frees the object to move, reloads the timer, resets the animation if told to, and switches the AI state to 0xC.
+// symdb: void aiAttack_TimerTickEnd_80EB194(void)  /* r7 = object's AI attack vars; returns flags in
+// symdb: nz/c/v and the decremented/reloaded timer value in r0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_TimerTickEnd_80EB194.yaml
 	thumb_local_start
 aiAttack_TimerTickEnd_80EB194:
 	push {lr}

@@ -9525,6 +9525,9 @@ loc_80077C8:
 	pop {pc}
 	thumb_func_end RemoveGivenAliveBattleActorFromList
 
+// symdb: Appends a battle object's name ID to the next slot of its alliance's entry list in the battle state, used to track which combatants belong to each side.
+// symdb: void battle_addObjectToAllianceEntryList(BattleObject* obj /* r5 */, Toolkit* toolkit /* r10 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_addObjectToAllianceEntryList_80077D2.yaml
 	thumb_local_start
 battle_addObjectToAllianceEntryList_80077D2: // (obj: * BattleObject $r5) -> ()
 	push {r4,r6,lr}
@@ -11227,6 +11230,10 @@ locret_8008490:
 	pop {pc}
 	thumb_func_end sub_8008452
 
+// symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in sub_801483C.
+// symdb: void sub_8008492(void); /* in: r5 = battle object/work struct ptr; out: none (r0 holds 4/6 or
+// symdb: the sub_801483C result on the early-return path, NZ flags per last tst/mov) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objAdvanceStateTimer_8008492.yaml
 	thumb_local_start
 battle_objAdvanceStateTimer_8008492:
 	push {lr}
@@ -11253,6 +11260,10 @@ locret_80084BE:
 	pop {pc}
 	thumb_func_end battle_objAdvanceStateTimer_8008492
 
+// symdb: Zero-fills the 12-byte (3-word) record at dword_203CA70 in IWRAM.
+// symdb: void sub_80084C0(void); /* no meaningful inputs; r2/r3/r5 preserved, c/v flags and nz (plus
+// symdb: r0/r1) pass through ZeroFillByWord untouched */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearDword_203CA70Record_80084C0.yaml
 	thumb_local_start
 clearDword_203CA70Record_80084C0:
 	push {r5,lr}
@@ -13198,6 +13209,11 @@ off_80092B4:
 	.word sub_8009314+1
 	thumb_func_end battle_dispatchStatePhase_80092A0
 
+// symdb: Runs a short 10-frame countdown in battle state 4 on the battle state object and, when it finishes (or if nothing was pending), advances the battle flow to state 8.
+// symdb: void battle_runState4CountdownOrAdvance_80092C0(oBattleState *state /* r5 */); // lr clobbered
+// symdb: (tail pop {pc}); returns r0 = last value written (remaining timer / 4 / 0), r1 = pending flag
+// symdb: read on the idle path, NZ from that value, C/V residue of the timer subs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runState4CountdownOrAdvance_80092C0.yaml
 	thumb_local_start
 battle_runState4CountdownOrAdvance_80092C0:
 	push {lr}
@@ -15017,6 +15033,10 @@ off_8009FC8:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009F8A
 
+// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sub_802FE28 until the count at 0x3000EA8 runs out.
+// symdb: void processPendingQueue_8009FCC(void); /* reads count from byte_3000EA8, entries from
+// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sub_802FE28 call */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
 	thumb_local_start
 sub_8009FCC:
 	push {r5-r7,lr}
@@ -15863,7 +15883,7 @@ off_800A4DC:
 
 // symdb: Fetches a per-navi value for the currently equipped PET navi via a two-step table lookup, returning 0xFF when the battle is in mode 1.
 // symdb: u32 pet_getCurNaviChainedLookup_800A4E0(void) -> r0 (value or 0xFF); r1/r3 also hold leftovers
-// symdb: from the second battle_getNaviStatsByte_800A540 call; preserves r4/r6, clobbers flags
+// symdb: from the second sub_800A540 call; preserves r4/r6, clobbers flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_getCurNaviChainedLookup_800A4E0.yaml
 	thumb_local_start
 pet_getCurNaviChainedLookup_800A4E0:
@@ -15916,6 +15936,9 @@ locret_800A53E:
 	pop {r4,r6,pc}
 	thumb_func_end sub_800A506
 
+// symdb: Reads one byte of the current navi's stats, choosing the active in-battle navi stats block or the PET's navi stats depending on a battle-effect flag.
+// symdb: int battle_getNaviStatsByte(int petSel /*r0*/, int statIndex /*r1*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getNaviStatsByte_800A540.yaml
 	thumb_local_start
 battle_getNaviStatsByte_800A540:
 	push {r4,r6,lr}
@@ -16277,6 +16300,11 @@ loc_800A76E:
 
 	thumb_func_start battle_canAllianceAct_800A772
 // lockout check?
+// symdb: Checks whether one alliance (player or opponent) is currently allowed to act, gating on a chip lockout timer and a battle-state permission flag.
+// symdb: int battle_canAllianceAct(u32 alliance /* r0: 0 = player, nonzero = opponent */, BattleObject*
+// symdb: obj /* r5 */); returns r0 = 1 if allowed, 0 if not; r1 = tested flag (or lockout timer on the
+// symdb: early-out path), r2 = caller's r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_canAllianceAct_800A772.yaml
 battle_canAllianceAct_800A772:
 	push {lr}
 	push {r0}
@@ -16318,6 +16346,10 @@ sfx_playSfx0C_800A79C:
 	pop {pc}
 	thumb_func_end sfx_playSfx0C_800A79C
 
+// symdb: Counts the opponent-side battle actors whose NameID lies within a caller-supplied inclusive range.
+// symdb: int battle_countOpponentActorsWithNameIdInRange(int minNameId /*r1*/, int maxNameId /*r2*/);
+// symdb: returns count in r0; clobbers r3 and NZ flags (flags set by final MOV r0, r4); r4-r7 preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_countOpponentActorsWithNameIdInRange_800A7A6.yaml
 	thumb_local_start
 battle_countOpponentActorsWithNameIdInRange_800A7A6:
 	push {r4-r7,lr}
@@ -16857,6 +16889,10 @@ loc_800AA56:
 	pop {pc}
 	thumb_func_end sub_800AA40
 
+// symdb: Compacts the 7-word (0x1C-byte) entry produced by getNextEntryAddress_800AAAE, sliding all non-zero words to the front and zero-filling the tail so the entry has no holes.
+// symdb: void compactEntryWords_800AA64(u32 r0 /* forwarded to getNextEntryAddress_800AAAE */, u32 r4 /*
+// symdb: preserved, unread */); returns nothing meaningful (R0 = 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/compactEntryWords_800AA64.yaml
 	thumb_local_start
 compactEntryWords_800AA64:
 	push {r4,lr}

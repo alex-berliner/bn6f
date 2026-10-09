@@ -8940,6 +8940,11 @@ byte_80A9AA0:
 	.byte 0x1C, 0x9E, 0x5, 0x5, 0x0, 0x0, 0xFF, 0x0, 0x7D, 0x1
 	thumb_func_end sub_80A9A96
 
+// symdb: Dispatches a battle object's behaviour step by calling one of three handler routines selected from the object's state, passing the object's per-character data table entry to the handler.
+// symdb: void battle_dispatchObjectBehaviorStep_80A9B70(Object *obj /* r5 */); tail-calls the selected
+// symdb: handler (r0 = handler entry address, r7 = byte_80A9AA0 + 0x10*obj->charId); returns to this
+// symdb: function's caller when the handler returns, with r0-r7 and NZCV as the handler left them
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectBehaviorStep_80A9B70.yaml
 	thumb_func_start battle_dispatchObjectBehaviorStep_80A9B70
 battle_dispatchObjectBehaviorStep_80A9B70:
 	push {lr}
@@ -9672,6 +9677,9 @@ sub_80AA0FC:
 	pop {pc}
 	thumb_func_end sub_80AA0FC
 
+// symdb: Copies one 8-byte palette-row entry (selected by index 0..2) from a fixed ROM table into the work buffer byte_20018B0 and returns 0.
+// symdb: int palette_copyTableRow(int row /* r0 = entry index, expected 0..2 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_copyTableRow_80AA104.yaml
 	thumb_func_start palette_copyTableRow_80AA104
 palette_copyTableRow_80AA104:
 	push {r4-r7,lr}
@@ -9924,6 +9932,9 @@ off_80AA2EC:
 	.word sub_80AA36C+1
 	thumb_func_end sub_80AA2D8
 
+// symdb: Initializes an object's sprite: sets its state fields, loads a sprite sheet (gfx 0x80, palette 0x1C, sprite 0x98), starts animation 0 with no shadow, then runs the follow-up init step.
+// symdb: void sub_80AA2F8(void); /* object struct pointer passed in r5, preserved; trashes r0-r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_initSpriteState3_80AA2F8.yaml
 	thumb_local_start
 object_initSpriteState3_80AA2F8:
 	push {r4-r7,lr}
@@ -10792,6 +10803,11 @@ dword_80AA8DC:
 	.word 0xFFFF
 	thumb_func_end sub_80AA88C
 
+// symdb: Wrapper that, when enabled by its second argument, invokes setup helper sub_80AA910 with a six-word parameter block and returns its result plus the current battle state's halfword field 0x36; otherwise returns (0, 0).
+// symdb: u32x2 sub_80AA8E0(u32 arg0 /*r0*/, u32 enable /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg4
+// symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of sub_80AA910, r1 =
+// symdb: battleState->oBattleState_Unk_36 (halfword, zero-extended); clobbers C/V.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80AA8E0.yaml
 	thumb_func_start sub_80AA8E0
 sub_80AA8E0:
 	push {r4,r6,r7,lr}

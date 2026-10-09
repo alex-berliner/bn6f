@@ -1,4 +1,7 @@
 
+// symdb: Publishes a text-graphics base pointer into the toolkit's text-renderer state, then hands the glyph chunk selected by an index to the renderer at sub_3006B94.
+// symdb: void renderTextGfxChunk(u32* gfx, int entryIndex /* r0, r1; r9 = second arg to sub_3006B94 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/renderTextGfx_8045F8C.yaml
 	thumb_func_start renderTextGfx_8045F8C
 renderTextGfx_8045F8C:
 	push {lr}
@@ -1507,6 +1510,10 @@ dword_8046B98:
 	.word 0x140
 	thumb_func_end sub_804692C
 
+// symdb: Initializes the BBS request-board work area for the selected request board entry, zeroing its 0x34-byte buffer and recording the current map group for the return trip.
+// symdb: void reqBBS_initRequestWorkArea_8046CC8(u32 slot /* r0 */, u32 toolkit /* r10 */); sets r2 =
+// symdb: dword_8046B98 (request data table base); clobbers r0, r1, lr, nzcv; preserves r3-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_initRequestWorkArea_8046CC8.yaml
 	thumb_func_start reqBBS_initRequestWorkArea_8046CC8
 reqBBS_initRequestWorkArea_8046CC8:
 	push {r4-r7,lr}
@@ -2279,6 +2286,11 @@ byte_8047318:
 	.byte 0xA, 0xE0, 0xA, 0xE0, 0xA, 0xE0, 0xA, 0xE0, 0xA, 0xE0, 0xA, 0xE0
 	thumb_func_end sub_80472E8
 
+// symdb: Rolls a nonzero random byte and stores a bit-scrambled/obfuscated code derived from it (plus the caller's base value) into object+0x30.
+// symdb: void storeObfuscatedRandomToken(u32 base /*r0*/, struct Object* obj /*r5*/); returns with
+// symdb: r0-r4/r5/r7 preserved, flags set as side effects (C=0, V from base+byte, N/Z from the stored
+// symdb: value)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/storeObfuscatedRandomToken_804733C.yaml
 	thumb_local_start
 storeObfuscatedRandomToken_804733C:
 	push {r0-r4,lr}
@@ -4091,6 +4103,10 @@ loc_8048C5C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8048C24
 
+// symdb: Resets the toolkit's shop data buffer, zeroing it and copying the default 8-byte-entry stock table from ROM, skipping empty entries.
+// symdb: void shop_resetStockTable_8048C68(void *toolkit_r10); /* outputs r2 = negative leftover entry
+// symdb: counter from the copy loop, not meaningful to callers */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shop_resetStockTable_8048C68.yaml
 	thumb_func_start shop_resetStockTable_8048C68
 shop_resetStockTable_8048C68:
 	push {lr}

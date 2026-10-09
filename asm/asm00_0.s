@@ -114,9 +114,9 @@ m4a_800061E:
 	pop {pc}
 	thumb_func_end m4a_800061E
 
-// symdb: Thin wrapper that submits a sound task to the sound engine, handing the engine's dispatcher sound_8000808 the task callback sound_tickAllMusicPlayers_814EA58 and passing the caller's r10 through as an argument.
+// symdb: Thin wrapper that submits a sound task to the sound engine, handing the engine's dispatcher sound_8000808 the task callback sub_814EA58 and passing the caller's r10 through as an argument.
 // symdb: void sound_dispatchTask_8000630(u32 r0, u32 r2); /* r4-r7, r10 preserved context; sets r1 =
-// symdb: caller's r10, r3 = &sound_tickAllMusicPlayers_814EA58|1 before calling sound_8000808; returns nzcv and r10 from the
+// symdb: caller's r10, r3 = &sub_814EA58|1 before calling sound_8000808; returns nzcv and r10 from the
 // symdb: callee */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchTask_8000630.yaml
 	thumb_local_start
@@ -319,7 +319,7 @@ off_8000704:
 	thumb_func_end sound_80006A2
 
 // () -> void
-// symdb: Asks the sound driver to switch music state (via callback sound_tickAllMusicPlayers_814EA58) and marks the game state so background music is treated as off.
+// symdb: Asks the sound driver to switch music state (via callback sub_814EA58) and marks the game state so background music is treated as off.
 // symdb: void music_stopBgm(u32 argR0, u32 argR2, Toolkit *toolkit /*r10*/); sets r0 = 0xFF, r1 =
 // symdb: toolkit, flags NZ from the 0xFF load
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/musicGameState_8000784.yaml
@@ -1541,6 +1541,10 @@ dword_8000DDC:
 	.word 0x99595999
 	thumb_func_end memory_bcd_8000D84
 
+// symdb: Splits the play-time frame counter into hours, minutes, seconds and leftover frames via three BIOS divisions.
+// symdb: Next sub_8000DE0(u32 totalFrames /* r0 */) -> hours /* r0 */, minutes /* r1 */, seconds /* r2
+// symdb: */, frames /* r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clock_breakPlayTimeIntoHMSF_8000DE0.yaml
 	thumb_func_start clock_breakPlayTimeIntoHMSF_8000DE0
 clock_breakPlayTimeIntoHMSF_8000DE0:
 	push {lr}
@@ -2872,6 +2876,10 @@ dword_80015CC:
 	.word 0x2000
 	thumb_func_end bg_ClearTilesAndReloadGraphics_80015B4
 
+// symdb: Uploads the toolkit's iBG tile-id block table to VRAM each frame, then clears the table to 0x2FF "no tile" entries for the next frame.
+// symdb: void copyToVRAMAndClear_iBGTileIdBlocks_Ptr(void) /* r10 = toolkit ptr, r3 preserved; clobbers
+// symdb: r0-r2, nzcv, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyToVRAMAndClear_iBGTileIdBlocks_Ptr.yaml
 	thumb_func_start copyToVRAMAndClear_iBGTileIdBlocks_Ptr
 copyToVRAMAndClear_iBGTileIdBlocks_Ptr:
 	push {lr}
@@ -3216,6 +3224,9 @@ dword_800184C:
 	.word 0x2000
 	thumb_func_end ZeroFillGFX30025c0
 
+// symdb: Loads a fixed 0x800-byte graphics block into VRAM at 0x600D400 and a 32-byte block into IWRAM at 0x3001B40.
+// symdb: void loadScreenGfx_8001850(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyMemory_8001850.yaml
 	thumb_func_start copyMemory_8001850
 copyMemory_8001850:
 	push {lr}

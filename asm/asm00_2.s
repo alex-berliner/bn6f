@@ -643,6 +643,10 @@ off_800F210:
 	.equiv enemy_getStruct1_struct_SecondaryElementWeakness, 0x06 // u8
 	.equiv enemy_getStruct1_struct_HasShadow, 0x07 // bool
 
+// symdb: Resolves an enemy index to a pointer to its per-enemy struct by looking up actor type (virus/navi/player) and AI index tables.
+// symdb: enemy_resolveStructByActorType(u16 enemy_idx) -> (void *struct_ptr /*r0*/, u32 ai_index_x4
+// symdb: /*r2*/); clobbers r1, lr, NZC flags; V flag also reported as output by callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/enemy_getStruct1.yaml
 	thumb_func_start enemy_getStruct1
 enemy_getStruct1:
 	push {lr}
@@ -681,6 +685,10 @@ off_800F230:
 	.equiv enemy_getStruct2_struct_ElemDamage, 0x04 // u16
 
 // where for elem_hp and elem_dmg, in a `.hword 0xXYYY` `X` is likely elem and `YYY` is hp/damage.
+// symdb: Resolves an enemy index to a pointer into a per-version 6-byte data record, selected by actor type (virus/navi/player) and AI index.
+// symdb: u8* enemy_getStruct2(u16 enemy_idx) -> r0 = pointer to 6-byte per-version record (r3 = 6 as a
+// symdb: side effect, r1/r2 clobbered)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/enemy_getStruct2.yaml
 	thumb_func_start enemy_getStruct2
 enemy_getStruct2:
 	push {lr}
@@ -717,6 +725,11 @@ off_800F260:
 	.word off_80EA8D8
 	thumb_func_end enemy_getStruct2
 
+// symdb: Given an enemy ID, returns a small set of per-enemy display parameters: a fixed 5-byte table record for IDs 0xCD..0xFF, otherwise the first two bytes of the enemy's own struct with the rest zeroed.
+
+// symdb: u32x5 enemy_getVisualParams(u32 id /* r0 */); in: r0 = enemy ID; out: r0..r3 = bytes 0-3 of the
+// symdb: record (r4 = byte 4 on the table path, untouched garbage on the struct path); flags clobbered.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
 	thumb_func_start sub_800F26C
 sub_800F26C:
 	push {lr}
@@ -5459,6 +5472,9 @@ off_8011470:
 	.word sub_80C46B6+1
 	thumb_func_end sub_8011450
 
+// symdb: Empty stub that does nothing and immediately returns; kept as a no-op hook point by the game.
+// symdb: void nullsub_43(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_43.yaml
 	thumb_local_start
 nullsub_43:
 	mov pc, lr
@@ -9852,6 +9868,9 @@ loc_8013366:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8013236
 
+// symdb: Checks whether the enemy AI may play the chip waiting in its battle hand this frame (no attack-power hint set, AI condition flags allow acting, hand not empty) and if so performs the chip selection via sub_8013236.
+// symdb: bool sub_801336C(battleObject* obj /* r4, r5 = the battle object */, ...)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiTrySelectChipFromHand_801336C.yaml
 	thumb_local_start
 aiTrySelectChipFromHand_801336C:
 	push {lr}
@@ -11064,6 +11083,10 @@ loc_8013B1C:
 	pop {pc}
 	thumb_func_end sub_8013AE4
 
+// symdb: When a battle object's collision data reports event 0x18, adds the amount in the next collision byte to the AI's counter at oAIData_Unk_12, clamping it at 7.
+// symdb: void sub_8013B20(battle_object *r5 /* in r5, object whose CollisionDataPtr/AIDataPtr are read
+// symdb: */); clobbers r0-r3, NZCV-defined; preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAddCounterFromCollision_8013B20.yaml
 	thumb_local_start
 battle_aiAddCounterFromCollision_8013B20:
 	push {r4,lr}
@@ -17088,6 +17111,10 @@ word_8016908:
 	.hword 0x7E94
 	thumb_func_end object_applyTintIfFlag16_80168F0
 
+// symdb: Recolors the current battle object's sprite (normal or inverted/white) depending on a bit of the current battle state, if the object opts in via flag 0x4000.
+// symdb: void sub_801690A(void); // reads current object via r5/r10; out r3 = value left by
+// symdb: sprite_setColorShader
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyStateSpriteColorShader_801690A.yaml
 	thumb_local_start
 battle_applyStateSpriteColorShader_801690A:
 	push {lr}
@@ -18997,6 +19024,10 @@ byte_8017868:
 	.byte 0xFE, 0xFD, 0xFC, 0xFC, 0xFB, 0xFB, 0xFA, 0xFA, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x0
 	thumb_func_end sub_8017768
 
+// symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (sub_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
+// symdb: void sub_8017888(battle_object *obj /* r5 */); returns r0 = 0; clobbers r0-r3, r7 (scratch,
+// symdb: restored), flags NZ set from "mov r0,#0"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_endTurnMarkActed_8017888.yaml
 	thumb_func_start battle_endTurnMarkActed_8017888
 battle_endTurnMarkActed_8017888:
 	push {r4,r7,lr}
@@ -22416,6 +22447,10 @@ locret_801A42C:
 	mov pc, lr
 	thumb_func_end sub_801A420
 
+// symdb: While a battle object is being hit, computes its arm position and spawns the hit/damage effect there.
+// symdb: void sub_801A42E(battleObject* obj /* r5 */, void* r4 /* preserved only */, ...); no meaningful
+// symdb: return (r0-r3 clobbered, r4-r7 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnHitEffectAtArm_801A42E.yaml
 	thumb_local_start
 battle_spawnHitEffectAtArm_801A42E:
 	push {r4,lr}
@@ -22479,6 +22514,11 @@ locret_801A4A4:
 	pop {r4,r6,pc}
 	thumb_func_end sub_801A45C
 
+// symdb: If a battle object was just hit by an arm-style attack (hit type 0xF4 or 0xF7), computes where the attacker's arm connects and spawns the corresponding battle effect there.
+// symdb: void battle_spawnArmHitEffect_801A4A6(battleObject* obj /* r5 */); also reads r4/r6/r7 per the
+// symdb: caller contract but does not use them; preserves r4-r7, returns r3 and the c/v flags as left by
+// symdb: sub_80E8124
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnArmHitEffect_801A4A6.yaml
 	thumb_local_start
 battle_spawnArmHitEffect_801A4A6:
 	push {r4,lr}
@@ -25232,6 +25272,12 @@ locret_801B9E4:
 	pop {r5,pc}
 	thumb_func_end sub_801B9BC
 
+// symdb: Runs one step of an enemy's "extra AI attack" script by dispatching through the caller's handler table or the shared AIAttackJumptable based on the object's CurAction.
+// symdb: void battle_runAIAttackDispatcher_801b9e6(u32 **callerAttackTable /* r0 */, BattleObject *obj /*
+// symdb: r5 */) — does not return to its own caller; the selected handler returns directly to
+// symdb: RunAIAttack's caller. r4/r6/r7 are set to the object's aiData/aiState/attackVars for the
+// symdb: handler, then restored. Flags NZC (and V) pass through to the handler.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunAIAttack.yaml
 	thumb_local_start
 RunAIAttack: // (extra_ai_attack_jumptable: * [* Fn]) -> ()
 	push {r4,r6,r7,lr}
@@ -25328,6 +25374,11 @@ loc_801BA8C:
 	pop {r4,pc}
 	thumb_func_end applyDamageToPlayer_801ba12
 
+// symdb: After a battle object finishes action 4, clears its flag2 bits and collision counter once its "done" condition is met.
+// symdb: int battle_object_postAction4CheckClearFlags_801BA92(struct BattleObject* obj /* r5 */); returns
+// symdb: 0 (not action 4), 1 (action 4 but still flagged/waiting), or 2 (flags just cleared); r4
+// symdb: preserved, r0-r3 clobbered, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_postAction4CheckClearFlags_801BA92.yaml
 	thumb_local_start
 battle_object_postAction4CheckClearFlags_801BA92:
 	push {r4,lr}
@@ -25351,6 +25402,8 @@ loc_801BABA:
 	mov r0, r4
 	pop {r4,pc}
 	thumb_func_end battle_object_postAction4CheckClearFlags_801BA92
+
+// symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 
 // symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 
@@ -25413,6 +25466,12 @@ off_801BB18:
 	.word 0x8000000
 	thumb_func_end sub_801BADE
 
+// symdb: Attempts to claim (reserve) the panel under one object for another object, marking the panel reserved and flagging the reserving object; fails if there is no panel or it is already reserved.
+// symdb: bool object_reservePanel(ObjectHeader *targetObject /*r0*/, u32 unused /*r1*/, ObjectHeader
+// symdb: *reserverObject /*r5*/); returns 1 on successful reservation, 0 if the target has no panel or
+// symdb: the panel is already reserved; sets NZ flags from the return value, clobbers r1-r3 (r2 carries
+// symdb: the prior reserver pointer on failure)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_reservePanel.yaml
 	thumb_func_start object_reservePanel
 object_reservePanel: // JP: 0x801bf38
 	push {lr}
@@ -25547,6 +25606,10 @@ locret_801BBF2:
 	pop {pc}
 	thumb_func_end object_updateSprite
 
+// symdb: Advances one battle object's sprite animation unless the battle is paused, the object has no sprite, or a time stop has frozen its animation.
+// symdb: void object_updateSpriteTimestop(battle_object *obj /* r5 */, void *unused /* r4 */, void
+// symdb: *unused2 /* r10 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_updateSpriteTimestop.yaml
 	thumb_func_start object_updateSpriteTimestop
 object_updateSpriteTimestop:
 	push {lr}
@@ -28273,6 +28336,10 @@ event_raiseFlag8000AndDispatch_801CEFA:
 	pop {pc}
 	thumb_func_end event_raiseFlag8000AndDispatch_801CEFA
 
+// symdb: State-machine dispatcher that reads the current state index from a work block and tail-calls the matching handler from a 5-entry ROM table.
+// symdb: void sub_801CF0E(void); /* r7 in/out preserved around the handler call; NZC set by the state*4
+// symdb: shift; control passes to the handler, which returns to this function's caller */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/state_dispatchHandler_801CF0E.yaml
 	thumb_local_start
 state_dispatchHandler_801CF0E:
 	push {r7,lr}
@@ -29872,6 +29939,11 @@ locret_801DC04:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801DBD4
 
+// symdb: Looks up an entry by 32-bit id in a fixed 6-slot, 8-bytes-per-slot work table and patches two of its bytes, returning 1 if no entry with that id exists.
+// symdb: int sub_801DC06(u8 value /*r0*/, u8 amount /*r1*/, u32 id /*r5*/); returns r0 = value and r1 =
+// symdb: amount - 8 on a hit (flags from subs r1,#8), or r0 = 1 (flags from mov) when no slot matches;
+// symdb: r4/r6/r7 preserved, r2 ends as the last 'in use' flag byte read, r3 as the remaining slot count
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801DC06.yaml
 	thumb_local_start
 sub_801DC06:
 	push {r4,r6,r7,lr}
@@ -29904,6 +29976,11 @@ loc_801DC32:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801DC06
 
+// symdb: Searches a six-entry slot table for the first occupied entry matching a given value and frees (zeroes) that slot, returning 0 on success or 1 if no match was found.
+// symdb: int releaseSlotByValue(u32 value /* r5 */); /* also called with r4, r6, r7, lr preserved; r0 = 0
+// symdb: if a slot was cleared, 1 if none matched; c/v set by the last comparison (value match or final
+// symdb: loop decrement); r2 = last flag byte read, r3 = slots left unexamined */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/releaseSlotByValue_801DC36.yaml
 	thumb_func_start releaseSlotByValue_801DC36
 releaseSlotByValue_801DC36:
 	push {r4,r6,r7,lr}
@@ -30686,6 +30763,9 @@ sub_801E0DC:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801E0DC
 
+// symdb: Queues the battle mode's graphics tiles for DMA unless the battle mode is 6, then sets flag 0x400 in the eStruct at 0x2035280 to signal the GFX was prepared.
+// symdb: void sub_801E10E(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadModeGfx_801E10E.yaml
 	thumb_local_start
 battle_loadModeGfx_801E10E:
 	push {lr}
@@ -31605,6 +31685,12 @@ sub_801E748:
 	pop {pc}
 	thumb_func_end sub_801E748
 
+// symdb: Checks whether the cross-net (double/linked battle) state flag is set and whether the linked partner session has reached the expected mode, returning 0/1/2 accordingly.
+// symdb: u32 sub_801E754(void) — takes no meaningful inputs (r1/r2/lr are scratch, r1 and r2 preserved);
+// symdb: returns in r0: 0 = bit 15 of dword_20352C0 clear, 1 = flag set but partner state doesn't match,
+// symdb: 2 = flag set and partner mode == 4. C/V are left from the caller's last flag-setting instruction
+// symdb: (carry clear on the early-exit path); N/Z reflect the last test.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/comm_checkCrossNetBattleReady_801E754.yaml
 	thumb_func_start comm_checkCrossNetBattleReady_801E754
 comm_checkCrossNetBattleReady_801E754:
 	push {r1,r2,lr}

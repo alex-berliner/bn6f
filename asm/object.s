@@ -2066,6 +2066,10 @@ loc_800C842:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800C81E
 
+// symdb: Counts a run of consecutive equal-valued byte entries (stride 8) starting next to a given row, walking in the given direction while the row stays within 1..6.
+// symdb: int countMatchingRun(int row /*r0*/, int step /*r1*/); returns runLength in r0 and the shared
+// symdb: run value in r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/countMatchingRun_800C84A.yaml
 	thumb_local_start
 countMatchingRun_800C84A:
 	push {r4-r6,lr}
@@ -2136,6 +2140,10 @@ loc_800C898:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800C878
 
+// symdb: Returns a pointer to a panel's 8-byte entry in the battle panel array (unk_2034010) for a given panel index.
+// symdb: Panel* battle_getPanelEntry(int panelIndex); // r0 in: panel index (also used as scratch), r0
+// symdb: out: pointer into panel array; clobbers r1 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getPanelEntry_800C8C2.yaml
 	thumb_local_start
 battle_getPanelEntry_800C8C2:
 	mov r1, #8
@@ -4096,6 +4104,13 @@ loc_800D586:
 	pop {pc}
 	thumb_func_end sub_800D53C
 
+// symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
+
+// symdb: Next sub_800D58C(void); takes the battle object pointer in r5 (inputs per contract also list r4,
+// symdb: r6, r7, lr, but the code only reads r5 and the pushed r4/r6/r7 are popped unchanged). Returns
+// symdb: the stopping panel index in r0 with N/Z set from it ("mov r0, r6"); r1-r3 are scratch after the
+// symdb: calls and C/V are clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_scanPanelsInFront_800D58C.yaml
 	thumb_func_start battle_scanPanelsInFront_800D58C
 battle_scanPanelsInFront_800D58C:
 	push {r4,r6,r7,lr}
@@ -6281,6 +6296,10 @@ off_800ECF0:
 	.word 0x0
 	thumb_func_end sub_800EC80
 
+// symdb: Resets the eight-slot AI data pool, tagging each slot's owner field at +0x7C with a unique one-hot mask and clearing the "AI data in use" bitfield.
+// symdb: void sub_800ED00(void); // returns r0=0, r1=&eUsedAIDataBitfield, r2=8, r3=0x100; flags from
+// symdb: final cmp r2,#8 (Z=1, C=1, V=0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_resetAIDataSlots_800ED00.yaml
 	thumb_func_start ai_resetAIDataSlots_800ED00
 ai_resetAIDataSlots_800ED00:
 	ldr r0, off_800ED20 // =eAIData 

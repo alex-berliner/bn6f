@@ -110,6 +110,11 @@ MapScriptCutsceneCmd_jump: // 8035924
 // byte1 - lower bound for progress byte
 // byte2 - upper bound for progress byte
 // destination3 - script to jump to
+// symdb: Map script command that reads the current game progress and jumps to a script address if it lies within a [min,max] byte range, otherwise skips the command.
+// symdb: u32 mapScriptCmd_jumpIfProgressInRange(scriptPtr in r7, toolkit in r10); // returns r0 = 1
+// symdb: always; r7 updated to jump target or scriptPtr+7; r4 = last value read from script; r6 = read-
+// symdb: mode counter (1/2/3) for ReadMapScriptByte/Word; NZCV flags set by the final add/mov
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump_if_progress_in_range.yaml
 MapScriptCutsceneCmd_jump_if_progress_in_range: // 8035932
 	push {lr}
 	mov r0, r10
@@ -234,6 +239,11 @@ MapScriptCutsceneCmd_jump_if_flag_clear: // 80359BE
 // byte1 - number of flags to test
 // event16_2 - starting flag to test
 // destination4 - script to jump to
+// symdb: Map script/cutscene command that jumps to a script address if every event flag in a given range is still clear.
+// symdb: int MapScriptCutsceneCmd_jump_if_flag_range_clear(void); // in: r7 = current script position,
+// symdb: r10 = script/cutscene context (consumed by ReadMapScript* helpers via r5/r6 selector); out: r0 =
+// symdb: 1, r7 = next script position (either old+8 or the word operand), flags nz/c/v set; r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump_if_flag_range_clear.yaml
 MapScriptCutsceneCmd_jump_if_flag_range_clear: // 80359EE
 	push {lr}
 	mov r6, #1
@@ -844,6 +854,10 @@ MapScriptCmd_jump_if_in_pet_menu: // 8035D4E
 // byte1 - memory param (base index, memory for byte3 is [eMapScriptState + byte1 + 1])
 // byte2 or mem1 - argument 1 for screen fade
 // byte3 or mem2 - argument 2 for screen fade
+// symdb: Map-script cutscene command handler that starts a screen fade using two byte parameters, then advances to the next script command.
+// symdb: Next MapScriptCutsceneCmd_set_screen_fade(void); inputs: r5 = script data pointer, r7 = script
+// symdb: command pointer, lr; clobbers r0-r4, r6, flags; preserves r5; returns r0 = 1, r7 += 4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_set_screen_fade.yaml
 MapScriptCutsceneCmd_set_screen_fade: // 8035D6A
 	push {lr}
 	mov r6, #1
@@ -1250,6 +1264,10 @@ MapScriptCutsceneCmd_load_map_gfx_anims_bg_anim: // 8035F52
 
 // 0x2f/0x39 0xff
 // terminate all gfx anims
+// symdb: Map script/cutscene command that stops one GFX animation slot, or all of them when the argument byte is 0xFF.
+// symdb: void MapScriptCutsceneCmd_terminate_one_or_all_gfx_anims(u8 scriptByte /* via ReadMapScriptByte
+// symdb: */, ...); returns 1 (Next) in r0, advances script pointer r7 by 2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_terminate_one_or_all_gfx_anims.yaml
 MapScriptCutsceneCmd_terminate_one_or_all_gfx_anims: // 8035F6A
 	push {lr}
 	mov r6, #1
@@ -2524,6 +2542,10 @@ off_8036EC4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end StartCutscene
 
+// symdb: Ends/aborts the currently running cutscene by parking the script interpreter on the dummy script, resetting skip-resume state and clearing event flag EVENT_1731.
+// symdb: void cutscene_end_8036ED4(toolkit r10); returns with r1, r3, c, v as left by
+// symdb: ClearEventFlagFromImmediate; r4-r7 preserved; clobbers r0, nz
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_end_8036ED4.yaml
 	thumb_func_start cutscene_end_8036ED4
 cutscene_end_8036ED4:
 	push {r4-r7,lr}
@@ -4230,6 +4252,13 @@ CutsceneCmd_cutscene_end:
 // spawn a new cutscene process
 // byte1 - which cutscene process to spawn (cutscene state struct offset to the cutscene script pointer, e.g. oCutsceneState_CutsceneScriptPos2)
 // ptr2 - cutscene script of the cutscene process
+// symdb: Map-script command "spawn cutscene process": writes a byte value into a chosen cutscene-state script-position field, unpausing that script slot, then continues the script.
+// symdb: u32 CutsceneCmd_spawn_cutscene_process(     /* r1 */ preserved scratch,     /* r4 */ struct
+// symdb: CutsceneState* cutsceneState,     /* r5 */ cutsceneState base pointer,     /* r7 */ u8*
+// symdb: scriptPtr /* current command cursor */,     /* lr */ return address) -> /* r0 */ u32
+// symdb: continueResult /* 1 = keep running script */,    /* r7 */ advanced scriptPtr, flags NZ from r0=1
+// symdb: and CV from r7+=6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_spawn_cutscene_process.yaml
 CutsceneCmd_spawn_cutscene_process:
 	push {lr}
 	// read cutscene script pointer
@@ -4521,6 +4550,10 @@ CutsceneCmd_set_var:
 // byte1 - memory param
 // byte2 or mem - text script to run
 // the length of the command is 2 if from mem, otherwise 3
+// symdb: Map cutscene interpreter command that runs a text script from the cutscene's text archive in the chatbox.
+// symdb: (r5: CutsceneState*, r7: cursor into command stream, r10: map script base, lr) -> r0 = 1
+// symdb: (continue cutscene); clobbers r1-r4, r6, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_run_text_script.yaml
 CutsceneCmd_run_text_script:
 	push {lr}
 	mov r6, #1

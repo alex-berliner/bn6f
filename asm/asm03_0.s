@@ -1340,6 +1340,9 @@ off_8026E48:
 	.word 0x1000
 	thumb_func_end sub_8026DC4
 
+// symdb: Chatbox state-machine step that waits for text printing to finish, then plays a sound effect and moves the chatbox to state 4.
+// symdb: void sub_8026E4C(ChatboxState *self /* r5: struct S20364C0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stateMaybeFinishText_8026E4C.yaml
 	thumb_local_start
 chatbox_stateMaybeFinishText_8026E4C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -1381,6 +1384,10 @@ loc_8026E92:
 	pop {pc}
 	thumb_func_end sub_8026E78
 
+// symdb: Runs one update step for a battle object, dispatching to the handler matching the object's kind byte and passing in a battle-effect flag.
+// symdb: void battle_updateObjectByKind_8026E98(S20364C0 *self /* in R5 */); also reads
+// symdb: GetBattleEffects() and clobbers/sets NZ from the effect check
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_updateObjectByKind_8026E98.yaml
 	thumb_local_start
 battle_updateObjectByKind_8026E98: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
@@ -6580,6 +6587,9 @@ locret_8029458:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80293F8
 
+// symdb: Compacts the current battle folder chip list in eBattleFolder by dropping empty (0xFFFF) slots and padding the tail so it always holds 30 entries.
+// symdb: void battle_compactFolderChipList_802945A(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_compactFolderChipList_802945A.yaml
 	thumb_local_start
 battle_compactFolderChipList_802945A:
 	push {r4,r6,r7,lr}
@@ -11759,6 +11769,11 @@ off_802BE04:
 	.word sub_802BE36+1
 	thumb_func_end sub_802BDF0
 
+// symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls sub_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
+// symdb: void sub_802BE0C(void); callers pass garbage in r0-r3 but r5 must hold the object pointer and
+// symdb: r10 the toolkit pointer; r4/r5 are preserved; returns with r0=4 and NZ flags set from "mov
+// symdb: r0,#4", r1-r3 as left by sub_801E0A0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/objStepFinishSetState4_802BE0C.yaml
 	thumb_local_start
 objStepFinishSetState4_802BE0C:
 	push {r4,r5,lr}
@@ -12642,6 +12657,11 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end sub_802C34E
 
+// symdb: Reads two byte positions from an object, scans the span between them (via sub_802C490), and if something is found along the way raises a type-3 notification.
+// symdb: void scanSpanBetween(Object* obj) — object pointer passed in r5; r4, r6, r7, r10 are inputs the
+// symdb: callee must preserve; returns nothing meaningful, but c/v and r1-r3 are left as side effects of
+// symdb: the early-out CMP and the callees.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:
 	push {r4,r5,lr}
@@ -14101,6 +14121,9 @@ locret_802CEC6:
 	mov pc, lr
 	thumb_func_end sub_802CEA6
 
+// symdb: Walks a fixed two-slot table at 0x2036720 and, for each slot whose entry pointer is set and whose "busy" halfword flag at +0x24 is clear, invokes a shared handler (sub_802CEA6) with that entry's byte at +0x16.
+// symdb: void sub_802CEC8(void); /* out: r4 = &unk_2036720[1] (base + 0x10) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/runPendingHandlerForEntryPair_802CEC8.yaml
 	thumb_func_start runPendingHandlerForEntryPair_802CEC8
 runPendingHandlerForEntryPair_802CEC8:
 	push {lr}
@@ -17083,6 +17106,11 @@ dword_802E4B4:
 	.word 0x40000
 	thumb_func_end sub_802E4A0
 
+// symdb: Looks up the battle object's alliance entry and returns a status code depending on which flag bytes are set in it.
+// symdb: // in: r5 = battle object ptr (oBattleObject_Alliance read) // out: r0 = status code (9, 0xD, or
+// symdb: 1); r1 = 0x54 left behind on the +0x54-check paths // clobbers: NZCV; r7 preserved
+// symdb: (pushed/popped) int getAllianceEntryStatus(void /* r5=this */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getAllianceEntryStatus_802E4B8.yaml
 	thumb_func_start battle_getAllianceEntryStatus_802E4B8
 battle_getAllianceEntryStatus_802E4B8:
 	push {r7,lr}
@@ -19519,6 +19547,10 @@ dword_802F638:
 	.word 0x1741
 	thumb_func_end startscreen_render_trigger_802F624
 
+// symdb: Start-screen state dispatcher — reads the screen's state byte, calls the matching state handler from a 5-entry jump table, then runs the common per-frame routine.
+// symdb: void startScreen_RunStateHandler(StartScreen* self /* r5 */); clobbers r0-r3, r12, lr and flags;
+// symdb: handlers are tail-style bx calls using lr-as-pc
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_RunStateHandler_802F63C.yaml
 	thumb_local_start
 startScreen_RunStateHandler_802F63C: // (self: * StartScreen $r5) -> ()
 	push {lr}
@@ -20117,6 +20149,9 @@ byte_802FB20:
 	.byte 0x0, 0x0
 	thumb_func_end sub_802FB10
 
+// symdb: On the start/title screen, if the screen state halfword has flag 0x80 set, feeds the small audio command table at byte_802FB7C to the sound sequencer helper sub_8001158 (e.g. a jingle/cursor sound), otherwise does nothing.
+// symdb: void sub_802FB64(const StartScreen* self /* r5 */) /* clobbers r0,r1,r2,r3, flags; sets C,V */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_playSoundIfFlagSet_802FB64.yaml
 	thumb_local_start
 startScreen_playSoundIfFlagSet_802FB64: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -22350,6 +22385,11 @@ nullsub_62:
 	thumb_func_end nullsub_62
 
 // 8030A00
+// symdb: Dispatches to the per-map-group EnterMap handler from one of three jumptables (real-world, internet, unknown) based on the map group number in r0.
+// symdb: void EnterMap_RunMapGroupAsmFunction_8030A00(u32 group /*r0*/); behaves as a tail call —
+// symdb: handler's register outputs (r2, r4-r12) pass through to the caller; r0/r1/r3/lr and NZCV
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/EnterMap_RunMapGroupAsmFunction_8030A00.yaml
 	thumb_func_start EnterMap_RunMapGroupAsmFunction_8030A00
 EnterMap_RunMapGroupAsmFunction_8030A00:
 	push {lr}
@@ -22385,6 +22425,10 @@ EnterMap_RunMapGroupAsmFunction_8030A00:
 
 	thumb_func_start LoadGFXAnimsForMapGroup
 // r0 map group, r1 map number
+// symdb: Dispatches a GFX-anim load handler for a map's group via one of three jumptables (real-world, internet, unknown range), keyed on the map group number.
+// symdb: (u8 mapGroup in r0, u8 mapNumber in r1) -> void; clobbers r0-r3, r12, lr and flags; preserves
+// symdb: nothing beyond the normal caller-saved set
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/LoadGFXAnimsForMapGroup.yaml
 LoadGFXAnimsForMapGroup: // (map_group: u8, map_number: u8) -> ()
 	push {lr}
 	cmp r0, #UNKNOWN_MAP_GROUP_START
@@ -22410,6 +22454,12 @@ LoadGFXAnimsForMapGroup: // (map_group: u8, map_number: u8) -> ()
 	.pool
 	thumb_func_end LoadGFXAnimsForMapGroup
 
+// symdb: Switches the overworld's active NPC spawn list — frees all existing overworld NPC objects, stores the new list pointer in the game state, and spawns one NPC per entry until a 0xFF terminator.
+// symdb: void npc_freeAllObjectsThenSpawnObjectsFromList(const NPCScript *const *list /* r0 */); returns
+// symdb: with r0 = pointer to the terminator entry, r1 = number of objects spawned (early exit: r1 =
+// symdb: previous list pointer), r2 = 0xFF; flags from the last compare (list vs. current on early exit,
+// symdb: terminator vs. 0xFF otherwise); r4-r6 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_freeAllObjectsThenSpawnObjectsFromList.yaml
 	thumb_func_start npc_freeAllObjectsThenSpawnObjectsFromList
 npc_freeAllObjectsThenSpawnObjectsFromList: // (ptr: [*const NPCScript]) -> ()
 	push {r4-r6,lr}

@@ -921,6 +921,11 @@ npc_waitMysteryDataTaken_809eaa0:
 	pop {r4,r7,pc}
 	thumb_func_end npc_waitMysteryDataTaken_809eaa0
 
+// symdb: Per-frame update for an overworld NPC whose state is "standing in a chatbox" — dispatches its CurAction handler, then refreshes sprite and interaction areas.
+// symdb: void npc_chatboxStateUpdate(OverworldNPCObject *self /* r5 */); no meaningful return value,
+// symdb: flags and r0-r3+ scratch are caller-agnostic (contract shows nz/c/v in and out but no caller
+// symdb: reliance documented)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_inChatbox_809EADA.yaml
 	thumb_local_start
 npc_inChatbox_809EADA: // (self: * OverworldNPCObject $r5) -> ()
 	push {lr}
@@ -2385,6 +2390,11 @@ NPCCommand_init_movement:
 // 0x2 - turn 90 degrees
 // 0x4 - turn 180 degrees
 // 0x6 - turn 270 degrees
+// symdb: NPC script command that turns an overworld NPC by a relative amount and starts it walking in the new direction.
+// symdb: void NPCCommand_change_movement_direction(OverworldNPCObject* npc /* r5 */, ScriptPos* scriptPos
+// symdb: /* r6 */); caller-saved r0, r2, r4, r6 and NZCV returned clobbered (r6 advanced past the
+// symdb: command, flags from add r6,#2)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_change_movement_direction.yaml
 NPCCommand_change_movement_direction:
 	push {lr}
 	// read new direction to move in

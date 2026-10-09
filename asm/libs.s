@@ -359,6 +359,10 @@ loc_8144376:
 	.byte 0, 0
 	thumb_func_end sub_8144250
 
+// symdb: Refreshes the e-Reader timer-enable flag at 0x200F460 based on the current SIO (link-port) mode, enabling it only when the port is in mode "0x8" and the companion flag at +2 is clear.
+// symdb: void sub_8144380(void) // reads SIOControlRegister and eTimerEnable200F460+2; writes
+// symdb: eTimerEnable200F460
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ereader_updateTimerEnable_8144380.yaml
 	thumb_local_start
 ereader_updateTimerEnable_8144380:
 	push {lr}
@@ -5985,6 +5989,10 @@ loc_8146BF0:
 	bx r1
 	thumb_func_end sub_8146BB8
 
+// symdb: Reads the state byte of the singleton object tracked by dword_2010CC0 and returns 1 if it is in state 0 or 1, else 0.
+// symdb: bool sub_8146BF4(void) // in: lr (return addr); out: r0 = 1 if state==0 or state==1 else 0;
+// symdb: NZ/C/V left per final CMP/MOV so callers can branch
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8146BF4.yaml
 	thumb_func_start sub_8146BF4
 sub_8146BF4:
 	push {lr}
@@ -21559,6 +21567,10 @@ sub_814E17C:
 	.byte 0, 0
 	thumb_func_end sub_814E17C
 
+// symdb: Pops the next entry number off an 8-bit command queue and copies (via sub_814E0B6) the three words of that table entry into the work struct's 0x24/0x28/0x2C parameter slots.
+// symdb: void loadNextQueuedParams(u32 *owner /*r0, holds table ptr at +0x30*/, u32 *work /*r1, queue
+// symdb: cursor at +0x40, params at +0x24/0x28/0x2C*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadNextQueuedParams_814E190.yaml
 	thumb_func_start loadNextQueuedParams_814E190
 loadNextQueuedParams_814E190:
 	mov r12, lr
@@ -22132,6 +22144,10 @@ off_814E524:
 	.word byte_3007FF0
 	thumb_func_end sub_814E4DC
 
+// symdb: Crossfades two color/fade channels of an object toward a source object's values, driven by a signed fade-position byte that makes one channel rise while the other falls.
+// symdb: void sprite_crossfadeColorChannels_814E528(dst /*r4*/, src /*r5*/); // returns r2 = sign-
+// symdb: extended fade position from [dst+0x14]; clobbers r0-r3 and NZCV flags; lr is return address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_crossfadeColorChannels_814E528.yaml
 	thumb_local_start
 sprite_crossfadeColorChannels_814E528:
 	ldrb r1, [r4,#0x12]
@@ -22937,6 +22953,10 @@ off_814EA54:
 	.word sound_MusicTable
 	thumb_func_end sub_814EA24
 
+// symdb: Iterates the 32-entry music player table gMPlayTable and ticks every music player once (per-frame audio update).
+// symdb: void sub_814EA58(void); // takes no meaningful arguments; calls sub_814F1E8(playerInfo) for each
+// symdb: entry; returns with r0 = return address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_tickAllMusicPlayers_814EA58.yaml
 	thumb_func_start sound_tickAllMusicPlayers_814EA58
 sound_tickAllMusicPlayers_814EA58:
 	push {r4,r5,lr}

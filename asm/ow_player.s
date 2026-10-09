@@ -1744,6 +1744,12 @@ off_809DEFC:
 	.word off_809DEF8
 	thumb_func_end sub_809DED4
 
+// symdb: Handles the player attempting to interact with the tile in front of them, either rejecting it when interaction is blocked or forwarding the tile's interaction value to the game state.
+// symdb: u32 ow_tryTileInteraction_809DF00(OWPlayerObject* r5 player, Toolkit* r10 toolkit); returns 1 if
+// symdb: interaction was blocked, 0 otherwise; leaves r7 = GameState* and NZ/C/V flags reflecting the
+// symdb: return value (NZ set from it, CV from the final mov r0,#0 path only on the non-blocked branch);
+// symdb: lr clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_tryTileInteraction_809DF00.yaml
 	thumb_local_start
 ow_tryTileInteraction_809DF00:
 	push {lr}
@@ -1902,6 +1908,11 @@ loc_809E014:
 	.word eStruct200ace0
 	thumb_func_end owPlayer_setJumptableIndex09AndOthers_809e004
 
+// symdb: Scans the overworld NPC object array for the first live NPC whose interaction isn't disabled and records it in the player object's interacted-NPC slot.
+// symdb: int ow_findInteractableNPC(OWPlayerObject *player /* r5 */); returns r0: 0 = NPC found and
+// symdb: stored, nonzero = no interactable NPC (1 = no live NPC found, or the disabled NPC's UnkFlags_60
+// symdb: word when the first live NPC has interaction disabled)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_findInteractableNPC_809E01C.yaml
 	thumb_local_start
 ow_findInteractableNPC_809E01C:
 	push {lr}
@@ -2798,6 +2809,11 @@ sub_809E462:
 	pop {pc}
 	thumb_func_end sub_809E462
 
+// symdb: Overworld hook that checks the player's coordinate trigger tile and, if it is one of the "player advances forward" tiles (0x48-0x4F), records which one it is and sets the advance-forward event flag.
+// symdb: void sub_809E46E(void); // no register inputs; r10 holds the toolkit pointer. Outputs: none
+// symdb: returned, side effects only (halfword store to player+0x64, event flag EVENT_1717 set). Clobbers
+// symdb: r0-r3, r7 (saved/restored), flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/overworld_CheckPlayerAdvanceForwardTrigger_809E46E.yaml
 	thumb_local_start
 overworld_CheckPlayerAdvanceForwardTrigger_809E46E:
 	push {r7,lr}

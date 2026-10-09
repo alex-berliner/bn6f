@@ -18,6 +18,11 @@ off_8021AB0:
   .word ChipDataArr_8021DA8 // [*const ChipData; 206]
 	thumb_func_end getChip8021DA8
 
+// symdb: Copies a 60-byte S-chip record into one slot of the S-chip table and unpacks/registers each of its 9-bit packed fields.
+// symdb: void sub_8021AB4(const u32* src, u32 slot) — r0 = record source, r1 = slot index; r10 = toolkit
+// symdb: (base pointer read from [r10 + oToolkit_S_Chip_2002178_Ptr]); exits with r2 = 1 and r3 = result
+// symdb: of the last sub_8021B2A call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sChip_loadRecordIntoSlot_8021AB4.yaml
 	thumb_func_start sChip_loadRecordIntoSlot_8021AB4
 sChip_loadRecordIntoSlot_8021AB4:
 	push {r4,r6,r7,lr}
@@ -319,6 +324,10 @@ dword_8021C78:
 // returns:
 // r0 - offset to chip code quantity
 // r3 - index of chip code in pack
+// symdb: Returns the address of the pack-stock quantity byte for a given chip id and code letter (falling back to the first code slot if the chip has no such code).
+// symdb: u8 *pack_getChipCodeQuantityPtr(u32 chipId, u32 code); // out: r0=ptr, r1=12*chipId, r2=chipId,
+// symdb: r3=codeIndex; clobbers nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getOffsetToQuantityOfChipCodeMaybe_8021c7c.yaml
 getOffsetToQuantityOfChipCodeMaybe_8021c7c:
 	push {r4,r7,lr}
 	mov r2, r0

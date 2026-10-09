@@ -1260,6 +1260,10 @@ jt_8034230:
 	.word sub_80342C6+1
 	thumb_func_end ho_8034218
 
+// symdb: Starts the enter-map sequence after a warp — switches the main state machine to state 4, clears VRAM/GFX buffers, resets the fade param, and runs the warp-arrival and area-music updates.
+// symdb: void map_setupEnterMapAfterWarp(void); /* reads toolkit ptr from r10; returns with r7 still =
+// symdb: r10 (toolkit ptr), other regs clobbered by calls */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_setupEnterMapAfterWarp_803423C.yaml
 	thumb_local_start
 map_setupEnterMapAfterWarp_803423C:
 	push {lr}
@@ -2532,6 +2536,10 @@ off_8035050:
 	.word UnkInternetMapGroupJumptable_8034784
 	thumb_func_end sub_8035028
 
+// symdb: Checks that the player has normal control and no cutscene is active, then starts the one-time "notification" cutscene (guarded by event flag 0x171A); returns 0 if it started, 1 otherwise.
+// symdb: int tryStartNotificationCutscene(void); // returns 0 = cutscene started, 1 = blocked; preserves
+// symdb: r2,r4-r7; reads GameState via toolkit in r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/tryStartNotificationCutscene_8035054.yaml
 	thumb_local_start
 tryStartNotificationCutscene_8035054:
 	push {r4-r7,lr}

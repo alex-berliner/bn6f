@@ -9405,6 +9405,10 @@ sub_803DCE8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803DCE8
 
+// symdb: Derives a small link-mode selector (0..3) from the eStruct200BC30 jump-offset slot and eLinkState, returning it in r0 with the zero flag set iff it is 0.
+// symdb: int sub_803DD30(void) // in: nothing (r7, lr saved); out: r0 = selector (0..3), NZ flags per r0;
+// symdb: preserves r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/link_getModeSelector_803DD30.yaml
 	thumb_func_start link_getModeSelector_803DD30
 link_getModeSelector_803DD30:
 	push {r7,lr}
@@ -13603,6 +13607,10 @@ info_copyTimestampToWorkArea_803F8B2:
 	pop {pc}
 	thumb_func_end info_copyTimestampToWorkArea_803F8B2
 
+// symdb: Anti-tamper integrity check - recomputes a byte-sum checksum over the 0x6710-byte EWRAM work area and compares it with the stored value, clearing the store and returning 0 on match, 1 on mismatch.
+// symdb: int verifyEwramWorkAreaChecksum_803F8C4(void); // r0 out: 0 = checksum OK, 1 = mismatch; NZ
+// symdb: flags set from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/verifyEwramWorkAreaChecksum_803F8C4.yaml
 	thumb_local_start
 verifyEwramWorkAreaChecksum_803F8C4:
 	push {r1-r7,lr}

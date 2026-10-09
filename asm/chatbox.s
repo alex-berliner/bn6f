@@ -916,6 +916,11 @@ dword_8040340:
 
 	thumb_local_start
 // () -> void
+// symdb: Redraws the chatbox's background tiles by blitting the tile-id array matching its current background graphic and open state at its current position and size.
+// symdb: void chatbox_CopyBackgroundTiles(chatbox *cb /* r5 */) — reads cb fields at 0x1D2, 0x10
+// symdb: (OpenState), CurTileXBlockPos, CurTileYBlockPos, CurTileWidth16, CurTileHeight16; r0-r4 are
+// symdb: scratch handed to CopyBackgroundTiles; r5-r7, r10 preserved; c/v set per CopyBackgroundTiles.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_CopyBackgroundTiles_8040344.yaml
 chatbox_CopyBackgroundTiles_8040344:
 	push {lr}
 	ldr r3, =spritePtrArr8045CEC
@@ -2869,6 +2874,11 @@ E9 = newline
 Description: moves the position for text writing to the next line
 Parameters: 0
 */
+// symdb: Advances the chatbox text-box graphics loader to the next state after a printed newline, raising the "box ready" flag once loading completes.
+// symdb: void chatbox_E9_newline(Chatbox* r5 box, u32* r4 cursor) — clobbers r0, r2, r3; always
+// symdb: increments r4 by 1 and returns r0 = 0 (with N/Z cleared); C/V reflect the r4 increment (NZCV
+// symdb: written); r5 and lr are not preserved (lr holds the return address).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_E9_newline.yaml
 chatbox_E9_newline:
 	push {lr}
 	ldrb r2, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -3699,6 +3709,10 @@ loc_8041742:
 	pop {pc}
 	thumb_func_end chatbox_804171C
 
+// symdb: Chatbox script command that starts one of two sub-scripts depending on whether the current game progress value lies within a given range.
+// symdb: chatbox_8041748(r4=cmdPtr, r5=?, r10=toolkitPtr, lr=ret) -> r0=1, r1..r3=scratch, r4=maybe
+// symdb: advanced, flags NZCV set
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_cmdRunScriptByGameProgress_8041748.yaml
 	thumb_local_start
 chatbox_cmdRunScriptByGameProgress_8041748:
 	push {lr}
@@ -4089,6 +4103,10 @@ loc_80419CA:
 	pop {pc}
 	thumb_func_end chatbox_startCurNaviScript_80419B4
 
+// symdb: Processes one 5-byte chatbox script entry, either advancing past it (0xFF end marker) or loading its script ID into the chatbox.
+// symdb: chatbox_processScriptEntry(Entry* r4 /*current entry*/ /*r10 = chatbox context, passed
+// symdb: through*/); returns r0 = 1 always
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_processScriptEntry_80419D0.yaml
 	thumb_local_start
 chatbox_processScriptEntry_80419D0:
 	push {lr}
@@ -4458,6 +4476,11 @@ Flags8041C50:
 	.word 0x200
 	thumb_func_end chatbox_F2_clearmsgbox
 
+// symdb: Text-script F3 opcode handler that shows or hides the chatbox, optionally with an explicit box length.
+// symdb: int chatbox_F3_control(r1, r2, /*r4*/ const u8 *scriptPtr, lr); // r4 in/out: advanced past the
+// symdb: opcode; returns 1 in r0, clobbers r0/r1(=arg)/r2(=arg)/lr and NZCV, preserves r1/r2 across the
+// symdb: body
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_F3_control.yaml
 	thumb_local_start
 chatbox_F3_control:
 	push {lr}
@@ -5887,6 +5910,11 @@ off_8042624:
 	.word chatbox_8042820+1
 	thumb_func_end chatbox_FC_interface
 
+// symdb: Processes one chatbox text-script entry - plays the text blip if the chatbox core is idle, then either starts the entry's script or skips past the 5-byte end-marker record.
+// symdb: int chatbox_processScriptEntry(void* entry /*r4*/, u32 coreArg0..3 /*r0-r3 passed through*/); /*
+// symdb: returns 1 in r0; r4 is advanced by 5 when the entry's terminator (0xFF) is consumed; NZCV flags
+// symdb: set from the final mov r0,#1 / add */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_processScriptEntry_8042678.yaml
 	thumb_local_start
 chatbox_processScriptEntry_8042678:
 	push {lr}
@@ -10632,6 +10660,10 @@ off_8045F5C:
 	.word eFlags2009F38
 	thumb_func_end chatbox_GetState_8045F4C
 
+// symdb: Resets the chatbox state fields and wipes its text buffer and glyph/tile buffer (0xF00 bytes each) for a fresh textbox.
+// symdb: void chatbox_8045F60(void) /* r5 = chatbox work area; clobbers r0, r1, flags; preserves r2, r3
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_resetAndClearBuffers_8045F60.yaml
 	thumb_local_start
 chatbox_resetAndClearBuffers_8045F60:
 	push {lr}
