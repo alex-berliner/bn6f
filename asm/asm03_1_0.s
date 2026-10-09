@@ -1209,7 +1209,7 @@ off_80341D8:
 off_80341DC:
 	.word transmission_BeginTransmissionScene_80341F8+1
 	.word ho_8034218+1
-	.word sub_803423C+1
+	.word map_setupEnterMapAfterWarp_803423C+1
 off_80341E8:
 	.word sub_80342DC+1
 	.word sub_80342E4+1
@@ -1261,7 +1261,7 @@ jt_8034230:
 	thumb_func_end ho_8034218
 
 	thumb_local_start
-sub_803423C:
+map_setupEnterMapAfterWarp_803423C:
 	push {lr}
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
@@ -1278,7 +1278,7 @@ sub_803423C:
 	bl sub_8033FDC
 	bl musicGameState_8000784 // () -> void
 	pop {pc}
-	thumb_func_end sub_803423C
+	thumb_func_end map_setupEnterMapAfterWarp_803423C
 
 // () -> void
 	thumb_local_start
@@ -1965,7 +1965,7 @@ cutscene_8034BB8:
 	bl sub_8034CB6
 	bl sub_8034D7C
 	bl ghostNaviCheck_8035274
-	bl sub_8035054
+	bl tryStartNotificationCutscene_8035054
 	bl cutscene_TryStartNotification_8035084
 	bl sub_809CF2C
 
@@ -2533,7 +2533,7 @@ off_8035050:
 	thumb_func_end sub_8035028
 
 	thumb_local_start
-sub_8035054:
+tryStartNotificationCutscene_8035054:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_803507A
@@ -2555,7 +2555,7 @@ loc_803507A:
 	.balign 4, 0
 off_8035080:
 	.word CutsceneScriptNotification_809AE68 // CutsceneScript
-	thumb_func_end sub_8035054
+	thumb_func_end tryStartNotificationCutscene_8035054
 
 // symdb: Attempts to launch the "notification" cutscene, returning 0 if it started or 1 if skipped.
 // symdb: u32 cutscene_TryStartNotification_8035084(void); // returns 0 = notification cutscene started, 1

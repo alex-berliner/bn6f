@@ -8940,8 +8940,8 @@ byte_80A9AA0:
 	.byte 0x1C, 0x9E, 0x5, 0x5, 0x0, 0x0, 0xFF, 0x0, 0x7D, 0x1
 	thumb_func_end sub_80A9A96
 
-	thumb_func_start sub_80A9B70
-sub_80A9B70:
+	thumb_func_start battle_dispatchObjectBehaviorStep_80A9B70
+battle_dispatchObjectBehaviorStep_80A9B70:
 	push {lr}
 	ldr r7, off_80A9B98 // =byte_80A9AA0
 	mov r0, #0x10
@@ -8963,7 +8963,7 @@ off_80A9B8C:
 	.word sub_80A9CA6+1
 off_80A9B98:
 	.word byte_80A9AA0
-	thumb_func_end sub_80A9B70
+	thumb_func_end battle_dispatchObjectBehaviorStep_80A9B70
 
 	thumb_local_start
 sub_80A9B9C:
@@ -9672,8 +9672,8 @@ sub_80AA0FC:
 	pop {pc}
 	thumb_func_end sub_80AA0FC
 
-	thumb_func_start sub_80AA104
-sub_80AA104:
+	thumb_func_start palette_copyTableRow_80AA104
+palette_copyTableRow_80AA104:
 	push {r4-r7,lr}
 	ldr r1, off_80AA118 // =byte_80AA11C
 	lsl r0, r0, #3
@@ -9690,7 +9690,7 @@ byte_80AA11C:
 	.byte 0x78, 0x68, 0x50, 0x70, 0xFF, 0xFF, 0xFF, 0xFF, 0x20
 	.byte 0x20, 0x20, 0x20, 0xFF, 0xFF, 0xFF, 0xFF, 0x78, 0x68
 	.byte 0x50, 0x70, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_80AA104
+	thumb_func_end palette_copyTableRow_80AA104
 
 	thumb_local_start
 sub_80AA134:
@@ -9919,13 +9919,13 @@ sub_80AA2D8:
 off_80AA2E8:
 	.word off_80AA2EC
 off_80AA2EC:
-	.word sub_80AA2F8+1
+	.word object_initSpriteState3_80AA2F8+1
 	.word sub_80AA322+1
 	.word sub_80AA36C+1
 	thumb_func_end sub_80AA2D8
 
 	thumb_local_start
-sub_80AA2F8:
+object_initSpriteState3_80AA2F8:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -9942,7 +9942,7 @@ sub_80AA2F8:
 	strb r0, [r5,#8]
 	bl sub_80AA322
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AA2F8
+	thumb_func_end object_initSpriteState3_80AA2F8
 
 	thumb_local_start
 sub_80AA322:

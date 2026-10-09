@@ -5430,7 +5430,7 @@ sub_8125D10:
 	mov r1, #4
 	ldr r2, off_8125D84 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x18]
 	ldr r1, off_8125D88 // =unk_201DC20 
 	ldr r2, off_8125D84 // =byte_2017A00 
@@ -5497,7 +5497,7 @@ sub_8125D94:
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x22]
 	ldr r1, off_8125E6C // =dword_201E420 
 	ldr r2, off_8125E68 // =byte_2017A00 
@@ -5535,7 +5535,7 @@ loc_8125E10:
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x22]
 	ldr r1, off_8125E6C // =dword_201E420 
 	ldr r2, off_8125E68 // =byte_2017A00 
@@ -5603,7 +5603,7 @@ sub_8125E78:
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
 	mov r3, #0xa
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x2c]
 	ldr r1, off_8125F50 // =dword_201EC20 
 	ldr r2, off_8125F4C // =byte_2017A00 
@@ -5641,7 +5641,7 @@ loc_8125EF4:
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
 	mov r3, #0xa
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x2c]
 	ldr r1, off_8125F50 // =dword_201EC20 
 	ldr r2, off_8125F4C // =byte_2017A00 
@@ -5709,7 +5709,7 @@ sub_8125F5C:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5747,7 +5747,7 @@ loc_8125FD8:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5807,7 +5807,7 @@ sub_8126030:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5845,7 +5845,7 @@ loc_81260AC:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5915,7 +5915,7 @@ sub_8126114:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	b locret_8126182
 loc_8126160:
 	mov r0, #0x40 
@@ -5932,7 +5932,7 @@ loc_8126160:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 locret_8126182:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8126114
@@ -5971,7 +5971,7 @@ sub_8126184:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 	b locret_81261F2
 loc_81261D0:
 	mov r0, #0x40 
@@ -5988,7 +5988,7 @@ loc_81261D0:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #0xe
-	bl sub_8126404
+	bl bg_drawTileStripTileBlock2_8126404
 locret_81261F2:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -6295,7 +6295,7 @@ locret_8126402:
 	thumb_func_end sub_81263D0
 
 	thumb_local_start
-sub_8126404:
+bg_drawTileStripTileBlock2_8126404:
 	push {r4-r7,lr}
 	mov r4, #0x7c 
 	ldr r6, [r7,r4]
@@ -6320,7 +6320,7 @@ loc_8126420:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 locret_812642E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8126404
+	thumb_func_end bg_drawTileStripTileBlock2_8126404
 
 	thumb_local_start
 sub_8126430:
@@ -11860,7 +11860,7 @@ off_81292BC:
 	thumb_local_start
 sub_81292D8:
 	push {r4,lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129336
 	bl sub_8046664 // () -> void
@@ -12202,7 +12202,7 @@ sub_8129598:
 	ldrb r0, [r5,#2]
 	tst r0, r0
 	beq loc_81295A4
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 loc_81295A4:
 	ldr r0, off_81295B0 // =off_81295B4 
 	ldrb r1, [r5,#2]
@@ -13483,7 +13483,7 @@ locret_8129EE0:
 	thumb_local_start
 sub_8129EE4:
 	push {lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
@@ -13524,7 +13524,7 @@ sub_8129F28:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	pop {pc}
 	.balign 4, 0
 off_8129F3C:
@@ -13632,7 +13632,7 @@ off_8129FF4:
 	thumb_local_start
 sub_812A008:
 	push {lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl crt0_start_800027C
 
 	bl sub_81465BC
@@ -13649,7 +13649,7 @@ locret_812A026:
 	thumb_local_start
 sub_812A028:
 	push {lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	ldrh r0, [r5,#0x28]
 	sub r0, #1
 	strh r0, [r5,#0x28]
@@ -13676,7 +13676,7 @@ locret_812A056:
 	thumb_local_start
 sub_812A058:
 	push {r4,lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl sub_8146588
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
@@ -13748,7 +13748,7 @@ off_812A0E0:
 	thumb_local_start
 sub_812A0E8:
 	push {lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812A12A
 	mov r0, #1
@@ -13815,7 +13815,7 @@ off_812A160:
 	thumb_local_start
 sub_812A168:
 	push {lr}
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812A1B6
 	mov r0, #1
@@ -14717,7 +14717,7 @@ loc_812A878:
 	bl sub_803C59C
 	b locret_812A892
 loc_812A88E:
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 locret_812A892:
 	pop {r4-r7,pc}
 	.word eS200A290
@@ -14754,7 +14754,7 @@ loc_812A8B8:
 	bl sub_803C59C
 	b locret_812A8D8
 loc_812A8D4:
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 locret_812A8D8:
 	pop {pc}
 	.balign 4, 0
@@ -15427,7 +15427,7 @@ loc_812ADDE:
 loc_812ADF0:
 	cmp r0, #0
 	bne locret_812ADF8
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 locret_812ADF8:
 	pop {pc}
 	.balign 4, 0x00
@@ -15453,7 +15453,7 @@ loc_812AE10:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	bne locret_812AE2A
-	bl sub_812B504
+	bl sprite_drawIfFlagSet_812B504
 locret_812AE2A:
 	pop {pc}
 	.balign 4, 0
@@ -16338,7 +16338,7 @@ off_812B500:
 	thumb_func_end sub_812B4AC
 
 	thumb_local_start
-sub_812B504:
+sprite_drawIfFlagSet_812B504:
 	push {r4,lr}
 	ldrb r0, [r5,#0x1b]
 	mov r1, #0x10
@@ -16361,7 +16361,7 @@ off_812B528:
 	.word dword_8129184
 dword_812B52C:
 	.word 0x80004000
-	thumb_func_end sub_812B504
+	thumb_func_end sprite_drawIfFlagSet_812B504
 
 	thumb_func_start sub_812B530
 sub_812B530:

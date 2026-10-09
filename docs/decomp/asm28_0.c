@@ -2607,7 +2607,7 @@ unsigned int sub_809D348()
             }
         }
     }
-    sub_809E46E();
+    overworld_CheckPlayerAdvanceForwardTrigger_809E46E();
     sub_809DB60();
     sub_809E3A2();
     if ( v4 )
@@ -3472,7 +3472,7 @@ int sub_809DED4()
 
 
 // 0x809df00
-signed int sub_809DF00()
+signed int ow_tryTileInteraction_809DF00()
 {
     int v0; // r5
     int v1; // r10
@@ -3480,7 +3480,7 @@ signed int sub_809DF00()
     int v3; // r0
     int v4; // r7
 
-    if ( sub_809E01C() )
+    if ( ow_findInteractableNPC_809E01C() )
     {
         v3 = *(v0 + 15);
         v4 = *(v1 + oToolkit_GameStatePtr);
@@ -3584,7 +3584,7 @@ int __fastcall sub_809E004(int result)
 
 
 // 0x809e01c
-signed int sub_809E01C()
+signed int ow_findInteractableNPC_809E01C()
 {
     int v0; // r5
     char *v1; // r7
@@ -4297,7 +4297,7 @@ int sub_809E462()
 
 
 // 0x809e46e
-signed int sub_809E46E()
+signed int overworld_CheckPlayerAdvanceForwardTrigger_809E46E()
 {
     int v0; // r10
     int v1; // r7

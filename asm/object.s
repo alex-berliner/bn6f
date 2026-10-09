@@ -261,7 +261,7 @@ loc_800BA1A:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BA88
 loc_800BA28:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_800BA88
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -374,10 +374,10 @@ loc_800BB08:
 	bl battle_networkInvert
 	tst r0, r0
 	bne loc_800BB18
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	b loc_800BB1C
 loc_800BB18:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 loc_800BB1C:
 	tst r0, r0
 	bne locret_800BB9E
@@ -517,7 +517,7 @@ loc_800BC1E:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BC86
 loc_800BC2C:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_800BC86
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -829,7 +829,7 @@ loc_800BE5E:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	b locret_800BED8
 loc_800BE6C:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_800BED8
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -1606,12 +1606,12 @@ sub_800C4BC:
 	bl getTable12Record_800D730_800C6D6
 	str r0, [sp]
 	mov r0, #0
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	// size
 	mov r1, #0x40 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	mov r7, r0
 	mov r4, #0
 loc_800C4DE:
@@ -1668,7 +1668,7 @@ loc_800C53C:
 	strb r1, [r7,#2]
 	strb r1, [r7,#6]
 	mov r0, r4
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	ldrb r1, [r0]
 	strb r1, [r7,#3]
 	strb r1, [r7,#4]
@@ -1817,7 +1817,7 @@ loc_800C68C:
 	ldr r0, [r6]
 	mov r1, r4
 	push {r0,r1}
-	bl sub_800C84A
+	bl countMatchingRun_800C84A
 	strb r0, [r7,#2]
 	strb r1, [r7,#3]
 	mov r2, r0
@@ -1962,7 +1962,7 @@ loc_800C788:
 	sub r6, #1
 	blt loc_800C7BE
 	mov r0, r4
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	mov r3, r0
 	ldrb r1, [r3,#4]
 	tst r1, r1
@@ -1995,7 +1995,7 @@ loc_800C7BE:
 	add r6, sp, #0
 	add r6, r6, r0
 	ldrb r0, [r6]
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	mov r1, #0
 	strb r1, [r0,#1]
 	ldrb r1, [r6,#1]
@@ -2067,11 +2067,11 @@ loc_800C842:
 	thumb_func_end sub_800C81E
 
 	thumb_local_start
-sub_800C84A:
+countMatchingRun_800C84A:
 	push {r4-r6,lr}
 	mov r4, r0
 	mov r5, r1
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	mov r2, #8
 	mul r2, r5
 	ldrb r3, [r0]
@@ -2092,7 +2092,7 @@ loc_800C872:
 	mov r0, r6
 	mov r1, r3
 	pop {r4-r6,pc}
-	thumb_func_end sub_800C84A
+	thumb_func_end countMatchingRun_800C84A
 
 	thumb_local_start
 sub_800C878:
@@ -2121,7 +2121,7 @@ loc_800C898:
 	bl battle_getPanelDataPtr_800C6E0
 	mov r7, r0
 	mov r0, r4
-	bl sub_800C8C2
+	bl battle_getPanelEntry_800C8C2
 	ldrb r1, [r0]
 	strb r1, [r7,#4]
 	mov r0, r4
@@ -2137,7 +2137,7 @@ loc_800C898:
 	thumb_func_end sub_800C878
 
 	thumb_local_start
-sub_800C8C2:
+battle_getPanelEntry_800C8C2:
 	mov r1, #8
 	mul r1, r0
 	ldr r0, off_800C8EC // =unk_2034010 
@@ -2161,7 +2161,7 @@ off_800C8E8:
 	.word unk_2034010
 off_800C8EC:
 	.word unk_2034010
-	thumb_func_end sub_800C8C2
+	thumb_func_end battle_getPanelEntry_800C8C2
 
 	thumb_func_start sub_800C8F0
 sub_800C8F0:
@@ -4096,8 +4096,8 @@ loc_800D586:
 	pop {pc}
 	thumb_func_end sub_800D53C
 
-	thumb_func_start sub_800D58C
-sub_800D58C:
+	thumb_func_start battle_scanPanelsInFront_800D58C
+battle_scanPanelsInFront_800D58C:
 	push {r4,r6,r7,lr}
 	bl sub_800D5BA
 	mov r6, r0
@@ -4119,7 +4119,7 @@ loc_800D59C:
 loc_800D5B6:
 	mov r0, r6
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800D58C
+	thumb_func_end battle_scanPanelsInFront_800D58C
 
 	thumb_local_start
 sub_800D5BA:
@@ -6281,8 +6281,8 @@ off_800ECF0:
 	.word 0x0
 	thumb_func_end sub_800EC80
 
-	thumb_func_start sub_800ED00
-sub_800ED00:
+	thumb_func_start ai_resetAIDataSlots_800ED00
+ai_resetAIDataSlots_800ED00:
 	ldr r0, off_800ED20 // =eAIData 
 	ldr r1, dword_800ED24 // =0x80000000 
 	mov r2, #0
@@ -6306,7 +6306,7 @@ dword_800ED24:
 	.word 0x80000000
 off_800ED28:
 	.word eUsedAIDataBitfield
-	thumb_func_end sub_800ED00
+	thumb_func_end ai_resetAIDataSlots_800ED00
 
 	thumb_func_start object_createAIData
 object_createAIData: // () -> Nullable<* AIData>

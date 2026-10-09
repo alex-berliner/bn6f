@@ -6438,7 +6438,7 @@ int sub_80A9A96()
 
 
 // 0x80a9b70
-int sub_80A9B70()
+int battle_dispatchObjectBehaviorStep_80A9B70()
 {
     int v0; // r5
     char *v1; // r7
@@ -6953,7 +6953,7 @@ int sub_80AA0FC()
 
 
 // 0x80aa104
-int __fastcall sub_80AA104(int a1)
+int __fastcall palette_copyTableRow_80AA104(int a1)
 {
     CopyBytes(&byte_80AA11C[8 * a1], byte_20018B0, 8);
     return 0;
@@ -7147,7 +7147,7 @@ int sub_80AA2D8()
 
 
 // 0x80aa2f8
-void __noreturn sub_80AA2F8()
+void __noreturn object_initSpriteState3_80AA2F8()
 {
     int v0; // r5
 

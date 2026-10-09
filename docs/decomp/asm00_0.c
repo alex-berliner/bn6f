@@ -84,7 +84,7 @@ int __fastcall sound_dispatchTask_8000630(int a1, int a2, int a3)
 {
     int v3; // r10
 
-    return sound_8000808(a1, v3, a3, sub_814EA58);
+    return sound_8000808(a1, v3, a3, sound_tickAllMusicPlayers_814EA58);
 }
 
 
@@ -153,7 +153,7 @@ signed int __fastcall musicGameState_8000784(int a1, int a2, int a3)
     Toolkit *tk; // r10
     signed int result; // r0
 
-    sound_8000808(a1, tk, a3, sub_814EA58);
+    sound_8000808(a1, tk, a3, sound_tickAllMusicPlayers_814EA58);
     result = 255;
     tk->gamestate->bgMusicIndicator = -1;
     return result;
@@ -262,7 +262,7 @@ int __fastcall sound_8000822(int result, int a2)
         {
             *(v5 + oGameState_BGMusicIndicator) = result;
             if ( result == 99 )
-                v7 = sub_814EA58;
+                v7 = sound_tickAllMusicPlayers_814EA58;
             else
                 v7 = m4a_SongNumStart;
             result = v7(result, v6, 0);
@@ -930,7 +930,7 @@ int __fastcall memory_bcd_8000D84(signed int a1)
 
     if ( a1 > 21600039 )
         return -1722197607;
-    sub_8000DE0();
+    clock_breakPlayTimeIntoHMSF_8000DE0();
     v3 = v2;
     v5 = v4;
     v7 = v6;
@@ -943,7 +943,7 @@ int __fastcall memory_bcd_8000D84(signed int a1)
 
 
 // 0x8000de0
-void sub_8000DE0()
+void clock_breakPlayTimeIntoHMSF_8000DE0()
 {
     __asm
     {

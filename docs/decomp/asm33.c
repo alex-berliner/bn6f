@@ -3159,7 +3159,7 @@ int sub_8125D94()
             sub_812625C(*(v0 + 116) - 130, 4, byte_2017A00, 7);
         }
         sub_812626C(*(v0 + 34), &dword_201E420, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 128, 4, byte_2017A00, 14);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 128, 4, byte_2017A00, 14);
     }
     return result;
 }
@@ -3180,7 +3180,7 @@ int sub_8125E78()
             sub_812625C(*(v0 + 116) - 112, 4, byte_2017A00, 5);
         }
         sub_812626C(*(v0 + 44), &dword_201EC20, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 110, 4, byte_2017A00, 10);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 110, 4, byte_2017A00, 10);
     }
     return result;
 }
@@ -3201,7 +3201,7 @@ int sub_8125F5C()
             sub_812625C(*(v0 + 116) - 94, 4, byte_2017A00, 7);
         }
         sub_812626C(*(v0 + 54), dword_201F420, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 92, 4, byte_2017A00, 14);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 92, 4, byte_2017A00, 14);
     }
     return result;
 }
@@ -3222,7 +3222,7 @@ int sub_8126030()
             sub_812625C(*(v0 + 116) - 76, 4, byte_2017A00, 7);
         }
         sub_812626C(*(v0 + 54), dword_201F420, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 74, 4, byte_2017A00, 14);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 74, 4, byte_2017A00, 14);
     }
     return result;
 }
@@ -3243,7 +3243,7 @@ int sub_8126114()
             sub_812625C(*(v0 + 116) - 76, 4, byte_2017A00, 7);
         }
         sub_812626C(*(v0 + 64), dword_201FC20, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 75, 4, byte_2017A00, 14);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 75, 4, byte_2017A00, 14);
     }
     return result;
 }
@@ -3264,7 +3264,7 @@ int sub_8126184()
             sub_812625C(*(v0 + 116) - 94, 4, byte_2017A00, 7);
         }
         sub_812626C(*(v0 + 64), dword_201FC20, byte_2017A00);
-        sub_8126404(*(v0 + 116) - 93, 4, byte_2017A00, 14);
+        bg_drawTileStripTileBlock2_8126404(*(v0 + 116) - 93, 4, byte_2017A00, 14);
     }
     return result;
 }
@@ -3515,7 +3515,7 @@ unsigned __int8 *__fastcall sub_81263D0(unsigned __int8 *result, int a2, _WORD *
 
 
 // 0x8126404
-void __fastcall __noreturn sub_8126404(int a1, int a2, u16 *a3, int a4)
+void __fastcall __noreturn bg_drawTileStripTileBlock2_8126404(int a1, int a2, u16 *a3, int a4)
 {
     int v4; // r7
 
@@ -6523,7 +6523,7 @@ int sub_81292D8()
     int v4; // r2
     int v5; // r3
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     result = IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -6792,7 +6792,7 @@ int sub_8129598()
     int v0; // r5
 
     if ( *(v0 + 2) )
-        sub_812B504();
+        sprite_drawIfFlagSet_812B504();
     return (*(&off_81295B4 + *(v0 + 2)))();
 }
 
@@ -7887,7 +7887,7 @@ int sub_8129EE4()
     int result; // r0
     char v2; // zf
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     sub_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
@@ -7918,7 +7918,7 @@ unsigned int sub_8129F28()
     int v0; // r5
 
     (*(&off_8129F40 + *(v0 + 2)))();
-    return sub_812B504();
+    return sprite_drawIfFlagSet_812B504();
 }
 
 
@@ -7980,7 +7980,7 @@ int sub_8129FE0()
 // 0x812a008
 void __fastcall __noreturn sub_812A008(int a1)
 {
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     crt0_start_800027C();
 }
 
@@ -7993,7 +7993,7 @@ int __fastcall sub_812A028(int a1)
     int result; // r0
     char v4; // zf
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     v2 = *(v1 + 40) - 1;
     *(v1 + 40) = v2;
     if ( !v2 )
@@ -8021,7 +8021,7 @@ int __fastcall sub_812A058(int a1)
     int v2; // r0
     int result; // r0
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     sub_8146588();
     if ( eStruct200BC30_getJumpOffset00() != 8 )
     {
@@ -8074,7 +8074,7 @@ int __fastcall sub_812A0E8(int a1)
     int v7; // r2
     int v8; // r3
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     result = IsPaletteFadeActive();
     if ( !v4 )
     {
@@ -8120,7 +8120,7 @@ int __fastcall sub_812A168(int a1)
     int v6; // r2
     int v7; // r3
 
-    sub_812B504();
+    sprite_drawIfFlagSet_812B504();
     result = IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -8835,7 +8835,7 @@ LABEL_30:
     if ( eStruct200BC30_getJumpOffset00() )
         result = sub_803C59C(218, 2);
     else
-        result = sub_812B504();
+        result = sprite_drawIfFlagSet_812B504();
     return result;
 }
 
@@ -8852,7 +8852,7 @@ int sub_812A8A4()
     if ( eStruct200BC30_getJumpOffset00() )
         result = sub_803C59C(218, 2);
     else
-        result = sub_812B504();
+        result = sprite_drawIfFlagSet_812B504();
     return result;
 }
 
@@ -9376,7 +9376,7 @@ LABEL_32:
     if ( result == 8 )
         return sub_803C612();
     if ( !result )
-        result = sub_812B504();
+        result = sprite_drawIfFlagSet_812B504();
     return result;
 }
 
@@ -9393,7 +9393,7 @@ int sub_812ADFC()
     sub_812B26C();
     result = eStruct200BC30_getJumpOffset00();
     if ( !result )
-        result = sub_812B504();
+        result = sprite_drawIfFlagSet_812B504();
     return result;
 }
 
@@ -9847,7 +9847,7 @@ void __noreturn sub_812B4AC()
 
 
 // 0x812b504
-unsigned int sub_812B504()
+unsigned int sprite_drawIfFlagSet_812B504()
 {
     int v0; // r5
     unsigned int result; // r0

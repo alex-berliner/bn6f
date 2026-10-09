@@ -301,7 +301,7 @@ loc_809D3A8:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	bl sub_809DE60
 loc_809D3BC:
-	bl sub_809E46E
+	bl overworld_CheckPlayerAdvanceForwardTrigger_809E46E
 	bl sub_809DB60
 	bl sub_809E3A2
 	bne loc_809D3E6
@@ -1739,15 +1739,15 @@ locret_809DEF6:
 	pop {pc}
 	.balign 4, 0
 off_809DEF8:
-	.word sub_809DF00+1
+	.word ow_tryTileInteraction_809DF00+1
 off_809DEFC:
 	.word off_809DEF8
 	thumb_func_end sub_809DED4
 
 	thumb_local_start
-sub_809DF00:
+ow_tryTileInteraction_809DF00:
 	push {lr}
-	bl sub_809E01C
+	bl ow_findInteractableNPC_809E01C
 	tst r0, r0
 	bne loc_809DF16
 	mov r0, #1
@@ -1767,7 +1767,7 @@ loc_809DF16:
 loc_809DF24:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_809DF00
+	thumb_func_end ow_tryTileInteraction_809DF00
 
 	thumb_local_start
 sub_809DF28:
@@ -1903,7 +1903,7 @@ loc_809E014:
 	thumb_func_end owPlayer_setJumptableIndex09AndOthers_809e004
 
 	thumb_local_start
-sub_809E01C:
+ow_findInteractableNPC_809E01C:
 	push {lr}
 	ldr r7, off_809E044 // =eOverworldNPCObjects 
 	ldr r2, dword_809E048 // =0xd80 
@@ -1932,7 +1932,7 @@ off_809E044:
 	.word eOverworldNPCObjects
 dword_809E048:
 	.word 0xD80
-	thumb_func_end sub_809E01C
+	thumb_func_end ow_findInteractableNPC_809E01C
 
 // symdb: Zeroes three consecutive state bytes (0xD-0xF) of the overworld player object while leaving the caller's r0/r1 untouched.
 // symdb: void sub_809E04C(void); /* in: none (r0/r1 passed through unchanged); out: none; flags nz
@@ -2799,7 +2799,7 @@ sub_809E462:
 	thumb_func_end sub_809E462
 
 	thumb_local_start
-sub_809E46E:
+overworld_CheckPlayerAdvanceForwardTrigger_809E46E:
 	push {r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
@@ -2818,7 +2818,7 @@ sub_809E46E:
 	bl SetEventFlagFromImmediate
 locret_809E494:
 	pop {r7,pc}
-	thumb_func_end sub_809E46E
+	thumb_func_end overworld_CheckPlayerAdvanceForwardTrigger_809E46E
 
 	thumb_func_start owPlayer_writeS200aec0_Unk20_809e496
 owPlayer_writeS200aec0_Unk20_809e496:

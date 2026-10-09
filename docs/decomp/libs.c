@@ -104,7 +104,7 @@ int __fastcall sub_8144250(_BYTE *a1, int a2, int a3)
             }
             else
             {
-                sub_8144380();
+                ereader_updateTimerEnable_8144380();
             }
             break;
         case 3:
@@ -139,7 +139,7 @@ LABEL_13:
 
 
 // 0x8144380
-int sub_8144380()
+int ereader_updateTimerEnable_8144380()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -10104,7 +10104,7 @@ int __fastcall sub_814E17C(int a1, int a2)
 
 
 // 0x814e190
-int __fastcall sub_814E190(int a1, _DWORD *a2)
+int __fastcall loadNextQueuedParams_814E190(int a1, _DWORD *a2)
 {
     unsigned __int8 *v2; // r2
     int v3; // r3
@@ -10441,7 +10441,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                                     v30 = *(v29 + 1) & 7;
                                     if ( *v27 & 3 )
                                     {
-                                        sub_814E528();
+                                        sprite_crossfadeColorChannels_814E528();
                                         if ( v30 )
                                             *(v29 + 29) |= 1u;
                                     }
@@ -10538,7 +10538,7 @@ int __fastcall sub_814E4DC(int a1, unsigned __int8 *a2, int a3)
 
 
 // 0x814e528
-unsigned int sub_814E528()
+unsigned int sprite_crossfadeColorChannels_814E528()
 {
     _BYTE *v0; // r4
     int v1; // r5
@@ -10754,7 +10754,7 @@ LABEL_42:
     *(v19 + 36) = v31;
     *(v19 + 4) = *(v14 + 8);
     *(v19 + 12) = *(v3 + 30);
-    sub_814E528();
+    sprite_crossfadeColorChannels_814E528();
     v32 = *(v19 + 8) + *(v3 + 8);
     if ( v32 < 0 )
         v32 = 0;
@@ -11065,7 +11065,7 @@ int __fastcall sub_814EA24(int a1)
 
 
 // 0x814ea58
-int __fastcall sub_814EA58(int a1, int a2, int a3)
+int __fastcall sound_tickAllMusicPlayers_814EA58(int a1, int a2, int a3)
 {
     int *v3; // r5
     signed int v4; // r4

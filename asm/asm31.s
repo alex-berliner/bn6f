@@ -73293,7 +73293,7 @@ locret_80DA9A0:
 	thumb_local_start
 sub_80DA9A2:
 	push {lr}
-	bl sub_8000DE0
+	bl clock_breakPlayTimeIntoHMSF_8000DE0
 	lsl r3, r3, #2
 	ldr r0, off_80DA9B4 // =byte_80DA9B8 
 	ldr r0, [r0,r3]
@@ -73334,8 +73334,8 @@ locret_80DA9FC:
 	pop {pc}
 	thumb_func_end battle_spawnTypeA9ObjectAtPanel_80DA9DC
 
-	thumb_func_start sub_80DA9FE
-sub_80DA9FE:
+	thumb_func_start rng_pickRandomHalfwordFromTableEntry_80DA9FE
+rng_pickRandomHalfwordFromTableEntry_80DA9FE:
 	push {r4,lr}
 	lsl r0, r0, #4
 	ldr r4, off_80DAA14 // =byte_80211A0 
@@ -73357,7 +73357,7 @@ dword_80DAA20:
 	.word 0xFF80000
 dword_80DAA24:
 	.word 0x3F800000
-	thumb_func_end sub_80DA9FE
+	thumb_func_end rng_pickRandomHalfwordFromTableEntry_80DA9FE
 
 	thumb_func_start t3_0xaa_80DAA28
 t3_0xaa_80DAA28:
@@ -85581,7 +85581,7 @@ sub_80E0754:
 loc_80E0782:
 	b loc_80E07B0
 loc_80E0784:
-	bl sub_800D58C
+	bl battle_scanPanelsInFront_800D58C
 	beq loc_80E07B0
 	ldrb r4, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
@@ -86478,7 +86478,7 @@ loc_80E0EB4:
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80E0EBC:
 	pop {r0}
-	bl sub_80E0F2E
+	bl battle_setExtraAnimState_80E0F2E
 	ldr r1, [r5,#oBattleObject_ExtraVars+0x14]
 	str r1, [r5,#oBattleObject_ExtraVars+0x18]
 	ldrb r0, [r6,#oAIData_PwrAtkState]
@@ -86551,7 +86551,7 @@ sub_80E0F28:
 	thumb_func_end sub_80E0F28
 
 	thumb_local_start
-sub_80E0F2E:
+battle_setExtraAnimState_80E0F2E:
 	push {lr}
 	mov r2, #0x15
 	cmp r0, #1
@@ -86575,7 +86575,7 @@ loc_80E0F38:
 	strb r0, [r5,#oObjectHeader_Flags]
 locret_80E0F5C:
 	pop {pc}
-	thumb_func_end sub_80E0F2E
+	thumb_func_end battle_setExtraAnimState_80E0F2E
 
 	thumb_local_start
 sub_80E0F5E:
@@ -92652,7 +92652,7 @@ off_80E3B84:
 	.word off_80E3B88
 off_80E3B88:
 	.word sub_80E3B94+1
-	.word sub_80E3BEA+1
+	.word battle_objectUpdatePosAndRunAction_80E3BEA+1
 	.word object_freeMemory+1
 	thumb_func_end t4_0x30_80E3B70
 
@@ -92696,7 +92696,7 @@ sub_80E3B94:
 	thumb_func_end sub_80E3B94
 
 	thumb_local_start
-sub_80E3BEA:
+battle_objectUpdatePosAndRunAction_80E3BEA:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_X]
 	ldr r1, [r5,#oBattleObject_Y]
@@ -92716,7 +92716,7 @@ off_80E3C08:
 off_80E3C0C:
 	.word sub_80E3C14+1
 	.word sub_80E3CC4+1
-	thumb_func_end sub_80E3BEA
+	thumb_func_end battle_objectUpdatePosAndRunAction_80E3BEA
 
 	thumb_local_start
 sub_80E3C14:
@@ -107286,7 +107286,7 @@ PlayerObjectAIAttackJumptables:
 	.word off_80EA52C
 off_80EA52C:
 	.word RunSpawnAnimationMaybe_8016380+1 // 0x0
-	.word sub_8017888+1 // battle start function 2? // 0x01
+	.word battle_endTurnMarkActed_8017888+1 // battle start function 2? // 0x01
 	.word sub_80173F4+1 // on delete? // 0x02
 	.word sub_80174FE+1 // on flinch // 0x03
 	.word sub_80175B8+1 // on paralyze // 0x04
@@ -107296,7 +107296,7 @@ off_80EA52C:
 	.word playerAI_update_80EA734+1 // 0x08
 off_80EA550:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107308,7 +107308,7 @@ off_80EA550:
 	.word sub_80F0778+1
 off_80EA57C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107320,7 +107320,7 @@ off_80EA57C:
 	.word sub_80F09B8+1
 off_80EA5A8:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107332,7 +107332,7 @@ off_80EA5A8:
 	.word sub_80F0CB0+1
 off_80EA5D4:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107344,7 +107344,7 @@ off_80EA5D4:
 	.word sub_80F1056+1
 off_80EA600:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107356,7 +107356,7 @@ off_80EA600:
 	.word sub_80F1334+1
 off_80EA62C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107368,7 +107368,7 @@ off_80EA62C:
 	.word sub_80F15CE+1
 off_80EA658:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107380,7 +107380,7 @@ off_80EA658:
 	.word sub_80F18AC+1
 off_80EA684:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107392,7 +107392,7 @@ off_80EA684:
 	.word sub_80F1A46+1
 off_80EA6B0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107404,7 +107404,7 @@ off_80EA6B0:
 	.word sub_80F1C1C+1
 off_80EA6DC:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -107418,7 +107418,7 @@ off_80EA6DC:
 	.word sub_80F2274+1
 off_80EA710:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -108186,7 +108186,7 @@ off_80EB070:
 off_80EB074:
 	.word sub_80EB088+1
 	.word sub_80EB128+1
-	.word sub_80EB194+1
+	.word aiAttack_TimerTickEnd_80EB194+1
 	.word sub_80EB1C4+1
 	.word sub_80EB1F8+1
 	thumb_func_end sub_80EB04C
@@ -108319,7 +108319,7 @@ locret_80EB188:
 	thumb_func_end sub_80EB128
 
 	thumb_local_start
-sub_80EB194:
+aiAttack_TimerTickEnd_80EB194:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -108342,7 +108342,7 @@ loc_80EB1BE:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_80EB1C2:
 	pop {pc}
-	thumb_func_end sub_80EB194
+	thumb_func_end aiAttack_TimerTickEnd_80EB194
 
 	thumb_local_start
 sub_80EB1C4:
@@ -119060,7 +119060,7 @@ playerAI_sub_80F0354:
 	tst r0, r0
 	bne loc_80F037A
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800A772
+	bl battle_canAllianceAct_800A772
 	tst r0, r0
 	beq loc_80F0374
 	mov r0, #0x40 
@@ -119114,7 +119114,7 @@ loc_80F03CC:
 	b loc_80F057C
 loc_80F03D2:
 	bl sub_802E4E4
-	bl sub_802E4B8
+	bl battle_getAllianceEntryStatus_802E4B8
 	cmp r0, #0xd
 	beq loc_80F03EA
 	cmp r0, #9
@@ -123893,7 +123893,7 @@ byte_80F28F0:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F29B0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -123987,7 +123987,7 @@ byte_80F2A54:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F2B14:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -125876,7 +125876,7 @@ byte_80F390C:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F39CC:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -127703,7 +127703,7 @@ byte_80F47D4:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F4894:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -129763,7 +129763,7 @@ byte_80F5838:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F58F8:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -130813,7 +130813,7 @@ sub_80F60C4:
 	ldr r1, dword_80F6364 // =0xa000 
 	tst r0, r1
 	bne loc_80F612C
-	bl sub_800D58C
+	bl battle_scanPanelsInFront_800D58C
 	mov r4, r0
 	bl object_getEnemyDirection
 	neg r0, r0
@@ -131186,7 +131186,7 @@ byte_80F6394:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F6454:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -133375,7 +133375,7 @@ byte_80F757C:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F763C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -135115,7 +135115,7 @@ byte_80F8334:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F83F4:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -136587,7 +136587,7 @@ byte_80F8EEC:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F8FAC:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -138246,7 +138246,7 @@ byte_80F9C80:
 	.byte 0xFF, 0xFF, 0xFF
 off_80F9D40:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -140301,7 +140301,7 @@ byte_80FACDC:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FAD9C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -141819,7 +141819,7 @@ byte_80FB8E0:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FB9A0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80FBC8A+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -144821,7 +144821,7 @@ byte_80FD044:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FD104:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -146395,7 +146395,7 @@ byte_80FDCF0:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FDDB0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -147775,7 +147775,7 @@ byte_80FE7D0:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FE890:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -149812,7 +149812,7 @@ byte_80FF7F0:
 	.byte 0xFF, 0xFF, 0xFF
 off_80FF8B0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -150778,7 +150778,7 @@ sub_80FFFBC:
 	ldrb r0, [r5,#0x12]
 	ldrb r1, [r5,#0x13]
 	bl object_reservePanel
-	bl sub_800D58C
+	bl battle_scanPanelsInFront_800D58C
 	mov r4, r0
 	bl object_getFrontDirection // () -> int
 	neg r0, r0
@@ -150917,7 +150917,7 @@ dword_81000DC:
 	thumb_local_start
 sub_81000E0:
 	push {r4,lr}
-	bl sub_800D58C
+	bl battle_scanPanelsInFront_800D58C
 	mov r4, r0
 	tst r4, r4
 	beq locret_81000F4
@@ -150987,7 +150987,7 @@ sub_8100144:
 	ldr r1, [r1,#4]
 	str r0, [sp]
 	str r1, [sp,#4]
-	bl sub_800D58C
+	bl battle_scanPanelsInFront_800D58C
 	mov r4, r0
 	tst r4, r4
 	beq loc_81001A4
@@ -151060,7 +151060,7 @@ byte_81001E8:
 	.byte 0xFF, 0xFF, 0xFF
 off_81002A8:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -153253,7 +153253,7 @@ byte_8101268:
 	.byte 0xFF, 0xFF, 0xFF
 off_8101328:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -153969,7 +153969,7 @@ byte_8101880:
 	.byte 0xFF, 0xFF, 0xFF
 off_8101940:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -158641,7 +158641,7 @@ byte_8103BB4:
 	.byte 0xFF, 0xFF, 0xFF
 off_8103C74:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80171A6+1
 	.word sub_8103DFA+1
 	.word sub_8103E06+1
@@ -161704,7 +161704,7 @@ byte_81053BC:
 	.byte 0xFF, 0xFF, 0xFF
 off_810547C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80171A6+1
 	.word sub_8105618+1
 	.word sub_8105624+1
@@ -164344,7 +164344,7 @@ byte_8106828:
 	.byte 0xFF, 0xFF, 0xFF
 off_81068E8:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1
@@ -166841,7 +166841,7 @@ byte_8107B50:
 	.byte 0xFF, 0xFF, 0xFF
 off_8107C10:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_8017888+1
+	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
 	.word sub_80174FE+1
 	.word sub_80175B8+1

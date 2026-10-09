@@ -114,9 +114,9 @@ m4a_800061E:
 	pop {pc}
 	thumb_func_end m4a_800061E
 
-// symdb: Thin wrapper that submits a sound task to the sound engine, handing the engine's dispatcher sound_8000808 the task callback sub_814EA58 and passing the caller's r10 through as an argument.
+// symdb: Thin wrapper that submits a sound task to the sound engine, handing the engine's dispatcher sound_8000808 the task callback sound_tickAllMusicPlayers_814EA58 and passing the caller's r10 through as an argument.
 // symdb: void sound_dispatchTask_8000630(u32 r0, u32 r2); /* r4-r7, r10 preserved context; sets r1 =
-// symdb: caller's r10, r3 = &sub_814EA58|1 before calling sound_8000808; returns nzcv and r10 from the
+// symdb: caller's r10, r3 = &sound_tickAllMusicPlayers_814EA58|1 before calling sound_8000808; returns nzcv and r10 from the
 // symdb: callee */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchTask_8000630.yaml
 	thumb_local_start
@@ -124,7 +124,7 @@ sound_dispatchTask_8000630:
 	push {lr}
 	mov r1, r10
 	push {r1}
-	ldr r3, off_8000870 // =sub_814EA58+1
+	ldr r3, off_8000870 // =sound_tickAllMusicPlayers_814EA58+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r1}
 	mov r10, r1
@@ -319,7 +319,7 @@ off_8000704:
 	thumb_func_end sound_80006A2
 
 // () -> void
-// symdb: Asks the sound driver to switch music state (via callback sub_814EA58) and marks the game state so background music is treated as off.
+// symdb: Asks the sound driver to switch music state (via callback sound_tickAllMusicPlayers_814EA58) and marks the game state so background music is treated as off.
 // symdb: void music_stopBgm(u32 argR0, u32 argR2, Toolkit *toolkit /*r10*/); sets r0 = 0xFF, r1 =
 // symdb: toolkit, flags NZ from the 0xFF load
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/musicGameState_8000784.yaml
@@ -328,7 +328,7 @@ musicGameState_8000784:
 	push {r7,lr}
 	mov r1, r10
 	push {r1}
-	ldr r3, off_8000898 // =sub_814EA58+1
+	ldr r3, off_8000898 // =sound_tickAllMusicPlayers_814EA58+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r1}
 	mov r10, r1
@@ -471,7 +471,7 @@ sound_8000822:
 	bne loc_8000844
 
   // 1 then
-	ldr r3, off_80008A8 // =sub_814EA58+1
+	ldr r3, off_80008A8 // =sound_tickAllMusicPlayers_814EA58+1
 	b loc_8000846
 
   // 0 else 1 else
@@ -509,7 +509,7 @@ off_8000868:
 off_800086C:
 	.word m4a_SongNumStart+1 // (idx: u16) -> ()
 off_8000870:
-	.word sub_814EA58+1
+	.word sound_tickAllMusicPlayers_814EA58+1
 off_8000874:
 	.word sub_814F9AC+1
 off_8000878:
@@ -529,7 +529,7 @@ off_8000890:
 off_8000894:
 	.word sub_814EAF0+1
 off_8000898:
-	.word sub_814EA58+1
+	.word sound_tickAllMusicPlayers_814EA58+1
 off_800089C:
 	.word sub_814E9F0+1
 numWords:
@@ -537,7 +537,7 @@ numWords:
 off_80008A4:
 	.word byte_2010B90
 off_80008A8:
-	.word sub_814EA58+1
+	.word sound_tickAllMusicPlayers_814EA58+1
 off_80008AC:
 	.word m4a_SongNumStart+1 // (idx: u16) -> ()
 off_80008B0:
@@ -1503,7 +1503,7 @@ memory_bcd_8000D84:
 	ldr r0, dword_8000DDC // =0x99595999
 	b loc_8000DD4
 loc_8000D92:
-	bl sub_8000DE0
+	bl clock_breakPlayTimeIntoHMSF_8000DE0
 	str r0, [sp]
 	str r1, [sp,#4]
 	str r2, [sp,#8]
@@ -1541,8 +1541,8 @@ dword_8000DDC:
 	.word 0x99595999
 	thumb_func_end memory_bcd_8000D84
 
-	thumb_func_start sub_8000DE0
-sub_8000DE0:
+	thumb_func_start clock_breakPlayTimeIntoHMSF_8000DE0
+clock_breakPlayTimeIntoHMSF_8000DE0:
 	push {lr}
 	sub sp, sp, #0x10
 	ldr r1, dword_8000E04 // =0x34bc0
@@ -1568,7 +1568,7 @@ off_8000E08:
 	.word 0xE10
 off_8000E0C:
 	.word 0x3C
-	thumb_func_end sub_8000DE0
+	thumb_func_end clock_breakPlayTimeIntoHMSF_8000DE0
 
 	thumb_func_start CapIncrementGameTimeFrames
 CapIncrementGameTimeFrames: // () -> void

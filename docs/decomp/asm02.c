@@ -6,7 +6,7 @@ void *__fastcall getChip8021DA8(int chipData)
 
 
 // 0x8021ab4
-int __fastcall sub_8021AB4(int a1, int a2)
+int __fastcall sChip_loadRecordIntoSlot_8021AB4(int a1, int a2)
 {
     Toolkit *tk; // r10
     signed int v3; // r6

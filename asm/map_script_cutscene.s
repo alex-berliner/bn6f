@@ -2524,8 +2524,8 @@ off_8036EC4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end StartCutscene
 
-	thumb_func_start cutscene_8036ED4
-cutscene_8036ED4:
+	thumb_func_start cutscene_end_8036ED4
+cutscene_end_8036ED4:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_CutsceneStatePtr]
@@ -2545,7 +2545,7 @@ cutscene_8036ED4:
 	movflag EVENT_1731
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end cutscene_8036ED4
+	thumb_func_end cutscene_end_8036ED4
 
 // symdb: Force-ends the currently running cutscene by jumping the cutscene script interpreter onto the dummy end script and clearing the cutscene-active event flag.
 // symdb: void cutscene_forceEndCurrent_8036EFE(Toolkit *toolkit /* r10 */); preserves r4-r7, clobbers
@@ -3843,7 +3843,7 @@ CutsceneCmd_end_for_map_reload_maybe_80376dc:
 	bne .eventActive
 	bl reloadCurNaviStatBoosts_813c3ac
 .eventActive
-	bl cutscene_8036ED4
+	bl cutscene_end_8036ED4
 	mov r0, #0
 	pop {pc}
 	thumb_func_end CutsceneCmd_end_for_map_reload_maybe_80376dc

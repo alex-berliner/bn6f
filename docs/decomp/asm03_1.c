@@ -593,7 +593,7 @@ int ho_8034218()
 
 
 // 0x803423c
-signed int __fastcall sub_803423C(int a1, int a2, int a3, int a4)
+signed int __fastcall map_setupEnterMapAfterWarp_803423C(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r0
@@ -826,7 +826,7 @@ int __fastcall cutscene_8034BB8(int a1)
             sub_8034CB6();
             sub_8034D7C();
             ghostNaviCheck_8035274();
-            sub_8035054();
+            tryStartNotificationCutscene_8035054();
             cutscene_TryStartNotification_8035084();
             sub_809CF2C();
         }
@@ -1294,7 +1294,7 @@ unsigned int sub_8035028()
 
 
 // 0x8035054
-signed int sub_8035054()
+signed int tryStartNotificationCutscene_8035054()
 {
     int v0; // r10
     char v1; // zf
@@ -11788,7 +11788,7 @@ int __fastcall sub_803DCE8(u32 a1, int a2, u8 a3, u8 a4)
 
 
 // 0x803dd30
-int __fastcall sub_803DD30(int a1)
+int __fastcall link_getModeSelector_803DD30(int a1)
 {
     int v1; // r1
     int result; // r0
@@ -12675,7 +12675,7 @@ signed int __fastcall sub_803E628(int a1, int a2)
         *(v3 + 40) = 0;
     }
     v7 = 56;
-    if ( sub_803DD30(v5) )
+    if ( link_getModeSelector_803DD30(v5) )
         v7 = 60;
     v8 = *(v7 + v3);
     v9 = 14;
@@ -12853,7 +12853,7 @@ signed __int64 __fastcall sub_803E7A4(int a1)
     signed __int64 result; // r0
 
     v1 = a1;
-    v2 = *(&dword_803E7D4 + sub_803DD30(a1));
+    v2 = *(&dword_803E7D4 + link_getModeSelector_803DD30(a1));
     if ( v2 == 255 )
         result = 0x100000000LL;
     else
@@ -12992,7 +12992,7 @@ int __fastcall sub_803E8B4(int a1)
     while ( 1 )
     {
         sub_803E78C(v2);
-        if ( !v4 && sub_803DD30(v3) != v2 - 1 )
+        if ( !v4 && link_getModeSelector_803DD30(v3) != v2 - 1 )
             break;
         if ( ++v2 > 4 )
             return v1;
@@ -14523,7 +14523,7 @@ signed __int64 __fastcall sub_803F740(int a1)
 {
     signed __int64 result; // r0
 
-    if ( byte_803F774[sub_803DD30(a1)] == 255 )
+    if ( byte_803F774[link_getModeSelector_803DD30(a1)] == 255 )
         result = 0x100000000LL;
     else
         result = sCamera.unk_66;
@@ -14599,7 +14599,7 @@ signed int sub_803F838()
     sub_814D8F0(234881280, &timer_2000000, 26384);
     save_memSetFlags_8006E0E(&timer_2000000, 26384);
     SetExtraToolkitPointers();
-    sub_803F8C4();
+    verifyEwramWorkAreaChecksum_803F8C4();
     if ( v0 && (infoText_IsTimestampUnchanged_803F8F4(), v0) )
     {
         v1 = 0;
@@ -14652,7 +14652,7 @@ int info_copyTimestampToWorkArea_803F8B2()
 
 
 // 0x803f8c4
-BOOL sub_803F8C4()
+BOOL verifyEwramWorkAreaChecksum_803F8C4()
 {
     int v0; // r10
     int v1; // r7

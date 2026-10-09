@@ -2126,7 +2126,7 @@ void __cdecl initNewGameData_8004DF0()
     sub_8049CF8();
     sub_804A17A();
     clearS2001c04Byte6_811FB78();
-    copy_8048C68();
+    shop_resetStockTable_8048C68();
     SetEventFlagFromImmediate(23, 29);
     SetEventFlagFromImmediate(4, 1);
     SetEventFlagRangeFromImmediate(4, 231, 2);
@@ -2173,7 +2173,7 @@ void __cdecl initNewGameData_8004DF0()
     SetEventFlagFromImmediate(0, 57);
     SetEventFlagFromImmediate(0, 17);
     sub_80AA004(0);
-    sub_80AA104(0);
+    palette_copyTableRow_80AA104(0);
     memBlock_ClearWorkArea_802D638();
     clearWorkBuffer_2000DC0_80356EC();
     *&gs->MapSelect = byte_100;
@@ -2198,7 +2198,7 @@ void __cdecl initNewGameData_8004DF0()
     sub_8021D36(v13, v14, v15, v16);
     ZeroFillByWord(*(v2 + oToolkit_S_Chip_2002178_Ptr), 180);
     zeroFill_e2002230();
-    sub_8021AB4(byte_80213AC, 0);
+    sChip_loadRecordIntoSlot_8021AB4(byte_80213AC, 0);
     clearToolkitUnk2002230RecordFields_81376E8();
     timer_setNoTimeout_8137700();
     clearChipGiftRecordAndTakeChipsSlot0_8137808();
@@ -3493,7 +3493,7 @@ int __fastcall subsystem_launchShop(int a1, int a2, int a3, int a4)
     int v5; // r5
     int result; // r0
 
-    sub_8046CC8(a1, a2, a3, a4);
+    reqBBS_initRequestWorkArea_8046CC8(a1, a2, a3, a4);
     v5 = *(v4 + oToolkit_GameStatePtr);
     *(v5 + oGameState_LastMapGroup) = *(v5 + oGameState_MapGroup);
     updatePlayerGameState_800107A();
@@ -5149,7 +5149,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     v14 = sub_8007628();
     chatbox_resetPrinterState_801FE00(v14, v15, v16);
     eStruct2038160_clearStruct(v17, v18, v19, v20);
-    sub_800ED00();
+    ai_resetAIDataSlots_800ED00();
     battle_InitNaviStatsByIndex_8013422(0, v21, v22, v23);
     v27 = battle_InitNaviStatsByIndex_8013422(1, v24, v25, v26);
     zeroFill_800BF66(v27, v28, v29, v30);
@@ -5253,7 +5253,7 @@ unsigned int spawnMysteryData_8007424()
     result = *(v0 + 2);
     if ( result > 15 )
     {
-        sub_80DA9FE(result >> 4);
+        rng_pickRandomHalfwordFromTableEntry_80DA9FE(result >> 4);
         result = battle_spawnTypeA9ObjectAtPanel_80DA9DC(*(v0 + 1) & 7, *(v0 + 1) >> 4, 0);
     }
     return result;
@@ -5420,7 +5420,7 @@ int __fastcall sub_800753C(int a1, int a2, int a3, int a4)
             v8[1] = v9[2];
             v8[3] = (*enemy_getStruct1(*(v4 + 40)))[2];
             v8[14] = -1;
-            result = sub_80077D2();
+            result = battle_addObjectToAllianceEntryList_80077D2();
         }
         else
         {
@@ -5554,7 +5554,7 @@ int *__fastcall sub_80076A0(int a1, int a2, int a3, char a4)
                 *(v13 + 21) = v4;
                 *(v4 + 42) = -1;
                 v13[14] = -1;
-                sub_80077D2();
+                battle_addObjectToAllianceEntryList_80077D2();
                 result = v4;
             }
             else
@@ -5619,7 +5619,7 @@ int __fastcall RemoveGivenAliveBattleActorFromList(int result)
 
 
 // 0x80077d2
-int sub_80077D2()
+int battle_addObjectToAllianceEntryList_80077D2()
 {
     int v0; // r5
     int v1; // r10
@@ -5921,7 +5921,7 @@ int battle_update_8007A44()
             panel_800BFC4();
             setChipsForPlayerObjects_800FDC0();
             sub_801BEE0();
-            sub_802CEC8();
+            runPendingHandlerForEntryPair_802CEC8();
             handleVariableDamageChip_800AEE8();
             if ( !*(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_0a) )
             {
@@ -6466,7 +6466,7 @@ int sub_8008064()
         }
         (sub_801E792)(v2, v3);
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         naviStatus_SetGfxAndStatus_801E724(255, 0);
@@ -6591,7 +6591,7 @@ int sub_80081A4()
         sub_8014040(v2);
         *(*(v1 + oToolkit_S2034880_Ptr) + 16) = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
         *(v0 + 3) = 4;
-        if ( sub_800A7A6(4, 371, 382) )
+        if ( battle_countOpponentActorsWithNameIdInRange_800A7A6(4, 371, 382) )
         {
             *(v0 + 8) = 102;
         }
@@ -6630,7 +6630,7 @@ int sub_80081A4()
         }
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -6676,7 +6676,7 @@ int sub_800825A()
         *(v0 + 3) = 4;
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -6709,7 +6709,7 @@ int sub_80082DC()
         (sub_801E792)(28);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         v3 = *(v0 + 8);
@@ -6907,7 +6907,7 @@ LABEL_10:
 
 
 // 0x8008492
-int __fastcall sub_8008492(int a1)
+int __fastcall battle_objAdvanceStateTimer_8008492(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -6939,7 +6939,7 @@ LABEL_10:
 
 
 // 0x80084c0
-void __fastcall sub_80084C0(int a1, int a2, int a3, int a4)
+void __fastcall clearDword_203CA70Record_80084C0(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&dword_203CA70, 12);
 }
@@ -6968,7 +6968,7 @@ int sub_8008528()
         *(v0 + 3) = 4;
         (sub_801E792)(0, 0);
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -7140,7 +7140,7 @@ int sub_8008688()
         (sub_801E792)(20);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -7192,7 +7192,7 @@ int sub_8008716()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -7255,7 +7255,7 @@ int sub_8008764()
         *(v0 + 3) = 4;
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -7288,7 +7288,7 @@ int sub_80087D8()
         (sub_801E792)(28);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         v3 = *(v0 + 8);
@@ -7339,7 +7339,7 @@ int sub_8008864()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -7387,7 +7387,7 @@ int sub_80088B2()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -7479,7 +7479,7 @@ int sub_800898C()
         SetCustGauge(0);
         (sub_801E792)(0, 0);
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -7598,7 +7598,7 @@ int sub_8008AA0()
         (sub_801E792)(20);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -7650,7 +7650,7 @@ int sub_8008B2E()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -7713,7 +7713,7 @@ int sub_8008B7C()
         *(v0 + 3) = 4;
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -7746,7 +7746,7 @@ int sub_8008BF0()
         (sub_801E792)(28);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         v3 = *(v0 + 8);
@@ -7797,7 +7797,7 @@ int sub_8008C7C()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -7845,7 +7845,7 @@ int sub_8008CCA()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -7937,7 +7937,7 @@ int sub_8008D9C()
         SetCustGauge(0);
         (sub_801E792)(0, 0);
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -8055,7 +8055,7 @@ int sub_8008EA0()
         (sub_801E792)(20);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -8107,7 +8107,7 @@ int sub_8008F2E()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -8170,7 +8170,7 @@ int sub_8008F7C()
         *(v0 + 3) = 4;
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = *(v0 + 8);
@@ -8203,7 +8203,7 @@ int sub_8008FF0()
         (sub_801E792)(28);
     }
     --*(v0 + 8);
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         v3 = *(v0 + 8);
@@ -8254,7 +8254,7 @@ int sub_800907C()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 4;
@@ -8302,7 +8302,7 @@ int sub_80090CA()
         *(v0 + 8) = 0;
         *(v0 + 3) = 4;
     }
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         result = 12;
@@ -8490,7 +8490,7 @@ int battle_dispatchStatePhase_80092A0()
 
 
 // 0x80092c0
-int sub_80092C0()
+int battle_runState4CountdownOrAdvance_80092C0()
 {
     int v0; // r5
     int result; // r0
@@ -8533,7 +8533,7 @@ int sub_80092F0()
 
     if ( *(v0 + 3) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             result = 8;
@@ -8642,7 +8642,7 @@ void __fastcall sub_800938A(int a1, int a2, int a3, int a4)
 
     if ( !*(v4 + 3) )
     {
-        sub_80084C0(*(v4 + 3), a2, a3, a4);
+        clearDword_203CA70Record_80084C0(*(v4 + 3), a2, a3, a4);
         *(v4 + 3) = 4;
     }
     sub_800801C();
@@ -8812,7 +8812,7 @@ signed int sub_80094DA()
     }
     else
     {
-        if ( sub_800A7A6(*(v0 + 3), 371, 382) && battle_getStateByteNibbles_800A832() == 1 )
+        if ( battle_countOpponentActorsWithNameIdInRange_800A7A6(*(v0 + 3), 371, 382) && battle_getStateByteNibbles_800A832() == 1 )
             v1 = 4;
         else
             v1 = 12;
@@ -9123,7 +9123,7 @@ int sub_8009784()
 
     if ( *(v0 + 3) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             result = 8;
@@ -9548,7 +9548,7 @@ int sub_8009AD8()
 
     if ( *(v0 + 3) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             result = 8;
@@ -9927,7 +9927,7 @@ int sub_8009DC8()
 
     if ( *(v0 + 3) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             result = 8;
@@ -10685,7 +10685,7 @@ void __fastcall sub_800A318(int a1)
     {
         v6 = v5;
         v7 = getPETNaviSelect();
-        v5 = &v6[30 * sub_800A540(v7, 45)];
+        v5 = &v6[30 * battle_getNaviStatsByte_800A540(v7, 45)];
         v2 = 1;
     }
     v20 = v5;
@@ -10775,7 +10775,7 @@ void sub_800A3E4()
     {
         v5 = v4;
         v6 = getPETNaviSelect();
-        v4 = &v5[30 * sub_800A540(v6, 45)];
+        v4 = &v5[30 * battle_getNaviStatsByte_800A540(v6, 45)];
         v1 = 1;
     }
     v7 = v4;
@@ -10839,8 +10839,8 @@ int __fastcall pet_getCurNaviChainedLookup_800A4E0(int a1)
         return 255;
     v2 = getPETNaviSelect();
     v3 = v2;
-    v4 = sub_800A540(v2, 45);
-    return sub_800A540(v3, v4 + 46);
+    v4 = battle_getNaviStatsByte_800A540(v2, 45);
+    return battle_getNaviStatsByte_800A540(v3, v4 + 46);
 }
 
 
@@ -10854,15 +10854,15 @@ signed int __fastcall sub_800A506(int a1)
     if ( sub_802D234() == 1 )
         return 255;
     v2 = getPETNaviSelect();
-    v3 = 2 * sub_800A540(v2, 45);
-    v4 = sub_800A540(v2, v3 + 86);
-    sub_800A540(v2, v3 + 87);
+    v3 = 2 * battle_getNaviStatsByte_800A540(v2, 45);
+    v4 = battle_getNaviStatsByte_800A540(v2, v3 + 86);
+    battle_getNaviStatsByte_800A540(v2, v3 + 87);
     return v4;
 }
 
 
 // 0x800a540
-int __fastcall sub_800A540(int a1, int a2)
+int __fastcall battle_getNaviStatsByte_800A540(int a1, int a2)
 {
     int v2; // r6
     int v3; // r4
@@ -11141,7 +11141,7 @@ BOOL __fastcall sub_800A754(int a1)
 
 
 // 0x800a772
-signed int __fastcall sub_800A772(int a1)
+signed int __fastcall battle_canAllianceAct_800A772(int a1)
 {
     int v1; // r5
     int v2; // ST00_4
@@ -11173,7 +11173,7 @@ int sfx_playSfx0C_800A79C()
 
 
 // 0x800a7a6
-int __fastcall sub_800A7A6(int a1, int a2, int a3)
+int __fastcall battle_countOpponentActorsWithNameIdInRange_800A7A6(int a1, int a2, int a3)
 {
     int v3; // r10
     signed int v4; // r3
@@ -11566,12 +11566,12 @@ int __fastcall sub_800AA40(int a1)
         v3 += 4;
     }
     while ( v3 != 32 );
-    return sub_800AA64(v5);
+    return compactEntryWords_800AA64(v5);
 }
 
 
 // 0x800aa64
-int __fastcall sub_800AA64(int a1)
+int __fastcall compactEntryWords_800AA64(int a1)
 {
     char *v1; // r3
     char *v2; // r1
@@ -13098,7 +13098,7 @@ char *object_drawChipName()
 
     if ( *(v0 + 11) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v7 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
@@ -13174,9 +13174,9 @@ char *sub_800BA8A()
     if ( *(v0 + 11) )
     {
         if ( battle_networkInvert(*(v0 + 22)) )
-            result = sub_801E754();
+            result = comm_checkCrossNetBattleReady_801E754();
         else
-            result = sub_801E754();
+            result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v7 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
@@ -13261,7 +13261,7 @@ char *sub_800BBA8()
 
     if ( *(v0 + 11) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v14 = sub_800B892(*(v0 + 22) ^ 1)) == 0 || v14 == 5 )

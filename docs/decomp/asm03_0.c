@@ -460,7 +460,7 @@ char *__fastcall sub_8026840(int a1, int a2, int a3, int a4)
     }
     v15 = sub_802A49C(v13);
     sub_802A40C(v15);
-    sub_802945A();
+    battle_compactFolderChipList_802945A();
     sub_802A646();
     BYTE1(dword_20364C4) = battle_countFolderChips_8027D58();
     sub_8027E2C();
@@ -823,7 +823,7 @@ signed int sub_8026DC4()
 
 
 // 0x8026e4c
-int sub_8026E4C()
+int chatbox_stateMaybeFinishText_8026E4C()
 {
     int v0; // r5
     int v1; // r1
@@ -861,7 +861,7 @@ int sub_8026E78()
 
 
 // 0x8026e98
-int __fastcall sub_8026E98(int a1)
+int __fastcall battle_updateObjectByKind_8026E98(int a1)
 {
     int v1; // r5
 
@@ -4487,7 +4487,7 @@ LABEL_6:
 
 
 // 0x802945a
-int sub_802945A()
+int battle_compactFolderChipList_802945A()
 {
     signed int v0; // r4
     int v1; // r6
@@ -7566,7 +7566,7 @@ int sub_802B7E0()
 
     if ( !*(v0 + 2) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( result != 2 )
             return result;
         *(v0 + 2) = 1;
@@ -7737,7 +7737,7 @@ int sub_802B9B8()
     int v0; // r5
     int result; // r0
 
-    result = sub_801E754();
+    result = comm_checkCrossNetBattleReady_801E754();
     if ( !result )
     {
         *(v0 + 1) = 24;
@@ -7864,7 +7864,7 @@ int sub_802BDF0()
 
 
 // 0x802be0c
-signed int __noreturn sub_802BE0C()
+signed int __noreturn objStepFinishSetState4_802BE0C()
 {
     int v0; // r10
     signed int result; // r0
@@ -9362,7 +9362,7 @@ char *__fastcall sub_802CEA6(int a1)
 
 
 // 0x802cec8
-char *sub_802CEC8()
+char *runPendingHandlerForEntryPair_802CEC8()
 {
     char *result; // r0
 
@@ -11506,7 +11506,7 @@ int sub_802E4A0()
 
 
 // 0x802e4b8
-signed int sub_802E4B8()
+signed int battle_getAllianceEntryStatus_802E4B8()
 {
     int v0; // r5
     char *v1; // r7
@@ -12944,7 +12944,7 @@ int startscreen_render_trigger_802F624()
 
 // 0x802f63c
 // () -> void
-int ho_802F63C()
+int startScreen_RunStateHandler_802F63C()
 {
     int v0; // r5
 
@@ -13269,7 +13269,7 @@ int __noreturn sub_802F8D8()
     }
     startScreen_runTriggerHandler_802FC9C();
     sub_802FC70();
-    sub_802FB64();
+    startScreen_playSoundIfFlagSet_802FB64();
     startScreen_fadeOutUpdateIfFlag40_802FB90();
     startScreen_dispatchIfFlag20_802FBB4();
     startScreen_playSoundIfFlagSet_802FBD8();
@@ -13316,7 +13316,7 @@ int sub_802FB10()
 
 
 // 0x802fb64
-int sub_802FB64()
+int startScreen_playSoundIfFlagSet_802FB64()
 {
     int v0; // r5
     int result; // r0

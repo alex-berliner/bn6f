@@ -3058,7 +3058,7 @@ off_8004724:
 	.word 0x0
 	.word 0x0
 	.word 0x0
-	.word sub_80A9B70+1
+	.word battle_dispatchObjectBehaviorStep_80A9B70+1
 	.word 0x0
 	.word sub_80A9D10+1
 	.word sub_80A9ECC+1
@@ -4037,7 +4037,7 @@ initNewGameData_8004DF0:
 	bl sub_8049CF8
 	bl sub_804A17A
 	bl clearS2001c04Byte6_811FB78
-	bl copy_8048C68
+	bl shop_resetStockTable_8048C68
 
 	movflag EVENT_PET_NAVI_ACTIVE
 	bl SetEventFlagFromImmediate
@@ -4194,7 +4194,7 @@ initNewGameData_8004DF0:
 	bl sub_80AA004
 
 	mov r0, #0
-	bl sub_80AA104
+	bl palette_copyTableRow_80AA104
 
 	bl memBlock_ClearWorkArea_802D638
 
@@ -4244,7 +4244,7 @@ initNewGameData_8004DF0:
 	ldr r0, off_80050E8 // =byte_80213AC
 	mov r1, #0
 
-	bl sub_8021AB4
+	bl sChip_loadRecordIntoSlot_8021AB4
 	bl clearToolkitUnk2002230RecordFields_81376E8
 	bl timer_setNoTimeout_8137700
 	bl clearChipGiftRecordAndTakeChipsSlot0_8137808
@@ -5813,7 +5813,7 @@ subsystem_launchReqBBS:
 	thumb_func_start subsystem_launchShop
 subsystem_launchShop:
 	push {r4-r7,lr}
-	bl sub_8046CC8
+	bl reqBBS_initRequestWorkArea_8046CC8
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
 
@@ -8685,7 +8685,7 @@ loc_8007236:
 	bl sub_8007628
 	bl chatbox_resetPrinterState_801FE00
 	bl eStruct2038160_clearStruct
-	bl sub_800ED00
+	bl ai_resetAIDataSlots_800ED00
 
 	mov r0, #0
 	bl battle_InitNaviStatsByIndex_8013422
@@ -8950,7 +8950,7 @@ spawnMysteryData_8007424: // (self: * EnemySetup $r6) -> ()
 	cmp r0, r1
 	ble locret_800744E
 	lsr r0, r0, #4
-	bl sub_80DA9FE
+	bl rng_pickRandomHalfwordFromTableEntry_80DA9FE
 	mov r4, r0
 
 	ldrb r0, [r6,#1]
@@ -9187,7 +9187,7 @@ loc_80075A2: // endif
 	strb r1, [r4,#3]
 	mov r0, #0xff
 	strb r0, [r4,#0xe]
-	bl sub_80077D2 // (obj: * BattleObject $r5) -> ()
+	bl battle_addObjectToAllianceEntryList_80077D2 // (obj: * BattleObject $r5) -> ()
 
 locret_80075C8:
 	pop {r4,r5,pc}
@@ -9452,7 +9452,7 @@ loc_8007708: // endif
 	cmp r0, #0
 	bne loc_8007772
 
-	bl sub_80077D2 // (obj: * BattleObject $r5) -> ()
+	bl battle_addObjectToAllianceEntryList_80077D2 // (obj: * BattleObject $r5) -> ()
 
 loc_8007772: // endif
 
@@ -9526,7 +9526,7 @@ loc_80077C8:
 	thumb_func_end RemoveGivenAliveBattleActorFromList
 
 	thumb_local_start
-sub_80077D2: // (obj: * BattleObject $r5) -> ()
+battle_addObjectToAllianceEntryList_80077D2: // (obj: * BattleObject $r5) -> ()
 	push {r4,r6,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
@@ -9550,7 +9550,7 @@ byte_80077F8:
 	.byte 0xC8, 0x0, 0xA8, 0x0
 dword_80077FC:
 	.word 0xFFFF
-	thumb_func_end sub_80077D2
+	thumb_func_end battle_addObjectToAllianceEntryList_80077D2
 
 	thumb_func_start battle_main_8007800
 battle_main_8007800:
@@ -9994,7 +9994,7 @@ loc_8007A9A:
 	bl panel_800BFC4
 	bl setChipsForPlayerObjects_800FDC0
 	bl sub_801BEE0
-	bl sub_802CEC8
+	bl runPendingHandlerForEntryPair_802CEC8
 	bl handleVariableDamageChip_800AEE8
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
@@ -10678,7 +10678,7 @@ off_8008038:
 	.word sub_800834A+1
 	.word sub_80083E4+1
 	.word sub_8008452+1
-	.word sub_8008492+1
+	.word battle_objAdvanceStateTimer_8008492+1
 off_8008060:
 	.word dword_203CA70
 	thumb_func_end sub_800801C
@@ -10723,7 +10723,7 @@ loc_80080A6:
 sub_80080AE:
 	bl sub_801E792
 loc_80080B2:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80080D0
 	mov r0, #0xff
@@ -10860,7 +10860,7 @@ loc_80081AE:
 	strb r0, [r5,#3]
 	ldr r1, dword_80084D8 // =0x173
 	ldr r2, dword_80084DC // =0x17e
-	bl sub_800A7A6
+	bl battle_countOpponentActorsWithNameIdInRange_800A7A6
 	tst r0, r0
 	beq loc_80081DE
 	mov r0, #0x66
@@ -10911,7 +10911,7 @@ loc_8008232:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008258
 	mov r0, #8
@@ -10976,7 +10976,7 @@ loc_80082B4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80082DA
 	mov r0, #8
@@ -11014,7 +11014,7 @@ loc_80082FE:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008348
 	ldrh r0, [r5,#8]
@@ -11228,7 +11228,7 @@ locret_8008490:
 	thumb_func_end sub_8008452
 
 	thumb_local_start
-sub_8008492:
+battle_objAdvanceStateTimer_8008492:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #5
@@ -11251,10 +11251,10 @@ loc_80084BA:
 	strb r0, [r5,#4]
 locret_80084BE:
 	pop {pc}
-	thumb_func_end sub_8008492
+	thumb_func_end battle_objAdvanceStateTimer_8008492
 
 	thumb_local_start
-sub_80084C0:
+clearDword_203CA70Record_80084C0:
 	push {r5,lr}
 	// memBlock
 	ldr r0, off_80084CC // =dword_203CA70
@@ -11281,7 +11281,7 @@ off_80084E8:
 	.word byte_203F558
 off_80084EC:
 	.word byte_203F658
-	thumb_func_end sub_80084C0
+	thumb_func_end clearDword_203CA70Record_80084C0
 
 	thumb_local_start
 sub_80084F0:
@@ -11329,7 +11329,7 @@ sub_8008528:
 	mov r1, #0
 	bl sub_801E792
 loc_8008550:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_800855C
 	mov r0, #4
@@ -11534,7 +11534,7 @@ sub_8008688:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne .ret
 	mov r0, #8
@@ -11581,7 +11581,7 @@ sub_8008716:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_800872C:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008738
 	mov r0, #0xc
@@ -11657,7 +11657,7 @@ loc_80087B0:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80087D6
 	mov r0, #8
@@ -11695,7 +11695,7 @@ loc_80087FA:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_800883E
 	ldrh r0, [r5,#8]
@@ -11765,7 +11765,7 @@ sub_8008864:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008886:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008892
 	mov r0, #4
@@ -11808,7 +11808,7 @@ sub_80088B2:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80088C8:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80088D4
 	mov r0, #0xc
@@ -11936,7 +11936,7 @@ sub_800898C:
 	mov r1, #0
 	bl sub_801E792
 loc_80089BE:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80089CA
 	mov r0, #4
@@ -12081,7 +12081,7 @@ loc_8008AF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008B0E
 	mov r0, #8
@@ -12128,7 +12128,7 @@ sub_8008B2E:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008B44:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008B50
 	mov r0, #0xc
@@ -12204,7 +12204,7 @@ loc_8008BC8:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008BEE
 	mov r0, #8
@@ -12242,7 +12242,7 @@ loc_8008C12:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008C56
 	ldrh r0, [r5,#8]
@@ -12312,7 +12312,7 @@ sub_8008C7C:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008C9E:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008CAA
 	mov r0, #4
@@ -12355,7 +12355,7 @@ sub_8008CCA:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008CE0:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008CEC
 	mov r0, #0xc
@@ -12482,7 +12482,7 @@ sub_8008D9C:
 	mov r1, #0
 	bl sub_801E792
 loc_8008DCE:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008DDA
 	mov r0, #4
@@ -12625,7 +12625,7 @@ loc_8008EF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008F0E
 	mov r0, #8
@@ -12672,7 +12672,7 @@ sub_8008F2E:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008F44:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008F50
 	mov r0, #0xc
@@ -12748,7 +12748,7 @@ loc_8008FC8:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8008FEE
 	mov r0, #8
@@ -12786,7 +12786,7 @@ loc_8009012:
 	ldrh r0, [r5,#8]
 	sub r0, #1
 	strh r0, [r5,#8]
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_8009056
 	ldrh r0, [r5,#8]
@@ -12856,7 +12856,7 @@ sub_800907C:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_800909E:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80090AA
 	mov r0, #4
@@ -12899,7 +12899,7 @@ sub_80090CA:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80090E0:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_80090EC
 	mov r0, #0xc
@@ -13193,13 +13193,13 @@ battle_dispatchStatePhase_80092A0:
 off_80092B0:
 	.word off_80092B4
 off_80092B4:
-	.word sub_80092C0+1
+	.word battle_runState4CountdownOrAdvance_80092C0+1
 	.word sub_80092F0+1
 	.word sub_8009314+1
 	thumb_func_end battle_dispatchStatePhase_80092A0
 
 	thumb_local_start
-sub_80092C0:
+battle_runState4CountdownOrAdvance_80092C0:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13227,7 +13227,7 @@ loc_80092E6:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_80092EE:
 	pop {pc}
-	thumb_func_end sub_80092C0
+	thumb_func_end battle_runState4CountdownOrAdvance_80092C0
 
 	thumb_local_start
 sub_80092F0:
@@ -13242,7 +13242,7 @@ sub_80092F0:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009312
 loc_8009306:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_8009312
 	mov r0, #8
@@ -13328,7 +13328,7 @@ sub_800938A:
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
 	bne loc_800939A
-	bl sub_80084C0
+	bl clearDword_203CA70Record_80084C0
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_800939A:
@@ -13508,7 +13508,7 @@ sub_80094DA:
 	bne loc_8009508
 	ldr r1, =0x173
 	ldr r2, =0x17e
-	bl sub_800A7A6
+	bl battle_countOpponentActorsWithNameIdInRange_800A7A6
 	cmp r0, #0
 	beq loc_80094FA
 	bl battle_getStateByteNibbles_800A832
@@ -13869,7 +13869,7 @@ sub_8009784:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_80097A6
 loc_800979A:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_80097A6
 	mov r0, #8
@@ -14325,7 +14325,7 @@ sub_8009AD8:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009AFA
 loc_8009AEE:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_8009AFA
 	mov r0, #8
@@ -14734,7 +14734,7 @@ sub_8009DC8:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009DEA
 loc_8009DDE:
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	tst r0, r0
 	bne locret_8009DEA
 	mov r0, #8
@@ -15645,7 +15645,7 @@ loc_800A33E:
 	push {r0}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x2d
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	mov r2, #0x3c
 	mul r2, r0
 	pop {r0}
@@ -15760,7 +15760,7 @@ loc_800A414:
 	push {r0}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x2d
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	mov r2, #0x3c
 	mul r2, r0
 	pop {r0}
@@ -15863,7 +15863,7 @@ off_800A4DC:
 
 // symdb: Fetches a per-navi value for the currently equipped PET navi via a two-step table lookup, returning 0xFF when the battle is in mode 1.
 // symdb: u32 pet_getCurNaviChainedLookup_800A4E0(void) -> r0 (value or 0xFF); r1/r3 also hold leftovers
-// symdb: from the second sub_800A540 call; preserves r4/r6, clobbers flags
+// symdb: from the second battle_getNaviStatsByte_800A540 call; preserves r4/r6, clobbers flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_getCurNaviChainedLookup_800A4E0.yaml
 	thumb_local_start
 pet_getCurNaviChainedLookup_800A4E0:
@@ -15877,11 +15877,11 @@ loc_800A4EE:
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
 	mov r1, #0x2d
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	mov r1, #0x2e
 	add r1, r1, r0
 	mov r0, r4
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 locret_800A504:
 	pop {r4,pc}
 	thumb_func_end pet_getCurNaviChainedLookup_800A4E0
@@ -15899,17 +15899,17 @@ loc_800A516:
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
 	mov r1, #0x2d
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	lsl r6, r0, #1
 	mov r1, #0x56
 	add r1, r1, r6
 	mov r0, r4
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	mov r1, #0x57
 	add r1, r1, r6
 	push {r0}
 	mov r0, r4
-	bl sub_800A540
+	bl battle_getNaviStatsByte_800A540
 	mov r1, r0
 	pop {r0}
 locret_800A53E:
@@ -15917,7 +15917,7 @@ locret_800A53E:
 	thumb_func_end sub_800A506
 
 	thumb_local_start
-sub_800A540:
+battle_getNaviStatsByte_800A540:
 	push {r4,r6,lr}
 	mov r6, r0
 	mov r4, r1
@@ -15941,7 +15941,7 @@ off_800A568:
 	.word unk_2039AA0
 off_800A56C:
 	.word unk_2039AA0
-	thumb_func_end sub_800A540
+	thumb_func_end battle_getNaviStatsByte_800A540
 
 	thumb_local_start
 // eBattleFolder = some buffer
@@ -16275,9 +16275,9 @@ loc_800A76E:
 	pop {pc}
 	thumb_func_end sub_800A754
 
-	thumb_func_start sub_800A772
+	thumb_func_start battle_canAllianceAct_800A772
 // lockout check?
-sub_800A772:
+battle_canAllianceAct_800A772:
 	push {lr}
 	push {r0}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -16304,7 +16304,7 @@ loc_800A790:
 loc_800A798:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800A772
+	thumb_func_end battle_canAllianceAct_800A772
 
 // symdb: Plays sound effect
 // symdb: void sub_800A79C(void) — callers pass r10 (base/context pointer read by the sfx player); no
@@ -16319,7 +16319,7 @@ sfx_playSfx0C_800A79C:
 	thumb_func_end sfx_playSfx0C_800A79C
 
 	thumb_local_start
-sub_800A7A6:
+battle_countOpponentActorsWithNameIdInRange_800A7A6:
 	push {r4-r7,lr}
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
@@ -16343,7 +16343,7 @@ loc_800A7C4:
 	mov r0, r4
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_800A7A6
+	thumb_func_end battle_countOpponentActorsWithNameIdInRange_800A7A6
 
 	thumb_func_start IsCurSubsystemInUse
 IsCurSubsystemInUse: // () -> (bool, !zf)
@@ -16853,12 +16853,12 @@ loc_800AA56:
 	cmp r0, #0x20
 	bne loc_800AA4C
 	pop {r0}
-	bl sub_800AA64
+	bl compactEntryWords_800AA64
 	pop {pc}
 	thumb_func_end sub_800AA40
 
 	thumb_local_start
-sub_800AA64:
+compactEntryWords_800AA64:
 	push {r4,lr}
 	bl getNextEntryAddress_800AAAE
 	mov r3, r0
@@ -16885,7 +16885,7 @@ loc_800AA86:
 	b loc_800AA86
 locret_800AA90:
 	pop {r4,pc}
-	thumb_func_end sub_800AA64
+	thumb_func_end compactEntryWords_800AA64
 
 // symdb: Fetches a pointer to an eight-entry u32 table from sub_800AAAE and returns how many of the eight entries are nonzero.
 // symdb: int countNonzeroTableEntries(void) — in: none meaningful (lr only); out: r0 = count of nonzero

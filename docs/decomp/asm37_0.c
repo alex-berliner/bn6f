@@ -3266,7 +3266,7 @@ u32 __fastcall sub_813DB24(int a1, int a2)
 
     v13 = a2;
     v2 = 4 * a1;
-    v3 = sub_803DD30(4 * a1);
+    v3 = link_getModeSelector_803DD30(4 * a1);
     if ( !v4 )
         v3 = 1;
     eStruct200F360 = v3;

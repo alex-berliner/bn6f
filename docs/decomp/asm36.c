@@ -9710,7 +9710,7 @@ int __fastcall GiveFolder(signed int a1)
     takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C(v2);
     if ( !sub_8137790() )
     {
-        sub_8021AB4(v3, v10);
+        sChip_loadRecordIntoSlot_8021AB4(v3, v10);
         if ( v2 >= 34 )
             sub_804A1D0(v2 & 0xF);
     }
@@ -9744,7 +9744,7 @@ signed int sub_8137790()
         byte_20018ED = byte_20018EE;
         byte_20018EE = v3;
         CopyWords(*(v1 + oToolkit_S_Chip_2002178_Ptr) + 60, *(v1 + oToolkit_S_Chip_2002178_Ptr) + 120, 0x3Cu);
-        sub_8021AB4(v0, 1);
+        sChip_loadRecordIntoSlot_8021AB4(v0, 1);
         if ( GetCurPETNaviStatsByte(0) == 1 )
             SetCurPETNaviStatsByte(0, 45, 2);
     }

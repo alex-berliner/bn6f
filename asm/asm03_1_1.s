@@ -9405,8 +9405,8 @@ sub_803DCE8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803DCE8
 
-	thumb_func_start sub_803DD30
-sub_803DD30:
+	thumb_func_start link_getModeSelector_803DD30
+link_getModeSelector_803DD30:
 	push {r7,lr}
 	bl eStruct200BC30_getJumpOffset00
 	mov r1, r0
@@ -9432,7 +9432,7 @@ off_803DD58:
 	.word off_803DC78
 off_803DD5C:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803DD30
+	thumb_func_end link_getModeSelector_803DD30
 
 	thumb_func_start sub_803DD60
 sub_803DD60:
@@ -10711,7 +10711,7 @@ loc_803E644:
 	str r0, [r6,#0x28]
 loc_803E64E:
 	mov r4, #0x38
-	bl sub_803DD30
+	bl link_getModeSelector_803DD30
 	tst r0, r0
 	beq loc_803E65A
 	mov r4, #0x3c
@@ -10922,7 +10922,7 @@ locret_803E7A0:
 sub_803E7A4:
 	push {r4-r7,lr}
 	mov r7, r0
-	bl sub_803DD30
+	bl link_getModeSelector_803DD30
 	ldr r1, off_803E7C8 // =dword_803E7D4
 	ldrb r0, [r1,r0]
 	cmp r0, #0xff
@@ -11111,7 +11111,7 @@ loc_803E8BA:
 	mov r0, r6
 	bl sub_803E78C
 	beq loc_803E8CC
-	bl sub_803DD30
+	bl link_getModeSelector_803DD30
 	sub r1, r6, #1
 	cmp r0, r1
 	bne loc_803E8D4
@@ -13404,7 +13404,7 @@ off_803F73C:
 sub_803F740:
 	push {r4-r7,lr}
 	mov r7, r0
-	bl sub_803DD30
+	bl link_getModeSelector_803DD30
 	ldr r1, off_803F768 // =byte_803F774
 	ldrb r0, [r1,r0]
 	cmp r0, #0xff
@@ -13536,7 +13536,7 @@ sub_803F838: // () -> !zf
 	bl encryption_save_memSetFlags_8006E0E // (u8 *mem, int size) -> void
 	pop {r0-r2}
 	bl SetExtraToolkitPointers
-	bl sub_803F8C4
+	bl verifyEwramWorkAreaChecksum_803F8C4
 	bne loc_803F870
 	bl infoText_IsTimestampUnchanged_803F8F4
 	bne loc_803F870
@@ -13604,7 +13604,7 @@ info_copyTimestampToWorkArea_803F8B2:
 	thumb_func_end info_copyTimestampToWorkArea_803F8B2
 
 	thumb_local_start
-sub_803F8C4:
+verifyEwramWorkAreaChecksum_803F8C4:
 	push {r1-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_S2001c04_Ptr]
@@ -13632,7 +13632,7 @@ off_803F8EC:
 	.word timer_2000000
 dword_803F8F0:
 	.word 0x670F
-	thumb_func_end sub_803F8C4
+	thumb_func_end verifyEwramWorkAreaChecksum_803F8C4
 
 // symdb: Compares a 20-byte timestamp stored in the save buffer against the master info-text timestamp, returning 0 when the on-screen info text is still current and 1 when it must be refreshed.
 // symdb: bool infoText_IsTimestampUnchanged(void); /* r0 = 0 if all 20 bytes match, r0 = 1 if any differ;

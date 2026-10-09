@@ -57523,7 +57523,7 @@ int sub_80DA9A2()
 {
     int v0; // r3
 
-    sub_8000DE0();
+    clock_breakPlayTimeIntoHMSF_8000DE0();
     return sprite_setUnk0x2c(*&byte_80DA9B8[4 * v0]);
 }
 
@@ -57554,7 +57554,7 @@ _BYTE *__fastcall battle_spawnTypeA9ObjectAtPanel_80DA9DC(char a1, int a2, int a
 
 
 // 0x80da9fe
-int __fastcall sub_80DA9FE(int a1)
+int __fastcall rng_pickRandomHalfwordFromTableEntry_80DA9FE(int a1)
 {
     char *v1; // r4
     char v2; // r0
@@ -66410,7 +66410,7 @@ int sub_80E0754()
     if ( !*(v0 + 11) )
     {
         if ( *(v0 + 4) )
-            sub_800D58C();
+            battle_scanPanelsInFront_800D58C();
         v1 = object_getEdgePanelMatchingRow();
         if ( !v4 )
         {
@@ -67026,7 +67026,7 @@ void chargeShotChargeObject_update_80E0E20()
             v13 = *(v3 + 30);
             if ( !*(v3 + 30) || (v4 == 1 || v4 != 2) && battle_networkInvert(*(v1 + 22)) )
                 *v0 &= 0xFDu;
-            sub_80E0F2E(v13);
+            battle_setExtraAnimState_80E0F2E(v13);
             *(v0 + 120) = *(v0 + 116);
             v5 = *(v3 + 29);
             *(v0 + 116) = v5;
@@ -67095,7 +67095,7 @@ int __fastcall sub_80E0F28(int result)
 
 
 // 0x80e0f2e
-int __fastcall sub_80E0F2E(int result)
+int __fastcall battle_setExtraAnimState_80E0F2E(int result)
 {
     int v1; // r5
     int v2; // r2
@@ -72145,7 +72145,7 @@ signed int __noreturn sub_80E3B94()
 
 
 // 0x80e3bea
-void __noreturn sub_80E3BEA()
+void __noreturn battle_objectUpdatePosAndRunAction_80E3BEA()
 {
     int v0; // r5
     int v1; // r1
@@ -84161,7 +84161,7 @@ int sub_80EB128()
 
 
 // 0x80eb194
-int sub_80EB194()
+int aiAttack_TimerTickEnd_80EB194()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -92506,7 +92506,7 @@ int __usercall playerAI_sub_80F0354@<R0>(Battle *obj@<R5>)
     v1 = obj->ai;
     if ( !battle_networkInvert(obj->Alliance) )
     {
-        if ( sub_800A772(obj->Alliance) )
+        if ( battle_canAllianceAct_800A772(obj->Alliance) )
             dispatch_801DA48(64);
         else
             dispatch_801DACC(64);
@@ -92545,7 +92545,7 @@ int __usercall playerAI_sub_80F0354@<R0>(Battle *obj@<R5>)
         goto LABEL_61;
     }
     sub_802E4E4();
-    v8 = sub_802E4B8();
+    v8 = battle_getAllianceEntryStatus_802E4B8();
     if ( v8 == 13 )
     {
         v9 = getEntryPtr_2036120_1D0_802E070(obj->Alliance);
@@ -101668,7 +101668,7 @@ int __fastcall __noreturn sub_80F60C4(int a1, int a2, int a3, int a4)
     v12 = a4;
     v4 = object_getFlag();
     if ( !(v4 & 0xA000) )
-        sub_800D58C();
+        battle_scanPanelsInFront_800D58C();
     result = object_getPanelsExceptCurrentFilterred(v4, 40960, v11, v12);
     v6 = result;
     if ( result )
@@ -116530,7 +116530,7 @@ void __fastcall __noreturn sub_80FFFBC(int a1)
     v2 = *(a1 + 19);
     object_getFrontDirection(v1);
     object_reservePanel(v1->panelX, v1->panelY);
-    sub_800D58C();
+    battle_scanPanelsInFront_800D58C();
 }
 
 
@@ -116571,7 +116571,7 @@ int sub_810007C()
 // 0x81000e0
 void __noreturn sub_81000E0()
 {
-    sub_800D58C();
+    battle_scanPanelsInFront_800D58C();
 }
 
 
@@ -116639,7 +116639,7 @@ void __noreturn sub_8100144()
     v1 = 8 * *(v0 + 22);
     v2 = *&byte_81001AC[v1];
     v3 = *&byte_81001AC[v1 + 4];
-    sub_800D58C();
+    battle_scanPanelsInFront_800D58C();
 }
 
 

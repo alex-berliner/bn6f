@@ -15214,7 +15214,7 @@ loc_813773E:
 	bne loc_8137762
 	mov r0, r4
 	ldr r1, [sp]
-	bl sub_8021AB4
+	bl sChip_loadRecordIntoSlot_8021AB4
 	cmp r7, #0x22 
 	blt loc_8137762
 	mov r0, #0xf
@@ -15278,7 +15278,7 @@ sub_8137790:
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, r4
 	mov r1, #1
-	bl sub_8021AB4
+	bl sChip_loadRecordIntoSlot_8021AB4
 	mov r0, #0
 	mov r1, #0x2d 
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8

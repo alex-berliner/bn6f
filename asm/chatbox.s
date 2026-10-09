@@ -1055,7 +1055,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	str r0, [r1]
 	mov r0, #0x80
 	bl chatbox_set_eFlags2009F38
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	// mask
 	ldr r0, Flags8040494 // =FLAGS_3E_HIDE_CHATBOX
 	bl chatbox_setflags_3e // (int mask) -> void
@@ -1213,7 +1213,7 @@ chatbox_reqBBS_80404C0:
 	str r0, [r1]
 	mov r0, #0x80
 	bl chatbox_set_eFlags2009F38
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	// mask
 	ldr r0, Flags80405D4 // =FLAGS_3E_HIDE_CHATBOX
 	bl chatbox_setflags_3e // (int mask) -> void
@@ -1369,7 +1369,7 @@ dead_80405F8:
 	str r0, [r1]
 	mov r0, #0x80
 	bl chatbox_set_eFlags2009F38
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	// mask
 	ldr r0, Flags804070C // =FLAGS_3E_HIDE_CHATBOX
 	bl chatbox_setflags_3e // (int mask) -> void
@@ -1717,7 +1717,7 @@ chatbox_config_80408D0:
 	mov r1, r5
 	add r1, #0x94 // ChatBoxPropreties.unk_94
 	strb r0, [r1]
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	ldr r0, Flags8040918 // =FLAGS_3E_UNK_0400
 	ldr r1, Flags804091C // =FLAGS_3E_UNK_0800
 	orr r0, r1
@@ -2773,7 +2773,7 @@ chatbox_8041090:
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
 	bl chatbox_setflags_3e // (int mask) -> void
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	// mask
 	mov r0, #FLAGS_3E_UNK_0008
 	bl chatbox_setflags_3e // (int mask) -> void
@@ -2846,7 +2846,7 @@ chatbox_804110C:
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
 	bl chatbox_setflags_3e // (int mask) -> void
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	mov r1, #0
 	strb r1, [r5,#oChatbox_BoxY]
 	mov r0, #0
@@ -3295,7 +3295,7 @@ loc_80413C0:
 	mov r2, #0x80
 	tst r1, r2
 	beq loc_80413EE
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	mov r1, #0
 	str r1, [r5,#oChatbox_Unk_64] // ChatBoxPropreties.unk_64
 	mov r1, #1
@@ -3507,7 +3507,7 @@ off_804157C:
 	.word jt_ctrl_8041580
 jt_ctrl_8041580:
 	.word chatbox_804171C+1
-	.word chatbox_8041748+1
+	.word chatbox_cmdRunScriptByGameProgress_8041748+1
 	.word chatbox_80416C4+1
 	.word chatbox_8041774+1
 	.word chatbox_80416F0+1
@@ -3540,7 +3540,7 @@ jt_ctrl_8041580:
 	.word 0x0
 	.word chatbox_8041904+1
 	.word chatbox_8041944+1
-	.word chatbox_80419D0+1
+	.word chatbox_processScriptEntry_80419D0+1
 	.word 0x0
 	.word 0x0
 	.word 0x0
@@ -3700,7 +3700,7 @@ loc_8041742:
 	thumb_func_end chatbox_804171C
 
 	thumb_local_start
-chatbox_8041748:
+chatbox_cmdRunScriptByGameProgress_8041748:
 	push {lr}
 	ldrb r1, [r4,#2]
 	ldrb r2, [r4,#3]
@@ -3724,7 +3724,7 @@ loc_804176E:
 	add r4, #6
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_8041748
+	thumb_func_end chatbox_cmdRunScriptByGameProgress_8041748
 
 	thumb_local_start
 chatbox_8041774:
@@ -4090,7 +4090,7 @@ loc_80419CA:
 	thumb_func_end chatbox_startCurNaviScript_80419B4
 
 	thumb_local_start
-chatbox_80419D0:
+chatbox_processScriptEntry_80419D0:
 	push {lr}
 	ldrb r0, [r4,#2]
 	push {r4,r5}
@@ -4111,7 +4111,7 @@ loc_80419F2:
 	add r4, #5
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_80419D0
+	thumb_func_end chatbox_processScriptEntry_80419D0
 
 	thumb_local_start
 chatbox_80419F8:
@@ -4434,7 +4434,7 @@ loc_8041BF2:
 	mov r1, r5
 	add r1, #oChatbox_Unk_94
 	strb r0, [r1]
-	bl chatbox_8045F60
+	bl chatbox_resetAndClearBuffers_8045F60
 	mov r0, #0
 	ldr r1, off_8041C44 // =off_8041C48
 	ldr r2, [r1]
@@ -5864,7 +5864,7 @@ chatbox_FC_interface:
 off_8042620:
 	.word off_8042624
 off_8042624:
-	.word chatbox_8042678+1
+	.word chatbox_processScriptEntry_8042678+1
 	.word NULL
 	.word NULL
 	.word chatbox_80426A8+1
@@ -5888,7 +5888,7 @@ off_8042624:
 	thumb_func_end chatbox_FC_interface
 
 	thumb_local_start
-chatbox_8042678:
+chatbox_processScriptEntry_8042678:
 	push {lr}
 	push {r4}
 	bl sub_803F798
@@ -5912,7 +5912,7 @@ loc_80426A0:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_8042678
+	thumb_func_end chatbox_processScriptEntry_8042678
 
 	thumb_local_start
 chatbox_80426A8:
@@ -10633,7 +10633,7 @@ off_8045F5C:
 	thumb_func_end chatbox_GetState_8045F4C
 
 	thumb_local_start
-chatbox_8045F60:
+chatbox_resetAndClearBuffers_8045F60:
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#oChatbox_Unk_70]
@@ -10654,6 +10654,6 @@ off_8045F80:
 	.word 0x6015700
 off_8045F88:
 	.word dword_200CDA0
-	thumb_func_end chatbox_8045F60
+	thumb_func_end chatbox_resetAndClearBuffers_8045F60
 
 /*For debugging purposes, connect comment at any range!*/

@@ -650,7 +650,7 @@ loc_8026936:
 loc_802694C:
 	bl sub_802A49C
 	bl sub_802A40C
-	bl sub_802945A
+	bl battle_compactFolderChipList_802945A
 	bl sub_802A646
 	bl battle_countFolderChips_8027D58
 	strb r0, [r5,#0x5] // (dword_20364C4+1 - 0x20364c0)
@@ -851,9 +851,9 @@ off_8026AA4:
 	// 0x14
 	.word sub_8026DC4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x18
-	.word sub_8026E4C+1 // (self: * S20364C0 $r5) -> ()
+	.word chatbox_stateMaybeFinishText_8026E4C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x1C
-	.word sub_8026E98+1 // (self: * S20364C0 $r5) -> ()
+	.word battle_updateObjectByKind_8026E98+1 // (self: * S20364C0 $r5) -> ()
 	// 0x20
 	.word sub_8026FC0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x24
@@ -1341,7 +1341,7 @@ off_8026E48:
 	thumb_func_end sub_8026DC4
 
 	thumb_local_start
-sub_8026E4C: // (self: * S20364C0 $r5) -> ()
+chatbox_stateMaybeFinishText_8026E4C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1361,7 +1361,7 @@ loc_8026E64:
 loc_8026E72:
 	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
-	thumb_func_end sub_8026E4C
+	thumb_func_end chatbox_stateMaybeFinishText_8026E4C
 
 	thumb_local_start
 sub_8026E78: // (self: * S20364C0 $r5) -> ()
@@ -1382,7 +1382,7 @@ loc_8026E92:
 	thumb_func_end sub_8026E78
 
 	thumb_local_start
-sub_8026E98: // (self: * S20364C0 $r5) -> ()
+battle_updateObjectByKind_8026E98: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	mov r4, #0
 	bl GetBattleEffects // () -> int
@@ -1405,7 +1405,7 @@ off_8026EBC:
 	.word sub_8026EC8+1
 	.word sub_8026F1A+1
 	.word sub_8026FAA+1
-	thumb_func_end sub_8026E98
+	thumb_func_end battle_updateObjectByKind_8026E98
 
 	thumb_local_start
 sub_8026EC8:
@@ -2287,7 +2287,7 @@ loc_80274E4:
 	strb r1, [r0,#7]
 	b locret_8027500
 loc_80274F0:
-	bl sub_802945A
+	bl battle_compactFolderChipList_802945A
 	bl sub_80294E0
 	bl sub_802A61A
 	mov r0, #8
@@ -5423,7 +5423,7 @@ loc_8028C60:
 	mov r0, #0x9c
 	bl PlaySoundEffect
 
-	// trigger sub_8026E4C via custMenuMainMaybe_8026A88
+	// trigger chatbox_stateMaybeFinishText_8026E4C via custMenuMainMaybe_8026A88
 	mov r0, #0x18
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -5439,7 +5439,7 @@ loc_8028C80:
 	cmp r0, #1
 	beq locret_8028C96
 
-	// trigger sub_8026E98 via custMenuMainMaybe_8026A88
+	// trigger battle_updateObjectByKind_8026E98 via custMenuMainMaybe_8026A88
 	mov r0, #0x1c
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -6581,7 +6581,7 @@ locret_8029458:
 	thumb_func_end sub_80293F8
 
 	thumb_local_start
-sub_802945A:
+battle_compactFolderChipList_802945A:
 	push {r4,r6,r7,lr}
 	ldr r3, off_8029510 // =eBattleFolder 
 	mov r4, #0
@@ -6609,7 +6609,7 @@ loc_802947E:
 	bne loc_802947E
 locret_8029486:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_802945A
+	thumb_func_end battle_compactFolderChipList_802945A
 
 	thumb_local_start
 sub_8029488:
@@ -11125,7 +11125,7 @@ sub_802B7E0:
 	ldrb r0, [r5,#2]
 	cmp r0, #0
 	bne loc_802B7F4
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #2
 	bne locret_802B80A
 	mov r0, #1
@@ -11369,7 +11369,7 @@ dword_802B9B4:
 	thumb_local_start
 sub_802B9B8:
 	push {lr}
-	bl sub_801E754
+	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
 	bne locret_802B9D2
 	mov r0, #0x18
@@ -11755,12 +11755,12 @@ sub_802BDF0:
 off_802BE00:
 	.word off_802BE04
 off_802BE04:
-	.word sub_802BE0C+1
+	.word objStepFinishSetState4_802BE0C+1
 	.word sub_802BE36+1
 	thumb_func_end sub_802BDF0
 
 	thumb_local_start
-sub_802BE0C:
+objStepFinishSetState4_802BE0C:
 	push {r4,r5,lr}
 	push {r5}
 	mov r0, #0
@@ -11780,7 +11780,7 @@ sub_802BE0C:
 	mov r0, #4
 	strh r0, [r5,#2]
 	pop {r4,r5,pc}
-	thumb_func_end sub_802BE0C
+	thumb_func_end objStepFinishSetState4_802BE0C
 
 	thumb_local_start
 sub_802BE36:
@@ -14101,8 +14101,8 @@ locret_802CEC6:
 	mov pc, lr
 	thumb_func_end sub_802CEA6
 
-	thumb_func_start sub_802CEC8
-sub_802CEC8:
+	thumb_func_start runPendingHandlerForEntryPair_802CEC8
+runPendingHandlerForEntryPair_802CEC8:
 	push {lr}
 	ldr r4, off_802D034 // =unk_2036720 
 	ldr r0, [r4,#0x8] // (dword_2036728 - 0x2036720)
@@ -14125,7 +14125,7 @@ loc_802CEDE:
 	bl sub_802CEA6
 locret_802CEF2:
 	pop {pc}
-	thumb_func_end sub_802CEC8
+	thumb_func_end runPendingHandlerForEntryPair_802CEC8
 
 	thumb_func_start hiveBlockHappensHere_802CEF4
 hiveBlockHappensHere_802CEF4:
@@ -17083,8 +17083,8 @@ dword_802E4B4:
 	.word 0x40000
 	thumb_func_end sub_802E4A0
 
-	thumb_func_start sub_802E4B8
-sub_802E4B8:
+	thumb_func_start battle_getAllianceEntryStatus_802E4B8
+battle_getAllianceEntryStatus_802E4B8:
 	push {r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
@@ -17107,7 +17107,7 @@ loc_802E4DA:
 	pop {r7,pc}
 	.byte 0, 0
 	.word 0xA000
-	thumb_func_end sub_802E4B8
+	thumb_func_end battle_getAllianceEntryStatus_802E4B8
 
 	thumb_func_start sub_802E4E4
 sub_802E4E4:
@@ -19380,7 +19380,7 @@ off_802F55C:
 jt_802F560:
 	.word startScreen_initGfx_802F574+1 // (self: *mut StartScreen $r5) -> ()
 	.word startscreen_802F60C+1 // (self: * StartScreen $r5) -> ()
-	.word ho_802F63C+1 // (self: * StartScreen $r5) -> ()
+	.word startScreen_RunStateHandler_802F63C+1 // (self: * StartScreen $r5) -> ()
 	.word load_game_802F756+1 // (self: * StartScreen $r5) -> ()
 off_802F570:
 	.word eStartScreen
@@ -19506,7 +19506,7 @@ startscreen_render_trigger_802F624: // (self: *mut StartScreen $r5) -> ()
 	ldr r0, dword_802F638 // =0x1741 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 
-  // trigger ho_802F63C via startscreen_render_802F544
+  // trigger startScreen_RunStateHandler_802F63C via startscreen_render_802F544
 	mov r0, #8
 	strb r0, [r5, #oStartScreen_JumpTableOff_00]
 
@@ -19520,7 +19520,7 @@ dword_802F638:
 	thumb_func_end startscreen_render_trigger_802F624
 
 	thumb_local_start
-ho_802F63C: // (self: * StartScreen $r5) -> ()
+startScreen_RunStateHandler_802F63C: // (self: * StartScreen $r5) -> ()
 	push {lr}
 
 	ldr r0, off_802F650 // =jt_802F654 
@@ -19549,7 +19549,7 @@ jt_802F654:
 	.word startScreen_UpdateAndRenderFrame_802F704+1 // (self: *mut StartScreen $r5) -> ()
 
 	.word sub_802F710+1 // (self: *mut StartScreen $r5) -> ()
-	thumb_func_end ho_802F63C
+	thumb_func_end startScreen_RunStateHandler_802F63C
 
 /// breaks right after Capcom logo
 	thumb_local_start
@@ -19581,7 +19581,7 @@ sub_802F668: // (self: *mut StartScreen $r5) -> ()
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-  // trigger sub_802F6A4 via ho_802F63C
+  // trigger sub_802F6A4 via startScreen_RunStateHandler_802F63C
 	mov r0, #4
 	strb r0, [r5, #oStartScreen_JumpTableOff_01]
 
@@ -19600,7 +19600,7 @@ sub_802F6A4: // (self: *mut StartScreen $r5) -> ()
 	bl IsScreenFadeActive // () -> zf
 	beq locret_802F6B0
 
-  // trigger sub_802F6B2 via ho_802F63C
+  // trigger sub_802F6B2 via startScreen_RunStateHandler_802F63C
 	mov r0, #8
 	strb r0, [r5, #oStartScreen_JumpTableOff_01]
 
@@ -19616,7 +19616,7 @@ sub_802F6B2: // (self: *mut StartScreen $r5) -> ()
 	cmp r0, #0
 	bgt loc_802F6C8
 
-  // trigger sub_802F710 via ho_802F63C
+  // trigger sub_802F710 via startScreen_RunStateHandler_802F63C
 	mov r0, #0x10
 	strb r0, [r5, #oStartScreen_JumpTableOff_01]
 
@@ -19972,7 +19972,7 @@ loc_802F924:
 loc_802F936:
 	bl startScreen_runTriggerHandler_802FC9C // (self: *const StartScreen $r5) -> ()
 	bl sub_802FC70 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FB64 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_playSoundIfFlagSet_802FB64 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_fadeOutUpdateIfFlag40_802FB90 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_dispatchIfFlag20_802FBB4 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_playSoundIfFlagSet_802FBD8 // (self: *const StartScreen $r5) -> ()
@@ -20118,7 +20118,7 @@ byte_802FB20:
 	thumb_func_end sub_802FB10
 
 	thumb_local_start
-sub_802FB64: // (self: *const StartScreen $r5) -> ()
+startScreen_playSoundIfFlagSet_802FB64: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x80
@@ -20134,7 +20134,7 @@ off_802FB78:
 byte_802FB7C:
 	.byte 0x2, 0x40, 0x4, 0x80, 0x80, 0x92, 0x0, 0x0, 0x12, 0x40, 0x4
 	.byte 0x40, 0x88, 0x92, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FB64
+	thumb_func_end startScreen_playSoundIfFlagSet_802FB64
 
 // symdb: On the start screen, when state field 0xA has flag 0x40 set, runs one step of the fade/transition routine driven by the parameter table byte_802FBA8.
 // symdb: void sub_802FB90(StartScreen *self /* r5 */); outputs: r2/r3/c/v as left by sub_8001158; r4-r7

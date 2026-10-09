@@ -508,7 +508,7 @@ void __fastcall chatbox_runScript(void *dialogScript, int scriptOffIdx)
     byte_1F5[chatbox] = 3;
     *eFlags2009F38 = 0;
     chatbox_set_eFlags2009F38(128);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     chatbox_setflags_3e(256);
     chatbox->unk_94 = chatbox->textCoord;
     chatbox->unk_90 = 13;
@@ -576,7 +576,7 @@ void __fastcall chatbox_reqBBS_80404C0(u16 *pDialogScript, int scriptIdx, int a3
     BYTE1(cb[3].pScriptCursor) = 3;
     *eFlags2009F38 = 0;
     chatbox_set_eFlags2009F38(128);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     chatbox_setflags_3e(256);
     cb->unk_94 = cb->textCoord;
     cb->unk_90 = 13;
@@ -647,7 +647,7 @@ void __fastcall dead_80405F8(int a1, int a2, int a3, int a4)
     byte_1F5[v7] = 3;
     *eFlags2009F38 = 0;
     chatbox_set_eFlags2009F38(128);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     chatbox_setflags_3e(byte_100);
     *(v7 + 148) = *(v7 + 24);
     *(v7 + 144) = 13;
@@ -794,7 +794,7 @@ int __fastcall chatbox_config_80408D0(int unused, int scriptID)
     cb->unk_74 = 1;
     v4 = cb->typingSpeed;
     cb->unk_94 = cb->textCoord;
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     return chatbox_clearFlags_3e(&byte_400 | 0x800);
 }
 
@@ -1367,7 +1367,7 @@ signed int chatbox_8041090()
     if ( !v1 )
         return 0;
     chatbox_setflags_3e(1);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     chatbox_setflags_3e(8);
     chatbox_maskFlags_3e(2u);
     if ( !v1 )
@@ -1417,7 +1417,7 @@ signed int chatbox_804110C()
     int v0; // r5
 
     chatbox_setflags_3e(1);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     *(v0 + 12) = 0;
     *(v0 + 16) = 0;
     chatbox_setflags_3e(byte_100);
@@ -1677,7 +1677,7 @@ LABEL_22:
             v19 = v0 + *(v0 + 1);
             if ( v18 & 0x80 )
             {
-                chatbox_8045F60();
+                chatbox_resetAndClearBuffers_8045F60();
                 *(v1 + offsetof(ChatBoxPropreties, unk_64)) = 0;
                 *(v1 + offsetof(ChatBoxPropreties, unk_74)) = 1;
                 *(v1 + offsetof(ChatBoxPropreties, pScriptCursor)) = v19;
@@ -1898,7 +1898,7 @@ signed int chatbox_804171C()
 
 
 // 0x8041748
-signed int chatbox_8041748()
+signed int chatbox_cmdRunScriptByGameProgress_8041748()
 {
     int v0; // r4
     int v1; // r10
@@ -2192,7 +2192,7 @@ signed int chatbox_startCurNaviScript_80419B4()
 
 
 // 0x80419d0
-signed int chatbox_80419D0()
+signed int chatbox_processScriptEntry_80419D0()
 {
     int v0; // r4
     int v1; // r0
@@ -2448,7 +2448,7 @@ signed int chatbox_F2_clearmsgbox()
     *(v1 + 116) = 1;
     v2 = *(v1 + 8);
     *(v1 + 148) = *(v1 + 24);
-    chatbox_8045F60();
+    chatbox_resetAndClearBuffers_8045F60();
     *(&dword_1D4 + v1) = 0;
     *(v1 + 470) = 0;
     return 1;
@@ -3300,7 +3300,7 @@ int chatbox_FC_interface()
 
 
 // 0x8042678
-signed int chatbox_8042678()
+signed int chatbox_processScriptEntry_8042678()
 {
     int v0; // r1
     int v1; // r2
@@ -4989,7 +4989,7 @@ int chatbox_GetState_8045F4C()
 
 
 // 0x8045f60
-void __fastcall chatbox_8045F60()
+void __fastcall chatbox_resetAndClearBuffers_8045F60()
 {
     ChatBoxPropreties *cb; // r5
     int v1; // r1

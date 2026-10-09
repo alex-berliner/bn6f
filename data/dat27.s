@@ -1538,7 +1538,7 @@ sub_80958BC:
 sub_80958CC:
 	push {lr}
 	mov r0, #2
-	bl sub_80AA104
+	bl palette_copyTableRow_80AA104
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_80958CC
@@ -1754,7 +1754,7 @@ cutscenescript_8095B04:
 sub_8095B0C:
 	push {lr}
 	mov r0, #1
-	bl sub_80AA104
+	bl palette_copyTableRow_80AA104
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_8095B0C

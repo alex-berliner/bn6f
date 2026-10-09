@@ -972,7 +972,7 @@ signed int sub_810E4F0()
     object_clearCollisionRegion();
     battle_ClearObjectCollisionResult_801A5E2();
     battle_resetCollisionState_80101C4(v0);
-    sub_801DC36();
+    releaseSlotByValue_801DC36();
     v0->chipsHeld = 0;
     v0->chip = -1;
     v0->parent = 0;
@@ -1374,7 +1374,7 @@ signed int __noreturn sub_810E928()
     battleObject_clearHitFlags_801A29A();
     battleObject_resetCollisionState_801A2B0();
     battle_resetCollisionState_80101C4(v0);
-    sub_801DC36();
+    releaseSlotByValue_801DC36();
     *(v0 + 26) = 0;
     *(v0 + 42) = -1;
     *(v0 + 76) = 0;

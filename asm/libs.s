@@ -254,7 +254,7 @@ loc_81442B4:
 	beq loc_81442C4
 	cmp r1, #2
 	beq loc_81442DC
-	bl sub_8144380
+	bl ereader_updateTimerEnable_8144380
 	b def_8144268
 loc_81442C4:
 	ldr r2, off_81442D8 // =eTimerEnable200F460 
@@ -360,7 +360,7 @@ loc_8144376:
 	thumb_func_end sub_8144250
 
 	thumb_local_start
-sub_8144380:
+ereader_updateTimerEnable_8144380:
 	push {lr}
 	ldr r0, off_814439C // =SIOControlRegister 
 	ldr r1, [r0]
@@ -385,7 +385,7 @@ loc_81443A4:
 loc_81443A8:
 	pop {r0}
 	bx r0
-	thumb_func_end sub_8144380
+	thumb_func_end ereader_updateTimerEnable_8144380
 
 	thumb_local_start
 sub_81443AC:
@@ -21559,8 +21559,8 @@ sub_814E17C:
 	.byte 0, 0
 	thumb_func_end sub_814E17C
 
-	thumb_func_start sub_814E190
-sub_814E190:
+	thumb_func_start loadNextQueuedParams_814E190
+loadNextQueuedParams_814E190:
 	mov r12, lr
 	ldr r2, [r1,#0x40]
 	ldrb r3, [r2]
@@ -21582,7 +21582,7 @@ sub_814E190:
 	str r3, [r1,#0x2c]
 	bx r12
 	.byte 0, 0
-	thumb_func_end sub_814E190
+	thumb_func_end loadNextQueuedParams_814E190
 
 // symdb: Runs a per-object update routine for the entity whose pointer is in r1, writes the routine's result byte into the object, and sets the object's status byte low bits to mark it active/updated.
 // symdb: void sub_814E1C0(u32 arg0 /*r0, passed through*/, void* obj /*r1*/); // r4-r11 preserved, r0-r3
@@ -21999,7 +21999,7 @@ loc_814E43C:
 	mov r0, #3
 	tst r0, r3
 	beq loc_814E45A
-	bl sub_814E528
+	bl sprite_crossfadeColorChannels_814E528
 	cmp r6, #0
 	beq loc_814E45A
 	ldrb r0, [r4,#0x1d]
@@ -22133,7 +22133,7 @@ off_814E524:
 	thumb_func_end sub_814E4DC
 
 	thumb_local_start
-sub_814E528:
+sprite_crossfadeColorChannels_814E528:
 	ldrb r1, [r4,#0x12]
 	mov r0, #0x14
 	ldrsb r2, [r4,r0]
@@ -22160,7 +22160,7 @@ loc_814E540:
 loc_814E554:
 	strb r0, [r4,#3]
 	bx lr
-	thumb_func_end sub_814E528
+	thumb_func_end sprite_crossfadeColorChannels_814E528
 
 	thumb_local_start
 ply_note: // (a0: ?, a1: u32?, a2: * ?) -> ()
@@ -22396,7 +22396,7 @@ loc_814E6BE:
 	str r0, [r4,#4]
 	ldrh r0, [r5,#0x1e]
 	strh r0, [r4,#0xc]
-	bl sub_814E528
+	bl sprite_crossfadeColorChannels_814E528
 	ldrb r1, [r4,#8]
 	mov r0, #8
 	ldrsb r0, [r5,r0]
@@ -22937,8 +22937,8 @@ off_814EA54:
 	.word sound_MusicTable
 	thumb_func_end sub_814EA24
 
-	thumb_func_start sub_814EA58
-sub_814EA58:
+	thumb_func_start sound_tickAllMusicPlayers_814EA58
+sound_tickAllMusicPlayers_814EA58:
 	push {r4,r5,lr}
 	ldr r0, dword_814EA7C // =0x20 
 	lsl r0, r0, #0x10
@@ -22963,7 +22963,7 @@ dword_814EA7C:
 	.word 0x20
 off_814EA80:
 	.word gMPlayTable
-	thumb_func_end sub_814EA58
+	thumb_func_end sound_tickAllMusicPlayers_814EA58
 
 	thumb_local_start
 sub_814EA84:

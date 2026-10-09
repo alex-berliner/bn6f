@@ -746,7 +746,7 @@ byte_8063619::
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_E36 destination4=mapscript_8063654
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_E36
 	ms_set_enter_map_screen_fade byte1=0x1C byte2=0xFF
-	ms_call_native_function ptr1=sub_80AA104+1 word5=0x00000001
+	ms_call_native_function ptr1=palette_copyTableRow_80AA104+1 word5=0x00000001
 	ms_write_word ptr1=unk_2011EA8 word5=0x00000000
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_16F2
 	ms_start_cutscene ptr1=cutscenescript_8095678 word5=0x00000000
@@ -757,7 +757,7 @@ mapscript_8063654:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_E3C destination4=byte_8063682
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_E3C
 	ms_set_enter_map_screen_fade byte1=0x04 byte2=0xFF
-	ms_call_native_function ptr1=sub_80AA104+1 word5=0x00000002
+	ms_call_native_function ptr1=palette_copyTableRow_80AA104+1 word5=0x00000002
 	ms_start_cutscene ptr1=cutscenescript_8095A70 word5=0x00000000
 	ms_jump destination1=byte_80636A7
 

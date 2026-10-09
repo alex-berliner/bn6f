@@ -6221,7 +6221,7 @@ loc_8011AFE:
 	str r0, [r7,#oAIAttackVars_Unk_30]
 	bl battle_testFlag0x40_800A8F8
 	beq loc_8011B2C
-	bl sub_802E4B8
+	bl battle_getAllianceEntryStatus_802E4B8
 	cmp r0, #0xd
 	beq loc_8011B38
 loc_8011B2C:
@@ -6268,7 +6268,7 @@ loc_8011B56:
 	str r0, [r7,#oAIAttackVars_Unk_30]
 	bl battle_testFlag0x40_800A8F8
 	beq loc_8011B84
-	bl sub_802E4B8
+	bl battle_getAllianceEntryStatus_802E4B8
 	cmp r0, #0xd
 	beq loc_8011B90
 loc_8011B84:
@@ -9378,7 +9378,7 @@ pwrAtkRelated_readsFromJoypad_8012FC8:
 	bl battle_isTimeStop
 	beq loc_8013008
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800A772
+	bl battle_canAllianceAct_800A772
 	tst r0, r0
 	bne loc_8012FE4
 	pop {r4,r6,r7,pc}
@@ -9473,7 +9473,7 @@ loc_801309C:
 	ldr r1, dword_80133CC // =0x60000 
 	tst r0, r1
 	bne loc_80130D0
-	bl sub_801336C
+	bl aiTrySelectChipFromHand_801336C
 	beq loc_80130BC
 	mov r1, #1
 	tst r7, r1
@@ -9504,7 +9504,7 @@ loc_80130D0:
 	bl SetAIData_Unk_44_Flag
 	b loc_8013130
 loc_80130EC:
-	bl sub_801336C
+	bl aiTrySelectChipFromHand_801336C
 	beq loc_801312A
 	mov r0, #1
 	tst r7, r0
@@ -9514,7 +9514,7 @@ loc_80130FA:
 	ldr r1, dword_80133D4 // =0x40000 
 	tst r0, r1
 	beq loc_8013130
-	bl sub_801336C
+	bl aiTrySelectChipFromHand_801336C
 	beq loc_801311C
 	ldrh r0, [r4,#oAIData_JoypadPressed]
 	mov r1, #1
@@ -9638,7 +9638,7 @@ loc_80131D8:
 	bl SetAIData_Unk_44_Flag
 loc_80131EE:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800A772
+	bl battle_canAllianceAct_800A772
 	tst r0, r0
 	beq locret_8013234
 	mov r1, #0xc
@@ -9648,7 +9648,7 @@ loc_80131EE:
 	ldr r1, dword_80133E0 // =0xffff 
 	cmp r0, r1
 	beq locret_8013234
-	bl sub_801336C
+	bl aiTrySelectChipFromHand_801336C
 	bne loc_8013218
 	ldrh r0, [r4,#oAIData_JoypadPressed]
 	mov r1, #1
@@ -9853,7 +9853,7 @@ loc_8013366:
 	thumb_func_end sub_8013236
 
 	thumb_local_start
-sub_801336C:
+aiTrySelectChipFromHand_801336C:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r1,#oAIData_APwrAtk]
@@ -9874,7 +9874,7 @@ loc_801337C:
 loc_8013392:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_801336C
+	thumb_func_end aiTrySelectChipFromHand_801336C
 
 	thumb_local_start
 sub_8013396:
@@ -11065,7 +11065,7 @@ loc_8013B1C:
 	thumb_func_end sub_8013AE4
 
 	thumb_local_start
-sub_8013B20:
+battle_aiAddCounterFromCollision_8013B20:
 	push {r4,lr}
 	sub sp, sp, #8
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
@@ -11091,7 +11091,7 @@ loc_8013B48:
 loc_8013B4A:
 	add sp, sp, #8
 	pop {r4,pc}
-	thumb_func_end sub_8013B20
+	thumb_func_end battle_aiAddCounterFromCollision_8013B20
 
 // (bool a1, int a2) -> void
 	thumb_func_start init_8013B4E
@@ -12067,7 +12067,7 @@ sub_8014216:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_8014254
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 loc_8014254:
 	pop {r5}
 loc_8014256:
@@ -12516,7 +12516,7 @@ loc_80144CE:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_801450A
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 loc_801450A:
 	pop {r5}
 loc_801450C:
@@ -16687,7 +16687,7 @@ sub_80165F8:
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1
@@ -17089,7 +17089,7 @@ word_8016908:
 	thumb_func_end object_applyTintIfFlag16_80168F0
 
 	thumb_local_start
-sub_801690A:
+battle_applyStateSpriteColorShader_801690A:
 	push {lr}
 	bl object_getFlag // () -> int
 	mov r1, #0x40 
@@ -17109,7 +17109,7 @@ off_801692C:
 	.word word_8016930
 word_8016930:
 	.hword 0x0, 0xFFFF
-	thumb_func_end sub_801690A
+	thumb_func_end battle_applyStateSpriteColorShader_801690A
 
 	thumb_func_start blindVisualHandledHere_8016934
 blindVisualHandledHere_8016934:
@@ -17828,7 +17828,7 @@ sub_8016EE0:
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1
@@ -18129,7 +18129,7 @@ sub_80170E4:
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
 	bl sub_8012EA8
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1
@@ -18447,7 +18447,7 @@ loc_801738A:
 	bl battle_networkInvert
 	tst r0, r0
 	beq loc_80173C6
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 loc_80173C6: .align 1, 0
 	bl battle_EnableAIUnk0x48FlagForNonstandardBoard_80141F4
 	mov r7, #0x58 
@@ -18496,7 +18496,7 @@ sub_801741C:
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
 	bl sub_8012EA8
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1
@@ -18997,8 +18997,8 @@ byte_8017868:
 	.byte 0xFE, 0xFD, 0xFC, 0xFC, 0xFB, 0xFB, 0xFA, 0xFA, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x0
 	thumb_func_end sub_8017768
 
-	thumb_func_start sub_8017888
-sub_8017888:
+	thumb_func_start battle_endTurnMarkActed_8017888
+battle_endTurnMarkActed_8017888:
 	push {r4,r7,lr}
 	bl battle_testFlag0x40_800A8F8
 	beq loc_80178AC
@@ -19020,7 +19020,7 @@ loc_80178AC:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {r4,r7,pc}
-	thumb_func_end sub_8017888
+	thumb_func_end battle_endTurnMarkActed_8017888
 
 	thumb_func_start sub_80178B6
 sub_80178B6:
@@ -22417,7 +22417,7 @@ locret_801A42C:
 	thumb_func_end sub_801A420
 
 	thumb_local_start
-sub_801A42E:
+battle_spawnHitEffectAtArm_801A42E:
 	push {r4,lr}
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0x74 
@@ -22440,7 +22440,7 @@ sub_801A42E:
 	bl sub_80E8124
 locret_801A45A:
 	pop {r4,pc}
-	thumb_func_end sub_801A42E
+	thumb_func_end battle_spawnHitEffectAtArm_801A42E
 
 	thumb_local_start
 sub_801A45C:
@@ -22480,7 +22480,7 @@ locret_801A4A4:
 	thumb_func_end sub_801A45C
 
 	thumb_local_start
-sub_801A4A6:
+battle_spawnArmHitEffect_801A4A6:
 	push {r4,lr}
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0xa4
@@ -22502,7 +22502,7 @@ loc_801A4B6:
 	bl sub_80E8124
 locret_801A4CE:
 	pop {r4,pc}
-	thumb_func_end sub_801A4A6
+	thumb_func_end battle_spawnArmHitEffect_801A4A6
 
 	thumb_func_start sub_801A4D0
 sub_801A4D0:
@@ -23479,7 +23479,7 @@ sub_801ABB8:
 	bl sub_801A36A
 	bl battle_objectDieOnCollisionHit_801A6D6
 	bl battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A
-	bl sub_8013B20
+	bl battle_aiAddCounterFromCollision_8013B20
 	bl sub_801026A
 	ldrb r4, [r7,#oCollisionData_HitModifierFinal]
 	mov r1, #0x3c 
@@ -23868,8 +23868,8 @@ ai_eventuallyRunsAIAttack_801AF44:
 	beq loc_801AF5E
 	b loc_801B142
 loc_801AF5E:
-	bl sub_801A42E
-	bl sub_801A4A6
+	bl battle_spawnHitEffectAtArm_801A42E
+	bl battle_spawnArmHitEffect_801A4A6
 	bl sub_801A45C
 	bl sub_801A506
 	bl applyDamageToPlayer_801ba12
@@ -24048,7 +24048,7 @@ loc_801B0EC:
 	mov r0, r1
 	bl object_clearFlag2
 	bl sub_801011A
-	bl sub_801BA92
+	bl battle_object_postAction4CheckClearFlags_801BA92
 	push {r0}
 	bl battle_checkObjectAction6Flag_801BABE
 	pop {r1}
@@ -24079,7 +24079,7 @@ loc_801B142:
 	lsl r0, r0, #0xe
 	bl object_clearFlag2
 	bl battle_updateAngerTint_80143E4
-	bl sub_801690A
+	bl battle_applyStateSpriteColorShader_801690A
 	bl sub_8016860
 	bl battle_applyStatusSpriteTint_80168C8
 	bl object_applyTintIfFlag16_80168F0
@@ -24196,8 +24196,8 @@ loc_801B21A:
 
 loc_801B21C:
 
-	bl sub_801A42E
-	bl sub_801A4A6
+	bl battle_spawnHitEffectAtArm_801A42E
+	bl battle_spawnArmHitEffect_801A4A6
 	bl sub_801A45C
 	bl sub_801BADE
 
@@ -24281,7 +24281,7 @@ loc_801B298: // endif
 
 	bl battleObject_clearHitFlags_801A29A
 	bl battleObject_resetCollisionState_801A2B0
-	bl sub_801BA92
+	bl battle_object_postAction4CheckClearFlags_801BA92
 
 	ldr r0, [r5,#oBattleObject_Unk_5c]
 	tst r0, r0
@@ -24377,7 +24377,7 @@ loc_801B338:
 	lsl r0, r0, #14 // OBJECT_FLAGS_2_UNK_BIT_14
 	bl object_clearFlag2
 
-	bl sub_801690A
+	bl battle_applyStateSpriteColorShader_801690A
 	bl sub_8016860
 	bl battle_applyStatusSpriteTint_80168C8
 	bl object_applyTintIfFlag16_80168F0
@@ -25329,7 +25329,7 @@ loc_801BA8C:
 	thumb_func_end applyDamageToPlayer_801ba12
 
 	thumb_local_start
-sub_801BA92:
+battle_object_postAction4CheckClearFlags_801BA92:
 	push {r4,lr}
 	mov r4, #0
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -25350,7 +25350,7 @@ sub_801BA92:
 loc_801BABA:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_801BA92
+	thumb_func_end battle_object_postAction4CheckClearFlags_801BA92
 
 // symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 
@@ -26123,7 +26123,7 @@ off_801BF88:
 	.word sub_801CA34+1
 	.word sub_801CA80+1
 	.word sub_801CDEC+1
-	.word sub_801CF0E+1
+	.word state_dispatchHandler_801CF0E+1
 	.word sub_801D1F6+1
 	.word sub_801C640+1
 	.word sub_801D2A4+1
@@ -28274,7 +28274,7 @@ event_raiseFlag8000AndDispatch_801CEFA:
 	thumb_func_end event_raiseFlag8000AndDispatch_801CEFA
 
 	thumb_local_start
-sub_801CF0E:
+state_dispatchHandler_801CF0E:
 	push {r7,lr}
 	ldr r7, off_801CF20 // =byte_2036840 
 	ldrb r0, [r7,#0x8] // (byte_2036848 - 0x2036840)
@@ -28295,7 +28295,7 @@ off_801CF28:
 	.word sub_801CF3C+1
 	.word sub_801CF9E+1
 	.word sub_801D048+1
-	thumb_func_end sub_801CF0E
+	thumb_func_end state_dispatchHandler_801CF0E
 
 // () -> void
 	thumb_local_start
@@ -29644,7 +29644,7 @@ off_801DA6C:
 	.word background_applyFixedTilePatch_801E03E+1
 	.word sub_801E1E4+1
 	.word sub_801E144+1
-	.word sub_801E10E+1
+	.word battle_loadModeGfx_801E10E+1
 	.word sub_801E376+1
 	.word sub_801E468+1
 	.word sub_801E4F4+1
@@ -29904,8 +29904,8 @@ loc_801DC32:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801DC06
 
-	thumb_func_start sub_801DC36
-sub_801DC36:
+	thumb_func_start releaseSlotByValue_801DC36
+releaseSlotByValue_801DC36:
 	push {r4,r6,r7,lr}
 	ldr r4, off_801DC5C // =dword_20352E0 
 	mov r3, #6
@@ -29931,7 +29931,7 @@ locret_801DC58:
 	.balign 4, 0
 off_801DC5C:
 	.word dword_20352E0
-	thumb_func_end sub_801DC36
+	thumb_func_end releaseSlotByValue_801DC36
 
 	thumb_local_start
 sub_801DC60:
@@ -30687,7 +30687,7 @@ sub_801E0DC:
 	thumb_func_end sub_801E0DC
 
 	thumb_local_start
-sub_801E10E:
+battle_loadModeGfx_801E10E:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #6
@@ -30707,7 +30707,7 @@ off_801E12C:
 off_801E130:
 	.word unk_3001A80
 	.word dword_86E1C78
-	thumb_func_end sub_801E10E
+	thumb_func_end battle_loadModeGfx_801E10E
 
 	thumb_local_start
 sub_801E138:
@@ -31605,8 +31605,8 @@ sub_801E748:
 	pop {pc}
 	thumb_func_end sub_801E748
 
-	thumb_func_start sub_801E754
-sub_801E754:
+	thumb_func_start comm_checkCrossNetBattleReady_801E754
+comm_checkCrossNetBattleReady_801E754:
 	push {r1,r2,lr}
 	ldr r2, off_801E77C // =eStruct2035280
 	ldr r1, [r2,#0x40] // (dword_20352C0 - 0x2035280)
@@ -31631,7 +31631,7 @@ locret_801E778:
 	.balign 4, 0
 off_801E77C:
 	.word eStruct2035280
-	thumb_func_end sub_801E754
+	thumb_func_end comm_checkCrossNetBattleReady_801E754
 
 	thumb_func_start sub_801E780
 sub_801E780:

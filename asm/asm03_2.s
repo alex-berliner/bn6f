@@ -1507,8 +1507,8 @@ dword_8046B98:
 	.word 0x140
 	thumb_func_end sub_804692C
 
-	thumb_func_start sub_8046CC8
-sub_8046CC8:
+	thumb_func_start reqBBS_initRequestWorkArea_8046CC8
+reqBBS_initRequestWorkArea_8046CC8:
 	push {r4-r7,lr}
 	ldr r5, off_8046D48 // =byte_2011C10 
 	mov r4, r0
@@ -1535,7 +1535,7 @@ off_8046CF0:
 	.word dword_8046B98
 off_8046CF4:
 	.word reqBBS_requestInfo_textOffsets
-	thumb_func_end sub_8046CC8
+	thumb_func_end reqBBS_initRequestWorkArea_8046CC8
 
 	thumb_func_start ShopControl
 ShopControl:
@@ -1618,7 +1618,7 @@ loc_8046DB8:
 	bl sub_803D06C
 loc_8046DBC:
 	str r0, [r5,#0x28]
-	bl sub_804733C
+	bl storeObfuscatedRandomToken_804733C
 	mov r0, #4
 	strb r0, [r5]
 	mov r0, #0
@@ -1850,7 +1850,7 @@ loc_8046F42:
 loc_8046F6E:
 	mov r0, r8
 	str r0, [r5,#0x2c]
-	bl sub_804733C
+	bl storeObfuscatedRandomToken_804733C
 	mov r1, #6
 	mov r0, #0x28 
 	strb r0, [r5]
@@ -1887,7 +1887,7 @@ loc_8046FA2:
 loc_8046FBE:
 	mov r0, r8
 	str r0, [r5,#0x28]
-	bl sub_804733C
+	bl storeObfuscatedRandomToken_804733C
 	push {r1}
 	ldr r7, [r5,#0x20]
 	ldrb r0, [r5,#4]
@@ -2027,7 +2027,7 @@ sub_804709C:
 	bne loc_8047118
 	ldr r0, [r5,#0x2c]
 	str r0, [r5,#0x28]
-	bl sub_804733C
+	bl storeObfuscatedRandomToken_804733C
 	ldr r7, [r5,#0x20]
 	ldrb r0, [r5,#4]
 	ldrb r1, [r7]
@@ -2061,7 +2061,7 @@ loc_804710A:
 loc_8047118:
 	ldr r0, [r5,#0x28]
 	str r0, [r5,#0x2c]
-	bl sub_804733C
+	bl storeObfuscatedRandomToken_804733C
 	ldr r0, [r5,#0x24]
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #SOUND_CANT_JACK_IN
@@ -2280,7 +2280,7 @@ byte_8047318:
 	thumb_func_end sub_80472E8
 
 	thumb_local_start
-sub_804733C:
+storeObfuscatedRandomToken_804733C:
 	push {r0-r4,lr}
 	mov r4, r0
 loc_8047340:
@@ -2302,7 +2302,7 @@ loc_8047340:
 	mvn r1, r1
 	str r1, [r5,#0x30]
 	pop {r0-r4,pc}
-	thumb_func_end sub_804733C
+	thumb_func_end storeObfuscatedRandomToken_804733C
 
 // symdb: Compares a caller-supplied expected value against a scrambled counter field (record+0x30) and reports the result only through the flags.
 // symdb: void checkScrambledCounter(u32 expected /* r0, preserved */, record *r5) / out: NZCV from
@@ -4091,8 +4091,8 @@ loc_8048C5C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8048C24
 
-	thumb_func_start copy_8048C68
-copy_8048C68:
+	thumb_func_start shop_resetStockTable_8048C68
+shop_resetStockTable_8048C68:
 	push {lr}
 	mov r0, r10
 	// memBlock
@@ -4120,7 +4120,7 @@ loc_8048C90:
 	b loc_8048C7C
 locret_8048C96:
 	pop {pc}
-	thumb_func_end copy_8048C68
+	thumb_func_end shop_resetStockTable_8048C68
 
 	thumb_func_start copy_8048C98
 copy_8048C98:

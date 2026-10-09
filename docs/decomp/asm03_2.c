@@ -900,7 +900,7 @@ signed int sub_804692C()
 
 
 // 0x8046cc8
-int __fastcall sub_8046CC8(int a1, int a2, int a3, int a4)
+int __fastcall reqBBS_initRequestWorkArea_8046CC8(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r4
@@ -1118,7 +1118,7 @@ signed int __fastcall __noreturn sub_80472E8(int a1, int a2, int a3)
 
 
 // 0x804733c
-void __fastcall sub_804733C(int a1)
+void __fastcall storeObfuscatedRandomToken_804733C(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -2060,7 +2060,7 @@ signed int __fastcall sub_8048C24(int a1)
 
 
 // 0x8048c68
-void *__fastcall copy_8048C68()
+void *__fastcall shop_resetStockTable_8048C68()
 {
     Toolkit *tk; // r10
     void *result; // r0

@@ -18,8 +18,8 @@ off_8021AB0:
   .word ChipDataArr_8021DA8 // [*const ChipData; 206]
 	thumb_func_end getChip8021DA8
 
-	thumb_func_start sub_8021AB4
-sub_8021AB4:
+	thumb_func_start sChip_loadRecordIntoSlot_8021AB4
+sChip_loadRecordIntoSlot_8021AB4:
 	push {r4,r6,r7,lr}
 	mov r2, #0x3c
 	mul r1, r2
@@ -40,7 +40,7 @@ loc_8021ACC:
 	cmp r6, #0x3c
 	blt loc_8021ACC
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8021AB4
+	thumb_func_end sChip_loadRecordIntoSlot_8021AB4
 
 /* (r0:u16 bitfield) -> r0:u16 upper9Bits, r1:u16 lower9Bits
    preserves: lr

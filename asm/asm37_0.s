@@ -4634,7 +4634,7 @@ sub_813DB24:
 	str r1, [sp,#4]
 	lsl r0, r0, #2
 	mov r7, r0
-	bl sub_803DD30
+	bl link_getModeSelector_803DD30
 	beq loc_813DB36
 	mov r0, #1
 loc_813DB36:

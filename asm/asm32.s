@@ -1340,7 +1340,7 @@ sub_810E4F0:
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1
@@ -1872,7 +1872,7 @@ sub_810E928:
 	bl battleObject_clearHitFlags_801A29A
 	bl battleObject_resetCollisionState_801A2B0
 	bl battle_resetCollisionState_80101C4
-	bl sub_801DC36
+	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
 	sub r0, #1

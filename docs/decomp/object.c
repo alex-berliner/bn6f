@@ -110,7 +110,7 @@ int sub_800BE2C()
 
     if ( *(v0 + 11) )
     {
-        result = sub_801E754();
+        result = comm_checkCrossNetBattleReady_801E754();
         if ( !result )
         {
             battle_resetObjAnimState_800B89C(*(v0 + 22));
@@ -474,9 +474,9 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
 
     v17 = a2;
     v16 = getTable12Record_800D730_800C6D6(a1);
-    v2 = sub_800C8C2(0);
+    v2 = battle_getPanelEntry_800C8C2(0);
     ZeroFillByWord(v2, 64);
-    v3 = sub_800C8C2(0);
+    v3 = battle_getPanelEntry_800C8C2(0);
     v4 = 0;
     do
     {
@@ -503,7 +503,7 @@ int __fastcall sub_800C4BC(int a1, unsigned int a2)
                 v10 = (*&v16[4 * (v6 - 1)] >> 4 * (v7 - 1)) & 0xF;
             v8[2] = v10;
             v8[6] = v10;
-            v11 = sub_800C8C2(v7);
+            v11 = battle_getPanelEntry_800C8C2(v7);
             v12 = *v11;
             v8[3] = *v11;
             v8[4] = v12;
@@ -599,7 +599,7 @@ signed int sub_800C67C()
     while ( v6 < v7 )
     {
         v2 = *(&v6 + 2 * (1 - v1));
-        v3 = sub_800C84A(*(&v6 + 2 * (1 - v1)), v1);
+        v3 = countMatchingRun_800C84A(*(&v6 + 2 * (1 - v1)), v1);
         v0[2] = v3;
         v0[3] = v4;
         *v0 = (v3 - 1) * v1 + v2;
@@ -706,7 +706,7 @@ int __fastcall sub_800C81E(int result, unsigned int a2, char a3)
 
 
 // 0x800c84a
-signed int __fastcall sub_800C84A(int a1, int a2)
+signed int __fastcall countMatchingRun_800C84A(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5
@@ -717,7 +717,7 @@ signed int __fastcall sub_800C84A(int a1, int a2)
 
     v2 = a1;
     v3 = a2;
-    v4 = sub_800C8C2(a1);
+    v4 = battle_getPanelEntry_800C8C2(a1);
     v5 = *v4;
     v6 = &v4[8 * v3];
     v7 = 1;
@@ -756,13 +756,13 @@ void __fastcall __noreturn sub_800C878(unsigned int a1, char a2)
         }
     }
     v5 = battle_getPanelDataPtr_800C6E0(0, 0);
-    v5[4] = *sub_800C8C2(0);
+    v5[4] = *battle_getPanelEntry_800C8C2(0);
     object_updatePanelParameters(0, 0);
 }
 
 
 // 0x800c8c2
-char *__fastcall sub_800C8C2(int a1)
+char *__fastcall battle_getPanelEntry_800C8C2(int a1)
 {
     return &byte_2034010[8 * a1];
 }
@@ -2457,7 +2457,7 @@ int __fastcall sub_800D53C(int a1, int a2, int a3)
 
 
 // 0x800d58c
-void __noreturn sub_800D58C()
+void __noreturn battle_scanPanelsInFront_800D58C()
 {
     sub_800D5BA();
 }
@@ -3793,7 +3793,7 @@ int __fastcall sub_800EC80(int a1)
 
 
 // 0x800ed00
-int sub_800ED00()
+int ai_resetAIDataSlots_800ED00()
 {
     _DWORD *v0; // r0
     unsigned int v1; // r1
