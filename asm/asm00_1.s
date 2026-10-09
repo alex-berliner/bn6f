@@ -573,6 +573,11 @@ sub_8003440:
 	.word eBattleObjectsLinkedListStart
 	thumb_func_end sub_8003440
 
+// symdb: Releases a battle object's slot — clears its flags, frees its bitmap slot for its type, unlinks it from the active-object list, and resets its sprite scaling.
+// symdb: void object_freeMemory(BattleObject *obj /* r5 */); clobbers r0-r3 and flags via tail work in
+// symdb: sprite_makeUnscalable; preserves r5; returns to sprite_makeUnscalable's caller with its
+// symdb: register/flag state (nz c v r0-r3, lr).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_freeMemory.yaml
 	thumb_func_start object_freeMemory
 object_freeMemory:
 	push {r5,lr}
@@ -1758,6 +1763,12 @@ off_8003B48:
 	.word owPlayer_main+1
 	thumb_func_end sub_8003B24
 
+// symdb: Allocates the first free slot in the overworld player object pool, initialises it from five register arguments, and returns the slot pointer (0 if the pool is full).
+// symdb: void SpawnOWPlayerObject(u32 r0_kindByte, u32 r1, u32 r2, u32 r3, u32 r4, /* lr clobbered */)
+// symdb: -> returns r5 = slot pointer or NULL, r0 = 0 on success; r1-r4 pass through unchanged; flags: on
+// symdb: success N=0/Z=1/C=0 (from the free-bit TST), on failure flags come from the final CMP slot >=
+// symdb: poolEnd (C=1). Unusual ABI: result in r5, not r0.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SpawnOWPlayerObject.yaml
 	thumb_func_start SpawnOWPlayerObject
 SpawnOWPlayerObject:
 	push {r0-r4,lr}
@@ -4775,6 +4786,10 @@ off_8005520:
 	.word ePETMenuData
 	thumb_func_end sub_8005462
 
+// symdb: Tears down the current game mode (frees type-0x21 objects, runs the standard init/clear passes) and advances the main jumptable to state 0x28.
+// symdb: void sub_8005524(void); uses r10 = toolkit pointer on entry; sets the main jumptable state to
+// symdb: 0x28; clobbers r0-r3 and NZC flags, preserves r4-r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mainState_resetGameAndGoto28_8005524.yaml
 	thumb_func_start mainState_resetGameAndGoto28_8005524
 mainState_resetGameAndGoto28_8005524:
 	push {lr}
@@ -5553,6 +5568,10 @@ locret_8005BC6:
 	thumb_func_end sub_8005B6E
 
 // (BattleSettings *r0Bt, bool r1) -> void
+// symdb: Starts a battle from the overworld: stores the battle data pointer, snapshots the current map group, switches the game state machine to the battle subsystem (index 8) and plays the battle-start jingle.
+// symdb: void StartBattle(void* battleData, int updatePlayerState /* toolkit in r10 */); clobbers
+// symdb: r0,r1,r3,flags,lr; preserves r2,r4-r7,r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/StartBattle.yaml
 	thumb_func_start StartBattle
 StartBattle:
 	push {r4-r7,lr}
@@ -8199,6 +8218,11 @@ loc_8006F68:
 	pop {r0-r7,pc}
 	thumb_func_end encryption_zenny_8006f54
 
+// symdb: Anti-cheat check on the player's zenny; sets a cheat flag and reports tampering via the Z flag.
+// symdb: void encryption_verifyZennyIntegrity_8006f78(void); /* in: nothing meaningful (r0-r7,lr pushed);
+// symdb: out: Z flag = zenny checksum still valid (Z set = OK, Z clear = tampered); r0-r7,lr preserved
+// symdb: via push/pop */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/encryption_zenny_8006f78.yaml
 	thumb_func_start encryption_zenny_8006f78
 encryption_zenny_8006f78:
 	push {r0-r7,lr}
@@ -8258,6 +8282,10 @@ loc_8006FC0:
 	pop {r0-r7,pc}
 	thumb_func_end encryption_bugfrags_8006fac
 
+// symdb: Anti-tamper integrity check on the protected BugFrag counter; reports intact vs. tampered via the Z flag.
+// symdb: void checkBugFragTamper_8006fd0(void); /* no register args (r10 = toolkit); no register return —
+// symdb: result is in flags: Z set = counter intact, Z clear = tampered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/encryption_bugfrags_8006fd0.yaml
 	thumb_func_start encryption_bugfrags_8006fd0
 encryption_bugfrags_8006fd0:
 	push {r0-r7,lr}
@@ -8321,6 +8349,10 @@ anticheat_modCardsUnset_800701c:
 	pop {r1-r7,pc}
 	thumb_func_end anticheat_modCardsUnset_800701c
 
+// symdb: Fills the 256-byte card-modification anticheat table with random bytes and a hidden complemented shadow copy for later tamper detection.
+// symdb: void anticheat_modCardsBuildXorTable_8007036(void); // clobbers r0, flags; preserves r1-r7;
+// symdb: reads the shadow buffer pointer from r10 + oToolkit_Unk2005038_Ptr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/anticheat_modCardsInit_8007036.yaml
 	thumb_local_start
 anticheat_modCardsInit_8007036:
 	push {r1-r7,lr}
@@ -9467,6 +9499,11 @@ locret_8007774:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80076A0
 
+// symdb: Registers a battle object in its alliance's "alive battle actors" list in the battle state, taking the first free slot of four and bumping the alliance's alive-actor count.
+// symdb: bool battle_claimAliveActorSlot(void *battleObject /* r5 */, void *toolkit /* r10 */); returns 1
+// symdb: in r0 if a slot was claimed, 0 if the alliance's list was full; r2/r3 left as scratch from the
+// symdb: last slot examined
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/modifyBattleStateBasedOnAliveBattleActorsAndUnkCond_8007778.yaml
 	thumb_local_start
 modifyBattleStateBasedOnAliveBattleActorsAndUnkCond_8007778:
 	push {lr}
@@ -10165,6 +10202,10 @@ off_8007C04:
 	.word battle_stepSubstateToState4_8007C14+1
 	thumb_func_end eStruct200BC30_dispatchJumpOffset00_8007BF0
 
+// symdb: Runs one step of the current battle sub-state at R5 and, once it finishes (or reports idle), advances the battle state machine to state 4.
+// symdb: void battle_stepSubstateToState4_8007C14(BattleState* state /*r5*/, Work* work /*r4*/);
+// symdb: preserves r4-r7, clobbers r0-r3/lr, returns nz/cv from the final stored value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_stepSubstateToState4_8007C14.yaml
 	thumb_local_start
 battle_stepSubstateToState4_8007C14:
 	push {lr}
@@ -13441,7 +13482,7 @@ locret_800945A:
 	thumb_func_end sub_800938A
 
 // symdb: Dispatches a battle-state phase byte (offset 2 of the struct in r5) to one of two phase handlers via a jump table.
-// symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to battle_waitLinkSync_8009478 (phase 0) or
+// symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to sub_8009478 (phase 0) or
 // symdb: sub_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DispatchStatePhase_800945C.yaml
 	thumb_local_start
@@ -13461,6 +13502,11 @@ off_8009470:
 	.word sub_80094B6+1
 	thumb_func_end battle_DispatchStatePhase_800945C
 
+// symdb: Link-battle sync wait state handler — waits until both linked GBA systems report the same tracked ID (or a ~3 s timeout) before letting the battle advance.
+// symdb: void battle_waitLinkSync(battleState *state /* r5 */) // called with r4-r7,r10 live; returns
+// symdb: flags nz/c/v and r0 = 4 (init/match paths), incremented frame counter, or 0xC (timeout) as side
+// symdb: effects of the tail dispatch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_waitLinkSync_8009478.yaml
 	thumb_local_start
 battle_waitLinkSync_8009478:
 	push {lr}
@@ -15146,6 +15192,13 @@ battle_isPaused:
 	mov pc, lr
 	thumb_func_end battle_isPaused
 
+// symdb: Gate for battle flow: returns 0xFF if the battle is over or time is stopped, otherwise 0 or 1 depending on which of two ready-flags (bit 3) is set in the battle work at dword_2036820.
+// symdb: u32 battle_checkFlowAdvanceFlags(void); in: r10, lr (r10 preserved by callees, unused here); no
+// symdb: meaningful register inputs. out: r0 = 0xFF (battle over / time stop / neither flag set), 0 (bit
+// symdb: 3 of dword_2036824 set), or 1 (bit 3 of dword_203682C set, only if the first is clear). side
+// symdb: outputs: r3 = dword_2036820 (battle work base), r2 = 8 (test mask) are left set for callers; r1
+// symdb: clobbered; flags NZCV clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkFlowAdvanceFlags_800A046.yaml
 	thumb_local_start
 battle_checkFlowAdvanceFlags_800A046:
 	push {lr}
@@ -15345,6 +15398,11 @@ sub_800A142:
 	mov pc, lr
 	thumb_func_end sub_800A142
 
+// symdb: Returns a small battle-phase/mode id (0/1/2/7) derived from the current battle state's phase flags, returning 0 while time is stopped.
+// symdb: int sub_800A152(void *r10_toolkit /* lr must be a valid return address */); out r0 = mode id, r1
+// symdb: = last phase-flag byte read, r2 = battleState+0x0d byte; NZ flags reflect the last tested byte
+// symdb: (or the time-stop result)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getPhaseMode_800A152.yaml
 	thumb_func_start battle_getPhaseMode_800A152
 battle_getPhaseMode_800A152:
 	push {lr}
@@ -15910,6 +15968,10 @@ locret_800A504:
 	pop {r4,pc}
 	thumb_func_end pet_getCurNaviChainedLookup_800A4E0
 
+// symdb: Reads a 2-byte status word (low, high) for the navi currently equipped in the PET, returning 0xFF,0xFF when no navi data is available.
+// symdb: u8 pair() -> r0 = low byte, r1 = high byte; NZCV set from the final `mov r1, r0` (reflects the
+// symdb: high byte); preserves r4 and r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_getCurNaviStatusPair_800A506.yaml
 	thumb_local_start
 pet_getCurNaviStatusPair_800A506:
 	push {r4,r6,lr}
@@ -17470,6 +17532,11 @@ byte_800AE00:
 	.byte 0xA, 0x8, 0x6, 0x4
 	thumb_func_end sub_800AC20
 
+// symdb: Per-frame tick of the battle phase state machine — records phase transitions, kicks phase setup, and runs a countdown timer that resets the phase to 0 when it expires.
+// symdb: void battle_updatePhaseState_800AE0C(void); // no meaningful register inputs; reads the battle
+// symdb: state pointer from the toolkit (r10 + oToolkit_BattleStatePtr). Clobbers r0, r1, lr, flags;
+// symdb: preserves r4-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_updatePhaseState_800AE0C.yaml
 	thumb_local_start
 battle_updatePhaseState_800AE0C:
 	push {r4,lr}
@@ -17696,6 +17763,10 @@ locret_800AF82:
 	pop {r4,r5,pc}
 	thumb_func_end sub_800AF50
 
+// symdb: Selects a battle "mode pair" from the current battle effect flags (special-casing effect bit 0x8 against the battle state) and tail-dispatches into sub_800AC20 with the chosen parameters.
+// symdb: void sub_800AF84(void); // in: r4-r7 (passthrough args), r10 = toolkit; out: r0-r2 plus whatever
+// symdb: sub_800AC20 leaves in r0-r7/c/v; r5-r7 preserved through this frame
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AF84.yaml
 	thumb_local_start
 sub_800AF84:
 	push {lr}
@@ -17913,6 +17984,10 @@ dword_800B10C:
 	.word 0x185
 	thumb_func_end someChipHandValidationHappensHere_800B090
 
+// symdb: Re-applies a fixed list of encryption packs (IDs 0x195-0x19A) by walking a 0-terminated halfword table and calling encryption_applyPack_8006e70 on each.
+// symdb: void sub_800B110(void); // no meaningful inputs; all caller registers r1-r7 are preserved, only
+// symdb: r0/r12(lr) and flags are clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/encryption_applyPackList_800B110.yaml
 	thumb_local_start
 encryption_applyPackList_800B110:
 	push {r4,lr}
@@ -18227,6 +18302,10 @@ loc_800B334:
 	pop {r4,r5,pc}
 	thumb_func_end battle_copyStructsIncludingBattleStats_800b2d8
 
+// symdb: Snapshots the current battle state (work buffer, active Navi stats, and a small inventory block) into backup buffers and stamps a validity marker before the battle is restarted or restored.
+// symdb: (r10: Toolkit*, r3: unused) -> r2, r3 and c/v flags as left by sub_80200A4(0x32); clobbers r0,
+// symdb: r1, lr, nz
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_backupStateForRestart_800B3A2.yaml
 	thumb_func_start battle_backupStateForRestart_800B3A2
 battle_backupStateForRestart_800B3A2:
 	push {lr}
@@ -18314,7 +18393,7 @@ off_800B440:
 	.word 0x3C4
 	thumb_func_end sub_800B428
 
-// symdb: Copies two saved 12-byte snapshots back into the working battle data area and then runs battle_syncEffectSlotBetweenBuffers_802C9EA on the restored data.
+// symdb: Copies two saved 12-byte snapshots back into the working battle data area and then runs sub_802C9EA on the restored data.
 // symdb: void sub_800B444(void)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
 	thumb_local_start
@@ -18885,6 +18964,10 @@ loc_800B770:
 	pop {r4,r6,pc}
 	thumb_func_end sub_800B762
 
+// symdb: Range-checked dispatcher that jumps to one of five handlers based on a command id in r0 (valid ids 0x11E-0x122), ignoring any other value.
+// symdb: void dispatchScriptCommand_800B79A(int id /* r0 */); tail-calls handler via lr; r2-r5, r8-r12
+// symdb: pass through untouched to the handler
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B79A.yaml
 	thumb_func_start sub_800B79A
 sub_800B79A:
 	push {lr}

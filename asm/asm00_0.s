@@ -1334,6 +1334,11 @@ loc_8000C6E:
 
 // FILE segment shifts to RNG here
 
+// symdb: Shuffles a byte array in place by performing a caller-given number of random swaps, using the primary game RNG.
+// symdb: void ShuffleByteArray(u8* r0 array, u32 r1 length, u32 r2 swapCount) — modifies array in place;
+// symdb: returns r0=array, r1=length (unchanged), r2=0 (decremented to zero), r3=index of first swap
+// symdb: slot; Z/C/V set by the final decrement (Z set when swapCount reached 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ShuffleByteList_PrimaryRNG.yaml
 	thumb_func_start ShuffleByteList_PrimaryRNG
 ShuffleByteList_PrimaryRNG:
 	push {r4-r6,lr}
@@ -3096,6 +3101,10 @@ renderInfo_80017A0: // () -> ()
 	mov pc, lr
 	thumb_func_end renderInfo_80017A0
 
+// symdb: Clears all of VRAM (0x6000000-0x600DFFF) with four zero-fill calls, used during video reset/startup.
+// symdb: void zeroFillVRAM(void); // r2/r3 preserved; returns with r0=0x600C000, r1=0x20 (tail state of
+// symdb: last helper call)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFillVRAM.yaml
 	thumb_func_start zeroFillVRAM
 zeroFillVRAM: // () -> ()
 	push {lr}

@@ -158,6 +158,10 @@ dword_803393E: // [u8; UNDERNET_NUM_MAPS]
 byte_8033942: // [u8; GRAVEYARD_NUM_MAPS]
 	.byte 0x5, 0x5, 0x5, 0x0, 0x0, 0x0
 
+// symdb: Resets the eS2011E30 work block and queues the per-area update (internet vs real-world handler) plus its graphics transfer.
+// symdb: void triggerSomeUpdateForInternetOrRealWorld_8033948(void); // reads r10 (toolkit)->gameState;
+// symdb: preserves r4-r7; r0,r1,lr clobbered; returns with flags from gfxTransfer_8033978
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/triggerSomeUpdateForInternetOrRealWorld_8033948.yaml
 	thumb_func_start triggerSomeUpdateForInternetOrRealWorld_8033948
 triggerSomeUpdateForInternetOrRealWorld_8033948:
 	push {r4-r7,lr}
@@ -3148,6 +3152,10 @@ loc_803559C:
 	pop {r4-r7,pc}
 	thumb_func_end testSetClearFlags_803553c
 
+// symdb: Resets a fixed set of five story event flags and sets one other flag (EVENT_120), then returns 0 — likely a scenario-state reset/reinit helper.
+// symdb: void clearSetFlags_80355a8(void); /* returns r0 = 0; r4-r7 and r10 are preserved; flags
+// symdb: clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearSetFlags_80355a8.yaml
 	thumb_func_start clearSetFlags_80355a8
 clearSetFlags_80355a8:
 	push {r4-r7,lr}
@@ -3402,6 +3410,11 @@ locret_8035754:
 	pop {r4-r7,pc}
 	thumb_func_end timer_tickCountdownTable_8035738
 
+// symdb: Scans a 32-entry request queue at dword_2000DC0 and claims the first pending request whose slot is free, clearing the slot; returns 0 if none available.
+// symdb: uint32 sub_8035756(void) — takes no register inputs (r4-r7/lr preserved); returns the claimed
+// symdb: request value in r0 (0 if none), with NZ flags set from r0. r3 is scratch (holds the last slot's
+// symdb: current value on exit).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/claimNextPendingRequest_8035756.yaml
 	thumb_local_start
 claimNextPendingRequest_8035756:
 	push {r4-r7,lr}

@@ -2456,6 +2456,11 @@ dword_8036D8C:
 	.word 0xFFFFFFFF
 	.word 0xFFFFFFFF
 
+// symdb: Selects and stores the music track for the map the player is currently on, looked up per map group/number with a per-sub-area table, defaulting to track 0x63.
+// symdb: void playMapMusicForCurrentSubArea(toToolkit* toolkit in r10 /* r4-r7 preserved */); leaves r1 =
+// symdb: current map group (gameState+4), r2 = current map number (gameState+5) in registers on return;
+// symdb: clobbers r0 and flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/playCertainMapMusicBasedOnEventByte_8036e44.yaml
 	thumb_func_start playCertainMapMusicBasedOnEventByte_8036e44
 playCertainMapMusicBasedOnEventByte_8036e44:
 	push {r4-r7,lr}
@@ -2993,6 +2998,11 @@ CutsceneCameraCmd_auto_scroll_to_player:
 // delta = min(delta, 0x100000)
 // delta = max(delta, 0x800)
 // restore delta sign and return
+// symdb: Computes one axis's per-frame camera auto-scroll step from a coordinate delta, clamping the magnitude to a fixed-point maximum and falling back to the raw magnitude for small deltas.
+// symdb: s32 CutsceneCamera_GetAutoScrollDeltaForCoord(s32 coordDelta /* r3 */); returns the signed,
+// symdb: clamped step in r3 and the minimum-step threshold 0x800 in r4; clobbers r0 and all flags,
+// symdb: preserves everything else, returns via mov pc, lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCamera_GetAutoScrollDeltaForCoord.yaml
 CutsceneCamera_GetAutoScrollDeltaForCoord:
 	mov r4, #0x10
 	lsl r4, r4, #0x10
@@ -5083,6 +5093,11 @@ CutsceneCmd_set_ow_player_navi_color_shader:
 // byte1 - modify type. 0=write, 1=add anim to facing direction and write
 // byte2 - memory param
 // byte3 or mem - base overworld player anim
+// symdb: Map-script cutscene command that sets the overworld player's fixed animation select, either to an immediate/table value or to an offset from the player's current facing direction.
+// symdb: void CutsceneCmd_setOwPlayerFixedAnimSelect(void) — reads script operands via ReadMapScriptByte;
+// symdb: returns r0 = 1 (success); advances the script pointer r7 by 4; uses r5 (script context/table
+// symdb: base) and r10 (script state), clobbers r0, r1, r3, r4, r6 and flags (nz c v)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_write_or_offset_ow_player_fixed_anim_select_8037dac.yaml
 CutsceneCmd_write_or_offset_ow_player_fixed_anim_select_8037dac:
 	push {lr}
 	mov r6, #2
@@ -5715,6 +5730,12 @@ MapScriptCutsceneCmd_give_or_take_item:
 
 // 0x54 0x1
 // stop cutscene camera script
+// symdb: Map-script command that either starts a named cutscene camera script or stops the running one and recenters the camera on the player.
+// symdb: void CutsceneCmd_run_or_stop_cutscene_camera_script(CutsceneState* r5, /* r7 */ u8*&
+// symdb: scriptReadPos, u8 r10 /* unused/ignored */); returns r0 = 1 (script interpreter keeps running);
+// symdb: also outputs NZ/C/V flags from that 1, trashes r1/r2/r4/r6, returns advanced r7 and lr. No
+// symdb: registers preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_run_or_stop_cutscene_camera_script.yaml
 CutsceneCmd_run_or_stop_cutscene_camera_script:
 	push {lr}
 	mov r6, #1

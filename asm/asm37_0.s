@@ -1827,6 +1827,10 @@ reloadCurNaviStatBoosts_813c3ac:
 	.balign 4, 0x00
 	thumb_func_end reloadCurNaviStatBoosts_813c3ac
 
+// symdb: Rebuilds and re-applies the equipped NaviCust programs and stock PET navi stats, then restores the player's selected navi and refreshes its display.
+// symdb: void reapplyNavicustAndPetNaviStats_813C458(void); // r2, r5-r12 passed through untouched, r4
+// symdb: callee-saved scratch, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/applyNaviStatsMaybe_813C458.yaml
 	thumb_local_start
 applyNaviStatsMaybe_813C458:
 	push {r4,lr}

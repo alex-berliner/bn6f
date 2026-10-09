@@ -11246,6 +11246,10 @@ off_81494B4:
 	.word dword_2010CC4
 	thumb_func_end rfu_enableREQCallback
 
+// symdb: RFU library callback for incoming REQ packets; logs the request command and dispatches it to the armed handler slot if one is enabled.
+// symdb: void rfu_STC_REQ_callback(u8 srcId /*r0*/, u16 reqCmd /*r1*/); note: r0 exits holding the entry
+// symdb: LR (pop {r0}; bx r0 epilogue quirk)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_STC_REQ_callback.yaml
 	thumb_local_start
 rfu_STC_REQ_callback:
 	push {r4,r5,lr}
@@ -17561,6 +17565,10 @@ off_814C1E0:
 	.word InterruptEnableRegister
 	thumb_func_end STWI_init_all
 
+// symdb: Hooks the wireless library's timer interrupt handler into a caller-supplied callback slot and enables the chosen hardware timer's IRQ.
+// symdb: void STWI_init_timer(u32* callbackSlot /*r0*/, u8 timerId /*r1*/); returns r2 = saved REG_IME,
+// symdb: r3 = &REG_IME
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_init_timer.yaml
 	thumb_local_start
 STWI_init_timer:
 	push {r4,r5,lr}

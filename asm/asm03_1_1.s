@@ -8547,6 +8547,10 @@ loc_803CF30:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_803CF10
 
+// symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through sub_803CF74.
+// symdb: void pet_addCurNaviStat0x3ECapped_803CF3C(u8 navi_slot /* r1 */, u32 mustBe0x70 /* r4 */); r4
+// symdb: must equal 0x70 or the call returns immediately; r4-r12 are preserved, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviStat0x3ECapped_803CF3C.yaml
 	thumb_local_start
 pet_addCurNaviStat0x3ECapped_803CF3C:
 	push {r4-r7,lr}
@@ -8953,6 +8957,10 @@ loc_803D1AE:
 	pop {r4-r7,pc}
 	thumb_func_end logoScreen_init_803D1A8
 
+// symdb: Logo screen state-machine tick — dispatches the current LogoScreenState handler, then animates the "PRESS START" text.
+// symdb: void logoScreen_tickState_803D1CA(void) /* uses eLogoScreenState singleton; r4-r7 preserved;
+// symdb: r0-r3,r12,clobbers */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/logoScreen_dispatch_803D1CA.yaml
 	thumb_func_start logoScreen_dispatch_803D1CA
 logoScreen_dispatch_803D1CA:
 	push {r4-r7,lr}
@@ -13111,6 +13119,10 @@ notZero_eByte200AD04:
 	.byte 0, 0
 	thumb_func_end notZero_eByte200AD04
 
+// symdb: Per-tick countdown gate — while a flag byte at 200AD04 is set, checks a condition each tick and decrements a halfword counter at 200AD06, clearing the flag when the count runs out.
+// symdb: void sub_803F530(void); returns condition via flags: Z set = countdown finished or inactive, Z
+// symdb: clear = still counting (r6==1 internally)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/tickCountdownGate_803F530.yaml
 	thumb_func_start tickCountdownGate_803F530
 tickCountdownGate_803F530:
 	push {r4,r6,lr}
@@ -13886,6 +13898,11 @@ off_803FAB0:
 	.word EXE6_InfoText_timestamp
 	thumb_func_end sub_803FA42
 
+// symdb: Backs up the 0x80-byte save block at dword_20067C0 into the game pak backup area, retrying up to three times, and returns 1 if any attempt verified successfully.
+// symdb: bool sub_803FAB4(void); returns r0 = 1 if at least one of three attempts copied and verified, r0
+// symdb: = 0 if all three failed; r4-r7 and NZ flags (on r0) are the observable outputs; clobbers r0-r3
+// symdb: and lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/save_BackupToGamePakWithRetry_803FAB4.yaml
 	thumb_local_start
 save_BackupToGamePakWithRetry_803FAB4:
 	push {r4-r7,lr}

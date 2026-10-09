@@ -744,6 +744,11 @@ locret_80465BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80465A0
 
+// symdb: Each frame, walks a 15-entry array of 0x58-byte entity records and calls the update handler selected by each active record's type byte.
+// symdb: void sub_80465BC(void); // pure dispatcher: r0 not read, r2/r3 pass through untouched; handlers
+// symdb: are called via blx-style bx lr with r0 = handler address itself, r1 = type*4, r5 = record
+// symdb: pointer, r7 = record index (0..14)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/entity_runAllUpdateHandlers_80465BC.yaml
 	thumb_func_start entity_runAllUpdateHandlers_80465BC
 entity_runAllUpdateHandlers_80465BC:
 	push {r4-r7,lr}
@@ -2172,6 +2177,11 @@ off_80471F4:
 	.word byte_2019A00
 	thumb_func_end sub_8047134
 
+// symdb: LZ77-decompresses the three compressed blobs the message/text-script system works from (a scene-dependent blob plus two fixed text data files) into their EWRAM buffers.
+// symdb: void uncomp_80471F8(u32* r5 /*handle*/); inputs r2,r3,r5 (r5 = pointer to a struct whose [0x1C]
+// symdb: is a pointer to a sub-struct whose [4] holds the compressed blob address), r4-r7 preserved;
+// symdb: outputs r2,r3,r4-r7 preserved; no flags contract
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/text_decompressMessageAssets_80471F8.yaml
 	thumb_local_start
 text_decompressMessageAssets_80471F8:
 	push {r4-r7,lr}
@@ -2574,6 +2584,10 @@ off_8047494:
 	.word NULL
 	thumb_func_end copyData_804747C
 
+// symdb: Uploads the current text window's tile graphics from its staging buffer into the BG tile block and renders the text object into the text layer.
+// symdb: (r3 = passthrough context, r5 = text object ptr, r10 = toolkit) -> clobbers r0-r2, r4, r6, r7,
+// symdb: lr; preserves r5, r8, r9; NZC flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_uploadWindowTileGfx_804754C.yaml
 	thumb_local_start
 chatbox_uploadWindowTileGfx_804754C:
 	push {r5,lr}
@@ -2942,6 +2956,10 @@ dword_80477FC:
 	.word 0x2420
 	thumb_func_end sub_8047790
 
+// symdb: Redraws the two background layers (tile graphics + tile map) for the area whose id is stored in the background state struct.
+// symdb: void sub_8047800(void *state /* r5 */) ; clobbers r0-r3, r12(?), flags; preserves r4-r7 per the
+// symdb: ABI, callers supply state in r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/background_LoadAreaTiles_8047800.yaml
 	thumb_local_start
 background_LoadAreaTiles_8047800:
 	push {r4-r7,lr}
@@ -4138,6 +4156,9 @@ locret_8048C96:
 	pop {pc}
 	thumb_func_end shop_resetStockTable_8048C68
 
+// symdb: Copies the 464-entry shop item table (byte_8047DA0) into the current shop's data buffer, skipping empty slots while keeping slot alignment.
+// symdb: void copy_8048C98(r10=toolkit, lr=return); writes r2, r3; clobbers r0, r1, nzcv flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shop_copyItemTableToShopData_8048C98.yaml
 	thumb_func_start shop_copyItemTableToShopData_8048C98
 shop_copyItemTableToShopData_8048C98:
 	push {lr}
@@ -6862,6 +6883,10 @@ sub_804A1D0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804A1D0
 
+// symdb: Copies the name of the folder with the given index from the text-script folder-name table into a buffer, writing one text-script character per 2 bytes until the 0xE6 end marker.
+// symdb: void sub_804A1FC(u32 folderIndex /*r0*/, void *dst /*r1*/); clobbers r0/r1 and flags, preserves
+// symdb: r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textScript_copyFolderNameToWide_804A1FC.yaml
 	thumb_local_start
 textScript_copyFolderNameToWide_804A1FC:
 	push {r4-r7,lr}

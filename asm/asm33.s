@@ -4012,6 +4012,10 @@ locret_812527C:
 	.byte 0, 0
 	thumb_func_end sub_8125254
 
+// symdb: Boot/init-time routine that assembles a 5-entry "init references" pointer table in RAM, resolves two words of each entry through sub_811FB84, then decompress-and-copies that table and a second data blob.
+// symdb: void sub_8125280(void); // no meaningful register inputs; clobbers r0-r3, lr and NZCV flags;
+// symdb: preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initRefs_buildAndDecompressTable_8125280.yaml
 	thumb_local_start
 initRefs_buildAndDecompressTable_8125280:
 	push {r4-r7,lr}
@@ -6261,6 +6265,10 @@ off_81263CC:
 	.word 0x200
 	thumb_func_end sub_8126334
 
+// symdb: Decodes a short run of character codes into pairs of tile-map halfword entries for an 8-wide text/tile strip
+// symdb: void sub_81263D0(u8 *src /*r0*/, u16 *dstLo /*r2*/, u16 *dstHi /*r3*/, u16 baseTile /*r6*/);
+// symdb: advances r2/r3 past the 8 written pairs; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/text_decodeCharTiles8_801263D0_81263D0.yaml
 	thumb_local_start
 text_decodeCharTiles8_801263D0_81263D0:
 	push {r4-r7,lr}
@@ -9014,7 +9022,7 @@ off_8127AC8:
 
 // symdb: Email menu state 1 (HandleEmailMenu81279F8's table): run the sub-state handler (off_8127AF8 by byte 2), then the common updates.
 // symdb: (r5 = menu state) -> handler entered with r0 = handler, r1 = sub-state (sub_8127B94 reads r1);
-// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, entity_runAllUpdateHandlers_80465BC, sub_80465F8
+// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, sub_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127ACC.yaml
 	thumb_local_start
 sub_8127ACC:
@@ -9851,6 +9859,11 @@ dword_8128188:
 	.word 0x9000
 	thumb_func_end sub_81280DC
 
+// symdb: Looks up an event flag from a table entry and returns 0x8000 if the flag is unset, otherwise passes the caller's value through.
+// symdb: u32 npc_checkEntryEventFlagOrHidden(u32 defaultResult /*r2*/, u32 indexAddend /*r3*/, Object*
+// symdb: object /*r5*/); // out: r2 = defaultResult if flag set, 0x8000 if clear; r0/r1/r3/r4 preserved
+// symdb: via push/pop
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_checkEntryEventFlagOrHidden_812818C.yaml
 	thumb_local_start
 npc_checkEntryEventFlagOrHidden_812818C:
 	push {r0,r1,r3,r4,lr}
@@ -15610,6 +15623,10 @@ scene_loadAndStartCutscene_812AF18:
 	.balign 4, 0x00
 	thumb_func_end scene_loadAndStartCutscene_812AF18
 
+// symdb: Builds a 0x64-byte pointer/reference table at unk_201D020 from a fixed 0x60-byte template, resolving each group's leading reference via sub_811FB84, then hands the table to decompAndCopyData to decompress the referenced data into place.
+// symdb: void sub_812AF3C(void); // no caller-passed registers used; r0-r3 and lr clobbered per ABI (the
+// symdb: reported r1-r7 "outputs" are caller-side artifacts, since r4-r7 are pushed/popped)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/decomp_buildInitRefTable_812AF3C.yaml
 	thumb_func_start decomp_buildInitRefTable_812AF3C
 decomp_buildInitRefTable_812AF3C:
 	push {r4-r7,lr}

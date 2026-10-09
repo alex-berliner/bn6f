@@ -419,6 +419,10 @@ off_80028D0:
 	.word byte_200F389
 	thumb_func_end sub_80028C0
 
+// symdb: Initializes the 0x50-byte uncompressed-sprite work block at byte_200DCA0, recording the sprite data pointer and pre-filling its tables before a sprite is decompressed into it.
+// symdb: void resetUncompSpriteWorkBlock_80028d4(const void *spriteData /* r0 */); // preserves r3, r5;
+// symdb: r2/r3/r5 and carry/overflow read back by callers (r2 ends as 0xFF, flags from the last ByteFill)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initUncompSpriteState_80028d4.yaml
 	thumb_func_start initUncompSpriteState_80028d4
 initUncompSpriteState_80028d4: // (a0: *const ?) -> ()
 	push {r5,lr}
@@ -1259,6 +1263,8 @@ sprite_clearFinalPalette:
 	strb r0, [r3,#oObjectSprite_Unk_15]
 	mov pc, lr
 	thumb_func_end sprite_clearFinalPalette
+
+// symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 
 // symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 

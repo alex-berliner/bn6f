@@ -69,6 +69,10 @@ split9BitsFromBitfield_8021AE0: // 8021AE0
 	.hword 0x01FF
 	thumb_func_end split9BitsFromBitfield_8021AE0
 
+// symdb: Grants `count` copies of a chip (id + code) to the player's chip pack, marking it as collected in the chip library.
+// symdb: int GiveChips(u32 chipId /*r0*/, u32 chipCode /*r1*/, u32 count /*r2*/) -> int result /*r0*/; r3
+// symdb: also carries result; nzcv clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GiveChips.yaml
 	thumb_func_start GiveChips
 GiveChips:
 	push {r4,lr}

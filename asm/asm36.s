@@ -5527,6 +5527,10 @@ loc_8132C62:
 	thumb_func_end SaveMenuOpenUpdate8132C50
 
 /// Disabling this causes save menu scene to be irresponsive after making Yes/No choice. Saving still occurs on Yes.
+// symdb: Per-frame update for a save-menu state; waits for the chatbox text (and confirmation flag) to finish, then stores the fade-out state, starts a screen fade, and refreshes the menu text graphics.
+// symdb: void SaveMenuUpdate8132C68(void); /* uses R5 = menu state block pointer supplied by the caller;
+// symdb: writes byte at [R5+1]; no return value, clobbers lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SaveMenuUpdate8132C68.yaml
 	thumb_local_start
 SaveMenuUpdate8132C68:
 	push {lr}
@@ -5925,6 +5929,9 @@ off_8132F74:
 	.word dword_86B7AE0
 	thumb_func_end saveMenuTextGfx_8132F4C
 
+// symdb: Reads a BCD-coded 4-digit counter (most plausibly the in-game clock, HHMM) and stores its two digit-pairs as binary numbers in the Unk200a220 work structure.
+// symdb: void sub_8132F78(void); /* r10 = toolkit; no register return value, flags clobbered */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8132F78.yaml
 	thumb_local_start
 sub_8132F78:
 	push {r4-r7,lr}

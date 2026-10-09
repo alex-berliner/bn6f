@@ -505,6 +505,11 @@ byte_80A4C64:
 	.byte 0x0
 	thumb_func_end sub_80A4C5C
 
+// symdb: Per-object state-machine dispatcher — picks a 16-byte record from a table by the object's state ID, then jumps to one of five phase handlers based on the object's phase byte.
+// symdb: void sub_80A51C4(void) // args passed in registers: r5 = state struct ptr; tail-dispatches to
+// symdb: handler(r0=handler addr, r1=phase selector, r7=state record ptr); flags NZCV set from
+// symdb: recordBase+recordOff computation
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_stateDispatchStep_80A51C4.yaml
 	thumb_func_start npc_stateDispatchStep_80A51C4
 npc_stateDispatchStep_80A51C4:
 	push {lr}

@@ -1,3 +1,7 @@
+// symdb: LZ77-decompresses the current map's three chatbox text archives (dialogue text, text scripts) into their fixed RAM work buffers, then returns 0.
+// symdb: void chatbox_uncompMapTextArchives_803FD08(void); /* returns 0 in r0; r4-r7 preserved
+// symdb: (pushed/popped); clobbers r0-r3, lr, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_uncompMapTextArchives_803FD08.yaml
 	thumb_func_start chatbox_uncompMapTextArchives_803FD08
 chatbox_uncompMapTextArchives_803FD08: // () -> int
 	push {r4-r7,lr}
@@ -2224,6 +2228,11 @@ off_8040C98:
 	.word 0x1F0
 	thumb_func_end chatbox_8040C44
 
+// symdb: Advances the chatbox's next-state byte at work+0x1F0 — states 0 and 3 hold, any other (interrupted) state clears the sub-state at +0x1F2 and restarts at 1.
+// symdb: void chatbox_advanceNextState_8040C9C(Chatbox *work /* r5 */); // preserves r0/r1, returns with
+// symdb: r0/r1 = caller's values, flags c/v left from the final CMP (vs 0 when state was 0, vs 3
+// symdb: otherwise)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_advanceNextState_8040C9C.yaml
 	thumb_local_start
 chatbox_advanceNextState_8040C9C:
 	push {r0,r1,lr}
@@ -3130,6 +3139,11 @@ Parameter 1 = "spaces" mode (0 = full text spaces, 1 = 1pxl lines)
 Parameter 2 = amount of "spaces" before text
 Example: EC 01 04 = display text 4 pixels behind an arrow spawned by createchoice
 */
+// symdb: Chatbox script opcode 0xEC handler - advances the text-cursor counters in the chatbox object by a per-command step, then continues the script.
+// symdb: int chatbox_scriptOpEC_advanceCursor(u8 *scriptCmd /*r4*/, Chatbox *chatbox /*r5*/); returns
+// symdb: r0=1 (keep interpreting), r1=new Unk_7C, r2=new Unk_70, r4 bumped past the 3-byte command; NZCV
+// symdb: set per the C version
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EC_label.yaml
 chatbox_EC_label:
 	push {lr}
 	ldrb r2, [r4,#1]
@@ -4382,6 +4396,10 @@ loc_8041B9C:
 	.balign 4, 0x00
 	thumb_func_end chatbox_F0_jump
 
+// symdb: Chatbox text-script opcode 0xF1 handler that sets the text print speed and queues the next speed to use afterwards.
+// symdb: void chatbox_F1_textspeed(u8 *scriptCursor /*r4*/, struct Chatbox *chatbox /*r5*/); returns r0=1
+// symdb: (advance flag), r1=speed+1, r2=0x1F3, r4=cursor+3, c/v from the r4+3 add, nz from "mov r0,#1"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_F1_textspeed.yaml
 	thumb_local_start
 chatbox_F1_textspeed:
 	push {lr}
@@ -6183,6 +6201,11 @@ chatbox_8042820:
 	pop {pc}
 	thumb_func_end chatbox_8042820
 
+// symdb: Chatbox state-machine dispatcher — reads the chatbox object's state byte and tail-jumps to one of ten per-state update handlers.
+// symdb: void chatbox_dispatchState(Chatbox* r4) — r4 = chatbox object; returns whatever/wherever the
+// symdb: selected handler returns (the handler's results and flags pass straight through to this
+// symdb: function's caller)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_F7_move.yaml
 	thumb_local_start
 chatbox_F7_move:
 	push {lr}

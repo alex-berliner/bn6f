@@ -115,6 +115,10 @@ sub_800B8EE:
 	pop {r4,pc}
 	thumb_func_end sub_800B8EE
 
+// symdb: Starts a time freeze for the battle object in R5, queueing the freeze dispatch, raising battle flag 4 for player-side objects, clearing its freeze counter, and switching it to the UPDATE state.
+// symdb: void object_timefreezeBegin(BattleObject *obj /* r5, caller-provided */); clobbers r0-r2 and
+// symdb: flags (nz, c set by the <<2 index shift and final mov)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_timefreezeBegin.yaml
 	thumb_func_start object_timefreezeBegin
 object_timefreezeBegin:
 	push {lr}
@@ -145,6 +149,10 @@ off_800B948:
 	.word dword_200F3B8
 	thumb_func_end object_timefreezeBegin
 
+// symdb: Battle-scene phase that fades the screen to dark (e.g. when the round is decided) and waits for the fade to finish before advancing the object's action state.
+// symdb: void object_dimScreen(BattleObject *obj /* r5 */);  // returns flags/r0-r3 as side effects of
+// symdb: the original: r0 = IsScreenFadeActive result on early return, 0 otherwise
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_dimScreen.yaml
 	thumb_func_start object_dimScreen
 object_dimScreen:
 	push {lr}
@@ -992,6 +1000,10 @@ off_800BF84:
 	.word byte_203CF00
 	thumb_func_end zeroFill_800BF66
 
+// symdb: Reinitializes six two-byte selection slots (counts cleared, values set to a descending 0xE..9 default) and writes 0x8C to a state word, after delegating to a helper whose register results it passes through.
+// symdb: void sub_800BF88(void); // no meaningful inputs; returns caller's r2-r7 unchanged, c/nz/v flags
+// symdb: from the final "mov r0,#9" (c/v from sub_800C4BC)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BF88.yaml
 	thumb_func_start sub_800BF88
 sub_800BF88:
 	push {r4,r6,r7,lr}
@@ -2342,6 +2354,11 @@ dword_800C9F4:
 	.word 0x3F0F
 	thumb_func_end object_crackPanelDup1
 
+// symdb: Breaks the panel under the given object (turning a cracked panel into a hole), playing the panel-break sound, and returns 1 on success or 0 if there is no breakable panel there.
+// symdb: int object_breakPanel(void *object /* r0 */); returns 1 if the panel was broken, 0 otherwise.
+// symdb: Uses r0-r1 on entry (object pointer passed through to object_getPanelDataOffset), clobbers r0-r3
+// symdb: and flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_breakPanel.yaml
 	thumb_func_start object_breakPanel
 object_breakPanel:
 	push {lr}
@@ -3310,6 +3327,11 @@ loc_800D006:
 	pop {r4-r7,pc}
 	thumb_func_end object_getPanelsInColumnFiltered
 
+// symdb: Scans the six columns of one battle row and collects the coordinates of panels passing a filter into a caller-supplied byte buffer.
+// symdb: int object_getPanelsInRowFiltered(u32 row /* r0 */, u32 filterA /* r2 */,
+// symdb: u32 filterB /* r3 */, u8* out /* r7, in-register */); returns r0 = number of panel coordinates
+// symdb: written; r4-r7 preserved; flags clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelsInRowFiltered.yaml
 	thumb_func_start object_getPanelsInRowFiltered
 object_getPanelsInRowFiltered:
 	push {r4-r7,lr}
@@ -4103,6 +4125,8 @@ loc_800D586:
 	add sp, sp, #0x14
 	pop {pc}
 	thumb_func_end sub_800D53C
+
+// symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 
 // symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 
@@ -5210,6 +5234,11 @@ byte_800E58C:
 	.byte 0x0, 0xFF, 0x6, 0x0, 0x1, 0x6, 0x0, 0xFF, 0x1, 0x0, 0x1, 0x1, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
 
+// symdb: Gates an object's use of a panel — validates the panel, then picks per-alliance panel parameters (selected by a panel flag bit) and runs the parameter check on them.
+// symdb: int battle_objectCheckPanelByAlliance(u32 panelParamA, u32 panelParamB, struct BattleObject* obj
+// symdb: /* in r5 */); returns 0 (Z set) for an invalid panel; otherwise returns
+// symdb: object_checkPanelParameters's r1-r3 results and NZCV flags unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectCheckPanelByAlliance_800E5AC.yaml
 	thumb_func_start battle_objectCheckPanelByAlliance_800E5AC
 battle_objectCheckPanelByAlliance_800E5AC:
 	push {r6,r7,lr}
@@ -6071,6 +6100,10 @@ loc_800EB9A:
 	pop {r4,r5,pc}
 	thumb_func_end sub_800EB6C
 
+// symdb: Plays the hit sound and spawns a hit-spark effect (effect type 8) over a battle object when it takes a collision carrying the hit-effect flag.
+// symdb: void object_spawnHiteffect(BattleObject* obj /* r5, object just hit */); preserves r4-r7,r10;
+// symdb: returns nothing meaningful (r0/r1 clobbered by calls)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnHiteffect.yaml
 	thumb_func_start object_spawnHiteffect
 object_spawnHiteffect:
 	push {r4,r6,lr}

@@ -1653,6 +1653,10 @@ NPCCommand_set_animation:
 // e.g. Yuichiro and Generic SciLab NPC share the same sprite, but have certain
 // OAM pieces hidden and use a different palette index
 // byte1 - new sprite id of NPC
+// symdb: NPC script command that assigns a sprite id to an overworld NPC, applying special-case palette/hidden-OAM overrides from a lookup table.
+// symdb: void NPCCommand_set_sprite(OverworldNPCObject* npc /*r5*/, const u8* cmdStream /*r6*/); // sets
+// symdb: nz/c/v from r6 += 2, clobbers r0-r3, preserves r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_sprite.yaml
 NPCCommand_set_sprite:
 	ldrb r0, [r6,#1]
 	strh r0, [r5,#oOverworldNPCObject_NPCSprite]
