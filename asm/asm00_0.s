@@ -2802,8 +2802,8 @@ off_80015B0:
 	.word dword_20018E8
 	thumb_func_end dead_rng_800157C
 
-	thumb_func_start sub_80015B4
-sub_80015B4:
+	thumb_func_start bg_ClearTilesAndReloadGraphics_80015B4
+bg_ClearTilesAndReloadGraphics_80015B4:
 	push {lr}
 	ldr r0, dword_80015C8 // =0x600e000
 	ldr r1, dword_80015CC // =0x2000
@@ -2816,7 +2816,7 @@ dword_80015C8:
 	.word 0x600E000
 dword_80015CC:
 	.word 0x2000
-	thumb_func_end sub_80015B4
+	thumb_func_end bg_ClearTilesAndReloadGraphics_80015B4
 
 	thumb_func_start copyToVRAMAndClear_iBGTileIdBlocks_Ptr
 copyToVRAMAndClear_iBGTileIdBlocks_Ptr:
@@ -3812,7 +3812,7 @@ off_8001C24:
    // 0x8 ???
 	.word sub_8001C52+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
   // 0xc manual palette transform
-	.word sub_8002310+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+	.word sprite_gfxAnimState_GotoNext_8002310+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x10 play sound effect
 	.word sub_800232A+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x14 set or clear event flag
@@ -4801,7 +4801,7 @@ sub_80021CE:
 // r2 = [oGFXAnimData_Param2] - num palettes
 // r3 = [oGFXAnimData_Index] - S20094c0 index
 // r4 = [oGFXAnimData_Param1] - dest?
-sub_8002310: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+sprite_gfxAnimState_GotoNext_8002310: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
 	push {r4,r7}
 	ldr r1, [r0,#oGFXAnimData_ParamNext - oGFXAnimData_ParamNext]
@@ -4814,7 +4814,7 @@ sub_8002310: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	bl sub_8002378
 	pop {r4,r7}
 	pop {pc}
-	thumb_func_end sub_8002310
+	thumb_func_end sprite_gfxAnimState_GotoNext_8002310
 
 	thumb_local_start
 sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()

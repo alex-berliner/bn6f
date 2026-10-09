@@ -332,7 +332,7 @@ loc_80004C0:
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_80015B4
+	bl bg_ClearTilesAndReloadGraphics_80015B4
 	bl copy_800260C
 	bl sub_80027C4
 	bl sub_802FDB0
@@ -351,7 +351,7 @@ loc_80004C0:
 	bl sub_8006910
 	bl sub_803DE5C
 	bl sub_8144240
-	bl sub_803EBC8
+	bl resetAndInitStruct200BC30_803EBC8
 	bl zeroFill_813D960
 	bl reset_flags32_20093A4 // () -> void
 	bl sub_804657C // () -> void

@@ -5392,7 +5392,7 @@ loc_80BA9AC:
 	mov r1, r6
 	push {r0,r1}
 	ldrb r2, [r5,#oBattleObject_Alliance]
-	bl sub_800D618
+	bl object_checkPanelTypeMatchesValue_800D618
 	tst r0, r0
 	pop {r0,r1}
 	beq loc_80BA9E4
@@ -5483,7 +5483,7 @@ loc_80BAA52:
 	mov r1, r6
 	push {r0,r1}
 	ldrb r2, [r5,#oBattleObject_Alliance]
-	bl sub_800D618
+	bl object_checkPanelTypeMatchesValue_800D618
 	tst r0, r0
 	pop {r0,r1}
 	beq loc_80BAA72
@@ -9110,7 +9110,7 @@ sub_80BC494:
 	ldr r4, dword_80BC4E0 // =0x10000 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0x74 
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 	mov r0, #0x20 
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #0xc
@@ -13807,7 +13807,7 @@ snakearmRelatedObject_t1_0x22_sub_80BE76A:
 	ldr r4, dword_80BE794 // =0x10000 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0x74 
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 	mov r0, #0x20 
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #8
@@ -17357,7 +17357,7 @@ sub_80C0116:
 	ldr r4, dword_80C0174 // =0x10000 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0x74 
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 	mov r0, #0x20 
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #0x10
@@ -19694,7 +19694,7 @@ sub_80C1182:
 	ldr r4, dword_80C11A8 // =0x10000 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0x74 
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 	mov r0, #0x20 
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #8
@@ -20093,7 +20093,7 @@ sub_80C1492:
 	ldr r4, dword_80C1564 // =0x10000 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0x74 
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 	mov r0, #0x20 
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #0x10
@@ -24296,7 +24296,7 @@ sub_80C33CA:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_80C33F4
-	bl sub_800FC7C
+	bl battle_drawCardToHand_800FC7C
 	pop {r5}
 loc_80C33F4:
 	mov r0, #3
@@ -24584,7 +24584,7 @@ sub_80C35CE:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	mov r5, r0
 	beq loc_80C3616
-	bl sub_800FC7C
+	bl battle_drawCardToHand_800FC7C
 loc_80C3616:
 	pop {r5}
 	mov r0, #0x27 
@@ -31280,7 +31280,7 @@ off_80C6A48:
 sub_80C6A50:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
-	bl sub_80C6AB8
+	bl battle_refreshObjectCollisionFromExtraVars_80C6AB8
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	ldrb r3, [r0]
 	strb r3, [r7,#oCollisionData_Region]
@@ -31334,7 +31334,7 @@ sub_80C6AAC:
 	thumb_func_end sub_80C6AAC
 
 	thumb_local_start
-sub_80C6AB8:
+battle_refreshObjectCollisionFromExtraVars_80C6AB8:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_ExtraVars]
 	ldrb r3, [r3,#1]
@@ -31350,7 +31350,7 @@ sub_80C6AB8:
 	bl object_setCollisionStatusEffect1
 locret_80C6AD8:
 	pop {pc}
-	thumb_func_end sub_80C6AB8
+	thumb_func_end battle_refreshObjectCollisionFromExtraVars_80C6AB8
 
 	thumb_local_start
 spawn_t3_0x12_80C6ADA:
@@ -31440,7 +31440,7 @@ sub_80C6B64:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r4,#3]
-	bl sub_80C6CFC
+	bl battle_objectDispatchPanelChange_80C6CFC
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_createCollisionData
 	mov r7, r0
@@ -31545,7 +31545,7 @@ loc_80C6C98:
 	mov r3, #0
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	bl sub_80C6CE4
+	bl battle_spawnBasicObjectKind0x16_80C6CE4
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
 loc_80C6CA6:
@@ -31587,7 +31587,7 @@ locret_80C6CE2:
 	thumb_func_end sub_80C6CBA
 
 	thumb_local_start
-sub_80C6CE4:
+battle_spawnBasicObjectKind0x16_80C6CE4:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0x16
@@ -31599,10 +31599,10 @@ sub_80C6CE4:
 	bl BasicBattleObjectInitialize
 locret_80C6CFA:
 	pop {pc}
-	thumb_func_end sub_80C6CE4
+	thumb_func_end battle_spawnBasicObjectKind0x16_80C6CE4
 
 	thumb_local_start
-sub_80C6CFC:
+battle_objectDispatchPanelChange_80C6CFC:
 	push {lr}
 	cmp r2, #0xff
 	bne loc_80C6D04
@@ -31620,7 +31620,7 @@ loc_80C6D0E:
 loc_80C6D18:
 	bl object_setPanelType
 	pop {pc}
-	thumb_func_end sub_80C6CFC
+	thumb_func_end battle_objectDispatchPanelChange_80C6CFC
 
 	thumb_local_start
 sub_80C6D1E:
@@ -37950,7 +37950,7 @@ off_80C9C8C:
 	.word off_80C9C90
 off_80C9C90:
 	.word sub_80C9CA2+1
-	.word sub_80C9CC4+1
+	.word battle_objectDestroyWhenAnimFrameDone_80C9CC4+1
 loc_80C9C98:
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -37979,7 +37979,7 @@ locret_80C9CC2:
 	thumb_func_end sub_80C9CA2
 
 	thumb_local_start
-sub_80C9CC4:
+battle_objectDestroyWhenAnimFrameDone_80C9CC4:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -37990,7 +37990,7 @@ sub_80C9CC4:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C9CD8:
 	pop {pc}
-	thumb_func_end sub_80C9CC4
+	thumb_func_end battle_objectDestroyWhenAnimFrameDone_80C9CC4
 
 	thumb_local_start
 sub_80C9CDA:
@@ -40332,7 +40332,7 @@ off_80CAF04:
 off_80CAF08:
 	.word sub_80CAF14+1
 	.word sub_80CAF9C+1
-	.word sub_80CB078+1
+	.word object_destroyWrapper_80CB078+1
 	thumb_func_end t3_0x38_80CAEF0
 
 	thumb_local_start
@@ -40504,11 +40504,11 @@ byte_80CB070:
 	thumb_func_end sub_80CAFC8
 
 	thumb_local_start
-sub_80CB078:
+object_destroyWrapper_80CB078:
 	push {lr}
 	bl object_genericDestroy
 	pop {pc}
-	thumb_func_end sub_80CB078
+	thumb_func_end object_destroyWrapper_80CB078
 
 	thumb_local_start
 sub_80CB080:
@@ -73258,8 +73258,8 @@ byte_80DA9B8:
 	.byte 0xD8, 0xF, 0x0, 0x0, 0xE8, 0xF, 0x0, 0x0, 0xF0, 0xF
 	thumb_func_end sub_80DA9A2
 
-	thumb_func_start sub_80DA9DC
-sub_80DA9DC:
+	thumb_func_start battle_spawnTypeA9ObjectAtPanel_80DA9DC
+battle_spawnTypeA9ObjectAtPanel_80DA9DC:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0xa9
@@ -73277,7 +73277,7 @@ sub_80DA9DC:
 	strb r1, [r0,#oObjectHeader_Flags]
 locret_80DA9FC:
 	pop {pc}
-	thumb_func_end sub_80DA9DC
+	thumb_func_end battle_spawnTypeA9ObjectAtPanel_80DA9DC
 
 	thumb_func_start sub_80DA9FE
 sub_80DA9FE:
@@ -84590,8 +84590,8 @@ locret_80DFF82:
 	pop {pc}
 	thumb_func_end sub_80DFEE8
 
-	thumb_func_start sub_80DFF84
-sub_80DFF84:
+	thumb_func_start battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84
+battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0xd3
@@ -84607,12 +84607,12 @@ sub_80DFF84:
 	strh r3, [r0,#oBattleObject_AllianceAndDirectionFlip]
 locret_80DFFA0:
 	pop {pc}
-	thumb_func_end sub_80DFF84
+	thumb_func_end battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84
 
 	thumb_local_start
 sub_80DFFA2:
 	push {lr}
-	bl sub_80DFF84
+	bl battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84
 	cmp r0, #0
 	beq locret_80DFFB4
 	ldrb r1, [r0]
@@ -85363,7 +85363,7 @@ off_80E0678:
 	.word off_80E067C
 off_80E067C:
 	.word sub_80E0684+1
-	.word sub_80E06E0+1
+	.word battle_object_teardownAndFree_80E06E0+1
 	thumb_func_end sub_80E0668
 
 	thumb_local_start
@@ -85417,7 +85417,7 @@ off_80E06DC:
 	thumb_func_end sub_80E0684
 
 	thumb_local_start
-sub_80E06E0:
+battle_object_teardownAndFree_80E06E0:
 	push {lr}
 	mov r0, #0
 	bl sub_800AA92
@@ -85428,10 +85428,10 @@ sub_80E06E0:
 	bl object_freeMemory
 locret_80E06F6:
 	pop {pc}
-	thumb_func_end sub_80E06E0
+	thumb_func_end battle_object_teardownAndFree_80E06E0
 
-	thumb_func_start sub_80E06F8
-sub_80E06F8:
+	thumb_func_start battle_spawnType4ObjectWithActiveFlag_80E06F8
+battle_spawnType4ObjectWithActiveFlag_80E06F8:
 	push {r4,r5,lr}
 	mov r0, #2
 	bl object_spawnType4
@@ -85444,7 +85444,7 @@ sub_80E06F8:
 	.balign 4, 0
 off_80E070C:
 	.word 0x400
-	thumb_func_end sub_80E06F8
+	thumb_func_end battle_spawnType4ObjectWithActiveFlag_80E06F8
 
 	thumb_func_start t4_0x3_80E0710
 t4_0x3_80E0710:
@@ -85599,7 +85599,7 @@ off_80E0854:
 	.word off_80E0858
 off_80E0858:
 	.word sub_80E0864+1
-	.word sub_80E08A6+1
+	.word sprite_updateDestroyWhenAnimEnds_80E08A6+1
 	.word object_freeMemory+1
 	thumb_func_end t4_0x4_80E0844
 
@@ -85634,7 +85634,7 @@ sub_80E0864:
 	thumb_func_end sub_80E0864
 
 	thumb_local_start
-sub_80E08A6:
+sprite_updateDestroyWhenAnimEnds_80E08A6:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -85649,7 +85649,7 @@ sub_80E08A6:
 loc_80E08BE:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80E08A6
+	thumb_func_end sprite_updateDestroyWhenAnimEnds_80E08A6
 
 	thumb_func_start sub_80E08C4
 sub_80E08C4:
@@ -88069,8 +88069,8 @@ battle_object_freeWithPhaseReset_80E1A5E:
 	pop {pc}
 	thumb_func_end battle_object_freeWithPhaseReset_80E1A5E
 
-	thumb_func_start sub_80E1A6A
-sub_80E1A6A:
+	thumb_func_start battle_spawnLinkedObject_80E1A6A
+battle_spawnLinkedObject_80E1A6A:
 	push {lr}
 	push {r5}
 	mov r0, #0x11
@@ -88086,7 +88086,7 @@ loc_80E1A82:
 	str r7, [r0,#oBattleObject_ExtraVars]
 locret_80E1A84:
 	pop {pc}
-	thumb_func_end sub_80E1A6A
+	thumb_func_end battle_spawnLinkedObject_80E1A6A
 
 	thumb_func_start sub_80E1A86
 sub_80E1A86:
@@ -88450,7 +88450,7 @@ off_80E1D08:
 	.word off_80E1D0C
 off_80E1D0C:
 	.word sub_80E1D18+1
-	.word sub_80E1D54+1
+	.word battle_objectFlyAnimUpdateAndDestroy_80E1D54+1
 	.word battle_objectFreeWrapper_80E1D72+1
 	thumb_func_end t4_0x14_80E1CF8
 
@@ -88478,12 +88478,12 @@ sub_80E1D18:
 	str r0, [r5,#oBattleObject_ZVelocity]
 	mov r0, #CUR_STATE_UPDATE
 	strb r0, [r5,#oBattleObject_CurState]
-	bl sub_80E1D54
+	bl battle_objectFlyAnimUpdateAndDestroy_80E1D54
 	pop {pc}
 	thumb_func_end sub_80E1D18
 
 	thumb_local_start
-sub_80E1D54:
+battle_objectFlyAnimUpdateAndDestroy_80E1D54:
 	push {lr}
 	bl sprite_update
 	ldr r0, [r5,#oBattleObject_Z]
@@ -88498,7 +88498,7 @@ sub_80E1D54:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80E1D70:
 	pop {pc}
-	thumb_func_end sub_80E1D54
+	thumb_func_end battle_objectFlyAnimUpdateAndDestroy_80E1D54
 
 // symdb: Trivial destructor wrapper that releases a battle object's memory slot back to the object pool via object_freeMemory.
 // symdb: void battle_objectFreeWrapper(object* obj /* r0 */); tail-calls object_freeMemory(r0)
@@ -90601,7 +90601,7 @@ loc_80E2DA0:
 	mov r0, r6
 	mov r1, r7
 	ldrb r2, [r5,#oBattleObject_Alliance]
-	bl sub_800D618
+	bl object_checkPanelTypeMatchesValue_800D618
 	tst r0, r0
 	beq loc_80E2DCE
 	mov r0, r6
@@ -97975,7 +97975,7 @@ sub_80E621C:
 	lsl r4, r4, #8
 	add r4, #2
 	mov r7, #0
-	bl sub_80E1A6A
+	bl battle_spawnLinkedObject_80E1A6A
 locret_80E624C:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -107150,7 +107150,7 @@ playerObject_update_80EA484:
   // Disabling this causes the pink ring around MegaMan to no longer appear when we hit a counter
 	bl sub_80139C4
 
-	bl sub_80100EC
+	bl battle_refreshNaviSpritePaletteFromForm_80100EC
 
 	bl battle_isPaused
 	bne locret_80EA4BE
@@ -107363,10 +107363,10 @@ loc_80EA764:
 	pop {pc}
 loc_80EA778:
 	bl sub_8012EA8
-	bl sub_801A264
+	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	mov r0, #0x42 
 	bl dispatch_801DACC // (a0: flags32) -> ()
-	bl sub_802DD2A
+	bl battle_isAllianceActiveAndAiFlag0x4000_802DD2A
 	tst r0, r0
 	beq loc_80EA79A
 	mov r0, #1
@@ -107641,10 +107641,10 @@ nullsub_105:
 // EXE6F: 80f05f0, EXE6G: 80f1920
 AIAttackJumptable:
 	.word sub_80EB04C+1 // 0x10
-	.word sub_80EB436+1 // 0x11
+	.word battle_aiAttackDispatch_80EB436+1 // 0x11
 	.word sub_80EB628+1 // 0x12
 	.word sub_80EB776+1 // 0x13
-	.word sub_80EBC0E+1 // 0x14
+	.word aiAttack_dispatchStateHandler_80EBC0E+1 // 0x14
 	.word sub_80EBD9C+1 // 0x15
 	.word megamanChargeShotAiAttack_80EBE00+1 // 0x16
 	.word sub_80EBF10+1 // 0x17
@@ -107657,7 +107657,7 @@ AIAttackJumptable:
 	.word sub_80EC5BC+1 // 0x1e
 	.word sub_80EC7A6+1 // 0x1f
 	.word sub_80EC844+1 // 0x20
-	.word sub_80EC884+1 // 0x21
+	.word battle_aiAttackStateDispatch_80EC884+1 // 0x21
 	.word sub_80EC960+1 // 0x22
 	.word sub_80ECA34+1 // 0x23
 	.word sub_80ECACA+1 // 0x24
@@ -107957,7 +107957,7 @@ sub_80EAF36:
 	ldr r3, dword_80EB048 // =0xffff 
 	cmp r0, r3
 	beq loc_80EAF80
-	bl sub_800FC7C
+	bl battle_drawCardToHand_800FC7C
 	mov r1, #0x1e
 	add r1, r1, r7
 	mov r0, #4
@@ -108255,7 +108255,7 @@ sub_80EB1C4:
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
 	cmp r0, #1
 	beq loc_80EB1E0
-	bl sub_8013FAE
+	bl battle_RollNaviStatChance_8013FAE
 	tst r0, r0
 	beq loc_80EB1E0
 	ldrb r0, [r7,#oAIAttackVars_Unk_0c]
@@ -108572,7 +108572,7 @@ loc_80EB432:
 	thumb_func_end sub_80EB402
 
 	thumb_local_start
-sub_80EB436:
+battle_aiAttackDispatch_80EB436:
 	push {lr}
 	ldr r1, off_80EB444 // =jt_80EB448 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -108585,7 +108585,7 @@ off_80EB444:
 jt_80EB448:
 	.word sub_80EB450+1
 	.word sub_80EB502+1
-	thumb_func_end sub_80EB436
+	thumb_func_end battle_aiAttackDispatch_80EB436
 
 	thumb_local_start
 sub_80EB450:
@@ -108843,7 +108843,7 @@ off_80EB638:
 	.word off_80EB63C
 off_80EB63C:
 	.word sub_80EB644+1
-	.word sub_80EB758+1
+	.word aiAttackTimerTick_80EB758+1
 	thumb_func_end sub_80EB628
 
 	thumb_local_start
@@ -108961,7 +108961,7 @@ byte_80EB738:
 	thumb_func_end sub_80EB644
 
 	thumb_local_start
-sub_80EB758:
+aiAttackTimerTick_80EB758:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -108978,7 +108978,7 @@ loc_80EB768:
 	bl object_exitAttackState
 locret_80EB774:
 	pop {pc}
-	thumb_func_end sub_80EB758
+	thumb_func_end aiAttackTimerTick_80EB758
 
 	thumb_local_start
 sub_80EB776:
@@ -109498,7 +109498,7 @@ locret_80EBC0C:
 	thumb_func_end sub_80EBBE2
 
 	thumb_local_start
-sub_80EBC0E:
+aiAttack_dispatchStateHandler_80EBC0E:
 	push {lr}
 	ldr r1, off_80EBC1C // =off_80EBC20 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -109511,7 +109511,7 @@ off_80EBC1C:
 off_80EBC20:
 	.word sub_80EBC28+1
 	.word sub_80EBD3C+1
-	thumb_func_end sub_80EBC0E
+	thumb_func_end aiAttack_dispatchStateHandler_80EBC0E
 
 	thumb_local_start
 sub_80EBC28:
@@ -110440,7 +110440,7 @@ loc_80EC308:
 	lsl r0, r0, #0x16
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_clearInvulnerableTime
-	bl sub_80142C2
+	bl battle_applySelfDamageFromBattleEffect_80142C2
 	mov r0, #1
 	bl object_setCollisionRegion
 	bl object_exitAttackState
@@ -111115,7 +111115,7 @@ byte_80EC870:
 	thumb_func_end sub_80EC844
 
 	thumb_local_start
-sub_80EC884:
+battle_aiAttackStateDispatch_80EC884:
 	push {lr}
 	ldr r1, off_80EC894 // =off_80EC898 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -111129,7 +111129,7 @@ off_80EC894:
 off_80EC898:
 	.word sub_80EC8A0+1
 	.word sub_80EC90E+1
-	thumb_func_end sub_80EC884
+	thumb_func_end battle_aiAttackStateDispatch_80EC884
 
 	thumb_local_start
 sub_80EC8A0:
@@ -113066,7 +113066,7 @@ sub_80ED6CA:
 	ldrb r2, [r7,#oAIAttackVars_Unk_02]
 	ldr r4, [r7,#oAIAttackVars_Unk_0c]
 	mov r3, #0
-	bl sub_80C6CE4
+	bl battle_spawnBasicObjectKind0x16_80C6CE4
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80ED6CA
 
@@ -117989,7 +117989,7 @@ loc_80EFBBE:
 	mov r0, #0x40 
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_clearInvulnerableTime
-	bl sub_80142C2
+	bl battle_applySelfDamageFromBattleEffect_80142C2
 	bl battle_IsNoCustomPlusActive_80107C0
 	mov r0, r3
 	bl battle_SetObjectHitModifier_8019F86
@@ -119227,7 +119227,7 @@ loc_80F05DE:
 	ldrb r0, [r3,#oAIAttackVars_Unk_1c]
 	cmp r0, #5
 	beq loc_80F05F2
-	bl sub_800FC7C
+	bl battle_drawCardToHand_800FC7C
 loc_80F05F2:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -167009,7 +167009,7 @@ sub_8107E66:
 	beq loc_8107E74
 	// whoops! lr isn't preserved, so this function call overwrites it.
 	// but because this function that it common branches to performs pop {pc}
-	// and the caller of this function (sub_800F3E8 -> indexByActorTypeAndAIIdxThenDispatch_800F420) calls this
+	// and the caller of this function (ai_dispatchByTypeAndIndex_800F3E8 -> indexByActorTypeAndAIIdxThenDispatch_800F420) calls this
 	// function right before a pop {pc}, this doesn't do anything harmful
 	bl sub_80C46B6
 	b loc_8107E74
@@ -169341,7 +169341,7 @@ battle_8108F74:
 	ldrh r1, [r0,r1]
 	cmp r1, #0
 	beq loc_8108FA0
-	bl sub_801A264
+	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	mov r0, #0x6e 
 	bl PlaySoundEffect
 loc_8108FA0:
@@ -170603,7 +170603,7 @@ off_8109B74:
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_8109B9C+1
@@ -170724,7 +170724,7 @@ off_8109CF8:
 	.word sub_8109D08+1
 	.word sub_8109D70+1
 	.word sub_8109D98+1
-	.word sub_8109DBA+1
+	.word ai_attackTickDown_timerEndExit_8109DBA+1
 	thumb_func_end sub_8109CE6
 
 	thumb_local_start
@@ -170819,7 +170819,7 @@ locret_8109DB8:
 	thumb_func_end sub_8109D98
 
 	thumb_local_start
-sub_8109DBA:
+ai_attackTickDown_timerEndExit_8109DBA:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170832,7 +170832,7 @@ sub_8109DBA:
 	bl object_exitAttackState
 locret_8109DD0:
 	pop {pc}
-	thumb_func_end sub_8109DBA
+	thumb_func_end ai_attackTickDown_timerEndExit_8109DBA
 
 	thumb_local_start
 sub_8109DD2:
@@ -170884,7 +170884,7 @@ loc_8109E1A:
 	mov r3, #0
 	ldrb r4, [r7,#oAIAttackVars_Unk_0c]
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80C6CE4
+	bl battle_spawnBasicObjectKind0x16_80C6CE4
 	mov r0, #1
 	ldr r1, [r7,#oAIAttackVars_Unk_30]
 	str r0, [r1]
@@ -171007,7 +171007,7 @@ ForMettaur_8109EF4:
 	// 0x00 (0x00) (CurAction -> 0x01)
 	.word RunSpawnAnimationMaybe_8016380+1
 	// 0x04 (0x01) (CurAction -> 0x08)
-	.word sub_8109F4C+1
+	.word battle_objFirstPhaseInitAndCommonUpdate_8109F4C+1
 	// 0x08 (0x02)
 	// disabling this causes game to freeze on mettaur getting hit
 	.word battle_objectTickWithExtraHandler_8109F6A+1
@@ -171044,7 +171044,7 @@ byte_8109F46:
 	thumb_func_end sub_8109EE4
 
 	thumb_local_start
-sub_8109F4C:
+battle_objFirstPhaseInitAndCommonUpdate_8109F4C:
 	push {lr}
 
 	ldrb r0, [r5,#oBattleObject_CurPhase]
@@ -171061,7 +171061,7 @@ sub_8109F4C:
 loc_8109F64:
 	bl sub_80165B8
 	pop {pc}
-	thumb_func_end sub_8109F4C
+	thumb_func_end battle_objFirstPhaseInitAndCommonUpdate_8109F4C
 
 // symdb: Per-frame update for a battle object; runs the object's phase-0 extra handler (if any), then advances its phase logic.
 // symdb: void battle_objectTickWithExtraHandler(battle_object_t* obj /* r5 */); no useful return value
@@ -171131,7 +171131,7 @@ locret_8109FC2:
 	thumb_func_end sub_8109FA2
 
 // symdb: Per-frame phase bookkeeping for a battle object: clears the object's Param4 byte when the object is still in phase 0, then runs the shared per-object update routine.
-// symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from sub_8016CE8's
+// symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from battleObjectStateDispatcher_8016CE8's
 // symdb: tail
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_updatePhaseTick_8109FC4.yaml
 	thumb_local_start
@@ -171143,7 +171143,7 @@ battle_object_updatePhaseTick_8109FC4:
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_Param4]
 loc_8109FD0:
-	bl sub_8016CE8
+	bl battleObjectStateDispatcher_8016CE8
 	pop {pc}
 	thumb_func_end battle_object_updatePhaseTick_8109FC4
 
@@ -171833,7 +171833,7 @@ off_810A550:
 	.word sub_810A5C2+1
 	.word sub_80166AE+1
 	.word sub_810A5D6+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810A5EA+1
@@ -172324,7 +172324,7 @@ off_810A9EC:
 	.word sub_810AA90+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810AA72+1
@@ -173429,7 +173429,7 @@ off_810B2D0:
 	.word sub_810B338+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810B350+1
@@ -174865,7 +174865,7 @@ loc_810BE88:
 	thumb_local_start
 sub_810BE8E:
 	push {lr}
-	bl sub_8016CE8
+	bl battleObjectStateDispatcher_8016CE8
 	bl sub_810BD40
 	beq locret_810BEB0
 	bl sub_810BDF4
@@ -175102,7 +175102,7 @@ sub_810C0E4:
 	mov r3, #0
 	ldrb r4, [r7,#oAIAttackVars_Unk_03]
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80C6CE4
+	bl battle_spawnBasicObjectKind0x16_80C6CE4
 	ldrb r0, [r7,#oAIAttackVars_Unk_0e]
 	cmp r0, #0
 	beq loc_810C120
@@ -175152,7 +175152,7 @@ off_810C170:
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810C1D8+1

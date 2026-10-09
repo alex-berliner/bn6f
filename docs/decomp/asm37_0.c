@@ -1,5 +1,5 @@
 // 0x813b768
-int sub_813B768()
+int toolkit_resetToolState_813B768()
 {
     int v0; // r10
 
@@ -1458,7 +1458,7 @@ int applyNaviStatsMaybe_813C458()
 
 
 // 0x813c490
-signed int sub_813C490()
+signed int checkCurPETNaviStats1FIsOne_813C490()
 {
     signed int v0; // r4
 
@@ -2127,7 +2127,7 @@ int sub_813CBCC()
     void (*v2)(void); // r1
 
     ClearEventFlagFromImmediate(23, 32);
-    if ( sub_813C490() == 1 )
+    if ( checkCurPETNaviStats1FIsOne_813C490() == 1 )
         return sub_813C020();
     v1 = 1;
     do

@@ -2177,7 +2177,7 @@ signed int __fastcall chatbox_804198C(int a1, int a2, int a3, int a4)
 
 
 // 0x80419b4
-signed int chatbox_80419B4()
+signed int chatbox_startCurNaviScript_80419B4()
 {
     int v0; // r4
     int v1; // r0
@@ -2712,7 +2712,7 @@ int chatbox_8041EE8()
 
     chatbox_setflags_3e(1);
     *(v1 + 60) = *(*(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 20);
-    sub_809E14C(*(v0 + 2));
+    owPlayer_RequestFixedAnimation_809E14C(*(v0 + 2));
     return 0;
 }
 
@@ -2748,7 +2748,7 @@ int chatbox_8041F44()
     v2 = *(v0 + 60);
     if ( v2 <= 7 )
         *(*(*(v1 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 16) = v2;
-    sub_809E14C(v2);
+    owPlayer_RequestFixedAnimation_809E14C(v2);
     return 0;
 }
 

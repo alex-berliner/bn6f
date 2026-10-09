@@ -556,7 +556,7 @@ loc_8026858:
 	bl sub_8029F70
 	tst r0, r0
 	beq loc_8026898
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r0, #5
 	beq loc_8026898
 	bl sub_8029EC8
@@ -613,7 +613,7 @@ loc_80268AC:
 	bl sub_8029F70
 	tst r0, r0
 	beq loc_802690E
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r0, #5
 	beq loc_802690E
 	bl sub_8029EF8
@@ -642,7 +642,7 @@ loc_8026936:
 	mov r1, #5
 	cmp r0, r1
 	bne loc_802694C
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	tst r3, r3
 	bne loc_802694C
 	mov r0, #5
@@ -779,7 +779,7 @@ off_8026A38:
 off_8026A3C:
 	.word sub_8026A50+1 // (self: * S20364C0 $r5) -> u8
 	.word custMenuMainMaybe_8026A88+1 // (self: * S20364C0 $r5) -> u8
-	.word sub_8026A6C+1 // (self: * S20364C0 $r5) -> u8
+	.word object_runFrameUpdate_8026A6C+1 // (self: * S20364C0 $r5) -> u8
 	.word 0x100
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
@@ -801,7 +801,7 @@ sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	thumb_func_end sub_8026A50
 
 	thumb_local_start
-sub_8026A6C: // (self: * S20364C0 $r5) -> u8
+object_runFrameUpdate_8026A6C: // (self: * S20364C0 $r5) -> u8
 	push {lr}
 	bl sub_8027D78
 	ldrb r0, [r5,#0xe]
@@ -811,7 +811,7 @@ sub_8026A6C: // (self: * S20364C0 $r5) -> u8
 	bl sub_802A0F8
 	ldrb r0, [r5,#4]
 	pop {pc}
-	thumb_func_end sub_8026A6C
+	thumb_func_end object_runFrameUpdate_8026A6C
 
 	thumb_local_start
 custMenuMainMaybe_8026A88: // (self: * S20364C0 $r5) -> u8
@@ -1791,7 +1791,7 @@ loc_802719E:
 loc_80271A0:
 	mov r1, #0
 	bl sub_80281E4
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #0
 	mov r1, #0x20 
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -1864,7 +1864,7 @@ sub_802721C:
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
 	mov r1, #2
 	strb r1, [r0,#7]
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #4
 	strh r0, [r5,#2]
 	pop {pc}
@@ -1905,7 +1905,7 @@ loc_802726A:
 loc_802727A:
 	bl sub_8029688
 loc_802727E:
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #0x14
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -2310,7 +2310,7 @@ loc_8027526:
 	mov r0, #0x83
 	add r0, #0xff
 	bl PlaySoundEffect
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	pop {pc}
 	thumb_func_end sub_802750C
 
@@ -2533,7 +2533,7 @@ loc_80276AA:
 	lsr r0, r0, #0x17
 	mov r1, #0
 	bl sprite_CopyObjTilesToVramSlot_80281D4
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #0x60 
 	mov r1, #8
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -2652,7 +2652,7 @@ locret_8027794:
 sub_8027796:
 	push {r4,r6,lr}
 	mov r4, #0
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r0, #1
 	bne loc_80277A4
 	mov r4, #0xc
@@ -2693,7 +2693,7 @@ loc_80277DA:
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
 	mov r1, #2
 	strb r1, [r0,#7]
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #0x60 
 	mov r1, #8
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -2960,7 +2960,7 @@ loc_80279E6:
 	bl sub_8029CD4
 	sub r4, #1
 	bpl loc_80279D8
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	pop {r4,pc}
 	.balign 4, 0x00
 	.word 0x1FF
@@ -3362,7 +3362,7 @@ sub_8027D78:
 	bl eStruct2035280_SetRequestBits_801BECC
 	ldr r0, off_8027E14 // =0x400 
 	bl dispatch_801DA48
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	bne locret_8027E10
 	mov r0, r10
@@ -3382,7 +3382,7 @@ loc_8027DC0:
 	bl sub_801DEEE
 	b locret_8027E10
 loc_8027DCE:
-	bl sub_801DED0
+	bl custGauge_Init_801DED0
 	b locret_8027E10
 loc_8027DD4:
 	bl battle_testFlag0x40_800A8F8
@@ -3606,7 +3606,7 @@ loc_8027F46:
 	beq loc_8027F64
 	cmp r0, #0xb
 	beq loc_8027F64
-	bl sub_8027F6A
+	bl battle_clearActiveChipIfMegaGiga_8027F6A
 	bl sub_8027F84
 	bl sub_8027FDC
 loc_8027F64:
@@ -3616,7 +3616,7 @@ loc_8027F64:
 	thumb_func_end sub_8027F42
 
 	thumb_local_start
-sub_8027F6A:
+battle_clearActiveChipIfMegaGiga_8027F6A:
 	push {r7,lr}
 	ldrb r0, [r7,#1]
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -3631,7 +3631,7 @@ loc_8027F7E:
 	strb r0, [r7,#1]
 locret_8027F82:
 	pop {r7,pc}
-	thumb_func_end sub_8027F6A
+	thumb_func_end battle_clearActiveChipIfMegaGiga_8027F6A
 
 	thumb_local_start
 sub_8027F84:
@@ -3961,7 +3961,7 @@ byte_802819C:
 	thumb_func_end sub_8028172
 
 	thumb_local_start
-sub_80281A8:
+battle_getChipElementData_80281A8:
 	push {r1,r2,lr}
 	ldr r2, dword_80283AC // =0x1ff 
 	and r0, r2
@@ -3976,16 +3976,16 @@ loc_80281B6:
 	.balign 4, 0
 off_80281C0:
 	.word byte_86E601C
-	thumb_func_end sub_80281A8
+	thumb_func_end battle_getChipElementData_80281A8
 
 // symdb: Queues one 0x80-byte chunk of a graphics DMA transfer, using a helper to set up the next source/destination pair.
 // symdb: gfx_QueueNextChunkedGfxTransfer(u32 src /*r0*/, u32 dest /*r1*/, ... /*r3 = context for
-// symdb: sub_80281A8*/) -> u32 /*r1 = dest + 0x80*/; preserves r2-r7
+// symdb: battle_getChipElementData_80281A8*/) -> u32 /*r1 = dest + 0x80*/; preserves r2-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_QueueNextChunkedGfxTransfer_80281C4.yaml
 	thumb_local_start
 gfx_QueueNextChunkedGfxTransfer_80281C4:
 	push {r2,r3,lr}
-	bl sub_80281A8
+	bl battle_getChipElementData_80281A8
 	mov r2, #0x80
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	add r1, #0x80
@@ -4069,7 +4069,7 @@ off_8028234:
 	thumb_func_end data_getRecordPtrById_8028214
 
 	thumb_local_start
-sub_8028238:
+sprite_clearObjVramEntry_8028238:
 	push {lr}
 	mov r1, #0xc0
 	mul r0, r1
@@ -4081,7 +4081,7 @@ sub_8028238:
 	.balign 4, 0
 dword_802824C:
 	.word 0x6009C20
-	thumb_func_end sub_8028238
+	thumb_func_end sprite_clearObjVramEntry_8028238
 
 	thumb_local_start
 sub_8028250:
@@ -4105,7 +4105,7 @@ loc_8028260:
 	pop {r0}
 	cmp r0, #0
 	bne loc_802827E
-	bl sub_80283B0
+	bl bg_ReloadTileBlock3Screen_80283B0
 	b locret_8028282
 loc_802827E:
 	bl sub_80283C8
@@ -4219,7 +4219,7 @@ battle_endActionSetup_8028310:
 	thumb_func_end battle_endActionSetup_8028310
 
 	thumb_local_start
-sub_8028320:
+battle_loadGfxChunkBySelector_8028320:
 	push {lr}
 	cmp r7, #1
 	bne loc_8028334
@@ -4236,7 +4236,7 @@ loc_8028334:
 	add r1, #0xc0
 locret_802833E:
 	pop {pc}
-	thumb_func_end sub_8028320
+	thumb_func_end battle_loadGfxChunkBySelector_8028320
 
 	thumb_local_start
 sub_8028340:
@@ -4275,7 +4275,7 @@ off_8028370:
 	.word sub_8028340+1
 	.word nullsub_14+1
 	.word battle_endActionSetup_8028310+1
-	.word sub_8028320+1
+	.word battle_loadGfxChunkBySelector_8028320+1
 off_80283A0:
 	.word byte_86E79CC
 off_80283A4:
@@ -4287,7 +4287,7 @@ dword_80283AC:
 	thumb_func_end sub_8028340
 
 	thumb_local_start
-sub_80283B0:
+bg_ReloadTileBlock3Screen_80283B0:
 	push {r4,r5,lr}
 	bl sub_80283C8
 	// j
@@ -4302,7 +4302,7 @@ sub_80283B0:
 	mov r5, #6
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4,r5,pc}
-	thumb_func_end sub_80283B0
+	thumb_func_end bg_ReloadTileBlock3Screen_80283B0
 
 	thumb_local_start
 sub_80283C8:
@@ -5457,10 +5457,10 @@ sub_8028CCC:
 	mov r2, #0
 	bl sub_8029CD4
 	ldrb r0, [r5,#7]
-	bl sub_8028238
+	bl sprite_clearObjVramEntry_8028238
 	mov r0, #2
 	strb r0, [r4,#7]
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	mov r0, #1
@@ -5653,7 +5653,7 @@ nullsub_59:
 	thumb_func_end nullsub_59
 
 	thumb_local_start
-sub_8028E32:
+customScreen_ExitSequence_8028E32:
 	push {lr}
 	bl sub_8028E4C
 	bl updateCustomScreen_WhenUnselectingChip_8028EC8 // () -> void
@@ -5662,7 +5662,7 @@ sub_8028E32:
 	mov r0, #0
 	bl sub_8028250
 	pop {pc}
-	thumb_func_end sub_8028E32
+	thumb_func_end customScreen_ExitSequence_8028E32
 
 	thumb_local_start
 sub_8028E4C:
@@ -6051,7 +6051,7 @@ loc_80290F2:
 	mov r0, #0
 	strb r0, [r4,#7]
 loc_80290F6:
-	bl sub_8028E32
+	bl customScreen_ExitSequence_8028E32
 	bl sub_8028476
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
@@ -6388,7 +6388,7 @@ sub_8029344:
 	mov r0, #0
 	bl sub_802A11C
 	mov r6, r0
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r0, #1
 	bne loc_802935A
 	ldr r4, dword_80293E4 // =0x18 
@@ -6417,7 +6417,7 @@ loc_8029368:
 sub_802937A:
 	push {r0-r4,lr}
 	ldr r4, dword_80293E8 // =0x6 
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r1, #0xb
 	blt loc_8029388
 	ldr r4, dword_80293EC // =0x12 
@@ -7429,7 +7429,7 @@ sub_8029A1E:
 	ldrb r0, [r5,#7]
 	cmp r0, #0xb
 	bne loc_8029A32
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	tst r3, r3
 	bne loc_8029A32
 	mov r0, #0x26 
@@ -7897,7 +7897,7 @@ off_8029D30:
 	thumb_local_start
 sub_8029D34:
 	push {r4,r5,lr}
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	cmp r0, #0
 	beq locret_8029D5E
 	ldr r0, [r5,#0x40]
@@ -8930,7 +8930,7 @@ dword_802A560:
 	thumb_func_end getChipID_802A54E
 
 	thumb_local_start
-sub_802A564:
+battle_getActorEmotion_802A564:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -8944,13 +8944,13 @@ loc_802A578:
 	bl sub_8015B5C
 locret_802A57C:
 	pop {pc}
-	thumb_func_end sub_802A564
+	thumb_func_end battle_getActorEmotion_802A564
 
 	thumb_local_start
 sub_802A57E:
 	push {r4,lr}
 	mov r4, #0
-	bl sub_802A564
+	bl battle_getActorEmotion_802A564
 	cmp r0, #5
 	beq loc_802A59C
 	cmp r0, #1
@@ -10040,7 +10040,7 @@ sub_802AED8:
 	push {lr}
 	bl sub_802AFD4
 	bne locret_802AEE8
-	bl sub_800AABC
+	bl battle_stateGotoPhase14_800AABC
 	mov r0, #8
 	strb r0, [r5]
 locret_802AEE8:
@@ -11781,7 +11781,7 @@ off_802BEA4:
 	.word sub_802BEB4+1
 	.word sub_802BF4C+1
 	.word sub_802C170+1
-	.word sub_802C1D4+1
+	.word runObjectStateHandler_802C1D4+1
 	thumb_func_end sub_802BE90
 
 	thumb_local_start
@@ -12238,7 +12238,7 @@ locret_802C1CC:
 	thumb_func_end sub_802C170
 
 	thumb_local_start
-sub_802C1D4:
+runObjectStateHandler_802C1D4:
 	push {lr}
 	ldr r1, off_802C1E4 // =off_802C1E8 
 	ldrb r0, [r5,#3]
@@ -12252,7 +12252,7 @@ off_802C1E4:
 off_802C1E8:
 	.word sub_802C1F0+1
 	.word sub_802C218+1
-	thumb_func_end sub_802C1D4
+	thumb_func_end runObjectStateHandler_802C1D4
 
 	thumb_local_start
 sub_802C1F0:
@@ -15454,8 +15454,8 @@ loc_802D822:
 loc_802D88C:
 	bl battle_objectNameIdToPopupHandler_8010DD0
 loc_802D890:
-	bl sub_800F378
-	bl sub_801A264
+	bl battle_dispatchActorByTypeAndAIIdx_800F378
+	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	bl sub_80143A6
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -15636,7 +15636,7 @@ sub_802D9B0:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r2, #0
 	bl sub_8011268
-	bl sub_801A264
+	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	bl battle_beginTurnOpenProcess_80144C0
 	bl sub_80143B4
 	mov r1, #0x40 
@@ -15838,7 +15838,7 @@ sub_802DB80:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r2, #0
 	bl sub_8011268
-	bl sub_801A264
+	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	bl battle_beginTurnOpenProcess_80144C0
 	bl sub_80143B4
 	mov r1, #0x40 
@@ -16001,8 +16001,8 @@ loc_802DD26:
 	pop {r5,r7,pc}
 	thumb_func_end sub_802DD1E
 
-	thumb_func_start sub_802DD2A
-sub_802DD2A:
+	thumb_func_start battle_isAllianceActiveAndAiFlag0x4000_802DD2A
+battle_isAllianceActiveAndAiFlag0x4000_802DD2A:
 	push {r7,lr}
 	mov r7, #0
 	mov r1, #0x29 
@@ -16018,7 +16018,7 @@ sub_802DD2A:
 loc_802DD46:
 	mov r0, r7
 	pop {r7,pc}
-	thumb_func_end sub_802DD2A
+	thumb_func_end battle_isAllianceActiveAndAiFlag0x4000_802DD2A
 
 	thumb_local_start
 sub_802DD4A:
@@ -16320,8 +16320,8 @@ locret_802DFFA:
 	pop {r4,pc}
 	thumb_func_end sub_802DFC8
 
-	thumb_func_start sub_802DFFC
-sub_802DFFC:
+	thumb_func_start battle_initWorkArea_802DFFC
+battle_initWorkArea_802DFFC:
 	push {r4,lr}
 
 	// memBlock
@@ -16337,7 +16337,7 @@ sub_802DFFC:
 	bl zeroFill_802E544
 
 	pop {r4,pc}
-	thumb_func_end sub_802DFFC
+	thumb_func_end battle_initWorkArea_802DFFC
 
 	thumb_func_start zeroFill_802E014
 zeroFill_802E014:
@@ -18514,8 +18514,8 @@ off_802F0D4:
 	.word 630 * 2
 	thumb_func_end toolkit_ClearAllEventFlags_802F0C4
 
-	thumb_func_start sub_802F0D8
-sub_802F0D8:
+	thumb_func_start eventflags_ClearTwoHalfwordsAt2DE_802F0D8
+eventflags_ClearTwoHalfwordsAt2DE_802F0D8:
 	push {lr}
 	ldr r0, dword_802F0EC // =0x2de 
 	mov r1, r10
@@ -18529,10 +18529,10 @@ dword_802F0EC:
 	.word 0x2DE
 dword_802F0F0:
 	.word 0x2
-	thumb_func_end sub_802F0D8
+	thumb_func_end eventflags_ClearTwoHalfwordsAt2DE_802F0D8
 
-	thumb_func_start sub_802F0F4
-sub_802F0F4:
+	thumb_func_start eventFlags_ClearRangeAt2C8_802F0F4
+eventFlags_ClearRangeAt2C8_802F0F4:
 	push {lr}
 	ldr r0, off_802F108 // =0x2c8 
 	mov r1, r10
@@ -18546,7 +18546,7 @@ off_802F108:
 	.word 0x2C8
 dword_802F10C:
 	.word 0x16
-	thumb_func_end sub_802F0F4
+	thumb_func_end eventFlags_ClearRangeAt2C8_802F0F4
 
 // The following event flag related functions have an additional way to enter the function
 // where it interprets the event flag as two 8 bit registers
@@ -24687,8 +24687,8 @@ off_8031B0C:
 jt_8031B10:
 	.word 0x0
 	.word sub_8031B9A+1 // 0x01
-	.word sub_8031BB2+1 // 0x02
-	.word sub_8031BCA+1 // 0x03
+	.word text_setupTextboxAndStartPrint_8031BB2+1 // 0x02
+	.word textbox_StepAndRefreshWindow_8031BCA+1 // 0x03
 	.word sub_8031BE2+1 // 0x04
 	.word 0x0 // 0x05
 	.word 0x0 // 0x06
@@ -24757,7 +24757,7 @@ sub_8031B9A:
 	thumb_func_end sub_8031B9A
 
 	thumb_local_start
-sub_8031BB2:
+text_setupTextboxAndStartPrint_8031BB2:
 	push {lr}
 	bl sub_803172E
 	mov r2, #8
@@ -24767,10 +24767,10 @@ sub_8031BB2:
 	bl sub_80315B8
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031BB2
+	thumb_func_end text_setupTextboxAndStartPrint_8031BB2
 
 	thumb_local_start
-sub_8031BCA:
+textbox_StepAndRefreshWindow_8031BCA:
 	push {lr}
 	bl sub_803172E
 	mov r2, #0
@@ -24780,7 +24780,7 @@ sub_8031BCA:
 	bl sub_80315B8
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031BCA
+	thumb_func_end textbox_StepAndRefreshWindow_8031BCA
 
 	thumb_local_start
 sub_8031BE2:

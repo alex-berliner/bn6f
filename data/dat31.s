@@ -380,7 +380,7 @@ off_810C6F0::
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810C72E+1
@@ -1126,7 +1126,7 @@ off_810CD60::
 	.word sub_810CDEA+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810CE1A+1
@@ -1453,7 +1453,7 @@ off_810D0F4::
 	.word sub_810D118+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810D130+1
@@ -1963,7 +1963,7 @@ off_810D554::
 	.word sub_810D590+1
 	.word sub_80166AE+1
 	.word sub_810D5A6+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_810D5CE+1
 	.word sub_810D5F6+1
 	.word sub_810D61E+1
@@ -2365,7 +2365,7 @@ off_810D910::
 	.word sub_810D970+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
-	.word sub_8016CE8+1
+	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
 	.word sub_810D998+1

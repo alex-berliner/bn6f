@@ -4207,7 +4207,7 @@ initNewGameData_8004DF0:
 	bl timer_setNoTimeout_8137700
 	bl clearChipGiftRecordAndTakeChipsSlot0_8137808
 	bl sub_80133EC
-	bl sub_813B768
+	bl toolkit_resetToolState_813B768
 	bl zeroFill_813B934
 	bl eraseMem_ClearBuffer_813C324
 	bl clearWorkArea_200DCF0_8121144
@@ -4316,8 +4316,8 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_802F0D8
-	bl sub_802F0F4
+	bl eventflags_ClearTwoHalfwordsAt2DE_802F0D8
+	bl eventFlags_ClearRangeAt2C8_802F0F4
 	bl cutscene_8036EFE
 	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl sub_809F90C
@@ -4693,7 +4693,7 @@ loc_8005474:
 	bl copyMemory_8001850
 	bl zeroFill_e2009740
 	bl zeroFill_e200F3A0
-	bl sub_811F6C0
+	bl pet_prepareMenuOnReturn_811F6C0
 	bl sub_8005524
 	mov r0, #0x11
 	bl TerminateGFXAnim
@@ -5136,9 +5136,9 @@ JumpTable8005948:
   // fade to white warp
 	.word sub_8005990+1 // (self: * GameState $r5) -> ()
   // jack out anim, fade to black, fade from black, jack in anim, walk in direction
-	.word sub_80059B4+1 // (self: * GameState $r5) -> ()
+	.word map_onMapWarpCutscene_80059B4+1 // (self: * GameState $r5) -> ()
   // jack out anim, auto camera scroll to another area in the same map, jack in anim, walk in direction
-	.word sub_80059D0+1 // (self: * GameState $r5) -> ()
+	.word startInMapWarpCutscene_80059D0+1 // (self: * GameState $r5) -> ()
   // jack out warp
 	.word sub_80059EC+1 // (self: * GameState $r5) -> ()
   // levbus warp
@@ -5197,7 +5197,7 @@ sub_8005990: // (self: * GameState $r5) -> ()
 	thumb_func_end sub_8005990
 
 	thumb_local_start
-sub_80059B4: // (self: * GameState $r5) -> ()
+map_onMapWarpCutscene_80059B4: // (self: * GameState $r5) -> ()
 	push {lr}
 
 	movflag EVENT_1703
@@ -5213,10 +5213,10 @@ sub_80059B4: // (self: * GameState $r5) -> ()
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 
 	pop {pc}
-	thumb_func_end sub_80059B4
+	thumb_func_end map_onMapWarpCutscene_80059B4
 
 	thumb_local_start
-sub_80059D0: // (self: * GameState $r5) -> ()
+startInMapWarpCutscene_80059D0: // (self: * GameState $r5) -> ()
 	push {lr}
 	movflag EVENT_1703
 	bl SetEventFlagFromImmediate
@@ -5228,7 +5228,7 @@ sub_80059D0: // (self: * GameState $r5) -> ()
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 
 	pop {pc}
-	thumb_func_end sub_80059D0
+	thumb_func_end startInMapWarpCutscene_80059D0
 
 	thumb_local_start
 sub_80059EC: // (self: * GameState $r5) -> ()
@@ -6511,7 +6511,7 @@ loc_8006276:
 	add r5, r5, r3
 	push {r0,r1}
 	mov r0, r3
-	bl sub_8006330
+	bl screenFade_StopAndFreePalettes_8006330
 	pop {r0,r1}
 	strb r0, [r5,#1]
 	ldr r2, off_80062C4 // =off_8006040
@@ -6577,7 +6577,7 @@ sub_80062D6:
 loc_80062DA:
 	ldr r5, off_80063BC // =eScreenFade 
 	add r5, r5, r0
-	bl sub_8006330
+	bl screenFade_StopAndFreePalettes_8006330
 	// memBlock
 	mov r0, r5
 	// size
@@ -6644,7 +6644,7 @@ off_800632C:
 	thumb_func_end subsystem_triggerTransition_800630A
 
 	thumb_local_start
-sub_8006330:
+screenFade_StopAndFreePalettes_8006330:
 	push {r5,lr}
 	ldr r5, off_80063BC // =eScreenFade
 	add r5, r5, r0
@@ -6656,7 +6656,7 @@ sub_8006330:
 	add r0, #0x13
 	bl Terminate_ePalette20097a0_Transform
 	pop {r5,pc}
-	thumb_func_end sub_8006330
+	thumb_func_end screenFade_StopAndFreePalettes_8006330
 
 // symdb: Initializes one entry of the eScreenFade array, resetting its step, frame counter, direction, and pending flag while setting the fade's step count from the selector's high nibble.
 // symdb: void screenFade_InitFadeBlock(u32 blockOffset /* r0 = block index * 0x10 */); returns r2 =
@@ -6720,7 +6720,7 @@ loc_800637C:
 loc_80063B0:
 	ldr r0, off_80063BC // =eScreenFade 
 	sub r0, r5, r0
-	bl sub_8006330
+	bl screenFade_StopAndFreePalettes_8006330
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80063BC:
@@ -8628,7 +8628,7 @@ loc_8007236:
 	bl object_Clear3RAMBytes_800371A
 	cmp r7, #2
 	beq loc_80072BA
-	bl sub_802DFFC
+	bl battle_initWorkArea_802DFFC
 	b loc_80072BE
 loc_80072BA:
 	bl zeroFill_802E014
@@ -8697,7 +8697,7 @@ dword_8007334:
 	thumb_func_end initBattleStructsAndVram_80071D4
 
 	thumb_local_start
-sub_8007338:
+camera_resetToOrigin_8007338:
 	push {lr}
 	bl mapTiles_ResetDimensionsToDefault_80303E8
 	mov r0, #0
@@ -8710,7 +8710,7 @@ sub_8007338:
 	bl camera_writeUnk03_14_80301b2
 	pop {pc}
 	.word 0x100000
-	thumb_func_end sub_8007338
+	thumb_func_end camera_resetToOrigin_8007338
 
 // symdb: Spawns the enemy battle objects for the current battle from the enemy setup array, then runs post-spawn setup.
 // symdb: void sub_8007358(void) — r5 = battle state (implicit); preserves r2-r12 and lr contents, returns
@@ -8881,7 +8881,7 @@ spawnMysteryData_8007424: // (self: * EnemySetup $r6) -> ()
 	lsr r0, r0, #0x1d // panel_x
 
 	mov r2, #0
-	bl sub_80DA9DC
+	bl battle_spawnTypeA9ObjectAtPanel_80DA9DC
 locret_800744E:
 	pop {r4,pc}
 	thumb_func_end spawnMysteryData_8007424
@@ -9679,7 +9679,7 @@ sub_800794C:
 	bl InitializeT3BattleObjectStructs
 	bl InitializeT4BattleObjectStructs
 	bl sub_802E112
-	bl sub_8007338
+	bl camera_resetToOrigin_8007338
 	bl clearBattleCounters_800A0C6
 	bl sub_801BE70
 	bl copy_8002668
@@ -9709,9 +9709,9 @@ off_800798C:
 	// 0x04
 	.word sub_80079A8+1
 	// 0x08
-	.word sub_80079D0+1
+	.word battle_state_finishBattlePhase_80079d0+1
 	// 0x0C
-	.word sub_80079F0+1
+	.word battle_RevealFieldColumnsStep_80079F0+1
 	thumb_func_end sub_8007978
 
 // symdb: Plays some battle cue/step via sub_801FE24, then stores battle-state value 4 into the state struct and returns.
@@ -9747,7 +9747,7 @@ loc_80079BC:
 	strb r0, [r1]
 	bl sub_800B144
 
-	// trigger sub_80079D0 via sub_8007978
+	// trigger battle_state_finishBattlePhase_80079d0 via sub_8007978
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Unk_02]
 
@@ -9758,7 +9758,7 @@ off_80079CC:
 	thumb_func_end sub_80079A8
 
 	thumb_local_start
-sub_80079D0:
+battle_state_finishBattlePhase_80079d0:
 	push {lr}
 
 	ldr r0, dword_80079EC // =0x12345678
@@ -9769,7 +9769,7 @@ sub_80079D0:
 	bl sub_800B460
 	bl battle_copyStructsIncludingBattleStats_800b2d8
 
-	// trigger sub_80079F0 via sub_8007978
+	// trigger battle_RevealFieldColumnsStep_80079F0 via sub_8007978
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Unk_02]
 
@@ -9779,10 +9779,10 @@ locret_80079EA:
 	.balign 4, 0
 dword_80079EC:
 	.word 0x12345678
-	thumb_func_end sub_80079D0
+	thumb_func_end battle_state_finishBattlePhase_80079d0
 
 	thumb_local_start
-sub_80079F0:
+battle_RevealFieldColumnsStep_80079F0:
 	push {lr}
 
 	bl GetBattlePanelColumnPattern
@@ -9792,7 +9792,7 @@ sub_80079F0:
 
 	bl sub_800A3E4
 
-	// trigger sub_80079D0 via sub_8007978
+	// trigger battle_state_finishBattlePhase_80079d0 via sub_8007978
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -9800,7 +9800,7 @@ sub_80079F0:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 
 	pop {pc}
-	thumb_func_end sub_80079F0
+	thumb_func_end battle_RevealFieldColumnsStep_80079F0
 
 	thumb_local_start
 sub_8007A0C:
@@ -10314,7 +10314,7 @@ loc_8007E38:
 	bl zeroFill_e20097A0
 	mov r0, #0x40
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
-	bl sub_800A892
+	bl battle_tickCustomScreenEffect_800A892
 	mov r0, #1
 	bl clear_flags32_20093A4 // (flags32 flags) -> void
 	movflag EVENT_1722_BEAST_LINK_GATE_RELATED
@@ -10595,7 +10595,7 @@ sub_8008064:
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_8008096
 	mov r0, #0xa5
@@ -10649,7 +10649,7 @@ sub_80080D2:
 	bl battle_setFlags
 	bl sub_800AE0C
 	bl sub_800A6A6
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_80080FE
 	bl sub_800AB7C
@@ -11108,10 +11108,10 @@ loc_8008462:
 	bl sub_802D6A0
 	mov r0, #0
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
-	bl sub_8015A16
+	bl battle_TickAIDataTimer0f_8015A16
 	mov r0, #1
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
-	bl sub_8015A16
+	bl battle_TickAIDataTimer0f_8015A16
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008484:
@@ -11249,7 +11249,7 @@ sub_800855E:
 	bl battle_setFlags
 	bl sub_800AE0C
 	bl sub_800A6A6
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_800858E
 	bl sub_800AB7C
@@ -11855,7 +11855,7 @@ sub_80089CC:
 	bl battle_setFlags
 	bl sub_800AE0C
 	bl sub_800A6A6
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_80089F8
 	bl sub_800AB7C
@@ -12401,7 +12401,7 @@ sub_8008DDC:
 	bl battle_setFlags
 	bl sub_800AE0C
 	bl sub_800A6A6
-	bl sub_800A97A
+	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_8008E08
 	bl sub_800AB7C
@@ -12926,13 +12926,13 @@ off_80091BC:
 	// 0x00
 	.word sub_80091F0+1
 	// 0x04
-	.word sub_80092A0+1
+	.word battle_dispatchStatePhase_80092A0+1
 	// 0x08
 	.word sub_8009338+1
 	// 0x0C
 	.word sub_800938A+1
 	// 0x10
-	.word sub_800945C+1
+	.word battle_DispatchStatePhase_800945C+1
 	// 0x14
 	.word sub_80094DA+1
 	// 0x18
@@ -12977,7 +12977,7 @@ loc_800920A: // else
 
 loc_8009210: // endif
 
-	bl sub_80E06F8
+	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 
 	// involved in spawning the viruses, navi, and mystery data from EnemySetup data structure
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
@@ -13071,7 +13071,7 @@ off_800929C:
 	thumb_func_end sub_800927C
 
 	thumb_local_start
-sub_80092A0:
+battle_dispatchStatePhase_80092A0:
 	push {lr}
 	ldr r1, off_80092B0 // =off_80092B4
 	ldrb r0, [r5,#oBattleState_Unk_02]
@@ -13086,7 +13086,7 @@ off_80092B4:
 	.word sub_80092C0+1
 	.word sub_80092F0+1
 	.word sub_8009314+1
-	thumb_func_end sub_80092A0
+	thumb_func_end battle_dispatchStatePhase_80092A0
 
 	thumb_local_start
 sub_80092C0:
@@ -13185,7 +13185,7 @@ loc_800934E:
 	beq locret_8009388
 	cmp r0, #2
 	bne loc_8009360
-	bl sub_800AABC
+	bl battle_stateGotoPhase14_800AABC
 	b locret_8009388
 loc_8009360:
 	mov r0, #0
@@ -13311,7 +13311,7 @@ locret_800945A:
 	thumb_func_end sub_800938A
 
 	thumb_local_start
-sub_800945C:
+battle_DispatchStatePhase_800945C:
 	push {lr}
 	ldr r1, off_800946C // =off_8009470
 	ldrb r0, [r5,#oBattleState_Unk_02]
@@ -13325,7 +13325,7 @@ off_800946C:
 off_8009470:
 	.word sub_8009478+1
 	.word sub_80094B6+1
-	thumb_func_end sub_800945C
+	thumb_func_end battle_DispatchStatePhase_800945C
 
 	thumb_local_start
 sub_8009478:
@@ -13596,7 +13596,7 @@ loc_8009672:
 	add r1, #1
 	strb r1, [r5,#oBattleState_Unk_1a]
 loc_8009678:
-	bl sub_80E06F8
+	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
 	bl PauseBattle
 	bl sub_8014178
@@ -13807,7 +13807,7 @@ loc_80097E8:
 	beq locret_800980C
 	cmp r0, #2
 	bne loc_80097FA
-	bl sub_800AABC
+	bl battle_stateGotoPhase14_800AABC
 	b locret_800980C
 loc_80097FA:
 	mov r0, #4
@@ -14083,7 +14083,7 @@ loc_80099FA:
 	add r1, #1
 	strb r1, [r5,#oBattleState_Unk_1a]
 loc_8009A00:
-	bl sub_80E06F8
+	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
 	bl PauseBattle
 	bl sub_8014178
@@ -14492,7 +14492,7 @@ loc_8009CEA:
 	add r1, #1
 	strb r1, [r5,#oBattleState_Unk_1a]
 loc_8009CF0:
-	bl sub_80E06F8
+	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
 	bl PauseBattle
 	bl sub_8014178
@@ -16373,7 +16373,7 @@ loc_800A888:
 	thumb_func_end sub_800A86E
 
 	thumb_local_start
-sub_800A892:
+battle_tickCustomScreenEffect_800A892:
 	push {lr}
 	bl GetBattleEffects // () -> int
 	ldr r1, off_800A94C // =0x100 
@@ -16388,7 +16388,7 @@ sub_800A892:
 	bl sub_8005DBE
 locret_800A8B0:
 	pop {pc}
-	thumb_func_end sub_800A892
+	thumb_func_end battle_tickCustomScreenEffect_800A892
 
 	thumb_local_start
 sub_800A8B2:
@@ -16516,8 +16516,8 @@ initIdListStruct_800A964:
 	pop {r4,pc}
 	thumb_func_end initIdListStruct_800A964
 
-	thumb_func_start sub_800A97A
-sub_800A97A:
+	thumb_func_start battle_IsBattleEnding_800A97A
+battle_IsBattleEnding_800A97A:
 	push {lr}
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -16533,7 +16533,7 @@ sub_800A97A:
 loc_800A994:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800A97A
+	thumb_func_end battle_IsBattleEnding_800A97A
 
 	thumb_func_start LoadVirusNameIDsForUpToFourSlots_800A998
 LoadVirusNameIDsForUpToFourSlots_800A998: // (name_id_arr: *mut [u16; 4]) -> u8
@@ -16767,8 +16767,8 @@ off_800AAB8:
 	.word unk_2038170
 	thumb_func_end getNextEntryAddress_800AAAE
 
-	thumb_func_start sub_800AABC
-sub_800AABC:
+	thumb_func_start battle_stateGotoPhase14_800AABC
+battle_stateGotoPhase14_800AABC:
 	push {r5,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
@@ -16781,12 +16781,12 @@ sub_800AABC:
 	mov r1, #0
 	strh r1, [r0,#oBattleState_Unk_02_03]
 	pop {r5,pc}
-	thumb_func_end sub_800AABC
+	thumb_func_end battle_stateGotoPhase14_800AABC
 
 	thumb_local_start
 sub_800AAD6:
 	push {r5,lr}
-	bl sub_800AABC
+	bl battle_stateGotoPhase14_800AABC
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
 	mov r0, #2

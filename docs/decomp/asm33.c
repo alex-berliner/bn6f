@@ -442,7 +442,7 @@ int __fastcall __noreturn sub_81237BC(int a1)
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
-        result = sub_811F708();
+        result = pet_menuExitToMap_811F708();
     return result;
 }
 
@@ -1041,7 +1041,7 @@ void __fastcall __noreturn submenu_subchip_81241A0(int a1, int a2, int a3)
     }
     if ( *(v3 + 2) == 16 )
     {
-        sub_812474C(v6);
+        chatbox_runScript201C100_812474C(v6);
         *(v3 + 17) &= 0xFEu;
     }
     sub_8120900(&unk_201C4B0, *(v3 + 24), *(v3 + 26), 3183072);
@@ -1058,7 +1058,7 @@ void submenu_subchip_8124230()
     *(*(v1 + oToolkit_Unk2001c04_Ptr) + 36) = 6000;
     *(v0 + 2) = 16;
     *(*(v1 + oToolkit_ChatboxPtr) + 76) = *(v0 + 16);
-    sub_812474C(10);
+    chatbox_runScript201C100_812474C(10);
 }
 
 
@@ -1071,7 +1071,7 @@ void submenu_subchip_812425C()
     SetEventFlagFromImmediate(23, 9);
     *(v0 + 2) = 16;
     *(*(v1 + oToolkit_ChatboxPtr) + 76) = *(v0 + 16);
-    sub_812474C(10);
+    chatbox_runScript201C100_812474C(10);
 }
 
 
@@ -1088,7 +1088,7 @@ void submenu_subchip_812427C()
     v2[11] = v2[7];
     *(v0 + 2) = 16;
     *(*(v1 + oToolkit_ChatboxPtr) + 76) = *(v0 + 16);
-    sub_812474C(10);
+    chatbox_runScript201C100_812474C(10);
 }
 
 
@@ -1103,7 +1103,7 @@ signed int submenu_subchip_81242AC()
     SetEventFlagFromImmediate(23, 8);
     *(v0 + 2) = 20;
     *(*(v1 + oToolkit_ChatboxPtr) + 76) = *(v0 + 16);
-    sub_812474C(10);
+    chatbox_runScript201C100_812474C(10);
     v2 = *(v1 + oToolkit_GameStatePtr);
     *(v2 + oGameState_EnterMapFadeParam1) = 12;
     result = 255;
@@ -1194,7 +1194,7 @@ int __fastcall submenu_subchip_8124350(int a1)
         }
         else
         {
-            result = sub_811F708();
+            result = pet_menuExitToMap_811F708();
         }
     }
     return result;
@@ -1313,7 +1313,7 @@ void __noreturn sub_8124588()
 
 
 // 0x81245bc
-void __noreturn sub_81245BC()
+void __noreturn bg_CopyTileBlock2At2_6_8x12_81245BC()
 {
     CopyBackgroundTiles(2, 6, 2, &unk_201EC2C, 8, &dword_C);
 }
@@ -1328,7 +1328,7 @@ void sub_81245D4()
     if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_MapGroup) < 128 )
     {
         *(v0 + 2) = 8;
-        sub_812474C(6);
+        chatbox_runScript201C100_812474C(6);
     }
     else
     {
@@ -1352,7 +1352,7 @@ void __fastcall sub_8124624(char a1)
     if ( *(v1 + 24) == v3 )
     {
         *(v1 + 2) = 8;
-        sub_812474C(6);
+        chatbox_runScript201C100_812474C(6);
     }
     else
     {
@@ -1365,7 +1365,7 @@ void __fastcall sub_8124624(char a1)
             v4 = v3;
         *(v1 + 22) = v4;
         *(v5 + 76) = v6;
-        sub_812474C(7);
+        chatbox_runScript201C100_812474C(7);
     }
 }
 
@@ -1381,14 +1381,14 @@ void __fastcall sub_8124660(char a1)
     {
         v1[2] = 8;
         *(*(v2 + oToolkit_ChatboxPtr) + 76) = v1[16];
-        sub_812474C(11);
+        chatbox_runScript201C100_812474C(11);
     }
     else
     {
         v1[2] = 12;
         v1[3] = 8;
         *(*(v2 + oToolkit_ChatboxPtr) + 76) = v1[16];
-        sub_812474C(7);
+        chatbox_runScript201C100_812474C(7);
     }
 }
 
@@ -1407,13 +1407,13 @@ void __fastcall sub_812469C(char a1)
         v1[2] = 12;
         v1[3] = 12;
         *(*(v2 + oToolkit_ChatboxPtr) + 76) = v1[16];
-        sub_812474C(7);
+        chatbox_runScript201C100_812474C(7);
     }
     else
     {
         v1[2] = 8;
         *(*(v2 + oToolkit_ChatboxPtr) + 76) = v1[16];
-        sub_812474C(11);
+        chatbox_runScript201C100_812474C(11);
     }
 }
 
@@ -1440,12 +1440,12 @@ void __fastcall sub_81246D8(char a1)
             v1[2] = 12;
             v1[3] = 16;
             *(*(v2 + oToolkit_ChatboxPtr) + 76) = v1[16];
-            sub_812474C(7);
+            chatbox_runScript201C100_812474C(7);
             return;
         }
         v4 = 13;
     }
-    sub_812474C(v4);
+    chatbox_runScript201C100_812474C(v4);
     v1[2] = 8;
 }
 
@@ -1464,18 +1464,18 @@ void __fastcall sub_812471C(char a1)
         v1[2] = 12;
         v1[3] = 20;
         *(*(v3 + oToolkit_ChatboxPtr) + 76) = v1[16];
-        sub_812474C(7);
+        chatbox_runScript201C100_812474C(7);
     }
     else
     {
         v1[2] = 8;
-        sub_812474C(12);
+        chatbox_runScript201C100_812474C(12);
     }
 }
 
 
 // 0x812474c
-void __fastcall sub_812474C(int a1)
+void __fastcall chatbox_runScript201C100_812474C(int a1)
 {
     chatbox_runScript_803FD9C(&eTextScript201C100, a1);
 }
@@ -1670,7 +1670,7 @@ int sub_8124D78()
     sub_81255F8(10, v1, v2);
     sub_8125444();
     sub_8125D94();
-    sub_812650C();
+    wrapper_sub8126570_fixedArgs_812650C();
     sub_8117084(*(v0 + 88), *(v0 + 18), 4);
     v3 = 0;
     v4 = *(v0 + 92);
@@ -2045,7 +2045,7 @@ int __fastcall sub_8125104(int a1)
     sub_81267A8();
     sub_8125444();
     sub_8125D94();
-    sub_812650C();
+    wrapper_sub8126570_fixedArgs_812650C();
     result = IsPaletteFadeActive();
     if ( !v3 )
     {
@@ -2217,7 +2217,7 @@ signed int sub_8125254()
     TestEventFlagFromImmediate(23, 17);
     if ( v0 )
     {
-        sub_811F708();
+        pet_menuExitToMap_811F708();
         result = 0;
     }
     else
@@ -3644,7 +3644,7 @@ int sub_81264F4()
 
 
 // 0x812650c
-int sub_812650C()
+int wrapper_sub8126570_fixedArgs_812650C()
 {
     return sub_8126570(90, 32, 30, 12);
 }
@@ -4077,9 +4077,9 @@ void sub_8126CC0()
     (*(&off_8126DC0 + *(v0 + 2)))();
     sub_80465BC();
     v1 = sub_81278D8();
-    sub_8119BE8(v1, *(v0 + 68), 0);
+    object_setSpritePosition_8119BE8(v1, *(v0 + 68), 0);
     v2 = sub_81278D8();
-    sub_811BDFC(v2, *(v0 + 68), 5);
+    sprite_setPositionByStructIndex_811BDFC(v2, *(v0 + 68), 5);
     sub_811B46C(8 * *(v0 + 13) + *(v0 + 64), *(v0 + 68), 1);
     v3 = 0;
     v4 = getPETNaviSelect();
@@ -4097,7 +4097,7 @@ void sub_8126CC0()
         if ( !sub_8123360() )
             v5 = 0;
     }
-    sub_8119C74(v5, 0);
+    registry_setEntryStatusByKey_8119C74(v5, 0);
     sub_811BED4(v5, 5);
     if ( !sub_8123360() )
         v3 = 0;
@@ -4372,7 +4372,7 @@ LABEL_8:
             v4 = 44;
             goto LABEL_8;
         }
-        sub_811F708();
+        pet_menuExitToMap_811F708();
     }
 }
 
@@ -4602,7 +4602,7 @@ int __fastcall __noreturn sub_8127580(int a1, int a2, int a3, int a4)
 
 
 // 0x81275a8
-void __noreturn sub_81275A8()
+void __noreturn background_drawSceneSection_81275A8()
 {
     int v0; // r5
 
@@ -4622,7 +4622,7 @@ void __noreturn sub_81275C8()
 
 
 // 0x8127618
-void __noreturn sub_8127618()
+void __noreturn bg_copyTileBlockFromStructOffset_8127618()
 {
     int v0; // r5
 
@@ -4794,7 +4794,7 @@ int sub_8127788()
 
 
 // 0x81277e0
-void __noreturn sub_81277E0()
+void __noreturn bg_Draw8x8TileBlock3FromTable_81277E0()
 {
     int v0; // r5
 
@@ -4869,7 +4869,7 @@ int __fastcall sub_8127990(int a1, int a2, int a3, int a4)
     int result; // r0
 
     v4 = a1;
-    result = sub_811F6C0(a1, a2, a3, a4);
+    result = pet_prepareMenuOnReturn_811F6C0(a1, a2, a3, a4);
     if ( v4 )
     {
         result = 1;
@@ -5009,7 +5009,7 @@ void sub_8127B18()
                 if ( sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
                 {
                     sub_8128008();
-                    sub_81281C0();
+                    bg_ReloadBackgroundRegion_5_3_81281C0();
                 }
             }
             else
@@ -5031,7 +5031,7 @@ LABEL_2:
         }
         sub_8128318();
         sub_8128008();
-        sub_81281C0();
+        bg_ReloadBackgroundRegion_5_3_81281C0();
         PlaySoundEffect(129, v5, v6);
     }
 }
@@ -5051,9 +5051,9 @@ void sub_8127B94()
         ClearEventFlag(v2 + 7456);
         SetEventFlag(v2 + 7584);
         sub_8128008();
-        sub_81281C0();
+        bg_ReloadBackgroundRegion_5_3_81281C0();
         *(v0 + 2) = 4;
-        sub_8127ED4(1);
+        chatbox_runVariantScript_8127ED4(1);
     }
 }
 
@@ -5093,7 +5093,7 @@ void __noreturn sub_8127BE4()
             }
             sub_8128500();
             sub_8128008();
-            sub_81281C0();
+            bg_ReloadBackgroundRegion_5_3_81281C0();
         }
     }
     else
@@ -5139,7 +5139,7 @@ int __fastcall sub_8127C64(int a1)
         }
         else
         {
-            result = sub_811F708();
+            result = pet_menuExitToMap_811F708();
         }
     }
     return result;
@@ -5222,7 +5222,7 @@ int sub_8127E9C()
     {
         v2 = 2;
     }
-    sub_8127ED4(v2);
+    chatbox_runVariantScript_8127ED4(v2);
     result = 0;
     *(v0 + 2) = 0;
     return result;
@@ -5230,7 +5230,7 @@ int sub_8127E9C()
 
 
 // 0x8127ed4
-void __fastcall sub_8127ED4(int a1)
+void __fastcall chatbox_runVariantScript_8127ED4(int a1)
 {
     int v1; // r5
 
@@ -5431,7 +5431,7 @@ void __fastcall sub_812818C(int a1, int a2, int a3, int a4)
 
 
 // 0x81281c0
-void sub_81281C0()
+void bg_ReloadBackgroundRegion_5_3_81281C0()
 {
     int v0; // r5
 
@@ -5470,7 +5470,7 @@ signed int sub_81281E0()
 
 
 // 0x8128260
-void __fastcall sub_8128260(int a1, int a2, int a3, int a4)
+void __fastcall palette_fillBufferWithFadeByte_8128260(int a1, int a2, int a3, int a4)
 {
     HalfwordFill(byte_2026870, byte_100, byte_812798A[0] << 8, a4);
 }
@@ -5904,7 +5904,7 @@ int __fastcall sub_81288E4(int a1, int a2)
     sub_8128C20();
     result = IsPaletteFadeActive();
     if ( !v3 )
-        result = sub_811F708();
+        result = pet_menuExitToMap_811F708();
     return result;
 }
 
@@ -6531,7 +6531,7 @@ int sub_81292D8()
         *(v0 + 2) = 4;
         clearStruct200BC30_803EBAC(4, v3, v4, v5);
         sub_80465A0(byte_8129158);
-        sub_812AFB0();
+        bg_LoadFullScreenTilesAndSetup_812AFB0();
     }
     return result;
 }
@@ -6630,7 +6630,7 @@ int sub_8129400()
         *(v0 + 2) = 12;
         clearStruct200BC30_803EBAC(12, v2, v3, v4);
         sub_80465A0(byte_8129168);
-        sub_812AFB0();
+        bg_LoadFullScreenTilesAndSetup_812AFB0();
     }
     sub_80465BC();
     sub_80465F8();
@@ -9463,7 +9463,7 @@ int sub_812AEC8()
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v1 )
-        result = sub_811F708();
+        result = pet_menuExitToMap_811F708();
     return result;
 }
 
@@ -9577,7 +9577,7 @@ void sub_812AFA4()
 
 
 // 0x812afb0
-void __noreturn sub_812AFB0()
+void __noreturn bg_LoadFullScreenTilesAndSetup_812AFB0()
 {
     CopyBackgroundTiles(0, 0, 1, &unk_201FDA0, 30, dword_14);
     JUMPOUT(loc_812AFC2);
@@ -9679,7 +9679,7 @@ int __fastcall sub_812B29C(int a1)
 
     if ( *(v1 + 27) & 1 )
         JUMPOUT(&locret_812B2FC);
-    return sub_811C23C(&dword_78, &dword_28[8 * *(v1 + a1)], 2);
+    return sprite_setPositionById_811C23C(&dword_78, &dword_28[8 * *(v1 + a1)], 2);
 }
 
 

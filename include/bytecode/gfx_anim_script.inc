@@ -24,7 +24,7 @@
 	enum GFX_ANIM_UNK_08 // 0x08
 	// no macro until I can find ROM data which uses this command
 
-  // Corresponds to command sub_8002310
+  // Corresponds to command sprite_gfxAnimState_GotoNext_8002310
 	enum GFX_ANIM_MANUAL_PAL_TRANSFORM // 0x0c
 	.macro gfx_anim_manual_pal_transform transform_type:req, ptr5:req, index:req, num_pals:req
 	gfx_anim_data_common_struct \transform_type, \ptr5, GFX_ANIM_MANUAL_PAL_TRANSFORM, \index, \num_pals

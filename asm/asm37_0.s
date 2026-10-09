@@ -1,6 +1,6 @@
 
-	thumb_func_start sub_813B768
-sub_813B768:
+	thumb_func_start toolkit_resetToolState_813B768
+toolkit_resetToolState_813B768:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk2004334_Ptr]
@@ -12,7 +12,7 @@ sub_813B768:
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_813B768
+	thumb_func_end toolkit_resetToolState_813B768
 
 	thumb_func_start sub_813B780
 sub_813B780:
@@ -1841,7 +1841,7 @@ applyNaviStatsMaybe_813C458:
 	thumb_func_end applyNaviStatsMaybe_813C458
 
 	thumb_local_start
-sub_813C490:
+checkCurPETNaviStats1FIsOne_813C490:
 	push {r4,lr}
 	mov r4, #0
 	mov r0, #0
@@ -1854,7 +1854,7 @@ loc_813C4A2:
 	mov r0, r4
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813C490
+	thumb_func_end checkCurPETNaviStats1FIsOne_813C490
 
 	thumb_local_start
 sub_813C4A8:
@@ -2813,7 +2813,7 @@ sub_813CBCC:
 	push {r4-r7,lr}
 	movflag EVENT_1720
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_813C490
+	bl checkCurPETNaviStats1FIsOne_813C490
 	cmp r0, #1
 	bne loc_813CBE4
 	bl sub_813C020

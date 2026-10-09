@@ -185,7 +185,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
-    sub_80015B4();
+    bg_ClearTilesAndReloadGraphics_80015B4();
     copy_800260C();
     sub_80027C4();
     sub_802FDB0();
@@ -204,7 +204,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     sub_8006910();
     sub_803DE5C();
     sub_8144240();
-    sub_803EBC8();
+    resetAndInitStruct200BC30_803EBC8();
     zeroFill_813D960();
     reset_flags32_20093A4();
     sub_804657C();

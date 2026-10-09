@@ -827,7 +827,7 @@ sub_81237BC:
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81237DC
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_81237DC:
 	pop {pc}
 	.byte 0, 0
@@ -1806,7 +1806,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	ldr r3, dword_8124058 // =0x306200 
 	bl sub_8120C94
 	bl sub_81247EC
-	bl sub_81245BC
+	bl bg_CopyTileBlock2At2_6_8x12_81245BC
 
 	mov r0, #0
 	strb r0, [r5,#0x14]
@@ -2119,7 +2119,7 @@ loc_81241EE:
 
   // 0 then
 	mov r0, r7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	ldrb r0, [r5,#0x11]
 	mov r1, #1
 	bic r0, r1
@@ -2167,7 +2167,7 @@ submenu_subchip_8124230: // (struct UnkSubMenu* state_a5) -> void
 	ldrh r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xa
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	pop {r4,pc}
 	.balign 4, 0
 dword_8124258:
@@ -2186,7 +2186,7 @@ submenu_subchip_812425C: // (struct UnkSubMenu* state_a5) -> void
 	ldrh r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xa
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	pop {r4,pc}
 	.balign 4, 0x00
 	thumb_func_end submenu_subchip_812425C
@@ -2209,7 +2209,7 @@ submenu_subchip_812427C: // (struct UnkSubMenu* state_a5) -> void
 	ldrh r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xa
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	pop {r4,pc}
 	.balign 4, 0
 dword_81242A8:
@@ -2228,7 +2228,7 @@ submenu_subchip_81242AC: // (struct UnkSubMenu* state_a5) -> void
 	ldrh r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xa
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	mov r0, #0xc
@@ -2334,7 +2334,7 @@ submenu_subchip_8124350: // (struct UnkSubMenu* state_a5) -> void
 	b locret_8124380
   // 0 else
 loc_812437C:
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_8124380:
 	pop {pc}
 	.balign 4, 0x00
@@ -2604,7 +2604,7 @@ off_81245B8:
 	thumb_func_end sub_8124588
 
 	thumb_local_start
-sub_81245BC:
+bg_CopyTileBlock2At2_6_8x12_81245BC:
 	push {r4-r7,lr}
 	// j
 	mov r0, #2
@@ -2621,7 +2621,7 @@ sub_81245BC:
 	.balign 4, 0
 off_81245D0:
 	.word unk_201EC2C
-	thumb_func_end sub_81245BC
+	thumb_func_end bg_CopyTileBlock2At2_6_8x12_81245BC
 
 	thumb_local_start
 sub_81245D4:
@@ -2647,7 +2647,7 @@ loc_81245F8:
 	mov r0, #8
 	strb r0, [r5,#2]
 	mov r0, #6
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	pop {pc}
 	.balign 4, 0
 off_8124604:
@@ -2686,13 +2686,13 @@ loc_8124646:
 	strh r1, [r5,#0x16]
 	str r0, [r4,#0x4c]
 	mov r0, #7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	b locret_812465C
 loc_8124652:
 	mov r0, #8
 	strb r0, [r5,#2]
 	mov r0, #6
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 locret_812465C:
 	pop {r4,r7,pc}
 	.byte 0, 0
@@ -2716,7 +2716,7 @@ sub_8124660:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	b locret_8124698
 loc_8124686:
 	mov r0, #8
@@ -2726,7 +2726,7 @@ loc_8124686:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xb
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 locret_8124698:
 	pop {r4,pc}
 	.balign 4, 0x00
@@ -2748,7 +2748,7 @@ sub_812469C:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	b locret_81246D4
 loc_81246C2:
 	mov r0, #8
@@ -2758,7 +2758,7 @@ loc_81246C2:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #0xb
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 locret_81246D4:
 	pop {r4,pc}
 	.balign 4, 0x00
@@ -2785,7 +2785,7 @@ sub_81246D8:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	b locret_812471A
 loc_8124704:
 	mov r0, #0xd
@@ -2797,7 +2797,7 @@ loc_8124708:
 	str r0, [r4,#0x4c]
 	mov r0, #0xb
 loc_8124712:
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	mov r0, #8
 	strb r0, [r5,#2]
 locret_812471A:
@@ -2820,19 +2820,19 @@ sub_812471C:
 	ldrb r0, [r5,#0x10]
 	str r0, [r4,#0x4c]
 	mov r0, #7
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 	b locret_812474A
 loc_8124740:
 	mov r0, #8
 	strb r0, [r5,#2]
 	mov r0, #0xc
-	bl sub_812474C
+	bl chatbox_runScript201C100_812474C
 locret_812474A:
 	pop {r4,r7,pc}
 	thumb_func_end sub_812471C
 
 	thumb_local_start
-sub_812474C:
+chatbox_runScript201C100_812474C:
 	push {lr}
 	mov r1, r0
 	ldr r0, off_8124758 // =eTextScript201C100
@@ -2841,7 +2841,7 @@ sub_812474C:
 	.balign 4, 0
 off_8124758:
 	.word eTextScript201C100
-	thumb_func_end sub_812474C
+	thumb_func_end chatbox_runScript201C100_812474C
 
 	thumb_local_start
 sub_812475C:
@@ -3360,7 +3360,7 @@ sub_8124D78:
 	bl sub_81255F8
 	bl sub_8125444
 	bl sub_8125D94
-	bl sub_812650C
+	bl wrapper_sub8126570_fixedArgs_812650C
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
@@ -3795,7 +3795,7 @@ sub_8125104:
 	bl sub_81267A8
 	bl sub_8125444
 	bl sub_8125D94
-	bl sub_812650C
+	bl wrapper_sub8126570_fixedArgs_812650C
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8125124
 	mov r0, #8
@@ -3968,7 +3968,7 @@ sub_8125254:
 	mov r0, #1
 	b locret_812527C
 loc_8125276:
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 	mov r0, #0
 locret_812527C:
 	pop {pc}
@@ -6432,7 +6432,7 @@ sub_81264F4:
 	thumb_func_end sub_81264F4
 
 	thumb_local_start
-sub_812650C:
+wrapper_sub8126570_fixedArgs_812650C:
 	push {r4-r7,lr}
 	mov r0, #0x5a 
 	mov r1, #0x20 
@@ -6444,7 +6444,7 @@ sub_812650C:
 	bl sub_8126570
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812650C
+	thumb_func_end wrapper_sub8126570_fixedArgs_812650C
 
 	thumb_local_start
 sub_8126524:
@@ -7187,12 +7187,12 @@ loc_8126C5E:
 	mov r0, #0x40 
 	bl chatbox_set_eFlags2009F38
 	bl sub_812741C
-	bl sub_81275A8
+	bl background_drawSceneSection_81275A8
 	bl sub_81275C8
-	bl sub_8127618
+	bl bg_copyTileBlockFromStructOffset_8127618
 	bl sub_8127638
 	bl sub_8127718
-	bl sub_81277E0
+	bl bg_Draw8x8TileBlock3FromTable_81277E0
 	bl sub_81273B4
 	bl sub_81273F0
 	bl sub_8127060
@@ -7236,11 +7236,11 @@ sub_8126CC0:
 	bl sub_81278D8
 	ldr r1, [r5,#0x44]
 	mov r2, #0
-	bl sub_8119BE8
+	bl object_setSpritePosition_8119BE8
 	bl sub_81278D8
 	ldr r1, [r5,#0x44]
 	mov r2, #5
-	bl sub_811BDFC
+	bl sprite_setPositionByStructIndex_811BDFC
 	mov r1, #0xd
 	ldrsb r0, [r5,r1]
 	lsl r0, r0, #3
@@ -7276,7 +7276,7 @@ loc_8126D26:
 loc_8126D32:
 	mov r0, r4
 	mov r1, #0
-	bl sub_8119C74
+	bl registry_setEntryStatusByKey_8119C74
 	mov r0, r4
 	mov r1, #5
 	bl sub_811BED4
@@ -7325,10 +7325,10 @@ loc_8126D92:
 	bl sub_8120900
 	pop {r4,r6}
 	bl sub_8127060
-	bl sub_81275A8
-	bl sub_8127618
+	bl background_drawSceneSection_81275A8
+	bl bg_copyTileBlockFromStructOffset_8127618
 	bl sub_8127718
-	bl sub_81277E0
+	bl bg_Draw8x8TileBlock3FromTable_81277E0
 	bl sub_81273B4
 	bl sub_81273F0
 	bl sub_8127374
@@ -7664,7 +7664,7 @@ loc_8127042:
 	strb r4, [r5]
 	b locret_812705E
 loc_812705A:
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_812705E:
 	pop {pc}
 	thumb_func_end sub_8126FF0
@@ -8262,7 +8262,7 @@ off_81275A4:
 	thumb_func_end sub_8127580
 
 	thumb_local_start
-sub_81275A8:
+background_drawSceneSection_81275A8:
 	push {r4-r7,lr}
 	mov r2, #0xd
 	ldrsb r0, [r5,r2]
@@ -8282,7 +8282,7 @@ sub_81275A8:
 	.balign 4, 0
 off_81275C4:
 	.word byte_8126930
-	thumb_func_end sub_81275A8
+	thumb_func_end background_drawSceneSection_81275A8
 
 	thumb_local_start
 sub_81275C8:
@@ -8326,7 +8326,7 @@ off_8127614:
 	thumb_func_end sub_81275C8
 
 	thumb_local_start
-sub_8127618:
+bg_copyTileBlockFromStructOffset_8127618:
 	push {r4-r7,lr}
 	mov r7, r5
 	mov r2, #0xd
@@ -8347,7 +8347,7 @@ sub_8127618:
 	.balign 4, 0
 off_8127634:
 	.word byte_81269E0
-	thumb_func_end sub_8127618
+	thumb_func_end bg_copyTileBlockFromStructOffset_8127618
 
 	thumb_local_start
 sub_8127638:
@@ -8592,7 +8592,7 @@ off_81277DC:
 	thumb_func_end sub_8127788
 
 	thumb_local_start
-sub_81277E0:
+bg_Draw8x8TileBlock3FromTable_81277E0:
 	push {r4-r7,lr}
 	mov r2, #0xd
 	ldrsb r0, [r5,r2]
@@ -8612,7 +8612,7 @@ sub_81277E0:
 	.balign 4, 0
 off_81277FC:
 	.word byte_8126A90
-	thumb_func_end sub_81277E0
+	thumb_func_end bg_Draw8x8TileBlock3FromTable_81277E0
 
 	thumb_local_start
 sub_8127800:
@@ -8779,7 +8779,7 @@ byte_812798A:
 sub_8127990:
 	push {r4,lr}
 	mov r4, r0
-	bl sub_811F6C0
+	bl pet_prepareMenuOnReturn_811F6C0
 	tst r4, r4
 	beq locret_81279A2
 
@@ -8919,10 +8919,10 @@ sub_8127A1C:
 	mov r0, #4
 	strb r0, [r1,#0x1] // (byte_2000FE1 - 0x2000fe0)
 	bl sub_8128500
-	bl sub_8128260
+	bl palette_fillBufferWithFadeByte_8128260
 	bl sub_8127E9C
 	bl sub_8128008
-	bl sub_81281C0
+	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	bl sub_81281E0
 	bl sub_8128280
 	pop {pc}
@@ -8998,7 +8998,7 @@ loc_8127B2A:
 	beq loc_8127B22
 	bl sub_8128318
 	bl sub_8128008
-	bl sub_81281C0
+	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	b locret_8127B8E
@@ -9030,7 +9030,7 @@ loc_8127B72:
 	tst r0, r0
 	beq locret_8127B8E
 	bl sub_8128008
-	bl sub_81281C0
+	bl bg_ReloadBackgroundRegion_5_3_81281C0
 locret_8127B8E:
 	pop {pc}
 	.balign 4, 0
@@ -9062,11 +9062,11 @@ sub_8127B94:
 	mov r0, r0
 	bl SetEventFlag
 	bl sub_8128008
-	bl sub_81281C0
+	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	mov r4, #4
 	strb r4, [r5,#2]
 	mov r0, #1
-	bl sub_8127ED4
+	bl chatbox_runVariantScript_8127ED4
 locret_8127BD6:
 	pop {r4,pc}
 	.balign 4, 0
@@ -9114,7 +9114,7 @@ loc_8127C1E:
 loc_8127C26:
 	bl sub_8128500
 	bl sub_8128008
-	bl sub_81281C0
+	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	b loc_8127C46
 loc_8127C34:
 	mov r0, r10
@@ -9173,7 +9173,7 @@ loc_8127C9E:
 	bl sub_811F728
 	b locret_8127CB6
 loc_8127CB2:
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_8127CB6:
 	pop {pc}
 	thumb_func_end sub_8127C64
@@ -9385,14 +9385,14 @@ loc_8127EC6:
 	mov r4, #1
 loc_8127EC8:
 	mov r0, r4
-	bl sub_8127ED4
+	bl chatbox_runVariantScript_8127ED4
 	mov r0, #0
 	strb r0, [r5,#2]
 	pop {r4,pc}
 	thumb_func_end sub_8127E9C
 
 	thumb_local_start
-sub_8127ED4:
+chatbox_runVariantScript_8127ED4:
 	push {lr}
 	mov r1, r0
 	ldr r0, off_8127EF0 // =eTextScript201BA00
@@ -9410,7 +9410,7 @@ locret_8127EEE:
 	.balign 4, 0
 off_8127EF0:
 	.word eTextScript201BA00
-	thumb_func_end sub_8127ED4
+	thumb_func_end chatbox_runVariantScript_8127ED4
 
 	thumb_local_start
 sub_8127EF4:
@@ -9804,7 +9804,7 @@ dword_81281BC:
 	thumb_func_end sub_812818C
 
 	thumb_local_start
-sub_81281C0:
+bg_ReloadBackgroundRegion_5_3_81281C0:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x1e]
 	tst r0, r0
@@ -9825,7 +9825,7 @@ locret_81281D8:
 	.balign 4, 0
 off_81281DC:
 	.word unk_2026700
-	thumb_func_end sub_81281C0
+	thumb_func_end bg_ReloadBackgroundRegion_5_3_81281C0
 
 	thumb_local_start
 sub_81281E0:
@@ -9893,7 +9893,7 @@ byte_8128250:
 	thumb_func_end sub_81281E0
 
 	thumb_local_start
-sub_8128260:
+palette_fillBufferWithFadeByte_8128260:
 	push {lr}
 	ldr r0, off_8128274 // =unk_2026870 
 	ldr r1, off_812827C // =0x100 
@@ -9909,7 +9909,7 @@ off_8128278:
 	.word byte_812798A
 off_812827C:
 	.word 0x100
-	thumb_func_end sub_8128260
+	thumb_func_end palette_fillBufferWithFadeByte_8128260
 
 	thumb_local_start
 sub_8128280:
@@ -10579,7 +10579,7 @@ sub_81288E4:
 	bl sub_8128C20
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81288F8
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_81288F8:
 	pop {pc}
 	.balign 4, 0x00
@@ -11787,7 +11787,7 @@ sub_81292D8:
 	// a1
 	ldr r0, off_8129338 // =byte_8129158
 	bl sub_80465A0 // (void *a1) -> void
-	bl sub_812AFB0
+	bl bg_LoadFullScreenTilesAndSetup_812AFB0
 	bl chatbox_8040818
 	mov r0, #8
 	mov r1, #0x10
@@ -11931,7 +11931,7 @@ sub_8129400:
 	// a1
 	ldr r0, off_8129448 // =byte_8129168
 	bl sub_80465A0 // (void *a1) -> void
-	bl sub_812AFB0
+	bl bg_LoadFullScreenTilesAndSetup_812AFB0
 	bl chatbox_8040818
 	mov r0, #8
 	mov r1, #0x10
@@ -15459,7 +15459,7 @@ sub_812AEC8:
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812AEDC
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 locret_812AEDC:
 	pop {pc}
 	.byte 0, 0
@@ -15613,7 +15613,7 @@ sub_812AFA4:
 	thumb_func_end sub_812AFA4
 
 	thumb_local_start
-sub_812AFB0:
+bg_LoadFullScreenTilesAndSetup_812AFB0:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0
@@ -15629,7 +15629,7 @@ sub_812AFB0:
 
 	bl sub_812B4AC
 	pop {r4-r7,pc}
-	thumb_func_end sub_812AFB0
+	thumb_func_end bg_LoadFullScreenTilesAndSetup_812AFB0
 	thumb_func_start sub_812AFC8
 sub_812AFC8:
 	push {r4-r7,lr}
@@ -15922,7 +15922,7 @@ loc_812B2AC:
 	ldr r2, off_812B2C0 // =0x28 
 	add r1, r1, r2
 	mov r2, #2
-	bl sub_811C23C
+	bl sprite_setPositionById_811C23C
 	pop {r4,r6,pc}
 	.balign 4, 0
 off_812B2BC:

@@ -4163,8 +4163,8 @@ loc_800D60E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800D5F0
 
-	thumb_func_start sub_800D618
-sub_800D618:
+	thumb_func_start object_checkPanelTypeMatchesValue_800D618
+object_checkPanelTypeMatchesValue_800D618:
 	push {r4,lr}
 	mov r4, r2
 	bl object_getPanelDataOffset
@@ -4180,7 +4180,7 @@ sub_800D618:
 	mov r0, #1
 locret_800D634:
 	pop {r4,pc}
-	thumb_func_end sub_800D618
+	thumb_func_end object_checkPanelTypeMatchesValue_800D618
 
 	thumb_local_start
 sub_800D636:
@@ -4240,7 +4240,7 @@ loc_800D68A:
 	mov r0, r4
 	mov r1, r5
 	mov r2, r6
-	bl sub_800D618
+	bl object_checkPanelTypeMatchesValue_800D618
 	tst r0, r0
 	bne loc_800D6B4
 	mov r0, r4

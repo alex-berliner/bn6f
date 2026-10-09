@@ -611,7 +611,7 @@ sub_81304BC:
 	tst r0, r0
 	bne loc_81304D2
 	ldr r0, off_81304E4 // =unk_2023FB0 
-	bl sub_811FE34
+	bl battle_ClearBuffer_811FE34
 	b locret_81304DE
 loc_81304D2:
 	sub r0, #1
@@ -5555,7 +5555,7 @@ ExitSaveMenu8132CA0:
 	beq loc_8132CB2
 	mov r0, #0x40 
 	bl chatbox_set_eFlags2009F38
-	bl sub_811F708
+	bl pet_menuExitToMap_811F708
 loc_8132CB2:
 	bl saveMenuTextGfx_8132F4C
 
@@ -6293,9 +6293,9 @@ loc_81332D6:
 	mov r0, #0
 	bl chatbox_runScript_803FD9C_on_eTextScript2028A20
 	ldr r0, off_813338C // =word_202A020 
-	bl sub_811FE34
+	bl battle_ClearBuffer_811FE34
 	ldr r0, off_8133394 // =unk_202A3E0 
-	bl sub_811FF6C
+	bl zeroFill_0xA000Words_811FF6C
 	mov r0, #8
 	strb r0, [r5,#2]
 	b loc_8133338
@@ -6306,7 +6306,7 @@ loc_81332F2:
 	beq loc_813330A
 	ldr r0, off_8133394 // =unk_202A3E0 
 	mov r1, #0
-	bl sub_811FF6C
+	bl zeroFill_0xA000Words_811FF6C
 	mov r0, #0
 	strh r0, [r5,#0x28]
 	b loc_8133334
@@ -6399,7 +6399,7 @@ sub_81333A0:
 	beq locret_81333E4
 loc_81333CC:
 	bl sub_81345D4
-	bl sub_81345E8
+	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl sub_8134610
 	b locret_81333E4
 loc_81333DA:
@@ -6993,7 +6993,7 @@ loc_8133830:
 	bl object_saveStateAndSetState8_8133E7C
 	mov r0, #1
 	mov r1, #3
-	bl sub_8117D10
+	bl entity_setLookupEntryStateFromFlag_8117D10
 loc_8133864:
 	bl sub_81341A0
 
@@ -7070,7 +7070,7 @@ loc_81338F4:
 	bge loc_813390E
 	mov r0, #0
 	mov r1, #3
-	bl sub_8117D10
+	bl entity_setLookupEntryStateFromFlag_8117D10
 	mov r0, #0
 	mov r1, #0
 loc_813390A:
@@ -7290,7 +7290,7 @@ loc_8133AE2:
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
-	bl sub_81345E8
+	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl sub_8134594
 	bl sub_8134538
 	bl sub_81345B0
@@ -7337,7 +7337,7 @@ loc_8133B4C:
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
-	bl sub_81345E8
+	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl sub_8134594
 	bl sub_8134538
 	bl sub_81345B0
@@ -7365,7 +7365,7 @@ loc_8133B8E:
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
-	bl sub_81345E8
+	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl sub_8134594
 	bl sub_8134538
 	bl sub_81345B0
@@ -8668,7 +8668,7 @@ sub_81345D4:
 	thumb_func_end sub_81345D4
 
 	thumb_local_start
-sub_81345E8:
+battle_spawnFixedArgEffect_wrapper_81345E8:
 	push {r4-r7,lr}
 	mov r0, #0xf0
 	mov r1, #0x20 
@@ -8678,7 +8678,7 @@ sub_81345E8:
 	ldr r6, byte_81346FC // =0x0
 	bl sub_813468C
 	pop {r4-r7,pc}
-	thumb_func_end sub_81345E8
+	thumb_func_end battle_spawnFixedArgEffect_wrapper_81345E8
 
 	thumb_local_start
 sub_81345FC:
@@ -13863,7 +13863,7 @@ sub_8136D8C:
 	// initRefs
 	ldr r0, off_8136EC4 // =off_8136EC8
 	bl decompAndCopyData // (u32 *initRefs) -> void
-	bl sub_811F6C0
+	bl pet_prepareMenuOnReturn_811F6C0
 	mov r0, r10
 	ldr r0, [r0,#0x34]
 	mov r1, #0x28 
@@ -17343,8 +17343,8 @@ sub_81387D8:
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
-	bl sub_802F0D8
-	bl sub_802F0F4
+	bl eventflags_ClearTwoHalfwordsAt2DE_802F0D8
+	bl eventFlags_ClearRangeAt2C8_802F0F4
 	bl cutscene_8036EFE
 	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl sub_809F90C

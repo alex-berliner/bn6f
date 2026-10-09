@@ -1801,7 +1801,7 @@ unsigned int dead_rng_800157C()
 
 
 // 0x80015b4
-void __cdecl sub_80015B4()
+void __cdecl bg_ClearTilesAndReloadGraphics_80015B4()
 {
     ZeroFillByEightWords(0x600E000, 0x2000);
     ZeroFillGFX30025c0();
@@ -2713,7 +2713,7 @@ int __fastcall sub_80021CE(int a1, int a2, unsigned int a3, int a4)
 
 
 // 0x8002310
-int __fastcall sub_8002310(_DWORD *a1)
+int __fastcall sprite_gfxAnimState_GotoNext_8002310(_DWORD *a1)
 {
     int v1; // r7
     int v2; // r4

@@ -564,7 +564,7 @@ int ho_jackIn_80341B6()
 
 
 // 0x80341f8
-int sub_80341F8()
+int transmission_BeginTransmissionScene_80341F8()
 {
     _BYTE *v0; // r5
     int v1; // r1
@@ -13425,7 +13425,7 @@ int sub_803EBB8()
 
 
 // 0x803ebc8
-void sub_803EBC8()
+void resetAndInitStruct200BC30_803EBC8()
 {
     int v0; // r0
 

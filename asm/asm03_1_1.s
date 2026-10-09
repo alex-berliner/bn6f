@@ -11633,8 +11633,8 @@ sub_803EBB8:
 	pop {pc}
 	thumb_func_end sub_803EBB8
 
-	thumb_func_start sub_803EBC8
-sub_803EBC8:
+	thumb_func_start resetAndInitStruct200BC30_803EBC8
+resetAndInitStruct200BC30_803EBC8:
 	push {lr}
 	ldr r0, off_803EBE0 // =dword_200B1B0
 	bl sub_803EF84
@@ -11648,7 +11648,7 @@ sub_803EBC8:
 	.balign 4, 0
 off_803EBE0:
 	.word dword_200B1B0
-	thumb_func_end sub_803EBC8
+	thumb_func_end resetAndInitStruct200BC30_803EBC8
 
 	thumb_local_start
 sub_803EBE4:

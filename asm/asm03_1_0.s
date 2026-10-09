@@ -1193,7 +1193,7 @@ off_80341D4:
 off_80341D8:
 	.word off_80341E8
 off_80341DC:
-	.word sub_80341F8+1
+	.word transmission_BeginTransmissionScene_80341F8+1
 	.word ho_8034218+1
 	.word sub_803423C+1
 off_80341E8:
@@ -1205,7 +1205,7 @@ off_80341F4:
 	thumb_func_end ho_jackIn_80341B6
 
 	thumb_local_start
-sub_80341F8:
+transmission_BeginTransmissionScene_80341F8:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5]
@@ -1219,7 +1219,7 @@ sub_80341F8:
 	.balign 4, 0
 off_8034214:
 	.word 0x40
-	thumb_func_end sub_80341F8
+	thumb_func_end transmission_BeginTransmissionScene_80341F8
 
 // () -> void
 	thumb_local_start

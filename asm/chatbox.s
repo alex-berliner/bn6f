@@ -3543,7 +3543,7 @@ jt_ctrl_8041580:
 	.word 0x0
 	.word 0x0
 	.word chatbox_804198C+1
-	.word chatbox_80419B4+1
+	.word chatbox_startCurNaviScript_80419B4+1
 	.word 0x0
 	.word chatbox_80419F8+1
 	.word chatbox_8041A28+1
@@ -4055,7 +4055,7 @@ off_80419B0:
 	thumb_func_end chatbox_804198C
 
 	thumb_local_start
-chatbox_80419B4:
+chatbox_startCurNaviScript_80419B4:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	add r0, #2
@@ -4069,7 +4069,7 @@ loc_80419CA:
 	add r4, #0xe
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_80419B4
+	thumb_func_end chatbox_startCurNaviScript_80419B4
 
 	thumb_local_start
 chatbox_80419D0:
@@ -4820,7 +4820,7 @@ chatbox_8041EE8:
 	cmp r0, #7
 	bgt loc_8041F04
 loc_8041F04:
-	bl sub_809E14C
+	bl owPlayer_RequestFixedAnimation_809E14C
 	add r4, #3
 	mov r0, #0
 	pop {pc}
@@ -4876,7 +4876,7 @@ chatbox_8041F44:
 	ldr r7, [r7,#oGameState_OverworldPlayerObjectPtr]
 	strb r0, [r7,#0x10]
 loc_8041F5E:
-	bl sub_809E14C
+	bl owPlayer_RequestFixedAnimation_809E14C
 	add r4, #2
 	mov r0, #0
 	pop {pc}

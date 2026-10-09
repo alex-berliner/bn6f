@@ -2512,7 +2512,7 @@ int __fastcall __noreturn sub_800D5F0(int a1, int a2)
 
 
 // 0x800d618
-char *__fastcall __noreturn sub_800D618(int a1, int a2, int a3)
+char *__fastcall __noreturn object_checkPanelTypeMatchesValue_800D618(int a1, int a2, int a3)
 {
     int v3; // r4
     char *result; // r0
@@ -2571,7 +2571,7 @@ signed int __fastcall sub_800D668(int a1, int a2, int a3)
     while ( 1 )
     {
         if ( object_isValidPanel(v7 + v5, v3) )
-            sub_800D618(v7 + v5, v3, v4);
+            object_checkPanelTypeMatchesValue_800D618(v7 + v5, v3, v4);
         if ( v8 )
             break;
         v5 = -v5;

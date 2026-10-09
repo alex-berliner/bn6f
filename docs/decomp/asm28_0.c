@@ -3747,7 +3747,7 @@ unsigned int __fastcall sub_809E13C(char a1)
 
 
 // 0x809e14c
-int __fastcall sub_809E14C(int a1)
+int __fastcall owPlayer_RequestFixedAnimation_809E14C(int a1)
 {
     char v1; // r4
     int result; // r0

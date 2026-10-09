@@ -949,7 +949,7 @@ void __noreturn sub_8046D4C()
 
 
 // 0x8046ddc
-void __noreturn sub_8046DDC()
+void __noreturn battle_objectAdvanceCounterToState8_8046DDC()
 {
     _BYTE *v0; // r5
     int v1; // r0

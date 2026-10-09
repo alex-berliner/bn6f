@@ -2124,8 +2124,8 @@ owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
 	pop {pc}
 	thumb_func_end owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 
-	thumb_func_start sub_809E14C
-sub_809E14C:
+	thumb_func_start owPlayer_RequestFixedAnimation_809E14C
+owPlayer_RequestFixedAnimation_809E14C:
 	push {r4-r7,lr}
 	mov r4, r0
 	ldr r7, off_809E184 // =eStruct200ace0 
@@ -2138,7 +2138,7 @@ sub_809E14C:
 loc_809E164:
 	strb r4, [r7,#oS200ace0_Unk_1c] // (byte_200ACFC - 0x200ace0)
 	pop {r4-r7,pc}
-	thumb_func_end sub_809E14C
+	thumb_func_end owPlayer_RequestFixedAnimation_809E14C
 
 	thumb_local_start
 sub_809E168:

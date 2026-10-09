@@ -637,7 +637,7 @@ off_804646C:
 	.word sub_8116924+1
 	.word sub_8116ADC+1
 	.word sub_8116CE0+1
-	.word sub_8116E10+1
+	.word stateDispatcher_3states_8116E10+1
 	.word sub_8117110+1
 	.word sub_8117218+1
 	.word sub_81172B0+1
@@ -647,7 +647,7 @@ off_804646C:
 	.word sub_8117780+1
 	.word sub_81178D8+1
 	.word sub_8117BC8+1
-	.word sub_8117D2C+1
+	.word objectStateDispatcher_8117D2C+1
 	.word sub_8117EC8+1
 	.word sub_8118344+1
 	.word sub_81187E8+1
@@ -655,11 +655,11 @@ off_804646C:
 	.word sub_8118D60+1
 	.word sub_8118E84+1
 	.word sub_8118F24+1
-	.word sub_8119364+1
+	.word npc_StateModeDispatcher_8119364+1
 	.word sub_811997C+1
 	.word sub_8119ACC+1
 	.word sub_8119D54+1
-	.word sub_8119E40+1
+	.word entity_RunStateHandler_8119E40+1
 	.word sub_811A338+1
 	.word sub_811A414+1
 	.word sub_811A78C+1
@@ -668,7 +668,7 @@ off_804646C:
 	.word sub_811AB5C+1
 	.word sub_811AD38+1
 	.word 0x0
-	.word sub_811B1EC+1
+	.word battle_runObjectStateHandler_811B1EC+1
 	.word sub_811B338+1
 	.word sub_811B3F4+1
 	.word sub_811B4AC+1
@@ -1552,7 +1552,7 @@ off_8046D18:
 	.word off_8046D1C
 off_8046D1C:
 	.word sub_8046D4C+1
-	.word sub_8046DDC+1
+	.word battle_objectAdvanceCounterToState8_8046DDC+1
 	.word sub_8046DF8+1
 	.word sub_8046E06+1
 	.word sub_8046E48+1
@@ -1627,7 +1627,7 @@ off_8046DD8:
 	thumb_func_end sub_8046D4C
 
 	thumb_local_start
-sub_8046DDC:
+battle_objectAdvanceCounterToState8_8046DDC:
 	push {lr}
 	ldrb r0, [r5,#8]
 	add r0, #2
@@ -1642,7 +1642,7 @@ loc_8046DF0:
 	bl sub_8047134
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8046DDC
+	thumb_func_end battle_objectAdvanceCounterToState8_8046DDC
 
 // symdb: Runs two update passes in sequence (sub_8047950 then sub_8047134) and always returns 0.
 // symdb: void sub_8046DF8(void) /* no inputs; returns r0 = 0 with N/Z set from it */
