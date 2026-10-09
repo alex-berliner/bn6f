@@ -2638,6 +2638,10 @@ object_setPanelType:
 	pop {r4-r6,pc}
 	thumb_func_end object_setPanelType
 
+// symdb: Claims the panel a battle object stands on for a given alliance, refreshing the panel afterwards.
+// symdb: void object_setPanelAlliance(u32 object /*r0*/, u32 param /*r1*/, u32 alliance /*r2*/); trashes
+// symdb: r0-r3, preserves r4-r7, returns panel type/scratch in r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setPanelAlliance.yaml
 	thumb_func_start object_setPanelAlliance
 object_setPanelAlliance:
 	push {r4-r6,lr}
@@ -2734,6 +2738,11 @@ loc_800CC82:
 // r1 = panely
 // r2 = flags that should be set
 // r3 = flags that should be clear
+// symdb: Tests whether the panel at given coordinates matches a required flag state (all of one mask set, none of another) and returns 1/0.
+// symdb: bool object_checkPanelParameters(int x /*r0*/, int y /*r1*/, u32 mustBeSet /*r2*/, u32
+// symdb: mustBeClear /*r3*/); returns r0 = 1 on success, 0 on failure; r4/r5 preserved; NZ set from the
+// symdb: 0/1 result, C/V left from object_getPanelParameters or from the final cmp on the mustBeSet path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_checkPanelParameters.yaml
 object_checkPanelParameters:
 	push {r4,r5,lr}
 	mov r4, r2
@@ -4163,6 +4172,11 @@ loc_800D60E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800D5F0
 
+// symdb: Returns 1 only when the panel the object stands on has its type/status byte equal to a requested value and that byte differs from the panel's alliance byte.
+// symdb: bool object_checkPanelTypeMatchesValue(object* obj /*r0*/, u32 panelArg /*r1*/, u8 expected
+// symdb: /*r2*/); r4 must hold caller's value and is preserved (passed through as context); returns 0/1
+// symdb: in r0; clobbers nz, c/v state as left by object_getPanelDataOffset on the no-panel exit
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_checkPanelTypeMatchesValue_800D618.yaml
 	thumb_func_start object_checkPanelTypeMatchesValue_800D618
 object_checkPanelTypeMatchesValue_800D618:
 	push {r4,lr}
@@ -5195,6 +5209,10 @@ loc_800E5DE:
 	pop {r6,r7,pc}
 	thumb_func_end sub_800E5AC
 
+// symdb: Returns whether the current object's flags allow it to move or act (1 = free, 0 = blocked).
+// symdb: bool object_canMove(void); // reads object ptr from r4, returns r0 = 1/0, sets NZ flags,
+// symdb: clobbers r1, preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_canMove.yaml
 	thumb_func_start object_canMove
 object_canMove:
 	push {r4,lr}

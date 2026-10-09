@@ -291,6 +291,10 @@ dword_80032D0:
 
 	thumb_func_end SpawnBattleObjectCommon
 
+// symdb: Spawns a battle object of type 1 from five arguments and runs its type-specific initialiser on success.
+// symdb: (u8 obj_idx @r0, u32 x @r1, u32 y @r2, u32 z @r3, u32 params @r4) -> * BattleObject @r5 (NULL on
+// symdb: failure); preserves r4, r6, r7; NZ flags reflect the spawn result on the failure path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnType1.yaml
 	thumb_func_start object_spawnType1
 object_spawnType1: // (obj_idx: u8, x: u32, y: u32, z: u32, params: u32) -> * BattleObject $r5
 	push {r7,lr}
@@ -327,6 +331,11 @@ loc_8003354:
 	pop {r7,pc}
 	thumb_func_end sub_800333C
 
+// symdb: Spawns a battle object of type 3 from five caller-supplied arguments and runs its initializer if the spawn succeeded.
+// symdb: BattleObject* battle_spawnObjectType3(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4); /* r0-r4 in; r5
+// symdb: out = new object pointer or NULL; flags set from tst r5,r5 when no initializer ran, otherwise
+// symdb: from sub_8003400; r4/r6/r7 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnType3.yaml
 	thumb_func_start object_spawnType3
 object_spawnType3:
 	push {r7,lr}
@@ -378,6 +387,11 @@ loc_80033A8:
 	pop {r7,pc}
 	thumb_func_end sub_8003390
 
+// symdb: Wrapper that spawns a battle object of type 4 from five caller-supplied parameters and immediately runs its initializer.
+// symdb: battle_spawnObjectType4(u32 param0, u32 param1, u32 param2, u32 param3, u32 param4) ->
+// symdb: BattleObject* (r0-r4 in; r0 = object pointer or NULL out; NZ flags reflect NULL-ness when
+// symdb: nothing spawned)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnType4.yaml
 	thumb_func_start object_spawnType4
 object_spawnType4:
 	push {r7,lr}
@@ -1087,6 +1101,10 @@ off_8003788:
 	.word byte_2036830
 	thumb_func_end object_800372A
 
+// symdb: Clears the overworld object interaction-area pool (0x280 bytes) and resets its entry count to zero.
+// symdb: void ZeroFillObjectInteractionAreas_800378C(void); /* clobbers r0, r1, lr, NZC flags; preserves
+// symdb: r2, r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFillObjectInteractionAreas_800378C.yaml
 	thumb_func_start ZeroFillObjectInteractionAreas_800378C
 ZeroFillObjectInteractionAreas_800378C: // () -> ()
 	push {lr}
@@ -1613,6 +1631,10 @@ endMinigameEffectMaybe_8003a90:
 	pop {r4-r7,pc}
 	thumb_func_end endMinigameEffectMaybe_8003a90
 
+// symdb: One-time initializer that zeroes the 0x48-byte work struct at 0x2001010 on first call, then sets an "initialized" flag so later calls skip the clear.
+// symdb: void initWorkStruct2001010(void); // inputs r2-r7 ignored; returns r1 = 0x48, preserves r2-r7,
+// symdb: c/v untouched, n/z clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_8003AB2.yaml
 	thumb_func_start zeroFill_8003AB2
 zeroFill_8003AB2:
 	push {r4-r7,lr}
@@ -1763,6 +1785,9 @@ loc_8003B82:
 	pop {r0-r4,pc}
 	thumb_func_end SpawnOWPlayerObject
 
+// symdb: Releases an overworld player object, clearing its slot in the active-player bitmask and resetting its sprite.
+// symdb: void FreeOWPlayerObject(ObjectHeader* obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/FreeOWPlayerObject.yaml
 	thumb_func_start FreeOWPlayerObject
 FreeOWPlayerObject:
 	push {lr}
@@ -2756,6 +2781,10 @@ loc_80045FE:
 	pop {r0-r4,pc}
 	thumb_func_end SpawnOverworldNPCObject
 
+// symdb: Frees an overworld NPC's object slot by clearing its bit in the active-NPC bitfield, marking the header unused, and removing its sprite scaling.
+// symdb: void overworld_freeNPCObject(ObjectHeader* npc /* r5 */); clobbers r0-r3 and flags (tail work
+// symdb: done by sprite_makeUnscalable), preserves r5, returns to lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/FreeOverworldNPCObject.yaml
 	thumb_func_start FreeOverworldNPCObject
 FreeOverworldNPCObject:
 	push {lr}
@@ -3158,6 +3187,10 @@ loc_80048AE:
 	pop {r0-r4,r6,pc}
 	thumb_func_end sub_8004864
 
+// symdb: Releases an overworld map object, clearing its active bit in the global allocation bitfield, marking its slot free, and unmarking it in the sprite system.
+// symdb: void FreeOverworldMapObject(struct OverworldMapObject* obj /* r5 */); returns r0-r3 = whatever
+// symdb: sprite_makeUnscalable leaves, flags NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/FreeOverworldMapObject.yaml
 	thumb_func_start FreeOverworldMapObject
 FreeOverworldMapObject:
 	push {lr}
@@ -5196,6 +5229,9 @@ sub_8005990: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8005990
 
+// symdb: Handler for warping on a map — resets two event flags and starts the "on-map warp" cutscene that makes the warp interactable.
+// symdb: void map_onMapWarpCutscene(GameState* self /* in r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_onMapWarpCutscene_80059B4.yaml
 	thumb_local_start
 map_onMapWarpCutscene_80059B4: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5215,6 +5251,10 @@ map_onMapWarpCutscene_80059B4: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end map_onMapWarpCutscene_80059B4
 
+// symdb: Sets the two story event flags that mark the in-map warp event as started, then launches the "on in-map warp" cutscene.
+// symdb: void sub_80059D0(GameState *self /* r5 */); sets NZCV per SetEventFlagFromImmediate; clobbers
+// symdb: r0-r3, lr; preserves r2, r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startInMapWarpCutscene_80059D0.yaml
 	thumb_local_start
 startInMapWarpCutscene_80059D0: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5753,6 +5793,10 @@ subsystem_launchReqBBS:
 	pop {r4-r7,pc}
 	thumb_func_end subsystem_launchReqBBS
 
+// symdb: Fades the screen out and queues the shop subsystem (0x20) to take over from the current map.
+// symdb: void subsystem_launchShop(Toolkit *toolkit /* r10 */); leaves r1 = 0x20, clobbers r0-r3,
+// symdb: preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/subsystem_launchShop.yaml
 	thumb_func_start subsystem_launchShop
 subsystem_launchShop:
 	push {r4-r7,lr}
@@ -6643,6 +6687,10 @@ off_800632C:
 	.word off_8005FB4
 	thumb_func_end subsystem_triggerTransition_800630A
 
+// symdb: Stops a screen fade effect and frees the two palettes (base+0x12, base+0x13) the fade slot was using.
+// symdb: void screenFade_StopAndFreePalettes(u8 fadeSlot); // in: r0 = eScreenFade slot index; out:
+// symdb: r0-r2, nzcv from last callee; preserves r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/screenFade_StopAndFreePalettes_8006330.yaml
 	thumb_local_start
 screenFade_StopAndFreePalettes_8006330:
 	push {r5,lr}
@@ -8696,6 +8744,9 @@ dword_8007334:
 	.word 0x2040000
 	thumb_func_end initBattleStructsAndVram_80071D4
 
+// symdb: Resets camera state and re-initializes it at the origin of map group 0xF0, map 0, then clears camera field unk03/14.
+// symdb: void sub_8007338(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_resetToOrigin_8007338.yaml
 	thumb_local_start
 camera_resetToOrigin_8007338:
 	push {lr}
@@ -9757,6 +9808,10 @@ off_80079CC:
 	.word eCamera+0x4C // eCamera.unk_4C
 	thumb_func_end sub_80079A8
 
+// symdb: Battle-state phase hook that ends the battle when the battle manager reports it finished, tearing down the scene, copying battle structs/stats back, and advancing the state machine to phase 0x0C.
+// symdb: void sub_80079D0(r4=?, r5=battleState*, r6=?, r7=?, r10=?); returns r0=0 (battle not finished)
+// symdb: or 0x0C (finished, phase advanced); flags NZ reflect r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_state_finishBattlePhase_80079d0.yaml
 	thumb_local_start
 battle_state_finishBattlePhase_80079d0:
 	push {lr}
@@ -9781,6 +9836,10 @@ dword_80079EC:
 	.word 0x12345678
 	thumb_func_end battle_state_finishBattlePhase_80079d0
 
+// symdb: One step of the battle-start field reveal: applies the panel column pattern to the battle field, then advances the battle-state script to step 8 and resets its timer.
+// symdb: Next sub_80079F0(BattleState* r5); /* r5 = battle state struct; r4,r6,r7,r10,lr preserved;
+// symdb: returns with Z flag set (mov r0,#0) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_RevealFieldColumnsStep_80079F0.yaml
 	thumb_local_start
 battle_RevealFieldColumnsStep_80079F0:
 	push {lr}
@@ -13070,6 +13129,10 @@ off_800929C:
 	.word 0x484
 	thumb_func_end sub_800927C
 
+// symdb: Dispatches to one of three battle-state phase handlers based on the phase byte at +2 of the battle state struct.
+// symdb: void battle_dispatchStatePhase(void) — r5 = battle state ptr in; calls handler with r0 = phase
+// symdb: byte, r1 = handler address; all registers/flags pass through from the handler
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStatePhase_80092A0.yaml
 	thumb_local_start
 battle_dispatchStatePhase_80092A0:
 	push {lr}
@@ -13310,6 +13373,10 @@ locret_800945A:
 	pop {r4,pc}
 	thumb_func_end sub_800938A
 
+// symdb: Dispatches a battle-state phase byte (offset 2 of the struct in r5) to one of two phase handlers via a jump table.
+// symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to sub_8009478 (phase 0) or
+// symdb: sub_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DispatchStatePhase_800945C.yaml
 	thumb_local_start
 battle_DispatchStatePhase_800945C:
 	push {lr}
@@ -15071,6 +15138,11 @@ battle_isTimeStop:
 	pop {pc}
 	thumb_func_end battle_isTimeStop
 
+// symdb: Battle-engine predicate returning 1 when a time-stop is active, the battle is not paused, or the battle flags have bit 0x20 set.
+// symdb: bool battle_isTimeStopOrNotPausedOrFlags0x20_800a0a4(void); // out: r0 = 0/1, r1 = scratch left
+// symdb: by callees (0x20 on the flags path); flags nz clobbered; r10 passed in by callers but unused
+// symdb: here
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_isTimeStopPauseOrBattleFlags0x20_800a0a4.yaml
 	thumb_func_start battle_isTimeStopPauseOrBattleFlags0x20_800a0a4
 battle_isTimeStopPauseOrBattleFlags0x20_800a0a4:
 	push {lr}
@@ -16103,6 +16175,10 @@ getBattleSettingsFromList1: // (int battleSettingsIdx) -> BattleSettings*
 	mov pc, lr
 	thumb_func_end getBattleSettingsFromList1
 
+// symdb: Reports whether the currently loaded subsystem counts as "the same" one, returning true when either nothing is in use or the shared subsystem state byte at eStruct203F7D8+1 still has bit 1 set.
+// symdb: bool isSameSubsystem_800A732(void) /* returns via Z flag: Z clear = same; clobbers r0-r3, lr;
+// symdb: preserves r4 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/isSameSubsystem_800A732.yaml
 	thumb_func_start isSameSubsystem_800A732
 isSameSubsystem_800A732: // () -> !zf
 	push {r4,lr}
@@ -16372,6 +16448,9 @@ loc_800A888:
 	pop {r4,r7,pc}
 	thumb_func_end sub_800A86E
 
+// symdb: Per-frame battle hook that runs the custom-screen (Full Custom/custom gauge) effect's update when that effect is active and its sub-state is ready.
+// symdb: void sub_800A892(void); // no args, no return; preserves r4-r7, clobbers flags and r0-r3/lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_tickCustomScreenEffect_800A892.yaml
 	thumb_local_start
 battle_tickCustomScreenEffect_800A892:
 	push {lr}
@@ -16516,6 +16595,10 @@ initIdListStruct_800A964:
 	pop {r4,pc}
 	thumb_func_end initIdListStruct_800A964
 
+// symdb: Returns whether the battle is in its end sequence (end-of-battle effect active and the end-phase counter has reached 15).
+// symdb: bool battle_IsBattleEnding(void) — in: r10 (toolkit), lr; out: r0 (0/1), flags from last
+// symdb: comparison, r1/r3 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_IsBattleEnding_800A97A.yaml
 	thumb_func_start battle_IsBattleEnding_800A97A
 battle_IsBattleEnding_800A97A:
 	push {lr}
@@ -16733,6 +16816,11 @@ locret_800AA90:
 	pop {r4,pc}
 	thumb_func_end sub_800AA64
 
+// symdb: Fetches a pointer to an eight-entry u32 table from sub_800AAAE and returns how many of the eight entries are nonzero.
+// symdb: int countNonzeroTableEntries(void) — in: none meaningful (lr only); out: r0 = count of nonzero
+// symdb: entries, r1 = last word read, r2 = 0x20, r3 = table pointer; c set / v clear from the final cmp
+// symdb: r2,#0x20
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AA92.yaml
 	thumb_func_start sub_800AA92
 sub_800AA92:
 	push {lr}
@@ -16767,6 +16855,10 @@ off_800AAB8:
 	.word unk_2038170
 	thumb_func_end getNextEntryAddress_800AAAE
 
+// symdb: Advances the battle state machine into phase 0x14, first running the struct-setup helper with argument 4
+// symdb: void battle_stateGotoPhase14_ADDRESS(Toolkit *r10 /* uses r10->battleStatePtr */);  // reads
+// symdb: r5/r10/lr, returns r0=battleState, r1=0, NZ flags from 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_stateGotoPhase14_800AABC.yaml
 	thumb_func_start battle_stateGotoPhase14_800AABC
 battle_stateGotoPhase14_800AABC:
 	push {r5,lr}
@@ -18084,6 +18176,10 @@ locret_800B426:
 	pop {r4,pc}
 	thumb_func_end transferBattleHandNaviStats_800B3D8
 
+// symdb: Reinitializes some global work structure, stamps a magic word next to it, and issues a mode-4 request to the state/screen manager at sub_80200A4.
+// symdb: void sub_800B428(void); // r1-r3 out are whatever sub_80200A4 left in them (passed straight
+// symdb: through); c/v out come from that call
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B428.yaml
 	thumb_local_start
 sub_800B428:
 	push {lr}
@@ -18100,6 +18196,9 @@ off_800B440:
 	.word 0x3C4
 	thumb_func_end sub_800B428
 
+// symdb: Copies two saved 12-byte snapshots back into the working battle data area and then runs sub_802C9EA on the restored data.
+// symdb: void sub_800B444(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
 	thumb_local_start
 sub_800B444:
 	push {lr}

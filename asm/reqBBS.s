@@ -743,6 +743,10 @@ reqBBS_addBBSMessage_813e5dc:
 	pop {r3,r7,pc}
 	thumb_func_end reqBBS_addBBSMessage_813e5dc
 
+// symdb: Clears the BBS (bulletin board) work RAM, marking every board slot as unused.
+// symdb: void reqBBS_ResetWorkAreas(void) // takes nothing meaningful; r3 is preserved and returned
+// symdb: unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_813E616.yaml
 	thumb_func_start reqBBS_813E616
 reqBBS_813E616:
 	push {lr}
@@ -2682,6 +2686,10 @@ reqBBS_addRequest_813F9A0:
 	pop {r3,r7,pc}
 	thumb_func_end reqBBS_addRequest_813F9A0
 
+// symdb: Resets the BBS (bulletin board) request state, filling the request entry list with free-slot markers and clearing the sent-requests counter.
+// symdb: void reqBBS_initMemory_813F9DA(void); // out: r2 = 0x80 (side effect of ByteFill's argument
+// symdb: surviving), clobbers r0 r1 lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_initMemory_813F9DA.yaml
 	thumb_func_start reqBBS_initMemory_813F9DA
 reqBBS_initMemory_813F9DA:
 	push {lr}

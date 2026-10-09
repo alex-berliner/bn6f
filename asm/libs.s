@@ -21355,6 +21355,10 @@ loc_814E092:
 	bx r0
 	thumb_func_end ply_fine
 
+// symdb: Copies a fixed 36-word table (at off_81C0418) into a caller-supplied buffer, passing each word through a converter routine before storing it.
+// symdb: void copyConvertedWordTable_814E09C(u32 *dest /* r0 */); returns via r12 (return address is
+// symdb: stashed in r12 instead of using lr normally)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E09C.yaml
 	thumb_local_start
 sub_814E09C:
 	mov r12, lr
@@ -21656,6 +21660,11 @@ sub_814E210:
 	.balign 4, 0x00
 	thumb_func_end sub_814E210
 
+// symdb: After resolving a record via sub_814E0D0, stores the record's new state byte and flags the record as dirty/needs-refresh when the state changed.
+// symdb: void sub_814E21C(void); // all actual inputs/outputs flow through the call to sub_814E0D0, which
+// symdb: returns a record pointer in r1 and a state value in r3; returns r12=lr with flags left from
+// symdb: CMP/ORR
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E21C.yaml
 	thumb_func_start sub_814E21C
 sub_814E21C:
 	mov r12, lr

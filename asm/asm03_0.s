@@ -784,6 +784,9 @@ off_8026A3C:
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
 
+// symdb: Queries some value via sub_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
+// symdb: u8 sub_8026A50(S20364C0* self /* r5 */); /* returns 0 in r0, sets Z=1 N=0, clobbers r1-r3 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026A50.yaml
 	thumb_local_start
 sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	push {lr}
@@ -800,6 +803,9 @@ sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	pop {pc}
 	thumb_func_end sub_8026A50
 
+// symdb: Runs an object's standard per-frame update sequence and returns its state byte.
+// symdb: u8 object_runFrameUpdate(Object* self /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_runFrameUpdate_8026A6C.yaml
 	thumb_local_start
 object_runFrameUpdate_8026A6C: // (self: * S20364C0 $r5) -> u8
 	push {lr}
@@ -3615,6 +3621,10 @@ loc_8027F64:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8027F42
 
+// symdb: After a Mega (0xA) or Giga (0xB) chip is chosen as the active chip, clears the active-chip selection index back to 0xFF (none).
+// symdb: void battle_clearActiveChipIfMegaGiga(struct ActiveChipState* state) // r7 = pointer to
+// symdb: folder/active-chip state block; only reads/writes its byte at +1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearActiveChipIfMegaGiga_8027F6A.yaml
 	thumb_local_start
 battle_clearActiveChipIfMegaGiga_8027F6A:
 	push {r7,lr}
@@ -3960,6 +3970,9 @@ byte_802819C:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6
 	thumb_func_end sub_8028172
 
+// symdb: Returns the element/attribute data pointer for a battle chip, falling back to a default blob for the "no chip" sentinel id 0x1FF.
+// symdb: void* battle_getChipElementData(i32 which_chip /* r0 */); preserves r1/r2; clobbers flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getChipElementData_80281A8.yaml
 	thumb_local_start
 battle_getChipElementData_80281A8:
 	push {r1,r2,lr}
@@ -3980,7 +3993,7 @@ off_80281C0:
 
 // symdb: Queues one 0x80-byte chunk of a graphics DMA transfer, using a helper to set up the next source/destination pair.
 // symdb: gfx_QueueNextChunkedGfxTransfer(u32 src /*r0*/, u32 dest /*r1*/, ... /*r3 = context for
-// symdb: battle_getChipElementData_80281A8*/) -> u32 /*r1 = dest + 0x80*/; preserves r2-r7
+// symdb: sub_80281A8*/) -> u32 /*r1 = dest + 0x80*/; preserves r2-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_QueueNextChunkedGfxTransfer_80281C4.yaml
 	thumb_local_start
 gfx_QueueNextChunkedGfxTransfer_80281C4:
@@ -4068,6 +4081,10 @@ off_8028234:
 	.word byte_802A700
 	thumb_func_end data_getRecordPtrById_8028214
 
+// symdb: Wipes one 0xC0-byte OBJ tile slot in VRAM (base 0x6009C20, entry index in r0) by filling it via sub_80281C4, used to free/reset a sprite's tile space.
+// symdb: void sprite_clearObjVramEntry(u32 entryIndex /* r0 */); r2-r7 preserved; flags clobbered by
+// symdb: callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearObjVramEntry_8028238.yaml
 	thumb_local_start
 sprite_clearObjVramEntry_8028238:
 	push {lr}
@@ -4218,6 +4235,10 @@ battle_endActionSetup_8028310:
 	pop {pc}
 	thumb_func_end battle_endActionSetup_8028310
 
+// symdb: Queues a chunk of battle graphics into a destination buffer, choosing between a fixed ROM chunk and a table-driven chunk based on R7.
+// symdb: void sub_8028320(mut dest r1, arg r2, arg r4, arg r5, arg r6, selector r7); clobbers r0-r3 and
+// symdb: nz/c/v, preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadGfxChunkBySelector_8028320.yaml
 	thumb_local_start
 battle_loadGfxChunkBySelector_8028320:
 	push {lr}
@@ -4286,6 +4307,10 @@ dword_80283AC:
 	.word 0x1FF
 	thumb_func_end sub_8028340
 
+// symdb: Runs a companion setup routine (sub_80283C8) and then loads a 15x6-tile background screen from the tile map at unk_2035186 into 32x32 tile block 3.
+// symdb: void sub_80283B0(void) — takes no meaningful inputs (r4/r5/r10 are caller state it must
+// symdb: preserve); returns nothing, with r0-r3 and NZCV left as CopyBackgroundTiles leaves them
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_ReloadTileBlock3Screen_80283B0.yaml
 	thumb_local_start
 bg_ReloadTileBlock3Screen_80283B0:
 	push {r4,r5,lr}
@@ -5652,6 +5677,10 @@ nullsub_59:
 	mov pc, lr
 	thumb_func_end nullsub_59
 
+// symdb: Runs the close-out sequence when leaving the Custom screen, then returns to the previous menu state.
+// symdb: void customScreen_ExitSequence_8028E32(void)  // no meaningful inputs; r0=0 is passed to the
+// symdb: final sub-call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/customScreen_ExitSequence_8028E32.yaml
 	thumb_local_start
 customScreen_ExitSequence_8028E32:
 	push {lr}
@@ -8929,6 +8958,10 @@ dword_802A560:
 	.word 0x3785
 	thumb_func_end getChipID_802A54E
 
+// symdb: Fetches the current battle emotion/mood state for a battle actor, dispatching between the normal emotion lookup and an alternate path based on a flag on the actor.
+// symdb: (r10=toolkit, r5=battle object, r4/r6 unused) -> (r0=emotion enum8?, r1=transformation, r2=mood,
+// symdb: r3=beast_out_counter)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getActorEmotion_802A564.yaml
 	thumb_local_start
 battle_getActorEmotion_802A564:
 	push {lr}
@@ -12237,6 +12270,11 @@ locret_802C1CC:
 	.word eStruct2035280
 	thumb_func_end sub_802C170
 
+// symdb: Tiny tail-call dispatcher that jumps to one of two per-object handler routines chosen by a state byte stored in the object, passing the caller straight through.
+// symdb: Next runObjectStateHandler(Object *obj /* R5 */) — reads obj->state (byte at +3), calls
+// symdb: table[obj->state] with R0=obj->state, R1=handler address, LR=address of the following `pop
+// symdb: {pc}`; NZCV and R0-R12/LR return whatever the chosen handler leaves in them.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/runObjectStateHandler_802C1D4.yaml
 	thumb_local_start
 runObjectStateHandler_802C1D4:
 	push {lr}
@@ -16001,6 +16039,10 @@ loc_802DD26:
 	pop {r5,r7,pc}
 	thumb_func_end sub_802DD1E
 
+// symdb: Returns 1 only when the battle object's navi-stats alliance byte (0x29) is set AND the AI-data flag word has bit 0x4000 set, else 0.
+// symdb: bool sub_802DD2A(BattleObject* obj /* r0 */); // out: r0 = 0/1, r1/r3 clobbered, flags set by
+// symdb: final adds r0,r7,#0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_isAllianceActiveAndAiFlag0x4000_802DD2A.yaml
 	thumb_func_start battle_isAllianceActiveAndAiFlag0x4000_802DD2A
 battle_isAllianceActiveAndAiFlag0x4000_802DD2A:
 	push {r7,lr}
@@ -16097,6 +16139,9 @@ off_802DE58:
 	.word 0x2000
 	thumb_func_end sub_802DD70
 
+// symdb: When test-battle flag 0x40 is set, runs the sub_802E2C4 handler for indices 0 and 1; otherwise does nothing.
+// symdb: void sub_802DE5C(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
 	thumb_func_start sub_802DE5C
 sub_802DE5C:
 	push {lr}
@@ -16320,6 +16365,9 @@ locret_802DFFA:
 	pop {r4,pc}
 	thumb_func_end sub_802DFC8
 
+// symdb: Clears the battle work buffer and hooks up the battle object table at the start of battle setup.
+// symdb: void battle_initWorkArea(void) /* preserves and returns r2/r3/r4 untouched */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initWorkArea_802DFFC.yaml
 	thumb_func_start battle_initWorkArea_802DFFC
 battle_initWorkArea_802DFFC:
 	push {r4,lr}
@@ -18296,6 +18344,9 @@ byte_802EF4C:
 	.byte 0x0
 	thumb_func_end sub_802EEC4
 
+// symdb: If a condition check (sub_800A8F8) reports active, drives the sub_802EF74 state machine twice with argument 0 then 1.
+// symdb: void sub_802EF5C(void); returns whatever flags/r0-r2 the last callee left
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802EF5C.yaml
 	thumb_func_start sub_802EF5C
 sub_802EF5C:
 	push {lr}
@@ -18514,6 +18565,9 @@ off_802F0D4:
 	.word 630 * 2
 	thumb_func_end toolkit_ClearAllEventFlags_802F0C4
 
+// symdb: Clears a group of 2 event flag halfwords (32 flag bits) starting at offset 0x2DE in the toolkit's event flags buffer.
+// symdb: void sub_802F0D8(void); /* reads r10 (toolkit ptr); r2/r3 preserved; clobbers r0,r1,lr,NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eventflags_ClearTwoHalfwordsAt2DE_802F0D8.yaml
 	thumb_func_start eventflags_ClearTwoHalfwordsAt2DE_802F0D8
 eventflags_ClearTwoHalfwordsAt2DE_802F0D8:
 	push {lr}
@@ -18531,6 +18585,9 @@ dword_802F0F0:
 	.word 0x2
 	thumb_func_end eventflags_ClearTwoHalfwordsAt2DE_802F0D8
 
+// symdb: Zeroes a fixed run of 0x16 halfwords in the toolkit's event flag array starting at offset 0x2C8, resetting that block of flags.
+// symdb: void sub_802F0F4(void) /* reads toolkit from r10; preserves r2, r3; returns r2 unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eventFlags_ClearRangeAt2C8_802F0F4.yaml
 	thumb_func_start eventFlags_ClearRangeAt2C8_802F0F4
 eventFlags_ClearRangeAt2C8_802F0F4:
 	push {lr}
@@ -20339,6 +20396,10 @@ off_802FE08:
 	.word iSpriteLayerLists
 	thumb_func_end sub_802FDB0
 
+// symdb: Copies the entire shadow OAM (iOamShadow, 0x400 bytes) into hardware OAM at 0x7000000, an end-of-frame sprite buffer flush.
+// symdb: void oam_FlushShadowOamToHardware_802FE0C(/* preserved passthrough in r3 */); registers: in r3
+// symdb: (ignored, passed through unchanged), out r3 (same value); clobbers r0-r2, lr, NZC flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyObjAttributesToIWRAM_802FE0C.yaml
 	thumb_func_start copyObjAttributesToIWRAM_802FE0C
 copyObjAttributesToIWRAM_802FE0C:
 	push {lr}
@@ -20521,6 +20582,10 @@ loc_802FF26:
 	mov pc, lr
 	thumb_func_end sub_802FF10
 
+// symdb: Resets a global state word to 0 and zeroes a 0x180-byte work buffer, likely preparing shared game/battle scratch state for reuse.
+// symdb: void state_resetAndClearBuffer(void); // r2/r3 preserved, r0/r1/lr clobbered, flags whatever
+// symdb: ZeroFillByEightWords leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cleareMemory_802FF2C.yaml
 	thumb_func_start cleareMemory_802FF2C
 cleareMemory_802FF2C:
 	push {lr}
@@ -24756,6 +24821,10 @@ sub_8031B9A:
 	pop {pc}
 	thumb_func_end sub_8031B9A
 
+// symdb: Standard three-step textbox setup — initialise textbox state, open the message window box, then begin printing the text.
+// symdb: void text_setupTextboxAndStartPrint(r0 arg0, r5 arg5); // returns to caller with
+// symdb: r0/r2/r3/r4/r5/r6/r7/flags as left by sub_8031B7C
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/text_setupTextboxAndStartPrint_8031BB2.yaml
 	thumb_local_start
 text_setupTextboxAndStartPrint_8031BB2:
 	push {lr}
@@ -24769,6 +24838,10 @@ text_setupTextboxAndStartPrint_8031BB2:
 	pop {pc}
 	thumb_func_end text_setupTextboxAndStartPrint_8031BB2
 
+// symdb: Advances the text engine by one step, then blits the affected window region and refreshes the text box display.
+// symdb: void textbox_StepAndRefreshWindow(void) — takes context in r0/r5 for the text-engine step;
+// symdb: returns final callee register/flag state (r0,r2-r7,nzcv) unchanged to caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textbox_StepAndRefreshWindow_8031BCA.yaml
 	thumb_local_start
 textbox_StepAndRefreshWindow_8031BCA:
 	push {lr}
@@ -24782,6 +24855,10 @@ textbox_StepAndRefreshWindow_8031BCA:
 	pop {pc}
 	thumb_func_end textbox_StepAndRefreshWindow_8031BCA
 
+// symdb: Runs a three-call setup/update sequence, passing fixed tile parameters (0, 0x10, 0xC, 0xC) to the middle call.
+// symdb: void sub_8031BE2(int r0, void* r5); // calls sub_803172E(r0,r5), sub_8031594(r0, 0, 0x10, 0xC,
+// symdb: 0xC), then sub_8031B7C(r0, r5); returns whatever the last callee leaves in r0/r3-r7 and flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BE2.yaml
 	thumb_local_start
 sub_8031BE2:
 	push {lr}
@@ -24795,6 +24872,10 @@ sub_8031BE2:
 	pop {pc}
 	thumb_func_end sub_8031BE2
 
+// symdb: Runs a fixed three-step sequence, forwarding caller arguments to sub_803172E, then calling sub_8031570 with fixed args (0, 0x10, 0x10, 0) and finally sub_8031B7C
+// symdb: void sub_8031BFA(regs r0, r5) — returns to caller via pop {pc}; all register results and NZCV
+// symdb: flags are whatever sub_8031B7C leaves behind
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BFA.yaml
 	thumb_local_start
 sub_8031BFA:
 	push {lr}
@@ -24834,6 +24915,10 @@ sub_8031C2A:
 	pop {pc}
 	thumb_func_end sub_8031C2A
 
+// symdb: Thin battle-side wrapper that calls helper sub_803172E, then invokes sub_80315DC with a fixed parameter block (0, 14, 14, 0) and passes its results on to sub_8031B7C.
+// symdb: void sub_8031C42(int r0, int r5) // r0/r5 forwarded to sub_803172E; returns whatever sub_8031B7C
+// symdb: leaves in r0/r2/r3/r4/r5 and NZCV
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C42.yaml
 	thumb_local_start
 sub_8031C42:
 	push {lr}

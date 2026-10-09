@@ -865,6 +865,10 @@ MapScriptCutsceneCmd_set_screen_fade: // 8035D6A
 // sets screen fade params for the screen fade when entering a map
 // byte1 - argument 1 for enter map screen fade
 // byte2 - argument 2 for enter map screen fade
+// symdb: Map script cutscene command that sets the two enter-map screen fade parameters from the script stream and advances past the command.
+// symdb: (u32* scriptPos r7, void* toolkit r10, u32 scriptState r0) -> u32 consumed r0; advances r7 by 3;
+// symdb: writes GameState.EnterMapFadeParam1/2; NZ flags set from r0=1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_set_enter_map_screen_fade.yaml
 MapScriptCutsceneCmd_set_enter_map_screen_fade: // 8035D98
 	push {lr}
 	mov r1, r10
@@ -885,6 +889,10 @@ MapScriptCutsceneCmd_set_enter_map_screen_fade: // 8035D98
 // set event flag
 // byte1 - memory param
 // event16_2 or mem - event flag to set
+// symdb: Map script command that sets an event flag whose number comes from a byte operand (or a 16-bit literal after a 0xFF escape marker).
+// symdb: void MapScriptCutsceneCmd_set_event_flag(scriptCtx r5, scriptPtr r7); // advances the script
+// symdb: pointer by 4, returns r0 = 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_set_event_flag.yaml
 MapScriptCutsceneCmd_set_event_flag: // 8035DB4
 	push {lr}
 	mov r6, #1
@@ -935,6 +943,11 @@ MapScriptCutsceneCmd_clear_event_flag: // 8035DD6
 // event flags set are in the range [event16_2, event16_2+byte1) (interval notation)
 // byte1 - number of event flags to set
 // event16_2 - starting event flag
+// symdb: Map-script/cutscene command that sets a contiguous run of event flags, then consumes its 4-byte script record and continues the script.
+// symdb: Next MapScriptCutsceneCmd_set_event_flag_range(void); reads command params via script stream
+// symdb: helpers, returns 1 in r0 ("keep running"); outgoing nz/c/v come from the ADDS r7,#4 position
+// symdb: update
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_set_event_flag_range.yaml
 MapScriptCutsceneCmd_set_event_flag_range: // 8035DF8
 	push {lr}
 	mov r6, #1
@@ -1118,6 +1131,10 @@ MapScriptCutsceneCmd_write_word: // 8035EDA
 // [eGameState + byte1] = byte2
 // byte1 - eGameState field to write to
 // byte2 - value to write
+// symdb: Map-script cutscene command that reads an offset and a byte value from the script stream and stores the value into the GameState struct at that offset.
+// symdb: void mapScriptCmd_writeGamestateByte(Toolkit* r10 /* GameState via oToolkit_GameStatePtr */, u8*
+// symdb: r7 /* script stream ptr */); // out: r0 = 1, r7 += 3, NZCV set from "add r7,#3"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_write_gamestate_byte.yaml
 MapScriptCutsceneCmd_write_gamestate_byte: // 8035EF2
 	push {lr}
 	mov r0, r10
@@ -1139,6 +1156,10 @@ MapScriptCutsceneCmd_write_gamestate_byte: // 8035EF2
 // [eStruct2001c04 + byte1] = byte2
 // byte1 - eStruct2001c04 field to write to
 // byte2 - value to write
+// symdb: Map script command that writes one byte at a given offset into the S2001c04 work-area struct.
+// symdb: void mapScriptCmd_writeS2001c04Byte(toolkit r10, scriptCursor r7); // returns r0 = 1, r7 += 3,
+// symdb: flags from r7+3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_write_eStruct2001c04_byte.yaml
 MapScriptCutsceneCmd_write_eStruct2001c04_byte: // 8035F0E
 	push {lr}
 	mov r0, r10
@@ -1248,6 +1269,11 @@ MapScriptCutsceneCmd_terminate_one_or_all_gfx_anims: // 8035F6A
 // trigger a PET overworld effect
 // byte1 - memory param
 // byte2 or mem - PET overworld effect to trigger
+// symdb: Map script cutscene command that triggers a PET (player terminal) effect, taking the effect id either from a lookup table or inline from the script.
+// symdb: Next MapScriptCutsceneCmd_doPetEffect(u8 *scriptCtx /*r5*/, u8 *scriptPtr /*r7*/); // in:
+// symdb: r5=script/context struct holding the effect-id table, r7=script read pointer; out: r0=1
+// symdb: (success), r7+=3, N/Z from 'mov r0,#1', C/V from the 'add r7,#3'; preserves r2,r3,r5,r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_do_pet_effect.yaml
 MapScriptCutsceneCmd_do_pet_effect: // 8035F98
 	push {lr}
 	mov r6, #1
@@ -3916,6 +3942,11 @@ loc_80377B2:
 // 0x05 byte1
 // wait script if the player sprite's current frame doesn't equal byte1
 // byte1 - anim frame to compare
+// symdb: Cutscene/map-script command that stalls the script until the player's overworld sprite reaches a given animation frame.
+// symdb: bool f(u8 targetFrame in r4, script cursor in r7, script ctx in r5/r10) -> r0 = 1 when frame
+// symdb: matches (r7 advanced past operand), r0 = 0 while still waiting; NZCV left reflecting the final
+// symdb: compare/pointer update; r5-r7, lr preserved or updated as described
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_wait_if_player_sprite_cur_frame_not_equal_maybe.yaml
 CutsceneCmd_wait_if_player_sprite_cur_frame_not_equal_maybe:
 	push {lr}
 	mov r6, #1
@@ -3994,6 +4025,13 @@ CutsceneCmd_wait_camera_script:
 // wait for cutscene variable to be equal to byte2
 // byte1 - cutscene variable to read from
 // byte2 - value to compare cutscene variable with
+// symdb: Cutscene script command "wait until script variable equals a value" — polls a script variable each update and only advances the script once it matches the given target.
+// symdb: u32 CutsceneCmd_wait_var_equal(void) — in: r5 = script-context pointer, r7 = script-stream
+// symdb: pointer, lr = return address; out: r0 = 1 when the wait finished (command consumed) or 0 while
+// symdb: still waiting, r4 = expected value left over from the second read, r6 = last read mode (2), r7
+// symdb: advanced past the 3-byte command on success, flags set (N/Z from movs, C/V from the compare or
+// symdb: the r7 += 3 add)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_wait_var_equal.yaml
 CutsceneCmd_wait_var_equal:
 	push {lr}
 	mov r6, #1
@@ -4015,6 +4053,11 @@ CutsceneCmd_wait_var_equal:
 // 0x0a byte1
 // wait for cutscene process to end
 // byte1 - offset to cutscene script in cutscene state (which cutscene process)
+// symdb: Polls the running map script each frame and reports whether it has reached its end-of-script opcode, letting the cutscene player wait for the script to finish.
+// symdb: Next CutsceneCmd_wait_cutscene_process(void); // in: r5 = script context base, r4 = script read-
+// symdb: offset register pair, r7 = current cutscene command pointer; out: r0 = 1 if script finished else
+// symdb: 0, r7 advanced by 2 on completion, NZC/V reflect the opcode compare and r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_wait_cutscene_process.yaml
 CutsceneCmd_wait_cutscene_process:
 	push {lr}
 	mov r6, #1
@@ -4519,6 +4562,10 @@ CutsceneCmd_switch_case_from_chatbox_flags_bit0_to_2:
 // store text archive pointer
 // the text archive may be compressed
 // ptr1 - text archive pointer. bit 31 indicates if it is compressed
+// symdb: Cutscene script command that loads a text archive (decompressing it first if needed) and stores its pointer in the cutscene state.
+// symdb: u32 CutsceneCmd_load_text_archive(CutsceneState *r5 /* state */, u32 r2, u32 r3, u8 *r7 /*
+// symdb: script cursor */, void *lr)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_decomp_text_archive.yaml
 CutsceneCmd_decomp_text_archive:
 	push {lr}
 	mov r6, #1
@@ -4534,6 +4581,10 @@ CutsceneCmd_decomp_text_archive:
 	pop {pc}
 	thumb_func_end CutsceneCmd_decomp_text_archive
 
+// symdb: Returns a TextScriptArchive* for a cutscene text reference, LZ77-decompressing it into the shared buffer if the pointer's top bit marks it as compressed.
+// symdb: TextScriptArchive* text_resolveCutsceneArchivePtr(CompText* archive /* r0; bit31 set =
+// symdb: LZ77-compressed */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/DecompressTextArchiveForCutscene.yaml
 	thumb_local_start
 DecompressTextArchiveForCutscene: // (CompText *archive) -> TextScriptArchive*
 	push {lr}
@@ -5210,6 +5261,11 @@ MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_npc:
 // 0x49 0x3X
 // free overworld map object created via a cutscene
 // byte1 lower nybble - which map object to free, from the list of cutscene state map object ptrs
+// symdb: Map-script sub-command that frees one overworld map object from a cutscene-state slot, advancing the script cursor and reporting success.
+// symdb: void MapScriptSubCmd_free_ow_map_object(u32 commandWord /*r4 low nibble = slot index*/,
+// symdb: CutsceneState* cutsceneState /*r5, preserved*/, u8** scriptCursor /*r7, advanced by 2*/); //
+// symdb: returns r0 = 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptSubCmd_free_ow_map_object.yaml
 MapScriptSubCmd_free_ow_map_object:
 	push {lr}
 	mov r1, #0xf
@@ -5460,6 +5516,10 @@ MapScriptCutsceneCmd_play_sound:
 // 0x31/0x4e hword1
 // play music
 // hword1 - music to play. if this is negative, then play the current map music
+// symdb: Map script "play music" command — plays the song id in its halfword operand, or the current event's theme if the id is negative, and advances the script.
+// symdb: void MapScriptCutsceneCmd_play_music(void); /* reads via script pointer r7; sets r7 += 3 and
+// symdb: returns r0 = 1 (continue script) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_play_music.yaml
 MapScriptCutsceneCmd_play_music:
 	push {lr}
 	mov r6, #1

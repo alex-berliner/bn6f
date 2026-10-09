@@ -8464,6 +8464,9 @@ locret_803CEB4:
 	.balign 4, 0x00
 	thumb_func_end sub_803CE44
 
+// symdb: Sets the current PET navi's HP stat to its max HP, healing it to full.
+// symdb: void SetCurNaviHPToFull(void) -> r0=0, Z set / N clear on return; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetCurNaviHPToFull.yaml
 	thumb_func_start SetCurNaviHPToFull
 SetCurNaviHPToFull:
 	push {r4-r7,lr}
@@ -11166,6 +11169,10 @@ init_eStartScreenAnimationControl200B1A0_1:
 	.balign 4, 0x00
 	thumb_func_end init_eStartScreenAnimationControl200B1A0_1
 
+// symdb: Resets the 8-byte start-screen animation control struct and marks it active.
+// symdb: void init_startScreenAnimationControl200B1A0_2(void); // flags out: Z=0,C cleared per movs r0,#1
+// symdb: (NZ set from result 1)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_eStartScreenAnimationControl200B1A0_2.yaml
 	thumb_local_start
 init_eStartScreenAnimationControl200B1A0_2:
 	push {r4,lr}
@@ -11633,6 +11640,10 @@ sub_803EBB8:
 	pop {pc}
 	thumb_func_end sub_803EBB8
 
+// symdb: Resets the linked-list head at dword_200B1B0 and reinitializes the 0x20-byte state struct at eStruct200BC30, likely at scene/subsystem startup.
+// symdb: void sub_803EBC8(void) — takes nothing meaningful from callers (r2/r3 are pass-through and
+// symdb: preserved untouched); returns with r2/r3 intact; clobbers r0, r1, flags, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetAndInitStruct200BC30_803EBC8.yaml
 	thumb_func_start resetAndInitStruct200BC30_803EBC8
 resetAndInitStruct200BC30_803EBC8:
 	push {lr}

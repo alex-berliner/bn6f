@@ -357,6 +357,9 @@ sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033A80
 
+// symdb: Per-frame update handler for the scene/entity while in the real world — resets two per-frame state flags, runs the real-world update logic, then queues a graphics transfer.
+// symdb: void realWorld_onUpdate_8033A96(S2011E30* self /* in r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/onUpdateInRealWorld_8033A96.yaml
 	thumb_local_start
 onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -980,6 +983,10 @@ dword_8033FBC:
 	.word 0xC7AC
 	thumb_func_end sub_8033F80
 
+// symdb: Queues a PET effect by writing its index into the eS2011E30 state block, clearing the pending-effect flag, and playing sound 0x9B for effect 3.
+// symdb: void pet_SetEffect_8033fc0(u32 effect /* r0 */); // returns r0 = effect (or PlaySoundEffect
+// symdb: result when effect == 3), flags from `cmp effect,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/doPETEffect_8033fc0.yaml
 	thumb_func_start doPETEffect_8033fc0
 doPETEffect_8033fc0:
 	push {r5,lr}
@@ -1204,6 +1211,10 @@ off_80341F4:
 	.word byte_2011A40
 	thumb_func_end ho_jackIn_80341B6
 
+// symdb: Prepares the wireless/cable transmission screen: sets a scene state to 4, switches the LCD to a fixed render mode, refreshes render info, and starts the transmission music.
+// symdb: void sub_80341F8(void) (r5 = pointer to a scene/state byte; flags and r0-r1 after return reflect
+// symdb: the trailing PlayMusic call)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/transmission_BeginTransmissionScene_80341F8.yaml
 	thumb_local_start
 transmission_BeginTransmissionScene_80341F8:
 	push {lr}

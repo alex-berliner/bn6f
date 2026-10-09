@@ -2094,6 +2094,9 @@ owPlayer_809E114:
 	mov pc, lr
 	thumb_func_end owPlayer_809E114
 
+// symdb: Re-enables the player after a non-NPC overworld dialogue ends by clearing the dialogue-busy byte, re-enabling movement, and clearing story event flag 0x1719.
+// symdb: void owPlayer_unlockPlayerAfterNonNPCDialogue_809E122(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_unlockPlayerAfterNonNPCDialogue_809E122.yaml
 	thumb_func_start owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 owPlayer_unlockPlayerAfterNonNPCDialogue_809E122:
 	push {lr}
@@ -2124,6 +2127,10 @@ owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
 	pop {pc}
 	thumb_func_end owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 
+// symdb: Asks the overworld player to play a fixed animation, applying it immediately (and raising event flag EVENT_1719) if allowed, otherwise parking the id in a pending slot for later.
+// symdb: void sub_809E14C(u32 animId /* r0 */); returns nothing; clobbers r0-r3,r12 and flags; preserves
+// symdb: r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_RequestFixedAnimation_809E14C.yaml
 	thumb_func_start owPlayer_RequestFixedAnimation_809E14C
 owPlayer_RequestFixedAnimation_809E14C:
 	push {r4-r7,lr}

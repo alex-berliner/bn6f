@@ -1795,6 +1795,10 @@ NPCCommand_enable_collision:
 // 0x21
 // attach shadow to the current NPC
 // so that the shadow moves with the NPC's z coordinate
+// symdb: NPC script command that removes the NPC's attached shadow sprite and advances the script.
+// symdb: void npcCmd_detachShadow(OverworldNPCObject* npc (r5), u32* scriptPtr (r6)); sets nz/c/v from
+// symdb: scriptPtr+1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_give_attached_shadow.yaml
 NPCCommand_give_attached_shadow:
 	push {lr}
 	ldr r0, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -2388,6 +2392,10 @@ NPCCommand_return_to_link:
 // byte1 - lower bound for progress byte
 // byte2 - upper bound for progress byte
 // destination3 - script to jump to
+// symdb: NPC script opcode that jumps to a script address if the game's story progress value lies within an inclusive range.
+// symdb: int NPCCommand_jump_if_progress_in_range(u8* scriptPtr /*r6*/, void* toolkit /*r10*/, void* ret
+// symdb: /*lr*/); // returns via r6 = next script pointer or jump target; flags set on the returned value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump_if_progress_in_range.yaml
 NPCCommand_jump_if_progress_in_range:
 	push {lr}
 	mov r0, r10
@@ -2482,6 +2490,11 @@ NPCCommand_jump_if_cutscene_var_not_equal:
 // wait for a cutscene variable to equal a given value
 // byte1 - cutscene variable to compare
 // byte2 - value to compare with the cutscene variable
+// symdb: NPC script command handler that pauses the NPC's script until a watched cutscene variable reaches a given value.
+// symdb: void npc_cmdWaitForCutsceneVar(OverworldNPCObject* r5 npc, u8* r6 scriptCursor /* operands at
+// symdb: +1/+2 */); returns updated cursor in r6 with nzcv flags from adds r6,#3, r0 from callee, lr
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_wait_cutscene_var.yaml
 NPCCommand_wait_cutscene_var:
 	push {r7,lr}
 
@@ -2561,6 +2574,9 @@ NPCCommand_set_text_script_index_and_ptr:
 // 0x45 hword1
 // wait for the npc (being a mystery data) to be taken
 // hword1 - mystery data id
+// symdb: NPC script command that suspends the NPC's script until the referenced mystery data (Cyberdata Block?) has been taken, then resumes.
+// symdb: (r5 npcObj, r6 scriptPtr) -> r6 scriptPtr+3 (flags from that add); r0/r1 clobbered via callees
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_wait_mystery_data_taken.yaml
 NPCCommand_wait_mystery_data_taken:
 	push {r7,lr}
 

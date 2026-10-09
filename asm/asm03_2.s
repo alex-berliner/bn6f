@@ -1626,6 +1626,10 @@ off_8046DD8:
 	.word byte_8046B8C
 	thumb_func_end sub_8046D4C
 
+// symdb: Steps an object's counter at (+8) forward by 2 each call, and once it reaches 21 clamps it and switches the object's state byte (+0) to 8, then calls a per-object update helper.
+// symdb: int sub_8046DDC(void *obj /* r5 */)  // always returns 0; clobbers r0-r3, r12, flags; preserves
+// symdb: r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectAdvanceCounterToState8_8046DDC.yaml
 	thumb_local_start
 battle_objectAdvanceCounterToState8_8046DDC:
 	push {lr}

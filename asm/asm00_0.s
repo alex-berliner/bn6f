@@ -39,6 +39,10 @@ PlaySoundEffect:
 	pop {r1-r7,pc}
 	thumb_func_end PlaySoundEffect
 
+// symdb: Switches the background music to the given song id, doing nothing if that song is already playing.
+// symdb: void PlayMusic(u8 song); // r0 = song id; preserves r1-r7 and r10, modifies flags per song
+// symdb: comparison
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/PlayMusic.yaml
 	thumb_func_start PlayMusic
 PlayMusic: // (song: u8) -> ()
 	push {r1-r7,lr}
@@ -315,6 +319,10 @@ off_8000704:
 	thumb_func_end sound_80006A2
 
 // () -> void
+// symdb: Asks the sound driver to switch music state (via callback sub_814EA58) and marks the game state so background music is treated as off.
+// symdb: void music_stopBgm(u32 argR0, u32 argR2, Toolkit *toolkit /*r10*/); sets r0 = 0xFF, r1 =
+// symdb: toolkit, flags NZ from the 0xFF load
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/musicGameState_8000784.yaml
 	thumb_func_start musicGameState_8000784
 musicGameState_8000784:
 	push {r7,lr}
@@ -574,6 +582,10 @@ ZeroFillByHalfword:
 /// Fill r0 with zero, using words.
 /// Size is in r1, in bytes.
 /// Source, destination, and size must be word compatible
+// symdb: Zero-fills a buffer a word at a time by calling BIOS CpuSet with a fixed-source zero word, leaving all argument registers intact.
+// symdb: void ZeroFillByWord(void* dest /*r0*/, u32 sizeBytes /*r1*/); // preserves r0-r3; returns flags
+// symdb: N=0, Z=1, C=0, V=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFillByWord.yaml
 	thumb_func_start ZeroFillByWord
 ZeroFillByWord: // (mut_mem: *mut (), num_bytes: usize) -> ()
 	push {r0-r3,lr}
@@ -600,6 +612,10 @@ ZeroFillByWord: // (mut_mem: *mut (), num_bytes: usize) -> ()
 // even though the size specified is converted to a word count
 // Source and destination must be word compatible
 // Size must be a multiple of eight words
+// symdb: Zeroes a byte-length buffer using a BIOS CpuFastSet fill (the BIOS moves eight words per burst, hence the original name).
+// symdb: void zeroFillWords(void* dest, u32 lengthBytes); // preserves r0-r3 and lr; returns N=0 Z=1 C=0
+// symdb: V=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFillByEightWords.yaml
 	thumb_func_start ZeroFillByEightWords
 ZeroFillByEightWords:
 	push {r0-r3,lr}
@@ -725,6 +741,10 @@ ByteFill:
 // Fill r0 with r2, where r2 is treated as a halfword.
 // Size is in r1, in bytes.
 // Source, destination, and size must be halfword compatible
+// symdb: Fills a byte range in memory with a 16-bit value using a halfword-mode CpuSet fill.
+// symdb: void HalfwordFill(void *dest /* r0 */, u32 byteCount /* r1 */, u16 value /* r2 */); // preserves
+// symdb: r0-r3, returns NZCV of "mov r1, r0" (i.e. dest as-if added to 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HalfwordFill.yaml
 	thumb_func_start HalfwordFill
 HalfwordFill:
 	push {r0-r3,lr}
@@ -772,6 +792,10 @@ WordFill:
 // even though the size specified is converted to a word count
 // Source and destination must be word compatible
 // Size must be a multiple of eight words
+// symdb: BIOS-assisted memory fill — writes one 32-bit word repeatedly to a destination via SWI CpuFastSet in fixed-source (fill) mode, preserving r0-r3 for the caller.
+// symdb: void mem_FillWordsFastSet(u32* dest /*r0*/, u32 byteLength /*r1*/, u32 fillWord /*r2*/); // r3
+// symdb: passed through untouched; flags and lr clobbered; r0-r3 preserved on return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/FillByEightWords.yaml
 	thumb_func_start FillByEightWords
 FillByEightWords:
 	push {r0-r3,lr}
@@ -2802,6 +2826,10 @@ off_80015B0:
 	.word dword_20018E8
 	thumb_func_end dead_rng_800157C
 
+// symdb: Clears the BG tile ID area of VRAM and reloads the BG tile graphics, resetting a related graphics buffer in the process.
+// symdb: void sub_80015B4(void); // no real arguments; r2/r3/r10 are pass-through state that is left
+// symdb: untouched (r3 explicitly preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_ClearTilesAndReloadGraphics_80015B4.yaml
 	thumb_func_start bg_ClearTilesAndReloadGraphics_80015B4
 bg_ClearTilesAndReloadGraphics_80015B4:
 	push {lr}
@@ -3054,6 +3082,9 @@ ZeroFill_byte_3001960:
 	pop {pc}
 	thumb_func_end ZeroFill_byte_3001960
 
+// symdb: Zeroes the first two halfwords of the palette buffer at palette_3001960 and of BG palette memory (0x5000000) during boot.
+// symdb: void main_zeroFillFirstPaletteEntries(void); // preserves r2/r3, returns caller's r3 unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/main_zeroFill_80017EC.yaml
 	thumb_func_start main_zeroFill_80017EC
 main_zeroFill_80017EC:
 	push {lr}
@@ -3342,6 +3373,9 @@ SetBGScrollCallbacks:
 
 	thumb_func_start SetDummyBGScrollCallbacks
 // set all bg callbacks to nullsubs
+// symdb: Installs no-op handlers into the BG scroll callback table (both scroll callbacks plus the HBlank callback) and hooks the dummy HBlank handler into the HBlank interrupt slot.
+// symdb: void SetDummyBGScrollCallbacks(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetDummyBGScrollCallbacks.yaml
 SetDummyBGScrollCallbacks:
 	push {lr}
 	ldr r2, off_80019AC // =eBGScrollCallbacks
@@ -4801,6 +4835,10 @@ sub_80021CE:
 // r2 = [oGFXAnimData_Param2] - num palettes
 // r3 = [oGFXAnimData_Index] - S20094c0 index
 // r4 = [oGFXAnimData_Param1] - dest?
+// symdb: Switches a graphics animation state over to the "next" animation referenced by its current animation data slot.
+// symdb: void sprite_gfxAnimState_GotoNext(const struct GFXAnimData* animData /*r0*/, struct
+// symdb: GFXAnimState* state /*r7*/); r4-r6 passed through as scratch; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_gfxAnimState_GotoNext_8002310.yaml
 sprite_gfxAnimState_GotoNext_8002310: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
 	push {r4,r7}

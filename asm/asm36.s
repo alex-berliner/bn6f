@@ -5385,6 +5385,10 @@ byte_8132ABC:
 	.byte 0xA3, 0xB2, 0xA5, 0xB2, 0xA6, 0xB2, 0xA8, 0xB2, 0xA7, 0xB2, 0xA9, 0xB2
 	thumb_func_end sub_8132A9E
 
+// symdb: Dispatcher for the save-menu (save/erase save data screen) scene state machine; jumps to the open/update/exit handler selected by the state byte.
+// symdb: void saveMenu_DispatchState(void* work /*r5*/) — state read from work+1; all registers and flags
+// symdb: pass through the selected handler (tail-dispatch via mov lr,pc / bx, returning with pop {pc}).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HandleSaveMenu8132B88.yaml
 	thumb_func_start HandleSaveMenu8132B88
 HandleSaveMenu8132B88:
 	push {lr}
@@ -5486,6 +5490,10 @@ off_8132C30:
 	thumb_func_end OpenSaveMenu8132BA8
 
 /// Called on each frame update while in the save submenu
+// symdb: Save-menu state dispatcher; tail-calls the per-state update handler selected by the menu's state byte.
+// symdb: void SaveMenuUpdate8132C34(r5=save-menu work area); tail-calls handler(r0=table word with Thumb
+// symdb: bit, r1=state byte); handler's registers and flags flow straight back to this function's caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SaveMenuUpdate8132C34.yaml
 	thumb_local_start
 SaveMenuUpdate8132C34:
 	push {lr}
@@ -7132,6 +7140,9 @@ loc_813396C:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8133944
+// symdb: Reads a state byte from an object at r5+2, calls its state handler through a two-entry dispatch table (both entries currently point to the same handler), then tail-calls a fixed follow-up routine.
+// symdb: void sub_813399C(void) /* r5 = object pointer; corrupts r0/r1/r3+ and lr per called code */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813399C.yaml
 	thumb_local_start
 sub_813399C:
 	push {lr}
@@ -8560,6 +8571,9 @@ dword_8134528:
 	.word unk_20018EC
 	.byte 0x60, 0x71, 0x0, 0x0, 0x16, 0x0, 0xB6, 0x0
 	thumb_func_end sub_8134490
+// symdb: Zero-argument wrapper that invokes sub_8134558 with a fixed argument set (0xE2, 0x1C, 0x1E, 0x24).
+// symdb: void sub_8134538(void); /* returns whatever sub_8134558 leaves in r0/flags */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134538.yaml
 	thumb_local_start
 sub_8134538:
 	push {lr}
@@ -8571,6 +8585,9 @@ sub_8134538:
 	pop {pc}
 	thumb_func_end sub_8134538
 
+// symdb: Tail-call wrapper that invokes sub_8134558 with four fixed constant arguments (0x182, 0x1C, 0x28, 0x2E).
+// symdb: void sub_8134548(void) // no meaningful inputs or outputs; forwards callee's results
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134548.yaml
 	thumb_local_start
 sub_8134548:
 	push {lr}
@@ -8654,6 +8671,10 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
+// symdb: Parameterless wrapper that invokes sub_813468C with one hard-coded argument set (0x5A, 0x20, 0x20, 0x12, table byte_81331F4, flag 0x40000000) and passes the caller's r5/r7 through untouched.
+// symdb: void sub_81345D4(void); // inputs r5, r7 forwarded to sub_813468C; no meaningful return value
+// symdb: (r4-r7 preserved)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
 sub_81345D4:
 	push {r4-r7,lr}
@@ -8667,6 +8688,10 @@ sub_81345D4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345D4
 
+// symdb: Parameterless wrapper that spawns/queues one effect via sub_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
+// symdb: void sub_81345E8(void); /* takes nothing from callers; returns callee's r1-r3, preserves r4-r7
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnFixedArgEffect_wrapper_81345E8.yaml
 	thumb_local_start
 battle_spawnFixedArgEffect_wrapper_81345E8:
 	push {r4-r7,lr}
@@ -10576,6 +10601,10 @@ sub_81353B8:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81353B8
+// symdb: Zero-argument wrapper that invokes sub_81348DC with one fixed parameter set (0x24, 0xA5, 0x28, 4, 6) and returns its r2/r3 results.
+// symdb: void sub_81353DC(void); // passes fixed r0=0x24, r1=0xA5, r2=0x28, r3=4, r4=6 into sub_81348DC;
+// symdb: returns callee's r2/r3 to caller, preserves r4-r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353DC.yaml
 	thumb_local_start
 sub_81353DC:
 	push {r4,lr}
@@ -10589,6 +10618,10 @@ sub_81353DC:
 	.byte 0, 0
 	thumb_func_end sub_81353DC
 
+// symdb: Thin wrapper that tail-calls sub_8134930 with fixed parameters (0x24, 0xA5, 0x28) and argument 6, forwarding two caller values through.
+// symdb: void sub_81353F0(u32 arg0 /* -> callee r7 */, u32 arg1 /* -> callee r3 */); clobbers r0-r3 and
+// symdb: flags, preserves r4-r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
 	thumb_local_start
 sub_81353F0:
 	push {r4-r7,lr}

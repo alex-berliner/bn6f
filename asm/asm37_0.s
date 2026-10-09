@@ -1,4 +1,8 @@
 
+// symdb: Clears the toolkit's Unk2004334 halfword and zeroes the 16 bytes behind its Unk200431c pointer, resetting some subsystem's per-frame/per-session state.
+// symdb: void sub_813B768(r2 passthrough) // reads r10 (toolkit), writes r2 through unchanged; clobbers
+// symdb: r0, r1, lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_resetToolState_813B768.yaml
 	thumb_func_start toolkit_resetToolState_813B768
 toolkit_resetToolState_813B768:
 	push {lr}
@@ -292,6 +296,10 @@ off_813B930:
 	.word byte_20096D8
 	thumb_func_end sub_813B928
 
+// symdb: Zeroes the two scratch work buffers (0x188 bytes and 0x40 bytes) hanging off the toolkit struct pointed to by r10.
+// symdb: void toolkit_clearScratchBuffers(u32 toolkit /*r10*/, u32 passR2 /*r2 in/out*/, u32 passR3 /*r3
+// symdb: in/out*/); clobbers r0, r1, lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_813B934.yaml
 	thumb_func_start zeroFill_813B934
 zeroFill_813B934:
 	push {lr}
@@ -1840,6 +1848,9 @@ applyNaviStatsMaybe_813C458:
 	.byte 0, 0
 	thumb_func_end applyNaviStatsMaybe_813C458
 
+// symdb: Reads byte 0x1F of the current PET's navi stats and returns whether it equals 1.
+// symdb: bool checkCurPETNaviStats1FIsOne(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkCurPETNaviStats1FIsOne_813C490.yaml
 	thumb_local_start
 checkCurPETNaviStats1FIsOne_813C490:
 	push {r4,lr}
@@ -4334,6 +4345,10 @@ loc_813D95A:
 	.byte 0, 0
 	thumb_func_end sub_813D94C
 
+// symdb: Wipes the 16-byte work area at eS200BC50 but saves and restores the single byte at offset 7 so it survives the clear.
+// symdb: void clearWorkArea_eS200BC50_keepByte7(void); // r2, r3, r4 preserved; r0/r1 scratch; C/V flags
+// symdb: pass through from ZeroFillByWord
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_813D960.yaml
 	thumb_func_start zeroFill_813D960
 zeroFill_813D960:
 	push {r4,r7,lr}

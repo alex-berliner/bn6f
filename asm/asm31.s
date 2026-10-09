@@ -31333,6 +31333,10 @@ sub_80C6AAC:
 	pop {pc}
 	thumb_func_end sub_80C6AAC
 
+// symdb: Refreshes a battle object's hitbox from its extra-vars data, reapplies the panel element effect on it, and optionally flags a collision status effect.
+// symdb: battle_refreshObjectCollisionFromExtraVars(r5 = battle object; r4, r6, r7, r10 also live on
+// symdb: entry and r4/r6/r7 are preserved; returns with r2 set by the element update)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_refreshObjectCollisionFromExtraVars_80C6AB8.yaml
 	thumb_local_start
 battle_refreshObjectCollisionFromExtraVars_80C6AB8:
 	push {lr}
@@ -31586,6 +31590,10 @@ locret_80C6CE2:
 	pop {pc}
 	thumb_func_end sub_80C6CBA
 
+// symdb: Spawn wrapper that creates a type-3 battle object of kind 0x16 and runs the basic battle-object initializer on it.
+// symdb: (u32 arg0, u32 arg1, u32 arg2) -> new battle object pointer (spawn routine delivers it in r5; on
+// symdb: the spawn-failure path r0 returns 0; register contract also marks r1-r3 as read back by callers)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnBasicObjectKind0x16_80C6CE4.yaml
 	thumb_local_start
 battle_spawnBasicObjectKind0x16_80C6CE4:
 	push {lr}
@@ -31601,6 +31609,11 @@ locret_80C6CFA:
 	pop {pc}
 	thumb_func_end battle_spawnBasicObjectKind0x16_80C6CE4
 
+// symdb: Dispatches a panel-state change requested by a battle object — break, crack, or set panel type based on an action code.
+// symdb: void battle_objectDispatchPanelChange(int r0, int r1 /*panel coords*/, u8 action /*r2*/); tail-
+// symdb: calls one of object_crackPanel / object_breakPanel_dup1 / object_setPanelType, forwarding all
+// symdb: registers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectDispatchPanelChange_80C6CFC.yaml
 	thumb_local_start
 battle_objectDispatchPanelChange_80C6CFC:
 	push {lr}
@@ -37978,6 +37991,10 @@ locret_80C9CC2:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80C9CA2
 
+// symdb: Ends a battle object's death animation — once the current animation frame no longer carries the 0x80 flag, clears its collision region and moves it into the destroyed state.
+// symdb: void battle_objectDestroyWhenAnimFrameDone(BattleObject* obj /* r5 */); clobbers r0-r3, lr;
+// symdb: leaves NZ set (from TST or from writing CUR_STATE_DESTROY), C/V from last callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectDestroyWhenAnimFrameDone_80C9CC4.yaml
 	thumb_local_start
 battle_objectDestroyWhenAnimFrameDone_80C9CC4:
 	push {lr}
@@ -40503,6 +40520,9 @@ byte_80CB070:
 	.byte 0x10, 0x0, 0x80, 0x15, 0x10, 0x0, 0x80, 0x2A
 	thumb_func_end sub_80CAFC8
 
+// symdb: Thin wrapper that destroys the object in R0 via the generic object destructor.
+// symdb: void object_destroyWrapper(void *obj /* r0 */); clobbers r0-r3 and flags, preserves r5-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_destroyWrapper_80CB078.yaml
 	thumb_local_start
 object_destroyWrapper_80CB078:
 	push {lr}
@@ -73258,6 +73278,11 @@ byte_80DA9B8:
 	.byte 0xD8, 0xF, 0x0, 0x0, 0xE8, 0xF, 0x0, 0x0, 0xF0, 0xF
 	thumb_func_end sub_80DA9A2
 
+// symdb: Spawns a battle object of type ID 0xA9 on a given panel with a given element, and marks it with header flag bits 0x14.
+// symdb: battle_spawnTypeA9ObjectAtPanel(u8 panelX in r0, u8 panelY in r1, u8 element in r2) ->
+// symdb: battle_object* in r0; sets nz c v (nz from the object pointer test, orr sets nz only); clobbers
+// symdb: r1, r2, r3, lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnTypeA9ObjectAtPanel_80DA9DC.yaml
 	thumb_func_start battle_spawnTypeA9ObjectAtPanel_80DA9DC
 battle_spawnTypeA9ObjectAtPanel_80DA9DC:
 	push {lr}
@@ -84590,6 +84615,12 @@ locret_80DFF82:
 	pop {pc}
 	thumb_func_end sub_80DFEE8
 
+// symdb: Spawns a battle object of type 0xD3 and initializes it with a panel position, element, damage word, and the alliance/flip halfword of another object.
+// symdb: BattleObject* battle_spawnTypeD3ObjectWithPanelElementAndDamage(u8 panelX /*r0*/, u8 panelY
+// symdb: /*r1*/, u8 element /*r2*/, BattleObject* sourceObject /*r5*/, u32 damageAndStamina /*r6*/);
+// symdb: clobbers NZCV; returns object pointer in r0, old r0/r1/r2 shifted into r1/r2/r3, sourceObject
+// symdb: preserved in r5; r4/r6/r7 untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84.yaml
 	thumb_func_start battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84
 battle_spawnTypeD3ObjectWithPanelElementAndDamage_80DFF84:
 	push {lr}
@@ -85416,6 +85447,10 @@ off_80E06DC:
 	.word byte_2036740
 	thumb_func_end sub_80E0684
 
+// symdb: Teardown callback for a battle entity - unless some global check says to skip cleanup, it runs a teardown step (arg 2) and frees the resulting object's memory.
+// symdb: void sub_80E06E0(void); // reads r5/r10 as context (preserved), no explicit args; returns via LR
+// symdb: pop, flags on early-exit path reflect the TST of the guard call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_teardownAndFree_80E06E0.yaml
 	thumb_local_start
 battle_object_teardownAndFree_80E06E0:
 	push {lr}
@@ -85430,6 +85465,10 @@ locret_80E06F6:
 	pop {pc}
 	thumb_func_end battle_object_teardownAndFree_80E06E0
 
+// symdb: Spawns a type-4 object (variant 2), then marks the resulting object's header flags with bit 0x04 and returns it.
+// symdb: Next sub_80E06F8(u32 a1 /*r1*/, u32 a2 /*r2*/, u32 a3 /*r3*/); r5 on entry holds the object
+// symdb: header context, returns the spawned object pointer in r0; preserves r4-r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnType4ObjectWithActiveFlag_80E06F8.yaml
 	thumb_func_start battle_spawnType4ObjectWithActiveFlag_80E06F8
 battle_spawnType4ObjectWithActiveFlag_80E06F8:
 	push {r4,r5,lr}
@@ -85585,6 +85624,10 @@ byte_80E083F:
 	.byte 0x0, 0x14, 0x18, 0x0, 0x0
 	thumb_func_end sub_80E07E0
 
+// symdb: Per-tick battle object dispatcher that reads the object's state byte and calls its state handler (init, main step, or free-memory teardown).
+// symdb: void t4_0x4_80E0844(void); /* r5 = battle object; returns whatever the state handler returns
+// symdb: (pass-through) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x4_80E0844.yaml
 	thumb_func_start t4_0x4_80E0844
 t4_0x4_80E0844:
 	push {lr}
@@ -85633,6 +85676,9 @@ sub_80E0864:
 	pop {r7,pc}
 	thumb_func_end sub_80E0864
 
+// symdb: Sprite update callback that destroys the battle object once its animation sequence finishes.
+// symdb: void sprite_updateDestroyWhenAnimEnds(/*r4: unused/forwarded arg, */ r5 = ObjectHeader* obj)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_updateDestroyWhenAnimEnds_80E08A6.yaml
 	thumb_local_start
 sprite_updateDestroyWhenAnimEnds_80E08A6:
 	push {lr}
@@ -86276,6 +86322,10 @@ dword_80E0DEC:
 	.word 0xFFFD8000
 	thumb_func_end sub_80E0DD0
 
+// symdb: State dispatcher (object "main" routine) for the charge-shot charge-up battle object; runs the init, per-frame update, or free handler depending on the object's state byte.
+// symdb: void chargeShotChargeObject_main_80E0DF0(void); // object in r5, tail-dispatches via mov lr,pc /
+// symdb: bx r1 to the handler selected by r5->CurState, then returns to the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chargeShotChargeObject_80E0DF0.yaml
 	thumb_func_start chargeShotChargeObject_80E0DF0
 chargeShotChargeObject_80E0DF0:
 	push {lr}
@@ -86425,6 +86475,10 @@ locret_80E0F00:
 	pop {r4,r6,r7,pc}
 	thumb_func_end chargeShotChargeObject_update_80E0E20
 
+// symdb: Spawns the charge-buildup effect object that orbits a brawler while a charge shot is powering up and links it to its owner.
+// symdb: void spawnChargeShotChargeObject(owner /* r5: battle object ptr */, resultSlot /* r7: u32* slot
+// symdb: tracking the effect */); sets NZ from the new-object null check; r4-r7 preserved, c unmodified
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnChargeShotChargeObject_80E0F02.yaml
 	thumb_func_start spawnChargeShotChargeObject_80E0F02
 spawnChargeShotChargeObject_80E0F02:
 	push {lr}
@@ -88069,6 +88123,10 @@ battle_object_freeWithPhaseReset_80E1A5E:
 	pop {pc}
 	thumb_func_end battle_object_freeWithPhaseReset_80E1A5E
 
+// symdb: Spawns a type-0x11 battle object and cross-links it with a parent object and an optional pointer slot so the caller can track the new object.
+// symdb: battle_spawnLinkedObject(/* spawn args in r1-r3?, */ void* ownerObj /*r5*/, void** holderPtr
+// symdb: /*r7*/) -> Next /* r0 = new object or NULL; Z set from r0, C/V cleared */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnLinkedObject_80E1A6A.yaml
 	thumb_func_start battle_spawnLinkedObject_80E1A6A
 battle_spawnLinkedObject_80E1A6A:
 	push {lr}
@@ -88482,6 +88540,10 @@ sub_80E1D18:
 	pop {pc}
 	thumb_func_end sub_80E1D18
 
+// symdb: Per-frame update for a battle object in flight — advances its sprite animation, integrates its Z velocity, and switches it to the destroy state once the animation's end-of-life frame flag (0x80) is set.
+// symdb: void sub_80E1D54(r4 /*ignored*/, BattleObject* r5 /*object*/, void* lr /*return addr*/); sets
+// symdb: flags from the final test; returns frame params (or CUR_STATE_DESTROY) in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectFlyAnimUpdateAndDestroy_80E1D54.yaml
 	thumb_local_start
 battle_objectFlyAnimUpdateAndDestroy_80E1D54:
 	push {lr}
@@ -108571,6 +108633,10 @@ loc_80EB432:
 	pop {pc}
 	thumb_func_end sub_80EB402
 
+// symdb: AI attack dispatcher that tail-calls one of two attack routines selected by the first byte of the AI attack-vars block.
+// symdb: void battle_aiAttackDispatch(void /* r7 = &AIAttackVars */); tail-calls sub_80EB450/sub_80EB502,
+// symdb: which return directly to this function's caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackDispatch_80EB436.yaml
 	thumb_local_start
 battle_aiAttackDispatch_80EB436:
 	push {lr}
@@ -108960,6 +109026,10 @@ byte_80EB738:
 	.byte 0x4, 0x0
 	thumb_func_end sub_80EB644
 
+// symdb: Runs a 5-frame countdown for an AI attack state and exits the attack state once the timer expires.
+// symdb: void aiAttackTimerTick(oAIAttackVars* r7); /* returns r0 = timer-1 and flags from the decrement;
+// symdb: callers treat r0 and flags as outputs */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttackTimerTick_80EB758.yaml
 	thumb_local_start
 aiAttackTimerTick_80EB758:
 	push {lr}
@@ -109497,6 +109567,10 @@ locret_80EBC0C:
 	pop {pc}
 	thumb_func_end sub_80EBBE2
 
+// symdb: Dispatches an AI attack routine based on the attack sub-state byte stored in the AI attack vars structure, tail-calling the selected handler.
+// symdb: void aiAttack_dispatchStateHandler(struct AiAttackVars *vars /* r7 */); // tail-calls
+// symdb: handler(state), whose registers/flags return directly to the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_dispatchStateHandler_80EBC0E.yaml
 	thumb_local_start
 aiAttack_dispatchStateHandler_80EBC0E:
 	push {lr}
@@ -109744,6 +109818,10 @@ off_80EBDFC:
 	.word 0x170
 	thumb_func_end sub_80EBD9C
 
+// symdb: Dispatches one step of MegaMan's charge-shot AI attack by tail-calling the routine selected from a 3-entry table using the phase byte in the AI attack state.
+// symdb: Next megamanChargeShotAiAttackDispatcher_80EBE00(void); // r7 = AI attack state, phase byte at
+// symdb: +0 (values 0/4/8); flags and all callee registers pass straight through to caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/megamanChargeShotAiAttack_80EBE00.yaml
 	thumb_local_start
 megamanChargeShotAiAttack_80EBE00:
 	push {lr}
@@ -111114,6 +111192,10 @@ byte_80EC870:
 	.byte 0xC8, 0x0, 0x2C, 0x1, 0xE8, 0x3, 0x0, 0x0
 	thumb_func_end sub_80EC844
 
+// symdb: Dispatches the enemy AI's attack-state handler selected by the mode byte at offset 0 of the AI attack-vars block (r7), tail-calling it with lr set to return to this function's caller.
+// symdb: void battle_aiAttackStateDispatch_ADDRESS(void) /* r7 = AI attack-vars block; trampoline: all
+// symdb: registers/flags other than what the handler sets pass straight through as outputs */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackStateDispatch_80EC884.yaml
 	thumb_local_start
 battle_aiAttackStateDispatch_80EC884:
 	push {lr}
@@ -170818,6 +170900,10 @@ locret_8109DB8:
 	pop {pc}
 	thumb_func_end sub_8109D98
 
+// symdb: AI attack timer tick - decrements the attack's countdown each frame and, when it hits zero, resets the object's animation and exits the attack state.
+// symdb: void sub_8109DBA(BattleObject* obj /*r5*/, AIAttackVars* vars /*r7*/); returns decremented timer
+// symdb: in r0; flags reflect the SUBS 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackTickDown_timerEndExit_8109DBA.yaml
 	thumb_local_start
 ai_attackTickDown_timerEndExit_8109DBA:
 	push {lr}
@@ -171043,6 +171129,10 @@ byte_8109F46:
 	.byte 0x1E, 0x18, 0x12, 0xC, 0x12, 0xC
 	thumb_func_end sub_8109EE4
 
+// symdb: Per-frame battle object update that performs a one-time side/alliance setup during phase 0, then runs the object's common update routine every frame.
+// symdb: void battle_objFirstPhaseInitAndCommonUpdate(battleObject* obj /*r5*/, int unk /*r7*/); // sets
+// symdb: nz from cmp(CurPhase,0), c/v from last callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objFirstPhaseInitAndCommonUpdate_8109F4C.yaml
 	thumb_local_start
 battle_objFirstPhaseInitAndCommonUpdate_8109F4C:
 	push {lr}
@@ -171131,7 +171221,7 @@ locret_8109FC2:
 	thumb_func_end sub_8109FA2
 
 // symdb: Per-frame phase bookkeeping for a battle object: clears the object's Param4 byte when the object is still in phase 0, then runs the shared per-object update routine.
-// symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from battleObjectStateDispatcher_8016CE8's
+// symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from sub_8016CE8's
 // symdb: tail
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_updatePhaseTick_8109FC4.yaml
 	thumb_local_start

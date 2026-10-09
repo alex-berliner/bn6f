@@ -4054,6 +4054,10 @@ off_80419B0:
 	.word off_8043C64
 	thumb_func_end chatbox_804198C
 
+// symdb: Looks up the chatbox script assigned to the currently equipped PET navi in a table entry and starts it, or skips the entry if the navi has no script.
+// symdb: Next chatbox_startCurNaviScript(void* tableEntry /*r4*/); // caller context in r2/r5/r10; always
+// symdb: returns r0 = 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_startCurNaviScript_80419B4.yaml
 	thumb_local_start
 chatbox_startCurNaviScript_80419B4:
 	push {lr}

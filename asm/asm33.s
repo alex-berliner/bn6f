@@ -640,6 +640,11 @@ locret_812365A:
 	pop {pc}
 	thumb_func_end sub_8123644
 
+// symdb: Two-way tail dispatcher that reads a mode byte at [R5+3] and jumps to one of two handlers from a small table, passing the caller's register state straight through.
+// symdb: void sub_812365C(void); // in: r5 = pointer to an object/struct whose byte at +3 selects the
+// symdb: branch; all registers except r0/r1 plus nz/c/v are forwarded to the selected handler and its
+// symdb: results flow back to the original caller
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812365C.yaml
 	thumb_local_start
 sub_812365C:
 	push {lr}
@@ -657,6 +662,10 @@ off_8123670:
 	.word sub_812368C+1
 	thumb_func_end sub_812365C
 
+// symdb: Runs a check (sub_81190F8 with argument 0); on success sets the object's state byte to 4 and advances the object via sub_8123D70, otherwise does nothing.
+// symdb: void sub_8123678(r5 = object pointer); outputs r0 and flags from the last callee; preserves
+// symdb: r4-r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123678.yaml
 	thumb_local_start
 sub_8123678:
 	push {lr}
@@ -1261,6 +1270,10 @@ dword_8123BBC:
 	.word 0x382E24
 	thumb_func_end sub_8123AB8
 
+// symdb: Thin wrapper that invokes sub_8123C20 with a fixed constant argument set; its game-level purpose is not yet identified.
+// symdb: void sub_8123BC0(void); /* tail-style wrapper: r0-r4 loaded with constants before call, r4-r7
+// symdb: preserved across it */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BC0.yaml
 	thumb_local_start
 sub_8123BC0:
 	push {r4-r7,lr}
@@ -1280,6 +1293,10 @@ dword_8123BDC:
 	.word 0x302F2E
 	thumb_func_end sub_8123BC0
 
+// symdb: Nullary wrapper that invokes sub_8123C20 with a hardcoded argument set (3-byte constant 0x5A,0x58,0x56, work area byte_81233E0, and mode/geometry values 0x20/5/0x5C/0), preserving the caller's r4-r7 around the call.
+// symdb: void sub_8123BE0(void) /* no meaningful inputs or outputs; r4-r7 saved and restored, caller-
+// symdb: visible state unchanged */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
 	thumb_local_start
 sub_8123BE0:
 	push {r4-r7,lr}
@@ -1300,6 +1317,11 @@ dword_8123BFC:
 	.word 0x5A5856
 	thumb_func_end sub_8123BE0
 
+// symdb: Thin wrapper that loads a fixed argument set (three-entry color table 0x5B5957, work buffer byte_81233E8, constants 0x40/6/0x60/1) and tail-calls sub_8123C20.
+// symdb: void sub_8123C20_wrapper(void) — no meaningful inputs of its own; forwards caller's r5 (and
+// symdb: whatever sub_8123C20 reads) through; returns whatever sub_8123C20 leaves in r0-r3 and flags;
+// symdb: preserves r4-r7.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123C00.yaml
 	thumb_local_start
 sub_8123C00:
 	push {r4-r7,lr}
@@ -1484,6 +1506,9 @@ loc_8123D3A:
 	.balign 4, 0x00
 	thumb_func_end sub_8123D24
 
+// symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine sub_80465A0.
+// symdb: void sub_8123D54(u32 selection /* r0 */)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123D54.yaml
 	thumb_local_start
 sub_8123D54:
 	push {lr}
@@ -1981,6 +2006,10 @@ off_8124130:
 	.word unk_201C400
 	thumb_func_end submenu_subchip_81240D0
 
+// symdb: Sub-menu update hook that restores the sub-menu state byte (+2) to 4 whenever the chatbox is not open.
+// symdb: void submenu_subchip_resetModeByteWhenChatboxClosed_8124134(struct UnkSubMenu* state /* r5 */);
+// symdb: returns r0 = 0 (chatbox open) or 4 (byte reset), NZ flags set accordingly, r1 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_subchip_8124134.yaml
 	thumb_local_start
 submenu_subchip_8124134: // (struct UnkSubMenu* state_a5) -> void
 	push {lr}
@@ -2603,6 +2632,10 @@ off_81245B8:
 	.word unk_201EBDC
 	thumb_func_end sub_8124588
 
+// symdb: Copies an 8x12 block of background tiles from tile block 2's table (unk_201EC2C) to position (j=2, i=6) in the background tilemap.
+// symdb: void sub_81245BC(void) — no meaningful inputs or outputs; preserves r4-r7, exits with whatever
+// symdb: r1/r2/flags CopyBackgroundTiles left behind
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_CopyTileBlock2At2_6_8x12_81245BC.yaml
 	thumb_local_start
 bg_CopyTileBlock2At2_6_8x12_81245BC:
 	push {r4-r7,lr}
@@ -2831,6 +2864,10 @@ locret_812474A:
 	pop {r4,r7,pc}
 	thumb_func_end sub_812471C
 
+// symdb: Runs one chatbox text script (index in r0) from the eTextScript201C100 text archive.
+// symdb: void chatbox_runScript201C100(u8 scriptIdx); // r0 = script index; returns whatever
+// symdb: chatbox_runScript_803FD9C leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript201C100_812474C.yaml
 	thumb_local_start
 chatbox_runScript201C100_812474C:
 	push {lr}
@@ -6416,6 +6453,10 @@ bg_copyTilePatchBlock2_81264E4:
 	pop {r4-r7,pc}
 	thumb_func_end bg_copyTilePatchBlock2_81264E4
 
+// symdb: Parameterless wrapper that tail-calls sub_8126570 with a fixed set of screen coordinates, sizes, and table pointers, apparently to draw or update one fixed on-screen element.
+// symdb: void sub_81264F4(void); // called with r5 and r10 already holding caller state; forwards both
+// symdb: untouched to sub_8126570; returns callee's r2/r3 results
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81264F4.yaml
 	thumb_local_start
 sub_81264F4:
 	push {r4-r7,lr}
@@ -6431,6 +6472,10 @@ sub_81264F4:
 	.balign 4, 0x00
 	thumb_func_end sub_81264F4
 
+// symdb: Parameter-filling wrapper that invokes worker sub_8126570 with fixed extents (90, 32, 30, 12) and pointers to the byte_8124A84 / dword_8124A84 tables plus the constant 0x40000000.
+// symdb: void sub_812650C(void); // no caller-passed inputs used; r2/r3 returned unchanged from
+// symdb: sub_8126570, r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/wrapper_sub8126570_fixedArgs_812650C.yaml
 	thumb_local_start
 wrapper_sub8126570_fixedArgs_812650C:
 	push {r4-r7,lr}
@@ -6446,6 +6491,10 @@ wrapper_sub8126570_fixedArgs_812650C:
 	.balign 4, 0x00
 	thumb_func_end wrapper_sub8126570_fixedArgs_812650C
 
+// symdb: Parameterless wrapper that invokes sub_8126570 with a fixed argument set (a 40x12 rect at x=90, y=32, two data pointers, and flag 0x40000000); game meaning unknown until sub_8126570 is identified.
+// symdb: void sub_8126524(void); // no meaningful inputs; r2/r3 are callee leftovers that callers of this
+// symdb: wrapper see as outputs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8126524.yaml
 	thumb_local_start
 sub_8126524:
 	push {r4-r7,lr}
@@ -6476,6 +6525,10 @@ sub_812653C:
 	.balign 4, 0x00
 	thumb_func_end sub_812653C
 
+// symdb: Thin wrapper that loads a fixed argument set (90, 32, 60, 12, two data-table pointers and the flag word 0x40000000) and tail-invokes sub_8126570, passing its results straight back.
+// symdb: void sub_8126554(void) -> (r1, r2, r3, C, V from sub_8126570); reads r4, r5, r10 as inputs to
+// symdb: sub_8126570 unchanged; preserves r4-r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8126554.yaml
 	thumb_local_start
 sub_8126554:
 	push {r4-r7,lr}
@@ -7059,6 +7112,11 @@ byte_8126B1C:
 	.byte 0xF7, 0xE5, 0xFA, 0xFF, 0xF7, 0xF1, 0xFF, 0x0, 0xBD
 	thumb_func_end sub_81268D8
 
+// symdb: Top-level state-machine dispatcher for the MegaMan status menu, tail-calling one of three state handlers based on the menu object's state byte.
+// symdb: void statusMenu_dispatchState(void* menu /* r5 */) — reads menu->state (u8 at r5+1, values 0/4/8
+// symdb: as byte offsets), tail-dispatches to sub_8126B6C / sub_8126CC0 / sub_8126FF0; no outputs of its
+// symdb: own, the handler returns directly to this function's caller.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HandleMegaManStatusMenu8126B4C.yaml
 	thumb_func_start HandleMegaManStatusMenu8126B4C
 HandleMegaManStatusMenu8126B4C:
 	push {lr}
@@ -8261,6 +8319,10 @@ off_81275A4:
 	.word dword_86B7AE0
 	thumb_func_end sub_8127580
 
+// symdb: Redraws an 11x8 block of the background (tile block 3) at a row determined by a scene-state page index plus 0x11.
+// symdb: void background_drawSceneSection(void* state /* r5 = scene/background state struct */); r4, r6,
+// symdb: r7, r10 are also passed by callers but unused inside; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/background_drawSceneSection_81275A8.yaml
 	thumb_local_start
 background_drawSceneSection_81275A8:
 	push {r4-r7,lr}
@@ -8325,6 +8387,10 @@ off_8127614:
 	.word unk_2018A00
 	thumb_func_end sub_81275C8
 
+// symdb: Copies an 11x6 block of background tiles from a table, with the vertical base index taken from a byte in a source struct plus the base tile 0x23.
+// symdb: void bg_copyTileBlockFromStructOffset(void *src /* r5, also passed to CopyBackgroundTiles as r7
+// symdb: */); passes through r4, r6, r10; clobbers r0-r3 and flags; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_copyTileBlockFromStructOffset_8127618.yaml
 	thumb_local_start
 bg_copyTileBlockFromStructOffset_8127618:
 	push {r4-r7,lr}
@@ -8591,6 +8657,10 @@ off_81277DC:
 	.word 0x600
 	thumb_func_end sub_8127788
 
+// symdb: Redraws an 8x8-tile area of background tile block 3, copying tile ids from a table indexed by an object's signed byte field at offset 0x0D.
+// symdb: void bg_Draw8x8TileBlock3FromTable(const struct Obj *r5 /* tileIndex at +0x0D */, u32 r4, u32
+// symdb: r6, u32 r7, u32 r10) -> r2==3; preserves r4, r5, r6, r7; clobbers r0, r1, r3, lr and nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_Draw8x8TileBlock3FromTable_81277E0.yaml
 	thumb_local_start
 bg_Draw8x8TileBlock3FromTable_81277E0:
 	push {r4-r7,lr}
@@ -9391,6 +9461,10 @@ loc_8127EC8:
 	pop {r4,pc}
 	thumb_func_end sub_8127E9C
 
+// symdb: Runs a chatbox text script from a fixed archive, switching to an alternate variant (index +10) when bit 0 of a context flag byte is set.
+// symdb: void chatbox_runVariantScript_8127ED4(u32 scriptIdx /*r0*/, /*r5 = context object, [r5+0xD] =
+// symdb: variant flags*/); clobbers r0-r3,r4; preserves r6,r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runVariantScript_8127ED4.yaml
 	thumb_local_start
 chatbox_runVariantScript_8127ED4:
 	push {lr}
@@ -9803,6 +9877,11 @@ dword_81281BC:
 	.word 0x8000
 	thumb_func_end sub_812818C
 
+// symdb: If a flag in the caller's background/map struct is set, redraws one fixed 23x8-tile region of a background layer from the tile id table at unk_2026700; otherwise does nothing.
+// symdb: void bg_ReloadBackgroundRegion_5_3(void)  /* r5 = background/map object (flag at +0x1E), r10 =
+// symdb: context; r4-r7 preserved, r0-r3 and NZCV clobbered (values from CopyBackgroundTiles on the
+// symdb: redraw path, tested halfword on the skip path) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_ReloadBackgroundRegion_5_3_81281C0.yaml
 	thumb_local_start
 bg_ReloadBackgroundRegion_5_3_81281C0:
 	push {r4-r7,lr}
@@ -9892,6 +9971,10 @@ byte_8128250:
 	.byte 0x0, 0x18, 0x0, 0x48, 0x0
 	thumb_func_end sub_81281E0
 
+// symdb: Fills a 0x100-halfword palette-sized buffer at unk_2026870 with a color word built from the byte stored at byte_812798A (byte << 8), likely resetting/fading the palette buffer.
+// symdb: void sub_8128260(void); /* in: none (r3 preserved incidentally); out: r2 = fill value; clobbers
+// symdb: r0,r1,r2,flags,lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_fillBufferWithFadeByte_8128260.yaml
 	thumb_local_start
 palette_fillBufferWithFadeByte_8128260:
 	push {lr}
@@ -15612,6 +15695,10 @@ sub_812AFA4:
 	.byte 0, 0
 	thumb_func_end sub_812AFA4
 
+// symdb: Fills a full 30x20-tile background screen with tile IDs from the table at unk_201FDA0 (tile block 1) and then runs the follow-up setup in sub_812B4AC.
+// symdb: void sub_812AFB0(void); // r1-r3 and the c/v flags returned by sub_812B4AC are passed through to
+// symdb: the caller; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_LoadFullScreenTilesAndSetup_812AFB0.yaml
 	thumb_local_start
 bg_LoadFullScreenTilesAndSetup_812AFB0:
 	push {r4-r7,lr}
