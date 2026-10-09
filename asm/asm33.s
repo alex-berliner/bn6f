@@ -1612,7 +1612,7 @@ loc_8123E28:
 	ldr r0, off_8123E48 // =byte_8123E4C
 	lsl r1, r4, #2
 	ldr r0, [r0,r1]
-	bl getStructFrom2008450
+	bl getStructEntryFlag2008450
 	beq loc_8123E40
 	mov r0, #0
 	ldrb r2, [r5,#0xc]
@@ -2006,7 +2006,7 @@ submenu_subchip_dispatch_8124144: // (struct UnkSubMenu* state_a5) -> void
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8124180
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	beq loc_8124176
 loc_8124170:
@@ -3958,7 +3958,7 @@ sub_8125254:
 	beq loc_8125276
 	bl chatbox_8040818
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	movflag EVENT_1711
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #1
@@ -4322,7 +4322,7 @@ loc_81255AC:
 	beq loc_81255BE
 	mov r0, #4
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_81255F2
 loc_81255BE:
 	ldrh r0, [r5,#0x12]
@@ -4377,7 +4377,7 @@ loc_8125610:
 	beq loc_8125622
 	mov r0, #0x10
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_8125670
 loc_8125622:
 	mov r1, #0x20 
@@ -4385,7 +4385,7 @@ loc_8125622:
 	beq loc_8125632
 	mov r0, #8
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_8125670
 loc_8125632:
 	ldr r0, [r5,#0x5c]
@@ -4454,7 +4454,7 @@ loc_81256A4:
 	mov r0, #0x1c
 	strb r0, [r5,#2]
 loc_81256A8:
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_81256FC
 loc_81256AE:
 	mov r1, #0x20 
@@ -4462,7 +4462,7 @@ loc_81256AE:
 	beq loc_81256BE
 	mov r0, #0x14
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_81256FC
 loc_81256BE:
 	ldr r0, [r5,#0x60]
@@ -4523,7 +4523,7 @@ loc_812571C:
 	beq loc_812572E
 	mov r0, #0x28 
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_812577C
 loc_812572E:
 	mov r1, #0x20 
@@ -4531,7 +4531,7 @@ loc_812572E:
 	beq loc_812573E
 	mov r0, #0x20 
 	strb r0, [r5,#2]
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_812577C
 loc_812573E:
 	ldr r0, [r5,#0x64]
@@ -4606,7 +4606,7 @@ loc_81257BC:
 	mov r0, #0x2c 
 	strb r0, [r5,#2]
 loc_81257C0:
-	bl sub_81258E8
+	bl playSoundEffect_7A_81258E8
 	b locret_8125804
 loc_81257C6:
 	ldr r0, [r5,#0x68]
@@ -4771,7 +4771,7 @@ off_81258E4:
 	thumb_func_end sub_8125820
 
 	thumb_local_start
-sub_81258E8:
+playSoundEffect_7A_81258E8:
 	push {lr}
 	ldr r0, dword_81258F4 // =0x7a 
 	bl PlaySoundEffect
@@ -4779,7 +4779,7 @@ sub_81258E8:
 	.balign 4, 0
 dword_81258F4:
 	.word 0x7A
-	thumb_func_end sub_81258E8
+	thumb_func_end playSoundEffect_7A_81258E8
 
 	thumb_local_start
 sub_81258F8:
@@ -5393,7 +5393,7 @@ sub_8125D10:
 	add r0, #0xf
 	mov r1, #4
 	ldr r2, off_8125D84 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x18]
 	ldr r1, off_8125D88 // =unk_201DC20 
 	ldr r2, off_8125D84 // =byte_2017A00 
@@ -5403,7 +5403,7 @@ sub_8125D10:
 	add r0, #0x19
 	mov r1, #4
 	ldr r2, off_8125D84 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8125D84:
@@ -5460,7 +5460,7 @@ sub_8125D94:
 	add r0, #4
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x22]
 	ldr r1, off_8125E6C // =dword_201E420 
 	ldr r2, off_8125E68 // =byte_2017A00 
@@ -5470,7 +5470,7 @@ sub_8125D94:
 	add r0, #0xe
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 	b locret_8125E64
 loc_8125E10:
 	ldrh r0, [r7,#0x22]
@@ -5498,7 +5498,7 @@ loc_8125E10:
 	add r0, #1
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x22]
 	ldr r1, off_8125E6C // =dword_201E420 
 	ldr r2, off_8125E68 // =byte_2017A00 
@@ -5508,7 +5508,7 @@ loc_8125E10:
 	add r0, #0xb
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 locret_8125E64:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -5566,7 +5566,7 @@ sub_8125E78:
 	add r0, #4
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x2c]
 	ldr r1, off_8125F50 // =dword_201EC20 
 	ldr r2, off_8125F4C // =byte_2017A00 
@@ -5576,7 +5576,7 @@ sub_8125E78:
 	add r0, #0xe
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 	b locret_8125F48
 loc_8125EF4:
 	ldrh r0, [r7,#0x2c]
@@ -5604,7 +5604,7 @@ loc_8125EF4:
 	add r0, #1
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x2c]
 	ldr r1, off_8125F50 // =dword_201EC20 
 	ldr r2, off_8125F4C // =byte_2017A00 
@@ -5614,7 +5614,7 @@ loc_8125EF4:
 	add r0, #0xb
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 locret_8125F48:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -5672,7 +5672,7 @@ sub_8125F5C:
 	add r0, #4
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5682,7 +5682,7 @@ sub_8125F5C:
 	add r0, #0xe
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 	b locret_812602C
 loc_8125FD8:
 	ldrh r0, [r7,#0x36]
@@ -5710,7 +5710,7 @@ loc_8125FD8:
 	add r0, #1
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5720,7 +5720,7 @@ loc_8125FD8:
 	add r0, #0xb
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 locret_812602C:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -5770,7 +5770,7 @@ sub_8126030:
 	add r0, #4
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5780,7 +5780,7 @@ sub_8126030:
 	add r0, #0xe
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 	b locret_8126100
 loc_81260AC:
 	ldrh r0, [r7,#0x36]
@@ -5808,7 +5808,7 @@ loc_81260AC:
 	add r0, #1
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_8126484
+	bl bg_drawTileRegion2x14_8126484
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -5818,7 +5818,7 @@ loc_81260AC:
 	add r0, #0xb
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
-	bl sub_81264E4
+	bl bg_copyTilePatchBlock2_81264E4
 locret_8126100:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -6322,7 +6322,7 @@ loc_8126476:
 	thumb_func_end sub_8126430
 
 	thumb_local_start
-sub_8126484:
+bg_drawTileRegion2x14_8126484:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -6332,7 +6332,7 @@ sub_8126484:
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_8126484
+	thumb_func_end bg_drawTileRegion2x14_8126484
 
 	thumb_local_start
 sub_8126494:
@@ -6382,7 +6382,7 @@ dword_81264E0:
 	thumb_func_end sub_8126494
 
 	thumb_local_start
-sub_81264E4:
+bg_copyTilePatchBlock2_81264E4:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -6392,7 +6392,7 @@ sub_81264E4:
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_81264E4
+	thumb_func_end bg_copyTilePatchBlock2_81264E4
 
 	thumb_local_start
 sub_81264F4:
@@ -6583,7 +6583,7 @@ sub_8126630:
 	cmp r4, #4
 	beq loc_8126686
 	mov r0, #0
-	bl getStructFrom2008450
+	bl getStructEntryFlag2008450
 	beq locret_81266BE
 	ldrb r0, [r1,#1]
 	cmp r0, #0x16
@@ -6619,7 +6619,7 @@ loc_8126652:
 	b locret_81266BE
 loc_8126686:
 	mov r0, #0
-	bl getStructFrom2008450
+	bl getStructEntryFlag2008450
 	beq locret_81266BE
 	ldrb r0, [r1,#1]
 	cmp r0, #0x1a
@@ -7163,7 +7163,7 @@ loc_8126C58:
 	bl chatbox_runScript_803FD9C // (TextScriptArchive *archive, u8 scriptIdx) -> void
 loc_8126C5E:
 	mov r0, #0x40 
-	bl chatbox_set_eFlags2009F38
+	bl chatbox_setEventFlags2009F38
 	bl sub_812741C
 	bl sub_81275A8
 	bl sub_81275C8
@@ -7338,7 +7338,7 @@ sub_8126DF8:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8126E0A
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r0, #4
 	strb r0, [r5,#2]
 loc_8126E0A:
@@ -7355,7 +7355,7 @@ sub_8126E10:
 	mov r0, #8
 	bl sub_811FB64
 	mov r0, #0x40 
-	bl chatbox_set_eFlags2009F38
+	bl chatbox_setEventFlags2009F38
 	b loc_8126E68
 loc_8126E28:
 	ldrb r0, [r5,#0x10]
@@ -7384,7 +7384,7 @@ loc_8126E36:
 	mov r0, #0x10
 	strb r0, [r5,#2]
 	mov r0, #0x40 
-	bl chatbox_set_eFlags2009F38
+	bl chatbox_setEventFlags2009F38
 	b loc_8126E80
 loc_8126E68:
 	ldrb r3, [r5,#0x10]
@@ -7459,7 +7459,7 @@ loc_8126ED4:
 	cmp r0, r1
 	bne loc_8126F0E
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	ldrb r0, [r5,#0x10]
 	cmp r0, #2
 	bne loc_8126EF2
@@ -7509,7 +7509,7 @@ sub_8126F40:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8126F88
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8126F88
@@ -7580,7 +7580,7 @@ loc_8126FC4:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8126FEC
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r0, #0x14
 	strb r0, [r5,#2]
 	mov r6, #0x35 
@@ -7613,7 +7613,7 @@ loc_8127006:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812705E
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	bl sub_81440D8 // static () -> void
 	bl sub_8046664 // () -> void
 	movflag EVENT_1713
@@ -7632,7 +7632,7 @@ loc_812703A:
 loc_8127042:
 	bl chatbox_8040818
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r0, r10
 	// memBlock
 	ldr r0, [r0,#oToolkit_SubmenuPtr]
@@ -7874,7 +7874,7 @@ loc_812728E:
 	bl SetScreenFade // (int a1, int a2) -> void
 	b loc_81272B8
 loc_81272A4:
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	add r7, r0, #1
 loc_81272AA:
 	mov r0, #0xc
@@ -8340,7 +8340,7 @@ sub_8127638:
 	mov r4, #0
 loc_812764E:
 	mov r0, r4
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -11786,7 +11786,7 @@ loc_8129324:
 	mov r4, #0x60 
 loc_8129330:
 	mov r0, r4
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 locret_8129336:
 	pop {r4,pc}
 	.balign 4, 0
@@ -11830,7 +11830,7 @@ loc_8129374:
 	mov r4, #0x60 
 loc_8129380:
 	mov r0, r4
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b loc_81293E8
 loc_8129388:
 	mov r0, #JOYPAD_A
@@ -11910,7 +11910,7 @@ sub_8129400:
 	ldrb r0, [r5,#0xd]
 	ldr r1, off_812944C // =dword_8129450
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 loc_8129438:
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
@@ -11971,7 +11971,7 @@ loc_8129480:
 loc_81294A8:
 	ldr r1, off_8129524 // =dword_8129528
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b loc_8129514
 loc_81294B2:
 	mov r0, #JOYPAD_A
@@ -12158,9 +12158,9 @@ loc_8129620:
 	strb r0, [r5,#3]
 	bl sub_812B530
 	mov r0, #1
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0x40 
-	bl chatbox_set_eFlags2009F38
+	bl chatbox_setEventFlags2009F38
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -12201,7 +12201,7 @@ sub_812968C:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812969E
 	mov r0, #0x40 
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r0, #4
 	strb r0, [r5,#3]
 locret_812969E:
@@ -12672,7 +12672,7 @@ loc_81299D0:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_81299F6
 	mov r0, #5
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b locret_8129A1C
 loc_81299F6:
 	bl sub_812B414
@@ -13273,7 +13273,7 @@ sub_8129E28:
 	and r0, r1
 	ldr r1, off_8129E44 // =byte_8129E48
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0x1c
 	strb r0, [r5,#3]
 locret_8129E42:
@@ -13521,7 +13521,7 @@ off_8129FF4:
 sub_812A008:
 	push {lr}
 	bl sub_812B504
-	bl start_800027C
+	bl crt0_start_800027C
 
 	bl sub_81465BC
 	tst r0, r0
@@ -13549,7 +13549,7 @@ sub_812A028:
 	mov r0, #5
 	strb r0, [r5,#0x10]
 	mov r0, #0x5e 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 loc_812A048:
 	bl sub_813D648
 	bne locret_812A056
@@ -13762,7 +13762,7 @@ sub_812A1D4:
 	cmp r0, #2
 	beq loc_812A1F6
 	mov r0, #0x30 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0x48 
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -13916,7 +13916,7 @@ sub_812A2EC:
 	ldr r1, off_812A34C // =byte_2023BC8 
 	strb r0, [r1]
 	mov r0, #0x2e 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #8
 	strb r0, [r5,#0xc]
 locret_812A338:
@@ -13950,7 +13950,7 @@ loc_812A360:
 	mov r4, #0x2f 
 loc_812A36E:
 	mov r0, r4
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #4
 	bl sub_803CB00
 	mov r0, #0x18
@@ -13961,7 +13961,7 @@ loc_812A384:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_812A3B8
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	beq loc_812A3AE
 	mov r0, #4
@@ -13969,7 +13969,7 @@ loc_812A384:
 	mov r0, #0x18
 	strb r0, [r5,#0xc]
 	mov r0, #0x2a 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	ldr r0, off_812A3BC // =byte_200AF80 
 	mov r1, #2
 	bl sub_8146E5C
@@ -14001,7 +14001,7 @@ sub_812A3C8:
 	mov r0, #5
 	strb r0, [r5,#0x10]
 	mov r0, #0x24 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b locret_812A3F8
 loc_812A3E8:
 	mov r0, #0x10
@@ -14566,7 +14566,7 @@ loc_812A82A:
 loc_812A838:
 	strb r0, [r5,#3]
 	mov r0, #0x28 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b loc_812A876
 loc_812A842:
 	cmp r3, #1
@@ -14574,7 +14574,7 @@ loc_812A842:
 	mov r0, #2
 	strb r0, [r5,#0x10]
 	mov r0, #0x25 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r1, #0x38 
 	strb r1, [r5,#1]
 	mov r1, #0
@@ -14587,7 +14587,7 @@ loc_812A842:
 	b loc_812A876
 loc_812A866:
 	mov r0, #0x24 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0x3c 
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -14675,11 +14675,11 @@ loc_812A90A:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_812A94E
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	bne loc_812A904
 	mov r0, #0x23 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0
 	strb r0, [r5,#0x11]
 loc_812A924:
@@ -14760,7 +14760,7 @@ loc_812A998:
 	cmp r0, #2
 	bne loc_812A9BE
 	mov r0, #0x2a 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b loc_812AAB6
 loc_812A9BE:
 	mov r1, #3
@@ -14773,7 +14773,7 @@ loc_812A9BE:
 loc_812A9CC:
 	strb r1, [r5,#0x10]
 	mov r0, r2
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r1, #0x10
 	strh r1, [r5,#0x26]
 	b loc_812AAB6
@@ -14848,7 +14848,7 @@ loc_812AA5C:
 loc_812AA66:
 	mov r0, #0x26 
 loc_812AA68:
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r1, #0x38 
 	strb r1, [r5,#1]
 	mov r1, #0
@@ -14879,7 +14879,7 @@ loc_812AA90:
 	mov r0, #2
 	strb r0, [r5,#0x10]
 	mov r0, #0x25 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 loc_812AAAC:
 	mov r0, #0x34 
 	strb r0, [r5,#1]
@@ -14914,11 +14914,11 @@ loc_812AADE:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_812AB04
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	bne loc_812AAD8
 	mov r0, #0x23 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0
 	strb r0, [r5,#0x11]
 loc_812AAF8:
@@ -14991,7 +14991,7 @@ loc_812AB5C:
 	cmp r0, #2
 	bne loc_812AB88
 	mov r0, #0x2a 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	b loc_812ABE0
 loc_812AB88:
 	mov r1, #3
@@ -15004,7 +15004,7 @@ loc_812AB88:
 loc_812AB96:
 	strb r1, [r5,#0x10]
 	mov r0, r2
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r1, #0x10
 	strh r1, [r5,#0x26]
 	b loc_812ABE0
@@ -15031,7 +15031,7 @@ loc_812ABC8:
 	mov r0, #2
 	strb r0, [r5,#0x10]
 	mov r0, #0x25 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 loc_812ABD6:
 	mov r0, #0x34 
 	strb r0, [r5,#1]
@@ -15148,7 +15148,7 @@ sub_812AC80:
 	mov r4, #0x30 
 loc_812ACA6:
 	mov r0, r4
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #8
 	strb r0, [r5,#2]
 loc_812ACB0:
@@ -15481,9 +15481,9 @@ sub_812AF18:
 	// initRefs
 	ldr r0, off_812B088 // =off_812B08C
 	bl decompAndCopyData // (u32 *initRefs) -> void
-	bl sub_812AF78
+	bl loadDecompressedAsset_812AF78
 	bl sub_812AF84
-	bl sub_812AF98
+	bl sprite_decompInitRefs_812AF98
 	bl sub_812AFA4
 	bl chatbox_8040818
 	pop {r4-r7,pc}
@@ -15525,15 +15525,15 @@ loc_812AF58:
 	.balign 4, 0x00
 	thumb_func_end sub_812AF3C
 
-	thumb_func_start sub_812AF78
-sub_812AF78:
+	thumb_func_start loadDecompressedAsset_812AF78
+loadDecompressedAsset_812AF78:
 	push {lr}
 	// initRefs
 	ldr r0, off_812B0E4 // =off_812B0E8
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812AF78
+	thumb_func_end loadDecompressedAsset_812AF78
 
 	thumb_func_start sub_812AF84
 sub_812AF84:
@@ -15548,15 +15548,15 @@ sub_812AF84:
 	pop {pc}
 	thumb_func_end sub_812AF84
 
-	thumb_func_start sub_812AF98
-sub_812AF98:
+	thumb_func_start sprite_decompInitRefs_812AF98
+sprite_decompInitRefs_812AF98:
 	push {lr}
 	// initRefs
 	ldr r0, off_812B19C // =byte_812B1A0
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812AF98
+	thumb_func_end sprite_decompInitRefs_812AF98
 
 	thumb_func_start sub_812AFA4
 sub_812AFA4:
@@ -16010,7 +16010,7 @@ sub_812B39C:
 	ldrb r0, [r5,#0x12]
 	ldr r1, off_812B3AC // =dword_812B3B0
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	.balign 4, 0
 off_812B3AC:
@@ -16025,7 +16025,7 @@ sub_812B3B4:
 	ldrb r0, [r5,#0x12]
 	ldr r1, off_812B3C4 // =dword_812B3C8 
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	.balign 4, 0
 off_812B3C4:
@@ -16040,7 +16040,7 @@ sub_812B3CC:
 	ldrb r0, [r5,#0x12]
 	ldr r1, off_812B3DC // =dword_812B3E0
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	.balign 4, 0
 off_812B3DC:
@@ -16055,7 +16055,7 @@ sub_812B3E4:
 	ldrb r0, [r5,#0x13]
 	ldr r1, off_812B3F4 // =dword_812B3F8
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	.balign 4, 0
 off_812B3F4:
@@ -16070,7 +16070,7 @@ sub_812B3FC:
 	ldrb r0, [r5,#0xe]
 	ldr r1, off_812B40C // =dword_812B410
 	ldrb r0, [r1,r0]
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	.balign 4, 0
 off_812B40C:
@@ -16092,7 +16092,7 @@ sub_812B414:
 	orr r0, r1
 	strb r0, [r5,#0x1b]
 	mov r0, #0x23 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	pop {pc}
 	thumb_func_end sub_812B414
 
@@ -16286,7 +16286,7 @@ sub_812B590:
 	push {r4,lr}
 	bl sub_812B574
 	mov r0, #0x2f 
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0x3c 
 	strb r0, [r5,#1]
 	mov r0, #4
@@ -16768,7 +16768,7 @@ loc_812B93E:
 	beq loc_812B964
 	mov r0, #0x35 
 loc_812B964:
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	ldr r0, off_812BAF4 // =unk_2033C00 
 	ldr r1, dword_812BAF8 // =0x800 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
@@ -17299,7 +17299,7 @@ sub_812BD34:
 	bl PlaySoundEffect
 	mov r0, #0x33 
 loc_812BD54:
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 locret_812BD5C:
@@ -17462,7 +17462,7 @@ sub_812BEEC:
 	bl PlaySoundEffect
 	mov r0, #0x36 
 loc_812BF06:
-	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
+	bl chatbox_runScript_eTextScript201BA20
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 locret_812BF0E:

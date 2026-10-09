@@ -313,7 +313,7 @@ int sub_809F9DC()
                     }
                     v2 += 12;
                 }
-                sub_809FDCE(*i, (j - i[1]) >> 2, v4);
+                record_writeU16IfIdMatches_809FDCE(*i, (j - i[1]) >> 2, v4);
             }
         }
     }
@@ -397,7 +397,7 @@ int __fastcall sub_809FADE(int a1)
 
 
 // 0x809faf4
-void sub_809FAF4()
+void mysteryData_InitMapGroupTables_809FAF4()
 {
     sub_809FB04();
     sub_809FB04();
@@ -633,7 +633,7 @@ signed int __fastcall sub_809FC96(int a1)
     {
         v21 = v10;
         v22 = *(v9 + 1);
-        sub_809FE44(v2);
+        goldMysteryData_GetEntryDataIfIdMatches_809FE44(v2);
         v25 = 0;
         while ( 1 )
         {
@@ -658,7 +658,7 @@ signed int __fastcall sub_809FC96(int a1)
     {
         v12 = v10;
         v13 = *(v9 + 1);
-        sub_809FE44(v2);
+        goldMysteryData_GetEntryDataIfIdMatches_809FE44(v2);
         v15 = (v12 + 8 * v14);
         result = *(v15 + 1);
         v17 = v15[3];
@@ -708,7 +708,7 @@ __int64 sub_809FD70()
 
 
 // 0x809fdce
-int __fastcall sub_809FDCE(int a1, int a2, __int16 a3)
+int __fastcall record_writeU16IfIdMatches_809FDCE(int a1, int a2, __int16 a3)
 {
     int result; // r0
 
@@ -764,7 +764,7 @@ int __fastcall sub_809FE36(int result)
 
 
 // 0x809fe44
-unsigned int __fastcall sub_809FE44(unsigned int result)
+unsigned int __fastcall goldMysteryData_GetEntryDataIfIdMatches_809FE44(unsigned int result)
 {
     int v1; // r4
 
@@ -781,7 +781,7 @@ unsigned int __fastcall sub_809FE44(unsigned int result)
 int sub_809FE5E()
 {
     __asm { SVC         6 }
-    return chatbox_8045EFC(10 * word_2000214 + 16, HIBYTE(word_2000214), 0, 0);
+    return chatbox_setTextParams_8045EFC(10 * word_2000214 + 16, HIBYTE(word_2000214), 0, 0);
 }
 
 

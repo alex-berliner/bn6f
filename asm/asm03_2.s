@@ -860,14 +860,14 @@ sub_8046670:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046670
 
-	thumb_func_start sub_804668A
-sub_804668A:
+	thumb_func_start sprite_clearScaleCounterAndMakeUnscalable_804668A
+sprite_clearScaleCounterAndMakeUnscalable_804668A:
 	push {r4-r7,lr}
 	mov r0, #0
 	strb r0, [r5]
 	bl sprite_makeUnscalable
 	pop {r4-r7,pc}
-	thumb_func_end sub_804668A
+	thumb_func_end sprite_clearScaleCounterAndMakeUnscalable_804668A
 
 	thumb_func_start sub_8046696
 sub_8046696:
@@ -892,7 +892,7 @@ loc_80466B0:
 	ldrb r0, [r5]
 	tst r0, r0
 	beq loc_80466BA
-	bl sub_804668A
+	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
 loc_80466BA:
 	add r5, #0x58 
 	add r7, #1
@@ -901,8 +901,8 @@ loc_80466BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80466AA
 
-	thumb_func_start getStructFrom2008450
-getStructFrom2008450:
+	thumb_func_start getStructEntryFlag2008450
+getStructEntryFlag2008450:
 	ldr r1, off_80466D4 // =eStructArr2008450 
 	mov r2, #0x58 
 	mul r2, r0
@@ -913,7 +913,7 @@ getStructFrom2008450:
 	.balign 4, 0x00
 off_80466D4:
 	.word eStructArr2008450
-	thumb_func_end getStructFrom2008450
+	thumb_func_end getStructEntryFlag2008450
 
 	thumb_local_start
 sub_80466D8:
@@ -1565,7 +1565,7 @@ sub_8046D4C:
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
 	bl sub_804754C
-	bl sub_8047CEC
+	bl copy_table_80469F0_to_202F800
 	mov r0, #0
 	ldr r1, off_8046DCC // =byte_2019A00 
 	bl sub_8047594
@@ -1646,7 +1646,7 @@ sub_8046E06:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8046E40
 	ldr r0, [r5,#0x28]
-	bl sub_8047366
+	bl checkScrambledCounter_8047366
 	bne loc_8046E40
 	ldrb r0, [r5,#8]
 	sub r0, #2
@@ -1681,7 +1681,7 @@ sub_8046E48:
 	beq loc_8046E80
 	ldr r1, [r5,#0x28]
 	mov r0, r1
-	bl sub_8047366
+	bl checkScrambledCounter_8047366
 	bne loc_8046E80
 	ldr r0, [r5,#0x1c]
 	ldr r0, [r0]
@@ -1720,7 +1720,7 @@ loc_8046E9E:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8046ECE
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_8046EBC
 	ldr r0, [r5,#0x24]
@@ -1731,7 +1731,7 @@ loc_8046E9E:
 	b loc_8046ECE
 loc_8046EBC:
 	mov r0, #0x40 
-	bl chatbox_set_eFlags2009F38
+	bl chatbox_setEventFlags2009F38
 	ldr r0, [r5,#0x24]
 	mov r1, #3
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -1762,7 +1762,7 @@ loc_8046EF2:
 	bne loc_8046EFC
 	b loc_8047020
 loc_8046EFC:
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_8046F12
 	ldrb r0, [r5,#7]
@@ -1782,7 +1782,7 @@ loc_8046F12:
 	mul r2, r1
 loc_8046F22:
 	ldr r0, [r5,#0x28]
-	bl sub_8047366
+	bl checkScrambledCounter_8047366
 	bne loc_8046F2E
 	sub r0, r0, r2
 	bge loc_8046F32
@@ -1872,7 +1872,7 @@ loc_8046FBE:
 	ldrh r0, [r7,#2]
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
-	bl sub_8047CB6
+	bl menu_clampListScrollAfterCountChange_8047CB6
 	pop {r1}
 	mov r0, #0x1c
 	strb r0, [r5]
@@ -1980,7 +1980,7 @@ sub_804709C:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8047130
 	ldr r0, [r5,#0x2c]
-	bl sub_8047366
+	bl checkScrambledCounter_8047366
 	bne loc_8047130
 	ldr r7, [r5,#0x20]
 	ldrh r0, [r7,#2]
@@ -2007,7 +2007,7 @@ sub_804709C:
 	ldrh r0, [r7,#2]
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
-	bl sub_8047CB6
+	bl menu_clampListScrollAfterCountChange_8047CB6
 	mov r0, #0x1c
 	strb r0, [r5]
 	mov r1, #7
@@ -2069,8 +2069,8 @@ sub_8047134:
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
 loc_8047174:
-	bl sub_8047CB6
-	bl sub_8047CEC
+	bl menu_clampListScrollAfterCountChange_8047CB6
+	bl copy_table_80469F0_to_202F800
 	ldrh r0, [r5,#0x18]
 	ldr r1, off_80471F4 // =byte_2019A00 
 	bl sub_8047594
@@ -2272,7 +2272,7 @@ loc_8047340:
 	thumb_func_end sub_804733C
 
 	thumb_local_start
-sub_8047366:
+checkScrambledCounter_8047366:
 	push {r0-r2,r4,lr}
 	mov r4, r0
 	ldr r0, [r5,#0x30]
@@ -2288,7 +2288,7 @@ sub_8047366:
 	sub r1, r1, r0
 	cmp r1, r4
 	pop {r0-r2,r4,pc}
-	thumb_func_end sub_8047366
+	thumb_func_end checkScrambledCounter_8047366
 
 	thumb_local_start
 sub_8047384:
@@ -2310,7 +2310,7 @@ sub_8047384:
 	add r7, r7, r2
 	mov r0, r8
 	ldrh r1, [r7,#2]
-	bl sub_804743C
+	bl findRecordWithHalfwordAtOffset2_804743C
 	bne loc_80473B8
 	mov r0, r9
 	ldrb r1, [r7,#4]
@@ -2365,7 +2365,7 @@ loc_80473F6:
 	add r7, r7, r0
 	ldrh r0, [r6,#2]
 	ldrh r1, [r7,#2]
-	bl sub_804743C
+	bl findRecordWithHalfwordAtOffset2_804743C
 	bne loc_8047422
 	ldrb r0, [r6,#4]
 	ldrb r1, [r7,#4]
@@ -2397,7 +2397,7 @@ loc_8047438:
 	thumb_func_end sub_80473E6
 
 	thumb_local_start
-sub_804743C:
+findRecordWithHalfwordAtOffset2_804743C:
 	push {r3-r7,lr}
 	mov r6, #0
 	mov r3, #0
@@ -2413,7 +2413,7 @@ loc_8047442:
 loc_8047452:
 	tst r6, r6
 	pop {r3-r7,pc}
-	thumb_func_end sub_804743C
+	thumb_func_end findRecordWithHalfwordAtOffset2_804743C
 
 	thumb_local_start
 sub_8047456:
@@ -3262,7 +3262,7 @@ loc_8047AB2:
 	mov r0, r4
 	mov r1, r2
 	mov r2, r3
-	bl chatbox_8045EFC
+	bl chatbox_setTextParams_8045EFC
 	pop {r0-r7}
 	ldr r2, [r5,#0x1c]
 	ldr r2, [r2]
@@ -3270,7 +3270,7 @@ loc_8047AB2:
 	beq loc_8047AF8
 	ldrb r0, [r7]
 	ldrh r1, [r7,#2]
-	bl sub_8047CA0
+	bl stub_doNothingReturnZero_8047CA0
 	bne loc_8047B72
 	mov r1, #5
 	ldrb r2, [r7]
@@ -3515,12 +3515,12 @@ off_8047C9C:
 	thumb_func_end sub_8047B88
 
 	thumb_local_start
-sub_8047CA0:
+stub_doNothingReturnZero_8047CA0:
 	push {r2-r7,lr}
 	mov r0, #0
 	tst r0, r0
 	pop {r2-r7,pc}
-	thumb_func_end sub_8047CA0
+	thumb_func_end stub_doNothingReturnZero_8047CA0
 
 	thumb_local_start
 sub_8047CA8:
@@ -3538,7 +3538,7 @@ sub_8047CB0:
 	thumb_func_end sub_8047CB0
 
 	thumb_local_start
-sub_8047CB6:
+menu_clampListScrollAfterCountChange_8047CB6:
 	push {lr}
 	ldrh r0, [r5,#0x12]
 	cmp r0, #4
@@ -3560,7 +3560,7 @@ loc_8047CCC:
 	strh r0, [r5,#0x14]
 locret_8047CDA:
 	pop {pc}
-	thumb_func_end sub_8047CB6
+	thumb_func_end menu_clampListScrollAfterCountChange_8047CB6
 
 	thumb_local_start
 sub_8047CDC:
@@ -3576,14 +3576,14 @@ locret_8047CEA:
 	thumb_func_end sub_8047CDC
 
 	thumb_local_start
-sub_8047CEC:
+copy_table_80469F0_to_202F800:
 	push {lr}
 	ldr r0, off_8047D74 // =byte_80469F0
 	ldr r1, off_8047D6C // =byte_202F800 
 	ldr r2, off_8047D70 // =0x168 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {pc}
-	thumb_func_end sub_8047CEC
+	thumb_func_end copy_table_80469F0_to_202F800
 
 	thumb_local_start
 sub_8047CFA:
@@ -4965,7 +4965,7 @@ sub_8049360:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_80493B2
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_80493A6
 	bl sub_813D638
@@ -5573,7 +5573,7 @@ sub_8049844:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_8049868
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_804985C
 	mov r0, #0xc
@@ -5611,7 +5611,7 @@ sub_8049888:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_80498A4
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_80498A0
 	mov r0, #0xc
@@ -5708,7 +5708,7 @@ sub_8049934:
 	ldrb r0, [r5,#3]
 	cmp r0, #1
 	beq loc_8049960
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_8049952
 	mov r0, #0x28 
@@ -5750,7 +5750,7 @@ sub_8049984:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_80499A8
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_804999C
 	mov r0, #0x28 
@@ -6515,7 +6515,7 @@ sub_8049FE0:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_804A004
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_8049FF8
 	mov r0, #0xc
@@ -6553,7 +6553,7 @@ sub_804A024:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_804A048
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_804A03C
 	mov r0, #0xc
@@ -7110,7 +7110,7 @@ sub_804A4D4:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_804A50A
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	beq loc_804A4FE
 	mov r0, #4
@@ -8582,7 +8582,7 @@ sub_804AF84:
 	mov r6, #0
 loc_804AF8E:
 	mov r0, r6
-	bl getStructFrom2008450
+	bl getStructEntryFlag2008450
 	beq loc_804AFA8
 	tst r6, r6
 	bne loc_804AF9C

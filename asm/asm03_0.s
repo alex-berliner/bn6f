@@ -1456,7 +1456,7 @@ sub_8026F1A:
 	bl chatbox_8040818
 	b loc_8026FA0
 loc_8026F34:
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #1
 	beq loc_8026FA0
 	mov r0, #0xff
@@ -9846,7 +9846,7 @@ sub_802AE14:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_802AE5A
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	beq loc_802AE52
 	mov r0, #0x10
@@ -9904,7 +9904,7 @@ sub_802AE84:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_802AEA6
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	tst r0, r0
 	beq loc_802AE9C
 	mov r0, #4
@@ -16056,7 +16056,7 @@ sub_802DF34:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	ldrb r0, [r5,#0x16]
 	ldrh r1, [r7,#0x14]
-	bl sub_8021D14
+	bl incrementRecordCounterByte_8021D14
 	ldrb r0, [r4,#9]
 	mov r1, #4
 	tst r0, r1

@@ -2121,7 +2121,7 @@ void __cdecl initNewGameData_8004DF0()
     sub_8003908();
     sub_8003A58();
     zeroFill_e2004348();
-    sub_809FAF4();
+    mysteryData_InitMapGroupTables_809FAF4();
     sub_809F9DC();
     sub_8049CF8();
     sub_804A17A();
@@ -2175,7 +2175,7 @@ void __cdecl initNewGameData_8004DF0()
     sub_80AA004(0);
     sub_80AA104(0);
     sub_802D638();
-    sub_80356EC();
+    clearWorkBuffer_2000DC0();
     *&gs->MapSelect = byte_100;
     gs->unk_44 = byte_100;
     *&gs->pad_48[oGameState_Unk_10] = byte_100;
@@ -2194,18 +2194,18 @@ void __cdecl initNewGameData_8004DF0()
     gs->unk_30 = 4;
     gs->unk_40 = 4;
     *&gs->pad_48[oGameState_LastMapGroup] = 4;
-    v13 = initGameProgressBuffer_803532c();
+    v13 = gameProgress_resetBuffer_803532c();
     sub_8021D36(v13, v14, v15, v16);
     ZeroFillByWord(*(v2 + oToolkit_S_Chip_2002178_Ptr), 180);
     zeroFill_e2002230();
     sub_8021AB4(byte_80213AC, 0);
-    sub_81376E8();
-    sub_8137700();
+    clearToolkitUnk2002230RecordFields_81376E8();
+    timer_setNoTimeout_8137700();
     sub_8137808();
     sub_80133EC();
     sub_813B768();
     zeroFill_813B934();
-    v17 = sub_813C324();
+    v17 = eraseMem_ClearBuffer_813C324();
     zeroFill_8121144(v17, v18, v19, v20);
     sub_800AAF2(v21, v22, v23, v24);
     sub_800AB22(v25, v26, v27, v28);
@@ -2514,7 +2514,7 @@ int __fastcall sub_80053E4(int a1)
     {
         chatbox_8040818();
         v4 = sub_80035A2(0x25u);
-        sub_80341AA(v4, v5, v6, v7);
+        clearWorkBuffer_2011A40(v4, v5, v6, v7);
         v8 = *v1;
         *v8 = 8;
         sub_8005F40(v8, 8, v9, v10);
@@ -3039,7 +3039,7 @@ signed int sub_800596C()
     SetEventFlagFromImmediate(23, 3);
     SetEventFlagFromImmediate(23, 56);
     engine_setScreeneffect(12, 16);
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
     result = 16;
     *v0 = 16;
     return result;
@@ -3055,7 +3055,7 @@ signed int sub_8005990()
     SetEventFlagFromImmediate(23, 3);
     SetEventFlagFromImmediate(23, 56);
     engine_setScreeneffect(4, 16);
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
     result = 16;
     *v0 = 16;
     return result;
@@ -3125,7 +3125,7 @@ signed int sub_8005A28()
     SetEventFlagFromImmediate(23, 3);
     SetEventFlagFromImmediate(23, 56);
     engine_setScreeneffect(12, 16);
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
     *(v0 + 104) = 60;
     result = 16;
     *v0 = 16;
@@ -3142,7 +3142,7 @@ signed int sub_8005A50()
     SetEventFlagFromImmediate(23, 3);
     SetEventFlagFromImmediate(23, 56);
     engine_setScreeneffect(12, 16);
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
     *(v0 + 104) = 160;
     result = 16;
     *v0 = 16;
@@ -3725,7 +3725,7 @@ void __fastcall sub_8005F00(int a1, char a2, char a3)
 
     sub_8005EEC(a1, a2, a3);
     **(v3 + oToolkit_GameStatePtr) = 16;
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
 }
 
 
@@ -3736,7 +3736,7 @@ void __fastcall sub_8005F14(int a1, char a2, char a3)
 
     sub_8005EEC(a1, a2, a3);
     **(v3 + oToolkit_GameStatePtr) = 20;
-    sub_8035738();
+    timer_tickCountdownTable_8035738();
 }
 
 
@@ -3820,7 +3820,7 @@ _BYTE *sub_8005F84()
     SetRenderInfoLCDControl(&byte_40);
     sub_809F68C();
     chatbox_8040818();
-    chatbox_clear_eFlags2009F38(64);
+    chatbox_clearEventFlags2009F38(64);
     **v0 = 4;
     result = *(v0 + oToolkit_GameStatePtr);
     *result = 0;
@@ -5144,7 +5144,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     sCamera.unk_4C = 0;
     v10 = sub_800A01C();
     sub_80075CA(v10, v11, v12, v13);
-    sub_8080D90();
+    bgScroll_ResetScrollCBCounters_8080D90();
     sub_8080DA0();
     v14 = sub_8007628();
     sub_801FE00(v14, v15, v16);
@@ -5161,7 +5161,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     sub_800A032();
     v43 = object_Clear3RAMBytes_800371A();
     v47 = sub_802DFFC(v43, v44, v45, v46);
-    sub_8021D08(v47, v48, v49, v50);
+    battle_ClearWorkBuffer_8021D08(v47, v48, v49, v50);
     eS20364C0 = 100745216;
     dword_20364C4 = &byte_20364C8;
     ClearEventFlagFromImmediate(23, 51);
@@ -12441,7 +12441,7 @@ int battle_copyStructsIncludingBattleStats_800b2d8()
     CopyWords(byte_203F538, byte_2036790, 0x28u);
     CopyWords(byte_203F638, byte_20367B8, 0x28u);
     *byte_203CA50 = dword_203F568;
-    sub_80AAB88(byte_203F56C, byte_203F66C, byte_2036750);
+    util_nandByteArray40_80AAB88(byte_203F56C, byte_203F66C, byte_2036750);
     dword_203CDF0[0] = *byte_203F594;
     *byte_203CDF4 = *byte_203F694;
     dword_203CFA0[0] = dword_203F560;

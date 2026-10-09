@@ -74,7 +74,7 @@ int sub_812D52E()
 	int result; // r0
 	char v1; // zf
 
-	result = getStructFrom2008450(0);
+	result = getStructEntryFlag2008450(0);
 	if ( v1 )
 		result = sub_812D56C(&byte_812C258, 0, 48);
 	return result;
@@ -87,7 +87,7 @@ int sub_812D54C()
 	int result; // r0
 	char v1; // zf
 
-	result = getStructFrom2008450(3);
+	result = getStructEntryFlag2008450(3);
 	if ( v1 )
 		result = sub_812D56C(byte_812C268, 3, 192);
 	return result;
@@ -112,7 +112,7 @@ int __fastcall sub_812D56C(void *a1, int a2, int a3)
 	sub_80465A0(a1);
 	do
 	{
-		result = getStructFrom2008450(v4);
+		result = getStructEntryFlag2008450(v4);
 		if ( !v8 )
 		{
 			if ( !v4 )
@@ -399,7 +399,7 @@ void sub_812D83C()
 	if ( !*(v0 + 108) )
 	{
 		*(v0 + 108) = byte_64;
-		chatbox_runScript_803FD9C_on_eTextScript201BA20(65);
+		chatbox_runScript_eTextScript201BA20(65);
 	}
 }
 
@@ -433,7 +433,7 @@ int sub_812D880()
 	{
 		if ( eStruct200BC30_getRef()[14] == 2 )
 			v1 = 48;
-		chatbox_runScript_803FD9C_on_eTextScript201BA20(v1);
+		chatbox_runScript_eTextScript201BA20(v1);
 	}
 	result = v0[22];
 	if ( v0[22] )
@@ -528,7 +528,7 @@ int sub_812DA3C()
 	int result; // r0
 	char v1; // zf
 
-	result = getStructFrom2008450(6);
+	result = getStructEntryFlag2008450(6);
 	if ( v1 )
 		result = sub_812D4FC();
 	return result;
@@ -543,7 +543,7 @@ signed int __fastcall sub_812DA4C(char a1)
 
 	*(v1 + 31) = a1;
 	*(v1 + 2) = 48;
-	chatbox_runScript_803FD9C_on_eTextScript201BA20(65);
+	chatbox_runScript_eTextScript201BA20(65);
 	result = 240;
 	*(v1 + 40) = 240;
 	return result;

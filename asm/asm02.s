@@ -77,10 +77,10 @@ loc_8021B00:
 	bl getOffsetToQuantityOfChipCodeMaybe_8021c7c // (int chip_idx, int searchItem, int off) -> void*
 	mov r4, r3
 	pop {r2}
-	bl addChipsToChipPackOffset_8021b5a
+	bl chipPack_addChipsToSlotCount_8021b5a
 	push {r3}
 	mov r1, r4
-	bl setUnkFieldOfChipCodeInChipPack_81376b8
+	bl chipPack_stampEntryWithTrayCountAndDecrement_81376b8
 	pop {r3}
 	mov r0, r3
 	pop {r4,pc}
@@ -107,13 +107,13 @@ loc_8021B3C:
 	push {r2}
 	bl getOffsetToQuantityOfChipCodeMaybe_8021c7c // (int chip_idx, int searchItem, int off) -> void*
 	pop {r2}
-	bl addChipsToChipPackOffset_8021b5a
+	bl chipPack_addChipsToSlotCount_8021b5a
 	mov r0, r3
 	pop {pc}
 	thumb_func_end sub_8021B2A
 
 	thumb_local_start
-addChipsToChipPackOffset_8021b5a:
+chipPack_addChipsToSlotCount_8021b5a:
 	mov r3, #1
 	ldrb r1, [r0]
 	cmp r1, #99
@@ -130,7 +130,7 @@ loc_8021B6E:
 	.balign 4, 0
 off_8021B74:
 	.word 0x1E20
-	thumb_func_end addChipsToChipPackOffset_8021b5a
+	thumb_func_end chipPack_addChipsToSlotCount_8021b5a
 
 // (int idx, int searchItem, int off) -> void*
 // [break (E7FE)]
@@ -387,17 +387,17 @@ off_8021D04:
 	.word 0x140
 	thumb_func_end sub_8021CA8
 
-	thumb_func_start sub_8021D08
-sub_8021D08:
+	thumb_func_start battle_ClearWorkBuffer_8021D08
+battle_ClearWorkBuffer_8021D08:
 	push {lr}
 	ldr r0, off_8021D94 // =unk_203A0A0
 	ldr r1, off_8021D98 // =0x2e0
 	bl ZeroFillByHalfword
 	pop {pc}
-	thumb_func_end sub_8021D08
+	thumb_func_end battle_ClearWorkBuffer_8021D08
 
-	thumb_func_start sub_8021D14
-sub_8021D14:
+	thumb_func_start incrementRecordCounterByte_8021D14
+incrementRecordCounterByte_8021D14:
 	push {lr}
 	ldr r2, off_8021D9C // =0x170
 	mul r2, r0
@@ -410,7 +410,7 @@ sub_8021D14:
 	strb r2, [r0,r1]
 locret_8021D28:
 	pop {pc}
-	thumb_func_end sub_8021D14
+	thumb_func_end incrementRecordCounterByte_8021D14
 
 	thumb_local_start
 sub_8021D2A:

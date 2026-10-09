@@ -83,7 +83,7 @@ void __fastcall __noreturn start_dead_8000268(int a1)
 
 
 // 0x800027c
-int __noreturn start_800027C()
+int __noreturn crt0_start_800027C()
 {
     int v1; // [sp+0h] [bp-4h]
 

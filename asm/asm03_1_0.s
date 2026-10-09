@@ -1150,8 +1150,8 @@ loc_8034140:
 	pop {r4-r7,pc}
 	thumb_func_end navi_80340F6
 
-	thumb_func_start sub_80341AA
-sub_80341AA:
+	thumb_func_start clearWorkBuffer_2011A40
+clearWorkBuffer_2011A40:
 	push {lr}
 	// memBlock
 	ldr r0, off_80341F4 // =byte_2011A40
@@ -1159,7 +1159,7 @@ sub_80341AA:
 	mov r1, #0xc
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
-	thumb_func_end sub_80341AA
+	thumb_func_end clearWorkBuffer_2011A40
 
 	thumb_func_start ho_jackIn_80341B6
 ho_jackIn_80341B6:
@@ -2864,8 +2864,8 @@ off_8035328:
 	.word byte_80990B8 // CutsceneScript
 	thumb_func_end ghostNaviCheck_8035274
 
-	thumb_func_start initGameProgressBuffer_803532c
-initGameProgressBuffer_803532c:
+	thumb_func_start gameProgress_resetBuffer_803532c
+gameProgress_resetBuffer_803532c:
 	push {r4-r7,lr}
 	ldr r6, off_8035350 // =byte_8037694
 	ldr r7, off_8035378 // =gameProgressBuffer_20010f0
@@ -2887,7 +2887,7 @@ loc_8035334:
 	.balign 4, 0
 off_8035350:
 	.word byte_8037694
-	thumb_func_end initGameProgressBuffer_803532c
+	thumb_func_end gameProgress_resetBuffer_803532c
 
 	thumb_func_start loadGameProgressFromGameProgressBuffer_8035354
 loadGameProgressFromGameProgressBuffer_8035354:
@@ -3111,8 +3111,8 @@ clearSetFlags_80355a8:
 	pop {r4-r7,pc}
 	thumb_func_end clearSetFlags_80355a8
 
-	thumb_func_start sub_80355DE
-sub_80355DE:
+	thumb_func_start getIndexed20ByteTableEntry_80355DE
+getIndexed20ByteTableEntry_80355DE:
 	ldr r1, off_80355E8 // =byte_80984C8
 	mov r2, #0x14
 	mul r2, r0
@@ -3120,7 +3120,7 @@ sub_80355DE:
 	mov pc, lr
 off_80355E8:
 	.word byte_80984C8
-	thumb_func_end sub_80355DE
+	thumb_func_end getIndexed20ByteTableEntry_80355DE
 
 	thumb_func_start sub_80355EC
 sub_80355EC:
@@ -3255,8 +3255,8 @@ applyLayerEffectToOWObject_8035694:
 	.pool // Struct8034460
 	thumb_func_end applyLayerEffectToOWObject_8035694
 
-	thumb_func_start sub_80356EC
-sub_80356EC:
+	thumb_func_start clearWorkBuffer_2000DC0
+clearWorkBuffer_2000DC0:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_8035784 // =dword_2000DC0
@@ -3264,7 +3264,7 @@ sub_80356EC:
 	ldr r1, off_8035788 // =0x100
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_80356EC
+	thumb_func_end clearWorkBuffer_2000DC0
 
 	thumb_func_start sub_80356F8
 sub_80356F8:
@@ -3312,8 +3312,8 @@ locret_8035736:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8035714
 
-	thumb_func_start sub_8035738
-sub_8035738:
+	thumb_func_start timer_tickCountdownTable_8035738
+timer_tickCountdownTable_8035738:
 	push {r4-r7,lr}
 	ldr r5, off_8035784 // =dword_2000DC0
 	mov r4, #0
@@ -3332,7 +3332,7 @@ loc_803574C:
 	blt loc_803573E
 locret_8035754:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8035738
+	thumb_func_end timer_tickCountdownTable_8035738
 
 	thumb_local_start
 sub_8035756:

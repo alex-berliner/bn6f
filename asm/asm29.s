@@ -1828,7 +1828,7 @@ loc_80A5CBE:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_80A5CDE
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	mov r4, #0
 	cmp r0, #0
 	bne loc_80A5CD2
@@ -10432,7 +10432,7 @@ sub_80AA6A4:
 off_80AA6B4:
 	.word JumpTable80AA6B8
 JumpTable80AA6B8:
-	.word sub_80AA6E8+1
+	.word alwaysTrue_80AA6E8+1
 	.word sub_80AA6EC+1
 	.word sub_80AA756+1
 	.word sub_80AA764+1
@@ -10447,10 +10447,10 @@ JumpTable80AA6B8:
 	thumb_func_end sub_80AA6A4
 
 	thumb_local_start
-sub_80AA6E8:
+alwaysTrue_80AA6E8:
 	mov r0, #1
 	mov pc, lr
-	thumb_func_end sub_80AA6E8
+	thumb_func_end alwaysTrue_80AA6E8
 
 	thumb_local_start
 sub_80AA6EC:
@@ -11150,8 +11150,8 @@ off_80AAB84:
 	.word byte_8020B9C
 	thumb_func_end sub_80AAB68
 
-	thumb_func_start sub_80AAB88
-sub_80AAB88:
+	thumb_func_start util_nandByteArray40_80AAB88
+util_nandByteArray40_80AAB88:
 	push {r5-r7,lr}
 	mov r3, #0
 	mov r5, r2
@@ -11167,7 +11167,7 @@ loc_80AAB92:
 	cmp r3, #0x28 
 	blt loc_80AAB92
 	pop {r5-r7,pc}
-	thumb_func_end sub_80AAB88
+	thumb_func_end util_nandByteArray40_80AAB88
 
 	thumb_func_start sub_80AABA4
 sub_80AABA4:

@@ -10957,7 +10957,7 @@ void __noreturn sub_8116904()
 // 0x811691c
 int sub_811691C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11071,7 +11071,7 @@ void __noreturn sub_8116A28()
 // 0x8116a3c
 int sub_8116A3C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11225,7 +11225,7 @@ int sub_8116C14()
     sprite_addCoordinates(8 * *(v0 + 16), 0);
     result = sprite_getCoordinates();
     if ( result < 0 )
-        result = sub_804668A();
+        result = sprite_clearScaleCounterAndMakeUnscalable_804668A();
     return result;
 }
 
@@ -11233,7 +11233,7 @@ int sub_8116C14()
 // 0x8116c38
 int sub_8116C38()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11445,7 +11445,7 @@ int sub_8116DEC()
 // 0x8116e08
 int sub_8116E08()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11551,7 +11551,7 @@ signed int sub_8116F9C()
 // 0x8116fd4
 int sub_8116FD4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11578,7 +11578,7 @@ int __fastcall sub_8116FDC(signed int a1, __int16 a2, int a3)
     v4 = a3 + 3;
     do
     {
-        getStructFrom2008450(v3);
+        getStructEntryFlag2008450(v3);
         if ( !v6 )
         {
             v7 = v5;
@@ -11620,7 +11620,7 @@ int __fastcall sub_8117084(__int16 a1, int a2, int a3)
     v4 = a3 + 3;
     do
     {
-        result = getStructFrom2008450(v3);
+        result = getStructEntryFlag2008450(v3);
         if ( v7 )
             break;
         *(v6 + 12) = v8;
@@ -11712,7 +11712,7 @@ void __noreturn sub_81171B4()
 // 0x81171cc
 int sub_81171CC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11726,7 +11726,7 @@ int __fastcall sub_81171D4(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -11744,7 +11744,7 @@ int __fastcall sub_81171F4(int a1, int a2)
     int v7; // [sp+0h] [bp-1Ch]
 
     v7 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         v5 = *(v3 + 6);
@@ -11811,7 +11811,7 @@ void __noreturn sub_811727C()
 // 0x81172a6
 int sub_81172A6()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11868,7 +11868,7 @@ void __noreturn sub_811734C()
 // 0x8117354
 int sub_8117354()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -11924,7 +11924,7 @@ void sub_8117488()
 // 0x81174b8
 int sub_81174B8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12098,7 +12098,7 @@ void __noreturn sub_8117680()
 // 0x8117688
 int sub_8117688()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12132,7 +12132,7 @@ int sub_81176C0()
 // 0x81176c8
 int sub_81176C8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12239,7 +12239,7 @@ void __noreturn sub_81177EC()
 // 0x8117818
 int sub_8117818()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12387,7 +12387,7 @@ void __noreturn sub_811794C()
 // 0x8117990
 int sub_8117990()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12653,7 +12653,7 @@ int sub_8117CC4()
 // 0x8117ccc
 int sub_8117CCC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -12667,7 +12667,7 @@ int sub_8117CD4()
     int v4; // r3
 
     v0 = &sSubmenu;
-    sub_81355D8();
+    submenu_isOpen_81355D8();
     if ( !v1 )
         v0 = sub_81312F4();
     v2 = 20800;
@@ -12688,7 +12688,7 @@ int __fastcall sub_8117D10(int a1, int a2)
     char v5; // zf
 
     v2 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v5 )
     {
         if ( v2 )
@@ -12832,7 +12832,7 @@ void __noreturn sub_8117E60()
 // 0x8117ec0
 int sub_8117EC0()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -13029,7 +13029,7 @@ MenuControl *sub_81180E0()
 // 0x81180fc
 int sub_81180FC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -13496,7 +13496,7 @@ int sub_81185A8()
 // 0x81185b8
 int sub_81185B8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14029,7 +14029,7 @@ void __noreturn sub_8118A88()
 // 0x8118aa8
 int sub_8118AA8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14181,7 +14181,7 @@ int sub_8118C8C()
     v6 = v4 - 1;
     if ( !((v6 < 0) ^ v5) )
     {
-        v7 = *sub_813B9FC(v6) >> 2;
+        v7 = *toolkit_getUnk2004190EntryPtr_813B9FC(v6) >> 2;
         if ( v7 != v0[13] )
         {
             v0[12] = v7;
@@ -14195,7 +14195,7 @@ int sub_8118C8C()
 // 0x8118cec
 int sub_8118CEC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14300,7 +14300,7 @@ int sub_8118DFC()
 // 0x8118e1c
 int sub_8118E1C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14391,7 +14391,7 @@ void __noreturn sub_8118F14()
 // 0x8118f1c
 int sub_8118F1C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14508,7 +14508,7 @@ signed int __noreturn sub_8119084()
 // 0x81190d8
 int sub_81190D8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14528,7 +14528,7 @@ signed int __fastcall sub_81190F8(int a1)
     char v2; // zf
 
     v1 = 0;
-    getStructFrom2008450(a1);
+    getStructEntryFlag2008450(a1);
     if ( !v2 && sprite_getFrameParameters() & 0xC0 )
         v1 = 1;
     return v1;
@@ -14542,7 +14542,7 @@ int __fastcall sub_8119118(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = 8;
@@ -14908,7 +14908,7 @@ void sub_8119800()
 // 0x8119804
 int sub_8119804()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -14931,7 +14931,7 @@ int __fastcall sub_811980C(__int16 a1, char a2, int a3, int a4)
     v5 = a3 + 3;
     do
     {
-        result = getStructFrom2008450(v4);
+        result = getStructEntryFlag2008450(v4);
         if ( !v8 )
         {
             *(v7 + 14) = v9;
@@ -14955,7 +14955,7 @@ int __fastcall sub_811983C(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         result = v5;
@@ -14981,7 +14981,7 @@ int __fastcall sub_8119854(int a1, __int16 a2, int a3)
     v4 = a3 + 3;
     do
     {
-        result = getStructFrom2008450(v3);
+        result = getStructEntryFlag2008450(v3);
         if ( !v6 )
             result = sprite_setCoordinates(v7, v8);
         ++v3;
@@ -15004,7 +15004,7 @@ int sub_8119880()
     if ( !v0 )
     {
         v3 = &sSubmenu;
-        sub_81355D8();
+        submenu_isOpen_81355D8();
         if ( !v0 )
             v3 = sub_81312F4();
         result = v3->unk_0E;
@@ -15028,7 +15028,7 @@ signed int sub_81198B0()
     if ( v1 == 1 || v1 == 2 || v1 == 3 || v1 == 4 || v1 == 5 )
         return 1;
     v2 = &sSubmenu;
-    sub_81355D8();
+    submenu_isOpen_81355D8();
     if ( !v3 )
         v2 = sub_81312F4();
     result = v2->unk_0E;
@@ -15093,7 +15093,7 @@ void __noreturn sub_81199C0()
 // 0x81199dc
 int sub_81199DC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -15253,7 +15253,7 @@ void __fastcall __noreturn sub_8119BD0(int a1)
 // 0x8119be0
 int sub_8119BE0()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -15267,7 +15267,7 @@ int __fastcall sub_8119BE8(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -15326,7 +15326,7 @@ int __fastcall sub_8119C74(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         result = 35;
@@ -15410,7 +15410,7 @@ void __noreturn sub_8119DE8()
     int v5; // r0
     unsigned int v6; // r0
 
-    getStructFrom2008450(0);
+    getStructEntryFlag2008450(0);
     v2 = v1;
     sprite_setCoordinates(*(v1 + 44), *(v1 + 46));
     v3 = *v2 | 0x80;
@@ -15429,7 +15429,7 @@ void __noreturn sub_8119DE8()
 // 0x8119e38
 int sub_8119E38()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -15668,7 +15668,7 @@ void sub_811A1E8()
 // 0x811a1ec
 int sub_811A1EC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -15689,7 +15689,7 @@ int __fastcall sub_811A1F4(__int16 a1, char a2, int a3, int a4)
     v4 = a3;
     do
     {
-        result = getStructFrom2008450(v4);
+        result = getStructEntryFlag2008450(v4);
         if ( !v7 )
         {
             *(v6 + 14) = v8;
@@ -15720,7 +15720,7 @@ int __fastcall sub_811A220(int a1, __int16 a2, int a3)
     v4 = a3 + 4;
     do
     {
-        result = getStructFrom2008450(v3);
+        result = getStructEntryFlag2008450(v3);
         if ( !v6 )
             result = sprite_setCoordinates(v7, v8);
         ++v3;
@@ -15859,7 +15859,7 @@ void __noreturn sub_811A370()
 // 0x811a3a4
 int sub_811A3A4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16001,7 +16001,7 @@ signed int sub_811A57C()
 // 0x811a5b4
 int sub_811A5B4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16032,7 +16032,7 @@ int __fastcall sub_811A610(int a1, int a2)
     Battle *v6; // r5
 
     v2 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v5 )
     {
         result = v4->objFlags;
@@ -16195,7 +16195,7 @@ void __noreturn sub_811A818()
 // 0x811a830
 int sub_811A830()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16209,7 +16209,7 @@ int __fastcall sub_811A838(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16258,7 +16258,7 @@ void __noreturn sub_811A8D0()
 // 0x811a8ec
 int sub_811A8EC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16272,7 +16272,7 @@ int __fastcall sub_811A8F4(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16287,7 +16287,7 @@ int __fastcall sub_811A914(int a1, int a2)
     unsigned __int8 *v4; // r5
 
     v2 = a1;
-    getStructFrom2008450(a2);
+    getStructEntryFlag2008450(a2);
     v4 = v3;
     sprite_setUnk0x2c(*&byte_811A938[4 * v2]);
     return *v4;
@@ -16303,7 +16303,7 @@ int __fastcall __noreturn sub_811A940(int a1, int a2)
     int result; // r0
 
     v2 = a1;
-    getStructFrom2008450(a2);
+    getStructEntryFlag2008450(a2);
     v4 = v3;
     sprite_setAnimation(v3, v2);
     sprite_loadAnimationData(v4);
@@ -16317,8 +16317,8 @@ int __fastcall __noreturn sub_811A940(int a1, int a2)
 // 0x811a968
 int __fastcall sub_811A968(int a1)
 {
-    getStructFrom2008450(a1);
-    return sub_804668A();
+    getStructEntryFlag2008450(a1);
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16418,7 +16418,7 @@ signed int __noreturn sub_811AAB8()
 // 0x811ab0c
 int sub_811AB0C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16541,7 +16541,7 @@ signed int __noreturn sub_811ACA8()
 // 0x811acfc
 int sub_811ACFC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16554,7 +16554,7 @@ int __fastcall sub_811AD04(__int16 a1, int a2, int a3)
     char v6; // zf
 
     v3 = a1;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v6 )
     {
         *(v5 + 12) = v3;
@@ -16575,7 +16575,7 @@ int __fastcall sub_811AD18(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16679,7 +16679,7 @@ signed int sub_811AE2C()
 // 0x811ae54
 int sub_811AE54()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16693,7 +16693,7 @@ int __fastcall sub_811AE5C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -16716,7 +16716,7 @@ int __fastcall sub_811AE7C(int a1, int a2)
 
     v10 = a1;
     v11 = a2;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -16747,7 +16747,7 @@ int __fastcall sub_811AFD8(int a1)
     char v3; // zf
     _BYTE *v4; // r5
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         v4 = v2;
@@ -16769,7 +16769,7 @@ int __fastcall sub_811AFFC(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         *v2 = 35;
@@ -16787,7 +16787,7 @@ int __fastcall sub_811B010(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = *(v2 + 17);
@@ -16926,7 +16926,7 @@ void __fastcall __noreturn sub_811B284(int a1)
 // 0x811b290
 int sub_811B290()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -16964,7 +16964,7 @@ int __fastcall sub_811B314(int a1, char a2)
     Battle *v6; // r5
 
     v2 = a2;
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v5 )
     {
         result = v4->objFlags;
@@ -17032,7 +17032,7 @@ int sub_811B3CC()
 // 0x811b3ec
 int sub_811B3EC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17079,7 +17079,7 @@ void __noreturn sub_811B45C()
 // 0x811b464
 int sub_811B464()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17093,7 +17093,7 @@ int __fastcall sub_811B46C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17109,7 +17109,7 @@ int __fastcall sub_811B48C(int a1, int a2)
     int v5; // [sp+0h] [bp-18h]
 
     v5 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         result = 35;
@@ -17248,7 +17248,7 @@ char *sub_811B6B8()
 // 0x811b6d8
 int sub_811B6D8()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17577,7 +17577,7 @@ int __noreturn sub_811BAC4()
 // 0x811baec
 int sub_811BAEC()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17715,7 +17715,7 @@ int __fastcall sub_811BC00(__int16 a1, int a2, int a3, __int16 a4)
     v7 = a1;
     v8 = a2;
     v9 = a4;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v6 )
     {
         *(v5 + 14) = v7;
@@ -17737,7 +17737,7 @@ int __fastcall sub_811BC24(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17803,7 +17803,7 @@ void __noreturn sub_811BD34()
 // 0x811bd3c
 int sub_811BD3C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17876,7 +17876,7 @@ int sub_811BDEC()
 // 0x811bdf4
 int sub_811BDF4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -17890,7 +17890,7 @@ int __fastcall sub_811BDFC(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -17977,7 +17977,7 @@ int __fastcall sub_811BED4(int a1, int a2)
     char v5; // zf
 
     v2 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v5 )
     {
         result = 1;
@@ -18025,7 +18025,7 @@ void __noreturn sub_811C07C()
 // 0x811c084
 int sub_811C084()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18077,7 +18077,7 @@ void __noreturn sub_811C0F8()
 int sub_811C10E()
 {
     (call_8002676)();
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18124,7 +18124,7 @@ void __noreturn sub_811C18C()
 // 0x811c1a4
 int sub_811C1A4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18170,7 +18170,7 @@ void __noreturn sub_811C22C()
 // 0x811c234
 int sub_811C234()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18184,7 +18184,7 @@ int __fastcall sub_811C23C(int a1, __int16 a2, int a3)
 
     v5 = a1;
     v6 = a2;
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
         result = sprite_setCoordinates(v5, v6);
     return result;
@@ -18225,7 +18225,7 @@ void __noreturn sub_811C298()
 // 0x811c2a0
 int sub_811C2A0()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18244,7 +18244,7 @@ int __fastcall sub_811C2A8(int a1, int a2)
     int v11; // [sp+0h] [bp-10h]
 
     v11 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -18288,7 +18288,7 @@ int __fastcall sub_811C4D8(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -18335,7 +18335,7 @@ void sub_811C52C()
 // 0x811c53c
 int sub_811C53C()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18346,7 +18346,7 @@ int __fastcall sub_811C544(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -18371,7 +18371,7 @@ int __fastcall sub_811C554(int a1, int a2)
     int v11; // [sp+0h] [bp-10h]
 
     v11 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -18521,7 +18521,7 @@ void __noreturn sub_811CA1C()
     if ( sub_811CC4E() )
         sub_811CA94();
     else
-        sub_804668A();
+        sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -18550,7 +18550,7 @@ void sub_811CA94()
 // 0x811cae4
 int sub_811CAE4()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -19410,7 +19410,7 @@ void __noreturn sub_811D2C8()
 // 0x811d2e0
 int sub_811D2E0()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -19420,9 +19420,9 @@ int __fastcall sub_811D2E8(int a1)
     int result; // r0
     char v2; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v2 )
-        result = sub_804668A();
+        result = sprite_clearScaleCounterAndMakeUnscalable_804668A();
     return result;
 }
 
@@ -19581,7 +19581,7 @@ int __fastcall sub_811D634(int a1, int a2, int a3)
     int result; // r0
     char v4; // zf
 
-    result = getStructFrom2008450(a3);
+    result = getStructEntryFlag2008450(a3);
     if ( !v4 )
     {
         sub_811D6CC();
@@ -19601,7 +19601,7 @@ int __fastcall sub_811D66C(int a1, int a2)
 
     v9 = a1;
     v2 = a2;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !_ZF )
     {
         result = 100 * v9;
@@ -19624,7 +19624,7 @@ int __fastcall sub_811D69C(int a1, int a2)
 
     v9 = a1;
     v2 = a2;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !_ZF )
     {
         result = 100 * v9;
@@ -19909,7 +19909,7 @@ int __fastcall sub_811DBF0(int a1)
     int v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = 12;
@@ -19964,7 +19964,7 @@ void sub_811DC70()
 // 0x811dc80
 int sub_811DC80()
 {
-    return sub_804668A();
+    return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
 
 
@@ -19982,7 +19982,7 @@ int __fastcall sub_811DC88(int a1, int a2)
     int v10; // [sp+0h] [bp-10h]
 
     v10 = a1;
-    result = getStructFrom2008450(a2);
+    result = getStructEntryFlag2008450(a2);
     if ( !v4 )
     {
         v5 = v3;
@@ -20030,7 +20030,7 @@ int __fastcall sub_811DF0C(int a1)
     _BYTE *v2; // r1
     char v3; // zf
 
-    result = getStructFrom2008450(a1);
+    result = getStructEntryFlag2008450(a1);
     if ( !v3 )
     {
         result = 1;
@@ -21837,7 +21837,7 @@ int sub_811F728()
     sub_80015FC(6);
     sub_809F68C();
     chatbox_8040818();
-    return chatbox_clear_eFlags2009F38(64);
+    return chatbox_clearEventFlags2009F38(64);
 }
 
 
@@ -22481,7 +22481,7 @@ int __fastcall sub_811FE7C(int *a1, int a2, int a3, int a4)
                     v22 = *v9;
                     if ( *v9 )
                     {
-                        v4[7] = (sub_81376CC(v9, v10) << 16) | (v5 << 7) | v21;
+                        v4[7] = (loadU16FromTableEntry_81376CC(v9, v10) << 16) | (v5 << 7) | v21;
                         v11 = (*(v6 + 14) << 7) | v21;
                         *v4 = (*(v6 + 14) << 16) | v11;
                         v4[2] = (v21 << 16) | v11;
@@ -23889,7 +23889,7 @@ int __fastcall sub_8120D10(int a1)
         }
         else
         {
-            v5 = isFolderSlotInUse_81377EC(0x22u);
+            v5 = folder_findSlotInUseIndex_81377EC(0x22u);
             if ( v5 >= 3 || !v9 && (v6 = v5, v7 = sub_8137890(v5), sub_8120DAC(v7), LOBYTE(v5) = v6, !v8) )
             {
                 GiveFolder(34);

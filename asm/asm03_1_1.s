@@ -2269,7 +2269,7 @@ sub_8039D08:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8039D60
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_8039D54
 	bl sub_813D638
@@ -4217,7 +4217,7 @@ sub_803AC02:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_803AC26
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_803AC1A
 	mov r0, #0xc
@@ -4263,7 +4263,7 @@ sub_803AC56:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_803AC72
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_803AC6E
 	mov r0, #0xc
@@ -4619,7 +4619,7 @@ sub_803AEE6:
 	ldrb r0, [r5,#3]
 	cmp r0, #1
 	beq loc_803AF12
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_803AF04
 	mov r0, #0x28
@@ -4669,7 +4669,7 @@ sub_803AF46:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_803AF6A
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_803AF5E
 	mov r0, #0x28
@@ -14108,7 +14108,7 @@ clearChatboxAndEvent:
 	ldr r1, off_803FD04 // =0x230
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0xc8
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	pop {pc}
 	.balign 4, 0
 off_803FD04:

@@ -2103,7 +2103,7 @@ cutscenescript_808EA6F:
 sub_808EA78::
 	push {lr}
 	mov r0, #0x15
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5,#0x34]
 	mov r0, #0
 	pop {pc}

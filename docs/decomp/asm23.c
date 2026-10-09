@@ -313,7 +313,7 @@ signed int sub_80897A6()
         chatbox_mask_eFlags2009F38(128);
         if ( v1 )
         {
-            if ( chatbox_8045F4C() )
+            if ( chatbox_GetState_8045F4C() )
             {
                 sub_8089D26();
                 *v0 = 12;

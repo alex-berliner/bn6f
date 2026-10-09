@@ -402,7 +402,7 @@ loc_80818C2:
 sub_80818C8:
 	push {lr}
 	mov r0, #0
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -1315,7 +1315,7 @@ cutscenescript_80822AD:
 sub_80822B8:
 	push {lr}
 	mov r0, #2
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -2258,7 +2258,7 @@ cutscenescript_8082D30:
 sub_8082D38:
 	push {lr}
 	mov r0, #3
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -6787,7 +6787,7 @@ dword_8085BC4::
 sub_8085BCC:
 	push {lr}
 	mov r0, #9
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}

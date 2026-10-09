@@ -206,15 +206,15 @@ off_8000278:
 	.word sub_3005E02+1
 	thumb_func_end start_dead_8000268
 
-	thumb_func_start start_800027C
-start_800027C:
+	thumb_func_start crt0_start_800027C
+crt0_start_800027C:
 	push {lr}
 	ldr r1, off_8000294 // =sub_3005E18+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
 	bx r0
-	thumb_func_end start_800027C
+	thumb_func_end crt0_start_800027C
 
 	thumb_func_start start_8000288
 start_8000288:

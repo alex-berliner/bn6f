@@ -3925,7 +3925,7 @@ initNewGameData_8004DF0:
 	bl Clear_eStruct2000780
 	bl sub_8003A58
 	bl zeroFill_e2004348
-	bl sub_809FAF4
+	bl mysteryData_InitMapGroupTables_809FAF4
 	bl sub_809F9DC
 	bl sub_8049CF8
 	bl sub_804A17A
@@ -4091,7 +4091,7 @@ initNewGameData_8004DF0:
 
 	bl sub_802D638
 
-	bl sub_80356EC
+	bl clearWorkBuffer_2000DC0
 
 	ldr r0, off_80050E4 // =0x100
 	strh r0, [r5,#oGameState_MapGroup]
@@ -4119,7 +4119,7 @@ initNewGameData_8004DF0:
 	str r0, [r5,#oGameState_SavedRealWorldFacingDirection]
 	str r0, [r5,#0x54]
 
-	bl initGameProgressBuffer_803532c
+	bl gameProgress_resetBuffer_803532c
 
 	bl sub_8021D36
 
@@ -4138,13 +4138,13 @@ initNewGameData_8004DF0:
 	mov r1, #0
 
 	bl sub_8021AB4
-	bl sub_81376E8
-	bl sub_8137700
+	bl clearToolkitUnk2002230RecordFields_81376E8
+	bl timer_setNoTimeout_8137700
 	bl sub_8137808
 	bl sub_80133EC
 	bl sub_813B768
 	bl zeroFill_813B934
-	bl sub_813C324
+	bl eraseMem_ClearBuffer_813C324
 	bl sub_8121144
 	bl sub_800AAF2
 	bl sub_800AB22
@@ -4254,7 +4254,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl sub_802F0D8
 	bl sub_802F0F4
 	bl cutscene_8036EFE
-	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
+	bl cutscene_clearScriptPosIfDummyValue_8036F24
 	bl sub_809F90C
 
 	movflag EVENT_1731
@@ -4375,7 +4375,7 @@ off_8005264:
 gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	push {lr}
 
-	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
+	bl cutscene_clearScriptPosIfDummyValue_8036F24
 
 	bl cutscene_8034BB8
 
@@ -4571,7 +4571,7 @@ sub_80053E4: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_80341AA
+	bl clearWorkBuffer_2011A40
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
 	mov r1, #8
@@ -5100,7 +5100,7 @@ sub_800596C: // (self: * GameState $r5) -> ()
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 
   // trigger sub_800536E via cbGameState_80050EC
 	mov r0, #0x10
@@ -5122,7 +5122,7 @@ sub_8005990: // (self: * GameState $r5) -> ()
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 
   // trigger sub_800536E via cbGameState_80050EC
 	mov r0, #0x10
@@ -5218,7 +5218,7 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 
 	mov r0, #0x3c
 	str r0, [r5,#oGameState_Unk_68]
@@ -5244,7 +5244,7 @@ sub_8005A50: // (self: * GameState $r5) -> ()
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 
 	mov r0, #0xa0
 	str r0, [r5,#oGameState_Unk_68]
@@ -5955,7 +5955,7 @@ warp_setSubsystemIndexTo0x10AndOthers_8005f00:
 	mov r0, #0x10
 	strb r0, [r4,#oGameState_SubsystemIndex]
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 	pop {r4-r7,pc}
 	thumb_func_end warp_setSubsystemIndexTo0x10AndOthers_8005f00
 
@@ -5971,7 +5971,7 @@ warp_setSubsystemIndexTo0x14AndOthers_8005f14:
 	mov r0, #0x14
 	strb r0, [r4,#oGameState_SubsystemIndex]
 
-	bl sub_8035738
+	bl timer_tickCountdownTable_8035738
 	pop {r4-r7,pc}
 	thumb_func_end warp_setSubsystemIndexTo0x14AndOthers_8005f14
 
@@ -6035,7 +6035,7 @@ sub_8005F84:
 	bl sub_809F68C
 	bl chatbox_8040818
 	mov r0, #0x40
-	bl chatbox_clear_eFlags2009F38 // (int a1) ->
+	bl chatbox_clearEventFlags2009F38 // (int a1) ->
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
 	mov r1, #4
@@ -8451,7 +8451,7 @@ loc_8007236:
 
 	bl sub_800A01C
 	bl sub_80075CA
-	bl sub_8080D90
+	bl bgScroll_ResetScrollCBCounters_8080D90
 	bl sub_8080DA0
 	bl sub_8007628
 	bl sub_801FE00
@@ -8479,7 +8479,7 @@ loc_8007236:
 loc_80072BA:
 	bl zeroFill_802E014
 loc_80072BE:
-	bl sub_8021D08
+	bl battle_ClearWorkBuffer_8021D08
 
 	ldr r0, off_8007310 // =eS20364C0
 	ldr r1, Word_8007314 // =0x6014000
@@ -17689,7 +17689,7 @@ loc_800B334:
 	ldr r0, off_800B5D0 // =byte_203F56C
 	ldr r1, off_800B5D4 // =byte_203F66C
 	ldr r2, off_800B5D8 // =unk_2036750
-	bl sub_80AAB88
+	bl util_nandByteArray40_80AAB88
 	ldr r2, off_800B5DC // =dword_203CDF0
 	ldr r0, off_800B5E0 // =byte_203F594
 	ldr r0, [r0]

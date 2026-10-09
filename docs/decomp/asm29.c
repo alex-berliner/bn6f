@@ -1248,7 +1248,7 @@ signed int sub_80A5C9C()
     if ( !v2 )
         return 2;
     v3 = 0;
-    if ( !chatbox_8045F4C() )
+    if ( !chatbox_GetState_8045F4C() )
         v3 = 1;
     *(v0 + 10) = 0;
     sub_809E122();
@@ -7503,7 +7503,7 @@ int __fastcall sub_80AA6A4(int a1)
 
 
 // 0x80aa6e8
-signed int sub_80AA6E8()
+signed int alwaysTrue_80AA6E8()
 {
     return 1;
 }
@@ -8078,7 +8078,7 @@ unsigned int __fastcall sub_80AAB68(int a1)
 
 
 // 0x80aab88
-int __fastcall sub_80AAB88(int a1, int a2, int a3)
+int __fastcall util_nandByteArray40_80AAB88(int a1, int a2, int a3)
 {
     signed int v3; // r3
     int v4; // r6

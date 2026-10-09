@@ -192,7 +192,7 @@ signed int sub_809A078()
             sub_809A360(*(v0 + 116));
             return 1;
         }
-        if ( !chatbox_8045F4C() )
+        if ( !chatbox_GetState_8045F4C() )
         {
             sub_804A2E8(0, v3, v4, v5);
             sub_804BD00();
@@ -343,7 +343,7 @@ signed int sub_809A1FC()
     }
     else
     {
-        if ( sub_803D0F4() < 10 || chatbox_8045F4C() )
+        if ( sub_803D0F4() < 10 || chatbox_GetState_8045F4C() )
         {
             *(v0 + 9) = 0;
             sub_809A360(*(v0 + 116));
@@ -465,7 +465,7 @@ signed int sub_809A404()
     chatbox_mask_eFlags2009F38(8);
     if ( v1 )
         return 1;
-    if ( chatbox_8045F4C() )
+    if ( chatbox_GetState_8045F4C() )
     {
         *(v0 + 9) = 0;
     }
@@ -585,7 +585,7 @@ signed int sub_809A520()
     chatbox_mask_eFlags2009F38(32);
     if ( _ZF )
         return 1;
-    if ( chatbox_8045F4C() )
+    if ( chatbox_GetState_8045F4C() )
     {
         chatbox_runScript(TextScriptChipTrader86C580C, 51);
         *(v0 + 132) = 8;
@@ -750,7 +750,7 @@ signed int sub_809A6EC()
     }
     else
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 9) = 0;
         }
@@ -831,7 +831,7 @@ LABEL_8:
     chatbox_mask_eFlags2009F38(32);
     if ( v4 )
         goto LABEL_8;
-    if ( chatbox_8045F4C() )
+    if ( chatbox_GetState_8045F4C() )
     {
         chatbox_8040818();
         *(v0 + 9) = 1;
@@ -1037,7 +1037,7 @@ signed int sub_809AADC()
     chatbox_mask_eFlags2009F38(8);
     if ( v1 )
         return 1;
-    if ( chatbox_8045F4C() )
+    if ( chatbox_GetState_8045F4C() )
     {
         chatbox_runScript(&eTextScript2033404, 11);
         result = 0;
@@ -2161,7 +2161,7 @@ signed int sub_809CB88()
             *(v0 + 8) = 2;
             return 0;
         }
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             TestEventFlagFromImmediate(1, 99);
             if ( v1 )

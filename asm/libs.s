@@ -5117,7 +5117,7 @@ sub_81465BC:
 	sub r1, r4, #4
 	mov r0, #3
 	bl rfu_setTimerInterrupt
-	bl sub_813D8C4
+	bl link_RequestDisconnect_813D8C4
 	mov r0, #4
 	bl sub_803DE88
 	mov r0, #1

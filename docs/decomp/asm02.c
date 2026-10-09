@@ -325,14 +325,14 @@ __int64 sub_8021CA8()
 
 
 // 0x8021d08
-void __fastcall sub_8021D08(int a1, int a2, int a3, int a4)
+void __fastcall battle_ClearWorkBuffer_8021D08(int a1, int a2, int a3, int a4)
 {
     ZeroFillByHalfword(byte_203A0A0, dword_2E0, a3, a4);
 }
 
 
 // 0x8021d14
-char *__fastcall sub_8021D14(int a1, int a2)
+char *__fastcall incrementRecordCounterByte_8021D14(int a1, int a2)
 {
     char *result; // r0
     signed int v3; // r2

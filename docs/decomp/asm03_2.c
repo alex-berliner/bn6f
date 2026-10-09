@@ -515,7 +515,7 @@ char *__fastcall sub_8046670(char a1, int a2, int a3)
 
 
 // 0x804668a
-int sub_804668A()
+int sprite_clearScaleCounterAndMakeUnscalable_804668A()
 {
     _BYTE *v0; // r5
 
@@ -546,7 +546,7 @@ int sub_80466AA()
     {
         result = *v0;
         if ( *v0 )
-            result = sub_804668A();
+            result = sprite_clearScaleCounterAndMakeUnscalable_804668A();
         v0 += 88;
         ++v1;
     }
@@ -556,7 +556,7 @@ int sub_80466AA()
 
 
 // 0x80466c4
-int __fastcall getStructFrom2008450(int a1)
+int __fastcall getStructEntryFlag2008450(int a1)
 {
     return eStructArr2008450[88 * a1];
 }
@@ -986,7 +986,7 @@ void __noreturn sub_8046E06()
     if ( !v1 )
     {
         v2 = *(v0 + 40);
-        sub_8047366();
+        checkScrambledCounter_8047366();
         if ( v1 )
         {
             v3 = *(v0 + 8) - 2;
@@ -1081,8 +1081,8 @@ void __noreturn sub_8047134()
         *(v6 + 13) = 0;
         *(v6 + 18) = sub_8047B88(0, v3, v4, 0);
     }
-    sub_8047CB6();
-    sub_8047CEC();
+    menu_clampListScrollAfterCountChange_8047CB6();
+    copy_table_80469F0_to_202F800();
     sub_8047594(*(v6 + 24), byte_2019A00);
 }
 
@@ -1133,7 +1133,7 @@ void __fastcall sub_804733C(int a1)
 
 
 // 0x8047366
-void sub_8047366()
+void checkScrambledCounter_8047366()
 {
     ;
 }
@@ -1170,7 +1170,7 @@ LABEL_5:
         v5 = v4[3];
         v6 = &byte_8047DA0[*(*(v2 + 28) + 8)];
         v7 = *(v6 + 1);
-        sub_804743C(a1);
+        findRecordWithHalfwordAtOffset2_804743C(a1);
         if ( !v8 )
             goto LABEL_5;
         v9 = v6[4];
@@ -1206,7 +1206,7 @@ signed int __fastcall sub_80473E6(int a1, int a2, int a3)
         {
             v8 = &byte_8047DA0[*(*(v3 + 28) + 8)];
             v9 = *(v8 + 1);
-            sub_804743C(*(v7 + 1));
+            findRecordWithHalfwordAtOffset2_804743C(*(v7 + 1));
             if ( !v10 )
                 break;
             v11 = v8[4];
@@ -1225,7 +1225,7 @@ signed int __fastcall sub_80473E6(int a1, int a2, int a3)
 
 
 // 0x804743c
-int __fastcall sub_804743C(int result)
+int __fastcall findRecordWithHalfwordAtOffset2_804743C(int result)
 {
     int v1; // r4
     int v2; // r7
@@ -1685,12 +1685,12 @@ void sub_8047A96()
         v2 += 144;
     v3 = *(v1 + 3);
     sub_8047CDC();
-    chatbox_8045EFC(v2, v1[4], v4, v4);
+    chatbox_setTextParams_8045EFC(v2, v1[4], v4, v4);
     if ( **(v0 + 28) != 2 )
     {
         v5 = *v1;
         v6 = *(v1 + 1);
-        sub_8047CA0();
+        stub_doNothingReturnZero_8047CA0();
         if ( !v9 )
         {
             PlaySoundEffect(105, v7, v8);
@@ -1902,7 +1902,7 @@ int __fastcall sub_8047B88(int a1, int a2, int a3, int a4)
 
 
 // 0x8047ca0
-int sub_8047CA0()
+int stub_doNothingReturnZero_8047CA0()
 {
     return 0;
 }
@@ -1923,7 +1923,7 @@ int sub_8047CB0()
 
 
 // 0x8047cb6
-int sub_8047CB6()
+int menu_clampListScrollAfterCountChange_8047CB6()
 {
     unsigned __int16 *v0; // r5
     int result; // r0
@@ -1956,7 +1956,7 @@ void sub_8047CDC()
 
 
 // 0x8047cec
-void sub_8047CEC()
+void copy_table_80469F0_to_202F800()
 {
     CopyWords(byte_80469F0, byte_202F800, dword_168);
 }
@@ -2795,7 +2795,7 @@ void sub_8049360()
     chatbox_mask_eFlags2009F38(8);
     if ( !v1 )
     {
-        if ( chatbox_8045F4C() || (v2 = sub_813D638(), v3 = v0[11], v4 = v0[14] + v3, v4 >= v2) )
+        if ( chatbox_GetState_8045F4C() || (v2 = sub_813D638(), v3 = v0[11], v4 = v0[14] + v3, v4 >= v2) )
         {
             sub_803BB2C(11);
             v0[1] = 48;
@@ -3360,7 +3360,7 @@ void __noreturn sub_8049844()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 12;
         }
@@ -3400,7 +3400,7 @@ void __noreturn sub_8049888()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
             *(v0 + 1) = 12;
         else
             *(v0 + 1) = 32;
@@ -3477,7 +3477,7 @@ void __noreturn sub_8049934()
         {
             *(v0 + 1) = 12;
         }
-        else if ( chatbox_8045F4C() )
+        else if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 40;
         }
@@ -3517,7 +3517,7 @@ void __noreturn sub_8049984()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 40;
         }
@@ -3964,7 +3964,7 @@ void __noreturn sub_8049FE0()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 12;
         }
@@ -4004,7 +4004,7 @@ void __noreturn sub_804A024()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 12;
         }
@@ -4287,7 +4287,7 @@ int sub_804A4D4()
         chatbox_mask_eFlags2009F38(32);
         if ( !v1 )
         {
-            if ( chatbox_8045F4C() )
+            if ( chatbox_GetState_8045F4C() )
             {
                 *v0 = 4;
                 *(v0 + 3) = 0;
@@ -5128,7 +5128,7 @@ int sub_804AF84()
     v1 = 0;
     do
     {
-        result = getStructFrom2008450(v1);
+        result = getStructEntryFlag2008450(v1);
         if ( !v4 )
         {
             if ( !v1 )

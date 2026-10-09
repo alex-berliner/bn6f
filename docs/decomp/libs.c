@@ -2370,7 +2370,7 @@ signed int sub_81465BC()
     if ( rfu_initializeAPI(&unk_3000000, 0xE64u, &off_3000E8C, 1) << 16 )
         return 0;
     rfu_setTimerInterrupt(3u, &off_3000E88);
-    sub_813D8C4();
+    link_RequestDisconnect_813D8C4();
     sub_803DE88(4, v0, v1, v2);
     return 1;
 }

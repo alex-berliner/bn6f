@@ -385,14 +385,14 @@ int __fastcall sub_813B9C4(int a1)
 
 
 // 0x813b9e0
-char (*__fastcall sub_813B9E0(int a1))[225]
+char (*__fastcall getIndexedDataTable_813B9E0(int a1))[225]
 {
     return off_813B9F0[a1];
 }
 
 
 // 0x813b9fc
-int __fastcall sub_813B9FC(int a1)
+int __fastcall toolkit_getUnk2004190EntryPtr_813B9FC(int a1)
 {
     int v1; // r10
 
@@ -671,7 +671,7 @@ int __fastcall sub_813BC1C(int a1)
         if ( result )
         {
             *(&v10 + v2) = result;
-            result = *sub_813B9FC(result - 1);
+            result = *toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
             if ( result )
             {
                 v5 = sub_813B780(result);
@@ -737,7 +737,7 @@ int __fastcall sub_813BC98(int a1)
             v5 += 4;
             if ( v5 >= 28 )
             {
-                result = *sub_813B9FC(v3);
+                result = *toolkit_getUnk2004190EntryPtr_813B9FC(v3);
                 if ( result )
                 {
                     v6 = sub_813B780(result);
@@ -767,7 +767,7 @@ int __fastcall sub_813BC98(int a1)
 
 
 // 0x813bd0c
-void sub_813BD0C()
+void getWorkAreaPtr_2006CF8()
 {
     ;
 }
@@ -781,7 +781,7 @@ void sub_813BD10()
 
 
 // 0x813bd14
-void sub_813BD14()
+void getWorkAreaPtr_2006CC0()
 {
     ;
 }
@@ -800,7 +800,7 @@ int sub_813BD24()
     do
     {
         ZeroFillByByte(byte_2006C50, 49);
-        v2 = sub_813B9FC(v1);
+        v2 = toolkit_getUnk2004190EntryPtr_813B9FC(v1);
         v3 = v2;
         v4 = *v2;
         if ( v4 )
@@ -927,7 +927,7 @@ int __fastcall sub_813BE38(int a1)
         {
             if ( --result != v8 )
             {
-                result = *sub_813B9FC(result);
+                result = *toolkit_getUnk2004190EntryPtr_813B9FC(result);
                 if ( result )
                 {
                     v6 = sub_813B780(result);
@@ -956,7 +956,7 @@ int sub_813BE8C()
 
     v0 = 0;
     do
-        result = *sub_813B9FC(v0++);
+        result = *toolkit_getUnk2004190EntryPtr_813B9FC(v0++);
     while ( v0 < 49 );
     return result;
 }
@@ -978,7 +978,7 @@ int sub_813BEA8()
     v2 = 0;
     do
     {
-        v3 = *sub_813B9FC(v1);
+        v3 = *toolkit_getUnk2004190EntryPtr_813B9FC(v1);
         if ( v3 )
         {
             v4 = *(sub_813B780(v3) + 3);
@@ -1008,7 +1008,7 @@ int sub_813BEA8()
 
 
 // 0x813bf0c
-signed int __fastcall sub_813BF0C(int a1)
+signed int __fastcall getUnk200431cTableByteCapped3_813BF0C(int a1)
 {
     int v1; // r10
     signed int result; // r0
@@ -1192,7 +1192,7 @@ int __fastcall sub_813C06C(int a1, int a2, int a3)
         result = *(v6 + v7);
         if ( result == v24 && *(v6 + v7) )
         {
-            v9 = sub_813B9FC(result - 1);
+            v9 = toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
             v10 = sub_813B780(*v9);
             v19 = 2 * *(v10 + 3);
             sub_813C4A8();
@@ -1277,7 +1277,7 @@ int __fastcall sub_813C1C0(int a1)
         v6 = *(v4 + v5);
         if ( *(v4 + v5) )
         {
-            v8 = sub_813B9FC(v6 - 1);
+            v8 = toolkit_getUnk2004190EntryPtr_813B9FC(v6 - 1);
             v7 = v8;
             v6 = *v8;
             if ( v6 )
@@ -1336,7 +1336,7 @@ int __fastcall sub_813C1C0(int a1)
 
 
 // 0x813c324
-int sub_813C324()
+int eraseMem_ClearBuffer_813C324()
 {
     return ZeroFillByByte(&unk_2000090, 8);
 }
@@ -1522,7 +1522,7 @@ int __fastcall sub_813C584(int a1)
         do
         {
             v4 = CheckKeyItem(113);
-            if ( (*sub_813B9E0(v4))[15 * (v1 + 5) + 5 + v3] == 3 )
+            if ( (*getIndexedDataTable_813B9E0(v4))[15 * (v1 + 5) + 5 + v3] == 3 )
             {
                 v5 = sub_813B9B4(v3, v1);
                 if ( v5 )
@@ -1557,7 +1557,7 @@ LABEL_13:
         result = byte_2006DA0[i];
         if ( !byte_2006DA0[i] )
             break;
-        v12 = sub_813B9FC(result - 1);
+        v12 = toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
         v13 = *(sub_813B780(*v12) + 4);
         ++*(v14 + v13);
     }
@@ -1604,12 +1604,12 @@ int applyNavicustPrograms_813C684()
 
     ZeroFillByByte(byte_2006DD8, 8);
     v1 = 6;
-    sub_813BD0C();
+    getWorkAreaPtr_2006CF8();
     do
     {
         if ( *(v0 + v1) )
         {
-            v2 = sub_813B9FC(*(v0 + v1) - 1);
+            v2 = toolkit_getUnk2004190EntryPtr_813B9FC(*(v0 + v1) - 1);
             v3 = *v2;
             if ( *v2 )
             {
@@ -1641,7 +1641,7 @@ LABEL_8:
     {
         if ( *(v0 + v8) )
         {
-            v9 = sub_813B9FC(*(v0 + v8) - 1);
+            v9 = toolkit_getUnk2004190EntryPtr_813B9FC(*(v0 + v8) - 1);
             if ( *v9 )
                 (*(&navicust_jt_NCPs + (*v9 >> 2)))();
         }
@@ -1649,12 +1649,12 @@ LABEL_8:
     }
     while ( v8 < 49 );
     v10 = 0;
-    sub_813BD14();
+    getWorkAreaPtr_2006CC0();
     do
     {
         if ( *(v0 + v10) )
         {
-            v11 = sub_813B9FC(*(v0 + v10) - 1);
+            v11 = toolkit_getUnk2004190EntryPtr_813B9FC(*(v0 + v10) - 1);
             if ( *v11 )
                 (*(&navicust_jt_NCPs + (*v11 >> 2)))();
         }
@@ -2132,7 +2132,7 @@ int sub_813CBCC()
     v1 = 1;
     do
     {
-        result = sub_813BF0C(v1);
+        result = getUnk200431cTableByteCapped3_813BF0C(v1);
         if ( result )
         {
             result = 4 * result + 16 * v1;
@@ -3019,7 +3019,7 @@ int sub_813D8AC()
 
 
 // 0x813d8c4
-u8 *sub_813D8C4()
+u8 *link_RequestDisconnect_813D8C4()
 {
     u8 *result; // r0
 
@@ -3215,7 +3215,7 @@ signed int sub_813DA94()
 // 0x813dac0
 void sub_813DAC0()
 {
-    start_800027C();
+    crt0_start_800027C();
 }
 
 

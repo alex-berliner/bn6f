@@ -75,7 +75,7 @@ loc_809FA46:
 	sub r1, r6, r1
 	lsr r1, r1, #2
 	mov r2, r12
-	bl sub_809FDCE
+	bl record_writeU16IfIdMatches_809FDCE
 	add r6, #4
 	b loc_809F9F4
 loc_809FA5A:
@@ -176,15 +176,15 @@ dword_809FAF0:
 	.word 0x1400
 	thumb_func_end sub_809FADE
 
-	thumb_func_start sub_809FAF4
-sub_809FAF4:
+	thumb_func_start mysteryData_InitMapGroupTables_809FAF4
+mysteryData_InitMapGroupTables_809FAF4:
 	push {r4-r7,lr}
 	ldr r4, InternetMysteryDataMapGroupEntries_p1 // =InternetMysteryDataMapGroupEntries 
 	bl sub_809FB04
 	ldr r4, RealWorldMysteryDataMapGroupEntries_p1 // =RealWorldMysteryDataMapGroupEntries
 	bl sub_809FB04
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FAF4
+	thumb_func_end mysteryData_InitMapGroupTables_809FAF4
 
 	thumb_local_start
 sub_809FB04:
@@ -487,7 +487,7 @@ loc_809FCFC:
 	mov r4, r0
 	ldrb r3, [r7,#1]
 	mov r0, r6
-	bl sub_809FE44
+	bl goldMysteryData_GetEntryDataIfIdMatches_809FE44
 	mov r1, #8
 	mul r1, r3
 	add r4, r4, r1
@@ -505,7 +505,7 @@ loc_809FD20:
 	mov r4, r0
 	ldrb r3, [r7,#1]
 	mov r0, r6
-	bl sub_809FE44
+	bl goldMysteryData_GetEntryDataIfIdMatches_809FE44
 	mov r2, #0
 loc_809FD2C:
 	mov r1, #8
@@ -603,7 +603,7 @@ loc_809FD96:
 	thumb_func_end sub_809FD70
 
 	thumb_local_start
-sub_809FDCE:
+record_writeU16IfIdMatches_809FDCE:
 	push {r4-r7,lr}
 	ldr r6, off_809FE9C // =byte_2000210 
 	lsl r1, r1, #8
@@ -614,7 +614,7 @@ sub_809FDCE:
 	strh r2, [r6,#0x6]
 locret_809FDDE:
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FDCE
+	thumb_func_end record_writeU16IfIdMatches_809FDCE
 
 	thumb_local_start
 sub_809FDE0:
@@ -681,7 +681,7 @@ locret_809FE42:
 	thumb_func_end sub_809FE36
 
 	thumb_local_start
-sub_809FE44:
+goldMysteryData_GetEntryDataIfIdMatches_809FE44:
 	push {r5-r7,lr}
 	ldr r6, off_809FE9C // =byte_2000210 
 	ldrh r1, [r6,#0x6]
@@ -696,7 +696,7 @@ sub_809FE44:
 	ldrb r3, [r6,#0x2]
 locret_809FE5C:
 	pop {r5-r7,pc}
-	thumb_func_end sub_809FE44
+	thumb_func_end goldMysteryData_GetEntryDataIfIdMatches_809FE44
 
 	thumb_func_start sub_809FE5E
 sub_809FE5E:
@@ -711,7 +711,7 @@ sub_809FE5E:
 	ldrb r1, [r6,#0x5]
 	mov r2, #0
 	mov r3, #0
-	bl chatbox_8045EFC
+	bl chatbox_setTextParams_8045EFC
 	pop {r5-r7,pc}
 	thumb_func_end sub_809FE5E
 

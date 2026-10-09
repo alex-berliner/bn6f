@@ -935,7 +935,7 @@ int sub_8026F1A()
         chatbox_8040818();
         goto LABEL_12;
     }
-    if ( chatbox_8045F4C() == 1 )
+    if ( chatbox_GetState_8045F4C() == 1 )
     {
 LABEL_12:
         cb->scriptID = 4;
@@ -6796,7 +6796,7 @@ int sub_802AE14()
     result = chatbox_mask_eFlags2009F38(32);
     if ( !v2 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 16;
             *(v0 + 2) = 0;
@@ -6848,7 +6848,7 @@ int sub_802AE84()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 4;
         }
@@ -11031,7 +11031,7 @@ int __fastcall sub_802DF34(int a1, __int16 a2, __int16 a3)
     v9 = *(v7 + 11);
     object_setAttack0();
     dispatch_801DACC(64);
-    sub_8021D14(*(v3 + 22), *(v6 + 20));
+    incrementRecordCounterByte_8021D14(*(v3 + 22), *(v6 + 20));
     result = *(v8 + 9);
     if ( result & 4 )
         result = sub_800AB46(*(v3 + 22), 6, 1);

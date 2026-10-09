@@ -1,6 +1,6 @@
 
-	thumb_func_start sub_8080D90
-sub_8080D90:
+	thumb_func_start bgScroll_ResetScrollCBCounters_8080D90
+bgScroll_ResetScrollCBCounters_8080D90:
 	push {lr}
 	ldr r0, off_8080D9C // =eBGScrollCBCounters 
 	mov r1, #8
@@ -9,7 +9,7 @@ sub_8080D90:
 	.balign 4, 0
 off_8080D9C:
 	.word eBGScrollCBCounters
-	thumb_func_end sub_8080D90
+	thumb_func_end bgScroll_ResetScrollCBCounters_8080D90
 
 	thumb_func_start sub_8080DA0
 sub_8080DA0:

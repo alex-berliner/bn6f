@@ -8007,7 +8007,7 @@ loc_80126F6:
 	beq loc_801273A
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldrh r1, [r7,#oAIAttackVars_Unk_14]
-	bl sub_8021D14
+	bl incrementRecordCounterByte_8021D14
 loc_801273A:
 	ldrb r0, [r6,#0xb]
 	pop {r4,r6,r7,pc}

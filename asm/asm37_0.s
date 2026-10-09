@@ -402,8 +402,8 @@ loc_813B9D8:
 	pop {pc}
 	thumb_func_end sub_813B9C4
 
-	thumb_func_start sub_813B9E0
-sub_813B9E0:
+	thumb_func_start getIndexedDataTable_813B9E0
+getIndexedDataTable_813B9E0:
 	push {lr}
 	ldr r1, off_813B9EC // =off_813B9F0 
 	lsl r0, r0, #2
@@ -416,17 +416,17 @@ off_813B9F0:
 	.word byte_813B1EC
 	.word byte_813B2CD
 	.word byte_813B3AE
-	thumb_func_end sub_813B9E0
+	thumb_func_end getIndexedDataTable_813B9E0
 
-	thumb_func_start sub_813B9FC
-sub_813B9FC:
+	thumb_func_start toolkit_getUnk2004190EntryPtr_813B9FC
+toolkit_getUnk2004190EntryPtr_813B9FC:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_Unk2004190_Ptr]
 	mov r2, #8
 	mul r0, r2
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_813B9FC
+	thumb_func_end toolkit_getUnk2004190EntryPtr_813B9FC
 
 	thumb_func_start sub_813BA08
 sub_813BA08:
@@ -764,7 +764,7 @@ loc_813BC46:
 	beq loc_813BC8E
 	str r0, [r1]
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r0, [r0]
 	tst r0, r0
 	beq loc_813BC8E
@@ -829,7 +829,7 @@ loc_813BCC0:
 	add r4, #4
 	cmp r4, #0x1c
 	blt loc_813BCC0
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -862,10 +862,10 @@ loc_813BD02:
 	thumb_func_end sub_813BC98
 
 	thumb_local_start
-sub_813BD0C:
+getWorkAreaPtr_2006CF8:
 	ldr r7, off_813BD18 // =unk_2006CF8 
 	mov pc, lr
-	thumb_func_end sub_813BD0C
+	thumb_func_end getWorkAreaPtr_2006CF8
 
 	thumb_local_start
 sub_813BD10:
@@ -874,7 +874,7 @@ sub_813BD10:
 	thumb_func_end sub_813BD10
 
 	thumb_local_start
-sub_813BD14:
+getWorkAreaPtr_2006CC0:
 	ldr r7, off_813BD20 // =unk_2006CC0 
 	mov pc, lr
 off_813BD18:
@@ -883,7 +883,7 @@ off_813BD1C:
 	.word unk_2006C88
 off_813BD20:
 	.word unk_2006CC0
-	thumb_func_end sub_813BD14
+	thumb_func_end getWorkAreaPtr_2006CC0
 
 	thumb_local_start
 sub_813BD24:
@@ -898,7 +898,7 @@ loc_813BD2C:
 	ldr r0, off_813BE88 // =byte_2006C50 
 	mov r8, r0
 	mov r0, r6
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -1048,7 +1048,7 @@ loc_813BE4A:
 	ldr r1, [sp]
 	cmp r0, r1
 	beq loc_813BE7C
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -1081,7 +1081,7 @@ sub_813BE8C:
 	mov r6, #0
 loc_813BE90:
 	mov r0, r6
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -1109,7 +1109,7 @@ sub_813BEA8:
 	mov r5, #0
 loc_813BEBA:
 	mov r0, r6
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -1155,7 +1155,7 @@ off_813BF08:
 	thumb_func_end sub_813BEA8
 
 	thumb_local_start
-sub_813BF0C:
+getUnk200431cTableByteCapped3_813BF0C:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_Unk200431c_Ptr]
 	ldrb r0, [r1,r0]
@@ -1165,7 +1165,7 @@ sub_813BF0C:
 locret_813BF18:
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_813BF0C
+	thumb_func_end getUnk200431cTableByteCapped3_813BF0C
 
 	thumb_func_start sub_813BF1C
 sub_813BF1C:
@@ -1387,7 +1387,7 @@ loc_813C08C:
 	tst r0, r0
 	beq loc_813C120
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	bl sub_813B780
@@ -1518,7 +1518,7 @@ loc_813C1DA:
 	b loc_813C1FA
 loc_813C1E4:
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
 	tst r0, r0
@@ -1637,8 +1637,8 @@ byte_813C308:
 	.byte 0x3
 	thumb_func_end sub_813C1C0
 
-	thumb_func_start sub_813C324
-sub_813C324:
+	thumb_func_start eraseMem_ClearBuffer_813C324
+eraseMem_ClearBuffer_813C324:
 	push {lr}
 	ldr r0, off_813C330 // =unk_2000090 
 	mov r1, #8
@@ -1647,7 +1647,7 @@ sub_813C324:
 	.balign 4, 0
 off_813C330:
 	.word unk_2000090
-	thumb_func_end sub_813C324
+	thumb_func_end eraseMem_ClearBuffer_813C324
 
 	thumb_func_start sub_813C334
 sub_813C334:
@@ -1904,7 +1904,7 @@ loc_813C59E:
 loc_813C5A0:
 	mov r0, #0x71 
 	bl CheckKeyItem
-	bl sub_813B9E0
+	bl getIndexedDataTable_813B9E0
 	mov r1, #0xf
 	add r2, r7, #5
 	mul r1, r2
@@ -1956,7 +1956,7 @@ loc_813C5FC:
 	tst r0, r0
 	beq loc_813C61E
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r0, [r0]
 	bl sub_813B780
 	ldrb r1, [r0,#4]
@@ -2016,7 +2016,7 @@ applyNavicustPrograms_813C684:
 	mov r1, #8
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r6, #6
-	bl sub_813BD0C
+	bl getWorkAreaPtr_2006CF8
 	str r7, [sp]
 loc_813C698:
 	ldr r7, [sp]
@@ -2024,7 +2024,7 @@ loc_813C698:
 	tst r0, r0
 	beq loc_813C6D6
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r4, [r0]
 	tst r4, r4
 	beq loc_813C6D6
@@ -2062,7 +2062,7 @@ loc_813C6E2:
 	tst r0, r0
 	beq loc_813C702
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r4, [r0]
 	tst r4, r4
 	beq loc_813C702
@@ -2077,7 +2077,7 @@ loc_813C702:
 	cmp r6, #0x31 
 	blt loc_813C6E2
 	mov r6, #0
-	bl sub_813BD14
+	bl getWorkAreaPtr_2006CC0
 	str r7, [sp]
 loc_813C710:
 	ldr r7, [sp]
@@ -2085,7 +2085,7 @@ loc_813C710:
 	tst r0, r0
 	beq loc_813C730
 	sub r0, #1
-	bl sub_813B9FC
+	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r4, [r0]
 	tst r4, r4
 	beq loc_813C730
@@ -2792,7 +2792,7 @@ loc_813CBE4:
 	mov r6, #1
 loc_813CBE6:
 	mov r0, r6
-	bl sub_813BF0C
+	bl getUnk200431cTableByteCapped3_813BF0C
 	tst r0, r0
 	beq loc_813CC0C
 	lsl r0, r0, #2
@@ -4184,15 +4184,15 @@ off_813D8C0:
 	.word 0x200
 	thumb_func_end sub_813D8AC
 
-	thumb_func_start sub_813D8C4
-sub_813D8C4:
+	thumb_func_start link_RequestDisconnect_813D8C4
+link_RequestDisconnect_813D8C4:
 	ldr r0, off_813D8CC // =eLinkState 
 	mov r1, #4
 	str r1, [r0,#0x58] // (dword_2009A28 - 0x20099d0)
 	mov pc, lr
 off_813D8CC:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_813D8C4
+	thumb_func_end link_RequestDisconnect_813D8C4
 
 	thumb_func_start sub_813D8D0
 sub_813D8D0:
@@ -4515,7 +4515,7 @@ off_813DAB8:
 	thumb_local_start
 sub_813DAC0:
 	push {lr}
-	bl start_800027C
+	bl crt0_start_800027C
 	bl sub_81465BC
 	tst r0, r0
 	beq loc_813DAD4

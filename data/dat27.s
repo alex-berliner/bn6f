@@ -808,7 +808,7 @@ end_cutscenescript_80950B7:
 sub_80950B8:
 	push {lr}
 	mov r0, #0x19
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -1527,7 +1527,7 @@ byte_80958AD::
 sub_80958BC:
 	push {lr}
 	mov r0, #0x1b
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -1866,7 +1866,7 @@ end_cutscenescript_8095C56:
 sub_8095C58:
 	push {lr}
 	mov r0, #0x1c
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}
@@ -2908,7 +2908,7 @@ byte_80968A4::
 sub_80968B0:
 	push {lr}
 	mov r0, #0x1d
-	bl sub_80355DE
+	bl getIndexed20ByteTableEntry_80355DE
 	str r0, [r5, #0x34]
 	mov r0, #0
 	pop {pc}

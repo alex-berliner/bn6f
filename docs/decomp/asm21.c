@@ -1,5 +1,5 @@
 // 0x8080d90
-int sub_8080D90()
+int bgScroll_ResetScrollCBCounters_8080D90()
 {
     return ZeroFillByByte(&eBGScrollCBCounters, 8);
 }

@@ -542,7 +542,7 @@ int navi_80340F6()
 
 
 // 0x80341aa
-void __fastcall sub_80341AA(int a1, int a2, int a3, int a4)
+void __fastcall clearWorkBuffer_2011A40(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&byte_2011A40, 12);
 }
@@ -1558,7 +1558,7 @@ int ghostNaviCheck_8035274()
 
 
 // 0x803532c
-int initGameProgressBuffer_803532c()
+int gameProgress_resetBuffer_803532c()
 {
     int v0; // r10
     char *v1; // r6
@@ -1718,7 +1718,7 @@ int clearSetFlags_80355a8()
 
 
 // 0x80355de
-char *__fastcall sub_80355DE(int a1)
+char *__fastcall getIndexed20ByteTableEntry_80355DE(int a1)
 {
     return &byte_80984C8[20 * a1];
 }
@@ -1782,7 +1782,7 @@ int __fastcall sub_8035694(int *a1)
 
 
 // 0x80356ec
-void __fastcall sub_80356EC()
+void __fastcall clearWorkBuffer_2000DC0()
 {
     ZeroFillByWord(&dword_2000DC0, byte_100);
 }
@@ -1830,7 +1830,7 @@ int __fastcall sub_8035714(int result)
 
 
 // 0x8035738
-void sub_8035738()
+void timer_tickCountdownTable_8035738()
 {
     int *v0; // r5
     signed int v1; // r4
@@ -3962,9 +3962,9 @@ signed int sub_8037A7C()
 
     ReadMapScriptByte(2, v0);
     if ( ReadMapScriptByte(1, v0) == 1 )
-        chatbox_clear_eFlags2009F38(v1);
+        chatbox_clearEventFlags2009F38(v1);
     else
-        chatbox_set_eFlags2009F38(v1);
+        chatbox_setEventFlags2009F38(v1);
     return 1;
 }
 
@@ -3975,7 +3975,7 @@ signed int __fastcall sub_8037AA0(int a1)
     int v1; // r7
     int v2; // r0
 
-    v2 = chatbox_8045F4C();
+    v2 = chatbox_GetState_8045F4C();
     ReadMapScriptWord(4 * v2 + 1, v1);
     return 1;
 }
@@ -6746,7 +6746,7 @@ int __fastcall sub_8039D08(int a1)
         chatbox_mask_eFlags2009F38(8);
         if ( !v2 )
         {
-            if ( chatbox_8045F4C() || (v3 = sub_813D638(), v4 = v1[11], v5 = v1[14] + v4, v5 >= v3) )
+            if ( chatbox_GetState_8045F4C() || (v3 = sub_813D638(), v4 = v1[11], v5 = v1[14] + v4, v5 >= v3) )
             {
                 sub_803BB2C(11);
                 v1[1] = 48;
@@ -8308,7 +8308,7 @@ void __noreturn sub_803AC02()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 12;
         }
@@ -8352,7 +8352,7 @@ void __noreturn sub_803AC56()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
             *(v0 + 1) = 12;
         else
             *(v0 + 1) = 32;
@@ -8681,7 +8681,7 @@ void __noreturn sub_803AEE6()
         {
             *(v0 + 1) = 12;
         }
-        else if ( chatbox_8045F4C() )
+        else if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 40;
         }
@@ -8725,7 +8725,7 @@ void __noreturn sub_803AF46()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        if ( chatbox_8045F4C() )
+        if ( chatbox_GetState_8045F4C() )
         {
             *(v0 + 1) = 40;
         }
@@ -15063,7 +15063,7 @@ void __cdecl clearChatboxAndEvent()
     Toolkit *tk; // r10
 
     ZeroFillByWord(tk->chatbox, &dword_230);
-    chatbox_clear_eFlags2009F38(200);
+    chatbox_clearEventFlags2009F38(200);
 }
 
 

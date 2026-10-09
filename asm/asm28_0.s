@@ -1042,7 +1042,7 @@ sub_809A078:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A0E8
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809A0F2
 	bl sub_804A2E8
@@ -1243,7 +1243,7 @@ loc_809A208:
 	mov r7, r0
 	cmp r7, #0xa
 	blt loc_809A238
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_809A244
 loc_809A238:
@@ -1488,7 +1488,7 @@ sub_809A404:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A442
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809A43A
 	ldr r0, off_809A448 // =TextScriptChipTrader86C580C
@@ -1627,7 +1627,7 @@ sub_809A520:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A610
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809A5FA
 	mov r0, #0x88
@@ -1856,7 +1856,7 @@ loc_809A6F8:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A74E
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_809A72A
 	mov r0, #0
@@ -1954,7 +1954,7 @@ loc_809A7C4:
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A802
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809A7F6
 	ldr r0, [r5,#0x74]
@@ -2328,7 +2328,7 @@ sub_809AADC:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809AB1A
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809AB0C
 	ldr r0, off_809AD78 // =eTextScript2033404 // TextScriptArchive
@@ -4427,7 +4427,7 @@ sub_809C7A0:
 	strb r2, [r5,#0x13]
 	str r1, [r5,#0x3c]
 	mov r0, r1
-	bl SetCutsceneCameraScript
+	bl cutscene_setCameraScript
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -4859,7 +4859,7 @@ sub_809CB88:
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_809CBAA:
-	bl chatbox_8045F4C
+	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809CBDC
 	movflag EVENT_163

@@ -5780,7 +5780,7 @@ int __fastcall somethingWriteChipParams_80126E4(int a1)
     *(v2 + 3) = v4[12];
     *(v2 + 2) = v4[4] | byte_80129E4[v4[6]];
     *(v2 + 4) = 0;
-    sub_8021D14(*(v1 + 22), *(v2 + 20));
+    incrementRecordCounterByte_8021D14(*(v1 + 22), *(v2 + 20));
     return v4[11];
 }
 
