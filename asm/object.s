@@ -4106,6 +4106,8 @@ loc_800D586:
 
 // symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 
+// symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
+
 // symdb: Next sub_800D58C(void); takes the battle object pointer in r5 (inputs per contract also list r4,
 // symdb: r6, r7, lr, but the code only reads r5 and the pushed r4/r6/r7 are popped unchanged). Returns
 // symdb: the stopping panel index in r0 with N/Z set from it ("mov r0, r6"); r1-r3 are scratch after the

@@ -343,6 +343,9 @@ sub_809FB4C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FB4C
 
+// symdb: Resolves the per-map-group entry pointer for a mystery-data group table, returning the base pointer unchanged for all non-mystery-data group ids.
+// symdb: u32* mysteryData_resolveMapGroupEntry_809FBF2(u32 groupId /*r0*/, u32* tableBase /*r1*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mysteryData_resolveMapGroupEntry_809FBF2.yaml
 	thumb_local_start
 mysteryData_resolveMapGroupEntry_809FBF2:
 	push {r2-r7,lr}

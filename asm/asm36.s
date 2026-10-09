@@ -5896,6 +5896,10 @@ off_8132F48:
 	.word unk_201C4C0
 	thumb_func_end saveMenu_8132EF4
 
+// symdb: Prepares and renders the save menu's text into VRAM tiles via renderTextGfx_8045F8C.
+// symdb: void saveMenuTextGfx_8132F4C(void); // no meaningful inputs; r0-r3 return as
+// symdb: renderTextGfx_8045F8C left them, r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/saveMenuTextGfx_8132F4C.yaml
 	thumb_local_start
 saveMenuTextGfx_8132F4C:
 	push {r4-r7,lr}

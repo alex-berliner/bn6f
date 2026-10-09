@@ -31246,6 +31246,11 @@ off_80C6A00:
 	.word sub_80C6A34+1
 	thumb_func_end sub_80C69AC
 
+// symdb: Moves a battle object one step sideways by its X velocity (in panel space) and destroys it if the panel it lands on is not a valid standing spot.
+// symdb: void battle_stepObjectXByVelocityAndDestroyIfInvalidPanel(/* r5 */ struct BattleObject* obj)  //
+// symdb: r4, r5, r6 in; r4/r6 preserved; returns validity flag of final panel in r0 with nz/c/v set from
+// symdb: it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08.yaml
 	thumb_local_start
 battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08:
 	push {lr}
@@ -31582,6 +31587,10 @@ locret_80C6CB8:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80C6C6A
 
+// symdb: Per-frame "dying" tick for a battle object — despawns it once its death animation finishes (or after a Timer2 linger), parking it offscreen and marking it destroyed.
+// symdb: void battleObject_dyingTickDespawn(BattleObject* obj /* r5 */); clobbers r0-r3, lr; caller
+// symdb: ignores flags and registers on return (returns via pop {pc})
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_dyingTickDespawn_80C6CBA.yaml
 	thumb_local_start
 battleObject_dyingTickDespawn_80C6CBA:
 	push {lr}
@@ -73262,6 +73271,11 @@ sub_80DA956:
 	pop {r7,pc}
 	thumb_func_end sub_80DA956
 
+// symdb: Death-linger phase for a battle object: publish a parameter to the battle state, play animation 1 for 90 frames with collision disabled, then switch the object to the DESTROY state.
+// symdb: void sub_80DA974(r5 = BattleObject*, r10 = Toolkit*) ; returns in r0 the decremented timer (or
+// symdb: CUR_STATE_DESTROY=8 on the destroy path), in r1 the object's Param1 on the setup path, and
+// symdb: NZ(+C,V) from the timer decrement / destroy-state load
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectLingerThenDestroyPhase_80DA974.yaml
 	thumb_local_start
 battle_objectLingerThenDestroyPhase_80DA974:
 	push {lr}
@@ -92706,6 +92720,8 @@ sub_80E3B94:
 
 // symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
 
+// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
+
 // symdb: void sub_80E3BEA(battle object in r5); clobbers r0-r3, lr (and flags); does not return to this
 // symdb: function's caller until the selected action handler returns; handler entered with r0 =
 // symdb: CurAction, r1 = its jump-table entry (thumb address), r2 = whatever sub_80E3D1A last left there
@@ -109770,6 +109786,10 @@ byte_80EBD34:
 	.byte 0x1, 0x1, 0x1, 0x1, 0xC, 0xC, 0xC, 0x0
 	thumb_func_end sub_80EBC28
 
+// symdb: Per-tick handler for an AI attack's wind-up phase; on first entry it detaches the linked object, plays animation 7, arms a 3-tick timer, then counts down and leaves the attack state when it expires.
+// symdb: void aiAttack_windupTick_80EBD3C(BattleObject* obj /*r5*/, AIAttackVars* vars /*r7*/); sets NZCV
+// symdb: from the timer countdown
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_windupTick_80EBD3C.yaml
 	thumb_local_start
 aiAttack_windupTick_80EBD3C:
 	push {lr}
@@ -170247,6 +170267,12 @@ sub_8109708:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8109708
 
+// symdb: Picks one object at random from a battle row chosen by alliance-dependent panel parameters and returns its entry byte split into an id (low 3 bits) and a 4-bit attribute field.
+// symdb: int battle_pickRandomRowObjectFields(int r0, int r4, int r5, int r6, int r7 /* args forwarded to
+// symdb: the panel-param helper; r4-r6 read by the callee */) // returns r0 = entry byte & 7 (object
+// symdb: id/kind), r1 = entry byte >> 4 (attribute field, bit 3 discarded); // r0 = 0 and nz from cmp
+// symdb: when the row is empty; nz set from the final r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomRowObjectFields_810971A.yaml
 	thumb_func_start battle_pickRandomRowObjectFields_810971A
 battle_pickRandomRowObjectFields_810971A:
 	push {r7,lr}
@@ -170853,6 +170879,11 @@ byte_8109BFC:
 	.byte 0x34, 0xA9, 0x34
 	thumb_func_end sub_8109BC0
 
+// symdb: Per-frame tick for an AI attack that counts a frame timer down and, once it expires, runs the attack's cleanup helpers and makes the object leave its attack state.
+// symdb: void battle_attackTimerTick_8109CBC(void) /* r5 = battle object, r7 = this attack's variable
+// symdb: block (oAIAttackVars); sets nz/c/v from the countdown subtract, returns early while the timer is
+// symdb: still non-negative */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_attackTimerTick_8109CBC.yaml
 	thumb_local_start
 battle_attackTimerTick_8109CBC:
 	push {lr}

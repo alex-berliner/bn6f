@@ -153,6 +153,10 @@ eStruct203F7D8_getUnk01:
 	mov pc, lr
 	thumb_func_end eStruct203F7D8_getUnk01
 
+// symdb: State-machine dispatcher for eStruct200BC30 that calls one of two handlers selected by the struct's current jump-table slot, passing the original argument through in r0.
+// symdb: void eStruct200BC30_dispatchStateHandler_801FEEE(void* arg /*r0*/); preserves r4-r7; returns
+// symdb: with c/v (and everything else except r0-r3) as left by the invoked handler
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct200BC30_dispatchStateHandler_801FEEE.yaml
 	thumb_func_start eStruct200BC30_dispatchStateHandler_801FEEE
 eStruct200BC30_dispatchStateHandler_801FEEE:
 	push {r4-r7,lr}

@@ -21,7 +21,7 @@ off_8021AB0:
 // symdb: Copies a 60-byte S-chip record into one slot of the S-chip table and unpacks/registers each of its 9-bit packed fields.
 // symdb: void sub_8021AB4(const u32* src, u32 slot) — r0 = record source, r1 = slot index; r10 = toolkit
 // symdb: (base pointer read from [r10 + oToolkit_S_Chip_2002178_Ptr]); exits with r2 = 1 and r3 = result
-// symdb: of the last pack_addChipByIdSetLibraryFlag_8021B2A call
+// symdb: of the last sub_8021B2A call
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sChip_loadRecordIntoSlot_8021AB4.yaml
 	thumb_func_start sChip_loadRecordIntoSlot_8021AB4
 sChip_loadRecordIntoSlot_8021AB4:
@@ -100,6 +100,11 @@ loc_8021B00:
 	pop {r4,pc}
 	thumb_func_end GiveChips
 
+// symdb: Grants a chip to the player's spare chip pack by chip id, setting its library event flag and packing the chips into the slot matching the chip's code.
+// symdb: int pack_addChipByIdSetLibraryFlag_8021B2A(u32 chip_id /*r0*/, u32 search_item /*r1*/, u32
+// symdb: amount /*r2*/); returns r3 of addChipsToChipPackOffset_8021b5a in r0; returns 0 without touching
+// symdb: the pack when amount==0; preserves r2, r4-r7 for the caller; clobbers nz c v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pack_addChipByIdSetLibraryFlag_8021B2A.yaml
 	thumb_func_start pack_addChipByIdSetLibraryFlag_8021B2A
 pack_addChipByIdSetLibraryFlag_8021B2A:
 	push {lr}

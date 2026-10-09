@@ -6141,6 +6141,10 @@ warp_getCurrentWarpEntry_8005f32:
 	mov pc, lr
 	thumb_func_end warp_getCurrentWarpEntry_8005f32
 
+// symdb: Resets all graphics state for a fresh scene by clearing VRAM, work RAM buffers, extended palettes, and render info, and installing dummy BG scroll callbacks.
+// symdb: void sub_8005F40(void)  /* no inputs; r4-r7 preserved and pass through, r0-r1/lr and flags
+// symdb: clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetAllGraphicsState_8005F40.yaml
 	thumb_func_start resetAllGraphicsState_8005F40
 resetAllGraphicsState_8005F40:
 	push {r4-r7,lr}
@@ -16708,6 +16712,10 @@ loc_800A994:
 	pop {pc}
 	thumb_func_end battle_IsBattleEnding_800A97A
 
+// symdb: Writes the NameIDs of the up to four living actors on the side of the battle opposite the current one into a caller-provided array and returns how many were written.
+// symdb: u32 battle_collectOpponentActorNameIds_800A998(u16 nameIds_out[4]) // r0 = u16[4] out; returns
+// symdb: entry count (0-4); clobbers r1-r3 and flags, preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/LoadVirusNameIDsForUpToFourSlots_800A998.yaml
 	thumb_func_start LoadVirusNameIDsForUpToFourSlots_800A998
 LoadVirusNameIDsForUpToFourSlots_800A998: // (name_id_arr: *mut [u16; 4]) -> u8
 	push {r4,lr}

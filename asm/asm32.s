@@ -16619,6 +16619,9 @@ dword_81169AC:
 	.word 0x40
 	thumb_func_end sub_8116944
 
+// symdb: Per-frame update for a PET menu object: dispatches on the object's mode byte to one of three state handlers, then refreshes its sprite.
+// symdb: void petMenu_updateObject(void* obj /* r5, object with mode byte at +9 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/petMenu_updateObject_81169B0.yaml
 	thumb_local_start
 petMenu_updateObject_81169B0:
 	push {r7,lr}
@@ -16641,6 +16644,10 @@ off_81169CC:
 	.word sub_8116A28+1
 	thumb_func_end petMenu_updateObject_81169B0
 
+// symdb: Counts an object's disappear timer down; when it expires, switches the object to state 4 with animation 0x23 and resets its sprite (animation 1, no shadow).
+// symdb: void sub_81169D8(Entity *r7 /* flag holder */, Obj *r5 /* object */); clobbers r0-r3, flags;
+// symdb: preserves r4, r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_tickDisappearTimer_81169D8.yaml
 	thumb_local_start
 npc_tickDisappearTimer_81169D8:
 	push {lr}
@@ -17375,6 +17382,9 @@ byte_8116F2D:
 	.byte 0x0, 0x1, 0x1, 0x0, 0x1, 0x0, 0x0
 	thumb_func_end sub_8116E30
 
+// symdb: Runs one battle object's type-specific update (selected by the kind byte at obj+4) and then updates its sprite.
+// symdb: void battle_objectUpdateByKind_8116F34(BattleObject* obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdateByKind_8116F34.yaml
 	thumb_local_start
 battle_objectUpdateByKind_8116F34:
 	push {lr}
@@ -17563,6 +17573,10 @@ off_8117080:
 	.word sSubmenu
 	thumb_func_end sub_8116FDC
 
+// symdb: Fills the halfword pair at +0xC/+0xE with the two given values on up to three consecutive structs from the pool at 0x2008450, stopping at the first index with no struct.
+// symdb: void sub_8117084(u16 valueA r0, u16 valueB r1, s32 startIndex r2); also returns last lookup's
+// symdb: r0/r1 and final cmp flags as side effects; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setStructHalfwordPairOnThree_8117084.yaml
 	thumb_func_start sprite_setStructHalfwordPairOnThree_8117084
 sprite_setStructHalfwordPairOnThree_8117084:
 	push {r4-r7,lr}
@@ -18795,6 +18809,10 @@ sub_81179E0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81179E0
 
+// symdb: Looks up the selected key item and renders its description text into the key item menu screen's VRAM slot.
+// symdb: void sub_81179E4(void); // r4 = key item menu state struct, r7 = menu context struct, r10 =
+// symdb: toolkit; preserved r4-r9
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/keyItemMenu_renderDescription_81179E4.yaml
 	thumb_local_start
 keyItemMenu_renderDescription_81179E4:
 	push {r4-r7,lr}
@@ -22609,7 +22627,7 @@ sub_811974C:
 
 // symdb: State-machine step for the object in r5 that runs one sub-step, sets the object's state byte to 0x10, then runs a second sub-step.
 // symdb: void sub_811975C(void); /* r5 = object/state pointer (read only); r4-r9 preserved; r0 and NZCV
-// symdb: returned from sprite_stepZoomShrinkOut_811976C */
+// symdb: returned from sub_811976C */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_stepChainSetState0x10_811975C.yaml
 	thumb_local_start
 npc_stepChainSetState0x10_811975C:
@@ -22621,6 +22639,10 @@ npc_stepChainSetState0x10_811975C:
 	pop {pc}
 	thumb_func_end npc_stepChainSetState0x10_811975C
 
+// symdb: One step of a sprite's shrink-zoom animation, snapping scale back to normal and clearing the scaling state once the zoom finishes.
+// symdb: void sub_811976C(sprite state record *r5 /* also uses r4, r6, r7 live-in from caller context
+// symdb: */); clobbers r0-r3, lr; sets flags from the called sprite routines (nz c v)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_stepZoomShrinkOut_811976C.yaml
 	thumb_local_start
 sprite_stepZoomShrinkOut_811976C:
 	push {lr}
@@ -22727,6 +22749,9 @@ sub_8119804:
 	pop {pc}
 	thumb_func_end sub_8119804
 
+// symdb: For three consecutive entries of a table rooted at 0x2008450, writes a byte, a halfword and another halfword into each entry's struct when that entry exists.
+// symdb: void sub_811980C(u16 valE /*r0*/, u8 valC /*r1*/, u32 startIndex /*r2*/, u16 val18 /*r3*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setFieldsInThreeTableEntries_811980C.yaml
 	thumb_func_start setFieldsInThreeTableEntries_811980C
 setFieldsInThreeTableEntries_811980C:
 	push {r4-r7,lr}
@@ -22772,6 +22797,10 @@ loc_811984E:
 	.balign 4, 0x00
 	thumb_func_end sub_811983C
 
+// symdb: Moves a group of three consecutive sprite-table entries (ids firstId..firstId+2) to the given (x, y) position, skipping any id with no entry.
+// symdb: void sub_8119854(u32 x, u32 y, u32 firstId) — preserves r4-r7; returns with NZCV set by the
+// symdb: final `cmp id, end` of the loop; clobbers r0-r3 and r5 (r5 is restored before return).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setPositionForIdRange3_8119854.yaml
 	thumb_func_start sprite_setPositionForIdRange3_8119854
 sprite_setPositionForIdRange3_8119854:
 	push {r4-r7,lr}
@@ -23751,6 +23780,10 @@ off_811A0A0:
 	.word 0x140
 	thumb_func_end sub_8119F88
 
+// symdb: Per-frame battle-object update that dispatches on the object's type byte to one of four update handlers, then advances the object's sprite state.
+// symdb: void object_runTypeUpdateThenSpriteUpdate_811A0A4(Object* obj /* r5 */); flags N/Z set from the
+// symdb: shifted type index, C cleared before dispatch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_runTypeUpdateThenSpriteUpdate_811A0A4.yaml
 	thumb_local_start
 object_runTypeUpdateThenSpriteUpdate_811A0A4:
 	push {lr}
@@ -23854,7 +23887,7 @@ npc_ClearBusyFlagAndResetState_811A138:
 
 // symdb: Lazily initializes a state object, switches it to state 0x10, and steps it once.
 // symdb: void stateObj_advanceToState0x10(void); /* r5 = state object pointer, preserved; returns
-// symdb: whatever sprite_scaleShrinkStep_811A160 leaves in r0 */
+// symdb: whatever sub_811A160 leaves in r0 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stateObj_advanceToState0x10_811A148.yaml
 	thumb_local_start
 stateObj_advanceToState0x10_811A148:
@@ -23871,6 +23904,10 @@ loc_811A154:
 	.byte 0, 0
 	thumb_func_end stateObj_advanceToState0x10_811A148
 
+// symdb: Steps a looping shrink animation on a sprite object, decrementing its scale by 0x20 each call and restarting from 0xC0 once it reaches 0x40.
+// symdb: void sprite_scaleShrinkStep(struct SpriteEffect* obj /* r5 */); clobbers r0-r3, preserves r4-r7;
+// symdb: returns with NZCV and r0-r3 as left by the called sprite routine
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_scaleShrinkStep_811A160.yaml
 	thumb_local_start
 sprite_scaleShrinkStep_811A160:
 	push {lr}
@@ -23968,6 +24005,10 @@ sub_811A1EC:
 	pop {pc}
 	thumb_func_end sub_811A1EC
 
+// symdb: For every entity slot from a caller-chosen start slot up to (not including) slot 4, looks up the slot's struct and overwrites three of its fields with values passed by the caller.
+// symdb: void sub_811A1F4(u16 halfwordVal /*r0*/, u8 byteVal /*r1*/, u32 startSlot /*r2*/, u16
+// symdb: halfwordVal2 /*r3*/); preserves r4; no meaningful return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setSlotFieldsFromStartTo3_811A1F4.yaml
 	thumb_func_start setSlotFieldsFromStartTo3_811A1F4
 setSlotFieldsFromStartTo3_811A1F4:
 	push {r4,lr}
@@ -23995,6 +24036,11 @@ loc_811A216:
 	pop {r4,pc}
 	thumb_func_end setSlotFieldsFromStartTo3_811A1F4
 
+// symdb: Moves the four object slots starting at a given index to a shared (x, y) screen position.
+// symdb: void sub_811A220(int x /*r0*/, int y /*r1*/, int firstSlot /*r2*/); clobbers r0-r3, r5, lr,
+// symdb: N/Z/C flags; preserves r4, r6, r7; outgoing flags come from the final slot<firstSlot+4
+// symdb: comparison
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_moveSlotGroupXY_811A220.yaml
 	thumb_func_start sprite_moveSlotGroupXY_811A220
 sprite_moveSlotGroupXY_811A220:
 	push {r4-r7,lr}
@@ -28933,6 +28979,10 @@ loc_811CB9C:
 	pop {pc}
 	thumb_func_end sub_811CAEC
 
+// symdb: Steps a one-shot countdown timer on a state object (r5); on the first call it initializes the delay from a lookup entry, and once the timer runs out it bumps a counter by 4 and reports completion.
+// symdb: Next sub_811CBA0(void *obj /* r5 */); returns r0 = 1 when the timer expired this call, 0 while
+// symdb: still counting; clobbers r0-r1, lr, flags (NZCV reflect the timer decrement/expiry)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/timerCountdown_step_811CBA0.yaml
 	thumb_local_start
 timerCountdown_step_811CBA0:
 	push {lr}
@@ -34056,6 +34106,10 @@ pet_menuExitToMap_811F708:
 	pop {pc}
 	thumb_func_end pet_menuExitToMap_811F708
 
+// symdb: Coroutine step that abandons the current game mode and transitions back to the overworld map (EnterMap subsystem), resetting the chatbox on the way.
+// symdb: void next_exitToMap_811F728(Toolkit *toolkit /*r10*/); // r5 passed in and preserved; returns to
+// symdb: caller's continuation via lr (pop {pc}); r0-r3 and flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/next_exitToMap_811F728.yaml
 	thumb_func_start next_exitToMap_811F728
 next_exitToMap_811F728:
 	push {lr}

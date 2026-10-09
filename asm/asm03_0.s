@@ -20236,6 +20236,9 @@ byte_802FBF0:
 	.byte 0x4, 0x40, 0x7C, 0x80, 0x40, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end startScreen_playSoundIfFlagSet_802FBD8
 
+// symdb: On the title/start screen, if the screen's state field has bit 3 set, hands a two-entry text/sprite descriptor table to the text printer helper sub_8001158.
+// symdb: void startScreen_printTextIfFlag3_802FBFC(const StartScreen *screen /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_printTextIfFlag3_802FBFC.yaml
 	thumb_local_start
 startScreen_printTextIfFlag3_802FBFC: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20298,6 +20301,12 @@ byte_802FC64:
 	.byte 0x4, 0x40, 0xCC, 0x80, 0x60, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end startScreen_playSfxIfFlagSet_802FC4C
 
+// symdb: Start-screen per-frame helper that, when bit 0x100 of the screen state halfword is set, triggers the sound/effect described by the parameter table byte_802FC88.
+// symdb: void startScreen_playFlaggedSfx_802FC70(const StartScreen *self /*r5*/) — reads r5; calls into
+// symdb: sub_8001158 with r0 = &byte_802FC88; returns with r4-r7 preserved (caller must reload them per
+// symdb: the contract, the callee preserves them); C is cleared by the mask-setup shift on the early-out
+// symdb: path, N/Z reflect (state & 0x100), V untouched.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_playFlaggedSfx_802FC70.yaml
 	thumb_local_start
 startScreen_playFlaggedSfx_802FC70: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20893,6 +20902,10 @@ off_8030068:
 	.word camera_updateDerivedOffsets_803007C+1
 	thumb_func_end camera_dispatchUpdate_8030054
 
+// symdb: Recomputes two derived 16.16 fixed-point values in the camera state (offsets +4/+6) from the pending scroll target nextX/nextY/nextZ, negating the results.
+// symdb: void camera_updateDerivedOffsets_803007C(Camera* cam /* r5 */); callers read back r1, r2, r4,
+// symdb: r6, r7, r8 and the nzcv flags (final flags come from the last `neg r6, r6`, i.e. 0 - shifted)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_updateDerivedOffsets_803007C.yaml
 	thumb_local_start
 camera_updateDerivedOffsets_803007C:
 	mov r1, #0x0 // byte_0
@@ -23775,6 +23788,11 @@ sub_803135E:
 	pop {r0-r2,r5,pc}
 	thumb_func_end sub_803135E
 
+// symdb: Runs the family's three-step helper sequence (prepare, draw/iterate over an unbounded 0x20-entry extent, finish) and then marks the r12 state flags as active by setting the low bit.
+// symdb: void sub_8031388(u32 arg0 /*r0*/, u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg5 /*r5*/); returns
+// symdb: with r0-r2/r5 preserved (restored from stack), r12 |= 1, NZ set from the new r12 value,
+// symdb: r3/r4/r6/r7-r9 whatever sub_80310B0 left.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031388.yaml
 	thumb_local_start
 sub_8031388:
 	push {r0-r2,r5,lr}
