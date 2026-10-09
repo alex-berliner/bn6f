@@ -26544,6 +26544,11 @@ locret_80C44A6:
 	pop {pc}
 	thumb_func_end sub_80C4484
 
+// symdb: Spawns battle object type 0x56 and links it to a owner object, inheriting its alliance/direction and setting header flag bits 0x04|0x10.
+// symdb: BattleObject* battle_spawnObject56LinkedToOwner(u32 x /*r1*/, u32 y /*r2*/, u32 z /*r3*/,
+// symdb: BattleObject* owner /*r5, also passed on stack as params*/); returns new object pointer in r0
+// symdb: (NULL on failure); N/Z set from the returned pointer (ADDS r0, r5,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnObject56LinkedToOwner_80C44A8.yaml
 	thumb_func_start battle_spawnObject56LinkedToOwner_80C44A8
 battle_spawnObject56LinkedToOwner_80C44A8:
 	push {lr}
@@ -27571,6 +27576,11 @@ locret_80C4C10:
 	pop {pc}
 	thumb_func_end sub_80C4B84
 
+// symdb: Spawns the pink counter-hit ring (object type 0x5E) over the counterattacked enemy and links it to the object that scored the counter.
+// symdb: (x: u32 r1, y: u32 r2, z: u32 r3, params: u32 r4, owner: *BattleObject r5, outPtr:
+// symdb: *BattleObject* r7) -> *BattleObject r5 (new ring object, or NULL on failure); r1..r4 are passed
+// symdb: straight through to object_spawnType1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SpawnCounterPinkRingMaybe_80C4C12.yaml
 	thumb_func_start SpawnCounterPinkRingMaybe_80C4C12
 SpawnCounterPinkRingMaybe_80C4C12: // (x_maybe: u32 , y_maybe: u32 , z_maybe: u32 , params_maybe: u32 , obj: * BattleObject $r5, a7: *u32 $r7) -> * BattleObject
 	push {lr}
@@ -31324,6 +31334,10 @@ loc_80C6AA6:
 	pop {r4,r7,pc}
 	thumb_func_end sub_80C6A50
 
+// symdb: Tears down a battle object — clears its collision region and puts it into the destroyed state.
+// symdb: void battle_object_destroy(BattleObject* obj /* r5 */); sets NZ flags from the state constant
+// symdb: (Z=0, N=0 for CUR_STATE_DESTROY=8)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_destroy_80C6AAC.yaml
 	thumb_local_start
 battle_object_destroy_80C6AAC:
 	push {lr}
@@ -31382,6 +31396,10 @@ byte_80C6B00:
 	.byte 0x3, 0x1, 0x6, 0xFF
 	thumb_func_end spawn_t3_0x12_80C6ADA
 
+// symdb: Per-frame update for battle object type 3/id 0x16 — dispatches a state handler for the object's current state, then refreshes its sprite.
+// symdb: void battle_objType3Id16_stateDispatchUpdate_80C6B40(BattleObject* obj /* r5 */); r0-r3 and NZCV
+// symdb: are clobbered by the callee chain, r4-r12 preserved through this wrapper
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x16_80C6B40.yaml
 	thumb_func_start t3_0x16_80C6B40
 t3_0x16_80C6B40:
 	push {lr}
@@ -37971,6 +37989,10 @@ loc_80C9C98:
 	pop {r7,pc}
 	thumb_func_end sub_80C9C5C
 
+// symdb: Ticks a battle object's countdown timer and, when it hits zero, fires its attack on the panel toward the player and moves the object to action 4.
+// symdb: void sub_80C9CA2(void) /* r5 = battle object; preserves r4-r7, clobbers r0-r3, returns NZCV from
+// symdb: timer-1 and final action store */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectCountdownFireAttackTick_80C9CA2.yaml
 	thumb_local_start
 battle_objectCountdownFireAttackTick_80C9CA2:
 	push {r4,r6,lr}
@@ -39981,6 +40003,10 @@ dword_80CAC40:
 	.word 0x6060C0C
 	thumb_func_end sub_80CAC00
 
+// symdb: Destroys a battle object after first clearing the back-pointer its second related object holds to it.
+// symdb: battle_objectDestroyWithRelated2Unlink(object /* r5: BattleObject* to destroy */); clobbers
+// symdb: r0-r3, flags via object_genericDestroy
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectDestroyWithRelated2Unlink_80CAC44.yaml
 	thumb_local_start
 battle_objectDestroyWithRelated2Unlink_80CAC44:
 	push {lr}
@@ -40091,6 +40117,10 @@ byte_80CAD04:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_80CAC82
 
+// symdb: Conditionally applies the elemental-attack damage modifier to a battle object, forwarding its element, attack parameter and damage-counter-disable word to the modifier routine.
+// symdb: void battle_applyElementAttackModIfEnabled(u32 enable /*r0*/, u32 r1, u32 r3, BattleObject* obj
+// symdb: /*r5*/); flags Z from (enable==0) when enable==0, otherwise whatever sub_80CAEC8 leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyElementAttackModIfEnabled_80CAD14.yaml
 	thumb_local_start
 battle_applyElementAttackModIfEnabled_80CAD14:
 	push {r4,r6,lr}
@@ -84456,6 +84486,9 @@ dword_80DFE3C:
 	.word 0x2000
 	thumb_func_end sub_80DFE28
 
+// symdb: Per-frame update for a battle object: dispatches to one of three state handlers based on the object's state byte, then refreshes its sprite.
+// symdb: void battle_objectUpdateByStateTable_80DFE40(struct BattleObject* obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0xd3_80DFE40.yaml
 	thumb_func_start t3_0xd3_80DFE40
 t3_0xd3_80DFE40:
 	push {lr}
@@ -86344,6 +86377,10 @@ off_80E0E04:
 	.word object_freeMemory+1
 	thumb_func_end chargeShotChargeObject_80E0DF0
 
+// symdb: Initializes the charge-shot charge battle object, marking it active and jumping straight into its first update step.
+// symdb: void chargeShotChargeObject_init_ADDRESS(BattleObject *obj /* r5 */); tail-calls
+// symdb: chargeShotChargeObject_update_80E0E20 and returns its r0-r3 and NZCV.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chargeShotChargeObject_init_80E0E10.yaml
 	thumb_local_start
 chargeShotChargeObject_init_80E0E10:
 	push {lr}
@@ -111267,6 +111304,11 @@ locret_80EC90C:
 	pop {r4,r7,pc}
 	thumb_func_end sub_80EC8A0
 
+// symdb: Runs a 10-frame countdown for a delayed AI attack, then detaches the tracked object and exits the attack state when it expires.
+// symdb: void sub_80EC90E(BattleObject *obj /* r5 */, AIAttackVars *vars /* r7 */) — r6, lr also live on
+// symdb: entry; on early return r0 = remaining timer and nz/c reflect timer-1; on expiry calls
+// symdb: object_exitAttackState and returns r0 = 0.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackTickDelayTimer_80EC90E.yaml
 	thumb_local_start
 ai_attackTickDelayTimer_80EC90E:
 	push {lr}
@@ -111401,6 +111443,10 @@ dword_80ECA08:
 	.word 0x40201
 	thumb_func_end sub_80EC97C
 
+// symdb: Decrements an AI attack state's frame countdown and leaves the attack state once it expires.
+// symdb: void sub_80ECA0C(AIAttackVars* vars /* r7 */); // returns flags/r0-r3 from the decrement or from
+// symdb: object_exitAttackState
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_tickTimerAndExitWhenDone_80ECA0C.yaml
 	thumb_local_start
 aiAttack_tickTimerAndExitWhenDone_80ECA0C:
 	push {lr}
@@ -146545,6 +146591,10 @@ dword_80FDF48:
 	.word 0x20
 	thumb_func_end sub_80FDF38
 
+// symdb: One-line thunk that hands the address of a static work area (dword_80FDF5C) to sub_800FE28 and returns its results.
+// symdb: void sub_80FDF4C(void) -> returns r0 and r2 set by sub_800FE28; r5 is also live on entry and
+// symdb: presumably consumed by the callee; flags clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80FDF4C.yaml
 	thumb_local_start
 sub_80FDF4C:
 	push {lr}
@@ -146579,6 +146629,10 @@ off_80FDF80:
 	.word loc_810141E
 	thumb_func_end sub_80FDF60
 
+// symdb: Trivial wrapper that invokes helper sub_800FE28 with a pointer to a constant one-word table (0x02020202), passing the helper's results straight through.
+// symdb: void sub_80FDF84(void /* r5 passed in per caller contract, not read here */) -> returns helper
+// symdb: results in r0 and r2
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80FDF84.yaml
 	thumb_local_start
 sub_80FDF84:
 	push {lr}
@@ -146592,6 +146646,9 @@ dword_80FDF94:
 	.word 0x2020202
 	thumb_func_end sub_80FDF84
 
+// symdb: Tiny wrapper that calls sub_800FE28 with a pointer to the fixed ROM constant 0x181E242A and returns its result.
+// symdb: Next sub_80FDF98(void /* inputs: r5 (unused here), lr */); returns callee result in r0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80FDF98.yaml
 	thumb_local_start
 sub_80FDF98:
 	push {lr}
@@ -146876,6 +146933,10 @@ locret_80FE1FC:
 	pop {pc}
 	thumb_func_end sub_80FE1B4
 
+// symdb: Ticks one AI attack's countdown, arming it on first call and firing it (via sub_801171C) once the timer expires.
+// symdb: void sub_80FE1FE(oAIAttackVars *attack /*r7*/); // caller-visible: r0-r3 clobbered, nz/c/v
+// symdb: reflect last op, r5/r6/r7 pass through, lr popped
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiTickAttackTimer_80FE1FE.yaml
 	thumb_local_start
 battle_aiTickAttackTimer_80FE1FE:
 	push {lr}
@@ -147224,6 +147285,12 @@ locret_80FE450:
 	pop {pc}
 	thumb_func_end sub_80FE42E
 
+// symdb: Dispatches an AI attack-state handler call through a two-entry jump table indexed by the state byte at offset 0 of the r7 attack-state block.
+// symdb: void aiAttackDispatchHandler(void /* r7 = AI attack state block, flags passed through */); —
+// symdb: reads r7[oAIAttackVars_Unk_00] (u8 selector), tail-invokes sub_80FE46C (selector 0) or
+// symdb: sub_80FE4AC (anything else); returns to this wrapper's caller with r7 preserved, all other
+// symdb: registers and NZCV flags whatever the handler left.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttackDispatchHandler_80FE452.yaml
 	thumb_local_start
 aiAttackDispatchHandler_80FE452:
 	push {r7,lr}
@@ -171172,9 +171239,9 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
-// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then battle_object_onAction8EndClearExtraVars_8109FA2) and returns.
+// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
 // symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
-// symdb: whatever battle_object_onAction8EndClearExtraVars_8109FA2 (and sub_8016B02) leave behind
+// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:
@@ -171200,6 +171267,10 @@ sub_8109F96:
 	pop {pc}
 	thumb_func_end sub_8109F96
 
+// symdb: Battle-object action-end cleanup — when the object finishes action 8 while still holding extra-variable state, it releases the referenced data and clears the extra-vars/Param4 fields.
+// symdb: void sub_8109FA2(r4=?, battleObject r5, r7=?, lr=return); clobbers r0 r1 r3 and flags (nz c v);
+// symdb: preserves r4 r7; tail-calls nothing (plain pop {pc})
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_onAction8EndClearExtraVars_8109FA2.yaml
 	thumb_local_start
 battle_object_onAction8EndClearExtraVars_8109FA2:
 	push {lr}

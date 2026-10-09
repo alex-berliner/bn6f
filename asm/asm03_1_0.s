@@ -339,6 +339,9 @@ off_8033A78:
 	thumb_func_end dispatch_80339CC
 
 /// Might be put for null checks, do not do anything on index 0
+// symdb: Empty placeholder callback that immediately returns to the caller; does nothing.
+// symdb: void callback_noop_8033A7C(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/callback_noop_8033A7C.yaml
 	thumb_local_start
 callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 	push {lr}
@@ -384,6 +387,10 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033AB0
 
+// symdb: Runs the four battle-state (re)initialization routines in order, resetting the battle work area pointed to by r5.
+// symdb: void battle_resetState(struct S2011E30 *self /* r5 */);  /* clobbers r0-r3, flags; preserves
+// symdb: r5-r7, r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_resetState_8033AC4.yaml
 	thumb_local_start
 battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -1357,6 +1364,10 @@ sub_80342E4:
 	pop {pc}
 	thumb_func_end sub_80342E4
 
+// symdb: Main-flow step 4 that kicks off the "enter map" transition after a warp — clears video, programs the fade-in, and triggers map entry.
+// symdb: void sub_80342EC(void); // r10 = toolkit pointer on entry; calls into sub-steps with r0 =
+// symdb: gameState, r1 = 0x10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_beginEnterMapOnWarpStep4_80342EC.yaml
 	thumb_local_start
 map_beginEnterMapOnWarpStep4_80342EC:
 	push {lr}
@@ -2546,6 +2557,10 @@ off_8035080:
 	.word CutsceneScriptNotification_809AE68 // CutsceneScript
 	thumb_func_end sub_8035054
 
+// symdb: Attempts to launch the "notification" cutscene, returning 0 if it started or 1 if skipped.
+// symdb: u32 cutscene_TryStartNotification_8035084(void); // returns 0 = notification cutscene started, 1
+// symdb: = not started
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_TryStartNotification_8035084.yaml
 	thumb_local_start
 cutscene_TryStartNotification_8035084:
 	push {r4-r7,lr}

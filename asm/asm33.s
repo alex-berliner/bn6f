@@ -662,7 +662,7 @@ off_8123670:
 	.word sub_812368C+1
 	thumb_func_end sub_812365C
 
-// symdb: Runs a check (sprite_testFrameParamsMaskC0_81190F8 with argument 0); on success sets the object's state byte to 4 and advances the object via sub_8123D70, otherwise does nothing.
+// symdb: Runs a check (sub_81190F8 with argument 0); on success sets the object's state byte to 4 and advances the object via sub_8123D70, otherwise does nothing.
 // symdb: void sub_8123678(r5 = object pointer); outputs r0 and flags from the last callee; preserves
 // symdb: r4-r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123678.yaml
@@ -15586,6 +15586,10 @@ sub_812AF14:
 	pop {pc}
 	thumb_func_end sub_812AF14
 
+// symdb: Sets up a scripted scene/cutscene — runs its init routine, decompresses its asset reference table, loads its graphics, text script and sprites, then starts the chatbox dialogue.
+// symdb: void scene_loadAndStartCutscene_812AF18(void) /* in: r4,r5,r6,r7,r10,lr; out: r4,r5,r6,r7
+// symdb: preserved; returns to caller */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scene_loadAndStartCutscene_812AF18.yaml
 	thumb_local_start
 scene_loadAndStartCutscene_812AF18:
 	push {r4-r7,lr}

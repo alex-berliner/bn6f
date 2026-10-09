@@ -2008,6 +2008,10 @@ off_802731C:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80272D0
 
+// symdb: If chatbox event flag 0x80 (eFlags2009F38) is clear, sets a chatbox state/halfword field to 4.
+// symdb: int sub_8027320(uint16_t *stateField /* r5: struct with u16 field at +2 */, int r1 /* unused */,
+// symdb: void *lr /* return */); /* returns r0 = flag-test result, sets nz/c/v from the cmp/move */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setState4IfFlag80Clear_8027320.yaml
 	thumb_local_start
 chatbox_setState4IfFlag80Clear_8027320:
 	push {lr}
@@ -2142,6 +2146,10 @@ sub_80273E4:
 	pop {pc}
 	thumb_func_end sub_80273E4
 
+// symdb: If the chatbox is not currently flagged as shown, resets the textbox object's active text state and then runs its per-frame update.
+// symdb: void chatbox_resetTextStateIfHidden(S20364C0 *self /* in r5 */) ; reads eFlags2009F38 bit 0x80,
+// symdb: returns nothing
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_resetTextStateIfHidden_80273EC.yaml
 	thumb_local_start
 chatbox_resetTextStateIfHidden_80273EC: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -4130,6 +4138,10 @@ locret_8028282:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8028250
 
+// symdb: Streams the chip-icon tiles for one entry of the chip selection screen into the queued graphics transfer.
+// symdb: void chipSelect_QueueEntryIconGfx_8028284(void); // entry struct in r4 (callee-local); clobbers
+// symdb: r0-r1, r12?, lr, flags; preserves r2-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipSelect_QueueEntryIconGfx_8028284.yaml
 	thumb_local_start
 chipSelect_QueueEntryIconGfx_8028284:
 	push {r4,lr}
@@ -8401,6 +8413,10 @@ battle_ClearPendingEventFlag_802A0EC:
 	pop {pc}
 	thumb_func_end battle_ClearPendingEventFlag_802A0EC
 
+// symdb: Checks the battle's pending-event flag and, if an event is queued, dispatches event flags 0x4000, then always clears the pending-event state.
+// symdb: void sub_802A0F8(void); // no meaningful inputs; returns after side effects, NZ flags from the
+// symdb: pending-event test survive into the clear call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DispatchPendingEvent_802A0F8.yaml
 	thumb_local_start
 battle_DispatchPendingEvent_802A0F8:
 	push {lr}
@@ -8596,6 +8612,10 @@ off_802A2D8:
 	.word sub_802A362+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end sub_802A2B0
 
+// symdb: If a condition (sub_802A394) is met, starts a screen fade (0x54 and 0x5C with length 0xA) and advances this object's state machine to step 4.
+// symdb: void sub_802A2E8(S20364C0 *self /* r5 */) -> void; flags NZ returned (from CMP r0,#0 or the
+// symdb: final MOV r0,#4)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/fadeScreenAndAdvanceState_802A2E8.yaml
 	thumb_local_start
 fadeScreenAndAdvanceState_802A2E8: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -11835,6 +11855,11 @@ off_802BEC8:
 	.word sub_802BF0C+1
 	thumb_func_end sub_802BEB4
 
+// symdb: Custom-menu state handler that pops the next halfword from the menu input queue, backing out to the state dispatcher if the queue is empty, otherwise storing the entry and advancing the menu state with a hold timer.
+// symdb: void custMenu_handleInputQueuePop_802BED4(/* r5 */ CustomMenuObj *menu); // lr clobbered;
+// symdb: returns R0 = 0 (queue empty) or 4 (consumed), NZ set from R0, c/v untouched, R1 = Unk_0c byte on
+// symdb: consumed path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/custMenu_handleInputQueuePop_802BED4.yaml
 	thumb_local_start
 custMenu_handleInputQueuePop_802BED4:
 	push {lr}
@@ -12292,6 +12317,10 @@ off_802C1E8:
 	.word sub_802C218+1
 	thumb_func_end runObjectStateHandler_802C1D4
 
+// symdb: Fills the 0x2A-byte table at unk_2035320 with values 0..0x29, shuffles it into a random order with the primary RNG, and resets the progress fields of the associated state struct.
+// symdb: void sub_802C1F0(State* state /* r5 */, void* r4, void* r6); // r4/r6 passed through by callers
+// symdb: but unused here; returns NZ (and C/V) from the constant 4 written to state->field3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initShuffledOrderTable42_802C1F0.yaml
 	thumb_local_start
 initShuffledOrderTable42_802C1F0:
 	push {lr}
@@ -13439,6 +13468,10 @@ loc_802CA50:
 	pop {r4,r5,pc}
 	thumb_func_end sub_802CA1E
 
+// symdb: Packs a sound ID from a request struct into a FIFO record and sends it to the ARM7 sound handler.
+// symdb: void sound_pushRequest_802CA5C(/* r5 */ struct SoundRequest *req); // no meaningful return;
+// symdb: flags/regs out are just fifo_pushRecord16's leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_pushRequest_802CA5C.yaml
 	thumb_local_start
 sound_pushRequest_802CA5C:
 	push {lr}
@@ -13461,6 +13494,10 @@ sound_pushRequest_802CA5C:
 	pop {pc}
 	thumb_func_end sound_pushRequest_802CA5C
 
+// symdb: Checks two dirty/update flags (unk04, unk06) on the singleton struct at 0x200A008 and runs the shared redraw pair (sub_802C54C + sub_802CAA6) once per set flag.
+// symdb: void sub_802CA82(void); /* in: nothing meaningful (r4-r7 preserved); out: nothing; called via
+// symdb: BL, returns to caller */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct200A008_redrawOnDirtyFlags_802CA82.yaml
 	thumb_func_start eStruct200A008_redrawOnDirtyFlags_802CA82
 eStruct200A008_redrawOnDirtyFlags_802CA82:
 	push {r4,lr}
@@ -14279,6 +14316,10 @@ dword_802D060:
 	.word 0x301BE
 	thumb_func_end sub_802CFF8
 
+// symdb: Returns the address of one 0x20-byte entry (selected by index) within the IWRAM array at byte_203C4A0.
+// symdb: struct20* getTableEntryPtr32_802D064(u32 index); // in: r0 = entry index, lr = return address;
+// symdb: out: r0 = &base[index*0x20]; flags NZCV set from the final address addition
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getTableEntryPtr32_802D064.yaml
 	thumb_func_start getTableEntryPtr32_802D064
 getTableEntryPtr32_802D064: // (a0: bool) -> * ?
 	mov r1, #0x20 
@@ -14306,7 +14347,7 @@ sub_802D070:
 	pop {pc}
 	thumb_func_end sub_802D070
 
-// symdb: Fetches a state struct via getTableEntryPtr32_802D064 (selected by the flag in r0), clears its byte at +0x10, and sets the two bytes at +0xD and +0xF to 100.
+// symdb: Fetches a state struct via sub_802D064 (selected by the flag in r0), clears its byte at +0x10, and sets the two bytes at +0xD and +0xF to 100.
 // symdb: void initStateCounters100(bool selector /* r0 */); returns the struct pointer in r0 and 100 in
 // symdb: r1 (NZCV reflect r1); tail of the call chain passes lr through
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initStateCounters100_802D08C.yaml
@@ -15265,6 +15306,9 @@ dword_802D69C:
 	.word 0x196
 	thumb_func_end sub_802D65E
 
+// symdb: Initialises the battle's player-tracking block at the start of a battle, caching pointers to the player's and enemy's side objects.
+// symdb: void sub_802D6A0(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initPlayerTracker_802D6A0.yaml
 	thumb_func_start battle_initPlayerTracker_802D6A0
 battle_initPlayerTracker_802D6A0:
 	push {r5-r7,lr}
@@ -15992,6 +16036,10 @@ locret_802DCEA:
 	pop {r5,pc}
 	thumb_func_end sub_802DCDE
 
+// symdb: AI helper that reports whether a battler's AI data has either of two special state flags (0x1000 at +0x48 or 0x4000000 at +0x44) set.
+// symdb: bool ai_CheckSpecialFlagPair_802DCEC(u32 aiIndex); // in: r0 = AI/battler parameter; out: r0 = 1
+// symdb: if either flag is set, else 0; clobbers r1, r3, NZ; clears C and V; preserves caller's r5/r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_CheckSpecialFlagPair_802DCEC.yaml
 	thumb_func_start ai_CheckSpecialFlagPair_802DCEC
 ai_CheckSpecialFlagPair_802DCEC:
 	push {r5,r7,lr}
@@ -20088,6 +20136,10 @@ byte_802FB7C:
 	.byte 0x40, 0x88, 0x92, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_802FB64
 
+// symdb: On the start screen, when state field 0xA has flag 0x40 set, runs one step of the fade/transition routine driven by the parameter table byte_802FBA8.
+// symdb: void sub_802FB90(StartScreen *self /* r5 */); outputs: r2/r3/c/v as left by sub_8001158; r4-r7
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_fadeOutUpdateIfFlag40_802FB90.yaml
 	thumb_local_start
 startScreen_fadeOutUpdateIfFlag40_802FB90: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20106,6 +20158,10 @@ byte_802FBA8:
 	.byte 0x4, 0x40, 0x2C, 0x80, 0x20, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end startScreen_fadeOutUpdateIfFlag40_802FB90
 
+// symdb: Checks the start-screen object's state halfword for flag 0x20 and, if set, hands a ROM-based record (byte_802FBCC) to helper sub_8001158.
+// symdb: void startScreen_dispatchIfFlag20_802FBB4(const StartScreen *self /* r5 */); caller-saved r0-r3,
+// symdb: flags c/v returned as-is, nz set by the tst
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_dispatchIfFlag20_802FBB4.yaml
 	thumb_local_start
 startScreen_dispatchIfFlag20_802FBB4: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20124,6 +20180,9 @@ byte_802FBCC:
 	.byte 0x4, 0x40, 0x54, 0x80, 0x30, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end startScreen_dispatchIfFlag20_802FBB4
 
+// symdb: On the title/start screen, plays a fixed sound or voice clip when status bit 0x10 is set.
+// symdb: void startScreen_playSoundIfFlagSet_802FBD8(StartScreen *screen /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_playSoundIfFlagSet_802FBD8.yaml
 	thumb_local_start
 startScreen_playSoundIfFlagSet_802FBD8: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20161,6 +20220,10 @@ byte_802FC14:
 	.byte 0x8E, 0x40, 0x18, 0x72, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_802FBFC
 
+// symdb: Start-screen helper that, when the screen state word has bit 2 set, hands a small parameter table (byte_802FC40) to the generic handler sub_8001158.
+// symdb: void startScreen_onStatusBit2(const StartScreen* self /* r5 */); // reads u16 at self+0xA; no
+// symdb: meaningful return value, clobbers r0-r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_onStatusBit2_802FC28.yaml
 	thumb_local_start
 startScreen_onStatusBit2_802FC28: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20179,6 +20242,9 @@ byte_802FC40:
 	.byte 0x4, 0x40, 0xA4, 0x80, 0x50, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end startScreen_onStatusBit2_802FC28
 
+// symdb: On the start/title screen, plays a sound effect (via sub_8001158) when the screen's state field has bit 1 set, otherwise does nothing.
+// symdb: void startScreen_playSfxIfFlagSet(const StartScreen *self /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_playSfxIfFlagSet_802FC4C.yaml
 	thumb_local_start
 startScreen_playSfxIfFlagSet_802FC4C: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20217,6 +20283,9 @@ byte_802FC88:
 	.byte 0x40, 0x40, 0x8, 0x72, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_802FC70
 
+// symdb: Start-screen hook that, when state flag 0x200 in the screen-state word is set, passes a fixed parameter block to the generic sub_8001158 handler and otherwise does nothing.
+// symdb: void sub_802FC9C(const StartScreen *self /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_runTriggerHandler_802FC9C.yaml
 	thumb_local_start
 startScreen_runTriggerHandler_802FC9C: // (self: *const StartScreen $r5) -> ()
 	push {lr}
@@ -20765,6 +20834,10 @@ off_8030040:
 	.word sub_8030136+1
 	thumb_func_end camera_802FFF4
 
+// symdb: Camera object update dispatcher — reads the camera's mode byte and jumps to the matching camera update handler from a small jump table.
+// symdb: void camera_dispatchUpdate_8030054(void) — takes everything via registers/flags as-is (r5 =
+// symdb: camera object); tail-returns whatever the selected handler leaves in registers and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_dispatchUpdate_8030054.yaml
 	thumb_local_start
 camera_dispatchUpdate_8030054:
 	push {lr}
@@ -23312,6 +23385,10 @@ sub_80310EC:
 	pop {pc}
 	thumb_func_end sub_80310EC
 
+// symdb: Zeroes two counter/flag words of the global state struct at dword_200F3E0 and then continues processing it via sub_80310EC.
+// symdb: u32 resetStateAndStep_8031122(u32 stateObj /*r0*/, u32 arg /*r5, forwarded to callee*/); returns
+// symdb: r0 = result of sub_80310EC
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031122.yaml
 	thumb_local_start
 sub_8031122:
 	push {lr}
@@ -23669,6 +23746,10 @@ sub_8031388:
 	pop {r0-r2,r5,pc}
 	thumb_func_end sub_8031388
 
+// symdb: Runs the full battle message-window setup sequence (prepare, 32x32 layout, finalize) and flags the request as handled in r12.
+// symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to sub_8031176; r12 = flag word
+// symdb: in/out; preserves r0, r1, r2, r5; NZCV on exit reflect (r12|1) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupMessageWindow_80313B0.yaml
 	thumb_local_start
 battle_setupMessageWindow_80313B0:
 	push {r0-r2,r5,lr}
@@ -23688,6 +23769,11 @@ battle_setupMessageWindow_80313B0:
 	pop {r0-r2,r5,pc}
 	thumb_func_end battle_setupMessageWindow_80313B0
 
+// symdb: Runs the standard battle text-box update sequence (init, fill/clear with fixed parameters, redraw pass) and then marks bit 1 of the r12 battle-state flag word as done.
+// symdb: void sub_80313D4(u32 arg0 /*r0*/, u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 state /*r5*/, u32 flags
+// symdb: /*r12*/); // preserves r0-r2, r5; clobbers r3,r4,r6-r9,r12,lr; flags out NZ from "flags |= 2"
+// symdb: (CV from callee chains)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runTextboxUpdateAndSetStateBit1_80313D4.yaml
 	thumb_local_start
 battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	push {r0-r2,r5,lr}
@@ -23709,6 +23795,10 @@ battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	pop {r0-r2,r5,pc}
 	thumb_func_end battle_runTextboxUpdateAndSetStateBit1_80313D4
 
+// symdb: Runs a fixed three-call sequence (step handler, a 0x20/0x20/0x20/1 parameterized setup, and a 0-arg call) and then sets bit 1 of the caller's state word in r12.
+// symdb: void sub_80313FC(void /* r0, r1, r2, r5: passed through and preserved; r12: in/out state word
+// symdb: */); returns updated state in r12 with NZ flags set from it
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80313FC.yaml
 	thumb_local_start
 sub_80313FC:
 	push {r0-r2,r5,lr}
@@ -24902,6 +24992,11 @@ sub_8031C12:
 	pop {pc}
 	thumb_func_end sub_8031C12
 
+// symdb: Runs a fixed three-call helper chain: an init/prepare step on the context, a setup call with hardcoded arguments (1, 0x10, 1, 0x10), and a final update/refresh step.
+// symdb: void sub_8031C2A(u32 a /*r0*/, u32 ctx /*r5*/); // only r0 and r5 are meaningfully consumed;
+// symdb: everything the caller sees after return is whatever sub_8031B7C leaves in r0-r7 and the NZCV
+// symdb: flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C2A.yaml
 	thumb_local_start
 sub_8031C2A:
 	push {lr}
@@ -24956,6 +25051,10 @@ sub_8031C64:
 	pop {pc}
 	thumb_func_end sub_8031C64
 
+// symdb: Thin battle-mode wrapper that calls sub_803172E with the caller's args, invokes sub_80315B8 with the fixed parameters (14, 14, 0, 16), then calls sub_8031B7C to finish a short setup sequence.
+// symdb: void sub_8031C7C(int r0, int r5); /* tail-ish: returns whatever the last callee leaves in r0,
+// symdb: r2-r7 and NZCV */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
 	thumb_local_start
 sub_8031C7C:
 	push {lr}
@@ -24969,6 +25068,10 @@ sub_8031C7C:
 	pop {pc}
 	thumb_func_end sub_8031C7C
 
+// symdb: Runs a fixed three-call setup sequence on an object (pointer in r0), then falls straight back to this function's own caller, passing everything through.
+// symdb: Next sub_8031C94(void) /* in: r0 (object ptr), r5, lr; out: flags nzcv and r0-r7,lr all passed
+// symdb: through from the last callee */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C94.yaml
 	thumb_local_start
 sub_8031C94:
 	push {lr}

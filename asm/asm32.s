@@ -16665,6 +16665,11 @@ locret_8116A00:
 	.balign 4, 0x00
 	thumb_func_end sub_81169D8
 
+// symdb: Checks a battle object's sprite frame parameters and, when they flag a needed animation (re)load, restarts animation 0, hides the shadow, runs follow-up setup, and sets the object's state byte to 8.
+// symdb: void battle_reloadObjectSprite_8116A04(r4=?, r5=battleObject, r6=?, r7=?) — reads r4-r7 as live
+// symdb: context (only r5 is used), clobbers r0-r3, preserves r4-r7; leaves flags from TST r0,#0xC0 (skip
+// symdb: path) or MOV r0,#8 (reload path).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_reloadObjectSprite_8116A04.yaml
 	thumb_local_start
 battle_reloadObjectSprite_8116A04:
 	push {lr}
@@ -16866,6 +16871,9 @@ dword_8116B98:
 	.word 0x20
 	thumb_func_end sub_8116B00
 
+// symdb: Runs the variant-specific update routine selected by the sprite object's type byte (r5+9), then advances the sprite's animation.
+// symdb: void sprite_dispatchVariantUpdate_8116B9C(void *obj /* in r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchVariantUpdate_8116B9C.yaml
 	thumb_local_start
 sprite_dispatchVariantUpdate_8116B9C:
 	push {lr}
@@ -16931,6 +16939,11 @@ locret_8116C10:
 	.balign 4, 0x00
 	thumb_func_end sub_8116BFC
 
+// symdb: Moves a sprite along one axis by 8x its signed scroll-speed field, then if the coordinate went negative clears its scale counter and marks it unscalable (it has scrolled off/shrunk away).
+// symdb: void sprite_scrollStepAndCullOffscreen_8116C14(Sprite* sprite /* r7 */); returns with r0/r1 =
+// symdb: resulting coordinates (from sprite_getCoordinates), flags from CMP of that coordinate vs 0 (or
+// symdb: from the reset callee when it fires)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_scrollStepAndCullOffscreen_8116C14.yaml
 	thumb_local_start
 sprite_scrollStepAndCullOffscreen_8116C14:
 	push {lr}
@@ -17123,6 +17136,10 @@ off_8116D68:
 	.word 0xAA
 	thumb_func_end sub_8116D00
 
+// symdb: Runs one behavior step of a battle object (dispatched by its state byte) and then advances its sprite animation.
+// symdb: void battle_objectRunBehaviorStep_8116D6C(/* r5 */ BattleObject* obj /* plus r2-r12 passed
+// symdb: through */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectRunBehaviorStep_8116D6C.yaml
 	thumb_local_start
 battle_objectRunBehaviorStep_8116D6C:
 	push {lr}
@@ -17142,6 +17159,10 @@ off_8116D84:
 	.word battle_stepForwardAnimWait_8116DEC+1
 	thumb_func_end battle_objectRunBehaviorStep_8116D6C
 
+// symdb: Drifts a battle object's sprite 16 px left per call and, once its x position reaches 0xAA (170), clamps it there and advances the object's state to 4.
+// symdb: void sub_8116D90(battle object* r5)  /* lr clobbered; r0-r3 and NZCV flags return garbage from
+// symdb: callees/last compare */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_moveSpriteLeftUntilX170_8116D90.yaml
 	thumb_local_start
 battle_moveSpriteLeftUntilX170_8116D90:
 	push {lr}
@@ -18623,6 +18644,12 @@ off_81178D4:
 	.word byte_2019A00
 	thumb_func_end sub_81178AC
 
+// symdb: Trampoline-style mode dispatcher that tail-invokes one of three mode handlers for the object pointed to by R5, based on the mode byte at [R5+8].
+// symdb: void object_dispatchModeHandler_81178D8(void); /* in: r5 = object pointer (mode byte at +8),
+// symdb: r2-r6, r8-r12 = pass-through args/pointers, nzcv = pass-through; out: r0/r1 + flags = whatever
+// symdb: the selected handler returned, r7 = work-area pointer byte_2011C10, r2-r6/r8-r12 preserved
+// symdb: through to the handler */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_dispatchModeHandler_81178D8.yaml
 	thumb_func_start object_dispatchModeHandler_81178D8
 object_dispatchModeHandler_81178D8:
 	push {lr}
@@ -21857,6 +21884,11 @@ off_81190F4:
 	.word 0x100
 	thumb_func_end sub_81190E0
 
+// symdb: Returns 1 if the sprite registered under the given handle has status bits 0xC0 set in its current frame parameters, else 0.
+// symdb: int sub_81190F8(u32 spriteHandle /* r0 */); returns r0 = 1 if any of frame-parameter bits 0xC0
+// symdb: are set, 0 otherwise or if the handle has no registered struct; N/Z reflect r0, C/V cleared; r1
+// symdb: = 0xC0 on the found path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_testFrameParamsMaskC0_81190F8.yaml
 	thumb_func_start sprite_testFrameParamsMaskC0_81190F8
 sprite_testFrameParamsMaskC0_81190F8:
 	push {r4,r5,lr}
@@ -27529,6 +27561,11 @@ sub_811BD3C:
 loc_811BD5E:
 	add sp, sp, #8
 	pop {r4-r7,pc}
+// symdb: Dispatches the current submenu mode's handler, passing the submenu object from the toolkit and the mode byte to one of three handlers.
+// symdb: void sub_811BD64(void); reads r5 (menu work area), r10 (toolkit); calls handler at
+// symdb: off_811BD7C[byte r5[8]] with r0 = handler address, r1 = mode byte, r6 =
+// symdb: toolkit->oToolkit_SubmenuPtr; r0/r1/flags returned from the handler; r6 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_runModeHandler_811BD64.yaml
 	.balign 4, 0x00
 	thumb_func_start submenu_runModeHandler_811BD64
 submenu_runModeHandler_811BD64:

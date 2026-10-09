@@ -693,6 +693,10 @@ off_804646C:
 	thumb_func_end sub_8046450
 
 // () -> void
+// symdb: Initialises the 15-slot eStruct array at eStructArr2008450, zero-filling it and marking every slot as free with element/type byte 0x20 and its slot index.
+// symdb: void sub_804657C(void); // in: none; out: r0/r1 clobbered (r1 = whatever ZeroFillByWord left),
+// symdb: Z=1 C=1 V=0 from the loop's final cmp; r2-r7,lr preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initEStructArr_804657C.yaml
 	thumb_func_start battle_initEStructArr_804657C
 battle_initEStructArr_804657C:
 	push {r4-r7,lr}
@@ -835,7 +839,7 @@ loc_8046652:
 	thumb_func_end sub_80465F8
 
 // () -> void
-// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then battle_initEStructArr_804657C) as a single combined per-frame update step.
+// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then sub_804657C) as a single combined per-frame update step.
 // symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
 	thumb_func_start sub_8046664
@@ -1057,6 +1061,10 @@ off_804679C:
 	.word sub_811E9A0+1
 	thumb_func_end sub_80466D8
 
+// symdb: Initializes the 0x1B8-byte work area at 0x2011860, zeroing it and giving each of its five 0x58-byte entries a default state byte and an index.
+// symdb: void sub_80467D8(void); // no meaningful inputs; clobbers r0, r1, flags (r0 = 0x20, r1 = 0x1B8
+// symdb: on return); preserves r2-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initWorkArea5Entries_80467D8.yaml
 	thumb_func_start initWorkArea5Entries_80467D8
 initWorkArea5Entries_80467D8:
 	push {r4-r7,lr}
@@ -1927,6 +1935,10 @@ off_8047024:
 	.word 0x100
 	thumb_func_end sub_8046ED2
 
+// symdb: Per-frame update for a chatbox dialogue context that (re)starts its text script with a speed depending on a repeat flag, while a global event flag is set.
+// symdb: chatbox_stepContextScript_8047028(context: *ChatboxContext /* r5 */) -> u32 /* always 0, Z set
+// symdb: */; preserves r4-r7, clobbers r0-r3/r12/lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepContextScript_8047028.yaml
 	thumb_local_start
 chatbox_stepContextScript_8047028:
 	push {lr}

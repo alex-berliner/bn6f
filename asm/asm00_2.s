@@ -869,6 +869,11 @@ locret_800F332:
 	mov pc, lr
 	thumb_func_end sub_800F322
 
+// symdb: Computes the OAM palette bank for a battle object from its AI data's actor type, version, and unk03 (variant) fields.
+// symdb: u8 battle_getObjectPalette_800F334(BattleObject* obj /* r5 */) -> r0 = palette index; also
+// symdb: returns r1 = actorType, r2 = version (or version*unk03 for viruses); clobbers r3, NZCV;
+// symdb: preserves nothing extra
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getBattleObjectPalette_800F334.yaml
 	thumb_local_start
 getBattleObjectPalette_800F334: // (obj: * BattleObject $r5) -> u8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -2394,6 +2399,11 @@ loc_800FDE0:
 	pop {r4-r6,pc}
 	thumb_func_end setChipsForPlayerObjects_800FDC0
 
+// symdb: Records how many chips a battle object holds from its alliance's hand and the first chip's ID onto the battle object.
+// symdb: void setChipsFromAllianceHand_800FDEA(BattleObject* obj /*r5*/) — also passes r4/lr as scratch
+// symdb: inputs; leaves r1 = address of the 0xFFFF terminator entry, r2 = r3 = 0xFFFF in the output
+// symdb: registers, preserves r4/r5, clobbers nzcv flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setChipsForPlayerObject_800FDEA.yaml
 	thumb_local_start
 setChipsForPlayerObject_800FDEA:
 	push {r4,lr}
@@ -9269,6 +9279,10 @@ locret_8012F3C:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8012EBC
 
+// symdb: Returns 1 when the current AI data reports the A button held (0x44 flag word free of 0x1000002F bits, 0x48 word with 0x200 clear and 0x10 set), else 0.
+// symdb: bool checkAIData(void); // in: r5 = AI data pointer (passed through to the flag getters); out:
+// symdb: r0 = 0/1, NZ flags set from r0; r3 left over from the last callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/returnBoolIfAIDataFlagsAreSet_8012F3E.yaml
 	thumb_local_start
 returnBoolIfAIDataFlagsAreSet_8012F3E:
 	push {lr}
@@ -10275,6 +10289,10 @@ loc_8013678:
 	thumb_func_end sub_80135E8
 
 // (int idx) -> void*
+// symdb: Returns the address of a navi's entry in the battle navi stats table for a given navi index.
+// symdb: NaviStats* GetBattleNaviStatsAddr(int index); // r0 = index, returns r0 =
+// symdb: &eBattleNaviStats0[index]; r1 also ends up holding the table base, flags set by the final ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleNaviStatsAddr.yaml
 	thumb_func_start GetBattleNaviStatsAddr
 GetBattleNaviStatsAddr: // (alliance: bool) -> * NaviStats
 	mov r1, #oNaviStats_Size
@@ -11701,6 +11719,10 @@ locret_8013FCE:
 	pop {r4,pc}
 	thumb_func_end battle_RollNaviStatChance_8013FAE
 
+// symdb: Deal a non-lethal hit to the player — subtract the damage amount from the player's HP but never below 1, then play the hit sound effect.
+// symdb: void battle_damagePlayerLeave1HP(u32 damage /* r0 */); clobbers r0, r1, lr and NZCV; preserves
+// symdb: r3-r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_damagePlayerLeave1HP_8013FD0.yaml
 	thumb_func_start battle_damagePlayerLeave1HP_8013FD0
 battle_damagePlayerLeave1HP_8013FD0:
 	push {r5,lr}
@@ -11904,6 +11926,9 @@ locret_801414E:
 	pop {pc}
 	thumb_func_end sub_80140EE
 
+// symdb: Returns 2/1/0 depending on which of two unlock/stat flags (0x38, then 0x37) is set on the currently equipped PET Navi.
+// symdb: int getCurNaviStatTier(void) // preserves r4, r10; result in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getCurNaviStatTier_8014150.yaml
 	thumb_func_start getCurNaviStatTier_8014150
 getCurNaviStatTier_8014150:
 	push {r4,lr}
@@ -12287,6 +12312,10 @@ dword_80143F8:
 	.word 0xF
 	thumb_func_end battle_updateAngerTint_80143E4
 
+// symdb: Runs one battle object's AI update, doing nothing while time-stop or the pause menu is active.
+// symdb: void sub_80143FC(object *r5, battleCtx *r10); /* preserved: none; clobbers r0, r1, lr, NZC, V (V
+// symdb: only via the AI callee) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runObjectAI_80143FC.yaml
 	thumb_local_start
 battle_runObjectAI_80143FC:
 	push {lr}
@@ -12418,6 +12447,11 @@ sub_8014490:
 	mov pc, lr
 	thumb_func_end sub_8014490
 
+// symdb: Applies a 1-HP gradual damage tick (e.g. poison) to a battle object once per call when its AI-data flag is armed, skipping if the battle is over or HP is already 1.
+// symdb: void sub_8014498(BattleObject *obj /*r5*/); // r5 = battle object, r10 passed but unused;
+// symdb: returns r3 = obj->AIDataPtr (oBattleObject_AIDataPtr) for the caller, except on the battle-over
+// symdb: early return; clobbers r0, r1, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_tickPoisonHpLoss_8014498.yaml
 	thumb_local_start
 battle_tickPoisonHpLoss_8014498:
 	push {lr}
@@ -15083,6 +15117,11 @@ locret_80159A0:
 	pop {r5,pc}
 	thumb_func_end sub_8015994
 
+// symdb: Returns whether a battle object's AI data has one of two special-state flags set (0x100 in the +0x48 flag word or 0x40 in the +0x44 flag word).
+// symdb: u32 battle_isObjectInSpecialAiState_80159A2(BattleObject* object); // r0 = object pointer (NULL
+// symdb: allowed); returns 1/0 in r0; c and v always clear on return, n/z reflect the result; r5 and r7
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_isObjectInSpecialAiState_80159A2.yaml
 	thumb_local_start
 battle_isObjectInSpecialAiState_80159A2:
 	push {r5,r7,lr}
@@ -15438,6 +15477,10 @@ loc_8015BE6:
 	pop {r4-r6,pc}
 	thumb_func_end sub_8015BA8
 
+// symdb: Writes a one-byte value to offset 0x0E of the given side's player NaviStats, but only when the player object exists and is in a state accepted by two state-check helpers.
+// symdb: void battle_setPlayerNaviStatsField0E(u32 alliance, u8 value) // r0 = alliance flag, r1 = byte
+// symdb: to store; flags on return are those left by the last executed call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setPlayerNaviStatsField0E_8015BEC.yaml
 	thumb_func_start battle_setPlayerNaviStatsField0E_8015BEC
 battle_setPlayerNaviStatsField0E_8015BEC:
 	push {r4-r6,lr}
@@ -16596,6 +16639,10 @@ loc_801659C:
 	pop {pc}
 	thumb_func_end sub_801657E
 
+// symdb: Sets a battle object's current action to 8 and clears its current phase (and phase-initialized flag), returning 0.
+// symdb: void battle_ResetObjectActionState(BattleObject* obj /* passed in r5 */); also returns r0 = 0
+// symdb: and sets NZ flags from that zero
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ResetObjectActionState_80165B8.yaml
 	thumb_func_start battle_ResetObjectActionState_80165B8
 battle_ResetObjectActionState_80165B8:
 	mov r0, #8
@@ -16992,6 +17039,11 @@ byte_80168A8:
 	.word 0x20406
 	thumb_func_end sub_8016860
 
+// symdb: Tints the current battle object's sprite with the color shader only when it has status flag 0x800, choosing no-tint/full-tint from a bit of battle_getStateUnk40_800A704.
+// symdb: void sub_80168C8(void); // reads r5 (battle object/state context) and r10 (frame/state
+// symdb: pointer?); returns r3 plus NZC flags from the flag test path; calls object_getFlag,
+// symdb: battle_getStateUnk40_800A704, sprite_setColorShader
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyStatusSpriteTint_80168C8.yaml
 	thumb_local_start
 battle_applyStatusSpriteTint_80168C8:
 	push {lr}
@@ -17675,6 +17727,10 @@ loc_8016E2A:
 	.word 0xA0000, 0x60000
 	thumb_func_end sub_8016D8C
 
+// symdb: Decrements a battle object's phase counter each tick and, when it expires, resets the object's flags and hands its saved state word back to the state machine.
+// symdb: void sub_8016E3C(battle object in r5); returns decremented phase in r0 (0 on the reset path),
+// symdb: also sets r1/r2, NZCV and lr per caller contract
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectCountdownPhaseOrReset_8016E3C.yaml
 	thumb_local_start
 battle_objectCountdownPhaseOrReset_8016E3C:
 	push {lr}
@@ -21167,6 +21223,10 @@ byte_80191C8:
 	.byte 0x0, 0x0
 	thumb_func_end sub_8018886
 
+// symdb: Resets the collision system by clearing the active-collision bitfield, reinitializing all 32 collision data slots with unique one-hot index bits, and clearing the collision scratch buffer.
+// symdb: void sub_801986C(void); // reads toolkit ptr from r10; preserves r2-r5 and r10; clobbers
+// symdb: r0,r1,lr and NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/collision_resetAllHitData_801986C.yaml
 	thumb_func_start collision_resetAllHitData_801986C
 collision_resetAllHitData_801986C:
 	push {r4,r5,lr}
@@ -22668,6 +22728,9 @@ dword_801A644:
 	.word 0x202
 	thumb_func_end sub_801A5EE
 
+// symdb: Ends a fighter's post-hit flashing-invisibility by clearing the flash countdown in its collision data, once the hit flag is set and no persistent invisibility remains.
+// symdb: battle_clearInvisFlashTimer(battleObj r5, battleState r10) -> collisionData r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearInvisFlashTimer_801A648.yaml
 	thumb_local_start
 battle_clearInvisFlashTimer_801A648:
 	push {lr}
@@ -25291,6 +25354,8 @@ loc_801BABA:
 
 // symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
 
+// symdb: Checks a battle object's current action and returns a state code: 0 if the action is not 6, 1 if action 6 without flag-2 bit set, and 2 if action 6 with flag-2 set, running sub_801A29A as a side effect in the last case.
+
 // symdb: int battle_checkObjectActionFlag6(BattleObject *obj /* r5 */); returns 0/1/2 in r0; flags on
 // symdb: exit reflect the returned value (final "mov r0, r4" is an adds r0, r4, #0).
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkObjectAction6Flag_801BABE.yaml
@@ -25373,6 +25438,11 @@ loc_801BB42:
 	pop {pc}
 	thumb_func_end object_reservePanel
 
+// symdb: Releases a battle panel previously reserved by a given object, clearing its reserver pointer and reserved flag.
+// symdb: int object_removePanelReserve(panelLookup r0/r1, void *requestingObject r5); returns 1 if the
+// symdb: reservation was cleared, 0 otherwise; N/Z reflect the boolean result, C/V carry over from the
+// symdb: reserver comparison on failure/success paths
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_removePanelReserve.yaml
 	thumb_func_start object_removePanelReserve
 object_removePanelReserve:
 	push {lr}
@@ -25761,6 +25831,10 @@ loc_801BDD0:
 // adds variance to input coords determined by randint(-mask/2,mask/2+1)
 // randint is inclusive
 // input args seem to (always?) be X and Z
+// symdb: Jitters two coordinates by a centered random offset (range set by a mask), applied in the high half of a fixed-point value, using one GetRNG roll for both.
+// symdb: void AddRandomVarianceToTwoCoords(u32 mask in r0, s32* coordA in r1, s32* coordB in r3); returns
+// symdb: updated r1 and r3; r2, r4, r6, r7 preserved; clobbers r0 and the NZCV flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/AddRandomVarianceToTwoCoords.yaml
 AddRandomVarianceToTwoCoords:
 	push {r4,r6,r7,lr}
 	push {r0-r3}
@@ -27437,6 +27511,11 @@ loc_801C9A0:
 	pop {pc}
 	thumb_func_end sub_801C984
 
+// symdb: Compares two target byte fields of a struct against their "current" copies and, whenever they differ, updates the copy and raises a notification event (6 for the first field, 0x1A for the second) via sub_801C9C8.
+// symdb: void sub_801C9A4(struct* r5); // r4, r6, r7, r10 also live on entry (passed through to
+// symdb: sub_801C9C8); returns nothing meaningful in r0-r3; flags and r0/r1 reflect the final
+// symdb: compare/callee call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/syncCurrentFieldsAndNotify_801C9A4.yaml
 	thumb_local_start
 syncCurrentFieldsAndNotify_801C9A4:
 	push {lr}
@@ -28082,6 +28161,11 @@ off_801CE5C:
 	.word event_raiseFlag8000AndDispatch_801CEFA+1
 	thumb_func_end sub_801CE28
 
+// symdb: Ticks a staged screen fade-out, dropping the fade parameter by 0x20 each step until the work block advances to state 4.
+// symdb: void sub_801CE6C(u8* work /* r5 */); calls sub_802FE7A(0, 0x40, 0xE0 - 0x20*work[7], work[6]);
+// symdb: returns r0 = step counter (0 on finishing tick); preserves r4-r7; c/v from `cmp counter,#5`, nz
+// symdb: from `movs r0,#0` only on the finishing tick
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/screenFadeOutStepTick_801CE6C.yaml
 	thumb_local_start
 screenFadeOutStepTick_801CE6C:
 	push {lr}
@@ -28146,6 +28230,10 @@ locret_801CED0:
 	pop {pc}
 	thumb_func_end sub_801CE92
 
+// symdb: One step of a multi-frame task that gradually clears a slice of an event flag word, finishing the task once all slices are done.
+// symdb: void sub_801CED2(taskState in r5); clobbers r0-r3 and flags; r4-r7 preserved; returns with r0 =
+// symdb: step counter (or 0xC when finished) and NZ/C/V from the cmp r0,#5 / final strb
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/flags_clearWordSlicesTaskStep_801CED2.yaml
 	thumb_local_start
 flags_clearWordSlicesTaskStep_801CED2:
 	push {lr}
@@ -29497,6 +29585,10 @@ byte_801D9B4:
 	.byte 0xB3, 0xD2, 0xB5, 0xD2
 	thumb_func_end sub_801D814
 
+// symdb: Per-frame battle-scene setup — queues the battle scene's graphics transfers, sets a render-info value, and refreshes the stored player battle object pointer.
+// symdb: void sub_801DA24(void); /* r10 = toolkit base in, clobbers r0-r2, lr; no meaningful outputs (c/v
+// symdb: flag residue only) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_sceneFrameSetup_801DA24.yaml
 	thumb_func_start battle_sceneFrameSetup_801DA24
 battle_sceneFrameSetup_801DA24:
 	push {lr}

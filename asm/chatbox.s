@@ -107,6 +107,9 @@ byte_803FD94:
 	thumb_func_end chatbox_runScript_803FD78
 
 
+// symdb: Entry stub of the chatbox text-script runner that starts the given script from the top (resume flag cleared) before jumping into the shared runner body.
+// symdb: void chatbox_runScript_803FD9C(TextScriptArchive *archive /*r0*/, u8 scriptIdx /*r1*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_803FD9C.yaml
 	thumb_func_start chatbox_runScript_803FD9C
 chatbox_runScript_803FD9C: // (TextScriptArchive *archive, u8 scriptIdx) -> void
 	push {r4,r5,lr}
@@ -175,6 +178,10 @@ off_803FE04:
 	thumb_func_end chatbox_runScript_803FDA4
 
 
+// symdb: Entry thunk for the chatbox script runner — resets the runner's "done" flag and tail-jumps into the shared script-execution loop at loc_803FE14.
+// symdb: chatbox_runScriptFromStart_803FE08(TextScriptArchive *archive /*r0*/, u8 scriptIdx /*r1*/);
+// symdb: clobbers r0-r4,lr,NZCV; preserves r6,r7,r10; returns runner state in r5,r6,r7 (per contract)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_803FE08.yaml
 	thumb_func_start chatbox_runScript_803FE08
 chatbox_runScript_803FE08: // (TextScriptArchive *archive, u8 scriptIdx) -> void
 	push {r4,r5,lr}
@@ -657,6 +664,9 @@ Flags804014C:
 	.word 0x138
 	thumb_func_end chatbox_interpreteAndDrawDialogChar_1
 
+// symdb: While the chatbox is printing text, skip to the next text-print phase when B is held, A is pressed, or the text speed is instant (0).
+// symdb: chatbox_step_t chatbox_checkAdvanceTextPrint(chatbox_t *r5 /* state, in r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_checkAdvanceTextPrint_8040154.yaml
 	thumb_local_start
 chatbox_checkAdvanceTextPrint_8040154: // (unk) -> unk
 	push {lr}
@@ -3745,6 +3755,10 @@ off_80417A0:
 	.word off_8043C64
 	thumb_func_end chatbox_8041774
 
+// symdb: Processes one 4-byte chatbox script entry — dispatches the byte at offset 3 as a script ID to the chatbox config handler, or advances the script cursor past a 0xFF end-of-entry marker.
+// symdb: Next chatbox_stepScriptEntry(void); /* in: r4 = pointer to current script entry; out: r0 = 1
+// symdb: always, flags set, r4 = advanced cursor on the 0xFF path, r2/r3 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepScriptEntry_80417A4.yaml
 	thumb_local_start
 chatbox_stepScriptEntry_80417A4:
 	push {lr}
@@ -4807,6 +4821,10 @@ loc_8041EE2:
 	.balign 4, 0x00
 	thumb_func_end chatbox_8041EB0
 
+// symdb: Chatbox script command that requests a fixed overworld player animation (operand byte at script+2) and stores the player's byte 0x14 into the chatbox work area.
+// symdb: void chatbox_cmd_playerFixedAnim(ScriptCtx* r4, Chatbox* r5, ? r6, Toolkit* r10); returns r0=0,
+// symdb: r4=script+3, r1=sub_809E14C result, r7=player object
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_cmd_playerFixedAnim_8041EE8.yaml
 	thumb_local_start
 chatbox_cmd_playerFixedAnim_8041EE8:
 	push {lr}
@@ -4840,6 +4858,10 @@ chatbox_8041F10:
 	pop {pc}
 	thumb_func_end chatbox_8041F10
 
+// symdb: Text-script opcode that waits until the player's overworld sprite animation step finishes before advancing the script cursor.
+// symdb: int chatbox_waitPlayerFrameStep(int* scriptCursor /*r4*/); returns 1 to advance, 0 to retry;
+// symdb: sets NZ from result, C/V from the cursor += 2 add on the advance path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_scriptWaitPlayerFrameStep_8041F1C.yaml
 	thumb_local_start
 chatbox_scriptWaitPlayerFrameStep_8041F1C:
 	push {lr}
@@ -4864,6 +4886,13 @@ loc_8041F3C:
 	.balign 4, 0x00
 	thumb_func_end chatbox_scriptWaitPlayerFrameStep_8041F1C
 
+// symdb: Chatbox script opcode handler that sets chatbox flag 0x0001, copies the script counter into the overworld player's text-state field, then advances the script cursor by 2 bytes and reports success.
+// symdb: int chatbox_8041F44(void); // called with r4 = chatbox script cursor (byte ptr, advanced by 2),
+// symdb: // r5 = chatbox state struct ptr (read [r5+0x3C] counter, [r5+0x3E] flags), // r10 = toolkit
+// symdb: (follows oToolkit_GameStatePtr -> oGameState_OverworldPlayerObjectPtr); // returns r0 = 0, r4
+// symdb: advanced by 2, N/Z cleared, C/V from the cursor add. // r1, r3, r6, r7, lr are
+// symdb: clobbered/scratch; r5, r6 preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_scriptStepSyncPlayerTextState_8041F44.yaml
 	thumb_local_start
 chatbox_scriptStepSyncPlayerTextState_8041F44:
 	push {lr}
@@ -5318,6 +5347,11 @@ off_80422A4:
 	.word chatbox_8042370+1
 	thumb_func_end chatbox_FD_sound
 
+// symdb: Plays the 16-bit sound effect id stored at the chatbox script's current cue record and advances the script pointer past it.
+// symdb: Next chatbox_PlayScriptSoundCue(void); reads r4 = pointer to a 4-byte cue record (bytes 2-3 =
+// symdb: sound id, little-endian); returns r0 = 1, advances r4 by 4; flags N/Z from r0=1, C/V from the r4
+// symdb: += 4 add; preserved r2 r3 r5 r6 r7 r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_PlayScriptSoundCue_80422D4.yaml
 	thumb_local_start
 chatbox_PlayScriptSoundCue_80422D4:
 	push {lr}
@@ -5331,6 +5365,10 @@ chatbox_PlayScriptSoundCue_80422D4:
 	pop {pc}
 	thumb_func_end chatbox_PlayScriptSoundCue_80422D4
 
+// symdb: Chatbox script command handler that plays the music track given as a u16 operand and advances the script pointer.
+// symdb: Next chatbox_cmdPlayMusic(u8** r4_scriptPtr); returns r0 = 1 always; clobbers r0, r1, lr;
+// symdb: preserves r2, r3, r5, r6, r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_cmdPlayMusic_80422E8.yaml
 	thumb_local_start
 chatbox_cmdPlayMusic_80422E8:
 	push {lr}
@@ -5344,6 +5382,10 @@ chatbox_cmdPlayMusic_80422E8:
 	pop {pc}
 	thumb_func_end chatbox_cmdPlayMusic_80422E8
 
+// symdb: Chatbox script opcode handler that clears chatbox status flag 0x40 and resumes script execution.
+// symdb: void chatbox_scriptOpClearFlag40(u8* scriptPtr in r4); returns Next=1 in r0 (continue script),
+// symdb: r4 = scriptPtr + 2; N/Z set from r0, C/V from the pointer increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_scriptOpClearFlag40_80422FC.yaml
 	thumb_local_start
 chatbox_scriptOpClearFlag40_80422FC:
 	push {lr}
@@ -5355,6 +5397,10 @@ chatbox_scriptOpClearFlag40_80422FC:
 	.balign 4, 0x00
 	thumb_func_end chatbox_scriptOpClearFlag40_80422FC
 
+// symdb: One chatbox state-machine step: sets chatbox flag 0x40, bumps the caller's state pointer by 2 bytes, and reports 1.
+// symdb: int chatbox_stateSetFlag40Advance(void) /* r1,r4,r5 in; r4 is a state cursor advanced by 2; r1
+// symdb: preserved; returns r0=1; N/Z set from 1, C/V from the r4+=2 add */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stateSetFlag40Advance_804230C.yaml
 	thumb_local_start
 chatbox_stateSetFlag40Advance_804230C:
 	push {lr}
@@ -5595,6 +5641,10 @@ loc_80424B6:
 	.balign 4, 0x00
 	thumb_func_end chatbox_804247C
 
+// symdb: Chatbox text-script action for shop counters — closes the chatbox and launches the shop scripted at this step, once.
+// symdb: void chatbox_80424BC(void) // r4 = script step context ([r4+2] = shop id), r5 = chatbox state
+// symdb: ([r5+4] = script step state byte); returns r0 = 0; NZ set (Z=1), C/V as left by prior ops
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_textScriptAction_openShop_80424BC.yaml
 	thumb_local_start
 chatbox_textScriptAction_openShop_80424BC:
 	push {lr}
@@ -10547,6 +10597,10 @@ chatbox_clear_eFlags2009F38:
 	thumb_func_end chatbox_clear_eFlags2009F38
 
 
+// symdb: Reads the current state of one or more bits of the chatbox/cutscene event flag word (eFlags2009F38) and returns it with NZ set so callers can branch on the result.
+// symdb: int chatbox_testFlags(int flagBits) // r0 in: bit mask; r0 out: flagBits & eFlags2009F38; NZ
+// symdb: from result; r1 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_mask_eFlags2009F38.yaml
 	thumb_func_start chatbox_mask_eFlags2009F38
 chatbox_mask_eFlags2009F38: // (int flag) -> int
 	push {r1}

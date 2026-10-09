@@ -2,6 +2,10 @@
 // (int chip_idx) -> ChipData*
 	thumb_func_start getChip8021DA8
 // exe6g: 8021eb8	
+// symdb: Returns a pointer to the 44-byte chip data record for a given chip ID in the static chip database (206 entries).
+// symdb: ChipData* battle_getChipData_8021DA8(int which_chip /* r0 */); sets c/v (and nz) from the final
+// symdb: address ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getChip8021DA8.yaml
 getChip8021DA8: // (which_chip: i32) -> *const ChipData
 	ldr r1, off_8021AB0 // =ChipDataArr_8021DA8 // [*const ChipData; 206]
 	mov r2, #44
@@ -42,6 +46,11 @@ loc_8021ACC:
    preserves: lr
    clobbers: r2
    ignores: r3-r12*/
+// symdb: Splits a packed 18-bit value into its low and high 9-bit halves, returning them in r0 and r1.
+// symdb: u9Pair split9BitsFromBitfield(u32 bitfield) // in: r0 = bitfield, lr = return; out: r0 = low 9
+// symdb: bits (masked with 0x01FF), r1 = bitfield >> 9, r2 = mask word 0xB51001FF; flags NZ set from r0,
+// symdb: C clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/split9BitsFromBitfield_8021AE0.yaml
 	thumb_func_start split9BitsFromBitfield_8021AE0
 split9BitsFromBitfield_8021AE0: // 8021AE0
 	// splits bitfield into lower and upper 9 bits, and returns those in r0, r1

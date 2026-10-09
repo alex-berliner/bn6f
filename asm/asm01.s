@@ -1,4 +1,8 @@
 
+// symdb: Resets the text-printer/chatbox state, clearing its pending word, flags, character slot and both text buffers.
+// symdb: void chatbox_resetPrinterState_801FE00(void); /* preserves incoming r2; returns r3 = ptr to
+// symdb: printer state at 0x2036780; clobbers r0, r1, lr and flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_resetPrinterState_801FE00.yaml
 	thumb_func_start chatbox_resetPrinterState_801FE00
 chatbox_resetPrinterState_801FE00:
 	push {lr}

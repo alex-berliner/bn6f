@@ -20192,6 +20192,10 @@ sub_814D8B0:
 	.thumb
 
 
+// symdb: Trivial wrapper around the GBA BIOS CpuFastSet call (SWI 0xC) that copies or fills a block of words in fast 8-word bursts.
+// symdb: void bios_CpuFastSet_814d8b4(const u32* src, u32* dest, u32 mode) /* r0=src, r1=dest, r2=mode;
+// symdb: clobbers r0-r3, no return */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SWI_CpuFastSet.yaml
 	thumb_func_start SWI_CpuFastSet
 SWI_CpuFastSet: // (src: *const u32, mut_dest: *mut u32, mode: u32) -> ()
 	//   r0	Source address		(must be aligned by 4)
@@ -20204,6 +20208,10 @@ SWI_CpuFastSet: // (src: *const u32, mut_dest: *mut u32, mode: u32) -> ()
 	bx lr
 	thumb_func_end SWI_CpuFastSet
 
+// symdb: BIOS software-interrupt wrapper that invokes the GBIOS CpuSet routine (svc 0xB) to copy or fill memory in 16- or 32-bit units.
+// symdb: void SWI_CpuSet(const void* src /*r0*/, void* dest /*r1*/, int lengthMode /*r2*/) — r0/r1/r2 in,
+// symdb: no return value; r1-r3 pass through unchanged, r0 clobbered by the BIOS call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SWI_CpuSet.yaml
 	thumb_func_start SWI_CpuSet
 SWI_CpuSet: // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	//   r0	Source address		(must be aligned by 4 for 32bit, by 2 for 16bit)

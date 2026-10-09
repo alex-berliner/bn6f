@@ -8001,6 +8001,9 @@ off_81340D8:
 	.word byte_813313C
 	thumb_func_end sub_81340AC
 
+// symdb: Runs an update routine on some battle data, then snaps the sprite of battle struct slot 3 to screen position (0xC0, 3) if that slot is occupied.
+// symdb: void sub_81340DC(void) /* r2,r3 pass through to sprite_setCoordinates; r4-r7 preserved */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81340DC.yaml
 	thumb_local_start
 sub_81340DC:
 	push {r4-r7,lr}

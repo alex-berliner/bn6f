@@ -343,6 +343,11 @@ sub_800286C:
 	mov pc, lr
 	thumb_func_end sub_800286C
 
+// symdb: Ensures an object's current animation frame's tile graphics are loaded into its VRAM slot, queueing a transfer only when the frame changed.
+// symdb: void sprite_loadAnimFrameTiles_8002874(r5: AnimState *state); // preserves r4-r7, clobbers
+// symdb: r0-r2/r3/lr, returns flags C/V from the frame-equality compare (or from
+// symdb: QueueEightWordAlignedGFXTransfer on the upload path)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_loadAnimFrameTiles_8002874.yaml
 	thumb_func_start sprite_loadAnimFrameTiles_8002874
 sprite_loadAnimFrameTiles_8002874:
 	push {r5,lr}
@@ -368,6 +373,10 @@ dword_8002898:
 	.word 0x6010000
 	thumb_func_end sprite_loadAnimFrameTiles_8002874
 
+// symdb: Clears the sprite object counter and marks the whole 0x388-entry object table at dword_200A890 as unused (0xFFFFFFFF), likely during sprite subsystem init/reset.
+// symdb: void sprite_initObjectPool_800289C(int unused_r3); // r3 passed in but preserved/unused; returns
+// symdb: flags from WordFill (v set, nz/c clobbered), r2 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_resetObjVars_800289C.yaml
 	thumb_func_start sprite_resetObjVars_800289C
 sprite_resetObjVars_800289C:
 	push {lr}
@@ -1247,6 +1256,8 @@ sprite_clearFinalPalette:
 
 // symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
 
+// symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
+
 // symdb: void sprite_getFrameParameters(ObjectHeader* header /* r5 */) — out: r0 = attribute byte
 // symdb: (sprite+2, with 0xC0 flip bits cleared when flag byte nonzero), r1 = r2 = frame/tile index byte
 // symdb: (sprite+0), r3 = sprite data address; flags out: c = 1, v = 0, nz per the flag byte at sprite+1.
@@ -1420,6 +1431,10 @@ sub_8002EBE:
 	mov pc, lr
 	thumb_func_end sub_8002EBE
 
+// symdb: Stores a color-shader id into the sprite block selected by an object's high-nibble sprite index.
+// symdb: void sprite_setColorShader(u16 shaderId /*r0*/, ObjectHeader* obj /*r5*/); returns r3 = address
+// symdb: of the affected sprite block, sets nzcv from the final ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setColorShader.yaml
 	thumb_func_start sprite_setColorShader
 sprite_setColorShader:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1493,6 +1508,10 @@ loc_8002F06:
 	mov pc, lr
 	thumb_func_end sprite_setMosaicSize
 
+// symdb: Clears the mosaic bit (0x10) in an object's sprite flag byte, disabling the mosaic effect on that object's sprite.
+// symdb: void sprite_clearMosaic(ObjectHeader* obj /* r5 */) — outputs r0 = 0x10 (mask), r1 = updated
+// symdb: flag byte, r3 = sprite struct address, c/v set by the address computation, nz clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearMosaic.yaml
 	thumb_func_start sprite_clearMosaic
 sprite_clearMosaic:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]

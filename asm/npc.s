@@ -1439,6 +1439,12 @@ NPCCommand_enable_npc_interaction:
 	thumb_local_start
 // 0x0e
 // disable NPC interaction (talking to the NPC)
+// symdb: Overworld NPC script opcode that sets the NPC's "disable interaction" flag so the player can no longer talk to/interact with that NPC, then advances the script pointer.
+// symdb: void NPCCommand_disable_npc_interaction(     OverworldNPCObject* r5 /* NPC object */,     u32&
+// symdb: r6             /* script instruction pointer, post-incremented */,     void* lr            /*
+// symdb: return address, tail-jumped */ ) /* outputs: r0 = flag bit (1), r1 = updated flags, r6 = next
+// symdb: instruction index; NZCV set from the r6 increment (add #1), r5/lr preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_disable_npc_interaction.yaml
 NPCCommand_disable_npc_interaction:
 	mov r0, #OW_NPC_UNK_FLAGS_60_DISABLE_INTERACTION
 	ldr r1, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -1506,6 +1512,10 @@ NPCCommand_pause:
 
 // byte1 - hop param base
 // byte2 - hop param delta
+// symdb: Overworld NPC script "hop" command — reads speed/distance operands and starts the NPC on a hop/leap action.
+// symdb: void NPCCommand_init_hop(NPC* r5, const u8* r6 /* script ptr */, ...); returns r0 = result of
+// symdb: the script-disable call, r6 advanced by 3, NZC set from ADD r6,#3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_init_hop.yaml
 NPCCommand_init_hop:
 	push {lr}
 	ldrb r0, [r6,#1]
@@ -1537,6 +1547,11 @@ NPCCommand_face_player_when_interacted:
 	thumb_local_start
 // 0x13
 // npc does not face the player when the player interacts with this NPC
+// symdb: Overworld NPC script command that marks the NPC so it does not turn to face the player when talked to, then advances the script.
+// symdb: Next NPCCommand_do_not_face_player_when_interacted(void) /* r5 = overworld NPC object pointer
+// symdb: (in), r6 = script/pc counter (in/out),    r0, r1 = scratch (out); NZCV set by the r6 increment;
+// symdb: returns via lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_do_not_face_player_when_interacted.yaml
 NPCCommand_do_not_face_player_when_interacted:
 	mov r0, #OW_NPC_UNK_FLAGS_60_FACE_PLAYER_WHEN_INTERACTED
 	ldr r1, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -1552,6 +1567,10 @@ NPCCommand_do_not_face_player_when_interacted:
 // hword1 - x coordinate
 // hword3 - y coordinate
 // hword5 - z coordinate
+// symdb: NPC script command that teleports the NPC to an X/Y/Z position given by three halfword operands in the script.
+// symdb: void NPCCommand_set_coords(OverworldNPCObject* npc /*r5*/, NPCScriptCursor* cursor /*r6*/);
+// symdb: returns updated cursor in r6 and sets flags from the +7 pointer advance
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_coords.yaml
 NPCCommand_set_coords:
 	push {lr}
 
@@ -1580,6 +1599,11 @@ NPCCommand_set_coords:
 // byte1 - direction to move npc in
 // byte2 - speed of movement
 // byte3 - distance of movement
+// symdb: Overworld NPC script command handler that starts an NPC moving in a direction at a given speed for a given distance.
+// symdb: void npc_scriptCmd_moveInDirection(OverworldNPCObject *npc /*r5*/, const u8 *script /*r6*/);
+// symdb: returns updated script pointer in r6 (past opcode + 3 param bytes), last parameter byte in r2,
+// symdb: ADDS flags (nz c) from r6+4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_move_in_direction.yaml
 NPCCommand_move_in_direction:
 	push {lr}
 
@@ -1719,6 +1743,10 @@ NPCCommand_set_layer_priority_override_to_3:
 // but have overlapping OAMs which can be removed to
 // show a different resulting sprite
 // word1 - bitfield of OAM pieces indicating which OAM pieces to show and hide
+// symdb: NPC script opcode handler that reads a 32-bit operand from the script and stores it as the NPC's hidden OAM pieces value.
+// symdb: Next npcScriptCmd_SetHiddenOAMPieces(NPCObject* npc /* r5 */, u8* scriptPtr /* r6 */); returns
+// symdb: operand in r0, scriptPtr advanced by 5 in r6, flags set by the pointer increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_write_hidden_oam_pieces.yaml
 NPCCommand_write_hidden_oam_pieces:
 	push {lr}
 	add r0, r6, #1
@@ -1769,6 +1797,11 @@ NPCCommand_clear_individual_hidden_oam_piece:
 	thumb_local_start
 // 0x1f
 // disable the current NPC's collision (NPC becomes passable)
+// symdb: NPC script opcode that sets the NPC's "no collision" flag so the player can walk through it, then advances the script program counter.
+// symdb: (r5 = OverworldNPCObject *, r6 = script PC (updated in place), lr = return address) -> r6 = r6 +
+// symdb: 1; flags nz/c/v updated by the final "adds r6, #1" (as if "adds r6, r6, #1"); r0 and r1 are
+// symdb: scratch outputs; no other registers are touched.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_disable_collision.yaml
 NPCCommand_disable_collision:
 	mov r0, #OW_NPC_UNK_FLAGS_60_DISABLE_COLLISION
 	ldr r1, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -1814,6 +1847,10 @@ NPCCommand_give_attached_shadow:
 // 0x22
 // give a shadow for the current NPC, but do not attach it
 // so that the shadow does not move with the NPC's z coordinate
+// symdb: NPC script command that detaches the NPC's shadow sprite, flagging the object and refreshing its shadow setup.
+// symdb: void NPCCommand_give_detached_shadow(OverworldNPCObject *npc /*r5*/, int *scriptPos /*r6*/); //
+// symdb: clobbers r0,r1,r3, sets NZCV from the scriptPos increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_give_detatched_shadow.yaml
 NPCCommand_give_detatched_shadow:
 	push {lr}
 	ldr r0, =(OW_NPC_UNK_FLAGS_60_SHADOW_FLAG_0x100 | OW_NPC_UNK_FLAGS_60_SHADOW_FLAG_0x80)
@@ -1931,6 +1968,10 @@ NPCCommand_disable_collision_alternate:
 // 0x28 hword1
 // play sound effect
 // hword1 - sound effect to play
+// symdb: NPC script opcode handler that reads a halfword sound-effect id from the script and plays it.
+// symdb: void NPCCommand_play_sound(u32 scriptPos /* r6 */); out: r0 = sound id (whatever PlaySoundEffect
+// symdb: leaves), r6 = scriptPos + 3, nzcv set by "adds r6, #3"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_play_sound.yaml
 NPCCommand_play_sound:
 	push {lr}
 	add r0, r6, #1
@@ -2137,6 +2178,10 @@ NPCCommand_remove_transform:
 // set the alpha for the current npc's sprite
 // but doesn't actually work (inherent to sprite_setAlpha_8002c7a)
 // byte1 - alpha to set (range 0-15). if byte1 is zero, then disable alpha
+// symdb: NPC script command handler that sets (or clears) the NPC sprite's alpha blending level from the command's parameter byte.
+// symdb: void NPCCommand_set_alpha(r5 npcCtx?, r6 cmdPtr /*in/out*/, r7, r10); returns r6 advanced by 2;
+// symdb: clobbers r0-r3, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_alpha.yaml
 NPCCommand_set_alpha:
 	push {lr}
 	bl sprite_disableAlpha
@@ -2154,6 +2199,10 @@ NPCCommand_set_alpha:
 // run a secondary NPC script
 // called separately from the primary NPC script
 // word1 - script to run
+// symdb: NPC script opcode handler that reads a 32-bit address from the script and stores it as the NPC's secondary script pointer, then skips past the 5-byte instruction.
+// symdb: void npcCmd_setSecondaryScriptPtr(OverworldNPCObject* npc /*r5*/, u8* scriptCursor /*r6*/);
+// symdb: returns next cursor in r6, flags from the r6+5 increment, r0-r3 as left by ReadNPCScriptWord
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_run_secondary_script.yaml
 NPCCommand_run_secondary_script:
 	push {lr}
 	add r0, r6, #1
@@ -2301,6 +2350,11 @@ NPCCommand_init_native_callback_with_args:
 // byte2 - speed of movement
 // byte3 - amount of movement iterations to do (8 pixels each)
 // destination4 - movement handler to call
+// symdb: NPC script "init movement" command handler — copies direction/speed/distance from the script into the NPC object and reads the command's argument word.
+// symdb: void NPCCommand_init_movement(OverworldNPCObject *npc /* r5 */, const u8 *script /* r6 */) ->
+// symdb: returns r0 = next script word via ReadNPCScriptWord; flags from cmp r6,r0 (nz c v); r1-r3
+// symdb: clobbered by callee, r4 = oOverworldNPCObject_MovementDistanceReload, lr clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_init_movement.yaml
 NPCCommand_init_movement:
 	push {lr}
 	mov r4, #oOverworldNPCObject_LinkRegister
@@ -2623,6 +2677,10 @@ NPCCommand_set_obj_window_mode:
 // 0x47 hword1
 // play music
 // hword1 - music to play
+// symdb: NPC script command that starts playing the music track whose ID is embedded in the script.
+// symdb: void NPCCommand_play_music(u8* scriptPtr /* r6 = current NPC script command pointer */); returns
+// symdb: with r6 advanced by 3 and NZCV set from the pointer add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_play_music.yaml
 NPCCommand_play_music:
 	push {lr}
 	add r0, r6, #1
@@ -2994,6 +3052,9 @@ NPCCommand_jump_if_screen_fade_active:
 	pop {pc}
 	thumb_func_end NPCCommand_jump_if_screen_fade_active
 
+// symdb: Assigns a new script/animation to an overworld NPC and clears its script-run state so it starts fresh.
+// symdb: void npc_setAnimationScript(OverworldNPCObject *npc /*r5*/, const NPCScript *script /*r0*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setNPCScript_809F506.yaml
 	thumb_local_start
 setNPCScript_809F506: // (self: *mut OverworldNPCObject $r5, script: *const NPCScript) -> ()
 	push {lr}
@@ -3186,6 +3247,10 @@ npc_beginChatboxState_809F5FC:
 	pop {pc}
 	thumb_func_end npc_beginChatboxState_809F5FC
 
+// symdb: Puts an overworld NPC back into its standard state after an interaction, restoring its stashed action/movement, reselecting its animation unless flag-gated, and clearing the chat-triggered flag.
+// symdb: void npc_resetToStandardState(OverworldNPCObject *npc /* r5 */); callers also pass r4 and lr (r4
+// symdb: unused here); returns r0 = 0 with Z/N/C/V set by "mov r0,#0"; r4/r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_resetToStandardState_809F612.yaml
 	thumb_local_start
 npc_resetToStandardState_809F612:
 	push {lr}

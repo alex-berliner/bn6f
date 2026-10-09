@@ -4802,6 +4802,10 @@ reqBBS_clearFlag_8140A0C:
 	pop {r4,r5,pc}
 	thumb_func_end reqBBS_clearFlag_8140A0C
 
+// symdb: Bulk-sets the request-board (BBS) event flag ranges in event word 0x16 and always returns success.
+// symdb: void reqBBS_setAllBoardFlags_ADDRESS(void) -> (r0 = 0, flags NZ from r0); clobbers r1-r3;
+// symdb: preserves r4, r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_setFlags_8140A24.yaml
 	thumb_local_start
 reqBBS_setFlags_8140A24:
 	push {lr}

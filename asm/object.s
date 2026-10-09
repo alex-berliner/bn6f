@@ -966,6 +966,10 @@ byte_203CF00_getEntryPtr_800BF5C:
 	mov pc, lr
 	thumb_func_end byte_203CF00_getEntryPtr_800BF5C
 
+// symdb: Clears the fixed 0xA0-byte work buffer at byte_203CF00 by zero-filling it via ZeroFillByWord.
+// symdb: void zeroFill_800BF66(void) — takes nothing; clobbers r0-r1 and flags (delegated to
+// symdb: ZeroFillByWord's return contract); r2/r3 and lr (as pc) are preserved/returned per contract
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_800BF66.yaml
 	thumb_func_start zeroFill_800BF66
 zeroFill_800BF66:
 	push {lr}
@@ -4147,6 +4151,11 @@ loc_800D5E4:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800D5BA
 
+// symdb: Counts how many of the three panels adjacent to a given panel position hold objects belonging to a different alliance (side) than the given one.
+// symdb: int battle_countAdjacentPanelsOfOtherAlliance_800D5F0(u32 position, u32 alliance); // r0 = panel
+// symdb: position, r1 = alliance id; returns count in r0; r1 returns holding the last panel's Alliance
+// symdb: byte, r2/r3 clobbered by the callee; sets c/v from the final adds
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_countAdjacentPanelsOfOtherAlliance_800D5F0.yaml
 	thumb_func_start battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 battle_countAdjacentPanelsOfOtherAlliance_800D5F0:
 	push {r4-r7,lr}
@@ -5048,6 +5057,11 @@ loc_800E494:
 	pop {r4,pc}
 	thumb_func_end sub_800E468
 
+// symdb: Tail-dispatch trampoline that calls one of four battle-object contact handlers selected by an index, passing the object's collision direction and returning the handler's results directly to the caller.
+// symdb: int battle_dispatchObjectContactHandler_800E498(u32 handlerIndex /* r0 */, BattleObject* obj /*
+// symdb: r5 */, ... /* r2, r3 passed through */); // returns whatever the selected handler returns in
+// symdb: r0/r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectContactHandler_800E498.yaml
 	thumb_local_start
 battle_dispatchObjectContactHandler_800E498:
 	push {lr}
@@ -5966,6 +5980,10 @@ sub_800EB18:
 	pop {pc}
 	thumb_func_end sub_800EB18
 
+// symdb: After a collision that flattened a battle object, resets its status effect to the "flattened" state (0x12) unless it already has one of the protected statuses 0x60-0x65, and updates its object flags.
+// symdb: void sub_800EB26(BattleObject *obj /* r5 */) /* leaves r3 = obj->collisionDataPtr, r2/r3
+// symdb: clobbered, c/v set by final cmp */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyFlattenHitStatus_800EB26.yaml
 	thumb_func_start battle_applyFlattenHitStatus_800EB26
 battle_applyFlattenHitStatus_800EB26:
 	push {lr}
@@ -6155,6 +6173,10 @@ GetAllianceDependentPanelParamArgs2:
 	mov pc, lr
 	thumb_func_end GetAllianceDependentPanelParamArgs2
 
+// symdb: Given a battle chip ID, returns the text script holding that chip's name string (navi chips have IDs above 0xFF and use a separate name table) and the ID's low byte.
+// symdb: u8 lowByte selectChipNameScript(u16 chipId /* r0 */) -> r0 = TextScript* (virus or navi chip
+// symdb: name list), r1 = chipId & 0xFF; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/selectVirusOrNaviNamesAndWhich_800EC56.yaml
 	thumb_func_start selectVirusOrNaviNamesAndWhich_800EC56
 selectVirusOrNaviNamesAndWhich_800EC56: // (a1: u16?) -> (Textscript*, u8?)
 	ldr r2, off_800ECEC // =TextScriptVirusChipNames 

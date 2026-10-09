@@ -142,6 +142,9 @@ off_80003CC:
 	.word GeneralLCDStatus_STAT_LYC_
 	thumb_func_end main_awaitFrame
 
+// symdb: Busy-waits until the VBlank flag (bit 0) of the LCD STAT register clears, i.e. blocks the caller until VBlank ends.
+// symdb: void main_waitStatVBlankFlagClear(void); clobbers r0-r2 and NZ flags; no inputs, no return value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/main_pollGeneralLCDStatus_STAT_LYC_.yaml
 	thumb_local_start
 main_pollGeneralLCDStatus_STAT_LYC_: // () -> ()
 	push {lr}

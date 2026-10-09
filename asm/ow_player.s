@@ -1954,6 +1954,11 @@ off_809E060:
 	.word eStruct2000aa0
 	thumb_func_end owPlayer_ClearStateBytes_D_E_F_809E04C
 
+// symdb: Spawns the overworld player object when entering a map and initializes it with the saved player position and facing direction from the game state.
+// symdb: void spawnOWPlayerObjectForEnterMap_809e064(u32 r1, u32 r2, u32 r3, u32 r4, u32 r6, u32 r7,
+// symdb: Toolkit* r10) -> OverworldPlayerObject* r5 (r0-r1 clobbered, NZCV clobbered, r2/r3/r4/r6/r7
+// symdb: preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnOWPlayerObjectForEnterMap_809e064.yaml
 	thumb_func_start spawnOWPlayerObjectForEnterMap_809e064
 spawnOWPlayerObjectForEnterMap_809e064:
 	push {r4,r6,r7,lr}
@@ -2262,6 +2267,10 @@ owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8
 	pop {r7}
 	thumb_func_end owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8
 
+// symdb: Adds the caller's X/Y/Z deltas to the overworld player's position fields in eStruct200ace0.
+// symdb: void owPlayer_offsetPlayerCoordsByDeltas(int dx, int dy, int dz); // in: r0=dx, r1=dy, r2=dz;
+// symdb: out: r3=new Z, NZCV from the Z add; r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_offsetS200ace0Coords_809e1fa.yaml
 	thumb_func_start owPlayer_offsetS200ace0Coords_809e1fa
 owPlayer_offsetS200ace0Coords_809e1fa:
 	push {r7,lr}
@@ -2446,6 +2455,10 @@ GetOWPlayerFacingDirection:
 	mov pc, lr
 	thumb_func_end GetOWPlayerFacingDirection
 
+// symdb: Resets the overworld player navi's sprite transform (horizontal/vertical compress 0x40 each, rotation 0) into eStruct2000aa0.
+// symdb: void owPlayer_resetNaviSpriteTransformDefaults_809e2c2(void); // writes r0=0x40, r1=0x40, r2=0
+// symdb: then tail-calls the generic setter; clobbers r0-r3 and nz flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2.yaml
 	thumb_func_start owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2
 owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2:
 	mov r0, #DEFAULT_OW_PLAYER_NAVI_HORIZONTAL_COMPRESS
@@ -2541,6 +2554,10 @@ sub_809E30C:
 	mov pc, lr
 	thumb_func_end sub_809E30C
 
+// symdb: Clears the overworld player struct's byte at 0x2000AA4 (the eStruct2000aa0 Sprite_04 field) and returns 0.
+// symdb: void owPlayer_zeroS2000AA0Param0x4_809e312(void); // returns r0 = 0, r3 = &eStruct2000aa0, Z set
+// symdb: / N clear
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_zeroS2000AA0Param0x4_809e312.yaml
 	thumb_func_start owPlayer_zeroS2000AA0Param0x4_809e312
 owPlayer_zeroS2000AA0Param0x4_809e312:
 	mov r0, #0

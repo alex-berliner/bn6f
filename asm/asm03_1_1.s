@@ -8286,6 +8286,10 @@ off_803CD70:
 	.word TextScriptCommError873B9E0
 	thumb_func_end RunTextScriptCommError_803CD64
 
+// symdb: Wipes the player's key-item inventory and re-grants a fixed starting set (four copies of key item 0x75 and one of key item 0).
+// symdb: void sub_803CD74(void) — reads the toolkit pointer from r10; no return value; clobbers r0-r3,
+// symdb: r12, lr and flags; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/keyItems_ResetInventoryAndGrantScenarioItems_803CD74.yaml
 	thumb_func_start keyItems_ResetInventoryAndGrantScenarioItems_803CD74
 keyItems_ResetInventoryAndGrantScenarioItems_803CD74:
 	push {r4-r7,lr}
@@ -8482,6 +8486,10 @@ SetCurNaviHPToFull:
 	pop {r4-r7,pc}
 	thumb_func_end SetCurNaviHPToFull
 
+// symdb: Computes stat 0x3E of the current PET navi plus a 16-bit counter held by the toolkit, and stores the result into stat 0x42 of that same navi.
+// symdb: void sub_803CED4(r10: toolkit_ptr); /* reads r4/r6/r7 as live regs (preserved), r10 = toolkit
+// symdb: base; returns sum in r2; clobbers r0,r1,r2,r3, flags, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/petnavi_setStat42ToStat3EPlusCounter_803CED4.yaml
 	thumb_func_start petnavi_setStat42ToStat3EPlusCounter_803CED4
 petnavi_setStat42ToStat3EPlusCounter_803CED4:
 	push {r4,r6,r7,lr}
@@ -9625,6 +9633,9 @@ locret_803DE80:
 	.pool
 	thumb_func_end sub_803DE72
 
+// symdb: Resets the eLink/link-battle state block and its side buffers, then stores the caller's state pointer at eLinkState+0x58.
+// symdb: void sub_803DE88(void *statePtr /* r0 */); clobbers r0/r1/nz/c/v, preserves r2-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eLinkState_ResetForNewUse_803DE88.yaml
 	thumb_func_start eLinkState_ResetForNewUse_803DE88
 eLinkState_ResetForNewUse_803DE88:
 	push {r4-r7,lr}
@@ -11198,6 +11209,9 @@ startScreen_IsTitleAnimationFinished_803E928:
 	mov pc, lr
 	thumb_func_end startScreen_IsTitleAnimationFinished_803E928
 
+// symdb: Trivial helper that unconditionally sets the CPU flags as "zero" (Z set, N clear), letting callers take a "zero/equal" branch on purpose.
+// symdb: void startScreen_TstZero(void) // in: lr only; out: Z=1, N=0 (C, V unchanged); clobbers r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_TstZero.yaml
 	thumb_func_start startScreen_TstZero
 startScreen_TstZero: // () -> !zf
 	mov r0, #0
@@ -13915,6 +13929,10 @@ loc_803FAF6:
 	pop {r4-r7,pc}
 	thumb_func_end rng_FillSeedBuffer_803FAEE
 
+// symdb: Writes the caller's value into the save work buffer at dword_20067C0 and flushes the 0x80-byte buffer to the Game Pak save area at 0xE007F80.
+// symdb: void save_CommitWorkBufferToGamePak_803FB04(u32 value /* r0, stored as first word of the save
+// symdb: block */); all registers r0-r7 preserved (push {r0-r7,lr} / pop {r0-r7,pc}); flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/save_CommitWorkBufferToGamePak_803FB04.yaml
 	thumb_local_start
 save_CommitWorkBufferToGamePak_803FB04:
 	push {r0-r7,lr}

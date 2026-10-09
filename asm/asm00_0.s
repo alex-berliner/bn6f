@@ -412,6 +412,11 @@ off_8000804:
 	.word loc_80007E8+1
 	thumb_func_end sub_80007BE
 
+// symdb: Appends a 16-byte sound/SSEQ request to the pending-request queue at dword_200A490, dropping it if the queue is full (32 entries).
+// symdb: void sound_8000808(u32 word0 /*r0*/, u32 word1 /*r1*/, u32 word2 /*r2*/, u32 word3 /*r3*/) —
+// symdb: r0-r3 form the 4-word request; flags returned are those of CMP count,#0x20 when full, else of
+// symdb: the address-computation ADD; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_8000808.yaml
 	thumb_local_start
 sound_8000808: // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	push {r4-r7,lr}
@@ -544,6 +549,9 @@ off_80008B0:
 /// Size is in r1, in bytes.
 /// Does a backwards fill for speed
 /// tags: "#mod_memory, "
+// symdb: Fills a memory range with zero bytes, one byte at a time, walking backwards from the end.
+// symdb: void ZeroFillByByte(void* dest /*r0*/, u32 numBytes /*r1*/); flags out from the final decrement
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFillByByte.yaml
 	thumb_func_start ZeroFillByByte
 ZeroFillByByte: // (mut_mem: *mut (), num_bytes: usize) -> ()
 	push {r0-r2,lr}
@@ -2008,6 +2016,9 @@ sub_80010A4:
 	thumb_func_end sub_80010A4
 
 
+// symdb: Returns the navi currently selected on the PET, leaving the game state pointer in r3.
+// symdb: u8 GetCurPETNavi(void); inputs r10 (toolkit), lr; outputs r0 (navi id), r3 (game state pointer)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetCurPETNavi.yaml
 	thumb_func_start GetCurPETNavi
 GetCurPETNavi: // () -> u8
 	mov r3, r10
@@ -2678,6 +2689,10 @@ sub_80014D4:
 /* (r0:uint * src, r1:uint * dest, r2:int size) -> void
    preserves: r0-r7,lr
    ignores: r4-r12*/
+// symdb: Word-aligned memmove — copies a byte count of words from source to destination, copying backwards when the regions overlap with destination above source.
+// symdb: void memmoveWords(u32* src /*r0*/, u32* dst /*r1*/, s32 sizeBytes /*r2*/) — preserves r0-r7 and
+// symdb: lr, sets NZCV per the final loop-counter subtraction
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyWords_80014EC.yaml
 	thumb_func_start copyWords_80014EC
 copyWords_80014EC: // 80014EC
 	push {r0-r7,lr}
@@ -2708,6 +2723,9 @@ copyWords_80014EC: // 80014EC
 	thumb_func_end copyWords_80014EC
 
 /// tags: "#mod_rng, "
+// symdb: Resets the primary RNG seed variable to its fixed initial value 0xA338244F.
+// symdb: void SeedRNG(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SeedRNG.yaml
 	thumb_func_start SeedRNG
 SeedRNG: // () -> ()
 	ldr r0, rng_8001594 // =0xa338244f
@@ -2717,6 +2735,10 @@ SeedRNG: // () -> ()
 	thumb_func_end SeedRNG
 
 /// tags: "#mod_rng, "
+// symdb: Advances the global primary RNG seed and returns the new 32-bit value.
+// symdb: (void) -> u32 nextSeed; preserves r7; returns r0 = new seed (r1/r2/r3 also hold the XOR
+// symdb: constant, seed<<1, seed>>31); nz from final EOR, c/v from the "+1" add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetRNG.yaml
 	thumb_func_start GetRNG
 GetRNG: // () -> u32?
 	push {r7,lr}
@@ -2755,6 +2777,10 @@ GetPositiveSignedRNG:
 	thumb_func_end GetPositiveSignedRNG
 
 /// tags: "#mod.rng, "
+// symdb: Advances the secondary RNG seed one step and stores it back to eSecondaryRngSeed.
+// symdb: void GetRNGSecondary(void); /* leaves new seed in r0, intermediates in r1-r3, sets nz/c/v from
+// symdb: the add and eor */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetRNGSecondary.yaml
 	thumb_func_start GetRNGSecondary
 GetRNGSecondary: // () -> void
 	push {r7,lr}
@@ -2912,6 +2938,11 @@ byte_8001618:
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
 	thumb_func_end sub_80015FC
 
+// symdb: Given a map group and map number, fetches that map's byte entry from either the real-world or internet group table and passes it to sub_80015FC (likely the map loader/setup).
+// symdb: void map_lookupMapIdByGroupAndNumber_8001708(u8 map_group /*r0*/, u8 map_number /*r1*/); tail-
+// symdb: calls sub_80015FC(u8 mapId /*r0*/), so r0 out is sub_80015FC's return value; also clobbers r1,
+// symdb: lr and returns sub_80015FC's flags/r2/r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_lookupMapIdByGroupAndNumber_8001708.yaml
 	thumb_func_start map_lookupMapIdByGroupAndNumber_8001708
 map_lookupMapIdByGroupAndNumber_8001708: // (map_group: u8, map_number: u8) -> ()
 	push {lr}
@@ -3001,6 +3032,10 @@ off_8001774:
 	.word ColorSpecialEffectsSelection
 	thumb_func_end render_800172C
 
+// symdb: Writes a halfword LCD control value (DISPCNT-style) into the current frame's render info struct.
+// symdb: void SetRenderInfoLCDControl(u16 lcdControl /*r0*/, r10 = toolkit); out: r1 =
+// symdb: toolkit->renderInfo pointer
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetRenderInfoLCDControl.yaml
 	thumb_func_start SetRenderInfoLCDControl
 SetRenderInfoLCDControl: // (a_00: u16) -> ()
 	mov r1, r10
@@ -3009,6 +3044,10 @@ SetRenderInfoLCDControl: // (a_00: u16) -> ()
 	mov pc, lr
 	thumb_func_end SetRenderInfoLCDControl
 
+// symdb: Returns the u16 LCD control value (DISPCNT) recorded in the current frame's render info block.
+// symdb: u16 GetRenderInfoLCDControl(void) — reads toolkit via r10 (frame pointer), returns value in r0;
+// symdb: clobbers r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetRenderInfoLCDControl.yaml
 	thumb_func_start GetRenderInfoLCDControl
 GetRenderInfoLCDControl: // () -> u16
 	mov r1, r10
@@ -3017,6 +3056,9 @@ GetRenderInfoLCDControl: // () -> u16
 	mov pc, lr
 	thumb_func_end GetRenderInfoLCDControl
 
+// symdb: Zeros the per-frame sprite/render counters in the toolkit's RenderInfo block so each frame's render-list build starts from a clean state.
+// symdb: void renderInfo_clearEntryCounts_8001788(void); // r10 = toolkit pointer, no return value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/renderInfo_8001788.yaml
 	thumb_func_start renderInfo_8001788
 renderInfo_8001788: // () -> ()
 	mov r0, r10
@@ -3033,6 +3075,10 @@ renderInfo_8001788: // () -> ()
 	mov pc, lr
 	thumb_func_end renderInfo_8001788
 
+// symdb: Clears the halfword counter at offset 2 of the current toolkit's render info block.
+// symdb: u32 renderInfo_clearCounter_80017A0(Toolkit *toolkit /* r10 */); // returns r1 = 0, clobbers r0
+// symdb: and nz flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/renderInfo_80017A0.yaml
 	thumb_func_start renderInfo_80017A0
 renderInfo_80017A0: // () -> ()
 	mov r0, r10

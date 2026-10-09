@@ -160,6 +160,10 @@ off_80A4AAC:
 	.word sub_80A4BD4+1
 	thumb_func_end sub_80A4A98
 
+// symdb: Sets a battle object's state to 4, snapshots its current tile coordinates into its position fields, and continues with the follow-up state handler.
+// symdb: void battle_objectEnterState4LatchTilePos(BattleObj* r5) — r5 in only; r0-r3 and flags
+// symdb: clobbered, r4/r6-r8/r10 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectEnterState4LatchTilePos_80A4AB8.yaml
 	thumb_local_start
 battle_objectEnterState4LatchTilePos_80A4AB8:
 	push {lr}
@@ -293,6 +297,11 @@ sub_80A4BD4:
 	pop {pc}
 	thumb_func_end sub_80A4BD4
 
+// symdb: Tail-call dispatcher that runs one of three phase handlers of the menu object in r5, selected by the pre-multiplied phase byte at r5+8.
+// symdb: menu_stateDispatch(void) — no direct args; object pointer is fixed in R5; passes R0 = handler's
+// symdb: own table entry (thumb address) and R1 = raw phase byte to the selected handler and returns its
+// symdb: result verbatim.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_stateDispatch_80A4BDC.yaml
 	thumb_func_start menu_stateDispatch_80A4BDC
 menu_stateDispatch_80A4BDC:
 	push {lr}
@@ -343,6 +352,10 @@ sub_80A4BFC:
 	pop {pc}
 	thumb_func_end sub_80A4BFC
 
+// symdb: Ticks a sprite object's animation, resetting byte +8 to 8 when the current frame carries the 0x80 parameter flag.
+// symdb: void sub_80A4C46(int unused /*r4*/, SpriteObj* sprite /*r5*/); returns sprite_update's flags and
+// symdb: r0-r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_tickWithFlagReset_80A4C46.yaml
 	thumb_local_start
 sprite_tickWithFlagReset_80A4C46:
 	push {lr}
