@@ -27,6 +27,9 @@ off_803FD38:
 	thumb_func_end chatbox_uncompMapTextArchives_803FD08
 
 
+// symdb: LZ77-decompresses the current map's compressed text archive (entry 1) into the shared decompression buffer.
+// symdb: void chatbox_uncompMapTextArchive(void) /* always returns r0 = 0; r4-r7 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_uncompMapTextArchives_803FD3C.yaml
 	thumb_func_start chatbox_uncompMapTextArchives_803FD3C
 chatbox_uncompMapTextArchives_803FD3C: // () -> int
 	push {r4-r7,lr}
@@ -44,6 +47,9 @@ off_803FD50:
 	thumb_func_end chatbox_uncompMapTextArchives_803FD3C
 
 
+// symdb: LZ77-decompresses the text archive chosen for the current map into the shared decompression buffer at 0x2033400 and returns 0.
+// symdb: void chatbox_uncompMapTextArchives_803FD54(void); // always returns 0 in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_uncompMapTextArchives_803FD54.yaml
 	thumb_local_start
 chatbox_uncompMapTextArchives_803FD54: // () -> int
 	push {r4-r7,lr}
@@ -2806,6 +2812,10 @@ Flags80410F4:
 	.word FLAGS_3E_HIDE_CHATBOX
 	thumb_func_end chatbox_8041090
 
+// symdb: Clears a chatbox's "window open" and "text finished" flags, resets its open state to fully closed (3), and returns 1.
+// symdb: int chatbox_closeAndReset(Chatbox* r5) // inputs: r1, r5, lr; outputs: r0 = 1, NZ from r0, r1
+// symdb: preserved; C/V untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_closeAndReset_80410F8.yaml
 	thumb_local_start
 chatbox_closeAndReset_80410F8:
 	push {lr}
@@ -3009,6 +3019,10 @@ chatbox_8041200:
 	pop {pc}
 	thumb_func_end chatbox_8041200
 
+// symdb: Chatbox script command handler that sets an event flag from the flag table and advances the script pointer to the next command.
+// symdb: void chatbox_cmdSetEventFlag(void* record /* r4 */, void* chatboxState /* r5 */); clobbers r0,
+// symdb: r1, r3, r4, lr and NZCV via SetEventFlag and the pointer bump
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_cmdSetEventFlag_8041218.yaml
 	thumb_local_start
 chatbox_cmdSetEventFlag_8041218:
 	push {lr}
@@ -5886,6 +5900,10 @@ chatbox_80426D4:
 	pop {pc}
 	thumb_func_end chatbox_80426D4
 
+// symdb: Chatbox step handler that raises chatbox flag 0x1000 and advances the current chatbox state's step pointer by 2, returning 1 to continue.
+// symdb: int chatbox_setFlag0x1000AndAdvanceStep(ChatboxState* state /*r4*/) -> r0 = 1; also clobbers
+// symdb: r0/r1 via call, advances r4 by 2, sets NZ (r0=1) and C/V (from the add)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setFlag0x1000AndAdvanceStep_80426E0.yaml
 	thumb_local_start
 chatbox_setFlag0x1000AndAdvanceStep_80426E0:
 	push {lr}

@@ -816,6 +816,10 @@ locret_809D7C6:
 	pop {pc}
 	thumb_func_end sub_809D7A8
 
+// symdb: After the player finishes interacting with an overworld NPC, checks the NPC's movement flag and, if it is 4, marks the player object with state 8 ("talking to counter NPC").
+// symdb: void sub_809D7C8(OWPlayerObject *r5) // r0 out: NPC movement flag, or 8 when the store happens;
+// symdb: r7 out: NPC object pointer; NZCV out: CMP(4) results, N/Z refreshed by the mov in the store path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_player_setCounterTalkStateAfterNpcInteract_809D7C8.yaml
 	thumb_local_start
 ow_player_setCounterTalkStateAfterNpcInteract_809D7C8:
 	push {lr}
@@ -1246,6 +1250,10 @@ off_809DAF4:
 	.word eStruct200ace0
 	thumb_func_end sub_809D9E0
 
+// symdb: Tests an overworld object's state halfword at +0x4C for bit 0x10 and returns whether it is set.
+// symdb: int overworldObj_testStateBit10(void *obj /* r5 */); // returns 0 or 0x10, sets NZ flags on
+// symdb: result
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/overworldObj_testStateBit10_809DAF8.yaml
 	thumb_local_start
 overworldObj_testStateBit10_809DAF8:
 	mov r3, #0x4c 
@@ -1288,6 +1296,10 @@ loc_809DB4A:
 	pop {pc}
 	thumb_func_end sub_809DB02
 
+// symdb: Returns whether the queued "player advance forward" event request (EVENT_1717_PLAYER_ADVANCE_FORWARD) is set, passing the answer through the condition flags.
+// symdb: bool sub_809DB50(void) // in: nothing (r10/lr unused); out: Z flag cleared = request pending (R0
+// symdb: nonzero), Z flag set = no request (R0 zeroed); R3 passes through untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/event_TestPlayerAdvanceForward_809DB50.yaml
 	thumb_local_start
 event_TestPlayerAdvanceForward_809DB50:
 	push {lr}
@@ -1571,6 +1583,10 @@ byte_809DDB4:
 	]
 	thumb_func_end sub_809DBC4
 
+// symdb: Ticks an overworld player object's 16-bit countdown in Unk_18, and once it expires only reports "not done" while the 0xC00000 status bits of Unk_50 are set.
+// symdb: bool sub_809DDCC(OWPlayerObject *r5); // clobbers r1, r2; sets c/v from the SUBS on the
+// symdb: countdown path, nz from the TST on the status path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_TickCountdownOrWait_809DDCC.yaml
 	thumb_local_start
 owPlayer_TickCountdownOrWait_809DDCC:
 	push {lr}
@@ -1800,6 +1816,11 @@ off_809DF9C:
 	.word off_809DF9C
 	thumb_func_end sub_809DF44
 
+// symdb: Returns whether the overworld player object is still moving, by comparing its current X/Y/Z coordinates against the "next" coordinates it is heading toward.
+// symdb: int owPlayer_isMoving(OWPlayerObject *obj /* r5 */); returns r0 = 1 if any of X vs NextX, Y vs
+// symdb: NextY, Z vs NextZ differ, r0 = 0 if stationary; r1/r2 hold the last compared (cur,next) pair;
+// symdb: C/V reflect the final CMP of that pair (callers branch immediately after)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_isMoving_809DFA0.yaml
 	thumb_local_start
 owPlayer_isMoving_809DFA0:
 	push {lr}
@@ -1861,6 +1882,10 @@ byte_809DFFC:
 	.byte 0x1, 0x3, 0x2, 0x6, 0x4, 0xC, 0x8, 0x9
 	thumb_func_end sub_809DFC0
 
+// symdb: Writes a new value into the overworld player's jumptable index (offset 0x09), unless it currently equals 0x10, in which case the value is parked in the pending slot (offset 0x0b) instead.
+// symdb: void owPlayer_writeJumptableIndexOrPending(u8 value /*r0*/, OWPlayerObject *player /*r5*/);
+// symdb: returns r1 = previous jumptable index; Z/C/V set by CMP old index, 0x10; N likewise
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setJumptableIndex09AndOthers_809e004.yaml
 	thumb_local_start
 owPlayer_setJumptableIndex09AndOthers_809e004:
 	push {lr}
@@ -1909,6 +1934,10 @@ dword_809E048:
 	.word 0xD80
 	thumb_func_end sub_809E01C
 
+// symdb: Zeroes three consecutive state bytes (0xD-0xF) of the overworld player object while leaving the caller's r0/r1 untouched.
+// symdb: void sub_809E04C(void); /* in: none (r0/r1 passed through unchanged); out: none; flags nz
+// symdb: clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_ClearStateBytes_D_E_F_809E04C.yaml
 	thumb_func_start owPlayer_ClearStateBytes_D_E_F_809E04C
 owPlayer_ClearStateBytes_D_E_F_809E04C:
 	push {r0,r1,lr}
@@ -1958,6 +1987,10 @@ sub_809E08A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E08A
 
+// symdb: Sets the "player can move" event flag so the on-map player character is free to walk again after a scripted event takes control away.
+// symdb: void SetPlayerCanMoveEventFlag(void); // in: none (lr only); out: none; clobbers r0, r1, r3, lr,
+// symdb: NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetPlayerCanMoveEventFlag.yaml
 	thumb_func_start SetPlayerCanMoveEventFlag
 SetPlayerCanMoveEventFlag:
 	push {lr}
@@ -1968,6 +2001,10 @@ SetPlayerCanMoveEventFlag:
 	thumb_func_end SetPlayerCanMoveEventFlag
 
 // () -> void
+// symdb: Clears the event-work flag that gates whether the player is allowed to move, disabling player input movement until it is set again.
+// symdb: void ClearPlayerCanMoveEventFlag(void) // in: lr (via r10 base for flag work area); out: r0, r1,
+// symdb: r3, nz/c/v per ClearEventFlagFromImmediate
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearPlayerCanMoveEventFlag.yaml
 	thumb_local_start
 ClearPlayerCanMoveEventFlag:
 	push {lr}
@@ -1978,6 +2015,10 @@ ClearPlayerCanMoveEventFlag:
 	thumb_func_end ClearPlayerCanMoveEventFlag
 
 // () -> void
+// symdb: Locks the player in place so dialogue with non-NPC objects (L button, jacking in, examining objects) can run without the player moving.
+// symdb: void owPlayer_lockPlayerForNonNPCDialogue_809E0B0(void); // in: r10 (passed by callers, unused
+// symdb: here), lr as return address; out: r0, r1, r3 and NZCV as left by the callees
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_lockPlayerForNonNPCDialogue_809E0B0.yaml
 	thumb_func_start owPlayer_lockPlayerForNonNPCDialogue_809E0B0
 owPlayer_lockPlayerForNonNPCDialogue_809E0B0:
 	// [break] pressing L, jacking in, and talking to objects but not NPCs
@@ -2069,6 +2110,10 @@ off_809E138:
 	.word eStruct200ace0
 	thumb_func_end owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 
+// symdb: Stores a fixed overworld player animation id into eStruct200ace0 and raises event flag EVENT_1719.
+// symdb: void owPlayer_setFixedAnimationAndFlag_ADDRESS(u8 animId /*r0*/); clobbers r0, r1, r3, lr and
+// symdb: NZCV via SetEventFlagFromImmediate
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setS200ace0_fixedAnimationSelect_809e13c.yaml
 	thumb_func_start owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 owPlayer_setS200ace0_fixedAnimationSelect_809e13c:
 	push {lr}
@@ -2113,6 +2158,11 @@ off_809E184:
 	.word eStruct200ace0
 	thumb_func_end sub_809E168
 
+// symdb: Relocates the overworld player object to the given (X, Y, Z), backing the old position up into the object's "Next" fields and mirroring the new position into the shared overworld-player state.
+// symdb: void owPlayer_movePlayerToCoordsCopyCurrentToNextMaybe_809e188(u32 x /* r0 */, u32 y /* r1 */,
+// symdb: u32 z /* r2 */); // reads r7/r10 (r10 = toolkit, r7 preserved); returns r3 = s200ace0 base
+// symdb: address; no flags meaningful
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188.yaml
 	thumb_func_start owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188
 owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188:
 	push {r7}
@@ -2130,6 +2180,10 @@ owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMay
 	str r2, [r3,#oOWPlayerObject_Z]
 	pop {r7}
 
+// symdb: Writes the given x/y/z values into the overworld player's coordinate fields in the eStruct200ace0 struct.
+// symdb: void owPlayer_setPlayerCoords_809e1a4(int x /*r0*/, int y /*r1*/, int z /*r2*/); returns r3 =
+// symdb: &eStruct200ace0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4.yaml
 	thumb_func_start owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4
 owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4:
 	ldr r3, off_809E214 // =eStruct200ace0
@@ -2140,6 +2194,10 @@ owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4:
 	thumb_func_end owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4
 	thumb_func_end owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188
 
+// symdb: Loads the overworld player object's X/Y/Z position into registers and returns a pointer to the object itself.
+// symdb: GetOverworldPlayerObjectPosition(toolkit in r10) -> (out r0 = X, r1 = Y, r2 = Z, r3 = overworld
+// symdb: player object pointer); lr is the return address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadOWPlayerObjectCoords.yaml
 	thumb_func_start ReadOWPlayerObjectCoords
 ReadOWPlayerObjectCoords:
 	mov r3, r10
@@ -2228,6 +2286,9 @@ locret_809E222:
 	.pool // 809E224
 	thumb_func_end owPlayer_809e218
 
+// symdb: Trivial stub that always returns 0, likely a placeholder callback or no-op hook.
+// symdb: int stub_returnZero(void) // inputs: lr only; outputs: r0 = 0; clobbers flags N,Z
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/returnZero_809E228.yaml
 	thumb_func_start returnZero_809E228
 returnZero_809E228:
 	mov r0, #0
@@ -2235,6 +2296,10 @@ returnZero_809E228:
 	.word eStruct200ace0
 	thumb_func_end returnZero_809E228
 
+// symdb: Sets the overworld player object's InteractionLocked flag to TRUE so the player cannot act while e.g. a cutscene or dialog is running.
+// symdb: void owPlayer_lockInteraction(Toolkit *toolkit /* r10 */); returns r0 = 1 (TRUE), r3 = overworld
+// symdb: player object pointer, NZ flags set from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setInteractionLocked_809e230.yaml
 	thumb_func_start owPlayer_setInteractionLocked_809e230
 owPlayer_setInteractionLocked_809e230:
 	mov r3, r10
@@ -2245,6 +2310,10 @@ owPlayer_setInteractionLocked_809e230:
 	mov pc, lr
 	thumb_func_end owPlayer_setInteractionLocked_809e230
 
+// symdb: Clears the overworld player object's "interaction locked" flag so the player can start a new interaction.
+// symdb: void owPlayer_clearInteractionLocked_809e23c(toolkit *r10) ; returns r0=0, r3=player object ptr,
+// symdb: flags NZ from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_clearInteractionLocked_809e23c.yaml
 	thumb_func_start owPlayer_clearInteractionLocked_809e23c
 owPlayer_clearInteractionLocked_809e23c:
 	mov r3, r10
@@ -2255,6 +2324,10 @@ owPlayer_clearInteractionLocked_809e23c:
 	mov pc, lr
 	thumb_func_end owPlayer_clearInteractionLocked_809e23c
 
+// symdb: Re-enables wall collision on the overworld player object (sets its wallCollision flag to TRUE).
+// symdb: Next owPlayer_enableWallCollision(u32 toolkit_in_r10), returns u32 r0 = TRUE, r3 = overworld
+// symdb: player object pointer; NZ flags set from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_enableWallCollision_809e248.yaml
 	thumb_func_start owPlayer_enableWallCollision_809e248
 owPlayer_enableWallCollision_809e248:
 	mov r3, r10
@@ -2265,6 +2338,10 @@ owPlayer_enableWallCollision_809e248:
 	mov pc, lr
 	thumb_func_end owPlayer_enableWallCollision_809e248
 
+// symdb: Clears the overworld player object's wall-collision flag, letting the player walk through walls.
+// symdb: void owPlayer_disableWallCollision_809e254(r10=toolkit) -> r0=FALSE(0), r3=player object ptr, nz
+// symdb: flags from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_disableWallCollision_809e254.yaml
 	thumb_func_start owPlayer_disableWallCollision_809e254
 owPlayer_disableWallCollision_809e254:
 	mov r3, r10
@@ -2336,6 +2413,10 @@ owPlayer_setPalette_809e2a0:
 	pop {r5,pc}
 	thumb_func_end owPlayer_setPalette_809e2a0
 
+// symdb: Sets the overworld player character's facing direction (e.g. up/down/left/right) in the current game state.
+// symdb: void SetOWPlayerFacingDirection(u8 direction /* r0, via r10=toolkit */); returns player object
+// symdb: pointer in r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetOWPlayerFacingDirection.yaml
 	thumb_func_start SetOWPlayerFacingDirection
 SetOWPlayerFacingDirection:
 	mov r3, r10
@@ -2345,6 +2426,10 @@ SetOWPlayerFacingDirection:
 	mov pc, lr
 	thumb_func_end SetOWPlayerFacingDirection
 
+// symdb: Returns which of the four directions the player's overworld sprite is currently facing.
+// symdb: Next GetOWPlayerFacingDirection(void) — in: r10 (toolkit), lr; out: r0 = facing direction
+// symdb: (0..3); clobbers: r0 only
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetOWPlayerFacingDirection.yaml
 	thumb_func_start GetOWPlayerFacingDirection
 GetOWPlayerFacingDirection:
 	mov r0, r10
@@ -2360,6 +2445,10 @@ owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2:
 	mov r1, #DEFAULT_OW_PLAYER_NAVI_VERTICAL_COMPRESS
 	mov r2, #DEFAULT_OW_PLAYER_NAVI_ROTATION
 
+// symdb: Stores the overworld player navi's sprite transform settings (horizontal compress, vertical compress, rotation) into the persistent player state struct at 0x2000AA0.
+// symdb: void owPlayer_setNaviSpriteTransform(u8 horizontalCompress /*r0*/, u8 verticalCompress /*r1*/,
+// symdb: u8 rotation /*r2*/); clobbers r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setS2000aa0_param0x0to0x2_809e2c8.yaml
 	thumb_func_start owPlayer_setS2000aa0_param0x0to0x2_809e2c8
 owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
 	ldr r3, off_809E430 // =eStruct2000aa0 
@@ -2399,6 +2488,9 @@ owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc:
 SetDefaultOWPlayerNaviColorShader:
 	mov r0, #0
 
+// symdb: Stores the given color-shader id to be applied to the player's navi sprite while in the overworld.
+// symdb: void SetOWPlayerNaviColorShader(u16 shaderId /* r0 */); returns r3 = eStruct2000aa0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetOWPlayerNaviColorShader.yaml
 	thumb_func_start SetOWPlayerNaviColorShader
 SetOWPlayerNaviColorShader:
 	ldr r3, off_809E430 // =eStruct2000aa0
@@ -2407,10 +2499,17 @@ SetOWPlayerNaviColorShader:
 	thumb_func_end SetOWPlayerNaviColorShader
 	thumb_func_end SetDefaultOWPlayerNaviColorShader
 
+// symdb: Zeroes the overworld player Navi's palette-index byte (0x2000AA5), resetting the player's color palette to the default.
+// symdb: ZeroOWPlayerNaviPaletteIndex(void) -> r3: pointer to eStruct2000aa0 (also leaves r0 = 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroOWPlayerNaviPaletteIndex.yaml
 	thumb_func_start ZeroOWPlayerNaviPaletteIndex
 ZeroOWPlayerNaviPaletteIndex:
 	mov r0, #0
 
+// symdb: Stores the chosen navi palette index for the overworld player sprite into the engine struct at 0x2000aa0 (field byte_2000AA5).
+// symdb: void SetOWPlayerNaviPaletteIndex(u8 paletteIndex /* r0 */); returns r3 = pointer to
+// symdb: eStruct2000aa0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetOWPlayerNaviPaletteIndex.yaml
 	thumb_func_start SetOWPlayerNaviPaletteIndex
 SetOWPlayerNaviPaletteIndex:
 	ldr r3, off_809E430 // =eStruct2000aa0
@@ -2439,6 +2538,10 @@ sub_809E30C:
 owPlayer_zeroS2000AA0Param0x4_809e312:
 	mov r0, #0
 
+// symdb: Stores the given sprite id into the overworld player struct's sprite-id byte (eStruct2000aa0 field 4).
+// symdb: void owPlayer_setSpriteId_809e314(u8 spriteId /* r0 */); // returns struct pointer in r3, lr
+// symdb: used as return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setS2000AA0Param0x4_809e314.yaml
 	thumb_func_start owPlayer_setS2000AA0Param0x4_809e314
 owPlayer_setS2000AA0Param0x4_809e314:
 	ldr r3, off_809E430 // =eStruct2000aa0 
@@ -2503,6 +2606,10 @@ sub_809E35E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E35E
 
+// symdb: Loads the flag byte at byte_2000AA8 (offset 8 of eStruct2000aa0) and sets the NZ flags on it so callers can branch on whether it is zero.
+// symdb: void sub_809E3A2(void); // sets Z iff byte_2000AA8 == 0; returns r3 = &eStruct2000aa0, clobbers
+// symdb: r0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809E3A2.yaml
 	thumb_func_start sub_809E3A2
 sub_809E3A2:
 	ldr r3, off_809E430 // =eStruct2000aa0 
@@ -2511,6 +2618,10 @@ sub_809E3A2:
 	mov pc, lr
 	thumb_func_end sub_809E3A2
 
+// symdb: Clears the flag byte at offset 8 of the global struct eStruct2000aa0 (byte_2000AA8), returning that struct's address.
+// symdb: void sub_809E3AA(void); /* in: lr (return addr); out: r3 = &eStruct2000aa0; clobbers r0, NZ
+// symdb: flags */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809E3AA.yaml
 	thumb_func_start sub_809E3AA
 sub_809E3AA:
 	ldr r3, off_809E430 // =eStruct2000aa0 
@@ -2519,6 +2630,9 @@ sub_809E3AA:
 	mov pc, lr
 	thumb_func_end sub_809E3AA
 
+// symdb: Clears the state-tracking struct at 0x2000AA0, zeroing its active flag and four halfword counters.
+// symdb: void sub_809E3B2(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetStruct2000aa0State_809E3B2.yaml
 	thumb_func_start resetStruct2000aa0State_809E3B2
 resetStruct2000aa0State_809E3B2:
 	push {r4-r7,lr}
@@ -2600,6 +2714,10 @@ off_809E430:
 	.word eStruct2000aa0
 	thumb_func_end sub_809E3D6
 
+// symdb: Returns the current sprite frame parameters of the overworld player object.
+// symdb: void getOWPlayerSpriteFrameParameters(u32 r10=toolkit, void* r5 /*unused input, overwritten*/,
+// symdb: return r0..r3 = frame parameters, r5 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getOWPlayerSpriteFrameParameters_809E434.yaml
 	thumb_func_start getOWPlayerSpriteFrameParameters_809E434
 getOWPlayerSpriteFrameParameters_809E434:
 	push {r5,lr}
@@ -2610,6 +2728,10 @@ getOWPlayerSpriteFrameParameters_809E434:
 	pop {r5,pc}
 	thumb_func_end getOWPlayerSpriteFrameParameters_809E434
 
+// symdb: Sets the visible bit in the overworld player object's flags so the player's sprite is drawn again.
+// symdb: MakeOWPlayerVisible(toolkit in r10) -> flags byte out r0, OBJECT_FLAG_VISIBLE out r1, player
+// symdb: object ptr out r3; NZ flags set from updated flags byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MakeOWPlayerVisible.yaml
 	thumb_func_start MakeOWPlayerVisible
 MakeOWPlayerVisible:
 	mov r3, r10
@@ -2622,6 +2744,10 @@ MakeOWPlayerVisible:
 	mov pc, lr
 	thumb_func_end MakeOWPlayerVisible
 
+// symdb: Hides the player's overworld sprite by clearing the visible flag on the overworld player object.
+// symdb: void MakeOWPlayerInvisible(toolkit r10); out: r0 = updated attribute byte, r1 = 2
+// symdb: (OBJECT_FLAG_VISIBLE), r3 = player object pointer, NZ flags set from new byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MakeOWPlayerInvisible.yaml
 	thumb_func_start MakeOWPlayerInvisible
 MakeOWPlayerInvisible:
 	mov r3, r10
@@ -2634,6 +2760,10 @@ MakeOWPlayerInvisible:
 	mov pc, lr
 	thumb_func_end MakeOWPlayerInvisible
 
+// symdb: Tests a flag byte (oGameState_Unk_10) in the current game state and returns it with NZ flags set so callers can branch on zero/nonzero.
+// symdb: bool gameState_checkFlagByteUnk10(Toolkit* toolkit) // in: r10 = toolkit, lr return; out: r0 =
+// symdb: flag byte, r1 = GameState*, NZ flags from r0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809E462.yaml
 	thumb_func_start sub_809E462
 sub_809E462:
 	push {lr}

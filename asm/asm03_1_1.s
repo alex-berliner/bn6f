@@ -6851,6 +6851,10 @@ sub_803C3D8:
 	mov pc, lr
 	thumb_func_end sub_803C3D8
 
+// symdb: Reads the flag byte at word_2006770+2 (byte_2006772) and returns it in r0 with Z/N flags reflecting its value.
+// symdb: bool testByte_2006772(void) // in: lr only; out: r0 = byte value, Z set if zero, N set if bit7
+// symdb: set
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803C3E0.yaml
 	thumb_func_start sub_803C3E0
 sub_803C3E0:
 	ldr r0, off_803C430 // =word_2006770
@@ -8356,6 +8360,9 @@ loc_803CDE4:
 	pop {r4-r7,pc}
 	thumb_func_end GiveItem
 
+// symdb: Clears the given key item slot in the player's key item inventory and then calls GiveItem to hand the item over.
+// symdb: void sub_803CDF8(u32 keyItemSlot /* r0 */, u32 giveItemArg /* r1, passed through to GiveItem */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/keyItems_RemoveFromInventoryAndGive_803CDF8.yaml
 	thumb_func_start keyItems_RemoveFromInventoryAndGive_803CDF8
 keyItems_RemoveFromInventoryAndGive_803CDF8:
 	push {lr}
@@ -9082,6 +9089,10 @@ locret_803D2A4:
 	pop {pc}
 	thumb_func_end sub_803D298
 
+// symdb: Wraps up the logo screen by restoring the normal LCD render mode (0x40) and reinitializing the shared screen-start state.
+// symdb: (self: *const LogoScreenState in r5) -> void; callers pass r2, r3, r10, lr; r2/r3 preserved,
+// symdb: r0/r1 and NZCV left as the last callee set them
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/logoScreen_finish_803D2A6.yaml
 	thumb_local_start
 logoScreen_finish_803D2A6: // (self: *const LogoScreenState $r5) -> ()
 	push {lr}
@@ -9574,6 +9585,9 @@ off_803DE58:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803DE24
 
+// symdb: Sets the boolean flag at EWRAM 0x200A284 to 1 (true), with no other side effects.
+// symdb: void setFlag_200A284(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DE5C.yaml
 	thumb_func_start sub_803DE5C
 sub_803DE5C:
 	push {lr}
@@ -9627,6 +9641,10 @@ sub_803DE88:
 	.balign 4, 0x00
 	thumb_func_end sub_803DE88
 
+// symdb: Trivial tail-call wrapper that immediately invokes sub_8144240 and returns its result to the caller.
+// symdb: Next sub_803DEAC(void) — entry with lr as return address; r4-r7 are passed through and preserved
+// symdb: by the callee; flags (nz c v) clobbered by the callee.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DEAC.yaml
 	thumb_func_start sub_803DEAC
 sub_803DEAC:
 	push {r4-r7,lr}
@@ -11130,6 +11148,10 @@ off_803E8FC:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803E8F8
 
+// symdb: Resets the 8-byte start-screen animation control block to zero and marks it active with state 0xB4.
+// symdb: void startScreen_initAnimationControl200B1A0(void); /* preserves r2/r4, returns r0=0xB4 with NZ
+// symdb: flags set from it */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_eStartScreenAnimationControl200B1A0_1.yaml
 	thumb_func_start init_eStartScreenAnimationControl200B1A0_1
 init_eStartScreenAnimationControl200B1A0_1:
 	push {r4,lr}
@@ -11157,6 +11179,10 @@ init_eStartScreenAnimationControl200B1A0_2:
 	.balign 4, 0x00
 	thumb_func_end init_eStartScreenAnimationControl200B1A0_2
 
+// symdb: Checks whether the start-screen (title) animation has finished by comparing its state byte at 0x200B1A0 against 2.
+// symdb: bool startScreen_IsTitleAnimationFinished(void) — in: lr only; out: r0 = state byte, NZCV set
+// symdb: from CMP r0,#2 (Z set when state == 2)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_IsTitleAnimationFinished_803E928.yaml
 	thumb_func_start startScreen_IsTitleAnimationFinished_803E928
 startScreen_IsTitleAnimationFinished_803E928:
 	ldr r0, off_803E960 // =eStartScreenAnimationControl200B1A0
@@ -11212,6 +11238,11 @@ off_803E960:
 	.word eStartScreenAnimationControl200B1A0
 	thumb_func_end startScreen_AnimatePressStart_803E938
 
+// symdb: Ticks down the "PRESS START" title-screen animation frame delay; when the timer hits zero, sets a flag so the animation advances to the next frame.
+// symdb: Next startScreen_DecrementPressStartFrameTimer(void) // in: nothing meaningful (r4-r7 preserved,
+// symdb: unused) // out: r0 = 1 when the timer just expired (0 otherwise reports the raw decremented
+// symdb: value), //      NZ/C/V reflect the final 'sub r0,#1' or 'mov r0,#1' — NZ set iff r0 != 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_DecrementPressStartPauseAnimationTimer.yaml
 	thumb_local_start
 startScreen_DecrementPressStartPauseAnimationTimer:
 	push {r4-r7,lr}
@@ -11305,6 +11336,10 @@ off_803EA18:
 	.word word_200AD04
 	thumb_func_end startScreen_AnimatePressStart_803E978
 
+// symdb: If the flag byte at 0x200AD04 is non-zero, dispatch to sub_803F560 to service the pending work; otherwise do nothing.
+// symdb: void sub_803EA1C(void); // no meaningful inputs or outputs; calls notZero_eByte200AD04 and
+// symdb: conditionally sub_803F560, so r0-r3 and flags reflect whatever those leave behind
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/runPendingWorkIfFlagged_803EA1C.yaml
 	thumb_local_start
 runPendingWorkIfFlagged_803EA1C:
 	push {r4-r7,lr}
@@ -11316,6 +11351,10 @@ locret_803EA28:
 	.balign 4, 0x00
 	thumb_func_end runPendingWorkIfFlagged_803EA1C
 
+// symdb: Returns 1 when the link-connection state byte has reached 0xC (connection fully established), else 0.
+// symdb: bool net_isLinkConnected_ADDRESS(void); // r0 = 1 if eLinkState == 0xC, else 0; c/v set by CMP,
+// symdb: nz reflects the comparison
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/net_isLinkConnected_803EA2C.yaml
 	thumb_func_start net_isLinkConnected_803EA2C
 net_isLinkConnected_803EA2C:
 	push {lr}
@@ -11364,6 +11403,10 @@ sub_803EA58:
 	.byte 0, 0
 	thumb_func_end sub_803EA58
 
+// symdb: Returns the first byte of the record at EWRAM 0x200BC30, used as an index/offset (likely for a jump-table dispatch on that record).
+// symdb: (void) -> u8 r0 (byte at eStruct200BC30[0]); also sets r1 = pointer to eStruct200BC30; lr is
+// symdb: used as return (mov pc, lr), no flags guaranteed.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct200BC30_getJumpOffset00.yaml
 	thumb_func_start eStruct200BC30_getJumpOffset00
 eStruct200BC30_getJumpOffset00:
 	ldr r1, off_803EBF8 // =eStruct200BC30
@@ -11372,6 +11415,10 @@ eStruct200BC30_getJumpOffset00:
 	.balign 4, 0x00
 	thumb_func_end eStruct200BC30_getJumpOffset00
 
+// symdb: Trivial wrapper that pushes lr, calls eStruct200BC30_getJumpOffset00, and returns straight to its own caller, passing results through unchanged.
+// symdb: Next eStruct200BC30_getJumpOffset00_pushpop(void); inputs lr (return address), outputs r0, r1,
+// symdb: lr (values produced by the callee)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct200BC30_getJumpOffset00_pushpop.yaml
 	thumb_func_start eStruct200BC30_getJumpOffset00_pushpop
 eStruct200BC30_getJumpOffset00_pushpop:
 	push {lr}
@@ -11560,6 +11607,10 @@ locret_803EBAA:
 	pop {r4,pc}
 	thumb_func_end sub_803EB60
 
+// symdb: Zero-fills the 0x20-byte work struct at 0x200BC30 (eStruct200BC30).
+// symdb: void sub_803EBAC(void) — callers pass r2/r3 (which are preserved and pass through untouched);
+// symdb: returns r1 as left by ZeroFillByWord, r2/r3 unchanged; clobbers r0, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearStruct200BC30_803EBAC.yaml
 	thumb_func_start clearStruct200BC30_803EBAC
 clearStruct200BC30_803EBAC:
 	push {lr}
@@ -12094,6 +12145,10 @@ off_803EF5C:
 	.word eStruct200BC30
 	thumb_func_end sub_803EF54
 
+// symdb: Calls sub_803EF7C to (re)initialize some state and then zero-fills the 0x100-byte buffer it returns.
+// symdb: void clearStateBuffer256_803EF60(void) // takes nothing meaningful in r2/r3 (preserved through);
+// symdb: clobbers r0/r1, returns garbage in r1
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803EF60.yaml
 	thumb_func_start sub_803EF60
 sub_803EF60:
 	push {lr}
@@ -12114,6 +12169,9 @@ sub_803EF74:
 	.balign 4, 0x00
 	thumb_func_end sub_803EF74
 
+// symdb: Returns a single 32-bit field at offset 0x34 into the eCamera area (labeled eCamera.unk_84), apparently the camera's "end" value.
+// symdb: uint32 sub_803EF7C(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803EF7C.yaml
 	thumb_func_start sub_803EF7C
 sub_803EF7C:
 	ldr r0, off_803EF8C // =eLinkState
@@ -12122,6 +12180,9 @@ sub_803EF7C:
 	.balign 4, 0x00
 	thumb_func_end sub_803EF7C
 
+// symdb: Stores the passed value into the link-state camera field at eLinkState+0x34 (aliased as eCamera.unk_84), a one-instruction setter.
+// symdb: void link_SetCameraValue(int value) // r0 = value; clobbers r1; no outputs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803EF84.yaml
 	thumb_local_start
 sub_803EF84:
 	ldr r1, off_803EF8C // =eLinkState
@@ -12920,6 +12981,10 @@ off_803F4C4:
 	.word byte_200AC20
 	thumb_func_end sub_803F460
 
+// symdb: Zeroes a 4-byte field at IWRAM 0x200AD04 by delegating to ZeroFillByByte.
+// symdb: void clear_e200AD04(void); // in: r2 (must be preserved through the call), lr; out: r2
+// symdb: preserved, r0/r1/lr and NZCV flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clear_e200AD04.yaml
 	thumb_func_start clear_e200AD04
 clear_e200AD04: // () -> ()
 	push {lr}
@@ -12949,6 +13014,10 @@ loc_803F4E8:
 	pop {pc}
 	thumb_func_end sub_803F4D4
 
+// symdb: Writes the byte passed in r0 to the global IWRAM variable word_200AD04 and returns that variable's address in r1.
+// symdb: void setByte_200AD04(u8 value); /* r0 = value; returns r1 = &word_200AD04; lr clobbered (uses lr
+// symdb: as return) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setByte_200AD04_803F4EC.yaml
 	thumb_func_start setByte_200AD04_803F4EC
 setByte_200AD04_803F4EC:
 	push {lr}
@@ -12967,6 +13036,9 @@ sub_803F4F4:
 	.byte 0, 0
 	thumb_func_end sub_803F4F4
 
+// symdb: Writes the constant 0xB4 (180, likely a frame count of 3 seconds) into the halfword at 0x200AD06, probably (re)starting or resetting a global timer.
+// symdb: void setTimerTo180Frames(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803F500.yaml
 	thumb_func_start sub_803F500
 sub_803F500:
 	push {lr}
@@ -12996,6 +13068,10 @@ off_803F520:
 	.word 0x78
 	thumb_func_end sub_803F50C
 
+// symdb: Loads the event/state byte at 0x200AD04 and returns it with NZ flags set, so callers can branch on "is this flag/counter non-zero".
+// symdb: u8 event_checkByte200AD04(void) // in: lr; out: r0 = byte value, r1 = &0x200AD04, NZ flags from
+// symdb: the byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/notZero_eByte200AD04.yaml
 	thumb_func_start notZero_eByte200AD04
 notZero_eByte200AD04:
 	push {lr}
@@ -13334,6 +13410,10 @@ EXE6_InfoText_timestamp: .asciz "REXE6 F 20060110a US"
 	.byte 0x0, 0x0, 0x0
 	thumb_func_end sub_803F740
 
+// symdb: Entry stub of a multi-entry routine: saves r1-r7 and lr, seeds the shared body's loop counter (r4) to 0, then falls through into the shared code at loc_803F7A2.
+// symdb: void sub_803F798(void); // caller's r1-r7 and lr are spilled to the stack by the stub itself;
+// symdb: returns to the caller via the shared body's pop {r1-r7,pc}
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803F798.yaml
 	thumb_func_start sub_803F798
 sub_803F798:
 	push {r1-r7,lr}
@@ -13458,6 +13538,10 @@ dword_803F890:
 	.word 0x6710
 	thumb_func_end sub_803F838
 
+// symdb: Computes a byte checksum over 16 bytes of EWRAM at 0x2000000+0x6700 and stores it (+24) into the S2001c04 work area's field at offset 0x68.
+// symdb: u32 sub_803F894(void) — reads the S2001c04 pointer from the toolkit (r10); returns the checksum
+// symdb: in r0; all other registers preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/s2001c04_ComputeChecksumOfEwramRegion_803F894.yaml
 	thumb_local_start
 s2001c04_ComputeChecksumOfEwramRegion_803F894:
 	push {r1-r7,lr}
@@ -13478,6 +13562,10 @@ loc_803F8A4:
 	pop {r1-r7,pc}
 	thumb_func_end s2001c04_ComputeChecksumOfEwramRegion_803F894
 
+// symdb: Copies the 20-byte InfoText timestamp buffer into the packet/work area at toolkit->S2001c04 + 0x6C.
+// symdb: void sub_803F8B2(void); /* reads r10 (toolkit ptr); r0/r1/r2 are left holding CopyBytes' final
+// symdb: r0/r1/r2, which callers treat as outputs r1/r2/r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/info_copyTimestampToWorkArea_803F8B2.yaml
 	thumb_local_start
 info_copyTimestampToWorkArea_803F8B2:
 	push {lr}
@@ -13521,6 +13609,10 @@ dword_803F8F0:
 	.word 0x670F
 	thumb_func_end sub_803F8C4
 
+// symdb: Compares a 20-byte timestamp stored in the save buffer against the master info-text timestamp, returning 0 when the on-screen info text is still current and 1 when it must be refreshed.
+// symdb: bool infoText_IsTimestampUnchanged(void); /* r0 = 0 if all 20 bytes match, r0 = 1 if any differ;
+// symdb: nz reflects r0; preserves r1-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/infoText_IsTimestampUnchanged_803F8F4.yaml
 	thumb_local_start
 infoText_IsTimestampUnchanged_803F8F4:
 	push {r1-r7,lr}
@@ -13794,6 +13886,9 @@ loc_803FAEA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803FAB4
 
+// symdb: Fills the 0x80-byte buffer at dword_20067C0 with 32 random 32-bit words from the hardware RNG.
+// symdb: void sub_803FAEE(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rng_FillSeedBuffer_803FAEE.yaml
 	thumb_local_start
 rng_FillSeedBuffer_803FAEE:
 	push {r4-r7,lr}

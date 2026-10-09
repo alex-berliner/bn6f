@@ -15282,6 +15282,10 @@ loc_8137804:
 	pop {pc}
 	thumb_func_end isFolderSlotInUse_81377EC
 
+// symdb: Zeros the 4-byte chip-gift/folder record at 0x20018EC and then invokes the chip-taking routine for folder slot 0.
+// symdb: void sub_8137808(void) — no meaningful inputs; scratch-only use of r2/r4-r7/r10 per callers is
+// symdb: incidental; returns with r4-r7 preserved and flags clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearChipGiftRecordAndTakeChipsSlot0_8137808.yaml
 	thumb_func_start clearChipGiftRecordAndTakeChipsSlot0_8137808
 clearChipGiftRecordAndTakeChipsSlot0_8137808:
 	push {r4,lr}

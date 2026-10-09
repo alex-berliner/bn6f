@@ -26083,6 +26083,10 @@ locret_80C4070:
 	pop {r4,pc}
 	thumb_func_end sub_80C4038
 
+// symdb: Null-safe helper that writes 8 into a battle object's field at +8, likely resetting its wait/counter timer.
+// symdb: void battle_ResetObjectTimerTo8(void* obj /* r0 */); /* returns r1=8 when obj != NULL, clobbers
+// symdb: nz */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ResetObjectTimerTo8_80C4072.yaml
 	thumb_func_start battle_ResetObjectTimerTo8_80C4072
 battle_ResetObjectTimerTo8_80C4072:
 	tst r0, r0
@@ -26103,6 +26107,9 @@ locret_80C4084:
 	mov pc, lr
 	thumb_func_end sub_80C407C
 
+// symdb: Sets a flag word (value 1) at offset +0x14 of a battle object's ExtraVars block; safe no-op on a null object pointer.
+// symdb: void battle_SetObjectExtraFlag14(BattleObject* obj /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_SetObjectExtraFlag14_80C4086.yaml
 	thumb_func_start battle_SetObjectExtraFlag14_80C4086
 battle_SetObjectExtraFlag14_80C4086:
 	tst r0, r0
@@ -26567,6 +26574,10 @@ locret_80C44D0:
 	mov pc, lr
 	thumb_func_end sub_80C44C8
 
+// symdb: Ends a battle object's current animation by marking it finished (0xFF) and refreshing the object's animation state; a NULL object pointer is a no-op.
+// symdb: void battle_EndObjectCurrentAnim(BattleObject* obj /* r0 */); clobbers r1-r3, sets flags;
+// symdb: preserves r4/r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_EndObjectCurrentAnim_80C44D2.yaml
 	thumb_func_start battle_EndObjectCurrentAnim_80C44D2
 battle_EndObjectCurrentAnim_80C44D2:
 	push {r5,lr}
@@ -27880,6 +27891,10 @@ loc_80C4FF8:
 	pop {pc}
 	thumb_func_end sub_80C4F02
 
+// symdb: Spawns a type-3 battle object (spawn type 0) and, if one was created, runs BasicBattleObjectInitialize on it with the caller's three arguments.
+// symdb: void sub_80C4FFE(u32 arg0 /*r0*/, u32 arg1 /*r1*/, u32 arg2 /*r2*/); returns r0 = object pointer
+// symdb: (NULL if spawn failed), N/Z set from the pointer, C=V=0; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_SpawnAndInitObjectType3_80C4FFE.yaml
 	thumb_func_start battle_SpawnAndInitObjectType3_80C4FFE
 battle_SpawnAndInitObjectType3_80C4FFE:
 	push {lr}
@@ -27956,6 +27971,9 @@ dword_80C508C:
 	.word 0x405FF10
 	thumb_func_end sub_80C5050
 
+// symdb: Moves a battle object one tile upward (Y and Z += 0x10000) when its Param1 state hits 0x1D, i.e. it finishes stepping onto an elevated panel.
+// symdb: void battle_objectStepUpOntoElevatedPanel(BattleObject* obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectStepUpOntoElevatedPanel_80C5090.yaml
 	thumb_local_start
 battle_objectStepUpOntoElevatedPanel_80C5090:
 	push {lr}
@@ -30591,6 +30609,9 @@ byte_80C6514:
 	.byte 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_80C64A0
 
+// symdb: Switches a battle object to animation 1, plays sound effect 0xA2, and sets its current action to 8 (likely a flinch/hit reaction).
+// symdb: void sub_80C6524(BattleObject* obj /* r5 */); /* returns r0 = 8, flags NZ set from 8 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_PlayHurtAnimAndSetAction8_80C6524.yaml
 	thumb_local_start
 battleObject_PlayHurtAnimAndSetAction8_80C6524:
 	push {lr}
@@ -30603,6 +30624,12 @@ battleObject_PlayHurtAnimAndSetAction8_80C6524:
 	pop {pc}
 	thumb_func_end battleObject_PlayHurtAnimAndSetAction8_80C6524
 
+// symdb: Reads the battle object's current sprite frame parameters and moves the object into the destroyed state if the frame carries the 0x80 "self-destruct" flag.
+// symdb: void battle_destroyObjectOnFrameFlag(BattleObject* obj /* r5 */) — actually returns the frame
+// symdb: parameters in r0-r3 and the flags (nz/c/v) left by sprite_getFrameParameters (or the final MOV
+// symdb: on the destroy path), so effectively: FrameParams battle_destroyObjectOnFrameFlag(BattleObject*
+// symdb: obj), with callers consuming r0-r3 and flags as outputs.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_destroyObjectOnFrameFlag_80C6536.yaml
 	thumb_local_start
 battle_destroyObjectOnFrameFlag_80C6536:
 	push {lr}
@@ -39162,6 +39189,10 @@ loc_80CA680:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80CA61A
 
+// symdb: Spawns a battle object of type 0x33 and initializes it with the caller's arguments.
+// symdb: Next* sub_80CA686(u32 a0, u32 a1, u32 a2, u32 a5)  // a5 in r5; returns object ptr or 0 in r0;
+// symdb: r1-r3 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnAndInitObject0x33_80CA686.yaml
 	thumb_local_start
 battle_spawnAndInitObject0x33_80CA686:
 	push {lr}
@@ -39817,6 +39848,10 @@ off_80CAB7C:
 	.word sub_80CAC44+1
 	thumb_func_end t3_0x36_80CAB68
 
+// symdb: Flags a battle object's current state so its update step will run next.
+// symdb: void battle_object_SetStateUpdatePhase(battle_object* r5); // returns r0 = 4 (CUR_STATE_UPDATE),
+// symdb: N/Z set from it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_SetStateUpdatePhase_80CAB88.yaml
 	thumb_local_start
 battle_object_SetStateUpdatePhase_80CAB88:
 	push {lr}
@@ -85226,6 +85261,10 @@ loc_80E05F0:
 	pop {pc}
 	thumb_func_end sub_80E05C4
 
+// symdb: Thin wrapper that spawns a type-4 battle object with effect type 0 and returns the spawned object pointer.
+// symdb: Next battle_spawnEffectObject_effect0(u32 effectType0 /* forced to 0 */, u32 arg1, u32 arg2, u32
+// symdb: arg3, /* r5 */ BattleCtx* ctx);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawn_t1_0x0_EffectObject.yaml
 	thumb_func_start spawn_t1_0x0_EffectObject
 spawn_t1_0x0_EffectObject:
 	push {r5,lr}
@@ -85254,6 +85293,10 @@ sub_80E060E:
 	mov pc, lr
 	thumb_func_end sub_80E060E
 
+// symdb: Copies bit 1 of a related battle object's flag byte into this object's flag byte, only when this object has extra vars.
+// symdb: void battle_MirrorRelatedObjectFlag1(battle object* this /* r5 */); clobbers r0-r2, sets c/v
+// symdb: from (ExtraVars == 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_MirrorRelatedObjectFlag1_80E0616.yaml
 	thumb_local_start
 battle_MirrorRelatedObjectFlag1_80E0616:
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -87931,6 +87974,9 @@ JumpTable80E19CC_p:
 	.word JumpTable80E19CC
 	thumb_func_end t4_0x11_80E19BC
 
+// symdb: Loads a battle object's Timer from a lookup table indexed by its Param1 byte, then advances the object's state to CUR_STATE_UPDATE.
+// symdb: Next sub_80E19DC(BattleObject *obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectSetTimerFromParam1Table_80E19DC.yaml
 	thumb_local_start
 battle_objectSetTimerFromParam1Table_80E19DC:
 	push {lr}
@@ -88010,6 +88056,10 @@ locret_80E1A5C:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80E1A0C
 
+// symdb: Sets a battle object's phase-initialized flag and then frees the object's memory via object_freeMemory.
+// symdb: void sub_80E1A5E(BattleObject* r5); // caller passes r5 (object) and lr; returns r0-r3 and
+// symdb: nz,c,v as left by object_freeMemory
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_freeWithPhaseReset_80E1A5E.yaml
 	thumb_local_start
 battle_object_freeWithPhaseReset_80E1A5E:
 	push {lr}
@@ -88450,6 +88500,9 @@ locret_80E1D70:
 	pop {pc}
 	thumb_func_end sub_80E1D54
 
+// symdb: Trivial destructor wrapper that releases a battle object's memory slot back to the object pool via object_freeMemory.
+// symdb: void battle_objectFreeWrapper(object* obj /* r0 */); tail-calls object_freeMemory(r0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectFreeWrapper_80E1D72.yaml
 	thumb_local_start
 battle_objectFreeWrapper_80E1D72:
 	push {lr}
@@ -105064,6 +105117,9 @@ byte_80E955C:
 	.byte 0x0, 0x80, 0x3, 0xF7, 0x46
 	thumb_func_end sub_80E94F8
 
+// symdb: Empty placeholder function that does nothing and returns immediately.
+// symdb: void nullsub_12(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_12.yaml
 	thumb_local_start
 nullsub_12:
 	mov pc, lr
@@ -109025,6 +109081,10 @@ dword_80EB848:
 	.word 0x1010014
 	thumb_func_end sub_80EB79C
 
+// symdb: Starts a new AI attack sequence on an attack-vars block, choosing the attack command and resetting its timer.
+// symdb: void aiAttack_BeginAttackSequence(AIAttackVars *vars /* r7 */); /* returns r0=8,
+// symdb: r1=vars->Unk_03, NZ from r0=8, C/V unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_BeginAttackSequence_80EB84C.yaml
 	thumb_local_start
 aiAttack_BeginAttackSequence_80EB84C:
 	mov r0, #1
@@ -109349,6 +109409,10 @@ byte_80EBB64:
 	.byte 0x1C, 0x0, 0x3, 0x3, 0x0
 	thumb_func_end sub_80EBB34
 
+// symdb: Checks a battle object's AI data for one specific enemy actor (type 1, AI index 0x12, version 4) and returns its slot ID 0xC, otherwise 0.
+// symdb: int sub_80EBB78(struct BattleObject* obj /* r5 */); returns r0 = 0xC on match, 0 otherwise; r2 =
+// symdb: AI data's version byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getSpecialActorSlotIfAiMatches_80EBB78.yaml
 	thumb_local_start
 battle_getSpecialActorSlotIfAiMatches_80EBB78:
 	push {r4,r7,lr}
@@ -146808,6 +146872,10 @@ dword_80FE280:
 	.word 0x20
 	thumb_func_end sub_80FE240
 
+// symdb: Ticks an enemy AI's attack wind-up state machine, starting a 30-frame wind-up and then flagging the attack to fire.
+// symdb: void battle_aiAttackWindupTick(BattleObject *obj /*r5*/, AIAttackVars *vars /*r7*/); returns r0
+// symdb: and NZCV flags per the original's last flag-setting op (garbage value, do not use)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackWindupTick_80FE284.yaml
 	thumb_local_start
 battle_aiAttackWindupTick_80FE284:
 	push {lr}
@@ -169848,6 +169916,9 @@ locret_8109628:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_81095D0
 
+// symdb: Empty subroutine that immediately returns; a placeholder for a removed or empty hook point.
+// symdb: void nullsub_13(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_13.yaml
 	thumb_local_start
 nullsub_13:
 	mov pc, lr
@@ -169980,6 +170051,13 @@ locret_81096F8:
 	thumb_func_start GetAllianceDependentPanelParamArgs
 // first four bytes of r3 are for player alliance
 // next four bytes are for enemy alliance
+// symdb: Looks up an 8-byte entry in a panel-effect parameter table, indexed by the battle object's alliance (team) field, returning the entry's param word and args pointer.
+// symdb: in:  r3 = base of panel param table (rows of 8 bytes, one per alliance value),      r5 = battle
+// symdb: object pointer (oBattleObject_Alliance byte selects the row),      lr = return address (function
+// symdb: returns with mov pc, lr) out: r2 = first word of the selected entry (param),      r3 = second
+// symdb: word of the selected entry (args pointer) flags: c, v set as if computing row + 4 (add r3,#4);
+// symdb: n, z clobbered; no registers preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetAllianceDependentPanelParamArgs.yaml
 GetAllianceDependentPanelParamArgs:
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	lsl r2, r2, #3
@@ -170985,6 +171063,10 @@ loc_8109F64:
 	pop {pc}
 	thumb_func_end sub_8109F4C
 
+// symdb: Per-frame update for a battle object; runs the object's phase-0 extra handler (if any), then advances its phase logic.
+// symdb: void battle_objectTickWithExtraHandler(battle_object_t* obj /* r5 */); no useful return value
+// symdb: (r0 holds the last callee's result)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectTickWithExtraHandler_8109F6A.yaml
 	thumb_local_start
 battle_objectTickWithExtraHandler_8109F6A:
 	push {lr}
@@ -171000,6 +171082,10 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
+// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
+// symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
+// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:
 	push {lr}
@@ -171044,6 +171130,10 @@ locret_8109FC2:
 	pop {pc}
 	thumb_func_end sub_8109FA2
 
+// symdb: Per-frame phase bookkeeping for a battle object: clears the object's Param4 byte when the object is still in phase 0, then runs the shared per-object update routine.
+// symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from sub_8016CE8's
+// symdb: tail
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_updatePhaseTick_8109FC4.yaml
 	thumb_local_start
 battle_object_updatePhaseTick_8109FC4:
 	push {lr}

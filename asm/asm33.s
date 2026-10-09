@@ -4651,6 +4651,10 @@ off_8125808:
 	.word 0x300
 	thumb_func_end sub_8125784
 
+// symdb: Records the player's submenu selection, plays the "exit submenu" sound, and starts a screen fade (kind 0xC, 0x10 frames) before leaving the menu.
+// symdb: void sub_812580C(u8 selection /* r0 */, r5 = menu state struct base); r3 and r10 pass through
+// symdb: unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_confirmExitAndFade_812580C.yaml
 	thumb_local_start
 menu_confirmExitAndFade_812580C:
 	push {lr}
@@ -15564,6 +15568,10 @@ loadDecompressedAsset_812AF78:
 	.balign 4, 0x00
 	thumb_func_end loadDecompressedAsset_812AF78
 
+// symdb: Decompresses an embedded text-data blob into work RAM and hands the resulting script to the text-script engine to run.
+// symdb: void sub_812AF84(void); // no meaningful inputs; r1-r7 on return are whatever sub_8123300
+// symdb: leaves, NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textScript_loadAndRunEmbeddedArchive_812AF84.yaml
 	thumb_func_start textScript_loadAndRunEmbeddedArchive_812AF84
 textScript_loadAndRunEmbeddedArchive_812AF84:
 	push {lr}

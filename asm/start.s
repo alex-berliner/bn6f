@@ -224,6 +224,10 @@ crt0_start_800027C:
 	bx r0
 	thumb_func_end crt0_start_800027C
 
+// symdb: ROM entry-point stub at the cart header's entry address that tail-trampolines into the game's startup routine and then returns straight to its own caller.
+// symdb: void crt0_entry_trampoline(void); // in: lr (return address), r4 preserved; out: r2/r3 pass
+// symdb: through from the callee, r4 unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/crt0_entry_trampoline_8000288.yaml
 	thumb_func_start crt0_entry_trampoline_8000288
 crt0_entry_trampoline_8000288:
 	push {lr}

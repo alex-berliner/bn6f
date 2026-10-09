@@ -2440,6 +2440,10 @@ loc_8047452:
 	pop {r3-r7,pc}
 	thumb_func_end findRecordWithHalfwordAtOffset2_804743C
 
+// symdb: Searches an 8-byte-stride table for the entry whose byte at offset 4 equals a given value, returning via the Z flag.
+// symdb: int sub_8047456(u32 needle /*r0*/, u32 entryCount /*r4*/, const void* table /*r7*/); returns via
+// symdb: flags (Z set = match found, Z clear = not found), r1/r3 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleFindEntryByFieldByte_8047456.yaml
 	thumb_local_start
 battleFindEntryByFieldByte_8047456:
 	push {r3-r7,lr}
@@ -3253,6 +3257,10 @@ locret_8047A7E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8047950
 
+// symdb: Puts a menu/UI state struct into its "show dialog" state (0x14), makes the chatbox run text script
+// symdb: void sub_8047A80(r4, r5 /*owner struct ptr*/, r6, r7, r10); clobbers r0-r1, r2-r3 (via
+// symdb: chatbox_runScript), NZCV; preserves r4, r5, r6, r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_showDialogOnUnselect_8047A80.yaml
 	thumb_local_start
 menu_showDialogOnUnselect_8047A80:
 	push {lr}

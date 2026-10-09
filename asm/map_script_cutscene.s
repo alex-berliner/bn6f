@@ -1161,6 +1161,10 @@ MapScriptCutsceneCmd_write_eStruct2001c04_byte: // 8035F0E
 // gfx anims can also do palette animations
 // see include/bytecode/gfx_anim_script.inc
 // ptr1 - gfx anim to load
+// symdb: Map script/cutscene opcode handler that reads a 4-byte pointer operand from the script stream and loads that GFXAnimScript.
+// symdb: void MapScriptCutsceneCmd_load_gfx_anim(void); /* in: r0 = map script state, r7 = script cursor;
+// symdb: out: r0 = 1, r7 = cursor+5, r4 = operand (GFXAnimScript *) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_load_gfx_anim.yaml
 MapScriptCutsceneCmd_load_gfx_anim: // 8035F2A
 	push {lr}
 	mov r6, #1
@@ -2620,6 +2624,11 @@ SetCutsceneCameraScript:
 	pop {pc}
 	thumb_func_end SetCutsceneCameraScript
 
+// symdb: Points the cutscene camera at the overworld player's coordinates.
+// symdb: void cutsceneCamera_focusCameraOnPlayer_8036faa(toolkit in r10); trashes r0, r1/r2 and flags (c,
+// symdb: v) come back from the callee and the flag-setting add; lr is pushed/popped and clobbered by the
+// symdb: call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutsceneCamera_focusCameraOnPlayerMaybe_8036faa.yaml
 	thumb_func_start cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
 	push {lr}
@@ -3925,6 +3934,11 @@ CutsceneCmd_wait_if_player_sprite_cur_frame_not_equal_maybe:
 	thumb_local_start
 // 0x06
 // functions as a nop
+// symdb: No-op cutscene script command that just skips itself and tells the script engine to keep running.
+// symdb: Next cutsceneCmd_nop(u8** scriptCursor) // in: r7 = pointer into cutscene script; out: r0 = 1 to
+// symdb: continue (0 would halt), r7 advanced past this command; N/Z from r0, C/V from the pointer
+// symdb: increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_nop_80377d0.yaml
 CutsceneCmd_nop_80377d0:
 	push {lr}
 	// always returns zero
@@ -4392,6 +4406,10 @@ CutsceneCmd_write_byte_to_extended_var_plus_param:
 // literal interpretation: [eCutsceneState+byte1] = byte2
 // byte1 - variable to modify
 // byte2 - new value of variable
+// symdb: Cutscene script opcode handler that writes a byte value into a cutscene variable slot and advances the script pointer past the 3-byte command.
+// symdb: u32 CutsceneCmd_set_var(u8 *vars /*r5*/, u8 *scriptPtr /*r7*/); // returns r0 = 1 (command
+// symdb: handled); r7 advanced by 3; r4 and r6 clobbered as scratch by the caller contract
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_set_var.yaml
 CutsceneCmd_set_var:
 	push {lr}
 	mov r6, #2
@@ -4479,6 +4497,11 @@ CutsceneCmd_set_or_clear_chatbox_flags:
 // 0 jumps to destination1, 1 jumps to destination5, 2 jumps to destination9...
 // destinationX - script to jump to
 // the length of this command is unknown, but the max length should be 33
+// symdb: Cutscene/script command that implements a "switch" on the chatbox flag word, jumping to the matching case in the map script.
+// symdb: int CutsceneCmd_switch_case_from_chatbox_flags_bit0_to_2(int scriptCtx /*r1*/, u8 *script
+// symdb: /*r7*/); returns r0 = 1; r7 = case word read from the script; r1 preserved; flags set by final
+// symdb: movs r0,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_switch_case_from_chatbox_flags_bit0_to_2.yaml
 CutsceneCmd_switch_case_from_chatbox_flags_bit0_to_2:
 	push {lr}
 	bl chatbox_GetState_8045F4C
@@ -5417,6 +5440,11 @@ CutsceneCmd_warp_cmd_8038040:
 // 0x30/0x4d hword1
 // play sound
 // hword1 - sound to play
+// symdb: Map script command handler that reads a sound effect ID from the script and plays it.
+// symdb: void MapScriptCutsceneCmd_play_sound(void); /* in: r4 = script cursor/state base, r7 = script
+// symdb: cursor; out: r0 = 1 (continue), r6 = 1, r7 += 3, flags NZCV from ADD r7,#3; preserved: r1 r2 r3
+// symdb: r5 r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_play_sound.yaml
 MapScriptCutsceneCmd_play_sound:
 	push {lr}
 	mov r6, #1

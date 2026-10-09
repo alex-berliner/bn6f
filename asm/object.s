@@ -1,4 +1,8 @@
 
+// symdb: Resolves an address from an object passed in r0 and writes the caller's byte value at offset +1, likely a one-byte field setter for some game entity/object.
+// symdb: u32 sub_800B884(void* object /*r0*/, u8 value /*r1*/); returns r0 = resolved address from
+// symdb: sub_800BF5C, r1 preserved, flags = whatever sub_800BF5C leaves
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B884.yaml
 	thumb_local_start
 sub_800B884:
 	push {lr}
@@ -9,6 +13,10 @@ sub_800B884:
 	pop {pc}
 	thumb_func_end sub_800B884
 
+// symdb: Resolves an object pointer via sub_800BF5C and returns byte 1 of the resolved structure, likely a type/flag field.
+// symdb: u8 sub_800B892(void* obj /* r0 */); reads r0, lr; returns r0 (and r1 per contract, untouched by
+// symdb: this wrapper); clobbers nzcv
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B892.yaml
 	thumb_local_start
 sub_800B892:
 	push {lr}
@@ -17,6 +25,10 @@ sub_800B892:
 	pop {pc}
 	thumb_func_end sub_800B892
 
+// symdb: Resets a battle object's animation state, clearing its current animation frame and animation timer to 0.
+// symdb: void battle_resetObjAnimState(void *battleObj /* r0 in, passed through to sub_800BF5C */); //
+// symdb: out flags: c, v preserved from the sub_800BF5C call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_resetObjAnimState_800B89C.yaml
 	thumb_local_start
 battle_resetObjAnimState_800B89C:
 	push {lr}
@@ -28,6 +40,9 @@ battle_resetObjAnimState_800B89C:
 	pop {pc}
 	thumb_func_end battle_resetObjAnimState_800B89C
 
+// symdb: Writes the same byte value into two single-byte state/work slots (slot 0 and slot 1) obtained from sub_800BF5C.
+// symdb: void writeByteToWorkSlots0And1(u8 value /* r0 */); preserves r4, clobbers r0-r1, lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/writeByteToWorkSlots0And1_800B8AC.yaml
 	thumb_local_start
 writeByteToWorkSlots0And1_800B8AC:
 	push {r4,lr}
@@ -41,6 +56,10 @@ writeByteToWorkSlots0And1_800B8AC:
 	pop {r4,pc}
 	thumb_func_end writeByteToWorkSlots0And1_800B8AC
 
+// symdb: Looks up some per-slot/state structure for the given index and returns whether its first byte equals that index.
+// symdb: int sub_800B8C2(u32 slot); // in: r0=slot/index; out: r0=1 if *ptr==slot else 0, r2=slot (copy
+// symdb: of the argument); clobbers r1, flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B8C2.yaml
 	thumb_local_start
 sub_800B8C2:
 	push {lr}
@@ -56,6 +75,10 @@ locret_800B8D6:
 	pop {pc}
 	thumb_func_end sub_800B8C2
 
+// symdb: Fetches a record pointer via sub_800BF5C and reports (as a bool, plus flags) whether that record's kind byte equals the index passed in r0.
+// symdb: bool sub_800B8D8(u32 index); // in: r0 = index; out: r0 = 1 if record kind == index else 0, r2 =
+// symdb: index (clobbered), flags Z/C/V from CMP kind,index
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B8D8.yaml
 	thumb_local_start
 sub_800B8D8:
 	push {lr}
@@ -930,6 +953,10 @@ loc_800BF50:
 	pop {r4,pc}
 	thumb_func_end sub_800BF16
 
+// symdb: Address helper that converts a slot index into a pointer to that entry in the 0x50-byte-per-entry array at byte_203CF00.
+// symdb: u8* byte_203CF00_getEntryPtr(u32 index /* r0 */); // returns r0 = byte_203CF00 + index*0x50,
+// symdb: also sets r1 = byte_203CF00 base, NZCV flags set by the final ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_203CF00_getEntryPtr_800BF5C.yaml
 	thumb_func_start byte_203CF00_getEntryPtr_800BF5C
 byte_203CF00_getEntryPtr_800BF5C:
 	mov r1, #0x50 
@@ -1813,6 +1840,10 @@ loc_800C6CE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800C67C
 
+// symdb: Returns the address of record r0 in a 12-byte-per-entry table at byte_800D730.
+// symdb: int getTable12Record_800D730(int index); // r0 in: record index; r0 out: pointer to that 12-byte
+// symdb: record; flags clobbered, r1 clobbered, lr used as return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getTable12Record_800D730_800C6D6.yaml
 	thumb_local_start
 getTable12Record_800D730_800C6D6:
 	mov r1, #0xc
@@ -1822,6 +1853,9 @@ getTable12Record_800D730_800C6D6:
 	mov pc, lr
 	thumb_func_end getTable12Record_800D730_800C6D6
 
+// symdb: Returns the address of a battle panel's data entry in ePanelData for a given column/row.
+// symdb: (u32 column r0, u32 row r1) -> u8* panelDataPtr r0; r2 left holding 8; clobbers r1 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getPanelDataPtr_800C6E0.yaml
 	thumb_local_start
 battle_getPanelDataPtr_800C6E0:
 	mov r2, #8
@@ -2132,6 +2166,10 @@ sub_800C8F0:
 	pop {pc}
 	thumb_func_end sub_800C8F0
 
+// symdb: Returns the status flags word of the panel at the given coordinates, or 0 if the coordinates are off the field.
+// symdb: u32 object_getPanelFlags(int x /*r0*/, int y /*r1*/); returns panel flags word, or 0 for invalid
+// symdb: panels
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelParameters.yaml
 	thumb_func_start object_getPanelParameters
 object_getPanelParameters:
 	push {lr}
@@ -2172,6 +2210,10 @@ off_800C924:
 	.word sub_30078C8+1
 	thumb_func_end sub_800C918
 
+// symdb: Trampoline that long-calls the real panel-parameter update routine for an object, passing all context registers straight through.
+// symdb: void object_updatePanelParameters(object_ctx /*r0,r1*/, panel_ctx /*r4-r7,r10*/); r0-r7 results
+// symdb: and NZC flags are those of the real body
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_updatePanelParameters.yaml
 	thumb_local_start
 object_updatePanelParameters:
 	push {lr}
@@ -2552,6 +2594,10 @@ off_800CBD4:
 	.word 0x114
 	thumb_func_end object_panel_setPoison
 
+// symdb: Marks the panel an object stands on as highlighted by setting the panel data flag byte at offset 1 to 1.
+// symdb: void object_highlightPanel(u32 object /*r0*/, u32 attr /*r1*/); // out: r0 = panel data offset
+// symdb: (or validity result), r1 = 1 on success; NZ/C/V per path
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_highlightPanel.yaml
 	thumb_func_start object_highlightPanel
 object_highlightPanel:
 	push {lr}
@@ -2612,6 +2658,10 @@ locret_800CC34:
 	pop {r4-r6,pc}
 	thumb_func_end object_setPanelAlliance
 
+// symdb: Sets the panel-ownership/panel-alliance timer of the indexed object in the object array to a long duration (0x708).
+// symdb: void object_setPanelAllianceTimerLong(u32 index); // r0=object index; returns r1=&object[index],
+// symdb: r2=0x708, r0=array base (0x2034010); c/v set by the ADDS that forms the entry address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setPanelAllianceTimerLong.yaml
 	thumb_func_start object_setPanelAllianceTimerLong
 object_setPanelAllianceTimerLong:
 	mov r1, #8
@@ -2647,6 +2697,10 @@ object_setPanelTypeBlink:
 	pop {pc}
 	thumb_func_end object_setPanelTypeBlink
 
+// symdb: Checks whether the panel a battle object currently occupies is a valid battlefield position.
+// symdb: bool object_isCurrentPanelValid(oBattleObject *obj /* r5 */); returns object_isValidPanel's
+// symdb: result in r0/r1 with its NZCV flags; lr clobbered (tail-call style)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_isCurrentPanelValid.yaml
 	thumb_func_start object_isCurrentPanelValid
 object_isCurrentPanelValid:
 	push {lr}
@@ -2702,6 +2756,9 @@ object_checkPanelParameters:
 	pop {r4,r5,pc}
 	thumb_func_end object_checkPanelParameters
 
+// symdb: returns whether the panel a battle object currently occupies is solid (hole, broken tile, off-grid, etc.)
+// symdb: bool object_isCurrentPanelSolid(battleObject* obj /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_isCurrentPanelSolid.yaml
 	thumb_func_start object_isCurrentPanelSolid
 object_isCurrentPanelSolid:
 	push {lr}
@@ -2711,6 +2768,10 @@ object_isCurrentPanelSolid:
 	pop {pc}
 	thumb_func_end object_isCurrentPanelSolid
 
+// symdb: Tests whether the panel at an object's position is solid (solid-panel flag 0x10 of the panel parameters).
+// symdb: u32 object_isPanelSolid(object*, u32 side); returns nonzero (0x10) if the panel is solid, 0
+// symdb: otherwise; NZ flags set from result for direct branching
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_isPanelSolid.yaml
 	thumb_func_start object_isPanelSolid
 object_isPanelSolid:
 	push {lr}
@@ -4553,6 +4614,10 @@ byte_800D730:
 	.byte 0x22, 0x2, 0x0, 0x0
 	thumb_func_end sub_800D700
 
+// symdb: Reads a battle object's pixel-space X/Y position and converts it to panel (grid) coordinates.
+// symdb: Next convertBattleObjectXYToPanelXY_800E24C(BattleObject* r5 obj); returns panel X in r0 and
+// symdb: panel Y in r1 (set by convertXYToPanelXY_800E258); clobbers flags and lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/convertBattleObjectXYToPanelXY_800E24C.yaml
 	thumb_func_start convertBattleObjectXYToPanelXY_800E24C
 convertBattleObjectXYToPanelXY_800E24C:
 	push {lr}
@@ -4565,6 +4630,10 @@ convertBattleObjectXYToPanelXY_800E24C:
 	thumb_func_start convertXYToPanelXY_800E258
 // panelX = (X + 160) / 40
 // panelY = (Y + 32) / 24
+// symdb: Converts a screen-space pixel position into battle-field panel (column, row) coordinates.
+// symdb: int battle_ScreenXYToPanelXY(int screenX_16p16, int screenY_16p16); /* returns r0 = panel
+// symdb: column, r1 = panel row; N/Z set from row, C/V clear */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/convertXYToPanelXY_800E258.yaml
 convertXYToPanelXY_800E258:
 	push {r5,r6,lr}
 	mov r6, r1
@@ -4587,6 +4656,10 @@ convertXYToPanelXY_800E258:
 	thumb_func_start object_getCoordinatesForPanels
 // X = panelX * 40 - 140
 // Y = panelY * 24 - 20
+// symdb: Converts a battle-field panel column/row into 16.16 fixed-point screen pixel coordinates (x in r0, y in r1).
+// symdb: int object_getCoordinatesForPanels(s8 panelColumn, s8 panelRow) -> returns x (r0, 16.16) and y
+// symdb: (r1, 16.16) in registers; clobbers r2 and NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getCoordinatesForPanels.yaml
 object_getCoordinatesForPanels:
 	mov r2, #0x28 
 	lsl r0, r0, #0x18
@@ -4611,6 +4684,9 @@ dword_800E298:
 	thumb_func_end object_getCoordinatesForPanels
 
 // () -> void
+// symdb: Recomputes a battle object's pixel X/Y from its current panel grid coordinates.
+// symdb: void object_setCoordinatesFromPanels(BattleObject* object /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setCoordinatesFromPanels.yaml
 	thumb_func_start object_setCoordinatesFromPanels
 object_setCoordinatesFromPanels:
 	push {lr}
@@ -4622,6 +4698,10 @@ object_setCoordinatesFromPanels:
 	pop {pc}
 	thumb_func_end object_setCoordinatesFromPanels
 
+// symdb: Recomputes a battle object's PanelX/PanelY from its current world X/Y/Z position.
+// symdb: void object_setPanelsFromCoordinates(BattleObject* obj /* r5 */); clobbers r0-r3; preserves
+// symdb: r5-r6; returns panel coords in r0/r1 as side effect; flags reflect convertXYToPanelXY_800E258
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setPanelsFromCoordinates.yaml
 	thumb_func_start object_setPanelsFromCoordinates
 object_setPanelsFromCoordinates:
 	push {lr}
@@ -4635,10 +4715,18 @@ object_setPanelsFromCoordinates:
 	pop {pc}
 	thumb_func_end object_setPanelsFromCoordinates
 
+// symdb: Returns the ±1 horizontal facing step of a battle object based on its alliance (player side = +1, enemy side = -1).
+// symdb: int object_getFacingDirection(BattleObject *obj /* r5 */); out r0 = +1 (player side) or -1
+// symdb: (enemy side), as a two's-complement u32; c/v and nz set by the final NEG
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getEnemyDirection.yaml
 	thumb_func_start object_getEnemyDirection
 object_getEnemyDirection:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 
+// symdb: Converts an alliance/side id into a facing direction multiplier (+1 for player side, -1 for enemy side).
+// symdb: int object_getAllianceDirection(int alliance /* r0 */); returns 1 - 2*alliance in r0, sets
+// symdb: N/Z/C/V from the final rsbs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getAllianceDirection.yaml
 	thumb_func_start object_getAllianceDirection
 object_getAllianceDirection:
 	lsl r0, r0, #1
@@ -4649,12 +4737,20 @@ object_getAllianceDirection:
 	thumb_func_end object_getEnemyDirection
 
 // () -> int
+// symdb: Returns the +1/-1 facing-direction multiplier for a battle object based on its alliance side and DirectionFlip flag.
+// symdb: int object_getFrontDirection(struct BattleObject* obj /* r5 */); -> r0 = +1 or -1 direction, r1
+// symdb: = obj->DirectionFlip, returns via lr (tail call into object_getFlipDirection)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getFrontDirection.yaml
 	thumb_func_start object_getFrontDirection
 object_getFrontDirection:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldrb r1, [r5,#oBattleObject_DirectionFlip]
 
 // (int a1, int a2) -> int
+// symdb: Compares two facing/direction flags and returns -1 if they differ or 1 if they match, used to decide horizontal sprite flipping.
+// symdb: int object_getFlipDirection(int dirA /*r0*/, int dirB /*r1*/); returns -1 (flip) or +1 (no
+// symdb: flip); NZCV set by the final NEG (RSBS 0, r0) on the pre-neg value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getFlipDirection.yaml
 	thumb_func_start object_getFlipDirection
 object_getFlipDirection:
 	eor r0, r1
@@ -4665,6 +4761,10 @@ object_getFlipDirection:
 	thumb_func_end object_getFlipDirection
 	thumb_func_end object_getFrontDirection
 
+// symdb: Subtracts a damage amount from a battle object's HP field, clamping the result at zero.
+// symdb: void battleObject_subtractHP(u32 damage /* r0 */); /* object ptr in r5; returns new HP in r1,
+// symdb: c/v from the SUBS */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_subtractHP.yaml
 	thumb_func_start object_subtractHP
 object_subtractHP:
 	push {r4,lr}
@@ -4788,6 +4888,10 @@ locret_800E3BC:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800E360
 
+// symdb: Sums a battle object's five per-panel collision damage values into its FinalDamage field and returns that total plus the sixth panel damage value.
+// symdb: (r5 = battle object, r4 = preserved scratch) -> r0 = u16 FinalDamage (sum of PanelDamage1..5),
+// symdb: r1 = u16 PanelDamage6, r3 = collision data pointer; clobbers r2 and nzcv flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE.yaml
 	thumb_func_start calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE
 calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE:
 	push {r4,lr}
@@ -4879,6 +4983,9 @@ loc_800E43E:
 	thumb_func_end object_calculateFinalDamage2
 
 // () -> int
+// symdb: Returns a battle object's effective horizontal facing — its alliance side XORed with its DirectionFlip override.
+// symdb: u32 object_getFlip(void* r5_object, /* out */ u32* r1_rawFlip)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getFlip.yaml
 	thumb_func_start object_getFlip
 object_getFlip:
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -4887,6 +4994,10 @@ object_getFlip:
 	mov pc, lr
 	thumb_func_end object_getFlip
 
+// symdb: One-line wrapper that tail-calls sub_800E468 with r0 set to 1 (a "true"/enable-style argument); purpose in game terms unknown until sub_800E468 is identified.
+// symdb: void sub_800E45E(void) // no meaningful inputs in r0; tail-calls sub_800E468(1); caller-visible
+// symdb: r0-r5, r8-r12, lr and carry come back from the callee
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800E45E.yaml
 	thumb_func_start sub_800E45E
 sub_800E45E:
 	push {lr}
@@ -5221,6 +5332,10 @@ byte_800E6C8:
 // } else {
 //     return r1 < r2 <= r0;
 // }
+// symdb: Generic math helper that checks whether a value (r2) lies within the interval bounded by r0 and r1, returning 1/0 regardless of which bound is smaller.
+// symdb: bool IsR2BetweenR0AndR1(int lower_or_upper_a /*r0*/, int the_other_bound /*r1*/, int value
+// symdb: /*r2*/); sets NZCV flags, result also mirrored in r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/IsR2BetweenR0AndR1.yaml
 IsR2BetweenR0AndR1:
 	mov r3, #0
 	cmp r0, r1
@@ -5808,6 +5923,10 @@ object_setInvulnerableTime:
 	pop {pc}
 	thumb_func_end object_setInvulnerableTime
 
+// symdb: Ends a battle object's post-hit invulnerability by zeroing its invulnerability timer and clearing the invulnerable flag.
+// symdb: void object_clearInvulnerableTime(r5=battle object*); out r1, r2 (leavings of object_clearFlag),
+// symdb: clobbers r0 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_clearInvulnerableTime.yaml
 	thumb_func_start object_clearInvulnerableTime
 object_clearInvulnerableTime:
 	push {lr}

@@ -1,5 +1,9 @@
 
 // () -> void
+// symdb: Skips an object header forward to its attached sprite data block and tail-calls the shared animation loader on it.
+// symdb: void sprite_loadObjectSpriteAnimation(ObjectHeader* header /* r5 */, scratch r4); trashes r0-r3
+// symdb: and flags; preserves r4/r5; called with lr as return address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_loadAnimationData.yaml
 	thumb_func_start sprite_loadAnimationData
 sprite_loadAnimationData:
 	push {r4,r5,lr}
@@ -13,6 +17,10 @@ sprite_loadAnimationData:
 	pop {r4,r5,pc}
 	thumb_func_end sprite_loadAnimationData
 
+// symdb: Tiny trampoline that tail-calls _sprite_loadAnimationData while preserving the caller's r4 around the branch.
+// symdb: sprite_loadAnimationData_trampoline_r4Preserved(void); // in: r4, r5, lr; out: r2, r3, r4, lr
+// symdb: (NZCV clobbered, r4 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_loadAnimationData_spritePtrProvidedDirectly.yaml
 	thumb_func_start sprite_loadAnimationData_spritePtrProvidedDirectly
 sprite_loadAnimationData_spritePtrProvidedDirectly:
 	push {r4,lr}
@@ -41,6 +49,10 @@ sprite_update:
 	pop {r4,r5,pc}
 	thumb_func_end sprite_update
 
+// symdb: Tiny thunk that tail-dispatches to the shared sprite update routine with r4 preset to that routine's own thumb address, preserving the caller's r4 across the call.
+// symdb: void sprite_updateTrampoline_ADDRESS(void); // in: r5 forwarded untouched to _sprite_update, lr
+// symdb: = return addr; out: r4 = caller's original r4 (preserved), flags clobbered by the callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_chatbox_80026D6.yaml
 	thumb_func_start sprite_chatbox_80026D6
 sprite_chatbox_80026D6:
 	push {r4,lr}
@@ -125,6 +137,9 @@ sprite_initialize:
 	thumb_func_end sprite_initialize
 
 // (int a1) -> void
+// symdb: Initializes the mugshot sprite for a given portrait index and flags the target sprite struct as loaded (0x80 at +0x16).
+// symdb: void sprite_loadMugshot_800275A(int mugshotIndex /* r0 */, struct *spriteState /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spriteLoadMugshot_800275A.yaml
 	thumb_func_start spriteLoadMugshot_800275A
 spriteLoadMugshot_800275A:
 	push {lr}
@@ -185,6 +200,9 @@ off_80027B0:
 	.word mugshotSpritePtrs
 	thumb_func_end sub_800279C
 
+// symdb: Writes 1 to the flag word at dword_200F350, likely marking some shared engine state (e.g. a sprite/resource table) as loaded or ready.
+// symdb: void sub_80027B4(void) — takes nothing (only lr), returns nothing; clobbers r0 and r1.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80027B4.yaml
 	thumb_func_start sub_80027B4
 sub_80027B4:
 	ldr r0, off_80027BC // =dword_200F350
@@ -210,6 +228,9 @@ sub_80027C4:
 	mov pc, lr
 	thumb_func_end sub_80027C4
 
+// symdb: Initializes the palette-DMA transfer task state at byte_20098A8, setting entry size 4, entry count 10, and a halfword transfer length of 0x2FF.
+// symdb: void sub_80027D4(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_InitTransferState_80027D4.yaml
 	thumb_func_start palette_InitTransferState_80027D4
 palette_InitTransferState_80027D4:
 	ldr r1, off_8002804 // =byte_20098A8
@@ -310,6 +331,10 @@ off_8002868:
 	.word byte_3001550
 	thumb_func_end sprite_loadPalette_8002818
 
+// symdb: Writes zero to the 32-bit global at 0x200F340 and returns; a one-liner reset of some global counter/flag.
+// symdb: void sub_800286C(void) — inputs: lr only (return address); outputs: none; clobbers r0, r1, NZ
+// symdb: flags.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800286C.yaml
 	thumb_func_start sub_800286C
 sub_800286C:
 	ldr r0, off_80028CC // =dword_200F340
@@ -510,6 +535,10 @@ loc_800297C:
 	pop {r4-r7,pc}
 	thumb_func_end uncompSprite_8002906
 
+// symdb: Looks up an id in a 12-entry table in IWRAM at byte_200DCA0 and returns the matching entry's 32-bit payload, or 0 if the id is not found.
+// symdb: u32 lookupValueForIdInTableAt_200DCA0(u32 id /* r0 */); returns payload u32 or 0; r5 preserved
+// symdb: (also used internally as the table pointer), r1/r2 scratch, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/lookupValueForIdInTableAt_200DCA0_8002986.yaml
 	thumb_local_start
 lookupValueForIdInTableAt_200DCA0_8002986:
 	push {r5,lr}
@@ -933,6 +962,11 @@ sprite_disableObjWindowMode:
 // but the bit to enable alpha blending is not set
 // and thus this call does nothing
 // original name: sprite_setMosaicScalingParameters_8002c7a
+// symdb: Trampoline that sets a sprite object to alpha-blend (effect mode 4) and programs the global blend coefficients from the given alpha level.
+// symdb: void sprite_setAlpha_8002c7a(u8 alpha /*r0*/, sprite object in r5, toolkit in r10); tail-calls
+// symdb: sprite_setAlpha(r0=alpha, r2=4, r5=object); returns r0=0x3f, r1/r2/r3 and nz/c/v from callee; r7
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setAlpha_8002c7a.yaml
 sprite_setAlpha_8002c7a:
 	mov r2, #4
 	b sprite_setAlpha
@@ -1001,6 +1035,11 @@ sprite_disableAlpha:
 	mov pc, lr
 	thumb_func_end sprite_disableAlpha
 
+// symdb: Reads the mosaic/scaling parameters for an object's attached sprite, returning the flag bits for that sprite and the current global scaling parameter from the toolkit.
+// symdb: u8 sprite_getMosaicScalingParameters(ObjectHeader* obj /*r0*/, Toolkit* toolkit /*r10*/, u8*
+// symdb: flagsOut /*r2*/); returns r0 = toolkit->Unk2009740_Ptr[2], sets r2 = objSprite->Unk_11 & 0x0C;
+// symdb: clobbers r1, r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getMosaicScalingParameters.yaml
 	thumb_func_start sprite_getMosaicScalingParameters
 sprite_getMosaicScalingParameters:
 	ldrb r3, [r0,#oObjectHeader_TypeAndSpriteOffset]
@@ -1121,6 +1160,10 @@ sprite_setPalette:
 	mov pc, lr
 	thumb_func_end sprite_setPalette
 
+// symdb: Returns the palette ID byte stored in an object's sprite data, locating the sprite via the header's sprite-offset nibble.
+// symdb: u8 sprite_getPalette(ObjectHeader* header /* r0 */); also returns r3 = pointer to the sprite
+// symdb: data, clobbers NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getPalette.yaml
 	thumb_func_start sprite_getPalette
 sprite_getPalette:
 	ldrb r3, [r0,#oObjectHeader_TypeAndSpriteOffset]
@@ -1142,6 +1185,9 @@ sprite_setAnimationAlt:
 	thumb_func_end sprite_setAnimationAlt
 
 // (u8 a1) -> void
+// symdb: Sets the current animation index for an object's sprite slot by writing it into the slot's first byte.
+// symdb: void sprite_setAnimation(u8 animIndex /*r0*/, ObjectHeader* obj /*r5*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setAnimation.yaml
 	thumb_func_start sprite_setAnimation
 sprite_setAnimation:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1169,6 +1215,9 @@ sprite_setFinalPalette:
 	mov pc, lr
 	thumb_func_end sprite_forceWhitePalette
 
+// symdb: Reads an object's sprite record via its VRAM tile offset and returns the sprite's final palette byte (masked to 0xF0).
+// symdb: u8 sprite_getFinalPalette(void* objHeader /* r0 */); returns palette in r1 (value & 0xF0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getFinalPalette.yaml
 	thumb_func_start sprite_getFinalPalette
 sprite_getFinalPalette:
 	ldrb r3, [r0,#oObjectHeader_TypeAndSpriteOffset]
@@ -1194,6 +1243,12 @@ sprite_clearFinalPalette:
 	mov pc, lr
 	thumb_func_end sprite_clearFinalPalette
 
+// symdb: Reads the current animation frame's rendering parameters (tile index, flip-disable flag, attribute byte) from an object's sprite data table.
+
+// symdb: void sprite_getFrameParameters(ObjectHeader* header /* r5 */) — out: r0 = attribute byte
+// symdb: (sprite+2, with 0xC0 flip bits cleared when flag byte nonzero), r1 = r2 = frame/tile index byte
+// symdb: (sprite+0), r3 = sprite data address; flags out: c = 1, v = 0, nz per the flag byte at sprite+1.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getFrameParameters.yaml
 	thumb_func_start sprite_getFrameParameters
 sprite_getFrameParameters:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1256,6 +1311,10 @@ sub_8002E2A:
 	mov pc, lr
 	thumb_func_end sub_8002E2A
 
+// symdb: Turns on the shadow for an object's current sprite by setting the shadow bit and clearing the no-shadow bit in its sprite state byte.
+// symdb: void sprite_enableShadow(Object* obj /* r5 */); returns r0 = new sprite state byte, r1 = 4, r3 =
+// symdb: sprite struct address; N/Z from the stored byte, C/V left over from the address ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_hasShadow.yaml
 	thumb_func_start sprite_hasShadow
 sprite_hasShadow:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1271,6 +1330,10 @@ sprite_hasShadow:
 	mov pc, lr
 	thumb_func_end sprite_hasShadow
 
+// symdb: Clears the shadow flag (and the bit-2 flag) in an object's sprite status byte, making the object's shadow stop rendering.
+// symdb: void sprite_removeShadow(void *header /* r5 */) — returns r0 = updated sprite status byte, r1 =
+// symdb: 4, r3 = sprite struct address; clobbers NZCV flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_removeShadow.yaml
 	thumb_func_start sprite_removeShadow
 sprite_removeShadow:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1365,6 +1428,9 @@ sprite_setColorShader:
 	mov pc, lr
 	thumb_func_end sprite_setColorShader
 
+// symdb: Returns the 16-bit color/palette shader value stored in an object's sprite data.
+// symdb: u16 sprite_getColorShader(ObjectHeader *header /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getColorShader.yaml
 	thumb_func_start sprite_getColorShader
 sprite_getColorShader:
 	ldrb r3, [r0,#oObjectHeader_TypeAndSpriteOffset]
@@ -1375,6 +1441,10 @@ sprite_getColorShader:
 	mov pc, lr
 	thumb_func_end sprite_getColorShader
 
+// symdb: Resets an object's sprite color-shader/palette-effect halfword to zero, returning the sprite data pointer.
+// symdb: void sprite_clearObjectColorShader(oObjectHeader* header /* r5 */); returns oObjectSprite* in
+// symdb: r3, flags c/v set by the final ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_zeroColorShader.yaml
 	thumb_func_start sprite_zeroColorShader
 sprite_zeroColorShader:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1434,6 +1504,10 @@ sprite_clearMosaic:
 	mov pc, lr
 	thumb_func_end sprite_clearMosaic
 
+// symdb: Reads two sprite/object state values at once: bit 0x10 of the object's sprite Unk_11 flag byte into r2, and the high byte of the toolkit render info halfword at +2 into r0.
+// symdb: void obj_getSpriteFlag10AndRenderInfoHigh(ObjectHeader* object /*r0*/, Toolkit* toolkit /*r10*/)
+// symdb: -> u8 renderInfoHigh /*r0*/ + u8 flag10 /*r2*/; clobbers r1, r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/obj_getSpriteFlag10AndRenderInfoHigh_8002F3E.yaml
 	thumb_func_start obj_getSpriteFlag10AndRenderInfoHigh_8002F3E
 obj_getSpriteFlag10AndRenderInfoHigh_8002F3E:
 	ldrb r3, [r0,#oObjectHeader_SpriteOffset]
@@ -1478,6 +1552,9 @@ sprite_setFlip:
 	mov pc, lr
 	thumb_func_end sprite_setFlip
 
+// symdb: Returns the flip value (0-3) stored in bits 4-5 of an object's sprite field Unk_16.
+// symdb: u8 sprite_getFlip(ObjectHeader* header /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getFlip.yaml
 	thumb_func_start sprite_getFlip
 sprite_getFlip:
 	ldrb r3, [r0,#oObjectHeader_SpriteOffset]
@@ -1494,6 +1571,10 @@ sprite_getFlip:
 // () -> void
 	thumb_func_start sprite_noShadow
 // shadow moves with sprite's Z
+// symdb: Sets an object's sprite attribute flags so the sprite renders without a shadow.
+// symdb: void sprite_setNoShadow(ObjectHeader* obj /* r5 */); returns r0 = updated attribute byte, r1 =
+// symdb: 1, r3 = sprite record pointer; NZ set from the attribute byte, CV from the sprite address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_noShadow.yaml
 sprite_noShadow:
 	ldrb r3, [r5,#oObjectHeader_SpriteOffset]
 	lsr r3, r3, #4
@@ -1508,6 +1589,10 @@ sprite_noShadow:
 	mov pc, lr
 	thumb_func_end sprite_noShadow
 
+// symdb: Stores a 32-bit value into field 0x2c of an object's sprite struct, whose offset is derived from the sprite ID nibble in the object header.
+// symdb: void sprite_setUnk0x2c(u32 value /* r0 */, ObjectHeader* header /* r5 */); returns r3 = pointer
+// symdb: to the object's sprite struct, flags from the address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setUnk0x2c.yaml
 	thumb_func_start sprite_setUnk0x2c
 sprite_setUnk0x2c:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1518,6 +1603,10 @@ sprite_setUnk0x2c:
 	mov pc, lr
 	thumb_func_end sprite_setUnk0x2c
 
+// symdb: Returns the word at offset 0x2c of an object's sprite record, locating the record via the sprite offset packed in the object header.
+// symdb: word sprite_getUnk0x2c(ObjectHeader *r5); also sets carry (side effect of the address add),
+// symdb: clobbers r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getUnk0x2c.yaml
 	thumb_func_start sprite_getUnk0x2c
 sprite_getUnk0x2c:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1559,6 +1648,10 @@ sub_8002FD4:
 	.hword 0x2000
 	thumb_func_end sub_8002FD4
 
+// symdb: Writes a 32-bit value into field +0x30 of whichever 0x10-byte-aligned sub-structure of a scene/npc object is selected by the high nibble of byte +2.
+// symdb: void object_writeSubstructField30(Object* obj /*r5*/, u32 value /*r0*/); // returns target
+// symdb: address in r3 and sets flags via the ADDS used for the sub-struct offset
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_writeSubstructField30_8002FEC.yaml
 	thumb_func_start object_writeSubstructField30_8002FEC
 object_writeSubstructField30_8002FEC:
 	ldrb r3, [r5,#2]
@@ -1626,6 +1719,11 @@ sub_800302A:
 	mov pc, lr
 	thumb_func_end sub_800302A
 
+// symdb: Stores a 4-bit palette bank into the high nibble of byte +0x15 of one 0x10-byte sub-entry of an object, selected by the high nibble of the object's byte at +2.
+// symdb: void sprite_setSubEntryPaletteBank(u32 paletteBank /* r0, 0-15 */, void *obj /* r5 */); sets
+// symdb: NZ/C/V as side effects, returns r0 = paletteBank << 4, r1 = new byte value, r2 = 0xF0, r3 = sub-
+// symdb: entry address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setSubEntryPaletteBank_800304A.yaml
 	thumb_func_start sprite_setSubEntryPaletteBank_800304A
 sprite_setSubEntryPaletteBank_800304A:
 	ldrb r3, [r5,#2]
@@ -1641,6 +1739,10 @@ sprite_setSubEntryPaletteBank_800304A:
 	mov pc, lr
 	thumb_func_end sprite_setSubEntryPaletteBank_800304A
 
+// symdb: Stores a byte into field +0xA of the 16-byte-aligned sub-record selected by the sprite object's bank/index nibble.
+// symdb: void sprite_setSubRecordFieldA(u8 value, SpriteObj* obj /* r5 */); // out: r3 = sub-record base,
+// symdb: c/v from the ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setSubRecordFieldA_8003060.yaml
 	thumb_func_start sprite_setSubRecordFieldA_8003060
 sprite_setSubRecordFieldA_8003060:
 	ldrb r3, [r5,#2]
@@ -1651,6 +1753,10 @@ sprite_setSubRecordFieldA_8003060:
 	mov pc, lr
 	thumb_func_end sprite_setSubRecordFieldA_8003060
 
+// symdb: Uses the high nibble of a selector byte in a table header to pick a 16-byte slot, writes a caller-supplied halfword into it, and zeroes a wider field that overruns into the next slot.
+// symdb: void sub_800306C(u16 value /* r0 */, void* table /* r5 */) // tail-calls back to lr; no return
+// symdb: value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/slotList_storeHalfwordAndClearField_800306C.yaml
 	thumb_func_start slotList_storeHalfwordAndClearField_800306C
 slotList_storeHalfwordAndClearField_800306C:
 	ldrb r3, [r5,#2]
@@ -1663,6 +1769,10 @@ slotList_storeHalfwordAndClearField_800306C:
 	mov pc, lr
 	thumb_func_end slotList_storeHalfwordAndClearField_800306C
 
+// symdb: Sets an object's x/y position fields within the 0x10-byte sprite sub-entry selected by the high nibble of the resource's byte 2.
+// symdb: void sprite_setCoordinates(u16 x /*r0*/, u16 y /*r1*/, SpriteResource* res /*r5*/); returns r3 =
+// symdb: selected sub-entry address, NZCV from computing it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setCoordinates.yaml
 	thumb_func_start sprite_setCoordinates
 sprite_setCoordinates:
 	ldrb r3, [r5,#2]

@@ -10524,6 +10524,10 @@ locret_80AA762:
 	mov pc, lr
 	thumb_func_end sub_80AA756
 
+// symdb: Returns 1 if event flag EVENT_212 is set, otherwise 0, and leaves N/Z flags reflecting the result.
+// symdb: bool isEventFlag212Set(void) — in: none (r4/r10/lr only per contract, all unused); out: r0 = 0
+// symdb: or 1, N/Z set from r0 (C/V clobbered by the flag test call)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/isEventFlag212Set_80AA764.yaml
 	thumb_local_start
 isEventFlag212Set_80AA764:
 	push {r4,lr}

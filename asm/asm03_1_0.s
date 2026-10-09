@@ -432,6 +432,10 @@ sub_8033B0C: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B0C
 
+// symdb: Per-frame update hook while browsing the Internet overworld — runs the common Internet update step, requests state 1, and redraws the current map/area name display.
+// symdb: void onUpdateInInternet_8033B1E(self: *S2011E30 /* in r5 */); reads r4-r7, r9-r12, lr from
+// symdb: callers; passes through all callee register and flag (nz c v) effects
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/onUpdateInInternet_8033B1E.yaml
 	thumb_local_start
 onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -2551,6 +2555,11 @@ off_80350A4:
 	.word CutsceneScriptNotification_8098BB8 // CutsceneScript
 	thumb_func_end sub_8035084
 
+// symdb: Spawns the player's overworld object for a map entry and points the camera at its coordinates.
+// symdb: void owPlayer_80350a8(void) — no meaningful inputs; internally calls
+// symdb: spawnOWPlayerObjectForEnterMap_809e064 (returns object ptr in r5) and
+// symdb: camera_writeUnk03_14_80301b2(mode=1, target=&object->Coords); r5 is preserved for the caller.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_80350a8.yaml
 	thumb_local_start
 owPlayer_80350a8:
 	push {r5,lr}

@@ -81,7 +81,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 	thumb_func_end npc_init_809E590
 
 // symdb: NPC state 4, every frame: run the script and current action, then update the sprite, interaction areas and layer.
-// symdb: (r5 = NPC) -> if ChatTriggered: npc_beginChatboxState_809F5FC; else npc_runPrimaryScript_809ebdc,
+// symdb: (r5 = NPC) -> if ChatTriggered: sub_809F5FC; else npc_runPrimaryScript_809ebdc,
 // symdb: NPCCurActionJumptable[CurAction], sprite_setFlip(mirrored), on a new NPCSprite:
 // symdb: sprite_load(0x80, category, sprite) + shadow mode (UnkFlags_60 0x80/0x100), on a new
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
@@ -397,7 +397,7 @@ dword_809E7D4:
 	thumb_func_end npc_nonCutsceneMovementInit_809E704
 
 // symdb: Walk one frame: unless blocked, move to Next*; when the step ends, snap to its target and start the next step or finish the walk.
-// symdb: (r5 = NPC) -> unless UnkFlags_60 0x10 (no collision), npc_overworld_CheckStateFlags50000_809F638 != 0 means blocked
+// symdb: (r5 = NPC) -> unless UnkFlags_60 0x10 (no collision), sub_809F638 != 0 means blocked
 // symdb: (sub_809F5B0 only); else X/Y/Z = Next*; Timer -= 1; at 0: X/Y = Unk_70/74, MovementDistance -=
 // symdb: 1, then npc_enableScript0x19_809f516 (done) or npc_nonCutsceneMovementInit_809E704; otherwise
 // symdb: Next* += Delta*, and unless UnkFlags_60 0x200 Z = NextZ = checkZCoordModifiers_8031612(Coords)
@@ -1339,6 +1339,10 @@ NPCCommand_clear_event_flag:
 	thumb_local_start
 // 0x08
 // set the npc to be active and visible
+// symdb: NPC script command that turns an object on, making it both active and visible on the map.
+// symdb: void NPCCommand_set_active_and_visible(ObjectHeader *r5, NPCScript *r6 /* in/out, advanced by 1
+// symdb: */); sets nz/cv from the pointer increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_active_and_visible.yaml
 NPCCommand_set_active_and_visible:
 	mov r0, #(OBJECT_FLAG_ACTIVE | OBJECT_FLAG_VISIBLE)
 	strb r0, [r5,#oObjectHeader_Flags]
@@ -1349,6 +1353,10 @@ NPCCommand_set_active_and_visible:
 	thumb_local_start
 // 0x09
 // set the npc to be active and invisible
+// symdb: NPC script command that marks the NPC's object as active (flag byte = 1) and steps the script pointer past this one-byte command.
+// symdb: void NPCCommand_set_active_and_invisible(ObjectHeader *obj /* r5 */, u8 **scriptPtr /* r6 */);
+// symdb: returns r0 = 1 (the flag value written), r6 advanced by 1, NZCV set by the pointer increment.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_active_and_invisible.yaml
 NPCCommand_set_active_and_invisible:
 	mov r0, #OBJECT_FLAG_ACTIVE
 	strb r0, [r5,#oObjectHeader_Flags]
@@ -1360,6 +1368,10 @@ NPCCommand_set_active_and_invisible:
 // 0x0a byte1
 // set npc collision radius
 // byte1 - new value of collision radius
+// symdb: Overworld NPC script opcode handler that sets an NPC object's collision radius from a one-byte argument in the script.
+// symdb: (r5 = OverworldNPCObject*, r6 = script cursor) -> r0 = radius byte, r6 = cursor advanced by 2;
+// symdb: NZCV set from (r6 + 2)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_collision_radius.yaml
 NPCCommand_set_collision_radius:
 	ldrb r0, [r6,#1]
 	strb r0, [r5,#oOverworldNPCObject_CollisionRadius]
@@ -1393,6 +1405,10 @@ NPCCommand_set_z_reach:
 // signedbyte1 - x offset for npc center
 // signedbyte2 - y offset for npc center
 // signedbyte3 - z offset for npc center
+// symdb: NPC script opcode that sets the NPC's center offset (X/Y/Z) from a 3-byte inline payload, used to shift the NPC's anchor/interaction point in the overworld.
+// symdb: void NPCCommand_shift_center(r5 = OverworldNPCObject*, r6 = script data ptr); outputs r0 =
+// symdb: center offset Z (sign-extended s8), r1 = 3, r6 advanced by 4, flags NZCV set by (old r6 + 4)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_shift_center.yaml
 NPCCommand_shift_center:
 	mov r1, #1
 	ldrsb r0, [r6,r1]
@@ -1436,6 +1452,10 @@ NPCCommand_disable_npc_interaction:
 // 0x0f byte1
 // set npc palette index
 // byte1 - value to set npc's palette index to
+// symdb: NPC script opcode that sets an overworld NPC's palette index from a byte embedded in the script and advances the script pointer.
+// symdb: (r5 NPC object, r6 script pointer, lr return) -> r0 = palette byte read, r6 = script pointer
+// symdb: advanced by 2, NZCV flags from "ADDS r6,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_npc_palette_index.yaml
 NPCCommand_set_npc_palette_index:
 	push {lr}
 	ldrb r0, [r6,#1]
@@ -1586,6 +1606,10 @@ NPCCommand_move_in_direction:
 // 0x16 byte1
 // set npc animation
 // byte1 - animation to set
+// symdb: Overworld NPC script opcode handler that sets which animation the NPC plays, reading the animation ID as the byte after the opcode.
+// symdb: u8 NPCCommand_set_animation(OverworldNPCObject* npc /*r5*/, u8* scriptPtr /*r6*/); returns
+// symdb: updated scriptPtr in r6, animation ID in r0, flags from ptr+2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_animation.yaml
 NPCCommand_set_animation:
 	ldrb r0, [r6,#1]
 	strb r0, [r5,#oOverworldNPCObject_AnimationSelect]
@@ -1641,6 +1665,10 @@ NPCCommand_set_sprite:
 // 0x18 byte1
 // set text script index
 // byte1 - new text script index of NPC
+// symdb: NPC script command that reads an immediate byte and sets which text script the overworld NPC will play when interacted with.
+// symdb: void NPCCommand_set_text_script_index(r5 = NPC object, r6 = script cursor; returns r0 = text
+// symdb: script index, r6 advanced by 2; NZCV set by the cursor add)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_text_script_index.yaml
 NPCCommand_set_text_script_index:
 	ldrb r0, [r6,#1]
 	strb r0, [r5,#oOverworldNPCObject_TextScriptIndex]
@@ -1663,6 +1691,10 @@ NPCCommand_disable_layer_priority_override:
 	thumb_local_start
 // 0x1a
 // override the current NPC's layer priority to 2
+// symdb: NPC script bytecode command that sets an overworld NPC's layer priority override to 2 and advances the script cursor.
+// symdb: void NPCCommand_set_layer_priority_override_to_2(NPCObject *r5, uint32 *r6 /* script cursor */);
+// symdb: returns r0 = 2, NZCV from r6++ (caller resumes via lr)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_layer_priority_override_to_2.yaml
 NPCCommand_set_layer_priority_override_to_2:
 	mov r0, #2
 	str r0, [r5,#oOverworldNPCObject_LayerPriorityOverride]
@@ -1838,6 +1870,10 @@ NPCCommand_set_sprite_to_cur_pet_navi:
 // set the current npc's sprite to a sprite from any sprite category
 // byte1 - sprite id
 // byte2 - sprite category
+// symdb: NPC script bytecode command that assigns an overworld NPC a sprite index and sprite category, and marks it as a normal (non-shadow) sprite.
+// symdb: void NPCCommand_set_sprite_with_category(npc r5, cursor r6) -> flags r0, shadowFlagConst r1,
+// symdb: cursor r6 (sets nz cv via r6+3)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_sprite_with_category.yaml
 NPCCommand_set_sprite_with_category:
 	ldrb r0, [r6,#1]
 	strh r0, [r5,#oOverworldNPCObject_NPCSprite]
@@ -1873,6 +1909,11 @@ NPCCommand_toggle_sprite_mirror:
 // disable collision for current NPC
 // functionally different than the other disable collision command
 // but the differences are unknown
+// symdb: NPC script command that turns off the NPC's collision (walk-through) by setting flag bit 0x10 in its UnkFlags_60 field, then steps the script to the next command.
+// symdb: void NPCCommand_disable_collision_alternate(r5 = OverworldNPCObject* npc, r6 =
+// symdb: &script_command_counter) -> returns via lr; outputs r0 (flag bit 0x10), r1 (updated
+// symdb: UnkFlags_60), r6 (counter advanced by 1), and NZCV flags from the counter increment (ADDS).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_disable_collision_alternate.yaml
 NPCCommand_disable_collision_alternate:
 	mov r0, #OW_NPC_UNK_FLAGS_60_DISABLE_COLLISION_0x10
 	ldr r1, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -2122,6 +2163,10 @@ NPCCommand_run_secondary_script:
 // 0x33 byte1
 // wait a given number of frames for the current npc's secondary script
 // byte1 - number of frames to wait
+// symdb: Overworld NPC script opcode handler that pauses the NPC's script for a given number of frames before it (or the secondary script) resumes.
+// symdb: Next NPCCommand_pause_secondary_script(OverworldNPCObject *npc /* r5 */, u8 *scriptPtr /* r6
+// symdb: */); returns r0 = 1, r6 = scriptPtr + 2, and nz/c/v set by the ADDS r6,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_pause_secondary_script.yaml
 NPCCommand_pause_secondary_script:
 	push {lr}
 
@@ -2141,6 +2186,10 @@ NPCCommand_pause_secondary_script:
 	thumb_local_start
 // 0x34
 // end the current npc's secondary script
+// symdb: NPC script opcode that terminates an overworld NPC's secondary (event) script, clearing its script pointer and timer so the NPC returns to normal behavior.
+// symdb: void NPCCommand_end_secondary_script(OverworldNPCObject *npc /* r5 */) -> returns r0=NULL, r6=0,
+// symdb: NZ flags from r6==0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_end_secondary_script.yaml
 NPCCommand_end_secondary_script:
 	mov r0, #NULL
 	str r0, [r5,#oOverworldNPCObject_UnkNPCScriptPtr_5c]
@@ -2183,6 +2232,10 @@ NPCCommand_init_native_callback:
 // 0x36 destination1
 // set the npc link register, and jump to another script
 // destination1 - script to jump to
+// symdb: NPC script VM "call subroutine" opcode — saves a return address in the NPC object's link register and jumps to a 32-bit destination read from the script.
+// symdb: void NPCCommand_jump_with_link(OverworldNPCObject* npc /* r5 */, int scriptPc /* r6 */); returns
+// symdb: r0 = r6 = new script Pc (jump target), sets flags via "movs r6, r0"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump_with_link.yaml
 NPCCommand_jump_with_link:
 	push {lr}
 	mov r4, #oOverworldNPCObject_LinkRegister
@@ -2361,6 +2414,10 @@ NPCCommand_jump_if_progress_in_range:
 // write a value to a cutscene variable
 // byte1 - cutscene variable to write to
 // byte2 - value to write to cutscene variable
+// symdb: Cutscene script "setvar" opcode handler that stores a byte value into the cutscene's variable buffer at a given index.
+// symdb: void NPCCommand_write_cutscene_var(u8 *scriptPtr in r6, toolkit in r10); returns nz c v flags
+// symdb: and r0 = varIndex, r1 = value, r4 = cutsceneState ptr, r6 = scriptPtr advanced by 3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_write_cutscene_var.yaml
 NPCCommand_write_cutscene_var:
 	push {lr}
 	mov r4, r10
@@ -2622,6 +2679,10 @@ NPCCommand_jump_if_anim_not_equal:
 // 0x4c byte1
 // set text script pointer to a hardcoded buffer and index to the given value for the current npc
 // byte1 - new text script index
+// symdb: Overworld NPC script opcode handler that assigns a text script index to the NPC and points it at the text decompression buffer, marking it ready to show a chatbox.
+// symdb: Next NPCCommand_set_text_script_index_and_ptr_to_decomp_buffer(NPC* r5 npc, u8* r6 cmdArgs); //
+// symdb: out: r6 = cmdArgs+2, flags (nz c v) and scratch r0/r1/r3 left as byproducts; lr used as return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_text_script_index_and_ptr_to_decomp_buffer.yaml
 NPCCommand_set_text_script_index_and_ptr_to_decomp_buffer:
 	push {lr}
 
@@ -3091,6 +3152,9 @@ dword_809F5F8:
 	.word (OW_OBJECT_INTERACTION_AREA_FLAG_0x10000 | OW_OBJECT_INTERACTION_AREA_FLAG_0x40000)
 	thumb_func_end sub_809F5B0
 
+// symdb: Puts an overworld NPC into the "in chatbox" state, backing up its action and movement flags before the conversation starts.
+// symdb: void npc_beginChatboxState(OverworldNPCObject *npc /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_beginChatboxState_809F5FC.yaml
 	thumb_local_start
 npc_beginChatboxState_809F5FC:
 	push {lr}
@@ -3128,6 +3192,10 @@ loc_809F632:
 	pop {pc}
 	thumb_func_end sub_809F612
 
+// symdb: Tests an overworld NPC object's state flag word for the 0x50000 bit pair and returns 1 if either is set, 0 otherwise.
+// symdb: bool npc_overworld_CheckStateFlags50000_ADDRESS(OverworldNPCObject *npc /* r5 */); also returns
+// symdb: the raw flag word in r1 and the mask 0x50000 in r2; clobbers N/Z flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_overworld_CheckStateFlags50000_809F638.yaml
 	thumb_local_start
 npc_overworld_CheckStateFlags50000_809F638:
 	push {lr}
@@ -3145,6 +3213,10 @@ dword_809F648:
 	thumb_func_end npc_overworld_CheckStateFlags50000_809F638
 
 // (u8 bitfield_arr[2]) -> u16
+// symdb: Reads a little-endian 16-bit operand from an NPC script byte stream and returns it without advancing the caller's cursor.
+// symdb: u16 ReadNPCScriptHalfword(const u8* script /* r0 */) -> r0 = halfword, r1 = low byte; carry = 0;
+// symdb: N/Z set from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadNPCScriptHalfword.yaml
 	thumb_local_start
 ReadNPCScriptHalfword:
 	ldrb r1, [r0]

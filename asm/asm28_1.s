@@ -1,4 +1,7 @@
 
+// symdb: Zero-fills the 0x480-byte struct pointed to by the toolkit's Unk2004348 pointer.
+// symdb: void zeroFillToolkitUnk2004348(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e2004348.yaml
 	thumb_func_start zeroFill_e2004348
 zeroFill_e2004348:
 	push {r4-r7,lr}

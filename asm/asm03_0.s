@@ -703,6 +703,10 @@ off_80269CC:
 	.word dword_20349A0
 	thumb_func_end sub_8026840
 
+// symdb: Queries some global status via sub_800A9E2 with argument 0 and reduces the result to a boolean that is true when bits 0 or 2 are set.
+// symdb: int checkStatusBits0Or2(void); returns 1 if (statusValue & 0x5) != 0 else 0; carry and overflow
+// symdb: flags from the inner call pass through to the caller
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80269D0.yaml
 	thumb_local_start
 sub_80269D0:
 	push {lr}
@@ -1931,6 +1935,11 @@ off_80272A4:
 	.word sub_8027394+1
 	thumb_func_end sub_802728C
 
+// symdb: Loads a word from a lookup table (indexed by the object's +0xC id) into the object's +0x40 field and switches the object to state 4.
+// symdb: void battle_loadObjTableEntryAndSetState4(Obj* r5); // writes obj->field40 (u32) and obj->state2
+// symdb: (u16=4); returns r0=4, r1=table base; nz/c set by "mov r0,#4" and the shifted-out bit of
+// symdb: (r5+0xC)<<2 (never set for byte values)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadObjTableEntryAndSetState4_80272B8.yaml
 	thumb_local_start
 battle_loadObjTableEntryAndSetState4_80272B8:
 	push {lr}
@@ -2060,6 +2069,10 @@ dword_8027390:
 	.word 0xB37A
 	thumb_func_end sub_8027332
 
+// symdb: Puts the battle object at r5 into state 4 and zeroes its halfword field (likely a timer/counter), returning 0.
+// symdb: void sub_8027394(battle_obj_t* obj /* r5 */); returns r0 = 0 with N/Z flags set from that 0
+// symdb: (Z=1)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8027394.yaml
 	thumb_local_start
 sub_8027394:
 	push {lr}
@@ -2091,6 +2104,10 @@ off_80273B8:
 	.word sub_80273E4+1
 	thumb_func_end sub_80273A4
 
+// symdb: Picks a battle object's next routine from a per-mode pointer table and flags the object with state 4.
+// symdb: void sub_80273CC(battleobj *r5); /* returns r0=4, r1=table base, NZ from r0=4 (clear), C from
+// symdb: mode<<2 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_SelectHandlerByMode_80273CC.yaml
 	thumb_local_start
 battle_object_SelectHandlerByMode_80273CC:
 	push {lr}
@@ -2107,6 +2124,10 @@ off_80273E0:
 	.word off_8027C84
 	thumb_func_end battle_object_SelectHandlerByMode_80273CC
 
+// symdb: Sets the byte pointed to by r5 to the constant 8 and returns 8, likely writing a state/enum value into some object field.
+// symdb: u8 setByteTo8(void *stateByte) — takes r5 = pointer to a byte; stores 8 there, returns r0 = 8
+// symdb: with NZ flags set from it; does not touch r5's caller value.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80273E4.yaml
 	thumb_local_start
 sub_80273E4:
 	push {lr}
@@ -3244,6 +3265,9 @@ off_8027D0C:
 	.word unk_2035000
 	thumb_func_end sub_8027CCC
 
+// symdb: Splits a battle chip id into one of two chip-name text tables plus an index into the chosen table.
+// symdb: u32* chip_SelectNameTextTable(u32 chipId /* r0 */); /* returns table ptr in r0, index in r1 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chip_SelectNameTextTable_8027D10.yaml
 	thumb_func_start chip_SelectNameTextTable_8027D10
 chip_SelectNameTextTable_8027D10:
 	mov r1, r0
@@ -3268,6 +3292,10 @@ off_8027D30:
 	thumb_func_end chip_SelectNameTextTable_8027D10
 
 // (int chipID) -> void*
+// symdb: Given a chip id, returns the pointer to that chip's description text-script table and the chip's index within it, switching to a second table for ids above 0xFF.
+// symdb: u32* chip_getDescriptionScript_8027D34(u32 chipId /* r0, low 9 bits */); // returns table
+// symdb: pointer in r0, index in r1; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chip_getScript_8027D34.yaml
 	thumb_local_start
 chip_getScript_8027D34:
 	mov r1, r0
@@ -3291,6 +3319,10 @@ off_8027D54:
 	.word TextScriptChipDesc1
 	thumb_func_end chip_getScript_8027D34
 
+// symdb: Counts how many chips (up to 30) are stored in the equipped battle folder before its 0xFFFF terminator entry.
+// symdb: int battle_countFolderChips(void); // in: lr only; out: r0 = chip count, r2 = pointer to
+// symdb: terminator entry (or one past slot 30 if none), r3 = entries left unscanned; preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_countFolderChips_8027D58.yaml
 	thumb_local_start
 battle_countFolderChips_8027D58:
 	push {r4,lr}
@@ -3497,6 +3529,10 @@ off_8027EE4:
 	.word dword_802A7CC
 	thumb_func_end sub_8027E90
 
+// symdb: Fills 12-byte records with pointers to each chip entry in the battle folder (eBattleFolder), writing up to a caller-given slot limit.
+// symdb: void sub_8027EE8(FolderRecord* dst /*r4*/, FolderHeader* src /*r5*/, u32 maxSlots /*r6*/);
+// symdb: returns r2=0, r3=0 on success; on early-out r3 holds the folder's entry count byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_BuildFolderEntryRecords_8027EE8.yaml
 	thumb_local_start
 battle_BuildFolderEntryRecords_8027EE8:
 	push {r4,r6,lr}
@@ -3713,6 +3749,10 @@ loc_802804C:
 	pop {r4,pc}
 	thumb_func_end sub_8028034
 
+// symdb: Scans a table of 12-byte entries for the first one whose leading byte is not the empty marker 0x0A/0x0B, and stores its index (or 0x0A if none) into record+7.
+// symdb: void sub_8028050(u8 *cursor /*r4*/, u8 *record /*r5*/); tailcalls r6, preserved r4/r6, clobbers
+// symdb: flags and r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/table_findFirstOccupiedEntry_8028050.yaml
 	thumb_local_start
 table_findFirstOccupiedEntry_8028050:
 	push {r4,r6,lr}
@@ -3838,6 +3878,10 @@ off_8028118:
 	.word dword_20349A0
 	thumb_func_end sub_80280E0
 
+// symdb: Queues all pending GFX transfers for the dataList at off_802A744, then tail-calls sub_802812C with the byte at [r5+0x10].
+// symdb: void gfx_flushDataListAndContinue(struct State* r5 /* plus passthrough args r2-r3 */); returns
+// symdb: whatever sub_802812C returns in r0-r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_flushDataListAndContinue_802811C.yaml
 	thumb_local_start
 gfx_flushDataListAndContinue_802811C:
 	push {lr}
@@ -3877,6 +3921,9 @@ off_8028160:
 	.word byte_30016B0
 	thumb_func_end sub_802812C
 
+// symdb: Maps an index through a lookup table and returns the pointer to that entry's 0x80-byte record in the dat38_86F5834 data table.
+// symdb: u8* getIndexed80hRecordPtr(u8 index)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getIndexed80hRecordPtr_8028164.yaml
 	thumb_local_start
 getIndexed80hRecordPtr_8028164:
 	ldr r1, off_8028198 // =byte_802819C 
@@ -3931,6 +3978,10 @@ off_80281C0:
 	.word byte_86E601C
 	thumb_func_end sub_80281A8
 
+// symdb: Queues one 0x80-byte chunk of a graphics DMA transfer, using a helper to set up the next source/destination pair.
+// symdb: gfx_QueueNextChunkedGfxTransfer(u32 src /*r0*/, u32 dest /*r1*/, ... /*r3 = context for
+// symdb: sub_80281A8*/) -> u32 /*r1 = dest + 0x80*/; preserves r2-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_QueueNextChunkedGfxTransfer_80281C4.yaml
 	thumb_local_start
 gfx_QueueNextChunkedGfxTransfer_80281C4:
 	push {r2,r3,lr}
@@ -3941,6 +3992,10 @@ gfx_QueueNextChunkedGfxTransfer_80281C4:
 	pop {r2,r3,pc}
 	thumb_func_end gfx_QueueNextChunkedGfxTransfer_80281C4
 
+// symdb: Thin wrapper that targets one 0x80-byte OBJ tile slot in VRAM (0x0600A4A0 + 0x80*slot) and calls the tile-loading helper sub_80281C4 on it.
+// symdb: void sprite_CopyObjTilesToVramSlot(u32 slot /* r1 */, ... /* r0 and r2..r7 pass through to
+// symdb: sub_80281C4 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_CopyObjTilesToVramSlot_80281D4.yaml
 	thumb_local_start
 sprite_CopyObjTilesToVramSlot_80281D4:
 	push {r1,r2,lr}
@@ -3971,6 +4026,10 @@ off_8028200:
 	.word byte_8725894
 	thumb_func_end sub_80281E4
 
+// symdb: Queues a single 0x40-byte chunk of a graphics transfer to the destination pointer in r1, then advances r1 past the chunk.
+// symdb: gfx_QueueNext64ByteChunk(dest /* r1 in/out, advanced by 0x40 */) -> void; clobbers r0 (source
+// symdb: address), preserves r2-r7; flags set by the r1 += 0x40 add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_QueueNext64ByteChunk_8028204.yaml
 	thumb_local_start
 gfx_QueueNext64ByteChunk_8028204:
 	push {r2,r3,lr}
@@ -3981,6 +4040,10 @@ gfx_QueueNext64ByteChunk_8028204:
 	pop {r2,r3,pc}
 	thumb_func_end gfx_QueueNext64ByteChunk_8028204
 
+// symdb: Returns a pointer to a 64-byte data record selected by id, with ids 0x1B/0x1C rerouted to a special record and out-of-range ids clamped to the last table entry.
+// symdb: void* data_getRecordPtrById(u32 id); // in: r0 = record id; r2 and lr preserved (lr is the
+// symdb: return); out: r0 = record pointer; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/data_getRecordPtrById_8028214.yaml
 	thumb_local_start
 data_getRecordPtrById_8028214:
 	push {r2,lr}
@@ -4072,6 +4135,9 @@ loc_8028298:
 	pop {r4,pc}
 	thumb_func_end sub_8028284
 
+// symdb: Empty stub function that does nothing and immediately returns.
+// symdb: void nullsub_14(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_14.yaml
 	thumb_local_start
 nullsub_14:
 	mov pc, lr
@@ -4138,6 +4204,10 @@ loc_80282FC:
 	pop {pc}
 	thumb_func_end sub_80282E8
 
+// symdb: Runs the standard end-of-battle-action bookkeeping, resetting a battle counter with 0x1FF and then firing scripted action 0x1D.
+// symdb: void battle_endActionSetup(void) // no meaningful inputs; returns to caller via lr (r0-r1
+// symdb: clobbered, flags clobbered, r2-r7 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_endActionSetup_8028310.yaml
 	thumb_local_start
 battle_endActionSetup_8028310:
 	push {lr}
@@ -6742,6 +6812,12 @@ locret_8029618:
 	pop {r2,r4-r6,pc}
 	thumb_func_end sub_80295C8
 
+// symdb: Compares a run of halfwords from a buffer against one pattern record and, on a full match, returns that record's result value.
+// symdb: i32 matchHalfwordPatternEntry(u32 count /*r2*/, struct record* rec /*r3*/, u32 stride /*r6*/,
+// symdb: u16* src /*r7*/) -> result in r0 (rec->result halfword on success, 0 on mismatch), r1 = stride
+// symdb: on success / the mismatched expected halfword on failure; NZ set from final move, C/V from the
+// symdb: last halfword compare
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/matchHalfwordPatternEntry_802961A.yaml
 	thumb_local_start
 matchHalfwordPatternEntry_802961A:
 	push {r2,r4,r7,lr}
@@ -7855,6 +7931,9 @@ byte_8029D64:
 	.byte 0x90
 	thumb_func_end sub_8029D34
 
+// symdb: Fixed-argument wrapper that invokes call_sub_3005EBA with the constant set (0xF, 4, 3, 0, 7, 2) and returns its r1-r3 results.
+// symdb: void sub_8029D80(void); /* out: r1, r2, r3 = callee results passed through; r4-r7 preserved */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8029D80.yaml
 	thumb_local_start
 sub_8029D80:
 	push {r4,r5,lr}
@@ -8118,6 +8197,9 @@ dword_8029FF0:
 	thumb_func_end sub_8029FB4
 
 // (int a1) -> bool
+// symdb: Returns 1 if the given chip ID matches either of the two chip IDs stored in the table at dword_802A02C, else 0.
+// symdb: bool u32 chipIDIsInSpecialPair(u32 chipID /* r0 */); preserves r1-r7; clobbers flags only
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipIDIs13f_8029FF4.yaml
 	thumb_local_start
 chipIDIs13f_8029FF4:
 	push {r1-r7,lr}
@@ -8136,6 +8218,10 @@ loc_802A008:
 	pop {r1-r7,pc}
 	thumb_func_end chipIDIs13f_8029FF4
 
+// symdb: Returns 1 if the low 9 bits of the given ID equal a special configured value (0x13F in this build), else 0.
+// symdb: int checkIdMatchesSpecialValue(u32 id); /* preserves r1-r7; returns bool in r0 with Z set iff
+// symdb: true */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802A00C.yaml
 	thumb_local_start
 sub_802A00C:
 	push {r1-r7,lr}
@@ -8272,6 +8358,10 @@ dword_802A0E8:
 	.word 0xD
 	thumb_func_end sub_802A0C8
 
+// symdb: Clears the byte flag at byte_20352CC (offset 0x4C of eStruct2035280), marking the battle/event it tracks as finished.
+// symdb: void sub_802A0EC(void); // in: lr only; out: r1=0, r2=0x4C, NZ set from "mov r2,#0x4C"; clobbers
+// symdb: r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ClearPendingEventFlag_802A0EC.yaml
 	thumb_local_start
 battle_ClearPendingEventFlag_802A0EC:
 	push {lr}
@@ -8350,6 +8440,10 @@ byte_802A148:
 	.byte 0x0, 0x42, 0x1, 0x0, 0x0
 
 
+// symdb: If the battle state's field oBattleState_Unk_15 is nonzero, writes 0xFF to byte_20349A5 (an unknown battle work buffer's byte 5), likely signaling a pending state/advance request.
+// symdb: void sub_802A210(r5 = battle state ptr); sets c/v from (Unk_15 != 0) comparison; returns r3 =
+// symdb: 0x20349A0 when Unk_15 != 0 (callers read r3, per contract)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setUnk20349A5Flag_802A210.yaml
 	thumb_local_start
 battle_setUnk20349A5Flag_802A210:
 	push {lr}
@@ -11560,6 +11654,10 @@ off_802BDB0:
 	.word unk_2034B30
 	thumb_func_end sub_802BD60
 
+// symdb: Runs helper sub_802C97E, then stores 4 into the word at r5, likely advancing a battle state/phase counter to its next step.
+// symdb: void sub_802BDB4(r4 context?, r5 outStatePtr, r10 work?); writes u32 4 to *r5; returns with NZCV
+// symdb: set from r0==4 and r0-r3 clobbered (r4, r5 preserved)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802BDB4.yaml
 	thumb_local_start
 sub_802BDB4:
 	push {lr}
@@ -11739,6 +11837,10 @@ locret_802BEFA:
 	pop {pc}
 	thumb_func_end sub_802BED4
 
+// symdb: Ticks down a per-object countdown byte at +0xB and advances the object's state byte at +3 to 8 when it expires.
+// symdb: int object_countdownTick_ADDRESS(Object *r5); /* in: r5 = object struct, lr = return; out: r0 =
+// symdb: decremented counter (or 8 when expired), NZCV flags set by SUBS/MOVS */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_countdownTick_802BEFC.yaml
 	thumb_local_start
 object_countdownTick_802BEFC:
 	push {lr}
@@ -12345,6 +12447,9 @@ locret_802C346:
 	pop {pc}
 	thumb_func_end sub_802C328
 
+// symdb: Zeroes a single state byte at offset 5 of a struct passed in r5 and returns 0 with flags set.
+// symdb: void sub_802C348(void* r5); // clears *(u8*)(r5+5); returns r0 = 0 with NZ flags set
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C348.yaml
 	thumb_local_start
 sub_802C348:
 	mov r0, #0
@@ -12650,6 +12755,11 @@ dword_802C584:
 	.word 0xFFFF
 	thumb_func_end sub_802C54C
 
+// symdb: Writes 42 consecutive halfword values (0xC1E8..0xC211) to memory at r0, most plausibly the tile-index field of a run of OAM entries for one large sprite/animation frame.
+// symdb: void sprite_FillConsecutiveTileIndices(u16 *dst /*r0*/); returns with r0 = dst+0x54 (past the
+// symdb: filled range), r1 = 0xC212 (one past last value written), r2 = 0 (exhausted counter); clobbers
+// symdb: flags, preserves nothing
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C588.yaml
 	thumb_local_start
 sub_802C588:
 	ldr r1, dword_802C598 // =0xc1e8 
@@ -12666,6 +12776,9 @@ dword_802C598:
 	.word 0xC1E8
 	thumb_func_end sub_802C588
 
+// symdb: Fills a 42-halfword tilemap region (e.g. the chip folder screen) with the blank tile entry 0x90C6.
+// symdb: void sub_802C59C(u16 *dst /* r0 */); clobbers r0-r2 and NZCV flags, returns via lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipFolder_ClearTilemapArea_802C59C.yaml
 	thumb_local_start
 chipFolder_ClearTilemapArea_802C59C:
 	ldr r1, dword_802C5AC // =0x90c6 
@@ -13054,6 +13167,11 @@ loc_802C8D0:
 	pop {pc}
 	thumb_func_end sub_802C8B0
 
+// symdb: Pops the next halfword entry from an in-struct FIFO queue, returning 0 when it is empty.
+// symdb: u16 queue_popHalfword(void *state /* r5 */); // in: r5 = queue state, lr = return; out: r0 =
+// symdb: value (0 if empty), r1 = read index, r2 = entry offset/count; flags c/v set by the last CMP/ADD,
+// symdb: nz clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/queue_popHalfword_802C8D4.yaml
 	thumb_local_start
 queue_popHalfword_802C8D4:
 	mov r0, #0
@@ -13070,6 +13188,10 @@ locret_802C8E8:
 	mov pc, lr
 	thumb_func_end queue_popHalfword_802C8D4
 
+// symdb: Returns a pointer to the 8-byte entry of the table at dword_2036820 selected by the current battle state's Unk_0d field.
+// symdb: battle_getStateTableEntryPtr(toolkit in r10) -> entryPtr out r0, index*8 out r2; clobbers r1;
+// symdb: NZCV set by the final address add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getStateTableEntryPtr_802C8EA.yaml
 	thumb_local_start
 battle_getStateTableEntryPtr_802C8EA:
 	mov r1, r10
@@ -13706,6 +13828,9 @@ off_802CD5C:
 	.word sub_80C2F96+1
 	thumb_func_end sub_802CCAE
 
+// symdb: If the current-target slot of the caller's alliance record points back at the caller, clears it to null.
+// symdb: battle_ClearAllianceTargetSlotIfSelf(battleObject* obj /* r5 */) -> u32 prevTarget /* r1 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ClearAllianceTargetSlotIfSelf_802CDD0.yaml
 	thumb_func_start battle_ClearAllianceTargetSlotIfSelf_802CDD0
 battle_ClearAllianceTargetSlotIfSelf_802CDD0:
 	ldr r0, off_802CE50 // =dword_203CFB0 
@@ -13741,6 +13866,9 @@ locret_802CDFC:
 	mov pc, lr
 	thumb_func_end sub_802CDE6
 
+// symdb: Wraps two 32-bit counters at dword_203CFB0 and dword_203CFB0+0xC down to their low 16 bits, discarding the upper halves.
+// symdb: void sub_802CDFE(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/wrapCountersAt203CFB0ToU16_802CDFE.yaml
 	thumb_func_start wrapCountersAt203CFB0ToU16_802CDFE
 wrapCountersAt203CFB0ToU16_802CDFE:
 	ldr r0, off_802CE50 // =dword_203CFB0 
@@ -13754,6 +13882,11 @@ wrapCountersAt203CFB0ToU16_802CDFE:
 	mov pc, lr
 	thumb_func_end wrapCountersAt203CFB0ToU16_802CDFE
 
+// symdb: Updates one side's battle counter for the object's alliance, either adding the tracked object's stored increment to the given value or raising the counter's recorded maximum.
+// symdb: u32 battle_updateSideCounter(u32 amount /*r0*/, BattleObject *object /*r5*/); // returns updated
+// symdb: amount in r0 and the counter block's tracked-object pointer in r2; clobbers r1, r3 and NZCV
+// symdb: flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802CE10.yaml
 	thumb_func_start sub_802CE10
 sub_802CE10:
 	ldr r1, off_802CE50 // =dword_203CFB0 
@@ -13801,6 +13934,10 @@ off_802CE50:
 	.word dword_203CFB0
 	thumb_func_end sub_802CE30
 
+// symdb: Zero-fills the fixed 0x20-byte work buffer at unk_2036720 (IWRAM), preserving r2/r3 for the caller.
+// symdb: void clearWorkBuffer_2036720_32bytes(void); /* in: r2, r3 (forwarded untouched), lr; out: r2, r3
+// symdb: preserved, c/v per ZeroFillByWord */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_802CE54.yaml
 	thumb_func_start zeroFill_802CE54
 zeroFill_802CE54:
 	push {lr}
@@ -13812,6 +13949,10 @@ zeroFill_802CE54:
 	pop {pc}
 	thumb_func_end zeroFill_802CE54
 
+// symdb: Looks up one 16-byte entry from a battle table, scrambling the index with the current battle's shuffle key so the returned entry is shuffled but deterministic per battle.
+// symdb: battle_getShuffledTableEntry(u32 index /* r0 */) -> entryHalfword0 /* r0 */, entryWord4 /* r1
+// symdb: */, entryHalfword2 /* r2 */; uses r10 = toolkit
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802CE60.yaml
 	thumb_func_start sub_802CE60
 sub_802CE60:
 	mov r1, r10
@@ -13828,6 +13969,10 @@ sub_802CE60:
 	mov pc, lr
 	thumb_func_end sub_802CE60
 
+// symdb: Reads the 16-byte record at index r0 of the table at 0x2036720 and returns its four fields in r0-r3.
+// symdb: u32 entryIndex -> (r0 = u16 field0, r1 = u32 field1, r2 = u16 field2, r3 = u32 field3); c/v set
+// symdb: by the address ADDS
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getTable2036720EntryFields_802CE78.yaml
 	thumb_func_start getTable2036720EntryFields_802CE78
 getTable2036720EntryFields_802CE78:
 	mov r1, #0x10
@@ -14123,6 +14268,10 @@ sub_802D070:
 	pop {pc}
 	thumb_func_end sub_802D070
 
+// symdb: Fetches a state struct via sub_802D064 (selected by the flag in r0), clears its byte at +0x10, and sets the two bytes at +0xD and +0xF to 100.
+// symdb: void initStateCounters100(bool selector /* r0 */); returns the struct pointer in r0 and 100 in
+// symdb: r1 (NZCV reflect r1); tail of the call chain passes lr through
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initStateCounters100_802D08C.yaml
 	thumb_func_start initStateCounters100_802D08C
 initStateCounters100_802D08C:
 	push {lr}
@@ -14235,6 +14384,10 @@ sub_802D144:
 	pop {pc}
 	thumb_func_end sub_802D144
 
+// symdb: Zeroes the 32-bit word at dword_2006740 (some counter or state flag) and returns.
+// symdb: void sub_802D150(void); /* clobbers r0, r1, NZ flags; tail-free "return to caller" via mov pc,
+// symdb: lr */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802D150.yaml
 	thumb_func_start sub_802D150
 sub_802D150:
 	ldr r1, off_802D21C // =dword_2006740 
@@ -14405,6 +14558,10 @@ GetBattleMode:
 	pop {pc}
 	thumb_func_end GetBattleMode
 
+// symdb: Returns the battle mode (flag battle, HP battle, etc.) selected in the passed battle settings struct.
+// symdb: Next GetBattleModeFromBattleSettings(BattleSettings *settings); // r0 = settings ptr, returns r0
+// symdb: = mode byte, no flags or other regs touched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleModeFromBattleSettings.yaml
 	thumb_local_start
 GetBattleModeFromBattleSettings:
 	ldrb r0, [r0,#3]
@@ -14412,6 +14569,10 @@ GetBattleModeFromBattleSettings:
 	thumb_func_end GetBattleModeFromBattleSettings
 
 // () -> int
+// symdb: Returns the battle-effects bitmask for the currently active battle by reading it out of the current battle state's battle settings.
+// symdb: int GetBattleEffects(void) — in: r10 (toolkit pointer), lr; out: r0 (battle-effects bitmask from
+// symdb: GetBattleEffectsFromBattleSettings)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleEffects.yaml
 	thumb_func_start GetBattleEffects
 GetBattleEffects:
 	push {lr}
@@ -14423,12 +14584,20 @@ GetBattleEffects:
 	thumb_func_end GetBattleEffects
 
 // () -> int
+// symdb: Returns the "optional battle effects" settings word (e.g. battle modifiers like Custom+ effects) from the current battle settings struct.
+// symdb: Next GetBattleEffectsFromBattleSettings(BattleSettings *settings); (r0 = BattleSettings ptr in,
+// symdb: r0 = effects word out; returns via mov pc, lr, so it works from both ARM->THUMB? no, it stays in
+// symdb: the caller's state)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleEffectsFromBattleSettings.yaml
 	thumb_func_start GetBattleEffectsFromBattleSettings
 GetBattleEffectsFromBattleSettings:
 	ldr r0, [r0,#oBattleSettings_UnkOptSettings]
 	mov pc, lr
 	thumb_func_end GetBattleEffectsFromBattleSettings
 
+// symdb: Returns the "Unk01" battle-settings value for the currently running battle.
+// symdb: Next GetCurrentBattleSettingsUnk01(tools in r10) -> u32 in r0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/GetBattleSettingsUnk01.yaml
 	thumb_local_start
 GetBattleSettingsUnk01:
 	push {lr}
@@ -14439,12 +14608,19 @@ GetBattleSettingsUnk01:
 	pop {pc}
 	thumb_func_end GetBattleSettingsUnk01
 
+// symdb: Returns byte at offset 1 of the battle settings struct, an unknown settings field.
+// symdb: Next GetBattleSettingsUnk01FromBattleSettings(u8 *battleSettings /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleSettingsUnk01FromBattleSettings.yaml
 	thumb_func_start GetBattleSettingsUnk01FromBattleSettings
 GetBattleSettingsUnk01FromBattleSettings:
 	ldrb r0, [r0,#1]
 	mov pc, lr
 	thumb_func_end GetBattleSettingsUnk01FromBattleSettings
 
+// symdb: Thin wrapper that returns the current battle panel column pattern from the active battle's settings.
+// symdb: Next GetBattlePanelColumnPattern(Toolkit* toolkit @ r10) -> Next pattern @ r0 (return address
+// symdb: passed through in lr as a tail call)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattlePanelColumnPattern.yaml
 	thumb_func_start GetBattlePanelColumnPattern
 GetBattlePanelColumnPattern:
 	push {lr}
@@ -14455,6 +14631,10 @@ GetBattlePanelColumnPattern:
 	pop {pc}
 	thumb_func_end GetBattlePanelColumnPattern
 
+// symdb: Returns the battle panel column pattern byte stored at offset 6 of the battle settings struct.
+// symdb: u8 GetBattlePanelColumnPatternFromBattleSettings(void* battleSettings); // in: r0 = battle
+// symdb: settings ptr, out: r0 = byte at +6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattlePanelColumnPatternFromBattleSettings.yaml
 	thumb_local_start
 GetBattlePanelColumnPatternFromBattleSettings:
 	ldrb r0, [r0,#6]
@@ -14967,6 +15147,10 @@ dword_802D634:
 	.word 0x153
 	thumb_func_end sub_802D5A8
 
+// symdb: Zero-fills the 32-byte work buffer at byte_2000070 (IWRAM), leaving r2/r3 untouched so it can be called through a function pointer with context.
+// symdb: void memBlock_ClearWorkArea(int passthrough_r2, int passthrough_r3) /* inputs: r2, r3, lr;
+// symdb: outputs: r2, r3 (unchanged); clobbers r0, r1, lr, NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/memBlock_ClearWorkArea_802D638.yaml
 	thumb_func_start memBlock_ClearWorkArea_802D638
 memBlock_ClearWorkArea_802D638:
 	push {lr}
@@ -14978,6 +15162,10 @@ memBlock_ClearWorkArea_802D638:
 	pop {pc}
 	thumb_func_end memBlock_ClearWorkArea_802D638
 
+// symdb: Increments one byte-sized counter in an IWRAM array (byte_2000070) selected by index, saturating at 255 instead of wrapping.
+// symdb: void sub_802D644(u32 index /* r0 */); returns r2 = incremented (possibly clamped) value, flags
+// symdb: from cmp against 0xFF
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802D644.yaml
 	thumb_func_start sub_802D644
 sub_802D644:
 	ldr r1, off_802D690 // =byte_2000070
@@ -15798,6 +15986,10 @@ locret_802DD1C:
 	pop {r5,pc}
 	thumb_func_end sub_802DD10
 
+// symdb: Vestigial stub that ignores its arguments and always returns 0 with Z set.
+// symdb: int stub_802DD1E(void); // inputs: r0 (ignored), r5/r7 (preserved, never read); outputs: r0 = 0,
+// symdb: N=0 Z=1 C=0 V=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802DD1E.yaml
 	thumb_local_start
 sub_802DD1E:
 	push {r5,r7,lr}
@@ -16214,6 +16406,10 @@ sub_802E066:
 	pop {pc}
 	thumb_func_end sub_802E066
 
+// symdb: Computes the address of entry `r0` of a fixed-stride (0x1D0-byte) record array based at unk_2036120, returning it in r0 with the array base in r1.
+// symdb: void* getEntryPtr_2036120_1D0(u32 index /* r0 */); // also leaves r1 = array base (unk_2036120),
+// symdb: sets NZCV from the final address addition
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getEntryPtr_2036120_1D0_802E070.yaml
 	thumb_func_start getEntryPtr_2036120_1D0_802E070
 getEntryPtr_2036120_1D0_802E070:
 	mov r1, #0xe8
@@ -16242,6 +16438,11 @@ sub_802E07C:
 	pop {pc}
 	thumb_func_end sub_802E07C
 
+// symdb: Tests whether the 0x40 bit of the current battle flags word is set, returning the masked result so callers can branch on it directly.
+// symdb: int battle_testFlag0x40(u32 ctx /* passed in r10, forwarded to battle_getFlags */); returns
+// symdb: nonzero (the masked 0x40 bit) in r0 when the flag is set, 0 otherwise; also sets NZ flags from
+// symdb: the result; r1 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestBattleFlag_0x40.yaml
 	thumb_func_start TestBattleFlag_0x40
 TestBattleFlag_0x40:
 	push {lr}
@@ -16395,6 +16596,10 @@ loc_802E1CC:
 	pop {r7,pc}
 	thumb_func_end sub_802E1BE
 
+// symdb: Ticks down (by one per call) the halfword timer at +0x30 of the record sub_802E070 looks up for the given battle object's alliance, and returns the new timer value in r1.
+// symdb: u16 battle_DecrementAllianceTimer(void) /* caller sets r5 = battle object ptr; returns r1 =
+// symdb: timer after decrement (0 if already 0); clobbers r0, flags, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DecrementAllianceTimer_802E1D8.yaml
 	thumb_func_start battle_DecrementAllianceTimer_802E1D8
 battle_DecrementAllianceTimer_802E1D8:
 	push {lr}
@@ -16453,6 +16658,9 @@ dword_802E23C:
 	.word 0x1F00000
 	thumb_func_end sub_802E1EC
 
+// symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at unk_2008170.
+// symdb: void loadIndexedPaletteToBuffer(int index /*r0*/); // preserves r3; clobbers r0-r2, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadIndexedPaletteToBuffer_802E240.yaml
 	thumb_func_start loadIndexedPaletteToBuffer_802E240
 loadIndexedPaletteToBuffer_802E240:
 	push {lr}
@@ -16851,6 +17059,10 @@ dword_802E540:
 	.word 0xFFFF
 	thumb_func_end sub_802E4E4
 
+// symdb: Zero-fills the fixed 0x170-byte work buffer at IWRAM address unk_20000A0.
+// symdb: void clearWorkBuffer_20000A0(uint32 r2_passthrough); /* r2 in: forwarded to ZeroFillByByte, must
+// symdb: be preserved; returns r2 unchanged; clobbers r0, r1, lr, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_802E544.yaml
 	thumb_local_start
 zeroFill_802E544:
 	push {lr}
@@ -18286,6 +18498,9 @@ dword_802F0A8:
 	.hword 0x384, 0x0
 	thumb_func_end sub_802F084
 
+// symdb: Clears the entire event-flags array in the toolkit's event-flag buffer, resetting all 630 story/scene flags.
+// symdb: void sub_802F0C4(void); // r10 = toolkit ptr in; r2, r3 preserved pass-through; NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_ClearAllEventFlags_802F0C4.yaml
 	thumb_func_start toolkit_ClearAllEventFlags_802F0C4
 toolkit_ClearAllEventFlags_802F0C4:
 	push {lr}
@@ -19348,6 +19563,9 @@ dword_802F700:
 	thumb_func_end sub_802F6B2
 
 /// Breaks right after interacting with "PRESS START"
+// symdb: Advances the title/start screen by one frame — runs its state update, then redraws it.
+// symdb: void startScreen_UpdateAndRenderFrame(StartScreen* self /* r5 */); no meaningful return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startScreen_UpdateAndRenderFrame_802F704.yaml
 	thumb_local_start
 startScreen_UpdateAndRenderFrame_802F704: // (self: *mut StartScreen $r5) -> ()
 	push {lr}
@@ -20010,6 +20228,9 @@ initRefs_802FCD8:
 	.word NULL
 	thumb_func_end startScreen_initGfx_802FCC0
 
+// symdb: Blits a fixed 32x20-tile background tile map (byte_87F8EB0) into 32x32 tile block 1 of the BG.
+// symdb: void bg_CopyFixedTileMap_32x20(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyBGTiles_802FD3C.yaml
 	thumb_local_start
 copyBGTiles_802FD3C:
 	push {r5,lr}
@@ -20160,6 +20381,10 @@ off_802FE44:
 	.word sprite_queueOamEntries+1
 	thumb_func_end sub_802FE38
 
+// symdb: Allocates one of 16 ID slots tracked in a bitfield at dword_2009A2C, returning the slot index (or 0xFF when all are taken).
+// symdb: u32 allocSlotFromBitmap16(void); // in: lr only; out: r0 = slot index 0..15 or 0xFF if full, r1
+// symdb: = updated bitmap word, r2 = mask of the bit claimed, r3 = &dword_2009A2C; clobbers NZCV
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802FE48.yaml
 	thumb_func_start sub_802FE48
 sub_802FE48:
 	ldr r3, off_802FF44 // =dword_2009A2C 
@@ -20184,6 +20409,9 @@ loc_802FE66:
 	mov pc, lr
 	thumb_func_end sub_802FE48
 
+// symdb: Clears one bit, selected by an MSB-first index in r0, in the 32-bit flag word at dword_2009A2C.
+// symdb: void flags_clearFlagWordBit(u8 bitIndex /* r0, 0 = bit 31 of the word ... 31 = bit 0 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/flags_clearFlagWordBit_802FE6A.yaml
 	thumb_func_start flags_clearFlagWordBit_802FE6A
 flags_clearFlagWordBit_802FE6A:
 	ldr r3, off_802FF44 // =dword_2009A2C 
@@ -20590,6 +20818,9 @@ sub_8030104:
 	mov pc, lr
 	thumb_func_end sub_8030104
 
+// symdb: Copies the camera's current x/y position into its saved-position fields (Unk_04->Unk_08, Unk_06->Unk_0a).
+// symdb: void camera_SavePosition(Camera* cam /* r5 */) /* returns r1 = saved y; lr = return */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_SavePosition_803011A.yaml
 	thumb_local_start
 camera_SavePosition_803011A:
 	ldrh r1, [r5,#oCamera_Unk_04]
@@ -20599,11 +20830,17 @@ camera_SavePosition_803011A:
 	mov pc, lr
 	thumb_func_end camera_SavePosition_803011A
 
+// symdb: Empty no-op stub that immediately returns; a placeholder for a removed or disabled feature call site.
+// symdb: void nullsub_7(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_7.yaml
 	thumb_local_start
 nullsub_7:
 	mov pc, lr
 	thumb_func_end nullsub_7
 
+// symdb: Copies a camera position (X/Y/Z) from the data block pointed to by the camera object's field oCamera_Unk_14 into the camera's own X/Y/Z fields.
+// symdb: void sub_8030126(camera in r5); returns r7 = source block pointer, r2 = copied Z value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_LoadPositionFromSource_8030126.yaml
 	thumb_local_start
 camera_LoadPositionFromSource_8030126:
 	ldr r7, [r5,#oCamera_Unk_14]
@@ -20690,6 +20927,9 @@ sub_8030194:
 	mov pc, lr
 	thumb_func_end sub_8030194
 
+// symdb: Writes a byte and a word into the camera struct, leaving a pointer to it in r2.
+// symdb: void camera_setUnk03_andUnk14(u8 value /* r0 */, u32 word /* r1 */); returns camera ptr in r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_writeUnk03_14_80301b2.yaml
 	thumb_func_start camera_writeUnk03_14_80301b2
 camera_writeUnk03_14_80301b2:
 	mov r2, r10
@@ -20876,6 +21116,10 @@ off_80302E4:
 	.word nullsub_60+1
 	thumb_func_end sub_80302D0
 
+// symdb: Copies the camera's current X/Y position (masked to 8 bits) into the scroll fields of all three render layers each frame.
+// symdb: void sub_80302F8(void /* r10 = toolkit */) // sets r1 = camX, r2 = camY, r3 = renderInfo, r4 =
+// symdb: 0xFF, r5 = camera, r7 = toolkit; NZ from "and r2, r4"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_CopyScrollToRenderLayers_80302F8.yaml
 	thumb_local_start
 camera_CopyScrollToRenderLayers_80302F8:
 	mov r7, r10
@@ -20895,6 +21139,10 @@ camera_CopyScrollToRenderLayers_80302F8:
 	mov pc, lr
 	thumb_func_end camera_CopyScrollToRenderLayers_80302F8
 
+// symdb: Copies the camera position into the render-info scroll offsets (masked to 8 bits) and zeroes two related offsets.
+// symdb: void renderInfo_SnapScrollToCamera(Toolkit* toolkit /* r10 */); returns r1=0, r2=camY,
+// symdb: r3=renderInfo, r4=0xFF, r5=camera, r7=toolkit; NZ flags set from 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/renderInfo_SnapScrollToCamera_8030316.yaml
 	thumb_local_start
 renderInfo_SnapScrollToCamera_8030316:
 	mov r7, r10
@@ -20915,6 +21163,10 @@ renderInfo_SnapScrollToCamera_8030316:
 	mov pc, lr
 	thumb_func_end renderInfo_SnapScrollToCamera_8030316
 
+// symdb: Clears the render info BG scroll offset fields (after briefly writing the masked camera scroll into them, which is then overwritten with zero).
+// symdb: void render_ClearScrollOffsets(void); /* in: r10 = toolkit; out: r1 = 0, r2 = camera Y & 0xFF,
+// symdb: r3 = renderInfo, r4 = 0xFF, r5 = camera, r7 = toolkit, NZ set from r1 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/render_ClearScrollOffsets_8030336.yaml
 	thumb_local_start
 render_ClearScrollOffsets_8030336:
 	mov r7, r10
@@ -21048,6 +21300,9 @@ off_80303E4:
 	.word off_8032F88 // Nullable<[*const [[*const Fn; 3]]>; INTERNET_NUM_GROUPS]
 	thumb_func_end initMapTilesState_803037c
 
+// symdb: Resets the map tile grid dimensions to the default 32x32.
+// symdb: void sub_80303E8(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mapTiles_ResetDimensionsToDefault_80303E8.yaml
 	thumb_func_start mapTiles_ResetDimensionsToDefault_80303E8
 mapTiles_ResetDimensionsToDefault_80303E8:
 	ldr r1, off_80305E0 // =eMapTilesState200be70
@@ -22051,6 +22306,11 @@ npc_freeAllObjectsThenSpawnObjectsFromList: // (ptr: [*const NPCScript]) -> ()
 	pop {r4-r6,pc}
 	thumb_func_end npc_freeAllObjectsThenSpawnObjectsFromList
 
+// symdb: Spawns an overworld NPC object with its initial script forced to 0, then stamps the caller's script selector and animation-script pointer onto the new object.
+// symdb: void npc_spawnObjectThenSetUnk10_TempAnimScriptPtr_8030a8c(u32 arg0, u32 whichScript, const
+// symdb: NPCScript *animScriptPtr, /* r3, r4 passed through as spawn args */); returns the new object
+// symdb: pointer in r5 (NULL on failure); r0-r4 and flags are preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_spawnObjectThenSetUnk10_TempAnimScriptPtr_8030a8c.yaml
 	thumb_local_start
 npc_spawnObjectThenSetUnk10_TempAnimScriptPtr_8030a8c: // (_l: *const [*const NPCScript], which: isize, script: *const NPCScript) -> ()
 	push {lr}
@@ -23597,6 +23857,11 @@ loc_8031590:
 	mov pc, lr
 	thumb_func_end sub_8031570
 
+// symdb: Evaluates the cross product of a point against a directed edge and returns 1 when the point falls on the negative (clockwise) side, used as the inner test of a polygon/hit-area fill routine.
+// symdb: int math_pointCrossHalfPlaneTest(Point* pt /* r0 = {x, y} */, int ax /* r2 */, int bx /* r3 */,
+// symdb: int ay /* r4 */, int by /* r5 */); returns 1 if the point is strictly on the negative side of
+// symdb: the edge, 0 if on the edge or positive side
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/math_pointCrossHalfPlaneTest_8031594.yaml
 	thumb_local_start
 math_pointCrossHalfPlaneTest_8031594:
 //  ((x*2 - (x & ~7)*2) * (r5 - r4)) + ((y*2 - (y & ~7)*2) * (r2 - r3)) + (r3 * r4 - r2 * r5)
@@ -23645,6 +23910,10 @@ loc_80315D8:
 	mov pc, lr
 	thumb_func_end sub_80315B8
 
+// symdb: Returns 1 if the point stored at r0 lies on the left side of the directed line through (r2,r4)->(r3,r5), else 0.
+// symdb: int math_pointLeftOfLineTest(const Point* point /*r0*/, int p1x /*r2*/, int p2x /*r3*/, int p1y
+// symdb: /*r4*/, int p2y /*r5*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/math_pointLeftOfLineTest_80315DC.yaml
 	thumb_local_start
 math_pointLeftOfLineTest_80315DC:
 	sub r6, r5, r4
@@ -23668,6 +23937,10 @@ loc_80315FC:
 	mov pc, lr
 	thumb_func_end math_pointLeftOfLineTest_80315DC
 
+// symdb: Feeds one 4-byte text command entry into the text printer state block, storing its halfword operand and marking the printer idle with 0xFE end bytes.
+// symdb: void textPrinter_QueueEndCommand(u32* cmd) /* r0: pointer to the current text command entry; no
+// symdb: return value, no flag contract */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031600.yaml
 	thumb_local_start
 sub_8031600:
 	ldr r5, off_8031780 // =dword_2011A20 
@@ -23867,6 +24140,10 @@ off_803175C:
 	.word dword_200F3E0
 	thumb_func_end sub_803172E
 
+// symdb: Reads the header bytes (signed count at +0, byte at +1, and byte at +2 when requested) of the current entry of the table pointed to by dword_2011A20.
+// symdb: int table_GetCurrentEntryHeader(u32 mode) -> r0 = signed byte at entry+0, r1 = entry+2 byte (if
+// symdb: mode==1) else 0, r2 = entry pointer, r3 = entry+1 byte, r5 = table base pointer
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/table_GetCurrentEntryHeader_8031760.yaml
 	thumb_local_start
 table_GetCurrentEntryHeader_8031760:
 	ldr r5, off_8031780 // =dword_2011A20 
@@ -24051,6 +24328,10 @@ sub_8031874:
 	pop {pc}
 	thumb_func_end sub_8031874
 
+// symdb: Latches the halfword at the current text-script pointer into the chatbox state (word_2013944), advances the script pointer by 4, and resets two per-line counters/positions to 0xFE.
+// symdb: void sub_803189C(u32* scriptPtr) // r0 in: pointer to a word in the script stream; no outputs;
+// symdb: clobbers r0, r1, r5 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_loadScriptWordAndResetScroll_803189C.yaml
 	thumb_local_start
 chatbox_loadScriptWordAndResetScroll_803189C:
 	ldr r5, off_8031994 // =dword_2013940 
@@ -24158,6 +24439,10 @@ dword_8031918:
 	.word NULL
 	thumb_func_end checkLayerPriority_80318b0
 
+// symdb: Loads the address of a state/word from RAM into r5 and returns a small mode id (3 for selector 1, otherwise 2) for the caller to act on.
+// symdb: int sub_8031980(int selector); /* returns 3 if selector==1 else 2; also sets r5 =
+// symdb: &dword_2013940; flags: nz from result, c/v from cmp with 1 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
 	thumb_local_start
 sub_8031980:
 	push {lr}
@@ -24287,6 +24572,9 @@ sub_8031A46:
 	pop {pc}
 	thumb_func_end sub_8031A46
 
+// symdb: Trivial one-line wrapper that invokes sub_8031980 with argument 1.
+// symdb: void sub_8031A5E(void); // lr only; passes through r0, r5 and NZCV from sub_8031980
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
 	thumb_local_start
 sub_8031A5E:
 	push {lr}
@@ -24295,6 +24583,10 @@ sub_8031A5E:
 	pop {pc}
 	thumb_func_end sub_8031A5E
 
+// symdb: Reads one 32-bit entry from an overworld script/data stream into object 55's value field, advances the stream pointer, and resets its two sentinel bytes to 0xFE.
+// symdb: void overworldObject55_ReadStreamEntry(u32* stream) // r0 in: pointer to the entry to consume;
+// symdb: no register outputs, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/overworldObject55_ReadStreamEntry_8031A68.yaml
 	thumb_local_start
 overworldObject55_ReadStreamEntry_8031A68:
 	ldr r5, off_8031B90 // =dword_2013920 

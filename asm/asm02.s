@@ -286,6 +286,10 @@ dword_8021C64:
 	.word 0x1FF
 	thumb_func_end sub_8021C02
 
+// symdb: Zero-fills the 0xF00-byte extra work-RAM block whose pointer is held in the toolkit struct.
+// symdb: void zeroFillExtraWorkRam_e2002230(void); /* reads r10 (toolkit base), preserves r2/r3, returns
+// symdb: caller's r3 unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e2002230.yaml
 	thumb_func_start zeroFill_e2002230
 zeroFill_e2002230:
 	push {lr}

@@ -30,6 +30,9 @@ call_m4aSoundVSync:
 // (enum SoundEffect idx) -> void
 // this can play any song in the song array but
 // usage-wise it is only be used for sound effects
+// symdb: Thin wrapper that asks the M4A sound engine to start playing the sound effect / music track whose ID is given in r0.
+// symdb: void PlaySoundEffect(u32 soundId /* r0, plus args r1-r3 forwarded */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/PlaySoundEffect.yaml
 PlaySoundEffect:
 	push {r1-r7,lr}
 	bl m4a_800061E // () -> void
@@ -91,6 +94,10 @@ loc_8000616:
 	thumb_func_end sub_800060A
 
 // () -> void
+// symdb: Thin wrapper/trampoline that dispatches a call into the m4a sound driver via sound_8000808, passing a routine pointer taken from the song-table area and shielding r10 from being clobbered.
+// symdb: void m4a_SoundMainWrapper(/* r0 passed through */, /* r2 passed through */); // r1 = incoming
+// symdb: r10 (forwarded as arg), r3 = m4a_SongNumStart|1 (thumb Fn*); preserves r4-r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4a_800061E.yaml
 	thumb_local_start
 m4a_800061E:
 	push {lr}
@@ -103,6 +110,11 @@ m4a_800061E:
 	pop {pc}
 	thumb_func_end m4a_800061E
 
+// symdb: Thin wrapper that submits a sound task to the sound engine, handing the engine's dispatcher sound_8000808 the task callback sub_814EA58 and passing the caller's r10 through as an argument.
+// symdb: void sound_dispatchTask_8000630(u32 r0, u32 r2); /* r4-r7, r10 preserved context; sets r1 =
+// symdb: caller's r10, r3 = &sub_814EA58|1 before calling sound_8000808; returns nzcv and r10 from the
+// symdb: callee */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchTask_8000630.yaml
 	thumb_local_start
 sound_dispatchTask_8000630:
 	push {lr}
@@ -115,6 +127,10 @@ sound_dispatchTask_8000630:
 	pop {pc}
 	thumb_func_end sound_dispatchTask_8000630
 
+// symdb: Looks up a sound handler by sound id in a table and hands it, with its arguments, to the sound dispatcher sound_8000808 via the shared callback sub_814F9AC.
+// symdb: void sound_dispatchSoundRequest(u8 idx /* r0 */, u32 a1 /* r1 */, u32 a2 /* r2 */); returns
+// symdb: caller's r10 in r3, passes c/v through from sound_8000808
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchSoundRequest_8000642.yaml
 	thumb_func_start sound_dispatchSoundRequest_8000642
 sound_dispatchSoundRequest_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
 	push {r4-r7,lr}
@@ -162,6 +178,10 @@ sound_8000672:
 	pop {r4-r7,pc}
 	thumb_func_end sound_8000672
 
+// symdb: Looks up a sound cue's handler word in the cue table and dispatches it via sound_8000808 with the caller's context and the shared sound callback.
+// symdb: void sound_dispatchCueHandler(u32 cueIndex /*r0*/, u32 arg /*r1*/, u32 context /*r10*/); returns
+// symdb: restored context in r2/r10, clobbers r0-r3, preserves r4-r7/r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchCueHandler_800068A.yaml
 	thumb_func_start sound_dispatchCueHandler_800068A
 sound_dispatchCueHandler_800068A:
 	push {r4-r7,lr}
@@ -324,6 +344,10 @@ sub_80007A0:
 	pop {r1-r7,pc}
 	thumb_func_end sub_80007A0
 
+// symdb: Zero-fills the 0x20C-byte work memBlock pointed to by dword_200A490.
+// symdb: void zeroFillWorkMemBlock(void) — takes nothing meaningful (r2/r3 preserved for callers); c/v
+// symdb: flags are whatever ZeroFillByWord leaves.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_80007B2.yaml
 	thumb_func_start zeroFill_80007B2
 zeroFill_80007B2:
 	push {lr}
@@ -598,6 +622,12 @@ ZeroFillByEightWords:
 // (u8 *src, u8 *dest, int byteCount) -> void
 
 // Copy r2 bytes from r0 to r1, in units of bytes.
+// symdb: A backwards byte-copy routine (memmove-style), safe when the destination is at or above the source (shifting data toward higher addresses).
+// symdb: void CopyBytes(const void *srcEnd /*r0*/, void *dstEnd /*r1*/, int count /*r2*/); // copies
+// symdb: count bytes from srcEnd[0..count-1] to dstEnd[0..count-1], // walking from the highest byte down
+// symdb: to the lowest. // Returns r2 = 0, r3 = last byte copied (src[0]); // flags from the final subs
+// symdb: (1-1): Z=1, C=1, V=0.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CopyBytes.yaml
 	thumb_func_start CopyBytes
 CopyBytes:
 	sub r2, #1
@@ -628,6 +658,10 @@ CopyHalfwords:
 /// Copy r2 bytes from r0 to r1, in units of words.
 /// Note r2 represents byte count, which is then converted to word count in function
 /// Source, destination, and size must be word compatible.
+// symdb: Block memory operation via BIOS CpuSet (SWI 5), taking a byte count and converting it to a word count before the call.
+// symdb: (u32 *src, u32 *dest, u32 size_bytes) -> void; clobbers flags (N,Z,C from the shift/ORR),
+// symdb: preserves r0-r3 and returns to lr via pop {pc}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CopyWords.yaml
 	thumb_func_start CopyWords
 CopyWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	push {r0-r3,lr}
@@ -653,6 +687,10 @@ CopyWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 // up the word count to a multiple of eight words.
 // Source and destination must be word compatible.
 // Size must be a multiple of eight words
+// symdb: Wrapper around the BIOS CpuFastSet SWI that block-copies memory in eight-word bursts, taking the size in bytes.
+// symdb: void CopyByEightWords(const u32* src, u32* dest, u32 sizeBytes); // clobbers flags (NZ from word
+// symdb: count, C from the size>>2 shift), preserves r0-r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CopyByEightWords.yaml
 	thumb_func_start CopyByEightWords
 CopyByEightWords: // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	push {r0-r3,lr}
@@ -822,6 +860,9 @@ dword_8000A38:
 	.word 0x80000000
 	thumb_func_end memory_80009FC
 
+// symdb: Zeroes the 32-bit word at IWRAM address 0x0200AC1C; a tiny helper wrapper for clearing one state variable.
+// symdb: void clearWord_e200AC1C(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWord_e200AC1C.yaml
 	thumb_func_start clearWord_e200AC1C
 clearWord_e200AC1C:
 	ldr r0, off_8000B10 // =dword_200AC1C
@@ -1226,6 +1267,10 @@ dword_8000C58:
 
 	thumb_func_start countHexDigits_8000C5C
 // get num bcd digits?
+// symdb: Returns the number of hexadecimal digits (4-bit nibbles) needed to represent a value, with 0 counting as one digit.
+// symdb: int countHexDigits(u32 value); // in: r0 = value; out: r0 = r1 = digit count, nzcv set from
+// symdb: "adds r0, r1, #0" on the result
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/countHexDigits_8000C5C.yaml
 countHexDigits_8000C5C:
 	mov r1, #1
 
@@ -1521,6 +1566,9 @@ sub_8000E28:
 	mov pc, lr
 	thumb_func_end sub_8000E28
 
+// symdb: Trivial stub that does nothing except return 0 in r0.
+// symdb: int stub_returnZero(void) /* always returns 0 in r0; flags clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stub_returnZero_8000E30.yaml
 	thumb_func_start stub_returnZero_8000E30
 stub_returnZero_8000E30:
 	push {r4-r7,lr}
@@ -1889,6 +1937,10 @@ locret_8001078:
 	thumb_func_end sub_8001040
 
 // () -> void
+// symdb: Copies the overworld player object's X/Y/Z position and facing direction into the game state, presumably to remember where the player stood before a warp.
+// symdb: GameState* updatePlayerGameState_800107A(Toolkit* toolkit /* r10 */); returns r3 = game state
+// symdb: pointer; clobbers r0, r1.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/updatePlayerGameState_800107A.yaml
 	thumb_func_start updatePlayerGameState_800107A
 updatePlayerGameState_800107A:
 	mov r3, r10
@@ -1941,6 +1993,9 @@ GetCurPETNavi: // () -> u8
 	thumb_func_end GetCurPETNavi
 
 
+// symdb: Stores the selected PET navi index (r0) into the game state's CurPETNavi byte.
+// symdb: void SetCurPETNavi(u8 naviIndex /* r0, via r10 = toolkit, returns game state ptr in r3 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetCurPETNavi.yaml
 	thumb_func_start SetCurPETNavi
 SetCurPETNavi:
 	mov r3, r10
@@ -1950,6 +2005,10 @@ SetCurPETNavi:
 	thumb_func_end SetCurPETNavi
 
 
+// symdb: Writes the currently selected PET navi ID (from GetCurPETNavi) into byte +7 of the toolkit's S2001c04 struct.
+// symdb: void pet_writeCurNaviIdToS2001c04(r10 toolkitPtr); // in: r10 = toolkit pointer; out: r0 = navi
+// symdb: ID (passthrough), r3 = S2001c04 pointer; clobbers lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/writeCurPETNaviToS2001c04_Unk07_80010c6.yaml
 	thumb_func_start writeCurPETNaviToS2001c04_Unk07_80010c6
 writeCurPETNaviToS2001c04_Unk07_80010c6:
 	push {lr}
@@ -1960,6 +2019,10 @@ writeCurPETNaviToS2001c04_Unk07_80010c6:
 	pop {pc}
 	thumb_func_end writeCurPETNaviToS2001c04_Unk07_80010c6
 
+// symdb: Reads the max HP and current HP of the navi currently equipped in the PET and returns them as a pair.
+// symdb: u16 pet_GetMaxAndCurHPForCurNavi(u8 which_navi); /* returns curHP in r0, maxHP in r1; c=v=0, nz
+// symdb: from the adds-encoded "mov r1, r6" (i.e. from maxHP) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetMaxAndCurHPForCurPETNavi_80010D4.yaml
 	thumb_func_start GetMaxAndCurHPForCurPETNavi_80010D4
 GetMaxAndCurHPForCurPETNavi_80010D4: // (which_navi: u8) -> (u16, u16)
 	push {r4-r7,lr}
@@ -2059,6 +2122,9 @@ locret_8001170:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8001158
 
+// symdb: Writes a caller-supplied byte into GameState+0x09 (an unnamed one-byte state field), via the toolkit's game state pointer.
+// symdb: void sub_8001172(u8 value /*r0*/); // r10 = toolkit; returns r3 = game state pointer
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8001172.yaml
 	thumb_func_start sub_8001172
 sub_8001172:
 	mov r3, r10
@@ -2068,6 +2134,10 @@ sub_8001172:
 	.balign 4, 0x00
 	thumb_func_end sub_8001172
 
+// symdb: Returns the direction of a fixed-point (x,y) vector as a single byte (0..255 over a full turn), via the BIOS ArcTan2 call.
+// symdb: u8 math_vectorAngleByte(s16_16p dx /* r0, upper 16 bits meaningful */, s16_16p dy /* r1, upper
+// symdb: 16 bits meaningful */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/calcAngle_800117C.yaml
 	thumb_func_start calcAngle_800117C
 calcAngle_800117C:
 	push {lr}
@@ -2362,6 +2432,10 @@ math_getThrowSpeeds:
 	pop {r4-r6,pc}
 	thumb_func_end math_getThrowSpeeds
 
+// symdb: Sets the caller-supplied bit(s) in the current battle state's flags word at +0x5c.
+// symdb: void battle_orStateFlags5c_ADDRESS(u32 bits /* r0 */) ; returns r1 = battle state ptr, r2 =
+// symdb: updated flags word ; clobbers NZ
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_orStateFlags5c_8001382.yaml
 	thumb_func_start battle_orStateFlags5c_8001382
 battle_orStateFlags5c_8001382:
 	mov r1, r10
@@ -2382,6 +2456,10 @@ sub_800138E:
 	mov pc, lr
 	thumb_func_end sub_800138E
 
+// symdb: Getter that returns the value of the battle state's Unk_5c field.
+// symdb: int battle_getStateUnk5c(void) — reads the toolkit pointer from r10 (caller's context), returns
+// symdb: the u32 at battleState->Unk_5c in r0; no flags read or meaningful on return.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getStateUnk5c_800139A.yaml
 	thumb_func_start battle_getStateUnk5c_800139A
 battle_getStateUnk5c_800139A:
 	mov r0, r10
@@ -2390,6 +2468,9 @@ battle_getStateUnk5c_800139A:
 	mov pc, lr
 	thumb_func_end battle_getStateUnk5c_800139A
 
+// symdb: Stores a caller-supplied word into the current battle state's field at offset 0x5c and hands back the battle state pointer.
+// symdb: void battle_SetStateUnk5c(u32 value); /* in: r0=value, r10=toolkit; out: r1=battle state ptr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_SetStateUnk5c_80013A2.yaml
 	thumb_func_start battle_SetStateUnk5c_80013A2
 battle_SetStateUnk5c_80013A2:
 	mov r1, r10
@@ -2628,6 +2709,10 @@ GetRNG: // () -> u32?
 	thumb_func_end GetRNG
 
 /// tags: "#mod_rng, "
+// symdb: Advances the game's primary RNG seed with a rotate/increment/XOR step and returns the new seed as a non-negative (sign-cleared) value.
+// symdb: u32 GetPositiveSignedRNG(void) // in: r7=scratch; out: r0=new seed with bit31 cleared,
+// symdb: r2/r3=shift temporaries, c=0, v=0, nz from result; preserves r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetPositiveSignedRNG.yaml
 	thumb_func_start GetPositiveSignedRNG
 GetPositiveSignedRNG:
 	push {r7,lr}
@@ -2662,6 +2747,11 @@ GetRNGSecondary: // () -> void
 	thumb_func_end GetRNGSecondary
 
 /// tags: "#mod.rng, "
+// symdb: Advances the game's secondary RNG seed and returns it as a non-negative signed value for caller convenience.
+// symdb: u32 GetPositiveSignedRNGSecondary(void); // in: none (r7 preserved as save/restore scratch) //
+// symdb: out: r0 = new seed with bit 31 cleared (always in [0, 0x7FFFFFFF]) //      r2 = old seed << 1,
+// symdb: r3 = old seed >> 31 (callers reportedly reuse these) // clobbers: r1, flags NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetPositiveSignedRNGSecondary.yaml
 	thumb_func_start GetPositiveSignedRNGSecondary
 GetPositiveSignedRNGSecondary:
 	push {r7,lr}
@@ -2951,6 +3041,10 @@ dword_80017DC:
 	.word 0x600C000
 	thumb_func_end zeroFillVRAM
 
+// symdb: Zeroes the 4-byte palette buffer at IWRAM 0x3001960 by calling ZeroFillByHalfword with a count of 2 halfwords.
+// symdb: void ZeroFill_byte_3001960(void); // trashes r0-r1, preserves r2/r3, passes ZeroFillByHalfword's
+// symdb: r1/c/v through to callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFill_byte_3001960.yaml
 	thumb_func_start ZeroFill_byte_3001960
 ZeroFill_byte_3001960:
 	push {lr}
@@ -2977,6 +3071,9 @@ dword_8001804:
 	.word 0x5000000
 	thumb_func_end main_zeroFill_80017EC
 
+// symdb: Copies the game's 0x200-byte palette table from IWRAM to BG palette RAM (0x5000000).
+// symdb: void loadBgPaletteTable_ADDRESS(void); // r3 preserved, r0-r2/lr scratch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyPalletesToIWRAM_8001808.yaml
 	thumb_func_start copyPalletesToIWRAM_8001808
 copyPalletesToIWRAM_8001808:
 	push {lr}
@@ -2993,6 +3090,10 @@ dword_800181C:
 	.word 0x5000000
 	thumb_func_end copyPalletesToIWRAM_8001808
 
+// symdb: Zero-fills the 8-byte scratch struct at toolkit->Unk2009740 before it is reused.
+// symdb: void clearToolkitUnk2009740(void) — takes the toolkit pointer in r10 (custom convention),
+// symdb: preserves r3; clobbers r0-r2 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e2009740.yaml
 	thumb_func_start zeroFill_e2009740
 zeroFill_e2009740:
 	push {lr}
@@ -3005,6 +3106,10 @@ zeroFill_e2009740:
 	pop {pc}
 	thumb_func_end zeroFill_e2009740
 
+// symdb: Zero-fills the 12-byte structure pointed to by the toolkit's oToolkit_Unk200f3a0_Ptr field.
+// symdb: void zeroFill_e200F3A0(void /* r10: toolkit base, r3: passed through untouched */), returns with
+// symdb: r2 = toolkit base pointer (r10) and r3 unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e200F3A0.yaml
 	thumb_func_start zeroFill_e200F3A0
 zeroFill_e200F3A0:
 	push {lr}
@@ -3017,6 +3122,10 @@ zeroFill_e200F3A0:
 	pop {pc}
 	thumb_func_end zeroFill_e200F3A0
 
+// symdb: Zero-fills the 0x2000-byte BG tile ID block buffer held by the toolkit, resetting the background tilemap layer's tile data.
+// symdb: void bg_ClearBGTileIdBlocks_ADDRESS(tools_t *r10 /* toolkit */, ... /* r2, r3 passed through
+// symdb: untouched */); returns r1 = 0x2000 and flags from the inner memset.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ZeroFillGFX30025c0.yaml
 	thumb_func_start ZeroFillGFX30025c0
 ZeroFillGFX30025c0:
 	push {lr}
@@ -3055,6 +3164,9 @@ off_8001878:
 	.word unk_3001B40
 	thumb_func_end copyMemory_8001850
 
+// symdb: Writes a single 16-bit BG tile id into the map's tile-id blocks at the given tile coordinates and 32x32 block.
+// symdb: void bgmap_WriteTileIdAtBlock(int x, int y, int blockIdx, u16 tileId)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bgmap_WriteTileIdAtBlock_800187C.yaml
 	thumb_func_start bgmap_WriteTileIdAtBlock_800187C
 bgmap_WriteTileIdAtBlock_800187C:
 	lsl r0, r0, #1
@@ -3208,6 +3320,11 @@ loc_800193A:
 // r0 - callback 0
 // r1 - callback 1
 // r2 - hblank interrupt callback
+// symdb: Installs a set of BG scroll/HBlank callback pointers and hooks the HBlank callback into IRQ 4.
+// symdb: void SetBGScrollCallbacks(void (*callback0)(void), void (*callback1)(void), void
+// symdb: (*hblankCallback)(void)); /* only acts when callback0 != NULL; returns r2 = hblankCallback, r3 =
+// symdb: callbacks table (when installed), NZ from the tst on r0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetBGScrollCallbacks.yaml
 SetBGScrollCallbacks:
 	push {lr}
 	tst r0, r0
@@ -3275,6 +3392,9 @@ nullsub_36:
 	mov pc, lr
 	thumb_func_end nullsub_36
 
+// symdb: BG1 scroll callback that advances a diagonal (3:2 slope) scroll, moving the background left/up by 8 and 4 subpixel steps per call.
+// symdb: void Next(r10=toolkit, lr=return) -> flags nz/c/v, r1=renderInfoPtr, r2=scrollX, r3=scrollY
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/BGScrollCB_BG1Diagonal3to2Scroll.yaml
 	thumb_func_start BGScrollCB_BG1Diagonal3to2Scroll
 BGScrollCB_BG1Diagonal3to2Scroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
@@ -3293,6 +3413,10 @@ BGScrollCB_BG1Diagonal3to2Scroll:
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1Diagonal3to2Scroll
 
+// symdb: Per-frame background scroll callback that scrolls the BG3 layer diagonally, moving faster on the X axis (8 subpixels/frame) than on Y (4 subpixels/frame), giving a shallow-diagonal "3-to-2" pan.
+// symdb: void (in: r10 = toolkit/engine context pointer, lr = return address; out: nz/c/v flags, r1 =
+// symdb: render info pointer, r2 = BG3 X offset, r3 = BG3 Y offset; no clobbers beyond r1-r3)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/BGScrollCB_BG3Diagonal3to2Scroll.yaml
 	thumb_func_start BGScrollCB_BG3Diagonal3to2Scroll
 BGScrollCB_BG3Diagonal3to2Scroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
@@ -3472,6 +3596,10 @@ off_8001AB8:
 	.word unk_200DF40
 	thumb_func_end nullsub_39
 
+// symdb: Clears the entire eGFXAnimStates block (0x1B0 bytes) to zero, e.g. when (re)initializing the GFX animation-state pool.
+// symdb: void gfx_zeroFillAnimStates(void) — takes no meaningful inputs (r2/r3 pass through untouched),
+// symdb: returns via pop {pc}; no flags meaningful (NZCV clobbered by the fill call)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e20094C0.yaml
 	thumb_func_start zeroFill_e20094C0
 zeroFill_e20094C0:
 	push {lr}
@@ -3557,6 +3685,10 @@ off_8001B68:
 	.word off_8001C24
 	thumb_func_end LoadGFXAnim
 
+// symdb: Stops a running graphics animation: clears its state flag and tears down the palette transform attached to that animation slot.
+// symdb: gfxAnim_Terminate(u32 animIndex /* r0 */); passes animIndex on to
+// symdb: Terminate_ePalette20097a0_Transform and returns that callee's r1/r2 and c/v flags to the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TerminateGFXAnim.yaml
 	thumb_func_start TerminateGFXAnim
 TerminateGFXAnim:
 	push {r4-r7,lr}
@@ -3572,6 +3704,10 @@ TerminateGFXAnim:
 	pop {r4-r7,pc}
 	thumb_func_end TerminateGFXAnim
 
+// symdb: Returns (via flags) whether the given graphics animation slot is active by testing its state byte.
+// symdb: bool IsGFXAnimActive(u32 slot /* r0 */); // result in flags (Z set = inactive), r0 = state byte,
+// symdb: r1 clobbered, r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/IsGFXAnimActive.yaml
 	thumb_func_start IsGFXAnimActive
 IsGFXAnimActive:
 	push {r4-r7,lr}
@@ -3687,6 +3823,10 @@ off_8001C40:
 	.word eGFXAnimStates
 	thumb_func_end ProcessGFXAnims
 
+// symdb: Queues an 8-word-aligned VRAM upload of an animation frame's graphics using the frame data linked from the anim state.
+// symdb: void sprite_QueueAnimFrameGfxUpload(void* gfxDataNext /* r0 */, GFXAnimState* animState /* r7
+// symdb: */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_QueueAnimFrameGfxUpload_8001C44.yaml
 	thumb_local_start
 sprite_QueueAnimFrameGfxUpload_8001C44: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
@@ -4705,6 +4845,9 @@ sub_8002338: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	pop {pc}
 	thumb_func_end sub_8002338
 
+// symdb: Loads every GFX animation script from a NULL/negative-terminated array of GFXAnimScript pointers.
+// symdb: void LoadGFXAnims(void* gfx_anim_data_arr /* FFStop32<[GFXAnimScript*]> in r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/LoadGFXAnims.yaml
 	thumb_func_start LoadGFXAnims
 LoadGFXAnims: // (gfx_anim_data_arr: * FFStop32<[GFXAnimScript]>) -> ()
 	push {r5,lr}
@@ -4720,6 +4863,10 @@ LoadGFXAnims: // (gfx_anim_data_arr: * FFStop32<[GFXAnimScript]>) -> ()
 	pop {r5,pc}
 	thumb_func_end LoadGFXAnims
 
+// symdb: Zero-fills the fixed 0x108-byte palette buffer at ePalette20097a0 by word writes.
+// symdb: void zeroFill_e20097A0(void); // in: r2 r3 lr (lr only for return); out: flags c v as left by
+// symdb: ZeroFillByWord; r2 r3 preserved, r0 r1 and nz clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_e20097A0.yaml
 	thumb_func_start zeroFill_e20097A0
 zeroFill_e20097A0:
 	push {lr}
@@ -4760,6 +4907,10 @@ loc_8002396:
 	pop {r5-r7,pc}
 	thumb_func_end sub_8002378
 
+// symdb: Frees one entry of the ePalette20097a0 palette pool by clearing its first (active) byte.
+// symdb: void Terminate_ePalette20097a0_Transform(u32 index) // r0 = entry index; returns r0=0, r1=entry
+// symdb: size, r2=address of cleared byte; sets nz/c/v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/Terminate_ePalette20097a0_Transform.yaml
 	thumb_func_start Terminate_ePalette20097a0_Transform
 Terminate_ePalette20097a0_Transform:
 	ldr r2, off_8002464 // =ePalette20097a0
@@ -4771,6 +4922,9 @@ Terminate_ePalette20097a0_Transform:
 	mov pc, lr
 	thumb_func_end Terminate_ePalette20097a0_Transform
 
+// symdb: Zero-fills the 0xD8-byte palette object at ePalette20097a0 (216 bytes = 16 palettes of 16 BGR555 entries).
+// symdb: void sub_80023A8(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_clearEPalette20097a0_80023A8.yaml
 	thumb_func_start palette_clearEPalette20097a0_80023A8
 palette_clearEPalette20097a0_80023A8:
 	push {lr}
@@ -4925,6 +5079,10 @@ loc_8002498:
 	pop {r4-r7,pc}
 	thumb_func_end run_eStruct200a6a0_Callback_8002484
 
+// symdb: Zero-fills the fixed 0x50-byte global struct at eStruct200a6a0, resetting it to a cleared state.
+// symdb: void zeroFill_80024A2(void); // takes nothing in registers, returns r1 and c/v flags as left by
+// symdb: ZeroFillByWord (callers effectively ignore them)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/zeroFill_80024A2.yaml
 	thumb_func_start zeroFill_80024A2
 zeroFill_80024A2:
 	push {r4-r7,lr}
@@ -4936,6 +5094,11 @@ zeroFill_80024A2:
 	pop {r4-r7,pc}
 	thumb_func_end zeroFill_80024A2
 
+// symdb: Invokes the currently armed callback stored in the record at 0x200A6A0, if its armed flag is set.
+// symdb: void event_runArmedCallback(void); /* trashes r0, flags; preserves r1-r12 per contract; tail
+// symdb: effect: whatever the registered callback does to r1-r3/flags is hidden by the lifter's caller
+// symdb: analysis */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/event_runArmedCallback_80024AE.yaml
 	thumb_func_start event_runArmedCallback_80024AE
 event_runArmedCallback_80024AE:
 	push {r4-r7,lr}
@@ -5163,6 +5326,10 @@ off_800264C:
 	.word unk_200F388
 	thumb_func_end copy_800260C
 
+// symdb: Copies the 0x200-byte BG palette buffered in IWRAM (iPallete3001750) into hardware BG palette RAM at 0x05000200.
+// symdb: void copyPalletesToIWRAM_8002650(void) — no meaningful register inputs; r3 is passed through and
+// symdb: preserved; no outputs (CPSR nz clobbered)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyPalletesToIWRAM_8002650.yaml
 	thumb_func_start copyPalletesToIWRAM_8002650
 copyPalletesToIWRAM_8002650:
 	push {lr}

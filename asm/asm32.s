@@ -10231,6 +10231,10 @@ off_8113148:
 	.word sub_8113162+1
 	.word sub_81131A2+1
 
+// symdb: Reads bit 0 of a battle object's state byte at offset 0x16 and writes an attribute code (0 -> 4, 1 -> 8) to a caller-supplied byte.
+// symdb: u8 battle_packObjStateBitToAttrCode(/*r4*/ BattleObj* obj, /*r6*/ u8* out); // returns code in
+// symdb: r0, r1=1, flags from the final add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_packObjStateBitToAttrCode_8113154.yaml
 	thumb_local_start
 battle_packObjStateBitToAttrCode_8113154:
 	ldrb r0, [r4,#0x16]
@@ -16675,6 +16679,10 @@ locret_8116A26:
 	pop {pc}
 	thumb_func_end sub_8116A04
 
+// symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into sub_8116A44
+// symdb: void sub_8116A28(r5=destStructPtr, r7=counterBytePtr /*, r4/r6 also live inputs; r4-r7
+// symdb: preserved*/); returns via sub_8116A44 in r0-r3 with nzcv set
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A28.yaml
 	thumb_local_start
 sub_8116A28:
 	push {lr}
@@ -17026,6 +17034,10 @@ byte_8116CCC:
 	.byte 0xC, 0x0, 0x1, 0x8, 0xD, 0x1, 0x0, 0x8
 	thumb_func_end sub_8116C78
 
+// symdb: Returns a pointer to one of sixteen 16-byte sub-records inside a record, chosen by the high nibble of the record's byte at offset 2.
+// symdb: Next record_getNthSubRecordPtr(void /* r5 = record pointer */); returns r0 = record + 16 *
+// symdb: (byte[2] >> 4)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/record_getNthSubRecordPtr_8116CD4.yaml
 	thumb_local_start
 record_getNthSubRecordPtr_8116CD4:
 	ldrb r0, [r5,#2]
@@ -17370,6 +17382,10 @@ locret_8116F88:
 	.balign 4, 0x00
 	thumb_func_end sub_8116F60
 
+// symdb: Update hook for a battle object in r5 that runs a paired "before" update routine, then re-invokes the follow-up routine with the object's halfword field at +0xC as its argument.
+// symdb: void sub_8116F8C(r4=r4, r5=objectPtr, r6=r6, r7=r7); clobbers r0-r3 and flags (returns whatever
+// symdb: sub_81170C0 leaves); preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdateWithFieldC_8116F8C.yaml
 	thumb_local_start
 battle_objectUpdateWithFieldC_8116F8C:
 	push {lr}
@@ -18351,6 +18367,10 @@ off_8117740:
 	.word sub_8117768+1
 	thumb_func_end sub_81176D0
 
+// symdb: Reads the odd byte of a byte-pair indexed by the object's [r5+4] field from table unk_201C400 and clamps it to at most 8.
+// symdb: u32 sub_811774C(void *obj); // in: r5=obj, lr=return; out: r0=clamped value, r1=index, flags
+// symdb: NZCV from cmp value,8
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getObjectPairOddByteClamped8_811774C.yaml
 	thumb_local_start
 battle_getObjectPairOddByteClamped8_811774C:
 	ldr r0, off_8117760 // =unk_201C400
@@ -18368,6 +18388,9 @@ off_8117760:
 	.word unk_201C400
 	thumb_func_end battle_getObjectPairOddByteClamped8_811774C
 
+// symdb: Trivial thunk that always returns the constant 9 (with flags set from it), likely one of a family of hardcoded value getters.
+// symdb: int battle_returnConstant9_ADDRESS(void) /* returns 9; also sets N/Z from the returned value */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8117764.yaml
 	thumb_local_start
 sub_8117764:
 	mov r0, #9
@@ -18671,6 +18694,10 @@ sub_8117990:
 	pop {pc}
 	thumb_func_end sub_8117990
 
+// symdb: Computes a byte offset into a 2-byte-entry table: (table[0]-1)*2 plus an index byte at [r5+4], returning it in r0.
+// symdb: int getTableEntryOffsetForObject(u32 tableFromHelper /*r0 out of sub_8047D84*/, u8* obj /*r5, +4
+// symdb: = 1-based index*/); // result in r0; r4-r7 preserved
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8117998.yaml
 	thumb_local_start
 sub_8117998:
 	push {r4-r7,lr}
@@ -18812,6 +18839,10 @@ off_8117A9C:
 	.word unk_2031344
 	thumb_func_end sub_8117A84
 
+// symdb: When iterating a 0x40-byte folder/pack entry list, counts folder chips matching a chip id + letter code, or advances the current entry pointer past entries with no valid letter code.
+// symdb: void sub_8117AA0(int chipId /*r0*/, int codeIndex /*r1*/, ... /*r2-r5 live*/, FolderEntry**
+// symdb: cursor /*r6*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/folder_CountChipsOfCodeOrSkipEntry_8117AA0.yaml
 	thumb_local_start
 folder_CountChipsOfCodeOrSkipEntry_8117AA0:
 	push {lr}
@@ -21642,6 +21673,9 @@ off_8118FD8:
 	.word sub_8118FE4+1
 	thumb_func_end sub_8118FC0
 
+// symdb: Empty do-nothing stub that only fills a slot in some function table.
+// symdb: void sub_8118FE0(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_8118FE0.yaml
 	thumb_local_start
 nullsub_8118FE0:
 	push {lr}
@@ -22480,6 +22514,10 @@ sub_8119730:
 	.balign 4, 0x00
 	thumb_func_end sub_8119730
 
+// symdb: Clears bit 1 of a state byte pointed to by r5 and writes 0xC to its offset-9 byte, likely advancing or resetting some object/NPC state.
+// symdb: void state_ClearBit1AndSetFieldC(void *state /* r5 */) — trashes r0 (=0xC), r1 (=2), NZ flags;
+// symdb: tail-calls back via popped lr
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811974C.yaml
 	thumb_local_start
 sub_811974C:
 	push {lr}
@@ -22492,6 +22530,10 @@ sub_811974C:
 	pop {pc}
 	thumb_func_end sub_811974C
 
+// symdb: State-machine step for the object in r5 that runs one sub-step, sets the object's state byte to 0x10, then runs a second sub-step.
+// symdb: void sub_811975C(void); /* r5 = object/state pointer (read only); r4-r9 preserved; r0 and NZCV
+// symdb: returned from sub_811976C */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_stepChainSetState0x10_811975C.yaml
 	thumb_local_start
 npc_stepChainSetState0x10_811975C:
 	push {lr}
@@ -22588,6 +22630,9 @@ byte_81197F8:
 	.byte 0x0, 0x1, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_81197B4
 
+// symdb: Empty placeholder function that immediately returns to the caller without doing anything.
+// symdb: void sub_8119800(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullStub_8119800.yaml
 	thumb_local_start
 nullStub_8119800:
 	push {lr}
@@ -23053,6 +23098,10 @@ byte_8119B74:
 	.byte 0x0
 	thumb_func_end sub_8119AEC
 
+// symdb: Computes a palette index via a helper, applies it to the current sprite, then runs the sprite update step.
+// symdb: void sub_8119BD0(void); // callers set up r4-r7 and r10 context for the callee chain; nz c v and
+// symdb: r0-r3 are scratch after return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_applyComputedPaletteAndUpdate_8119BD0.yaml
 	thumb_local_start
 sprite_applyComputedPaletteAndUpdate_8119BD0:
 	push {lr}
@@ -23685,6 +23734,9 @@ sub_811A11C:
 	.balign 4, 0x00
 	thumb_func_end sub_811A11C
 
+// symdb: Clears bit 1 of an object's status byte and resets its byte at offset 9 to 0xC, likely ending a busy/waiting state and restarting its state timer.
+// symdb: void sub_811A138(void *obj /* r5 */); // returns r0=0xC, r1=2, NZ flags from "mov r0,#0xC"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_ClearBusyFlagAndResetState_811A138.yaml
 	thumb_local_start
 npc_ClearBusyFlagAndResetState_811A138:
 	push {lr}
@@ -23789,6 +23841,9 @@ byte_811A1E0:
 	.byte 0x0, 0x1, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_811A1B0
 
+// symdb: Empty stub function that does nothing and immediately returns to its caller.
+// symdb: void sub_811A1E8(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A1E8.yaml
 	thumb_local_start
 sub_811A1E8:
 	push {lr}
@@ -23855,6 +23910,11 @@ loc_811A240:
 	.balign 4, 0x00
 	thumb_func_end sub_811A220
 
+// symdb: Submenu helper that tests the menu object's state byte and, unless it is in state 2 or 3, compares the sSubmenu struct's two cursor bytes (unk_0E vs unk_0F) so the caller can branch on the result.
+// symdb: void sub_811A24C(menu /*r5*/) // inputs: r5 (menu object), lr; outputs: flags NZCV from the
+// symdb: final CMP, r6 = &sSubmenu (when state is not 2/3); clobbers r0, r1; callers branch on returned
+// symdb: flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_compareCursorBytes_811A24C.yaml
 	thumb_local_start
 submenu_compareCursorBytes_811A24C:
 	push {lr}
@@ -26203,6 +26263,11 @@ off_811B458:
 	.word 0xC0
 	thumb_func_end sub_811B414
 
+// symdb: Thin trampoline that tail-calls sprite_update and passes its results straight back to the caller.
+// symdb: int sprite_updateWrapper(int arg_r4, int arg_r5) — takes whatever sprite_update expects in r0-r3
+// symdb: (set up by the caller), returns sprite_update's r0-r3 and NZCV flags unchanged; r4/r5 are
+// symdb: preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_updateWrapper_811B45C.yaml
 	thumb_local_start
 sprite_updateWrapper_811B45C:
 	push {lr}
@@ -27447,6 +27512,10 @@ off_811BDE8:
 	.word sub_811BDEC+1
 	thumb_func_end sub_811BDCC
 
+// symdb: Thin tail-call trampoline that immediately branches to sub_811BE9C and returns its results; no work of its own.
+// symdb: void sub_811BDEC(r5 arg); /* tail-calls sub_811BE9C(r5), propagating r0-r3 and NZCV to the
+// symdb: original caller */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811BDEC.yaml
 	thumb_local_start
 sub_811BDEC:
 	push {lr}
@@ -27534,6 +27603,10 @@ locret_811BE8E:
 	pop {pc}
 	thumb_func_end sub_811BE1C
 
+// symdb: Loads a status byte from a lookup table indexed by the object's field at +0xC and sets the Z flag on whether it is zero.
+// symdb: bool sub_811BE90(void *obj /* r5 */); // returns flag byte in r0, table base in r2, zero/nonzero
+// symdb: in Z flag
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_checkStatusFlag_811BE90.yaml
 	thumb_local_start
 object_checkStatusFlag_811BE90:
 	ldr r0, [r5,#0xc]
@@ -27897,6 +27970,10 @@ off_811C228:
 	.word 0x28
 	thumb_func_end sub_811C1CC
 
+// symdb: Trivial wrapper that tail-calls sprite_update, forwarding its arguments so the current object's sprite animation frame is advanced.
+// symdb: void sprite_updateAnimPassthrough(r4, r5); // r4/r5 passed straight through to sprite_update;
+// symdb: returned r0-r3 and NZCV flags are whatever sprite_update leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_updateAnimPassthrough_811C22C.yaml
 	thumb_local_start
 sprite_updateAnimPassthrough_811C22C:
 	push {lr}
@@ -28767,6 +28844,10 @@ sub_811CBD0:
 	pop {pc}
 	thumb_func_end sub_811CBD0
 
+// symdb: Runs the action implemented by sub_811CC4E and then reports success by returning 1.
+// symdb: void sub_811CC02(r5 in /* context passed through to sub_811CC4E */, lr); out r0 = 1 (success),
+// symdb: r1 = whatever sub_811CC4E left, NZ from r0=1, C = whatever sub_811CC4E left
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811CC02.yaml
 	thumb_local_start
 sub_811CC02:
 	push {lr}
@@ -28788,6 +28869,9 @@ sub_811CC0C:
 	pop {pc}
 	thumb_func_end sub_811CC0C
 
+// symdb: Sets bit 1 (0x02) on the status byte pointed to by r5 and calls the sub_811CC60 helper with argument 2, then returns 1.
+// symdb: int sub_811CC26(void *statusByte /* r5 */); // returns 1 always, r1 and flags clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811CC26.yaml
 	thumb_local_start
 sub_811CC26:
 	push {lr}
@@ -28801,6 +28885,10 @@ sub_811CC26:
 	pop {pc}
 	thumb_func_end sub_811CC26
 
+// symdb: Clears bit 1 of an object/status byte, dispatches command 2 through sub_811CC60, and always reports success (returns 1).
+// symdb: int sub_811CC3A(void* statusByte /* r5 */); /* always returns 1; sets NZ,C,V from r0=1; r1 and
+// symdb: lr are clobbered */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811CC3A.yaml
 	thumb_local_start
 sub_811CC3A:
 	push {lr}
@@ -28814,6 +28902,10 @@ sub_811CC3A:
 	pop {pc}
 	thumb_func_end sub_811CC3A
 
+// symdb: Reads an object's current state index and stores the matching state-handler pointer from a fixed table into the object.
+// symdb: void object_SetStateHandler_ADDRESS(void* obj /* r5 */); returns handler in r0, table base in
+// symdb: r1, sets C from the index shift; modifies N/Z
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_SetStateHandler_811CC4E.yaml
 	thumb_local_start
 object_SetStateHandler_811CC4E:
 	ldrb r0, [r5,#4]
@@ -28827,6 +28919,10 @@ off_811CC5C:
 	.word off_811C9C0
 	thumb_func_end object_SetStateHandler_811CC4E
 
+// symdb: Adds an amount to a 32-bit counter field at +0xC of the struct passed in r5, returning the new value (and old value in r1) with carry/overflow flags from the addition.
+// symdb: u32 counter_addU32(struct *r5, u32 amount /* r0 */); returns new value in r0, old value in r1;
+// symdb: c/v (and nz) set per the ADDS
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/counter_addU32_r5Plus0C_811CC60.yaml
 	thumb_local_start
 counter_addU32_r5Plus0C_811CC60:
 	ldr r1, [r5,#0xc]
@@ -32484,6 +32580,10 @@ byte_811EBDA:
 	.byte 0x4, 0x4, 0x4, 0x4, 0x4, 0x0
 	thumb_func_end sub_811EA28
 
+// symdb: Tests a bit in the PET menu flags byte (ePETMenuData+5) and sets NZ flags for the caller to branch on.
+// symdb: bool pet_testMenuDataFlag(u32 mask /* r0 */); // result in Z/N flags; also returns r1=flags
+// symdb: byte, r2=&ePETMenuData
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TestPETMenuDataFlag.yaml
 	thumb_func_start TestPETMenuDataFlag
 TestPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
@@ -32492,6 +32592,10 @@ TestPETMenuDataFlag:
 	mov pc, lr
 	thumb_func_end TestPETMenuDataFlag
 
+// symdb: Sets bits in the PET menu's data-flags byte, marking menu options/data as unlocked or available.
+// symdb: void SetPETMenuDataFlag(u8 flagBits) — in: r0 = flag bits to OR in; out: none; clobbers r1, r2,
+// symdb: NZ flags; returns via caller's lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetPETMenuDataFlag.yaml
 	thumb_local_start
 SetPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
@@ -32502,6 +32606,10 @@ SetPETMenuDataFlag:
 	.balign 4, 0x00
 	thumb_func_end SetPETMenuDataFlag
 
+// symdb: Clears specified bit(s) in the PET menu data flags byte and returns the previous value.
+// symdb: void ClearPETMenuDataFlag(u32 flagMask /* r0 */) -> out r1 = old flags byte, r2 = ePETMenuData
+// symdb: pointer; clobbers NZ flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearPETMenuDataFlag.yaml
 	thumb_func_start ClearPETMenuDataFlag
 ClearPETMenuDataFlag:
 	ldr r2, off_811EC4C // =ePETMenuData
@@ -32512,6 +32620,9 @@ ClearPETMenuDataFlag:
 	.byte 0, 0
 	thumb_func_end ClearPETMenuDataFlag
 
+// symdb: Zero-fills the 0x18-byte ePETMenuData structure, resetting the PET menu state.
+// symdb: (void) -> void; leaves r4 = &ePETMenuData for the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_ClearMenuData_811EC00.yaml
 	thumb_func_start pet_ClearMenuData_811EC00
 pet_ClearMenuData_811EC00:
 	push {lr}
@@ -33923,6 +34034,10 @@ JumpTable811F7A0:
 
 	thumb_func_start IsButtonPressed
 // (joypad_enum_t key) -> !zf
+// symdb: Returns whether any of the buttons given in the mask were newly pressed this frame, for menu/UI input checks.
+// symdb: bool IsButtonPressed(u16 buttonMask /* r0 */, Toolkit *toolkit /* r10 */); sets NZ flags from
+// symdb: (mask & pressed), returns pressed word in r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/IsButtonPressed.yaml
 IsButtonPressed:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_JoypadPtr]
@@ -34223,9 +34338,9 @@ off_811FA08:
 	.word 0x100
 	thumb_func_end sub_811F91C
 
-// symdb: Menu cursor: move one entry left/right with the d-pad (keys 0x20/0x10), clamping or wrapping, with the cursor sound.
-// symdb: (r0 = pressed keys, r1 = entry count, r2 = mode: bit 0 wrap, bit 1 silent, r3 = index) -> r0 =
-// symdb: new index
+// symdb: Horizontal-only cursor movement handler that tail-jumps into the shared cursor mover after clearing the vertical-move bit.
+// symdb: void menu_moveCursorLeftRight_811FA0C(void); /* pass-through wrapper — r0, r1, r2, r3, r5, r6,
+// symdb: r7, r10 flow into menu_moveCursor_811FA36; r2 bit 1 cleared in-register */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_moveCursorLeftRight_811FA0C.yaml
 	thumb_func_start menu_moveCursorLeftRight_811FA0C
 menu_moveCursorLeftRight_811FA0C:
@@ -34431,6 +34546,9 @@ dword_811FB60:
 	.word 0xFFFF
 	thumb_func_end sub_811FAF4
 
+// symdb: Confirms the highlighted submenu entry, plays the "exit submenu" sound, and starts a screen fade to leave the submenu.
+// symdb: void submenu_ConfirmExitAndFade(u8 selectedEntry /*r0*/, u8* submenuState /*r5*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_ConfirmExitAndFade_811FB64.yaml
 	thumb_func_start submenu_ConfirmExitAndFade_811FB64
 submenu_ConfirmExitAndFade_811FB64:
 	push {lr}
@@ -34443,6 +34561,9 @@ submenu_ConfirmExitAndFade_811FB64:
 	pop {pc}
 	thumb_func_end submenu_ConfirmExitAndFade_811FB64
 
+// symdb: Zeroes byte 6 of the game's S2001c04 work area, reached through the toolkit's pointer to it.
+// symdb: void sub_811FB78(Toolkit *toolkit /* r10 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearS2001c04Byte6_811FB78.yaml
 	thumb_func_start clearS2001c04Byte6_811FB78
 clearS2001c04Byte6_811FB78:
 	mov r1, r10
@@ -34961,6 +35082,10 @@ dword_811FF50:
 	.word 0x13A
 	thumb_func_end sub_811FE7C
 
+// symdb: Maps a small index (0..11) through a fixed 12-byte ROM table, returning a permuted ID byte (indices 4 and 8 are swapped; index 11 clamps to 0).
+// symdb: int sub_811FF54(int index) -> int (r0 in = index, r0 out = byte at byte_811FF60[index]; clobbers
+// symdb: r1)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811FF54.yaml
 	thumb_local_start
 sub_811FF54:
 	push {lr}
@@ -37339,6 +37464,9 @@ off_8121128:
 	.byte 0x0
 	thumb_func_end sub_8121108
 
+// symdb: Zero-fills a 0x18-halfword (0x30-byte) work area at 200DCF0, taking no meaningful arguments.
+// symdb: void clearWorkArea_200DCF0(void); // r0/r1 are set internally; r2-r7 pass through untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkArea_200DCF0_8121144.yaml
 	thumb_func_start clearWorkArea_200DCF0_8121144
 clearWorkArea_200DCF0_8121144:
 	push {r4-r7,lr}

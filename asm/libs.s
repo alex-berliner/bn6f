@@ -184,6 +184,10 @@ off_814423C:
 	.word word_2006E04
 	thumb_func_end sub_8144158
 
+// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then sub_81440D8) for its subsystem, likely once per frame.
+// symdb: void sub_8144240(void); // no meaningful inputs or outputs; caller-saved r0-r3 and flags are
+// symdb: clobbered, r4-r7 preserved
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
 	thumb_func_start sub_8144240
 sub_8144240:
 	push {lr}
@@ -1677,6 +1681,9 @@ loc_8144CA4:
 	.byte 0x95, 0x9, 0x0, 0x0, 0x94, 0x9, 0x0, 0x0, 0xFF, 0xEF, 0x0, 0x0
 	thumb_func_end sub_8144C90
 
+// symdb: Returns the byte at eTimerEnable200F460+1, the second byte of the timer-enable flags, i.e. whether that timer/flag group is currently enabled.
+// symdb: bool timer_IsEnabled(void) — reads none, returns r0 = byte flag (0 or nonzero)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/timer_IsEnabled_8144CE0.yaml
 	thumb_func_start timer_IsEnabled_8144CE0
 timer_IsEnabled_8144CE0:
 	ldr r0, off_8144CE8 // =eTimerEnable200F460 
@@ -11146,6 +11153,10 @@ loc_814943A:
 	bx r1
 	thumb_func_end rfu_UNI_PARENT_getDRAC_ACK
 
+// symdb: Thin wrapper that sets up the hardware timer the wireless adapter library uses for its interrupt, with the two arguments swapped before calling STWI_init_timer.
+// symdb: void rfu_setTimerInterrupt(u32 argA /* -> becomes arg2 of STWI_init_timer, truncated to u8 */,
+// symdb: u32 argB /* -> becomes arg1 of STWI_init_timer */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_setTimerInterrupt.yaml
 	thumb_local_start
 rfu_setTimerInterrupt:
 	push {lr}
@@ -17748,6 +17759,10 @@ dword_814C344:
 	.word 0xFFFF
 	thumb_func_end STWI_read_status
 
+// symdb: Clears the wireless (STWI) callback handler by registering NULL, disabling further wireless callbacks
+// symdb: void STWI_init_Callback_M(void) — no register inputs (besides lr), no outputs; clobbers r0, r1,
+// symdb: nz flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_init_Callback_M.yaml
 	thumb_local_start
 STWI_init_Callback_M:
 	push {lr}
@@ -17757,6 +17772,10 @@ STWI_init_Callback_M:
 	bx r0
 	thumb_func_end STWI_init_Callback_M
 
+// symdb: Resets the STWI wireless library's send/receive callback to none (NULL), used when initializing the wireless comms state.
+// symdb: void STWI_set_Callback_S_Null(void) — inputs: lr (return address, must be a valid Thumb
+// symdb: address); outputs: none; clobbers flags (nz), r0, r1, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_init_Callback_S.yaml
 	thumb_local_start
 STWI_init_Callback_S:
 	push {lr}
@@ -17766,6 +17785,10 @@ STWI_init_Callback_S:
 	bx r0
 	thumb_func_end STWI_init_Callback_S
 
+// symdb: Registers the callback function the wireless (STWI) library calls when an incoming message/event arrives.
+// symdb: void STWI_set_Callback_M(void (*callback)(void)) // r0 = callback pointer; returns nothing,
+// symdb: clobbers r1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_M.yaml
 	thumb_local_start
 STWI_set_Callback_M:
 	ldr r1, off_814C368 // =dword_2010CCC 
@@ -17776,6 +17799,9 @@ off_814C368:
 	.word dword_2010CCC
 	thumb_func_end STWI_set_Callback_M
 
+// symdb: Registers a callback function in the wireless (STWI) driver work area to be invoked when a wireless send completes.
+// symdb: void STWI_set_Callback_S(void *callback /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_S.yaml
 	thumb_local_start
 STWI_set_Callback_S:
 	ldr r1, off_814C374 // =dword_2010CCC 
@@ -17786,6 +17812,9 @@ off_814C374:
 	.word dword_2010CCC
 	thumb_func_end STWI_set_Callback_S
 
+// symdb: Sets the wireless (STWI) callback ID by storing it into the callback-ID field of the STWI work struct.
+// symdb: void STWI_set_Callback_ID(u32 callbackId /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_ID.yaml
 	thumb_local_start
 STWI_set_Callback_ID:
 	ldr r1, off_814C380 // =dword_2010CCC 
@@ -20188,6 +20217,11 @@ SWI_CpuSet: // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	bx lr
 	thumb_func_end SWI_CpuSet
 
+// symdb: Thin wrapper that invokes the BIOS signed 32-bit division call (svc 6) and returns the quotient, remainder, and absolute quotient to the caller.
+// symdb: int SWI_Div(int dividend /*r0*/, int divisor /*r1*/, int r2_in /*r2 passthrough*/, int
+// symdb: r3_ignored); returns r0 = dividend / divisor (signed), r1 = dividend % divisor (signed), r3 =
+// symdb: abs(quotient) as unsigned, r2 passthrough
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SWI_Div.yaml
 	thumb_func_start SWI_Div
 SWI_Div:
 	// Signed Division, r0/r1.
@@ -20752,6 +20786,10 @@ loc_814DBEA:
 	pop {pc}
 	thumb_func_end __umodsi3
 
+// symdb: Helper that multiplies two unsigned 32-bit values and returns the high 32 bits of the 64-bit product.
+// symdb: u32 umul3232H32(u32 a /*r0*/, u32 b /*r1*/); /* returns high word in r0; also leaves low word in
+// symdb: r2 and high word in r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/umul3232H32.yaml
 	thumb_local_start 2
 umul3232H32:
 	adr r2, .umul3232H32arm
@@ -21235,6 +21273,10 @@ byte_814E028:
 	.word 0x68736D53
 	thumb_func_end sub_814E008
 
+// symdb: Zeroes the 64-byte sound work/state structure used by the sound engine.
+// symdb: void SoundMain_ClearSoundWork64(u32 *soundWork /* r0 */)  /* r4 in and preserved (saved via
+// symdb: r12); returns r0 = soundWork+64, r1-r3 = 0, Z=1 N=0 from final movs r4,#0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SoundMainBTM.yaml
 	thumb_func_start SoundMainBTM, 2
 SoundMainBTM:
 	mov r12, r4
@@ -21250,6 +21292,10 @@ SoundMainBTM:
 	bx lr
 	thumb_func_end SoundMainBTM
 
+// symdb: Detaches a node from the doubly linked list it is chained into, leaving an already-detached node untouched.
+// symdb: void UnlinkNodeFromList(void* node /* r0 */); // clobbers r1-r3 and flags; trashes lr via
+// symdb: internal use, returns via bx lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RealClearChain.yaml
 	thumb_func_start RealClearChain, 2
 RealClearChain:
 	ldr r3, [r0,#0x2c]
@@ -21325,11 +21371,20 @@ loc_814E0A2:
 	.balign 4, 0x00
 	thumb_func_end sub_814E09C
 
+// symdb: Loads one byte from the buffer pointed to by r2 and tail-calls the next handler (sub_814E0B6) with that byte in r3, leaving r0 untouched.
+// symdb: void sub_814E0B4(int arg /*r0*/, u8* src /*r2*/) /* r3 out = *src, r0 passed through, lr is the
+// symdb: tail-call target */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0B4.yaml
 	thumb_local_start
 sub_814E0B4:
 	ldrb r3, [r2]
 	thumb_func_end sub_814E0B4
 
+// symdb: Range-checks the value in r2 and treats it as valid (leaves r3 alone) only when it is a RAM pointer (bit 25 set, i.e. 0x02000000-0x03FFFFFF); otherwise it clears r3 to signal "invalid".
+// symdb: void checkIsRamPointer(void) // in: r2 = value to test, r3 = caller's flag (must be pre-set
+// symdb: nonzero for a meaningful pass); out: r3 = 0 on failure, untouched on success; r0 always
+// symdb: preserved; flags set as side effects of the last shift/compare
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0B6.yaml
 	thumb_local_start
 sub_814E0B6:
 	push {r0}
@@ -21400,6 +21455,10 @@ loc_814E114:
 	.balign 4, 0x00
 	thumb_func_end ply_patt
 
+// symdb: Pops the most recently queued entry off a player "pending" list and copies it into the current-entry slot.
+// symdb: void ply_pend(void* list /* r1 */); /* returns r2=poppped entry value (or count if empty),
+// symdb: r3=&list+4*newCount, sets nzcv; lr preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ply_pend.yaml
 	thumb_func_start ply_pend
 ply_pend:
 	ldrb r2, [r1,#2]
@@ -21453,6 +21512,10 @@ sub_814E15C:
 	.balign 4, 0x00
 	thumb_func_end sub_814E15C
 
+// symdb: Refreshes two halfword fields of an object, storing a doubled value from a helper at +0x1C and an 8.8 fixed-point scaled copy of it at +0x20.
+// symdb: void sub_814E168(void); /* no direct args of its own; returns the callee's r0/r2/r3 and flags
+// symdb: from the final shift */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E168.yaml
 	thumb_func_start sub_814E168
 sub_814E168:
 	mov r12, lr
@@ -21466,6 +21529,11 @@ sub_814E168:
 	bx r12
 	thumb_func_end sub_814E168
 
+// symdb: Runs a helper on a battle object, stores the byte it computes at offset 0xA, and forces flag bits 2-3 (0xC) on in the object's flag byte at offset 0.
+// symdb: void battle_objectStoreComputedByteAndSetFlags_C(void); /* r1 = battle object pointer; r0,
+// symdb: r4-r11 are forwarded untouched to sub_814E0D0; returns r2 = 0xC, r3 = updated flag byte, NZ from
+// symdb: the ORR */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E17C.yaml
 	thumb_func_start sub_814E17C
 sub_814E17C:
 	mov r12, lr
@@ -21504,6 +21572,10 @@ sub_814E190:
 	.byte 0, 0
 	thumb_func_end sub_814E190
 
+// symdb: Runs a per-object update routine for the entity whose pointer is in r1, writes the routine's result byte into the object, and sets the object's status byte low bits to mark it active/updated.
+// symdb: void sub_814E1C0(u32 arg0 /*r0, passed through*/, void* obj /*r1*/); // r4-r11 preserved, r0-r3
+// symdb: and r12 clobbered, flags set from the final ORR
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObj_runUpdateAndSetActive_814E1C0.yaml
 	thumb_func_start battleObj_runUpdateAndSetActive_814E1C0
 battleObj_runUpdateAndSetActive_814E1C0:
 	mov r12, lr
@@ -21517,6 +21589,11 @@ battleObj_runUpdateAndSetActive_814E1C0:
 	.balign 4, 0x00
 	thumb_func_end battleObj_runUpdateAndSetActive_814E1C0
 
+// symdb: Shifts an object's Y coordinate up by 0x40 units via a helper call, then sets the object's low state-flag bits so the change takes effect.
+// symdb: void sprite_moveYUp64AndMarkDirty(unknown r0, Object* r1 /* object ptr, preserved into callee
+// symdb: */, unknown r4-r11); clobbers r2-r3, r12, flags (NZ from ORR, C/V from the subtract); returns to
+// symdb: caller via saved LR in r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_moveYUp64AndMarkDirty_814E1D4.yaml
 	thumb_func_start sprite_moveYUp64AndMarkDirty_814E1D4
 sprite_moveYUp64AndMarkDirty_814E1D4:
 	mov r12, lr
@@ -21530,6 +21607,11 @@ sprite_moveYUp64AndMarkDirty_814E1D4:
 	bx r12
 	thumb_func_end sprite_moveYUp64AndMarkDirty_814E1D4
 
+// symdb: Runs the check in sub_814E0D0 and writes its status, biased by 0x40, plus flag bits 0x0C into a state struct.
+// symdb: void recordCheckResultInState(void); // no direct args; callee sub_814E0D0 leaves the state
+// symdb: struct pointer in r1; returns to caller via r12; clobbers r2, r3 and flags (c/v from SUB, nz
+// symdb: from ORR)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1E8.yaml
 	thumb_func_start sub_814E1E8
 sub_814E1E8:
 	mov r12, lr
@@ -21543,6 +21625,10 @@ sub_814E1E8:
 	bx r12
 	thumb_func_end sub_814E1E8
 
+// symdb: Recomputes a status byte for the object/state structure in r1 via sub_814E0D0, stores it at +0xF, and sets the 0xC flag bits in the control byte at +0.
+// symdb: void sub_814E1FC(u8* state /* r1 */); // calls sub_814E0D0 (result in r3); flags NZ updated from
+// symdb: the ORed byte
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1FC.yaml
 	thumb_func_start sub_814E1FC
 sub_814E1FC:
 	mov r12, lr
@@ -21556,6 +21642,11 @@ sub_814E1FC:
 	.byte 0, 0
 	thumb_func_end sub_814E1FC
 
+// symdb: Thin wrapper that calls sub_814E0D0 and stores the byte result it leaves in r3 at [r1+0x1B].
+// symdb: void sub_814E210(...); // tail-style: preserves LR in r12, calls sub_814E0D0(r0,r1,...), then
+// symdb: writes the callee's r3 byte to *(u8*)(r1+0x1B); all other registers and flags pass through from
+// symdb: the callee
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E210.yaml
 	thumb_func_start sub_814E210
 sub_814E210:
 	mov r12, lr
@@ -21581,6 +21672,9 @@ loc_814E232:
 	bx r12
 	thumb_func_end sub_814E21C
 
+// symdb: Fetches the next glyph code from the text stream and writes it (minus 0x40) into a print-buffer state record, flagging the record as holding a glyph.
+// symdb: void chatbox_PrintBuffer_WriteNextGlyph(void* fontCtx /* r0 */, PrintBuffer* pb /* r1 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_PrintBuffer_WriteNextGlyph_814E234.yaml
 	thumb_func_start chatbox_PrintBuffer_WriteNextGlyph_814E234
 chatbox_PrintBuffer_WriteNextGlyph_814E234:
 	mov r12, lr
@@ -22397,6 +22491,11 @@ loc_814E79E:
 	.balign 4, 0x00
 	thumb_func_end sub_814E758
 
+// symdb: Resets two status bytes of a battle-side struct and ORs a mode value (0xC or 3) into its flags byte depending on a delay/counter byte.
+// symdb: void battle_resetActionState(struct* r1); /* writes bytes +0x00, +0x16, +0x1A of *r1; returns r2
+// symdb: = mode (0xC or 3), r3 = new flags byte; N/Z set from OR result, C=1/V=0 left over from the CMP
+// symdb: */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7A4.yaml
 	thumb_local_start
 sub_814E7A4:
 	mov r2, #0
@@ -22417,6 +22516,9 @@ loc_814E7B6:
 	.byte 0, 0
 	thumb_func_end sub_814E7A4
 
+// symdb: Reads the next byte from a byte stream (script/message or data reader), advancing the stream's cursor.
+// symdb: int streamReadNextByte(void* stream /* r1 */); // returns byte in r3, address of the byte in r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/streamReadNextByte_814E7C0.yaml
 	thumb_local_start
 streamReadNextByte_814E7C0:
 	ldr r2, [r1,#0x40]
@@ -22427,6 +22529,10 @@ streamReadNextByte_814E7C0:
 	.balign 4, 0x00
 	thumb_func_end streamReadNextByte_814E7C0
 
+// symdb: Tiny wrapper: stores a computed byte at [struct+0x19] and, when that byte is zero, runs an extra fixup call.
+// symdb: unknown inputs (r0..r11, lr as live on entry); returns flags (nz c v) and registers as left by
+// symdb: callees; r0-r3,r12 clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7CC.yaml
 	thumb_func_start sub_814E7CC
 sub_814E7CC:
 	mov r12, lr
@@ -22440,6 +22546,10 @@ loc_814E7DC:
 	.byte 0, 0
 	thumb_func_end sub_814E7CC
 
+// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (sub_814E7A4) only when that result is zero.
+// symdb: unknown /* inputs include r0, r1 (r1 points to a struct whose +0x17 byte field is written) and
+// symdb: lr; returns via the saved lr in r12; clobbers r0-r3 and flags per the callees */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
 	thumb_func_start sub_814E7E0
 sub_814E7E0:
 	mov r12, lr
@@ -22530,6 +22640,10 @@ dword_814E878:
 	.word 0x7FFFFFFF
 	thumb_func_end sub_814E85C
 
+// symdb: Guarded setter for an object whose type word is 'Smsh' — writes a 16-bit value into two fields and a fixed 0x100 into a third.
+// symdb: void sub_814E87C(SmshObj* obj, u16 value) // also returns return address in r0 and clobbers
+// symdb: r2-r3; sets flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_smashFx_SetParams_814E87C.yaml
 	thumb_func_start battle_smashFx_SetParams_814E87C
 battle_smashFx_SetParams_814E87C:
 	push {lr}
@@ -25705,6 +25819,10 @@ sub_814FE20:
 	.balign 4, 0x00
 	thumb_func_end sub_814FE20
 
+// symdb: Reads the next character byte from a text script and stores it into the text state's current-character field, advancing the script pointer.
+// symdb: u32 text_ReadNextChar(u32 state /*r1*/); // out: r0 = advanced read pointer, r2 = char read,
+// symdb: NZCV from the pointer increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/text_ReadNextChar_814FE34.yaml
 	thumb_func_start text_ReadNextChar_814FE34
 text_ReadNextChar_814FE34:
 	ldr r0, [r1,#0x40]
@@ -25715,6 +25833,10 @@ text_ReadNextChar_814FE34:
 	bx lr
 	thumb_func_end text_ReadNextChar_814FE34
 
+// symdb: Reads one byte from the data stream pointed to by [r1+0x40], stores it into the byte field at [r1+0x1F], and advances the stream pointer.
+// symdb: u8 readNextStreamByte(void* rec /* r1 */); // out: r0 = advanced stream pointer, r2 = byte read,
+// symdb: nz/c/v from pointer increment
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/readNextStreamByte_814FE40.yaml
 	thumb_func_start readNextStreamByte_814FE40
 readNextStreamByte_814FE40:
 	ldr r0, [r1,#0x40]
