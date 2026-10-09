@@ -2034,12 +2034,12 @@ char *sub_8004D48()
     scenario_ClearEffectActiveFlag_800399A();
     v2 = event_ackNewFlagByte_8003AEA();
     pet_ClearMenuData_811EC00(v2, v3, v4, v5);
-    sub_800B110();
+    encryption_applyPackList_800B110();
     ClearEventFlagFromImmediate(0, 145);
     sub_803C3E0();
     if ( !v6 )
         SetEventFlagFromImmediate(0, 145);
-    return copy_8048C98();
+    return shop_copyItemTableToShopData_8048C98();
 }
 
 
@@ -2202,7 +2202,7 @@ void __cdecl initNewGameData_8004DF0()
     clearToolkitUnk2002230RecordFields_81376E8();
     timer_setNoTimeout_8137700();
     clearChipGiftRecordAndTakeChipsSlot0_8137808();
-    sub_80133EC();
+    battle_initSlotsOrderPhaseB_80133EC();
     toolkit_resetToolState_813B768();
     zeroFill_813B934();
     v17 = eraseMem_ClearBuffer_813C324();
@@ -2379,7 +2379,7 @@ int __fastcall battle_init_80052D8(int a1)
     sub_8004590();
     sub_8004934();
     event_runArmedCallback_80024AE();
-    result = sub_803F530();
+    result = tickCountdownGate_803F530();
     if ( v2 )
     {
         result = IsPaletteFadeActive();
@@ -2589,7 +2589,7 @@ int sub_8005462()
         zeroFill_e2009740();
         zeroFill_e200F3A0();
         pet_prepareMenuOnReturn_811F6C0(v2, v3, v4, v5);
-        sub_8005524();
+        mainState_resetGameAndGoto28_8005524();
         TerminateGFXAnim(17);
         sub_8046664();
         result = chatbox_8040818();
@@ -2599,7 +2599,7 @@ int sub_8005462()
 
 
 // 0x8005524
-_BYTE *sub_8005524()
+_BYTE *mainState_resetGameAndGoto28_8005524()
 {
     _BYTE **v0; // r10
     int v1; // r0
@@ -2927,7 +2927,7 @@ _BYTE *__fastcall sub_8005814(int a1)
     {
         v3 = chatbox_8040818();
         sub_811F6E0(v3, v4, v5, v6);
-        result = sub_8005524();
+        result = mainState_resetGameAndGoto28_8005524();
     }
     return result;
 }
@@ -3253,7 +3253,7 @@ void sub_8005AF4()
                                 return;
                             PlaySoundEffect(121, v3, v4);
                             updatePlayerGameState_800107A();
-                            sub_811EC10(v5, v6, v7, v8);
+                            pet_initMenu_811EC10(v5, v6, v7, v8);
                             scenario_initEffectState_8003962();
                             zeroFill_8003AB2();
                         }
@@ -6027,7 +6027,7 @@ int __fastcall eStruct200BC30_dispatchJumpOffset00_8007BF0(int a1)
 
 
 // 0x8007c14
-signed int sub_8007C14()
+signed int battle_stepSubstateToState4_8007C14()
 {
     int v0; // r4
     int v1; // r5
@@ -6209,7 +6209,7 @@ void __fastcall sub_8007CA0(int a1, int a2, int a3)
             v32 = getPETNaviSelect();
             SetCurPETNaviStatsByte(v32, 33, v31);
             if ( battle_getStateByteNibbles_800A832() == 1 )
-                sub_802C9B8();
+                battle_updateSlotBestRecords_802C9B8();
             *(v5 + 18) = 0;
             *(v5 + 20) = 0;
         }
@@ -6498,11 +6498,11 @@ int sub_80080D2()
     sub_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
-    sub_800AE0C();
+    battle_updatePhaseState_800AE0C();
     v2 = sub_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
-    v3 = sub_800A152();
+    v3 = battle_getPhaseMode_800A152();
     switch ( v3 )
     {
         case 1:
@@ -6528,7 +6528,7 @@ int sub_80080D2()
             *v0 = 24;
             return result;
         default:
-            v6 = sub_800A046();
+            v6 = battle_checkFlowAdvanceFlags_800A046();
             if ( v6 != 255 )
             {
                 *(v0 + 5) = v6;
@@ -6588,7 +6588,7 @@ int sub_80081A4()
         dispatch_801DACC(937043);
         flags_clearBits_eStruct2035280_801BED6(937043);
         v2 = battle_getStateByte0d_800A7E2();
-        sub_8014040(v2);
+        battle_playerHPRegenTick_8014040(v2);
         *(*(v1 + oToolkit_S2034880_Ptr) + 16) = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
         *(v0 + 3) = 4;
         if ( battle_countOpponentActorsWithNameIdInRange_800A7A6(4, 371, 382) )
@@ -6622,7 +6622,7 @@ int sub_80081A4()
             {
                 v8 = sub_800A8D4();
             }
-            else if ( sub_800A152() == 7 )
+            else if ( battle_getPhaseMode_800A152() == 7 )
             {
                 v8 = 20;
             }
@@ -6668,7 +6668,7 @@ int sub_800825A()
         else
             v3 = 102;
         *(v0 + 8) = v3;
-        v4 = sub_800A152();
+        v4 = battle_getPhaseMode_800A152();
         v5 = sub_800A8B2();
         if ( v4 == 7 )
             v5 = 24;
@@ -6994,11 +6994,11 @@ int sub_800855E()
     sub_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
-    sub_800AE0C();
+    battle_updatePhaseState_800AE0C();
     v2 = sub_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
-    v3 = sub_800A152();
+    v3 = battle_getPhaseMode_800A152();
     switch ( v3 )
     {
         case 1:
@@ -7016,7 +7016,7 @@ int sub_800855E()
             *v0 = 20;
             break;
         default:
-            v5 = sub_800A046();
+            v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
                 battle_isTimeStop();
@@ -7122,7 +7122,7 @@ int sub_8008688()
         dispatch_801DACC(8539203);
         flags_clearBits_eStruct2035280_801BED6(8539203);
         v3 = battle_getStateByte0d_800A7E2();
-        sub_8014040(v3);
+        battle_playerHPRegenTick_8014040(v3);
         *(*(v1 + oToolkit_S2034880_Ptr) + 16) = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
         *(v0 + 3) = 4;
         v4 = sub_802D246();
@@ -7503,11 +7503,11 @@ int sub_80089CC()
     sub_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
-    sub_800AE0C();
+    battle_updatePhaseState_800AE0C();
     v2 = sub_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
-    v3 = sub_800A152();
+    v3 = battle_getPhaseMode_800A152();
     switch ( v3 )
     {
         case 1:
@@ -7526,7 +7526,7 @@ int sub_80089CC()
             *v0 = 20;
             break;
         default:
-            v5 = sub_800A046();
+            v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
                 result = sub_800A21C();
@@ -7580,7 +7580,7 @@ int sub_8008AA0()
         dispatch_801DACC(19523);
         flags_clearBits_eStruct2035280_801BED6(19523);
         v3 = battle_getStateByte0d_800A7E2();
-        sub_8014040(v3);
+        battle_playerHPRegenTick_8014040(v3);
         *(*(v1 + oToolkit_S2034880_Ptr) + 16) = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
         *(v0 + 3) = 4;
         v4 = sub_802D246();
@@ -7961,11 +7961,11 @@ int sub_8008DDC()
     sub_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
-    sub_800AE0C();
+    battle_updatePhaseState_800AE0C();
     v2 = sub_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
-    v3 = sub_800A152();
+    v3 = battle_getPhaseMode_800A152();
     switch ( v3 )
     {
         case 1:
@@ -7983,7 +7983,7 @@ int sub_8008DDC()
             *v0 = 20;
             break;
         default:
-            v5 = sub_800A046();
+            v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
                 result = sub_800A21C();
@@ -8037,7 +8037,7 @@ int sub_8008EA0()
         dispatch_801DACC(19523);
         flags_clearBits_eStruct2035280_801BED6(19523);
         v3 = battle_getStateByte0d_800A7E2();
-        sub_8014040(v3);
+        battle_playerHPRegenTick_8014040(v3);
         *(*(v1 + oToolkit_S2034880_Ptr) + 16) = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
         *(v0 + 3) = 4;
         v4 = sub_802D246();
@@ -8455,7 +8455,7 @@ unsigned int sub_80091F0()
         battle_spawnType4ObjectWithActiveFlag_80E06F8(v1, v4, v2, v3);
         battle_SpawnEnemyObjects_8007358();
         sub_800A028();
-        sub_8014178();
+        battle_applyNaviStatTableEntry_8014178();
         if ( sub_802D246() & 8 )
             v6 = 21;
         else
@@ -8731,7 +8731,7 @@ int battle_DispatchStatePhase_800945C()
 
 
 // 0x8009478
-int sub_8009478()
+int battle_waitLinkSync_8009478()
 {
     int v0; // r5
     int result; // r0
@@ -9017,7 +9017,7 @@ unsigned int sub_8009658()
         battle_spawnType4ObjectWithActiveFlag_80E06F8(v1, v4, v2, v3);
         battle_SpawnEnemyObjects_8007358();
         sub_800A028();
-        sub_8014178();
+        battle_applyNaviStatTableEntry_8014178();
         if ( sub_802D246() & 8 )
             v6 = 21;
         else
@@ -9471,7 +9471,7 @@ unsigned int sub_80099E0()
         battle_spawnType4ObjectWithActiveFlag_80E06F8(v1, v4, v2, v3);
         battle_SpawnEnemyObjects_8007358();
         sub_800A028();
-        sub_8014178();
+        battle_applyNaviStatTableEntry_8014178();
         if ( sub_802D246() & 8 )
             v6 = 21;
         else
@@ -9850,7 +9850,7 @@ unsigned int sub_8009CD0()
         battle_spawnType4ObjectWithActiveFlag_80E06F8(v1, v4, v2, v3);
         battle_SpawnEnemyObjects_8007358();
         sub_800A028();
-        sub_8014178();
+        battle_applyNaviStatTableEntry_8014178();
         if ( sub_802D246() & 8 )
             v6 = 21;
         else
@@ -10291,7 +10291,7 @@ int battle_isPaused()
 
 
 // 0x800a046
-signed int sub_800A046()
+signed int battle_checkFlowAdvanceFlags_800A046()
 {
     signed int v0; // r1
     signed int result; // r0
@@ -10452,7 +10452,7 @@ int sub_800A142()
 
 
 // 0x800a152
-signed int sub_800A152()
+signed int battle_getPhaseMode_800A152()
 {
     int v0; // r10
     char v1; // zf
@@ -10707,7 +10707,7 @@ void __fastcall sub_800A318(int a1)
             *(*(v1 + oToolkit_S2034880_Ptr) + 23) = 1;
         }
         v12 = 0;
-        v13 = sub_800A506(v9);
+        v13 = pet_getCurNaviStatusPair_800A506(v9);
         v14 = 2 * v13;
         v16 = 2 * v15;
         if ( v13 != 255 )
@@ -10787,7 +10787,7 @@ void sub_800A3E4()
             v13 = 2 * v8;
             *(*(v0 + oToolkit_S2034880_Ptr) + 23) = 1;
         }
-        v9 = sub_800A506(v8);
+        v9 = pet_getCurNaviStatusPair_800A506(v8);
         if ( v9 != 255 )
         {
             v14 = 2 * v9;
@@ -10845,7 +10845,7 @@ int __fastcall pet_getCurNaviChainedLookup_800A4E0(int a1)
 
 
 // 0x800a506
-signed int __fastcall sub_800A506(int a1)
+signed int __fastcall pet_getCurNaviStatusPair_800A506(int a1)
 {
     int v2; // r4
     int v3; // r6
@@ -12007,7 +12007,7 @@ signed int __fastcall sub_800AC20(int a1, int a2)
 
 
 // 0x800ae0c
-int sub_800AE0C()
+int battle_updatePhaseState_800AE0C()
 {
     int v0; // r10
     _BYTE *v1; // r4
@@ -12288,7 +12288,7 @@ void someChipHandValidationHappensHere_800B090()
 
 
 // 0x800b110
-int sub_800B110()
+int encryption_applyPackList_800B110()
 {
     __int16 *i; // r4
     int result; // r0
@@ -12406,7 +12406,7 @@ int sub_800B144()
     byte_203CCAA = sub_81209DC(1);
     byte_203CCAB[0] = v16;
     CopyBytes(&dword_3C4 + *(v0 + oToolkit_Flags2001c88_Ptr), &byte_203CCAB[1], 40);
-    *byte_203CCD4 = sub_8010D20();
+    *byte_203CCD4 = stub_alwaysReturnsFalse_8010D20();
     TestEventFlagFromImmediate(1, 99);
     if ( v8 )
         v17 = 255;
@@ -12454,7 +12454,7 @@ int battle_copyStructsIncludingBattleStats_800b2d8()
 
 
 // 0x800b3a2
-int sub_800B3A2()
+int battle_backupStateForRestart_800B3A2()
 {
     int v0; // r10
     char *v1; // r0
@@ -12497,7 +12497,7 @@ char *sub_800B444()
 
     CopyWords(byte_203F4A4, &unk_2035260, 0xCu);
     CopyWords(byte_203F5A4, &unk_203526C, 0xCu);
-    return sub_802C9EA(v0);
+    return battle_syncEffectSlotBetweenBuffers_802C9EA(v0);
 }
 
 

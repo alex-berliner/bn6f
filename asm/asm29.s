@@ -505,8 +505,8 @@ byte_80A4C64:
 	.byte 0x0
 	thumb_func_end sub_80A4C5C
 
-	thumb_func_start sub_80A51C4
-sub_80A51C4:
+	thumb_func_start npc_stateDispatchStep_80A51C4
+npc_stateDispatchStep_80A51C4:
 	push {lr}
 	ldr r7, off_80A51F4 // =byte_80A4C64
 	mov r0, #0x10
@@ -530,7 +530,7 @@ off_80A51E0:
 	.word sub_80A5350+1
 off_80A51F4:
 	.word byte_80A4C64
-	thumb_func_end sub_80A51C4
+	thumb_func_end npc_stateDispatchStep_80A51C4
 
 	thumb_local_start
 sub_80A51F8:

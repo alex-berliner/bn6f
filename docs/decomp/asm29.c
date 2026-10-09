@@ -216,7 +216,7 @@ int sub_80A4C5C()
 
 
 // 0x80a51c4
-int sub_80A51C4()
+int npc_stateDispatchStep_80A51C4()
 {
     int v0; // r5
     char *v1; // r7

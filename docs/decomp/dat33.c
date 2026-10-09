@@ -5,7 +5,7 @@ int sub_812C2C0()
     int result; // r0
 
     (*(&off_812C2EC + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
@@ -1636,7 +1636,7 @@ void __noreturn sub_812D298()
 // 0x812d310
 void sub_812D310()
 {
-    sub_812AF3C();
+    decomp_buildInitRefTable_812AF3C();
     loadDecompressedAsset_812AF78();
     textScript_loadAndRunEmbeddedArchive_812AF84();
     decompAndCopyData(byte_812D32C);

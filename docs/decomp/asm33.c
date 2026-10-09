@@ -167,7 +167,7 @@ int sub_8123514()
     sub_8123A50();
     sub_8123C98();
     sub_8123E58();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -438,7 +438,7 @@ int __fastcall __noreturn sub_81237BC(int a1)
     sub_8123A50();
     sub_8123C98();
     sub_8123E58();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -879,7 +879,7 @@ void __fastcall submenu_subchip_init_8123F7C(int a1, int a2, int a3, int a4)
     sub_8124384();
     v4[12] = 6;
     subchip_initGfx_81243B0();
-    sub_8120C94(&unk_201EC2C, 8, 6, 3170816);
+    gfx_fillTilemapConsecutiveBanded_8120C94(&unk_201EC2C, 8, 6, 3170816);
     sub_81247EC();
 }
 
@@ -890,7 +890,7 @@ void __noreturn submenu_subchip_dispatch_812407C()
     int v0; // r5
 
     (*(&jt_81240A0 + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_812453C();
 }
@@ -1181,7 +1181,7 @@ int __fastcall submenu_subchip_8124350(int a1)
     char v3; // zf
 
     sub_81244EC();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -1577,7 +1577,7 @@ void __fastcall __noreturn sub_8124B5C(int a1, int a2, int a3, int a4)
     sub_8126818(0);
     *(v4 + 1) = 4;
     *(v4 + 2) = 0;
-    sub_8125280();
+    initRefs_buildAndDecompressTable_8125280();
     sub_81254FC();
 }
 
@@ -2232,7 +2232,7 @@ signed int sub_8125254()
 
 
 // 0x8125280
-void sub_8125280()
+void initRefs_buildAndDecompressTable_8125280()
 {
     int v0; // r6
     int v1; // r7
@@ -2288,7 +2288,7 @@ int sub_8125444()
 
     sub_81265DC();
     sub_8126630();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = *(v0 + 112);
     if ( result )
@@ -3396,7 +3396,7 @@ LABEL_4:
             }
             v15 = v10[v11 >> 8];
             v16 = *&v15[2 * v11];
-            sub_81263D0(&v15[v16], v16, a3, v8);
+            text_decodeCharTiles8_801263D0_81263D0(&v15[v16], v16, a3, v8);
             goto LABEL_10;
         }
         if ( !v6 )
@@ -3458,7 +3458,7 @@ void **__fastcall sub_8126334(int a1, int a2, _DWORD *a3)
 LABEL_6:
             v10 = result[v9 >> 8];
             v11 = *&v10[2 * v9];
-            result = sub_81263D0(&v10[v11], v11, a3, v6);
+            result = text_decodeCharTiles8_801263D0_81263D0(&v10[v11], v11, a3, v6);
             goto LABEL_8;
         }
         *a3 = 0;
@@ -3483,7 +3483,7 @@ LABEL_8:
 
 
 // 0x81263d0
-unsigned __int8 *__fastcall sub_81263D0(unsigned __int8 *result, int a2, _WORD *a3, _WORD *a4)
+unsigned __int8 *__fastcall text_decodeCharTiles8_801263D0_81263D0(unsigned __int8 *result, int a2, _WORD *a3, _WORD *a4)
 {
     __int16 v4; // r6
     signed int i; // r7
@@ -4075,7 +4075,7 @@ void sub_8126CC0()
 
     *(v0 + 14) = *(v0 + 13);
     (*(&off_8126DC0 + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     v1 = sub_81278D8();
     object_setSpritePosition_8119BE8(v1, *(v0 + 68), 0);
     v2 = sub_81278D8();
@@ -4343,7 +4343,7 @@ void sub_8126FF0()
     int v3; // r2
     char v4; // r4
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     if ( !sub_8123360() )
         sub_811BED4(0, 5);
     sub_80465F8();
@@ -4959,7 +4959,7 @@ int sub_8127ACC()
     sub_8127F54();
     sub_8127FE4();
     sub_8128280();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -5120,7 +5120,7 @@ int __fastcall sub_8127C64(int a1)
     sub_8127F54();
     sub_8127FE4();
     sub_8128280();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v4 )
@@ -5384,7 +5384,7 @@ int __fastcall sub_81280DC(int a1, int a2)
             v4 = 0;
             v5 = &unk_2026700 + &byte_5C * v3;
             v6 = (v5 + 46);
-            sub_812818C(result, &byte_5C * v3, 28672, v3);
+            npc_checkEntryEventFlagOrHidden_812818C(result, &byte_5C * v3, 28672, v3);
             do
             {
                 *&v5[v4] = v7 | v8;
@@ -5422,7 +5422,7 @@ int __fastcall sub_81280DC(int a1, int a2)
 
 
 // 0x812818c
-void __fastcall sub_812818C(int a1, int a2, int a3, int a4)
+void __fastcall npc_checkEntryEventFlagOrHidden_812818C(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -6252,7 +6252,7 @@ int sub_8128DCC()
     int v0; // r5
 
     (*(&off_8128DE8 + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -6607,7 +6607,7 @@ int sub_812933C()
             chatbox_runScript_803FD9C_on_eTextScript201BA20(v5);
         }
     }
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     return sub_812B29C(13);
 }
@@ -6632,7 +6632,7 @@ int sub_8129400()
         sub_80465A0(byte_8129168);
         bg_LoadFullScreenTilesAndSetup_812AFB0();
     }
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     return sub_812B29C(13);
 }
@@ -6713,7 +6713,7 @@ void sub_8129454()
             v0[33] = v5;
         }
     }
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_812B288(13);
 }
@@ -6726,7 +6726,7 @@ int sub_812952C()
     int result; // r0
     char v2; // zf
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -6748,7 +6748,7 @@ int sub_812954C()
     int v4; // r2
     int v5; // r3
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -6768,7 +6768,7 @@ int sub_812956C()
     int result; // r0
     char v2; // zf
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -6807,7 +6807,7 @@ int sub_81295D8()
     int v4; // r3
     int v5; // r1
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -7016,7 +7016,7 @@ int sub_81297C0()
     int result; // r0
     char v2; // zf
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -7888,7 +7888,7 @@ int sub_8129EE4()
     char v2; // zf
 
     sprite_drawIfFlagSet_812B504();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -9459,7 +9459,7 @@ int sub_812AEC8()
     int result; // r0
     char v1; // zf
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v1 )
@@ -9501,7 +9501,7 @@ void sub_812AF14()
 // 0x812af18
 int scene_loadAndStartCutscene_812AF18()
 {
-    sub_812AF3C();
+    decomp_buildInitRefTable_812AF3C();
     decompAndCopyData(&off_812B08C);
     loadDecompressedAsset_812AF78();
     textScript_loadAndRunEmbeddedArchive_812AF84();
@@ -9512,7 +9512,7 @@ int scene_loadAndStartCutscene_812AF18()
 
 
 // 0x812af3c
-void sub_812AF3C()
+void decomp_buildInitRefTable_812AF3C()
 {
     int v0; // r6
     int v1; // r7
@@ -9640,7 +9640,7 @@ int sub_812B218()
 int __fastcall sub_812B25C(int a1)
 {
     sub_812B2C4(a1);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -9932,7 +9932,7 @@ int sub_812B5C8()
     result = sub_8132290();
     if ( result == 28 )
     {
-        sub_80465BC();
+        entity_runAllUpdateHandlers_80465BC();
         result = sub_80465F8();
     }
     return result;

@@ -499,7 +499,7 @@ sub_8123514:
 	bl sub_8123A50
 	bl sub_8123C98
 	bl sub_8123E58
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
@@ -832,7 +832,7 @@ sub_81237BC:
 	bl sub_8123A50
 	bl sub_8123C98
 	bl sub_8123E58
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81237DC
@@ -1829,7 +1829,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	mov r1, #8
 	mov r2, #6
 	ldr r3, dword_8124058 // =0x306200 
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 	bl sub_81247EC
 	bl bg_CopyTileBlock2At2_6_8x12_81245BC
 
@@ -1855,26 +1855,26 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	mov r1, #0xb
 	mov r2, #3
 	ldr r3, dword_8124050 // =0x30b380 
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 	bl sub_812453C
 
 	ldr r0, off_812405C // =unk_201EC8C 
 	mov r1, #8
 	mov r2, #1
 	ldr r3, dword_8124060 // =0x306220 
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 
 	ldr r0, off_8124064 // =unk_201ECAC 
 	mov r1, #8
 	mov r2, #1
 	ldr r3, dword_8124068 // =0x306230 
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 
 	ldr r0, off_812406C // =unk_201ECCC 
 	mov r1, #8
 	mov r2, #1
 	ldr r3, dword_8124070 // =0x306240 
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 	bl sub_8124870
 
 	ldr r0, off_8124074 // =byte_8123F40
@@ -1925,7 +1925,7 @@ submenu_subchip_dispatch_812407C: // (struct UnkSubMenu* state_a5) -> void
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_812453C
 	bl sub_812475C
@@ -2339,7 +2339,7 @@ locret_812434C:
 submenu_subchip_8124350: // (struct UnkSubMenu* state_a5) -> void
 	push {lr}
 	bl sub_81244EC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 
   // if (IsScreenFadeActive()) return
@@ -3172,7 +3172,7 @@ sub_8124B5C:
 	strb r0, [r5,#1]
 	mov r0, #0
 	strb r0, [r5,#2]
-	bl sub_8125280
+	bl initRefs_buildAndDecompressTable_8125280
 	bl sub_81254FC
 	mov r0, #0xa0
 	str r0, [r5,#0x74]
@@ -4013,7 +4013,7 @@ locret_812527C:
 	thumb_func_end sub_8125254
 
 	thumb_local_start
-sub_8125280:
+initRefs_buildAndDecompressTable_8125280:
 	push {r4-r7,lr}
 	ldr r4, off_8125360 // =unk_2029000 
 	mov r6, #0
@@ -4047,7 +4047,7 @@ loc_812529C:
 	ldr r0, off_8125364 // =byte_8125368
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	pop {r4-r7,pc}
-	thumb_func_end sub_8125280
+	thumb_func_end initRefs_buildAndDecompressTable_8125280
 
 	thumb_local_start
 sub_81252C0:
@@ -4177,7 +4177,7 @@ sub_8125444:
 	push {lr}
 	bl sub_81265DC
 	bl sub_8126630
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldr r0, [r5,#0x70]
 	cmp r0, #0
@@ -6146,7 +6146,7 @@ loc_81262EE:
 	lsl r1, r1, #1
 	ldrh r1, [r0,r1]
 	add r0, r0, r1
-	bl sub_81263D0
+	bl text_decodeCharTiles8_801263D0_81263D0
 	b loc_812631A
 loc_8126304:
 	mov r1, #0
@@ -6221,7 +6221,7 @@ loc_8126374:
 	lsl r1, r1, #1
 	ldrh r1, [r0,r1]
 	add r0, r0, r1
-	bl sub_81263D0
+	bl text_decodeCharTiles8_801263D0_81263D0
 	b loc_81263A0
 loc_812638A:
 	mov r1, #0
@@ -6262,7 +6262,7 @@ off_81263CC:
 	thumb_func_end sub_8126334
 
 	thumb_local_start
-sub_81263D0:
+text_decodeCharTiles8_801263D0_81263D0:
 	push {r4-r7,lr}
 	mov r7, #0
 loc_81263D4:
@@ -6292,7 +6292,7 @@ loc_81263F0:
 	b loc_81263F0
 locret_8126402:
 	pop {r4-r7,pc}
-	thumb_func_end sub_81263D0
+	thumb_func_end text_decodeCharTiles8_801263D0_81263D0
 
 // symdb: Blits a horizontal strip of background tiles, 8 tiles wide, into tile block 2, either from a caller-supplied tile id table or as a plain fill depending on a flag.
 // symdb: void bg_drawTileStripTileBlock2_8126404(u32 j /*r0*/, u32 i /*r1*/, const u16 *tileIds /*r2*/,
@@ -7294,7 +7294,7 @@ sub_8126CC0:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_81278D8
 	ldr r1, [r5,#0x44]
 	mov r2, #0
@@ -7683,7 +7683,7 @@ locret_8126FEC:
 	thumb_local_start
 sub_8126FF0:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_8123360 // () -> bool
 	tst r0, r0
 	bne loc_8127006
@@ -9014,7 +9014,7 @@ off_8127AC8:
 
 // symdb: Email menu state 1 (HandleEmailMenu81279F8's table): run the sub-state handler (off_8127AF8 by byte 2), then the common updates.
 // symdb: (r5 = menu state) -> handler entered with r0 = handler, r1 = sub-state (sub_8127B94 reads r1);
-// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, sub_80465F8
+// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, entity_runAllUpdateHandlers_80465BC, sub_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127ACC.yaml
 	thumb_local_start
 sub_8127ACC:
@@ -9028,7 +9028,7 @@ sub_8127ACC:
 	bl sub_8127F54
 	bl sub_8127FE4
 	bl sub_8128280
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
@@ -9221,7 +9221,7 @@ sub_8127C64:
 	bl sub_8127F54
 	bl sub_8127FE4
 	bl sub_8128280
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8127CB6
@@ -9783,7 +9783,7 @@ loc_81280FC:
 	lsl r6, r6, #1
 	add r6, r6, r7
 	ldr r2, [sp]
-	bl sub_812818C
+	bl npc_checkEntryEventFlagOrHidden_812818C
 loc_8128112:
 	mov r1, r0
 	orr r1, r2
@@ -9852,7 +9852,7 @@ dword_8128188:
 	thumb_func_end sub_81280DC
 
 	thumb_local_start
-sub_812818C:
+npc_checkEntryEventFlagOrHidden_812818C:
 	push {r0,r1,r3,r4,lr}
 	mov r4, r2
 	ldr r0, off_81281B4 // =dword_2027590 
@@ -9879,7 +9879,7 @@ dword_81281B8:
 	.word 0x1D20
 dword_81281BC:
 	.word 0x8000
-	thumb_func_end sub_812818C
+	thumb_func_end npc_checkEntryEventFlagOrHidden_812818C
 
 // symdb: If a flag in the caller's background/map struct is set, redraws one fixed 23x8-tile region of a background layer from the tile id table at unk_2026700; otherwise does nothing.
 // symdb: void bg_ReloadBackgroundRegion_5_3(void)  /* r5 = background/map object (flag at +0x1E), r10 =
@@ -11236,7 +11236,7 @@ loc_8128D7C:
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
 	strb r0, [r5,#1]
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -11276,7 +11276,7 @@ sub_8128DCC:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
@@ -11992,7 +11992,7 @@ loc_81293D6:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 loc_81293E8:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B29C
@@ -12028,7 +12028,7 @@ sub_8129400:
 	ldrb r0, [r1,r0]
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 loc_8129438:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B29C
@@ -12134,7 +12134,7 @@ loc_81294FA:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 loc_8129514:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B288
@@ -12149,7 +12149,7 @@ dword_8129528:
 	thumb_local_start
 sub_812952C:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129548
@@ -12166,7 +12166,7 @@ locret_8129548:
 	thumb_local_start
 sub_812954C:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812956A
@@ -12182,7 +12182,7 @@ locret_812956A:
 	thumb_local_start
 sub_812956C:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129594
@@ -12232,7 +12232,7 @@ off_81295B4:
 	thumb_local_start
 sub_81295D8:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129650
@@ -12485,7 +12485,7 @@ off_81297BC:
 	thumb_local_start
 sub_81297C0:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81297D8
@@ -13488,7 +13488,7 @@ locret_8129EE0:
 sub_8129EE4:
 	push {lr}
 	bl sprite_drawIfFlagSet_812B504
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129F00
@@ -15542,7 +15542,7 @@ off_812AEC4:
 	thumb_local_start
 sub_812AEC8:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812AEDC
@@ -15597,7 +15597,7 @@ sub_812AF14:
 	thumb_local_start
 scene_loadAndStartCutscene_812AF18:
 	push {r4-r7,lr}
-	bl sub_812AF3C
+	bl decomp_buildInitRefTable_812AF3C
 	// initRefs
 	ldr r0, off_812B088 // =off_812B08C
 	bl decompAndCopyData // (u32 *initRefs) -> void
@@ -15610,8 +15610,8 @@ scene_loadAndStartCutscene_812AF18:
 	.balign 4, 0x00
 	thumb_func_end scene_loadAndStartCutscene_812AF18
 
-	thumb_func_start sub_812AF3C
-sub_812AF3C:
+	thumb_func_start decomp_buildInitRefTable_812AF3C
+decomp_buildInitRefTable_812AF3C:
 	push {r4-r7,lr}
 	ldr r4, off_812B084 // =unk_201D020 
 	mov r6, #0
@@ -15643,7 +15643,7 @@ loc_812AF58:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812AF3C
+	thumb_func_end decomp_buildInitRefTable_812AF3C
 
 // symdb: Thunk that decompresses one piece of asset data referenced by off_812B0E8 and copies it to the destination encoded in that reference.
 // symdb: void sub_812AF78(void) // no meaningful inputs; only r0 (the reference pointer) is set
@@ -15965,7 +15965,7 @@ off_812B258:
 sub_812B25C:
 	push {lr}
 	bl sub_812B2C4
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	thumb_func_end sub_812B25C
@@ -16472,7 +16472,7 @@ sub_812B5C8:
 	bl sub_8132290
 	cmp r0, #0x1c
 	bne locret_812B5EC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 locret_812B5EC:
 	pop {r4,pc}

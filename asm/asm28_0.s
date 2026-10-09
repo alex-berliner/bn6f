@@ -1204,7 +1204,7 @@ loc_809A1CC:
 	mov r1, #0x58
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
 	bl sub_809A360
@@ -1234,7 +1234,7 @@ loc_809A208:
 	mov r1, #0x58
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1821,7 +1821,7 @@ loc_809A6BC:
 	mov r1, #0x58 
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
 	bl sub_809A80C
@@ -1851,7 +1851,7 @@ loc_809A6F8:
 	mov r1, #0x58 
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2199,7 +2199,7 @@ loc_809A9A4:
 	mov r1, #0x58 
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	movflag EVENT_F5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -2226,7 +2226,7 @@ loc_809A9D8:
 	mov r1, #0x58 
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2612,7 +2612,7 @@ loc_809ACFA:
 	strb r0, [r5,#4]
 	mov r7, #0
 loc_809AD00:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, r7
 	pop {r4-r7,pc}
@@ -2637,7 +2637,7 @@ loc_809AD22:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 loc_809AD30:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	mov r7, #1
 	mov r0, #0x80

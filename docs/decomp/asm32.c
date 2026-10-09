@@ -12,7 +12,7 @@ int sub_810D970()
         if ( v1 )
             v1 = battle_ResetObjectTimerTo8_80C4072(v1);
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -215,7 +215,7 @@ signed int sub_810DAF0()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -893,7 +893,7 @@ signed int sub_810E34A()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -915,7 +915,7 @@ int sub_810E37A()
     int v0; // r0
 
     v0 = sub_810E0D4();
-    return sub_80165C2(v0);
+    return battle_objectUpdateDispatchPhase_80165C2(v0);
 }
 
 
@@ -1352,7 +1352,7 @@ int sub_810E8DA()
         {
             v3 = *(v0 + 104);
             if ( v3 )
-                result = sub_80165C2(v3);
+                result = battle_objectUpdateDispatchPhase_80165C2(v3);
             else
                 result = (*(&off_810E914 + *(v0 + 10)))();
         }
@@ -1961,7 +1961,7 @@ signed int sub_810F1B6()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -2130,7 +2130,7 @@ int sub_810F402()
             sub_80CBAF2(v4);
         v1 = sub_80E5B6E(*(v0 + 104));
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -2774,7 +2774,7 @@ int sub_810FDF0()
             *(v0 + 104) = 0;
         }
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -3316,7 +3316,7 @@ int sub_8110518()
             *(v0 + 100) = 0;
         }
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -5377,7 +5377,7 @@ signed int sub_8111FAE()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -5927,7 +5927,7 @@ signed int sub_8112600()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -6264,7 +6264,7 @@ int sub_8112A1E()
         if ( v1 )
             v1 = sub_80D1EE8(v1);
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -6931,7 +6931,7 @@ int sub_8113148()
 
 
 // 0x8113162
-void __fastcall sub_8113162(int a1, int a2, int a3)
+void __fastcall battle_initAttackFromPreset_8113162(int a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r5
@@ -6962,7 +6962,7 @@ signed int sub_81131D8()
     int v3; // r3
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 && *(v0 + 36) <= (*(v0 + 38) >> 1) )
     {
         somethingWriteChipParams_80126E4(v2 & 0x1FF);
@@ -7241,7 +7241,7 @@ int sub_811363C()
             v1 = battle_ResetObjectTimerTo8_80C4072(*(v0 + 104));
         }
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -11177,7 +11177,7 @@ void __noreturn sprite_dispatchVariantUpdate_8116B9C()
 
 
 // 0x8116bc0
-int sub_8116BC0()
+int sprite_fallingObjectStepDown_8116BC0()
 {
     int v0; // r5
     int result; // r0
@@ -11204,7 +11204,7 @@ signed int sub_8116BFC()
     unsigned __int8 *v1; // r7
     signed int result; // r0
 
-    sub_8116C40();
+    record_adjustNthSubRecordFieldC_8116C40();
     sub_8116C78();
     result = *v1;
     if ( result == 8 )
@@ -11238,7 +11238,7 @@ int sub_8116C38()
 
 
 // 0x8116c40
-int sub_8116C40()
+int record_adjustNthSubRecordFieldC_8116C40()
 {
     int v0; // r5
     int v1; // r7
@@ -11404,7 +11404,7 @@ int battle_moveSpriteLeftUntilX170_8116D90()
 
 
 // 0x8116db4
-void __noreturn sub_8116DB4()
+void __noreturn petMenu_updateSpriteVisibility_8116DB4()
 {
     Battle *v0; // r5
     signed int v1; // r0
@@ -12401,7 +12401,7 @@ int sub_8117998()
 
 
 // 0x81179ae
-int sub_81179AE()
+int dispatchStateHandler_81179AE()
 {
     char *v0; // r0
 
@@ -12469,7 +12469,7 @@ void __fastcall folder_CountChipsOfCodeOrSkipEntry_8117AA0(signed int result, in
     if ( a2 <= 26 )
     {
         v2 = GetChipCountOfCode(result, a2);
-        sub_8117B94(v2);
+        copyTwoDigitNumberTiles_8117B94(v2);
     }
 }
 
@@ -12509,7 +12509,7 @@ void __fastcall sub_8117B38(int a1, int a2)
     if ( a2 )
     {
         v2 = sub_803D138(a1 + 144, a2);
-        sub_8117B94(v2);
+        copyTwoDigitNumberTiles_8117B94(v2);
     }
 }
 
@@ -12546,7 +12546,7 @@ int sub_8117B5C()
 
 
 // 0x8117b94
-void __fastcall sub_8117B94(int a1)
+void __fastcall copyTwoDigitNumberTiles_8117B94(int a1)
 {
     int v1; // r6
 
@@ -12756,7 +12756,7 @@ void sub_8117DE0()
 
 
 // 0x8117e20
-void __noreturn sub_8117E20()
+void __noreturn battle_refreshObjectSprite_8117E20()
 {
     int v0; // r5
     int v1; // r7
@@ -15488,7 +15488,7 @@ int __fastcall sub_8119EEC(int a1, int a2, int a3, int a4)
     if ( !*(v4 + 14) )
         return sub_8119F88(v5, a2, a3, a4);
     v9 = *(v4 + 14);
-    sub_811A268();
+    menu_getTableEntryForStateIndex_811A268();
     v5 = v9;
     if ( !a3 )
     {
@@ -15744,7 +15744,7 @@ int submenu_compareCursorBytes_811A24C()
 
 
 // 0x811a268
-int sub_811A268()
+int menu_getTableEntryForStateIndex_811A268()
 {
     MenuControl *v0; // r6
     int *v1; // r3
@@ -15774,7 +15774,7 @@ int sub_811A29C()
     int result; // r0
     int v6; // r0
 
-    v0 = sub_811A268();
+    v0 = menu_getTableEntryForStateIndex_811A268();
     if ( v0 && (v2 || !v1) )
     {
         v3 = byte_8124B1C[v0 - dword_140];
@@ -15800,7 +15800,7 @@ int sub_811A2EC()
     int result; // r0
     int v5; // r0
 
-    if ( sub_811A268() && (v1 || !v0) )
+    if ( menu_getTableEntryForStateIndex_811A268() && (v1 || !v0) )
     {
         v2 = v1 + 1;
         v3 = sprite_getUnk0x2c();
@@ -18634,7 +18634,7 @@ signed int timerCountdown_step_811CBA0()
 
 
 // 0x811cbd0
-signed int sub_811CBD0()
+signed int battle_matchTrackedSpriteAndShrink_811CBD0()
 {
     int v0; // r5
     int v1; // r0
@@ -21092,7 +21092,7 @@ void __fastcall pet_ClearMenuData_811EC00(int a1, int a2, int a3, int a4)
 
 
 // 0x811ec10
-void __fastcall sub_811EC10(int a1, int a2, int a3, int a4)
+void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     char v5; // r1
@@ -21166,7 +21166,7 @@ int sub_811EC68()
 int ho_811ED1C()
 {
     (*(jt_811ED3C + ePETMenuData))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     return sub_811F508();
 }
@@ -21400,7 +21400,7 @@ int __noreturn sub_811EFB8()
 
 
 // 0x811f014
-int __noreturn sub_811F014()
+int __noreturn updateMapNameDisplay_811F014()
 {
     int v0; // r10
 
@@ -21411,7 +21411,7 @@ int __noreturn sub_811F014()
 
 
 // 0x811f050
-int __noreturn sub_811F050()
+int __noreturn drawMapNamesScreen_811F050()
 {
     int v0; // r10
 
@@ -21422,7 +21422,7 @@ int __noreturn sub_811F050()
 
 
 // 0x811f08c
-int __fastcall __noreturn sub_811F08C(int a1)
+int __fastcall __noreturn drawCurrentMapName_811F08C(int a1)
 {
     int v1; // r0
 
@@ -21849,7 +21849,7 @@ int __noreturn sub_811F758()
     int v2; // r2
     int v3; // r3
 
-    sub_8005524();
+    mainState_resetGameAndGoto28_8005524();
     v1 = *(v0 + oToolkit_SubmenuPtr);
     *v1 = 24;
     return sub_8129248(v1, 24, v2, v3);
@@ -23691,7 +23691,7 @@ int sub_8120AB8()
 
 
 // 0x8120ae8
-int __fastcall sub_8120AE8(int a1)
+int __fastcall countNaviFolderChipsWithElement_8120AE8(int a1)
 {
     int v1; // r10
     int v2; // r0
@@ -23804,7 +23804,7 @@ int sub_8120BE4()
 
 
 // 0x8120c94
-int __fastcall sub_8120C94(int a1, int a2, int a3, int a4)
+int __fastcall gfx_fillTilemapConsecutiveBanded_8120C94(int a1, int a2, int a3, int a4)
 {
     int v4; // ST00_4
     int v5; // ST0C_4
@@ -23880,7 +23880,7 @@ int __fastcall sub_8120D10(int a1)
     v9 = a1;
     v10 = getPETNaviSelect();
     v2 = GetCurPETNaviStatsByte(v10);
-    if ( sub_8120AE8(1) > v2 || (v3 = GetCurPETNaviStatsByte(v10), result = sub_8120AE8(2), result > v3) )
+    if ( countNaviFolderChipsWithElement_8120AE8(1) > v2 || (v3 = GetCurPETNaviStatsByte(v10), result = countNaviFolderChipsWithElement_8120AE8(2), result > v3) )
     {
         if ( *(*(v1 + oToolkit_Unk2001c04_Ptr) + 5) == 1 )
         {

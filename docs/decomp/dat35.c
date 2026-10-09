@@ -54,7 +54,7 @@ int sub_812F094()
 	int result; // r0
 
 	(*(&off_812F0C0 + *(v0 + 2)))();
-	sub_80465BC();
+	entity_runAllUpdateHandlers_80465BC();
 	sub_80465F8();
 	result = eStruct200BC30_getJumpOffset00();
 	if ( result )

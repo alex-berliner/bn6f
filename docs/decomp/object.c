@@ -2937,7 +2937,7 @@ __int64 sub_800E468()
 
     LODWORD(v4) = battle_dispatchObjectContactHandler_800E498(v0[15]);
     HIDWORD(v4) = v1;
-    sub_800E5AC(v4 + v0[18], v1 + v0[19]);
+    battle_objectCheckPanelByAlliance_800E5AC(v4 + v0[18], v1 + v0[19]);
     if ( v2 )
         result = 0LL;
     else
@@ -2981,7 +2981,7 @@ int __noreturn sub_800E500()
 
 
 // 0x800e5ac
-BOOL __fastcall sub_800E5AC(int a1, int a2)
+BOOL __fastcall battle_objectCheckPanelByAlliance_800E5AC(int a1, int a2)
 {
     int v2; // r5
     int v3; // r6

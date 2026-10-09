@@ -396,7 +396,7 @@ void __noreturn reqBBS_813E534()
 {
     reqBBS_GUI *v0; // r5
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     reqBBS_813E8CC(v0, v0->pagePos);
     reqBBS_drawRequestBBS();
@@ -1370,7 +1370,7 @@ void __noreturn reqBBS_813F8F0()
 {
     int v0; // r5
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     reqBBS_renderRequestNames(*(v0 + 36));
 }

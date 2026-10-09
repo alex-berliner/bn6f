@@ -12,7 +12,7 @@ sub_810D970:
 	beq loc_810D986
 	bl battle_ResetObjectTimerTo8_80C4072
 loc_810D986:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_810D970
 
@@ -220,7 +220,7 @@ sub_810DAF0:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_810DB1C
 	lsl r4, r0, #0x17
@@ -1211,7 +1211,7 @@ sub_810E34A:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_810E376
 	lsl r4, r0, #0x17
@@ -1234,7 +1234,7 @@ loc_810E376:
 sub_810E37A:
 	push {r4-r7,lr}
 	bl sub_810E0D4
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {r4-r7,pc}
 	thumb_func_end sub_810E37A
 
@@ -1849,7 +1849,7 @@ loc_810E904:
 	bl sub_8016EC4
 	b locret_810E90E
 loc_810E90A:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 locret_810E90E:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
@@ -2647,7 +2647,7 @@ byte_810F008:
 off_810F010:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -2851,7 +2851,7 @@ sub_810F1B6:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_810F1E2
 	lsl r4, r0, #0x17
@@ -3079,7 +3079,7 @@ loc_810F428:
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	bl sub_80E5B6E
 loc_810F42E:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_810F402
 
@@ -4190,7 +4190,7 @@ sub_810FDF0:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 loc_810FE0C:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	.balign 4, 0
 dword_810FE14:
@@ -5038,7 +5038,7 @@ loc_8110532:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 loc_8110540:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_8110518
 
@@ -6087,7 +6087,7 @@ byte_8110DB0:
 off_8110DC0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -6664,7 +6664,7 @@ byte_8111328:
 off_8111330:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -7950,7 +7950,7 @@ off_8111DB0:
 off_8111DC0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_8111DF0+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -8195,7 +8195,7 @@ sub_8111FAE:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_8111FDA
 	lsl r4, r0, #0x17
@@ -8403,7 +8403,7 @@ locret_81121EC:
 off_81121F0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -8886,7 +8886,7 @@ sub_8112600:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_811262C
 	lsl r4, r0, #0x17
@@ -9362,7 +9362,7 @@ loc_8112A3A:
 	beq loc_8112A44
 	bl sub_80D1EE8
 loc_8112A44:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_8112A1E
 
@@ -10129,7 +10129,7 @@ ForGunner_8113078:
 	.word battle_ResetObjectActionState_80165B8+1
 	// 0x08 (0x02)
 	// disabling this causes game to freeze on Gunner being hit a deadly hit (that would cause its HP to go to 0)
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	// 0x0C (0x03)
 	.word sub_80166AE+1
 	// 0x10 (0x04)
@@ -10232,7 +10232,7 @@ off_8113144:
 
 off_8113148:
 	.word battle_packObjStateBitToAttrCode_8113154+1
-	.word sub_8113162+1
+	.word battle_initAttackFromPreset_8113162+1
 	.word sub_81131A2+1
 
 // symdb: Reads bit 0 of a battle object's state byte at offset 0x16 and writes an attribute code (0 -> 4, 1 -> 8) to a caller-supplied byte.
@@ -10251,7 +10251,7 @@ battle_packObjStateBitToAttrCode_8113154:
 	thumb_func_end battle_packObjStateBitToAttrCode_8113154
 
 	thumb_local_start
-sub_8113162:
+battle_initAttackFromPreset_8113162:
 	push {lr}
 	ldrb r0, [r5,#0x13]
 	bl battle_pickRandomRowObjectFields_810971A
@@ -10285,7 +10285,7 @@ sub_8113162:
 
 locret_81131A0:
 	pop {pc}
-	thumb_func_end sub_8113162
+	thumb_func_end battle_initAttackFromPreset_8113162
 
 	thumb_local_start
 sub_81131A2:
@@ -10324,7 +10324,7 @@ sub_81131D8:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_8113204
 
@@ -10790,7 +10790,7 @@ sub_811363C:
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	bl battle_ResetObjectTimerTo8_80C4072
 loc_8113654:
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_811363C
 
@@ -11639,7 +11639,7 @@ dword_8113D4C:
 off_8113D50:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -12797,7 +12797,7 @@ off_8114700:
 snakearmAttackTable_8114710:
 	.word RunSpawnAnimationMaybe_8016380+1 // 0x0
 	.word snakearmAI_setMovingThenCall_sub_80165B8_8114FAA+1 // 0x1
-	.word sub_80165C2+1 // 0x2
+	.word battle_objectUpdateDispatchPhase_80165C2+1 // 0x2
 	.word sub_80166AE+1 // 0x3
 	.word sub_8016B02+1 // 0x4
 	.word battleObjectStateDispatcher_8016CE8+1 // 0x5
@@ -14399,7 +14399,7 @@ byte_81154E8:
 off_81154F0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_811555C+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -14915,7 +14915,7 @@ sub_81159B0:
 	thumb_local_start
 sub_81159C4:
 	push {lr}
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	cmp r0, #8
 	bne loc_81159DA
@@ -15377,7 +15377,7 @@ byte_8115DD0:
 off_8115DE0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_81162AE+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -16895,13 +16895,13 @@ sprite_dispatchVariantUpdate_8116B9C:
 off_8116BB0:
 	.word off_8116BB4
 off_8116BB4:
-	.word sub_8116BC0+1
+	.word sprite_fallingObjectStepDown_8116BC0+1
 	.word sub_8116BFC+1
 	.word sprite_scrollStepAndCullOffscreen_8116C14+1
 	thumb_func_end sprite_dispatchVariantUpdate_8116B9C
 
 	thumb_local_start
-sub_8116BC0:
+sprite_fallingObjectStepDown_8116BC0:
 	push {lr}
 	mov r0, #0
 	mov r1, #8
@@ -16925,7 +16925,7 @@ off_8116BE8:
 byte_8116BEC:
 	.byte 0x20, 0x0, 0x30, 0x0, 0x40, 0x0, 0x50, 0x0, 0x60, 0x0, 0x70
 	.byte 0x0, 0x80, 0x0, 0x90, 0x0
-	thumb_func_end sub_8116BC0
+	thumb_func_end sprite_fallingObjectStepDown_8116BC0
 
 // symdb: Runs two phase-update helpers on some state object, then when a shared counter byte reaches 8 also stores 8 into the object at +9 (a phase/done flag?).
 // symdb: void sub_8116BFC(r4 = ?, r5 = state object ptr, r6 = ?, r7 = ptr to counter byte); returns r0 =
@@ -16934,7 +16934,7 @@ byte_8116BEC:
 	thumb_local_start
 sub_8116BFC:
 	push {lr}
-	bl sub_8116C40
+	bl record_adjustNthSubRecordFieldC_8116C40
 	bl sub_8116C78
 	ldrb r0, [r7]
 	cmp r0, #8
@@ -16979,7 +16979,7 @@ sub_8116C38:
 	thumb_func_end sub_8116C38
 
 	thumb_local_start
-sub_8116C40:
+record_adjustNthSubRecordFieldC_8116C40:
 	push {r4-r6,lr}
 	bl record_getNthSubRecordPtr_8116CD4
 	mov r4, r0
@@ -17011,7 +17011,7 @@ loc_8116C72:
 	strh r0, [r4,#0xc]
 	pop {r4-r6,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8116C40
+	thumb_func_end record_adjustNthSubRecordFieldC_8116C40
 
 	thumb_local_start
 sub_8116C78:
@@ -17162,7 +17162,7 @@ off_8116D80:
 	.word off_8116D84
 off_8116D84:
 	.word battle_moveSpriteLeftUntilX170_8116D90+1
-	.word sub_8116DB4+1
+	.word petMenu_updateSpriteVisibility_8116DB4+1
 	.word battle_stepForwardAnimWait_8116DEC+1
 	thumb_func_end battle_objectRunBehaviorStep_8116D6C
 
@@ -17191,7 +17191,7 @@ locret_8116DB0:
 	thumb_func_end battle_moveSpriteLeftUntilX170_8116D90
 
 	thumb_local_start
-sub_8116DB4:
+petMenu_updateSpriteVisibility_8116DB4:
 	push {r7,lr}
 	mov r0, #0
 	ldr r7, off_8116DE8 // =ePETMenuData
@@ -17220,7 +17220,7 @@ locret_8116DE6:
 	.balign 4, 0
 off_8116DE8:
 	.word ePETMenuData
-	thumb_func_end sub_8116DB4
+	thumb_func_end petMenu_updateSpriteVisibility_8116DB4
 
 // symdb: Advances an object's "step forward" animation (pose 0x16) and marks its state as finished (state 8) once 0x11A frames have elapsed.
 // symdb: void battle_stepForwardAnimWait(r5 = object state ptr); out r0 = frames run by
@@ -18778,8 +18778,8 @@ sub_8117998:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8117998
 
-	thumb_func_start sub_81179AE
-sub_81179AE:
+	thumb_func_start dispatchStateHandler_81179AE
+dispatchStateHandler_81179AE:
 	push {r4-r7,lr}
 	ldr r7, off_81179DC // =byte_2011C10
 	bl sub_8047D84
@@ -18801,7 +18801,7 @@ off_81179CC:
 	.word sub_8117AB4+1
 off_81179DC:
 	.word byte_2011C10
-	thumb_func_end sub_81179AE
+	thumb_func_end dispatchStateHandler_81179AE
 
 	thumb_local_start
 sub_81179E0:
@@ -18923,7 +18923,7 @@ folder_CountChipsOfCodeOrSkipEntry_8117AA0:
 	cmp r1, #0x1a
 	bgt loc_8117AB0
 	bl GetChipCountOfCode
-	bl sub_8117B94
+	bl copyTwoDigitNumberTiles_8117B94
 	pop {pc}
 loc_8117AB0:
 	add r6, #0x40
@@ -18994,7 +18994,7 @@ sub_8117B38:
 	beq locret_8117B48
 	add r0, #0x90
 	bl sub_803D138
-	bl sub_8117B94
+	bl copyTwoDigitNumberTiles_8117B94
 locret_8117B48:
 	pop {pc}
 	thumb_func_end sub_8117B38
@@ -19041,7 +19041,7 @@ off_8117B90:
 	thumb_func_end sub_8117B5C
 
 	thumb_local_start
-sub_8117B94:
+copyTwoDigitNumberTiles_8117B94:
 	push {r7,lr}
 	mov r1, #0xa
 	svc 6
@@ -19067,7 +19067,7 @@ loc_8117BAE:
 	.balign 4, 0
 off_8117BC4:
 	.word unk_2031204
-	thumb_func_end sub_8117B94
+	thumb_func_end copyTwoDigitNumberTiles_8117B94
 
 	thumb_func_start sub_8117BC8
 sub_8117BC8:
@@ -19383,11 +19383,11 @@ locret_8117DFA:
 off_8117DFC:
 	.word off_8117E00
 off_8117E00:
-	.word sub_8117E20+1
-	.word sub_8117E20+1
-	.word sub_8117E20+1
+	.word battle_refreshObjectSprite_8117E20+1
+	.word battle_refreshObjectSprite_8117E20+1
+	.word battle_refreshObjectSprite_8117E20+1
 	.word sub_8117E60+1
-	.word sub_8117E20+1
+	.word battle_refreshObjectSprite_8117E20+1
 	.word sub_8117E60+1
 	.word sub_8117E60+1
 off_8117E1C:
@@ -19395,7 +19395,7 @@ off_8117E1C:
 	thumb_func_end sub_8117DE0
 
 	thumb_local_start
-sub_8117E20:
+battle_refreshObjectSprite_8117E20:
 	push {lr}
 	ldrb r0, [r7,#0xd]
 	ldrb r1, [r5,#3]
@@ -19423,7 +19423,7 @@ loc_8117E42:
 loc_8117E5A:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_8117E20
+	thumb_func_end battle_refreshObjectSprite_8117E20
 
 	thumb_local_start
 sub_8117E60:
@@ -23584,7 +23584,7 @@ sub_8119EEC:
 	tst r0, r0
 	beq loc_8119F12
 	push {r0}
-	bl sub_811A268
+	bl menu_getTableEntryForStateIndex_811A268
 	pop {r0}
 	tst r2, r2
 	bne loc_8119F06
@@ -24098,7 +24098,7 @@ off_811A264:
 	thumb_func_end submenu_compareCursorBytes_811A24C
 
 	thumb_local_start
-sub_811A268:
+menu_getTableEntryForStateIndex_811A268:
 	push {r4-r7,lr}
 	ldr r3, off_811A290 // =dword_201FC20
 
@@ -24129,12 +24129,12 @@ off_811A294:
 	.word sSubmenu
 off_811A298:
 	.word unk_2037780
-	thumb_func_end sub_811A268
+	thumb_func_end menu_getTableEntryForStateIndex_811A268
 
 	thumb_local_start
 sub_811A29C:
 	push {r4-r7,lr}
-	bl sub_811A268
+	bl menu_getTableEntryForStateIndex_811A268
 	tst r0, r0
 	beq loc_811A2CA
 	tst r2, r2
@@ -24174,7 +24174,7 @@ byte_811A2E4:
 	thumb_local_start
 sub_811A2EC:
 	push {r4-r7,lr}
-	bl sub_811A268
+	bl menu_getTableEntryForStateIndex_811A268
 	tst r0, r0
 	beq loc_811A316
 	tst r2, r2
@@ -28872,7 +28872,7 @@ off_811CAC0:
 off_811CAC4:
 	.word sub_811CAEC+1
 	.word timerCountdown_step_811CBA0+1
-	.word sub_811CBD0+1
+	.word battle_matchTrackedSpriteAndShrink_811CBD0+1
 	.word sub_811CC02+1
 	.word battle_initObjectSpriteAndStartAnimation_811CC0C+1
 	.word sub_811CC26+1
@@ -29012,7 +29012,7 @@ loc_811CBCC:
 	thumb_func_end timerCountdown_step_811CBA0
 
 	thumb_local_start
-sub_811CBD0:
+battle_matchTrackedSpriteAndShrink_811CBD0:
 	push {lr}
 	bl sub_811CC68
 	mov r2, #4
@@ -29033,7 +29033,7 @@ sub_811CBD0:
 	bl counter_addU32_r5Plus0C_811CC60
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_811CBD0
+	thumb_func_end battle_matchTrackedSpriteAndShrink_811CBD0
 
 // symdb: Runs the action implemented by sub_811CC4E and then reports success by returning 1.
 // symdb: void sub_811CC02(r5 in /* context passed through to sub_811CC4E */, lr); out r0 = 1 (success),
@@ -32831,8 +32831,8 @@ pet_ClearMenuData_811EC00:
 	.balign 4, 0
 	thumb_func_end pet_ClearMenuData_811EC00
 
-	thumb_func_start sub_811EC10
-sub_811EC10:
+	thumb_func_start pet_initMenu_811EC10
+pet_initMenu_811EC10:
 	push {r4,lr}
 	mov r0, r10
 	// memBlock
@@ -32864,20 +32864,20 @@ off_811EC48:
 	.word byte_811EBDA
 off_811EC4C:
 	.word ePETMenuData
-	thumb_func_end sub_811EC10
+	thumb_func_end pet_initMenu_811EC10
 
 // symdb: Top-level per-frame updater that runs the subsystem's five update steps in order and returns.
 // symdb: void runFrameUpdateSequence(void); // no meaningful inputs or outputs; r0-r3/lr and nzcv on
-// symdb: return are just whatever the final callee (sub_811F08C) leaves
+// symdb: return are just whatever the final callee (drawCurrentMapName_811F08C) leaves
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811EC50.yaml
 	thumb_func_start sub_811EC50
 sub_811EC50:
 	push {lr}
 	bl sub_811EC68
 	bl sub_811EFB8
-	bl sub_811F014
-	bl sub_811F050
-	bl sub_811F08C
+	bl updateMapNameDisplay_811F014
+	bl drawMapNamesScreen_811F050
+	bl drawCurrentMapName_811F08C
 	pop {pc}
 	thumb_func_end sub_811EC50
 
@@ -32965,7 +32965,7 @@ ho_811ED1C:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_811F508 // () -> void
 	pop {r5,pc}
@@ -33327,7 +33327,7 @@ off_811F010:
 	thumb_func_end sub_811EFB8
 
 	thumb_local_start
-sub_811F014:
+updateMapNameDisplay_811F014:
 	push {r4-r7,lr}
 	bl sub_803D06C
 	mov r6, r10
@@ -33355,10 +33355,10 @@ dword_811F048:
 	.word 0x6015240
 off_811F04C:
 	.word byte_200CF20
-	thumb_func_end sub_811F014
+	thumb_func_end updateMapNameDisplay_811F014
 
 	thumb_local_start
-sub_811F050:
+drawMapNamesScreen_811F050:
 	push {r4-r7,lr}
 	bl sub_803D0F4
 	mov r6, r10
@@ -33386,10 +33386,10 @@ dword_811F084:
 	.word 0x6015400
 off_811F088:
 	.word byte_200D220
-	thumb_func_end sub_811F050
+	thumb_func_end drawMapNamesScreen_811F050
 
 	thumb_local_start
-sub_811F08C:
+drawCurrentMapName_811F08C:
 	push {r4-r7,lr}
 	bl sub_811F290
 	mov r1, r0
@@ -33418,7 +33418,7 @@ off_811F0C0:
 	.word TextScriptMapNames
 off_811F0C4:
 	.word dword_86A5D60
-	thumb_func_end sub_811F08C
+	thumb_func_end drawCurrentMapName_811F08C
 
 	thumb_local_start
 sub_811F0C8:
@@ -34147,7 +34147,7 @@ next_exitToMap_811F728:
 	thumb_func_start sub_811F758
 sub_811F758:
 	push {lr}
-	bl sub_8005524
+	bl mainState_resetGameAndGoto28_8005524
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_SubmenuPtr]
 	mov r1, #0x18
@@ -37001,7 +37001,7 @@ loc_8120ACE:
 	thumb_func_end sub_8120AB8
 
 	thumb_local_start
-sub_8120AE8:
+countNaviFolderChipsWithElement_8120AE8:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -37032,7 +37032,7 @@ loc_8120B1A:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8120AE8
+	thumb_func_end countNaviFolderChipsWithElement_8120AE8
 
 	thumb_local_start
 sub_8120B28:
@@ -37204,8 +37204,8 @@ word_8120C8E:
 word_8120C90:
 	.hword 0x2220
 	.balign 4, 0x00
-	thumb_func_start sub_8120C94
-sub_8120C94:
+	thumb_func_start gfx_fillTilemapConsecutiveBanded_8120C94
+gfx_fillTilemapConsecutiveBanded_8120C94:
 	push {r4-r7,lr}
 	push {r0-r3}
 	lsl r1, r1, #1
@@ -37233,7 +37233,7 @@ loc_8120CAE:
 	cmp r2, r6
 	blt loc_8120CAA
 	pop {r4-r7,pc}
-	thumb_func_end sub_8120C94
+	thumb_func_end gfx_fillTilemapConsecutiveBanded_8120C94
 
 	thumb_func_start sub_8120CC8
 sub_8120CC8:
@@ -37256,7 +37256,7 @@ locret_8120CD6:
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 	mov r4, r0
 	mov r0, #1
-	bl sub_8120AE8
+	bl countNaviFolderChipsWithElement_8120AE8
 	cmp r0, r4
 	bgt loc_8120D08
 	mov r0, #0
@@ -37264,7 +37264,7 @@ locret_8120CD6:
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 	mov r4, r0
 	mov r0, #2
-	bl sub_8120AE8
+	bl countNaviFolderChipsWithElement_8120AE8
 	cmp r0, r4
 	bgt loc_8120D08
 	mov r7, #0
@@ -37286,7 +37286,7 @@ sub_8120D10:
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 	mov r4, r0
 	mov r0, #1
-	bl sub_8120AE8
+	bl countNaviFolderChipsWithElement_8120AE8
 	cmp r0, r4
 	bgt loc_8120D46
 	ldr r0, [sp,#4]
@@ -37294,7 +37294,7 @@ sub_8120D10:
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 	mov r4, r0
 	mov r0, #2
-	bl sub_8120AE8
+	bl countNaviFolderChipsWithElement_8120AE8
 	cmp r0, r4
 	ble loc_8120DA2
 loc_8120D46:

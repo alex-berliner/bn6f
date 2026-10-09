@@ -104,7 +104,7 @@ off_8130104:
 	thumb_local_start
 sub_8130108:
 	push {lr}
-	bl sub_812AF3C
+	bl decomp_buildInitRefTable_812AF3C
 	bl loadDecompressedAsset_812AF78
 	bl sub_812AFA4
 	// initRefs
@@ -1158,7 +1158,7 @@ sub_8130904:
 	mov r1, #8
 	tst r0, r1
 	bne loc_8130920
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8
 loc_8130920:
 	bl eStruct200BC30_getJumpOffset00
@@ -2563,7 +2563,7 @@ locret_81313FC:
 	thumb_local_start
 sub_8131400:
 	push {lr}
-	bl sub_812AF3C
+	bl decomp_buildInitRefTable_812AF3C
 	bl loadDecompressedAsset_812AF78
 	// initRefs
 	ldr r0, off_8131414 // =byte_8131418
@@ -6123,7 +6123,7 @@ loc_81330B2:
 	ldr r3, [r4,#4]
 	ldrb r1, [r4,#8]
 	ldrb r2, [r4,#9]
-	bl sub_8120C94
+	bl gfx_fillTilemapConsecutiveBanded_8120C94
 	add r6, #4
 	cmp r6, #0x1c
 	blt loc_81330B2
@@ -6399,7 +6399,7 @@ sub_81333A0:
 	bl sub_81340FC
 	bl sub_8134490
 
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldrb r0, [r5,#2]
 	cmp r0, #0xc
@@ -7169,7 +7169,7 @@ off_81339B4:
 sub_81339BC:
 	push {lr}
 	bl sub_81340FC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8133A2A
@@ -7302,7 +7302,7 @@ loc_8133AC6:
 	strb r0, [r5,#2]
 loc_8133AE2:
 	bl sub_81340FC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
@@ -7349,7 +7349,7 @@ loc_8133B2C:
 	bl sub_813175C
 loc_8133B4C:
 	bl sub_81340FC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
@@ -7377,7 +7377,7 @@ loc_8133B8A:
 	bl chatbox_runScript_803FD9C_on_eTextScript2028A20
 loc_8133B8E:
 	bl sub_81340FC
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
@@ -11093,7 +11093,7 @@ sub_81357C4:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
@@ -11549,7 +11549,7 @@ locret_8135B52:
 	thumb_local_start
 sub_8135B54:
 	push {r4,lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8135B90
@@ -13908,7 +13908,7 @@ sub_8136D8C:
 	ldr r0, [r0,#0x34]
 	mov r1, #0x28 
 	strb r1, [r0]
-	bl sub_8005524
+	bl mainState_resetGameAndGoto28_8005524
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	.word 0x11C
@@ -15510,7 +15510,7 @@ sub_8137964:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81380E0
 	mov r0, #0
@@ -15640,7 +15640,7 @@ off_8137A78:
 	thumb_local_start
 sub_8137A7C:
 	push {lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_81380E0
 	bl IsScreenFadeActive // () -> zf
@@ -16715,7 +16715,7 @@ loc_8138354:
 	sub r7, #1
 	bne loc_8138354
 loc_8138368:
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_8138848
 	pop {r7,pc}

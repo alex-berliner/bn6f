@@ -377,7 +377,7 @@ dword_810C6EC::
 off_810C6F0::
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word sub_810C720+1
-	.word sub_80165C2+1
+	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -532,7 +532,7 @@ sub_810C820::
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_810C84C
 	lsl r4, r0, #0x17
@@ -1195,7 +1195,7 @@ sub_810CDEA::
 loc_810CE10::
 	bl object_removePanelReserve
 loc_810CE14::
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_810CDEA
 
@@ -1352,7 +1352,7 @@ sub_810CF4A::
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
-	bl sub_800ED90
+	bl battle_getSelectedChipForUse_800ED90
 	tst r3, r3
 	beq loc_810CF8E
 	lsl r4, r0, #0x17
@@ -1469,7 +1469,7 @@ sub_810D118::
 	beq loc_810D12A
 	bl sub_80E5410
 loc_810D12A::
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_810D118
 
@@ -1986,7 +1986,7 @@ sub_810D590::
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
 loc_810D5A0::
-	bl sub_80165C2
+	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
 	thumb_func_end sub_810D590
 

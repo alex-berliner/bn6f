@@ -621,7 +621,7 @@ loc_813E52A:
 	thumb_local_start
 reqBBS_813E534:
 	push {r5,lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldrh r0, [r5,#0x24]
 	bl reqBBS_813E8CC
@@ -2564,7 +2564,7 @@ loc_813F8E6:
 	thumb_local_start
 reqBBS_813F8F0:
 	push {r5,lr}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	ldrh r0, [r5,#0x24]
 	bl reqBBS_renderRequestNames

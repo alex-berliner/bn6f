@@ -744,8 +744,8 @@ locret_80465BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80465A0
 
-	thumb_func_start sub_80465BC
-sub_80465BC:
+	thumb_func_start entity_runAllUpdateHandlers_80465BC
+entity_runAllUpdateHandlers_80465BC:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -779,7 +779,7 @@ loc_80465E2:
 	.balign 4, 0
 off_80465F4:
 	.word off_804646C
-	thumb_func_end sub_80465BC
+	thumb_func_end entity_runAllUpdateHandlers_80465BC
 
 // () -> void
 	thumb_func_start sub_80465F8
@@ -1589,17 +1589,17 @@ sub_8046D4C:
 	ldr r2, off_8046DD0 // =byte_201AE00 
 	bl sub_8048DF8
 	bl copyData_804747C
-	bl uncomp_80471F8
+	bl text_decompressMessageAssets_80471F8
 	mov r0, #0
 	bl sub_8047B88
 	strh r0, [r5,#0x12]
-	bl sub_804754C
+	bl chatbox_uploadWindowTileGfx_804754C
 	bl copy_table_80469F0_to_202F800_8047CEC
 	mov r0, #0
 	ldr r1, off_8046DCC // =byte_2019A00 
 	bl sub_8047594
 	bl sub_804758C
-	bl sub_8047800
+	bl background_LoadAreaTiles_8047800
 	// a1
 	ldr r0, off_8046DD8 // =byte_8046B8C
 	bl sub_80465A0 // (void *a1) -> void
@@ -2092,9 +2092,9 @@ sub_8047134:
 	mov r5, #0x14
 	bl call_sub_3005EBA
 	pop {r5}
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
-	bl sub_81179AE
+	bl dispatchStateHandler_81179AE
 	bl sub_80473E6
 	bne loc_8047174
 	ldrh r0, [r5,#0xe]
@@ -2117,7 +2117,7 @@ loc_8047174:
 	bl sub_8047834
 loc_8047188:
 	bl sub_804758C
-	bl sub_8047800
+	bl background_LoadAreaTiles_8047800
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_RenderInfoPtr]
 	ldrh r6, [r7,#0x10]
@@ -2173,7 +2173,7 @@ off_80471F4:
 	thumb_func_end sub_8047134
 
 	thumb_local_start
-uncomp_80471F8:
+text_decompressMessageAssets_80471F8:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x1c]
 	// src
@@ -2203,7 +2203,7 @@ off_8047224:
 	.word CompText873ECC8
 off_8047228:
 	.word eDecompressedTextArchive202DA00
-	thumb_func_end uncomp_80471F8
+	thumb_func_end text_decompressMessageAssets_80471F8
 
 	thumb_local_start
 sub_804722C:
@@ -2575,7 +2575,7 @@ off_8047494:
 	thumb_func_end copyData_804747C
 
 	thumb_local_start
-sub_804754C:
+chatbox_uploadWindowTileGfx_804754C:
 	push {r5,lr}
 	ldr r0, off_8047578 // =byte_2017204 
 	mov r1, r10
@@ -2606,7 +2606,7 @@ dword_8047584:
 	.word 0x6002000
 off_8047588:
 	.word dword_86A5D60
-	thumb_func_end sub_804754C
+	thumb_func_end chatbox_uploadWindowTileGfx_804754C
 
 // symdb: One-instruction trampoline that tail-calls sub_80478D4 and returns whatever it returns.
 // symdb: void wrapper_sub_80478D4(void) — no registers set up or inspected; all callee-visible state is
@@ -2943,7 +2943,7 @@ dword_80477FC:
 	thumb_func_end sub_8047790
 
 	thumb_local_start
-sub_8047800:
+background_LoadAreaTiles_8047800:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrb r0, [r7,#8]
@@ -2973,7 +2973,7 @@ off_804782C:
 	.word eTileIds2018A04
 off_8047830:
 	.word byte_202F800
-	thumb_func_end sub_8047800
+	thumb_func_end background_LoadAreaTiles_8047800
 
 	thumb_local_start
 sub_8047834:
@@ -4138,8 +4138,8 @@ locret_8048C96:
 	pop {pc}
 	thumb_func_end shop_resetStockTable_8048C68
 
-	thumb_func_start copy_8048C98
-copy_8048C98:
+	thumb_func_start shop_copyItemTableToShopData_8048C98
+shop_copyItemTableToShopData_8048C98:
 	push {lr}
 	ldr r0, off_8048CC4 // =byte_8047DA0 
 	mov r1, r10
@@ -4170,7 +4170,7 @@ off_8048CC4:
 	.word byte_8047DA0
 dword_8048CC8:
 	.word 0xE80
-	thumb_func_end copy_8048C98
+	thumb_func_end shop_copyItemTableToShopData_8048C98
 
 	thumb_local_start
 sub_8048CCC:
@@ -6814,7 +6814,7 @@ sub_804A17A:
 	mov r0, #0
 	mov r1, r5
 	add r1, #0
-	bl sub_804A1FC
+	bl textScript_copyFolderNameToWide_804A1FC
 	mov r0, r5
 	add r0, #0
 	mov r1, #0xe6
@@ -6830,7 +6830,7 @@ sub_804A17A:
 	mov r0, #1
 	mov r1, r5
 	add r1, #0x20 
-	bl sub_804A1FC
+	bl textScript_copyFolderNameToWide_804A1FC
 	mov r0, r5
 	add r0, #0x20 
 	mov r1, #0xe6
@@ -6854,7 +6854,7 @@ sub_804A1D0:
 	mov r0, r7
 	mov r1, r5
 	add r1, #0x40 
-	bl sub_804A1FC
+	bl textScript_copyFolderNameToWide_804A1FC
 	mov r0, r5
 	add r0, #0x40 
 	mov r1, #0xe6
@@ -6863,7 +6863,7 @@ sub_804A1D0:
 	thumb_func_end sub_804A1D0
 
 	thumb_local_start
-sub_804A1FC:
+textScript_copyFolderNameToWide_804A1FC:
 	push {r4-r7,lr}
 	ldr r4, off_804A22C // =TextScriptFolderNames
 	lsl r0, r0, #1
@@ -6895,7 +6895,7 @@ locret_804A228:
 	.balign 4, 0
 off_804A22C:
 	.word TextScriptFolderNames
-	thumb_func_end sub_804A1FC
+	thumb_func_end textScript_copyFolderNameToWide_804A1FC
 
 	thumb_local_start
 sub_804A230:
@@ -6997,7 +6997,7 @@ ChipTraderControl:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl sub_804AFB8
 	bl sub_804AFE4

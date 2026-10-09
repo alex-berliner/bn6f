@@ -206,7 +206,7 @@ LABEL_15:
                 goto LABEL_15;
             v3 = (TextScriptBytecodeJumptable[v2 - 0xE5])(0);
             if ( v3 != 2 )
-                chatbox_8040C9C();
+                chatbox_advanceNextState_8040C9C();
         }
 LABEL_16:
         cb->pScriptCursor = v1;
@@ -266,21 +266,21 @@ signed int chatbox_interpreteAndDrawDialogChar_1()
             {
                 v5 = cb->unk_7C;
                 sub_3006F8C(0, v1[1] + 228);
-                chatbox_8040C9C();
+                chatbox_advanceNextState_8040C9C();
                 v1 += 2;
             }
             else
             {
                 v4 = cb->unk_7C;
                 sub_3006F8C(0, v3);
-                chatbox_8040C9C();
+                chatbox_advanceNextState_8040C9C();
                 ++v1;
             }
         }
         else
         {
             (TextScriptBytecodeJumptable[v2 - 0xE5])();
-            chatbox_8040C9C();
+            chatbox_advanceNextState_8040C9C();
         }
         cb->pScriptCursor = v1;
         v6 = cb->flags_3E & 1;
@@ -998,7 +998,7 @@ void chatbox_8040C44()
 
 
 // 0x8040c9c
-void chatbox_8040C9C()
+void chatbox_advanceNextState_8040C9C()
 {
     ChatBoxPropreties *cb; // r5
     u8 v1; // r0

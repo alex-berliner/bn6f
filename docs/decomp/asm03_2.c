@@ -428,7 +428,7 @@ void __cdecl sub_80465A0(void *a1)
 
 
 // 0x80465bc
-int sub_80465BC()
+int entity_runAllUpdateHandlers_80465BC()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -941,10 +941,10 @@ void __noreturn sub_8046D4C()
 
     v1 = sub_8048DF8(*(v0 + 4), byte_2019A00, &byte_201AE00);
     copyData_804747C(v1, v2, v3, v4);
-    uncomp_80471F8();
+    text_decompressMessageAssets_80471F8();
     v8 = sub_8047B88(0, v5, v6, v7);
     *(v0 + 18) = v8;
-    sub_804754C();
+    chatbox_uploadWindowTileGfx_804754C();
 }
 
 
@@ -1070,9 +1070,9 @@ void __noreturn sub_8047134()
     int v6; // [sp+0h] [bp-18h]
 
     call_sub_3005EBA(0, 0, 2, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
-    v0 = sub_81179AE();
+    v0 = dispatchStateHandler_81179AE();
     sub_80473E6(v0, v1, v2);
     if ( v5 && !*(v6 + 14) )
     {
@@ -1088,7 +1088,7 @@ void __noreturn sub_8047134()
 
 
 // 0x80471f8
-void uncomp_80471F8()
+void text_decompressMessageAssets_80471F8()
 {
     int v0; // r5
 
@@ -1274,7 +1274,7 @@ void __fastcall copyData_804747C(int a1, int a2, int a3, int a4)
 
 
 // 0x804754c
-int __noreturn sub_804754C()
+int __noreturn chatbox_uploadWindowTileGfx_804754C()
 {
     int v0; // r5
     int v1; // r10
@@ -1438,7 +1438,7 @@ void __fastcall __noreturn sub_8047790(int a1, int a2, int a3)
 
 
 // 0x8047800
-void __noreturn sub_8047800()
+void __noreturn background_LoadAreaTiles_8047800()
 {
     int v0; // r5
 
@@ -2099,7 +2099,7 @@ void *__fastcall shop_resetStockTable_8048C68()
 
 
 // 0x8048c98
-char *copy_8048C98()
+char *shop_copyItemTableToShopData_8048C98()
 {
     int v0; // r10
     char *result; // r0
@@ -4094,10 +4094,10 @@ void *__fastcall sub_804A17A()
 
     ZeroFillByWord(&unk_2001850, 96);
     HalfwordFill(&unk_2001850, 0x20u, 58853, 58624);
-    sub_804A1FC(0, &unk_2001850);
+    textScript_copyFolderNameToWide_804A1FC(0, &unk_2001850);
     byte_2001860 = -26;
     HalfwordFill(&algn_2001861[15], 0x20u, 58853, 58624);
-    sub_804A1FC(1, &algn_2001861[15]);
+    textScript_copyFolderNameToWide_804A1FC(1, &algn_2001861[15]);
     result = &algn_2001861[15];
     byte_2001880 = -26;
     return result;
@@ -4112,7 +4112,7 @@ char *__fastcall sub_804A1D0(int a1)
 
     v1 = a1;
     HalfwordFill(&algn_2001881[15], 0x20u, 58853, 58624);
-    sub_804A1FC(v1, &algn_2001881[15]);
+    textScript_copyFolderNameToWide_804A1FC(v1, &algn_2001881[15]);
     result = &algn_2001881[15];
     byte_20018A0 = -26;
     return result;
@@ -4120,7 +4120,7 @@ char *__fastcall sub_804A1D0(int a1)
 
 
 // 0x804a1fc
-signed int __fastcall sub_804A1FC(int a1, _BYTE *a2)
+signed int __fastcall textScript_copyFolderNameToWide_804A1FC(int a1, _BYTE *a2)
 {
     unsigned __int8 *v2; // r4
     signed int result; // r0
@@ -4194,7 +4194,7 @@ int __noreturn ChipTraderControl()
     int v0; // r8
 
     (*(&JumpOffset804A33C + sSubmenu.unk_00))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_804AFB8();
     sub_804AFE4();

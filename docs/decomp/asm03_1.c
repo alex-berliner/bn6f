@@ -760,7 +760,7 @@ int sub_80343B0()
     *(v0 + 6) = v5;
     (loc_8000AC4)(*(v2 + 1), palette_3001960, 32);
     CopyBackgroundTiles(0, 0, 1, eTileIds2017A04, 32, dword_14);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -1326,7 +1326,7 @@ signed int cutscene_TryStartNotification_8035084()
     IsNotSlipRunningAndNotInCutscene();
     if ( v0 )
         return 1;
-    v1 = sub_8035756();
+    v1 = claimNextPendingRequest_8035756();
     if ( v0 )
         return 1;
     StartCutscene(CutsceneScriptNotification_8098BB8, v1, v2, v3);
@@ -1853,7 +1853,7 @@ void timer_tickCountdownTable_8035738()
 
 
 // 0x8035756
-int sub_8035756()
+int claimNextPendingRequest_8035756()
 {
     int *v0; // r5
     signed int v1; // r4
@@ -5343,7 +5343,7 @@ int cb_8038AD0()
     (*(&off_8038AF4 + byte_2011E40))();
     sub_8046818();
     sub_8046854();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -6027,7 +6027,7 @@ int sub_8039658()
     int v0; // r5
 
     (*(&off_8039674 + *(v0 + 1)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -11131,7 +11131,7 @@ signed int __fastcall GiveItem(signed int a1, int a2)
     v11 = v6;
     if ( v9 == 113 )
         reloadCurNaviStatBoosts_813c3ac();
-    sub_803CF3C(v11, v8);
+    pet_addCurNaviStat0x3ECapped_803CF3C(v11, v8);
     sub_803CFB0();
     return v11;
 }
@@ -11288,7 +11288,7 @@ int sub_803CF10()
 
 
 // 0x803cf3c
-int __fastcall sub_803CF3C(int a1, int a2)
+int __fastcall pet_addCurNaviStat0x3ECapped_803CF3C(int a1, int a2)
 {
     int v2; // r4
     int v3; // r7
@@ -14344,7 +14344,7 @@ int notZero_eByte200AD04()
 
 
 // 0x803f530
-int sub_803F530()
+int tickCountdownGate_803F530()
 {
     int result; // r0
     bool v1; // zf
@@ -14549,7 +14549,7 @@ signed int sub_803F79E()
     int v5; // r4
     int v6; // [sp-4h] [bp-24h]
 
-    sub_803FAB4();
+    save_BackupToGamePakWithRetry_803FAB4();
     if ( v1 )
     {
         do
@@ -14860,7 +14860,7 @@ signed int sub_803FA42()
 
 
 // 0x803fab4
-BOOL sub_803FAB4()
+BOOL save_BackupToGamePakWithRetry_803FAB4()
 {
     int v0; // r7
     signed int v1; // r6

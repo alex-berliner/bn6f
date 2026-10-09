@@ -308,7 +308,7 @@ signed int sub_809A1B4()
     }
     *(v0 + 4) = v2;
     sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_809A360(*(v0 + 116));
     TestEventFlagFromImmediate(0, 245);
@@ -333,7 +333,7 @@ signed int sub_809A1FC()
         v1 = 0;
     *(v0 + 4) = v1;
     sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(8);
     if ( v2 )
@@ -715,7 +715,7 @@ signed int sub_809A6A4()
     }
     *(v0 + 4) = v2;
     sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_809A80C(*(v0 + 116));
     TestEventFlagFromImmediate(0, 245);
@@ -740,7 +740,7 @@ signed int sub_809A6EC()
         v1 = 0;
     *(v0 + 4) = v1;
     sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(8);
     if ( v2 )
@@ -960,7 +960,7 @@ signed int sub_809A98C()
     }
     *(v0 + 4) = v2;
     sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     TestEventFlagFromImmediate(0, 245);
     if ( v4 )
@@ -984,7 +984,7 @@ signed int sub_809A9CC()
         v1 = 0;
     *(v0 + 4) = v1;
     sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(128);
     if ( v2 )
@@ -1244,7 +1244,7 @@ signed int sub_809ACD0()
         *(v0 + 4) = 96;
         v4 = 0;
     }
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     return v4;
 }
@@ -1267,7 +1267,7 @@ signed int sub_809AD0C()
         *(v0 + 4) = v2;
         sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     }
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     v3 = 1;
     chatbox_mask_eFlags2009F38(128);

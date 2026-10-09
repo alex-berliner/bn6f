@@ -85,7 +85,7 @@ int sub_8130084()
 // 0x8130108
 void sub_8130108()
 {
-	sub_812AF3C();
+	decomp_buildInitRefTable_812AF3C();
 	loadDecompressedAsset_812AF78();
 	sub_812AFA4();
 	decompAndCopyData(byte_8130124);
@@ -1688,7 +1688,7 @@ void sub_81313C0()
 // 0x8131400
 void sub_8131400()
 {
-    sub_812AF3C();
+    decomp_buildInitRefTable_812AF3C();
     loadDecompressedAsset_812AF78();
     decompAndCopyData(byte_8131418);
 }
@@ -3689,7 +3689,7 @@ int sub_81330AC()
     v0 = 0;
     do
     {
-        result = sub_8120C94(*off_81330CC[v0], *(off_81330CC[v0] + 8), *(off_81330CC[v0] + 9), off_81330CC[v0][1]);
+        result = gfx_fillTilemapConsecutiveBanded_8120C94(*off_81330CC[v0], *(off_81330CC[v0] + 8), *(off_81330CC[v0] + 9), off_81330CC[v0][1]);
         ++v0;
     }
     while ( v0 < 7 );
@@ -4426,7 +4426,7 @@ int __fastcall sub_81339BC(int a1)
     signed int v5; // r6
 
     sub_81340FC();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     v2 = IsPaletteFadeActive();
     if ( !v3 )
@@ -4527,7 +4527,7 @@ int __fastcall sub_8133A68(int a1)
         }
     }
     sub_81340FC();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
@@ -4563,7 +4563,7 @@ int __fastcall sub_8133B18(int a1)
         }
     }
     sub_81340FC();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
@@ -4592,7 +4592,7 @@ int __fastcall sub_8133B74(int a1)
         chatbox_runScript_803FD9C_on_eTextScript2028A20(v2);
     }
     sub_81340FC();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
@@ -6708,7 +6708,7 @@ int sub_81357C4()
     int v0; // r5
 
     (*(&off_81357E0 + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     return sub_80465F8();
 }
 
@@ -7121,7 +7121,7 @@ int sub_8135B54()
     int v5; // r1
     int v6; // r2
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -8637,7 +8637,7 @@ _BYTE *sub_8136D8C()
     decompAndCopyData(&off_8136EC8);
     pet_prepareMenuOnReturn_811F6C0(v1, v2, v3, v4);
     **(v0 + 52) = 40;
-    return sub_8005524();
+    return mainState_resetGameAndGoto28_8005524();
 }
 
 
@@ -9868,7 +9868,7 @@ void sub_8137964()
     int v0; // r5
 
     (*(&off_8137984 + *(v0 + 2)))();
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81380E0();
     JUMPOUT(locret_813797E);
@@ -9986,7 +9986,7 @@ signed int sub_8137A7C()
     int v1; // r10
     char v2; // zf
 
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81380E0();
     IsPaletteFadeActive();
@@ -10587,7 +10587,7 @@ int sub_8138348()
         --v1;
     }
     while ( v1 );
-    sub_80465BC();
+    entity_runAllUpdateHandlers_80465BC();
     v2 = sub_80465F8();
     return sub_8138848(v2, v3, v4, v5);
 }

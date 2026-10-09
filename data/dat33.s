@@ -26,7 +26,7 @@ sub_812C2C0::
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
@@ -2096,7 +2096,7 @@ off_812D30C::
 	thumb_local_start
 sub_812D310::
 	push {lr}
-	bl sub_812AF3C
+	bl decomp_buildInitRefTable_812AF3C
 	bl loadDecompressedAsset_812AF78
 	bl textScript_loadAndRunEmbeddedArchive_812AF84
 	// initRefs

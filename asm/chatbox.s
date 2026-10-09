@@ -425,7 +425,7 @@ loop_803FF56:
 			
 			cmp r0, #2
 			beq loc_803FF7A
-				bl chatbox_8040C9C
+				bl chatbox_advanceNextState_8040C9C
 loc_803FF7A:
 	b fi_803FFD0
 if_803FF7C:
@@ -567,7 +567,7 @@ loc_8040070:
 	ldr r1, [r2,r1]
 	mov lr, pc
 	bx r1
-	bl chatbox_8040C9C
+	bl chatbox_advanceNextState_8040C9C
 loc_8040086:
 	b loc_80400B8
 loc_8040088:
@@ -581,7 +581,7 @@ loc_8040088:
 	ldr r3, off_8040138 // =sub_3006F8C+1
 	mov lr, pc
 	bx r3
-	bl chatbox_8040C9C
+	bl chatbox_advanceNextState_8040C9C
 	add r4, #1
 	b loc_80400B8
 loc_80400A4:
@@ -592,7 +592,7 @@ loc_80400A4:
 	ldr r3, off_8040138 // =sub_3006F8C+1
 	mov lr, pc
 	bx r3
-	bl chatbox_8040C9C
+	bl chatbox_advanceNextState_8040C9C
 	add r4, #2
 loc_80400B8:
 	str r4, [r5,#oChatbox_TextScriptCursorPtr]
@@ -2225,7 +2225,7 @@ off_8040C98:
 	thumb_func_end chatbox_8040C44
 
 	thumb_local_start
-chatbox_8040C9C:
+chatbox_advanceNextState_8040C9C:
 	push {r0,r1,lr}
 	mov r0, #0
 	ldr r1, off_8040CC8 // =0x1f0
@@ -2254,7 +2254,7 @@ off_8040CC8:
 	.word 0x1F0
 off_8040CCC:
 	.word 0x1F1
-	thumb_func_end chatbox_8040C9C
+	thumb_func_end chatbox_advanceNextState_8040C9C
 
 	thumb_local_start
 chatbox_8040CD0:

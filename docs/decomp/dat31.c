@@ -359,7 +359,7 @@ signed int sub_810C820()
     int v4; // r4
 
     v1 = 0;
-    v2 = sub_800ED90(v0);
+    v2 = battle_getSelectedChipForUse_800ED90(v0);
     if ( v3 )
     {
         v4 = v2 & 0x1FF;
@@ -866,7 +866,7 @@ int sub_810D118()
         if ( v1 )
             v1 = sub_80E5410(v1);
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 
@@ -1307,7 +1307,7 @@ int sub_810D590()
         v1 = 0;
         *(v0 + 96) = 0;
     }
-    return sub_80165C2(v1);
+    return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
 

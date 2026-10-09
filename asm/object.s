@@ -5059,7 +5059,7 @@ sub_800E468:
 	add r0, r0, r3
 	ldrb r3, [r5,#oBattleObject_PanelY]
 	add r1, r1, r3
-	bl sub_800E5AC
+	bl battle_objectCheckPanelByAlliance_800E5AC
 	bne loc_800E48E
 	mov r0, #0
 	mov r1, #0
@@ -5210,8 +5210,8 @@ byte_800E58C:
 	.byte 0x0, 0xFF, 0x6, 0x0, 0x1, 0x6, 0x0, 0xFF, 0x1, 0x0, 0x1, 0x1, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
 
-	thumb_func_start sub_800E5AC
-sub_800E5AC:
+	thumb_func_start battle_objectCheckPanelByAlliance_800E5AC
+battle_objectCheckPanelByAlliance_800E5AC:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -5238,7 +5238,7 @@ loc_800E5C6:
 loc_800E5DE:
 	mov r0, #0
 	pop {r6,r7,pc}
-	thumb_func_end sub_800E5AC
+	thumb_func_end battle_objectCheckPanelByAlliance_800E5AC
 
 // symdb: Returns whether the current object's flags allow it to move or act (1 = free, 0 = blocked).
 // symdb: bool object_canMove(void); // reads object ptr from r4, returns r0 = 1/0, sets NZ flags,

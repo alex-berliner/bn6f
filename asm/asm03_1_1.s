@@ -312,7 +312,7 @@ cb_8038AD0:
 	bx r0
 	bl sub_8046818
 	bl sub_8046854
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
@@ -1403,7 +1403,7 @@ sub_8039658:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -2848,7 +2848,7 @@ loc_803A194:
 	add r1, r1, r3
 	mov r2, r4
 	bl sub_803BBA4
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A186
@@ -2869,7 +2869,7 @@ loc_803A1C4:
 	add r6, #1
 	cmp r6, #4
 	blt loc_803A1C4
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 locret_803A1D6:
 	pop {r4-r7,pc}
@@ -8358,7 +8358,7 @@ loc_803CDE4:
 	mov r4, r0
 	mov r0, r3
 	push {r0}
-	bl sub_803CF3C
+	bl pet_addCurNaviStat0x3ECapped_803CF3C
 	bl sub_803CFB0
 	pop {r0}
 	pop {r4-r7,pc}
@@ -8548,7 +8548,7 @@ loc_803CF30:
 	thumb_func_end sub_803CF10
 
 	thumb_local_start
-sub_803CF3C:
+pet_addCurNaviStat0x3ECapped_803CF3C:
 	push {r4-r7,lr}
 	cmp r4, #0x70
 	bne locret_803CFAE
@@ -8576,7 +8576,7 @@ loc_803CF5A:
 	.balign 4, 0
 off_803CF70:
 	.word 0x3E8
-	thumb_func_end sub_803CF3C
+	thumb_func_end pet_addCurNaviStat0x3ECapped_803CF3C
 
 	thumb_local_start
 sub_803CF74:
@@ -13111,8 +13111,8 @@ notZero_eByte200AD04:
 	.byte 0, 0
 	thumb_func_end notZero_eByte200AD04
 
-	thumb_func_start sub_803F530
-sub_803F530:
+	thumb_func_start tickCountdownGate_803F530
+tickCountdownGate_803F530:
 	push {r4,r6,lr}
 	mov r6, #0
 	bl notZero_eByte200AD04
@@ -13137,7 +13137,7 @@ loc_803F558:
 	.balign 4, 0
 off_803F55C:
 	.word word_200AD04
-	thumb_func_end sub_803F530
+	thumb_func_end tickCountdownGate_803F530
 
 	thumb_func_start sub_803F560
 sub_803F560:
@@ -13455,7 +13455,7 @@ sub_803F79E:
 	push {r1-r7,lr}
 	mov r4, #1
 loc_803F7A2:
-	bl sub_803FAB4
+	bl save_BackupToGamePakWithRetry_803FAB4
 	bne loc_803F808
 	tst r4, r4
 	bne loc_803F7C2
@@ -13887,7 +13887,7 @@ off_803FAB0:
 	thumb_func_end sub_803FA42
 
 	thumb_local_start
-sub_803FAB4:
+save_BackupToGamePakWithRetry_803FAB4:
 	push {r4-r7,lr}
 	mov r7, #0
 	mov r6, #0
@@ -13917,7 +13917,7 @@ loc_803FADC:
 loc_803FAEA:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803FAB4
+	thumb_func_end save_BackupToGamePakWithRetry_803FAB4
 
 // symdb: Fills the 0x80-byte buffer at dword_20067C0 with 32 random 32-bit words from the hardware RNG.
 // symdb: void sub_803FAEE(void)

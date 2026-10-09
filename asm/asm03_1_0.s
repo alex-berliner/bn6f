@@ -1480,7 +1480,7 @@ loc_80343D0:
 	mov r4, #0x20
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
-	bl sub_80465BC
+	bl entity_runAllUpdateHandlers_80465BC
 	bl sub_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -2574,7 +2574,7 @@ cutscene_TryStartNotification_8035084:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_803509E
-	bl sub_8035756
+	bl claimNextPendingRequest_8035756
 	beq loc_803509E
 	mov r1, r0
 	ldr r0, off_80350A4 // =CutsceneScriptNotification_8098BB8 // CutsceneScript
@@ -3403,7 +3403,7 @@ locret_8035754:
 	thumb_func_end timer_tickCountdownTable_8035738
 
 	thumb_local_start
-sub_8035756:
+claimNextPendingRequest_8035756:
 	push {r4-r7,lr}
 	ldr r5, off_8035784 // =dword_2000DC0
 	mov r4, #0
@@ -3434,7 +3434,7 @@ off_8035784:
 	.word dword_2000DC0
 off_8035788:
 	.word 0x100
-	thumb_func_end sub_8035756
+	thumb_func_end claimNextPendingRequest_8035756
 
 	thumb_func_start sub_803578C
 sub_803578C:
