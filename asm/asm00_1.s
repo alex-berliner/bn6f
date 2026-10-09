@@ -4350,7 +4350,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	pop {pc}
 .endif1:
 
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl InitializeOverworldMapObjectStructs
@@ -4683,7 +4683,7 @@ sub_80053E4: // (self: * GameState $r5) -> ()
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
 	mov r1, #8
 	strb r1, [r0]
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4781,7 +4781,7 @@ sub_8005524:
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4817,7 +4817,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4856,7 +4856,7 @@ sub_80055CE: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4895,7 +4895,7 @@ sub_8005642: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4935,7 +4935,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -4974,7 +4974,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5013,7 +5013,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5076,7 +5076,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl sub_8004702
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5885,7 +5885,7 @@ sub_8005D88:
 	str r0, [r5,#oGameState_Ptr_20]
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5906,7 +5906,7 @@ sub_8005DBE:
 	str r0, [r5,#oGameState_Ptr_20]
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5926,7 +5926,7 @@ sub_8005DF0:
 	str r0, [r5,#oGameState_Ptr_20]
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5946,7 +5946,7 @@ sub_8005E22:
 	str r0, [r5,#oGameState_Ptr_20]
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -5966,7 +5966,7 @@ dead_8005E54:
 	str r0, [r5,#oGameState_Ptr_20]
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl zeroFill_80024A2
@@ -6141,8 +6141,8 @@ warp_getCurrentWarpEntry_8005f32:
 	mov pc, lr
 	thumb_func_end warp_getCurrentWarpEntry_8005f32
 
-	thumb_func_start sub_8005F40
-sub_8005F40:
+	thumb_func_start resetAllGraphicsState_8005F40
+resetAllGraphicsState_8005F40:
 	push {r4-r7,lr}
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -6155,7 +6155,7 @@ sub_8005F40:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_8005F40
+	thumb_func_end resetAllGraphicsState_8005F40
 
 // symdb: Runs one setup/step routine (sub_802FDB0) and then wipes the work memory that routine used via cleareMemory_802FF2C.
 // symdb: void sub_8005F6C(void); // callers pass r3-r7 as live inputs, r4-r7 preserved; returns v, r2, r3
@@ -8639,7 +8639,7 @@ loc_8007208:
 	mov r0, #1
 	strb r0, [r5,#oBattleState_Unk_0a]
 
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl sub_8005F78
 
 	bl GetBattleMode
@@ -9709,7 +9709,7 @@ loc_80078EC:
 	b locret_8007936
 loc_8007900:
 	mov r0, r4
-	bl dispatch_801FEEE
+	bl eStruct200BC30_dispatchStateHandler_801FEEE
 
 	mov r0, #8
 	and r4, r0
@@ -9959,7 +9959,7 @@ loc_8007A66:
 	b loc_8007B10
 loc_8007A6C:
 	mov r4, r0
-	bl dispatch_801FEEE
+	bl eStruct200BC30_dispatchStateHandler_801FEEE
 	mov r0, #8
 	and r0, r4
 	bne loc_8007B10

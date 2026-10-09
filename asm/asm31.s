@@ -31242,12 +31242,12 @@ loc_80C69D8:
 off_80C69FC:
 	.word off_80C6A00
 off_80C6A00:
-	.word sub_80C6A08+1
+	.word battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08+1
 	.word sub_80C6A34+1
 	thumb_func_end sub_80C69AC
 
 	thumb_local_start
-sub_80C6A08:
+battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -31267,7 +31267,7 @@ sub_80C6A08:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C6A32:
 	pop {pc}
-	thumb_func_end sub_80C6A08
+	thumb_func_end battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08
 
 	thumb_local_start
 sub_80C6A34:
@@ -31530,7 +31530,7 @@ off_80C6C54:
 	.word off_80C6C58
 off_80C6C58:
 	.word sub_80C6C6A+1
-	.word sub_80C6CBA+1
+	.word battleObject_dyingTickDespawn_80C6CBA+1
 loc_80C6C60:
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -31583,7 +31583,7 @@ locret_80C6CB8:
 	thumb_func_end sub_80C6C6A
 
 	thumb_local_start
-sub_80C6CBA:
+battleObject_dyingTickDespawn_80C6CBA:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #0xc
@@ -31606,7 +31606,7 @@ loc_80C6CD6:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C6CE2:
 	pop {pc}
-	thumb_func_end sub_80C6CBA
+	thumb_func_end battleObject_dyingTickDespawn_80C6CBA
 
 // symdb: Spawn wrapper that creates a type-3 battle object of kind 0x16 and runs the basic battle-object initializer on it.
 // symdb: (u32 arg0, u32 arg1, u32 arg2) -> new battle object pointer (spawn routine delivers it in r5; on
@@ -38340,7 +38340,7 @@ sub_80C9F18:
 	b loc_80C9F54
 loc_80C9F36:
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	bne loc_80C9F52
 	ldrb r1, [r5,#oBattleObject_Alliance]
@@ -73182,7 +73182,7 @@ off_80DA8DC:
 	.word sub_80DA8EC+1
 	.word sub_80DA908+1
 	.word sub_80DA956+1
-	.word sub_80DA974+1
+	.word battle_objectLingerThenDestroyPhase_80DA974+1
 	thumb_func_end sub_80DA886
 
 	thumb_local_start
@@ -73263,7 +73263,7 @@ sub_80DA956:
 	thumb_func_end sub_80DA956
 
 	thumb_local_start
-sub_80DA974:
+battle_objectLingerThenDestroyPhase_80DA974:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -73288,7 +73288,7 @@ loc_80DA994:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80DA9A0:
 	pop {pc}
-	thumb_func_end sub_80DA974
+	thumb_func_end battle_objectLingerThenDestroyPhase_80DA974
 
 	thumb_local_start
 sub_80DA9A2:
@@ -109640,7 +109640,7 @@ off_80EBC1C:
 	.word off_80EBC20
 off_80EBC20:
 	.word sub_80EBC28+1
-	.word sub_80EBD3C+1
+	.word aiAttack_windupTick_80EBD3C+1
 	thumb_func_end aiAttack_dispatchStateHandler_80EBC0E
 
 	thumb_local_start
@@ -109771,7 +109771,7 @@ byte_80EBD34:
 	thumb_func_end sub_80EBC28
 
 	thumb_local_start
-sub_80EBD3C:
+aiAttack_windupTick_80EBD3C:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -109794,7 +109794,7 @@ loc_80EBD5A:
 	bl object_exitAttackState
 locret_80EBD66:
 	pop {pc}
-	thumb_func_end sub_80EBD3C
+	thumb_func_end aiAttack_windupTick_80EBD3C
 
 	thumb_local_start
 sub_80EBD68:
@@ -170247,8 +170247,8 @@ sub_8109708:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8109708
 
-	thumb_func_start sub_810971A
-sub_810971A:
+	thumb_func_start battle_pickRandomRowObjectFields_810971A
+battle_pickRandomRowObjectFields_810971A:
 	push {r7,lr}
 	sub sp, sp, #8
 	ldr r3, off_8109780 // =off_8109784 
@@ -170269,7 +170269,7 @@ sub_810971A:
 loc_8109742:
 	add sp, sp, #8
 	pop {r7,pc}
-	thumb_func_end sub_810971A
+	thumb_func_end battle_pickRandomRowObjectFields_810971A
 
 	thumb_local_start
 CheckIfOpposingAllianceInObjectRow:
@@ -170854,7 +170854,7 @@ byte_8109BFC:
 	thumb_func_end sub_8109BC0
 
 	thumb_local_start
-sub_8109CBC:
+battle_attackTimerTick_8109CBC:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -170875,7 +170875,7 @@ loc_8109CE0:
 	bl object_exitAttackState
 locret_8109CE4:
 	pop {pc}
-	thumb_func_end sub_8109CBC
+	thumb_func_end battle_attackTimerTick_8109CBC
 
 	thumb_local_start
 sub_8109CE6:
@@ -171197,7 +171197,7 @@ ForMettaur_8109EF4:
 	// triggered immediately start of battle following CurAction 0x01
 	.word sub_8109FD6+1
 	// 0x24 (0x09)
-	.word sub_8109CBC+1
+	.word battle_attackTimerTick_8109CBC+1
 	// 0x28 (0x0A)
 	// setting this to sub_8109FD6+1 (0x08) causes mettaurs not to move up/down to player and always attack taking turns between mettaurs
 	.word sub_8109CE6+1

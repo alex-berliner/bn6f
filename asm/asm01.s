@@ -153,8 +153,8 @@ eStruct203F7D8_getUnk01:
 	mov pc, lr
 	thumb_func_end eStruct203F7D8_getUnk01
 
-	thumb_func_start dispatch_801FEEE
-dispatch_801FEEE:
+	thumb_func_start eStruct200BC30_dispatchStateHandler_801FEEE
+eStruct200BC30_dispatchStateHandler_801FEEE:
 	push {r4-r7,lr}
 
 	mov r7, r0
@@ -176,7 +176,7 @@ off_801FF08:
 	.word sub_801FFD6+1
 	.word sub_801FFD6+1
 	.word sub_801FF18+1
-	thumb_func_end dispatch_801FEEE
+	thumb_func_end eStruct200BC30_dispatchStateHandler_801FEEE
 
 	thumb_local_start
 sub_801FF18:

@@ -6926,7 +6926,7 @@ sub_811152C:
 loc_8111540:
 	ldrb r0, [r5,#oBattleObject_PanelY]
 	add r0, #1
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	tst r0, r0
 	bne loc_8111564
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -6951,11 +6951,11 @@ loc_8111564:
 loc_8111578:
 	ldrb r0, [r5,#oBattleObject_PanelY]
 	sub r0, #1
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	bne loc_81115A0
 	ldrb r0, [r5,#oBattleObject_PanelY]
 	add r0, #1
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	bne loc_81115B8
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -6999,7 +6999,7 @@ loc_81115D0:
 loc_81115E4:
 	ldrb r0, [r5,#oBattleObject_PanelY]
 	sub r0, #1
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	tst r0, r0
 	bne loc_8111608
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -8804,7 +8804,7 @@ locret_811252A:
 sub_811252C:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_8112548
 	ldr r4, off_8112580 // =off_8112584
@@ -10254,7 +10254,7 @@ battle_packObjStateBitToAttrCode_8113154:
 sub_8113162:
 	push {lr}
 	ldrb r0, [r5,#0x13]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq locret_81131A0
 	ldrb r1, [r4,#0x16]
@@ -14475,7 +14475,7 @@ sub_8115598:
 	tst r0, r1
 	bne loc_81155EC
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_81155EC
 	ldrb r2, [r4,#oAIData_Version_16]
@@ -16566,7 +16566,7 @@ off_8116934:
 	.word off_8116938
 off_8116938:
 	.word sub_8116944+1
-	.word sub_81169B0+1
+	.word petMenu_updateObject_81169B0+1
 	.word sub_8116A3C+1
 	thumb_func_end sub_8116924
 
@@ -16608,7 +16608,7 @@ loc_811698A:
 	strb r0, [r5,#4]
 	mov r0, #6
 	strb r0, [r5,#0xc]
-	bl sub_81169B0
+	bl petMenu_updateObject_81169B0
 	pop {pc}
 	.balign 4, 0
 dword_81169A4:
@@ -16620,7 +16620,7 @@ dword_81169AC:
 	thumb_func_end sub_8116944
 
 	thumb_local_start
-sub_81169B0:
+petMenu_updateObject_81169B0:
 	push {r7,lr}
 	ldr r7, off_81169C4 // =ePETMenuData
 	ldr r0, off_81169C8 // =off_81169CC
@@ -16636,13 +16636,13 @@ off_81169C4:
 off_81169C8:
 	.word off_81169CC
 off_81169CC:
-	.word sub_81169D8+1
+	.word npc_tickDisappearTimer_81169D8+1
 	.word battle_reloadObjectSprite_8116A04+1
 	.word sub_8116A28+1
-	thumb_func_end sub_81169B0
+	thumb_func_end petMenu_updateObject_81169B0
 
 	thumb_local_start
-sub_81169D8:
+npc_tickDisappearTimer_81169D8:
 	push {lr}
 	mov r0, #0x10
 	ldrsh r1, [r7,r0]
@@ -16663,7 +16663,7 @@ sub_81169D8:
 locret_8116A00:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81169D8
+	thumb_func_end npc_tickDisappearTimer_81169D8
 
 // symdb: Checks a battle object's sprite frame parameters and, when they flag a needed animation (re)load, restarts animation 0, hides the shadow, runs follow-up setup, and sets the object's state byte to 8.
 // symdb: void battle_reloadObjectSprite_8116A04(r4=?, r5=battleObject, r6=?, r7=?) — reads r4-r7 as live
@@ -17264,7 +17264,7 @@ off_8116E20:
 	.word off_8116E24
 off_8116E24:
 	.word sub_8116E30+1
-	.word sub_8116F34+1
+	.word battle_objectUpdateByKind_8116F34+1
 	.word sub_8116FD4+1
 	thumb_func_end stateDispatcher_3states_8116E10
 
@@ -17320,7 +17320,7 @@ loc_8116E3C:
 	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_8116F34
+	bl battle_objectUpdateByKind_8116F34
 	pop {pc}
 	.balign 4, 0
 off_8116EAC:
@@ -17376,7 +17376,7 @@ byte_8116F2D:
 	thumb_func_end sub_8116E30
 
 	thumb_local_start
-sub_8116F34:
+battle_objectUpdateByKind_8116F34:
 	push {lr}
 	ldr r0, off_8116F48 // =jt_8116F4C
 	ldrb r1, [r5,#4]
@@ -17395,7 +17395,7 @@ jt_8116F4C:
 	.word sub_8116F9C+1
 	.word sub_8116F60+1
 	.word battle_objectUpdateWithFieldC_8116F8C+1
-	thumb_func_end sub_8116F34
+	thumb_func_end battle_objectUpdateByKind_8116F34
 
 	thumb_local_start
 sub_8116F60:
@@ -17563,8 +17563,8 @@ off_8117080:
 	.word sSubmenu
 	thumb_func_end sub_8116FDC
 
-	thumb_func_start sub_8117084
-sub_8117084:
+	thumb_func_start sprite_setStructHalfwordPairOnThree_8117084
+sprite_setStructHalfwordPairOnThree_8117084:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r0, [sp]
@@ -17586,7 +17586,7 @@ loc_81170A6:
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8117084
+	thumb_func_end sprite_setStructHalfwordPairOnThree_8117084
 
 	thumb_local_start
 sub_81170AC:
@@ -18782,7 +18782,7 @@ off_81179C8:
 	.word off_81179CC
 off_81179CC:
 	.word sub_81179E0+1
-	.word sub_81179E4+1
+	.word keyItemMenu_renderDescription_81179E4+1
 	.word sub_8117A14+1
 	.word sub_8117AB4+1
 off_81179DC:
@@ -18796,7 +18796,7 @@ sub_81179E0:
 	thumb_func_end sub_81179E0
 
 	thumb_local_start
-sub_81179E4:
+keyItemMenu_renderDescription_81179E4:
 	push {r4-r7,lr}
 	ldrh r0, [r4,#2]
 	bl CheckKeyItem
@@ -18820,7 +18820,7 @@ dword_8117A0C:
 	.word 0x6013520
 off_8117A10:
 	.word dword_86A5D60
-	thumb_func_end sub_81179E4
+	thumb_func_end keyItemMenu_renderDescription_81179E4
 
 	thumb_local_start
 sub_8117A14:
@@ -22535,7 +22535,7 @@ off_81196DC:
 	.word sub_8119730+1
 	.word sub_811974C+1
 	.word npc_stepChainSetState0x10_811975C+1
-	.word sub_811976C+1
+	.word sprite_stepZoomShrinkOut_811976C+1
 	thumb_func_end sub_81196C4
 
 	thumb_local_start
@@ -22609,7 +22609,7 @@ sub_811974C:
 
 // symdb: State-machine step for the object in r5 that runs one sub-step, sets the object's state byte to 0x10, then runs a second sub-step.
 // symdb: void sub_811975C(void); /* r5 = object/state pointer (read only); r4-r9 preserved; r0 and NZCV
-// symdb: returned from sub_811976C */
+// symdb: returned from sprite_stepZoomShrinkOut_811976C */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_stepChainSetState0x10_811975C.yaml
 	thumb_local_start
 npc_stepChainSetState0x10_811975C:
@@ -22617,12 +22617,12 @@ npc_stepChainSetState0x10_811975C:
 	bl sub_8119438
 	mov r0, #0x10
 	strb r0, [r5,#9]
-	bl sub_811976C
+	bl sprite_stepZoomShrinkOut_811976C
 	pop {pc}
 	thumb_func_end npc_stepChainSetState0x10_811975C
 
 	thumb_local_start
-sub_811976C:
+sprite_stepZoomShrinkOut_811976C:
 	push {lr}
 	ldrb r0, [r5]
 	mov r1, #2
@@ -22647,7 +22647,7 @@ loc_811978E:
 locret_8119798:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811976C
+	thumb_func_end sprite_stepZoomShrinkOut_811976C
 
 // symdb: Trampoline that dispatches an object's state handler, calling the routine selected by the object's state byte (r5+9) from a jump table and passing the handler its own address and the state index.
 // symdb: void npc_dispatchStateHandler(Object *obj /* r5 */); clobbers everything, since the handler's
@@ -22727,8 +22727,8 @@ sub_8119804:
 	pop {pc}
 	thumb_func_end sub_8119804
 
-	thumb_func_start sub_811980C
-sub_811980C:
+	thumb_func_start setFieldsInThreeTableEntries_811980C
+setFieldsInThreeTableEntries_811980C:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -22754,7 +22754,7 @@ loc_8119830:
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811980C
+	thumb_func_end setFieldsInThreeTableEntries_811980C
 
 	thumb_func_start sub_811983C
 sub_811983C:
@@ -22772,8 +22772,8 @@ loc_811984E:
 	.balign 4, 0x00
 	thumb_func_end sub_811983C
 
-	thumb_func_start sub_8119854
-sub_8119854:
+	thumb_func_start sprite_setPositionForIdRange3_8119854
+sprite_setPositionForIdRange3_8119854:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -22796,7 +22796,7 @@ loc_8119874:
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8119854
+	thumb_func_end sprite_setPositionForIdRange3_8119854
 
 	thumb_local_start
 sub_8119880:
@@ -23478,7 +23478,7 @@ off_8119E50:
 	.word off_8119E54
 off_8119E54:
 	.word sub_8119E60+1
-	.word sub_811A0A4+1
+	.word object_runTypeUpdateThenSpriteUpdate_811A0A4+1
 	.word sub_811A1EC+1
 	thumb_func_end entity_RunStateHandler_8119E40
 
@@ -23543,7 +23543,7 @@ loc_8119E76:
 	strh r0, [r5,#0x10]
 	strb r0, [r5,#0xd]
 	strh r0, [r5,#0x1a]
-	bl sub_811A0A4
+	bl object_runTypeUpdateThenSpriteUpdate_811A0A4
 	pop {pc}
 	thumb_func_end sub_8119E60
 
@@ -23752,7 +23752,7 @@ off_811A0A0:
 	thumb_func_end sub_8119F88
 
 	thumb_local_start
-sub_811A0A4:
+object_runTypeUpdateThenSpriteUpdate_811A0A4:
 	push {lr}
 	ldr r0, off_811A0B8 // =off_811A0BC
 	ldrb r1, [r5,#4]
@@ -23770,7 +23770,7 @@ off_811A0BC:
 	.word object_runUpdateDispatch_811A190+1
 	.word sub_811A1E8+1
 	.word sub_811A0CC+1
-	thumb_func_end sub_811A0A4
+	thumb_func_end object_runTypeUpdateThenSpriteUpdate_811A0A4
 
 	thumb_local_start
 sub_811A0CC:
@@ -23789,7 +23789,7 @@ off_811A0E0:
 	.word battle_initScalableSpriteObject_811A11C+1
 	.word npc_ClearBusyFlagAndResetState_811A138+1
 	.word stateObj_advanceToState0x10_811A148+1
-	.word sub_811A160+1
+	.word sprite_scaleShrinkStep_811A160+1
 	thumb_func_end sub_811A0CC
 
 	thumb_local_start
@@ -23854,7 +23854,7 @@ npc_ClearBusyFlagAndResetState_811A138:
 
 // symdb: Lazily initializes a state object, switches it to state 0x10, and steps it once.
 // symdb: void stateObj_advanceToState0x10(void); /* r5 = state object pointer, preserved; returns
-// symdb: whatever sub_811A160 leaves in r0 */
+// symdb: whatever sprite_scaleShrinkStep_811A160 leaves in r0 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stateObj_advanceToState0x10_811A148.yaml
 	thumb_local_start
 stateObj_advanceToState0x10_811A148:
@@ -23866,13 +23866,13 @@ stateObj_advanceToState0x10_811A148:
 loc_811A154:
 	mov r0, #0x10
 	strb r0, [r5,#9]
-	bl sub_811A160
+	bl sprite_scaleShrinkStep_811A160
 	pop {pc}
 	.byte 0, 0
 	thumb_func_end stateObj_advanceToState0x10_811A148
 
 	thumb_local_start
-sub_811A160:
+sprite_scaleShrinkStep_811A160:
 	push {lr}
 	ldrb r0, [r5]
 	mov r1, #2
@@ -23897,7 +23897,7 @@ loc_811A182:
 locret_811A18C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_811A160
+	thumb_func_end sprite_scaleShrinkStep_811A160
 
 // symdb: Per-frame update dispatcher for one object — calls the object's type-specific handler chosen by the byte at object+9, then runs two shared update passes.
 // symdb: void object_runUpdateDispatch(Object* r5 /* in only */); no meaningful return value (r0/r1 flow
@@ -23968,8 +23968,8 @@ sub_811A1EC:
 	pop {pc}
 	thumb_func_end sub_811A1EC
 
-	thumb_func_start sub_811A1F4
-sub_811A1F4:
+	thumb_func_start setSlotFieldsFromStartTo3_811A1F4
+setSlotFieldsFromStartTo3_811A1F4:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -23993,10 +23993,10 @@ loc_811A216:
 	blt loc_811A202
 	add sp, sp, #0x10
 	pop {r4,pc}
-	thumb_func_end sub_811A1F4
+	thumb_func_end setSlotFieldsFromStartTo3_811A1F4
 
-	thumb_func_start sub_811A220
-sub_811A220:
+	thumb_func_start sprite_moveSlotGroupXY_811A220
+sprite_moveSlotGroupXY_811A220:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -24019,7 +24019,7 @@ loc_811A240:
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811A220
+	thumb_func_end sprite_moveSlotGroupXY_811A220
 
 // symdb: Submenu helper that tests the menu object's state byte and, unless it is in state 2 or 3, compares the sSubmenu struct's two cursor bytes (unk_0E vs unk_0F) so the caller can branch on the result.
 // symdb: void sub_811A24C(menu /*r5*/) // inputs: r5 (menu object), lr; outputs: flags NZCV from the
@@ -28825,7 +28825,7 @@ off_811CAC0:
 	.word off_811CAC4
 off_811CAC4:
 	.word sub_811CAEC+1
-	.word sub_811CBA0+1
+	.word timerCountdown_step_811CBA0+1
 	.word sub_811CBD0+1
 	.word sub_811CC02+1
 	.word battle_initObjectSpriteAndStartAnimation_811CC0C+1
@@ -28934,7 +28934,7 @@ loc_811CB9C:
 	thumb_func_end sub_811CAEC
 
 	thumb_local_start
-sub_811CBA0:
+timerCountdown_step_811CBA0:
 	push {lr}
 	ldrb r0, [r5,#9]
 	tst r0, r0
@@ -28959,7 +28959,7 @@ loc_811CBB4:
 loc_811CBCC:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_811CBA0
+	thumb_func_end timerCountdown_step_811CBA0
 
 	thumb_local_start
 sub_811CBD0:
@@ -34040,7 +34040,7 @@ off_811F704:
 	thumb_func_start pet_menuExitToMap_811F708
 pet_menuExitToMap_811F708:
 	push {lr}
-	bl sub_811F728
+	bl next_exitToMap_811F728
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
 	mov r1, #8
@@ -34056,8 +34056,8 @@ pet_menuExitToMap_811F708:
 	pop {pc}
 	thumb_func_end pet_menuExitToMap_811F708
 
-	thumb_func_start sub_811F728
-sub_811F728:
+	thumb_func_start next_exitToMap_811F728
+next_exitToMap_811F728:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_MainJumptableIndexPtr]
@@ -34088,7 +34088,7 @@ sub_811F728:
 	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 
 	pop {pc}
-	thumb_func_end sub_811F728
+	thumb_func_end next_exitToMap_811F728
 
 	thumb_func_start sub_811F758
 sub_811F758:
@@ -36394,7 +36394,7 @@ loc_8120712:
 	strh r3, [r7]
 loc_812072C:
 	mov r2, #1
-	bl sub_8021B2A
+	bl pack_addChipByIdSetLibraryFlag_8021B2A
 loc_8120732:
 	add r7, #2
 	add r4, #0x20
@@ -36450,7 +36450,7 @@ loc_812078C:
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
 	mov r2, #1
-	bl sub_8021B2A
+	bl pack_addChipByIdSetLibraryFlag_8021B2A
 	add r7, #2
 	ldr r0, off_81207BC // =0x3c
 	ldr r1, [sp,#8]
@@ -36936,7 +36936,7 @@ loc_8120ACE:
 	ldrh r0, [r7,r6]
 	bl split9BitsFromBitfield_8021AE0 // (int bitfield) -> (int, int)
 	mov r2, #1
-	bl sub_8021B2A
+	bl pack_addChipByIdSetLibraryFlag_8021B2A
 	add r6, #2
 	cmp r6, #0x3c
 	blt loc_8120ACE

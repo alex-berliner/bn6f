@@ -1462,8 +1462,8 @@ void sub_8047834()
         {
             sub_80478B8();
             sub_80465A0(byte_8046B74);
-            sub_811980C(*(v1 + 1), v1[4], 0, 0);
-            sub_8119854(120, 80, 0);
+            setFieldsInThreeTableEntries_811980C(*(v1 + 1), v1[4], 0, 0);
+            sprite_setPositionForIdRange3_8119854(120, 80, 0);
             chatbox_runScript(eTextScript202BA04, 127);
         }
         else if ( v2 == 1 )
@@ -2457,7 +2457,7 @@ int sub_804900C()
     renderInfo_8001788();
     renderInfo_80017A0();
     v1 = sub_80015FC(17);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     sub_803BEC0();
     sub_8049CBC();
     sub_8049D42();
@@ -3796,7 +3796,7 @@ int __noreturn sub_8049E28()
     renderInfo_8001788();
     renderInfo_80017A0();
     v1 = sub_80015FC(17);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     sub_803BEC0();
     sub_804A14C();
     *v0 = 8;
@@ -4343,8 +4343,8 @@ int sub_804A574()
     int result; // r0
 
     v1 = *(&unk_202A3E0 + 8 * (*(v0 + 42) + *(v0 + 46)) + 7);
-    sub_811980C((v1 << 16) >> 23, v1 & 0x7F, 0, 0);
-    sub_8119854(-40, 88, 0);
+    setFieldsInThreeTableEntries_811980C((v1 << 16) >> 23, v1 & 0x7F, 0, 0);
+    sprite_setPositionForIdRange3_8119854(-40, 88, 0);
     *(v0 + 1) = 4;
     result = 0;
     *(v0 + 24) = 0;
@@ -4365,7 +4365,7 @@ int sub_804A5B4()
         v1 = 40;
     }
     *(v0 + 24) = v1;
-    return sub_8119854(v1, 88, 0);
+    return sprite_setPositionForIdRange3_8119854(v1, 88, 0);
 }
 
 
@@ -4395,12 +4395,12 @@ int sub_804A5EC()
     v1 = *(v0 + 24) - 16;
     if ( v1 < -40 )
     {
-        sub_811980C(0, 0, 0, 0);
+        setFieldsInThreeTableEntries_811980C(0, 0, 0, 0);
         *v0 = 4;
         v1 = -40;
     }
     *(v0 + 24) = v1;
-    return sub_8119854(v1, 88, 0);
+    return sprite_setPositionForIdRange3_8119854(v1, 88, 0);
 }
 
 
@@ -5157,7 +5157,7 @@ int sub_804AFE4()
 {
     int v0; // r5
 
-    sub_8117084(*(v0 + 30), dword_200ACB0, 3);
+    sprite_setStructHalfwordPairOnThree_8117084(*(v0 + 30), dword_200ACB0, 3);
     return sub_8116FDC(&loc_CC, 27, 3);
 }
 

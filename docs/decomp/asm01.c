@@ -97,7 +97,7 @@ int eStruct203F7D8_getUnk01()
 
 // 0x801feee
 // (u8 a0) -> void
-int __fastcall dispatch_801FEEE(int a1)
+int __fastcall eStruct200BC30_dispatchStateHandler_801FEEE(int a1)
 {
     int v1; // r7
     int v2; // r0

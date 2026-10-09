@@ -2358,7 +2358,7 @@ submenu_subchip_8124350: // (struct UnkSubMenu* state_a5) -> void
 	mov r0, #1
 	bl ClearPETMenuDataFlag
 
-	bl sub_811F728
+	bl next_exitToMap_811F728
 
 	b locret_8124380
   // 0 else
@@ -3296,11 +3296,11 @@ loc_8124CBC:
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	ldr r0, [r5,#0x5c]
 	ldrh r1, [r5,#0x1c]
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_812674C
 	bl sub_81267A8
 	pop {pc}
@@ -3330,7 +3330,7 @@ loc_8124D02:
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3338,7 +3338,7 @@ loc_8124D02:
 	ldrh r1, [r5,#0x1c]
 loc_8124D26:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	.byte 0, 0
 	thumb_func_end sub_8124CE8
@@ -3366,7 +3366,7 @@ loc_8124D4A:
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3374,7 +3374,7 @@ loc_8124D4A:
 	ldrh r1, [r5,#0x1c]
 loc_8124D6E:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8124D30
@@ -3401,7 +3401,7 @@ sub_8124D78:
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3409,7 +3409,7 @@ sub_8124D78:
 	ldrh r1, [r5,#0x1c]
 loc_8124DBA:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_812674C
 	bl sub_81267A8
 	pop {pc}
@@ -3448,7 +3448,7 @@ loc_8124DE6:
 	ldrh r1, [r5,#0x26]
 loc_8124E0A:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3456,7 +3456,7 @@ loc_8124E0A:
 	ldrh r1, [r5,#0x1c]
 loc_8124E1A:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8124DCC
@@ -3493,7 +3493,7 @@ loc_8124E3E:
 	ldrh r1, [r5,#0x26]
 loc_8124E62:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3501,7 +3501,7 @@ loc_8124E62:
 	ldrh r1, [r5,#0x1c]
 loc_8124E72:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8124E24
@@ -3532,7 +3532,7 @@ sub_8124E7C:
 	ldrh r1, [r5,#0x26]
 loc_8124EB4:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3540,7 +3540,7 @@ loc_8124EB4:
 	ldrh r1, [r5,#0x1c]
 loc_8124EC4:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_812674C
 	bl sub_81267A8
 	pop {pc}
@@ -3582,7 +3582,7 @@ loc_8124F08:
 	ldrh r1, [r5,#0x30]
 loc_8124F18:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x60]
 	cmp r0, #5
@@ -3590,7 +3590,7 @@ loc_8124F18:
 	ldrh r1, [r5,#0x26]
 loc_8124F28:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	thumb_func_end sub_8124ED4
 
@@ -3630,7 +3630,7 @@ loc_8124F64:
 	ldrh r1, [r5,#0x1c]
 loc_8124F74:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x60]
 	cmp r0, #5
@@ -3638,7 +3638,7 @@ loc_8124F74:
 	ldrh r1, [r5,#0x26]
 loc_8124F84:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	thumb_func_end sub_8124F30
 
@@ -3666,7 +3666,7 @@ sub_8124F8C:
 	ldrh r1, [r5,#0x26]
 loc_8124FC0:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x64]
 	cmp r0, #0xf
@@ -3674,7 +3674,7 @@ loc_8124FC0:
 	ldrh r1, [r5,#0x30]
 loc_8124FD0:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_812674C
 	bl sub_81267A8
 	pop {pc}
@@ -3716,7 +3716,7 @@ loc_8125014:
 	ldrh r1, [r5,#0x3a]
 loc_8125024:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x64]
 	cmp r0, #0xf
@@ -3724,7 +3724,7 @@ loc_8125024:
 	ldrh r1, [r5,#0x30]
 loc_8125034:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	thumb_func_end sub_8124FE0
 
@@ -3764,7 +3764,7 @@ loc_8125070:
 	ldrh r1, [r5,#0x26]
 loc_8125080:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x64]
 	cmp r0, #0xf
@@ -3772,7 +3772,7 @@ loc_8125080:
 	ldrh r1, [r5,#0x30]
 loc_8125090:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_81267F0
 	pop {pc}
 	thumb_func_end sub_812503C
@@ -3921,7 +3921,7 @@ loc_81251B2:
 	ldrh r1, [r5,#0x26]
 loc_81251CC:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x68]
 	cmp r0, #0x27 
@@ -3938,7 +3938,7 @@ loc_81251DC:
 	ldrh r1, [r5,#0x3a]
 loc_81251EC:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	thumb_func_end sub_8125198
 
@@ -3969,7 +3969,7 @@ loc_812520E:
 	ldrh r1, [r5,#0x26]
 loc_8125228:
 	mov r2, #4
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3986,7 +3986,7 @@ loc_8125238:
 	ldrh r1, [r5,#0x3a]
 loc_8125248:
 	mov r2, #7
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	bl sub_81267F0
 	pop {pc}
 	thumb_func_end sub_81251F4
@@ -6688,11 +6688,11 @@ loc_8126652:
 	mov r1, #0xff
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	mov r0, #0x2f 
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #0
 	bl sub_8126818
 	b locret_81266BE
@@ -6718,11 +6718,11 @@ loc_812669A:
 	ldrb r1, [r2,r1]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811A1F4
+	bl setSlotFieldsFromStartTo3_811A1F4
 	mov r0, #0x2f 
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_811A220
+	bl sprite_moveSlotGroupXY_811A220
 locret_81266BE:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -9244,7 +9244,7 @@ loc_8127C9E:
 	beq loc_8127CB2
 	mov r0, #1
 	bl ClearPETMenuDataFlag
-	bl sub_811F728
+	bl next_exitToMap_811F728
 	b locret_8127CB6
 loc_8127CB2:
 	bl pet_menuExitToMap_811F708
@@ -16590,7 +16590,7 @@ loc_812B6D4:
 	cmp r1, #5
 	bne loc_812B6D8
 loc_812B6D8:
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2

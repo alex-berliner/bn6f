@@ -1190,7 +1190,7 @@ int __fastcall submenu_subchip_8124350(int a1)
         if ( *(v1 + 17) & 2 )
         {
             sub_811EBF4(1);
-            result = sub_811F728();
+            result = next_exitToMap_811F728();
         }
         else
         {
@@ -1671,12 +1671,12 @@ int sub_8124D78()
     sub_8125444();
     sub_8125D94();
     wrapper_sub8126570_fixedArgs_812650C();
-    sub_8117084(*(v0 + 88), *(v0 + 18), 4);
+    sprite_setStructHalfwordPairOnThree_8117084(*(v0 + 88), *(v0 + 18), 4);
     v3 = 0;
     v4 = *(v0 + 92);
     if ( v4 == 39 )
         v3 = *(v0 + 28);
-    sub_8117084(v4, v3, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v4, v3, 7);
     sub_812674C();
     return sub_81267A8();
 }
@@ -1713,12 +1713,12 @@ int sub_8124DCC()
         if ( v2 == 5 )
             v3 = *(v0 + 38);
     }
-    sub_8117084(v2, v3, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v2, v3, 4);
     v4 = 0;
     v5 = *(v0 + 92);
     if ( v5 == 39 )
         v4 = *(v0 + 28);
-    return sub_8117084(v5, v4, 7);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
 }
 
 
@@ -1753,12 +1753,12 @@ int sub_8124E24()
         if ( v2 == 5 )
             v3 = *(v0 + 38);
     }
-    sub_8117084(v2, v3, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v2, v3, 4);
     v4 = 0;
     v5 = *(v0 + 92);
     if ( v5 == 39 )
         v4 = *(v0 + 28);
-    return sub_8117084(v5, v4, 7);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
 }
 
 
@@ -1786,12 +1786,12 @@ int sub_8124E7C()
     v4 = *(v0 + 96);
     if ( v4 == 5 )
         v3 = *(v0 + 38);
-    sub_8117084(v4, v3, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v4, v3, 4);
     v5 = 0;
     v6 = *(v0 + 92);
     if ( v6 == 39 )
         v5 = *(v0 + 28);
-    sub_8117084(v6, v5, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v6, v5, 7);
     sub_812674C();
     return sub_81267A8();
 }
@@ -1830,12 +1830,12 @@ int sub_8124ED4()
         if ( v3 == 15 )
             v2 = *(v0 + 48);
     }
-    sub_8117084(v3, v2, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 7);
     v4 = 0;
     v5 = *(v0 + 96);
     if ( v5 == 5 )
         v4 = *(v0 + 38);
-    return sub_8117084(v5, v4, 4);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 4);
 }
 
 
@@ -1872,12 +1872,12 @@ int sub_8124F30()
         if ( v3 == 39 )
             v2 = *(v0 + 28);
     }
-    sub_8117084(v3, v2, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 7);
     v4 = 0;
     v5 = *(v0 + 96);
     if ( v5 == 5 )
         v4 = *(v0 + 38);
-    return sub_8117084(v5, v4, 4);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 4);
 }
 
 
@@ -1905,12 +1905,12 @@ int sub_8124F8C()
     v4 = *(v0 + 96);
     if ( v4 == 5 )
         v3 = *(v0 + 38);
-    sub_8117084(v4, v3, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v4, v3, 4);
     v5 = 0;
     v6 = *(v0 + 100);
     if ( v6 == 15 )
         v5 = *(v0 + 48);
-    sub_8117084(v6, v5, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v6, v5, 7);
     sub_812674C();
     return sub_81267A8();
 }
@@ -1949,12 +1949,12 @@ int sub_8124FE0()
         if ( v3 == 29 )
             v2 = *(v0 + 58);
     }
-    sub_8117084(v3, v2, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 4);
     v4 = 0;
     v5 = *(v0 + 100);
     if ( v5 == 15 )
         v4 = *(v0 + 48);
-    return sub_8117084(v5, v4, 7);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
 }
 
 
@@ -1991,12 +1991,12 @@ int sub_812503C()
         if ( v3 == 5 )
             v2 = *(v0 + 38);
     }
-    sub_8117084(v3, v2, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 4);
     v4 = 0;
     v5 = *(v0 + 100);
     if ( v5 == 15 )
         v4 = *(v0 + 48);
-    sub_8117084(v5, v4, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
     return sub_81267F0();
 }
 
@@ -2149,7 +2149,7 @@ int sub_8125198()
     v3 = *(v0 + 96);
     if ( v3 == 5 )
         v2 = *(v0 + 38);
-    sub_8117084(v3, v2, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 4);
     v4 = 0;
     v5 = *(v0 + 104);
     if ( v5 == 39 )
@@ -2161,7 +2161,7 @@ int sub_8125198()
         if ( v5 == 29 )
             v4 = *(v0 + 58);
     }
-    return sub_8117084(v5, v4, 7);
+    return sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
 }
 
 
@@ -2191,7 +2191,7 @@ int sub_81251F4()
     v3 = *(v0 + 96);
     if ( v3 == 5 )
         v2 = *(v0 + 38);
-    sub_8117084(v3, v2, 4);
+    sprite_setStructHalfwordPairOnThree_8117084(v3, v2, 4);
     v4 = 0;
     v5 = *(v0 + 92);
     if ( v5 == 39 )
@@ -2203,7 +2203,7 @@ int sub_81251F4()
         if ( v5 == 29 )
             v4 = *(v0 + 58);
     }
-    sub_8117084(v5, v4, 7);
+    sprite_setStructHalfwordPairOnThree_8117084(v5, v4, 7);
     return sub_81267F0();
 }
 
@@ -3752,8 +3752,8 @@ _BYTE *sub_8126630()
             if ( *(v5 + 1) != 26 )
                 sub_80465A0(byte_8124B08);
             v6 = *(v0 + 60) + *(v0 + 64);
-            sub_811A1F4(dword_201FC20[v6], HIBYTE(dword_201FC20[v6]), 0, 0);
-            result = sub_811A220(47, 88, 0);
+            setSlotFieldsFromStartTo3_811A1F4(dword_201FC20[v6], HIBYTE(dword_201FC20[v6]), 0, 0);
+            result = sprite_moveSlotGroupXY_811A220(47, 88, 0);
         }
     }
     else
@@ -3766,8 +3766,8 @@ _BYTE *sub_8126630()
                 sub_8046696(3);
                 sub_80465A0(byte_8124AE0);
             }
-            sub_811980C(*(*(&off_81266C4 + v1) + 2 * (*(v0 + 10 * v1 + 20) + *(v0 + 10 * v1 + 24))), 255, 0, 0);
-            sub_8119854(47, 88, 0);
+            setFieldsInThreeTableEntries_811980C(*(*(&off_81266C4 + v1) + 2 * (*(v0 + 10 * v1 + 20) + *(v0 + 10 * v1 + 24))), 255, 0, 0);
+            sprite_setPositionForIdRange3_8119854(47, 88, 0);
             result = sub_8126818(0);
         }
     }
@@ -5135,7 +5135,7 @@ int __fastcall sub_8127C64(int a1)
         if ( *(v1 + 13) & 1 )
         {
             sub_811EBF4(1);
-            result = sub_811F728();
+            result = next_exitToMap_811F728();
         }
         else
         {
@@ -10031,7 +10031,7 @@ void sub_812B698()
                 v1 = sub_812B7C4();
                 break;
         }
-        sub_8005F40(v1, v2, v3, v4);
+        resetAllGraphicsState_8005F40(v1, v2, v3, v4);
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();

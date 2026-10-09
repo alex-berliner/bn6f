@@ -2999,11 +2999,11 @@ sub_8047834:
 	ldrb r1, [r7,#4]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	mov r0, #0x78 
 	mov r1, #0x50 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	ldr r0, off_80478A8 // =eTextScript202BA04 // TextScriptArchive
 	mov r1, #0x7f
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -4664,7 +4664,7 @@ sub_804900C:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x11
 	bl sub_80015FC
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl sub_803BEC0
 	bl sub_8049CBC
 	bl sub_8049D42
@@ -6401,7 +6401,7 @@ sub_8049E28:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x11
 	bl sub_80015FC
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl sub_803BEC0
 	bl sub_804A14C
 	mov r0, #8
@@ -7151,7 +7151,7 @@ sub_804A460:
 	beq loc_804A4CC
 	bl sub_8046664 // () -> void
 	bl owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
-	bl sub_811F728
+	bl next_exitToMap_811F728
 	bl sub_8120AB8
 	ldrb r0, [r5]
 	cmp r0, #0x10
@@ -7282,11 +7282,11 @@ sub_804A574:
 	and r1, r2
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	ldr r0, dword_804A5B0 // =0xffffffd8 
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -7314,7 +7314,7 @@ loc_804A5C6:
 	strh r0, [r5,#0x18]
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_804A5B4
@@ -7347,7 +7347,7 @@ sub_804A5EC:
 	mov r1, #0
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	mov r0, #4
 	strb r0, [r5]
 	ldr r0, dword_804A618 // =0xffffffd8 
@@ -7355,7 +7355,7 @@ loc_804A60C:
 	strh r0, [r5,#0x18]
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	pop {pc}
 	.balign 4, 0
 dword_804A618:
@@ -8727,7 +8727,7 @@ sub_804AFE4:
 	ldr r1, off_804B004 // =eS200AC80 
 	ldr r1, [r1,#0x30] // (dword_200ACB0 - 0x200ac80)
 	mov r2, #3
-	bl sub_8117084
+	bl sprite_setStructHalfwordPairOnThree_8117084
 	ldr r0, off_804B000 // =0xcc 
 	mov r1, #0x1b
 	mov r2, #3

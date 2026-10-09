@@ -14942,7 +14942,7 @@ sub_802D3A8:
 	cmp r0, #2
 	bgt loc_802D3BE
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_802D3C6
 loc_802D3BE:
@@ -15010,7 +15010,7 @@ sub_802D430:
 	mov r6, #0
 loc_802D446:
 	mov r0, r4
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_802D46C
 	ldr r2, [sp]
@@ -15038,7 +15038,7 @@ loc_802D46C:
 	mov r6, #0
 loc_802D47C:
 	mov r0, r4
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_802D494
 	mov r0, r4
@@ -15182,7 +15182,7 @@ locret_802D586:
 sub_802D588:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_802D5A0
 	ldrh r0, [r6,#6]
@@ -20003,12 +20003,12 @@ loc_802F924:
 	beq loc_802F936
 loc_802F936:
 	bl startScreen_runTriggerHandler_802FC9C // (self: *const StartScreen $r5) -> ()
-	bl sub_802FC70 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_playFlaggedSfx_802FC70 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_playSoundIfFlagSet_802FB64 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_fadeOutUpdateIfFlag40_802FB90 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_dispatchIfFlag20_802FBB4 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_playSoundIfFlagSet_802FBD8 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FBFC // (self: *const StartScreen $r5) -> ()
+	bl startScreen_printTextIfFlag3_802FBFC // (self: *const StartScreen $r5) -> ()
 	bl startScreen_onStatusBit2_802FC28 // (self: *const StartScreen $r5) -> ()
 	bl startScreen_playSfxIfFlagSet_802FC4C // (self: *const StartScreen $r5) -> ()
 	pop {r4-r7,pc}
@@ -20237,7 +20237,7 @@ byte_802FBF0:
 	thumb_func_end startScreen_playSoundIfFlagSet_802FBD8
 
 	thumb_local_start
-sub_802FBFC: // (self: *const StartScreen $r5) -> ()
+startScreen_printTextIfFlag3_802FBFC: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #8
@@ -20253,7 +20253,7 @@ off_802FC10:
 byte_802FC14:
 	.byte 0x14, 0x40, 0x8E, 0x80, 0x10, 0x72, 0x0, 0x0, 0x24, 0x40
 	.byte 0x8E, 0x40, 0x18, 0x72, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FBFC
+	thumb_func_end startScreen_printTextIfFlag3_802FBFC
 
 // symdb: Start-screen helper that, when the screen state word has bit 2 set, hands a small parameter table (byte_802FC40) to the generic handler sub_8001158.
 // symdb: void startScreen_onStatusBit2(const StartScreen* self /* r5 */); // reads u16 at self+0xA; no
@@ -20299,7 +20299,7 @@ byte_802FC64:
 	thumb_func_end startScreen_playSfxIfFlagSet_802FC4C
 
 	thumb_local_start
-sub_802FC70: // (self: *const StartScreen $r5) -> ()
+startScreen_playFlaggedSfx_802FC70: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x10
@@ -20316,7 +20316,7 @@ off_802FC84:
 byte_802FC88:
 	.byte 0x14, 0x40, 0x40, 0x80, 0x0, 0x72, 0x0, 0x0, 0x24, 0x40
 	.byte 0x40, 0x40, 0x8, 0x72, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FC70
+	thumb_func_end startScreen_playFlaggedSfx_802FC70
 
 // symdb: Start-screen hook that, when state flag 0x200 in the screen-state word is set, passes a fixed parameter block to the generic sub_8001158 handler and otherwise does nothing.
 // symdb: void sub_802FC9C(const StartScreen *self /* r5 */)
@@ -20886,15 +20886,15 @@ camera_dispatchUpdate_8030054:
 off_8030064:
 	.word off_8030068
 off_8030068:
-	.word sub_803007C+1
-	.word sub_803007C+1
+	.word camera_updateDerivedOffsets_803007C+1
+	.word camera_updateDerivedOffsets_803007C+1
 	.word sub_80300AC+1
 	.word sub_8030104+1
-	.word sub_803007C+1
+	.word camera_updateDerivedOffsets_803007C+1
 	thumb_func_end camera_dispatchUpdate_8030054
 
 	thumb_local_start
-sub_803007C:
+camera_updateDerivedOffsets_803007C:
 	mov r1, #0x0 // byte_0
 	ldr r4, [r5,#oCamera_nextX_3c]
 	sub r1, r1, r4
@@ -20919,7 +20919,7 @@ sub_803007C:
 	neg r6, r6
 	strh r6, [r5,#oCamera_Unk_06]
 	mov pc, lr
-	thumb_func_end sub_803007C
+	thumb_func_end camera_updateDerivedOffsets_803007C
 
 	thumb_local_start
 sub_80300AC:

@@ -2266,7 +2266,7 @@ int __fastcall EnterMap(int a1)
     result = IsPaletteFadeActive();
     if ( !notScreeneffectAimating )
     {
-        sub_8005F40(result, v3, v4, v5);
+        resetAllGraphicsState_8005F40(result, v3, v4, v5);
         runSetupStepAndClearWorkArea_8005F6C();
         v6 = sub_80027C4();
         InitializeOverworldMapObjectStructs(v6, v7, v8, v9);
@@ -2517,7 +2517,7 @@ int __fastcall sub_80053E4(int a1)
         clearWorkBuffer_2011A40_80341AA(v4, v5, v6, v7);
         v8 = *v1;
         *v8 = 8;
-        sub_8005F40(v8, 8, v9, v10);
+        resetAllGraphicsState_8005F40(v8, 8, v9, v10);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2610,7 +2610,7 @@ _BYTE *sub_8005524()
 
     sub_80035A2(0x21u);
     v1 = sub_8004702();
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -2654,7 +2654,7 @@ _BYTE *__fastcall sub_800555A(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2700,7 +2700,7 @@ _BYTE *__fastcall sub_80055CE(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2746,7 +2746,7 @@ _BYTE *__fastcall sub_8005642(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2792,7 +2792,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2838,7 +2838,7 @@ _BYTE *__fastcall sub_800572C(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2884,7 +2884,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -2963,7 +2963,7 @@ _BYTE *__fastcall sub_800585A(int a1)
         chatbox_8040818();
         sub_80035A2(0x21u);
         v4 = sub_8004702();
-        sub_8005F40(v4, v5, v6, v7);
+        resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         zeroFill_80024A2();
@@ -3546,7 +3546,7 @@ int sub_8005D88()
 
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     v1 = sub_80035A2(0x25u);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -3573,7 +3573,7 @@ int __noreturn sub_8005DBE()
 
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     v1 = sub_80035A2(0x25u);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -3595,7 +3595,7 @@ int __noreturn sub_8005DF0()
 
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     v1 = sub_80035A2(0x25u);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -3617,7 +3617,7 @@ int __noreturn sub_8005E22()
 
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     v1 = sub_80035A2(0x25u);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -3639,7 +3639,7 @@ int __noreturn dead_8005E54()
 
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     v1 = sub_80035A2(0x25u);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     zeroFill_80024A2();
@@ -3771,7 +3771,7 @@ int sub_8005F32()
 
 
 // 0x8005f40
-void __fastcall sub_8005F40(int a1, int a2, int a3, int a4)
+void __fastcall resetAllGraphicsState_8005F40(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     int v5; // r1
@@ -5130,7 +5130,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     ZeroFillByWord(*(v4 + oToolkit_S2034880_Ptr), 240);
     *(v6 + 60) = v5;
     *(v6 + 10) = 1;
-    sub_8005F40(1, v7, v8, v9);
+    resetAllGraphicsState_8005F40(1, v7, v8, v9);
     sub_8005F78();
     if ( sub_802D234() == 1 )
         sub_80027E4();
@@ -5732,7 +5732,7 @@ LABEL_3:
     }
     else
     {
-        dispatch_801FEEE(v2);
+        eStruct200BC30_dispatchStateHandler_801FEEE(v2);
         result = 8;
         if ( !(v2 & 8) )
             result = (*(&off_8007940 + *(v0 + 1)))();
@@ -5902,7 +5902,7 @@ int battle_update_8007A44()
     else
     {
         v5 = v2;
-        dispatch_801FEEE(v2);
+        eStruct200BC30_dispatchStateHandler_801FEEE(v2);
         if ( !(v5 & 8) )
         {
             v6 = eStruct2038160_getBattleTerminate01();

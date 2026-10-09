@@ -21,7 +21,7 @@ int __fastcall sChip_loadRecordIntoSlot_8021AB4(int a1, int a2)
     do
     {
         v4 = split9BitsFromBitfield_8021AE0(*&v7[v3]);
-        result = sub_8021B2A(v4, v5, 1);
+        result = pack_addChipByIdSetLibraryFlag_8021B2A(v4, v5, 1);
         v3 += 2;
     }
     while ( v3 < 60 );
@@ -68,7 +68,7 @@ int __fastcall GiveChips(int a1, int a2, int a3)
 
 
 // 0x8021b2a
-int __fastcall sub_8021B2A(int a1, int a2, int a3)
+int __fastcall pack_addChipByIdSetLibraryFlag_8021B2A(int a1, int a2, int a3)
 {
     char *v4; // r0
     int v5; // r1

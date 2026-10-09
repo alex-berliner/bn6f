@@ -47,7 +47,7 @@ sub_8038630:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl initGfx_80386CC
@@ -338,7 +338,7 @@ sub_8038B04:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl decomp_initGfx_8038F30 // () -> void
@@ -1355,7 +1355,7 @@ sub_80395E4:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x11
 	bl sub_80015FC
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl copyData_803B216
 	bl sub_803BEC0
 	bl sub_803BA28
@@ -1423,7 +1423,7 @@ off_8039674:
 	thumb_local_start
 sub_8039694:
 	push {r4-r7,lr}
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl ZeroFillGFX30025c0
 	ldr r0, dword_8039708 // =0x1f40
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
@@ -2441,7 +2441,7 @@ sub_8039E80:
 	beq loc_8039EB4
 	bl chatbox_8040818
 	bl copyMemory_8001850
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl RandomizeExtraToolkitPointers // () -> ?
@@ -8066,7 +8066,7 @@ sub_803CBD0:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl copyData_803CC60
@@ -8230,7 +8230,7 @@ sub_803CCFC:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	bl sub_803CD58
@@ -9014,7 +9014,7 @@ loc_803D212:
 	mov r1, #0xff
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 
 	bl runSetupStepAndClearWorkArea_8005F6C
 
@@ -14169,7 +14169,7 @@ byte_803FC50:
 	thumb_local_start
 copyTileData_803FC64:
 	push {r5,lr}
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
 	// initRefs

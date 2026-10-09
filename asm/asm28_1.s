@@ -51,7 +51,7 @@ loc_809FA0C:
 	cmp r0, #5
 	bne loc_809FA42
 	ldr r1, [r7,#8]
-	bl sub_809FBF2
+	bl mysteryData_resolveMapGroupEntry_809FBF2
 	mov r1, r0
 	ldr r0, [r7,#4]
 	mov r2, sp
@@ -344,7 +344,7 @@ sub_809FB4C:
 	thumb_func_end sub_809FB4C
 
 	thumb_local_start
-sub_809FBF2:
+mysteryData_resolveMapGroupEntry_809FBF2:
 	push {r2-r7,lr}
 	mov r4, r1
 	cmp r0, #5
@@ -366,7 +366,7 @@ RealWorldMysteryDataMapGroupEntries_p1:
 InternetMysteryDataMapGroupEntries_p1:
 	.word InternetMysteryDataMapGroupEntries
 	.word byte_2000210
-	thumb_func_end sub_809FBF2
+	thumb_func_end mysteryData_resolveMapGroupEntry_809FBF2
 
 	thumb_func_start sub_809FC1C
 sub_809FC1C:
@@ -416,7 +416,7 @@ loc_809FC50:
 	push {r2}
 	ldrb r0, [r4]
 	ldr r1, [r4,#8]
-	bl sub_809FBF2
+	bl mysteryData_resolveMapGroupEntry_809FBF2
 	mov r4, r0
 	ldrb r3, [r7,#1]
 	mov r1, #8
@@ -486,7 +486,7 @@ loc_809FCE0:
 	ldrb r0, [r4]
 	mov r12, r0
 	ldr r1, [r4,#8]
-	bl sub_809FBF2
+	bl mysteryData_resolveMapGroupEntry_809FBF2
 	mov r1, r12
 	cmp r1, #5
 	bne loc_809FCFC

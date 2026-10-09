@@ -136,7 +136,7 @@ int sub_812D5A0()
 
 	v0 = sub_812D6F8();
 	v1 = *&word_2023FA0[16 * (*(v0 + 21) + *(v0 + 23)) + 14];
-	return sub_811980C((v1 << 16) >> 23, v1 & 0x7F, 0, *(v0 + 21) + *(v0 + 23));
+	return setFieldsInThreeTableEntries_811980C((v1 << 16) >> 23, v1 & 0x7F, 0, *(v0 + 21) + *(v0 + 23));
 }
 
 
@@ -146,7 +146,7 @@ int __fastcall sub_812D5D0(int a1, int a2, int a3)
 	int v3; // r4
 
 	v3 = a1 & 0x1FF;
-	sub_811980C(a1 & 0x1FF, (a1 << 17) >> 26, a2, a3);
+	setFieldsInThreeTableEntries_811980C(a1 & 0x1FF, (a1 << 17) >> 26, a2, a3);
 	return v3;
 }
 
@@ -155,7 +155,7 @@ int __fastcall sub_812D5D0(int a1, int a2, int a3)
 int sub_812D5EC()
 {
 	sub_812D6F8();
-	return sub_8119854(198, 88, 0);
+	return sprite_setPositionForIdRange3_8119854(198, 88, 0);
 }
 
 

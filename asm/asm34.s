@@ -312,7 +312,7 @@ sub_812D5A0:
 	and r1, r2
 	mov r2, #0
 	mov r3, r4
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_812D5CC:
@@ -330,7 +330,7 @@ sub_812D5D0:
 	mov r4, r0
 	lsl r1, r1, #0x11
 	lsr r1, r1, #0x1a
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	mov r0, r4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -344,7 +344,7 @@ sub_812D5EC:
 	mov r0, #0xc6
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	pop {r4-r7,pc}
 	thumb_func_end sub_812D5EC
 

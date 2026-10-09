@@ -303,7 +303,7 @@ int sub_809F9DC()
                 {
                     if ( *v2 == 5 )
                     {
-                        v5 = sub_809FBF2(5, *(v2 + 8));
+                        v5 = mysteryData_resolveMapGroupEntry_809FBF2(5, *(v2 + 8));
                         v6 = sub_809FA68(*(v2 + 4), v5, &v9);
                         *v3 = BYTE4(v6);
                         v3 = (v3 + 1);
@@ -519,7 +519,7 @@ int __fastcall sub_809FB4C(int a1, _BYTE *a2, _BYTE *a3, unsigned int a4)
 
 
 // 0x809fbf2
-int __fastcall sub_809FBF2(int a1, int a2)
+int __fastcall mysteryData_resolveMapGroupEntry_809FBF2(int a1, int a2)
 {
     return a2;
 }
@@ -560,7 +560,7 @@ int __fastcall sub_809FC1C(int a1)
             v8 = i[1];
             v9 = sub_809FADE(v2);
             v10 = *(i + 1) + 8 * *v9 + 2;
-            v11 = *(sub_809FBF2(*i, *(i + 2)) + 8 * v9[1]);
+            v11 = *(mysteryData_resolveMapGroupEntry_809FBF2(*i, *(i + 2)) + 8 * v9[1]);
             return sub_809FE36(v7);
         }
     }
@@ -628,7 +628,7 @@ signed int __fastcall sub_809FC96(int a1)
             break;
     }
     v9 = sub_809FADE(v2);
-    v10 = sub_809FBF2(*i, *(i + 2));
+    v10 = mysteryData_resolveMapGroupEntry_809FBF2(*i, *(i + 2));
     if ( v11 == 5 && v3 )
     {
         v21 = v10;

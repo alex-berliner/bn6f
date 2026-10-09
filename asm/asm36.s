@@ -8049,7 +8049,7 @@ loc_8134114:
 	and r1, r2
 	mov r2, #0
 	mov r3, r4
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	pop {r4,pc}
 	.balign 4, 0
 off_8134130:
@@ -8071,7 +8071,7 @@ sub_8134138:
 	sub r0, r0, r1
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	ldrb r0, [r7,#0xe]
 	strb r0, [r7,#0xf]
 	ldrb r0, [r7,#0xe]
@@ -11562,7 +11562,7 @@ sub_8135B54:
 	cmp r4, #0x28 
 	bne loc_8135B88
 	bl owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
-	bl sub_811F728
+	bl next_exitToMap_811F728
 	b locret_8135B90
 loc_8135B88:
 	mov r0, #0xc
@@ -17352,7 +17352,7 @@ sub_81387D8:
 	str r0, [r1,#oGameState_Ptr_20]
 
 	bl copy_800260C
-	bl sub_8005F40
+	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027F4
 	bl copy_8002668

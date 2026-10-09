@@ -21,7 +21,7 @@ off_8021AB0:
 // symdb: Copies a 60-byte S-chip record into one slot of the S-chip table and unpacks/registers each of its 9-bit packed fields.
 // symdb: void sub_8021AB4(const u32* src, u32 slot) — r0 = record source, r1 = slot index; r10 = toolkit
 // symdb: (base pointer read from [r10 + oToolkit_S_Chip_2002178_Ptr]); exits with r2 = 1 and r3 = result
-// symdb: of the last sub_8021B2A call
+// symdb: of the last pack_addChipByIdSetLibraryFlag_8021B2A call
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sChip_loadRecordIntoSlot_8021AB4.yaml
 	thumb_func_start sChip_loadRecordIntoSlot_8021AB4
 sChip_loadRecordIntoSlot_8021AB4:
@@ -40,7 +40,7 @@ loc_8021ACC:
 	ldrh r0, [r7,r6]
 	bl split9BitsFromBitfield_8021AE0 // (int bitfield) -> (int, int)
 	mov r2, #1
-	bl sub_8021B2A
+	bl pack_addChipByIdSetLibraryFlag_8021B2A
 	add r6, #2
 	cmp r6, #0x3c
 	blt loc_8021ACC
@@ -100,8 +100,8 @@ loc_8021B00:
 	pop {r4,pc}
 	thumb_func_end GiveChips
 
-	thumb_func_start sub_8021B2A
-sub_8021B2A:
+	thumb_func_start pack_addChipByIdSetLibraryFlag_8021B2A
+pack_addChipByIdSetLibraryFlag_8021B2A:
 	push {lr}
 	push {r0-r2}
 	bl encryption_applyPack_8006e70 // (int idx_20008A0) -> void
@@ -124,7 +124,7 @@ loc_8021B3C:
 	bl addChipsToChipPackOffset_8021b5a
 	mov r0, r3
 	pop {pc}
-	thumb_func_end sub_8021B2A
+	thumb_func_end pack_addChipByIdSetLibraryFlag_8021B2A
 
 // symdb: Adds a number of chips to a chip pack slot's count byte, capping the count at 99 and reporting the outcome.
 // symdb: int addChipsToSlotCount(u8* slotCount /* r0 */, int amount /* r2 */); // returns r1 = new count,

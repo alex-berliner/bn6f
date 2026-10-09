@@ -25441,7 +25441,7 @@ void __noreturn sub_80C69AC()
 
 
 // 0x80c6a08
-signed int sub_80C6A08()
+signed int battle_stepObjectXByVelocityAndDestroyIfInvalidPanel_80C6A08()
 {
     int v0; // r5
     signed int result; // r0
@@ -25702,7 +25702,7 @@ int sub_80C6C6A()
 
 
 // 0x80c6cba
-int sub_80C6CBA()
+int battleObject_dyingTickDespawn_80C6CBA()
 {
     int v0; // r5
     int result; // r0
@@ -57489,7 +57489,7 @@ signed int sub_80DA956()
 
 
 // 0x80da974
-int sub_80DA974()
+int battle_objectLingerThenDestroyPhase_80DA974()
 {
     int v0; // r5
     int v1; // r10
@@ -85047,7 +85047,7 @@ int __fastcall sub_80EBC28(int a1, int a2, int a3)
 
 
 // 0x80ebd3c
-void sub_80EBD3C()
+void aiAttack_windupTick_80EBD3C()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -131820,7 +131820,7 @@ int __fastcall sub_8109708(int a1, int a2, int a3)
 
 
 // 0x810971a
-int __fastcall sub_810971A(int a1, int a2, int a3)
+int __fastcall battle_pickRandomRowObjectFields_810971A(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -132256,7 +132256,7 @@ void sub_8109BC0()
 
 
 // 0x8109cbc
-void sub_8109CBC()
+void battle_attackTimerTick_8109CBC()
 {
     int v0; // r5
     int v1; // r7

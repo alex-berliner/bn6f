@@ -1002,7 +1002,7 @@ int sub_812CC44()
                         *(v0 + 48) = v8;
                         sub_812D954(0);
                     }
-                    sub_8119854(v7 + 48, 88, 0);
+                    sprite_setPositionForIdRange3_8119854(v7 + 48, 88, 0);
                     v9 = 192 - *(v0 + 46);
                     if ( v9 <= 48 )
                     {
@@ -1010,7 +1010,7 @@ int sub_812CC44()
                         *(v0 + 48) = v10;
                         sub_812D954(1);
                     }
-                    sub_8119854(v9, 88, 3);
+                    sprite_setPositionForIdRange3_8119854(v9, 88, 3);
                 }
                 *(v0 + 38) = 0;
                 *(v5 + 8) = 0;

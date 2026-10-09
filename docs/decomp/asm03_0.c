@@ -9964,7 +9964,7 @@ signed int __fastcall sub_802D3A8(int a1, int a2, int a3)
     _WORD *v4; // r6
 
     *v4 = 8;
-    if ( v4[2] <= 2 && !sub_810971A(*(v3 + 19), a2, a3) )
+    if ( v4[2] <= 2 && !battle_pickRandomRowObjectFields_810971A(*(v3 + 19), a2, a3) )
         return 0;
     v4[2] = 0;
     return 2;
@@ -10016,7 +10016,7 @@ __int64 __fastcall __noreturn sub_802D430(int a1, int a2, int a3, int a4)
     v7 = 1;
     do
     {
-        v8 = sub_810971A(v7, v5, v6);
+        v8 = battle_pickRandomRowObjectFields_810971A(v7, v5, v6);
         if ( v8 )
             sub_8015CC0(v8, v5, v21, v22);
         ++v7;
@@ -10027,7 +10027,7 @@ __int64 __fastcall __noreturn sub_802D430(int a1, int a2, int a3, int a4)
     v11 = 0;
     do
     {
-        if ( sub_810971A(v10, v5, v6) )
+        if ( battle_pickRandomRowObjectFields_810971A(v10, v5, v6) )
         {
             v12 = object_getPanelsInRowFiltered(v10, v5, v21, v22);
             v11 += v12;
@@ -10111,7 +10111,7 @@ signed int __fastcall __noreturn sub_802D588(int a1, int a2, int a3)
     _WORD *v4; // r6
     int v5; // r0
 
-    if ( sub_810971A(*(v3 + 19), a2, a3) )
+    if ( battle_pickRandomRowObjectFields_810971A(*(v3 + 19), a2, a3) )
     {
         v5 = v4[3] - 1;
         v4[3] = v5;
@@ -13268,12 +13268,12 @@ int __noreturn sub_802F8D8()
             startScreen_TstZero();
     }
     startScreen_runTriggerHandler_802FC9C();
-    sub_802FC70();
+    startScreen_playFlaggedSfx_802FC70();
     startScreen_playSoundIfFlagSet_802FB64();
     startScreen_fadeOutUpdateIfFlag40_802FB90();
     startScreen_dispatchIfFlag20_802FBB4();
     startScreen_playSoundIfFlagSet_802FBD8();
-    sub_802FBFC();
+    startScreen_printTextIfFlag3_802FBFC();
     startScreen_onStatusBit2_802FC28();
     return startScreen_playSfxIfFlagSet_802FC4C();
 }
@@ -13368,7 +13368,7 @@ int startScreen_playSoundIfFlagSet_802FBD8()
 
 
 // 0x802fbfc
-int sub_802FBFC()
+int startScreen_printTextIfFlag3_802FBFC()
 {
     int v0; // r5
     int result; // r0
@@ -13407,7 +13407,7 @@ int startScreen_playSfxIfFlagSet_802FC4C()
 
 
 // 0x802fc70
-int sub_802FC70()
+int startScreen_playFlaggedSfx_802FC70()
 {
     int v0; // r5
     int result; // r0
@@ -13718,7 +13718,7 @@ int camera_dispatchUpdate_8030054()
 
 
 // 0x803007c
-void sub_803007C()
+void camera_updateDerivedOffsets_803007C()
 {
     int v0; // r5
     char *v1; // r1

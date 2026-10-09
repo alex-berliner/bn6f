@@ -1164,11 +1164,11 @@ loc_809A15C:
 	ldr r1, [r5,r1]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	ldr r0, dword_809A25C // =0xffffffd0
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	movflag EVENT_F6
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #0
@@ -1203,7 +1203,7 @@ loc_809A1CC:
 	add r0, r0, r1
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
@@ -1233,7 +1233,7 @@ loc_809A208:
 	add r0, r0, r1
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #8
@@ -1781,11 +1781,11 @@ loc_809A64E:
 	ldr r1, [r5,r1]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	ldr r0, dword_809A758 // =0xffffffd0 
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	movflag EVENT_F6
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #0
@@ -1820,7 +1820,7 @@ loc_809A6BC:
 	add r0, r0, r1
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
@@ -1850,7 +1850,7 @@ loc_809A6F8:
 	add r0, r0, r1
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #8
@@ -2163,11 +2163,11 @@ sub_809A950:
 	ldr r1, [r5,r1]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	ldr r0, dword_809AA00 // =0xffffffd0 
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_809A982:
@@ -2198,7 +2198,7 @@ loc_809A9A4:
 	add r0, r0, r1
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	movflag EVENT_F5
@@ -2225,7 +2225,7 @@ loc_809A9D8:
 	add r0, r0, r1
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void
 	mov r0, #0x80
@@ -2572,11 +2572,11 @@ sub_809ACA4:
 	ldr r1, [r5,r1]
 	mov r2, #0
 	mov r3, #0
-	bl sub_811980C
+	bl setFieldsInThreeTableEntries_811980C
 	ldr r0, dword_809AD48 // =0xffffffd0
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -2604,7 +2604,7 @@ loc_809ACE8:
 	add r0, r0, r1
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r7, #1
 	b loc_809AD00
 loc_809ACFA:
@@ -2635,7 +2635,7 @@ loc_809AD22:
 	add r0, r0, r1
 	mov r1, #0x58
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 loc_809AD30:
 	bl sub_80465BC
 	bl sub_80465F8 // () -> void

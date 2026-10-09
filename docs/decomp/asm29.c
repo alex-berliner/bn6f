@@ -8376,7 +8376,7 @@ signed int sub_80AADA6()
     v4 = 30 * *(v0[oToolkit_S2011c50_Ptr] + 5);
     do
     {
-        sub_8021B2A(*v3 & 0x1FF, *v3 / 0x200u, 1);
+        pack_addChipByIdSetLibraryFlag_8021B2A(*v3 & 0x1FF, *v3 / 0x200u, 1);
         ++v3;
         --v4;
     }

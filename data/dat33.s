@@ -1297,7 +1297,7 @@ loc_812CC96::
 loc_812CCC0::
 	mov r1, #0x58 
 	mov r2, #0
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #0xc0
 	ldrh r1, [r5,#0x2e]
 	sub r0, r0, r1
@@ -1316,7 +1316,7 @@ loc_812CCC0::
 loc_812CCEA::
 	mov r1, #0x58 
 	mov r2, #3
-	bl sub_8119854
+	bl sprite_setPositionForIdRange3_8119854
 loc_812CCF2::
 	mov r1, #0
 	strh r1, [r5,#0x26]

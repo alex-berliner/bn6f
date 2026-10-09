@@ -5226,7 +5226,7 @@ signed int __fastcall __noreturn sub_8038630(int a1)
     SetRenderInfoLCDControl(4928);
     renderInfo_8001788();
     renderInfo_80017A0();
-    sub_8005F40(v2, v3, v4, v5);
+    resetAllGraphicsState_8005F40(v2, v3, v4, v5);
     runSetupStepAndClearWorkArea_8005F6C();
     v6 = sub_80027C4();
     initGfx_80386CC(v6, v7, v8, v9);
@@ -5367,7 +5367,7 @@ void __fastcall __noreturn sub_8038B04(int a1, int a2, int a3, int a4)
     SetRenderInfoLCDControl(8000);
     renderInfo_8001788();
     renderInfo_80017A0();
-    sub_8005F40(v8, v9, v10, v11);
+    resetAllGraphicsState_8005F40(v8, v9, v10, v11);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     decomp_initGfx_8038F30();
@@ -5982,7 +5982,7 @@ int __noreturn sub_80395E4()
     renderInfo_8001788();
     renderInfo_80017A0();
     v1 = sub_80015FC(17);
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     copyData_803B216(v5, v6, v7, v8);
     sub_803BEC0();
     sub_803BA28();
@@ -6042,7 +6042,7 @@ signed int __fastcall __noreturn sub_8039694(int a1, int a2, int a3, int a4)
     int v8; // r3
     signed int result; // r0
 
-    sub_8005F40(a1, a2, a3, a4);
+    resetAllGraphicsState_8005F40(a1, a2, a3, a4);
     ZeroFillGFX30025c0();
     SetRenderInfoLCDControl(8000);
     renderInfo_8001788();
@@ -6918,7 +6918,7 @@ int __fastcall sub_8039E80(int a1)
     {
         chatbox_8040818();
         copyMemory_8001850();
-        sub_8005F40(v2, v3, v4, v5);
+        resetAllGraphicsState_8005F40(v2, v3, v4, v5);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
         RandomizeExtraToolkitPointers();
@@ -10899,7 +10899,7 @@ void __fastcall __noreturn sub_803CBD0(int a1)
     SetRenderInfoLCDControl(8000);
     renderInfo_8001788();
     renderInfo_80017A0();
-    sub_8005F40(v1, v2, v3, v4);
+    resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     v5 = sub_80027C4();
     copyData_803CC60(v5, v6, v7, v8);
@@ -11018,7 +11018,7 @@ signed int __fastcall __noreturn sub_803CCFC(int a1)
     SetRenderInfoLCDControl(8000);
     renderInfo_8001788();
     renderInfo_80017A0();
-    sub_8005F40(v2, v3, v4, v5);
+    resetAllGraphicsState_8005F40(v2, v3, v4, v5);
     runSetupStepAndClearWorkArea_8005F6C();
     v6 = sub_80027C4();
     sub_803CD58(v6, v7, v8, v9);
@@ -11660,7 +11660,7 @@ void __noreturn sub_803D1FC()
     renderInfo_8001788();
     renderInfo_80017A0();
     v3 = engine_setScreeneffect(v1, 255);
-    sub_8005F40(v3, v4, v5, v6);
+    resetAllGraphicsState_8005F40(v3, v4, v5, v6);
     runSetupStepAndClearWorkArea_8005F6C();
     v7 = sub_80027C4();
     logoScreen_loadLogoTiles_803D2B8(v7, v8, v9, v10);
@@ -15047,7 +15047,7 @@ int sub_803FC14()
 // 0x803fc64
 void __fastcall __noreturn copyTileData_803FC64(int a1, int a2, int a3, int a4)
 {
-    sub_8005F40(a1, a2, a3, a4);
+    resetAllGraphicsState_8005F40(a1, a2, a3, a4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
     decompAndCopyData(&initRefs803FCA4);

@@ -11531,7 +11531,7 @@ loc_80AADE4:
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	mov r2, #1
-	bl sub_8021B2A
+	bl pack_addChipByIdSetLibraryFlag_8021B2A
 	add r7, #2
 	sub r4, #1
 	bne loc_80AADE4

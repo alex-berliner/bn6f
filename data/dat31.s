@@ -1217,7 +1217,7 @@ sub_810CE1A::
 	b loc_810CEAA
 loc_810CE38::
 	ldrb r0, [r5,#oBattleObject_PanelY]
-	bl sub_810971A
+	bl battle_pickRandomRowObjectFields_810971A
 	cmp r0, #0
 	beq loc_810CEAA
 	ldrb r2, [r5,#oBattleObject_Alliance]

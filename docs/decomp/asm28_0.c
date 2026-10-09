@@ -271,8 +271,8 @@ signed int sub_809A138()
                 sub_809A308();
                 sub_8046664();
                 sub_80465A0(byte_8099E90);
-                sub_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
-                sub_8119854(-48, 88, 0);
+                setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
+                sprite_setPositionForIdRange3_8119854(-48, 88, 0);
                 ClearEventFlagFromImmediate(0, 246);
                 return 0;
             }
@@ -307,7 +307,7 @@ signed int sub_809A1B4()
         v2 = 96;
     }
     *(v0 + 4) = v2;
-    sub_8119854(v2 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     sub_809A360(*(v0 + 116));
@@ -332,7 +332,7 @@ signed int sub_809A1FC()
     if ( v1 < 0 )
         v1 = 0;
     *(v0 + 4) = v1;
-    sub_8119854(v1 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(8);
@@ -678,8 +678,8 @@ signed int sub_809A630()
                 sub_809A308();
                 sub_8046664();
                 sub_80465A0(byte_8099E90);
-                sub_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
-                sub_8119854(-48, 88, 0);
+                setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
+                sprite_setPositionForIdRange3_8119854(-48, 88, 0);
                 ClearEventFlagFromImmediate(0, 246);
                 return 0;
             }
@@ -714,7 +714,7 @@ signed int sub_809A6A4()
         v2 = 96;
     }
     *(v0 + 4) = v2;
-    sub_8119854(v2 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     sub_809A80C(*(v0 + 116));
@@ -739,7 +739,7 @@ signed int sub_809A6EC()
     if ( v1 < 0 )
         v1 = 0;
     *(v0 + 4) = v1;
-    sub_8119854(v1 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(8);
@@ -934,8 +934,8 @@ signed int sub_809A950()
         return 1;
     *(v0 + 4) = 0;
     sub_80465A0(byte_809A898);
-    sub_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
-    sub_8119854(-48, 88, 0);
+    setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
+    sprite_setPositionForIdRange3_8119854(-48, 88, 0);
     return 0;
 }
 
@@ -959,7 +959,7 @@ signed int sub_809A98C()
         v2 = 96;
     }
     *(v0 + 4) = v2;
-    sub_8119854(v2 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     TestEventFlagFromImmediate(0, 245);
@@ -983,7 +983,7 @@ signed int sub_809A9CC()
     if ( v1 < 0 )
         v1 = 0;
     *(v0 + 4) = v1;
-    sub_8119854(v1 - 48, 88, 0);
+    sprite_setPositionForIdRange3_8119854(v1 - 48, 88, 0);
     sub_80465BC();
     sub_80465F8();
     chatbox_mask_eFlags2009F38(128);
@@ -1214,8 +1214,8 @@ int sub_809ACA4()
 
     *(v0 + 4) = 0;
     sub_80465A0(byte_809AA24);
-    sub_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
-    sub_8119854(-48, 88, 0);
+    setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
+    sprite_setPositionForIdRange3_8119854(-48, 88, 0);
     return 0;
 }
 
@@ -1233,7 +1233,7 @@ signed int sub_809ACD0()
     if ( v2 <= 96 )
     {
         *(v0 + 4) = v2;
-        sub_8119854(v2 - 48, 88, 0);
+        sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
         v4 = 1;
     }
     else
@@ -1265,7 +1265,7 @@ signed int sub_809AD0C()
         if ( v2 < 0 )
             v2 = 0;
         *(v0 + 4) = v2;
-        sub_8119854(v2 - 48, 88, 0);
+        sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     }
     sub_80465BC();
     sub_80465F8();

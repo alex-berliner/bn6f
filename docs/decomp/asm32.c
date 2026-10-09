@@ -4550,7 +4550,7 @@ int __fastcall sub_811152C(int a1, int a2, int a3)
     switch ( v4 )
     {
         case 1:
-            if ( sub_810971A(v3[19] + 1, a2, a3)
+            if ( battle_pickRandomRowObjectFields_810971A(v3[19] + 1, a2, a3)
                 || (sub_81096FA(v3[18], v3[19] + 1, v6, byte_8111740), v7 = v3[22],
                                                                                                                              (result = sub_8015E46(v8, v9, v10, v11)) == 0) )
             {
@@ -4559,7 +4559,7 @@ int __fastcall sub_811152C(int a1, int a2, int a3)
             }
             break;
         case 2:
-            sub_810971A(v3[19] - 1, a2, a3);
+            battle_pickRandomRowObjectFields_810971A(v3[19] - 1, a2, a3);
             if ( !v28 )
             {
                 sub_81096FA(v3[18], v3[19] + 1, v17, byte_8111740);
@@ -4571,7 +4571,7 @@ LABEL_17:
                 sub_81096FA(v3[18], v3[19], v29, byte_8111740);
                 return panelFlagCheck_8015D80(v36, v37, v38, v39);
             }
-            sub_810971A(v3[19] + 1, v16, v17);
+            battle_pickRandomRowObjectFields_810971A(v3[19] + 1, v16, v17);
             if ( v28 )
             {
                 sub_81096FA(v3[18], v3[19], v18, byte_8111740);
@@ -4584,7 +4584,7 @@ LABEL_17:
                 goto LABEL_17;
             break;
         case 3:
-            if ( sub_810971A(v3[19] - 1, a2, a3)
+            if ( battle_pickRandomRowObjectFields_810971A(v3[19] - 1, a2, a3)
                 || (sub_81096FA(v3[18], v3[19] - 1, v40, byte_8111740),
                         v41 = v3[22],
                         (result = sub_8015E46(v42, v43, v44, v45)) == 0) )
@@ -5890,7 +5890,7 @@ int __fastcall sub_811252C(int a1, int a2, int a3)
     int v10; // r1
     int v11; // r2
 
-    result = sub_810971A(*(v3 + 19), a2, a3);
+    result = battle_pickRandomRowObjectFields_810971A(*(v3 + 19), a2, a3);
     if ( !result || (v6 = 4 * *(v3 + 104), v7 = *(&off_8112584 + v6), (result = sub_8112562(result, v5, v6)) == 0) )
     {
         v8 = 4 * *(v3 + 104);
@@ -6938,7 +6938,7 @@ void __fastcall sub_8113162(int a1, int a2, int a3)
     int v5; // r7
     int v6; // r1
 
-    if ( sub_810971A(*(v4 + 19), a2, a3) )
+    if ( battle_pickRandomRowObjectFields_810971A(*(v4 + 19), a2, a3) )
     {
         v6 = *(v3 + 22);
         *(v5 + 15) = byte_81130DE[v6];
@@ -9568,7 +9568,7 @@ signed int sub_8115598()
     *(v1 + 104) = 0;
     if ( object_getFlag() & 0xA000
         || (FindBattleActorsWithNonzeroParam_ReturnCountAndSum(104, 157, 162), v5 = *(v1 + 19), (1 << v5) & v4)
-        || !sub_810971A(*(v1 + 19), v4, v5) )
+        || !battle_pickRandomRowObjectFields_810971A(*(v1 + 19), v4, v5) )
     {
         *(v3 + 26) = 0;
         v8 = object_getFlag();
@@ -10999,12 +10999,12 @@ void __fastcall __noreturn sub_8116944(int a1, int a2)
     sprite_setCoordinates(176, 64);
     *(v2 + 4) = -1;
     *(v2 + 12) = 6;
-    sub_81169B0();
+    petMenu_updateObject_81169B0();
 }
 
 
 // 0x81169b0
-void sub_81169B0()
+void petMenu_updateObject_81169B0()
 {
     Battle *v0; // r5
 
@@ -11014,7 +11014,7 @@ void sub_81169B0()
 
 
 // 0x81169d8
-int sub_81169D8()
+int npc_tickDisappearTimer_81169D8()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -11480,12 +11480,12 @@ void __noreturn sub_8116E30()
     sprite_setSubEntryPaletteBank_800304A((*off_8116EEC[*(v0 + 5)])[v2]);
     sprite_setSubRecordFieldA_8003060((*off_8116EFC[*(v0 + 5)])[v2]);
     *(v0 + 8) = 4;
-    sub_8116F34();
+    battle_objectUpdateByKind_8116F34();
 }
 
 
 // 0x8116f34
-void __noreturn sub_8116F34()
+void __noreturn battle_objectUpdateByKind_8116F34()
 {
     int v0; // r5
 
@@ -11604,7 +11604,7 @@ int __fastcall sub_8116FDC(signed int a1, __int16 a2, int a3)
 
 
 // 0x8117084
-int __fastcall sub_8117084(__int16 a1, int a2, int a3)
+int __fastcall sprite_setStructHalfwordPairOnThree_8117084(__int16 a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r6
@@ -12418,7 +12418,7 @@ void sub_81179E0()
 
 
 // 0x81179e4
-int __noreturn sub_81179E4()
+int __noreturn keyItemMenu_renderDescription_81179E4()
 {
     int v0; // r4
     int v1; // r7
@@ -14837,12 +14837,12 @@ int __fastcall npc_stepChainSetState0x10_811975C(int a1, int a2, int a3, int a4)
 
     sub_8119438(a1, a2, a3, a4);
     *(v4 + 9) = 16;
-    return sub_811976C();
+    return sprite_stepZoomShrinkOut_811976C();
 }
 
 
 // 0x811976c
-int sub_811976C()
+int sprite_stepZoomShrinkOut_811976C()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -14913,7 +14913,7 @@ int sub_8119804()
 
 
 // 0x811980c
-int __fastcall sub_811980C(__int16 a1, char a2, int a3, int a4)
+int __fastcall setFieldsInThreeTableEntries_811980C(__int16 a1, char a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r7
@@ -14966,7 +14966,7 @@ int __fastcall sub_811983C(int a1, int a2)
 
 
 // 0x8119854
-int __fastcall sub_8119854(int a1, __int16 a2, int a3)
+int __fastcall sprite_setPositionForIdRange3_8119854(int a1, __int16 a2, int a3)
 {
     int v3; // r4
     int v4; // r7
@@ -15471,7 +15471,7 @@ void __fastcall __noreturn sub_8119E60(int a1, int a2, int a3, int a4)
     *(v4 + 16) = 255;
     *(v4 + 13) = -1;
     *(v4 + 26) = 255;
-    sub_811A0A4();
+    object_runTypeUpdateThenSpriteUpdate_811A0A4();
 }
 
 
@@ -15526,7 +15526,7 @@ __int64 __fastcall sub_8119F88(int a1, int a2, int a3, int a4)
 
 
 // 0x811a0a4
-void sub_811A0A4()
+void object_runTypeUpdateThenSpriteUpdate_811A0A4()
 {
     int v0; // r5
 
@@ -15604,12 +15604,12 @@ int __fastcall stateObj_advanceToState0x10_811A148(int a1, int a2, int a3, int a
     if ( !*(v4 + 4) )
         sub_8119EEC(*(v4 + 4), a2, a3, a4);
     *(v4 + 9) = 16;
-    return sub_811A160();
+    return sprite_scaleShrinkStep_811A160();
 }
 
 
 // 0x811a160
-int sub_811A160()
+int sprite_scaleShrinkStep_811A160()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -15673,7 +15673,7 @@ int sub_811A1EC()
 
 
 // 0x811a1f4
-int __fastcall sub_811A1F4(__int16 a1, char a2, int a3, int a4)
+int __fastcall setSlotFieldsFromStartTo3_811A1F4(__int16 a1, char a2, int a3, int a4)
 {
     signed int v4; // r4
     int result; // r0
@@ -15705,7 +15705,7 @@ int __fastcall sub_811A1F4(__int16 a1, char a2, int a3, int a4)
 
 
 // 0x811a220
-int __fastcall sub_811A220(int a1, __int16 a2, int a3)
+int __fastcall sprite_moveSlotGroupXY_811A220(int a1, __int16 a2, int a3)
 {
     int v3; // r4
     int v4; // r7
@@ -18610,7 +18610,7 @@ signed int sub_811CAEC()
 
 
 // 0x811cba0
-signed int sub_811CBA0()
+signed int timerCountdown_step_811CBA0()
 {
     int v0; // r5
     int v1; // r0
@@ -21815,7 +21815,7 @@ signed int pet_menuExitToMap_811F708()
     int v0; // r10
     signed int result; // r0
 
-    sub_811F728();
+    next_exitToMap_811F728();
     *(*(v0 + oToolkit_GameStatePtr) + oGameState_EnterMapFadeParam1) = 8;
     ePETMenuData = 20;
     byte_200DF21 = 0;
@@ -21827,7 +21827,7 @@ signed int pet_menuExitToMap_811F708()
 
 
 // 0x811f728
-int sub_811F728()
+int next_exitToMap_811F728()
 {
     int v0; // r10
 
@@ -23311,7 +23311,7 @@ int __fastcall sub_81206F8(int a1, int a2)
         {
             if ( !*(v2 + 2) )
                 *v5 = (v7 << 9) | v6;
-            sub_8021B2A(v6, v7, 1);
+            pack_addChipByIdSetLibraryFlag_8021B2A(v6, v7, 1);
         }
         ++v5;
         v4 += 32;
@@ -23372,7 +23372,7 @@ LABEL_11:
             if ( ++v9 > 3 )
                 return 1;
         }
-        sub_8021B2A(v12, v13, 1);
+        pack_addChipByIdSetLibraryFlag_8021B2A(v12, v13, 1);
         ++v5;
         if ( v5 >= word_3C + v15 )
             goto LABEL_11;
@@ -23679,7 +23679,7 @@ int sub_8120AB8()
         do
         {
             v4 = split9BitsFromBitfield_8021AE0(*(v2 + v3));
-            result = sub_8021B2A(v4, v5, 1);
+            result = pack_addChipByIdSetLibraryFlag_8021B2A(v4, v5, 1);
             v3 += 2;
         }
         while ( v3 < 60 );

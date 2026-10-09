@@ -4985,7 +4985,7 @@ int sub_81340FC()
         v1 = &unk_202A3E0;
         v2 = *(v0 + 42) + *(v0 + 46);
     }
-    return sub_811980C(*&v1[16 * v2 + 14] << 16 >> 23, *&v1[16 * v2 + 14] & 0x7F, 0, v2);
+    return setFieldsInThreeTableEntries_811980C(*&v1[16 * v2 + 14] << 16 >> 23, *&v1[16 * v2 + 14] & 0x7F, 0, v2);
 }
 
 
@@ -5001,7 +5001,7 @@ int sub_8134138()
     int v6; // r0
     int v7; // r1
 
-    sub_8119854(*(&dword_813418C + *(v0 + 14)) - 8 * *(v0 + 24), 88, 0);
+    sprite_setPositionForIdRange3_8119854(*(&dword_813418C + *(v0 + 14)) - 8 * *(v0 + 24), 88, 0);
     *(v0 + 15) = *(v0 + 14);
     if ( *(v0 + 14) )
     {
@@ -7133,7 +7133,7 @@ int sub_8135B54()
         if ( v4 == 40 )
         {
             sub_809E122();
-            result = sub_811F728();
+            result = next_exitToMap_811F728();
         }
         else
         {
@@ -11073,7 +11073,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
 
     *(*(v4 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
     copy_800260C();
-    sub_8005F40(v5, v6, v7, v8);
+    resetAllGraphicsState_8005F40(v5, v6, v7, v8);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027F4();
     copy_8002668();
