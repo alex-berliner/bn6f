@@ -2140,7 +2140,7 @@ loc_813C730:
 	add r6, #1
 	cmp r6, #0x31 
 	blt loc_813C710
-	bl sub_803CED4
+	bl petnavi_setStat42ToStat3EPlusCounter_803CED4
 	bl sub_813CEA0 // () -> void
 	add sp, sp, #4
 	pop {r4-r7,pc}
@@ -3955,7 +3955,7 @@ off_813D6C4:
 sub_813D6DC:
 	push {r4,lr}
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrb r4, [r0,#0xc]
 	ldrb r2, [r0,#0xe]
 	lsl r2, r2, #8
@@ -3970,7 +3970,7 @@ sub_813D6DC:
 sub_813D6F4:
 	push {lr}
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r2, #3
 	mov r1, #0
 loc_813D700:
@@ -3990,7 +3990,7 @@ loc_813D700:
 sub_813D714:
 	push {lr}
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrh r1, [r0,#0x14]
 	ldrb r2, [r0,#0x11]
 	lsl r2, r2, #0x10
@@ -4001,7 +4001,7 @@ sub_813D714:
 
 	push {lr}
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r2, #1
 	ldrb r1, [r0,#9]
 	bic r1, r2
@@ -4012,7 +4012,7 @@ sub_813D714:
 	.byte 0, 0
 	push {lr}
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldr r1, [r0,#0x1c]
 	mov r0, #0x80
 	and r0, r1
@@ -4078,7 +4078,7 @@ sub_813D7B8:
 	push {r5,r7,lr}
 	mov r7, r0
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r5, r0
 	ldrb r0, [r7,#1]
 	cmp r0, #0x14

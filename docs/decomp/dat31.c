@@ -256,7 +256,7 @@ int sub_810C720()
     int v0; // r5
 
     *(*(v0 + 84) + 7) = 10;
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 
@@ -789,7 +789,7 @@ int sub_810CDC0()
         }
         *(v1 + 6) = v3;
     }
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 

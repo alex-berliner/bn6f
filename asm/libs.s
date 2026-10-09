@@ -5126,7 +5126,7 @@ sub_81465BC:
 	bl rfu_setTimerInterrupt
 	bl link_RequestDisconnect_813D8C4
 	mov r0, #4
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	mov r0, #1
 	b loc_81465F6
 	.balign 4, 0
@@ -6841,7 +6841,7 @@ sub_8147228:
 	strb r0, [r5]
 	ldrb r4, [r6,#1]
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, r0
 	mov r0, r4
 	bl sub_813D78C
@@ -6982,7 +6982,7 @@ sub_8147350:
 	push {r4,lr}
 	sub sp, sp, #4
 	mov r0, #4
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	ldr r0, off_81473B4 // =byte_2010280 
 	mov r1, #0
 	strb r1, [r0]
@@ -8417,7 +8417,7 @@ sub_8147E98:
 	strb r1, [r4,#2]
 	ldrb r4, [r5,#1]
 	mov r0, #0
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, r0
 	mov r0, r4
 	bl sub_813D78C
@@ -8538,7 +8538,7 @@ sub_8147F98:
 	push {r4-r6,lr}
 	sub sp, sp, #4
 	mov r0, #4
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	ldr r4, off_8147FF4 // =unk_2010350 
 	mov r0, r4
 	bl sub_81465FC

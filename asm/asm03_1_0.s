@@ -309,11 +309,11 @@ locret_8033A16:
 off_8033A18:
 	.word JumpTable8033A1C
 JumpTable8033A1C:
-	.word noop_8033A7C+1 // (self: *const S2011E30 $r5) -> ()
+	.word callback_noop_8033A7C+1 // (self: *const S2011E30 $r5) -> ()
 	.word sub_8033A80+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033AB0+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033AC4+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_resetState_8033AC4+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033ADC+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033AF0+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
@@ -340,10 +340,10 @@ off_8033A78:
 
 /// Might be put for null checks, do not do anything on index 0
 	thumb_local_start
-noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
+callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 	push {lr}
 	pop {pc}
-	thumb_func_end noop_8033A7C
+	thumb_func_end callback_noop_8033A7C
 
 	thumb_local_start
 sub_8033A80: // (self: * S2011E30 $r5) -> ()
@@ -385,7 +385,7 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	thumb_func_end sub_8033AB0
 
 	thumb_local_start
-sub_8033AC4: // (self: * S2011E30 $r5) -> ()
+battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
 	bl sub_8033B80
@@ -394,7 +394,7 @@ sub_8033AC4: // (self: * S2011E30 $r5) -> ()
 	bl sub_8033C68
 	bl sub_8033BE8
 	pop {pc}
-	thumb_func_end sub_8033AC4
+	thumb_func_end battle_resetState_8033AC4
 
 	thumb_local_start
 sub_8033ADC: // (self: * S2011E30 $r5) -> ()
@@ -1206,7 +1206,7 @@ off_80341DC:
 off_80341E8:
 	.word sub_80342DC+1
 	.word sub_80342E4+1
-	.word sub_80342EC+1
+	.word map_beginEnterMapOnWarpStep4_80342EC+1
 off_80341F4:
 	.word byte_2011A40
 	thumb_func_end ho_jackIn_80341B6
@@ -1358,7 +1358,7 @@ sub_80342E4:
 	thumb_func_end sub_80342E4
 
 	thumb_local_start
-sub_80342EC:
+map_beginEnterMapOnWarpStep4_80342EC:
 	push {lr}
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_MainJumptableIndexPtr]
@@ -1375,7 +1375,7 @@ sub_80342EC:
 	bl map_triggerEnterMapOnWarp_8005C04
 	bl navi_80340F6
 	pop {pc}
-	thumb_func_end sub_80342EC
+	thumb_func_end map_beginEnterMapOnWarpStep4_80342EC
 
 // () -> void
 // [break] jack-in
@@ -1955,7 +1955,7 @@ cutscene_8034BB8:
 	bl sub_8034D7C
 	bl ghostNaviCheck_8035274
 	bl sub_8035054
-	bl sub_8035084
+	bl cutscene_TryStartNotification_8035084
 	bl sub_809CF2C
 
 .doRunCutscene:
@@ -2547,7 +2547,7 @@ off_8035080:
 	thumb_func_end sub_8035054
 
 	thumb_local_start
-sub_8035084:
+cutscene_TryStartNotification_8035084:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_803509E
@@ -2564,7 +2564,7 @@ loc_803509E:
 	.balign 4, 0
 off_80350A4:
 	.word CutsceneScriptNotification_8098BB8 // CutsceneScript
-	thumb_func_end sub_8035084
+	thumb_func_end cutscene_TryStartNotification_8035084
 
 // symdb: Spawns the player's overworld object for a map entry and points the camera at its coordinates.
 // symdb: void owPlayer_80350a8(void) — no meaningful inputs; internally calls

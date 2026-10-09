@@ -4103,7 +4103,7 @@ sub_800D58C:
 loc_800D59C:
 	mov r0, r6
 	mov r1, r7
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	bne loc_800D5B6
 	add r6, r6, r4
@@ -4131,7 +4131,7 @@ loc_800D5C6:
 	beq loc_800D5E4
 	mov r0, r6
 	mov r1, r7
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	beq loc_800D5E0
 	add r6, r6, r4
@@ -4147,8 +4147,8 @@ loc_800D5E4:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800D5BA
 
-	thumb_func_start sub_800D5F0
-sub_800D5F0:
+	thumb_func_start battle_countAdjacentPanelsOfOtherAlliance_800D5F0
+battle_countAdjacentPanelsOfOtherAlliance_800D5F0:
 	push {r4-r7,lr}
 	mov r4, r1
 	mov r5, #0
@@ -4170,7 +4170,7 @@ loc_800D60E:
 	ble loc_800D5FA
 	mov r0, r5
 	pop {r4-r7,pc}
-	thumb_func_end sub_800D5F0
+	thumb_func_end battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 
 // symdb: Returns 1 only when the panel the object stands on has its type/status byte equal to a requested value and that byte differs from the panel's alliance byte.
 // symdb: bool object_checkPanelTypeMatchesValue(object* obj /*r0*/, u32 panelArg /*r1*/, u8 expected
@@ -5025,7 +5025,7 @@ sub_800E468:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	ldrb r0, [r5,#oBattleObject_Unk_0f]
-	bl sub_800E498
+	bl battle_dispatchObjectContactHandler_800E498
 	str r0, [sp,#4]
 	str r1, [sp,#8]
 	str r2, [sp,#0xc]
@@ -5049,7 +5049,7 @@ loc_800E494:
 	thumb_func_end sub_800E468
 
 	thumb_local_start
-sub_800E498:
+battle_dispatchObjectContactHandler_800E498:
 	push {lr}
 	lsl r0, r0, #2
 	ldr r1, off_800E4AC // =off_800E4B0 
@@ -5067,7 +5067,7 @@ off_800E4B0:
 	.word sub_800E548+1
 	.word sub_800E4C8+1
 	.word sub_800E500+1
-	thumb_func_end sub_800E498
+	thumb_func_end battle_dispatchObjectContactHandler_800E498
 
 	thumb_local_start
 sub_800E4C0:
@@ -5966,8 +5966,8 @@ sub_800EB18:
 	pop {pc}
 	thumb_func_end sub_800EB18
 
-	thumb_func_start sub_800EB26
-sub_800EB26:
+	thumb_func_start battle_applyFlattenHitStatus_800EB26
+battle_applyFlattenHitStatus_800EB26:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r0, [r3,#oCollisionData_FlagsFromCollision]
@@ -5988,7 +5988,7 @@ loc_800EB3C:
 	bl object_clearFlag2
 locret_800EB4C:
 	pop {pc}
-	thumb_func_end sub_800EB26
+	thumb_func_end battle_applyFlattenHitStatus_800EB26
 
 	thumb_local_start
 sub_800EB4E:
@@ -6197,7 +6197,7 @@ sub_800EC80: // (enemy_idx: u16) -> u16
 	bl stub_returnZero_8000E30
 	mov r7, r0
 
-	bl sub_8014150
+	bl getCurNaviStatTier_8014150
 	cmp r0, r7
 	ble loc_800EC94 /*+10*/
 

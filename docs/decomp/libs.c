@@ -2371,7 +2371,7 @@ signed int sub_81465BC()
         return 0;
     rfu_setTimerInterrupt(3u, &off_3000E88);
     link_RequestDisconnect_813D8C4();
-    sub_803DE88(4, v0, v1, v2);
+    eLinkState_ResetForNewUse_803DE88(4, v0, v1, v2);
     return 1;
 }
 
@@ -3232,7 +3232,7 @@ LABEL_6:
         goto LABEL_6;
     *v2 = 3;
     v7 = *(v3 + 1);
-    v8 = sub_802D064(0);
+    v8 = getTableEntryPtr32_802D064(0);
     sub_813D78C(v7, v8);
     return v10;
 }
@@ -3303,7 +3303,7 @@ int __fastcall sub_8147350(int a1, int a2, int a3, int a4)
 {
     __int16 v5; // [sp+0h] [bp-Ch]
 
-    sub_803DE88(4, a2, a3, a4);
+    eLinkState_ResetForNewUse_803DE88(4, a2, a3, a4);
     byte_2010280 = 0;
     byte_201033C = 0;
     byte_201028C = 0;
@@ -3852,7 +3852,7 @@ int __fastcall sub_8147E98(_BYTE *a1, int a2)
         *v2 = 3;
         v2[2] = 0;
         v5 = *(v3 + 1);
-        v6 = sub_802D064(0);
+        v6 = getTableEntryPtr32_802D064(0);
         sub_813D78C(v5, v6);
     }
     else if ( v4 == 39 )
@@ -3931,7 +3931,7 @@ int __fastcall sub_8147F98(int a1, int a2, int a3, int a4)
 {
     __int16 v5; // [sp+0h] [bp-14h]
 
-    sub_803DE88(4, a2, a3, a4);
+    eLinkState_ResetForNewUse_803DE88(4, a2, a3, a4);
     sub_81465FC(&unk_2010350);
     word_2010352 = 0;
     zeroFill_813D960();

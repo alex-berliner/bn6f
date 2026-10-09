@@ -207,8 +207,8 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     resetAndInitStruct200BC30_803EBC8();
     zeroFill_813D960();
     reset_flags32_20093A4();
-    sub_804657C();
-    sub_80467D8();
+    battle_initEStructArr_804657C();
+    initWorkArea5Entries_80467D8();
     LOWORD(dword_2009930) = 1;
     ZeroFillByWord(tk->jo_gameSubsysSel, 8);
     logoScreen_init_803D1A8();

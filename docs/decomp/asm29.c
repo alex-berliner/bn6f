@@ -96,7 +96,7 @@ int sub_80A4A98()
 
 
 // 0x80a4ab8
-int sub_80A4AB8()
+int battle_objectEnterState4LatchTilePos_80A4AB8()
 {
     int v0; // r5
 
@@ -166,7 +166,7 @@ int sub_80A4BD4()
 
 
 // 0x80a4bdc
-int sub_80A4BDC()
+int menu_stateDispatch_80A4BDC()
 {
     int v0; // r5
 
@@ -193,12 +193,12 @@ void __noreturn sub_80A4BFC()
     sprite_noShadow(v0);
     sprite_setPallete(*(v0 + 5));
     *(v0 + 8) = 4;
-    sub_80A4C46();
+    sprite_tickWithFlagReset_80A4C46();
 }
 
 
 // 0x80a4c46
-void __noreturn sub_80A4C46()
+void __noreturn sprite_tickWithFlagReset_80A4C46()
 {
     Battle *v0; // r5
 

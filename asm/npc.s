@@ -1066,7 +1066,7 @@ npc_inChatbox_curAction_waitClose_809EBBC:
 	bne locret_809EBDA
 	mov r0, #0
 	strb r0, [r5,#oOverworldNPCObject_Unk_07]
-	bl sub_809F612
+	bl npc_resetToStandardState_809F612
 locret_809EBDA:
 	pop {pc}
 	thumb_func_end npc_inChatbox_curAction_waitClose_809EBBC
@@ -3187,7 +3187,7 @@ npc_beginChatboxState_809F5FC:
 	thumb_func_end npc_beginChatboxState_809F5FC
 
 	thumb_local_start
-sub_809F612:
+npc_resetToStandardState_809F612:
 	push {lr}
 	mov r0, #NPC_CUR_STATE_STANDARD
 	strb r0, [r5,#oOverworldNPCObject_CurState]
@@ -3206,7 +3206,7 @@ loc_809F632:
 	mov r0, #0
 	strb r0, [r5,#oOverworldNPCObject_ChatTriggered]
 	pop {pc}
-	thumb_func_end sub_809F612
+	thumb_func_end npc_resetToStandardState_809F612
 
 // symdb: Tests an overworld NPC object's state flag word for the 0x50000 bit pair and returns 1 if either is set, 0 otherwise.
 // symdb: bool npc_overworld_CheckStateFlags50000_ADDRESS(OverworldNPCObject *npc /* r5 */); also returns

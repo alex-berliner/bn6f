@@ -1,6 +1,6 @@
 
-	thumb_func_start sub_801FE00
-sub_801FE00:
+	thumb_func_start chatbox_resetPrinterState_801FE00
+chatbox_resetPrinterState_801FE00:
 	push {lr}
 	ldr r3, off_80200B4 // =eStruct203F7D8
 	mov r0, #0
@@ -17,7 +17,7 @@ sub_801FE00:
 	ldr r1, off_80200C8 // =0x100 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	pop {pc}
-	thumb_func_end sub_801FE00
+	thumb_func_end chatbox_resetPrinterState_801FE00
 
 	thumb_func_start sub_801FE24
 sub_801FE24:
@@ -29,7 +29,7 @@ sub_801FE24:
 	bl notZero_eByte200AD04
 	beq locret_801FE5C
 	mov r0, #0
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	mov r0, #0x10
 	mov r1, #0
 	mov r2, #2

@@ -5710,7 +5710,7 @@ void __noreturn sub_80BB398()
     *(v0 + 120) = 2;
     v1 = byte_80BB3F4[*(v0 + 22)];
     *(v0 + 108) = v1;
-    sub_800D5F0(v1, *(v0 + 22));
+    battle_countAdjacentPanelsOfOtherAlliance_800D5F0(v1, *(v0 + 22));
 }
 
 
@@ -21736,7 +21736,7 @@ void sub_80C4484()
 
 
 // 0x80c44a8
-int __fastcall sub_80C44A8(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObject56LinkedToOwner_80C44A8(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -25517,7 +25517,7 @@ signed int __fastcall sub_80C6A50(int a1)
 
 
 // 0x80c6aac
-signed int sub_80C6AAC()
+signed int battle_object_destroy_80C6AAC()
 {
     int v0; // r5
     signed int result; // r0
@@ -30685,7 +30685,7 @@ void __noreturn sub_80C9C5C()
 
 
 // 0x80c9ca2
-int sub_80C9CA2()
+int battle_objectCountdownFireAttackTick_80C9CA2()
 {
     int v0; // r5
     int result; // r0
@@ -32050,7 +32050,7 @@ int __fastcall sub_80CAC00(int a1, int a2, int a3, int a4)
     *(v4 + 32) = result;
     if ( (result < 0) ^ v7 )
     {
-        sub_80CAD14(*(v4 + 6), *(v4 + 7), a3, a4);
+        battle_applyElementAttackModIfEnabled_80CAD14(*(v4 + 6), *(v4 + 7), a3, a4);
         *(v4 + 9) = 0;
         result = 0;
         *(v4 + 10) = 0;
@@ -32060,7 +32060,7 @@ int __fastcall sub_80CAC00(int a1, int a2, int a3, int a4)
 
 
 // 0x80cac44
-int sub_80CAC44()
+int battle_objectDestroyWithRelated2Unlink_80CAC44()
 {
     int v0; // r5
     _DWORD *v1; // r1
@@ -32142,7 +32142,7 @@ int __fastcall __noreturn sub_80CAC82(int a1, int a2)
 
 
 // 0x80cad14
-int __fastcall sub_80CAD14(int result, int a2, int a3, int a4)
+int __fastcall battle_applyElementAttackModIfEnabled_80CAD14(int result, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r4
@@ -50927,7 +50927,7 @@ int sub_80D66E2()
         v4 = object_getFrontDirection(v0);
         v5 = *(v0 + 64);
         if ( v4 != v5 )
-            sub_800D5F0(*(v0 + 18) + v5, *(v0 + 22));
+            battle_countAdjacentPanelsOfOtherAlliance_800D5F0(*(v0 + 18) + v5, *(v0 + 22));
         v7 = *(v0 + 64) + *(v0 + 18);
         v8 = *(v0 + 19);
         if ( object_isValidPanel(v7, v8)
@@ -72941,7 +72941,7 @@ void __fastcall __noreturn sub_80E42AA(int a1, int a2, int a3)
     v4 = a2;
     v5 = a3;
     object_getFrontDirection(v3);
-    sub_800D5F0(-5 * (v4 ^ v5) + 6, v4);
+    battle_countAdjacentPanelsOfOtherAlliance_800D5F0(-5 * (v4 ^ v5) + 6, v4);
 }
 
 
@@ -78409,7 +78409,7 @@ int sub_80E75AC()
     int result; // r0
 
     if ( !*(v0 + 11) )
-        sub_800D5F0(*(&dword_80E75FC + 2 * (*(v0 + 22) ^ *(v0 + 23))), *(v0 + 22));
+        battle_countAdjacentPanelsOfOtherAlliance_800D5F0(*(&dword_80E75FC + 2 * (*(v0 + 22) ^ *(v0 + 23))), *(v0 + 22));
     result = *(v0 + 12);
     if ( !*(v0 + 12) )
     {
@@ -85795,7 +85795,7 @@ char *__fastcall sub_80EC44C(int a1, int a2, int a3)
     int v3; // r5
 
     PlaySoundEffect(141, a2, a3);
-    return sub_8015BEC(*(v3 + 22), 255);
+    return battle_setPlayerNaviStatsField0E_8015BEC(*(v3 + 22), 255);
 }
 
 
@@ -86197,7 +86197,7 @@ int sub_80EC8A0()
 
 
 // 0x80ec90e
-void sub_80EC90E()
+void ai_attackTickDelayTimer_80EC90E()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -86309,7 +86309,7 @@ int sub_80EC97C()
 
 
 // 0x80eca0c
-void sub_80ECA0C()
+void aiAttack_tickTimerAndExitWhenDone_80ECA0C()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -113478,7 +113478,7 @@ int sub_80FE1B4()
 
 
 // 0x80fe1fe
-int sub_80FE1FE()
+int battle_aiTickAttackTimer_80FE1FE()
 {
     int v0; // r7
     int result; // r0
@@ -113819,7 +113819,7 @@ void sub_80FE42E()
 
 
 // 0x80fe452
-int sub_80FE452()
+int aiAttackDispatchHandler_80FE452()
 {
     unsigned __int8 *v0; // r7
 
@@ -121021,7 +121021,7 @@ int sub_8103038()
     object_getFrontDirection(v0);
     v1 = -5 * v0->Alliance + 6;
     if ( object_isValidPanel(v1, 2) )
-        sub_800D5F0(v1, v0->Alliance ^ 1);
+        battle_countAdjacentPanelsOfOtherAlliance_800D5F0(v1, v0->Alliance ^ 1);
     v2 = &byte_810308C[8 * v0->Alliance];
     v3 = object_checkPanelParameters(v1, 2, *v2, v2[1]) == 0;
     result = v1;
@@ -132271,7 +132271,7 @@ void sub_8109CBC()
         if ( **(v1 + 48) )
         {
             sub_800AA40(*(v0 + 100));
-            sub_800AA1A(*(v0 + 100));
+            list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
             **(v1 + 48) = 0;
         }
         object_exitAttackState(v0);
@@ -132452,7 +132452,7 @@ void sub_8109E4A()
     if ( !v2 )
     {
         sub_800AA40(*(v0 + 100));
-        sub_800AA1A(*(v0 + 100));
+        list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
         **(v1 + 48) = 0;
         object_exitAttackState(v0);
     }
@@ -132538,10 +132538,10 @@ int battle_objFirstPhaseInitAndCommonUpdate_8109F4C()
     {
         v1 = *(v0 + 22) ^ *(v0 + 23);
         *(v0 + 100) = v1;
-        sub_800AA1A(v1);
+        list_tryAddUniqueEntry_800AA1A(v1);
         *(v0 + 7) = 0;
     }
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 
@@ -132562,7 +132562,7 @@ int battle_objectTickWithExtraHandler_8109F6A()
 int sub_8109F7E()
 {
     sub_8016B02();
-    return sub_8109FA2();
+    return battle_object_onAction8EndClearExtraVars_8109FA2();
 }
 
 
@@ -132570,7 +132570,7 @@ int sub_8109F7E()
 int sub_8109F8A()
 {
     sub_8016B36();
-    return sub_8109FA2();
+    return battle_object_onAction8EndClearExtraVars_8109FA2();
 }
 
 
@@ -132578,12 +132578,12 @@ int sub_8109F8A()
 int sub_8109F96()
 {
     sub_8016B72();
-    return sub_8109FA2();
+    return battle_object_onAction8EndClearExtraVars_8109FA2();
 }
 
 
 // 0x8109fa2
-int sub_8109FA2()
+int battle_object_onAction8EndClearExtraVars_8109FA2()
 {
     int v0; // r5
     int result; // r0
@@ -132595,7 +132595,7 @@ int sub_8109FA2()
         if ( result )
         {
             sub_800AA40(*(v0 + 100));
-            sub_800AA1A(*(v0 + 100));
+            list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
             result = 0;
             *(v0 + 96) = 0;
             *(v0 + 7) = 0;
@@ -133674,7 +133674,7 @@ signed int sub_810ABD0()
 // 0x810abf6
 int sub_810ABF6()
 {
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 

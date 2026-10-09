@@ -2482,12 +2482,12 @@ void __noreturn sub_800D5BA()
         v1 = v0->panelX;
         object_getFrontDirection(v0);
     }
-    sub_800D5F0(v1, v2);
+    battle_countAdjacentPanelsOfOtherAlliance_800D5F0(v1, v2);
 }
 
 
 // 0x800d5f0
-int __fastcall __noreturn sub_800D5F0(int a1, int a2)
+int __fastcall __noreturn battle_countAdjacentPanelsOfOtherAlliance_800D5F0(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5
@@ -2935,7 +2935,7 @@ __int64 sub_800E468()
     __int64 result; // r0
     __int64 v4; // [sp+4h] [bp-14h]
 
-    LODWORD(v4) = sub_800E498(v0[15]);
+    LODWORD(v4) = battle_dispatchObjectContactHandler_800E498(v0[15]);
     HIDWORD(v4) = v1;
     sub_800E5AC(v4 + v0[18], v1 + v0[19]);
     if ( v2 )
@@ -2947,7 +2947,7 @@ __int64 sub_800E468()
 
 
 // 0x800e498
-int __fastcall sub_800E498(int a1)
+int __fastcall battle_dispatchObjectContactHandler_800E498(int a1)
 {
     int v1; // r5
 
@@ -3561,7 +3561,7 @@ int __fastcall sub_800EB18(__int16 a1)
 
 
 // 0x800eb26
-int sub_800EB26()
+int battle_applyFlattenHitStatus_800EB26()
 {
     int v0; // r5
     int v1; // r3
@@ -3774,7 +3774,7 @@ int __fastcall sub_800EC80(int a1)
 
     v7 = a1;
     v1 = stub_returnZero_8000E30();
-    v2 = sub_8014150();
+    v2 = getCurNaviStatTier_8014150();
     if ( v2 > v1 )
         v1 = v2;
     v3 = GetVerActorTyAndAIIdx_80182B4(v7);

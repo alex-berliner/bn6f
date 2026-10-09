@@ -354,8 +354,8 @@ loc_80004C0:
 	bl resetAndInitStruct200BC30_803EBC8
 	bl zeroFill_813D960
 	bl reset_flags32_20093A4 // () -> void
-	bl sub_804657C // () -> void
-	bl sub_80467D8
+	bl battle_initEStructArr_804657C // () -> void
+	bl initWorkArea5Entries_80467D8
 	ldr r0, off_800056C // =dword_2009930
 	mov r1, #1
 	strh r1, [r0]

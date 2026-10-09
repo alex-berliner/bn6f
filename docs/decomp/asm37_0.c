@@ -1661,7 +1661,7 @@ LABEL_8:
         ++v10;
     }
     while ( v10 < 49 );
-    sub_803CED4();
+    petnavi_setStat42ToStat3EPlusCounter_803CED4();
     return sub_813CEA0();
 }
 
@@ -2822,7 +2822,7 @@ char *sub_813D6DC()
     char *result; // r0
     int v1; // r1
 
-    result = sub_802D064(0);
+    result = getTableEntryPtr32_802D064(0);
     v1 = (result << 16) | result[12] | (result[14] << 8);
     return result;
 }
@@ -2836,7 +2836,7 @@ char *sub_813D6F4()
     int v2; // r1
     unsigned __int8 v3; // vf
 
-    result = sub_802D064(0);
+    result = getTableEntryPtr32_802D064(0);
     v1 = 3;
     v2 = 0;
     do
@@ -2855,7 +2855,7 @@ char *sub_813D714()
     char *result; // r0
     int v1; // r1
 
-    result = sub_802D064(0);
+    result = getTableEntryPtr32_802D064(0);
     v1 = *(result + 10) | (result[17] << 16);
     return result;
 }
@@ -2902,7 +2902,7 @@ int __fastcall sub_813D7B8(int a1)
     int result; // r0
 
     v1 = a1;
-    sub_802D064(0);
+    getTableEntryPtr32_802D064(0);
     v2 = *(v1 + 1);
     if ( v2 > 20 )
         return sub_813D5E8(1);

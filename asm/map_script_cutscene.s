@@ -2520,8 +2520,8 @@ cutscene_8036ED4:
 	pop {r4-r7,pc}
 	thumb_func_end cutscene_8036ED4
 
-	thumb_func_start cutscene_8036EFE
-cutscene_8036EFE:
+	thumb_func_start cutscene_forceEndCurrent_8036EFE
+cutscene_forceEndCurrent_8036EFE:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_CutsceneStatePtr]
@@ -2539,7 +2539,7 @@ cutscene_8036EFE:
 	.balign 4, 0
 off_8036F20:
 	.word DummyCutsceneScript
-	thumb_func_end cutscene_8036EFE
+	thumb_func_end cutscene_forceEndCurrent_8036EFE
 
 // symdb: If the cutscene script position holds the magic dummy value 1, clears both the current and saved script positions to NULL.
 // symdb: void cutscene_clearScriptPosIfDummyValue(Toolkit *toolkit @ r10); returns cutscene state ptr in
@@ -3793,7 +3793,7 @@ CutsceneCmd_end_for_map_reload_maybe_8037c64:
 	bne .eventActive
 	bl reloadCurNaviStatBoosts_813c3ac
 .eventActive
-	bl cutscene_8036EFE
+	bl cutscene_forceEndCurrent_8036EFE
 	mov r0, #0
 	pop {pc}
 	thumb_func_end CutsceneCmd_end_for_map_reload_maybe_8037c64

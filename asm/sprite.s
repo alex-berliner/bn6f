@@ -343,8 +343,8 @@ sub_800286C:
 	mov pc, lr
 	thumb_func_end sub_800286C
 
-	thumb_func_start sub_8002874
-sub_8002874:
+	thumb_func_start sprite_loadAnimFrameTiles_8002874
+sprite_loadAnimFrameTiles_8002874:
 	push {r5,lr}
 	ldr r2, [r5,#0x24]
 	ldr r0, [r5,#0x1c]
@@ -366,7 +366,7 @@ locret_8002896:
 	.balign 4, 0
 dword_8002898:
 	.word 0x6010000
-	thumb_func_end sub_8002874
+	thumb_func_end sprite_loadAnimFrameTiles_8002874
 
 	thumb_func_start sprite_resetObjVars_800289C
 sprite_resetObjVars_800289C:

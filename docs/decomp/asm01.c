@@ -1,5 +1,5 @@
 // 0x801fe00
-void __fastcall sub_801FE00(int a1, int a2, int a3)
+void __fastcall chatbox_resetPrinterState_801FE00(int a1, int a2, int a3)
 {
     *eStruct203F7D8 = 0;
     eFlags2036782 = 0;
@@ -27,7 +27,7 @@ int __fastcall sub_801FE24(int a1)
         result = notZero_eByte200AD04();
         if ( v5 )
             return result;
-        sub_803DE88(0, v2, v3, v4);
+        eLinkState_ResetForNewUse_803DE88(0, v2, v3, v4);
         sub_803DCE8(0x10u, 0, 2u, 5u);
     }
     result = 1;

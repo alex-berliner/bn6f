@@ -645,7 +645,7 @@ off_804646C:
 	.word sub_81175D0+1
 	.word sub_8117690+1
 	.word sub_8117780+1
-	.word sub_81178D8+1
+	.word object_dispatchModeHandler_81178D8+1
 	.word sub_8117BC8+1
 	.word objectStateDispatcher_8117D2C+1
 	.word sub_8117EC8+1
@@ -675,7 +675,7 @@ off_804646C:
 	.word sub_811B9B4+1
 	.word 0x0
 	.word sub_811BC44+1
-	.word sub_811BD64+1
+	.word submenu_runModeHandler_811BD64+1
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
@@ -693,8 +693,8 @@ off_804646C:
 	thumb_func_end sub_8046450
 
 // () -> void
-	thumb_func_start sub_804657C
-sub_804657C:
+	thumb_func_start battle_initEStructArr_804657C
+battle_initEStructArr_804657C:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_80466D4 // =eStructArr2008450 
@@ -715,7 +715,7 @@ loc_804658A:
 	.balign 4, 0
 off_804659C:
 	.word 0x528
-	thumb_func_end sub_804657C
+	thumb_func_end battle_initEStructArr_804657C
 
 // (void *a1) -> void
 	thumb_func_start sub_80465A0
@@ -813,7 +813,7 @@ loc_8046634:
 	beq loc_8046644
 	push {r4,r5,r7}
 	add r5, #0x20 
-	bl sub_8002874
+	bl sprite_loadAnimFrameTiles_8002874
 	pop {r4,r5,r7}
 loc_8046644:
 	push {r4,r5,r7}
@@ -835,14 +835,14 @@ loc_8046652:
 	thumb_func_end sub_80465F8
 
 // () -> void
-// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then sub_804657C) as a single combined per-frame update step.
+// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then battle_initEStructArr_804657C) as a single combined per-frame update step.
 // symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
 	thumb_func_start sub_8046664
 sub_8046664:
 	push {r4-r7,lr}
 	bl sub_80466AA // () -> void
-	bl sub_804657C // () -> void
+	bl battle_initEStructArr_804657C // () -> void
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046664
 
@@ -1057,8 +1057,8 @@ off_804679C:
 	.word sub_811E9A0+1
 	thumb_func_end sub_80466D8
 
-	thumb_func_start sub_80467D8
-sub_80467D8:
+	thumb_func_start initWorkArea5Entries_80467D8
+initWorkArea5Entries_80467D8:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_8046928 // =byte_2011860 
@@ -1079,7 +1079,7 @@ loc_80467E6:
 	.balign 4, 0
 off_80467F8:
 	.word 0x1B8
-	thumb_func_end sub_80467D8
+	thumb_func_end initWorkArea5Entries_80467D8
 
 	thumb_func_start sub_80467FC
 sub_80467FC:
@@ -1171,7 +1171,7 @@ loc_804688A:
 	beq loc_804689A
 	push {r5,r7}
 	add r5, #0x20 
-	bl sub_8002874
+	bl sprite_loadAnimFrameTiles_8002874
 	pop {r5,r7}
 loc_804689A:
 	push {r5,r7}
@@ -1196,7 +1196,7 @@ loc_80468A8:
 sub_80468BA:
 	push {r4-r7,lr}
 	bl sub_8046900
-	bl sub_80467D8
+	bl initWorkArea5Entries_80467D8
 	pop {r4-r7,pc}
 	thumb_func_end sub_80468BA
 
@@ -1558,7 +1558,7 @@ off_8046D1C:
 	.word sub_8046E48+1
 	.word sub_8046E84+1
 	.word sub_8046ED2+1
-	.word sub_8047028+1
+	.word chatbox_stepContextScript_8047028+1
 	.word sub_8047050+1
 	.word sub_8047066+1
 	.word sub_804709C+1
@@ -1928,7 +1928,7 @@ off_8047024:
 	thumb_func_end sub_8046ED2
 
 	thumb_local_start
-sub_8047028:
+chatbox_stepContextScript_8047028:
 	push {lr}
 	bl sub_8047134
 	mov r0, #8
@@ -1948,7 +1948,7 @@ loc_8047044:
 loc_804704C:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8047028
+	thumb_func_end chatbox_stepContextScript_8047028
 
 	thumb_local_start
 sub_8047050:
@@ -10666,7 +10666,7 @@ sub_804CAE0:
 	ldr r1, [r1,#oToolkit_GameStatePtr]
 	ldrb r0, [r1,#oGameState_MapGroup]
 	ldrb r1, [r1,#oGameState_MapNumber]
-	bl map_8001708 // (map_group: u8, map_number: u8) -> ()
+	bl map_lookupMapIdByGroupAndNumber_8001708 // (map_group: u8, map_number: u8) -> ()
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	ldrh r0, [r1]

@@ -393,7 +393,7 @@ int __fastcall sub_8046450(int a1)
 
 // 0x804657c
 // () -> void
-void __cdecl sub_804657C()
+void __cdecl battle_initEStructArr_804657C()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -477,7 +477,7 @@ int sub_80465F8()
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
-                    sub_8002874();
+                    sprite_loadAnimFrameTiles_8002874();
             }
             sub_8002694(0, 0);
         }
@@ -494,7 +494,7 @@ int sub_80465F8()
 void __cdecl sub_8046664()
 {
     sub_80466AA();
-    sub_804657C();
+    battle_initEStructArr_804657C();
 }
 
 
@@ -648,7 +648,7 @@ signed int sub_80466D8()
 
 
 // 0x80467d8
-void __cdecl sub_80467D8()
+void __cdecl initWorkArea5Entries_80467D8()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -731,7 +731,7 @@ int sub_8046854()
                     v3 = v4;
                 }
                 if ( v3 & 0x20 )
-                    sub_8002874();
+                    sprite_loadAnimFrameTiles_8002874();
             }
             sub_8002694(0, 0);
         }
@@ -747,7 +747,7 @@ int sub_8046854()
 void sub_80468BA()
 {
     sub_8046900();
-    sub_80467D8();
+    initWorkArea5Entries_80467D8();
 }
 
 
@@ -1031,7 +1031,7 @@ void __fastcall __noreturn sub_8046ED2(int a1)
 
 
 // 0x8047028
-void __fastcall __noreturn sub_8047028(int a1)
+void __fastcall __noreturn chatbox_stepContextScript_8047028(int a1)
 {
     sub_8047134();
 }
@@ -6259,7 +6259,7 @@ signed int __fastcall sub_804CAE0(int a1, int a2, int a3, int a4)
     int v4; // r10
 
     zeroFill_e2009740();
-    map_8001708(
+    map_lookupMapIdByGroupAndNumber_8001708(
         *(*(v4 + oToolkit_GameStatePtr) + oGameState_MapGroup),
         *(*(v4 + oToolkit_GameStatePtr) + oGameState_MapNumber));
     **(v4 + oToolkit_RenderInfoPtr) &= 0xD7FFu;

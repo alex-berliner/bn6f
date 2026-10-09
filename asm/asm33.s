@@ -662,7 +662,7 @@ off_8123670:
 	.word sub_812368C+1
 	thumb_func_end sub_812365C
 
-// symdb: Runs a check (sub_81190F8 with argument 0); on success sets the object's state byte to 4 and advances the object via sub_8123D70, otherwise does nothing.
+// symdb: Runs a check (sprite_testFrameParamsMaskC0_81190F8 with argument 0); on success sets the object's state byte to 4 and advances the object via sub_8123D70, otherwise does nothing.
 // symdb: void sub_8123678(r5 = object pointer); outputs r0 and flags from the last callee; preserves
 // symdb: r4-r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123678.yaml
@@ -670,7 +670,7 @@ off_8123670:
 sub_8123678:
 	push {lr}
 	mov r0, #0
-	bl sub_81190F8
+	bl sprite_testFrameParamsMaskC0_81190F8
 	beq locret_812368A
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -11810,7 +11810,7 @@ sub_8129248:
 	strh r1, [r0,#0x16]
 	strh r1, [r0,#0x18]
 	strh r1, [r0,#0x1a]
-	bl sub_812AF18
+	bl scene_loadAndStartCutscene_812AF18
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -13540,7 +13540,7 @@ sub_8129F48:
 	bl crt0_entry_trampoline_8000288
 	mov r0, #4
 	strb r0, [r5,#2]
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	bl sub_803DEAC
 	mov r0, #0x10
 	mov r1, #3
@@ -13638,7 +13638,7 @@ sub_812A008:
 	bl sub_81465BC
 	tst r0, r0
 	beq locret_812A026
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	mov r0, #4
 	strb r0, [r5,#2]
 	mov r0, #3
@@ -15587,7 +15587,7 @@ sub_812AF14:
 	thumb_func_end sub_812AF14
 
 	thumb_local_start
-sub_812AF18:
+scene_loadAndStartCutscene_812AF18:
 	push {r4-r7,lr}
 	bl sub_812AF3C
 	// initRefs
@@ -15600,7 +15600,7 @@ sub_812AF18:
 	bl chatbox_8040818
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812AF18
+	thumb_func_end scene_loadAndStartCutscene_812AF18
 
 	thumb_func_start sub_812AF3C
 sub_812AF3C:

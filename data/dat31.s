@@ -395,7 +395,7 @@ sub_810C720::
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0xa
 	strb r1, [r0,#oCollisionData_StaminaDamageCounterDisabler]
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end sub_810C720
 
@@ -1168,7 +1168,7 @@ sub_810CDC0::
 loc_810CDE2::
 	strb r0, [r6,#oAIState_Unk_06]
 loc_810CDE4::
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end sub_810CDC0
 
@@ -1449,7 +1449,7 @@ byte_810D034::
 	.byte 0xFF, 0xFF, 0xFF
 off_810D0F4::
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810D118+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -1959,7 +1959,7 @@ off_810D550::
 	.word 0x184
 off_810D554::
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810D590+1
 	.word sub_80166AE+1
 	.word sub_810D5A6+1
@@ -2361,7 +2361,7 @@ locret_810D90C::
 	.balign 4, 0
 off_810D910::
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810D970+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1

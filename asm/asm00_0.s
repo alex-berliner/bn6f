@@ -2912,8 +2912,8 @@ byte_8001618:
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
 	thumb_func_end sub_80015FC
 
-	thumb_func_start map_8001708
-map_8001708: // (map_group: u8, map_number: u8) -> ()
+	thumb_func_start map_lookupMapIdByGroupAndNumber_8001708
+map_lookupMapIdByGroupAndNumber_8001708: // (map_group: u8, map_number: u8) -> ()
 	push {lr}
 
 	cmp r0, #INTERNET_MAP_GROUP_START
@@ -2942,7 +2942,7 @@ off_8001724:
 	.word off_803385C // [*const [u8]; REAL_WORLD_NUM_GROUPS]
 off_8001728:
 	.word off_8033878 // [Nullable<*const [u8]>; REAL_WORLD_NUM_GROUPS]
-	thumb_func_end map_8001708
+	thumb_func_end map_lookupMapIdByGroupAndNumber_8001708
 
 	thumb_func_start render_800172C
 render_800172C:

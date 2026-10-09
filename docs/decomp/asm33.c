@@ -313,7 +313,7 @@ signed int sub_8123678()
     signed int result; // r0
     char v2; // zf
 
-    result = sub_81190F8(0);
+    result = sprite_testFrameParamsMaskC0_81190F8(0);
     if ( !v2 )
     {
         *(v0 + 3) = 4;
@@ -6492,7 +6492,7 @@ int __fastcall sub_8129248(int a1, int a2, int a3, int a4)
     v10[11] = 0;
     v10[12] = 0;
     v10[13] = 0;
-    sub_812AF18();
+    scene_loadAndStartCutscene_812AF18();
     v4[1] = 4;
     v4[2] = 0;
     byte_200BC3C = 60;
@@ -9499,7 +9499,7 @@ void sub_812AF14()
 
 
 // 0x812af18
-int sub_812AF18()
+int scene_loadAndStartCutscene_812AF18()
 {
     sub_812AF3C();
     decompAndCopyData(&off_812B08C);

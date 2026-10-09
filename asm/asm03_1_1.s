@@ -8286,8 +8286,8 @@ off_803CD70:
 	.word TextScriptCommError873B9E0
 	thumb_func_end RunTextScriptCommError_803CD64
 
-	thumb_func_start sub_803CD74
-sub_803CD74:
+	thumb_func_start keyItems_ResetInventoryAndGrantScenarioItems_803CD74
+keyItems_ResetInventoryAndGrantScenarioItems_803CD74:
 	push {r4-r7,lr}
 	mov r0, r10
 	// memBlock
@@ -8305,7 +8305,7 @@ sub_803CD74:
 	.balign 4, 0
 off_803CD94:
 	.word 0x190
-	thumb_func_end sub_803CD74
+	thumb_func_end keyItems_ResetInventoryAndGrantScenarioItems_803CD74
 
 	thumb_func_start GiveItem
 GiveItem:
@@ -8482,8 +8482,8 @@ SetCurNaviHPToFull:
 	pop {r4-r7,pc}
 	thumb_func_end SetCurNaviHPToFull
 
-	thumb_func_start sub_803CED4
-sub_803CED4:
+	thumb_func_start petnavi_setStat42ToStat3EPlusCounter_803CED4
+petnavi_setStat42ToStat3EPlusCounter_803CED4:
 	push {r4,r6,r7,lr}
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
@@ -8499,7 +8499,7 @@ sub_803CED4:
 	mov r1, #0x42
 	bl SetCurPETNaviStatsHword
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_803CED4
+	thumb_func_end petnavi_setStat42ToStat3EPlusCounter_803CED4
 
 	thumb_local_start
 sub_803CEF8:
@@ -9625,8 +9625,8 @@ locret_803DE80:
 	.pool
 	thumb_func_end sub_803DE72
 
-	thumb_func_start sub_803DE88
-sub_803DE88:
+	thumb_func_start eLinkState_ResetForNewUse_803DE88
+eLinkState_ResetForNewUse_803DE88:
 	push {r4-r7,lr}
 	mov r4, r0
 	ldr r0, off_803DF9C // =eLinkState
@@ -9642,7 +9642,7 @@ sub_803DE88:
 	str r4, [r6,#0x58] // (dword_2009A28 - 0x20099d0)
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803DE88
+	thumb_func_end eLinkState_ResetForNewUse_803DE88
 
 // symdb: Trivial tail-call wrapper that immediately invokes sub_8144240 and returns its result to the caller.
 // symdb: Next sub_803DEAC(void) — entry with lr as return address; r4-r7 are passed through and preserved
@@ -13327,7 +13327,7 @@ sub_803F6B0:
 	bl ZeroFillByHalfword
 	bl crt0_entry_trampoline_8000288
 	mov r0, #0
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	bl sub_803DEAC
 	mov r0, #0x10
 	mov r1, #2
@@ -13357,7 +13357,7 @@ sub_803F6F4:
 	mov r1, #0x20
 	bl ZeroFillByHalfword
 	mov r0, #0
-	bl sub_803DE88
+	bl eLinkState_ResetForNewUse_803DE88
 	mov r0, #0x10
 	mov r1, #2
 	mov r2, #4
@@ -13456,7 +13456,7 @@ loc_803F7C2:
 	bl rollRngSeedIntoExtraToolkitPtrs_8006e26
 	bl info_copyTimestampToWorkArea_803F8B2
 	bl s2001c04_ComputeChecksumOfEwramRegion_803F894
-	bl sub_803FB04
+	bl save_CommitWorkBufferToGamePak_803FB04
 	ldr r0, off_803F888 // =timer_2000000
 	ldr r1, dword_803F890 // =0x6710
 	bl encryption_xorBufferWithKey_8006df6
@@ -13916,7 +13916,7 @@ loc_803FAF6:
 	thumb_func_end rng_FillSeedBuffer_803FAEE
 
 	thumb_local_start
-sub_803FB04:
+save_CommitWorkBufferToGamePak_803FB04:
 	push {r0-r7,lr}
 	ldr r4, off_803FB18 // =dword_20067C0
 	str r0, [r4]
@@ -13934,7 +13934,7 @@ dword_803FB20:
 	.word 0xE007F80
 off_803FB24:
 	.word 0x80
-	thumb_func_end sub_803FB04
+	thumb_func_end save_CommitWorkBufferToGamePak_803FB04
 
 	thumb_func_start sub_803FB28
 sub_803FB28:

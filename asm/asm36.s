@@ -17378,7 +17378,7 @@ sub_81387D8:
 	bl zeroFill_8003AB2
 	bl eventflags_ClearTwoHalfwordsAt2DE_802F0D8
 	bl eventFlags_ClearRangeAt2C8_802F0F4
-	bl cutscene_8036EFE
+	bl cutscene_forceEndCurrent_8036EFE
 	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl sub_809F90C
 

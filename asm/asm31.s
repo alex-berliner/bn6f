@@ -6757,7 +6757,7 @@ sub_80BB398:
 loc_80BB3AC:
 	mov r0, r6
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	cmp r0, #0
 	beq loc_80BB3BC
 	sub r6, r6, r4
@@ -26544,8 +26544,8 @@ locret_80C44A6:
 	pop {pc}
 	thumb_func_end sub_80C4484
 
-	thumb_func_start sub_80C44A8
-sub_80C44A8:
+	thumb_func_start battle_spawnObject56LinkedToOwner_80C44A8
+battle_spawnObject56LinkedToOwner_80C44A8:
 	push {lr}
 	push {r5}
 	mov r0, #0x56 
@@ -26562,7 +26562,7 @@ sub_80C44A8:
 	strb r1, [r0,#oObjectHeader_Flags]
 locret_80C44C6:
 	pop {pc}
-	thumb_func_end sub_80C44A8
+	thumb_func_end battle_spawnObject56LinkedToOwner_80C44A8
 
 	thumb_func_start sub_80C44C8
 sub_80C44C8:
@@ -31273,7 +31273,7 @@ off_80C6A44:
 	.word off_80C6A48
 off_80C6A48:
 	.word sub_80C6A50+1
-	.word sub_80C6AAC+1
+	.word battle_object_destroy_80C6AAC+1
 	thumb_func_end sub_80C6A34
 
 	thumb_local_start
@@ -31325,13 +31325,13 @@ loc_80C6AA6:
 	thumb_func_end sub_80C6A50
 
 	thumb_local_start
-sub_80C6AAC:
+battle_object_destroy_80C6AAC:
 	push {lr}
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_80C6AAC
+	thumb_func_end battle_object_destroy_80C6AAC
 
 // symdb: Refreshes a battle object's hitbox from its extra-vars data, reapplies the panel element effect on it, and optionally flags a collision status effect.
 // symdb: battle_refreshObjectCollisionFromExtraVars(r5 = battle object; r4, r6, r7, r10 also live on
@@ -32343,7 +32343,7 @@ off_80C7280:
 	.word off_80C7284
 off_80C7284:
 	.word sub_80C72B0+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80C734E+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -37962,7 +37962,7 @@ loc_80C9C7A:
 off_80C9C8C:
 	.word off_80C9C90
 off_80C9C90:
-	.word sub_80C9CA2+1
+	.word battle_objectCountdownFireAttackTick_80C9CA2+1
 	.word battle_objectDestroyWhenAnimFrameDone_80C9CC4+1
 loc_80C9C98:
 	bl object_clearCollisionRegion // () -> void
@@ -37972,7 +37972,7 @@ loc_80C9C98:
 	thumb_func_end sub_80C9C5C
 
 	thumb_local_start
-sub_80C9CA2:
+battle_objectCountdownFireAttackTick_80C9CA2:
 	push {r4,r6,lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
@@ -37989,7 +37989,7 @@ sub_80C9CA2:
 	strb r0, [r5,#oBattleObject_CurAction]
 locret_80C9CC2:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80C9CA2
+	thumb_func_end battle_objectCountdownFireAttackTick_80C9CA2
 
 // symdb: Ends a battle object's death animation — once the current animation frame no longer carries the 0x80 flag, clears its collision region and moves it into the destroyed state.
 // symdb: void battle_objectDestroyWhenAnimFrameDone(BattleObject* obj /* r5 */); clobbers r0-r3, lr;
@@ -39862,7 +39862,7 @@ off_80CAB78:
 off_80CAB7C:
 	.word battle_object_SetStateUpdatePhase_80CAB88+1
 	.word sub_80CAB90+1
-	.word sub_80CAC44+1
+	.word battle_objectDestroyWithRelated2Unlink_80CAC44+1
 	thumb_func_end t3_0x36_80CAB68
 
 // symdb: Flags a battle object's current state so its update step will run next.
@@ -39954,7 +39954,7 @@ sub_80CAC00:
 	bl sub_80CAC82
 	strb r2, [r5,#oBattleObject_Param3]
 	strb r3, [r5,#oBattleObject_Param4]
-	bl sub_80CAD14
+	bl battle_applyElementAttackModIfEnabled_80CAD14
 	ldrb r0, [r5,#oBattleObject_Param1]
 	ldr r1, off_80CAC3C // =dword_80CAC40
 	ldrb r0, [r1,r0]
@@ -39967,7 +39967,7 @@ loc_80CAC22:
 	bge locret_80CAC3A
 	ldrb r0, [r5,#oBattleObject_Param3]
 	ldrb r1, [r5,#oBattleObject_Param4]
-	bl sub_80CAD14
+	bl battle_applyElementAttackModIfEnabled_80CAD14
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
@@ -39982,7 +39982,7 @@ dword_80CAC40:
 	thumb_func_end sub_80CAC00
 
 	thumb_local_start
-sub_80CAC44:
+battle_objectDestroyWithRelated2Unlink_80CAC44:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_RelatedObject2Ptr]
 	ldr r0, [r1,#oBattleObject_ObjectHeader]
@@ -39993,7 +39993,7 @@ sub_80CAC44:
 loc_80CAC52:
 	bl object_genericDestroy
 	pop {pc}
-	thumb_func_end sub_80CAC44
+	thumb_func_end battle_objectDestroyWithRelated2Unlink_80CAC44
 
 	thumb_local_start
 sub_80CAC58:
@@ -40092,7 +40092,7 @@ byte_80CAD04:
 	thumb_func_end sub_80CAC82
 
 	thumb_local_start
-sub_80CAD14:
+battle_applyElementAttackModIfEnabled_80CAD14:
 	push {r4,r6,lr}
 	tst r0, r0
 	beq locret_80CAD24
@@ -40103,7 +40103,7 @@ sub_80CAD14:
 locret_80CAD24:
 	pop {r4,r6,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80CAD14
+	thumb_func_end battle_applyElementAttackModIfEnabled_80CAD14
 
 	thumb_func_start t3_0x37_80CAD28
 t3_0x37_80CAD28:
@@ -42100,7 +42100,7 @@ off_80CBC88:
 	.word off_80CBC8C
 off_80CBC8C:
 	.word sub_80CBCB0+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CBDE6+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -44743,7 +44743,7 @@ off_80CD0B4:
 	.word off_80CD0B8
 off_80CD0B8:
 	.word sub_80CD0E0+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CD1BE+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -45455,7 +45455,7 @@ off_80CD628:
 	.word off_80CD62C
 off_80CD62C:
 	.word sub_80CD654+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CD700+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -45912,7 +45912,7 @@ off_80CD9F0:
 	.word off_80CD9F4
 off_80CD9F4:
 	.word sub_80CDA1C+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CDBE8+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -46447,7 +46447,7 @@ off_80CDE1C:
 	.word off_80CDE20
 off_80CDE20:
 	.word sub_80CDE68+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CDE44+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -49056,7 +49056,7 @@ off_80CF1B4:
 	.word off_80CF1B8
 off_80CF1B8:
 	.word sub_80CF250+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CF1DC+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -50135,7 +50135,7 @@ off_80CFA44:
 	.word off_80CFA48
 off_80CFA48:
 	.word sub_80CFA6C+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CFB2C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -55620,7 +55620,7 @@ off_80D2344:
 	.word jt_80D2348
 jt_80D2348:
 	.word sub_80D236C+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D239C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -58124,7 +58124,7 @@ off_80D35B4:
 	.word off_80D35B8
 off_80D35B8:
 	.word sub_80D35E0+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D36CE+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -59664,7 +59664,7 @@ off_80D416C:
 	.word off_80D4170
 off_80D4170:
 	.word sub_80D4198+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D42E8+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -60507,7 +60507,7 @@ off_80D4798:
 	.word off_80D479C
 off_80D479C:
 	.word sub_80D47C0+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D4888+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -61251,7 +61251,7 @@ off_80D4D5C:
 	.word off_80D4D60
 off_80D4D60:
 	.word sub_80D4D88+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D4EFC+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -64582,7 +64582,7 @@ loc_80D66F4:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	add r0, r0, r1
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	beq loc_80D6752
 loc_80D6714:
@@ -66733,7 +66733,7 @@ off_80D7794:
 	.word off_80D7798
 off_80D7798:
 	.word sub_80D77D4+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D787C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -68387,7 +68387,7 @@ off_80D8504:
 	.word off_80D8508
 off_80D8508:
 	.word sub_80D852C+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D855C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -72109,7 +72109,7 @@ off_80DA130:
 	.word off_80DA134
 off_80DA134:
 	.word sub_80DA15C+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80DA2EC+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -74329,7 +74329,7 @@ off_80DB170:
 	.word off_80DB174
 off_80DB174:
 	.word sub_80DB198+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80DB252+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -93628,7 +93628,7 @@ sub_80E42AA:
 loc_80E42D2:
 	ldr r0, [sp,#0x10]
 	ldr r1, [sp,#4]
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	bne loc_80E42EE
 	ldr r0, [sp,#0x10]
@@ -100724,7 +100724,7 @@ sub_80E75AC:
 	add r4, r4, r0
 	ldrb r0, [r4]
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	beq loc_80E75EC
 	ldrb r0, [r4]
@@ -110654,7 +110654,7 @@ sub_80EC44C:
 	bl PlaySoundEffect
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xff
-	bl sub_8015BEC
+	bl battle_setPlayerNaviStatsField0E_8015BEC
 	pop {pc}
 	thumb_func_end sub_80EC44C
 
@@ -111210,7 +111210,7 @@ off_80EC894:
 	.word off_80EC898
 off_80EC898:
 	.word sub_80EC8A0+1
-	.word sub_80EC90E+1
+	.word ai_attackTickDelayTimer_80EC90E+1
 	thumb_func_end battle_aiAttackStateDispatch_80EC884
 
 	thumb_local_start
@@ -111268,7 +111268,7 @@ locret_80EC90C:
 	thumb_func_end sub_80EC8A0
 
 	thumb_local_start
-sub_80EC90E:
+ai_attackTickDelayTimer_80EC90E:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -111289,7 +111289,7 @@ loc_80EC91E:
 	bl object_exitAttackState
 locret_80EC932:
 	pop {pc}
-	thumb_func_end sub_80EC90E
+	thumb_func_end ai_attackTickDelayTimer_80EC90E
 
 	thumb_local_start
 sub_80EC934:
@@ -111322,7 +111322,7 @@ off_80EC970:
 	.word off_80EC974
 off_80EC974:
 	.word sub_80EC97C+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80EC960
 
 	thumb_local_start
@@ -111402,7 +111402,7 @@ dword_80ECA08:
 	thumb_func_end sub_80EC97C
 
 	thumb_local_start
-sub_80ECA0C:
+aiAttack_tickTimerAndExitWhenDone_80ECA0C:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -111424,7 +111424,7 @@ dword_80ECA2C:
 	.word 0x300000
 off_80ECA30:
 	.word PanelOffsetListsPointerTable
-	thumb_func_end sub_80ECA0C
+	thumb_func_end aiAttack_tickTimerAndExitWhenDone_80ECA0C
 
 	thumb_local_start
 sub_80ECA34:
@@ -111780,7 +111780,7 @@ off_80ECCC0:
 	.word off_80ECCC4
 off_80ECCC4:
 	.word sub_80ECCCC+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80ECCB0
 
 	thumb_local_start
@@ -112538,7 +112538,7 @@ off_80ED26C:
 	.word off_80ED270
 off_80ED270:
 	.word sub_80ED278+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80ED25C
 
 	thumb_local_start
@@ -112621,7 +112621,7 @@ off_80ED308:
 	.word off_80ED30C
 off_80ED30C:
 	.word sub_80ED314+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80ED2F8
 
 	thumb_local_start
@@ -113084,7 +113084,7 @@ off_80ED65C:
 	.word off_80ED660
 off_80ED660:
 	.word sub_80ED668+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80ED64C
 
 	thumb_local_start
@@ -113165,7 +113165,7 @@ off_80ED6F4:
 	.word off_80ED6F8
 off_80ED6F8:
 	.word sub_80ED700+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80ED6E6
 
 	thumb_local_start
@@ -117189,7 +117189,7 @@ off_80EF4C4:
 	.word off_80EF4C8
 off_80EF4C8:
 	.word sub_80EF4D0+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80EF4B4
 
 	thumb_local_start
@@ -118687,7 +118687,7 @@ off_80F00A4:
 	.word off_80F00A8
 off_80F00A8:
 	.word sub_80F00B0+1
-	.word sub_80ECA0C+1
+	.word aiAttack_tickTimerAndExitWhenDone_80ECA0C+1
 	thumb_func_end sub_80F0094
 
 	thumb_local_start
@@ -146360,7 +146360,7 @@ off_80FDDB0:
 	.word sub_80FE0D4+1
 	.word sub_80FE21E+1
 	.word sub_80FE330+1
-	.word sub_80FE452+1
+	.word aiAttackDispatchHandler_80FE452+1
 	thumb_func_end sub_80FDCA4
 
 	thumb_local_start
@@ -146747,7 +146747,7 @@ off_80FE0E8:
 	.word sub_80FE0F8+1
 	.word sub_80FE130+1
 	.word sub_80FE1B4+1
-	.word sub_80FE1FE+1
+	.word battle_aiTickAttackTimer_80FE1FE+1
 	thumb_func_end sub_80FE0D4
 
 	thumb_local_start
@@ -146877,7 +146877,7 @@ locret_80FE1FC:
 	thumb_func_end sub_80FE1B4
 
 	thumb_local_start
-sub_80FE1FE:
+battle_aiTickAttackTimer_80FE1FE:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -146895,7 +146895,7 @@ loc_80FE210:
 	bl sub_801171C
 locret_80FE21C:
 	pop {pc}
-	thumb_func_end sub_80FE1FE
+	thumb_func_end battle_aiTickAttackTimer_80FE1FE
 
 	thumb_local_start
 sub_80FE21E:
@@ -147225,7 +147225,7 @@ locret_80FE450:
 	thumb_func_end sub_80FE42E
 
 	thumb_local_start
-sub_80FE452:
+aiAttackDispatchHandler_80FE452:
 	push {r7,lr}
 	ldr r1, off_80FE460 // =off_80FE464 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -147238,7 +147238,7 @@ off_80FE460:
 off_80FE464:
 	.word sub_80FE46C+1
 	.word sub_80FE4AC+1
-	thumb_func_end sub_80FE452
+	thumb_func_end aiAttackDispatchHandler_80FE452
 
 	thumb_local_start
 sub_80FE46C:
@@ -157003,7 +157003,7 @@ loc_810304A:
 	mov r1, #1
 	eor r1, r0
 	mov r0, r4
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	tst r0, r0
 	bne loc_810306A
 	add r4, r4, r7
@@ -170681,7 +170681,7 @@ locret_8109B72:
 	.balign 4, 0
 off_8109B74:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -170781,7 +170781,7 @@ sub_8109CBC:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl sub_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA1A
+	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
 	ldr r1, [r7,#oAIAttackVars_Unk_30]
 	str r0, [r1]
@@ -171005,7 +171005,7 @@ loc_8109E5A:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl sub_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA1A
+	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
 	ldr r1, [r7,#oAIAttackVars_Unk_30]
 	str r0, [r1]
@@ -171145,11 +171145,11 @@ battle_objFirstPhaseInitAndCommonUpdate_8109F4C:
 	ldrb r1, [r5,#oBattleObject_DirectionFlip]
 	eor r0, r1
 	str r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA1A
+	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_Param4]
 loc_8109F64:
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end battle_objFirstPhaseInitAndCommonUpdate_8109F4C
 
@@ -171172,15 +171172,15 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
-// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
+// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then battle_object_onAction8EndClearExtraVars_8109FA2) and returns.
 // symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
-// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
+// symdb: whatever battle_object_onAction8EndClearExtraVars_8109FA2 (and sub_8016B02) leave behind
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:
 	push {lr}
 	bl sub_8016B02
-	bl sub_8109FA2
+	bl battle_object_onAction8EndClearExtraVars_8109FA2
 	pop {pc}
 	thumb_func_end sub_8109F7E
 
@@ -171188,7 +171188,7 @@ sub_8109F7E:
 sub_8109F8A:
 	push {lr}
 	bl sub_8016B36
-	bl sub_8109FA2
+	bl battle_object_onAction8EndClearExtraVars_8109FA2
 	pop {pc}
 	thumb_func_end sub_8109F8A
 
@@ -171196,12 +171196,12 @@ sub_8109F8A:
 sub_8109F96:
 	push {lr}
 	bl sub_8016B72
-	bl sub_8109FA2
+	bl battle_object_onAction8EndClearExtraVars_8109FA2
 	pop {pc}
 	thumb_func_end sub_8109F96
 
 	thumb_local_start
-sub_8109FA2:
+battle_object_onAction8EndClearExtraVars_8109FA2:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	cmp r0, #8
@@ -171212,13 +171212,13 @@ sub_8109FA2:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl sub_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA1A
+	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
 	strb r0, [r5,#oBattleObject_Param4]
 locret_8109FC2:
 	pop {pc}
-	thumb_func_end sub_8109FA2
+	thumb_func_end battle_object_onAction8EndClearExtraVars_8109FA2
 
 // symdb: Per-frame phase bookkeeping for a battle object: clears the object's Param4 byte when the object is still in phase 0, then runs the shared per-object update routine.
 // symdb: void battle_object_updatePhaseTick(battleObject* obj /* r5 */)  // sets NZCV from sub_8016CE8's
@@ -171919,7 +171919,7 @@ sub_810A534:
 	.balign 4, 0
 off_810A550:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810A5C2+1
 	.word sub_80166AE+1
 	.word sub_810A5D6+1
@@ -172655,7 +172655,7 @@ locret_810ABF4:
 	thumb_local_start
 sub_810ABF6:
 	push {lr}
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end sub_810ABF6
 
@@ -173515,7 +173515,7 @@ byte_810B2C8:
 	.byte 0x80, 0x0, 0x88, 0xF, 0x0, 0x0, 0x0, 0x0
 off_810B2D0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810B338+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -174559,7 +174559,7 @@ off_810BB90:
 	.word byte_810BBE8
 off_810BB94:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810BE74+1
 	.word sub_80166AE+1
 	.word sub_810BBF6+1
@@ -175238,7 +175238,7 @@ byte_810C164:
 	.byte 0x83, 0xFF, 0x5, 0x32, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_810C170:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1

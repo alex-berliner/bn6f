@@ -5269,7 +5269,7 @@ int sub_8111DF0()
     int v0; // r6
 
     *(v0 + 4) = 1;
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 
@@ -7128,7 +7128,7 @@ int sub_81134B0()
         *(v1 + 18) = 9;
         *(v1 + 23) = 1;
         v5 = v0->panelX + object_getFrontDirection(v0);
-        sub_800D5F0(v5, v0->Alliance);
+        battle_countAdjacentPanelsOfOtherAlliance_800D5F0(v5, v0->Alliance);
     }
     return result;
 }
@@ -9160,7 +9160,7 @@ int __fastcall battleCoordCalc_8114F6A(_DWORD *a1, int a2, int a3, int a4)
 int snakearmAI_setMovingThenCall_sub_80165B8_8114FAA()
 {
     object_setFlag1(64);
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 
@@ -9531,7 +9531,7 @@ int sub_811555C()
     GetPositiveSignedRNG();
     *(v0 + 96) = (v1 & 2) - 1;
     *(v0 + 108) = 0;
-    return sub_80165B8();
+    return battle_ResetObjectActionState_80165B8();
 }
 
 
@@ -10575,7 +10575,7 @@ void sub_81162AA()
 // 0x81162ae
 int sub_81162AE()
 {
-    sub_80165B8();
+    battle_ResetObjectActionState_80165B8();
     object_setFlag1(0x800000);
     return object_clearCollisionRegion();
 }
@@ -11039,7 +11039,7 @@ int sub_81169D8()
 
 
 // 0x8116a04
-int sub_8116A04()
+int battle_reloadObjectSprite_8116A04()
 {
     Battle *v0; // r5
     int result; // r0
@@ -11162,12 +11162,12 @@ void __noreturn sub_8116B00()
     sprite_setCoordinates(v5, v4);
     *(v0 + 13) = 1;
     *(v0 + 12) = 0;
-    sub_8116B9C();
+    sprite_dispatchVariantUpdate_8116B9C();
 }
 
 
 // 0x8116b9c
-void __noreturn sub_8116B9C()
+void __noreturn sprite_dispatchVariantUpdate_8116B9C()
 {
     Battle *v0; // r5
 
@@ -11217,7 +11217,7 @@ signed int sub_8116BFC()
 
 
 // 0x8116c14
-int sub_8116C14()
+int sprite_scrollStepAndCullOffscreen_8116C14()
 {
     int v0; // r7
     int result; // r0
@@ -11370,12 +11370,12 @@ void __fastcall __noreturn sub_8116D00(int a1, int a2)
     }
     *(v2 + 9) = v5;
     sprite_setCoordinates(v4, 151);
-    sub_8116D6C();
+    battle_objectRunBehaviorStep_8116D6C();
 }
 
 
 // 0x8116d6c
-void __noreturn sub_8116D6C()
+void __noreturn battle_objectRunBehaviorStep_8116D6C()
 {
     Battle *v0; // r5
 
@@ -11385,7 +11385,7 @@ void __noreturn sub_8116D6C()
 
 
 // 0x8116d90
-int sub_8116D90()
+int battle_moveSpriteLeftUntilX170_8116D90()
 {
     int v0; // r5
     int result; // r0
@@ -12328,7 +12328,7 @@ int sub_81178AC()
 
 
 // 0x81178d8
-int sub_81178D8()
+int object_dispatchModeHandler_81178D8()
 {
     int v0; // r5
 
@@ -14522,7 +14522,7 @@ int sub_81190E0()
 
 
 // 0x81190f8
-signed int __fastcall sub_81190F8(int a1)
+signed int __fastcall sprite_testFrameParamsMaskC0_81190F8(int a1)
 {
     signed int v1; // r4
     char v2; // zf
@@ -17808,7 +17808,7 @@ int sub_811BD3C()
 
 
 // 0x811bd64
-int sub_811BD64()
+int submenu_runModeHandler_811BD64()
 {
     int v0; // r5
     int v1; // r10

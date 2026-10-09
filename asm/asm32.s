@@ -913,7 +913,7 @@ off_810E110:
 	.byte 0, 0, 0, 0
 off_810E120:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810E37A+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -1700,7 +1700,7 @@ byte_810E7A8:
 	.byte 0x10, 0xFF, 0x5, 0x4, 0x0, 0x0, 0x0, 0x0
 off_810E7B0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810E8DA+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -2646,7 +2646,7 @@ byte_810F008:
 	.byte 0x0, 0xA0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_810F010:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -3024,7 +3024,7 @@ locret_810F39A:
 	.balign 4, 0
 off_810F39C:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810F402+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -4067,7 +4067,7 @@ dword_810FCDC:
 	.word 0x800000
 off_810FCE0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810FDF0+1
 	.word sub_80166AE+1
 	.word sub_810FD70+1
@@ -4996,7 +4996,7 @@ dword_81104D0:
 	.word 0x10011104
 off_81104D4:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_8110518+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -6086,7 +6086,7 @@ byte_8110DB0:
 	.byte 0x0, 0x0, 0x80, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_8110DC0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -6663,7 +6663,7 @@ byte_8111328:
 	.byte 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x0, 0x0
 off_8111330:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -7967,7 +7967,7 @@ sub_8111DF0:
 	push {lr}
 	mov r0, #1
 	strh r0, [r6,#oAIState_Unk_04]
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end sub_8111DF0
 
@@ -8402,7 +8402,7 @@ locret_81121EC:
 	.balign 4, 0
 off_81121F0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -9289,7 +9289,7 @@ byte_8112998:
 	.byte 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_81129A0:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_8112A1E+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -10126,7 +10126,7 @@ ForGunner_8113078:
 	// 0x00 (0x00) (CurAction -> 0x01)
 	.word RunSpawnAnimationMaybe_8016380+1
 	// 0x04 (0x01) (CurAction -> 0x08)
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	// 0x08 (0x02)
 	// disabling this causes game to freeze on Gunner being hit a deadly hit (that would cause its HP to go to 0)
 	.word sub_80165C2+1
@@ -10623,7 +10623,7 @@ loc_81134C4:
 loc_81134E2:
 	mov r0, r6
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_800D5F0
+	bl battle_countAdjacentPanelsOfOtherAlliance_800D5F0
 	cmp r0, #3
 	beq loc_81134F2
 	add r6, r6, r4
@@ -10741,7 +10741,7 @@ dword_81135C8:
 	.word 0x12810
 off_81135CC:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811363C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -11638,7 +11638,7 @@ dword_8113D4C:
 	.word 0xC0000
 off_8113D50:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80165C2+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -13811,7 +13811,7 @@ snakearmAI_setMovingThenCall_sub_80165B8_8114FAA:
 	push {r4-r7,lr}
 	mov r0, #OBJECT_FLAGS_CANNOT_SLIDE
 	bl object_setFlag1 // (int a1) -> void
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {r4-r7,pc}
 	thumb_func_end snakearmAI_setMovingThenCall_sub_80165B8_8114FAA
 
@@ -14435,7 +14435,7 @@ sub_811555C:
 	mov r0, #0
 	mov r1, #0x6c
 	strh r0, [r5,r1]
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	pop {pc}
 	thumb_func_end sub_811555C
 
@@ -14876,7 +14876,7 @@ off_811594C:
 	.word byte_8115938
 off_8115950:
 	.word RunSpawnAnimationMaybe_8016380+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_81159C4+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -15949,7 +15949,7 @@ sub_81162AA:
 	thumb_local_start
 sub_81162AE:
 	push {r4-r7,lr}
-	bl sub_80165B8
+	bl battle_ResetObjectActionState_80165B8
 	ldr r0, dword_81162F4 // =0x800000
 	bl object_setFlag1 // (int a1) -> void
 	bl object_clearCollisionRegion // () -> void
@@ -16004,7 +16004,7 @@ byte_8116300:
 	.byte 0xFF, 0xFF, 0xFF, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_81163F0:
 	.word sub_8116470+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811648C+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -16243,7 +16243,7 @@ byte_81165C4:
 	.byte 0x0, 0x0
 off_81166B0:
 	.word sub_81166F2+1
-	.word sub_80165B8+1
+	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811670E+1
 	.word sub_80166AE+1
 	.word sub_8016B02+1
@@ -16637,7 +16637,7 @@ off_81169C8:
 	.word off_81169CC
 off_81169CC:
 	.word sub_81169D8+1
-	.word sub_8116A04+1
+	.word battle_reloadObjectSprite_8116A04+1
 	.word sub_8116A28+1
 	thumb_func_end sub_81169B0
 
@@ -16666,7 +16666,7 @@ locret_8116A00:
 	thumb_func_end sub_81169D8
 
 	thumb_local_start
-sub_8116A04:
+battle_reloadObjectSprite_8116A04:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0xc0
@@ -16681,7 +16681,7 @@ sub_8116A04:
 	strb r0, [r5,#9]
 locret_8116A26:
 	pop {pc}
-	thumb_func_end sub_8116A04
+	thumb_func_end battle_reloadObjectSprite_8116A04
 
 // symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into sub_8116A44
 // symdb: void sub_8116A28(r5=destStructPtr, r7=counterBytePtr /*, r4/r6 also live inputs; r4-r7
@@ -16787,7 +16787,7 @@ off_8116AEC:
 	.word off_8116AF0
 off_8116AF0:
 	.word sub_8116B00+1
-	.word sub_8116B9C+1
+	.word sprite_dispatchVariantUpdate_8116B9C+1
 	.word sub_8116C38+1
 off_8116AFC:
 	.word ePETMenuData
@@ -16854,7 +16854,7 @@ loc_8116B78:
 	strb r0, [r5,#0xd]
 	mov r0, #0
 	strb r0, [r5,#0xc]
-	bl sub_8116B9C
+	bl sprite_dispatchVariantUpdate_8116B9C
 	pop {r4,pc}
 	.balign 4, 0
 off_8116B8C:
@@ -16867,7 +16867,7 @@ dword_8116B98:
 	thumb_func_end sub_8116B00
 
 	thumb_local_start
-sub_8116B9C:
+sprite_dispatchVariantUpdate_8116B9C:
 	push {lr}
 	ldr r0, off_8116BB0 // =off_8116BB4
 	ldrb r1, [r5,#9]
@@ -16882,8 +16882,8 @@ off_8116BB0:
 off_8116BB4:
 	.word sub_8116BC0+1
 	.word sub_8116BFC+1
-	.word sub_8116C14+1
-	thumb_func_end sub_8116B9C
+	.word sprite_scrollStepAndCullOffscreen_8116C14+1
+	thumb_func_end sprite_dispatchVariantUpdate_8116B9C
 
 	thumb_local_start
 sub_8116BC0:
@@ -16932,7 +16932,7 @@ locret_8116C10:
 	thumb_func_end sub_8116BFC
 
 	thumb_local_start
-sub_8116C14:
+sprite_scrollStepAndCullOffscreen_8116C14:
 	push {lr}
 	mov r1, #0x10
 	ldrsh r0, [r7,r1]
@@ -16949,7 +16949,7 @@ locret_8116C2E:
 	.balign 4, 0
 dword_8116C34:
 	.word 0x20
-	thumb_func_end sub_8116C14
+	thumb_func_end sprite_scrollStepAndCullOffscreen_8116C14
 
 	thumb_local_start
 sub_8116C38:
@@ -17070,7 +17070,7 @@ off_8116CF0:
 	.word off_8116CF4
 off_8116CF4:
 	.word sub_8116D00+1
-	.word sub_8116D6C+1
+	.word battle_objectRunBehaviorStep_8116D6C+1
 	.word sub_8116E08+1
 	thumb_func_end sub_8116CE0
 
@@ -17110,7 +17110,7 @@ loc_8116D4E:
 	strb r2, [r5,#9]
 	ldr r1, dword_8116D64 // =0x97
 	bl sprite_setCoordinates
-	bl sub_8116D6C
+	bl battle_objectRunBehaviorStep_8116D6C
 	pop {pc}
 	.balign 4, 0
 dword_8116D5C:
@@ -17124,7 +17124,7 @@ off_8116D68:
 	thumb_func_end sub_8116D00
 
 	thumb_local_start
-sub_8116D6C:
+battle_objectRunBehaviorStep_8116D6C:
 	push {lr}
 	ldr r0, off_8116D80 // =off_8116D84
 	ldrb r1, [r5,#9]
@@ -17137,13 +17137,13 @@ sub_8116D6C:
 off_8116D80:
 	.word off_8116D84
 off_8116D84:
-	.word sub_8116D90+1
+	.word battle_moveSpriteLeftUntilX170_8116D90+1
 	.word sub_8116DB4+1
 	.word battle_stepForwardAnimWait_8116DEC+1
-	thumb_func_end sub_8116D6C
+	thumb_func_end battle_objectRunBehaviorStep_8116D6C
 
 	thumb_local_start
-sub_8116D90:
+battle_moveSpriteLeftUntilX170_8116D90:
 	push {lr}
 	mov r0, #0x10
 	neg r0, r0
@@ -17160,7 +17160,7 @@ sub_8116D90:
 locret_8116DB0:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8116D90
+	thumb_func_end battle_moveSpriteLeftUntilX170_8116D90
 
 	thumb_local_start
 sub_8116DB4:
@@ -18623,8 +18623,8 @@ off_81178D4:
 	.word byte_2019A00
 	thumb_func_end sub_81178AC
 
-	thumb_func_start sub_81178D8
-sub_81178D8:
+	thumb_func_start object_dispatchModeHandler_81178D8
+object_dispatchModeHandler_81178D8:
 	push {lr}
 	ldr r7, off_81178F8 // =byte_2011C10
 	ldr r0, off_81178E8 // =off_81178EC
@@ -18642,7 +18642,7 @@ off_81178EC:
 	.word sub_8117990+1
 off_81178F8:
 	.word byte_2011C10
-	thumb_func_end sub_81178D8
+	thumb_func_end object_dispatchModeHandler_81178D8
 
 	thumb_local_start
 sub_81178FC:
@@ -21857,8 +21857,8 @@ off_81190F4:
 	.word 0x100
 	thumb_func_end sub_81190E0
 
-	thumb_func_start sub_81190F8
-sub_81190F8:
+	thumb_func_start sprite_testFrameParamsMaskC0_81190F8
+sprite_testFrameParamsMaskC0_81190F8:
 	push {r4,r5,lr}
 	mov r4, #0
 	bl getStructFrom2008450
@@ -21874,7 +21874,7 @@ loc_8119110:
 	tst r0, r0
 	pop {r4,r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81190F8
+	thumb_func_end sprite_testFrameParamsMaskC0_81190F8
 
 	thumb_func_start sub_8119118
 sub_8119118:
@@ -27530,8 +27530,8 @@ loc_811BD5E:
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_start sub_811BD64
-sub_811BD64:
+	thumb_func_start submenu_runModeHandler_811BD64
+submenu_runModeHandler_811BD64:
 	push {r6,lr}
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_SubmenuPtr]
@@ -27548,7 +27548,7 @@ off_811BD7C:
 	.word sub_811BD88+1
 	.word sprite_dispatchObjectUpdate_811BDCC+1
 	.word sub_811BDF4+1
-	thumb_func_end sub_811BD64
+	thumb_func_end submenu_runModeHandler_811BD64
 
 	thumb_local_start
 sub_811BD88:

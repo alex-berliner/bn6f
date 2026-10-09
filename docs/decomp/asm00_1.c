@@ -2106,7 +2106,7 @@ void __cdecl initNewGameData_8004DF0()
     gs->unk_12 = -1;
     toolkit_ClearAllEventFlags_802F0C4(255, v4, v0, v1);
     v9 = sub_8006D00(v5, v6, v7, v8);
-    sub_803CD74(v9, v10, v11, v12);
+    keyItems_ResetInventoryAndGrantScenarioItems_803CD74(v9, v10, v11, v12);
     gs->pad_13[oGameState_SubsystemIndex] = 0;
     *&gs->pad_74[oGameState_MapGroup] = 0;
     sub_802F2C8();
@@ -2306,7 +2306,7 @@ int __fastcall EnterMap(int a1)
         SetRenderInfoLCDControl(&loc_1740);
         v27 = gs->MapSubOffset;
         LoadGFXAnimsForMapGroup(gs->MapSelect);
-        map_8001708(gs->MapSelect, gs->MapSubOffset);
+        map_lookupMapIdByGroupAndNumber_8001708(gs->MapSelect, gs->MapSubOffset);
         map_8034B4C(gs->MapSelect, gs->MapSubOffset);
         EnterMap_RunMapGroupAsmFunction_8030A00(gs->MapSelect);
         ClearEventFlagFromImmediate(23, 61);
@@ -3031,7 +3031,7 @@ void sub_80058D0()
 
 
 // 0x800596c
-signed int sub_800596C()
+signed int gameState_beginEndingSequence_800596C()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -3384,7 +3384,7 @@ int map_triggerEnterMapOnWarp_8005C04()
     *(v0[0xF] + oGameState_Unk_20) = 0;
     sub_80035A2(0x25u);
     CopyWords(*(v0[5] + 20) + 16 * (*(v0[5] + 17) - 1), v0[5], 0x10u);
-    map_8001708(*(v0[0xF] + oGameState_MapGroup), *(v0[0xF] + oGameState_MapNumber));
+    map_lookupMapIdByGroupAndNumber_8001708(*(v0[0xF] + oGameState_MapGroup), *(v0[0xF] + oGameState_MapNumber));
     SetRenderInfoLCDControl(&byte_40);
     v1 = v0[5];
     v2 = v0[0xF];
@@ -5147,13 +5147,13 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     bgScroll_ResetScrollCBCounters_8080D90();
     sub_8080DA0();
     v14 = sub_8007628();
-    sub_801FE00(v14, v15, v16);
+    chatbox_resetPrinterState_801FE00(v14, v15, v16);
     eStruct2038160_clearStruct(v17, v18, v19, v20);
     sub_800ED00();
     battle_InitNaviStatsByIndex_8013422(0, v21, v22, v23);
     v27 = battle_InitNaviStatsByIndex_8013422(1, v24, v25, v26);
     zeroFill_800BF66(v27, v28, v29, v30);
-    v31 = sub_800A2F8();
+    v31 = battle_initTypeAndFieldFromSettings_800A2F8();
     sub_800A954(v31, v32, v33, v34);
     zeroFill_800AB70(v35, v36, v37, v38);
     zeroFill_802CE54(v39, v40, v41, v42);
@@ -5238,7 +5238,7 @@ void spawnEnemy_80073E2()
     v3 = v0[2] + ((v0[3] << 8) & 0xFFF);
     if ( !(sub_802D246() & 0x8000) )
         sub_800EC80(v3);
-    sub_800768C();
+    battle_spawnEnemyObject_800768C();
 }
 
 
@@ -5473,7 +5473,7 @@ int sub_8007628()
 
 
 // 0x800768c
-void sub_800768C()
+void battle_spawnEnemyObject_800768C()
 {
     JUMPOUT(&loc_80076A8);
 }
@@ -5779,7 +5779,7 @@ signed int sub_800794C()
 
 
 // 0x8007978
-int sub_8007978()
+int battle_dispatchPhase_8007978()
 {
     int v0; // r5
 
@@ -5801,7 +5801,7 @@ signed int __fastcall battle_cueThenSetState4_800799C(int a1)
 
 
 // 0x80079a8
-signed int __fastcall sub_80079A8(int a1)
+signed int __fastcall battle_state_endPhaseWithEffect_80079A8(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -5860,7 +5860,7 @@ int battle_RevealFieldColumnsStep_80079F0()
 // 0x8007a0c
 void __fastcall __noreturn sub_8007A0C(int a1, int a2, int a3, int a4)
 {
-    sub_801986C(a1, a2, a3, a4);
+    collision_resetAllHitData_801986C(a1, a2, a3, a4);
     sub_800C8F0();
 }
 
@@ -6017,7 +6017,7 @@ int battle_stateCountdownTick_8007BD0()
 
 
 // 0x8007bf0
-int __fastcall sub_8007BF0(int a1)
+int __fastcall eStruct200BC30_dispatchJumpOffset00_8007BF0(int a1)
 {
     int v1; // r0
 
@@ -6237,7 +6237,7 @@ void __fastcall sub_8007CA0(int a1, int a2, int a3)
         }
         if ( sub_802D246() & 0x10 )
             SetCurNaviHPToFull();
-        sub_802CA82();
+        eStruct200A008_redrawOnDirtyFlags_802CA82();
     }
     *(v7 + oGameState_Unk_0a) = 0;
     zeroFill_e20097A0();
@@ -6888,7 +6888,7 @@ int __fastcall sub_8008452(int a1)
     }
     if ( !*(v1 + 3) )
     {
-        sub_802D6A0();
+        battle_initPlayerTracker_802D6A0();
         v3 = battle_findPlayer(0);
         battle_TickAIDataTimer0f_8015A16(v3);
         v4 = battle_findPlayer(1);
@@ -8425,7 +8425,7 @@ unsigned int sub_80091F0()
     {
         if ( !*(v0 + 2) )
         {
-            sub_800927C();
+            task484_RunFrame_800927C();
             *(v0 + 2) = 4;
         }
         v8 = battle_getStateUnk5c_800139A();
@@ -8470,12 +8470,12 @@ unsigned int sub_80091F0()
 
 
 // 0x800927c
-int sub_800927C()
+int task484_RunFrame_800927C()
 {
     eStruct2035280_SetRequestBits_801BECC(&dword_484);
     dispatch_801DA48(&dword_484);
     sub_801E5F8();
-    sub_801DA24();
+    battle_sceneFrameSetup_801DA24();
     return sub_801E0A0(0, 0);
 }
 
@@ -9036,7 +9036,7 @@ int sub_80096E0()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
-    sub_801DA24();
+    battle_sceneFrameSetup_801DA24();
     sub_801DF0C();
     return SetCustGauge(0);
 }
@@ -9490,7 +9490,7 @@ int sub_8009A68()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
-    sub_801DA24();
+    battle_sceneFrameSetup_801DA24();
     return sub_801E0A0(0, 0);
 }
 
@@ -9869,7 +9869,7 @@ int sub_8009D58()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
-    sub_801DA24();
+    battle_sceneFrameSetup_801DA24();
     return sub_801E0A0(0, 0);
 }
 
@@ -10626,7 +10626,7 @@ int battle_getFlags()
 
 
 // 0x800a2f8
-int sub_800A2F8()
+int battle_initTypeAndFieldFromSettings_800A2F8()
 {
     int v0; // r10
     int v5; // r3
@@ -10691,11 +10691,11 @@ void __fastcall sub_800A318(int a1)
     v20 = v5;
     CopyHalfwords(v5, byte_203CDB0, 60);
     if ( !v2 )
-        sub_800A7EA(v20);
+        encryption_decryptPackTable30_800a7ea(v20);
     if ( v4 & 0x80 )
     {
         v8 = 0;
-        v9 = sub_800A4E0(128);
+        v9 = pet_getCurNaviChainedLookup_800A4E0(128);
         v10 = 2 * v9;
         if ( v9 != 255 )
         {
@@ -10781,7 +10781,7 @@ void sub_800A3E4()
     v7 = v4;
     if ( v3 & 0x80 )
     {
-        v8 = sub_800A4E0(128);
+        v8 = pet_getCurNaviChainedLookup_800A4E0(128);
         if ( v8 != 255 )
         {
             v13 = 2 * v8;
@@ -10822,14 +10822,14 @@ void sub_800A3E4()
     }
     while ( v11 < 60 );
     if ( !v1 )
-        sub_800A7EA(v7);
+        encryption_decryptPackTable30_800a7ea(v7);
     if ( v3 & 0x80 )
         sub_800A570(byte_203CDB0, *(*(v0 + oToolkit_S2034880_Ptr) + 23), *(*(v0 + oToolkit_S2034880_Ptr) + 68));
 }
 
 
 // 0x800a4e0
-int __fastcall sub_800A4E0(int a1)
+int __fastcall pet_getCurNaviChainedLookup_800A4E0(int a1)
 {
     int v2; // r0
     int v3; // r4
@@ -11222,7 +11222,7 @@ int battle_getStateByte0d_800A7E2()
 
 
 // 0x800a7ea
-int __fastcall sub_800A7EA(_WORD *a1)
+int __fastcall encryption_decryptPackTable30_800a7ea(_WORD *a1)
 {
     _WORD *v1; // r4
     signed int v2; // r6
@@ -11522,7 +11522,7 @@ signed int __fastcall sub_800AA06(int a1)
 
 
 // 0x800aa1a
-signed int __fastcall sub_800AA1A(int a1)
+signed int __fastcall list_tryAddUniqueEntry_800AA1A(int a1)
 {
     int v1; // r5
     char *v2; // r7
@@ -11672,12 +11672,12 @@ signed int sub_800AAE8()
 // 0x800aaf2
 void __fastcall sub_800AAF2(int unused, int a2, int a3, int a4)
 {
-    sub_800AAFC(0, a2, a3, a4);
+    clearIndexEntryPair_800AAFC(0, a2, a3, a4);
 }
 
 
 // 0x800aafc
-void __fastcall sub_800AAFC(int a1, int a2, int a3, int a4)
+void __fastcall clearIndexEntryPair_800AAFC(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
 

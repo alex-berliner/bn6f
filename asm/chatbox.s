@@ -339,7 +339,7 @@ chatbox_onUpdate: // () -> void
 	b .if_803FF04
 .if_803FEFE
 		// else
-			bl chatbox_8040154 // (unk) -> unk
+			bl chatbox_checkAdvanceTextPrint_8040154 // (unk) -> unk
 		b .fi_803FF08
 .if_803FF04
 	// else
@@ -658,7 +658,7 @@ Flags804014C:
 	thumb_func_end chatbox_interpreteAndDrawDialogChar_1
 
 	thumb_local_start
-chatbox_8040154: // (unk) -> unk
+chatbox_checkAdvanceTextPrint_8040154: // (unk) -> unk
 	push {lr}
 	mov r2, #2
 	ldrh r1, [r5,#oChatbox_JoypadHeld]
@@ -681,7 +681,7 @@ locret_8040174:
 	mov r0, #1
 	strb r0, [r5,#oChatbox_JumpTableOffset_11]
 	pop {pc}
-	thumb_func_end chatbox_8040154
+	thumb_func_end chatbox_checkAdvanceTextPrint_8040154
 
 	thumb_local_start
 chatbox_804017C:
@@ -2133,7 +2133,7 @@ loc_8040C0C:
 	strh r6, [r5,#6]
 	pop {r7}
 	bl sprite_loadPalette_8002818
-	bl sub_8002874
+	bl sprite_loadAnimFrameTiles_8002874
 	mov r0, #0
 	mov r1, #3
 	bl sub_8002694
@@ -3501,7 +3501,7 @@ jt_ctrl_8041580:
 	.word chatbox_80416C4+1
 	.word chatbox_8041774+1
 	.word chatbox_80416F0+1
-	.word chatbox_80417A4+1
+	.word chatbox_stepScriptEntry_80417A4+1
 	.word chatbox_80417C0+1
 	.word chatbox_80417E4+1
 	.word chatbox_8041818+1
@@ -3746,7 +3746,7 @@ off_80417A0:
 	thumb_func_end chatbox_8041774
 
 	thumb_local_start
-chatbox_80417A4:
+chatbox_stepScriptEntry_80417A4:
 	push {lr}
 	mov r0, #2
 	mov r0, #3
@@ -3761,7 +3761,7 @@ loc_80417B8:
 	mov r0, #1
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end chatbox_80417A4
+	thumb_func_end chatbox_stepScriptEntry_80417A4
 
 	thumb_local_start
 chatbox_80417C0:
@@ -4769,12 +4769,12 @@ off_8041E90:
 	.word off_8041E94
 off_8041E94:
 	.word chatbox_8041EB0+1
-	.word chatbox_8041EE8+1
+	.word chatbox_cmd_playerFixedAnim_8041EE8+1
 	.word chatbox_8041F10+1
-	.word chatbox_8041F1C+1
-	.word chatbox_8041F44+1
-	.word chatbox_8041EE8+1
-	.word chatbox_8041F44+1
+	.word chatbox_scriptWaitPlayerFrameStep_8041F1C+1
+	.word chatbox_scriptStepSyncPlayerTextState_8041F44+1
+	.word chatbox_cmd_playerFixedAnim_8041EE8+1
+	.word chatbox_scriptStepSyncPlayerTextState_8041F44+1
 	thumb_func_end chatbox_F8_playeranimation
 
 	thumb_local_start
@@ -4808,7 +4808,7 @@ loc_8041EE2:
 	thumb_func_end chatbox_8041EB0
 
 	thumb_local_start
-chatbox_8041EE8:
+chatbox_cmd_playerFixedAnim_8041EE8:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -4829,7 +4829,7 @@ loc_8041F04:
 	mov r0, #0
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end chatbox_8041EE8
+	thumb_func_end chatbox_cmd_playerFixedAnim_8041EE8
 
 	thumb_local_start
 chatbox_8041F10:
@@ -4841,7 +4841,7 @@ chatbox_8041F10:
 	thumb_func_end chatbox_8041F10
 
 	thumb_local_start
-chatbox_8041F1C:
+chatbox_scriptWaitPlayerFrameStep_8041F1C:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -4862,10 +4862,10 @@ loc_8041F3C:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_8041F1C
+	thumb_func_end chatbox_scriptWaitPlayerFrameStep_8041F1C
 
 	thumb_local_start
-chatbox_8041F44:
+chatbox_scriptStepSyncPlayerTextState_8041F44:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -4884,7 +4884,7 @@ loc_8041F5E:
 	add r4, #2
 	mov r0, #0
 	pop {pc}
-	thumb_func_end chatbox_8041F44
+	thumb_func_end chatbox_scriptStepSyncPlayerTextState_8041F44
 
 	thumb_local_start
 chatbox_FA_print:
@@ -5304,14 +5304,14 @@ chatbox_FD_sound:
 off_80422A0:
 	.word off_80422A4
 off_80422A4:
-	.word chatbox_80422D4+1
-	.word chatbox_80422E8+1
-	.word chatbox_80422FC+1
-	.word chatbox_804230C+1
+	.word chatbox_PlayScriptSoundCue_80422D4+1
+	.word chatbox_cmdPlayMusic_80422E8+1
+	.word chatbox_scriptOpClearFlag40_80422FC+1
+	.word chatbox_stateSetFlag40Advance_804230C+1
 	.word chatbox_804231C+1
 	.word chatbox_8042328+1
-	.word chatbox_80422D4+1
-	.word chatbox_80422D4+1
+	.word chatbox_PlayScriptSoundCue_80422D4+1
+	.word chatbox_PlayScriptSoundCue_80422D4+1
 	.word chatbox_8042340+1
 	.word chatbox_scriptCmdSetFlags3e80_8042350+1
 	.word chatbox_8042360+1
@@ -5319,7 +5319,7 @@ off_80422A4:
 	thumb_func_end chatbox_FD_sound
 
 	thumb_local_start
-chatbox_80422D4:
+chatbox_PlayScriptSoundCue_80422D4:
 	push {lr}
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
@@ -5329,10 +5329,10 @@ chatbox_80422D4:
 	add r4, #4
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_80422D4
+	thumb_func_end chatbox_PlayScriptSoundCue_80422D4
 
 	thumb_local_start
-chatbox_80422E8:
+chatbox_cmdPlayMusic_80422E8:
 	push {lr}
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
@@ -5342,10 +5342,10 @@ chatbox_80422E8:
 	add r4, #4
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_80422E8
+	thumb_func_end chatbox_cmdPlayMusic_80422E8
 
 	thumb_local_start
-chatbox_80422FC:
+chatbox_scriptOpClearFlag40_80422FC:
 	push {lr}
 	mov r0, #FLAGS_3E_UNK_0040
 	bl chatbox_clearFlags_3e // (int mask) -> void
@@ -5353,10 +5353,10 @@ chatbox_80422FC:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_80422FC
+	thumb_func_end chatbox_scriptOpClearFlag40_80422FC
 
 	thumb_local_start
-chatbox_804230C:
+chatbox_stateSetFlag40Advance_804230C:
 	push {lr}
 	mov r0, #FLAGS_3E_UNK_0040
 	bl chatbox_setflags_3e // (int mask) -> void
@@ -5364,7 +5364,7 @@ chatbox_804230C:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_804230C
+	thumb_func_end chatbox_stateSetFlag40Advance_804230C
 
 	thumb_local_start
 chatbox_804231C:
@@ -5460,7 +5460,7 @@ jt_804239C:
 	.word chatbox_804244C+1
 	.word chatbox_804247C+1
 	.word 0x0
-	.word chatbox_80424BC+1
+	.word chatbox_textScriptAction_openShop_80424BC+1
 	.word chatbox_80424E0+1
 	.word 0x0
 	.word chatbox_804252C+1
@@ -5596,7 +5596,7 @@ loc_80424B6:
 	thumb_func_end chatbox_804247C
 
 	thumb_local_start
-chatbox_80424BC:
+chatbox_textScriptAction_openShop_80424BC:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -5616,7 +5616,7 @@ loc_80424DA:
 	mov r0, #0
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end chatbox_80424BC
+	thumb_func_end chatbox_textScriptAction_openShop_80424BC
 
 	thumb_local_start
 chatbox_80424E0:

@@ -241,7 +241,7 @@ int *sub_800286C()
 
 
 // 0x8002874
-_DWORD *sub_8002874()
+_DWORD *sprite_loadAnimFrameTiles_8002874()
 {
     int v0; // r5
     _DWORD *result; // r0

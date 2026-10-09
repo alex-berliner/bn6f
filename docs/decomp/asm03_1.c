@@ -66,7 +66,7 @@ void dispatch_80339CC()
 
 
 // 0x8033a7c
-void noop_8033A7C()
+void callback_noop_8033A7C()
 {
     ;
 }
@@ -94,7 +94,7 @@ void __noreturn sub_8033AB0()
 
 
 // 0x8033ac4
-void __noreturn sub_8033AC4()
+void __noreturn battle_resetState_8033AC4()
 {
     sub_8033B80(0);
 }
@@ -696,7 +696,7 @@ signed int sub_80342E4()
 
 
 // 0x80342ec
-int __fastcall sub_80342EC(int a1, int a2, int a3, int a4)
+int __fastcall map_beginEnterMapOnWarpStep4_80342EC(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r0
@@ -827,7 +827,7 @@ int __fastcall cutscene_8034BB8(int a1)
             sub_8034D7C();
             ghostNaviCheck_8035274();
             sub_8035054();
-            sub_8035084();
+            cutscene_TryStartNotification_8035084();
             sub_809CF2C();
         }
     }
@@ -1316,7 +1316,7 @@ signed int sub_8035054()
 
 
 // 0x8035084
-signed int sub_8035084()
+signed int cutscene_TryStartNotification_8035084()
 {
     char v0; // zf
     int v1; // r0
@@ -11071,7 +11071,7 @@ void __fastcall RunTextScriptCommError_803CD64(int a1)
 
 
 // 0x803cd74
-int __fastcall sub_803CD74(int a1, int a2, int a3, int a4)
+int __fastcall keyItems_ResetInventoryAndGrantScenarioItems_803CD74(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
 
@@ -11246,7 +11246,7 @@ int SetCurNaviHPToFull()
 
 
 // 0x803ced4
-int sub_803CED4()
+int petnavi_setStat42ToStat3EPlusCounter_803CED4()
 {
     int v0; // r10
     int v1; // r0
@@ -11951,7 +11951,7 @@ u32 sub_803DE72()
 
 
 // 0x803de88
-void __fastcall sub_803DE88(int a1, int a2, int a3, int a4)
+void __fastcall eLinkState_ResetForNewUse_803DE88(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r2
@@ -14510,7 +14510,7 @@ unsigned int __fastcall sub_803F6F4(int a1, int a2, int a3, int a4)
 
     v4 = a1;
     ZeroFillByHalfword(&eStruct200F360, 0x20u, a3, a4);
-    sub_803DE88(0, v5, v6, v7);
+    eLinkState_ResetForNewUse_803DE88(0, v5, v6, v7);
     sub_803DCE8(0x10u, 2, 4u, 4u);
     (*sub_813DBC0)(0, 0, dword_803F734[v4]);
     sCamera.unk_5C = 60;
@@ -14557,7 +14557,7 @@ signed int sub_803F79E()
             save_8006E26();
             info_copyTimestampToWorkArea_803F8B2();
             v2 = s2001c04_ComputeChecksumOfEwramRegion_803F894();
-            sub_803FB04(v2);
+            save_CommitWorkBufferToGamePak_803FB04(v2);
             sub_8006DF6(&timer_2000000, 26384);
             v3 = 0;
             while ( 1 )
@@ -14900,7 +14900,7 @@ void rng_FillSeedBuffer_803FAEE()
 
 
 // 0x803fb04
-void __fastcall sub_803FB04(int a1)
+void __fastcall save_CommitWorkBufferToGamePak_803FB04(int a1)
 {
     dword_20067C0[0] = a1;
     libSave_CopyToGamePak(dword_20067C0, 0xE007F80, byte_80);

@@ -544,7 +544,7 @@ int object_runFrameUpdate_8026A6C()
     flags_clearFlagWordBit_802FE6A(*(v0 + 14));
     sub_80062EC();
     sub_802A3CC();
-    sub_802A0F8();
+    battle_DispatchPendingEvent_802A0F8();
     return *(v0 + 4);
 }
 
@@ -619,8 +619,8 @@ int __fastcall sub_8026B04(int a1, int a2, int a3)
     {
         if ( *(v4[6] + 7) == 1 )
             RetrieveAndRenderEnemyVirusNamesInBattle_801E574();
-        sub_8013FD0(0);
-        sub_8013FD0(1);
+        battle_damagePlayerLeave1HP_8013FD0(0);
+        battle_damagePlayerLeave1HP_8013FD0(1);
         v13 = *(v3 + 12);
         if ( v13 == 255 || v13 == 5 && *(v4[6] + 7) >= 5 )
         {
@@ -1310,7 +1310,7 @@ void sub_80272D0()
         }
         else if ( v3 == 2 )
         {
-            sub_8015BEC(*(*(v2 + oToolkit_S2034880_Ptr) + 13), v0[1]);
+            battle_setPlayerNaviStatsField0E_8015BEC(*(*(v2 + oToolkit_S2034880_Ptr) + 13), v0[1]);
             *(v1 + 64) = v0 + 2;
         }
         else
@@ -1328,7 +1328,7 @@ void sub_80272D0()
 
 
 // 0x8027320
-int sub_8027320()
+int chatbox_setState4IfFlag80Clear_8027320()
 {
     int v0; // r5
     int result; // r0
@@ -1424,7 +1424,7 @@ signed int sub_80273E4()
 
 
 // 0x80273ec
-int sub_80273EC()
+int chatbox_resetTextStateIfHidden_80273EC()
 {
     int v0; // r5
 
@@ -2818,7 +2818,7 @@ void __fastcall sub_8028250(int a1)
 
 
 // 0x8028284
-int sub_8028284()
+int chipSelect_QueueEntryIconGfx_8028284()
 {
     int v0; // r4
     __int16 v1; // r0
@@ -3726,7 +3726,7 @@ int sub_8028DBC()
     int v2; // r3
 
     v0 = battle_getStateByte0d_800A7E2();
-    sub_802D064(v0)[8] = 1;
+    getTableEntryPtr32_802D064(v0)[8] = 1;
     byte_20349A4 = 1;
     custMenuPressOK_8028D3A(&dword_20349A0, 1, v1, v2);
     return 0;
@@ -5823,7 +5823,7 @@ char *battle_ClearPendingEventFlag_802A0EC()
 
 
 // 0x802a0f8
-char *sub_802A0F8()
+char *battle_DispatchPendingEvent_802A0F8()
 {
     if ( byte_20352CC )
         dispatch_801DACC(0x4000);
@@ -5919,7 +5919,7 @@ int sub_802A2B0()
 
 
 // 0x802a2e8
-int sub_802A2E8()
+int fadeScreenAndAdvanceState_802A2E8()
 {
     int v0; // r5
     int result; // r0
@@ -7850,7 +7850,7 @@ int sub_802BDC0()
 
     (*(&off_802BDDC + *(v0 + 1)))();
     sub_802C85C();
-    return sub_802CA5C();
+    return sound_pushRequest_802CA5C();
 }
 
 
@@ -7923,7 +7923,7 @@ int sub_802BEB4()
 
 
 // 0x802bed4
-signed int sub_802BED4()
+signed int custMenu_handleInputQueuePop_802BED4()
 {
     int v0; // r5
     int v1; // r0
@@ -8225,7 +8225,7 @@ int runObjectStateHandler_802C1D4()
 
 
 // 0x802c1f0
-signed int sub_802C1F0()
+signed int initShuffledOrderTable42_802C1F0()
 {
     int v0; // r5
     int v1; // r0
@@ -8924,7 +8924,7 @@ int __fastcall sub_802CA1E(int a1)
 
 
 // 0x802ca5c
-int sub_802CA5C()
+int sound_pushRequest_802CA5C()
 {
     int v0; // r5
 
@@ -8933,7 +8933,7 @@ int sub_802CA5C()
 
 
 // 0x802ca82
-int sub_802CA82()
+int eStruct200A008_redrawOnDirtyFlags_802CA82()
 {
     int v0; // r0
     signed int v1; // r0
@@ -9492,7 +9492,7 @@ int sub_802CFF8()
 
 
 // 0x802d064
-char *__fastcall sub_802D064(int a1)
+char *__fastcall getTableEntryPtr32_802D064(int a1)
 {
     return &byte_203C4A0[32 * a1];
 }
@@ -9504,7 +9504,7 @@ signed int __fastcall sub_802D070(int a1)
     char *v1; // ST00_4
     signed int result; // r0
 
-    v1 = sub_802D064(a1);
+    v1 = getTableEntryPtr32_802D064(a1);
     ZeroFillByWord(v1, 32);
     v1[16] = 0;
     result = 100;
@@ -9519,7 +9519,7 @@ char *__fastcall initStateCounters100_802D08C(int a1)
 {
     char *result; // r0
 
-    result = sub_802D064(a1);
+    result = getTableEntryPtr32_802D064(a1);
     result[16] = 0;
     result[13] = 100;
     result[15] = 100;
@@ -9545,7 +9545,7 @@ char *__fastcall sub_802D0BA(int a1)
 {
     char *result; // r0
 
-    result = sub_802D064(a1);
+    result = getTableEntryPtr32_802D064(a1);
     *result = 0;
     *(result + 1) = 0;
     return result;
@@ -9562,7 +9562,7 @@ int __fastcall sub_802D0C8(int a1)
     int result; // r0
     int v10; // [sp+0h] [bp-1Ch]
 
-    v1 = sub_802D064(a1);
+    v1 = getTableEntryPtr32_802D064(a1);
     v2 = battle_getStateByte0d_800A7E2();
     v3 = battle_findPlayer(v2);
     __asm { SVC         6 }
@@ -9587,7 +9587,7 @@ int __fastcall sub_802D118(int a1)
     char v3; // r1
     int result; // r0
 
-    v1 = sub_802D064(a1);
+    v1 = getTableEntryPtr32_802D064(a1);
     v2 = sub_800A856();
     v3 = 0;
     if ( v2 )
@@ -9613,7 +9613,7 @@ char *__fastcall sub_802D144(int a1)
 {
     char *result; // r0
 
-    result = sub_802D064(a1);
+    result = getTableEntryPtr32_802D064(a1);
     result[8] = 0;
     return result;
 }
@@ -9690,14 +9690,14 @@ int __fastcall sub_802D184(int a1)
 // 0x802d1b4
 int __fastcall sub_802D1B4(int a1)
 {
-    return sub_802D064(a1)[13];
+    return getTableEntryPtr32_802D064(a1)[13];
 }
 
 
 // 0x802d1be
 int __fastcall sub_802D1BE(int a1)
 {
-    return sub_802D064(a1)[15];
+    return getTableEntryPtr32_802D064(a1)[15];
 }
 
 
@@ -9732,7 +9732,7 @@ char *sub_802D1EC()
     int v2; // r1
 
     v0 = battle_getStateByte0d_800A7E2();
-    result = sub_802D064(v0);
+    result = getTableEntryPtr32_802D064(v0);
     v2 = result[18];
     if ( result[18] )
     {
@@ -10209,7 +10209,7 @@ int __fastcall sub_802D65E(int a1)
 
 
 // 0x802d6a0
-signed int sub_802D6A0()
+signed int battle_initPlayerTracker_802D6A0()
 {
     signed int result; // r0
 
@@ -10817,7 +10817,7 @@ int __fastcall sub_802DCDE(int result)
 
 
 // 0x802dcec
-signed int __fastcall sub_802DCEC(int a1)
+signed int __fastcall ai_CheckSpecialFlagPair_802DCEC(int a1)
 {
     signed int v1; // r7
 
@@ -13267,15 +13267,15 @@ int __noreturn sub_802F8D8()
         if ( v3 )
             startScreen_TstZero();
     }
-    sub_802FC9C();
+    startScreen_runTriggerHandler_802FC9C();
     sub_802FC70();
     sub_802FB64();
-    sub_802FB90();
-    sub_802FBB4();
-    sub_802FBD8();
+    startScreen_fadeOutUpdateIfFlag40_802FB90();
+    startScreen_dispatchIfFlag20_802FBB4();
+    startScreen_playSoundIfFlagSet_802FBD8();
     sub_802FBFC();
-    sub_802FC28();
-    return sub_802FC4C();
+    startScreen_onStatusBit2_802FC28();
+    return startScreen_playSfxIfFlagSet_802FC4C();
 }
 
 
@@ -13329,7 +13329,7 @@ int sub_802FB64()
 
 
 // 0x802fb90
-int sub_802FB90()
+int startScreen_fadeOutUpdateIfFlag40_802FB90()
 {
     int v0; // r5
     int result; // r0
@@ -13342,7 +13342,7 @@ int sub_802FB90()
 
 
 // 0x802fbb4
-int sub_802FBB4()
+int startScreen_dispatchIfFlag20_802FBB4()
 {
     int v0; // r5
     int result; // r0
@@ -13355,7 +13355,7 @@ int sub_802FBB4()
 
 
 // 0x802fbd8
-int sub_802FBD8()
+int startScreen_playSoundIfFlagSet_802FBD8()
 {
     int v0; // r5
     int result; // r0
@@ -13381,7 +13381,7 @@ int sub_802FBFC()
 
 
 // 0x802fc28
-int sub_802FC28()
+int startScreen_onStatusBit2_802FC28()
 {
     int v0; // r5
     int result; // r0
@@ -13394,7 +13394,7 @@ int sub_802FC28()
 
 
 // 0x802fc4c
-int sub_802FC4C()
+int startScreen_playSfxIfFlagSet_802FC4C()
 {
     int v0; // r5
     int result; // r0
@@ -13420,7 +13420,7 @@ int sub_802FC70()
 
 
 // 0x802fc9c
-int sub_802FC9C()
+int startScreen_runTriggerHandler_802FC9C()
 {
     int v0; // r5
     int result; // r0
@@ -13685,7 +13685,7 @@ void __fastcall camera_init_802FF4C(int x, int y, int a3, int mapGroup)
     }
     pCamera->pad_02[0] = v15;
     camera_doShakeEffect_80301e8();
-    sub_8030054();
+    camera_dispatchUpdate_8030054();
     sub_80302D0();
     camera_SavePosition_803011A();
 }
@@ -13701,7 +13701,7 @@ int camera_802FFF4()
     v2 = *(v1 + oToolkit_CameraPtr);
     (*(&off_8030034 + *(v2 + 3)))();
     camera_doShakeEffect_80301e8();
-    sub_8030054();
+    camera_dispatchUpdate_8030054();
     (*(&JumpTable8030040 + *(v2 + 2)))();
     camera_SavePosition_803011A();
     return v0;
@@ -13709,7 +13709,7 @@ int camera_802FFF4()
 
 
 // 0x8030054
-int sub_8030054()
+int camera_dispatchUpdate_8030054()
 {
     int v0; // r5
 
@@ -15502,7 +15502,7 @@ void __fastcall sub_8031388(_DWORD *a1)
 
 
 // 0x80313b0
-void __fastcall sub_80313B0(_DWORD *a1)
+void __fastcall battle_setupMessageWindow_80313B0(_DWORD *a1)
 {
     _DWORD *v1; // r0
     int v2; // r1
@@ -15515,7 +15515,7 @@ void __fastcall sub_80313B0(_DWORD *a1)
 
 
 // 0x80313d4
-void __fastcall sub_80313D4(_DWORD *a1)
+void __fastcall battle_runTextboxUpdateAndSetStateBit1_80313D4(_DWORD *a1)
 {
     _DWORD *v1; // r0
     int v2; // r1

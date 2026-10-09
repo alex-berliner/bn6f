@@ -76,7 +76,7 @@ int npc_beginChatboxState_809F5FC()
 
 
 // 0x809f612
-int sub_809F612()
+int npc_resetToStandardState_809F612()
 {
     int v0; // r5
     int result; // r0

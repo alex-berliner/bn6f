@@ -814,7 +814,7 @@ object_runFrameUpdate_8026A6C: // (self: * S20364C0 $r5) -> u8
 	bl flags_clearFlagWordBit_802FE6A
 	bl sub_80062EC
 	bl sub_802A3CC // () -> ()
-	bl sub_802A0F8
+	bl battle_DispatchPendingEvent_802A0F8
 	ldrb r0, [r5,#4]
 	pop {pc}
 	thumb_func_end object_runFrameUpdate_8026A6C
@@ -865,7 +865,7 @@ off_8026AA4:
 	// 0x30
 	.word sub_80273A4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x34
-	.word sub_80273EC+1 // (self: * S20364C0 $r5) -> ()
+	.word chatbox_resetTextStateIfHidden_80273EC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x38
 	.word sub_8027406+1 // (self: * S20364C0 $r5) -> ()
 	// 0x3C
@@ -991,9 +991,9 @@ loc_8026B8C:
 	b loc_8026BC2
 loc_8026BB6:
 	mov r0, #0
-	bl sub_8013FD0
+	bl battle_damagePlayerLeave1HP_8013FD0
 	mov r0, #1
-	bl sub_8013FD0
+	bl battle_damagePlayerLeave1HP_8013FD0
 loc_8026BC2:
 	ldrb r0, [r5,#oS20364C0_Unk_0c]
 	cmp r0, #0xff
@@ -1936,7 +1936,7 @@ off_80272A0:
 off_80272A4:
 	.word battle_loadObjTableEntryAndSetState4_80272B8+1
 	.word sub_80272D0+1
-	.word sub_8027320+1
+	.word chatbox_setState4IfFlag80Clear_8027320+1
 	.word sub_8027332+1
 	.word sub_8027394+1
 	thumb_func_end sub_802728C
@@ -1998,7 +1998,7 @@ loc_8027308:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#0xd]
-	bl sub_8015BEC
+	bl battle_setPlayerNaviStatsField0E_8015BEC
 	add r4, #2
 	str r4, [r5,#0x40]
 locret_8027318:
@@ -2009,7 +2009,7 @@ off_802731C:
 	thumb_func_end sub_80272D0
 
 	thumb_local_start
-sub_8027320:
+chatbox_setState4IfFlag80Clear_8027320:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2019,7 +2019,7 @@ sub_8027320:
 	strh r0, [r5,#2]
 locret_8027330:
 	pop {pc}
-	thumb_func_end sub_8027320
+	thumb_func_end chatbox_setState4IfFlag80Clear_8027320
 
 	thumb_local_start
 sub_8027332:
@@ -2105,7 +2105,7 @@ off_80273B4:
 off_80273B8:
 	.word battle_object_SelectHandlerByMode_80273CC+1
 	.word sub_80272D0+1
-	.word sub_8027320+1
+	.word chatbox_setState4IfFlag80Clear_8027320+1
 	.word sub_8027332+1
 	.word sub_80273E4+1
 	thumb_func_end sub_80273A4
@@ -2143,7 +2143,7 @@ sub_80273E4:
 	thumb_func_end sub_80273E4
 
 	thumb_local_start
-sub_80273EC: // (self: * S20364C0 $r5) -> ()
+chatbox_resetTextStateIfHidden_80273EC: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2156,7 +2156,7 @@ sub_80273EC: // (self: * S20364C0 $r5) -> ()
 loc_8027400:
 	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
-	thumb_func_end sub_80273EC
+	thumb_func_end chatbox_resetTextStateIfHidden_80273EC
 
 	thumb_local_start
 sub_8027406: // (self: * S20364C0 $r5) -> ()
@@ -4131,7 +4131,7 @@ locret_8028282:
 	thumb_func_end sub_8028250
 
 	thumb_local_start
-sub_8028284:
+chipSelect_QueueEntryIconGfx_8028284:
 	push {r4,lr}
 	ldrb r0, [r4,#7]
 	cmp r0, #2
@@ -4150,7 +4150,7 @@ loc_8028298:
 	lsr r0, r0, #9
 	bl gfx_QueueNext64ByteChunk_8028204
 	pop {r4,pc}
-	thumb_func_end sub_8028284
+	thumb_func_end chipSelect_QueueEntryIconGfx_8028284
 
 // symdb: Empty stub function that does nothing and immediately returns.
 // symdb: void nullsub_14(void)
@@ -4285,7 +4285,7 @@ off_8028368:
 off_802836C:
 	.word off_8028370
 off_8028370:
-	.word sub_8028284+1
+	.word chipSelect_QueueEntryIconGfx_8028284+1
 	.word nullsub_14+1
 	.word sub_80282AE+1
 	.word sub_80282C2+1
@@ -5598,7 +5598,7 @@ sub_8028DBC:
 	push {lr}
 	bl battle_getStateByte0d_800A7E2
 
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 
 	mov r1, #1
 	strb r1, [r0,#8]
@@ -8402,7 +8402,7 @@ battle_ClearPendingEventFlag_802A0EC:
 	thumb_func_end battle_ClearPendingEventFlag_802A0EC
 
 	thumb_local_start
-sub_802A0F8:
+battle_DispatchPendingEvent_802A0F8:
 	push {lr}
 	ldr r0, off_802A114 // =eStruct2035280
 	mov r1, #0
@@ -8420,7 +8420,7 @@ off_802A114:
 	.word eStruct2035280
 dword_802A118:
 	.word 0x4000
-	thumb_func_end sub_802A0F8
+	thumb_func_end battle_DispatchPendingEvent_802A0F8
 
 	thumb_local_start
 sub_802A11C:
@@ -8590,14 +8590,14 @@ locret_802A2D2:
 off_802A2D4:
 	.word off_802A2D8
 off_802A2D8:
-	.word sub_802A2E8+1 // (self: * S20364C0 $r5) -> ()
+	.word fadeScreenAndAdvanceState_802A2E8+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A30C+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A33E+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A362+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end sub_802A2B0
 
 	thumb_local_start
-sub_802A2E8: // (self: * S20364C0 $r5) -> ()
+fadeScreenAndAdvanceState_802A2E8: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	bl sub_802A394
 	cmp r0, #0
@@ -8616,7 +8616,7 @@ sub_802A2E8: // (self: * S20364C0 $r5) -> ()
 
 locret_802A30A:
 	pop {pc}
-	thumb_func_end sub_802A2E8
+	thumb_func_end fadeScreenAndAdvanceState_802A2E8
 
 	thumb_local_start
 sub_802A30C: // (self: * S20364C0 $r5) -> ()
@@ -11709,7 +11709,7 @@ sub_802BDC0:
 	mov lr, pc
 	bx r1
 	bl sub_802C85C
-	bl sub_802CA5C
+	bl sound_pushRequest_802CA5C
 	pop {pc}
 	.balign 4, 0
 off_802BDD8:
@@ -11830,13 +11830,13 @@ sub_802BEB4:
 off_802BEC4:
 	.word off_802BEC8
 off_802BEC8:
-	.word sub_802BED4+1
+	.word custMenu_handleInputQueuePop_802BED4+1
 	.word object_countdownTick_802BEFC+1
 	.word sub_802BF0C+1
 	thumb_func_end sub_802BEB4
 
 	thumb_local_start
-sub_802BED4:
+custMenu_handleInputQueuePop_802BED4:
 	push {lr}
 
 	bl queue_popHalfword_802C8D4
@@ -11868,7 +11868,7 @@ loc_802BEF4:
 	strb r0, [r5,#oS20364C0_Unk_03]
 locret_802BEFA:
 	pop {pc}
-	thumb_func_end sub_802BED4
+	thumb_func_end custMenu_handleInputQueuePop_802BED4
 
 // symdb: Ticks down a per-object countdown byte at +0xB and advances the object's state byte at +3 to 8 when it expires.
 // symdb: int object_countdownTick_ADDRESS(Object *r5); /* in: r5 = object struct, lr = return; out: r0 =
@@ -12288,12 +12288,12 @@ runObjectStateHandler_802C1D4:
 off_802C1E4:
 	.word off_802C1E8
 off_802C1E8:
-	.word sub_802C1F0+1
+	.word initShuffledOrderTable42_802C1F0+1
 	.word sub_802C218+1
 	thumb_func_end runObjectStateHandler_802C1D4
 
 	thumb_local_start
-sub_802C1F0:
+initShuffledOrderTable42_802C1F0:
 	push {lr}
 	mov r0, #0
 	ldr r7, off_802C214 // =unk_2035320 
@@ -12314,7 +12314,7 @@ loc_802C1F6:
 	.balign 4, 0
 off_802C214:
 	.word unk_2035320
-	thumb_func_end sub_802C1F0
+	thumb_func_end initShuffledOrderTable42_802C1F0
 
 	thumb_local_start
 sub_802C218:
@@ -13440,7 +13440,7 @@ loc_802CA50:
 	thumb_func_end sub_802CA1E
 
 	thumb_local_start
-sub_802CA5C:
+sound_pushRequest_802CA5C:
 	push {lr}
 	mov r0, #6
 	ldrsb r0, [r5,r0]
@@ -13459,10 +13459,10 @@ sub_802CA5C:
 	mov r3, #0
 	bl fifo_pushRecord16_8009FF8
 	pop {pc}
-	thumb_func_end sub_802CA5C
+	thumb_func_end sound_pushRequest_802CA5C
 
-	thumb_func_start sub_802CA82
-sub_802CA82:
+	thumb_func_start eStruct200A008_redrawOnDirtyFlags_802CA82
+eStruct200A008_redrawOnDirtyFlags_802CA82:
 	push {r4,lr}
 	bl eStruct200A008_getUnk04
 	cmp r0, #0
@@ -13477,7 +13477,7 @@ loc_802CA94:
 	bl sub_802CAA6
 locret_802CAA4:
 	pop {r4,pc}
-	thumb_func_end sub_802CA82
+	thumb_func_end eStruct200A008_redrawOnDirtyFlags_802CA82
 
 	thumb_local_start
 sub_802CAA6:
@@ -14279,20 +14279,20 @@ dword_802D060:
 	.word 0x301BE
 	thumb_func_end sub_802CFF8
 
-	thumb_func_start sub_802D064
-sub_802D064: // (a0: bool) -> * ?
+	thumb_func_start getTableEntryPtr32_802D064
+getTableEntryPtr32_802D064: // (a0: bool) -> * ?
 	mov r1, #0x20 
 	mul r0, r1
 	ldr r1, off_802D214 // =byte_203C4A0 
 	add r0, r0, r1
 	mov pc, lr
 	.byte 0, 0
-	thumb_func_end sub_802D064
+	thumb_func_end getTableEntryPtr32_802D064
 
 	thumb_func_start sub_802D070
 sub_802D070:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	push {r0}
 	// size
 	mov r1, #0x20 
@@ -14306,14 +14306,14 @@ sub_802D070:
 	pop {pc}
 	thumb_func_end sub_802D070
 
-// symdb: Fetches a state struct via sub_802D064 (selected by the flag in r0), clears its byte at +0x10, and sets the two bytes at +0xD and +0xF to 100.
+// symdb: Fetches a state struct via getTableEntryPtr32_802D064 (selected by the flag in r0), clears its byte at +0x10, and sets the two bytes at +0xD and +0xF to 100.
 // symdb: void initStateCounters100(bool selector /* r0 */); returns the struct pointer in r0 and 100 in
 // symdb: r1 (NZCV reflect r1); tail of the call chain passes lr through
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initStateCounters100_802D08C.yaml
 	thumb_func_start initStateCounters100_802D08C
 initStateCounters100_802D08C:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, #0
 	strb r1, [r0,#0x10]
 	mov r1, #0x64 
@@ -14342,7 +14342,7 @@ sub_802D09E:
 	thumb_local_start
 sub_802D0BA:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, #0
 	str r1, [r0]
 	str r1, [r0,#4]
@@ -14353,7 +14353,7 @@ sub_802D0BA:
 sub_802D0C8:
 	push {r4,r7,lr}
 	sub sp, sp, #0x10
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r7, r0
 	bl battle_getStateByte0d_800A7E2
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
@@ -14392,7 +14392,7 @@ loc_802D112:
 	thumb_local_start
 sub_802D118:
 	push {r6,r7,lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r7, r0
 	bl sub_800A856
 	mov r1, #0
@@ -14416,7 +14416,7 @@ loc_802D138:
 	thumb_local_start
 sub_802D144:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, #0
 	strb r1, [r0,#8]
 	pop {pc}
@@ -14504,7 +14504,7 @@ loc_802D1A2:
 	thumb_func_start sub_802D1B4
 sub_802D1B4:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrb r0, [r0,#0xd]
 	pop {pc}
 	thumb_func_end sub_802D1B4
@@ -14512,7 +14512,7 @@ sub_802D1B4:
 	thumb_func_start sub_802D1BE
 sub_802D1BE:
 	push {lr}
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrb r0, [r0,#0xf]
 	pop {pc}
 	thumb_func_end sub_802D1BE
@@ -14544,7 +14544,7 @@ loc_802D1E2:
 sub_802D1EC:
 	push {lr}
 	bl battle_getStateByte0d_800A7E2
-	bl sub_802D064 // (a0: bool) -> * ?
+	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrb r1, [r0,#0x12]
 	cmp r1, #0
 	bne loc_802D1FE
@@ -15265,8 +15265,8 @@ dword_802D69C:
 	.word 0x196
 	thumb_func_end sub_802D65E
 
-	thumb_func_start sub_802D6A0
-sub_802D6A0:
+	thumb_func_start battle_initPlayerTracker_802D6A0
+battle_initPlayerTracker_802D6A0:
 	push {r5-r7,lr}
 	ldr r5, off_802D6C0 // =dword_203C970 
 	mov r0, #0
@@ -15283,7 +15283,7 @@ sub_802D6A0:
 	.balign 4, 0
 off_802D6C0:
 	.word dword_203C970
-	thumb_func_end sub_802D6A0
+	thumb_func_end battle_initPlayerTracker_802D6A0
 
 	thumb_func_start sub_802D6C4
 sub_802D6C4:
@@ -15992,8 +15992,8 @@ locret_802DCEA:
 	pop {r5,pc}
 	thumb_func_end sub_802DCDE
 
-	thumb_func_start sub_802DCEC
-sub_802DCEC:
+	thumb_func_start ai_CheckSpecialFlagPair_802DCEC
+ai_CheckSpecialFlagPair_802DCEC:
 	push {r5,r7,lr}
 	mov r7, #0
 	mov r5, r0
@@ -16011,7 +16011,7 @@ sub_802DCEC:
 loc_802DD0C:
 	mov r0, r7
 	pop {r5,r7,pc}
-	thumb_func_end sub_802DCEC
+	thumb_func_end ai_CheckSpecialFlagPair_802DCEC
 
 	thumb_local_start
 sub_802DD10:
@@ -19922,15 +19922,15 @@ loc_802F924:
 	bl startScreen_TstZero // () -> !zf
 	beq loc_802F936
 loc_802F936:
-	bl sub_802FC9C // (self: *const StartScreen $r5) -> ()
+	bl startScreen_runTriggerHandler_802FC9C // (self: *const StartScreen $r5) -> ()
 	bl sub_802FC70 // (self: *const StartScreen $r5) -> ()
 	bl sub_802FB64 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FB90 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FBB4 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FBD8 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_fadeOutUpdateIfFlag40_802FB90 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_dispatchIfFlag20_802FBB4 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_playSoundIfFlagSet_802FBD8 // (self: *const StartScreen $r5) -> ()
 	bl sub_802FBFC // (self: *const StartScreen $r5) -> ()
-	bl sub_802FC28 // (self: *const StartScreen $r5) -> ()
-	bl sub_802FC4C // (self: *const StartScreen $r5) -> ()
+	bl startScreen_onStatusBit2_802FC28 // (self: *const StartScreen $r5) -> ()
+	bl startScreen_playSfxIfFlagSet_802FC4C // (self: *const StartScreen $r5) -> ()
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_802F95C:
@@ -20089,7 +20089,7 @@ byte_802FB7C:
 	thumb_func_end sub_802FB64
 
 	thumb_local_start
-sub_802FB90: // (self: *const StartScreen $r5) -> ()
+startScreen_fadeOutUpdateIfFlag40_802FB90: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x40 
@@ -20104,10 +20104,10 @@ off_802FBA4:
 	.word byte_802FBA8
 byte_802FBA8:
 	.byte 0x4, 0x40, 0x2C, 0x80, 0x20, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FB90
+	thumb_func_end startScreen_fadeOutUpdateIfFlag40_802FB90
 
 	thumb_local_start
-sub_802FBB4: // (self: *const StartScreen $r5) -> ()
+startScreen_dispatchIfFlag20_802FBB4: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x20 
@@ -20122,10 +20122,10 @@ off_802FBC8:
 	.word byte_802FBCC
 byte_802FBCC:
 	.byte 0x4, 0x40, 0x54, 0x80, 0x30, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FBB4
+	thumb_func_end startScreen_dispatchIfFlag20_802FBB4
 
 	thumb_local_start
-sub_802FBD8: // (self: *const StartScreen $r5) -> ()
+startScreen_playSoundIfFlagSet_802FBD8: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x10
@@ -20140,7 +20140,7 @@ off_802FBEC:
 	.word byte_802FBF0
 byte_802FBF0:
 	.byte 0x4, 0x40, 0x7C, 0x80, 0x40, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FBD8
+	thumb_func_end startScreen_playSoundIfFlagSet_802FBD8
 
 	thumb_local_start
 sub_802FBFC: // (self: *const StartScreen $r5) -> ()
@@ -20162,7 +20162,7 @@ byte_802FC14:
 	thumb_func_end sub_802FBFC
 
 	thumb_local_start
-sub_802FC28: // (self: *const StartScreen $r5) -> ()
+startScreen_onStatusBit2_802FC28: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #4
@@ -20177,10 +20177,10 @@ off_802FC3C:
 	.word byte_802FC40
 byte_802FC40:
 	.byte 0x4, 0x40, 0xA4, 0x80, 0x50, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FC28
+	thumb_func_end startScreen_onStatusBit2_802FC28
 
 	thumb_local_start
-sub_802FC4C: // (self: *const StartScreen $r5) -> ()
+startScreen_playSfxIfFlagSet_802FC4C: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #2
@@ -20195,7 +20195,7 @@ off_802FC60:
 	.word byte_802FC64
 byte_802FC64:
 	.byte 0x4, 0x40, 0xCC, 0x80, 0x60, 0x82, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802FC4C
+	thumb_func_end startScreen_playSfxIfFlagSet_802FC4C
 
 	thumb_local_start
 sub_802FC70: // (self: *const StartScreen $r5) -> ()
@@ -20218,7 +20218,7 @@ byte_802FC88:
 	thumb_func_end sub_802FC70
 
 	thumb_local_start
-sub_802FC9C: // (self: *const StartScreen $r5) -> ()
+startScreen_runTriggerHandler_802FC9C: // (self: *const StartScreen $r5) -> ()
 	push {lr}
 	ldrh r0, [r5,#0xa]
 	mov r1, #0x20 
@@ -20235,7 +20235,7 @@ off_802FCB0:
 byte_802FCB4:
 	.byte 0x16, 0x40, 0x6C, 0x80, 0x70, 0xA2, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0
-	thumb_func_end sub_802FC9C
+	thumb_func_end startScreen_runTriggerHandler_802FC9C
 
 	thumb_local_start
 startScreen_initGfx_802FCC0:
@@ -20704,7 +20704,7 @@ loc_802FFC4:
 loc_802FFCA:
 	strb r0, [r5,#oCamera_Unk_02]
 	bl camera_doShakeEffect_80301e8
-	bl sub_8030054
+	bl camera_dispatchUpdate_8030054
 	bl sub_80302D0
 	bl camera_SavePosition_803011A
 	pop {r5-r7}
@@ -20737,7 +20737,7 @@ camera_802FFF4:
 	mov lr, pc
 	bx r0
 	bl camera_doShakeEffect_80301e8
-	bl sub_8030054
+	bl camera_dispatchUpdate_8030054
 	ldr r0, off_803003C // =off_8030040
 	ldrb r1, [r5,#oCamera_Unk_02]
 	ldr r0, [r0,r1]
@@ -20766,7 +20766,7 @@ off_8030040:
 	thumb_func_end camera_802FFF4
 
 	thumb_local_start
-sub_8030054:
+camera_dispatchUpdate_8030054:
 	push {lr}
 	ldr r0, off_8030064 // =off_8030068
 	ldrb r1, [r5,#oCamera_Unk_02]
@@ -20783,7 +20783,7 @@ off_8030068:
 	.word sub_80300AC+1
 	.word sub_8030104+1
 	.word sub_803007C+1
-	thumb_func_end sub_8030054
+	thumb_func_end camera_dispatchUpdate_8030054
 
 	thumb_local_start
 sub_803007C:
@@ -22666,8 +22666,8 @@ off_8030C3C:
 dword_8030C40:
 	.word 0x0
 	.word sub_8031388+1 // 0x01 up left
-	.word sub_80313B0+1 // 0x02 down right
-	.word sub_80313D4+1 // 0x03 down left
+	.word battle_setupMessageWindow_80313B0+1 // 0x02 down right
+	.word battle_runTextboxUpdateAndSetStateBit1_80313D4+1 // 0x03 down left
 	.word sub_80313FC+1 // 0x04 up right
 	.word sub_8031420+1 // 0x05 corner right
 	.word sub_8031478+1 // 0x06 corner down
@@ -23670,7 +23670,7 @@ sub_8031388:
 	thumb_func_end sub_8031388
 
 	thumb_local_start
-sub_80313B0:
+battle_setupMessageWindow_80313B0:
 	push {r0-r2,r5,lr}
 	bl sub_8031176
 	mov r2, #0x20 
@@ -23686,10 +23686,10 @@ sub_80313B0:
 	orr r0, r1
 	mov r12, r0
 	pop {r0-r2,r5,pc}
-	thumb_func_end sub_80313B0
+	thumb_func_end battle_setupMessageWindow_80313B0
 
 	thumb_local_start
-sub_80313D4:
+battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	push {r0-r2,r5,lr}
 	bl sub_8031136
 	mov r2, #0x20 
@@ -23707,7 +23707,7 @@ sub_80313D4:
 	orr r0, r1
 	mov r12, r0
 	pop {r0-r2,r5,pc}
-	thumb_func_end sub_80313D4
+	thumb_func_end battle_runTextboxUpdateAndSetStateBit1_80313D4
 
 	thumb_local_start
 sub_80313FC:

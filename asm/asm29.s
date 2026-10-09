@@ -155,13 +155,13 @@ sub_80A4A98:
 off_80A4AA8:
 	.word off_80A4AAC
 off_80A4AAC:
-	.word sub_80A4AB8+1
+	.word battle_objectEnterState4LatchTilePos_80A4AB8+1
 	.word sub_80A4ACC+1
 	.word sub_80A4BD4+1
 	thumb_func_end sub_80A4A98
 
 	thumb_local_start
-sub_80A4AB8:
+battle_objectEnterState4LatchTilePos_80A4AB8:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -171,7 +171,7 @@ sub_80A4AB8:
 	str r0, [r5,#0x28]
 	bl sub_80A4ACC
 	pop {pc}
-	thumb_func_end sub_80A4AB8
+	thumb_func_end battle_objectEnterState4LatchTilePos_80A4AB8
 
 	thumb_local_start
 sub_80A4ACC:
@@ -293,8 +293,8 @@ sub_80A4BD4:
 	pop {pc}
 	thumb_func_end sub_80A4BD4
 
-	thumb_func_start sub_80A4BDC
-sub_80A4BDC:
+	thumb_func_start menu_stateDispatch_80A4BDC
+menu_stateDispatch_80A4BDC:
 	push {lr}
 	ldr r0, off_80A4BEC // =off_80A4BF0 
 	ldrb r1, [r5,#8]
@@ -307,9 +307,9 @@ off_80A4BEC:
 	.word off_80A4BF0
 off_80A4BF0:
 	.word sub_80A4BFC+1
-	.word sub_80A4C46+1
+	.word sprite_tickWithFlagReset_80A4C46+1
 	.word sub_80A4C5C+1
-	thumb_func_end sub_80A4BDC
+	thumb_func_end menu_stateDispatch_80A4BDC
 
 	thumb_local_start
 sub_80A4BFC:
@@ -339,12 +339,12 @@ sub_80A4BFC:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A4C46
+	bl sprite_tickWithFlagReset_80A4C46
 	pop {pc}
 	thumb_func_end sub_80A4BFC
 
 	thumb_local_start
-sub_80A4C46:
+sprite_tickWithFlagReset_80A4C46:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -355,7 +355,7 @@ sub_80A4C46:
 loc_80A4C56:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80A4C46
+	thumb_func_end sprite_tickWithFlagReset_80A4C46
 
 	thumb_local_start
 sub_80A4C5C:

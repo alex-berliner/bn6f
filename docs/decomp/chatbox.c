@@ -133,7 +133,7 @@ void __cdecl chatbox_onUpdate()
             v4 = cb->unk_78;
             if ( !v4 )
             {
-                chatbox_8040154();
+                chatbox_checkAdvanceTextPrint_8040154();
                 goto LABEL_11;
             }
             cb->unk_78 = v4 - 1;
@@ -316,7 +316,7 @@ signed int chatbox_interpreteAndDrawDialogChar_1()
 
 
 // 0x8040154
-int chatbox_8040154()
+int chatbox_checkAdvanceTextPrint_8040154()
 {
     int v0; // r5
     int result; // r0
@@ -963,7 +963,7 @@ LABEL_13:
             sprite_chatbox_80026D6();
             *(v7 + 3) = v3;
             sprite_loadPalette_8002818();
-            sub_8002874();
+            sprite_loadAnimFrameTiles_8002874();
             sub_8002694(0, 3);
         }
     }
@@ -1935,7 +1935,7 @@ signed int __fastcall chatbox_8041774(int a1, int a2, int a3, int a4)
 
 
 // 0x80417a4
-signed int __fastcall chatbox_80417A4(int a1, int a2, int a3, int a4)
+signed int __fastcall chatbox_stepScriptEntry_80417A4(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r1
@@ -2704,7 +2704,7 @@ signed int chatbox_8041EB0()
 
 
 // 0x8041ee8
-int chatbox_8041EE8()
+int chatbox_cmd_playerFixedAnim_8041EE8()
 {
     int v0; // r4
     int v1; // r5
@@ -2726,7 +2726,7 @@ signed int chatbox_8041F10()
 
 
 // 0x8041f1c
-BOOL chatbox_8041F1C()
+BOOL chatbox_scriptWaitPlayerFrameStep_8041F1C()
 {
     int v0; // r10
     int v1; // r5
@@ -2738,7 +2738,7 @@ BOOL chatbox_8041F1C()
 
 
 // 0x8041f44
-int chatbox_8041F44()
+int chatbox_scriptStepSyncPlayerTextState_8041F44()
 {
     int v0; // r5
     int v1; // r10
@@ -2931,7 +2931,7 @@ int chatbox_FD_sound()
 
 
 // 0x80422d4
-signed int __fastcall chatbox_80422D4(int a1, int a2, int a3)
+signed int __fastcall chatbox_PlayScriptSoundCue_80422D4(int a1, int a2, int a3)
 {
     int v3; // r4
 
@@ -2941,7 +2941,7 @@ signed int __fastcall chatbox_80422D4(int a1, int a2, int a3)
 
 
 // 0x80422e8
-signed int __fastcall chatbox_80422E8(int a1, int a2, int a3)
+signed int __fastcall chatbox_cmdPlayMusic_80422E8(int a1, int a2, int a3)
 {
     int v3; // r4
 
@@ -2951,7 +2951,7 @@ signed int __fastcall chatbox_80422E8(int a1, int a2, int a3)
 
 
 // 0x80422fc
-signed int chatbox_80422FC()
+signed int chatbox_scriptOpClearFlag40_80422FC()
 {
     chatbox_clearFlags_3e(64);
     return 1;
@@ -2959,7 +2959,7 @@ signed int chatbox_80422FC()
 
 
 // 0x804230c
-signed int chatbox_804230C()
+signed int chatbox_stateSetFlag40Advance_804230C()
 {
     chatbox_setflags_3e(64);
     return 1;
@@ -3114,7 +3114,7 @@ int chatbox_804247C()
 
 
 // 0x80424bc
-int chatbox_80424BC()
+int chatbox_textScriptAction_openShop_80424BC()
 {
     int v0; // r4
     int v1; // r5

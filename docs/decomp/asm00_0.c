@@ -1836,7 +1836,7 @@ void __fastcall sub_80015FC(int idx)
 
 
 // 0x8001708
-int __fastcall map_8001708(signed int a1, int a2)
+int __fastcall map_lookupMapIdByGroupAndNumber_8001708(signed int a1, int a2)
 {
     _DWORD *v2; // r3
 

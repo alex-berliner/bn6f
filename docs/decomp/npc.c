@@ -558,7 +558,7 @@ int npc_inChatbox_curAction_waitClose_809EBBC()
         if ( !*(v4 + oGameState_Unk_10) )
         {
             *(v0 + 7) = 0;
-            result = sub_809F612();
+            result = npc_resetToStandardState_809F612();
         }
     }
     return result;
