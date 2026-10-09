@@ -112,6 +112,10 @@ loc_8021B3C:
 	pop {pc}
 	thumb_func_end sub_8021B2A
 
+// symdb: Adds a number of chips to a chip pack slot's count byte, capping the count at 99 and reporting the outcome.
+// symdb: int addChipsToSlotCount(u8* slotCount /* r0 */, int amount /* r2 */); // returns r1 = new count,
+// symdb: r3 = status: 0 added fully, 1 slot already full, 2 clamped to 99; clobbers nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipPack_addChipsToSlotCount_8021b5a.yaml
 	thumb_local_start
 chipPack_addChipsToSlotCount_8021b5a:
 	mov r3, #1
@@ -387,6 +391,10 @@ off_8021D04:
 	.word 0x140
 	thumb_func_end sub_8021CA8
 
+// symdb: Zero-fills a 0x5C0-byte work buffer at 0x203A0A0, likely resetting battle state between encounters.
+// symdb: void sub_8021D08(void) // clobbers r0, r1, lr, flags; preserves r2, r3 (callers observe r2 pass
+// symdb: through unchanged)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ClearWorkBuffer_8021D08.yaml
 	thumb_func_start battle_ClearWorkBuffer_8021D08
 battle_ClearWorkBuffer_8021D08:
 	push {lr}
@@ -396,6 +404,11 @@ battle_ClearWorkBuffer_8021D08:
 	pop {pc}
 	thumb_func_end battle_ClearWorkBuffer_8021D08
 
+// symdb: Increments one byte of a per-record counter table (record size 0x170 at 0x203A0A0), saturating at 0xFF, and returns the counter value.
+// symdb: u8 incrementRecordCounterByte(u32 recordIndex /*r0*/, u32 fieldOffset /*r1*/); out: r2 = new (or
+// symdb: saturated) counter byte, nzcv flags set (CMP count,0xFF on saturate path, ADDS on increment
+// symdb: path); r0 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/incrementRecordCounterByte_8021D14.yaml
 	thumb_func_start incrementRecordCounterByte_8021D14
 incrementRecordCounterByte_8021D14:
 	push {lr}

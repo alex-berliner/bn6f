@@ -60,6 +60,10 @@ off_803FD64:
 	thumb_func_end chatbox_uncompMapTextArchives_803FD54
 
 
+// symdb: Thin wrapper that runs a numbered text script from the fixed eTextScript202DA04 archive by forwarding to chatbox_runScript.
+// symdb: void chatbox_runScript_202da04(u8 scriptID); // r0 = script index; tail-calls
+// symdb: chatbox_runScript(eTextScript202DA04, scriptID)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_202da04.yaml
 	thumb_func_start chatbox_runScript_202da04
 chatbox_runScript_202da04: // (u8 scriptID) -> void
 	push {r4,r5,lr}
@@ -925,6 +929,9 @@ chatbox_CopyBackgroundTiles_8040344:
 	thumb_func_end chatbox_CopyBackgroundTiles_8040344
 
 
+// symdb: Runs one of the train-ride text scripts (archive eTextScript2034A04) by index through the generic chatbox script runner.
+// symdb: void chatbox_runTrainScript(u8 script_idx /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runTrainScript.yaml
 	thumb_func_start chatbox_runTrainScript
 chatbox_runTrainScript:
 	push {r4,r5,lr}
@@ -2919,6 +2926,11 @@ off_8041184:
 	.word chatbox_8041238+1
 	thumb_func_end chatbox_EA_flag
 
+// symdb: Sets the event flag whose id is passed in r0, then steps the r4 event-script cursor forward by one 4-byte entry.
+// symdb: chatbox_setEventFlagAndAdvanceEventCursor(u32 flagId /* r0 */, void* eventCursor /* r4 */, void*
+// symdb: ctx /* r10 */); returns garbage in r0/r1/r3 (whatever SetEventFlag leaves), updated cursor in
+// symdb: r4, flags from "add r4,#4"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setEventFlagAndAdvanceEventCursor_80411B0.yaml
 	thumb_local_start
 chatbox_setEventFlagAndAdvanceEventCursor_80411B0:
 	push {lr}
@@ -2928,6 +2940,10 @@ chatbox_setEventFlagAndAdvanceEventCursor_80411B0:
 	.balign 4, 0x00
 	thumb_func_end chatbox_setEventFlagAndAdvanceEventCursor_80411B0
 
+// symdb: Clears the text-advance event flag for the current chatbox entry and steps the chatbox entry pointer to the next 4-byte slot.
+// symdb: void chatbox_80411BC(u16 eventFlagBitfield /*r0*/, ChatboxEntry *entry /*r4, also r10 caller-
+// symdb: preserved base*/); // returns with r4 advanced by 4, flags set by the ADDS
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_ClearEntryWaitFlagAndAdvanceEntry_80411BC.yaml
 	thumb_local_start
 chatbox_ClearEntryWaitFlagAndAdvanceEntry_80411BC:
 	push {lr}
@@ -5367,6 +5383,11 @@ chatbox_8042340:
 	.byte 0, 0
 	thumb_func_end chatbox_8042340
 
+// symdb: Chatbox script opcode handler that sets flag bit 0x80 in the chatbox flags field (0x3E) and steps the script cursor past the 1-halfword command.
+// symdb: Next chatbox_scriptCmdSetFlags3e80(void) — called with r4 = script cursor pointer, r1 must be
+// symdb: preserved; returns r0 = 1 (script continue/advance status), updates N/Z from r0 and C/V from the
+// symdb: cursor increment.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_scriptCmdSetFlags3e80_8042350.yaml
 	thumb_local_start
 chatbox_scriptCmdSetFlags3e80_8042350:
 	push {lr}
@@ -7151,6 +7172,10 @@ off_8042FEC:
 	.word chatbox_8043008+1
 	thumb_func_end chatbox_F9_storebyte
 
+// symdb: Chatbox script opcode handler that writes a value from the script into one of the cutscene state's byte variables.
+// symdb: Next chatbox_setCutsceneStateByte(u8* cmd /* r4 */, Toolkit* toolkit /* r10 */); returns r0 = 1,
+// symdb: r1 = stored value, r2 = byte-array base, r4 = cmd advanced by 4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setCutsceneStateByte_8042FF4.yaml
 	thumb_local_start
 chatbox_setCutsceneStateByte_8042FF4:
 	push {lr}
@@ -10438,6 +10463,10 @@ chatbox_8045EEC:
 	pop {r1-r7,pc}
 	thumb_func_end chatbox_8045EEC
 
+// symdb: Stores four caller-supplied text parameters into the active chatbox's struct for the chatbox task to read back later.
+// symdb: void chatbox_setTextParams(u32 a, u32 b, u32 c, u32 d); // r0-r3 in, no meaningful outputs,
+// symdb: flags untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setTextParams_8045EFC.yaml
 	thumb_func_start chatbox_setTextParams_8045EFC
 chatbox_setTextParams_8045EFC:
 	push {r4-r7,lr}
@@ -10462,6 +10491,10 @@ sub_8045F0C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8045F0C
 
+// symdb: ORs the given bits into the eFlags2009F38 event-flag word, leaving the new value in the NZ flags.
+// symdb: void chatbox_set_eFlags2009F38(u32 bits /*r0*/); // sets flags NZ per the resulting word;
+// symdb: preserves r1, r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setEventFlags2009F38.yaml
 	thumb_func_start chatbox_setEventFlags2009F38
 chatbox_setEventFlags2009F38:
 	push {r1,r2}
@@ -10475,6 +10508,10 @@ chatbox_setEventFlags2009F38:
 	thumb_func_end chatbox_setEventFlags2009F38
 
 // (int a1) ->
+// symdb: Clears the selected bits of the chatbox/event flag word at 0x2009F38 (e.g. dismissing per-dialogue state).
+// symdb: void chatbox_clear_eFlags2009F38(u32 mask /* r0 */); returns flags NZ = new flag word, r1-r2
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clearEventFlags2009F38.yaml
 	thumb_func_start chatbox_clearEventFlags2009F38
 chatbox_clearEventFlags2009F38:
 	push {r1,r2}
@@ -10501,6 +10538,10 @@ off_8045F48:
 	thumb_func_end chatbox_mask_eFlags2009F38
 
 
+// symdb: Reads the chatbox/text state selector (low 3 bits) from the flags word at eFlags2009F38.
+// symdb: u32 chatbox_GetState(u32 r1_in /* ignored, preserved */); returns state (0-7) in r0, sets NZ
+// symdb: flags on it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_GetState_8045F4C.yaml
 	thumb_func_start chatbox_GetState_8045F4C
 chatbox_GetState_8045F4C:
 	push {r1}

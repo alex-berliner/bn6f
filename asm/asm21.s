@@ -1,4 +1,7 @@
 
+// symdb: Zeroes the eight BG scroll callback counters used by the map/BG scroll system.
+// symdb: void sub_8080D90(void)  // r2 passed in and preserved but unused; clobbers r0, r1, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bgScroll_ResetScrollCBCounters_8080D90.yaml
 	thumb_func_start bgScroll_ResetScrollCBCounters_8080D90
 bgScroll_ResetScrollCBCounters_8080D90:
 	push {lr}

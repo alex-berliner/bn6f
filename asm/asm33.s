@@ -1585,6 +1585,10 @@ off_8123E04:
 	.word dword_81233D4
 	thumb_func_end sub_8123D98
 
+// symdb: Tests bit 0x20 of a per-index status byte in the table at 20018EC, returning 1 if set / 0 if clear.
+// symdb: bool isStatusBit20Set(void* state /* r5 */); // returns in r0 (and mirrors it in r2); leaves NZ
+// symdb: flags set from the AND with 0x20 for caller branching; clobbers r1
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123E08.yaml
 	thumb_local_start
 sub_8123E08:
 	push {lr}
@@ -4770,6 +4774,10 @@ off_81258E4:
 	.word 0x100
 	thumb_func_end sub_8125820
 
+// symdb: Plays sound effect 0x7A (a fixed, hardcoded SFX id) and returns.
+// symdb: void sub_81258E8(void); // r1-r7, r10 pass through preserved to PlaySoundEffect; r0 = 0x7A on
+// symdb: call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/playSoundEffect_7A_81258E8.yaml
 	thumb_local_start
 playSoundEffect_7A_81258E8:
 	push {lr}
@@ -6321,6 +6329,12 @@ loc_8126476:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8126430
 
+// symdb: Draws a 2x14-tile strip of background graphics from a supplied tile-ID list, always using 32x32 tile block 2.
+// symdb: void bg_drawTileRegion2x14(u32 j, u32 i, const u16 *tileIds) — r0=j (x/column origin), r1=i
+// symdb: (y/row origin), r2=tileIds pointer; consumes r2, preserves r0 and r4-r7; r3 returns holding the
+// symdb: tileIds pointer (leftover from CopyBackgroundTiles), r4-r7 are popped back to their incoming
+// symdb: values; flags clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_drawTileRegion2x14_8126484.yaml
 	thumb_local_start
 bg_drawTileRegion2x14_8126484:
 	push {r4-r7,lr}
@@ -6381,6 +6395,10 @@ dword_81264E0:
 	.word 0x8340
 	thumb_func_end sub_8126494
 
+// symdb: Thin wrapper that copies a fixed 3x14 patch of background tiles into 32x32 tile block
+// symdb: void bg_copyTilePatchBlock2(u32 j, u32 i, const u16 *tile_ids); // returns CopyBackgroundTiles'
+// symdb: leftover r3 value in r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bg_copyTilePatchBlock2_81264E4.yaml
 	thumb_local_start
 bg_copyTilePatchBlock2_81264E4:
 	push {r4-r7,lr}
@@ -8652,6 +8670,10 @@ off_81278D4:
 	.word eTextScript201BF20
 	thumb_func_end sub_81278C8
 
+// symdb: Returns the address of the entry selected by the signed byte index at struct+0xD within the 8-byte-element array whose base pointer is stored at struct+0x40.
+// symdb: Next sub_81278D8(void *structR5); /* in: r5 = struct pointer; out: r0 = &struct->field40[index]
+// symdb: */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81278D8.yaml
 	thumb_local_start
 sub_81278D8:
 	push {lr}
@@ -10198,6 +10220,9 @@ off_81284A0:
 	.word unk_2028590
 	thumb_func_end sub_812848C
 
+// symdb: Writes the state pair (7, 4) into the two-byte state/work buffer at byte_2000FE0, presumably switching some subsystem to mode 7 with sub-state 4.
+// symdb: void sub_81284A4(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81284A4.yaml
 	thumb_func_start sub_81284A4
 sub_81284A4:
 	ldr r0, off_81284B0 // =byte_2000FE0 
@@ -15525,6 +15550,10 @@ loc_812AF58:
 	.balign 4, 0x00
 	thumb_func_end sub_812AF3C
 
+// symdb: Thunk that decompresses one piece of asset data referenced by off_812B0E8 and copies it to the destination encoded in that reference.
+// symdb: void sub_812AF78(void) // no meaningful inputs; only r0 (the reference pointer) is set
+// symdb: internally
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadDecompressedAsset_812AF78.yaml
 	thumb_func_start loadDecompressedAsset_812AF78
 loadDecompressedAsset_812AF78:
 	push {lr}
@@ -15548,6 +15577,9 @@ sub_812AF84:
 	pop {pc}
 	thumb_func_end sub_812AF84
 
+// symdb: Decompresses and copies the packed initRefs data blob (byte_812B1A0) via decompAndCopyData, likely initializing a sprite/animation resource set.
+// symdb: void sub_812AF98(void); // no meaningful inputs; calls decompAndCopyData with r0 = &byte_812B1A0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_decompInitRefs_812AF98.yaml
 	thumb_func_start sprite_decompInitRefs_812AF98
 sprite_decompInitRefs_812AF98:
 	push {lr}
@@ -15558,6 +15590,10 @@ sprite_decompInitRefs_812AF98:
 	.balign 4, 0x00
 	thumb_func_end sprite_decompInitRefs_812AF98
 
+// symdb: Trivial wrapper that decompresses the blob at byte_812B1C0 and copies it into place via decompAndCopyData.
+// symdb: void sub_812AFA4(void); // tail-calls decompAndCopyData(u32 *src), so effectively returns
+// symdb: whatever that returns
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812AFA4.yaml
 	thumb_func_start sub_812AFA4
 sub_812AFA4:
 	push {lr}

@@ -4199,6 +4199,9 @@ dword_813227C:
 	.word 0x2000
 	thumb_func_end sub_8132194
 
+// symdb: Chatbox wrapper that runs text script archive eTextScript201BA20 starting at a caller-supplied script index.
+// symdb: void chatbox_runScript_eTextScript201BA20(u32 scriptIdx /* r0 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript_eTextScript201BA20.yaml
 	thumb_func_start chatbox_runScript_eTextScript201BA20
 chatbox_runScript_eTextScript201BA20:
 	push {lr}
@@ -5945,6 +5948,10 @@ sub_8132F78:
 	.balign 4, 0x00
 	thumb_func_end sub_8132F78
 
+// symdb: Copies a halfword selected by index from a caller-provided table into field +8 of the struct behind the toolkit's oToolkit_Unk200a220_Ptr
+// symdb: void sub_8132FB8(u16 index /*r0*/, const u16 *table /*r1*/); reads toolkit from r10; no return
+// symdb: value
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8132FB8.yaml
 	thumb_local_start
 sub_8132FB8:
 	push {r4-r7,lr}
@@ -5955,6 +5962,10 @@ sub_8132FB8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132FB8
 
+// symdb: Copies one word from a caller-supplied table (selected by index) into field +8 of the "unk 200a220" work struct held by the toolkit.
+// symdb: void storeTableEntryIntoUnk200a220Field8(int r0 index_or_offset, const u32 *r1 tableBase); //
+// symdb: passes r4-r7, r10 through; clobbers r0, r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/storeTableEntryIntoUnk200a220Field8_8132FC4.yaml
 	thumb_local_start
 storeTableEntryIntoUnk200a220Field8_8132FC4:
 	push {r4-r7,lr}
@@ -7739,6 +7750,9 @@ dword_8133E78:
 	.word 0x7A
 	thumb_func_end checkLeftRightInputForFolderEdit_8133E3C
 
+// symdb: Saves an object's current state byte into a backup slot and switches its state machine to state 8.
+// symdb: void object_saveStateAndSetState8(void /* r5 = object struct */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_saveStateAndSetState8_8133E7C.yaml
 	thumb_local_start
 object_saveStateAndSetState8_8133E7C:
 	push {lr}
@@ -9930,6 +9944,10 @@ off_8134F74:
 	.word unk_202A3E0
 	thumb_func_end sub_8134F40
 
+// symdb: Writes 0xFF into bytes 0 and 2 of the toolkit's S2001c04 work buffer and returns 0xFF, apparently flagging a "no result / done" state for whatever subsystem reads that buffer.
+// symdb: void s2001c04_markResultNone(void); /* in: r10 = toolkit; out: r1 = 0xFF; clobbers r0, NZ flags
+// symdb: */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134F78.yaml
 	thumb_local_start
 sub_8134F78:
 	push {lr}
@@ -10353,6 +10371,10 @@ locret_8135258:
 	.balign 4, 0x00
 	thumb_func_end sub_8135244
 
+// symdb: Clamps the message viewer's scroll offset so the text window cannot scroll more than 7 lines past the bottom of the message.
+// symdb: void chatbox_clampScrollToTextEnd(MessageWindow* win) // win in r5; no return value; clobbers
+// symdb: r0, r1 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clampScrollToTextEnd_813525C.yaml
 	thumb_local_start
 chatbox_clampScrollToTextEnd_813525C:
 	push {lr}
@@ -10839,6 +10861,10 @@ off_81355D4:
 	.word 0x3C0
 	thumb_func_end sub_8135500
 
+// symdb: Returns whether any submenu other than the main/no-submenu state (0x20) is currently open.
+// symdb: Next sub_81355D8(void) // out: r1 = 0 if sSubmenu == 0x20 else 1; NZ reflect r1, C/V left from
+// symdb: the CMP
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_isOpen_81355D8.yaml
 	thumb_func_start submenu_isOpen_81355D8
 submenu_isOpen_81355D8:
 	mov r1, #0
@@ -15041,6 +15067,10 @@ off_81376B4:
 	.word TextScriptNaviCustDialog
 	thumb_func_end RunTextScriptNaviCustDialog
 
+// symdb: Stamps a chip-pack entry's halfword field with the current selection-tray counter at byte_20065B4 and then decrements that counter.
+// symdb: void chipPack_stampEntryWithTrayCountAndDecrement(u8* packBase /*r0*/, u32 chipIndex /*r1*/); //
+// symdb: returns r1 = chipIndex*2, r2 = &byte_20065B4, clobbers r0/r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipPack_stampEntryWithTrayCountAndDecrement_81376b8.yaml
 	thumb_func_start chipPack_stampEntryWithTrayCountAndDecrement_81376b8
 chipPack_stampEntryWithTrayCountAndDecrement_81376b8:
 	ldr r2, off_8137710 // =byte_20065B4 
@@ -15055,6 +15085,9 @@ chipPack_stampEntryWithTrayCountAndDecrement_81376b8:
 	.balign 4, 0x00
 	thumb_func_end chipPack_stampEntryWithTrayCountAndDecrement_81376b8
 
+// symdb: Returns the u16 at [r0 + r1*2 + 4], i.e. entry r1 of the u16 array that begins 4 bytes into the table passed in r0.
+// symdb: int loadU16FromTableEntry(const u16* table /*r0*/, int index /*r1*/) -> u16 value /*r0*/
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadU16FromTableEntry_81376CC.yaml
 	thumb_func_start loadU16FromTableEntry_81376CC
 loadU16FromTableEntry_81376CC:
 	ldr r2, off_8137710 // =byte_20065B4 
@@ -15073,6 +15106,10 @@ loadU16FromTableEntry_81376CC:
 	mov r2, #0
 	strh r2, [r0,#4]
 	mov pc, lr
+// symdb: Zeroes the four halfwords (offsets 4-0xA) of each 12-byte record in the 0x140-record array referenced by the toolkit's Unk2002230 pointer, leaving the first 4 bytes of each record intact.
+// symdb: void clearToolkitUnk2002230RecordFields(void); /* reads r10 (toolkit), clobbers r0-r2 and NZCV
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearToolkitUnk2002230RecordFields_81376E8.yaml
 	thumb_func_start clearToolkitUnk2002230RecordFields_81376E8
 clearToolkitUnk2002230RecordFields_81376E8:
 	mov r1, r10
@@ -15090,6 +15127,10 @@ loc_81376F0:
 	mov pc, lr
 	thumb_func_end clearToolkitUnk2002230RecordFields_81376E8
 
+// symdb: Writes 0x7FFF to the halfword timer counter at byte_20065B4, effectively disabling/expiring the timer.
+// symdb: void sub_8137700(void); /* in: lr only; out: r2 = 0xFF (incidental); clobbers r0, r1, nz,c flags
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/timer_setNoTimeout_8137700.yaml
 	thumb_func_start timer_setNoTimeout_8137700
 timer_setNoTimeout_8137700:
 	ldr r1, off_8137710 // =byte_20065B4 
@@ -15216,6 +15257,11 @@ loc_81377E8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8137790
 
+// symdb: Looks up which of the 3 in-use folder-slot entries (at unk_20018EC) holds a given folder slot, returning its index, or 3 if the slot is not in use.
+// symdb: int folder_findSlotInUseIndex(u32 packedChipData /* slot in high nibble of r0 */); // returns
+// symdb: 0-2 = matching entry index, 3 = not in use; also leaves r2 = last compared entry's slot nibble,
+// symdb: r3 = table address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/folder_findSlotInUseIndex_81377EC.yaml
 	thumb_func_start folder_findSlotInUseIndex_81377EC
 folder_findSlotInUseIndex_81377EC:
 	push {lr}
@@ -15300,6 +15346,10 @@ off_8137880:
 	.word unk_20018EC
 	thumb_func_end takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C
 
+// symdb: Returns a byte selected by index from a lookup table stored in IWRAM at 0x20018EC.
+// symdb: u8 getByteFromTable_20018EC(u8 index) // r0 = index in, r0 = table[index] out; flags untouched
+// symdb: (tail 'mov pc, lr')
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8137884.yaml
 	thumb_func_start sub_8137884
 sub_8137884:
 	ldr r1, off_813788C // =unk_20018EC 

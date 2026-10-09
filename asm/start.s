@@ -171,6 +171,10 @@ off_8000248:
 
 	thumb_func_start SetInterruptCallback
 // set the callback for interrupt r0/4 to callback r1
+// symdb: Installs a handler pointer into the BIOS/interrupt dispatch table slot selected by an interrupt index.
+// symdb: void SetInterruptCallback(u8 interrupt_idx /* r0 */, void (*callback)() /* r1 */); clobbers r0,
+// symdb: r2, r3, NZ; preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetInterruptCallback.yaml
 SetInterruptCallback:
 	push {lr}
 	ldr r2, off_8000258 // =_SetInterruptCallback+1 
@@ -206,6 +210,10 @@ off_8000278:
 	.word sub_3005E02+1
 	thumb_func_end start_dead_8000268
 
+// symdb: ROM entry point; trampolines to the game's main boot routine that was copied into EWRAM at 0x3005E18 and then returns through the normal caller.
+// symdb: void start(void) — no register inputs, no register outputs; r4 is preserved, all other scratch
+// symdb: registers and flags are clobbered by the callee chain
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/crt0_start_800027C.yaml
 	thumb_func_start crt0_start_800027C
 crt0_start_800027C:
 	push {lr}

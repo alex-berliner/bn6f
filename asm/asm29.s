@@ -10446,6 +10446,9 @@ JumpTable80AA6B8:
 	.word sub_80AA810+1
 	thumb_func_end sub_80AA6A4
 
+// symdb: Trivial helper that unconditionally returns 1 ("true") in R0.
+// symdb: void alwaysTrue(void) -> r0 = 1 (NZ set for result 1)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/alwaysTrue_80AA6E8.yaml
 	thumb_local_start
 alwaysTrue_80AA6E8:
 	mov r0, #1
@@ -11150,6 +11153,9 @@ off_80AAB84:
 	.word byte_8020B9C
 	thumb_func_end sub_80AAB68
 
+// symdb: Computes a bitwise NAND of two 40-byte buffers into a third (dst[i] = ~(srcA[i] | srcB[i]))
+// symdb: void util_nandByteArray40(const u8* srcA /*r0*/, const u8* srcB /*r1*/, u8* dst /*r2*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/util_nandByteArray40_80AAB88.yaml
 	thumb_func_start util_nandByteArray40_80AAB88
 util_nandByteArray40_80AAB88:
 	push {r5-r7,lr}

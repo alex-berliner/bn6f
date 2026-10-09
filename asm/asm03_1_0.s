@@ -1150,6 +1150,9 @@ loc_8034140:
 	pop {r4-r7,pc}
 	thumb_func_end navi_80340F6
 
+// symdb: Zero-fills a 12-byte work buffer at 0x2011A40, presumably to reset some subsystem's scratch state before reuse.
+// symdb: void sub_80341AA(void); // callers' r2/r3 are untouched pass-throughs; clobbers r0, r1, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2011A40.yaml
 	thumb_func_start clearWorkBuffer_2011A40
 clearWorkBuffer_2011A40:
 	push {lr}
@@ -1317,6 +1320,9 @@ loc_80342D6:
 	pop {pc}
 	thumb_func_end sub_80342C6
 
+// symdb: Sets a state byte pointed to by r5 to 4, likely advancing a state machine to its fourth phase.
+// symdb: void sub_80342DC(u8* state /* r5 */) -> returns r0 = 4 with NZ flags set
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80342DC.yaml
 	thumb_local_start
 sub_80342DC:
 	push {lr}
@@ -1325,6 +1331,9 @@ sub_80342DC:
 	pop {pc}
 	thumb_func_end sub_80342DC
 
+// symdb: Writes the constant 8 to a single byte at the address in r5, almost certainly setting a battle object's state/counter/kind field to 8.
+// symdb: battle_SetEntityByteTo8(u8* field /* r5 */) -> u8 /* r0 = 8, NZ flags from 8 (N=0, Z=0) */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80342E4.yaml
 	thumb_local_start
 sub_80342E4:
 	push {lr}
@@ -2864,6 +2873,10 @@ off_8035328:
 	.word byte_80990B8 // CutsceneScript
 	thumb_func_end ghostNaviCheck_8035274
 
+// symdb: Resets the game-progress flag buffer to the default table values and clears the current progress state in the game state struct.
+// symdb: void gameProgress_resetBuffer_803532c(void); // inputs r4-r7,r10 (preserved except r7 used as
+// symdb: scratch), outputs r3=0x19 (entries copied); clobbers r0,r1,r3,r6,r7 and NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gameProgress_resetBuffer_803532c.yaml
 	thumb_func_start gameProgress_resetBuffer_803532c
 gameProgress_resetBuffer_803532c:
 	push {r4-r7,lr}
@@ -3111,6 +3124,11 @@ clearSetFlags_80355a8:
 	pop {r4-r7,pc}
 	thumb_func_end clearSetFlags_80355a8
 
+// symdb: Returns a pointer to entry `index` of a fixed 20-byte-per-entry table at byte_80984C8.
+// symdb: u8* getIndexed20ByteTableEntry(u32 index) // in: r0=index, lr=return; out: r0=entry address,
+// symdb: r1=table base, r2=byte offset; c/v set by the ADDS used for the address computation (nz
+// symdb: clobbered)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getIndexed20ByteTableEntry_80355DE.yaml
 	thumb_func_start getIndexed20ByteTableEntry_80355DE
 getIndexed20ByteTableEntry_80355DE:
 	ldr r1, off_80355E8 // =byte_80984C8
@@ -3255,6 +3273,9 @@ applyLayerEffectToOWObject_8035694:
 	.pool // Struct8034460
 	thumb_func_end applyLayerEffectToOWObject_8035694
 
+// symdb: Zero-fills the 0x100-byte work buffer at IWRAM 0x2000DC0 word-wise.
+// symdb: void sub_80356EC(void); /* no inputs, no meaningful outputs */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkBuffer_2000DC0.yaml
 	thumb_func_start clearWorkBuffer_2000DC0
 clearWorkBuffer_2000DC0:
 	push {r4-r7,lr}
@@ -3312,6 +3333,10 @@ locret_8035736:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8035714
 
+// symdb: Ticks a table of 32 countdown timers, decrementing each active entry once per call.
+// symdb: void sub_8035738(void); // inputs r4-r7 (preserved), lr; outputs r3 = last computed value,
+// symdb: C/V/NZ from final subtract or loop compare
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/timer_tickCountdownTable_8035738.yaml
 	thumb_func_start timer_tickCountdownTable_8035738
 timer_tickCountdownTable_8035738:
 	push {r4-r7,lr}

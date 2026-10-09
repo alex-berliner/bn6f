@@ -85,6 +85,13 @@ MapScriptCmd_end: // 8035920
 // 0x01/0x15 destination1
 // jump to another script
 // destination1 - script to jump to
+// symdb: Map-script command handler for "jump": consumes a jump-target word from the script and transfers script execution there, always reporting success.
+// symdb: void MapScriptCutsceneCmd_jump(u32 scriptReader in r4 /* implicitly via ReadMapScriptWord */,
+// symdb: u32 cmdId out r6 = 1,                                u32 newScriptPtr out r7 (copy of updated
+// symdb: r4),                                u32 result out r0 = 1,                                flags:
+// symdb: "nz/c/v set per \"adds r7, r4, #0\" then nz from \"mov r0, #1\";"
+// symdb: lr used as return address)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump.yaml
 MapScriptCutsceneCmd_jump: // 8035924
 	push {lr}
 	mov r6, #1
@@ -2407,6 +2414,9 @@ locret_8036E72:
 	.pool // 8036E74
 	thumb_func_end playCertainMapMusicBasedOnEventByte_8036e44
 
+// symdb: Starts playback of the music track assigned to the current map/cutscene state.
+// symdb: void PlayMapMusic(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/PlayMapMusic.yaml
 	thumb_func_start PlayMapMusic
 PlayMapMusic: // () -> ()
 	push {r4-r7,lr}
@@ -2501,6 +2511,10 @@ off_8036F20:
 	.word DummyCutsceneScript
 	thumb_func_end cutscene_8036EFE
 
+// symdb: If the cutscene script position holds the magic dummy value 1, clears both the current and saved script positions to NULL.
+// symdb: void cutscene_clearScriptPosIfDummyValue(Toolkit *toolkit @ r10); returns cutscene state ptr in
+// symdb: r1; flags C,V set from cmp(scriptPos, 1), NZ reflect comparison; clobbers r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_clearScriptPosIfDummyValue_8036F24.yaml
 	thumb_func_start cutscene_clearScriptPosIfDummyValue_8036F24
 cutscene_clearScriptPosIfDummyValue_8036F24:
 	mov r1, r10
@@ -2590,6 +2604,10 @@ TryCutsceneSkip:
 	pop {r4-r7,pc}
 	thumb_func_end TryCutsceneSkip
 
+// symdb: Points the cutscene camera engine at a new camera script and resets its command timer so playback starts from the beginning.
+// symdb: void SetCutsceneCameraScript(void* cameraScript /* r0 */); clobbers r0, NZ flags; r1/r2 left as
+// symdb: set by camera_writeUnk03_14_80301b2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_setCameraScript.yaml
 	thumb_func_start cutscene_setCameraScript
 cutscene_setCameraScript:
 	push {lr}
@@ -2758,6 +2776,9 @@ CutsceneCameraCmd_simple_scroll:
 	thumb_local_start
 // 0x08
 // end cutscene camera script
+// symdb: Handles the "end" command of a cutscene camera script by returning success (0).
+// symdb: void CutsceneCameraCmd_end(void) -> returns r0 = 0 with NZ flags set
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCameraCmd_end.yaml
 CutsceneCameraCmd_end:
 	mov r0, #0
 	mov pc, lr
@@ -3415,6 +3436,10 @@ ReadCutsceneCameraScriptSignedByte:
 	pop {r1-r3,pc}
 	thumb_func_end ReadCutsceneCameraScriptSignedByte
 
+// symdb: Reads a little-endian 16-bit value at a given offset within a cutscene camera script buffer.
+// symdb: u16 ReadCutsceneCameraScriptHalfword(u32 scriptOffset /*r0*/, u8 *scriptBase /*r1*/); preserves
+// symdb: r1-r3, clobbers flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadCutsceneCameraScriptHalfword.yaml
 	thumb_local_start
 ReadCutsceneCameraScriptHalfword:
 	push {r1-r3,lr}
@@ -3426,6 +3451,10 @@ ReadCutsceneCameraScriptHalfword:
 	pop {r1-r3,pc}
 	thumb_func_end ReadCutsceneCameraScriptHalfword
 
+// symdb: Reads a sign-extended 16-bit immediate from a cutscene camera script at a given byte offset.
+// symdb: s16 ReadCutsceneCameraScriptSignedHalfword(const void *script /*r0*/, int offset /*r1*/);
+// symdb: preserves r1-r3, returns value in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadCutsceneCameraScriptSignedHalfword.yaml
 	thumb_local_start
 ReadCutsceneCameraScriptSignedHalfword:
 	push {r1-r3,lr}
@@ -3928,6 +3957,11 @@ CutsceneCmd_wait_screen_fade:
 	thumb_local_start
 // 0x08
 // wait for cutscene camera script to finish
+// symdb: Cutscene script command that pauses the cutscene until the parallel-running camera script finishes.
+// symdb: u8 CutsceneCmd_wait_camera_script(CutsceneState *r5, u32 r7_commandCounter /* in/out */);
+// symdb: returns 0 while the camera script is active (counter unchanged), 1 when done (counter advanced);
+// symdb: sets nz from r0, and on the done path c/v come from the ADDS r7,#1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_wait_camera_script.yaml
 CutsceneCmd_wait_camera_script:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneState_CutsceneCameraScriptActive]
@@ -4087,6 +4121,9 @@ CutsceneCmd_wait_if_eStruct2001010_initialized:
 	thumb_local_start
 // 0x11
 // end cutscene script
+// symdb: Cutscene script command that terminates the running cutscene by signaling "stop" to the script engine.
+// symdb: void CutsceneCmd_cutscene_end(void) -> returns r0 = 0, sets NZ flags from that zero
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_cutscene_end.yaml
 CutsceneCmd_cutscene_end:
 	mov r0, #0
 	mov pc, lr
@@ -4147,6 +4184,11 @@ CutsceneCmd_kill_cutscene_process:
 // 0x14 ptr1
 // set the script to execute for when a cutscene is skipped
 // ptr1 - script to execute
+// symdb: Cutscene script VM command that arms skipping by recording which script should run after the player skips the current cutscene.
+// symdb: void CutsceneCmd_set_cutscene_skip_script(cutsceneState r5, cursor r7); // reads operand via
+// symdb: ReadMapScriptWord; returns r0=1 (success), r4=operand word, r6=1, r7=r7+5, NZ/C/V clobbered, lr
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_set_cutscene_skip_script.yaml
 CutsceneCmd_set_cutscene_skip_script:
 	push {lr}
 	mov r6, #1
@@ -4396,6 +4438,9 @@ CutsceneCmd_run_text_script:
 // 0x3b
 // unknown chatbox command
 // ex. called after getting a chip from the numbertrader
+// symdb: Cutscene chatbox command that opens/shows the message box, advances the script cursor, and signals completion.
+// symdb: Next CutsceneCmd_chatbox_cmd_8037a70(u32 script_ptr_r1, u32 r2, u32 r5, u32* r7_cursor, u32 r10)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_chatbox_show_8037a70.yaml
 CutsceneCmd_chatbox_show_8037a70:
 	push {lr}
 	bl chatbox_8040818
@@ -6258,6 +6303,10 @@ RunCutscene:
 	.pool
 	thumb_func_end RunCutscene
 
+// symdb: Sets one bit in the current cutscene-state flag word, marking a cutscene event/step as done.
+// symdb: u32 SetCutsceneFlag(u8 flagIndex in r0, CutsceneState* state in r5); returns updated flag word
+// symdb: in r0, preserves r1; flags clobbered (nz c), carry is input
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SetCutsceneFlag.yaml
 	thumb_local_start
 SetCutsceneFlag:
 	push {r1}
@@ -6270,6 +6319,11 @@ SetCutsceneFlag:
 	mov pc, lr
 	thumb_func_end SetCutsceneFlag
 
+// symdb: Clears a single bit in the cutscene-state object's cutscene flags word, marking that cutscene/event flag as no longer set.
+// symdb: void ClearCutsceneFlag(u8 flagIndex in r0, CutsceneState* state in r5); preserves r1 and the
+// symdb: carry flag; clobbers r0 and the nz flags; carry out of the caller-visible value comes from the
+// symdb: flag-setting shift (carry = bit shifted out of 1 << n, untouched if n == 0).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearCutsceneFlag.yaml
 	thumb_local_start
 ClearCutsceneFlag:
 	push {r1}
@@ -6282,6 +6336,11 @@ ClearCutsceneFlag:
 	mov pc, lr
 	thumb_func_end ClearCutsceneFlag
 
+// symdb: Tests whether a numbered cutscene flag is set in the current cutscene state's flag word, returning the result in the Z flag.
+// symdb: u32 TestCutsceneFlag(u32 flagNumber /*r0*/, struct CutsceneState *state /*r5*/); returns flag
+// symdb: word in r0, Z clear iff flag set (N also from mask result), C from the shift barrel shifter; r1
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_TestFlag.yaml
 	thumb_local_start
 cutscene_TestFlag:
 	push {r1}

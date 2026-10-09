@@ -161,6 +161,9 @@ sub_809FACE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FACE
 
+// symdb: Returns the address of a halfword-sized entry inside the toolkit's 0x02004xxx buffer, given an offset measured relative to 0x1400.
+// symdb: u16* sub_809FADE(u32 offset /* r0, toolkit in r10 */); also returns the buffer base in r2
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809FADE.yaml
 	thumb_local_start
 sub_809FADE:
 	mov r2, r10
@@ -176,6 +179,9 @@ dword_809FAF0:
 	.word 0x1400
 	thumb_func_end sub_809FADE
 
+// symdb: (Re)initializes the mystery data map group tables, first for the internet world and then for the real world.
+// symdb: void sub_809FAF4(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mysteryData_InitMapGroupTables_809FAF4.yaml
 	thumb_func_start mysteryData_InitMapGroupTables_809FAF4
 mysteryData_InitMapGroupTables_809FAF4:
 	push {r4-r7,lr}
@@ -602,6 +608,11 @@ loc_809FD96:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FD70
 
+// symdb: Compares a caller-supplied 16-bit id against the id stored in a global record and, only on a match, overwrites the record's 16-bit value field.
+// symdb: u16 record_writeU16IfIdMatches(u8 idLo /*r0*/, u8 idHi /*r1*/, u16 value /*r2*/); // returns the
+// symdb: record's currently stored id (r1 out); NZCV set from cmp(id, storedId); r0 and flags clobbered,
+// symdb: r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/record_writeU16IfIdMatches_809FDCE.yaml
 	thumb_local_start
 record_writeU16IfIdMatches_809FDCE:
 	push {r4-r7,lr}
@@ -668,6 +679,9 @@ locret_809FE34:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FDE0
 
+// symdb: Increments a caller-supplied counter when r4 equals the halfword index/state field at byte_2000210+6; otherwise returns the counter unchanged.
+// symdb: int bumpCounterIfMatchesWord2000210_6(int counter /* r0 */, int value /* r4 */)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809FE36.yaml
 	thumb_local_start
 sub_809FE36:
 	push {r4-r7,lr}
@@ -680,6 +694,10 @@ locret_809FE42:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FE36
 
+// symdb: Checks a mystery data id against the id registered in the gold mystery data work area and, on a match, returns that entry's data pointer and content byte.
+// symdb: void goldMysteryData_GetEntryDataIfIdMatches(u16 id /* r0 */); // out: r4 = entry data ptr, r3 =
+// symdb: content byte (only written on match)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/goldMysteryData_GetEntryDataIfIdMatches_809FE44.yaml
 	thumb_local_start
 goldMysteryData_GetEntryDataIfIdMatches_809FE44:
 	push {r5-r7,lr}

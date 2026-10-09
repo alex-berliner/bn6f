@@ -402,6 +402,10 @@ loc_813B9D8:
 	pop {pc}
 	thumb_func_end sub_813B9C4
 
+// symdb: Returns the address of one of three data tables (byte_813B1EC, byte_813B2CD, byte_813B3AE) selected by the index in r0.
+// symdb: u32* getIndexedDataTable(u32 index) // in: r0 = table index; out: r0 = pointer to selected
+// symdb: table; clobbers r1, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getIndexedDataTable_813B9E0.yaml
 	thumb_func_start getIndexedDataTable_813B9E0
 getIndexedDataTable_813B9E0:
 	push {lr}
@@ -418,6 +422,11 @@ off_813B9F0:
 	.word byte_813B3AE
 	thumb_func_end getIndexedDataTable_813B9E0
 
+// symdb: Returns the address of entry `index` in the 8-byte-per-entry array whose base pointer is held in the toolkit struct at oToolkit_Unk2004190_Ptr.
+// symdb: void *toolkit_getUnk2004190EntryPtr(u32 index /* r0 */, toolkit *tk /* r10 */) /* returns r0 =
+// symdb: base + index*8; also leaves r1 = array base, r2 = 8, and sets NZCV flags from the final ADD (V
+// symdb: is listed as an output) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_getUnk2004190EntryPtr_813B9FC.yaml
 	thumb_func_start toolkit_getUnk2004190EntryPtr_813B9FC
 toolkit_getUnk2004190EntryPtr_813B9FC:
 	mov r1, r10
@@ -861,18 +870,28 @@ loc_813BD02:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813BC98
 
+// symdb: Trivial getter that returns the address of a work buffer at 0x2006CF8 in r7 for its caller.
+// symdb: void getWorkAreaPtr_2006CF8(void) /* out: r7 = &unk_2006CF8; only lr is read, nothing else
+// symdb: touched */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CF8.yaml
 	thumb_local_start
 getWorkAreaPtr_2006CF8:
 	ldr r7, off_813BD18 // =unk_2006CF8 
 	mov pc, lr
 	thumb_func_end getWorkAreaPtr_2006CF8
 
+// symdb: Tiny getter that loads the base address of the work/RAM area at 0x2006C88 into r7 for the caller.
+// symdb: void sub_813BD10(void); // out: r7 = 0x2006C88
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BD10.yaml
 	thumb_local_start
 sub_813BD10:
 	ldr r7, off_813BD1C // =unk_2006C88 
 	mov pc, lr
 	thumb_func_end sub_813BD10
 
+// symdb: Tiny helper that loads the base address of the IWRAM data block at 0x2006CC0 into r7 (a work-area/global-struct pointer getter).
+// symdb: void getWorkAreaPtr_2006CC0(void); // out: r7 = &unk_2006CC0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getWorkAreaPtr_2006CC0.yaml
 	thumb_local_start
 getWorkAreaPtr_2006CC0:
 	ldr r7, off_813BD20 // =unk_2006CC0 
@@ -1154,6 +1173,10 @@ off_813BF08:
 	.word byte_2006D30
 	thumb_func_end sub_813BEA8
 
+// symdb: Reads a byte at the given index from the toolkit's Unk200431c table and clamps the value to a maximum of 3.
+// symdb: u8 getUnk200431cTableByteCapped3_ADDRESS(u32 index /* r0 */); // r1 also returns the table base
+// symdb: pointer; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getUnk200431cTableByteCapped3_813BF0C.yaml
 	thumb_local_start
 getUnk200431cTableByteCapped3_813BF0C:
 	mov r1, r10
@@ -1637,6 +1660,10 @@ byte_813C308:
 	.byte 0x3
 	thumb_func_end sub_813C1C0
 
+// symdb: Zero-fills the 8-byte work record at unk_2000090 in EWRAM, passing the caller's r2 through untouched.
+// symdb: void sub_813C324(void) /* in: r2 (pass-through value, preserved); out: r2 unchanged; clobbers
+// symdb: r0, r1, lr, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eraseMem_ClearBuffer_813C324.yaml
 	thumb_func_start eraseMem_ClearBuffer_813C324
 eraseMem_ClearBuffer_813C324:
 	push {lr}
@@ -1998,6 +2025,9 @@ byte_813C640:
 	.byte 0xFF, 0xFF
 	thumb_func_end sub_813C624
 
+// symdb: Writes zero to the halfword pointed at by the toolkit's Unk2004334 pointer (likely resetting some global UI/state counter).
+// symdb: void sub_813C678(Toolkit* toolkit /* r10 */)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813C678.yaml
 	thumb_local_start
 sub_813C678:
 	push {lr}
@@ -3779,6 +3809,10 @@ dead_813D600::
 off_813D608:
 	.word byte_200AF80
 
+// symdb: Tests the boolean flag byte at offset 5 of the IWRAM struct at 0x200BC50 and returns its value and the struct address so callers can branch on it.
+// symdb: void testStruct200BC50Flag05_813D60C(void) /* in: lr only; out: r0 = flag byte (0 or nonzero),
+// symdb: r1 = &struct200BC50, Z/N flags set from r0 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/test0x200bc50_0x5_813D60C.yaml
 	thumb_func_start test0x200bc50_0x5_813D60C
 test0x200bc50_0x5_813D60C:
 	push {lr}
@@ -3799,6 +3833,10 @@ off_813D618:
 	.balign 4, 0x00
 off_813D628:
 	.word eS200BC50
+// symdb: Stores an 8-bit value passed in r0 into byte 0x200BC55 (offset 5 of the IWRAM struct at 0x200BC50) and returns the struct's base address in r1.
+// symdb: u32 setByte200BC55(u8 value); /* in: r0 = value to store, lr = return address; out: r1 = struct
+// symdb: base 0x200BC50 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813D62C.yaml
 	thumb_local_start
 sub_813D62C:
 	push {lr}
@@ -4184,6 +4222,9 @@ off_813D8C0:
 	.word 0x200
 	thumb_func_end sub_813D8AC
 
+// symdb: Sets the link session state to 4, requesting teardown of the current wireless/cable link connection.
+// symdb: void link_RequestDisconnect(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/link_RequestDisconnect_813D8C4.yaml
 	thumb_func_start link_RequestDisconnect_813D8C4
 link_RequestDisconnect_813D8C4:
 	ldr r0, off_813D8CC // =eLinkState 

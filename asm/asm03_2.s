@@ -835,6 +835,9 @@ loc_8046652:
 	thumb_func_end sub_80465F8
 
 // () -> void
+// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then sub_804657C) as a single combined per-frame update step.
+// symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
 	thumb_func_start sub_8046664
 sub_8046664:
 	push {r4-r7,lr}
@@ -843,6 +846,10 @@ sub_8046664:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046664
 
+// symdb: Initializes one 0x58-byte entry of the struct array at 0x2008450 as "type 9", storing an id byte, a parameter word, and clearing its counter/state word.
+// symdb: struct* initType9Entry(u8 id /*r0*/, u32 slot /*r1*/, u32 param /*r2*/); returns r0 = pointer to
+// symdb: the 0x58-byte entry, r1 = slot*0x58, flags N/Z from the returned pointer (C set, V clear)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046670.yaml
 	thumb_func_start sub_8046670
 sub_8046670:
 	push {r4-r7,lr}
@@ -860,6 +867,9 @@ sub_8046670:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046670
 
+// symdb: Zeros a sprite's scale/cycle counter byte and rebuilds the sprite as unscalable.
+// symdb: void sprite_clearScaleCounterAndMakeUnscalable(/* r5 */ u8* scaleCounter)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearScaleCounterAndMakeUnscalable_804668A.yaml
 	thumb_func_start sprite_clearScaleCounterAndMakeUnscalable_804668A
 sprite_clearScaleCounterAndMakeUnscalable_804668A:
 	push {r4-r7,lr}
@@ -901,6 +911,10 @@ loc_80466BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80466AA
 
+// symdb: Returns the first byte (an in-use/status flag) of entry `index` of the fixed 0x58-byte struct array at eStructArr2008450, with NZ flags set from that byte.
+// symdb: u8 getStructFrom2008450(u32 index); /* r0 in: entry index; r0 out: flag byte, NZ set from it; r1
+// symdb: out: entry address, r2 out: 0x58*index; C/V left from the base+offset ADDS */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getStructEntryFlag2008450.yaml
 	thumb_func_start getStructEntryFlag2008450
 getStructEntryFlag2008450:
 	ldr r1, off_80466D4 // =eStructArr2008450 
@@ -1630,6 +1644,9 @@ loc_8046DF0:
 	pop {pc}
 	thumb_func_end sub_8046DDC
 
+// symdb: Runs two update passes in sequence (sub_8047950 then sub_8047134) and always returns 0.
+// symdb: void sub_8046DF8(void) /* no inputs; returns r0 = 0 with N/Z set from it */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046DF8.yaml
 	thumb_local_start
 sub_8046DF8:
 	push {lr}
@@ -2271,6 +2288,10 @@ loc_8047340:
 	pop {r0-r4,pc}
 	thumb_func_end sub_804733C
 
+// symdb: Compares a caller-supplied expected value against a scrambled counter field (record+0x30) and reports the result only through the flags.
+// symdb: void checkScrambledCounter(u32 expected /* r0, preserved */, record *r5) / out: NZCV from
+// symdb: cmp(scrambledValue - expected); r0-r4 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkScrambledCounter_8047366.yaml
 	thumb_local_start
 checkScrambledCounter_8047366:
 	push {r0-r2,r4,lr}
@@ -2396,6 +2417,10 @@ loc_8047438:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80473E6
 
+// symdb: Scans an array of 8-byte records and sets the Z flag if any record's halfword at offset +2 equals a given value, telling the caller whether a match was found.
+// symdb: int findRecordWithHalfwordAtOffset2(u16 target /*r0*/, void* records /*r7*/, int count /*r4*/);
+// symdb: returns via flags: Z set = match found, NZ = not found; r1 = last halfword read
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/findRecordWithHalfwordAtOffset2_804743C.yaml
 	thumb_local_start
 findRecordWithHalfwordAtOffset2_804743C:
 	push {r3-r7,lr}
@@ -2551,6 +2576,10 @@ off_8047588:
 	.word dword_86A5D60
 	thumb_func_end sub_804754C
 
+// symdb: One-instruction trampoline that tail-calls sub_80478D4 and returns whatever it returns.
+// symdb: void wrapper_sub_80478D4(void) — no registers set up or inspected; all callee-visible state is
+// symdb: passed straight through and r4-r9 are preserved.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804758C.yaml
 	thumb_local_start
 sub_804758C:
 	push {r5,lr}
@@ -3514,6 +3543,9 @@ off_8047C9C:
 	.word byte_201AE00
 	thumb_func_end sub_8047B88
 
+// symdb: No-op stub that only returns 0 with the Z flag set; all other registers are preserved.
+// symdb: void sub_8047CA0(void); // returns r0 = 0, Z set / N clear, C unaffected; r2-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stub_doNothingReturnZero_8047CA0.yaml
 	thumb_local_start
 stub_doNothingReturnZero_8047CA0:
 	push {r2-r7,lr}
@@ -3530,6 +3562,9 @@ sub_8047CA8:
 	pop {r1-r7,pc}
 	thumb_func_end sub_8047CA8
 
+// symdb: Two-instruction stub that always yields "no"/zero, with callers branching on the flags it leaves.
+// symdb: int stub_alwaysFalse(void) // r0 = 0 out; Z set, N clear out
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8047CB0.yaml
 	thumb_local_start
 sub_8047CB0:
 	push {lr}
@@ -3537,6 +3572,10 @@ sub_8047CB0:
 	pop {pc}
 	thumb_func_end sub_8047CB0
 
+// symdb: After a list's entry count (u16 at object+0x12) shrinks, pulls the two list indices at +0x14 and +0x18 back down so they stay within the shortened list, only lowering them, never raising.
+// symdb: void menu_clampListScrollAfterCountChange(Object* r5); /* r5 in, lr in (return address); returns
+// symdb: with only the V flag meaningful to callers; clobbers r0, r1 and NZC */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_clampListScrollAfterCountChange_8047CB6.yaml
 	thumb_local_start
 menu_clampListScrollAfterCountChange_8047CB6:
 	push {lr}
@@ -3562,6 +3601,9 @@ locret_8047CDA:
 	pop {pc}
 	thumb_func_end menu_clampListScrollAfterCountChange_8047CB6
 
+// symdb: Multiplies a passed value by 100 unless some global mode word equals 1, in which case the value is returned unchanged.
+// symdb: u32 sub_8047CDC(u32 value /* r1 in, r1 out; all other registers preserved, flags clobbered */)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8047CDC.yaml
 	thumb_local_start
 sub_8047CDC:
 	push {r0,r2-r7,lr}
@@ -3575,6 +3617,10 @@ locret_8047CEA:
 	pop {r0,r2-r7,pc}
 	thumb_func_end sub_8047CDC
 
+// symdb: Copies a fixed 0x168-word data table from ROM (byte_80469F0) into a fixed EWRAM work buffer (byte_202F800).
+// symdb: void sub_8047CEC(void) /* in: none (lr only); out: none; preserves r3; clobbers r0-r2, lr, NZC
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copy_table_80469F0_to_202F800.yaml
 	thumb_local_start
 copy_table_80469F0_to_202F800:
 	push {lr}
