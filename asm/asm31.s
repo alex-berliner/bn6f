@@ -92738,15 +92738,6 @@ sub_80E3B94:
 	thumb_func_end sub_80E3B94
 
 // symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
-
-// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
-
-// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
-
-// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
-
-// symdb: Updates a battle object's position (once as-is, once after applying its X velocity) through sub_80E3D1A, then dispatches to one of two per-action handlers selected by the object's CurAction byte.
-
 // symdb: void sub_80E3BEA(battle object in r5); clobbers r0-r3, lr (and flags); does not return to this
 // symdb: function's caller until the selected action handler returns; handler entered with r0 =
 // symdb: CurAction, r1 = its jump-table entry (thumb address), r2 = whatever sub_80E3D1A last left there

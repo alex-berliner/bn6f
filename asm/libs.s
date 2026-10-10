@@ -20920,6 +20920,11 @@ m4a_814DC84:
 	.word 1584
 	thumb_func_end SoundMain
 
+// symdb: The m4a ("Sappy") PCM mixer that m4aSoundInit copies to IWRAM 0x03005700 and SoundMain runs every frame.
+// symdb: Tail-jumped to from SoundMain inside its stack frame (r0 = SoundInfo, r4 = pcmDmaCounter, r5 =
+// symdb: buffer position this frame, r8 = samples per frame; [sp+0x14] = scanline budget, [sp+0x18] =
+// symdb: SoundInfo); returns through SoundMain's epilogue.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SoundMainRAM.yaml
 	thumb_local_start 2
 SoundMainRAM:
 	ldrb r3, [r0,#5]
