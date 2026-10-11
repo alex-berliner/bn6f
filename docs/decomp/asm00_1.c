@@ -516,7 +516,7 @@ unsigned int __fastcall sub_80035A2(unsigned int result)
 
 
 // 0x800362c
-signed int __fastcall sub_800362C(signed __int16 *a1)
+signed int __fastcall projectObjectToScreen_800362C(signed __int16 *a1)
 {
 	int v1; // r10
 	_DWORD *v2; // r3
@@ -1391,7 +1391,7 @@ int gameMode_switchToMode2_80046F8()
 
 
 // 0x8004702
-signed int sub_8004702()
+signed int npc_clearOverworldNpcStateWord_8004702()
 {
 	signed int result; // r0
 	char *v1; // r3
@@ -1996,7 +1996,7 @@ void __fastcall sub_8004CCC(int a1, _WORD *a2, int a3, char a4)
 
 
 // 0x8004d48
-char *sub_8004D48()
+char *scenario_prepareEnterMap_8004D48()
 {
     Toolkit *tk; // r10
     GameState *gs; // r5
@@ -2026,7 +2026,7 @@ char *sub_8004D48()
     setEventFlag_809E098();
     sCamera.unk_4C = 0;
     LOBYTE(dword_20096D0) = 0;
-    sub_8004702();
+    npc_clearOverworldNpcStateWord_8004702();
     ClearEventFlagFromImmediate(23, 3);
     ClearEventFlagFromImmediate(23, 27);
     ClearEventFlagFromImmediate(23, 21);
@@ -2109,7 +2109,7 @@ void __cdecl initNewGameData_8004DF0()
     keyItems_ResetInventoryAndGrantScenarioItems_803CD74(v9, v10, v11, v12);
     gs->pad_13[oGameState_SubsystemIndex] = 0;
     *&gs->pad_74[oGameState_MapGroup] = 0;
-    sub_802F2C8();
+    resetPaletteScratch_802F2C8();
     sub_81284A4();
     sub_809E2C2();
     sub_809E2F4();
@@ -2122,9 +2122,9 @@ void __cdecl initNewGameData_8004DF0()
     battle_ClearEStruct2001010_8003A58();
     zeroFill_e2004348();
     mysteryData_InitMapGroupTables_809FAF4();
-    sub_809F9DC();
-    sub_8049CF8();
-    sub_804A17A();
+    mysteryData_processMapGroups_809F9DC();
+    chatbox_initTextLineBuffer_8049CF8();
+    textScript_buildFolderNameBuffers_804A17A();
     clearS2001c04Byte6_811FB78();
     shop_resetStockTable_8048C68();
     SetEventFlagFromImmediate(23, 29);
@@ -2172,7 +2172,7 @@ void __cdecl initNewGameData_8004DF0()
     SetEventFlagFromImmediate(0, 56);
     SetEventFlagFromImmediate(0, 57);
     SetEventFlagFromImmediate(0, 17);
-    sub_80AA004(0);
+    copyOamEntry_80AA004(0);
     palette_copyTableRow_80AA104(0);
     memBlock_ClearWorkArea_802D638();
     clearWorkBuffer_2000DC0_80356EC();
@@ -2278,7 +2278,7 @@ int __fastcall EnterMap(int a1)
         eventFlags_ClearRangeAt2C8_802F0F4(v14, v15, v16, v17);
         sub_8036EFE();
         sub_8036F24();
-        sub_809F90C();
+        clearBattleStateIfEvent1708Pending_809F90C();
         ClearEventFlagFromImmediate(23, 49);
         sub_803F6B0(0, v18, v19, v20);
         sub_803F500();
@@ -2384,14 +2384,14 @@ int __fastcall battle_init_80052D8(int a1)
     {
         result = IsPaletteFadeActive();
         if ( !v2 )
-            sub_800531C(result);
+            endBattleAndEnterMap_800531C(result);
     }
     return result;
 }
 
 
 // 0x800531c
-void __fastcall __noreturn sub_800531C(int a1)
+void __fastcall __noreturn endBattleAndEnterMap_800531C(int a1)
 {
     int v1; // r10
     int v2; // r1
@@ -2401,7 +2401,7 @@ void __fastcall __noreturn sub_800531C(int a1)
 
     chatbox_8040818();
     sub_80035A2(0x21u);
-    sub_8004702();
+    npc_clearOverworldNpcStateWord_8004702();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -2483,7 +2483,7 @@ int __fastcall sub_800536E(int a1)
 
 
 // 0x80053e4
-int __fastcall sub_80053E4(int a1)
+int __fastcall scene_nextOrUpdate_80053E4(int a1)
 {
     int v1; // r10
     int result; // r0
@@ -2609,7 +2609,7 @@ _BYTE *mainState_resetGameAndGoto28_8005524()
     _BYTE *result; // r0
 
     sub_80035A2(0x21u);
-    v1 = sub_8004702();
+    v1 = npc_clearOverworldNpcStateWord_8004702();
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027C4();
@@ -2653,7 +2653,7 @@ _BYTE *__fastcall sub_800555A(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2699,7 +2699,7 @@ _BYTE *__fastcall sub_80055CE(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2717,7 +2717,7 @@ _BYTE *__fastcall sub_80055CE(int a1)
 
 
 // 0x8005642
-_BYTE *__fastcall sub_8005642(int a1)
+_BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -2745,7 +2745,7 @@ _BYTE *__fastcall sub_8005642(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2791,7 +2791,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2837,7 +2837,7 @@ _BYTE *__fastcall sub_800572C(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2883,7 +2883,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -2901,7 +2901,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
 
 
 // 0x8005814
-_BYTE *__fastcall sub_8005814(int a1)
+_BYTE *__fastcall mainState_runFrame_8005814(int a1)
 {
     _BYTE *result; // r0
     char v2; // zf
@@ -2962,7 +2962,7 @@ _BYTE *__fastcall sub_800585A(int a1)
     {
         chatbox_8040818();
         sub_80035A2(0x21u);
-        v4 = sub_8004702();
+        v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
         sub_80027C4();
@@ -3186,7 +3186,7 @@ void checkThenStartBattle_8005A8C()
                                         chatbox_mask_eFlags2009F38(128);
                                         if ( v1 )
                                         {
-                                            v2 = sub_80AA4C0();
+                                            v2 = battle_tryEncounter_80AA4C0();
                                             if ( !v1 )
                                             {
                                                 StartBattle(v2, 1);
@@ -3559,7 +3559,7 @@ int sub_8005D88()
 
 
 // 0x8005dbe
-int __noreturn sub_8005DBE()
+int __noreturn battle_initFullSetup_8005DBE()
 {
     int v0; // r10
     int v1; // r0
@@ -3812,13 +3812,13 @@ void sub_8005F78()
 
 
 // 0x8005f84
-_BYTE *sub_8005F84()
+_BYTE *resetGameStateToOpening_8005F84()
 {
     int v0; // r10
     _BYTE *result; // r0
 
     SetRenderInfoLCDControl(&byte_40);
-    sub_809F68C();
+    npc_clearAllBusyFlags_809F68C();
     chatbox_8040818();
     chatbox_clear_eFlags2009F38(64);
     **v0 = 4;
@@ -4077,7 +4077,7 @@ int sub_800647C()
 
 
 // 0x80064be
-_WORD *sub_80064BE()
+_WORD *fade_tick_80064BE()
 {
     int v0; // r5
     unsigned int v1; // r1
@@ -5143,10 +5143,10 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     ZeroFillByEightWords((*(v4 + oToolkit_iBGTileIdBlocks_Ptr) + 2048), 6144);
     sCamera.unk_4C = 0;
     v10 = sub_800A01C();
-    sub_80075CA(v10, v11, v12, v13);
+    loadSceneGfx_80075CA(v10, v11, v12, v13);
     bgScroll_ResetScrollCBCounters_8080D90();
     sub_8080DA0();
-    v14 = sub_8007628();
+    v14 = battle_initDisplayTables_8007628();
     chatbox_resetPrinterState_801FE00(v14, v15, v16);
     eStruct2038160_clearStruct(v17, v18, v19, v20);
     ai_resetAIDataSlots_800ED00();
@@ -5192,7 +5192,7 @@ int battle_SpawnEnemyObjects_8007358()
     int v0; // r5
 
     SpawnBattleObjectUsingBattleEntityConfig_8007368(*(*(v0 + 60) + 12));
-    return sub_80AA88C();
+    return battle_rollRandomItemDrops_80AA88C();
 }
 
 
@@ -5221,7 +5221,7 @@ int spawnMegaMan_80073CC()
 {
     _BYTE *v0; // r6
 
-    return sub_800753C(v0[1] & 7, v0[1] >> 4, *v0 & 1, 1);
+    return battle_spawnNaviOnPanel_800753C(v0[1] & 7, v0[1] >> 4, *v0 & 1, 1);
 }
 
 
@@ -5371,7 +5371,7 @@ _BYTE *__noreturn spawnGuardian_800751C()
 
 
 // 0x800753c
-int __fastcall sub_800753C(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnNaviOnPanel_800753C(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -5432,7 +5432,7 @@ int __fastcall sub_800753C(int a1, int a2, int a3, int a4)
 
 
 // 0x80075ca
-void __fastcall sub_80075CA(int a1, int a2, int a3, int a4)
+void __fastcall loadSceneGfx_80075CA(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(0x6008000, 64);
     ZeroFillByWord(0x6008000, 64);
@@ -5442,7 +5442,7 @@ void __fastcall sub_80075CA(int a1, int a2, int a3, int a4)
 
 
 // 0x8007628
-int sub_8007628()
+int battle_initDisplayTables_8007628()
 {
     int v0; // r10
     int v1; // r0
@@ -5770,7 +5770,7 @@ signed int sub_800794C()
     sub_802E112();
     camera_resetToOrigin_8007338();
     v13 = clearBattleCounters_800A0C6();
-    sub_801BE70(v13, v14, v15, v16);
+    resetBattleBuffers_801BE70(v13, v14, v15, v16);
     copy_8002668();
     result = 4;
     *(v0 + 1) = 4;
@@ -5815,7 +5815,7 @@ signed int __fastcall battle_state_endPhaseWithEffect_80079A8(int a1)
         v3 = 0;
     *(v1 + 13) = v3;
     sCamera.unk_4C = v3;
-    sub_800B144();
+    battle_initBattleStateBuffer_800B144();
     result = 8;
     *(v1 + 2) = 8;
     return result;
@@ -5858,7 +5858,7 @@ int battle_RevealFieldColumnsStep_80079F0()
 
 
 // 0x8007a0c
-void __fastcall __noreturn sub_8007A0C(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_initEntry_8007A0C(int a1, int a2, int a3, int a4)
 {
     collision_resetAllHitData_801986C(a1, a2, a3, a4);
     sub_800C8F0();
@@ -6087,7 +6087,7 @@ LABEL_10:
 
 
 // 0x8007ca0
-void __fastcall sub_8007CA0(int a1, int a2, int a3)
+void __fastcall battle_state_tick_8007CA0(int a1, int a2, int a3)
 {
     int v3; // r5
     int *v4; // r10
@@ -6442,8 +6442,8 @@ int sub_8008064()
     int v3; // r1
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 8) = 30;
@@ -6494,8 +6494,8 @@ int sub_80080D2()
     char *v10; // r0
     char v11; // [sp-4h] [bp-8h]
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
@@ -6556,7 +6556,7 @@ int sub_80080D2()
             }
             else
             {
-                result = sub_800A1D0();
+                result = battle_checkNaviFreeze_800A1D0();
                 if ( v8 )
                     return result;
             }
@@ -6959,8 +6959,8 @@ int sub_8008528()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -6990,8 +6990,8 @@ int sub_800855E()
     char v6; // zf
 
     sub_80085FE();
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
@@ -7468,8 +7468,8 @@ int sub_800898C()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -7499,8 +7499,8 @@ int sub_80089CC()
     int result; // r0
     signed int v5; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
@@ -7926,8 +7926,8 @@ int sub_8008D9C()
     int v0; // r5
     int result; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     if ( !*(v0 + 3) )
     {
         *(v0 + 4) = 0;
@@ -7957,8 +7957,8 @@ int sub_8008DDC()
     int result; // r0
     signed int v5; // r0
 
-    sub_8012DFC(0);
-    sub_8012DFC(1);
+    battle_updateNaviAIJoypad_8012DFC(0);
+    battle_updateNaviAIJoypad_8012DFC(1);
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
@@ -8474,7 +8474,7 @@ int task484_RunFrame_800927C()
 {
     eStruct2035280_SetRequestBits_801BECC(&dword_484);
     dispatch_801DA48(&dword_484);
-    sub_801E5F8();
+    battle_initSceneStart_801E5F8();
     battle_sceneFrameSetup_801DA24();
     return sub_801E0A0(0, 0);
 }
@@ -8775,7 +8775,7 @@ int sub_80094B6()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
     result = sub_802BD60();
@@ -9339,7 +9339,7 @@ int sub_8009916()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
     result = sub_802BD60();
@@ -9718,7 +9718,7 @@ int sub_8009C06()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
     result = sub_802BD60();
@@ -10136,7 +10136,7 @@ int sub_8009F3A()
 
     if ( !*(v0 + 3) )
     {
-        sub_802C34E(&unk_2035260);
+        setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
     result = sub_802BD60();
@@ -10513,7 +10513,7 @@ BOOL sub_800A1AA()
 
 
 // 0x800a1d0
-BOOL sub_800A1D0()
+BOOL battle_checkNaviFreeze_800A1D0()
 {
     char v0; // zf
     int v1; // r0
@@ -10730,7 +10730,7 @@ void __fastcall sub_800A318(int a1)
             v12 = 1;
             *(*(v1 + oToolkit_S2034880_Ptr) + 68) = 1;
         }
-        sub_800A570(byte_203CDB0, v8, v12);
+        shuffleFolder_800A570(byte_203CDB0, v8, v12);
     }
 }
 
@@ -10824,7 +10824,7 @@ void sub_800A3E4()
     if ( !v1 )
         encryption_decryptPackTable30_800a7ea(v7);
     if ( v3 & 0x80 )
-        sub_800A570(byte_203CDB0, *(*(v0 + oToolkit_S2034880_Ptr) + 23), *(*(v0 + oToolkit_S2034880_Ptr) + 68));
+        shuffleFolder_800A570(byte_203CDB0, *(*(v0 + oToolkit_S2034880_Ptr) + 23), *(*(v0 + oToolkit_S2034880_Ptr) + 68));
 }
 
 
@@ -10881,7 +10881,7 @@ int __fastcall battle_getNaviStatsByte_800A540(int a1, int a2)
 
 
 // 0x800a570
-void __fastcall sub_800A570(__int16 *a1, int a2, int a3)
+void __fastcall shuffleFolder_800A570(__int16 *a1, int a2, int a3)
 {
     int v3; // r10
     __int16 *v4; // r7
@@ -11347,7 +11347,7 @@ int __fastcall battle_tickCustomScreenEffect_800A892(int a1)
     {
         result = battle_getStateByteNibbles_800A832();
         if ( result == 2 )
-            sub_8005DBE();
+            battle_initFullSetup_8005DBE();
     }
     return result;
 }
@@ -11388,7 +11388,7 @@ signed int __fastcall battle_testFlag0x40_800A8F8(int a1)
 
 
 // 0x800a908
-int sub_800A908()
+int clearBattleStateCounter_800A908()
 {
     int result; // r0
 
@@ -12024,7 +12024,7 @@ int battle_updatePhaseState_800AE0C()
         {
             v4 = v2;
             if ( sub_802D234() != 6 )
-                sub_801E228(v4 - 2);
+                eStruct2035280_DrawMessageMode_801E228(v4 - 2);
         }
     }
     if ( v1[29] )
@@ -12305,7 +12305,7 @@ int encryption_applyPackList_800B110()
 
 
 // 0x800b144
-int sub_800B144()
+int battle_initBattleStateBuffer_800B144()
 {
     int v0; // r10
     int v1; // r0

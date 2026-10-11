@@ -12,7 +12,7 @@ main_gameRoutine:
 	bl main_awaitFrame
 	bl sub_80007BE
 	bl CallBGScrollCallback1
-	bl render_800172C
+	bl render_flushDisplayRegisters_800172C
 	bl copyObjAttributesToIWRAM_802FE0C
 	bl ProcessGFXTransferQueue
 	bl getPalleteAndTransition_80023E0
@@ -76,7 +76,7 @@ main_subsystemJumpTable:
   // 0x10
 	.word logoScreen_dispatch_803D1CA+1
   // 0x14
-	.word cb_803FB3C+1
+	.word cb_dispatchS200F348State_803FB3C+1
   // 0x18
 	.word cb_80395A4+1
   // 0x1C
@@ -278,7 +278,7 @@ main_static_screen_fade_8000454:
 
 	push {r1}
 
-	bl start_800023C // () -> ()
+	bl entryRomInit_800023C // () -> ()
 	bl main_initToolkitAndOtherSubsystems // () -> ()
 	bl clear_e200AD04 // () -> ()
 	pop {r1}
@@ -332,7 +332,7 @@ loc_80004C0:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 
 	bl main_zeroFill_80017EC
-	bl render_800172C
+	bl render_flushDisplayRegisters_800172C
 	bl copyMemory_8001850
 	bl main_static_8000570
 	bl zeroFill_80007B2
@@ -341,14 +341,14 @@ loc_80004C0:
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 	bl bg_ClearTilesAndReloadGraphics_80015B4
-	bl copy_800260C
+	bl resetOverworldScene_800260C
 	bl sub_80027C4
 	bl sub_802FDB0
 	bl clearWord_e200AC1C
 	bl clearChatboxAndEvent
 	bl cleareMemory_802FF2C
 	bl initNewGameData_8004DF0
-	bl sub_8004D48
+	bl scenario_prepareEnterMap_8004D48
 	bl cutscene_end_8036ED4
 	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
 	bl zeroFill_e20094C0

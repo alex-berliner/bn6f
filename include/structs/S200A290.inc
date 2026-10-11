@@ -6,7 +6,7 @@
 
   u8 Index_00 // loc=0x00
 
-  // `sub_8049DDC`, `sub_8039570`, and `sub_8048F9C` all zero it with size `0x1b0`
+  // `sub_8049DDC`, `sub_8039570`, and `initSaveStateBlock_8048F9C` all zero it with size `0x1b0`
   struct_org 0x1b0
   u0 Size // loc=0x1b0
 

@@ -807,7 +807,7 @@ sprite_decompressTemp:
 	mov r3, r12
 	push {r1-r3}
 	ldr r5, off_8002BF0 // =byte_200DCA0
-	bl sub_8002BCC
+	bl sprite_clearSlot_8002BCC
 	ldr r1, [r5,#0x4c] // (dword_200DCEC - 0x200dca0)
 	ldr r4, off_8002BC0 // =SpritePointersList
 	ldr r6, off_8002BC8 // =dword_2033000
@@ -882,11 +882,11 @@ off_8002BC8:
 	thumb_func_end sprite_decompressTemp
 
 // symdb: Reset a sprite slot by hiding its OAM attribute (0x7FFF) and marking its link field as free (-1).
-// symdb: void sub_8002BCC(void /* r5 = sprite base */);  /* inputs: r5, lr; outputs: r0, r5; clobbers:
+// symdb: void sprite_clearSlot_8002BCC(void /* r5 = sprite base */);  /* inputs: r5, lr; outputs: r0, r5; clobbers:
 // symdb: nz, c, v; preserved: r0-r7 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8002BCC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearSlot_8002BCC.yaml
 	thumb_local_start
-sub_8002BCC:
+sprite_clearSlot_8002BCC:
 	push {r0-r7,lr}
 	ldrb r3, [r5]
 	lsl r7, r3, #1
@@ -902,7 +902,7 @@ sub_8002BCC:
 	mvn r0, r0
 	str r0, [r5,r7]
 	pop {r0-r7,pc}
-	thumb_func_end sub_8002BCC
+	thumb_func_end sprite_clearSlot_8002BCC
 
 	thumb_local_start
 sub_8002BEA:

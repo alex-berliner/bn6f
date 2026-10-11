@@ -986,7 +986,7 @@ int stub_returnZero_8000E30()
 
 
 // 0x8000e3a
-int __fastcall sub_8000E3A(int a1, int a2)
+int __fastcall pickWeightedIndex_8000E3A(int a1, int a2)
 {
     int v2; // r10
     unsigned int v3; // r0
@@ -1103,15 +1103,15 @@ signed int sub_8000EE4()
     TestEventFlagFromImmediate(14, 0);
     if ( !v1 )
         v0 = 1;
-    if ( sub_81207F8(0) >= 200 )
+    if ( countEventFlagChips_81207F8(0) >= 200 )
         ++v0;
-    if ( sub_81207F8(1) >= 39 )
+    if ( countEventFlagChips_81207F8(1) >= 39 )
         ++v0;
-    if ( sub_81207F8(2) >= 5 )
+    if ( countEventFlagChips_81207F8(2) >= 5 )
         ++v0;
-    if ( sub_81207F8(5) >= 15 )
+    if ( countEventFlagChips_81207F8(5) >= 15 )
         ++v0;
-    if ( sub_81207F8(4) >= 29 )
+    if ( countEventFlagChips_81207F8(4) >= 29 )
         ++v0;
     TestEventFlagFromImmediate(3, 112);
     if ( !v1 )
@@ -1390,7 +1390,7 @@ void sub_8001154()
 
 // 0x8001158
 // () -> void
-int __fastcall sub_8001158(int *a1)
+int __fastcall scriptListRun_8001158(int *a1)
 {
     int *i; // r7
     int result; // r0
@@ -1820,7 +1820,7 @@ void copyToVRAMAndClear_iBGTileIdBlocks_Ptr()
 
 
 // 0x80015fc
-void __fastcall sub_80015FC(int idx)
+void __fastcall toolkit_applyOverlayPalette_80015FC(int idx)
 {
     int v1; // r10
     char *v2; // r1
@@ -1849,12 +1849,12 @@ int __fastcall map_lookupMapIdByGroupAndNumber_8001708(signed int a1, int a2)
     {
         v2 = &off_803385C;
     }
-    return sub_80015FC(*(v2[a1] + a2));
+    return toolkit_applyOverlayPalette_80015FC(*(v2[a1] + a2));
 }
 
 
 // 0x800172c
-int render_800172C()
+int render_flushDisplayRegisters_800172C()
 {
     Toolkit *tk; // r10
     s_rendering_0200AC40 *v1; // r5
@@ -2052,7 +2052,7 @@ void __fastcall call_sub_3005EBA(int a1, int a2, int a3, __int16 a4)
 
 
 // 0x80018e0
-int __fastcall sub_80018E0(char a1, int a2, int a3, _WORD *a4)
+int __fastcall bg_writeTileIdRow_80018E0(char a1, int a2, int a3, _WORD *a4)
 {
     int v4; // r4
     int v5; // r10
@@ -2074,7 +2074,7 @@ int __fastcall sub_80018E0(char a1, int a2, int a3, _WORD *a4)
 
 
 // 0x8001930
-int __fastcall sub_8001930(int a1, int a2, int a3, int a4)
+int __fastcall fillOamTileStripes_8001930(int a1, int a2, int a3, int a4)
 {
     _WORD *v4; // r4
     int v5; // r2
@@ -2439,7 +2439,7 @@ int __fastcall sub_8001C52(int a1)
 
 
 // 0x8001c94
-int __fastcall sub_8001C94(int *a1)
+int __fastcall gfx_renderAnimTileSheet_8001C94(int *a1)
 {
     int v1; // r7
     int v2; // r6
@@ -2464,7 +2464,7 @@ int __fastcall sub_8001C94(int *a1)
 
 
 // 0x8001cfc
-int __fastcall sub_8001CFC(int *a1)
+int __fastcall buildGFXAnimFrame_8001CFC(int *a1)
 {
     int v1; // r7
     int v2; // r6
@@ -2601,7 +2601,7 @@ unsigned int sub_8001ED0()
 
 
 // 0x8002000
-int sub_8002000()
+int copyStruct_64bytes_8002000()
 {
     _DWORD *v0; // r4
     _DWORD *v1; // r5
@@ -3022,7 +3022,7 @@ __int64 __fastcall sub_80024CC(int a1, int a2, unsigned int a3, unsigned int a4)
 
 
 // 0x800260c
-void __cdecl copy_800260C()
+void __cdecl resetOverworldScene_800260C()
 {
     int v0; // r0
     int v1; // r1

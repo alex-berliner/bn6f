@@ -934,7 +934,7 @@ sub_8072B70:
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_S2001c04_Ptr]
 	mov r4, r0
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq locret_8072BA0
 	ldr r0, [r5,#0x3c]
 	sub r0, #1

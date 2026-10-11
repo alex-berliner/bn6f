@@ -26,7 +26,7 @@ int sub_8080DA0()
     if ( result != 1 )
     {
         sub_803537C();
-        result = sub_8035424();
+        result = battle_loadDeathAnims_8035424();
     }
     return result;
 }
@@ -49,7 +49,7 @@ int __fastcall sub_8080DEA(int a1, signed int a2)
     LoadBGAnimData((&off_8080F98)[v3]);
     LoadGFXAnims(off_8081220[v3]);
     sub_803537C();
-    return sub_8035424();
+    return battle_loadDeathAnims_8035424();
 }
 
 

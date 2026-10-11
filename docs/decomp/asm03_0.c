@@ -409,7 +409,7 @@ char *__fastcall sub_8026840(int a1, int a2, int a3, int a4)
     flags_clearBits_eStruct2035280_801BED6(131376);
     v5 = 0;
     if ( !sub_80136CC(*(*(v4 + oToolkit_S2034880_Ptr) + 13), 41) && sub_8029F70(0) && battle_getActorEmotion_802A564() != 5 )
-        v5 = sub_8029EC8();
+        v5 = countUnmaskedEventFlags_8029EC8();
     v6 = byte_86E625C;
     if ( v5 )
         v6 = byte_86E64B4;
@@ -458,10 +458,10 @@ char *__fastcall sub_8026840(int a1, int a2, int a3, int a4)
         v13 = byte_80269BC[sub_802D234()];
         byte_20364CC = v13;
     }
-    v15 = sub_802A49C(v13);
-    sub_802A40C(v15);
+    v15 = tickBeastOutCounter_802A49C(v13);
+    battle_updateBeastOutCounter_802A40C(v15);
     battle_compactFolderChipList_802945A();
-    sub_802A646();
+    expireBattleFlag_802A646();
     BYTE1(dword_20364C4) = battle_countFolderChips_8027D58();
     sub_8027E2C();
     sub_8028250(1);
@@ -540,7 +540,7 @@ int object_runFrameUpdate_8026A6C()
 {
     int v0; // r5
 
-    sub_8027D78();
+    battle_customGauge_EndTurn_8027D78();
     flags_clearFlagWordBit_802FE6A(*(v0 + 14));
     sub_80062EC();
     sound_playCrossTransformationJingle_802A3CC();
@@ -638,7 +638,7 @@ int __fastcall sub_8026B04(int a1, int a2, int a3)
 
 
 // 0x8026bf4
-int sub_8026BF4()
+int scrollStrip_update_8026BF4()
 {
     int v0; // r5
     int v1; // r10
@@ -697,7 +697,7 @@ int __usercall custMenuUpdateWaitSelectionState_8026CCC@<R0>(void *r5@<R5>)
         sub_8028820();
         sub_8029C08();
         v5 = sub_802899C();
-        sub_8029D34(v5);
+        battle_endingBgUpdate_8029D34(v5);
         result = *(r5 + 16) + 1;
         *(r5 + 16) = result;
     }
@@ -786,7 +786,7 @@ signed int sub_8026DC4()
 
     if ( !v0[2] )
     {
-        sub_8027D78();
+        battle_customGauge_EndTurn_8027D78();
         v0[2] = 1;
         folder_tallyChipsByClass_802A4FC();
         battle_backupStateForRestart_800B3A2();
@@ -872,7 +872,7 @@ int __fastcall battle_updateObjectByKind_8026E98(int a1)
 
 
 // 0x8026ec8
-int __fastcall sub_8026EC8(int a1)
+int __fastcall runBattleDialog_8026EC8(int a1)
 {
     int v1; // r4
     int v2; // r5
@@ -991,7 +991,7 @@ int sub_8026FAA()
 
 
 // 0x8026fc0
-void __fastcall sub_8026FC0(int a1)
+void __fastcall battle_runTutorialDialog_8026FC0(int a1)
 {
     int v1; // r5
     signed int v2; // r4
@@ -2029,7 +2029,7 @@ int __fastcall sub_80279C8(int a1)
 
     sub_8029C08();
     v2 = sub_802899C();
-    sub_8029D34(v2);
+    battle_endingBgUpdate_8029D34(v2);
     v3 = 4;
     do
     {
@@ -2256,7 +2256,7 @@ int battle_countFolderChips_8027D58()
 
 
 // 0x8027d78
-int sub_8027D78()
+int battle_customGauge_EndTurn_8027D78()
 {
     int v0; // r10
     int v1; // r0
@@ -2336,8 +2336,8 @@ int sub_8027E2C()
     v2 = getLocOfActiveChips_8027E1C(0);
     v3 = v2;
     ZeroFillByWord(v2, 144);
-    sub_802A40C(v4);
-    sub_8027E90();
+    battle_updateBeastOutCounter_802A40C(v4);
+    resetBattleRecordSlots_8027E90();
     if ( *(*(v1 + oToolkit_S2034880_Ptr) + 23) )
         v3[4] = 1;
     v5 = v0[6];
@@ -2357,7 +2357,7 @@ int sub_8027E2C()
 
 
 // 0x8027e90
-int sub_8027E90()
+int resetBattleRecordSlots_8027E90()
 {
     int v0; // r4
     signed int v1; // r3
@@ -2392,7 +2392,7 @@ int sub_8027E90()
     }
     else
     {
-        result = sub_8029FB4(v4);
+        result = checkBattleEventGate_8029FB4(v4);
         if ( result )
         {
             v6 = 1;
@@ -2475,7 +2475,7 @@ int sub_8027F42()
         if ( result != 10 && result != 11 )
         {
             battle_clearActiveChipIfMegaGiga_8027F6A();
-            sub_8027F84();
+            battle_updateActiveChipSlotId_8027F84();
             result = sub_8027FDC();
         }
         --v0;
@@ -2502,7 +2502,7 @@ signed int battle_clearActiveChipIfMegaGiga_8027F6A()
 
 
 // 0x8027f84
-int sub_8027F84()
+int battle_updateActiveChipSlotId_8027F84()
 {
     signed int v0; // r6
     unsigned __int8 *v1; // r7
@@ -2987,7 +2987,7 @@ void sub_8028476()
     }
     if ( v3 == 1 )
     {
-        sub_80286D4(v1, 1, v2);
+        beastout_QueuePaletteGFXAndSheets_80286D4(v1, 1, v2);
     }
     else if ( v3 == 2 )
     {
@@ -3157,7 +3157,7 @@ void __fastcall beastout_LoadSelectionScreenSpriteSheets_802869E(int a1, int a2,
 
 
 // 0x80286d4
-void __fastcall sub_80286D4(int a1, int a2, int a3)
+void __fastcall beastout_QueuePaletteGFXAndSheets_80286D4(int a1, int a2, int a3)
 {
     int v3; // r5
     signed int v4; // r1
@@ -3166,7 +3166,7 @@ void __fastcall sub_80286D4(int a1, int a2, int a3)
     int v7; // r1
     int v8; // r2
 
-    sub_80287D2(a1, a2, a3);
+    loadOneSpriteTileRow_80287D2(a1, a2, a3);
     v4 = *(v3 + 8);
     if ( *(v3 + 8) )
         v4 = 4;
@@ -3185,7 +3185,7 @@ void __fastcall sub_802871C(int a1, int a2, int a3)
     int v5; // r1
     int v6; // r2
 
-    sub_80287D2(a1, a2, a3);
+    loadOneSpriteTileRow_80287D2(a1, a2, a3);
     (loc_8000AC8)(byte_8723034, 100701536, 1344);
     v3 = getLocOfActiveChips_8027E1C(11);
     v4 = (loc_8000AC8)(&dword_8725814[8 * v3[6]], &unk_3001AA0, 32);
@@ -3200,7 +3200,7 @@ void __fastcall sub_8028754(int a1, int a2, int a3)
     int v4; // r1
     int v5; // r2
 
-    sub_80287D2(a1, a2, a3);
+    loadOneSpriteTileRow_80287D2(a1, a2, a3);
     (loc_8000AC8)(dword_87225B4, 100701536, 1344);
     v3 = (loc_8000AC8)(dword_87257D4, &unk_3001AA0, 32);
     beastout_LoadSelectionScreenSpriteSheets_802869E(v3, v4, v5);
@@ -3214,7 +3214,7 @@ void __fastcall sub_802877C(int a1, int a2, int a3)
     int v4; // r1
     int v5; // r2
 
-    sub_80287D2(a1, a2, a3);
+    loadOneSpriteTileRow_80287D2(a1, a2, a3);
     (loc_8000AC8)(dword_8733E74, 100701536, 1344);
     v3 = (loc_8000AC8)(dword_87343D4, &unk_3001AA0, 32);
     beastout_LoadSelectionScreenSpriteSheets_802869E(v3, v4, v5);
@@ -3234,7 +3234,7 @@ int __fastcall sub_80287A4(_BYTE *a1, int a2, int a3)
     if ( v3 == 5 )
         a1 -= 12;
     v4 = a1[4];
-    sub_80287D2(v4, v3, a3);
+    loadOneSpriteTileRow_80287D2(v4, v3, a3);
     (loc_8000AC8)(dword_8722AF4, 100701536, 1344);
     v5 = (loc_8000AC8)(dword_8725854, &unk_3001AA0, 32);
     beastout_LoadSelectionScreenSpriteSheets_802869E(v5, v6, v7);
@@ -3243,7 +3243,7 @@ int __fastcall sub_80287A4(_BYTE *a1, int a2, int a3)
 
 
 // 0x80287d2
-int __fastcall sub_80287D2(int a1, int a2, int a3)
+int __fastcall loadOneSpriteTileRow_80287D2(int a1, int a2, int a3)
 {
     sub_802868C(byte_802A6C0, 100701024, a3, 8);
     return (loc_8000AC8)(byte_86E587C, &unk_3001A80, 32);
@@ -3424,7 +3424,7 @@ LABEL_25:
         result = *(v4 + 2);
         if ( result & 2 )
         {
-            result = sub_8029B1C();
+            result = battleTutorial_first_checkTextStep_8029B1C();
             if ( !result )
             {
                 *(v3 + 1) = 80;
@@ -3553,15 +3553,15 @@ LABEL_15:
             {
                 result = *(r5 + 12);
                 if ( result != &loc_FC + 3 )
-                    result = sub_8029A56();
+                    result = firstBattleTutorial_step_8029A56();
             }
         }
     }
     else if ( result & 2 )
     {
-        result = sub_8029B1C();
+        result = battleTutorial_first_checkTextStep_8029B1C();
         if ( !result )
-            result = sub_8029032(0, v8, v9);
+            result = customScreen_ExitAction_8029032(0, v8, v9);
     }
     else
     {
@@ -3797,7 +3797,7 @@ void nullsub_59()
 // 0x8028e32
 void customScreen_ExitSequence_8028E32()
 {
-    sub_8028E4C();
+    classifyActiveChipElements_8028E4C();
     updateCustomScreen_WhenUnselectingChip_8028EC8();
     battle_updateActiveChipSlotB_state_8028F48();
     battle_updateExtraSlotChipKeepFlag_8028F84();
@@ -3806,7 +3806,7 @@ void customScreen_ExitSequence_8028E32()
 
 
 // 0x8028e4c
-char *sub_8028E4C()
+char *classifyActiveChipElements_8028E4C()
 {
     int v0; // r5
     signed int v1; // r6
@@ -4054,7 +4054,7 @@ signed int sub_8028FC0()
 
 
 // 0x8029032
-int __fastcall sub_8029032(int a1, int a2, int a3)
+int __fastcall customScreen_ExitAction_8029032(int a1, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     int v5; // r1
@@ -4212,7 +4212,7 @@ int __fastcall sub_8029110(int a1, int a2, int a3, int a4)
                 *(v4 + 11) = 16;
             }
         }
-        sub_8029224();
+        processChipCommandQueue_8029224();
     }
     v21 = dword_2033000;
     v22 = &byte_20366C0;
@@ -4242,7 +4242,7 @@ int __fastcall sub_8029110(int a1, int a2, int a3, int a4)
 
 
 // 0x8029224
-int sub_8029224()
+int processChipCommandQueue_8029224()
 {
     signed __int16 *i; // r4
     int result; // r0
@@ -4673,7 +4673,7 @@ void __fastcall sub_8029520(int a1, int a2)
 
 
 // 0x80295c8
-int __fastcall sub_80295C8(int a1, int a2, int a3, int a4)
+int __fastcall battle_scanChipSeq_80295C8(int a1, int a2, int a3, int a4)
 {
     int v4; // r6
     int v5; // r7
@@ -5102,7 +5102,7 @@ int custMenu_80298F4()
     switch ( v1 )
     {
         case 1:
-            result = sub_80299B6();
+            result = battle_getPrepStatus_80299B6();
             if ( !result )
                 return result;
             v3 = result;
@@ -5170,7 +5170,7 @@ signed int sub_802996E()
 
 
 // 0x80299b6
-signed int sub_80299B6()
+signed int battle_getPrepStatus_80299B6()
 {
     _BYTE *v0; // r5
 
@@ -5252,7 +5252,7 @@ signed int sub_8029A36()
 
 
 // 0x8029a56
-int sub_8029A56()
+int firstBattleTutorial_step_8029A56()
 {
     int v0; // r5
     int result; // r0
@@ -5263,7 +5263,7 @@ int sub_8029A56()
     {
         if ( !*(v0 + 12) )
         {
-            result = sub_8029AAA();
+            result = battle_getObjectStatusCode_8029AAA();
             if ( !result )
                 return result;
             v2 = result;
@@ -5271,7 +5271,7 @@ int sub_8029A56()
         }
         if ( result == 1 )
         {
-            result = sub_8029ADA();
+            result = entity_getActionIndex_8029ADA();
             if ( !result )
                 return result;
             v2 = result;
@@ -5298,7 +5298,7 @@ LABEL_12:
 
 
 // 0x8029aaa
-signed int sub_8029AAA()
+signed int battle_getObjectStatusCode_8029AAA()
 {
     int v0; // r5
     int v1; // r0
@@ -5333,7 +5333,7 @@ signed int sub_8029AAA()
 
 
 // 0x8029ada
-signed int sub_8029ADA()
+signed int entity_getActionIndex_8029ADA()
 {
     int v0; // r5
     int v1; // r0
@@ -5374,7 +5374,7 @@ int sub_8029B16()
 
 
 // 0x8029b1c
-int sub_8029B1C()
+int battleTutorial_first_checkTextStep_8029B1C()
 {
     int v0; // r5
     int v1; // r0
@@ -5579,7 +5579,7 @@ void __fastcall sub_8029CD4(int a1, int a2, int a3)
 
 
 // 0x8029d34
-void __fastcall sub_8029D34(int a1)
+void __fastcall battle_endingBgUpdate_8029D34(int a1)
 {
     int v1; // r5
 
@@ -5622,7 +5622,7 @@ int __fastcall sub_8029EAC(int a1)
 
 
 // 0x8029ec8
-int sub_8029EC8()
+int countUnmaskedEventFlags_8029EC8()
 {
     signed int v0; // r4
     int v1; // r6
@@ -5699,7 +5699,7 @@ signed int __fastcall sub_8029F70(int a1)
 
 
 // 0x8029fb4
-signed int __fastcall sub_8029FB4(int a1)
+signed int __fastcall checkBattleEventGate_8029FB4(int a1)
 {
     int v1; // r5
     signed int v2; // r4
@@ -6036,7 +6036,7 @@ int sound_playCrossTransformationJingle_802A3CC()
 
 
 // 0x802a40c
-int __fastcall sub_802A40C(int a1)
+int __fastcall battle_updateBeastOutCounter_802A40C(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -6108,7 +6108,7 @@ int __fastcall sub_802A40C(int a1)
 
 
 // 0x802a49c
-int __fastcall sub_802A49C(int a1)
+int __fastcall tickBeastOutCounter_802A49C(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -6298,7 +6298,7 @@ char *sub_802A61A()
 
 
 // 0x802a646
-signed int sub_802A646()
+signed int expireBattleFlag_802A646()
 {
     int v0; // r5
     int v1; // r10
@@ -7987,7 +7987,7 @@ int battle_pickObjectAnimState_802BF0C()
 
 
 // 0x802bf4c
-int sub_802BF4C()
+int dispatchBattleObjectBehavior_802BF4C()
 {
     int v0; // r5
 
@@ -7996,7 +7996,7 @@ int sub_802BF4C()
 
 
 // 0x802bf6c
-signed int sub_802BF6C()
+signed int setupChipListVisual_802BF6C()
 {
     int v0; // r5
     int v1; // r0
@@ -8334,7 +8334,7 @@ int sub_802C2D0()
 
 
 // 0x802c328
-int sub_802C328()
+int battle_advanceFade_802C328()
 {
     int v0; // r5
     int result; // r0
@@ -8368,7 +8368,7 @@ int sub_802C348()
 
 
 // 0x802c34e
-int __fastcall sub_802C34E(int a1)
+int __fastcall setupNaviDisplay_802C34E(int a1)
 {
     int v1; // r10
     int v2; // r4
@@ -9221,7 +9221,7 @@ int *battle_ClearAllianceTargetSlotIfSelf_802CDD0()
 
 
 // 0x802cde6
-int *sub_802CDE6()
+int *battleObject_DetachFromAllianceSlot_802CDE6()
 {
     int v0; // r5
     int *result; // r0
@@ -9272,7 +9272,7 @@ unsigned int __fastcall sub_802CE10(unsigned int result)
 
 
 // 0x802ce30
-BOOL sub_802CE30()
+BOOL checkBattleOrderMatch_802CE30()
 {
     int v0; // r5
     int *v1; // r0
@@ -9470,7 +9470,7 @@ LABEL_22:
 
 
 // 0x802cff8
-int sub_802CFF8()
+int battleObject_handleImpact_802CFF8()
 {
     int v0; // r5
     int result; // r0
@@ -10363,7 +10363,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     v13 = sub_8013774(v12, 44);
     v14 = v13;
     v15 = sub_8013774(v13, 41);
-    sub_800FC9E(v15, v14);
+    chip_class_lookup_800FC9E(v15, v14);
     sprite_load(v1, 128, v16, v17);
     sprite_loadAnimationData(v1);
     sprite_hasShadow();
@@ -10532,7 +10532,7 @@ signed int __noreturn sub_802D9B0()
     v5 = sub_8013774(v4, 44);
     v6 = v5;
     v7 = sub_8013774(v5, 41);
-    sub_800FC9E(v7, v6);
+    chip_class_lookup_800FC9E(v7, v6);
     sprite_load(v0, 128, v8, v9);
     sprite_loadAnimationData(v0);
     sprite_hasShadow();
@@ -10725,7 +10725,7 @@ signed int __noreturn sub_802DB80()
     v5 = sub_8013774(v4, 44);
     v6 = v5;
     v7 = sub_8013774(v5, 41);
-    sub_800FC9E(v7, v6);
+    chip_class_lookup_800FC9E(v7, v6);
     sprite_load(v0, 128, v8, v9);
     sprite_loadAnimationData(v0);
     sprite_hasShadow();
@@ -12824,7 +12824,7 @@ unsigned int __fastcall sub_802F270(unsigned int a1)
 
 
 // 0x802f2c8
-int *sub_802F2C8()
+int *resetPaletteScratch_802F2C8()
 {
     int *result; // r0
 
@@ -12874,7 +12874,7 @@ int __usercall startScreen_initGfx_802F574@<R0>(StartScreen *scr@<R5>)
     u8 v11; // r7
     int result; // r0
 
-    sub_80015FC(11);
+    toolkit_applyOverlayPalette_80015FC(11);
     SetRenderInfoLCDControl(&loc_1140);
     renderInfo_8001788();
     renderInfo_80017A0();
@@ -12949,7 +12949,7 @@ int startScreen_RunStateHandler_802F63C()
     int v0; // r5
 
     (*(jt_802F654 + *(v0 + 1)))();
-    return sub_802FB10();
+    return loadTitleBlob_802FB10();
 }
 
 
@@ -12962,7 +12962,7 @@ void __fastcall __noreturn startScreen_init_802F668(int a1, int a2, int a3)
     *(v3 + 15) = 0;
     *(v3 + 4) = 2630;
     music_80005F2(1, a2, a3);
-    sub_80015FC(10);
+    toolkit_applyOverlayPalette_80015FC(10);
     SetRenderInfoLCDControl(&loc_1340);
     *(v3 + 6) = 0;
     copyBGTiles_802FD3C();
@@ -13044,7 +13044,7 @@ void __fastcall __noreturn startScreen_UpdateAndRenderFrame_802F704(int a1, int 
 
 
 // 0x802f710
-int sub_802F710()
+int startScreen_update_802F710()
 {
     _WORD *v0; // r5
     int result; // r0
@@ -13106,7 +13106,7 @@ int load_game_802F756()
     {
         if ( *(v0 + 8) == 1 && *(v0 + 2) )
         {
-            sub_8004D48();
+            scenario_prepareEnterMap_8004D48();
             SetEventFlagFromImmediate(23, 4);
             sub_81440D8();
             result = rfu_REQ_stopMode();
@@ -13114,7 +13114,7 @@ int load_game_802F756()
         else
         {
             sub_813D90C(0);
-            v3 = sub_8004D48();
+            v3 = scenario_prepareEnterMap_8004D48();
             v7 = sub_8039570(v3, v4, v5, v6);
             clearStruct200BC30_803EBAC(v7, v8, v9, v10);
             eStruct200BC30_setJumpOffset00(12);
@@ -13125,9 +13125,9 @@ int load_game_802F756()
     }
     else
     {
-        copy_800260C();
+        resetOverworldScene_800260C();
         initNewGameData_8004DF0();
-        sub_8004D48();
+        scenario_prepareEnterMap_8004D48();
         sub_81440D8();
         rfu_REQ_stopMode();
         result = *(v0 + 2);
@@ -13231,7 +13231,7 @@ int sub_802F88E()
 
     result = **(v0 + oToolkit_CurFramePtr) & 0x3F;
     if ( result <= 32 )
-        result = sub_8001158(byte_802F8AC);
+        result = scriptListRun_8001158(byte_802F8AC);
     return result;
 }
 
@@ -13253,10 +13253,10 @@ int __noreturn sub_802F8D8()
         LOBYTE(v2) = 0;
     v0[7] = v2;
     sub_802FE28(*&byte_802F960[4 * v0[8]], *&byte_802F970[2 * v0[6]], 0, 0);
-    sub_802F994(v0[8]);
+    sprite_submitOamSet_802F994(v0[8]);
     if ( v0[2] )
     {
-        sub_802F9EC(v0[8]);
+        playOamSeq_802F9EC(v0[8]);
         notZero_eByte200AD04();
         if ( v3 )
             startScreen_TstZero();
@@ -13280,16 +13280,16 @@ int __noreturn sub_802F8D8()
 
 
 // 0x802f994
-int __fastcall sub_802F994(int a1)
+int __fastcall sprite_submitOamSet_802F994(int a1)
 {
-    return sub_8001158(off_802F9A8[a1]);
+    return scriptListRun_8001158(off_802F9A8[a1]);
 }
 
 
 // 0x802f9ec
-int __fastcall sub_802F9EC(int a1)
+int __fastcall playOamSeq_802F9EC(int a1)
 {
-    return sub_8001158(off_802FA00[a1]);
+    return scriptListRun_8001158(off_802FA00[a1]);
 }
 
 
@@ -13300,18 +13300,18 @@ int __fastcall dead_802FA44(int a1)
     int result; // r0
 
     if ( *(v1 + 9) < 3 )
-        result = sub_8001158(off_802FA68[a1]);
+        result = scriptListRun_8001158(off_802FA68[a1]);
     else
-        result = sub_8001158(off_802FA74[a1]);
+        result = scriptListRun_8001158(off_802FA74[a1]);
     return result;
 }
 
 
 // 0x802fb10
 // () -> void
-int sub_802FB10()
+int loadTitleBlob_802FB10()
 {
-    return sub_8001158(byte_802FB20);
+    return scriptListRun_8001158(byte_802FB20);
 }
 
 
@@ -13323,7 +13323,7 @@ int startScreen_playSoundIfFlagSet_802FB64()
 
     result = *(v0 + 10);
     if ( result & 0x80 )
-        result = sub_8001158(byte_802FB7C);
+        result = scriptListRun_8001158(byte_802FB7C);
     return result;
 }
 
@@ -13336,7 +13336,7 @@ int startScreen_fadeOutUpdateIfFlag40_802FB90()
 
     result = *(v0 + 10);
     if ( result & 0x40 )
-        result = sub_8001158(byte_802FBA8);
+        result = scriptListRun_8001158(byte_802FBA8);
     return result;
 }
 
@@ -13349,7 +13349,7 @@ int startScreen_dispatchIfFlag20_802FBB4()
 
     result = *(v0 + 10);
     if ( result & 0x20 )
-        result = sub_8001158(byte_802FBCC);
+        result = scriptListRun_8001158(byte_802FBCC);
     return result;
 }
 
@@ -13362,7 +13362,7 @@ int startScreen_playSoundIfFlagSet_802FBD8()
 
     result = *(v0 + 10);
     if ( result & 0x10 )
-        result = sub_8001158(byte_802FBF0);
+        result = scriptListRun_8001158(byte_802FBF0);
     return result;
 }
 
@@ -13375,7 +13375,7 @@ int startScreen_printTextIfFlag3_802FBFC()
 
     result = *(v0 + 10);
     if ( result & 8 )
-        result = sub_8001158(byte_802FC14);
+        result = scriptListRun_8001158(byte_802FC14);
     return result;
 }
 
@@ -13388,7 +13388,7 @@ int startScreen_onStatusBit2_802FC28()
 
     result = *(v0 + 10);
     if ( result & 4 )
-        result = sub_8001158(byte_802FC40);
+        result = scriptListRun_8001158(byte_802FC40);
     return result;
 }
 
@@ -13401,7 +13401,7 @@ int startScreen_playSfxIfFlagSet_802FC4C()
 
     result = *(v0 + 10);
     if ( result & 2 )
-        result = sub_8001158(byte_802FC64);
+        result = scriptListRun_8001158(byte_802FC64);
     return result;
 }
 
@@ -13414,7 +13414,7 @@ int startScreen_playFlaggedSfx_802FC70()
 
     result = *(v0 + 10);
     if ( result & 0x100 )
-        result = sub_8001158(byte_802FC88);
+        result = scriptListRun_8001158(byte_802FC88);
     return result;
 }
 
@@ -13427,7 +13427,7 @@ int startScreen_runTriggerHandler_802FC9C()
 
     result = *(v0 + 10);
     if ( result & 0x200 )
-        result = sub_8001158(byte_802FCB4);
+        result = scriptListRun_8001158(byte_802FCB4);
     return result;
 }
 
@@ -14658,7 +14658,7 @@ void __fastcall copyTilemapLayerRowsToWindow_8030892(int a1, int a2, unsigned in
         if ( (v11 < 0) ^ v10 || v11 >= v13 )
             call_sub_3005EBA(0, (v5 + v8) & 0x1F, v7, 0);
         else
-            sub_80018E0(v4 & 0x1F, (v5 + v8) & 0x1F, v7, (2 * (v4 - 15 + (v12 >> 1)) + 2 * v12 * v11 + v6));
+            bg_writeTileIdRow_80018E0(v4 & 0x1F, (v5 + v8) & 0x1F, v7, (2 * (v4 - 15 + (v12 >> 1)) + 2 * v12 * v11 + v6));
         ++v8;
     }
     while ( v8 < 32 );
@@ -14872,7 +14872,7 @@ LABEL_2:
     dword_2011D24 = &word_2011D28;
     byte_2011D1A = 0;
     word_2011D16 = 0;
-    sub_8030CAC(a1);
+    owObject_lineDraw_8030CAC(a1);
     v2 = &word_2011D28;
     dword_2011D20 = &word_2011D28;
     while ( v2 != dword_2011D24 )
@@ -14917,7 +14917,7 @@ LABEL_2:
 
 
 // 0x8030cac
-void __fastcall sub_8030CAC(int a1)
+void __fastcall owObject_lineDraw_8030CAC(int a1)
 {
     int v1; // r4
     int v2; // r7
@@ -15382,7 +15382,7 @@ __int64 __fastcall sub_80311F4(__int64 a1)
 
 
 // 0x803123e
-void sub_803123E()
+void camera_initAndActivate_803123E()
 {
     _DWORD *v0; // r0
     int v1; // r1
@@ -15475,7 +15475,7 @@ void sub_8031330()
 
 
 // 0x803135e
-void __fastcall sub_803135E(_DWORD *a1)
+void __fastcall camera_recenterAndSetCtrlBits_803135E(_DWORD *a1)
 {
     _DWORD *v1; // r0
     int v2; // r1

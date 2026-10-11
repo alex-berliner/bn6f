@@ -87,7 +87,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
 // symdb: on new hidden pieces, copy the shown values to the Update fields,
 // symdb: npc_createInteractionAreas_809F526, layer = LayerPriorityOverride or
-// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
+// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), recordCapsule_809F922 if UnkFlags_60 0x40
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_standard_809E5E2.yaml
 	thumb_local_start
 npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
@@ -180,7 +180,7 @@ loc_809E690:
 	mov r1, #OW_NPC_UNK_FLAGS_60_0x40
 	tst r0, r1
 	beq locret_809E6A0
-	bl sub_809F922
+	bl recordCapsule_809F922
 locret_809E6A0:
 	pop {pc}
 	.balign 4, 0x00
@@ -952,7 +952,7 @@ npc_inChatbox_809EADA: // (self: * OverworldNPCObject $r5) -> ()
 	mov r1, #OW_NPC_UNK_FLAGS_60_0x40 
 	tst r0, r1
 	beq locret_809EAFA
-	bl sub_809F922
+	bl recordCapsule_809F922
 locret_809EAFA:
 	pop {pc}
 	.balign 4, 0
@@ -1028,7 +1028,7 @@ npc_inChatbox_curAction_init_809EB20:
 	mov r1, #oOverworldNPCObject_Chatbox_90
 	ldr r0, [r5,r1]
 	str r0, [r7,#oChatbox_Unk_4C]
-	bl sub_809FC96
+	bl mysteryData_lookupForNavi_809FC96
 	str r0, [r7,#0x54]
 	str r1, [r7,#0x58]
 	strb r2, [r5,#oOverworldNPCObject_TextScriptIndex]
@@ -3408,11 +3408,11 @@ off_809F688:
 	thumb_func_end sub_809F66C
 
 // symdb: Clears bit 0 of field Unk_50 on every overworld NPC object, releasing all NPCs from their "busy/mid-interaction" state (e.g. across a scene or map change).
-// symdb: void sub_809F68C(void); // in: lr only; out: r1=1, r2=array end pointer, r3=loop-exit cursor,
+// symdb: void npc_clearAllBusyFlags_809F68C(void); // in: lr only; out: r1=1, r2=array end pointer, r3=loop-exit cursor,
 // symdb: c/v from final CMP (r3 vs r2), nz clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F68C.yaml
-	thumb_func_start sub_809F68C
-sub_809F68C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_clearAllBusyFlags_809F68C.yaml
+	thumb_func_start npc_clearAllBusyFlags_809F68C
+npc_clearAllBusyFlags_809F68C:
 	push {lr}
 	ldr r3, off_809F6A4 // =eOverworldNPCObjects 
 	ldr r2, off_809F6A8 // =NUM_OVERWORLD_NPC_OBJECTS * oOverworldNPCObject_Size 
@@ -3705,7 +3705,7 @@ npcscript_809F900:
 	ns_end
 	ns_end
 
-	thumb_func_end sub_809F68C
+	thumb_func_end npc_clearAllBusyFlags_809F68C
 
 	thumb_func_start sub_809F904
 sub_809F904:
@@ -3716,10 +3716,10 @@ sub_809F904:
 	thumb_func_end sub_809F904
 
 // symdb: On the first call before event flag 0x1708 is set, zeroes the battle state buffer at byte_2000210 (u8 at +0, u32 at +8); once the flag has been triggered the function becomes a no-op.
-// symdb: void sub_809F90C(void) /* clobbers r0,r1,nz,c,v,r3,lr */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F90C.yaml
-	thumb_func_start sub_809F90C
-sub_809F90C:
+// symdb: void clearBattleStateIfEvent1708Pending_809F90C(void) /* clobbers r0,r1,nz,c,v,r3,lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearBattleStateIfEvent1708Pending_809F90C.yaml
+	thumb_func_start clearBattleStateIfEvent1708Pending_809F90C
+clearBattleStateIfEvent1708Pending_809F90C:
 	push {lr}
 	movflag EVENT_1708
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3730,15 +3730,15 @@ sub_809F90C:
 	str r1, [r0,#0x8]
 locret_809F920:
 	pop {pc}
-	thumb_func_end sub_809F90C
+	thumb_func_end clearBattleStateIfEvent1708Pending_809F90C
 
 // symdb: Appends a capsule/Navi ID to the cap-table at 0x2000210 (up to 16 entries) if event flag 0x1708 is clear.
 // symdb: // Preserves r4,r6,r7. NZCV/r0/r1/r3/lr clobbered. // r5 in: value to record // r10 in: ignored
 // symdb: by body (kept by contract convention) // returns r3 unchanged for caller void
 // symdb: recordCapsule_809F922(u32 capsuleId /* r5 */);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F922.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/recordCapsule_809F922.yaml
 	thumb_local_start
-sub_809F922:
+recordCapsule_809F922:
 	push {r4,r6,r7,lr}
 	movflag EVENT_1708
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3754,7 +3754,7 @@ sub_809F922:
 	str r5, [r7,r6]
 locret_809F940:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_809F922
+	thumb_func_end recordCapsule_809F922
 
 	thumb_func_start sub_809F942
 sub_809F942: // () -> Nullable<* ?>
@@ -3825,13 +3825,13 @@ sub_809F942: // () -> Nullable<* ?>
 
 .break_809F9A6:
 
-	bl sub_809F90C
+	bl clearBattleStateIfEvent1708Pending_809F90C
 	mov r0, #NULL
 	pop {r4-r7,pc}
 
 loc_809F9AE:
 	push {r5}
-	bl sub_809F90C
+	bl clearBattleStateIfEvent1708Pending_809F90C
 	pop {r0}
 	ldr r7, off_809F9C4 // =byte_2000210 
 	str r0, [r7,#0x8]

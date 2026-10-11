@@ -805,7 +805,7 @@ unsigned int sub_8142618()
     int v8; // r2
     int v9; // r3
 
-    sub_8034C36();
+    check_playerCanAdvanceForward_8034C36();
     if ( v2 || (v1 = sub_81427CE(), TestEventFlag(v1), v2) )
     {
 LABEL_13:
@@ -1619,7 +1619,7 @@ int sub_8142FC8()
     int v9; // r2
     int v10; // r3
 
-    sub_8034C36();
+    check_playerCanAdvanceForward_8034C36();
     if ( v4 )
         goto LABEL_20;
     v1 = sub_81430DC();
@@ -2070,7 +2070,7 @@ int sub_814343A()
     int v1; // [sp+0h] [bp-24h]
 
     ByteFill(&v1, 16, 0x20u);
-    dword_200101C = *&byte_8143464[4 * sub_8000E3A(&v1, 3)];
+    dword_200101C = *&byte_8143464[4 * pickWeightedIndex_8000E3A(&v1, 3)];
     return 0;
 }
 
@@ -2225,7 +2225,7 @@ int sub_8143A54()
     int v15; // r2
     int v16; // r3
 
-    sub_8034C36();
+    check_playerCanAdvanceForward_8034C36();
     if ( v3 )
         goto LABEL_24;
     v1 = sub_8143C18();

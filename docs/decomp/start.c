@@ -17,7 +17,7 @@ void __noreturn GameEntryPoint()
     start_copyMemory(IWRAMRoutinesROMLocation, sub_3005B00, 7892);
     SetPrimaryToolkitPointers();
     RandomizeExtraToolkitPointers();
-    start_800023C();
+    entryRomInit_800023C();
 }
 
 
@@ -49,7 +49,7 @@ void __cdecl start_copyMemory(void *src, void *dest, int size)
 
 // 0x800023c
 // () -> void
-void __noreturn start_800023C()
+void __noreturn entryRomInit_800023C()
 {
     sub_3005DA0();
 }

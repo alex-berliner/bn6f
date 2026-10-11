@@ -5878,7 +5878,7 @@ CutsceneCmd_start_fixed_battle:
 	mov r6, #1
 	bl ReadMapScriptHalfword
 	mov r0, r4
-	bl sub_803522E
+	bl handleDriveOutEvents_803522E
 	mov r0, #0x2c
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -6108,10 +6108,10 @@ CutsceneCmd_encryption_cmd_80382de:
 
 	thumb_local_start
 // 0x69
-// call navi_80340F6
+// call endOfSection_NaviSetup_80340F6
 CutsceneCmd_navi_cmd_80340f6:
 	push {lr}
-	bl navi_80340F6
+	bl endOfSection_NaviSetup_80340F6
 	add r7, #1
 	mov r0, #1
 	pop {pc}

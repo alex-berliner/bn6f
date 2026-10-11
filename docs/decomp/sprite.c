@@ -485,7 +485,7 @@ signed int __fastcall sprite_decompressTemp(int a1, int a2)
     _DWORD *v6; // r8
     int v7; // r3
 
-    sub_8002BCC();
+    sprite_clearSlot_8002BCC();
     v3 = dword_200DCEC;
     v4 = 0;
     while ( v2 != *&byte_200DCA0[v4 + 4] )
@@ -514,7 +514,7 @@ signed int __fastcall sprite_decompressTemp(int a1, int a2)
 
 
 // 0x8002bcc
-void sub_8002BCC()
+void sprite_clearSlot_8002BCC()
 {
     unsigned __int8 *v0; // r5
     int v1; // r3

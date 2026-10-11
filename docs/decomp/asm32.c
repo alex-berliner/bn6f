@@ -6761,7 +6761,7 @@ int sub_8112F70()
 
 
 // 0x8112fba
-u32 *sub_8112FBA()
+u32 *ai_attackState_SetupSpecial_8112FBA()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10971,7 +10971,7 @@ int sub_8116924()
 
 
 // 0x8116944
-void __fastcall __noreturn sub_8116944(int a1, int a2)
+void __fastcall __noreturn petMenu_initSprite_8116944(int a1, int a2)
 {
     int v2; // r5
     char v3; // r0
@@ -11340,7 +11340,7 @@ int sub_8116CE0()
 
 
 // 0x8116d00
-void __fastcall __noreturn sub_8116D00(int a1, int a2)
+void __fastcall __noreturn battle_initSpriteType23_8116D00(int a1, int a2)
 {
     int v2; // r5
     u8 v3; // r0
@@ -11459,7 +11459,7 @@ int stateDispatcher_3states_8116E10()
 
 
 // 0x8116e30
-void __noreturn sub_8116E30()
+void __noreturn battle_objectInit_8116E30()
 {
     int v0; // r5
     char v1; // r0
@@ -11556,7 +11556,7 @@ int sub_8116FD4()
 
 
 // 0x8116fdc
-int __fastcall sub_8116FDC(signed int a1, __int16 a2, int a3)
+int __fastcall sprite_positionSubmenuEntries_8116FDC(signed int a1, __int16 a2, int a3)
 {
     int v3; // r4
     int v4; // r7
@@ -12125,7 +12125,7 @@ int sub_81176B0()
 // 0x81176c0
 int sub_81176C0()
 {
-    return sub_81176D0();
+    return battle_playObjectTripleSound_81176D0();
 }
 
 
@@ -12137,7 +12137,7 @@ int sub_81176C8()
 
 
 // 0x81176d0
-signed int sub_81176D0()
+signed int battle_playObjectTripleSound_81176D0()
 {
     int v0; // r5
     int v1; // r4
@@ -12337,7 +12337,7 @@ int object_dispatchModeHandler_81178D8()
 
 
 // 0x81178fc
-void __noreturn sub_81178FC()
+void __noreturn sprite_slotInitKind23_81178FC()
 {
     int v0; // r5
     u8 v1; // r0
@@ -12430,7 +12430,7 @@ int __noreturn keyItemMenu_renderDescription_81179E4()
 
 
 // 0x8117a14
-int __fastcall sub_8117A14(int a1, int a2, int a3, int a4)
+int __fastcall folder_DrawSelectedChipCodeCounts_8117A14(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     unsigned __int8 *v5; // r5
@@ -12567,7 +12567,7 @@ int sub_8117BC8()
 
 
 // 0x8117be8
-void __noreturn sub_8117BE8()
+void __noreturn sprite_initGuiSlotA_8117BE8()
 {
     Battle *v0; // r5
 
@@ -14405,7 +14405,7 @@ int sub_8118F24()
 
 
 // 0x8118f44
-void __noreturn sub_8118F44()
+void __noreturn sprite_initBattle_8118F44()
 {
     int v0; // r5
     u8 v1; // r0
@@ -14456,7 +14456,7 @@ void sub_8118FE4()
 
 
 // 0x8119018
-int __noreturn sub_8119018()
+int __noreturn battle_dispatchEventScript_8119018()
 {
     int v0; // r5
     int v1; // r1
@@ -14562,7 +14562,7 @@ int npc_StateModeDispatcher_8119364()
 
 
 // 0x8119384
-void __fastcall __noreturn sub_8119384(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_spriteInit_8119384(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -14603,7 +14603,7 @@ void __fastcall __noreturn sub_8119384(int a1, int a2, int a3, int a4)
 
 
 // 0x8119438
-int __fastcall sub_8119438(int a1, int a2, int a3, int a4)
+int __fastcall chipPanel_renderChipGfxAndText_8119438(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -14757,7 +14757,7 @@ int sub_81196C4()
     int v0; // r5
 
     (*(&off_81196DC + *(v0 + 9)))();
-    return sub_81198E8();
+    return sprite_setUnk0x2cFromLoader_81198E8();
 }
 
 
@@ -14792,7 +14792,7 @@ signed int sub_81196F0()
     }
     else
     {
-        sub_8119438(v1, v2, v3, v4);
+        chipPanel_renderChipGfxAndText_8119438(v1, v2, v3, v4);
         *(v0 + 16) = *(v0 + 14);
         *(v0 + 13) = *(v0 + 12);
         result = *(v0 + 24);
@@ -14835,7 +14835,7 @@ int __fastcall npc_stepChainSetState0x10_811975C(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
-    sub_8119438(a1, a2, a3, a4);
+    chipPanel_renderChipGfxAndText_8119438(a1, a2, a3, a4);
     *(v4 + 9) = 16;
     return sprite_stepZoomShrinkOut_811976C();
 }
@@ -14877,7 +14877,7 @@ void sub_81197B4()
     int v4; // r0
     _BYTE *v5; // r0
 
-    sub_81198B0();
+    submenu_isStateChanged_81198B0();
     if ( !v1 || !(**(v0 + 20) & 2) )
     {
         v2 = *(v0 + 14);
@@ -15015,7 +15015,7 @@ int sub_8119880()
 
 
 // 0x81198b0
-signed int sub_81198B0()
+signed int submenu_isStateChanged_81198B0()
 {
     int v0; // r5
     int v1; // r0
@@ -15038,7 +15038,7 @@ signed int sub_81198B0()
 
 
 // 0x81198e8
-int sub_81198E8()
+int sprite_setUnk0x2cFromLoader_81198E8()
 {
     int v0; // r5
     int v1; // r0
@@ -15197,7 +15197,7 @@ int sub_8119ACC()
 
 
 // 0x8119aec
-void __noreturn sub_8119AEC()
+void __noreturn buildPetStatusIconSprite_8119AEC()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -15536,7 +15536,7 @@ void object_runTypeUpdateThenSpriteUpdate_811A0A4()
 
 
 // 0x811a0cc
-int sub_811A0CC()
+int stateObj_dispatchByStateByte_811A0CC()
 {
     int v0; // r5
 
@@ -15637,7 +15637,7 @@ int object_runUpdateDispatch_811A190()
 
 
 // 0x811a1b0
-void sub_811A1B0()
+void submenu_updateChipPreviewSprite_811A1B0()
 {
     int v0; // r5
     char v1; // zf
@@ -15921,7 +15921,7 @@ void __noreturn sub_811A434()
     slotList_storeHalfwordAndClearField_800306C(*&byte_811A4BC[4 * *(v0 + 4)]);
     sprite_setSubEntryPaletteBank_800304A(*(&off_811A4D8 + *(v0 + 4)));
     sprite_setSubRecordFieldA_8003060(3);
-    sub_811A5BC();
+    sprite_setPositionByFlags_811A5BC();
     if ( *(v0 + 4) )
         sub_811A640();
     *(v0 + 8) = 4;
@@ -15984,7 +15984,7 @@ signed int sub_811A51C()
 
 
 // 0x811a57c
-signed int sub_811A57C()
+signed int sprite_updatePositionAndClamp_811A57C()
 {
     int v0; // r5
 
@@ -16006,7 +16006,7 @@ int sub_811A5B4()
 
 
 // 0x811a5bc
-int sub_811A5BC()
+int sprite_setPositionByFlags_811A5BC()
 {
     _BYTE *v0; // r5
     char *v1; // r3
@@ -16884,7 +16884,7 @@ int battle_runObjectStateHandler_811B1EC()
 
 
 // 0x811b20c
-void __noreturn sub_811B20C()
+void __noreturn setupGuiObjectSprite_811B20C()
 {
     int v0; // r5
     u8 v1; // r0
@@ -16906,7 +16906,7 @@ void __noreturn sub_811B20C()
     slotList_storeHalfwordAndClearField_800306C(&dword_130);
     sprite_setSubEntryPaletteBank_800304A(2);
     sprite_setSubRecordFieldA_8003060(5);
-    sub_811B298();
+    sprite_submenuUpdateAnimAndPos_811B298();
     *(v0 + 8) = 4;
     *(v0 + 12) = 0;
     sprite_objectUpdateAnimation_811B284(0);
@@ -16918,7 +16918,7 @@ void __fastcall __noreturn sprite_objectUpdateAnimation_811B284(int a1)
 {
     Battle *v1; // r5
 
-    sub_811B298();
+    sprite_submenuUpdateAnimAndPos_811B298();
     sprite_update(v1);
 }
 
@@ -16931,7 +16931,7 @@ int sub_811B290()
 
 
 // 0x811b298
-int sub_811B298()
+int sprite_submenuUpdateAnimAndPos_811B298()
 {
     int v0; // r5
     int v1; // r7
@@ -17046,14 +17046,14 @@ int sub_811B3F4()
 
 
 // 0x811b414
-void __fastcall __noreturn sub_811B414(int a1, int a2)
+void __fastcall __noreturn gui_initSprite0x2C_811B414(int a1, int a2)
 {
     Battle *v2; // r5
     u8 v3; // r0
 
     v2->objFlags = 1;
     initGuiSprite_8002770(44, a2);
-    v3 = sub_80101F8();
+    v3 = getPetNaviStatus_80101F8();
     sprite_setAnimation(v2, v3);
     sprite_loadAnimationData(v2);
     sprite_noShadow(v2);
@@ -17084,7 +17084,7 @@ int sub_811B464()
 
 
 // 0x811b46c
-int __fastcall sub_811B46C(int a1, __int16 a2, int a3)
+int __fastcall sprite_setCoordsIfExists_811B46C(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -17869,7 +17869,7 @@ void sprite_dispatchObjectUpdate_811BDCC()
 // 0x811bdec
 int sub_811BDEC()
 {
-    return sub_811BE9C();
+    return adjustSpriteByOffset_811BE9C();
 }
 
 
@@ -17949,7 +17949,7 @@ int object_checkStatusFlag_811BE90()
 
 
 // 0x811be9c
-int sub_811BE9C()
+int adjustSpriteByOffset_811BE9C()
 {
     char *v0; // r5
     int v1; // ST00_4
@@ -18129,7 +18129,7 @@ int sub_811C1A4()
 
 
 // 0x811c1ac
-int sub_811C1AC()
+int battle_dispatchByClass_811C1AC()
 {
     int v0; // r5
 
@@ -18138,7 +18138,7 @@ int sub_811C1AC()
 
 
 // 0x811c1cc
-void __noreturn sub_811C1CC()
+void __noreturn sprite_setupGuiResourceObject_811C1CC()
 {
     Battle *v0; // r5
 
@@ -18501,7 +18501,7 @@ int sub_811C9FC()
 
 
 // 0x811ca1c
-void __noreturn sub_811CA1C()
+void __noreturn install_object_state_handler_811CA1C()
 {
     int v0; // r5
 
@@ -21110,13 +21110,13 @@ void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
 // 0x811ec50
 void __noreturn sub_811EC50()
 {
-    sub_811EC68();
+    queueGFXTransfersFromTable_811EC68();
     sub_811EFB8();
 }
 
 
 // 0x811ec68
-int sub_811EC68()
+int queueGFXTransfersFromTable_811EC68()
 {
     int v0; // r6
     int v1; // r7
@@ -21135,7 +21135,7 @@ int sub_811EC68()
         v3 = v1 + 4;
         v4 = *(&off_811ECFC + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = sub_811FB84(v2, v4);
+        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
@@ -21197,7 +21197,7 @@ void sub_811ED58()
         sub_811F1B8();
     }
     sub_811F0C8();
-    sub_811F11C();
+    petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
     if ( *(v0 + 16) >= 0 )
         CopyBackgroundTiles_onNaviSelect_811F54C();
@@ -21220,7 +21220,7 @@ void sub_811EDB4()
 
     CopyBackgroundTiles_PET_811EF70();
     CopyBackgroundTiles_onNaviSelect_811F54C();
-    sub_811F24C();
+    replaySpriteFrames_811F24C();
     IsGFXAnimActive(16);
     if ( v2 )
     {
@@ -21292,7 +21292,7 @@ LABEL_22:
 
 
 // 0x811ee98
-void __noreturn sub_811EE98()
+void __noreturn battle_state_tick_811EE98()
 {
     int v0; // r5
     int v1; // r0
@@ -21308,7 +21308,7 @@ void __noreturn sub_811EE98()
             *v0 = 12;
     }
     sub_811F0C8();
-    sub_811F11C();
+    petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
     CopyBackgroundTiles_onNaviSelect_811F54C();
 }
@@ -21331,7 +21331,7 @@ void __noreturn sub_811EED0()
         getPETNaviSelect();
     *(v0 + 1) = 8;
     sub_811F0C8();
-    sub_811F11C();
+    petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
 }
 
@@ -21344,7 +21344,7 @@ void __fastcall __noreturn naviSelect_SetupBackgrounds_811EF0C(int a1)
 
 
 // 0x811ef28
-void __noreturn sub_811EF28()
+void __noreturn initPetSelectScreen_811EF28()
 {
     int v0; // r5
 
@@ -21395,7 +21395,7 @@ int __noreturn sub_811EFB8()
         *(v1 + 12) = 0;
     }
     renderTextGfx_8045F8C(TextScriptMapNames, 240, &unk_200BEA0, 0);
-    return sub_811F5DC(&unk_200BEA0, byte_200CC20, 100749312, 9);
+    return sprite_repackAndQueueTiles_811F5DC(&unk_200BEA0, byte_200CC20, 100749312, 9);
 }
 
 
@@ -21404,9 +21404,9 @@ int __noreturn updateMapNameDisplay_811F014()
 {
     int v0; // r10
 
-    *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = sub_803D06C();
+    *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = protectedZennyOrZero_803D06C();
     renderTextGfx_8045F8C(TextScriptMapNames, 241, &unk_200C0E0, 0);
-    return sub_811F5DC(&unk_200C0E0, byte_200CF20, 100749888, 7);
+    return sprite_repackAndQueueTiles_811F5DC(&unk_200C0E0, byte_200CF20, 100749888, 7);
 }
 
 
@@ -21417,7 +21417,7 @@ int __noreturn drawMapNamesScreen_811F050()
 
     *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = sub_803D0F4();
     renderTextGfx_8045F8C(TextScriptMapNames, 242, &unk_200C2A0, 0);
-    return sub_811F5DC(&unk_200C2A0, byte_200D220, 100750336, 6);
+    return sprite_repackAndQueueTiles_811F5DC(&unk_200C2A0, byte_200D220, 100750336, 6);
 }
 
 
@@ -21426,9 +21426,9 @@ int __fastcall __noreturn drawCurrentMapName_811F08C(int a1)
 {
     int v1; // r0
 
-    v1 = sub_811F290();
+    v1 = getCurrentMapBgm_811F290();
     renderTextGfx_8045F8C(TextScriptMapNames, v1, byte_200C620, 0);
-    return sub_811F5DC(byte_200C620, byte_200C920, 100751232, 12);
+    return sprite_repackAndQueueTiles_811F5DC(byte_200C620, byte_200C920, 100751232, 12);
 }
 
 
@@ -21455,7 +21455,7 @@ int sub_811F0C8()
 
 
 // 0x811f11c
-int sub_811F11C()
+int petCommSaveInit_811F11C()
 {
     int v0; // r5
     signed int v1; // r0
@@ -21564,7 +21564,7 @@ signed int __noreturn sub_811F214()
 
 
 // 0x811f24c
-int sub_811F24C()
+int replaySpriteFrames_811F24C()
 {
     int v0; // r5
     int v1; // r0
@@ -21590,7 +21590,7 @@ int sub_811F24C()
 
 
 // 0x811f290
-int sub_811F290()
+int getCurrentMapBgm_811F290()
 {
     int v0; // r10
     int v1; // r2
@@ -21673,7 +21673,7 @@ void CopyBackgroundTiles_onNaviSelect_811F54C()
 
 
 // 0x811f5dc
-int __fastcall sub_811F5DC(int a1, int a2, int a3, signed int a4)
+int __fastcall sprite_repackAndQueueTiles_811F5DC(int a1, int a2, int a3, signed int a4)
 {
     int v4; // r5
     int v5; // r4
@@ -21834,8 +21834,8 @@ int next_exitToMap_811F728()
     **v0 = 4;
     **(v0 + oToolkit_GameStatePtr) = 0;
     **(v0 + oToolkit_RenderInfoPtr) = &byte_40;
-    sub_80015FC(6);
-    sub_809F68C();
+    toolkit_applyOverlayPalette_80015FC(6);
+    npc_clearAllBusyFlags_809F68C();
     chatbox_8040818();
     return chatbox_clear_eFlags2009F38(64);
 }
@@ -21852,7 +21852,7 @@ int __noreturn sub_811F758()
     mainState_resetGameAndGoto28_8005524();
     v1 = *(v0 + oToolkit_SubmenuPtr);
     *v1 = 24;
-    return sub_8129248(v1, 24, v2, v3);
+    return battle_initScene_8129248(v1, 24, v2, v3);
 }
 
 
@@ -22235,7 +22235,7 @@ int clearS2001c04Byte6_811FB78()
 
 
 // 0x811fb84
-char (*__fastcall sub_811FB84(char (*a1)[32], int a2))[32]
+char (*__fastcall getKeyedTableEntry_811FB84(char (*a1)[32], int a2))[32]
 {
     int v2; // r10
     signed int v3; // r4
@@ -22324,7 +22324,7 @@ signed int __fastcall sub_811FCB8(int a1, int *a2, int a3, int a4)
         v5[6] = (v9[8] << 16) | v13;
         v5[3] = (sub_811FF80(v18) << 16) | v13;
         v5[5] = v13 | 0x10000;
-        sub_811FE48(v23);
+        registerHitCounter_811FE48(v23);
         v5 += 8;
         ++v6;
     }
@@ -22406,7 +22406,7 @@ void __fastcall battle_ClearBuffer_811FE34(int a1, int a2, int a3, int a4)
 
 
 // 0x811fe48
-int __fastcall sub_811FE48(int a1)
+int __fastcall registerHitCounter_811FE48(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -22438,7 +22438,7 @@ int __fastcall sub_811FE48(int a1)
 
 
 // 0x811fe7c
-int __fastcall sub_811FE7C(int *a1, int a2, int a3, int a4)
+int __fastcall buildChipSearchTable_811FE7C(int *a1, int a2, int a3, int a4)
 {
     int *v4; // r6
     int v5; // r7
@@ -22579,7 +22579,7 @@ __int16 *sub_811FFC0()
 
 
 // 0x8120018
-signed int __fastcall sub_8120018(signed int a1, int a2, int a3, int a4)
+signed int __fastcall battle_fieldLockDispatch_8120018(signed int a1, int a2, int a3, int a4)
 {
     int v4; // r7
     int v5; // r2
@@ -22915,7 +22915,7 @@ int __fastcall sub_8120348(int a1, _WORD *a2, int a3, int a4)
 
 
 // 0x8120390
-int __fastcall sub_8120390(int a1, int a2, int a3, int a4)
+int __fastcall battle_loadFolderChipGfx_8120390(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -23409,7 +23409,7 @@ int __fastcall sub_81207C4(int a1, _WORD *a2)
 
 
 // 0x81207f8
-int __fastcall sub_81207F8(int a1)
+int __fastcall countEventFlagChips_81207F8(int a1)
 {
     int v1; // r5
     unsigned __int16 *v2; // r4
@@ -23505,7 +23505,7 @@ LABEL_14:
 
 
 // 0x8120900
-void __fastcall __noreturn sub_8120900(_WORD *a1, int a2, int a3, int a4)
+void __fastcall __noreturn scoreboard_buildScoreBcdTilemap_8120900(_WORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r6
@@ -23759,7 +23759,7 @@ signed int sub_8120B54()
         sub_8144D30();
         return 255;
     }
-    if ( sub_803F740(4) >> 32 )
+    if ( link_getSlotState_803F740(4) >> 32 )
         return 255;
     v2 = 0;
 LABEL_7:
@@ -23864,7 +23864,7 @@ int __fastcall sub_8120CC8(int result, unsigned __int8 *a2)
 
 
 // 0x8120d10
-int __fastcall sub_8120D10(int a1)
+int __fastcall petNaviTryGiveElementFolder_8120D10(int a1)
 {
     int v1; // r10
     int v2; // r4

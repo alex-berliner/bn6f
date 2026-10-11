@@ -227,7 +227,7 @@ signed int __fastcall sub_800BF88(int a1, unsigned int a2)
 {
     signed int result; // r0
 
-    sub_800C4BC(a1, a2);
+    battle_buildPlayerPanelGrid_800C4BC(a1, a2);
     *byte_203CB04 = 140;
     byte_2036742 = 0;
     byte_2036744 = 0;
@@ -257,7 +257,7 @@ int panel_800BFC4()
     {
         result = battle_isTimeStop();
         if ( v1 )
-            sub_800C746();
+            battle_updatePanels_800C746();
     }
     return result;
 }
@@ -355,7 +355,7 @@ void stepPanelTileAnimations_800C192()
 
 
 // 0x800c380
-void __fastcall sub_800C380(int a1, int a2)
+void __fastcall panelObject_update_800C380(int a1, int a2)
 {
     int v2; // r7
     int v3; // r4
@@ -454,7 +454,7 @@ void __fastcall sub_800C488(int a1)
 
 
 // 0x800c4bc
-int __fastcall sub_800C4BC(int a1, unsigned int a2)
+int __fastcall battle_buildPlayerPanelGrid_800C4BC(int a1, unsigned int a2)
 {
     char *v2; // r0
     char *v3; // r7
@@ -667,7 +667,7 @@ __int64 __fastcall __noreturn sub_800C6F0(int a1)
 
 
 // 0x800c746
-void __noreturn sub_800C746()
+void __noreturn battle_updatePanels_800C746()
 {
     sub_800C6F0(1);
 }
@@ -2922,12 +2922,12 @@ int __usercall object_getFlip@<R0>(Battle *obj@<R5>)
 // 0x800e45e
 __int64 sub_800E45E()
 {
-    return sub_800E468();
+    return battle_objectResolveContactOffset_800E468();
 }
 
 
 // 0x800e468
-__int64 sub_800E468()
+__int64 battle_objectResolveContactOffset_800E468()
 {
     unsigned __int8 *v0; // r5
     int v1; // r1

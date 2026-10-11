@@ -140,7 +140,7 @@ int __fastcall sub_801FF18(int result)
         }
         eFlags2036782 = **(v1 + oToolkit_JoypadPtr);
         byte_2036786 = *(*(v1 + oToolkit_S2034880_Ptr) + 17);
-        word_203678C = sub_803F740(4);
+        word_203678C = link_getSlotState_803F740(4);
         if ( !(eStruct203F7D8[2] & 1) )
             goto LABEL_16;
         result = net_isLinkConnected_803EA2C();
@@ -217,7 +217,7 @@ int __fastcall sub_801FFD6(int result)
         {
             eFlags2036782 = **(v2 + oToolkit_JoypadPtr);
             byte_2036786 = *(*(v2 + oToolkit_S2034880_Ptr) + 17);
-            word_203678C = sub_803F740(4);
+            word_203678C = link_getSlotState_803F740(4);
             if ( !(v1[2] & 1) || (v6 = v1[3], v4 = __OFSUB__(v6, 1), v7 = v6 - 1, v1[3] = v7, (v7 < 0) ^ v4) )
             {
                 v1[2] &= 0xFEu;

@@ -1595,7 +1595,7 @@
 
 	enum cs_navi_cmd_80340f6_cmd // 0x69
 // 0x69
-// call navi_80340F6
+// call endOfSection_NaviSetup_80340F6
 	.macro cs_navi_cmd_80340f6
 	.byte cs_navi_cmd_80340f6_cmd
 	.endm

@@ -1005,12 +1005,12 @@ off_800BF84:
 
 // symdb: Reinitializes six two-byte selection slots (counts cleared, values set to a descending 0xE..9 default) and writes 0x8C to a state word, after delegating to a helper whose register results it passes through.
 // symdb: void sub_800BF88(void); // no meaningful inputs; returns caller's r2-r7 unchanged, c/nz/v flags
-// symdb: from the final "mov r0,#9" (c/v from sub_800C4BC)
+// symdb: from the final "mov r0,#9" (c/v from battle_buildPlayerPanelGrid_800C4BC)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BF88.yaml
 	thumb_func_start sub_800BF88
 sub_800BF88:
 	push {r4,r6,r7,lr}
-	bl sub_800C4BC
+	bl battle_buildPlayerPanelGrid_800C4BC
 	ldr r0, off_800C1F8 // =byte_203CB04 
 	mov r1, #0x8c
 	str r1, [r0]
@@ -1048,7 +1048,7 @@ panel_800BFC4:
 	bne locret_800C016
 	bl battle_isTimeStop
 	bne locret_800C016
-	bl sub_800C746
+	bl battle_updatePanels_800C746
 	ldr r0, off_800C1FC // =byte_203CB04 
 	ldr r1, [r0]
 	sub r1, #1
@@ -1064,7 +1064,7 @@ loc_800BFEA:
 loc_800BFEC:
 	mov r0, r4
 	mov r1, r5
-	bl sub_800C380
+	bl panelObject_update_800C380
 	mov r0, #0
 	ldrb r1, [r7,#oPanelData_Type]
 	cmp r1, #3
@@ -1460,11 +1460,11 @@ dword_800C340:
 	thumb_func_end stepPanelTileAnimations_800C192
 
 // symdb: Battle panel tile state-machine update (animating in, settling, activating, timed trigger).
-// symdb: void sub_800C380(u32 r0 /*battle_obj*/, u32 r1 /*tile_data*/) panel_obj in r7 -> u16 r1 (delay)
+// symdb: void panelObject_update_800C380(u32 r0 /*battle_obj*/, u32 r1 /*tile_data*/) panel_obj in r7 -> u16 r1 (delay)
 // symdb: in oTimerActive, byte r2 in r7->+6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C380.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/panelObject_update_800C380.yaml
 	thumb_local_start
-sub_800C380:
+panelObject_update_800C380:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r5, r1
@@ -1602,7 +1602,7 @@ loc_800C484:
 	strb r2, [r7,#6]
 locret_800C486:
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C380
+	thumb_func_end panelObject_update_800C380
 
 // symdb: r1 = 480 in battle mode 1, else 600, keeping r0/r2/r3 (likely a timer length in frames).
 // symdb: () -> r1 = GetBattleMode() == 1 ? 0x1E0 : 0x258; r0, r2, r3 preserved
@@ -1635,11 +1635,11 @@ off_800C4B8:
 	thumb_func_end sub_800C488
 
 // symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
-// symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
+// symdb: void battle_buildPlayerPanelGrid_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
 // symdb: returns via sub_800C67C -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800C4BC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buildPlayerPanelGrid_800C4BC.yaml
 	thumb_local_start
-sub_800C4BC:
+battle_buildPlayerPanelGrid_800C4BC:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp,#4]
@@ -1753,7 +1753,7 @@ byte_800C5B8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_800C4BC
+	thumb_func_end battle_buildPlayerPanelGrid_800C4BC
 
 // symdb: per-frame update: steps the panel animations, then redraws every panel slot
 // symdb: static void update_panels(void); adapter: in r10=toolkit, out v, r1-r7 (r4-r7 preserved); flags
@@ -1967,9 +1967,9 @@ loc_800C734:
 // symdb: Per-frame battle update: advances 6 team state counters, resolves queued panel-encounter pair events, and ticks the 6×3 field-grid cell timers while toggling alliance-visibility bits.
 // symdb: void battle_updatePanels(void); /* in: none required (reads globals); out: r3 = last grid-cell
 // symdb: visibility flag, r2 = from callee; clobbers r0 r1 lr NZCV; preserves r4 r5 r6 r7 r10 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800C746.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_updatePanels_800C746.yaml
 	thumb_local_start
-sub_800C746:
+battle_updatePanels_800C746:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	mov r4, #1
@@ -2086,7 +2086,7 @@ loc_800C80E:
 	ble loc_800C7EA
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C746
+	thumb_func_end battle_updatePanels_800C746
 
 	thumb_local_start
 sub_800C81E:
@@ -5101,24 +5101,24 @@ object_getFlip:
 	mov pc, lr
 	thumb_func_end object_getFlip
 
-// symdb: One-line wrapper that tail-calls sub_800E468 with r0 set to 1 (a "true"/enable-style argument); purpose in game terms unknown until sub_800E468 is identified.
-// symdb: void sub_800E45E(void) // no meaningful inputs in r0; tail-calls sub_800E468(1); caller-visible
+// symdb: One-line wrapper that tail-calls battle_objectResolveContactOffset_800E468 with r0 set to 1 (a "true"/enable-style argument); purpose in game terms unknown until battle_objectResolveContactOffset_800E468 is identified.
+// symdb: void sub_800E45E(void) // no meaningful inputs in r0; tail-calls battle_objectResolveContactOffset_800E468(1); caller-visible
 // symdb: r0-r5, r8-r12, lr and carry come back from the callee
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800E45E.yaml
 	thumb_func_start sub_800E45E
 sub_800E45E:
 	push {lr}
 	mov r0, #1
-	bl sub_800E468
+	bl battle_objectResolveContactOffset_800E468
 	pop {pc}
 	thumb_func_end sub_800E45E
 
 // symdb: Resolves a battle object's contact offset, zeroing it when the target panel isn't on the object's alliance.
-// symdb: void sub_800E468(void * /* r5 */ battleObj)     -> r0,r1,r2 (contact offset x,y,extra);
+// symdb: void battle_objectResolveContactOffset_800E468(void * /* r5 */ battleObj)     -> r0,r1,r2 (contact offset x,y,extra);
 // symdb: c,v clobbered by alliance check; r3 untouched here;        r4 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800E468.yaml
-	thumb_func_start sub_800E468
-sub_800E468:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectResolveContactOffset_800E468.yaml
+	thumb_func_start battle_objectResolveContactOffset_800E468
+battle_objectResolveContactOffset_800E468:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	ldrb r0, [r5,#oBattleObject_Unk_0f]
@@ -5143,7 +5143,7 @@ loc_800E48E:
 loc_800E494:
 	add sp, sp, #0x10
 	pop {r4,pc}
-	thumb_func_end sub_800E468
+	thumb_func_end battle_objectResolveContactOffset_800E468
 
 // symdb: Tail-dispatch trampoline that calls one of four battle-object contact handlers selected by an index, passing the object's collision direction and returning the handler's results directly to the caller.
 // symdb: int battle_dispatchObjectContactHandler_800E498(u32 handlerIndex /* r0 */, BattleObject* obj /*
@@ -5166,7 +5166,7 @@ off_800E4AC:
 	.word off_800E4B0
 off_800E4B0:
 	.word sub_800E4C0+1
-	.word sub_800E548+1
+	.word battle_getHitModifierOffsets_800E548+1
 	.word sub_800E4C8+1
 	.word sub_800E500+1
 	thumb_func_end battle_dispatchObjectContactHandler_800E498
@@ -5241,9 +5241,9 @@ byte_800E538:
 // symdb: void battle_getHitModifierOffsets(u32 r4_in, BattleObject *r5, u32 r6_in, void *lr); /* out: r0
 // symdb: = direction * s8_multiplier (s32), r1 = s8 offset_x, r2 = u8 offset_y, r3 = collision_data_ptr;
 // symdb: flags: nzcv set */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800E548.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getHitModifierOffsets_800E548.yaml
 	thumb_local_start
-sub_800E548:
+battle_getHitModifierOffsets_800E548:
 	push {r4,r6,lr}
 	bl object_getEnemyDirection
 	mov r4, r0
@@ -5278,7 +5278,7 @@ loc_800E56E:
 	ldrsb r1, [r2,r1]
 	ldrb r2, [r2,#2]
 	pop {r4,r6,pc}
-	thumb_func_end sub_800E548
+	thumb_func_end battle_getHitModifierOffsets_800E548
 off_800E588:
 	.word byte_800E58C
 byte_800E58C:

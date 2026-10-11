@@ -623,7 +623,7 @@ mapscript_8063444:
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_E28
 	ms_set_enter_map_screen_fade byte1=0x0C byte2=0xFF
 	ms_write_eStruct2001c04_byte byte1=0x04 byte2=0x0C
-	ms_call_native_function ptr1=sub_80AA004+1 word5=0x00000001
+	ms_call_native_function ptr1=copyOamEntry_80AA004+1 word5=0x00000001
 	ms_start_cutscene ptr1=cutscenescript_8094EBC word5=0x00000000
 	ms_jump destination1=byte_80634C7
 

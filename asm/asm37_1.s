@@ -1245,7 +1245,7 @@ byte_8142610:
 	thumb_local_start
 sub_8142618:
 	push {r4-r7,lr}
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814266C
 	bl sub_81427CE
 	mov r0, r0
@@ -2460,7 +2460,7 @@ off_8142FC4:
 	thumb_local_start
 sub_8142FC8:
 	push {r4-r7,lr}
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814305E
 	bl sub_81430DC
 	mov r0, r0
@@ -3067,7 +3067,7 @@ sub_8143406:
 	ldrb r2, [r5,#0xa] // (byte_200101A - 0x2001010)
 	strb r1, [r0,r2]
 	mov r1, #4
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 	strb r0, [r5,#0xa] // (byte_200101A - 0x2001010)
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
@@ -3085,7 +3085,7 @@ sub_814343A:
 	bl ByteFill // (u8 *mem, int byteCount, u8 byte) -> void
 	mov r0, sp
 	mov r1, #3
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 	ldr r1, off_8143460 // =byte_8143464 
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
@@ -3422,7 +3422,7 @@ off_8143A50:
 	thumb_local_start
 sub_8143A54:
 	push {r4-r7,lr}
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq loc_8143B04
 	bl sub_8143C18
 	mov r0, r0

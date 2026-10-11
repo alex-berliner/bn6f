@@ -143,7 +143,7 @@ char *__fastcall sub_809F66C(int a1)
 
 
 // 0x809f68c
-unsigned int sub_809F68C()
+unsigned int npc_clearAllBusyFlags_809F68C()
 {
     char *v0; // r3
     unsigned int result; // r0
@@ -173,7 +173,7 @@ int sub_809F904()
 
 
 // 0x809f90c
-char *sub_809F90C()
+char *clearBattleStateIfEvent1708Pending_809F90C()
 {
     char *result; // r0
     char v1; // zf
@@ -190,7 +190,7 @@ char *sub_809F90C()
 
 
 // 0x809f922
-int sub_809F922()
+int recordCapsule_809F922()
 {
     int v0; // r5
     int result; // r0
@@ -244,14 +244,14 @@ int sub_809F942()
                 if ( v8 - v9 <= 2359296 && v8 - v9 >= -3670016 && v8 + v9 <= 1835008 && v8 + v9 >= -1835008 )
                 {
                     v10 = *i;
-                    sub_809F90C();
+                    clearBattleStateIfEvent1708Pending_809F90C();
                     result = v10;
                     dword_2000218 = v10;
                     return result;
                 }
             }
         }
-        sub_809F90C();
+        clearBattleStateIfEvent1708Pending_809F90C();
         result = 0;
     }
     return result;
@@ -275,7 +275,7 @@ void __fastcall zeroFill_e2004348()
 
 
 // 0x809f9dc
-int sub_809F9DC()
+int mysteryData_processMapGroups_809F9DC()
 {
     int *i; // r4
     int *j; // r6
@@ -317,7 +317,7 @@ int sub_809F9DC()
             }
         }
     }
-    return sub_809FDE0();
+    return rollInternetMysteryData_809FDE0();
 }
 
 
@@ -344,7 +344,7 @@ __int64 __fastcall sub_809FA68(_BYTE *a1, int a2, unsigned __int8 *a3)
             *(&v12 + v5++) = a1[1];
             a1 += 8;
         }
-        a1 = sub_8000E3A(&v12, v5);
+        a1 = pickWeightedIndex_8000E3A(&v12, v5);
     }
     LODWORD(v4) = a1;
     v6 = HIDWORD(v4);
@@ -367,7 +367,7 @@ LABEL_14:
         *(&v12 + v7++) = v10;
         v6 += 8;
     }
-    HIDWORD(v4) = sub_8000E3A(&v12, v7);
+    HIDWORD(v4) = pickWeightedIndex_8000E3A(&v12, v7);
     return v4;
 }
 
@@ -399,13 +399,13 @@ int __fastcall sub_809FADE(int a1)
 // 0x809faf4
 void mysteryData_InitMapGroupTables_809FAF4()
 {
-    sub_809FB04();
-    sub_809FB04();
+    clearMysteryDataEventFlags_809FB04();
+    clearMysteryDataEventFlags_809FB04();
 }
 
 
 // 0x809fb04
-void sub_809FB04()
+void clearMysteryDataEventFlags_809FB04()
 {
     _DWORD *v0; // r4
     unsigned __int8 **i; // r6
@@ -569,7 +569,7 @@ int __fastcall sub_809FC1C(int a1)
 
 
 // 0x809fc96
-signed int __fastcall sub_809FC96(int a1)
+signed int __fastcall mysteryData_lookupForNavi_809FC96(int a1)
 {
     int v1; // r10
     int v2; // r6
@@ -695,7 +695,7 @@ __int64 sub_809FD70()
         ++v2;
         v0 = (v0 + 1);
     }
-    v3 = sub_8000E3A(&v8, v2);
+    v3 = pickWeightedIndex_8000E3A(&v8, v2);
     byte_2000213 = v3;
     v4 = &GoldMysteryDataEntries[3 * v3];
     word_2000214 = *v4;
@@ -720,7 +720,7 @@ int __fastcall record_writeU16IfIdMatches_809FDCE(int a1, int a2, __int16 a3)
 
 
 // 0x809fde0
-int sub_809FDE0()
+int rollInternetMysteryData_809FDE0()
 {
     int result; // r0
     int v1; // r7
@@ -732,7 +732,7 @@ int sub_809FDE0()
     if ( word_2000216 )
     {
         ByteFill(&v4, 16, 0x20u);
-        v1 = sub_8000E3A(&v4, word_2000216) + 1;
+        v1 = pickWeightedIndex_8000E3A(&v4, word_2000216) + 1;
         v2 = *(*(&off_80A336C + 2 * (word_2000214 - 128) + 1) + 4 * HIBYTE(word_2000214));
         v3 = 0;
         while ( *v2 )

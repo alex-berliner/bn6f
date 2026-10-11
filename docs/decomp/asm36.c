@@ -55,7 +55,7 @@ int sub_8130084()
 	zeroFillVRAM();
 	ZeroFill_byte_3001960(v3, v4, v5, v6);
 	ZeroFillGFX30025c0();
-	sub_80015FC(16);
+	toolkit_applyOverlayPalette_80015FC(16);
 	sub_8046664();
 	chatbox_8040818();
 	v7 = *(v1 + oToolkit_RenderInfoPtr);
@@ -353,7 +353,7 @@ void sub_81304EC()
 	{
 		sub_81200EC(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20243E8);
 		CopyBackgroundTiles(10, 8, 2, byte_20243E8, 8, &dword_8 + 2);
-		sub_8120390(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20244C8, byte_812F06C);
+		battle_loadFolderChipGfx_8120390(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20244C8, byte_812F06C);
 		CopyBackgroundTiles(8, 8, 2, byte_20244C8, 2, &dword_8 + 2);
 		sub_81203E4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024500, &dword_35C | 0x9000);
 		CopyBackgroundTiles(18, 8, 2, byte_2024500, 2, &dword_8 + 2);
@@ -1280,8 +1280,8 @@ int sub_8130F78()
             rfu_waitREQComplete();
         }
         v3 = chatbox_8040818();
-        sub_8129248(v3, v4, v5, v6);
-        sub_812B530();
+        battle_initScene_8129248(v3, v4, v5, v6);
+        loadEntityJumpOffset00Gfx_812B530();
         sub_8132614();
         *(v0 + 3) = 32;
         *(v0 + 30) = 0;
@@ -1621,7 +1621,7 @@ void __noreturn sub_81312FC()
     zeroFillVRAM();
     ZeroFill_byte_3001960(v3, v4, v5, v6);
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     sub_8046664();
     chatbox_8040818();
     v7 = *(v1 + oToolkit_RenderInfoPtr);
@@ -2350,7 +2350,7 @@ int sub_8131FC4()
         *(v0 + 3) = 4;
         *(v0 + 12) = 0;
         sub_803CB00(1);
-        sub_8048F9C(0, v9, v10, v11);
+        initSaveStateBlock_8048F9C(0, v9, v10, v11);
         result = 40;
         **v1 = 40;
     }
@@ -3372,7 +3372,7 @@ void __noreturn OpenSaveMenu8132BA8(int a1, int a2, int a3, int a4)
     zeroFillVRAM();
     ZeroFill_byte_3001960(v6, v7, v8, v9);
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     v10 = *(v5 + oToolkit_RenderInfoPtr);
     *v10 = 8000;
     v10[8] = 0;
@@ -3385,10 +3385,10 @@ void __noreturn OpenSaveMenu8132BA8(int a1, int a2, int a3, int a4)
     *(v4 + 2) = 0;
     engine_setScreeneffect(8, 16);
     sub_8046664();
-    *(v4 + 12) = sub_81207F8(0);
-    *(v4 + 14) = sub_81207F8(1);
-    *(v4 + 16) = sub_81207F8(2);
-    v11 = sub_8021CA8();
+    *(v4 + 12) = countEventFlagChips_81207F8(0);
+    *(v4 + 14) = countEventFlagChips_81207F8(1);
+    *(v4 + 16) = countEventFlagChips_81207F8(2);
+    v11 = battle_countValidChipSlots_8021CA8();
     *(v4 + 20) = v11;
     saveMenu_config_textscript_8132CB8();
 }
@@ -3469,7 +3469,7 @@ void __noreturn saveMenu_config_textscript_8132CB8()
         v3 = v1 + 4;
         v4 = *(&off_8132D58 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = sub_811FB84(v2, v4);
+        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
@@ -3564,7 +3564,7 @@ int __fastcall storeTableEntryIntoUnk200a220Field8_8132FC4(int a1, int a2)
 
 
 // 0x8132fd0
-void __noreturn sub_8132FD0()
+void __noreturn decomposeTileBlock_8132FD0()
 {
     int v0; // r5
     signed int v1; // r7
@@ -3681,7 +3681,7 @@ void __noreturn sub_8132FD0()
 
 
 // 0x81330ac
-int sub_81330AC()
+int gfx_fillAllBandedTilemaps_81330AC()
 {
     signed int v0; // r6
     int result; // r0
@@ -3718,7 +3718,7 @@ void __fastcall __noreturn sub_8133228(int a1, int a2, int a3, int a4)
     char v10; // zf
 
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     v6 = *(v5 + oToolkit_RenderInfoPtr);
     *v6 = 8000;
     v6[8] = 0;
@@ -3788,13 +3788,13 @@ void __noreturn sub_81333A0()
     int v1; // r0
 
     (*(&off_81333EC + *(v0 + 2)))();
-    v1 = sub_81340FC();
+    v1 = battle_setFieldsFromObj_81340FC();
     sub_8134490(v1);
 }
 
 
 // 0x8133400
-void __noreturn sub_8133400()
+void __noreturn battle_objectUpdate_8133400()
 {
     int v0; // r5
     int v1; // r0
@@ -3807,7 +3807,7 @@ void __noreturn sub_8133400()
         v1 = 0;
         *(v0 + 3) = 0;
     }
-    sub_8134594(v1);
+    submenu_clearBgIfClosed_8134594(v1);
     sub_8134538();
     sub_81341A0();
 }
@@ -3822,7 +3822,7 @@ int __fastcall sub_8133434(int a1)
     int v4; // r1
     int v5; // r2
 
-    sub_8134594(a1);
+    submenu_clearBgIfClosed_8134594(a1);
     sub_8134538();
     sub_81345B0();
     sub_8134548();
@@ -4237,7 +4237,7 @@ int sub_8133788()
             chatbox_runScript_803FD9C_on_eTextScript2028A20(23);
         }
     }
-    sub_8134594(v1);
+    submenu_clearBgIfClosed_8134594(v1);
     sub_8134538();
     sub_81345B0();
     return sub_8134548();
@@ -4290,7 +4290,7 @@ void __fastcall __noreturn sub_81337E8(int a1)
             goto LABEL_20;
         }
     }
-    sub_8133C58();
+    chatbox_selectPress_8133C58();
     if ( v3 )
     {
         if ( !sub_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
@@ -4313,7 +4313,7 @@ LABEL_20:
 
 
 // 0x813388c
-void __fastcall __noreturn sub_813388C(int a1)
+void __fastcall __noreturn folderEdit_step_813388C(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -4392,7 +4392,7 @@ void __fastcall __noreturn sub_8133944(int a1)
     sub_8133C0C();
     if ( !v4 )
     {
-        sub_8134594(v3);
+        submenu_clearBgIfClosed_8134594(v3);
         sub_81345B0();
         sub_8134538();
         sub_8134548();
@@ -4401,7 +4401,7 @@ void __fastcall __noreturn sub_8133944(int a1)
     sub_81347A4();
     if ( v4 )
         *(v1 + 52) = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
-    sub_813471C();
+    copyBackgroundTiles_sub_813471C();
 }
 
 
@@ -4417,7 +4417,7 @@ void __noreturn sub_813399C()
 
 
 // 0x81339bc
-int __fastcall sub_81339BC(int a1)
+int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -4425,7 +4425,7 @@ int __fastcall sub_81339BC(int a1)
     signed int v4; // r4
     signed int v5; // r6
 
-    sub_81340FC();
+    battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     v2 = IsPaletteFadeActive();
@@ -4454,7 +4454,7 @@ int __fastcall sub_81339BC(int a1)
         v2 = 0;
         *(v1 + 2) = 0;
     }
-    sub_8134594(v2);
+    submenu_clearBgIfClosed_8134594(v2);
     sub_8134538();
     sub_81345B0();
     return sub_8134548();
@@ -4526,12 +4526,12 @@ int __fastcall sub_8133A68(int a1)
             }
         }
     }
-    sub_81340FC();
+    battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
-    sub_8134594(v4);
+    submenu_clearBgIfClosed_8134594(v4);
     sub_8134538();
     sub_81345B0();
     return sub_8134548();
@@ -4562,12 +4562,12 @@ int __fastcall sub_8133B18(int a1)
             sub_813175C(0);
         }
     }
-    sub_81340FC();
+    battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
-    sub_8134594(v3);
+    submenu_clearBgIfClosed_8134594(v3);
     sub_8134538();
     sub_81345B0();
     return sub_8134548();
@@ -4591,12 +4591,12 @@ int __fastcall sub_8133B74(int a1)
             v2 = 24;
         chatbox_runScript_803FD9C_on_eTextScript2028A20(v2);
     }
-    sub_81340FC();
+    battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     sub_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
-    sub_8134594(v4);
+    submenu_clearBgIfClosed_8134594(v4);
     sub_8134538();
     sub_81345B0();
     return sub_8134548();
@@ -4672,7 +4672,7 @@ void sub_8133C0C()
 
 
 // 0x8133c58
-void sub_8133C58()
+void chatbox_selectPress_8133C58()
 {
     _BYTE *v0; // r5
     int v1; // r1
@@ -4905,7 +4905,7 @@ void __noreturn sub_8133EC0()
         v3 = v1 + 4;
         v4 = *(&off_8133F70 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = sub_811FB84(v2, v4);
+        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
@@ -4972,7 +4972,7 @@ int sub_81340DC()
 
 
 // 0x81340fc
-int sub_81340FC()
+int battle_setFieldsFromObj_81340FC()
 {
     int v0; // r5
     __int16 *v1; // r0
@@ -5084,19 +5084,19 @@ void __fastcall __noreturn sub_8134490(int a1)
 // 0x8134538
 int sub_8134538()
 {
-    return sub_8134558(226, 28, 30, 36);
+    return object_resolveTableEntry_8134558(226, 28, 30, 36);
 }
 
 
 // 0x8134548
 int sub_8134548()
 {
-    return sub_8134558(386, 28, 40, 46);
+    return object_resolveTableEntry_8134558(386, 28, 40, 46);
 }
 
 
 // 0x8134558
-signed int __fastcall sub_8134558(int a1, int a2, int a3, int a4)
+signed int __fastcall object_resolveTableEntry_8134558(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -5105,7 +5105,7 @@ signed int __fastcall sub_8134558(int a1, int a2, int a3, int a4)
 
 
 // 0x8134594
-int __fastcall sub_8134594(int a1)
+int __fastcall submenu_clearBgIfClosed_8134594(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -5218,7 +5218,7 @@ int __fastcall sub_813468C(int a1, int a2, int a3, int a4)
 
 
 // 0x813471c
-void __noreturn sub_813471C()
+void __noreturn copyBackgroundTiles_sub_813471C()
 {
     int v0; // r5
     int v1; // r0
@@ -5319,7 +5319,7 @@ signed int sub_81347A4()
     v13 = 30;
     if ( v6 )
         v13 = 40;
-    sub_8120018(*(&off_81348D4 + v6), *(v0 + v13), v8, v12);
+    battle_fieldLockDispatch_8120018(*(&off_81348D4 + v6), *(v0 + v13), v8, v12);
     v14 = 0;
     v15 = 0;
     if ( !*(v0 + 13) )
@@ -5359,7 +5359,7 @@ signed int sub_81347A4()
 
 
 // 0x81348dc
-int __fastcall sub_81348DC(int a1, int a2, int a3, int a4)
+int __fastcall battle_alignRowCheck_81348DC(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -5640,7 +5640,7 @@ int sub_8134ADC()
                     *(v0 + 40) = v28;
                     if ( v28 == v27 )
                         sub_8135244();
-                    sub_813527C(v25, v26, v40 - 1 - v39, v39);
+                    battle_copyStateSlotsAndZeroNext_813527C(v25, v26, v40 - 1 - v39, v39);
                     chatbox_clampScrollToTextEnd_813525C();
                 }
                 else
@@ -5686,7 +5686,7 @@ int sub_8134ADC()
                 *(v0 + 40) = v20;
                 if ( v20 == v19 )
                     sub_8135244();
-                sub_813527C(v17, v18, v40 - 1 - v39, v39);
+                battle_copyStateSlotsAndZeroNext_813527C(v17, v18, v40 - 1 - v39, v39);
                 chatbox_clampScrollToTextEnd_813525C();
             }
             else
@@ -5829,7 +5829,7 @@ int sub_8134CF0()
                         v29 = v28 - v27;
                         if ( !v29 )
                             sub_8135244();
-                        sub_813527C(v25, v26, v29, v27);
+                        battle_copyStateSlotsAndZeroNext_813527C(v25, v26, v29, v27);
                         chatbox_clampScrollToTextEnd_813525C();
                         sub_8134F78();
                     }
@@ -6146,7 +6146,7 @@ LABEL_20:
         }
         while ( v12 < v13 );
         v15 = getChip8021DA8(v17);
-        if ( sub_8135500(v15, v17) )
+        if ( battle_CheckSpawnLimit_8135500(v15, v17) )
             return v5;
         return 0;
     }
@@ -6301,7 +6301,7 @@ void chatbox_clampScrollToTextEnd_813525C()
 
 
 // 0x813527c
-void __fastcall sub_813527C(int a1, int a2, int a3, int a4)
+void __fastcall battle_copyStateSlotsAndZeroNext_813527C(int a1, int a2, int a3, int a4)
 {
     u32 *v4; // r4
     int v5; // r6
@@ -6352,7 +6352,7 @@ int __fastcall sub_81352A0(int a1, void *a2, int a3, int a4)
         {
             sub_80465A0(v14);
             *(v5 + 28) = v10;
-            sub_81348DC(36, v15, v16, v17);
+            battle_alignRowCheck_81348DC(36, v15, v16, v17);
             result = 1;
             *(v5 + 76) |= 1u;
         }
@@ -6366,7 +6366,7 @@ int __fastcall sub_81352A0(int a1, void *a2, int a3, int a4)
 
 
 // 0x8135314
-int __fastcall sub_8135314(int a1, int a2, int a3, int a4)
+int __fastcall battle_setupPETNavis_8135314(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -6433,7 +6433,7 @@ int __fastcall sub_81353B8(void *a1, int a2, __int16 a3, int a4)
 // 0x81353dc
 int sub_81353DC()
 {
-    return sub_81348DC(36, 165, 40, 4);
+    return battle_alignRowCheck_81348DC(36, 165, 40, 4);
 }
 
 
@@ -6521,7 +6521,7 @@ int sub_8135404()
 
 
 // 0x8135500
-signed int __fastcall sub_8135500(int a1, int a2)
+signed int __fastcall battle_CheckSpawnLimit_8135500(int a1, int a2)
 {
     signed int v2; // r4
     unsigned int v3; // r6
@@ -6619,9 +6619,9 @@ int submenu_isOpen_81355D8()
 
 
 // 0x81355ec
-int sub_81355EC()
+int registerBattleStartScript_81355EC()
 {
-    return sub_8135314(word_202A020, off_8135604, 165, 40);
+    return battle_setupPETNavis_8135314(word_202A020, off_8135604, 165, 40);
 }
 
 
@@ -6657,7 +6657,7 @@ void __fastcall __noreturn sub_81356F4(int a1, int a2, int a3, int a4)
     zeroFillVRAM();
     ZeroFill_byte_3001960(v6, v7, v8, v9);
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     v10 = *(v5 + oToolkit_RenderInfoPtr);
     *v10 = -8384;
     v10[8] = 0;
@@ -7163,7 +7163,7 @@ void __noreturn sub_8135B94()
         v3 = v1 + 4;
         v4 = *(&off_8135C2C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = sub_811FB84(v2, v4);
+        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
@@ -8330,7 +8330,7 @@ int sub_81369B8()
 
     *(v0 + 3) = 32;
     *(v0 + 18) = 0;
-    sub_813BBD4();
+    battle_initState_813BBD4();
     return sub_8136B10(1);
 }
 
@@ -8563,7 +8563,7 @@ unsigned int sub_8136BE8()
 
 
 // 0x8136c24
-int sub_8136C24()
+int battle_refreshPETNaviStats_8136C24()
 {
     char v0; // ST00_1
     char v1; // ST04_1
@@ -9856,7 +9856,7 @@ void __fastcall __noreturn sub_81378D4(int a1, int a2, int a3, int a4)
     zeroFillVRAM();
     ZeroFill_byte_3001960(v4, v5, v6, v7);
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     sub_8046664();
     sub_8137ACC();
 }
@@ -10026,7 +10026,7 @@ void __noreturn sub_8137ACC()
         v3 = v1 + 4;
         v4 = *(&off_8137B6C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = sub_811FB84(v2, v4);
+        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
@@ -11072,7 +11072,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
     int v17; // r3
 
     *(*(v4 + oToolkit_GameStatePtr) + oGameState_Unk_20) = 0;
-    copy_800260C();
+    resetOverworldScene_800260C();
     resetAllGraphicsState_8005F40(v5, v6, v7, v8);
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027F4();
@@ -11089,7 +11089,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
     eventFlags_ClearRangeAt2C8_802F0F4(v14, v15, v16, v17);
     sub_8036EFE();
     sub_8036F24();
-    sub_809F90C();
+    clearBattleStateIfEvent1708Pending_809F90C();
     return sub_80035A2(0x25u);
 }
 

@@ -41,14 +41,14 @@ sub_812D3A8:
 	bl sub_8120A88
 	ldr r0, off_812D3E0 // =unk_2023FC0 
 	mov r1, #1
-	bl sub_811FE7C
+	bl buildChipSearchTable_811FE7C
 	add r0, #1
 	strh r0, [r7,#0x28]
 	mov r1, r0
 	ldr r0, off_812D3E0 // =unk_2023FC0 
 	mov r2, #5
 	mov r3, #4
-	bl sub_8120018
+	bl battle_fieldLockDispatch_8120018
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_S2001c04_Ptr]
 	mov r0, #5
@@ -87,7 +87,7 @@ sub_812D3E4:
 	ldr r3, off_812D4D0 // =byte_812C288 
 	ldr r4, dword_812D4D4 // =0x6007600 
 	mov r5, #7
-	bl sub_8120390
+	bl battle_loadFolderChipGfx_8120390
 	mov r0, #1
 	mov r1, #4
 	mov r2, #2
@@ -624,7 +624,7 @@ loc_812D7E6:
 	ldrh r1, [r5,#0x28]
 	sub r1, #1
 	beq loc_812D7F6
-	bl sub_8120018
+	bl battle_fieldLockDispatch_8120018
 	bl sub_812D5A0
 loc_812D7F6:
 	mov r6, #0

@@ -283,7 +283,7 @@ char *__fastcall chip_8021C7C(int a1, int a2)
 
 
 // 0x8021ca8
-__int64 sub_8021CA8()
+__int64 battle_countValidChipSlots_8021CA8()
 {
     int v0; // r10
     __int64 v1; // r4

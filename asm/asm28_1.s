@@ -15,12 +15,12 @@ dword_809F9D8:
 	.word 0x480
 	thumb_func_end zeroFill_e2004348
 
-// symdb: Walks the InternetMysteryDataMapGroupEntries table, resolving type-5 mystery-data entries, clearing their event flags, and recording per-group statistics; finalizes via sub_809FDE0 on the sentinel type-1 group.
-// symdb: void sub_809F9DC(void); // reads  r10, lr (caller) // writes r1, r2, r3, C/V/N/Z (all passed
-// symdb: through from sub_809FDE0) // preserved r4-r7, r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F9DC.yaml
-	thumb_func_start sub_809F9DC
-sub_809F9DC:
+// symdb: Walks the InternetMysteryDataMapGroupEntries table, resolving type-5 mystery-data entries, clearing their event flags, and recording per-group statistics; finalizes via rollInternetMysteryData_809FDE0 on the sentinel type-1 group.
+// symdb: void mysteryData_processMapGroups_809F9DC(void); // reads  r10, lr (caller) // writes r1, r2, r3, C/V/N/Z (all passed
+// symdb: through from rollInternetMysteryData_809FDE0) // preserved r4-r7, r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mysteryData_processMapGroups_809F9DC.yaml
+	thumb_func_start mysteryData_processMapGroups_809F9DC
+mysteryData_processMapGroups_809F9DC:
 	push {r4-r7,lr}
 	mov r4, r12
 	push {r4}
@@ -89,11 +89,11 @@ loc_809FA5A:
 	add r4, #8
 	b loc_809F9E8
 loc_809FA5E:
-	bl sub_809FDE0
+	bl rollInternetMysteryData_809FDE0
 	pop {r4}
 	mov r12, r4
 	pop {r4-r7,pc}
-	thumb_func_end sub_809F9DC
+	thumb_func_end mysteryData_processMapGroups_809F9DC
 
 	thumb_local_start
 sub_809FA68:
@@ -117,7 +117,7 @@ loc_809FA78:
 loc_809FA88:
 	mov r0, sp
 	mov r1, r4
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 loc_809FA90:
 	mov r6, r0
 	mov r1, r7
@@ -149,7 +149,7 @@ loc_809FAB4:
 loc_809FABC:
 	mov r0, sp
 	mov r1, r4
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 	mov r7, r0
 	add sp, sp, #0x20
 	mov r0, r6
@@ -193,18 +193,18 @@ dword_809FAF0:
 mysteryData_InitMapGroupTables_809FAF4:
 	push {r4-r7,lr}
 	ldr r4, InternetMysteryDataMapGroupEntries_p1 // =InternetMysteryDataMapGroupEntries 
-	bl sub_809FB04
+	bl clearMysteryDataEventFlags_809FB04
 	ldr r4, RealWorldMysteryDataMapGroupEntries_p1 // =RealWorldMysteryDataMapGroupEntries
-	bl sub_809FB04
+	bl clearMysteryDataEventFlags_809FB04
 	pop {r4-r7,pc}
 	thumb_func_end mysteryData_InitMapGroupTables_809FAF4
 
 // symdb: Walks the mystery-data map entries and clears each non-GREEN entry's event flag.
 // symdb: void clearMysteryDataEventFlags_809FB04(u32 group /* r4 */); // r5/r6/r7/lr in; preserves r4-r7;
 // symdb: clobbers r0-r3, lr, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FB04.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearMysteryDataEventFlags_809FB04.yaml
 	thumb_local_start
-sub_809FB04:
+clearMysteryDataEventFlags_809FB04:
 	push {r4-r7,lr}
 .loop
 	ldr r6, [r4,#oMysteryDataMapGroupEntry_MapGroup]
@@ -245,7 +245,7 @@ sub_809FB04:
 	b .loop
 .mysteryDataEntriesDone
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FB04
+	thumb_func_end clearMysteryDataEventFlags_809FB04
 
 	thumb_local_start
 sub_809FB4C:
@@ -451,9 +451,9 @@ locret_809FC94:
 // symdb: Look up mystery-data output (four bytes + C/V flags) for a Navi ID, using the current map's mystery-data table and the current PET Navi's "special" stat to pick between a direct entry and a cyclic gold-scan fallback.
 // symdb: void mysteryData_lookupForNavi_809FC96(u32 r0_naviId, struct GameToolkit* r10_toolkit); /*
 // symdb: returns r0,r1,r2,r3 and clobbers flags C,V (r4-r7,r12,lr preserved) */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FC96.yaml
-	thumb_func_start sub_809FC96
-sub_809FC96:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mysteryData_lookupForNavi_809FC96.yaml
+	thumb_func_start mysteryData_lookupForNavi_809FC96
+mysteryData_lookupForNavi_809FC96:
 	push {r4-r7,lr}
 	mov r4, r12
 	push {r4}
@@ -571,7 +571,7 @@ loc_809FD6A:
 	pop {r4}
 	mov r12, r4
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FC96
+	thumb_func_end mysteryData_lookupForNavi_809FC96
 
 	thumb_local_start
 sub_809FD70:
@@ -598,7 +598,7 @@ loc_809FD84:
 loc_809FD96:
 	mov r0, sp
 	mov r1, r3
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 	sub sp, sp, #0x10
 	strb r0, [r6,#0x3]
 	mov r1, #0xc
@@ -646,11 +646,11 @@ locret_809FDDE:
 	thumb_func_end record_writeU16IfIdMatches_809FDCE
 
 // symdb: Rolls which mystery data spawns in the current internet map block, hashing the pending state halfword into a slot number and picking that type-5 entry from the block's entry list.
-// symdb: void sub_809FDE0(void); // reads state at byte_2000210; callers pass r4-r7/r10 (preserved) and
+// symdb: void rollInternetMysteryData_809FDE0(void); // reads state at byte_2000210; callers pass r4-r7/r10 (preserved) and
 // symdb: ignore outputs other than flags c/v and r1/r2/r3 side values
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FDE0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rollInternetMysteryData_809FDE0.yaml
 	thumb_local_start
-sub_809FDE0:
+rollInternetMysteryData_809FDE0:
 	push {r4-r7,lr}
 	ldr r6, off_809FE9C // =byte_2000210 
 	ldrh r0, [r6,#0x6]
@@ -666,7 +666,7 @@ sub_809FDE0:
 	bl ByteFill // (u8 *mem, int byteCount, u8 byte) -> void
 	mov r0, sp
 	ldrh r1, [r6,#0x6]
-	bl sub_8000E3A
+	bl pickWeightedIndex_8000E3A
 	add r7, r0, #1
 	add sp, sp, #0x10
 	ldr r4, InternetMysteryDataMapGroupEntries_p2 // =InternetMysteryDataMapGroupEntries 
@@ -699,7 +699,7 @@ loc_809FE30:
 	strh r0, [r6,#0x6]
 locret_809FE34:
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FDE0
+	thumb_func_end rollInternetMysteryData_809FDE0
 
 // symdb: Increments a caller-supplied counter when r4 equals the halfword index/state field at byte_2000210+6; otherwise returns the counter unchanged.
 // symdb: int bumpCounterIfMatchesWord2000210_6(int counter /* r0 */, int value /* r4 */)

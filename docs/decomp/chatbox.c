@@ -229,7 +229,7 @@ LABEL_16:
                 sub_30070B4(v10);
                 cb->currLine = cb->amount_of_box_appeared;
             }
-            chatbox_804021C();
+            chatbox_emitTextGridOAM_804021C();
         }
     }
     chatbox_8040B8C();
@@ -304,7 +304,7 @@ signed int chatbox_interpreteAndDrawDialogChar_1()
                     break;
                 cb->currLine = v8;
             }
-            chatbox_804021C();
+            chatbox_emitTextGridOAM_804021C();
         }
     }
     chatbox_8040B8C();
@@ -371,7 +371,7 @@ int chatbox_804017C()
 
 
 // 0x804021c
-signed int chatbox_804021C()
+signed int chatbox_emitTextGridOAM_804021C()
 {
     int v0; // r5
     int v1; // r10
@@ -1320,7 +1320,7 @@ char *chatbox_E8_msgbox()
 
 
 // 0x804103e
-signed int chatbox_804103E()
+signed int chatbox_stepOpenAnimation_804103E()
 {
     int v0; // r5
     int v2; // r0
@@ -1994,7 +1994,7 @@ signed int chatbox_80417E4()
 
 
 // 0x8041818
-signed int chatbox_8041818()
+signed int chatbox_evaluateChipScript_8041818()
 {
     unsigned __int8 *v0; // r4
     int v1; // r0
@@ -2239,7 +2239,7 @@ signed int chatbox_8041A28()
     signed int v1; // r0
     int v2; // r1
 
-    v1 = sub_81207F8(6);
+    v1 = countEventFlagChips_81207F8(6);
     if ( v1 >= 12 )
         v2 = *(v0 + 2);
     else
@@ -2258,7 +2258,7 @@ signed int chatbox_8041A4C()
     signed int v2; // r3
     int v3; // r1
 
-    v1 = sub_81207F8(byte_8041AB4[v0[2]]);
+    v1 = countEventFlagChips_81207F8(byte_8041AB4[v0[2]]);
     v2 = 6;
     if ( v1 >= v0[3] && v1 <= v0[4] )
         v2 = 5;
@@ -2277,7 +2277,7 @@ signed int chatbox_8041A7C()
     signed int v2; // r3
     int v3; // r1
 
-    v1 = sub_81207F8(byte_8041AB4[v0[1] - 52]);
+    v1 = countEventFlagChips_81207F8(byte_8041AB4[v0[1] - 52]);
     v2 = 5;
     if ( v1 >= v0[2] && v1 <= v0[3] )
         v2 = 4;
@@ -2802,7 +2802,7 @@ signed int chatbox_8041FB4()
 
 
 // 0x80420bc
-signed int chatbox_80420BC()
+signed int chatbox_loadNaviTextLine_80420BC()
 {
     int v0; // r4
     int v1; // r5
@@ -2833,7 +2833,7 @@ void chatbox_8042124()
 
 
 // 0x8042128
-signed int chatbox_8042128()
+signed int chatbox_pushTextLevel_8042128()
 {
     int v0; // r4
     int v1; // r5
@@ -2844,8 +2844,8 @@ signed int chatbox_8042128()
     if ( *(v0 + 3) )
         v2 = *(v1 + 4 * (*(v0 + 3) - 1) + 76);
     else
-        v2 = sub_803D06C();
-    chatbox_8042A14(v2, *(v0 + 2), &byte_200AFA0[64 * *(v0 + 3)]);
+        v2 = protectedZennyOrZero_803D06C();
+    chatbox_formatBcdNumber_8042A14(v2, *(v0 + 2), &byte_200AFA0[64 * *(v0 + 3)]);
     *(v1 + 44) = &byte_200AFA0[64 * *(v0 + 3)];
     v3 = v0 + 4;
     *(v1 + 68) = v3;
@@ -2862,7 +2862,7 @@ signed int chatbox_8042184()
     int v2; // r4
 
     ++*(v1 + 5);
-    chatbox_8042A14(**(&off_8043C8C + *(v0 + 3)), *(v0 + 2), &unk_200AFE0);
+    chatbox_formatBcdNumber_8042A14(**(&off_8043C8C + *(v0 + 3)), *(v0 + 2), &unk_200AFE0);
     *(v1 + 44) = &unk_200AFE0;
     v2 = v0 + 4;
     *(v1 + 68) = v2;
@@ -3082,7 +3082,7 @@ int chatbox_804244C()
     chatbox_setflags_3e(1);
     if ( !*(v0 + 4) )
     {
-        v2 = sub_80AA5F4(*(v0 + 4), v1, 31);
+        v2 = pickBattleSettingsEntry_80AA5F4(*(v0 + 4), v1, 31);
         StartBattle(v2, 1);
         engine_setScreeneffect(44, 16);
         *(v0 + 4) = 1;
@@ -3105,7 +3105,7 @@ int chatbox_804247C()
         v2 = *(v0 + 2) | (*(v0 + 3) << 8);
         v3 = getBattleSettingsFromList0(v2);
         StartBattle(v3, 1);
-        sub_803522E(v2);
+        handleDriveOutEvents_803522E(v2);
         engine_setScreeneffect(44, 16);
         *(v1 + 4) = 1;
     }
@@ -3272,7 +3272,7 @@ int chatbox_80425E0()
 
 
 // 0x80425f0
-int chatbox_80425F0()
+int chatbox_launchMailOption_80425F0()
 {
     int v0; // r4
     int v1; // r5
@@ -3463,7 +3463,7 @@ int chatbox_F7_move()
 
 
 // 0x8042a14
-signed int __fastcall __spoils<R0,R2,R3,R12> chatbox_8042A14(int a1, int a2, bool *a3)
+signed int __fastcall __spoils<R0,R2,R3,R12> chatbox_formatBcdNumber_8042A14(int a1, int a2, bool *a3)
 {
     bool *v3; // ST04_4
     unsigned int v4; // r8
@@ -3639,12 +3639,12 @@ signed int chatbox_8042B38()
         if ( v2 == 2 )
         {
             v12 = v0[2] | (v0[3] << 8) | (v0[4] << 16) | (v0[5] << 24);
-            sub_803D02C();
+            protectZenny_803D02C();
             PlaySoundEffect(115, v13, v14);
             return 1;
         }
         v18 = v0[2] | (v0[3] << 8) | (v0[4] << 16) | (v0[5] << 24);
-        v16 = sub_803D06C();
+        v16 = protectedZennyOrZero_803D06C();
         v8 = v18;
         v17 = 0;
         if ( v16 != v18 )

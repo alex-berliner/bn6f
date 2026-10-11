@@ -87,7 +87,7 @@ int sub_80A4A90()
 
 
 // 0x80a4a98
-int sub_80A4A98()
+int battle_dispatchState4Handler_80A4A98()
 {
     int v0; // r5
 
@@ -175,7 +175,7 @@ int menu_stateDispatch_80A4BDC()
 
 
 // 0x80a4bfc
-void __noreturn sub_80A4BFC()
+void __noreturn sprite_setupEffect_80A4BFC()
 {
     int v0; // r5
     int v1; // r6
@@ -227,7 +227,7 @@ int npc_stateDispatchStep_80A51C4()
 
 
 // 0x80a51f8
-int sub_80A51F8()
+int mapEntry_update_80A51F8()
 {
     Battle *v0; // r5
     unsigned __int16 *v1; // r7
@@ -379,7 +379,7 @@ void __noreturn sub_80A5448()
     u8 v3; // r0
 
     *v0 = 3;
-    v1 = sub_80A54A4();
+    v1 = lookupMapEntryPair_80A54A4();
     *(v0 + 12) = *v2 << 16;
     *(v0 + 16) = v2[1] << 16;
     *(v0 + 20) = 0;
@@ -413,7 +413,7 @@ int sub_80A549C()
 
 
 // 0x80a54a4
-char *sub_80A54A4()
+char *lookupMapEntryPair_80A54A4()
 {
     int v0; // r5
     int v1; // r10
@@ -512,7 +512,7 @@ void sub_80A5588()
                         if ( v2 )
                         {
                             if ( *(v1 + 8) != 2 )
-                                sub_80A5744();
+                                checkBbsReqFlag_80A5744();
                         }
                     }
                     sprite_update(v0);
@@ -554,7 +554,7 @@ signed int sub_80A55D4()
     result = *(v0 + 6);
     if ( result != 1 )
     {
-        v4 = sub_80A5764();
+        v4 = pickBBSMsgForMapGroup_80A5764();
         v5 = *(v0 + 7);
         if ( *(v0 + 7) )
         {
@@ -681,7 +681,7 @@ int sub_80A5724()
 
 
 // 0x80a5744
-unsigned int sub_80A5744()
+unsigned int checkBbsReqFlag_80A5744()
 {
     int v0; // r5
     int v1; // r6
@@ -699,7 +699,7 @@ unsigned int sub_80A5744()
 
 
 // 0x80a5764
-int sub_80A5764()
+int pickBBSMsgForMapGroup_80A5764()
 {
     int v0; // r10
     char *v1; // r7
@@ -5206,7 +5206,7 @@ int sub_80A8DB0()
     int v6; // r1
     int v7; // r2
 
-    result = sub_8034C36();
+    result = check_playerCanAdvanceForward_8034C36();
     if ( !v2 )
     {
         sub_8002E04();
@@ -6449,7 +6449,7 @@ int battle_dispatchObjectBehaviorStep_80A9B70()
 
 
 // 0x80a9b9c
-void sub_80A9B9C()
+void ow_spawnObjectFromConfig_80A9B9C()
 {
     int v0; // r5
     unsigned __int16 *v1; // r7
@@ -6487,12 +6487,12 @@ void sub_80A9B9C()
     sprite_setPallete(*(v1 + 11));
     sprite_setFlip(v0, *(v1 + 13));
     *(v0 + 8) = 4;
-    sub_80A9C26();
+    eventFlagNpcUpdate_80A9C26();
 }
 
 
 // 0x80a9c26
-void __noreturn sub_80A9C26()
+void __noreturn eventFlagNpcUpdate_80A9C26()
 {
     void *sprite; // r5
     unsigned __int16 *v1; // r7
@@ -6875,7 +6875,7 @@ int sub_80A9FFC()
 
 
 // 0x80aa004
-int __fastcall sub_80AA004(int a1)
+int __fastcall copyOamEntry_80AA004(int a1)
 {
     CopyBytes(&byte_80AA01C[16 * a1], byte_2001130, 16);
     return 0;
@@ -7138,7 +7138,7 @@ void __noreturn sub_80AA2A8()
 
 
 // 0x80aa2d8
-int sub_80AA2D8()
+int battle_object_dispatchSpriteState3_80AA2D8()
 {
     int v0; // r5
 
@@ -7300,7 +7300,7 @@ int sub_80AA4B8()
 
 
 // 0x80aa4c0
-unsigned int sub_80AA4C0()
+unsigned int battle_tryEncounter_80AA4C0()
 {
     int v0; // r10
     int v1; // r7
@@ -7359,15 +7359,15 @@ unsigned int sub_80AA4C0()
                     {
                         if ( HIWORD(dword_2000B30)
                             || dword_2000B30 < 8
-                            || (result = sub_80AA5F4(dword_2000B30, &dword_2000B30, 64)) == 0 )
+                            || (result = pickBattleSettingsEntry_80AA5F4(dword_2000B30, &dword_2000B30, 64)) == 0 )
                         {
                             GetPositiveSignedRNG();
                             __asm { SVC         6 }
                             v17 = getPETNaviSelect();
                             v18 = GetCurPETNaviStatsByte(v17);
-                            result = sub_80AA5F4(v18, v19, v18);
+                            result = pickBattleSettingsEntry_80AA5F4(v18, v19, v18);
                             if ( !result )
-                                result = sub_80AA5F4(0, v20, 31);
+                                result = pickBattleSettingsEntry_80AA5F4(0, v20, 31);
                         }
                         else
                         {
@@ -7409,14 +7409,14 @@ int __fastcall chooseRandomEncounterMaybe_80aa5e4(int a1, int a2)
     int result; // r0
 
     v3 = *(v2 + oToolkit_GameStatePtr);
-    result = sub_80AA5F4(a1, a2, 31);
+    result = pickBattleSettingsEntry_80AA5F4(a1, a2, 31);
     *(v3 + oGameState_CurBattleDataPtr) = result;
     return result;
 }
 
 
 // 0x80aa5f4
-int __fastcall sub_80AA5F4(int a1, int a2, int a3)
+int __fastcall pickBattleSettingsEntry_80AA5F4(int a1, int a2, int a3)
 {
     int v3; // r10
     int (*(**v5)[22])[49]; // r3
@@ -7467,7 +7467,7 @@ int __fastcall sub_80AA5F4(int a1, int a2, int a3)
     v11 = v20;
     while ( *v8 != 255 )
     {
-        if ( sub_80AA6A4(v8[7]) )
+        if ( dispatchGameHandlerByIndex_80AA6A4(v8[7]) )
         {
             if ( sub_80AA824(v8) & v11 )
             {
@@ -7496,7 +7496,7 @@ int __fastcall sub_80AA5F4(int a1, int a2, int a3)
 
 
 // 0x80aa6a4
-int __fastcall sub_80AA6A4(int a1)
+int __fastcall dispatchGameHandlerByIndex_80AA6A4(int a1)
 {
     return (*(&JumpTable80AA6B8 + a1))();
 }
@@ -7590,7 +7590,7 @@ signed int sub_80AA778()
 
 
 // 0x80aa78c
-signed int sub_80AA78C()
+signed int tryEvent214LuckyRoll_80AA78C()
 {
     signed int v0; // r4
     char v1; // zf
@@ -7730,7 +7730,7 @@ void sub_80AA86E()
 
 
 // 0x80aa88c
-int sub_80AA88C()
+int battle_rollRandomItemDrops_80AA88C()
 {
     int v0; // r10
     unsigned int v1; // r0
@@ -7843,7 +7843,7 @@ int __fastcall sub_80AA910(int a1, int a2, int a3, int a4)
         if ( v12 )
         {
             v13 = sub_80AAE98(v12);
-            v14 = sub_80AAA98(v27, v28, v29, 2);
+            v14 = damage_jitter_80AAA98(v27, v28, v29, 2);
             if ( v14 >= 20 )
             {
                 v13 += 20;
@@ -7908,7 +7908,7 @@ LABEL_23:
     {
         v10 = sub_80AAA3C(v25, v26, 0);
         v11 = sub_80AAE98(v10);
-        result = *&v11[sub_80AAA98(v27, v28, v29, 0)];
+        result = *&v11[damage_jitter_80AAA98(v27, v28, v29, 0)];
     }
     return result;
 }
@@ -7986,7 +7986,7 @@ int __fastcall sub_80AAA3C(int a1, int a2, int a3)
 
 
 // 0x80aaa98
-int __fastcall sub_80AAA98(int a1, int a2, unsigned int a3, int a4)
+int __fastcall damage_jitter_80AAA98(int a1, int a2, unsigned int a3, int a4)
 {
     int v4; // r4
     signed int v5; // r0

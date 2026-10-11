@@ -68,7 +68,7 @@ _GameEntryPoint:
 	ldr r0, off_8000218 // =RandomizeExtraToolkitPointers+1 
 	mov lr, pc
 	bx r0
-	ldr r0, off_800021C // =start_800023C+1 
+	ldr r0, off_800021C // =entryRomInit_800023C+1 
 	mov lr, pc
 	bx r0
 	ldr r0, off_8000220 // =byte_20081B0 
@@ -137,7 +137,7 @@ off_8000214:
 off_8000218:
 	.word RandomizeExtraToolkitPointers+1 // () -> ?
 off_800021C:
-	.word start_800023C+1 // () -> ()
+	.word entryRomInit_800023C+1 // () -> ()
 off_8000220:
 	.word byte_20081B0
 off_8000224:
@@ -156,11 +156,11 @@ off_8000238:
 
 // () -> void
 // symdb: GBA ROM entry thunk: calls the main ROM/BIOS initialization routine sub_3005DA0, then returns control to the caller using the saved LR.
-// symdb: u32 start_800023C(void);  // called with: <none>; returns caller's saved LR in r0; nz/c/v flags
+// symdb: u32 entryRomInit_800023C(void);  // called with: <none>; returns caller's saved LR in r0; nz/c/v flags
 // symdb: from the call; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/start_800023C.yaml
-	thumb_func_start start_800023C
-start_800023C: // () -> ()
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/entryRomInit_800023C.yaml
+	thumb_func_start entryRomInit_800023C
+entryRomInit_800023C: // () -> ()
 	push {lr}
 
 	ldr r0, off_8000248 // =sub_3005DA0+1 
@@ -171,7 +171,7 @@ start_800023C: // () -> ()
 	bx r0
 off_8000248:
 	.word sub_3005DA0+1
-	thumb_func_end start_800023C
+	thumb_func_end entryRomInit_800023C
 
 	thumb_func_start SetInterruptCallback
 // set the callback for interrupt r0/4 to callback r1

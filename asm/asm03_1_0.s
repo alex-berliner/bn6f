@@ -387,7 +387,7 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	bl sub_8033B80
 	mov r0, #0
 	bl sub_8033F80
-	bl sub_8033C68
+	bl updateChipSlotGfx_8033C68
 	pop {pc}
 	thumb_func_end sub_8033AB0
 
@@ -402,7 +402,7 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	bl sub_8033B80
 	mov r0, #0
 	bl sub_8033F80
-	bl sub_8033C68
+	bl updateChipSlotGfx_8033C68
 	bl sub_8033BE8
 	pop {pc}
 	thumb_func_end battle_resetState_8033AC4
@@ -597,9 +597,9 @@ dword_8033C64:
 // symdb: Per-frame chip-slot GFX animator that cycles a tile pointer through VRAM 0x06017400, runs paired window/HBlank DMA setups, and plays spin SFX 0x9A on a cooldown.
 // symdb: (u8 *state) -> (void)  // r5 = state pointer; r0/r1/r2/r3/r4/r6/r7/lr preserved aside from
 // symdb: sound-effect path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033C68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/updateChipSlotGfx_8033C68.yaml
 	thumb_local_start
-sub_8033C68:
+updateChipSlotGfx_8033C68:
 	push {lr}
 	ldrb r0, [r5,#6]
 	ldr r1, off_8033D28 // =off_8033D2C
@@ -658,7 +658,7 @@ dword_8033CE8:
 	.word 0xC7A0
 dword_8033CEC:
 	.word 0xA017400D
-	thumb_func_end sub_8033C68
+	thumb_func_end updateChipSlotGfx_8033C68
 
 	thumb_local_start
 sub_8033CF0:
@@ -917,7 +917,7 @@ RenderMapName_8033EE8:
 
 loc_8033EFC:
 
-	bl sub_811F290
+	bl getCurrentMapBgm_811F290
 
 	mov r1, r0
 	ldr r0, off_8033F34 // =TextScriptMapNames
@@ -1034,10 +1034,10 @@ off_8033FD8:
 	thumb_func_end doPETEffect_8033fc0
 
 // symdb: Fully resets the player's PET Navi setup — heals HP, reloads stat boosts, clears "active"/session event flags, zeroes navi stats/mood/BeastOut counter, and re-syncs beast & story flag groups based on EVENT_224 and EVENT_1008
-// symdb: void sub_8033FDC(void) /* reads toolkit ptr from r10, no other inputs; clobbers nz */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8033FDC.yaml
-	thumb_func_start sub_8033FDC
-sub_8033FDC:
+// symdb: void resetPetNaviSetup_8033FDC(void) /* reads toolkit ptr from r10, no other inputs; clobbers nz */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetPetNaviSetup_8033FDC.yaml
+	thumb_func_start resetPetNaviSetup_8033FDC
+resetPetNaviSetup_8033FDC:
 	push {r4-r7,lr}
 	bl reloadCurNaviStatBoosts_813c3ac
 	movflag EVENT_PET_NAVI_ACTIVE
@@ -1048,7 +1048,7 @@ sub_8033FDC:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_1721
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_809F9DC
+	bl mysteryData_processMapGroups_809F9DC
 	bl SetCurNaviHPToFull
 	movflag EVENT_1724
 	bl SetEventFlagFromImmediate
@@ -1079,7 +1079,7 @@ loc_803405A:
 loc_8034064:
 	bl SetBeastOutCounterTo3
 	bl ZeroAllNaviStatsMood
-	bl sub_800A908
+	bl clearBattleStateCounter_800A908
 	movflag EVENT_1700
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r7, r10
@@ -1121,14 +1121,14 @@ loc_8034064:
 	bl ClearEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
 locret_80340F4:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8033FDC
+	thumb_func_end resetPetNaviSetup_8033FDC
 
-// symdb: End-of-section Navi setup: reloads the PET Navi (or just stat boosts if already loaded), ensures EVENT_PET_NAVI_ACTIVE is set, refills HP, clears a batch of transient event flags, enables the ghost Navi, zeroes scratch fields in the S2001c04 Navi struct, sets the beast-out counter to 3, zeros all Navi stat moods, and chains into sub_800A908.
-// symdb: void navi_80340F6(struct Toolkit *tk /* r10 */); // clobbers r0, r1, r2, r3, nz, c, v; preserves
-// symdb: r4-r7 // returns whatever sub_800A908 left in r0-r3 (and nz/c/v) per the adapter convention
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navi_80340F6.yaml
-	thumb_func_start navi_80340F6
-navi_80340F6:
+// symdb: End-of-section Navi setup: reloads the PET Navi (or just stat boosts if already loaded), ensures EVENT_PET_NAVI_ACTIVE is set, refills HP, clears a batch of transient event flags, enables the ghost Navi, zeroes scratch fields in the S2001c04 Navi struct, sets the beast-out counter to 3, zeros all Navi stat moods, and chains into clearBattleStateCounter_800A908.
+// symdb: void endOfSection_NaviSetup_80340F6(struct Toolkit *tk /* r10 */); // clobbers r0, r1, r2, r3, nz, c, v; preserves
+// symdb: r4-r7 // returns whatever clearBattleStateCounter_800A908 left in r0-r3 (and nz/c/v) per the adapter convention
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/endOfSection_NaviSetup_80340F6.yaml
+	thumb_func_start endOfSection_NaviSetup_80340F6
+endOfSection_NaviSetup_80340F6:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
@@ -1187,9 +1187,9 @@ loc_8034140:
 	strh r0, [r7,#0x14]
 	bl SetBeastOutCounterTo3
 	bl ZeroAllNaviStatsMood
-	bl sub_800A908
+	bl clearBattleStateCounter_800A908
 	pop {r4-r7,pc}
-	thumb_func_end navi_80340F6
+	thumb_func_end endOfSection_NaviSetup_80340F6
 
 // symdb: Zero-fills a 12-byte work buffer at 0x2011A40, presumably to reset some subsystem's scratch state before reuse.
 // symdb: void sub_80341AA(void); // callers' r2/r3 are untouched pass-throughs; clobbers r0, r1, flags
@@ -1279,7 +1279,7 @@ off_803422C:
 	.word jt_8034230
 jt_8034230:
 	.word sub_8034268+1
-	.word sub_80342A4+1
+	.word fadeTimerTick_80342A4+1
 	.word sub_80342C6+1
 	thumb_func_end ho_8034218
 
@@ -1302,7 +1302,7 @@ map_setupEnterMapAfterWarp_803423C:
 	mov r1, #0
 	strb r1, [r0,#oGameState_EnterMapFadeParam1]
 	bl map_triggerEnterMapOnWarp_8005C04
-	bl sub_8033FDC
+	bl resetPetNaviSetup_8033FDC
 	bl musicGameState_8000784 // () -> void
 	pop {pc}
 	thumb_func_end map_setupEnterMapAfterWarp_803423C
@@ -1312,7 +1312,7 @@ map_setupEnterMapAfterWarp_803423C:
 sub_8034268:
 	push {lr}
 	mov r0, #9
-	bl sub_80015FC
+	bl toolkit_applyOverlayPalette_80015FC
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFillGFX30025c0
 	bl decompJackInAnimationGfx_8034314 // () -> void
@@ -1339,9 +1339,9 @@ off_80342A0:
 // symdb: Advances the screen-fade countdown for one frame, kicking off the next fade phase when it expires, then runs the post-fade update step.
 // symdb: void fadeTimerTick_80342A4(void /* r5 = fade state ptr */);  // inputs: r5, r10, lr; outputs:
 // symdb: r5, r8, r9, r10, r11, r12; clobbers nzcv r0-r3 lr; preserves r4-r9 r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80342A4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/fadeTimerTick_80342A4.yaml
 	thumb_local_start
-sub_80342A4:
+fadeTimerTick_80342A4:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80342C0
@@ -1357,7 +1357,7 @@ sub_80342A4:
 loc_80342C0:
 	bl sub_80343B0 // () -> void
 	pop {pc}
-	thumb_func_end sub_80342A4
+	thumb_func_end fadeTimerTick_80342A4
 
 	thumb_local_start
 sub_80342C6:
@@ -1415,7 +1415,7 @@ map_beginEnterMapOnWarpStep4_80342EC:
 	mov r1, #0x10
 	strb r1, [r0,#oGameState_EnterMapFadeParam2]
 	bl map_triggerEnterMapOnWarp_8005C04
-	bl navi_80340F6
+	bl endOfSection_NaviSetup_80340F6
 	pop {pc}
 	thumb_func_end map_beginEnterMapOnWarpStep4_80342EC
 
@@ -1988,13 +1988,13 @@ cutscene_8034BB8:
 	bne .doRunCutscene
 
 	bl RunContinuousMapScript
-	bl sub_809C968
+	bl overworldCoordInteractionUpdate_809C968
 
-	bl sub_8034C6E
+	bl playerAdvanceForwardCheck_8034C6E
 	beq .doRunCutscene
 
 	bl HandleCoordinateInteractionCutscene
-	bl sub_8034F68
+	bl maybeStartEntranceCutscene_8034F68
 	bl npc_80350BC
 	bl sub_8034DB0
 	bl sub_8034CB6
@@ -2002,7 +2002,7 @@ cutscene_8034BB8:
 	bl ghostNaviCheck_8035274
 	bl tryStartNotificationCutscene_8035054
 	bl cutscene_TryStartNotification_8035084
-	bl sub_809CF2C
+	bl tryStartBbsGuiCutscene_809CF2C
 
 .doRunCutscene:
 	bl RunSecondaryContinuousMapScript
@@ -2034,10 +2034,10 @@ cutscene_8034BB8:
 	thumb_func_end cutscene_8034BB8
 
 // symdb: Gate check that returns true when the player is allowed to auto-advance one tile forward on the overworld (no fade, no advance/sliprun event, no busy subsystem, no chatbox mask 0x80, no cutscene).
-// symdb: bool sub_8034C36(void); // r0 out = 1 allowed, 0 blocked; NZ flags from final MOV r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034C36.yaml
-	thumb_func_start sub_8034C36
-sub_8034C36:
+// symdb: bool check_playerCanAdvanceForward_8034C36(void); // r0 out = 1 allowed, 0 blocked; NZ flags from final MOV r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/check_playerCanAdvanceForward_8034C36.yaml
+	thumb_func_start check_playerCanAdvanceForward_8034C36
+check_playerCanAdvanceForward_8034C36:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8034C6A
@@ -2059,13 +2059,13 @@ sub_8034C36:
 loc_8034C6A:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8034C36
+	thumb_func_end check_playerCanAdvanceForward_8034C36
 
 // symdb: Returns 1 when the player is permitted to auto-advance the overworld forward, otherwise 0
-// symdb: u32 sub_8034C6E(void) /* returns 1 in r0 with NZ flags if advance allowed, else 0 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034C6E.yaml
+// symdb: u32 playerAdvanceForwardCheck_8034C6E(void) /* returns 1 in r0 with NZ flags if advance allowed, else 0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/playerAdvanceForwardCheck_8034C6E.yaml
 	thumb_local_start
-sub_8034C6E:
+playerAdvanceForwardCheck_8034C6E:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8034C98
@@ -2084,7 +2084,7 @@ sub_8034C6E:
 loc_8034C98:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8034C6E
+	thumb_func_end playerAdvanceForwardCheck_8034C6E
 
 // symdb: Returns true when neither the slip-run state flag (EVENT_IN_SLIPRUN_STATE) is set nor a cutscene script is active
 // symdb: bool IsNotSlipRunningAndNotInCutscene(void) -> r0 (1=TRUE, 0=FALSE), nz
@@ -2462,11 +2462,11 @@ off_8034F64:
 	thumb_func_end HandleCoordinateInteractionCutscene
 
 // symdb: Overworld per-frame: if a door-coordinate trigger under the player is enabled, start the door's entrance/interact cutscene.
-// symdb: void sub_8034F68(void); /* inputs: r10 toolkit, lr; outputs: r2 r8 r9 r10 r11; clobbers nz c v
+// symdb: void maybeStartEntranceCutscene_8034F68(void); /* inputs: r10 toolkit, lr; outputs: r2 r8 r9 r10 r11; clobbers nz c v
 // symdb: r0 r1 r3 lr; preserves r4-r7 r12 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034F68.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/maybeStartEntranceCutscene_8034F68.yaml
 	thumb_local_start
-sub_8034F68:
+maybeStartEntranceCutscene_8034F68:
 	push {r4-r7,lr}
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne locret_8034FA8
@@ -2504,7 +2504,7 @@ off_8034FB0:
 	.word CutsceneScriptEntranceInteract_8098384 // CutsceneScript
 off_8034FB4:
 	.word unk_2011EA0
-	thumb_func_end sub_8034F68
+	thumb_func_end maybeStartEntranceCutscene_8034F68
 
 	thumb_func_start sub_8034FB8
 sub_8034FB8:
@@ -2854,9 +2854,9 @@ word_80351EC:
 // symdb: Scans a hardcoded {trigger, flag} table and sets the matching story/quest flag when the given event ID is found
 // symdb: u16 handleDriveOutEvents(u32 event /* r0 */); // returns final loaded trigger word in r1 (0xFFFF
 // symdb: sentinel on exit), flags CV set by `cmp r1,
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_803522E.yaml
-	thumb_func_start sub_803522E
-sub_803522E:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/handleDriveOutEvents_803522E.yaml
+	thumb_func_start handleDriveOutEvents_803522E
+handleDriveOutEvents_803522E:
 	push {r4-r7,lr}
 	ldr r4, off_803524C // =word_8035250
 	mov r7, r0
@@ -2896,7 +2896,7 @@ word_8035250:
 	.hword 0x221
 	.hword 0xff
 	.hword 0xff
-	thumb_func_end sub_803522E
+	thumb_func_end handleDriveOutEvents_803522E
 
 // symdb: Checks whether the player is standing on a ghost Navi trigger in the undernet/network maps and starts the shared ghost Navi encounter cutscene if the ghost has appeared but not yet been deleted.
 // symdb: void ghostNaviCheck_8035274(void) — takes nothing (r10 = toolkit pointer is carried over from
@@ -3111,10 +3111,10 @@ off_8035418:
 	thumb_func_end sub_8035408
 
 // symdb: Loads the alternate-death GFX/animation scripts (the "Death" GFXAnim script set referenced via `byte_8034AFC`) at battle setup when story flag EVENT_28 is set and the battle-effects bitmask's bit 3 (mask `0x8`) is clear.
-// symdb: void sub_8035424(void);  // uses r10 lr in; clobbers r0-r3, r8-r12, lr; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8035424.yaml
-	thumb_func_start sub_8035424
-sub_8035424:
+// symdb: void battle_loadDeathAnims_8035424(void);  // uses r10 lr in; clobbers r0-r3, r8-r12, lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadDeathAnims_8035424.yaml
+	thumb_func_start battle_loadDeathAnims_8035424
+battle_loadDeathAnims_8035424:
 	push {r4-r7,lr}
 	movflag EVENT_28
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3164,7 +3164,7 @@ byte_80354D4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x45, 0x1C, 0x3C, 0x1, 0x5, 0x8, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x46, 0x1C, 0x3C, 0x1, 0xFF, 0x0
 	.byte 0x0, 0x0
-	thumb_func_end sub_8035424
+	thumb_func_end battle_loadDeathAnims_8035424
 
 	thumb_func_start testSetClearFlags_803553c
 testSetClearFlags_803553c:

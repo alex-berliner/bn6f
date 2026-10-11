@@ -1776,8 +1776,8 @@ sub_812FDC0::
 	bl rfu_waitREQComplete
 loc_812FDD8::
 	bl sub_8130850
-	bl sub_8129248
-	bl sub_812B530
+	bl battle_initScene_8129248
+	bl loadEntityJumpOffset00Gfx_812B530
 	bl sub_8132614
 	mov r0, #0x10
 	strb r0, [r5,#3]

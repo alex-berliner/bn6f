@@ -3,7 +3,7 @@
     // type: struct RenderInfo
 	\set_struct_start_address
 	set_struct_label \struct_entry, \label
-	// look at render_800172C for how data is transferred
+	// look at render_flushDisplayRegisters_800172C for how data is transferred
 	// todo document rest of struct fields
 	u16 Unk_00 // loc=0x0
 	u16 Unk_02 // loc=0x2

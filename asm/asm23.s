@@ -594,9 +594,9 @@ sub_8089280:
 	bge loc_8089294
 	ldr r0, off_80892F0 // =byte_80892F4
 loc_8089294:
-	bl sub_8001158 // () -> void
+	bl scriptListRun_8001158 // () -> void
 	ldr r0, off_8089340 // =byte_8089344
-	bl sub_8001158 // () -> void
+	bl scriptListRun_8001158 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80892A0: 

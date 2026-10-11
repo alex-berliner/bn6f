@@ -940,11 +940,11 @@ off_8003628:
 	thumb_func_end FreeAllObjectsOfSpecifiedTypes
 
 // symdb: Projects an object's world position into screen space relative to the camera's next-frame scroll, returning screen x/y plus a visibility flag (collapses to an off-screen fallback if outside the clip window).
-// symdb: void sub_800362C(u32 r0 = objectPtr, u32 r10 = toolkitPtr) -> r0 = screenX, r1 = screenY, r2 =
+// symdb: void projectObjectToScreen_800362C(u32 r0 = objectPtr, u32 r10 = toolkitPtr) -> r0 = screenX, r1 = screenY, r2 =
 // symdb: visible (1=on-screen, 0=clipped/fallback), r3 = cameraPtr; clobbers nzcv; preserves r4-r7, lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800362C.yaml
-	thumb_func_start sub_800362C
-sub_800362C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/projectObjectToScreen_800362C.yaml
+	thumb_func_start projectObjectToScreen_800362C
+projectObjectToScreen_800362C:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_CameraPtr]
@@ -1000,7 +1000,7 @@ loc_8003688:
 	.balign 4, 0
 off_8003690:
 	.word eCamera+0x4C // eCamera.unk_4C
-	thumb_func_end sub_800362C
+	thumb_func_end projectObjectToScreen_800362C
 
 	thumb_func_start sub_8003694
 sub_8003694:
@@ -3021,12 +3021,12 @@ gameMode_switchToMode2_80046F8:
 	thumb_func_end gameMode_switchToMode2_80046F8
 
 // symdb: Clears one state word (offset 0xC4) of all 16 overworld NPC object slots, presumably invalidating each NPC's active/behavior word before an area (re)load.
-// symdb: void sub_8004702(void) — no meaningful inputs (lr = return address only); returns garbage in
+// symdb: void npc_clearOverworldNpcStateWord_8004702(void) — no meaningful inputs (lr = return address only); returns garbage in
 // symdb: r0..r3 (r0=0x10, r2=0, r1/r3 = loop addresses) and flags from the final CMP r0,#0x10 (Z=1, C=1,
 // symdb: V=0, N=0); callers read back only r0-r3 and nzcv per the contract.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8004702.yaml
-	thumb_func_start sub_8004702
-sub_8004702:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_clearOverworldNpcStateWord_8004702.yaml
+	thumb_func_start npc_clearOverworldNpcStateWord_8004702
+npc_clearOverworldNpcStateWord_8004702:
 	mov r0, #0
 	ldr r3, off_800471C // =eOverworldNPCObjects
 loc_8004706:
@@ -3048,7 +3048,7 @@ off_8004720:
 	.word byte_2006530
 off_8004724:
 	.word ho_80A4984+1
-	.word sub_80A4A98+1
+	.word battle_dispatchState4Handler_80A4A98+1
 	.word menu_stateDispatch_80A4BDC+1
 	.word npc_stateDispatchStep_80A51C4+1
 	.word sub_80A5428+1
@@ -3092,9 +3092,9 @@ off_8004724:
 	.word sub_80AA058+1
 	.word sub_80AA140+1
 	.word sub_80AA1E0+1
-	.word sub_80AA2D8+1
+	.word battle_object_dispatchSpriteState3_80AA2D8+1
 	.word sub_80AA374+1
-	thumb_func_end sub_8004702
+	thumb_func_end npc_clearOverworldNpcStateWord_8004702
 
 	thumb_func_start SpawnOverworldMapObject
 SpawnOverworldMapObject:
@@ -3886,9 +3886,9 @@ byte_8004D34:
 /// breaks on "Continue" via load_game_802F756
 // symdb: Resets all per-location game state (EnterMap parameters, event flags, camera, pet menu, encryption packs, shop table) so the player can transition to a new map area.
 // symdb: void scenario_prepareEnterMap_8004D48(void *toolkit /* r10 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8004D48.yaml
-	thumb_func_start sub_8004D48
-sub_8004D48:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scenario_prepareEnterMap_8004D48.yaml
+	thumb_func_start scenario_prepareEnterMap_8004D48
+scenario_prepareEnterMap_8004D48:
 	push {r4-r7,lr}
 
 	mov r5, r10
@@ -3937,7 +3937,7 @@ sub_8004D48:
 	ldr r1, off_8004DEC // =dword_20096D0
 	strb r0, [r1]
 
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 
 	movflag EVENT_1703
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -3976,7 +3976,7 @@ off_8004DE8:
 	.word eCamera+0x4C // eCamera.unk_4C
 off_8004DEC:
 	.word dword_20096D0
-	thumb_func_end sub_8004D48
+	thumb_func_end scenario_prepareEnterMap_8004D48
 
 // Breaking on this pauses right on ^R on game boot
 // symdb: Resets all save-dependent game state (GameState, scenario state, event flags, overworld, mystery/shop, chips/battle/tools, palettes, reqBBS) to a fresh-new-save baseline when starting a new game.
@@ -4053,7 +4053,7 @@ initNewGameData_8004DF0:
 	strb r0, [r5,#oGameState_Unk_13]
 	str r0, [r5,#0x78]
 
-	bl sub_802F2C8
+	bl resetPaletteScratch_802F2C8
 	bl sub_81284A4
 	bl owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2
 	bl SetDefaultOWPlayerNaviColorShader
@@ -4066,9 +4066,9 @@ initNewGameData_8004DF0:
 	bl battle_ClearEStruct2001010_8003A58
 	bl zeroFill_e2004348
 	bl mysteryData_InitMapGroupTables_809FAF4
-	bl sub_809F9DC
-	bl sub_8049CF8
-	bl sub_804A17A
+	bl mysteryData_processMapGroups_809F9DC
+	bl chatbox_initTextLineBuffer_8049CF8
+	bl textScript_buildFolderNameBuffers_804A17A
 	bl clearS2001c04Byte6_811FB78
 	bl shop_resetStockTable_8048C68
 
@@ -4224,7 +4224,7 @@ initNewGameData_8004DF0:
 	bl SetEventFlagFromImmediate
 
 	mov r0, #0
-	bl sub_80AA004
+	bl copyOamEntry_80AA004
 
 	mov r0, #0
 	bl palette_copyTableRow_80AA104
@@ -4357,13 +4357,13 @@ GameStateJumptable:
 	// 0x10
 	.word sub_800536E+1 // (self: * GameState $r5) -> ()
 	// 0x14
-	.word sub_80053E4+1 // (self: * GameState $r5) -> ()
+	.word scene_nextOrUpdate_80053E4+1 // (self: * GameState $r5) -> ()
 	// 0x18
 	.word sub_8005462+1 // (self: * GameState $r5) -> ()
 	// 0x1C
 	.word sub_800555A+1 // (self: * GameState $r5) -> ()
 	// 0x20
-	.word sub_8005642+1 // (self: * GameState $r5) -> ()
+	.word scenario_finalizeFrameOrRestart_8005642+1 // (self: * GameState $r5) -> ()
 	// 0x24
 	.word sub_80056B8+1 // (self: * GameState $r5) -> ()
 	// 0x28
@@ -4373,7 +4373,7 @@ GameStateJumptable:
 	// 0x30
 	.word sub_80055CE+1 // (self: * GameState $r5) -> ()
 	// 0x34
-	.word sub_8005814+1 // (self: * GameState $r5) -> ()
+	.word mainState_runFrame_8005814+1 // (self: * GameState $r5) -> ()
 	// 0x38
 	.word sub_800585A+1 // (self: * GameState $r5) -> ()
 	thumb_func_end cbGameState_80050EC
@@ -4406,7 +4406,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl eventFlags_ClearRangeAt2C8_802F0F4
 	bl cutscene_forceEndCurrent_8036EFE
 	bl clearCutsceneScriptPosIfMagicValue0x1_8036F24
-	bl sub_809F90C
+	bl clearBattleStateIfEvent1708Pending_809F90C
 
 	movflag EVENT_1731
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -4597,19 +4597,19 @@ battle_init_80052D8: // (self: * GameState $r5) -> ()
 	beq locret_800531A
 
 	// triggers battle main
-	bl sub_800531C
+	bl endBattleAndEnterMap_800531C
 
 locret_800531A:
 	pop {pc}
 	thumb_func_end battle_init_80052D8
 
 // symdb: End-of-battle teardown that frees battle-time objects, resets misc state, queues the post-battle map-entry subsystem (0xC), and reinitializes battle structures/VRAM plus the logo-screen state buffer.
-// symdb: void sub_800531C(void); // inputs: r4 r5 r6 r7 r10 lr; outputs: r8 r9 r10 r11 r12;
+// symdb: void endBattleAndEnterMap_800531C(void); // inputs: r4 r5 r6 r7 r10 lr; outputs: r8 r9 r10 r11 r12;
 // symdb: // clobbers NZCV + r0 r1 r2 r3 r5 lr; preserves r4 r6 r7                         // r10 (to) =
 // symdb: toolkit pointer carrying the GameStatePtr used to set SubsystemIndex.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800531C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/endBattleAndEnterMap_800531C.yaml
 	thumb_local_start
-sub_800531C:
+endBattleAndEnterMap_800531C:
 	push {lr}
 
 	bl chatbox_8040818
@@ -4617,7 +4617,7 @@ sub_800531C:
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
 
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 
 	bl zeroFill_80024A2
 
@@ -4647,7 +4647,7 @@ off_8005358:
 	.word eLogoScreenState
 off_800535C:
 	.word 0x2180
-	thumb_func_end sub_800531C
+	thumb_func_end endBattleAndEnterMap_800531C
 
 	thumb_local_start
 HandlesBattleMainUntilEndOfBattleThenTriggersEnterMap: // (self: * GameState $r5) -> ()
@@ -4716,9 +4716,9 @@ hword_80053E0:
 
 // symdb: Per-frame GameState tick: runs all scene sub-updates (dispatch, NPC AI, sprites, events), and when a screen fade is active performs a full scene-transition reset (free objects, clear buffers, set jump-table step 8, reinit graphics/LCD).
 // symdb: void scene_nextOrUpdate_80053E4(GameState *self /*r5*/, Toolkit *toolkit /*r10*/)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80053E4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scene_nextOrUpdate_80053E4.yaml
 	thumb_local_start
-sub_80053E4: // (self: * GameState $r5) -> ()
+scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -4759,7 +4759,7 @@ locret_800545C:
 	.balign 4, 0
 word_8005460:
 	.hword 0x40
-	thumb_func_end sub_80053E4
+	thumb_func_end scene_nextOrUpdate_80053E4
 
 // () -> void
 	thumb_local_start
@@ -4843,7 +4843,7 @@ mainState_resetGameAndGoto28_8005524:
 	push {lr}
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -4879,7 +4879,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -4918,7 +4918,7 @@ sub_80055CE: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -4938,10 +4938,10 @@ locret_8005640:
 	thumb_func_end sub_80055CE
 
 // symdb: Main-jumptable step that finalizes the current frame's effects/draws, and if the screen fade is no longer active tears the scenario down and advances the main jumptable to state 0x2C (scenario restart).
-// symdb: void sub_8005642(void /* r10=toolkit, r5/r7 live, returns r0/r1/r5/r7 and sets N/Z */);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8005642.yaml
+// symdb: void scenario_finalizeFrameOrRestart_8005642(void /* r10=toolkit, r5/r7 live, returns r0/r1/r5/r7 and sets N/Z */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scenario_finalizeFrameOrRestart_8005642.yaml
 	thumb_local_start
-sub_8005642: // (self: * GameState $r5) -> ()
+scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -4960,7 +4960,7 @@ sub_8005642: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -4978,7 +4978,7 @@ sub_8005642: // (self: * GameState $r5) -> ()
 locret_80056B4:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8005642
+	thumb_func_end scenario_finalizeFrameOrRestart_8005642
 
 	thumb_local_start
 sub_80056B8: // (self: * GameState $r5) -> ()
@@ -5000,7 +5000,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -5039,7 +5039,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -5078,7 +5078,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -5098,10 +5098,10 @@ locret_8005812:
 	thumb_func_end sub_80057A0
 
 // symdb: Per-frame main loop dispatcher for the current game state: runs all state handlers, then if no screen fade is active also drives chatbox/overlay updates and the reset-and-jump-to-state-28 path.
-// symdb: void sub_8005814(void);  // no usable inputs/outputs; trashes r0-r3, r7, lr; preserves r4-r6
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8005814.yaml
+// symdb: void mainState_runFrame_8005814(void);  // no usable inputs/outputs; trashes r0-r3, r7, lr; preserves r4-r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mainState_runFrame_8005814.yaml
 	thumb_local_start
-sub_8005814: // (self: * GameState $r5) -> ()
+mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -5122,7 +5122,7 @@ sub_8005814: // (self: * GameState $r5) -> ()
 	bl mainState_resetGameAndGoto28_8005524
 locret_8005858:
 	pop {pc}
-	thumb_func_end sub_8005814
+	thumb_func_end mainState_runFrame_8005814
 
 	thumb_local_start
 sub_800585A: // (self: * GameState $r5) -> ()
@@ -5144,7 +5144,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
-	bl sub_8004702
+	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027C4
@@ -5501,7 +5501,7 @@ checkThenStartBattle_8005A8C: // () -> ()
 	bne locret_8005AF2
 
   // Try to get battle settings to start battle or return
-	bl sub_80AA4C0 // () -> (* BattleSettings, zf)
+	bl battle_tryEncounter_80AA4C0 // () -> (* BattleSettings, zf)
 	beq locret_8005AF2 // if none return
 
 	mov r1, #1
@@ -5909,7 +5909,7 @@ subsystem_launchShop:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-  // trigger sub_8005642 via cbGameState_80050EC
+  // trigger scenario_finalizeFrameOrRestart_8005642 via cbGameState_80050EC
 	mov r1, #0x20 
 	strb r1, [r5,#oGameState_SubsystemIndex]
 
@@ -5983,9 +5983,9 @@ sub_8005D88:
 // symdb: Runs the complete battle-entry initialization sequence: clears the auxiliary game-state pointer, frees all type-0x25 objects, then inits graphics, work areas, scenario effects, and NetNav stats in order.
 // symdb: void battle_initFullSetup_8005DBE(void); /* r10 = toolkit pointer (preserved); clobbers r0-r3,
 // symdb: lr; preserves r4-r12 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8005DBE.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initFullSetup_8005DBE.yaml
 	thumb_local_start
-sub_8005DBE:
+battle_initFullSetup_8005DBE:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -6002,7 +6002,7 @@ sub_8005DBE:
 	bl sub_803FB28
 	bl reloadCurNaviStatBoosts_813c3ac
 	pop {r4-r7,pc}
-	thumb_func_end sub_8005DBE
+	thumb_func_end battle_initFullSetup_8005DBE
 
 	thumb_local_start
 sub_8005DF0:
@@ -6133,7 +6133,7 @@ subsystem_launchMail:
 	ldrb r0, [r1,#0x10]
 	str r0, [r5,#oGameState_FacingDirectionAfterWarp]
 
-  // trigger sub_8005814 via cbGameState_80050EC
+  // trigger mainState_runFrame_8005814 via cbGameState_80050EC
 	mov r1, #0x34
 	strb r1, [r5,#oGameState_SubsystemIndex]
 
@@ -6196,7 +6196,7 @@ warp_setSubsystemIndexTo0x14AndOthers_8005f14:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 
-  // trigger sub_80053E4 via cbGameState_80050EC
+  // trigger scene_nextOrUpdate_80053E4 via cbGameState_80050EC
 	mov r0, #0x14
 	strb r0, [r4,#oGameState_SubsystemIndex]
 
@@ -6276,15 +6276,15 @@ sub_8005F78:
 	thumb_func_end sub_8005F78
 
 // symdb: Tears down the current scene (LCD render defaults, effect/chatbox state, 0x40 chatbox flag block) and rewinds the main jumptable to step 4 with game state kind 0, phase 8, returning phase 8 in r1.
-// symdb: void sub_8005F84(void /* r10 = toolkit, lr = return */); returns r1 = 8 (with r2/r3 and c/v left
+// symdb: void resetGameStateToOpening_8005F84(void /* r10 = toolkit, lr = return */); returns r1 = 8 (with r2/r3 and c/v left
 // symdb: as chatbox_clear_eFlags2009F38 leaves them); preserves r4-r7.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8005F84.yaml
-	thumb_func_start sub_8005F84
-sub_8005F84:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetGameStateToOpening_8005F84.yaml
+	thumb_func_start resetGameStateToOpening_8005F84
+resetGameStateToOpening_8005F84:
 	push {r4-r7,lr}
 	ldr r0, off_8005FB0 // =0x40
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
-	bl sub_809F68C
+	bl npc_clearAllBusyFlags_809F68C
 	bl chatbox_8040818
 	mov r0, #0x40
 	bl chatbox_clear_eFlags2009F38 // (int a1) ->
@@ -6313,7 +6313,7 @@ off_8005FB4:
 	.word sub_8006366+1
 	.word sub_800647C+1
 	.word sub_8006366+1
-	.word sub_80064BE+1
+	.word fade_tick_80064BE+1
 	.word sub_8006366+1
 	.word sub_800647C+1
 	.word sub_8006366+1
@@ -6337,7 +6337,7 @@ off_8005FB4:
 	.word sub_800647C+1
 	.word sub_8006366+1
 	.word sub_800647C+1
-	thumb_func_end sub_8005F84
+	thumb_func_end resetGameStateToOpening_8005F84
 
 off_8006040:
 	fade_params_struct [
@@ -7031,11 +7031,11 @@ loc_8006490:
 	thumb_func_end sub_800647C
 
 // symdb: Advances a two-slot palette color fade by one tick, repaints the affected palette entries, then dispatches to a running or finished handler.
-// symdb: void sub_80064BE(u32 fade_state /* r5 */) /* preserves r4-r7; clobbers nzcv,r0,r1,r2,r3,r6,r7,lr
+// symdb: void fade_tick_80064BE(u32 fade_state /* r5 */) /* preserves r4-r7; clobbers nzcv,r0,r1,r2,r3,r6,r7,lr
 // symdb: */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80064BE.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/fade_tick_80064BE.yaml
 	thumb_local_start
-sub_80064BE:
+fade_tick_80064BE:
 	push {r4-r7,lr}
 	ldrh r1, [r5,#6]
 	ldrh r2, [r5,#4]
@@ -7080,7 +7080,7 @@ off_800650C:
 off_8006510:
 	.word sub_8006518+1
 	.word sub_8006580+1
-	thumb_func_end sub_80064BE
+	thumb_func_end fade_tick_80064BE
 
 	thumb_local_start
 sub_8006518:
@@ -8813,10 +8813,10 @@ loc_8007236:
 	strb r0, [r1]
 
 	bl sub_800A01C
-	bl sub_80075CA
+	bl loadSceneGfx_80075CA
 	bl bgScroll_ResetScrollCBCounters_8080D90
 	bl sub_8080DA0
-	bl sub_8007628
+	bl battle_initDisplayTables_8007628
 	bl chatbox_resetPrinterState_801FE00
 	bl eStruct2038160_clearStruct
 	bl ai_resetAIDataSlots_800ED00
@@ -8934,7 +8934,7 @@ battle_SpawnEnemyObjects_8007358: // () -> ()
 	ldr r0, [r5,#oBattleState_BattleSettings]
 	ldr r0, [r0,#oBattleSettings_EnemySetupArrPtr]
 	bl SpawnBattleObjectUsingBattleEntityConfig_8007368 // (arr: * MagicStop8<0xF0, [EnemySetup]> $r6) -> ()
-	bl sub_80AA88C // () -> ()
+	bl battle_rollRandomItemDrops_80AA88C // () -> ()
 	pop {pc}
 	thumb_func_end battle_SpawnEnemyObjects_8007358
 
@@ -9005,7 +9005,7 @@ off_80073A0:
 	thumb_func_end SpawnBattleObjectUsingBattleEntityConfig_8007368
 
 // symdb: Spawns Mega Man from an EnemySetup entry at the panel encoded in its position byte, on the side given by its alliance bit.
-// symdb: Next spawnMegaManFromSetup(EnemySetup *self /* r6 */); tail-calls sub_800753C(panel_x r0,
+// symdb: Next spawnMegaManFromSetup(EnemySetup *self /* r6 */); tail-calls battle_spawnNaviOnPanel_800753C(panel_x r0,
 // symdb: panel_y r1, alliance r2, charId=1 r3) and returns its flags/registers
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnMegaMan_80073CC.yaml
 	thumb_local_start
@@ -9020,7 +9020,7 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	ldrb r2, [r6]
 	mov r3, #1
 	and r2, r3 // alliance
-	bl sub_800753C // (panel_x: u8, panel_y: u8, alliance: bool) -> ?
+	bl battle_spawnNaviOnPanel_800753C // (panel_x: u8, panel_y: u8, alliance: bool) -> ?
 	pop {pc}
 	thumb_func_end spawnMegaMan_80073CC
 
@@ -9249,9 +9249,9 @@ spawnGuardian_800751C: // (self: * EnemySetup $r6) -> ()
 // symdb: Spawns and fully initialises a Navi battle object at a given panel, derives its NameID from alliance stats, allocates AI data, and registers it in the alliance entry list.
 // symdb: battle_spawnNaviOnPanel_800753C(r0: u8 panel_x, r1: u8 panel_y, r2: bool alliance) -> void;
 // symdb: clobbers r0 r1 r2 r3 r10 lr, preserves r4 r5 r6 r7, sets nzcv flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800753C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnNaviOnPanel_800753C.yaml
 	thumb_local_start
-sub_800753C: // (panel_x: u8, panel_y: u8, alliance: bool) -> ?
+battle_spawnNaviOnPanel_800753C: // (panel_x: u8, panel_y: u8, alliance: bool) -> ?
 	push {r4,r5,lr}
 
 	push {r0-r2}
@@ -9333,14 +9333,14 @@ loc_80075A2: // endif
 
 locret_80075C8:
 	pop {r4,r5,pc}
-	thumb_func_end sub_800753C
+	thumb_func_end battle_spawnNaviOnPanel_800753C
 
 // symdb: Loads a scene's graphics by clearing a tile buffer, queueing the VRAM/palette transfer list, and LZ77-decompressing a tile set into VRAM.
-// symdb: void sub_80075CA(void);  // uses lr; clobbers r0 r1 r2 r3 lr and flags nzcvc; preserves r4 r5 r6
+// symdb: void loadSceneGfx_80075CA(void);  // uses lr; clobbers r0 r1 r2 r3 lr and flags nzcvc; preserves r4 r5 r6
 // symdb: r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80075CA.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadSceneGfx_80075CA.yaml
 	thumb_local_start
-sub_80075CA:
+loadSceneGfx_80075CA:
 	push {r5,lr}
 	// memBlock
 	ldr r0, dword_8007624 // =0x6008000
@@ -9381,14 +9381,14 @@ dword_8007620:
 	.word 0x6001460
 dword_8007624:
 	.word 0x6008000
-	thumb_func_end sub_80075CA
+	thumb_func_end loadSceneGfx_80075CA
 
 // symdb: Initializes display/rendering hardware registers and palette/BG-character data from two static (offset, value) tables.
 // symdb: void battle_initDisplayTables_8007628(void); /* r10 = toolkit base; returns r0=palette ptr,
 // symdb: r1=table cursor, r2=0xFF, r3=last written value, NZCV set from r2 vs 0xFF */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8007628.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initDisplayTables_8007628.yaml
 	thumb_local_start
-sub_8007628:
+battle_initDisplayTables_8007628:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	ldr r1, off_8007654 // =word_800765C
@@ -9435,7 +9435,7 @@ word_8007674:
 	.word 0x3F3F0008
 	.word 0x3F3F000A
 	.hword 0xFF
-	thumb_func_end sub_8007628
+	thumb_func_end battle_initDisplayTables_8007628
 
 // symdb: Entry stub of the battle object/enemy spawner; sets up the shared frame and tail-branches into the spawner body at loc_80076A8.
 // symdb: BattleObject *battle_spawnEnemyObject_800768C(u16 enemy_idx, u8 panel_x, u8 panel_y, bool
@@ -9804,7 +9804,7 @@ loc_8007898:
 	strb r0, [r5,#oBattleState_Index_00]
 
   // This can eventually lead to triggering gameover and moving to start screen
-  // trigger sub_8007CA0 via sub_8007B80
+  // trigger battle_state_tick_8007CA0 via sub_8007B80
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -9854,7 +9854,7 @@ loc_80078EC:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_00]
 
-  // trigger sub_8007CA0 via sub_8007B80?
+  // trigger battle_state_tick_8007CA0 via sub_8007B80?
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -9908,7 +9908,7 @@ off_800793C:
 off_8007940: 
   .word sub_800794C+1
 	.word battle_dispatchPhase_8007978+1
-	.word sub_8007A0C+1
+	.word battle_initEntry_8007A0C+1
 	thumb_func_end sub_8007850
 
 	thumb_local_start
@@ -9921,7 +9921,7 @@ sub_800794C:
 	bl sub_802E112
 	bl camera_resetToOrigin_8007338
 	bl clearBattleCounters_800A0C6
-	bl sub_801BE70
+	bl resetBattleBuffers_801BE70
 	bl copy_8002668
 
   // trigger battle_dispatchPhase_8007978 via sub_8007850
@@ -9993,7 +9993,7 @@ loc_80079BC:
 	strb r0, [r5,#oBattleState_Unk_0d]
 	ldr r1, off_80079CC // =eCamera+76
 	strb r0, [r1]
-	bl sub_800B144
+	bl battle_initBattleStateBuffer_800B144
 
 	// trigger battle_state_finishBattlePhase_80079d0 via battle_dispatchPhase_8007978
 	mov r0, #8
@@ -10059,11 +10059,11 @@ battle_RevealFieldColumnsStep_80079F0:
 	thumb_func_end battle_RevealFieldColumnsStep_80079F0
 
 // symdb: Initializes a new battle: clears hit data, resets object/panel lists, sets up sprite decomp state, then advances the battle state phase index to 4.
-// symdb: void sub_8007A0C(struct BattleState *r5); // clobbers nz c v r0 r1 r2 r3 r5 r6 r7 r8 r9 r10 r12
+// symdb: void battle_initEntry_8007A0C(struct BattleState *r5); // clobbers nz c v r0 r1 r2 r3 r5 r6 r7 r8 r9 r10 r12
 // symdb: lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8007A0C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initEntry_8007A0C.yaml
 	thumb_local_start
-sub_8007A0C:
+battle_initEntry_8007A0C:
 	push {lr}
 	bl collision_resetAllHitData_801986C
 	bl sub_800C8F0
@@ -10089,7 +10089,7 @@ loc_8007A36:
 	.balign 4, 0
 off_8007A40:
 	.word eLogoScreenState
-	thumb_func_end sub_8007A0C
+	thumb_func_end battle_initEntry_8007A0C
 
 	thumb_local_start
 battle_update_8007A44: // (self: * BattleState $r5) -> ()
@@ -10245,7 +10245,7 @@ off_8007B94:
   // 0x00
   .word sub_8007B9C+1 // (self: *mut BattleState $r5) -> ()
   // 0x04
-	.word sub_8007CA0+1 // (self: *mut BattleState $r5) -> ()
+	.word battle_state_tick_8007CA0+1 // (self: *mut BattleState $r5) -> ()
 	thumb_func_end sub_8007B80
 
 	thumb_local_start
@@ -10400,10 +10400,10 @@ off_8007C9C:
 	thumb_func_end sub_8007C50
 
 // symdb: Per-frame tick for the battle game-state; routes battle-end cleanup, intro-frame counter, Navi emotion/mood/HP bookkeeping, and post-battle teardown.
-// symdb: void sub_8007CA0(BattleState* r5, Toolkit* r10) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007CA0.yaml
+// symdb: void battle_state_tick_8007CA0(BattleState* r5, Toolkit* r10) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_state_tick_8007CA0.yaml
 	thumb_local_start
-sub_8007CA0: // (self: *mut BattleState $r5) -> ()
+battle_state_tick_8007CA0: // (self: *mut BattleState $r5) -> ()
 	push {r4,r6,r7,lr}
 	bl musicGameState_8000784 // () -> void
 	mov r4, r10
@@ -10595,7 +10595,7 @@ loc_8007E38:
 	bl SetPrimaryToolkitPointers // () -> ()
 locret_8007E60:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8007CA0
+	thumb_func_end battle_state_tick_8007CA0
 
 	thumb_local_start
 sub_8007E62: // (self: * BattleState $r5) -> ()
@@ -10703,7 +10703,7 @@ sub_8007F2C:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_00]
 
-  // trigger sub_8007CA0 via sub_8007B80
+  // trigger battle_state_tick_8007CA0 via sub_8007B80
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -10781,7 +10781,7 @@ sub_8007FD2:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_00]
 
-  // trigger sub_8007CA0 via sub_8007B80
+  // trigger battle_state_tick_8007CA0 via sub_8007B80
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -10856,9 +10856,9 @@ off_8008060:
 sub_8008064:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_80080B2
@@ -10912,9 +10912,9 @@ locret_80080D0:
 sub_80080D2:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -10973,7 +10973,7 @@ loc_8008158:
 	bl battle_testFlag0x40_800A8F8
 	cmp r0, #0
 	bne loc_8008168
-	bl sub_800A1D0
+	bl battle_checkNaviFreeze_800A1D0
 	beq locret_80081A2
 	b loc_800819A
 loc_8008168:
@@ -11490,9 +11490,9 @@ off_8008524:
 sub_8008528:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008550
@@ -11520,9 +11520,9 @@ sub_800855E:
 	push {lr}
 	bl sub_80085FE
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -12094,9 +12094,9 @@ off_8008988:
 sub_800898C:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_80089BE
@@ -12126,9 +12126,9 @@ locret_80089CA:
 sub_80089CC:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -12640,9 +12640,9 @@ off_8008D98:
 sub_8008D9C:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008DCE
@@ -12672,9 +12672,9 @@ locret_8008DDA:
 sub_8008DDC:
 	push {lr}
 	mov r0, #0
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	mov r0, #1
-	bl sub_8012DFC
+	bl battle_updateNaviAIJoypad_8012DFC
 	bl UnpauseBattle
 	mov r0, #1
 	bl battle_setFlags
@@ -13342,7 +13342,7 @@ task484_RunFrame_800927C:
 	bl eStruct2035280_SetRequestBits_801BECC
 	ldr r0, off_800929C // =0x484
 	bl dispatch_801DA48
-	bl sub_801E5F8
+	bl battle_initSceneStart_801E5F8
 	bl battle_sceneFrameSetup_801DA24
 	mov r0, #0
 	mov r1, #0
@@ -13672,7 +13672,7 @@ sub_80094B6:
 	tst r0, r0
 	bne loc_80094C8
 	ldr r0, =unk_2035260
-	bl sub_802C34E
+	bl setupNaviDisplay_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_80094C8:
@@ -14263,7 +14263,7 @@ sub_8009916:
 	tst r0, r0
 	bne loc_8009928
 	ldr r0, off_800999C // =unk_2035260
-	bl sub_802C34E
+	bl setupNaviDisplay_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009928:
@@ -14672,7 +14672,7 @@ sub_8009C06:
 	tst r0, r0
 	bne loc_8009C18
 	ldr r0, off_8009C8C // =unk_2035260
-	bl sub_802C34E
+	bl setupNaviDisplay_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009C18:
@@ -15125,7 +15125,7 @@ sub_8009F3A:
 	tst r0, r0
 	bne loc_8009F4C
 	ldr r0, off_8009FC4 // =unk_2035260
-	bl sub_802C34E
+	bl setupNaviDisplay_802C34E
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009F4C:
@@ -15610,9 +15610,9 @@ off_800A1CC:
 // symdb: Returns 1 if the player or enemy navi is under a freeze/slowdown status and the corresponding battle flag bit confirms it is currently in effect.
 // symdb: battle_checkNaviFreeze_800A1D0(u32 r6, u32 r10) -> r0 (active: 0 or 1), r1 (flag bit consulted),
 // symdb: NZ flags reflect r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800A1D0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkNaviFreeze_800A1D0.yaml
 	thumb_local_start
-sub_800A1D0:
+battle_checkNaviFreeze_800A1D0:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A218
@@ -15649,7 +15649,7 @@ loc_800A214:
 loc_800A218:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800A1D0
+	thumb_func_end battle_checkNaviFreeze_800A1D0
 
 	thumb_local_start
 sub_800A21C:
@@ -15924,7 +15924,7 @@ loc_800A3CE:
 	ldr r0, off_800A3E0 // =eBattleFolder
 	mov r1, r7
 	mov r2, r6
-	bl sub_800A570
+	bl shuffleFolder_800A570
 locret_800A3D8:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -16057,7 +16057,7 @@ loc_800A4B6:
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	mov r3, #0x44
 	ldrb r2, [r2,r3]
-	bl sub_800A570
+	bl shuffleFolder_800A570
 loc_800A4D2:
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
@@ -16160,10 +16160,10 @@ off_800A56C:
 	thumb_local_start
 // eBattleFolder = some buffer
 // symdb: Shuffles a 30-chip battle folder in place, splitting gigas, reshuffling pools, and (optionally) tagging two chips into the last slots.
-// symdb: void sub_800A570(u32 folder_ptr, u32 reg_flag, u32 tag_flag, u32 toolkit /* r10 */); /* out:
+// symdb: void shuffleFolder_800A570(u32 folder_ptr, u32 reg_flag, u32 tag_flag, u32 toolkit /* r10 */); /* out:
 // symdb: none; clobbers nz,c,v,r0-r3,lr; preserves r4-r7 */
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A570.yaml
-sub_800A570: // shuffle folder
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shuffleFolder_800A570.yaml
+shuffleFolder_800A570: // shuffle folder
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -16304,7 +16304,7 @@ loc_800A664:
 	bl CopyHalfwords // (u16 *src, u16 *dest, int halfwordCount) -> void
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
-	thumb_func_end sub_800A570
+	thumb_func_end shuffleFolder_800A570
 
 	thumb_local_start
 // r0 = main shuffled folder ptr
@@ -16749,7 +16749,7 @@ battle_tickCustomScreenEffect_800A892:
 	bl battle_getStateByteNibbles_800A832
 	cmp r0, #2
 	bne locret_800A8B0
-	bl sub_8005DBE
+	bl battle_initFullSetup_8005DBE
 locret_800A8B0:
 	pop {pc}
 	thumb_func_end battle_tickCustomScreenEffect_800A892
@@ -16806,9 +16806,9 @@ loc_800A904:
 
 // symdb: Clears the 32-bit battle state counter at A_dword_2000B30 to 0 and returns its address in r1.
 // symdb: void clearBattleStateCounter_800A908(u32 *outCounter /* r1 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800A908.yaml
-	thumb_func_start sub_800A908
-sub_800A908:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearBattleStateCounter_800A908.yaml
+	thumb_func_start clearBattleStateCounter_800A908
+clearBattleStateCounter_800A908:
 	mov r0, #0
 	ldr r1, off_800A950 // =dword_2000B30
 	str r0, [r1]
@@ -16847,7 +16847,7 @@ off_800A94C:
 	.word 0x100
 off_800A950:
 	.word dword_2000B30
-	thumb_func_end sub_800A908
+	thumb_func_end clearBattleStateCounter_800A908
 
 // symdb: Runs the same per-buffer routine (sub_800A964) over two adjacent work areas at byte_20349C0 and byte_2034A10, likely stepping two sprite/object state buffers each frame.
 // symdb: void sub_800A954(void); /* r2, r3, r4 pass through untouched; r0/r1/lr clobbered, flags
@@ -17687,7 +17687,7 @@ battle_updatePhaseState_800AE0C:
 	pop {r0}
 	beq loc_800AE32
 	sub r0, #2
-	bl sub_801E228
+	bl eStruct2035280_DrawMessageMode_801E228
 loc_800AE32:
 	ldrb r0, [r4,#oBattleState_Unk_1d]
 	tst r0, r0
@@ -18160,11 +18160,11 @@ dword_800B140:
 	thumb_func_end encryption_applyPackList_800B110
 
 // symdb: Initializes the per-battle state buffer at dword_203CBE0 (RNG seed, battle settings, Navi stats picked by battle mode/effects, weapon arrays, event-flag snapshot) at the start of a battle.
-// symdb: void sub_800B144(u32 r10 /* toolkit ptr */, u32 lr, u32 r6 /* passed through to sub_81209DC */);
+// symdb: void battle_initBattleStateBuffer_800B144(u32 r10 /* toolkit ptr */, u32 lr, u32 r6 /* passed through to sub_81209DC */);
 // symdb: /* clobbers r0,r1,r2,r3,lr,N,Z,C,V; preserves r4,r5,r6,r7 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800B144.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initBattleStateBuffer_800B144.yaml
 	thumb_local_start
-sub_800B144:
+battle_initBattleStateBuffer_800B144:
 	push {r4,r6,lr}
 	ldr r4, off_800B2BC // =dword_203CBE0
 	ldr r0, off_800B2C0 // =ePrimaryRngSeed
@@ -18354,7 +18354,7 @@ off_800B2D0:
 	.word unk_2000260
 dword_800B2D4:
 	.word 0x12345678
-	thumb_func_end sub_800B144
+	thumb_func_end battle_initBattleStateBuffer_800B144
 
 // symdb: Propagates the working navi-stats buffer into the four battle navi slots (and a secondary buffer when battle-effect bit 3 is set), then snapshots RNG seed, four 0x28-byte auxiliary arrays, a counter, and three paired dwords into the battle-result/availability structures.
 // symdb: void battle_propagateNaviStatsAndBattleData_800b2d8(void); // no explicit inputs/outputs beyond

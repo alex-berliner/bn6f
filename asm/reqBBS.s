@@ -85,7 +85,7 @@ reqBBS_static_draw_813E0F8:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x17
-	bl sub_80015FC
+	bl toolkit_applyOverlayPalette_80015FC
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -202,7 +202,7 @@ reqBBS_draw_813E1C8:
 	mov r1, #0
 	strb r1, [r0,#4]
 	strb r1, [r0,#6]
-	bl sub_8005F84
+	bl resetGameStateToOpening_8005F84
 	mov r0, #1
 	pop {pc}
 loc_813E21C:
@@ -2028,7 +2028,7 @@ loc_813F4B6:
 	bl renderInfo_8001788 // () -> ()
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x17
-	bl sub_80015FC
+	bl toolkit_applyOverlayPalette_80015FC
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -2149,7 +2149,7 @@ ExitReqBBSMenu813F590:
 	mov r1, #0
 	strb r1, [r0,#4]
 	strb r1, [r0,#6]
-	bl sub_8005F84
+	bl resetGameStateToOpening_8005F84
 	mov r0, #1
 	pop {pc}
 loc_813F5E4:

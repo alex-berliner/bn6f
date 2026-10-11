@@ -521,7 +521,7 @@ loc_8040008:
 	ldrb r0, [r5,#oChatbox_BoxGfxLoadState_0F]
 	strb r0, [r5,#oChatbox_CurrLine]
 loc_8040012:
-	bl chatbox_804021C
+	bl chatbox_emitTextGridOAM_804021C
 loc_8040016:
 	bl chatbox_8040B8C
 	bl chatbox_804082C
@@ -640,7 +640,7 @@ loc_80400F8:
 	strb r1, [r5,#oChatbox_CurrLine]
 	b loc_80400F8
 loc_804010E:
-	bl chatbox_804021C
+	bl chatbox_emitTextGridOAM_804021C
 loc_8040112:
 	bl chatbox_8040B8C
 	bl chatbox_804082C
@@ -777,11 +777,11 @@ byte_8040210:
 	thumb_func_end chatbox_804017C
 
 // symdb: Emits a 3-row by 6-column grid of OAM sprite entries for a chatbox text panel.
-// symdb: void chatbox_804021C(struct ChatBoxProperties *r5); // preserves r4,r5,r6,r7,r8,r9,r10,r12;
+// symdb: void chatbox_emitTextGridOAM_804021C(struct ChatBoxProperties *r5); // preserves r4,r5,r6,r7,r8,r9,r10,r12;
 // symdb: clobbers r0,r1,r2,r3,lr,flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_804021C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_emitTextGridOAM_804021C.yaml
 	thumb_local_start
-chatbox_804021C:
+chatbox_emitTextGridOAM_804021C:
 	push {r4,r6,r7,lr}
 	mov r1, r12
 	push {r1}
@@ -920,7 +920,7 @@ off_804033C:
 	.word dword_8040340
 dword_8040340:
 	.word 0x201000
-	thumb_func_end chatbox_804021C
+	thumb_func_end chatbox_emitTextGridOAM_804021C
 
 	thumb_local_start
 // () -> void
@@ -2068,8 +2068,8 @@ dword_8040B38:
 // symdb: void chatbox_loadMugshotPortrait_8040B3A(u32 mugshotId /*r0*/, u32 attr01 /*r1*/, Chatbox*
 // symdb: chatbox /*r5*/); /* r4 passes through; returns r1=chatbox+0x88 value, r2/r3 whatever the sprite
 // symdb: animation loader left, r7=chatbox */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8040B3A.yaml
-sub_8040B3A:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_loadMugshotPortrait_8040B3A.yaml
+chatbox_loadMugshotPortrait_8040B3A:
 	push {r5,lr}
 	push {r5}
 	ldr r2, off_8040B88 // =0x1f8
@@ -2111,7 +2111,7 @@ off_8040B84:
 	.word 0x3C0
 off_8040B88:
 	.word 0x1F8
-	thumb_func_end sub_8040B3A
+	thumb_func_end chatbox_loadMugshotPortrait_8040B3A
 
 	thumb_local_start
 chatbox_8040B8C:
@@ -2742,19 +2742,19 @@ off_8040FD4:
 off_8040FD8:
 	.word byte_8045DCC
 chatbox_EB_msgboxJumpTable:
-	.word chatbox_804103E+1
+	.word chatbox_stepOpenAnimation_804103E+1
 	.word chatbox_8041090+1
 	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
-	.word chatbox_804103E+1
+	.word chatbox_stepOpenAnimation_804103E+1
 	.word chatbox_8041090+1
 	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
-	.word chatbox_804103E+1
+	.word chatbox_stepOpenAnimation_804103E+1
 	.word chatbox_8041090+1
 	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
-	.word chatbox_804103E+1
+	.word chatbox_stepOpenAnimation_804103E+1
 	.word chatbox_8041090+1
 	.word chatbox_closeAndReset_80410F8+1
 	.word chatbox_804110C+1
@@ -2776,9 +2776,9 @@ byte_804102C:
 // symdb: */   /* out: r2 clobbered to 3 on the drain path after BoxY reaches 0 */   /* flags: N/Z from
 // symdb: final r0 (mov r0,#0 or mov r0,#1); C/V left as guest */   /* clobbers: r0, r1, r2, lr; flips
 // symdb: flags 1, 0x04, 0x100 on chatbox flag word */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_804103E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepOpenAnimation_804103E.yaml
 	thumb_local_start
-chatbox_804103E:
+chatbox_stepOpenAnimation_804103E:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -2821,7 +2821,7 @@ loc_804107A:
 	mov r0, #1
 	pop {pc}
 	.pool
-	thumb_func_end chatbox_804103E
+	thumb_func_end chatbox_stepOpenAnimation_804103E
 
 	thumb_local_start
 chatbox_8041090:
@@ -3593,8 +3593,8 @@ jt_ctrl_8041580:
 	.word chatbox_stepScriptEntry_80417A4+1
 	.word chatbox_80417C0+1
 	.word chatbox_80417E4+1
-	.word chatbox_8041818+1
-	.word chatbox_8041818+1
+	.word chatbox_evaluateChipScript_8041818+1
+	.word chatbox_evaluateChipScript_8041818+1
 	.word chatbox_8042A9C+1
 	.word chatbox_8042A9C+1
 	.word chatbox_8042A9C+1
@@ -3627,7 +3627,7 @@ jt_ctrl_8041580:
 	.word 0x0
 	.word chatbox_8041694+1
 	.word chatbox_8041670+1
-	.word chatbox_8041818+1
+	.word chatbox_evaluateChipScript_8041818+1
 	.word chatbox_8041964+1
 	.word 0x0
 	.word 0x0
@@ -3916,9 +3916,9 @@ loc_8041810:
 // symdb: Evaluates a chatbox chip-condition script record, optionally triggering a sub-script and stepping past it.
 // symdb: void chatbox_evaluateChipScript_8041818(u32 /*r4*/ scriptRecordPtr); /* out: r0=1,
 // symdb: r1=scriptId/0xFF, r2=offset, r4=advanced ptr; clobbers nz c v r1 lr */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8041818.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_evaluateChipScript_8041818.yaml
 	thumb_local_start
-chatbox_8041818:
+chatbox_evaluateChipScript_8041818:
 	push {lr}
 	ldrb r0, [r4,#1]
 	cmp r0, #9
@@ -4013,7 +4013,7 @@ loc_80418C6:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end chatbox_8041818
+	thumb_func_end chatbox_evaluateChipScript_8041818
 
 	thumb_local_start
 chatbox_80418CC:
@@ -4235,7 +4235,7 @@ loc_8041A22:
 chatbox_8041A28:
 	push {lr}
 	mov r0, #6
-	bl sub_81207F8
+	bl countEventFlagChips_81207F8
 	cmp r0, #0xc
 	bge loc_8041A38
 	ldrb r1, [r4,#3]
@@ -4260,7 +4260,7 @@ chatbox_8041A4C:
 	ldrb r1, [r4,#2]
 	ldr r2, off_8041AB0 // =byte_8041AB4
 	ldrb r0, [r2,r1]
-	bl sub_81207F8
+	bl countEventFlagChips_81207F8
 	ldrb r1, [r4,#3]
 	ldrb r2, [r4,#4]
 	mov r3, #6
@@ -4289,7 +4289,7 @@ chatbox_8041A7C:
 	sub r1, #0x34
 	ldr r2, off_8041AB0 // =byte_8041AB4
 	ldrb r0, [r2,r1]
-	bl sub_81207F8
+	bl countEventFlagChips_81207F8
 	ldrb r1, [r4,#2]
 	ldrb r2, [r4,#3]
 	mov r3, #5
@@ -4720,7 +4720,7 @@ loc_8041D60:
 	strb r7, [r5,r3]
 	mov r2, #0xff
 	strb r2, [r5,#oChatbox_Unk_0B]
-	bl sub_8040B3A
+	bl chatbox_loadMugshotPortrait_8040B3A
 	add r4, #3
 	b loc_8041D9C
 loc_8041D74:
@@ -5033,10 +5033,10 @@ off_8041F78:
 	.word jt_FA_print_8041F7C
 jt_FA_print_8041F7C:
 	.word chatbox_8041FB4+1
-	.word chatbox_80420BC+1
+	.word chatbox_loadNaviTextLine_80420BC+1
 	.word chatbox_8042124+1
-	.word chatbox_8042128+1
-	.word chatbox_8042128+1
+	.word chatbox_pushTextLevel_8042128+1
+	.word chatbox_pushTextLevel_8042128+1
 	.word 0x0
 	.word chatbox_8042184+1
 	.word 0x0
@@ -5167,9 +5167,9 @@ off_80420B8:
 // symdb: Copies one 64-byte block of the current PET navi's dialogue text into the next chatbox buffer slot and advances the script cursor.
 // symdb: r4=scriptPtr (command stream), r5=chatbox (chatbox struct); returns r0=1, r4=text slot dest
 // symdb: pointer, r7=chatbox+0x64 (slot-counter address); flags from final mov r0,#1 (nz set, c/v clear)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_80420BC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_loadNaviTextLine_80420BC.yaml
 	thumb_local_start
-chatbox_80420BC:
+chatbox_loadNaviTextLine_80420BC:
 	push {lr}
 	ldrb r0, [r5,#oChatbox_Unk_05]
 	add r0, #1
@@ -5220,7 +5220,7 @@ off_8042118:
 	.word TextScriptNaviNames1
 off_8042120:
 	.word 0x140
-	thumb_func_end chatbox_80420BC
+	thumb_func_end chatbox_loadNaviTextLine_80420BC
 
 	thumb_local_start
 chatbox_8042124:
@@ -5234,9 +5234,9 @@ chatbox_8042124:
 // symdb: = 1 (always), r1 = historySlotOffset (0x140 + (depth-1)*4), r2 = 4 (mul scratch left in place),
 // symdb: r4 = per-slot text buffer base (byte_200AFA0 + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
 // symdb: clobbered.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042128.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_pushTextLevel_8042128.yaml
 	thumb_local_start
-chatbox_8042128:
+chatbox_pushTextLevel_8042128:
 	push {lr}
 	ldrb r0, [r5,#oChatbox_Unk_05]
 	add r0, #1
@@ -5251,7 +5251,7 @@ chatbox_8042128:
 	b loc_8042148
 loc_8042140:
 	push {r1-r3}
-	bl sub_803D06C
+	bl protectedZennyOrZero_803D06C
 	pop {r1-r3}
 loc_8042148:
 	ldr r2, off_804217C // =byte_200AFA0
@@ -5259,7 +5259,7 @@ loc_8042148:
 	lsl r1, r1, #6
 	add r2, r2, r1
 	ldrb r1, [r4,#2]
-	bl chatbox_8042A14
+	bl chatbox_formatBcdNumber_8042A14
 	ldr r0, off_804217C // =byte_200AFA0
 	ldrb r1, [r4,#3]
 	lsl r1, r1, #6
@@ -5284,7 +5284,7 @@ off_804217C:
 	.word byte_200AFA0
 off_8042180:
 	.word 0x140
-	thumb_func_end chatbox_8042128
+	thumb_func_end chatbox_pushTextLevel_8042128
 
 	thumb_local_start
 chatbox_8042184:
@@ -5302,7 +5302,7 @@ chatbox_8042184:
 	lsl r1, r1, #6
 	add r2, r2, r1
 	ldrb r1, [r4,#2]
-	bl chatbox_8042A14
+	bl chatbox_formatBcdNumber_8042A14
 	ldr r0, off_80421CC // =byte_200AFA0
 	mov r1, #1
 	lsl r1, r1, #6
@@ -5631,7 +5631,7 @@ jt_804239C:
 	.word 0x0
 	.word chatbox_80425E0+1
 	.word chatbox_80425C0+1
-	.word chatbox_80425F0+1
+	.word chatbox_launchMailOption_80425F0+1
 	thumb_func_end chatbox_FB_special
 
 	thumb_local_start
@@ -5708,7 +5708,7 @@ chatbox_804244C:
 loc_804245C:
 	push {r4,r5}
 	mov r2, #0x1f
-	bl sub_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
+	bl pickBattleSettingsEntry_80AA5F4 // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	mov r1, #1
 	bl StartBattle // (BattleSettings *r0Bt, bool r1) -> void
 	mov r0, #0x2c
@@ -5743,7 +5743,7 @@ loc_804248C:
 	mov r1, #1
 	bl StartBattle // (BattleSettings *r0Bt, bool r1) -> void
 	mov r0, r7
-	bl sub_803522E
+	bl handleDriveOutEvents_803522E
 	mov r0, #0x2c
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -5949,9 +5949,9 @@ chatbox_80425E0:
 // symdb: void chatbox_launchMailOption_80425F0(void); /* r4: chatbox object (mail index at +2); r5: text-
 // symdb: script state (guard byte at +4); r10/lr: callers' frame/link; returns r0 = 0 (nz set), r2/r3
 // symdb: trashed, r4/r5 preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_80425F0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_launchMailOption_80425F0.yaml
 	thumb_local_start
-chatbox_80425F0:
+chatbox_launchMailOption_80425F0:
 	push {lr}
 	// mask
 	mov r0, #FLAGS_3E_UNK_0001
@@ -5969,7 +5969,7 @@ loc_804260A:
 	mov r0, #0
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end chatbox_80425F0
+	thumb_func_end chatbox_launchMailOption_80425F0
 
 	thumb_local_start
 chatbox_FC_interface:
@@ -6300,12 +6300,12 @@ off_8042840:
 off_8042844:
 	.word sub_804286C
 	.word sub_80428B8
-	.word sub_80428C0
+	.word chatbox_initFromScriptEntry_80428C0
 	.word sub_80428E4
 	.word sub_80428EC
 	.word sub_80428FC
 	.word sub_8042910
-	.word sub_804293C
+	.word chatbox_placeCenteredTextRun_804293C
 	.word sub_8042990
 	.word sub_80429D8
 	thumb_func_end chatbox_F7_move
@@ -6355,9 +6355,9 @@ sub_80428B8: // 0x80428B8
 // symdb: Initializes a chatbox's display state (char index, cursor, row, derived row, text-pointer slot) from a 5-byte script entry and advances the script pointer by 5.
 // symdb: void chatbox_initFromScriptEntry_80428C0(const u8 *entry /* r4 */, struct Chatbox *chatbox /* r5
 // symdb: */) -> returns 1 in r0; clobbers r1, r2, r3, r4, NZCV.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80428C0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_initFromScriptEntry_80428C0.yaml
 	thumb_local_start
-sub_80428C0: // 0x80428C0
+chatbox_initFromScriptEntry_80428C0: // 0x80428C0
 	ldrb r1, [r4,#2]
 	strb r1, [r5,#oChatbox_TextScriptCharIdx]
 	add r1, #0xaf
@@ -6376,7 +6376,7 @@ sub_80428C0: // 0x80428C0
 	add r4, #5
 	mov r0, #1
 	mov pc, lr
-	thumb_func_end sub_80428C0
+	thumb_func_end chatbox_initFromScriptEntry_80428C0
 
 	thumb_local_start
 sub_80428E4: // 0x80428E4
@@ -6442,9 +6442,9 @@ sub_8042910: // 0x8042910
 // symdb: u32 chatbox_placeCenteredTextRun_804293C(u32* scriptPtr /* r4 */, Chatbox* chatbox /* r5 */);
 // symdb: returns 1 in r0, new draw pos in r1, aligned offset in r2, next char X in r3, scriptPtr advanced
 // symdb: by 3 in r4; flags set as for r4+3 add (N=Z=C=V=0 in practice); preserves r6, r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804293C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_placeCenteredTextRun_804293C.yaml
 	thumb_local_start
-sub_804293C: // 0x804293C
+chatbox_placeCenteredTextRun_804293C: // 0x804293C
 	push {r6,r7,lr}
 	mov r6, #0xf0
 	mov r7, #0xb0
@@ -6486,7 +6486,7 @@ loc_8042972:
 	add r4, #3
 	mov r0, #1
 	pop {r6,r7,pc}
-	thumb_func_end sub_804293C
+	thumb_func_end chatbox_placeCenteredTextRun_804293C
 	.balign 4, 0
 
 	thumb_local_start
@@ -6570,9 +6570,9 @@ sub_80429D8: // 0x80429D8
 // symdb: Format a BCD-converted integer into a chatbox glyph string with optional padding and right-alignment, then write a 3-byte terminator.
 // symdb: void chatbox_formatBcdNumber_8042A14(u32 r0=value, u32 r1=flags, u32 r2=dstBuf); outputs
 // symdb: r3=padRemainder, r6=fillGlyph, r7=0, r8=bcdValue; preserves r1,r4,r5; clobbers NZCV,r0,r2
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042A14.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_formatBcdNumber_8042A14.yaml
 	thumb_local_start
-chatbox_8042A14:
+chatbox_formatBcdNumber_8042A14:
 	push {r4,r5,lr}
 	push {r1,r2}
 	bl memory_bcdConvert
@@ -6650,7 +6650,7 @@ off_8042A94:
 	.word eReqBBSGui
 off_8042A98:
 	.word eReqBBSGui
-	thumb_func_end chatbox_8042A14
+	thumb_func_end chatbox_formatBcdNumber_8042A14
 
 	thumb_local_start
 chatbox_8042A9C:
@@ -6805,7 +6805,7 @@ loc_8042BA4:
 	orr r0, r1
 	orr r0, r2
 	orr r0, r3
-	bl sub_803D02C
+	bl protectZenny_803D02C
 	pop {r4,r5}
 	push {r0}
 	mov r0, #SOUND_UNK_73
@@ -6826,7 +6826,7 @@ loc_8042BD0:
 	orr r0, r2
 	orr r0, r3
 	push {r0,r2,r3}
-	bl sub_803D06C
+	bl protectedZennyOrZero_803D06C
 	mov r1, r0
 	pop {r0,r2,r3}
 	mov r2, #0

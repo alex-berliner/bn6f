@@ -21,7 +21,7 @@ int sub_81440D8()
 
 
 // 0x8144158
-int sub_8144158()
+int link_initAndClear_8144158()
 {
     int v1; // [sp+0h] [bp-1Ch]
     __int16 v2; // [sp+4h] [bp-18h]
@@ -56,7 +56,7 @@ int sub_8144240()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_8144158();
+    link_initAndClear_8144158();
     sub_81440D8();
     return v1;
 }
@@ -86,7 +86,7 @@ int __fastcall sub_8144250(_BYTE *a1, int a2, int a3)
         case 1:
             if ( *a1 == 1 )
             {
-                sub_8144158();
+                link_initAndClear_8144158();
                 byte_200F461 = 2;
             }
             break;
@@ -1226,7 +1226,7 @@ LABEL_38:
 
 
 // 0x81453d4
-int sub_81453D4()
+int rfu_handleVBlank_81453D4()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -2621,7 +2621,7 @@ int sub_814692C()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_81453D4();
+    rfu_handleVBlank_81453D4();
     return v1;
 }
 
@@ -10943,7 +10943,7 @@ int m4aSoundInit()
 
     SWI_CpuSet((&SoundMainRAM & 0xFFFFFFFE), byte_3005700, Timer0Counter_Reload);
     sub_814ECC8(iSoundInfo);
-    sub_814EB84(iCgbChannels);
+    cgbSoundInit_814EB84(iCgbChannels);
     sub_814EE2C(9696256);
     v0 = &gMPlayTable;
     v1 = 32;
@@ -11201,7 +11201,7 @@ int __fastcall sub_814EB1C(int a1)
 
 
 // 0x814eb84
-int __fastcall sub_814EB84(_BYTE *a1)
+int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
 {
     _BYTE *v1; // r5
     int v2; // r4
@@ -11235,7 +11235,7 @@ int __fastcall sub_814EB84(_BYTE *a1)
         off_30055F4 = sub_814F2F0;
         *(v2 + 28) = a1;
         *(v2 + 40) = CgbSound;
-        *(v2 + 44) = sub_814F44C;
+        *(v2 + 44) = soundStartChannel_814F44C;
         *(v2 + 48) = sub_814F3A4;
         *(v2 + 12) = 0;
         v5 = 0;
@@ -11776,7 +11776,7 @@ int __fastcall sub_814F3A4(char a1, unsigned __int8 a2, unsigned __int8 a3)
 
 
 // 0x814f44c
-int __fastcall sub_814F44C(signed int a1)
+int __fastcall soundStartChannel_814F44C(signed int a1)
 {
     __int16 *v1; // r1
     _BYTE *v2; // r1
@@ -11819,7 +11819,7 @@ LABEL_13:
 
 
 // 0x814f4a0
-int __fastcall sub_814F4A0(unsigned __int8 *a1)
+int __fastcall soundChannel_tickPanVolume_814F4A0(unsigned __int8 *a1)
 {
     unsigned __int8 *v1; // r2
     unsigned int v2; // r3
@@ -11970,7 +11970,7 @@ LABEL_16:
             *v1 = 3;
             *(v1 + 29) = 3;
             v34 = v4;
-            sub_814F4A0(v1);
+            soundChannel_tickPanVolume_814F4A0(v1);
             v7 = v34;
             if ( v0 != 2 )
             {
@@ -12053,7 +12053,7 @@ LABEL_70:
             }
             if ( v0 == 3 )
                 *(v1 + 29) |= 1u;
-            sub_814F4A0(v1);
+            soundChannel_tickPanVolume_814F4A0(v1);
             v13 = *v1 & 3;
             if ( !(*v1 & 3) )
             {
@@ -12189,7 +12189,7 @@ LABEL_80:
             goto LABEL_84;
         }
 LABEL_40:
-        sub_814F44C(v0);
+        soundStartChannel_814F44C(v0);
         *v1 = 0;
 LABEL_91:
         *(v1 + 29) = 0;

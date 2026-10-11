@@ -819,7 +819,7 @@ sub_80950B8:
 sub_80950C8:
 	push {lr}
 	mov r0, #2
-	bl sub_80AA004
+	bl copyOamEntry_80AA004
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_80950C8
@@ -828,7 +828,7 @@ sub_80950C8:
 sub_80950D4:
 	push {lr}
 	mov r0, #0
-	bl sub_80AA004
+	bl copyOamEntry_80AA004
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_80950D4
@@ -955,7 +955,7 @@ end_cutscenescript_809521E:
 sub_8095220:
 	push {lr}
 	mov r0, #1
-	bl sub_80AA004
+	bl copyOamEntry_80AA004
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_8095220
@@ -5812,7 +5812,7 @@ CutsceneScriptNotification_8098BB8::
 	cs_do_pet_effect byte1=0x05 byte2=0xFF
 	cs_pause byte1=0xFF byte2=0x3E
 	cs_do_pet_effect byte1=0xFF byte2=0x01
-	cs_call_native_with_return_value ptr1=sub_8098BE8+1
+	cs_call_native_with_return_value ptr1=deliverCutsceneMail_8098BE8+1
 	cs_run_text_script_from_mem byte1=0x04
 	cs_wait_chatbox byte1=0x80
 	cs_unlock_player_after_non_npc_dialogue_809e122

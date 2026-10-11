@@ -1,5 +1,5 @@
 // 0x8098be8
-int sub_8098BE8()
+int deliverCutsceneMail_8098BE8()
 {
     int v0; // r5
     int v1; // r1
@@ -1890,7 +1890,7 @@ int sub_809C01C()
     writeCurPETNaviToS2001c04_Unk07_80010c6();
     sub_80010BE(*(v3 + 20));
     v4 = reloadCurNaviBaseStats_8120df0();
-    sub_8033FDC(v4);
+    resetPetNaviSetup_8033FDC(v4);
     return 0;
 }
 
@@ -2015,7 +2015,7 @@ int sub_809C954()
 
 
 // 0x809c968
-unsigned int sub_809C968()
+unsigned int overworldCoordInteractionUpdate_809C968()
 {
     int v0; // r10
     int v1; // r7
@@ -2028,7 +2028,7 @@ unsigned int sub_809C968()
     int v9; // r3
     int v10; // r1
 
-    sub_8034C36();
+    check_playerCanAdvanceForward_8034C36();
     if ( v4 )
         goto LABEL_23;
     TestEventFlagFromImmediate(2, 36);
@@ -2209,7 +2209,7 @@ signed int sub_809CC00()
         return 1;
     }
     v4 = 1;
-    sub_803F560();
+    battle_getLinkStateCode_803F560();
     if ( !v5 )
     {
         v4 = 0;
@@ -2326,7 +2326,7 @@ signed int sub_809CD60()
     if ( *(v0 + 112) )
     {
         v4 = 1;
-        sub_803F560();
+        battle_getLinkStateCode_803F560();
         if ( v5 || (v4 = 0, !word_200AD04[1]) )
         {
             setByte_200AD04_803F4EC(v4);
@@ -2368,7 +2368,7 @@ int sub_809CDD4()
     else
         sub_809CE40();
     reloadCurNaviStatBoosts_813c3ac();
-    sub_8120D10(0);
+    petNaviTryGiveElementFolder_8120D10(0);
     if ( v1 )
         return 0;
     v2 = 50;
@@ -2392,10 +2392,10 @@ signed int sub_809CE14()
     int v3; // r2
 
     v1 = 1;
-    if ( !sub_803F560() )
+    if ( !battle_getLinkStateCode_803F560() )
     {
         sub_803F644();
-        if ( !v2 && !(sub_803F740(4) >> 32) )
+        if ( !v2 && !(link_getSlotState_803F740(4) >> 32) )
         {
             *(v0 + 116) = v3;
             v1 = 0;
@@ -2432,13 +2432,13 @@ signed int sub_809CE40()
 
 
 // 0x809cf2c
-void *sub_809CF2C()
+void *tryStartBbsGuiCutscene_809CF2C()
 {
     void *result; // r0
     char v1; // zf
     int v2; // r3
 
-    result = sub_8034C36();
+    result = check_playerCanAdvanceForward_8034C36();
     if ( !v1 )
     {
         result = reqBBS_81407D8();
@@ -2592,7 +2592,7 @@ unsigned int sub_809D348()
     (*(&off_809D450 + *(v0 + 9)))();
     if ( *(v0 + 12) )
     {
-        sub_809E3D6();
+        clampPlayerPosition_809E3D6();
         if ( checkCollision_8030b6a(v0 + 28) )
         {
             TestEventFlagFromImmediate(23, 22);
@@ -2608,7 +2608,7 @@ unsigned int sub_809D348()
         }
     }
     overworld_CheckPlayerAdvanceForwardTrigger_809E46E();
-    sub_809DB60();
+    owPlayerInputTick_809DB60();
     sub_809E3A2();
     if ( v4 )
     {
@@ -2679,7 +2679,7 @@ int sub_809D470()
         return sub_809E004(4);
     if ( sub_809DB02() )
         return sub_809E004(8);
-    if ( sub_809DED4() )
+    if ( ow_gatePendingTileInteraction_809DED4() )
         return sub_809E004(12);
     result = sub_809DF28();
     if ( result )
@@ -2710,7 +2710,7 @@ int sub_809D4DC()
         *(v1 + 1) = 0;
         result = sub_809E004(16);
     }
-    else if ( sub_809DED4() )
+    else if ( ow_gatePendingTileInteraction_809DED4() )
     {
         result = sub_809E004(12);
     }
@@ -2829,15 +2829,15 @@ LABEL_8:
     {
         *(v1 + 1) = 0;
         sub_809E004(16);
-        return sub_809DE30();
+        return endSlipRunState_809DE30();
     }
-    if ( sub_809DED4() )
+    if ( ow_gatePendingTileInteraction_809DED4() )
         return sub_809E004(12);
     event_TestPlayerAdvanceForward_809DB50();
     if ( !v2 )
     {
         sub_809E004(20);
-        return sub_809DE30();
+        return endSlipRunState_809DE30();
     }
     if ( overworldObj_testStateBit10_809DAF8() )
     {
@@ -2847,7 +2847,7 @@ LABEL_8:
     {
         return sub_809E004(0);
     }
-    return sub_809DDF0();
+    return oowExitSlipRun_809DDF0();
 }
 
 
@@ -2916,7 +2916,7 @@ signed int sub_809D730()
 
 
 // 0x809d75e
-int sub_809D75E()
+int ow_player_processAction_809D75E()
 {
     _BYTE *v0; // r5
     int v1; // r10
@@ -3011,7 +3011,7 @@ int sub_809D800()
         *(v0 + 8) = *&byte_809D89C[4 * byte_0[v1 + 1]];
     if ( *(v0 + 12) )
     {
-        sub_809E3D6();
+        clampPlayerPosition_809E3D6();
         checkCollision_8030b6a(v0 + 28);
     }
     dword_200ACE8 = *(v0 + 28);
@@ -3299,19 +3299,19 @@ int event_TestPlayerAdvanceForward_809DB50()
 
 
 // 0x809db60
-int sub_809DB60()
+int owPlayerInputTick_809DB60()
 {
     int v0; // r5
     int v1; // r10
     char v2; // zf
     int result; // r0
 
-    sub_809DBC4(byte_809DBF4, (v0 + 52));
+    createOWPlayerInteractionArea_809DBC4(byte_809DBF4, (v0 + 52));
     TestEventFlagFromImmediate(23, 61);
     if ( !v2 || **(v1 + oToolkit_JoypadPtr) & 0xF0 )
-        sub_809DBC4(off_809DCEC[*(v0 + 16)], (v0 + 80));
+        createOWPlayerInteractionArea_809DBC4(off_809DCEC[*(v0 + 16)], (v0 + 80));
     if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_11) )
-        sub_809DBC4(off_809DC0C[*(v0 + 16)], (v0 + 72));
+        createOWPlayerInteractionArea_809DBC4(off_809DC0C[*(v0 + 16)], (v0 + 72));
     result = 0;
     *(v0 + 52) = 0;
     *(v0 + 72) = 0;
@@ -3321,7 +3321,7 @@ int sub_809DB60()
 
 
 // 0x809dbc4
-int __fastcall sub_809DBC4(_DWORD *a1, _DWORD *a2)
+int __fastcall createOWPlayerInteractionArea_809DBC4(_DWORD *a1, _DWORD *a2)
 {
     _DWORD *v2; // r5
     _DWORD *v3; // r7
@@ -3363,7 +3363,7 @@ signed int owPlayer_TickCountdownOrWait_809DDCC()
 
 
 // 0x809ddf0
-int sub_809DDF0()
+int oowExitSlipRun_809DDF0()
 {
     int v0; // r5
     int result; // r0
@@ -3389,7 +3389,7 @@ int sub_809DDF0()
 
 
 // 0x809de30
-int sub_809DE30()
+int endSlipRunState_809DE30()
 {
     int result; // r0
     char v1; // zf
@@ -3452,7 +3452,7 @@ unsigned int sub_809DE98()
 
 
 // 0x809ded4
-int sub_809DED4()
+int ow_gatePendingTileInteraction_809DED4()
 {
     int v0; // r5
     char v1; // zf
@@ -4197,7 +4197,7 @@ signed int __fastcall sub_809E3C4(int a1, int a2, int a3, int a4)
 
 
 // 0x809e3d6
-int sub_809E3D6()
+int clampPlayerPosition_809E3D6()
 {
     int v0; // r10
     int result; // r0

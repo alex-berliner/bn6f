@@ -120,7 +120,7 @@ int __fastcall sub_8072B70(int a1)
 
     v2 = *(v1 + oToolkit_Unk2001c04_Ptr);
     v3 = a1;
-    result = sub_8034C36();
+    result = check_playerCanAdvanceForward_8034C36();
     if ( !v5 )
     {
         v6 = *(v2 + 60);

@@ -1543,8 +1543,8 @@ sub_812E6CC::
 	bl rfu_REQ_stopMode
 	bl rfu_waitREQComplete
 loc_812E6E4::
-	bl sub_8129248
-	bl sub_812B530
+	bl battle_initScene_8129248
+	bl loadEntityJumpOffset00Gfx_812B530
 	bl sub_8132614
 	mov r0, #0x10
 	strb r0, [r5,#3]
@@ -1919,7 +1919,7 @@ sub_812E9AC::
 	bl ZeroFill_byte_3001960
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
-	bl sub_80015FC
+	bl toolkit_applyOverlayPalette_80015FC
 	bl sub_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, r10

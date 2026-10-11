@@ -106,8 +106,8 @@ int sub_8089280()
     v1 = byte_80892A4;
     if ( (**(v0 + oToolkit_CurFramePtr) & 0x1F) < 8 )
         v1 = byte_80892F4;
-    sub_8001158(v1);
-    return sub_8001158(byte_8089344);
+    scriptListRun_8001158(v1);
+    return scriptListRun_8001158(byte_8089344);
 }
 
 

@@ -1196,8 +1196,8 @@ int sub_812CEA4()
             rfu_REQ_stopMode();
             v3 = rfu_waitREQComplete();
         }
-        sub_8129248(v3, v4, v5, v6);
-        sub_812B530();
+        battle_initScene_8129248(v3, v4, v5, v6);
+        loadEntityJumpOffset00Gfx_812B530();
         sub_8132614();
         *(v0 + 3) = 16;
         *(v0 + 30) = 0;
@@ -1615,7 +1615,7 @@ void __noreturn sub_812D298()
     zeroFillVRAM();
     ZeroFill_byte_3001960(v2, v3, v4, v5);
     ZeroFillGFX30025c0();
-    sub_80015FC(16);
+    toolkit_applyOverlayPalette_80015FC(16);
     sub_8046664();
     chatbox_8040818();
     v6 = *(v0 + oToolkit_RenderInfoPtr);

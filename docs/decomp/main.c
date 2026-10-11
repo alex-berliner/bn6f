@@ -18,7 +18,7 @@ void __noreturn main_()
         main_awaitFrame();
         sub_80007BE();
         CallBGScrollCallback1();
-        render_800172C();
+        render_flushDisplayRegisters_800172C();
         copyObjAttributesToIWRAM_802FE0C();
         objRender_8000A44();
         getPalleteAndTransition_80023E0();
@@ -154,7 +154,7 @@ void __cdecl main_static_screen_fade_8000454()
                     if ( (v4 & 0xF) == 15 )
                     {
                         if ( v3 & 0xF )
-                            start_800023C();
+                            entryRomInit_800023C();
                     }
                 }
                 *v5 = v6;
@@ -177,7 +177,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     RandomizeExtraToolkitPointers();
     v1 = SetRenderInfoLCDControl(&loc_C0);
     main_zeroFill_80017EC(v1, v2, v3, v4);
-    render_800172C();
+    render_flushDisplayRegisters_800172C();
     copyMemory_8001850();
     main_static_8000570();
     zeroFill_80007B2();
@@ -186,14 +186,14 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
     bg_ClearTilesAndReloadGraphics_80015B4();
-    copy_800260C();
+    resetOverworldScene_800260C();
     sub_80027C4();
     sub_802FDB0();
     clearWord_e200AC1C();
     clearChatboxAndEvent();
     cleareMemory_802FF2C();
     initNewGameData_8004DF0();
-    sub_8004D48();
+    scenario_prepareEnterMap_8004D48();
     sub_8036ED4();
     sub_8036F24();
     zeroFill_e20094C0();

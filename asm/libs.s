@@ -67,11 +67,11 @@ dword_8144154:
 	thumb_func_end sub_81440D8
 
 // symdb: Reset GBA link-cable hardware and zero multiplayer comm buffers/state.
-// symdb: void sub_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
+// symdb: void link_initAndClear_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
 // symdb: c v {r0 r1 r2 r3} */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8144158.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/link_initAndClear_8144158.yaml
 	thumb_local_start
-sub_8144158:
+link_initAndClear_8144158:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	ldr r6, off_81441EC // =word_2006DFC 
@@ -186,16 +186,16 @@ off_8144238:
 	.word word_2006E02
 off_814423C:
 	.word word_2006E04
-	thumb_func_end sub_8144158
+	thumb_func_end link_initAndClear_8144158
 
-// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then sub_81440D8) for its subsystem, likely once per frame.
+// symdb: Tiny driver routine that runs two back-to-back update steps (link_initAndClear_8144158 then sub_81440D8) for its subsystem, likely once per frame.
 // symdb: void sub_8144240(void); // no meaningful inputs or outputs; caller-saved r0-r3 and flags are
 // symdb: clobbered, r4-r7 preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
 	thumb_func_start sub_8144240
 sub_8144240:
 	push {lr}
-	bl sub_8144158
+	bl link_initAndClear_8144158
 	bl sub_81440D8 // static () -> void
 	pop {r0}
 	bx r0
@@ -244,7 +244,7 @@ loc_814429C:
 	ldrb r0, [r4]
 	cmp r0, #1
 	bne def_8144268
-	bl sub_8144158
+	bl link_initAndClear_8144158
 	ldr r1, off_81442B0 // =eTimerEnable200F460 
 	mov r0, #2
 	strb r0, [r1,#0x1] // (byte_200F461 - 0x200f460)
@@ -2686,11 +2686,11 @@ off_81453D0:
 	thumb_func_end sub_8145210
 
 // symdb: Handles an RFU (wireless) VBlank tick: syncs RFU state, and if the sync returned a non-zero status, sends command 0xF1 and then processes the RFU response queue.
-// symdb: void sub_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
+// symdb: void rfu_handleVBlank_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
 // symdb: clobbered; r4 preserved (not used here) */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81453D4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_handleVBlank_81453D4.yaml
 	thumb_local_start
-sub_81453D4:
+rfu_handleVBlank_81453D4:
 	push {lr}
 	bl rfu_syncVBlank
 	lsl r0, r0, #0x10
@@ -2703,7 +2703,7 @@ sub_81453D4:
 loc_81453EC:
 	pop {r0}
 	bx r0
-	thumb_func_end sub_81453D4
+	thumb_func_end rfu_handleVBlank_81453D4
 
 	thumb_local_start
 sub_81453F0:
@@ -5655,7 +5655,7 @@ off_8146928:
 	thumb_func_start sub_814692C
 sub_814692C:
 	push {lr}
-	bl sub_81453D4
+	bl rfu_handleVBlank_81453D4
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
@@ -22750,7 +22750,7 @@ m4aSoundInit:
 	ldr r0, off_814E900 // =iSoundInfo 
 	bl sub_814ECC8
 	ldr r0, off_814E904 // =iCgbChannels 
-	bl sub_814EB84
+	bl cgbSoundInit_814EB84
 	ldr r0, dword_814E908 // =0x93f400 
 	bl sub_814EE2C
 	ldr r0, dword_814E90C // =0x20 
@@ -23177,11 +23177,11 @@ dword_814EB80:
 	thumb_func_end sub_814EB1C
 
 // symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
-// symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
+// symdb: void cgbSoundInit_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
 // symdb: preserves r4-r6 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814EB84.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cgbSoundInit_814EB84.yaml
 	thumb_local_start
-sub_814EB84:
+cgbSoundInit_814EB84:
 	push {r4-r6,lr}
 	sub sp, sp, #4
 	mov r5, r0
@@ -23242,7 +23242,7 @@ sub_814EB84:
 	str r5, [r4,#0x1c]
 	ldr r0, off_814EC88 // =CgbSound+1 
 	str r0, [r4,#0x28]
-	ldr r0, off_814EC8C // =sub_814F44C+1 
+	ldr r0, off_814EC8C // =soundStartChannel_814F44C+1 
 	str r0, [r4,#0x2c]
 	ldr r0, off_814EC90 // =sub_814F3A4+1 
 	str r0, [r4,#0x30]
@@ -23316,14 +23316,14 @@ off_814EC84:
 off_814EC88:
 	.word CgbSound+1
 off_814EC8C:
-	.word sub_814F44C+1
+	.word soundStartChannel_814F44C+1
 off_814EC90:
 	.word sub_814F3A4+1
 dword_814EC94:
 	.word 0x0
 byte_814EC98:
 	.byte 0x40, 0x0, 0x0, 0x5, 0x2A, 0xDF, 0x70, 0x47
-	thumb_func_end sub_814EB84
+	thumb_func_end cgbSoundInit_814EB84
 
 	thumb_local_start
 sub_814ECA0:
@@ -24478,9 +24478,9 @@ off_814F448:
 // symdb: Starts one of the four APU sound channels (1–4) by writing envelope/length then trigger, returning the trigger register address to the caller.
 // symdb: void soundStartChannel_814F44C(u8 channel /* r0 */, void *ret /* lr */) -> void *triggerReg /*
 // symdb: r1 */; clobbers nz,c,v; flags set by ADDS/#-addition path matching the original exit instruction
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814F44C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/soundStartChannel_814F44C.yaml
 	thumb_local_start
-sub_814F44C:
+soundStartChannel_814F44C:
 	push {lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -24531,13 +24531,13 @@ loc_814F496:
 	bx r0
 off_814F49C:
 	.word Channel4Length_Envelope_NR41_NR42_+1
-	thumb_func_end sub_814F44C
+	thumb_func_end soundStartChannel_814F44C
 
 // symdb: Per-tick update of one GBA sound channel's pan / volume / mute bytes (called from the SIO/stream audio mixer tick)
 // symdb: void soundChannel_tickPanVolume_814F4A0(struct SoundChannel* r0); clobbers r0 r1, returns via lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814F4A0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/soundChannel_tickPanVolume_814F4A0.yaml
 	thumb_local_start
-sub_814F4A0:
+soundChannel_tickPanVolume_814F4A0:
 	push {r4,lr}
 	mov r2, r0
 	ldrb r0, [r2,#2]
@@ -24595,7 +24595,7 @@ loc_814F4EC:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_814F4A0
+	thumb_func_end soundChannel_tickPanVolume_814F4A0
 
 	thumb_local_start
 CgbSound:
@@ -24752,7 +24752,7 @@ loc_814F618:
 	strb r0, [r4,#0x1d]
 	mov r0, r4
 	str r3, [sp,#0x20]
-	bl sub_814F4A0
+	bl soundChannel_tickPanVolume_814F4A0
 	ldr r3, [sp,#0x20]
 	cmp r6, #2
 	beq loc_814F650
@@ -24888,7 +24888,7 @@ loc_814F6F8:
 loc_814F714:
 	lsl r0, r6, #0x18
 	lsr r0, r0, #0x18
-	bl sub_814F44C
+	bl soundStartChannel_814F44C
 	mov r0, #0
 	strb r0, [r4]
 	b loc_814F96A
@@ -24940,7 +24940,7 @@ loc_814F768:
 	strb r0, [r4,#0x1d]
 loc_814F77A:
 	mov r0, r4
-	bl sub_814F4A0
+	bl soundChannel_tickPanVolume_814F4A0
 	ldrb r0, [r4]
 	mov r1, #3
 	and r1, r0

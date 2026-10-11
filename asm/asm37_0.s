@@ -716,11 +716,11 @@ loc_813BBCE:
 	thumb_func_end sub_813BB68
 
 // symdb: Initializes a battle-related state buffer plus three 0x31-byte I/O scratch buffers pulled from the toolkit, then runs the battle sub-init sequence (layout, sprite/cell setup, etc.) on the state buffer.
-// symdb: void sub_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
+// symdb: void battle_initState_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
 // symdb: clobbered, NZCV clobbered, r0..r3 / lr clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BBD4.yaml
-	thumb_func_start sub_813BBD4
-sub_813BBD4:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initState_813BBD4.yaml
+	thumb_func_start battle_initState_813BBD4
+battle_initState_813BBD4:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk200431c_Ptr]
@@ -737,24 +737,24 @@ sub_813BBD4:
 	mov r1, #0x31 
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, r7
-	bl sub_813BC1C
+	bl battle_categorizeRandomIds_813BC1C
 	mov r0, r7
 	bl sub_813BC98
 	bl sub_813BD24
 	bl sub_813BE8C
 	bl sub_813BEA8
 	mov r0, r7
-	bl sub_813C584
+	bl battleItems_countByType_813C584
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BBD4
+	thumb_func_end battle_initState_813BBD4
 
 // symdb: Picks seven random IDs, classifies the corresponding toolkit objects by type, and writes them into two global target arrays (unk_2006CC0 for type-1/2, unk_2006CF8 for other types), while incrementing per-ID occurrence counters for type-1 objects in a caller-supplied byte array.
 // symdb: void battle_categorizeRandomIds_813BC1C(void *byte_array_ptr /* r0 */) — preserves r4-r7;
 // symdb: clobbers r0-r3, flags, lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BC1C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_categorizeRandomIds_813BC1C.yaml
 	thumb_local_start
-sub_813BC1C:
+battle_categorizeRandomIds_813BC1C:
 	push {r4-r7,lr}
 	sub sp, sp, #0x24
 	str r0, [sp,#0x1c]
@@ -820,7 +820,7 @@ loc_813BC8E:
 	bge loc_813BC36
 	add sp, sp, #0x24
 	pop {r4-r7,pc}
-	thumb_func_end sub_813BC1C
+	thumb_func_end battle_categorizeRandomIds_813BC1C
 
 	thumb_local_start
 sub_813BC98:
@@ -1209,9 +1209,9 @@ locret_813BF18:
 // symdb: Returns 1 if event flag 0x1720 is set, 0 otherwise, leaving it for the caller to branch on via NZ (the dead EVENT_1723 test in the assembly is never reached).
 // symdb: void eventFlag1720IsSet_813BF1C(void); // r4-r7 preserved; result is in NZ (R0 = 0/1); clobbers
 // symdb: R0-R3, LR, C, V
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BF1C.yaml
-	thumb_func_start sub_813BF1C
-sub_813BF1C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eventFlag1720IsSet_813BF1C.yaml
+	thumb_func_start eventFlag1720IsSet_813BF1C
+eventFlag1720IsSet_813BF1C:
 	push {r4-r7,lr}
 	mov r6, #1
 	movflag EVENT_1720
@@ -1228,7 +1228,7 @@ loc_813BF38:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_813BF1C
+	thumb_func_end eventFlag1720IsSet_813BF1C
 
 	mov r3, r10
 	ldr r3, [r3,#0x60]
@@ -1850,8 +1850,8 @@ reloadCurNaviStatBoosts_813c3ac:
 	thumb_local_start
 applyNaviStatsMaybe_813C458:
 	push {r4,lr}
-	bl sub_813BBD4
-	bl sub_8136C24
+	bl battle_initState_813BBD4
+	bl battle_refreshPETNaviStats_8136C24
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
 	mov r0, #0
@@ -1945,10 +1945,10 @@ byte_813C550:
 	thumb_func_end sub_813C4C8
 
 // symdb: Scans the battle-item grid, counting each item into a per-type tally array supplied by the caller.
-// symdb: void sub_813C584(u8* count_array /* r0 */);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813C584.yaml
+// symdb: void battleItems_countByType_813C584(u8* count_array /* r0 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleItems_countByType_813C584.yaml
 	thumb_local_start
-sub_813C584:
+battleItems_countByType_813C584:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -2031,7 +2031,7 @@ loc_813C61E:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813C584
+	thumb_func_end battleItems_countByType_813C584
 
 	thumb_local_start
 sub_813C624:
@@ -2164,7 +2164,7 @@ loc_813C730:
 	cmp r6, #0x31 
 	blt loc_813C710
 	bl petnavi_setStat42ToStat3EPlusCounter_803CED4
-	bl sub_813CEA0 // () -> void
+	bl battle_clearIncompatibleChipSlot_813CEA0 // () -> void
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -3282,9 +3282,9 @@ sub_813CE90:
 // symdb: If the PET Navi's equipped chip has an element level exceeding the Navi's stat-9 threshold, mark that chip slot as consumed (0xFF).
 // symdb: void battle_clearIncompatibleChipSlot_813CEA0(void /* R10 = toolkit ptr */); /* returns R2 =
 // symdb: leftover from split9BitsFromBitfield_8021AE0 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813CEA0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearIncompatibleChipSlot_813CEA0.yaml
 	thumb_local_start
-sub_813CEA0:
+battle_clearIncompatibleChipSlot_813CEA0:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	mov r0, #0
@@ -3324,7 +3324,7 @@ loc_813CEF2:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CEA0
+	thumb_func_end battle_clearIncompatibleChipSlot_813CEA0
 
 	thumb_local_start
 sub_813CEF8:

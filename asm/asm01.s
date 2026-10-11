@@ -262,7 +262,7 @@ loc_801FF84:
 	ldrb r1, [r0,#oBattleState_Unk_11]
 	strb r1, [r5,#0x6] // (byte_2036786 - 0x2036780)
 	mov r0, #4
-	bl sub_803F740
+	bl link_getSlotState_803F740
 	strh r0, [r5,#0xc] // (word_203678C - 0x2036780)
 	ldrb r0, [r4,#0x2] // (eStruct203F7D8+2 - 0x203f7d8)
 	mov r1, #1
@@ -385,7 +385,7 @@ loc_802005A:
 	ldrb r1, [r0,#oBattleState_Unk_11]
 	strb r1, [r5,#0x6] // (byte_2036786 - 0x2036780)
 	mov r0, #4
-	bl sub_803F740
+	bl link_getSlotState_803F740
 	strh r0, [r5,#0xc] // (word_203678C - 0x2036780)
 	ldrb r0, [r4,#2]
 	mov r1, #1

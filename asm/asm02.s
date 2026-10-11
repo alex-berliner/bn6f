@@ -379,9 +379,9 @@ loc_8021C9A:
 // symdb: r10 (toolkit* in, preserved) -> r0 (u32 total chip-slot count), r4-r7 preserved, clobbers r1-r3,
 // symdb: lr, flags; internally calls getChip8021DA8(idx) -> ChipData*, encryption_testPack_8006e84(idx)
 // symdb: -> Z set means eligible
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8021CA8.yaml
-	thumb_func_start sub_8021CA8
-sub_8021CA8:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_countValidChipSlots_8021CA8.yaml
+	thumb_func_start battle_countValidChipSlots_8021CA8
+battle_countValidChipSlots_8021CA8:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r5, #0
@@ -433,7 +433,7 @@ loc_8021CF4:
 	.balign 4, 0
 off_8021D04:
 	.word 0x140
-	thumb_func_end sub_8021CA8
+	thumb_func_end battle_countValidChipSlots_8021CA8
 
 // symdb: Zero-fills a 0x5C0-byte work buffer at 0x203A0A0, likely resetting battle state between encounters.
 // symdb: void sub_8021D08(void) // clobbers r0, r1, lr, flags; preserves r2, r3 (callers observe r2 pass

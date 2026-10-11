@@ -280,7 +280,7 @@ sub_809D348:
 	ldrb r0, [r5,#oOWPlayerObject_wallCollision_0c]
 	tst r0, r0
 	beq loc_809D3BC
-	bl sub_809E3D6
+	bl clampPlayerPosition_809E3D6
 	mov r0, #oOWPlayerObject_Coords
 	add r0, r0, r5
 	bl checkCollision_8030b6a
@@ -302,7 +302,7 @@ loc_809D3A8:
 	bl sub_809DE60
 loc_809D3BC:
 	bl overworld_CheckPlayerAdvanceForwardTrigger_809E46E
-	bl sub_809DB60
+	bl owPlayerInputTick_809DB60
 	bl sub_809E3A2
 	bne loc_809D3E6
 	ldrb r0, [r5,#oOWPlayerObject_InteractionLocked]
@@ -369,7 +369,7 @@ off_809D450:
 	.word sub_809D470+1
 	.word sub_809D4DC+1
 	.word sub_809D61A+1
-	.word sub_809D75E+1
+	.word ow_player_processAction_809D75E+1
 	.word sub_809D800+1
 	.word sub_809D8F4+1
 off_809D468:
@@ -409,7 +409,7 @@ loc_809D4A2:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	pop {r4,pc}
 loc_809D4B2:
-	bl sub_809DED4
+	bl ow_gatePendingTileInteraction_809DED4
 	tst r0, r0
 	beq loc_809D4C2
 	mov r0, #0xc
@@ -457,7 +457,7 @@ loc_809D4FC:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b locret_809D552
 loc_809D510:
-	bl sub_809DED4
+	bl ow_gatePendingTileInteraction_809DED4
 	tst r0, r0
 	beq loc_809D520
 	mov r0, #0xc
@@ -629,10 +629,10 @@ loc_809D650:
 	strb r0, [r7,#1]
 	mov r0, #0x10
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
-	bl sub_809DE30
+	bl endSlipRunState_809DE30
 	b locret_809D6AE
 loc_809D668:
-	bl sub_809DED4
+	bl ow_gatePendingTileInteraction_809DED4
 	tst r0, r0
 	beq loc_809D678
 	mov r0, #0xc
@@ -643,7 +643,7 @@ loc_809D678:
 	beq loc_809D68A
 	mov r0, #0x14
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
-	bl sub_809DE30
+	bl endSlipRunState_809DE30
 	b locret_809D6AE
 loc_809D68A:
 	bl overworldObj_testStateBit10_809DAF8
@@ -660,7 +660,7 @@ loc_809D69A:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b locret_809D6AE
 loc_809D6AA:
-	bl sub_809DDF0
+	bl oowExitSlipRun_809DDF0
 locret_809D6AE:
 	pop {pc}
 	.balign 4, 0
@@ -762,9 +762,9 @@ loc_809D750:
 
 // symdb: Dispatches one overworld player action via a jump table, consumes any pending animation requested by the handler, and initiates a scene transition if needed.
 // symdb: void ow_player_processAction(u32 player_obj /*r5*/, u32 toolkit /*r10*/) -> r0, nz, c, v
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809D75E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_player_processAction_809D75E.yaml
 	thumb_local_start
-sub_809D75E:
+ow_player_processAction_809D75E:
 	push {lr}
 	ldr r7, off_809D7A4 // =off_809D798 
 	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
@@ -801,7 +801,7 @@ off_809D798:
 	.word sub_809D7D8+1
 off_809D7A4:
 	.word off_809D798
-	thumb_func_end sub_809D75E
+	thumb_func_end ow_player_processAction_809D75E
 
 	thumb_local_start
 // chat triggered
@@ -910,7 +910,7 @@ loc_809D844:
 	ldrb r0, [r5,#oOWPlayerObject_wallCollision_0c]
 	tst r0, r0
 	beq loc_809D856
-	bl sub_809E3D6
+	bl clampPlayerPosition_809E3D6
 	mov r0, #0x1c
 	add r0, r0, r5
 	bl checkCollision_8030b6a
@@ -956,7 +956,7 @@ off_809D8B0:
 	.word sub_809D470+1
 	.word sub_809D4DC+1
 	.word sub_809D61A+1
-	.word sub_809D75E+1
+	.word ow_player_processAction_809D75E+1
 	.word sub_809D800+1
 	.word sub_809D8F4+1
 off_809D8C8:
@@ -1320,17 +1320,17 @@ locret_809DB5E:
 	thumb_func_end event_TestPlayerAdvanceForward_809DB50
 
 // symdb: Overworld player tick: primes Unk_34 animation slot, refreshes Unk_50 from the slip/arrow table and Unk_48 from the game-state table, then clears all three slots.
-// symdb: void sub_809DB60(/* r5=OWPlayerObject*, r10=Toolkit* */);   inputs: r5 (OWPlayerObject*), r10
+// symdb: void owPlayerInputTick_809DB60(/* r5=OWPlayerObject*, r10=Toolkit* */);   inputs: r5 (OWPlayerObject*), r10
 // symdb: (Toolkit*), lr (return)   outputs: r4 r5 (preserved per contract)   clobbers: nz c v r0 r1 r2 r3
 // symdb: r6 r7 lr   preserved: r5
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DB60.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayerInputTick_809DB60.yaml
 	thumb_local_start
-sub_809DB60:
+owPlayerInputTick_809DB60:
 	push {lr}
 	ldr r0, off_809DBF0 // =byte_809DBF4
 	mov r1, #oOWPlayerObject_Unk_34
 	add r1, r1, r5
-	bl sub_809DBC4
+	bl createOWPlayerInteractionArea_809DBC4
 	movflag EVENT_IN_SLIPRUN_STATE
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_809DB82
@@ -1347,7 +1347,7 @@ loc_809DB82:
 	ldr r0, [r7,r0]
 	mov r1, #oOWPlayerObject_Unk_50
 	add r1, r1, r5
-	bl sub_809DBC4
+	bl createOWPlayerInteractionArea_809DBC4
 loc_809DB92:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
@@ -1360,7 +1360,7 @@ loc_809DB92:
 	ldr r0, [r7,r0]
 	mov r1, #oOWPlayerObject_Unk_48
 	add r1, r1, r5
-	bl sub_809DBC4
+	bl createOWPlayerInteractionArea_809DBC4
 loc_809DBAC:
 	mov r0, #0
 	mov r3, #oOWPlayerObject_Unk_34
@@ -1375,16 +1375,16 @@ off_809DBBC:
 	.word off_809DC0C
 off_809DBC0:
 	.word off_809DCEC
-	thumb_func_end sub_809DB60
+	thumb_func_end owPlayerInputTick_809DB60
 
 // symdb: Builds an OW interaction area on the player object using a template struct's offsets plus the player's world position, then stores the new handle at the caller-supplied output pointer.
-// symdb: void sub_809DBC4(u32 area_struct /* r0: ptr to ow_player_interaction_area_struct template */,
+// symdb: void createOWPlayerInteractionArea_809DBC4(u32 area_struct /* r0: ptr to ow_player_interaction_area_struct template */,
 // symdb: u32 out_handle_ptr /* r1: ptr to write the created area handle into */,                  u32
 // symdb: player_obj /* r5: ptr to OW player object */); // flags clobbered; r4, r5 (preserved across
 // symdb: callee) preserved on return
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DBC4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/createOWPlayerInteractionArea_809DBC4.yaml
 	thumb_local_start
-sub_809DBC4:
+createOWPlayerInteractionArea_809DBC4:
 	push {r5,lr}
 	mov r7, r0
 	mov r2, #0
@@ -1600,7 +1600,7 @@ byte_809DDB4:
 		flags_10: OW_OBJECT_INTERACTION_AREA_FLAG_0x200000,
 		flags_14: (OW_OBJECT_INTERACTION_AREA_FLAG_0x400000 | OW_OBJECT_INTERACTION_AREA_FLAG_0x800000)
 	]
-	thumb_func_end sub_809DBC4
+	thumb_func_end createOWPlayerInteractionArea_809DBC4
 
 // symdb: Ticks an overworld player object's 16-bit countdown in Unk_18, and once it expires only reports "not done" while the 0xC00000 status bits of Unk_50 are set.
 // symdb: bool sub_809DDCC(OWPlayerObject *r5); // clobbers r1, r2; sets c/v from the SUBS on the
@@ -1631,11 +1631,11 @@ dword_809DDEC:
 	thumb_func_end owPlayer_TickCountdownOrWait_809DDCC
 
 // symdb: Overworld: exits the player's slip-run state when the slip-run event is no longer active.
-// symdb: void sub_809DDF0(void) /* r5=OWPlayerObject*, r10=?, lr=ret; trashes r0-r3, r6, r7, nz/c/v, lr
+// symdb: void oowExitSlipRun_809DDF0(void) /* r5=OWPlayerObject*, r10=?, lr=ret; trashes r0-r3, r6, r7, nz/c/v, lr
 // symdb: */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DDF0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/oowExitSlipRun_809DDF0.yaml
 	thumb_local_start
-sub_809DDF0:
+oowExitSlipRun_809DDF0:
 	push {lr}
 	movflag EVENT_1716
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1659,13 +1659,13 @@ locret_809DE2A:
 	.balign 4, 0
 dword_809DE2C:
 	.word 0xC00000
-	thumb_func_end sub_809DDF0
+	thumb_func_end oowExitSlipRun_809DDF0
 
 // symdb: If the EVENT_1716 gate is active, finalize the player's slip-run: optionally mark EVENT_173F, then clear the in-slip-run flag and EVENT_173E.
 // symdb: void endSlipRunState_809DE30(void);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DE30.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/endSlipRunState_809DE30.yaml
 	thumb_local_start
-sub_809DE30:
+endSlipRunState_809DE30:
 	push {lr}
 	movflag EVENT_1716
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1682,7 +1682,7 @@ loc_809DE4E:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 locret_809DE5E:
 	pop {pc}
-	thumb_func_end sub_809DE30
+	thumb_func_end endSlipRunState_809DE30
 
 	thumb_local_start
 sub_809DE60:
@@ -1745,9 +1745,9 @@ locret_809DED2:
 // symdb: Overworld dispatcher that suppresses a pending tile-interaction request while the PET menu's data flag is set or a cutscene is running, otherwise hands it off to the tile-interaction handler.
 // symdb: void ow_gatePendingTileInteraction_809DED4(void); // in: r5 = overworld player object pointer;
 // symdb: out: r0 (handler return value); clobbers r0,r2,r5,r8,r9,r10,r11,r12,r1,r3,r4,r6,r7,lr,NZCV
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DED4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_gatePendingTileInteraction_809DED4.yaml
 	thumb_local_start
-sub_809DED4:
+ow_gatePendingTileInteraction_809DED4:
 	push {lr}
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -1772,7 +1772,7 @@ off_809DEF8:
 	.word ow_tryTileInteraction_809DF00+1
 off_809DEFC:
 	.word off_809DEF8
-	thumb_func_end sub_809DED4
+	thumb_func_end ow_gatePendingTileInteraction_809DED4
 
 // symdb: Handles the player attempting to interact with the tile in front of them, either rejecting it when interaction is blocked or forwarding the tile's interaction value to the game state.
 // symdb: u32 ow_tryTileInteraction_809DF00(OWPlayerObject* r5 player, Toolkit* r10 toolkit); returns 1 if
@@ -2729,10 +2729,10 @@ sub_809E3C4:
 	thumb_func_end sub_809E3C4
 
 // symdb: Overworld per-frame clamp: pushes the player object's X/Y coordinates out to the bounding box stored in eStruct2000aa0 when its enable flag is set.
-// symdb: void sub_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809E3D6.yaml
+// symdb: void clampPlayerPosition_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clampPlayerPosition_809E3D6.yaml
 	thumb_local_start
-sub_809E3D6:
+clampPlayerPosition_809E3D6:
 	push {r4-r7,lr}
 	ldr r4, off_809E430 // =eStruct2000aa0 
 	ldrb r0, [r4,#0xb] // (byte_2000AAB - 0x2000aa0)
@@ -2784,7 +2784,7 @@ locret_809E42C:
 	.balign 4, 0
 off_809E430:
 	.word eStruct2000aa0
-	thumb_func_end sub_809E3D6
+	thumb_func_end clampPlayerPosition_809E3D6
 
 // symdb: Returns the current sprite frame parameters of the overworld player object.
 // symdb: void getOWPlayerSpriteFrameParameters(u32 r10=toolkit, void* r5 /*unused input, overwritten*/,

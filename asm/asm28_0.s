@@ -1,9 +1,9 @@
 
 // symdb: Cutscene native: delivers the mail referenced by the current cutscene command and updates its received/done flags.
 // symdb: void deliverCutsceneMail(void) // r5 = cutscene command data ptr; returns r0=0, sets NZ flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8098BE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/deliverCutsceneMail_8098BE8.yaml
 	thumb_local_start
-sub_8098BE8:
+deliverCutsceneMail_8098BE8:
 	push {r4-r7,lr}
 	ldr r0, dword_8098C1C // =0x1ca0 
 	ldrb r1, [r5,#6]
@@ -321,7 +321,7 @@ start_battle_809913C:
 	mov r1, #1
 	bl StartBattle
 	ldrh r0, [r5, #4]
-	bl sub_803522E
+	bl handleDriveOutEvents_803522E
 	ldrb r0, [r5, #7]
 	tst r0, r0
 	beq loc_809915E
@@ -421,7 +421,7 @@ CutsceneScriptLMessage_80991F4:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_8098BE8
+	thumb_func_end deliverCutsceneMail_8098BE8
 
 	thumb_local_start
 RunLMessageTextScript:
@@ -889,7 +889,7 @@ sub_8099E3C:
 	mov r6, r10
 	ldr r6, [r6, #0x2c]
 	str r0, [r6, #0x4c]
-	bl sub_809FC96
+	bl mysteryData_lookupForNavi_809FC96
 	str r0, [r6, #0x54]
 	str r1, [r6, #0x58]
 	strb r2, [r5, #4]
@@ -4015,7 +4015,7 @@ loc_809C050:
 	ldrb r0, [r7,#0x14]
 	bl SetCurPETNavi
 	bl reloadCurNaviBaseStats_8120df0
-	bl sub_8033FDC
+	bl resetPetNaviSetup_8033FDC
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -4601,13 +4601,13 @@ sub_809C954:
 	thumb_func_end sub_809C954
 
 // symdb: Overworld coord-interaction update: records a valid interaction coord (0x30–0x33) into the player object while EVENT_1B9 is clear, and otherwise drives a cutscene entry gated by key item count.
-// symdb: void sub_809C968(struct Toolkit *toolkit /* r10 */); // r2 produced (callee leftover from
+// symdb: void overworldCoordInteractionUpdate_809C968(struct Toolkit *toolkit /* r10 */); // r2 produced (callee leftover from
 // symdb: helpers); r4-r7, r10 preserved; NZCV clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C968.yaml
-	thumb_func_start sub_809C968
-sub_809C968:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/overworldCoordInteractionUpdate_809C968.yaml
+	thumb_func_start overworldCoordInteractionUpdate_809C968
+overworldCoordInteractionUpdate_809C968:
 	push {r4-r7,lr}
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq loc_809CA26
 	movflag EVENT_224
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -4700,7 +4700,7 @@ off_809CA38:
 	.word off_809C0F0
 off_809CA3C:
 	.word byte_809C354 // CutsceneScript
-	thumb_func_end sub_809C968
+	thumb_func_end overworldCoordInteractionUpdate_809C968
 
 	thumb_func_start sub_809CA40
 sub_809CA40:
@@ -4923,7 +4923,7 @@ loc_809CC1C:
 	mov r6, #0
 	mov r4, #1
 	mov r7, r12
-	bl sub_803F560
+	bl battle_getLinkStateCode_803F560
 	mov r12, r7
 	beq loc_809CC3E
 	mov r6, #1
@@ -5083,7 +5083,7 @@ loc_809CD7C:
 	mov r6, #0
 	mov r4, #1
 	mov r7, r12
-	bl sub_803F560
+	bl battle_getLinkStateCode_803F560
 	mov r12, r7
 	beq loc_809CD9E
 	mov r6, #1
@@ -5141,7 +5141,7 @@ loc_809CDE4:
 loc_809CDE8:
 	bl reloadCurNaviStatBoosts_813c3ac
 	mov r0, #0
-	bl sub_8120D10
+	bl petNaviTryGiveElementFolder_8120D10
 	beq loc_809CE0E
 	mov r0, #0x32
 	cmp r1, #0x10
@@ -5168,14 +5168,14 @@ sub_809CE14:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r7, r12
-	bl sub_803F560
+	bl battle_getLinkStateCode_803F560
 	mov r12, r7
 	tst r0, r0
 	bne loc_809CE38
 	bl sub_803F644
 	beq loc_809CE38
 	mov r0, #4
-	bl sub_803F740
+	bl link_getSlotState_803F740
 	tst r1, r1
 	bne loc_809CE38
 	str r2, [r5,#0x74]
@@ -5280,12 +5280,12 @@ cutscenescript_809CF28:
 	thumb_func_end sub_809CE40
 
 // symdb: Starts the BBS GUI cutscene if the global cond-check passes and a BBS request is pending.
-// symdb: void sub_809CF2C(void); // in: none, out: nz/c/v (BEQ branches), preserved r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CF2C.yaml
-	thumb_func_start sub_809CF2C
-sub_809CF2C:
+// symdb: void tryStartBbsGuiCutscene_809CF2C(void); // in: none, out: nz/c/v (BEQ branches), preserved r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/tryStartBbsGuiCutscene_809CF2C.yaml
+	thumb_func_start tryStartBbsGuiCutscene_809CF2C
+tryStartBbsGuiCutscene_809CF2C:
 	push {r4-r7,lr}
-	bl sub_8034C36
+	bl check_playerCanAdvanceForward_8034C36
 	beq locret_809CF4E
 	bl reqBBS_81407D8
 	tst r0, r0
@@ -5307,6 +5307,6 @@ dword_809CF54:
 	.word 0xE
 off_809CF58:
 	.word eReqBBSGui
-	thumb_func_end sub_809CF2C
+	thumb_func_end tryStartBbsGuiCutscene_809CF2C
 
 /*For debugging purposes, connect comment at any range!*/

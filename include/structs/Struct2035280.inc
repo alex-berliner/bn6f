@@ -14,7 +14,7 @@
 	struct_org 0x44
 	flags32 UnkFlags_44 // loc=0x44
 
-  // sub_801BE70 implies 0x60
+  // resetBattleBuffers_801BE70 implies 0x60
   struct_org 0x60
   u0 Size // loc=0x60
 

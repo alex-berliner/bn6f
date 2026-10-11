@@ -605,7 +605,7 @@ LABEL_10:
 
 
 // 0x813bbd4
-int sub_813BBD4()
+int battle_initState_813BBD4()
 {
     int v0; // r10
     int v1; // r7
@@ -615,17 +615,17 @@ int sub_813BBD4()
     ZeroFillByByte(&unk_2006CF8, 49);
     ZeroFillByByte(&unk_2006C88, 49);
     ZeroFillByByte(&unk_2006CC0, 49);
-    sub_813BC1C(v1);
+    battle_categorizeRandomIds_813BC1C(v1);
     sub_813BC98(v1);
     sub_813BD24();
     sub_813BE8C();
     sub_813BEA8();
-    return sub_813C584(v1);
+    return battleItems_countByType_813C584(v1);
 }
 
 
 // 0x813bc1c
-int __fastcall sub_813BC1C(int a1)
+int __fastcall battle_categorizeRandomIds_813BC1C(int a1)
 {
     int v1; // r6
     int v2; // r5
@@ -1021,7 +1021,7 @@ signed int __fastcall getUnk200431cTableByteCapped3_813BF0C(int a1)
 
 
 // 0x813bf1c
-signed int sub_813BF1C()
+signed int eventFlag1720IsSet_813BF1C()
 {
     signed int v0; // r6
     char v1; // zf
@@ -1444,8 +1444,8 @@ int applyNaviStatsMaybe_813C458()
 {
     int v0; // r4
 
-    sub_813BBD4();
-    sub_8136C24();
+    battle_initState_813BBD4();
+    battle_refreshPETNaviStats_8136C24();
     v0 = getPETNaviSelect();
     sub_80010BE(0);
     sub_813C678();
@@ -1494,7 +1494,7 @@ int sub_813C4C8()
 
 
 // 0x813c584
-int __fastcall sub_813C584(int a1)
+int __fastcall battleItems_countByType_813C584(int a1)
 {
     int v1; // r7
     int v2; // r5
@@ -1662,7 +1662,7 @@ LABEL_8:
     }
     while ( v10 < 49 );
     petnavi_setStat42ToStat3EPlusCounter_803CED4();
-    return sub_813CEA0();
+    return battle_clearIncompatibleChipSlot_813CEA0();
 }
 
 
@@ -2453,7 +2453,7 @@ int sub_813CE90()
 
 // 0x813cea0
 // () -> void
-int sub_813CEA0()
+int battle_clearIncompatibleChipSlot_813CEA0()
 {
     int v0; // r10
     int v1; // r7

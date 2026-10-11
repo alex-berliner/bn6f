@@ -19,9 +19,9 @@ signed int __fastcall sub_812D3A8(int a1, int a2, int a3, int a4)
 
 	ZeroFillByEightWords(word_2023FA0, 32);
 	sub_8120A88();
-	v8 = sub_811FE7C(&unk_2023FC0, 1, v6, v7) + 1;
+	v8 = buildChipSearchTable_811FE7C(&unk_2023FC0, 1, v6, v7) + 1;
 	*(v4 + 40) = v8;
-	sub_8120018(&unk_2023FC0, v8, 5, 4);
+	battle_fieldLockDispatch_8120018(&unk_2023FC0, v8, 5, 4);
 	v9 = *(v5 + oToolkit_Unk2001c04_Ptr);
 	*(v9 + 2) = 5;
 	result = 4;
@@ -38,7 +38,7 @@ int sub_812D3E4()
 	v0 = sub_812D6F8();
 	sub_8120194(*(v0 + 23), word_2023FA0, &unk_202DFA0);
 	CopyBackgroundTiles(3, 4, 2, &unk_202DFA0, 8, &dword_C + 2);
-	sub_8120390(*(v0 + 23), word_2023FA0, &unk_202E080, byte_812C288);
+	battle_loadFolderChipGfx_8120390(*(v0 + 23), word_2023FA0, &unk_202E080, byte_812C288);
 	CopyBackgroundTiles(1, 4, 2, &unk_202E080, 2, &dword_C + 2);
 	sub_81203E4(*(v0 + 23), word_2023FA0, &unk_202E0B8, &dword_35C | 0x9000);
 	CopyBackgroundTiles(11, 4, 2, &unk_202E0B8, 2, &dword_C + 2);
@@ -349,7 +349,7 @@ signed int sub_812D7A4()
 	*(v5 + 3) = v8;
 	if ( *(v1 + 20) != 1 )
 	{
-		sub_8120018(&unk_2023FC0, *(v1 + 20) - 1, v6, v8);
+		battle_fieldLockDispatch_8120018(&unk_2023FC0, *(v1 + 20) - 1, v6, v8);
 		sub_812D5A0();
 	}
 	return 1;

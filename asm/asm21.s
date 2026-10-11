@@ -42,7 +42,7 @@ sub_8080DA0:
 	cmp r0, #1
 	beq locret_8080DE8
 	bl sub_803537C
-	bl sub_8035424
+	bl battle_loadDeathAnims_8035424
 locret_8080DE8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8080DA0
@@ -72,7 +72,7 @@ sub_8080DEA:
 	ldr r0, [r0,r1]
 	bl LoadGFXAnims // (gfx_anim_data_arr: * FFStop32<[GFXAnimScript]>) -> ()
 	bl sub_803537C
-	bl sub_8035424
+	bl battle_loadDeathAnims_8035424
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8080E2C:

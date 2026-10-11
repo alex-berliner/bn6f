@@ -1397,8 +1397,8 @@ int sub_812FDC0()
             rfu_waitREQComplete();
         }
         sub_8130850();
-        sub_8129248(v3, v4, v5, v6);
-        sub_812B530();
+        battle_initScene_8129248(v3, v4, v5, v6);
+        loadEntityJumpOffset00Gfx_812B530();
         sub_8132614();
         *(v0 + 3) = 16;
         *(v0 + 30) = 0;

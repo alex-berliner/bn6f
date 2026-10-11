@@ -101,7 +101,7 @@ void npc_standard_809E5E2()
         v4 = sub_8035694((v0 + 36));
     sprite_setPriority_8002E14(v4);
     if ( *(v0 + 96) & 0x40 )
-        sub_809F922();
+        recordCapsule_809F922();
 }
 
 
@@ -481,7 +481,7 @@ void npc_inChatbox_809EADA()
     sprite_update(v0);
     npc_createInteractionAreas_809F526();
     if ( *(v0 + 96) & 0x40 )
-        sub_809F922();
+        recordCapsule_809F922();
 }
 
 
@@ -522,7 +522,7 @@ int __fastcall npc_inChatbox_curAction_init_809EB20(int a1, int a2, int a3, int 
             chatbox = tk->chatbox;
             v10 = *npc->pad_90;
             chatbox->unk_4C = v10;
-            flags = sub_809FC96(v10);
+            flags = mysteryData_lookupForNavi_809FC96(v10);
             chatbox->unk_54 = flags;
             chatbox->unk_58 = v11;
             npc->scriptArrayOffset = v12;
