@@ -146,6 +146,14 @@ MapScriptCutsceneCmd_jump_if_progress_in_range: // 8035932
 // byte1 - memory param
 // event16_2 - flag to test
 // destination4 - script to jump to
+// symdb: Map-script cutscene command that branches the script cursor to a stored 32-bit offset when the selected 16-bit event flag is set, otherwise skips past the 8-byte target slot.
+// symdb: /* r5 = flag_table (base of 16-bit event-flag table),  * r7 = position (current script cursor),
+// symdb: * lr = return address */ void MapScriptCutsceneCmd_jump_if_flag_set(u32 flag_table /* r5 */, u32
+// symdb: position /* r7 */); /* -> r0 = 1 (always),  *    r4 = jump-target word when flag set, else the
+// symdb: resolved event flag value,  *    r7 = new script cursor (jump target when set, position+8 when
+// symdb: clear),  *    flags NZ (NZ set), C/V undefined from pop {pc} */ /* clobbers r0, r1, r3, r4, r6,
+// symdb: r7, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump_if_flag_set.yaml
 MapScriptCutsceneCmd_jump_if_flag_set: // 8035962
 	push {lr}
 	mov r6, #1
@@ -179,6 +187,11 @@ MapScriptCutsceneCmd_jump_if_flag_set: // 8035962
 // byte1 - number of flags to test
 // event16_2 - starting flag to test
 // destination4 - script to jump to
+// symdb: In a map cutscene script, if every bit in an event-flag range is set, jump to an inline offset; otherwise skip past the 8-byte command.
+// symdb: u32 MapScriptCutsceneCmd_jump_if_flag_range_set(void /* r7=script_pos in/out, r10=script base,
+// symdb: lr=return */); // clobbers r0=1, r1,r3,r4=last read, r5,r6,r7=new pos; C/V from final adds, NZ
+// symdb: from mov r0,#1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump_if_flag_range_set.yaml
 MapScriptCutsceneCmd_jump_if_flag_range_set: // 8035992
 	push {lr}
 	mov r6, #1
@@ -671,6 +684,11 @@ MapScriptCmd_jump_if_game_state_44_not_equal: // 8035C4A
 // 0x16 0x01 destination2
 // jump if the current map group equals the last map group
 // destination2 - script to jump to
+// symdb: Map-script opcode that conditionally jumps if the current map group equals (or, via the mode byte, not equals) the previous map group.
+// symdb: void mapScriptCmd_jumpIfMapGroupEqLastMapGroup_8035C6E(void);   inputs:  r7 (script PC), r10
+// symdb: (toolkit), lr (return)   outputs: nz (r0=1), r7 (advanced script PC: jump target on match, else
+// symdb: PC+6)   clobbers: r0, r1, r4, r6, c, v   preserved: -
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCmd_jump_if_map_group_compare_last_map_group.yaml
 MapScriptCmd_jump_if_map_group_compare_last_map_group: // 8035C6E
 	push {lr}
 	mov r6, #1
@@ -1453,6 +1471,12 @@ RunContinuousMapScript:
 
 	thumb_func_start RunSecondaryContinuousMapScript
 // called every frame
+// symdb: Runs the secondary continuous map script by dispatching each op byte through MapScriptCommandJumptable until a handler returns zero.
+// symdb: void runSecondaryContinuousMapScript_8036064(void)   // inputs (from caller / loop entry): r1,
+// symdb: r2, r3, r8, r9, r10, r11, lr   // outputs to caller (after last handler): r1, r2, r9, r10, r11
+// symdb: // clobbers: r0, r3, r8, lr, flags N/Z/C/V   // preserved across the function: r4, r5, r6, r7,
+// symdb: r12   // per-iteration loop exit: handler bx-target returns Z-set → break; Z-clear → continue
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunSecondaryContinuousMapScript.yaml
 RunSecondaryContinuousMapScript:
 	push {r4-r7,lr}
 	mov r4, r12
@@ -1559,6 +1583,12 @@ ReadMapScriptSignedHalfword: // 80360B6
 	spoils: r6
 	preserves: r7
 	unused: r0-r3,r5,r8-r12*/
+// symdb: Reads a 32-bit big-endian word from the map script stream and advances the cursor.
+// symdb: u32 mapScript_ReadWord(void);   // inputs:  r6 = byte offset into script, r7 = script base
+// symdb: pointer   // outputs: r4 = 32-bit big-endian word read from [base+offset]   //          r7 =
+// symdb: restored base pointer (r7 += r6, then restored on return)   //          r6 = trashed (last byte
+// symdb: of the word)   // flags:    N/Z set per the result value; C/V clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadMapScriptWord.yaml
 ReadMapScriptWord: // 80360C8
 	push {r7,lr}
 	add r7, r7, r6
@@ -2682,6 +2712,10 @@ loc_8036F7E:
 	mov pc, lr
 	thumb_func_end cutscene_checkOriginalCutsceneScriptPos_8036F70
 
+// symdb: Returns true (with SELECT button bit set) when a fade is in progress and the player presses SELECT, letting a cutscene be skipped.
+// symdb: bool TryCutsceneSkip(void /* r10 = toolkit */) -> r1 (carry preserved), Z reflects the skip
+// symdb: eligibility (Z=1 = not eligible because no fade), NZ otherwise reflects (pressed & SELECT)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TryCutsceneSkip.yaml
 	thumb_local_start
 TryCutsceneSkip:
 	push {r4-r7,lr}
@@ -2824,6 +2858,12 @@ CutsceneCameraCmd_set_camera_pos:
 // signedhword3 - x offset
 // signedhword5 - y offset
 // signedhword7 - z offset
+// symdb: Cutscene camera command that scrolls the camera along X/Y/Z by signed 8.8 deltas from the script for a scripted number of ticks.
+// symdb: void CutsceneCameraCmd_simple_scroll(u16* scriptCursor /*r1*/, u32 unused /*r2*/, u32 unused
+// symdb: /*r3*/, struct CutsceneCameraInfo* info /*r5*/, struct Toolkit* toolkit /*r10*/) -> u8
+// symdb: keepRunning /*r0*/, u16* nextCursor /*r1*/; flags NZCV set (timer<=0 path: ADDS r1,r1,#9;
+// symdb: timer>0 path: CMP #0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCameraCmd_simple_scroll.yaml
 CutsceneCameraCmd_simple_scroll:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneCameraInfo_CommandInitialized]
@@ -2885,6 +2925,11 @@ CutsceneCameraCmd_end:
 // 0x0c hword1
 // wait a certain amount of frames
 // hword1 - number of frames to wait
+// symdb: cutscene-camera command "wait": on first run, loads a halfword duration from the camera script into the timer; every run decrements it and, when it underflows, clears the command slot and advances the script cursor past the 3-byte wait instruction
+// symdb: void CutsceneCameraCmd_wait(u32 cmdLen /*r0=1 in*/, const u8 *scriptCursor /*in/out r1*/, struct
+// symdb: CutsceneCameraInfo *camera /*r5*/, r3 preserved) -> r0=1, r1=new cursor, r2=timer; flags from
+// symdb: cmp r2,#0 (still waiting) or adds r1,#3 (done); clobbers r2, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCameraCmd_wait.yaml
 CutsceneCameraCmd_wait:
 	push {lr}
 	ldrb r2, [r5,#oCutsceneCameraInfo_CommandInitialized]
@@ -3853,6 +3898,10 @@ byte_8037694:
 	thumb_local_start
 // 0x00
 // end script for map reload?
+// symdb: Cutscene command wrapper: if event flag 0x1741 is unset, reload the current Navi's stat boosts, then force-end the active cutscene; always returns 0.
+// symdb: void CutsceneCmd_end_for_map_reload_maybe_8037c64(void) /* clobbers r0,r1,r2,r3,r12,lr; sets N/Z
+// symdb: from r0=0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_end_for_map_reload_maybe_8037c64.yaml
 CutsceneCmd_end_for_map_reload_maybe_8037c64:
 	push {lr}
 	movflag EVENT_1741
@@ -4058,6 +4107,10 @@ CutsceneCmd_nop_80377d0:
 	thumb_local_start
 // 0x07
 // wait for screen to fade
+// symdb: Cutscene script command that blocks until an active screen fade finishes, reporting done/not-done and ticking the script pointer.
+// symdb: void CutsceneCmd_wait_screen_fade(void)  /* in: r7=script ptr; out: r0=done flag, r7=script ptr;
+// symdb: clobbers r0,r3,lr,c,v,n,z */ /* wait — r1 is also an output per the lifter contract */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_wait_screen_fade.yaml
 CutsceneCmd_wait_screen_fade:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
@@ -4607,6 +4660,13 @@ CutsceneCmd_chatbox_cmd_8037a70:
 // set or clear chatbox flags
 // byte1 - operation type (0 = set, 1 = clear)
 // byte2 - flags to set or clear
+// symdb: Cutscene/map-script opcode that sets or clears a chatbox flag bit in eFlags2009F38 from a 3-byte argument (2-byte flag id + 1-byte mode).
+// symdb: u32 chatbox_setClearFlag_cutsceneCommand_8037A7C(u32 scriptPtr /*r7*/); /* returns 1 in r0,
+// symdb: advances r7 by 3, leaves flag id in r0, set/clear mode in r4; clobbers r0 r6 lr; flags: nz=cv
+// symdb: preserved */ // internal: reads two script bytes (r6=2 then r6=1 via ReadMapScriptByte -> r4),
+// symdb: and if mode==1 calls chatbox_clear_eFlags2009F38(flag_id) else
+// symdb: chatbox_set_eFlags2009F38(flag_id).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_set_or_clear_chatbox_flags.yaml
 CutsceneCmd_set_or_clear_chatbox_flags:
 	push {lr}
 	mov r6, #2
@@ -4758,6 +4818,16 @@ off_8037B24:
 // byte1 - special to call (multiple of 4)
 // byte2 - memory param
 // byte3 or mem - argument to special
+// symdb: Overworld map-script command that sets a single player-sprite property (layer index, facing direction, palette, alpha, Navi palette or S2000AA0 +0x4 param) using a literal byte or a script-variable byte as the value.
+// symdb: /* Inputs from caller (via r5/r7/r10/lr and r3 implicit): */ /*   r5 = script variable table
+// symdb: base */ /*   r7 = current map-script byte pointer (advanced past this command) */ /*   r10, lr =
+// symdb: preserved by convention */ /*   r3 = untouched on entry (ReadMapScriptByte receives no typed arg
+// symdb: there) */ /* Outputs to caller: */ /*   r0 = 1 (always: command succeeded) */ /*   r1, r2, r4,
+// symdb: r5, r7, r8, r9, r10, r11, r12 = unchanged from each handler */ /*   r7 += 4 (the whole 4-byte
+// symdb: command is consumed) */ /* Flags: */ /*   N/Z from the final "movs r0, #1" (so N=0, Z=0) */ /*
+// symdb: C/V from the "adds r7, #4" before that (depends on prior r7 low byte) */ /* Clobbered by this
+// symdb: function internally: r0, r3, r4, r6, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_ow_player_sprite_special_with_arg.yaml
 CutsceneCmd_ow_player_sprite_special_with_arg:
 	push {lr}
 	mov r6, #1
@@ -5241,6 +5311,11 @@ MapScriptSubCmd_spawn_ow_map_object:
 // signedhword5 - map object y coordinate offset to player
 // signedhword7 - map object z coordinate offset to player
 // word9 - unknown param (written to field oOverworldMapObject_ObjectID)
+// symdb: Map-script subcommand that spawns an overworld map object at a position relative to the OW player and stores the handle in a CutsceneState slot.
+// symdb: r4 (slot index, low nibble used), r5 (CutsceneState base ptr) → r0=1 (success), r7 advanced by
+// symdb: 0xD, NZCV from r7+0xD; r5 preserved; clobbers r1 r2 r3 r6 r0 r7 lr; reads [r5+offset] as input,
+// symdb: writes [slot_ptr] as output
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_player.yaml
 MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_player:
 	push {lr}
 	mov r1, #0xf
@@ -5300,6 +5375,10 @@ MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_player:
 // signedhword6 - map object y coordinate offset to npc
 // signedhword8 - map object z coordinate offset to npc
 // word10 - map object ID (written to field oOverworldMapObject_ObjectID)
+// symdb: Map-script sub-command that spawns an overworld map object at an existing NPC's position plus three fixed-point offsets and stores its pointer in a cutscene-state slot.
+// symdb: void (r4=ptrSlotSel, r5=cutsceneState, r7=scriptCursor) -> r0=1, r1=spawnX, r2=spawnY,
+// symdb: r3=spawnZ, r4=scriptWord, r6=slotAddr, r7+=0xE; flags nz,c/v from the cursor add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_npc.yaml
 MapScriptSubCmd_spawn_ow_map_object_relative_to_ow_npc:
 	push {lr}
 	mov r1, #0xf
@@ -5537,6 +5616,10 @@ CutsceneCmd_call_native_with_return_value:
 // else:
 // call warp_setSubsystemIndexTo0x10AndOthers_8005f00 with r0=ptr3, r1=0, r2=byte2
 // byte2 = map group transition type
+// symdb: Handles the cutscene script "warp" command: dispatches to immediate warp, pending-warp storage, or re-warp based on the parameter byte's bits 0x20/0x40 and bit 0 picking between subsystem-index 0x10 and 0x14 flavors.
+// symdb: void cutsceneCmd_warp_8038040(u32 r5=cutscene state, u32 r7=script cursor) -> nz cv r0 (1=keep
+// symdb: running), r1, r2, r4, r5, r7 advanced; clobbers r0, r3, r6, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_warp_cmd_8038040.yaml
 CutsceneCmd_warp_cmd_8038040:
 	push {lr}
 	mov r6, #1
@@ -5701,6 +5784,11 @@ MapScriptCutsceneCmd_stop_sound:
 // byte1 - operation type (0=give, 1=take)
 // byte2 - item to give or take
 // byte3 - quantity of item
+// symdb: Map cutscene script command that gives the player an item (counted) or takes one based on a mode byte.
+// symdb: void Next(void);  // script cmd dispatcher entry inputs:  r4 (script reader handle), r5, r7
+// symdb: (script byte stream cursor), r8, r9, r10, r11, r12, lr outputs: r0 = 1, nz flag set; clobbers
+// symdb: r1, r2, r4, r6, r8, r9, r10, r11, r12; preserves r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_give_or_take_item.yaml
 MapScriptCutsceneCmd_give_or_take_item:
 	push {lr}
 	mov r6, #2
@@ -5767,6 +5855,10 @@ CutsceneCmd_run_or_stop_cutscene_camera_script:
 // 0x55 hword1
 // start a fixed battle (i.e. a non-random encounter battle)
 // hword1 - battle index
+// symdb: Map script opcode that starts a fixed preset battle (preset index in next script halfword), after resetting Beast Out / navi mood outside the Internet maps, then fades the screen out and advances the script.
+// symdb: void CutsceneCmd_start_fixed_battle(u32 r7_scriptPos, u10 *r10_toolkit)     -> r0 = 1, r7 += 3,
+// symdb: N/Z from r0=1, C/V from r7+=3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_start_fixed_battle.yaml
 CutsceneCmd_start_fixed_battle:
 	push {lr}
 	mov r0, r10
@@ -5848,6 +5940,10 @@ MapScriptCutsceneCmd_run_eStruct200a6a0_callback:
 // byte1 - shake type
 // byte2 - shake timer
 // byte3 - unused
+// symdb: Cutscene command handler that reads two map-script bytes (shake magnitude and duration) and triggers the camera shake effect, then advances the script by 4 bytes.
+// symdb: void CutsceneCmd_do_camera_shake(void) /* uses r7 (script ptr), r10, lr in; r0=1, script ptr +=
+// symdb: 4 out; clobbers r1,r2,r4,r6, cv flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_do_camera_shake.yaml
 CutsceneCmd_do_camera_shake:
 	push {lr}
 	mov r6, #1

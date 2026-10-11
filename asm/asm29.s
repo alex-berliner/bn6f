@@ -142,6 +142,10 @@ sub_80A4A90:
 	pop {pc}
 	thumb_func_end sub_80A4A90
 
+// symdb: Dispatches a battle object's per-frame state handler for state 4, selected by the byte at `obj+8`.
+// symdb: void sub_80A4A98(void);  // in: r5=battle object ptr; out: passthrough; clobbers: nz c v
+// symdb: r0-r4,r6-r12,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A4A98.yaml
 	thumb_func_start sub_80A4A98
 sub_80A4A98:
 	push {lr}
@@ -320,6 +324,13 @@ off_80A4BF0:
 	.word sub_80A4C5C+1
 	thumb_func_end menu_stateDispatch_80A4BDC
 
+// symdb: Overworld sprite "setup" handler for an effect/shockwave entity — loads tile/palette, applies Z and layer-effect transforms, sets animation/priority/palette, and kicks off the per-frame tick.
+// symdb: void sub_80A4BFC(void); /* r5  in:  pointer to overworld effect-object (r10, lr inherited from
+// symdb: caller; only r5 is meaningful) */ /* r2  out: clobbered */ /* r5  out: preserved across the call
+// symdb: (caller's object pointer) */ /* r6  out: original Z value loaded from obj+0x14 (clobbered;
+// symdb: caller observes it) */ /* r10 out: preserved */ /* r11 out: clobbered */ /* clobbers: N Z C V,
+// symdb: r0, r1, r3, r6, lr; preserves r4, r5, r7, r8, r9, r12 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A4BFC.yaml
 	thumb_local_start
 sub_80A4BFC:
 	push {lr}
@@ -537,6 +548,12 @@ off_80A51F4:
 	.word byte_80A4C64
 	thumb_func_end npc_stateDispatchStep_80A51C4
 
+// symdb: Map-entry show/hide controller: when the entry's trigger flag is set, load its sprite, clear its pair of flags and switch to state 3 (shown); when clear, set both flags, mark hidden (state 0x10) and tear down.
+// symdb: void sub_80A51F8(void);                 // uses caller-provided r5 = control struct, r7 = entry
+// symdb: struct, r10 = bank base   in:  r5 (control struct), r7 (entry struct), r10 (bank/base), lr
+// symdb: (return)   out: r0/r2/r5/r10 (forwarded from tail call sub_80A5268 or sub_80A5350); NZ/CV
+// symdb: reflect that tail's flags   clobbers: r0, r1, r2, r3, lr; preserves r4, r5, r6, r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A51F8.yaml
 	thumb_local_start
 sub_80A51F8:
 	push {lr}
@@ -584,6 +601,10 @@ loc_80A524E:
 	pop {pc}
 	thumb_func_end sub_80A51F8
 
+// symdb: Per-frame step for a sub-object that drives sprite animation/sound based on event flags and a screen-fade tick, transitioning the parent's sub-state machine.
+// symdb: void sub_80A5268(u32 r2, u32 r4, parent* r5, u32 r6, sub_object* r7, u32 r10, lr); clobbers
+// symdb: r0,r1,r3,lr; preserves r4,r5,r6,r7,r10; outputs r2,r5,r10
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5268.yaml
 	thumb_local_start
 sub_80A5268:
 	push {lr}
@@ -703,6 +724,10 @@ off_80A534C:
 	.word 0x14C
 	thumb_func_end sub_80A5304
 
+// symdb: Thin trampoline that tail-calls FreeOverworldMapObject via a `push {lr}` / `pop {pc}` shim, used as the cleanup hook stored in the overworld map-object vtable slot it sits adjacent to.
+// symdb: void freeOverworldMapObject_80A5350(void);  /* clobbers r0-r3, r5, lr; sets NZCV per
+// symdb: FreeOverworldMapObject */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5350.yaml
 	thumb_local_start
 sub_80A5350:
 	push {lr}
@@ -804,6 +829,13 @@ sub_80A549C:
 	pop {pc}
 	thumb_func_end sub_80A549C
 
+// symdb: Resolves a (base, secondary) pointer pair for the current overworld/map context by indexing two parallel 3-entry tables with the map number (or 2 for map group 0x85) and adding an entity-specific sub-offset from r5.
+// symdb: void lookupMapEntryPair_80A54A4(uint32_t *r5_unknown, struct GameState *gameStateFromR10) ->
+// symdb: (void *r0, void *r1); // inputs: r10 -> Toolkit* (only its oToolkit_GameStatePtr is read); r5 ->
+// symdb: some 4+ byte struct (byte at +4 is the sub-index); lr = return address // outputs: r0 = first
+// symdb: entry pointer + sub-index*4; r1 = second entry pointer + sub-index*4 // clobbers: r0, r1, r2,
+// symdb: r3, NZCV // preserved: r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A54A4.yaml
 	thumb_local_start
 sub_80A54A4:
 	push {r4,lr}
@@ -922,6 +954,10 @@ loc_80A557A:
 	.word 0x17F
 	thumb_func_end sub_80A5514
 
+// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or sub_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
+// symdb: void Next_sub_80A5588(void);  /* inputs: r5, r6, r10, lr  outputs: r2, r5, r10, r11  clobbers
+// symdb: nz/c/v, r0, r1, r3, lr; preserves r4-r9, r12 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
 	thumb_local_start
 sub_80A5588:
 	push {lr}
@@ -1158,6 +1194,10 @@ dword_80A5740:
 	.word 0xC200C20
 	thumb_func_end sub_80A5724
 
+// symdb: After a BBS request, set event flag 4/234 (EVENT_4EA) if the live request byte differs from the previously saved one.
+// symdb: void checkBbsReqFlag_80A5744(void);  // inputs: r5,r6,r10,lr (caller-saved pointer/state slots);
+// symdb: outputs/clobbers: nz,c,v,r0,r1,r2,r3,lr; preserved r4,r5,r6,r7,r8,r9,r11,r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A5744.yaml
 	thumb_local_start
 sub_80A5744:
 	push {r4,lr}
@@ -1176,6 +1216,9 @@ locret_80A5760:
 	.balign 4, 0x00
 	thumb_func_end sub_80A5744
 
+// symdb: Picks a "BBS" message id based on the current map group and the result of reqBBS(4)
+// symdb: u32 sub_80A5764(struct GameState *gameState_in_r10) -> u32 messageId; clobbers r1,r2,r3,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A5764.yaml
 	thumb_local_start
 sub_80A5764:
 	push {r4-r7,lr}
@@ -8975,6 +9018,11 @@ off_80A9B98:
 	.word byte_80A9AA0
 	thumb_func_end battle_dispatchObjectBehaviorStep_80A9B70
 
+// symdb: Brings a freshly spawned overworld object live — resolves its spawn/event flags, loads and configures its sprite from its spawn-config table entry, and marks it active.
+// symdb: void sub_80A9B9C(u32 obj /* r5 */, u32 cfg /* r7 */); // r6 holds the object's saved z across
+// symdb: the priority fallback; clobbers r6 and returns whatever sub_80A9C26 leaves in r0-r3 and the
+// symdb: flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9B9C.yaml
 	thumb_local_start
 sub_80A9B9C:
 	push {lr}
@@ -9036,6 +9084,11 @@ loc_80A9BF6:
 	pop {pc}
 	thumb_func_end sub_80A9B9C
 
+// symdb: Overworld event-driven object update that flips an NPC/object between hidden (state 1) and shown (state 3) based on an event flag, syncing flags and playing appear/disappear animations with a sound effect.
+// symdb: void sub_80A9C26(r5 = object ptr, r7 = flag script record ptr); no meaningful return value
+// symdb: (r0-r3 and nz/c/v are whatever the final sprite_update call leaves behind); preserves r4, r6,
+// symdb: r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9C26.yaml
 	thumb_local_start
 sub_80A9C26:
 	push {lr}
@@ -9561,6 +9614,9 @@ sub_80A9FFC:
 	pop {pc}
 	thumb_func_end sub_80A9FFC
 
+// symdb: Copies a 16-byte OAM/template row from a small inline table (byte_80AA01C) into a chip/PET header buffer at byte_2001130, selected by the caller's low nybble of r0, then clears r0.
+// symdb: void sub_80AA004(u32 index /* r0 */); // r0 returned as 0; lr used; other regs preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA004.yaml
 	thumb_func_start sub_80AA004
 sub_80AA004:
 	push {r4-r7,lr}
@@ -9919,6 +9975,9 @@ loc_80AA2D0:
 	.balign 4, 0x00
 	thumb_func_end sub_80AA2A8
 
+// symdb: Battle-object sprite-state-3 dispatcher: jumps to the init/update/done handler picked by the selector byte at [obj+8].
+// symdb: void sub_80AA2D8(void /* r5 = battle object */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA2D8.yaml
 	thumb_func_start sub_80AA2D8
 sub_80AA2D8:
 	push {r4-r7,lr}
@@ -10129,6 +10188,10 @@ sub_80AA4B8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA4B8
 
+// symdb: Attempts to select and initiate an overworld random encounter battle, returning a BattleSettings pointer or NULL.
+// symdb: battle_tryEncounter_80AA4C0(void) -> BattleSettings* r0 (nz); uses r10 as toolkit context
+// symdb: pointer; preserves r4-r7; clobbers r0-r3, r8-r9, r11-r12, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA4C0.yaml
 	thumb_func_start sub_80AA4C0
 sub_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
@@ -10334,6 +10397,10 @@ chooseRandomEncounterMaybe_80aa5e4:
 	pop {r7,pc}
 	thumb_func_end chooseRandomEncounterMaybe_80aa5e4
 
+// symdb: Picks a random encounter's battle-settings entry for the current map, filtered by a caller-supplied bitmask and chosen via event-flag-bank-6 table selection plus iCurrFrame round-robin.
+// symdb: u32 pickBattleSettingsEntry_80AA5F4(u32 filter /*r2*/, struct Toolkit *toolkit /*r10*/) -> u32
+// symdb: entry /*r0*/, plus r1/flags from callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA5F4.yaml
 	thumb_func_start sub_80AA5F4
 sub_80AA5F4: // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	push {r4-r7,lr}
@@ -10448,6 +10515,10 @@ off_80AA6A0:
 	.word off_8020188
 	thumb_func_end sub_80AA5F4
 
+// symdb: Jump-table dispatcher that tail-calls one of 12 game-handler routines selected by an index passed in R0.
+// symdb: void sub_80AA6A4(u32 r0 /* handler index */); -> r0 = handler's return; r2..r12 forwarded from
+// symdb: handler (r1 clobbered, lr clobbered, flags clobbered)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA6A4.yaml
 	thumb_local_start
 sub_80AA6A4:
 	push {lr}
@@ -10583,6 +10654,9 @@ loc_80AA788:
 	pop {r4,pc}
 	thumb_func_end sub_80AA778
 
+// symdb: Returns 1 when "EVENT:214" is set and a [0,255] roll is <= 0xC0 (~75% chance), else 0.
+// symdb: u32 sub_80AA78C(void); /* clobbers nz c v r1 r3 lr; preserves r4 r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA78C.yaml
 	thumb_local_start
 sub_80AA78C:
 	push {r4,lr}
@@ -10742,6 +10816,10 @@ off_80AA888:
 	.word dword_2000B30
 	thumb_func_end sub_80AA86E
 
+// symdb: Rolls a random item drop for up to four post-battle drop slots and flags the winning slot with the rolled item id.
+// symdb: void battle_rollRandomItemDrops(void) /* in: r10 = toolkit; out: flags C/V from (loop count ==
+// symdb: 4); clobbers r0-r3 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA88C.yaml
 	thumb_func_start sub_80AA88C
 sub_80AA88C: // () -> ()
 	push {r4-r7,lr}
@@ -11051,6 +11129,10 @@ loc_80AAA94:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AAA3C
 
+// symdb: Rolls per-hit damage jitter: picks a base byte from a 16-entry table indexed by (param1, low-nibble of RNG), adds a ±2-style step, then adds a bonus capped by an attack-raw/8*3 threshold.
+// symdb: u32 sub_80AAA98(u32 param1 /*r0*/, s32 bonus /*r1*/, u32 raw_mag /*r2*/, u32 mode /*r3*/) -> u32
+// symdb: (NZCV flags from final ADD r0, r0, #0; r4 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AAA98.yaml
 	thumb_local_start
 sub_80AAA98:
 	push {r4,lr}

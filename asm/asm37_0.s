@@ -715,6 +715,10 @@ loc_813BBCE:
 	.balign 4, 0x00
 	thumb_func_end sub_813BB68
 
+// symdb: Initializes a battle-related state buffer plus three 0x31-byte I/O scratch buffers pulled from the toolkit, then runs the battle sub-init sequence (layout, sprite/cell setup, etc.) on the state buffer.
+// symdb: void sub_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
+// symdb: clobbered, NZCV clobbered, r0..r3 / lr clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BBD4.yaml
 	thumb_func_start sub_813BBD4
 sub_813BBD4:
 	push {r4-r7,lr}
@@ -745,6 +749,10 @@ sub_813BBD4:
 	.balign 4, 0x00
 	thumb_func_end sub_813BBD4
 
+// symdb: Picks seven random IDs, classifies the corresponding toolkit objects by type, and writes them into two global target arrays (unk_2006CC0 for type-1/2, unk_2006CF8 for other types), while incrementing per-ID occurrence counters for type-1 objects in a caller-supplied byte array.
+// symdb: void battle_categorizeRandomIds_813BC1C(void *byte_array_ptr /* r0 */) — preserves r4-r7;
+// symdb: clobbers r0-r3, flags, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BC1C.yaml
 	thumb_local_start
 sub_813BC1C:
 	push {r4-r7,lr}
@@ -1198,6 +1206,10 @@ locret_813BF18:
 	.balign 4, 0x00
 	thumb_func_end getUnk200431cTableByteCapped3_813BF0C
 
+// symdb: Returns 1 if event flag 0x1720 is set, 0 otherwise, leaving it for the caller to branch on via NZ (the dead EVENT_1723 test in the assembly is never reached).
+// symdb: void eventFlag1720IsSet_813BF1C(void); // r4-r7 preserved; result is in NZ (R0 = 0/1); clobbers
+// symdb: R0-R3, LR, C, V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BF1C.yaml
 	thumb_func_start sub_813BF1C
 sub_813BF1C:
 	push {r4-r7,lr}
@@ -1751,6 +1763,10 @@ byte_813C3A4:
 	.hword JOYPAD_B // 0x6
 	thumb_func_end sub_813C334
 
+// symdb: Heals/clamps the current PET navi's HP (and slot 0's HP) to MaxHP, branching on map group and the EVENT_PET_NAVI_ACTIVE flag, with a MegaMan-only side effect when no PET navi is set.
+// symdb: void reloadCurNaviStatBoosts(u32 *toolkit /* r10 */); /* preserves r4-r7, returns NZCV + all
+// symdb: caller-saved regs */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reloadCurNaviStatBoosts_813c3ac.yaml
 	thumb_func_start reloadCurNaviStatBoosts_813c3ac
 reloadCurNaviStatBoosts_813c3ac:
 	push {r4-r7,lr}
@@ -1928,6 +1944,9 @@ byte_813C550:
 	.byte 0x6E, 0x6F, 0x76, 0x77, 0x0, 0x0, 0x0
 	thumb_func_end sub_813C4C8
 
+// symdb: Scans the battle-item grid, counting each item into a per-type tally array supplied by the caller.
+// symdb: void sub_813C584(u8* count_array /* r0 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813C584.yaml
 	thumb_local_start
 sub_813C584:
 	push {r4-r7,lr}
@@ -3260,6 +3279,10 @@ sub_813CE90:
 	thumb_func_end sub_813CE90
 
 // () -> void
+// symdb: If the PET Navi's equipped chip has an element level exceeding the Navi's stat-9 threshold, mark that chip slot as consumed (0xFF).
+// symdb: void battle_clearIncompatibleChipSlot_813CEA0(void /* R10 = toolkit ptr */); /* returns R2 =
+// symdb: leftover from split9BitsFromBitfield_8021AE0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813CEA0.yaml
 	thumb_local_start
 sub_813CEA0:
 	push {r4-r7,lr}

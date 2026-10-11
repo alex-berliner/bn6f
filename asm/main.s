@@ -230,6 +230,11 @@ dword_8000450:
 	.word 0x3FF
 	thumb_func_end main_updateJoypad_80003E4
 
+// symdb: Main-loop soft-reset (A+B+Select+Start) handler that runs while a screen fade is active and triggers a toolkit reboot on the combo.
+// symdb: void main_softResetHandler_8000454(void); /* reads toolkit via r10, returns final r3 = 0xF on
+// symdb: idle paths or callee leftover on reboot; caller writes subindex 0xA via strb after the reboot
+// symdb: path */
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/main_static_screen_fade_8000454.yaml
 	thumb_local_start
 main_static_screen_fade_8000454:
 	push {r4-r7,lr}

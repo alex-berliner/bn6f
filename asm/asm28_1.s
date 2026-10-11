@@ -15,6 +15,10 @@ dword_809F9D8:
 	.word 0x480
 	thumb_func_end zeroFill_e2004348
 
+// symdb: Walks the InternetMysteryDataMapGroupEntries table, resolving type-5 mystery-data entries, clearing their event flags, and recording per-group statistics; finalizes via sub_809FDE0 on the sentinel type-1 group.
+// symdb: void sub_809F9DC(void); // reads  r10, lr (caller) // writes r1, r2, r3, C/V/N/Z (all passed
+// symdb: through from sub_809FDE0) // preserved r4-r7, r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F9DC.yaml
 	thumb_func_start sub_809F9DC
 sub_809F9DC:
 	push {r4-r7,lr}
@@ -195,6 +199,10 @@ mysteryData_InitMapGroupTables_809FAF4:
 	pop {r4-r7,pc}
 	thumb_func_end mysteryData_InitMapGroupTables_809FAF4
 
+// symdb: Walks the mystery-data map entries and clears each non-GREEN entry's event flag.
+// symdb: void clearMysteryDataEventFlags_809FB04(u32 group /* r4 */); // r5/r6/r7/lr in; preserves r4-r7;
+// symdb: clobbers r0-r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FB04.yaml
 	thumb_local_start
 sub_809FB04:
 	push {r4-r7,lr}
@@ -440,6 +448,10 @@ locret_809FC94:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FC1C
 
+// symdb: Look up mystery-data output (four bytes + C/V flags) for a Navi ID, using the current map's mystery-data table and the current PET Navi's "special" stat to pick between a direct entry and a cyclic gold-scan fallback.
+// symdb: void mysteryData_lookupForNavi_809FC96(u32 r0_naviId, struct GameToolkit* r10_toolkit); /*
+// symdb: returns r0,r1,r2,r3 and clobbers flags C,V (r4-r7,r12,lr preserved) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FC96.yaml
 	thumb_func_start sub_809FC96
 sub_809FC96:
 	push {r4-r7,lr}
@@ -633,6 +645,10 @@ locret_809FDDE:
 	pop {r4-r7,pc}
 	thumb_func_end record_writeU16IfIdMatches_809FDCE
 
+// symdb: Rolls which mystery data spawns in the current internet map block, hashing the pending state halfword into a slot number and picking that type-5 entry from the block's entry list.
+// symdb: void sub_809FDE0(void); // reads state at byte_2000210; callers pass r4-r7/r10 (preserved) and
+// symdb: ignore outputs other than flags c/v and r1/r2/r3 side values
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FDE0.yaml
 	thumb_local_start
 sub_809FDE0:
 	push {r4-r7,lr}

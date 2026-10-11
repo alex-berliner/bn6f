@@ -73,6 +73,10 @@ sub_801FE64:
 	mov pc, lr
 	thumb_func_end sub_801FE64
 
+// symdb: Single step of the battle-effects transition driver that advances the per-step state byte at eStruct203F7D8+1, initializing two 0x10-byte buffers on first call and otherwise branching on EVENT flag 0x172D and bit 0x8 of the battle-effects word, optionally committing E_STEP_BUSY after a two-call handshake with sub_8144D04(0,3).
+// symdb: void next_801FE6C(void); // uses r8 r9 r10 r11 r12 lr on input; clobbers nz, c, v, r0 r1 r2 r3
+// symdb: lr; preserves r4 r5 r6 r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801FE6C.yaml
 	thumb_func_start sub_801FE6C
 sub_801FE6C:
 	push {r4,r6,lr}
@@ -412,6 +416,9 @@ loc_80200A0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_801FFD6
 
+// symdb: Sets a byte in the chip-use queue/selector struct (eStruct203F7D8+3) and marks it dirty by OR-ing 1 into its flags byte (eStruct203F7D8+2).
+// symdb: void sub_80200A4(u8 r0=value); // r1 := 1, r3 := A_eStruct203F7D8, NZ clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80200A4.yaml
 	thumb_func_start sub_80200A4
 sub_80200A4:
 	ldr r3, off_8020130 // =eStruct203F7D8

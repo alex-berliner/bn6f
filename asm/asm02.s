@@ -212,6 +212,9 @@ loc_8021BBC:
 	pop {r4,pc}
 	thumb_func_end TakeChips
 
+// symdb: Returns the quantity owned of a chip given its code index and search-bag index, or 0 if the code is not recognised.
+// symdb: u8 GetChipCountOfCode(u32 chip_idx /*r0*/, u32 search_item /*r1*/, u32 off /*r2*/) -> r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetChipCountOfCode.yaml
 	thumb_func_start GetChipCountOfCode
 GetChipCountOfCode:
 	push {r4,lr}
@@ -227,6 +230,11 @@ loc_8021BD4:
 	pop {r4,pc}
 	thumb_func_end GetChipCountOfCode
 
+// symdb: Returns the total owned count of a chip (sum of its 4 count bytes) from the toolkit's chip table, after passing encryption_testPack validation.
+// symdb: /* in: r0 = chip_id, r10 = toolkit pointer */ /* out: r0 = total count (sum of 4 bytes), r1 =
+// symdb: last byte (4th) or 0 */ /* clobbers: r1, lr; nz/c/v from encryption_testPack */ u32
+// symdb: getChipCountSum_8021BD8(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetTotalChipCount.yaml
 	thumb_func_start GetTotalChipCount
 GetTotalChipCount:
 	push {r7,lr}
@@ -367,6 +375,11 @@ loc_8021C9A:
 	pop {r4,r7,pc}
 	thumb_func_end getOffsetToQuantityOfChipCodeMaybe_8021c7c
 
+// symdb: Sums the per-slot chip-count entries from the toolkit table across all 320 eligible chip types, skipping locked packs, empty (0xFF) slots, and chips flagged with bit 5.
+// symdb: r10 (toolkit* in, preserved) -> r0 (u32 total chip-slot count), r4-r7 preserved, clobbers r1-r3,
+// symdb: lr, flags; internally calls getChip8021DA8(idx) -> ChipData*, encryption_testPack_8006e84(idx)
+// symdb: -> Z set means eligible
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8021CA8.yaml
 	thumb_func_start sub_8021CA8
 sub_8021CA8:
 	push {r4-r7,lr}
@@ -466,6 +479,9 @@ sub_8021D2A:
 	mov pc, lr
 	thumb_func_end sub_8021D2A
 
+// symdb: Initialize the chat/text-script buffers in WRAM by zeroing one region and copying four small template tables into it.
+// symdb: void sub_8021D36(void) // clobbers r0,r1,r2,lr; preserves r3; no inputs/outputs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8021D36.yaml
 	thumb_func_start sub_8021D36
 sub_8021D36:
 	push {lr}

@@ -574,6 +574,10 @@ byte_809E8C4
 	.byte oOverworldNPCObject_Y16, 1
 	thumb_func_end npc_doDiagonalMovement_809E878
 
+// symdb: Dispatches an overworld NPC's hop/leap movement handler (init/update × hop/leap/diagonal leap) selected by oOverworldNPCObject_MovementFlag_0a, then runs its secondary script.
+// symdb: void npc_runHopMovement_809e8cc(struct OverworldNPCObject *npcObj /* r5 */); /* returns r0,
+// symdb: leaves nz/c/v from npc_runSecondaryScriptMaybe_809ebf8 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_doHopMovement_809e8cc.yaml
 	thumb_local_start
 npc_doHopMovement_809e8cc:
 	push {lr}
@@ -613,6 +617,10 @@ npc_initHopMovement_809e8fc:
 	pop {pc}
 	thumb_func_end npc_initHopMovement_809e8fc
 
+// symdb: Advances an NPC's hop (jump) arc one frame, landing on the ground if the arc completes.
+// symdb: void npc_updateHopMovement_809e916(u32 *npc_obj /* r5 */) -> r0 (new Z when in-flight; undefined
+// symdb: when landing), r1 (previous Z), r2 (ground Z, <<16), nzcv from `cmp new_z, ground_scaled`
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_updateHopMovement_809e916.yaml
 	thumb_local_start
 npc_updateHopMovement_809e916:
 	push {lr}
@@ -888,6 +896,10 @@ npc_waitCutsceneVar_809ea82:
 	pop {r4,r7,pc}
 	thumb_func_end npc_waitCutsceneVar_809ea82
 
+// symdb: Overworld NPC handler that, once its linked MysteryData event flag has been taken, swaps the NPC's sprite, frees it and toggles its script, then always falls through to the secondary script pass.
+// symdb: void npc_waitMysteryDataTaken_809eaa0(struct OverworldNPCObject* r5) -> r0 r1 r2 r5 r11 lr; nz c
+// symdb: v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_waitMysteryDataTaken_809eaa0.yaml
 	thumb_local_start
 npc_waitMysteryDataTaken_809eaa0:
 	push {r4,r7,lr}
@@ -967,6 +979,11 @@ off_809EB1C:
 	.word off_809EB14
 	thumb_func_end npc_inChatbox_curAction_809EB04
 
+// symdb: Initializes the NPC's "in chatbox" interaction state: optionally turns the NPC sprite to face the player, picks and runs the appropriate text script (NPC-owned / in-memory "mystery" / map-loaded, with an HP-memory navi check), locks movement, and hands off to the wait-close state.
+// symdb: void npc_inChatbox_curAction_init_809EB20(     u32 npc_ptr /* r5 */,     u32 toolkit_ptr /* r10
+// symdb: */,     u32 r3 /* script type from previous state, fed into HP-mem check */); // outputs: r5,
+// symdb: NZCV (all from tail call to npc_inChatbox_curAction_waitClose_809EBBC)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_inChatbox_curAction_init_809EB20.yaml
 	thumb_local_start
 npc_inChatbox_curAction_init_809EB20:
 	push {lr}
@@ -1058,6 +1075,12 @@ dword_809EBB8:
 	.word OW_NPC_UNK_FLAGS_60_CHATBOX_FLAG_0x800
 	thumb_func_end npc_inChatbox_curAction_init_809EB20
 
+// symdb: Overworld NPC chat-box close-wait action: returns early if the player direction-lock event is set or the game-state close-animation gate is non-zero, otherwise clears the NPC's sub-state byte and resets the NPC to its standard state.
+// symdb: void npc_inChatbox_curAction_waitClose_809EBBC(u32 /*r5*/ npc_ptr,
+// symdb: u32 /*r10*/ toolkit_ptr,                                               u32 /*r7*/
+// symdb: game_state_ptr_in) -> u32 /*r7*/ game_state_ptr_out; // clobbers r0, r1, r2, r3, r7, lr; NZCV
+// symdb: per path; preserves r4, r5.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_inChatbox_curAction_waitClose_809EBBC.yaml
 	thumb_local_start
 npc_inChatbox_curAction_waitClose_809EBBC:
 	push {lr}
@@ -1076,6 +1099,11 @@ locret_809EBDA:
 	pop {pc}
 	thumb_func_end npc_inChatbox_curAction_waitClose_809EBBC
 
+// symdb: Executes an overworld NPC's primary bytecode script, dispatching each opcode through the NPC command jumptable until a terminate flag is set.
+// symdb: /* inputs:  R2, R5 (NPC obj pointer), R10, LR */ /* outputs: R2, R5, R10, R11 (R5/R10 preserved
+// symdb: across dispatcher) */ /* clobbers: N Z C V, R0,R1,R3,R4,R6-R9,R12,LR */ void
+// symdb: npc_runPrimaryScript_809ebdc(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_runPrimaryScript_809ebdc.yaml
 	thumb_local_start
 npc_runPrimaryScript_809ebdc:
 	push {lr}
@@ -1130,6 +1158,11 @@ npc_runSecondaryScriptMaybe_809ebf8:
 	pop {pc}
 	thumb_func_end npc_runSecondaryScriptMaybe_809ebf8
 
+// symdb: Decrements the secondary-script timer on an overworld NPC object and, when it expires, flags the script for termination.
+// symdb: void npc_decrementSecondaryTimer_809ec1c(void); // inputs:  r5 = overworld NPC object pointer //
+// symdb: outputs: r0 = post-decrement timer (or 0 on expire), N/Z set from pre-decrement timer SUBS //
+// symdb: clobbers: r0, N/Z flags; lr preserved via pop {pc}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_decrementSecondaryTimer_809ec1c.yaml
 	thumb_local_start
 npc_decrementSecondaryTimer_809ec1c:
 	push {lr}
@@ -1297,6 +1330,9 @@ NPCCommand_jump_if_flag_set:
 // jump if the given event flag is clear
 // event16_1 - event flag to test
 // destination3 - script to jump to
+// symdb: NPC script command: reads a u16 event flag; if the flag is set, advances the script pointer by 7 bytes; if the flag is clear, reads a u32 jump target from the script and returns it as the new script pointer.
+// symdb: void NPCCommand_jump_if_flag_clear(u32 /*inout*/ r6, u32 /*?*/ r10) -> u32 r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump_if_flag_clear.yaml
 NPCCommand_jump_if_flag_clear:
 	push {lr}
 	add r0, r6, #1
@@ -1874,6 +1910,11 @@ NPCCommand_give_detatched_shadow:
 	thumb_local_start
 // 0x23
 // remove the current NPC's shadow
+// symdb: NPC command-list handler that clears an overworld NPC's shadow by toggling the UnkFlags_60 shadow bit pair (set 0x80, clear 0x100), calling sprite_removeShadow, and advancing the command cursor by one.
+// symdb: void NPCCommand_remove_shadow(void);   // inputs:  r5 = current OverworldNPCObject*, r6 =
+// symdb: command-list cursor   // outputs: r6 = cursor + 1; cpsr N/Z set from r6, V untouched   //
+// symdb: otherwise:  r0/r3/lr clobbered; r5/r6 overwritten by caller convention
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_remove_shadow.yaml
 NPCCommand_remove_shadow:
 	push {lr}
 	mov r0, #OW_NPC_UNK_FLAGS_60_SHADOW_FLAG_0x80
@@ -2511,6 +2552,10 @@ NPCCommand_write_cutscene_var:
 // byte1 - cutscene variable to compare
 // byte2 - value to compare with the cutscene variable
 // destination3 - script to jump to
+// symdb: NPC script opcode: conditional jump to a script word when a cutscene-state byte equals a script-provided expected value, else advance past the 7-byte instruction.
+// symdb: void NPCCommand_jump_if_cutscene_var_equals(u32* r10 /*toolkit*/, u8* r6 /*script cursor*/) ->
+// symdb: (u8* r6 /*new script cursor*/); clobbers r0,r1,r2,r3,r4,lr; flags NZCV set by cmp.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump_if_cutscene_var_equals.yaml
 NPCCommand_jump_if_cutscene_var_equals:
 	push {lr}
 	mov r4, r10
@@ -3362,6 +3407,10 @@ off_809F688:
 	.word eOverworldNPCObjects
 	thumb_func_end sub_809F66C
 
+// symdb: Clears bit 0 of field Unk_50 on every overworld NPC object, releasing all NPCs from their "busy/mid-interaction" state (e.g. across a scene or map change).
+// symdb: void sub_809F68C(void); // in: lr only; out: r1=1, r2=array end pointer, r3=loop-exit cursor,
+// symdb: c/v from final CMP (r3 vs r2), nz clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F68C.yaml
 	thumb_func_start sub_809F68C
 sub_809F68C:
 	push {lr}
@@ -3666,6 +3715,9 @@ sub_809F904:
 	pop {pc}
 	thumb_func_end sub_809F904
 
+// symdb: On the first call before event flag 0x1708 is set, zeroes the battle state buffer at byte_2000210 (u8 at +0, u32 at +8); once the flag has been triggered the function becomes a no-op.
+// symdb: void sub_809F90C(void) /* clobbers r0,r1,nz,c,v,r3,lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F90C.yaml
 	thumb_func_start sub_809F90C
 sub_809F90C:
 	push {lr}
@@ -3680,6 +3732,11 @@ locret_809F920:
 	pop {pc}
 	thumb_func_end sub_809F90C
 
+// symdb: Appends a capsule/Navi ID to the cap-table at 0x2000210 (up to 16 entries) if event flag 0x1708 is clear.
+// symdb: // Preserves r4,r6,r7. NZCV/r0/r1/r3/lr clobbered. // r5 in: value to record // r10 in: ignored
+// symdb: by body (kept by contract convention) // returns r3 unchanged for caller void
+// symdb: recordCapsule_809F922(u32 capsuleId /* r5 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F922.yaml
 	thumb_local_start
 sub_809F922:
 	push {r4,r6,r7,lr}

@@ -4700,6 +4700,9 @@ dword_8140980:
 	.word 0xF
 	thumb_func_end reqBBS_8140974
 
+// symdb: Clears three byte flags (offsets 0xD, 0xE, 0xF) in the BBS request GUI state struct.
+// symdb: void reqBBS_8140984(void); // clobbers r0, r1, r2, N, Z; preserves r4-r7, lr returned via pop
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_8140984.yaml
 	thumb_func_start reqBBS_8140984
 reqBBS_8140984:
 	push {r4-r7,lr}

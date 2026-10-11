@@ -881,6 +881,10 @@ off_8002BC8:
 	.word dword_2033000
 	thumb_func_end sprite_decompressTemp
 
+// symdb: Reset a sprite slot by hiding its OAM attribute (0x7FFF) and marking its link field as free (-1).
+// symdb: void sub_8002BCC(void /* r5 = sprite base */);  /* inputs: r5, lr; outputs: r0, r5; clobbers:
+// symdb: nz, c, v; preserved: r0-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8002BCC.yaml
 	thumb_local_start
 sub_8002BCC:
 	push {r0-r7,lr}
@@ -1095,6 +1099,10 @@ off_8002D10:
 	.word sprite_projectAndCull+1
 	thumb_func_end sub_8002D06
 
+// symdb: Adjusts an object's sprite pointer to the nearest 16-byte-aligned scalable sprite data offset, then tail-jumps to a continuation routine that uses the scaled pointer.
+// symdb: void sprite_makeScalable(void); // in: r5 = object ptr; out/clobbers: r5, r7, r0-r3, lr;
+// symdb: clobbers: N,Z,C,V flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_makeScalable.yaml
 	thumb_func_start sprite_makeScalable
 sprite_makeScalable:
 	push {r5,lr}

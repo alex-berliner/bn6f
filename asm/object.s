@@ -670,6 +670,9 @@ locret_800BD32:
 	pop {pc}
 	thumb_func_end sub_800BCF6
 
+// symdb: End-of-turn cleanup for a time-freeze battle object, releasing its memory and resetting animations/counters on both sides.
+// symdb: void object_timefreezeEnd(u32 r5 /* battle object */) : r5 -> [r0 r1 r2 r3 lr nz c v]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timefreezeEnd.yaml
 	thumb_func_start object_timefreezeEnd
 object_timefreezeEnd:
 	push {lr}
@@ -1456,6 +1459,10 @@ dword_800C340:
 	.word 0xA
 	thumb_func_end stepPanelTileAnimations_800C192
 
+// symdb: Battle panel tile state-machine update (animating in, settling, activating, timed trigger).
+// symdb: void sub_800C380(u32 r0 /*battle_obj*/, u32 r1 /*tile_data*/) panel_obj in r7 -> u16 r1 (delay)
+// symdb: in oTimerActive, byte r2 in r7->+6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C380.yaml
 	thumb_local_start
 sub_800C380:
 	push {r4-r7,lr}
@@ -1627,6 +1634,10 @@ off_800C4B8:
 	.word byte_203CB04
 	thumb_func_end sub_800C488
 
+// symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
+// symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
+// symdb: returns via sub_800C67C -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800C4BC.yaml
 	thumb_local_start
 sub_800C4BC:
 	push {r4-r7,lr}
@@ -1953,6 +1964,10 @@ loc_800C734:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800C6F0
 
+// symdb: Per-frame battle update: advances 6 team state counters, resolves queued panel-encounter pair events, and ticks the 6×3 field-grid cell timers while toggling alliance-visibility bits.
+// symdb: void battle_updatePanels(void); /* in: none required (reads globals); out: r3 = last grid-cell
+// symdb: visibility flag, r2 = from callee; clobbers r0 r1 lr NZCV; preserves r4 r5 r6 r7 r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800C746.yaml
 	thumb_local_start
 sub_800C746:
 	push {r4-r7,lr}
@@ -3282,6 +3297,10 @@ loc_800CF9C:
 	pop {r4,r6,pc}
 	thumb_func_end object_getPanelsIgnoreRowFiltered
 
+// symdb: Scan battle-panel grid (rows 1-3, cols 1-6) skipping the row matching the ignore parameter, packing each passing panel as (col | row<<4) into the output buffer; returns panel count.
+// symdb: s32 object_getPanelsIgnoreColumnFiltered(u32 ignore_row /* r0 */, u32 param_a /* r2 */, u32
+// symdb: param_b /* r3 */, u8 *buf /* r7 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelsIgnoreColumnFiltered.yaml
 	thumb_func_start object_getPanelsIgnoreColumnFiltered
 object_getPanelsIgnoreColumnFiltered:
 	push {r4,r6,lr}
@@ -3426,6 +3445,10 @@ loc_800D080:
 	pop {pc}
 	thumb_func_end object_getEnemyPlayerPanels
 
+// symdb: Scans rows opposite to this object's facing side from a panel six rows behind, returning the first row whose panel passes the parameter and validity checks, or 0 if none qualify.
+// symdb: u32 object_getClosestPanelMatchingRowFiltered(u32 r0 /* row */, u32 r1, u32 r2, u32 r3) -> u32
+// symdb: r0 /* row or 0 */; preserves r1-r5; flags nz/c/v set from r0 on return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getClosestPanelMatchingRowFiltered.yaml
 	thumb_func_start object_getClosestPanelMatchingRowFiltered
 object_getClosestPanelMatchingRowFiltered:
 	push {r4,r5,lr}
@@ -4993,6 +5016,10 @@ calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE:
 	pop {r4,pc}
 	thumb_func_end calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE
 
+// symdb: Sum the five panel-damage entries of a battle object's CollisionData into FinalDamage, halving each entry (rounding up) if the object stands on a holy panel, and clamp the result.
+// symdb: void object_calcFinalDamageOnHoly_800E3DE(u32 /*r5*/ object, r4/r6 scratch in, lr); returns r2
+// symdb: as left by sub_802CE10, sets C/V via `add r3,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_calculateFinalDamage1.yaml
 	thumb_func_start object_calculateFinalDamage1
 object_calculateFinalDamage1:
 	push {r4,r6,lr}
@@ -5086,6 +5113,10 @@ sub_800E45E:
 	pop {pc}
 	thumb_func_end sub_800E45E
 
+// symdb: Resolves a battle object's contact offset, zeroing it when the target panel isn't on the object's alliance.
+// symdb: void sub_800E468(void * /* r5 */ battleObj)     -> r0,r1,r2 (contact offset x,y,extra);
+// symdb: c,v clobbered by alliance check; r3 untouched here;        r4 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800E468.yaml
 	thumb_func_start sub_800E468
 sub_800E468:
 	push {r4,lr}
@@ -5206,6 +5237,11 @@ byte_800E538:
 	.byte 0x0, 0xFF, 0x1, 0x0, 0x0, 0x1, 0x1, 0x0, 0xFF, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0
 	thumb_func_end sub_800E500
 
+// symdb: Computes knockback direction multiplier and X/Y offset from a hit object's collision-data hit-modifier byte and the enemy's facing direction.
+// symdb: void battle_getHitModifierOffsets(u32 r4_in, BattleObject *r5, u32 r6_in, void *lr); /* out: r0
+// symdb: = direction * s8_multiplier (s32), r1 = s8 offset_x, r2 = u8 offset_y, r3 = collision_data_ptr;
+// symdb: flags: nzcv set */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800E548.yaml
 	thumb_local_start
 sub_800E548:
 	push {r4,r6,lr}
@@ -5325,6 +5361,11 @@ off_800E614:
 	.word 0x1040
 	thumb_func_end sub_800E5FC
 
+// symdb: Picks a panel-parameter pair from a small table (selected by the object's alliance and whether it carries flag 0x10 / stands on a solid panel) and passes it, together with the target panel, to object_checkPanelParameters; returns immediately if the target panel is invalid.
+// symdb: void playerObject_movingToPanel_check_800E618(u32 panelX /* r0 */, u32 panelY /* r1 */, u32 obj
+// symdb: /* r5 */); returns whatever object_checkPanelParameters left in r0-r3 plus nz/c/v (or Z set,
+// symdb: r0==0 if the panel is invalid); clobbers r0; preserves r4-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/playerObjectMovingToPanelValidityRelated_800E618.yaml
 	thumb_func_start playerObjectMovingToPanelValidityRelated_800E618
 playerObjectMovingToPanelValidityRelated_800E618:
 	push {r6,r7,lr}
@@ -6278,6 +6319,10 @@ locret_800EC7E:
 	thumb_func_end sub_800EC66
 
 // also returns enemy_idx
+// symdb: Bumps an enemy chip-drop index up by the navi's current stat tier (floored with a stubbed contribution), capped by the enemy's version for actor type 0 (boss-style enemies); other actor types pass through unchanged.
+// symdb: u32 sub_800EC80(u32 enemy_idx /* r0 */) -> u32 /* r0 */ ; clobbers r1,r3; preserves r4-r7; flags
+// symdb: clobbered (n/z/c/v)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800EC80.yaml
 	thumb_func_start sub_800EC80
 sub_800EC80: // (enemy_idx: u16) -> u16
 	push {r4,r5,r7,lr}
@@ -6378,6 +6423,10 @@ off_800ED28:
 	.word eUsedAIDataBitfield
 	thumb_func_end ai_resetAIDataSlots_800ED00
 
+// symdb: Allocates one of the 8 battle AI data slots (AIData + AIState + AIAttackVars) for an object, zero-fills it, and returns its pointer or NULL if all slots are in use.
+// symdb: void object_createAIData() -> r0: eAIData slot base (or NULL), r2: updated eUsedAIDataBitfield
+// symdb: value, r3: address of eUsedAIDataBitfield; r4/r5 preserved; clobbers r1, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_createAIData.yaml
 	thumb_func_start object_createAIData
 object_createAIData: // () -> Nullable<* AIData>
 	push {r4,r5,lr}

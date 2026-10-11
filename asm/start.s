@@ -155,6 +155,10 @@ off_8000238:
 	arm_func_end start_copyMemory
 
 // () -> void
+// symdb: GBA ROM entry thunk: calls the main ROM/BIOS initialization routine sub_3005DA0, then returns control to the caller using the saved LR.
+// symdb: u32 start_800023C(void);  // called with: <none>; returns caller's saved LR in r0; nz/c/v flags
+// symdb: from the call; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/start_800023C.yaml
 	thumb_func_start start_800023C
 start_800023C: // () -> ()
 	push {lr}

@@ -66,6 +66,10 @@ dword_8144154:
 	.word 0x1000002
 	thumb_func_end sub_81440D8
 
+// symdb: Reset GBA link-cable hardware and zero multiplayer comm buffers/state.
+// symdb: void sub_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
+// symdb: c v {r0 r1 r2 r3} */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8144158.yaml
 	thumb_local_start
 sub_8144158:
 	push {r4-r7,lr}
@@ -2681,6 +2685,10 @@ off_81453D0:
 	.word eStruct200FE00
 	thumb_func_end sub_8145210
 
+// symdb: Handles an RFU (wireless) VBlank tick: syncs RFU state, and if the sync returned a non-zero status, sends command 0xF1 and then processes the RFU response queue.
+// symdb: void sub_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
+// symdb: clobbered; r4 preserved (not used here) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81453D4.yaml
 	thumb_local_start
 sub_81453D4:
 	push {lr}
@@ -19208,6 +19216,9 @@ off_814CCF8:
 	.word dword_2010CCC
 	thumb_func_end AgbRFU_checkID
 
+// symdb: Initializes the GBA serial I/O hardware into multiplayer-link mode, readying the link-cable ID buffer before the handshake begins.
+// symdb: void linkCable_sio32Init_814CCFC(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/Sio32IDInit.yaml
 	thumb_local_start
 Sio32IDInit:
 	push {r4,r5,lr}
@@ -21474,6 +21485,9 @@ loc_814E0DE:
 	bx r0
 	thumb_func_end ply_goto
 
+// symdb: Advance one step in a music pattern's playback (writes the next note pointer, bumps the step index, then yields via ply_goto) or signals end-of-pattern to ply_fine once all 3 steps are consumed.
+// symdb: void ply_patt(u32 patt) /* r1 in; r4 r5 lr out; clobbers r0 r1 r2 r3 nzcv */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ply_patt.yaml
 	thumb_func_start ply_patt
 ply_patt:
 	ldrb r2, [r1,#2]
@@ -23162,6 +23176,10 @@ dword_814EB80:
 	.word 0x68736D53
 	thumb_func_end sub_814EB1C
 
+// symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
+// symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
+// symdb: preserves r4-r6 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814EB84.yaml
 	thumb_local_start
 sub_814EB84:
 	push {r4-r6,lr}
@@ -23803,9 +23821,8 @@ off_814F008:
 	.word Timer0Control
 	thumb_func_end m4aSoundVSyncOn_814EF94
 
-// symdb: m4aSoundVSync: per-frame restart of the sound FIFO DMAs.
-// symdb: () -> if SoundInfo is valid: count down pcmDmaCounter; at 0 reload it and restart DMA1/DMA2
-// symdb: (control 0x84400004)
+// symdb: VSync hook of the M4A sound driver; on a VSync tick, decrements a frame gate and, when it expires, restores its period and re-kicks the two Direct Sound DMA channels.
+// symdb: void m4aSoundVSync(void) // clobbers r0,r1,r2,r3 and N/Z/C/V; lr saved+restored via push/pop
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/m4aSoundVSync.yaml
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync:
@@ -24358,6 +24375,12 @@ loc_814F396:
 	.balign 4, 0x00
 	thumb_func_end sub_814F2F0
 
+// symdb: Mode-selecting packed/single-byte LUT lookup with linear interpolation between adjacent packed entries, used as a generic helper across multiple subsystems.
+// symdb: u32 interpLutLookup_814F3A4(u8 mode, u8 index, u8 frac); /* inputs: r0=mode, r1=index, r2=frac,
+// symdb: r3/r4/r5/r6/r7/lr=unused; outputs: r0=result, r1=lr (return), r2=0 or frac, r3=table addr,
+// symdb: r12=frac (interp path) or frac (simple); flags set by final add (interp: add(interp, 0x800);
+// symdb: simple: add(idx, table_addr)) */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814F3A4.yaml
 	thumb_local_start
 sub_814F3A4:
 	push {r4-r7,lr}
@@ -24452,6 +24475,10 @@ off_814F448:
 	.word byte_81C0628
 	thumb_func_end sub_814F3A4
 
+// symdb: Starts one of the four APU sound channels (1–4) by writing envelope/length then trigger, returning the trigger register address to the caller.
+// symdb: void soundStartChannel_814F44C(u8 channel /* r0 */, void *ret /* lr */) -> void *triggerReg /*
+// symdb: r1 */; clobbers nz,c,v; flags set by ADDS/#-addition path matching the original exit instruction
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814F44C.yaml
 	thumb_local_start
 sub_814F44C:
 	push {lr}
@@ -24506,6 +24533,9 @@ off_814F49C:
 	.word Channel4Length_Envelope_NR41_NR42_+1
 	thumb_func_end sub_814F44C
 
+// symdb: Per-tick update of one GBA sound channel's pan / volume / mute bytes (called from the SIO/stream audio mixer tick)
+// symdb: void soundChannel_tickPanVolume_814F4A0(struct SoundChannel* r0); clobbers r0 r1, returns via lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814F4A0.yaml
 	thumb_local_start
 sub_814F4A0:
 	push {r4,lr}

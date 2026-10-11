@@ -978,6 +978,10 @@ QueueHwordAlignedGFXTransfer: // (queued_src: *const (), mut_queued_dest: *mut (
 	mov r3, #2
 	b loc_8000ACA
 
+// symdb: Queues a word-aligned GFX DMA copy into the global GFX transfer ring buffer (handler slot 3, copy_type 3).
+// symdb: void queueWordAlignedGfxTransfer_8000AC4(u32 src /* r0 */, u32 dest /* r1 */, u32 size /* r2 */,
+// symdb: lr /* lr */) -> (r3, nz/c/v)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/QueueWordAlignedGFXTransfer.yaml
 	thumb_func_start QueueWordAlignedGFXTransfer
 QueueWordAlignedGFXTransfer: // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r3, #3
@@ -1075,6 +1079,10 @@ locret_8000B2E:
 
 // For the uncompressed tuple3[0] case, it just copies tuple3[0] into tuple3[1] by tuple3[2] bytes, also routing to copies appropriately.
 // It terminates when it encounters a NULL after processing triplets.
+// symdb: Table-driven ROM data loader that iterates 12-byte entries, LZ77-decompressing or plain-copying game asset data into RAM until a null terminator.
+// symdb: void decompAndCopyData(u32 r0_table_ptr); // reads r2-r7 from caller; returns r1,r2,r3 clobbered
+// symdb: by callees, r4-r7 preserved, flags from final test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/decompAndCopyData.yaml
 	thumb_func_start decompAndCopyData
 decompAndCopyData:
 	push {r4-r7,lr}
@@ -1428,6 +1436,11 @@ loc_8000CDC:
 	pop {r4-r6,pc}
 	thumb_func_end ShuffleHwordList_PrimaryRNG
 
+// symdb: In-place Fisher–Yates-style shuffle of a u16 array using the secondary RNG and BIOS Sqrt as the index source.
+// symdb: void shuffleHwordList_SecondaryRNG_08000D12(const u16 *r0_array, u32 r1_rngState, u32 r2_count);
+// symdb: // returns r0 = r0_array, r1 = r1_rngState, r2 = 0, r3 = last computed halfword byte-offset; //
+// symdb: clobbers nz,c,v; preserves r0/r1/r4/r5/r6/r7.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/ShuffleHwordList_SecondaryRNG.yaml
 	thumb_func_start ShuffleHwordList_SecondaryRNG
 ShuffleHwordList_SecondaryRNG:
 	push {r4-r6,lr}
@@ -1498,6 +1511,11 @@ locret_8000D82:
 	pop {r4,r6,pc}
 	thumb_func_end unused_8000D5E
 
+// symdb: Converts the save/play-time frame counter into a packed-BCD HH:MM:SS.cc value used by the play-time display, capping at 99:59:59.99.
+// symdb: u32 playtime_framesToPackedBcd(u32 frames /*r0*/); /* returns packed BCD in r0; r2 =
+// symdb: minutes<<16, r3 = seconds<<8 on normal path (preserved on overflow); clobbers nzcv/r1; preserves
+// symdb: r4,r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/memory_bcd_8000D84.yaml
 	thumb_func_start memory_bcd_8000D84
 memory_bcd_8000D84:
 	push {lr}
@@ -1619,6 +1637,10 @@ stub_returnZero_8000E30:
 	pop {r4-r7,pc}
 	thumb_func_end stub_returnZero_8000E30
 
+// symdb: Picks a weighted-random index from a u8 weight table, stirring the RNG and using the current frame counter.
+// symdb: u32 sub_8000E3A(const u8* table /* r0 */, s32 count /* r1 */, void* toolkit /* r10 */) -> r0
+// symdb: chosen index, r2 chosen index, r3 last table byte read; clobbers r1, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8000E3A.yaml
 	thumb_func_start sub_8000E3A
 sub_8000E3A:
 	push {r4-r7,lr}
@@ -1726,6 +1748,9 @@ dword_8000EE0:
 	.word 0xFFFF
 	thumb_func_end sub_8000EB6
 
+// symdb: Counts how many of 9 title-screen reward icons the player has earned and returns the count plus a bitmask of which ones
+// symdb: void GetTitleScreenIconCount(void) -> (u32 count r0, u16 bitmask r1); clobbers r2-r7, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetTitleScreenIconCount.yaml
 	thumb_func_start GetTitleScreenIconCount
 GetTitleScreenIconCount: // () -> (u8, u16)
 	push {r4-r7,lr}
@@ -2148,6 +2173,10 @@ sub_8001154:
 	thumb_func_end sub_8001154
 
 // () -> void
+// symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sub_802FE28.
+// symdb: void sub_8001158(const void *scriptTable);  // r0 = list ptr; clobbers r0-r3, r5, lr; flags NZ
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8001158.yaml
 	thumb_func_start sub_8001158
 sub_8001158:
 	push {r4-r7,lr}
@@ -2913,6 +2942,10 @@ fill:
 
 /// Disabling this causes a lot of glitchy overlayed graphics from logo screen and throughout.
 /// Game remains functional. In the net the background is very glitchy and animating you can't see MegaMan
+// symdb: Copies an 8-byte palette/tile slot entry from a ROM table into the toolkit render-info write area.
+// symdb: void sub_80015FC(u32 entry_index /* r0 */, void *toolkit /* r10 */); -> void; clobbers r0, r1,
+// symdb: r2, r3, N, Z, C, V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80015FC.yaml
 	thumb_func_start sub_80015FC
 sub_80015FC:
 	ldr r1, off_8001614 // =byte_8001618
@@ -2988,6 +3021,10 @@ off_8001728:
 	.word off_8033878 // [Nullable<*const [u8]>; REAL_WORLD_NUM_GROUPS]
 	thumb_func_end map_lookupMapIdByGroupAndNumber_8001708
 
+// symdb: Flushes cached display-register state (DISPCNT, BG0CTL, MOSAIC, WIN0X, BLDCNT/BLDCOL) from the toolkit's RenderInfo tables into GBA hardware I/O.
+// symdb: render_800172C(/* Toolkit * */ r10, /* preserved */ r3, r4, r5, r6, r7) -> /* sets ADDS from
+// symdb: ri+4 */ v, nz, c; clobbers r0, r1, r2, lr; preserves r3-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/render_800172C.yaml
 	thumb_func_start render_800172C
 render_800172C:
 	push {r4-r7,lr}
@@ -3333,6 +3370,11 @@ off_80018DC:
 	.word sub_3005EBA+1
 	thumb_func_end call_sub_3005EBA
 
+// symdb: Copies a horizontal run of BG tile ids from a source buffer into one 32x32 tile-id map block, wrapping columns at 32.
+// symdb: void bg_writeTileIdRow(u32 x /*r0*/, u32 y /*r1*/, u32 block /*r2*/, const u16* src /*r3*/, s32
+// symdb: count /*r4*/, Toolkit* toolkit /*r10*/) -> leaves r0 = next x (wrapped), r1 = 0x1F, r2 =
+// symdb: block<<11, r3 = src past the copy, r4 = remaining count, flags set by final "CMP r4,#0"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80018E0.yaml
 	thumb_func_start sub_80018E0
 sub_80018E0:
 	push {r6,r7,lr}
@@ -3379,6 +3421,13 @@ loc_800191A:
 	pop {r6,r7,pc}
 	thumb_func_end sub_80018E0
 
+// symdb: Fills a stripe of OAM attribute pairs (two linked rows per row index) with consecutive tile IDs.
+// symdb: void sub_8001930(u32 tile_id_base /* r0, low 12b */,                  u32 high_bits /* r1,
+// symdb: placed into bits 12+ */,                  u32 stride_entries /* r2, multiplied by 4 to get byte
+// symdb: stride */,                  s32 strip_count /* r3, decremented; 0 loops again, <0 means loop
+// symdb: again */,                  OamEntry* dst /* r4 */); // clobbers nz c v r0 r1 r2 r3; preserves r4
+// symdb: r5 r6 r7; returns via lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8001930.yaml
 	thumb_func_start sub_8001930
 sub_8001930:
 	push {r4-r7,lr}
@@ -3672,6 +3721,9 @@ off_8001AB0:
 	.word eBGScrollCBCounters
 	thumb_func_end BGScrollCB_BG1AccelToVeryFastDownScroll
 
+// symdb: Empty placeholder function that immediately returns to its caller.
+// symdb: void nullsub_39(void);  /* no params, no return, no clobbers */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_39.yaml
 	thumb_func_start nullsub_39
 nullsub_39:
 	mov pc, lr
@@ -3979,6 +4031,10 @@ off_8001C90:
 	.word eMapTilesState200be70
 	thumb_func_end sub_8001C52
 
+// symdb: Renders all 32-byte tile entries of a GFX animation sequence into an EWRAM staging buffer via per-frame dispatch handlers, then queues a DMA transfer of the assembled sheet to the display destination.
+// symdb: void gfx_renderAnimTileSheet(GFXAnimData *animData /*r0*/, /*r4 preserved*/, GFXAnimState
+// symdb: *animState /*r7*/);  // outputs: r0-r12 clobbered, NZCV clobbered; r4,r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001C94.yaml
 	thumb_local_start
 sub_8001C94: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {r4,r7,lr}
@@ -4056,6 +4112,10 @@ off_8001CEC:
 	.word sub_8001ED0+1
 	thumb_func_end sub_8001C94
 
+// symdb: Decodes one frame of a graphics animation stream into the object's per-tile scratch buffer and queues a single aligned DMA-style copy of the finished tiles to the object's destination.
+// symdb: void sub_8001CFC(void *params /*r0*/, GFXAnimState *self /*r7*/) -> (r0..r3,r5,r6,flags
+// symdb: clobbered; r4/r7 preserved via push/pop)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001CFC.yaml
 	thumb_local_start
 sub_8001CFC: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {r4,r7,lr}
@@ -4487,6 +4547,9 @@ dword_8001FFC:
 	.word 0xF0F0F0F0
 	thumb_func_end sub_8001ED0
 
+// symdb: Copies a 64-byte (16-word) structure from one buffer to another.
+// symdb: void sub_8002000(u32 dst_ptr in r5, u32 src_ptr in r4); clobbers r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8002000.yaml
 	thumb_local_start
 sub_8002000:
 	ldr r0, [r4]
@@ -5390,6 +5453,9 @@ byte_80025CC:
 	thumb_func_end sub_80024CC
 
 /// tags: "#mcu, "
+// symdb: Resets overworld scene state by zeroing OAM and sound RAM, then reinitializing player/NPC/map object structs, sprite variables, and a small RAM buffer.
+// symdb: void resetOverworldScene_800260C(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copy_800260C.yaml
 	thumb_func_start copy_800260C
 copy_800260C:
 	push {r4,lr}

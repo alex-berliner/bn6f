@@ -4758,6 +4758,9 @@ dword_8132610:
 	.word 0x1C1814
 	thumb_func_end sub_81325F4
 
+// symdb: Dispatches on sub_8132290's menu choice, sets a flag byte, picks a sub-state via lookup, and writes the next handler index into the menu record.
+// symdb: void sub_8132614(struct MenuRecord *r5) * ; returns nz=1 in Z due to `mov r0,
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8132614.yaml
 	thumb_func_start sub_8132614
 sub_8132614:
 	push {lr}
@@ -5512,6 +5515,10 @@ JumpTable8132C48:
 	thumb_func_end SaveMenuUpdate8132C34
 
 /// Disabling this causes user interaction to be irresponsive but yields identical save menu scene
+// symdb: Save-menu per-frame update: while the screen fade is active, clear chatbox eFlag 0x40 and mark the menu object's state byte as "fading" (4), then always refresh the save-menu text GFX.
+// symdb: void SaveMenuOpenUpdate8132C50(u32 menu_ptr /* r5 */) -> clobbers nz,c,v,r0,r1,r2,r3; preserves
+// symdb: r4-r11
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SaveMenuOpenUpdate8132C50.yaml
 	thumb_local_start
 SaveMenuOpenUpdate8132C50:
 	push {lr}
@@ -5560,6 +5567,10 @@ off_8132C9C:
 	.word 0x110
 	thumb_func_end SaveMenuUpdate8132C68
 
+// symdb: Finalizes the PET save submenu, optionally resetting the chatbox e-flags and returning the PET menu to the overworld map while a screen fade is active, then refreshes the save-menu text graphics.
+// symdb: void ExitSaveMenu8132CA0(void); // uses r10/lr in; clobbers nz,c,v,r0-r3,lr; preserves r4-r9;
+// symdb: final outputs (r5,r8,r9,r10,r11,r12) come from saveMenuTextGfx_8132F4C
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ExitSaveMenu8132CA0.yaml
 	thumb_local_start
 ExitSaveMenu8132CA0:
 	push {lr}
@@ -5575,6 +5586,9 @@ loc_8132CB2:
 /// If disabled, game crashes on entering save menu
 	pop {pc}
 	thumb_func_end ExitSaveMenu8132CA0
+// symdb: Sets up the save menu's text-script assets (init-ref list, decompressed background blobs, network script, and background tile grid) before the menu is shown.
+// symdb: void saveMenu_initTextScript_8132CB8(void);  /* r10/lr in; r4-r7 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/saveMenu_config_textscript_8132CB8.yaml
 	thumb_local_start
 saveMenu_config_textscript_8132CB8:
 	push {r4-r7,lr}
@@ -5691,6 +5705,11 @@ off_8132D90:
 	.word eDecompBuffer2013A00
 	.word 0x0
 	thumb_func_end saveMenu_config_textscript_8132CB8
+// symdb: Renders the save-menu UI: tile-name headers, three save-file name rows, an info line, and footer text into VRAM tilemap 0x6004000–0x6005400.
+// symdb: void saveMenu_8132D9C(struct SaveMenuCtx *r10 /* save-menu state, base saved by caller */); //
+// symdb: input: r10 = save-menu context pointer (fields +0x34 = slot data, +0x38 = status-block pointer)
+// symdb: // output: clobbers nz,c,v,r0,r1,r2,r3,r10,r11,r12,lr; preserves r4,r5,r6,r7,r8,r9
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/saveMenu_8132D9C.yaml
 	thumb_local_start
 saveMenu_8132D9C:
 	push {r4-r7,lr}
@@ -5852,6 +5871,10 @@ off_8132EF0:
 	.word dword_86B7AE0
 	thumb_func_end saveMenu_8132D9C
 
+// symdb: Draws the save menu's background layer by blitting four prebuilt tilemaps (header text plus three window pieces) into background tile block 2.
+// symdb: void saveMenu_drawBackground_8132EF4(void); // no meaningful inputs; r4-r7 preserved; r0-r3,
+// symdb: flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/saveMenu_8132EF4.yaml
 	thumb_local_start
 saveMenu_8132EF4:
 	push {r4-r7,lr}
@@ -5995,6 +6018,9 @@ storeTableEntryIntoUnk200a220Field8_8132FC4:
 	pop {r4-r7,pc}
 	thumb_func_end storeTableEntryIntoUnk200a220Field8_8132FC4
 
+// symdb: Decomposes a 3-block compression chain header into a left/right interleaved tile-ID list and blits it as one 32x32 BG tile block on layer 2.
+// symdb: void decomposeTileBlock_8132FD0(const u16 *tile_block_header /* r5 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8132FD0.yaml
 	thumb_local_start
 sub_8132FD0:
 	push {r4-r7,lr}
@@ -6119,6 +6145,10 @@ dword_81330A4:
 off_81330A8:
 	.word eDecompBuffer2013A00
 	thumb_func_end sub_8132FD0
+// symdb: Refills all seven background tilemap buffers from a static descriptor table, each via a banded consecutive-row tilemap fill.
+// symdb: void sub_81330AC(void); /* in: none (lr only); out: none; r4-r7 preserved, flags clobbered, Z
+// symdb: set on exit from final CMP r6,#0x1C */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81330AC.yaml
 	thumb_local_start
 sub_81330AC:
 	push {r4-r7,lr}
@@ -6438,6 +6468,11 @@ off_81333EC:
 	.word sub_8133484+1
 	.word sub_8133788+1
 	thumb_func_end sub_81333A0
+// symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
+// symdb: void battle_objectUpdate_8133400(     u32 r4 /* context */, u32 *r5 /* battle object ptr */,
+// symdb: u32 r6 /* context */, u32 r7 /* context */, u32 r10, u32 lr ); /* returns via lr; r0-r3, nz, c,
+// symdb: v carry the residue of the last sub_81353F0 call */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133400.yaml
 	thumb_local_start
 sub_8133400:
 	push {lr}
@@ -7030,6 +7065,10 @@ loc_8133864:
 off_8133888:
 	.word sSubmenu
 	thumb_func_end sub_81337E8
+// symdb: One frame of the folder-edit object step: passes three outer guards, checks an input-locked flag and the held-joypad buttons for a folder-edit gesture, otherwise delegates L/R handling to the folder-edit helper, and saves state into state 8 when handled.
+// symdb: void sub_813388C(void); /* uses r5 = folder_obj, r10 = toolkit; clobbers nz c v r0 r1 r2 r3 r4
+// symdb: r6 r12; preserves r7 r8 r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813388C.yaml
 	thumb_local_start
 sub_813388C:
 	push {lr}
@@ -7115,6 +7154,10 @@ loc_813390E:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81338D4
+// symdb: Scene step: handles joypad cursor input for the menu (gated by state checks) then runs a fixed tail of scene/anim updates and palette/OBJ bank setups.
+// symdb: void sub_8133944(void);  /* uses toolkit via R10, menu state object via R5; no explicit returns;
+// symdb: clobbers r0-r3,r9-r12,lr; flags NZCV clobbered; preserves r4-r8,r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133944.yaml
 	thumb_local_start
 sub_8133944:
 	push {lr}
@@ -7172,6 +7215,10 @@ off_81339B4:
 	.word sub_81339BC+1
 	thumb_func_end sub_813399C
 
+// symdb: Per-frame update for a PET/Navi state object that drives the entity pipeline, and during screen fades refreshes the current PET/Navi's stats from the state struct and resets its header.
+// symdb: void petNavi_perFrameUpdate_81339BC(u32 state /* r5 */); // trashes r0-r4, r6, r8, r9, r10-r12,
+// symdb: lr; flags nzcv; returns via pop {pc}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81339BC.yaml
 	thumb_local_start
 sub_81339BC:
 	push {lr}
@@ -7483,6 +7530,11 @@ locret_8133C56:
 	pop {pc}
 	thumb_func_end sub_8133C0C
 
+// symdb: Handles a SELECT button press in the in-game chatbox menu: plays the confirm sound, dispatches the appropriate close/submenu script, and updates menu state flags.
+// symdb: chatbox_selectPress_8133C58(r5 = menu_state_ptr) -> nz (1 = action dispatched, 0 = ignored);
+// symdb: inputs r2 r3 r4 r5 r6 r7 r10 lr; outputs nz r4 r5 r6 r7 r10; clobbers r0 r1 r2 r3 lr; preserves
+// symdb: r4 r6 r7 r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133C58.yaml
 	thumb_local_start
 sub_8133C58:
 	push {r4,r6,lr}
@@ -7732,6 +7784,10 @@ byte_8133E34:
 	.byte 0x5, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0
 	thumb_func_end sub_8133D64
 
+// symdb: Checks left/right d-pad to navigate between folder view and pack view during folder editing.
+// symdb: s32 folderEdit_CheckLeftRightNav(u32 r0 mode_offset, u32 r5 mode_base, u32 r10 toolkit_ptr) ->
+// symdb: r0 result, nz flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkLeftRightInputForFolderEdit_8133E3C.yaml
 	thumb_local_start
 checkLeftRightInputForFolderEdit_8133E3C:
 	push {r4-r7,lr}
@@ -8035,6 +8091,10 @@ off_81340F8:
 	.word byte_813314C
 	thumb_func_end sub_81340DC
 
+// symdb: Looks up a battle-table entry via the object's index fields, unpacks two bit-fields from offset +0x1C, and forwards them to the shared three-table-entry setter.
+// symdb: void battle_setFieldsFromObj(u32 *obj /*r5*/); // outputs c v r1 r2 r3 (from callee); preserves
+// symdb: r4 r5 r6 r7; clobbers r0 nz
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81340FC.yaml
 	thumb_local_start
 sub_81340FC:
 	push {r4,lr}
@@ -8613,6 +8673,10 @@ sub_8134548:
 	pop {pc}
 	thumb_func_end sub_8134548
 
+// symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to sub_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
+// symdb: void object_resolveTableEntry_8134558(u32 index, u32 sub_id, u32 attr_a_off, u32 attr_b_off,
+// symdb: /*r5=*/u32 entry_ptr);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8134558.yaml
 	thumb_local_start
 sub_8134558:
 	push {r4-r7,lr}
@@ -8647,6 +8711,10 @@ dword_8134590:
 	.word 0xC24C
 	thumb_func_end sub_8134558
 
+// symdb: Clears the submenu background tile area when the in-game submenu (menu window) is not currently open.
+// symdb: void submenu_clearBgIfClosed_8134594(void);   /* takes no arguments; trashes r0-r3, r4-r6, lr;
+// symdb: clobbers N, Z, C, V */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8134594.yaml
 	thumb_local_start
 sub_8134594:
 	push {r4-r7,lr}
@@ -8664,6 +8732,9 @@ locret_81345AC:
 	.byte 0, 0
 	thumb_func_end sub_8134594
 
+// symdb: Fixed-parameter thunk that instantiates a sprite/effect (ID 0xF3, type 0x16) by calling a common object-init routine with a ROM data table and flag 0x10000000.
+// symdb: void sprite_initEffectF3_81345B0(void); // r4-r7 preserved, r0-r3 clobbered, lr clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345B0.yaml
 	thumb_local_start
 sub_81345B0:
 	push {r4-r7,lr}
@@ -8868,6 +8939,9 @@ off_8134718:
 	.word dword_81331FC
 	thumb_func_end sub_813468C
 
+// symdb: Copies background tiles for an object, choosing a small (2x2) or large (0x15x2) source rectangle based on a flag at r5+0xD, into tile block 0 with a fixed 8x0x11 destination.
+// symdb: void sub_813471C(void /* uses r5 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813471C.yaml
 	thumb_local_start
 sub_813471C:
 	push {r4-r7,lr}
@@ -9119,6 +9193,11 @@ off_81348D4:
 	.word unk_202A3E0
 	thumb_func_end sub_81347A4
 
+// symdb: Verifies a battle object's column position against its expected row offset; if aligned, repositions the object and clears a misalignment flag, otherwise sets the flag.
+// symdb: void battle_alignRowCheck_81348DC(u32 row_off /*r0*/, u32 cur_x /*r1*/, u32 cur_y /*r2*/, u32
+// symdb: flag_obj /*r3*/, u32 threshold /*r4*/, BattleObj* obj /*r5*/); flags nz,c,v modified; r4-r7
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81348DC.yaml
 	thumb_func_start sub_81348DC
 sub_81348DC:
 	push {r4,lr}
@@ -10435,6 +10514,10 @@ locret_813527A:
 	pop {pc}
 	thumb_func_end chatbox_clampScrollToTextEnd_813525C
 
+// symdb: Copies a run of 32-byte battle-state/toolkit slots from src to dst, then zero-fills the next slot past the copied range.
+// symdb: void battle_copyStateSlotsAndZeroNext_813527C(u32 src /*r0*/, u32 dst /*r1*/, u32 slot_count
+// symdb: /*r2*/);  // r4-r7 preserved; r0, r1, lr, flags clobbered; r2, r3 written by callees
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813527C.yaml
 	thumb_local_start
 sub_813527C:
 	push {r4-r7,lr}
@@ -10514,6 +10597,10 @@ dword_8135310:
 	.word 0x302F2E
 	thumb_func_end sub_81352A0
 
+// symdb: Battle setup: populates the two PET navi slots, accumulates their HP, and stores the total in the battle object.
+// symdb: u32 sub_8135314(u32 navi_data, u32 stats_arr, u32 arg2, u32 arg3, u32 ptr_array, u32
+// symdb: battle_obj); clobbers nz c v r0 r1 r2 r3 lr; preserves r4 r5 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8135314.yaml
 	thumb_func_start sub_8135314
 sub_8135314:
 	push {r4-r7,lr}
@@ -10784,6 +10871,11 @@ dword_81354FC:
 	.word 0xFFFF
 	thumb_func_end sub_8135404
 
+// symdb: Scans the 30 battle-object array for allies of a given alliance, buckets them by HP tier, and reports whether the caller would exceed the per-tier spawn limit for its own HP bucket.
+// symdb: u32 battle_CheckSpawnLimit_8135500(u32 obj_ptr, u32 alliance) -> r0: exceeded flag (0/1); r1:
+// symdb: capped limit (when exceeded) or current bucket count + 1 (when not); r2: overflowing bucket
+// symdb: index 0..4 (when exceeded) or unchanged (when not); clobbers nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8135500.yaml
 	thumb_local_start
 sub_8135500:
 	push {r4-r7,lr}
@@ -10930,6 +11022,10 @@ off_81355E8:
 	.word sSubmenu
 	thumb_func_end submenu_isOpen_81355D8
 
+// symdb: Registers the Battle Start battle-script block with the script engine
+// symdb: void sub_81355EC(void); // r5, r10, lr passed through from callee; r5 returned; clobbers nz,c,v
+// symdb: r0-r3, lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81355EC.yaml
 	thumb_local_start
 sub_81355EC:
 	push {r4,lr}
@@ -13749,6 +13845,10 @@ off_8136C20:
 	.word byte_2009390
 	thumb_func_end sub_8136BE8
 
+// symdb: Reapplies the current PET Navi's stat initialization while preserving its in-battle stat values (HP, level, etc.).
+// symdb: void sub_8136C24(void);  /* takes no arguments, returns nothing; r1, r2, flags c/v left from
+// symdb: SetCurPETNaviStatsByte */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8136C24.yaml
 	thumb_func_start sub_8136C24
 sub_8136C24:
 	push {lr}

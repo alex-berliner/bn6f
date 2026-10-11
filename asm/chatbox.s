@@ -776,6 +776,10 @@ byte_8040210:
 	.byte 0x3, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0
 	thumb_func_end chatbox_804017C
 
+// symdb: Emits a 3-row by 6-column grid of OAM sprite entries for a chatbox text panel.
+// symdb: void chatbox_804021C(struct ChatBoxProperties *r5); // preserves r4,r5,r6,r7,r8,r9,r10,r12;
+// symdb: clobbers r0,r1,r2,r3,lr,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_804021C.yaml
 	thumb_local_start
 chatbox_804021C:
 	push {r4,r6,r7,lr}
@@ -970,6 +974,10 @@ off_8040380:
 	thumb_func_end chatbox_runTrainScript
 
 
+// symdb: Resets the chatbox, loads a script entry from a TextScriptArchive by index, configures all display/tile defaults, and queues the chatbox tilemap and font data for transfer
+// symdb: void chatbox_runScript(const TextScriptArchive *archive /*r0*/, u8 script_idx /*r1*/); reads
+// symdb: toolkit via r10; preserves r4-r7; clobbers nz cv r0-r3 lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_runScript.yaml
 	thumb_func_start chatbox_runScript
 chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	push {r4-r6,lr}
@@ -1438,6 +1446,12 @@ off_804072C:
 	.word 0x1F5
 	thumb_func_end dead_80405F8
 
+// symdb: Looks up a per-map compressed chatbox / L-button text script for the player's current map group/number and slot.
+// symdb: u8 chatbox_selectCompTextByMap_8040730(u8 idx, struct Toolkit* r10) -> r0 = LZ77-compressed text
+// symdb: script pointer; r2 = 4 * oGameState_Unk_08; r3 = &table[oGameState_Unk_08]; NZCV set from ADD
+// symdb: r3, r2 (i.e. LD32(slotTable) + 4 * Unk_08). Clobbers: r1, r2, r3, NZCV. Preserves r4-r7. Uses
+// symdb: r10.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_selectCompTextByMap_8040730.yaml
 	thumb_local_start
 chatbox_selectCompTextByMap_8040730: // (u8 idx) -> CompText*
 	push {r4-r7,lr}
@@ -1555,6 +1569,13 @@ mapPtrs80407C0:
 	.word inInternet_8044520 // [Nullable<*const [*const LZ77Compressed<TextScriptArchive>]>; INTERNET_NUM_GROUPS]
 	thumb_func_end chatbox_selectCompTextByMap_8040794
 
+// symdb: Resolves the LZ77-compressed chat/dialogue script for the current (mapGroup, mapNumber) at story progress stage 4, branching on real-world vs. internet maps.
+// symdb: /* chatbox_selectCompTextByMap (r10 = toolkit ptr) -> *const LZ77Compressed<TextScriptArchive>
+// symdb: */ void chatbox_selectCompTextByMap(uint32_t toolkit);   /* in: r10=toolkit, out: r0=text,
+// symdb: r2=16, r3=slotAddress */                                                     /* clobbers: r1,
+// symdb: N/Z/C/V (from final ldr addr calc) */                                                     /*
+// symdb: preserved: r4-r7, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_selectCompTextByMap_80407C8.yaml
 	thumb_local_start
 chatbox_selectCompTextByMap_80407C8: // () -> *const LZ77Compressed<TextScriptArchive>
 	push {r4-r7,lr}
@@ -1697,6 +1718,11 @@ byte_80408A4:
 	thumb_func_end chatbox_804082C
 
 // (int notUsed, u8 scriptID) -> void
+// symdb: Configures the chatbox to begin playback of a given text script entry, resetting its cursor/state and clearing two chatbox-related flags.
+// symdb: void chatbox_startScript(u32 chatbox /* r5 */, u32 script_idx /* r1 */)   -> r1, r2, r3, r4, lr
+// symdb: (r4 = resolved script pointer);   clobbers nz, r0; preserves r2, r3; C/V preserved (ORR has no
+// symdb: effect on them).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_config_80408D0.yaml
 	thumb_local_start
 chatbox_config_80408D0:
 	push {lr}
@@ -1783,6 +1809,9 @@ chatbox_maskFlags_3e:
 	.balign 4, 0x00
 	thumb_func_end chatbox_maskFlags_3e
 
+// symdb: Advances one frame of the chatbox's ED-select animation: DMA-loads the next tile row into VRAM, wraps the frame index at the end of the table, and queues the OAM sprite for that frame.
+// symdb: void chatbox_ED_select_8040944(u32 /*chatbox*/ r5); // r5 in/out (preserved), no flags on return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_ED_select_8040944.yaml
 	thumb_local_start
 chatbox_ED_select_8040944:
 	push {lr}
@@ -2035,6 +2064,11 @@ dword_8040B38:
 
 	thumb_local_start
 // (enum Mugshot idx) -> void
+// symdb: Sets up the chatbox's sprite sub-structure to display a character's mugshot portrait, loading its graphics and animation data.
+// symdb: void chatbox_loadMugshotPortrait_8040B3A(u32 mugshotId /*r0*/, u32 attr01 /*r1*/, Chatbox*
+// symdb: chatbox /*r5*/); /* r4 passes through; returns r1=chatbox+0x88 value, r2/r3 whatever the sprite
+// symdb: animation loader left, r7=chatbox */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8040B3A.yaml
 sub_8040B3A:
 	push {r5,lr}
 	push {r5}
@@ -2479,6 +2513,10 @@ chatbox_E5_nop: // (&self@r5, char *script@r4) -> int
 
 // Description: ends the current script and closes message box
 // Parameters: 0
+// symdb: Advances or closes the chatbox on script opcode 0xE6, dequeuing the next pending script entry or clearing/hiding the chatbox when nothing is queued.
+// symdb: void chatbox_advanceOrHide_E6End_8040E98(Chatbox *self) -> u32 r0 (1 if a queued script was
+// symdb: dequeued into r4, 0 otherwise); preserves: r3; clobbers: r0, r1, r2, r4, lr, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_E6_end.yaml
 	thumb_local_start
 chatbox_E6_end: // (&self@r5, char *script@r4) -> int
 	push {lr}
@@ -2731,6 +2769,14 @@ byte_804102C:
 	.byte 0x2
 	thumb_func_end chatbox_E8_msgbox
 
+// symdb: Advances the chatbox open animation one tick, ticking BoxY down then OpenState 0->3, returning 1 when the open transition completes.
+// symdb: void chatbox_stepOpenAnimation_804103E(void);   /* r5: pointer to chatbox state struct (deref
+// symdb: +0x10 OpenState, +BoxY) */   /* in: r1, r2 are ignored */   /* out: r0 = 0 while animating, 1
+// symdb: when open completes this tick */   /* out: r1 clobbered (BoxY-1 on scroll path, 0 once drained)
+// symdb: */   /* out: r2 clobbered to 3 on the drain path after BoxY reaches 0 */   /* flags: N/Z from
+// symdb: final r0 (mov r0,#0 or mov r0,#1); C/V left as guest */   /* clobbers: r0, r1, r2, lr; flips
+// symdb: flags 1, 0x04, 0x100 on chatbox flag word */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_804103E.yaml
 	thumb_local_start
 chatbox_804103E:
 	push {lr}
@@ -3093,6 +3139,11 @@ Parameter 1 = ??
 Parameters 2-4 = cursor settings
 EB XX LR UD = Pressing left moves cursor to option L, right moves cursor to option R, up moves cursor to option U, down moves cursor to option D
 */
+// symdb: Appends one entry to the chatbox's option (choice) list, copying the option's parameter bytes into the next free slot and resetting the choice cursor.
+// symdb: chatbox_EB_option(u32 r1 /* unused */, const u8 *r4 optionDef, Chatbox *r5) -> r0=1,
+// symdb: r1=oChatbox_Unk_80, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_Unk_70 word,
+// symdb: r4=optionDef+4; NZCV from ADDS r4,#4; r2/r3/r4/lr clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EB_option.yaml
 chatbox_EB_option:
 	push {lr}
 	// mask
@@ -3517,6 +3568,10 @@ loc_8041546:
 	.word 0x1F0
 	thumb_func_end chatbox_EE_pause
 
+// symdb: Dispatches the chatbox script opcode at work-area offset 1 to its handler via the jt_ctrl_8041580 jump table.
+// symdb: void chatbox_runScriptCmd_804156C(struct chatbox_ctx *r4);  // tail call: returns whatever
+// symdb: regs/flags the handler leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EF_checkflag.yaml
 	thumb_local_start
 chatbox_EF_checkflag:
 	push {lr}
@@ -3858,6 +3913,10 @@ loc_8041810:
 	.balign 4, 0x00
 	thumb_func_end chatbox_80417E4
 
+// symdb: Evaluates a chatbox chip-condition script record, optionally triggering a sub-script and stepping past it.
+// symdb: void chatbox_evaluateChipScript_8041818(u32 /*r4*/ scriptRecordPtr); /* out: r0=1,
+// symdb: r1=scriptId/0xFF, r2=offset, r4=advanced ptr; clobbers nz c v r1 lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8041818.yaml
 	thumb_local_start
 chatbox_8041818:
 	push {lr}
@@ -4589,6 +4648,10 @@ dword_8041CF0:
 	.word 0x72
 	thumb_func_end chatbox_F4_unk
 
+// symdb: Executes the chatbox F5 (mugshot) scripting command: activates/deactivates the character portrait, sets its palette and facial-expression overrides, or looks up display data from id-to-value tables and triggers a graphic refresh.
+// symdb: u32 chatbox_processF5Mugshot_08041cf4(u8* r4_cmd, Chatbox* r5_chatbox) -> r0=1, r4 advanced by
+// symdb: cmd size, NZCV from pointer-add; r5 preserved; r1/r2/r3/r7/flag-3e clobbered by callees
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_F5_mugshot.yaml
 	thumb_local_start
 chatbox_F5_mugshot:
 	push {lr}
@@ -5101,6 +5164,10 @@ off_80420B8:
 	.word 0x140
 	thumb_func_end chatbox_8041FB4
 
+// symdb: Copies one 64-byte block of the current PET navi's dialogue text into the next chatbox buffer slot and advances the script cursor.
+// symdb: r4=scriptPtr (command stream), r5=chatbox (chatbox struct); returns r0=1, r4=text slot dest
+// symdb: pointer, r7=chatbox+0x64 (slot-counter address); flags from final mov r0,#1 (nz set, c/v clear)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_80420BC.yaml
 	thumb_local_start
 chatbox_80420BC:
 	push {lr}
@@ -5161,6 +5228,13 @@ chatbox_8042124:
 	pop {pc}
 	thumb_func_end chatbox_8042124
 
+// symdb: Open a nested text-display level in the chatbox, wiring its script pointer and saving the resume point for when it closes.
+// symdb: void chatbox_pushTextLevel(u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg3 /* r3 */, const u8*
+// symdb: cmdWord /* r4, points at a 4-byte chatbox text command */, struct Chatbox* chat /* r5 */); -> r0
+// symdb: = 1 (always), r1 = historySlotOffset (0x140 + (depth-1)*4), r2 = 4 (mul scratch left in place),
+// symdb: r4 = per-slot text buffer base (byte_200AFA0 + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
+// symdb: clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042128.yaml
 	thumb_local_start
 chatbox_8042128:
 	push {lr}
@@ -5871,6 +5945,11 @@ chatbox_80425E0:
 	.byte 0, 0
 	thumb_func_end chatbox_80425E0
 
+// symdb: Chatbox option-launcher that, on first tick, sets chatbox flag 0x3E bit "FLAGS_3E_UNK_0001" and opens the mail subsystem using the mail index stored at [r4+2], then marks the text-script state byte so it only fires once.
+// symdb: void chatbox_launchMailOption_80425F0(void); /* r4: chatbox object (mail index at +2); r5: text-
+// symdb: script state (guard byte at +4); r10/lr: callers' frame/link; returns r0 = 0 (nz set), r2/r3
+// symdb: trashed, r4/r5 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_80425F0.yaml
 	thumb_local_start
 chatbox_80425F0:
 	push {lr}
@@ -6273,6 +6352,10 @@ sub_80428B8: // 0x80428B8
 	thumb_func_end sub_80428B8
 	.balign 4, 0
 
+// symdb: Initializes a chatbox's display state (char index, cursor, row, derived row, text-pointer slot) from a 5-byte script entry and advances the script pointer by 5.
+// symdb: void chatbox_initFromScriptEntry_80428C0(const u8 *entry /* r4 */, struct Chatbox *chatbox /* r5
+// symdb: */) -> returns 1 in r0; clobbers r1, r2, r3, r4, NZCV.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80428C0.yaml
 	thumb_local_start
 sub_80428C0: // 0x80428C0
 	ldrb r1, [r4,#2]
@@ -6355,6 +6438,11 @@ sub_8042910: // 0x8042910
 	thumb_func_end sub_8042910
 	.balign 4, 0
 
+// symdb: Chatbox text-script command that centers the next run of text horizontally, storing the computed start X and draw position into the chatbox object.
+// symdb: u32 chatbox_placeCenteredTextRun_804293C(u32* scriptPtr /* r4 */, Chatbox* chatbox /* r5 */);
+// symdb: returns 1 in r0, new draw pos in r1, aligned offset in r2, next char X in r3, scriptPtr advanced
+// symdb: by 3 in r4; flags set as for r4+3 add (N=Z=C=V=0 in practice); preserves r6, r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804293C.yaml
 	thumb_local_start
 sub_804293C: // 0x804293C
 	push {r6,r7,lr}
@@ -6441,6 +6529,10 @@ loc_80429BE:
 	thumb_func_end sub_8042990
 	.balign 4, 0
 
+// symdb: Advances the chatbox's script cursor by a row-aligned half-width offset, bumps an internal data pointer by an 8-byte aligned slot, and steps the caller's row iterator forward by 3; returns 1.
+// symdb: void sub_80429D8(u8* r4_rowIter, ChatboxState* r5_chatbox); /* returns 1 in r0, nz/c/v
+// symdb: clobbered, r6/r7 preserved; passes r2=step, r3=half+cursor, r4+=3, r8=half */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80429D8.yaml
 	thumb_local_start
 sub_80429D8: // 0x80429D8
 	push {r6,r7,lr}
@@ -6475,6 +6567,10 @@ sub_80429D8: // 0x80429D8
 	thumb_func_end sub_80429D8
 	.balign 4, 0
 
+// symdb: Format a BCD-converted integer into a chatbox glyph string with optional padding and right-alignment, then write a 3-byte terminator.
+// symdb: void chatbox_formatBcdNumber_8042A14(u32 r0=value, u32 r1=flags, u32 r2=dstBuf); outputs
+// symdb: r3=padRemainder, r6=fillGlyph, r7=0, r8=bcdValue; preserves r1,r4,r5; clobbers NZCV,r0,r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042A14.yaml
 	thumb_local_start
 chatbox_8042A14:
 	push {r4,r5,lr}

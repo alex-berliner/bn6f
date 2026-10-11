@@ -671,6 +671,11 @@ off_809D6B8:
 	.word off_809D6B0
 	thumb_func_end sub_809D61A
 
+// symdb: Applies the overworld player's directional walking/anim table for the current facing, swapping to the SlipRun table while EVENT_1716 (and not EVENT_173F) is set.
+// symdb: void owPlayerApplyFacingAnim_809D6BC(u32 r3, u32 r4, OWPlayerObject* r5, void* r10 /*toolkit*/);
+// symdb: out: r0=4, r1=group byte, r3=r3_in, r6=GameState*, r7=selected anim entry addr; flags NZ from
+// symdb: final add
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/calledWhenUsingSlipRun_809D6BC.yaml
 	thumb_local_start
 calledWhenUsingSlipRun_809D6BC:
 	push {lr}
@@ -755,6 +760,9 @@ loc_809D750:
 	pop {pc}
 	thumb_func_end sub_809D730
 
+// symdb: Dispatches one overworld player action via a jump table, consumes any pending animation requested by the handler, and initiates a scene transition if needed.
+// symdb: void ow_player_processAction(u32 player_obj /*r5*/, u32 toolkit /*r10*/) -> r0, nz, c, v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809D75E.yaml
 	thumb_local_start
 sub_809D75E:
 	push {lr}
@@ -1311,6 +1319,11 @@ locret_809DB5E:
 	pop {pc}
 	thumb_func_end event_TestPlayerAdvanceForward_809DB50
 
+// symdb: Overworld player tick: primes Unk_34 animation slot, refreshes Unk_50 from the slip/arrow table and Unk_48 from the game-state table, then clears all three slots.
+// symdb: void sub_809DB60(/* r5=OWPlayerObject*, r10=Toolkit* */);   inputs: r5 (OWPlayerObject*), r10
+// symdb: (Toolkit*), lr (return)   outputs: r4 r5 (preserved per contract)   clobbers: nz c v r0 r1 r2 r3
+// symdb: r6 r7 lr   preserved: r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DB60.yaml
 	thumb_local_start
 sub_809DB60:
 	push {lr}
@@ -1364,6 +1377,12 @@ off_809DBC0:
 	.word off_809DCEC
 	thumb_func_end sub_809DB60
 
+// symdb: Builds an OW interaction area on the player object using a template struct's offsets plus the player's world position, then stores the new handle at the caller-supplied output pointer.
+// symdb: void sub_809DBC4(u32 area_struct /* r0: ptr to ow_player_interaction_area_struct template */,
+// symdb: u32 out_handle_ptr /* r1: ptr to write the created area handle into */,                  u32
+// symdb: player_obj /* r5: ptr to OW player object */); // flags clobbered; r4, r5 (preserved across
+// symdb: callee) preserved on return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DBC4.yaml
 	thumb_local_start
 sub_809DBC4:
 	push {r5,lr}
@@ -1611,6 +1630,10 @@ dword_809DDEC:
 	.word 0xC00000
 	thumb_func_end owPlayer_TickCountdownOrWait_809DDCC
 
+// symdb: Overworld: exits the player's slip-run state when the slip-run event is no longer active.
+// symdb: void sub_809DDF0(void) /* r5=OWPlayerObject*, r10=?, lr=ret; trashes r0-r3, r6, r7, nz/c/v, lr
+// symdb: */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DDF0.yaml
 	thumb_local_start
 sub_809DDF0:
 	push {lr}
@@ -1638,6 +1661,9 @@ dword_809DE2C:
 	.word 0xC00000
 	thumb_func_end sub_809DDF0
 
+// symdb: If the EVENT_1716 gate is active, finalize the player's slip-run: optionally mark EVENT_173F, then clear the in-slip-run flag and EVENT_173E.
+// symdb: void endSlipRunState_809DE30(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DE30.yaml
 	thumb_local_start
 sub_809DE30:
 	push {lr}
@@ -1716,6 +1742,10 @@ locret_809DED2:
 	pop {pc}
 	thumb_func_end sub_809DE98
 
+// symdb: Overworld dispatcher that suppresses a pending tile-interaction request while the PET menu's data flag is set or a cutscene is running, otherwise hands it off to the tile-interaction handler.
+// symdb: void ow_gatePendingTileInteraction_809DED4(void); // in: r5 = overworld player object pointer;
+// symdb: out: r0 (handler return value); clobbers r0,r2,r5,r8,r9,r10,r11,r12,r1,r3,r4,r6,r7,lr,NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DED4.yaml
 	thumb_local_start
 sub_809DED4:
 	push {lr}
@@ -2054,6 +2084,10 @@ nullsub_26:
 	mov pc, lr
 	thumb_func_end nullsub_26
 
+// symdb: Syncs the overworld player's X/Y/Z position (always) and facing direction (only before event flag 0x1719 is set) into the shared state struct at 0x200ACE0.
+// symdb: void owPlayer_809E0C8(struct oToolkit *toolkit /* r10 */); clobbers: r0, r1, r2, r3, lr; flags N
+// symdb: Z C V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_809E0C8.yaml
 	thumb_local_start
 owPlayer_809E0C8:
 	push {lr}
@@ -2694,6 +2728,9 @@ sub_809E3C4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E3C4
 
+// symdb: Overworld per-frame clamp: pushes the player object's X/Y coordinates out to the bounding box stored in eStruct2000aa0 when its enable flag is set.
+// symdb: void sub_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809E3D6.yaml
 	thumb_local_start
 sub_809E3D6:
 	push {r4-r7,lr}
