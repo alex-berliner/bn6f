@@ -5762,6 +5762,8 @@ chatbox_8042418:
 	.balign 4, 0x00
 	thumb_func_end chatbox_8042418
 
+// symdb: Chatbox command that starts a random battle: pickBattleSettingsEntry_80AA5F4(0x1F) -> StartBattle, then a screen fade; fires once per text script (guarded by a state byte).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_804244C.yaml
 	thumb_local_start
 chatbox_804244C:
 	push {lr}

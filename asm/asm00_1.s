@@ -16045,6 +16045,8 @@ off_800A3E0:
 	.word eBattleFolder
 	thumb_func_end sub_800A318
 
+// symdb: Loads the battle folder into eBattleFolder and triggers shuffleFolder_800A570: source is the saved folder (oToolkit_S_Chip_2002178_Ptr = 0x02002178), a battle-mode table (dword_802137C) or unk_2039AA0 with effects bit 0x200000; Navi offset = GetCurPETNaviStatsByte(0x2D) * 0x3C; tag pairs land at +0x38/+0x3A.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A3E4.yaml
 	thumb_local_start
 sub_800A3E4:
 	push {r4-r7,lr}

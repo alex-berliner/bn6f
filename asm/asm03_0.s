@@ -1487,6 +1487,8 @@ loc_8026F0E:
 	pop {pc}
 	thumb_func_end runBattleDialog_8026EC8
 
+// symdb: Run-away (L button) attempt: t = (NaviStats+0x3E + 4) / 5 vs BattleSettings.Unk_01; if not an auto-win, a threshold byte from off_8027014 indexed by the attempt counter dword_20349A8 decides via one GetRNGSecondary ((r & 0xF) < threshold); writes the outcome (2 escaped) to S20364C0+4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026F1A.yaml
 	thumb_local_start
 sub_8026F1A:
 	push {r4,lr}
@@ -1625,6 +1627,8 @@ off_802700C:
 	.word byte_20366C0
 off_8027010:
 	.word off_8027014
+// symdb: Run-away threshold rows for sub_8026F1A: { 4, 8, 15 }, { 8, 12, 15 }, { 12, 14, 15 }; the row is picked by how the battle's busting level compares to the escape stat, the byte index is the attempt counter dword_20349A8.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8027014.yaml
 off_8027014:
 	.word byte_8027020
 	.word byte_8027023
@@ -1879,6 +1883,8 @@ off_80271F4:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80271C2
 
+// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80271F8.yaml
 	thumb_local_start
 sub_80271F8: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -5762,6 +5768,8 @@ sub_8028DBC:
 	pop {pc}
 	thumb_func_end sub_8028DBC
 
+// symdb: Shuffle-once button handler (custom screen, active slot 8): a chip of type 4/5 whose enabled byte is 0 starts the shuffle state machine (jump 0x28 -> sub_80271F8) with sound 0x82; a nonzero enabled byte plays SOUND_CANT_JACK_IN instead.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028DD6.yaml
 	thumb_local_start
 sub_8028DD6:
 	push {lr}
@@ -7101,6 +7109,8 @@ off_8029684:
 	.word dword_203CA48
 	thumb_func_end sub_8029652
 
+// symdb: Shuffle-once, per-tick step: copies the hand's eligible chips into dword_2033000, shuffles them with ShuffleHwordList_SecondaryRNG and writes them back into eBattleFolder — one secondary-RNG shuffle per tick (8 ticks, from sub_802723A).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029688.yaml
 	thumb_local_start
 sub_8029688:
 	push {r4,r6,r7,lr}
@@ -7247,6 +7257,8 @@ off_8029784:
 	.word dword_2033000
 	thumb_func_end sub_8029688
 
+// symdb: Shuffle-once, first step: copies the hand's eligible chips (eBattleFolder[0 .. S20364C0+6), skipping used (slot byte 2) and disabled (bit 0 of +4)) into word_2036660 and shuffles that buffer with ShuffleHwordList_SecondaryRNG in two segments split at byte_80298C8[kind] (all-zero table = one segment).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029788.yaml
 	thumb_local_start
 sub_8029788:
 	push {r4,r6,r7,lr}
@@ -7349,6 +7361,8 @@ loc_8029838:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8029788
 
+// symdb: Shuffle-once, final step: copies the shuffled snapshot word_2036660 back over the hand's eligible slots in eBattleFolder (no shuffle here).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802983C.yaml
 	thumb_local_start
 sub_802983C:
 	push {r4,r6,r7,lr}

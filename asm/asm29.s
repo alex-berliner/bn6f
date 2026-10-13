@@ -10546,6 +10546,8 @@ locret_80AA5DC:
 	.word byte_8020CE4
 	thumb_func_end battle_tryEncounter_80AA4C0
 
+// symdb: Sets GameState.CurBattleDataPtr to pickBattleSettingsEntry_80AA5F4(0x1F) — the cutscene command start_random_battle's way of starting a random encounter.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chooseRandomEncounterMaybe_80aa5e4.yaml
 	thumb_func_start chooseRandomEncounterMaybe_80aa5e4
 chooseRandomEncounterMaybe_80aa5e4:
 	push {r7,lr}
