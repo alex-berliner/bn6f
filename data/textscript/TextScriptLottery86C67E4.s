@@ -1,3 +1,5 @@
+// symdb: Number trader / lottery text script: deterministic — no RNG draw is involved in choosing the (always-last-entry) outcome.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/TextScriptLottery86C67E4.yaml
 TextScriptLottery86C67E4::
 	text_archive_start
 

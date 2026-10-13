@@ -1633,6 +1633,8 @@ sub_809A4EC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A4EC
 
+// symdb: Bug Frag trader menu step: cost checks (cmp 0 / 2 / 0xFF paths) and one svc-6 division in the roll path; the tier roll itself is sub_813D48C.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A520.yaml
 	thumb_local_start
 sub_809A520:
 	push {r4-r7,lr}

@@ -337,6 +337,8 @@ JumpTable8033A1C:
 	.word sub_8033A80+1 // (self: * S2011E30 $r5) -> ()
 off_8033A48:
 	.word JumpTableInternet8033A4C
+// symdb: Internet-area spawn jumptable: one spawn routine per internet area (e.g. GreenArea_UnkFunction_8077e60, Underground_UnkFunction_8079468, ...), each spawning that area's map objects (e.g. MrWeatherComp_SpawnMapObjectsForMap -> SpawnObjectsFromList).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/JumpTableInternet8033A4C.yaml
 JumpTableInternet8033A4C:
 	.word noop_8033B08+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033B0C+1 // (self: * S2011E30 $r5) -> ()

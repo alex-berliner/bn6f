@@ -156,6 +156,8 @@ word_2000B5C:: // 0x2000b5c
 	.space 132
 unk_2000BE0:: // 0x2000be0
 	.space 320
+// symdb: Cybercrow lesson crow records, 8 slots of 0x14 bytes: +0 state, +2 timer 0x1E + (r & 0x3F), +4 heading (raw RNG), +6 timer 2, +8 / +0xC / +0x10 position (X/Y/Z).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2000D20.yaml
 byte_2000D20:: // 0x2000d20
 	.space 1
 byte_2000D21:: // 0x2000d21

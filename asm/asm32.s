@@ -37766,7 +37766,7 @@ loc_8120CAE:
 	pop {r4-r7,pc}
 	thumb_func_end gfx_fillTilemapConsecutiveBanded_8120C94
 
-// symdb: Reads the next byte (character) from a text buffer at a caller-supplied index, treating 0xFF as the end marker and wrapping back to the buffer's start with index 0.
+// symdb: Table lookup: returns t[i], or t[0] when t[i] == 0xFF (the caller's index is r0, the table r1).
 // symdb: int chatbox_readTextChar_8120CC8(int index, u8 *buf) -> r0 = new index (0 if end marker hit), r1
 // symdb: = byte read, r2 = buf, r3 = incoming index, carry = (byte == 0xFF), overflow clear
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120CC8.yaml

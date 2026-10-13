@@ -2895,6 +2895,8 @@ locret_814330C:
 	.word 0x1E
 	thumb_func_end sub_81432FA
 
+// symdb: Spawns a crow into the first free slot of byte_2000D20 (max 6 active): 2 primary GetRNG calls — one raw heading stored at +4, one & 0xF0 (<<1) angle on a fixed radius around the player via math_cosTable / math_sinTable — then SpawnOverworldMapObject(type 0x18).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143314.yaml
 	thumb_local_start
 sub_8143314:
 	push {r4-r7,lr}
@@ -3044,6 +3046,8 @@ loc_8143402:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81433F6
 
+// symdb: Writes GetRNG & 3 into eStruct2001010 + 0xA (byte_200101A); meaning unknown (the vidsync doc flags it the same way).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143406.yaml
 	thumb_local_start
 sub_8143406:
 	push {r4-r7,lr}

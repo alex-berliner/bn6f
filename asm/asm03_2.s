@@ -9408,6 +9408,8 @@ off_804BD78:
 	.word off_804B018
 	thumb_func_end sub_804BD00
 
+// symdb: Chip trader weighted pick: GetRNG masked to the low 10 bits (r & 0x3FF), the table's weights summed, svc 6 = r % sum, then a walk of the cumulative weights picks the slot.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderWeightedRandomMaybe_804BD7C.yaml
 	thumb_local_start
 chipTraderWeightedRandomMaybe_804BD7C:
 	push {r5,lr}
@@ -9561,6 +9563,8 @@ dword_804BE84:
 
 	thumb_local_start
 // r1 = rarity histogram
+// symdb: Chip trader step: GetRNG % count (svc 6) over the candidate list.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BE88.yaml
 sub_804BE88:
 	push {r5,lr}
 	mov r7, r8
@@ -9717,6 +9721,8 @@ off_804BF90:
 	.word byte_804B06A
 	thumb_func_end sub_804BF18
 
+// symdb: Chip trader redraw reward: GetRNG % count (svc 6) over the candidate list.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderGetRewardFromRedraw_804BF94.yaml
 	thumb_local_start
 chipTraderGetRewardFromRedraw_804BF94:
 	push {r5,lr}

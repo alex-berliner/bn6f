@@ -417,6 +417,8 @@ cutscenescript_808C372:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Cybercrow "pecked" cutscene helper: on the object's +4 state trigger it sets a 0x3C (60) frame countdown at +0x70+0 and then, once per frame while it runs, rolls GetRNG & 0xFF (re-rolling while the high nibble matches the stored value at +0x70+0xC).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C378.yaml
 	thumb_local_start
 sub_808C378:
 	push {r4-r7,lr}

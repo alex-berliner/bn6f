@@ -3635,6 +3635,8 @@ dword_813D488:
 	.word 0x2620
 	thumb_func_end sub_813D41C
 
+// symdb: Bug Frag trader tier roll: indexes a table, rolls GetRNG & 0xF and consults byte_813D500 (the tier table, all zero — so no special tier adjustment); costs are dword_813D4FC = {10, 20, 30, 50}.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D48C.yaml
 	thumb_func_start sub_813D48C
 sub_813D48C:
 	push {r4-r7,lr}
@@ -3688,12 +3690,18 @@ off_813D4F4:
 	.word dword_813D4FC
 off_813D4F8:
 	.word byte_813D500
+// symdb: Bug Frag trader costs, 4 halfwords: 10, 20, 30, 50 (.word 0x321E140A).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dword_813D4FC.yaml
 dword_813D4FC:
 	.word 0x321E140A
+// symdb: Bug Frag trader tier table, 16 bytes, all zero — the tier roll in sub_813D48C has nothing to add.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_813D500.yaml
 byte_813D500:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_813D48C
 
+// symdb: Bug Frag trader item roll (first): GetRNG & 0xF picks the item, re-rolled while the table says 0xFF; then a second GetRNG & 3 picks the chip code (added to the item index).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D510.yaml
 	thumb_local_start
 sub_813D510:
 	push {r4-r7,lr}
@@ -3745,6 +3753,8 @@ loc_813D564:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813D510
 
+// symdb: Bug Frag trader item roll (second): GetRNG & 0xF, re-rolled on 0xFF; variant gate cmp r0,#1.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D568.yaml
 	thumb_local_start
 sub_813D568:
 	push {r4-r7,lr}
@@ -3775,6 +3785,8 @@ loc_813D590:
 	.balign 4, 0x00
 	thumb_func_end sub_813D568
 
+// symdb: Bug Frag trader item roll (third): GetRNG & 0xF, re-rolled on 0xFF; variant gate cmp r0,#2.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D598.yaml
 	thumb_local_start
 sub_813D598:
 	push {r4-r7,lr}
