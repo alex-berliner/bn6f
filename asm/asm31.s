@@ -134244,6 +134244,8 @@ off_80F768C:
 	.word sub_80F7690+1
 	thumb_func_end sub_80F7670
 
+// symdb: SpoutMan AI step: GetPositiveSignedRNG & 0xF < 0xC gates the attack (a second roll follows).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F7690.yaml
 	thumb_local_start
 sub_80F7690:
 	push {r4,r6,lr}
@@ -135583,6 +135585,8 @@ locret_80F8092:
 	pop {pc}
 	thumb_func_end sub_80F803E
 
+// symdb: SpoutMan AI helper (range sub_80F8094..sub_80F8256): no RNG call in this one.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8094.yaml
 	thumb_local_start
 sub_80F8094:
 	push {lr}
@@ -135822,6 +135826,8 @@ loc_80F8252:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80F81C0
 
+// symdb: SpoutMan picker (range end): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8256.yaml
 	thumb_local_start
 sub_80F8256:
 	push {r4,r6,r7,lr}
@@ -137137,6 +137143,8 @@ locret_80F8CF6:
 	pop {pc}
 	thumb_func_end sub_80F8CCA
 
+// symdb: TomahawkMan AI helper (range sub_80F8CF8..sub_80F8DFE): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8CF8.yaml
 	thumb_local_start
 sub_80F8CF8:
 	push {r6,r7,lr}
@@ -137282,6 +137290,8 @@ loc_80F8DFA:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80F8DA8
 
+// symdb: TomahawkMan picker (range end): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8DFE.yaml
 	thumb_local_start
 sub_80F8DFE:
 	push {r6,r7,lr}
@@ -137456,6 +137466,8 @@ off_80F8FFC:
 	.word sub_80F9000+1
 	thumb_func_end sub_80F8FE0
 
+// symdb: TenguMan AI step: GetPositiveSignedRNG & 0xF < 0xE gates the branch (a second roll follows).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F9000.yaml
 	thumb_local_start
 sub_80F9000:
 	push {r4,r6,lr}
@@ -137555,6 +137567,8 @@ sub_80F9088:
 	pop {pc}
 	thumb_func_end sub_80F9088
 
+// symdb: TenguMan AI step: GetPositiveSignedRNG & 0xF < 8 gates the branch.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F90BA.yaml
 	thumb_local_start
 sub_80F90BA:
 	push {r4,lr}
@@ -137684,6 +137698,8 @@ sub_80F9168:
 	pop {pc}
 	thumb_func_end sub_80F9168
 
+// symdb: TenguMan AI step: GetPositiveSignedRNG & 3 compared against ExtraVars (a 0-3 rotating pick — equal means advance: +1 & 3).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F91A2.yaml
 	thumb_local_start
 sub_80F91A2:
 	push {r4,lr}
@@ -138654,6 +138670,8 @@ sub_80F9932:
 	pop {pc}
 	thumb_func_end sub_80F9932
 
+// symdb: TenguMan picker: GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F993A.yaml
 	thumb_local_start
 sub_80F993A:
 	push {r6,r7,lr}
@@ -138706,6 +138724,8 @@ locret_80F9990:
 	pop {pc}
 	thumb_func_end sub_80F9980
 
+// symdb: TenguMan picker (second): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F9992.yaml
 	thumb_local_start
 sub_80F9992:
 	push {r4,r6,r7,lr}
@@ -142708,6 +142728,8 @@ dword_80FBA20:
 	.word 0xC0C0C04
 	thumb_func_end sub_80FBA0C
 
+// symdb: ProtoMan AI step: guard, then GetPositiveSignedRNG & 0xF < 0xC gates the attack (a second roll follows later in the body).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FBA24.yaml
 	thumb_local_start
 sub_80FBA24:
 	push {r4,r6,lr}
@@ -142771,6 +142793,8 @@ locret_80FBA98:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80FBA24
 
+// symdb: ProtoMan AI step: GetPositiveSignedRNG & 0xF < 0xE gates the branch (a second roll follows).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FBA9A.yaml
 	thumb_local_start
 sub_80FBA9A:
 	push {r4,r6,lr}
@@ -142850,6 +142874,8 @@ locret_80FBB32:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80FBA9A
 
+// symdb: ProtoMan AI step: GetPositiveSignedRNG & 0xF < 0xC gates the branch (a second roll follows).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FBB34.yaml
 	thumb_local_start
 sub_80FBB34:
 	push {r4,r6,lr}
@@ -142931,6 +142957,8 @@ locret_80FBBC8:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80FBB34
 
+// symdb: ProtoMan AI step: GetPositiveSignedRNG & 0xF < 0xE gates the branch (a second roll follows).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FBBCA.yaml
 	thumb_local_start
 sub_80FBBCA:
 	push {r4,r6,lr}
@@ -145151,6 +145179,8 @@ locret_80FCCBA:
 	pop {pc}
 	thumb_func_end sub_80FCC4C
 
+// symdb: ProtoMan-family panel chooser (misnamed after JudgeMan in the disassembly): GetPositiveSignedRNG & 0xF < 0xC gates the choice, a second roll follows; called from the ProtoMan AI path.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/judgemanChoosePanel_80FCCBC.yaml
 	thumb_local_start
 judgemanChoosePanel_80FCCBC:
 	push {r4,r6,r7,lr}
@@ -159714,6 +159744,8 @@ off_8103CCC:
 	.word sub_8103CD0+1
 	thumb_func_end sub_8103CB0
 
+// symdb: Gregar AI step: state byte at AIState+6, then GetPositiveSignedRNG & 0xF < 8 gates the attack.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8103CD0.yaml
 	thumb_local_start
 sub_8103CD0:
 	push {r4,r6,lr}
@@ -162043,6 +162075,8 @@ locret_8104E96:
 	pop {pc}
 	thumb_func_end sub_8104E36
 
+// symdb: Gregar AI step (range sub_8104E98..sub_8105174, several helpers): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8104E98.yaml
 	thumb_local_start
 sub_8104E98:
 	push {r4,r6,r7,lr}
@@ -162432,6 +162466,8 @@ sub_810515A:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810515A
 
+// symdb: Gregar picker (range end): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8105174.yaml
 	thumb_local_start
 sub_8105174:
 	push {r6,r7,lr}
@@ -162777,6 +162813,8 @@ off_81054D4:
 	.word sub_81054D8+1
 	thumb_func_end sub_81054B8
 
+// symdb: Falzar AI step: state byte at AIState+5, then GetPositiveSignedRNG & 0xF < 6 gates the attack.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81054D8.yaml
 	thumb_local_start
 sub_81054D8:
 	push {r4,r6,lr}
@@ -164811,6 +164849,8 @@ locret_8106416:
 	pop {pc}
 	thumb_func_end sub_81063F4
 
+// symdb: Falzar picker: GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8106418.yaml
 	thumb_local_start
 sub_8106418:
 	push {r6,r7,lr}
@@ -164944,6 +164984,8 @@ dword_81064F0:
 	.word 0x2040203
 	thumb_func_end sub_81064DC
 
+// symdb: Falzar picker (second): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81064F4.yaml
 	thumb_local_start
 sub_81064F4:
 	push {r4,r6,r7,lr}
@@ -165030,6 +165072,8 @@ sub_8106590:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8106590
 
+// symdb: Falzar panel-state step: byte fields in AIAttackVars (Unk_0d/0e, the panel bytes at Unk_2c+0x12/0x13 via object_isValidPanel) and an alliance-indexed byte table dword_810665C; no RNG call itself.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81065A8.yaml
 	thumb_local_start
 sub_81065A8:
 	push {r4,r6,r7,lr}
@@ -165229,6 +165273,8 @@ loc_810670A:
 	pop {r4,r6,pc}
 	thumb_func_end sub_81066EA
 
+// symdb: Falzar step: GetPositiveSignedRNG & 1 (kept in r4) feeds the alliance-dependent choice.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8106718.yaml
 	thumb_local_start
 sub_8106718:
 	push {r4,r6,lr}
