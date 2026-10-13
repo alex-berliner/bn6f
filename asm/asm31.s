@@ -1,6 +1,8 @@
 
 	thumb_func_start t1_0x0_80B81EC
 // some sort of generic function for enemies?
+// symdb: Battle object type 0 main: branches on AIData.ActorType — 0 virus -> battleObject_dispatch_8108F50, 1 navi -> sub_80F2330, 2 player -> playerObject_main_80EA460.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_0x0_80B81EC.yaml
 t1_0x0_80B81EC:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -74140,6 +74142,8 @@ locret_80DABC2:
 	pop {pc}
 	thumb_func_end sub_80DAB9C
 
+// symdb: Chooses the Cornfiesta chip-attack panel: one GetRNG call masked with 0xF; a chip attack object helper, not navi AI.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chooseCornfiestaPanelXY_80DABC4.yaml
 	thumb_local_start
 chooseCornfiestaPanelXY_80DABC4:
 	push {lr}
@@ -124247,6 +124251,8 @@ off_80F2348:
 	.word sub_8016C4E+1
 	thumb_func_end sub_80F2330
 
+// symdb: Navi battle object main dispatch: indexes four AI tables by AIData.AIIndex * 4 — actions off_80F2410, the ai_eventuallyRunsAIAttack_801AF44 flag table off_80F23AC, off_80F2474, off_80F25A0 — and decrements AIData.ChipLockoutTimer.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F2354.yaml
 	thumb_local_start
 sub_80F2354:
 	push {r4,lr}
@@ -124292,6 +124298,8 @@ off_80F23A4:
 	.word off_80F2474
 off_80F23A8:
 	.word off_80F25A0
+// symdb: Navi AI table indexed by AIData.AIIndex * 4 (via sub_80F2354 -> ai_eventuallyRunsAIAttack_801AF44); the navi AI indexes are 1 HeatMan, 2 ElecMan, 3 SlashMan, 4 EraseMan, 5 ChargeMan, 6 SpoutMan, 7 TomahawkMan, 8 TenguMan, 9 GroundMan, 0xA DustMan, 0xB ProtoMan, 0xC BlastMan, 0xD DiveMan, 0xE CircusMan, 0xF JudgeMan, 0x10 ElementMan, 0x12 Colonel, 0x13 Bass, 0x14 Gregar, 0x15 Falzar (11/16/17/18 dummies).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_80F23AC.yaml
 off_80F23AC:
 	.word off_80F29B0
 	.word off_80F2B14
@@ -170482,6 +170490,8 @@ off_8108F68:
 	.word sub_8016C4E+1
 	thumb_func_end battleObject_dispatch_8108F50
 
+// symdb: Virus/enemy per-frame update: special-cases a few NameIDs, then indexes the four AI tables by AIData.AIIndex * 4 — actions off_8109050 (to battle_801B1C4), hooks off_81091D0 (long-call) — and stores the object Z into AIData+0x3C unless CurAction == 7.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_8108F74.yaml
 	thumb_local_start
 battle_8108F74:
 	push {r4,lr}
@@ -170589,6 +170599,8 @@ off_8109048:
 	.word off_8109050
 off_810904C:
 	.word off_81091D0
+// symdb: Virus AI action table, indexed by AIData.AIIndex * 4 (battle_8108F74): each slot is either an action word or a pointer to a per-virus sub-table (e.g. slot 1 Mettaur -> ForMettaur_8109EF4).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8109050.yaml
 off_8109050:
 	// 0x00
 	.word off_8109B74
@@ -170654,6 +170666,8 @@ off_8109050:
 	.word off_81163F0
 	// 0x7C
 	.word off_81166B0
+// symdb: Virus AI per-index data table (indexed like off_8109050): slot 1 Mettaur -> MettaurEnemyStruct1_8109BD0, etc. The AI indexes map to the virus families 1 Mettaur, 2 Piranha, 3 HeadyA, 4 Swordy, 5 KillrEye, 6 Quaker, 7 Catack, 8 Champy, 9 WindBox, 0xA Trumpy, 0xB OldStov, 0xC HntdCndl, 0xD Kettle, 0xE Puffy, 0xF StarFish, 0x10 ErthDrgn, 0x11 ScarCrow, 0x12 PulsBulb, 0x13 BigHat, 0x14 BombCorn, 0x15 Shrubby, 0x16 HonyBmbr, 0x17 Gunner, 0x18 FgtrPlne, 0x19 DarkMech, 0x1A SnakeArm, 0x1B Armadill, 0x1C Cragger, 0x1D Nghtmare, 0x1E Mettaur variant?, 0x1F Tuby (virus code ends near off_81166B0).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_81090D0.yaml
 off_81090D0:
 	// 0x00
 	.word byte_8109A78
@@ -170784,6 +170798,8 @@ off_8109150:
 	.word byte_8116300
 	// 0x7C
 	.word byte_81165C4
+// symdb: Virus AI hook table (indexed by AIData.AIIndex * 4, long-called by battle_8108F74); mostly nullsub_13 with a few real hooks (e.g. slot 3 -> sub_810ABD0).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_81091D0.yaml
 off_81091D0:
 	// 0x00
 	.word nullsub_13+1
@@ -170849,6 +170865,8 @@ off_81091D0:
 	.word sub_81165A4+1
 	// 0x7C
 	.word nullsub_13+1
+// symdb: Second virus AI hook table (indexed by AIData.AIIndex * 4); almost all nullsub_13.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8109250.yaml
 off_8109250:
 	// 0x00
 	.word nullsub_13+1
@@ -171930,6 +171948,8 @@ off_8109CF8:
 	.word ai_attackTickDown_timerEndExit_8109DBA+1
 	thumb_func_end sub_8109CE6
 
+// symdb: Generic virus move step: asks the alliance's panel-picker callback for a target panel, writes it to FuturePanelX/Y and reserves it (flag CANNOT_SLIDE), spawns the warp effect and sets AttackVars timer 3 / step 4 — the teleport lands ~3 frames later. No RNG here (the picker does the roll).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109D08.yaml
 	thumb_local_start
 sub_8109D08:
 	push {r4,r6,r7,lr}
@@ -172396,6 +172416,8 @@ off_8109FF0:
 	.word sub_810A204+1
 	thumb_func_end sub_8109FD6
 
+// symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (sub_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A004.yaml
 	thumb_local_start
 sub_810A004:
 	push {lr}
@@ -172541,6 +172563,8 @@ sub_810A0D4:
 	pop {pc}
 	thumb_func_end sub_810A0D4
 
+// symdb: Mettaur decide-attack roll: GetPositiveSignedRNG & 0xF < 2 attacks; otherwise waits 0x32 (50).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A0EE.yaml
 	thumb_local_start
 sub_810A0EE:
 	push {lr}
@@ -172747,6 +172771,8 @@ locret_810A252:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810A21A
 
+// symdb: Mettaur flag-state 8 roll: GetPositiveSignedRNG & 1 picks one of two candidate-relative-panel lists (dword_810A2A4) that are then walked panel by panel (GetAllianceDependentPanelParamArgs).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A254.yaml
 	thumb_local_start
 sub_810A254:
 	push {r4,r6,r7,lr}

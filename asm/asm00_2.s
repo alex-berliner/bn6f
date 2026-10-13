@@ -15771,6 +15771,8 @@ ZeroAllNaviStatsMood:
 	pop {r4,pc}
 	thumb_func_end ZeroAllNaviStatsMood
 
+// symdb: Random relative panel picker (alliance-aware): collects the filtered panels except the object's current one via the alliance's filter callback, rolls GetPositiveSignedRNG % count and decodes the byte (x = low 3 bits, y = high nibble); with no valid panel it returns the object's current panel (0 draws).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015C48.yaml
 	thumb_func_start sub_8015C48
 sub_8015C48:
 	push {r7,lr}
@@ -15809,6 +15811,8 @@ byte_8015C84:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_8015C48
 
+// symdb: Random panel picker (no filter callback): GetPositiveSignedRNG % count over the filtered panel list except the current panel, decoding x = low 3 bits / y = high nibble; returns the current panel when none is valid (0 draws).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015C94.yaml
 	thumb_func_start sub_8015C94
 sub_8015C94:
 	push {r7,lr}
@@ -15939,6 +15943,8 @@ byte_8015D78:
 // r2 - panel set flags
 // r3 - panel clear flags
 // r4 - relative panel offsets
+// symdb: Filtered random relative panel picker used by AI: walks a candidate panel list (relative offsets, 0x7F terminator), transforms each by the object's facing (object_getEnemyDirection), checks the panel, and rolls GetPositiveSignedRNG (svc 6) over the survivors; 0 candidates -> 0 draws.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/panelFlagCheck_8015D80.yaml
 panelFlagCheck_8015D80:
 	push {r4,lr}
 	sub sp, sp, #0x38
@@ -16077,6 +16083,8 @@ GetRandomRelativePanelFiltered:
 
 	thumb_local_start
 // GetRandomRelativePanelFilteredFromList
+// symdb: Filtered random relative panel picker: transforms candidate relative panels by the alliance direction, validates them (object_checkPanelParameters) and picks one with GetPositiveSignedRNG % valid_count; no valid panel -> 0 draws.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/_GetRandomRelativePanelFiltered.yaml
 _GetRandomRelativePanelFiltered:
 	push {r4,r6,lr}
 	sub sp, sp, #0x38

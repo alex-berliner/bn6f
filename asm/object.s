@@ -3189,6 +3189,8 @@ loc_800CEC4:
 	pop {r4,r6,pc}
 	thumb_func_end object_getPanelsFiltered
 
+// symdb: Random panel picker within the object's current column: object_getPanelsInColumnIgnoreRowFiltered (alliance-filtered), GetPositiveSignedRNG % count, decode x = low 3 bits / y = high nibble; no valid panel -> 0 draws and the count in r2.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_getRandomPanelFromCurrentColumn.yaml
 	thumb_local_start
 object_getRandomPanelFromCurrentColumn:
 	push {r7,lr}
