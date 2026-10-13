@@ -145690,6 +145690,8 @@ off_80FD154:
 	.word sub_80FD158+1
 	thumb_func_end sub_80FD138
 
+// symdb: BlastMan AI step: guards on the move counter (> 3) and an every-2nd-attack check, then rolls GetPositiveSignedRNG & 0xF < 8 to attack.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FD158.yaml
 	thumb_local_start
 sub_80FD158:
 	push {r4,r6,lr}
@@ -145990,6 +145992,8 @@ loc_80FD372:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80FD31C
 
+// symdb: BlastMan AI step: when battle_getAiDifficultyTier_800FE36 != 0, rolls GetPositiveSignedRNG & 0xF (result feeds the alliance-dependent choice); tier 0 skips the roll.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FD376.yaml
 	thumb_local_start
 sub_80FD376:
 	push {r4,lr}
@@ -146977,12 +146981,8 @@ locret_80FDA60:
 	pop {pc}
 	thumb_func_end sub_80FDA3E
 
-// symdb: Chooses a random valid panel for a panel-targeting AI action, falling back from an ignore-column candidate list to a same-row list, then decodes its packed (column,row) byte into r0/r1 for the actor's action.
-// symdb: /* r0 = target object, r2/r3 = filter args, r5 = actor object,  * lr = return address. clobbers
-// symdb: nz/c/v and r2/r3; preserves r4-r7. */ void Next(object *targetObj /*r0*/,           u32 filterA
-// symdb: /*r2*/, u32 filterB /*r3*/,           object *actor /*r5*/); /* returns row in r0, column in r1;
-// symdb: r5 passed through */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80FDA62.yaml
+// symdb: BlastMan panel picker: collects candidate panels on the stack, rolls GetPositiveSignedRNG % count (svc 6) and decodes the chosen byte (x = low 3 bits, y = high nibble).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FDA62.yaml
 	thumb_local_start
 sub_80FDA62:
 	push {r6,r7,lr}
@@ -147034,11 +147034,8 @@ loc_80FDAB4:
 	pop {r6,r7,pc}
 	thumb_func_end sub_80FDA62
 
-// symdb: Picks a random reachable target panel for a battle object from its alliance's preferred columns, falling back to its current panel when none qualify.
-// symdb: void battle_pickTargetPanelForObject_80FDAC4(u32 param0, u32 param2, u32 param3, struct
-// symdb: BattleObject* r5); returns r0=chosenPanelX, r1=chosenPanelY; clobbers nz,c,v,r2,r3,lr; preserves
-// symdb: r4,r6,r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80FDAC4.yaml
+// symdb: BlastMan panel picker (second): candidate list then one GetPositiveSignedRNG % count roll (svc 6).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FDAC4.yaml
 	thumb_local_start
 sub_80FDAC4:
 	push {r4,r6,r7,lr}
@@ -147143,6 +147140,8 @@ byte_80FDB80:
 	.byte 1, 2, 6, 5
 	thumb_func_end sub_80FDAC4
 
+// symdb: BlastMan picker (third): GetPositiveSignedRNG % count (svc 6) over the candidate panels.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FDB84.yaml
 	thumb_local_start
 sub_80FDB84:
 	push {r7,lr}
@@ -147182,6 +147181,8 @@ loc_80FDBC8:
 	pop {r7,pc}
 	thumb_func_end sub_80FDB84
 
+// symdb: BlastMan picker (fourth): GetPositiveSignedRNG % count (svc 6) over the candidate panels.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FDBCC.yaml
 	thumb_local_start
 sub_80FDBCC:
 	push {r4,r6,r7,lr}
@@ -147377,6 +147378,8 @@ off_80FDE00:
 	.word sub_80FDE04+1
 	thumb_func_end sub_80FDDE4
 
+// symdb: DiveMan AI step: guards on the state byte (cmp 2, cmp 3), then rolls GetPositiveSignedRNG & 0xF < 6 to attack.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FDE04.yaml
 	thumb_local_start
 sub_80FDE04:
 	push {r4,r6,lr}
@@ -148821,6 +148824,8 @@ off_80FE8E0:
 	.word sub_80FE8E4+1
 	thumb_func_end sub_80FE8C4
 
+// symdb: CircusMan AI step: two GetPositiveSignedRNG & 0xF rolls; the first gates an early branch (< 0xE, i.e. almost always taken), the second a further branch (< 1?).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FE8E4.yaml
 	thumb_local_start
 sub_80FE8E4:
 	push {r4,r6,lr}
@@ -150456,6 +150461,8 @@ locret_80FF526:
 	pop {pc}
 	thumb_func_end sub_80FF504
 
+// symdb: CircusMan panel picker: GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FF528.yaml
 	thumb_local_start
 sub_80FF528:
 	push {r4,r6,r7,lr}
@@ -150575,6 +150582,8 @@ byte_80FF60D:
 	.byte 0x0, 0x0, 0xFF, 0x1, 0x0, 0x0, 0x1
 	thumb_func_end sub_80FF528
 
+// symdb: CircusMan picker (second): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FF614.yaml
 	thumb_local_start
 sub_80FF614:
 	push {r4,r6,r7,lr}
@@ -150858,6 +150867,8 @@ off_80FF900:
 	.word sub_80FF904+1
 	thumb_func_end sub_80FF8E4
 
+// symdb: JudgeMan AI step: guards (cmp 2, cmp 5) then two GetPositiveSignedRNG & 0xF rolls; the first gates an attack branch (< 0xE).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FF904.yaml
 	thumb_local_start
 sub_80FF904:
 	push {r4,r6,lr}
@@ -151777,6 +151788,8 @@ locret_80FFFBA:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80FFF84
 
+// symdb: JudgeMan picker: GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FFFBC.yaml
 	thumb_local_start
 sub_80FFFBC:
 	push {r4,r6,r7,lr}
@@ -151987,6 +152000,8 @@ dword_8100140:
 	.word 0xF880080
 	thumb_func_end sub_8100106
 
+// symdb: JudgeMan picker (second): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8100144.yaml
 	thumb_local_start
 sub_8100144:
 	push {r4,r6,r7,lr}
@@ -153840,6 +153855,8 @@ locret_8100F5A:
 	pop {pc}
 	thumb_func_end sub_8100F38
 
+// symdb: ElementMan picker: GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8100F5C.yaml
 	thumb_local_start
 sub_8100F5C:
 	push {r6,r7,lr}
@@ -153867,6 +153884,8 @@ loc_8100F86:
 	pop {r6,r7,pc}
 	thumb_func_end sub_8100F5C
 
+// symdb: ElementMan picker (second): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8100F8A.yaml
 	thumb_local_start
 sub_8100F8A:
 	push {r6,lr}
@@ -153949,6 +153968,8 @@ loc_810101A:
 	pop {r6,pc}
 	thumb_func_end sub_8100F8A
 
+// symdb: ElementMan picker (third): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810102A.yaml
 	thumb_local_start
 sub_810102A:
 	push {r6,r7,lr}
@@ -154086,6 +154107,8 @@ byte_810111C:
 	.byte 0x0
 	thumb_func_end sub_81010DA
 
+// symdb: ElementMan picker (fourth): GetPositiveSignedRNG % count (svc 6) over the candidates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810112C.yaml
 	thumb_local_start
 sub_810112C:
 	push {r4,r6,r7,lr}
@@ -154323,6 +154346,8 @@ locret_81013A8:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810138C
 
+// symdb: Colonel AI step: state guards (cmp 2 / 3 / 1) then GetPositiveSignedRNG & 1 plus 1 (a 1-or-2 pick).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81013AA.yaml
 	thumb_local_start
 sub_81013AA:
 	push {r4,r6,lr}
