@@ -11295,8 +11295,10 @@ loc_80AAA94:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AAA3C
 
-// symdb: Battle reward column jitter: one GetPositiveSignedRNG gives the column ((r>>16)&0xF) and the +0/+2 bonus ((r>>8)&1); the pair offset comes from byte_8020B9C[bustingLevel*16 + col]; mode 2 pins the bonus at 2; mode 1 ignores the table; +0x14 (16) is added when HP <= 3*(MaxHP>>3).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/damage_jitter_80AAA98.yaml
+// symdb: Picks the battle reward: returns a byte offset into the enemy's 20-entry reward table (byte_80AAEA8 + id * 0x28) from a base table byte_8020B9C[r0 * 16 + RNG nibble], an RNG bit * 2 and +0x14 (the table's second half) when r1 <= (r2 >> 3) * 3. Not a damage jitter.
+// symdb: u32 sub_80AAA98(u32 param1 /*r0*/, s32 bonus /*r1*/, u32 raw_mag /*r2*/, u32 mode /*r3*/) -> u32
+// symdb: (NZCV flags from final ADD r0, r0, #0; r4 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/damage_jitter_80AAA98.yaml
 	thumb_local_start
 damage_jitter_80AAA98:
 	push {r4,lr}
@@ -11881,8 +11883,9 @@ off_80AAE94:
 	.word unk_2036750
 	thumb_func_end sub_80AAE36
 
-// symdb: Returns byte_80AAEA8 + enemy_id * 0x28 — the per-enemy 20-halfword reward table row (a pure address computation).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAE98.yaml
+// symdb: Returns byte_80AAEA8 + index * 0x28 — the enemy's 20-halfword battle reward table row (not a sprite table).
+// symdb: void* getBattleSpriteEntry_80AAE98(uint32_t index);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AAE98.yaml
 	thumb_local_start
 sub_80AAE98:
 	ldr r2, off_80AAEA4 // =byte_80AAEA8
