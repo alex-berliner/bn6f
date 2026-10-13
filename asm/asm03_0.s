@@ -12265,9 +12265,8 @@ off_802BF60:
 	.word sub_802C0A4+1
 	thumb_func_end dispatchBattleObjectBehavior_802BF4C
 
-// symdb: Refills and shuffles the 42-slot chip pool, then queues tile+palette image transfers for a chip or soul preview based on the packed id stored in the caller struct.
-// symdb: void sub_802BF6C(u32 toolkit /* r5 */) -> /* r7: chip data ptr or pool base */; r0=4, NZ set
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setupChipListVisual_802BF6C.yaml
+// symdb: Result-screen chip-reveal animation setup: shuffles the reveal order with ShuffleByteList_PrimaryRNG (cosmetic, 42-entry shuffle via initShuffledOrderTable42_802C1F0), decodes each packed chip id with decodePackedIdFields_802C54C and queues the chip GFX transfers.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/setupChipListVisual_802BF6C.yaml
 	thumb_local_start
 setupChipListVisual_802BF6C:
 	push {lr}
@@ -13611,6 +13610,8 @@ battle_getStateTableEntryPtr_802C8EA:
 	mov pc, lr
 	thumb_func_end battle_getStateTableEntryPtr_802C8EA
 
+// symdb: Fills the 12-byte battle-result record (target passed in r0, e.g. 0x0203CBE4): +0 mode (0, or 1/2 from GetBattleEffects bit 8 + state nibbles), +1 busting level (BattleState+0x1E), +3 the count of nonzero rewards, +4 battle time, +8 reward 1, +0xA reward 2 (BattleState+0x36).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C8FA.yaml
 	thumb_func_start sub_802C8FA
 sub_802C8FA:
 	push {r5-r7,lr}
@@ -13873,6 +13874,8 @@ locret_802CAA4:
 	pop {r4,pc}
 	thumb_func_end eStruct200A008_redrawOnDirtyFlags_802CA82
 
+// symdb: Applies a battle reward: type 0 = GiveChips (or TakeChips when the state nibble is 2), type 1 = GiveZenny, type 2 = nothing (HP), type 3 = bug frags — called from eStruct200A008_redrawOnDirtyFlags_802CA82 when the reward is given on leaving the result screen.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CAA6.yaml
 	thumb_local_start
 sub_802CAA6:
 	push {lr}

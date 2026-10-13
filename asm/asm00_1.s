@@ -9156,6 +9156,8 @@ dword_8007420:
 	.word 0x8000
 	thumb_func_end spawnEnemy_80073E2
 
+// symdb: Battle-start mystery data: spawns when GetPositiveSignedRNG % 15 < the EnemySetup byte at +2; contents from rng_pickRandomHalfwordFromTableEntry_80DA9FE over the row setupByte2 >> 4 of byte_80211A0 (rows of 8 u16, index RNG & 0xE); placed at the panel packed in EnemySetup byte +1 (x = low 3 bits, y = high nibble).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnMysteryData_8007424.yaml
 	thumb_local_start
 spawnMysteryData_8007424: // (self: * EnemySetup $r6) -> ()
 	push {r4,lr}
@@ -13341,6 +13343,8 @@ dword_80091EC:
 	.word 0x11A
 	thumb_func_end sub_8009158
 
+// symdb: Battle-start sequence: spawns the field objects (battle_spawnType4ObjectWithActiveFlag_80E06F8, battle_SpawnEnemyObjects_8007358 — which runs the held-chip roll), pauses the battle, applies the navi-stat table, sets up music and the frame task, all behind GetBattleEffects checks.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80091F0.yaml
 	thumb_local_start
 sub_80091F0:
 	push {r4,r6,r7,lr}
@@ -17524,6 +17528,8 @@ off_800AC1C:
 	.word 0x800
 	thumb_func_end sub_800ABC6
 
+// symdb: Busting-level calculation, no RNG: compares the battle time (BCD, memory_bcd_8000D84 of battle_getStateUnk40_800A704) against per-mode threshold tables (off_800ADDC / byte_800AE00) and returns the busting level; 0x18F default / 0xF1 when arg == 2.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AC20.yaml
 	thumb_local_start
 sub_800AC20:
 	push {r4,r6,r7,lr}
