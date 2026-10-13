@@ -28,6 +28,11 @@ sub_810D98C:
 	pop {pc}
 	thumb_func_end sub_810D98C
 
+// symdb: Battle enemy AI state-machine step: runs a pre-check (sub_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
+// symdb: void aiStepDispatch(u32 r4, u32 r5, u32 r6, u32 r7, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12,
+// symdb: u32 lr); /* returns r1, r5, r8, r9, r10, r11, r12; clobbers nz/c/v, r0, r2, r3, r7, lr;
+// symdb: preserves r4, r6 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810D998.yaml
 	thumb_func_start sub_810D998
 sub_810D998:
 	push {r4,r6,lr}
@@ -112,6 +117,10 @@ locret_810DA22:
 	pop {pc}
 	thumb_func_end sub_810DA00
 
+// symdb: Dispatches to one of two AI state handlers based on the byte at offset oAIState_Unk_02 of the AI state struct in r6.
+// symdb: void aiStateDispatch_810DA24(void); // r6 holds the AI state struct pointer; base
+// symdb: "off_810DA44:0" -> handler 0, "off_810DA44:1" -> handler 1
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DA24.yaml
 	thumb_local_start
 sub_810DA24:
 	push {lr}
@@ -130,6 +139,10 @@ off_810DA44:
 	.word sub_810DAAA+1
 	thumb_func_end sub_810DA24
 
+// symdb: AI step that picks a movement-target X for a battle object by probing the front tile and locating the opposing-side object.
+// symdb: void ai_selectMovementTarget_810DA4C(void) /* r5 = battle object, r6 = AI state, r10, lr in; r1
+// symdb: = range lo, r5 preserved out; clobbers r0,r2,r3,lr,NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DA4C.yaml
 	thumb_local_start
 sub_810DA4C:
 	push {r4,lr}
@@ -246,6 +259,11 @@ loc_810DB1C:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810DAF0
 
+// symdb: AI helper that picks the next valid panel one step closer to its target along the Y axis (preferred) or X axis, validated via object_checkPanelParameters.
+// symdb: void aiStepPanelTowardTarget_810DB20(u32 /*r5*/ battle_obj, u32 /*r6*/ ai_state); // out: r0 =
+// symdb: candidate panel X (0 if none valid), r1 = candidate panel Y; clobbers r2, r3, lr; flags NZCV
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DB20.yaml
 	thumb_local_start
 sub_810DB20:
 	push {r4,r6,r7,lr}
@@ -458,6 +476,9 @@ byte_810DCC8:
 	.byte 0x78, 0x64, 0x50, 0x3C, 0x50, 0x28
 	thumb_func_end sub_810DC4C
 
+// symdb: Lazily instantiates a type-4 auxiliary entity (param 0x10B04) for a battle object on first call, caching its handle at ExtraVars+8.
+// symdb: void sub_810DCCE(BattleObject* r5); // r4, r5 preserved; nz/c/v/r0-r5,r7/lr updated by creator
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DCCE.yaml
 	thumb_func_start sub_810DCCE
 sub_810DCCE:
 	push {r4,lr}
@@ -10024,7 +10045,7 @@ locret_8112FB8:
 
 // symdb: AI attack driver that branches the battle-object state machine on attacker.oBattleObject_RelatedObject1Ptr, setting up a "special" attack (anim 2, victim lookup 0x12810, extra flag 14, timer/0xA, front direction, 0x1E frame counter) when it is 1, otherwise writing a phase id (0xC if 0, no-op otherwise).
 // symdb: // r5 = attacker battle object*, r7 = AI attack vars*, r10/lr preserved by caller u32
-// symdb: ai_attackState_SetupSpecial_8112FBA(void); // reads: r5 attacker, r7 aiVars // writes: r0 phase value (8, 0xC, or the
+// symdb: sub_8112FBA(void); // reads: r5 attacker, r7 aiVars // writes: r0 phase value (8, 0xC, or the
 // symdb: RelatedObject1Ptr value), r1 scratch, r5 preserved-as-in // clobbers NZCV (sets flags via final
 // symdb: phase compare); r0,r2-r4,lr scratch; r5-r7 preserved // side effects: ST8 anim, ST32/ST16 AI
 // symdb: vars fields, calls sub_80C4038, battle_SetObjectExtraFlag14_80C4086, object_getFrontDirection,
@@ -10100,6 +10121,10 @@ locret_8113036:
 	pop {pc}
 	thumb_func_end sub_8113002
 
+// symdb: Advances a battle object's attack state one frame: kicks off the attack anim/duration on the first tick, clears the current anim when its frame parameters show the end marker, and calls object_exitAttackState once the per-attack countdown reaches zero.
+// symdb: void ai_stepAttackState_8113038(u32 r5 /* battle object */, u32 r6 /* unused */, u32 r7 /* its
+// symdb: AIAttackVars */, u32 r1_in) -> r1; clobbers r0,r2,r3,r6,r7,lr,flags NZCV; preserves r4.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_8113038.yaml
 	thumb_local_start
 ai_8113038:
 	push {r4,lr}
@@ -10178,6 +10203,10 @@ byte_81130D8:
 byte_81130DE:
 	.byte 0x0, 0x0, 0x1, 0x1, 0x1, 0x1
 
+// symdb: Trivial sequence that calls sub_8113114 then sub_8016B02, then returns to the caller.
+// symdb: void callAndReturn_81130E4(void) /* uses r4 r5 r10 from caller; clobbers most regs; no preserved
+// symdb: regs */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81130E4.yaml
 	thumb_local_start
 sub_81130E4:
 	push {lr}
@@ -10186,6 +10215,9 @@ sub_81130E4:
 	pop {pc}
 	thumb_func_end sub_81130E4
 
+// symdb: Per-frame tick for a battle object: runs an internal update (sub_8113114) then drives the battle object's state machine (battleObjectStateDispatcher_8016CE8).
+// symdb: void sub_81130F0(void);  // uses r4, r5, r10, lr in; clobbers r0-r12, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81130F0.yaml
 	thumb_local_start
 sub_81130F0:
 	push {lr}
@@ -10210,6 +10242,10 @@ sub_8113108:
 	pop {pc}
 	thumb_func_end sub_8113108
 
+// symdb: Clears BattleObject's RelatedObject1Ptr to 0; the AIData version bit read on entry is unused.
+// symdb: void sub_8113114(AIData *r4 /*version read*/, BattleObject *r5 /*written*/); // inputs: r4, r5,
+// symdb: lr // outputs: - // clobbers: r0, r1, nz flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8113114.yaml
 	thumb_local_start
 sub_8113114:
 	push {lr}
@@ -16572,6 +16608,10 @@ sub_811691C:
 	pop {pc}
 	thumb_func_end sub_811691C
 
+// symdb: Per-frame dispatcher for a pet-menu object, calling one of three state handlers (init/update/other) based on the state byte at object+8.
+// symdb: void sub_8116924(u32 /* r5 */ petMenu_object); // out: r2,r3,r5,r10,r11 from handler; flags from
+// symdb: handler
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116924.yaml
 	thumb_func_start sub_8116924
 sub_8116924:
 	push {lr}
@@ -16591,7 +16631,7 @@ off_8116938:
 	thumb_func_end sub_8116924
 
 // symdb: Initializes a pet-menu sprite/object record with GUI type, animation, palette, coordinates and a follow-up update call.
-// symdb: void petMenu_initSprite_8116944(int gui_type /* r1 */, u32 obj /* r5 */) -> r0 (clobbered); clobbers
+// symdb: void sub_8116944(int gui_type /* r1 */, u32 obj /* r5 */) -> r0 (clobbered); clobbers
 // symdb: r0,r1,r2,r3,r4,r6,r8,r9,r10,r11,r12,lr,NZCV; preserves r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/petMenu_initSprite_8116944.yaml
 	thumb_local_start
@@ -16812,6 +16852,10 @@ byte_8116AD0:
 	.byte 0x0, 0x0
 	thumb_func_end sub_8116A44
 
+// symdb: Dispatches the ePET menu update routine by a variant byte stored at offset 8 of the battle object, setting r7 to the global menu-data pointer before calling through a 3-entry jump table.
+// symdb: void epetMenuVariantDispatch(u32 r5 /* battle_obj */); // outputs r2,r3,r5,r10,r11; clobbers
+// symdb: r0,r1,r4,r6,r8,r9,r12,nzcv,lr; preserves r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116ADC.yaml
 	thumb_func_start sub_8116ADC
 sub_8116ADC:
 	push {r7,lr}
@@ -16833,6 +16877,9 @@ off_8116AFC:
 	.word ePETMenuData
 	thumb_func_end sub_8116ADC
 
+// symdb: Initializes a battle sub-member sprite (PET Navi / team variant) by setting team byte, animation, palette, priority, coordinates, and dispatching its variant update.
+// symdb: void sprite_initBattleVariant_8116B00(u32 *sprite /*r5*/, u32 *player_slot /*r7*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116B00.yaml
 	thumb_local_start
 sub_8116B00:
 	push {r4,lr}
@@ -17049,6 +17096,10 @@ loc_8116C72:
 	.balign 4, 0x00
 	thumb_func_end record_adjustNthSubRecordFieldC_8116C40
 
+// symdb: Advance the per-frame palette animation of a battle sprite when its alliance matches the caller's, then apply the resulting sub-palette bank and palette.
+// symdb: void sprite_tickMatchPaletteAnim_8116C78(u32 r5 /*sprite_ptr*/, u32 r7 /*related_ptr*/); /* r5
+// symdb: preserved on exit; clobbers r0-r3, r6, lr, NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116C78.yaml
 	thumb_local_start
 sub_8116C78:
 	push {r4-r6,lr}
@@ -17112,6 +17163,10 @@ record_getNthSubRecordPtr_8116CD4:
 	.byte 0, 0
 	thumb_func_end record_getNthSubRecordPtr_8116CD4
 
+// symdb: Battle object dispatcher that runs the current behavior-step handler chosen from a 3-entry table.
+// symdb: void sub_8116CE0(uint32_t r5_battleObject, uint32_t unused lr_in); r2 r3 r5 r10 r11 preserved
+// symdb: for caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116CE0.yaml
 	thumb_func_start sub_8116CE0
 sub_8116CE0:
 	push {lr}
@@ -17533,7 +17588,7 @@ sub_8116FD4:
 	thumb_func_end sub_8116FD4
 
 // symdb: Lays out the three sprites of a submenu entry slot (selected entry plus its two neighbours) around an anchor point and toggles each entry's visible/hide flag depending on whether the anchor is on screen.
-// symdb: void sprite_positionSubmenuEntries_8116FDC(u32 baseX /*r0*/, u32 baseY /*r1*/, u32 firstPoolIndex /*r2*/); preserves
+// symdb: void sub_8116FDC(u32 baseX /*r0*/, u32 baseY /*r1*/, u32 firstPoolIndex /*r2*/); preserves
 // symdb: r4-r7, r5 returned untouched, r3 left as sprite_setCoordinates left it
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_positionSubmenuEntries_8116FDC.yaml
 	thumb_func_start sprite_positionSubmenuEntries_8116FDC
@@ -17665,6 +17720,9 @@ loc_81170BA:
 	pop {pc}
 	thumb_func_end sub_81170AC
 
+// symdb: Builds a randomized sprite visibility mask via two BIOS PRNG draws and applies it to a sprite object through sprite_setUnk0x2c.
+// symdb: void sprite_setRandomMask_81170C0(u32 seed /*r0*/, SpriteObj *sprite /*r5*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81170C0.yaml
 	thumb_local_start
 sub_81170C0:
 	push {r4-r7,lr}
@@ -18369,6 +18427,10 @@ sub_8117688:
 	pop {pc}
 	thumb_func_end sub_8117688
 
+// symdb: Dispatches to one of three THUMB handlers based on a battle-context byte at offset 8.
+// symdb: u32 sub_8117690(u32 r5_battleCtx, u32 r10_in, u32 lr); // reads ctx[8]; clobbers
+// symdb: r0,r1,r2,r3,r4,r6,r7,r8,r9,r12,lr; preserves nothing
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117690.yaml
 	thumb_func_start sub_8117690
 sub_8117690:
 	push {lr}
@@ -18401,9 +18463,9 @@ sub_81176B0:
 	pop {pc}
 	thumb_func_end sub_81176B0
 
-// symdb: One-instruction trampoline that tail-calls battle_playObjectTripleSound_81176D0; behavior is entirely that of the callee.
+// symdb: One-instruction trampoline that tail-calls sub_81176D0; behavior is entirely that of the callee.
 // symdb: void sub_81176C0(void) — no arguments set up or results handled here; all registers and flags
-// symdb: pass through untouched to battle_playObjectTripleSound_81176D0 (r4-r7 listed as preserved by the callee's contract).
+// symdb: pass through untouched to sub_81176D0 (r4-r7 listed as preserved by the callee's contract).
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81176C0.yaml
 	thumb_local_start
 sub_81176C0:
@@ -18739,7 +18801,7 @@ off_81178F8:
 	thumb_func_end object_dispatchModeHandler_81178D8
 
 // symdb: Initializes a sprite state slot as kind 0x23, runs its byte script, loads its animation/graphics/palette/priority, then jumps to sub_811794C.
-// symdb: void sprite_slotInitKind23_81178FC(u8 *slot_ptr /* r5 */);
+// symdb: void sub_81178FC(u8 *slot_ptr /* r5 */);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_slotInitKind23_81178FC.yaml
 	thumb_local_start
 sprite_slotInitKind23_81178FC:
@@ -18775,6 +18837,10 @@ off_8117948:
 	.word 0x180
 	thumb_func_end sprite_slotInitKind23_81178FC
 
+// symdb: Per-frame step for the in-battle HP/shield bar UI tile: picks the tile variant from the current battle-chip art, repositions the sprite, advances its frame animation, and commits the new frame.
+// symdb: void sub_811794C(u8* state /* r5 */, struct* chipOrPanelCtx /* r7 */);  /* uses lr; clobbers
+// symdb: r0,r1,r2,r3,r4; preserved r5,r6,r7; flags NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811794C.yaml
 	thumb_local_start
 sub_811794C:
 	push {lr}
@@ -18901,7 +18967,7 @@ off_8117A10:
 	thumb_func_end keyItemMenu_renderDescription_81179E4
 
 // symdb: On the folder screen, renders the selected chip's four code letters and the per-code "copies in folder" tallies into a tile buffer and queues them to VRAM.
-// symdb: void folder_DrawSelectedChipCodeCounts_8117A14(r4: *entry /* folder entry, chip id halfword at +2 */) -> r0-r3 as left by
+// symdb: void sub_8117A14(r4: *entry /* folder entry, chip id halfword at +2 */) -> r0-r3 as left by
 // symdb: QueueEightWordAlignedGFXTransfer, nz/c/v from last callee; r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/folder_DrawSelectedChipCodeCounts_8117A14.yaml
 	thumb_local_start
@@ -19137,6 +19203,9 @@ off_8117BC4:
 	.word unk_2031204
 	thumb_func_end copyTwoDigitNumberTiles_8117B94
 
+// symdb: Thumb trampoline that jumps to one of three handlers chosen by the byte at r5+8.
+// symdb: void sub_8117BC8(struct HandlerObj *r5); /* returns: r2 r3 r5 r10 r11 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117BC8.yaml
 	thumb_func_start sub_8117BC8
 sub_8117BC8:
 	push {lr}
@@ -19201,6 +19270,10 @@ dword_8117C48:
 	.word 0xC
 	thumb_func_end sprite_initGuiSlotA_8117BE8
 
+// symdb: Dispatches a sprite's current sub-state handler from a 3-entry jump table and then ticks the sprite with the shared sprite_update.
+// symdb: void sprite_runSubStateHandlerAndUpdate_8117C4C(sprite /* r5 */); // returns r2, r3, r5, r10,
+// symdb: r11 to caller; all flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117C4C.yaml
 	thumb_local_start
 sub_8117C4C:
 	push {lr}
@@ -19279,6 +19352,10 @@ sub_8117CCC:
 	pop {pc}
 	thumb_func_end sub_8117CCC
 
+// symdb: Draws the menu cursor/highlight sprite for the active menu, sliding it horizontally with the menu's scroll value and picking a highlighted tile variant when the selection matches the current entry.
+// symdb: void sub_8117CD4(void); // reads no incoming registers (only lr); returns sub_812068C's r0-r3
+// symdb: and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117CD4.yaml
 	thumb_local_start
 sub_8117CD4:
 	push {r7,lr}
@@ -19363,6 +19440,9 @@ off_8117D40:
 	.word sub_8117EC0+1
 	thumb_func_end objectStateDispatcher_8117D2C
 
+// symdb: Initializes and positions one of the four link-battle partner portrait sprites (graphics ID 0x23) by player slot.
+// symdb: void sprite_initLinkPortrait_8117D4C(SpriteBlock *obj /* r5 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117D4C.yaml
 	thumb_local_start
 sub_8117D4C:
 	push {r4,lr}
@@ -19417,6 +19497,10 @@ byte_8117DC4:
 	.byte 2, 3, 4, 0
 	thumb_func_end sub_8117D4C
 
+// symdb: Tail-dispatches to a battle object's mode handler, selected by the mode byte at [r5+5] through the off_8117DDC jump table.
+// symdb: void sub_8117DC8(u32 r5 /*object*/); // returns the handler's r2/r3/r5/r10/r11; clobbers
+// symdb: r0-r1,r4,r6-r9,r12,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117DC8.yaml
 	thumb_local_start
 sub_8117DC8:
 	push {lr}
@@ -19499,6 +19583,10 @@ loc_8117E5A:
 	pop {pc}
 	thumb_func_end battle_refreshObjectSprite_8117E20
 
+// symdb: Picks a battle sprite's animation index from its and the object's facing/lane, swaps it in if changed, then runs the per-frame sprite update.
+// symdb: void sub_8117E60(void *battleSprite /* r5 */, void *battleObj /* r7 */); clobbers r0,r1; r2/r3
+// symdb: returned via sprite_update; NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117E60.yaml
 	thumb_local_start
 sub_8117E60:
 	push {lr}
@@ -21744,6 +21832,10 @@ sub_8118F1C:
 	pop {pc}
 	thumb_func_end sub_8118F1C
 
+// symdb: Sprite update trampoline; dispatches to one of three handlers based on the state byte at [r5+8] via a ROM jump table, preserving LR.
+// symdb: void sub_8118F24(u32* r5) /* reads r5->state @ +8, clobbers nz c v r0 r1 r4 r6 r7 r8 r9 r12 lr,
+// symdb: returns via lr_save; preserved: none */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118F24.yaml
 	thumb_func_start sub_8118F24
 sub_8118F24:
 	push {lr}
@@ -21846,6 +21938,10 @@ nullsub_8118FE0:
 	pop {pc}
 	thumb_func_end nullsub_8118FE0
 
+// symdb: Per-frame update for a battle object: dispatches a state handler by the +9 state byte, then reloads the sprite animation if the graphic id (+4) changed.
+// symdb: void sub_8118FE4(battle_obj* r5, ctx* r10) — uses r11 as scratch/likeness link; dispatch
+// symdb: handlers may tail-call further code
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118FE4.yaml
 	thumb_local_start
 sub_8118FE4:
 	push {lr}
@@ -21962,6 +22058,10 @@ byte_81190CC:
 	.byte 0x0, 0xB9, 0x0, 0x0, 0x10, 0xB9, 0x0, 0x0, 0x20, 0xB9, 0x0, 0x0
 	thumb_func_end sub_8119084
 
+// symdb: Tail-call stub that forwards the sprite object pointer in r5 to sprite_clearScaleCounterAndMakeUnscalable_804668A, resetting the sprite's scale counter and marking it unscalable.
+// symdb: void sub_81190D8(u32 sprite /* r5 */); // outputs r2 r3; clobbers r0 r1, lr, NZCV; preserves r4
+// symdb: r5 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81190D8.yaml
 	thumb_local_start
 sub_81190D8:
 	push {lr}
@@ -22008,6 +22108,9 @@ loc_8119110:
 	.balign 4, 0x00
 	thumb_func_end sprite_testFrameParamsMaskC0_81190F8
 
+// symdb: Looks up a global struct via getStructFrom2008450 and, if present, writes 8 into its byte at offset 8 (a small "kick"/state set, possibly used after a mini-game/event).
+// symdb: void sub_8119118(void);  // r0 in (forwarded to getStructFrom2008450), no return value
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8119118.yaml
 	thumb_func_start sub_8119118
 sub_8119118:
 	push {lr}
@@ -22199,7 +22302,7 @@ off_8119378:
 	thumb_func_end npc_StateModeDispatcher_8119364
 
 // symdb: Initialize a battle sprite object from its character/team indices, setting graphic, animation, palette, priority, slot halfword, sub-entry palette bank, sub-record field A, and final state fields.
-// symdb: void battle_spriteInit_8119384(u32* obj /* r5 */)
+// symdb: void sub_8119384(u32* obj /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spriteInit_8119384.yaml
 	thumb_local_start
 battle_spriteInit_8119384:
@@ -22288,7 +22391,7 @@ loc_8119420:
 	thumb_func_end battle_spriteInit_8119384
 
 // symdb: Draws the currently-selected chip's icon, palettes, and description text into the chip selection panel's VRAM region.
-// symdb: void chipPanel_renderChipGfxAndText_8119438(struct ChipPanelObj *r5 /* preserved */); // clobbers r0-r3, r12, lr, flags;
+// symdb: void sub_8119438(struct ChipPanelObj *r5 /* preserved */); // clobbers r0-r3, r12, lr, flags;
 // symdb: r4, r6-r9 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipPanel_renderChipGfxAndText_8119438.yaml
 	thumb_local_start
@@ -22507,6 +22610,10 @@ loc_81195C6:
 	.balign 4, 0x00
 	thumb_func_end sub_8119594
 
+// symdb: Zeros the header and body tile blocks of an object's tiles in `vObjectTiles`, sized 0xA00 and 0x780 bytes, preserving the caller's r0.
+// symdb: void clearObjectTileBlocks_81195E4(void /* r5 = object, r0 preserved, r1/r2/lr/NZCV clobbered
+// symdb: */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81195E4.yaml
 	thumb_local_start
 sub_81195E4:
 	push {lr}
@@ -22647,7 +22754,7 @@ off_81196DC:
 
 // symdb: Battle-object state sync/rollback stub — copies primary HP/ID/position fields to their backups, or rolls the backup forward to current values when the gate (sub_8119880) flags them stale, marking state=4.
 // symdb: void sub_81196F0(u32 *battleObj /* r5 */) -> preserves r4-r9, returns current pos in r0 and
-// symdb: chipPanel_renderChipGfxAndText_8119438's flags; clobbers r0-r3, r12, lr.
+// symdb: sub_8119438's flags; clobbers r0-r3, r12, lr.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196F0.yaml
 	thumb_local_start
 sub_81196F0:
@@ -22997,7 +23104,7 @@ off_81198E4:
 	thumb_func_end submenu_isStateChanged_81198B0
 
 // symdb: Writes the sprite's unk0x2c field via sprite_setUnk0x2c, choosing base 0x40000000 when oSprite+0xC is 0xFF, otherwise 0.
-// symdb: void sprite_setUnk0x2cFromLoader_81198E8(u32 *oSprite)  /* in: r5=oSprite; out: none; clobbers r0,r1,r3,lr,NZCV */
+// symdb: void sub_81198E8(u32 *oSprite)  /* in: r5=oSprite; out: none; clobbers r0,r1,r3,lr,NZCV */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setUnk0x2cFromLoader_81198E8.yaml
 	thumb_local_start
 sprite_setUnk0x2cFromLoader_81198E8:
@@ -23248,7 +23355,7 @@ off_8119AE0:
 	thumb_func_end sub_8119ACC
 
 // symdb: Build and display the PET-Navi status (style/element) icon sprite for the current PET Navi, choosing the sprite form from a table based on the active Navi or its stats.
-// symdb: void buildPetStatusIconSprite_8119AEC(void /* obj ptr in r5 */); // inputs: r5 (object ptr) // outputs: r2 r3 r5 //
+// symdb: void sub_8119AEC(void /* obj ptr in r5 */); // inputs: r5 (object ptr) // outputs: r2 r3 r5 //
 // symdb: clobbers: r0 r1 lr; flags n z c v
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/buildPetStatusIconSprite_8119AEC.yaml
 	thumb_local_start
@@ -23453,6 +23560,10 @@ loc_8119C8E:
 	.balign 4, 0x00
 	thumb_func_end registry_setEntryStatusByKey_8119C74
 
+// symdb: Returns a per-navi (x, y) offset pair from a lookup table, selected by the navi currently equipped in the PET (navi 0 additionally switches entry sets based on its stats byte 0x17 and EVENT_163).
+// symdb: int sub_8119C94(void); returns r0 = x (s16), r1 = y (s16); reads r10/lr context via
+// symdb: GetCurPETNavi
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8119C94.yaml
 	thumb_func_start sub_8119C94
 sub_8119C94:
 	push {r4,lr}
@@ -23767,6 +23878,10 @@ loc_8119F82:
 	.balign 4, 0x00
 	thumb_func_end sub_8119EEC
 
+// symdb: Zeroes an object's two sprite tile blocks in object VRAM so its graphics slots can be reused.
+// symdb: void sub_8119F88(void* r5 /* object */); // reads [r5+5] (resource id); preserves r0 and r3 for
+// symdb: the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8119F88.yaml
 	thumb_local_start
 sub_8119F88:
 	push {lr}
@@ -23915,7 +24030,7 @@ off_811A0BC:
 	thumb_func_end object_runTypeUpdateThenSpriteUpdate_811A0A4
 
 // symdb: state-object dispatcher that routes to one of five handlers based on the state byte at obj+9
-// symdb: void stateObj_dispatchByStateByte_811A0CC(void /* r5 = state object */)
+// symdb: void sub_811A0CC(void /* r5 = state object */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stateObj_dispatchByStateByte_811A0CC.yaml
 	thumb_local_start
 stateObj_dispatchByStateByte_811A0CC:
@@ -24071,7 +24186,7 @@ off_811A1AC:
 	thumb_func_end object_runUpdateDispatch_811A190
 
 // symdb: Updates the chip-preview sprite palette on a submenu line when its selected chip or cursor byte has changed (also stashes them as the new "previous" values), bailing out when the cursor bytes match and gate-bit-1 of the flags byte is set.
-// symdb: void submenu_updateChipPreviewSprite_811A1B0(struct SubmenuLine *line /* r5 */); // returns via pop {pc}; no return value
+// symdb: void sub_811A1B0(struct SubmenuLine *line /* r5 */); // returns via pop {pc}; no return value
 // symdb: carried in regs to the caller // reads: line->cursorByte, line->cursorByteBak, line->chipIndex,
 // symdb: line->chipIndexBak, line->flagsPtr // writes: line->chipIndexBak, line->cursorByteBak // flags
 // symdb: out: nz/c/v from the final callee (sprite_setPalette) when the preview path runs; from
@@ -24298,6 +24413,11 @@ byte_811A2E4:
 	.byte 0x3E, 0x0, 0x0, 0x0, 0x9E, 0x7, 0x0, 0x0
 	thumb_func_end sub_811A29C
 
+// symdb: Updates a bit field of the sprite attribute word (offset 0x2C) of the menu table entry selected for the current state index, either resetting it to a fixed value or filling it while clearing one selected bit.
+// symdb: void menu_setStateSpriteAttrField_811A2EC(/*r0-r3 passed through to
+// symdb: menu_getTableEntryForStateIndex_811A268, r5 = some context/object pointer*/); // lr clobbered,
+// symdb: r4-r7 preserved, flags clobbered; only r5 is a true local input
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A2EC.yaml
 	thumb_local_start
 sub_811A2EC:
 	push {r4-r7,lr}
@@ -24454,6 +24574,12 @@ off_811A3EC:
 loc_811A410:
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
+// symdb: Dispatches a battle object's per-frame state to one of three handlers based on its state byte.
+// symdb: /* @r5: battle object base; @r10: caller-saved scratch (passed through)    State byte is read
+// symdb: from (r5 + 8); used as offset into off_811A428    (states stored pre-multiplied by 4).    On
+// symdb: entry r0 = handler (with Thumb bit set), r1 = raw state byte.    Returns r2, r3, r5, r10, r11
+// symdb: from the chosen handler. */ void sub_811A414(u32 r5, u32 r10, void (*handler)(void));
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A414.yaml
 	thumb_func_start sub_811A414
 sub_811A414:
 	push {lr}
@@ -24472,6 +24598,10 @@ off_811A428:
 	.word sub_811A5B4+1
 	thumb_func_end sub_811A414
 
+// symdb: Initialise a slot-list icon sprite in the submenu, picking sprite/animation art from the submenu mode and slot flag, then queue the next state step.
+// symdb: void submenuSpriteSlot_init_811A434(u8* slot /* r5 */, void* scratch /* r10 */); clobbers
+// symdb: r0-r3,r8,r9,r11,r12,lr; preserves r4,r6,r7; flags NZCV trashed
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A434.yaml
 	thumb_local_start
 sub_811A434:
 	push {r4-r7,lr}
@@ -24555,6 +24685,10 @@ off_811A4D8:
 	.word 0x100
 	thumb_func_end sub_811A434
 
+// symdb: Dispatches to a per-state sprite update handler picked by the state field at r5+4, then runs the shared sprite_update.
+// symdb: void sub_811A4DC(struct Sprite* r5 /* work pointer */);  // clobbers
+// symdb: r0,r1,r2,r3,r4,r6,r7,r8,r9,r10,r11,r12,lr; flags NZ C V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A4DC.yaml
 	thumb_local_start
 sub_811A4DC:
 	push {lr}
@@ -24574,12 +24708,19 @@ off_811A4F4:
 	.word sub_811A500+1
 	thumb_func_end sub_811A4DC
 
+// symdb: Trivial trampoline pushing LR and popping into PC to tail-return to the caller.
+// symdb: void sub_811A4FC(void); // uses lr; no other regs or flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A4FC.yaml
 	thumb_local_start
 sub_811A4FC:
 	push {lr}
 	pop {pc}
 	thumb_func_end sub_811A4FC
 
+// symdb: Dispatches the per-frame update of the "object" in r5 by jumping through a type-indexed table of two handlers (offsets 0 and 1 of the object's type byte).
+// symdb: void object_dispatchUpdate_811A500(/* r5 */ struct Object* obj); // reads r5; clobbers
+// symdb: r0..r4,r6..r9,r12,lr,NZCV; returns to caller with r5/r10/r11 as // the handler's outputs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A500.yaml
 	thumb_local_start
 sub_811A500:
 	push {lr}
@@ -24645,7 +24786,7 @@ byte_811A56C:
 	thumb_func_end sub_811A51C
 
 // symdb: sprite update step — adds (0x10, 0) to the sprite's coordinates, then if the new X reaches 0x3C snaps Y to a per-state clamp table and clears a state flag, finally chaining into the next animation/phase step.
-// symdb: void sprite_updatePositionAndClamp_811A57C(struct SpriteObj *r5); /* clobbers r0-r3, lr, N Z C V; preserves r4, r5, r6, r7
+// symdb: void sub_811A57C(struct SpriteObj *r5); /* clobbers r0-r3, lr, N Z C V; preserves r4, r5, r6, r7
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_updatePositionAndClamp_811A57C.yaml
 	thumb_local_start
@@ -24675,6 +24816,9 @@ byte_811A5AC:
 	.byte 0x26, 0x0, 0x39, 0x0, 0x4C, 0x0, 0x5F, 0x0
 	thumb_func_end sprite_updatePositionAndClamp_811A57C
 
+// symdb: Tiny trampoline that clears a sprite's scale counter and flags it unscalable.
+// symdb: void sub_811A5B4(void) // r5 in/out, lr in; clobbers r0,r1,r2,r3, nz,cv, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A5B4.yaml
 	thumb_local_start
 sub_811A5B4:
 	push {lr}
@@ -24683,7 +24827,7 @@ sub_811A5B4:
 	thumb_func_end sub_811A5B4
 
 // symdb: Battle: pick a sprite-coordinate pair from one of three tables based on two flag bytes and apply it via sprite_setCoordinates.
-// symdb: void sprite_setPositionByFlags_811A5BC(const u8* r5); /* r5 -> object-array entry; flags at +4/+7, table index at +6
+// symdb: void sub_811A5BC(const u8* r5); /* r5 -> object-array entry; flags at +4/+7, table index at +6
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setPositionByFlags_811A5BC.yaml
 	thumb_local_start
@@ -24748,6 +24892,12 @@ locret_811A63C:
 	.byte 0x0, 0x0
 	thumb_func_end sub_811A610
 
+// symdb: Dispatches submenu input to the action handler matching the current selection (with a special case for d-pad up).
+// symdb: void sub_811A640(void); // inputs:  r5 (submenu entity), r10, lr (return) // outputs: r5, r10,
+// symdb: r11; preserved r4-r7 // clobbers: r0, r1, r2, r3, r8, r9, r12, lr; flags N Z C V // dispatches
+// symdb: with r0 = handler entry (Thumb) or joyDir for up, //         r1 = (u8)(r5+6), //         r7 =
+// symdb: &sSubmenu
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A640.yaml
 	thumb_local_start
 sub_811A640:
 	push {r4-r7,lr}
@@ -24788,6 +24938,10 @@ dword_811A66C:
 	.word sub_811A6DC+1
 	thumb_func_end sub_811A640
 
+// symdb: Looks up a 3-byte ID in a small table by caller-supplied index and dispatches to sub_811A718 (likely an e-mail/message slot resolver).
+// symdb: void emailLookupByIndex_811A68C(u32 index_byte in r1); clobbers r0,r1,r2,r3,r4,r12,lr,NZCV;
+// symdb: preserves r5-r9; sets r10,r11 (return via pop {pc}).
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A68C.yaml
 	thumb_local_start
 sub_811A68C:
 	push {lr}
@@ -24802,6 +24956,10 @@ dword_811A69C:
 	.word 0x151413
 	thumb_func_end sub_811A68C
 
+// symdb: Looks up a byte from the data table at 0x0811A6B0 (data word 0x181716) using r1 as an index, then forwards that byte to sub_811A718.
+// symdb: void queryTable181716_811A6A0(uint8_t r1_index); // outputs: r10, r11; clobbers
+// symdb: r0,r1,r2,r3,r4,r12,lr, nz/c/v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811A6A0.yaml
 	thumb_local_start
 sub_811A6A0:
 	push {lr}
@@ -24816,6 +24974,10 @@ dword_811A6B0:
 	.word 0x181716
 	thumb_func_end sub_811A6A0
 
+// symdb: Looks up a tile animation entry in a small table indexed by r1 and dispatches it to the tile-animation handler.
+// symdb: u8 sub_811A6B4(int index /* r1 */, void *ctx /* r10 */);   // returns new value via r10/r11
+// symdb: (e.g. next-state pointer or hw write);   // clobbers r0,r1-r4,r12,lr and N,Z,C,V.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A6B4.yaml
 	thumb_local_start
 sub_811A6B4:
 	push {lr}
@@ -24830,6 +24992,9 @@ dword_811A6C4:
 	.word 0x1C1B
 	thumb_func_end sub_811A6B4
 
+// symdb: Reads one of three packed bytes at 0x0811A6D8 (values 0x1D, 0x1E, 0x1F) indexed by r1, then tail-calls sub_811A718 with that byte.
+// symdb: void sub_811A6C8(uint32_t r1_index); // preserves r5-r9; clobbers r0,r2-r4,r12,lr,NZCV
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A6C8.yaml
 	thumb_local_start
 sub_811A6C8:
 	push {lr}
@@ -26419,6 +26584,9 @@ byte_811B304:
 	.byte 0x0, 0x0
 	thumb_func_end sprite_submenuUpdateAnimAndPos_811B298
 
+// symdb: Starts a requested animation on an object's sprite and hides its shadow, unless the sprite's state byte has the 0x08 flag set.
+// symdb: void sprite_startAnimNoShadow_811B314(u32 objectId /* r0 */, u32 animId /* r1 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811B314.yaml
 	thumb_func_start sub_811B314
 sub_811B314:
 	push {r4,r5,lr}
@@ -26535,6 +26703,10 @@ sub_811B3EC:
 	pop {pc}
 	thumb_func_end sub_811B3EC
 
+// symdb: Dispatches an object's per-frame update through a 3-way jump table keyed by the byte at [object+8].
+// symdb: void sub_811B3F4(void);  // in: r5=object pointer; out: r2,r3,r5,r10,r11 (whatever handler
+// symdb: leaves); clobbers NZCV,r0,r1,r4,r6-r9,r12,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811B3F4.yaml
 	thumb_func_start sub_811B3F4
 sub_811B3F4:
 	push {lr}
@@ -26607,7 +26779,7 @@ sub_811B464:
 	thumb_func_end sub_811B464
 
 // symdb: Set a sprite's screen X/Y coordinates only if the sprite id resolves to a live sprite struct.
-// symdb: void sprite_setCoordsIfExists_811B46C(u32 x /*r0*/, u32 y /*r1*/, u32 sprite_id /*r2*/, u32 preserve_r5 /*out*/)
+// symdb: void sub_811B46C(u32 x /*r0*/, u32 y /*r1*/, u32 sprite_id /*r2*/, u32 preserve_r5 /*out*/)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setCoordsIfExists_811B46C.yaml
 	thumb_func_start sprite_setCoordsIfExists_811B46C
 sprite_setCoordsIfExists_811B46C:
@@ -27795,6 +27967,9 @@ off_811BD7C:
 	.word sub_811BDF4+1
 	thumb_func_end submenu_runModeHandler_811BD64
 
+// symdb: PET-screen sprite state — picks which navi sprite bank to show (selected navi, or stats + optional progress offset) and hands control to its update phase.
+// symdb: void sub_811BD88(void *petObjState /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811BD88.yaml
 	thumb_local_start
 sub_811BD88:
 	push {r4,lr}
@@ -27854,8 +28029,8 @@ off_811BDE8:
 	.word sub_811BDEC+1
 	thumb_func_end sprite_dispatchObjectUpdate_811BDCC
 
-// symdb: Thin tail-call trampoline that immediately branches to adjustSpriteByOffset_811BE9C and returns its results; no work of its own.
-// symdb: void sub_811BDEC(r5 arg); /* tail-calls adjustSpriteByOffset_811BE9C(r5), propagating r0-r3 and NZCV to the
+// symdb: Thin tail-call trampoline that immediately branches to sub_811BE9C and returns its results; no work of its own.
+// symdb: void sub_811BDEC(r5 arg); /* tail-calls sub_811BE9C(r5), propagating r0-r3 and NZCV to the
 // symdb: original caller */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811BDEC.yaml
 	thumb_local_start
@@ -27895,6 +28070,11 @@ loc_811BE16:
 	.balign 4, 0x00
 	thumb_func_end sprite_setPositionByStructIndex_811BDFC
 
+// symdb: Initialize (or restamp) the GUI sprite for a PET-Navi slot, setting up animation, palette, priority, and position from per-kind tables; skips work if the slot has no entry.
+// symdb: void sub_811BE1C(u32 slot_index /* r0 */, u32 sprite_record /* r5 */,                  u32
+// symdb: caller_r3_in /* r3 */) -> u32 /* r3, from sprite_setCoordinates */   // clobbers r0, r1, r2, lr;
+// symdb: flags N Z C V; preserves r4, r5, r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811BE1C.yaml
 	thumb_local_start
 sub_811BE1C:
 	push {lr}
@@ -27964,7 +28144,7 @@ object_checkStatusFlag_811BE90:
 	thumb_func_end object_checkStatusFlag_811BE90
 
 // symdb: Repositions a sprite by its per-type (x,y) offset and tags it normal or special based on a per-type flag table.
-// symdb: void adjustSpriteByOffset_811BE9C(struct SpriteObj *r5_sprite); // returns in r0 = flag table byte, r1 = attr
+// symdb: void sub_811BE9C(struct SpriteObj *r5_sprite); // returns in r0 = flag table byte, r1 = attr
 // symdb: byte written, // r2 = flag table address; r3 left from sprite_setCoordinates; // clobbers
 // symdb: r0,r1,r2,r3,lr and flags N,Z (from TST) plus C,V (left by sprite_setCoordinates).
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/adjustSpriteByOffset_811BE9C.yaml
@@ -27999,6 +28179,12 @@ loc_811BECE:
 	pop {pc}
 	thumb_func_end adjustSpriteByOffset_811BE9C
 
+// symdb: Looks up a record in the shared structure pool and stamps its status byte (offset 0) with 0x23 or 1 depending on the record's kind byte.
+// symdb: void struct_setRecordStatusByKind_811BED4(u32 id /* r0 */, void* poolArg /* r1, replaced with
+// symdb: the resolved record pointer by getStructFrom2008450 */); returns nothing in r0-r3 (r0 ends
+// symdb: holding the written status value), Z flag from the lookup tells callers "record not found";
+// symdb: r4-r7 preserved (callers read back r5/r7)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811BED4.yaml
 	thumb_func_start sub_811BED4
 sub_811BED4:
 	push {r4-r7,lr}
@@ -28263,7 +28449,7 @@ sub_811C1A4:
 	thumb_func_end sub_811C1A4
 
 // symdb: Dispatches a battle-object update to one of three handlers based on the class-offset byte at [obj+8].
-// symdb: void battle_dispatchByClass_811C1AC(u32 obj /* r5 */, r2, r3, r4, r6, r7, r8, r9, r10, r11, r12, lr); /* clobbers
+// symdb: void sub_811C1AC(u32 obj /* r5 */, r2, r3, r4, r6, r7, r8, r9, r10, r11, r12, lr); /* clobbers
 // symdb: all of r0–r12, lr, NZCV */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchByClass_811C1AC.yaml
 	thumb_func_start battle_dispatchByClass_811C1AC
@@ -28285,7 +28471,7 @@ off_811C1C0:
 	thumb_func_end battle_dispatchByClass_811C1AC
 
 // symdb: Spawns and configures the GUI sprite (resource 0x69) for an object, tagging it as type 0x23, positioning it at (120,40) and setting its animation/palette/priority attributes.
-// symdb: void sprite_setupGuiResourceObject_811C1CC(r4, r5 work /* object work area */, r6, r7); returns r0-r3 and nz/c/v exactly
+// symdb: void sub_811C1CC(r4, r5 work /* object work area */, r6, r7); returns r0-r3 and nz/c/v exactly
 // symdb: as sprite_updateAnimPassthrough_811C22C leaves them; r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_setupGuiResourceObject_811C1CC.yaml
 	thumb_local_start
@@ -28949,6 +29135,9 @@ off_811C9C0:
 	.word 0x0
 	thumb_func_end sub_811C7A0
 
+// symdb: Dispatches to one of three object-state handlers based on a mode byte at [r5+8].
+// symdb: void sub_811C9FC(u32 ctx) // r5 in; trashes r0-r4,r6-r12,flags; returns via tail bx
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811C9FC.yaml
 	thumb_func_start sub_811C9FC
 sub_811C9FC:
 	push {lr}
@@ -28968,7 +29157,7 @@ off_811CA10:
 	thumb_func_end sub_811C9FC
 
 // symdb: Initialise and install the sprite state handler for a generic object, marking it as state 0x23 during sprite setup, then transitioning to state 4.
-// symdb: void install_object_state_handler_811CA1C(void);  // r5 = object record pointer (in); no out regs/flags exposed to caller
+// symdb: void sub_811CA1C(void);  // r5 = object record pointer (in); no out regs/flags exposed to caller
 // symdb: (r5 preserved)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/install_object_state_handler_811CA1C.yaml
 	thumb_local_start
@@ -29022,6 +29211,10 @@ off_811CA90:
 	.word unk_201BA04
 	thumb_func_end install_object_state_handler_811CA1C
 
+// symdb: Drives a battle object's 7-state dispatch loop, then sets flag bit 1 based on a 0x1150 timer threshold and refreshes the sprite.
+// symdb: void sub_811CA94(void *r5 /* battle object */); // uses nz flags from sub_811CC68 each step,
+// symdb: loops while handler leaves NZ, then returns
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811CA94.yaml
 	thumb_local_start
 sub_811CA94:
 	push {lr}
@@ -33067,8 +33260,8 @@ sub_811EC50:
 	pop {pc}
 	thumb_func_end sub_811EC50
 
-// symdb: Builds the per-frame GFX transfer list in the staging buffer at unk_20096E0 (packing two source-table entries via getKeyedTableEntry_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
-// symdb: void queueGFXTransfersFromTable_811EC68(void /* uses r10/lr as inputs per lifter, no meaningful args */)
+// symdb: Builds the per-frame GFX transfer list in the staging buffer at unk_20096E0 (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
+// symdb: void sub_811EC68(void /* uses r10/lr as inputs per lifter, no meaningful args */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/queueGFXTransfersFromTable_811EC68.yaml
 	thumb_local_start
 queueGFXTransfersFromTable_811EC68:
@@ -33173,6 +33366,9 @@ off_811ED54:
 	thumb_func_end ho_811ED1C
 
 // () -> void
+// symdb: Per-frame tick that advances the PET window's signed animation timer, reloads GFX animation scripts on overflow, replays sprite frames, and copies PET/Navi background tiles.
+// symdb: void pet_windowTick(PETWindow *state /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811ED58.yaml
 	thumb_local_start
 sub_811ED58:
 	push {lr}
@@ -33326,7 +33522,7 @@ off_811EE94:
 	thumb_func_end sub_811EDB4
 
 // symdb: Battle-state tick handler that decrements the per-frame countdown by 4, clamps at -32, and triggers a timeout (state byte 0xC) when the PET GFX animation finishes.
-// symdb: void battle_state_tick_811EE98(u32* r5 /* battle state struct */) -> void (clobbers r0,r1,r2,r3,lr,nz,c,v;
+// symdb: void sub_811EE98(u32* r5 /* battle state struct */) -> void (clobbers r0,r1,r2,r3,lr,nz,c,v;
 // symdb: caller must preserve r5)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_state_tick_811EE98.yaml
 	thumb_local_start
@@ -33398,7 +33594,7 @@ naviSelect_SetupBackgrounds_811EF0C:
 	thumb_func_end naviSelect_SetupBackgrounds_811EF0C
 
 // symdb: Initializes the PET/Navi-select screen background by clearing a flag, loading GFX anim scripts, and copying background tiles for both the PET and Navi-select screens.
-// symdb: void initPetSelectScreen_811EF28(void *state /* r5 */)
+// symdb: void sub_811EF28(void *state /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initPetSelectScreen_811EF28.yaml
 	thumb_local_start
 initPetSelectScreen_811EF28:
@@ -33672,7 +33868,7 @@ word_811F110:
 	thumb_func_end sub_811F0C8
 
 // symdb: Initializes the PET (Personal Terminal) communication save slots, writing default halfword values to each of 8 pointer-table slots, overriding the active state slot (unless state byte == 8), and applying the EVENT_PET_COMM_SAVE_DISABLED patch when that flag is set.
-// symdb: void petCommSaveInit_811F11C(u32 state_addr /* r5 */); clobbers r0,r1,r2,r3,lr,NZcv; r4 preserved
+// symdb: void sub_811F11C(u32 state_addr /* r5 */); clobbers r0,r1,r2,r3,lr,NZcv; r4 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/petCommSaveInit_811F11C.yaml
 	thumb_local_start
 petCommSaveInit_811F11C:
@@ -33835,7 +34031,7 @@ byte_811F238:
 	thumb_func_end sub_811F214
 
 // symdb: Replays a sequence of sprite/animation frames from a small table, advancing a clamped tick counter each call
-// symdb: void replaySpriteFrames_811F24C(void);  // in: r5 = base of caller state struct (writes r5+0xC counter);
+// symdb: void sub_811F24C(void);  // in: r5 = base of caller state struct (writes r5+0xC counter);
 // symdb: clobbers r0,r1,r2,r3,r6,r7,lr; preserves r4-r7 (caller-saved by push/pop); NZCV clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/replaySpriteFrames_811F24C.yaml
 	thumb_local_start
@@ -34021,6 +34217,10 @@ byte_811F4F8:
 	thumb_func_end getCurrentMapBgm_811F290
 
 // () -> void
+// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
+// symdb: void sub_811F508(void); /* inputs: r5,r10,lr; outputs: r7; clobbers nzcv,r0-r3,lr; preserves
+// symdb: r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811F508.yaml
 	thumb_local_start
 sub_811F508:
 	push {r4,lr}
@@ -34404,6 +34604,11 @@ off_811F770:
 	thumb_func_end sub_811F758
 
 /// Passes on control to the specific menu based on JumpTable811F7A0
+// symdb: Per-frame dispatcher for the pause ("sub") menu: runs the active screen handler then steps the RNG, skipping the RNG tick on comm/save sub-screens.
+// symdb: void submenuTick_811F774(void)   // r10 = toolkit pointer; r2/r3 forwarded to screen handler
+// symdb: // uses r4-r9, r11, r12, lr as scratch; r4-r7 also clobbered by callee   // flags: clobbers N Z
+// symdb: C V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SubMenuControl.yaml
 	thumb_func_start SubMenuControl
 SubMenuControl: // () -> ()
 	push {r4-r7,lr}
@@ -35403,7 +35608,7 @@ off_811FE44:
 	thumb_func_end battle_ClearBuffer_811FE34
 
 // symdb: Records or increments a hit tally for a 30-slot id->count array, sourcing the new id from word "unk_20343E0" +0x1C.
-// symdb: u16 Next(registerHitCounter_811FE48)(void *counterArray /*r0*/, void *unk_20343E0 /*r5*/, ? /*lr*/);   /*
+// symdb: u16 Next(sub_811FE48)(void *counterArray /*r0*/, void *unk_20343E0 /*r5*/, ? /*lr*/);   /*
 // symdb: clobbers r0,r1,r3 + NZCV; preserves r4-r7; r3 returns the byte offset      of the count slot
 // symdb: that was written (offset+2), or 0x78 if no empty/matching      slot was found within 30 entries.
 // symdb: */
@@ -35442,7 +35647,7 @@ locret_811FE74:
 	thumb_func_end registerHitCounter_811FE48
 
 // symdb: Build a 0x20-byte-entry chip search/index table in the given buffer by scanning chips 1..0x13A, returning the entry count
-// symdb: u32 buildChipSearchTable_811FE7C(u32 dest /*r0*/, u32 mode /*r1*/) -> r0 = entry count; preserves r4-r7; clobbers
+// symdb: u32 sub_811FE7C(u32 dest /*r0*/, u32 mode /*r1*/) -> r0 = entry count; preserves r4-r7; clobbers
 // symdb: r1-r3, lr, nzcv
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/buildChipSearchTable_811FE7C.yaml
 	thumb_func_start buildChipSearchTable_811FE7C
@@ -35589,6 +35794,9 @@ byte_811FF78:
 	.byte 0x0, 0xA0, 0x0, 0x0, 0x3A, 0x1, 0x0, 0x0
 	thumb_func_end zeroFill_0xA000Words_811FF6C
 
+// symdb: Classifies a chip into one of several categories based on its element flags (offset 9 of the chip data) and returns the category code along with a boolean flag.
+// symdb: u32 classifyChipElement_811FF80(u32 which_chip, out u32 r1) -> u32 category
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811FF80.yaml
 	thumb_local_start
 sub_811FF80:
 	push {r3,r4,lr}
@@ -36146,6 +36354,11 @@ off_8120344:
 	.word 0x200
 	thumb_func_end sub_81202FC
 
+// symdb: Fills two spans of a tilemap with the blank text-box tile ((palette<<12)|0x200), then hands the leftover run to a continuation filler.
+// symdb: void sub_8120348(u32 passthrough, u16 *tilemapDest, u32 palette, s32 runLength, s32
+// symdb: secondRunOffset /* in r4 */) — all registers r0-r7 preserved except that the two helper calls
+// symdb: are invoked; contract lists r7 as an output because callers rely on it surviving unchanged.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120348.yaml
 	thumb_func_start sub_8120348
 sub_8120348:
 	push {r4-r7,lr}
@@ -36235,6 +36448,10 @@ loc_81203D2:
 	pop {r4-r7,pc}
 	thumb_func_end battle_loadFolderChipGfx_8120390
 
+// symdb: Builds a packed chip-slot address list from a chip-pack entry row of the folder table.
+// symdb: void sub_81203E4(u32 entry_index /* r0 */, u32 entry_base /* r1 */, u32 out_list /* r2 */, u32
+// symdb: slot_base /* r3 */, u32 count /* r5 */); /* r7 preserved; flags clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81203E4.yaml
 	thumb_func_start sub_81203E4
 sub_81203E4:
 	push {r4-r7,lr}
@@ -36360,6 +36577,11 @@ loc_81204B6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8120458
 
+// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via sub_8120504, and zeroing entries for empty slots.
+// symdb: void battle_processChipSlotArray(s32 startIdx /*r0*/, void* chipArrayBase /*r1*/, void* dest
+// symdb: /*r2*/, void* extraParam /*r3*/, s32 count /*r5*/); /* writes 8*count bytes at dest; r0-r3,lr
+// symdb: clobbered; r4-r7,preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81204C4.yaml
 	thumb_func_start sub_81204C4
 sub_81204C4:
 	push {r4-r7,lr}
@@ -36431,6 +36653,9 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
+// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sub_802FE28 with a small index offset.
+// symdb: (u32 r0, u32 r1, u32 r2, u32 lr) -> u32 r0; flags out: N,Z,C,V
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C
 sub_812053C:
 	push {r4-r7,lr}
@@ -36553,6 +36778,10 @@ loc_8120608:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81205C0
 
+// symdb: Converts a range of 0x20-byte battle-grid panel entries into packed BCD tilemap words for display.
+// symdb: void battle_decodePanelTiles_8120618(u32 firstIndex /*r0*/, u32 tableBase /*r1*/, u32 dst
+// symdb: /*r2*/, u32 tileSrcBase /*r3*/, u32 count /*r5*/); // clobbers r0-r3, nzcv; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120618.yaml
 	thumb_func_start sub_8120618
 sub_8120618:
 	push {r4-r7,lr}
@@ -36621,6 +36850,10 @@ dword_8120688:
 	.word 0x10001
 	thumb_func_end sub_8120618
 
+// symdb: Searches a row-based lookup table for a packed position, fires a handler (with the row index bumped by 0x16) when a hit is found, then re-searches with the hit's index shifted down by 8.
+// symdb: int sub_812068C(int value, int row, int arg2, int arg3) — returns whatever sub_81205C0 leaves in
+// symdb: r0 on the second call; NZCV flags come from that same final call; r4-r7 preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_812068C.yaml
 	thumb_local_start
 sub_812068C:
 	push {r4-r7,lr}
@@ -36651,6 +36884,10 @@ loc_81206AA:
 	.balign 4, 0x00
 	thumb_func_end sub_812068C
 
+// symdb: Iterates a list of 0x20-byte packed chip entries from newest to oldest and hands each one with a nonzero count to GiveChips.
+// symdb: void chip_givePackedEntryList_81206C4(ChipEntry* entries /*r0*/, EntryListHeader* header /*r5,
+// symdb: preserved*/); /* r10 passed in by callers but unused; count read from header+0x28 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81206C4.yaml
 	thumb_func_start sub_81206C4
 sub_81206C4:
 	push {r4-r7,lr}
@@ -36831,7 +37068,7 @@ loc_81207EA:
 	thumb_func_end sub_81207C4
 
 // symdb: Counts chip IDs whose per-entry event flag is set AND whose attribute/element matches the requested chip category (support / element-gated / MegaMan / general).
-// symdb: u32 countEventFlagChips_81207F8(u32 chipCategory /* r0 */);  // returns count in r0; clobbers r1-r3, nzcv;
+// symdb: u32 sub_81207F8(u32 chipCategory /* r0 */);  // returns count in r0; clobbers r1-r3, nzcv;
 // symdb: preserves r4-r7, lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/countEventFlagChips_81207F8.yaml
 	thumb_func_start countEventFlagChips_81207F8
@@ -36994,7 +37231,7 @@ dword_81208FC:
 	thumb_func_end sub_8120898
 
 // symdb: Builds an 11x2 background tilemap displaying two 4-digit BCD scores separated by a dash (e.g. "1234-5678"), with leading zeros blanked and a priority-set terminator, then blits it via CopyBackgroundTiles.
-// symdb: void scoreboard_buildScoreBcdTilemap_8120900(u16* tile_map, u32 val1, u32 val2, u32 base_tile_id, u32 bg_j, u32 bg_i, u32
+// symdb: void sub_8120900(u16* tile_map, u32 val1, u32 val2, u32 base_tile_id, u32 bg_j, u32 bg_i, u32
 // symdb: lr)   inputs:  r0=tile_map, r1=val1, r2=val2, r3=base_tile_id, r4=bg_j, r6=bg_i, r10=lr
 // symdb: outputs: r5, r7   clobbers: N Z C V r0 r1 r2 r3 lr   preserved: r4 r5 r6 r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scoreboard_buildScoreBcdTilemap_8120900.yaml
@@ -37123,6 +37360,10 @@ loc_81209B2:
 // input:
 // r0 (a0) - 0, 1, 2
 // 
+// symdb: Selects a random battle element ID from a category-specific pool and returns a bias modifier byte drawn from a weighted lookup table.
+// symdb: u32 battle_pickElementAndBias_81209DC(u32 category /*r0*/); /* out: r0 = element ID (low byte),
+// symdb: r1 = bias value 0..0x13; preserves r6,r7; clobbers r2,r3,lr,NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81209DC.yaml
 sub_81209DC:
 	push {r6,r7,lr}
 	// block:
@@ -37338,6 +37579,11 @@ loc_8120B48:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8120B28
 
+// symdb: Maps a chip ID to its style-sub-element override code (6–10) via a fixed ROM lookup table, gated by guard byte, battle phase, active effects, and style-swap slot state.
+// symdb: style_override_t style_getChipOverrideCode_8120B54(uint32_t chipId /*r2*/, uint32_t in_r3
+// symdb: /*passthrough*/); /* r10 = pointer consumed by GetBattleEffects; returns r0 = override code, r3
+// symdb: = column index */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120B54.yaml
 	thumb_func_start sub_8120B54
 sub_8120B54:
 	push {r4-r7,lr}
@@ -37517,6 +37763,10 @@ loc_8120CAE:
 	pop {r4-r7,pc}
 	thumb_func_end gfx_fillTilemapConsecutiveBanded_8120C94
 
+// symdb: Reads the next byte (character) from a text buffer at a caller-supplied index, treating 0xFF as the end marker and wrapping back to the buffer's start with index 0.
+// symdb: int chatbox_readTextChar_8120CC8(int index, u8 *buf) -> r0 = new index (0 if end marker hit), r1
+// symdb: = byte read, r2 = buf, r3 = incoming index, carry = (byte == 0xFF), overflow clear
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120CC8.yaml
 	thumb_func_start sub_8120CC8
 sub_8120CC8:
 	mov r3, r0

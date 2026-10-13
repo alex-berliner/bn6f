@@ -2288,6 +2288,8 @@ RealWorldMysteryDataMapGroupEntries::
 	.word 0x0
 	.word 0x0
 	.word 0x1
+// symdb: Mystery data map-group entries: {map group, maps}, ended by 1.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/InternetMysteryDataMapGroupEntries.yaml
 InternetMysteryDataMapGroupEntries::
 	.equiv oMysteryDataMapGroupEntry_MapGroup, 0
 	.equiv oMysteryDataMapGroupEntry_MapNumberPtr, 4

@@ -211,6 +211,10 @@ locret_800B9AE:
 	pop {pc}
 	thumb_func_end sub_800B97E
 
+// symdb: Draws the chip-name banner for a battle object on its first visit, then advances the object's action phase once the alliance is ready.
+// symdb: void object_drawChipName(u32 obj /* r5 */); /* inputs: r4 r5 r6 r7 r10 lr; outputs: r5 r8 r9 r10
+// symdb: r11 r12; clobbers NZCV r0-r4 lr; preserves r5-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_drawChipName.yaml
 	thumb_func_start object_drawChipName
 object_drawChipName:
 	push {lr}
@@ -734,6 +738,10 @@ locret_800BDB0:
 	pop {pc}
 	thumb_func_end object_timefreezeEnd
 
+// symdb: Dispatches to a battle object's per-phase handler based on its current phase byte.
+// symdb: void sub_800BDB2(void) // in: r5 = battle object, r10 = (passed through to handler); out: r5,
+// symdb: r8, r9, r10, r11, r12 (handler's results); flags: handler's nz/c/v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800BDB2.yaml
 	thumb_func_start sub_800BDB2
 sub_800BDB2:
 	push {lr}
@@ -751,6 +759,10 @@ off_800BDC4:
 	.word sub_800BE2C+1
 	thumb_func_end sub_800BDB2
 
+// symdb: Battle-object phase step: when an action slot's Unk_30 is in the 0xDD..0x118 window and the cross-team table lookup yields 0xBA, run the panel-targeted sub-animation (sub_800B884) and a panel-XY helper (sub_800ABC6) and set phase to 4; otherwise just bump CurAction by 4 and zero the phase field.
+// symdb: void sub_800BDD0(void);          // r5 = battle object base, r10 = ?, lr = return
+// symdb: // clobbers r0,r1,r2,r3,lr and nz,cv; preserves r4,r5,r6,r7,r10
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BDD0.yaml
 	thumb_local_start
 sub_800BDD0:
 	push {r4,lr}
@@ -1005,7 +1017,7 @@ off_800BF84:
 
 // symdb: Reinitializes six two-byte selection slots (counts cleared, values set to a descending 0xE..9 default) and writes 0x8C to a state word, after delegating to a helper whose register results it passes through.
 // symdb: void sub_800BF88(void); // no meaningful inputs; returns caller's r2-r7 unchanged, c/nz/v flags
-// symdb: from the final "mov r0,#9" (c/v from battle_buildPlayerPanelGrid_800C4BC)
+// symdb: from the final "mov r0,#9" (c/v from sub_800C4BC)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BF88.yaml
 	thumb_func_start sub_800BF88
 sub_800BF88:
@@ -1460,7 +1472,7 @@ dword_800C340:
 	thumb_func_end stepPanelTileAnimations_800C192
 
 // symdb: Battle panel tile state-machine update (animating in, settling, activating, timed trigger).
-// symdb: void panelObject_update_800C380(u32 r0 /*battle_obj*/, u32 r1 /*tile_data*/) panel_obj in r7 -> u16 r1 (delay)
+// symdb: void sub_800C380(u32 r0 /*battle_obj*/, u32 r1 /*tile_data*/) panel_obj in r7 -> u16 r1 (delay)
 // symdb: in oTimerActive, byte r2 in r7->+6
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/panelObject_update_800C380.yaml
 	thumb_local_start
@@ -1635,7 +1647,7 @@ off_800C4B8:
 	thumb_func_end sub_800C488
 
 // symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
-// symdb: void battle_buildPlayerPanelGrid_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
+// symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
 // symdb: returns via sub_800C67C -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buildPlayerPanelGrid_800C4BC.yaml
 	thumb_local_start
@@ -1916,6 +1928,10 @@ battle_getPanelDataPtr_800C6E0:
 	mov pc, lr
 	thumb_func_end battle_getPanelDataPtr_800C6E0
 
+// symdb: For a battle object, count its allied (or non-matching-alliance) panels per column and return totals, clean counts, and bitmasks
+// symdb: u32 object_countAllyPanels_800C6F0(void *object); // r0=object in; r0=total panels, r1=clean
+// symdb: panels, r2=total mask, r3=clean mask out; clobbers nz,c,v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800C6F0.yaml
 	thumb_local_start
 sub_800C6F0:
 	push {r4-r7,lr}
@@ -2243,9 +2259,9 @@ loc_800C906:
 	pop {pc}
 	thumb_func_end object_getPanelParameters
 
-// symdb: Long-call thunk to _object_getPanelDataOffset (out of bl range).
-// symdb: (r0, r1 = arguments, passed through) -> results of _object_getPanelDataOffset; lr ends as
-// symdb: 0x0800C912 (the thunk's own pop {pc})
+// symdb: Thumb interworking trampoline that tail-calls the real implementation `_object_getPanelDataOffset` (loaded via `off_800C914: .word _object_getPanelDataOffset+1`) with the caller's r0 and r1 forwarded unchanged.
+// symdb: void object_getPanelDataOffset(u32 r0, u32 r1) /* r0,r1 in; r0-r3, lr, C, V out; N,Z clobbered
+// symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelDataOffset.yaml
 	thumb_func_start object_getPanelDataOffset
 object_getPanelDataOffset:
@@ -3098,6 +3114,10 @@ off_800CE60:
 	.word unk_2034010
 	thumb_func_end object_showPanel
 
+// symdb: Scans every field panel and collects those matching required/forbidden attribute bitmasks (excluding the object's own panel) into a caller-supplied list, returning the entry count.
+// symdb: u32 battle_object_collectMatchingPanelsExceptSelf_800CE64(u32 r5_battleObject, u32
+// symdb: r2_requiredAttrs, u32 r3_forbiddenAttrs, u32 r7_outList)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelsExceptCurrentFiltered.yaml
 	thumb_func_start object_getPanelsExceptCurrentFiltered
 object_getPanelsExceptCurrentFiltered:
 	push {r4,r6,lr}
@@ -3335,6 +3355,11 @@ loc_800CFD2:
 	pop {r4,r6,pc}
 	thumb_func_end object_getPanelsIgnoreColumnFiltered
 
+// symdb: Iterates the three column panels of a panel base and writes the encoded ID of each one that passes object_checkPanelParameters into a caller-supplied buffer, returning the count written.
+// symdb: u32 object_getPanelsInColumnFiltered(     u32 panelBase,         // r0     u32 param0,
+// symdb: // r2 (sp+0)     u32 param1,            // r3 (sp+4)     u8 *outBuffer /*r7*/); // returns: r0 =
+// symdb: number of panel bytes appended to outBuffer; flags NZ/C/V set from ADD r0,r6,#0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_getPanelsInColumnFiltered.yaml
 	thumb_func_start object_getPanelsInColumnFiltered
 object_getPanelsInColumnFiltered:
 	push {r4-r7,lr}
@@ -4882,6 +4907,9 @@ loc_800E2E2:
 	.word 0x40000000
 	thumb_func_end object_subtractHP
 
+// symdb: Adds R0 to a battle object's HP, clamped to MaxHP, returning the new HP in R1.
+// symdb: void object_addHP(u16 amount, oBattleObject* obj) -> u16 newHP; clobbers nz,c,v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_addHP.yaml
 	thumb_func_start object_addHP
 object_addHP:
 	ldrh r1, [r5,#oBattleObject_HP]
@@ -5057,6 +5085,12 @@ loc_800E404:
 	pop {r4,r6,pc}
 	thumb_func_end object_calculateFinalDamage1
 
+// symdb: Recomputes an object's pending collision-damage total, halving each entry (round up) when the object stands on a holy panel.
+// symdb: void object_calculateFinalDamage2(void);   // in:  r5 = battle object pointer; lr = return
+// symdb: address   // out: r0 = new damage total, r2 = last processed entry, r3 = collData + 0x80   //
+// symdb: flags = NZCV from r0+1 after the final address add   // clobbers: r0, r1, r2, r3, NZCV   //
+// symdb: preserved: r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_calculateFinalDamage2.yaml
 	thumb_func_start object_calculateFinalDamage2
 object_calculateFinalDamage2:
 	push {r4,lr}
@@ -5101,8 +5135,8 @@ object_getFlip:
 	mov pc, lr
 	thumb_func_end object_getFlip
 
-// symdb: One-line wrapper that tail-calls battle_objectResolveContactOffset_800E468 with r0 set to 1 (a "true"/enable-style argument); purpose in game terms unknown until battle_objectResolveContactOffset_800E468 is identified.
-// symdb: void sub_800E45E(void) // no meaningful inputs in r0; tail-calls battle_objectResolveContactOffset_800E468(1); caller-visible
+// symdb: One-line wrapper that tail-calls sub_800E468 with r0 set to 1 (a "true"/enable-style argument); purpose in game terms unknown until sub_800E468 is identified.
+// symdb: void sub_800E45E(void) // no meaningful inputs in r0; tail-calls sub_800E468(1); caller-visible
 // symdb: r0-r5, r8-r12, lr and carry come back from the callee
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800E45E.yaml
 	thumb_func_start sub_800E45E
@@ -5114,7 +5148,7 @@ sub_800E45E:
 	thumb_func_end sub_800E45E
 
 // symdb: Resolves a battle object's contact offset, zeroing it when the target panel isn't on the object's alliance.
-// symdb: void battle_objectResolveContactOffset_800E468(void * /* r5 */ battleObj)     -> r0,r1,r2 (contact offset x,y,extra);
+// symdb: void sub_800E468(void * /* r5 */ battleObj)     -> r0,r1,r2 (contact offset x,y,extra);
 // symdb: c,v clobbered by alliance check; r3 untouched here;        r4 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectResolveContactOffset_800E468.yaml
 	thumb_func_start battle_objectResolveContactOffset_800E468
@@ -5820,6 +5854,10 @@ off_800E990:
 	.word 0x2000
 	thumb_func_end sub_800E730
 
+// symdb: Classifies a signed (dx, dy) delta between two points into one of six direction codes (0=origin, 1=up, 2=down, 3/4=other axes depending on r4 flag, 5=out of range) used to drive an entity toward/away from a target.
+// symdb: u32 sub_800E994(u32 ax, u32 ay, u32 bx, u32 by, u32 flag) -> r0=code (0..5), r1=dy (raw unsigned
+// symdb: ay-by); preserves C/V from the final CMP against
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800E994.yaml
 	thumb_func_start sub_800E994
 sub_800E994:
 	sub r0, r0, r2

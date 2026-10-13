@@ -87,7 +87,7 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 // symdb: AnimationSelect: sprite_setAnimation; then sprite_update, sprite_setPalette, sprite_setUnk0x2c
 // symdb: on new hidden pieces, copy the shown values to the Update fields,
 // symdb: npc_createInteractionAreas_809F526, layer = LayerPriorityOverride or
-// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), recordCapsule_809F922 if UnkFlags_60 0x40
+// symdb: applyLayerEffectToOWObject_8035694, sub_8002E14(layer), sub_809F922 if UnkFlags_60 0x40
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_standard_809E5E2.yaml
 	thumb_local_start
 npc_standard_809E5E2: // (self: * OverworldNPCObject $r5) -> ()
@@ -1383,7 +1383,7 @@ NPCCommand_clear_event_flag:
 // symdb: NPC script command that turns an object on, making it both active and visible on the map.
 // symdb: void NPCCommand_set_active_and_visible(ObjectHeader *r5, NPCScript *r6 /* in/out, advanced by 1
 // symdb: */); sets nz/cv from the pointer increment
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_active_and_visible.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_active_and_visible.yaml
 NPCCommand_set_active_and_visible:
 	mov r0, #(OBJECT_FLAG_ACTIVE | OBJECT_FLAG_VISIBLE)
 	strb r0, [r5,#oObjectHeader_Flags]
@@ -1774,6 +1774,10 @@ NPCCommand_set_layer_priority_override_to_2:
 	thumb_local_start
 // 0x1b
 // override the current NPC's layer priority to 3
+// symdb: NPC script opcode handler that sets the NPC's layer-priority override to 3 and advances the script cursor.
+// symdb: void NPCCommand_set_layer_priority_override_to_3(void); /* r5=overworld NPC object, r6=script
+// symdb: cursor; returns r6+1; clobbers nz c v r0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_layer_priority_override_to_3.yaml
 NPCCommand_set_layer_priority_override_to_3:
 	mov r0, #3
 	str r0, [r5,#oOverworldNPCObject_LayerPriorityOverride]
@@ -2041,6 +2045,10 @@ NPCCommand_play_sound:
 // - sets mystery data coordinates
 // - sets collision radius to 4, center offset x to 2, and center offset y to -2
 // hword1 - mystery data ID
+// symdb: NPC script opcode that converts the current NPC into a mystery-data orb (or retires it when the data is already collected).
+// symdb: void npc_cmd_initMysteryData_809f058(struct OverworldNPCObject* r5 /* npc */, const u8* r6 /*
+// symdb: npc script */) /* returns new r6 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_init_mystery_data.yaml
 NPCCommand_init_mystery_data:
 	push {lr}
 	mov r0, #((OW_NPC_UNK_FLAGS_60_CHATBOX_FLAG_0x400 | OW_NPC_UNK_FLAGS_60_CHATBOX_FLAG_0x800) >> 4)
@@ -2126,6 +2134,10 @@ byte_809F0E4:
 // wait for the current npc's animation to equal the specified frame
 // if bit 7 or bit 6 of byte1 is set, test for the specified bits instead
 // byte1 - frame of the current npc's animation to wait for
+// symdb: Overworld NPC script command that makes an NPC idle until a specified number of animation frames elapse.
+// symdb: void NPCCommand_wait_anim_frame(u32* r5 /*npc_obj*/, const u8* r6 /*cmd_stream*/) -> r0
+// symdb: (npc_disable_script result), r6 (cmd_stream+2); clobbers nz,cv r0,r7,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_wait_anim_frame.yaml
 NPCCommand_wait_anim_frame:
 	push {lr}
 
@@ -2183,6 +2195,10 @@ NPCCommand_set_mosaic:
 // set npc animation and force it to update
 // so that it updates even if the current animation is the same
 // byte1 - animation to set
+// symdb: Overworld NPC script opcode that sets the NPC's animation selection and forces an immediate animation update, then advances the script cursor.
+// symdb: void NPCCommand_set_animation_force_update(void) /* r5 = NPC object, r6 = script cursor */; out:
+// symdb: r6 = next script cursor; clobbers r0, flags NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_animation_force_update.yaml
 NPCCommand_set_animation_force_update:
 	ldrb r0, [r6,#1]
 	strb r0, [r5,#oOverworldNPCObject_AnimationSelect]
@@ -2201,6 +2217,10 @@ NPCCommand_set_animation_force_update:
 // byte1 - horizontal compress value
 // byte2 - vertical compress value
 // byte3 - rotation value
+// symdb: NPC script opcode that resets sprite scale and reapplies a new scale to an NPC sprite.
+// symdb: void NPCCommand_set_transform(uint8 r6_opcode_and_args, uint8 r6_1, uint8 r6_2, uint8 r6_3); /*
+// symdb: clobbers r0, r1, r2, r3, nz, c; preserves r4, r7; advances r6 by 4 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_transform.yaml
 NPCCommand_set_transform:
 	push {lr}
 	bl sprite_makeUnscalable
@@ -3242,6 +3262,11 @@ dword_809F5AC:
 
 	thumb_local_start
 // movement/interaction related
+// symdb: Rebuilds an overworld NPC's interaction/collision area around its next position, unless the NPC has collision disabled, then clears its Unk_54 slot.
+// symdb: void sub_809F5B0(OverworldNPCObject *r5 npc, u32 r2 pass_through) -> u32 r2
+// symdb: (createOWObjectInteractionArea result, or the pass-through value when skipped), u32 r5 (npc,
+// symdb: unchanged)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F5B0.yaml
 sub_809F5B0:
 	push {lr}
 	ldr r0, [r5,#oOverworldNPCObject_UnkFlags_60]
@@ -3408,7 +3433,7 @@ off_809F688:
 	thumb_func_end sub_809F66C
 
 // symdb: Clears bit 0 of field Unk_50 on every overworld NPC object, releasing all NPCs from their "busy/mid-interaction" state (e.g. across a scene or map change).
-// symdb: void npc_clearAllBusyFlags_809F68C(void); // in: lr only; out: r1=1, r2=array end pointer, r3=loop-exit cursor,
+// symdb: void sub_809F68C(void); // in: lr only; out: r1=1, r2=array end pointer, r3=loop-exit cursor,
 // symdb: c/v from final CMP (r3 vs r2), nz clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_clearAllBusyFlags_809F68C.yaml
 	thumb_func_start npc_clearAllBusyFlags_809F68C
@@ -3716,7 +3741,7 @@ sub_809F904:
 	thumb_func_end sub_809F904
 
 // symdb: On the first call before event flag 0x1708 is set, zeroes the battle state buffer at byte_2000210 (u8 at +0, u32 at +8); once the flag has been triggered the function becomes a no-op.
-// symdb: void clearBattleStateIfEvent1708Pending_809F90C(void) /* clobbers r0,r1,nz,c,v,r3,lr */
+// symdb: void sub_809F90C(void) /* clobbers r0,r1,nz,c,v,r3,lr */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearBattleStateIfEvent1708Pending_809F90C.yaml
 	thumb_func_start clearBattleStateIfEvent1708Pending_809F90C
 clearBattleStateIfEvent1708Pending_809F90C:
@@ -3756,6 +3781,10 @@ locret_809F940:
 	pop {r4,r6,r7,pc}
 	thumb_func_end recordCapsule_809F922
 
+// symdb: Scans the NPC proximity list for the first NPC inside the player's asymmetric collision diamond (same Z-plane, diamond bounds on dx−dy and dx+dy) and stores its pointer as the current interaction target; short-circuits when event 0x1708 is set.
+// symdb: npc_checkProximityDiamond_809F942(toolkit: u32 /* r10 */) -> r3; outputs r4, r6 (preserved);
+// symdb: clobbers r0-r2, r5, r7, flags; returns 0 when no NPC is in range
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809F942.yaml
 	thumb_func_start sub_809F942
 sub_809F942: // () -> Nullable<* ?>
 	push {r4-r7,lr}

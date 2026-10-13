@@ -15,9 +15,9 @@ dword_809F9D8:
 	.word 0x480
 	thumb_func_end zeroFill_e2004348
 
-// symdb: Walks the InternetMysteryDataMapGroupEntries table, resolving type-5 mystery-data entries, clearing their event flags, and recording per-group statistics; finalizes via rollInternetMysteryData_809FDE0 on the sentinel type-1 group.
-// symdb: void mysteryData_processMapGroups_809F9DC(void); // reads  r10, lr (caller) // writes r1, r2, r3, C/V/N/Z (all passed
-// symdb: through from rollInternetMysteryData_809FDE0) // preserved r4-r7, r12
+// symdb: Walks the InternetMysteryDataMapGroupEntries table, resolving type-5 mystery-data entries, clearing their event flags, and recording per-group statistics; finalizes via sub_809FDE0 on the sentinel type-1 group.
+// symdb: void sub_809F9DC(void); // reads  r10, lr (caller) // writes r1, r2, r3, C/V/N/Z (all passed
+// symdb: through from sub_809FDE0) // preserved r4-r7, r12
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mysteryData_processMapGroups_809F9DC.yaml
 	thumb_func_start mysteryData_processMapGroups_809F9DC
 mysteryData_processMapGroups_809F9DC:
@@ -646,7 +646,7 @@ locret_809FDDE:
 	thumb_func_end record_writeU16IfIdMatches_809FDCE
 
 // symdb: Rolls which mystery data spawns in the current internet map block, hashing the pending state halfword into a slot number and picking that type-5 entry from the block's entry list.
-// symdb: void rollInternetMysteryData_809FDE0(void); // reads state at byte_2000210; callers pass r4-r7/r10 (preserved) and
+// symdb: void sub_809FDE0(void); // reads state at byte_2000210; callers pass r4-r7/r10 (preserved) and
 // symdb: ignore outputs other than flags c/v and r1/r2/r3 side values
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rollInternetMysteryData_809FDE0.yaml
 	thumb_local_start

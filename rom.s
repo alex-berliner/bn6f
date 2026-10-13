@@ -31,6 +31,8 @@ dat01:
 	.include "data/dat01.s"
 asm02:
 	.include "asm/asm02.s"
+// symdb: ChipData: 44 bytes per chip id, its codes first.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ChipDataArr.yaml
 ChipDataArr:
 	.include "data/ChipDataArr.s"
 asm03_0:

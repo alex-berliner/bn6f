@@ -201,6 +201,10 @@ sound_dispatchCueHandler_800068A:
 	pop {r4-r7,pc}
 	thumb_func_end sound_dispatchCueHandler_800068A
 
+// symdb: Play a background-music track on one of the MML sound channels, also recording the song id in the GameState indicator.
+// symdb: void sound_80006A2(u32 song_id /* r0 */, u32 channel_arg /* r1 */, u32 channel_index /* r2 */,
+// symdb: void *toolkit /* r10 */); /* clobbers r1-r3,r4-r10,r12,lr; NZCV; preserves r4-r10,r12 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_80006A2.yaml
 	thumb_func_start sound_80006A2
 sound_80006A2:
 	push {r4-r7,lr}
@@ -1182,6 +1186,9 @@ ret_reachedTerminator_8000B8C:
 
 // (u32 *dataRefs) -> void
 // [break] open PET
+// symdb: Walks a 12-byte-per-entry list of graphics transfer requests and queues each copy to VRAM at the widest alignment the size permits, transparently LZ77-unpacking any entry that has GFX_SOURCE_PACKED set in its source word.
+// symdb: void queueGFXTransfersInList_8000B8E(const GfxTransferEntry *list /*r0*/);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/QueueGFXTransfersInList.yaml
 	thumb_func_start QueueGFXTransfersInList
 QueueGFXTransfersInList:
 	push {r4-r7,lr}
@@ -1638,7 +1645,7 @@ stub_returnZero_8000E30:
 	thumb_func_end stub_returnZero_8000E30
 
 // symdb: Picks a weighted-random index from a u8 weight table, stirring the RNG and using the current frame counter.
-// symdb: u32 pickWeightedIndex_8000E3A(const u8* table /* r0 */, s32 count /* r1 */, void* toolkit /* r10 */) -> r0
+// symdb: u32 sub_8000E3A(const u8* table /* r0 */, s32 count /* r1 */, void* toolkit /* r10 */) -> r0
 // symdb: chosen index, r2 chosen index, r3 last table byte read; clobbers r1, nzcv
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pickWeightedIndex_8000E3A.yaml
 	thumb_func_start pickWeightedIndex_8000E3A
@@ -2023,6 +2030,11 @@ updatePlayerGameState_800107A:
 	mov pc, lr
 	thumb_func_end updatePlayerGameState_800107A
 
+// symdb: Saves the current real-world player position, Z layer, facing direction, and map id into the game state for later restoration.
+// symdb: void saveRealWorldPos_8001092(s32 x /*r0*/, s32 y /*r1*/, s32 z /*r2*/,
+// symdb: s32 facing /*r3*/, s32 mapId /*r4*/); // preserves: r4 r5 r6 r7 // r10 expected to be the
+// symdb: toolkit base; no flags touched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8001092.yaml
 	thumb_local_start
 sub_8001092:
 	push {r4-r7,lr}
@@ -2111,6 +2123,9 @@ GetMaxAndCurHPForCurPETNavi_80010D4: // (which_navi: u8) -> (u16, u16)
 	pop {r4-r7,pc}
 	thumb_func_end GetMaxAndCurHPForCurPETNavi_80010D4
 
+// symdb: Clamps a requested value for PET navi stat 0x40 to the existing cap held in stat 0x42, then stores it.
+// symdb: u8 which_navi (r0), s32 requested_value (r1) -> void (returns via pop {pc}); r4-r7 preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80010EC.yaml
 	thumb_func_start sub_80010EC
 sub_80010EC:
 	push {r4-r7,lr}
@@ -2174,9 +2189,9 @@ sub_8001154:
 
 // () -> void
 // symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sub_802FE28.
-// symdb: void scriptListRun_8001158(const void *scriptTable);  // r0 = list ptr; clobbers r0-r3, r5, lr; flags NZ
+// symdb: void sub_8001158(const void *scriptTable);  // r0 = list ptr; clobbers r0-r3, r5, lr; flags NZ
 // symdb: clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scriptListRun_8001158.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/scriptListRun_8001158.yaml
 	thumb_func_start scriptListRun_8001158
 scriptListRun_8001158:
 	push {r4-r7,lr}
@@ -2943,7 +2958,7 @@ fill:
 /// Disabling this causes a lot of glitchy overlayed graphics from logo screen and throughout.
 /// Game remains functional. In the net the background is very glitchy and animating you can't see MegaMan
 // symdb: Copies an 8-byte palette/tile slot entry from a ROM table into the toolkit render-info write area.
-// symdb: void toolkit_applyOverlayPalette_80015FC(u32 entry_index /* r0 */, void *toolkit /* r10 */); -> void; clobbers r0, r1,
+// symdb: void sub_80015FC(u32 entry_index /* r0 */, void *toolkit /* r10 */); -> void; clobbers r0, r1,
 // symdb: r2, r3, N, Z, C, V
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_applyOverlayPalette_80015FC.yaml
 	thumb_func_start toolkit_applyOverlayPalette_80015FC
@@ -2984,10 +2999,10 @@ byte_8001618:
 	.byte 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x1, 0x3F, 0x8, 0x3C, 0x3, 0x3D, 0x2, 0x3E, 0x9, 0x3F
 	thumb_func_end toolkit_applyOverlayPalette_80015FC
 
-// symdb: Given a map group and map number, fetches that map's byte entry from either the real-world or internet group table and passes it to toolkit_applyOverlayPalette_80015FC (likely the map loader/setup).
+// symdb: Given a map group and map number, fetches that map's byte entry from either the real-world or internet group table and passes it to sub_80015FC (likely the map loader/setup).
 // symdb: void map_lookupMapIdByGroupAndNumber_8001708(u8 map_group /*r0*/, u8 map_number /*r1*/); tail-
-// symdb: calls toolkit_applyOverlayPalette_80015FC(u8 mapId /*r0*/), so r0 out is toolkit_applyOverlayPalette_80015FC's return value; also clobbers r1,
-// symdb: lr and returns toolkit_applyOverlayPalette_80015FC's flags/r2/r3
+// symdb: calls sub_80015FC(u8 mapId /*r0*/), so r0 out is sub_80015FC's return value; also clobbers r1,
+// symdb: lr and returns sub_80015FC's flags/r2/r3
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_lookupMapIdByGroupAndNumber_8001708.yaml
 	thumb_func_start map_lookupMapIdByGroupAndNumber_8001708
 map_lookupMapIdByGroupAndNumber_8001708: // (map_group: u8, map_number: u8) -> ()
@@ -3022,7 +3037,7 @@ off_8001728:
 	thumb_func_end map_lookupMapIdByGroupAndNumber_8001708
 
 // symdb: Flushes cached display-register state (DISPCNT, BG0CTL, MOSAIC, WIN0X, BLDCNT/BLDCOL) from the toolkit's RenderInfo tables into GBA hardware I/O.
-// symdb: render_flushDisplayRegisters_800172C(/* Toolkit * */ r10, /* preserved */ r3, r4, r5, r6, r7) -> /* sets ADDS from
+// symdb: render_800172C(/* Toolkit * */ r10, /* preserved */ r3, r4, r5, r6, r7) -> /* sets ADDS from
 // symdb: ri+4 */ v, nz, c; clobbers r0, r1, r2, lr; preserves r3-r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/render_flushDisplayRegisters_800172C.yaml
 	thumb_func_start render_flushDisplayRegisters_800172C
@@ -3315,6 +3330,14 @@ bgmap_WriteTileIdAtBlock_800187C:
 	mov pc, lr
 	thumb_func_end bgmap_WriteTileIdAtBlock_800187C
 
+// symdb: Blits a rectangle of 16-bit BG tile ids into one of the toolkit's BG tile-id blocks at the given tile (x,y) offset.
+// symdb: void bgTileIdBlit_8001890(s32 tileX, s32 tileY, s32 bgBlockIdx, const u16* src, s32 tileWidth,
+// symdb: s32 tileRows); // r0: tile-x offset (in tiles), doubled on exit // r1: tile-y offset (in tiles),
+// symdb: on exit = ptr past the last row written // r2: BG tile-id-block index (0x800-byte block),
+// symdb: cleared on exit // r3: source pointer (u16*); on exit = src + 2*tileWidth*tileRows // r4: tile
+// symdb: width per row // r5: row count; note r5==0 still copies exactly one row // Out flags: from final
+// symdb: `cmp r5,#0` on (rowsLeft-1)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8001890.yaml
 	thumb_func_start sub_8001890
 sub_8001890:
 	push {r4-r7,lr}
@@ -3422,7 +3445,7 @@ loc_800191A:
 	thumb_func_end bg_writeTileIdRow_80018E0
 
 // symdb: Fills a stripe of OAM attribute pairs (two linked rows per row index) with consecutive tile IDs.
-// symdb: void fillOamTileStripes_8001930(u32 tile_id_base /* r0, low 12b */,                  u32 high_bits /* r1,
+// symdb: void sub_8001930(u32 tile_id_base /* r0, low 12b */,                  u32 high_bits /* r1,
 // symdb: placed into bits 12+ */,                  u32 stride_entries /* r2, multiplied by 4 to get byte
 // symdb: stride */,                  s32 strip_count /* r3, decremented; 0 loops again, <0 means loop
 // symdb: again */,                  OamEntry* dst /* r4 */); // clobbers nz c v r0 r1 r2 r3; preserves r4
@@ -3509,6 +3532,10 @@ dword_8001990:
 	.word nullsub_38+1
 	thumb_func_end SetDummyBGScrollCallbacks
 
+// symdb: trampoline that loads slot 0 of eBGScrollCallbacks and tail-calls its handler
+// symdb: void CallBGScrollCallback0(void) // reads handler via r0=handler,r1=tableBase at the bx; r4-r12
+// symdb: forwarded, r0-r3+flags clobbered by the handler
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CallBGScrollCallback0.yaml
 	thumb_func_start CallBGScrollCallback0
 CallBGScrollCallback0:
 	push {lr}
@@ -3519,6 +3546,10 @@ CallBGScrollCallback0:
 	pop {pc}
 	thumb_func_end CallBGScrollCallback0
 
+// symdb: Trampoline that invokes the first of the two BG-scroll callbacks stored in eBGScrollCallbacks (slot at offset 8).
+// symdb: void CallBGScrollCallback1(void); /* r10 in, lr in; r8 r9 r10 r11 r12 out; nz c v + r0-r7 lr
+// symdb: clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CallBGScrollCallback1.yaml
 	thumb_func_start CallBGScrollCallback1
 CallBGScrollCallback1:
 	push {lr}
@@ -3584,6 +3615,9 @@ BGScrollCB_BG3Diagonal3to2Scroll:
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3Diagonal3to2Scroll
 
+// symdb: BG1 scrolling-callback that advances its counter by 4 and writes the divided scroll value into the BG1 vertical scroll slot of the toolkit's render info.
+// symdb: void BGScrollCB_BG1UpScroll(void);  /* in: r10 = toolkit ptr; clobbers r1, r3, NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/BGScrollCB_BG1UpScroll.yaml
 	thumb_func_start BGScrollCB_BG1UpScroll
 BGScrollCB_BG1UpScroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
@@ -3597,6 +3631,9 @@ BGScrollCB_BG1UpScroll:
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1UpScroll
 
+// symdb: BG3 vertical scroll callback that advances the shared BG-scroll counter0 up by 4 pixels each frame and pushes the per-tile value into the active render info.
+// symdb: void BGScrollCB_BG3UpScroll(void) /* in: r10 = oToolkitPtr; clobbers r1, r3, N, Z, C, V */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/BGScrollCB_BG3UpScroll.yaml
 	thumb_func_start BGScrollCB_BG3UpScroll
 BGScrollCB_BG3UpScroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters
@@ -4031,10 +4068,11 @@ off_8001C90:
 	.word eMapTilesState200be70
 	thumb_func_end sub_8001C52
 
-// symdb: Renders all 32-byte tile entries of a GFX animation sequence into an EWRAM staging buffer via per-frame dispatch handlers, then queues a DMA transfer of the assembled sheet to the display destination.
-// symdb: void gfx_renderAnimTileSheet(GFXAnimData *animData /*r0*/, /*r4 preserved*/, GFXAnimState
-// symdb: *animState /*r7*/);  // outputs: r0-r12 clobbered, NZCV clobbered; r4,r7 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gfx_renderAnimTileSheet_8001C94.yaml
+// symdb: Renders one frame of an animated GFX tile sheet by decoding each u16 descriptor into an EWRAM scratch buffer and queueing a word-aligned copy to the destination
+// symdb: void gfx_renderAnimTileSheet_8001C94(u32 r0 /* *GFXAnimDataNext */,
+// symdb: struct GFXAnimState* r7)   -> preserves r4, r7; out c/v from QueueEightWordAlignedGFXTransfer;
+// symdb: clobbers r0-r3, r5, r6, r8, r9, r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_renderAnimTileSheet_8001C94.yaml
 	thumb_local_start
 gfx_renderAnimTileSheet_8001C94: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {r4,r7,lr}
@@ -4113,7 +4151,7 @@ off_8001CEC:
 	thumb_func_end gfx_renderAnimTileSheet_8001C94
 
 // symdb: Decodes one frame of a graphics animation stream into the object's per-tile scratch buffer and queues a single aligned DMA-style copy of the finished tiles to the object's destination.
-// symdb: void buildGFXAnimFrame_8001CFC(void *params /*r0*/, GFXAnimState *self /*r7*/) -> (r0..r3,r5,r6,flags
+// symdb: void sub_8001CFC(void *params /*r0*/, GFXAnimState *self /*r7*/) -> (r0..r3,r5,r6,flags
 // symdb: clobbered; r4/r7 preserved via push/pop)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/buildGFXAnimFrame_8001CFC.yaml
 	thumb_local_start
@@ -4548,7 +4586,7 @@ dword_8001FFC:
 	thumb_func_end sub_8001ED0
 
 // symdb: Copies a 64-byte (16-word) structure from one buffer to another.
-// symdb: void copyStruct_64bytes_8002000(u32 dst_ptr in r5, u32 src_ptr in r4); clobbers r0
+// symdb: void sub_8002000(u32 dst_ptr in r5, u32 src_ptr in r4); clobbers r0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/copyStruct_64bytes_8002000.yaml
 	thumb_local_start
 copyStruct_64bytes_8002000:
@@ -5206,6 +5244,10 @@ off_8002464:
 	.word ePalette20097a0
 	thumb_func_end getPalleteAndTransition_80023E0
 
+// symdb: Zeroes the 0x50-byte IWRAM/Scratch eStruct at 0x200A6A0, stores three caller parameters into its +4/+8/+C slots, and marks it active (byte at +0 = 1).
+// symdb: void initEStruct200a6a0(u32 param1 /*r0*/, u32 param2 /*r1*/, u32 param3 /*r2*/); /* r1..r7
+// symdb: preserved; r0 returned = 1 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/Initialize_eStruct200a6a0.yaml
 	thumb_func_start Initialize_eStruct200a6a0
 Initialize_eStruct200a6a0:
 	push {r4-r7,lr}
@@ -5225,6 +5267,10 @@ Initialize_eStruct200a6a0:
 	pop {r4-r7,pc}
 	thumb_func_end Initialize_eStruct200a6a0
 
+// symdb: Fires the installed callback on the eStruct200a6a0 event block if it is armed, then clears the whole 0x50-byte block
+// symdb: void run_eStruct200a6a0_Callback_8002484(void);  // uses r10, lr on entry; preserves r4-r7;
+// symdb: trashes r0-r3, r8, r9, r11, r12, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/run_eStruct200a6a0_Callback_8002484.yaml
 	thumb_func_start run_eStruct200a6a0_Callback_8002484
 run_eStruct200a6a0_Callback_8002484:
 	push {r4-r7,lr}

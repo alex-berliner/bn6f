@@ -1,7 +1,8 @@
 
-// symdb: Cutscene native: delivers the mail referenced by the current cutscene command and updates its received/done flags.
-// symdb: void deliverCutsceneMail(void) // r5 = cutscene command data ptr; returns r0=0, sets NZ flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/deliverCutsceneMail_8098BE8.yaml
+// symdb: Delivers a cutscene-driven mail (inbox message + delivery/completion event flags) for the active script record.
+// symdb: void deliverCutsceneMail_8098BE8(u32 *scriptRecord in R5, void* viaR10/zero r2 pass-through);
+// symdb: returns R0, R1, R2; clobbers NZ CARRY/OVERFLOW.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/deliverCutsceneMail_8098BE8.yaml
 	thumb_local_start
 deliverCutsceneMail_8098BE8:
 	push {r4-r7,lr}
@@ -158,6 +159,10 @@ byte_8098E20:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Resolves the current chip-use record's Navi index into the behaviour lookup table at off_8098CFC, copies overlay bytes and a conditional sprite flag into the battle object, then fires any encoded event-flag set/clear.
+// symdb: void chipApplyNaviEntry_8098E24(chipUse_t *r5 /* chip-use record with navi index at +4 */,
+// symdb: battleToolkit_t *r10 /* toolkit with inner battle object at +0x3C */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8098E24.yaml
 	thumb_local_start
 sub_8098E24:
 	push {r4-r7, lr}
@@ -197,6 +202,11 @@ loc_8098E62:
 	.pool
 	thumb_func_end sub_8098E24
 
+// symdb: Copies three per-entry setting bytes (with 0xFF meaning "keep current") from a 0x1C-byte-per-entry table into bytes 6-8 of the work struct reached via R10+0x3C, indexed by the byte at R5+4.
+// symdb: int sub_8098E6C(void) /* in: r5 = source object/entry struct, r10 = context whose +0x3C holds
+// symdb: the destination struct pointer; out: r0 = 0, r1 = entry index, r2 = 0x1C*index, NZ set from r0
+// symdb: */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8098E6C.yaml
 	thumb_local_start
 sub_8098E6C:
 	push {r4-r7, lr}
@@ -423,6 +433,10 @@ CutsceneScriptLMessage_80991F4:
 
 	thumb_func_end deliverCutsceneMail_8098BE8
 
+// symdb: Plays a chatbox line spoken by the player's PET Navi (humor joke or poem) when valid, otherwise falls back to the current map's train/text script.
+// symdb: void chatbox_runPETNaviScript_08099218(void); // uses R10 (toolkit ptr), preserves r4-r7,
+// symdb: returns NZ and 0 in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunLMessageTextScript.yaml
 	thumb_local_start
 RunLMessageTextScript:
 
@@ -2818,6 +2832,10 @@ loc_809AF5A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809AF00
 
+// symdb: Selects a CopyBot tutorial cutscene entry from a per-map table (picking the "pre-CopyBot" variant if the CopyBot event flag is unset), stores it on the work struct, then warps and poses the overworld player to that entry's coordinates/facing/anim and clears the Navi palette.
+// symdb: void owPlayer_prepareCopyBotScene_809AF7C(struct work *r5, struct r10_state *r10);  // returns
+// symdb: nz via r0=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809AF7C.yaml
 	thumb_local_start
 sub_809AF7C:
 	push {r4-r7,lr}
@@ -4601,7 +4619,7 @@ sub_809C954:
 	thumb_func_end sub_809C954
 
 // symdb: Overworld coord-interaction update: records a valid interaction coord (0x30–0x33) into the player object while EVENT_1B9 is clear, and otherwise drives a cutscene entry gated by key item count.
-// symdb: void overworldCoordInteractionUpdate_809C968(struct Toolkit *toolkit /* r10 */); // r2 produced (callee leftover from
+// symdb: void sub_809C968(struct Toolkit *toolkit /* r10 */); // r2 produced (callee leftover from
 // symdb: helpers); r4-r7, r10 preserved; NZCV clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/overworldCoordInteractionUpdate_809C968.yaml
 	thumb_func_start overworldCoordInteractionUpdate_809C968
@@ -5279,9 +5297,10 @@ cutscenescript_809CF28:
 
 	thumb_func_end sub_809CE40
 
-// symdb: Starts the BBS GUI cutscene if the global cond-check passes and a BBS request is pending.
-// symdb: void tryStartBbsGuiCutscene_809CF2C(void); // in: none, out: nz/c/v (BEQ branches), preserved r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/tryStartBbsGuiCutscene_809CF2C.yaml
+// symdb: Conditional entry point that starts the BBS GUI cutscene when the player can advance forward and a BBS request is pending.
+// symdb: void tryStartBbsGuiCutscene_809CF2C(void); // inputs: r10 (caller-saved, preserved by extra
+// symdb: push? — actually untouched), lr; outputs/clobbers: r0, r1, r2, r3, NZCV; preserved: r4–r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/tryStartBbsGuiCutscene_809CF2C.yaml
 	thumb_func_start tryStartBbsGuiCutscene_809CF2C
 tryStartBbsGuiCutscene_809CF2C:
 	push {r4-r7,lr}

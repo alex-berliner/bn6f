@@ -185,6 +185,12 @@ loc_8021B84:
 // - 0 if taking chips was successful
 // - 1 if no chips of the specified code are in the pack
 // - 2 if taking chips would cause underflow
+// symdb: Removes a requested number of copies of a chip from the player's chip pack and reports the resulting owned count (or a sentinel "empty" value when it empties out) together with a status code.
+// symdb: u32 takeChipsFromPack_8021B92(u16 chip_idx /* r0 */, u8 chip_code /* r1 */,
+// symdb: u8 amount /* r2 */)   /* r0 returns STATUS (0 = taken, 1 = none owned, 2 = not enough) */   /*
+// symdb: r1 returns new owned count, or empty_value from lookup once 0 */   /* r2 returns amount echoed
+// symdb: unchanged */   /* r3 returns STATUS again */   /* clobbers: r0, NZCV */   /* preserved: r2 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TakeChips.yaml
 TakeChips:
 	push {r4,lr}
 	push {r2}

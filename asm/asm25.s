@@ -1,4 +1,7 @@
 
+// symdb: Mr. Weather comp reset (cutscene native, steps at eWeatherCompState+2): puts MegaMan back at +0x12/+0x14 (Z 0x40) with animation +0xF and facing +0x10, sets flag 0xBE4; returns 1 while busy, 0 when done.
+// symdb: cutscene native; r5 = eWeatherCompState -> r0 = 1 busy, 0 done
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F810.yaml
 	thumb_local_start
 sub_808F810:
 	push {r4-r7,lr}
@@ -738,6 +741,9 @@ dword_808FDBC:
 	.word 0x2011B30
 	thumb_func_end sub_808FD64
 
+// symdb: Mr. Weather comp entry: while flag 0xBFB is clear, zero eWeatherCompState and set its defaults; clear flags 0xBF4..+6, 0xBE9..+5 and 0xBF2, set 0xBE0; then the comp's setup calls.
+// symdb: r10 = toolkit -> r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FDC0.yaml
 	thumb_local_start
 sub_808FDC0:
 	push {r5,lr}
@@ -1051,6 +1057,9 @@ off_8090000:
 	.word byte_8143564
 	thumb_func_end sub_808FFC0
 
+// symdb: Mr. Weather comp: if MegaMan's tile trigger (reqBBS_81409E4) is 0x70..0x79, stores it - 0x70 at eWeatherCompState+0xE and returns 1 (Z clear).
+// symdb: r5 = eWeatherCompState -> r0 = 0/1, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090004.yaml
 	thumb_local_start
 sub_8090004:
 	push {r4,lr}
@@ -1069,6 +1078,9 @@ loc_809001A:
 	pop {r4,pc}
 	thumb_func_end sub_8090004
 
+// symdb: Mr. Weather comp: if MegaMan's tile trigger is 0x60..0x69, stores it - 0x60 at eWeatherCompState+0xE and returns 1 (Z clear).
+// symdb: r5 = eWeatherCompState -> r0, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090020.yaml
 	thumb_local_start
 sub_8090020:
 	push {r4,lr}
@@ -1153,6 +1165,9 @@ loc_80900C2:
 	pop {r4,pc}
 	thumb_func_end sub_809005C
 
+// symdb: Mr. Weather comp: spawns map object 0x1D near MegaMan, counts it in eWeatherCompState+6 and sets flags 0xBE5, PET_DISABLED and 0x1739.
+// symdb: r5 = eWeatherCompState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80900C8.yaml
 	thumb_local_start
 sub_80900C8:
 	push {lr}
@@ -1179,6 +1194,9 @@ sub_80900C8:
 	pop {pc}
 	thumb_func_end sub_80900C8
 
+// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
+// symdb: r5 = eWeatherCompState -> r4 = script or 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090104.yaml
 	thumb_local_start
 sub_8090104:
 	push {r4-r7,lr}

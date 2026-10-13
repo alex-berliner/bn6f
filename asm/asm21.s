@@ -14,6 +14,10 @@ off_8080D9C:
 	.word eBGScrollCBCounters
 	thumb_func_end bgScroll_ResetScrollCBCounters_8080D90
 
+// symdb: Loads the per-field BG scroll callbacks, BG-anim script, sprite/GFX anim scripts, and LCD-control mask for the current battle field, and preloads the death-anim set when not in a real battle.
+// symdb: void battle_loadFieldData_8080DA0(void);  /* r10 in: field index; clobbers r0..r3, r6..r12, lr,
+// symdb: nzc/v */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8080DA0.yaml
 	thumb_func_start sub_8080DA0
 sub_8080DA0:
 	push {r4-r7,lr}
@@ -468,6 +472,12 @@ off_80812FC:
 	.word 0xFFFFFFFF
 	thumb_func_end sub_8080DEA
 
+// symdb: Computes the Weather Computron puzzle status byte for the current map, returning 7 (non-qualifying map), the raw battle-settings byte, 0x15 (puzzle available but unflagged), or 0x10 (puzzle already solved / no rule applies).
+// symdb: u32 getWeatherCompStatus_8081308(void);   inputs:  r10 = current toolkit pointer (GameStatePtr,
+// symdb: BattleStatePtr)   outputs: r0  = status byte (7, raw settings byte, 0x10, or 0x15)   clobbers:
+// symdb: r0, r1, r2, r3, LR, flags N/Z/C/V   preserved: r4, r5, r6, r7   calls: TestEventFlag (u16 flag)
+// symdb: -> flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8081308.yaml
 	thumb_local_start
 sub_8081308:
 	push {r4-r7,lr}

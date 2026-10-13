@@ -712,6 +712,11 @@ off_813E5D8:
 	.word unk_2033A00
 	thumb_func_end reqBBS_uncomp_813E5A0
 
+// symdb: Records a BBS (bulletin-board) message: sets its event flag, marks a second mirror flag, and appends its per-board message number into the board's circular message table.
+// symdb: void reqBBS_addBBSMessage(u32 flag /* r0 */)     -> u32 nextWriteIndex /* r0 */, u32*
+// symdb: writeIndexBase /* r1 */, u8* boardLog /* r2 */; // Preserves r3 and r7; leaves lr at the address
+// symdb: returned by the final SetEventFlag tail-call.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_addBBSMessage_813e5dc.yaml
 	thumb_func_start reqBBS_addBBSMessage_813e5dc
 reqBBS_addBBSMessage_813e5dc:
 	push {r3,r7,lr}
@@ -4747,6 +4752,9 @@ off_81409CC:
 	thumb_func_end reqBBS_8140984
 
 // (int a1) -> int
+// symdb: Returns a random number in 0..n-1 for n in r0: (GetRNG() & 0xFF) % n, by BIOS Div (svc 6); a general helper the overworld map objects use, not a BBS routine.
+// symdb: u32 randomBelow(u32 n /* r0 */) -> r0 = r1 = (GetRNG() & 0xFF) % n; clobbers r2, r3, nz c v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81409D0.yaml
 	thumb_func_start reqBBS_81409D0
 reqBBS_81409D0:
 	push {r6,lr}
@@ -4760,6 +4768,9 @@ reqBBS_81409D0:
 	pop {r6,pc}
 	thumb_func_end reqBBS_81409D0
 
+// symdb: Polls the overworld player's NPC script-array for a coordinate (touch) trigger such as an on-touch BBS.
+// symdb: void checkPlayerBBSTrigger_81409E4(void);  // in: r10=Toolkit*, lr=ret; clobbers nz/c/v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81409E4.yaml
 	thumb_func_start reqBBS_81409E4
 reqBBS_81409E4:
 	push {lr}
@@ -4781,6 +4792,10 @@ reqBBS_81409F4:
 	.byte 0, 0
 	thumb_func_end reqBBS_81409F4
 
+// symdb: BBS request handler that sets event flag 0x7 in event byte 0x17 (memory address 0x2001F68).
+// symdb: void reqBBS_setFlag_e17b0f7_8140A00(void); /* inputs: r10, lr; outputs: r1, r3, c, v, lr;
+// symdb: clobbers: r0, n, z */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_setFlag_e17b0f7_8140A00.yaml
 	thumb_func_start reqBBS_setFlag_e17b0f7_8140A00
 reqBBS_setFlag_e17b0f7_8140A00:
 	// entry 17, byte 0, flag 7

@@ -1,4 +1,6 @@
 
+// symdb: Battle reward tables: 20 u16 (0x28 bytes) per enemy id.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_80AAEA8.yaml
 byte_80AAEA8::
 	.byte 0x64
 	.byte 0x40, 0x64, 0x40, 0x64, 0x40, 0x83, 0x34, 0x96, 0x40

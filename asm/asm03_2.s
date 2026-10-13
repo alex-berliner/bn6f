@@ -208,6 +208,12 @@ off_80460F4:
 	.word 0x0
 	thumb_func_end sub_8046038
 
+// symdb: Dispatches an animation opcode stream against the Toolkit's animation state, decoding commands until a finalizer is run.
+// symdb: void sub_8046154(u32 r0 /* stream ptr */,                  u32 r2 /* src data */,
+// symdb: u32 r3 /* finalizer arg */,                  u32 r4 /* stream ID */,                  u32 r5 /*
+// symdb: bank */,                  u32 r6 /* base ptr */,                  u32 r7 /* dest buf */,
+// symdb: u32 r10 /* toolkit */); // preserves r4-r7; clobbers r0-r3, r8, r9, r11, r12, lr; flags nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8046154.yaml
 	thumb_local_start
 sub_8046154:
 	push {r4-r7,lr}
@@ -474,6 +480,9 @@ off_8046348:
 	.word byte_200A220
 	thumb_func_end sub_8046290
 
+// symdb: Thin trampoline that calls sub_8046356 and returns with r3 forced to 0.
+// symdb: void sub_804634C(void); // clobbers r0,r1,r2,r3,r4,r6,r7,lr; NZCV
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804634C.yaml
 	thumb_local_start
 sub_804634C:
 	push {lr}
@@ -482,6 +491,10 @@ sub_804634C:
 	pop {pc}
 	thumb_func_end sub_804634C
 
+// symdb: Advances a per-step "column-reveal" bitmap effect (byte_200A220) one column, OR-ing a pixel pattern into 12 row-words of a bitmap and bumping its step counter.
+// symdb: void bitmapRevealStep_8046356(void); /* pushes caller r0, returns caller_r0+1 in r0; clobbers
+// symdb: r1,r2,r3,r4,r6,r7; C/V set by the final ADD r0,#1, N/Z forced from r3=1 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8046356.yaml
 	thumb_local_start
 sub_8046356:
 	push {r0}
@@ -620,6 +633,12 @@ off_804644C:
 	.word byte_200A220
 	thumb_func_end sub_80463A0
 
+// symdb: Dispatches an entity to its per-state handler by indexing a table at dword_8046464 with the entity's byte-1 state field.
+// symdb: void entity_runStateHandler_8046450(void *entity /* r0 */);     input:  r0 = entity pointer
+// symdb: output: r0, r3, r8, r10, r11, r12 from the dispatched handler     clobbered by dispatcher: r1,
+// symdb: r2, r4, r5, r6, r9, lr; flags N/Z reflect state<<2, C clear, V undefined     preserved: r3, r7
+// symdb: (pushed/popped across the bx dispatch)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8046450.yaml
 	thumb_local_start
 sub_8046450:
 	push {r3,r7,lr}
@@ -891,6 +910,10 @@ sprite_clearScaleCounterAndMakeUnscalable_804668A:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_clearScaleCounterAndMakeUnscalable_804668A
 
+// symdb: clears the first byte of an entry in the eStructArr2008450 array and marks its sprite unscalable.
+// symdb: void sub_8046696(u32 r0 index, ... r4 r5 r6 r7 preserved, returns r2 r3 from
+// symdb: sprite_makeUnscalable; clobbers nzcv r0 r1 lr)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046696.yaml
 	thumb_func_start sub_8046696
 sub_8046696:
 	push {r4-r7,lr}
@@ -942,7 +965,7 @@ off_80466D4:
 	thumb_func_end getStructFrom2008450
 
 // symdb: Walks a battle object's hitbox entries, applies X/Y mirror flags, and updates the on-screen flag byte and active-hitbox bitmask for that object.
-// symdb: void battleObject_scanHitboxesAndSetFlags_80466D8(struct BattleObject* r5 /* in */) ->     r3 (flags byte stored back at obj+3),
+// symdb: void sub_80466D8(struct BattleObject* r5 /* in */) ->     r3 (flags byte stored back at obj+3),
 // symdb: r6 (mask-without-MSB in normal mode, or original Y in alternate mode),     r8 (X-mirror flag
 // symdb: 0/1),     r9 (Y-mirror flag 0/1),     r12 (original Y coordinate);     clobbers nz,cv
 // symdb: r0,r1,r2,r4,r7; preserves r5; LR return.
@@ -1679,7 +1702,7 @@ loc_8046DF0:
 	pop {pc}
 	thumb_func_end battle_objectAdvanceCounterToState8_8046DDC
 
-// symdb: Runs two update passes in sequence (battleMenu_navigate_8047950 then sub_8047134) and always returns 0.
+// symdb: Runs two update passes in sequence (sub_8047950 then sub_8047134) and always returns 0.
 // symdb: void sub_8046DF8(void) /* no inputs; returns r0 = 0 with N/Z set from it */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046DF8.yaml
 	thumb_local_start
@@ -1692,7 +1715,7 @@ sub_8046DF8:
 	thumb_func_end sub_8046DF8
 
 // symdb: Advances the scramble-counter panel's countdown/frame animation, then runs shared cleanup.
-// symdb: void scramblePanel_tick_8046E06(void);   // r5 in = state ptr; returns 0 in r0 with NZ set
+// symdb: void sub_8046E06(void);   // r5 in = state ptr; returns 0 in r0 with NZ set
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scramblePanel_tick_8046E06.yaml
 	thumb_local_start
 scramblePanel_tick_8046E06:
@@ -1729,7 +1752,7 @@ loc_8046E40:
 	thumb_func_end scramblePanel_tick_8046E06
 
 // symdb: Overworld dialogue-end handler that applies a counter update and unlocks the player when the screen isn't fading and the counter validates.
-// symdb: u32 dialogueEnd_unlockPlayer_8046E48(u32 dialogue_ptr /* r5 */) -> r0 (0/1 in nz)
+// symdb: u32 sub_8046E48(u32 dialogue_ptr /* r5 */) -> r0 (0/1 in nz)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dialogueEnd_unlockPlayer_8046E48.yaml
 	thumb_local_start
 dialogueEnd_unlockPlayer_8046E48:
@@ -1761,6 +1784,10 @@ loc_8046E80:
 	pop {pc}
 	thumb_func_end dialogueEnd_unlockPlayer_8046E48
 
+// symdb: Per-chatbox-tick handler that processes B-button cancel, busy-prompt scripts, and default exit scripts.
+// symdb: void chatbox_tickBAndExit_8046E84(ChatboxState* r5, Toolkit* r10); /* r5 = chatbox state ptr;
+// symdb: r10 = toolkit (preserved as r10,r11 out) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8046E84.yaml
 	thumb_local_start
 sub_8046E84:
 	push {lr}
@@ -2286,7 +2313,7 @@ byte_8047268:
 	thumb_func_end sub_804722C
 
 // symdb: Feeds one column of a per-column sprite/attr table to the writer at sub_802FE28 and advances an 18-column counter that wraps to 0.
-// symdb: void sprite_emitColumnEntry_80472E8(u16 upper /*r0*/, u16 lower /*r1*/, u32 column /*r2*/) — returns the column's
+// symdb: void sub_80472E8(u16 upper /*r0*/, u16 lower /*r1*/, u32 column /*r2*/) — returns the column's
 // symdb: table entry in r1, the next (wrapped) column counter in r2, and 0 in r3; r0 is scratch, r4-r7/lr
 // symdb: preserved, flags clobbered.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_emitColumnEntry_80472E8.yaml
@@ -2654,7 +2681,7 @@ off_8047588:
 	.word dword_86A5D60
 	thumb_func_end chatbox_uploadWindowTileGfx_804754C
 
-// symdb: One-instruction trampoline that tail-calls mail_drawSelectedEntry_80478D4 and returns whatever it returns.
+// symdb: One-instruction trampoline that tail-calls sub_80478D4 and returns whatever it returns.
 // symdb: void wrapper_sub_80478D4(void) — no registers set up or inspected; all callee-visible state is
 // symdb: passed straight through and r4-r9 are preserved.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804758C.yaml
@@ -3116,6 +3143,10 @@ off_80478B4:
 	.word byte_8046B84
 	thumb_func_end sub_8047834
 
+// symdb: Initializes four chapter/area state slots (0-3) via sub_8046696 during chapter setup.
+// symdb: void initChapterSlots_80478B8(void); // inputs: lr (return address); outputs: r2,r5,r7
+// symdb: (preserved); clobbers nz,c,v,r0,r1,r3,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80478B8.yaml
 	thumb_local_start
 sub_80478B8:
 	push {r4-r7,lr}
@@ -3131,7 +3162,7 @@ sub_80478B8:
 	thumb_func_end sub_80478B8
 
 // symdb: Redraws the currently highlighted mail-list entry — its icon tiles, name strip, and the text shown in the mail reader.
-// symdb: void mail_drawSelectedEntry_80478D4(u32 entry /* r5: mail list entry object */, void* toolkit /* r10: toolkit
+// symdb: void sub_80478D4(u32 entry /* r5: mail list entry object */, void* toolkit /* r10: toolkit
 // symdb: struct */) — no return value; clobbers r0-r3, lr and flags; preserves r4-r9 per its own push/pop
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mail_drawSelectedEntry_80478D4.yaml
 	thumb_local_start
@@ -3204,7 +3235,7 @@ off_804794C:
 	thumb_func_end mail_drawSelectedEntry_80478D4
 
 // symdb: Battle menu per-frame input handler: navigates a 2D cursor (column/page) over battle chips with D-pad/L/R, confirms with A, toggles selection with B or R, and marks the menu dirty when the cursor moves.
-// symdb: void battleMenu_navigate_8047950(u32 /*r5*/ menu, u32 /*r10*/ toolkit /*r2,r3 also live but unused here*/);
+// symdb: void sub_8047950(u32 /*r5*/ menu, u32 /*r10*/ toolkit /*r2,r3 also live but unused here*/);
 // symdb: outputs: nothing returned; r10 preserved (toolkit ptr re-passed by callees) clobbers: NZCV (with
 // symdb: `tst`) and r0,r1,r2,r3,lr preserved: r4,r5,r6,r7,r10
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleMenu_navigate_8047950.yaml
@@ -3511,6 +3542,10 @@ dword_8047B84:
 	.word 0x2420
 	thumb_func_end sub_8047A96
 
+// symdb: Builds the filtered, deduplicated list of purchasable items for the active shop context (regular shop or PET-navi shop) into the shared display buffer at 0x2019A00 and returns the valid slot count.
+// symdb: u32 shop_buildFilteredList_8047B88(u32 modeData /* r0 */, u32 modeContext /* r5, deref at +0x1c
+// symdb: */, u32 toolkit /* r10 */) -> u32 count /* r0 */; r4-r7 preserved; nzc flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8047B88.yaml
 	thumb_local_start
 sub_8047B88:
 	push {r4-r7,lr}
@@ -3835,6 +3870,9 @@ dword_8047D80:
 	.word 0xFFF
 	thumb_func_end dimUnownedChipStrip_8047CFA
 
+// symdb: Computes the address of the currently-selected battle grid cell from the cursor's column and row in the battle state block.
+// symdb: void sub_8047D84(void) -> r0 (cell address); preserves r4-r7; clobbers r1, flags nz/c/v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8047D84.yaml
 	thumb_func_start sub_8047D84
 sub_8047D84:
 	push {r4-r7,lr}
@@ -4154,6 +4192,10 @@ byte_8048BE4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_8047D84
 
+// symdb: Iterates a shop's item table and returns 1 if any active entry is a navi-gated unique item that is currently unavailable (no PET-navi equipped, wrong kind, or real price when a sentinel is expected).
+// symdb: int shop_checkUniqueItemLocked(u32 shopIndex /*r0*/, u32 toolkit /*r10*/) ->
+// symdb: r0=locked(1)/clear(0), r2=entry ptr, r3=last flag byte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8048C24.yaml
 	thumb_func_start sub_8048C24
 sub_8048C24:
 	push {r4-r7,lr}
@@ -4446,7 +4488,7 @@ loc_8048DEC:
 	thumb_func_end sub_8048DAE
 
 // symdb: Splits one shop's chip stock list into two packed display regions based on per-chip event flags (bought/sold/unlocked state), compacts the empty slots, and hands both region pointers back to the caller.
-// symdb: void packShopChipLists_8048DF8(u32 list_index r0, void* region_a r1, void* region_b r2, u32 capacity r4,
+// symdb: void sub_8048DF8(u32 list_index r0, void* region_a r1, void* region_b r2, u32 capacity r4,
 // symdb: struct Toolkit* r10) -> r2 = region_a ptr (packed path) / unchanged (skip path), r3 = region_b
 // symdb: ptr / shop data ptr
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/packShopChipLists_8048DF8.yaml
@@ -4690,7 +4732,7 @@ off_8048F98:
 	thumb_func_end sub_8048F88
 
 // symdb: Initializes the E-Save (extra save) state block eS200A290 by zero-filling it, then writes a small header (save_arg, 8, 0xA) and sets *toolkit->main_jumptable_index_ptr to 0x30.
-// symdb: void initSaveStateBlock_8048F9C(u16 save_arg /* r0 */, struct Toolkit *toolkit /* r10 */);
+// symdb: void sub_8048F9C(u16 save_arg /* r0 */, struct Toolkit *toolkit /* r10 */);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initSaveStateBlock_8048F9C.yaml
 	thumb_func_start initSaveStateBlock_8048F9C
 initSaveStateBlock_8048F9C:
@@ -4728,6 +4770,11 @@ sub_8048FC4:
 	.word 0x1B0
 	thumb_func_end sub_8048FC4
 
+// symdb: Subsystem tick callback dispatched by the state byte at eS200A290, firing completion event 0xDA arg 2 when the subsystem reports no longer in use.
+// symdb: void subsystemTick_cb_8048FD4(void); // clobbers NZCV and r0–r3, r5 (restored), r12, lr //
+// symdb: preserves r4, r6, r7 (r5 saved/restored around handler dispatch) // no explicit inputs; reads
+// symdb: global state byte eS200A290
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cb_8048FD4.yaml
 	thumb_func_start cb_8048FD4
 cb_8048FD4:
 	push {r4-r7,lr}
@@ -4756,6 +4803,9 @@ off_8049008:
 	.word eS200A290
 	thumb_func_end cb_8048FD4
 
+// symdb: Tear down the current scene (close chatbox, blank LCD, release palette and graphics state) and write the next scene state (0xC or 0x8) into the caller's struct.
+// symdb: void sub_804900C(void); // in: r5=scene state struct; out: r3, flags c,v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804900C.yaml
 	thumb_local_start
 sub_804900C:
 	push {r4-r7,lr}
@@ -5627,6 +5677,12 @@ loc_8049714:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049704
 
+// symdb: Dispatches the chatbox state machine by jumping through a per-state thumb vector table using the chatbox state's state byte as the table index.
+// symdb: void sub_804971C(void);   /* in : r5 = chatbox context; r2, r4-r12, lr are passed through to the
+// symdb: selected handler.    * out: returns to caller via popped lr; leaves in the guest registers
+// symdb: whatever the dispatched handler returns in r3, r8-r12 and the           c/v flags (r4-r7 are
+// symdb: preserved by the callee per ABI, nz are           clobbered, r0/r1/r2/lr are clobbered). */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804971C.yaml
 	thumb_local_start
 sub_804971C:
 	push {r4-r7,lr}
@@ -5658,6 +5714,10 @@ off_8049730:
 	.word chatbox_closeFadeHandler_80499CE+1
 	thumb_func_end sub_804971C
 
+// symdb: Scene/transition entry that configures LCD/palette/fade, zeroes several state bytes in the r5 struct, and enables chatbox layers 0 and 1 with state 4.
+// symdb: void sceneEnter_8049770(struct *r5) -> *r0 [c/v set, *r3 *r8 *r9 *r10 *r11 *r12 written, r4 r5
+// symdb: r6 r7 r8 r9 r12 preserved, r0 r1 r2 lr clobbered]
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049770.yaml
 	thumb_local_start
 sub_8049770:
 	push {r4-r7,lr}
@@ -5696,6 +5756,10 @@ dword_80497CC:
 	.word 0x1F40
 	thumb_func_end sub_8049770
 
+// symdb: Drives the per-frame screen-fade update during battle, finalising the fade counter when a fade is still in progress.
+// symdb: void sub_80497D0(void);  /* r5 -> caller's fade state struct (byte at +1 is the counter); flags,
+// symdb: r3, r8, r9, r10, r11, r12 returned from sub_803A820 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80497D0.yaml
 	thumb_local_start
 sub_80497D0:
 	push {r4-r7,lr}
@@ -5712,6 +5776,11 @@ loc_80497E8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80497D0
 
+// symdb: Per-frame state driver for an object: tests flag 0x80 of eFlags2009F38; if unset, calls sub_803BB80 and, on a non-zero result, sets state byte 1 to 0xC, then always runs battle_moduleInit_803A820.
+// symdb: void sub_80497EE(void); // no in/out regs (r5 points to object, r10 to caller context);
+// symdb: preserves r4-r9,r12 // uses NZ; outputs to r0 (passed on to sub_803A820), then borrows
+// symdb: r3,r8-r11,r12 + C/V from sub_803A820
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80497EE.yaml
 	thumb_local_start
 sub_80497EE:
 	push {r4-r7,lr}
@@ -5842,6 +5911,10 @@ loc_80498CE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80498AA
 
+// symdb: Initializes a battle work structure (clears byte at +8, writes 0x24 marker at +1) before handing it to battle_moduleInit_803A820 to fill in.
+// symdb: void battle_workInit_80498D4(u32 r5 /* work struct */); out: r3, r8-r12, C, V (preserved by
+// symdb: caller convention: r4-r7, r12; clobbered: r0-r2, lr, N, Z)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80498D4.yaml
 	thumb_local_start
 sub_80498D4:
 	push {r4-r7,lr}
@@ -5853,6 +5926,10 @@ sub_80498D4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80498D4
 
+// symdb: Per-module battle initializer hook that defers module start until the chatbox clears its 0x80 flag.
+// symdb: void sub_80498E4(u32 modulePtr /* r5 */); // returns via tail-call to battle_moduleInit_803A820,
+// symdb: surfacing r3, r8-r12, c, v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80498E4.yaml
 	thumb_local_start
 sub_80498E4:
 	push {r4-r7,lr}
@@ -5866,6 +5943,10 @@ loc_80498F2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80498E4
 
+// symdb: Steps the chip-select submenu state machine once per frame, dispatching to the per-state handler and then running the common cleanup.
+// symdb: void sub_80498F8(void); // no meaningful inputs/outputs; uses r2 r4 r5 r10 lr on entry, clobbers
+// symdb: nz r0 r1 r2 r3 r8 r9 r10 r11 r12 lr, preserves r4 r5 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80498F8.yaml
 	thumb_local_start
 sub_80498F8:
 	push {r4-r7,lr}
@@ -5984,7 +6065,7 @@ loc_80499C8:
 	thumb_func_end sub_80499AE
 
 // symdb: Chatbox cleanup/reset handler gated on the screen-fade state (resets fade flag, clears VRAM/GFX, reinitializes chatbox state machine when not fading; otherwise takes an alternate early-out path).
-// symdb: void chatbox_closeFadeHandler_80499CE(u16* fadeState_r5, ... r6 r7 r8 r9 r10 r11 r12 lr) -> clobbers nz cv r0 r1 r2
+// symdb: void sub_80499CE(u16* fadeState_r5, ... r6 r7 r8 r9 r10 r11 r12 lr) -> clobbers nz cv r0 r1 r2
 // symdb: r3 r8 r9 r10 r11 r12 lr; preserves r4 r5 r6 r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_closeFadeHandler_80499CE.yaml
 	thumb_local_start
@@ -6324,7 +6405,7 @@ off_8049CF4:
 	thumb_func_end sub_8049CBC
 
 // symdb: Resets the 0x48-byte dialog-text work buffer at 0x2001800, pre-filling its two text lines with blank tile bytes (0xE5) plus 0xE6 marker bytes.
-// symdb: void chatbox_initTextLineBuffer_8049CF8(void) — no meaningful inputs; returns with r2=0xE5E5 and r3=0xE500 left over
+// symdb: void sub_8049CF8(void) — no meaningful inputs; returns with r2=0xE5E5 and r3=0xE500 left over
 // symdb: from the last fill call, r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_initTextLineBuffer_8049CF8.yaml
 	thumb_func_start chatbox_initTextLineBuffer_8049CF8
@@ -6363,6 +6444,9 @@ chatbox_initTextLineBuffer_8049CF8:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_initTextLineBuffer_8049CF8
 
+// symdb: Likely flag setter: writes "enabled = 1" into the byte_2001802 enable flag of a shared word_2001800 subsystem block.
+// symdb: void sub_8049D3A(void); // r1 = 1 on return, r0 = &word_2001800
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049D3A.yaml
 	thumb_local_start
 sub_8049D3A:
 	ldr r0, off_8049D94 // =word_2001800 
@@ -6371,6 +6455,9 @@ sub_8049D3A:
 	mov pc, lr
 	thumb_func_end sub_8049D3A
 
+// symdb: one line in game terms
+// symdb: u32 Next sub_8049D42(void); // r0 = state byte, returns to lr, sets NZ
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049D42.yaml
 	thumb_func_start sub_8049D42
 sub_8049D42:
 	ldr r0, off_8049D94 // =word_2001800 
@@ -6404,6 +6491,10 @@ off_8049D6C:
 	.word eS200A290
 	thumb_func_end sub_8049D4A
 
+// symdb: Draw a fresh value from the RNG and store the low 16 bits as the new RNG seed (word_2001800).
+// symdb: void storeNextRngSeed_8049D70(void);  /* in: lr; out: r4 r5 r6 r7; clobbers r0-r3, lr, flags nz
+// symdb: c v */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049D70.yaml
 	thumb_local_start
 sub_8049D70:
 	push {r4-r7,lr}
@@ -6476,6 +6567,10 @@ sub_8049DC4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049DC4
 
+// symdb: Zeroes the 0x1B0-byte work block at eS200A290, advances the toolkit's main jumptable to state 0x4C, and seeds the block's +0x22/+0x24/+0x26 fields.
+// symdb: void sub_8049DDC(u16 fieldValue /* r0 */, struct Toolkit *toolkit /* r10 */); preserves r2-r7;
+// symdb: clobbers r0, r1, lr, NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049DDC.yaml
 	thumb_func_start sub_8049DDC
 sub_8049DDC:
 	push {r4-r7,lr}
@@ -6501,6 +6596,10 @@ off_8049E00:
 	.word 0x1B0
 	thumb_func_end sub_8049DDC
 
+// symdb: Dispatches E-Reader chatbox handling by indexing the current phase byte in eS200A290 into a 3-entry jump table to call the matching per-phase handler.
+// symdb: void Next(void /* guest regs */); /* inputs: r2 r4 r10 lr; outputs: r4 r5 r6 r7 r8 r9 r10 r11
+// symdb: r12; clobbers: nz c v r0 r1 r2 r3 lr; preserved: r4 r5 r6 r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cb_8049E04.yaml
 	thumb_func_start cb_8049E04
 cb_8049E04:
 	push {r4-r7,lr}
@@ -6567,6 +6666,10 @@ off_8049E80:
 	.word 0x40
 	thumb_func_end sub_8049E5C
 
+// symdb: Dispatches a chatbox/scene/fade sub-state step by jumping to one of nine Thumb handlers selected by the sub-state byte at `r5+1`.
+// symdb: void sub_8049E84(void);  // inputs: r2 r4 r5 r10 lr; outputs: r8 r9 r10 r11 r12; clobbers nz c v
+// symdb: r0 r1 r2 r3 lr; preserved r4 r5 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049E84.yaml
 	thumb_local_start
 sub_8049E84:
 	push {r4-r7,lr}
@@ -6591,6 +6694,9 @@ off_8049E98:
 	.word sceneUpdate_804A078+1
 	thumb_func_end sub_8049E84
 
+// symdb: Scene/cutscene initializer that configures LCD rendering, starts a 0x10 screen fade-in, clears state flags, fires setup hooks twice (idx 0 and 1), and transitions the state machine to phase 4.
+// symdb: void sceneInitFadeIn_8049EBC(struct State* r5); /* r10/lr input, r8/r9/r11/r12 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049EBC.yaml
 	thumb_local_start
 sub_8049EBC:
 	push {r4-r7,lr}
@@ -6630,6 +6736,10 @@ dword_8049F1C:
 	.word 0x1F40
 	thumb_func_end sub_8049EBC
 
+// symdb: Loops indices 0x29..0x2C into sub_803B674, presumably initializing/tearing down a small set of slot-like objects.
+// symdb: void sub_8049F20(void) /* in: r10, lr (unused); out: r5 (forwarded from sub_803B674); clobbers N
+// symdb: Z C V, r0-r3, lr; preserves r4-r7 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049F20.yaml
 	thumb_local_start
 sub_8049F20:
 	push {r4-r7,lr}
@@ -6681,6 +6791,9 @@ sub_8049F50:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049F50
 
+// symdb: Initializes a battle/scene state by queuing several setup actions and resuming script playback.
+// symdb: void sub_8049F70(void);
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049F70.yaml
 	thumb_local_start
 sub_8049F70:
 	push {r4-r7,lr}
@@ -6694,6 +6807,10 @@ sub_8049F70:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049F70
 
+// symdb: chatbox step that conditionally bumps a state byte at r5+1 to 0x0C and then calls the chained step sub_8049F70
+// symdb: void chatbox_step_8049F8A(void);  // in: r5 (chatbox control struct), r10, lr; out: r8 r9 r10
+// symdb: r11 r12; clobbers r0 r1 r2 r3 lr, flags nz c v; preserves r4 r5 r6 r7 r8 r9 r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049F8A.yaml
 	thumb_local_start
 sub_8049F8A:
 	push {r4-r7,lr}
@@ -6709,6 +6826,9 @@ loc_8049F9E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049F8A
 
+// symdb: Top-level dispatcher that runs the current menu/battle substate handler and then refreshes the submenu and battle object.
+// symdb: void sub_8049FA4(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049FA4.yaml
 	thumb_local_start
 sub_8049FA4:
 	push {r4-r7,lr}
@@ -6824,7 +6944,7 @@ loc_804A072:
 	thumb_func_end sub_804A04E
 
 // symdb: Scene-update hook that, while a screen fade is active, tears down scene graphics (VRAM, GFX buffer, tile memory, LCD control, chatbox, system init); otherwise delegates to sub_8049F70.
-// symdb: void sceneUpdate_804A078(void) /* r5/r10/lr in, no return value, clobbers r0-r3/r12 + nzcv */
+// symdb: void sub_804A078(void) /* r5/r10/lr in, no return value, clobbers r0-r3/r12 + nzcv */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sceneUpdate_804A078.yaml
 	thumb_local_start
 sceneUpdate_804A078:
@@ -6920,7 +7040,7 @@ byte_804A0E8:
 	thumb_func_end copyData_804A0AC
 
 // symdb: Loads a 0x20-byte tile block into a sprite object and starts a sound effect (SFX 0x10/0x30).
-// symdb: void sprite_loadTilesAndPlaySfx_804A14C(u16 sprite_id R5+0x22); // R0 destroyed, R5 preserved
+// symdb: void sub_804A14C(u16 sprite_id R5+0x22); // R0 destroyed, R5 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesAndPlaySfx_804A14C.yaml
 	thumb_local_start
 sprite_loadTilesAndPlaySfx_804A14C:
@@ -6949,7 +7069,7 @@ byte_804A178:
 	thumb_func_end sprite_loadTilesAndPlaySfx_804A14C
 
 // symdb: Builds the two text-script folder name buffers at unk_2001850, filling each with 0x20 halfwords of 0xE5E5, copying the wide folder name, and stamping a 0xE6 terminator at offset 0x10.
-// symdb: void textScript_buildFolderNameBuffers_804A17A(void);  // callee-saved: r4-r7; uses r0-r3 + flags internally
+// symdb: void sub_804A17A(void);  // callee-saved: r4-r7; uses r0-r3 + flags internally
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textScript_buildFolderNameBuffers_804A17A.yaml
 	thumb_func_start textScript_buildFolderNameBuffers_804A17A
 textScript_buildFolderNameBuffers_804A17A:
@@ -7058,6 +7178,9 @@ off_804A22C:
 	.word TextScriptFolderNames
 	thumb_func_end textScript_copyFolderNameToWide_804A1FC
 
+// symdb: Copies 0x20 bytes of chip data into the chip queue slot, indexed by chip ID via a per-chip slot table.
+// symdb: void sub_804A230(u8 chipId /* r0 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804A230.yaml
 	thumb_local_start
 sub_804A230:
 	push {r4-r7,lr}
@@ -9695,6 +9818,10 @@ off_804C024:
 	.word byte_804B011
 	thumb_func_end selectChipTraderRewardList_804BFF0
 
+// symdb: tail-dispatcher that runs the currently-selected chatbox step handler
+// symdb: void sub_804C058(void); /* in: r5=chatbox object; out/clobber: r0-r3,r8-r12,lzcv; preserved:
+// symdb: r4-r7 */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C058.yaml
 	thumb_func_start sub_804C058
 sub_804C058:
 	push {r4-r7,lr}
@@ -9712,6 +9839,10 @@ off_804C06C:
 	.word chatbox_stepIfGatesOpen_804C11C+1
 	thumb_func_end sub_804C058
 
+// symdb: Clears battle event flag (flag id 4, bit 0xFE) and turns off the 0x400 render/info bit in the toolkit's render-info word.
+// symdb: void sub_804C074(void) /* in: r10 toolkit ptr, lr return; out: r2=0x400, r3, r5; clobbers
+// symdb: r0,r1,lr + nz,c,v */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C074.yaml
 	thumb_func_start sub_804C074
 sub_804C074:
 	push {r4-r7,lr}
@@ -9726,6 +9857,10 @@ sub_804C074:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804C074
 
+// symdb: Initializes the battle toolkit/HUD for a request: queues palette/tilemap GFX transfers into VRAM, configures the toolkit's render info and an internal palette blob, resets HUD fields on the r5 battle object, runs an optional extra setup gated by event flags EVENT_4FB/EVENT_4FE, then sets the HUD phase byte and the EVENT_4FE flag.
+// symdb: void battleToolkit_initHud_804C08C(void *r5_battleObj, void *r10_toolkit); // preserves r4 r5 r6
+// symdb: r7; clobbers r0 r1 r2 r3 lr + nz c v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C08C.yaml
 	thumb_local_start
 sub_804C08C:
 	push {r4-r7,lr}
@@ -9794,7 +9929,7 @@ dword_804C118:
 	thumb_func_end sub_804C08C
 
 // symdb: Cutscene/chatbox tick: if PET flag 0x01 is clear, neither cutting-back cutscene position matches, and chatbox flag 0x80 is unset, run sub_804C144 then sub_804C298.
-// symdb: void chatbox_stepIfGatesOpen_804C11C(void); /* in: r5, r10, lr; out: r2; clobbers r0,r1,r3,lr and nz,c,v; preserves
+// symdb: void sub_804C11C(void); /* in: r5, r10, lr; out: r2; clobbers r0,r1,r3,lr and nz,c,v; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepIfGatesOpen_804C11C.yaml
 	thumb_local_start
@@ -9816,6 +9951,12 @@ locret_804C142:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_stepIfGatesOpen_804C11C
 
+// symdb: Drives a battle screen-flash / background-fill effect: ticks a counter, advances frame index on timer expiry, and copies a 32x32 tile block (from one of 8 frame buffers) into character block 2.
+// symdb: void battle_runScreenFlashEffect_804C144(void); // inputs : r5 (state block: byte[+0x11] flag,
+// symdb: byte[+0x13] frame index, byte[+0x14] timer), //          r10 (toolkit pointer -> render info),
+// symdb: lr (return) // outputs: r5 preserved/repointed // clobber: r0,r1,r2,r3,NZCV,lr // preserved:
+// symdb: r4,r5,r6,r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C144.yaml
 	thumb_local_start
 sub_804C144:
 	push {r4-r7,lr}
@@ -9889,7 +10030,7 @@ off_804C1B4:
 	thumb_func_end sub_804C144
 
 // symdb: Applies an indexed scroll delta (from parallel X/Y addend tables) to an object's local X/Y offsets and to the toolkit RenderInfo scroll registers.
-// symdb: void applyScrollOffset_804C1D4(void);  // in: r5 = caller object (offsets at +0x15, +0x16), r10 = toolkit
+// symdb: void sub_804C1D4(void);  // in: r5 = caller object (offsets at +0x15, +0x16), r10 = toolkit
 // symdb: (RenderInfoPtr at oToolkit_RenderInfoPtr); out: r5 unchanged; clobbers nz c v r0 r1 r2 r3;
 // symdb: preserves r4 r5 r6 r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/applyScrollOffset_804C1D4.yaml
@@ -9929,7 +10070,7 @@ byte_804C20C:
 	thumb_func_end applyScrollOffset_804C1D4
 
 // symdb: Ticks a per-object action/anim timer; on expiry advances toolkit state counters and may trigger a state-4 transition
-// symdb: void tickActionTimer_804C214(void /* r5=battle obj?, r10=toolkit */); clobbers r0, N Z C V; preserves r4
+// symdb: void sub_804C214(void /* r5=battle obj?, r10=toolkit */); clobbers r0, N Z C V; preserves r4
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/tickActionTimer_804C214.yaml
 	thumb_local_start
 tickActionTimer_804C214:

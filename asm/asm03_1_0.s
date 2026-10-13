@@ -202,6 +202,13 @@ triggerSomeUpdateForInternetOrRealWorld_8033948:
 	pop {r4-r7,pc}
 	thumb_func_end triggerSomeUpdateForInternetOrRealWorld_8033948
 
+// symdb: Queues graphics (sprites/font tiles) into VRAM appropriate to the current map group, then runs a follow-up transfer for non-Internet maps.
+// symdb: void loadMapGroupGFX_8033978(void)   // inputs:  r10 = caller's "toolkit"/game-state base ptr
+// symdb: (read via oToolkit_GameStatePtr -> oGameState_MapGroup); lr = return   // outputs: none
+// symdb: directly; r0/r1/r2/r3/r5/r7 trashed by callees   // clobbers: r0, r1, lr, N/Z (and C/V as set by
+// symdb: callers)   // preserved: r4, r5, r6, r7 (note r5 clobbered by callees inside the call; only r7
+// symdb: spans the asm frame)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfxTransfer_8033978.yaml
 	thumb_func_start gfxTransfer_8033978
 gfxTransfer_8033978: // () -> ()
 	push {r4-r7,lr}
@@ -254,6 +261,10 @@ off_80339C8:
 	.word byte_86C1F20
 	thumb_func_end gfxTransfer_8033978
 
+// symdb: PET menu scene dispatcher: runs the current sub-handler of the singleton scene state eS2011E30 every tick, picking between a real-world and an internet jump table based on the current map group, and choosing between paired entries in the real-world table via the CopyBot / PetNavi event flags.
+// symdb: void dispatch_80339CC(u32 toolkit /* r10 */); // r4-r7 preserved by push/pop; r2,r3,r8-r12 and
+// symdb: NZCV pass through from the last callee (bails out early if TestPETMenuDataFlag(1) returns 0)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dispatch_80339CC.yaml
 	thumb_func_start dispatch_80339CC
 dispatch_80339CC: // () -> ()
 	push {r4-r7,lr}
@@ -352,6 +363,9 @@ callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end callback_noop_8033A7C
 
+// symdb: Initializes/resumes the three render subsystems (OAM/affine, BG map, and GFX transfer) with reset argument 0.
+// symdb: void sub_8033A80(void) /* clobbers r0/r2/r3 and flags; r5/r10/lr passed in */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033A80.yaml
 	thumb_local_start
 sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -543,6 +557,9 @@ byte_8033BB8:
 	.byte 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1
 	thumb_func_end sub_8033B80
 
+// symdb: Queues the current PET navi's graphics chunk into VRAM and triggers the update for the battle screen.
+// symdb: void sub_8033BE8(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8033BE8.yaml
 	thumb_local_start
 sub_8033BE8:
 	push {lr}
@@ -739,10 +756,9 @@ locret_8033D9E:
 	pop {pc}
 	thumb_func_end sub_8033D88
 
-// symdb: Queues a 0x20-byte aligned GFX transfer (to VRAM/OAM at 0x030016D0) for the current PET/Navi sprite, picking the source from a 13-entry table indexed by PET/Navi id with an override driven by event flag 0x163 and eByte200AD04.
-// symdb: void gfxTransfer_8033DA0(u32 tileOffset /* r0 */);  /* preserves r4-r7, clobbers r0-r3, n,z
-// symdb: flags; c,v,r2-r7 out */ flags clobbered: nz preserved: r4 r5 r6 r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gfxTransfer_8033DA0.yaml
+// symdb: Queues a 32-byte PET navi tileset DMA transfer into the VRAM staging area at 0x30016D0.
+// symdb: void queuePETNaviTileset_8033DA0(u32 baseAddr /* r0 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfxTransfer_8033DA0.yaml
 	thumb_local_start
 gfxTransfer_8033DA0: // (a0: u32?) -> ()
 	push {r4-r7,lr}
@@ -1034,7 +1050,7 @@ off_8033FD8:
 	thumb_func_end doPETEffect_8033fc0
 
 // symdb: Fully resets the player's PET Navi setup — heals HP, reloads stat boosts, clears "active"/session event flags, zeroes navi stats/mood/BeastOut counter, and re-syncs beast & story flag groups based on EVENT_224 and EVENT_1008
-// symdb: void resetPetNaviSetup_8033FDC(void) /* reads toolkit ptr from r10, no other inputs; clobbers nz */
+// symdb: void sub_8033FDC(void) /* reads toolkit ptr from r10, no other inputs; clobbers nz */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetPetNaviSetup_8033FDC.yaml
 	thumb_func_start resetPetNaviSetup_8033FDC
 resetPetNaviSetup_8033FDC:
@@ -1123,9 +1139,9 @@ locret_80340F4:
 	pop {r4-r7,pc}
 	thumb_func_end resetPetNaviSetup_8033FDC
 
-// symdb: End-of-section Navi setup: reloads the PET Navi (or just stat boosts if already loaded), ensures EVENT_PET_NAVI_ACTIVE is set, refills HP, clears a batch of transient event flags, enables the ghost Navi, zeroes scratch fields in the S2001c04 Navi struct, sets the beast-out counter to 3, zeros all Navi stat moods, and chains into clearBattleStateCounter_800A908.
-// symdb: void endOfSection_NaviSetup_80340F6(struct Toolkit *tk /* r10 */); // clobbers r0, r1, r2, r3, nz, c, v; preserves
-// symdb: r4-r7 // returns whatever clearBattleStateCounter_800A908 left in r0-r3 (and nz/c/v) per the adapter convention
+// symdb: End-of-section Navi setup: reloads the PET Navi (or just stat boosts if already loaded), ensures EVENT_PET_NAVI_ACTIVE is set, refills HP, clears a batch of transient event flags, enables the ghost Navi, zeroes scratch fields in the S2001c04 Navi struct, sets the beast-out counter to 3, zeros all Navi stat moods, and chains into sub_800A908.
+// symdb: void navi_80340F6(struct Toolkit *tk /* r10 */); // clobbers r0, r1, r2, r3, nz, c, v; preserves
+// symdb: r4-r7 // returns whatever sub_800A908 left in r0-r3 (and nz/c/v) per the adapter convention
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/endOfSection_NaviSetup_80340F6.yaml
 	thumb_func_start endOfSection_NaviSetup_80340F6
 endOfSection_NaviSetup_80340F6:
@@ -1205,6 +1221,10 @@ clearWorkBuffer_2011A40_80341AA:
 	pop {pc}
 	thumb_func_end clearWorkBuffer_2011A40_80341AA
 
+// symdb: Jack-in cutscene step dispatcher: branches on map group (real-world vs internet) and the current step byte in byte_2011A40 to call one of six handlers, restoring the caller's r4-r7.
+// symdb: void ho_jackIn_80341B6(u32 toolkit /* r10 */, u32 r4, u32 r5, u32 r6, u32 r7 /* preserved across
+// symdb: call */, u32 r8, u32 r9, u32 r11, u32 r12 /* clobbered in transit */); /* uses lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ho_jackIn_80341B6.yaml
 	thumb_func_start ho_jackIn_80341B6
 ho_jackIn_80341B6:
 	push {r4-r7,lr}
@@ -1473,6 +1493,10 @@ byte_8034370:
 	thumb_func_end decompJackInAnimationGfx_8034314
 
 // () -> void
+// symdb: Per-frame advance of the world-map animation table, queueing its row palette and restamping the 32x20 BG tile block before ticking entities and draining queued GFX.
+// symdb: void sub_80343B0(void);  // r5 = state (row table + frame counter); r10 passed through; clobbers
+// symdb: r0-r3, r8, r9, r11, r12, lr, NZCV; preserves r4, r5, r6, r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80343B0.yaml
 	thumb_local_start
 sub_80343B0:
 	push {r4-r7,lr}
@@ -1899,6 +1923,9 @@ byte_8034AFC:
 
 	thumb_func_start map_8034B4C
 // JP 0x8035b08
+// symdb: Loads a map (real-world or internet) by clearing the per-map work block, running map-music/event setup, spawning the overworld player and NPCs, then installing the map's on-init/on-update script pair and starting the map's music.
+// symdb: void loadMap_8034B4C(u8 map_group /* r0 */, u8 map_number /* r1 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_8034B4C.yaml
 map_8034B4C: // (map_group: u8, map_number: u8) -> ()
 	push {r4-r7,lr}
 
@@ -2034,7 +2061,7 @@ cutscene_8034BB8:
 	thumb_func_end cutscene_8034BB8
 
 // symdb: Gate check that returns true when the player is allowed to auto-advance one tile forward on the overworld (no fade, no advance/sliprun event, no busy subsystem, no chatbox mask 0x80, no cutscene).
-// symdb: bool check_playerCanAdvanceForward_8034C36(void); // r0 out = 1 allowed, 0 blocked; NZ flags from final MOV r0
+// symdb: bool sub_8034C36(void); // r0 out = 1 allowed, 0 blocked; NZ flags from final MOV r0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/check_playerCanAdvanceForward_8034C36.yaml
 	thumb_func_start check_playerCanAdvanceForward_8034C36
 check_playerCanAdvanceForward_8034C36:
@@ -2062,7 +2089,7 @@ loc_8034C6A:
 	thumb_func_end check_playerCanAdvanceForward_8034C36
 
 // symdb: Returns 1 when the player is permitted to auto-advance the overworld forward, otherwise 0
-// symdb: u32 playerAdvanceForwardCheck_8034C6E(void) /* returns 1 in r0 with NZ flags if advance allowed, else 0 */
+// symdb: u32 sub_8034C6E(void) /* returns 1 in r0 with NZ flags if advance allowed, else 0 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/playerAdvanceForwardCheck_8034C6E.yaml
 	thumb_local_start
 playerAdvanceForwardCheck_8034C6E:
@@ -2296,6 +2323,11 @@ off_8034E38:
 	.word byte_809CAD8 // CutsceneScript
 	thumb_func_end sub_8034DB0
 
+// symdb: Searches one of three hardcoded u16 lists for the halfword at [r7,#4] and returns the byte offset of the match (or of the 0xFFFF terminator if absent), with the Z flag marking "not found".
+// symdb: u32 sub_8034E3C(u32 listIndex /*r1*/, /*r7*/ struct with u16 field at +4); out: r0 = r2 = byte
+// symdb: offset of match or terminator, Z set when NOT found (NZ from notFound flag); r1/r3 clobbered,
+// symdb: r4/r6 preserved despite r4 being written locally
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034E3C.yaml
 	thumb_local_start
 sub_8034E3C:
 	push {r4,r6,lr}
@@ -2394,6 +2426,10 @@ byte_8034EEF:
 	.byte 0xF8
 	thumb_func_end sub_8034E88
 
+// symdb: Starts the "object interaction" cutscene (TalkObject script) for the coordinate interaction tile the player is currently standing on, if applicable.
+// symdb: void HandleCoordinateInteractionCutscene(u32 toolkit /* r10 */);     // outputs: r2 unchanged;
+// symdb: clobbers r0/r1/r3, lr, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HandleCoordinateInteractionCutscene.yaml
 	thumb_local_start
 HandleCoordinateInteractionCutscene:
 	push {r4-r7,lr}
@@ -2462,7 +2498,7 @@ off_8034F64:
 	thumb_func_end HandleCoordinateInteractionCutscene
 
 // symdb: Overworld per-frame: if a door-coordinate trigger under the player is enabled, start the door's entrance/interact cutscene.
-// symdb: void maybeStartEntranceCutscene_8034F68(void); /* inputs: r10 toolkit, lr; outputs: r2 r8 r9 r10 r11; clobbers nz c v
+// symdb: void sub_8034F68(void); /* inputs: r10 toolkit, lr; outputs: r2 r8 r9 r10 r11; clobbers nz c v
 // symdb: r0 r1 r3 lr; preserves r4-r7 r12 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/maybeStartEntranceCutscene_8034F68.yaml
 	thumb_local_start
@@ -2650,6 +2686,8 @@ owPlayer_80350a8:
 	.balign 4, 0x00
 	thumb_func_end owPlayer_80350a8
 
+// symdb: Runs the "<item> just expired!" cutscene when SneakRun (flag 0x170A) or LocEnemy (0x170B) is on and its steps left (eStruct2001c04 +0x24 / +0x28) reached 0.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/npc_80350BC.yaml
 	thumb_local_start
 npc_80350BC:
 	push {r4,lr}
@@ -2705,6 +2743,10 @@ off_8035130:
 	.word byte_8099E04 // CutsceneScript
 	thumb_func_end npc_80350BC
 
+// symdb: Spawn overworld NPC objects for the current map based on MapGroup/MapNumber, unless EVENT_1721 is set.
+// symdb: void npc_spawnOverworldNPCObjectsForMap(void); // r10 = toolkit ptr; output via callee: r0-r3
+// symdb: returned through; clobbers r0-r3; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_spawnOverworldNPCObjectsForMap.yaml
 	thumb_func_start npc_spawnOverworldNPCObjectsForMap
 npc_spawnOverworldNPCObjectsForMap:
 	push {r4-r7,lr}
@@ -3028,6 +3070,9 @@ off_8035378:
 	.word gameProgressBuffer_20010f0
 	thumb_func_end storeGameProgressToGameProgressBuffer_8035364
 
+// symdb: Re-arms event flag 0x28 when the player enters a map whose group matches an entry in the built-in auto-increment table whose paired flag is currently set.
+// symdb: void sub_803537C(void); // implicit input: r10 = toolkit pointer; no outputs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_803537C.yaml
 	thumb_func_start sub_803537C
 sub_803537C:
 	push {r4-r7,lr}
@@ -3111,7 +3156,7 @@ off_8035418:
 	thumb_func_end sub_8035408
 
 // symdb: Loads the alternate-death GFX/animation scripts (the "Death" GFXAnim script set referenced via `byte_8034AFC`) at battle setup when story flag EVENT_28 is set and the battle-effects bitmask's bit 3 (mask `0x8`) is clear.
-// symdb: void battle_loadDeathAnims_8035424(void);  // uses r10 lr in; clobbers r0-r3, r8-r12, lr; preserves r4-r7
+// symdb: void sub_8035424(void);  // uses r10 lr in; clobbers r0-r3, r8-r12, lr; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadDeathAnims_8035424.yaml
 	thumb_func_start battle_loadDeathAnims_8035424
 battle_loadDeathAnims_8035424:
@@ -3245,6 +3290,9 @@ off_80355E8:
 	.word byte_80984C8
 	thumb_func_end getIndexed20ByteTableEntry_80355DE
 
+// symdb: Sets or clears the real-world-map indicator (stat byte 0x22) on Navi 0 by scanning a table of special map IDs.
+// symdb: void navi_updateRealWorldMapFlag_80355EC(void /*r10 = toolkit_ptr*/);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80355EC.yaml
 	thumb_func_start sub_80355EC
 sub_80355EC:
 	push {r4-r7,lr}
@@ -3283,6 +3331,10 @@ off_8035628:
 word_803562C:
 	.word 0x00010000, byte_2030003, 0x00040303, 0x01050005, 0xFFFF0006
 
+// symdb: Scans an id/event-flag table; if the current target id matches an entry whose flag is set, loads a GFX+animations bundle.
+// symdb: void sub_8035640(u32* someStruct, ...); // r10 = ptr to a struct whose +0x3c points to a {u16
+// symdb: id, ...} blob; r2,r5,r7-r12 out; flags NZ/C/V clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8035640.yaml
 	thumb_local_start
 sub_8035640:
 	push {r4-r7, lr}

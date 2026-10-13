@@ -68,6 +68,12 @@ off_80026E0:
 /* r0 = 0x80
    r1 = sprite category
    r2 = sprite index*/
+// symdb: Loads a sprite into an object, clearing its loaded-flag bit and falling back to a placeholder when not found.
+// symdb: void sprite_load(void *spriteData, u16 spriteId, u8 subIndex, void *objectHeader); /* returns
+// symdb: via r4/r5 preserved, r1 holds original spriteData */ /* in:  r0 spriteData, r1 spriteId, r2
+// symdb: subIndex, r5 objectHeader out: r1 = original r0 (spriteData), r4/r5 preserved clobbers: N Z C V,
+// symdb: r0 r2 r3 lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_load.yaml
 	thumb_func_start sprite_load
 sprite_load:
 	push {r4,r5,lr}
@@ -882,7 +888,7 @@ off_8002BC8:
 	thumb_func_end sprite_decompressTemp
 
 // symdb: Reset a sprite slot by hiding its OAM attribute (0x7FFF) and marking its link field as free (-1).
-// symdb: void sprite_clearSlot_8002BCC(void /* r5 = sprite base */);  /* inputs: r5, lr; outputs: r0, r5; clobbers:
+// symdb: void sub_8002BCC(void /* r5 = sprite base */);  /* inputs: r5, lr; outputs: r0, r5; clobbers:
 // symdb: nz, c, v; preserved: r0-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearSlot_8002BCC.yaml
 	thumb_local_start
@@ -1259,6 +1265,10 @@ sprite_getFinalPalette:
 	mov pc, lr
 	thumb_func_end sprite_getFinalPalette
 
+// symdb: Clears the high nibble of an object's sprite final-palette byte, leaving only the low nibble.
+// symdb: void sprite_clearFinalPalette(u32 objectHeader /* r5 */); returns: r1 = 0xf0, r3 = sprite
+// symdb: pointer; flags: N,Z from BIC of masked byte (0..0xF), C,V preserved from header+offset ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearFinalPalette.yaml
 	thumb_func_start sprite_clearFinalPalette
 sprite_clearFinalPalette:
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]

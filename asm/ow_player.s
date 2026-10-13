@@ -1320,7 +1320,7 @@ locret_809DB5E:
 	thumb_func_end event_TestPlayerAdvanceForward_809DB50
 
 // symdb: Overworld player tick: primes Unk_34 animation slot, refreshes Unk_50 from the slip/arrow table and Unk_48 from the game-state table, then clears all three slots.
-// symdb: void owPlayerInputTick_809DB60(/* r5=OWPlayerObject*, r10=Toolkit* */);   inputs: r5 (OWPlayerObject*), r10
+// symdb: void sub_809DB60(/* r5=OWPlayerObject*, r10=Toolkit* */);   inputs: r5 (OWPlayerObject*), r10
 // symdb: (Toolkit*), lr (return)   outputs: r4 r5 (preserved per contract)   clobbers: nz c v r0 r1 r2 r3
 // symdb: r6 r7 lr   preserved: r5
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayerInputTick_809DB60.yaml
@@ -1378,7 +1378,7 @@ off_809DBC0:
 	thumb_func_end owPlayerInputTick_809DB60
 
 // symdb: Builds an OW interaction area on the player object using a template struct's offsets plus the player's world position, then stores the new handle at the caller-supplied output pointer.
-// symdb: void createOWPlayerInteractionArea_809DBC4(u32 area_struct /* r0: ptr to ow_player_interaction_area_struct template */,
+// symdb: void sub_809DBC4(u32 area_struct /* r0: ptr to ow_player_interaction_area_struct template */,
 // symdb: u32 out_handle_ptr /* r1: ptr to write the created area handle into */,                  u32
 // symdb: player_obj /* r5: ptr to OW player object */); // flags clobbered; r4, r5 (preserved across
 // symdb: callee) preserved on return
@@ -1631,7 +1631,7 @@ dword_809DDEC:
 	thumb_func_end owPlayer_TickCountdownOrWait_809DDCC
 
 // symdb: Overworld: exits the player's slip-run state when the slip-run event is no longer active.
-// symdb: void oowExitSlipRun_809DDF0(void) /* r5=OWPlayerObject*, r10=?, lr=ret; trashes r0-r3, r6, r7, nz/c/v, lr
+// symdb: void sub_809DDF0(void) /* r5=OWPlayerObject*, r10=?, lr=ret; trashes r0-r3, r6, r7, nz/c/v, lr
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/oowExitSlipRun_809DDF0.yaml
 	thumb_local_start
@@ -1805,6 +1805,9 @@ loc_809DF24:
 	pop {pc}
 	thumb_func_end ow_tryTileInteraction_809DF00
 
+// symdb: Overworld player per-frame dispatcher; bypasses the real handler when the player's substate jumptable index is 0x10 (locked/skip-this-tick), otherwise falls through into the real per-frame handler at eStruct200ace0.
+// symdb: void sub_809DF28(struct OWPlayerObject* r5) -> uint8_t r0; clobbers r7, nz, c, v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DF28.yaml
 	thumb_local_start
 sub_809DF28:
 	push {lr}
@@ -2729,7 +2732,7 @@ sub_809E3C4:
 	thumb_func_end sub_809E3C4
 
 // symdb: Overworld per-frame clamp: pushes the player object's X/Y coordinates out to the bounding box stored in eStruct2000aa0 when its enable flag is set.
-// symdb: void clampPlayerPosition_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.
+// symdb: void sub_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clampPlayerPosition_809E3D6.yaml
 	thumb_local_start
 clampPlayerPosition_809E3D6:
@@ -2902,6 +2905,10 @@ DisableOWPlayerAlpha:
 	pop {r5,pc}
 	thumb_func_end DisableOWPlayerAlpha
 
+// symdb: Toggle the CopyBot active event flag and refresh the overworld player sprite to show (or hide) the CopyBot companion
+// symdb: void owPlayer_toggleUsingCopybot_809e4bc(void); /* inputs: r10 = oToolkit*; outputs: r1, r2;
+// symdb: clobbers r0, r3, lr, nz, c, v; preserves r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_toggleUsingCopybot_809e4bc.yaml
 	thumb_func_start owPlayer_toggleUsingCopybot_809e4bc
 owPlayer_toggleUsingCopybot_809e4bc:
 	push {r4-r7,lr}
@@ -2928,6 +2935,9 @@ loc_809E4DA:
 	pop {r4-r7,pc}
 	thumb_func_end owPlayer_toggleUsingCopybot_809e4bc
 
+// symdb: Draws the overworld player sprite using its current animation frame.
+// symdb: void sub_809E4F8(Toolkit* r10)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809E4F8.yaml
 	thumb_func_start sub_809E4F8
 sub_809E4F8:
 	push {r4-r7,lr}

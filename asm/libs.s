@@ -1,5 +1,11 @@
 
 // static () -> void
+// symdb: Tears down the link-communication hardware prior to a hardware/mode hand-off: backs up and masks the master interrupt state, trims IE to 0xFF3F (clearing the timer IRQs), stops SIO and Timer 3, pokes the SIO control register, then BIOS-fills the timer-enable block at 0x200F460 (0x266 halfwords) and the SIO buffer at 0x200F44C (2 words) with zeros and clears its second byte.
+// symdb: void Next sub_81440D8(void);              /* entry: no GBA regs in/out */ call_SWI_CpuSet_result
+// symdb: reset_comm_hardware(void);   /* sets r1 = unk_200F44C, r2 = 0x1000002, r3 = 0x1000002 (last
+// symdb: CpuSet      mode word), flags = ADD(r1, 0) so C=0 V=0 N=0 Z=0;      preserves r4/r5 across the
+// symdb: prologue, writes lr via bx r0 from saved      pop; clobbers r0 as scratch. */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81440D8.yaml
 	thumb_func_start sub_81440D8
 sub_81440D8:
 	push {r4,r5,lr}
@@ -67,7 +73,7 @@ dword_8144154:
 	thumb_func_end sub_81440D8
 
 // symdb: Reset GBA link-cable hardware and zero multiplayer comm buffers/state.
-// symdb: void link_initAndClear_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
+// symdb: void sub_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
 // symdb: c v {r0 r1 r2 r3} */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/link_initAndClear_8144158.yaml
 	thumb_local_start
@@ -188,7 +194,7 @@ off_814423C:
 	.word word_2006E04
 	thumb_func_end link_initAndClear_8144158
 
-// symdb: Tiny driver routine that runs two back-to-back update steps (link_initAndClear_8144158 then sub_81440D8) for its subsystem, likely once per frame.
+// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then sub_81440D8) for its subsystem, likely once per frame.
 // symdb: void sub_8144240(void); // no meaningful inputs or outputs; caller-saved r0-r3 and flags are
 // symdb: clobbered, r4-r7 preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
@@ -2686,7 +2692,7 @@ off_81453D0:
 	thumb_func_end sub_8145210
 
 // symdb: Handles an RFU (wireless) VBlank tick: syncs RFU state, and if the sync returned a non-zero status, sends command 0xF1 and then processes the RFU response queue.
-// symdb: void rfu_handleVBlank_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
+// symdb: void sub_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
 // symdb: clobbered; r4 preserved (not used here) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_handleVBlank_81453D4.yaml
 	thumb_local_start
@@ -5652,6 +5658,10 @@ off_8146928:
 	.word eStruct200FE00
 	thumb_func_end sub_8146918
 
+// symdb: Tail-call trampoline that runs the RFU (wireless) VBlank handler and returns its preserved registers to the caller.
+// symdb: void rfu_vblankTrampoline_814692C(void); /* uses lr as the return address; returns r4-r12 from
+// symdb: rfu_handleVBLANK_81453D4 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814692C.yaml
 	thumb_func_start sub_814692C
 sub_814692C:
 	push {lr}
@@ -11039,6 +11049,9 @@ dword_8149358:
 	.word 0xFFFF
 	thumb_func_end rfu_initializeAPI
 
+// symdb: Resets the wireless-adapter (RFU) API state, including its link-state and work blocks, slot table, and status halfwords, with interrupts disabled.
+// symdb: void rfu_clearAPIVariables(void); returns r2=4, r3=0; clobbers r0,r1,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_STC_clearAPIVariables.yaml
 	thumb_local_start
 rfu_STC_clearAPIVariables:
 	push {r4-r7,lr}
@@ -13978,6 +13991,10 @@ off_814A824:
 	.word dword_2010CCC
 	thumb_func_end rfu_getMasterSlave
 
+// symdb: Clear all four wireless RFU slot buffers (data and link), mark each slot closed, reset the RFU link-state control bytes, and restore the saved IME state.
+// symdb: void rfu_clearAllSlots(void); /* returns RFU base pointer via r2; flags C=1,V=0 (cmp r5,#3 after
+// symdb: loop); clobbers r2,r3 and r0/r1 scratch; preserves r4-r8 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rfu_clearAllSlot.yaml
 	thumb_func_start rfu_clearAllSlot
 rfu_clearAllSlot:
 	push {r4-r7,lr}
@@ -19281,6 +19298,12 @@ off_814CD6C:
 	.word InterruptRequestFlags_IRQAcknowledge
 	thumb_func_end Sio32IDInit
 
+// symdb: Multiplayer-link 32-bit ID handshake state machine: drives SIO/RCNT/IME/IE around the SIO interrupt to bring up the link, accept the partner ID, or tear it down.
+// symdb: void Sio32IDMain(void); /* inputs: lr (return address); r0..r3, r6, flags are not used.
+// symdb: outputs: r0 = result (partner ID word, or 0 on busy/control paths),             r12 = the
+// symdb: byte_2010CD1 stage byte captured at entry.    clobbers: "r1, r2, r3; preserved: r4, r5, r6, r7;
+// symdb: flags clobbered. */"
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/Sio32IDMain.yaml
 	thumb_local_start
 Sio32IDMain:
 	push {r4-r7,lr}
@@ -19415,6 +19438,10 @@ loc_814CE5E:
 	bx r1
 	thumb_func_end Sio32IDMain
 
+// symdb: SIO32 multiplayer link interrupt: advance ID-exchange handshake and reload SIODATA0 with the next expected partner ID and RX mask; parent re-arms the start bit after a settle delay.
+// symdb: void Sio32IDIntr(void);  // inputs: lr; outputs: nz,c,v,r4,r5; clobbers: r0,r1,r2,r3; preserves:
+// symdb: r4,r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/Sio32IDIntr.yaml
 	thumb_local_start
 Sio32IDIntr:
 	push {r4,r5,lr}
@@ -22508,6 +22535,10 @@ off_814E754:
 	.word byte_81C068C
 	thumb_func_end ply_note
 
+// symdb: Advances a sound channel's script stream to read the next target pitch, then scans the channel's active-note list to mark the first matching unplayed note as dispatched.
+// symdb: void snd_dispatchChannelNote_814E758(/* r1 = */ uint32_t chan);  /* r4, r5 preserved; clobbers
+// symdb: r0-r3, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814E758.yaml
 	thumb_func_start sub_814E758
 sub_814E758:
 	push {r4,r5}
@@ -22628,6 +22659,10 @@ loc_814E7F0:
 	.balign 4, 0x00
 	thumb_func_end sub_814E7E0
 
+// symdb: Interpolates between two adjacent decoded audio samples, blends by an 8-bit fraction, and scales by the caller struct's amplitude field.
+// symdb: u32 audio_interpSample_814E7F4(SampleStruct *struct_ptr /*r0*/, u8 sample_index /*r1*/, u8
+// symdb: blend_factor /*r2*/) /*->r0 = scaled value, r12 = struct_ptr*/
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814E7F4.yaml
 	thumb_local_start
 sub_814E7F4:
 	push {r4-r7,lr}
@@ -22925,6 +22960,10 @@ loc_814E9EC:
 	bx r0
 	thumb_func_end sub_814E99C
 
+// symdb: Restart a BGM track on its music player if it is the track currently playing.
+// symdb: void sub_814E9F0(u16 songId);  // preserves r4-r6, r7-r12, lr; clobbers r0, r1, r2, r3, r10,
+// symdb: nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814E9F0.yaml
 	thumb_func_start sub_814E9F0
 sub_814E9F0:
 	push {lr}
@@ -23089,6 +23128,10 @@ off_814EAEC:
 	.word 0x101
 	thumb_func_end sub_814EACC
 
+// symdb: Initializes a tagged message/script-sequence object with a new step pointer and active state
+// symdb: void sub_814EAF0(void *msgObj /* r0 */, u16 value /* r1 */); outputs r1 (0x7FFFFFFF on tag match
+// symdb: else masked value), r2 = msgObj, r3 = tag word; clobbers nz c v r0; preserves lr (via push {lr})
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_814EAF0.yaml
 	thumb_func_start sub_814EAF0
 sub_814EAF0:
 	push {lr}
@@ -23177,7 +23220,7 @@ dword_814EB80:
 	thumb_func_end sub_814EB1C
 
 // symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
-// symdb: void cgbSoundInit_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
+// symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
 // symdb: preserves r4-r6 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cgbSoundInit_814EB84.yaml
 	thumb_local_start

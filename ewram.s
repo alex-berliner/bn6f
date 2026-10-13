@@ -30,6 +30,8 @@ unk_2000260:: // 0x2000260
 	.space 48
 reqBBS_requestEntriesList:: // 0x2000290
 	.space 128
+// symdb: Mr. Weather comp puzzle state (0x60 bytes): reset routine, trigger index, the tornadoes' saved state (they rebuild from it on a map reload).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2000310.yaml
 unk_2000310:: // 0x2000310
 	.space 2
 byte_2000312:: // 0x2000312
@@ -238,6 +240,8 @@ eActiveOverworldNPCObjectsBitfield:: // 0x20010e0
 	.space 16
 gameProgressBuffer_20010f0:: // 0x20010f0
 	.space 48
+// symdb: Secondary RNG state (u32), same step as ePrimaryRngSeed; drives the folder shuffle and the Run roll.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eSecondaryRngSeed.yaml
 eSecondaryRngSeed:: // 0x2001120
 	.space 16
 byte_2001130:: // 0x2001130
@@ -259,6 +263,8 @@ unk_200119C:: // 0x200119c
 unk_200119E:: // 0x200119E
 	.space 382
 	.space 212
+// symdb: Primary RNG state (u32): GetRNG steps it as x' = (rotl(x,1) + 1) ^ 0x873CA9E5; most random decisions read it.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ePrimaryRngSeed.yaml
 ePrimaryRngSeed:: // 0x20013f0
 	.space 16
 byte_2001400:: // 0x2001400
@@ -326,19 +332,27 @@ dword_2001ABC:: // 0x2001abc
 byte_2001AC0:: // 0x2001ac0
 	.space 192
 eToolkitExtraPtrsMemory::
+// symdb: Game state: +0 subsystem (0x04 overworld, 0x0C battle, 0x18 PET menu), +4/+5 map, +0xC last map, +0xE MegaMan's tile trigger, +0x18 player object, +0x1C current battle settings, +0x24 player spawn point.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eGameState.yaml
 eGameState:: // 0x2001b80
 	game_state_struct eGameState
 eGameStateEnd::
 	.space 4
 
+// symdb: Overworld walk state: +0x12 walk counter (>>6, max 16, picks the encounter odds), +0x24 SneakRun steps left, +0x28 LocEnemy steps left.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct2001c04.yaml
 eStruct2001c04:: // 0x2001c04
 	s_2001c04_struct eStruct2001c04
 eStruct2001c04End:: // 0x2001c88
 
 // u8[1448]
 // continuous buffer of bit flags addressed with a u16 flag offset
+// symdb: Event flag bit array: flag f is byte f >> 3, mask 0x80 >> (f & 7) (TestEventFlag).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eEventFlags.yaml
 eEventFlags:: // 0x2001C88
 	.space 1448
+// symdb: Chip pack: one count byte per (chip id * 12 + code index).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/unk_2002230.yaml
 unk_2002230:: // 0x2002230
 	.space 236
 unk_200231C:: // 0x200231c
@@ -359,6 +373,8 @@ unk_2004334:: // 0x2004334
 	.space 4
 unk_2004338:: // 0x2004338
 	.space 16
+// symdb: Mystery data contents: one u16 per mystery-data id at 2*(id - 0x1400), the two picked indexes, rolled at jack-in.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/unk_2004348.yaml
 unk_2004348:: // 0x2004348
 	.space 1156
 eNaviStats:: // 0x20047cc
@@ -385,6 +401,8 @@ eToolkitExtraPtrsMemoryEnd:: // 0x200153c
 eReqBBSGui:: // 0x2005780
 	req_bbs_gui_struct eReqBBSGui
 
+// symdb: 16 overworld NPC objects of 0xD8 bytes: active = header bit 0, X +0x24, Y +0x28 (as include/structs/OverworldNPCObject.inc says).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eOverworldNPCObjects.yaml
 	.balign 0x10, 0x00
 eOverworldNPCObjects:: // 0x20057b0
 	overworld_npc_object_struct eOverworldNPCObject0
@@ -701,6 +719,8 @@ dword_2009930:: // 0x2009930
 byte_2009940:: // 0x2009940
 	.space 64
 
+// symdb: Camera; +0x30/+0x34 look like the camera X/Y following MegaMan (s16.16), duplicated at +0x3C/+0x40.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/eCamera.yaml
 eCamera:: // 0x2009980
 	camera_struct eCamera
 eCameraEnd:: // 0x20099d0
@@ -746,6 +766,8 @@ eActiveOWPlayerObjectBitfield:: // 0x2009f34
 	.space 4
 eFlags2009F38:: // 0x2009f38
 	.space 8
+// symdb: MegaMan's overworld object: facing +0x10, X/Y/Z +0x1C/+0x20/+0x24 (s16.16), next X/Y/Z from +0x28.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eOWPlayerObject.yaml
 eOWPlayerObject:: // 0x2009f40
 	overworld_player_object_struct eOWPlayerObject
 eOWPlayerObjectEnd:: // 0x200a008
@@ -756,12 +778,16 @@ byte_200A00A:: // 0x200a00a
 	.space 1
 byte_200A00B:: // 0x200a00b
 	.space 1
+// symdb: The battle reward actually given (packed u16; eStruct200A008 + 4, set by eStruct200A008_setUnk04 from the result record).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/word_200A00C.yaml
 word_200A00C:: // 0x200a00c
 	.space 2
 word_200A00E:: // 0x200a00e
 	.space 2
 word_200A010:: // 0x200a010
 	.space 512
+// symdb: Main-loop pass counter, +1 per pass; encounter formation and mystery-data rolls read it. Not saved: a reload starts it elsewhere.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/iCurrFrame.yaml
 iCurrFrame:: // 0x200a210
 	.space 16
 byte_200A220:: // 0x200a220
@@ -791,6 +817,8 @@ dword_200A258:: // 0x200a258
 dword_200A25C:: // 0x200a25c
 	.space 20
 
+// symdb: Joypad state; +0x08..+0x10 per-key held-frame counters, +0x13 key-repeat phase (cycles 0..4 while a direction is held).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eJoypad.yaml
 eJoypad:: // 0x200a270
 	joypad_struct eJoypad
 eJoypadEnd::
@@ -1121,6 +1149,8 @@ byte_200DD14:: // 0x200dd14
 	.space 12
 byte_200DD20:: // 0x200dd20
 	.space 512
+// symdb: PET main menu state: +4 the selected entry while a submenu opens (3 opened NaviCust in the run, 4 E-Mail); +0x0A..+0x0F cursor/animation bytes.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ePETMenuData.yaml
 ePETMenuData:: // 0x200df20
 	.space 1
 byte_200DF21:: // 0x200df21
@@ -1709,6 +1739,8 @@ unk_2011EC8:: // 0x2011ec8
 	.space 4
 unk_2011ECC:: // 0x2011ecc
 	.space 20
+// symdb: 56 overworld map objects of 0x78 bytes: header byte 1 = type (index into OverworldMapObjectUpdateJumptable), +4 params (low byte = instance index), X +0xC, Y +0x10 (s16.16).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eOverworldMapObjects.yaml
 eOverworldMapObjects:: // 0x2011ee0
 	overworld_map_object_struct eOverworldMapObject0
 	overworld_map_object_struct eOverworldMapObject1
@@ -2553,6 +2585,8 @@ dword_2033C30:: // 0x2033c30
 
 // note: this is probably not the start of the battle ewram overlay
 	.section ewram_battle
+// symdb: One bit per live T1 battle object; object 0 is bit 31.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eActiveT1BattleObjectsBitfield.yaml
 eActiveT1BattleObjectsBitfield:: // 0x2034000
 	.space 16
 unk_2034010:: // 0x2034010
@@ -2571,6 +2605,8 @@ eAIData:: // 0x2034080
 	ai_data_struct eAIData6
 	ai_data_struct eAIData7
 
+// symdb: Battle state: +0x02 phase byte, +8+side enemy counts, +0x4C + 8*side enemy lists, +0x90 alive opponent objects (4 pointers).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eBattleState.yaml
 eBattleState:: // 0x2034880
 	battle_state_struct eBattleState
 eBattleStateEnd:: // 0x2034970
@@ -2633,6 +2669,8 @@ unk_2035260:: // 0x2035260
 	.space 1
 byte_2035261:: // 0x2035261
 	.space 7
+// symdb: Word +8 of the battle result record unk_2035260: the battle reward (packed u16) on its way to the result screen.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dword_2035268.yaml
 dword_2035268:: // 0x2035268
 	.space 4
 unk_203526C:: // 0x203526c
@@ -2971,6 +3009,8 @@ unk_203A980:: // 0x203a980
 unk_203A990:: // 0x203a990
 	.space 16
 
+// symdb: T1 battle objects: object n at 0x0203A9B0 + n*0xD8 (after a 0x10 header); HP +0x24, MaxHP +0x26, Alliance +0x16 (0 MegaMan's side, 1 enemies). Object 0 is MegaMan (HP at 0x0203A9D4).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eT1BattleObjects.yaml
 eT1BattleObjects:: // 0x203a9a0
 	t1_battle_object_struct eT1BattleObject0 // 0x203a9b0
 	t1_battle_object_struct eT1BattleObject1 // 0x203aa88
@@ -3058,6 +3098,8 @@ byte_203CB04:: // 0x203cb04
 	.space 8
 dword_203CBE0:: // 0x203cbe0
 	.space 4
+// symdb: Payload of the outgoing battle link packet (dword_203CBE0 + 4); at battle phase 4 its first word is the battle's RNG seed snapshot.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/dword_203CBE4.yaml
 dword_203CBE4:: // 0x203cbe4
 	.space 4
 byte_203CBE8:: // 0x203cbe8
@@ -3096,6 +3138,8 @@ eNaviStats203CCE0:: // 0x203cce0
 	.space 200
 byte_203CDA8:: // 0x203cda8
 	.space 8
+// symdb: The battle's shuffled folder: 30 u16 (chip id | code << 9); the hand is the first N.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eBattleFolder.yaml
 eBattleFolder:: // 0x203cdb0
 	.space 56
 word_203CDE8:: // 0x203cde8
@@ -3218,6 +3262,8 @@ byte_203EFA0:: // 0x203efa0
 	.space 1280
 dword_203F4A0:: // 0x203f4a0
 	.space 4
+// symdb: Payload of the received (loopback) battle link packet: the battle seed the primary RNG is restored from at battle phase 8; later the 12-byte battle result record (reward word at +8, 0x0203F4AC).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_203F4A4.yaml
 byte_203F4A4:: // 0x203f4a4
 	.space 8
 eBattleNaviStats203F4AC:: // 0x203f4ac

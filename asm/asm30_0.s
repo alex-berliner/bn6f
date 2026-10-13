@@ -1,4 +1,8 @@
 
+// symdb: Resolves an enemy index to a per-version AI data record via a two-level (actor_type → ai_index) table.
+// symdb: u32 resolveEnemyAiRecord_80AED50(u16 enemy_idx); // in: r0 = enemy_idx; out: r0 = AI record
+// symdb: pointer, r2 = ai_index*4, r3 = version*0x20
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AED50.yaml
 	thumb_func_start sub_80AED50
 sub_80AED50:
 	push {lr}
@@ -18,6 +22,8 @@ sub_80AED50:
 	.balign 4, 0
 off_80AED70:
 	.word off_80AED74
+// symdb: [actor type][AI index] -> 0x20 bytes per version: the chips a virus can hold (sub_80AED50).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/off_80AED74.yaml
 off_80AED74:
 	// <endpool>
 	.word off_80AED80

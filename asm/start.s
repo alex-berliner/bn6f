@@ -92,6 +92,10 @@ _GameEntryPoint:
 	arm_func_end GameEntryPoint
 
 // (void *mem, int size) -> void
+// symdb: Zero-fills a word-aligned memory region by walking backwards in 4-byte steps (the "start" helper used during boot/early init).
+// symdb: void start_clearMemory(u32 dst, u32 byte_count /* r0, r1 */); /* clobbers r1, r2, NZCV; Z set on
+// symdb: return */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/start_clearMemory.yaml
 	arm_local_start
 start_clearMemory:
 	mov r2, #0
@@ -103,6 +107,10 @@ loc_80001C8:
 	arm_func_end start_clearMemory
 
 // (void *src, void *dest, int size) -> void
+// symdb: Copies 'size' bytes from src (r0) to dst (r1) one word at a time, walking backwards from the end.
+// symdb: void copyMemory(u32 src /*r0*/, u32 dst /*r1*/, u32 size /*r2*/); // returns: r2=0, r3=last word
+// symdb: copied; flags from final SUBS (r2-4): N=0, Z=1, C=1, V=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/start_copyMemory.yaml
 	arm_local_start
 start_copyMemory:
 	// size
@@ -156,7 +164,7 @@ off_8000238:
 
 // () -> void
 // symdb: GBA ROM entry thunk: calls the main ROM/BIOS initialization routine sub_3005DA0, then returns control to the caller using the saved LR.
-// symdb: u32 entryRomInit_800023C(void);  // called with: <none>; returns caller's saved LR in r0; nz/c/v flags
+// symdb: u32 start_800023C(void);  // called with: <none>; returns caller's saved LR in r0; nz/c/v flags
 // symdb: from the call; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/entryRomInit_800023C.yaml
 	thumb_func_start entryRomInit_800023C

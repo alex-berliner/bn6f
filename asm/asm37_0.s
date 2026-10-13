@@ -716,7 +716,7 @@ loc_813BBCE:
 	thumb_func_end sub_813BB68
 
 // symdb: Initializes a battle-related state buffer plus three 0x31-byte I/O scratch buffers pulled from the toolkit, then runs the battle sub-init sequence (layout, sprite/cell setup, etc.) on the state buffer.
-// symdb: void battle_initState_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
+// symdb: void sub_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
 // symdb: clobbered, NZCV clobbered, r0..r3 / lr clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initState_813BBD4.yaml
 	thumb_func_start battle_initState_813BBD4
@@ -822,6 +822,11 @@ loc_813BC8E:
 	pop {r4-r7,pc}
 	thumb_func_end battle_categorizeRandomIds_813BC1C
 
+// symdb: Scans the 0x31 ally/battle entries, skipping the seven reserved partner IDs, and counts per-item-index ranks for usable items while flagging unusable ones in a global marker array.
+// symdb: void sub_813BC98(u32 r0 /* rank counter array base */); // clobbers r0,r1,r2,r3,lr and N/Z/C/V
+// symdb: flags; preserves r4,r5,r6,r7; R5 (r7) is the "outputs" the contract notes but is just the saved
+// symdb: scratch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BC98.yaml
 	thumb_local_start
 sub_813BC98:
 	push {r4-r7,lr}
@@ -1129,6 +1134,9 @@ loc_813BE9E:
 	.balign 4, 0x00
 	thumb_func_end sub_813BE8C
 
+// symdb: Scans the toolkit's unknown-entry table, collects up to 0x31 unique info-table IDs into a scratch buffer, and bumps one of two tally bytes on the counter (oToolkit_Unk200431c_Ptr) by 1 or 2 when 5 or more distinct IDs are found.
+// symdb: void sub_813BEA8(void /* r10 = toolkit ptr */); /* r7 preserved; clobbers r0/r2, NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BEA8.yaml
 	thumb_local_start
 sub_813BEA8:
 	push {r4-r7,lr}
@@ -1945,7 +1953,7 @@ byte_813C550:
 	thumb_func_end sub_813C4C8
 
 // symdb: Scans the battle-item grid, counting each item into a per-type tally array supplied by the caller.
-// symdb: void battleItems_countByType_813C584(u8* count_array /* r0 */);
+// symdb: void sub_813C584(u8* count_array /* r0 */);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleItems_countByType_813C584.yaml
 	thumb_local_start
 battleItems_countByType_813C584:
@@ -2842,6 +2850,10 @@ off_813CBC8:
 	.word 0x1F4
 	thumb_func_end navicust_NCP_HPPlus500
 
+// symdb: Dispatches per-slot handlers for the PET Navigator's stat-category table (slots 1-0xF, four stat types), with a special early-exit path when stat 0x1F is set.
+// symdb: void processPETNaviStatSlots(void); /* preserves r4-r7; clobbers r0,r1,r2,r3; handlers may write
+// symdb: r8-r12; flags clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813CBCC.yaml
 	thumb_local_start
 sub_813CBCC:
 	push {r4-r7,lr}
@@ -3811,6 +3823,9 @@ off_813D5D8:
 	.word eS200BC50
 	thumb_func_end sub_813D5D0
 
+// symdb: Thin thunk that tail-calls sub_814692C with no arguments.
+// symdb: void sub_813D5DC(void); // tail-call to sub_814692C, no params, no return value
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813D5DC.yaml
 	thumb_func_start sub_813D5DC
 sub_813D5DC:
 	push {lr}
@@ -4736,6 +4751,9 @@ byte_813DBAC:
 off_813DBBC:
 	.word eLinkState // eLinkState
 
+// symdb: Initialize the "BRE5" magic tag block at 0x200B1B0 with three u16 args and a 0x3C terminator
+// symdb: void initEre5bBlock_813DBC0(u16 arg0, u16 arg1, u16 arg2, u16 unused_lr)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813DBC0.yaml
 	thumb_local_start
 sub_813DBC0:
 	push {r4, lr}

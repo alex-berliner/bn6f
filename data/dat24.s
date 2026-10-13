@@ -3088,6 +3088,8 @@ gfx_anim_script_808F5F0:
 	gfx_anim_data data=0x80000000 delay=0x0000000A
 	gfx_anim_end
 
+// symdb: Mr. Weather comp cutscene for a 0x7x trigger: lock the player, set flag 0x1731, run weatherComp_putPlayerBack_808F810 (put MegaMan back), game-state byte 9 = 3, unlock.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_808F668.yaml
 byte_808F668::
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0

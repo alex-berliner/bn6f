@@ -70,6 +70,10 @@ off_80031A8:
 	.word eBattleObjectsLinkedListSentinel
 	thumb_func_end clearBattleObjectLinkedLists_800318C
 
+// symdb: Walks the battle-object linked list once per frame and dispatches each non-sentinel node to its type/index-specific update routine, with pause and time-stop gating.
+// symdb: void RunBattleObjectLogic(void); /* uses r10 = toolkit pointer on entry; NZCV clobbered, r0-r3
+// symdb: and lr clobbered, r4-r7 preserved, r2/r3/r8/r9/r10/r11/r12/lr read on entry */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunBattleObjectLogic.yaml
 	thumb_local_start
 RunBattleObjectLogic: // () -> ()
 	push {r4-r7,lr}
@@ -194,6 +198,10 @@ DebugMsg_8003272: .asciz "F%02x"
 // clobbers: r0, r1, r2, r3
 // returns: r5
 // 8003278
+// symdb: Allocates a battle object from the per-type pool, initializes its header from a caller-supplied stack record, and returns the object pointer or NULL if the pool is full.
+// symdb: /* SpawnBattleObjectCommon(u8 obj_type /*r0*/, *const u32 init_record /*r1*/) -> BattleObject*
+// symdb: /*r5*/; also returns init fields in r0-r4; NZ clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SpawnBattleObjectCommon.yaml
 SpawnBattleObjectCommon: // (obj_type: u8, ctx_stack: * ()) -> * BattleObject $r5
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
@@ -357,6 +365,11 @@ loc_8003370:
 	pop {r7,pc}
 	thumb_func_end object_spawnType3
 
+// symdb: Spawns a battle object of type 3 with a 5-word context taken from r0-r4, linking it into the battle object list on success.
+// symdb: BattleObject* spawnBattleObjectType3WithCtx(u32 ctx0, u32 ctx1, u32 ctx2, u32 ctx3, u32 ctx4);
+// symdb: // in: r0-r4=context words; out: r5=BattleObject* or NULL; clobbers r0-r3,LR,flags; preserves
+// symdb: r4,r6,r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003374.yaml
 	thumb_func_start sub_8003374
 sub_8003374:
 	push {r7,lr}
@@ -940,7 +953,7 @@ off_8003628:
 	thumb_func_end FreeAllObjectsOfSpecifiedTypes
 
 // symdb: Projects an object's world position into screen space relative to the camera's next-frame scroll, returning screen x/y plus a visibility flag (collapses to an off-screen fallback if outside the clip window).
-// symdb: void projectObjectToScreen_800362C(u32 r0 = objectPtr, u32 r10 = toolkitPtr) -> r0 = screenX, r1 = screenY, r2 =
+// symdb: void sub_800362C(u32 r0 = objectPtr, u32 r10 = toolkitPtr) -> r0 = screenX, r1 = screenY, r2 =
 // symdb: visible (1=on-screen, 0=clipped/fallback), r3 = cameraPtr; clobbers nzcv; preserves r4-r7, lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/projectObjectToScreen_800362C.yaml
 	thumb_func_start projectObjectToScreen_800362C
@@ -1002,6 +1015,11 @@ off_8003690:
 	.word eCamera+0x4C // eCamera.unk_4C
 	thumb_func_end projectObjectToScreen_800362C
 
+// symdb: Projects a world-space object's (x,y,z) into screen coordinates through the camera, returning screen_x, screen_y, in-viewport visibility, and a Z depth ready to be passed into an OAM-affine descriptor.
+// symdb: ProjectionResult cameraProjectObject_8003694(u32 obj_ptr /* r0 */, u32 toolkit /* r10 */); /*
+// symdb: returns r0=screen_x, r1=screen_y, r2=visibility 0/1, r3=depth+DRAW_Z_OFFSET, nzcv set by the
+// symdb: depth+DRAW_Z_OFFSET add */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003694.yaml
 	thumb_func_start sub_8003694
 sub_8003694:
 	push {r4-r7,lr}
@@ -1089,6 +1107,10 @@ object_Clear3RAMBytes_800371A:
 	mov pc, lr
 	thumb_func_end object_Clear3RAMBytes_800371A
 
+// symdb: Registers a freshly allocated battle object into the per-type object slot list, returning the bumped slot position and count pointer to the caller.
+// symdb: void registerObjectInTypeSlot(u32 r5 /* object */, ??? out_r2 /* count_ptr */, ??? out_r3 /*
+// symdb: slot_index */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_800372A.yaml
 	thumb_local_start
 object_800372A:
 	ldrb r0, [r5,#oBattleObject_Type]
@@ -1218,6 +1240,10 @@ createOWObjectInteractionArea_80037ac:
 // a, b, c
 
 // 1 a = 1 unk0c, a unk08
+// symdb: Resolves pairwise interactions among overworld object interaction areas registered for the current frame, snapping the player to a "touched" object's coords and clearing the interaction-area list for next frame.
+// symdb: void resolveOWObjectInteractions_80037f4(void);  /* clobbers r0-r3, NZCV; preserves r5; r4 and
+// symdb: r6 returned to caller */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkOWObjectInteractions_80037f4.yaml
 checkOWObjectInteractions_80037f4:
 	push {r5,lr}
 	ldr r0, off_8003884 // =eNumOWObjectInteractionAreas
@@ -1526,6 +1552,12 @@ scenario_ClearEffectActiveFlag_800399A:
 	pop {r4-r7,pc}
 	thumb_func_end scenario_ClearEffectActiveFlag_800399A
 
+// symdb: Dispatches a scenario/cutscene effect by indexing a 16-byte-stride jump table at jt_80038E8 using the sub-id byte at 0x2000781, after gating on the active/complete byte at 0x2000780.
+// symdb: void dispatchScenarioEffect_80039AA(void);   // caller-supplied registers passed through to the
+// symdb: dispatched handler:   //   in:  r2, r3, r4, r6, r8, r9, r10, r11, r12, lr   //   out (to handler
+// symdb: and back to caller via pushed r4-r7): r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12   //
+// symdb: clobbers internally: nz, c, v, r0, r1, lr   //   preserved across the call: r4, r5, r6, r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80039AA.yaml
 	thumb_local_start
 sub_80039AA:
 	push {r4-r7,lr}
@@ -1835,6 +1867,11 @@ FreeOWPlayerObject:
 	pop {pc}
 	thumb_func_end FreeOWPlayerObject
 
+// symdb: Per-frame dispatcher that walks every slot in the overworld player-object table and calls each active object's update routine through a jump table, gating non-pause-update objects while battle is paused.
+// symdb: void battle_updateEachOWPlayerObject_8003BA2(/* R8 = pass-through to callees */, /* R9 =
+// symdb: saved/restored only */, /* R10 = toolkit ptr */, /* R11 = pass-through */, /* R12 = pass-through
+// symdb: to callees */) -> void
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/TryUpdateEachOWPlayerObject_8003BA2.yaml
 	thumb_func_start TryUpdateEachOWPlayerObject_8003BA2
 TryUpdateEachOWPlayerObject_8003BA2: // () -> ()
 	push {r4-r7,lr}
@@ -1896,6 +1933,10 @@ off_8003BF0:
 	.word off_8003B48
 	thumb_func_end TryUpdateEachOWPlayerObject_8003BA2
 
+// symdb: Per-frame draw driver for the overworld object list (starting at the player); projects each visible sprite, ensures its tiles are resident, queues OAM pieces, then flushes the queue.
+// symdb: void sub_8003BF4(void)  // inputs: r10, lr; outputs: none; clobbers r0-r3, r10, NZCV; preserves
+// symdb: r4-r9, r12 (saved/restored around the work)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8003BF4.yaml
 	thumb_func_start sub_8003BF4
 sub_8003BF4:
 	push {r4-r7,lr}
@@ -2097,6 +2138,9 @@ T1BattleObjectJumptable:
 
 	thumb_func_end sub_8003C7A
 
+// symdb: Iterates the battle object list and updates/queues each sprite, then finalizes the frame.
+// symdb: void sub_8003E18(void); // clobbers r0-r3, r10, r12, flags, lr; preserves r4-r9, r11
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003E18.yaml
 	thumb_local_start
 sub_8003E18:
 	push {r4-r7,lr}
@@ -2168,6 +2212,9 @@ off_8003E94:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003E18
 
+// symdb: Calls sub_80028C0 with mode 1 to reset/teardown battle objects at scene exit.
+// symdb: void battle_resetObjects_8003E98(void); /* clobbers r0-r2, lr */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
 	thumb_func_start sub_8003E98
 sub_8003E98:
 	push {lr}
@@ -2771,6 +2818,11 @@ off_80045BC:
 	.word npc_dispatch_809E570+1 // (self: * OverworldNPCObject $r5) -> ()
 	thumb_func_end dead_800459A
 
+// symdb: Claims the first free slot in the overworld NPC object table and initialises it with the caller's index, position, and movement word.
+// symdb: void SpawnOverworldNPCObject(u32 r0_index, u32 r1_x, u32 r2_y, u32 r3_z, u32 r4_movement); r5 =
+// symdb: new object address (0 if full); r0-r4 preserved; C/V clobbered (Z set on full table, cleared on
+// symdb: success).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SpawnOverworldNPCObject.yaml
 	thumb_func_start SpawnOverworldNPCObject
 SpawnOverworldNPCObject:
 	push {r0-r4,lr}
@@ -3021,7 +3073,7 @@ gameMode_switchToMode2_80046F8:
 	thumb_func_end gameMode_switchToMode2_80046F8
 
 // symdb: Clears one state word (offset 0xC4) of all 16 overworld NPC object slots, presumably invalidating each NPC's active/behavior word before an area (re)load.
-// symdb: void npc_clearOverworldNpcStateWord_8004702(void) — no meaningful inputs (lr = return address only); returns garbage in
+// symdb: void sub_8004702(void) — no meaningful inputs (lr = return address only); returns garbage in
 // symdb: r0..r3 (r0=0x10, r2=0, r1/r3 = loop addresses) and flags from the final CMP r0,#0x10 (Z=1, C=1,
 // symdb: V=0, N=0); callers read back only r0-r3 and nzcv per the contract.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_clearOverworldNpcStateWord_8004702.yaml
@@ -3046,6 +3098,8 @@ off_800471C:
 	.word eOverworldNPCObjects
 off_8004720:
 	.word byte_2006530
+// symdb: Overworld map object update jumptable: one routine per object type (header byte 1).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8004724.yaml
 off_8004724:
 	.word ho_80A4984+1
 	.word battle_dispatchState4Handler_80A4A98+1
@@ -3245,6 +3299,9 @@ FreeOverworldMapObject:
 	pop {pc}
 	thumb_func_end FreeOverworldMapObject
 
+// symdb: Updates every active overworld map object through OverworldMapObjectUpdateJumptable[type]; skipped while EVENT_NON_NPC_ANIMATION_LOCKED is set.
+// symdb: () -> (); r10 = toolkit; calls each object's routine with r5 = object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/TryUpdateEachOverworldMapObject_80048D2.yaml
 	thumb_func_start TryUpdateEachOverworldMapObject_80048D2
 TryUpdateEachOverworldMapObject_80048D2: // () -> ()
 	push {r4-r7,lr}
@@ -4604,7 +4661,7 @@ locret_800531A:
 	thumb_func_end battle_init_80052D8
 
 // symdb: End-of-battle teardown that frees battle-time objects, resets misc state, queues the post-battle map-entry subsystem (0xC), and reinitializes battle structures/VRAM plus the logo-screen state buffer.
-// symdb: void endBattleAndEnterMap_800531C(void); // inputs: r4 r5 r6 r7 r10 lr; outputs: r8 r9 r10 r11 r12;
+// symdb: void sub_800531C(void); // inputs: r4 r5 r6 r7 r10 lr; outputs: r8 r9 r10 r11 r12;
 // symdb: // clobbers NZCV + r0 r1 r2 r3 r5 lr; preserves r4 r6 r7                         // r10 (to) =
 // symdb: toolkit pointer carrying the GameStatePtr used to set SubsystemIndex.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/endBattleAndEnterMap_800531C.yaml
@@ -4664,6 +4721,10 @@ locret_800536C:
 	pop {pc}
 	thumb_func_end HandlesBattleMainUntilEndOfBattleThenTriggersEnterMap
 
+// symdb: Overworld per-frame tick: runs all overworld subsystem updates, then if a screen fade is active drives the warp-landing countdown, playing cue sounds at fixed steps and finally triggering the chatbox and the map's on-warp-enter event when the timer expires.
+// symdb: void sub_800536E(struct GameState *self /* r5 */); // preserves r4..r7; clobbers r0..r3, lr, N Z
+// symdb: C V; returns none // (callees leave r8..r12 untouched on exit)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800536E.yaml
 	thumb_local_start
 sub_800536E: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -4938,7 +4999,7 @@ locret_8005640:
 	thumb_func_end sub_80055CE
 
 // symdb: Main-jumptable step that finalizes the current frame's effects/draws, and if the screen fade is no longer active tears the scenario down and advances the main jumptable to state 0x2C (scenario restart).
-// symdb: void scenario_finalizeFrameOrRestart_8005642(void /* r10=toolkit, r5/r7 live, returns r0/r1/r5/r7 and sets N/Z */);
+// symdb: void sub_8005642(void /* r10=toolkit, r5/r7 live, returns r0/r1/r5/r7 and sets N/Z */);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scenario_finalizeFrameOrRestart_8005642.yaml
 	thumb_local_start
 scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
@@ -5098,7 +5159,7 @@ locret_8005812:
 	thumb_func_end sub_80057A0
 
 // symdb: Per-frame main loop dispatcher for the current game state: runs all state handlers, then if no screen fade is active also drives chatbox/overlay updates and the reset-and-jump-to-state-28 path.
-// symdb: void mainState_runFrame_8005814(void);  // no usable inputs/outputs; trashes r0-r3, r7, lr; preserves r4-r6
+// symdb: void sub_8005814(void);  // no usable inputs/outputs; trashes r0-r3, r7, lr; preserves r4-r6
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mainState_runFrame_8005814.yaml
 	thumb_local_start
 mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
@@ -5164,6 +5225,12 @@ locret_80058CC:
 	.byte 0, 0
 	thumb_func_end sub_800585A
 
+// symdb: Overworld tick that arms a warp when the player stands on a map warp trigger whose "warp seen" event flag is still clear, dispatching to the cutscene matching the warp's type.
+// symdb: void sub_80058D0(struct Toolkit *toolkit /* r10 */); // returns in r5 (preserved), with r1..r12
+// symdb: set up for the dispatched cutscene // handler (r1 = JumpTable8005948, r2 = this warp's data
+// symdb: entry, r4 = entry // offset, r5 = GameState*); r0 untouched on return; clobbers r0,r1,r2,r3, //
+// symdb: r4,r6,r7,lr and the N/Z/C/V flags; preserves r5.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80058D0.yaml
 	thumb_local_start
 sub_80058D0:
 	push {r5,lr}
@@ -6276,7 +6343,7 @@ sub_8005F78:
 	thumb_func_end sub_8005F78
 
 // symdb: Tears down the current scene (LCD render defaults, effect/chatbox state, 0x40 chatbox flag block) and rewinds the main jumptable to step 4 with game state kind 0, phase 8, returning phase 8 in r1.
-// symdb: void resetGameStateToOpening_8005F84(void /* r10 = toolkit, lr = return */); returns r1 = 8 (with r2/r3 and c/v left
+// symdb: void sub_8005F84(void /* r10 = toolkit, lr = return */); returns r1 = 8 (with r2/r3 and c/v left
 // symdb: as chatbox_clear_eFlags2009F38 leaves them); preserves r4-r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/resetGameStateToOpening_8005F84.yaml
 	thumb_func_start resetGameStateToOpening_8005F84
@@ -6777,6 +6844,9 @@ IsScreenFadeActive_common:
 	thumb_func_end IsScreenFadeActive
 	thumb_func_end isScreenFadeActive_80062FC
 
+// symdb: Per-frame dispatcher that calls the active screen-fade handler for each of the two 0x20-byte screen-fade slots.
+// symdb: void tickScreenFadeSlots_800630A(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/subsystem_triggerTransition_800630A.yaml
 	thumb_func_start subsystem_triggerTransition_800630A
 subsystem_triggerTransition_800630A:
 	push {r4-r7,lr}
@@ -6843,6 +6913,9 @@ screenFade_InitFadeBlock_800634C:
 	pop {r5,pc}
 	thumb_func_end screenFade_InitFadeBlock_800634C
 
+// symdb: per-frame update of one entry in the eScreenFade screen-fade array, ticking its counter down and repainting its two palettes with a fading grey until the end counter is hit
+// symdb: void sub_8006366(u32 r5 /* fade entry */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8006366.yaml
 	thumb_local_start
 sub_8006366:
 	push {r4-r7,lr}
@@ -7031,7 +7104,7 @@ loc_8006490:
 	thumb_func_end sub_800647C
 
 // symdb: Advances a two-slot palette color fade by one tick, repaints the affected palette entries, then dispatches to a running or finished handler.
-// symdb: void fade_tick_80064BE(u32 fade_state /* r5 */) /* preserves r4-r7; clobbers nzcv,r0,r1,r2,r3,r6,r7,lr
+// symdb: void sub_80064BE(u32 fade_state /* r5 */) /* preserves r4-r7; clobbers nzcv,r0,r1,r2,r3,r6,r7,lr
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/fade_tick_80064BE.yaml
 	thumb_local_start
@@ -7137,6 +7210,9 @@ loc_8006552:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8006518
 
+// symdb: Tears down the cross-over/transform overlay effect, freeing its two BG palettes and clearing the render-info bits it set up.
+// symdb: void effectTransformTeardown_8006580(struct EffectState* r5, struct Toolkit* r10) -> r2 = 0x40
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8006580.yaml
 	thumb_local_start
 sub_8006580:
 	push {r4-r7,lr}
@@ -8938,6 +9014,11 @@ battle_SpawnEnemyObjects_8007358: // () -> ()
 	pop {pc}
 	thumb_func_end battle_SpawnEnemyObjects_8007358
 
+// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_Unk_04_05` to `oBattleState_Unk_12_13` and copies the alive-actor words over the battle-actor slots in the BattleState.
+// symdb: void spawnBattleObjectsFromConfig_8007368( const EnemySetup *config /* r0 -> r6 */, BattleState
+// symdb: *state /* r5 */, BattleToolkit *toolkit /* r10 */, void *r4, void *r7, void *lr /* inherited */)
+// symdb: -> returns r5, r8, r9, r10, r11, r12; clobbers nzcv r0-r3, r4, r7, lr; preserves r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/SpawnBattleObjectUsingBattleEntityConfig_8007368.yaml
 	thumb_local_start
 SpawnBattleObjectUsingBattleEntityConfig_8007368: // (arr: * MagicStop8<0xF0, [EnemySetup]> $r6) -> ()
 	push {r6,lr}
@@ -9005,7 +9086,7 @@ off_80073A0:
 	thumb_func_end SpawnBattleObjectUsingBattleEntityConfig_8007368
 
 // symdb: Spawns Mega Man from an EnemySetup entry at the panel encoded in its position byte, on the side given by its alliance bit.
-// symdb: Next spawnMegaManFromSetup(EnemySetup *self /* r6 */); tail-calls battle_spawnNaviOnPanel_800753C(panel_x r0,
+// symdb: Next spawnMegaManFromSetup(EnemySetup *self /* r6 */); tail-calls sub_800753C(panel_x r0,
 // symdb: panel_y r1, alliance r2, charId=1 r3) and returns its flags/registers
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnMegaMan_80073CC.yaml
 	thumb_local_start
@@ -9024,6 +9105,11 @@ spawnMegaMan_80073CC: // (self: * EnemySetup $r6) -> ()
 	pop {pc}
 	thumb_func_end spawnMegaMan_80073CC
 
+// symdb: Spawns one enemy battle object from an EnemySetup record, reading its panel position, 12-bit enemy id, and alliance, optionally remapping the id per current battle effects.
+// symdb: BattleObject *battle_spawnEnemyFromSetup(EnemySetup *setup /* r6 */); also reads r4, r7, r10
+// symdb: context from callers and passes r4/r6/r7 straight through; returns r0, r5 preserved, flags nzcv
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnEnemy_80073E2.yaml
 	thumb_local_start
 spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	push {r5,lr}
@@ -9336,7 +9422,7 @@ locret_80075C8:
 	thumb_func_end battle_spawnNaviOnPanel_800753C
 
 // symdb: Loads a scene's graphics by clearing a tile buffer, queueing the VRAM/palette transfer list, and LZ77-decompressing a tile set into VRAM.
-// symdb: void loadSceneGfx_80075CA(void);  // uses lr; clobbers r0 r1 r2 r3 lr and flags nzcvc; preserves r4 r5 r6
+// symdb: void sub_80075CA(void);  // uses lr; clobbers r0 r1 r2 r3 lr and flags nzcvc; preserves r4 r5 r6
 // symdb: r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadSceneGfx_80075CA.yaml
 	thumb_local_start
@@ -9710,6 +9796,11 @@ dword_80077FC:
 	.word 0xFFFF
 	thumb_func_end battle_addObjectToAllianceEntryList_80077D2
 
+// symdb: Per-frame battle tick: runs pre-frame hooks, dispatches to the active state handler via jump table, then increments frame counter and returns state-byte nibbles plus active-effect count to the caller.
+// symdb: battle_tick_8007800(void) -> returns (r0 = stateByte@0x0A, r1 = stateByte_loNibble, r2 =
+// symdb: stateByte_hiNibble, r3 = activeEffectsCount; flags N/Z from r0, C=0, V from callee); inputs r2
+// symdb: r4 r5 r6 r7 r8 r9 r10 r11 r12 lr; preserves r4 r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_main_8007800.yaml
 	thumb_func_start battle_main_8007800
 battle_main_8007800:
 	push {r4,r5,lr}
@@ -10059,7 +10150,7 @@ battle_RevealFieldColumnsStep_80079F0:
 	thumb_func_end battle_RevealFieldColumnsStep_80079F0
 
 // symdb: Initializes a new battle: clears hit data, resets object/panel lists, sets up sprite decomp state, then advances the battle state phase index to 4.
-// symdb: void battle_initEntry_8007A0C(struct BattleState *r5); // clobbers nz c v r0 r1 r2 r3 r5 r6 r7 r8 r9 r10 r12
+// symdb: void sub_8007A0C(struct BattleState *r5); // clobbers nz c v r0 r1 r2 r3 r5 r6 r7 r8 r9 r10 r12
 // symdb: lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initEntry_8007A0C.yaml
 	thumb_local_start
@@ -10229,6 +10320,10 @@ off_8007B50:
 	.word sub_8009158+1
 	thumb_func_end battle_update_8007A44
 
+// symdb: Dispatches to the current battle-state phase handler via the two-entry jump table at off_8007B94, selected by BattleState::index_01.
+// symdb: void sub_8007B80(void);  // in: r5 = *BattleState; out: r5..r12 (clobbered by handler); clobbers
+// symdb: r0..r4, lr, N Z C V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8007B80.yaml
 	thumb_local_start
 sub_8007B80: // (self: * BattleState $r5) -> ()
 	push {lr}
@@ -10400,7 +10495,7 @@ off_8007C9C:
 	thumb_func_end sub_8007C50
 
 // symdb: Per-frame tick for the battle game-state; routes battle-end cleanup, intro-frame counter, Navi emotion/mood/HP bookkeeping, and post-battle teardown.
-// symdb: void battle_state_tick_8007CA0(BattleState* r5, Toolkit* r10) -> void
+// symdb: void sub_8007CA0(BattleState* r5, Toolkit* r10) -> void
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_state_tick_8007CA0.yaml
 	thumb_local_start
 battle_state_tick_8007CA0: // (self: *mut BattleState $r5) -> ()
@@ -10822,6 +10917,11 @@ off_8008018:
 	.word eStruct203F7D8
 	thumb_func_end sub_8007FD2
 
+// symdb: Battle-object state dispatcher (per-frame tick of an object's state timer/handler).
+// symdb: void sub_800801C(void /* pass-through r2 r3 r4 r6 r7 r10 lr */);   returns nothing explicit; r0
+// symdb: = byte at object+4 (0x203CA74); r2..r12 clobbered;   nz/c/v flags clobbered; r5 preserved (via
+// symdb: push {r5,lr} / pop {r5,pc}).
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800801C.yaml
 	thumb_local_start
 sub_800801C:
 	push {r5,lr}
@@ -11098,6 +11198,10 @@ locret_8008258:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80081A4
 
+// symdb: Per-frame update of the post-battle wait state that performs end-of-fight bookkeeping on the first call, then ticks a countdown and hands control to the next state once the link layer releases and the timer expires.
+// symdb: void sub_800825A(u32 r3, u32 r5 controller, u32 r6, u32 r7, u32 r10 toolkit, u32 lr) -> u32
+// symdb: r2-r12; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800825A.yaml
 	thumb_local_start
 sub_800825A:
 	push {r4,lr}
@@ -11329,6 +11433,9 @@ off_8008408:
 	.word 0x200
 	thumb_func_end sub_80083E4
 
+// symdb: Pre-battle intro step that copies intro graphics, waits for a busy flag, then runs both player BattleObjects through sub_8015A38 and marks the controller state as 4.
+// symdb: void sub_800840C(struct IntroState *r5 /* clobbered as outputs: id, phase=+3, phase=+2 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800840C.yaml
 	thumb_local_start
 sub_800840C:
 	push {lr}
@@ -13150,6 +13257,10 @@ off_8009154:
 	.word 0x400
 	thumb_func_end sub_8009140
 
+// symdb: Battle state tick: runs the current state's phase handler (via the jump table at off_80091BC) and updates the low-HP warning siren based on the player's HP crossing a quarter of max.
+// symdb: void battle_dispatchStatePhase_8009158(void);  // r5 = battle state in/out;
+// symdb: r2,r3,r4,r5,r6,r8,r9,r10,r11,r12 carry callee return values; clobbers nz,c,v,r0,r1,r7,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8009158.yaml
 	thumb_local_start
 sub_8009158:
 	push {lr}
@@ -16071,7 +16182,7 @@ off_800A4DC:
 // symdb: Fetches a per-navi value for the currently equipped PET navi via a two-step table lookup, returning 0xFF when the battle is in mode 1.
 // symdb: u32 pet_getCurNaviChainedLookup_800A4E0(void) -> r0 (value or 0xFF); r1/r3 also hold leftovers
 // symdb: from the second sub_800A540 call; preserves r4/r6, clobbers flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_getCurNaviChainedLookup_800A4E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_getCurNaviChainedLookup_800A4E0.yaml
 	thumb_local_start
 pet_getCurNaviChainedLookup_800A4E0:
 	push {r4,lr}
@@ -16159,10 +16270,10 @@ off_800A56C:
 
 	thumb_local_start
 // eBattleFolder = some buffer
-// symdb: Shuffles a 30-chip battle folder in place, splitting gigas, reshuffling pools, and (optionally) tagging two chips into the last slots.
-// symdb: void shuffleFolder_800A570(u32 folder_ptr, u32 reg_flag, u32 tag_flag, u32 toolkit /* r10 */); /* out:
-// symdb: none; clobbers nz,c,v,r0-r3,lr; preserves r4-r7 */
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shuffleFolder_800A570.yaml
+// symdb: Shuffles a 30-chip battle folder, separating Giga chips, re-inserting them at random positions, and optionally tagging a random chip pair into the last two slots.
+// symdb: void shuffleFolder_800A570(u32 folder_ptr, u32 reg_flag, u32 tag_flag, u32 toolkit /* r10 */);
+// symdb: // preserves r4-r7, clobbers r0-r3,lr,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shuffleFolder_800A570.yaml
 shuffleFolder_800A570: // shuffle folder
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
@@ -17718,6 +17829,10 @@ battle_bumpTimerAndReloadSubcount_800AE44:
 	mov pc, lr
 	thumb_func_end battle_bumpTimerAndReloadSubcount_800AE44
 
+// symdb: Looks up an object in one of the battle-state's object pointer lists by a 2-byte key (bytes 0x12/0x13 of the entry), returning the matching object or 0.
+// symdb: u32 battleStateFindObjectByKey_800AE54(u8 keyA, u8 keyB, u32 listSelector); // r0=keyA, r1=keyB,
+// symdb: r2=listSelector; returns object in r0; NZCV set per tst/cmp; r4,r6,r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800AE54.yaml
 	thumb_func_start sub_800AE54
 sub_800AE54:
 	push {r4,r6,r7,lr}
@@ -17804,7 +17919,7 @@ dword_800AEE4:
 
 // symdb: Re-rolls the damage value of the currently selected chip in both battlers' records, but only when that chip has the variable-damage flag set.
 // symdb: void handleVariableDamageChip_800AEE8(void)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/handleVariableDamageChip_800AEE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/handleVariableDamageChip_800AEE8.yaml
 	thumb_local_start
 handleVariableDamageChip_800AEE8:
 	push {r4-r6,lr}
@@ -18160,7 +18275,7 @@ dword_800B140:
 	thumb_func_end encryption_applyPackList_800B110
 
 // symdb: Initializes the per-battle state buffer at dword_203CBE0 (RNG seed, battle settings, Navi stats picked by battle mode/effects, weapon arrays, event-flag snapshot) at the start of a battle.
-// symdb: void battle_initBattleStateBuffer_800B144(u32 r10 /* toolkit ptr */, u32 lr, u32 r6 /* passed through to sub_81209DC */);
+// symdb: void sub_800B144(u32 r10 /* toolkit ptr */, u32 lr, u32 r6 /* passed through to sub_81209DC */);
 // symdb: /* clobbers r0,r1,r2,r3,lr,N,Z,C,V; preserves r4,r5,r6,r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initBattleStateBuffer_800B144.yaml
 	thumb_local_start
@@ -18546,9 +18661,9 @@ off_800B440:
 	.word 0x3C4
 	thumb_func_end sub_800B428
 
-// symdb: Copies two saved 12-byte snapshots back into the working battle data area and then runs sub_802C9EA on the restored data.
+// symdb: Restores the battle result records from the received link payloads: 12 bytes byte_203F4A4 -> unk_2035260 and byte_203F5A4 -> unk_203526C, then runs battle_syncEffectSlotBetweenBuffers_802C9EA.
 // symdb: void sub_800B444(void)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
 	thumb_local_start
 sub_800B444:
 	push {lr}
@@ -19011,6 +19126,11 @@ eStruct200A008_getUnk03:
 	mov pc, lr
 	thumb_func_end eStruct200A008_getUnk03
 
+// symdb: In battle, scan the pending-event list from the active side of the battle state and fire any event flags whose entry value is >= 0x100 (mapped to flag index value+0x300), unless battle-effect bits 0x8 or 0x80000 are set.
+// symdb: void sub_800B6F2(void)   // inputs: r10 = toolkit base (BattleStatePtr derived), lr = return
+// symdb: // outputs: r1, r3, r6, r7, lr (return); C, V flags set   // clobbers: r0, N, Z   // preserved:
+// symdb: r4, r6, r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800B6F2.yaml
 	thumb_local_start
 sub_800B6F2:
 	push {r4,r6,r7,lr}

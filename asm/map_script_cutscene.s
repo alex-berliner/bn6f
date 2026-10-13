@@ -477,6 +477,11 @@ loc_8035B3E:
 // byte1 - byte to compare return value of checkCoordinateTrigger_8031a7a
 // signedbyte2 - signed offset to overworld player object coordinates
 // destination3 - script to jump to
+// symdb: Map-script command opcode handler that branches when the coordinate-trigger value at the player's position (with an in-script Z delta) is not equal to the next script byte.
+// symdb: void MapScriptCutsceneCmd_coordinate_trigger_not_equal_cmd_8035b44(u32 scriptPc /* r7 */, u32
+// symdb: toolkit /* r10 */, u32 lr /* return addr */); // returns r7 = next script pc, r0 = 1, sets nz;
+// symdb: clobbers r0..r4,r11,r12,c,v
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_coordinate_trigger_not_equal_cmd_8035b44.yaml
 MapScriptCutsceneCmd_coordinate_trigger_not_equal_cmd_8035b44: // 8035b44
 	push {lr}
 	mov r6, #2
@@ -1114,6 +1119,11 @@ MapScriptCmd_start_cutscene: // 8035E8E
 // [word1] = byte5
 // ptr1 - pointer to write to
 // byte5 - value to write
+// symdb: Map-script cutscene command: writes a script-supplied byte to an absolute address.
+// symdb: void MapScriptCmd_write_byte(uint16_t opcode, uint32_t *script_cursor, char *return_addr) /* r7
+// symdb: in/out: script cursor advanced by 6; r4 in: opcode word, out: written byte; r6 clobbered; r0=1;
+// symdb: NZ flags set on r0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_write_byte.yaml
 MapScriptCutsceneCmd_write_byte: // 8035EAA
 	push {lr}
 	mov r6, #1
@@ -1248,6 +1258,10 @@ MapScriptCutsceneCmd_load_gfx_anim: // 8035F2A
 // gfx anims can also do palette animations
 // see include/bytecode/gfx_anim_script.inc
 // ptr1 - list of gfx anims to load, terminated by negative
+// symdb: Cutscene stream opcode that loads a bank of GFX anim scripts (FFStop32-terminated array) into the GFX anim pool.
+// symdb: void cutsceneCmd_loadGFXAnims_8035F3E(void); // in: r7=cutscene PC, r6=1; out: r0=1 (NZ),
+// symdb: r1/r2/r4/r5/r7..r12 preserved; clobbers r0,r3,r6,LR
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_load_gfx_anims.yaml
 MapScriptCutsceneCmd_load_gfx_anims: // 8035F3E
 	push {lr}
 	mov r6, #1
@@ -2549,6 +2563,10 @@ sub_8036E86:
 	thumb_func_start StartCutscene
 // r0 - cutscene script to run
 // r1 - parameter
+// symdb: Initializes the cutscene state in the Toolkit: wipes it, sets the new cutscene script and its param, parks the three secondary script slots on a dummy script, and installs the cutscene text archive and the default Unk_34 table.
+// symdb: void StartCutscene(const CutsceneScript *script /* r0 */, u32 param /* r1 */, Toolkit *toolkit
+// symdb: /* r10 */) -> u32 default_Unk_34_table /* r0 */; r1 preserved; r2/r3/flags from ZeroFillByWord
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/StartCutscene.yaml
 StartCutscene: // (script: *const CutsceneScript, param: u32) -> ()
 	push {r5,lr}
 	mov r5, r10
@@ -2661,6 +2679,10 @@ IsCutsceneScriptNonNull: // () -> !zf
 	thumb_func_end IsCutsceneScriptNonNull
 
 // () -> zf
+// symdb: Returns nz (= TRUE) if the cutscene state's originally-saved script pointer is the L-Message cutscript sentinel, otherwise FALSE.
+// symdb: u32 cutscene_isOriginalScriptLMessage_8036F40(void) // in: R10=Toolkit; out: R2 bool, nz flags
+// symdb: set from R2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_checkOriginalCutsceneScriptPos_8036F40.yaml
 	thumb_func_start cutscene_checkOriginalCutsceneScriptPos_8036F40
 cutscene_checkOriginalCutsceneScriptPos_8036F40:
 	mov r0, r10
@@ -2679,6 +2701,10 @@ off_8036F54:
 	.word CutsceneScriptLMessage_80991F4 // CutsceneScript
 	thumb_func_end cutscene_checkOriginalCutsceneScriptPos_8036F40
 
+// symdb: Tests whether the cutscene state's saved original script pointer matches the "AskJackOut" script.
+// symdb: BOOL cutscene_isOriginalScriptAskJackOut_8036F58(void) // r10=toolkit, out r2=TRUE/FALSE, NZ
+// symdb: flags = r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_checkOriginalCutsceneScriptPos_8036F58.yaml
 	thumb_func_start cutscene_checkOriginalCutsceneScriptPos_8036F58
 cutscene_checkOriginalCutsceneScriptPos_8036F58:
 	mov r0, r10
@@ -2763,6 +2789,10 @@ cutsceneCamera_focusCameraOnPlayerMaybe_8036faa:
 	pop {pc}
 	thumb_func_end cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 
+// symdb: Dispatches the current overworld/cutscene camera command by reading the next opcode from the camera script and tail-calling its handler.
+// symdb: void runCutsceneCameraCommand_8036FBC(void); /* clobbers r0,r1,r2,r3,r8,r9,r12,lr; preserves
+// symdb: r4-r7; NZ reflect handler's r0, CV unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunCutsceneCameraCommand.yaml
 	thumb_local_start
 RunCutsceneCameraCommand:
 	push {r4-r7,lr}
@@ -3617,6 +3647,9 @@ ReadCutsceneCameraScriptSignedHalfword:
 
 	thumb_local_start
 // (int a1, int a2) -> int
+// symdb: Reads one little-endian 32-bit word out of a cutscene camera script byte stream.
+// symdb: u32 cutscene_readCameraScriptWord(u32 offset, const u8 *base); // r0=offset, r1=base -> r0=word
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ReadCutsceneCameraScriptWord.yaml
 ReadCutsceneCameraScriptWord:
 	push {r1-r3,lr}
 	add r3, r1, r0
@@ -3934,6 +3967,10 @@ CutsceneCmd_end_for_map_reload_maybe_80376dc:
 // pause the current cutscene script for a given number of frames (up to 255)
 // byte1 - memory param
 // byte2 or mem - number of frames to pause
+// symdb: Cutscene script opcode that pauses the active script for a configurable number of interpreter ticks.
+// symdb: void CutsceneCmd_pause(u8 *cutsceneState /* r5 */, u32 scriptPtr /* r7 */, u32 duration /* r4,
+// symdb: in/out */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_pause.yaml
 CutsceneCmd_pause:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
@@ -4949,6 +4986,11 @@ off_8037C34:
 // byte1 - memory param
 // byte2 or mem - number of frames to move player
 // signedhword3 - movement speed of player
+// symdb: Cutscene opcode that glides the overworld player in its current facing direction for a fixed number of frames.
+// symdb: void CutsceneCmd_move_player_in_facing_direction(u32 r5 cutsceneState, u32 r7 scriptPos, u32 r4
+// symdb: carryIn) /* out: r0 in NZ (1=finished/0 wait), r4 = step-table addr 0x8037CB4 while gliding; r1,
+// symdb: r2 untouched */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_move_player_in_facing_direction.yaml
 CutsceneCmd_move_player_in_facing_direction:
 	push {lr}
 	ldrb r0, [r5,#oCutsceneState_WhichCutsceneScript]
@@ -5265,6 +5307,12 @@ off_8037E38:
 // hword5 - map object y coordinate
 // hword7 - map object z coordinate
 // word9 - map object ID (written to field oOverworldMapObject_ObjectID)
+// symdb: Map-script subcommand that spawns an overworld map object and stores its pointer in one of the cutscene state's 16 owMapObjectPtrs slots.
+// symdb: /* in:  r4 = slot index (low 4 bits), r5 = cutscene state, r7 = script command ptr  * out: nz,
+// symdb: r1/r2 (left as SpawnOverworldMapObject left them), r4 = word@+9,  *      r5 = cutscene state, r7
+// symdb: = command + 0xd  * clobbers: r0, r3, r6, lr; flags c/v set by `mov r0, #1` (nz)  * preserved: r5
+// symdb: across the call */ void subcmd_spawnOwMapObject_8037E4C(void);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptSubCmd_spawn_ow_map_object.yaml
 MapScriptSubCmd_spawn_ow_map_object:
 	push {lr}
 	mov r1, #0xf
@@ -5584,6 +5632,10 @@ CutsceneCmd_spawn_or_free_ow_map_or_npc_objects:
 // 0x4b ptr1
 // call native function. if the return flags are nonzero, then wait
 // ptr1 - native function to call
+// symdb: Map-script cutscene command dispatcher that reads the next script word and calls the native handler in r4, advancing or halting based on its return.
+// symdb: void cutsceneCmd_callNativeWithRet_8038028(void);  // in: r2 r5 r7 r10 lr;  out: nz r1 r2 r4 r5
+// symdb: r7 r8 r9 r10 r11 r12;  clobbers: c v r0 r3 r6 lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_call_native_with_return_value.yaml
 CutsceneCmd_call_native_with_return_value:
 	push {lr}
 	mov r6, #1
@@ -6072,6 +6124,9 @@ MapScriptCutsceneCmd_end_minigame_effect:
 // i.e. [hword1, hword1+byte3) (interval notation)
 // hword1 - starting bbs message flag
 // byte3 - number of bbs messages to add
+// symdb: Map-script cutscene opcode handler that queues a consecutive run of BBS (bulletin board) messages onto the pending-board mailbox and advances the script cursor by 4 bytes.
+// symdb: void mapScriptCutsceneCmd_addBBSMessageRange_80382BA(u32* /* inout r7 */ script_cursor)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_add_bbs_message_range.yaml
 MapScriptCutsceneCmd_add_bbs_message_range:
 	push {lr}
 	mov r6, #1
@@ -6142,6 +6197,12 @@ CutsceneCmd_change_navi_maybe_80382fe:
 // i.e. [hword1, hword1+byte3) (interval notation)
 // hword1 - starting mail flag
 // byte3 - number of mails to add
+// symdb: Cutscene script command that queues a contiguous run of mails into the player's inbox.
+// symdb: void scriptCmd_addMailRange(u32 commandArg /* r0, unused but preserved */,
+// symdb: u32 scriptCursor /* r7 */);   out: r4 = mailsLeft (clobbered from the run length),        r7 =
+// symdb: scriptCursor + 4 (advanced past this 4-byte command),        r0 = 1 (success status),
+// symdb: flags NZ = 1 (N clear, Z clear);   clobbers r0 r1 r2 r3 r4 r6 r7 v c; preserves nothing.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_add_mail_range.yaml
 MapScriptCutsceneCmd_add_mail_range:
 	push {lr}
 	mov r6, #1

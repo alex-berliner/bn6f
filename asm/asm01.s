@@ -23,6 +23,10 @@ chatbox_resetPrinterState_801FE00:
 	pop {pc}
 	thumb_func_end chatbox_resetPrinterState_801FE00
 
+// symdb: Start or restart the battle-effects overlay (0x10) — reset link state when the slot is free and start it in mode 5, otherwise restart in mode 0 — and flag the overlay as active in the battle-effects struct.
+// symdb: void sub_801FE24(void); // inputs:  none meaningful (r10/lr inherited) // outputs: r5 r6 r7 set;
+// symdb: preserves r4 r5 r6 r7; clobbers r0 r1 r2 r3 lr, N Z C V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801FE24.yaml
 	thumb_func_start sub_801FE24
 sub_801FE24:
 	push {r4,lr}
@@ -528,6 +532,9 @@ locret_802015C:
 	pop {r7,pc}
 	thumb_func_end sub_8020140
 
+// symdb: Reads the BattleTerminate01 flag byte from the global eStruct2038160 and returns it in r0.
+// symdb: uint8_t eStruct2038160_getBattleTerminate01(void); // inputs: lr; outputs: r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eStruct2038160_getBattleTerminate01.yaml
 	thumb_func_start eStruct2038160_getBattleTerminate01
 eStruct2038160_getBattleTerminate01:
 	ldr r0, off_802016C // =eStruct2038160
@@ -542,17 +549,25 @@ off_8020168:
 	.word eStruct2038160
 off_802016C:
 	.word eStruct2038160
+// symdb: Encounter root table 0 of the four pickBattleSettingsEntry_80AA5F4 chooses from by event flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/off_8020170.yaml
 off_8020170:
 	.word off_8020190
 	.word off_80201E4
+// symdb: Encounter root table 1 of the four pickBattleSettingsEntry_80AA5F4 chooses from by event flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/off_8020178.yaml
 off_8020178:
 	.word off_8020190
 	.word pt_8020240
+// symdb: Encounter root table 2 of the four pickBattleSettingsEntry_80AA5F4 chooses from by event flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/off_8020180.yaml
 off_8020180: // [*const [*const [*const FFStop32<[BattleSettings]>; 16]]; 2]
 	// not internet
 	.word off_8020190
 	// internet
 	.word pt_802029C
+// symdb: Encounter root table 3 of the four pickBattleSettingsEntry_80AA5F4 chooses from by event flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/off_8020188.yaml
 off_8020188:
 	.word off_8020190
 	.word off_80202F8
