@@ -31620,7 +31620,7 @@ sub_811DF1C:
 	ldr r0, off_811DF2C // =off_811DF30
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]
-	ldr r6, off_811DF3C // =unk_2000310
+	ldr r6, off_811DF3C // =eWeatherCompState
 	mov lr, pc
 	bx r0
 	pop {pc}
@@ -31632,7 +31632,7 @@ off_811DF30:
 	.word sub_811DF94+1
 	.word sub_811DFCC+1
 off_811DF3C:
-	.word unk_2000310
+	.word eWeatherCompState
 	thumb_func_end sub_811DF1C
 
 	thumb_local_start

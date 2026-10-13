@@ -1,5 +1,5 @@
 // 0x808f810
-signed int __fastcall sub_808F810(int a1)
+signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
 {
     int v1; // r0
     signed int v2; // r4
@@ -330,7 +330,7 @@ int __fastcall sub_808FBA0(int a1)
 int __fastcall sub_808FBC0(int a1, int a2)
 {
     sub_80301B2(0, a2);
-    SetCameraXYZ(*(&unk_2000310 + byte_200031C + 32) << 16, *(&unk_2000310 + byte_200031C + 35) << 16, 0x400000);
+    SetCameraXYZ(*(&eWeatherCompState + byte_200031C + 32) << 16, *(&eWeatherCompState + byte_200031C + 35) << 16, 0x400000);
     return 0;
 }
 
@@ -426,7 +426,7 @@ int sub_808FD64()
 
 
 // 0x808fdc0
-int sub_808FDC0()
+int weatherComp_init_808FDC0()
 {
     int v0; // r0
     int v1; // r1
@@ -444,7 +444,7 @@ int sub_808FDC0()
     v0 = TestEventFlagFromImmediate(11, 251);
     if ( v4 )
     {
-        ZeroFillByWord(&unk_2000310, 96);
+        ZeroFillByWord(&eWeatherCompState, 96);
         sub_808FE64(v5, v6, v7, v8);
         byte_2000314 = -1;
         dword_2000330 = 255;
@@ -473,7 +473,7 @@ int sub_808FE34()
 
     TestEventFlagFromImmediate(11, 251);
     if ( v0 )
-        ZeroFillByWord(&unk_2000310, 96);
+        ZeroFillByWord(&eWeatherCompState, 96);
     dword_2000330 = 255;
     sub_808FF9C();
     sub_809003C();
@@ -508,9 +508,9 @@ void *sub_808FE74()
         {
             v2 = sub_809005C();
             if ( !v1 )
-                sub_80900C8(v2);
+                weatherComp_spawnObject1DNearPlayer_80900C8(v2);
         }
-        result = sub_8090104();
+        result = weatherComp_pickScript_8090104();
         if ( result )
             result = StartCutscene(result, v3, v4, v5);
     }
@@ -695,7 +695,7 @@ int sub_808FFC0()
 
 
 // 0x8090004
-signed int sub_8090004()
+signed int weatherComp_checkTrigger70_8090004()
 {
     int v0; // r5
     signed int v1; // r4
@@ -713,7 +713,7 @@ signed int sub_8090004()
 
 
 // 0x8090020
-signed int sub_8090020()
+signed int weatherComp_checkTrigger60_8090020()
 {
     signed int v0; // r4
     int v1; // r5
@@ -800,7 +800,7 @@ signed int sub_809005C()
 
 
 // 0x80900c8
-unsigned int __fastcall sub_80900C8(int a1)
+unsigned int __fastcall weatherComp_spawnObject1DNearPlayer_80900C8(int a1)
 {
     int v1; // r5
     __int64 v2; // r0
@@ -818,7 +818,7 @@ unsigned int __fastcall sub_80900C8(int a1)
 
 
 // 0x8090104
-char *sub_8090104()
+char *weatherComp_pickScript_8090104()
 {
     _BYTE *v0; // r5
     char *v1; // r4
@@ -826,10 +826,10 @@ char *sub_8090104()
     int v3; // r0
 
     v1 = 0;
-    sub_8090004();
+    weatherComp_checkTrigger70_8090004();
     if ( !v2 )
         return byte_808F668;
-    sub_8090020();
+    weatherComp_checkTrigger60_8090020();
     if ( !v2 )
         return byte_808F67C;
     sub_80902DC();

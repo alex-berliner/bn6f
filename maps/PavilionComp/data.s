@@ -247,7 +247,7 @@ mapscript_806B046:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806B04A:
-	ms_call_native_function ptr1=sub_808FDC0+1 word5=0x00000000
+	ms_call_native_function ptr1=weatherComp_init_808FDC0+1 word5=0x00000000
 	ms_jump destination1=byte_806B074
 
 byte_806B058:

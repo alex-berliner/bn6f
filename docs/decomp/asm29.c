@@ -5253,7 +5253,7 @@ signed int sub_80A8DF0()
 
 
 // 0x80a8e74
-int sub_80A8E74()
+int owMapObject_weatherTornado_80A8E74()
 {
     int v0; // r5
 
@@ -5262,7 +5262,7 @@ int sub_80A8E74()
 
 
 // 0x80a8e9c
-int __noreturn sub_80A8E9C()
+int __noreturn owMapObject_weatherTornado_init_80A8E9C()
 {
     int v0; // r5
     int v1; // r0
@@ -5275,7 +5275,7 @@ int __noreturn sub_80A8E9C()
     sprite_noShadow(v0);
     v1 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v1);
-    sub_80A90B0();
+    owMapObject_weatherTornado_loadHome_80A90B0();
     TestEventFlagFromImmediate(11, 251);
     if ( v2 )
     {
@@ -5284,14 +5284,14 @@ int __noreturn sub_80A8E9C()
         *(v0 + 36) = 1;
         goto LABEL_6;
     }
-    sub_80A91D4();
+    owMapObject_weatherTornado_isCaught_80A91D4();
     if ( v2 )
     {
-        sub_80A9268();
+        owMapObject_weatherTornado_restoreState_80A9268();
 LABEL_6:
-        sub_80A908C();
+        owMapObject_weatherTornado_loadParams_80A908C();
         *(v0 + 8) = 4;
-        sub_80A8F08();
+        owMapObject_weatherTornado_active_80A8F08();
     }
     *(v0 + 8) = 12;
     return sub_80A8FFC();
@@ -5299,7 +5299,7 @@ LABEL_6:
 
 
 // 0x80a8f08
-void __noreturn sub_80A8F08()
+void __noreturn owMapObject_weatherTornado_active_80A8F08()
 {
     Battle *v0; // r5
     char v1; // zf
@@ -5308,7 +5308,7 @@ void __noreturn sub_80A8F08()
     if ( !v1 )
     {
         v0->currState = 8;
-        sub_80A8FA0(8);
+        owMapObject_weatherTornado_caught_80A8FA0(8);
     }
     s_2011C50_8036F40();
     if ( v1 )
@@ -5319,19 +5319,19 @@ void __noreturn sub_80A8F08()
             chatbox_mask_eFlags2009F38(128);
             if ( v1 )
             {
-                sub_80A8F48();
-                sub_80A91A4();
+                owMapObject_weatherTornado_moveOrPause_80A8F48();
+                owMapObject_weatherTornado_checkHitPlayer_80A91A4();
             }
         }
     }
-    sub_80A91F4();
+    owMapObject_weatherTornado_setPriority_80A91F4();
     sprite_update(v0);
-    sub_80A9218();
+    owMapObject_weatherTornado_saveState_80A9218();
 }
 
 
 // 0x80a8f48
-int sub_80A8F48()
+int owMapObject_weatherTornado_moveOrPause_80A8F48()
 {
     unsigned __int8 *v0; // r5
     int v1; // r4
@@ -5346,18 +5346,18 @@ int sub_80A8F48()
         v0[36] = v2;
         if ( v2 )
         {
-            sub_80A9038();
-            result = sub_80A90CC();
+            owMapObject_weatherTornado_step_80A9038();
+            result = owMapObject_weatherTornado_isBlocked_80A90CC();
             if ( !v4 )
             {
                 v0[36] = v0[38];
-                result = sub_80A90E4();
+                result = owMapObject_weatherTornado_repickDirection_80A90E4();
             }
             return result;
         }
         v0[36] = v0[38];
-        sub_80A9004();
-        result = sub_80A9150();
+        owMapObject_weatherTornado_pickDirection_80A9004();
+        result = owMapObject_weatherTornado_isPauseDue_80A9150();
         if ( v4 )
             return result;
         v0[9] = v1 + 1;
@@ -5372,14 +5372,14 @@ int sub_80A8F48()
 
 
 // 0x80a8fa0
-void __fastcall __noreturn sub_80A8FA0(int a1)
+void __fastcall __noreturn owMapObject_weatherTornado_caught_80A8FA0(int a1)
 {
     Battle *v1; // r5
     char v2; // zf
     int v3; // r1
     int v4; // r2
 
-    sub_80A91D4();
+    owMapObject_weatherTornado_isCaught_80A91D4();
     if ( !v2 )
     {
         sprite_setAnimation(v1, 0x19u);
@@ -5387,20 +5387,20 @@ void __fastcall __noreturn sub_80A8FA0(int a1)
         sprite_noShadow(v1);
         v1->currState = 12;
         PlaySoundEffect(dword_160, v3, v4);
-        sub_80A8FE4();
+        owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4();
     }
     TestEventFlagFromImmediate(11, 239);
     if ( v2 )
     {
         v1->currState = 4;
-        sub_80A8F08();
+        owMapObject_weatherTornado_active_80A8F08();
     }
     sprite_update(v1);
 }
 
 
 // 0x80a8fe4
-void __noreturn sub_80A8FE4()
+void __noreturn owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4()
 {
     Battle *v0; // r5
 
@@ -5418,7 +5418,7 @@ int sub_80A8FFC()
 
 
 // 0x80a9004
-int sub_80A9004()
+int owMapObject_weatherTornado_pickDirection_80A9004()
 {
     unsigned __int8 *v0; // r5
     int v1; // r6
@@ -5451,7 +5451,7 @@ int sub_80A9004()
 
 
 // 0x80a9038
-int sub_80A9038()
+int owMapObject_weatherTornado_step_80A9038()
 {
     int v0; // r5
     int v1; // r4
@@ -5511,7 +5511,7 @@ int sub_80A9038()
 
 
 // 0x80a908c
-int sub_80A908C()
+int owMapObject_weatherTornado_loadParams_80A908C()
 {
     int v0; // r5
     char *v1; // r0
@@ -5519,7 +5519,7 @@ int sub_80A908C()
     unsigned int v3; // r0
     int result; // r0
 
-    v1 = sub_80A916C();
+    v1 = owMapObject_weatherTornado_getParams_80A916C();
     v2 = v1;
     v3 = *v1;
     *(v0 + 44) = v3;
@@ -5533,13 +5533,13 @@ int sub_80A908C()
 
 
 // 0x80a90b0
-signed int sub_80A90B0()
+signed int owMapObject_weatherTornado_loadHome_80A90B0()
 {
     _DWORD *v0; // r5
     char *v1; // r0
     signed int result; // r0
 
-    v1 = sub_80A916C();
+    v1 = owMapObject_weatherTornado_getParams_80A916C();
     v0[3] = *(v1 + 4) << 16;
     v0[4] = *(v1 + 5) << 16;
     result = 0x400000;
@@ -5549,7 +5549,7 @@ signed int sub_80A90B0()
 
 
 // 0x80a90cc
-signed int sub_80A90CC()
+signed int owMapObject_weatherTornado_isBlocked_80A90CC()
 {
     int v0; // r5
     signed int v1; // r4
@@ -5562,7 +5562,7 @@ signed int sub_80A90CC()
 
 
 // 0x80a90e4
-int sub_80A90E4()
+int owMapObject_weatherTornado_repickDirection_80A90E4()
 {
     int v0; // r5
     int v1; // r6
@@ -5587,8 +5587,8 @@ int sub_80A90E4()
         *(v0 + 5) = v3;
         *(v0 + 24) = *(v0 + 12);
         *(v0 + 28) = *(v0 + 16);
-        sub_80A9038();
-        sub_80A90CC();
+        owMapObject_weatherTornado_step_80A9038();
+        owMapObject_weatherTornado_isBlocked_80A90CC();
         if ( v5 )
             break;
         *(v0 + 12) = *(v0 + 24);
@@ -5607,7 +5607,7 @@ int sub_80A90E4()
 
 
 // 0x80a9150
-signed int sub_80A9150()
+signed int owMapObject_weatherTornado_isPauseDue_80A9150()
 {
     int v0; // r5
     signed int v1; // r3
@@ -5623,7 +5623,7 @@ signed int sub_80A9150()
 
 
 // 0x80a916c
-char *sub_80A916C()
+char *owMapObject_weatherTornado_getParams_80A916C()
 {
     int v0; // r5
     int v1; // r10
@@ -5640,7 +5640,7 @@ char *sub_80A916C()
 
 
 // 0x80a91a4
-int sub_80A91A4()
+int owMapObject_weatherTornado_checkHitPlayer_80A91A4()
 {
     int v0; // r5
     int result; // r0
@@ -5660,7 +5660,7 @@ int sub_80A91A4()
 
 
 // 0x80a91d4
-int sub_80A91D4()
+int owMapObject_weatherTornado_isCaught_80A91D4()
 {
     int v0; // r5
 
@@ -5669,7 +5669,7 @@ int sub_80A91D4()
 
 
 // 0x80a91f4
-int sub_80A91F4()
+int owMapObject_weatherTornado_setPriority_80A91F4()
 {
     int v0; // r5
     char v1; // zf
@@ -5684,7 +5684,7 @@ int sub_80A91F4()
 
 
 // 0x80a9218
-int sub_80A9218()
+int owMapObject_weatherTornado_saveState_80A9218()
 {
     int v0; // r5
     int v1; // r6
@@ -5705,7 +5705,7 @@ int sub_80A9218()
 
 
 // 0x80a9268
-int sub_80A9268()
+int owMapObject_weatherTornado_restoreState_80A9268()
 {
     int v0; // r5
     int v1; // r6

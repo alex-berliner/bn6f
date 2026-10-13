@@ -90,7 +90,7 @@ mapscript_806A31E:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806A322:
-	ms_call_native_function ptr1=sub_808FDC0+1 word5=0x00000000
+	ms_call_native_function ptr1=weatherComp_init_808FDC0+1 word5=0x00000000
 	ms_write_word ptr1=unk_2011EA8 word5=0x08030102
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_16F2
 	ms_jump destination1=byte_806A359
@@ -167,7 +167,7 @@ mapscript_806A41A:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806A41E:
-	ms_call_native_function ptr1=sub_808FDC0+1 word5=0x00000000
+	ms_call_native_function ptr1=weatherComp_init_808FDC0+1 word5=0x00000000
 	ms_jump destination1=byte_806A448
 
 byte_806A42C:
@@ -221,7 +221,7 @@ mapscript_806A4B6:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806A4BA:
-	ms_call_native_function ptr1=sub_808FDC0+1 word5=0x00000000
+	ms_call_native_function ptr1=weatherComp_init_808FDC0+1 word5=0x00000000
 	ms_jump destination1=byte_806A4E4
 
 byte_806A4C8:

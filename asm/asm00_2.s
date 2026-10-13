@@ -20610,15 +20610,15 @@ off_80182B0:
 GetVerActorTyAndAIIdx_80182B4: // (enemy_idx: u16) -> *const (version: u8, actor_type: ActorType, ai_index: u8)
 	mov r1, #3
 	mul r1, r0
-	ldr r0, off_80182C0 // =byte_80182C4
+	ldr r0, off_80182C0 // =EnemyVerActorTyAndAIIdxTable
 	add r0, r0, r1
 	mov pc, lr
 	.byte 0, 0
 off_80182C0:
-	.word byte_80182C4
+	.word EnemyVerActorTyAndAIIdxTable
 // symdb: 3 bytes per enemy id: version, actor type, AI index (GetVerActorTyAndAIIdx_80182B4).
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_80182C4.yaml
-byte_80182C4:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/EnemyVerActorTyAndAIIdxTable.yaml
+EnemyVerActorTyAndAIIdxTable:
 	// Version, ActorType,        AIIndex
 	.byte 0x00, ACTOR_TYPE_VIRUS, 0x00 // 0x0
 

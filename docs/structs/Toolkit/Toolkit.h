@@ -107,7 +107,7 @@ typedef struct{
 	// 02004338
 	void *unk_2004338;                // loc=0x6C
 	// 02004348
-	void *unk_2004348;                // loc=0x70
+	void *eMysteryDataRolls;                // loc=0x70
 	// 020047CC
 	void *eNaviStats;                // loc=0x74
 	// 02004A8C

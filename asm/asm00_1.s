@@ -3099,8 +3099,8 @@ off_800471C:
 off_8004720:
 	.word byte_2006530
 // symdb: Overworld map object update jumptable: one routine per object type (header byte 1).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8004724.yaml
-off_8004724:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/OverworldMapObjectUpdateJumptable.yaml
+OverworldMapObjectUpdateJumptable:
 	.word ho_80A4984+1
 	.word battle_dispatchState4Handler_80A4A98+1
 	.word menu_stateDispatch_80A4BDC+1
@@ -3127,7 +3127,7 @@ off_8004724:
 	.word sub_80A89DC+1
 	.word sub_80A8AB4+1
 	.word 0x0
-	.word sub_80A8E74+1
+	.word owMapObject_weatherTornado_80A8E74+1
 	.word sub_80A92B8+1
 	.word sub_80A9430+1
 	.word sub_80A9658+1
@@ -3317,7 +3317,7 @@ TryUpdateEachOverworldMapObject_80048D2: // () -> ()
 
 	sub sp, sp, #8
 	ldr r5, off_80049D4 // =eOverworldMapObjects
-	ldr r0, off_800492C // =off_8004724
+	ldr r0, off_800492C // =OverworldMapObjectUpdateJumptable
 	ldr r1, off_80049D8 // =dword_2013920
 	str r0, [sp]
 	str r1, [sp,#4]
@@ -3368,7 +3368,7 @@ TryUpdateEachOverworldMapObject_80048D2: // () -> ()
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_800492C:
-	.word off_8004724
+	.word OverworldMapObjectUpdateJumptable
 	.word dword_2013920
 	thumb_func_end TryUpdateEachOverworldMapObject_80048D2
 

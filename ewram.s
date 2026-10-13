@@ -31,8 +31,8 @@ unk_2000260:: // 0x2000260
 reqBBS_requestEntriesList:: // 0x2000290
 	.space 128
 // symdb: Mr. Weather comp puzzle state (0x60 bytes): reset routine, trigger index, the tornadoes' saved state (they rebuild from it on a map reload).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2000310.yaml
-unk_2000310:: // 0x2000310
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eWeatherCompState.yaml
+eWeatherCompState:: // 0x2000310
 	.space 2
 byte_2000312:: // 0x2000312
 	.space 2
@@ -374,8 +374,8 @@ unk_2004334:: // 0x2004334
 unk_2004338:: // 0x2004338
 	.space 16
 // symdb: Mystery data contents: one u16 per mystery-data id at 2*(id - 0x1400), the two picked indexes, rolled at jack-in.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/unk_2004348.yaml
-unk_2004348:: // 0x2004348
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eMysteryDataRolls.yaml
+eMysteryDataRolls:: // 0x2004348
 	.space 1156
 eNaviStats:: // 0x20047cc
     navi_stats_struct eNaviStats0

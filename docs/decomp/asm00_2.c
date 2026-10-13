@@ -14739,7 +14739,7 @@ int sub_801823C()
 // 0x80182b4
 char *__fastcall GetVerActorTyAndAIIdx_80182B4(int a1)
 {
-    return &byte_80182C4[3 * a1];
+    return &EnemyVerActorTyAndAIIdxTable[3 * a1];
 }
 
 

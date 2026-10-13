@@ -3064,7 +3064,7 @@ cutscenescript_808F5BA:
 unk_808F5C4:
 	.word 0x04000000, 0x00000000, 0x00000000, 0x00000000
 off_808F5D4::
-	.word unk_2000310
+	.word eWeatherCompState
 
 gfx_anim_script_808F5D8:
 	gfx_anim_manual_pal_transform transform_type=0x0000000C ptr5=iPalette3001B60 index=0x0F num_pals=0x01
@@ -3094,7 +3094,7 @@ byte_808F668::
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
-	cs_call_native_with_return_value ptr1=sub_808F810+1
+	cs_call_native_with_return_value ptr1=weatherComp_putPlayerBack_808F810+1
 	cs_write_gamestate_byte byte1=0x09 byte2=0x03
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64

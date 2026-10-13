@@ -270,7 +270,7 @@ void __fastcall zeroFill_e2004348()
 {
     Toolkit *tk; // r10
 
-    ZeroFillByEightWords(tk->unk_2004348, &dword_480);
+    ZeroFillByEightWords(tk->eMysteryDataRolls, &dword_480);
 }
 
 

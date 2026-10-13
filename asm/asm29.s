@@ -7421,11 +7421,11 @@ byte_80A8E20:
 // symdb: Mr. Weather comp tornado (map object type 0x1A): update, dispatching on state +8 (0 init, 4 active, 8 caught, 0xC free when its animation ends).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A8E74.yaml
-	thumb_func_start sub_80A8E74
-sub_80A8E74:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_80A8E74.yaml
+	thumb_func_start owMapObject_weatherTornado_80A8E74
+owMapObject_weatherTornado_80A8E74:
 	push {lr}
-	ldr r6, off_80A8E98 // =unk_2000310 
+	ldr r6, off_80A8E98 // =eWeatherCompState 
 	ldr r0, off_80A8E84 // =off_80A8E88 
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]
@@ -7436,20 +7436,20 @@ sub_80A8E74:
 off_80A8E84:
 	.word off_80A8E88
 off_80A8E88:
-	.word sub_80A8E9C+1
-	.word sub_80A8F08+1
-	.word sub_80A8FA0+1
-	.word sub_80A8FE4+1
+	.word owMapObject_weatherTornado_init_80A8E9C+1
+	.word owMapObject_weatherTornado_active_80A8F08+1
+	.word owMapObject_weatherTornado_caught_80A8FA0+1
+	.word owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4+1
 off_80A8E98:
-	.word unk_2000310
-	thumb_func_end sub_80A8E74
+	.word eWeatherCompState
+	thumb_func_end owMapObject_weatherTornado_80A8E74
 
 // symdb: Tornado state 0 (init): sprite 0x80/0x1C/0x6C, animation 0x18, home position; restores a saved state or frees itself if already caught, then enters state 4.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8E9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_init_80A8E9C.yaml
 	thumb_local_start
-sub_80A8E9C:
+owMapObject_weatherTornado_init_80A8E9C:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -7465,18 +7465,18 @@ sub_80A8E9C:
 	add r0, #0xc
 	bl applyLayerEffectToOWObject_8035694
 	bl sprite_setPriority_8002E14
-	bl sub_80A90B0
+	bl owMapObject_weatherTornado_loadHome_80A90B0
 	movflag EVENT_BFB
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A8EEA
-	bl sub_80A91D4
+	bl owMapObject_weatherTornado_isCaught_80A91D4
 	beq loc_80A8EE4
 	mov r0, #0xc
 	strb r0, [r5,#8]
 	bl sub_80A8FFC
 	pop {r4-r7,pc}
 loc_80A8EE4:
-	bl sub_80A9268
+	bl owMapObject_weatherTornado_restoreState_80A9268
 	b loc_80A8EF8
 loc_80A8EEA:
 	mov r0, #0
@@ -7487,27 +7487,27 @@ loc_80A8EEA:
 	mov r1, #0x24 
 	strb r0, [r5,r1]
 loc_80A8EF8:
-	bl sub_80A908C
+	bl owMapObject_weatherTornado_loadParams_80A908C
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A8F08
+	bl owMapObject_weatherTornado_active_80A8F08
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A8E9C
+	thumb_func_end owMapObject_weatherTornado_init_80A8E9C
 
 // symdb: Tornado state 4 (active): flag 0xBEF -> caught (state 8); else, outside cutscenes and the chatbox, move (owMapObject_weatherTornado_moveOrPause_80A8F48) and check the hit on MegaMan (owMapObject_weatherTornado_checkHitPlayer_80A91A4); then priority, sprite, save state.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8F08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_active_80A8F08.yaml
 	thumb_local_start
-sub_80A8F08:
+owMapObject_weatherTornado_active_80A8F08:
 	push {r4-r7,lr}
 	movflag EVENT_BEF
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A8F1E
 	mov r0, #8
 	strb r0, [r5,#8]
-	bl sub_80A8FA0
+	bl owMapObject_weatherTornado_caught_80A8FA0
 	b loc_80A8F3A
 loc_80A8F1E:
 	bl cutscene_checkOriginalCutsceneScriptPos_8036F40 // () -> zf
@@ -7517,21 +7517,21 @@ loc_80A8F1E:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_80A8F3A
-	bl sub_80A8F48
-	bl sub_80A91A4
+	bl owMapObject_weatherTornado_moveOrPause_80A8F48
+	bl owMapObject_weatherTornado_checkHitPlayer_80A91A4
 loc_80A8F3A:
-	bl sub_80A91F4
+	bl owMapObject_weatherTornado_setPriority_80A91F4
 	bl sprite_update
-	bl sub_80A9218
+	bl owMapObject_weatherTornado_saveState_80A9218
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A8F08
+	thumb_func_end owMapObject_weatherTornado_active_80A8F08
 
 // symdb: Tornado movement: mode +9 = 0 moving (+0x24 counts down; steps, re-picking on a blocked tile; at 0 reloads from +0x26 and draws a direction, pausing for +0x27 frames when due), nonzero paused (+0x25 counts down).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A8F48.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_moveOrPause_80A8F48.yaml
 	thumb_local_start
-sub_80A8F48:
+owMapObject_weatherTornado_moveOrPause_80A8F48:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#9]
 	cmp r4, #0
@@ -7541,22 +7541,22 @@ sub_80A8F48:
 	sub r0, #1
 	strb r0, [r5,r1]
 	beq loc_80A8F72
-	bl sub_80A9038
-	bl sub_80A90CC
+	bl owMapObject_weatherTornado_step_80A9038
+	bl owMapObject_weatherTornado_isBlocked_80A90CC
 	beq locret_80A8F9E
 	mov r0, #0x26 
 	ldrb r0, [r5,r0]
 	mov r1, #0x24 
 	strb r0, [r5,r1]
-	bl sub_80A90E4
+	bl owMapObject_weatherTornado_repickDirection_80A90E4
 	b locret_80A8F9E
 loc_80A8F72:
 	mov r0, #0x26 
 	ldrb r0, [r5,r0]
 	mov r1, #0x24 
 	strb r0, [r5,r1]
-	bl sub_80A9004
-	bl sub_80A9150
+	bl owMapObject_weatherTornado_pickDirection_80A9004
+	bl owMapObject_weatherTornado_isPauseDue_80A9150
 	beq locret_80A8F9E
 	add r4, #1
 	strb r4, [r5,#9]
@@ -7574,16 +7574,16 @@ loc_80A8F90:
 	strb r4, [r5,#9]
 locret_80A8F9E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A8F48
+	thumb_func_end owMapObject_weatherTornado_moveOrPause_80A8F48
 
 // symdb: Tornado state 8 (caught): if its caught flag is set, animation 0x19, sound 0x160, state 0xC; else back to state 4 once flag 0xBEF clears.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8FA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_caught_80A8FA0.yaml
 	thumb_local_start
-sub_80A8FA0:
+owMapObject_weatherTornado_caught_80A8FA0:
 	push {lr}
-	bl sub_80A91D4
+	bl owMapObject_weatherTornado_isCaught_80A91D4
 	beq loc_80A8FC6
 	mov r0, #0x19
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -7593,7 +7593,7 @@ sub_80A8FA0:
 	strb r0, [r5,#8]
 	ldr r0, off_80A8FE0 // =0x160 
 	bl PlaySoundEffect
-	bl sub_80A8FE4
+	bl owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4
 	b loc_80A8FD8
 loc_80A8FC6:
 	movflag EVENT_BEF
@@ -7601,21 +7601,21 @@ loc_80A8FC6:
 	bne loc_80A8FD8
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A8F08
+	bl owMapObject_weatherTornado_active_80A8F08
 loc_80A8FD8:
 	bl sprite_update
 	pop {pc}
 	.balign 4, 0
 off_80A8FE0:
 	.word 0x160
-	thumb_func_end sub_80A8FA0
+	thumb_func_end owMapObject_weatherTornado_caught_80A8FA0
 
 // symdb: Tornado state 0xC: frees the object when its animation's frame parameters have bit 0x80 (the end).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8FE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4.yaml
 	thumb_local_start
-sub_80A8FE4:
+owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -7626,7 +7626,7 @@ loc_80A8FF4:
 	bl sprite_update
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A8FE4
+	thumb_func_end owMapObject_weatherTornado_freeWhenAnimEnds_80A8FE4
 
 	thumb_local_start
 sub_80A8FFC:
@@ -7638,9 +7638,9 @@ sub_80A8FFC:
 // symdb: Tornado: draws a direction +5 = random(8) (0..7), moved on by one (7 -> 0) if equal to the last one (eWeatherCompState + 0x31 + i); +0x28 += 1.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9004.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_pickDirection_80A9004.yaml
 	thumb_local_start
-sub_80A9004:
+owMapObject_weatherTornado_pickDirection_80A9004:
 	push {lr}
 	mov r0, #8
 	bl reqBBS_81409D0 // (int a1) -> int
@@ -7668,14 +7668,14 @@ loc_80A9028:
 	strb r0, [r5,r1]
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A9004
+	thumb_func_end owMapObject_weatherTornado_pickDirection_80A9004
 
 // symdb: Tornado: steps X/Y (+0xC/+0x10) in direction +5 by +0x2C (directions 0,1,3,4,5,7) or +0x30 on both axes (2, 6).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9038.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_step_80A9038.yaml
 	thumb_local_start
-sub_80A9038:
+owMapObject_weatherTornado_step_80A9038:
 	push {r4,lr}
 	ldr r4, [r5,#0x2c]
 	ldrb r0, [r5,#5]
@@ -7726,16 +7726,16 @@ loc_80A9086:
 	str r1, [r5,#0xc]
 	str r2, [r5,#0x10]
 	pop {r4,pc}
-	thumb_func_end sub_80A9038
+	thumb_func_end owMapObject_weatherTornado_step_80A9038
 
 // symdb: Tornado: loads its parameters from owMapObject_weatherTornado_getParams_80A916C's entry: speed +0x2C (word 0), +0x30 = speed/2, move period +0x26 (+4), pause length +0x27 (+6), moves per pause +7 (+0xC).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A908C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadParams_80A908C.yaml
 	thumb_local_start
-sub_80A908C:
+owMapObject_weatherTornado_loadParams_80A908C:
 	push {r7,lr}
-	bl sub_80A916C
+	bl owMapObject_weatherTornado_getParams_80A916C
 	mov r7, r0
 	ldr r0, [r7]
 	str r0, [r5,#0x2c]
@@ -7751,16 +7751,16 @@ sub_80A908C:
 	strb r0, [r5,#7]
 	pop {r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A908C
+	thumb_func_end owMapObject_weatherTornado_loadParams_80A908C
 
 // symdb: Tornado: home position X/Y from its parameter entry (+8/+0xA, pixels -> s16.16), Z = 0x40.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A90B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadHome_80A90B0.yaml
 	thumb_local_start
-sub_80A90B0:
+owMapObject_weatherTornado_loadHome_80A90B0:
 	push {r7,lr}
-	bl sub_80A916C
+	bl owMapObject_weatherTornado_getParams_80A916C
 	mov r7, r0
 	ldrh r0, [r7,#8]
 	lsl r0, r0, #0x10
@@ -7772,14 +7772,14 @@ sub_80A90B0:
 	lsl r0, r0, #0x10
 	str r0, [r5,#0x14]
 	pop {r7,pc}
-	thumb_func_end sub_80A90B0
+	thumb_func_end owMapObject_weatherTornado_loadHome_80A90B0
 
 // symdb: Tornado: blocked if the coordinate trigger at its position is 0xC0 (returns 1, Z clear).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A90CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isBlocked_80A90CC.yaml
 	thumb_local_start
-sub_80A90CC:
+owMapObject_weatherTornado_isBlocked_80A90CC:
 	push {r4,lr}
 	mov r4, #0
 	mov r0, #0xc
@@ -7792,14 +7792,14 @@ loc_80A90DE:
 	mov r0, r4
 	tst r0, r0
 	pop {r4,pc}
-	thumb_func_end sub_80A90CC
+	thumb_func_end owMapObject_weatherTornado_isBlocked_80A90CC
 
 // symdb: Tornado: re-picks a random direction different from the current one, undoing the step and retrying while the new step is blocked; records the last directions in eWeatherCompState.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A90E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_repickDirection_80A90E4.yaml
 	thumb_local_start
-sub_80A90E4:
+owMapObject_weatherTornado_repickDirection_80A90E4:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#4]
 loc_80A90E8:
@@ -7814,8 +7814,8 @@ loc_80A90E8:
 	str r0, [r5,#0x18]
 	ldr r0, [r5,#0x10]
 	str r0, [r5,#0x1c]
-	bl sub_80A9038
-	bl sub_80A90CC
+	bl owMapObject_weatherTornado_step_80A9038
+	bl owMapObject_weatherTornado_isBlocked_80A90CC
 	beq loc_80A9118
 	ldr r0, [r5,#0x18]
 	str r0, [r5,#0xc]
@@ -7855,14 +7855,14 @@ loc_80A9132:
 	strb r0, [r5,r1]
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A90E4
+	thumb_func_end owMapObject_weatherTornado_repickDirection_80A90E4
 
 // symdb: Tornado: pause due when moves since the last pause (+0x28) >= +7; then resets +0x28 (returns 1, Z clear).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9150.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isPauseDue_80A9150.yaml
 	thumb_local_start
-sub_80A9150:
+owMapObject_weatherTornado_isPauseDue_80A9150:
 	push {lr}
 	mov r3, #0
 	mov r1, #0x28 
@@ -7878,14 +7878,14 @@ loc_80A9164:
 	tst r0, r0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A9150
+	thumb_func_end owMapObject_weatherTornado_isPauseDue_80A9150
 
 // symdb: Tornado: its 16-byte parameter entry, from off_80A9194[map number, or 3 for map group 0x85] + 16 * instance (+4).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A916C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_getParams_80A916C.yaml
 	thumb_local_start
-sub_80A916C:
+owMapObject_weatherTornado_getParams_80A916C:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -7913,14 +7913,14 @@ off_80A9194:
 	.word byte_81436C4
 	.word byte_81436E4
 	.word byte_8143704
-	thumb_func_end sub_80A916C
+	thumb_func_end owMapObject_weatherTornado_getParams_80A916C
 
 // symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (sub_80011D6).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A91A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_checkHitPlayer_80A91A4.yaml
 	thumb_local_start
-sub_80A91A4:
+owMapObject_weatherTornado_checkHitPlayer_80A91A4:
 	push {r4,lr}
 	movflag EVENT_BE4
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -7940,14 +7940,14 @@ sub_80A91A4:
 locret_80A91D0:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A91A4
+	thumb_func_end owMapObject_weatherTornado_checkHitPlayer_80A91A4
 
 // symdb: Tornado: tests its caught flag byte_80A91EC[instance] (0xBE9 / 0xBEA / 0xBEB).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A91D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isCaught_80A91D4.yaml
 	thumb_local_start
-sub_80A91D4:
+owMapObject_weatherTornado_isCaught_80A91D4:
 	push {lr}
 	ldr r0, off_80A91E8 // =byte_80A91EC
 	ldrb r1, [r5,#4]
@@ -7961,14 +7961,14 @@ off_80A91E8:
 	.word byte_80A91EC
 byte_80A91EC:
 	.byte 0xE9, 0xB, 0xEA, 0xB, 0xEB, 0xB, 0x0, 0x0
-	thumb_func_end sub_80A91D4
+	thumb_func_end owMapObject_weatherTornado_isCaught_80A91D4
 
 // symdb: Tornado: sprite priority 1 while flag 0xBE6 is set, else from the layer at its position.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A91F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_setPriority_80A91F4.yaml
 	thumb_local_start
-sub_80A91F4:
+owMapObject_weatherTornado_setPriority_80A91F4:
 	push {lr}
 	movflag EVENT_BE6
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -7984,14 +7984,14 @@ loc_80A9208:
 locret_80A9214:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A91F4
+	thumb_func_end owMapObject_weatherTornado_setPriority_80A91F4
 
 // symdb: Tornado: saves its state into eWeatherCompState every active frame (mode, direction, both countdowns, moves since the last pause, X/Y as s16 pixels), per instance.
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9218.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_saveState_80A9218.yaml
 	thumb_local_start
-sub_80A9218:
+owMapObject_weatherTornado_saveState_80A9218:
 	push {r4,lr}
 	ldrb r4, [r5,#4]
 	ldrb r0, [r5,#9]
@@ -8032,14 +8032,14 @@ sub_80A9218:
 	add r1, r1, r2
 	strh r0, [r6,r1]
 	pop {r4,pc}
-	thumb_func_end sub_80A9218
+	thumb_func_end owMapObject_weatherTornado_saveState_80A9218
 
 // symdb: Tornado: restores the state owMapObject_weatherTornado_saveState_80A9218 saved (on init after a map reload, flag 0xBFB set).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9268.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_restoreState_80A9268.yaml
 	thumb_local_start
-sub_80A9268:
+owMapObject_weatherTornado_restoreState_80A9268:
 	push {r4,lr}
 	ldrb r4, [r5,#4]
 	mov r1, #0x28 
@@ -8080,14 +8080,14 @@ sub_80A9268:
 	lsl r0, r0, #0x10
 	str r0, [r5,#0x10]
 	pop {r4,pc}
-	thumb_func_end sub_80A9268
+	thumb_func_end owMapObject_weatherTornado_restoreState_80A9268
 
 // symdb: Mr. Weather comp map object type 0x1B, probably part of MegaMan's rainbow-orb trail: fades to white and sets flag 0xBE7 after a tornado hit (0xBE6), frees itself on 0xBE4.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A92B8.yaml
 	thumb_func_start sub_80A92B8
 sub_80A92B8:
 	push {lr}
-	ldr r6, off_80A92DC // =unk_2000310 
+	ldr r6, off_80A92DC // =eWeatherCompState 
 	ldr r0, off_80A92C8 // =off_80A92CC 
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]
@@ -8103,7 +8103,7 @@ off_80A92CC:
 	.word sub_80A9360+1
 	.word sub_80A93D0+1
 off_80A92DC:
-	.word unk_2000310
+	.word eWeatherCompState
 	thumb_func_end sub_80A92B8
 
 	thumb_local_start
@@ -8281,7 +8281,7 @@ locret_80A942E:
 	thumb_func_start sub_80A9430
 sub_80A9430:
 	push {lr}
-	ldr r6, off_80A9454 // =unk_2000310 
+	ldr r6, off_80A9454 // =eWeatherCompState 
 	ldr r0, off_80A9440 // =off_80A9444 
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]
@@ -8297,7 +8297,7 @@ off_80A9444:
 	.word sub_80A94F8+1
 	.word sub_80A9568+1
 off_80A9454:
-	.word unk_2000310
+	.word eWeatherCompState
 	thumb_func_end sub_80A9430
 
 	thumb_local_start
@@ -8556,7 +8556,7 @@ byte_80A9648:
 	thumb_func_start sub_80A9658
 sub_80A9658:
 	push {lr}
-	ldr r6, off_80A967C // =unk_2000310 
+	ldr r6, off_80A967C // =eWeatherCompState 
 	ldr r0, off_80A9668 // =off_80A966C 
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]
@@ -8572,7 +8572,7 @@ off_80A966C:
 	.word sub_80A96F0+1
 	.word sub_80A96FC+1
 off_80A967C:
-	.word unk_2000310
+	.word eWeatherCompState
 	thumb_func_end sub_80A9658
 
 	thumb_local_start

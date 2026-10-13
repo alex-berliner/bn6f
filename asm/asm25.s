@@ -1,9 +1,9 @@
 
 // symdb: Mr. Weather comp reset (cutscene native, steps at eWeatherCompState+2): puts MegaMan back at +0x12/+0x14 (Z 0x40) with animation +0xF and facing +0x10, sets flag 0xBE4; returns 1 while busy, 0 when done.
 // symdb: cutscene native; r5 = eWeatherCompState -> r0 = 1 busy, 0 done
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F810.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_putPlayerBack_808F810.yaml
 	thumb_local_start
-sub_808F810:
+weatherComp_putPlayerBack_808F810:
 	push {r4-r7,lr}
 	ldr r5, off_808F8FC // =off_808F5D4 
 	ldr r5, [r5]
@@ -69,7 +69,7 @@ loc_808F8A6:
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808F810
+	thumb_func_end weatherComp_putPlayerBack_808F810
 
 	thumb_local_start
 sub_808F8AC:
@@ -736,16 +736,16 @@ word_808FDB4:
 word_808FDB6:
 	.hword 0x30C
 off_808FDB8:
-	.word unk_2000310
+	.word eWeatherCompState
 dword_808FDBC:
 	.word 0x2011B30
 	thumb_func_end sub_808FD64
 
 // symdb: Mr. Weather comp entry: while flag 0xBFB is clear, zero eWeatherCompState and set its defaults; clear flags 0xBF4..+6, 0xBE9..+5 and 0xBF2, set 0xBE0; then the comp's setup calls.
 // symdb: r10 = toolkit -> r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FDC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_init_808FDC0.yaml
 	thumb_local_start
-sub_808FDC0:
+weatherComp_init_808FDC0:
 	push {r5,lr}
 	ldr r5, off_808FEA0 // =off_808FDB8 
 	ldr r5, [r5]
@@ -786,7 +786,7 @@ loc_808FE10:
 	mov r0, #0
 	pop {r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808FDC0
+	thumb_func_end weatherComp_init_808FDC0
 
 	thumb_func_start sub_808FE34
 sub_808FE34:
@@ -835,9 +835,9 @@ sub_808FE74:
 	bne loc_808FE90
 	bl sub_809005C
 	beq loc_808FE90
-	bl sub_80900C8
+	bl weatherComp_spawnObject1DNearPlayer_80900C8
 loc_808FE90:
-	bl sub_8090104
+	bl weatherComp_pickScript_8090104
 	cmp r0, #0
 	beq locret_808FE9C
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -1059,9 +1059,9 @@ off_8090000:
 
 // symdb: Mr. Weather comp: if MegaMan's tile trigger (reqBBS_81409E4) is 0x70..0x79, stores it - 0x70 at eWeatherCompState+0xE and returns 1 (Z clear).
 // symdb: r5 = eWeatherCompState -> r0 = 0/1, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090004.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger70_8090004.yaml
 	thumb_local_start
-sub_8090004:
+weatherComp_checkTrigger70_8090004:
 	push {r4,lr}
 	mov r4, #0
 	bl reqBBS_81409E4
@@ -1076,13 +1076,13 @@ loc_809001A:
 	mov r0, r4
 	tst r0, r0
 	pop {r4,pc}
-	thumb_func_end sub_8090004
+	thumb_func_end weatherComp_checkTrigger70_8090004
 
 // symdb: Mr. Weather comp: if MegaMan's tile trigger is 0x60..0x69, stores it - 0x60 at eWeatherCompState+0xE and returns 1 (Z clear).
 // symdb: r5 = eWeatherCompState -> r0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090020.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger60_8090020.yaml
 	thumb_local_start
-sub_8090020:
+weatherComp_checkTrigger60_8090020:
 	push {r4,lr}
 	bl reqBBS_81409E4
 	cmp r0, #0x60 
@@ -1097,7 +1097,7 @@ loc_8090034:
 	tst r0, r0
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8090020
+	thumb_func_end weatherComp_checkTrigger60_8090020
 
 	thumb_local_start
 sub_809003C:
@@ -1167,9 +1167,9 @@ loc_80900C2:
 
 // symdb: Mr. Weather comp: spawns map object 0x1D near MegaMan, counts it in eWeatherCompState+6 and sets flags 0xBE5, PET_DISABLED and 0x1739.
 // symdb: r5 = eWeatherCompState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80900C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_spawnObject1DNearPlayer_80900C8.yaml
 	thumb_local_start
-sub_80900C8:
+weatherComp_spawnObject1DNearPlayer_80900C8:
 	push {lr}
 	bl ReadOWPlayerObjectCoords
 	sub r2, #0x20 
@@ -1192,22 +1192,22 @@ sub_80900C8:
 	movflag EVENT_1739
 	bl SetEventFlagFromImmediate
 	pop {pc}
-	thumb_func_end sub_80900C8
+	thumb_func_end weatherComp_spawnObject1DNearPlayer_80900C8
 
 // symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
 // symdb: r5 = eWeatherCompState -> r4 = script or 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8090104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_pickScript_8090104.yaml
 	thumb_local_start
-sub_8090104:
+weatherComp_pickScript_8090104:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r6, #0
-	bl sub_8090004
+	bl weatherComp_checkTrigger70_8090004
 	beq loc_8090114
 	ldr r4, off_8090180 // =byte_808F668 
 	b loc_809017C
 loc_8090114:
-	bl sub_8090020
+	bl weatherComp_checkTrigger60_8090020
 	beq loc_809011E
 	ldr r4, off_8090184 // =byte_808F67C 
 	b loc_809017C
@@ -1273,7 +1273,7 @@ off_8090194:
 	.word byte_808F728
 off_8090198:
 	.word byte_808F6EC
-	thumb_func_end sub_8090104
+	thumb_func_end weatherComp_pickScript_8090104
 
 	thumb_local_start
 sub_809019C:
