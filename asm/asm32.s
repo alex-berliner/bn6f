@@ -2502,6 +2502,8 @@ locret_810EE62:
 	pop {pc}
 	thumb_func_end sub_810EE3E
 
+// symdb: Puffy AI step with no RNG: frame-parameter checks and sub_801171C timer setup.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EE64.yaml
 	thumb_local_start
 sub_810EE64:
 	push {lr}
@@ -2564,6 +2566,8 @@ loc_810EECE:
 	bl sub_8015C94
 locret_810EEDC:
 	pop {r4,r6,pc}
+// symdb: Puffy AI step: after object_getFlag / sub_80103F8, rolls GetPositiveSignedRNG & 0xF.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EEDE.yaml
 	thumb_local_start
 sub_810EEDE:
 	push {r4,r6,lr}
@@ -2606,6 +2610,8 @@ byte_810EF30:
 	.byte 0x0
 	thumb_func_end sub_810EEDE
 
+// symdb: Puffy AI step: GetPositiveSignedRNG & 0xE (front-direction-relative) picks the branch.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EF40.yaml
 	thumb_local_start
 sub_810EF40:
 	push {r4,lr}
@@ -10301,11 +10307,8 @@ battle_packObjStateBitToAttrCode_8113154:
 	mov pc, lr
 	thumb_func_end battle_packObjStateBitToAttrCode_8113154
 
-// symdb: Initializes a battle attack object's stats from a preset table selected by the attacker's attack index, then kicks off the attack with a duration of 10.
-// symdb: void battle_initAttackFromPreset(attacker /*r4*/, context /*r5*/, attackObj /*r7*/) — returns
-// symdb: flags from the state check (if it bails) or from object_setAttack0; clobbers r0-r3, preserves
-// symdb: r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initAttackFromPreset_8113162.yaml
+// symdb: Gunner attack init: picks the row/object fields with battle_pickRandomRowObjectFields_810971A (the RNG lives there) and arms the attack (object_setAttack0).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAttackFromPreset_8113162.yaml
 	thumb_local_start
 battle_initAttackFromPreset_8113162:
 	push {lr}

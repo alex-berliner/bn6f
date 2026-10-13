@@ -173189,6 +173189,8 @@ sub_810A610:
 	pop {pc}
 	thumb_func_end sub_810A610
 
+// symdb: Piranha AI step: the flag-state byte at AIState+4 cycles 0/1; only some states roll GetPositiveSignedRNG % 3 (svc 6) to pick the attack, others set the 0x64 timer / step 9 directly.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A648.yaml
 	thumb_local_start
 sub_810A648:
 	push {lr}
@@ -173309,6 +173311,8 @@ loc_810A720:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810A6F4
 
+// symdb: Piranha panel picker: validates the candidate panel (GetAllianceDependentPanelParamArgs + object_checkPanelParameters, object_reservePanel), then rolls GetPositiveSignedRNG % count over the valid panels (svc 6).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A724.yaml
 	thumb_local_start
 sub_810A724:
 	push {r4,r6,r7,lr}
@@ -174697,6 +174701,8 @@ off_810B2D0:
 	.word sub_810B172+1
 	thumb_func_end sub_810B2AE
 
+// symdb: Swordy AI step: spawns the generic type-0x47 effect object, then rolls GetPositiveSignedRNG & 1 to branch the attack.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810B30C.yaml
 	thumb_local_start
 sub_810B30C:
 	push {lr}
@@ -174897,6 +174903,8 @@ locret_810B49A:
 	pop {r6,pc}
 	thumb_func_end sub_810B436
 
+// symdb: Swordy variant step: after sub_810B58A and a <= 3 check, rolls GetPositiveSignedRNG & 1.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810B49C.yaml
 	thumb_local_start
 sub_810B49C:
 	push {lr}
@@ -175126,6 +175134,8 @@ sub_810B646:
 	cmp r0, #0
 	pop {r0,r1,pc}
 	thumb_func_end sub_810B646
+// symdb: Swordy-family panel picker: ignores the object's column and picks a row panel (object_getPanelsIgnoreColumnFiltered / object_getPanelsInRowFiltered), then rolls GetPositiveSignedRNG % count (svc 6).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810B65E.yaml
 	thumb_local_start
 sub_810B65E:
 	push {r4,r7,lr}
@@ -175189,6 +175199,8 @@ byte_810B6E0:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_810B6B4
 
+// symdb: Swordy-family step: on the 1/2 state paths rolls GetPositiveSignedRNG & 1.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810B6F0.yaml
 	thumb_local_start
 sub_810B6F0:
 	push {lr}
@@ -176034,6 +176046,8 @@ loc_810BDF0:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810BDC4
 
+// symdb: KillrEye AI step: GetRNG & 3 (with a 0x63 counter guard) picks the attack branch.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BDF4.yaml
 	thumb_local_start
 sub_810BDF4:
 	push {r4-r7,lr}
@@ -176064,6 +176078,8 @@ sub_810BDF4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_810BDF4
 
+// symdb: KillrEye AI step (second): GetRNG & 3, same 0x63 guard shape as sub_810BDF4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BE2A.yaml
 	thumb_local_start
 sub_810BE2A:
 	push {r4,lr}
@@ -176448,6 +176464,8 @@ off_810C1EC:
 	.word sub_810C212+1
 	thumb_func_end sub_810C1D8
 
+// symdb: Quaker AI step: GetPositiveSignedRNG & 7, times 10 (0xA), becomes the attack delay via object_setAttack0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C1F4.yaml
 	thumb_local_start
 sub_810C1F4:
 	push {lr}
@@ -176549,6 +176567,8 @@ loc_810C2AE:
 	pop {r4,r6,pc}
 	thumb_func_end sub_810C282
 
+// symdb: Quaker panel picker: three GetAllianceDependentPanelParamArgs + object_getPanelsInRowFiltered candidate sets, then one GetPositiveSignedRNG % count roll (svc 6).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C2B2.yaml
 	thumb_local_start
 sub_810C2B2:
 	push {r4,r7,lr}
