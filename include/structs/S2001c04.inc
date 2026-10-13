@@ -11,6 +11,8 @@
 	u8 Unk_07 // loc=0x7
 
 	struct_org 0x12
+	// walk counter: >> 6, max 16, picks the encounter odds; 0x400 lets the next roll start a battle
+	// (vidsync runtime; recomp symbols/db/eStruct2001c04.yaml)
 	u16 Unk_12 // loc=0x12
 	u16 Unk_14 // loc=0x14
 
@@ -19,6 +21,7 @@
   u32 Unk_1c // loc=0x1c
 
 	struct_org 0x24
+  // SneakRun steps left (flag 0x170A) / LocEnemy steps left (flag 0x170B) (vidsync runtime)
   u32 Unk_24 // loc=0x24
   u32 Unk_28 // loc=0x28
   u32 OptCurBattleDataPtr // loc=0x2c

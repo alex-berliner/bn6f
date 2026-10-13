@@ -23,6 +23,8 @@
 	JoypadFlags Pressed // loc=0x2
 	JoypadFlags LowSensitivityHeld // loc=0x4
 	JoypadFlags Held2 // loc=0x6
+	// 0x8..0x11: frames each key has been held; they count up and saturate near 0x10 (vidsync probe;
+	// recomp symbols/db/eJoypad.yaml)
 	u8 AHeldTimer // loc=0x8
 	u8 BHeldTimer // loc=0x9
 	u8 SelectHeldTimer // loc=0xa
@@ -34,6 +36,8 @@
 	u8 RHeldTimer // loc=0x10
 	u8 LHeldTimer // loc=0x11
 	u8 Undetected_12 // loc=0x12
+	// key-repeat phase, cycles 0..4 while a direction is held; a held key repeats (LowSensitivityHeld
+	// bits fire) when it wraps. A reload resets it (vidsync runtime; recomp symbols/db/eJoypad.yaml)
 	u8 LowSensitivityTimer // loc=0x13
 	u0 Size // loc=0x14
 	restore_struct_label
