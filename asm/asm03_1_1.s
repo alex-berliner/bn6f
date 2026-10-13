@@ -7032,6 +7032,8 @@ off_803C408:
 	.word eS200A290
 	thumb_func_end sub_803C3E8
 
+// symdb: Draws one primary RNG value and stores its low halfword at word_2006770; plausibly a link-session token.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C40C.yaml
 	thumb_local_start
 sub_803C40C:
 	push {r4-r7,lr}
@@ -13776,6 +13778,8 @@ loc_803F814:
 	pop {r1-r7,pc}
 	thumb_func_end sub_803F79E
 
+// symdb: Saves the game: copies the 0x6710-byte EWRAM block 0x02000000-0x0200670F (both RNG seeds, mystery data, event flags, chip pack, ...) to 0x0E000100.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F838.yaml
 	thumb_func_start sub_803F838
 sub_803F838: // () -> !zf
 	push {r1-r7,lr}

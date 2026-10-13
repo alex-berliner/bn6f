@@ -10885,6 +10885,8 @@ dword_804C808:
 	.word 0x10000E02
 	thumb_func_end sub_804C7EC
 
+// symdb: Random ambient SFX timer: one primary RNG draw sets a random 300-555 frame countdown at object +0x14.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C818.yaml
 	thumb_local_start
 sub_804C818:
 	push {r4-r7,lr}

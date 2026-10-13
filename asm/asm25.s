@@ -986,6 +986,8 @@ loc_808FF74:
 	pop {r4,pc}
 	thumb_func_end sub_808FF70
 
+// symdb: Mr. Weather comp predicate: returns 1 iff the word at eWeatherCompState + 0x20 is 0 (0 otherwise).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF8C.yaml
 	thumb_local_start
 sub_808FF8C:
 	push {lr}
@@ -1456,6 +1458,8 @@ off_80902D8:
 	.word off_808FDB8
 	thumb_func_end sub_809022C
 
+// symdb: Mr. Weather comp: tests a per-map event flag and returns whether it is set — flag 0x0BE1 + MapNumber, or 0x0FD2 when the map group is 0x85 (undernet?). Table byte_8090300 = { 0x0BE1, 0x0BE2, 0x0BE3, 0x0FD2 }.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80902DC.yaml
 	thumb_local_start
 sub_80902DC:
 	push {r4-r7,lr}

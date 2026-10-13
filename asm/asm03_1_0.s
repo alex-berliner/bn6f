@@ -2686,8 +2686,8 @@ owPlayer_80350a8:
 	.balign 4, 0x00
 	thumb_func_end owPlayer_80350a8
 
-// symdb: Runs the "<item> just expired!" cutscene when SneakRun (flag 0x170A) or LocEnemy (0x170B) is on and its steps left (eStruct2001c04 +0x24 / +0x28) reached 0.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/npc_80350BC.yaml
+// symdb: Runs the "<item> just expired!" cutscene when SneakRun (flag 0x170A) or LocEnemy (0x170B) is on and its steps left (eStruct2001c04 +0x24 / +0x28) reached 0; on EVENT_1708 it instead starts cutscene byte_8099E04, and it only acts in Internet maps (MapGroup >= 0x80) while no Slip/cutscene is running.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_80350BC.yaml
 	thumb_local_start
 npc_80350BC:
 	push {r4,lr}

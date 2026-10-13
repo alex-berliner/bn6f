@@ -21598,6 +21598,8 @@ SetCameraXYZ:
 	mov pc, lr
 	thumb_func_end SetCameraXYZ
 
+// symdb: Camera shake: draws from the secondary RNG (two calls), a cosmetic advance that still shifts the next folder shuffle.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_doShakeEffect_80301e8.yaml
 	thumb_local_start
 camera_doShakeEffect_80301e8:
 	push {lr}

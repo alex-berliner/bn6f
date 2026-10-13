@@ -3071,6 +3071,8 @@ sub_8143406:
 	strb r0, [r5,#0xa] // (byte_200101A - 0x2001010)
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
+// symdb: Uniform 3-way pick through pickWeightedIndex_8000E3A with the weight table {5,5,5} - the result is always 0, so it only burns 2-8 primary draws; stores 5 into dword_200101C (the Cybercrow spawn cooldown).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814343A.yaml
 	thumb_local_start
 sub_814343A:
 	push {r4-r7,lr}

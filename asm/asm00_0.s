@@ -2873,6 +2873,8 @@ GetPositiveSignedRNGSecondary:
 	thumb_func_end GetPositiveSignedRNGSecondary
 
 /// tags: "#mod.rng, #dead, "
+// symdb: Steps the unused third RNG state at dword_20018E8 with the primary's recurrence; dead code, no caller.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dead_rng_800157C.yaml
 	thumb_local_start
 dead_rng_800157C:
 	push {r7,lr}

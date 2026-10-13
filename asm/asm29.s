@@ -185,6 +185,8 @@ battle_objectEnterState4LatchTilePos_80A4AB8:
 	pop {pc}
 	thumb_func_end battle_objectEnterState4LatchTilePos_80A4AB8
 
+// symdb: Story-explosion map object update (map object types 1 / 0x1E / 0x1F family): burns 1-2 primary RNG draws per explosion puff.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A4ACC.yaml
 	thumb_local_start
 sub_80A4ACC:
 	push {r4-r7,lr}
@@ -6958,6 +6960,8 @@ off_80A8AB0:
 	.word math_cosTable
 	thumb_func_end sub_80A8A7C
 
+// symdb: Cybercrow map object (type 0x18) update: copies the crow record's position (s16.16 X/Y/Z at +0x08 / +0x0C / +0x10) into the object at +0x0C/+0x10/+0x14, runs one of 3 state handlers (off_80A8AE8), copies the position back.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8AB4.yaml
 	thumb_func_start sub_80A8AB4
 sub_80A8AB4:
 	push {r4-r7,lr}
@@ -7228,6 +7232,8 @@ locret_80A8CCA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8CB8
 
+// symdb: Cybercrow map object wobble: when the record's countdown at +0x02 expires, one GetRNG % 0x60 << 8 and one GetRNG & 7 (sign: < 4 negates) pick a heading change added to the record's +0x04; then sub_8143220.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8CCC.yaml
 	thumb_local_start
 sub_80A8CCC:
 	push {r4-r7,lr}
@@ -8133,6 +8139,8 @@ sub_80A92E0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A92E0
 
+// symdb: Mr. Weather comp map object (type 0x1B rainbow-orb) state 4: flag 0xBE6 -> priority 3, state 8, sound 0x6B and the fade sub_80A9360; flag 0xBE4 -> state 0xC (sub_80A93D0); otherwise bob via sub_80A93D8 + sub_80A93E8.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A931C.yaml
 	thumb_local_start
 sub_80A931C:
 	push {r4-r7,lr}
@@ -8163,6 +8171,8 @@ loc_80A935A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A931C
 
+// symdb: Mr. Weather comp map object (type 0x1B) white-fade state: steps the palette through sub_80A937C, layers the effect over the object (applyLayerEffectToOWObject_8035694) and sets the sprite priority.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9360.yaml
 	thumb_local_start
 sub_80A9360:
 	push {r4-r7,lr}
@@ -8176,6 +8186,8 @@ sub_80A9360:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9360
 
+// symdb: Mr. Weather comp map object (type 0x1B) fade-table stepper: [r5+0x24] >> 1 indexes byte_80A93C0 = { 4, 6, 8, ..., 0x1E, 0x1F, 0xFF }; each entry is applied as a sprite color shader, 0xFF ends the fade (state 0xC, flag 0xBE7) and the counter increments each frame.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A937C.yaml
 	thumb_local_start
 sub_80A937C:
 	push {lr}
@@ -8234,6 +8246,8 @@ dword_80A93E4:
 	.word 0xE000000
 	thumb_func_end sub_80A93D8
 
+// symdb: Mr. Weather comp map object (type 0x1B) idle bob: alternates a phase byte at +0x06 every 0x18 frames and moves the object's Z (s16.16 at +0x14) by ±0x4000 (±0.25 px) per frame.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A93E8.yaml
 	thumb_local_start
 sub_80A93E8:
 	push {lr}
@@ -8278,6 +8292,8 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
 	push {lr}
@@ -8455,8 +8471,8 @@ off_80A9598:
 	.word byte_81437CC
 	thumb_func_end sub_80A9570
 
-// symdb: Mr. Weather comp map object (type 0x1C) step: MegaMan within 12 px at the same Z -> flag 0xBFC, sound 0x1A4, state 8.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A95A8.yaml
+// symdb: Mr. Weather comp map object (type 0x1C) step: MegaMan within 12 px at the same Z -> flag 0xBFC, sound 0x1A4, sets the object's per-instance event flag (byte_80A9648[i], i = [r5+4]), removes the shadow, state 8.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A95A8.yaml
 	thumb_local_start
 sub_80A95A8:
 	push {r4,lr}
@@ -8512,8 +8528,8 @@ locret_80A9610:
 	.balign 4, 0x00
 	thumb_func_end sub_80A95EC
 
-// symdb: Mr. Weather comp: sets flag byte_80A9648[index].
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A9614.yaml
+// symdb: Mr. Weather comp: sets the object's per-instance event flag — SetEventFlag(byte_80A9648[[r5+4]]), i.e. flag 0x0BF4 + instance index.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9614.yaml
 	thumb_local_start
 sub_80A9614:
 	push {r4,lr}
@@ -8527,8 +8543,8 @@ sub_80A9614:
 	.balign 4, 0x00
 	thumb_func_end sub_80A9614
 
-// symdb: Mr. Weather comp: tests flag byte_80A9648[index].
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A9628.yaml
+// symdb: Mr. Weather comp: returns 1 iff the object's per-instance event flag is set — TestEventFlag(byte_80A9648[[r5+4]]), i.e. flag 0x0BF4 + instance index.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9628.yaml
 	thumb_local_start
 sub_80A9628:
 	push {r4,lr}
@@ -8553,6 +8569,8 @@ byte_80A9648:
 	.byte 0xF9, 0xB, 0xFA, 0xB, 0x0, 0x0
 	thumb_func_end sub_80A9628
 
+// symdb: Mr. Weather comp map object (type 0x1D) update: long-calls one of 4 state handlers (off_80A966C = sub_80A9680, sub_80A96C8, sub_80A96F0, sub_80A96FC) chosen by the state byte [r5+8].
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9658.yaml
 	thumb_func_start sub_80A9658
 sub_80A9658:
 	push {lr}
@@ -8812,6 +8830,8 @@ sub_80A9844:
 	pop {pc}
 	thumb_func_end sub_80A9844
 
+// symdb: Story-explosion map object update (map object types 1 / 0x1E / 0x1F family): burns 1-2 primary RNG draws per explosion puff.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9858.yaml
 	thumb_local_start
 sub_80A9858:
 	push {r4-r7,lr}
@@ -8913,6 +8933,8 @@ sub_80A98F4:
 	pop {pc}
 	thumb_func_end sub_80A98F4
 
+// symdb: Story-explosion map object update (map object types 1 / 0x1E / 0x1F family): burns 1-2 primary RNG draws per explosion puff.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9908.yaml
 	thumb_local_start
 sub_80A9908:
 	push {r4-r7,lr}
@@ -10050,6 +10072,8 @@ loc_80AA27C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA248
 
+// symdb: Falling-object map object (type 0x2C): one primary RNG draw per landing, which sets a random 8-39 frame wait at object +0x24.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA282.yaml
 	thumb_local_start
 sub_80AA282:
 	push {r4-r7,lr}

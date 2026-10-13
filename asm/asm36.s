@@ -3415,6 +3415,8 @@ off_8131C20:
 	.word sub_8131D80+1
 	thumb_func_end sub_8131C04
 
+// symdb: Eight-pass secondary-RNG table shuffle into dword_202522C (0x0202522C); the UI that reads the result is not identified.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131C2C.yaml
 	thumb_local_start
 sub_8131C2C:
 	push {r4-r7,lr}
@@ -3632,6 +3634,8 @@ off_8131E50:
 	.word byte_8131BE0
 	thumb_func_end sub_8131D80
 
+// symdb: Gathers three 10-halfword rows out of the shuffled 0x0202522C table into unk_20251A0, starting at a secondary-RNG-picked word offset; one draw per call.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131E70.yaml
 	thumb_local_start
 sub_8131E70:
 	push {r4-r7,lr}

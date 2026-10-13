@@ -299,6 +299,8 @@ dword_20018B8:: // 0x20018b8
 	.space 8
 unk_20018C0:: // 0x20018c0
 	.space 40
+// symdb: Third RNG state (u32), stepped by the same recurrence as the primary; only dead_rng_800157C touches it and nothing calls that, so it never advances in play.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_20018E8.yaml
 dword_20018E8:: // 0x20018e8
 	.space 4
 unk_20018EC:: // 0x20018ec
@@ -719,8 +721,8 @@ dword_2009930:: // 0x2009930
 byte_2009940:: // 0x2009940
 	.space 64
 
-// symdb: Camera; +0x30/+0x34 look like the camera X/Y following MegaMan (s16.16), duplicated at +0x3C/+0x40.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/eCamera.yaml
+// symdb: Camera; +0x30/+0x34 the camera X/Y following MegaMan (s16.16), +0x3C/+0x40 the next-frame targets the shake and follow code writes them from.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eCamera.yaml
 eCamera:: // 0x2009980
 	camera_struct eCamera
 eCameraEnd:: // 0x20099d0

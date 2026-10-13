@@ -4395,6 +4395,8 @@ F0 01 = load 8-bit script number from 02009D6C and execute that script (if the n
 F0 02 XX = store XX into 02009D6C (if XX = FFh, nothing happens and the script continues)
 F0 XX = ? (this is for XX above 02)
 */
+// symdb: Chatbox text opcode F0 (jump table chatbox.s:2498): random weighted branch — opcode F0 nn w... t...: (r & 0x3FF) % (sum of weights w) picks which target t to jump to. Consumes (iCurrFrame & 3) + 2 GetRNG draws.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_F0_jump.yaml
 chatbox_F0_jump:
 	push {lr}
 	ldrb r0, [r4,#1]
@@ -5913,6 +5915,8 @@ chatbox_804252C:
 	pop {pc}
 	thumb_func_end chatbox_804252C
 
+// symdb: Dead code: a random-item chatbox command handler — plays SOUND_UNK_73, draws GetRNG & [r4+2], picks a byte from the table after the arguments, stores it to r5+0x4C and calls GiveItem(1). Nothing in bn6f/asm references it, so it never runs.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8042554.yaml
 	thumb_local_start
 sub_8042554:
 	push {lr}

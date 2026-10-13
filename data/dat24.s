@@ -3041,6 +3041,8 @@ cutscenescript_808F514:
 	cs_wait_var_equal byte1=0x08 byte2=0x04
 	cs_pause byte1=0xFF byte2=0x1E
 
+// symdb: Mr. Weather comp cleanup cutscene: fade out, clear EVENT_CUR_DIR_LOCKED, free all ow map objects, set event flag 0x11F, pause 30, set the enter-map fade and warp via unk_808F5C4, then re-enable collisions and unlock the player.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscenescript_808F594.yaml
 cutscenescript_808F594:
 	cs_disable_cutscene_skip_script
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x10
@@ -3101,6 +3103,8 @@ byte_808F668::
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Mr. Weather comp cutscene for a 0x6x trigger: lock the player, set flag 0x1731, run sub_808F900, game-state byte 9 = 0, unlock.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_808F67C.yaml
 byte_808F67C::
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0

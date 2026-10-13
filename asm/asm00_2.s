@@ -6189,6 +6189,8 @@ nullsub_44:
 	mov pc, lr
 	thumb_func_end nullsub_44
 
+// symdb: MegaMan's charge shot: burns one primary RNG draw per shot and, stat-gated, runs sub_8013D5E (a weighted 1/2 pick) whose outcome sends the shot down a second RNG-consuming path.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/megamanChargeShotBPwrAtk_init_8011A26.yaml
 	thumb_local_start
 megamanChargeShotBPwrAtk_init_8011A26: // JP: 0x8012036
 	push {r4,lr}
@@ -11526,6 +11528,8 @@ byte_8013D44:
 	.byte 0x18, 0x1, 0x1C, 0x1, 0xFC, 0x0, 0xFC, 0x0, 0xFC, 0x0, 0xFC, 0x0
 	thumb_func_end naviAi_changePanel_8013CC4
 
+// symdb: Stat-gated weighted pick for the charge shot: builds a 16-entry list from NaviStats bytes 0x14 (1s) and 0x15 (2s), then one primary draw & 0xF picks from it; 0 when both stats are 0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013D5E.yaml
 	thumb_func_start sub_8013D5E
 sub_8013D5E:
 	push {r4-r7,lr}
