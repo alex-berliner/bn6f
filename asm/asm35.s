@@ -119,7 +119,7 @@ sub_812EB78:
 	push {lr}
 	// a1
 	ldr r0, off_812EB84 // =byte_812DA94 
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_812EB84:
@@ -183,7 +183,7 @@ sub_812EBD8:
 	sub sp, sp, #4
 	str r2, [sp]
 	mov r6, r1
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, r6
 	bl getStructFrom2008450
 	beq loc_812EBFE
@@ -469,7 +469,7 @@ loc_812EDEA:
 	// a1
 	ldr r0, off_812EDF8 // =byte_812DADC 
 loc_812EDEE:
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_812EDF4:

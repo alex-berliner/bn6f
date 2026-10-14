@@ -650,7 +650,7 @@ int __fastcall sub_8123C20(int a1, int a2, void *a3, int a4)
         *(v5 + v4) = v8;
         if ( !(v11 & *(v5 + 76)) )
         {
-            sub_80465A0(v12);
+            battle_spawnEStructRecordsFromTable_80465A0(v12);
             *(v5 + 76) |= v11;
         }
         v10 = 10 * *(v5 + 12) + 36;
@@ -727,7 +727,7 @@ void __fastcall sub_8123D54(int a1)
     v2 = byte_81233F0;
     if ( v1 )
         v2 = byte_81233F8;
-    sub_80465A0(v2);
+    battle_spawnEStructRecordsFromTable_80465A0(v2);
 }
 
 
@@ -3750,7 +3750,7 @@ _BYTE *battle_updateChipSprite_8126630()
         if ( !v4 )
         {
             if ( *(v5 + 1) != 26 )
-                sub_80465A0(byte_8124B08);
+                battle_spawnEStructRecordsFromTable_80465A0(byte_8124B08);
             v6 = *(v0 + 60) + *(v0 + 64);
             setSlotFieldsFromStartTo3_811A1F4(dword_201FC20[v6], HIBYTE(dword_201FC20[v6]), 0, 0);
             result = sprite_moveSlotGroupXY_811A220(47, 88, 0);
@@ -3764,7 +3764,7 @@ _BYTE *battle_updateChipSprite_8126630()
             if ( *(v3 + 1) != 22 )
             {
                 sub_8046696(3);
-                sub_80465A0(byte_8124AE0);
+                battle_spawnEStructRecordsFromTable_80465A0(byte_8124AE0);
             }
             setFieldsInThreeTableEntries_811980C(*(*(&off_81266C4 + v1) + 2 * (*(v0 + 10 * v1 + 20) + *(v0 + 10 * v1 + 24))), 255, 0, 0);
             sprite_setPositionForIdRange3_8119854(47, 88, 0);
@@ -4059,7 +4059,7 @@ LABEL_10:
 
 
 // 0x8126cc0
-void sub_8126CC0()
+void battle_petNaviDisplayUpdate_8126CC0()
 {
     int v0; // r5
     int v1; // r0
@@ -6230,7 +6230,7 @@ void __noreturn sub_8128CD8()
     sub_802B4D4(byte_201BB60, 36976, 100699648, v7);
     sub_8129104(byte_201BB60, 36960);
     battle_resetEStructRecords_8046664();
-    sub_80465A0(byte_8128CB0);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_8128CB0);
     v8 = sub_802B2A0(byte_201BDB8);
     *(v0 + 30) = v8;
     if ( v8 )
@@ -6530,7 +6530,7 @@ int battle_initFullCutscene_81292D8()
         battle_resetEStructRecords_8046664();
         *(v0 + 2) = 4;
         clearStruct200BC30_803EBAC(4, v3, v4, v5);
-        sub_80465A0(byte_8129158);
+        battle_spawnEStructRecordsFromTable_80465A0(byte_8129158);
         bg_LoadFullScreenTilesAndSetup_812AFB0();
     }
     return result;
@@ -6629,7 +6629,7 @@ int scene_runFadePopTick_8129400()
         *(v0 + 13) = 0;
         *(v0 + 2) = 12;
         clearStruct200BC30_803EBAC(12, v2, v3, v4);
-        sub_80465A0(byte_8129168);
+        battle_spawnEStructRecordsFromTable_80465A0(byte_8129168);
         bg_LoadFullScreenTilesAndSetup_812AFB0();
     }
     entity_runAllUpdateHandlers_80465BC();

@@ -201,7 +201,7 @@ sub_81301DC:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_8130204 // =byte_812F044
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_S2001c04_Ptr]
 	ldrb r4, [r0,#5]
@@ -342,7 +342,7 @@ sub_81302D0:
 	sub sp, sp, #4
 	str r2, [sp]
 	mov r6, r1
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, r6
 	bl getStructFrom2008450
 	beq loc_81302EE
@@ -593,7 +593,7 @@ loc_81304AA:
 	// a1
 	ldr r0, off_81304B8 // =byte_812F064
 loc_81304AE:
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_81304B4:
@@ -1985,7 +1985,7 @@ loc_8130F90:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_8130FC0 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 locret_8130FBA:
 	pop {pc}
 	.balign 4, 0
@@ -4921,7 +4921,7 @@ sub_81326D4:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// a1
 	ldr r0, off_8132710 // =byte_81326C8
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #1
 	mov r1, #0
 	bl sub_811AE7C
@@ -7718,7 +7718,7 @@ loc_8133D28:
 	bne loc_8133D36
 	// a1
 	ldr r0, off_8133D5C // =byte_8133154
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 loc_8133D36:
 	ldrh r0, [r5,#0x20]
 	ldrh r1, [r5,#0x24]
@@ -7808,7 +7808,7 @@ loc_8133D9A:
 	ldr r1, off_8133E08 // =off_8133E0C 
 	// a1
 	ldr r0, [r1,r0]
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 loc_8133DDC:
 	ldr r0, off_8133E24 // =off_8133E28 
 	lsl r1, r4, #2
@@ -8118,7 +8118,7 @@ sub_81340AC:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_81340D8 // =byte_813313C
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r6, #0
 loc_81340B6:
 	mov r0, r6
@@ -8151,7 +8151,7 @@ sub_81340DC:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_81340F8 // =byte_813314C
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #3
 	bl getStructFrom2008450
 	beq locret_81340F6
@@ -10679,7 +10679,7 @@ sub_81352A0:
 loc_81352E8:
 	// a1
 	ldr r0, [sp,#4]
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	strh r6, [r5,#0x1c]
 	mov r0, #0x24 
 	ldr r1, [sp,#8]
@@ -10741,7 +10741,7 @@ loc_8135328:
 	lsl r1, r4, #2
 	// a1
 	ldr r0, [r0,r1]
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, off_8135398 // =off_813539C 
 	lsl r1, r4, #2
 	ldr r0, [r0,r1]
@@ -10796,7 +10796,7 @@ sub_81353B8:
 	str r2, [sp,#8]
 	str r3, [sp,#0xc]
 	ldr r0, [sp]
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #0x20 
 	ldr r1, [sp,#4]
 	ldr r2, [sp,#8]
@@ -11283,7 +11283,7 @@ sub_81356F4:
 	bl sub_8135D8C
 	bl sub_8135D9C
 	ldr r0, off_81357C0 // =byte_8135628
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #SONG_NAVI_CUSTOMIZER
 	bl PlayMusic // (song: u8) -> ()
 	pop {pc}
@@ -12482,7 +12482,7 @@ sub_8136100:
 	strb r0, [r5,#2]
 	// a1
 	ldr r0, off_8136128 // =byte_8135654
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r7, #0x81
 loc_8136120:
 	mov r0, r7
@@ -13462,7 +13462,7 @@ sub_813686C:
 	strh r0, [r5,#0x1c]
 	// a1
 	ldr r0, off_81368C0 // =byte_8136828
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk200f3a0_Ptr]
 	mov r1, #0x27 
@@ -13573,7 +13573,7 @@ loc_8136962:
 	bl sub_8046696
 	// a1
 	ldr r0, off_8136994 // =byte_8136834
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r1, off_813699C // =byte_81369B5 
 	ldrb r2, [r5,#0xf]
 	ldrb r1, [r1,r2]
@@ -13631,7 +13631,7 @@ sub_81369D0:
 	bl sub_8046696
 	// a1
 	ldr r0, off_8136A08 // =byte_813683C
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #0x30 
 	strb r0, [r5,#3]
 	mov r0, #0
@@ -17622,7 +17622,7 @@ sub_8138848:
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	pop {pc}
 	thumb_func_end sub_8138848
 

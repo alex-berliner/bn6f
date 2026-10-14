@@ -3373,9 +3373,9 @@ off_800492C:
 	thumb_func_end TryUpdateEachOverworldMapObject_80048D2
 
 // symdb: Per-frame draw step for the overworld map-object table: for each of the 56 entries projects/culls, ensures gfx resident, queues OAM pieces when visible (or clears the queued count when hidden), then records the sprite-group palette count in slot 5.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004934.yaml
-	thumb_func_start sub_8004934
-sub_8004934:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_queueSprites_8004934.yaml
+	thumb_func_start owMapObject_queueSprites_8004934
+owMapObject_queueSprites_8004934:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -3441,7 +3441,7 @@ off_80049A8:
 	.word sprite_projectAndCull+1
 off_80049AC:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8004934
+	thumb_func_end owMapObject_queueSprites_8004934
 
 // symdb: One-line thunk that invokes sub_80028C0 with the constant 5 and returns.
 // symdb: void sub_80049B0(void); /* result of the tail-called routine arrives in r2 */
@@ -4430,7 +4430,7 @@ GameStateJumptable:
 	// 0x2C
 	.word sub_80057A0+1 // (self: * GameState $r5) -> ()
 	// 0x30
-	.word sub_80055CE+1 // (self: * GameState $r5) -> ()
+	.word gamestate_runOverworldSceneStep_80055CE+1 // (self: * GameState $r5) -> ()
 	// 0x34
 	.word mainState_runFrame_8005814+1 // (self: * GameState $r5) -> ()
 	// 0x38
@@ -4619,7 +4619,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl sub_80058D0
 	bl checkThenStartBattle_8005A8C // () -> ()
@@ -4646,7 +4646,7 @@ battle_init_80052D8: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 
 	bl tickCountdownGate_803F530
@@ -4740,7 +4740,7 @@ sub_800536E: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80053DA
@@ -4793,7 +4793,7 @@ scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_800545C
@@ -4850,7 +4850,7 @@ loc_8005474:
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	ldr r7, off_8005520 // =ePETMenuData
 	ldrb r0, [r7,#0x1] // (byte_200DF21 - 0x200df20)
@@ -4939,7 +4939,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80055CC
@@ -4966,9 +4966,9 @@ locret_80055CC:
 	thumb_func_end sub_800555A
 
 // symdb: Main-state 0x30 handler: runs one frame of the overworld/PET scene pipeline, and once a screen fade is running tears the scene down and switches the main jumptable to state 0x44.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80055CE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gamestate_runOverworldSceneStep_80055CE.yaml
 	thumb_local_start
-sub_80055CE: // (self: * GameState $r5) -> ()
+gamestate_runOverworldSceneStep_80055CE: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -4980,7 +4980,7 @@ sub_80055CE: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8005640
@@ -5004,7 +5004,7 @@ sub_80055CE: // (self: * GameState $r5) -> ()
 	strb r1, [r0]
 locret_8005640:
 	pop {pc}
-	thumb_func_end sub_80055CE
+	thumb_func_end gamestate_runOverworldSceneStep_80055CE
 
 // symdb: Main-jumptable step that finalizes the current frame's effects/draws, and if the screen fade is no longer active tears the scenario down and advances the main jumptable to state 0x2C (scenario restart).
 // symdb: void sub_8005642(void /* r10=toolkit, r5/r7 live, returns r0/r1/r5/r7 and sets N/Z */);
@@ -5022,7 +5022,7 @@ scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80056B4
@@ -5062,7 +5062,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_800572A
@@ -5101,7 +5101,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_800579E
@@ -5140,7 +5140,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8005812
@@ -5182,7 +5182,7 @@ mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8005858
@@ -5206,7 +5206,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	bl npc_drawSprites_800467C
 	bl sub_8004298
 	bl sub_8004590
-	bl sub_8004934
+	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80058CC
@@ -5960,7 +5960,7 @@ subsystem_launchReqBBS:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-  // trigger sub_80055CE via cbGameState_80050EC
+  // trigger gamestate_runOverworldSceneStep_80055CE via cbGameState_80050EC
 	mov r0, #0x30 
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -10953,8 +10953,8 @@ off_8008034:
 off_8008038:
 	.word sub_800840C+1
 	.word sub_8008064+1
-	.word sub_80080D2+1
-	.word sub_80081A4+1
+	.word battle_updateMainFlow_80080D2+1
+	.word battle_runVictorySequence_80081A4+1
 	.word sub_800825A+1
 	.word sub_80082DC+1
 	.word sub_800834A+1
@@ -11022,9 +11022,9 @@ locret_80080D0:
 	thumb_func_end sub_8008064
 
 // symdb: Per-frame tick of the battle main-flow state machine: refreshes both navis' virtual joypads, unpauses the battle, ticks the phase state machine, and writes the next main-flow state id (0xC/0x10/0x18/0x1C/0x20) into the caller's state word.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80080D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateMainFlow_80080D2.yaml
 	thumb_local_start
-sub_80080D2:
+battle_updateMainFlow_80080D2:
 	push {lr}
 	mov r0, #0
 	bl battle_updateNaviAIJoypad_8012DFC
@@ -11121,12 +11121,12 @@ loc_800819A:
 	str r0, [r5]
 locret_80081A2:
 	pop {pc}
-	thumb_func_end sub_80080D2
+	thumb_func_end battle_updateMainFlow_80080D2
 
 // symdb: Per-frame battle-end (victory) phase handler: on first entry clears result flags, runs player HP regen, counts leftover opponent actors, plays the winner BGM, then after a countdown marks the battle finished for the overworld flow.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80081A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runVictorySequence_80081A4.yaml
 	thumb_local_start
-sub_80081A4:
+battle_runVictorySequence_80081A4:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -11213,7 +11213,7 @@ loc_8008232:
 	bl eStruct200A008_setUnk02
 locret_8008258:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80081A4
+	thumb_func_end battle_runVictorySequence_80081A4
 
 // symdb: Per-frame update of the post-battle wait state that performs end-of-fight bookkeeping on the first call, then ticks a countdown and hands control to the next state once the link layer releases and the timer expires.
 // symdb: void sub_800825A(u32 r3, u32 r5 controller, u32 r6, u32 r7, u32 r10 toolkit, u32 lr) -> u32
@@ -13331,7 +13331,7 @@ off_80091B8:
 	.word off_80091BC
 off_80091BC:
 	// 0x00
-	.word sub_80091F0+1
+	.word battle_runBattleIntroSpawnStep_80091F0+1
 	// 0x04
 	.word battle_dispatchStatePhase_80092A0+1
 	// 0x08
@@ -13359,9 +13359,9 @@ dword_80091EC:
 	thumb_func_end sub_8009158
 
 // symdb: Battle-intro step of the battle-start state machine: spawns the field/enemy actors, applies navi stats, starts the battle BGM, then polls the intro task and hands off to the battle-flow index (0x04, or 0x24 when EVENT_1735 is set).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80091F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleIntroSpawnStep_80091F0.yaml
 	thumb_local_start
-sub_80091F0:
+battle_runBattleIntroSpawnStep_80091F0:
 	push {r4,r6,r7,lr}
 
 	ldrb r0, [r5,#oBattleState_Unk_03]
@@ -13459,7 +13459,7 @@ locret_8009276:
 	.balign 4, 0
 off_8009278:
 	.word 0x400
-	thumb_func_end sub_80091F0
+	thumb_func_end battle_runBattleIntroSpawnStep_80091F0
 
 // symdb: Runs one frame of task ID 0x484 by requesting it, dispatching it, and then clearing the active task state.
 // symdb: void sub_800927C(void) // no meaningful inputs; returns to caller with r0/r1 zeroed and C/V/N/Z

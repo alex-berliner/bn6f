@@ -138,7 +138,7 @@ char *sub_81301DC()
 	int v2; // r6
 	char *result; // r0
 
-	sub_80465A0(byte_812F044);
+	battle_spawnEStructRecordsFromTable_80465A0(byte_812F044);
 	v1 = *(*(v0 + oToolkit_Unk2001c04_Ptr) + 5);
 	v2 = 0;
 	do
@@ -219,7 +219,7 @@ int __fastcall sub_81302D0(void *a1, int a2, int a3)
 
 	v6 = a3;
 	v3 = a2;
-	sub_80465A0(a1);
+	battle_spawnEStructRecordsFromTable_80465A0(a1);
 	result = getStructFrom2008450(v3);
 	if ( !v5 )
 		result = sprite_setCoordinates(v6, 68);
@@ -323,7 +323,7 @@ void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
 // 0x81304a4
 void sub_81304A4()
 {
-	sub_80465A0(byte_812F05C);
+	battle_spawnEStructRecordsFromTable_80465A0(byte_812F05C);
 }
 
 
@@ -3076,7 +3076,7 @@ void __fastcall __noreturn sub_81326D4(int a1, int a2, int a3, int a4)
     ZeroFillGFX30025c0();
     battle_resetEStructRecords_8046664();
     decompAndCopyData(&dword_8132718);
-    sub_80465A0(byte_81326C8);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_81326C8);
     sub_811AE7C(1, 0);
     sub_813281C();
     sub_81328C0();
@@ -4743,7 +4743,7 @@ LABEL_17:
     if ( !(v7 & 1) )
     {
         if ( !(*(v0 + 76) & 1) )
-            sub_80465A0(byte_8133154);
+            battle_spawnEStructRecordsFromTable_80465A0(byte_8133154);
         *(v0 + 28) = *(v0 + 32) + *(v0 + 36);
         sub_81353DC();
         v10 = *(v0 + 76) | 1;
@@ -4820,7 +4820,7 @@ LABEL_8:
     *(v0 + 100) += v6;
     v10 = *&byte_8133E1C[4 * v3];
     if ( !(*(v0 + 76) & v10) )
-        sub_80465A0(off_8133E0C[v3]);
+        battle_spawnEStructRecordsFromTable_80465A0(off_8133E0C[v3]);
     *&(&off_8133E28)[v3][v0] = *(v0 + 32) + *(v0 + 36);
     sub_81353F0(*&byte_8133E34[4 * v3], v3);
     v11 = *(v0 + 76) | v10;
@@ -4937,7 +4937,7 @@ int sub_81340AC()
     char v4; // zf
     int v5; // r5
 
-    sub_80465A0(byte_813313C);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_813313C);
     v1 = 0;
     do
     {
@@ -4963,7 +4963,7 @@ int sub_81340DC()
     int result; // r0
     char v1; // zf
 
-    sub_80465A0(byte_813314C);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_813314C);
     result = getStructFrom2008450(3);
     if ( !v1 )
         result = sprite_setCoordinates(192, 3);
@@ -6350,7 +6350,7 @@ int __fastcall sub_81352A0(int a1, void *a2, int a3, int a4)
         v12 = getPETNaviSelect();
         if ( v11 <= GetCurPETNaviStatsByte(v12) )
         {
-            sub_80465A0(v14);
+            battle_spawnEStructRecordsFromTable_80465A0(v14);
             *(v5 + 28) = v10;
             battle_alignRowCheck_81348DC(36, v15, v16, v17);
             result = 1;
@@ -6400,7 +6400,7 @@ int __fastcall battle_setupPETNavis_8135314(int a1, int a2, int a3, int a4)
         if ( v9 != 255 )
         {
             v13 += *(32 * v9 + v14 + 24) >> 16;
-            sub_80465A0(*(v15 + 4 * v6));
+            battle_spawnEStructRecordsFromTable_80465A0(*(v15 + 4 * v6));
             *&(&off_813539C)[v6][v5] = v10;
             v11 = *(v18 + 4 * v6);
             sub_8134930(36, v16, v17, v6);
@@ -6425,7 +6425,7 @@ int __fastcall sub_81353B8(void *a1, int a2, __int16 a3, int a4)
     v4 = a2;
     v5 = a3;
     v6 = a4;
-    sub_80465A0(a1);
+    battle_spawnEStructRecordsFromTable_80465A0(a1);
     return sub_81349B4(32, v4, v5, v6);
 }
 
@@ -7526,7 +7526,7 @@ int sub_8136100()
         *(v0 + 48) = 0;
         *(v0 + 50) = 0;
         *(v0 + 2) = 28;
-        sub_80465A0(byte_8135654);
+        battle_spawnEStructRecordsFromTable_80465A0(byte_8135654);
         v1 = 129;
     }
     return PlaySoundEffect(v1, v2, v3);
@@ -8260,7 +8260,7 @@ void __noreturn sub_813686C()
     *(v0 + 3) = 0;
     *(v0 + 18) = 8;
     *(v0 + 28) = 10;
-    sub_80465A0(byte_8136828);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_8136828);
     v2 = v1[7];
     v2[9] = 39;
     v2[10] = 55;
@@ -8312,7 +8312,7 @@ int sub_813691C()
             {
                 *(v0 + 28) = v3 >> 2;
                 sub_8046696(11);
-                sub_80465A0(byte_8136834);
+                battle_spawnEStructRecordsFromTable_80465A0(byte_8136834);
                 if ( *(v0 + 3) >= byte_81369B5[*(v0 + 15)] )
                     sub_8136B58(1);
             }
@@ -8350,7 +8350,7 @@ int sub_81369D0()
         reloadCurNaviStatBoosts_813c3ac();
         *(v0 + 28) = 11;
         sub_8046696(11);
-        sub_80465A0(byte_813683C);
+        battle_spawnEStructRecordsFromTable_80465A0(byte_813683C);
         *(v0 + 3) = 48;
         *(v0 + 21) = 0;
         PlaySoundEffect(116, v2, v3);
@@ -11110,7 +11110,7 @@ int __fastcall sub_8138848(int a1, int a2, int a3, int a4)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    return sub_8004934();
+    return owMapObject_queueSprites_8004934();
 }
 
 

@@ -414,7 +414,7 @@ void __cdecl battle_initEStructArr_804657C()
 
 // 0x80465a0
 // (void *a1) -> void
-void __cdecl sub_80465A0(void *a1)
+void __cdecl battle_spawnEStructRecordsFromTable_80465A0(void *a1)
 {
     char *v1; // ST00_4
 
@@ -927,7 +927,7 @@ int ShopControl()
 
 
 // 0x8046d4c
-void __noreturn sub_8046D4C()
+void __noreturn shop_initScreen_8046D4C()
 {
     int v0; // r5
     int v1; // r0
@@ -1461,7 +1461,7 @@ void sub_8047834()
         if ( v2 == 2 )
         {
             sub_80478B8();
-            sub_80465A0(byte_8046B74);
+            battle_spawnEStructRecordsFromTable_80465A0(byte_8046B74);
             setFieldsInThreeTableEntries_811980C(*(v1 + 1), v1[4], 0, 0);
             sprite_setPositionForIdRange3_8119854(120, 80, 0);
             chatbox_runScript(eTextScript202BA04, 127);
@@ -1475,7 +1475,7 @@ void sub_8047834()
         {
             chatbox_runScript(eTextScript202DA04, *(v1 + 1) >> 2);
             sub_80478B8();
-            sub_80465A0(byte_8046B84);
+            battle_spawnEStructRecordsFromTable_80465A0(byte_8046B84);
         }
     }
 }
@@ -5124,7 +5124,7 @@ int sub_804AF84()
     char v4; // zf
     int v5; // r5
 
-    sub_80465A0(byte_804A2B0);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_804A2B0);
     v1 = 0;
     do
     {

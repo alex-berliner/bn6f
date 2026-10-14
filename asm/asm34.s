@@ -270,7 +270,7 @@ sub_812D56C:
 	str r2, [sp]
 	mov r6, r1
 	add r4, r6, #2
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 loc_812D57A:
 	mov r0, r6
 	bl getStructFrom2008450
@@ -799,7 +799,7 @@ loc_812D922:
 	// a1
 	ldr r0, off_812D930 // =byte_812C280 
 loc_812D926:
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_812D92C:

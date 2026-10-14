@@ -33359,7 +33359,7 @@ off_811ED38:
 	.word jt_811ED3C
 jt_811ED3C:
 	.word sub_811ED58+1
-	.word sub_811EDB4+1
+	.word pet_updateNaviSelectScreen_811EDB4+1
 	.word battle_state_tick_811EE98+1
 	.word sub_811EED0+1
 	.word naviSelect_SetupBackgrounds_811EF0C+1
@@ -33394,7 +33394,7 @@ sub_811ED58:
 	strb r0, [r5]
 	// a1
 	ldr r0, off_811EDA8 // =byte_811EB78
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl sub_811F1B8
 	bl replaySpriteFrames_811F24C
 loc_811ED8E:
@@ -33418,9 +33418,9 @@ off_811EDB0:
 	thumb_func_end sub_811ED58
 
 // symdb: Per-frame update of the PET navi-select screen: refreshes both background layers and the sprite frame table, handles A/B/START/d-pad input to pick a navi slot (or back out), and refreshes the PET comm-save state.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EDB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_updateNaviSelectScreen_811EDB4.yaml
 	thumb_local_start
-sub_811EDB4:
+pet_updateNaviSelectScreen_811EDB4:
 	push {r4,lr}
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	bl CopyBackgroundTiles_onNaviSelect_811F54C // () -> void
@@ -33524,7 +33524,7 @@ off_811EE90:
 	.word byte_811EB04
 off_811EE94:
 	.word byte_811EB5C
-	thumb_func_end sub_811EDB4
+	thumb_func_end pet_updateNaviSelectScreen_811EDB4
 
 // symdb: Battle-state tick handler that decrements the per-frame countdown by 4, clamps at -32, and triggers a timeout (state byte 0xC) when the PET GFX animation finishes.
 // symdb: void sub_811EE98(u32* r5 /* battle state struct */) -> void (clobbers r0,r1,r2,r3,lr,nz,c,v;
@@ -33609,7 +33609,7 @@ initPetSelectScreen_811EF28:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_811EF64 // =byte_811EBA4
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #4
 	strb r0, [r5]
 	ldr r0, off_811EF68 // =byte_811EAD4

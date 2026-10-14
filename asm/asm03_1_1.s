@@ -1947,7 +1947,7 @@ sub_8039A58:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8039AB4 // =byte_8039390
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl sub_803C40C
 	mov r0, #0xf0
 	mov r1, #0x30

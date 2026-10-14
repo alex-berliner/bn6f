@@ -42,7 +42,7 @@ void __usercall reqBBS_static_draw_813E0F8(reqBBS_GUI *gui@<R5>, int a1@<R0>, in
     renderInfo_80017A0();
     toolkit_applyOverlayPalette_80015FC(23);
     engine_setScreeneffect(8, 16);
-    sub_80465A0(byte_813DBDC);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_813DBDC);
     if ( gui->totalNewRequests && !gui->numNewRequests )
     {
         gui->jto_0 = 4;

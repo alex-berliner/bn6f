@@ -430,7 +430,7 @@ chipFolder_screenInit_812345C:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8123510 // =byte_8123400
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl refreshChipUseStats_8123A80
 	bl drawBattleBackground_8123AB8
 	ldr r0, off_81234F0 // =unk_201D220 
@@ -461,7 +461,7 @@ chipFolder_init_812349C:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8123510 // =byte_8123400
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl refreshChipUseStats_8123A80
 	bl drawBattleBackground_8123AB8
 	ldr r0, off_81234F0 // =unk_201D220 
@@ -1436,7 +1436,7 @@ loc_8123C52:
 	bne loc_8123C6C
 	// a1
 	ldr r0, [sp,#8]
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, [sp,#4]
 	ldr r1, [r5,#0x4c]
 	orr r1, r0
@@ -1566,7 +1566,7 @@ loc_8123D3A:
 	.balign 4, 0x00
 	thumb_func_end sub_8123D24
 
-// symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine sub_80465A0.
+// symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine battle_spawnEStructRecordsFromTable_80465A0.
 // symdb: void sub_8123D54(u32 selection /* r0 */)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123D54.yaml
 	thumb_local_start
@@ -1579,7 +1579,7 @@ sub_8123D54:
 	// a1
 	ldr r0, off_8123D6C // =byte_81233F8
 loc_8123D60:
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {pc}
 	.balign 4, 0
 off_8123D68:
@@ -1943,7 +1943,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	bl sub_8124870
 
 	ldr r0, off_8124074 // =byte_8123F40
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 
 	mov r0, #0
 	ldr r1, off_8124078 // =dword_8123F3C
@@ -3341,7 +3341,7 @@ loc_8124BCC:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8124C28 // =byte_8124AE0
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl sub_81252C0
 	bl sub_8125D10
 	bl sub_812546C
@@ -6914,7 +6914,7 @@ battle_updateChipSprite_8126630:
 	bl sub_8046696
 	// a1
 	ldr r0, off_81266DC // =byte_8124AE0
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 loc_8126652:
 	lsl r2, r4, #2
 	ldr r1, off_81266C0 // =off_81266C4 
@@ -6948,7 +6948,7 @@ loc_8126686:
 	beq loc_812669A
 	// a1
 	ldr r0, off_81266D8 // =byte_8124B08
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 loc_812669A:
 	ldr r2, off_81266D4 // =dword_201FC20 
 	ldrh r0, [r5,#0x3c]
@@ -7365,7 +7365,7 @@ byte_8126B1C:
 
 // symdb: Top-level state-machine dispatcher for the MegaMan status menu, tail-calling one of three state handlers based on the menu object's state byte.
 // symdb: void statusMenu_dispatchState(void* menu /* r5 */) — reads menu->state (u8 at r5+1, values 0/4/8
-// symdb: as byte offsets), tail-dispatches to sub_8126B6C / sub_8126CC0 / sub_8126FF0; no outputs of its
+// symdb: as byte offsets), tail-dispatches to sub_8126B6C / battle_petNaviDisplayUpdate_8126CC0 / sub_8126FF0; no outputs of its
 // symdb: own, the handler returns directly to this function's caller.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HandleMegaManStatusMenu8126B4C.yaml
 	thumb_func_start HandleMegaManStatusMenu8126B4C
@@ -7382,7 +7382,7 @@ off_8126B5C:
 	.word off_8126B60
 off_8126B60:
 	.word battle_petNaviDisplayInit_8126B6C+1
-	.word sub_8126CC0+1
+	.word battle_petNaviDisplayUpdate_8126CC0+1
 	.word pet_menuScreenTick_8126FF0+1
 	thumb_func_end HandleMegaManStatusMenu8126B4C
 
@@ -7515,7 +7515,7 @@ loc_8126C5E:
 	str r1, [r5,#0x44]
 	// a1
 	ldr r0, off_8126CB0 // =byte_8126B1C
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -7535,9 +7535,9 @@ off_8126CBC:
 	thumb_func_end battle_petNaviDisplayInit_8126B6C
 
 // symdb: Per-frame update of the PET navi-display scene (sibling of battle_petNaviDisplayInit_8126B6C): runs its 9-entry state table, positions the selected entry's sprites, syncs PET-navi-dependent status entries, and redraws the scene.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126CC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_petNaviDisplayUpdate_8126CC0.yaml
 	thumb_local_start
-sub_8126CC0:
+battle_petNaviDisplayUpdate_8126CC0:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0xd]
 	strb r0, [r5,#0xe]
@@ -7666,7 +7666,7 @@ dword_8126DE8:
 	.word 0x81E0
 byte_8126DEC:
 	.byte 0xE0, 0x91, 0x0, 0x0, 0x20, 0x2, 0x0, 0x0, 0x50, 0x0, 0x0, 0x0
-	thumb_func_end sub_8126CC0
+	thumb_func_end battle_petNaviDisplayUpdate_8126CC0
 
 // symdb: If a screen fade is active, clears a chatbox EFlag and marks the chatbox hidden, then tail-calls the chatbox state handler.
 // symdb: void sub_8126DF8(uint8_t *r5 /*chatbox struct*/, r2 r4 r10 /*passed through to sub_81272C4*/)
@@ -11613,7 +11613,7 @@ sub_8128CD8:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8128DC8 // =byte_8128CB0
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, off_8128DB0 // =byte_201BDB8
 	bl sub_802B2A0
 	strh r0, [r5,#0x1e]
@@ -12307,7 +12307,7 @@ battle_initFullCutscene_81292D8:
 	bl clearStruct200BC30_803EBAC
 	// a1
 	ldr r0, off_8129338 // =byte_8129158
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl bg_LoadFullScreenTilesAndSetup_812AFB0
 	bl chatbox_8040818
 	mov r0, #8
@@ -12460,7 +12460,7 @@ scene_runFadePopTick_8129400:
 	bl clearStruct200BC30_803EBAC
 	// a1
 	ldr r0, off_8129448 // =byte_8129168
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl bg_LoadFullScreenTilesAndSetup_812AFB0
 	bl chatbox_8040818
 	mov r0, #8
@@ -14769,7 +14769,7 @@ loc_812A470:
 loc_812A47A:
 	// a1
 	ldr r0, off_812A490 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -15077,7 +15077,7 @@ loc_812A6D4:
 loc_812A6DE:
 	// a1
 	ldr r0, off_812A6F4 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -16098,7 +16098,7 @@ loc_812AE96:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_812AEC4 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	beq locret_812AEBE
@@ -16965,7 +16965,7 @@ sub_812B4AC:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_812B500 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_812B4F8:
@@ -17274,7 +17274,7 @@ loc_812B71A:
 	bl sub_812AFC8
 
 	ldr r0, off_812B754 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {r4,pc}
 	.byte 0, 0
 off_812B750:
@@ -18352,7 +18352,7 @@ sub_812BFAC:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_812BFF0 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 locret_812BFE2:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -18425,7 +18425,7 @@ sub_812C034:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_812C078 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 locret_812C06A:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -18475,7 +18475,7 @@ sub_812C094:
 	bl sub_812AFC8
 	// a1
 	ldr r0, off_812C0C8 // =byte_8129150
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 locret_812C0C2:
 	pop {pc}
 	.balign 4, 0

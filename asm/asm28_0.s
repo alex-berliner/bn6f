@@ -1174,7 +1174,7 @@ loc_809A15C:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A1B0 // =byte_8099E90
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #0x7c
 	ldr r0, [r5,r0]
 	mov r1, #0x80
@@ -1794,7 +1794,7 @@ loc_809A64E:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A6A0 // =byte_8099E90
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, [r5,#0x7c]
 	mov r1, #0x80
 	ldr r1, [r5,r1]
@@ -2176,7 +2176,7 @@ sub_809A950:
 	strb r0, [r5,#4]
 	// a1
 	ldr r0, off_809A988 // =byte_809A898
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, [r5,#0x7c]
 	mov r1, #0x80
 	ldr r1, [r5,r1]
@@ -2585,7 +2585,7 @@ sub_809ACA4:
 	strb r0, [r5,#4]
 	// a1
 	ldr r0, off_809ACCC // =byte_809AA24
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, [r5,#0x7c]
 	mov r1, #0x80
 	ldr r1, [r5,r1]

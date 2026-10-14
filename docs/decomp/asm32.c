@@ -21193,7 +21193,7 @@ void sub_811ED58()
         *(v0 + 14) = 0;
         *(v0 + 13) = 2;
         *v0 = 4;
-        sub_80465A0(byte_811EB78);
+        battle_spawnEStructRecordsFromTable_80465A0(byte_811EB78);
         sub_811F1B8();
     }
     sub_811F0C8();
@@ -21205,7 +21205,7 @@ void sub_811ED58()
 
 
 // 0x811edb4
-void sub_811EDB4()
+void pet_updateNaviSelectScreen_811EDB4()
 {
     _BYTE *v0; // r5
     int v1; // r10
@@ -21350,7 +21350,7 @@ void __noreturn initPetSelectScreen_811EF28()
 
     *(v0 + 16) = 0;
     battle_resetEStructRecords_8046664();
-    sub_80465A0(byte_811EBA4);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_811EBA4);
     *v0 = 4;
     LoadGFXAnim(byte_811EAD4);
     LoadGFXAnim(byte_811EAEC);

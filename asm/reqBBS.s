@@ -91,7 +91,7 @@ reqBBS_static_draw_813E0F8:
 	bl SetScreenFade // (int a1, int a2) -> void
 	// a1
 	ldr r0, off_813E178 // =byte_813DBDC
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldrh r0, [r5,#0x1e] // reqBBS_GUI.totalNewRequests
 	cmp r0, #0
 	beq loc_813E14C
@@ -2038,7 +2038,7 @@ loc_813F4B6:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	ldr r0, off_813F534 // =reqBBS_entriesGfx 
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldrh r0, [r5,#0x1e]
 	cmp r0, #0
 	beq loc_813F508

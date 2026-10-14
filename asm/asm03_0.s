@@ -865,7 +865,7 @@ off_8026AA4:
 	// 0x10
 	.word sub_8026DB0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x14
-	.word sub_8026DC4+1 // (self: * S20364C0 $r5) -> ()
+	.word battle_endChipSelectionBeginTurn_8026DC4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x18
 	.word chatbox_stateMaybeFinishText_8026E4C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x1C
@@ -1305,9 +1305,9 @@ locret_8026DC2:
 	thumb_func_end sub_8026DB0
 
 // symdb: Turn-transition handler of the chip-selection state machine (S20364C0): runs the once-per-turn custom-gauge teardown + folder tally + restart snapshot, transfers the hand on the first turn, then requests the next state.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026DC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_endChipSelectionBeginTurn_8026DC4.yaml
 	thumb_local_start
-sub_8026DC4: // (self: * S20364C0 $r5) -> ()
+battle_endChipSelectionBeginTurn_8026DC4: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -1367,7 +1367,7 @@ dword_8026E44:
 	.word 0x56789123
 off_8026E48:
 	.word 0x1000
-	thumb_func_end sub_8026DC4
+	thumb_func_end battle_endChipSelectionBeginTurn_8026DC4
 
 // symdb: Chatbox state-machine step that waits for text printing to finish, then plays a sound effect and moves the chatbox to state 4.
 // symdb: void sub_8026E4C(ChatboxState *self /* r5: struct S20364C0 */)

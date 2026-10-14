@@ -745,9 +745,9 @@ off_804659C:
 
 // (void *a1) -> void
 // symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via sub_8046670.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80465A0.yaml
-	thumb_func_start sub_80465A0
-sub_80465A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructRecordsFromTable_80465A0.yaml
+	thumb_func_start battle_spawnEStructRecordsFromTable_80465A0
+battle_spawnEStructRecordsFromTable_80465A0:
 	push {r4-r7,lr}
 loc_80465A2:
 	ldrb r7, [r0]
@@ -763,7 +763,7 @@ loc_80465A2:
 	b loc_80465A2
 locret_80465BA:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80465A0
+	thumb_func_end battle_spawnEStructRecordsFromTable_80465A0
 
 // symdb: Each frame, walks a 15-entry array of 0x58-byte entity records and calls the update handler selected by each active record's type byte.
 // symdb: void sub_80465BC(void); // pure dispatcher: r0 not read, r2/r3 pass through untouched; handlers
@@ -1611,7 +1611,7 @@ ShopControl:
 off_8046D18:
 	.word off_8046D1C
 off_8046D1C:
-	.word sub_8046D4C+1
+	.word shop_initScreen_8046D4C+1
 	.word battle_objectAdvanceCounterToState8_8046DDC+1
 	.word sub_8046DF8+1
 	.word scramblePanel_tick_8046E06+1
@@ -1627,9 +1627,9 @@ off_8046D48:
 	thumb_func_end ShopControl
 
 // symdb: One-time setup of the shop screen: packs the chip stock lists, loads graphics/text assets, builds the purchasable list, draws the five-row chip list, spawns the shop's eStruct records, runs the greeting script and picks the currency (zenny or bug-frags).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046D4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_initScreen_8046D4C.yaml
 	thumb_local_start
-sub_8046D4C:
+shop_initScreen_8046D4C:
 	push {lr}
 	ldrb r0, [r5,#4]
 	ldr r1, off_8046DCC // =byte_2019A00 
@@ -1649,7 +1649,7 @@ sub_8046D4C:
 	bl background_LoadAreaTiles_8047800
 	// a1
 	ldr r0, off_8046DD8 // =byte_8046B8C
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, [r5,#0x24]
 	mov r1, #0
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -1686,7 +1686,7 @@ dword_8046DD4:
 	.word 0x1F40
 off_8046DD8:
 	.word byte_8046B8C
-	thumb_func_end sub_8046D4C
+	thumb_func_end shop_initScreen_8046D4C
 
 // symdb: Steps an object's counter at (+8) forward by 2 each call, and once it reaches 21 clamps it and switches the object's state byte (+0) to 8, then calls a per-object update helper.
 // symdb: int sub_8046DDC(void *obj /* r5 */)  // always returns 0; clobbers r0-r3, r12, flags; preserves
@@ -3109,7 +3109,7 @@ sub_8047834:
 	bl sub_80478B8
 	// a1
 	ldr r0, off_80478A4 // =byte_8046B74 
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldrh r0, [r7,#2]
 	ldrb r1, [r7,#4]
 	mov r2, #0
@@ -3139,7 +3139,7 @@ loc_804788C:
 	bl sub_80478B8
 	// a1
 	ldr r0, off_80478B4 // =byte_8046B84 
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 locret_80478A0:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -8964,7 +8964,7 @@ sub_804AF84:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_804AFB0 // =byte_804A2B0 
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r6, #0
 loc_804AF8E:
 	mov r0, r6

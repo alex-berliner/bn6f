@@ -21652,12 +21652,12 @@ void battleObject_setupSprite_80C4368()
     sprite_loadAnimationData(v0);
     sprite_update(v0);
     *(v0 + 8) = 4;
-    sub_80C43C4();
+    battleObject_syncSpriteWithRelatedObject_80C43C4();
 }
 
 
 // 0x80c43c4
-int sub_80C43C4()
+int battleObject_syncSpriteWithRelatedObject_80C43C4()
 {
     int v0; // r5
     int v1; // r4
@@ -22653,7 +22653,7 @@ void t3_0x0_80C4E58()
 
 
 // 0x80c4e7c
-int sub_80C4E7C()
+int battleObject_initAttackFromDefTable_80C4E7C()
 {
     int v0; // r5
     _BYTE *v1; // r7
@@ -26272,7 +26272,7 @@ void __noreturn sub_80C7250()
         *(v0 + 10) = 0;
     }
     sprite_clearFinalPalette();
-    sub_801AD9E();
+    object_applyCollisionHit_801AD9E();
     v1 = battleObject_dispatchActionHandler_801B394(&off_80C7284);
     object_presentCollisionData(v1, v2);
     object_updateSpritePaused();
@@ -28431,7 +28431,7 @@ int __fastcall sub_80C86B0(char a1, int a2, int a3, int a4)
 
 
 // 0x80c8708
-int __noreturn sub_80C8708()
+int __noreturn battleObject_initSpriteAndCollision_80C8708()
 {
     int v0; // r5
     int v1; // r0
@@ -31250,7 +31250,7 @@ int sub_80CA2CC()
 
 
 // 0x80ca2d4
-int __noreturn sub_80CA2D4()
+int __noreturn battleObject_initProjectileFromTable_80CA2D4()
 {
     int v0; // r5
     int v1; // r2
@@ -39750,7 +39750,7 @@ void __noreturn sub_80CFA18()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD9E();
+    object_applyCollisionHit_801AD9E();
     object_spawnCollisionEffect();
     sub_800F672();
     battleObject_dispatchActionHandler_801B394(&off_80CFA48);
@@ -43983,7 +43983,7 @@ void __noreturn sub_80D2320()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD9E();
+    object_applyCollisionHit_801AD9E();
     v1 = battleObject_dispatchActionHandler_801B394(&jt_80D2348);
     object_presentCollisionData(v1, v2);
     object_updateSpriteTimestop();
@@ -53828,7 +53828,7 @@ void __noreturn battleObject_respawn_80D84DE()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD9E();
+    object_applyCollisionHit_801AD9E();
     *(v0 + 36) = 1;
     v1 = battleObject_dispatchActionHandler_801B394(&off_80D8508);
     object_presentCollisionData(v1, v2);
@@ -84747,7 +84747,7 @@ LABEL_7:
 
 
 // 0x80eb862
-int sub_80EB862()
+int battleAi_spawnTempAttackObjectStep_80EB862()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84986,7 +84986,7 @@ int aiAttack_dispatchStateHandler_80EBC0E()
 
 
 // 0x80ebc28
-int __fastcall sub_80EBC28(int a1, int a2, int a3)
+int __fastcall battleAi_chargeThenFireAttackStep_80EBC28(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7
@@ -122539,7 +122539,7 @@ signed int sub_8103E06()
     Battle *v0; // r5
     signed int result; // r0
 
-    sub_80175B8(v0);
+    battleObject_actionParalyze_80175B8(v0);
     result = 65;
     v0->currAnimation = 65;
     return result;
@@ -125066,7 +125066,7 @@ int __usercall sub_8105624@<R0>(Battle *obj@<R5>)
 {
     int result; // r0
 
-    sub_80175B8(obj);
+    battleObject_actionParalyze_80175B8(obj);
     result = 20;
     obj->currAnimation = 20;
     return result;

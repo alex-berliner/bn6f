@@ -270,7 +270,7 @@ signed int sub_809A138()
                 *(v0 + 4) = 32;
                 sub_809A308();
                 battle_resetEStructRecords_8046664();
-                sub_80465A0(byte_8099E90);
+                battle_spawnEStructRecordsFromTable_80465A0(byte_8099E90);
                 setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
                 sprite_setPositionForIdRange3_8119854(-48, 88, 0);
                 ClearEventFlagFromImmediate(0, 246);
@@ -677,7 +677,7 @@ signed int sub_809A630()
                 *(v0 + 4) = 32;
                 sub_809A308();
                 battle_resetEStructRecords_8046664();
-                sub_80465A0(byte_8099E90);
+                battle_spawnEStructRecordsFromTable_80465A0(byte_8099E90);
                 setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
                 sprite_setPositionForIdRange3_8119854(-48, 88, 0);
                 ClearEventFlagFromImmediate(0, 246);
@@ -933,7 +933,7 @@ signed int sub_809A950()
     if ( v1 )
         return 1;
     *(v0 + 4) = 0;
-    sub_80465A0(byte_809A898);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_809A898);
     setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
     sprite_setPositionForIdRange3_8119854(-48, 88, 0);
     return 0;
@@ -1213,7 +1213,7 @@ int sub_809ACA4()
     int v0; // r5
 
     *(v0 + 4) = 0;
-    sub_80465A0(byte_809AA24);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_809AA24);
     setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
     sprite_setPositionForIdRange3_8119854(-48, 88, 0);
     return 0;

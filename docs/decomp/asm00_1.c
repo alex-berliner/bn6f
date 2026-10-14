@@ -1574,7 +1574,7 @@ int *TryUpdateEachOverworldMapObject_80048D2()
 
 
 // 0x8004934
-int sub_8004934()
+int owMapObject_queueSprites_8004934()
 {
 	signed int v0; // r0
 	signed int v1; // r1
@@ -2352,7 +2352,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     sub_80058D0();
     checkThenStartBattle_8005A8C();
@@ -2377,7 +2377,7 @@ int __fastcall battle_init_80052D8(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = tickCountdownGate_803F530();
     if ( v2 )
@@ -2450,7 +2450,7 @@ int __fastcall sub_800536E(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v5 )
@@ -2507,7 +2507,7 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2559,7 +2559,7 @@ int pet_menuUpdateAndHandleExit_8005462()
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     if ( byte_200DF21 != 4 || (IsPaletteFadeActive(), v1) )
     {
@@ -2646,7 +2646,7 @@ _BYTE *__fastcall sub_800555A(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2671,7 +2671,7 @@ _BYTE *__fastcall sub_800555A(int a1)
 
 
 // 0x80055ce
-_BYTE *__fastcall sub_80055CE(int a1)
+_BYTE *__fastcall gamestate_runOverworldSceneStep_80055CE(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -2692,7 +2692,7 @@ _BYTE *__fastcall sub_80055CE(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2738,7 +2738,7 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2784,7 +2784,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2830,7 +2830,7 @@ _BYTE *__fastcall sub_800572C(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2876,7 +2876,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -2920,7 +2920,7 @@ _BYTE *__fastcall mainState_runFrame_8005814(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -2955,7 +2955,7 @@ _BYTE *__fastcall sub_800585A(int a1)
     npc_drawSprites_800467C();
     sub_8004298();
     sub_8004590();
-    sub_8004934();
+    owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -6479,7 +6479,7 @@ int sub_8008064()
 
 
 // 0x80080d2
-int sub_80080D2()
+int battle_updateMainFlow_80080D2()
 {
     int v0; // r5
     int v1; // r10
@@ -6570,7 +6570,7 @@ int sub_80080D2()
 
 
 // 0x80081a4
-int sub_80081A4()
+int battle_runVictorySequence_80081A4()
 {
     int v0; // r5
     int v1; // r10
@@ -8406,7 +8406,7 @@ int sub_8009158()
 
 
 // 0x80091f0
-unsigned int sub_80091F0()
+unsigned int battle_runBattleIntroSpawnStep_80091F0()
 {
     int v0; // r5
     int v1; // r0

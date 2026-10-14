@@ -722,7 +722,7 @@ void __cdecl decompJackInAnimationGfx_8034314()
     *(v0 + 3) = 0;
     *(v0 + 6) = 2;
     battle_resetEStructRecords_8046664();
-    sub_80465A0(byte_8034370);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_8034370);
 }
 
 
@@ -6440,7 +6440,7 @@ signed int sub_8039A58()
     chatbox_8040818();
     sub_803BE30(2);
     battle_resetEStructRecords_8046664();
-    sub_80465A0(byte_8039390);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_8039390);
     sub_803C40C();
     sub_803C1A8(v0 + 240, v0 + 48, v0 + 256, v0 + 144);
     sub_803C320();

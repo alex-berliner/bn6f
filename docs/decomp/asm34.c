@@ -109,7 +109,7 @@ int __fastcall sub_812D56C(void *a1, int a2, int a3)
 	v10 = a3;
 	v4 = a2;
 	v5 = a2 + 2;
-	sub_80465A0(a1);
+	battle_spawnEStructRecordsFromTable_80465A0(a1);
 	do
 	{
 		result = getStructFrom2008450(v4);
@@ -461,7 +461,7 @@ void __fastcall __noreturn sub_812D8C8(int a1, int a2, int a3, int a4)
 // 0x812d91c
 void sub_812D91C()
 {
-	sub_80465A0(byte_812C278);
+	battle_spawnEStructRecordsFromTable_80465A0(byte_812C278);
 }
 
 

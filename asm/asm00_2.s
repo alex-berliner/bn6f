@@ -12389,9 +12389,9 @@ locret_8014324:
 	thumb_func_end sub_80142DC
 
 // symdb: Per-frame anger-state maintenance for the player-side battle actor: on the anger trigger sets the anger flag and a 600-frame oAIData_Anger timer, counts it down, and clears anger on expiry or when the emotion already supersedes it.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014326.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updatePlayerAngerState_8014326.yaml
 	thumb_local_start
-sub_8014326:
+battle_updatePlayerAngerState_8014326:
 	push {r4,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
 	bl unpackVerActorTyAndAIIdx_800F29C
@@ -12449,7 +12449,7 @@ loc_8014394:
 	bl object_clearFlag // (int bitfield) -> void
 locret_80143A4:
 	pop {r4,pc}
-	thumb_func_end sub_8014326
+	thumb_func_end battle_updatePlayerAngerState_8014326
 
 	thumb_func_start sub_80143A6
 sub_80143A6:
@@ -19000,9 +19000,9 @@ dword_80175B4:
 	thumb_func_end battleObject_actionFlinch_80174FE
 
 // symdb: Paralyze action handler (CurAction 4, 'on paralyze' in the action tables): commits the pushed-back position, plays animation 2, then waits out the paralysis counter (shortened by button mashing) before ending the action.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80175B8.yaml
-	thumb_func_start sub_80175B8
-sub_80175B8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_actionParalyze_80175B8.yaml
+	thumb_func_start battleObject_actionParalyze_80175B8
+battleObject_actionParalyze_80175B8:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -19093,7 +19093,7 @@ dword_8017680:
 	.word 0x400000
 dword_8017684:
 	.word 0x20005F
-	thumb_func_end sub_80175B8
+	thumb_func_end battleObject_actionParalyze_80175B8
 
 	thumb_func_start sub_8017688
 sub_8017688:
@@ -24060,9 +24060,9 @@ locret_801AD9C:
 	thumb_func_end sub_801AD6A
 
 // symdb: Applies a collision hit to a battle object: guards against battle flags/dead targets, on HitModifierFinal bit 0x40 marks the hit state (ObjectFlags2 0x100, clear 0x4, Unk_0f=1), then recomputes final damage and spawns the hit effect.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AD9E.yaml
-	thumb_func_start sub_801AD9E
-sub_801AD9E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_applyCollisionHit_801AD9E.yaml
+	thumb_func_start object_applyCollisionHit_801AD9E
+object_applyCollisionHit_801AD9E:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -24100,7 +24100,7 @@ loc_801ADF0:
 	bl object_spawnHiteffect
 locret_801ADF8:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AD9E
+	thumb_func_end object_applyCollisionHit_801AD9E
 
 	thumb_func_start sub_801ADFA
 sub_801ADFA:
@@ -24487,7 +24487,7 @@ loc_801B126:
 	bl sub_801A5EE
 	bl sub_800E730
 	bl battle_tickCollisionTimer_8010162
-	bl sub_8014326
+	bl battle_updatePlayerAngerState_8014326
 	bl nullsub_6
 	bl battle_tickPoisonHpLoss_8014498
 	bl battle_DecrementAllianceTimer_802E1D8
@@ -26583,7 +26583,7 @@ off_801BF88:
 	.word sub_801C416+1
 	.word sub_801C4E4+1
 	.word sub_801C576+1
-	.word sub_801C6EE+1
+	.word battle_drawSelectedChipNameAndDamage_801C6EE+1
 	.word sub_801C906+1
 	.word nullsub_58+1
 	.word sub_801C9E4+1
@@ -27618,9 +27618,9 @@ byte_801C6E8:
 	thumb_func_end sub_801C640
 
 // symdb: Draws the battle actor's selected chip as name text plus a right-aligned damage number (and optional second value / marker glyph) into the battle BG tile map; does nothing when no chip is selected.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C6EE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawSelectedChipNameAndDamage_801C6EE.yaml
 	thumb_local_start
-sub_801C6EE:
+battle_drawSelectedChipNameAndDamage_801C6EE:
 	push {r4-r7,lr}
 	mov r0, #0
 	push {r0}
@@ -27788,7 +27788,7 @@ dword_801C838:
 	.word 0xD1D2
 off_801C83C:
 	.word eStruct2035280
-	thumb_func_end sub_801C6EE
+	thumb_func_end battle_drawSelectedChipNameAndDamage_801C6EE
 
 	thumb_local_start
 sub_801C840:

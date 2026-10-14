@@ -1445,7 +1445,7 @@ map_beginEnterMapOnWarpStep4_80342EC:
 // [break] jack-in
 // symdb: Decompresses the jack-in animation GFX and primes the chip-select screen's animation state object (r5) for playback.
 // symdb: void decompJackInAnimationGfx_8034314(u32 *animStateObj /* r5 */) -> /* r5 returned; r2/r3 +
-// symdb: nz/c/v left by tail callee sub_80465A0 */ r4 r6 r7
+// symdb: nz/c/v left by tail callee battle_spawnEStructRecordsFromTable_80465A0 */ r4 r6 r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/decompJackInAnimationGfx_8034314.yaml
 	thumb_local_start
 decompJackInAnimationGfx_8034314:
@@ -1461,7 +1461,7 @@ decompJackInAnimationGfx_8034314:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, a1 // =byte_8034370
-	bl sub_80465A0 // (void *a1) -> void
+	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8034334:

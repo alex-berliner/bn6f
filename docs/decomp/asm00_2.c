@@ -8656,7 +8656,7 @@ int __fastcall sub_80142DC(int a1)
 
 
 // 0x8014326
-int sub_8014326()
+int battle_updatePlayerAngerState_8014326()
 {
     int v0; // r5
     int result; // r0
@@ -13595,7 +13595,7 @@ int __usercall battleObject_actionFlinch_80174FE@<R0>(Battle *obj@<R5>)
 
 
 // 0x80175b8
-int __usercall sub_80175B8@<R0>(Battle *obj@<R5>)
+int __usercall battleObject_actionParalyze_80175B8@<R0>(Battle *obj@<R5>)
 {
     int v1; // r0
     int v2; // r1
@@ -16654,7 +16654,7 @@ int sub_801AD6A()
 
 
 // 0x801ad9e
-int sub_801AD9E()
+int object_applyCollisionHit_801AD9E()
 {
     int v0; // r5
     int v1; // r7
@@ -16972,7 +16972,7 @@ LABEL_48:
                     sub_801A5EE();
                     v10 = sub_800E730();
                     battle_tickCollisionTimer_8010162(v10);
-                    sub_8014326();
+                    battle_updatePlayerAngerState_8014326();
                     nullsub_6();
                     battle_tickPoisonHpLoss_8014498();
                     battle_DecrementAllianceTimer_802E1D8();
@@ -18977,7 +18977,7 @@ int __fastcall sub_801C640(int a1)
 
 
 // 0x801c6ee
-void __noreturn sub_801C6EE()
+void __noreturn battle_drawSelectedChipNameAndDamage_801C6EE()
 {
     int v0; // r0
     int v1; // r1

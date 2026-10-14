@@ -777,7 +777,7 @@ int sub_8026DB0()
 
 
 // 0x8026dc4
-signed int sub_8026DC4()
+signed int battle_endChipSelectionBeginTurn_8026DC4()
 {
     _BYTE *v0; // r5
     signed int result; // r0

@@ -76,7 +76,7 @@ int sub_812EAC4()
 // 0x812eb78
 void sub_812EB78()
 {
-    sub_80465A0(&byte_812DA94);
+    battle_spawnEStructRecordsFromTable_80465A0(&byte_812DA94);
 }
 
 
@@ -124,7 +124,7 @@ int __fastcall sub_812EBD8(void *a1, int a2, int a3)
 
     v7 = a3;
     v3 = a2;
-    sub_80465A0(a1);
+    battle_spawnEStructRecordsFromTable_80465A0(a1);
     result = getStructFrom2008450(v3);
     if ( !v5 )
     {
@@ -261,7 +261,7 @@ void __fastcall __noreturn sub_812ED94(int a1, int a2, int a3, int a4)
 // 0x812ede4
 void sub_812EDE4()
 {
-    sub_80465A0(byte_812DAD4);
+    battle_spawnEStructRecordsFromTable_80465A0(byte_812DAD4);
 }
 
 
