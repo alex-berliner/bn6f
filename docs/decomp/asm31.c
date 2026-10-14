@@ -37843,7 +37843,7 @@ void __noreturn sub_80CE730()
 
 
 // 0x80ce782
-int __noreturn sub_80CE782()
+int __noreturn object_destroyStep_80CE782()
 {
     int v0; // r5
     int v1; // r0
@@ -47521,7 +47521,7 @@ LABEL_9:
 
 
 // 0x80d4544
-int sub_80D4544()
+int battleObject_updateMovementHighlight_80D4544()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -67703,12 +67703,12 @@ void __noreturn sub_80E1540()
     sprite_noShadow(v0);
     *v0 |= 2u;
     *(v0 + 8) = 4;
-    sub_80E1566();
+    battleObject_snakeArmTick_80E1566();
 }
 
 
 // 0x80e1566
-void sub_80E1566()
+void battleObject_snakeArmTick_80E1566()
 {
     int v0; // r5
     int v1; // r0
@@ -71945,12 +71945,12 @@ int __noreturn sub_80E39D0()
     v2 = object_getFlip(v0);
     sprite_setFlip(v0, v2);
     *(v0 + 8) = 4;
-    return sub_80E3A32();
+    return battleObject_runBeastSpActionHandler_80E3A32();
 }
 
 
 // 0x80e3a32
-int sub_80E3A32()
+int battleObject_runBeastSpActionHandler_80E3A32()
 {
     int v0; // r5
     int result; // r0
@@ -83835,7 +83835,7 @@ signed int __fastcall __noreturn sub_80EADDC(int a1, int a2, int a3, int a4)
 
 
 // 0x80eae28
-int __fastcall sub_80EAE28(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_slashBeastWaveUpdate_80EAE28(int a1, int a2, int a3, int a4)
 {
     Battle *v4; // r5
     int v5; // r7
@@ -88703,7 +88703,7 @@ void sub_80EDEF6()
 
 
 // 0x80edf0c
-void sub_80EDF0C()
+void battle_aiAttackVarsTickOrExit_80EDF0C()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -109806,7 +109806,7 @@ int sub_80FBC8A()
     int v0; // r5
     int result; // r0
 
-    sub_80170C4();
+    battleObject_dispatchPhaseByPaused_80170C4();
     result = *(v0 + 16);
     if ( result == 2 )
     {

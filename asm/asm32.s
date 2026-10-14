@@ -20443,7 +20443,7 @@ loc_8118454:
 	bl sprite_setCoordinates
 	bl sprite_disableAlpha
 	bl sprite_zeroColorShader
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118604
 	pop {r4-r7,pc}
 	thumb_func_end beastOutOrProgramAdvanceSetTransform_811842C
@@ -20467,7 +20467,7 @@ loc_8118496:
 	strb r1, [r5,#0xc]
 	strb r4, [r5]
 	bl sub_81186A8
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118604
 	pop {r4-r7,pc}
 	thumb_func_end sub_811847C
@@ -20480,7 +20480,7 @@ sub_81184A8:
 	mov r1, #0
 	strb r1, [r5,#0xc]
 	bl sub_8118744
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	thumb_func_end sub_81184A8
@@ -20501,7 +20501,7 @@ loc_81184CE:
 	bl sprite_setAlpha_8002c7a
 	bl sprite_zeroColorShader
 	bl sub_81186A8
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	thumb_func_end sub_81184C0
@@ -20517,7 +20517,7 @@ sub_81184EC:
 	bl sprite_setAlpha_8002c7a
 	bl sprite_zeroColorShader
 	bl sub_81186A8
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	.byte 0, 0
@@ -20553,7 +20553,7 @@ loc_8118538:
 loc_8118542:
 	strb r4, [r6,#0xd]
 loc_8118544:
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	.byte 0, 0
@@ -20575,7 +20575,7 @@ loc_811855E:
 	bl sprite_setAlpha_8002c7a
 	bl sprite_zeroColorShader
 	bl sub_811870C
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	thumb_func_end sub_8118550
@@ -20596,7 +20596,7 @@ loc_811858A:
 	bl sprite_setAlpha_8002c7a
 	bl sprite_zeroColorShader
 	bl sub_81186A8
-	bl sub_81185E4
+	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl sub_8118658
 	pop {pc}
 	thumb_func_end sub_811857C
@@ -20644,9 +20644,9 @@ locret_81185E2:
 
 // symdb: For the battle object in r6, look up a palette id from a 16-bit table at 0x0201DA80 indexed by (r6+0x3A)+(r6+0x38), subtract 0x90, and write that to the object's sprite palette via sprite_setPalette.
 // symdb: (r6 = BattleObject*) -> void ; side effect: writes palette index into the object's sprite data
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81185E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setPaletteFromOffsetTable_81185E4.yaml
 	thumb_local_start
-sub_81185E4:
+battleObject_setPaletteFromOffsetTable_81185E4:
 	push {lr}
 	ldrh r0, [r6,#0x3a]
 	ldrh r1, [r6,#0x38]
@@ -20661,7 +20661,7 @@ sub_81185E4:
 	sub r0, #1
 	bl sprite_setPalette // (int pallete) -> void
 	pop {pc}
-	thumb_func_end sub_81185E4
+	thumb_func_end battleObject_setPaletteFromOffsetTable_81185E4
 
 // symdb: Builds a per-element "alive enemy" bitmask from AI dispatch results and writes it to the sprite's 0x2c field
 // symdb: (r6 = battleObject) -> r0 = elementAliveMask ; side effect: sprite_setUnk0x2c stores r0 into
@@ -32039,9 +32039,9 @@ off_811E164:
 // symdb: (r5 = AIData*, lr = return addr) -> r0 = AIData+0x8 byte used as index into 3-entry handler
 // symdb: table ; side effects: tail-bx into one of sub_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
 // symdb: preserves r5 (callee-saved)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E168.yaml
-	thumb_func_start sub_811E168
-sub_811E168:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiState_dispatchStateMachine_811E168.yaml
+	thumb_func_start battle_aiState_dispatchStateMachine_811E168
+battle_aiState_dispatchStateMachine_811E168:
 	push {lr}
 	ldr r6, off_811E188 // =eStruct2001010
 	ldr r0, off_811E178 // =off_811E17C
@@ -32059,7 +32059,7 @@ off_811E17C:
 	.word sub_811E1FA+1
 off_811E188:
 	.word eStruct2001010
-	thumb_func_end sub_811E168
+	thumb_func_end battle_aiState_dispatchStateMachine_811E168
 
 	thumb_local_start
 sub_811E18C:
@@ -32105,7 +32105,7 @@ loc_811E1E4:
 	orr r4, r1
 loc_811E1E6:
 	strb r4, [r5]
-	bl sub_811E202
+	bl battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202
 	mov r0, #0xcc
 	mov r1, #0x1e
 	bl sprite_setCoordinates
@@ -32122,9 +32122,9 @@ sub_811E1FA:
 
 // symdb: Builds a bitmask from AI versioning fields and writes it into the battle object's sprite Unk_2c.
 // symdb: (r5 = current BattleObject*) -> void ; side effects: writes sprite field 0x2c on the object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E202.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202.yaml
 	thumb_local_start
-sub_811E202:
+battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202:
 	push {r4-r7,lr}
 	ldr r7, dword_811E240 // =0x1ffffff8
 	bl battle_getAIDataVersionFields_81418E4
@@ -32157,7 +32157,7 @@ sub_811E202:
 dword_811E240:
 	.word 0x1FFFFFF8
 	.word eStruct2001010
-	thumb_func_end sub_811E202
+	thumb_func_end battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202
 
 // symdb: Tail-calls a scenario-effect step handler chosen by scenario-substate byte at r5+8
 // symdb: (r5 = scenario-effect state) -> r0 = 0x5e0 ; r5 preserved

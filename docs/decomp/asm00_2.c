@@ -13072,7 +13072,7 @@ int __noreturn battleObject_initNaviObject_8016F56()
 
 
 // 0x80170c4
-int sub_80170C4()
+int battleObject_dispatchPhaseByPaused_80170C4()
 {
     int v0; // r5
     int result; // r0
@@ -13114,7 +13114,7 @@ signed int __fastcall sub_80170E4(int a1)
 
 
 // 0x8017122
-int sub_8017122()
+int battleObject_runWindRecoveryState_8017122()
 {
     int v0; // r5
     int result; // r0

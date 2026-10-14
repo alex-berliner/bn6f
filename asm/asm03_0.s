@@ -12030,7 +12030,7 @@ battle_chipSelectStep_802BDC0:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_802C85C
+	bl battle_chipSelectDrawMeterBlocks_802C85C
 	bl sound_pushRequest_802CA5C
 	pop {pc}
 	.balign 4, 0
@@ -13550,9 +13550,9 @@ byte_802C848:
 // symdb: Draws the CustGauge/Mood-style meter block tiles (border + filled segments) into the 24x32 chip-select row buffer using the current frame's bit-4 to choose one of two tile palettes.
 // symdb: (r5 = battle object / chip-select ctx, r10 = Toolkit) -> r0 = 0 ; side effect: writes up to 4
 // symdb: tile rows into the chip-select row buffer at unk_2034B30 via blitTileBlockToRowBuffer_802C4B6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C85C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipSelectDrawMeterBlocks_802C85C.yaml
 	thumb_local_start
-sub_802C85C:
+battle_chipSelectDrawMeterBlocks_802C85C:
 	push {lr}
 	ldrb r0, [r5,#0xf]
 	tst r0, r0
@@ -13585,7 +13585,7 @@ byte_802C890:
 byte_802C8A0:
 	.byte 0xC7, 0x90, 0xC8, 0x90, 0xC9, 0x90, 0xCA, 0x90, 0xCB
 	.byte 0x90, 0xCC, 0x90, 0xCD, 0x90, 0xCE, 0x90
-	thumb_func_end sub_802C85C
+	thumb_func_end battle_chipSelectDrawMeterBlocks_802C85C
 
 	thumb_local_start
 sub_802C8B0:

@@ -13316,7 +13316,7 @@ int beastOutOrProgramAdvanceSetTransform_811842C()
     sprite_setCoordinates(230, 18 * *(v1 + 32) + 27);
     sprite_disableAlpha();
     sprite_zeroColorShader();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118604();
 }
 
@@ -13343,7 +13343,7 @@ int sub_811847C()
     v0[12] = v4;
     *v0 = v2;
     sub_81186A8();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118604();
 }
 
@@ -13356,7 +13356,7 @@ int sub_81184A8()
     *v0 = 1;
     v0[12] = 0;
     sub_8118744();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13377,7 +13377,7 @@ int sub_81184C0()
     sub_8002C7A(10);
     sprite_zeroColorShader();
     sub_81186A8();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13392,7 +13392,7 @@ int sub_81184EC()
     sub_8002C7A(10);
     sprite_zeroColorShader();
     sub_81186A8();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13429,7 +13429,7 @@ int sub_8118510()
             v5 = 1;
         *(v1 + 13) = v5;
     }
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13450,7 +13450,7 @@ int sub_8118550()
     sub_8002C7A(10);
     sprite_zeroColorShader();
     sub_811870C();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13471,7 +13471,7 @@ int sub_811857C()
     sub_8002C7A(10);
     sprite_zeroColorShader();
     sub_81186A8();
-    sub_81185E4();
+    battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
 
@@ -13517,7 +13517,7 @@ int sub_81185C0()
 
 
 // 0x81185e4
-void sub_81185E4()
+void battleObject_setPaletteFromOffsetTable_81185E4()
 {
     int v0; // r6
     int *v1; // r0
@@ -20273,7 +20273,7 @@ int __fastcall battle_gfx_renderLatticeOrSpinner_811E0BA(int a1, int a2, int a3,
 
 
 // 0x811e168
-int sub_811E168()
+int battle_aiState_dispatchStateMachine_811E168()
 {
     int v0; // r5
 
@@ -20317,7 +20317,7 @@ void __noreturn sub_811E1D4()
     else
         v4 = v2 | 2;
     v0->objFlags = v4;
-    sub_811E202(v3);
+    battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202(v3);
     sprite_setCoordinates(204, 30);
     sprite_update(v0);
 }
@@ -20331,7 +20331,7 @@ int sub_811E1FA()
 
 
 // 0x811e202
-int __fastcall sub_811E202(int a1)
+int __fastcall battleObject_setSpriteUnk2cFlagsFromAIVersion_811E202(int a1)
 {
     char v1; // r0
     char v6; // r1

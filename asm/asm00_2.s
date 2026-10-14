@@ -18522,10 +18522,10 @@ byte_80170A4:
 
 // symdb: If the battle is not paused, dispatches to a CurPhase-specific handler for the BattleObject in r5 via a 2-entry tail-call table; otherwise returns immediately.
 // symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (sub_80170E4 /
-// symdb: sub_8017122) returns (a per-phase status/result byte)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80170C4.yaml
-	thumb_func_start sub_80170C4
-sub_80170C4:
+// symdb: battleObject_runWindRecoveryState_8017122) returns (a per-phase status/result byte)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchPhaseByPaused_80170C4.yaml
+	thumb_func_start battleObject_dispatchPhaseByPaused_80170C4
+battleObject_dispatchPhaseByPaused_80170C4:
 	push {lr}
 	bl battle_isPaused
 	bne locret_80170D6
@@ -18541,8 +18541,8 @@ off_80170D8:
 	.word off_80170DC
 off_80170DC:
 	.word sub_80170E4+1
-	.word sub_8017122+1
-	thumb_func_end sub_80170C4
+	.word battleObject_runWindRecoveryState_8017122+1
+	thumb_func_end battleObject_dispatchPhaseByPaused_80170C4
 
 // symdb: Tears down a battle object's active state (clears collision, AI data, chip slot/hand, reapplies sprite flip), optionally checks for battle end, and sets the object's phase to 4.
 // symdb: void sub_80170E4(battleObject_t* r5 /* in */);
@@ -18577,9 +18577,9 @@ loc_8017118:
 // symdb: (r5 = BattleObject*, r3/r10/lr not really inputs — r3 is destroyed, r10 = toolkit) -> void ;
 // symdb: side effects: writes to AIData, spawns two battle objects, removes panel reservation, removes
 // symdb: the actor from BattleState.AliveBattleActors, sets CUR_STATE_DESTROY.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017122.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runWindRecoveryState_8017122.yaml
 	thumb_local_start
-sub_8017122:
+battleObject_runWindRecoveryState_8017122:
 	push {r4,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -18640,7 +18640,7 @@ loc_801719C:
 	bl sprite_forceWhitePalette
 locret_80171A4:
 	pop {r4,r7,pc}
-	thumb_func_end sub_8017122
+	thumb_func_end battleObject_runWindRecoveryState_8017122
 
 	thumb_func_start sub_80171A6
 sub_80171A6:

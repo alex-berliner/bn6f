@@ -823,7 +823,7 @@ jt_80895C0:
 	.word sub_80896C4+1
 	.word sub_80896D4+1
 	.word sub_8089792+1
-	.word sub_80897A6+1
+	.word battleObject_beastOut_checkOrInit_80897A6+1
 	.word sub_8089C16+1
 	.word sub_8089C78+1
 	.word sub_80897E8+1
@@ -1037,9 +1037,9 @@ sub_8089792:
 // symdb: Beast-Out AI/sub-behavior tick that, when not yet active, gates on chatbox state and either triggers the Beast-Out scenario or starts the timer-driven Beast-Out state, writing state bytes to the AIData/AIState pointed at by r5.
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused, r5 = AIData/AIState object ptr) -> r0 = 1
 // symdb: (always) ; side effects: writes state fields in *r5, calls chatbox/Battle scenario helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80897A6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastOut_checkOrInit_80897A6.yaml
 	thumb_local_start
-sub_80897A6:
+battleObject_beastOut_checkOrInit_80897A6:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x13]
 	tst r0, r0
@@ -1067,7 +1067,7 @@ loc_80897C8:
 loc_80897E4:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80897A6
+	thumb_func_end battleObject_beastOut_checkOrInit_80897A6
 
 	thumb_local_start
 sub_80897E8:

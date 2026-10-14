@@ -7849,7 +7849,7 @@ int battle_chipSelectStep_802BDC0()
     int v0; // r5
 
     (*(&off_802BDDC + *(v0 + 1)))();
-    sub_802C85C();
+    battle_chipSelectDrawMeterBlocks_802C85C();
     return sound_pushRequest_802CA5C();
 }
 
@@ -8692,7 +8692,7 @@ int __fastcall sub_802C810(int a1)
 
 
 // 0x802c85c
-int sub_802C85C()
+int battle_chipSelectDrawMeterBlocks_802C85C()
 {
     int v0; // r5
     int v1; // r10

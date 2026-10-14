@@ -1340,7 +1340,7 @@ sub_80A57D0:
 	bl sprite_setPriority_8002E14
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
-	bl sub_80A5890
+	bl battle_setPlayerDirectionAndAnimFromAIState_80A5890
 	mov r0, #0
 	str r0, [r5,#0x30]
 	strb r0, [r5,#6]
@@ -1397,7 +1397,7 @@ loc_80A586A:
 	bl sub_80A58AC
 	b loc_80A587E
 loc_80A5870:
-	bl sub_80A5890
+	bl battle_setPlayerDirectionAndAnimFromAIState_80A5890
 	b loc_80A587E
 loc_80A5876:
 	mov r0, #1
@@ -1420,9 +1420,9 @@ sub_80A5888:
 // symdb: Copies the AI state's direction/anim offset triple (offsets 0x7C..0x84) into the player battle object and triggers a direction/anim update.
 // symdb: (r5 = player BattleObject*, r6 = AIData*) -> void ; side effects on player BattleObject at
 // symdb: offsets 0xC,0x10,0x14; calls owPlayer_setDirectionAnimFromOffset_80A5974
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5890.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setPlayerDirectionAndAnimFromAIState_80A5890.yaml
 	thumb_local_start
-sub_80A5890:
+battle_setPlayerDirectionAndAnimFromAIState_80A5890:
 	push {lr}
 	mov r3, #0x7c 
 	ldr r0, [r6,r3]
@@ -1436,7 +1436,7 @@ sub_80A5890:
 	bl owPlayer_setDirectionAnimFromOffset_80A5974
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A5890
+	thumb_func_end battle_setPlayerDirectionAndAnimFromAIState_80A5890
 
 	thumb_local_start
 sub_80A58AC:
@@ -5421,7 +5421,7 @@ off_80A7C94:
 	.word off_80A7C98
 off_80A7C98:
 	.word sub_80A7CA4+1
-	.word sub_80A7CEA+1
+	.word owMapObject_updateBeastSpEncounter_80A7CEA+1
 	.word sub_80A7CF6+1
 	thumb_func_end battleObject_dispatchCurAction_80A7C84
 
@@ -5452,21 +5452,21 @@ sub_80A7CA4:
 	pop {r4-r7}
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A7CEA
+	bl owMapObject_updateBeastSpEncounter_80A7CEA
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CA4
 
 // symdb: Overworld map object tick for Beast SP encounter: checks bounds and starts the encounter, then runs the standard sprite update.
 // symdb: (in: r5 = some object pointer; r10 = toolkit; lr = return) -> side effects only; r0/flags may be
 // symdb: clobbered via sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CEA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_updateBeastSpEncounter_80A7CEA.yaml
 	thumb_local_start
-sub_80A7CEA:
+owMapObject_updateBeastSpEncounter_80A7CEA:
 	push {r4-r7,lr}
 	bl owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7CEA
+	thumb_func_end owMapObject_updateBeastSpEncounter_80A7CEA
 
 	thumb_local_start
 sub_80A7CF6:

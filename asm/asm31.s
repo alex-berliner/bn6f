@@ -48275,7 +48275,7 @@ off_80CE720:
 	.word off_80CE724
 off_80CE724:
 	.word sub_80CE730+1
-	.word sub_80CE782+1
+	.word object_destroyStep_80CE782+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x51_80CE70C
 
@@ -48321,9 +48321,9 @@ loc_80CE75A:
 // symdb: (r5 = BattleObject*, r10 = toolkit) -> void ; side effects: clears/writes the object's collision
 // symdb: region, writes `oBattleObject_CurStateActionPhaseAndPhaseInitialized = CUR_STATE_DESTROY (0x8)`,
 // symdb: and may set `oBattleObject_CurStateActionPhaseAndPhaseInitialized` via the per-action dispatcher
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE782.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_destroyStep_80CE782.yaml
 	thumb_local_start
-sub_80CE782:
+object_destroyStep_80CE782:
 	push {r4,r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -48353,7 +48353,7 @@ off_80CE7BC:
 	.word off_80CE7C0
 off_80CE7C0:
 	.word sub_80CE7C4+1
-	thumb_func_end sub_80CE782
+	thumb_func_end object_destroyStep_80CE782
 
 	thumb_local_start
 sub_80CE7C4:
@@ -60827,7 +60827,7 @@ loc_80D4520:
 off_80D4530:
 	.word off_80D4534
 off_80D4534:
-	.word sub_80D4544+1
+	.word battleObject_updateMovementHighlight_80D4544+1
 	.word battleObject_dispatchCurPhaseByJumpTable_80D4570+1
 	.word sub_80D45EC+1
 	.word sub_80D4604+1
@@ -60837,9 +60837,9 @@ off_80D4534:
 // symdb: (r5 = BattleObject*) -> void ; side effects: writes oBattleObject_Flags,
 // symdb: oBattleObject_CurAction, oBattleObject_CurPhaseAndPhaseInitialized; may call
 // symdb: object_highlightPanel
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4544.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateMovementHighlight_80D4544.yaml
 	thumb_local_start
-sub_80D4544:
+battleObject_updateMovementHighlight_80D4544:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	mov r1, #4
@@ -60863,7 +60863,7 @@ loc_80D4556:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80D456E:
 	pop {pc}
-	thumb_func_end sub_80D4544
+	thumb_func_end battleObject_updateMovementHighlight_80D4544
 
 // symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select sub_80D458C or sub_80D45AE, then returns
 // symdb: (r5 = BattleObjectPtr) -> r0 = ... ; no fixed return contract, side effect is jumping to one of
@@ -88122,7 +88122,7 @@ off_80E1530:
 	.word off_80E1534
 off_80E1534:
 	.word sub_80E1540+1
-	.word sub_80E1566+1
+	.word battleObject_snakeArmTick_80E1566+1
 	.word sub_8016C9C+1
 	thumb_func_end t4_0xf_80E1520
 
@@ -88141,15 +88141,15 @@ sub_80E1540:
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80E1566
+	bl battleObject_snakeArmTick_80E1566
 	pop {r4,pc}
 	thumb_func_end sub_80E1540
 
 // symdb: Per-tick update for a SnakeArm-style extra battle object: toggles its pause flag, copies arm world coords from a partner Navi, and frees the object if the battle ends or its targets are gone.
 // symdb: (r5 = battle object) -> void ; may clear OBJECT_FLAG_PAUSE_UPDATE on the object and free it
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1566.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_snakeArmTick_80E1566.yaml
 	thumb_local_start
-sub_80E1566:
+battleObject_snakeArmTick_80E1566:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -88240,7 +88240,7 @@ loc_80E161A:
 	bl object_updateSpriteTimestop
 locret_80E161E:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80E1566
+	thumb_func_end battleObject_snakeArmTick_80E1566
 
 	thumb_func_start sub_80E1620
 sub_80E1620:
@@ -93232,7 +93232,7 @@ off_80E39C0:
 	.word off_80E39C4
 off_80E39C4:
 	.word sub_80E39D0+1
-	.word sub_80E3A32+1
+	.word battleObject_runBeastSpActionHandler_80E3A32+1
 	.word object_freeMemory+1
 	thumb_func_end t4_0x2e_80E39A0
 
@@ -93272,7 +93272,7 @@ sub_80E39D0:
 	bl sprite_setFlip
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80E3A32
+	bl battleObject_runBeastSpActionHandler_80E3A32
 	pop {pc}
 	.balign 4, 0
 off_80E3A2C:
@@ -93284,9 +93284,9 @@ word_80E3A30:
 // symdb: Beast-SP battle-object action dispatcher — if the object is dying/finished or its related target is doing action 0xB, force CUR_STATE_DESTROY; otherwise (when Param3==1 or not time-stopped) jump into the per-CurAction handler table at off_80E3A70.
 // symdb: (r5 = BattleObject*) -> void ; out=r0 only inside the per-action handler tail; no return value
 // symdb: consumed by the lone caller.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E3A32.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runBeastSpActionHandler_80E3A32.yaml
 	thumb_local_start
-sub_80E3A32:
+battleObject_runBeastSpActionHandler_80E3A32:
 	push {lr}
 	bl battle_isBattleOver
 	tst r0, r0
@@ -93322,7 +93322,7 @@ off_80E3A6C:
 	.word off_80E3A70
 off_80E3A70:
 	.word sub_80E3A74+1
-	thumb_func_end sub_80E3A32
+	thumb_func_end battleObject_runBeastSpActionHandler_80E3A32
 
 	thumb_local_start
 sub_80E3A74:
@@ -108645,7 +108645,7 @@ AIAttackJumptable:
 	.word airspinAttack_80EDCC0+1 // 0x38
 	.word riskyHoneyAttack_80EDD80+1 // 0x39
 	.word aquaSpiralAiAttack_80EDE7E+1 // 0x3a
-	.word sub_80EDF0C+1 // 0x3b
+	.word battle_aiAttackVarsTickOrExit_80EDF0C+1 // 0x3b
 	.word sub_80EDF5C+1 // 0x3c
 	.word sub_80EE044+1 // 0x3d
 	.word dollThunderAttack_80EE0BC+1 // 0x3e
@@ -108715,7 +108715,7 @@ off_80EADCC:
 	.word off_80EADD0
 off_80EADD0:
 	.word sub_80EADDC+1
-	.word sub_80EAE28+1
+	.word battleObject_slashBeastWaveUpdate_80EAE28+1
 	.word object_endPwrAtkAction_80EAF36+1
 	thumb_func_end sub_80EAD9C
 
@@ -108757,9 +108757,9 @@ sub_80EADDC:
 // symdb: (r5 = *BattleObject, r7 = *AIData, r3 = *AIAttackVars scratch, r6 already preserved) -> void ;
 // symdb: updates AIAttackVars scratch, battle object's PanelX/PanelY/X/Y/Z, sets anim 4/0, sets word at
 // symdb: r6+0x0 to 8 (frame counter)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EAE28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_slashBeastWaveUpdate_80EAE28.yaml
 	thumb_local_start
-sub_80EAE28:
+battleObject_slashBeastWaveUpdate_80EAE28:
 	push {r4,r6,lr}
 	mov r6, r3
 	ldrb r0, [r6,#1]
@@ -108873,7 +108873,7 @@ loc_80EAF0E:
 	strh r0, [r6]
 locret_80EAF18:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80EAE28
+	thumb_func_end battleObject_slashBeastWaveUpdate_80EAE28
 
 	thumb_local_start
 sub_80EAF1A:
@@ -115311,9 +115311,9 @@ locret_80EDF0A:
 // symdb: AI attack-vars step: count down Unk_10, then on expiry clear the AI flag bits 0x1000/0x2000 (flip direction + refresh sprite/arm) and call object_exitAttackState.
 // symdb: (r5 = BattleObject, r7 = AIAttackVars) -> void ; mutates AIData->Unk_44 (clears 0x1000|0x2000),
 // symdb: BattleObject->DirectionFlip, AIAttackVars->Unk_01/Unk_10, then arms/exits attack state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EDF0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackVarsTickOrExit_80EDF0C.yaml
 	thumb_local_start
-sub_80EDF0C:
+battle_aiAttackVarsTickOrExit_80EDF0C:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -115353,7 +115353,7 @@ dword_80EDF54:
 	.word 0x2000
 dword_80EDF58:
 	.word 0x3000
-	thumb_func_end sub_80EDF0C
+	thumb_func_end battle_aiAttackVarsTickOrExit_80EDF0C
 
 	thumb_local_start
 sub_80EDF5C:
@@ -124923,7 +124923,7 @@ byte_80F28F0:
 off_80F29B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -125017,7 +125017,7 @@ byte_80F2A54:
 off_80F2B14:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -126906,7 +126906,7 @@ byte_80F390C:
 off_80F39CC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -128733,7 +128733,7 @@ byte_80F47D4:
 off_80F4894:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -130793,7 +130793,7 @@ byte_80F5838:
 off_80F58F8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -132216,7 +132216,7 @@ byte_80F6394:
 off_80F6454:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -134405,7 +134405,7 @@ byte_80F757C:
 off_80F763C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -136151,7 +136151,7 @@ byte_80F8334:
 off_80F83F4:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -137627,7 +137627,7 @@ byte_80F8EEC:
 off_80F8FAC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -139296,7 +139296,7 @@ byte_80F9C80:
 off_80F9D40:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -141351,7 +141351,7 @@ byte_80FACDC:
 off_80FAD9C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -143254,7 +143254,7 @@ locret_80FBC7C:
 	thumb_local_start
 sub_80FBC8A:
 	push {lr}
-	bl sub_80170C4
+	bl battleObject_dispatchPhaseByPaused_80170C4
 	ldrb r0, [r5,#oBattleObject_CurAnim]
 	cmp r0, #2
 	bne locret_80FBCA0
@@ -145881,7 +145881,7 @@ byte_80FD044:
 off_80FD104:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -147569,7 +147569,7 @@ byte_80FDCF0:
 off_80FDDB0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -149015,7 +149015,7 @@ byte_80FE7D0:
 off_80FE890:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -151058,7 +151058,7 @@ byte_80FF7F0:
 off_80FF8B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -152312,7 +152312,7 @@ byte_81001E8:
 off_81002A8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -154513,7 +154513,7 @@ byte_8101268:
 off_8101328:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -155231,7 +155231,7 @@ byte_8101880:
 off_8101940:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -165622,7 +165622,7 @@ byte_8106828:
 off_81068E8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1
@@ -168119,7 +168119,7 @@ byte_8107B50:
 off_8107C10:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
-	.word sub_80170C4+1
+	.word battleObject_dispatchPhaseByPaused_80170C4+1
 	.word battleObject_actionFlinch_80174FE+1
 	.word battleObject_actionParalyze_80175B8+1
 	.word sub_80178B6+1

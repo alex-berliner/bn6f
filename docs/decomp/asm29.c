@@ -737,7 +737,7 @@ void __noreturn sub_80A57D0()
     v1 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v1);
     sprite_setPallete(0);
-    sub_80A5890();
+    battle_setPlayerDirectionAndAnimFromAIState_80A5890();
     *(v0 + 48) = 0;
     *(v0 + 6) = 0;
     *(v0 + 9) = 0;
@@ -783,7 +783,7 @@ void __noreturn sub_80A5828()
             *(v1 + 7) = 0;
             *(v0 + 9) = 0;
 LABEL_9:
-            sub_80A5890();
+            battle_setPlayerDirectionAndAnimFromAIState_80A5890();
             goto LABEL_11;
         }
     }
@@ -805,7 +805,7 @@ int sub_80A5888()
 
 
 // 0x80a5890
-int sub_80A5890()
+int battle_setPlayerDirectionAndAnimFromAIState_80A5890()
 {
     _DWORD *v0; // r5
     _DWORD *v1; // r6
@@ -3612,12 +3612,12 @@ void __noreturn sub_80A7CA4()
     sprite_setPallete(1);
     SpawnOverworldMapObject(0, *(v0 + 12), *(v0 + 16), *(v0 + 20));
     *(v0 + 8) = 4;
-    sub_80A7CEA();
+    owMapObject_updateBeastSpEncounter_80A7CEA();
 }
 
 
 // 0x80a7cea
-void __noreturn sub_80A7CEA()
+void __noreturn owMapObject_updateBeastSpEncounter_80A7CEA()
 {
     Battle *v0; // r5
 

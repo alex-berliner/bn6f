@@ -302,7 +302,7 @@ signed int __fastcall sub_8089792(int a1)
 
 
 // 0x80897a6
-signed int sub_80897A6()
+signed int battleObject_beastOut_checkOrInit_80897A6()
 {
     _BYTE *v0; // r5
     char v1; // zf
