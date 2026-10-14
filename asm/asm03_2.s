@@ -857,7 +857,7 @@ loc_8046644:
 	add r5, #0x20 
 	mov r0, r4
 	mov r1, #0
-	bl sub_8002694
+	bl sprite_queueFramePiecesViaSub_8002694
 	pop {r4,r5,r7}
 loc_8046652:
 	add r5, #0x58 
@@ -1229,7 +1229,7 @@ loc_804689A:
 	add r5, #0x20 
 	mov r0, #0
 	mov r1, #0
-	bl sub_8002694
+	bl sprite_queueFramePiecesViaSub_8002694
 	pop {r5,r7}
 loc_80468A8:
 	add r5, #0x58 

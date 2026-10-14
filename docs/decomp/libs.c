@@ -2107,7 +2107,7 @@ int __fastcall sub_81461B0(int a1, int a2)
     a1 = a1;
     a2 = a2;
     if ( dword_200FE40 )
-        return sub_814DA68(a1, a2, dword_200FE40);
+        return rfu_callFuncByPtr_814DA68(a1, a2, dword_200FE40);
     word_200FE16 = 0;
     word_200FE14 = 0;
     return v3;
@@ -5079,7 +5079,7 @@ int __fastcall rfu_STC_REQ_callback(unsigned __int8 a1, unsigned __int16 a2)
     v4 = dword_2010CC4;
     *(dword_2010CC4 + 28) = v3;
     if ( *v4 & 8 )
-        sub_814DA68(v2, v3, *dword_2010CC8);
+        rfu_callFuncByPtr_814DA68(v2, v3, *dword_2010CC8);
     return v6;
 }
 
@@ -5096,7 +5096,7 @@ int __fastcall rfu_CB_defaultCallback(unsigned __int8 a1, int a2)
     if ( a1 == 255 )
     {
         if ( *dword_2010CC4 & 8 )
-            sub_814DA68(255, v2 >> 16, *dword_2010CC8);
+            rfu_callFuncByPtr_814DA68(255, v2 >> 16, *dword_2010CC8);
         v3 = *(dword_2010CC0 + 3) | *(dword_2010CC0 + 2);
         v4 = 0;
         do
@@ -8640,7 +8640,7 @@ LABEL_9:
         STWI_reset_ClockCounter();
         v3 = *(dword_2010CCC + 24);
         if ( v3 )
-            sub_814DA68(255, 0, v3);
+            rfu_callFuncByPtr_814DA68(255, 0, v3);
     }
     return v5;
 }
@@ -8743,7 +8743,7 @@ int __fastcall STWI_init(unsigned __int8 a1)
         *(dword_2010CCC + 18) = 6;
         v3 = *(v1 + 24);
         if ( v3 )
-            sub_814DA68(a1, *(v1 + 18), v3);
+            rfu_callFuncByPtr_814DA68(a1, *(v1 + 18), v3);
         return 1;
     }
     v4 = dword_2010CCC;
@@ -8756,7 +8756,7 @@ int __fastcall STWI_init(unsigned __int8 a1)
         *v5 = 0;
         v7 = *(dword_2010CCC + 24);
         if ( v7 )
-            sub_814DA68(a1, *(dword_2010CCC + 18), v7);
+            rfu_callFuncByPtr_814DA68(a1, *(dword_2010CCC + 18), v7);
         return 1;
     }
     if ( !*(dword_2010CCC + 20) )
@@ -8838,7 +8838,7 @@ int STWI_restart_Command()
             *(v0 + 44) = 0;
             v7 = *(dword_2010CCC + 24);
             if ( v7 )
-                sub_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v7);
+                rfu_callFuncByPtr_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v7);
             *dword_2010CCC = 4;
         }
         else
@@ -8851,7 +8851,7 @@ int STWI_restart_Command()
             *v3 = 0;
             v5 = *(dword_2010CCC + 24);
             if ( v5 )
-                sub_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v5);
+                rfu_callFuncByPtr_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v5);
         }
     }
     else
@@ -9226,7 +9226,7 @@ int __fastcall rfufunc_tailCallStub_814DA64(int a1, int (__fastcall *a2)(int))
 
 
 // 0x814da68
-int __fastcall sub_814DA68(int a1, int a2, int (__fastcall *a3)(int, int))
+int __fastcall rfu_callFuncByPtr_814DA68(int a1, int a2, int (__fastcall *a3)(int, int))
 {
     return (a3)(a1, a2, a3);
 }
@@ -10335,7 +10335,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                                     }
                                     else
                                     {
-                                        sub_814ECA0(v11);
+                                        m4a_ply_trampoline_814ECA0(v11);
                                     }
                                     v14 = *(v11 + 52);
                                     if ( v14 == v11 )
@@ -10457,7 +10457,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                                 }
                                 else
                                 {
-                                    sub_814ECA0(v29);
+                                    m4a_ply_trampoline_814ECA0(v29);
                                 }
                                 v32 = *(v29 + 52);
                                 if ( v32 == v29 )
@@ -10732,7 +10732,7 @@ LABEL_39:
         }
     }
 LABEL_42:
-    sub_814ECA0(v19);
+    m4a_ply_trampoline_814ECA0(v19);
     *(v19 + 48) = 0;
     v29 = *(v3 + 32);
     *(v19 + 52) = v29;
@@ -11256,7 +11256,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
 
 
 // 0x814eca0
-int __fastcall sub_814ECA0(int a1)
+int __fastcall m4a_ply_trampoline_814ECA0(int a1)
 {
     return rfufunc_tailCallStub_814DA64(a1, off_30055F8);
 }
@@ -12531,7 +12531,7 @@ LABEL_32:
                 *(a2 + 64) += 4;
             else
 LABEL_31:
-                sub_814DA68(v2, a2, off_3005574);
+                rfu_callFuncByPtr_814DA68(v2, a2, off_3005574);
             break;
         default:
             return v8;
@@ -12550,7 +12550,7 @@ int __fastcall sub_814FD54(int a1, int a2)
     v2 = *(a2 + 64);
     v3 = *v2;
     *(a2 + 64) = v2 + 1;
-    sub_814DA68(a1, a2, *(&off_81C06C0 + v3));
+    rfu_callFuncByPtr_814DA68(a1, a2, *(&off_81C06C0 + v3));
     return v5;
 }
 
@@ -12560,7 +12560,7 @@ int __fastcall sub_814FD74(int a1, int a2)
 {
     int v3; // [sp+0h] [bp-4h]
 
-    sub_814DA68(a1, a2, off_3005570);
+    rfu_callFuncByPtr_814DA68(a1, a2, off_3005570);
     return v3;
 }
 

@@ -2030,7 +2030,7 @@ cutscene_8034BB8:
 	bl maybeStartEntranceCutscene_8034F68
 	bl npc_80350BC
 	bl sub_8034DB0
-	bl sub_8034CB6
+	bl cutscene_tryJackInOrJackOut_8034CB6
 	bl sub_8034D7C
 	bl ghostNaviCheck_8035274
 	bl tryStartNotificationCutscene_8035054
@@ -2140,9 +2140,9 @@ IsNotSlipRunningAndNotInCutscene:
 // symdb: Overworld cutscene handler that, when the L button is pressed and the player stands on a jack-in/jack-out spot, starts the corresponding jack-in or jack-out cutscene (or plays the can't-jack-in sound).
 // symdb: () -> r0 = 0 if a cutscene was started, 1 otherwise ; side effects: may play SOUND_CANT_JACK_IN
 // symdb: or call StartCutscene with one of two cutscene scripts.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034CB6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_tryJackInOrJackOut_8034CB6.yaml
 	thumb_local_start
-sub_8034CB6:
+cutscene_tryJackInOrJackOut_8034CB6:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_8034D52
@@ -2236,7 +2236,7 @@ dword_8034D6C:
 	.word 0x602
 byte_8034D70:
 	.byte 0x0, 0x0, 0xC, 0x0, 0xFF, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0
-	thumb_func_end sub_8034CB6
+	thumb_func_end cutscene_tryJackInOrJackOut_8034CB6
 
 	thumb_local_start
 sub_8034D7C:

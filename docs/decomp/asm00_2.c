@@ -1921,7 +1921,7 @@ int __fastcall battle_getPlayerAIData_8010022(int a1)
 
 
 // 0x801002c
-int sub_801002C()
+int battle_pickPaletteIndexForNavi_801002C()
 {
     int v0; // r5
     int v1; // r0
@@ -1972,7 +1972,7 @@ void __fastcall battle_refreshNaviSpritePaletteFromForm_80100EC(int a1)
     v1 = sub_8013774(a1, 44);
     if ( v1 < 23 || v1 > 24 )
     {
-        v2 = sub_801002C();
+        v2 = battle_pickPaletteIndexForNavi_801002C();
         sprite_setPallete(v2);
     }
     else
@@ -2189,7 +2189,7 @@ int battle_tickAiSelfDrain_8010230()
 
 
 // 0x801026a
-int sub_801026A()
+int battleObject_processPoisonTick_801026A()
 {
     Battle *v0; // r5
     int result; // r0
@@ -5939,7 +5939,7 @@ int __usercall useChipRelated_80127C0@<R0>(Battle *obj@<R5>, int a1@<R0>)
         PlaySoundEffect(135, v14, v13);
     }
     *(v3 + 6) = v30;
-    *(v3 + 8) = sub_8012A38(obj, *(v3 + 20), *(v3 + 8), v27);
+    *(v3 + 8) = battle_aiClassifyChipCategory_8012A38(obj, *(v3 + 20), *(v3 + 8), v27);
     if ( v15 )
     {
         if ( v15 == 1 )
@@ -6089,7 +6089,7 @@ void __noreturn sub_80129F4()
 
 
 // 0x8012a38
-int __fastcall sub_8012A38(int a1, int a2, int a3, int a4)
+int __fastcall battle_aiClassifyChipCategory_8012A38(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -6540,7 +6540,7 @@ signed int battleObject_playerAIUpdate_8012E74()
         if ( v3 )
         {
             sub_8012EA0();
-            result = sub_8012EBC();
+            result = battle_ai_updatePowerAttackCharge_8012EBC();
         }
     }
     return result;
@@ -6568,7 +6568,7 @@ int __usercall sub_8012EA8@<R0>(Battle *obj@<R5>)
 
 
 // 0x8012ebc
-int sub_8012EBC()
+int battle_ai_updatePowerAttackCharge_8012EBC()
 {
     int v0; // r5
     _BYTE *v1; // r4
@@ -13369,7 +13369,7 @@ int __noreturn playerObject_init_80172F0()
     *(v0 + 16) = 0;
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
-    v9 = sub_801002C();
+    v9 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v9);
     v10 = object_getFlip(v0);
     v11 = sprite_setFlip(v0, v10);
@@ -16506,7 +16506,7 @@ int battleObject_processCollisionResultsForEnemy_801ABB8()
                     v3 = battle_objectDieOnCollisionHit_801A6D6();
                     battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A(v3, v4, v5);
                     battle_aiAddCounterFromCollision_8013B20();
-                    sub_801026A();
+                    battleObject_processPoisonTick_801026A();
                     if ( *(v1 + 15) & 0x3C )
                     {
                         if ( *(v1 + 15) & 0x40 )
@@ -18848,7 +18848,7 @@ int sub_801C4AE()
 
 
 // 0x801c4e4
-int __fastcall sub_801C4E4(int a1)
+int __fastcall battle_drawTimerTiles_801C4E4(int a1)
 {
     unsigned __int8 *v1; // r5
     int result; // r0
@@ -19065,7 +19065,7 @@ void __noreturn battle_drawSelectedChipNameAndDamage_801C6EE()
                 }
                 while ( v12 );
             }
-            sub_8012A38(dword_20352C8, v16, v10, 0);
+            battle_aiClassifyChipCategory_8012A38(dword_20352C8, v16, v10, 0);
             if ( v14 )
             {
                 v15 = (&v16 + 2 * v9 + 12);
@@ -19352,10 +19352,10 @@ int __fastcall sub_801CA80(int result)
 
 
 // 0x801cadc
-int sub_801CADC() { // could not decompile
+int battleObject_updateAnimAndState_801CADC() { // could not decompile
     asm(".func\
     .thumb_func\
-    sub_801CADC:\
+    battleObject_updateAnimAndState_801CADC:\
         push {lr}\
         ldrb r0, [r5,#0x17]\
         cmp r0, #0xff\
@@ -19406,7 +19406,7 @@ int sub_801CADC() { // could not decompile
         strb r0, [r5,#0x15]\
         bl battle_ai_tickPwrAtkPresses_801CC94\
         pop {pc}\
-    .endfunc // sub_801CADC"
+    .endfunc // battleObject_updateAnimAndState_801CADC"
     );
 }
 

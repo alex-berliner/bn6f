@@ -2841,9 +2841,9 @@ battle_getPlayerAIData_8010022:
 
 // symdb: Returns a palette index computed from a battle object's Navi (B-side) stats and AI data, used to recolor a navi sprite palette.
 // symdb: (r5 = battleObject) -> r0 = palette index ; no other side effects (callee-saved r4/r7 restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801002C.yaml
-	thumb_func_start sub_801002C
-sub_801002C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickPaletteIndexForNavi_801002C.yaml
+	thumb_func_start battle_pickPaletteIndexForNavi_801002C
+battle_pickPaletteIndexForNavi_801002C:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r7,#oAIData_ActorType]
@@ -2913,11 +2913,11 @@ byte_80100A8:
 	.byte 0x88, 0x42, 0x0, 0xDA, 0x2, 0x24, 0x20, 0x1C, 0x10, 0xBD, 0x10, 0xB5
 	.byte 0x29, 0x21, 0x3, 0xF0, 0x4B, 0xFB, 0x0, 0x28, 0x1, 0xD1, 0x1, 0x20
 	.byte 0x10, 0xBD, 0xFF, 0xF7, 0x2D, 0xFE, 0x10, 0xBD
-	thumb_func_end sub_801002C
+	thumb_func_end battle_pickPaletteIndexForNavi_801002C
 
 // symdb: Updates a battle object's navi sprite palette, using a dedicated handler for cross/beast transformed states and a computed palette otherwise.
 // symdb: void battle_refreshNaviSpritePaletteFromForm(void *battleObj /* r0 */, ... /* r2-r7,r10 pass
-// symdb: through to helpers */) -> palette-related values in r0/r1 from sub_801002C path
+// symdb: through to helpers */) -> palette-related values in r0/r1 from battle_pickPaletteIndexForNavi_801002C path
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_refreshNaviSpritePaletteFromForm_80100EC.yaml
 	thumb_func_start battle_refreshNaviSpritePaletteFromForm_80100EC
 battle_refreshNaviSpritePaletteFromForm_80100EC:
@@ -2931,7 +2931,7 @@ battle_refreshNaviSpritePaletteFromForm_80100EC:
 	bl sub_8016A38
 	b locret_801010A
 loc_8010102:
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	bl sprite_setPalette // (int pallete) -> void
 locret_801010A:
 	pop {pc}
@@ -3167,9 +3167,9 @@ locret_8010268:
 // symdb: (r5 = current battle object, r10 = toolkit) -> r0 = 0 ; side effects: subtracts 1 HP from the
 // symdb: object via object_subtractHP when the poison counter elapses; clears the counter on early exit
 // symdb: and on reset
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801026A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processPoisonTick_801026A.yaml
 	thumb_local_start
-sub_801026A:
+battleObject_processPoisonTick_801026A:
 	push {r4,lr}
 	bl battle_isTimeStop
 	bne locret_801029E
@@ -3201,7 +3201,7 @@ off_80102A0:
 	.word byte_80102A4
 byte_80102A4:
 	.byte 0x0, 0x28, 0x23, 0x1E, 0x19, 0x14, 0xF, 0xA
-	thumb_func_end sub_801026A
+	thumb_func_end battleObject_processPoisonTick_801026A
 
 	thumb_func_start handleCustHPBug_80102AC
 handleCustHPBug_80102AC:
@@ -8435,7 +8435,7 @@ loc_801284E:
 	ldrh r1, [r7,#oAIAttackVars_Unk_14]
 	ldrh r2, [r7,#oAIAttackVars_Damage]
 	ldr r3, [sp]
-	bl sub_8012A38
+	bl battle_aiClassifyChipCategory_8012A38
 	strh r0, [r7,#oAIAttackVars_Damage]
 	tst r1, r1
 	beq loc_8012880
@@ -8688,9 +8688,9 @@ off_8012A28:
 // symdb: (r0 = *BattleObject, r1 = chipIdx, r2 = chipBitsInOut, r3 = someCtxOrBits, r10 = *Toolkit) -> r0
 // symdb: = chipBitsOut (with 0x8000 OR'd if any category matched), r1 = categoryClass {0,1,2,4,6} ; side
 // symdb: effects: r2..r7 trashed, NZCV clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012A38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiClassifyChipCategory_8012A38.yaml
 	thumb_local_start
-sub_8012A38:
+battle_aiClassifyChipCategory_8012A38:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	mov r5, r0
@@ -8760,7 +8760,7 @@ loc_8012AB4:
 	mov r1, r6
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
-	thumb_func_end sub_8012A38
+	thumb_func_end battle_aiClassifyChipCategory_8012A38
 
 // symdb: Checks whether a battle object's current chip qualifies for some special chip-related condition and returns 1 or 0.
 // symdb: bool sub_8012ABC(void* battleObject) — r0 in is the battle object; r0 out is 1 when qualified, 0
@@ -9340,7 +9340,7 @@ battleObject_playerAIUpdate_8012E74:
 	bl battle_isPaused
 	bne locret_8012E8E
 	bl sub_8012EA0
-	bl sub_8012EBC
+	bl battle_ai_updatePowerAttackCharge_8012EBC
 locret_8012E8E:
 	pop {r4,r6,pc}
 loc_8012E90:
@@ -9376,9 +9376,9 @@ sub_8012EA8:
 // symdb: Advances the AI battle object's power-attack (B/A-button) charge timer when not time-stopped and the AI is holding the appropriate button.
 // symdb: (r5 = AIDataPtr, r10 = toolkit/BattleStatePtr) -> void ; side effects: mutates AIData
 // symdb: PwrAtkButton, PwrAtkCurChargeTime, PwrAtkState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012EBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_updatePowerAttackCharge_8012EBC.yaml
 	thumb_local_start
-sub_8012EBC:
+battle_ai_updatePowerAttackCharge_8012EBC:
 	push {r4,r6,r7,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	bl battle_isTimeStop
@@ -9448,7 +9448,7 @@ loc_8012F34:
 	strb r0, [r4,#oAIData_PwrAtkState]
 locret_8012F3C:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8012EBC
+	thumb_func_end battle_ai_updatePowerAttackCharge_8012EBC
 
 // symdb: Returns 1 when the current AI data reports the A button held (0x44 flag word free of 0x1000002F bits, 0x48 word with 0x200 clear and 0x10 set), else 0.
 // symdb: bool checkAIData(void); // in: r5 = AI data pointer (passed through to the flag getters); out:
@@ -18722,7 +18722,7 @@ playerObject_init_80172F0:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
@@ -23950,7 +23950,7 @@ battleObject_processCollisionResultsForEnemy_801ABB8:
 	bl battle_objectDieOnCollisionHit_801A6D6
 	bl battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A
 	bl battle_aiAddCounterFromCollision_8013B20
-	bl sub_801026A
+	bl battleObject_processPoisonTick_801026A
 	ldrb r4, [r7,#oCollisionData_HitModifierFinal]
 	mov r1, #0x3c 
 	tst r4, r1
@@ -26612,7 +26612,7 @@ off_801BF04:
 	.word nullsub_58+1
 	.word sub_801CA28+1
 	.word nullsub_58+1
-	.word sub_801CADC+1
+	.word battleObject_updateAnimAndState_801CADC+1
 	.word sub_801CE28+1
 	.word sub_801D1D8+1
 	.word sub_801C5F4+1
@@ -26655,7 +26655,7 @@ off_801BF88:
 	.word sub_801C078+1
 	.word sub_801C202+1
 	.word sub_801C416+1
-	.word sub_801C4E4+1
+	.word battle_drawTimerTiles_801C4E4+1
 	.word sub_801C576+1
 	.word battle_drawSelectedChipNameAndDamage_801C6EE+1
 	.word sub_801C906+1
@@ -27433,9 +27433,9 @@ off_801C4E0:
 // symdb: Draws BG tile-id patterns (story-sequence 2 related) based on a counter threshold
 // symdb: (r5 = some battle-state ptr, r10 = toolkit) -> void ; side-effect: writes BG tile-id map blocks
 // symdb: via bg_write* helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C4E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawTimerTiles_801C4E4.yaml
 	thumb_local_start
-sub_801C4E4:
+battle_drawTimerTiles_801C4E4:
 	push {r4-r6,lr}
 	bl battle_IsBattleEnding_800A97A
 	cmp r0, #0
@@ -27507,7 +27507,7 @@ loc_801C55C:
 	bl bgmap_WriteTileIdAtBlock_800187C
 locret_801C574:
 	pop {r4-r6,pc}
-	thumb_func_end sub_801C4E4
+	thumb_func_end battle_drawTimerTiles_801C4E4
 
 	thumb_local_start
 sub_801C576:
@@ -27823,7 +27823,7 @@ loc_801C7DE:
 	ldr r0, [r0,#0x48] // (dword_20352C8 - 0x2035280)
 	ldr r1, [sp]
 	mov r3, #0
-	bl sub_8012A38
+	bl battle_aiClassifyChipCategory_8012A38
 	tst r1, r1
 	beq loc_801C806
 	mov r2, r6
@@ -28298,9 +28298,9 @@ dword_801CAD8:
 // symdb: Battle-object per-frame anim/state update: refreshes CurAnim when NegaWisp (id 0x29) flag set, ticks a future-panel timer/anim, and dispatches to either sub_801CC34 or battle_updateObjectAnim_801CB38.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes r5+0x14/0x15/0x1f, calls
 // symdb: GetBattleNaviStatsByte/sub_801CC34/battle_updateObjectAnim_801CB38/sub_801CC94
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CADC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimAndState_801CADC.yaml
 	thumb_local_start
-sub_801CADC:
+battleObject_updateAnimAndState_801CADC:
 	push {lr}
 	ldrb r0, [r5,#0x17]
 	cmp r0, #0xff
@@ -28351,7 +28351,7 @@ loc_801CB30:
 	strb r0, [r5,#0x15]
 	bl battle_ai_tickPwrAtkPresses_801CC94
 	pop {pc}
-	thumb_func_end sub_801CADC
+	thumb_func_end battleObject_updateAnimAndState_801CADC
 
 // symdb: Advances a battle object's animation state machine and queues its tile, cell, and pattern GFX transfers to VRAM.
 // symdb: void sub_801CB38(u32 /* saved */ r0, u32 obj /* r5 */, u32 /* r10 */) -> u32 r0, u32 r3, u32 r4,

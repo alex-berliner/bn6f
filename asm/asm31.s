@@ -562,7 +562,7 @@ off_80B85F0:
 	.word off_80B85F4
 off_80B85F4:
 	.word sub_80B8600+1
-	.word sub_80B863A+1
+	.word battleObject_syncVisualStateFromRelatedObject_80B863A+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x2_80B85E0
 
@@ -586,16 +586,16 @@ sub_80B8600:
 	bl sprite_update
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80B863A
+	bl battleObject_syncVisualStateFromRelatedObject_80B863A
 	pop {r7,pc}
 	thumb_func_end sub_80B8600
 
 // symdb: Copies visual state (flag bits, color shader, final palette, mosaic/alpha, flip) from the linked related object onto this BattleObject and dispatches a sub-action handler.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects update self BattleObject sprite
 // symdb: block and tail-call CurAction handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B863A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_syncVisualStateFromRelatedObject_80B863A.yaml
 	thumb_local_start
-sub_80B863A:
+battleObject_syncVisualStateFromRelatedObject_80B863A:
 	push {lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r1, #2
@@ -637,7 +637,7 @@ off_80B8698:
 	.word sub_80B86A4+1
 	.word sub_80B86C4+1
 	.word sub_80B86D4+1
-	thumb_func_end sub_80B863A
+	thumb_func_end battleObject_syncVisualStateFromRelatedObject_80B863A
 
 	thumb_local_start
 sub_80B86A4:
@@ -1175,7 +1175,7 @@ loc_80B8A70:
 	bl object_setPanelsFromCoordinates
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -6272,7 +6272,7 @@ loc_80BAFA8:
 	bl object_setPanelsFromCoordinates
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -6720,7 +6720,7 @@ loc_80BB2F8:
 	bl object_setPanelsFromCoordinates
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -10059,7 +10059,7 @@ loc_80BCBA8:
 	bl object_setPanelsFromCoordinates
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -10331,7 +10331,7 @@ loc_80BCD90:
 	beq loc_80BCDF8
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 loc_80BCDF8:
@@ -19403,7 +19403,7 @@ sub_80C0E24:
 	stmia r0!, {r1-r3}
 	push {r5}
 	mov r5, r4
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -23965,7 +23965,7 @@ loc_80C3058:
 	bl object_setPanelsFromCoordinates
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r4,#oBattleObject_NameID]
@@ -27271,7 +27271,7 @@ loc_80C487C:
 	strh r0, [r5,#oBattleObject_Z16]
 	push {r5}
 	mov r5, r4
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
@@ -60664,7 +60664,7 @@ off_80D4454:
 	.word off_80D4458
 off_80D4458:
 	.word sub_80D4472+1
-	.word sub_80D44D2+1
+	.word battleObject_handleDestroyByInvincibility_80D44D2+1
 	.word sub_80D4464+1
 	thumb_func_end t3_0x79_80D4440
 
@@ -60726,9 +60726,9 @@ loc_80D44B4:
 
 // symdb: Battle-object death handler (CurAction==0) that tears down collision, fires the death hit, then transitions the object into the destroy state.
 // symdb: (r5 = battleObject, r10 = toolkit) -> void ; may clobber r0-r3/r7 per ARM ABI
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D44D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleDestroyByInvincibility_80D44D2.yaml
 	thumb_local_start
-sub_80D44D2:
+battleObject_handleDestroyByInvincibility_80D44D2:
 	push {r4,r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -60778,7 +60778,7 @@ off_80D4534:
 	.word sub_80D4570+1
 	.word sub_80D45EC+1
 	.word sub_80D4604+1
-	thumb_func_end sub_80D44D2
+	thumb_func_end battleObject_handleDestroyByInvincibility_80D44D2
 
 	thumb_local_start
 sub_80D4544:
@@ -87143,7 +87143,7 @@ loc_80E0EBC:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80E0ED8:
-	bl sub_80E0F5E
+	bl battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E
 	ldrh r0, [r4,#oBattleObject_NameID]
 	mov r1, #0
 	ldrb r2, [r4,#oBattleObject_Alliance]
@@ -87243,9 +87243,9 @@ locret_80E0F5C:
 // symdb: Plays the buster-charge SFX at the right charge stage for a charge-shot object, or stays silent if the controller does not own the charge input.
 // symdb: (r5 = ChargeShotBattleObjectPtr) -> (no return used by caller); side effects: may call
 // symdb: PlaySoundEffect for SOUND_BUSTER_CHARGE or SOUND_UNK_72
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E0F5E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E.yaml
 	thumb_local_start
-sub_80E0F5E:
+battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r2, [r1,#oBattleObject_AIDataPtr]
@@ -87280,7 +87280,7 @@ loc_80E0F8C:
 	bl PlaySoundEffect
 locret_80E0F9E:
 	pop {pc}
-	thumb_func_end sub_80E0F5E
+	thumb_func_end battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E
 
 	thumb_func_start t4_0x9_80E0FA0
 t4_0x9_80E0FA0:
@@ -87664,7 +87664,7 @@ sub_80E121C:
 	stmia r0!, {r1-r3}
 	push {r5}
 	mov r5, r4
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	pop {r5}
 	bl sprite_setPalette // (int pallete) -> void
 	ldrh r0, [r4,#oBattleObject_NameID]

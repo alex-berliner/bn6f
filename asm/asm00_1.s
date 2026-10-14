@@ -11046,7 +11046,7 @@ battle_updateMainFlow_80080D2:
 	mov r0, #1
 	bl battle_setFlags
 	bl battle_updatePhaseState_800AE0C
-	bl sub_800A6A6
+	bl battle_advanceUnk40IfFlagSet_800A6A6
 	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_80080FE
@@ -11663,7 +11663,7 @@ sub_800855E:
 	mov r0, #1
 	bl battle_setFlags
 	bl battle_updatePhaseState_800AE0C
-	bl sub_800A6A6
+	bl battle_advanceUnk40IfFlagSet_800A6A6
 	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_800858E
@@ -12269,7 +12269,7 @@ sub_80089CC:
 	mov r0, #1
 	bl battle_setFlags
 	bl battle_updatePhaseState_800AE0C
-	bl sub_800A6A6
+	bl battle_advanceUnk40IfFlagSet_800A6A6
 	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_80089F8
@@ -12815,7 +12815,7 @@ sub_8008DDC:
 	mov r0, #1
 	bl battle_setFlags
 	bl battle_updatePhaseState_800AE0C
-	bl sub_800A6A6
+	bl battle_advanceUnk40IfFlagSet_800A6A6
 	bl battle_IsBattleEnding_800A97A
 	tst r0, r0
 	beq loc_8008E08
@@ -16492,9 +16492,9 @@ sub_800A672:
 
 // symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_Unk_32` bit 0 is set, increment `oBattleState_Unk_40` (clamped to 0x8c9f).
 // symdb: (no args; r10 = Toolkit ptr) -> r0/r1/r2/r3 clobbered as temporaries, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A6A6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceUnk40IfFlagSet_800A6A6.yaml
 	thumb_local_start
-sub_800A6A6:
+battle_advanceUnk40IfFlagSet_800A6A6:
 	push {lr}
 	bl battle_isTimeStop
 	bne locret_800A6D6
@@ -16518,7 +16518,7 @@ loc_800A6D4:
 	str r1, [r0,#oBattleState_Unk_40]
 locret_800A6D6:
 	pop {pc}
-	thumb_func_end sub_800A6A6
+	thumb_func_end battle_advanceUnk40IfFlagSet_800A6A6
 
 	thumb_local_start
 sub_800A6D8:

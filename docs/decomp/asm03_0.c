@@ -10371,7 +10371,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     v1->currAnimation = 3;
     sprite_setAnimation(v1, 3u);
     sprite_loadAnimationData(v1);
-    v18 = sub_801002C();
+    v18 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v18);
     v19 = object_getFlip(v1);
     v20 = sprite_setFlip(v1, v19);
@@ -10540,7 +10540,7 @@ signed int __noreturn sub_802D9B0()
     v0->currAnimation = 3;
     sprite_setAnimation(v0, 3u);
     sprite_loadAnimationData(v0);
-    v10 = sub_801002C();
+    v10 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v10);
     v11 = object_getFlip(v0);
     sprite_setFlip(v0, v11);
@@ -10733,7 +10733,7 @@ signed int __noreturn sub_802DB80()
     v0->currAnimation = 3;
     sprite_setAnimation(v0, 3u);
     sprite_loadAnimationData(v0);
-    v10 = sub_801002C();
+    v10 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v10);
     v11 = object_getFlip(v0);
     sprite_setFlip(v0, v11);

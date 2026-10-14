@@ -3782,7 +3782,7 @@ LABEL_5:
 
 
 // 0x81333a0
-void __noreturn sub_81333A0()
+void __noreturn battle_dispatchObjectUpdateOrEffect_81333A0()
 {
     int v0; // r5
     int v1; // r0

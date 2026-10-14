@@ -177,7 +177,7 @@ void __fastcall zeroFill_80007B2()
 
 
 // 0x80007be
-int sub_80007BE()
+int main_drainPendingRequestQueueAndForwardSoundReq_80007BE()
 {
     int v0; // r7
     int v1; // r0
@@ -3068,7 +3068,7 @@ void copy_8002668()
 
 
 // 0x8002694
-void __fastcall __noreturn sub_8002694(int a1, int a2)
+void __fastcall __noreturn sprite_queueFramePiecesViaSub_8002694(int a1, int a2)
 {
     sprite_queueFramePieces(a1, a2);
 }

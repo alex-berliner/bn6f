@@ -15906,7 +15906,7 @@ loc_802D822:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
@@ -16094,7 +16094,7 @@ sub_802D9B0:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
@@ -16296,7 +16296,7 @@ sub_802DB80:
 	strb r0, [r5,#0x10]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
-	bl sub_801002C
+	bl battle_pickPaletteIndexForNavi_801002C
 	bl sprite_setPalette // (int pallete) -> void
 	bl object_getFlip // () -> int
 	bl sprite_setFlip

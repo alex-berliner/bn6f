@@ -10,7 +10,7 @@ main_:
 main_gameRoutine:
 	bl main_pollGeneralLCDStatus_STAT_LYC_ // () -> ()
 	bl main_awaitFrame
-	bl sub_80007BE
+	bl main_drainPendingRequestQueueAndForwardSoundReq_80007BE
 	bl CallBGScrollCallback1
 	bl render_flushDisplayRegisters_800172C
 	bl copyObjAttributesToIWRAM_802FE0C

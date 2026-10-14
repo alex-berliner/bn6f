@@ -823,7 +823,7 @@ int __fastcall cutscene_8034BB8(int a1)
             maybeStartEntranceCutscene_8034F68(v2);
             npc_80350BC();
             sub_8034DB0();
-            sub_8034CB6();
+            cutscene_tryJackInOrJackOut_8034CB6();
             sub_8034D7C();
             ghostNaviCheck_8035274();
             tryStartNotificationCutscene_8035054();
@@ -928,7 +928,7 @@ BOOL IsNotSlipRunningAndNotInCutscene()
 
 
 // 0x8034cb6
-signed int sub_8034CB6()
+signed int cutscene_tryJackInOrJackOut_8034CB6()
 {
     int v0; // r10
     char v1; // zf

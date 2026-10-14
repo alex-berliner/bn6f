@@ -964,7 +964,7 @@ LABEL_13:
             *(v7 + 3) = v3;
             sprite_loadPalette_8002818();
             sprite_loadAnimFrameTiles_8002874();
-            sub_8002694(0, 3);
+            sprite_queueFramePiecesViaSub_8002694(0, 3);
         }
     }
     return result;

@@ -3289,7 +3289,7 @@ signed int sub_80A7A40()
     int v8; // r1
     int v10; // r1
 
-    sub_80A7C58();
+    battle_isInputAllowedOrBattleBusy_80A7C58();
     if ( !v2 )
         return 0;
     v3 = *(v1 + 6);
@@ -3322,7 +3322,7 @@ signed int sub_80A7AA4()
     int v3; // r0
     unsigned __int8 v4; // vf
 
-    sub_80A7C58();
+    battle_isInputAllowedOrBattleBusy_80A7C58();
     if ( !v2 )
         return 0;
     if ( !*(v0 + 3) )
@@ -3402,7 +3402,7 @@ signed int sub_80A7B32()
     int v7; // r0
     int v8; // r3
 
-    sub_80A7C58();
+    battle_isInputAllowedOrBattleBusy_80A7C58();
     if ( !v3 )
         return 0;
     v4 = *(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr);
@@ -3513,7 +3513,7 @@ void *sub_80A7BC0()
     int v18; // r2
     int v19; // r3
 
-    result = sub_80A7C58();
+    result = battle_isInputAllowedOrBattleBusy_80A7C58();
     if ( v3 )
     {
         v4 = *(*(v1 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr);
@@ -3560,7 +3560,7 @@ void *sub_80A7BC0()
 
 
 // 0x80a7c58
-signed int sub_80A7C58()
+signed int battle_isInputAllowedOrBattleBusy_80A7C58()
 {
     signed int v0; // r4
     char v1; // zf
@@ -3578,7 +3578,7 @@ signed int sub_80A7C58()
                 IsPaletteFadeActive();
                 if ( !v1 )
                 {
-                    sub_809E3A2();
+                    owMapObject_isHoveringElevator_0809E3A2();
                     if ( !v1 )
                         v0 = 0;
                 }

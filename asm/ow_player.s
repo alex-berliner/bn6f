@@ -307,7 +307,7 @@ loc_809D3A8:
 loc_809D3BC:
 	bl overworld_CheckPlayerAdvanceForwardTrigger_809E46E
 	bl owPlayerInputTick_809DB60
-	bl sub_809E3A2
+	bl owMapObject_isHoveringElevator_0809E3A2
 	bne loc_809D3E6
 	ldrb r0, [r5,#oOWPlayerObject_InteractionLocked]
 	tst r0, r0
@@ -372,7 +372,7 @@ loc_809D446:
 off_809D450:
 	.word sub_809D470+1
 	.word sub_809D4DC+1
-	.word sub_809D61A+1
+	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
 	.word sub_809D8F4+1
@@ -384,7 +384,7 @@ off_809D468:
 	thumb_local_start
 sub_809D470:
 	push {r4,lr}
-	bl sub_809D9E0
+	bl owMapObject_handlePlayerInteract_809D9E0
 	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
 	tst r0, r0
 	bne loc_809D484
@@ -436,7 +436,7 @@ locret_809D4D6:
 	thumb_local_start
 sub_809D4DC:
 	push {lr}
-	bl sub_809D9E0
+	bl owMapObject_handlePlayerInteract_809D9E0
 	tst r0, r0
 	beq loc_809D4FC
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]
@@ -603,9 +603,9 @@ loc_809D60C:
 // symdb: (r5 = oOWPlayerObject*, r10 = oToolkit*) -> void ; side effects: writes the overworld player
 // symdb: jumptable index via owPlayer_setJumptableIndex09AndOthers_809e004, may clear
 // symdb: oOWPlayerObject_Unk_0a, may end slip-run state, may set EVENT_173F via callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D61A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_runSlipRunOrEngine_0809D61A.yaml
 	thumb_local_start
-sub_809D61A:
+owPlayer_runSlipRunOrEngine_0809D61A:
 	push {lr}
 	movflag EVENT_1716
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -614,7 +614,7 @@ sub_809D61A:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_809D646
 loc_809D630:
-	bl sub_809D9E0
+	bl owMapObject_handlePlayerInteract_809D9E0
 	tst r0, r0
 	beq loc_809D650
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]
@@ -678,7 +678,7 @@ off_809D6B0:
 	.word sub_809D730+1
 off_809D6B8:
 	.word off_809D6B0
-	thumb_func_end sub_809D61A
+	thumb_func_end owPlayer_runSlipRunOrEngine_0809D61A
 
 // symdb: Applies the overworld player's directional walking/anim table for the current facing, swapping to the SlipRun table while EVENT_1716 (and not EVENT_173F) is set.
 // symdb: void owPlayerApplyFacingAnim_809D6BC(u32 r3, u32 r4, OWPlayerObject* r5, void* r10 /*toolkit*/);
@@ -935,7 +935,7 @@ loc_809D856:
 	str r0, [r7,#0xc] // (dword_200ACEC - 0x200ace0)
 	ldr r0, [r5,#oOWPlayerObject_Z]
 	str r0, [r7,#0x10] // (dword_200ACF0 - 0x200ace0)
-	bl sub_809E3A2
+	bl owMapObject_isHoveringElevator_0809E3A2
 	bne loc_809D886
 	ldrb r0, [r5,#oOWPlayerObject_InteractionLocked]
 	tst r0, r0
@@ -968,7 +968,7 @@ off_809D8AC:
 off_809D8B0:
 	.word sub_809D470+1
 	.word sub_809D4DC+1
-	.word sub_809D61A+1
+	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
 	.word sub_809D8F4+1
@@ -1136,9 +1136,9 @@ off_809D9DC:
 // symdb: Overworld player interaction handler: builds a target XYZ ahead of the player's facing direction, runs the coordinate trigger check (e.g. examining an NPC/object via the A button), and packs the resulting "interaction" bits into the OW player's `Unk_4c` word, also updating `Unk_0d` / `FacingDirection` on no-input.
 // symdb: (uses r5=OWPlayer, r10=Toolkit) -> r0 unused, r2 carries result ; sets OWPlayer.Unk_4c,
 // symdb: OWPlayer.Unk_0d, OWPlayer.FacingDirection
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D9E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_handlePlayerInteract_809D9E0.yaml
 	thumb_local_start
-sub_809D9E0:
+owMapObject_handlePlayerInteract_809D9E0:
 	push {lr}
 	sub sp, sp, #0xc
 	mov r8, sp
@@ -1273,7 +1273,7 @@ off_809DAEC:
 	.word eStruct2000aa0
 off_809DAF4:
 	.word eStruct200ace0
-	thumb_func_end sub_809D9E0
+	thumb_func_end owMapObject_handlePlayerInteract_809D9E0
 
 // symdb: Tests an overworld object's state halfword at +0x4C for bit 0x10 and returns whether it is set.
 // symdb: int overworldObj_testStateBit10(void *obj /* r5 */); // returns 0 or 0x10, sets NZ flags on
@@ -2702,14 +2702,14 @@ sub_809E35E:
 // symdb: Returns NZ (Z=0) iff the byte at eStruct2000aa0+0x8 is non-zero (i.e. the overworld player Navi is currently in the elevator pose/animation).
 // symdb: () -> r0 = byte at (eStruct2000aa0 + 0x8); flags Z set when byte == 0, NZ otherwise ; no side
 // symdb: effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E3A2.yaml
-	thumb_func_start sub_809E3A2
-sub_809E3A2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_isHoveringElevator_0809E3A2.yaml
+	thumb_func_start owMapObject_isHoveringElevator_0809E3A2
+owMapObject_isHoveringElevator_0809E3A2:
 	ldr r3, off_809E430 // =eStruct2000aa0 
 	ldrb r0, [r3,#0x8] // (byte_2000AA8 - 0x2000aa0)
 	tst r0, r0
 	mov pc, lr
-	thumb_func_end sub_809E3A2
+	thumb_func_end owMapObject_isHoveringElevator_0809E3A2
 
 // symdb: Clears the flag byte at offset 8 of the global struct eStruct2000aa0 (byte_2000AA8), returning that struct's address.
 // symdb: void sub_809E3AA(void); /* in: lr (return addr); out: r3 = &eStruct2000aa0; clobbers r0, NZ

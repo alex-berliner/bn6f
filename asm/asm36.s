@@ -6299,7 +6299,7 @@ off_8133210:
 	.word off_8133214
 off_8133214:
 	.word sub_8133228+1
-	.word sub_81333A0+1
+	.word battle_dispatchObjectUpdateOrEffect_81333A0+1
 	.word sub_813399C+1
 	.word sub_8133228+1
 	.word sub_8133A44+1
@@ -6479,9 +6479,9 @@ off_813339C:
 // symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
 // symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
 // symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81333A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectUpdateOrEffect_81333A0.yaml
 	thumb_local_start
-sub_81333A0:
+battle_dispatchObjectUpdateOrEffect_81333A0:
 	push {lr}
 	ldr r0, off_81333E8 // =off_81333EC 
 	ldrb r1, [r5,#2]
@@ -6522,7 +6522,7 @@ off_81333EC:
 	.word sub_8133434+1
 	.word sub_8133484+1
 	.word sub_8133788+1
-	thumb_func_end sub_81333A0
+	thumb_func_end battle_dispatchObjectUpdateOrEffect_81333A0
 // symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
 // symdb: void battle_objectUpdate_8133400(     u32 r4 /* context */, u32 *r5 /* battle object ptr */,
 // symdb: u32 r6 /* context */, u32 r7 /* context */, u32 r10, u32 lr ); /* returns via lr; r0-r3, nz, c,

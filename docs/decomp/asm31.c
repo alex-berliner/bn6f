@@ -432,12 +432,12 @@ void __noreturn sub_80B8600()
     sprite_loadAnimationData(v0);
     sprite_update(v0);
     *(v0 + 8) = 4;
-    sub_80B863A();
+    battleObject_syncVisualStateFromRelatedObject_80B863A();
 }
 
 
 // 0x80b863a
-int sub_80B863A()
+int battleObject_syncVisualStateFromRelatedObject_80B863A()
 {
     int v0; // r5
     int v1; // r0
@@ -897,7 +897,7 @@ int __noreturn sub_80B8A3C()
     object_setPanelsFromCoordinates(v0);
     v14 = v0;
     v15 = v0->parent;
-    v16 = sub_801002C();
+    v16 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v16);
     v17 = object_getFlip(v14);
     sprite_setFlip(v14, v17);
@@ -5272,7 +5272,7 @@ int __noreturn sub_80BAF74()
     object_setPanelsFromCoordinates(v0);
     v14 = v0;
     v15 = v0->parent;
-    v16 = sub_801002C();
+    v16 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v16);
     v17 = object_getFlip(v14);
     sprite_setFlip(v14, v17);
@@ -5676,7 +5676,7 @@ int __noreturn sub_80BB2C4()
     object_setPanelsFromCoordinates(obj);
     v14 = obj;
     v15 = obj->parent;
-    v16 = sub_801002C();
+    v16 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v16);
     v17 = object_getFlip(v14);
     sprite_setFlip(v14, v17);
@@ -8446,7 +8446,7 @@ int __noreturn sub_80BCB74()
     object_setPanelsFromCoordinates(v0);
     v14 = v0;
     v15 = v0->parent;
-    v16 = sub_801002C();
+    v16 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v16);
     v17 = object_getFlip(v14);
     sprite_setFlip(v14, v17);
@@ -8683,7 +8683,7 @@ int __noreturn sub_80BCD38()
     {
         v17 = v0;
         v18 = *(v0 + 76);
-        v19 = sub_801002C();
+        v19 = battle_pickPaletteIndexForNavi_801002C();
         v0 = v17;
         sprite_setPallete(v19);
     }
@@ -15821,7 +15821,7 @@ void sub_80C0E24()
         *v10 = *(*(v20 + 76) + 52);
         v10[1] = v8;
         v10[2] = v9;
-        v11 = sub_801002C();
+        v11 = battle_pickPaletteIndexForNavi_801002C();
         v0 = v20;
         sprite_setPallete(v11);
         if ( *(v20 + 96) == 2 )
@@ -19641,7 +19641,7 @@ signed int __noreturn sub_80C3024()
     object_setPanelsFromCoordinates(v0);
     v14 = v0;
     v15 = v0->parent;
-    v16 = sub_801002C();
+    v16 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v16);
     *&v14->extraVars[12] = unpackVerActorTyAndAIIdx_800F29C(*(v1 + 20));
     *&v14->extraVars[16] = v17;
@@ -22225,7 +22225,7 @@ void __noreturn sub_80C4848()
     v13[2] = v12;
     ++*(v0 + 58);
     ++*(v0 + 62);
-    v14 = sub_801002C();
+    v14 = battle_pickPaletteIndexForNavi_801002C();
     sprite_setPallete(v14);
     v15 = object_getFlip(v0);
     sprite_setFlip(v0, v15);
@@ -47489,7 +47489,7 @@ void __noreturn sub_80D4472()
 
 
 // 0x80d44d2
-void __noreturn sub_80D44D2()
+void __noreturn battleObject_handleDestroyByInvincibility_80D44D2()
 {
     int v0; // r5
     int v1; // r0
@@ -67033,7 +67033,7 @@ void chargeShotChargeObject_update_80E0E20()
             *(v0 + 16) = v5;
             if ( !v5 )
                 *v0 &= 0xFDu;
-            sub_80E0F5E();
+            battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E();
             v6 = getBattleArmPositionMaybe_8018810(*(v1 + 40), 0, *(v1 + 22), *(v1 + 23));
             v8 = v7 << 16;
             v9 = *(v1 + 56);
@@ -67120,7 +67120,7 @@ int __fastcall battle_setExtraAnimState_80E0F2E(int result)
 
 
 // 0x80e0f5e
-int sub_80E0F5E()
+int battleObject_chargeShotChargeObject_playChargeSounds_80E0F5E()
 {
     _DWORD *v0; // r5
     int v1; // r1
@@ -67434,7 +67434,7 @@ void sub_80E121C()
         *v10 = v17->parent[13];
         v10[1] = v8;
         v10[2] = v9;
-        v11 = sub_801002C();
+        v11 = battle_pickPaletteIndexForNavi_801002C();
         v0 = v17;
         sprite_setPallete(v11);
         if ( unpackVerActorTyAndAIIdx_800F29C(*(v1 + 20)) == 2 )

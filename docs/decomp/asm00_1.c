@@ -6499,7 +6499,7 @@ int battle_updateMainFlow_80080D2()
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
-    v2 = sub_800A6A6();
+    v2 = battle_advanceUnk40IfFlagSet_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
     v3 = battle_getPhaseMode_800A152();
@@ -6995,7 +6995,7 @@ int sub_800855E()
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
-    v2 = sub_800A6A6();
+    v2 = battle_advanceUnk40IfFlagSet_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
     v3 = battle_getPhaseMode_800A152();
@@ -7504,7 +7504,7 @@ int sub_80089CC()
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
-    v2 = sub_800A6A6();
+    v2 = battle_advanceUnk40IfFlagSet_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
     v3 = battle_getPhaseMode_800A152();
@@ -7962,7 +7962,7 @@ int sub_8008DDC()
     sub_800A032();
     battle_setFlags(1);
     battle_updatePhaseState_800AE0C();
-    v2 = sub_800A6A6();
+    v2 = battle_advanceUnk40IfFlagSet_800A6A6();
     if ( battle_IsBattleEnding_800A97A(v2) )
         sub_800AB7C();
     v3 = battle_getPhaseMode_800A152();
@@ -11002,7 +11002,7 @@ int __fastcall sub_800A672(int result, int a2, __int16 a3, int a4)
 
 
 // 0x800a6a6
-int sub_800A6A6()
+int battle_advanceUnk40IfFlagSet_800A6A6()
 {
     int v0; // r10
     int result; // r0

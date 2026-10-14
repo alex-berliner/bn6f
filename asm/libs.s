@@ -4534,7 +4534,7 @@ sub_81461B0:
 	ldr r2, [r4,#0x40] // (dword_200FE40 - 0x200fe00)
 	cmp r2, #0
 	beq loc_81461C6
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 loc_81461C6:
 	mov r0, #0
 	strh r0, [r4,#0x16] // (word_200FE16 - 0x200fe00)
@@ -11293,7 +11293,7 @@ rfu_STC_REQ_callback:
 	ldr r2, [r0]
 	mov r0, r5
 	mov r1, r4
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 loc_81494E6:
 	pop {r4,r5}
 	pop {r0}
@@ -11328,7 +11328,7 @@ rfu_CB_defaultCallback:
 	ldr r2, [r0]
 	mov r0, #0xff
 	mov r1, r3
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 loc_8149522:
 	ldr r0, off_8149564 // =dword_2010CC0 
 	ldr r0, [r0]
@@ -18722,7 +18722,7 @@ loc_814C946:
 	beq loc_814C964
 	mov r0, #0xff
 	mov r1, #0
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 loc_814C964:
 	pop {r4}
 	pop {r0}
@@ -18874,7 +18874,7 @@ STWI_init:
 	beq loc_814CAC2
 	ldrh r1, [r1,#0x12]
 	mov r0, r5
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	b loc_814CAC2
 	.balign 4, 0
 off_814CA70:
@@ -18902,7 +18902,7 @@ loc_814CA78:
 	ldrh r1, [r0,#0x12]
 	mov r0, r5
 loc_814CA9E:
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	b loc_814CAC2
 off_814CAA4:
 	.word dword_2010CCC
@@ -19073,7 +19073,7 @@ loc_814CBBE:
 	beq loc_814CC06
 	ldrb r0, [r1,#6]
 	ldrh r1, [r1,#0x12]
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	b loc_814CC06
 loc_814CBE0:
 	ldrh r0, [r2,#0x12]
@@ -19091,7 +19091,7 @@ loc_814CBE0:
 	ldrb r0, [r1,#6]
 	ldrh r1, [r1,#0x12]
 loc_814CBFC:
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 loc_814CC00:
 	ldr r1, [r4]
 	mov r0, #4
@@ -20608,12 +20608,12 @@ rfufunc_tailCallStub_814DA64:
 
 // symdb: Thumb trampoline that branches to the function pointer passed in r2 (tail-call), used to dispatch registered RFU callbacks
 // symdb: (none read) -> none returned (r0 from r2 may propagate via `bx r2`); no memory side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_callFuncByPtr_814DA68.yaml
 	thumb_local_start
-sub_814DA68:
+rfu_callFuncByPtr_814DA68:
 	bx r2
 	nop 
-	thumb_func_end sub_814DA68
+	thumb_func_end rfu_callFuncByPtr_814DA68
 
 	thumb_local_start
 sub_814DA6C:
@@ -21885,7 +21885,7 @@ loc_814E2CE:
 loc_814E2EA:
 	mov r0, r4
 loc_814E2EC:
-	bl sub_814ECA0
+	bl m4a_ply_trampoline_814ECA0
 loc_814E2F0:
 	ldr r1, [r4,#0x34]
 	cmp r1, r4
@@ -22067,7 +22067,7 @@ loc_814E42C:
 	tst r0, r1
 	bne loc_814E43C
 	mov r0, r4
-	bl sub_814ECA0
+	bl m4a_ply_trampoline_814ECA0
 	b loc_814E498
 loc_814E43C:
 	ldrb r0, [r4,#1]
@@ -22444,7 +22444,7 @@ loc_814E68C:
 	beq loc_814E73E
 loc_814E698:
 	mov r0, r4
-	bl sub_814ECA0
+	bl m4a_ply_trampoline_814ECA0
 	mov r1, #0
 	str r1, [r4,#0x30]
 	ldr r3, [r5,#0x20]
@@ -23381,9 +23381,9 @@ byte_814EC98:
 
 // symdb: tail-call trampoline for an MPlay note dispatch (MPlayMain / ply_note → common helper)
 // symdb: (r0 = ???) -> returns whatever the indirect helper returns via a tail jump
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814ECA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/m4a_ply_trampoline_814ECA0.yaml
 	thumb_local_start
-sub_814ECA0:
+m4a_ply_trampoline_814ECA0:
 	push {lr}
 	ldr r1, off_814ECB0 // =off_30055F8 
 	ldr r1, [r1]
@@ -23393,7 +23393,7 @@ sub_814ECA0:
 	.balign 4, 0
 off_814ECB0:
 	.word off_30055F8
-	thumb_func_end sub_814ECA0
+	thumb_func_end m4a_ply_trampoline_814ECA0
 
 	thumb_local_start
 sub_814ECB4:
@@ -25819,7 +25819,7 @@ loc_814FD34:
 	ldr r2, [r0]
 	mov r0, r4
 	mov r1, r6
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	b def_814FC28
 	.balign 4, 0x00
 off_814FD44:
@@ -25845,7 +25845,7 @@ sub_814FD54:
 	lsl r3, r3, #2
 	add r3, r3, r2
 	ldr r2, [r3]
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -25858,7 +25858,7 @@ sub_814FD74:
 	push {lr}
 	ldr r2, off_814FD84 // =off_3005570 
 	ldr r2, [r2]
-	bl sub_814DA68
+	bl rfu_callFuncByPtr_814DA68
 	pop {r0}
 	bx r0
 	.balign 4, 0

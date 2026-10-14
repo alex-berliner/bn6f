@@ -16,7 +16,7 @@ void __noreturn main_()
     {
         main_pollGeneralLCDStatus_STAT_LYC_();
         main_awaitFrame();
-        sub_80007BE();
+        main_drainPendingRequestQueueAndForwardSoundReq_80007BE();
         CallBGScrollCallback1();
         render_flushDisplayRegisters_800172C();
         copyObjAttributesToIWRAM_802FE0C();

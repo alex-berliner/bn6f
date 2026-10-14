@@ -2609,7 +2609,7 @@ unsigned int owPlayer_update_809D348()
     }
     overworld_CheckPlayerAdvanceForwardTrigger_809E46E();
     owPlayerInputTick_809DB60();
-    sub_809E3A2();
+    owMapObject_isHoveringElevator_0809E3A2();
     if ( v4 )
     {
         if ( *(v0 + 23) )
@@ -2666,7 +2666,7 @@ int sub_809D470()
     char v2; // zf
     int result; // r0
 
-    sub_809D9E0();
+    owMapObject_handlePlayerInteract_809D9E0();
     if ( !v0[10] )
     {
         v0[20] = v0[16];
@@ -2698,7 +2698,7 @@ int sub_809D4DC()
     int v1; // r7
     int result; // r0
 
-    if ( sub_809D9E0() )
+    if ( owMapObject_handlePlayerInteract_809D9E0() )
     {
         if ( v0[16] != v0[17] )
             v0[10] = 0;
@@ -2808,7 +2808,7 @@ int sub_809D5C4()
 
 
 // 0x809d61a
-int sub_809D61A()
+int owPlayer_runSlipRunOrEngine_0809D61A()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -2817,7 +2817,7 @@ int sub_809D61A()
     TestEventFlagFromImmediate(23, 22);
     if ( v2 || (TestEventFlagFromImmediate(23, 61), v2) )
     {
-        if ( !sub_809D9E0() )
+        if ( !owMapObject_handlePlayerInteract_809D9E0() )
             goto LABEL_8;
         if ( v0[16] != v0[17] )
             v0[10] = 0;
@@ -3017,7 +3017,7 @@ int ow_player_updateCollisionAndPos_809D800()
     dword_200ACE8 = *(v0 + 28);
     dword_200ACEC = *(v0 + 32);
     dword_200ACF0 = *(v0 + 36);
-    sub_809E3A2();
+    owMapObject_isHoveringElevator_0809E3A2();
     if ( v4 )
     {
         if ( *(v0 + 23) )
@@ -3155,7 +3155,7 @@ int sub_809D9A0()
 
 
 // 0x809d9e0
-int sub_809D9E0()
+int owMapObject_handlePlayerInteract_809D9E0()
 {
     int v0; // r5
     int v1; // r10
@@ -4149,7 +4149,7 @@ void __cdecl sub_809E35E()
 
 
 // 0x809e3a2
-int sub_809E3A2()
+int owMapObject_isHoveringElevator_0809E3A2()
 {
     return byte_2000AA8;
 }

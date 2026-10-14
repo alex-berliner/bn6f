@@ -599,7 +599,7 @@ loc_8141FE4:
 	movflag EVENT_702
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 loc_814201A:
-	bl sub_809E3A2
+	bl owMapObject_isHoveringElevator_0809E3A2
 	beq loc_814202A
 	mov r0, #0x54 
 	bl sub_8001172

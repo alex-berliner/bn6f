@@ -4943,7 +4943,7 @@ byte_80A7A38:
 	thumb_local_start
 sub_80A7A40:
 	push {r4-r7,lr}
-	bl sub_80A7C58
+	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7A88
 	ldr r7, off_80A7AA0 // =math_sinTable 
 	ldrh r3, [r6,#6]
@@ -4997,7 +4997,7 @@ off_80A7AA0:
 	thumb_local_start
 sub_80A7AA4:
 	push {r4-r7,lr}
-	bl sub_80A7C58
+	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7AD0
 	ldrb r0, [r6,#3]
 	tst r0, r0
@@ -5073,7 +5073,7 @@ sub_80A7AFA:
 	thumb_local_start
 sub_80A7B32:
 	push {r4-r7,lr}
-	bl sub_80A7C58
+	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7B76
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
@@ -5175,7 +5175,7 @@ sub_80A7BBA:
 	thumb_local_start
 sub_80A7BC0:
 	push {r4-r7,lr}
-	bl sub_80A7C58
+	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne locret_80A7C3C
 	ldr r4, off_80A7C40 // =dword_80A7C44 
 	mov r7, r10
@@ -5243,9 +5243,9 @@ off_80A7C54:
 
 // symdb: Returns 1 (busy/locked-out) if any of chatbox-flag 0x80, an active cutscene script, busy OW player/cutscene, a screen fade, or a non-zero beast-sp flag is set; otherwise returns 0.
 // symdb: () -> r0 = 1 if battle input should be locked out, 0 if free; ZF=1 when r0=0, ZF=0 when r0=1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7C58.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_isInputAllowedOrBattleBusy_80A7C58.yaml
 	thumb_local_start
-sub_80A7C58:
+battle_isInputAllowedOrBattleBusy_80A7C58:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -5257,14 +5257,14 @@ sub_80A7C58:
 	bne loc_80A7C7E
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80A7C7E
-	bl sub_809E3A2
+	bl owMapObject_isHoveringElevator_0809E3A2
 	beq loc_80A7C7E
 	mov r4, #0
 loc_80A7C7E:
 	mov r0, r4
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7C58
+	thumb_func_end battle_isInputAllowedOrBattleBusy_80A7C58
 
 	thumb_func_start sub_80A7C84
 sub_80A7C84:

@@ -366,7 +366,7 @@ unsigned int sub_8141F7C()
         StartCutscene(byte_8089DF4, 0, v15, v16);
         ClearEventFlagFromImmediate(7, 2);
     }
-    sub_809E3A2();
+    owMapObject_isHoveringElevator_0809E3A2();
     if ( !v2 )
     {
         sub_8001172(84);

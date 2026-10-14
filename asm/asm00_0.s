@@ -374,9 +374,9 @@ zeroFill_80007B2:
 // symdb: Drains the battle tick jump-table queue at dword_200A490, calling each pending function pointer with its parameters, then plays any queued sound request via sound_8000808.
 // symdb: () -> void ; side effects: clobbers dword_200A490 (the pending-request queue), calls each queued
 // symdb: function pointer, may push to sound_8000808's pending SSEQ queue (dword_200A490 / sound queue).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80007BE.yaml
-	thumb_func_start sub_80007BE
-sub_80007BE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/main_drainPendingRequestQueueAndForwardSoundReq_80007BE.yaml
+	thumb_func_start main_drainPendingRequestQueueAndForwardSoundReq_80007BE
+main_drainPendingRequestQueueAndForwardSoundReq_80007BE:
 	push {r4-r7,lr}
 	ldr r5, dword_200A490_p
 	ldr r7, [r5]
@@ -418,7 +418,7 @@ locret_8000800:
 	.balign 4, 0
 off_8000804:
 	.word loc_80007E8+1
-	thumb_func_end sub_80007BE
+	thumb_func_end main_drainPendingRequestQueueAndForwardSoundReq_80007BE
 
 // symdb: Appends a 16-byte sound/SSEQ request to the pending-request queue at dword_200A490, dropping it if the queue is full (32 entries).
 // symdb: void sound_8000808(u32 word0 /*r0*/, u32 word1 /*r1*/, u32 word2 /*r2*/, u32 word3 /*r3*/) —
@@ -5604,9 +5604,9 @@ off_8002690:
 // symdb: Thumb↔ARM veneer that tail-calls sprite_queueFramePieces on the IWRAM sprite
 // symdb: (r0 = sprite param, r1 = chatbox mugshot?, r2/r3/.. = preserved) -> returns whatever
 // symdb: sprite_queueFramePieces returns; side effects: queues OAM for the current animation frame
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002694.yaml
-	thumb_func_start sub_8002694
-sub_8002694:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueFramePiecesViaSub_8002694.yaml
+	thumb_func_start sprite_queueFramePiecesViaSub_8002694
+sprite_queueFramePiecesViaSub_8002694:
 	push {lr}
 	ldr r2, off_80026A0 // =sprite_queueFramePieces+1
 	mov lr, pc
@@ -5615,6 +5615,6 @@ sub_8002694:
 	.balign 4, 0x00
 off_80026A0:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8002694
+	thumb_func_end sprite_queueFramePiecesViaSub_8002694
 
 /*For debugging purposes, connect comment at any range!*/

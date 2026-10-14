@@ -479,7 +479,7 @@ int battle_updateEStructSprites_80465F8()
                 if ( v3 & 0x20 )
                     sprite_loadAnimFrameTiles_8002874();
             }
-            sub_8002694(0, 0);
+            sprite_queueFramePiecesViaSub_8002694(0, 0);
         }
         v0 += 88;
         ++v1;
@@ -733,7 +733,7 @@ int sub_8046854()
                 if ( v3 & 0x20 )
                     sprite_loadAnimFrameTiles_8002874();
             }
-            sub_8002694(0, 0);
+            sprite_queueFramePiecesViaSub_8002694(0, 0);
         }
         v0 += 88;
         ++v1;
