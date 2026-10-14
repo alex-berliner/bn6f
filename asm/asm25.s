@@ -116,9 +116,9 @@ off_808F8FC:
 // symdb: while still running ; side effects: clears/raises event flags, mutates EWRAM struct at 0x2000310
 // symdb: (state + cached coords/anims), moves and recolours the OWPlayer Navi, calls
 // symdb: request_BBS_clear_8140A0C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F900.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/busStation_runBusMoveSequence_controller_808F900.yaml
 	thumb_local_start
-sub_808F900:
+busStation_runBusMoveSequence_controller_808F900:
 	push {r4-r7,lr}
 	ldr r5, off_808FB48 // =off_808F5D4 
 	ldr r5, [r5]
@@ -177,7 +177,7 @@ loc_808F98A:
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808F900
+	thumb_func_end busStation_runBusMoveSequence_controller_808F900
 
 	thumb_local_start
 sub_808F990:

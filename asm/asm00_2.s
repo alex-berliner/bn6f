@@ -17228,7 +17228,7 @@ sub_80166AE:
 
 // symdb: Dispatches an AI-specific callback based on the BattleObject's Unk_1f field, used by attack-event functions
 // symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
-// symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
+// symdb: effects: jumps to sub_80166D0 or battleObject_stepMoveToFuturePanel_8016730 via a function pointer table indexed by the
 // symdb: object's Unk_1f byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIDispatchByType_80166B6.yaml
 	thumb_local_start
@@ -17244,7 +17244,7 @@ off_80166C4:
 	.word off_80166C8
 off_80166C8:
 	.word sub_80166D0+1
-	.word sub_8016730+1
+	.word battleObject_stepMoveToFuturePanel_8016730+1
 	thumb_func_end battle_dispatchAIDispatchByType_80166B6
 
 	thumb_local_start
@@ -17297,9 +17297,9 @@ loc_8016722:
 // symdb: Per-frame step of a battle object's "moving to its future panel" state (slide / approach), decrementing the timer and finishing by either reverting to standing or starting a new sub-step.
 // symdb: (r5 = BattleObject*) -> void ; side effects: panel reserve/release, write to battle object
 // symdb: fields, possibly AI data word, clear/leave object collision flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016730.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepMoveToFuturePanel_8016730.yaml
 	thumb_local_start
-sub_8016730:
+battleObject_stepMoveToFuturePanel_8016730:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_Unk_1e]
 	sub r0, #1
@@ -17427,7 +17427,7 @@ dword_8016834:
 	.word 0xA0000
 dword_8016838:
 	.word 0x60000
-	thumb_func_end sub_8016730
+	thumb_func_end battleObject_stepMoveToFuturePanel_8016730
 
 	thumb_local_start
 sub_801683C:
@@ -23985,7 +23985,7 @@ battleObject_processCollisionResults_801A9B8:
 	bl battle_incrementAllianceStatOnCollisionHit_801A6B4
 	bl battle_buffTwoStatsPlus2OnEventF6_801A720
 	bl applyChipAllianceEffect_8013AE4
-	bl sub_801AEB0
+	bl battleObject_applyHitModifierFlags_801AEB0
 	bl battle_applyFlattenHitStatus_800EB26
 	ldrh r0, [r5,#oBattleObject_NameID]
 	ldr r1, dword_801AA40 // =0x125 
@@ -24094,7 +24094,7 @@ loc_801AB02:
 	bl battle_incrementAllianceStatOnCollisionHit_801A6B4
 	bl battle_buffTwoStatsPlus2OnEventF6_801A720
 	bl applyChipAllianceEffect_8013AE4
-	bl sub_801AEB0
+	bl battleObject_applyHitModifierFlags_801AEB0
 	bl battle_applyFlattenHitStatus_800EB26
 	bl battleObject_applyStatusEffect_801A554
 	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
@@ -24257,7 +24257,7 @@ battleObject_processCollisionResultsForPlayer_801AC6C:
 	bl battle_incrementAllianceStatOnCollisionHit_801A6B4
 	bl battle_buffTwoStatsPlus2OnEventF6_801A720
 	bl battleObject_applyStatusEffectOnTurnEnd_80139F6
-	bl sub_801AEB0
+	bl battleObject_applyHitModifierFlags_801AEB0
 	bl battle_applyFlattenHitStatus_800EB26
 	bl handlePanelDamage_8013F1E
 	mov r1, #0x29 
@@ -24492,9 +24492,9 @@ byte_801AEA0:
 // symdb: Translate the HitModifierFinal byte of a battle object's collision data into ObjectFlags2 side-effects and Unk_0f updates.
 // symdb: (r5 = BattleObject*, r7 = ?, lr) -> void (returns nothing to callers; r0/r1/r2/r4 are scratch
 // symdb: and r4/r7/lr are restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AEB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHitModifierFlags_801AEB0.yaml
 	thumb_local_start
-sub_801AEB0:
+battleObject_applyHitModifierFlags_801AEB0:
 	push {r4,r7,lr}
 	ldrb r4, [r7,#oCollisionData_HitModifierFinal]
 	bl object_getFlag // () -> int
@@ -24539,7 +24539,7 @@ loc_801AEF8:
 	strb r0, [r5,#oBattleObject_Unk_0f]
 locret_801AF0C:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AEB0
+	thumb_func_end battleObject_applyHitModifierFlags_801AEB0
 
 	thumb_local_start
 sub_801AF0E:
@@ -26489,9 +26489,9 @@ locret_801BCF2:
 // symdb: Battle-object per-frame animation dispatcher: applies pause/timestop/stop-sprite-update flags, syncs CurAnim into the sprite slot, loads frame data, and ticks sprite_update.
 // symdb: (r5 = BattleObject*) -> void ; side effects: reads/writes object header flags and sprite slot;
 // symdb: calls sprite_setAnimation / sprite_loadAnimationData / sprite_update.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BCF4.yaml
-	thumb_func_start sub_801BCF4
-sub_801BCF4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_animationAndSpriteUpdate_801BCF4.yaml
+	thumb_func_start battleObject_animationAndSpriteUpdate_801BCF4
+battleObject_animationAndSpriteUpdate_801BCF4:
 	push {lr}
 	bl battle_isPaused
 	bne locret_801BD3A
@@ -26527,7 +26527,7 @@ loc_801BD36:
 	bl sprite_update
 locret_801BD3A:
 	pop {pc}
-	thumb_func_end sub_801BCF4
+	thumb_func_end battleObject_animationAndSpriteUpdate_801BCF4
 
 	thumb_func_start sub_801BD3C
 sub_801BD3C:

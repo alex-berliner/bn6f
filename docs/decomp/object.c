@@ -8,7 +8,7 @@ int object_timefreezeEnd()
 
     if ( *(v0 + 11) )
         return object_freeMemory();
-    sub_800B884(*(v0 + 22));
+    object_setBattleEffectParam2_800B884(*(v0 + 22));
     result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1);
     if ( result == 5 || !result )
     {
@@ -25,7 +25,7 @@ int object_timefreezeEnd()
             battle_resetObjAnimState_800B89C(*(v0 + 22) ^ 1);
             battle_clearFlags(4);
         }
-        sub_800B884(*(v0 + 22));
+        object_setBattleEffectParam2_800B884(*(v0 + 22));
         battle_resetObjAnimState_800B89C(*(v0 + 22));
         *(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 3) = 0;
         result = object_freeMemory();
@@ -51,7 +51,7 @@ signed int sub_800BDD0()
 
     if ( *(v0 + 48) - 221 <= 0x3B && getTable2036720EntryFields_802CE78(*(v0 + 22) ^ 1) == 186 )
     {
-        sub_800B884(*(v0 + 22));
+        object_setBattleEffectParam2_800B884(*(v0 + 22));
         sub_800ABC6(*(v0 + 18), *(v0 + 19));
         result = 4;
         *(v0 + 10) = 4;
@@ -117,7 +117,7 @@ int sub_800BE2C()
             v4 = *(v0 + 22) ^ 1;
             *(v0 + 22) = v4;
             writeByteToWorkSlots0And1_800B8AC(v4);
-            sub_800B884(*(v0 + 22));
+            object_setBattleEffectParam2_800B884(*(v0 + 22));
             v5 = *(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 2);
             if ( v5 )
             {

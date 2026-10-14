@@ -40,7 +40,7 @@ int sub_812D3E4()
 	CopyBackgroundTiles(3, 4, 2, &unk_202DFA0, 8, &dword_C + 2);
 	battle_loadFolderChipGfx_8120390(*(v0 + 23), word_2023FA0, &unk_202E080, byte_812C288);
 	CopyBackgroundTiles(1, 4, 2, &unk_202E080, 2, &dword_C + 2);
-	sub_81203E4(*(v0 + 23), word_2023FA0, &unk_202E0B8, &dword_35C | 0x9000);
+	battle_buildChipFolderOamPack_81203E4(*(v0 + 23), word_2023FA0, &unk_202E0B8, &dword_35C | 0x9000);
 	CopyBackgroundTiles(11, 4, 2, &unk_202E0B8, 2, &dword_C + 2);
 	battle_loadChipIconSlots_8120458(*(v0 + 23), word_2023FA0, &unk_202E0F0, 41494);
 	CopyBackgroundTiles(13, 4, 2, &unk_202E0F0, 1, &dword_C + 2);

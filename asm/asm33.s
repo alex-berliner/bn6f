@@ -424,7 +424,7 @@ off_8123448:
 chipFolder_screenInit_812345C:
 	push {lr}
 	mov r0, #1
-	bl sub_81237E0
+	bl chipFolder_initVramAndState_81237E0
 	bl chipFolder_initGfx_812386C
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
@@ -455,7 +455,7 @@ chipFolder_screenInit_812345C:
 chipFolder_init_812349C:
 	push {lr}
 	mov r0, #0
-	bl sub_81237E0
+	bl chipFolder_initVramAndState_81237E0
 	bl chipFolder_initGfx_812386C
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
@@ -898,9 +898,9 @@ locret_81237DC:
 // symdb: (r0 = firstTimeInitFlag, r1 = ptr stored at submenu+0x4c) -> void ; side effects: writes
 // symdb: submenu+0x10..0x3a, +0x4c; clears VRAM and IWRAM 0x3001960; zeroes BG tile ID block at
 // symdb: 0x30025c0; sets render info 0x1f40; calls SetScreenFade(0x8, 0x10).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81237E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipFolder_initVramAndState_81237E0.yaml
 	thumb_local_start
-sub_81237E0:
+chipFolder_initVramAndState_81237E0:
 	push {r4,lr}
 	mov r4, r0
 	mov r0, #0
@@ -964,7 +964,7 @@ dword_8123864:
 	.word 0x1F40
 off_8123868:
 	.word dword_81233D4
-	thumb_func_end sub_81237E0
+	thumb_func_end chipFolder_initVramAndState_81237E0
 
 // symdb: Initializes all graphics for the chip-folder PET screen: decompresses tile/sprite/palette data, loads folder-page label text scripts, and fills two regions of tile-block-1 with background grid tiles.
 // symdb: void chipFolder_initGfx(void); // r4-r7 preserved; r2/r3 carry last CopyBackgroundTiles in/out
@@ -1264,7 +1264,7 @@ drawBattleBackground_8123AB8:
 	orr r3, r4
 	ldr r4, dword_8123BA4 // =0x6006b80 
 	mov r5, #5
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r0, #0x16
 	mov r1, #8
 	mov r2, #2

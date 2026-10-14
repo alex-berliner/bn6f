@@ -722,7 +722,7 @@ int battleObject_dispatchAICustomOp_80A57AC()
 
 
 // 0x80a57d0
-void __noreturn sub_80A57D0()
+void __noreturn battleObject_initPlayerBeastOutShrine_80A57D0()
 {
     int v0; // r5
     int v1; // r0
@@ -2130,7 +2130,7 @@ int battle_ai_dispatchBeastSp_80A6E98()
 
 
 // 0x80a6ebc
-void __noreturn sub_80A6EBC()
+void __noreturn battleObject_initBeastSpEnemy_80A6EBC()
 {
     int v0; // r5
     int v1; // r0
@@ -2515,7 +2515,7 @@ int battleObject_dispatchAIData_80A72B4()
 
 
 // 0x80a72d8
-void __noreturn sub_80A72D8()
+void __noreturn battleObject_beastOutSpawn_80A72D8()
 {
     int v0; // r5
     char *v1; // r4

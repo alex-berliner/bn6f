@@ -698,7 +698,7 @@ loc_813050C:
 	orr r3, r4
 	ldr r4, dword_8130600 // =0x6006b80 
 	mov r5, #5
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r0, #0x12
 	mov r1, #8
 	mov r2, #2
@@ -7261,7 +7261,7 @@ battleObject_submenuLoopStep_8133944:
 	strh r0, [r5,#0x34]
 loc_8133964:
 	bl copyBackgroundTiles_sub_813471C
-	bl sub_8134740
+	bl battleObject_submenuRenderAngerGauge_8134740
 loc_813396C:
 	bl submenu_clearBgIfClosed_8134594
 	bl battleObject_runBeastStatusEffect_81345B0
@@ -8356,7 +8356,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	orr r3, r4
 	ldr r4, dword_81342FC // =0x6006b80 
 	mov r5, #7
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -8490,7 +8490,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/battle_buildChipFolderOamPack_81203E4/sub_8120458/sub_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:
@@ -8545,7 +8545,7 @@ battleObject_drawFolderEditScreenGfx_8134310:
 	orr r3, r4
 	ldr r4, dword_8134474 // =0x6006b80 
 	mov r5, #7
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -9106,9 +9106,9 @@ off_813473C:
 // symdb: (r5 = battleObject AIData ptr, r10 = toolkit) -> r0 = next frame's low-nibble value (callee-
 // symdb: saved r5 live); side effects: OAM entry queued via battleObject_queueOamFromTableRow;
 // symdb: reads/writes battleObject.AIData.Unk_15 (frame timer).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuRenderAngerGauge_8134740.yaml
 	thumb_local_start
-sub_8134740:
+battleObject_submenuRenderAngerGauge_8134740:
 	push {r4,lr}
 	sub sp, sp, #4
 	ldr r0, dword_813478C // =0xc0000 
@@ -9159,7 +9159,7 @@ dword_813479C:
 	.word 0x40000000
 off_81347A0:
 	.word dword_81331FC
-	thumb_func_end sub_8134740
+	thumb_func_end battleObject_submenuRenderAngerGauge_8134740
 
 // symdb: A-button confirm step for the custom-style AI/anger menu: stores the picked slot index, plays the select SFX, flips a state byte through a 2-byte cursor pair, then dispatches a per-mode handler via `battle_fieldLockDispatch_8120018` and rewrites the three tracked target slots so they no longer match their stored enemy references.
 // symdb: (r2 = scene ctx, r5 = AI menu state, r8 = ?, r10 = Toolkit, lr) -> r0 = 1 if A was newly

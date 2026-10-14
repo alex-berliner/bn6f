@@ -2,16 +2,16 @@
 // symdb: Writes the low byte of r1 to byte offset 0x1 of the (r0-indexed) entry in the byte_203CF00 0x50-byte-per-entry table and returns that entry pointer in r0.
 // symdb: (r0 = index, r1 = byte value) -> r0 = &byte_203CF00[index] ; no side effects beyond the one
 // symdb: store
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B884.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setBattleEffectParam2_800B884.yaml
 	thumb_local_start
-sub_800B884:
+object_setBattleEffectParam2_800B884:
 	push {lr}
 	push {r1}
 	bl byte_203CF00_getEntryPtr_800BF5C
 	pop {r1}
 	strb r1, [r0,#1]
 	pop {pc}
-	thumb_func_end sub_800B884
+	thumb_func_end object_setBattleEffectParam2_800B884
 
 // symdb: Returns the byte at offset 0x1 of the entry that byte_203CF00_getEntryPtr points at for the given slot index.
 // symdb: (r0 = slotIndex) -> r0 = entry.byte_1 ; no side effects
@@ -222,7 +222,7 @@ object_drawChipName:
 	bne loc_800BA28
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
@@ -289,12 +289,12 @@ loc_800BA28:
 	beq loc_800BA56
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	b locret_800BA88
 loc_800BA56:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r1, [r0,#2]
@@ -336,7 +336,7 @@ battleObject_stepSnakeArm_800BA8A:
 	beq loc_800BAB8
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
@@ -410,12 +410,12 @@ loc_800BB1C:
 	beq loc_800BB46
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	b locret_800BB9E
 loc_800BB46:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r1, [r0,#0xc]
@@ -474,7 +474,7 @@ sub_800BBA8:
 	bne loc_800BC2C
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
@@ -549,12 +549,12 @@ loc_800BC2C:
 	beq loc_800BC5A
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	b locret_800BC86
 loc_800BC5A:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r1, [r0,#0xc]
@@ -691,7 +691,7 @@ object_timefreezeEnd:
 loc_800BD42:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #5
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
@@ -729,7 +729,7 @@ loc_800BD80:
 loc_800BD94:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_resetObjAnimState_800B89C
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -762,7 +762,7 @@ off_800BDC4:
 	.word sub_800BE2C+1
 	thumb_func_end sub_800BDB2
 
-// symdb: Battle-object phase step: when an action slot's Unk_30 is in the 0xDD..0x118 window and the cross-team table lookup yields 0xBA, run the panel-targeted sub-animation (sub_800B884) and a panel-XY helper (sub_800ABC6) and set phase to 4; otherwise just bump CurAction by 4 and zero the phase field.
+// symdb: Battle-object phase step: when an action slot's Unk_30 is in the 0xDD..0x118 window and the cross-team table lookup yields 0xBA, run the panel-targeted sub-animation (object_setBattleEffectParam2_800B884) and a panel-XY helper (sub_800ABC6) and set phase to 4; otherwise just bump CurAction by 4 and zero the phase field.
 // symdb: void sub_800BDD0(void);          // r5 = battle object base, r10 = ?, lr = return
 // symdb: // clobbers r0,r1,r2,r3,lr and nz,cv; preserves r4,r5,r6,r7,r10
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BDD0.yaml
@@ -789,7 +789,7 @@ loc_800BDE8:
 loc_800BDF4:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl sub_800ABC6
@@ -867,7 +867,7 @@ loc_800BE6C:
 	bl writeByteToWorkSlots0And1_800B8AC
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #4
-	bl sub_800B884
+	bl object_setBattleEffectParam2_800B884
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl byte_203CF00_getEntryPtr_800BF5C
 	ldr r3, [r0,#8]

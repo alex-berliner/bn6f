@@ -103,7 +103,7 @@ mapscript_8067EA6:
 	ms_jump destination1=byte_8067F03
 
 mapscript_8067EC0:
-	ms_call_native_function ptr1=sub_8086EA8+1 word5=0x00000000
+	ms_call_native_function ptr1=battle_beastSpUpdateStep_8086EA8+1 word5=0x00000000
 	ms_jump_if_progress_in_range byte1=0x10 byte2=0x1F destination3=byte_8067ED5
 	ms_jump destination1=byte_8067F03
 
@@ -151,7 +151,7 @@ byte_8067F4F::
 	ms_jump destination1=mapscript_8067F72
 
 mapscript_8067F69:
-	ms_call_native_function ptr1=sub_8086EA8+1 word5=0x00000000
+	ms_call_native_function ptr1=battle_beastSpUpdateStep_8086EA8+1 word5=0x00000000
 
 mapscript_8067F72:
 	ms_end
@@ -196,7 +196,7 @@ byte_8067FDF::
 	ms_jump destination1=mapscript_8068043
 
 mapscript_8067FF9:
-	ms_call_native_function ptr1=sub_8086EA8+1 word5=0x00000000
+	ms_call_native_function ptr1=battle_beastSpUpdateStep_8086EA8+1 word5=0x00000000
 	ms_jump_if_progress_in_range byte1=0x10 byte2=0x1F destination3=mapscript_806800E
 	ms_jump destination1=mapscript_8068043
 

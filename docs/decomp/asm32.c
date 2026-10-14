@@ -12711,7 +12711,7 @@ int objectStateDispatcher_8117D2C()
 
 
 // 0x8117d4c
-int __noreturn sub_8117D4C()
+int __noreturn battleObject_initDmgNumberCounter_8117D4C()
 {
     int v0; // r5
     u8 v1; // r0
@@ -13715,7 +13715,7 @@ int submenu_dispatchByIndex_81187E8()
 
 
 // 0x811880c
-void __noreturn sub_811880C()
+void __noreturn battleObject_initBeastSP_811880C()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -20282,7 +20282,7 @@ int battle_aiState_dispatchStateMachine_811E168()
 
 
 // 0x811e18c
-void __fastcall __noreturn sub_811E18C(int a1, int a2)
+void __fastcall __noreturn battleObject_beastSpInit_811E18C(int a1, int a2)
 {
     Battle *v2; // r5
 
@@ -22963,7 +22963,7 @@ int __fastcall battle_loadFolderChipGfx_8120390(int a1, int a2, int a3, int a4)
 
 
 // 0x81203e4
-int __fastcall sub_81203E4(int a1, int a2, int a3, int a4)
+int __fastcall battle_buildChipFolderOamPack_81203E4(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5

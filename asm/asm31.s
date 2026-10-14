@@ -29728,7 +29728,7 @@ t3_0x8_80C5BB0:
 off_80C5BC4:
 	.word off_80C5BC8
 off_80C5BC8:
-	.word sub_80C5BD4+1
+	.word battleObject_initSnakeArmEvent_80C5BD4+1
 	.word battle_processCollisionEvent_80C5C40+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x8_80C5BB0
@@ -29739,9 +29739,9 @@ off_80C5BC8:
 // symdb: oObjectHeader_Flags, oBattleObject_CurAnim/CurAnimCopy, oBattleObject_ExtraVars,
 // symdb: CollisionDataPtr (via object_createCollisionData), and the object's CollisionData fields; on
 // symdb: allocation failure calls object_freeMemory and tail-returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5BD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initSnakeArmEvent_80C5BD4.yaml
 	thumb_local_start
-sub_80C5BD4:
+battleObject_initSnakeArmEvent_80C5BD4:
 	push {lr}
 	mov r1, #0xc
 	mov r2, #2
@@ -29789,7 +29789,7 @@ loc_80C5C1E:
 	.balign 4, 0
 off_80C5C3C:
 	.word byte_80C5BA0
-	thumb_func_end sub_80C5BD4
+	thumb_func_end battleObject_initSnakeArmEvent_80C5BD4
 
 // symdb: Processes a collision hit on a battle object: removes/respawns collision data, dispatches a per-action handler via a jump table, and destroys the object when the battle has ended or the collision is already resolved.
 // symdb: void battle_processCollisionEvent(u32 r5 /* battleObjectPtr *);  // uses r4 as scratch, clobbers
@@ -31778,7 +31778,7 @@ off_80C6B54:
 	.word off_80C6B58
 off_80C6B58:
 	.word battle_objectInitFromParamTable_80C6B64+1
-	.word sub_80C6C14+1
+	.word battleObject_kind0x16Handler_80C6C14+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x16_80C6B40
 
@@ -31868,9 +31868,9 @@ off_80C6C10:
 // symdb: Update handler for battle objects whose CurAction is 0x16 (Snakearm); routes to a per-action step and tears down the object on battle-over or non-hole+non-solid panels.
 // symdb: (r5 = BattleObjectPtr, r8 = ?, r10 = Toolkit, r4/r7 = saved) -> void ; r0 trashed, flags
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C6C14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_kind0x16Handler_80C6C14.yaml
 	thumb_local_start
-sub_80C6C14:
+battleObject_kind0x16Handler_80C6C14:
 	push {r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -31908,7 +31908,7 @@ loc_80C6C60:
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {r7,pc}
-	thumb_func_end sub_80C6C14
+	thumb_func_end battleObject_kind0x16Handler_80C6C14
 
 // symdb: Per-frame step handler for battle-object kind 0x16 (snake-arm); counts down a timer, then spawns a kind-0x16 child segment one panel ahead (or via sub_80C6D1E when Param1 is 0xC/0xD/0xE), animates, and parks it off-screen with collision cleared on the last frame.
 // symdb: (r5 = battle object ptr) -> r0 = 0, r1 preserved, r5 preserved ; writes to the object at r5 and
@@ -43527,7 +43527,7 @@ off_80CC24C:
 	.word off_80CC250
 off_80CC250:
 	.word sub_80CC260+1
-	.word sub_80CC29E+1
+	.word battleObject_rollingCannonPhase_Init_80CC29E+1
 	.word loc_80CC320+1
 	.word sub_80CC36C+1
 	thumb_func_end sub_80CC23E
@@ -43571,9 +43571,9 @@ locret_80CC29C:
 
 // symdb: Phase handler for a rolling-cannon (SnakeArm-style projectile) battle object: initialises it on the front row, plays a firing sound, sets HP and velocity, then drives its left/right column travel via XVelocity and collision checks.
 // symdb: (r5 = battle object) -> void ; side effects: writes many BattleObject fields, plays SFX 0xFF
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC29E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_rollingCannonPhase_Init_80CC29E.yaml
 	thumb_local_start
-sub_80CC29E:
+battleObject_rollingCannonPhase_Init_80CC29E:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -43663,7 +43663,7 @@ off_80CC360:
 	.word byte_80CC364
 byte_80CC364:
 	.byte 0x0, 0x0, 0x80, 0x5, 0x0, 0x0, 0x80, 0xA
-	thumb_func_end sub_80CC29E
+	thumb_func_end battleObject_rollingCannonPhase_Init_80CC29E
 
 	thumb_local_start
 sub_80CC36C:
@@ -56549,7 +56549,7 @@ t3_0x6f_80D2460:
 off_80D2470:
 	.word jt_80D2474
 jt_80D2474:
-	.word sub_80D2480+1
+	.word battleObject_initAppearOrEntryFromSide_80D2480+1
 	.word sub_80D24F0+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x6f_80D2460
@@ -56557,9 +56557,9 @@ jt_80D2474:
 // symdb: Initializes a battle object that materializes by walking in from the field edge, setting up its sprite/sound/velocity/timer/state
 // symdb: (r5 = battle object ptr) -> side effects only; object now has sprite, shake velocity and
 // symdb: CUR_STATE_UPDATE = 4 set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D2480.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initAppearOrEntryFromSide_80D2480.yaml
 	thumb_local_start
-sub_80D2480:
+battleObject_initAppearOrEntryFromSide_80D2480:
 	push {lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -56605,7 +56605,7 @@ loc_80D24DC:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl sub_80D24F0
 	pop {pc}
-	thumb_func_end sub_80D2480
+	thumb_func_end battleObject_initAppearOrEntryFromSide_80D2480
 
 	thumb_local_start
 sub_80D24F0:
@@ -108277,7 +108277,7 @@ playerObject_main_80EA460:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_801BCF4
+	bl battleObject_animationAndSpriteUpdate_801BCF4
 	pop {pc}
 	.balign 4, 0
 off_80EA474:
@@ -136405,16 +136405,16 @@ sub_80F8428:
 off_80F8440:
 	.word off_80F8444
 off_80F8444:
-	.word sub_80F8448+1
+	.word battle_aiEnemyAiActionHandler_80F8448+1
 	thumb_func_end sub_80F8428
 
 // symdb: Handles one tick of an enemy AI's battle-AI routine, selecting an attack script and target based on HP ratios and difficulty tier.
 // symdb: (r5 = *BattleObject self, r6 = *AIState state, r7 = *AIAttackVars attackVars) -> void ; side
 // symdb: effects: mutates AIState counters (Unk_04/Unk_05) and AIAttackVars fields (Unk_02, Unk_03,
 // symdb: Unk_18, Unk_28, Unk_2c, Unk_30) and triggers object_setAttack0/4 on self
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8448.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiEnemyAiActionHandler_80F8448.yaml
 	thumb_local_start
-sub_80F8448:
+battle_aiEnemyAiActionHandler_80F8448:
 	push {r4,r6,lr}
 	mov r3, #4
 	ldrh r1, [r5,#oBattleObject_MaxHP]
@@ -136524,7 +136524,7 @@ off_80F8538:
 	.word dword_80F853C
 dword_80F853C:
 	.word 0x3030306
-	thumb_func_end sub_80F8448
+	thumb_func_end battle_aiEnemyAiActionHandler_80F8448
 
 	thumb_local_start
 sub_80F8540:

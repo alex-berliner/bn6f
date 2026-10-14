@@ -10030,7 +10030,7 @@ off_8007938:
 off_800793C:
 	.word dword_200F3B0
 off_8007940: 
-  .word sub_800794C+1
+  .word battle_initForMatchStart_0800794C+1
 	.word battle_dispatchPhase_8007978+1
 	.word battle_initEntry_8007A0C+1
 	thumb_func_end battle_finishBattle_8007850
@@ -10038,9 +10038,9 @@ off_8007940:
 // symdb: Initializes a battle: clears battle-object linked lists, initializes T1/T3/T4 battle-object structs, sets the beast-link flag, resets camera, zeroes battle counters, resets battle buffers, then writes 4 to oBattleState_Index_01 and returns via battle-state dispatch.
 // symdb: (no meaningful inputs) -> returns to caller via `pop {pc}`; side-effects a wide swath of EWRAM
 // symdb: battle state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800794C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initForMatchStart_0800794C.yaml
 	thumb_local_start
-sub_800794C:
+battle_initForMatchStart_0800794C:
 	push {lr}
 	bl clearBattleObjectLinkedLists_800318C // () -> ()
 	bl InitializeT1BattleObjectStructs
@@ -10057,7 +10057,7 @@ sub_800794C:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	pop {pc}
-	thumb_func_end sub_800794C
+	thumb_func_end battle_initForMatchStart_0800794C
 
 // symdb: Battle-mode phase dispatcher that jumps to one of four per-phase handlers based on the phase byte stored in the battle state struct.
 // symdb: void battle_dispatchPhase_8007978(void) /* r5 = battle state struct; returns whatever
@@ -10174,7 +10174,7 @@ battle_RevealFieldColumnsStep_80079F0:
 	ldrb r0, [r5,#oBattleState_BattleField]
 	bl sub_800BF88
 
-	bl sub_800A3E4
+	bl battle_populateBattleFolder_800A3E4
 
 	// trigger battle_state_finishBattlePhase_80079d0 via battle_dispatchPhase_8007978
 	mov r0, #8
@@ -16142,9 +16142,9 @@ off_800A3E0:
 // symdb: Builds the 30-chip battle folder (eBattleFolder) from a navi stat block, applying Beast-Out/dark-chip overrides from battle state and optionally shuffling it
 // symdb: (r0..r3 ignored on entry) -> no return value ; side effects: writes eBattleFolder (30
 // symdb: halfwords), may set BattleState.Unk_17 / Unk_44, may shuffle folder
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A3E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_populateBattleFolder_800A3E4.yaml
 	thumb_local_start
-sub_800A3E4:
+battle_populateBattleFolder_800A3E4:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	mov r0, #0xff
@@ -16275,7 +16275,7 @@ off_800A4D8:
 	.word dword_802137C
 off_800A4DC:
 	.word eBattleFolder
-	thumb_func_end sub_800A3E4
+	thumb_func_end battle_populateBattleFolder_800A3E4
 
 // symdb: Fetches a per-navi value for the currently equipped PET navi via a two-step table lookup, returning 0xFF when the battle is in mode 1.
 // symdb: u32 pet_getCurNaviChainedLookup_800A4E0(void) -> r0 (value or 0xFF); r1/r3 also hold leftovers

@@ -8220,9 +8220,9 @@ sub_8086E70:
 // symdb: Per-frame update step for the Beast-form/SP (Beast-out) Navi's AI: refresh AIData from the actor's BattleObject, run/queue the beast intro cutscene, and advance any pending beast sub-state.
 // symdb: (r2 = ? , r10 = Toolkit, lr = ret) -> void ; no return value other than the clobbered scratch
 // symdb: registers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpUpdateStep_8086EA8.yaml
 	thumb_local_start
-sub_8086EA8:
+battle_beastSpUpdateStep_8086EA8:
 	push {r4-r7, lr}
 	ldr r5, off_8086ED4 // =off_8086D18
 	ldr r5, [r5, #0]
@@ -8240,7 +8240,7 @@ loc_8086ECC:
 	bl sub_80871F4
 	pop {r4-r7, pc}
 	.balign 4, 0
-	thumb_func_end sub_8086EA8
+	thumb_func_end battle_beastSpUpdateStep_8086EA8
 
 off_8086ED4::
 	.word off_8086D18

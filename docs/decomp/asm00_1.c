@@ -5742,7 +5742,7 @@ LABEL_3:
 
 
 // 0x800794c
-signed int sub_800794C()
+signed int battle_initForMatchStart_0800794C()
 {
     int v0; // r5
     char *v1; // r0
@@ -5849,7 +5849,7 @@ int battle_RevealFieldColumnsStep_80079F0()
 
     v1 = sub_802D26A();
     sub_800BF88(*(v0 + 6), v1);
-    sub_800A3E4();
+    battle_populateBattleFolder_800A3E4();
     *(v0 + 1) = 8;
     result = 0;
     *(v0 + 2) = 0;
@@ -10736,7 +10736,7 @@ void __fastcall sub_800A318(int a1)
 
 
 // 0x800a3e4
-void sub_800A3E4()
+void battle_populateBattleFolder_800A3E4()
 {
     int v0; // r10
     signed int v1; // r7
@@ -12924,7 +12924,7 @@ char *__fastcall sub_800B80E(int a1)
 
 
 // 0x800b884
-char *__fastcall sub_800B884(int a1)
+char *__fastcall object_setBattleEffectParam2_800B884(int a1)
 {
     char *result; // r0
     char v2; // [sp+0h] [bp-8h]
@@ -13103,7 +13103,7 @@ char *object_drawChipName()
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v7 = battleObject_getIndex_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
             {
-                sub_800B884(*(v0 + 22));
+                object_setBattleEffectParam2_800B884(*(v0 + 22));
                 v8 = byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22));
                 if ( v8[2] || *(*(v8 + 3) + 36) )
                 {
@@ -13120,13 +13120,13 @@ char *object_drawChipName()
             }
             else
             {
-                result = sub_800B884(*(v0 + 22));
+                result = object_setBattleEffectParam2_800B884(*(v0 + 22));
             }
         }
     }
     else
     {
-        sub_800B884(*(v0 + 22));
+        object_setBattleEffectParam2_800B884(*(v0 + 22));
         result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1);
         if ( result == &byte_0[3] || !result )
         {
@@ -13181,7 +13181,7 @@ char *battleObject_stepSnakeArm_800BA8A()
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v7 = battleObject_getIndex_800B892(*(v0 + 22) ^ 1)) == 0 || v7 == 5 )
             {
-                sub_800B884(*(v0 + 22));
+                object_setBattleEffectParam2_800B884(*(v0 + 22));
                 if ( *(*(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 3) + 36) )
                 {
                     if ( *(v0 + 48) - 221 <= 0x3B && getTable2036720EntryFields_802CE78(*(v0 + 22) ^ 1) == 186 )
@@ -13207,12 +13207,12 @@ char *battleObject_stepSnakeArm_800BA8A()
             }
             else
             {
-                result = sub_800B884(*(v0 + 22));
+                result = object_setBattleEffectParam2_800B884(*(v0 + 22));
             }
         }
     }
     else if ( battleObject_getIndex_800B892(*(v0 + 22)) == 4
-                 || (sub_800B884(*(v0 + 22)), result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1), result == &byte_0[3])
+                 || (object_setBattleEffectParam2_800B884(*(v0 + 22)), result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1), result == &byte_0[3])
                  || !result )
     {
         flags_clearBits_eStruct2035280_801BED6(0x10000);
@@ -13266,7 +13266,7 @@ char *sub_800BBA8()
         {
             if ( sub_800B8C2(*(v0 + 22)) || (v14 = battleObject_getIndex_800B892(*(v0 + 22) ^ 1)) == 0 || v14 == 5 )
             {
-                sub_800B884(*(v0 + 22));
+                object_setBattleEffectParam2_800B884(*(v0 + 22));
                 if ( *(*(byte_203CF00_getEntryPtr_800BF5C(*(v0 + 22)) + 3) + 36) )
                     *(v0 + 9) += 4;
                 else
@@ -13276,13 +13276,13 @@ char *sub_800BBA8()
             }
             else
             {
-                result = sub_800B884(*(v0 + 22));
+                result = object_setBattleEffectParam2_800B884(*(v0 + 22));
             }
         }
     }
     else
     {
-        sub_800B884(*(v0 + 22));
+        object_setBattleEffectParam2_800B884(*(v0 + 22));
         result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1);
         if ( result == &byte_0[3] || !result )
         {

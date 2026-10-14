@@ -1314,7 +1314,7 @@ battleObject_dispatchAICustomOp_80A57AC:
 off_80A57BC:
 	.word off_80A57C0
 off_80A57C0:
-	.word sub_80A57D0+1
+	.word battleObject_initPlayerBeastOutShrine_80A57D0+1
 	.word battleObject_updateBeastOutPwrAtk_80A5828+1
 	.word sub_80A5888+1
 off_80A57CC:
@@ -1326,9 +1326,9 @@ off_80A57CC:
 // symdb: lr = ret) -> r4/r5 preserved ; side effects: writes CurState=1, byte6/9=0, word30=0, byte8=4,
 // symdb: calls TestEventFlagFromImmediate(EVENT_5F2), conditional call to sub_80A5A1C, then
 // symdb: battleObject_updateBeastOutPwrAtk_80A5828
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A57D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPlayerBeastOutShrine_80A57D0.yaml
 	thumb_local_start
-sub_80A57D0:
+battleObject_initPlayerBeastOutShrine_80A57D0:
 	push {r4-r7,lr}
 	mov r0, #1
 	strb r0, [r5]
@@ -1362,7 +1362,7 @@ loc_80A581E:
 	strb r0, [r5,#8]
 	bl battleObject_updateBeastOutPwrAtk_80A5828
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A57D0
+	thumb_func_end battleObject_initPlayerBeastOutShrine_80A57D0
 
 // symdb: Drives a beast-out Navi's per-tick PwrAtk hand-off animation: copies target coords, runs the hand-off sub-state until it finishes, then resets.
 // symdb: (r5 = BattleObject, r6 = AIData) -> void ; no return; writes AIData.Unk_07 (sub-state),
@@ -3492,7 +3492,7 @@ battle_ai_dispatchBeastSp_80A6E98:
 off_80A6EA8:
 	.word off_80A6EAC
 off_80A6EAC:
-	.word sub_80A6EBC+1
+	.word battleObject_initBeastSpEnemy_80A6EBC+1
 	.word battleObject_updateAnimation_80A6F2C+1
 	.word sub_80A6F70+1
 off_80A6EB8:
@@ -3502,9 +3502,9 @@ off_80A6EB8:
 // symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run sub_80A7208 when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
 // symdb: (r5 = BattleObject*) -> r0 = 0x26 ; side effects: writes many BattleObject fields, may patch
 // symdb: coords from a returned table, may run a one-shot story-gated helper
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6EBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastSpEnemy_80A6EBC.yaml
 	thumb_local_start
-sub_80A6EBC:
+battleObject_initBeastSpEnemy_80A6EBC:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -3550,7 +3550,7 @@ loc_80A6F20:
 	bl battleObject_updateAnimation_80A6F2C
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A6EBC
+	thumb_func_end battleObject_initBeastSpEnemy_80A6EBC
 
 // symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
@@ -4032,7 +4032,7 @@ byte_80A729C:
 
 // symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
-// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
+// symdb: dispatched routine returns ; side effects: tail-calls into battleObject_beastOutSpawn_80A72D8 / sub_80A7354 /
 // symdb: sub_80A7398 depending on (r5+0x8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAIData_80A72B4.yaml
 	thumb_func_start battleObject_dispatchAIData_80A72B4
@@ -4049,7 +4049,7 @@ battleObject_dispatchAIData_80A72B4:
 off_80A72C4:
 	.word off_80A72C8
 off_80A72C8:
-	.word sub_80A72D8+1
+	.word battleObject_beastOutSpawn_80A72D8+1
 	.word battleObject_updateFromCurAction_80A7354+1
 	.word sub_80A7398+1
 off_80A72D4:
@@ -4059,9 +4059,9 @@ off_80A72D4:
 // symdb: Spawns one battle object's beast-form (sprite 0x80/anim 0x2f, palette 0, no shadow, priority derived from +0xC) when CurState transitions from 3 to 4 (BattleObject in r5)
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, lr) -> void; side effects: writes CurAction=3, then
 // symdb: CurState=4, sets EVENT_5FF, conditionally calls sub_80A76E8 when EVENT_5E5 is set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A72D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastOutSpawn_80A72D8.yaml
 	thumb_local_start
-sub_80A72D8:
+battleObject_beastOutSpawn_80A72D8:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -4110,7 +4110,7 @@ loc_80A7342:
 	movflag EVENT_5FF
 	bl SetEventFlagFromImmediate
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A72D8
+	thumb_func_end battleObject_beastOutSpawn_80A72D8
 
 // symdb: Advances a battle object's CurAction state machine, updating the sprite and chaining per-state helpers (handles BeastOut/L-Message/AskJackOut gating around state 1)
 // symdb: (r5 = object ptr, r6 = ?, r10 = toolkit) -> void ; side effects: may mutate object state and

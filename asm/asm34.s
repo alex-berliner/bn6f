@@ -104,7 +104,7 @@ sub_812D3E4:
 	orr r3, r4
 	ldr r4, dword_812D4E0 // =0x6006b80 
 	mov r5, #7
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r0, #0xb
 	mov r1, #4
 	mov r2, #2

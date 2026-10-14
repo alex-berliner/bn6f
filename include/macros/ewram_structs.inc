@@ -191,7 +191,7 @@ known offsets from https://pastebin.com/grDF80Vp
 
 what is eBattleNaviStats0? field 0e is karma
 
-sub_801BCF4 = animate battle sprite?
+battleObject_animationAndSpriteUpdate_801BCF4 = animate battle sprite?
 */
 
 /*

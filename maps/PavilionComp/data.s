@@ -139,7 +139,7 @@ mapscript_806AECF:
 
 dword_806AED0:
 	ms_jump_if_flag_range_set byte1=0x03 event16_2=EVENT_FC2 destination4=byte_806AEE1
-	ms_call_native_function ptr1=sub_8086EA8+1 word5=0x00000000
+	ms_call_native_function ptr1=battle_beastSpUpdateStep_8086EA8+1 word5=0x00000000
 
 byte_806AEE1:
 	ms_jump_if_progress_in_range byte1=0x60 byte2=0x6F destination3=byte_806AEED

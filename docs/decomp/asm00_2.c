@@ -12227,7 +12227,7 @@ int __noreturn sub_80166D0()
 
 
 // 0x8016730
-int sub_8016730()
+int battleObject_stepMoveToFuturePanel_8016730()
 {
     int v0; // r5
     int v1; // r0
@@ -16330,7 +16330,7 @@ int battleObject_processCollisionResults_801A9B8()
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
                 applyChipAllianceEffect_8013AE4(v4);
-                sub_801AEB0();
+                battleObject_applyHitModifierFlags_801AEB0();
                 battle_applyFlattenHitStatus_800EB26();
                 v5 = *(v0 + 40);
                 if ( v5 < 293 || v5 > 298 )
@@ -16419,7 +16419,7 @@ int battleObject_processCollisionResultsByMode_801AAC0()
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
                 applyChipAllianceEffect_8013AE4(v4);
-                sub_801AEB0();
+                battleObject_applyHitModifierFlags_801AEB0();
                 battle_applyFlattenHitStatus_800EB26();
                 battleObject_applyStatusEffect_801A554();
                 battleObject_clearChipSelectionOnAirShoe_801A2CC();
@@ -16570,7 +16570,7 @@ int battleObject_processCollisionResultsForPlayer_801AC6C()
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
                 battleObject_applyStatusEffectOnTurnEnd_80139F6(v4);
-                sub_801AEB0();
+                battleObject_applyHitModifierFlags_801AEB0();
                 battle_applyFlattenHitStatus_800EB26();
                 v5 = handlePanelDamage_8013F1E();
                 v6 = sub_8013774(v5, 41);
@@ -16768,7 +16768,7 @@ int sub_801AE56()
 
 
 // 0x801aeb0
-int sub_801AEB0()
+int battleObject_applyHitModifierFlags_801AEB0()
 {
     int v0; // r5
     int v1; // r7
@@ -17964,7 +17964,7 @@ void battleObject_updateSpriteAnimIfChanged_801BCD0()
 
 
 // 0x801bcf4
-void sub_801BCF4()
+void battleObject_animationAndSpriteUpdate_801BCF4()
 {
     Battle *v0; // r5
     char v1; // zf

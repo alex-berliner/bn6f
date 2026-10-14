@@ -355,7 +355,7 @@ void sub_81304EC()
 		CopyBackgroundTiles(10, 8, 2, byte_20243E8, 8, &dword_8 + 2);
 		battle_loadFolderChipGfx_8120390(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20244C8, byte_812F06C);
 		CopyBackgroundTiles(8, 8, 2, byte_20244C8, 2, &dword_8 + 2);
-		sub_81203E4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024500, &dword_35C | 0x9000);
+		battle_buildChipFolderOamPack_81203E4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024500, &dword_35C | 0x9000);
 		CopyBackgroundTiles(18, 8, 2, byte_2024500, 2, &dword_8 + 2);
 		battle_loadChipIconSlots_8120458(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024538, 41494);
 		CopyBackgroundTiles(20, 8, 2, byte_2024538, 1, &dword_8 + 2);
@@ -5232,7 +5232,7 @@ void __noreturn copyBackgroundTiles_sub_813471C()
 
 
 // 0x8134740
-int sub_8134740()
+int battleObject_submenuRenderAngerGauge_8134740()
 {
     int v0; // r5
     signed int v1; // r0

@@ -7904,7 +7904,7 @@ menuCopyBackgroundTiles_804A7C0:
 	orr r3, r4
 	ldr r4, dword_804A8D8 // =0x6006b80 
 	mov r5, #7
-	bl sub_81203E4
+	bl battle_buildChipFolderOamPack_81203E4
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x29 

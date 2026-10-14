@@ -24041,7 +24041,7 @@ void t3_0x8_80C5BB0()
 
 
 // 0x80c5bd4
-int __noreturn sub_80C5BD4()
+int __noreturn battleObject_initSnakeArmEvent_80C5BD4()
 {
     int v0; // r5
     char v1; // r0
@@ -25630,7 +25630,7 @@ signed int battle_objectInitFromParamTable_80C6B64()
 
 
 // 0x80c6c14
-int __noreturn sub_80C6C14()
+int __noreturn battleObject_kind0x16Handler_80C6C14()
 {
     int v0; // r5
     int v1; // r0
@@ -34247,7 +34247,7 @@ int sub_80CC260()
 
 
 // 0x80cc29e
-int sub_80CC29E()
+int battleObject_rollingCannonPhase_Init_80CC29E()
 {
     int v0; // r5
     int result; // r0
@@ -44114,7 +44114,7 @@ int t3_0x6f_80D2460()
 
 
 // 0x80d2480
-int __noreturn sub_80D2480()
+int __noreturn battleObject_initAppearOrEntryFromSide_80D2480()
 {
     int v0; // r5
     int v1; // r0
@@ -83686,7 +83686,7 @@ int __usercall playerObject_main_80EA460@<R0>(Battle *obj@<R5>)
     int result; // r0
 
     (*(&off_80EA478 + obj->currState))();
-    sub_801BCF4();
+    battleObject_animationAndSpriteUpdate_801BCF4();
     return result;
 }
 
@@ -104555,7 +104555,7 @@ int sub_80F8428()
 
 
 // 0x80f8448
-void sub_80F8448()
+void battle_aiEnemyAiActionHandler_80F8448()
 {
     int v0; // r5
     int v1; // r6

@@ -138,7 +138,7 @@ int HandleChipFolderMenu8123434()
 // 0x812345c
 void __fastcall __noreturn chipFolder_screenInit_812345C(int a1, int a2)
 {
-    sub_81237E0(1, a2);
+    chipFolder_initVramAndState_81237E0(1, a2);
     chipFolder_initGfx_812386C();
 }
 
@@ -146,7 +146,7 @@ void __fastcall __noreturn chipFolder_screenInit_812345C(int a1, int a2)
 // 0x812349c
 void __fastcall __noreturn chipFolder_init_812349C(int a1, int a2)
 {
-    sub_81237E0(0, a2);
+    chipFolder_initVramAndState_81237E0(0, a2);
     chipFolder_initGfx_812386C();
 }
 
@@ -448,7 +448,7 @@ int __fastcall __noreturn pet_menu_runFrame_81237BC(int a1)
 
 
 // 0x81237e0
-int __fastcall sub_81237E0(int a1, int a2)
+int __fastcall chipFolder_initVramAndState_81237E0(int a1, int a2)
 {
     int v2; // r5
     int v3; // r10
@@ -590,7 +590,7 @@ void __noreturn drawBattleBackground_8123AB8()
     CopyBackgroundTiles(14, 8, 2, &unk_201D6E0, 8, &dword_8 + 2);
     battle_loadFolderChipGfx_8120390(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D7C0, byte_8123394);
     CopyBackgroundTiles(12, 8, 2, &unk_201D7C0, 2, &dword_8 + 2);
-    sub_81203E4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D7F8, &dword_35C | 0xA000);
+    battle_buildChipFolderOamPack_81203E4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D7F8, &dword_35C | 0xA000);
     CopyBackgroundTiles(22, 8, 2, &unk_201D7F8, 2, &dword_8 + 2);
     battle_loadChipIconSlots_8120458(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D830, 45590);
     CopyBackgroundTiles(24, 8, 2, &unk_201D830, 1, &dword_8 + 2);

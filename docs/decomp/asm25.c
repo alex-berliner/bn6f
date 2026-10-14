@@ -72,7 +72,7 @@ void __noreturn weatherComp_spawnPlayerAfterReset_808F8AC()
 
 
 // 0x808f900
-signed int __fastcall sub_808F900(int a1)
+signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
 {
     signed int v1; // r4
     char v2; // zf

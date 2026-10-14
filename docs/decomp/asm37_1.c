@@ -310,7 +310,7 @@ signed int battle_canBeastOut_8141AD2()
 
 
 // 0x8141f7c
-unsigned int sub_8141F7C()
+unsigned int beast_spawnObjectsAndSetup_8141F7C()
 {
     int v0; // r10
     unsigned __int8 *v1; // r1

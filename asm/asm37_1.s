@@ -554,9 +554,9 @@ byte_8141F64:
 // symdb: (no args; uses r5 + r10 + lr from the caller) -> r0 = 0 or 0x10 (post-test Carry/non-carry
 // symdb: result); side effects: clears/loads `unk_2000BE0` (0x140 bytes), clears flag 0x700/0x702, may
 // symdb: start cutscene `byte_8089DF4` and call `gameState_setUnk09_8001172(0x54)`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141F7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beast_spawnObjectsAndSetup_8141F7C.yaml
 	thumb_local_start
-sub_8141F7C:
+beast_spawnObjectsAndSetup_8141F7C:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#0x3c]
@@ -647,7 +647,7 @@ dword_8142044:
 	.word 0xFF050505
 off_8142048:
 	.word byte_8089DF4 // CutsceneScript
-	thumb_func_end sub_8141F7C
+	thumb_func_end beast_spawnObjectsAndSetup_8141F7C
 
 	thumb_local_start
 sub_814204C:
