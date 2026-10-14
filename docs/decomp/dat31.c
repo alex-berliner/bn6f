@@ -367,7 +367,7 @@ signed int sub_810C820()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }

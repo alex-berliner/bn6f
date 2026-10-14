@@ -897,9 +897,9 @@ locret_800F320: // endif
 // symdb: Consume one chip from the battle object's queue and clear the current chip ID when the queue empties
 // symdb: (r5 = BattleObject*) -> ; side effects: writes r5->ChipsHeld, conditionally writes r5->Chip;
 // symdb: clobbers r0 and NZCV
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F322.yaml
-	thumb_func_start sub_800F322
-sub_800F322:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_decrementChipHeldAndClearChip_800F322.yaml
+	thumb_func_start battleObject_decrementChipHeldAndClearChip_800F322
+battleObject_decrementChipHeldAndClearChip_800F322:
 	ldrb r0, [r5,#oBattleObject_ChipsHeld]
 	cmp r0, #0
 	beq locret_800F332
@@ -910,7 +910,7 @@ sub_800F322:
 	strh r0, [r5,#oBattleObject_Chip]
 locret_800F332:
 	mov pc, lr
-	thumb_func_end sub_800F322
+	thumb_func_end battleObject_decrementChipHeldAndClearChip_800F322
 
 // symdb: Computes the OAM palette bank for a battle object from its AI data's actor type, version, and unk03 (variant) fields.
 // symdb: u8 battle_getObjectPalette_800F334(BattleObject* obj /* r5 */) -> r0 = palette index; also
@@ -4093,7 +4093,7 @@ loc_8010888:
 loc_8010890:
 	ldrb r0, [r4,r0]
 loc_8010892:
-	bl sub_8019F8C
+	bl battleObject_setElement_8019F8C
 	ldr r4, off_80108B4 // =byte_80108D1 
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -4558,7 +4558,7 @@ battle_chargePwrAtk_8010C50:
 	ldr r1, dword_8010D40 // =0x3ff 
 	sub r0, r0, r1
 	mov r1, r6
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 locret_8010C74:
 	pop {r4-r6,pc}
 	thumb_func_end battle_chargePwrAtk_8010C50
@@ -4631,9 +4631,9 @@ loc_8010D00:
 // symdb: Looks up a 2-byte beast power-Atk base entry at byte_80212D4 + 2*idx and forwards (idx, two table bytes) to sub_8012642.
 // symdb: (r0 = beast-power-Atk table index) -> r0 = ... (forwarded from callee, captured as 0x1e) ; no
 // symdb: side effects in this frame
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010D04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastPwrAtk_addScaledBaseFromIndex_8010D04.yaml
 	thumb_local_start
-sub_8010D04:
+battle_beastPwrAtk_addScaledBaseFromIndex_8010D04:
 	push {lr}
 	mov r2, #2
 	mul r0, r2
@@ -4643,7 +4643,7 @@ sub_8010D04:
 	ldrb r1, [r2,#1]
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	pop {pc}
-	thumb_func_end sub_8010D04
+	thumb_func_end battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 
 	thumb_local_start
 sub_8010D18:
@@ -5032,23 +5032,23 @@ sub_8011004:
 	pop {r4,pc}
 	thumb_func_end sub_8011004
 
-// symdb: Tiny helper that reads the NameID field of a battle object (passed in r5) and tail-calls sub_801102A with it.
+// symdb: Tiny helper that reads the NameID field of a battle object (passed in r5) and tail-calls battle_callActorActionHandler_801102A with it.
 // symdb: void sub_8011020(void) — takes the battle object pointer implicitly in r5; returns whatever
-// symdb: sub_801102A returns in r0 (not forwarded here; it branches via pop {pc} after the call returns)
+// symdb: battle_callActorActionHandler_801102A returns in r0 (not forwarded here; it branches via pop {pc} after the call returns)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getObjectNameID_8011020.yaml
 	thumb_func_start battle_getObjectNameID_8011020
 battle_getObjectNameID_8011020:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_801102A
+	bl battle_callActorActionHandler_801102A
 	pop {pc}
 	thumb_func_end battle_getObjectNameID_8011020
 
 // symdb: Dispatches an actor's action handler by (ActorType, AIIndex) via a 2D jump table.
 // symdb: (r0 = actorNameID: u8) -> r0 = handlerRoutinePtr: u32 (moved to lr and jumped to)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801102A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_callActorActionHandler_801102A.yaml
 	thumb_local_start
-sub_801102A:
+battle_callActorActionHandler_801102A:
 	push {lr}
 	bl GetVerActorTyAndAIIdx_80182B4 // (enemy_idx: u16) -> *const (version: u8, actor_type: ActorType, ai_index: u8)
 	ldrb r1, [r0,#1]
@@ -5061,7 +5061,7 @@ sub_801102A:
 	mov lr, pc
 	bx r0
 	pop {pc}
-	thumb_func_end sub_801102A
+	thumb_func_end battle_callActorActionHandler_801102A
 
 	thumb_func_start sub_8011044
 sub_8011044:
@@ -7231,7 +7231,7 @@ sub_801206E:
 	push {r0}
 	mov r0, #0x14
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7247,7 +7247,7 @@ sub_801208A:
 	push {r0}
 	mov r0, #0x14
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7447,7 +7447,7 @@ sub_80121DC:
 	push {lr}
 	mov r0, #0
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7464,7 +7464,7 @@ sub_80121F8:
 	push {lr}
 	mov r0, #0xa
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7479,7 +7479,7 @@ sub_8012210:
 	push {lr}
 	mov r0, #0xe
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7494,7 +7494,7 @@ sub_8012228:
 	push {lr}
 	mov r0, #4
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7509,7 +7509,7 @@ sub_8012240:
 	push {lr}
 	mov r0, #2
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7524,7 +7524,7 @@ tomahawkmanBPwrAtk_init_8012258:
 	push {lr}
 	mov r0, #0xc
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7560,7 +7560,7 @@ sub_8012292:
 	push {lr}
 	mov r0, #6
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7575,7 +7575,7 @@ sub_80122AA:
 	push {lr}
 	mov r0, #8
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7590,7 +7590,7 @@ sub_80122C2:
 	push {lr}
 	mov r0, #0x12
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7605,7 +7605,7 @@ sub_80122DA:
 	push {lr}
 	mov r0, #0x10
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_8010D04
+	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -17151,7 +17151,7 @@ loc_801663A:
 	bge loc_8016644
 	bl relatedToIsBattleOver_800A11C
 loc_8016644:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
@@ -18320,7 +18320,7 @@ sub_8016EE0:
 	bge loc_8016F0C
 	bl relatedToIsBattleOver_800A11C
 loc_8016F0C:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_HP]
 	mov r0, #4
@@ -18632,7 +18632,7 @@ sub_80170E4:
 	bge loc_8017118
 	bl relatedToIsBattleOver_800A11C
 loc_8017118:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
@@ -19023,7 +19023,7 @@ loc_801745A:
 	bge loc_8017464
 	bl relatedToIsBattleOver_800A11C
 loc_8017464:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
@@ -22197,9 +22197,9 @@ battle_SetObjectHitModifier_8019F86:
 
 // symdb: Writes a packed-elements byte into both BattleObject.Element and CollisionData.{PrimaryElement,SecondaryElement}, splitting the low/high nibbles.
 // symdb: (r0 = packed element byte, r5 = *BattleObject) -> side effects only; r2 clobbered to 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8019F8C.yaml
-	thumb_func_start sub_8019F8C
-sub_8019F8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setElement_8019F8C.yaml
+	thumb_func_start battleObject_setElement_8019F8C
+battleObject_setElement_8019F8C:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	strb r0, [r5,#oBattleObject_Element]
 	mov r2, #0xf
@@ -22209,7 +22209,7 @@ sub_8019F8C:
 	and r0, r2
 	strb r0, [r1,#oCollisionData_SecondaryElement]
 	mov pc, lr
-	thumb_func_end sub_8019F8C
+	thumb_func_end battleObject_setElement_8019F8C
 
 // symdb: Sets the secondary element weakness of a battle object's collision data.
 // symdb: void battleObject_SetSecondaryElementWeakness(battleObject_t* obj /* r5 */, u8 element /* r0 */)

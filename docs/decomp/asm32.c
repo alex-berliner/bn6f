@@ -223,7 +223,7 @@ signed int battle_enemyAI_preCheckChipUsage_810DAF0()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -901,7 +901,7 @@ signed int sub_810E34A()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -1379,7 +1379,7 @@ signed int __noreturn sub_810E928()
     *(v0 + 42) = -1;
     *(v0 + 76) = 0;
     v1 = battle_clearAIDataAndBarrier_801A7F4();
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     battle_ClearAllianceTargetSlotIfSelf_802CDD0();
     sub_810EB42();
     object_reservePanel(*(v0 + 18), *(v0 + 19));
@@ -1969,7 +1969,7 @@ signed int battle_aiTryChipAttack_0810F1B6()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -5385,7 +5385,7 @@ signed int sub_8111FAE()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -5935,7 +5935,7 @@ signed int battleObject_tryStartChipAttack_8112600()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -6967,7 +6967,7 @@ signed int battle_object_tryUseChipWhenLowHP_81131D8()
     {
         somethingWriteChipParams_80126E4(v2 & 0x1FF);
         object_setAttack0();
-        sub_800F322();
+        battleObject_decrementChipHeldAndClearChip_800F322();
         v1 = 1;
     }
     return v1;
@@ -13278,7 +13278,7 @@ void sub_81183C4()
     u8 v2; // r0
 
     (*(&off_81183E8 + *(v1 + 2)))();
-    v2 = sub_81185C0();
+    v2 = battle_aiCountAliveEnemiesInRow_81185C0();
     sprite_setAnimation(v0, v2);
     sprite_loadAnimationData(v0);
     sprite_update(v0);
@@ -13501,7 +13501,7 @@ int sub_81185B8()
 
 
 // 0x81185c0
-int sub_81185C0()
+int battle_aiCountAliveEnemiesInRow_81185C0()
 {
     int v0; // r5
     int v1; // r6
@@ -13735,12 +13735,12 @@ void __noreturn sub_811880C()
     v0->unk_0D = -1;
     sprite_setCoordinates(136, 20 * *(v1 + 32) + 27);
     v0->pad_0C[0] = 0;
-    sub_8118874();
+    battleObject_dispatchSpriteUpdate_8118874();
 }
 
 
 // 0x8118874
-void sub_8118874()
+void battleObject_dispatchSpriteUpdate_8118874()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -14129,12 +14129,12 @@ void __noreturn sub_8118BC8()
     sprite_setCoordinates(128, 20 * *(v1 + 32) + 27);
     v0->pad_0C[0] = -1;
     v0->unk_0D = -1;
-    sub_8118C2C();
+    battleObject_updateByType_8118C2C();
 }
 
 
 // 0x8118c2c
-void __noreturn sub_8118C2C()
+void __noreturn battleObject_updateByType_8118C2C()
 {
     Battle *v0; // r5
     int v1; // r6

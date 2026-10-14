@@ -551,7 +551,7 @@ int __fastcall battle_SetObjectAIDataField78_800F318(int result)
 
 
 // 0x800f322
-signed int sub_800F322()
+signed int battleObject_decrementChipHeldAndClearChip_800F322()
 {
     int v0; // r5
     signed int result; // r0
@@ -2860,7 +2860,7 @@ int __fastcall battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(i
         else
             v3 = sub_8013774(0, 16);
     }
-    v4 = sub_8019F8C(v3);
+    v4 = battleObject_setElement_8019F8C(v3);
     v5 = sub_8013774(v4, 44);
     if ( !v5 )
         v5 = sub_8013774(0, 41);
@@ -3139,7 +3139,7 @@ int __fastcall battle_chargePwrAtk_8010C50(int a1, int a2)
     if ( result )
     {
         v4 = getChip8021DA8(v2);
-        result = sub_8010D04(v4[13] - 1023);
+        result = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(v4[13] - 1023);
     }
     return result;
 }
@@ -3193,7 +3193,7 @@ int __fastcall sub_8010CE0(int a1)
 
 
 // 0x8010d04
-int __fastcall sub_8010D04(int a1)
+int __fastcall battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(int a1)
 {
     return battle_beastPwrAtk_addScaledBase_8012642(byte_80212D4[2 * a1], byte_80212D4[2 * a1 + 1]);
 }
@@ -3403,12 +3403,12 @@ int battle_getObjectNameID_8011020()
 {
     int v0; // r5
 
-    return sub_801102A(*(v0 + 40));
+    return battle_callActorActionHandler_801102A(*(v0 + 40));
 }
 
 
 // 0x801102a
-int __fastcall sub_801102A(int a1)
+int __fastcall battle_callActorActionHandler_801102A(int a1)
 {
     char *v1; // r0
 
@@ -4856,7 +4856,7 @@ int sub_801206E()
 
     v2 = (loc_80126EA)(72);
     v3 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(20);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(20);
     *(v1 + 10) = 138;
     return v2;
 }
@@ -4872,7 +4872,7 @@ int sub_801208A()
 
     v2 = (loc_80126EA)(73);
     v3 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(20);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(20);
     *(v1 + 10) = 148;
     return v2;
 }
@@ -5026,7 +5026,7 @@ signed int sub_80121DC()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(0);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(0);
     *(v1 + 10) = 138;
     *(v1 + 2) = 1;
     *(v1 + 12) = 30;
@@ -5042,7 +5042,7 @@ signed int sub_80121F8()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(10);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(10);
     *(v1 + 10) = 138;
     *(v1 + 2) = 2;
     return 9;
@@ -5057,7 +5057,7 @@ signed int sub_8012210()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(14);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(14);
     *(v1 + 10) = 138;
     *(v1 + 2) = 0;
     return 9;
@@ -5072,7 +5072,7 @@ signed int sub_8012228()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(4);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(4);
     *(v1 + 10) = 138;
     *(v1 + 2) = 0;
     return 9;
@@ -5087,7 +5087,7 @@ signed int sub_8012240()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(2);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(2);
     *(v1 + 10) = 138;
     *(v1 + 2) = 3;
     return 9;
@@ -5102,7 +5102,7 @@ signed int tomahawkmanBPwrAtk_init_8012258()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(12);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(12);
     *(v1 + 10) = 138;
     *(v1 + 2) = 4;
     *(v1 + 12) = 30;
@@ -5133,7 +5133,7 @@ signed int sub_8012292()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(6);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(6);
     *(v1 + 10) = 138;
     *(v1 + 2) = 0;
     return 9;
@@ -5148,7 +5148,7 @@ signed int sub_80122AA()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(8);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(8);
     *(v1 + 10) = 138;
     *(v1 + 2) = 1;
     return 9;
@@ -5163,7 +5163,7 @@ signed int sub_80122C2()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(18);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(18);
     *(v1 + 10) = 138;
     *(v1 + 2) = 0;
     return 9;
@@ -5178,7 +5178,7 @@ signed int sub_80122DA()
     int v2; // r1
 
     v2 = *(v0 + 22);
-    *(v1 + 8) = sub_8010D04(16);
+    *(v1 + 8) = battle_beastPwrAtk_addScaledBaseFromIndex_8010D04(16);
     *(v1 + 10) = 138;
     *(v1 + 2) = 0;
     return 9;
@@ -12111,7 +12111,7 @@ signed int __fastcall battle_teardownObject_80165F8(int a1)
     v3 = *(v1 + 5);
     if ( v3 < 1 )
         v3 = relatedToIsBattleOver_800A11C();
-    sub_802EF5C(v3);
+    battle_dispatchDestroyEvents_802EF5C(v3);
     result = 4;
     *(v1 + 10) = 4;
     return result;
@@ -12950,7 +12950,7 @@ signed int __fastcall sub_8016EE0(int a1)
     v2 = *(v1 + 5);
     if ( v2 < 1 )
         v2 = relatedToIsBattleOver_800A11C();
-    sub_802EF5C(v2);
+    battle_dispatchDestroyEvents_802EF5C(v2);
     *(v1 + 36) = 0;
     result = 4;
     *(v1 + 10) = 4;
@@ -13106,7 +13106,7 @@ signed int __fastcall sub_80170E4(int a1)
     v3 = *(v1 + 5);
     if ( v3 < 1 )
         v3 = relatedToIsBattleOver_800A11C();
-    sub_802EF5C(v3);
+    battle_dispatchDestroyEvents_802EF5C(v3);
     result = 4;
     *(v1 + 10) = 4;
     return result;
@@ -13446,7 +13446,7 @@ signed int __fastcall __noreturn sub_801741C(int a1)
     v4 = *(v1 + 5);
     if ( v4 < 1 )
         v4 = relatedToIsBattleOver_800A11C();
-    sub_802EF5C(v4);
+    battle_dispatchDestroyEvents_802EF5C(v4);
     result = 4;
     *(v1 + 10) = 4;
     return result;
@@ -14928,7 +14928,7 @@ int __fastcall battle_SetObjectHitModifier_8019F86(int result)
 
 
 // 0x8019f8c
-int __fastcall sub_8019F8C(char a1)
+int __fastcall battleObject_setElement_8019F8C(char a1)
 {
     int v1; // r5
     int v2; // r1

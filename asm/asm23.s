@@ -1075,7 +1075,7 @@ sub_80897E8:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_8089804
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089804
 	mov r0, #4
 	mov r1, #0xff
@@ -1107,7 +1107,7 @@ loc_8089822:
 	thumb_local_start
 sub_8089826:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089836
 	bl sub_8142BB6
 	mov r0, #0x2c 
@@ -1143,7 +1143,7 @@ sub_808985A:
 	bl sub_814216E
 	cmp r0, r4
 	bne loc_8089898
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089898
 	bl sub_814216E
 	ldr r1, [r7,#0xc]
@@ -1171,7 +1171,7 @@ loc_8089898:
 	thumb_local_start
 sub_808989C:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_80898AE
 	mov r0, #7
 	bl sub_8089CA4
@@ -1214,7 +1214,7 @@ loc_80898E4:
 	thumb_local_start
 sub_80898E8:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_80898F8
 	bl sub_8142BFA
 	mov r0, #0x40 
@@ -1248,7 +1248,7 @@ sub_808991C:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_808994E
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_808994E
 	bl sub_8142B58
 	bl SetOWPlayerFacingDirection
@@ -1277,7 +1277,7 @@ sub_8089960:
 	ldrb r0, [r5,#0x13]
 	tst r0, r0
 	bne loc_808997A
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_808997A
 	mov r0, #4
 	mov r1, #0xff
@@ -1309,7 +1309,7 @@ loc_8089998:
 	thumb_local_start
 sub_808999C:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_80899D4
 	bl sub_8142224
 	tst r0, r0
@@ -1340,7 +1340,7 @@ sub_80899D8:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80899EE
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_80899EE
 	bl sub_8142BF4
 	mov r0, #0x58 
@@ -1370,7 +1370,7 @@ loc_8089A0C:
 	thumb_local_start
 sub_8089A10:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089A36
 	bl GetSoulWeaponsMapIndex
 	ldr r1, off_8089A3C // =off_8089A40 
@@ -1404,7 +1404,7 @@ off_8089A40:
 	thumb_local_start
 sub_8089A60:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089AC6
 	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
@@ -1446,7 +1446,7 @@ loc_8089AC6:
 	thumb_local_start
 sub_8089ACA:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089AE4
 	mov r0, #0xc
 	bl sub_8089CA4
@@ -1466,7 +1466,7 @@ sub_8089AE8:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_8089B2A
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B2A
 	bl cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 	mov r0, #0
@@ -1496,7 +1496,7 @@ loc_8089B2A:
 	thumb_local_start
 sub_8089B2E:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B50
 	mov r0, #2
 	ldr r1, [r7,#0x10]
@@ -1523,7 +1523,7 @@ owPlayer_handleBeastSpawnTransition_8089B54:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_8089B7A
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B7A
 	mov r0, #4
 	bl SetOWPlayerFacingDirection
@@ -1540,7 +1540,7 @@ loc_8089B7A:
 	thumb_local_start
 sub_8089B7E:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B90
 	mov r0, #0
 	bl sub_8089CA4
@@ -1569,7 +1569,7 @@ loc_8089BA6:
 	thumb_local_start
 sub_8089BAA:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BBC
 	mov r0, #0xd
 	bl sub_8089CA4
@@ -1602,7 +1602,7 @@ loc_8089BE0:
 	thumb_local_start
 sub_8089BE4:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BF6
 	mov r0, #0xe
 	bl sub_8089CA4
@@ -1679,7 +1679,7 @@ loc_8089C74:
 	thumb_local_start
 sub_8089C78:
 	push {r4-r7,lr}
-	bl sub_8089CB4
+	bl battle_tickChipLockout_8089CB4
 	beq loc_8089C9A
 	bl cutsceneCamera_focusCameraOnPlayerMaybe_8036faa
 	mov r0, #0
@@ -1718,9 +1718,9 @@ sub_8089CB0:
 // symdb: decrements ChipLockoutTimer (AIData+0x18) and returns whether it hit/exceeded zero this frame
 // symdb: (r5 = *AIData) -> r0 = 0 if timer remained >0 after decrement, 1 if it reached 0 or was already
 // symdb: <=0; r0 holds the new timer value on the 0 path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockout_8089CB4.yaml
 	thumb_local_start
-sub_8089CB4:
+battle_tickChipLockout_8089CB4:
 	ldrh r0, [r5,#0x18]
 	sub r0, #1
 	blt loc_8089CC0
@@ -1730,7 +1730,7 @@ sub_8089CB4:
 loc_8089CC0:
 	mov r0, #1
 	mov pc, lr
-	thumb_func_end sub_8089CB4
+	thumb_func_end battle_tickChipLockout_8089CB4
 
 	thumb_local_start
 sub_8089CC4:

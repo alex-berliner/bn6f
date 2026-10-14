@@ -6522,7 +6522,7 @@ off_81333E8:
 off_81333EC:
 	.word battle_objectUpdate_8133400+1
 	.word sub_81337C4+1
-	.word sub_8133434+1
+	.word submenu_handleSelectAFromList_8133434+1
 	.word battleObject_submenuDispatchByBeastSpIndex_8133484+1
 	.word sub_8133788+1
 	thumb_func_end battle_dispatchObjectUpdateOrEffect_81333A0
@@ -6558,9 +6558,9 @@ loc_8133410:
 // symdb: Advances the submenu selection state for the "main submenu" widget: refreshes its target row, runs beast-status effect / object resolve helpers, and either stays on the cursor (option busy) or commits the highlighted row by playing the menu-select SFX, switching the highlight to the "OK" row and fading out.
 // symdb: (r5 = submenu state ptr, r10 = toolkit ptr) -> side effects only ; writes
 // symdb: submenu->idx_00/Possibly wantsNewRow/HoveredIndex; plays SFX and starts screen fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133434.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_handleSelectAFromList_8133434.yaml
 	thumb_local_start
-sub_8133434:
+submenu_handleSelectAFromList_8133434:
 	push {lr}
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
@@ -6595,7 +6595,7 @@ loc_8133478:
 	strb r0, [r5,#2]
 locret_8133482:
 	pop {pc}
-	thumb_func_end sub_8133434
+	thumb_func_end submenu_handleSelectAFromList_8133434
 
 // symdb: Beast-SP submenu jump table dispatcher: picks one of four sub-handlers from the AIData's Beast-SP index, then chains submenu/folder/AI init and runs the turn handler.
 // symdb: (r0 = BattleObject self ptr, r1 = AIData ptr, r2 = index/state word, r5 = Toolkit ptr (r10
@@ -7242,7 +7242,7 @@ sub_8133944:
 	push {lr}
 	bl sub_8133C0C
 	bne loc_813396C
-	bl sub_81347A4
+	bl battleObject_selectAIDataHandler_81347A4
 	bne loc_8133964
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -9157,9 +9157,9 @@ off_81347A0:
 // symdb: (r2 = scene ctx, r5 = AI menu state, r8 = ?, r10 = Toolkit, lr) -> r0 = 1 if A was newly
 // symdb: pressed, else 0; side effects: PlaySoundEffect(SOUND_MENU_SELECT), writes AIData-related fields
 // symdb: on r5 and the cursor pair at s_2001c04, calls battle_fieldLockDispatch_8120018
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81347A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_selectAIDataHandler_81347A4.yaml
 	thumb_local_start
-sub_81347A4:
+battleObject_selectAIDataHandler_81347A4:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	mov r0, #JOYPAD_A
@@ -9327,7 +9327,7 @@ off_81348D0:
 off_81348D4:
 	.word word_202A020
 	.word unk_202A3E0
-	thumb_func_end sub_81347A4
+	thumb_func_end battleObject_selectAIDataHandler_81347A4
 
 // symdb: Verifies a battle object's column position against its expected row offset; if aligned, repositions the object and clears a misalignment flag, otherwise sets the flag.
 // symdb: void battle_alignRowCheck_81348DC(u32 row_off /*r0*/, u32 cur_x /*r1*/, u32 cur_y /*r2*/, u32
@@ -11243,9 +11243,9 @@ byte_813565C:
 // symdb: Indirect dispatcher keyed by r5+0x1: reads a byte and tail-calls one of three handler routines via a thumb-BX table
 // symdb: (r5 = base of a beast-state struct, AIIndex at +0x1 used as the dispatch key) -> r0 = 0 ; tail-
 // symdb: call returns whatever the chosen handler returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81356D4.yaml
-	thumb_func_start sub_81356D4
-sub_81356D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_dispatchHandler_81356D4.yaml
+	thumb_func_start beastsp_dispatchHandler_81356D4
+beastsp_dispatchHandler_81356D4:
 	push {lr}
 	ldr r0, off_81356E4 // =off_81356E8 
 	ldrb r1, [r5,#1]
@@ -11260,7 +11260,7 @@ off_81356E8:
 	.word sub_81356F4+1
 	.word beastsp_dispatchHandler_81357C4+1
 	.word sub_8135B54+1
-	thumb_func_end sub_81356D4
+	thumb_func_end beastsp_dispatchHandler_81356D4
 
 	thumb_local_start
 sub_81356F4:
@@ -14228,7 +14228,7 @@ sub_8136DE0:
 	bx r0
 	mov r5, r10
 	ldr r5, [r5,#0x34]
-	bl sub_81356D4
+	bl beastsp_dispatchHandler_81356D4
 	ldr r5, off_8136EC0 // =byte_2009390 
 	mov r1, r10
 	ldr r1, [r1,#4]

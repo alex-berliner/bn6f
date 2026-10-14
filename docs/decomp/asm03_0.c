@@ -3287,7 +3287,7 @@ int battle_custMenuDispatchSelection_8028820()
 
 
 // 0x8028894
-int sub_8028894()
+int battleObject_computeBButtonOffsets_8028894()
 {
     int v0; // r5
     signed int v1; // r0
@@ -12328,7 +12328,7 @@ int sub_802EEC4()
 
 
 // 0x802ef5c
-signed int __fastcall sub_802EF5C(int a1)
+signed int __fastcall battle_dispatchDestroyEvents_802EF5C(int a1)
 {
     signed int result; // r0
 

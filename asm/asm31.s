@@ -31196,7 +31196,7 @@ sub_80C6726:
 	mov r3, #1
 	bl object_updateCollisionData
 	ldrb r0, [r5,#oBattleObject_Element]
-	bl sub_8019F8C
+	bl battleObject_setElement_8019F8C
 	pop {pc}
 	thumb_func_end sub_80C6726
 
@@ -31666,7 +31666,7 @@ battle_refreshObjectCollisionFromExtraVars_80C6AB8:
 	mov r2, #5
 	bl object_updateCollisionData
 	ldrb r0, [r5,#oBattleObject_Element]
-	bl sub_8019F8C
+	bl battleObject_setElement_8019F8C
 	ldr r3, [r5,#oBattleObject_ExtraVars]
 	ldrb r0, [r3,#3]
 	cmp r0, #0
@@ -42835,7 +42835,7 @@ loc_80CBD98:
 	add r0, #0xff
 	bl PlaySoundEffect
 loc_80CBDC2:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -42893,7 +42893,7 @@ loc_80CBE20:
 loc_80CBE38:
 	bl object_clearCollisionRegion // () -> void
 	bl clearEntryOfBattleStateBattleObjectList_800F656
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80CBE48:
@@ -45549,7 +45549,7 @@ loc_80CD1FC:
 	mov r4, #0
 	bl spawn_t1_0x0_EffectObject
 loc_80CD20E:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	mov r0, r5
 	bl sub_80E544C
@@ -46005,7 +46005,7 @@ loc_80CD582:
 	bl object_createCollisionData
 	tst r0, r0
 	bne loc_80CD5A2
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_freeMemory
 	pop {pc}
@@ -46035,7 +46035,7 @@ loc_80CD5CE:
 	mov r7, r5
 	add r7, #0x34 
 	stmia r7!, {r0-r2}
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_genericDestroy
 	pop {pc}
@@ -46156,7 +46156,7 @@ loc_80CD6D4:
 	bl sub_80E1D7A
 	bl object_clearCollisionRegion // () -> void
 	bl clearEntryOfBattleStateBattleObjectList_800F656
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #CUR_STATE_DESTROY
 	strb r0, [r5,#oBattleObject_CurState]
 	pop {pc}
@@ -46229,7 +46229,7 @@ loc_80CD770:
 	tst r0, r0
 	bne locret_80CD78C
 loc_80CD778:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -46579,7 +46579,7 @@ loc_80CDA3A:
 	mov r1, #2
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -46852,7 +46852,7 @@ loc_80CDC66:
 	mov r1, #2
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -47082,7 +47082,7 @@ sub_80CDE44:
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -49773,7 +49773,7 @@ loc_80CF23A:
 	mov r1, #2
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -50917,7 +50917,7 @@ sub_80CFB2C:
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_getFlag2
 	ldr r1, dword_80CFC00 // =0x8000 
@@ -56327,7 +56327,7 @@ sub_80D2398:
 	thumb_local_start
 sub_80D239C:
 	push {r4,r7,lr}
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -58979,7 +58979,7 @@ loc_80D3708:
 	mov r4, #0
 	bl spawn_t1_0x0_EffectObject
 loc_80D3720:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -60575,7 +60575,7 @@ loc_80D4322:
 	mov r4, #0
 	bl spawn_t1_0x0_EffectObject
 loc_80D433A:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -61405,7 +61405,7 @@ loc_80D493C:
 	mov r1, #1
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl sub_800BF16
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	b locret_80D499E
 loc_80D496C:
 	mov r0, #0x34 
@@ -61417,7 +61417,7 @@ loc_80D496C:
 	mov r4, #0x14
 	bl spawn_t1_0x0_EffectObject
 loc_80D497E:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -62145,7 +62145,7 @@ sub_80D4EFC:
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_getFlag2
 	ldr r1, dword_80D5018 // =0x8000 
@@ -67324,7 +67324,7 @@ loc_80D76B4:
 	bl object_createCollisionData
 	tst r0, r0
 	bne loc_80D76DE
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_freeMemory
 	pop {pc}
@@ -67360,7 +67360,7 @@ loc_80D7718:
 	mov r7, r5
 	add r7, #0x34 
 	stmia r7!, {r0-r2}
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_genericDestroy
 	pop {pc}
@@ -67505,7 +67505,7 @@ loc_80D784E:
 	bl sub_801DD34
 	bl object_clearCollisionRegion // () -> void
 	bl clearEntryOfBattleStateBattleObjectList_800F656
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #CUR_STATE_DESTROY
 	strb r0, [r5,#oBattleObject_CurState]
 	pop {pc}
@@ -67594,7 +67594,7 @@ loc_80D7906:
 	tst r0, r0
 	bne locret_80D7926
 loc_80D790E:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -67640,7 +67640,7 @@ sub_80D795C:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
 	str r1, [r0,#oCollisionData_ObjectFlags1]
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	mov r0, #0x85
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -69133,7 +69133,7 @@ sub_80D8558:
 	thumb_local_start
 sub_80D855C:
 	push {r4,r7,lr}
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -69770,7 +69770,7 @@ loc_80D8A02:
 loc_80D8A0C:
 	b loc_80D8A1E
 loc_80D8A0E:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -69928,7 +69928,7 @@ loc_80D8B38:
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
 	bgt locret_80D8B50
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -69962,7 +69962,7 @@ loc_80D8B66:
 	mov r4, #0x14
 	bl spawn_t1_0x0_EffectObject
 loc_80D8B84:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -73104,7 +73104,7 @@ loc_80DA340:
 	mov r4, #0
 	bl spawn_t1_0x0_EffectObject
 loc_80DA358:
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_clearCollisionRegion // () -> void
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -75178,7 +75178,7 @@ sub_80DB252:
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl clearEntryOfBattleStateBattleObjectList_800F656
 	bl object_getFlag2
 	ldr r1, dword_80DB300 // =0x300000 
@@ -88442,7 +88442,7 @@ loc_80E1708:
 	bgt loc_80E172A
 	cmp r0, #0
 	beq loc_80E1728
-	bl sub_80E1730
+	bl battle_pickClosestPanelObject_80E1730
 	b loc_80E172A
 loc_80E1728:
 	mov r0, r3
@@ -88455,9 +88455,9 @@ locret_80E172E:
 
 // symdb: Picks the battle object (among r4 and r7) whose PanelY best matches the current object's PanelY
 // symdb: (r0 = objA, r3 = objB, r6 = refObj) -> r0 = chosenObj ; side effects: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1730.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickClosestPanelObject_80E1730.yaml
 	thumb_local_start
-sub_80E1730:
+battle_pickClosestPanelObject_80E1730:
 	push {r4,r7,lr}
 	mov r4, r0
 	mov r7, r3
@@ -88482,7 +88482,7 @@ loc_80E174C:
 loc_80E1758:
 	mov r0, r4
 	pop {r4,r7,pc}
-	thumb_func_end sub_80E1730
+	thumb_func_end battle_pickClosestPanelObject_80E1730
 
 	thumb_local_start
 sub_80E175C:
@@ -93027,7 +93027,7 @@ off_80E3814:
 	.word off_80E3818
 off_80E3818:
 	.word sub_80E3824+1
-	.word sub_80E386A+1
+	.word battleObject_runObjectFlagStateMachine_80E386A+1
 	.word sub_80E3962+1
 	thumb_func_end t4_0x2d_80E37F4
 
@@ -93064,9 +93064,9 @@ sub_80E3824:
 // symdb: Battle object step that toggles the pause-update flag bit via `RelatedObject1Ptr->CurAction`/param and dispatches via the jump table at off_80E38B4
 // symdb: (r5 = this BattleObject*, r10 = toolkit, lr = return) -> void ; no return value, side effect on
 // symdb: r5's `oObjectHeader_Flags` and possibly state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runObjectFlagStateMachine_80E386A.yaml
 	thumb_local_start
-sub_80E386A:
+battleObject_runObjectFlagStateMachine_80E386A:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #4
@@ -93113,7 +93113,7 @@ off_80E38B4:
 	.word sub_80E3904+1
 	.word sub_80E3930+1
 	.word sub_80E3950+1
-	thumb_func_end sub_80E386A
+	thumb_func_end battleObject_runObjectFlagStateMachine_80E386A
 
 	thumb_local_start
 sub_80E38C8:
@@ -153207,7 +153207,7 @@ loc_81008D4:
 	ldr r0, [r4]
 	ldr r1, off_8100908 // =byte_810090C
 	ldrb r0, [r1,r0]
-	bl sub_8019F8C
+	bl battleObject_setElement_8019F8C
 	ldr r0, [r4]
 	ldr r1, off_8100914 // =off_8100918 
 	ldrb r0, [r1,r0]
@@ -172975,7 +172975,7 @@ loc_810A152:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	b loc_810A17A
 loc_810A162:
 	bl battle_getStateUnk40_800A704
@@ -172985,7 +172985,7 @@ loc_810A162:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 loc_810A17A:
 	mov r0, #0x10
 	strb r0, [r6,#oAIState_Unk_00]
@@ -173638,7 +173638,7 @@ sub_810A6C0:
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused; relies on r5 = battle object pointer, r10 =
 // symdb: BattleState toolkit ptr) -> r0 = 1 if the chip attack was set up, 0 otherwise ; side effects:
 // symdb: BattleState.Unk_40 (turn counter?) compared against 0x12c, and on success calls write-chip-
-// symdb: params / set-attack-0 / sub_800F322
+// symdb: params / set-attack-0 / battleObject_decrementChipHeldAndClearChip_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_useSelectedChipIfReady_810A6F4.yaml
 	thumb_local_start
 battle_useSelectedChipIfReady_810A6F4:
@@ -173657,7 +173657,7 @@ battle_useSelectedChipIfReady_810A6F4:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810A720:
 	mov r0, r6
@@ -175362,7 +175362,7 @@ sub_810B54C:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810B580:
 	mov r0, r6
@@ -176384,7 +176384,7 @@ dword_810BDC0:
 // symdb: AI helper that, when the actor has a chip selected and battle turn state is high enough, queues that chip for use by writing its parameters, setting attack0, and starting the chip-use sub-state.
 // symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
 // symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
-// symdb: AttackVars/Attack0 and triggers sub_800F322
+// symdb: AttackVars/Attack0 and triggers battleObject_decrementChipHeldAndClearChip_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryStartChipAttack_810BDC4.yaml
 	thumb_local_start
 battle_tryStartChipAttack_810BDC4:
@@ -176403,7 +176403,7 @@ battle_tryStartChipAttack_810BDC4:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810BDF0:
 	mov r0, r6
@@ -176924,7 +176924,7 @@ sub_810C282:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810C2AE:
 	mov r0, r6

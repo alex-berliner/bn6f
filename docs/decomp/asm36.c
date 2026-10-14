@@ -3814,7 +3814,7 @@ void __noreturn battle_objectUpdate_8133400()
 
 
 // 0x8133434
-int __fastcall sub_8133434(int a1)
+int __fastcall submenu_handleSelectAFromList_8133434(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -4398,7 +4398,7 @@ void __fastcall __noreturn sub_8133944(int a1)
         object_resolveTableEntryWrapper_8134548();
         battleObject_submenuRenderFolderAndChips_81341A0();
     }
-    sub_81347A4();
+    battleObject_selectAIDataHandler_81347A4();
     if ( v4 )
         *(v1 + 52) = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
     copyBackgroundTiles_sub_813471C();
@@ -5256,7 +5256,7 @@ int sub_8134740()
 
 
 // 0x81347a4
-signed int sub_81347A4()
+signed int battleObject_selectAIDataHandler_81347A4()
 {
     int v0; // r5
     int v1; // r10
@@ -6633,7 +6633,7 @@ int sub_813561C()
 
 
 // 0x81356d4
-int sub_81356D4()
+int beastsp_dispatchHandler_81356D4()
 {
     int v0; // r5
 
@@ -8668,7 +8668,7 @@ int sub_8136DE0()
     v2[2] = 0;
     (*(&off_8136E2C + byte_2009390[0]))();
     v3 = *(v0 + 52);
-    sub_81356D4();
+    beastsp_dispatchHandler_81356D4();
     v4 = *(v0 + 4);
     *v4 = word_2009398;
     v4[1] = word_200939A;

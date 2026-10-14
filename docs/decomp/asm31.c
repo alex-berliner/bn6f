@@ -25187,7 +25187,7 @@ int __fastcall sub_80C6726(int a1)
     int v1; // r5
 
     object_updateCollisionData(a1, 4, 5, 1);
-    return sub_8019F8C(*(v1 + 14));
+    return battleObject_setElement_8019F8C(*(v1 + 14));
 }
 
 
@@ -25537,7 +25537,7 @@ int __fastcall battle_refreshObjectCollisionFromExtraVars_80C6AB8(int a1)
     int result; // r0
 
     object_updateCollisionData(a1, 4, 5, *(*(v1 + 96) + 1));
-    sub_8019F8C(*(v1 + 14));
+    battleObject_setElement_8019F8C(*(v1 + 14));
     v2 = *(v1 + 96);
     result = *(v2 + 3);
     if ( *(v2 + 3) )
@@ -33782,7 +33782,7 @@ signed int sub_80CBD32()
         sub_80E2FE8(v6, 2, v7, 0);
         v8 = camera_initShakeEffect_80302a8(1, 30);
     }
-    sub_802EF5C(v8);
+    battle_dispatchDestroyEvents_802EF5C(v8);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_clearCollisionRegion();
     result = 8;
@@ -33820,7 +33820,7 @@ signed int __noreturn sub_80CBDE6()
     }
     object_clearCollisionRegion();
     v4 = clearEntryOfBattleStateBattleObjectList_800F656();
-    sub_802EF5C(v4);
+    battle_dispatchDestroyEvents_802EF5C(v4);
     result = 8;
     *(v0 + 8) = 8;
     return result;
@@ -35815,7 +35815,7 @@ int sub_80CD1BE()
         PlaySoundEffect(112, 0x8000, v2);
         spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60));
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     sub_80E544C(v0);
     object_clearCollisionRegion();
@@ -36162,7 +36162,7 @@ LABEL_10:
             obj->currState = 4;
             sub_80CD5F8();
         }
-        sub_802EF5C(0);
+        battle_dispatchDestroyEvents_802EF5C(0);
         clearEntryOfBattleStateBattleObjectList_800F656();
         result = object_freeMemory();
     }
@@ -36174,7 +36174,7 @@ LABEL_10:
         *v16 = v15;
         v16[1] = v17;
         v16[2] = 0;
-        sub_802EF5C(v15);
+        battle_dispatchDestroyEvents_802EF5C(v15);
         clearEntryOfBattleStateBattleObjectList_800F656();
         result = object_genericDestroy();
     }
@@ -36308,7 +36308,7 @@ int sub_80CD700()
     {
         result = PlaySoundEffect(112, v3, v4);
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
     result = 8;
@@ -36599,7 +36599,7 @@ int sub_80CDA1C()
             object_clearCollisionRegion();
             v3 = *v0 & 0xFD;
             *v0 = v3;
-            sub_802EF5C(v3);
+            battle_dispatchDestroyEvents_802EF5C(v3);
             clearEntryOfBattleStateBattleObjectList_800F656();
             result = 8;
             *(v0 + 8) = 8;
@@ -36788,7 +36788,7 @@ LABEL_17:
 LABEL_14:
         v5 = *v0 & 0xFD;
         *v0 = v5;
-        sub_802EF5C(v5);
+        battle_dispatchDestroyEvents_802EF5C(v5);
         clearEntryOfBattleStateBattleObjectList_800F656();
         result = 8;
         *(v0 + 8) = 8;
@@ -36924,7 +36924,7 @@ signed int __noreturn sub_80CDE44()
 
     object_clearCollisionRegion();
     v1 = object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     clearEntryOfBattleStateBattleObjectList_800F656();
     *v0 &= 0xFDu;
     result = 8;
@@ -39000,7 +39000,7 @@ signed int __noreturn sub_80CF1DC()
     }
     v4 = *v0 & 0xFD;
     *v0 = v4;
-    sub_802EF5C(v4);
+    battle_dispatchDestroyEvents_802EF5C(v4);
     clearEntryOfBattleStateBattleObjectList_800F656();
     result = 8;
     *(v0 + 8) = 8;
@@ -39846,7 +39846,7 @@ signed int __noreturn sub_80CFB2C()
 
     object_clearCollisionRegion();
     v1 = object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     clearEntryOfBattleStateBattleObjectList_800F656();
     v2 = object_getFlag2();
     if ( v2 & 0x8000 )
@@ -44034,7 +44034,7 @@ signed int __fastcall __noreturn sub_80D239C(int a1)
     int v13; // r2
     int v14; // r3
 
-    sub_802EF5C(a1);
+    battle_dispatchDestroyEvents_802EF5C(a1);
     object_clearCollisionRegion();
     object_removePanelReserve(*(v1 + 20), *(v1 + 21));
     v2 = *(v1 + 96);
@@ -46094,7 +46094,7 @@ int sub_80D36CE()
         PlaySoundEffect(112, 0x8000, v2);
         spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60) + 1310720);
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_clearCollisionRegion();
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
@@ -47360,7 +47360,7 @@ int sub_80D42E8()
         PlaySoundEffect(112, 0x8000, v2);
         spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60) + 1310720);
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_clearCollisionRegion();
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
@@ -47925,7 +47925,7 @@ int sub_80D48AE()
             {
                 result = sub_800F90E(8);
 LABEL_15:
-                sub_802EF5C(result);
+                battle_dispatchDestroyEvents_802EF5C(result);
                 clearEntryOfBattleStateBattleObjectList_800F656();
                 object_clearCollisionRegion();
                 object_removePanelReserve(*(v0 + 20), *(v0 + 21));
@@ -47956,7 +47956,7 @@ LABEL_14:
                     v6 = *(v0 + 4);
                     v7 = sub_80E61D2(*(v0 + 18), *(v0 + 19), 0, 0);
                     v8 = sub_800BF16(*(v0 + 22), 1, v7);
-                    return sub_802EF5C(v8);
+                    return battle_dispatchDestroyEvents_802EF5C(v8);
                 }
                 goto LABEL_15;
             }
@@ -48507,7 +48507,7 @@ signed int __noreturn sub_80D4EFC()
     int v7; // r0
 
     v1 = object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     clearEntryOfBattleStateBattleObjectList_800F656();
     v2 = object_getFlag2();
     if ( !(v2 & 0x8000) )
@@ -52508,7 +52508,7 @@ int __noreturn sub_80D761C()
             obj->currState = 4;
             sub_80D774C();
         }
-        sub_802EF5C(0);
+        battle_dispatchDestroyEvents_802EF5C(0);
         clearEntryOfBattleStateBattleObjectList_800F656();
         result = object_freeMemory();
     }
@@ -52520,7 +52520,7 @@ int __noreturn sub_80D761C()
         *v18 = v17;
         v18[1] = v19;
         v18[2] = 0;
-        sub_802EF5C(v17);
+        battle_dispatchDestroyEvents_802EF5C(v17);
         clearEntryOfBattleStateBattleObjectList_800F656();
         result = object_genericDestroy();
     }
@@ -52665,7 +52665,7 @@ signed int sub_80D789C()
         spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60));
         result = PlaySoundEffect(112, v3, v4);
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
     *(v0 + 8) = 8;
@@ -52699,7 +52699,7 @@ signed int __noreturn sub_80D795C()
     object_clearCollisionRegion();
     v1 = *(v0 + 84);
     *(v1 + 60) = 0;
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     PlaySoundEffect(388, v2, v3);
     *(v0 + 104) = sub_80C4038(0, 0, 0, 0);
     clearEntryOfBattleStateBattleObjectList_800F656();
@@ -53880,7 +53880,7 @@ signed int __fastcall __noreturn sub_80D855C(int a1)
     int v13; // r2
     int v14; // r3
 
-    sub_802EF5C(a1);
+    battle_dispatchDestroyEvents_802EF5C(a1);
     object_clearCollisionRegion();
     object_removePanelReserve(*(v1 + 20), *(v1 + 21));
     v2 = *(v1 + 96);
@@ -54350,7 +54350,7 @@ void __noreturn airspinObject_update_80D8988()
     }
     spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60));
     v5 = PlaySoundEffect(112, v3, v4);
-    sub_802EF5C(v5);
+    battle_dispatchDestroyEvents_802EF5C(v5);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_clearCollisionRegion();
     *(v0 + 8) = 8;
@@ -54469,7 +54469,7 @@ int sub_80D8B18()
     *(v0 + 32) = result;
     if ( ((result < 0) ^ v2) | (result == 0) )
     {
-        sub_802EF5C(result);
+        battle_dispatchDestroyEvents_802EF5C(result);
         clearEntryOfBattleStateBattleObjectList_800F656();
         object_clearCollisionRegion();
         result = 8;
@@ -54499,7 +54499,7 @@ int sub_80D8B52()
         if ( result != 1 )
             spawn_t1_0x0_EffectObject(v0, v0 + 64, *(v0 + 52), *(v0 + 56), *(v0 + 60) + 786432);
     }
-    sub_802EF5C(result);
+    battle_dispatchDestroyEvents_802EF5C(result);
     clearEntryOfBattleStateBattleObjectList_800F656();
     object_clearCollisionRegion();
     result = 8;
@@ -56857,7 +56857,7 @@ int sub_80DA2EC()
     if ( result )
     {
 LABEL_13:
-        sub_802EF5C(result);
+        battle_dispatchDestroyEvents_802EF5C(result);
         clearEntryOfBattleStateBattleObjectList_800F656();
         object_clearCollisionRegion();
         object_removePanelReserve(*(v0 + 20), *(v0 + 21));
@@ -58403,7 +58403,7 @@ signed int __noreturn sub_80DB252()
 
     object_clearCollisionRegion();
     v1 = object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    sub_802EF5C(v1);
+    battle_dispatchDestroyEvents_802EF5C(v1);
     clearEntryOfBattleStateBattleObjectList_800F656();
     v2 = object_getFlag2();
     if ( v2 & 0x300000 )
@@ -67902,7 +67902,7 @@ int battle_aiIterateOverBattleObjectsByRow_80E1704()
         if ( v4 >= v0 && v4 <= (v0 >> 8) )
         {
             if ( result )
-                result = sub_80E1730(result, v4, v0 >> 8, v3);
+                result = battle_pickClosestPanelObject_80E1730(result, v4, v0 >> 8, v3);
             else
                 result = *v1;
         }
@@ -67913,7 +67913,7 @@ int battle_aiIterateOverBattleObjectsByRow_80E1704()
 
 
 // 0x80e1730
-int __fastcall sub_80E1730(int a1, int a2, int a3, int a4)
+int __fastcall battle_pickClosestPanelObject_80E1730(int a1, int a2, int a3, int a4)
 {
     int v4; // r6
     int v5; // r4
@@ -71727,7 +71727,7 @@ signed int __noreturn sub_80E3824()
 
 
 // 0x80e386a
-int sub_80E386A()
+int battleObject_runObjectFlagStateMachine_80E386A()
 {
     int v0; // r5
     int result; // r0
@@ -117227,7 +117227,7 @@ int sub_81008C2()
             v5 = *v4;
             __asm { SVC         6 }
             *v4 = 5;
-            sub_8019F8C(byte_810090C[*v4]);
+            battleObject_setElement_8019F8C(byte_810090C[*v4]);
             sprite_setPallete(*(&off_8100918 + *v4));
             result = 12;
             *v0 = 12;
@@ -132783,7 +132783,7 @@ int battle_aiSelectAndUseChip_810A126()
             {
                 somethingWriteChipParams_80126E4(159);
                 object_setAttack0();
-                sub_800F322();
+                battleObject_decrementChipHeldAndClearChip_800F322();
 LABEL_8:
                 *v2 = 16;
                 result = 0;
@@ -132795,7 +132795,7 @@ LABEL_8:
         {
             somethingWriteChipParams_80126E4(v6);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             goto LABEL_8;
         }
     }
@@ -133302,7 +133302,7 @@ signed int battle_useSelectedChipIfReady_810A6F4()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -134558,7 +134558,7 @@ signed int sub_810B54C()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -135218,7 +135218,7 @@ signed int battle_tryStartChipAttack_810BDC4()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }
@@ -135576,7 +135576,7 @@ signed int sub_810C282()
         {
             somethingWriteChipParams_80126E4(v4);
             object_setAttack0();
-            sub_800F322();
+            battleObject_decrementChipHeldAndClearChip_800F322();
             v1 = 1;
         }
     }

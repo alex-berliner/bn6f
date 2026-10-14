@@ -256,7 +256,7 @@ battle_enemyAI_preCheckChipUsage_810DAF0:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810DB1C:
 	mov r0, r6
@@ -1255,7 +1255,7 @@ sub_810E34A:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810E376:
 	mov r0, r6
@@ -1912,7 +1912,7 @@ sub_810E928:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl battle_clearAIDataAndBarrier_801A7F4
-	bl sub_802EF5C
+	bl battle_dispatchDestroyEvents_802EF5C
 	bl battle_ClearAllianceTargetSlotIfSelf_802CDD0
 	bl sub_810EB42
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -2916,7 +2916,7 @@ battle_aiTryChipAttack_0810F1B6:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810F1E2:
 	mov r0, r6
@@ -8260,7 +8260,7 @@ sub_8111FAE:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_8111FDA:
 	mov r0, r6
@@ -8960,7 +8960,7 @@ battleObject_tryStartChipAttack_8112600:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_811262C:
 	mov r0, r6
@@ -10416,7 +10416,7 @@ sub_81131A2:
 
 // symdb: If its HP is at or below half of MaxHP, has the BattleObject in r5 use its currently selected chip
 // symdb: (r5 = BattleObject*) -> r0 = bool (1 = used a chip, 0 = did not) ; side effects: may call
-// symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / sub_800F322 on r5
+// symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / battleObject_decrementChipHeldAndClearChip_800F322 on r5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_object_tryUseChipWhenLowHP_81131D8.yaml
 	thumb_local_start
 battle_object_tryUseChipWhenLowHP_81131D8:
@@ -10437,7 +10437,7 @@ battle_object_tryUseChipWhenLowHP_81131D8:
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_8113204:
 	mov r0, r6
@@ -20398,7 +20398,7 @@ sub_81183C4:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_81185C0
+	bl battle_aiCountAliveEnemiesInRow_81185C0
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_update
@@ -20649,9 +20649,9 @@ sub_81185B8:
 
 // symdb: AI helper: return the count of alive enemy battle-objects in a row (incremented when found)
 // symdb: (r5 = AIData? r6 = BattleState?) -> r0 = u8 count of alive enemies in row ; side effects none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81185C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiCountAliveEnemiesInRow_81185C0.yaml
 	thumb_local_start
-sub_81185C0:
+battle_aiCountAliveEnemiesInRow_81185C0:
 	push {lr}
 	ldrh r0, [r6,#0x3a]
 	ldrh r1, [r6,#0x38]
@@ -20670,7 +20670,7 @@ sub_81185C0:
 	add r0, #1
 locret_81185E2:
 	pop {pc}
-	thumb_func_end sub_81185C0
+	thumb_func_end battle_aiCountAliveEnemiesInRow_81185C0
 
 // symdb: For the battle object in r6, look up a palette id from a 16-bit table at 0x0201DA80 indexed by (r6+0x3A)+(r6+0x38), subtract 0x90, and write that to the object's sprite palette via sprite_setPalette.
 // symdb: (r6 = BattleObject*) -> void ; side effect: writes palette index into the object's sprite data
@@ -20966,7 +20966,7 @@ sub_81187DC:
 
 // symdb: Dispatches the SubMenu's current CurAction through a 3-entry Thumb jump table using the SubMenu object's CurAction byte.
 // symdb: (r5 = SubMenu*) -> r0/r1/r2/r3 clobbered by callee ; side effect: jumps to sub_811880C,
-// symdb: sub_8118874 or sub_8118AA8 based on [r5+8]
+// symdb: battleObject_dispatchSpriteUpdate_8118874 or sub_8118AA8 based on [r5+8]
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81187E8.yaml
 	thumb_func_start sub_81187E8
 sub_81187E8:
@@ -20988,7 +20988,7 @@ off_81187F8:
 	.word off_81187FC
 off_81187FC:
 	.word sub_811880C+1
-	.word sub_8118874+1
+	.word battleObject_dispatchSpriteUpdate_8118874+1
 	.word sub_8118AA8+1
 off_8118808:
 	.word sSubmenu
@@ -21030,7 +21030,7 @@ sub_811880C:
 	bl sprite_setCoordinates
 	mov r0, #0
 	strb r0, [r5,#0xc]
-	bl sub_8118874
+	bl battleObject_dispatchSpriteUpdate_8118874
 	pop {pc}
 	.balign 4, 0
 off_811886C:
@@ -21042,9 +21042,9 @@ off_8118870:
 // symdb: BeastSP object sprite update dispatcher: copies 0xC->0xD and jumps to one of 14 sprite routines indexed by the object's SpriteOffset (low nibble of header byte 2), then chains into sprite_update.
 // symdb: (r5 = object ptr, r6 = related ptr) -> r0 = 0x5EC ; side effect: byte [r5+0xD] := byte [r5+0xC],
 // symdb: then calls the sprite handler chosen from off_8118890[r6[2]] and finally sprite_update(r5)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118874.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchSpriteUpdate_8118874.yaml
 	thumb_local_start
-sub_8118874:
+battleObject_dispatchSpriteUpdate_8118874:
 	push {lr}
 	ldrb r0, [r5,#0xc]
 	strb r0, [r5,#0xd]
@@ -21074,7 +21074,7 @@ off_8118890:
 	.word sub_8118A88+1
 	.word sub_81188EC+1
 	.word sub_81189D4+1
-	thumb_func_end sub_8118874
+	thumb_func_end battleObject_dispatchSpriteUpdate_8118874
 
 	thumb_local_start
 sub_81188CC:
@@ -21501,7 +21501,7 @@ off_8118BB4:
 	.word off_8118BB8
 off_8118BB8:
 	.word sub_8118BC8+1
-	.word sub_8118C2C+1
+	.word battleObject_updateByType_8118C2C+1
 	.word sub_8118CEC+1
 off_8118BC4:
 	.word sSubmenu
@@ -21541,7 +21541,7 @@ sub_8118BC8:
 	mov r0, #0xff
 	strb r0, [r5,#0xc]
 	strb r0, [r5,#0xd]
-	bl sub_8118C2C
+	bl battleObject_updateByType_8118C2C
 	pop {pc}
 	.balign 4, 0
 off_8118C24:
@@ -21553,9 +21553,9 @@ off_8118C28:
 // symdb: Battle-object per-frame dispatcher: copies CurAnim (offset 0xc) into a backup byte (0xd), then tail-calls an animation-update routine picked from a small jump table indexed by `header.Type` (0x2), finally running the standard sprite update.
 // symdb: (r5 = BattleObject*, r6 = header-staging ptr, lr = return) -> r0 = 0x24c ; r2/r3/r5 caller-saved
 // symdb: ; side effects: writes [r5+0xd], dispatches via jump table, calls sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118C2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateByType_8118C2C.yaml
 	thumb_local_start
-sub_8118C2C:
+battleObject_updateByType_8118C2C:
 	push {lr}
 	ldrb r0, [r5,#0xc]
 	strb r0, [r5,#0xd]
@@ -21585,7 +21585,7 @@ off_8118C48:
 	.word sub_8118C84+1
 	.word sub_8118C84+1
 	.word sub_8118C84+1
-	thumb_func_end sub_8118C2C
+	thumb_func_end battleObject_updateByType_8118C2C
 
 	thumb_local_start
 sub_8118C84:
@@ -34867,7 +34867,7 @@ JumpTable811F7A0:
   // 0x20
 	.word battleObject_dispatchUpdateByState_8133200+1
   // 0x24
-	.word sub_81356D4+1
+	.word beastsp_dispatchHandler_81356D4+1
   // 0x28
 	.word sub_8136DE0+1
   // 0x2C

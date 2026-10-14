@@ -5088,14 +5088,14 @@ dword_8028864:
 off_8028868:
 	.word jt_802886C
 jt_802886C:
-	.word sub_8028894+1
+	.word battleObject_computeBButtonOffsets_8028894+1
 	.word loadConstArgsAndPairTable_80288D0+1
 	.word sub_8028904+1
 	.word sub_8028968+1
 	.word sub_8028938+1
 	.word sub_8028938+1
-	.word sub_8028894+1
-	.word sub_8028894+1
+	.word battleObject_computeBButtonOffsets_8028894+1
+	.word battleObject_computeBButtonOffsets_8028894+1
 	.word sub_8028938+1
 	.word sub_8028938+1
 	thumb_func_end battle_custMenuDispatchSelection_8028820
@@ -5103,9 +5103,9 @@ jt_802886C:
 // symdb: Computes a base offset and slot-index pair (returned in r0/r1) from a battle object's B-button chip slot byte
 // symdb: (r5 = BattleObject*) -> r0 = base, r1 = slot index; side effects: r6 set to &byte_80288B0, lr
 // symdb: saved/restored via push {lr}/pop {pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computeBButtonOffsets_8028894.yaml
 	thumb_local_start
-sub_8028894:
+battleObject_computeBButtonOffsets_8028894:
 	push {lr}
 	ldr r6, off_80288AC // =byte_80288B0
 	mov r1, #0
@@ -5126,7 +5126,7 @@ byte_80288B0:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xE, 0x10, 0xE, 0x0, 0xE, 0x30, 0xE
 	.byte 0x0, 0x0, 0x20, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0xC, 0x10, 0xC, 0x0
 	.byte 0xC, 0x30, 0xC, 0x0, 0x1, 0x20
-	thumb_func_end sub_8028894
+	thumb_func_end battleObject_computeBButtonOffsets_8028894
 
 // symdb: Pure constant-setup stub that returns fixed arguments (0x5B, 0x6E) and a pointer to a 16-entry byte-pair table for the caller's next operation, likely dialog/menu or animation parameters.
 // symdb: void sub_80288D0(void) -> r0=0x5B, r1=0x6E, r6=&byte_80288E4; NZCV set as if by CMP 0x70,2 (N=0
@@ -18841,9 +18841,9 @@ byte_802EF4C:
 // symdb: If battle flag 0x40 is set, dispatches a paired "0 then 1" signal to the battle object's destroy sub-event handler (sub_802EF74), then returns; otherwise no-op.
 // symdb: () -> ; side effect: when BATTLE flag 0x40 is set, calls sub_802EF74(r0=0) then
 // symdb: sub_802EF74(r0=1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EF5C.yaml
-	thumb_func_start sub_802EF5C
-sub_802EF5C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchDestroyEvents_802EF5C.yaml
+	thumb_func_start battle_dispatchDestroyEvents_802EF5C
+battle_dispatchDestroyEvents_802EF5C:
 	push {lr}
 	bl battle_testFlag0x40_800A8F8
 	cmp r0, #0
@@ -18854,7 +18854,7 @@ sub_802EF5C:
 	bl sub_802EF74
 locret_802EF72:
 	pop {pc}
-	thumb_func_end sub_802EF5C
+	thumb_func_end battle_dispatchDestroyEvents_802EF5C
 
 	thumb_local_start
 sub_802EF74:

@@ -544,7 +544,7 @@ sub_810C820::
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810C84C::
 	mov r0, r6
@@ -1388,7 +1388,7 @@ loc_810CF7E::
 	mov r0, r4
 	bl somethingWriteChipParams_80126E4
 	bl object_setAttack0
-	bl sub_800F322
+	bl battleObject_decrementChipHeldAndClearChip_800F322
 	mov r6, #1
 loc_810CF8E::
 	mov r0, r6

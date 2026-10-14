@@ -342,7 +342,7 @@ signed int sub_80897E8()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
             engine_setScreeneffect(4, 255);
@@ -376,7 +376,7 @@ signed int __fastcall sub_8089826(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8142BB6();
@@ -416,7 +416,7 @@ signed int sub_808985A()
     v2 = sub_8142C20(0);
     if ( sub_814216E() == v2 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v3 )
         {
             if ( sub_814216E() == *(v1 + 12) )
@@ -448,7 +448,7 @@ signed int __fastcall sub_808989C(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8089CA4(7);
@@ -497,7 +497,7 @@ signed int __fastcall sub_80898E8(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8142BFA();
@@ -533,7 +533,7 @@ signed int sub_808991C()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
             v2 = sub_8142B58();
@@ -557,7 +557,7 @@ signed int sub_8089960()
 
     if ( !v0[19] )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
             engine_setScreeneffect(4, 255);
@@ -593,7 +593,7 @@ signed int __fastcall sub_808999C(int a1)
     int v3; // r0
     int v4; // r0
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         v3 = sub_8142224();
@@ -621,7 +621,7 @@ signed int sub_80899D8()
     IsPaletteFadeActive();
     if ( !v1 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
             sub_8142BF4();
@@ -655,7 +655,7 @@ signed int __fastcall sub_8089A10(int a1)
     char v2; // zf
     char (*v3)[8]; // r0
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         v3 = off_8089A40[GetSoulWeaponsMapIndex()];
@@ -683,7 +683,7 @@ signed int __fastcall sub_8089A60(int a1)
     int v9; // r1
     int v10; // r2
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v4 )
     {
         v5 = battle_getSoulWeaponBase_81427CE();
@@ -714,7 +714,7 @@ signed int __fastcall sub_8089ACA(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8089CA4(12);
@@ -736,7 +736,7 @@ signed int sub_8089AE8()
     chatbox_mask_eFlags2009F38(128);
     if ( v2 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v2 )
         {
             sub_8036FAA();
@@ -767,7 +767,7 @@ signed int __fastcall sub_8089B2E(int a1)
     int v2; // r7
     char v3; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v3 )
     {
         chatbox_8045EDC(2, *(v2 + 16));
@@ -789,7 +789,7 @@ signed int owPlayer_handleBeastSpawnTransition_8089B54()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        sub_8089CB4();
+        battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
             sub_809E2AE(4);
@@ -809,7 +809,7 @@ signed int __fastcall sub_8089B7E(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8089CA4(0);
@@ -839,7 +839,7 @@ signed int __fastcall sub_8089BAA(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8089CA4(13);
@@ -873,7 +873,7 @@ signed int __fastcall sub_8089BE4(int a1)
     _BYTE *v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
         sub_8089CA4(14);
@@ -947,7 +947,7 @@ signed int __fastcall sub_8089C78(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_8089CB4();
+    battle_tickChipLockout_8089CB4();
     if ( v2 )
         return 1;
     sub_8036FAA();
@@ -977,7 +977,7 @@ int __fastcall sub_8089CB0(int result)
 
 
 // 0x8089cb4
-signed int sub_8089CB4()
+signed int battle_tickChipLockout_8089CB4()
 {
     int v0; // r5
     int v1; // r0
