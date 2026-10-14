@@ -806,6 +806,10 @@ off_80465F4:
 	thumb_func_end entity_runAllUpdateHandlers_80465BC
 
 // () -> void
+// symdb: Per-frame sprite pipeline over the eStruct record array: for each of the 15 records whose flag byte has bit 0x2 (active/visible), rescans hitboxes, reloads palette and the current anim frame's tiles when flagged, and rebuilds its render data.
+// symdb: void battle_updateEStructSprites(void) : (nothing, only lr) -> [nz c v r0 r1 r2 r3 r4 r5 r6 r7
+// symdb: r8 r9 r12] (callee-saved restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80465F8.yaml
 	thumb_func_start sub_80465F8
 sub_80465F8:
 	mov r0, #0
@@ -866,9 +870,9 @@ loc_8046652:
 	thumb_func_end sub_80465F8
 
 // () -> void
-// symdb: Tiny wrapper that runs two consecutive update subroutines (sub_80466AA then sub_804657C) as a single combined per-frame update step.
+// symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after sub_80466AA, so scene ticks returning from a battle overlay start from clean records.
 // symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
 	thumb_func_start sub_8046664
 sub_8046664:
 	push {r4-r7,lr}
@@ -2133,6 +2137,10 @@ loc_8047130:
 	pop {pc}
 	thumb_func_end sub_804709C
 
+// symdb: Per-frame update/render of the shop buy menu: runs the entity/state updates, rebuilds and draws the 5-row purchasable-item list, draws the cursor and scroll arrows, and refreshes the background.
+// symdb: void shopBuyMenu_updateFrame(u32 r5 /* menu state */) : r5 -> [r1-r10 r12] (callee-saved
+// symdb: restored; no caller-live return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047134.yaml
 	thumb_local_start
 sub_8047134:
 	push {r4-r7,lr}

@@ -26071,6 +26071,9 @@ loc_80C3F3C:
 	pop {r4-r7,pc}
 	thumb_func_end battleObj_initSprite_80C3F00
 
+// symdb: UPDATE handler of the t1_0x54 follower object type: copies position/animation state from its related (parent) object and re-anchors itself each frame.
+// symdb: void t1_0x54_updateFromRelatedObject(u32 r5 /* battle object */) : r5 -> [r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C3F52.yaml
 	thumb_local_start
 sub_80C3F52:
 	push {r4-r7,lr}
@@ -26347,6 +26350,9 @@ sub_80C40F8:
 	pop {pc}
 	thumb_func_end sub_80C40F8
 
+// symdb: UPDATE handler of the t1_0x55 follower object type: the sibling of t1_0x54_updateFromRelatedObject_80C3F52 with the same follow-the-parent behaviour and a slightly different field set.
+// symdb: void t1_0x55_updateFromRelatedObject(u32 r5 /* battle object */) : r5 -> [r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4146.yaml
 	thumb_local_start
 sub_80C4146:
 	push {r4,lr}
@@ -30267,6 +30273,9 @@ off_80C60C0:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0xb_80C60A8
 
+// symdb: Table-driven init handler of the train-arrow projectile family: Param1 selects one of the 0x10-byte config entries at byte_80C6038 (sprite, element, velocities, collision params), entry 6 takes its look from ExtraVars, then hands off to trainArrow_80C619C.
+// symdb: void battleObject_initTrainArrowVariant(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C60CC.yaml
 	thumb_local_start
 sub_80C60CC:
 	push {r4,r6,r7,lr}
@@ -38318,6 +38327,9 @@ off_80C9BDC:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x2f_80C9BC4
 
+// symdb: Init handler of a short-lived shadowless sprite object: appears on its panel for about two frames with a 0xFF (no-op) hit effect, then runs the standard update; no sound, no private updater.
+// symdb: void battleObject_initBriefCollisionObject(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9BE8.yaml
 	thumb_local_start
 sub_80C9BE8:
 	push {r4,r7,lr}
@@ -39516,6 +39528,9 @@ off_80CA55C:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x33_80CA544
 
+// symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater sub_80CA61A.
+// symdb: void battleObject_initPanelBreakBounce(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA568.yaml
 	thumb_local_start
 sub_80CA568:
 	push {r4,r7,lr}
@@ -40594,6 +40609,9 @@ off_80CAD40:
 	.word sub_80CAEC0+1
 	thumb_func_end t3_0x37_80CAD28
 
+// symdb: Init handler of a forward-flying, slowly rising projectile: forward speed picked from the four-word table byte_80CADCC by Param1, ZVelocity +1.0/frame, then hands off to the standard update; no sound, no private updater.
+// symdb: void battleObject_initRisingShot(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CAD4C.yaml
 	thumb_local_start
 sub_80CAD4C:
 	push {lr}
@@ -47961,6 +47979,9 @@ off_80CE548:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x50_80CE530
 
+// symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater sub_80CE5F0.
+// symdb: void battleObject_initFastLunge(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE554.yaml
 	thumb_local_start
 sub_80CE554:
 	push {r4,lr}

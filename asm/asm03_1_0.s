@@ -2544,6 +2544,10 @@ off_8034FB4:
 	.word unk_2011EA0
 	thumb_func_end maybeStartEntranceCutscene_8034F68
 
+// symdb: Map-enter trigger: when the map actually changed (number or group) or EVENT_1703 is pending and no cutscene is running, starts the after-jack-in cutscene (or its EVENT_127 variant), then clears the trigger flags.
+// symdb: void cutscene_TryStartOnMapEnterAfterJackIn(void) : r10 (toolkit) -> [r0 r1 r2 r3] (captured
+// symdb: exits r0 = 0x80, the last flag id handled)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034FB8.yaml
 	thumb_func_start sub_8034FB8
 sub_8034FB8:
 	push {r4-r7,lr}

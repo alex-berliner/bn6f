@@ -4823,6 +4823,10 @@ word_8005460:
 	thumb_func_end scene_nextOrUpdate_80053E4
 
 // () -> void
+// symdb: Per-frame main state handler of the PET menu subsystem (game state 0x18): runs the PET scene pipeline each tick and handles the exit modes - fade-out back to main state 0x28, or the final return to the overworld.
+// symdb: void pet_menuUpdateAndHandleExit(u32 r5 /* GameState */) : r5 -> [r4 r5 r6 r8 r9 r10 r11 r12]
+// symdb: (captured exits r0 = 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005462.yaml
 	thumb_local_start
 sub_8005462: // (self: * GameState $r5) -> ()
 	push {r7,lr}
@@ -5582,6 +5586,9 @@ locret_8005AF2:
 	pop {r5,pc}
 	thumb_func_end checkThenStartBattle_8005A8C
 
+// symdb: From the overworld tick: on a fresh START press, with every blocker clear, boots or resumes the PET menu subsystem by switching the game state to subsystem 0x18.
+// symdb: void gamestate_openPetMenuOnStartPress(void) : r10 (toolkit) -> [r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005AF4.yaml
 	thumb_local_start
 sub_8005AF4:
 	push {r5,lr}

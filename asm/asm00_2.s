@@ -13705,6 +13705,10 @@ locret_8014BEC:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8014B98
 
+// symdb: Transformation-intro step for the player navi (state 2 of the off_8014AB4 step table): sets up the new form's sprite/name/per-form init, plays the log-in SFX, then after a 10-frame countdown hands off to the turn-open processing.
+// symdb: void battle_runTransformationIntroStep(u32 r5 /* battle object */, u32 r7 /* AIAttackVars */) :
+// symdb: r5 r7 -> [r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014BEE.yaml
 	thumb_local_start
 sub_8014BEE:
 	push {r4,lr}
@@ -18152,6 +18156,10 @@ locret_8016F54:
 	pop {r4,pc}
 	thumb_func_end sub_8016F1A
 
+// symdb: Init-state handler of an enemy-navi battle object: loads its sprite/animation/palette/flip from the enemy data record, sets element and secondary weakness, builds collision data with ability flags, queues the name popup and advances to the update state.
+// symdb: void battleObject_initNaviObject(u32 r5 /* battle object */) : r5 -> [r4 r5 r6 r7 r10] (r0 =
+// symdb: CUR_STATE_UPDATE on the captured exits)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016F56.yaml
 	thumb_func_start sub_8016F56
 sub_8016F56:
 	push {r4,r6,r7,lr}
@@ -18905,6 +18913,10 @@ loc_80174E0:
 	pop {pc}
 	thumb_func_end battle_tickIntroState_80174BE
 
+// symdb: Flinch action handler (CurAction 3, 'on flinch' in the PlayerObjectAIAttackJumptables annotation): dispatches the AI, commits the pushed-back FuturePanel position, plays animation 1 for 23 frames, then ends the action.
+// symdb: void battleObject_actionFlinch(u32 r5 /* battle object */) : r5 -> [r5 r10] (captured exits r0 =
+// symdb: Timer countdown)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80174FE.yaml
 	thumb_func_start sub_80174FE
 sub_80174FE:
 	push {lr}
@@ -23654,6 +23666,9 @@ dword_801A9B4:
 	.word 0xFFFF
 	thumb_func_end sub_801A9AA
 
+// symdb: Per-frame collision/damage processing pipeline for a battle object: the base navi-AI variant, skipping battleObject_applyStatusEffect for NameIDs 0x125-0x12A.
+// symdb: void battleObject_processCollisionResults(u32 r5 /* battle object */) : r5 -> [r4 r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A9B8.yaml
 	thumb_func_start sub_801A9B8
 sub_801A9B8:
 	push {r4,r7,lr}
@@ -23750,6 +23765,9 @@ locret_801AABE:
 	pop {r4,r7,pc}
 	thumb_func_end sub_801AA48
 
+// symdb: Per-frame collision/damage processing pipeline for a battle object: the navi-AI variant that skips battle_tickAiSelfDrain when the battle mode is 0xA, and applies the status effect unconditionally.
+// symdb: void battleObject_processCollisionResultsByMode(u32 r5 /* battle object */) : r5 -> [r4 r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AAC0.yaml
 	thumb_func_start sub_801AAC0
 sub_801AAC0:
 	push {r4,r7,lr}
@@ -23836,6 +23854,10 @@ locret_801ABB6:
 	pop {r4,r7,pc}
 	thumb_func_end sub_801AB40
 
+// symdb: Per-frame collision/damage processing pipeline for an enemy battle object (r5): the enemy-side variant of the family, with a pause gate, AI hit hooks and HitModifierFinal flag reactions.
+// symdb: void battleObject_processCollisionResultsForEnemy(u32 r5 /* battle object */) : r5 -> [r4 r5
+// symdb: r10] (nz c v r0-r3, r12 clobbered for callers)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801ABB8.yaml
 	thumb_func_start sub_801ABB8
 sub_801ABB8:
 	push {r4,r7,lr}
@@ -24812,6 +24834,10 @@ dword_801B390:
 	.word OBJECT_FLAGS_2_DO_UPDATE_COLLISION_PANELS
 	thumb_func_end battle_801B1C4
 
+// symdb: Applies a battle object's pending collision damage (white flash, hit SFX, HP subtraction, defeat/status transitions) and then dispatches its CurAction handler from the caller-supplied table.
+// symdb: void battleObject_dispatchActionHandler(r0 = handler table (function pointers indexed by
+// symdb: CurAction*4), u32 r5 /* battle object */) : r0 r5 -> [r5 r10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B394.yaml
 	thumb_func_start sub_801B394
 sub_801B394: // JP: 0x801b904
 	push {r6,r7,lr}

@@ -252,6 +252,10 @@ dword_809D344:
 	.word 0xA108
 	thumb_func_end sub_809D270
 
+// symdb: Per-frame update of the overworld player: resets the movement-step state, runs the movement-state jumptable handler, resolves collisions/slip-run, updates layer and sprite priority, and feeds the walk/encounter counters.
+// symdb: void owPlayer_update(u32 r5 /* OWPlayerObject */) : r5 -> [r4 r5 r8 r9 r10 r11 r12] (captured
+// symdb: exits r0 = 0x80 is caller residue, not a return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D348.yaml
 	thumb_local_start
 sub_809D348:
 	push {lr}

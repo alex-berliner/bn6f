@@ -522,6 +522,10 @@ off_802683C:
 	.word byte_80267D5
 	thumb_func_end sub_8026726
 
+// symdb: One-time-per-run init of the battle custom (chip-select) screen: resets battle state words, loads the chip-select tilemap/OBJ graphics, initialises the eS20364C0 state (NaviIndex, folder chip count, selectable PET-Navi candidates) and advances the battle phase counter.
+// symdb: void battle_initCustomScreen(void) : r10 (toolkit) -> [r2 r3 r4 r5 r6 r8 r9] (callee-saved
+// symdb: restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026840.yaml
 	thumb_func_start sub_8026840
 sub_8026840:
 	push {r4-r7,lr}
