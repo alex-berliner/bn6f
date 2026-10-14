@@ -675,7 +675,7 @@ signed int sub_8123C98()
     sub_8120348(v1 >> 4, word_20347D8, 11, 1);
     CopyBackgroundTiles(11, 6, 2, word_20347D8, 15, &byte_0[2]);
     v2 = GetCurPETNaviStatsByte(*(v0 + 20));
-    return sub_812053C(v2, 33120, 12189751);
+    return battleObject_drawIndicatorOrStatusIcon_812053C(v2, 33120, 12189751);
 }
 
 

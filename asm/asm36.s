@@ -6520,7 +6520,7 @@ off_81333EC:
 	.word battle_objectUpdate_8133400+1
 	.word sub_81337C4+1
 	.word sub_8133434+1
-	.word sub_8133484+1
+	.word battleObject_submenuDispatchByBeastSpIndex_8133484+1
 	.word sub_8133788+1
 	thumb_func_end battle_dispatchObjectUpdateOrEffect_81333A0
 // symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
@@ -6542,7 +6542,7 @@ loc_8133410:
 	bl object_resolveTableEntryByIndex_8134538
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #5
 	mov r1, #0
 	bl battle_aiRunTurnHandler_81353F0
@@ -6594,9 +6594,9 @@ locret_8133482:
 // symdb: (r0 = BattleObject self ptr, r1 = AIData ptr, r2 = index/state word, r5 = Toolkit ptr (r10
 // symdb: convention), lr = return) -> r0 = Beast-SP index (0x40) ; side effects: calls submenu/folder
 // symdb: render, calls sub_81353F0 twice with handler indices 5 and 6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133484.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuDispatchByBeastSpIndex_8133484.yaml
 	thumb_local_start
-sub_8133484:
+battleObject_submenuDispatchByBeastSpIndex_8133484:
 	push {lr}
 	ldr r0, off_81334B4 // =off_81334B8 
 	ldrb r1, [r5,#3]
@@ -6607,7 +6607,7 @@ sub_8133484:
 
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #5
 	mov r1, #0
 	bl battle_aiRunTurnHandler_81353F0
@@ -6623,7 +6623,7 @@ off_81334B8:
 	.word sub_8133540+1
 	.word sub_81335EC+1
 	.word sub_8133770+1
-	thumb_func_end sub_8133484
+	thumb_func_end battleObject_submenuDispatchByBeastSpIndex_8133484
 	thumb_local_start
 sub_81334C8:
 	push {r4,lr}
@@ -7046,7 +7046,7 @@ off_81337D4:
 off_81337D8:
 	.word sub_81337E8+1
 	.word folderEdit_step_813388C+1
-	.word sub_81338D4+1
+	.word battleObject_submenuFolderEditTick_81338D4+1
 	.word sub_8133944+1
 	thumb_func_end sub_81337C4
 
@@ -7121,7 +7121,7 @@ loc_8133864:
 
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #5
 	mov r1, #0
 	bl battle_aiRunTurnHandler_81353F0
@@ -7173,9 +7173,9 @@ loc_81338C6:
 // symdb: Per-frame tick for the in-battle submenu folder-edit screen: animates the folder panel, then redraws the scrolling background, submenu bg, folder/chip graphics and dispatches chip-select AI ticks for slots 5/6.
 // symdb: (r5 = submenu state ptr, r10 = toolkit ptr, lr = return) -> no meaningful return; side effects
 // symdb: mutate submenu state, BG, submenu GFX, dispatch chip-select AI updates
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81338D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuFolderEditTick_81338D4.yaml
 	thumb_local_start
-sub_81338D4:
+battleObject_submenuFolderEditTick_81338D4:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrh r0, [r7,#0x18]
@@ -7216,7 +7216,7 @@ loc_813390E:
 	bl sub_8134548
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 	bl battleObject_drawFolderEditScreenGfx_8134310
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #5
 	mov r1, #0
 	bl battle_aiRunTurnHandler_81353F0
@@ -7225,7 +7225,7 @@ loc_813390E:
 	bl battle_aiRunTurnHandler_81353F0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81338D4
+	thumb_func_end battleObject_submenuFolderEditTick_81338D4
 // symdb: Scene step: handles joypad cursor input for the menu (gated by state checks) then runs a fixed tail of scene/anim updates and palette/OBJ bank setups.
 // symdb: void sub_8133944(void);  /* uses toolkit via R10, menu state object via R5; no explicit returns;
 // symdb: clobbers r0-r3,r9-r12,lr; flags NZCV clobbered; preserves r4-r8,r10 */
@@ -7256,7 +7256,7 @@ loc_813396C:
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl battleObject_drawFolderEditScreenGfx_8134310
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #5
 	mov r1, #0
 	bl battle_aiRunTurnHandler_81353F0
@@ -7735,7 +7735,7 @@ loc_8133D36:
 	ldrh r1, [r5,#0x24]
 	add r0, r0, r1
 	strh r0, [r5,#0x1c]
-	bl sub_81353DC
+	bl battleObject_alignRowOffsetCheckSN3_81353DC
 	mov r0, #1
 	ldr r1, [r5,#0x4c]
 	orr r1, r0
@@ -8669,7 +8669,7 @@ off_813448C:
 	thumb_func_end battleObject_drawFolderEditScreenGfx_8134310
 // symdb: Draws a submenu's two side border strips (with blank-fill inside) and dispatches a per-state palette/VRAM word for the submenu widget, varying the strip layout and palette id by submenu state and current submenu-vs-no-submenu branch.
 // symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = 0xFF ; side effects: writes tilemap blocks via
-// symdb: CopyBackgroundTiles and queues a sub_812053C dispatch
+// symdb: CopyBackgroundTiles and queues a battleObject_drawIndicatorOrStatusIcon_812053C dispatch
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_drawSubmenuBox_8134490.yaml
 	thumb_local_start
 menu_drawSubmenuBox_8134490:
@@ -8740,7 +8740,7 @@ loc_813450A:
 	ldr r2, dword_8134528 // =0xc20016 
 	sub r2, r2, r1
 	ldr r1, dword_8134524 // =0x8160 
-	bl sub_812053C
+	bl battleObject_drawIndicatorOrStatusIcon_812053C
 	pop {r4-r7,pc}
 off_813451C:
 	.word unk_20347D8
@@ -10850,9 +10850,9 @@ sub_81353B8:
 // symdb: Hard-coded row-alignment check for the BattleObject at panel column 6, used as a one-shot reposition helper.
 // symdb: () -> r0 = "offset delta result" (1); side effects: clobbers r0-r3, may invoke
 // symdb: `battle_alignRowCheck_81348DC`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81353DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_alignRowOffsetCheckSN3_81353DC.yaml
 	thumb_local_start
-sub_81353DC:
+battleObject_alignRowOffsetCheckSN3_81353DC:
 	push {r4,lr}
 	mov r0, #0x24 
 	mov r1, #0xa5
@@ -10862,7 +10862,7 @@ sub_81353DC:
 	bl battle_alignRowCheck_81348DC
 	pop {r4,pc}
 	.byte 0, 0
-	thumb_func_end sub_81353DC
+	thumb_func_end battleObject_alignRowOffsetCheckSN3_81353DC
 
 // symdb: Dispatches an AI turn action (r0=row/action id) with r1 (often a 0/1 sub-mode) into the AI panel-range/attack routine using constants 0x24, 0xA5, 0x28, 6.
 // symdb: (r0 = action index [5..6], r1 = sub-flag [0..1], r5 = caller's object/AIData, lr = caller's lr)

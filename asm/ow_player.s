@@ -826,7 +826,7 @@ locret_809D796:
 off_809D798:
 	.word sub_809D7A8+1
 	.word ow_player_setCounterTalkStateAfterNpcInteract_809D7C8+1
-	.word sub_809D7D8+1
+	.word owPlayerObject_clearStateUnk10_809D7D8+1
 off_809D7A4:
 	.word off_809D798
 	thumb_func_end ow_player_processAction_809D75E
@@ -871,9 +871,9 @@ locret_809D7D6:
 
 // symdb: When chatbox event-flag bit 0x80 is clear, zero the OW player's Unk_10 game-state byte, the Unk_07/Unk_09/Unk_0a OWPlayerObject bytes, then return.
 // symdb: () -> void ; side effects: writes eGameState+0x10, writes r5+0x07/0x09/0x0a
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayerObject_clearStateUnk10_809D7D8.yaml
 	thumb_local_start
-sub_809D7D8:
+owPlayerObject_clearStateUnk10_809D7D8:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -891,7 +891,7 @@ loc_809D7E2:
 	strb r0, [r5,#oOWPlayerObject_Unk_0a]
 locret_809D7F6:
 	pop {pc}
-	thumb_func_end sub_809D7D8
+	thumb_func_end owPlayerObject_clearStateUnk10_809D7D8
 
 	thumb_local_start
 sub_809D7F8:

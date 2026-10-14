@@ -1503,7 +1503,7 @@ sub_8123C98:
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
 	ldr r1, dword_8123CEC // =0x8160 
 	ldr r2, byte_8123CF0 // =0x37
-	bl sub_812053C
+	bl battleObject_drawIndicatorOrStatusIcon_812053C
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8123CE4:

@@ -916,13 +916,13 @@ off_80A5500:
 	.word off_80A5504
 off_80A5504:
 	.word sub_80A5514+1
-	.word sub_80A5588+1
+	.word owMapObject_bbsObjectUpdate_80A5588+1
 	.word sub_80A55CC+1
 off_80A5510:
 	.word unk_2013960
 	thumb_func_end sub_80A54F0
 
-// symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to sub_80A5588.
+// symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to owMapObject_bbsObjectUpdate_80A5588.
 // symdb: void owObject_spawnSetup_80A5514(u32 r5 /*owObject*/, u32 r6 /*sourceObject*/, u32 r10
 // symdb: /*toolkit*/) -> r2 r5 r10 r11; clobbers nz c v r0 r1 r3 lr; preserves r4 r6 r7 r8 r9 r12
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A5514.yaml
@@ -977,7 +977,7 @@ loc_80A552A:
 loc_80A557A:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A5588
+	bl owMapObject_bbsObjectUpdate_80A5588
 	pop {r4-r7,pc}
 	.word 0x17F
 	thumb_func_end sub_80A5514
@@ -985,9 +985,9 @@ loc_80A557A:
 // symdb: Per-frame update for the BBS overworld object (spawned by sub_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
 // symdb: (r5 = owMapObjectPtr, r6 = ???, r10 = toolkitPtr, lr) -> void ; side effects: events flags
 // symdb: EVENT_4EA/EVENT_4EB tested/possibly set, sprite updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_bbsObjectUpdate_80A5588.yaml
 	thumb_local_start
-sub_80A5588:
+owMapObject_bbsObjectUpdate_80A5588:
 	push {lr}
 	bl cutscene_checkOriginalCutsceneScriptPos_8036F40 // () -> zf
 	bne locret_80A55CA
@@ -1013,7 +1013,7 @@ loc_80A55C6:
 	bl sprite_update
 locret_80A55CA:
 	pop {pc}
-	thumb_func_end sub_80A5588
+	thumb_func_end owMapObject_bbsObjectUpdate_80A5588
 
 // symdb: Thin wrapper that frees an overworld map object by index (r5) via FreeOverworldMapObject, forwarding its r2/r5 outputs to the caller.
 // symdb: void freeMapObject_80A55CC(U in: r5 object_index; out: r2, r5; clobbers: nzcv r0 r1 r3 lr)
@@ -4780,7 +4780,7 @@ sub_80A78AE:
 sub_80A78B8:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
-	bl sub_8142068
+	bl battle_getAIDataPtr_8142068
 	ldr r0, off_80A78CC // =off_80A78D0 
 	ldrb r1, [r5,#8]
 	ldr r0, [r0,r1]

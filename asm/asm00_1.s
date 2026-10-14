@@ -17195,9 +17195,9 @@ battle_clearEnemyFadeinList:
 // symdb: Returns true if the battle object whose AIData is at index r0 matches the battle object passed in r5.
 // symdb: (r0 = aiDataIndex, r5 = battleObjectPtr) -> r0 = 1 if match else 0 ; sets flags Z (equal) and C
 // symdb: (carry) via the cmp/bne path; r1/r2 are clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA06.yaml
-	thumb_func_start sub_800AA06
-sub_800AA06:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_isCurrentTurnBattleObject_800AA06.yaml
+	thumb_func_start battleObject_isCurrentTurnBattleObject_800AA06
+battleObject_isCurrentTurnBattleObject_800AA06:
 	push {lr}
 	bl getNextEntryAddress_800AAAE
 	mov r2, #0
@@ -17208,7 +17208,7 @@ sub_800AA06:
 loc_800AA16:
 	mov r0, r2
 	pop {pc}
-	thumb_func_end sub_800AA06
+	thumb_func_end battleObject_isCurrentTurnBattleObject_800AA06
 
 // symdb: Adds a 32-bit value to an 8-entry registry list returned by getNextEntryAddress_800AAAE, storing it in the first free (zero) slot; fails if the value is already present or the list is full.
 // symdb: bool list_tryAddUniqueEntry_800AA1A(u32 value /*r5*/); /* r7 and lr are working inputs (r7
@@ -17301,9 +17301,9 @@ locret_800AA90:
 // symdb: (no explicit args read; r0 holds whatever the caller passed in but is overwritten immediately to
 // symdb: 0) -> r0 = number of non-zero u32 entries (each 0x20 bytes apart) in the entry block at
 // symdb: 0x2038170 + r0*0x20 ; no side effects beyond reading the array and restoring lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA92.yaml
-	thumb_func_start sub_800AA92
-sub_800AA92:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_countAliveNextEntries_800AA92.yaml
+	thumb_func_start battle_countAliveNextEntries_800AA92
+battle_countAliveNextEntries_800AA92:
 	push {lr}
 	bl getNextEntryAddress_800AAAE
 	mov r3, r0
@@ -17319,7 +17319,7 @@ loc_800AAA6:
 	cmp r2, #0x20
 	blt loc_800AA9E
 	pop {pc}
-	thumb_func_end sub_800AA92
+	thumb_func_end battle_countAliveNextEntries_800AA92
 
 // symdb: Returns the address of entry `r0` (0x20 bytes each) in the Next array at 0x2038170, also leaving the array base in r1.
 // symdb: u32* getNextEntryAddress(int index) // in: r0 = element index, lr = return; out: r0 =

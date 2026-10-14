@@ -488,7 +488,7 @@ BOOL camera_isObjectInFrontOfCamera_80269D0()
 
 
 // 0x80269e2
-signed int sub_80269E2()
+signed int camera_shouldApplyBgScrollToBothLayerPairs_80269E2()
 {
     signed int result; // r0
 
@@ -2983,7 +2983,7 @@ void sub_8028476()
     if ( !*v1 )
     {
         v4 = getChipID_802A54E(**(v1 + 2));
-        sub_80284E2(v4);
+        battleObject_loadChipPanelGfx_80284E2(v4);
     }
     if ( v3 == 1 )
     {
@@ -3014,7 +3014,7 @@ void sub_8028476()
 
 
 // 0x80284e2
-void __fastcall __noreturn sub_80284E2(unsigned int a1)
+void __fastcall __noreturn battleObject_loadChipPanelGfx_80284E2(unsigned int a1)
 {
     int v1; // r10
     int (*v2)[345]; // r0
@@ -13852,7 +13852,7 @@ signed int camera_applyScrollToBgLayers_8030158()
     *(v4 + 20) += v2;
     *(v4 + 22) = v5;
     v8 = v2;
-    result = sub_80269E2();
+    result = camera_shouldApplyBgScrollToBothLayerPairs_80269E2();
     if ( !result )
     {
         result = *(v1 + oToolkit_RenderInfoPtr);

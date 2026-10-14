@@ -21927,13 +21927,13 @@ void sub_80C461C()
             *v0 &= 0xFBu;
         *(v0 + 9) = 4;
         *(v0 + 10) = 0;
-        sub_80C464C();
+        battleObject_updateSprite_80C464C();
     }
 }
 
 
 // 0x80c464c
-void sub_80C464C()
+void battleObject_updateSprite_80C464C()
 {
     int v0; // r5
     int v1; // r0
@@ -65763,7 +65763,7 @@ int sub_80DFE64()
 
 
 // 0x80dfea8
-void __noreturn sub_80DFEA8()
+void __noreturn battleObject_destroyOnCollision_80DFEA8()
 {
     int v0; // r5
     int v1; // r0
@@ -66353,7 +66353,7 @@ int battle_object_teardownAndFree_80E06E0()
 {
     int result; // r0
 
-    result = sub_800AA92(0);
+    result = battle_countAliveNextEntries_800AA92(0);
     if ( !result )
     {
         battle_orStateFlags5c_8001382(2);
@@ -83952,7 +83952,7 @@ int getSlashBeastWaveAttackLockonTypeMaybe_80EAF26()
 
 
 // 0x80eaf36
-void sub_80EAF36()
+void object_endPwrAtkAction_80EAF36()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -84184,7 +84184,7 @@ int aiAttack_TimerTickEnd_80EB194()
 
 
 // 0x80eb1c4
-void sub_80EB1C4()
+void ai_attackStepRunDecrement_80EB1C4()
 {
     int v0; // r4
     Battle *v1; // r5
@@ -132501,7 +132501,7 @@ signed int sub_8109EC4()
     _WORD *v1; // r7
     signed int result; // r0
 
-    result = sub_800AA06(*(v0 + 100));
+    result = battleObject_isCurrentTurnBattleObject_800AA06(*(v0 + 100));
     if ( result )
     {
         *(v0 + 16) = 4;
@@ -132634,7 +132634,7 @@ void sub_810A004()
     int v3; // r7
     __int16 v4; // r0
 
-    if ( sub_800AA06(*(v1 + 100)) )
+    if ( battleObject_isCurrentTurnBattleObject_800AA06(*(v1 + 100)) )
     {
         if ( *(v1 + 7) )
         {

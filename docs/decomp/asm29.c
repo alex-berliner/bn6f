@@ -481,12 +481,12 @@ void __noreturn sub_80A5514()
             *(v1 + 15) = 10;
     }
     *(v0 + 8) = 4;
-    sub_80A5588();
+    owMapObject_bbsObjectUpdate_80A5588();
 }
 
 
 // 0x80a5588
-void sub_80A5588()
+void owMapObject_bbsObjectUpdate_80A5588()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -3159,7 +3159,7 @@ int sub_80A78B8()
 {
     int v0; // r5
 
-    sub_8142068(*(v0 + 4));
+    battle_getAIDataPtr_8142068(*(v0 + 4));
     return (*(&off_80A78D0 + *(v0 + 8)))();
 }
 

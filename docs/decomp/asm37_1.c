@@ -131,7 +131,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
         }
         battle_callAIDispatch_8046818();
         v2 = battleObject_updateSpriteGfxForAll_8046854();
-        sub_811E0BA(v2, v3, v4, v5);
+        battle_gfx_renderLatticeOrSpinner_811E0BA(v2, v3, v4, v5);
         s_2011C50_ptr_1C_isNull();
         if ( v1 )
         {
@@ -398,7 +398,7 @@ unsigned int __fastcall sub_8142050(int a1)
 
 
 // 0x8142068
-int __fastcall sub_8142068(int a1)
+int __fastcall battle_getAIDataPtr_8142068(int a1)
 {
     return 40 * a1;
 }

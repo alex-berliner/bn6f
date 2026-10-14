@@ -180,7 +180,7 @@ battle_performBeastOutBattleAiTick_81419A0:
 loc_81419CC:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
-	bl sub_811E0BA
+	bl battle_gfx_renderLatticeOrSpinner_811E0BA
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_8141A0C
 	bl owPlayer_isBusyOrCutsceneActive_809E462
@@ -653,15 +653,15 @@ off_8142064:
 
 // symdb: Returns a pointer to one of up to four AIData slots stored at unk_2000BE0, indexed by r0.
 // symdb: (r0 = actor index 0..3) -> r0 = &unk_2000BE0 + r0 * 0x28 ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142068.yaml
-	thumb_func_start sub_8142068
-sub_8142068:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAIDataPtr_8142068.yaml
+	thumb_func_start battle_getAIDataPtr_8142068
+battle_getAIDataPtr_8142068:
 	ldr r6, off_8142130 // =unk_2000BE0 
 	mov r1, #0x28 
 	mul r0, r1
 	add r6, r6, r0
 	mov pc, lr
-	thumb_func_end sub_8142068
+	thumb_func_end battle_getAIDataPtr_8142068
 
 	thumb_local_start
 sub_8142072:

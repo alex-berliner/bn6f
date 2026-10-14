@@ -3858,7 +3858,7 @@ int __fastcall sub_8133434(int a1)
 
 
 // 0x8133484
-void __noreturn sub_8133484()
+void __noreturn battleObject_submenuDispatchByBeastSpIndex_8133484()
 {
     int v0; // r5
 
@@ -4343,7 +4343,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
 
 
 // 0x81338d4
-void __noreturn sub_81338D4()
+void __noreturn battleObject_submenuFolderEditTick_81338D4()
 {
     int v0; // r5
     int v1; // r0
@@ -4745,7 +4745,7 @@ LABEL_17:
         if ( !(*(v0 + 76) & 1) )
             battle_spawnEStructRecordsFromTable_80465A0(byte_8133154);
         *(v0 + 28) = *(v0 + 32) + *(v0 + 36);
-        sub_81353DC();
+        battleObject_alignRowOffsetCheckSN3_81353DC();
         v10 = *(v0 + 76) | 1;
         *(v0 + 76) = v10;
         PlaySoundEffect(130, v10, v11);
@@ -6431,7 +6431,7 @@ int __fastcall sub_81353B8(void *a1, int a2, __int16 a3, int a4)
 
 
 // 0x81353dc
-int sub_81353DC()
+int battleObject_alignRowOffsetCheckSN3_81353DC()
 {
     return battle_alignRowCheck_81348DC(36, 165, 40, 4);
 }

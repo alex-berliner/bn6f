@@ -11507,7 +11507,7 @@ void batle_clearEnemyFadeinList()
 
 
 // 0x800aa06
-signed int __fastcall sub_800AA06(int a1)
+signed int __fastcall battleObject_isCurrentTurnBattleObject_800AA06(int a1)
 {
     int v1; // r5
     char *v2; // r0
@@ -11602,7 +11602,7 @@ int __fastcall compactEntryWords_800AA64(int a1)
 
 
 // 0x800aa92
-int __fastcall sub_800AA92(int a1)
+int __fastcall battle_countAliveNextEntries_800AA92(int a1)
 {
     char *v1; // r3
     int result; // r0

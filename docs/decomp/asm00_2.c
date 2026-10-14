@@ -8645,7 +8645,7 @@ int __fastcall battleObject_checkAngerTrigger_80142DC(int a1)
                 result = object_getFlag();
                 if ( !(result & 0x200000) )
                 {
-                    if ( sub_801442C() >= 120 || (result = *(*(v1 + 84) + 128) >> 1, result >= 150) )
+                    if ( battleObject_aiGetUnk4cPtr_801442C() >= 120 || (result = *(*(v1 + 84) + 128) >> 1, result >= 150) )
                         result = object_setFlag2(512);
                 }
             }
@@ -8786,7 +8786,7 @@ int battle_clearAIDataField4c_8014424()
 
 
 // 0x801442c
-int sub_801442C()
+int battleObject_aiGetUnk4cPtr_801442C()
 {
     int v0; // r5
 
@@ -11858,7 +11858,7 @@ int battleObject_joinAlly_80163B4()
 
     if ( *(v0 + 11) )
     {
-        if ( battle_getStateUnk5c_800139A() & 1 && sub_800AA06(0) )
+        if ( battle_getStateUnk5c_800139A() & 1 && battleObject_isCurrentTurnBattleObject_800AA06(0) )
         {
             PlaySoundEffect(148, v3, v4);
             *(v0 + 32) = 2;
@@ -20431,7 +20431,7 @@ int sub_801DB54()
 
 
 // 0x801db60
-int sub_801DB60()
+int battle_setUnkFlagBit0_eStruct2035280_801DB60()
 {
     return flagSetBits_eStruct2035280_801BEB8(1);
 }
@@ -20567,7 +20567,7 @@ int sub_801DC60()
 
 
 // 0x801dc6e
-int sub_801DC6E()
+int battle_setFlag0x04_eStruct2035280_801DC6E()
 {
     return flagSetBits_eStruct2035280_801BEB8(4);
 }

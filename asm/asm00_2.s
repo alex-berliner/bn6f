@@ -12434,7 +12434,7 @@ battleObject_checkAngerTrigger_80142DC:
 	lsl r1, r1, #0x15
 	tst r0, r1
 	bne locret_8014324
-	bl sub_801442C
+	bl battleObject_aiGetUnk4cPtr_801442C
 	cmp r0, #0x78 
 	bge loc_801431C
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
@@ -12613,13 +12613,13 @@ battle_clearAIDataField4c_8014424:
 
 // symdb: Loads AIData +0x4c from a BattleObject for the AI script helpers
 // symdb: (r5 = BattleObject*) -> r0 = *(BattleObject->AIData + 0x4c) ; side effects none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801442C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiGetUnk4cPtr_801442C.yaml
 	thumb_local_start
-sub_801442C:
+battleObject_aiGetUnk4cPtr_801442C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_4c]
 	mov pc, lr
-	thumb_func_end sub_801442C
+	thumb_func_end battleObject_aiGetUnk4cPtr_801442C
 
 	thumb_local_start
 sub_8014432:
@@ -16708,7 +16708,7 @@ loc_80163E2:
 	tst r0, r1
 	beq loc_8016410
 	mov r0, #0
-	bl sub_800AA06
+	bl battleObject_isCurrentTurnBattleObject_800AA06
 	tst r0, r0
 	beq loc_8016410
 	mov r0, #0x94
@@ -30327,9 +30327,9 @@ locret_801DA64:
 off_801DA68:
 	.word off_801DA6C
 off_801DA6C:
-	.word sub_801DB60+1
+	.word battle_setUnkFlagBit0_eStruct2035280_801DB60+1
 	.word sub_801DB78+1
-	.word sub_801DC6E+1
+	.word battle_setFlag0x04_eStruct2035280_801DC6E+1
 	.word sub_801DD7C+1
 	.word setupBattleBackground_801DDF6+1
 	.word sub_801DE3C+1
@@ -30452,15 +30452,15 @@ sub_801DB54:
 // symdb: Sets the flag bit 0x1 in eStruct2035280+0x44 (story-battle related flag word)
 // symdb: () -> r0 = 1 ; side effects ORs 0x1 into eStruct2035280+0x44 and returns the updated word in r2
 // symdb: (via callee)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DB60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setUnkFlagBit0_eStruct2035280_801DB60.yaml
 	thumb_local_start
-sub_801DB60:
+battle_setUnkFlagBit0_eStruct2035280_801DB60:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {pc}
-	thumb_func_end sub_801DB60
+	thumb_func_end battle_setUnkFlagBit0_eStruct2035280_801DB60
 
 // symdb: Tiny thunk that invokes sub_801BEC2 with the constant argument 2; effect depends entirely on what sub_801BEC2 does with its argument.
 // symdb: void sub_801DB6C(void) /* trashes r0-r2, lr and the flags; passes r0=2 to sub_801BEC2 */
@@ -30653,16 +30653,16 @@ sub_801DC60:
 
 // symdb: Sets the bit 0x04 of the flag word at eStruct2035280+0x44 (no inputs, no outputs).
 // symdb: () -> (no caller-visible return; flag word at eStruct2035280+0x44 |= 0x04)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DC6E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setFlag0x04_eStruct2035280_801DC6E.yaml
 	thumb_local_start
-sub_801DC6E:
+battle_setFlag0x04_eStruct2035280_801DC6E:
 	push {lr}
 	mov r0, #1
 	mov r1, #2
 	lsl r0, r1
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {pc}
-	thumb_func_end sub_801DC6E
+	thumb_func_end battle_setFlag0x04_eStruct2035280_801DC6E
 
 // symdb: Claims a slot in the four-slot battle status list at 0x203EB50 for a battle object, caching its name ID and HP for the status UI.
 // symdb: /* r0=param0, r1=param1, r5=battle object -> r0; preserves r4,r6,r7 */ u32 sub_801DC7C(u8

@@ -31857,9 +31857,9 @@ sub_811E0B2:
 // symdb: Prepares and VRAM-queues a 0x140-byte background-tile lattice (or "no-data" filler) used by the chip-select/lattice battle-screen effect, branching on `eStruct2001010+0x10`.
 // symdb: () -> void ; queues a 0x140-byte GFX transfer from EWRAM `byte_2027200` to VRAM `0x06015580` via
 // symdb: `QueueEightWordAlignedGFXTransfer`; reads/writes `eStruct2001010+0x10..0x12`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E0BA.yaml
-	thumb_func_start sub_811E0BA
-sub_811E0BA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_gfx_renderLatticeOrSpinner_811E0BA.yaml
+	thumb_func_start battle_gfx_renderLatticeOrSpinner_811E0BA
+battle_gfx_renderLatticeOrSpinner_811E0BA:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_811E160 // =byte_2027200
@@ -31954,7 +31954,7 @@ off_811E160:
 	.word byte_2027200
 off_811E164:
 	.word eStruct2001010
-	thumb_func_end sub_811E0BA
+	thumb_func_end battle_gfx_renderLatticeOrSpinner_811E0BA
 
 	thumb_func_start sub_811E168
 sub_811E168:
@@ -36712,9 +36712,9 @@ loc_8120520:
 // symdb: Queue an OAM sprite entry for a battle object's status / damage indicator, if the previous draw step succeeded
 // symdb: (r0 = draw result code, r1 = battle object ptr, r2 = ?) -> r0 = 0xff ; side effects: queues an
 // symdb: OAM entry via sprite_queueOamEntryThunk_802FE28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
-	thumb_func_start sub_812053C
-sub_812053C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawIndicatorOrStatusIcon_812053C.yaml
+	thumb_func_start battleObject_drawIndicatorOrStatusIcon_812053C
+battleObject_drawIndicatorOrStatusIcon_812053C:
 	push {r4-r7,lr}
 	mov r4, r1
 	mov r3, #0
@@ -36732,7 +36732,7 @@ sub_812053C:
 	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_812055E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_812053C
+	thumb_func_end battleObject_drawIndicatorOrStatusIcon_812053C
 	.balign 4, 0
 dword_8120560:
 	.word 0xC0008000

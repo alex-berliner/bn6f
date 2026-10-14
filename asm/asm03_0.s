@@ -725,9 +725,9 @@ locret_80269E0:
 
 // symdb: Returns 1 when the camera should NOT skip the second BG layer pair's scroll, by checking the eS20364C0 (chip select) jump offsets against an allowlist.
 // symdb: () -> r0 = 1 (apply both) / 0 (skip second pair) ; flags NZCV clobbered, no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80269E2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_shouldApplyBgScrollToBothLayerPairs_80269E2.yaml
 	thumb_local_start
-sub_80269E2:
+camera_shouldApplyBgScrollToBothLayerPairs_80269E2:
 	push {r5,lr}
 	mov r0, #0
 	ldr r5, off_8026BF0 // =eS20364C0 
@@ -765,7 +765,7 @@ loc_8026A24:
 	mov r0, #1
 locret_8026A26:
 	pop {r5,pc}
-	thumb_func_end sub_80269E2
+	thumb_func_end camera_shouldApplyBgScrollToBothLayerPairs_80269E2
 
 // symdb: Dispatches one tick of the eS20364C0 state machine via its jump table
 // symdb: void sub_8026A28(void); /* uses r5 for the state object; passes state byte in r0 and jump-table
@@ -4573,7 +4573,7 @@ loc_80284AA:
 	ldr r0, [r0,#8]
 	ldrh r0, [r0]
 	bl getChipID_802A54E // (int a1) -> int
-	bl sub_80284E2
+	bl battleObject_loadChipPanelGfx_80284E2
 	b locret_80284E0
 loc_80284B8:
 	bl beastout_QueuePaletteGFXAndSheets_80286D4
@@ -4602,9 +4602,9 @@ locret_80284E0:
 // symdb: Battle side-effect routine that streams the chip-activation panel graphics (chip name tiles, icon, element palette, attack counter BCD digits) into VRAM for the active battle object's side.
 // symdb: (r0 = chip_id_word, r1 = ?, r2 = ?, r3 = toolkit-derived pointer) -> r0 = pointer into gfx chunk
 // symdb: table (e.g. 0x0802a6c0) or VRAM-side data; only caller-saved regs (r4-r10) survive
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80284E2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_loadChipPanelGfx_80284E2.yaml
 	thumb_local_start
-sub_80284E2:
+battleObject_loadChipPanelGfx_80284E2:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -4742,7 +4742,7 @@ loc_80285DC:
 loc_80285FA:
 	add sp, sp, #0x10
 	pop {r4,pc}
-	thumb_func_end sub_80284E2
+	thumb_func_end battleObject_loadChipPanelGfx_80284E2
 
 	thumb_local_start
 sub_80285FE:
@@ -21557,7 +21557,7 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	mov pc, lr
 	thumb_func_end camera_applyDeltaToRenderInfoScroll_8030136
 
-// symdb: Applies the camera's frame-to-frame movement delta to the background scroll positions, always scrolling the first background layer pair and also the second pair unless a check (sub_80269E2) says not to.
+// symdb: Applies the camera's frame-to-frame movement delta to the background scroll positions, always scrolling the first background layer pair and also the second pair unless a check (camera_shouldApplyBgScrollToBothLayerPairs_80269E2) says not to.
 // symdb: int sub_8030158(CameraState* camera /*r5*/, Toolkit* toolkit /*r10*/)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_applyScrollToBgLayers_8030158.yaml
 	thumb_local_start
@@ -21578,7 +21578,7 @@ camera_applyScrollToBgLayers_8030158:
 	strh r6, [r0,#oRenderInfo_Unk_14]
 	strh r7, [r0,#oRenderInfo_Unk_16]
 	push {r1,r4}
-	bl sub_80269E2
+	bl camera_shouldApplyBgScrollToBothLayerPairs_80269E2
 	pop {r1,r4}
 	tst r0, r0
 	bne locret_8030192

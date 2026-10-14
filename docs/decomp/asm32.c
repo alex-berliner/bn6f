@@ -20204,7 +20204,7 @@ int sub_811E0B2()
 
 
 // 0x811e0ba
-int __fastcall sub_811E0BA(int a1, int a2, int a3, int a4)
+int __fastcall battle_gfx_renderLatticeOrSpinner_811E0BA(int a1, int a2, int a3, int a4)
 {
     char *v4; // r7
     int v5; // r4
@@ -23136,7 +23136,7 @@ int __fastcall sub_8120504(int a1, int *a2, int a3)
 
 
 // 0x812053c
-signed int __fastcall sub_812053C(int a1, __int16 a2, int a3)
+signed int __fastcall battleObject_drawIndicatorOrStatusIcon_812053C(int a1, __int16 a2, int a3)
 {
     __int16 v3; // r4
     signed int result; // r0

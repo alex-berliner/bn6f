@@ -26922,7 +26922,7 @@ off_80C4610:
 	.word off_80C4614
 off_80C4614:
 	.word sub_80C461C+1
-	.word sub_80C464C+1
+	.word battleObject_updateSprite_80C464C+1
 	thumb_func_end battleObject_copyStateAndSyncSpriteFromRelated_80C458C
 
 	thumb_local_start
@@ -26946,7 +26946,7 @@ loc_80C463E:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
-	bl sub_80C464C
+	bl battleObject_updateSprite_80C464C
 locret_80C464A:
 	pop {pc}
 	thumb_func_end sub_80C461C
@@ -26954,9 +26954,9 @@ locret_80C464A:
 // symdb: Per-frame sprite/animation tick for a battle object, picking one of three update paths based on Param3 and skipping when the collision flags forbid it.
 // symdb: (r5 = oBattleObjectPtr, r10 = oToolkitPtr) -> void ; side effects: refreshes mosaic + alpha on
 // symdb: the object's sprite via the toolkit, then advances its animation
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C464C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSprite_80C464C.yaml
 	thumb_local_start
-sub_80C464C:
+battleObject_updateSprite_80C464C:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -26987,7 +26987,7 @@ loc_80C4686:
 	bl sub_801BCD0
 locret_80C468A:
 	pop {pc}
-	thumb_func_end sub_80C464C
+	thumb_func_end battleObject_updateSprite_80C464C
 
 	thumb_func_start spawn_t1_0x47_probablyGeneric_80C468C
 spawn_t1_0x47_probablyGeneric_80C468C:
@@ -85132,7 +85132,7 @@ off_80DFE54:
 	.word off_80DFE58
 off_80DFE58:
 	.word sub_80DFE64+1
-	.word sub_80DFEA8+1
+	.word battleObject_destroyOnCollision_80DFEA8+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0xd3_80DFE40
 
@@ -85175,9 +85175,9 @@ loc_80DFE8C:
 
 // symdb: Tear-down path for a battle object after collision: remove its collision data, spawn the destruction effect, and either destroy the object (if it should not persist during the destruction effect) or continue running its per-action collision handler.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DFEA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_destroyOnCollision_80DFEA8.yaml
 	thumb_local_start
-sub_80DFEA8:
+battleObject_destroyOnCollision_80DFEA8:
 	push {r4,r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -85207,7 +85207,7 @@ off_80DFEDC:
 off_80DFEE0:
 	.word sub_80DFEE8+1
 	.word loc_80DFF64+1
-	thumb_func_end sub_80DFEA8
+	thumb_func_end battleObject_destroyOnCollision_80DFEA8
 
 	thumb_local_start
 sub_80DFEE8:
@@ -86151,7 +86151,7 @@ off_80E06DC:
 battle_object_teardownAndFree_80E06E0:
 	push {lr}
 	mov r0, #0
-	bl sub_800AA92
+	bl battle_countAliveNextEntries_800AA92
 	tst r0, r0
 	bne locret_80E06F6
 	mov r0, #2
@@ -108650,7 +108650,7 @@ off_80EADCC:
 off_80EADD0:
 	.word sub_80EADDC+1
 	.word sub_80EAE28+1
-	.word sub_80EAF36+1
+	.word object_endPwrAtkAction_80EAF36+1
 	thumb_func_end sub_80EAD9C
 
 	thumb_local_start
@@ -108831,9 +108831,9 @@ locret_80EAF34:
 // symdb: Finalizes a battle object's power-attack action: commits the move to the destination panel, exits the attack state (or falls into the sub-attack handler) when the power-attack bookkeeping resolves, and may draw the next chip into hand if a charged attack finished.
 // symdb: (r5 = object, r6 = AIState, r7 = ???) -> void ; no return value consumed by callers; r5/r6/r7
 // symdb: callee-saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EAF36.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_endPwrAtkAction_80EAF36.yaml
 	thumb_local_start
-sub_80EAF36:
+object_endPwrAtkAction_80EAF36:
 	push {lr}
 	ldrb r1, [r5,#oBattleObject_CurAction]
 	cmp r1, #0x10
@@ -108895,7 +108895,7 @@ loc_80EAFBC:
 	bl sub_801171C
 locret_80EAFC0:
 	pop {pc}
-	thumb_func_end sub_80EAF36
+	thumb_func_end object_endPwrAtkAction_80EAF36
 
 	thumb_local_start
 sub_80EAFC2:
@@ -108991,7 +108991,7 @@ off_80EB074:
 	.word sub_80EB088+1
 	.word sub_80EB128+1
 	.word aiAttack_TimerTickEnd_80EB194+1
-	.word sub_80EB1C4+1
+	.word ai_attackStepRunDecrement_80EB1C4+1
 	.word sub_80EB1F8+1
 	thumb_func_end aiAttack_stepStateMachine_80EB04C
 
@@ -109155,9 +109155,9 @@ locret_80EB1C2:
 // symdb: AI tick: decrements AIAttackVars.Unk_10 countdown; on expiry resolves an outcome and either exits the attack state or advances a sub-step.
 // symdb: (r4 = AIDataPtr, r7 = AIAttackVarsPtr) -> r0 = 0..3 (success/result); side effects updates
 // symdb: AIAttackVars.Unk_10, AIData.Unk_1a; may call object_exitAttackState.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB1C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackStepRunDecrement_80EB1C4.yaml
 	thumb_local_start
-sub_80EB1C4:
+ai_attackStepRunDecrement_80EB1C4:
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -109184,7 +109184,7 @@ loc_80EB1F2:
 	bl sub_801171C
 locret_80EB1F6:
 	pop {pc}
-	thumb_func_end sub_80EB1C4
+	thumb_func_end ai_attackStepRunDecrement_80EB1C4
 
 	thumb_local_start
 sub_80EB1F8:
@@ -172369,7 +172369,7 @@ locret_8109EC2:
 sub_8109EC4:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA06
+	bl battleObject_isCurrentTurnBattleObject_800AA06
 	tst r0, r0
 	beq locret_8109EE2
 	mov r0, #4
@@ -172571,13 +172571,13 @@ off_8109FF0:
 	.word sub_810A204+1
 	thumb_func_end sub_8109FD6
 
-// symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (sub_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
+// symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (battleObject_isCurrentTurnBattleObject_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A004.yaml
 	thumb_local_start
 sub_810A004:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA06
+	bl battleObject_isCurrentTurnBattleObject_800AA06
 	tst r0, r0
 	bne loc_810A01E
 	ldrb r0, [r4,#oAIData_Version_16]
