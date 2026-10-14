@@ -1813,7 +1813,7 @@ signed int __fastcall sub_3006F8C(int a1, int a2)
 
 
 // 0x3007038
-signed int __fastcall sub_3007038(int a1, int a2)
+signed int __fastcall chatbox_renderLineSubtitleGfx_03007038(int a1, int a2)
 {
     unsigned int v2; // r6
     _DWORD *v3; // r2
@@ -2382,7 +2382,7 @@ int __fastcall sub_3007708(int a1, int a2, int a3)
 
 
 // 0x300777c
-void __fastcall sub_300777C(unsigned __int8 *a1)
+void __fastcall object_updateCollisionPanels_300777C(unsigned __int8 *a1)
 {
     int v1; // r8
     unsigned __int8 *v2; // r5

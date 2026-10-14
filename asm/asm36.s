@@ -738,7 +738,7 @@ loc_813050C:
 	ldr r4, dword_8130610 // =0x34f 
 	orr r3, r4
 	mov r5, #5
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r0, #0x15
 	mov r1, #8
 	mov r2, #2
@@ -8396,7 +8396,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	ldr r4, dword_813430C // =0x34f 
 	orr r3, r4
 	mov r5, #7
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -8490,7 +8490,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/battle_fillChipPackEntries_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:
@@ -8585,7 +8585,7 @@ battleObject_drawFolderEditScreenGfx_8134310:
 	ldr r4, dword_8134484 // =0x34f 
 	orr r3, r4
 	mov r5, #7
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2

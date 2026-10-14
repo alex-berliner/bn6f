@@ -136,7 +136,7 @@ sub_812D3E4:
 	ldr r4, dword_812D4F0 // =0x34f 
 	orr r3, r4
 	mov r5, #7
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r0, #0xe
 	mov r1, #4
 	mov r2, #2

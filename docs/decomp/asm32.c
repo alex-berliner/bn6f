@@ -11668,7 +11668,7 @@ int battleObject_dispatchBeastOutAction_8117110()
 
 
 // 0x8117130
-void __noreturn sub_8117130()
+void __noreturn battleObject_initBeastOut_8117130()
 {
     int v0; // r5
     char v1; // r0
@@ -12846,7 +12846,7 @@ int battleObject_aiStateJumpTableDispatcher_8117EC8()
 
 
 // 0x8117ee8
-void __noreturn sub_8117EE8()
+void __noreturn battleObject_beastSpInit_8117EE8()
 {
     int v0; // r5
     __int16 v1; // r1
@@ -13249,7 +13249,7 @@ int submenu_dispatchByIndex_8118344()
 
 
 // 0x8118368
-void __noreturn sub_8118368()
+void __noreturn battle_beastOut_initActor_8118368()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -18091,7 +18091,7 @@ int sub_811C11C()
 
 
 // 0x811c13c
-void __fastcall __noreturn sub_811C13C(int a1, int a2)
+void __fastcall __noreturn battleObject_initBeastOutOverworldGui_811C13C(int a1, int a2)
 {
     Battle *v2; // r5
 
@@ -21174,7 +21174,7 @@ int ho_811ED1C()
 
 // 0x811ed58
 // () -> void
-void sub_811ED58()
+void startScreen_naviSelectTick_811ED58()
 {
     int v0; // r5
     int v1; // r0
@@ -21315,7 +21315,7 @@ void __noreturn battle_state_tick_811EE98()
 
 
 // 0x811eed0
-void __noreturn sub_811EED0()
+void __noreturn pet_initNavCustMenuSubscreen_811EED0()
 {
     int v0; // r5
     int v1; // r1
@@ -23075,7 +23075,7 @@ LABEL_8:
 
 
 // 0x81204c4
-int __fastcall sub_81204C4(int a1, int a2, _DWORD *a3, int a4)
+int __fastcall battle_fillChipPackEntries_81204C4(int a1, int a2, _DWORD *a3, int a4)
 {
     int v4; // r5
     int v5; // r5

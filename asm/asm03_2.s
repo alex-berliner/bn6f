@@ -7950,7 +7950,7 @@ menuCopyBackgroundTiles_804A7C0:
 	ldr r4, dword_804A8E8 // =0x34f 
 	orr r3, r4
 	mov r5, #7
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x2c 

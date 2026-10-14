@@ -12805,7 +12805,7 @@ signed int __noreturn battleAdvanceObjectPhase_8016D08()
 
 
 // 0x8016d8c
-int sub_8016D8C()
+int battleObject_landOnDestinationPanel_8016D8C()
 {
     int v0; // r5
     int v1; // r1
@@ -13086,7 +13086,7 @@ int battleObject_dispatchPhaseByPaused_80170C4()
 
 
 // 0x80170e4
-signed int __fastcall sub_80170E4(int a1)
+signed int __fastcall battleObject_destroy_80170E4(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -13193,7 +13193,7 @@ signed int __fastcall sub_80171CC(int a1)
     int v2; // r1
     int v3; // r2
 
-    v1 = sub_80170E4(a1);
+    v1 = battleObject_destroy_80170E4(a1);
     return musicGameState_8000784(v1, v2, v3);
 }
 
@@ -15016,7 +15016,7 @@ void __fastcall object_presentCollisionData(int a1, int a2)
     }
     *(v3 + 17) = 0;
     ZeroFillByHalfword(v3 + 104, 0x40u, v5, v6);
-    sub_300777C(*(v2 + 84));
+    object_updateCollisionPanels_300777C(*(v2 + 84));
 }
 
 
@@ -15630,7 +15630,7 @@ Battle *battle_spawnHitEffectAtArm_801A42E()
 
 
 // 0x801a45c
-void __fastcall sub_801A45C(int a1)
+void __fastcall battle_handleCollisionCrouchSlideReset_801A45C(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -16850,7 +16850,7 @@ void __fastcall ai_eventuallyRunsAIAttack_801AF44(int a1)
         goto LABEL_42;
     battle_spawnHitEffectAtArm_801A42E();
     v4 = battle_spawnArmHitEffect_801A4A6();
-    sub_801A45C(v4);
+    battle_handleCollisionCrouchSlideReset_801A45C(v4);
     battle_ai_markWindBoxReady_801A506();
     applyDamageToPlayer_801ba12();
     battleObject_clearCollisionIfHitAction_801BADE();
@@ -17036,7 +17036,7 @@ int __fastcall battle_801B1C4(int a1)
 LABEL_40:
         battle_spawnHitEffectAtArm_801A42E();
         v4 = battle_spawnArmHitEffect_801A4A6();
-        sub_801A45C(v4);
+        battle_handleCollisionCrouchSlideReset_801A45C(v4);
         battleObject_clearCollisionIfHitAction_801BADE();
         if ( v2[64]
             && (v5 = v2[64], sprite_forceWhitePallete(),

@@ -1302,7 +1302,7 @@ drawBattleBackground_8123AB8:
 	ldr r4, dword_8123BB4 // =0x34f 
 	orr r3, r4
 	mov r5, #5
-	bl sub_81204C4
+	bl battle_fillChipPackEntries_81204C4
 	mov r0, #0x19
 	mov r1, #8
 	mov r2, #2
@@ -7678,7 +7678,7 @@ off_8126DBC:
 	.word off_8126DC0
 off_8126DC0:
 	.word chatbox_fadeGuardThenRunState_8126DF8+1
-	.word sub_8126E10+1
+	.word battle_cursorMoveAndDispatchNext_8126E10+1
 	.word sub_8126E88+1
 	.word sub_8126EA4+1
 	.word sub_8126EC0+1
@@ -7715,9 +7715,9 @@ loc_8126E0A:
 // symdb: (r2 = ?, r5/r10 = toolkit/BattleObject-ish context, r4/r6/r7 = callee-saved) -> r5/r8-r10/r12
 // symdb: preserved, r0/r1/r3 trashed; side effects: writes fields on the object ptr in r5, sets chatbox
 // symdb: event flag bits, plays selection sounds, tail-calls battle_dispatchNextCmd
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126E10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_cursorMoveAndDispatchNext_8126E10.yaml
 	thumb_local_start
-sub_8126E10:
+battle_cursorMoveAndDispatchNext_8126E10:
 	push {r4,lr}
 	mov r0, #JOYPAD_START | JOYPAD_B
 	bl IsButtonPressed
@@ -7772,7 +7772,7 @@ loc_8126E80:
 	bl battle_dispatchNextCmd_81272C4
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8126E10
+	thumb_func_end battle_cursorMoveAndDispatchNext_8126E10
 
 	thumb_local_start
 sub_8126E88:

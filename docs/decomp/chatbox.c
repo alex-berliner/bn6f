@@ -4146,7 +4146,7 @@ LABEL_7:
         v20 = v9;
         v21 = v10;
         v22 = 4 * *(v16 + 1);
-        sub_3007038(1, *(&cb->unk_4C + *v16) + 1);
+        chatbox_renderLineSubtitleGfx_03007038(1, *(&cb->unk_4C + *v16) + 1);
         v9 = v20;
         v10 = v21;
         v16 = v18 + 12;
@@ -4308,7 +4308,7 @@ LABEL_7:
         v22 = v10;
         v23 = v11;
         v24 = 4 * *(v18 + 1);
-        sub_3007038(1, *(v1 + *v18 + 76) + 1);
+        chatbox_renderLineSubtitleGfx_03007038(1, *(v1 + *v18 + 76) + 1);
         v10 = v22;
         v11 = v23;
         v18 = v20 + 12;
@@ -4461,7 +4461,7 @@ LABEL_7:
         v21 = v9;
         v22 = v10;
         v23 = 4 * *(v17 + 1);
-        sub_3007038(1, *(v1 + *v17 + 76) + 1);
+        chatbox_renderLineSubtitleGfx_03007038(1, *(v1 + *v17 + 76) + 1);
         v9 = v21;
         v10 = v22;
         v17 = v19 + 12;
@@ -4631,7 +4631,7 @@ LABEL_7:
         v18 = v10;
         v19 = v7;
         v20 = 4 * *(v14 + 1) + *&byte_803FCE4[4 * (*(v1 + 15) - 2)];
-        sub_3007038(1, *(v1 + 2 * *v14 + 76));
+        chatbox_renderLineSubtitleGfx_03007038(1, *(v1 + 2 * *v14 + 76));
         v10 = v18;
         v7 = v19;
         v14 = v16 + 12;
@@ -4803,7 +4803,7 @@ LABEL_7:
         v22 = v18;
         v23 = v10;
         v24 = 4 * *(v17 + 1);
-        sub_3007038(1, v20 + 1);
+        chatbox_renderLineSubtitleGfx_03007038(1, v20 + 1);
         v10 = v23;
         v17 = v21 + 12;
         v18 = v22 + 1;

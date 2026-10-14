@@ -594,7 +594,7 @@ void __noreturn drawBattleBackground_8123AB8()
     CopyBackgroundTiles(22, 8, 2, &unk_201D7F8, 2, &dword_8 + 2);
     battle_loadChipIconSlots_8120458(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D830, 45590);
     CopyBackgroundTiles(24, 8, 2, &unk_201D830, 1, &dword_8 + 2);
-    sub_81204C4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, word_201D84C, 37711);
+    battle_fillChipPackEntries_81204C4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, word_201D84C, 37711);
     CopyBackgroundTiles(25, 8, 2, word_201D84C, 2, &dword_8 + 2);
 }
 
@@ -4141,7 +4141,7 @@ int chatbox_fadeGuardThenRunState_8126DF8()
 
 
 // 0x8126e10
-int sub_8126E10()
+int battle_cursorMoveAndDispatchNext_8126E10()
 {
     _BYTE *v0; // r5
     int v1; // r10

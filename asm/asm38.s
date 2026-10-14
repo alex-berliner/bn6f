@@ -3024,9 +3024,9 @@ off_3007034:
 // symdb: (r1 = line index, r6 = packed tile range/width metadata, r8 = dest slot base?, r12 = current) ->
 // symdb: r0..r3 trashed; no return to caller (void-like leaf). Side effects: writes to EWRAM at
 // symdb: `unk_200BEA0` (per-line slot table) and ROM reads at `byte_86ACD60`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007038.yaml
-	thumb_func_start sub_3007038
-sub_3007038:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_renderLineSubtitleGfx_03007038.yaml
+	thumb_func_start chatbox_renderLineSubtitleGfx_03007038
+chatbox_renderLineSubtitleGfx_03007038:
 	push {r1,r4-r7,lr}
 	mov r7, r8
 	mov r2, r9
@@ -3090,7 +3090,7 @@ off_30070AC:
 	.word unk_200BEA0
 off_30070B0:
 	.word byte_8043CA4
-	thumb_func_end sub_3007038
+	thumb_func_end chatbox_renderLineSubtitleGfx_03007038
 
 	thumb_func_start sub_30070B4
 sub_30070B4:
@@ -4044,9 +4044,9 @@ dword_3007778:
 // symdb: Walks a battle object's collision footprint and updates the panel(s) it occupies each frame, with a second mode that scans the whole 6x3 grid.
 // symdb: (r0 = CollisionData*) -> void ; side effects: panel data and per-panel collision state mutated
 // symdb: via sub_3007868 and _object_updatePanelParameters
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_300777C.yaml
-	thumb_func_start sub_300777C
-sub_300777C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateCollisionPanels_300777C.yaml
+	thumb_func_start object_updateCollisionPanels_300777C
+object_updateCollisionPanels_300777C:
 	push {r4-r7,lr}
 	mov r3, r8
 	push {r0}
@@ -4137,7 +4137,7 @@ off_3007820:
 	.word PanelOffsetListsPointerTable
 off_3007824:
 	.word byte_8019C34
-	thumb_func_end sub_300777C
+	thumb_func_end object_updateCollisionPanels_300777C
 
 	thumb_local_start
 sub_3007828:

@@ -359,7 +359,7 @@ void sub_81304EC()
 		CopyBackgroundTiles(18, 8, 2, byte_2024500, 2, &dword_8 + 2);
 		battle_loadChipIconSlots_8120458(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024538, 41494);
 		CopyBackgroundTiles(20, 8, 2, byte_2024538, 1, &dword_8 + 2);
-		sub_81204C4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, word_2024554, 33615);
+		battle_fillChipPackEntries_81204C4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, word_2024554, 33615);
 		CopyBackgroundTiles(21, 8, 2, word_2024554, 2, &dword_8 + 2);
 	}
 	else

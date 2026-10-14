@@ -5593,7 +5593,7 @@ battleObject_runAIDispatchWithCurState_80A7D90:
 off_80A7DA8:
 	.word off_80A7DAC
 off_80A7DAC:
-	.word sub_80A7DB8+1
+	.word battleObject_beastSP_init_80A7DB8+1
 	.word battleObject_beastSP_battlerUpdate_80A7E14+1
 	.word sub_80A7E0C+1
 	thumb_func_end battleObject_runAIDispatchWithCurState_80A7D90
@@ -5601,9 +5601,9 @@ off_80A7DAC:
 // symdb: Init handler for a Beast-SP battle object: sets state to CUR_STATE_INITIALIZE (3), loads sprite 0x80/0x1c/0x4e, hooks the soul-weapon cursor camera coords into X/Y/Z, then falls through to the update dispatcher.
 // symdb: (r5 = BattleObject, r10 = toolkit) -> void ; side effects: writes BattleObject[0x8] = 3, sprite
 // symdb: data, Coords X/Y/Z, OAM priority, then tail-calls the update dispatcher.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7DB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSP_init_80A7DB8.yaml
 	thumb_local_start
-sub_80A7DB8:
+battleObject_beastSP_init_80A7DB8:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -5636,7 +5636,7 @@ sub_80A7DB8:
 	strb r0, [r5,#8]
 	bl battleObject_beastSP_battlerUpdate_80A7E14
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7DB8
+	thumb_func_end battleObject_beastSP_init_80A7DB8
 
 	thumb_local_start
 sub_80A7E0C:

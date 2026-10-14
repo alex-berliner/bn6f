@@ -3715,7 +3715,7 @@ int battleObject_runAIDispatchWithCurState_80A7D90()
 
 
 // 0x80a7db8
-void __noreturn sub_80A7DB8()
+void __noreturn battleObject_beastSP_init_80A7DB8()
 {
     int v0; // r5
     int v1; // r7

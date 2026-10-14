@@ -4457,7 +4457,7 @@ void __noreturn menuCopyBackgroundTiles_804A7C0()
     CopyBackgroundTiles(11, 4, 2, eTileIds2034714, 2, &dword_C + 2);
     battle_loadChipIconSlots_8120458(menu->unk_2E, &unk_202A3E0, eTileIds203474C, 45590);
     CopyBackgroundTiles(13, 4, 2, eTileIds203474C, 1, &dword_C + 2);
-    sub_81204C4(menu->unk_2E, &unk_202A3E0, eTileIds2034768, 37711);
+    battle_fillChipPackEntries_81204C4(menu->unk_2E, &unk_202A3E0, eTileIds2034768, 37711);
     CopyBackgroundTiles(14, 4, 2, eTileIds2034768, 2, &dword_C + 2);
     sub_8120618(menu->unk_2E, &unk_202A3E0, eTileIds20347A0, byte_200 | 0xB000);
     CopyBackgroundTiles(16, 4, 2, eTileIds20347A0, 2, &dword_C + 2);

@@ -14979,7 +14979,7 @@ int t1_0x2c_80C07BC()
 
 
 // 0x80c07dc
-int sub_80C07DC()
+int battleObject_init_80C07DC()
 {
     int v0; // r5
     int v1; // r0
@@ -15777,7 +15777,7 @@ int t1_0x2d_80C0E04()
 
 
 // 0x80c0e24
-void sub_80C0E24()
+void battleObject_spawnOrUpdateFromRelated_80C0E24()
 {
     int v0; // r5
     int v1; // r0
@@ -23518,7 +23518,7 @@ void __noreturn sub_80C5654()
 
 
 // 0x80c56b4
-char *sub_80C56B4()
+char *battleObject_tossUpdate_80C56B4()
 {
     int v0; // r5
     int v1; // r1
@@ -43938,7 +43938,7 @@ int t3_0x6e_80D2290()
 
 
 // 0x80d22b0
-void __noreturn sub_80D22B0()
+void __noreturn battleObject_initObstacle_80D22B0()
 {
     int v0; // r5
     _BYTE *v1; // r0
@@ -114675,7 +114675,7 @@ int sub_80FEE44()
 
 
 // 0x80feeb8
-int sub_80FEEB8()
+int battleObject_throwArcingMoveUpdate_80FEEB8()
 {
     int v0; // r5
     int v1; // r7
@@ -114959,7 +114959,7 @@ int sub_80FF068()
 
 
 // 0x80ff0dc
-int sub_80FF0DC()
+int battleObject_moveAlongThrow_80FF0DC()
 {
     int v0; // r5
     int v1; // r7

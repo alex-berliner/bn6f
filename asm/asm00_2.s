@@ -18063,7 +18063,7 @@ off_8016CF8:
 	.word off_8016CFC
 off_8016CFC:
 	.word battleAdvanceObjectPhase_8016D08+1
-	.word sub_8016D8C+1
+	.word battleObject_landOnDestinationPanel_8016D8C+1
 	.word battle_objectCountdownPhaseOrReset_8016E3C+1
 	thumb_func_end battleObjectStateDispatcher_8016CE8
 
@@ -18136,9 +18136,9 @@ dword_8016D88:
 // symdb: Advances a battle object toward its reserved destination panel and snaps the FuturePanelX/Y, releasing/re-reserving panels as it crosses panel boundaries.
 // symdb: in=(r5 = oBattleObject*) ; out= r4/r5/r6/r7 caller-saved, r0 not surfaced as a meaningful value
 // symdb: (write to memory only); no return to caller other than saving r4, jumps via `pop {r4,pc}`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016D8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_landOnDestinationPanel_8016D8C.yaml
 	thumb_local_start
-sub_8016D8C:
+battleObject_landOnDestinationPanel_8016D8C:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -18218,7 +18218,7 @@ loc_8016E2A:
 	bl object_updateCollisionPanels
 	pop {r4,pc}
 	.word 0xA0000, 0x60000
-	thumb_func_end sub_8016D8C
+	thumb_func_end battleObject_landOnDestinationPanel_8016D8C
 
 // symdb: Decrements a battle object's phase counter each tick and, when it expires, resets the object's flags and hands its saved state word back to the state machine.
 // symdb: void sub_8016E3C(battle object in r5); returns decremented phase in r0 (0 on the reset path),
@@ -18604,7 +18604,7 @@ byte_80170A4:
 	thumb_func_end battleObject_initNaviObject_8016F56
 
 // symdb: If the battle is not paused, dispatches to a CurPhase-specific handler for the BattleObject in r5 via a 2-entry tail-call table; otherwise returns immediately.
-// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (sub_80170E4 /
+// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (battleObject_destroy_80170E4 /
 // symdb: sub_8017122) returns (a per-phase status/result byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchPhaseByPaused_80170C4.yaml
 	thumb_func_start battleObject_dispatchPhaseByPaused_80170C4
@@ -18623,16 +18623,16 @@ locret_80170D6:
 off_80170D8:
 	.word off_80170DC
 off_80170DC:
-	.word sub_80170E4+1
+	.word battleObject_destroy_80170E4+1
 	.word battleObject_runWindRecoveryState_8017122+1
 	thumb_func_end battleObject_dispatchPhaseByPaused_80170C4
 
 // symdb: Destroy handler for a battle object — clears its collision state, charges, chips, AI/barrier, sprite flip, decrements alliance, dispatches destroy events, and sets phase to 0x4 (CUR_STATE_UPDATE).
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: many object fields overwritten;
 // symdb: calls sub-battle functions
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80170E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_destroy_80170E4.yaml
 	thumb_local_start
-sub_80170E4:
+battleObject_destroy_80170E4:
 	push {lr}
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
@@ -18655,7 +18655,7 @@ loc_8017118:
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_80170E4
+	thumb_func_end battleObject_destroy_80170E4
 
 // symdb: Per-frame update for the Wind-style recovery state of a battle object: on first entry, freezes animation and spawns a linked wind effect + sparkle effect with an 0x5A-frame timer; once the timer expires, releases any reserved panel, removes the actor from the alive list, clears alliance targeting, and destroys the object.
 // symdb: (r5 = BattleObject*, r3/r10/lr not really inputs — r3 is destroyed, r10 = toolkit) -> void ;
@@ -18750,7 +18750,7 @@ off_80171C0:
 	thumb_local_start
 sub_80171CC:
 	push {lr}
-	bl sub_80170E4
+	bl battleObject_destroy_80170E4
 	bl musicGameState_8000784 // () -> void
 	pop {pc}
 	thumb_func_end sub_80171CC
@@ -22341,7 +22341,7 @@ object_removeCollisionData:
 
 // symdb: Refreshes a battle object's collision state for the current frame while it is present in a collision, clearing one-shot hit/status data (unless time is stopped) and then running the shared collision handler.
 // symdb: void object_presentCollisionData(void) // r5 = battle object, r1 = new collision flags, r3 =
-// symdb: context for the collision handler; preserves r4-r7, returns r0-r3 as left by sub_300777C
+// symdb: context for the collision handler; preserves r4-r7, returns r0-r3 as left by object_updateCollisionPanels_300777C
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_presentCollisionData.yaml
 	thumb_func_start object_presentCollisionData
 object_presentCollisionData:
@@ -22366,7 +22366,7 @@ loc_801A034:
 	mov r1, #0x40 
 	bl ZeroFillByHalfword
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
-	ldr r3, off_801A0CC // =sub_300777C+1 
+	ldr r3, off_801A0CC // =object_updateCollisionPanels_300777C+1 
 	mov lr, pc
 	bx r3
 	pop {r4,pc}
@@ -22480,7 +22480,7 @@ object_getTableEntry_801A0BA:
 off_801A0C8:
 	.word _object_removeCollisionData+1
 off_801A0CC:
-	.word sub_300777C+1
+	.word object_updateCollisionPanels_300777C+1
 off_801A0D0:
 	.word byte_8019C7C
 	thumb_func_end object_getTableEntry_801A0BA
@@ -23101,9 +23101,9 @@ locret_801A45A:
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: sub_802E032(0x1500),
 // symdb: tableAddSaturatedByte_800AB46(...), PlaySoundEffect(SOUND_SELECT_86), sub_801E270 (window panel
 // symdb: update)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A45C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleCollisionCrouchSlideReset_801A45C.yaml
 	thumb_local_start
-sub_801A45C:
+battle_handleCollisionCrouchSlideReset_801A45C:
 	push {r4,r6,lr}
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r6, [r4,#oCollisionData_FlagsFromCollision]
@@ -23137,7 +23137,7 @@ loc_801A47C:
 	pop {r0}
 locret_801A4A4:
 	pop {r4,r6,pc}
-	thumb_func_end sub_801A45C
+	thumb_func_end battle_handleCollisionCrouchSlideReset_801A45C
 
 // symdb: If a battle object was just hit by an arm-style attack (hit type 0xF4 or 0xF7), computes where the attacker's arm connects and spawns the corresponding battle effect there.
 // symdb: void battle_spawnArmHitEffect_801A4A6(battleObject* obj /* r5 */); also reads r4/r6/r7 per the
@@ -24594,7 +24594,7 @@ ai_eventuallyRunsAIAttack_801AF44:
 loc_801AF5E:
 	bl battle_spawnHitEffectAtArm_801A42E
 	bl battle_spawnArmHitEffect_801A4A6
-	bl sub_801A45C
+	bl battle_handleCollisionCrouchSlideReset_801A45C
 	bl battle_ai_markWindBoxReady_801A506
 	bl applyDamageToPlayer_801ba12
 	bl battleObject_clearCollisionIfHitAction_801BADE
@@ -24922,7 +24922,7 @@ loc_801B21C:
 
 	bl battle_spawnHitEffectAtArm_801A42E
 	bl battle_spawnArmHitEffect_801A4A6
-	bl sub_801A45C
+	bl battle_handleCollisionCrouchSlideReset_801A45C
 	bl battleObject_clearCollisionIfHitAction_801BADE
 
 	mov r0, #oCollisionData_FinalDamage

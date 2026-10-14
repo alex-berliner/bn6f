@@ -7765,7 +7765,7 @@ loc_804320E:
 	ldr r0, [r0,r3]
 	add r6, r6, r0
 	mov r0, #1
-	ldr r3, off_80432B0 // =sub_3007038+1
+	ldr r3, off_80432B0 // =chatbox_renderLineSubtitleGfx_03007038+1
 	mov lr, pc
 	bx r3
 	pop {r0-r7}
@@ -7833,7 +7833,7 @@ loc_8043276:
 off_80432AC:
 	.word byte_803FCE4
 off_80432B0:
-	.word sub_3007038+1
+	.word chatbox_renderLineSubtitleGfx_03007038+1
 	.word 0x1CC
 off_80432B8:
 	.word 0x154
@@ -7996,7 +7996,7 @@ loc_80433C4:
 	ldr r0, [r0,r3]
 	add r6, r6, r0
 	mov r0, #1
-	ldr r3, off_80434C8 // =sub_3007038+1
+	ldr r3, off_80434C8 // =chatbox_renderLineSubtitleGfx_03007038+1
 	mov lr, pc
 	bx r3
 	pop {r0-r7}
@@ -8117,7 +8117,7 @@ loc_80434BE:
 off_80434C4:
 	.word byte_803FCE4
 off_80434C8:
-	.word sub_3007038+1
+	.word chatbox_renderLineSubtitleGfx_03007038+1
 	.word 0x1CC
 off_80434D0:
 	.word 0x154
@@ -8240,7 +8240,7 @@ loc_804359C:
 	ldr r0, [r0,r3]
 	add r6, r6, r0
 	mov r0, #1
-	ldr r3, off_8043698 // =sub_3007038+1
+	ldr r3, off_8043698 // =chatbox_renderLineSubtitleGfx_03007038+1
 	mov lr, pc
 	bx r3
 	pop {r0-r7}
@@ -8356,7 +8356,7 @@ loc_804368C:
 off_8043694:
 	.word byte_803FCE4
 off_8043698:
-	.word sub_3007038+1
+	.word chatbox_renderLineSubtitleGfx_03007038+1
 	.word 0x1CC
 off_80436A0:
 	.word 0x154
@@ -8785,7 +8785,7 @@ loc_80439A8:
 	ldr r0, [r0,r3]
 	add r6, r6, r0
 	mov r0, #1
-	ldr r3, off_8043A38 // =sub_3007038+1
+	ldr r3, off_8043A38 // =chatbox_renderLineSubtitleGfx_03007038+1
 	mov lr, pc
 	bx r3
 	pop {r0-r7}
@@ -8847,7 +8847,7 @@ loc_8043A04:
 off_8043A34:
 	.word byte_803FCE4
 off_8043A38:
-	.word sub_3007038+1
+	.word chatbox_renderLineSubtitleGfx_03007038+1
 off_8043A3C:
 	.word 0x1CC
 off_8043A40:
