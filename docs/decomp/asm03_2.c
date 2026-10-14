@@ -721,7 +721,7 @@ int battleObject_updateSpriteGfxForAll_8046854()
         if ( result & 2 )
         {
             v4 = *v0;
-            sub_804692C();
+            battleObject_updateHitboxPanelOverlap_804692C();
             v3 = v4;
             if ( !(v4 & 0x40) )
             {
@@ -815,7 +815,7 @@ int __fastcall sub_804691A(int a1)
 
 
 // 0x804692c
-signed int sub_804692C()
+signed int battleObject_updateHitboxPanelOverlap_804692C()
 {
     int v0; // r5
     int v1; // r12

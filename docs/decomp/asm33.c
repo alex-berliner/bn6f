@@ -602,26 +602,26 @@ void __noreturn drawBattleBackground_8123AB8()
 // 0x8123bc0
 int sub_8123BC0()
 {
-    return sub_8123C20(&dword_8123BDC, 1, byte_81233D8, 4);
+    return battleObject_applyAIDataToAttackTable_8123C20(&dword_8123BDC, 1, byte_81233D8, 4);
 }
 
 
 // 0x8123be0
 int sub_8123BE0()
 {
-    return sub_8123C20(&dword_8123BFC, 32, byte_81233E0, 5);
+    return battleObject_applyAIDataToAttackTable_8123C20(&dword_8123BFC, 32, byte_81233E0, 5);
 }
 
 
 // 0x8123c00
 int sub_8123C00()
 {
-    return sub_8123C20(&dword_8123C1C, 64, byte_81233E8, 6);
+    return battleObject_applyAIDataToAttackTable_8123C20(&dword_8123C1C, 64, byte_81233E8, 6);
 }
 
 
 // 0x8123c20
-int __fastcall sub_8123C20(int a1, int a2, void *a3, int a4)
+int __fastcall battleObject_applyAIDataToAttackTable_8123C20(int a1, int a2, void *a3, int a4)
 {
     int v4; // r4
     int v5; // r5

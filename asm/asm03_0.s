@@ -854,7 +854,7 @@ off_8026AA0:
 	.word off_8026AA4
 off_8026AA4:
 	// 0x00
-	.word sub_8026B04+1 // (self: * S20364C0 $r5) -> ()
+	.word battle_custMenuAnimateCursorToOK_8026B04+1 // (self: * S20364C0 $r5) -> ()
 	// 0x04
 	.word custMenuUpdateWaitSelectionState_8026CCC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x08
@@ -907,9 +907,9 @@ off_8026AA4:
 // symdb: (r5 = *S20364C0 chip-select state, r10 = *Toolkit) -> void ; side effects: BG tile map writes at
 // symdb: chip-select block, plays sound effect 0x79 (select), updates chatbox/eRenderInfo, damages player
 // symdb: HP, switches JumpOffset01 to either 0x2C or 0x4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_custMenuAnimateCursorToOK_8026B04.yaml
 	thumb_local_start
-sub_8026B04: // (self: * S20364C0 $r5) -> ()
+battle_custMenuAnimateCursorToOK_8026B04: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
 	ldrb r0, [r5,#oS20364C0_Unk_02]
@@ -1050,7 +1050,7 @@ loc_8026BE8:
 	.balign 4, 0
 off_8026BF0:
 	.word eS20364C0
-	thumb_func_end sub_8026B04
+	thumb_func_end battle_custMenuAnimateCursorToOK_8026B04
 
 // symdb: Per-frame scroll-strip update — init gate, copy zero-tile columns, advance scroll, shift camera, and notify the scroll subsystem.
 // symdb: void sub_8026BF4(struct S20364C0 *self /* r5 */, struct Toolkit *toolkit /* r10 */); /* clobbers
@@ -14408,9 +14408,9 @@ zeroFill_802CE54:
 // symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_Unk_0d), reading r0=lo16, r1=hi16, r2=upper from a global table
 // symdb: (r0 = selector 0..n, r10 = toolkit) -> r0 = u16 entry[0], r2 = u16 entry[2], r1 = u32 entry[4] ;
 // symdb: no side effects, returns through r0/r1/r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CE60.yaml
-	thumb_func_start sub_802CE60
-sub_802CE60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getStoryFlagFromBattleState_802CE60.yaml
+	thumb_func_start battle_getStoryFlagFromBattleState_802CE60
+battle_getStoryFlagFromBattleState_802CE60:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#oBattleState_Unk_0d]
@@ -14423,7 +14423,7 @@ sub_802CE60:
 	ldrh r2, [r0,#2]
 	ldrh r0, [r0]
 	mov pc, lr
-	thumb_func_end sub_802CE60
+	thumb_func_end battle_getStoryFlagFromBattleState_802CE60
 
 // symdb: Reads the 16-byte record at index r0 of the table at 0x2036720 and returns its four fields in r0-r3.
 // symdb: u32 entryIndex -> (r0 = u16 field0, r1 = u32 field1, r2 = u16 field2, r3 = u32 field3); c/v set
@@ -23626,9 +23626,9 @@ loc_8030E86:
 // symdb: (r0 = cameraStructPtr, r1 = ?, r2 = destField1, r3 = destField2, r4 = srcField1, r5 = srcField2,
 // symdb: r6 = out_ptr_or_field?, r12 = ?) -> r0 = deltaX, r1 = deltaY ; side effects: writes r8/r9
 // symdb: (return regs preserved through callees)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030E8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_computeScrollDelta_8030E8C.yaml
 	thumb_local_start
-sub_8030E8C:
+camera_computeScrollDelta_8030E8C:
 	push {lr}
 	mov r8, r6
 	sub r6, r5, r4
@@ -23689,13 +23689,13 @@ loc_8030EFE:
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_8030E8C
+	thumb_func_end camera_computeScrollDelta_8030E8C
 
 // symdb: Battle textbox update helper called from camera-scroll/textbox transition sequences; returns 0,0 on early-out, otherwise two deltas used by callers' r12 accumulator.
 // symdb: (r0 = ptr, r2 = ?, r3 = ?, r4 = ?, r5 = ?, r6 = ?) -> r0 = deltaLo (or 0), r1 = deltaHi (or 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030F04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runTextboxUpdateAndSetStateBit1_8030F04.yaml
 	thumb_local_start
-sub_8030F04:
+battle_runTextboxUpdateAndSetStateBit1_8030F04:
 	push {lr}
 	mov r8, r6
 	sub r6, r5, r4
@@ -23756,7 +23756,7 @@ loc_8030F76:
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_8030F04
+	thumb_func_end battle_runTextboxUpdateAndSetStateBit1_8030F04
 
 // symdb: Tests whether a line segment crosses a two-edge wedge (stored in an object) and returns the intersection coordinates, or (0,0) on no-cross.
 // symdb: seg_result col_segEdgeIntersect(u32 obj, u32 xA, u32 yA, u32 xB, u32 yB, u32 mode)
@@ -24177,7 +24177,7 @@ loc_8031234:
 	pop {r0-r2,r5,pc}
 	thumb_func_end sub_80311F4
 
-// symdb: Initializes a camera via sub_8031122, snaps it to its current center (halved coords from sub_8030E8C) via camera_moveByDelta_80310B0, and sets bits 0 and 1 of the caller's r12 to mark it active and ready.
+// symdb: Initializes a camera via sub_8031122, snaps it to its current center (halved coords from camera_computeScrollDelta_8030E8C) via camera_moveByDelta_80310B0, and sets bits 0 and 1 of the caller's r12 to mark it active and ready.
 // symdb: void camera_initAndActivate_803123E(u32 savedR0, u32 savedR1, u32 savedR2, u32 savedR5, u32*
 // symdb: cameraState);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_initAndActivate_803123E.yaml
@@ -24190,7 +24190,7 @@ camera_initAndActivate_803123E:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #1
-	bl sub_8030E8C
+	bl camera_computeScrollDelta_8030E8C
 	lsr r0, r0, #1
 	asr r1, r1, #1
 	bl camera_moveByDelta_80310B0
@@ -24210,7 +24210,7 @@ sub_8031264:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #1
-	bl sub_8030F04
+	bl battle_runTextboxUpdateAndSetStateBit1_8030F04
 	neg r0, r0
 	lsr r0, r0, #1
 	neg r0, r0
@@ -24296,7 +24296,7 @@ sub_8031302:
 	mov r5, #0x20 
 	sub r5, #0x20 
 	mov r6, #1
-	bl sub_8030E8C
+	bl camera_computeScrollDelta_8030E8C
 	lsr r0, r0, #1
 	neg r1, r1
 	lsr r1, r1, #1
@@ -24320,7 +24320,7 @@ sub_8031330:
 	mov r5, #0x20 
 	add r5, #0x20 
 	mov r6, #1
-	bl sub_8030F04
+	bl battle_runTextboxUpdateAndSetStateBit1_8030F04
 	neg r0, r0
 	lsr r0, r0, #1
 	neg r0, r0
@@ -24399,7 +24399,7 @@ battle_setupMessageWindow_80313B0:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #1
-	bl sub_8030E8C
+	bl camera_computeScrollDelta_8030E8C
 	mov r1, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24425,7 +24425,7 @@ battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	mov r5, #0
 	sub r5, #1
 	mov r6, #1
-	bl sub_8030F04
+	bl battle_runTextboxUpdateAndSetStateBit1_8030F04
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24495,7 +24495,7 @@ sub_8031420:
 	mov r5, #0
 	sub r5, #1
 	mov r6, #0
-	bl sub_8030F04
+	bl battle_runTextboxUpdateAndSetStateBit1_8030F04
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24521,7 +24521,7 @@ sub_8031478:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #0
-	bl sub_8030E8C
+	bl camera_computeScrollDelta_8030E8C
 	mov r1, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24540,7 +24540,7 @@ sub_8031478:
 	mov r5, #0
 	sub r5, #1
 	mov r6, #0
-	bl sub_8030F04
+	bl battle_runTextboxUpdateAndSetStateBit1_8030F04
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24605,7 +24605,7 @@ sub_8031520:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #0
-	bl sub_8030E8C
+	bl camera_computeScrollDelta_8030E8C
 	mov r1, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12

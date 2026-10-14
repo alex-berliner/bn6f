@@ -15862,7 +15862,7 @@ loc_814B542:
 	ldr r3, [r1,#4]
 	mov r1, r12
 	mov r2, r5
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 loc_814B562:
 	ldrh r1, [r4]
 	ldr r0, dword_814B594 // =0x8022 
@@ -15995,7 +15995,7 @@ loc_814B63E:
 	ldr r3, [r0,#4]
 	mov r0, r7
 	mov r1, r6
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 	ldr r0, off_814B664 // =dword_2010CC0 
 	ldr r2, [r0]
 	ldrb r0, [r2]
@@ -16704,7 +16704,7 @@ loc_814BB54:
 	add r1, sp, #4
 	ldr r3, [r0,#4]
 	mov r0, sp
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 	mov r0, #1
 	strb r0, [r5,#6]
 	strh r4, [r5]
@@ -17115,7 +17115,7 @@ loc_814BE4E:
 	ldrh r2, [r6,#6]
 	ldr r3, [r0,#4]
 	mov r0, sp
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 	ldrh r1, [r5]
 	ldr r0, dword_814BF04 // =0x8042 
 	cmp r1, r0
@@ -18923,7 +18923,7 @@ loc_814CAA8:
 	beq loc_814CAC2
 	ldrh r1, [r2,#0x12]
 	mov r0, r5
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 loc_814CAC2:
 	mov r0, #1
 	b loc_814CB0E
@@ -20430,7 +20430,7 @@ loc_814D938:
 	mov r1, r5
 	mov r2, r6
 loc_814D948:
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 	add sp, sp, #0x80
 	pop {r4-r6}
 	pop {r0}
@@ -20559,7 +20559,7 @@ loc_814DA0C:
 	mov r0, r4
 	mov r1, r5
 	mov r2, r6
-	bl sub_814DA6C
+	bl rfu_dispatchCallFromCallback_814DA6C
 	add sp, sp, #0xc0
 	pop {r4-r6}
 	pop {r1}
@@ -20623,11 +20623,11 @@ rfu_callFuncByPtr_814DA68:
 // symdb: Indirect-tail wrapper that branches to the function pointer held in r3 (typical call-via-pointer helper in the RFU packet handling path).
 // symdb: (r3 = target function) -> whatever the target returns; lr is not restored here (tail-call via
 // symdb: BX)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_dispatchCallFromCallback_814DA6C.yaml
 	thumb_local_start
-sub_814DA6C:
+rfu_dispatchCallFromCallback_814DA6C:
 	bx r3
-	thumb_func_end sub_814DA6C
+	thumb_func_end rfu_dispatchCallFromCallback_814DA6C
 
 	nop 
 	bx r4
@@ -21614,9 +21614,9 @@ sub_814E15C:
 // symdb: Advances the buster/chip-charge frame on a battle object and stores a damage-scaled value
 // symdb: (r0 = BattleObject*, r1 = ?) -> r0 = BattleObject* ; side effects: writes halfwords to
 // symdb: BattleObject+0x1c and +0x20, clobbers r1..r3 and flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E168.yaml
-	thumb_func_start sub_814E168
-sub_814E168:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateChipCharge_814E168.yaml
+	thumb_func_start battleObject_updateChipCharge_814E168
+battleObject_updateChipCharge_814E168:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	lsl r3, r3, #1
@@ -21626,14 +21626,14 @@ sub_814E168:
 	lsr r3, r3, #8
 	strh r3, [r0,#0x20]
 	bx r12
-	thumb_func_end sub_814E168
+	thumb_func_end battleObject_updateChipCharge_814E168
 
 // symdb: Tail-call wrapper around battleObject_runUpdateRoutineAndAdvancePC_814E0D0 that also sets CurPhase = CurPhase | 0x0C on the caller-supplied AIState and returns the original object pointer in r0.
 // symdb: (r0 = BattleObject*, r1 = AIState*) -> r0 = same BattleObject* ; side effects: writes CurPhase
 // symdb: (offset 0xA) and the bottom-of-AIState byte (offset 0x0) of *r1.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E17C.yaml
-	thumb_func_start sub_814E17C
-sub_814E17C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C.yaml
+	thumb_func_start battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C
+battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0xa]
@@ -21643,7 +21643,7 @@ sub_814E17C:
 	strb r3, [r1]
 	bx r12
 	.byte 0, 0
-	thumb_func_end sub_814E17C
+	thumb_func_end battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C
 
 // symdb: Pops the next entry number off an 8-bit command queue and copies (via sub_814E0B6) the three words of that table entry into the work struct's 0x24/0x28/0x2C parameter slots.
 // symdb: void loadNextQueuedParams(u32 *owner /*r0, holds table ptr at +0x30*/, u32 *work /*r1, queue

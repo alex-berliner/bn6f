@@ -1330,7 +1330,7 @@ dword_8123BBC:
 	.word 0x382E24
 	thumb_func_end drawBattleBackground_8123AB8
 
-// symdb: Thin wrapper that invokes sub_8123C20 with a fixed constant argument set; its game-level purpose is not yet identified.
+// symdb: Thin wrapper that invokes battleObject_applyAIDataToAttackTable_8123C20 with a fixed constant argument set; its game-level purpose is not yet identified.
 // symdb: void sub_8123BC0(void); /* tail-style wrapper: r0-r4 loaded with constants before call, r4-r7
 // symdb: preserved across it */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BC0.yaml
@@ -1342,7 +1342,7 @@ sub_8123BC0:
 	ldr r2, off_8123BD4 // =byte_81233D8
 	mov r3, #4
 	mov r4, #0x1c
-	bl sub_8123C20
+	bl battleObject_applyAIDataToAttackTable_8123C20
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8123BD4:
@@ -1353,7 +1353,7 @@ dword_8123BDC:
 	.word 0x302F2E
 	thumb_func_end sub_8123BC0
 
-// symdb: Nullary wrapper that invokes sub_8123C20 with a hardcoded argument set (3-byte constant 0x5A,0x58,0x56, work area byte_81233E0, and mode/geometry values 0x20/5/0x5C/0), preserving the caller's r4-r7 around the call.
+// symdb: Nullary wrapper that invokes battleObject_applyAIDataToAttackTable_8123C20 with a hardcoded argument set (3-byte constant 0x5A,0x58,0x56, work area byte_81233E0, and mode/geometry values 0x20/5/0x5C/0), preserving the caller's r4-r7 around the call.
 // symdb: void sub_8123BE0(void) /* no meaningful inputs or outputs; r4-r7 saved and restored, caller-
 // symdb: visible state unchanged */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
@@ -1366,7 +1366,7 @@ sub_8123BE0:
 	mov r3, #5
 	mov r4, #0x5c 
 	mov r6, #0
-	bl sub_8123C20
+	bl battleObject_applyAIDataToAttackTable_8123C20
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8123BF4:
@@ -1377,9 +1377,9 @@ dword_8123BFC:
 	.word 0x5A5856
 	thumb_func_end sub_8123BE0
 
-// symdb: Thin wrapper that loads a fixed argument set (three-entry color table 0x5B5957, work buffer byte_81233E8, constants 0x40/6/0x60/1) and tail-calls sub_8123C20.
+// symdb: Thin wrapper that loads a fixed argument set (three-entry color table 0x5B5957, work buffer byte_81233E8, constants 0x40/6/0x60/1) and tail-calls battleObject_applyAIDataToAttackTable_8123C20.
 // symdb: void sub_8123C20_wrapper(void) — no meaningful inputs of its own; forwards caller's r5 (and
-// symdb: whatever sub_8123C20 reads) through; returns whatever sub_8123C20 leaves in r0-r3 and flags;
+// symdb: whatever battleObject_applyAIDataToAttackTable_8123C20 reads) through; returns whatever battleObject_applyAIDataToAttackTable_8123C20 leaves in r0-r3 and flags;
 // symdb: preserves r4-r7.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123C00.yaml
 	thumb_local_start
@@ -1391,7 +1391,7 @@ sub_8123C00:
 	mov r3, #6
 	mov r4, #0x60 
 	mov r6, #1
-	bl sub_8123C20
+	bl battleObject_applyAIDataToAttackTable_8123C20
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8123C14:
@@ -1406,9 +1406,9 @@ dword_8123C1C:
 // symdb: (r0 = byte_table_ptr (tbl of u8 lookup bytes), r1 = spawn_bitmask, r2 = spawn_table_ptr, r3 =
 // symdb: bit_idx, r4 = u16 store_offset, r5 = battle_object_ptr, r10 = toolkit_ptr, lr = ret) -> void ;
 // symdb: clobbers r0/r1/r2/r3/r6/r7/lr; mutates battle object + toolkit/BG/scene state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyAIDataToAttackTable_8123C20.yaml
 	thumb_local_start
-sub_8123C20:
+battleObject_applyAIDataToAttackTable_8123C20:
 	push {lr}
 	sub sp, sp, #0x18
 	str r0, [sp]
@@ -1469,7 +1469,7 @@ loc_8123C92:
 	add sp, sp, #0x18
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8123C20
+	thumb_func_end battleObject_applyAIDataToAttackTable_8123C20
 
 	thumb_local_start
 sub_8123C98:

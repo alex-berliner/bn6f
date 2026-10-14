@@ -1211,7 +1211,7 @@ loc_8046862:
 	beq loc_80468A8
 	push {r0,r5,r7}
 	add r5, #0x20 
-	bl sub_804692C
+	bl battleObject_updateHitboxPanelOverlap_804692C
 	pop {r0,r5,r7}
 	mov r1, #0x40 
 	tst r0, r1
@@ -1331,9 +1331,9 @@ off_8046928:
 // symdb: Tests each hitbox slot in the AIData's collision hitbox table against the panel grid and updates a per-direction-overlap bitfield plus a "hitbox touches any enemy/ally panel" object flag.
 // symdb: (r5 = AIData pointer) -> r3 written back to AIData+0x03 (battle-object Flags bits 1/3), r7
 // symdb: (overlap bitmap) stored to AIData+0x28; side effects: mutates the caller's AIData
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804692C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateHitboxPanelOverlap_804692C.yaml
 	thumb_local_start
-sub_804692C:
+battleObject_updateHitboxPanelOverlap_804692C:
 	push {r5,lr}
 	mov r1, #0xc
 	ldrsh r1, [r5,r1]
@@ -1559,7 +1559,7 @@ dword_8046B98:
 	.word CompText87F2094
 	.word 0x480
 	.word 0x140
-	thumb_func_end sub_804692C
+	thumb_func_end battleObject_updateHitboxPanelOverlap_804692C
 
 // symdb: Initializes the BBS request-board work area for the selected request board entry, zeroing its 0x34-byte buffer and recording the current map group for the return trip.
 // symdb: void reqBBS_initRequestWorkArea_8046CC8(u32 slot /* r0 */, u32 toolkit /* r10 */); sets r2 =

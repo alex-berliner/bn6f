@@ -1397,7 +1397,7 @@ sub_8089A60:
 	push {r4-r7,lr}
 	bl sub_8089CB4
 	beq loc_8089AC6
-	bl sub_81427CE
+	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
 	bl ClearEventFlag // (u16 entryFlagBitfield) -> void
 	bl sub_814219C

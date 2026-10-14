@@ -21196,7 +21196,7 @@ void sub_811ED58()
         battle_spawnEStructRecordsFromTable_80465A0(byte_811EB78);
         sub_811F1B8();
     }
-    sub_811F0C8();
+    battle_updateCursorPulsate_811F0C8();
     petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
     if ( *(v0 + 16) >= 0 )
@@ -21307,7 +21307,7 @@ void __noreturn battle_state_tick_811EE98()
         if ( v2 )
             *v0 = 12;
     }
-    sub_811F0C8();
+    battle_updateCursorPulsate_811F0C8();
     petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
     CopyBackgroundTiles_onNaviSelect_811F54C();
@@ -21330,7 +21330,7 @@ void __noreturn sub_811EED0()
     if ( !v3 )
         getPETNaviSelect();
     *(v0 + 1) = 8;
-    sub_811F0C8();
+    battle_updateCursorPulsate_811F0C8();
     petCommSaveInit_811F11C();
     CopyBackgroundTiles_PET_811EF70();
 }
@@ -21433,7 +21433,7 @@ int __fastcall __noreturn drawCurrentMapName_811F08C(int a1)
 
 
 // 0x811f0c8
-int sub_811F0C8()
+int battle_updateCursorPulsate_811F0C8()
 {
     _BYTE *v0; // r5
     int result; // r0

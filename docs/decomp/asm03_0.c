@@ -559,7 +559,7 @@ int custMenuMainMaybe_8026A88()
 
 
 // 0x8026b04
-int __fastcall sub_8026B04(int a1, int a2, int a3)
+int __fastcall battle_custMenuAnimateCursorToOK_8026B04(int a1, int a2, int a3)
 {
     int v3; // r5
     _DWORD *v4; // r10
@@ -9292,7 +9292,7 @@ void __fastcall zeroFill_802CE54(int a1, int a2, int a3, int a4)
 
 
 // 0x802ce60
-int __fastcall sub_802CE60(int a1)
+int __fastcall battle_getStoryFlagFromBattleState_802CE60(int a1)
 {
     int v1; // r10
     char *v2; // r0
@@ -15114,7 +15114,7 @@ int __fastcall sub_8030E14(_DWORD *a1, int a2, int a3, int a4)
 
 
 // 0x8030e8c
-int __fastcall sub_8030E8C(_DWORD *a1, int a2, int a3, int a4)
+int __fastcall camera_computeScrollDelta_8030E8C(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -15146,7 +15146,7 @@ int __fastcall sub_8030E8C(_DWORD *a1, int a2, int a3, int a4)
 
 
 // 0x8030f04
-int __fastcall sub_8030F04(_DWORD *a1, int a2, int a3, int a4)
+int __fastcall battle_runTextboxUpdateAndSetStateBit1_8030F04(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -15390,7 +15390,7 @@ void camera_initAndActivate_803123E()
     int v3; // r1
 
     v0 = sub_8031122();
-    v2 = sub_8030E8C(v0, v1, 0, 32);
+    v2 = camera_computeScrollDelta_8030E8C(v0, v1, 0, 32);
     camera_moveByDelta_80310B0(v2 >> 1, v3 >> 1);
 }
 
@@ -15404,7 +15404,7 @@ void sub_8031264()
     unsigned int v3; // r1
 
     v0 = sub_8031122();
-    v2 = sub_8030F04(v0, v1, 0, 32);
+    v2 = battle_runTextboxUpdateAndSetStateBit1_8030F04(v0, v1, 0, 32);
     camera_moveByDelta_80310B0(-(-v2 >> 1), v3 >> 1);
 }
 
@@ -15455,7 +15455,7 @@ void sub_8031302()
     int v3; // r1
 
     v0 = sub_8031122();
-    v2 = sub_8030E8C(v0, v1, 0, 32);
+    v2 = camera_computeScrollDelta_8030E8C(v0, v1, 0, 32);
     camera_moveByDelta_80310B0(v2 >> 1, -(-v3 >> 1));
 }
 
@@ -15469,7 +15469,7 @@ void sub_8031330()
     unsigned int v3; // r1
 
     v0 = sub_8031122();
-    v2 = sub_8030F04(v0, v1, 0, 32);
+    v2 = battle_runTextboxUpdateAndSetStateBit1_8030F04(v0, v1, 0, 32);
     camera_moveByDelta_80310B0(-(-v2 >> 1), v3 >> 1);
 }
 
@@ -15509,7 +15509,7 @@ void __fastcall battle_setupMessageWindow_80313B0(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_scrollAccumulateStep_8031176(a1);
-    v3 = sub_8030E8C(v1, v2, 32, 32);
+    v3 = camera_computeScrollDelta_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
 }
 
@@ -15522,7 +15522,7 @@ void __fastcall battle_runTextboxUpdateAndSetStateBit1_80313D4(_DWORD *a1)
     int v3; // r1
 
     v1 = battleObject_applyShakeOffsetAndProject_8031136(a1);
-    sub_8030F04(v1, v2, 32, 0);
+    battle_runTextboxUpdateAndSetStateBit1_8030F04(v1, v2, 32, 0);
     camera_moveByDelta_80310B0(0, v3);
 }
 
@@ -15559,7 +15559,7 @@ void __fastcall sub_8031420(__int64 a1)
     if ( v4 != 1 )
     {
         v5 = battleObject_applyShakeOffsetAndProject_8031136(v8);
-        sub_8030F04(v5, v6, 32, 0);
+        battle_runTextboxUpdateAndSetStateBit1_8030F04(v5, v6, 32, 0);
         camera_moveByDelta_80310B0(0, v7);
     }
 }
@@ -15579,12 +15579,12 @@ void __fastcall sub_8031478(__int64 a1)
 
     v8 = a1;
     v1 = battle_scrollAccumulateStep_8031176(a1);
-    v3 = sub_8030E8C(v1, v2, 32, 32);
+    v3 = camera_computeScrollDelta_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {
         v5 = battleObject_applyShakeOffsetAndProject_8031136(v8);
-        sub_8030F04(v5, v6, 32, 0);
+        battle_runTextboxUpdateAndSetStateBit1_8030F04(v5, v6, 32, 0);
         camera_moveByDelta_80310B0(0, v7);
     }
 }
@@ -15629,7 +15629,7 @@ void __fastcall sub_8031520(__int64 a1)
 
     v8 = a1;
     v1 = battle_scrollAccumulateStep_8031176(a1);
-    v3 = sub_8030E8C(v1, v2, 32, 32);
+    v3 = camera_computeScrollDelta_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {

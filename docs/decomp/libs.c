@@ -7229,7 +7229,7 @@ LABEL_16:
     if ( v10 )
     {
         v26 = *&v4[2 * *v13 + 2];
-        result = sub_814DA6C(&v26, v3, v10, *(dword_2010CC8 + 4));
+        result = rfu_dispatchCallFromCallback_814DA6C(&v26, v3, v10, *(dword_2010CC8 + 4));
     }
     else
     {
@@ -7287,7 +7287,7 @@ int __fastcall rfu_STC_UNI_constructLLSF(unsigned __int8 a1, _BYTE **a2)
         *v2 = v9 + 1;
     }
     v11 = *&(*v3)[8];
-    return sub_814DA6C(&v11, v2, *&(*v3)[4], *(dword_2010CC8 + 4));
+    return rfu_dispatchCallFromCallback_814DA6C(&v11, v2, *&(*v3)[4], *(dword_2010CC8 + 4));
 }
 
 
@@ -7592,7 +7592,7 @@ int __fastcall rfu_STC_UNI_receive(unsigned __int8 a1, int a2, int a3)
         *(v6 + 4) = *(v3 + 6);
         v7 = *(v3 + 6);
         v10 = *&(*off_2010CA0[a1])[20];
-        return sub_814DA6C(&v9, &v10, v7, *(dword_2010CC8 + 4));
+        return rfu_dispatchCallFromCallback_814DA6C(&v9, &v10, v7, *(dword_2010CC8 + 4));
     }
     *&(*v5)[12] = 73;
     *(v6 + 2) = 1793;
@@ -7772,7 +7772,7 @@ LABEL_17:
 LABEL_15:
         v11 = *(v3 + 4);
         if ( *(v3 + 5) == ((*(v7 + v11 + 33) + 1) & 3) )
-            return sub_814DA6C(&v15, &v7[2 * v11 + 2], *(v3 + 6), *(dword_2010CC8 + 4));
+            return rfu_dispatchCallFromCallback_814DA6C(&v15, &v7[2 * v11 + 2], *(v3 + 6), *(dword_2010CC8 + 4));
         goto LABEL_17;
     }
     if ( v8 == 32833 )
@@ -8765,7 +8765,7 @@ int __fastcall STWI_init(unsigned __int8 a1)
         *(dword_2010CCC + 18) = 4;
         v9 = *(v4 + 24);
         if ( v9 )
-            return sub_814DA6C(a1, *(v4 + 18), v4, v9);
+            return rfu_dispatchCallFromCallback_814DA6C(a1, *(v4 + 18), v4, v9);
         return 1;
     }
     v11 = *v5;
@@ -9122,7 +9122,7 @@ int __fastcall sub_814D8F0(int a1, int a2, int a3)
         ++v5;
         v6 = (v6 + 2);
     }
-    return sub_814DA6C(v3, a2, v4, &v9 + 1);
+    return rfu_dispatchCallFromCallback_814DA6C(v3, a2, v4, &v9 + 1);
 }
 
 
@@ -9192,7 +9192,7 @@ int __fastcall sub_814D9C4(int a1, int a2, int a3)
         ++v5;
         v6 = (v6 + 2);
     }
-    return sub_814DA6C(v3, a2, v4, &v9 + 1);
+    return rfu_dispatchCallFromCallback_814DA6C(v3, a2, v4, &v9 + 1);
 }
 
 
@@ -9233,7 +9233,7 @@ int __fastcall rfu_callFuncByPtr_814DA68(int a1, int a2, int (__fastcall *a3)(in
 
 
 // 0x814da6c
-int __fastcall sub_814DA6C(int a1, int a2, int a3, int a4)
+int __fastcall rfu_dispatchCallFromCallback_814DA6C(int a1, int a2, int a3, int a4)
 {
     return (a4)(a1, a2, a3, a4);
 }
@@ -10075,7 +10075,7 @@ int __fastcall sub_814E15C(int a1, int a2)
 
 
 // 0x814e168
-int __fastcall sub_814E168(int a1, int a2)
+int __fastcall battleObject_updateChipCharge_814E168(int a1, int a2)
 {
     int v2; // r3
     _WORD *v3; // r0
@@ -10090,7 +10090,7 @@ int __fastcall sub_814E168(int a1, int a2)
 
 
 // 0x814e17c
-int __fastcall sub_814E17C(int a1, int a2)
+int __fastcall battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C(int a1, int a2)
 {
     _BYTE *v2; // r1
     char v3; // r3

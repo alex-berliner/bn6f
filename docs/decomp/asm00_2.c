@@ -1546,7 +1546,7 @@ int __fastcall sub_800FCFC(int a1)
 
 
 // 0x800fd0a
-int __fastcall sub_800FD0A(int a1)
+int __fastcall battle_aiActorKind_getBeastOutCostBase_800FD0A(int a1)
 {
     int v1; // r5
     _BYTE *v2; // r4
@@ -1935,7 +1935,7 @@ int battle_pickPaletteIndexForNavi_801002C()
         return 0;
     v1 = sub_8013774(2, 41);
     if ( v1 )
-        return sub_800FD0A(v1);
+        return battle_aiActorKind_getBeastOutCostBase_800FD0A(v1);
     v2 = GetAIDataUnk0x48Flag();
     if ( v2 & byte_200 )
     {
@@ -19200,11 +19200,11 @@ BOOL sub_801C984()
     int v1; // r0
     BOOL result; // r0
 
-    v1 = sub_802CE60(0);
+    v1 = battle_getStoryFlagFromBattleState_802CE60(0);
     if ( v1 )
         LOBYTE(v1) = 1;
     *(v0 + 7) = v1;
-    result = sub_802CE60(1) != 0;
+    result = battle_getStoryFlagFromBattleState_802CE60(1) != 0;
     *(v0 + 9) = result;
     return result;
 }

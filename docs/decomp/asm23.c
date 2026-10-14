@@ -686,7 +686,7 @@ signed int __fastcall sub_8089A60(int a1)
     sub_8089CB4();
     if ( !v4 )
     {
-        v5 = sub_81427CE();
+        v5 = battle_getSoulWeaponBase_81427CE();
         ClearEventFlag(v5);
         *(v2 + 16) = sub_814219C();
         sub_81422B4();

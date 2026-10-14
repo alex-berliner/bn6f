@@ -2333,9 +2333,9 @@ sub_800FCFC:
 // symdb: Compute a per-battle-actor beast-out cost multiplier (NaviStats 0x29 * mapping byte) for AI choice
 // symdb: (r5 = BattleObject) -> r0 = byte_80212BB[mapping_idx(NaviStats_0x29)] * cost_factor ; side
 // symdb: effects: clobbers r4,r7,nz,cv
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FD0A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiActorKind_getBeastOutCostBase_800FD0A.yaml
 	thumb_local_start
-sub_800FD0A:
+battle_aiActorKind_getBeastOutCostBase_800FD0A:
 	push {r4,r7,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	mov r1, #0x29 
@@ -2365,7 +2365,7 @@ loc_800FD3A:
 loc_800FD40:
 	mul r0, r7
 	pop {r4,r7,pc}
-	thumb_func_end sub_800FD0A
+	thumb_func_end battle_aiActorKind_getBeastOutCostBase_800FD0A
 
 	thumb_local_start
 sub_800FD44:
@@ -2913,7 +2913,7 @@ loc_8010092:
 	add r4, r4, r0
 	b loc_801009E
 loc_8010096:
-	bl sub_800FD0A
+	bl battle_aiActorKind_getBeastOutCostBase_800FD0A
 	pop {r4,r7,pc}
 loc_801009C:
 	mov r4, #0
@@ -28129,23 +28129,23 @@ dword_801C980:
 	.word 0xAAAA
 	thumb_func_end sub_801C906
 
-// symdb: Calls the checker at sub_802CE60 twice (with 0 and 1) and stores each answer as a 0/1 boolean into two byte fields of the struct at r5.
+// symdb: Calls the checker at battle_getStoryFlagFromBattleState_802CE60 twice (with 0 and 1) and stores each answer as a 0/1 boolean into two byte fields of the struct at r5.
 // symdb: void sub_801C984(struct *r5 /* +7, +9 written */); callers pass r5, r10 (unused here) and lr;
-// symdb: returns r0 = (sub_802CE60(1) != 0 ? 1 : raw second answer), r1-r2 and NZCV from the tail of the
+// symdb: returns r0 = (battle_getStoryFlagFromBattleState_802CE60(1) != 0 ? 1 : raw second answer), r1-r2 and NZCV from the tail of the
 // symdb: second query's compare/mov sequence
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C984.yaml
 	thumb_local_start
 sub_801C984:
 	push {lr}
 	mov r0, #0
-	bl sub_802CE60
+	bl battle_getStoryFlagFromBattleState_802CE60
 	cmp r0, #0
 	beq loc_801C992
 	mov r0, #1
 loc_801C992:
 	strb r0, [r5,#7]
 	mov r0, #1
-	bl sub_802CE60
+	bl battle_getStoryFlagFromBattleState_802CE60
 	cmp r0, #0
 	beq loc_801C9A0
 	mov r0, #1

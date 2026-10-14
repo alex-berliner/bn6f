@@ -197,7 +197,7 @@ loc_81419CC:
 	bne loc_8141A0C
 	bl sub_8141AD2
 	bne loc_8141A08
-	bl sub_8141A10
+	bl battle_beastSpEvolveStep_8141A10
 	b loc_8141A0C
 loc_8141A08:
 	bl sub_8141A70
@@ -208,9 +208,9 @@ loc_8141A0C:
 
 // symdb: Per-frame Beast+ form-evolution trigger: watches a counter on the active battle object and calls StartCutscene to play one of the Beast+ evolution scenes (params 5/6/7) when the threshold is reached.
 // symdb: (r5 = *BattleObject) -> void ; side effects: writes BattleObject fields, may call StartCutscene
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141A10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpEvolveStep_8141A10.yaml
 	thumb_local_start
-sub_8141A10:
+battle_beastSpEvolveStep_8141A10:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
@@ -264,7 +264,7 @@ locret_8141A6A:
 	.balign 4, 0
 off_8141A6C:
 	.word byte_808A128 // CutsceneScript
-	thumb_func_end sub_8141A10
+	thumb_func_end battle_beastSpEvolveStep_8141A10
 
 	thumb_local_start
 sub_8141A70:
@@ -1057,7 +1057,7 @@ battle_getBeastOutAvailability_81422BE:
 	mov r4, r0
 	cmp r4, #0xff
 	beq loc_81422F0
-	bl sub_81427CE
+	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq loc_81422F0
@@ -1153,7 +1153,7 @@ sub_8142510:
 	movflag EVENT_1650
 	mov r2, #0x18
 	bl SetEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
-	bl sub_81427CE
+	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq locret_81425FC
@@ -1260,7 +1260,7 @@ sub_8142618:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814266C
-	bl sub_81427CE
+	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq loc_814266C
@@ -1465,9 +1465,9 @@ byte_81427BC:
 
 // symdb: Returns a SoulWeapons per-row base value (0x7F0..0x7F7) indexed by the current SoulWeapons map index.
 // symdb: () -> r0 = u16 base value (0x7F0..0x7F7)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427CE.yaml
-	thumb_func_start sub_81427CE
-sub_81427CE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getSoulWeaponBase_81427CE.yaml
+	thumb_func_start battle_getSoulWeaponBase_81427CE
+battle_getSoulWeaponBase_81427CE:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex
 	ldr r1, off_81427DC // =byte_81427E0 
@@ -1480,7 +1480,7 @@ off_81427DC:
 byte_81427E0:
 	.byte 0xF0, 0x7, 0xF1, 0x7, 0xF2, 0x7, 0xF3, 0x7, 0xF4, 0x7, 0xF5
 	.byte 0x7, 0xF6, 0x7, 0xF7, 0x7, 0x0, 0x0
-	thumb_func_end sub_81427CE
+	thumb_func_end battle_getSoulWeaponBase_81427CE
 
 	thumb_local_start
 sub_81427F2:
@@ -1804,7 +1804,7 @@ sub_8142A84:
 	mov r4, #0
 	mov r6, #0
 loc_8142A8E:
-	bl sub_8142B28
+	bl battleObject_getPanelChipByIndexAtPlayerPos_8142B28
 	beq loc_8142A9C
 	bl sub_81421E8
 	beq loc_8142A9C
@@ -1882,7 +1882,7 @@ sub_8142B04:
 	mov r4, #0
 	mov r6, #0
 loc_8142B0E:
-	bl sub_8142B28
+	bl battleObject_getPanelChipByIndexAtPlayerPos_8142B28
 	beq loc_8142B1A
 	cmp r0, r7
 	bne loc_8142B1A
@@ -1900,9 +1900,9 @@ loc_8142B1A:
 // symdb: Looks up the battle object at the player's current overworld tile and returns its panel chip id (the halfword at offset 4), or 0 if no object matches
 // symdb: (r5 = pointer to a battle object state with bytes at +0 and +1 used) -> r0 = halfword from
 // symdb: matching object's +4, or 0 ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getPanelChipByIndexAtPlayerPos_8142B28.yaml
 	thumb_local_start
-sub_8142B28:
+battleObject_getPanelChipByIndexAtPlayerPos_8142B28:
 	push {r4-r7,lr}
 	mov r4, #0
 	ldrb r0, [r5]
@@ -1926,7 +1926,7 @@ loc_8142B4C:
 	.balign 4, 0
 off_8142B54:
 	.word eOverworldMapObjects
-	thumb_func_end sub_8142B28
+	thumb_func_end battleObject_getPanelChipByIndexAtPlayerPos_8142B28
 
 	thumb_func_start sub_8142B58
 sub_8142B58:

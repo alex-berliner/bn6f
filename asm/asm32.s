@@ -33416,7 +33416,7 @@ sub_811ED58:
 	bl sub_811F1B8
 	bl replaySpriteFrames_811F24C
 loc_811ED8E:
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	mov r1, #0x10
@@ -33534,7 +33534,7 @@ loc_811EE70:
 	strb r0, [r5,#4]
 loc_811EE82:
 	bl sub_811F1B8
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	pop {r4,pc}
 	.balign 4, 0
@@ -33565,7 +33565,7 @@ battle_state_tick_811EE98:
 	mov r0, #0xc
 	strb r0, [r5]
 loc_811EEB6:
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	bl CopyBackgroundTiles_onNaviSelect_811F54C // () -> void
@@ -33593,7 +33593,7 @@ sub_811EED0:
 loc_811EEF8:
 	mov r0, #8
 	strb r0, [r5,#1]
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	pop {pc}
@@ -33609,7 +33609,7 @@ naviSelect_SetupBackgrounds_811EF0C:
 	push {lr}
 	bl sub_811F1B8
 	bl sub_811F214
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	bl CopyBackgroundTiles_onNaviSelect_811F54C // () -> void
@@ -33636,7 +33636,7 @@ initPetSelectScreen_811EF28:
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
 	bl sub_811F1B8
 	bl sub_811F214
-	bl sub_811F0C8
+	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	bl CopyBackgroundTiles_PET_811EF70 // () -> void
 	bl CopyBackgroundTiles_onNaviSelect_811F54C // () -> void
@@ -33848,9 +33848,9 @@ off_811F0C4:
 // symdb: Per-frame PET/Navi-select cursor pulse: either loads a pulsing palette index into word_3001B2C from a script table, or calls sub_811F184 to advance a sub-frame animation timer and writes the new pulse state back into the r5 toolkit scratch.
 // symdb: (r5 = toolkit pointer, r10 = ?, lr = ret) -> r0 = 0x019A ; side effect: writes halfword 0x019A
 // symdb: to word_3001B2C, or writes the pair (r5+6, r5+7) returned from sub_811F184
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F0C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateCursorPulsate_811F0C8.yaml
 	thumb_local_start
-sub_811F0C8:
+battle_updateCursorPulsate_811F0C8:
 	push {lr}
 	ldrb r0, [r5,#4]
 	cmp r0, #8
@@ -33889,7 +33889,7 @@ word_811F110:
 	.hword 0x19A
 	.hword 0x6
 	.byte 0xCB, 0x4E, 0x6, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_811F0C8
+	thumb_func_end battle_updateCursorPulsate_811F0C8
 
 // symdb: Initializes the PET (Personal Terminal) communication save slots, writing default halfword values to each of 8 pointer-table slots, overriding the active state slot (unless state byte == 8), and applying the EVENT_PET_COMM_SAVE_DISABLED patch when that flag is set.
 // symdb: void sub_811F11C(u32 state_addr /* r5 */); clobbers r0,r1,r2,r3,lr,NZcv; r4 preserved

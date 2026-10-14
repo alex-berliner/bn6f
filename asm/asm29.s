@@ -2849,7 +2849,7 @@ sub_80A6A34:
 	pop {pc}
 	thumb_func_end sub_80A6A34
 
-// symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from sub_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
+// symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from battleObject_getFromListPair_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
 // symdb: (r5 = battle object, plus inherited r2/r3/r8/r9/r10/r11/r12/lr) -> no out value, void-like ;
 // symdb: side effects: clobbers r0-r4/r6/r7, sets [r5+0x14], updates sprite priority + sprite OAM
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionSubroutineDispatch_80A6A62.yaml
@@ -2860,7 +2860,7 @@ battleObject_runActionSubroutineDispatch_80A6A62:
 	mov r6, #0x24
 	mov r7, #0x3c
 loc_80A6A6A:
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0]
 	ldr r1, off_80A6AB8 // =JumpTable_80A6ABC
 	ldr r0, [r1,r0]
@@ -2871,7 +2871,7 @@ loc_80A6A6A:
 	mov r6, #0x28
 	mov r7, #0x3e
 loc_80A6A80:
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	tst r0, r0
 	beq loc_80A6A94
 	ldrh r0, [r0]
@@ -2935,7 +2935,7 @@ sub_80A6B10:
 	push {r0-r3}
 	mov r2, #1
 	strb r2, [r5,r4]
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	mov r2, #2
 	ldrsh r1, [r0,r2]
 	lsl r1, r1, #0x10
@@ -3040,7 +3040,7 @@ sub_80A6BD8:
 	push {r0-r3}
 	mov r2, #1
 	strb r2, [r5,r4]
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	mov r2, #2
 	ldrsh r1, [r0,r2]
 	lsl r1, r1, #0x10
@@ -3065,14 +3065,14 @@ sub_80A6BD8:
 	strh r0, [r5,r7]
 	mov r0, #0
 	str r0, [r5,#0x34]
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r1, [r0,#8]
 	ldr r0, [r5,#0xc]
 	ldr r2, [r5,#0x18]
 	sub r0, r2, r0
 	svc 6
 	str r0, [r5,#0x2c]
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r1, [r0,#8]
 	ldr r0, [r5,#0x10]
 	ldr r2, [r5,#0x1c]
@@ -3144,7 +3144,7 @@ sub_80A6CA4:
 	bne loc_80A6CB8
 	mov r0, #1
 	strb r0, [r5,r4]
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
 	strh r0, [r5,r7]
 loc_80A6CB8:
@@ -3167,7 +3167,7 @@ loc_80A6CD0:
 	thumb_local_start
 sub_80A6CD4:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	mov r2, #2
 	ldrsh r1, [r0,r2]
 	lsl r1, r1, #0x10
@@ -3225,7 +3225,7 @@ sub_80A6D38:
 	thumb_local_start
 sub_80A6D42:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -3239,7 +3239,7 @@ sub_80A6D42:
 sub_80A6D5C:
 	push {lr}
 	bl sprite_makeScalable
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r2, [r0,#4]
 	ldrh r1, [r0,#2]
 	mov r0, #0
@@ -3263,7 +3263,7 @@ sub_80A6D7A:
 	thumb_local_start
 sub_80A6D8A:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
 	strb r0, [r5,#5]
 	ldr r1, off_80A6DA8 // =off_80A619C
@@ -3299,7 +3299,7 @@ loc_80A6DC2:
 	thumb_local_start
 sub_80A6DC6:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
 	bl sprite_setAlpha_8002c7a
 	mov r0, #4
@@ -3343,7 +3343,7 @@ sub_80A6DFC:
 	thumb_local_start
 sub_80A6E0C:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
 	bl PlaySoundEffect
 	mov r0, #4
@@ -3355,7 +3355,7 @@ sub_80A6E0C:
 	thumb_local_start
 sub_80A6E22:
 	push {lr}
-	bl sub_80A6E78
+	bl battleObject_getFromListPair_80A6E78
 	ldrb r0, [r0,#2]
 	mov r1, r0
 	bl sprite_setMosaicSize
@@ -3414,9 +3414,9 @@ sub_80A6E70:
 
 // symdb: Reads a 32-bit entry from a [r5, r6] base+offset battle-object linked-list node and returns it in r0.
 // symdb: (r5 = linked-list node base, r6 = byte offset) -> r0 = *(u32*)(r5 + r6) ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getFromListPair_80A6E78.yaml
 	thumb_local_start
-sub_80A6E78:
+battleObject_getFromListPair_80A6E78:
 	ldr r0, [r5,r6]
 	mov pc, lr
 dword_80A6E7C:
@@ -3428,7 +3428,7 @@ byte_80A6E84:
 	.byte 0x6E, 0xFE
 byte_80A6E90:
 	.byte 0x78, 0x0, 0x26, 0xFE, 0x1A, 0x0, 0xE4, 0xFF
-	thumb_func_end sub_80A6E78
+	thumb_func_end battleObject_getFromListPair_80A6E78
 
 	thumb_func_start sub_80A6E98
 sub_80A6E98:

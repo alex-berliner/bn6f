@@ -1687,13 +1687,13 @@ void battleObject_runActionSubroutineDispatch_80A6A62()
 
     do
     {
-        v1 = sub_80A6E78();
+        v1 = battleObject_getFromListPair_80A6E78();
         (*(&JumpTable_80A6ABC + *v1))();
     }
     while ( !v2 );
     do
     {
-        v3 = sub_80A6E78();
+        v3 = battleObject_getFromListPair_80A6E78();
         if ( !v3 )
             break;
         (*(&JumpTable_80A6ABC + *v3))();
@@ -1740,7 +1740,7 @@ signed int __fastcall sub_80A6B10(int a1, int a2)
     if ( !*(v3 + v2) )
     {
         *(v3 + v2) = 1;
-        v5 = sub_80A6E78();
+        v5 = battleObject_getFromListPair_80A6E78();
         v3[6] = v5[1] << 16;
         v3[7] = v5[2] << 16;
         v3[8] = v5[3] << 16;
@@ -1808,7 +1808,7 @@ signed int __fastcall sub_80A6BD8(int a1, int a2)
     if ( !*(v3 + v2) )
     {
         *(v3 + v2) = 1;
-        v5 = sub_80A6E78();
+        v5 = battleObject_getFromListPair_80A6E78();
         v3[6] = v5[1] << 16;
         v3[7] = v5[2] << 16;
         v3[8] = v5[3] << 14;
@@ -1818,10 +1818,10 @@ signed int __fastcall sub_80A6BD8(int a1, int a2)
         v3[14] = 0x4000;
         *(v3 + v4) = 0x4000 - v6;
         v3[13] = 0;
-        v11 = *(sub_80A6E78() + 8);
+        v11 = *(battleObject_getFromListPair_80A6E78() + 8);
         __asm { SVC         6 }
         v3[11] = v3[6] - v3[3];
-        v12 = *(sub_80A6E78() + 8);
+        v12 = *(battleObject_getFromListPair_80A6E78() + 8);
         __asm { SVC         6 }
         v3[12] = v3[7] - v3[4];
     }
@@ -1866,7 +1866,7 @@ signed int __fastcall sub_80A6CA4(int a1, int a2)
     if ( !*(v3 + v2) )
     {
         *(v3 + v2) = 1;
-        *(v3 + v4) = *(sub_80A6E78() + 2);
+        *(v3 + v4) = *(battleObject_getFromListPair_80A6E78() + 2);
     }
     v5 = *(v3 + v4);
     v6 = __OFSUB__(v5--, 1);
@@ -1886,7 +1886,7 @@ signed int __fastcall sub_80A6CD4(int a1)
     _DWORD *v1; // r5
     signed __int16 *v2; // r0
 
-    v2 = sub_80A6E78();
+    v2 = battleObject_getFromListPair_80A6E78();
     v1[3] = v2[1] << 16;
     v1[4] = v2[2] << 16;
     v1[5] = v2[3] << 16;
@@ -1928,7 +1928,7 @@ signed int __fastcall __noreturn sub_80A6D42(int a1)
     Battle *v1; // r5
     int v2; // r0
 
-    v2 = sub_80A6E78();
+    v2 = battleObject_getFromListPair_80A6E78();
     sprite_setAnimation(v1, *(v2 + 2));
     sprite_loadAnimationData(v1);
     sub_80A6E70(4);
@@ -1942,7 +1942,7 @@ signed int sub_80A6D5C()
     int v0; // r0
 
     sprite_makeScalable();
-    v0 = sub_80A6E78();
+    v0 = battleObject_getFromListPair_80A6E78();
     sprite_setScaleParameters(0, *(v0 + 2), *(v0 + 4));
     sub_80A6E70(6);
     return 1;
@@ -1964,7 +1964,7 @@ signed int __fastcall sub_80A6D8A(int a1)
     int v1; // r5
     int v2; // r0
 
-    v2 = *(sub_80A6E78() + 2);
+    v2 = *(battleObject_getFromListPair_80A6E78() + 2);
     *(v1 + 5) = v2;
     *(v1 + 40) = *(&off_80A619C + v2);
     sub_80A6E70(4);
@@ -1992,7 +1992,7 @@ signed int __fastcall sub_80A6DC6(int a1)
 {
     int v1; // r0
 
-    v1 = sub_80A6E78();
+    v1 = battleObject_getFromListPair_80A6E78();
     sub_8002C7A(*(v1 + 2));
     sub_80A6E70(4);
     return 1;
@@ -2037,7 +2037,7 @@ signed int __fastcall sub_80A6E0C(int a1)
     int v2; // r1
     int v3; // r2
 
-    v1 = sub_80A6E78();
+    v1 = battleObject_getFromListPair_80A6E78();
     PlaySoundEffect(*(v1 + 2), v2, v3);
     sub_80A6E70(4);
     return 1;
@@ -2049,7 +2049,7 @@ signed int __fastcall sub_80A6E22(int a1)
 {
     int v1; // r0
 
-    v1 = sub_80A6E78();
+    v1 = battleObject_getFromListPair_80A6E78();
     sprite_setMosaicSize(*(v1 + 2), *(v1 + 2));
     sub_80A6E70(4);
     return 1;
@@ -2111,7 +2111,7 @@ int __fastcall sub_80A6E70(int a1)
 
 
 // 0x80a6e78
-int sub_80A6E78()
+int battleObject_getFromListPair_80A6E78()
 {
     int v0; // r5
     int v1; // r6

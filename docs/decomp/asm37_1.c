@@ -148,7 +148,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
                         {
                             v6 = sub_8141AD2();
                             if ( v1 )
-                                sub_8141A10(v6, v7, v8, v9);
+                                battle_beastSpEvolveStep_8141A10(v6, v7, v8, v9);
                             else
                                 sub_8141A70();
                         }
@@ -162,7 +162,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
 
 
 // 0x8141a10
-int __fastcall sub_8141A10(int a1, int a2, int a3, int a4)
+int __fastcall battle_beastSpEvolveStep_8141A10(int a1, int a2, int a3, int a4)
 {
     _BYTE *v4; // r5
     int result; // r0
@@ -703,7 +703,7 @@ BOOL battle_getBeastOutAvailability_81422BE()
         v1 = GetSoulWeaponsMapIndex();
         if ( v1 != 255 )
         {
-            v2 = sub_81427CE();
+            v2 = battle_getSoulWeaponBase_81427CE();
             TestEventFlag(v2);
             if ( !v0 )
             {
@@ -736,7 +736,7 @@ int sub_8142510()
     int v13; // r3
 
     SetEventFlagRangeFromImmediate(22, 80, 24);
-    v1 = sub_81427CE();
+    v1 = battle_getSoulWeaponBase_81427CE();
     result = TestEventFlag(v1);
     if ( !v3 )
     {
@@ -806,7 +806,7 @@ unsigned int sub_8142618()
     int v9; // r3
 
     check_playerCanAdvanceForward_8034C36();
-    if ( v2 || (v1 = sub_81427CE(), TestEventFlag(v1), v2) )
+    if ( v2 || (v1 = battle_getSoulWeaponBase_81427CE(), TestEventFlag(v1), v2) )
     {
 LABEL_13:
         ClearEventFlagFromImmediate(7, 66);
@@ -929,7 +929,7 @@ int __fastcall sub_81427A4(int a1)
 
 
 // 0x81427ce
-int sub_81427CE()
+int battle_getSoulWeaponBase_81427CE()
 {
     return *&byte_81427E0[2 * GetSoulWeaponsMapIndex()];
 }
@@ -1113,7 +1113,7 @@ int sub_8142A84()
     v2 = 0;
     do
     {
-        v3 = sub_8142B28();
+        v3 = battleObject_getPanelChipByIndexAtPlayerPos_8142B28();
         if ( !v4 )
         {
             sub_81421E8(v3);
@@ -1195,7 +1195,7 @@ int __fastcall sub_8142B04(int a1)
     v4 = 0;
     do
     {
-        v5 = sub_8142B28();
+        v5 = battleObject_getPanelChipByIndexAtPlayerPos_8142B28();
         if ( !v6 && v5 == v1 )
             ++v4;
         v2 += 30;
@@ -1207,7 +1207,7 @@ int __fastcall sub_8142B04(int a1)
 
 
 // 0x8142b28
-int sub_8142B28()
+int battleObject_getPanelChipByIndexAtPlayerPos_8142B28()
 {
     int v0; // r5
     int v1; // r4
