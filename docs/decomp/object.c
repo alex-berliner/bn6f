@@ -142,9 +142,9 @@ int sub_800BE2C()
     else
     {
         if ( battle_networkInvert(*(v0 + 22) ^ 1) )
-            (sub_801E792)(80, 0, 0, 186);
+            (battle_dispatchKindEffect_801E792)(80, 0, 0, 186);
         else
-            (sub_801E792)(76, 0, 0, 186);
+            (battle_dispatchKindEffect_801E792)(76, 0, 0, 186);
         PlaySoundEffect(371, v1, v2);
         result = 4;
         *(v0 + 11) = 4;

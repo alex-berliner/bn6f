@@ -259,12 +259,12 @@ loc_800B9F8:
 	bne loc_800BA12
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	b loc_800BA1A
 loc_800BA12:
 	mov r3, r0
 	mov r0, #0x50
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_800BA1A:
 	mov r0, #0x74
 	add r0, #0xff
@@ -368,12 +368,12 @@ loc_800BAD8:
 	bne loc_800BAF2
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	b loc_800BAFA
 loc_800BAF2:
 	mov r3, r0
 	mov r0, #0x50
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_800BAFA:
 	mov r0, #0x74
 	add r0, #0xff
@@ -513,14 +513,14 @@ loc_800BBEC:
 loc_800BC08:
 	mov r3, r0
 	mov r0, #0x4c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	b loc_800BC1E
 loc_800BC12:
 	ldr r3, off_800BF78 // =0x171
 	mov r1, #0
 	mov r2, #0
 	mov r0, #0x50
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_800BC1E:
 	mov r0, #0x74
 	add r0, #0xff
@@ -838,12 +838,12 @@ sub_800BE2C:
 	bne loc_800BE56
 	mov r3, r0
 	mov r0, #0x4c 
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	b loc_800BE5E
 loc_800BE56:
 	mov r3, r0
 	mov r0, #0x50 
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_800BE5E:
 	mov r0, #0x74 
 	add r0, #0xff

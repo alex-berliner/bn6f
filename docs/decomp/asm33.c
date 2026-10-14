@@ -586,13 +586,13 @@ void __noreturn drawBattleBackground_8123AB8()
     int v1; // r7
 
     v1 = v0;
-    sub_81200EC(*(v0 + *(&dword_8123BBC + *(v0 + 12))), &unk_201D220, &unk_201D6E0);
+    battle_drawChipSelectFighterNames_81200EC(*(v0 + *(&dword_8123BBC + *(v0 + 12))), &unk_201D220, &unk_201D6E0);
     CopyBackgroundTiles(14, 8, 2, &unk_201D6E0, 8, &dword_8 + 2);
     battle_loadFolderChipGfx_8120390(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D7C0, byte_8123394);
     CopyBackgroundTiles(12, 8, 2, &unk_201D7C0, 2, &dword_8 + 2);
     sub_81203E4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D7F8, &dword_35C | 0xA000);
     CopyBackgroundTiles(22, 8, 2, &unk_201D7F8, 2, &dword_8 + 2);
-    sub_8120458(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D830, 45590);
+    battle_loadChipIconSlots_8120458(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, &unk_201D830, 45590);
     CopyBackgroundTiles(24, 8, 2, &unk_201D830, 1, &dword_8 + 2);
     sub_81204C4(*(v1 + *(&dword_8123BBC + *(v1 + 12))), &unk_201D220, word_201D84C, 37711);
     CopyBackgroundTiles(25, 8, 2, word_201D84C, 2, &dword_8 + 2);

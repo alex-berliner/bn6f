@@ -1211,7 +1211,7 @@ drawBattleBackground_8123AB8:
 	ldr r2, off_8123B8C // =unk_201D6E0 
 	mov r3, #0xb
 	mov r5, #5
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	// j
 	mov r0, #0xe
 	// i
@@ -1271,7 +1271,7 @@ drawBattleBackground_8123AB8:
 	ldr r4, dword_8123BAC // =0x216 
 	orr r3, r4
 	mov r5, #5
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r0, #0x18
 	mov r1, #8
 	mov r2, #2

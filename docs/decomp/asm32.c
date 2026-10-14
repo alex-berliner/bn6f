@@ -13814,7 +13814,7 @@ int sub_811891C()
     }
     else
     {
-        sub_813B9B4(*(v1 + 40), *(v1 + 44));
+        battle_checkItemFlagFor_813B9B4(*(v1 + 40), *(v1 + 44));
         if ( !v3 )
             v4 = 1;
     }
@@ -14173,7 +14173,7 @@ int sub_8118C8C()
     chatbox_mask_eFlags2009F38(128);
     if ( v3 )
         v2 = 67;
-    v4 = sub_813B9B4(*(v1 + 40), *(v1 + 44));
+    v4 = battle_checkItemFlagFor_813B9B4(*(v1 + 40), *(v1 + 44));
     if ( v3 )
         v2 = 1;
     *v0 = v2;
@@ -18555,7 +18555,7 @@ int sub_811CAE4()
 
 
 // 0x811caec
-signed int sub_811CAEC()
+signed int battleObject_runFloatingAnim_811CAEC()
 {
     int v0; // r5
     unsigned __int16 *v1; // r0
@@ -22661,7 +22661,7 @@ signed int __fastcall battle_fieldLockDispatch_8120018(signed int a1, int a2, in
 
 
 // 0x81200ec
-int __fastcall sub_81200EC(int a1, int a2, int a3)
+int __fastcall battle_drawChipSelectFighterNames_81200EC(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r5
@@ -23018,7 +23018,7 @@ int __fastcall sub_81203E4(int a1, int a2, int a3, int a4)
 
 
 // 0x8120458
-int __fastcall sub_8120458(int a1, int a2, int a3, int a4)
+int __fastcall battle_loadChipIconSlots_8120458(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // ST00_4

@@ -2654,12 +2654,12 @@ unsigned int owPlayer_update_809D348()
         }
     }
     owPlayer_checkJumpLandingAccumulateFacing_809DFC0();
-    return sub_809DE98();
+    return owPlayer_resetSneakRunAndCheckBButton_809DE98();
 }
 
 
 // 0x809d470
-int sub_809D470()
+int ow_player_perFrameSubstateDispatcher_809D470()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -2692,7 +2692,7 @@ int sub_809D470()
 
 
 // 0x809d4dc
-int sub_809D4DC()
+int owPlayer_tickPerFrame_809D4DC()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -2888,7 +2888,7 @@ signed int calledWhenUsingSlipRun_809D6BC()
 
 
 // 0x809d730
-signed int sub_809D730()
+signed int owPlayer_ApplyKnockbackOrSnapToTarget_809D730()
 {
     int v0; // r5
     signed int result; // r0
@@ -3428,7 +3428,7 @@ int sub_809DE60()
 
 
 // 0x809de98
-unsigned int sub_809DE98()
+unsigned int owPlayer_resetSneakRunAndCheckBButton_809DE98()
 {
     int v0; // r10
     char v1; // zf

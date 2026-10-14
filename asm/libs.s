@@ -726,9 +726,9 @@ off_81445F4:
 // symdb: link-cable SIO control tick (EWRAM at eTimerEnable200F460) polled each frame by the global handler
 // symdb: () -> ; side effects: mutates EWRAM bytes eTimerEnable200F450/454/460..474 and (via
 // symdb: libSIOControlStart) the SIO hardware
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81445F8.yaml
-	thumb_func_start sub_81445F8
-sub_81445F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/libSIOControlPoll_81445F8.yaml
+	thumb_func_start libSIOControlPoll_81445F8
+libSIOControlPoll_81445F8:
 	push {r4,lr}
 	ldr r4, off_8144620 // =eTimerEnable200F460 
 	ldrb r3, [r4]
@@ -816,7 +816,7 @@ loc_8144690:
 	.balign 4, 0x00
 off_8144698:
 	.word byte_200F450
-	thumb_func_end sub_81445F8
+	thumb_func_end libSIOControlPoll_81445F8
 
 	thumb_func_start libSIO814469C
 libSIO814469C:
@@ -22173,9 +22173,9 @@ dword_814E4D8:
 // symdb: Stops all currently-playing sound channels in the sound bank when bit 0x80 of its flags is set
 // symdb: (r0 = ignored, r1 = sound bank struct ptr) -> r0 = saved LR (tail-call-style return); side
 // symdb: effects: clears each channel's state, calls m4a_mplay_trackEndJumpStub per channel
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E4DC.yaml
-	thumb_func_start sub_814E4DC
-sub_814E4DC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_stopAllChannelsInBank_814E4DC.yaml
+	thumb_func_start sound_stopAllChannelsInBank_814E4DC
+sound_stopAllChannelsInBank_814E4DC:
 	push {r4-r6,lr}
 	mov r5, r1
 	ldrb r1, [r5]
@@ -22220,7 +22220,7 @@ loc_814E51E:
 	.balign 4, 0
 off_814E524:
 	.word byte_3007FF0
-	thumb_func_end sub_814E4DC
+	thumb_func_end sound_stopAllChannelsInBank_814E4DC
 
 // symdb: Crossfades two color/fade channels of an object toward a source object's values, driven by a signed fade-position byte that makes one channel rise while the other falls.
 // symdb: void sprite_crossfadeColorChannels_814E528(dst /*r4*/, src /*r5*/); // returns r2 = sign-
@@ -23292,7 +23292,7 @@ cgbSoundInit_814EB84:
 	str r0, [r1,#0x74] // (off_30055E4 - 0x3005570)
 	ldr r0, off_814EC78 // =SampleFreqSet_814EDC0+1 
 	str r0, [r1,#0x78] // (off_30055E8 - 0x3005570)
-	ldr r0, off_814EC7C // =sub_814E4DC+1 
+	ldr r0, off_814EC7C // =sound_stopAllChannelsInBank_814E4DC+1 
 	str r0, [r1,#0x7c] // (off_30055EC - 0x3005570)
 	mov r2, r1
 	add r2, #0x80
@@ -23370,7 +23370,7 @@ off_814EC74:
 off_814EC78:
 	.word SampleFreqSet_814EDC0+1
 off_814EC7C:
-	.word sub_814E4DC+1
+	.word sound_stopAllChannelsInBank_814E4DC+1
 off_814EC80:
 	.word sub_814F228+1
 off_814EC84:
@@ -24114,7 +24114,7 @@ loc_814F14A:
 loop_814F178:
 	mov r0, r5
 	mov r1, r4
-	bl sub_814E4DC
+	bl sound_stopAllChannelsInBank_814E4DC
 
 	mov r0, #0xc0
 	strb r0, [r4]
@@ -24153,7 +24153,7 @@ break_814F1A4:
 loc_814F1AE:
 	mov r0, r5
 	mov r1, r4
-	bl sub_814E4DC
+	bl sound_stopAllChannelsInBank_814E4DC
 
 	mov r0, r8
 	strb r0, [r4]
@@ -24209,7 +24209,7 @@ sub_814F1E8:
 loc_814F20A:
 	mov r0, r6
 	mov r1, r5
-	bl sub_814E4DC
+	bl sound_stopAllChannelsInBank_814E4DC
 	sub r4, #1
 	add r5, #0x50 
 	cmp r4, #0
@@ -24277,7 +24277,7 @@ loc_814F26C:
 loc_814F282:
 	mov r0, r6
 	mov r1, r4
-	bl sub_814E4DC
+	bl sound_stopAllChannelsInBank_814E4DC
 	ldrh r0, [r6,#0x28]
 	mov r1, #1
 	and r1, r0

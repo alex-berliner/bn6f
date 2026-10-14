@@ -745,7 +745,7 @@ signed int __noreturn sub_80B88F0()
 
 
 // 0x80b8932
-void sub_80B8932()
+void battleObject_syncSpriteFromRelatedObject_80B8932()
 {
     int v0; // r5
     int v1; // r6
@@ -92703,7 +92703,7 @@ void nullsub_104()
 
 
 // 0x80f0608
-int sub_80F0608()
+int battleObject_aiHandleChipsAndFlinchZ_80F0608()
 {
     int v0; // r5
     int v1; // r0

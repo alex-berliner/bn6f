@@ -6539,7 +6539,7 @@ signed int battleObject_playerAIUpdate_8012E74()
         result = battle_isPaused();
         if ( v3 )
         {
-            sub_8012EA0();
+            battle_runPwrAtkRelated_8012EA0();
             result = battle_ai_updatePowerAttackCharge_8012EBC();
         }
     }
@@ -6548,7 +6548,7 @@ signed int battleObject_playerAIUpdate_8012E74()
 
 
 // 0x8012ea0
-int sub_8012EA0()
+int battle_runPwrAtkRelated_8012EA0()
 {
     return pwrAtkRelated_readsFromJoypad_8012FC8();
 }
@@ -7692,7 +7692,7 @@ int sub_80139C4()
 
 
 // 0x80139f6
-int __fastcall sub_80139F6(char *a1)
+int __fastcall battleObject_applyStatusEffectOnTurnEnd_80139F6(char *a1)
 {
     int *v1; // r5
     int v2; // r4
@@ -8628,7 +8628,7 @@ int __fastcall battle_applySelfDamageFromBattleEffect_80142C2(int a1)
 
 
 // 0x80142dc
-int __fastcall sub_80142DC(int a1)
+int __fastcall battleObject_checkAngerTrigger_80142DC(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -16569,7 +16569,7 @@ int battleObject_processCollisionResultsForPlayer_801AC6C()
                 hiveBlockHappensHere_802CEF4();
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
-                sub_80139F6(v4);
+                battleObject_applyStatusEffectOnTurnEnd_80139F6(v4);
                 sub_801AEB0();
                 battle_applyFlattenHitStatus_800EB26();
                 v5 = handlePanelDamage_8013F1E();
@@ -18787,7 +18787,7 @@ int __noreturn sub_801C416()
 
 
 // 0x801c470
-int sub_801C470()
+int battleObject_tickCustomGauge_801C470()
 {
     int v0; // r5
     int result; // r0
@@ -18951,7 +18951,7 @@ signed int sub_801C5F4()
 
 
 // 0x801c640
-int __fastcall sub_801C640(int a1)
+int __fastcall battle_drawOrderBGSelectionArrows_801C640(int a1)
 {
     int v1; // r5
     int result; // r0

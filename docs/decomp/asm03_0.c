@@ -7541,7 +7541,7 @@ int sub_802B7A0()
             v2 = 36;
             if ( !*(v0 + 7) )
                 v2 = 52;
-            (sub_801E792)(v2);
+            (battle_dispatchKindEffect_801E792)(v2);
             *(v0 + 1) = 4;
             *(v0 + 2) = 0;
             result = 0;
@@ -9076,7 +9076,7 @@ int sub_802CBCC()
         v3 = *(v0 + 8);
         v2 = *(v0 + 10);
     }
-    (sub_801E792)(40, v2, v3);
+    (battle_dispatchKindEffect_801E792)(40, v2, v3);
     *(v0 + 1) = 4;
     result = 0;
     *(v0 + 2) = 0;

@@ -367,11 +367,11 @@ loc_809D444:
 	str r0, [r7,#0x28]
 loc_809D446:
 	bl owPlayer_checkJumpLandingAccumulateFacing_809DFC0
-	bl sub_809DE98
+	bl owPlayer_resetSneakRunAndCheckBButton_809DE98
 	pop {pc}
 off_809D450:
-	.word sub_809D470+1
-	.word sub_809D4DC+1
+	.word ow_player_perFrameSubstateDispatcher_809D470+1
+	.word owPlayer_tickPerFrame_809D4DC+1
 	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
@@ -385,9 +385,9 @@ off_809D468:
 // symdb: (r5 = overworld player object ptr, r10 = toolkit ptr) -> void ; side effects: overwrites
 // symdb: r5+oOWPlayerObject_JumptableIndex_09 (or its pending slot at +0x0b), may write +0x0a, +0x09,
 // symdb: +0x14 fields on the player; no caller-visible return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D470.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_player_perFrameSubstateDispatcher_809D470.yaml
 	thumb_local_start
-sub_809D470:
+ow_player_perFrameSubstateDispatcher_809D470:
 	push {r4,lr}
 	bl owMapObject_handlePlayerInteract_809D9E0
 	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
@@ -436,7 +436,7 @@ loc_809D4C2:
 locret_809D4D6:
 	pop {r4,pc}
 	.word 0x2000AA0
-	thumb_func_end sub_809D470
+	thumb_func_end ow_player_perFrameSubstateDispatcher_809D470
 
 // symdb: Overworld player per-frame dispatcher: handles the player-object interaction probe first; otherwise picks the next player jumptable index based on per-frame checks (gate/tile interaction, door advance, advance-forward event, bit-0x10 state).
 // symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr, lr) -> r0 = result of the chosen sub-check (zero/non-
@@ -444,9 +444,9 @@ locret_809D4D6:
 // symdb: and oOWPlayerObject_JumptableIndex_09 (or its pending slot) via
 // symdb: owPlayer_setJumptableIndex09AndOthers_809e004; reads oOWPlayerObject_FacingDirection and
 // symdb: oOWPlayerObject_Unk_11.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D4DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_tickPerFrame_809D4DC.yaml
 	thumb_local_start
-sub_809D4DC:
+owPlayer_tickPerFrame_809D4DC:
 	push {lr}
 	bl owMapObject_handlePlayerInteract_809D9E0
 	tst r0, r0
@@ -510,7 +510,7 @@ off_809D554:
 	.word sub_809D5C4+1
 off_809D55C:
 	.word off_809D554
-	thumb_func_end sub_809D4DC
+	thumb_func_end owPlayer_tickPerFrame_809D4DC
 
 	thumb_local_start
 sub_809D560:
@@ -687,7 +687,7 @@ locret_809D6AE:
 	.balign 4, 0
 off_809D6B0:
 	.word calledWhenUsingSlipRun_809D6BC+1
-	.word sub_809D730+1
+	.word owPlayer_ApplyKnockbackOrSnapToTarget_809D730+1
 off_809D6B8:
 	.word off_809D6B0
 	thumb_func_end owPlayer_runSlipRunOrEngine_0809D61A
@@ -757,9 +757,9 @@ off_809D728:
 // symdb: Overworld player per-frame move handler: if the countdown has not finished, integrates the cached X/Y velocities into the player's coordinates and marks the per-tick state as 2; otherwise snaps the player onto the precomputed target X/Y/Z.
 // symdb: (r5 = OWPlayerObject*) -> ; side effects: writes Unk_38/Unk_3c delta into X/Y (and sets Unk_13 =
 // symdb: 2), or copies NextX/Y/Z into X/Y/Z of the OW player object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D730.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_ApplyKnockbackOrSnapToTarget_809D730.yaml
 	thumb_local_start
-sub_809D730:
+owPlayer_ApplyKnockbackOrSnapToTarget_809D730:
 	push {lr}
 	bl owPlayer_TickCountdownOrWait_809DDCC
 	tst r0, r0
@@ -783,7 +783,7 @@ loc_809D750:
 	str r1, [r5,#oOWPlayerObject_Y]
 	str r2, [r5,#oOWPlayerObject_Z]
 	pop {pc}
-	thumb_func_end sub_809D730
+	thumb_func_end owPlayer_ApplyKnockbackOrSnapToTarget_809D730
 
 // symdb: Dispatches one overworld player action via a jump table, consumes any pending animation requested by the handler, and initiates a scene transition if needed.
 // symdb: void ow_player_processAction(u32 player_obj /*r5*/, u32 toolkit /*r10*/) -> r0, nz, c, v
@@ -982,8 +982,8 @@ off_809D8A8:
 off_809D8AC:
 	.word eStruct200ace0
 off_809D8B0:
-	.word sub_809D470+1
-	.word sub_809D4DC+1
+	.word ow_player_perFrameSubstateDispatcher_809D470+1
+	.word owPlayer_tickPerFrame_809D4DC+1
 	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
@@ -1751,9 +1751,9 @@ off_809DE90:
 
 // symdb: Overworld player helper that clears SlipRun/related story flags when a guard story flag is set, otherwise only clears the SlipRun cancel flag unless B is held
 // symdb: () -> ; side effects: clears story/event flags via ClearEventFlagFromImmediate
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DE98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_resetSneakRunAndCheckBButton_809DE98.yaml
 	thumb_local_start
-sub_809DE98:
+owPlayer_resetSneakRunAndCheckBButton_809DE98:
 	push {lr}
 	movflag EVENT_1716
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1776,7 +1776,7 @@ loc_809DEBE:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 locret_809DED2:
 	pop {pc}
-	thumb_func_end sub_809DE98
+	thumb_func_end owPlayer_resetSneakRunAndCheckBButton_809DE98
 
 // symdb: Overworld dispatcher that suppresses a pending tile-interaction request while the PET menu's data flag is set or a cutscene is running, otherwise hands it off to the tile-interaction handler.
 // symdb: void ow_gatePendingTileInteraction_809DED4(void); // in: r5 = overworld player object pointer;

@@ -962,7 +962,7 @@ off_80B88E0:
 	.word off_80B88E4
 off_80B88E4:
 	.word sub_80B88F0+1
-	.word sub_80B8932+1
+	.word battleObject_syncSpriteFromRelatedObject_80B8932+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x3_80B88D0
 
@@ -996,9 +996,9 @@ sub_80B88F0:
 
 // symdb: Syncs the battle object's sprite state from its RelatedObject1Ptr (copy pose/sprite-fields, palette, alpha, flip) and advances its animation when not time-stopped.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0..r7/lr clobbered, no meaningful return to caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8932.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_syncSpriteFromRelatedObject_80B8932.yaml
 	thumb_local_start
-sub_80B8932:
+battleObject_syncSpriteFromRelatedObject_80B8932:
 	push {r4,r6,lr}
 	bl object_getFrontDirection // () -> int
 	mov r6, r0
@@ -1071,7 +1071,7 @@ loc_80B89B4:
 	bl object_freeMemory
 locret_80B89DA:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80B8932
+	thumb_func_end battleObject_syncSpriteFromRelatedObject_80B8932
 
 	thumb_func_start sub_80B89DC
 sub_80B89DC:
@@ -108446,8 +108446,8 @@ off_80EA8D8:
 	// 0x60
 	.word byte_80F0304
 playerObjectUpdateJumptable_80EA93C:
-	.word sub_80F0608+1, nullsub_104+1, nullsub_104+1, nullsub_104+1
-	.word nullsub_104+1, sub_80F0608+1, nullsub_104+1, nullsub_104+1
+	.word battleObject_aiHandleChipsAndFlinchZ_80F0608+1, nullsub_104+1, nullsub_104+1, nullsub_104+1
+	.word nullsub_104+1, battleObject_aiHandleChipsAndFlinchZ_80F0608+1, nullsub_104+1, nullsub_104+1
 	.word nullsub_104+1, nullsub_104+1, nullsub_104+1, nullsub_104+1
 	.word nullsub_104+1, nullsub_104+1, nullsub_104+1, nullsub_104+1
 	.word nullsub_104+1, nullsub_104+1, nullsub_104+1, nullsub_104+1
@@ -120254,9 +120254,9 @@ nullsub_104:
 // symdb: Per-frame AI tick for a Navi battle object: charges/picks the next chip, advances chip cooldown timers, and (when not flinch-bubbled or action 0x50) snaps Z to 0 or to 0x140000.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects on r5->CurAction-derived state,
 // symdb: r5->Z, AIData->PwrAtkCurChargeTime and chip-charge halfword in the BattleHand slot
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F0608.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiHandleChipsAndFlinchZ_80F0608.yaml
 	thumb_local_start
-sub_80F0608:
+battleObject_aiHandleChipsAndFlinchZ_80F0608:
 	push {r4,r6,lr}
 	bl battle_isPaused
 	bne loc_80F068C
@@ -120344,7 +120344,7 @@ loc_80F06B6:
 	str r0, [r5,#oBattleObject_Z]
 locret_80F06BA:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80F0608
+	thumb_func_end battleObject_aiHandleChipsAndFlinchZ_80F0608
 
 	push {r7,lr}
 	mov r1, #0x2c 

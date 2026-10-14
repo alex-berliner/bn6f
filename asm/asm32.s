@@ -21021,7 +21021,7 @@ loc_811892A:
 loc_8118938:
 	ldrh r0, [r6,#0x28]
 	ldrh r1, [r6,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq loc_8118944
 	mov r7, #1
 loc_8118944:
@@ -21480,7 +21480,7 @@ sub_8118C8C:
 loc_8118C9A:
 	ldrh r0, [r6,#0x28]
 	ldrh r1, [r6,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	bne loc_8118CA6
 	mov r4, #1
 loc_8118CA6:
@@ -29249,7 +29249,7 @@ loc_811CAB6:
 off_811CAC0:
 	.word off_811CAC4
 off_811CAC4:
-	.word sub_811CAEC+1
+	.word battleObject_runFloatingAnim_811CAEC+1
 	.word timerCountdown_step_811CBA0+1
 	.word battle_matchTrackedSpriteAndShrink_811CBD0+1
 	.word sub_811CC02+1
@@ -29271,9 +29271,9 @@ sub_811CAE4:
 // symdb: (r5 = BattleObject*) -> r0 = 0/1 (done flag) ; side effects: mutates BattleObject +0x9, +0x10,
 // symdb: +0x14, +0x16, +0x18, +0x1a, +0x1c, +0x1e, writes sprite scale and position, and increments a
 // symdb: 32-bit counter at +0xC by 0xE.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CAEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runFloatingAnim_811CAEC.yaml
 	thumb_local_start
-sub_811CAEC:
+battleObject_runFloatingAnim_811CAEC:
 	push {lr}
 	sub sp, sp, #0x10
 	ldrb r0, [r5,#9]
@@ -29361,7 +29361,7 @@ loc_811CB4E:
 loc_811CB9C:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_811CAEC
+	thumb_func_end battleObject_runFloatingAnim_811CAEC
 
 // symdb: Steps a one-shot countdown timer on a state object (r5); on the first call it initializes the delay from a lookup entry, and once the timer runs out it bumps a counter by 4 and reports completion.
 // symdb: Next sub_811CBA0(void *obj /* r5 */); returns r0 = 1 when the timer expired this call, 0 while
@@ -36035,9 +36035,9 @@ dword_81200E8:
 // symdb: (r0 = rowCount, r1 = destBaseTilesBlock, r2 = srcStringsOrDstForZero, r3 = baseTile |
 // symdb: (0x200<<16)) -> r0 = 5 ; side effects writes tile buffer at r1+(i*0x20) with chip-name font
 // symdb: glyphs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81200EC.yaml
-	thumb_func_start sub_81200EC
-sub_81200EC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipSelectFighterNames_81200EC.yaml
+	thumb_func_start battle_drawChipSelectFighterNames_81200EC
+battle_drawChipSelectFighterNames_81200EC:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	str r5, [sp,#4]
@@ -36125,7 +36125,7 @@ off_812018C:
 	.word unk_2001186
 off_8120190:
 	.word unk_200119E
-	thumb_func_end sub_81200EC
+	thumb_func_end battle_drawChipSelectFighterNames_81200EC
 
 	thumb_func_start sub_8120194
 sub_8120194:
@@ -36543,9 +36543,9 @@ dword_8120454:
 // symdb: Loads per-battle icon slot descriptors (chip ID + alt code) for a list of battle objects into an out buffer.
 // symdb: (r0 = startIndex, r1 = basePtr, r2 = outSlotsPtr, r3 = altCode, r5 = count) -> void ; side
 // symdb: effect: writes 2 u16 per slot to r2 (id, id+1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120458.yaml
-	thumb_func_start sub_8120458
-sub_8120458:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadChipIconSlots_8120458.yaml
+	thumb_func_start battle_loadChipIconSlots_8120458
+battle_loadChipIconSlots_8120458:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -36603,7 +36603,7 @@ loc_81204B6:
 	blt loc_812047C
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
-	thumb_func_end sub_8120458
+	thumb_func_end battle_loadChipIconSlots_8120458
 
 // symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via sub_8120504, and zeroing entries for empty slots.
 // symdb: void battle_processChipSlotArray(s32 startIdx /*r0*/, void* chipArrayBase /*r1*/, void* dest

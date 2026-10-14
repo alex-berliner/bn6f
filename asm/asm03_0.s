@@ -11382,7 +11382,7 @@ loc_802B7BC:
 	bne loc_802B7CE
 	mov r0, #0x34 
 loc_802B7CE:
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -14068,7 +14068,7 @@ sub_802CBCC:
 	mov r1, r3
 loc_802CBE2:
 	mov r0, #0x28 
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0

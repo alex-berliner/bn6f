@@ -120,7 +120,7 @@ sub_812D3E4:
 	ldr r4, dword_812D4E8 // =0x216 
 	orr r3, r4
 	mov r5, #7
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r0, #0xd
 	mov r1, #4
 	mov r2, #2

@@ -11945,7 +11945,7 @@ u32 sub_803DE72()
 
     result = sJoystick.unk_14;
     if ( sJoystick.unk_14 )
-        result = sub_81445F8();
+        result = libSIOControlPoll_81445F8();
     return result;
 }
 

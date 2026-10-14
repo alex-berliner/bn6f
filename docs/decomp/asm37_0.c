@@ -354,7 +354,7 @@ int __fastcall sub_813B950(int a1, int a2, int a3, int a4)
 
 
 // 0x813b9b4
-int __fastcall sub_813B9B4(int a1, int a2)
+int __fastcall battle_checkItemFlagFor_813B9B4(int a1, int a2)
 {
     int v2; // r10
 
@@ -658,7 +658,7 @@ int __fastcall battle_categorizeRandomIds_813BC1C(int a1)
     v2 = 0;
     do
     {
-        result = sub_813B9B4(v1, 3);
+        result = battle_checkItemFlagFor_813B9B4(v1, 3);
         v18 = (&v10 + v2);
         v4 = 0;
         do
@@ -722,7 +722,7 @@ int __fastcall sub_813BC98(int a1)
     v2 = 0;
     do
     {
-        *(&v10 + v2) = sub_813B9B4(v1, 3) - 1;
+        *(&v10 + v2) = battle_checkItemFlagFor_813B9B4(v1, 3) - 1;
         v2 += 4;
         ++v1;
     }
@@ -1184,7 +1184,7 @@ int __fastcall sub_813C06C(int a1, int a2, int a3)
     v4 = 14 * a3;
     v5 = &byte_813C188[v4];
     v22 = &byte_813C1A4[v4];
-    v24 = sub_813B9B4(a1, a2);
+    v24 = battle_checkItemFlagFor_813B9B4(a1, a2);
     v6 = *(v3 + oToolkit_Unk200414c_Ptr);
     v7 = 0;
     do
@@ -1524,7 +1524,7 @@ int __fastcall battleItems_countByType_813C584(int a1)
             v4 = CheckKeyItem(113);
             if ( (*getIndexedDataTable_813B9E0(v4))[15 * (v1 + 5) + 5 + v3] == 3 )
             {
-                v5 = sub_813B9B4(v3, v1);
+                v5 = battle_checkItemFlagFor_813B9B4(v3, v1);
                 if ( v5 )
                     byte_2006D68[v2++] = v5;
             }

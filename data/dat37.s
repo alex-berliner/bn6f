@@ -46133,7 +46133,7 @@ off_81C0418::
 	.word ply_fine+1
 	.word sub_814E758+1
 	.word SampleFreqSet_814EDC0+1
-	.word sub_814E4DC+1
+	.word sound_stopAllChannelsInBank_814E4DC+1
 	.word sub_814F228+1
 	.word sub_814F2F0+1
 	.word RealClearChain+1

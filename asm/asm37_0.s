@@ -384,9 +384,9 @@ loc_813B9A0:
 // symdb: Reads one byte from the toolkit's 0x200414c array at offset (r0 + r1*7) and returns its value/zero-flag through r0.
 // symdb: (r0 = item index, r1 = some other index/argument, r10 = toolkit ptr) -> r0 = byte at that offset
 // symdb: ; side effects: none (pure load via tail-return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B9B4.yaml
-	thumb_func_start sub_813B9B4
-sub_813B9B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkItemFlagFor_813B9B4.yaml
+	thumb_func_start battle_checkItemFlagFor_813B9B4
+battle_checkItemFlagFor_813B9B4:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_Unk200414c_Ptr]
 	mov r2, #7
@@ -395,7 +395,7 @@ sub_813B9B4:
 	ldrb r0, [r3,r0]
 	tst r0, r0
 	mov pc, lr
-	thumb_func_end sub_813B9B4
+	thumb_func_end battle_checkItemFlagFor_813B9B4
 
 	thumb_func_start sub_813B9C4
 sub_813B9C4:
@@ -778,7 +778,7 @@ battle_categorizeRandomIds_813BC1C:
 loc_813BC36:
 	mov r0, r6
 	mov r1, #3
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	mov r1, sp
 	add r1, r1, r5
 	str r1, [sp,#0x20]
@@ -844,7 +844,7 @@ sub_813BC98:
 loc_813BCA2:
 	mov r0, r6
 	mov r1, #3
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	mov r1, sp
 	add r1, r1, r5
 	sub r0, #1
@@ -1432,7 +1432,7 @@ sub_813C06C:
 	ldr r4, off_813C184 // =byte_813C1A4 
 	add r4, r4, r2
 	str r4, [sp]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	str r0, [sp,#8]
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_Unk200414c_Ptr]
@@ -1991,7 +1991,7 @@ loc_813C5A0:
 	bne loc_813C5CC
 	mov r0, r6
 	mov r1, r7
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	tst r0, r0
 	beq loc_813C5CC
 	ldr r1, off_813C638 // =byte_2006D68 

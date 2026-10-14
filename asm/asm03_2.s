@@ -7845,7 +7845,7 @@ menuCopyBackgroundTiles_804A7C0:
 	ldr r2, off_804A8C0 // =eTileIds20345FC
 	mov r3, #0xb
 	mov r5, #7
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x21 
@@ -7913,7 +7913,7 @@ menuCopyBackgroundTiles_804A7C0:
 	ldr r4, dword_804A8E0 // =0x216 
 	orr r3, r4
 	mov r5, #7
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x2b 
@@ -8020,7 +8020,7 @@ sub_804A8F4:
 	ble loc_804A90A
 	mov r5, #7
 loc_804A90A:
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x32 
@@ -8049,7 +8049,7 @@ loc_804A928:
 	ldr r4, dword_804A968 // =0x216 
 	orr r3, r4
 	mov r5, #7
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x3a 

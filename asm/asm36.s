@@ -655,7 +655,7 @@ loc_813050C:
 	ldr r2, off_81305E8 // =unk_20243E8 
 	mov r3, #0xa
 	mov r5, #5
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	// j
 	mov r0, #0xa
 	// i
@@ -718,7 +718,7 @@ loc_813050C:
 	ldr r4, dword_8130608 // =0x216 
 	orr r3, r4
 	mov r5, #5
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r0, #0x14
 	mov r1, #8
 	mov r2, #2
@@ -8289,7 +8289,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	ldr r2, off_81342E4 // =unk_2034458 
 	mov r3, #0xb
 	mov r5, #7
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -8353,7 +8353,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	ldr r4, dword_8134304 // =0x216 
 	orr r3, r4
 	mov r5, #7
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -8467,7 +8467,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/sub_81203E4/battle_loadChipIconSlots_8120458/sub_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:
@@ -8478,7 +8478,7 @@ battleObject_drawFolderEditScreenGfx_8134310:
 	ldr r2, off_813445C // =eTileIds20345FC
 	mov r3, #0xb
 	mov r5, #7
-	bl sub_81200EC
+	bl battle_drawChipSelectFighterNames_81200EC
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -8542,7 +8542,7 @@ battleObject_drawFolderEditScreenGfx_8134310:
 	ldr r4, dword_813447C // =0x216 
 	orr r3, r4
 	mov r5, #7
-	bl sub_8120458
+	bl battle_loadChipIconSlots_8120458
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2
@@ -12418,7 +12418,7 @@ loc_8136070:
 loc_8136072:
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	bne loc_8136082
 	bl sub_8135F5C
 	b loc_8136090
@@ -12490,7 +12490,7 @@ sub_8136100:
 	mov r7, #0x69 
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq loc_8136120
 	mov r0, #0
 	strh r0, [r5,#0x30]
@@ -13096,7 +13096,7 @@ sub_813658C:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	sub r0, #1
 	mov r4, r0
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -13141,7 +13141,7 @@ sub_81365F0:
 	mov r6, #0
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	sub r0, #1
 	mov r4, r0
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -13287,7 +13287,7 @@ sub_81366FC:
 	sub sp, sp, #4
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	sub r0, #1
 	str r0, [sp]
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -13575,7 +13575,7 @@ sub_813691C:
 	sub r0, #4
 	lsr r0, r0, #2
 	mov r1, #3
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq loc_8136962
 	sub r0, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -14570,7 +14570,7 @@ loc_8137136:
 	bne locret_8137156
 	ldrh r0, [r7,#0x28]
 	ldrh r1, [r7,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq locret_8137156
 	mov r0, #0x12
 	bl RunTextScriptNaviCustDialog
@@ -14779,7 +14779,7 @@ loc_81372B8:
 	bne locret_81372D8
 	ldrh r0, [r7,#0x28]
 	ldrh r1, [r7,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq locret_81372D8
 	mov r0, #0x1b
 	bl RunTextScriptNaviCustDialog
@@ -15081,7 +15081,7 @@ loc_81374FE:
 	bne locret_813751E
 	ldrh r0, [r7,#0x28]
 	ldrh r1, [r7,#0x2c]
-	bl sub_813B9B4
+	bl battle_checkItemFlagFor_813B9B4
 	beq locret_813751E
 	mov r0, #0x24 
 	bl RunTextScriptNaviCustDialog

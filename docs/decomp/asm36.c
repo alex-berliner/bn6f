@@ -351,13 +351,13 @@ void sub_81304EC()
 	v0 = sub_8130404();
 	if ( v0[12] )
 	{
-		sub_81200EC(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20243E8);
+		battle_drawChipSelectFighterNames_81200EC(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20243E8);
 		CopyBackgroundTiles(10, 8, 2, byte_20243E8, 8, &dword_8 + 2);
 		battle_loadFolderChipGfx_8120390(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20244C8, byte_812F06C);
 		CopyBackgroundTiles(8, 8, 2, byte_20244C8, 2, &dword_8 + 2);
 		sub_81203E4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024500, &dword_35C | 0x9000);
 		CopyBackgroundTiles(18, 8, 2, byte_2024500, 2, &dword_8 + 2);
-		sub_8120458(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024538, 41494);
+		battle_loadChipIconSlots_8120458(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_2024538, 41494);
 		CopyBackgroundTiles(20, 8, 2, byte_2024538, 1, &dword_8 + 2);
 		sub_81204C4(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, word_2024554, 33615);
 		CopyBackgroundTiles(21, 8, 2, word_2024554, 2, &dword_8 + 2);
@@ -5048,7 +5048,7 @@ void __noreturn battleObject_submenuRenderFolderAndChips_81341A0()
 {
     int v0; // r5
 
-    sub_81200EC(*(v0 + 36), word_202A020, &unk_2034458);
+    battle_drawChipSelectFighterNames_81200EC(*(v0 + 36), word_202A020, &unk_2034458);
     CopyBackgroundTiles(15 - *(v0 + 24), 4, 2, &unk_2034458, 8, &dword_C + 2);
     JUMPOUT(loc_81341CA);
 }
@@ -5059,7 +5059,7 @@ void __noreturn battleObject_drawFolderEditScreenGfx_8134310()
 {
     int v0; // r5
 
-    sub_81200EC(*(v0 + 46), &unk_202A3E0, eTileIds20345FC);
+    battle_drawChipSelectFighterNames_81200EC(*(v0 + 46), &unk_202A3E0, eTileIds20345FC);
     CopyBackgroundTiles(33 - *(v0 + 24), 4, 2, eTileIds20345FC, 8, &dword_C + 2);
     JUMPOUT(loc_813433A);
 }
@@ -7474,7 +7474,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
                 }
                 *(v3 + 40) = v14;
             }
-            v15 = sub_813B9B4(*(v3 + 40), *(v3 + 44));
+            v15 = battle_checkItemFlagFor_813B9B4(*(v3 + 40), *(v3 + 44));
             if ( !v16 )
             {
                 v17 = toolkit_getUnk2004190EntryPtr_813B9FC(v15 - 1);
@@ -7520,7 +7520,7 @@ int sub_8136100()
     char v4; // zf
 
     v1 = 105;
-    sub_813B9B4(*(v0 + 40), *(v0 + 44));
+    battle_checkItemFlagFor_813B9B4(*(v0 + 40), *(v0 + 44));
     if ( !v4 )
     {
         *(v0 + 48) = 0;
@@ -7991,7 +7991,7 @@ signed int sub_813658C()
     int v10; // r3
     signed int result; // r0
 
-    v1 = sub_813B9B4(*(v0 + 40), *(v0 + 44)) - 1;
+    v1 = battle_checkItemFlagFor_813B9B4(*(v0 + 40), *(v0 + 44)) - 1;
     v2 = toolkit_getUnk2004190EntryPtr_813B9FC(v1);
     sub_813BA64();
     v3 = *v2;
@@ -8025,7 +8025,7 @@ int sub_81365F0()
     int v0; // r5
     int v1; // r0
 
-    v1 = sub_813B9B4(*(v0 + 40), *(v0 + 44));
+    v1 = battle_checkItemFlagFor_813B9B4(*(v0 + 40), *(v0 + 44));
     toolkit_getUnk2004190EntryPtr_813B9FC(v1 - 1);
     return 0;
 }
@@ -8120,7 +8120,7 @@ int *sub_81366FC()
     int v8; // r3
     int v9; // [sp+0h] [bp-18h]
 
-    v1 = sub_813B9B4(*(v0 + 40), *(v0 + 44));
+    v1 = battle_checkItemFlagFor_813B9B4(*(v0 + 40), *(v0 + 44));
     v9 = v1 - 1;
     v2 = *toolkit_getUnk2004190EntryPtr_813B9FC(v1 - 1);
     v3 = *(battleObject_getByIndex_813B780(v2) + 3);
@@ -8307,7 +8307,7 @@ int sub_813691C()
         if ( !byte_81369A0[7 * *(v0 + 15) + (v2 >> 2)] )
         {
             v3 = 0;
-            v4 = sub_813B9B4((*(v0 + 3) - 4) >> 2, 3);
+            v4 = battle_checkItemFlagFor_813B9B4((*(v0 + 3) - 4) >> 2, 3);
             if ( v5 || (v6 = toolkit_getUnk2004190EntryPtr_813B9FC(v4 - 1), v3 = *v6, *v6) )
             {
                 *(v0 + 28) = v3 >> 2;
@@ -8973,7 +8973,7 @@ int sub_81370D4()
                 result = *(v1 + 2);
                 if ( result == 8 )
                 {
-                    result = sub_813B9B4(*(v1 + 40), *(v1 + 44));
+                    result = battle_checkItemFlagFor_813B9B4(*(v1 + 40), *(v1 + 44));
                     if ( !v3 )
                     {
                         RunTextScriptNaviCustDialog(18);
@@ -9174,7 +9174,7 @@ int sub_813726C()
                 result = *(v1 + 2);
                 if ( result == 8 )
                 {
-                    result = sub_813B9B4(*(v1 + 40), *(v1 + 44));
+                    result = battle_checkItemFlagFor_813B9B4(*(v1 + 40), *(v1 + 44));
                     if ( !v3 )
                     {
                         RunTextScriptNaviCustDialog(27);
@@ -9396,7 +9396,7 @@ int sub_81374D4()
                 result = *(v1 + 2);
                 if ( result == 8 )
                 {
-                    result = sub_813B9B4(*(v1 + 40), *(v1 + 44));
+                    result = battle_checkItemFlagFor_813B9B4(*(v1 + 40), *(v1 + 44));
                     if ( !v3 )
                     {
                         RunTextScriptNaviCustDialog(36);

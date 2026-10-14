@@ -289,7 +289,7 @@ int __fastcall sub_81444E4(int a1)
 
 
 // 0x81445f8
-int sub_81445F8()
+int libSIOControlPoll_81445F8()
 {
     int v1; // [sp+4h] [bp-4h]
 
@@ -10497,7 +10497,7 @@ int __fastcall m4a_mplay_trackEndJumpStub_814E4CC(int a1, int a2, int a3, int (_
 
 
 // 0x814e4dc
-int __fastcall sub_814E4DC(int a1, unsigned __int8 *a2, int a3)
+int __fastcall sound_stopAllChannelsInBank_814E4DC(int a1, unsigned __int8 *a2, int a3)
 {
     unsigned __int8 *v3; // r5
     int v4; // r1
@@ -11230,7 +11230,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
         off_30055E0 = sub_814FD54;
         off_30055E4 = sub_814E758;
         off_30055E8 = SampleFreqSet_814EDC0;
-        off_30055EC = sub_814E4DC;
+        off_30055EC = sound_stopAllChannelsInBank_814E4DC;
         off_30055F0 = sub_814F228;
         off_30055F4 = sub_814F2F0;
         *(v2 + 28) = a1;
@@ -11562,7 +11562,7 @@ LABEL_16:
             }
             do
             {
-                sub_814E4DC(v2, v6, v4);
+                sound_stopAllChannelsInBank_814E4DC(v2, v6, v4);
                 *v6 = -64;
                 *(v6 + 32) = 0;
                 *(v6 + 64) = *&v3[4 * v5++ + 8];
@@ -11572,7 +11572,7 @@ LABEL_16:
         }
         for ( ; v5 < *(v2 + 8); v6 += 80 )
         {
-            sub_814E4DC(v2, v6, v4);
+            sound_stopAllChannelsInBank_814E4DC(v2, v6, v4);
             *v6 = 0;
             ++v5;
         }
@@ -11598,7 +11598,7 @@ int __fastcall sub_814F1E8(int a1, int a2, int a3)
         v4 = *(a1 + 8);
         for ( i = *(a1 + 44); v4 > 0; i += 80 )
         {
-            sub_814E4DC(v3, i, a3);
+            sound_stopAllChannelsInBank_814E4DC(v3, i, a3);
             --v4;
         }
         *(v3 + 52) = 1752395091;
@@ -11664,7 +11664,7 @@ LABEL_15:
     v6 = *(v1 + 8);
     for ( j = *(v1 + 44); v6 > 0; j += 80 )
     {
-        sub_814E4DC(v1, j, v4);
+        sound_stopAllChannelsInBank_814E4DC(v1, j, v4);
         if ( !(*(v1 + 40) & 1) )
             *j = 0;
         --v6;

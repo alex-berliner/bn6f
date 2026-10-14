@@ -4449,13 +4449,13 @@ void __noreturn menuCopyBackgroundTiles_804A7C0()
 {
     MenuControl *menu; // r5
 
-    sub_81200EC(menu->unk_2E, &unk_202A3E0, eTileIds20345FC);
+    battle_drawChipSelectFighterNames_81200EC(menu->unk_2E, &unk_202A3E0, eTileIds20345FC);
     CopyBackgroundTiles(3, 4, 2, eTileIds20345FC, 8, &dword_C + 2);
     battle_loadFolderChipGfx_8120390(menu->unk_2E, &unk_202A3E0, eTileIds20346DC, byte_804A264);
     CopyBackgroundTiles(1, 4, 2, eTileIds20346DC, 2, &dword_C + 2);
     sub_81203E4(menu->unk_2E, &unk_202A3E0, eTileIds2034714, &dword_35C | 0xA000);
     CopyBackgroundTiles(11, 4, 2, eTileIds2034714, 2, &dword_C + 2);
-    sub_8120458(menu->unk_2E, &unk_202A3E0, eTileIds203474C, 45590);
+    battle_loadChipIconSlots_8120458(menu->unk_2E, &unk_202A3E0, eTileIds203474C, 45590);
     CopyBackgroundTiles(13, 4, 2, eTileIds203474C, 1, &dword_C + 2);
     sub_81204C4(menu->unk_2E, &unk_202A3E0, eTileIds2034768, 37711);
     CopyBackgroundTiles(14, 4, 2, eTileIds2034768, 2, &dword_C + 2);
@@ -4472,12 +4472,12 @@ void __noreturn sub_804A8F4()
     signed int v2; // r5
 
     v1 = v0;
-    sub_81200EC(*(v0 + 36), word_202A020, &unk_2034458);
+    battle_drawChipSelectFighterNames_81200EC(*(v0 + 36), word_202A020, &unk_2034458);
     v2 = dword_200ACB0;
     if ( dword_200ACB0 > 7 )
         v2 = 7;
     CopyBackgroundTiles(20, 4, 2, &unk_2034458, 8, 2 * v2);
-    sub_8120458(*(v1 + 36), word_202A020, &unk_20345A8, 45590);
+    battle_loadChipIconSlots_8120458(*(v1 + 36), word_202A020, &unk_20345A8, 45590);
     CopyBackgroundTiles(28, 4, 2, &unk_20345A8, 1, &dword_C + 2);
 }
 

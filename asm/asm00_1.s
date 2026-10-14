@@ -11022,7 +11022,7 @@ loc_80080A6:
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#oBattleState_Unk_07]
 sub_80080AE:
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_80080B2:
 	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
@@ -11211,7 +11211,7 @@ loc_8008222:
 	mov r6, #0x14
 loc_800822C:
 	mov r0, r6
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008232:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -11278,7 +11278,7 @@ loc_800829A:
 	bne loc_80082AC
 	mov r0, #0x18
 loc_80082AC:
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80082B4:
@@ -11318,7 +11318,7 @@ sub_80082DC:
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_80082FE:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -11647,7 +11647,7 @@ sub_8008528:
 	strb r0, [r5,#3]
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008550:
 	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
@@ -11849,7 +11849,7 @@ sub_8008688:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 .loc_80086DC:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -11895,7 +11895,7 @@ sub_8008716:
 	tst r0, r0
 	bne loc_800872C
 	mov r0, #0x58
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -11970,7 +11970,7 @@ loc_80087A2:
 loc_80087A4:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_80087B0:
@@ -12010,7 +12010,7 @@ sub_80087D8:
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_80087FA:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -12079,7 +12079,7 @@ sub_8008864:
 	ldr r0, dword_800893C // =0x824c43
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -12122,7 +12122,7 @@ sub_80088B2:
 	tst r0, r0
 	bne loc_80088C8
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -12254,7 +12254,7 @@ sub_800898C:
 	bl SetCustGauge
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_80089BE:
 	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
@@ -12400,7 +12400,7 @@ loc_8008AE6:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008AF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -12446,7 +12446,7 @@ sub_8008B2E:
 	tst r0, r0
 	bne loc_8008B44
 	mov r0, #0x58
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -12521,7 +12521,7 @@ loc_8008BBA:
 loc_8008BBC:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008BC8:
@@ -12561,7 +12561,7 @@ sub_8008BF0:
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008C12:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -12630,7 +12630,7 @@ sub_8008C7C:
 	ldr r0, dword_8008D54 // =0x4c43
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -12673,7 +12673,7 @@ sub_8008CCA:
 	tst r0, r0
 	bne loc_8008CE0
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -12804,7 +12804,7 @@ sub_8008D9C:
 	bl SetCustGauge
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008DCE:
 	bl comm_checkCrossNetBattleReady_801E754
 	cmp r0, #0
@@ -12944,7 +12944,7 @@ loc_8008EE6:
 	bl PlayMusic // (song: u8) -> ()
 	strh r4, [r5,#8]
 	mov r0, #0x14
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8008EF4:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -12990,7 +12990,7 @@ sub_8008F2E:
 	tst r0, r0
 	bne loc_8008F44
 	mov r0, #0x58
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -13065,7 +13065,7 @@ loc_8008FBA:
 loc_8008FBC:
 	strh r4, [r5,#8]
 	mov r0, #0x18
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008FC8:
@@ -13105,7 +13105,7 @@ sub_8008FF0:
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 loc_8009012:
 	ldrh r0, [r5,#8]
 	sub r0, #1
@@ -13174,7 +13174,7 @@ sub_800907C:
 	ldr r0, dword_8009150 // =0x4c43
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, #0x54
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -13217,7 +13217,7 @@ sub_80090CA:
 	tst r0, r0
 	bne loc_80090E0
 	mov r0, #0x1c
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #0
 	strh r0, [r5,#8]
 	mov r0, #4
@@ -13364,7 +13364,7 @@ off_80091BC:
 	// 0x10
 	.word battle_DispatchStatePhase_800945C+1
 	// 0x14
-	.word sub_80094DA+1
+	.word battle_initFadeToBattleResult_80094DA+1
 	// 0x18
 	.word sub_800951E+1
 	// 0x1C
@@ -13572,7 +13572,7 @@ sub_80092F0:
 	bne loc_8009306
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009312
@@ -13843,9 +13843,9 @@ locret_80094D8:
 // symdb: Drives a battle-end fade-out and hands off to the post-battle state when the fade finishes.
 // symdb: (no input registers from caller) -> r0 = fade colour slot (1 or 4) on the first entry, nothing
 // symdb: afterwards ; sets oBattleState_Unk_03 and oBattleState_Index_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80094DA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initFadeToBattleResult_80094DA.yaml
 	thumb_local_start
-sub_80094DA:
+battle_initFadeToBattleResult_80094DA:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13881,7 +13881,7 @@ loc_8009508:
 
 locret_800951C:
 	pop {pc}
-	thumb_func_end sub_80094DA
+	thumb_func_end battle_initFadeToBattleResult_80094DA
 
 	thumb_local_start
 sub_800951E:
@@ -14208,7 +14208,7 @@ sub_8009784:
 	bne loc_800979A
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_80097A6
@@ -14664,7 +14664,7 @@ sub_8009AD8:
 	bne loc_8009AEE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009AFA
@@ -15073,7 +15073,7 @@ sub_8009DC8:
 	bne loc_8009DDE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
-	bl sub_801E792
+	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009DEA

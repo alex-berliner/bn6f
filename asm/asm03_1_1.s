@@ -9833,7 +9833,7 @@ sub_803DE68:
 	pop {pc}
 	thumb_func_end sub_803DE68
 
-// symdb: Dispatches a global handler read from unk_200A284 to sub_81445F8 if non-null.
+// symdb: Dispatches a global handler read from unk_200A284 to libSIOControlPoll_81445F8 if non-null.
 // symdb: void sub_803DE72(void);  /* reads: r0 (handler ptr) via unk_200A284; writes: r0 (handler ptr
 // symdb: forwarded), r1-r3, lr (clobbered by call), nz/c/v flags; preserves r4; returns to lr via pop
 // symdb: {pc} */
@@ -9845,7 +9845,7 @@ sub_803DE72:
 	ldr r0, [r0]
 	tst r0, r0
 	beq locret_803DE80
-	bl sub_81445F8
+	bl libSIOControlPoll_81445F8
 locret_803DE80:
 	pop {pc}
 	.balign 4, 0x00

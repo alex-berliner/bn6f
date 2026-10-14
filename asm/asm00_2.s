@@ -9347,7 +9347,7 @@ battleObject_playerAIUpdate_8012E74:
 	bne loc_8012E90
 	bl battle_isPaused
 	bne locret_8012E8E
-	bl sub_8012EA0
+	bl battle_runPwrAtkRelated_8012EA0
 	bl battle_ai_updatePowerAttackCharge_8012EBC
 locret_8012E8E:
 	pop {r4,r6,pc}
@@ -9364,13 +9364,13 @@ loc_8012E90:
 // symdb: tail-call passthrough that runs the PWR-atk / joypad-related update
 // symdb: (in = r5, r10, lr) -> out r0 = result of pwrAtkRelated_readsFromJoypad_8012FC8 ; no side effects
 // symdb: beyond callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012EA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runPwrAtkRelated_8012EA0.yaml
 	thumb_local_start
-sub_8012EA0:
+battle_runPwrAtkRelated_8012EA0:
 	push {lr}
 	bl pwrAtkRelated_readsFromJoypad_8012FC8
 	pop {pc}
-	thumb_func_end sub_8012EA0
+	thumb_func_end battle_runPwrAtkRelated_8012EA0
 
 // symdb: Clears the active PwrAtk (charged/Press A) state of a battle object: zeros the AIData charge-related bytes and clears the 0x60000 flag in the AI flag word.
 // symdb: (r5 = BattleObjectPtr) -> r0 = 0x60000 ; side effects: writes AIData offsets 0x1b/0x1d/0x1e to 0
@@ -11120,9 +11120,9 @@ locret_80139F4:
 
 // symdb: Applies a per-turn status/elemental effect (e.g. poison, paralyze, freeze, root, blind, soft-delete) to the navi represented by `r5`'s BattleObject using the byte at `CollisionData+0xA4/0xA5`.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, ...caller-saved r4..r12/lr) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80139F6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyStatusEffectOnTurnEnd_80139F6.yaml
 	thumb_local_start
-sub_80139F6:
+battleObject_applyStatusEffectOnTurnEnd_80139F6:
 	push {r4,lr}
 	sub sp, sp, #8
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
@@ -11236,7 +11236,7 @@ loc_8013ADC:
 	bl sub_800FF5E
 	add sp, sp, #8
 	pop {r4,pc}
-	thumb_func_end sub_80139F6
+	thumb_func_end battleObject_applyStatusEffectOnTurnEnd_80139F6
 
 // symdb: Applies an alliance-style chip stat bonus (stat 0x18 or 0x19) read from the battle object's collision data, capped at 7.
 // symdb: void applyChipAllianceEffect_8013AE4(struct BattleObject* r5_battleObject)
@@ -12399,9 +12399,9 @@ dword_80142D8:
 // symdb: Tests several hostility/anger-related criteria for a battle object and sets the "anger" ObjectFlag2 bit if any condition triggers.
 // symdb: (r5 = battle object, r10 = toolkit) -> none ; side effects: may set OBJECT_FLAGS_2_UNK_BIT_21
 // symdb: (0x200) on the object's CollisionData.ObjectFlags2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80142DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkAngerTrigger_80142DC.yaml
 	thumb_local_start
-sub_80142DC:
+battleObject_checkAngerTrigger_80142DC:
 	push {r4,lr}
 	bl GetBattleMode
 	cmp r0, #1
@@ -12435,7 +12435,7 @@ loc_801431C:
 	bl object_setFlag2
 locret_8014324:
 	pop {r4,pc}
-	thumb_func_end sub_80142DC
+	thumb_func_end battleObject_checkAngerTrigger_80142DC
 
 // symdb: Per-frame anger-state maintenance for the player-side battle actor: on the anger trigger sets the anger flag and a 600-frame oAIData_Anger timer, counts it down, and clears anger on expiry or when the emotion already supersedes it.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updatePlayerAngerState_8014326.yaml
@@ -24052,7 +24052,7 @@ battleObject_processCollisionResultsForPlayer_801AC6C:
 	bl hiveBlockHappensHere_802CEF4
 	bl battle_incrementAllianceStatOnCollisionHit_801A6B4
 	bl battle_buffTwoStatsPlus2OnEventF6_801A720
-	bl sub_80139F6
+	bl battleObject_applyStatusEffectOnTurnEnd_80139F6
 	bl sub_801AEB0
 	bl battle_applyFlattenHitStatus_800EB26
 	bl handlePanelDamage_8013F1E
@@ -24077,7 +24077,7 @@ loc_801ACEC:
 	bl object_calculateFinalDamage1
 	bl battleObject_tickCounterTimer_801A420
 	bl battle_runObjectAI_80143FC
-	bl sub_80142DC
+	bl battleObject_checkAngerTrigger_80142DC
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -26630,7 +26630,7 @@ off_801BF04:
 	.word sub_801BFF8+1
 	.word sub_801C168+1
 	.word sub_801C368+1
-	.word sub_801C470+1
+	.word battleObject_tickCustomGauge_801C470+1
 	.word sub_801C4AE+1
 	.word nullsub_58+1
 	.word battle_tickLowHpWarning_801C840+1
@@ -26696,7 +26696,7 @@ off_801BF88:
 	.word palette_QueueObjectPalettePair_801CDEC+1
 	.word state_dispatchHandler_801CF0E+1
 	.word sub_801D1F6+1
-	.word sub_801C640+1
+	.word battle_drawOrderBGSelectionArrows_801C640+1
 	.word sub_801D2A4+1
 	.word sub_801D47A+1
 	.word nullsub_58+1
@@ -27402,9 +27402,9 @@ off_801C46C:
 // symdb: Drives the player's custom gauge forward each frame; on hitting 0x4000 sets the battle-flags custom-full bit and plays the full-gauge SFX.
 // symdb: (no args; r10 = battle toolkit) -> void ; side effects: reads/writes r5+0x20/0x22, sets battle
 // symdb: flags, plays SE 0x8F
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C470.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickCustomGauge_801C470.yaml
 	thumb_local_start
-sub_801C470:
+battleObject_tickCustomGauge_801C470:
 	push {lr}
 	bl battle_isPaused
 	bne locret_801C4AC
@@ -27431,7 +27431,7 @@ sub_801C470:
 	bl PlaySoundEffect
 locret_801C4AC:
 	pop {pc}
-	thumb_func_end sub_801C470
+	thumb_func_end battleObject_tickCustomGauge_801C470
 
 	thumb_local_start
 sub_801C4AE:
@@ -27652,9 +27652,9 @@ locret_801C63E:
 // symdb: Renders the battle BG tile-id blocks and arrow indicators used by the turn-order selection BG overlay
 // symdb: (r5 = *Toolkit, r10 = ?, lr) -> r0 = ?, nz/c/v ; side effects: queue GFX transfers and write BG
 // symdb: tile-ids
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C640.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawOrderBGSelectionArrows_801C640.yaml
 	thumb_local_start
-sub_801C640:
+battle_drawOrderBGSelectionArrows_801C640:
 	push {r4-r6,lr}
 	bl battle_IsBattleEnding_800A97A
 	cmp r0, #0
@@ -27736,7 +27736,7 @@ off_801C6E4:
 	.word byte_801C6E8
 byte_801C6E8:
 	.byte 0x6A, 0x1, 0x69, 0x1, 0x8F, 0x0
-	thumb_func_end sub_801C640
+	thumb_func_end battle_drawOrderBGSelectionArrows_801C640
 
 // symdb: Draws the battle actor's selected chip as name text plus a right-aligned damage number (and optional second value / marker glyph) into the battle BG tile map; does nothing when no chip is selected.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawSelectedChipNameAndDamage_801C6EE.yaml
@@ -32373,9 +32373,9 @@ locret_801E790:
 // symdb: effect is already busy or no slot was free; side effects: writes 9 bytes at byte_2036840, sets
 // symdb: eStruct2035280+0x40 bit 0x8000, calls dispatch_801DA48(0x8000) and dispatch_801DACC(0x100) when
 // symdb: kind==0x24
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E792.yaml
-	thumb_func_start sub_801E792
-sub_801E792:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchKindEffect_801E792.yaml
+	thumb_func_start battle_dispatchKindEffect_801E792
+battle_dispatchKindEffect_801E792:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -32449,7 +32449,7 @@ loc_801E81C:
 	.balign 4, 0
 off_801E824:
 	.word eStruct2035280
-	thumb_func_end sub_801E792
+	thumb_func_end battle_dispatchKindEffect_801E792
 
 // symdb: Stores a byte value clamped to a maximum of 99 into a struct field, then calls a helper to refresh whatever depends on it.
 // symdb: void sub_801E828(u8 value /*r1*/, struct* ptr /*r5*/); sets flags and r0-r3 via the tail call
