@@ -270,9 +270,9 @@ off_8141A6C:
 	.word byte_808A128 // CutsceneScript
 	thumb_func_end battle_beastSpEvolveStep_8141A10
 
-// symdb: per-frame Beast Out gauge driver for a battle object's AI state
-// symdb: (r5 = AIDataPtr) -> no return; mutates AIData fields around the Beast Out timer
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8141A70.yaml
+// symdb: Ticks and gates a BattleObject's "Beast Out" Power-Atk-charge state machine (cooldown/charge timer and rearm logic)
+// symdb: (r5 = BattleObject*) -> (none returned; flags may_write); side effects on the object's fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141A70.yaml
 	thumb_local_start
 sub_8141A70:
 	push {r4-r7,lr}
@@ -842,6 +842,10 @@ sub_8142166:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142166
 
+// symdb: returns true (r0=1 -> 7) while the per-battle scenario-effect state at eScenarioEffectState2000780+0xE is non-zero, serving as a guard for the scenario-effect handlers
+// symdb: () -> r0 = 1 if scenario-effect state+0xE != 0 else 0 ; sets NZ, clobbers r4, restores lr via
+// symdb: tail-call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814216E.yaml
 	thumb_func_start sub_814216E
 sub_814216E:
 	push {r4-r7,lr}
@@ -2083,6 +2087,9 @@ loc_8142C16:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142BFA
 
+// symdb: counts active battle entries whose team byte matches the given team id
+// symdb: (r0 = team id) -> r0 = count ; side effects: none (clobbers nzcv, r4-r7)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C20.yaml
 	thumb_func_start sub_8142C20
 sub_8142C20:
 	push {r4-r7,lr}

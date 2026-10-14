@@ -4224,6 +4224,10 @@ dword_802824C:
 	.word 0x6009C20
 	thumb_func_end sprite_clearObjVramEntry_8028238
 
+// symdb: Reloads the Custom-screen chip grid from the ten active chip entries, then either redraws the BG tile block or recolors the chip icons.
+// symdb: (r0 = reloadKind: 0=redraw BG tile block 3, !=0=recolor chip icon OBPals) -> void ; side
+// symdb: effects: VRAM BG tile block 3, sprite OBPals, r10 implicitly read
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028250.yaml
 	thumb_local_start
 sub_8028250:
 	push {r4-r7,lr}
@@ -13528,6 +13532,11 @@ byte_802C7EC:
 	.byte 0x91, 0xDF, 0x91, 0xE1, 0x91, 0xE3, 0x91, 0xC5, 0x90
 	thumb_func_end sub_802C75C
 
+// symdb: Draws one of two small tilemap sprite blocks (10 halfword pairs) into unk_2034B30's 24-wide row buffer at x=2,y=0xE for the chip selection screen, picking the block by the caller's anim-state index.
+// symdb: (r0 = animStateIndex 0..1) -> side effects only (writes halfwords into the row buffer via
+// symdb: blitTileBlockToRowBuffer_802C4B6; returns r0=0xA, callee-saved r5/r6/r7 clobbered across the
+// symdb: blit)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C810.yaml
 	thumb_local_start
 sub_802C810:
 	push {r5,lr}
@@ -24240,6 +24249,11 @@ camera_initAndActivate_803123E:
 	pop {r0-r2,r5,pc}
 	thumb_func_end camera_initAndActivate_803123E
 
+// symdb: story3 battle helper: finalizes the textbox update via sub_8031122/0x30F04, derives a camera scroll delta and feeds it to camera_moveByDelta_80310B0, then ORs 3 into the high bit of r12 (likely a state/flag word the caller owns) and returns
+// symdb: (r0 = a state struct pointer also passed to sub_8031122, r1 = 0x8466, r2 = 0x02027C50, r3 = 0,
+// symdb: r5, r12, lr) -> r0 = pointer (unchanged), r12 |= 3, lr popped; r1, r2, r3, r5 clobbered as side
+// symdb: effects via callees
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031264.yaml
 	thumb_local_start
 sub_8031264:
 	push {r0-r2,r5,lr}

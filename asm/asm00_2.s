@@ -12728,6 +12728,9 @@ sub_801444E:
 	pop {pc}
 	thumb_func_end sub_801444E
 
+// symdb: Returns true iff the calling BattleObject's AIData `Unk_32` (u16) field equals zero, leaving the flag set.
+// symdb: (r5 = BattleObject*) -> r0 = value of AIData->Unk_32; flags Z/C/V reflect `cmp r0, #0`
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801445C.yaml
 	thumb_local_start
 sub_801445C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -12775,6 +12778,10 @@ sub_8014482:
 	pop {pc}
 	thumb_func_end sub_8014482
 
+// symdb: Returns whether the battle object's AIData `Unk_36` halfword is non-zero (sets r0 to that value and Z flag accordingly)
+// symdb: (r5 = BattleObject*) -> r0 = AIData->Unk_36 (halfword, zero-extended) ; Z set when that halfword
+// symdb: is 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014490.yaml
 	thumb_local_start
 sub_8014490:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -13441,6 +13448,9 @@ loc_80148C8:
 	pop {r4,pc}
 	thumb_func_end sub_801486C
 
+// symdb: Beast Out sub-state dispatch for an actor: dispatches on actor type to a per-event routine
+// symdb: (r5 = actor-related state) -> tail-call to one of three routines; returns their result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80148CC.yaml
 	thumb_local_start
 sub_80148CC:
 	push {lr}
@@ -22145,6 +22155,10 @@ byte_8019C7C:
 	.word 0xc0044080, 0xc0044080
 	thumb_func_end object_freeCollisionData
 
+// symdb: Applies SelfDamage flag bits to a battle object's CollisionData: clears/clamps SelfDamage, doubles it on DAMAGE_DOUBLE, sets status/hit modifiers on DAMAGE_PARALYZE/DAMAGE_UNINSTALL, and dispatches sub_801A4D0 for DAMAGE_ERASECROSS_SKULL_HIT/DAMAGE_NOTHING.
+// symdb: (r0 = CollisionData* @0x02XXXXXX, r1 = ???) -> r0 = ??? ; side effects: mutates CollisionData
+// symdb: fields SelfDamage (0x2e), StatusEffectBase (0x10), HitModifierBase (0x0e); calls sub_801A4D0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8019F44.yaml
 	thumb_local_start
 sub_8019F44:
 	push {r4,r6,r7,lr}

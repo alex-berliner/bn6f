@@ -950,6 +950,11 @@ loc_8089700:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80896D4
 
+// symdb: Battle custom-screen handler that maps joypad (A/B/L/R) inputs over the active scenario-effect slot in the chip-select state, playing the appropriate cue and returning a non-zero code on a successful change.
+// symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;
+// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via sub_81421C8, and
+// symdb: reads scenario-effect active flag and sub_8142A84.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089704.yaml
 	thumb_local_start
 sub_8089704:
 	push {r4-r7,lr}
@@ -1069,10 +1074,10 @@ loc_80897E4:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastOut_checkOrInit_80897A6
 
-// symdb: On every tick, if the chip-lockout chatbox flag isn't active, advance the chip lockout timer and start a white screen fade when it expires, marking the screen state byte at [r5] with 0x24.
-// symdb: (r5 = pointer to a battle/screen state byte) -> r0 = 1 ; side effects: may write 0x24 to [r5],
-// symdb: may call SetScreenFade and battle_tickChipLockout_8089CB4
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80897E8.yaml
+// symdb: Per-frame handler: if eFlags2009F38 bit 0x80 is unset, tick chip lockout via sub_8089CB4 and on its non-zero return trigger a screen fade (0x4 / 0xff) and write 0x24 to the r5-pointed state's byte; always returns 1
+// symdb: (r5 = battle state pointer) -> r0 = 1 ; side effects: may call SetScreenFade(4, 0xff) and store
+// symdb: 0x24 to [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80897E8.yaml
 	thumb_local_start
 sub_80897E8:
 	push {r4-r7,lr}
@@ -1412,7 +1417,7 @@ off_8089A40:
 // symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
 // symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
-// symdb: PlayMapMusic, calls ai_setAIDataUnk18_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
+// symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipLockoutTransition_8089A60.yaml
 	thumb_local_start
 battle_handleChipLockoutTransition_8089A60:
@@ -1476,7 +1481,7 @@ loc_8089AE4:
 // symdb: Beast-out AI step: when chatbox/cutscene flag 0x80 is clear, advance chip-lockout and decide the controlled beast's next facing/animation state.
 // symdb: (r0 = toolkit via r10, r5 = battleObject, r7 = ?, lr) -> r0 = 1 ; side effects: clears PanelY in
 // symdb: battle object, sets OW player facing to 4 (down), pushes a fixed OW player animation via
-// symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls ai_setAIDataUnk18_8089CB0(0|0x1e)
+// symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls sub_8089CB0(0|0x1e)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleBeastOutStep_8089AE8.yaml
 	thumb_local_start
 battle_handleBeastOutStep_8089AE8:
@@ -1511,6 +1516,10 @@ loc_8089B2A:
 	pop {r4-r7,pc}
 	thumb_func_end battle_handleBeastOutStep_8089AE8
 
+// symdb: AI handler that locks the chip queue and queues a PwrAtk chip when the chip lockout timer is active.
+// symdb: (r5 = AIData*, r7 = ?, r10 = Toolkit*) -> r0 = 1 ; side effects: writes AIData[0x18]=0x70, calls
+// symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089B2E.yaml
 	thumb_local_start
 sub_8089B2E:
 	push {r4-r7,lr}
@@ -1648,6 +1657,11 @@ loc_8089C12:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089BFA
 
+// symdb: Beast-mode overworld AI step: drives transform/fail handling by inspecting the current PET navi and HP, sets the OW player animation, then writes a new state byte.
+// symdb: (r5 = AIData ptr, r10 = Toolkit ptr) -> r0 = 1 ; side effects: writes AIData+0x00, AIData+0x08,
+// symdb: AIData+0x13, anim field in s200ace0, possibly raises event 0x1719 via
+// symdb: owPlayer_setS200ace0_fixedAnimationSelect_809e13c
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089C16.yaml
 	thumb_local_start
 sub_8089C16:
 	push {r4-r7,lr}

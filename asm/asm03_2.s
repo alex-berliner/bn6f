@@ -11321,6 +11321,9 @@ off_804CCA4:
 	.word sub_804CCC0+1
 	thumb_func_end beastSp_spawnIndexDispatcher_804CC8E
 
+// symdb: Empty stub: push/pop with no body and no callees; behaves as an instantaneous no-op tail-return
+// symdb: (lr) -> ; no return value, side effects only on r4-r7 in the saved set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCBC.yaml
 	thumb_local_start
 sub_804CCBC:
 	push {r4-r7,lr}

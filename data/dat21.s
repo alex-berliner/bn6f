@@ -3834,8 +3834,10 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Per-battle init helper that selects a battle-setup entry, copies pet/param struct, registers the object, sets a couple of event flags, and clears/stages cutscene state for the upcoming pet-wave animation.
-// symdb: (r10 = ToolkitPtr) -> nz ; r0/r2/r3/r4/r5/r7/r8/r9/r12 trashed; uses r5 and r12 heavily
+// symdb: Cutscene-graphics-orchestrator (reads L-Message / AskJackOut cutscene script markers, sets/clocks GFX anims 0x8083FC0/0x8083FFC/0x08084068, and toggles event flag 0x17 bit 7 via the BBS request handlers) — placeholder for the scene that runs at 0x8083DF0.
+// symdb: (r10 = oToolkit, lr = return) -> nz flags ; side effects: event flag bit (0x17, 0x07)
+// symdb: read/cleared/set, three GFX anim state slots loaded and ticked, sub_8083F80 / sub_80840C4 /
+// symdb: sub_8084080 / sub_8084180 / sub_8084214 / sub_80842D8 driven, sub_809E462 called
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8217,8 +8219,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Per-frame Beast-Out AI dispatcher for a battle object (selects one of several beast-action paths based on event flags) — void
-// symdb: (r2 = beast-mode-related context/param, r10 = Toolkit) -> r2,r3,r5,r7 ; side effects
+// symdb: placeholder - cannot propose a real name; assembly for this function is missing from the disassembly
+// symdb: (r2 in, r10 = toolkit, lr) -> r2, r3, r5, r7 out ; side effects unknown
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

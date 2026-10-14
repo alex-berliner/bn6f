@@ -656,6 +656,10 @@ locret_80B86C2:
 	pop {pc}
 	thumb_func_end sub_80B86A4
 
+// symdb: Tail-call wrapper that runs the battle object's sprite/animation step when the object is alive and unfrozen.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> tail-calls
+// symdb: battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B86C4.yaml
 	thumb_local_start
 sub_80B86C4:
 	push {lr}
@@ -42403,7 +42407,7 @@ locret_80CBA50:
 // symdb: (r5 = obj, r10 = toolkit) -> r0 = 0; side effects: clobbers r0..r7, lr; writes oBattleObject_X,
 // symdb: oBattleObject_Y, oBattleObject_XVelocity, oBattleObject_YVelocity, oBattleObject_CurPhase,
 // symdb: oBattleObject_CurAction, oBattleObject_CurStateActionPhaseAndPhaseInitialized,
-// symdb: oBattleObject_Timer; clears the object's collision region; recurses into battleObject_decideEnemyYTargetDirection_80CBAFA.
+// symdb: oBattleObject_Timer; clears the object's collision region; recurses into sub_80CBAFA.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processSnakeArmPhase_80CBA52.yaml
 	thumb_local_start
 battleObject_processSnakeArmPhase_80CBA52:
@@ -43873,6 +43877,10 @@ locret_80CC560:
 	pop {pc}
 	thumb_func_end sub_80CC4EC
 
+// symdb: For a battle object, tears down collision immediately if the battle is over, otherwise removes+sprays and then refreshes collision for a final hit.
+// symdb: (r4,r5,r7,r8,r10 = caller battle object + toolkit context) -> void ; side effects: clears region
+// symdb: / spawns hit effect / transitions to CUR_STATE_DESTROY, or continues present-collision flow.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC562.yaml
 	thumb_local_start
 sub_80CC562:
 	push {lr}
@@ -113514,11 +113522,9 @@ off_80ED150:
 	.word sub_80ED154+1
 	thumb_func_end ai_attack_dispatch_80ED13E
 
-// symdb: AI attack-vars step: spawns a guard/shield or snake-like sub-object (0x2B) on the user's arm slot, then updates the linked child over a duration and tears it down on timeout or movement completion.
-// symdb: (r5 = self BattleObject*, r6 = ???, r7 = AIAttackVars*) -> r0 = 0/1 ; side effects:
-// symdb: spawns/destroys linked 0x2B object, plays SFX 0xC5, mutates AIAttackVars and AIData Unk_68,
-// symdb: exits attack state on completion
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80ED154.yaml
+// symdb: Per-frame AI helper for the SnakeArm (object 0x2B) held by a battle object: on first call sets up the arm, then each tick hits the front panel with damage = AIAttackVars.Damage + AttackBoost, spawning hit effects/projectiles, and tears the arm down after Unk_0c frames.
+// symdb: (r5 = owner BattleObject, r7 = AIAttackVars ptr, lr) -> side effects only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80ED154.yaml
 	thumb_local_start
 sub_80ED154:
 	push {r4,r6,lr}
@@ -118478,6 +118484,11 @@ byte_80EF606:
 	.byte 0x3A, 0x39
 	thumb_func_end sub_80EF550
 
+// symdb: Per-frame tick on the AI's per-attack vars (Unk_10 then Unk_12); when both reach 0, clears OBJECT_FLAGS_USING_ACTION and exits attack state.
+// symdb: (r5 = AIData*, r6 = ?, r7 = AIAttackVars*, lr) -> r0..r3/r6/r7 clobbered ; side effects: writes
+// symdb: AIAttackVars[0x10], AIAttackVars[0x12], AIAttackVars[0x00]; on expiry calls object_clearFlag(r5,
+// symdb: 0x400000) and object_exitAttackState(r5,r6,r7)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EF608.yaml
 	thumb_local_start
 sub_80EF608:
 	push {r4,r6,r7,lr}
@@ -122905,7 +122916,7 @@ byte_80F17BC:
 
 // symdb: AI attack dispatch table for SnakeArm — branches on AIAttackVars[0] via ThumbBX
 // symdb: (r7 = pointer to AIData, lr = return) -> r0..r3 overwritten by the chosen handler; tail-calls
-// symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / battleObject_attackVars_tickExitTimer_80F1888
+// symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / sub_80F1888
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiDispatchAttack_80F17C4.yaml
 	thumb_local_start
 battleObject_aiDispatchAttack_80F17C4:

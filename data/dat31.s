@@ -2225,9 +2225,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Picks a panel in the 6x3 grid in front of a battle object and highlights it, setting the in-front flag
-// symdb: (r0 = ?, r1 = self/pc_addr, r2 = 0x80, r3 = 3) -> r0 = highlighted panel index (0..0x7F or
-// symdb: sentinel)
+// symdb: Cannot determine; assembly not provided, callers list empty.
+// symdb: unknown — contract lists r4/r5/r7/r10/lr in and r1/r5 out, but I have not observed how those are
+// symdb: populated or consumed.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

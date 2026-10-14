@@ -8497,7 +8497,7 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, object_mrWeatherStep_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
