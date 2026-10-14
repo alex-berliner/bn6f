@@ -490,7 +490,7 @@ AI *battleObject_refreshSpriteAndArm_800F2C6()
     {
         if ( result->naviVirusIndicator == 2 )
         {
-            v3 = sub_8018856(3);
+            v3 = battleObject_computeAIStepForwardDeltaX_8018856(3);
             result = sub_801DC06(v3, -v4);
         }
         else
@@ -9564,7 +9564,7 @@ void battle_runBeastTransformationAction_8014A38()
             (*(&off_8014AF0 + *v1))();
         }
         if ( !(GetAIDataUnk0x48Flag() & 0x80000) )
-            sub_801BCD0();
+            battleObject_updateSpriteAnimIfChanged_801BCD0();
     }
 }
 
@@ -9712,7 +9712,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
             v14 = battle_setObjectTextId_8015B22(v14);
         v15 = sub_8013774(v14, 44);
         sub_8011268(v15);
-        v16 = sub_8018856(3);
+        v16 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v16, -v17);
         PlaySoundEffect(141, v18, v19);
         PlaySoundEffect(119, v20, v21);
@@ -9922,7 +9922,7 @@ int __cdecl sub_8014E08(int a1, int a2, int a3)
         v22 = v3->childobject2;
         if ( v22 )
             *(v22 + 6) = 0;
-        v23 = sub_8018856(3);
+        v23 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v23, -v24);
         *(v4 + 1) = 4;
     }
@@ -10138,7 +10138,7 @@ int sub_8015040()
             *(v19 + 6) = 0;
             *v19 |= 0x14u;
         }
-        v20 = sub_8018856(3);
+        v20 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v20, -v21);
         *(v1 + 1) = 4;
     }
@@ -10365,7 +10365,7 @@ int sub_80152C8()
         v19 = v0->childobject2;
         if ( v19 )
             *(v19 + 6) = 0;
-        v20 = sub_8018856(3);
+        v20 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v20, -v21);
         *(v1 + 1) = 4;
     }
@@ -10566,7 +10566,7 @@ int sub_80154C8()
             *(v14 + 16) = 0;
             *(v14 + 6) = 0;
         }
-        v15 = sub_8018856(3);
+        v15 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v15, -v16);
         PlaySoundEffect(141, v17, v18);
         PlaySoundEffect(119, v19, v20);
@@ -10704,7 +10704,7 @@ void sub_801562C()
         v15 = object_clearInvulnerableTime();
         v16 = sub_8013774(v15, 44);
         sub_8011268(v16);
-        v17 = sub_8018856(3);
+        v17 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v17, -v18);
         *(v0 + 76) = 0;
         v19 = *(v0 + 88);
@@ -10825,7 +10825,7 @@ signed int sub_8015766()
             *(v18 + 6) = 1;
             *v18 |= 0x14u;
         }
-        v19 = sub_8018856(3);
+        v19 = battleObject_computeAIStepForwardDeltaX_8018856(3);
         sub_801DC06(v19, -v20);
         object_clearInvulnerableTime();
         v0->parent = 0;
@@ -13393,7 +13393,7 @@ int __noreturn playerObject_init_80172F0()
     v21 = battle_beginTurnOpenProcess_80144C0();
     sub_8013E58(v21);
     sub_801DB84();
-    v22 = sub_8018856(3);
+    v22 = battleObject_computeAIStepForwardDeltaX_8018856(3);
     sub_801DC06(v22, -v23);
     if ( sub_802D246() & 8 && battle_networkInvert(*(v0 + 22)) )
         releaseSlotByValue_801DC36();
@@ -14779,7 +14779,7 @@ int __fastcall getIndexedSignedBytePair_8018842(int a1, int a2, int a3)
 
 
 // 0x8018856
-int __fastcall sub_8018856(int a1)
+int __fastcall battleObject_computeAIStepForwardDeltaX_8018856(int a1)
 {
     Battle *v1; // r5
     int v2; // ST04_4
@@ -17944,7 +17944,7 @@ void object_updateSpritePaused()
 
 
 // 0x801bcd0
-void sub_801BCD0()
+void battleObject_updateSpriteAnimIfChanged_801BCD0()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -18912,7 +18912,7 @@ void __fastcall sub_801C576(int a1)
 
 
 // 0x801c5f4
-signed int sub_801C5F4()
+signed int battle_playCounterHitSound_801C5F4()
 {
     int v0; // r5
     signed int *v1; // r10
@@ -20934,7 +20934,7 @@ int __noreturn sub_801E07C()
 
 
 // 0x801e0a0
-int __fastcall sub_801E0A0(char a1, char a2)
+int __fastcall battle_eStruct2035280_postEvent_801E0A0(char a1, char a2)
 {
     word_20352A4 = *(dword_20352C8 + 36);
     byte_2035281 = a1;

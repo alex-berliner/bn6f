@@ -1056,7 +1056,7 @@ signed int sub_809AADC()
 
 
 // 0x809ab20
-signed int sub_809AB20()
+signed int battle_lotteryStep_809AB20()
 {
     int v0; // r4
     int v1; // r5

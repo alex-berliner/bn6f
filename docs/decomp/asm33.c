@@ -165,7 +165,7 @@ int sub_8123514()
 
     (*(&off_812353C + *(v0 + 2)))();
     sfx_playChipUseSound_8123A50();
-    sub_8123C98();
+    pet_menu_drawCharacterStatBlock_8123C98();
     sub_8123E58();
     entity_runAllUpdateHandlers_80465BC();
     return battle_updateEStructSprites_80465F8();
@@ -382,7 +382,7 @@ int petNaviMenuFrame_812368C()
     {
         SetCurPETNaviStatsByte(*(v0 + 20), 45, v9);
         v10 = 8;
-        if ( (sub_8137884(*(v0 + 12)) >> 4) >= 2 )
+        if ( (battle_getPlayerCurState_8137884(*(v0 + 12)) >> 4) >= 2 )
             v10 = 9;
         sub_8123A40(v10);
         *(v0 + 2) = 16;
@@ -436,7 +436,7 @@ int __fastcall __noreturn pet_menu_runFrame_81237BC(int a1)
     char v2; // zf
 
     sfx_playChipUseSound_8123A50();
-    sub_8123C98();
+    pet_menu_drawCharacterStatBlock_8123C98();
     sub_8123E58();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
@@ -664,14 +664,14 @@ int __fastcall battleObject_applyAIDataToAttackTable_8123C20(int a1, int a2, voi
 
 
 // 0x8123c98
-signed int sub_8123C98()
+signed int pet_menu_drawCharacterStatBlock_8123C98()
 {
     int v0; // r5
     unsigned int v1; // r0
     int v2; // r0
 
     call_sub_3005EBA(3, 6, 2, 0);
-    v1 = sub_8137884(*(v0 + 12));
+    v1 = battle_getPlayerCurState_8137884(*(v0 + 12));
     sub_8120348(v1 >> 4, word_20347D8, 11, 1);
     CopyBackgroundTiles(11, 6, 2, word_20347D8, 15, &byte_0[2]);
     v2 = GetCurPETNaviStatsByte(*(v0 + 20));
@@ -5495,7 +5495,7 @@ int battle_checkSubFlags_8128280()
         {
             result = TestEventFlag((dword_2027590[8 * (v1 + v3) + 6] >> 16) + 7584);
             if ( v5 )
-                result = sub_81282C0(v3);
+                result = battleObject_tickOamSubFlagAnimSlot_81282C0(v3);
             ++v3;
         }
         while ( v3 < 4 && v3 < v2 );
@@ -5505,7 +5505,7 @@ int battle_checkSubFlags_8128280()
 
 
 // 0x81282c0
-int __fastcall sub_81282C0(int a1)
+int __fastcall battleObject_tickOamSubFlagAnimSlot_81282C0(int a1)
 {
     int v1; // r7
     int result; // r0

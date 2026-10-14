@@ -10349,7 +10349,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                             }
                             if ( *v25 & 0x40 )
                             {
-                                sub_814ECB4(v25);
+                                mplay_trackHandler_814ECB4(v25);
                                 *v25 = -128;
                                 *(v25 + 15) = 2;
                                 *(v25 + 19) = 64;
@@ -11181,7 +11181,7 @@ int __fastcall sub_814EB1C(int a1)
                 if ( v4 & v5 && v5 & 0x40 )
                 {
                     v6 = v4;
-                    sub_814ECB4(v3);
+                    mplay_trackHandler_814ECB4(v3);
                     v4 = v6;
                     *v3 = v6;
                     v3[15] = 2;
@@ -11263,7 +11263,7 @@ int __fastcall m4a_ply_trampoline_814ECA0(int a1)
 
 
 // 0x814ecb4
-int __fastcall sub_814ECB4(int a1)
+int __fastcall mplay_trackHandler_814ECB4(int a1)
 {
     return rfufunc_tailCallStub_814DA64(a1, off_30055FC);
 }
@@ -11490,7 +11490,7 @@ int __fastcall sub_814F08C(int a1, _BYTE *a2, unsigned __int8 a3)
         if ( **byte_3007FF0 == 1752395091 )
         {
             **byte_3007FF0 = 1752395092;
-            sub_814ECB4(a1);
+            mplay_trackHandler_814ECB4(a1);
             *(v3 + 44) = v4;
             *(v3 + 8) = v5;
             for ( *(v3 + 4) = 2147483648; v5; v4 += 80 )

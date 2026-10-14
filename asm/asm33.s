@@ -516,7 +516,7 @@ sub_8123514:
 	mov lr, pc
 	bx r0
 	bl sfx_playChipUseSound_8123A50
-	bl sub_8123C98
+	bl pet_menu_drawCharacterStatBlock_8123C98
 	bl sub_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -762,7 +762,7 @@ loc_81236B0:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	mov r6, #8
 	ldrb r0, [r5,#0xc]
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	cmp r0, #2
 	blt loc_8123708
@@ -871,7 +871,7 @@ off_81237B8:
 pet_menu_runFrame_81237BC:
 	push {lr}
 	bl sfx_playChipUseSound_8123A50
-	bl sub_8123C98
+	bl pet_menu_drawCharacterStatBlock_8123C98
 	bl sub_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -1474,9 +1474,9 @@ loc_8123C92:
 // symdb: PET status sub-screen: clears the status tilemap area, fills it with the pre-loaded char stat tiles, and renders the status icon for the active PET navi.
 // symdb: (r5 = SubMenu* / runtime state, r10 = Toolkit*, lr = ret) -> void ; side effects: clobbers
 // symdb: r0–r7/lr, writes tilemap at unk_20347D8 and the status block bg tiles via CopyBackgroundTiles.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_menu_drawCharacterStatBlock_8123C98.yaml
 	thumb_local_start
-sub_8123C98:
+pet_menu_drawCharacterStatBlock_8123C98:
 	push {r4-r7,lr}
 	mov r7, r5
 	mov r0, #3
@@ -1488,7 +1488,7 @@ sub_8123C98:
 	bl call_sub_3005EBA
 	ldrb r0, [r7,#0xc]
 	ldrb r0, [r7,#0xc]
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	ldr r1, off_8123CE4 // =unk_20347D8 
 	mov r2, #0xb
@@ -1518,7 +1518,7 @@ dword_8123CEC:
 byte_8123CF0:
 	.byte 0x37, 0x0, 0xBA, 0x0, 0x60, 0x71, 0x0, 0x0, 0x37, 0x0, 0xA6
 	.byte 0x0
-	thumb_func_end sub_8123C98
+	thumb_func_end pet_menu_drawCharacterStatBlock_8123C98
 
 	thumb_local_start
 sub_8123CFC:
@@ -10363,7 +10363,7 @@ off_812827C:
 	.word 0x100
 	thumb_func_end palette_fillBufferWithFadeByte_8128260
 
-// symdb: Iterates the four battle object slots whose indices follow obj_flags; for each whose matching event flag (sub_flag + 0x1DA0) is unset, calls sub_81282C0 with the slot index.
+// symdb: Iterates the four battle object slots whose indices follow obj_flags; for each whose matching event flag (sub_flag + 0x1DA0) is unset, calls battleObject_tickOamSubFlagAnimSlot_81282C0 with the slot index.
 // symdb: void sub_8128280(struct BattleObj *r5 /* in/out, preserved */, void *r10 /* in, preserved */);
 // symdb: // returns via RETURN_TO_CALLER(); clobbers r0-r3, lr, N Z C V; preserves r4, r6, r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkSubFlags_8128280.yaml
@@ -10389,7 +10389,7 @@ loc_812828C:
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_81282AC
 	mov r0, r5
-	bl sub_81282C0
+	bl battleObject_tickOamSubFlagAnimSlot_81282C0
 loc_81282AC:
 	add r5, #1
 	cmp r5, #4
@@ -10408,9 +10408,9 @@ dword_81282BC:
 // symdb: Drives a per-slot OAM/animation entry for battle object sub-flag visuals (decrements a counter, queues an OAM row, advances to the next entry when it elapses).
 // symdb: (r0 = slot index) -> r0 = unk_2026870[2*slot] (current anim id) ; side effects: writes
 // symdb: unk_2026870[2*slot] and [2*slot+1]; r1/r4 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81282C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickOamSubFlagAnimSlot_81282C0.yaml
 	thumb_local_start
-sub_81282C0:
+battleObject_tickOamSubFlagAnimSlot_81282C0:
 	push {r4-r7,lr}
 	lsl r7, r0, #1
 	ldr r4, off_8128310 // =unk_2026870 
@@ -10454,7 +10454,7 @@ off_8128310:
 	.word unk_2026870
 off_8128314:
 	.word byte_812798A
-	thumb_func_end sub_81282C0
+	thumb_func_end battleObject_tickOamSubFlagAnimSlot_81282C0
 
 	thumb_local_start
 sub_8128318:

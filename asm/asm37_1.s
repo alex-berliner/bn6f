@@ -1014,7 +1014,7 @@ loc_814226A:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
 loc_8142272:
-	bl sub_8142C90
+	bl battleObject_emptyStub_8142C90
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_perFrameUpdate_8142248
@@ -2105,12 +2105,12 @@ off_8142C8C:
 
 // symdb: empty stub function that immediately returns to its caller
 // symdb: (lr) -> ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_emptyStub_8142C90.yaml
 	thumb_local_start
-sub_8142C90:
+battleObject_emptyStub_8142C90:
 	push {r4-r7,lr}
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142C90
+	thumb_func_end battleObject_emptyStub_8142C90
 
 	thumb_func_start sub_8142C94
 sub_8142C94:

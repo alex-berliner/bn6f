@@ -4779,9 +4779,9 @@ sub_80A78AE:
 // symdb: Dispatches to an AI subroutine indexed by `AIDataPtr->BLeftAbility`, after refreshing the AI data pointer from the battle object.
 // symdb: (in r5 = BattleObject*, in r10 = Toolkit*) -> no return (tail-calls the handler); side effects:
 // symdb: clobbers r0,r1,r2,r3,r6,r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A78B8.yaml
-	thumb_func_start sub_80A78B8
-sub_80A78B8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiDispatchByAIDataBLeftAbility_80A78B8.yaml
+	thumb_func_start battle_aiDispatchByAIDataBLeftAbility_80A78B8
+battle_aiDispatchByAIDataBLeftAbility_80A78B8:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	bl battle_getAIDataPtr_8142068
@@ -4799,7 +4799,7 @@ off_80A78D0:
 	.word sub_80A7912+1
 	.word sub_80A796C+1
 	.word sub_80A79D4+1
-	thumb_func_end sub_80A78B8
+	thumb_func_end battle_aiDispatchByAIDataBLeftAbility_80A78B8
 
 	thumb_local_start
 sub_80A78E0:
@@ -5518,7 +5518,7 @@ battleObject_beastSP_battlerUpdate_80A7E14:
 off_80A7E28:
 	.word off_80A7E2C
 off_80A7E2C:
-	.word sub_80A7E44+1
+	.word battleObject_clearActionPhaseUnk09_80A7E44+1
 	.word sub_80A7E4C+1
 	.word sub_80A7EDA+1
 	.word sub_80A7F58+1
@@ -5528,14 +5528,14 @@ off_80A7E2C:
 
 // symdb: Stub that zeros a battle object's CurAction byte (offset 0x9).
 // symdb: (r5 = *BattleObject) -> r0 = 0 ; side effects: writes byte 0 at r5+0x9
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearActionPhaseUnk09_80A7E44.yaml
 	thumb_local_start
-sub_80A7E44:
+battleObject_clearActionPhaseUnk09_80A7E44:
 	push {r4-r7,lr}
 	mov r0, #0
 	strb r0, [r5,#9]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7E44
+	thumb_func_end battleObject_clearActionPhaseUnk09_80A7E44
 
 	thumb_local_start
 sub_80A7E4C:

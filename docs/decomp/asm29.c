@@ -3155,7 +3155,7 @@ int sub_80A78AE()
 
 
 // 0x80a78b8
-int sub_80A78B8()
+int battle_aiDispatchByAIDataBLeftAbility_80A78B8()
 {
     int v0; // r5
 
@@ -3760,7 +3760,7 @@ void __noreturn battleObject_beastSP_battlerUpdate_80A7E14()
 
 
 // 0x80a7e44
-int sub_80A7E44()
+int battleObject_clearActionPhaseUnk09_80A7E44()
 {
     int v0; // r5
     int result; // r0

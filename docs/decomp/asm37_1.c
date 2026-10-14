@@ -664,7 +664,7 @@ int battleObject_perFrameUpdate_8142248()
         battle_callAIDispatch_8046818();
         battleObject_updateSpriteGfxForAll_8046854();
     }
-    sub_8142C90();
+    battleObject_emptyStub_8142C90();
     return 0;
 }
 
@@ -1411,7 +1411,7 @@ int __fastcall sub_8142C46(int a1)
 
 
 // 0x8142c90
-void sub_8142C90()
+void battleObject_emptyStub_8142C90()
 {
     ;
 }

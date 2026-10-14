@@ -863,7 +863,7 @@ sub_813068C:
 loc_81306AC:
 	sub r0, #1
 	push {r0}
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r1, r7
@@ -1076,7 +1076,7 @@ sub_8130810:
 	tst r0, r0
 	beq locret_8130846
 	sub r0, #1
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	ldr r1, off_8130848 // =unk_20347D8 
 	mov r2, #0xa
@@ -6476,7 +6476,7 @@ off_813339C:
 	thumb_func_end sub_8133228
 // symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
 // symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
-// symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
+// symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of battleObject_runActionShieldOrStatusEffect_81345D4,
 // symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
 // symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectUpdateOrEffect_81333A0.yaml
@@ -6502,7 +6502,7 @@ battle_dispatchObjectUpdateOrEffect_81333A0:
 	cmp r0, #0xc
 	beq locret_81333E4
 loc_81333CC:
-	bl sub_81345D4
+	bl battleObject_runActionShieldOrStatusEffect_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl battleObject_queueOamPanelGrid_8134610
 	b locret_81333E4
@@ -7430,7 +7430,7 @@ loc_8133AE2:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
-	bl sub_81345D4
+	bl battleObject_runActionShieldOrStatusEffect_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
@@ -7477,7 +7477,7 @@ loc_8133B4C:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
-	bl sub_81345D4
+	bl battleObject_runActionShieldOrStatusEffect_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
@@ -7505,7 +7505,7 @@ loc_8133B8E:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
-	bl sub_81345D4
+	bl battleObject_runActionShieldOrStatusEffect_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
@@ -8868,9 +8868,9 @@ dword_81345D0:
 // symdb: Run the battle-object action/state-update step for the shield-or-status-effect helper with hard-coded parameters (0x5a/0x20/0x20/0x12) and return its u8 result.
 // symdb: (r5/r10 = toolkit/aux; no caller-supplied arg registers meaningful here) -> r0 = u8 result from
 // symdb: battleObject_updateShieldOrStatusEffect_813468C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionShieldOrStatusEffect_81345D4.yaml
 	thumb_local_start
-sub_81345D4:
+battleObject_runActionShieldOrStatusEffect_81345D4:
 	push {r4-r7,lr}
 	mov r0, #0x5a 
 	mov r1, #0x20 
@@ -8880,7 +8880,7 @@ sub_81345D4:
 	ldr r6, byte_81346FC // =0x0
 	bl battleObject_updateShieldOrStatusEffect_813468C
 	pop {r4-r7,pc}
-	thumb_func_end sub_81345D4
+	thumb_func_end battleObject_runActionShieldOrStatusEffect_81345D4
 
 // symdb: Parameterless wrapper that spawns/queues one effect via sub_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
 // symdb: void sub_81345E8(void); /* takes nothing from callers; returns callee's r1-r3, preserves r4-r7
@@ -15644,16 +15644,16 @@ off_8137880:
 
 // symdb: Reads the current state byte (0/4/8 etc.) of the active battle object for a given slot/index.
 // symdb: (r0 = index) -> r0 = byte from unk_20018EC[r0] ; no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137884.yaml
-	thumb_func_start sub_8137884
-sub_8137884:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPlayerCurState_8137884.yaml
+	thumb_func_start battle_getPlayerCurState_8137884
+battle_getPlayerCurState_8137884:
 	ldr r1, off_813788C // =unk_20018EC 
 	ldrb r0, [r1,r0]
 	mov pc, lr
 	.balign 4, 0x00
 off_813788C:
 	.word unk_20018EC
-	thumb_func_end sub_8137884
+	thumb_func_end battle_getPlayerCurState_8137884
 
 	thumb_func_start sub_8137890
 sub_8137890:

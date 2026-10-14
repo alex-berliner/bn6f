@@ -558,7 +558,7 @@ sub_810DE00:
 	strb r0, [r6,#oAIState_Unk_00]
 	bl sub_810DEC4
 	bl sub_810E0D4
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_810DE28
 loc_810DE1E:
 	ldr r1, off_810DE2C // =off_810DE30
@@ -2388,7 +2388,7 @@ sub_810ED70:
 	ldrh r0, [r0,#0x24]
 	tst r0, r0
 	bne loc_810ED9C
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_810EDA6
 loc_810ED9C:
 	ldr r1, off_810EDA8 // =off_810EDAC
@@ -2493,7 +2493,7 @@ sub_810EE3E:
 	mov r1, #4
 	mul r0, r1
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_810EE62
 loc_810EE5E:
 	mov r0, #4
@@ -2502,7 +2502,7 @@ locret_810EE62:
 	pop {pc}
 	thumb_func_end sub_810EE3E
 
-// symdb: Puffy AI step with no RNG: frame-parameter checks and sub_801171C timer setup.
+// symdb: Puffy AI step with no RNG: frame-parameter checks and object_exitAttackState_801171C timer setup.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EE64.yaml
 	thumb_local_start
 sub_810EE64:
@@ -2529,7 +2529,7 @@ loc_810EE7E:
 	mov r1, #4
 	mul r0, r1
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810EE94:
 	pop {pc}
 	thumb_func_end sub_810EE64
@@ -5297,7 +5297,7 @@ sub_811072C:
 	strb r0, [r6,#oAIState_Unk_00]
 	mov r0, #0
 	strh r0, [r6,#oAIState_Unk_02]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_811079E
 loc_8110794:
 	ldrh r0, [r7,#oAIAttackVars_Unk_18]
@@ -5348,7 +5348,7 @@ sub_81107BC:
 loc_81107E8:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81107F0:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_81107BC
@@ -7394,7 +7394,7 @@ loc_811187C:
 	bl object_updateCollisionPanels
 	ldr r0, dword_8111908 // =0x501040
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	ldr r0, [r5,#oBattleObject_Unk_5c]
 	cmp r0, #0
 	beq loc_81118C2
@@ -10187,7 +10187,7 @@ ForGunner_8113078:
 	// 0x1C (0x07)
 	.word sub_8113108+1
 	// 0x20 (0x08)
-	.word sub_8113124+1
+	.word battle_object_dispatchAIState_8113124+1
 	// 0x24 (0x09)
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	// 0x28 (0x0A)
@@ -10268,9 +10268,9 @@ loc_811311E:
 // symdb: Dispatches the current AI state of a battle object via a jumptable after gating on low-HP chip usage and a flag check.
 // symdb: (r6 = BattleObject*) -> r0/r1 = scratch ; side effects: jumps through an AI-state dispatch table
 // symdb: at off_8113148
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8113124.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_object_dispatchAIState_8113124.yaml
 	thumb_local_start
-sub_8113124:
+battle_object_dispatchAIState_8113124:
 	push {r4,r6,lr}
 	bl battle_object_tryUseChipWhenLowHP_81131D8
 	cmp r0, #0
@@ -10289,7 +10289,7 @@ locret_8113142:
 	.balign 4, 0
 off_8113144:
 	.word off_8113148
-	thumb_func_end sub_8113124
+	thumb_func_end battle_object_dispatchAIState_8113124
 
 off_8113148:
 	.word battle_packObjStateBitToAttrCode_8113154+1
@@ -10518,7 +10518,7 @@ loc_8113378:
 	bl sub_811339A
 	b locret_8113398
 loc_8113394:
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8113398:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8113350
@@ -10637,7 +10637,7 @@ loc_8113466:
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
 	cmp r0, #8
 	beq locret_811348C
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_811348C:
 	pop {r4,pc}
 	thumb_func_end sub_811339A
@@ -16317,7 +16317,7 @@ off_81166B0:
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
-	.word sub_8116720+1
+	.word battle_updateCustGauge_8116720+1
 	thumb_func_start sub_81166D4
 sub_81166D4:
 	push {lr}
@@ -16365,9 +16365,9 @@ sub_811670E:
 
 // symdb: For the battle object in r5, runs its AI state dispatch then refreshes the Custom Gauge from current HP/MaxHP/charge values.
 // symdb: |
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116720.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateCustGauge_8116720.yaml
 	thumb_local_start
-sub_8116720:
+battle_updateCustGauge_8116720:
 	push {r4,r6,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	mov r6, #0x80
@@ -16395,7 +16395,7 @@ off_8116750:
 	.word off_8116754
 off_8116754:
 	.word sub_8116758+1
-	thumb_func_end sub_8116720
+	thumb_func_end battle_updateCustGauge_8116720
 
 	thumb_local_start
 sub_8116758:
@@ -22003,7 +22003,7 @@ battle_dispatchEventScript_8119018:
 	ldr r0, off_8119068 // =byte_811906C
 	ldr r3, [r0,r3]
 	mov r0, r1
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r4, #8
@@ -25506,7 +25506,7 @@ sub_811AA4C:
 	ldr r0, off_811AA9C // =byte_811AAA0
 	ldr r3, [r0,r3]
 	mov r0, r1
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	lsr r0, r0, #4
 	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r4, #8
@@ -25732,7 +25732,7 @@ loc_811AC18:
 	sub r1, #1
 	push {r1}
 	mov r0, r1
-	bl sub_8137884
+	bl battle_getPlayerCurState_8137884
 	cmp r0, #0x22
 	pop {r1}
 	blt loc_811AC38
@@ -35507,7 +35507,7 @@ loc_811FD22:
 	orr r0, r4
 	str r0, [r5,#4]
 	ldrb r0, [r6,#6]
-	bl sub_811FF54
+	bl battle_synthesizePackEntryFromChipSearchResult_811FF54
 	lsl r0, r0, #0x10
 	orr r0, r4
 	str r0, [r5,#0x10]
@@ -35770,7 +35770,7 @@ loc_811FEB0:
 	orr r0, r3
 	str r0, [r6,#4]
 	ldrb r0, [r5,#6]
-	bl sub_811FF54
+	bl battle_synthesizePackEntryFromChipSearchResult_811FF54
 	lsl r0, r0, #0x10
 	orr r0, r3
 	str r0, [r6,#0x10]
@@ -35813,9 +35813,9 @@ dword_811FF50:
 
 // symdb: Look up a chip-id-driven reordering table for chip-pack slot rows.
 // symdb: (r0 = chipIndexInSearchTable 0..0xA) -> r0 = remappedSlotIndex ; side effects none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FF54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_synthesizePackEntryFromChipSearchResult_811FF54.yaml
 	thumb_local_start
-sub_811FF54:
+battle_synthesizePackEntryFromChipSearchResult_811FF54:
 	push {lr}
 	ldr r1, off_811FF5C // =byte_811FF60
 	ldrb r0, [r1,r0]
@@ -35824,7 +35824,7 @@ off_811FF5C:
 	.word byte_811FF60
 byte_811FF60:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x8, 0x4, 0x6, 0x7, 0x5, 0x9, 0xA, 0x0
-	thumb_func_end sub_811FF54
+	thumb_func_end battle_synthesizePackEntryFromChipSearchResult_811FF54
 
 // symdb: Wrapper that zero-fills a 160 KB (0xA000-word) block of memory starting at the address given in r0.
 // symdb: void sub_811FF6C(void *dest /*r0*/); /* preserves r0, r2, r3; r1/r2/r3 left as
@@ -36532,7 +36532,7 @@ loc_8120408:
 	beq loc_8120436
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrb r0, [r0,#6]
-	bl sub_811FF54
+	bl battle_synthesizePackEntryFromChipSearchResult_811FF54
 	mov r1, #4
 	mul r0, r1
 	ldr r1, [sp,#0x10]
@@ -36723,7 +36723,7 @@ battleObject_drawIndicatorOrStatusIcon_812053C:
 	push {r4-r7,lr}
 	mov r4, r1
 	mov r3, #0
-	bl sub_81205C0
+	bl sprite_queueTwoOamEntries_81205C0
 	tst r0, r0
 	blt locret_812055E
 	ldr r1, dword_8120560 // =0xc0008000
@@ -36750,7 +36750,7 @@ sub_8120568:
 	add r6, r3, #0
 	add r4, r1, #0
 	mov r3, #0
-	bl sub_81205C0
+	bl sprite_queueTwoOamEntries_81205C0
 	add r7, r0, #0
 	tst r0, r0
 	blt loc_8120586
@@ -36769,7 +36769,7 @@ loc_8120586:
 	add r0, r6, #0
 	add r1, r4, #0
 	mov r3, #0
-	bl sub_81205C0
+	bl sprite_queueTwoOamEntries_81205C0
 	tst r0, r0
 	blt loc_81205B4
 	ldr r1, =0x0
@@ -36790,9 +36790,9 @@ loc_81205B4:
 // symdb: Queues two sprite OAM entries (a top tile and a bottom tile) with overlapping/blended vertical extents, returning a packed status value.
 // symdb: (r0 = ?, r1 = base tile id low16, r2 = packed y/coord, r3 = flag, lr = ?) -> r0 = packed result
 // symdb: ; also clobbers r1, r2, r3, r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81205C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueTwoOamEntries_81205C0.yaml
 	thumb_local_start
-sub_81205C0:
+sprite_queueTwoOamEntries_81205C0:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	mov r7, r2
@@ -36842,7 +36842,7 @@ loc_8120608:
 	mov r0, r7
 	add sp, sp, #8
 	pop {r4-r7,pc}
-	thumb_func_end sub_81205C0
+	thumb_func_end sprite_queueTwoOamEntries_81205C0
 
 // symdb: Converts a range of 0x20-byte battle-grid panel entries into packed BCD tilemap words for display.
 // symdb: void battle_decodePanelTiles_8120618(u32 firstIndex /*r0*/, u32 tableBase /*r1*/, u32 dst
@@ -36917,7 +36917,7 @@ dword_8120688:
 	thumb_func_end sub_8120618
 
 // symdb: Searches a row-based lookup table for a packed position, fires a handler (with the row index bumped by 0x16) when a hit is found, then re-searches with the hit's index shifted down by 8.
-// symdb: int sub_812068C(int value, int row, int arg2, int arg3) — returns whatever sub_81205C0 leaves in
+// symdb: int sub_812068C(int value, int row, int arg2, int arg3) — returns whatever sprite_queueTwoOamEntries_81205C0 leaves in
 // symdb: r0 on the second call; NZCV flags come from that same final call; r4-r7 preserved.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_812068C.yaml
 	thumb_local_start
@@ -36926,7 +36926,7 @@ sub_812068C:
 	mov r4, r1
 	mov r6, r3
 	mov r3, #1
-	bl sub_81205C0
+	bl sprite_queueTwoOamEntries_81205C0
 	mov r7, r0
 	tst r0, r0
 	blt loc_81206AA
@@ -36945,7 +36945,7 @@ loc_81206AA:
 	mov r0, r6
 	mov r1, r4
 	mov r3, #1
-	bl sub_81205C0
+	bl sprite_queueTwoOamEntries_81205C0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_812068C

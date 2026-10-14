@@ -933,7 +933,7 @@ battle_custMenuAnimateCursorToOK_8026B04: // (self: * S20364C0 $r5) -> ()
 
 	mov r0, #0xf
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 
 	mov r0, #0xf
 	str r0, [r5,#0x44]
@@ -3444,7 +3444,7 @@ battle_customGauge_EndTurn_8027D78:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 	ldr r0, off_8027E14 // =0x400 
 	bl eStruct2035280_SetRequestBits_801BECC
 	ldr r0, off_8027E14 // =0x400 
@@ -12055,10 +12055,10 @@ off_802BE04:
 	.word sub_802BE36+1
 	thumb_func_end sub_802BDF0
 
-// symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls sub_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
+// symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls battle_eStruct2035280_postEvent_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
 // symdb: void sub_802BE0C(void); callers pass garbage in r0-r3 but r5 must hold the object pointer and
 // symdb: r10 the toolkit pointer; r4/r5 are preserved; returns with r0=4 and NZ flags set from "mov
-// symdb: r0,#4", r1-r3 as left by sub_801E0A0
+// symdb: r0,#4", r1-r3 as left by battle_eStruct2035280_postEvent_801E0A0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/objStepFinishSetState4_802BE0C.yaml
 	thumb_local_start
 objStepFinishSetState4_802BE0C:
@@ -12077,7 +12077,7 @@ objStepFinishSetState4_802BE0C:
 	mov r0, #0
 	strh r0, [r3,#oRenderInfo_Unk_18]
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 	mov r0, #4
 	strh r0, [r5,#2]
 	pop {r4,r5,pc}
@@ -15786,7 +15786,7 @@ sub_802D714:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 	pop {pc}
 	.balign 4, 0
 off_802D728:
@@ -16019,7 +16019,7 @@ sub_802D926:
 	ldrb r0, [r7,#oAIAttackVars_Unk_03]
 	cmp r0, #0
 	bne locret_802D93C
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 locret_802D93C:
 	pop {pc}
 	.balign 4, 0
@@ -24867,7 +24867,7 @@ dword_8031690:
 	.word NULL // 0xe
 	.word NULL // 0xf
 	.word NULL // 0x10
-	.word sub_80317FA+1 // 0x11
+	.word table_GetCurrentEntryColumnCount_80317FA+1 // 0x11
 	.word sub_8031808+1 // 0x12
 	.word sub_803182A+1 // 0x13
 	.word sub_8031852+1 // 0x14
@@ -25066,16 +25066,16 @@ sub_80317DE:
 
 // symdb: Reads the current table entry's column count (r0+r1) and returns total row size minus 2
 // symdb: () -> r0 = header.r0 + header.r1 ; side effects: calls table_GetCurrentEntryHeader_8031760
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80317FA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/table_GetCurrentEntryColumnCount_80317FA.yaml
 	thumb_local_start
-sub_80317FA:
+table_GetCurrentEntryColumnCount_80317FA:
 	push {lr}
 	mov r0, #1
 	bl table_GetCurrentEntryHeader_8031760
 	add r0, r0, r1
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_80317FA
+	thumb_func_end table_GetCurrentEntryColumnCount_80317FA
 
 	thumb_local_start
 sub_8031808:

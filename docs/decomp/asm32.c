@@ -6901,7 +6901,7 @@ int sub_8113114()
 
 
 // 0x8113124
-int sub_8113124()
+int battle_object_dispatchAIState_8113124()
 {
     unsigned __int8 *v0; // r6
     int result; // r0
@@ -10780,7 +10780,7 @@ signed int sub_811670E()
 
 
 // 0x8116720
-signed int sub_8116720()
+signed int battle_updateCustGauge_8116720()
 {
     int v0; // r5
 
@@ -14471,7 +14471,7 @@ int __noreturn battle_dispatchEventScript_8119018()
     v1 = *(v0 + 3) - 7;
     v2 = (&off_811905C)[v1];
     v3 = *&byte_811906C[4 * v1];
-    v4 = sub_8137884(v1);
+    v4 = battle_getPlayerCurState_8137884(v1);
     v5 = chatbox_getTextScriptPointerByIndex_804A24C(v4 >> 4);
     return sub_3006B94(v5, sub_3006B94, v6, v7);
 }
@@ -16381,7 +16381,7 @@ int __noreturn sub_811AA4C()
     v1 = *(v0 + 3);
     v2 = *(&off_811AA90 + v1);
     v3 = *&byte_811AAA0[4 * v1];
-    v4 = sub_8137884(v1);
+    v4 = battle_getPlayerCurState_8137884(v1);
     v5 = chatbox_getTextScriptPointerByIndex_804A24C(v4 >> 4);
     return sub_3006B94(v5, sub_3006B94, v6, v7);
 }
@@ -16494,7 +16494,7 @@ int __noreturn sub_811ABF8()
         if ( !*(v0 + 3) )
         {
             v2 = (*(v0 + 12) & 0x7FFF) - 1;
-            v3 = sub_8137884(v2);
+            v3 = battle_getPlayerCurState_8137884(v2);
             v4 = v2;
             if ( v3 >= 34 )
                 v4 = 2;
@@ -22320,7 +22320,7 @@ signed int __fastcall sub_811FCB8(int a1, int *a2, int a3, int a4)
         v5[2] = (v19 << 16) | v12;
         v13 = v19 | (v11 << 7);
         v5[1] = (*(v9 + 12) << 16) | v12;
-        v5[4] = (sub_811FF54(v9[6]) << 16) | v13;
+        v5[4] = (battle_synthesizePackEntryFromChipSearchResult_811FF54(v9[6]) << 16) | v13;
         v5[6] = (v9[8] << 16) | v13;
         v5[3] = (sub_811FF80(v18) << 16) | v13;
         v5[5] = v13 | 0x10000;
@@ -22486,7 +22486,7 @@ int __fastcall buildChipSearchTable_811FE7C(int *a1, int a2, int a3, int a4)
                         *v4 = (*(v6 + 14) << 16) | v11;
                         v4[2] = (v21 << 16) | v11;
                         v4[1] = (*(v6 + 12) << 16) | v11;
-                        v12 = sub_811FF54(v6[6]);
+                        v12 = battle_synthesizePackEntryFromChipSearchResult_811FF54(v6[6]);
                         v4[4] = (v12 << 16) | v13;
                         v4[6] = (v6[8] << 16) | v13;
                         v4[5] = (v22 << 16) | v13;
@@ -22509,7 +22509,7 @@ int __fastcall buildChipSearchTable_811FE7C(int *a1, int a2, int a3, int a4)
 
 
 // 0x811ff54
-int __fastcall sub_811FF54(int a1)
+int __fastcall battle_synthesizePackEntryFromChipSearchResult_811FF54(int a1)
 {
     return byte_811FF60[a1];
 }
@@ -22996,7 +22996,7 @@ int __fastcall sub_81203E4(int a1, int a2, int a3, int a4)
         if ( v12 )
         {
             v13 = getChip8021DA8(v12);
-            v14 = sub_811FF54(v13[6]);
+            v14 = battle_synthesizePackEntryFromChipSearchResult_811FF54(v13[6]);
             v15 = ((v18 + 4 * v14 + 1) << 16) | (v18 + 4 * v14);
             *(v11 + 4 * v10) = v15;
             *(v11 + 4 * v10 + 4) = v15 + 131074;
@@ -23143,7 +23143,7 @@ signed int __fastcall battleObject_drawIndicatorOrStatusIcon_812053C(int a1, __i
     unsigned __int8 v5; // vf
 
     v3 = a2;
-    result = sub_81205C0(a1, a2, a3, 0);
+    result = sprite_queueTwoOamEntries_81205C0(a1, a2, a3, 0);
     if ( !((result < 0) ^ v5) )
         result = sprite_queueOamEntryThunk_802FE28(result & 0x3FFF7FFF | 0x4000, v3 + 12, 0, 1);
     return result;
@@ -23151,7 +23151,7 @@ signed int __fastcall battleObject_drawIndicatorOrStatusIcon_812053C(int a1, __i
 
 
 // 0x81205c0
-int __fastcall sub_81205C0(int a1, __int16 a2, int a3, int a4)
+int __fastcall sprite_queueTwoOamEntries_81205C0(int a1, __int16 a2, int a3, int a4)
 {
     int v4; // r7
     __int16 v5; // r4
@@ -23253,11 +23253,11 @@ int __fastcall sub_812068C(int a1, __int16 a2, int a3, int a4)
 
     v4 = a2;
     v5 = a4;
-    v6 = sub_81205C0(a1, a2, a3, 1);
+    v6 = sprite_queueTwoOamEntries_81205C0(a1, a2, a3, 1);
     v7 = v6;
     if ( v6 >= 0 )
         sprite_queueOamEntryThunk_802FE28(v6, v4 + 22, 0, 1);
-    return sub_81205C0(v5, v4, (((v7 >> 16) + 8) << 16) | v7, 1);
+    return sprite_queueTwoOamEntries_81205C0(v5, v4, (((v7 >> 16) + 8) << 16) | v7, 1);
 }
 
 

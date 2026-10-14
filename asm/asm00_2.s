@@ -840,7 +840,7 @@ battleObject_refreshSpriteAndArm_800F2C6:
 	cmp r1, #2
 	bne loc_800F2EA
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	pop {pc}
@@ -5954,9 +5954,9 @@ object_exitAttackState:
 // symdb: (r5 = battle object) -> void ; side effects: writes AIData + AIAttackVars + CurAction of the
 // symdb: object in r5, modifies the global AIData flags at Unk_44 (mask 0x1000003F), calls
 // symdb: battleObject_clearPwrAtkState_8012EA8 and object_clearFlag(OBJECT_FLAGS_USING_ACTION).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801171C.yaml
-	thumb_func_start sub_801171C
-sub_801171C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_exitAttackState_801171C.yaml
+	thumb_func_start object_exitAttackState_801171C
+object_exitAttackState_801171C:
 	push {r6,r7,lr}
 loc_801171E:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -5995,7 +5995,7 @@ loc_8011754:
 dword_8011760:
 	.word 0x1000003F
 	thumb_func_end object_exitAttackState
-	thumb_func_end sub_801171C
+	thumb_func_end object_exitAttackState_801171C
 
 	thumb_func_start calledOnBAtkProbInit_8011764
 calledOnBAtkProbInit_8011764:
@@ -13641,7 +13641,7 @@ loc_8014A98:
 	ldr r1, dword_8014B14 // =0x80000 
 	tst r0, r1
 	bne locret_8014AA6
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 locret_8014AA6:
 	pop {pc}
 loc_8014AA8:
@@ -13853,7 +13853,7 @@ loc_8014C72:
 	bl sub_8011268
 	pop {r0}
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #0x8d
@@ -14101,7 +14101,7 @@ loc_8014E92:
 	strb r1, [r0,#oBattleObject_Param3]
 loc_8014EA8:
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #4
@@ -14370,7 +14370,7 @@ loc_80150CA:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_80150F0:
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #4
@@ -14658,7 +14658,7 @@ loc_8015356:
 	strb r1, [r0,#oBattleObject_Param3]
 loc_801536C:
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #4
@@ -14901,7 +14901,7 @@ loc_801555A:
 	strb r1, [r0,#oBattleObject_Param3]
 loc_8015578:
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #0x8d
@@ -15088,7 +15088,7 @@ loc_80156DC:
 	mov r2, #0
 	bl sub_8011268
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	mov r0, #0
@@ -15237,7 +15237,7 @@ loc_801580A:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8015878:
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	bl object_clearInvulnerableTime
@@ -18827,7 +18827,7 @@ loc_801738A:
 	bl sub_8013E58
 	bl sub_801DB84
 	mov r0, #3
-	bl sub_8018856
+	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
 	bl sub_801DC06
 	bl GetBattleEffects // () -> int
@@ -21277,9 +21277,9 @@ getIndexedSignedBytePair_8018842:
 
 // symdb: Computes the per-frame X-axis step the AI moves toward an enemy based on a chip-class table, signed by the object's facing direction.
 // symdb: (r0 = chipClassTableIdx, r5 = BattleObjectPtr) -> r0 = signed X-step multiplier for AI movement
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018856.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computeAIStepForwardDeltaX_8018856.yaml
 	thumb_local_start
-sub_8018856:
+battleObject_computeAIStepForwardDeltaX_8018856:
 	push {lr}
 	push {r0}
 	mov r1, #0x2c 
@@ -21299,7 +21299,7 @@ sub_8018856:
 	pop {r0,r1}
 	mul r0, r2
 	pop {pc}
-	thumb_func_end sub_8018856
+	thumb_func_end battleObject_computeAIStepForwardDeltaX_8018856
 
 // symdb: Returns a pointer to a 0x44-byte sprite/animation record from one of three tables, optionally remapping the sub-index through a 16-entry LUT when the table index is 0.
 // symdb: const void *u8(u16 tableIdx, u16 subIdx); // r0=tableIdx, r1=subIdx -> r0=ptr; clobbers
@@ -26293,9 +26293,9 @@ locret_801BCCE:
 // symdb: Refreshes a battle object's sprite animation index whenever CurAnim changes, then ticks the sprite one frame.
 // symdb: (r5 = BattleObject* this, lr = return) -> (r0, r1, r2, r3 clobbered; r4, r5, lr preserved for
 // symdb: tail-call; void return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BCD0.yaml
-	thumb_func_start sub_801BCD0
-sub_801BCD0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteAnimIfChanged_801BCD0.yaml
+	thumb_func_start battleObject_updateSpriteAnimIfChanged_801BCD0
+battleObject_updateSpriteAnimIfChanged_801BCD0:
 	push {lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #8
@@ -26313,7 +26313,7 @@ loc_801BCEE:
 	bl sprite_update
 locret_801BCF2:
 	pop {pc}
-	thumb_func_end sub_801BCD0
+	thumb_func_end battleObject_updateSpriteAnimIfChanged_801BCD0
 
 // symdb: Per-frame sprite update for a battle object (loads new anim if changed, then advances sprite), gated by pause/time-stop/freeze flags.
 // symdb: u32 sub_801BCF4(u32 obj /* r5 */) -> r5 (obj unchanged); clobbers nz,c,v,r0-r3,lr; preserves
@@ -26696,7 +26696,7 @@ off_801BF04:
 	.word battleObject_updateAnimAndState_801CADC+1
 	.word sub_801CE28+1
 	.word sub_801D1D8+1
-	.word sub_801C5F4+1
+	.word battle_playCounterHitSound_801C5F4+1
 	.word sub_801D2A0+1
 	.word sub_801D450+1
 	.word sub_801D514+1
@@ -27665,9 +27665,9 @@ locret_801C5F2:
 // symdb: Plays a "counter hit" SFX from a small lookup table when the AIData's Anger/Timer tier increases between ticks, but only if battle flag 0x40 is set.
 // symdb: (r5 = AIData*, r10 = Toolkit*, lr) -> no meaningful r0 return; side effects:
 // symdb: PlaySoundEffect(r0=???)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C5F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_playCounterHitSound_801C5F4.yaml
 	thumb_local_start
-sub_801C5F4:
+battle_playCounterHitSound_801C5F4:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_MainJumptableIndexPtr]
@@ -27706,7 +27706,7 @@ loc_801C620:
 	bl PlaySoundEffect
 locret_801C63E:
 	pop {pc}
-	thumb_func_end sub_801C5F4
+	thumb_func_end battle_playCounterHitSound_801C5F4
 
 // symdb: Renders the battle BG tile-id blocks and arrow indicators used by the turn-order selection BG overlay
 // symdb: (r5 = *Toolkit, r10 = ?, lr) -> r0 = ?, nz/c/v ; side effects: queue GFX transfers and write BG
@@ -31353,9 +31353,9 @@ off_801E09C:
 // symdb: (r0 = param0 -> byte_2035281, r1 = param1 -> byte_2035282, r10 = toolkit) -> void ; side
 // symdb: effects: writes Struct2035280+0x24/0x1/0x2, ORs 0x80 into Struct2035280+0x40, then calls
 // symdb: dispatch_801DA48(r0=0x80)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E0A0.yaml
-	thumb_func_start sub_801E0A0
-sub_801E0A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_eStruct2035280_postEvent_801E0A0.yaml
+	thumb_func_start battle_eStruct2035280_postEvent_801E0A0
+battle_eStruct2035280_postEvent_801E0A0:
 	push {lr}
 	ldr r3, off_801E0D8 // =eStruct2035280
 	ldr r2, [r3,#0x48] // (dword_20352C8 - 0x2035280)
@@ -31368,7 +31368,7 @@ sub_801E0A0:
 	mov r0, #0x80
 	bl dispatch_801DA48
 	pop {pc}
-	thumb_func_end sub_801E0A0
+	thumb_func_end battle_eStruct2035280_postEvent_801E0A0
 
 	thumb_local_start
 sub_801E0BC:

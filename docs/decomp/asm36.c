@@ -440,7 +440,7 @@ int sub_813068C()
 	if ( v1 )
 	{
 		v5 = v1 - 1;
-		v6 = sub_8137884(v1 - 1);
+		v6 = battle_getPlayerCurState_8137884(v1 - 1);
 		v7 = chatbox_getTextScriptPointerByIndex_804A24C(v6 >> 4);
 		CopyBytes(v7, &unk_202708C, 32);
 		v8 = *(v0 + oToolkit_S_Chip_2002178_Ptr) + 60 * v5;
@@ -607,7 +607,7 @@ void sub_8130810()
 	sub_8130850();
 	if ( v0[12] )
 	{
-		v1 = sub_8137884(v0[12] - 1);
+		v1 = battle_getPlayerCurState_8137884(v0[12] - 1);
 		sub_8120348(v1 >> 4, word_20347D8, 10, 1);
 		CopyBackgroundTiles(8, 6, 2, word_20347D8, 15, &byte_0[2]);
 	}
@@ -4529,7 +4529,7 @@ int __fastcall sub_8133A68(int a1)
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_81345D4();
+    battleObject_runActionShieldOrStatusEffect_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
     object_resolveTableEntryByIndex_8134538();
@@ -4565,7 +4565,7 @@ int __fastcall sub_8133B18(int a1)
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_81345D4();
+    battleObject_runActionShieldOrStatusEffect_81345D4();
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v3);
     object_resolveTableEntryByIndex_8134538();
@@ -4594,7 +4594,7 @@ int __fastcall sub_8133B74(int a1)
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_81345D4();
+    battleObject_runActionShieldOrStatusEffect_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
     object_resolveTableEntryByIndex_8134538();
@@ -5125,7 +5125,7 @@ int sub_81345B0()
 
 
 // 0x81345d4
-int sub_81345D4()
+int battleObject_runActionShieldOrStatusEffect_81345D4()
 {
     return battleObject_updateShieldOrStatusEffect_813468C(90, 32, 32, 18);
 }
@@ -9821,7 +9821,7 @@ signed int __fastcall takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C(un
 
 
 // 0x8137884
-int __fastcall sub_8137884(int a1)
+int __fastcall battle_getPlayerCurState_8137884(int a1)
 {
     return *(&unk_20018EC + a1);
 }

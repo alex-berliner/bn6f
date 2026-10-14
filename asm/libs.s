@@ -21912,7 +21912,7 @@ loc_814E300:
 	tst r0, r3
 	beq loc_814E37E
 	mov r0, r5
-	bl sub_814ECB4
+	bl mplay_trackHandler_814ECB4
 	mov r0, #0x80
 	strb r0, [r5]
 	mov r0, #2
@@ -23212,7 +23212,7 @@ loc_814EB38:
 	beq loc_814EB6A
 	mov r0, r4
 	str r2, [sp]
-	bl sub_814ECB4
+	bl mplay_trackHandler_814ECB4
 	ldr r2, [sp]
 	strb r2, [r4]
 	mov r0, #2
@@ -23410,9 +23410,9 @@ off_814ECB0:
 // symdb: m4a song-track tail-call trampoline that pops the saved LR and returns through the chosen track's IRQ handler.
 // symdb: (r0 = MPlayTrackInfo*) ; r0 = LR; no other output regs; no side effects on globals beyond the
 // symdb: tail call.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814ECB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mplay_trackHandler_814ECB4.yaml
 	thumb_local_start
-sub_814ECB4:
+mplay_trackHandler_814ECB4:
 	push {lr}
 	ldr r1, off_814ECC4 // =off_30055FC 
 	ldr r1, [r1]
@@ -23422,7 +23422,7 @@ sub_814ECB4:
 	.balign 4, 0
 off_814ECC4:
 	.word off_30055FC
-	thumb_func_end sub_814ECB4
+	thumb_func_end mplay_trackHandler_814ECB4
 
 	thumb_local_start
 sub_814ECC8:
@@ -23990,7 +23990,7 @@ loc_814F0A0:
 	add r0, r1, #1
 	str r0, [r5]
 	mov r0, r7
-	bl sub_814ECB4
+	bl mplay_trackHandler_814ECB4
 	str r6, [r7,#0x2c]
 	strb r4, [r7,#8]
 	mov r0, #0x80

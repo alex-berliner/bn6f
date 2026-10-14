@@ -7452,7 +7452,7 @@ void __fastcall sub_8008928(int a1, int a2, int a3, int a4)
 
 
 // 0x8008950
-int sub_8008950()
+int battle_dispatchPostMoveSubstate_8008950()
 {
     int v0; // r0
 
@@ -8476,7 +8476,7 @@ int task484_RunFrame_800927C()
     dispatch_801DA48(&dword_484);
     battle_initSceneStart_801E5F8();
     battle_sceneFrameSetup_801DA24();
-    return sub_801E0A0(0, 0);
+    return battle_eStruct2035280_postEvent_801E0A0(0, 0);
 }
 
 
@@ -9491,7 +9491,7 @@ int sub_8009A68()
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
     battle_sceneFrameSetup_801DA24();
-    return sub_801E0A0(0, 0);
+    return battle_eStruct2035280_postEvent_801E0A0(0, 0);
 }
 
 
@@ -9617,7 +9617,7 @@ void __fastcall sub_8009B20(int a1, int a2, int a3, int a4)
         sub_8008D40(*(v4 + 3), a2, a3, a4);
         *(v4 + 3) = 4;
     }
-    sub_8008950();
+    battle_dispatchPostMoveSubstate_8008950();
     someChipHandValidationHappensHere_800B090();
     if ( v5 )
     {
@@ -9870,7 +9870,7 @@ int sub_8009D58()
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
     battle_sceneFrameSetup_801DA24();
-    return sub_801E0A0(0, 0);
+    return battle_eStruct2035280_postEvent_801E0A0(0, 0);
 }
 
 

@@ -580,7 +580,7 @@ int __fastcall battle_custMenuAnimateCursorToOK_8026B04(int a1, int a2, int a3)
         *(v4[2] + 24) = 120;
         battle_setNaviStatusGfx_801E71C(0);
         dispatch_801DACC(128);
-        sub_801E0A0(15, 0);
+        battle_eStruct2035280_postEvent_801E0A0(15, 0);
         *(v3 + 68) = 15;
         *(v3 + 64) = 120;
         *(v3 + 2) = 120;
@@ -2266,7 +2266,7 @@ int battle_customGauge_EndTurn_8027D78()
     *(*(v0 + oToolkit_RenderInfoPtr) + 24) = 0;
     battle_setNaviStatusGfx_801E71C(0);
     dispatch_801DACC(128);
-    sub_801E0A0(0, 0);
+    battle_eStruct2035280_postEvent_801E0A0(0, 0);
     eStruct2035280_SetRequestBits_801BECC(&byte_400);
     v1 = dispatch_801DA48(&byte_400);
     result = battle_IsBattleEnding_800A97A(v1);
@@ -7872,7 +7872,7 @@ signed int __noreturn objStepFinishSetState4_802BE0C()
 
     call_sub_3005EBA(0, 0, 3, 0);
     *(*(v0 + oToolkit_RenderInfoPtr) + 24) = 0;
-    sub_801E0A0(0, 0);
+    battle_eStruct2035280_postEvent_801E0A0(0, 0);
     result = 4;
     *(v2 + 2) = 4;
     return result;
@@ -10248,7 +10248,7 @@ void sub_802D714()
     unsigned __int8 *v0; // r7
 
     (*(&off_802D72C + *v0))();
-    sub_801BCD0();
+    battleObject_updateSpriteAnimIfChanged_801BCD0();
 }
 
 
@@ -10448,7 +10448,7 @@ void sub_802D926()
 
     (*(&off_802D944 + *v0))();
     if ( !v0[3] )
-        sub_801BCD0();
+        battleObject_updateSpriteAnimIfChanged_801BCD0();
 }
 
 
@@ -15851,7 +15851,7 @@ __int64 __fastcall sub_80317DE(_DWORD *a1)
 
 
 // 0x80317fa
-__int64 __fastcall sub_80317FA(int a1, int a2)
+__int64 __fastcall table_GetCurrentEntryColumnCount_80317FA(int a1, int a2)
 {
     return (table_GetCurrentEntryHeader_8031760(1) + a2);
 }

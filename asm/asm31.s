@@ -26693,7 +26693,7 @@ battleObject_updateSprite_80C4484:
 	bl object_updateSprite
 	b locret_80C44A6
 loc_80C44A2:
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 locret_80C44A6:
 	pop {pc}
 	thumb_func_end battleObject_updateSprite_80C4484
@@ -26745,7 +26745,7 @@ battle_EndObjectCurrentAnim_80C44D2:
 	mov r1, #0xff
 	strb r1, [r0,#oBattleObject_CurAnimCopy]
 	mov r5, r0
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 locret_80C44E2:
 	pop {r5,pc}
 	thumb_func_end battle_EndObjectCurrentAnim_80C44D2
@@ -26984,7 +26984,7 @@ loc_80C4680:
 	bl object_updateSpriteTimestop
 	b locret_80C468A
 loc_80C4686:
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 locret_80C468A:
 	pop {pc}
 	thumb_func_end battleObject_updateSprite_80C464C
@@ -95483,7 +95483,7 @@ t4_0x3c_80E4A1C:
 	ldrb r0, [r5,#oBattleObject_CurState]
 	cmp r0, #8
 	bne loc_80E4A34
-	bl sub_801BCD0
+	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 	b locret_80E4A38
 loc_80E4A34:
 	bl sub_801BC24
@@ -108697,7 +108697,7 @@ sub_80EAE28:
 	mov r0, #1
 	strb r0, [r6,#1]
 	bl sub_80E1654
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EAE48
 	mov r0, #4
@@ -108886,13 +108886,13 @@ loc_80EAF80:
 	cmp r0, #1
 	beq loc_80EAFAE
 loc_80EAFAE:
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EAFBC
 	bl object_exitAttackState
 	b locret_80EAFC0
 loc_80EAFBC:
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80EAFC0:
 	pop {pc}
 	thumb_func_end object_endPwrAtkAction_80EAF36
@@ -109049,7 +109049,7 @@ loc_80EB0CC:
 	mov r1, #4
 	mov r2, #1
 	bl tableAddSaturatedByte_800AB46
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB10A
 	mov r0, #4
@@ -109061,13 +109061,13 @@ loc_80EB10A:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 	b locret_80EB126
 loc_80EB114:
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB122
 	bl object_exitAttackState
 	b locret_80EB126
 loc_80EB122:
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80EB126:
 	pop {pc}
 	thumb_func_end sub_80EB088
@@ -109106,7 +109106,7 @@ loc_80EB16C:
 	ldr r0, [r7,#oAIAttackVars_Unk_2c]
 	bl sub_800F2FC
 loc_80EB172:
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB180
 	mov r0, #3
@@ -109140,7 +109140,7 @@ aiAttack_TimerTickEnd_80EB194:
 	bl object_setFlag1 // (int a1) -> void
 	ldrh r0, [r7,#oAIAttackVars_Unk_18]
 	strh r0, [r7,#oAIAttackVars_Unk_10]
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB1BE
 	mov r0, #0
@@ -109175,13 +109175,13 @@ loc_80EB1E0:
 	mov r0, #0
 loc_80EB1E2:
 	strb r0, [r4,#oAIData_Unk_1a]
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB1F2
 	bl object_exitAttackState
 	b locret_80EB1F6
 loc_80EB1F2:
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80EB1F6:
 	pop {pc}
 	thumb_func_end ai_attackStepRunDecrement_80EB1C4
@@ -109202,7 +109202,7 @@ sub_80EB1F8:
 	bl object_removePanelReserve
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
-	bl sub_80F02A2
+	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB22A
 	mov r0, #3
@@ -119898,9 +119898,9 @@ locret_80F02A0:
 
 // symdb: Returns 0 only when the actor's AIAttackVars.Unk_0d is nonzero AND AIData.Unk_48 has bit 0x8000 set; otherwise returns 1.
 // symdb: (r7 = AIDataPtr) -> r0 = 1 or 0 ; r4 trashed, preserves r5/r7/lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F02A2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttack_checkMysteryDataUnk_80F02A2.yaml
 	thumb_local_start
-sub_80F02A2:
+battle_aiAttack_checkMysteryDataUnk_80F02A2:
 	push {r4,lr}
 	mov r4, #1
 	ldrb r0, [r7,#oAIAttackVars_Unk_0d]
@@ -119952,7 +119952,7 @@ byte_80F0304:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_80F02A2
+	thumb_func_end battle_aiAttack_checkMysteryDataUnk_80F02A2
 
 	thumb_local_start
 playerAI_sub_80F0354:
@@ -127293,7 +127293,7 @@ sub_80F3DC0:
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_CURRENTLY_MOVING_1_BIT
 	bl object_setFlag1 // (int a1) -> void
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80F3E08:
 	pop {pc}
 	thumb_func_end sub_80F3DC0
@@ -127314,7 +127314,7 @@ loc_80F3E1C:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80F3E28
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80F3E28:
 	pop {pc}
 	thumb_func_end sub_80F3E0A
@@ -148028,7 +148028,7 @@ locret_80FE1FC:
 	pop {pc}
 	thumb_func_end battle_aiAttack_stepGlide_80FE1B4
 
-// symdb: Ticks one AI attack's countdown, arming it on first call and firing it (via sub_801171C) once the timer expires.
+// symdb: Ticks one AI attack's countdown, arming it on first call and firing it (via object_exitAttackState_801171C) once the timer expires.
 // symdb: void sub_80FE1FE(oAIAttackVars *attack /*r7*/); // caller-visible: r0-r3 clobbered, nz/c/v
 // symdb: reflect last op, r5/r6/r7 pass through, lr popped
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiTickAttackTimer_80FE1FE.yaml
@@ -148048,7 +148048,7 @@ loc_80FE210:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80FE21C
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_80FE21C:
 	pop {pc}
 	thumb_func_end battle_aiTickAttackTimer_80FE1FE
@@ -160434,7 +160434,7 @@ sub_81041B0:
 loc_81041CC:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81041D4:
 	pop {pc}
 	thumb_func_end sub_81041B0
@@ -160473,7 +160473,7 @@ sub_81041D6:
 loc_8104218:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104220:
 	pop {pc}
 	.balign 4, 0
@@ -160596,7 +160596,7 @@ loc_81042FC:
 	bgt locret_810430C
 	mov r0, #0x40 
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810430C:
 	pop {pc}
 	thumb_func_end sub_8104290
@@ -160640,7 +160640,7 @@ sub_8104340:
 loc_810435C:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104364:
 	pop {pc}
 	thumb_func_end sub_8104340
@@ -160680,7 +160680,7 @@ sub_8104366:
 loc_81043AA:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81043B2:
 	pop {pc}
 	.balign 4, 0
@@ -160887,7 +160887,7 @@ loc_810451C:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8104528
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104528:
 	pop {pc}
 	thumb_func_end sub_8104500
@@ -160933,7 +160933,7 @@ sub_810455C:
 loc_810457C:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104584:
 	pop {pc}
 	thumb_func_end sub_810455C
@@ -160973,7 +160973,7 @@ sub_8104586:
 loc_81045CA:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81045D2:
 	pop {pc}
 	.balign 4, 0
@@ -161209,7 +161209,7 @@ loc_810477E:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_810478A
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810478A:
 	pop {pc}
 	thumb_func_end sub_8104758
@@ -161272,7 +161272,7 @@ loc_81047F2:
 loc_8104800:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104808:
 	pop {pc}
 	thumb_func_end sub_81047C0
@@ -161618,7 +161618,7 @@ loc_8104A90:
 	bgt locret_8104AA0
 	mov r0, #0x40 
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104AA0:
 	pop {pc}
 	thumb_func_end sub_8104A30
@@ -161800,7 +161800,7 @@ loc_8104BD8:
 	bgt locret_8104BE8
 	mov r0, #0x40 
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104BE8:
 	pop {pc}
 	thumb_func_end sub_8104BC2
@@ -162157,7 +162157,7 @@ loc_8104E8A:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8104E96
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8104E96:
 	pop {pc}
 	thumb_func_end sub_8104E36
@@ -163548,7 +163548,7 @@ loc_8105A00:
 loc_8105A0E:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105A16:
 	pop {pc}
 	.balign 4, 0
@@ -163613,7 +163613,7 @@ loc_8105A88:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8105A94
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105A94:
 	pop {pc}
 	thumb_func_end sub_8105A72
@@ -163708,7 +163708,7 @@ loc_8105B32:
 loc_8105B40:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105B48:
 	pop {pc}
 	thumb_func_end sub_8105AF6
@@ -163891,7 +163891,7 @@ loc_8105C84:
 	bgt locret_8105C94
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105C94:
 	pop {pc}
 	thumb_func_end sub_8105C72
@@ -163986,7 +163986,7 @@ loc_8105D2E:
 loc_8105D3C:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105D44:
 	pop {pc}
 	.balign 4, 0
@@ -164135,7 +164135,7 @@ loc_8105E52:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8105E5E
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105E5E:
 	pop {pc}
 	thumb_func_end sub_8105E3C
@@ -164229,7 +164229,7 @@ loc_8105EF4:
 loc_8105F02:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105F0A:
 	pop {pc}
 	.balign 4, 0
@@ -164344,7 +164344,7 @@ loc_8105FD4:
 	bgt locret_8105FE4
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8105FE4:
 	pop {pc}
 	thumb_func_end sub_8105FC2
@@ -164441,7 +164441,7 @@ loc_8106086:
 loc_8106094:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810609C:
 	pop {pc}
 	thumb_func_end sub_810604A
@@ -164617,7 +164617,7 @@ loc_81061C4:
 	bgt locret_81061D4
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81061D4:
 	pop {pc}
 	thumb_func_end sub_81061B2
@@ -164703,7 +164703,7 @@ loc_810625C:
 loc_810626A:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8106272:
 	pop {pc}
 	thumb_func_end sub_8106238
@@ -164931,7 +164931,7 @@ loc_810640A:
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8106416
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_8106416:
 	pop {pc}
 	thumb_func_end sub_81063F4
@@ -171534,7 +171534,7 @@ loc_81097BE:
 	bge locret_81097D4
 	cmp r6, #0
 	beq loc_81097D0
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_81097D4
 loc_81097D0:
 	bl object_exitAttackState
@@ -171568,7 +171568,7 @@ loc_81097E0:
 loc_81097F4:
 	cmp r6, #0
 	beq loc_81097FE
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_8109802
 loc_81097FE:
 	bl object_exitAttackState
@@ -171637,7 +171637,7 @@ loc_810985E:
 loc_8109864:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810986C:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8109820
@@ -171678,7 +171678,7 @@ loc_8109890:
 	bl object_setFlag1 // (int a1) -> void
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_1a]
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_81098C2:
 	pop {pc}
 	thumb_func_end sub_810986E
@@ -175563,7 +175563,7 @@ loc_810B918:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	mov r0, #0x40
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 	b locret_810B962
 loc_810B942:
 	mov r0, #0x64
@@ -175646,7 +175646,7 @@ loc_810B9D4:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	bl sub_810BDF4
-	bl sub_801171C
+	bl object_exitAttackState_801171C
 locret_810B9E0:
 	pop {r4,r6,pc}
 	.byte 0x0, 0x0

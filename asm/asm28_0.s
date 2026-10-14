@@ -2297,7 +2297,7 @@ cutscenescript_809AA50:
 
 byte_809AA5F:
 	cs_wait_chatbox byte1=0x08
-	cs_call_native_with_return_value ptr1=sub_809AB20+1
+	cs_call_native_with_return_value ptr1=battle_lotteryStep_809AB20+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=cutscenescript_809AA44
 	cs_jump_if_var_equal byte1=0x08 byte2=0x03 destination3=byte_809AA87
 	cs_jump_if_var_equal byte1=0x08 byte2=0x04 destination3=cutscenescript_809AA50
@@ -2379,9 +2379,9 @@ loc_809AB1A:
 // symdb: (r2 = eventFlagValue, r5 = localLotteryStatePtr, r7..r12 = preserved scratch from callers) -> r0
 // symdb: = 0 to indicate "tick processed", 1 to indicate "chatbox still busy" ; side effects: text
 // symdb: scripts played, chip/item/NaviCust grants fired, counter/state bytes clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AB20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_lotteryStep_809AB20.yaml
 	thumb_local_start
-sub_809AB20:
+battle_lotteryStep_809AB20:
 	push {r4-r7,lr}
 	movflag EVENT_1725
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -2523,7 +2523,7 @@ dword_809AC2C:
 	.word unk_2033700
 
 	.word NULL
-	thumb_func_end sub_809AB20
+	thumb_func_end battle_lotteryStep_809AB20
 
 	thumb_local_start
 sub_809AC48:

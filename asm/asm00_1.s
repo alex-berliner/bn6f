@@ -3125,7 +3125,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A72B4+1
 	.word sub_80A77A8+1
 	.word sub_80A781C+1
-	.word sub_80A78B8+1
+	.word battle_aiDispatchByAIDataBLeftAbility_80A78B8+1
 	.word sub_80A7C84+1
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1
 	.word battle_dispatchCustomJumptableByIndex_80A8208+1
@@ -12212,9 +12212,9 @@ off_8008940:
 // symdb: Dispatches the battle's post-move substate by reading a state byte from EWRAM at 0x203CA70 and tail-calling the matching handler
 // symdb: () -> r0 = byte loaded from *(0x203CA70 + 0x4) ; side effects: tail-calls one of seven handlers
 // symdb: stored in `off_800896C`, preserving lr via r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008950.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchPostMoveSubstate_8008950.yaml
 	thumb_local_start
-sub_8008950:
+battle_dispatchPostMoveSubstate_8008950:
 	push {r5,lr}
 	ldr r5, off_8008988 // =dword_203CA70
 	ldr r1, off_8008968 // =off_800896C
@@ -12238,7 +12238,7 @@ off_800896C:
 	.word sub_8008D18+1
 off_8008988:
 	.word dword_203CA70
-	thumb_func_end sub_8008950
+	thumb_func_end battle_dispatchPostMoveSubstate_8008950
 
 	thumb_local_start
 sub_800898C:
@@ -13506,7 +13506,7 @@ task484_RunFrame_800927C:
 	bl battle_sceneFrameSetup_801DA24
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 	pop {pc}
 	.balign 4, 0
 off_800929C:
@@ -14612,7 +14612,7 @@ sub_8009A68:
 	bl battle_sceneFrameSetup_801DA24
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 	pop {pc}
 	.balign 4, 0
 off_8009A84:
@@ -14724,7 +14724,7 @@ sub_8009B20:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009B30:
-	bl sub_8008950
+	bl battle_dispatchPostMoveSubstate_8008950
 	bl someChipHandValidationHappensHere_800B090
 	cmp r0, #0
 	beq locret_8009BAA
@@ -15021,7 +15021,7 @@ sub_8009D58:
 	bl battle_sceneFrameSetup_801DA24
 	mov r0, #0
 	mov r1, #0
-	bl sub_801E0A0
+	bl battle_eStruct2035280_postEvent_801E0A0
 	pop {pc}
 	.balign 4, 0
 off_8009D74:

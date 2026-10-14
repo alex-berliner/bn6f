@@ -21724,7 +21724,7 @@ void battleObject_updateSprite_80C4484()
     (sprite_setAlpha)(v1);
     if ( *(v0 + 6) )
     {
-        sub_801BCD0();
+        battleObject_updateSpriteAnimIfChanged_801BCD0();
     }
     else
     {
@@ -21769,7 +21769,7 @@ void __fastcall battle_EndObjectCurrentAnim_80C44D2(int result)
     if ( result )
     {
         *(result + 17) = -1;
-        sub_801BCD0();
+        battleObject_updateSpriteAnimIfChanged_801BCD0();
     }
 }
 
@@ -21951,7 +21951,7 @@ void battleObject_updateSprite_80C464C()
         }
         else if ( v2 == 2 )
         {
-            sub_801BCD0();
+            battleObject_updateSpriteAnimIfChanged_801BCD0();
         }
         else
         {
@@ -73729,7 +73729,7 @@ void t4_0x3c_80E4A1C()
 
     (*(&off_80E4A40 + *(v0 + 8)))();
     if ( *(v0 + 8) == 8 )
-        sub_801BCD0();
+        battleObject_updateSpriteAnimIfChanged_801BCD0();
     else
         sub_801BC24();
 }
@@ -83862,7 +83862,7 @@ int __fastcall sub_80EAE28(int a1, int a2, int a3, int a4)
     {
         *(a4 + 1) = 1;
         sub_80E1654();
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_setAnimation(v4);
         *(v6 + 8) = 3;
     }
@@ -83991,7 +83991,7 @@ LABEL_11:
         object_clearFlag(64);
         object_setFlag1(0x80000);
         sub_802D234();
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_exitAttackState(v0);
         else
             (loc_801171C)();
@@ -84099,7 +84099,7 @@ void sub_80EB088()
     if ( !v6 )
     {
 LABEL_14:
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_exitAttackState(v0);
         else
             (loc_801171C)();
@@ -84114,7 +84114,7 @@ LABEL_14:
     SetAIDataUnk0x48Flag(v8);
     object_setFlag1(64);
     tableAddSaturatedByte_800AB46(v0->Alliance, 4, 1);
-    if ( sub_80F02A2() )
+    if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
         object_setAnimation(v0);
     *(v1 + 16) = 3;
     *v1 = 4;
@@ -84150,7 +84150,7 @@ int sub_80EB128()
             if ( v5 == 49 || v5 == 35 || v5 == 51 )
                 sub_800F2FC(*(v1 + 44));
         }
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_setAnimation(v0);
         *(v1 + 16) = 5;
         result = 8;
@@ -84174,7 +84174,7 @@ int aiAttack_TimerTickEnd_80EB194()
         object_clearFlag(64);
         object_setFlag1(0x80000);
         v1[8] = v1[12];
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_setAnimation(v0);
         result = 12;
         *v1 = 12;
@@ -84205,7 +84205,7 @@ void ai_attackStepRunDecrement_80EB1C4()
         else
             v6 = 0;
         *(v0 + 26) = v6;
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_exitAttackState(v1);
         else
             (loc_801171C)();
@@ -84238,7 +84238,7 @@ int sub_80EB1F8()
         object_removePanelReserve(v5, v6);
         object_setCoordinatesFromPanels(v0);
         object_updateCollisionPanels(v0);
-        if ( sub_80F02A2() )
+        if ( battle_aiAttack_checkMysteryDataUnk_80F02A2() )
             object_setAnimation(v0);
         v1[8] = 5;
         result = 8;
@@ -92460,7 +92460,7 @@ void __fastcall sub_80F0262(int a1, int a2, int a3)
 
 
 // 0x80f02a2
-signed int sub_80F02A2()
+signed int battle_aiAttack_checkMysteryDataUnk_80F02A2()
 {
     int v0; // r7
     signed int v1; // r4
