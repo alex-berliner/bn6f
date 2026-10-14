@@ -10639,7 +10639,7 @@ loc_802B0F2:
 	ldrb r2, [r5,#0xf]
 	ldr r3, off_802B110 // =byte_802A848 
 	ldr r4, [r6,#8]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	add r6, #0x10
 	sub r7, #1
 	bgt loc_802B0F2
@@ -10689,7 +10689,7 @@ loc_802B178:
 	mov r2, #0
 	ldr r3, off_802B198 // =dword_802A862
 	ldr r4, [r6,#8]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	add r6, #0x10
 	sub r7, #1
 	bgt loc_802B178
@@ -10769,7 +10769,7 @@ loc_802B22A:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1

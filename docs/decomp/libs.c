@@ -9953,7 +9953,7 @@ int __fastcall sub_814E09C(int a1)
     do
     {
         v2 = *v1;
-        sub_814E0B6();
+        battleObject_validateScriptPointer_814E0B6();
         *v4 = v5;
         v6 = (v4 + 1);
         v1 = (v7 + 4);
@@ -9969,19 +9969,19 @@ void __fastcall sub_814E0B4(int a1, int a2, unsigned __int8 *a3)
     int v3; // r3
 
     v3 = *a3;
-    sub_814E0B6();
+    battleObject_validateScriptPointer_814E0B6();
 }
 
 
 // 0x814e0b6
-void sub_814E0B6()
+void battleObject_validateScriptPointer_814E0B6()
 {
     ;
 }
 
 
 // 0x814e0d0
-void __fastcall sub_814E0D0(int a1, int a2)
+void __fastcall battleObject_runUpdateRoutineAndAdvancePC_814E0D0(int a1, int a2)
 {
     unsigned __int8 *v2; // r2
     int v3; // r3
@@ -9989,7 +9989,7 @@ void __fastcall sub_814E0D0(int a1, int a2)
     v2 = *(a2 + 64);
     *(a2 + 64) = v2 + 1;
     v3 = *v2;
-    sub_814E0B6();
+    battleObject_validateScriptPointer_814E0B6();
 }
 
 
@@ -10052,7 +10052,7 @@ int __fastcall sub_814E12C(int a1, int a2)
         JUMPOUT(&loc_814E0DE);
     }
     ++*(a2 + 3);
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     if ( v6 < v5 )
         JUMPOUT(&loc_814E0DE);
     *(v3 + 3) = 0;
@@ -10068,7 +10068,7 @@ int __fastcall sub_814E15C(int a1, int a2)
     char v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     *(v2 + 29) = v3;
     return v4();
 }
@@ -10081,7 +10081,7 @@ int __fastcall sub_814E168(int a1, int a2)
     _WORD *v3; // r0
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v2 *= 2;
     v3[14] = v2;
     v3[16] = v2 * v3[15] >> 8;
@@ -10096,7 +10096,7 @@ int __fastcall sub_814E17C(int a1, int a2)
     char v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v2[10] = v3;
     *v2 |= 0xCu;
     return v4();
@@ -10125,13 +10125,13 @@ int __fastcall loadNextQueuedParams_814E190(int a1, _DWORD *a2)
     v3 = *v2;
     a2[16] = v2 + 1;
     v4 = *(12 * v3 + *(a1 + 48));
-    sub_814E0B6();
+    battleObject_validateScriptPointer_814E0B6();
     *(v5 + 36) = v6;
     v8 = *(v7 + 4);
-    sub_814E0B6();
+    battleObject_validateScriptPointer_814E0B6();
     *(v9 + 40) = v10;
     v12 = *(v11 + 8);
-    sub_814E0B6();
+    battleObject_validateScriptPointer_814E0B6();
     *(v13 + 44) = v14;
     return v15();
 }
@@ -10144,7 +10144,7 @@ int __fastcall battleObj_runUpdateAndSetActive_814E1C0(int a1, int a2)
     char v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v2[18] = v3;
     *v2 |= 3u;
     return v4();
@@ -10158,7 +10158,7 @@ int __fastcall sprite_moveYUp64AndMarkDirty_814E1D4(int a1, int a2)
     _BYTE *v3; // r1
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v3[20] = v2 - 64;
     *v3 |= 3u;
     return v4();
@@ -10172,7 +10172,7 @@ int __fastcall sub_814E1E8(int a1, int a2)
     _BYTE *v3; // r1
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v3[14] = v2 - 64;
     *v3 |= 0xCu;
     return v4();
@@ -10186,7 +10186,7 @@ int __fastcall sub_814E1FC(int a1, int a2)
     char v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v2[15] = v3;
     *v2 |= 0xCu;
     return v4();
@@ -10200,7 +10200,7 @@ int __fastcall sub_814E210(int a1, int a2)
     char v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     *(v2 + 27) = v3;
     return v4();
 }
@@ -10213,7 +10213,7 @@ int __fastcall sub_814E21C(int a1, int a2)
     int v3; // r3
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     if ( v2[24] != v3 )
     {
         v2[24] = v3;
@@ -10230,7 +10230,7 @@ int __fastcall chatbox_PrintBuffer_WriteNextGlyph_814E234(int a1, int a2)
     _BYTE *v3; // r1
     int (*v4)(void); // r12
 
-    sub_814E0D0(a1, a2);
+    battleObject_runUpdateRoutineAndAdvancePC_814E0D0(a1, a2);
     v3[12] = v2 - 64;
     *v3 |= 0xCu;
     return v4();
@@ -11236,7 +11236,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
         *(v2 + 28) = a1;
         *(v2 + 40) = CgbSound;
         *(v2 + 44) = soundStartChannel_814F44C;
-        *(v2 + 48) = sub_814F3A4;
+        *(v2 + 48) = battle_calcPanelScreenCoord_814F3A4;
         *(v2 + 12) = 0;
         v5 = 0;
         SWI_CpuSet(&v5, a1, 83886144);
@@ -11727,7 +11727,7 @@ int __fastcall m4a_plyNote_applyPitchAndVolume_814F2F0(int a1, char *a2)
 
 
 // 0x814f3a4
-int __fastcall sub_814F3A4(char a1, unsigned __int8 a2, unsigned __int8 a3)
+int __fastcall battle_calcPanelScreenCoord_814F3A4(char a1, unsigned __int8 a2, unsigned __int8 a3)
 {
     signed int v3; // r12
     unsigned int v4; // r5

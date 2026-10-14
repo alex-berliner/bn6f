@@ -11734,7 +11734,7 @@ int __fastcall sub_81171D4(int a1, __int16 a2, int a3)
 
 
 // 0x81171f4
-int __fastcall sub_81171F4(int a1, int a2)
+int __fastcall battleObject_setFlags6Bit_81171F4(int a1, int a2)
 {
     int result; // r0
     int v3; // r1
@@ -12256,7 +12256,7 @@ int sub_8117820()
     v0 = sub_81178AC();
     if ( !v0 )
         return sprite_setUnk0x2c(-1);
-    v1 = sub_813B7A0(v0 - 144, 0) + 8;
+    v1 = battleObject_runAIDispatchTable_813B7A0(v0 - 144, 0) + 8;
     v2 = 0;
     v3 = 0xFFFFFFF;
     v4 = 0x8000000;
@@ -13537,7 +13537,7 @@ int sub_8118604()
     int v4; // r0
     unsigned int v5; // r2
 
-    v1 = sub_813B7A0(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144, *(v0 + 14)) + 8;
+    v1 = battleObject_runAIDispatchTable_813B7A0(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144, *(v0 + 14)) + 8;
     v2 = 0;
     v3 = 0;
     v4 = 0x7FFFFFFF;
@@ -13571,7 +13571,7 @@ int sub_8118658()
     int v4; // r0
     unsigned int v5; // r2
 
-    v1 = sub_813B7A0(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144, *(v0 + 14)) + 8;
+    v1 = battleObject_runAIDispatchTable_813B7A0(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144, *(v0 + 14)) + 8;
     v2 = 0;
     v3 = 0;
     v4 = -1;
@@ -14472,7 +14472,7 @@ int __noreturn battle_dispatchEventScript_8119018()
     v2 = (&off_811905C)[v1];
     v3 = *&byte_811906C[4 * v1];
     v4 = sub_8137884(v1);
-    v5 = sub_804A24C(v4 >> 4);
+    v5 = chatbox_getTextScriptPointerByIndex_804A24C(v4 >> 4);
     return sub_3006B94(v5, sub_3006B94, v6, v7);
 }
 
@@ -16382,7 +16382,7 @@ int __noreturn sub_811AA4C()
     v2 = *(&off_811AA90 + v1);
     v3 = *&byte_811AAA0[4 * v1];
     v4 = sub_8137884(v1);
-    v5 = sub_804A24C(v4 >> 4);
+    v5 = chatbox_getTextScriptPointerByIndex_804A24C(v4 >> 4);
     return sub_3006B94(v5, sub_3006B94, v6, v7);
 }
 
@@ -16498,7 +16498,7 @@ int __noreturn sub_811ABF8()
             v4 = v2;
             if ( v3 >= 34 )
                 v4 = 2;
-            v1 = sub_804A24C(v4);
+            v1 = chatbox_getTextScriptPointerByIndex_804A24C(v4);
         }
     }
     else
@@ -17644,7 +17644,7 @@ int sub_811BB64()
     int v4; // r0
     unsigned int v5; // r2
 
-    v1 = sub_813B7A0(word_2023FA0[2 * (*(v0 + 62) + *(v0 + 60))] - 144, 0) + 8;
+    v1 = battleObject_runAIDispatchTable_813B7A0(word_2023FA0[2 * (*(v0 + 62) + *(v0 + 60))] - 144, 0) + 8;
     v2 = 0;
     v3 = 0;
     v4 = -1;
@@ -17678,7 +17678,7 @@ int sub_811BBB8()
     int v4; // r0
     unsigned int v5; // r2
 
-    v1 = sub_813B7A0(*(v0 + 14) - 144, 0) + 8;
+    v1 = battleObject_runAIDispatchTable_813B7A0(*(v0 + 14) - 144, 0) + 8;
     v2 = 0;
     v3 = 0;
     v4 = -1;
@@ -21616,7 +21616,7 @@ int sub_811F508()
     result = 0x100000;
     if ( !*(v0 + 16) )
     {
-        result = sub_811FAF4(*(v0 + 16) | 0x100000, 0, *(v0 + 10), byte_811EBD0);
+        result = battleObject_queueOamFromTableRow_811FAF4(*(v0 + 16) | 0x100000, 0, *(v0 + 10), byte_811EBD0);
         v2 = *(v0 + 11) - 1;
         *(v0 + 11) = v2;
         if ( !v2 )
@@ -22173,7 +22173,7 @@ signed int __fastcall object_computeAndQueueOamEntry_811FA98(signed int result, 
 
 
 // 0x811faf4
-unsigned int __fastcall sub_811FAF4(int a1, unsigned int a2, int a3, int *a4)
+unsigned int __fastcall battleObject_queueOamFromTableRow_811FAF4(int a1, unsigned int a2, int a3, int *a4)
 {
     int v4; // r4
     int v5; // r10
@@ -22909,7 +22909,7 @@ int __fastcall sub_8120348(int a1, _WORD *a2, int a3, int a4)
         v9 = __OFSUB__(v8--, 1);
     }
     while ( !(((v8 < 0) ^ v9) | (v8 == 0)) );
-    v10 = sub_804A24C(a1);
+    v10 = chatbox_getTextScriptPointerByIndex_804A24C(a1);
     return sub_81202B4(v10, v11, v12, v13);
 }
 

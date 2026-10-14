@@ -156,9 +156,9 @@ sub_8141998:
 // symdb: Beast-SP Battle AI per-frame dispatch (init sub-mode, run AI, conditionally run sub-routines) returning 0.
 // symdb: (r10 = ToolkitPtr) -> r0 = 0 ; updates r4–r7/r8/r9/r12, calls many subsystems, may call
 // symdb: chatbox_mask_eFlags2009F38
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81419A0.yaml
-	thumb_func_start sub_81419A0
-sub_81419A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_performBeastOutBattleAiTick_81419A0.yaml
+	thumb_func_start battle_performBeastOutBattleAiTick_81419A0
+battle_performBeastOutBattleAiTick_81419A0:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
 	bl sub_8141AA8
@@ -204,7 +204,7 @@ loc_8141A08:
 loc_8141A0C:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_81419A0
+	thumb_func_end battle_performBeastOutBattleAiTick_81419A0
 
 	thumb_local_start
 sub_8141A10:
@@ -992,7 +992,7 @@ sub_814223E:
 battleObject_perFrameUpdate_8142248:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
-	bl sub_81422BE
+	bl battle_getBeastOutAvailability_81422BE
 	bne loc_8142272
 	ldrb r0, [r5,#0x3] // (byte_2000783 - 0x2000780)
 	tst r0, r0
@@ -1043,9 +1043,9 @@ sub_81422B4:
 
 // symdb: Returns 0 only when the current soul-weapon beast is unlocked and its required event flags are set; otherwise 1.
 // symdb: () -> r0 = bool (0 = beast available, 1 = unavailable) ; side effects: clobbers r0-r3,r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81422BE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getBeastOutAvailability_81422BE.yaml
 	thumb_local_start
-sub_81422BE:
+battle_getBeastOutAvailability_81422BE:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -1142,7 +1142,7 @@ byte_81424BC:
 	.byte 0x2, 0x7D, 0x80, 0x1, 0x1, 0x7D, 0x7D, 0x2, 0x1, 0x7D, 0x7C
 	.byte 0x1, 0x3, 0x7E, 0x7B, 0x3, 0x3, 0x7D, 0x7B, 0x1, 0x1, 0x7C
 	.byte 0x7B, 0x1, 0x2, 0x0, 0x0, 0xFF, 0xFF
-	thumb_func_end sub_81422BE
+	thumb_func_end battle_getBeastOutAvailability_81422BE
 
 	thumb_local_start
 sub_8142510:

@@ -2763,7 +2763,7 @@ signed int sub_809D560()
 
 
 // 0x809d5c4
-int sub_809D5C4()
+int owPlayer_applyCountdownUpdate_809D5C4()
 {
     int v0; // r5
     char v1; // r2

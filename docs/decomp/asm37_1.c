@@ -106,7 +106,7 @@ signed int __fastcall sub_8141914(int a1, int a2, int a3, int a4)
 
 
 // 0x81419a0
-int sub_81419A0()
+int battle_performBeastOutBattleAiTick_81419A0()
 {
     int v0; // r10
     char v1; // zf
@@ -652,7 +652,7 @@ int battleObject_perFrameUpdate_8142248()
 {
     char v0; // zf
 
-    sub_81422BE();
+    battle_getBeastOutAvailability_81422BE();
     if ( v0 )
     {
         if ( byte_2000783 )
@@ -689,7 +689,7 @@ int sub_81422B4()
 
 
 // 0x81422be
-BOOL sub_81422BE()
+BOOL battle_getBeastOutAvailability_81422BE()
 {
     char v0; // zf
     unsigned int v1; // r4

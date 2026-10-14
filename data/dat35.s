@@ -1633,7 +1633,7 @@ loc_812FC9A::
 	mov r2, #0x3c 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, #2
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r1, r0
 	mov r0, r6
 	mov r2, #0x20 

@@ -26705,7 +26705,7 @@ off_801BF84:
 	.word off_801BF88
 off_801BF88:
 	.word battle_RequestEndBattle_801C06E+1
-	.word sub_801C078+1
+	.word battle_drawChipCountsOAMWithRetvalZero_801C078+1
 	.word battle_renderHpOverlays_801C202+1
 	.word sub_801C416+1
 	.word battle_drawTimerTiles_801C4E4+1
@@ -26839,14 +26839,14 @@ battle_RequestEndBattle_801C06E:
 
 // symdb: Trivial battle helper that calls battle_drawChipCountsOAM_801C082 with r0=0 and returns 0.
 // symdb: () -> r0 = 0 ; side effects: delegates to battle_drawChipCountsOAM_801C082(r0=0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C078.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipCountsOAMWithRetvalZero_801C078.yaml
 	thumb_local_start
-sub_801C078:
+battle_drawChipCountsOAMWithRetvalZero_801C078:
 	push {lr}
 	mov r0, #0
 	bl battle_drawChipCountsOAM_801C082
 	pop {pc}
-	thumb_func_end sub_801C078
+	thumb_func_end battle_drawChipCountsOAMWithRetvalZero_801C078
 
 // symdb: Iterates an array of 6 chip-count OAM slots at dword_20352E0, projecting each owning battle object's screen X/Y and queuing an OAM entry for that actor's selected chip with a run of stacked OAM tiles.
 // symdb: (r0 = playerAlliance?) -> r0 = 0 ; side effects: queues OAM entries via sub_802FE28

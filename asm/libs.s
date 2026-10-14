@@ -21450,7 +21450,7 @@ sub_814E09C:
 	ldr r2, off_814E0CC // =off_81C0418 
 loc_814E0A2:
 	ldr r3, [r2]
-	bl sub_814E0B6
+	bl battleObject_validateScriptPointer_814E0B6
 	stmia r0!, {r3}
 	add r2, #4
 	sub r1, #1
@@ -21459,7 +21459,7 @@ loc_814E0A2:
 	.balign 4, 0x00
 	thumb_func_end sub_814E09C
 
-// symdb: Loads one byte from the buffer pointed to by r2 and tail-calls the next handler (sub_814E0B6) with that byte in r3, leaving r0 untouched.
+// symdb: Loads one byte from the buffer pointed to by r2 and tail-calls the next handler (battleObject_validateScriptPointer_814E0B6) with that byte in r3, leaving r0 untouched.
 // symdb: void sub_814E0B4(int arg /*r0*/, u8* src /*r2*/) /* r3 out = *src, r0 passed through, lr is the
 // symdb: tail-call target */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0B4.yaml
@@ -21472,9 +21472,9 @@ sub_814E0B4:
 // symdb: (r0 = scratch/preserved, r1 = scratch/preserved, r2 = candidate pointer to validate, lr =
 // symdb: return) -> r0 = preserved, r3 = 0 when r2 is outside the allowed range, else r3 untouched; side
 // symdb: effects: none observable (push/pop of r0 only)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E0B6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_validateScriptPointer_814E0B6.yaml
 	thumb_local_start
-sub_814E0B6:
+battleObject_validateScriptPointer_814E0B6:
 	push {r0}
 	lsr r0, r2, #0x19
 	bne loc_814E0C8
@@ -21491,22 +21491,22 @@ loc_814E0C8:
 	.balign 4, 0
 off_814E0CC:
 	.word off_81C0418
-	thumb_func_end sub_814E0B6
+	thumb_func_end battleObject_validateScriptPointer_814E0B6
 
 // symdb: Reads the next command byte from a battle-object's per-update script pointer at [r1+0x40], advances the pointer, then falls through into a RAM-pointer validator.
 // symdb: (r1 = battleObject/state ptr) -> r0 = ?, r2 = advanced script pointer, r3 = command byte (or
-// symdb: cleared if invalid); falls through into sub_814E0B6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
+// symdb: cleared if invalid); falls through into battleObject_validateScriptPointer_814E0B6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateRoutineAndAdvancePC_814E0D0.yaml
 	thumb_local_start
-sub_814E0D0:
+battleObject_runUpdateRoutineAndAdvancePC_814E0D0:
 	ldr r2, [r1,#0x40]
 loc_814E0D2:
 	add r3, r2, #1
 	str r3, [r1,#0x40]
 	ldrb r3, [r2]
-	b sub_814E0B6
+	b battleObject_validateScriptPointer_814E0B6
 	.balign 4, 0x00
-	thumb_func_end sub_814E0D0
+	thumb_func_end battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 
 	thumb_func_start ply_goto
 ply_goto:
@@ -21584,7 +21584,7 @@ loc_814E13C:
 	add r3, #1
 	strb r3, [r1,#3]
 	mov r12, r3
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	cmp r12, r3
 	bcs loc_814E14E
 	b loc_814E0DE
@@ -21601,7 +21601,7 @@ loc_814E14E:
 	thumb_func_start sub_814E15C
 sub_814E15C:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0x1d]
 	bx r12
 	.balign 4, 0x00
@@ -21614,7 +21614,7 @@ sub_814E15C:
 	thumb_func_start sub_814E168
 sub_814E168:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	lsl r3, r3, #1
 	strh r3, [r0,#0x1c]
 	ldrh r2, [r0,#0x1e]
@@ -21626,13 +21626,13 @@ sub_814E168:
 
 // symdb: Runs a helper on a battle object, stores the byte it computes at offset 0xA, and forces flag bits 2-3 (0xC) on in the object's flag byte at offset 0.
 // symdb: void battle_objectStoreComputedByteAndSetFlags_C(void); /* r1 = battle object pointer; r0,
-// symdb: r4-r11 are forwarded untouched to sub_814E0D0; returns r2 = 0xC, r3 = updated flag byte, NZ from
+// symdb: r4-r11 are forwarded untouched to battleObject_runUpdateRoutineAndAdvancePC_814E0D0; returns r2 = 0xC, r3 = updated flag byte, NZ from
 // symdb: the ORR */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E17C.yaml
 	thumb_func_start sub_814E17C
 sub_814E17C:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0xa]
 	ldrb r3, [r1]
 	mov r2, #0xc
@@ -21642,7 +21642,7 @@ sub_814E17C:
 	.byte 0, 0
 	thumb_func_end sub_814E17C
 
-// symdb: Pops the next entry number off an 8-bit command queue and copies (via sub_814E0B6) the three words of that table entry into the work struct's 0x24/0x28/0x2C parameter slots.
+// symdb: Pops the next entry number off an 8-bit command queue and copies (via battleObject_validateScriptPointer_814E0B6) the three words of that table entry into the work struct's 0x24/0x28/0x2C parameter slots.
 // symdb: void loadNextQueuedParams(u32 *owner /*r0, holds table ptr at +0x30*/, u32 *work /*r1, queue
 // symdb: cursor at +0x40, params at +0x24/0x28/0x2C*/)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadNextQueuedParams_814E190.yaml
@@ -21659,13 +21659,13 @@ loadNextQueuedParams_814E190:
 	ldr r3, [r0,#0x30]
 	add r2, r2, r3
 	ldr r3, [r2]
-	bl sub_814E0B6
+	bl battleObject_validateScriptPointer_814E0B6
 	str r3, [r1,#0x24]
 	ldr r3, [r2,#4]
-	bl sub_814E0B6
+	bl battleObject_validateScriptPointer_814E0B6
 	str r3, [r1,#0x28]
 	ldr r3, [r2,#8]
-	bl sub_814E0B6
+	bl battleObject_validateScriptPointer_814E0B6
 	str r3, [r1,#0x2c]
 	bx r12
 	.byte 0, 0
@@ -21678,7 +21678,7 @@ loadNextQueuedParams_814E190:
 	thumb_func_start battleObj_runUpdateAndSetActive_814E1C0
 battleObj_runUpdateAndSetActive_814E1C0:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0x12]
 	ldrb r3, [r1]
 	mov r2, #3
@@ -21696,7 +21696,7 @@ battleObj_runUpdateAndSetActive_814E1C0:
 	thumb_func_start sprite_moveYUp64AndMarkDirty_814E1D4
 sprite_moveYUp64AndMarkDirty_814E1D4:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	sub r3, #0x40 
 	strb r3, [r1,#0x14]
 	ldrb r3, [r1]
@@ -21706,15 +21706,15 @@ sprite_moveYUp64AndMarkDirty_814E1D4:
 	bx r12
 	thumb_func_end sprite_moveYUp64AndMarkDirty_814E1D4
 
-// symdb: Runs the check in sub_814E0D0 and writes its status, biased by 0x40, plus flag bits 0x0C into a state struct.
-// symdb: void recordCheckResultInState(void); // no direct args; callee sub_814E0D0 leaves the state
+// symdb: Runs the check in battleObject_runUpdateRoutineAndAdvancePC_814E0D0 and writes its status, biased by 0x40, plus flag bits 0x0C into a state struct.
+// symdb: void recordCheckResultInState(void); // no direct args; callee battleObject_runUpdateRoutineAndAdvancePC_814E0D0 leaves the state
 // symdb: struct pointer in r1; returns to caller via r12; clobbers r2, r3 and flags (c/v from SUB, nz
 // symdb: from ORR)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1E8.yaml
 	thumb_func_start sub_814E1E8
 sub_814E1E8:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	sub r3, #0x40 
 	strb r3, [r1,#0xe]
 	ldrb r3, [r1]
@@ -21724,14 +21724,14 @@ sub_814E1E8:
 	bx r12
 	thumb_func_end sub_814E1E8
 
-// symdb: Recomputes a status byte for the object/state structure in r1 via sub_814E0D0, stores it at +0xF, and sets the 0xC flag bits in the control byte at +0.
-// symdb: void sub_814E1FC(u8* state /* r1 */); // calls sub_814E0D0 (result in r3); flags NZ updated from
+// symdb: Recomputes a status byte for the object/state structure in r1 via battleObject_runUpdateRoutineAndAdvancePC_814E0D0, stores it at +0xF, and sets the 0xC flag bits in the control byte at +0.
+// symdb: void sub_814E1FC(u8* state /* r1 */); // calls battleObject_runUpdateRoutineAndAdvancePC_814E0D0 (result in r3); flags NZ updated from
 // symdb: the ORed byte
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1FC.yaml
 	thumb_func_start sub_814E1FC
 sub_814E1FC:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0xf]
 	ldrb r3, [r1]
 	mov r2, #0xc
@@ -21741,29 +21741,29 @@ sub_814E1FC:
 	.byte 0, 0
 	thumb_func_end sub_814E1FC
 
-// symdb: Thin wrapper that calls sub_814E0D0 and stores the byte result it leaves in r3 at [r1+0x1B].
-// symdb: void sub_814E210(...); // tail-style: preserves LR in r12, calls sub_814E0D0(r0,r1,...), then
+// symdb: Thin wrapper that calls battleObject_runUpdateRoutineAndAdvancePC_814E0D0 and stores the byte result it leaves in r3 at [r1+0x1B].
+// symdb: void sub_814E210(...); // tail-style: preserves LR in r12, calls battleObject_runUpdateRoutineAndAdvancePC_814E0D0(r0,r1,...), then
 // symdb: writes the callee's r3 byte to *(u8*)(r1+0x1B); all other registers and flags pass through from
 // symdb: the callee
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E210.yaml
 	thumb_func_start sub_814E210
 sub_814E210:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0x1b]
 	bx r12
 	.balign 4, 0x00
 	thumb_func_end sub_814E210
 
-// symdb: After resolving a record via sub_814E0D0, stores the record's new state byte and flags the record as dirty/needs-refresh when the state changed.
-// symdb: void sub_814E21C(void); // all actual inputs/outputs flow through the call to sub_814E0D0, which
+// symdb: After resolving a record via battleObject_runUpdateRoutineAndAdvancePC_814E0D0, stores the record's new state byte and flags the record as dirty/needs-refresh when the state changed.
+// symdb: void sub_814E21C(void); // all actual inputs/outputs flow through the call to battleObject_runUpdateRoutineAndAdvancePC_814E0D0, which
 // symdb: returns a record pointer in r1 and a state value in r3; returns r12=lr with flags left from
 // symdb: CMP/ORR
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E21C.yaml
 	thumb_func_start sub_814E21C
 sub_814E21C:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	ldrb r0, [r1,#0x18]
 	cmp r0, r3
 	beq loc_814E232
@@ -21782,7 +21782,7 @@ loc_814E232:
 	thumb_func_start chatbox_PrintBuffer_WriteNextGlyph_814E234
 chatbox_PrintBuffer_WriteNextGlyph_814E234:
 	mov r12, lr
-	bl sub_814E0D0
+	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	sub r3, #0x40 
 	strb r3, [r1,#0xc]
 	ldrb r3, [r1]
@@ -23309,7 +23309,7 @@ cgbSoundInit_814EB84:
 	str r0, [r4,#0x28]
 	ldr r0, off_814EC8C // =soundStartChannel_814F44C+1 
 	str r0, [r4,#0x2c]
-	ldr r0, off_814EC90 // =sub_814F3A4+1 
+	ldr r0, off_814EC90 // =battle_calcPanelScreenCoord_814F3A4+1 
 	str r0, [r4,#0x30]
 	ldr r0, dword_814EC94 // =0x0 
 	mov r1, #0
@@ -23383,7 +23383,7 @@ off_814EC88:
 off_814EC8C:
 	.word soundStartChannel_814F44C+1
 off_814EC90:
-	.word sub_814F3A4+1
+	.word battle_calcPanelScreenCoord_814F3A4+1
 dword_814EC94:
 	.word 0x0
 byte_814EC98:
@@ -24455,9 +24455,9 @@ loc_814F396:
 // symdb: Computes a BattleChip damage value by looking up the chip's row in a damage table and scaling by a row-level multiplier.
 // symdb: (r0 = row type 0..6, r1 = chip index, r2 = slot/level index 0..3) -> r0 = final damage (raw
 // symdb: value + 0x800) ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F3A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcPanelScreenCoord_814F3A4.yaml
 	thumb_local_start
-sub_814F3A4:
+battle_calcPanelScreenCoord_814F3A4:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -24548,7 +24548,7 @@ off_814F444:
 	.word byte_81C05A4
 off_814F448:
 	.word byte_81C0628
-	thumb_func_end sub_814F3A4
+	thumb_func_end battle_calcPanelScreenCoord_814F3A4
 
 // symdb: Starts one of the four APU sound channels (1–4) by writing envelope/length then trigger, returning the trigger register address to the caller.
 // symdb: void soundStartChannel_814F44C(u8 channel /* r0 */, void *ret /* lr */) -> void *triggerReg /*

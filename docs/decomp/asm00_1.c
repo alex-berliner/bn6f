@@ -8623,7 +8623,7 @@ int sub_8009338()
 
 
 // 0x800938a
-void __fastcall sub_800938A(int a1, int a2, int a3, int a4)
+void __fastcall battle_stepRunAndDecideResult_800938A(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0

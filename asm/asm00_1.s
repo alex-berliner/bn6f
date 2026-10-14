@@ -1610,7 +1610,7 @@ off_80039F0:
 off_80039F4:
 	.word jt_80038E8
 off_80039F8:
-	.word sub_81419A0+1
+	.word battle_performBeastOutBattleAiTick_81419A0+1
 	.word 0x0, 0x0
 	.word 0x1, 0x0, 0x0
 	.word 0xFFFFFFFF, 0x0
@@ -3119,7 +3119,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A5428+1
 	.word sub_80A54F0+1
 	.word sub_80A57AC+1
-	.word sub_80A5AD4+1
+	.word battle_beastOutDispatch_80A5AD4+1
 	.word sub_80A6A16+1
 	.word sub_80A6E98+1
 	.word sub_80A72B4+1
@@ -13363,7 +13363,7 @@ off_80091BC:
 	// 0x08
 	.word sub_8009338+1
 	// 0x0C
-	.word sub_800938A+1
+	.word battle_stepRunAndDecideResult_800938A+1
 	// 0x10
 	.word battle_DispatchStatePhase_800945C+1
 	// 0x14
@@ -13664,9 +13664,9 @@ locret_8009388:
 // symdb: (no args via registers; toolkit/BattleState ptr in r10) -> r0 = 0 ; side effects: writes
 // symdb: BattleState.Unk_03, BattleState.Index_01, BattleState.Unk_02_03, BattleState.Unk_1e, clears
 // symdb: dword_203CA70 record, calls several battle helpers.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800938A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepRunAndDecideResult_800938A.yaml
 	thumb_local_start
-sub_800938A:
+battle_stepRunAndDecideResult_800938A:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13761,7 +13761,7 @@ loc_8009454:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_800945A:
 	pop {r4,pc}
-	thumb_func_end sub_800938A
+	thumb_func_end battle_stepRunAndDecideResult_800938A
 
 // symdb: Dispatches a battle-state phase byte (offset 2 of the struct in r5) to one of two phase handlers via a jump table.
 // symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to sub_8009478 (phase 0) or

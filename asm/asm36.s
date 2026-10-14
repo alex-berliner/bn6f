@@ -398,7 +398,7 @@ loc_8130326:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -865,7 +865,7 @@ loc_81306AC:
 	push {r0}
 	bl sub_8137884
 	lsr r0, r0, #4
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r1, r7
 	mov r2, #0x20 
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
@@ -2658,7 +2658,7 @@ loc_813149E:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -6526,7 +6526,7 @@ off_81333EC:
 // symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
 // symdb: void battle_objectUpdate_8133400(     u32 r4 /* context */, u32 *r5 /* battle object ptr */,
 // symdb: u32 r6 /* context */, u32 r7 /* context */, u32 r10, u32 lr ); /* returns via lr; r0-r3, nz, c,
-// symdb: v carry the residue of the last sub_81353F0 call */
+// symdb: v carry the residue of the last battle_aiRunTurnHandler_81353F0 call */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdate_8133400.yaml
 	thumb_local_start
 battle_objectUpdate_8133400:
@@ -6545,10 +6545,10 @@ loc_8133410:
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	mov r0, #6
 	mov r1, #1
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end battle_objectUpdate_8133400
@@ -6605,10 +6605,10 @@ sub_8133484:
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	mov r0, #6
 	mov r1, #1
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	pop {pc}
 	.balign 4, 0x00
 off_81334B4:
@@ -7119,10 +7119,10 @@ loc_8133864:
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	mov r0, #6
 	mov r1, #1
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	pop {pc}
 	.balign 4, 0x00
 off_8133888:
@@ -7210,10 +7210,10 @@ loc_813390E:
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	mov r0, #6
 	mov r1, #1
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81338D4
@@ -7250,10 +7250,10 @@ loc_813396C:
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	mov r0, #6
 	mov r1, #1
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8133944
@@ -7823,7 +7823,7 @@ loc_8133DDC:
 	lsl r1, r4, #2
 	ldr r0, [r0,r1]
 	mov r1, r4
-	bl sub_81353F0
+	bl battle_aiRunTurnHandler_81353F0
 	ldr r1, [r5,#0x4c]
 	orr r1, r6
 	str r1, [r5,#0x4c]
@@ -8825,7 +8825,7 @@ submenu_clearBgIfClosed_8134594:
 	mov r3, #0x10
 	ldr r4, off_81345C4 // =byte_81331EC
 	ldr r6, dword_81345CC // =0x0 
-	bl sub_813468C
+	bl battleObject_updateShieldOrStatusEffect_813468C
 locret_81345AC:
 	pop {r4-r7,pc}
 	.byte 0, 0
@@ -8843,7 +8843,7 @@ sub_81345B0:
 	mov r3, #0x11
 	ldr r4, off_81345C4 // =byte_81331EC
 	ldr r6, dword_81345D0 // =0x10000000 
-	bl sub_813468C
+	bl battleObject_updateShieldOrStatusEffect_813468C
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_81345C4:
@@ -8855,8 +8855,8 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
-// symdb: Parameterless wrapper that invokes sub_813468C with one hard-coded argument set (0x5A, 0x20, 0x20, 0x12, table byte_81331F4, flag 0x40000000) and passes the caller's r5/r7 through untouched.
-// symdb: void sub_81345D4(void); // inputs r5, r7 forwarded to sub_813468C; no meaningful return value
+// symdb: Parameterless wrapper that invokes battleObject_updateShieldOrStatusEffect_813468C with one hard-coded argument set (0x5A, 0x20, 0x20, 0x12, table byte_81331F4, flag 0x40000000) and passes the caller's r5/r7 through untouched.
+// symdb: void sub_81345D4(void); // inputs r5, r7 forwarded to battleObject_updateShieldOrStatusEffect_813468C; no meaningful return value
 // symdb: (r4-r7 preserved)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
@@ -8868,11 +8868,11 @@ sub_81345D4:
 	mov r3, #0x12
 	ldr r4, off_81346F4 // =byte_81331F4
 	ldr r6, byte_81346FC // =0x0
-	bl sub_813468C
+	bl battleObject_updateShieldOrStatusEffect_813468C
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345D4
 
-// symdb: Parameterless wrapper that spawns/queues one effect via sub_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
+// symdb: Parameterless wrapper that spawns/queues one effect via battleObject_updateShieldOrStatusEffect_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
 // symdb: void sub_81345E8(void); /* takes nothing from callers; returns callee's r1-r3, preserves r4-r7
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnFixedArgEffect_wrapper_81345E8.yaml
@@ -8885,7 +8885,7 @@ battle_spawnFixedArgEffect_wrapper_81345E8:
 	mov r3, #0x13
 	ldr r4, off_81346F4 // =byte_81331F4
 	ldr r6, byte_81346FC // =0x0
-	bl sub_813468C
+	bl battleObject_updateShieldOrStatusEffect_813468C
 	pop {r4-r7,pc}
 	thumb_func_end battle_spawnFixedArgEffect_wrapper_81345E8
 
@@ -8898,7 +8898,7 @@ sub_81345FC:
 	mov r3, #0x13
 	ldr r4, off_81346F4 // =byte_81331F4
 	ldr r6, byte_81346FC // =0x0
-	bl sub_813468C
+	bl battleObject_updateShieldOrStatusEffect_813468C
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345FC
 
@@ -8948,7 +8948,7 @@ loc_8134642:
 	orr r2, r3
 	ldr r3, off_81346F4 // =byte_81331F4
 	ldr r4, byte_81346FC // =0x0
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -8972,10 +8972,10 @@ loc_8134686:
 // symdb: Applies a shield/status effect overlay to a battle object by patching the related-object byte with a packed (nibble) tag looked up from dword_81331FC when the high nibble of the source byte equals 1, then spawns the overlay sprite.
 // symdb: (r0 = packed value, r1 = ?, r2 = ?, r3 = relatedObjectOffsetInO1, r5 = toolkit/object, r4 =
 // symdb: ptrToTableOrArgs, r6 = ptrToTableOrArgs) -> r0 = original lower nibble; side effects: writes the
-// symdb: related-object byte at oBattleObject+0x4c and dispatches sub_811FAF4.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813468C.yaml
+// symdb: related-object byte at oBattleObject+0x4c and dispatches battleObject_queueOamFromTableRow_811FAF4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateShieldOrStatusEffect_813468C.yaml
 	thumb_local_start
-sub_813468C:
+battleObject_updateShieldOrStatusEffect_813468C:
 	push {r4,lr}
 	sub sp, sp, #0x1c
 	str r1, [sp]
@@ -9009,7 +9009,7 @@ loc_81346B2:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -9041,7 +9041,7 @@ byte_813470C:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x5E, 0x0, 0x0, 0x0, 0xF4, 0x0, 0x0, 0x0
 off_8134718:
 	.word dword_81331FC
-	thumb_func_end sub_813468C
+	thumb_func_end battleObject_updateShieldOrStatusEffect_813468C
 
 // symdb: Copies background tiles for an object, choosing a small (2x2) or large (0x15x2) source rectangle based on a flag at r5+0xD, into tile block 0 with a fixed 8x0x11 destination.
 // symdb: void sub_813471C(void /* uses r5 */);
@@ -9074,7 +9074,7 @@ off_813473C:
 	thumb_func_end copyBackgroundTiles_sub_813471C
 // symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from sub_8120CC8 when it reaches zero.
 // symdb: void sub_8134740(u32 battleObj /* r5 */); /* r5 preserved; nz/c/v clobbered; r0-r3,r4,lr
-// symdb: clobbered via sub_811FAF4/sub_8120CC8 */
+// symdb: clobbered via battleObject_queueOamFromTableRow_811FAF4/sub_8120CC8 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
 	thumb_local_start
 sub_8134740:
@@ -9098,7 +9098,7 @@ loc_813474E:
 	and r2, r3
 	ldr r3, off_8134798 // =byte_81331F4
 	ldr r4, dword_813479C // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -9333,7 +9333,7 @@ battle_alignRowCheck_81348DC:
 loc_8134908:
 	mov r0, #1
 	ldr r1, [sp,#0xc]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 	b loc_813492A
 loc_8134912:
 	ldr r3, [sp,#0x10]
@@ -9345,7 +9345,7 @@ loc_8134912:
 	bl sub_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0xc]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 loc_813492A:
 	add sp, sp, #0x14
 	pop {r4,pc}
@@ -9355,7 +9355,7 @@ loc_813492A:
 // symdb: Checks an actor's panel position against a target's column/row index and triggers a panel-based attack if aligned.
 // symdb: (r0 = HP-offset 0x24, r1 = x-offset 0xA5, r2 = alliance/whatever-offset 0x28, r3 = attacker-flag
 // symdb: index, r5 = BattleObject ptr, r7 = AIAttackVars ptr) -> r0 = 0x20 if HP-bit set, 0x40 if not (or
-// symdb: 1 on branch); calls sub_81171F4/sub_81171D4 on AIAttackVars
+// symdb: 1 on branch); calls battleObject_setFlags6Bit_81171F4/sub_81171D4 on AIAttackVars
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiCheckPanelRangeAndDoAttack_8134930.yaml
 	thumb_func_start battle_aiCheckPanelRangeAndDoAttack_8134930
 battle_aiCheckPanelRangeAndDoAttack_8134930:
@@ -9390,7 +9390,7 @@ battle_aiCheckPanelRangeAndDoAttack_8134930:
 loc_8134968:
 	mov r0, #1
 	ldr r1, [sp,#0x10]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 	b loc_813498A
 loc_8134972:
 	ldr r3, [sp,#0xc]
@@ -9402,7 +9402,7 @@ loc_8134972:
 	bl sub_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0x10]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 loc_813498A:
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
@@ -9443,7 +9443,7 @@ sub_81349B4:
 	bl sub_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0xc]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 	add sp, sp, #0x10
 	pop {r4,pc}
 	.byte 0x0, 0x0
@@ -10852,9 +10852,9 @@ sub_81353DC:
 // symdb: Dispatches an AI turn action (r0=row/action id) with r1 (often a 0/1 sub-mode) into the AI panel-range/attack routine using constants 0x24, 0xA5, 0x28, 6.
 // symdb: (r0 = action index [5..6], r1 = sub-flag [0..1], r5 = caller's object/AIData, lr = caller's lr)
 // symdb: -> r0 = result bitmask/status word ; no other return registers per contract
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiRunTurnHandler_81353F0.yaml
 	thumb_local_start
-sub_81353F0:
+battle_aiRunTurnHandler_81353F0:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r3, r1
@@ -10864,7 +10864,7 @@ sub_81353F0:
 	mov r4, #6
 	bl battle_aiCheckPanelRangeAndDoAttack_8134930
 	pop {r4-r7,pc}
-	thumb_func_end sub_81353F0
+	thumb_func_end battle_aiRunTurnHandler_81353F0
 
 	thumb_local_start
 sub_8135404:
@@ -13960,7 +13960,7 @@ loc_8136BF8:
 	ldrb r2, [r5,r2]
 	ldr r3, off_8136C14 // =byte_8136844
 	ldr r4, dword_8136C1C // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	mov r2, #0x15
 	strb r0, [r5,r2]
 locret_8136C12:
@@ -16675,7 +16675,7 @@ loc_8138122:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1

@@ -38,7 +38,7 @@ sub_813B790:
 	push {lr}
 	ldr r1, off_813B79C // =byte_20096D8 
 	ldrb r1, [r1]
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	pop {pc}
 	.balign 4, 0
 off_813B79C:
@@ -48,9 +48,9 @@ off_813B79C:
 // symdb: Battle AI dispatcher: looks up the caller's battle object, picks an AIData field (0x8 or 0xc) based on event flag 0x2660+actorIndex, then tail-calls through a 4-entry thunk table.
 // symdb: (r0 = actorIndex, r1 = dispatchId) -> r0 = unk_2009F00 ; side effects: reads battle object
 // symdb: AIData, tests event flag, tail-jumps to dispatchId[0..3]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B7A0.yaml
-	thumb_func_start sub_813B7A0
-sub_813B7A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runAIDispatchTable_813B7A0.yaml
+	thumb_func_start battleObject_runAIDispatchTable_813B7A0
+battleObject_runAIDispatchTable_813B7A0:
 	push {r4,r6,r7,lr}
 	mov r6, r1
 	mov r4, r0
@@ -85,7 +85,7 @@ off_813B7E4:
 	.word unk_2009F00
 dword_813B7E8:
 	.word 0x2660
-	thumb_func_end sub_813B7A0
+	thumb_func_end battleObject_runAIDispatchTable_813B7A0
 
 	thumb_local_start
 sub_813B7EC:
@@ -1004,7 +1004,7 @@ sub_813BD90:
 	str r0, [sp,#0x14]
 	ldr r0, [sp]
 	mov r1, r3
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	ldr r1, [sp,#4]
 	ldr r2, [sp,#8]

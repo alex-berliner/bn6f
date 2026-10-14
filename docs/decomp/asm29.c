@@ -1060,7 +1060,7 @@ int sub_80A5A5C()
 
 
 // 0x80a5ad4
-int sub_80A5AD4()
+int battle_beastOutDispatch_80A5AD4()
 {
     int v0; // r5
 
@@ -1192,7 +1192,7 @@ LABEL_24:
         }
     }
 LABEL_21:
-    sub_80A6014();
+    battleObject_loadAIDataEntry_80A6014();
     sprite_update(v0);
 }
 
@@ -1631,7 +1631,7 @@ signed int sub_80A5FD0()
 
 
 // 0x80a6014
-signed int sub_80A6014()
+signed int battleObject_loadAIDataEntry_80A6014()
 {
     int v0; // r5
     _DWORD *v1; // r6
@@ -3621,7 +3621,7 @@ void __noreturn sub_80A7CEA()
 {
     Battle *v0; // r5
 
-    sub_80A7CFE();
+    owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE();
     sprite_update(v0);
 }
 
@@ -3634,7 +3634,7 @@ int sub_80A7CF6()
 
 
 // 0x80a7cfe
-void *sub_80A7CFE()
+void *owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE()
 {
     _DWORD *v0; // r5
     int v1; // r10

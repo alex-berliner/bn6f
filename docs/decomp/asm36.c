@@ -441,7 +441,7 @@ int sub_813068C()
 	{
 		v5 = v1 - 1;
 		v6 = sub_8137884(v1 - 1);
-		v7 = sub_804A24C(v6 >> 4);
+		v7 = chatbox_getTextScriptPointerByIndex_804A24C(v6 >> 4);
 		CopyBytes(v7, &unk_202708C, 32);
 		v8 = *(v0 + oToolkit_S_Chip_2002178_Ptr) + 60 * v5;
 		v9 = 0;
@@ -1731,7 +1731,7 @@ int __fastcall sub_8131480(int a1, int a2, int a3, int a4)
     else
         v8 = 0;
     v9 = *(v5 + a4);
-    v10 = sub_811FAF4(v7 | (a2 + 19 * v8), v6, v9 & 0xF, v4);
+    v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 19 * v8), v6, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
         *(v5 + v13) = sub_8120CC8(v10, &dword_8129180);
@@ -4822,7 +4822,7 @@ LABEL_8:
     if ( !(*(v0 + 76) & v10) )
         battle_spawnEStructRecordsFromTable_80465A0(off_8133E0C[v3]);
     *&(&off_8133E28)[v3][v0] = *(v0 + 32) + *(v0 + 36);
-    sub_81353F0(*&byte_8133E34[4 * v3], v3);
+    battle_aiRunTurnHandler_81353F0(*&byte_8133E34[4 * v3], v3);
     v11 = *(v0 + 76) | v10;
     *(v0 + 76) = v11;
     PlaySoundEffect(129, v11, v12);
@@ -5112,7 +5112,7 @@ int __fastcall submenu_clearBgIfClosed_8134594(int a1)
 
     result = submenu_isOpen_81355D8();
     if ( v2 )
-        result = sub_813468C(231, 22, 0, 16);
+        result = battleObject_updateShieldOrStatusEffect_813468C(231, 22, 0, 16);
     return result;
 }
 
@@ -5120,28 +5120,28 @@ int __fastcall submenu_clearBgIfClosed_8134594(int a1)
 // 0x81345b0
 int sub_81345B0()
 {
-    return sub_813468C(243, 22, 0, 17);
+    return battleObject_updateShieldOrStatusEffect_813468C(243, 22, 0, 17);
 }
 
 
 // 0x81345d4
 int sub_81345D4()
 {
-    return sub_813468C(90, 32, 32, 18);
+    return battleObject_updateShieldOrStatusEffect_813468C(90, 32, 32, 18);
 }
 
 
 // 0x81345e8
 int battle_spawnFixedArgEffect_wrapper_81345E8()
 {
-    return sub_813468C(240, 32, 42, 19);
+    return battleObject_updateShieldOrStatusEffect_813468C(240, 32, 42, 19);
 }
 
 
 // 0x81345fc
 int sub_81345FC()
 {
-    return sub_813468C(90, 32, 32, 19);
+    return battleObject_updateShieldOrStatusEffect_813468C(90, 32, 32, 19);
 }
 
 
@@ -5171,7 +5171,7 @@ int sub_8134610()
         if ( !((v5 < 0) ^ v4) && v5 <= 6 )
         {
             v6 = *(v0 + 22);
-            v7 = sub_811FAF4(
+            v7 = battleObject_queueOamFromTableRow_811FAF4(
                          ((*&byte_813470C[4 * *(v0 + 64)] - 8 * *(v0 + 24)) << 16) | (16 * v5 + 32),
                          0x20003u,
                          v6 & 0xF | 0x80000000,
@@ -5188,7 +5188,7 @@ int sub_8134610()
 
 
 // 0x813468c
-int __fastcall sub_813468C(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_updateShieldOrStatusEffect_813468C(int a1, int a2, int a3, int a4)
 {
     int *v4; // r4
     int v5; // r5
@@ -5207,7 +5207,7 @@ int __fastcall sub_813468C(int a1, int a2, int a3, int a4)
     else
         v7 = 0;
     v8 = *(v5 + a4);
-    v9 = sub_811FAF4(v6 | (a2 + 16 * v7), 0x20003u, v8 & 0xF, v4);
+    v9 = battleObject_queueOamFromTableRow_811FAF4(v6 | (a2 + 16 * v7), 0x20003u, v8 & 0xF, v4);
     v10 = (v8 >> 4) - 1;
     if ( v8 >> 4 == 1 )
         *(v5 + v12) = sub_8120CC8(v9, &dword_81331FC);
@@ -5245,7 +5245,7 @@ int sub_8134740()
     if ( *(v0 + 13) )
         v1 = 10747904;
     v2 = *(v0 + 21);
-    v3 = sub_811FAF4(v1 | (16 * *(v0 + 52) + 32), 2u, v2 & 0xF, byte_81331F4);
+    v3 = battleObject_queueOamFromTableRow_811FAF4(v1 | (16 * *(v0 + 52) + 32), 2u, v2 & 0xF, byte_81331F4);
     v4 = (v2 >> 4) - 1;
     if ( v2 >> 4 == 1 )
         *(v0 + 21) = sub_8120CC8(v3, &dword_81331FC);
@@ -5384,12 +5384,12 @@ int __fastcall battle_alignRowCheck_81348DC(int a1, int a2, int a3, int a4)
         v10 = v7 - v8;
         if ( (v10 < 0) ^ v9 || v10 > v4 )
         {
-            result = sub_81171F4(1, v13);
+            result = battleObject_setFlags6Bit_81171F4(1, v13);
         }
         else
         {
             sub_81171D4(a2 - 8 * *(v5 + 24), v12 + 16 * v10, v13);
-            result = sub_81171F4(0, v13);
+            result = battleObject_setFlags6Bit_81171F4(0, v13);
         }
     }
     return result;
@@ -5421,12 +5421,12 @@ int __fastcall battle_aiCheckPanelRangeAndDoAttack_8134930(int a1, int a2, int a
         v11 = v8 - v9;
         if ( (v11 < 0) ^ v10 || v11 > v4 )
         {
-            result = sub_81171F4(1, v6);
+            result = battleObject_setFlags6Bit_81171F4(1, v6);
         }
         else
         {
             sub_81171D4(a2 - 8 * *(v5 + 24), v13 + 16 * v11, v6);
-            result = sub_81171F4(0, v6);
+            result = battleObject_setFlags6Bit_81171F4(0, v6);
         }
     }
     return result;
@@ -5441,7 +5441,7 @@ int __fastcall sub_81349B4(int a1, int a2, __int16 a3, int a4)
 
     v5 = a4;
     sub_81171D4(a2 - 8 * *(v4 + 24), a3 + 16 * *(v4 + a1), a4);
-    return sub_81171F4(0, v5);
+    return battleObject_setFlags6Bit_81171F4(0, v5);
 }
 
 
@@ -6438,7 +6438,7 @@ int sub_81353DC()
 
 
 // 0x81353f0
-int __fastcall sub_81353F0(int a1, int a2)
+int __fastcall battle_aiRunTurnHandler_81353F0(int a1, int a2)
 {
     return battle_aiCheckPanelRangeAndDoAttack_8134930(36, 165, 40, a2);
 }
@@ -8555,7 +8555,7 @@ unsigned int sub_8136BE8()
 
     if ( *v0 != 40 || (result = byte_2009390[0], byte_2009390[0] < 132) )
     {
-        result = sub_811FAF4(14155920, 0x10102u, v0[21], byte_8136844);
+        result = battleObject_queueOamFromTableRow_811FAF4(14155920, 0x10102u, v0[21], byte_8136844);
         v0[21] = result;
     }
     return result;
@@ -10452,7 +10452,7 @@ int __fastcall sub_8138104(int a1, int a2, int a3, int a4)
     else
         v8 = 0;
     v9 = *(v5 + a4);
-    v10 = sub_811FAF4(v7 | (a2 + 16 * v8), 0x20002u, v9 & 0xF, v4);
+    v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), 0x20002u, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
         *(v5 + v13) = sub_8120CC8(v10, v6);

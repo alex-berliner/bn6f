@@ -507,7 +507,7 @@ locret_809D552:
 	.balign 4, 0
 off_809D554:
 	.word sub_809D560+1
-	.word sub_809D5C4+1
+	.word owPlayer_applyCountdownUpdate_809D5C4+1
 off_809D55C:
 	.word off_809D554
 	thumb_func_end owPlayer_tickPerFrame_809D4DC
@@ -568,9 +568,9 @@ off_809D5BC:
 
 // symdb: Per-tick handler that runs when the overworld player's countdown is still active: reads a Z-coordinate modifier (notably "shoes on a given Z layer"), gates a doubling case on event flag EVENT_1716, and slides the player by Unk_38/Unk_3c shifted by the chosen Z layer.
 // symdb: (r5 = OWPlayerObject*) -> void ; side effects: writes Unk_13, X, Y on the player object via r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D5C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_applyCountdownUpdate_809D5C4.yaml
 	thumb_local_start
-sub_809D5C4:
+owPlayer_applyCountdownUpdate_809D5C4:
 	push {lr}
 	bl owPlayer_TickCountdownOrWait_809DDCC
 	tst r0, r0
@@ -612,7 +612,7 @@ loc_809D60C:
 	str r1, [r5,#oOWPlayerObject_Y]
 	str r2, [r5,#oOWPlayerObject_Z]
 	pop {pc}
-	thumb_func_end sub_809D5C4
+	thumb_func_end owPlayer_applyCountdownUpdate_809D5C4
 
 // symdb: Overworld player slip-run substate: gates each frame on the EVENT_1716/EVENT_IN_SLIPRUN_STATE flags, dispatches via Unk_0a jumptable between slip-run and engine tick, and otherwise routes the player into normal per-frame updates (advance/forward, idle, tile-interaction) before ending the slip-run if conditions warrant.
 // symdb: (r5 = oOWPlayerObject*, r10 = oToolkit*) -> void ; side effects: writes the overworld player

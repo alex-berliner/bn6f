@@ -1281,7 +1281,7 @@ signed int sub_812FC50()
         if ( sub_803DD60(v7) )
             v8 = &unk_20270EC;
         CopyWords(v8 + 32, v3, 0x3Cu);
-        v9 = sub_804A24C(2);
+        v9 = chatbox_getTextScriptPointerByIndex_804A24C(2);
         CopyWords(v8, v9, 0x20u);
         v10 = 0;
         do

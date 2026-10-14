@@ -17897,9 +17897,9 @@ loc_81171EE:
 // symdb: Sets or clears bit 1 of the byte at offset 0x6 of the eStructArr2008450 entry whose index is in r1, depending on the flag in r0; bails out if the entry is not in use.
 // symdb: (r0 = bool flag, r1 = entry index into eStructArr2008450) -> no return value ; side effect: bit
 // symdb: 1 of entry[idx].Unk_06 is OR'd or BIC'd
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81171F4.yaml
-	thumb_func_start sub_81171F4
-sub_81171F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setFlags6Bit_81171F4.yaml
+	thumb_func_start battleObject_setFlags6Bit_81171F4
+battleObject_setFlags6Bit_81171F4:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r0, [sp]
@@ -17920,7 +17920,7 @@ loc_8117212:
 loc_8117214:
 	add sp, sp, #8
 	pop {r4-r7,pc}
-	thumb_func_end sub_81171F4
+	thumb_func_end battleObject_setFlags6Bit_81171F4
 
 	thumb_func_start sub_8117218
 sub_8117218:
@@ -18687,7 +18687,7 @@ sub_8117820:
 	beq loc_8117868
 	sub r0, #0x90
 	mov r1, #0
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	add r7, #8
 	mov r4, #0
@@ -20608,7 +20608,7 @@ sub_8118604:
 	sub r0, #0x90
 	ldrb r1, [r6,#0xe]
 	mov r2, #0
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	add r7, #8
 	mov r4, #0
@@ -20654,7 +20654,7 @@ sub_8118658:
 	ldrh r0, [r0]
 	sub r0, #0x90
 	ldrb r1, [r6,#0xe]
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	add r7, #8
 	mov r4, #0
@@ -21999,7 +21999,7 @@ battle_dispatchEventScript_8119018:
 	mov r0, r1
 	bl sub_8137884
 	lsr r0, r0, #4
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r4, #8
 	mov r5, #1
 	ldr r6, off_8119078 // =dword_86B7AE0
@@ -25502,7 +25502,7 @@ sub_811AA4C:
 	mov r0, r1
 	bl sub_8137884
 	lsr r0, r0, #4
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r4, #8
 	mov r5, #1
 	ldr r6, off_811AAAC // =dword_86B7AE0
@@ -25733,7 +25733,7 @@ loc_811AC18:
 	mov r1, #2
 loc_811AC38:
 	mov r0, r1
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	mov r4, r0
 loc_811AC40:
 	ldrb r1, [r5,#3]
@@ -27704,7 +27704,7 @@ sub_811BB64:
 	sub r0, #0x90
 	mov r1, #0
 	mov r2, #0
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	add r7, #8
 	mov r4, #0
@@ -27745,7 +27745,7 @@ sub_811BBB8:
 	sub r0, #0x90
 	mov r1, #0
 	mov r2, #0
-	bl sub_813B7A0
+	bl battleObject_runAIDispatchTable_813B7A0
 	mov r7, r0
 	add r7, #8
 	mov r4, #0
@@ -34239,7 +34239,7 @@ byte_811F4F8:
 	thumb_func_end getCurrentMapBgm_811F290
 
 // () -> void
-// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
+// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to battleObject_queueOamFromTableRow_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
 // symdb: void sub_811F508(void); /* inputs: r5,r10,lr; outputs: r7; clobbers nzcv,r0-r3,lr; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811F508.yaml
@@ -34258,7 +34258,7 @@ sub_811F508:
 	ldrb r2, [r5,#0xa]
 	ldr r3, off_811F540 // =byte_811EBD0
 	ldr r4, dword_811F544 // =0x40000000
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldrb r1, [r5,#0xb]
 	sub r1, #1
 	strb r1, [r5,#0xb]
@@ -35180,9 +35180,9 @@ dword_811FAF0:
 // symdb: (r0 = packed X|Y render bits, r1 = packed 16-bit position+flags, r2 = signed row/entry index
 // symdb: (low bits used), r3 = ptr to u16 descriptor table) -> r0 = next row index ((index2>>1)+1) ; side
 // symdb: effects: calls sprite_queueOamEntryThunk_802FE28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FAF4.yaml
-	thumb_func_start sub_811FAF4
-sub_811FAF4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueOamFromTableRow_811FAF4.yaml
+	thumb_func_start battleObject_queueOamFromTableRow_811FAF4
+battleObject_queueOamFromTableRow_811FAF4:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	mov r6, r1
@@ -35243,7 +35243,7 @@ loc_811FB5A:
 	.balign 4, 0
 dword_811FB60:
 	.word 0xFFFF
-	thumb_func_end sub_811FAF4
+	thumb_func_end battleObject_queueOamFromTableRow_811FAF4
 
 // symdb: Confirms the highlighted submenu entry, plays the "exit submenu" sound, and starts a screen fade to leave the submenu.
 // symdb: void submenu_ConfirmExitAndFade(u8 selectedEntry /*r0*/, u8* submenuState /*r5*/)
@@ -36427,7 +36427,7 @@ loc_8120368:
 	sub r4, #1
 	bgt loc_8120368
 	mov r6, #0
-	bl sub_804A24C
+	bl chatbox_getTextScriptPointerByIndex_804A24C
 	ldr r4, [sp]
 	ldr r5, [sp,#4]
 	bl sub_81202B4

@@ -7079,7 +7079,7 @@ unsigned int sub_802B0EC()
     do
     {
         v3 = v2[2];
-        result = sub_811FAF4((*v2 << 16) | v2[1], 0x10002u, *(v0 + 15), byte_802A848);
+        result = battleObject_queueOamFromTableRow_811FAF4((*v2 << 16) | v2[1], 0x10002u, *(v0 + 15), byte_802A848);
         v2 += 4;
         v5 = __OFSUB__(v1--, 1);
     }
@@ -7112,7 +7112,7 @@ int __fastcall sub_802B15C(int result)
             do
             {
                 v6 = v5[2];
-                result = sub_811FAF4((*v5 << 16) | (v5[1] + v3), 0x10002u, 0, &dword_802A862);
+                result = battleObject_queueOamFromTableRow_811FAF4((*v5 << 16) | (v5[1] + v3), 0x10002u, 0, &dword_802A862);
                 v5 += 4;
                 v7 = __OFSUB__(v4--, 1);
             }
@@ -7157,7 +7157,7 @@ int __fastcall sub_802B20C(int a1, int a2, int a3, int a4)
     else
         v8 = 0;
     v9 = *(v5 + a4);
-    v10 = sub_811FAF4(v7 | (a2 + 16 * v8), v6, v9 & 0xF, v4);
+    v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), v6, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
         *(v5 + v13) = sub_8120CC8(v10, &dword_8129180);

@@ -1696,9 +1696,9 @@ byte_80A5ABC:
 
 // symdb: Beast-Out AI dispatch table that calls one of three per-state handlers based on the AIData sub-state byte at r5+8.
 // symdb: (r5 = AIState* or AIData*, r10 = Toolkit*, lr = return) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5AD4.yaml
-	thumb_func_start sub_80A5AD4
-sub_80A5AD4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutDispatch_80A5AD4.yaml
+	thumb_func_start battle_beastOutDispatch_80A5AD4
+battle_beastOutDispatch_80A5AD4:
 	push {lr}
 	ldr r6, off_80A5AF4 // =unk_2011A90 
 	ldr r0, off_80A5AE4 // =off_80A5AE8 
@@ -1716,7 +1716,7 @@ off_80A5AE8:
 	.word sub_80A5C6C+1
 off_80A5AF4:
 	.word unk_2011A90
-	thumb_func_end sub_80A5AD4
+	thumb_func_end battle_beastOutDispatch_80A5AD4
 
 	thumb_local_start
 sub_80A5AF8:
@@ -1775,7 +1775,7 @@ locret_80A5B6C:
 // symdb: per-frame state machine that drives the player's Beast Out transformation and un-transformation during battle
 // symdb: (r5 = BeastOutAIData-like ctx, r6 = related BattleObject, r10 = toolkit) -> void ; side effects:
 // symdb: mutates ctx/r5 and BattleObject/r6 state, sets/clears event flags
-// symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with sub_80A6014 + sprite_update
+// symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with battleObject_loadAIDataEntry_80A6014 + sprite_update
 // symdb: on r5's sprite
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTick_80A5B70.yaml
 	thumb_local_start
@@ -1884,7 +1884,7 @@ loc_80A5C48:
 loc_80A5C5E:
 	bl sub_80A5EC8
 loc_80A5C62:
-	bl sub_80A6014
+	bl battleObject_loadAIDataEntry_80A6014
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end battle_beastOutTick_80A5B70
@@ -2395,9 +2395,9 @@ loc_80A5FF2:
 // symdb: copies one AI data entry (HP/Element/Param1-3) from a BattleObject into an AIData scratch slot
 // symdb: (r5 = BattleObject*, r6 = AI scratch buffer in EWRAM) -> no return; side effect: writes 3 bytes
 // symdb: + 3 dwords into the scratch buffer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6014.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_loadAIDataEntry_80A6014.yaml
 	thumb_local_start
-sub_80A6014:
+battleObject_loadAIDataEntry_80A6014:
 	push {r4-r7,lr}
 	ldr r7, off_80A604C // =byte_2000EC0 
 	ldr r0, [r5,#0x24]
@@ -2809,7 +2809,7 @@ byte_80A69EA:
 	.byte 0x40, 0x0, 0x8, 0x0, 0x4, 0x0, 0x2, 0x0, 0x40, 0x0, 0xA, 0x0, 0x4, 0x0, 0x2
 	.byte 0x0, 0x40, 0x0, 0xC, 0x0, 0x4, 0x0, 0x2, 0x0, 0x40, 0x0, 0xE, 0x0, 0x4, 0x0
 	.byte 0x2, 0x0, 0x40, 0x0, 0x10, 0x0, 0x4, 0x0, 0x2, 0x0, 0x44, 0x0, 0x24, 0x0
-	thumb_func_end sub_80A6014
+	thumb_func_end battleObject_loadAIDataEntry_80A6014
 
 	thumb_func_start sub_80A6A16
 sub_80A6A16:
@@ -5339,7 +5339,7 @@ sub_80A7CA4:
 	thumb_local_start
 sub_80A7CEA:
 	push {r4-r7,lr}
-	bl sub_80A7CFE
+	bl owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CEA
@@ -5354,9 +5354,9 @@ sub_80A7CF6:
 // symdb: Overworld interaction trigger: if the player is inside a fixed 0xE0000..0x1C0000 X/Y box and conditions hold (no chatbox 0x80, no cutscene, no busy player, not faded), set event flag 0x1731 and start the BeastSp encounter cutscene (script selected by player id).
 // symdb: (r5 = unknown 0x14-byte param for StartCutscene) -> void ; uses overworld player coords from
 // symdb: tk->GameState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CFE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE.yaml
 	thumb_local_start
-sub_80A7CFE:
+owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE:
 	push {r4-r7,lr}
 	ldr r4, off_80A7D74 // =dword_80A7D78 
 	mov r7, r10
@@ -5423,7 +5423,7 @@ off_80A7D88:
 	.word byte_8089E44 // CutsceneScript
 off_80A7D8C:
 	.word byte_8089FD8 // CutsceneScript
-	thumb_func_end sub_80A7CFE
+	thumb_func_end owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE
 
 // symdb: Dispatches an AI actor's per-state handler via a 3-entry table indexed by `AIData+8`.
 // symdb: (r5 = AIData*, r10 = Toolkit*, lr = caller LR) -> r0 = result of indirect call ; r4-r10/LR

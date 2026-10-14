@@ -379,7 +379,7 @@ loc_812D61E:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1

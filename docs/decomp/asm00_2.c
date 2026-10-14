@@ -18393,7 +18393,7 @@ int battle_RequestEndBattle_801C06E()
 
 
 // 0x801c078
-int sub_801C078()
+int battle_drawChipCountsOAMWithRetvalZero_801C078()
 {
     return battle_drawChipCountsOAM_801C082(0);
 }

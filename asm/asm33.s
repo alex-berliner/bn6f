@@ -1432,7 +1432,7 @@ sub_8123C20:
 	beq loc_8123C92
 	mov r0, #1
 	ldr r1, [sp,#0xc]
-	bl sub_81171F4
+	bl battleObject_setFlags6Bit_81171F4
 	b loc_8123C92
 loc_8123C52:
 	ldr r1, [sp,#0x10]
@@ -1616,7 +1616,7 @@ byte_8123D90:
 	.byte 0x4F, 0x0, 0x0, 0x0, 0x55, 0x0, 0x0, 0x0
 	thumb_func_end sub_8123D70
 
-// symdb: Refreshes one spawn slot in a battle-object array, decrementing its tier and looking up the next entry via sub_811FAF4 when the tier runs out.
+// symdb: Refreshes one spawn slot in a battle-object array, decrementing its tier and looking up the next entry via battleObject_queueOamFromTableRow_811FAF4 when the tier runs out.
 // symdb: void battle_refreshSpawnSlot(u32 page /*r0*/, u32 offset /*r1*/, u32 table_idx /*r2*/, u32
 // symdb: slot_off /*r3*/, u32 fwd_r3 /*r4*/, void *base /*r5*/, u32 fwd_r4 /*r6*/); // preserves r4-r7,
 // symdb: no register outputs, clobbers flags
@@ -1652,7 +1652,7 @@ loc_8123DB6:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -1750,14 +1750,14 @@ sub_8123E58:
 	mov r2, #0
 	ldr r3, off_8123ED8 // =dword_81233BC
 	ldr r4, dword_8123EDC // =0x80004000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r0, off_8123EE0 // =byte_8123EE4
 	ldr r0, [r0,r6]
 	ldr r1, dword_8123EF0 // =0x20005 
 	mov r2, #0
 	ldr r3, off_8123EF4 // =dword_81233C0
 	ldr r4, dword_8123EF8 // =0x8000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	b loc_8123EAC
 loc_8123E8C:
 	ldr r0, off_8123EFC // =byte_8123F00
@@ -1766,14 +1766,14 @@ loc_8123E8C:
 	mov r2, #0
 	ldr r3, off_8123F10 // =dword_81233C4
 	ldr r4, dword_8123F14 // =0x80004000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r0, off_8123F18 // =byte_8123F1C
 	ldr r0, [r0,r6]
 	ldr r1, dword_8123F28 // =0x20005 
 	mov r2, #0
 	ldr r3, off_8123F2C // =dword_81233C8
 	ldr r4, dword_8123F30 // =0x8000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 loc_8123EAC:
 	ldrb r0, [r5,#0x10]
 	add r0, #1
@@ -2633,7 +2633,7 @@ sub_81244EC:
 	ldrb r2, [r5,#0xd]
 	ldr r3, off_8124530 // =byte_8123F34
 	ldr r4, dword_8124534 // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldrb r1, [r5,#0x12]
 	sub r1, #1
 	strb r1, [r5,#0x12]
@@ -6824,7 +6824,7 @@ loc_812658E:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -8327,7 +8327,7 @@ loc_812732A:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -9089,7 +9089,7 @@ sub_81278E8:
 	mov r2, #0
 	ldr r3, off_8127938 // =dword_8126904
 	ldr r4, dword_8127940 // =0x80004000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	mov r1, #0xd
 	ldrsb r0, [r5,r1]
 	lsl r0, r0, #3
@@ -9102,7 +9102,7 @@ sub_81278E8:
 	mov r2, #0
 	ldr r3, off_812793C // =dword_8126908
 	ldr r4, dword_8127940 // =0x80004000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	bl sub_8127944
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -9909,7 +9909,7 @@ fieldEntityTileAnimTick_8127F54:
 	ldrb r2, [r5,#0xc]
 	ldr r3, off_8127FCC // =byte_8127978
 	ldr r4, dword_8127FD0 // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldrb r1, [r5,#0xe]
 	sub r1, #1
 	strb r1, [r5,#0xe]
@@ -9936,7 +9936,7 @@ sub_8127F90:
 	ldrb r2, [r5,#0xf]
 	ldr r3, off_8127FCC // =byte_8127978
 	ldr r4, dword_8127FD0 // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldrb r1, [r5,#0x10]
 	sub r1, #1
 	strb r1, [r5,#0x10]
@@ -10420,7 +10420,7 @@ sub_81282C0:
 	mov r2, r4
 	ldr r3, off_8128308 // =byte_8127984
 	ldr r4, dword_812830C // =0x4000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r4, off_8128310 // =unk_2026870 
 	add r6, r7, #1
 	ldrb r1, [r4,r6]
@@ -11420,7 +11420,7 @@ loc_8128B62:
 	ldrb r2, [r5,#0xc]
 	ldr r3, off_8128B90 // =byte_8128678
 	ldr r4, dword_8128B94 // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	strb r0, [r5,#0xc]
 locret_8128B7C:
 	pop {r4-r7,pc}
@@ -11989,7 +11989,7 @@ loc_8129036:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -16650,7 +16650,7 @@ sub_812B2C4:
 	ldrb r2, [r5,#0x17]
 	ldr r3, off_812B300 // =byte_8129178
 	ldr r4, dword_812B304 // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldrb r1, [r5,#0x18]
 	sub r1, #1
 	strb r1, [r5,#0x18]
@@ -16983,7 +16983,7 @@ off_812B500:
 	.word byte_8129150
 	thumb_func_end sub_812B4AC
 
-// symdb: If bit 4 (0x10) of the flag byte at [r5+0x1B] is set, calls the draw/render helper sub_811FAF4 with a fixed argument block; otherwise returns immediately.
+// symdb: If bit 4 (0x10) of the flag byte at [r5+0x1B] is set, calls the draw/render helper battleObject_queueOamFromTableRow_811FAF4 with a fixed argument block; otherwise returns immediately.
 // symdb: void sub_812B504(void* obj /*r5*/); clobbers r0-r3, preserved r4; flags on early-exit path come
 // symdb: from tst of (byte & 0x10)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_drawIfFlagSet_812B504.yaml
@@ -16999,7 +16999,7 @@ sprite_drawIfFlagSet_812B504:
 	mov r2, #0
 	ldr r3, off_812B528 // =dword_8129184 
 	ldr r4, dword_812B52C // =0x80004000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 locret_812B51C:
 	pop {r4,pc}
 	.balign 4, 0

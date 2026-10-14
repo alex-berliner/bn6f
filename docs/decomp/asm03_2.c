@@ -4158,7 +4158,7 @@ int __fastcall sub_804A230(int a1)
 
 
 // 0x804a24c
-char *__fastcall sub_804A24C(int a1)
+char *__fastcall chatbox_getTextScriptPointerByIndex_804A24C(int a1)
 {
     return &unk_2001850 + *(&dword_804A25C + a1);
 }
@@ -4546,7 +4546,7 @@ int __fastcall sub_804A9F0(int a1, int a2, int a3, int a4)
     else
         v7 = 0;
     v8 = *(v5 + a4);
-    v9 = sub_811FAF4(v6 | (a2 + 16 * v7), 0x20002u, v8 & 0xF, v4);
+    v9 = battleObject_queueOamFromTableRow_811FAF4(v6 | (a2 + 16 * v7), 0x20002u, v8 & 0xF, v4);
     v10 = (v8 >> 4) - 1;
     if ( v8 >> 4 == 1 )
         *(v5 + v12) = sub_8120CC8(v9, &dword_804A2AC);
@@ -5012,7 +5012,7 @@ int sub_804AE68()
     int result; // r0
 
     v1 = *(v0 + 21);
-    v2 = sub_811FAF4((16 * *(v0 + 52) + 32) | 0xA40000, 2u, v1 & 0xF, byte_804A29C);
+    v2 = battleObject_queueOamFromTableRow_811FAF4((16 * *(v0 + 52) + 32) | 0xA40000, 2u, v1 & 0xF, byte_804A29C);
     v3 = (v1 >> 4) - 1;
     if ( v1 >> 4 == 1 )
         *(v0 + 21) = sub_8120CC8(v2, &dword_804A2AC);

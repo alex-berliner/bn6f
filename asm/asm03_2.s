@@ -7219,9 +7219,9 @@ off_804A248:
 
 // symdb: Resolves a text-script index to a pointer in the text-script pool at EWRAM 0x02001850 via a 0x40-byte LUT at 0x0804a25c, returning a u8* into the pool.
 // symdb: (r0 = textScriptIndex) -> r0 = u8* into unk_2001850 pool ; clobbers r0, r1; preserves r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A24C.yaml
-	thumb_func_start sub_804A24C
-sub_804A24C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_getTextScriptPointerByIndex_804A24C.yaml
+	thumb_func_start chatbox_getTextScriptPointerByIndex_804A24C
+chatbox_getTextScriptPointerByIndex_804A24C:
 	push {r4-r7,lr}
 	ldr r1, off_804A258 // =dword_804A25C 
 	ldrb r1, [r1,r0]
@@ -7252,7 +7252,7 @@ dword_804A2AC:
 byte_804A2B0:
 	.byte 0x16, 0x0, 0x0, 0x0, 0x16, 0x1, 0x1, 0x0, 0x16, 0x2, 0x2, 0x0, 0x4, 0x3
 	.byte 0x0, 0x2, 0x4, 0x4, 0x1, 0x2, 0x4, 0x5, 0x2, 0x2, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_804A24C
+	thumb_func_end chatbox_getTextScriptPointerByIndex_804A24C
 
 	thumb_func_start sub_804A2CC
 sub_804A2CC:
@@ -8186,7 +8186,7 @@ loc_804AA0E:
 	and r2, r3
 	ldr r3, [sp,#0xc]
 	ldr r4, [sp,#0x10]
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp,#0x14]
 	lsr r1, r1, #4
 	sub r1, #1
@@ -8820,7 +8820,7 @@ sub_804AE68:
 	and r2, r3
 	ldr r3, off_804AEB8 // =byte_804A29C 
 	ldr r4, dword_804AEBC // =0x40000000 
-	bl sub_811FAF4
+	bl battleObject_queueOamFromTableRow_811FAF4
 	ldr r1, [sp]
 	lsr r1, r1, #4
 	sub r1, #1

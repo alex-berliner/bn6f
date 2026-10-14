@@ -18,12 +18,12 @@ int *__fastcall battleObject_getByIndex_813B780(int a1)
 // 0x813b790
 void *__fastcall sub_813B790(int a1)
 {
-    return sub_813B7A0(a1, byte_20096D8);
+    return battleObject_runAIDispatchTable_813B7A0(a1, byte_20096D8);
 }
 
 
 // 0x813b7a0
-void *__fastcall sub_813B7A0(int a1, int a2)
+void *__fastcall battleObject_runAIDispatchTable_813B7A0(int a1, int a2)
 {
     int v2; // r6
     int v3; // r4
@@ -847,7 +847,7 @@ _BYTE *__fastcall sub_813BD90(int a1, int a2, int a3, int a4)
     v8 = a3;
     v21 = v4 + 1;
     v22 = v5;
-    v9 = sub_813B7A0(a1, a4);
+    v9 = battleObject_runAIDispatchTable_813B7A0(a1, a4);
     v10 = v7 - 3;
     v11 = v8 - 3;
     v12 = *(v6 + oToolkit_Unk200414c_Ptr) + 7 * (v8 - 3) + v7 - 3;
