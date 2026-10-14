@@ -5531,7 +5531,7 @@ int sub_8112278()
     unsigned __int8 *v0; // r6
     int result; // r0
 
-    result = sub_8112600();
+    result = battleObject_tryStartChipAttack_8112600();
     if ( !result )
         result = (*(&off_8112294 + *v0))();
     return result;
@@ -5918,7 +5918,7 @@ int __fastcall sub_8112562(int a1, int a2, int a3)
 
 
 // 0x8112600
-signed int sub_8112600()
+signed int battleObject_tryStartChipAttack_8112600()
 {
     int v0; // r5
     signed int v1; // r6
@@ -9875,7 +9875,7 @@ int __fastcall sub_81159B0(int a1, int a2, int a3, int a4)
 
 
 // 0x81159dc
-int sub_81159DC()
+int battleObject_tickColorShaderFromExtraVars_81159DC()
 {
     int v0; // r5
     int result; // r0
@@ -14752,7 +14752,7 @@ void battle_dispatchSpriteAction_81196A0()
 
 
 // 0x81196c4
-int sub_81196C4()
+int submenu_dispatchByCurAction_81196C4()
 {
     int v0; // r5
 
@@ -20468,12 +20468,12 @@ void __fastcall __noreturn sub_811E384(int a1, int a2)
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v2->currState = 4;
-    sub_811E3CC();
+    battleObject_setCoordsFromCutsceneScript_811E3CC();
 }
 
 
 // 0x811e3cc
-void __noreturn sub_811E3CC()
+void __noreturn battleObject_setCoordsFromCutsceneScript_811E3CC()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -21194,7 +21194,7 @@ void sub_811ED58()
         *(v0 + 13) = 2;
         *v0 = 4;
         battle_spawnEStructRecordsFromTable_80465A0(byte_811EB78);
-        sub_811F1B8();
+        startScreen_queueFourCornerArrows_811F1B8();
     }
     battle_updateCursorPulsate_811F0C8();
     petCommSaveInit_811F11C();
@@ -21287,7 +21287,7 @@ LABEL_10:
         }
     }
 LABEL_22:
-    sub_811F1B8();
+    startScreen_queueFourCornerArrows_811F1B8();
 }
 
 
@@ -21339,7 +21339,7 @@ void __noreturn sub_811EED0()
 // 0x811ef0c
 void __fastcall __noreturn naviSelect_SetupBackgrounds_811EF0C(int a1)
 {
-    sub_811F1B8();
+    startScreen_queueFourCornerArrows_811F1B8();
 }
 
 
@@ -21354,7 +21354,7 @@ void __noreturn initPetSelectScreen_811EF28()
     *v0 = 4;
     LoadGFXAnim(byte_811EAD4);
     LoadGFXAnim(byte_811EAEC);
-    sub_811F1B8();
+    startScreen_queueFourCornerArrows_811F1B8();
 }
 
 
@@ -21513,7 +21513,7 @@ int __fastcall sub_811F184(_WORD *a1, char *a2, int a3, int a4)
 
 
 // 0x811f1b8
-signed int __noreturn sub_811F1B8()
+signed int __noreturn startScreen_queueFourCornerArrows_811F1B8()
 {
     signed int *v0; // r7
     signed int v1; // r6

@@ -11245,7 +11245,7 @@ off_81356E4:
 	.word off_81356E8
 off_81356E8:
 	.word sub_81356F4+1
-	.word sub_81357C4+1
+	.word beastsp_dispatchHandler_81357C4+1
 	.word sub_8135B54+1
 	thumb_func_end sub_81356D4
 
@@ -11340,9 +11340,9 @@ off_81357C0:
 // symdb: Dispatches a beast-sp (beast-out special) battle update handler selected by a type byte, then runs the standard entity/sprite tick
 // symdb: (r5 = beastsp context, r5+0x2 = type byte) -> r0 = 0 ; side effects: jumps through handler
 // symdb: table, then calls entity_runAllUpdateHandlers_80465BC and battle_updateEStructSprites_80465F8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81357C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_dispatchHandler_81357C4.yaml
 	thumb_local_start
-sub_81357C4:
+beastsp_dispatchHandler_81357C4:
 	push {lr}
 	ldr r0, off_81357DC // =off_81357E0 
 	ldrb r1, [r5,#2]
@@ -11371,7 +11371,7 @@ off_81357E0:
 	.word sub_8135A44+1
 	.word sub_8135AF8+1
 	.word sub_8135B38+1
-	thumb_func_end sub_81357C4
+	thumb_func_end beastsp_dispatchHandler_81357C4
 
 	thumb_local_start
 sub_813581C:
@@ -13857,7 +13857,7 @@ loc_8136B34:
 	mov r0, r6
 	mov r1, #3
 	mov r2, r7
-	bl sub_813C06C
+	bl battle_beastOutApplyCrossChanges_813C06C
 	add r6, #1
 	cmp r6, r4
 	blt loc_8136B34

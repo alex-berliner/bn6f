@@ -122791,7 +122791,7 @@ off_80F17D4:
 	.word off_80F17D8
 off_80F17D8:
 	.word sub_80F17E4+1
-	.word sub_80F1808+1
+	.word battleObject_aiSpawnSnakeArmAttack_80F1808+1
 	.word sub_80F1888+1
 	thumb_func_end sub_80F17C4
 
@@ -122822,9 +122822,9 @@ locret_80F1806:
 // symdb: Drives the AI "snake-arm" sub-attack over a few frames: starts it (sets phase 4, animation 0x10, SFX 0x0B), waits 0x1E frames, then spawns the collision region at the front panel of `r5` and a type-1/0 effect at the mirrored front panel offset.
 // symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> void ; mutates r5's CurAnim, r7's
 // symdb: Unk_01/Unk_10/Unk_00, plays SFX, spawns a collision region and an effect object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F1808.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiSpawnSnakeArmAttack_80F1808.yaml
 	thumb_local_start
-sub_80F1808:
+battleObject_aiSpawnSnakeArmAttack_80F1808:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -122886,7 +122886,7 @@ dword_80F1880:
 	.word 0x700FF11
 dword_80F1884:
 	.word 0x1
-	thumb_func_end sub_80F1808
+	thumb_func_end battleObject_aiSpawnSnakeArmAttack_80F1808
 
 	thumb_local_start
 sub_80F1888:
@@ -171076,7 +171076,7 @@ off_81091D0:
 	// 0x6C
 	.word nullsub_13+1
 	// 0x70
-	.word sub_81159DC+1
+	.word battleObject_tickColorShaderFromExtraVars_81159DC+1
 	// 0x74
 	.word sub_81162AA+1
 	// 0x78

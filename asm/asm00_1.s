@@ -12233,7 +12233,7 @@ battle_dispatchPostMoveSubstate_8008950:
 off_8008968:
 	.word off_800896C
 off_800896C:
-	.word sub_800898C+1
+	.word battle_startCrossNet_800898C+1
 	.word battle_advancePostMovePhase_80089CC+1
 	.word sub_8008A7C+1
 	.word sub_8008B7C+1
@@ -12247,9 +12247,9 @@ off_8008988:
 // symdb: Initialises or finalises the cross-net battle lobby handoff within the battle context (advances both navi AI joypads, flips the toolkit battle state to 4 once comms are ready, and clears gauges).
 // symdb: (r5 = BattleState-like ctx, r10 = Toolkit, lr = ret) -> flags NZ/C/V ; void-like (callers only
 // symdb: use NZ/C/V)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800898C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startCrossNet_800898C.yaml
 	thumb_local_start
-sub_800898C:
+battle_startCrossNet_800898C:
 	push {lr}
 	mov r0, #0
 	bl battle_updateNaviAIJoypad_8012DFC
@@ -12278,7 +12278,7 @@ loc_80089BE:
 	str r0, [r5]
 locret_80089CA:
 	pop {pc}
-	thumb_func_end sub_800898C
+	thumb_func_end battle_startCrossNet_800898C
 
 // symdb: Per-frame post-move phase driver: unpauses, ticks AI joypad, advances phase state, and dispatches to a "wait for ready" / chip-lockout / move-result state machine.
 // symdb: (r10 = toolkit, r5 = some scratch object/state ptr) -> void ; side effects: writes *r5, advances

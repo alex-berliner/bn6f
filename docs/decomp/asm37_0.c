@@ -1155,7 +1155,7 @@ void __cdecl sub_813C030()
 
 
 // 0x813c06c
-int __fastcall sub_813C06C(int a1, int a2, int a3)
+int __fastcall battle_beastOutApplyCrossChanges_813C06C(int a1, int a2, int a3)
 {
     int v3; // r10
     int v4; // r2

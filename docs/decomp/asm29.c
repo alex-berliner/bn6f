@@ -1159,7 +1159,7 @@ LABEL_24:
             SetEventFlagFromImmediate(23, 40);
             *(v0 + 9) = v3 + 1;
         }
-        v4 = sub_80A5C9C();
+        v4 = battle_aiBeastSPageStep_80A5C9C();
         if ( v4 == 1 )
         {
             *(v0 + 9) = 0;
@@ -1227,7 +1227,7 @@ signed int battle_ai_checkBeastOutTrigger_80A5C74()
 
 
 // 0x80a5c9c
-signed int sub_80A5C9C()
+signed int battle_aiBeastSPageStep_80A5C9C()
 {
     int v0; // r5
     int v1; // r4
@@ -2223,8 +2223,8 @@ int battleObject_stepBeastOut_80A6F78()
     int v7; // r1
 
     sub_80A6FDC();
-    sub_80A704C();
-    v1 = sub_80A708C();
+    battleObject_updateBeastOutSprite_80A704C();
+    v1 = battleObject_pickBeastSpFace_80A708C();
     v2 = 0;
     v3 = *(v0 + 12);
     v4 = *(v0 + 36);
@@ -2302,7 +2302,7 @@ int sub_80A6FDC()
 
 
 // 0x80a704c
-int sub_80A704C()
+int battleObject_updateBeastOutSprite_80A704C()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -2329,7 +2329,7 @@ int sub_80A704C()
 
 
 // 0x80a708c
-int sub_80A708C()
+int battleObject_pickBeastSpFace_80A708C()
 {
     _DWORD *v0; // r5
     unsigned int v1; // r0
@@ -2579,7 +2579,7 @@ void __noreturn battleObject_updateFromCurAction_80A7354()
                 }
                 else
                 {
-                    sub_80A73A0();
+                    battleObject_beastStepUpdate_80A73A0();
                     owMapObject_event5F1Trigger_80A75DC();
                 }
             }
@@ -2598,7 +2598,7 @@ int sub_80A7398()
 
 
 // 0x80a73a0
-int sub_80A73A0()
+int battleObject_beastStepUpdate_80A73A0()
 {
     int v0; // r5
     char v1; // r0
@@ -4558,7 +4558,7 @@ void beastSP_initOrUpdate_80A86B4()
     int v10; // r4
 
     v1 = 1;
-    v2 = *&sub_81421D8()[4 * *(v0 + 4)];
+    v2 = *&battleObject_scenarioEffectStateAddr_81421D8()[4 * *(v0 + 4)];
     if ( v2 )
     {
         v3 = battle_getScenarioEffectStateField_81421D0();

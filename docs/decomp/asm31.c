@@ -94824,7 +94824,7 @@ int sub_80F17E4()
 
 
 // 0x80f1808
-void __fastcall sub_80F1808(int a1, int a2, int a3)
+void __fastcall battleObject_aiSpawnSnakeArmAttack_80F1808(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7

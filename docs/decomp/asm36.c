@@ -6703,7 +6703,7 @@ void __fastcall __noreturn sub_81356F4(int a1, int a2, int a3, int a4)
 
 
 // 0x81357c4
-int sub_81357C4()
+int beastsp_dispatchHandler_81357C4()
 {
     int v0; // r5
 
@@ -8493,7 +8493,7 @@ int __fastcall sub_8136B10(__int16 a1)
     if ( v5 >= 7 )
         v5 = 7;
     do
-        result = sub_813C06C(v4++, 3, v3);
+        result = battle_beastOutApplyCrossChanges_813C06C(v4++, 3, v3);
     while ( v4 < v5 );
     return result;
 }

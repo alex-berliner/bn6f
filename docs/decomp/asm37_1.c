@@ -571,7 +571,7 @@ int battle_getScenarioEffectStateField_81421D0()
 
 
 // 0x81421d8
-char *sub_81421D8()
+char *battleObject_scenarioEffectStateAddr_81421D8()
 {
     return byte_2000798;
 }
@@ -1081,7 +1081,7 @@ int sub_81429CA()
     char *i; // r7
     int v5; // r2
 
-    v0 = sub_81421D8();
+    v0 = battleObject_scenarioEffectStateAddr_81421D8();
     ZeroFillByWord(v0, 16);
     v1 = sub_8142990();
     v2 = *(&off_8142A1C + battle_getScenarioEffectStateField_81421D0());

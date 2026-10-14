@@ -1432,9 +1432,9 @@ off_813C068:
 // symdb: Iterates the battle slot table for the beast-out forms, swaps in matched chip/animation pairs into `unk_30019E0` when the active navi owns the appropriate flag.
 // symdb: (r0 = ?, r1 = ?, r2 = modeFlag, r10 = toolkit) -> r0 = 0 ; side effects: writes to unk_30019E0
 // symdb: entry table
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C06C.yaml
-	thumb_func_start sub_813C06C
-sub_813C06C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutApplyCrossChanges_813C06C.yaml
+	thumb_func_start battle_beastOutApplyCrossChanges_813C06C
+battle_beastOutApplyCrossChanges_813C06C:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r2, [sp,#4]
@@ -1564,7 +1564,7 @@ byte_813C1A4:
 	.byte 0x4, 0x31, 0xF7, 0x5E, 0xF7, 0x2, 0xB7, 0x51, 0x17, 0x0
 	.byte 0x81, 0x5D, 0x80, 0x2, 0xA9, 0x45, 0x7B, 0x6F, 0x7B, 0x3
 	.byte 0x3B, 0x62, 0x5B, 0x0, 0x5, 0x6E, 0x2, 0x3
-	thumb_func_end sub_813C06C
+	thumb_func_end battle_beastOutApplyCrossChanges_813C06C
 
 	thumb_func_start sub_813C1C0
 sub_813C1C0:

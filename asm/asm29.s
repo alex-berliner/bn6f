@@ -1811,7 +1811,7 @@ loc_80A5B82:
 	add r7, #1
 	strb r7, [r5,#9]
 loc_80A5BB0:
-	bl sub_80A5C9C
+	bl battle_aiBeastSPageStep_80A5C9C
 	cmp r0, #1
 	beq loc_80A5BDA
 	cmp r0, #2
@@ -1929,9 +1929,9 @@ loc_80A5C98:
 // symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> r0 = 2 while running, 1 if page ended cleanly, 0 if
 // symdb: chatbox flag 0x80 was already cleared at entry ; side effects: locks/unlocks OW player and
 // symdb: clears eFlags2009F38 dialogue busy state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5C9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiBeastSPageStep_80A5C9C.yaml
 	thumb_local_start
-sub_80A5C9C:
+battle_aiBeastSPageStep_80A5C9C:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#0xa]
 	cmp r4, #0
@@ -1965,7 +1965,7 @@ loc_80A5CDE:
 locret_80A5CE0:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A5C9C
+	thumb_func_end battle_aiBeastSPageStep_80A5C9C
 
 	thumb_local_start
 sub_80A5CE4:
@@ -3568,8 +3568,8 @@ sub_80A6F70:
 battleObject_stepBeastOut_80A6F78:
 	push {r4-r7,lr}
 	bl sub_80A6FDC
-	bl sub_80A704C
-	bl sub_80A708C
+	bl battleObject_updateBeastOutSprite_80A704C
+	bl battleObject_pickBeastSpFace_80A708C
 	mov r2, r0
 	mov r4, #0
 	ldr r0, [r5,#0xc]
@@ -3679,9 +3679,9 @@ off_80A7044:
 
 // symdb: Swaps the beast-out form sprite/animation on a battle object when its target panel changes.
 // symdb: (r5 = BattleObjectPtr) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A704C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBeastOutSprite_80A704C.yaml
 	thumb_local_start
-sub_80A704C:
+battleObject_updateBeastOutSprite_80A704C:
 	push {r4,lr}
 	ldr r0, [r5,#0x24]
 	ldr r1, [r5,#0x28]
@@ -3710,13 +3710,13 @@ off_80A7080:
 	.word byte_80A7084
 byte_80A7084:
 	.byte 0x1, 0x1, 0x0, 0x3, 0x2, 0x0, 0x0, 0x0
-	thumb_func_end sub_80A704C
+	thumb_func_end battleObject_updateBeastOutSprite_80A704C
 
 // symdb: For a Beasts+ beastman-style battle object, picks the facing-table entry (0 or 1) based on the horizontal angle between two positions stored on the object and writes it to oBattleObject+0x30.
 // symdb: (r5 = BattleObject*) -> r0 = 0x0001C000 ; side effects: writes oBattleObject+0x30
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A708C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_pickBeastSpFace_80A708C.yaml
 	thumb_local_start
-sub_80A708C:
+battleObject_pickBeastSpFace_80A708C:
 	push {r4,lr}
 	ldr r0, [r5,#0x24]
 	ldr r1, [r5,#0x28]
@@ -3743,7 +3743,7 @@ off_80A70B4:
 	.word byte_80A70B8
 byte_80A70B8:
 	.byte 0x0, 0xC0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0
-	thumb_func_end sub_80A708C
+	thumb_func_end battleObject_pickBeastSpFace_80A708C
 
 	thumb_local_start
 sub_80A70C0:
@@ -4100,7 +4100,7 @@ loc_80A7380:
 	strb r0, [r5,#8]
 	b loc_80A738E
 loc_80A7386:
-	bl sub_80A73A0
+	bl battleObject_beastStepUpdate_80A73A0
 	bl owMapObject_event5F1Trigger_80A75DC
 loc_80A738E:
 	bl sprite_update
@@ -4118,9 +4118,9 @@ sub_80A7398:
 // symdb: Per-frame Beast-out movement step for a battle object (sliding on its X or Y slot by a slot-width delta, clamped to the lane bounds), with optional sub-state advancement.
 // symdb: (r5 = battle object, r10 = toolkit) -> void ; reads/writes battle object
 // symdb: +0x5..+0x10,+0x18,+0x1c; calls render projector at +0xc
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A73A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastStepUpdate_80A73A0.yaml
 	thumb_local_start
-sub_80A73A0:
+battleObject_beastStepUpdate_80A73A0:
 	push {r4-r7,lr}
 	mov r0, r5
 	add r0, #0xc
@@ -4205,7 +4205,7 @@ loc_80A7438:
 	str r0, [r5,#0x10]
 locret_80A743A:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A73A0
+	thumb_func_end battleObject_beastStepUpdate_80A73A0
 
 	thumb_local_start
 sub_80A743C:
@@ -6606,7 +6606,7 @@ sub_80A86AC:
 beastSP_initOrUpdate_80A86B4:
 	push {r4-r7,lr}
 	mov r4, #1
-	bl sub_81421D8
+	bl battleObject_scenarioEffectStateAddr_81421D8
 	ldrb r1, [r5,#4]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]

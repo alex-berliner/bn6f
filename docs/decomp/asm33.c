@@ -166,7 +166,7 @@ int battleObject_runUpdateHandlerByType_8123514()
     (*(&off_812353C + *(v0 + 2)))();
     sfx_playChipUseSound_8123A50();
     pet_menu_drawCharacterStatBlock_8123C98();
-    sub_8123E58();
+    pet_menu_drawStatusIcons_8123E58();
     entity_runAllUpdateHandlers_80465BC();
     return battle_updateEStructSprites_80465F8();
 }
@@ -437,7 +437,7 @@ int __fastcall __noreturn pet_menu_runFrame_81237BC(int a1)
 
     sfx_playChipUseSound_8123A50();
     pet_menu_drawCharacterStatBlock_8123C98();
-    sub_8123E58();
+    pet_menu_drawStatusIcons_8123E58();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
     result = IsPaletteFadeActive();
@@ -812,7 +812,7 @@ int sub_8123E24()
 
 
 // 0x8123e58
-int sub_8123E58()
+int pet_menu_drawStatusIcons_8123E58()
 {
     unsigned __int8 *v0; // r5
     int v1; // r6

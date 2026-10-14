@@ -510,7 +510,7 @@ off_8123510:
 // symdb: Dispatches one battle object's per-frame update through a type-indexed jump table, then runs chip SFX, the PET menu stat block, and the standard entity/BattleObject update passes.
 // symdb: (r2 = ?, r4..r7, r10 = toolkit, r5 = current battle object) -> r5, r8..r10, r12 ; side effects:
 // symdb: jumps through off_812353C, then calls sfx_playChipUseSound_8123C98,
-// symdb: pet_menu_drawCharacterStatBlock_8123C98, sub_8123E58, entity_runAllUpdateHandlers_80465BC,
+// symdb: pet_menu_drawCharacterStatBlock_8123C98, pet_menu_drawStatusIcons_8123E58, entity_runAllUpdateHandlers_80465BC,
 // symdb: battle_updateEStructSprites_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateHandlerByType_8123514.yaml
 	thumb_local_start
@@ -523,7 +523,7 @@ battleObject_runUpdateHandlerByType_8123514:
 	bx r0
 	bl sfx_playChipUseSound_8123A50
 	bl pet_menu_drawCharacterStatBlock_8123C98
-	bl sub_8123E58
+	bl pet_menu_drawStatusIcons_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
@@ -878,7 +878,7 @@ pet_menu_runFrame_81237BC:
 	push {lr}
 	bl sfx_playChipUseSound_8123A50
 	bl pet_menu_drawCharacterStatBlock_8123C98
-	bl sub_8123E58
+	bl pet_menu_drawStatusIcons_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
@@ -1745,9 +1745,9 @@ byte_8123E4C:
 // symdb: PET menu per-frame redraw that picks one of two OAM sprite rows for the current navi status and toggles a frame/animation byte.
 // symdb: (r5 = SubMenuPtr) -> r0 = new CurAnim frame index ; side effects OAM queue, mutates SubMenu+0x10
 // symdb: and SubMenu+0x11
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123E58.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_menu_drawStatusIcons_8123E58.yaml
 	thumb_local_start
-sub_8123E58:
+pet_menu_drawStatusIcons_8123E58:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#0x14]
 	mov r1, #0x2d 
@@ -1847,7 +1847,7 @@ dword_8123F3C:
 byte_8123F40:
 	.byte 0xA, 0x0, 0x0, 0x0, 0xA, 0x1, 0x1, 0x0, 0xA, 0x2, 0x2, 0x0, 0xA, 0x3, 0x3
 	.byte 0x0, 0xA, 0x4, 0x4, 0x0, 0xA, 0x5, 0x5, 0x0, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_8123E58
+	thumb_func_end pet_menu_drawStatusIcons_8123E58
 
 	thumb_func_start DispatchSubChipMenu8123F5C
 DispatchSubChipMenu8123F5C: // (struct UnkSubMenu* state_a5) -> void

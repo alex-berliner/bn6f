@@ -8476,7 +8476,7 @@ byte_8112272:
 	thumb_local_start
 sub_8112278:
 	push {r4,r6,lr}
-	bl sub_8112600
+	bl battleObject_tryStartChipAttack_8112600
 	cmp r0, #0
 	bne locret_811228C
 	ldr r1, off_8112290 // =off_8112294
@@ -8923,9 +8923,9 @@ byte_81125F0:
 // symdb: If the AI's battle object has a chip selected and the battle is past the opening phase, performs the chip-attack startup sequence (write chip params, set attack action, post-update) and returns 1.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = 1 if a chip attack was initiated, else 0 ; side
 // symdb: effects: mutates the battle object, reads/writes battle state.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112600.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tryStartChipAttack_8112600.yaml
 	thumb_local_start
-sub_8112600:
+battleObject_tryStartChipAttack_8112600:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -8946,7 +8946,7 @@ sub_8112600:
 loc_811262C:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_8112600
+	thumb_func_end battleObject_tryStartChipAttack_8112600
 
 	thumb_local_start
 sub_8112630:
@@ -15006,9 +15006,9 @@ loc_81159DA:
 // symdb: Per-frame counter that decrements a BattleObject ExtraVar and, every 2nd tick while the battle is running and not paused, refreshes sprite color-shader id 0xF.
 // symdb: (r5 = BattleObject*) -> (void) ; side effect: writes oBattleObject_ExtraVars+4 and calls
 // symdb: sprite_setColorShader on the object's sprite block
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81159DC.yaml
-	thumb_func_start sub_81159DC
-sub_81159DC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickColorShaderFromExtraVars_81159DC.yaml
+	thumb_func_start battleObject_tickColorShaderFromExtraVars_81159DC
+battleObject_tickColorShaderFromExtraVars_81159DC:
 	push {lr}
 	bl battle_isPaused
 	bne locret_8115A00
@@ -15026,7 +15026,7 @@ sub_81159DC:
 	bl sprite_setColorShader
 locret_8115A00:
 	pop {pc}
-	thumb_func_end sub_81159DC
+	thumb_func_end battleObject_tickColorShaderFromExtraVars_81159DC
 
 	thumb_local_start
 sub_8115A02:
@@ -22790,7 +22790,7 @@ battle_dispatchSpriteAction_81196A0:
 off_81196B4:
 	.word off_81196B8
 off_81196B8:
-	.word sub_81196C4+1
+	.word submenu_dispatchByCurAction_81196C4+1
 	.word npc_dispatchStateHandler_811979C+1
 	.word nullStub_8119800+1
 	thumb_func_end battle_dispatchSpriteAction_81196A0
@@ -22799,9 +22799,9 @@ off_81196B8:
 // symdb: (r5 = battleObjectPtr, r10 = toolkit, lr = return) -> r0 = 0x40000000 ; side effects: dispatches
 // symdb: to one of 5 submenu action handlers; sprite unk0x2c is written by the
 // symdb: `sprite_setUnk0x2cFromLoader` follow-up.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81196C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchByCurAction_81196C4.yaml
 	thumb_local_start
-sub_81196C4:
+submenu_dispatchByCurAction_81196C4:
 	push {lr}
 	ldr r0, off_81196D8 // =off_81196DC
 	ldrb r1, [r5,#9]
@@ -22819,7 +22819,7 @@ off_81196DC:
 	.word sub_811974C+1
 	.word npc_stepChainSetState0x10_811975C+1
 	.word sprite_stepZoomShrinkOut_811976C+1
-	thumb_func_end sub_81196C4
+	thumb_func_end submenu_dispatchByCurAction_81196C4
 
 // symdb: Refreshes the active submenu panel's chip visuals/text and copies status fields forward when the chip selection has changed.
 // symdb: (r5 = SubMenu*, r10 = Toolkit*) -> r5 preserved ; side effects: may redraw chip gfx/text via
@@ -32292,7 +32292,7 @@ off_811E370:
 	.word off_811E374
 off_811E374:
 	.word sub_811E384+1
-	.word sub_811E3CC+1
+	.word battleObject_setCoordsFromCutsceneScript_811E3CC+1
 	.word sub_811E40C+1
 off_811E380:
 	.word eScenarioEffectState2000780
@@ -32321,7 +32321,7 @@ sub_811E384:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811E3CC
+	bl battleObject_setCoordsFromCutsceneScript_811E3CC
 	pop {pc}
 	.balign 4, 0
 off_811E3C8:
@@ -32332,9 +32332,9 @@ off_811E3C8:
 // symdb: (r5 = BattleObject*, r6 = ?, r10 = Toolkit/CutsceneState base; lr = return into caller) -> (r0 =
 // symdb: 0x1AC, NZ flag set) ; side effects: writes Object[5] in scratch mem, sets Coordinates of
 // symdb: object's sprite sub-entry, runs sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E3CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setCoordsFromCutsceneScript_811E3CC.yaml
 	thumb_local_start
-sub_811E3CC:
+battleObject_setCoordsFromCutsceneScript_811E3CC:
 	push {lr}
 	ldrb r4, [r5]
 	mov r1, #2
@@ -32366,7 +32366,7 @@ loc_811E3FC:
 	.balign 4, 0
 off_811E408:
 	.word dword_8089128 // CutsceneScript
-	thumb_func_end sub_811E3CC
+	thumb_func_end battleObject_setCoordsFromCutsceneScript_811E3CC
 
 	thumb_local_start
 sub_811E40C:
@@ -33490,7 +33490,7 @@ sub_811ED58:
 	// a1
 	ldr r0, off_811EDA8 // =byte_811EB78
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
-	bl sub_811F1B8
+	bl startScreen_queueFourCornerArrows_811F1B8
 	bl replaySpriteFrames_811F24C
 loc_811ED8E:
 	bl battle_updateCursorPulsate_811F0C8
@@ -33610,7 +33610,7 @@ loc_811EE70:
 	bl menu_moveCursorUpDown_811FA22
 	strb r0, [r5,#4]
 loc_811EE82:
-	bl sub_811F1B8
+	bl startScreen_queueFourCornerArrows_811F1B8
 	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
 	pop {r4,pc}
@@ -33684,7 +33684,7 @@ loc_811EEF8:
 	thumb_local_start
 naviSelect_SetupBackgrounds_811EF0C:
 	push {lr}
-	bl sub_811F1B8
+	bl startScreen_queueFourCornerArrows_811F1B8
 	bl sub_811F214
 	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
@@ -33711,7 +33711,7 @@ initPetSelectScreen_811EF28:
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
 	ldr r0, off_811EF6C // =byte_811EAEC
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
-	bl sub_811F1B8
+	bl startScreen_queueFourCornerArrows_811F1B8
 	bl sub_811F214
 	bl battle_updateCursorPulsate_811F0C8
 	bl petCommSaveInit_811F11C
@@ -34056,9 +34056,9 @@ locret_811F1B6:
 // symdb: Queues four corner-arrow OAM tiles (top-left + top-right + bottom-left + bottom-right) for the PET/Navi-select screen overlay.
 // symdb: () -> void ; queues four 8x8 OAM sprites via sprite_queueOamEntryThunk_802FE28 using two paired
 // symdb: descriptor tables (r0=tilePtr/u16 attr, r2=0, r3=1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F1B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startScreen_queueFourCornerArrows_811F1B8.yaml
 	thumb_local_start
-sub_811F1B8:
+startScreen_queueFourCornerArrows_811F1B8:
 	push {r4-r7,lr}
 	ldr r7, off_811F1EC // =dword_811F1F0
 	mov r6, #0
@@ -34100,7 +34100,7 @@ dword_811F204:
 byte_811F208:
 	.byte 0x80, 0xC3, 0x0, 0x0, 0x6E, 0x0, 0x98, 0x0, 0x84, 0xC3, 0x0
 	.byte 0x0
-	thumb_func_end sub_811F1B8
+	thumb_func_end startScreen_queueFourCornerArrows_811F1B8
 
 // symdb: Iterates a built-in three-entry table and passes each (word0, word1) pair to sub_802FE28 with fixed arguments (0, 1), most likely registering three related display/animation entries.
 // symdb: void runEntryTableTriple_811F214(void)

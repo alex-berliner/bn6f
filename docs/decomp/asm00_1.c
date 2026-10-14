@@ -7463,7 +7463,7 @@ int battle_dispatchPostMoveSubstate_8008950()
 
 
 // 0x800898c
-int sub_800898C()
+int battle_startCrossNet_800898C()
 {
     int v0; // r5
     int result; // r0
