@@ -5038,6 +5038,10 @@ off_802881C:
 	.word unk_3001A80
 	thumb_func_end loadOneSpriteTileRow_80287D2
 
+// symdb: Custom-menu chip-select dispatcher: routes per selected-slot index to a small handler that packs (row,column) pair-coords into FIFO records.
+// symdb: (r5 = active-chip-array base, r6 = out-pair-table base; saves r4-r6,lr) -> flags ; side effects
+// symdb: writes records into the FIFO at dword_3002180 via fifo_pushRecord16_8009FF8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028820.yaml
 	thumb_local_start
 sub_8028820:
 	push {r4-r6,lr}
@@ -8752,12 +8756,10 @@ locret_802A21E:
 	pop {pc}
 	thumb_func_end battle_setUnk20349A5Flag_802A210
 
-// symdb: Returns a panel-slot candidate for an automated/navi selection in battle, or 0xFF when no candidate qualifies.
-// symdb: u8 battle_pickPanelCandidate_802A220(     r2  /* unused (legacy scratch) */,     r5  /* in:
-// symdb: caller struct; reads +0x3A word as a slot id to skip */,     r10 /* in: Toolkit/Task pointer;
-// symdb: reads +oToolkit_BattleStatePtr */,     lr) -> u8 (r0, also returned in r4); flags: nz/v/c set
-// symdb: per callees
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802A220.yaml
+// symdb: Decides whether the puppeteer (L+R swap mechanic) should swap to a new element for the player's MegaMan this frame, returning that element code or 0xFF if no swap.
+// symdb: (r2 -> used as save 0xb selection; r5 = ?, r10 = toolkit) -> r0 = element code (0..0xB) if a
+// symdb: swap is due, else 0xFF
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A220.yaml
 	thumb_local_start
 sub_802A220:
 	push {r4,r6,r7,lr}
@@ -12983,9 +12985,9 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end setupNaviDisplay_802C34E
 
-// symdb: Computes the charge column difference (signed) between a battle object's A- and B-button power attacks and triggers a chip-use update when non-zero.
-// symdb: (r5 = object, r6 ?, r10 = toolkit, lr = ret) -> r0 = (preserved); r4,r5,r6,r7 clobbered;
-// symdb: r1,r2,r3 caller-saved (write-visible). Side effects: may call sub_802C490 and call_sub_3005EBA.
+// symdb: Performs a B-button panel swap in the chip-select screen by comparing A-panel vs B-panel slot indices and triggering the swap routine when they differ.
+// symdb: (r0 = diff-into-blend?, r1 = ?, r5 = ?, r6 = ?, r10 = toolkit) -> r0 = unchanged (ldrsb diff
+// symdb: result) ; side effects: calls sub_802C490 and call_sub_3005EBA to actually do the swap
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:
@@ -25118,6 +25120,10 @@ sub_803182A:
 	pop {pc}
 	thumb_func_end sub_803182A
 
+// symdb: Computes a one-dimensional panel-column distance between a battle object and its target reference point (used by AI ranged targeting)
+// symdb: (r0 = AIData scratch, r5 = actor BattleObject) -> r0 = panel-column distance from target ; side
+// symdb: effects: clobbers r1,r2,r3; preserves r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031852.yaml
 	thumb_local_start
 sub_8031852:
 	push {lr}

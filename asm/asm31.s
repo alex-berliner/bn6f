@@ -60828,6 +60828,10 @@ locret_80D456E:
 	pop {pc}
 	thumb_func_end sub_80D4544
 
+// symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select sub_80D458C or sub_80D45AE, then returns
+// symdb: (r5 = BattleObjectPtr) -> r0 = ... ; no fixed return contract, side effect is jumping to one of
+// symdb: two phase handlers based on CurPhase
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4570.yaml
 	thumb_local_start
 sub_80D4570:
 	push {lr}
@@ -88254,6 +88258,10 @@ sub_80E1662:
 	mov pc, lr
 	thumb_func_end sub_80E1662
 
+// symdb: Initialise a stack-local list of allied/enemy BattleObject pointers (5-word slots) by collecting opponents via object_getEnemyByNameRange, then zeroing the self-slot.
+// symdb: (r5 = self BattleObject) -> r0 = 0 (always); side effects: writes 0x34 bytes of stack temp,
+// symdb: mutates self→RelatedObject1Ptr via sub_80E16CC
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
 	push {r4,r6,r7,lr}
@@ -111832,6 +111840,11 @@ locret_80EC67C:
 	pop {r4,pc}
 	thumb_func_end sub_80EC5EC
 
+// symdb: Advances the AI AttackVars counter, falls through to process an attack action when the timer runs out, and resets the state if interrupted by invalid conditions.
+// symdb: (r5 = current BattleObject, r7 = AI AttackVars block, r10 = toolkit) -> r0/r1/r2/r3 =
+// symdb: scratch/clobbered ; side effects: writes to AIData->Unk_44 bit, AIData->Unk_30/Unk_00,
+// symdb: AttackVars->Unk_01/10/30, and jumps into sub_80EC792/sub_80116AE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EC67E.yaml
 	thumb_local_start
 sub_80EC67E:
 	push {r4,r6,lr}

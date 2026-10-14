@@ -346,7 +346,7 @@ loc_8003354:
 // symdb: Spawns a battle object of type 3 from five caller-supplied arguments and runs its initializer if the spawn succeeded.
 // symdb: BattleObject* battle_spawnObjectType3(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4); /* r0-r4 in; r5
 // symdb: out = new object pointer or NULL; flags set from tst r5,r5 when no initializer ran, otherwise
-// symdb: from object_attachToEUnkBattleObjectLinkedList_8003400; r4/r6/r7 preserved */
+// symdb: from sub_8003400; r4/r6/r7 preserved */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnType3.yaml
 	thumb_func_start object_spawnType3
 object_spawnType3:
@@ -12374,6 +12374,10 @@ off_8008A90:
 	.word sub_8008B52+1
 	thumb_func_end sub_8008A7C
 
+// symdb: Battle-mode pre-fight tick that dispatches the pre-battle init phase once, picks and plays a battle/pre-battle song, decrements a per-tick counter, and hands off to the next state when the linked-partner sync is ready.
+// symdb: (r5 = BattleModePreBState, r10 = Toolkit) -> ; side effects writes to eBattleModePreBState
+// symdb: (offset 3 as phase, 8 as timer), plays music via PlayMusic, dispatches effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008AA0.yaml
 	thumb_local_start
 sub_8008AA0:
 	push {r4,r6,lr}

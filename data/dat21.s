@@ -3834,9 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: BBS request dispatcher that reads/clauses the request entry, asks the cutscene engine which script sent it, and routes to the appropriate per-request handler (set/clear flag, NSF animation loaders, set-event-flag helpers).
-// symdb: (r10 = eToolkit ptr, lr = return) -> flags nz ; side effects on r0-r9/r12, EWRAM via r10, calls
-// symdb: a chain of subsystem helpers
+// symdb: Handles the BBS request screen state machine, managing updates based on player input.
+// symdb: () -> void ; updates BBS state, manipulates event flags, modifies render/cutscene globals
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

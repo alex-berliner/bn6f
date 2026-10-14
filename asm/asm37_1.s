@@ -673,6 +673,9 @@ sub_8142072:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142072
 
+// symdb: Looks up an index in a small 3-entry table (byte_81420A8) by matching against the current MapGroup, returning the table index or 0xff.
+// symdb: (r10 = ToolkitPtr, lr = return) -> r0 = index (0..n) or 0xff if no match/empty entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142080.yaml
 	thumb_func_start sub_8142080
 sub_8142080:
 	push {r4-r7,lr}

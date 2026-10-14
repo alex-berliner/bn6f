@@ -10069,7 +10069,7 @@ loc_8013366:
 	pop {r4,r6,r7,pc}
 	thumb_func_end ai_tryUseChipFromHand_8013236
 
-// symdb: Checks whether the enemy AI may play the chip waiting in its battle hand this frame (no attack-power hint set, AI condition flags allow acting, hand not empty) and if so performs the chip selection via ai_tryUseChipFromHand_8013236.
+// symdb: Checks whether the enemy AI may play the chip waiting in its battle hand this frame (no attack-power hint set, AI condition flags allow acting, hand not empty) and if so performs the chip selection via sub_8013236.
 // symdb: bool sub_801336C(battleObject* obj /* r4, r5 = the battle object */, ...)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiTrySelectChipFromHand_801336C.yaml
 	thumb_local_start
@@ -26181,6 +26181,10 @@ locret_801BC22:
 	pop {pc}
 	thumb_func_end object_updateSpriteTimestop
 
+// symdb: Advance a battle object's sprite animation (load+set on change, update on no-change) unless paused/invisible/sprite-frozen or in a non-time-stopped state when the object isn't flagged to update during time-stop.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: may load sprite animation data, set
+// symdb: sprite animation index, run sprite_update, write CurAnimCopy
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BC24.yaml
 	thumb_func_start sub_801BC24
 sub_801BC24:
 	push {lr}
@@ -30511,6 +30515,10 @@ sub_801DB78:
 	pop {pc}
 	thumb_func_end sub_801DB78
 
+// symdb: Claims a free slot in dword_20352E0's 6-slot custom-arm table for this battle object's NameID and stores its mirrored arm attachment offset, then links the battle object into it.
+// symdb: (r5 = battleObject) -> r0 = 1 ; side effects: writes to the 6-slot table at 0x020352E0 (per-
+// symdb: entry 8 bytes: status, x, y, ptr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DB84.yaml
 	thumb_local_start
 sub_801DB84:
 	push {r4,r6,r7,lr}

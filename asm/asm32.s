@@ -18472,7 +18472,7 @@ off_81176A4:
 	thumb_func_end sub_8117690
 
 // symdb: Sets a state-struct entity to active with mode/counter 4 and immediately runs its shared update routine.
-// symdb: void sub_81176B0(r5 = state struct); NZCV and r0-r3 reflect the tail work done by battleObject_runTripleSoundDispatch_81176C0
+// symdb: void sub_81176B0(r5 = state struct); NZCV and r0-r3 reflect the tail work done by sub_81176C0
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81176B0.yaml
 	thumb_local_start
 sub_81176B0:
@@ -19816,6 +19816,10 @@ off_8117FE0:
 	.word sub_81180E0+1
 	thumb_func_end battle_beastsp_dispatchToPhaseHandler_8117FC4
 
+// symdb: After setting a BattleObject's beast-out phase/sprite, clears the Submenu's unk_0D byte when the phase is zero (i.e. when not actually beast-out)
+// symdb: (r5 = ptr to some BattleObject context) -> r0 = ptr to sSubmenu ; side effect: may clear
+// symdb: sSubmenu.unk_0D
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117FF8.yaml
 	thumb_local_start
 sub_8117FF8:
 	push {lr}
@@ -20110,6 +20114,11 @@ byte_811820C:
 	.byte 0xFA, 0x1, 0x0, 0x0, 0xFC, 0x1, 0x0
 	thumb_func_end sub_81181DC
 
+// symdb: Updates a chip-related object's palette and palette bank for the submenu, decrementing a timer and advancing a chip-index sequence every tick.
+// symdb: (r0 = unused, r1 = unused, r5 = battle object ptr) -> r0 = non-zero (typically 1, sometimes 5) ;
+// symdb: side effects on r5's flags byte, Unk_0c/0xd/0xe, plus GBA palette hardware via
+// symdb: sprite_setPalette/sprite_setSubEntryPaletteBank
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118234.yaml
 	thumb_local_start
 sub_8118234:
 	push {r4-r7,lr}
@@ -20229,6 +20238,10 @@ off_8118310:
 	.word sSubmenu
 	thumb_func_end battleObject_setBeastOutPhaseAndSprite_81182A4
 
+// symdb: Returns a pointer to one of two rows of the BattleObject CurState/CurAction byte-pair (16-byte aligned)
+// symdb: (r5 = BattleObject ptr) -> r0 = pointer to either BaseRow+0x8 or BaseRow+0x18 ; side effects:
+// symdb: none (nz/c/v flags clobbered)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118314.yaml
 	thumb_local_start
 sub_8118314:
 	ldrb r0, [r5,#2]
@@ -23071,10 +23084,10 @@ loc_8119874:
 	.byte 0, 0
 	thumb_func_end sprite_setPositionForIdRange3_8119854
 
-// symdb: Returns 1 (probably forcing AI skip/guard) only when the actor's APwrAtk slot lookup in a small byte table returns zero and the submenu state byte at sSubmenu+0xE differs from sSubmenu+0xF; otherwise falls through to the Z-set path.
-// symdb: (r5 = actor/AIData, lr = unk) -> flags Z set when the submenu-byte pair matches, clear
-// symdb: otherwise; r0/r1/r6/lr may be clobbered; no callee-saved registers used.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
+// symdb: Battle-object helper that returns 0/1 based on whether the current "select" / "switch" submenu slots differ while a submenu other than 0x20 is open, using the B-press data at r5+5.
+// symdb: (r5 = AIDataPtr-in-BattleObject?) -> r0 = 0/1 in Z ; sets Z on the return path; clobbers r0, r1,
+// symdb: r6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
 	thumb_local_start
 sub_8119880:
 	push {lr}
@@ -32095,6 +32108,9 @@ dword_811E240:
 	.word eStruct2001010
 	thumb_func_end sub_811E202
 
+// symdb: Tail-calls a scenario-effect step handler chosen by scenario-substate byte at r5+8
+// symdb: (r5 = scenario-effect state) -> r0 = 0x5e0 ; r5 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E248.yaml
 	thumb_func_start sub_811E248
 sub_811E248:
 	push {lr}
@@ -32147,6 +32163,11 @@ off_811E2B0:
 	.word 0x290
 	thumb_func_end sub_811E26C
 
+// symdb: Updates the Beast Out / Cross Fusion player's battle object sprite each frame, including a flip-state bit, optional sprite/animation reload and cutscene-driven coordinate offset.
+// symdb: (r5 = ptr to BattleObject, r6 = ptr to related object / extra struct) -> void ; side effects:
+// symdb: mutates object header flags and animation index, calls sprite_setCoordinates / sub_811E314 /
+// symdb: sprite_update, pushes two args for cutscene_checkOriginalCutsceneScriptPos_8036F70
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E2B4.yaml
 	thumb_local_start
 sub_811E2B4:
 	push {lr}
@@ -32199,6 +32220,10 @@ sub_811E30C:
 	pop {pc}
 	thumb_func_end sub_811E30C
 
+// symdb: Builds a per-battle-object sprite-Unk0x2c bitmask by clearing scenario-effect bits, then stores it on the object's sprite
+// symdb: (r5 = object pointer in r5 per caller convention) -> r0 = updated Unk0x2c value, r5 preserved ;
+// symdb: side effects: writes to r5's ObjectSprite Unk_2c; clobbers r0,r2,r3,r4,r6,r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E314.yaml
 	thumb_local_start
 sub_811E314:
 	push {r4-r7,lr}
@@ -36655,7 +36680,7 @@ loc_81204B6:
 	pop {r4-r7,pc}
 	thumb_func_end battle_loadChipIconSlots_8120458
 
-// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via battle_packChipIntoBattlePackEntry_8120504, and zeroing entries for empty slots.
+// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via sub_8120504, and zeroing entries for empty slots.
 // symdb: void battle_processChipSlotArray(s32 startIdx /*r0*/, void* chipArrayBase /*r1*/, void* dest
 // symdb: /*r2*/, void* extraParam /*r3*/, s32 count /*r5*/); /* writes 8*count bytes at dest; r0-r3,lr
 // symdb: clobbered; r4-r7,preserved */

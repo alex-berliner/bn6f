@@ -1209,11 +1209,10 @@ dword_80A5720:
 	.word 0x80B0B
 	thumb_func_end sub_80A5690
 
-// symdb: Returns two ROM-table bytes indexed by the selector byte at r6+5.
-// symdb: void lookupObjBytePair_80A5724(const void *r6 /*IN: object whose +5 byte is a selector*/,
-// symdb: u8 *r0 /*OUT: byte from table at 0x80A573C*/,                                u8 *r1 /*OUT: byte
-// symdb: from table at 0x80A5740*/); clobbers: r2, r3; preserved: r4; flags: not used.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5724.yaml
+// symdb: Returns a hotspot boundary byte pair for a given map group's hotspot region during overworld camera hotspot tests.
+// symdb: (r6 = ptr to map group hotspot context, byte at r6+5 = region index) -> r0 = byte from
+// symdb: dword_80A573C[region], r1 = byte from dword_80A5740[region]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5724.yaml
 	thumb_local_start
 sub_80A5724:
 	push {r4,lr}
@@ -1290,6 +1289,9 @@ byte_80A579C:
 	.byte 0x0
 	thumb_func_end pickBBSMsgForMapGroup_80A5764
 
+// symdb: jump-table dispatcher that calls an AIData B-button custom-op handler based on `[r5+8]`
+// symdb: (none meaningful — callee uses r5/r10 from caller) -> flags; tails via `pop {pc}`
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A57AC.yaml
 	thumb_func_start sub_80A57AC
 sub_80A57AC:
 	push {lr}
@@ -3957,6 +3959,11 @@ byte_80A729C:
 	.byte 0x0, 0x0, 0x0, 0x40
 	thumb_func_end sub_80A7238
 
+// symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
+// symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
+// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
+// symdb: sub_80A7398 depending on (r5+0x8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A72B4.yaml
 	thumb_func_start sub_80A72B4
 sub_80A72B4:
 	push {lr}
@@ -4030,6 +4037,10 @@ loc_80A7342:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A72D8
 
+// symdb: Beast-Out/MegaBeast action-1 (Beast Cannon/etc.) substep: chooses the per-tick script flow (sub_80A7640 or write CurState=8) and runs sprite update + a phase helper.
+// symdb: in: r5 = battle object whose CurAction==1, r6 = battle object, r10 = toolkit ; out:
+// symdb: r2-r3-r4-r5-r8-r9-r10 (no caller-visible return; callee-saved only)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7354.yaml
 	thumb_local_start
 sub_80A7354:
 	push {r4-r7,lr}
@@ -4828,10 +4839,11 @@ sub_80A78E0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A78E0
 
-// symdb: Per-frame BeastOut driver: syncs velocity/position scratch with the AIData scratch, runs a state sub-jump table, then writes the results back and refreshes the sprite.
-// symdb: (r5 = battleObject, r6 = AIData scratch view, r10 = toolkit, r7 = script cursor ptr) ->
-// symdb: r2/r3/r10 live for caller; r0/r1 clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7912.yaml
+// symdb: Drives a single Beast-Out AI step on the actuator: copies two BattleObject scratch regions, runs a per-action script (sub-handlers 0..6) with compare-and-loop semantics, optionally fires the Beast-SP trigger check, then commits and runs sprite_update.
+// symdb: (r5 = AIDataPtr, r6 = BattleObjectPtr, r10 = ToolkitPtr, r7 = byte-table cursor, lr) -> void ;
+// symdb: side effects: r0-r7/r10/lr/flags; mutates AIData+0xc/0x10/0x14 and BattleObject+8/0xc/0x10;
+// symdb: calls sub_8142050, sub_80A7BC0, sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7912.yaml
 	thumb_local_start
 sub_80A7912:
 	push {r4-r7,lr}
@@ -6525,6 +6537,9 @@ sub_80A86AC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A86AC
 
+// symdb: Initialize-or-update step for a "Beast SP" overworld cursor/indicator object: picks sprite/palette/priority by SoulWeaponCursorCameraCoords and (rarely) plays a one-shot SE.
+// symdb: (r5 = object, r10 = toolkit) -> r0 = palette index (4 or 5)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A86B4.yaml
 	thumb_local_start
 sub_80A86B4:
 	push {r4-r7,lr}
