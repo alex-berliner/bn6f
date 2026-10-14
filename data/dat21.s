@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Per-frame driver for a battle-related animation/state-machine chain (graphical animation loaders + NPC/cutscene script flag tests).
-// symdb: (r10 = toolkit ptr, lr) -> flags (nz) ; side effects: jumps via tail-call/jump table to
-// symdb: load_gfx_anim_*, and may set/clear/test event flags.
+// symdb: Cutscene/BBS orchestrator that tests/sets event flags and drives GFX anim + sprite loads around the cutscene-script-pos checks
+// symdb: (r10 = toolkit ptr, no other inputs) -> void ; modifies a wide set of scratch regs and writes
+// symdb: through toolkit globals
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,8 +8218,9 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: BattleObject scene/frame dispatch with event-flag-gated subroutines; behaviour is unrecoverable from the supplied data because the assembly wasn't located.
-// symdb: (r2 = ?, r10 = oToolkit) -> r0 = 0, flags Z set ; side effects: modifies r0-r7/lr, flags
+// symdb: Per-frame beast-out AI dispatch: tests a story event flag then routes to a beast-out AI sub-state action (likely sets/checks AIData fields and runs an action routine).
+// symdb: (r0 = ?, r1 = ?, r2 = working object/actor idx, r10 = toolkit) -> modifies r2, r3, r5, r7 in
+// symdb: place; side effects flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

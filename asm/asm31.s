@@ -60886,6 +60886,10 @@ off_80D4584:
 	.word sub_80D45AE+1
 	thumb_func_end battleObject_dispatchCurPhaseByJumpTable_80D4570
 
+// symdb: BattleObject phase tick: if not yet initialized, seed Timer from Param2; each call decrements Timer and on reaching zero, reset Timer to 8 and set CurPhaseAndPhaseInitialized to 4.
+// symdb: (r5 = BattleObject*) -> r0 = leftover Timer; side effects writes BattleObject->PhaseInitialized,
+// symdb: Timer, CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D458C.yaml
 	thumb_local_start
 sub_80D458C:
 	push {lr}
@@ -88358,6 +88362,10 @@ byte_80E16C4:
 	.byte 0xA0, 0xA4, 0xAC, 0xB0, 0xB4, 0xB8, 0xBC, 0xFF
 	thumb_func_end battle_ai_findEnemyTargets_80E1670
 
+// symdb: Decides a target panel (high byte = direction, low byte = column) for a battle object's step/move toward a chosen enemy/ally.
+// symdb: (r0 = actorType, r1 = battleObject ptr, r2 = unknown) -> r0 = result of sub_80E1704 ; side
+// symdb: effects (BattleObject->PanelX read/written via path constants)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E16CC.yaml
 	thumb_local_start
 sub_80E16CC:
 	push {r4,r6,r7,lr}

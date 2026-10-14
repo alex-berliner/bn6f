@@ -22663,10 +22663,10 @@ loc_814E7DC:
 	.byte 0, 0
 	thumb_func_end battle_aiData_processStreamByte_814E7CC
 
-// symdb: Reads one byte from a battle byte stream (via r1) into AIData.Version_17 (r0+0x17), and resets Version_16/charge flags via sub_814E7A4 when the byte is 0.
-// symdb: (r0 = AIData*, r1 = byte stream ptr) -> r0 = AIData* ; writes byte to [r0+0x17], conditionally
-// symdb: tail-calls sub_814E7A4(r1)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
+// symdb: Reads one byte from the battle stream and stores it into AIData.Version_17, resetting version/charge flags when the byte is zero.
+// symdb: (r0 = AIDataPtr, r1 = StreamPtr) -> r0 = AIDataPtr ; side effects: writes AIData.Version_17; on
+// symdb: zero, calls battle_aiData_resetVersionAndChargeFlags_814E7A4(r1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
 	thumb_func_start sub_814E7E0
 sub_814E7E0:
 	mov r12, lr

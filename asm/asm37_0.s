@@ -1140,6 +1140,9 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
+// symdb: Loops over the 0x31 8-byte Unk2004190 entries and clears/initializes the ones whose first halfword is already zero.
+// symdb: (no args, r10 = oToolkit) -> void; r7 clobbered, no return value
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:
 	push {r4-r7,lr}

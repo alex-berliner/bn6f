@@ -3018,6 +3018,10 @@ dword_80279C4:
 	.word 0x55
 	thumb_func_end sub_802794A
 
+// symdb: Finishes the chip-select subsystem: ticks the selection anim, refills a 4-slot chip row, then runs the Custom-screen exit sequence.
+// symdb: (r5 = *S20364C0, r10 = *Toolkit, lr) -> void ; side effects: writes to chip-select state at r5+8
+// symdb: (NumChipsSelected) and to Toolkit/BattleObject state during the exit sequence
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80279C8.yaml
 	thumb_local_start
 sub_80279C8:
 	push {r4,lr}
@@ -24586,6 +24590,10 @@ locret_80314CA:
 	pop {pc}
 	thumb_func_end sub_8031478
 
+// symdb: Steps the battle grid/scroll by 1 pixel (or 0x20 / 8 pixels in the alternate path) per frame using line-vs-point tests, accumulating axis deltas into a packed result held in r12.
+// symdb: (r0 = ?, r1 = ?, r2 = ?, r5 = ?, r12 in/out) -> r0 = r0 (unchanged), flags NZCV ; side effect:
+// symdb: writes axis-step bits into r12 across calls
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80314CC.yaml
 	thumb_local_start
 sub_80314CC:
 	push {lr}

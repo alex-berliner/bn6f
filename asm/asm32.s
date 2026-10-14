@@ -235,6 +235,10 @@ sub_810DAE4:
 	pop {pc}
 	thumb_func_end sub_810DAE4
 
+// symdb: Battle enemy AI pre-check: if the actor has a chip selected for use and the battle state's Unk_40 has reached 0x12C, write chip params, set attack 0 and reset state, signalling the AI to pause its state handler.
+// symdb: (r5 = BattleObject*, r10 = BattleState*) -> r0 = bool pauseAI ; side effects: writes AI params,
+// symdb: sets attack index to 0, resets selected chip state, may advance BattleState-derived counters
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810DAF0.yaml
 	thumb_local_start
 sub_810DAF0:
 	push {r4,r6,lr}
@@ -17046,10 +17050,10 @@ byte_8116BEC:
 	.byte 0x0, 0x80, 0x0, 0x90, 0x0
 	thumb_func_end sprite_fallingObjectStepDown_8116BC0
 
-// symdb: Runs two phase-update helpers on some state object, then when a shared counter byte reaches 8 also stores 8 into the object at +9 (a phase/done flag?).
-// symdb: void sub_8116BFC(r4 = ?, r5 = state object ptr, r6 = ?, r7 = ptr to counter byte); returns r0 =
-// symdb: counter byte (or 8 on the store path), flags from cmp counter,#8, preserves r4-r6
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116BFC.yaml
+// symdb: Per-frame tick for a SprOut "wind" sub-record: nudges the sub-record's +0xC time field up/down by 2, advances the allied sprite's palette animation, and queues destruction (CurAction = CUR_STATE_DESTROY) once the wind has fully expired.
+// symdb: (r5 = BattleObject*, r7 = byte ptr to a record/cur-state byte) -> void; side effect: may write
+// symdb: [r5+9] (CurAction) = 0x08, plus whatever the two callees mutate
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116BFC.yaml
 	thumb_local_start
 sub_8116BFC:
 	push {lr}
@@ -18625,6 +18629,9 @@ sub_8117764:
 	mov pc, lr
 	thumb_func_end sub_8117764
 
+// symdb: Clamps enemy (virus) count for the battle by checking progress flag 0x75 (min 4, max 8 viruses)
+// symdb: (r10 = toolkit, lr = return) -> r0 = clamped enemy count (4..8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117768.yaml
 	thumb_local_start
 sub_8117768:
 	push {lr}
@@ -32047,7 +32054,7 @@ off_811E164:
 
 // symdb: AI state-machine dispatcher that jumps (ARM-mode BX) to one of three handlers based on a sub-state byte in the AIData pointed to by r5
 // symdb: (r5 = AIData*, lr = return addr) -> r0 = AIData+0x8 byte used as index into 3-entry handler
-// symdb: table ; side effects: tail-bx into one of sub_811E18C / battleObject_setCoordsAndUpdateSprite_811E1D4 / sub_811E1FA (Thumb),
+// symdb: table ; side effects: tail-bx into one of sub_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
 // symdb: preserves r5 (callee-saved)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiState_dispatchStateMachine_811E168.yaml
 	thumb_func_start battle_aiState_dispatchStateMachine_811E168

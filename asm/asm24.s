@@ -1165,6 +1165,10 @@ loc_808CB06:
 	.balign 4, 0x00
 	thumb_func_end sub_808CAD4
 
+// symdb: Overworld per-frame step that drives the random-encounter progress (PET-Navi footsteps / "LocEnemy" state) and may start the encounter cutscene.
+// symdb: (no input args, r10 = Toolkit) -> side effects: may set state in 0x2000B40 area, play SE 0x13B,
+// symdb: start a cutscene via StartCutscene; nothing returned in r0/r1.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CB0C.yaml
 	thumb_func_start sub_808CB0C
 sub_808CB0C:
 	push {r4-r7,lr}

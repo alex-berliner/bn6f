@@ -425,9 +425,10 @@ loc_80200A0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_801FFD6
 
-// symdb: Sets a byte in the chip-use queue/selector struct (eStruct203F7D8+3) and marks it dirty by OR-ing 1 into its flags byte (eStruct203F7D8+2).
-// symdb: void sub_80200A4(u8 r0=value); // r1 := 1, r3 := A_eStruct203F7D8, NZ clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80200A4.yaml
+// symdb: Posts a battle-mode/flags update into eStruct203F7D8 (writes mode byte at +3 and OR=1 into flags byte at +2); r0 returns 1.
+// symdb: (r0 = request code) -> r0 = 1 ; side effects: store 1 byte to (eStruct203F7D8+3), read-modify-
+// symdb: write (eStruct203F7D8+2) |= 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80200A4.yaml
 	thumb_func_start sub_80200A4
 sub_80200A4:
 	ldr r3, off_8020130 // =eStruct203F7D8

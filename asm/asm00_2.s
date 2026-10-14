@@ -12278,6 +12278,10 @@ off_80141C4:
 	.word 0x104
 	thumb_func_end SetBeastOutCounterTo3
 
+// symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers sub_801E0BC for the enemy-side network invert.
+// symdb: (r5 = *BattleObject) -> (flags Z) ; side effects: writes [r5+0x24..0x27] (HP/MaxHP) and may call
+// symdb: sub_801E0BC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80141C8.yaml
 	thumb_local_start
 sub_80141C8:
 	push {lr}
@@ -13905,6 +13909,12 @@ locret_8014CBE:
 	pop {r4,pc}
 	thumb_func_end battle_runTransformationIntroStep_8014BEE
 
+// symdb: Per-tick AI attack update that cancels the Beast Out spam (atkvars Unk_10) once elapsed and tears down its state.
+// symdb: (r5 = ActorBattleObjectPtr, r6 = ?, r7 = ActorAIDataPtr, r10 = ToolkitPtr, lr = caller) -> r0 =
+// symdb: new Alliance value passed to sub_800AB2E ; side effects: edits ActorAIData->AttackVars offsets
+// symdb: 0x01 and 0x10, clears AIData bits 0x80 / 0x80000, AIData->Unk_44 bits 0x80008600, battle-state
+// symdb: flags 0x20, then calls object_exitAttackState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014CC0.yaml
 	thumb_local_start
 sub_8014CC0:
 	push {r4,lr}
@@ -14066,10 +14076,9 @@ dword_8014E04:
 	.word 0x80000
 	thumb_func_end sub_8014D70
 
-// symdb: AI attack-vars phase handler that drives the "Beast Out" style transformation step — flashes it white, performs a sprite change/animation, plays a sound, and on expiry runs turn-open post-processing before handing off to the next AI phase.
-// symdb: (r5 = battleObject, r7 = aiAttackVars, r10 = toolkit) -> void ; side effects: battle object's
-// symdb: sprite, animation, palette and NaviStats transformation byte are mutated, plus battle-wide setup
-// symdb: callbacks fire.
+// symdb: AI attack sub-state that handles the sequence just before/after a battle object transforms (Beast Out / Soul Unison / etc.) — flashes white, swaps sprite+anim, plays the transform SFX, updates the NaviStats Transformation byte, then opens the post-transform turn
+// symdb: (r4 = unused?, r5 = *battleObject, r6 = ??, r7 = *aiAttackVars, r10 = *toolkit) -> void ; side
+// symdb: effects: rewrites object sprite+anim, NaviStats[0x2C], triggers beginTurnOpenProcess
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
 	thumb_local_start
 sub_8014E08:
@@ -17708,6 +17717,10 @@ off_8016AE8:
 	.byte 0x2, 0x2, 0x2, 0x2, 0x2
 	thumb_func_end sub_8016AD0
 
+// symdb: Battle object per-frame handler that initializes an object's AI on first call, dispatches its AI handler, then commits a pending state transition if one was staged in Unk_5c
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: clears OBJECT_FLAGS_INVULNERABLE in
+// symdb: the collision data, dispatches AI, resets collision state, mutates object fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016B02.yaml
 	thumb_func_start sub_8016B02
 sub_8016B02:
 	push {lr}
@@ -31297,10 +31310,10 @@ chatbox_openMessageWindow_801DFEA:
 	pop {r4,r5,pc}
 	thumb_func_end chatbox_openMessageWindow_801DFEA
 
-// symdb: Tiny wrapper that tail-invokes sub_801BEB8 with the hardcoded argument 0x40.
-// symdb: void sub_801E006(void); /* no meaningful inputs besides lr; r0-r2 and nz/c flags returned from
-// symdb: sub_801BEB8, whose results callers inspect */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801E006.yaml
+// symdb: Sets bit 0x40 in the eStruct2035280 flags word (offset 0x44) to mark some battle state flag.
+// symdb: (none) -> r0 = 0x40 ; side effect: ORs 0x40 into eStruct2035280+0x44 via
+// symdb: flagSetBits_eStruct2035280_801BEB8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E006.yaml
 	thumb_local_start
 sub_801E006:
 	push {lr}

@@ -10384,7 +10384,7 @@ byte_804C3F0:
 
 // symdb: Dispatcher that calls one of two AIData sub-handlers based on an actor slot index and an action selector from a 0x14-byte AIData entry.
 // symdb: (r5 = AIData table base?, r5+0xc = slot index, r5+0x10 = action selector) -> returns whatever
-// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or battle_render_setBlurAndAnimUpdate_804C478
+// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or sub_804C478
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchJumpByActorSlotAndAction_804C404.yaml
 	thumb_local_start
 battle_dispatchJumpByActorSlotAndAction_804C404:

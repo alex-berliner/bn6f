@@ -18104,10 +18104,10 @@ locret_800AF82:
 	pop {r4,r5,pc}
 	thumb_func_end sub_800AF50
 
-// symdb: Selects a battle "mode pair" from the current battle effect flags (special-casing effect bit 0x8 against the battle state) and tail-dispatches into sub_800AC20 with the chosen parameters.
-// symdb: void sub_800AF84(void); // in: r4-r7 (passthrough args), r10 = toolkit; out: r0-r2 plus whatever
-// symdb: sub_800AC20 leaves in r0-r7/c/v; r5-r7 preserved through this frame
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AF84.yaml
+// symdb: Picks a busting-level category (0/1/2) for sub_800AC20 based on battle-effects flags and battle state's Unk_0d byte, then forwards to sub_800AC20.
+// symdb: (r0 = unused, r1 = unused, r10 = Toolkit ptr) -> r0 = category arg for sub_800AC20 (0, 1, or 2);
+// symdb: side effects: clobbers r0/r1/r2/r3 and the C/V flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AF84.yaml
 	thumb_local_start
 sub_800AF84:
 	push {lr}

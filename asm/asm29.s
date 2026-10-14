@@ -1690,6 +1690,9 @@ sub_80A5A1C:
 	.balign 4, 0x00
 	thumb_func_end sub_80A5A1C
 
+// symdb: Stores BattleObject.r5.CurAction into an EWRAM mirror byte
+// symdb: (r5 = BattleObject*) -> void ; side effect: writes byte at 0x2000EC0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5A5C.yaml
 	thumb_local_start
 sub_80A5A5C:
 	push {lr}
@@ -3407,6 +3410,9 @@ sub_80A6E3A:
 	pop {pc}
 	thumb_func_end sub_80A6E3A
 
+// symdb: Trivial stub that returns 0 to its caller.
+// symdb: () -> r0 = 0 ; side effects: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E4A.yaml
 	thumb_local_start
 sub_80A6E4A:
 	push {lr}

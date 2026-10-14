@@ -1864,6 +1864,9 @@ sprite_getCoordinates:
 	mov pc, lr
 	thumb_func_end sprite_getCoordinates
 
+// symdb: Look up the per-frame (dx, dy) shadow offset entry for a sprite given the current frame index.
+// symdb: (r0 = spriteDataPtr?, r1 = frameIndex) -> r0 = dx, r1 = dy (or both 0 if missing/none)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80030BA.yaml
 	thumb_func_start sub_80030BA
 sub_80030BA:
 	push {r4-r7,lr}
