@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Initializes/refreshes a beast-out related battle object (loads gfx anims, manages event flags and cutscene-script sentinels) and writes into the battle object's AIData/extras; result is a void-like side-effect call used by beast-out AI processing.
-// symdb: (r10 = Toolkit) ; side effects on battle object in r5, BBS request flags, event flags 0x17[7] /
-// symdb: 0x17[?], and several EWRAM-backed data slots
+// symdb: BBS / PET request subsystem state handler that reacts to story/event flags and the cutscene-script pointer, gating and triggering event-flag updates and loading the request-menu GFX anims.
+// symdb: (r10 = toolkit) -> nz ; side effects: clears/sets/tests event flags 0x1C84.., mutates ReqBBS
+// symdb: state, loads GFX anims
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

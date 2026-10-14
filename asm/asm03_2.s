@@ -744,7 +744,7 @@ off_804659C:
 	thumb_func_end battle_initEStructArr_804657C
 
 // (void *a1) -> void
-// symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via battle_initEmotionTableEntry_8046670.
+// symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via sub_8046670.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructRecordsFromTable_80465A0.yaml
 	thumb_func_start battle_spawnEStructRecordsFromTable_80465A0
 battle_spawnEStructRecordsFromTable_80465A0:

@@ -410,8 +410,9 @@ off_80028BC:
 	.word 0x388
 	thumb_func_end sprite_resetObjVars_800289C
 
-// symdb: Record the sprite palette count (dword_200F340) in slot r0 of byte_200F389, after each sprite group is queued.
-// symdb: (r0 = slot) -> byte_200F389[r0] = (u8)dword_200F340; r1 = dword_200F340, r2 = &byte_200F389
+// symdb: Records the current queued-sprite palette count (dword_200F340) into byte slot r0 of the per-group counter array at byte_200F389.
+// symdb: (r0 = groupSlot) -> side effects only (r1/r2 clobbered, NZ flags set); writes byte_200F389[r0] =
+// symdb: (byte) dword_200F340
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80028C0.yaml
 	thumb_func_start sub_80028C0
 sub_80028C0:

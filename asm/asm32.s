@@ -16953,9 +16953,10 @@ off_8116AFC:
 	.word ePETMenuData
 	thumb_func_end sub_8116ADC
 
-// symdb: Initializes a battle sub-member sprite (PET Navi / team variant) by setting team byte, animation, palette, priority, coordinates, and dispatching its variant update.
-// symdb: void sprite_initBattleVariant_8116B00(u32 *sprite /*r5*/, u32 *player_slot /*r7*/)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8116B00.yaml
+// symdb: Initializes a battle navigation arrow object's sprite and animation state.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr, lr) -> void ; sets up sprite sub-record + animation for
+// symdb: navi arrow
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116B00.yaml
 	thumb_local_start
 sub_8116B00:
 	push {r4,lr}
@@ -38039,10 +38040,9 @@ loc_8120CAE:
 	pop {r4-r7,pc}
 	thumb_func_end gfx_fillTilemapConsecutiveBanded_8120C94
 
-// symdb: Table lookup: returns t[i], or t[0] when t[i] == 0xFF (the caller's index is r0, the table r1).
-// symdb: int chatbox_readTextChar_8120CC8(int index, u8 *buf) -> r0 = new index (0 if end marker hit), r1
-// symdb: = byte read, r2 = buf, r3 = incoming index, carry = (byte == 0xFF), overflow clear
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120CC8.yaml
+// symdb: Looks up the next animation table entry for a battle object — fetches `t[i]` from `r1`; if the byte is `0xFF` it returns the first byte of the table instead.
+// symdb: (r0 = index, r1 = table ptr) -> r0 = byte ; preserves lr via tail-call, no memory writes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120CC8.yaml
 	thumb_func_start sub_8120CC8
 sub_8120CC8:
 	mov r3, r0

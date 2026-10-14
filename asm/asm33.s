@@ -12717,10 +12717,10 @@ off_81295B4:
 	.word sub_8129EE4+1
 	thumb_func_end sub_8129598
 
-// symdb: Per-frame update for the eStruct200BC30 entity: runs its update handlers, advances a jump-arc state when a fade isn't active, and otherwise boots the intro sequence (chatbox + screen fade).
-// symdb: void sub_81295D8(void) /* r4 r5 r6 r10 lr in; r5 r8 r9 r10 r11 r12 out; r6 r7 r8 r9 preserved;
-// symdb: clobbers nz c v r0 r1 r2 r3 r4 lr */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81295D8.yaml
+// symdb: Per-frame tick of the "screens3" sub-menu: advances the entity update/sprite pipelines, then either toggles an in/out transition step on the active entity record or triggers a fade-in chatbox prompt.
+// symdb: () -> r0 = 0x1 ; side effects: mutates entity record at [r5+0x1b..0x3], eFlags2009F38 |= 0x40,
+// symdb: requests a screen fade(8,16) and a chatbox script 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81295D8.yaml
 	thumb_local_start
 sub_81295D8:
 	push {lr}
@@ -16524,7 +16524,7 @@ byte_812B1C0:
 	.word NULL
 	thumb_func_end sub_812AFC8
 
-// symdb: Decodes a sentinel-terminated 4-byte-per-entry table through battle_initEmotionTableEntry_8046670 and stores the results into the 4-slot scratch buffer unk_20251A0 (zeroed first).
+// symdb: Decodes a sentinel-terminated 4-byte-per-entry table through sub_8046670 and stores the results into the 4-slot scratch buffer unk_20251A0 (zeroed first).
 // symdb: void loadEntryPairTable_812B1DC(const void *entryTable /* r0 */); // clobbers r0-r3, r4, r5, r6,
 // symdb: lr; NZCV; r4/r5/r6 preserved in // practice (set by callee but live across the call)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadEntryPairTable_812B1DC.yaml
@@ -16714,10 +16714,11 @@ dword_812B314:
 	.word 0x20004
 	thumb_func_end sub_812B2C4
 
-// symdb: Walks the table at "unk_20251A0", calling sub_811A768 to deallocate unlocked entries until the per-entity counter at "[entity_base+0x1C]" reaches the threshold for the current level in "byte_812B394".
-// symdb: u32 sub_812B318(u32 slot_count /* r0 */, void *entity_base /* r5 */); -> { r0: ok_flag (1=all-
-// symdb: ok, 0=an entry was freed), r1: null_count, r2: locked_count, r3: passthrough from sub_811A768 }
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812B318.yaml
+// symdb: Per battle object, increments the +0x1C frame counter and walks up to three chip-select entry slots in unk_20251A0, counting ready entries and dequeueing those whose animation has played out; returns whether to proceed and how many active entries remain.
+// symdb: (r0 = maxEntries (= original +1), r5 = current battle object) -> r0 = 1 if the object should
+// symdb: continue, 0 if the slot was reset; r1 = count of ready entries; r2 = count of "fast" (high-bit
+// symdb: set) entries
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B318.yaml
 	thumb_local_start
 sub_812B318:
 	push {r4-r7,lr}

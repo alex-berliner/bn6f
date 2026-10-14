@@ -19586,6 +19586,11 @@ off_80178C8:
 	.word sub_8017A38+1
 	thumb_func_end sub_80178B6
 
+// symdb: Kicks off an actor's move one panel in the chosen direction by reserving the destination panel, computing a constant X/Y velocity from the row/col offset, and setting the end-of-move waiting state (or a fallback halt state if the destination panel can't be used).
+// symdb: (r5 = battleObject) -> r0 = 0x4 or 0x8 ; side effects: writes AIData Unk_68 = 0,
+// symdb: RelatedObject1Ptr = 0, sets CurAnim, copies FuturePanelXY -> PanelXY, sets XVelocity/YVelocity,
+// symdb: reserves next panel, etc.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80178D4.yaml
 	thumb_local_start
 sub_80178D4:
 	push {r6,r7,lr}

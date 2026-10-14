@@ -13,10 +13,9 @@ sub_800B884:
 	pop {pc}
 	thumb_func_end sub_800B884
 
-// symdb: Resolves an object pointer via sub_800BF5C and returns byte 1 of the resolved structure, likely a type/flag field.
-// symdb: u8 sub_800B892(void* obj /* r0 */); reads r0, lr; returns r0 (and r1 per contract, untouched by
-// symdb: this wrapper); clobbers nzcv
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B892.yaml
+// symdb: Returns the byte at offset 0x1 of the entry that byte_203CF00_getEntryPtr points at for the given slot index.
+// symdb: (r0 = slotIndex) -> r0 = entry.byte_1 ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B892.yaml
 	thumb_local_start
 sub_800B892:
 	push {lr}

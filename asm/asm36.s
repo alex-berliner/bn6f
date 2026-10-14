@@ -6308,6 +6308,11 @@ off_8133214:
 	.word sub_8133A44+1
 	thumb_func_end battleObject_dispatchUpdateByState_8133200
 
+// symdb: Initializes the chip-select screen state from the overlay's "submenu open" branch, building the chip pack, decompressing screen assets, and switching state to view 4.
+// symdb: (r5 = BattleState-like overlay state, r10 = Toolkit) -> r0 = 4 ; side effects: zeroes large
+// symdb: IWRAM buffers, clears BG tile data, kicks off the chip-pack/chip-search table builds, runs a
+// symdb: chatbox script, runs the "Battle Start" script, and sets r5->curSubscreen = 4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133228.yaml
 	thumb_local_start
 sub_8133228:
 	push {r4-r7,lr}
@@ -7057,10 +7062,11 @@ off_81337D8:
 	.word sub_8133944+1
 	thumb_func_end sub_81337C4
 
-// symdb: Per-frame update of the submenu scene object: dispatches flow handlers when open, triggers close-out dialog when closed, and refreshes layout and button groups.
-// symdb: void submenu_tick_81337E8(u32 r2, u32 r4, u32 objectPtr /*r5*/, u32 toolkit /*r10*/) -> modifies
-// symdb: r5, r8, r9, r12; preserves r7, r10
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81337E8.yaml
+// symdb: Per-frame input/state dispatcher for the in-battle custom-screen submenu (handles B/START/A/SELECT/LR/dpad, folder-edit quit, submenu BG clear, and runs the two row-align/tile-upload helpers plus AI turn-handler steps 5/6).
+// symdb: (r5 = sSubmenu/this battle object, r10 = Toolkit, r2 = ?, r4 / lr saved) -> r0 = 0x40 ; side
+// symdb: effects: writes sSubmenu.unk_02/unk_1B/obj+1/obj+2, runs script 0x17, plays SFX, dispatches into
+// symdb: chatbox_*/folder-edit/object_saveState/BG/AI helpers.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81337E8.yaml
 	thumb_local_start
 sub_81337E8:
 	push {lr}

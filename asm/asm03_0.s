@@ -25603,8 +25603,8 @@ dword_8031B78:
 	.word 0x16EF
 	thumb_func_end checkCoordinateTrigger_8031a7a
 
-// symdb: With r0 == 1, return byte 1 of the structure at [[dword_2013920] + 0x14]; otherwise 0.
-// symdb: (r0 = query) -> r0 = byte or 0; r5 = object table, r2 = structure (as the original)
+// symdb: Returns the battle textbox cursor blink visibility/state byte from the global chatbox state, or 0 if the caller passes a non-1 mode.
+// symdb: (r0 = query_mode) -> r0 = byte at (chatbox_base + 0x14)[1] if r0==1, else 0 ; no side effects
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031B7C.yaml
 	thumb_local_start
 sub_8031B7C:
