@@ -1922,7 +1922,7 @@ int __fastcall sub_8027834(int a1, int a2, int a3)
     else
     {
         __asm { SVC         6 }
-        result = sub_80279C8(v5);
+        result = battle_customScreen_clearSelection_80279C8(v5);
     }
     return result;
 }
@@ -1949,7 +1949,7 @@ int __fastcall sub_802790C(int a1, int a2, int a3)
     if ( v5 > 5 )
     {
         sub_80279FC();
-        sub_80279C8(v6);
+        battle_customScreen_clearSelection_80279C8(v6);
         sub_8028476();
         *(v3 + 1) = 4;
         *(v3 + 2) = 0;
@@ -1987,7 +1987,7 @@ int __fastcall sub_802794A(int a1, int a2, int a3)
         v6 = 1;
         *(v3 + 2) = 1;
     }
-    sub_80279C8(v6);
+    battle_customScreen_clearSelection_80279C8(v6);
     v8 = 0;
     do
     {
@@ -2020,7 +2020,7 @@ int __fastcall sub_802794A(int a1, int a2, int a3)
 
 
 // 0x80279c8
-int __fastcall sub_80279C8(int a1)
+int __fastcall battle_customScreen_clearSelection_80279C8(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -2124,7 +2124,7 @@ int sub_8027AAE()
         engine_setScreeneffect(0, 32);
         sub_802A088(*(v0 + 26));
         sub_80279FC();
-        sub_80279C8(v2);
+        battle_customScreen_clearSelection_80279C8(v2);
         sub_8028476();
         PlaySoundEffect(146, v3, v4);
         result = 12;
@@ -2145,7 +2145,7 @@ int sub_8027ADE()
     if ( !result )
     {
         sub_80279FC();
-        sub_80279C8(v2);
+        battle_customScreen_clearSelection_80279C8(v2);
         sub_8028476();
         *(v0 + 1) = 4;
         result = 0;
@@ -10160,7 +10160,7 @@ void __fastcall memBlock_ClearWorkArea_802D638()
 
 
 // 0x802d644
-int __fastcall sub_802D644(int result)
+int __fastcall battleObject_incrementCollisionRegion_802D644(int result)
 {
     int v1; // r2
 

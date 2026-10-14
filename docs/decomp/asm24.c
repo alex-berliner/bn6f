@@ -174,11 +174,11 @@ void pet_tryStartRandomEncounterStep_808CB0C()
             sub_808CCAC(0);
             byte_2000B43 = 32;
         }
-        v5 = sub_808CD04();
+        v5 = reqBBS_pollTouchTrigger_808CD04();
         if ( v1 )
         {
             ClearEventFlagFromImmediate(11, 241);
-            if ( sub_808CFB8() == 1 )
+            if ( jackIn_attemptJackInCheck_808CFB8() == 1 )
                 sub_808D108();
         }
         else
@@ -374,7 +374,7 @@ int __fastcall sub_808CCAC(int a1)
 
 
 // 0x808cd04
-signed int sub_808CD04()
+signed int reqBBS_pollTouchTrigger_808CD04()
 {
     signed int v0; // r4
     signed int v1; // r0
@@ -587,7 +587,7 @@ signed int sub_808CF8C()
 
 
 // 0x808cfb8
-signed int sub_808CFB8()
+signed int jackIn_attemptJackInCheck_808CFB8()
 {
     signed int v0; // r4
     __int64 v1; // r0

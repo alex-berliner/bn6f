@@ -1212,14 +1212,14 @@ loc_808CB5A:
 	mov r0, #0x20 
 	strb r0, [r5,#0x3] // (byte_2000B43 - 0x2000b40)
 loc_808CB6A:
-	bl sub_808CD04
+	bl reqBBS_pollTouchTrigger_808CD04
 	beq loc_808CB76
 	bl sub_808CD24
 	b loc_808CB8A
 loc_808CB76:
 	movflag EVENT_BF1
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_808CFB8
+	bl jackIn_attemptJackInCheck_808CFB8
 	cmp r0, #1
 	bne loc_808CB8A
 	bl sub_808D108
@@ -1447,9 +1447,9 @@ loc_808CCFC:
 // symdb: Polls the on-touch BBS request and caches its id if it falls in the 0xC0..0xCC range.
 // symdb: () -> r0 = bool (1 if the touch request id was accepted and stored, 0 otherwise) ; side effects:
 // symdb: stores the request id byte at *(dword_808CA44+5) when in range
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CD04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_pollTouchTrigger_808CD04.yaml
 	thumb_local_start
-sub_808CD04:
+reqBBS_pollTouchTrigger_808CD04:
 	push {r4-r7,lr}
 	ldr r5, off_808D030 // =dword_808CA44
 	ldr r5, [r5]
@@ -1466,7 +1466,7 @@ loc_808CD1C:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CD04
+	thumb_func_end reqBBS_pollTouchTrigger_808CD04
 
 	thumb_local_start
 sub_808CD24:
@@ -1751,9 +1751,9 @@ dword_808CFB4:
 // symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
 // symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
 // symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CFB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/jackIn_attemptJackInCheck_808CFB8.yaml
 	thumb_local_start
-sub_808CFB8:
+jackIn_attemptJackInCheck_808CFB8:
 	push {r4-r7,lr}
 	ldr r5, off_808D030 // =dword_808CA44
 	ldr r5, [r5]
@@ -1815,7 +1815,7 @@ dword_808D02C:
 	.word 0xFFFF
 off_808D030:
 	.word dword_808CA44
-	thumb_func_end sub_808CFB8
+	thumb_func_end jackIn_attemptJackInCheck_808CFB8
 
 	thumb_local_start
 sub_808D034:

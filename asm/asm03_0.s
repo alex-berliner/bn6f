@@ -2894,7 +2894,7 @@ loc_80278C8:
 	bl sub_802794A // (self: * S20364C0 $r5) -> ()
 	b locret_80278DA
 loc_80278D6:
-	bl sub_80279C8
+	bl battle_customScreen_clearSelection_80279C8
 locret_80278DA:
 	pop {pc}
 	.balign 4, 0
@@ -2936,7 +2936,7 @@ loc_8027922:
 	cmp r0, #5
 	ble loc_8027940
 	bl sub_80279FC
-	bl sub_80279C8
+	bl battle_customScreen_clearSelection_80279C8
 	bl sub_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
@@ -2964,7 +2964,7 @@ loc_802795C:
 	ldr r7, [r7,#oToolkit_JoypadPtr]
 	bl sub_8028A78
 loc_8027964:
-	bl sub_80279C8
+	bl battle_customScreen_clearSelection_80279C8
 	mov r4, #0
 loc_802796A:
 	ldrb r1, [r5,#0x1b]
@@ -3020,9 +3020,9 @@ dword_80279C4:
 
 // symdb: In-battle Custom Screen cleanup: ticks the chip-select anim, queues its gfx, refreshes 5 slot sprites with new availability, then runs the close-out sequence.
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80279C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customScreen_clearSelection_80279C8.yaml
 	thumb_local_start
-sub_80279C8:
+battle_customScreen_clearSelection_80279C8:
 	push {r4,lr}
 	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
@@ -3045,7 +3045,7 @@ loc_80279E6:
 	pop {r4,pc}
 	.balign 4, 0x00
 	.word 0x1FF
-	thumb_func_end sub_80279C8
+	thumb_func_end battle_customScreen_clearSelection_80279C8
 
 	thumb_local_start
 sub_80279FC:
@@ -3161,7 +3161,7 @@ sub_8027AAE:
 	ldrb r0, [r5,#0x1a]
 	bl sub_802A088
 	bl sub_80279FC
-	bl sub_80279C8
+	bl battle_customScreen_clearSelection_80279C8
 	bl sub_8028476
 	mov r0, #0x92
 	bl PlaySoundEffect
@@ -3178,7 +3178,7 @@ sub_8027ADE:
 	cmp r0, #0
 	bne locret_8027B1A
 	bl sub_80279FC
-	bl sub_80279C8
+	bl battle_customScreen_clearSelection_80279C8
 	bl sub_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
@@ -15665,9 +15665,9 @@ memBlock_ClearWorkArea_802D638:
 // symdb: Increments the per-collision-region counter at EWRAM 0x2000070[r0] for the given region index, saturating at 0xFF.
 // symdb: (r0 = region index 0..N) -> r0 = region index (untouched); r2 = new value written, with C/V
 // symdb: clobbered by the saturating cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D644.yaml
-	thumb_func_start sub_802D644
-sub_802D644:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_incrementCollisionRegion_802D644.yaml
+	thumb_func_start battleObject_incrementCollisionRegion_802D644
+battleObject_incrementCollisionRegion_802D644:
 	ldr r1, off_802D690 // =byte_2000070
 	ldrb r2, [r1,r0]
 	add r2, #1
@@ -15676,7 +15676,7 @@ sub_802D644:
 	strb r2, [r1,r0]
 locret_802D650:
 	mov pc, lr
-	thumb_func_end sub_802D644
+	thumb_func_end battleObject_incrementCollisionRegion_802D644
 
 	thumb_func_start sub_802D652
 sub_802D652:

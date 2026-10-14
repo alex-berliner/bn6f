@@ -218,7 +218,7 @@ int sub_8123574()
 
 
 // 0x81235a4
-void __noreturn sub_81235A4()
+void __noreturn battle_handleChipUseSubmenuInput_81235A4()
 {
     int v0; // r5
     int v1; // r10

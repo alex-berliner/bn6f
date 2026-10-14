@@ -375,7 +375,7 @@ off_809D450:
 	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
-	.word sub_809D8F4+1
+	.word owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4+1
 off_809D468:
 	.word off_809D450
 	.word 0xFFFF
@@ -993,7 +993,7 @@ off_809D8B0:
 	.word owPlayer_runSlipRunOrEngine_0809D61A+1
 	.word ow_player_processAction_809D75E+1
 	.word ow_player_updateCollisionAndPos_809D800+1
-	.word sub_809D8F4+1
+	.word owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4+1
 off_809D8C8:
 	.word off_809D8B0
 	thumb_func_end ow_player_updateCollisionAndPos_809D800
@@ -1027,9 +1027,9 @@ locret_809D8F0:
 // symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr) -> none ; side effects: writes OWPlayerObject+0x0b,
 // symdb: clears a story-progress event flag, writes OWPlayerObject->JumptableIndex_09 (or its pending
 // symdb: slot)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D8F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4.yaml
 	thumb_local_start
-sub_809D8F4:
+owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4:
 	push {lr}
 	ldr r7, off_809D928 // =off_809D91C 
 	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
@@ -1054,7 +1054,7 @@ off_809D91C:
 	.word sub_809D9A0+1
 off_809D928:
 	.word off_809D91C
-	thumb_func_end sub_809D8F4
+	thumb_func_end owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4
 
 	thumb_local_start
 sub_809D92C:

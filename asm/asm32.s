@@ -161,7 +161,7 @@ loc_810DA68:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	mov r4, r0
 	ldrb r0, [r4,#0x13]
 	strb r0, [r6,#oAIState_Unk_05]
@@ -1057,7 +1057,7 @@ sub_810E1F0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	tst r0, r0
 	beq loc_810E25C
@@ -2391,7 +2391,7 @@ battle_aiAttackDispatch_810ED70:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	bne loc_810ED9C
 	ldrh r0, [r0,#0x24]
@@ -2551,7 +2551,7 @@ locret_810EE94:
 	ldrb r0, [r5,#0x16]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	ldrb r1, [r0,#0x13]
 	ldrb r0, [r0,#0x12]
 	mov r4, #9
@@ -2575,7 +2575,7 @@ loc_810EECE:
 	bl sub_8015C94
 locret_810EEDC:
 	pop {r4,r6,pc}
-// symdb: Puffy AI step: after object_getFlag / sub_80103F8, rolls GetPositiveSignedRNG & 0xF.
+// symdb: Puffy AI step: after object_getFlag / battleObject_findClosestEnemyBattleObject_80103F8, rolls GetPositiveSignedRNG & 0xF.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EEDE.yaml
 	thumb_local_start
 sub_810EEDE:
@@ -2587,7 +2587,7 @@ sub_810EEDE:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	ldrb r1, [r0,#0x13]
 	ldrb r0, [r0,#0x12]
 	b locret_810EF16
@@ -2795,7 +2795,7 @@ off_810F0D4:
 
 // symdb: Beast-Out AI tick step: when the beast-AI flag is set, advance the turn counter and queue an attack; otherwise countdown and either pick a chip attack or queue a counter/decide.
 // symdb: (r4 = AIData, r5 = BattleObject, r6 = AIState, r7 = AIAttackVars) -> void ; side effects:
-// symdb: AIAttackVars (damage/flags/cmd), object_setAttack0, possibly sub_80103F8 reads from the
+// symdb: AIAttackVars (damage/flags/cmd), object_setAttack0, possibly battleObject_findClosestEnemyBattleObject_80103F8 reads from the
 // symdb: opposite-ally battle object.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiBeastOutTick_810F0D8.yaml
 	thumb_local_start
@@ -2838,7 +2838,7 @@ loc_810F0F4:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq loc_810F160
 	ldrh r0, [r0,#0x24]
@@ -4305,7 +4305,7 @@ sub_810FE5C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldr r0, off_810FF00 // =byte_810FD30
@@ -4395,7 +4395,7 @@ sub_810FF1C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_8110278 // =byte_810FD14
 	ldrb r1, [r4,#oAIData_Version_16]
@@ -4458,7 +4458,7 @@ sub_810FF9C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq locret_810FFC2
 	push {r0}
@@ -4481,7 +4481,7 @@ sub_810FFC4:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq loc_810FFFC
 	ldrb r0, [r0,#0x13]
@@ -5275,7 +5275,7 @@ sub_811072C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq loc_8110794
 	ldrh r1, [r0,#0x24]
@@ -6861,7 +6861,7 @@ loc_811145C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_81114C0 // =byte_811136C
 	ldrb r1, [r4,#oAIData_Version_16]
@@ -7123,7 +7123,7 @@ sub_8111674:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #5
@@ -7853,7 +7853,7 @@ sub_8111C88:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	mov r6, r0
 	ldrb r1, [r0,#0x13]
 	ldrb r0, [r0,#0x12]
@@ -8575,7 +8575,7 @@ loc_8112302:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_8112698 // =sub_81124F2+1
 	str r0, [r7,#oAIAttackVars_Unk_28]
@@ -8670,7 +8670,7 @@ loc_81123A8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	mov r0, #0xa
 	bl object_setAttack0
@@ -10509,7 +10509,7 @@ off_8113340:
 	.word off_8113344
 off_8113344:
 	.word sub_8113350+1
-	.word sub_811339A+1
+	.word battleObject_advanceMoveStep_811339A+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	thumb_func_end sub_8113330
 
@@ -10542,7 +10542,7 @@ loc_8113378:
 	strh r0, [r7,#oAIAttackVars_Unk_12]
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_Unk_00]
-	bl sub_811339A
+	bl battleObject_advanceMoveStep_811339A
 	b locret_8113398
 loc_8113394:
 	bl object_exitAttackState_801171C
@@ -10554,9 +10554,9 @@ locret_8113398:
 // symdb: (r5 = obj, r6 = AIState, r7 = AIAttackVars) -> void ; side effects to obj (X, PanelX/Y, Region,
 // symdb: ObjectFlags1), AIState (Unk_04), AIAttackVars (Unk_00/Unk_10/Unk_12/Unk_3c), spawns t1/effect
 // symdb: object on arrival
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811339A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_advanceMoveStep_811339A.yaml
 	thumb_local_start
-sub_811339A:
+battleObject_advanceMoveStep_811339A:
 	push {r4,lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r0, [r3,#oCollisionData_FlagsFromCollision]
@@ -10672,7 +10672,7 @@ loc_8113466:
 	bl object_exitAttackState_801171C
 locret_811348C:
 	pop {r4,pc}
-	thumb_func_end sub_811339A
+	thumb_func_end battleObject_advanceMoveStep_811339A
 
 	thumb_local_start
 sub_811348E:
@@ -10996,7 +10996,7 @@ loc_8113700:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	mov r0, #0xa
 	bl object_setAttack0
@@ -11846,7 +11846,7 @@ sub_8113E54:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldr r0, off_8113E9C // =byte_8113DB0
@@ -11946,7 +11946,7 @@ sub_8113F10:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_8113F5C // =byte_8113D84
 	ldrb r1, [r4,#oAIData_Version_16]
@@ -12033,7 +12033,7 @@ sub_8113FC0:
 	ldrb r0, [r5,#0x16]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq locret_8113FE6
 	push {r0}
@@ -12056,7 +12056,7 @@ sub_8113FE8:
 	ldrb r0, [r5,#0x16]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq loc_8114020
 	ldrb r0, [r0,#0x13]
@@ -13317,7 +13317,7 @@ sub_8114AF0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq locret_8114BA2
 	str r0, [r7,#oAIAttackVars_Unk_2c]
@@ -15156,7 +15156,7 @@ sub_8115A96:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	mov r0, #0xa
 	bl object_setAttack0
@@ -15685,7 +15685,7 @@ sub_8115F74:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_81162DC // =byte_8115E2C
 	ldrb r1, [r4,#oAIData_Version_16]
@@ -15786,7 +15786,7 @@ sub_8116044:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	mov r1, #0x68
 	ldrb r1, [r5,r1]
 	lsl r1, r1, #2
@@ -15806,7 +15806,7 @@ sub_811606A:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	mov r1, #0x68
 	ldrb r1, [r5,r1]
 	lsl r1, r1, #2
@@ -15826,7 +15826,7 @@ sub_8116090:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	ldrb r1, [r0,#0x13]
 	ldrb r0, [r0,#0x12]
 	ldr r3, off_81162EC // =byte_8116190
@@ -15908,7 +15908,7 @@ sub_81161B0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	ldrb r2, [r0,#0x12]
 	ldrb r3, [r0,#0x13]
 	pop {r0,r1}
@@ -15965,7 +15965,7 @@ sub_8116210:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	ldrb r2, [r0,#0x12]
 	ldrb r3, [r0,#0x13]
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -16199,7 +16199,7 @@ sub_811649E:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq loc_81164CC
 	ldrh r0, [r0,#0x24]
@@ -16261,7 +16261,7 @@ sub_8116510:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_80103F8
+	bl battleObject_findClosestEnemyBattleObject_80103F8
 	tst r0, r0
 	beq locret_811654E
 	push {r0}
@@ -32341,9 +32341,9 @@ dword_811E358:
 // symdb: Dispatches a BattleObject's CurState via a small jump table after reading offset 0x8
 // symdb: (r5 = BattleObjectPtr, r10 = toolkit ptr, lr) → side effects only; clobbers r0-r4, r6, r7, lr;
 // symdb: NZCV flags modified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E360.yaml
-	thumb_func_start sub_811E360
-sub_811E360:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCurStateAction_811E360.yaml
+	thumb_func_start battleObject_dispatchCurStateAction_811E360
+battleObject_dispatchCurStateAction_811E360:
 	push {lr}
 	ldr r6, off_811E380 // =eScenarioEffectState2000780
 	ldr r0, off_811E370 // =off_811E374
@@ -32361,7 +32361,7 @@ off_811E374:
 	.word sub_811E40C+1
 off_811E380:
 	.word eScenarioEffectState2000780
-	thumb_func_end sub_811E360
+	thumb_func_end battleObject_dispatchCurStateAction_811E360
 
 	thumb_local_start
 sub_811E384:

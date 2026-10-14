@@ -2407,7 +2407,7 @@ u32 battle_preUpdateAndGetPlayerObject_80103EC()
 
 
 // 0x80103f8
-int __fastcall sub_80103F8(int a1)
+int __fastcall battleObject_findClosestEnemyBattleObject_80103F8(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -3195,7 +3195,7 @@ int __fastcall sub_8010CE0(int a1)
 // 0x8010d04
 int __fastcall sub_8010D04(int a1)
 {
-    return sub_8012642(byte_80212D4[2 * a1], byte_80212D4[2 * a1 + 1]);
+    return battle_beastPwrAtk_addScaledBase_8012642(byte_80212D4[2 * a1], byte_80212D4[2 * a1 + 1]);
 }
 
 
@@ -4291,7 +4291,7 @@ signed int sub_8011BA2()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(30, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(30, 20);
     *(v0 + 10) = 148;
     *(v0 + 2) = 1;
     *(v0 + 3) = 1;
@@ -4308,7 +4308,7 @@ signed int greatfireAPwrAtk_init_8011BD0()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(50, 30);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(50, 30);
     *(v0 + 10) = 138;
     *(v0 + 2) = 1;
     return 53;
@@ -4320,7 +4320,7 @@ signed int sub_8011BE8()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(10, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(10, 10);
     *(v0 + 10) = 134;
     *(v0 + 2) = 2;
     return 58;
@@ -4332,7 +4332,7 @@ signed int sub_8011C00()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(40, 30);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(40, 30);
     *(v0 + 10) = 138;
     *(v0 + 2) = 3;
     return 60;
@@ -4344,7 +4344,7 @@ signed int sub_8011C18()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(30, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(30, 20);
     *(v0 + 10) = 138;
     *(v0 + 2) = 32;
     *(v0 + 12) = 2964736;
@@ -4357,7 +4357,7 @@ signed int sub_8011C38()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(40, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(40, 20);
     *(v0 + 6) = 0;
     *(v0 + 10) = 148;
     *(v0 + 2) = 3;
@@ -4371,7 +4371,7 @@ signed int spoutcrossBPwrAtk_init_8011C5E()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(20, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(20, 10);
     *(v0 + 6) = 0;
     *(v0 + 10) = 148;
     *(v0 + 3) = 2;
@@ -4386,7 +4386,7 @@ signed int sub_8011C88()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(40, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(40, 20);
     *(v0 + 6) = 0;
     *(v0 + 10) = 148;
     *(v0 + 3) = 1;
@@ -4433,7 +4433,7 @@ signed int slashcrossBPwrAtk_init_8011CD6()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(60, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(60, 20);
     *(v0 + 10) = 148;
     *(v0 + 3) = 16;
     *(v0 + 2) = -128;
@@ -4450,7 +4450,7 @@ signed int sub_8011CF8()
     int v1; // r0
     char v2; // r1
 
-    *(v0 + 8) = sub_8012642(40, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(40, 20);
     *(v0 + 10) = 148;
     v1 = sub_8013774(148, 44);
     v2 = 0;
@@ -4467,7 +4467,7 @@ signed int sub_8011D20()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(70, 30);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(70, 30);
     *(v0 + 10) = 158;
     *(v0 + 2) = 64;
     return 70;
@@ -4483,7 +4483,7 @@ signed int sub_8011D38()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(40, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(40, 20);
     return 74;
 }
 
@@ -4497,7 +4497,7 @@ signed int sub_8011D54()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 138;
-    *(v0 + 8) = sub_8012642(90, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(90, 20);
     *(v0 + 2) = 16;
     return 26;
 }
@@ -4508,7 +4508,7 @@ signed int sub_8011D74()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(10, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(10, 10);
     *(v0 + 10) = 148;
     *(v0 + 2) = 16;
     *(v0 + 4) = 0;
@@ -4528,7 +4528,7 @@ signed int sub_8011D9C()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(50, 30);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(50, 30);
     *(v0 + 2) = -128;
     return 76;
 }
@@ -4543,7 +4543,7 @@ signed int sub_8011DBC()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(50, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(50, 20);
     *(v0 + 2) = 4;
     return 78;
 }
@@ -4558,7 +4558,7 @@ signed int sub_8011DDC()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(70, 30);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(70, 30);
     *(v0 + 2) = 1;
     return 79;
 }
@@ -4573,7 +4573,7 @@ signed int sub_8011DFC()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(80, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(80, 20);
     *(v0 + 2) = 16;
     return 80;
 }
@@ -4588,7 +4588,7 @@ signed int sub_8011E1C()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 158;
-    *(v0 + 8) = sub_8012642(50, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(50, 10);
     *(v0 + 2) = 0;
     *(v0 + 18) = 2;
     return 82;
@@ -4725,7 +4725,7 @@ signed int sub_8011F44()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(30, 20);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(30, 20);
     *(v0 + 10) = 148;
     *(v0 + 2) = 1;
     *(v0 + 4) = 0;
@@ -4740,7 +4740,7 @@ signed int sub_8011F64()
 {
     int v0; // r7
 
-    *(v0 + 8) = sub_8012642(50, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(50, 10);
     *(v0 + 10) = 148;
     *(v0 + 2) = 16;
     *(v0 + 4) = 0;
@@ -4840,7 +4840,7 @@ signed int sub_8012044()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 20;
-    *(v0 + 8) = sub_8012642(80, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(80, 10);
     *(v0 + 12) = 0;
     return 19;
 }
@@ -4913,7 +4913,7 @@ signed int sub_80120D6()
     *(v0 + 5) = 0;
     *(v0 + 6) = 0;
     *(v0 + 10) = 148;
-    *(v0 + 8) = sub_8012642(80, 10);
+    *(v0 + 8) = battle_beastPwrAtk_addScaledBase_8012642(80, 10);
     *(v0 + 12) = 0;
     return 19;
 }
@@ -5725,7 +5725,7 @@ signed int __fastcall sub_801263A(int a1)
 
 
 // 0x8012642
-int __fastcall sub_8012642(int a1, int a2)
+int __fastcall battle_beastPwrAtk_addScaledBase_8012642(int a1, int a2)
 {
     int v2; // r2
     int v4; // [sp+0h] [bp-Ch]
@@ -6359,7 +6359,7 @@ int sub_8012CB2()
             v8 = v7 & 7;
             v9 = v7 >> 4;
             v10 = v4;
-            sub_8012642(30, 20);
+            battle_beastPwrAtk_addScaledBase_8012642(30, 20);
             sub_80C7F20(v8, v9, 16, v10);
             ++v5;
             --v6;
@@ -9859,7 +9859,7 @@ int sub_8014D70()
 
 
 // 0x8014e08
-int __cdecl sub_8014E08(int a1, int a2, int a3)
+int __cdecl battle_ai_attackVars_step3_8014E08(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7
@@ -12106,7 +12106,7 @@ signed int __fastcall battle_teardownObject_80165F8(int a1)
         if ( *v2 >= 4 )
             sub_802D65E(v2[2]);
         else
-            sub_802D644(v2[2]);
+            battleObject_incrementCollisionRegion_802D644(v2[2]);
     }
     v3 = *(v1 + 5);
     if ( v3 < 1 )

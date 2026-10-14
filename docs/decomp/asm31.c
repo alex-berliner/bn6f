@@ -33531,7 +33531,7 @@ int sub_80CBAFA()
     result = 5 * (*(v0 + 22) ^ 1) + 1;
     if ( result == *(v0 + 18) )
     {
-        result = sub_80103F8(*(v0 + 22) ^ 1);
+        result = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         v2 = 1;
         v3 = *(v0 + 19);
         if ( v3 != 1 )
@@ -43569,7 +43569,7 @@ int sub_80D1F0E()
         }
         *(v0 + 108) = 0;
 LABEL_9:
-        v3 = sub_80103F8(*(v0 + 22) ^ 1);
+        v3 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         v1 = 0;
     }
 LABEL_10:
@@ -43671,7 +43671,7 @@ unsigned int sub_80D1FD8()
 
     result = object_getEnemyDirection();
     v2 = *(v0 + 64);
-    if ( v2 || (v3 = sub_80103F8(*(v0 + 22) ^ 1), v2 = *(v0 + 18), (result = v2 - *(v3 + 18)) != 0) )
+    if ( v2 || (v3 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1), v2 = *(v0 + 18), (result = v2 - *(v3 + 18)) != 0) )
     {
         v4 = 0;
         if ( result >> 31 != v2 >> 31 )
@@ -47669,7 +47669,7 @@ LABEL_7:
     if ( ((result < 0) ^ v2) | (result == 0) )
     {
         object_clearCollisionRegion();
-        v4 = sub_80103F8(*(v0 + 22) ^ 1);
+        v4 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         v5 = *(v0 + 44);
         spawnThunderboltObject_80C7D50(*(v4 + 18), *(v4 + 19), 3, 0);
         goto LABEL_7;
@@ -57444,7 +57444,7 @@ unsigned int sub_80DA8EC()
 
 
 // 0x80da908
-signed int sub_80DA908()
+signed int battleObject_destroyOrDazzle_PHASE_80DA908()
 {
     int v0; // r5
     signed int result; // r0
@@ -67879,12 +67879,12 @@ int __fastcall battleObject_computeMoveTargetPanel_80E16CC(int a1, int a2)
     int v2; // r4
 
     v2 = *(a2 + 18);
-    return sub_80E1704();
+    return battle_aiIterateOverBattleObjectsByRow_80E1704();
 }
 
 
 // 0x80e1704
-int sub_80E1704()
+int battle_aiIterateOverBattleObjectsByRow_80E1704()
 {
     unsigned int v0; // r4
     int *v1; // r7
@@ -73775,12 +73775,12 @@ void __noreturn sub_80E4A6E()
     v1 = object_getFlip(v0);
     sprite_setFlip(v0, v1);
     *(v0 + 8) = 4;
-    sub_80E4AAE();
+    battleObject_updateAttachedArmCoords_80E4AAE();
 }
 
 
 // 0x80e4aae
-int sub_80E4AAE()
+int battleObject_updateAttachedArmCoords_80E4AAE()
 {
     int v0; // r5
     int v1; // r4
@@ -119130,7 +119130,7 @@ void sub_8101CC0()
         goto LABEL_31;
     v9 = v2;
     v11 = v3;
-    v4 = sub_80103F8(*(v0 + 22) ^ 1);
+    v4 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     if ( !v4 )
         goto LABEL_31;
     v8 = v9;
@@ -132495,7 +132495,7 @@ int sub_8109E98()
 
 
 // 0x8109ec4
-signed int sub_8109EC4()
+signed int battleObject_beastOutOnTurn_8109EC4()
 {
     int v0; // r5
     _WORD *v1; // r7
@@ -132648,7 +132648,7 @@ void sub_810A004()
                 }
                 else
                 {
-                    if ( *(v1 + 19) == *(sub_80103F8(*(v1 + 22) ^ 1) + 19) )
+                    if ( *(v1 + 19) == *(battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1) + 19) )
                         *v2 = 12;
                     else
                         *v2 = 4;
@@ -132899,7 +132899,7 @@ BOOL sub_810A21A()
     int v9; // r2
     int v10; // r3
 
-    v1 = *(sub_80103F8(v0[22] ^ 1) + 19);
+    v1 = *(battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1) + 19);
     v3 = v0[19];
     if ( v1 == v3 )
         return 0;
@@ -133187,7 +133187,7 @@ signed int sub_810A610()
     int v2; // r7
     signed int result; // r0
 
-    *(v2 + 44) = sub_80103F8(*(v0 + 22) ^ 1);
+    *(v2 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     *(v2 + 40) = sub_810A724;
     *(v2 + 24) = 1;
     *(v2 + 3) = 2;
@@ -133603,7 +133603,7 @@ int sub_810AB40()
     int result; // r0
 
     *(v3 + 40) = sub_810ACC4;
-    *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+    *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     *(v3 + 24) = byte_810AA6C[*(v0 + 22)];
     if ( object_getFlag() & 0x8000 )
         *(v3 + 24) += 60;
@@ -133874,7 +133874,7 @@ Battle *sub_810ADAC()
     int v17; // r3
     int v18; // [sp-4h] [bp-18h]
 
-    result = sub_80103F8(*(v0 + 22) ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     if ( result )
     {
         v2 = result;
@@ -134501,7 +134501,7 @@ void sub_810B49C()
 
     if ( sub_810B58A() || (v3 = *(v1 + 4), *(v1 + 4) = v3 + 1, v3 < 3) )
     {
-        *(v2 + 44) = sub_80103F8(*(v0 + 22) ^ 1);
+        *(v2 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         v5 = object_getFlag();
         if ( !(v5 & 0xA000) )
             sub_810B65E(v5);
@@ -134533,7 +134533,7 @@ void sub_810B49C()
     {
         GetPositiveSignedRNG();
         sub_810B6F0(v4 & 1);
-        *(v2 + 44) = sub_80103F8(*(v0 + 22) ^ 1);
+        *(v2 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         object_setAttack0();
         *(v1 + 4) = 0;
     }
@@ -135538,7 +135538,7 @@ void sub_810C212()
         *(v2 + 8) = byte_810C1B4[v3];
         *(v2 + 10) = 10;
         *(v2 + 48) = *&byte_810C19C[4 * v3];
-        v4 = sub_80103F8(*(v1 + 22) ^ 1);
+        v4 = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
         if ( v4 )
         {
             *(v2 + 44) = v4;

@@ -3060,7 +3060,7 @@ int sub_809D8CC()
 
 
 // 0x809d8f4
-int sub_809D8F4()
+int owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4()
 {
     int v0; // r5
     int v1; // r7

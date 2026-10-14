@@ -3441,9 +3441,9 @@ battle_preUpdateAndGetPlayerObject_80103EC:
 // symdb: Finds the closest enemy BattleObject to a panel (panel coords passed via stack) and returns it
 // symdb: (r0 = actorIndex 0..3 [OpponentActors slot index], r5 = self BattleObject*) -> r0 = closest
 // symdb: enemy BattleObject* (or NULL); side effects: stack scratch for two (X,Y) pairs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80103F8.yaml
-	thumb_func_start sub_80103F8
-sub_80103F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_findClosestEnemyBattleObject_80103F8.yaml
+	thumb_func_start battleObject_findClosestEnemyBattleObject_80103F8
+battleObject_findClosestEnemyBattleObject_80103F8:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	ldrb r1, [r5,#oBattleObject_PanelX]
@@ -3497,7 +3497,7 @@ loc_8010454:
 	mov r0, r7
 	add sp, sp, #8
 	pop {r4-r7,pc}
-	thumb_func_end sub_80103F8
+	thumb_func_end battleObject_findClosestEnemyBattleObject_80103F8
 
 	thumb_local_start
 sub_8010460:
@@ -4625,7 +4625,7 @@ sub_8010D04:
 	add r2, r2, r0
 	ldrb r0, [r2]
 	ldrb r1, [r2,#1]
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	pop {pc}
 	thumb_func_end sub_8010D04
 
@@ -6468,7 +6468,7 @@ sub_8011BA2:
 	push {lr}
 	mov r0, #0x1e
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6494,7 +6494,7 @@ greatfireAPwrAtk_init_8011BD0:
 	push {lr}
 	mov r0, #0x32 
 	mov r1, #0x1e
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6509,7 +6509,7 @@ sub_8011BE8:
 	push {lr}
 	mov r0, #0xa
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x86
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6524,7 +6524,7 @@ sub_8011C00:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x1e
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6539,7 +6539,7 @@ sub_8011C18:
 	push {lr}
 	mov r0, #0x1e
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6559,7 +6559,7 @@ sub_8011C38:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -6581,7 +6581,7 @@ spoutcrossBPwrAtk_init_8011C5E: // spoutcross CS initialize? // JP: 801225e
 	push {lr}
 	mov r0, #0x14
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -6605,7 +6605,7 @@ sub_8011C88:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -6658,7 +6658,7 @@ slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
 	push {lr}
 	mov r0, #0x3c 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6678,7 +6678,7 @@ sub_8011CF8:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6701,7 +6701,7 @@ sub_8011D20:
 	push {lr}
 	mov r0, #0x46 
 	mov r1, #0x1e
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6722,7 +6722,7 @@ sub_8011D38:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x28 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x4a 
 	pop {pc}
@@ -6739,7 +6739,7 @@ sub_8011D54:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x5a 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6752,7 +6752,7 @@ sub_8011D74:
 	push {lr}
 	mov r0, #0xa
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6782,7 +6782,7 @@ sub_8011D9C:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
 	mov r1, #0x1e
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x80
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6801,7 +6801,7 @@ sub_8011DBC:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6820,7 +6820,7 @@ sub_8011DDC:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x46 
 	mov r1, #0x1e
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6839,7 +6839,7 @@ sub_8011DFC:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x50 
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -6858,7 +6858,7 @@ sub_8011E1C:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_02]
@@ -7027,7 +7027,7 @@ sub_8011F44:
 	push {lr}
 	mov r0, #0x1e
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7046,7 +7046,7 @@ sub_8011F64:
 	push {lr}
 	mov r0, #0x32 
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7190,7 +7190,7 @@ sub_8012044:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x50 
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_Unk_0c]
@@ -7276,7 +7276,7 @@ sub_80120D6:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x50 
 	mov r1, #0xa
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_Unk_0c]
@@ -8211,9 +8211,9 @@ sub_801263A:
 // symdb: Battle helper: add (baseDamage * beastOutMulti) to running total, with the multiplier clamped to 5.
 // symdb: (r0 = currentDamageTotal, r1 = baseDamage) -> r0 = currentDamageTotal + baseDamage *
 // symdb: clamp(beastDamageCap, 0, 5) ; r1 unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012642.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastPwrAtk_addScaledBase_8012642.yaml
 	thumb_local_start
-sub_8012642:
+battle_beastPwrAtk_addScaledBase_8012642:
 	push {lr}
 	push {r0,r1}
 	bl computeBeastDamageCap_801265A
@@ -8226,7 +8226,7 @@ loc_8012652:
 	mul r1, r2
 	add r0, r0, r1
 	pop {pc}
-	thumb_func_end sub_8012642
+	thumb_func_end battle_beastPwrAtk_addScaledBase_8012642
 
 // symdb: Battle damage cap used while the player navi is beast-out / transformed; returns 1 in beast-out, otherwise alliance + navi bonus + transformation bonus, clamped to 0xa.
 // symdb: u32 computeBeastDamageCap_801265A(u32 battle_object /* r5 */); /* clobbers r0-r3, r6, lr;
@@ -9169,7 +9169,7 @@ loc_8012CEC:
 	push {r0-r3}
 	mov r0, #0x1e
 	mov r1, #0x14
-	bl sub_8012642
+	bl battle_beastPwrAtk_addScaledBase_8012642
 	mov r6, #0x8a
 	lsl r6, r6, #0x10
 	orr r6, r0
@@ -13699,7 +13699,7 @@ off_8014AC4:
 off_8014AC8:
 	.word sub_8014D08+1
 	.word sub_8014D70+1
-	.word sub_8014E08+1
+	.word battle_ai_attackVars_step3_8014E08+1
 	.word object_aiAttackVarsExitState_8014F04+1
 off_8014AD8:
 	.word off_8014ADC
@@ -14087,9 +14087,9 @@ dword_8014E04:
 // symdb: AI step 3 for a battle object's attack vars — plays the load/charge-in animation, sets a 10-frame counter, plays a sound, and on expiry runs the turn-open / sprite-restoration cleanup and sets the next state to 0xC.
 // symdb: (r5 = battle object, r7 = AI attack vars, r10 = toolkit, lr = ret) -> void ; no return value to
 // symdb: callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_attackVars_step3_8014E08.yaml
 	thumb_local_start
-sub_8014E08:
+battle_ai_attackVars_step3_8014E08:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
@@ -14192,7 +14192,7 @@ locret_8014EFE:
 	.balign 4, 0
 dword_8014F00:
 	.word 0x30E00
-	thumb_func_end sub_8014E08
+	thumb_func_end battle_ai_attackVars_step3_8014E08
 
 // symdb: Countdown-then-exit routine for an AI attack-vars state, clearing AI/battle flags and tearing the object out of its attack state.
 // symdb: (r7 = BattleObject*, r6 = related object?, r5 = related object?, r10 = toolkit) -> side effects
@@ -17108,7 +17108,7 @@ battle_teardownObject_80165F8:
 	cmp r1, #4
 	bge loc_8016634
 	ldrb r0, [r0,#2]
-	bl sub_802D644
+	bl battleObject_incrementCollisionRegion_802D644
 	b loc_801663A
 loc_8016634:
 	ldrb r0, [r0,#2]

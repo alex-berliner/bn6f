@@ -532,7 +532,7 @@ off_8123538:
 	.word off_812353C
 off_812353C:
 	.word battle_updateFrame_8123558+1
-	.word sub_81235A4+1
+	.word battle_handleChipUseSubmenuInput_81235A4+1
 	.word chatbox_resetIfFading_8123644+1
 	.word sub_812365C+1
 	.word sub_812377C+1
@@ -591,9 +591,9 @@ locret_81235A0:
 // symdb: Start/B, plays SFX, mutates r5 fields (+2=anim, +3, +0xc cursor, +0x1e/+0x20/+0x28/+0x32 AIData
 // symdb: counters, +0x32 again), refreshes chip-use stats; then calls drawBattleBackground + AI/attack-
 // symdb: table apply phases.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81235A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipUseSubmenuInput_81235A4.yaml
 	thumb_local_start
-sub_81235A4:
+battle_handleChipUseSubmenuInput_81235A4:
 	push {lr}
 	mov r0, #JOYPAD_START | JOYPAD_B
 	bl IsButtonPressed
@@ -662,7 +662,7 @@ off_812363C:
 	.word dword_8123640
 dword_8123640:
 	.word 0x140A00
-	thumb_func_end sub_81235A4
+	thumb_func_end battle_handleChipUseSubmenuInput_81235A4
 
 // symdb: If a screen fade is active, reset the chatbox state (call chatbox_8040818) and clear three status bytes at the passed struct (0x20, 0x00, 0x00); otherwise return the value IsScreenFadeActive left in R0 unchanged.
 // symdb: /* sub_8123644(r5 = chatbox_status_ptr) -> r0; preserves r2, r5; clobbers r0,r1,r3,lr; nzcv from

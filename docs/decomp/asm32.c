@@ -139,7 +139,7 @@ signed int sub_810DA4C()
     }
     else
     {
-        v4 = sub_80103F8(*(v0 + 22) ^ 1);
+        v4 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         v5 = v4;
         v1[5] = *(v4 + 19);
         v6 = object_getFrontDirection(v0);
@@ -745,7 +745,7 @@ int sub_810E1F0()
     *(v3 + 24) = byte_810E174[v4];
     *(v3 + 8) = byte_810E154[v4];
     *(v3 + 10) = byte_810E15C[v4];
-    v5 = sub_80103F8(*(v1 + 22) ^ 1);
+    v5 = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     *(v3 + 44) = v5;
     if ( v5 )
     {
@@ -1657,7 +1657,7 @@ int battle_aiAttackDispatch_810ED70()
     unsigned __int8 *v1; // r7
     int result; // r0
 
-    if ( !**(v1 + 10) || !battle_isBattleOver() || sub_80103F8(*(v0 + 22) ^ 1) || dword_24 )
+    if ( !**(v1 + 10) || !battle_isBattleOver() || battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1) || dword_24 )
         result = (*(&off_810EDAC + *v1))();
     else
         result = (loc_801171C)();
@@ -1806,7 +1806,7 @@ int sub_810EEDE()
         sub_81096FA(v4 & 0xF, 15, v5, byte_810EF28);
         sub_8015C94(v0[18], v0[19], v6, v7);
     }
-    v1 = sub_80103F8(v0[22] ^ 1);
+    v1 = battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1);
     v2 = *(v1 + 19);
     return *(v1 + 18);
 }
@@ -1928,7 +1928,7 @@ void battle_aiBeastOutTick_810F0D8()
             *(v1 + 108) = 0;
             v6 = *(v2 + 4);
             *(v2 + 4) = v6 + 1;
-            if ( v6 >= 3 && (*(v2 + 4) = 0, !battle_isBattleOver()) && (v7 = sub_80103F8(*(v1 + 22) ^ 1)) != 0 && *(v7 + 36) )
+            if ( v6 >= 3 && (*(v2 + 4) = 0, !battle_isBattleOver()) && (v7 = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1)) != 0 && *(v7 + 36) )
             {
                 v8 = byte_810F18C[*(v0 + 22)];
                 *(v3 + 8) = v8;
@@ -2841,7 +2841,7 @@ int __fastcall sub_810FE5C(int a1)
         *(v2 + 100) = v6;
         *(v2 + 101) = v7;
         object_reservePanel(v6, v7);
-        *(v4 + 44) = sub_80103F8(*(v2 + 22) ^ 1);
+        *(v4 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v2 + 22) ^ 1);
         v8 = *(v1 + 22);
         *(v4 + 24) = byte_810FD30[v8];
         *(v4 + 8) = byte_810FD1A[v8];
@@ -2879,7 +2879,7 @@ int sub_810FF1C()
     int result; // r0
 
     *(v3 + 40) = sub_810FF68;
-    *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+    *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     *(v3 + 24) = byte_810FD14[*(v0 + 22)];
     if ( object_getFlag() & 0x8000 )
         *(v3 + 24) += 60;
@@ -2930,7 +2930,7 @@ int sub_810FF9C()
     int v6; // r2
     int v7; // r3
 
-    result = sub_80103F8(v0[22] ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1);
     if ( result )
     {
         sub_81096FA(v0[18], v0[19], v2, byte_81100A0);
@@ -2955,7 +2955,7 @@ int sub_810FFC4()
     int v8; // ST00_4
     int v13; // [sp+0h] [bp-2Ch]
 
-    result = sub_80103F8(*(v0 + 22) ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     if ( result )
     {
         sub_81096FA(*(result + 19), v2, v3, byte_81100A0);
@@ -3429,7 +3429,7 @@ void sub_811072C()
     char v5; // r2
     int v6; // [sp-4h] [bp-8h]
 
-    v3 = sub_80103F8(*(v0 + 22) ^ 1);
+    v3 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     if ( v3
         && *(v3 + 36)
         && *(v3 + 19) == *(v0 + 19)
@@ -4420,7 +4420,7 @@ int sub_8111438()
     if ( sub_81114C8() )
     {
         *(v3 + 40) = sub_81114C8;
-        *(v3 + 44) = sub_80103F8(v1[22] ^ 1);
+        *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(v1[22] ^ 1);
         *(v3 + 24) = byte_811136C[*(v0 + 22)];
         *(v3 + 3) = 3;
         *(v3 + 12) = 20;
@@ -4623,7 +4623,7 @@ void __noreturn sub_8111674()
     unsigned __int8 *v10; // [sp+0h] [bp-18h]
 
     object_reservePanel(v0[18], v0[19]);
-    sub_80103F8(v0[22] ^ 1);
+    battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1);
     sub_81096FA(5 * v0[22] + 1, 2, v1, byte_8111740);
     v2 = v0[22];
     v7 = sub_8111750(v3, v4, v5, v6);
@@ -5159,7 +5159,7 @@ BOOL __noreturn sub_8111C88()
     int v9; // r3
     BOOL result; // r0
 
-    v3 = sub_80103F8(*(v1 + 22) ^ 1);
+    v3 = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     v4 = v3;
     sub_81096FA(*(v3 + 18), *(v3 + 19), v5, &off_8111D70);
     result = object_checkPanelParameters(v6, v7, v8, v9);
@@ -5591,7 +5591,7 @@ LABEL_11:
         {
             *(v1 + 108) = 1;
             *(v3 + 24) = 5;
-            *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+            *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
             *(v3 + 40) = sub_81124F2;
             sub_8112666();
             *v2 = 8;
@@ -5674,7 +5674,7 @@ int sub_811239A()
         *(v3 + 8) = byte_8112254[v4];
         *(v3 + 10) = 10;
         *(v3 + 40) = v1 + 108;
-        *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+        *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
         object_setAttack0();
     }
     else
@@ -7013,12 +7013,12 @@ int __fastcall sub_8113350(int a1)
     *(v3 + 16) = 0;
     *(v3 + 18) = 0;
     *v3 = 4;
-    return sub_811339A();
+    return battleObject_advanceMoveStep_811339A();
 }
 
 
 // 0x811339a
-int sub_811339A()
+int battleObject_advanceMoveStep_811339A()
 {
     int v0; // r5
     int v1; // r6
@@ -7293,7 +7293,7 @@ LABEL_10:
         *(v3 + 52) = 0;
         *(v3 + 56) = 58720256;
         *(v3 + 48) = *&byte_81135FC[4 * *(v0 + 22)];
-        *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+        *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
         object_setAttack0();
         sub_8113330();
         return;
@@ -7907,7 +7907,7 @@ int __fastcall sub_8113E54(int a1)
     object_canMove(a1);
     if ( !v5 )
     {
-        *(v4 + 44) = sub_80103F8(*(v2 + 22) ^ 1);
+        *(v4 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v2 + 22) ^ 1);
         v6 = *(v1 + 22);
         *(v4 + 24) = byte_8113DB0[v6];
         *(v4 + 8) = byte_8113D8A[v6];
@@ -7976,7 +7976,7 @@ int sub_8113F10()
 
     *(v1 + 16) = 0;
     *(v3 + 40) = sub_8113F94;
-    *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+    *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     *(v3 + 24) = byte_8113D84[*(v0 + 22)];
     *(v3 + 3) = 2;
     *(v3 + 12) = 20;
@@ -8045,7 +8045,7 @@ int sub_8113FC0()
     int v6; // r2
     int v7; // r3
 
-    result = sub_80103F8(v0[22] ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1);
     if ( result )
     {
         sub_81096FA(v0[18], v0[19], v2, byte_8114160);
@@ -8070,7 +8070,7 @@ int sub_8113FE8()
     int v8; // ST00_4
     int v13; // [sp+0h] [bp-2Ch]
 
-    result = sub_80103F8(*(v0 + 22) ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     if ( result )
     {
         sub_81096FA(*(result + 19), v2, v3, byte_8114160);
@@ -8799,7 +8799,7 @@ unsigned __int8 *sub_8114AF0()
     v4 = 0x2000;
     if ( v2 & 0x2000 )
         goto LABEL_8;
-    result = sub_80103F8(v0->Alliance ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(v0->Alliance ^ 1);
     if ( !result )
         return result;
     *(v1 + 44) = result;
@@ -9986,7 +9986,7 @@ signed int sub_8115A96()
     *(v3 + 24) = byte_81159AA[v4];
     *(v3 + 8) = *&byte_8115980[4 * v4];
     *(v3 + 40) = *(v1 + 96);
-    *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+    *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     object_setAttack0();
     result = 4;
     *v2 = 4;
@@ -10357,7 +10357,7 @@ int sub_8115F74()
 
     *(v1 + 16) = 4;
     *(v3 + 40) = sub_8115FCE;
-    *(v3 + 44) = sub_80103F8(*(v1 + 22) ^ 1);
+    *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     v4 = byte_8115E2C[*(v0 + 22)];
     if ( object_getFlag() & 0xA000 )
         v5 += 60;
@@ -10426,7 +10426,7 @@ int sub_8116044()
     int v6; // r2
     int v7; // r3
 
-    v1 = sub_80103F8(*(v0 + 22) ^ 1);
+    v1 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     v2 = off_81160C4[*(v0 + 104)];
     sub_81096FA(*(v1 + 18), *(v1 + 19), v3, byte_8116190);
     return panelFlagCheck_8015D80(v4, v5, v6, v7);
@@ -10445,7 +10445,7 @@ int sub_811606A()
     int v6; // r2
     int v7; // r3
 
-    v1 = sub_80103F8(*(v0 + 22) ^ 1);
+    v1 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     v2 = off_81160E0[*(v0 + 104)];
     sub_81096FA(*(v1 + 18), *(v1 + 19), v3, byte_8116190);
     return panelFlagCheck_8015D80(v4, v5, v6, v7);
@@ -10463,7 +10463,7 @@ int sub_8116090()
     int v5; // r2
     int v6; // r3
 
-    v1 = sub_80103F8(*(v0 + 22) ^ 1);
+    v1 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
     sub_81096FA(*(v1 + 18), *(v1 + 19), v2, byte_8116190);
     return panelFlagCheck_8015D80(v3, v4, v5, v6);
 }
@@ -10495,7 +10495,7 @@ void __fastcall sub_81161B0(int a1, int a2)
 
     v3 = a1;
     v4 = a2;
-    v5 = sub_80103F8(*(v2 + 22) ^ 1);
+    v5 = battleObject_findClosestEnemyBattleObject_80103F8(*(v2 + 22) ^ 1);
     v6 = v3 - *(v5 + 18);
     v7 = v4 - *(v5 + 19);
     v8 = v6 * object_getEnemyDirection();
@@ -10517,7 +10517,7 @@ void sub_8116210()
     int v5; // r1
 
     v1 = object_getEnemyDirection();
-    v2 = sub_80103F8(v0[22] ^ 1);
+    v2 = battleObject_findClosestEnemyBattleObject_80103F8(v0[22] ^ 1);
     v3 = *(v2 + 19);
     v4 = (v0[18] - *(v2 + 18)) * v1;
     v5 = v0[19] - v3;
@@ -10646,7 +10646,7 @@ signed int sub_811649E()
 
     if ( !battle_isBattleOver() )
     {
-        v1 = sub_80103F8(*(v0 + 22) ^ 1);
+        v1 = battleObject_findClosestEnemyBattleObject_80103F8(*(v0 + 22) ^ 1);
         if ( v1 )
         {
             if ( *(v1 + 36) )
@@ -10694,7 +10694,7 @@ int sub_8116510()
     int v6; // ST00_4
     char v7; // r0
 
-    result = sub_80103F8(*(v1 + 22) ^ 1);
+    result = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
     if ( result )
     {
         v3 = result;
@@ -20444,7 +20444,7 @@ int battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314()
 
 
 // 0x811e360
-int sub_811E360()
+int battleObject_dispatchCurStateAction_811E360()
 {
     int v0; // r5
 
