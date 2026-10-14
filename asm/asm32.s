@@ -8504,7 +8504,7 @@ locret_811228C:
 off_8112290:
 	.word off_8112294
 off_8112294:
-	.word sub_81122A0+1
+	.word battleObject_aiSetupCombatInit_81122A0+1
 	.word sub_8112340+1
 	.word sub_811239A+1
 	thumb_func_end sub_8112278
@@ -8513,9 +8513,9 @@ off_8112294:
 // symdb: (void battle object in r5, AIState in r6, AIAttackVars in r7, AIData in r4, toolkit in r10) ->
 // symdb: r0 = 0 ; side effects: writes AIState.Unk_00/04/0c, AIState.Unk_08,
 // symdb: BattleObject.ExtraVars[0..0xf], AIAttackVars.Unk_10/18/28/2c, and the object's Param1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81122A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiSetupCombatInit_81122A0.yaml
 	thumb_local_start
-sub_81122A0:
+battleObject_aiSetupCombatInit_81122A0:
 	push {lr}
 	bl object_getFlag // () -> int
 	ldr r1, dword_8112684 // =0xa000
@@ -8592,7 +8592,7 @@ loc_811233A:
 	strh r0, [r6,#oAIState_Unk_08]
 locret_811233E:
 	pop {pc}
-	thumb_func_end sub_81122A0
+	thumb_func_end battleObject_aiSetupCombatInit_81122A0
 
 	thumb_local_start
 sub_8112340:
@@ -23309,7 +23309,7 @@ loc_81199CE:
 loc_81199D2:
 	mov r0, #0xff
 	strh r0, [r6,#0x1c]
-	bl sub_8119A48
+	bl battleObject_beastSpAdvanceAndDrawTiles_8119A48
 	pop {pc}
 	thumb_func_end sub_81199C0
 
@@ -23376,9 +23376,9 @@ dword_8119A44:
 // symdb: Per-step Beast SP meter/bar advance that draws/replaces the bar's tile strip and pings SFX 0x7E every 4 increments when the chatbox flag is clear.
 // symdb: (r5 = beastSp state ptr, r10 = toolkit) -> side effects only (modifies r5->state, copies BG
 // symdb: tiles, plays SFX)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119A48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSpAdvanceAndDrawTiles_8119A48.yaml
 	thumb_local_start
-sub_8119A48:
+battleObject_beastSpAdvanceAndDrawTiles_8119A48:
 	push {r4-r7,lr}
 	mov r2, #0x28
 	ldr r1, [r5,#0x10]
@@ -23426,7 +23426,7 @@ locret_8119A9A:
 	.balign 4, 0
 off_8119A9C:
 	.word hword_8119904
-	thumb_func_end sub_8119A48
+	thumb_func_end battleObject_beastSpAdvanceAndDrawTiles_8119A48
 
 	thumb_local_start
 sub_8119AA0:

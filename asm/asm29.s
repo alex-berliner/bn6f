@@ -1409,7 +1409,7 @@ loc_80A5876:
 	mov r0, #0
 	strb r0, [r6,#7]
 loc_80A587E:
-	bl sub_80A5A5C
+	bl battle_copyActorIndexToBattleFlags_80A5A5C
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_updateBeastOutPwrAtk_80A5828
@@ -1692,9 +1692,9 @@ sub_80A5A1C:
 
 // symdb: Copies the actor's BButton (CurAction) byte from the AIData struct into a battle-side flag buffer.
 // symdb: (r5 = AIDataPtr) -> void ; side effect: writes one byte to 0x2000EC0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5A5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_copyActorIndexToBattleFlags_80A5A5C.yaml
 	thumb_local_start
-sub_80A5A5C:
+battle_copyActorIndexToBattleFlags_80A5A5C:
 	push {lr}
 	ldr r1, off_80A5A68 // =byte_2000EC0 
 	ldrb r0, [r5,#9]
@@ -1718,7 +1718,7 @@ byte_80A5ABC:
 	.byte 0xB8, 0xFE, 0x68, 0x1, 0x10, 0x0, 0x3, 0x32, 0xD8, 0xFD
 	.byte 0xA8, 0x0, 0x10, 0x0, 0x3, 0x33, 0x76, 0x0, 0xC8, 0xFD
 	.byte 0x10, 0x0, 0x3, 0x34
-	thumb_func_end sub_80A5A5C
+	thumb_func_end battle_copyActorIndexToBattleFlags_80A5A5C
 
 // symdb: Beast-Out AI dispatch table that calls one of three per-state handlers based on the AIData sub-state byte at r5+8.
 // symdb: (r5 = AIState* or AIData*, r10 = Toolkit*, lr = return) -> void

@@ -842,7 +842,7 @@ battleObject_refreshSpriteAndArm_800F2C6:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	pop {pc}
 loc_800F2EA:
 	bl battleRefreshTrackedObjectArmPos_801DBD4
@@ -5652,9 +5652,9 @@ off_8011500:
 // symdb: r10 = Toolkit*) -> r0 = 1 on success, 0 if no collision slot was free ; side effects: writes
 // symdb: CurAnim/CurAnimCopy on the object, allocates/links a CollisionData block, populates it, sets
 // symdb: sprite flip bits.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011504.yaml
-	thumb_func_start sub_8011504
-sub_8011504:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initSpriteAndCollision_8011504.yaml
+	thumb_func_start battleObject_initSpriteAndCollision_8011504
+battleObject_initSpriteAndCollision_8011504:
 	push {r6,r7,lr}
 	mov r6, r0
 loc_8011508:
@@ -5694,7 +5694,7 @@ loc_8011540:
 	bl sprite_setFlip
 	mov r0, #1
 	pop {r6,r7,pc}
-	thumb_func_end sub_8011504
+	thumb_func_end battleObject_initSpriteAndCollision_8011504
 
 // symdb: Fills in the base battle-object fields (position, element, related object, flags) for a newly spawned battle entity.
 // symdb: void BasicBattleObjectInitialize(BattleObject* obj, u8 panelX, u8 panelY, u8 element,
@@ -13436,7 +13436,7 @@ sub_80148CC:
 off_80148DC:
 	.word off_80148E0
 off_80148E0:
-	.word sub_80148EC+1
+	.word battle_toggleBattleScreenFadeOrSomething_80148EC+1
 	.word activateCrossHappensHere_8014944+1
 	.word battle_runBeastOutIntro_801498E+1
 	thumb_func_end sub_80148CC
@@ -13444,9 +13444,9 @@ off_80148E0:
 // symdb: Drives the post-battle intro/outro fade-out for turn-end-of-beast-sp behaviour: kicks the screen fade, dispatches a large flag payload, then waits for it to finish and dispatches the next payload.
 // symdb: (r5 = S20047CC*, r10 = toolkit) -> no return value ; writes S20047CC+0x1, S20047CC+0x2,
 // symdb: S20047CC+0x3 and triggers SetScreenFade / dispatch_801DACC.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80148EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_toggleBattleScreenFadeOrSomething_80148EC.yaml
 	thumb_local_start
-sub_80148EC:
+battle_toggleBattleScreenFadeOrSomething_80148EC:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13492,7 +13492,7 @@ locret_801493E:
 	.balign 4, 0
 dword_8014940:
 	.word 0x4000
-	thumb_func_end sub_80148EC
+	thumb_func_end battle_toggleBattleScreenFadeOrSomething_80148EC
 
 	thumb_local_start
 activateCrossHappensHere_8014944:
@@ -13907,7 +13907,7 @@ loc_8014C72:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #0x8d
 	bl PlaySoundEffect
 	mov r0, #SOUND_LOG_IN_77
@@ -14165,7 +14165,7 @@ loc_8014EA8:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 loc_8014EB8:
@@ -14439,7 +14439,7 @@ loc_80150F0:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 loc_8015100:
@@ -14727,7 +14727,7 @@ loc_801536C:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 loc_801537C:
@@ -14970,7 +14970,7 @@ loc_8015578:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #0x8d
 	bl PlaySoundEffect
 	mov r0, #SOUND_LOG_IN_77
@@ -15157,7 +15157,7 @@ loc_80156DC:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -15306,7 +15306,7 @@ loc_8015878:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	bl object_clearInvulnerableTime
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -18915,7 +18915,7 @@ loc_801738A:
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
-	bl sub_801DC06
+	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	bl GetBattleEffects // () -> int
 	mov r1, #8
 	tst r0, r1
@@ -30684,9 +30684,9 @@ locret_801DC04:
 // symdb: (r0 = animId/u8, r1 = panelX | (panelY<<8)) -> r0 = 1 if no match found (slot scan exhausted),
 // symdb: else r0 = passed-in animId ; side effects: writes to the matched entry in the dword_20352E0
 // symdb: 6-entry slot table at +1 (anim id) and +2 (panelX-1, panelY-1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DC06.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setCustomGaugeBarAnimate_801DC06.yaml
 	thumb_local_start
-sub_801DC06:
+battleObject_setCustomGaugeBarAnimate_801DC06:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #8
 	str r0, [sp]
@@ -30715,7 +30715,7 @@ loc_801DC28:
 loc_801DC32:
 	add sp, sp, #8
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801DC06
+	thumb_func_end battleObject_setCustomGaugeBarAnimate_801DC06
 
 // symdb: Searches a six-entry slot table for the first occupied entry matching a given value and frees (zeroes) that slot, returning 0 on success or 1 if no match was found.
 // symdb: int releaseSlotByValue(u32 value /* r5 */); /* also called with r4, r6, r7, lr preserved; r0 = 0

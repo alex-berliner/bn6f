@@ -4348,7 +4348,7 @@ void pet_menuScreenTick_8126FF0()
         sub_811BED4(0, 5);
     battle_updateEStructSprites_80465F8();
     battle_dispatchNextCmd_81272C4();
-    sub_8127374();
+    pet_drawBattleChipCursorOam_8127374();
     IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -4480,16 +4480,16 @@ int battle_dispatchNextCmd_81272C4()
     int result; // r0
 
     if ( !*(v0 + 16)
-        || (sub_812730C(4, 52, 0, 19), result = *(v0 + 15), result != 2) && (result = *(v0 + 16), result == 1) )
+        || (battleObject_dispatchCmdSpawnChild_812730C(4, 52, 0, 19), result = *(v0 + 15), result != 2) && (result = *(v0 + 16), result == 1) )
     {
-        result = sub_812730C(232, 52, 0, 18);
+        result = battleObject_dispatchCmdSpawnChild_812730C(232, 52, 0, 18);
     }
     return result;
 }
 
 
 // 0x812730c
-int __fastcall sub_812730C(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_dispatchCmdSpawnChild_812730C(int a1, int a2, int a3, int a4)
 {
     int *v4; // r4
     int v5; // r5
@@ -4520,7 +4520,7 @@ int __fastcall sub_812730C(int a1, int a2, int a3, int a4)
 
 
 // 0x8127374
-signed int sub_8127374()
+signed int pet_drawBattleChipCursorOam_8127374()
 {
     int v0; // r5
     signed int result; // r0
@@ -4593,7 +4593,7 @@ void __noreturn sub_8127578()
 
 
 // 0x8127580
-int __fastcall __noreturn sub_8127580(int a1, int a2, int a3, int a4)
+int __fastcall __noreturn chatbox_renderGlyph_8127580(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
 
@@ -4617,7 +4617,7 @@ void __noreturn battle_renderChipSlots_81275C8()
     int v1; // r10
 
     *(*(v1 + oToolkit_Unk200a220_Ptr) + 8) = *(v0 + 20);
-    sub_8127580(8, 0, 100700160, eTextScript201BF20);
+    chatbox_renderGlyph_8127580(8, 0, 100700160, eTextScript201BF20);
 }
 
 
@@ -4742,7 +4742,7 @@ int sub_8127718()
         v3 = byte_201D74C[v1];
         if ( v3 >= 64 )
             v3 = sub_8127760(v3);
-        sub_8127580(v3, 0, 100704256, TextScript873EA50);
+        chatbox_renderGlyph_8127580(v3, 0, 100704256, TextScript873EA50);
     }
     return result;
 }
@@ -4787,7 +4787,7 @@ int sub_8127788()
         v5 = v4 - 64;
         if ( v4 >= 64 && v5 <= 2 )
             *(*(v1 + 56) + 4 * v5 + 8) = *&byte_201D74C[v2 + 4];
-        sub_8127580(v4, 0, 100704256, TextScript873EA50);
+        chatbox_renderGlyph_8127580(v4, 0, 100704256, TextScript873EA50);
     }
     return result;
 }
@@ -4858,7 +4858,7 @@ int sub_8127944()
 {
     int v0; // r5
 
-    return sub_812730C(8 * *(v0 + 13) + 554, 110, 0, 72);
+    return battleObject_dispatchCmdSpawnChild_812730C(8 * *(v0 + 13) + 554, 110, 0, 72);
 }
 
 

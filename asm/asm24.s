@@ -1224,7 +1224,7 @@ loc_808CB76:
 	bne loc_808CB8A
 	bl sub_808D108
 loc_808CB8A:
-	bl sub_808CC34
+	bl battle_pickBattleStateInitPtr_808CC34
 	cmp r0, #0
 	beq locret_808CB96
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -1322,9 +1322,9 @@ loc_808CC2E:
 // symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
 // symdb: call return); side effects: may read EVENT_9D4, may call
 // symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickBattleStateInitPtr_808CC34.yaml
 	thumb_local_start
-sub_808CC34:
+battle_pickBattleStateInitPtr_808CC34:
 	push {r4,r6,lr}
 	mov r4, #0
 	mov r6, #0
@@ -1363,7 +1363,7 @@ off_808CC7C:
 	.word byte_808C428
 off_808CC80:
 	.word byte_808C930
-	thumb_func_end sub_808CC34
+	thumb_func_end battle_pickBattleStateInitPtr_808CC34
 
 	thumb_local_start
 sub_808CC84:
@@ -1751,7 +1751,7 @@ dword_808CFB4:
 // symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
 // symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
 // symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
-// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
+// symdb: SOUND_CANT_JACK_IN), calls battleObject_computePanelOffsetFromCoords_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/jackIn_attemptJackInCheck_808CFB8.yaml
 	thumb_local_start
 jackIn_attemptJackInCheck_808CFB8:
@@ -1760,7 +1760,7 @@ jackIn_attemptJackInCheck_808CFB8:
 	ldr r5, [r5]
 	mov r4, #0
 	bl ReadOWPlayerObjectCoords
-	bl sub_808D034
+	bl battleObject_computePanelOffsetFromCoords_808D034
 	strh r2, [r5,#0x12] // (word_2000B52 - 0x2000b40)
 	ldrh r3, [r5,#0x14] // (word_2000B54 - 0x2000b40)
 	cmp r2, r3
@@ -1821,9 +1821,9 @@ off_808D030:
 // symdb: Converts 16.16 absolute world (X,Y) returned by sub_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
 // symdb: (r0 = xQ12, r1 = yQ12, r5 = BattleObject*, r10 = Toolkit) -> r2 = (panelCol<<1 | low bit), r3 =
 // symdb: (panelRow<<1 | low bit) ; writes [r5+8] and [r5+9] bytes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D034.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computePanelOffsetFromCoords_808D034.yaml
 	thumb_local_start
-sub_808D034:
+battleObject_computePanelOffsetFromCoords_808D034:
 	push {r4,r5,lr}
 	push {r0,r1}
 	bl sub_808D060
@@ -1845,7 +1845,7 @@ sub_808D034:
 	mul r2, r4
 	add r2, r2, r3
 	pop {r4,r5,pc}
-	thumb_func_end sub_808D034
+	thumb_func_end battleObject_computePanelOffsetFromCoords_808D034
 
 	thumb_local_start
 sub_808D060:

@@ -15591,7 +15591,7 @@ void __fastcall sub_8031478(__int64 a1)
 
 
 // 0x80314cc
-void __fastcall sub_80314CC(__int64 a1)
+void __fastcall battle_scrollStep_80314CC(__int64 a1)
 {
     _DWORD *v1; // r0
     int v2; // r1

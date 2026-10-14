@@ -23343,7 +23343,7 @@ dword_8030C40:
 	.word battle_scrollTickStepOrStop_80313FC+1 // 0x04 up right
 	.word sub_8031420+1 // 0x05 corner right
 	.word sub_8031478+1 // 0x06 corner down
-	.word sub_80314CC+1 // 0x07 corner up
+	.word battle_scrollStep_80314CC+1 // 0x07 corner up
 	.word battle_scrollAdvanceByPanelStep_8031520+1 // 0x08 corner left
 	.word sub_80311F4+1 // 0x09 vertical right
 	.word camera_initAndActivate_803123E+1 // 0x0a horizontal down
@@ -24590,9 +24590,9 @@ locret_80314CA:
 // symdb: Applies a battle camera scroll step, blending a line-vs-point shake/projection check and a line-vs-wedge secondary test, accumulating results into r12.
 // symdb: (r0 = BattleObjectPtr, r1 = ?, r2 = ?, r5 = ?, r12 = accumulator) -> r0 = BattleObjectPtr ; side
 // symdb: effects: camera X/Y may move, r12 accumulates hit bits
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80314CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollStep_80314CC.yaml
 	thumb_local_start
-sub_80314CC:
+battle_scrollStep_80314CC:
 	push {lr}
 	push {r0-r2,r5}
 	bl battleObject_applyShakeOffsetAndProject_8031136
@@ -24632,7 +24632,7 @@ loc_803150E:
 	pop {r0-r2,r5}
 locret_803151E:
 	pop {pc}
-	thumb_func_end sub_80314CC
+	thumb_func_end battle_scrollStep_80314CC
 
 // symdb: Performs one incremental scroll step (and optional collision-test second half) during battle panel-by-panel scrolling
 // symdb: (r0 = BattleState ptr, r1 = scroll counter/state, r2 = ???, r12 = accumulated result bitmask, r5

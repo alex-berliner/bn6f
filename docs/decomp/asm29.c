@@ -792,7 +792,7 @@ LABEL_9:
         sub_80A58AC();
     }
 LABEL_11:
-    sub_80A5A5C();
+    battle_copyActorIndexToBattleFlags_80A5A5C();
     sprite_update(v0);
 }
 
@@ -1048,7 +1048,7 @@ int sub_80A5A1C()
 
 
 // 0x80a5a5c
-int sub_80A5A5C()
+int battle_copyActorIndexToBattleFlags_80A5A5C()
 {
     int v0; // r5
     int result; // r0

@@ -5539,7 +5539,7 @@ int sub_8112278()
 
 
 // 0x81122a0
-int sub_81122A0()
+int battleObject_aiSetupCombatInit_81122A0()
 {
     int v0; // r4
     int v1; // r5
@@ -15084,7 +15084,7 @@ void __noreturn sub_81199C0()
     if ( !*(v0 + 19) && *(v0 + 28) == 255 )
     {
         *(v0 + 28) = 255;
-        sub_8119A48();
+        battleObject_beastSpAdvanceAndDrawTiles_8119A48();
     }
     sub_81199E4();
 }
@@ -15120,7 +15120,7 @@ int __noreturn sub_81199E4()
 
 
 // 0x8119a48
-int __noreturn sub_8119A48()
+int __noreturn battleObject_beastSpAdvanceAndDrawTiles_8119A48()
 {
     int v0; // r5
     int v1; // r2

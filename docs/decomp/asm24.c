@@ -185,7 +185,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
         {
             sub_808CD24(v5);
         }
-        v6 = sub_808CC34();
+        v6 = battle_pickBattleStateInitPtr_808CC34();
         if ( v6 )
             StartCutscene(v6, v7, v8, v9);
     }
@@ -256,7 +256,7 @@ int sub_808CC10()
 
 
 // 0x808cc34
-char *sub_808CC34()
+char *battle_pickBattleStateInitPtr_808CC34()
 {
     char *v0; // r4
     char v1; // zf
@@ -601,7 +601,7 @@ signed int jackIn_attemptJackInCheck_808CFB8()
 
     v0 = 0;
     v1 = sub_809E1AE();
-    v2 = sub_808D034(v1, SHIDWORD(v1));
+    v2 = battleObject_computePanelOffsetFromCoords_808D034(v1, SHIDWORD(v1));
     word_2000B52 = v3;
     if ( v3 != word_2000B54 )
     {
@@ -636,7 +636,7 @@ signed int jackIn_attemptJackInCheck_808CFB8()
 
 
 // 0x808d034
-int __fastcall sub_808D034(int a1, int a2)
+int __fastcall battleObject_computePanelOffsetFromCoords_808D034(int a1, int a2)
 {
     int v2; // r5
     int v3; // ST04_4

@@ -7667,7 +7667,7 @@ loc_8126D92:
 	bl bg_Draw8x8TileBlock3FromTable_81277E0
 	bl chatbox_event163Progress_81273B4
 	bl paintMapEventTileBlock_81273F0
-	bl sub_8127374
+	bl pet_drawBattleChipCursorOam_8127374
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8126DBC:
@@ -7974,7 +7974,7 @@ pet_menuScreenTick_8126FF0:
 loc_8127006:
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl battle_dispatchNextCmd_81272C4
-	bl sub_8127374
+	bl pet_drawBattleChipCursorOam_8127374
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812705E
 	mov r0, #0x40 
@@ -8284,7 +8284,7 @@ battle_dispatchNextCmd_81272C4:
 	ldr r6, dword_8127308 // =0x10000000 
 	ldr r4, off_8127300 // =byte_81268FC
 	ldr r7, off_8127370 // =dword_81268F8
-	bl sub_812730C
+	bl battleObject_dispatchCmdSpawnChild_812730C
 	ldrb r0, [r5,#0xf]
 	cmp r0, #2
 	beq locret_81272FC
@@ -8299,7 +8299,7 @@ loc_81272EA:
 	ldr r6, dword_8127304 // =0x0 
 	ldr r4, off_8127300 // =byte_81268FC
 	ldr r7, off_8127370 // =dword_81268F8
-	bl sub_812730C
+	bl battleObject_dispatchCmdSpawnChild_812730C
 locret_81272FC:
 	pop {r4,pc}
 	.balign 4, 0
@@ -8321,9 +8321,9 @@ dword_8127308:
 // symdb: recomposed as (new_hi_nibble<<4 | old_lo_nibble)); also NZCV, r1-r3, r5-r7, lr clobbered. Side
 // symdb: effects: writes one byte at [r5+r3] (twice), one word at [r5+r3] via strb; calls into
 // symdb: battleObject_queueOamFromTableRow_811FAF4 and sub_8120CC8.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812730C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCmdSpawnChild_812730C.yaml
 	thumb_local_start
-sub_812730C:
+battleObject_dispatchCmdSpawnChild_812730C:
 	push {r4,lr}
 	sub sp, sp, #0x1c
 	str r1, [sp]
@@ -8377,13 +8377,13 @@ dword_812736C:
 	.word 0x20002
 off_8127370:
 	.word dword_81268F8
-	thumb_func_end sub_812730C
+	thumb_func_end battleObject_dispatchCmdSpawnChild_812730C
 
 // symdb: For the PET menu cursor entity, queue one OAM entry of its battle-chip cursor sprite at its current position.
 // symdb: (r5 = ptr to PET-menu cursor entity) -> side effects only; queues an OAM entry.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127374.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_drawBattleChipCursorOam_8127374.yaml
 	thumb_local_start
-sub_8127374:
+pet_drawBattleChipCursorOam_8127374:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x1e]
 	cmp r0, #4
@@ -8415,7 +8415,7 @@ dword_81273A8:
 	.word 0x20002
 byte_81273AC:
 	.byte 0x4C, 0xC2, 0x0, 0x0, 0xDA, 0x1, 0x0, 0x0
-	thumb_func_end sub_8127374
+	thumb_func_end pet_drawBattleChipCursorOam_8127374
 
 // symdb: Chatbox script handler for event flag 163 that advances a per-event progress counter and queues the next (or final) chatbox text.
 // symdb: void chatbox_event163Progress_81273B4(void);   inputs: r10 = oToolkit pointer (used to fetch
@@ -8623,9 +8623,9 @@ sub_8127578:
 // symdb: (r0 = glyphIndex, r1 = paletteOffset, r2 = VRAM tile dest, r3 = toolkit text renderer state,
 // symdb: r4..r7/r10/lr = toolkit live) -> r0 = 0xB or 0x4 (sub-renderer return) ; side effect: text-gfx
 // symdb: base ptr published via renderTextGfx_8045F8C, plus tile write into r2+r1/r0 region
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127580.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_renderGlyph_8127580.yaml
 	thumb_local_start
-sub_8127580:
+chatbox_renderGlyph_8127580:
 	push {r4-r7,lr}
 	ldr r6, off_81275A0 // =dword_86A5D60 
 loc_8127584:
@@ -8646,7 +8646,7 @@ off_81275A0:
 	.word dword_86A5D60
 off_81275A4:
 	.word dword_86B7AE0
-	thumb_func_end sub_8127580
+	thumb_func_end chatbox_renderGlyph_8127580
 
 // symdb: Redraws an 11x8 block of the background (tile block 3) at a row determined by a scene-state page index plus 0x11.
 // symdb: void background_drawSceneSection(void* state /* r5 = scene/background state struct */); r4, r6,
@@ -8675,7 +8675,7 @@ off_81275C4:
 	.word byte_8126930
 	thumb_func_end background_drawSceneSection_81275A8
 
-// symdb: Renders the three Battle Chip selection slots (BG slots 8/9/10) of a toolkit selection row, loading each slot's selected chip byte from r5+0x14/0x15/0x16 into a toolkit object's +8 field and dispatching each render via sub_8127580 with palette offsets 0x000/0x400/0x800.
+// symdb: Renders the three Battle Chip selection slots (BG slots 8/9/10) of a toolkit selection row, loading each slot's selected chip byte from r5+0x14/0x15/0x16 into a toolkit object's +8 field and dispatching each render via chatbox_renderGlyph_8127580 with palette offsets 0x000/0x400/0x800.
 // symdb: void sub_81275C8(u32 r5 /* chip-slots struct */, u32 r10 /* toolkit_obj_ptr */, u32 r7 /*
 // symdb: unused? */, u32 lr /* ret addr */); /* outs: r5 r7 r8 r9 r10 r11 r12 preserved; r0 r1 r2 r3
 // symdb: clobbered by callee; NZCV clobbered */
@@ -8692,7 +8692,7 @@ battle_renderChipSlots_81275C8:
 	ldr r2, dword_812760C // =0x6009000 
 	ldr r3, off_8127610 // =eTextScript201BF20
 	ldr r4, off_8127614 // =unk_2018A00 
-	bl sub_8127580
+	bl chatbox_renderGlyph_8127580
 	ldrb r0, [r5,#0x15]
 	str r0, [r6,#8]
 	mov r0, #9
@@ -8701,7 +8701,7 @@ battle_renderChipSlots_81275C8:
 	ldr r2, dword_812760C // =0x6009000 
 	ldr r3, off_8127610 // =eTextScript201BF20
 	ldr r4, off_8127614 // =unk_2018A00 
-	bl sub_8127580
+	bl chatbox_renderGlyph_8127580
 	ldrb r0, [r5,#0x16]
 	str r0, [r6,#8]
 	mov r0, #0xa
@@ -8710,7 +8710,7 @@ battle_renderChipSlots_81275C8:
 	ldr r2, dword_812760C // =0x6009000 
 	ldr r3, off_8127610 // =eTextScript201BF20
 	ldr r4, off_8127614 // =unk_2018A00 
-	bl sub_8127580
+	bl chatbox_renderGlyph_8127580
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_812760C:
@@ -8901,7 +8901,7 @@ loc_8127730:
 	ldr r3, off_8127750 // =TextScript873EA50 
 	ldr r4, off_8127754 // =byte_2019A00 
 	mov r1, r6
-	bl sub_8127580
+	bl chatbox_renderGlyph_8127580
 	add r7, #1
 	mov r0, #0x20 
 	lsl r0, r0, #4
@@ -8979,7 +8979,7 @@ loc_81277B0:
 	ldr r3, off_81277D0 // =TextScript873EA50 
 	ldr r4, off_81277D4 // =byte_2019A00 
 	mov r1, r6
-	bl sub_8127580
+	bl chatbox_renderGlyph_8127580
 	add r7, #4
 	mov r0, #0x20 
 	lsl r0, r0, #4
@@ -9170,7 +9170,7 @@ sub_8127944:
 	ldr r4, off_8127964 // =byte_812690C
 	ldr r6, dword_8127968 // =0x40000000 
 	ldr r7, off_812796C // =byte_8126912
-	bl sub_812730C
+	bl battleObject_dispatchCmdSpawnChild_812730C
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8127964:

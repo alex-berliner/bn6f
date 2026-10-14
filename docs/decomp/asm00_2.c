@@ -491,7 +491,7 @@ AI *battleObject_refreshSpriteAndArm_800F2C6()
         if ( result->naviVirusIndicator == 2 )
         {
             v3 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-            result = sub_801DC06(v3, -v4);
+            result = battleObject_setCustomGaugeBarAnimate_801DC06(v3, -v4);
         }
         else
         {
@@ -3774,7 +3774,7 @@ void nullsub_43()
 
 
 // 0x8011504
-_BYTE *__fastcall __noreturn sub_8011504(unsigned int spriteIdx, unsigned int a2)
+_BYTE *__fastcall __noreturn battleObject_initSpriteAndCollision_8011504(unsigned int spriteIdx, unsigned int a2)
 {
     Battle *obj; // r5
     unsigned int v3_spriteIdx; // r6
@@ -9367,7 +9367,7 @@ int sub_80148CC()
 
 
 // 0x80148ec
-int sub_80148EC()
+int battle_toggleBattleScreenFadeOrSomething_80148EC()
 {
     int v0; // r5
     int v1; // r0
@@ -9713,7 +9713,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
         v15 = sub_8013774(v14, 44);
         sub_8011268(v15);
         v16 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v16, -v17);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v16, -v17);
         PlaySoundEffect(141, v18, v19);
         PlaySoundEffect(119, v20, v21);
         *(v4 + 1) = 4;
@@ -9923,7 +9923,7 @@ int __cdecl battle_ai_attackVars_step3_8014E08(int a1, int a2, int a3)
         if ( v22 )
             *(v22 + 6) = 0;
         v23 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v23, -v24);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v23, -v24);
         *(v4 + 1) = 4;
     }
     v25 = *(v4 + 16);
@@ -10139,7 +10139,7 @@ int sub_8015040()
             *v19 |= 0x14u;
         }
         v20 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v20, -v21);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v20, -v21);
         *(v1 + 1) = 4;
     }
     v22 = *(v1 + 16);
@@ -10366,7 +10366,7 @@ int sub_80152C8()
         if ( v19 )
             *(v19 + 6) = 0;
         v20 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v20, -v21);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v20, -v21);
         *(v1 + 1) = 4;
     }
     v22 = *(v1 + 16);
@@ -10567,7 +10567,7 @@ int sub_80154C8()
             *(v14 + 6) = 0;
         }
         v15 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v15, -v16);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v15, -v16);
         PlaySoundEffect(141, v17, v18);
         PlaySoundEffect(119, v19, v20);
         *(v1 + 1) = 4;
@@ -10705,7 +10705,7 @@ void sub_801562C()
         v16 = sub_8013774(v15, 44);
         sub_8011268(v16);
         v17 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v17, -v18);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v17, -v18);
         *(v0 + 76) = 0;
         v19 = *(v0 + 88);
         *(v19 + 104) = 0;
@@ -10826,7 +10826,7 @@ signed int sub_8015766()
             *v18 |= 0x14u;
         }
         v19 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-        sub_801DC06(v19, -v20);
+        battleObject_setCustomGaugeBarAnimate_801DC06(v19, -v20);
         object_clearInvulnerableTime();
         v0->parent = 0;
         v0->ai->unk_68 = 0;
@@ -13394,7 +13394,7 @@ int __noreturn playerObject_init_80172F0()
     sub_8013E58(v21);
     battleObject_registerCustomArm_801DB84();
     v22 = battleObject_computeAIStepForwardDeltaX_8018856(3);
-    sub_801DC06(v22, -v23);
+    battleObject_setCustomGaugeBarAnimate_801DC06(v22, -v23);
     if ( sub_802D246() & 8 && battle_networkInvert(*(v0 + 22)) )
         releaseSlotByValue_801DC36();
     v24 = battle_EnableAIUnk0x48FlagForNonstandardBoard_80141F4();
@@ -20516,7 +20516,7 @@ int battleRefreshTrackedObjectArmPos_801DBD4()
 
 
 // 0x801dc06
-signed int __fastcall sub_801DC06(signed int result, char a2)
+signed int __fastcall battleObject_setCustomGaugeBarAnimate_801DC06(signed int result, char a2)
 {
     int v2; // r5
     int *v3; // r4

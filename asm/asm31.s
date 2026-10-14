@@ -31846,7 +31846,7 @@ loc_80C6C40:
 off_80C6C54:
 	.word off_80C6C58
 off_80C6C58:
-	.word sub_80C6C6A+1
+	.word battleObject_kind0x16SnakearmStep_80C6C6A+1
 	.word battleObject_dyingTickDespawn_80C6CBA+1
 loc_80C6C60:
 	bl object_clearCollisionRegion // () -> void
@@ -31858,9 +31858,9 @@ loc_80C6C60:
 // symdb: Per-frame step handler for battle-object kind 0x16 (snake-arm); counts down a timer, then spawns a kind-0x16 child segment one panel ahead (or via sub_80C6D1E when Param1 is 0xC/0xD/0xE), animates, and parks it off-screen with collision cleared on the last frame.
 // symdb: (r5 = battle object ptr) -> r0 = 0, r1 preserved, r5 preserved ; writes to the object at r5 and
 // symdb: to spawned children
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C6C6A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_kind0x16SnakearmStep_80C6C6A.yaml
 	thumb_local_start
-sub_80C6C6A:
+battleObject_kind0x16SnakearmStep_80C6C6A:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -31901,7 +31901,7 @@ loc_80C6CA6:
 	bl object_clearCollisionRegion // () -> void
 locret_80C6CB8:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80C6C6A
+	thumb_func_end battleObject_kind0x16SnakearmStep_80C6C6A
 
 // symdb: Per-frame "dying" tick for a battle object — despawns it once its death animation finishes (or after a Timer2 linger), parking it offscreen and marking it destroyed.
 // symdb: void battleObject_dyingTickDespawn(BattleObject* obj /* r5 */); clobbers r0-r3, lr; caller
@@ -39799,7 +39799,7 @@ sub_80CA6D8:
 loc_80CA708:
 	ldr r1, dword_80CA92C // =0x6050100 
 loc_80CA70A:
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CA72A
 loc_80CA712:
@@ -42268,7 +42268,7 @@ sub_80CB964:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80CBB34 // =0x1021025 
 	ldr r1, dword_80CBB38 // =0xc0d0000 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CB98E
 	mov r0, #0x34 
@@ -43911,7 +43911,7 @@ sub_80CC5C8:
 	beq loc_80CC5E2
 	ldr r0, dword_80CC754 // =0x100040f 
 	ldr r1, dword_80CC758 // =0x4050000 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CC5FA
 loc_80CC5E2:
@@ -47672,7 +47672,7 @@ sub_80CE270:
 	strb r0, [r5,#oBattleObject_Element]
 	ldr r0, dword_80CE518 // =0x1090c02 
 	ldr r1, dword_80CE51C // =0x4050100 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CE28C
 	bl object_freeMemory
@@ -48038,11 +48038,11 @@ off_80CE544:
 	.word off_80CE548
 off_80CE548:
 	.word battleObject_initFastLunge_80CE554+1
-	.word sub_80CE5F0+1
+	.word battleObject_finishAndDespawn_80CE5F0+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x50_80CE530
 
-// symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater sub_80CE5F0.
+// symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater battleObject_finishAndDespawn_80CE5F0.
 // symdb: void battleObject_initFastLunge(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initFastLunge_80CE554.yaml
 	thumb_local_start
@@ -48107,15 +48107,15 @@ loc_80CE5BA:
 	bl PlaySoundEffect
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80CE5F0
+	bl battleObject_finishAndDespawn_80CE5F0
 	pop {r4,pc}
 	thumb_func_end battleObject_initFastLunge_80CE554
 
 // symdb: Tear down the current battle object: clear its collision flags/region, optionally spawn a 0x34-byte-aligned "destroy" effect from its coords, and mark its state as DESTROY.
 // symdb: (r5 = battle object) -> void ; clobbers r0/r1/r4/r5/r6/r7/r10 via the callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE5F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_finishAndDespawn_80CE5F0.yaml
 	thumb_local_start
-sub_80CE5F0:
+battleObject_finishAndDespawn_80CE5F0:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -48158,7 +48158,7 @@ off_80CE640:
 off_80CE644:
 	.word sub_80CE64C+1
 	.word sub_80CE690+1
-	thumb_func_end sub_80CE5F0
+	thumb_func_end battleObject_finishAndDespawn_80CE5F0
 
 	thumb_local_start
 sub_80CE64C:
@@ -48292,7 +48292,7 @@ sub_80CE730:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80CE810 // =0x70402 
 	ldr r1, dword_80CE814 // =0x4050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CE75A
 	mov r0, #0x34 
@@ -48440,7 +48440,7 @@ sub_80CE83C:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r0, dword_80CEAF8 // =0x1000c0b 
 	ldr r1, dword_80CEAFC // =0x7050100 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80CE858
 	bl object_freeMemory
@@ -54035,7 +54035,7 @@ sub_80D124E:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80D14F8 // =0x1034 
 	ldr r1, dword_80D14FC // =0xc0d0100 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D1282
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -55369,7 +55369,7 @@ sub_80D1C5A:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80D2018 // =0x1001031 
 	ldr r1, dword_80D201C // =0xc0d0000 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D1C84
 	mov r0, #0x34 
@@ -58151,7 +58151,7 @@ riskyHoneyObject_init_80D30F4:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80D34A4 // =0x1001031 
 	ldr r1, dword_80D34A8 // =0x4050100 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D311E
 	mov r0, #0x34 
@@ -60744,7 +60744,7 @@ sub_80D4472:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80D46AC // =0x41f 
 	ldr r1, dword_80D46B0 // =0xc0d0300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D449C
 	mov r0, #0x34 
@@ -61520,7 +61520,7 @@ sub_80D4A48:
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80D4B5C // =0x102102a 
 	ldr r1, dword_80D4B60 // =0x6050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D4A72
 	mov r0, #0x34 
@@ -66990,7 +66990,7 @@ sub_80D7420:
 	bne loc_80D743A
 	ldr r1, dword_80D75F4 // =0x6050100 
 loc_80D743A:
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D745A
 loc_80D7442:
@@ -69661,7 +69661,7 @@ loc_80D8926:
 loc_80D8942:
 	ldr r0, dword_80D8C34 // =0xc41 
 	ldr r1, dword_80D8C38 // =0xe0f0300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
@@ -71969,7 +71969,7 @@ sub_80D9A74:
 	str r0, [r5,#oBattleObject_ExtraVars]
 	ldr r0, dword_80D9D30 // =0x1001052 
 	ldr r1, dword_80D9D34 // =0xa050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80D9A94
 	bl object_freeMemory
@@ -73779,7 +73779,7 @@ battle_initObject_80DA834:
 	str r0, [r5,#oBattleObject_Z]
 	ldr r0, dword_80DAA18 // =0x100100c 
 	ldr r1, dword_80DAA1C // =0xe0f0300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
@@ -75005,7 +75005,7 @@ sub_80DB108:
 	str r0, [r5,#oBattleObject_Z]
 	ldr r0, dword_80DB2F0 // =0x1000c00 
 	ldr r1, dword_80DB2F4 // =0x13140300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80DB11E
 loc_80DB11E:
@@ -75278,7 +75278,7 @@ sub_80DB324:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldr r0, dword_80DB554 // =0xc62 
 	ldr r1, dword_80DB558 // =0x15050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_getFrontDirection // () -> int
 	mov r1, #0x10
@@ -77793,7 +77793,7 @@ sub_80DC61C:
 	push {lr}
 	ldr r0, dword_80DC6B0 // =0x1044 
 	ldr r1, dword_80DC6B4 // =0x56050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	tst r0, r0
 	bne loc_80DC630
 	bl object_freeMemory
@@ -77954,7 +77954,7 @@ sub_80DC730:
 	str r0, [r5,#oBattleObject_Z]
 	ldr r0, dword_80DCB0C // =0x100d 
 	ldr r1, dword_80DCB10 // =0x4050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
@@ -82302,7 +82302,7 @@ sub_80DE818:
 	ldr r0, dword_80DEA34 // =0x10c45 
 loc_80DE85E:
 	ldr r1, dword_80DEA38 // =0x6050300 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	ldrb r0, [r5,#oBattleObject_Param2]
 	bl sprite_setPalette // (int pallete) -> void
 	ldrb r0, [r5,#oBattleObject_Param3]
@@ -85426,7 +85426,7 @@ sub_80DFFDC:
 	str r0, [r5,#oBattleObject_Z]
 	ldr r0, dword_80E0388 // =0x100d 
 	ldr r1, dword_80E038C // =0x4050100 
-	bl sub_8011504
+	bl battleObject_initSpriteAndCollision_8011504
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
@@ -108272,7 +108272,7 @@ off_80EA658:
 	.word sub_8017688+1
 	.word sub_8017768+1
 	.word playerAI_update_80EA734+1
-	.word sub_80F17C4+1
+	.word battleObject_aiDispatchAttack_80F17C4+1
 	.word sub_80F18AC+1
 off_80EA684:
 	.word RunSpawnAnimationMaybe_8016380+1
@@ -122863,9 +122863,9 @@ byte_80F17BC:
 // symdb: AI attack dispatch table for SnakeArm — branches on AIAttackVars[0] via ThumbBX
 // symdb: (r7 = pointer to AIData, lr = return) -> r0..r3 overwritten by the chosen handler; tail-calls
 // symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / sub_80F1888
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F17C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiDispatchAttack_80F17C4.yaml
 	thumb_local_start
-sub_80F17C4:
+battleObject_aiDispatchAttack_80F17C4:
 	push {r7,lr}
 	ldr r1, off_80F17D4 // =off_80F17D8 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -122880,7 +122880,7 @@ off_80F17D8:
 	.word sub_80F17E4+1
 	.word battleObject_aiSpawnSnakeArmAttack_80F1808+1
 	.word sub_80F1888+1
-	thumb_func_end sub_80F17C4
+	thumb_func_end battleObject_aiDispatchAttack_80F17C4
 
 	thumb_local_start
 sub_80F17E4:
@@ -173458,7 +173458,7 @@ loc_810A5E4:
 	thumb_local_start
 sub_810A5EA:
 	push {r4,r6,lr}
-	bl sub_810A6F4
+	bl battle_useSelectedChipIfReady_810A6F4
 	cmp r0, #0
 	bne locret_810A5FE
 	ldr r1, off_810A600 // =off_810A604 
@@ -173609,9 +173609,9 @@ sub_810A6C0:
 // symdb: BattleState toolkit ptr) -> r0 = 1 if the chip attack was set up, 0 otherwise ; side effects:
 // symdb: BattleState.Unk_40 (turn counter?) compared against 0x12c, and on success calls write-chip-
 // symdb: params / set-attack-0 / sub_800F322
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A6F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_useSelectedChipIfReady_810A6F4.yaml
 	thumb_local_start
-sub_810A6F4:
+battle_useSelectedChipIfReady_810A6F4:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -173632,7 +173632,7 @@ sub_810A6F4:
 loc_810A720:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810A6F4
+	thumb_func_end battle_useSelectedChipIfReady_810A6F4
 
 // symdb: Piranha panel picker: validates the candidate panel (GetAllianceDependentPanelParamArgs + object_checkPanelParameters, object_reservePanel), then rolls GetPositiveSignedRNG % count over the valid panels (svc 6).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A724.yaml
@@ -176161,7 +176161,7 @@ loc_810BC5A:
 	strh r1, [r5,r0]
 	b loc_810BC84
 loc_810BC7C:
-	bl sub_810BDC4
+	bl battle_tryStartChipAttack_810BDC4
 	cmp r0, #0
 	bne locret_810BC8E
 loc_810BC84:
@@ -176349,9 +176349,9 @@ dword_810BDC0:
 // symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
 // symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
 // symdb: AttackVars/Attack0 and triggers sub_800F322
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BDC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryStartChipAttack_810BDC4.yaml
 	thumb_local_start
-sub_810BDC4:
+battle_tryStartChipAttack_810BDC4:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -176372,7 +176372,7 @@ sub_810BDC4:
 loc_810BDF0:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810BDC4
+	thumb_func_end battle_tryStartChipAttack_810BDC4
 
 // symdb: KillrEye AI step: GetRNG & 3 (with a 0x63 counter guard) picks the attack branch.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BDF4.yaml
