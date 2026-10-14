@@ -6285,6 +6285,9 @@ dword_81331FC:
 	.word 0xFF060606
 	thumb_func_end gfx_fillAllBandedTilemaps_81330AC
 
+// symdb: Thunk that reads the battle object's CurState (offset 0) and tail-calls one of several per-state handlers via an indirect jump table
+// symdb: (r5 = BattleObject*) -> tail-call to selected handler ; side effects none of its own
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133200.yaml
 	thumb_func_start sub_8133200
 sub_8133200:
 	push {r4-r7,lr}

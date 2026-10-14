@@ -3834,8 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Unknown — no assembly available in the provided context
-// symdb: unknown
+// symdb: Drives the cutscene-state → BBS-request path that handles L-Message / AskJackOut cutscenes for the player's PET Navi, including event-flag tests/sets and several GFX anim loads.
+// symdb: () -> side effects only (no return value used)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

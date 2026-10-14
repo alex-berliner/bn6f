@@ -3614,6 +3614,10 @@ sub_809B9EC:
 	.balign 4, 0x00
 	thumb_func_end sub_809B9EC
 
+// symdb: Load the 5-word Beast SP damage/info table from CutsceneState into r0-r4, clamping the fourth word to 0x10
+// symdb: (no explicit args; uses Toolkit->CutsceneStatePtr) -> r0=word0, r1=word1, r2=word2, r3=word3,
+// symdb: r4=min(word4,0x10)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BA14.yaml
 	thumb_func_start sub_809BA14
 sub_809BA14:
 	push {r5-r7,lr}

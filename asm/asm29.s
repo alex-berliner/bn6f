@@ -3560,6 +3560,10 @@ sub_80A6F70:
 	pop {pc}
 	thumb_func_end sub_80A6F70
 
+// symdb: Advances a Beast Out beastSP offset toward its target, applying the delta and incrementing a phase counter on stall
+// symdb: (r5 = ptr AIData/AIState?) -> void ; side effects: writes AIData+0xc/0x10 (offsets toward
+// symdb: JoypadHeld/JoypadReleased targets) and AIState[+6] phase counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6F78.yaml
 	thumb_local_start
 sub_80A6F78:
 	push {r4-r7,lr}
@@ -3767,6 +3771,10 @@ off_80A70EC:
 	.word byte_80A6E90
 	thumb_func_end sub_80A70C0
 
+// symdb: One-shot overworld check that raises a beast-out flag and bumps AIData Anger when the player enters a particular map-object box (or the player Z is non-zero and the same box holds).
+// symdb: void (r5=owMapObject*, r6=owMapObject* r6+0x84 context, r10=toolkit) ; sets flag EVENT_5F1 and
+// symdb: `[r5+0x34]=1` on success
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A70FC.yaml
 	thumb_local_start
 sub_80A70FC:
 	push {r4-r7,lr}
@@ -3930,6 +3938,9 @@ sub_80A7208:
 	.balign 4, 0x00
 	thumb_func_end sub_80A7208
 
+// symdb: Copies a BattleObject's power-attack / beast-out fields (BPwrAtk, BButton, Anger, AIData ptrs) into a scratch EWRAM table indexed by the object's slot id.
+// symdb: (r5 = BattleObjectPtr) -> side effects only; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7238.yaml
 	thumb_local_start
 sub_80A7238:
 	push {r4-r7,lr}
@@ -3975,7 +3986,7 @@ byte_80A729C:
 
 // symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
-// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / battleObject_updateFromCurAction_80A7354 /
+// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
 // symdb: sub_80A7398 depending on (r5+0x8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAIData_80A72B4.yaml
 	thumb_func_start battleObject_dispatchAIData_80A72B4
@@ -4095,6 +4106,9 @@ sub_80A7398:
 	pop {pc}
 	thumb_func_end sub_80A7398
 
+// symdb: Battle object: project position, update sub-state, run post-projection X/Y clamp helper
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A73A0.yaml
 	thumb_local_start
 sub_80A73A0:
 	push {r4-r7,lr}
@@ -4621,6 +4635,10 @@ locret_80A775A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A76E8
 
+// symdb: Copies selected fields from a BattleObject AIData struct (APwrAtk, BButton, BPwrAtk, version, joypad) into a per-fighter template buffer at 0x2000EC0.
+// symdb: (r5 = BattleObject*, r6 = AIData-derived or per-fighter stats base) -> r3 = last offset used;
+// symdb: side effect writes several bytes into byte_2000EC0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A775C.yaml
 	thumb_local_start
 sub_80A775C:
 	push {r4-r7,lr}
@@ -4869,7 +4887,7 @@ sub_80A78E0:
 // symdb: Drives a single Beast-Out AI step on the actuator: copies two BattleObject scratch regions, runs a per-action script (sub-handlers 0..6) with compare-and-loop semantics, optionally fires the Beast-SP trigger check, then commits and runs sprite_update.
 // symdb: (r5 = AIDataPtr, r6 = BattleObjectPtr, r10 = ToolkitPtr, r7 = byte-table cursor, lr) -> void ;
 // symdb: side effects: r0-r7/r10/lr/flags; mutates AIData+0xc/0x10/0x14 and BattleObject+8/0xc/0x10;
-// symdb: calls battle_getAIDataForEnemyIndex_8142050, sub_80A7BC0, sprite_update
+// symdb: calls sub_8142050, sub_80A7BC0, sprite_update
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpStepper_80A7912.yaml
 	thumb_local_start
 battle_beastSpStepper_80A7912:
@@ -5944,7 +5962,7 @@ byte_80A81F0:
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `sub_80A822C`, `battleObject_updateSpriteAndMaybeReloadAnim_80A827C`, or `sub_80A829C` (selected by index byte)
+// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
@@ -6059,9 +6077,9 @@ off_80A82CC:
 	.word byte_80A8114
 	thumb_func_end sub_80A82A4
 
-// symdb: For an overworld map object (r5), if its "tier/event" event flag for the current map is set, raise its sprite OAM priority to 3, and report whether the flag was set.
-// symdb: (r5 = OWMapObjectPtr, r10 = ToolkitPtr) -> r0 = 0/1 (event flag set?); side effect: may call
-// symdb: sprite_setPriority with priority=3 on the object's sprite
+// symdb: If a story-progress (event) flag is set for the current map/group, bump the sprite's OAM priority on the object passed in r5 and return 1; otherwise return 0.
+// symdb: (r5 = object ptr, r10 = toolkit ptr) -> r0 = 0 (no priority bump) or 1 (priority was bumped to
+// symdb: 3)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
 	thumb_local_start
 sub_80A82DC:

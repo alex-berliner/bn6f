@@ -1424,6 +1424,10 @@ off_813C068:
 	.word 0x14C
 	thumb_func_end sub_813C030
 
+// symdb: Per-beastOut-index loop: scans the 0x31-byte `Unk200414c` array for matching actors and writes a 16-bit code from `byte_813C188` (or an alternate based on r2 and item-flag checks) into `unk_30019E0` slots keyed by the matched actor's entry pointer; also sets the AIData `Unk_03`-derived second slot.
+// symdb: (r0 = ?, r1 = ?, r2 = beastOutIndex?, r10 = ToolkitPtr) -> r0 = 0 ; no other caller-visible
+// symdb: outputs; side effects: writes to unk_30019E0 u16 slots
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813C06C.yaml
 	thumb_func_start sub_813C06C
 sub_813C06C:
 	push {r4-r7,lr}

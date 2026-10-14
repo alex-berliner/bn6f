@@ -114,6 +114,10 @@ byte_8086FD0:
 	.byte 0xE1, 0x5, 0xE2, 0x5, 0xE3, 0x5, 0xC0, 0xF
 	thumb_func_end sub_8086FA4
 
+// symdb: Picks a beast-out / beast-sp intro cutscene based on result code, story flags, and current map, then calls StartCutscene
+// symdb: (r5 = *ReqBBSGui-ish state byte, r10 = *Toolkit, r2 = ?, lr = return) -> (void) ; may start a
+// symdb: cutscene, set state bytes in r5, toggle event flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8086FD8.yaml
 	thumb_local_start
 sub_8086FD8:
 	push {r4-r7,lr}

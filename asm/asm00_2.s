@@ -3888,6 +3888,10 @@ dword_801073C:
 	.word 0x17A
 	thumb_func_end battle_applyInvisibleClear_80106C0
 
+// symdb: Attempts to steal a chip from the enemy Navi by clearing their anti-steal flag and spawning a steal effect at their panel; returns whether the steal was performed.
+// symdb: (r0 = chipID, r5 = actor BattleObject / caller context, r10 = toolkit) -> r0 = 1 on success, 0
+// symdb: if any guard failed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010740.yaml
 	thumb_func_start sub_8010740
 sub_8010740:
 	push {r4,r6,r7,lr}
@@ -12537,6 +12541,11 @@ locret_80143A4:
 	pop {r4,pc}
 	thumb_func_end battle_updatePlayerAngerState_8014326
 
+// symdb: Sets the navi alliance's navi-stats `Unk_0e` flag to 0x80 for the AI actor in r5, clears the global `USING_ACTION`/`FLINCHING` object flags, and zeros the actor's AIData Anger and Unk_4c fields.
+// symdb: (r5 = *BattleObject whose AIDataPtr is set up) -> r0 = 0 ; side effects: clears
+// symdb: `object_clearFlag(1<<0x15)` and `object_clearFlag2(0x200)`, writes 0x80 to NaviStats+0xe, writes
+// symdb: 0 to AIData.Anger and AIData.Unk_4c
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80143A6.yaml
 	thumb_func_start sub_80143A6
 sub_80143A6:
 	push {lr}

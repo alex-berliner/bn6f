@@ -910,9 +910,9 @@ sub_81421C8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421C8
 
-// symdb: returns the byte at eScenarioEffectState2000780+0xb (an EWRAM scratch byte used by battle scenario effects)
-// symdb: () -> r0 = eScenarioEffectState2000780[0xb] ; no side effects
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81421D0.yaml
+// symdb: Returns the byte at offset 0xB of the scenario/effect state (eScenarioEffectState2000780).
+// symdb: () -> r0 = byte at state + 0xB ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81421D0.yaml
 	thumb_func_start sub_81421D0
 sub_81421D0:
 	push {r4-r7,lr}

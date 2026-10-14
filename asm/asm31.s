@@ -26925,6 +26925,11 @@ off_80C4614:
 	.word battleObject_updateSprite_80C464C+1
 	thumb_func_end battleObject_copyStateAndSyncSpriteFromRelated_80C458C
 
+// symdb: Per-frame battle-object sprite hook that forces sprite mosaic/scale handling and exits the object on a state flag.
+// symdb: (r5 = BattleObject) -> r0 = updated sprite state ; side effects: writes
+// symdb: CurAction/CurPhaseAndPhaseInitialized, clears an ObjectHeader bit, conditionally invokes
+// symdb: sub_80C464C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C461C.yaml
 	thumb_local_start
 sub_80C461C:
 	push {lr}
@@ -29161,7 +29166,7 @@ sub_80C57E4:
 	pop {pc}
 	thumb_func_end sub_80C57E4
 
-// symdb: Init handler of an aura-style battle object: fixed sprite (0x80/0x10/0x17) with palette from Param1*4, flip depends on which side of Param3's column it sits on, two animation tables by adjacency, then hands off to battleObject_auraUpdateOrDestroy_80C5886.
+// symdb: Init handler of an aura-style battle object: fixed sprite (0x80/0x10/0x17) with palette from Param1*4, flip depends on which side of Param3's column it sits on, two animation tables by adjacency, then hands off to sub_80C5886.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80C57F4.yaml
 	thumb_local_start
 sub_80C57F4:
@@ -88270,10 +88275,10 @@ sub_80E1662:
 	mov pc, lr
 	thumb_func_end sub_80E1662
 
-// symdb: Resolve opposing-side enemies within an enemy-name ID range and store their object pointers into a caller-provided 4-entry table on the stack.
-// symdb: (r5 = self BattleObject*, r6..r10 scratch) -> void ; stack: out [BattleObject*, BattleObject*,
-// symdb: BattleObject*, u8] indexed by alliance-flipping enemy name IDs, side-effect-only (caller-
-// symdb: provided scratch + stack)
+// symdb: On the AI's battle object (`r5`), locate a 4-slot enemy-name-range array using the flipped alliance, then probe RelatedObject1Ptr for matching names at slot indices 0, 1 and 2 via sub_80E16CC.
+// symdb: (r5 = AI/target BattleObjectPtr, r6 caller-saved, r7 caller-saved, r10 = toolkit, lr) -> r0 =
+// symdb: last sub_80E16CC return (probe hit flag), r5 preserved (callee-saved) ; side effects: stack
+// symdb: scratch `0x34` bytes, calls object_getEnemyByNameRange and sub_80E16CC three times.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
@@ -109621,6 +109626,11 @@ locret_80EB500:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80EB450
 
+// symdb: AI tick that counts down a "wait for direction input" timer, then on expiry/exit kicks off a new attack via aiAttack_initVarsAndStart_80116AE using the held D-pad direction and the equipped cross navi.
+// symdb: (r5 = BattleObject, r6 = ?, r7 = AIAttackVars, r10 = Toolkit) -> void ; side effects: writes to
+// symdb: AIAttackVars (Unk_01, Unk_10, Unk_12), clears BattleObject.RelatedObject1Ptr and AIData.Unk_68,
+// symdb: calls object_exitAttackState, and may dispatch aiAttack_initVarsAndStart_80116AE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB502.yaml
 	thumb_local_start
 sub_80EB502:
 	push {r4,r6,lr}
@@ -111860,7 +111870,7 @@ locret_80EC67C:
 // symdb: Advances the AI AttackVars counter, falls through to process an attack action when the timer runs out, and resets the state if interrupted by invalid conditions.
 // symdb: (r5 = current BattleObject, r7 = AI AttackVars block, r10 = toolkit) -> r0/r1/r2/r3 =
 // symdb: scratch/clobbered ; side effects: writes to AIData->Unk_44 bit, AIData->Unk_30/Unk_00,
-// symdb: AttackVars->Unk_01/10/30, and jumps into sub_80EC792/aiAttack_initVarsAndStart_80116AE
+// symdb: AttackVars->Unk_01/10/30, and jumps into sub_80EC792/sub_80116AE
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackVarsTryResetAndProcessAction_80EC67E.yaml
 	thumb_local_start
 battle_aiAttackVarsTryResetAndProcessAction_80EC67E:
@@ -114246,6 +114256,11 @@ locret_80ED7A0:
 	pop {r4,pc}
 	thumb_func_end sub_80ED764
 
+// symdb: AI attack step that walks the battle object forward each turn and, once in range, hands the turn off to the standard attack flow
+// symdb: (no explicit return) ; side effects: mutates AIAttackVars (Unk_01 init flag, Unk_10 free-panel
+// symdb: count), BattleObject->RelatedObject1Ptr, AIData->Unk_68, exits the attack state and starts the
+// symdb: normal ai attack via aiAttack_initVarsAndStart_80116AE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80ED7A2.yaml
 	thumb_local_start
 sub_80ED7A2:
 	push {r4,lr}
@@ -171684,6 +171699,10 @@ locret_810986C:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8109820
 
+// symdb: Per-tick AI attack motion: integrate velocity into X/Y, periodically re-sync panel/collision, and finalize the move when the AI step counter expires (snap to destination, release reservation, raise cannot-slide, set currently-moving flag, mark Unk_1a=1, then exit attack state).
+// symdb: (r5 = BattleObject*, r6 = ?, r7 = AIData*) -> void ; side effects: mutates BattleObject
+// symdb: X/Y/PanelX/PanelY/CollisionData flags and AIData AttackVars Unk_10/Unk_1a
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810986E.yaml
 	thumb_local_start
 sub_810986E:
 	push {lr}
@@ -172285,6 +172304,10 @@ off_8109DE4:
 	.word aiAttackTimer_tick_8109E4A+1
 	thumb_func_end aiAttackDispatch_8109DD2
 
+// symdb: Drives a multi-frame key-item trap AI: arms it on first call, plays the "armed" anim, fires the kind-0x16 hitbox, then resolves after a timer elapses.
+// symdb: (r5 = battleObject, r7 = AIAttackVars, r10 = toolkit) -> r0 = residual Timer value (0..0x3f);
+// symdb: side effects mutate AIAttackVars + battleObject CurAnim and spawn a kind-0x16 projectile
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109DEC.yaml
 	thumb_local_start
 sub_8109DEC:
 	push {r4,r6,lr}

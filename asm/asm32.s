@@ -22787,6 +22787,10 @@ off_81196B8:
 	.word nullStub_8119800+1
 	thumb_func_end battle_dispatchSpriteAction_81196A0
 
+// symdb: SubMenu index dispatcher that jumps to one of five handler routines based on `oSubMenu+0x9` (Idx_00's neighbour byte), via a Thumb-BX table, then returns through `lr`.
+// symdb: (r5 = oSubMenuPtr implicit, r9 = toolkit implicit) -> r0 = 0x40000000 ; side effects: jumps to
+// symdb: one of five handler routines and returns to caller; no other saved-state effects.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196C4.yaml
 	thumb_local_start
 sub_81196C4:
 	push {lr}
@@ -22948,6 +22952,9 @@ off_81197B0:
 	.word sub_81197B4+1
 	thumb_func_end npc_dispatchStateHandler_811979C
 
+// symdb: Refreshes the chip-select submenu's sprite palette based on the currently highlighted chip and its element
+// symdb: (r5 = *SubMenu) -> void ; updates SubMenu palette + sprite-setPalette
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81197B4.yaml
 	thumb_local_start
 sub_81197B4:
 	push {r4-r7,lr}
@@ -36411,6 +36418,12 @@ loc_81202F6:
 	.balign 4, 0x00
 	thumb_func_end sub_81202B4
 
+// symdb: Seeds two u16 tile-index buffers (back and front) with a base tile plus VRAM offset, then expands a TextScript folder name into both via sub_81202B4.
+// symdb: (r0 = folder name index, r1 = EWRAM dest buffer A (paired u16), r2 = number of u16 pairs, r3 =
+// symdb: secondary u16 count, r4 = VRAM tile base) -> r0 = 4 ; side effects writes r1..r1+2*r2-1 and
+// symdb: r1..r1+2*r4-1? wait: writes to two buffers derived from r1 and r3*sizes, plus EWRAM at
+// symdb: 0x02034814 captured
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81202FC.yaml
 	thumb_func_start sub_81202FC
 sub_81202FC:
 	push {r4-r7,lr}

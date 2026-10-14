@@ -11958,7 +11958,7 @@ off_802BCB0:
 
 // symdb: Initializes the chip-select/custom-screen state at eS20364C0, dispatches by Index_00 to a tile-copy routine, then runs a panel scan
 // symdb: (r0 = unused=4) -> r0 = 1 ; side effects: writes eS20364C0.Unk_05, copies tiles to a BG block,
-// symdb: calls battle_chipSelect_handleUpDownInput_802C460
+// symdb: calls sub_802C460
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelect_802BD60.yaml
 	thumb_func_start battle_initChipSelect_802BD60
 battle_initChipSelect_802BD60:
@@ -24712,6 +24712,10 @@ loc_80315B4:
 	mov pc, lr
 	thumb_func_end math_pointCrossHalfPlaneTest_8031594
 
+// symdb: Returns 1 if the (r4,r5) and (r3,r2) deltas cross-product *into* a 2x2 cross-shaped hit area defined by a struct passed in r0; otherwise 0.
+// symdb: (r0 = ptr to a small struct of two u32 pairs; r2,r3,r4,r5 = signed 16.16 coords forming two
+// symdb: vectors) -> r0 = 1 if test passes else 0 ; side effects none
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80315B8.yaml
 	thumb_local_start
 sub_80315B8:
 	sub r6, r5, r4

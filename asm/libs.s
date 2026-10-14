@@ -23048,7 +23048,7 @@ off_814EA54:
 	thumb_func_end sub_814EA24
 
 // symdb: Iterates the 32-entry music player table gMPlayTable and ticks every music player once (per-frame audio update).
-// symdb: void sub_814EA58(void); // takes no meaningful arguments; calls sound_musicPlayerSetStopFlag_814F1E8(playerInfo) for each
+// symdb: void sub_814EA58(void); // takes no meaningful arguments; calls sub_814F1E8(playerInfo) for each
 // symdb: entry; returns with r0 = return address
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_tickAllMusicPlayers_814EA58.yaml
 	thumb_func_start sound_tickAllMusicPlayers_814EA58
