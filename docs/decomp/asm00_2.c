@@ -12337,7 +12337,7 @@ signed int __fastcall sub_801683C(int a1, int a2, int a3)
 
 
 // 0x8016860
-int __fastcall sub_8016860(int a1)
+int __fastcall battleObject_updateColorShader_8016860(int a1)
 {
     Battle *v1; // r5
     int result; // r0
@@ -16866,7 +16866,7 @@ LABEL_42:
         object_clearFlag2(0x4000);
         v11 = battle_updateAngerTint_80143E4();
         v12 = battle_applyStateSpriteColorShader_801690A(v11);
-        v13 = sub_8016860(v12);
+        v13 = battleObject_updateColorShader_8016860(v12);
         v14 = battle_applyStatusSpriteTint_80168C8(v13);
         object_applyTintIfFlag16_80168F0(v14);
         blindVisualHandledHere_8016934();
@@ -17110,7 +17110,7 @@ LABEL_40:
     sprite_zeroColorShader();
     v13 = object_clearFlag2(0x4000);
     v14 = battle_applyStateSpriteColorShader_801690A(v13);
-    v15 = sub_8016860(v14);
+    v15 = battleObject_updateColorShader_8016860(v14);
     v16 = battle_applyStatusSpriteTint_80168C8(v15);
     object_applyTintIfFlag16_80168F0(v16);
     blindVisualHandledHere_8016934();

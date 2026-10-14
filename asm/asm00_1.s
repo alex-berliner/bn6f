@@ -1559,9 +1559,9 @@ scenario_ClearEffectActiveFlag_800399A:
 // symdb: Per-frame scenario effect dispatch: indexes `jt_80038E8` by `eScenarioEffectState2000780.Index` and tail-calls the resulting handler.
 // symdb: (no args passed by callee — caller-set r10 toolkit + lr drive behaviour) -> r0 from the
 // symdb: dispatched handler ; no side effects on r4-r9/r12 when no handler runs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80039AA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/scenario_runEffectStateJumptable_80039AA.yaml
 	thumb_local_start
-sub_80039AA:
+scenario_runEffectStateJumptable_80039AA:
 	push {r4-r7,lr}
 	ldr r5, off_80039F0 // =eScenarioEffectState2000780
 	ldrb r0, [r5]
@@ -1580,7 +1580,7 @@ sub_80039AA:
 	bx r0
 locret_80039CA:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80039AA
+	thumb_func_end scenario_runEffectStateJumptable_80039AA
 
 	thumb_func_start Is_eScenarioEffectState2000780_Initialized
 Is_eScenarioEffectState2000780_Initialized:
@@ -4622,7 +4622,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 
 	bl dispatch_80339CC // () -> ()
 
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl checkOWObjectInteractions_80037f4
 	bl camera_802FFF4
@@ -4636,7 +4636,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
-	bl sub_80058D0
+	bl owMap_checkWarpTrigger_80058D0
 	bl checkThenStartBattle_8005A8C // () -> ()
 	bl nullsub_8005B6A
 	bl gamestate_openPetMenuOnStartPress_8005AF4
@@ -4652,7 +4652,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 battle_init_80052D8: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -4746,7 +4746,7 @@ locret_800536C:
 overworld_owMap_renderAndTickSubsystems_800536E: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -4799,7 +4799,7 @@ hword_80053E0:
 scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -4856,7 +4856,7 @@ pet_menuUpdateAndHandleExit_8005462: // (self: * GameState $r5) -> ()
 	bl mapName_runSequence_811EC50
 loc_8005474:
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -4945,7 +4945,7 @@ mainState_resetGameAndGoto28_8005524:
 sub_800555A: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -4986,7 +4986,7 @@ locret_80055CC:
 gamestate_runOverworldSceneStep_80055CE: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5028,7 +5028,7 @@ locret_8005640:
 scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5068,7 +5068,7 @@ locret_80056B4:
 sub_80056B8: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5107,7 +5107,7 @@ locret_800572A:
 sub_800572C: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5146,7 +5146,7 @@ locret_800579E:
 sub_80057A0: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5188,7 +5188,7 @@ locret_8005812:
 mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5212,7 +5212,7 @@ locret_8005858:
 sub_800585A: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
-	bl sub_80039AA
+	bl scenario_runEffectStateJumptable_80039AA
 	bl object_dispatchByType_8003AFA
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
@@ -5251,9 +5251,9 @@ locret_80058CC:
 // symdb: Per-frame overworld check that consumes a coordinate trigger and dispatches to one of nine warp cutscene routines based on the warp type.
 // symdb: () -> void ; triggers a warp via Toolkit's Warp2011bb0 state. No register contract for callers
 // symdb: (saves r5,lr only)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80058D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMap_checkWarpTrigger_80058D0.yaml
 	thumb_local_start
-sub_80058D0:
+owMap_checkWarpTrigger_80058D0:
 	push {r5,lr}
 
 	mov r5, r10
@@ -5348,7 +5348,7 @@ JumpTable8005948:
 	.word sub_8005A28+1 // (self: * GameState $r5) -> ()
   // same as above, but with a different delay
 	.word sub_8005A50+1 // (self: * GameState $r5) -> ()
-	thumb_func_end sub_80058D0
+	thumb_func_end owMap_checkWarpTrigger_80058D0
 
 // symdb: Kicks off the ending sequence — sets the finale story event flags, starts a screen fade, ticks the countdown timers, and switches the game state machine to the ending subsystem.
 // symdb: void sub_800596C(GameState *self /* r5 */); sets NZ from the final movs r0,#0x10, leaves C/V

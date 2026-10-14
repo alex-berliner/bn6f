@@ -17454,9 +17454,9 @@ loc_801685C:
 // symdb: Recolor a battle object's sprite as a warm/cool gradient depending on its navi version.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> r0 = 0 ; side effects: writes the object's high-
 // symdb: nibble sprite color shader via sprite_setColorShader.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016860.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateColorShader_8016860.yaml
 	thumb_local_start
-sub_8016860:
+battleObject_updateColorShader_8016860:
 	push {r4,lr}
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -17497,7 +17497,7 @@ byte_80168A8:
 	.byte 0x18, 0x1A, 0x1C, 0x1E, 0x1E, 0x1C, 0x1A, 0x18, 0x16, 0x14, 0x12, 0x10
 	.word byte_80A0C0E
 	.word 0x20406
-	thumb_func_end sub_8016860
+	thumb_func_end battleObject_updateColorShader_8016860
 
 // symdb: Tints the current battle object's sprite with the color shader only when it has status flag 0x800, choosing no-tint/full-tint from a bit of battle_getStateUnk40_800A704.
 // symdb: void sub_80168C8(void); // reads r5 (battle object/state context) and r10 (frame/state
@@ -24791,7 +24791,7 @@ loc_801B142:
 	bl object_clearFlag2
 	bl battle_updateAngerTint_80143E4
 	bl battle_applyStateSpriteColorShader_801690A
-	bl sub_8016860
+	bl battleObject_updateColorShader_8016860
 	bl battle_applyStatusSpriteTint_80168C8
 	bl object_applyTintIfFlag16_80168F0
 	bl blindVisualHandledHere_8016934
@@ -25089,7 +25089,7 @@ loc_801B338:
 	bl object_clearFlag2
 
 	bl battle_applyStateSpriteColorShader_801690A
-	bl sub_8016860
+	bl battleObject_updateColorShader_8016860
 	bl battle_applyStatusSpriteTint_80168C8
 	bl object_applyTintIfFlag16_80168F0
 

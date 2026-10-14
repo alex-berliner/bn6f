@@ -17847,7 +17847,7 @@ void sub_811BD88()
         v4 = v2;
     }
     *(v0 + 12) = v4;
-    sub_811BE1C(v4);
+    petSprite_setVisualForSelectedNavi_811BE1C(v4);
     *(v0 + 8) = 4;
     sprite_dispatchObjectUpdate_811BDCC();
 }
@@ -17898,7 +17898,7 @@ int __fastcall sprite_setPositionByStructIndex_811BDFC(int a1, __int16 a2, int a
 
 
 // 0x811be1c
-int __fastcall sub_811BE1C(int a1)
+int __fastcall petSprite_setVisualForSelectedNavi_811BE1C(int a1)
 {
     Battle *v1; // r5
     int result; // r0

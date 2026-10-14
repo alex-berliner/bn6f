@@ -28174,7 +28174,7 @@ loc_811BDB8:
 	add r0, r0, r1
 loc_811BDBC:
 	str r0, [r5,#0xc]
-	bl sub_811BE1C
+	bl petSprite_setVisualForSelectedNavi_811BE1C
 	mov r0, #4
 	strb r0, [r5,#8]
 	bl sprite_dispatchObjectUpdate_811BDCC
@@ -28250,9 +28250,9 @@ loc_811BE16:
 // symdb: Configures the PET navi sprite's appearance (init sprite, animation, palette, priority, coordinates) based on the currently selected navi and stats.
 // symdb: (r0 = navi/state index, r1 = 1, r2 = table byte, r5 = sprite object) -> void ; side effects:
 // symdb: writes sprite/palette/anim/coord fields of object in r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BE1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/petSprite_setVisualForSelectedNavi_811BE1C.yaml
 	thumb_local_start
-sub_811BE1C:
+petSprite_setVisualForSelectedNavi_811BE1C:
 	push {lr}
 	mov r1, #1
 	strb r1, [r5]
@@ -28303,7 +28303,7 @@ loc_811BE64:
 	bl sprite_setCoordinates
 locret_811BE8E:
 	pop {pc}
-	thumb_func_end sub_811BE1C
+	thumb_func_end petSprite_setVisualForSelectedNavi_811BE1C
 
 // symdb: Loads a status byte from a lookup table indexed by the object's field at +0xC and sets the Z flag on whether it is zero.
 // symdb: bool sub_811BE90(void *obj /* r5 */); // returns flag byte in r0, table base in r2, zero/nonzero

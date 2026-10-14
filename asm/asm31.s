@@ -9405,7 +9405,7 @@ t1_0x1b_80BC650:
 off_80BC660:
 	.word off_80BC664
 off_80BC664:
-	.word sub_80BC670+1
+	.word battleObject_beastSpecial_init_80BC670+1
 	.word sub_80BC78C+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x1b_80BC650
@@ -9413,9 +9413,9 @@ off_80BC664:
 // symdb: CUR_STATE_INITIALIZE handler for a beast's Special-type Attack object — loads chip sprite/palette, computes spawn X/Y from panel and a per-kind Y-offset table, kicks the name popup and a SpecialUse flag, then transitions to CUR_STATE_UPDATE.
 // symdb: (r5 = ptr BattleObject) -> r0 = 0 ; writes object fields (NameID, sprite, anim, palette, coords,
 // symdb: ExtraVars[0..0x14]) and sets CurState = CUR_STATE_UPDATE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BC670.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSpecial_init_80BC670.yaml
 	thumb_local_start
-sub_80BC670:
+battleObject_beastSpecial_init_80BC670:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	ldr r1, off_80BC870 // =0x1a0 
@@ -9511,7 +9511,7 @@ byte_80BC758:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0xF8, 0xFF, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0
-	thumb_func_end sub_80BC670
+	thumb_func_end battleObject_beastSpecial_init_80BC670
 
 	thumb_local_start
 sub_80BC78C:
@@ -28653,7 +28653,7 @@ t3_0x4_80C53C0:
 off_80C53D4:
 	.word off_80C53D8
 off_80C53D8:
-	.word sub_80C53FA+1
+	.word battleObject_initSnakeArm_80C53FA+1
 	.word sub_80C54E0+1
 	.word sub_80C53E4+1
 	thumb_func_end t3_0x4_80C53C0
@@ -28678,9 +28678,9 @@ loc_80C53F4:
 // symdb: Initializes a battle object representing a snake-like arm/part (Param4 picks animation/handling) — sets sprite, palette, flip, lays it out in front of its parent, creates and configures a hitbox, then advances to the Update state.
 // symdb: (r5 = parent/this battle object, r10 = toolkit) -> void ; side effects: writes sprite
 // symdb: attributes, coords, timer, state, allocates a CollisionData slot
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C53FA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initSnakeArm_80C53FA.yaml
 	thumb_local_start
-sub_80C53FA:
+battleObject_initSnakeArm_80C53FA:
 	push {r4,r7,lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -28781,7 +28781,7 @@ byte_80C54D0:
 	.byte 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x14, 0x0
 byte_80C54DC:
 	.byte 0x0, 0x1, 0x1, 0x0
-	thumb_func_end sub_80C53FA
+	thumb_func_end battleObject_initSnakeArm_80C53FA
 
 // symdb: Per-action collision bookkeeping step for the battle object: drop old collision, spawn hit effect, then either destroy the object (if the battle is over) or run its CurAction collision handler, present the new collision data, and highlight its current panel.
 // symdb: void object_runCollisionStep_80C54E0(struct BattleObject* r5 /* battle object */, u32 r4 /*
@@ -30083,16 +30083,16 @@ loc_80C5E6E:
 off_80C5E78:
 	.word off_80C5E7C
 off_80C5E7C:
-	.word sub_80C5E84+1
+	.word battleObject_panelBreakEffectTimer_80C5E84+1
 	.word sub_80C5F0C+1
 	thumb_func_end sub_80C5E44
 
 // symdb: Battle-object action that highlights the panel while a timer ticks down, then cracks the tile, plays a break SFX, and advances the object's state to phase 4 (or destroys it if the panel refuses the crack).
 // symdb: (r5 = BattleObject*) -> void ; side effects: panel highlight/clear, sprite reload, tile crack,
 // symdb: sound 0xB9, destroys or sets CurAction=4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5E84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_panelBreakEffectTimer_80C5E84.yaml
 	thumb_local_start
-sub_80C5E84:
+battleObject_panelBreakEffectTimer_80C5E84:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	mov r1, #4
@@ -30154,7 +30154,7 @@ loc_80C5F02:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C5F0A:
 	pop {pc}
-	thumb_func_end sub_80C5E84
+	thumb_func_end battleObject_panelBreakEffectTimer_80C5E84
 
 // symdb: Per-frame update that finalizes a battle object's destruction: drops collision then waits for the current animation to finish before switching state to CUR_STATE_DESTROY.
 // symdb: void sub_80C5F0C(void); /* in: r5 = battle object; clobbers r0, r1, r2, r3, lr, nzc/v; returns
@@ -36763,7 +36763,7 @@ t3_0x28_80C8FFC:
 off_80C9010:
 	.word off_80C9014
 off_80C9014:
-	.word sub_80C9024+1
+	.word battleObject_initSnakeArmMover_80C9024+1
 	.word sub_80C9074+1
 	.word sub_80C90DC+1
 	.word object_genericDestroy+1
@@ -36773,9 +36773,9 @@ off_80C9014:
 // symdb: (r5 = BattleObject*) -> void ; side effects: sets r5->CurAnim = 0x0B, r5->Element = 5,
 // symdb: r5->XVelocity = +1/-1 facing, allocates and initializes a CollisionData block linked to r5, sets
 // symdb: r5->CurStateActionPhaseAndPhaseInitialized = CUR_STATE_UPDATE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9024.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initSnakeArmMover_80C9024.yaml
 	thumb_local_start
-sub_80C9024:
+battleObject_initSnakeArmMover_80C9024:
 	push {lr}
 	mov r0, #0x80
 	mov r1, #0x14
@@ -36806,7 +36806,7 @@ loc_80C9060:
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_80C9024
+	thumb_func_end battleObject_initSnakeArmMover_80C9024
 
 	thumb_local_start
 sub_80C9074:
@@ -39636,11 +39636,11 @@ off_80CA558:
 	.word off_80CA55C
 off_80CA55C:
 	.word battleObject_initPanelBreakBounce_80CA568+1
-	.word sub_80CA61A+1
+	.word battleObject_updatePanelBreakBounce_80CA61A+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x33_80CA544
 
-// symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater sub_80CA61A.
+// symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater battleObject_updatePanelBreakBounce_80CA61A.
 // symdb: void battleObject_initPanelBreakBounce(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPanelBreakBounce_80CA568.yaml
 	thumb_local_start
@@ -39717,7 +39717,7 @@ loc_80CA5FC:
 	bl object_presentCollisionData
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80CA61A
+	bl battleObject_updatePanelBreakBounce_80CA61A
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_initPanelBreakBounce_80CA568
 
@@ -39725,9 +39725,9 @@ loc_80CA5FC:
 // symdb: (r5 = battle object) -> void ; side effects: mutates BattleObject fields (X, Z, ZVelocity,
 // symdb: PanelX/PanelY, header Flags, CurState), removes and re-presents collision data, may destroy
 // symdb: object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA61A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updatePanelBreakBounce_80CA61A.yaml
 	thumb_local_start
-sub_80CA61A:
+battleObject_updatePanelBreakBounce_80CA61A:
 	push {r4,r6,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -39777,7 +39777,7 @@ loc_80CA670:
 loc_80CA680:
 	bl object_presentCollisionData
 	pop {r4,r6,pc}
-	thumb_func_end sub_80CA61A
+	thumb_func_end battleObject_updatePanelBreakBounce_80CA61A
 
 // symdb: Spawns a battle object of type 0x33 and initializes it with the caller's arguments.
 // symdb: Next* sub_80CA686(u32 a0, u32 a1, u32 a2, u32 a5)  // a5 in r5; returns object ptr or 0 in r0;
@@ -43332,7 +43332,7 @@ t3_0x40_80CC0E8:
 off_80CC100:
 	.word off_80CC104
 off_80CC104:
-	.word sub_80CC110+1
+	.word battleObject_initLaserShot_80CC110+1
 	.word object_dispatchCollisionPhase_80CC1A0+1
 	.word sub_80CC472+1
 	thumb_func_end t3_0x40_80CC0E8
@@ -43340,9 +43340,9 @@ off_80CC104:
 // symdb: Initializes a laser-tracer battle object: places it on its panel, loads its sprite/animation/palette, sets flip, installs collision data, and transitions to its first action phase.
 // symdb: (r5 = battle object, r8 = ?, r10 = toolkit, lr = return) -> r0 = collision-data-pointer-or-0 ;
 // symdb: sets nz/cv ; side effects: many battle-object fields, IWRAM collision slot, sprite load
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC110.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initLaserShot_80CC110.yaml
 	thumb_local_start
-sub_80CC110:
+battleObject_initLaserShot_80CC110:
 	push {lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0x28 
@@ -43402,7 +43402,7 @@ loc_80CC176:
 	str r1, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80CC19E:
 	pop {pc}
-	thumb_func_end sub_80CC110
+	thumb_func_end battleObject_initLaserShot_80CC110
 
 // symdb: Per-frame dispatch for a battle object's collision phase: tears down current collision data, spawns the post-hit effect, then either marks the object destroyed (battle over), clears its region and forces a phase re-init (self-hit), or runs the per-action handler (or the shared collision present handler if time-stopped).
 // symdb: (r5 = BattleObject*) -> void ; side effects: writes
@@ -43838,7 +43838,7 @@ sub_80CC486:
 	strb r2, [r0,#oObjectHeader_Flags]
 	push {r5}
 	mov r5, r0
-	bl sub_80CC110
+	bl battleObject_initLaserShot_80CC110
 	pop {r5}
 locret_80CC4B8:
 	pop {pc}
@@ -45347,7 +45347,7 @@ t3_0x48_80CCFDC:
 off_80CCFEC:
 	.word off_80CCFF0
 off_80CCFF0:
-	.word sub_80CCFFC+1
+	.word battleObject_initFromHPTableByParam1_80CCFFC+1
 	.word sub_80CD08C+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x48_80CCFDC
@@ -45355,9 +45355,9 @@ off_80CCFF0:
 // symdb: Initializes a battle object of the type that reads its HP/extra-vars from a per-index table in `byte_80CCFD4` and sets up sprite/collision/curstate (Param1 indexes the type/HP table).
 // symdb: (r5 = battleObject) -> void ; side effects: writes many fields of the battle object, loads
 // symdb: sprite, allocates collision, dispatches to sub_80CD08C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CCFFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initFromHPTableByParam1_80CCFFC.yaml
 	thumb_local_start
-sub_80CCFFC:
+battleObject_initFromHPTableByParam1_80CCFFC:
 	push {r7,lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -45418,7 +45418,7 @@ off_80CD084:
 	.word 0x5A0
 off_80CD088:
 	.word byte_80CCFD4
-	thumb_func_end sub_80CCFFC
+	thumb_func_end battleObject_initFromHPTableByParam1_80CCFFC
 
 	thumb_local_start
 sub_80CD08C:
@@ -63775,7 +63775,7 @@ t3_0x84_80D5ABC:
 off_80D5AD0:
 	.word off_80D5AD4
 off_80D5AD4:
-	.word sub_80D5AE0+1
+	.word battle_spawnMovingProjectile_80D5AE0+1
 	.word sub_80D5B84+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x84_80D5ABC
@@ -63783,9 +63783,9 @@ off_80D5AD4:
 // symdb: Initializes a battle object's position/sprite/collision and seeds its X-velocity from a Param1 table; runs when the object's state reaches CUR_STATE_UPDATE.
 // symdb: (r5 = oBattleObject, r10 = oToolkit) -> void ; side effects: writes multiple fields on the
 // symdb: object, allocates a collision slot, schedules a sub-routine.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D5AE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnMovingProjectile_80D5AE0.yaml
 	thumb_local_start
-sub_80D5AE0:
+battle_spawnMovingProjectile_80D5AE0:
 	push {lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0x19
@@ -63850,7 +63850,7 @@ off_80D5B70:
 byte_80D5B74:
 	.byte 0x0, 0x0, 0x5, 0x0, 0x0, 0x80, 0x5, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x80, 0x6
 	.byte 0x0
-	thumb_func_end sub_80D5AE0
+	thumb_func_end battle_spawnMovingProjectile_80D5AE0
 
 	thumb_local_start
 sub_80D5B84:
@@ -69094,7 +69094,7 @@ t3_0x98_80D8444:
 off_80D8454:
 	.word off_80D8458
 off_80D8458:
-	.word sub_80D8464+1
+	.word battleObject_initializeInvulnerable_80D8464+1
 	.word battleObject_respawn_80D84DE+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x98_80D8444
@@ -69102,9 +69102,9 @@ off_80D8458:
 // symdb: Initializes a battle object sprite, sets a 1-HP invulnerable target placed one panel below its panel coords (Z-1, Y-1) with collision types 0/0xe/0xf and immediately enters CUR_STATE_UPDATE.
 // symdb: (r5 = oBattleObjectPtr) -> void ; on creation failure the slot is freed and the function returns
 // symdb: without further setup
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D8464.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initializeInvulnerable_80D8464.yaml
 	thumb_local_start
-sub_80D8464:
+battleObject_initializeInvulnerable_80D8464:
 	push {lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0
@@ -69156,7 +69156,7 @@ loc_80D84C4:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80D84DC:
 	pop {pc}
-	thumb_func_end sub_80D8464
+	thumb_func_end battleObject_initializeInvulnerable_80D8464
 
 // symdb: Respawn / reinitialize a battle object (mark hidden, reset palette/HP, install standard per-state handlers, refresh collision and timestop sprite).
 // symdb: void battleObject_respawn_80D84DE(void);  /* in: r2 r4 r5 r8 r9 r10 r11 r12 lr; out: r5 r8 r9
@@ -72152,7 +72152,7 @@ loc_80D9B08:
 off_80D9B1C:
 	.word off_80D9B20
 off_80D9B20:
-	.word sub_80D9B2C+1
+	.word battleObject_throwProjectile_80D9B2C+1
 	.word sub_80D9C1C+1
 	.word sub_80D9C54+1
 	thumb_func_end sub_80D9ABA
@@ -72160,9 +72160,9 @@ off_80D9B20:
 // symdb: Throw-tick for a type-4 battle object — initialises a parabolic (gravity) throw on the first call, applies X/Y/Z velocity each frame, snaps to the landing panel when the timer expires, and destroys itself (spawning a hit effect) if it lands on a valid empty panel of the opposing alliance.
 // symdb: (r5 = oBattleObject*) -> void ; side effects: object state, collision region, panel reservation,
 // symdb: effect-object allocation
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D9B2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_throwProjectile_80D9B2C.yaml
 	thumb_local_start
-sub_80D9B2C:
+battleObject_throwProjectile_80D9B2C:
 	push {r4,r6,r7,lr}
 	mov r0, r9
 	push {r0}
@@ -72266,7 +72266,7 @@ loc_80D9BFE:
 	.byte 0x66, 0xE6, 0x2, 0x0, 0x0, 0xD8, 0xFF, 0xFF, 0x66, 0x6, 0x2
 	.byte 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6, 0x2, 0x0, 0x66, 0xE6
 	.byte 0x2, 0x0
-	thumb_func_end sub_80D9B2C
+	thumb_func_end battleObject_throwProjectile_80D9B2C
 
 	thumb_local_start
 sub_80D9C1C:

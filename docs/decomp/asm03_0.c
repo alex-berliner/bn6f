@@ -463,7 +463,7 @@ char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
     battle_compactFolderChipList_802945A();
     expireBattleFlag_802A646();
     BYTE1(dword_20364C4) = battle_countFolderChips_8027D58();
-    sub_8027E2C();
+    battle_initChipSelectTurn_8027E2C();
     battle_customScreenReloadFromChipEntries_8028250(1);
     v16 = 4;
     do
@@ -2321,7 +2321,7 @@ char *__fastcall getLocOfActiveChips_8027E1C(int a1)
 
 
 // 0x8027e2c
-int sub_8027E2C()
+int battle_initChipSelectTurn_8027E2C()
 {
     unsigned __int8 *v0; // r5
     int v1; // r10

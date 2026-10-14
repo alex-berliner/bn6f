@@ -7059,7 +7059,7 @@ off_81337D8:
 	.word battleObject_runSubmenuInputHandler_81337E8+1
 	.word folderEdit_step_813388C+1
 	.word battleObject_submenuFolderEditTick_81338D4+1
-	.word sub_8133944+1
+	.word battleObject_submenuLoopStep_8133944+1
 	thumb_func_end sub_81337C4
 
 // symdb: Per-frame input/state dispatcher for the in-battle custom-screen submenu (handles B/START/A/SELECT/LR/dpad, folder-edit quit, submenu BG clear, and runs the two row-align/tile-upload helpers plus AI turn-handler steps 5/6).
@@ -7243,9 +7243,9 @@ loc_813390E:
 // symdb: (r2, r4, r5, r6, r7, r8, r10, lr = various preserved live regs incl. submenu ptr in r5 and
 // symdb: Toolkit ptr in r10) -> no return value (pop {pc}); side effects: writes tile-flag palette, BG
 // symdb: tilemap, custom-gfx, AI turn-handler dispatch, cursor index stored back at r5+0x34
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133944.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuLoopStep_8133944.yaml
 	thumb_local_start
-sub_8133944:
+battleObject_submenuLoopStep_8133944:
 	push {lr}
 	bl sub_8133C0C
 	bne loc_813396C
@@ -7279,7 +7279,7 @@ loc_813396C:
 	bl battle_aiRunTurnHandler_81353F0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8133944
+	thumb_func_end battleObject_submenuLoopStep_8133944
 // symdb: Reads a state byte from an object at r5+2, calls its state handler through a two-entry dispatch table (both entries currently point to the same handler), then tail-calls a fixed follow-up routine.
 // symdb: void sub_813399C(void) /* r5 = object pointer; corrupts r0/r1/r3+ and lr per called code */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813399C.yaml

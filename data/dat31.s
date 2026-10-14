@@ -2219,7 +2219,7 @@ sub_810D7E4::
 off_810D7F4::
 	.word off_810D7F8
 off_810D7F8::
-	.word sub_810D808+1
+	.word ai_attackVars_stepChargeAndShoot_810D808+1
 	.word sub_810D8B2+1
 	.word sub_810D8EA+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -2229,9 +2229,9 @@ off_810D7F8::
 // symdb: (r4 = AIDataPtr, r5 = BattleObjectPtr, r7 = AIAttackVarsPtr, r10 = ToolkitPtr) -> r0 = remaining
 // symdb: windup frames (or final state); writes AIAttackVars fields, BattleObject.CurAnim, CollisionData
 // symdb: flag, and a child battle object via sub_80C5578.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackVars_stepChargeAndShoot_810D808.yaml
 	thumb_local_start
-sub_810D808::
+ai_attackVars_stepChargeAndShoot_810D808::
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -2314,7 +2314,7 @@ loc_810D892::
 	bl highlightPanelIfSomeCondition_8109660
 locret_810D8B0::
 	pop {r4,r6,pc}
-	thumb_func_end sub_810D808
+	thumb_func_end ai_attackVars_stepChargeAndShoot_810D808
 
 	thumb_local_start
 sub_810D8B2::

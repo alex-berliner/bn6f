@@ -1608,7 +1608,7 @@ void __noreturn sub_8124C94()
     IsPaletteFadeActive();
     if ( !v3 )
         menu_handleStartAndDpad_8125594(0, v1, v2);
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D10();
 }
 
@@ -1628,7 +1628,7 @@ void __noreturn sub_8124CE8()
         *(v0 + 2) = 12;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D10();
 }
 
@@ -1648,7 +1648,7 @@ void __noreturn battle_objTickTimerAndRefreshSpritePairs_8124D30()
         *(v0 + 2) = 0;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D10();
 }
 
@@ -1668,7 +1668,7 @@ int sub_8124D78()
     *(v0 + 32) = *(v0 + 30);
     *(v0 + 36) = *(v0 + 34);
     sub_81255F8(10, v1, v2);
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D94();
     wrapper_sub8126570_fixedArgs_812650C();
     sprite_setStructHalfwordPairOnThree_8117084(*(v0 + 88), *(v0 + 18), 4);
@@ -1701,7 +1701,7 @@ int sprite_shieldUpdate_8124DCC()
         *(v0 + 2) = 24;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D94();
     bg_drawArenaTiles_8125E78();
     v2 = *(v0 + 88);
@@ -1741,7 +1741,7 @@ int sub_8124E24()
         *(v0 + 2) = 12;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D94();
     bg_drawArenaTiles_8125E78();
     v2 = *(v0 + 88);
@@ -1779,7 +1779,7 @@ int sprite_stage2InitBattleState_8124E7C()
     *(v0 + 42) = *(v0 + 40);
     *(v0 + 46) = *(v0 + 44);
     sub_8125678(20, v1, v2);
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8126524();
     v3 = 0;
@@ -1816,7 +1816,7 @@ int sub_8124ED4()
         *(v0 + 2) = 36;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8125F5C();
     v2 = 0;
@@ -1858,7 +1858,7 @@ int sub_8124F30()
         *(v0 + 2) = 24;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8125F5C();
     v2 = 0;
@@ -1898,7 +1898,7 @@ int sub_8124F8C()
     *(v0 + 56) = *(v0 + 54);
     sub_8125704(30, v1, v2);
     sub_81268D8();
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125F5C();
     sub_812653C();
     v3 = 0;
@@ -1935,7 +1935,7 @@ int sub_8124FE0()
         *(v0 + 2) = 48;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125F5C();
     sub_8126114();
     v2 = 0;
@@ -1977,7 +1977,7 @@ int sub_812503C()
         *(v0 + 2) = 36;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125F5C();
     sub_8126114();
     v2 = 0;
@@ -2012,7 +2012,7 @@ int battle_runIntro_812508C_812509C()
     *(v0 + 62) = *(v0 + 60);
     *(v0 + 66) = *(v0 + 64);
     battle_input_tick_8125784(40, 66, v1);
-    sub_8125444();
+    battle_runTransition_8125444();
     if ( *(v0 + 100) )
         sub_8126114();
     else
@@ -2029,7 +2029,7 @@ void __fastcall __noreturn battle_runUpdatesAndCheckFade_81250E0(int a1)
 {
     sub_812674C();
     sub_81267A8();
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D10();
 }
 
@@ -2043,7 +2043,7 @@ int __fastcall sub_8125104(int a1)
 
     sub_812674C();
     sub_81267A8();
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125D94();
     wrapper_sub8126570_fixedArgs_812650C();
     result = IsPaletteFadeActive();
@@ -2065,7 +2065,7 @@ int __fastcall sub_8125128(int a1)
 
     sub_812674C();
     sub_81267A8();
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8126524();
     result = IsPaletteFadeActive();
@@ -2087,7 +2087,7 @@ int __fastcall sub_812514C(int a1)
 
     sub_812674C();
     sub_81267A8();
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8125F5C();
     sub_812653C();
     result = IsPaletteFadeActive();
@@ -2109,7 +2109,7 @@ int __fastcall battle_transitionTick_8125170(int a1)
 
     sub_812674C();
     sub_81267A8();
-    sub_8125444();
+    battle_runTransition_8125444();
     sub_8126114();
     sub_8126554();
     sub_81267F0();
@@ -2142,7 +2142,7 @@ int sub_8125198()
         *(v0 + 2) = 48;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8126184();
     v2 = 0;
@@ -2184,7 +2184,7 @@ int sub_81251F4()
         *(v0 + 2) = 24;
     }
     *(v0 + 112) = 255;
-    sub_8125444();
+    battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8126184();
     v2 = 0;
@@ -2281,7 +2281,7 @@ void __noreturn sub_81252C0()
 
 
 // 0x8125444
-int sub_8125444()
+int battle_runTransition_8125444()
 {
     int v0; // r5
     int result; // r0

@@ -3447,7 +3447,7 @@ sub_8124C94:
 	mov r0, #0
 	bl menu_handleStartAndDpad_8125594
 loc_8124CBC:
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D10
 	bl sub_81264F4
 	ldr r0, [r5,#0x58]
@@ -3484,7 +3484,7 @@ sub_8124CE8:
 loc_8124D02:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D10
 	bl sub_8125D94
 	ldr r0, [r5,#0x58]
@@ -3524,7 +3524,7 @@ battle_objTickTimerAndRefreshSpritePairs_8124D30:
 loc_8124D4A:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D10
 	bl sub_8125D94
 	ldr r0, [r5,#0x58]
@@ -3563,7 +3563,7 @@ sub_8124D78:
 	strh r0, [r5,#0x24]
 	mov r0, #0xa
 	bl sub_81255F8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D94
 	bl wrapper_sub8126570_fixedArgs_812650C
 	ldr r0, [r5,#0x58]
@@ -3604,7 +3604,7 @@ sprite_shieldUpdate_8124DCC:
 loc_8124DE6:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D94
 	bl bg_drawArenaTiles_8125E78
 	ldr r0, [r5,#0x58]
@@ -3649,7 +3649,7 @@ sub_8124E24:
 loc_8124E3E:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D94
 	bl bg_drawArenaTiles_8125E78
 	ldr r0, [r5,#0x58]
@@ -3696,7 +3696,7 @@ sprite_stage2InitBattleState_8124E7C:
 	strh r0, [r5,#0x2e]
 	mov r0, #0x14
 	bl sub_8125678
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8126524
 	mov r1, #0
@@ -3737,7 +3737,7 @@ sub_8124ED4:
 loc_8124EEE:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8125F5C
 	mov r1, #0
@@ -3785,7 +3785,7 @@ sub_8124F30:
 loc_8124F4A:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8125F5C
 	mov r1, #0
@@ -3830,7 +3830,7 @@ sub_8124F8C:
 	mov r0, #0x1e
 	bl sub_8125704
 	bl sub_81268D8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125F5C
 	bl sub_812653C
 	mov r1, #0
@@ -3871,7 +3871,7 @@ sub_8124FE0:
 loc_8124FFA:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125F5C
 	bl sub_8126114
 	mov r1, #0
@@ -3919,7 +3919,7 @@ sub_812503C:
 loc_8125056:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125F5C
 	bl sub_8126114
 	mov r1, #0
@@ -3970,7 +3970,7 @@ battle_runIntro_812508C_812509C:
 	strh r0, [r5,r1]
 	mov r0, #0x28 
 	bl battle_input_tick_8125784
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	ldr r0, [r5,#0x64]
 	tst r0, r0
 	bne loc_81250CA
@@ -3996,7 +3996,7 @@ battle_runUpdatesAndCheckFade_81250E0:
 	push {lr}
 	bl sub_812674C
 	bl sub_81267A8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D10
 	bl sub_81264F4
 	bl IsScreenFadeActive // () -> zf
@@ -4013,7 +4013,7 @@ sub_8125104:
 	push {lr}
 	bl sub_812674C
 	bl sub_81267A8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125D94
 	bl wrapper_sub8126570_fixedArgs_812650C
 	bl IsScreenFadeActive // () -> zf
@@ -4030,7 +4030,7 @@ sub_8125128:
 	push {lr}
 	bl sub_812674C
 	bl sub_81267A8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8126524
 	bl IsScreenFadeActive // () -> zf
@@ -4047,7 +4047,7 @@ sub_812514C:
 	push {lr}
 	bl sub_812674C
 	bl sub_81267A8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8125F5C
 	bl sub_812653C
 	bl IsScreenFadeActive // () -> zf
@@ -4068,7 +4068,7 @@ battle_transitionTick_8125170:
 	push {lr}
 	bl sub_812674C
 	bl sub_81267A8
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl sub_8126114
 	bl sub_8126554
 	bl sub_81267F0
@@ -4103,7 +4103,7 @@ sub_8125198:
 loc_81251B2:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8126184
 	mov r1, #0
@@ -4151,7 +4151,7 @@ sub_81251F4:
 loc_812520E:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
-	bl sub_8125444
+	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8126184
 	mov r1, #0
@@ -4378,9 +4378,9 @@ off_8125384:
 // symdb: One-shot battle-transition pump: draws player/enemy row sprites, ticks chip/eStruct/entities, and (if the `r5+0x70` flag is set) clears it, reloads the static+scene tilemaps and redraws the 32x32 background tiles.
 // symdb: (r5 = battle state ptr, r10 = toolkit ptr) -> (none, void) ; side effects: OAM/VRAM writes via
 // symdb: callees, sets [r5+0x70] = 0 when consumed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125444.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runTransition_8125444.yaml
 	thumb_local_start
-sub_8125444:
+battle_runTransition_8125444:
 	push {lr}
 	bl drawBattleRowSprites_81265DC
 	bl battle_updateChipSprite_8126630
@@ -4396,7 +4396,7 @@ sub_8125444:
 locret_8125468:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8125444
+	thumb_func_end battle_runTransition_8125444
 
 // symdb: Draws a multi-row 32x32 background tile graphic for a battle-scene object, selecting an alternate tile set for the bottom rows when a flag is set.
 // symdb: void battle_drawBgTileRows(u32 bgObj /*r5*/) — outputs r3, r4, r6, r7 from the last

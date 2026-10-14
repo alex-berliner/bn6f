@@ -4382,7 +4382,7 @@ LABEL_8:
 
 
 // 0x8133944
-void __fastcall __noreturn sub_8133944(int a1)
+void __fastcall __noreturn battleObject_submenuLoopStep_8133944(int a1)
 {
     int v1; // r5
     int v2; // r10

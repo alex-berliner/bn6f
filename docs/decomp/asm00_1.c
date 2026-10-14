@@ -816,7 +816,7 @@ int scenario_ClearEffectActiveFlag_800399A()
 
 
 // 0x80039aa
-int sub_80039AA()
+int scenario_runEffectStateJumptable_80039AA()
 {
 	int result; // r0
 
@@ -2340,7 +2340,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     TryUpdateEachOverworldMapObject_80048D2();
     sub_809F942();
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     checkOWObjectInteractions_80037f4();
     camera_802FFF4();
@@ -2354,7 +2354,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
-    sub_80058D0();
+    owMap_checkWarpTrigger_80058D0();
     checkThenStartBattle_8005A8C();
     nullsub_8005B6A();
     gamestate_openPetMenuOnStartPress_8005AF4();
@@ -2368,7 +2368,7 @@ int __fastcall battle_init_80052D8(int a1)
     char v2; // zf
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2441,7 +2441,7 @@ int __fastcall overworld_owMap_renderAndTickSubsystems_800536E(int a1)
     unsigned __int8 v7; // vf
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2498,7 +2498,7 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
     int v11; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2550,7 +2550,7 @@ int pet_menuUpdateAndHandleExit_8005462()
         mapName_runSequence_811EC50();
     }
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2637,7 +2637,7 @@ _BYTE *__fastcall sub_800555A(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2683,7 +2683,7 @@ _BYTE *__fastcall gamestate_runOverworldSceneStep_80055CE(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2729,7 +2729,7 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2775,7 +2775,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2821,7 +2821,7 @@ _BYTE *__fastcall sub_800572C(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2867,7 +2867,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2911,7 +2911,7 @@ _BYTE *__fastcall mainState_runFrame_8005814(int a1)
     int v6; // r3
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2946,7 +2946,7 @@ _BYTE *__fastcall sub_800585A(int a1)
     int v8; // r5
 
     dispatch_80339CC();
-    sub_80039AA();
+    scenario_runEffectStateJumptable_80039AA();
     object_dispatchByType_8003AFA();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
@@ -2980,7 +2980,7 @@ _BYTE *__fastcall sub_800585A(int a1)
 
 
 // 0x80058d0
-void sub_80058D0()
+void owMap_checkWarpTrigger_80058D0()
 {
     int v0; // r10
     int v1; // r5

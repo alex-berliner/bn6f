@@ -123,7 +123,7 @@ mapscript_806672C:
 	ms_jump destination1=dword_8066750
 
 byte_8066742:
-	ms_call_native_function ptr1=sub_8083DF0+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_runIntroStateMachine_8083DF0+1 word5=0x00000000
 	ms_jump destination1=dword_8066750
 
 dword_8066750:
@@ -242,7 +242,7 @@ byte_806692E:
 	ms_jump destination1=dword_8066984
 
 mapscript_8066944:
-	ms_call_native_function ptr1=sub_8083DF0+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_runIntroStateMachine_8083DF0+1 word5=0x00000000
 	ms_jump destination1=dword_8066984
 
 mapscript_8066952:

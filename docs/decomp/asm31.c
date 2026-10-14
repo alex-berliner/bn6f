@@ -7910,7 +7910,7 @@ int t1_0x1b_80BC650()
 
 
 // 0x80bc670
-signed int __noreturn sub_80BC670()
+signed int __noreturn battleObject_beastSpecial_init_80BC670()
 {
     int v0; // r5
     int v1; // r1
@@ -23254,7 +23254,7 @@ int sub_80C53E4()
 
 
 // 0x80c53fa
-signed int sub_80C53FA()
+signed int battleObject_initSnakeArm_80C53FA()
 {
     int v0; // r5
     u8 v1; // r0
@@ -24276,7 +24276,7 @@ void __noreturn sub_80C5E44()
 
 
 // 0x80c5e84
-int sub_80C5E84()
+int battleObject_panelBreakEffectTimer_80C5E84()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -29395,7 +29395,7 @@ void t3_0x28_80C8FFC()
 
 
 // 0x80c9024
-void __noreturn sub_80C9024()
+void __noreturn battleObject_initSnakeArmMover_80C9024()
 {
     int v0; // r5
     _BYTE *v1; // r0
@@ -31510,7 +31510,7 @@ void __noreturn battleObject_initPanelBreakBounce_80CA568()
 
 
 // 0x80ca61a
-void __noreturn sub_80CA61A()
+void __noreturn battleObject_updatePanelBreakBounce_80CA61A()
 {
     int v0; // r5
     unsigned int v1; // r1
@@ -34088,7 +34088,7 @@ void t3_0x40_80CC0E8()
 
 
 // 0x80cc110
-void __noreturn sub_80CC110()
+void __noreturn battleObject_initLaserShot_80CC110()
 {
     int v0; // r5
     int v1; // r0
@@ -34496,7 +34496,7 @@ int __fastcall sub_80CC486(char a1, int a2, int a3, int a4)
         *(v4 + 96) = v6;
         *v6 = v4;
         *v4 |= 0x10u;
-        sub_80CC110();
+        battleObject_initLaserShot_80CC110();
     }
     return result;
 }
@@ -35618,7 +35618,7 @@ int t3_0x48_80CCFDC()
 
 
 // 0x80ccffc
-void __noreturn sub_80CCFFC()
+void __noreturn battleObject_initFromHPTableByParam1_80CCFFC()
 {
     int v0; // r5
     int v1; // r0
@@ -49745,7 +49745,7 @@ void t3_0x84_80D5ABC()
 
 
 // 0x80d5ae0
-int __noreturn sub_80D5AE0()
+int __noreturn battle_spawnMovingProjectile_80D5AE0()
 {
     int v0; // r5
     int v1; // r0
@@ -53780,7 +53780,7 @@ int t3_0x98_80D8444()
 
 
 // 0x80d8464
-void __noreturn sub_80D8464()
+void __noreturn battleObject_initializeInvulnerable_80D8464()
 {
     int v0; // r5
     _BYTE *v1; // r0
@@ -56107,7 +56107,7 @@ LABEL_10:
 
 
 // 0x80d9b2c
-int sub_80D9B2C()
+int battleObject_throwProjectile_80D9B2C()
 {
     int v0; // r5
     int v1; // r9

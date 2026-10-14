@@ -658,7 +658,7 @@ loc_802694C:
 	bl expireBattleFlag_802A646
 	bl battle_countFolderChips_8027D58
 	strb r0, [r5,#0x5] // (dword_20364C4+1 - 0x20364c0)
-	bl sub_8027E2C
+	bl battle_initChipSelectTurn_8027E2C
 	mov r0, #1
 	bl battle_customScreenReloadFromChipEntries_8028250
 	mov r1, #4
@@ -3529,9 +3529,9 @@ off_8027E28:
 // symdb: Initializes the chip-select active-state (12 active-chip records), updates beast-out counter, and sets up the first row of selectable chips from the folder.
 // symdb: () -> r0 = 0x0b ; side effects: clears 0x90 bytes at the active-chip array, rewrites the beast-
 // symdb: out counter byte, resets record slots, writes to r4+4 and r5+6.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027E2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelectTurn_8027E2C.yaml
 	thumb_local_start
-sub_8027E2C:
+battle_initChipSelectTurn_8027E2C:
 	push {r4,r6,r7,lr}
 	mov r0, #0
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -3573,7 +3573,7 @@ loc_8027E74:
 	bl table_findFirstOccupiedEntry_8028050
 	bl folder_findFirstChipWithFlag_802806C
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8027E2C
+	thumb_func_end battle_initChipSelectTurn_8027E2C
 
 // symdb: Initializes the 12-entry battle-record slot array from a ROM template and sets the panel-mode/panel-flag header bytes based on the current battle mode.
 // symdb: void resetBattleRecordSlots_8027E90(u32* slotArray)  // in: r4=slot array base; clobbers r0..r3,

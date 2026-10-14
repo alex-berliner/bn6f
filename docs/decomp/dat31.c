@@ -1446,7 +1446,7 @@ int sub_810D7E4()
 
 
 // 0x810d808
-int sub_810D808()
+int ai_attackVars_stepChargeAndShoot_810D808()
 {
     int v0; // r4
     Battle *v1; // r5

@@ -3597,7 +3597,7 @@ CutsceneScriptStory22PanickingProgman_8083B68:
 	cs_disable_cutscene_skip_script
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_4DF
 	cs_call_native_with_return_value ptr1=clear_8083D7C+1
-	cs_call_native_with_return_value ptr1=sub_8083DF0+1
+	cs_call_native_with_return_value ptr1=cutscene_runIntroStateMachine_8083DF0+1
 	cs_pause byte1=0xFF byte2=0x78
 	cs_set_var byte1=0x08 byte2=0x07
 	cs_run_text_script_not_from_mem byte2=0x09
@@ -3836,9 +3836,9 @@ off_8083DEC::
 
 // symdb: Per-frame state machine that drives a cutscene/intro animation (states 0–4, then terminate), gating start on event flags and the overworld busy flag, and clearing a large set of related event flags when finished.
 // symdb: () -> r0 = 0/1 (continuation flag for the caller's "still active" check); no other args used.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_runIntroStateMachine_8083DF0.yaml
 	thumb_local_start
-sub_8083DF0:
+cutscene_runIntroStateMachine_8083DF0:
 	push {r4-r7, lr}
 	ldr r5, =off_8083C38
 	ldr r5, [r5, #0]
@@ -3970,7 +3970,7 @@ loc_8083F28:
 	mov r0, #1
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_8083DF0
+	thumb_func_end cutscene_runIntroStateMachine_8083DF0
 
 	thumb_local_start
 sub_8083F34:

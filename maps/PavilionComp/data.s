@@ -390,7 +390,7 @@ byte_806B242:
 	ms_jump destination1=byte_806B266
 
 mapscript_806B258:
-	ms_call_native_function ptr1=sub_8083DF0+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_runIntroStateMachine_8083DF0+1 word5=0x00000000
 	ms_jump destination1=byte_806B266
 
 byte_806B266:
