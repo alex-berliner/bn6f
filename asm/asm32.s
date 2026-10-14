@@ -8049,7 +8049,7 @@ sub_8111E14:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
 loc_8111E20:
-	bl sub_8111FAE
+	bl battleObject_tryUseSelectedChip_8111FAE
 	cmp r0, #0
 	bne locret_8111ED4
 	ldrb r0, [r6,#oAIState_Unk_04]
@@ -8245,9 +8245,9 @@ locret_8111FAC:
 
 // symdb: If a battle object has a chip selected and the battle state is past 0x12C, commit it: write chip params, set attack 0, and decrement the chip count.
 // symdb: (r5 = BattleObject) -> r0 = 1 if a chip was used, 0 otherwise ; no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111FAE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tryUseSelectedChip_8111FAE.yaml
 	thumb_local_start
-sub_8111FAE:
+battleObject_tryUseSelectedChip_8111FAE:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -8311,7 +8311,7 @@ byte_8112024:
 	.byte 0x34, 0xA3, 0x34, 0xA3, 0x34, 0xA3, 0x34, 0xA3, 0x34
 	.byte 0xA3, 0x34, 0xA3, 0x34, 0xA3, 0x34, 0xA3, 0x34, 0xA3
 	.byte 0x34, 0xA3, 0x34
-	thumb_func_end sub_8111FAE
+	thumb_func_end battleObject_tryUseSelectedChip_8111FAE
 
 	thumb_local_start
 sub_81120E4:
@@ -9812,7 +9812,7 @@ off_8112DAC:
 	.word off_8112DB0
 off_8112DB0:
 	.word sub_8112DC0+1
-	.word sub_8112E34+1
+	.word battle_initBeastOutAttack_8112E34+1
 	.word sub_8112E7C+1
 	.word sub_8112EC4+1
 	thumb_func_end sub_8112D9C
@@ -9873,9 +9873,9 @@ byte_8112E24:
 // symdb: (r5 = self BattleObject*, r7 = AIAttackVars*, r10 = toolkit) -> void ; side effects: writes to
 // symdb: BattleObject and AIAttackVars, calls object_setCounterTime(0x1e),
 // symdb: battle_SetObjectExtraFlag14_80C4086
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112E34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastOutAttack_8112E34.yaml
 	thumb_local_start
-sub_8112E34:
+battle_initBeastOutAttack_8112E34:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	cmp r0, #1
@@ -9910,7 +9910,7 @@ loc_8112E72:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8112E7A:
 	pop {pc}
-	thumb_func_end sub_8112E34
+	thumb_func_end battle_initBeastOutAttack_8112E34
 
 	thumb_local_start
 sub_8112E7C:
@@ -20335,9 +20335,9 @@ loc_8118340:
 // symdb: 3-way state dispatcher for the SubMenu subsystem, indexing into a handler table by the byte at r5+8 and tail-calling one of three Thumb handlers.
 // symdb: (r0 = ???, r5 = ???, r10 = Toolkit) -> does not return normally (tail-calls a handler via bx
 // symdb: r0); side effects: clobbers r0-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118344.yaml
-	thumb_func_start sub_8118344
-sub_8118344:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchByIndex_8118344.yaml
+	thumb_func_start submenu_dispatchByIndex_8118344
+submenu_dispatchByIndex_8118344:
 	push {lr}
 
 	ldr r6, off_8118364 // =sSubmenu
@@ -20360,7 +20360,7 @@ off_8118358:
 	.word sub_81185B8+1
 off_8118364:
 	.word sSubmenu
-	thumb_func_end sub_8118344
+	thumb_func_end submenu_dispatchByIndex_8118344
 
 	thumb_local_start
 sub_8118368:
@@ -20984,9 +20984,9 @@ sub_81187DC:
 // symdb: (r5 = submenu struct ptr) -> tail call to a per-index handler; the called handler returns
 // symdb: whatever its own contract returns (out list mentions r2/r3/r5 as caller-visible, but that's just
 // symdb: because the caller's callee-save list reflects the tail-called handler's full contract).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81187E8.yaml
-	thumb_func_start sub_81187E8
-sub_81187E8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchByIndex_81187E8.yaml
+	thumb_func_start submenu_dispatchByIndex_81187E8
+submenu_dispatchByIndex_81187E8:
 	push {lr}
 
 	ldr r6, off_8118808 // =sSubmenu
@@ -21009,7 +21009,7 @@ off_81187FC:
 	.word sub_8118AA8+1
 off_8118808:
 	.word sSubmenu
-	thumb_func_end sub_81187E8
+	thumb_func_end submenu_dispatchByIndex_81187E8
 
 	thumb_local_start
 sub_811880C:
@@ -21502,9 +21502,9 @@ sub_8118B98:
 // symdb: Battle object per-frame dispatcher that selects one of three update routines by the object's type byte at [r5+8] (BattleObject.CurState).
 // symdb: (r5 = BattleObjectPtr) -> side effects via the called routine; no value returned (void-like;
 // symdb: r0..r4, r6, lr clobbered transitively, pc popped from stack)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118BA4.yaml
-	thumb_func_start sub_8118BA4
-sub_8118BA4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateDispatcher_8118BA4.yaml
+	thumb_func_start battleObject_updateDispatcher_8118BA4
+battleObject_updateDispatcher_8118BA4:
 	push {lr}
 	ldr r6, off_8118BC4 // =sSubmenu
 	ldr r0, off_8118BB4 // =off_8118BB8
@@ -21522,7 +21522,7 @@ off_8118BB8:
 	.word sub_8118CEC+1
 off_8118BC4:
 	.word sSubmenu
-	thumb_func_end sub_8118BA4
+	thumb_func_end battleObject_updateDispatcher_8118BA4
 
 	thumb_local_start
 sub_8118BC8:
@@ -34886,7 +34886,7 @@ JumpTable811F7A0:
   // 0x24
 	.word beastsp_dispatchHandler_81356D4+1
   // 0x28
-	.word sub_8136DE0+1
+	.word battleObject_runBeastSpFunction_8136DE0+1
   // 0x2C
 	.word sub_81378B4+1
   // 0x30

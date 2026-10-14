@@ -5291,7 +5291,7 @@ int sub_8111E14()
 
     if ( *(v0 + 96) == 1 )
         *(v0 + 96) = 0;
-    result = sub_8111FAE();
+    result = battleObject_tryUseSelectedChip_8111FAE();
     if ( !result )
     {
         if ( !*(v1 + 4) )
@@ -5368,7 +5368,7 @@ int sub_8111F94()
 
 
 // 0x8111fae
-signed int sub_8111FAE()
+signed int battleObject_tryUseSelectedChip_8111FAE()
 {
     int v0; // r5
     signed int v1; // r6
@@ -6582,7 +6582,7 @@ int sub_8112DC0()
 
 
 // 0x8112e34
-u32 *sub_8112E34()
+u32 *battle_initBeastOutAttack_8112E34()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -13240,7 +13240,7 @@ int __fastcall sub_8118320(int a1, int a2)
 
 
 // 0x8118344
-int sub_8118344()
+int submenu_dispatchByIndex_8118344()
 {
     int v0; // r5
 
@@ -13706,7 +13706,7 @@ unsigned int sub_81187DC()
 
 
 // 0x81187e8
-int sub_81187E8()
+int submenu_dispatchByIndex_81187E8()
 {
     int v0; // r5
 
@@ -14101,7 +14101,7 @@ unsigned int sub_8118B98()
 
 
 // 0x8118ba4
-int sub_8118BA4()
+int battleObject_updateDispatcher_8118BA4()
 {
     int v0; // r5
 

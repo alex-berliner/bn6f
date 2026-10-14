@@ -5539,7 +5539,7 @@ int selectChipTraderRewardList_804BFF0()
 
 
 // 0x804c058
-int sub_804C058()
+int chatbox_dispatchTable_804C058()
 {
     int v0; // r5
 
@@ -5621,7 +5621,7 @@ void chatbox_stepIfGatesOpen_804C11C()
                 if ( v0 )
                 {
                     sub_804C144();
-                    sub_804C298();
+                    chatbox_copyNaviSpriteState_804C298();
                 }
             }
         }
@@ -5774,7 +5774,7 @@ int sub_804C244()
 
 
 // 0x804c298
-int sub_804C298()
+int chatbox_copyNaviSpriteState_804C298()
 {
     _BYTE *v0; // r5
     int v1; // r10

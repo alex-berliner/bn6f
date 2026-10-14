@@ -11984,7 +11984,7 @@ signed int battle_updateLinkState_803DEB4()
     int v5; // [sp-4h] [bp-18h]
 
     v0 = 1;
-    dword_2009A18 = sub_8144250(sCamera.pad_56, &byte_200DD10, &unk_2009480);
+    dword_2009A18 = link_stateMachineRunStep_8144250(sCamera.pad_56, &byte_200DD10, &unk_2009480);
     v5 = dword_2009A18;
     if ( timer_IsEnabled_8144CE0() == 5 )
         return 4;

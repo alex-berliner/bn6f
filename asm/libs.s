@@ -212,9 +212,9 @@ sub_8144240:
 // symdb: (r0 = small struct ptr {byte 0 = lastMode}, r1 = ptr2, r2 = ptr3) -> r0 = packed status word ;
 // symdb: side effects: IWRAM/EWRAM at eTimerEnable200F460+ (link-state, SIO control), call to
 // symdb: link/teardown helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144250.yaml
-	thumb_func_start sub_8144250
-sub_8144250:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_stateMachineRunStep_8144250.yaml
+	thumb_func_start link_stateMachineRunStep_8144250
+link_stateMachineRunStep_8144250:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r5, r1
@@ -372,7 +372,7 @@ loc_8144376:
 	pop {r1}
 	bx r1
 	.byte 0, 0
-	thumb_func_end sub_8144250
+	thumb_func_end link_stateMachineRunStep_8144250
 
 // symdb: Refreshes the e-Reader timer-enable flag at 0x200F460 based on the current SIO (link-port) mode, enabling it only when the port is in mode "0x8" and the companion flag at +2 is clear.
 // symdb: void sub_8144380(void) // reads SIOControlRegister and eTimerEnable200F460+2; writes

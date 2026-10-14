@@ -4009,7 +4009,7 @@ sub_8083F80:
 	ldrb r4, [r5, #1]
 	cmp r4, #0
 	bgt loc_8083F9A
-	ldr r0, off_8083FB8 // =sub_804C058
+	ldr r0, off_8083FB8 // =chatbox_dispatchTable_804C058
 	ldr r1, off_8083FBC // =sub_804C074
 	mov r2, #0
 	bl Initialize_eStruct200a6a0
@@ -4029,7 +4029,7 @@ loc_8083FA6:
 	thumb_local_start
 sub_8083FA8:
 	push {r4-r7, lr}
-	ldr r0, off_8083FB8 // =sub_804C058
+	ldr r0, off_8083FB8 // =chatbox_dispatchTable_804C058
 	ldr r1, off_8083FBC // =sub_804C074
 	mov r2, #0
 	bl Initialize_eStruct200a6a0
@@ -4038,7 +4038,7 @@ sub_8083FA8:
 	thumb_func_end sub_8083FA8
 
 off_8083FB8::
-	.word sub_804C058+1
+	.word chatbox_dispatchTable_804C058+1
 off_8083FBC::
 	.word sub_804C074+1
 
@@ -8229,7 +8229,7 @@ sub_8086EA8:
 	bl battle_aiGetCurActionPanelY_8087140
 	cmp r0, #0
 	beq loc_8086EBA
-	bl sub_8087184
+	bl battle_beastSpRefreshAIDataFromBattleObject_8087184
 loc_8086EBA:
 	bl startScreen_runBeastCutscene_8086FD8
 	movflag EVENT_5ED

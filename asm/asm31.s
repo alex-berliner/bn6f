@@ -42369,7 +42369,7 @@ off_80CBA28:
 	.word off_80CBA2C
 off_80CBA2C:
 	.word sub_80CBA34+1
-	.word sub_80CBA52+1
+	.word battleObject_processSnakeArmPhase_80CBA52+1
 	thumb_func_end battleObject_handleCollisionFrame_80CB9E2
 
 	thumb_local_start
@@ -42395,9 +42395,9 @@ locret_80CBA50:
 // symdb: oBattleObject_Y, oBattleObject_XVelocity, oBattleObject_YVelocity, oBattleObject_CurPhase,
 // symdb: oBattleObject_CurAction, oBattleObject_CurStateActionPhaseAndPhaseInitialized,
 // symdb: oBattleObject_Timer; clears the object's collision region; recurses into sub_80CBAFA.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CBA52.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processSnakeArmPhase_80CBA52.yaml
 	thumb_local_start
-sub_80CBA52:
+battleObject_processSnakeArmPhase_80CBA52:
 	push {lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -42447,7 +42447,7 @@ loc_80CBA8E:
 	strb r0, [r5,#oBattleObject_CurPhase]
 locret_80CBAB6:
 	pop {pc}
-	thumb_func_end sub_80CBA52
+	thumb_func_end battleObject_processSnakeArmPhase_80CBA52
 
 	thumb_func_start sub_80CBAB8
 sub_80CBAB8:
@@ -108680,7 +108680,7 @@ AIAttackJumptable:
 	.word sub_80EC350+1 // 0x1b
 	.word sub_80EC39C+1 // 0x1c
 	.word sub_80EC45E+1 // 0x1d
-	.word sub_80EC5BC+1 // 0x1e
+	.word battle_aiHandleAttackVarsSubtypeAndAction_80EC5BC+1 // 0x1e
 	.word sub_80EC7A6+1 // 0x1f
 	.word sub_80EC844+1 // 0x20
 	.word battle_aiAttackStateDispatch_80EC884+1 // 0x21
@@ -111872,9 +111872,9 @@ dword_80EC5B8:
 
 // symdb: Dispatches an AI action based on the AIAttackVars[Unk_00] subtype, calling the matching handler and, if bit flags 0x8600 are set in the per-actor Unk_44 word, invoking sub_801056A(r7, 0, 0).
 // symdb: void (no caller-visible return value); r7 = AIDataPtr, lr = return address preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EC5BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiHandleAttackVarsSubtypeAndAction_80EC5BC.yaml
 	thumb_local_start
-sub_80EC5BC:
+battle_aiHandleAttackVarsSubtypeAndAction_80EC5BC:
 	push {lr}
 	ldr r1, off_80EC5DC // =off_80EC5E0 
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -111898,7 +111898,7 @@ off_80EC5E0:
 	.word battle_aiAttackVarsTryResetAndProcessAction_80EC67E+1
 dword_80EC5E8:
 	.word 0x8600
-	thumb_func_end sub_80EC5BC
+	thumb_func_end battle_aiHandleAttackVarsSubtypeAndAction_80EC5BC
 
 	thumb_local_start
 sub_80EC5EC:
@@ -173215,9 +173215,9 @@ byte_810A2EC:
 // symdb: Dispatches to one of seven AI attack-vars handlers based on the actor's AIAttackVars.Unk_00 value (0..6).
 // symdb: () -> r0 = whatever the dispatched handler returns in r0 ; side effects: r1 preserved-then-
 // symdb: clobbered, lr saved/restored via push/pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A3AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackVars_dispatch_810A3AC.yaml
 	thumb_local_start
-sub_810A3AC:
+battle_aiAttackVars_dispatch_810A3AC:
 	push {lr}
 	ldr r1, off_810A3BC // =off_810A3C0
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -173236,7 +173236,7 @@ off_810A3C0:
 	.word sub_810A4D0+1
 	.word sub_810A50C+1
 	.word sub_810A51E+1
-	thumb_func_end sub_810A3AC
+	thumb_func_end battle_aiAttackVars_dispatch_810A3AC
 
 	thumb_local_start
 sub_810A3DC:
@@ -173456,7 +173456,7 @@ off_810A550:
 	.word sub_810A5EA+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word genericAI_movementRelated_8109952+1
-	.word sub_810A3AC+1
+	.word battle_aiAttackVars_dispatch_810A3AC+1
 byte_810A580:
 	.byte 0x0, 0xA0, 0x1, 0x0, 0x0, 0xB0, 0x1, 0x0, 0x0, 0xC0, 0x1, 0x0, 0x0, 0xD0
 	.byte 0x1, 0x0, 0x0, 0xE0, 0x1, 0x0, 0x0, 0xF0, 0x1, 0x0
@@ -176864,7 +176864,7 @@ sub_810C1F4:
 	thumb_local_start
 sub_810C212:
 	push {lr}
-	bl sub_810C282
+	bl battleObject_tryBeastOutChipAttack_810C282
 	cmp r0, #0
 	bne locret_810C280
 	ldrb r1, [r4,#oAIData_Version_16]
@@ -176923,9 +176923,9 @@ locret_810C280:
 
 // symdb: AI helper: when a battle object has a chip selected and Unk_40 has reached a threshold, push chip params, set attack0 and consume the held chip, returning whether it acted.
 // symdb: (r5 = BattleObject) -> r0 = 1 if the beast-out chip attack was committed, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C282.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tryBeastOutChipAttack_810C282.yaml
 	thumb_local_start
-sub_810C282:
+battleObject_tryBeastOutChipAttack_810C282:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -176946,7 +176946,7 @@ sub_810C282:
 loc_810C2AE:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810C282
+	thumb_func_end battleObject_tryBeastOutChipAttack_810C282
 
 // symdb: Quaker panel picker: three GetAllianceDependentPanelParamArgs + object_getPanelsInRowFiltered candidate sets, then one GetPositiveSignedRNG % count roll (svc 6).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C2B2.yaml

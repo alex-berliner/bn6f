@@ -14207,9 +14207,9 @@ off_8136DDC:
 // symdb: (r0 = beast-sp subsystem object ptr, r1 = 0x28) -> r0 = ? (caller treats as unknown); side
 // symdb: effects: writes EWRAM 0x2009398..0xC and calls one of 0x24 dispatch targets then invokes
 // symdb: beastsp_dispatchHandler_81356D4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136DE0.yaml
-	thumb_func_start sub_8136DE0
-sub_8136DE0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runBeastSpFunction_8136DE0.yaml
+	thumb_func_start battleObject_runBeastSpFunction_8136DE0
+battleObject_runBeastSpFunction_8136DE0:
 	push {r4-r7,lr}
 	ldr r5, off_8136EC0 // =byte_2009390 
 	mov r7, r10
@@ -14297,7 +14297,7 @@ off_8136EC8:
 	.word byte_3001590
   .word 0x20
   .word NULL
-	thumb_func_end sub_8136DE0
+	thumb_func_end battleObject_runBeastSpFunction_8136DE0
 
 	thumb_local_start
 sub_8136EE4:

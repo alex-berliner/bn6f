@@ -671,9 +671,9 @@ off_804646C:
 	.word sub_8117BC8+1
 	.word objectStateDispatcher_8117D2C+1
 	.word battleObject_aiStateJumpTableDispatcher_8117EC8+1
-	.word sub_8118344+1
-	.word sub_81187E8+1
-	.word sub_8118BA4+1
+	.word submenu_dispatchByIndex_8118344+1
+	.word submenu_dispatchByIndex_81187E8+1
+	.word battleObject_updateDispatcher_8118BA4+1
 	.word sub_8118D60+1
 	.word sub_8118E84+1
 	.word sub_8118F24+1
@@ -9849,9 +9849,9 @@ off_804C024:
 // symdb: Tail-call dispatcher that jumps to a chatbox-step routine chosen by Toolkit pointer + 0x10
 // symdb: (r5 = EWRAM pointer; r10 = Toolkit) -> r0 = result from chosen routine ; side effects: jumps
 // symdb: into one of two chatbox helpers, preserves {r4-r7}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C058.yaml
-	thumb_func_start sub_804C058
-sub_804C058:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_dispatchTable_804C058.yaml
+	thumb_func_start chatbox_dispatchTable_804C058
+chatbox_dispatchTable_804C058:
 	push {r4-r7,lr}
 	ldr r0, off_804C068 // =off_804C06C
 	ldrb r1, [r5,#0x10]
@@ -9865,7 +9865,7 @@ off_804C068:
 off_804C06C:
 	.word sub_804C08C+1
 	.word chatbox_stepIfGatesOpen_804C11C+1
-	thumb_func_end sub_804C058
+	thumb_func_end chatbox_dispatchTable_804C058
 
 // symdb: Clears battle event flag (flag id 4, bit 0xFE) and turns off the 0x400 render/info bit in the toolkit's render-info word.
 // symdb: void sub_804C074(void) /* in: r10 toolkit ptr, lr return; out: r2=0x400, r3, r5; clobbers
@@ -9956,7 +9956,7 @@ dword_804C118:
 	.word 0x1E09
 	thumb_func_end sub_804C08C
 
-// symdb: Cutscene/chatbox tick: if PET flag 0x01 is clear, neither cutting-back cutscene position matches, and chatbox flag 0x80 is unset, run sub_804C144 then sub_804C298.
+// symdb: Cutscene/chatbox tick: if PET flag 0x01 is clear, neither cutting-back cutscene position matches, and chatbox flag 0x80 is unset, run sub_804C144 then chatbox_copyNaviSpriteState_804C298.
 // symdb: void sub_804C11C(void); /* in: r5, r10, lr; out: r2; clobbers r0,r1,r3,lr and nz,c,v; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepIfGatesOpen_804C11C.yaml
@@ -9974,7 +9974,7 @@ chatbox_stepIfGatesOpen_804C11C:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne locret_804C142
 	bl sub_804C144
-	bl sub_804C298
+	bl chatbox_copyNaviSpriteState_804C298
 locret_804C142:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_stepIfGatesOpen_804C11C
@@ -10182,9 +10182,9 @@ off_804C294:
 // symdb: Copies OW navi sprite state (animation/palette/transform/coord shader) into unk_2000AC0 for chatbox rendering
 // symdb: (r5 = OWPlayerObject*, r10 = Toolkit*) -> r2 = RenderInfo/unk_2009740 derived pointer ; side
 // symdb: effects: writes 14 bytes to unk_2000AC0 + 0x0F..0x1D
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C298.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_copyNaviSpriteState_804C298.yaml
 	thumb_local_start
-sub_804C298:
+chatbox_copyNaviSpriteState_804C298:
 	push {r5,lr}
 	ldr r3, off_804C308 // =unk_2000AC0 
 	ldrb r0, [r5,#0x10]
@@ -10213,7 +10213,7 @@ sub_804C298:
 	strb r0, [r3,#0x19] // (byte_2000AD9 - 0x2000ac0)
 	pop {r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804C298
+	thumb_func_end chatbox_copyNaviSpriteState_804C298
 
 	thumb_local_start
 sub_804C2D0:

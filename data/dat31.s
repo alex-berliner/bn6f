@@ -1129,7 +1129,7 @@ off_810CD60::
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
-	.word sub_810CE1A+1
+	.word battleObject_aiActionStep_810CE1A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word genericAI_movementRelated_8109952+1
 	.word sub_810C9B8+1
@@ -1201,9 +1201,9 @@ loc_810CE14::
 
 // symdb: Enemy AI action-decision step that picks a random row target, maybe picks B-button / PwrAtk inputs, and dispatches into attack sub-helpers.
 // symdb: () -> r0 = 0 ; side effects: reads/writes AIData (r5) and BattleState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CE1A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiActionStep_810CE1A.yaml
 	thumb_local_start
-sub_810CE1A::
+battleObject_aiActionStep_810CE1A::
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	ldr r0, [r5,#oBattleObject_ExtraVars]
@@ -1273,7 +1273,7 @@ loc_810CEA6::
 loc_810CEAA::
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_810CE1A
+	thumb_func_end battleObject_aiActionStep_810CE1A
 
 	thumb_local_start
 sub_810CEAE::

@@ -9898,7 +9898,7 @@ battle_updateLinkState_803DEB4:
 	add r0, r7, #6
 	ldr r1, off_803DFA0 // =byte_200DD10
 	ldr r2, off_803DFA4 // =unk_2009480
-	bl sub_8144250
+	bl link_stateMachineRunStep_8144250
 	str r0, [r7,#0x48] // (dword_2009A18 - 0x20099d0)
 	push {r0}
 	bl timer_IsEnabled_8144CE0

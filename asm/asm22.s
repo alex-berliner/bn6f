@@ -336,9 +336,9 @@ loc_8087178:
 // symdb: Refreshes the Beast/SP (Beast-form Navi) AI's per-state attack vars from a copy of the actor's BattleObject position/velocity fields.
 // symdb: (r5 = AIData*, r10 = toolkit via r5) -> side effects only ; copies [r5+0x70..0x7c] ->
 // symdb: [r5+0x7c..0x88], copies overworld player X/Y/Z into [r5+0x10..0x18]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087184.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpRefreshAIDataFromBattleObject_8087184.yaml
 	thumb_local_start
-sub_8087184:
+battle_beastSpRefreshAIDataFromBattleObject_8087184:
 	push {r4-r7,lr}
 	mov r3, #0x70 
 	mov r4, #0x7c 
@@ -369,7 +369,7 @@ loc_808718E:
 	str r2, [r5,r3]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8087184
+	thumb_func_end battle_beastSpRefreshAIDataFromBattleObject_8087184
 
 	thumb_local_start
 sub_80871C0:

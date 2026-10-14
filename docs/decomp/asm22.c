@@ -265,7 +265,7 @@ __int64 sub_8087150()
 
 
 // 0x8087184
-__int64 sub_8087184()
+__int64 battle_beastSpRefreshAIDataFromBattleObject_8087184()
 {
     int v0; // r5
     int v1; // r3

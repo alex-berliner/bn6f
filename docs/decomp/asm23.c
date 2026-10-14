@@ -670,7 +670,7 @@ signed int __fastcall sub_8089A10(int a1)
 
 
 // 0x8089a60
-signed int __fastcall sub_8089A60(int a1)
+signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r7
@@ -726,7 +726,7 @@ signed int __fastcall sub_8089ACA(int a1)
 
 
 // 0x8089ae8
-signed int sub_8089AE8()
+signed int battle_handleBeastOutStep_8089AE8()
 {
     _BYTE *v0; // r5
     int v1; // r7

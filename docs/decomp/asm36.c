@@ -8649,7 +8649,7 @@ void sub_8136DC8()
 
 
 // 0x8136de0
-int sub_8136DE0()
+int battleObject_runBeastSpFunction_8136DE0()
 {
     int v0; // r10
     int v1; // r7

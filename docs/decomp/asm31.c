@@ -33424,7 +33424,7 @@ int sub_80CBA34()
 
 
 // 0x80cba52
-int sub_80CBA52()
+int battleObject_processSnakeArmPhase_80CBA52()
 {
     int v0; // r5
     int result; // r0
@@ -85913,7 +85913,7 @@ void sub_80EC556()
 
 
 // 0x80ec5bc
-int sub_80EC5BC()
+int battle_aiHandleAttackVarsSubtypeAndAction_80EC5BC()
 {
     unsigned __int8 *v0; // r7
     int result; // r0
@@ -132947,7 +132947,7 @@ int sub_810A254()
 
 
 // 0x810a3ac
-int sub_810A3AC()
+int battle_aiAttackVars_dispatch_810A3AC()
 {
     unsigned __int8 *v0; // r7
 
@@ -135527,7 +135527,7 @@ void sub_810C212()
     int v3; // r1
     int v4; // r0
 
-    if ( !sub_810C282() )
+    if ( !battleObject_tryBeastOutChipAttack_810C282() )
     {
         v3 = *(v0 + 22);
         *(v2 + 3) = byte_810C1D2[v3];
@@ -135559,7 +135559,7 @@ void sub_810C212()
 
 
 // 0x810c282
-signed int sub_810C282()
+signed int battleObject_tryBeastOutChipAttack_810C282()
 {
     int v0; // r5
     signed int v1; // r6

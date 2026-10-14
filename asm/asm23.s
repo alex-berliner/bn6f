@@ -842,9 +842,9 @@ jt_80895C0:
 	.word sub_80899D8+1
 	.word sub_80899F2+1
 	.word sub_8089A10+1
-	.word sub_8089A60+1
+	.word battle_handleChipLockoutTransition_8089A60+1
 	.word sub_8089ACA+1
-	.word sub_8089AE8+1
+	.word battle_handleBeastOutStep_8089AE8+1
 	.word sub_8089B2E+1
 	.word owPlayer_handleBeastSpawnTransition_8089B54+1
 	.word sub_8089B7E+1
@@ -1413,9 +1413,9 @@ off_8089A40:
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
 // symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
 // symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089A60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipLockoutTransition_8089A60.yaml
 	thumb_local_start
-sub_8089A60:
+battle_handleChipLockoutTransition_8089A60:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089AC6
@@ -1454,7 +1454,7 @@ loc_8089ABA:
 loc_8089AC6:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089A60
+	thumb_func_end battle_handleChipLockoutTransition_8089A60
 
 	thumb_local_start
 sub_8089ACA:
@@ -1477,9 +1477,9 @@ loc_8089AE4:
 // symdb: (r0 = toolkit via r10, r5 = battleObject, r7 = ?, lr) -> r0 = 1 ; side effects: clears PanelY in
 // symdb: battle object, sets OW player facing to 4 (down), pushes a fixed OW player animation via
 // symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls sub_8089CB0(0|0x1e)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089AE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleBeastOutStep_8089AE8.yaml
 	thumb_local_start
-sub_8089AE8:
+battle_handleBeastOutStep_8089AE8:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1509,7 +1509,7 @@ loc_8089B20:
 loc_8089B2A:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089AE8
+	thumb_func_end battle_handleBeastOutStep_8089AE8
 
 	thumb_local_start
 sub_8089B2E:

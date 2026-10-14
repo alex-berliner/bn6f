@@ -63,7 +63,7 @@ int sub_8144240()
 
 
 // 0x8144250
-int __fastcall sub_8144250(_BYTE *a1, int a2, int a3)
+int __fastcall link_stateMachineRunStep_8144250(_BYTE *a1, int a2, int a3)
 {
     _BYTE *v3; // r4
     __int16 *v4; // r5
