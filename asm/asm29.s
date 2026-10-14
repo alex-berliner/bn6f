@@ -901,6 +901,10 @@ off_80A54E4:
 	.word byte_80A5408
 	thumb_func_end lookupMapEntryPair_80A54A4
 
+// symdb: Trampoline/jump-table dispatcher that calls one of three BBS-related sub-functions selected by an index byte on an object pointed to by r5.
+// symdb: (no explicit arguments) -> returns to caller via `pop {pc}`; r0 ultimately carries the result of
+// symdb: the dispatched function (0x6f8 in all captured calls)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A54F0.yaml
 	thumb_func_start sub_80A54F0
 sub_80A54F0:
 	push {lr}
@@ -1548,6 +1552,11 @@ sub_80A596C:
 	b loc_80A597A
 	thumb_func_end sub_80A596C
 
+// symdb: Facing-aware animation swap for an OW player's navi sprite based on the vector to the overworld player
+// symdb: (r5 = OWPlayerObject*) -> void ; side effects: triggers sprite_setAnimation /
+// symdb: sprite_loadAnimationData / sprite_noShadow on the same object; updates r5+0x30 with the new anim
+// symdb: index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5974.yaml
 	thumb_local_start
 sub_80A5974:
 	push {r4,lr}
@@ -3518,7 +3527,7 @@ loc_80A6F20:
 // symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
-// symdb: sprite_update, calls sub_80A6F78/battle_beastOut_checkPlayerInBoxTrigger_80A70FC/sub_80A7160/sub_80A7238.
+// symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimation_80A6F2C.yaml
 	thumb_local_start
 battleObject_updateAnimation_80A6F2C:

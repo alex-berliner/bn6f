@@ -2885,6 +2885,11 @@ byte_810F1A4:
 	.byte 0xA, 0xA, 0xA, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1
 	thumb_func_end sub_810F0D8
 
+// symdb: Per-actor AI helper that fires a selected battle chip when charge/threshold gates pass.
+// symdb: (r5 = battle object AI data ptr?, r10 = toolkit, r7/r4/r6 = preserved callee-saved) -> r0 = 1 if
+// symdb: chip was triggered, 0 otherwise ; side effects: may write chip params, set attack, and update
+// symdb: related object state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810F1B6.yaml
 	thumb_local_start
 sub_810F1B6:
 	push {r4,r6,lr}
@@ -9438,11 +9443,10 @@ sub_8112A64:
 	pop {pc}
 	thumb_func_end sub_8112A64
 
-// symdb: AI counter-attack timer/state driver for a BattleObject's combat counter-throw state.
-// symdb: (r5 = BattleObject, r6 = AIState, r7 = AIAttackVars, r4 = AIData, r10 = Toolkit) -> void ; side
-// symdb: effects: writes AIState, BattleObject ExtraVars, AIAttackVars, calls object_setAttack0 /
-// symdb: object_getFlag / FindBattleActorsWithNonzeroParam_ReturnCountAndSum
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8112A78.yaml
+// symdb: AI tick for SnakeArm-style battle object: counts down Unk_08 then fires two stage checks (0x74/0x7F/0x84 and 0x64/0x7F/0x84) before deciding whether to schedule attack 0xB (or fall through to attack 0xA)
+// symdb: (r4 = AIData ptr, r5 = BattleObject ptr, r6 = AIState ptr, r7 = AIAttackVars ptr, r10 = toolkit)
+// symdb: -> flags; writes AIData.Version_16 into AttackVars.Unk_03 and several AttackVars fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112A78.yaml
 	thumb_local_start
 sub_8112A78:
 	push {lr}
@@ -20634,6 +20638,10 @@ locret_81185E2:
 	pop {pc}
 	thumb_func_end sub_81185C0
 
+// symdb: Loads a BattleObject's palette index from a global u16 table indexed by an AIData-derived offset, looks up the BattleObject, and sets its sprite palette.
+// symdb: (r5 = AIData? base, r6 = related battle object, lr = return) -> void (r0 only used as scratch,
+// symdb: returned 0)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81185E4.yaml
 	thumb_local_start
 sub_81185E4:
 	push {lr}
@@ -20652,6 +20660,11 @@ sub_81185E4:
 	pop {pc}
 	thumb_func_end sub_81185E4
 
+// symdb: Refreshes a battle object's BeastOut status and packs per-actor flag bits into r0 for sprite_setUnk0x2c.
+// symdb: (r5 = caller scratch, r6 = battle object ptr, r10 = toolkit ptr, lr = ret) -> r0 = packed flag
+// symdb: bitmask ; side effects: calls battleObject_runAIDispatchTable_813B7A0 and sprite_setUnk0x2c,
+// symdb: clobbers r0-r3/r7
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8118604.yaml
 	thumb_local_start
 sub_8118604:
 	push {r4-r7,lr}

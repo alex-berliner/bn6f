@@ -8981,11 +8981,10 @@ loc_803D0F0:
 	pop {pc}
 	thumb_func_end TakeBugfrags
 
-// symdb: Returns the player's protected bug-frags count from the game state, returning 0 if the bug-frag encryption check succeeds.
-// symdb: /* r10 = toolkit; returns bugfrags in r0, game-state pointer in r1 */ /* On the "encryption
-// symdb: active" path, only r0/r1 are set to 0/unmodified; r2-r7 are preserved */ /* clobbers: r0, r1,
-// symdb: NZ, CV; preserves: r2-r7; uses: r10 (toolkit), lr (return) */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803D0F4.yaml
+// symdb: Returns the anti-tamper Protected BugFrags counter from the global GameState, or 0 if the integrity check fails.
+// symdb: () -> r0 = ProtectedBugfrags (u32), or 0 when integrity check fails ; sets Z according to the
+// symdb: integrity-check result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D0F4.yaml
 	thumb_func_start sub_803D0F4
 sub_803D0F4:
 	push {lr}
@@ -9885,9 +9884,12 @@ sub_803DEAC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803DEAC
 
-// symdb: Updates the battle camera/timer state each frame, advancing camera-shake countdowns and calling into sub-actions based on bit flags in the timer-enable word.
-// symdb: (r0 = battle mode / scratch word) -> r0 = next state code (0, 1, 2, 4, 8 or 0x20)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DEB4.yaml
+// symdb: Updates the link-battle state (eLinkState + Camera shake/state fields) and returns a numeric code describing the current link phase.
+// symdb: (r0 = timer/group index, r1 = pointer to local stack scratch from caller) -> r0 = link-state
+// symdb: code (1, 2, 4, 8, 0x20, or 4) ; side effects: writes to eLinkState and the camera-struct fields
+// symdb: at +0x04 (pad_54), +0x06 (pad_56), +0x07 (pad_56+1), +0x0C (eCamera.unk_5C), +0x48; calls
+// symdb: TestEventFlagFromImmediate on EVENT_172F.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DEB4.yaml
 	thumb_func_start sub_803DEB4
 sub_803DEB4:
 	push {r4-r7,lr}

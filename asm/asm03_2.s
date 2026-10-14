@@ -11149,6 +11149,11 @@ nullsub_804CBA0:
 	pop {r4-r7,pc}
 	thumb_func_end nullsub_804CBA0
 
+// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `sub_804CBDC` or `sub_804CC8E`.
+// symdb: (r0 = ptr to a 2-entry fnptr table stored alongside `off_804CBB8`, r1 = u8 dispatch key) -> r0 =
+// symdb: return value forwarded from the chosen handler ; side effects: none in this stub itself; the
+// symdb: dispatched handler runs in r5/r10/lr-saved context.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CBA4.yaml
 	thumb_local_start
 sub_804CBA4:
 	push {r4-r7,lr}
@@ -11278,6 +11283,10 @@ sub_804CC7E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804CC7E
 
+// symdb: Jump-table dispatcher that selects one of two beast-spawn routines based on the AIData Unk_0c byte read from r5.
+// symdb: (r0 = junk loaded from table, r1 = dispatch index<<2, r5 = AIData ptr) -> (tail call into
+// symdb: sub_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CC8E.yaml
 	thumb_local_start
 sub_804CC8E:
 	push {r4-r7,lr}

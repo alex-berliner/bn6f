@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Per-frame update for the BBS request subsystem that toggles event flags and dispatches GFX animations based on cutscene/cutscript and BBS request state.
-// symdb: (r10 = Toolkit) -> side effects only; no return value carried in r0 (caller restores r0). may
-// symdb: clobber r0..r5
+// symdb: Event-flags BBS request handler that clears a pet/navi story-progress flag (BBS payload wrapper).
+// symdb: (r10 = Toolkit) -> NZ (handled); side-effects: clears an event flag pair, may set/clear event
+// symdb: byte 0x17 bit 0x7, may load GFX anim scripts, may copy a struct.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,8 +8218,9 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Empty placeholder; assembly not included, behaviour unverified.
-// symdb: (r0 = ?, r1 = ?, r2 = ?) -> r0 = ? ; side effects ?
+// symdb: Beast-Out actor update routine: tests an event/story flag and dispatches into the per-frame Beast-Out state machine for the calling BattleObject.
+// symdb: (in r2 = pointer to AIData? or actor index, in r10 = Toolkit) -> no return value to callers;
+// symdb: clobbers r0-r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

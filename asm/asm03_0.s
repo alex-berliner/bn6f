@@ -24381,10 +24381,11 @@ camera_recenterAndSetCtrlBits_803135E:
 	pop {r0-r2,r5,pc}
 	thumb_func_end camera_recenterAndSetCtrlBits_803135E
 
-// symdb: Camera shake frame updater that does a 2D point-vs-line hit test to decide shake magnitude, then moves the camera.
-// symdb: (r0 = camera?, r5 = shakestate?, r12 = flag/result word, lr = ret) -> r0 = camera?; sets a bit
-// symdb: in r12 (0x1 ORed in)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031388.yaml
+// symdb: applies a one-frame fullscreen camera shake and a zero-magnitude line-vs-point test, then marks the camera shake as updated
+// symdb: (r0 = battle object ptr, r12 = some bitfield ptr) -> r0 = battle object ptr ; side effects:
+// symdb: camera position shifted by tiny fixed delta via camera_moveByDelta, sub_8030E14 (hit test)
+// symdb: called, r12 ORed with 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031388.yaml
 	thumb_local_start
 sub_8031388:
 	push {r0-r2,r5,lr}
@@ -25680,11 +25681,9 @@ sub_8031C12:
 	pop {pc}
 	thumb_func_end sub_8031C12
 
-// symdb: Runs a fixed three-call helper chain: an init/prepare step on the context, a setup call with hardcoded arguments (1, 0x10, 1, 0x10), and a final update/refresh step.
-// symdb: void sub_8031C2A(u32 a /*r0*/, u32 ctx /*r5*/); // only r0 and r5 are meaningfully consumed;
-// symdb: everything the caller sees after return is whatever sub_8031B7C leaves in r0-r7 and the NZCV
-// symdb: flags
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C2A.yaml
+// symdb: Computes the actor's relative position to the target, then advances the textbox cursor blink with two constants and queries a sub-state.
+// symdb: (r0 = BattleObject ptr, r5 = ?) -> r0 = sub_8031B7C result ; r5 preserved, lr-tail-called
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C2A.yaml
 	thumb_local_start
 sub_8031C2A:
 	push {lr}
@@ -25739,9 +25738,10 @@ sub_8031C64:
 	pop {pc}
 	thumb_func_end sub_8031C64
 
-// symdb: Thin battle-mode wrapper that calls sub_803172E with the caller's args, invokes textbox_computeCursorBlinkAdvance_80315B8 with the fixed parameters (14, 14, 0, 16), then calls sub_8031B7C to finish a short setup sequence.
-// symdb: void sub_8031C7C(int r0, int r5); /* tail-ish: returns whatever the last callee leaves in r0,
-// symdb: r2-r7 and NZCV */
+// symdb: Advances the custom-screen cursor blink/animation tick and refreshes its position relative to a target.
+// symdb: (r0 = pointer to BattleObject / scratch buffer) -> r0 = result of sub_8031B7C (likely a
+// symdb: counter/state value) ; side effects: writes via battle_calcRelPosToTarget_803172E,
+// symdb: textbox_computeCursorBlinkAdvance_80315B8, and sub_8031B7C
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
 	thumb_local_start
 sub_8031C7C:

@@ -936,6 +936,10 @@ off_813BD20:
 	.word unk_2006CC0
 	thumb_func_end getWorkAreaPtr_2006CC0_813BD14
 
+// symdb: Iterates all 0x31 battle rows and, for each entry with the enabled bit set, collects target panels in the four cardinal neighbours of the entry's panel and runs a finalize helper.
+// symdb: () -> ; side effects: zero-fills a 0x31-byte scratch buffer and writes per-entry panels via
+// symdb: battleObject_collectTargetsInRegion + sub_813BE38
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD24.yaml
 	thumb_local_start
 sub_813BD24:
 	push {r4-r7,lr}

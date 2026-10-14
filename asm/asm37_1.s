@@ -74,6 +74,10 @@ sub_81418DA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81418DA
 
+// symdb: reads AIData.Version_15..Version_17 into r0..r2 from the EWRAM AIData struct
+// symdb: () -> r0 = AIData.Unk_15, r1 = AIData.Version_16, r2 = AIData.Version_14 ; no side effects
+// symdb: beyond register output
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81418E4.yaml
 	thumb_func_start sub_81418E4
 sub_81418E4:
 	push {r4-r7,lr}
@@ -301,6 +305,9 @@ locret_8141AA6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8141A70
 
+// symdb: Checks whether the current map group is in the PET-menu's allowed "beast-sp" map whitelist.
+// symdb: () -> r0 = bool (0 = allowed, 1 = not allowed / flag set); flags Z set on success path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141AA8.yaml
 	thumb_local_start
 sub_8141AA8:
 	push {r4-r7,lr}
@@ -1275,6 +1282,10 @@ byte_8142610:
 	.byte 0x2D, 0x2D, 0x2D, 0x3C, 0x3C, 0x3C, 0x96, 0x96
 	thumb_func_end sub_8142510
 
+// symdb: Overworld per-frame cutscene dispatcher: checks soul-weapon / beast / cross-progress event flags and fires the matching cutscene scripts, clearing them once handled.
+// symdb: (in r10 = *Toolkit, lr = return) -> no caller-visible result; side effects = sets/clears
+// symdb: EVENT_742/743/746/747 and may StartCutscene with one of three scripts
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142618.yaml
 	thumb_local_start
 sub_8142618:
 	push {r4-r7,lr}

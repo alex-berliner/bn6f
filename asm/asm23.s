@@ -1034,9 +1034,9 @@ sub_8089792:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089792
 
-// symdb: Per-frame AI behaviour step for the player's beast-out/spout-sp Navi in battle, conditionally advancing sub-state and rewriting Unk_13 / state byte.
-// symdb: (r5 = battle object ptr, r7 = ...) -> r0 = 1 ; clobbers r1..r3, side-effect writes
-// symdb: [r5+0x00]=0x0c or [r5+0x00]=0x20 on different paths
+// symdb: Advances an actor (r5 = BattleObject) through one beast-out power-charge tick, kicking off a PwrAtk if the B-button is held and the chatbox isn't running.
+// symdb: (r5 = *BattleObject) -> r0 = 1 ; side effects: writes [r5,#0x00] = 0x0C, 0x0A or 0x20 and may
+// symdb: write timer/state fields via callees
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80897A6.yaml
 	thumb_local_start
 sub_80897A6:

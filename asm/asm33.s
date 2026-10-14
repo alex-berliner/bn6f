@@ -1336,10 +1336,10 @@ dword_8123BBC:
 	.word 0x382E24
 	thumb_func_end drawBattleBackground_8123AB8
 
-// symdb: Thin wrapper that invokes sub_8123C20 with a fixed constant argument set; its game-level purpose is not yet identified.
-// symdb: void sub_8123BC0(void); /* tail-style wrapper: r0-r4 loaded with constants before call, r4-r7
-// symdb: preserved across it */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BC0.yaml
+// symdb: Forwards fixed AI-attack parameter table plus per-frame params into battleObject_applyAIDataToAttackTable_8123C20 for all battle objects on the field.
+// symdb: (r0 = dword_8123BDC = 0x0302F2E, r1 = 0x1, r2 = byte_81233D8, r3 = 0x4, r4 = 0x1c) -> void ;
+// symdb: side effects: jumps into the per-battle-object loop in 8123C20
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123BC0.yaml
 	thumb_local_start
 sub_8123BC0:
 	push {r4-r7,lr}
@@ -1359,9 +1359,10 @@ dword_8123BDC:
 	.word 0x302F2E
 	thumb_func_end sub_8123BC0
 
-// symdb: Nullary wrapper that invokes sub_8123C20 with a hardcoded argument set (3-byte constant 0x5A,0x58,0x56, work area byte_81233E0, and mode/geometry values 0x20/5/0x5C/0), preserving the caller's r4-r7 around the call.
-// symdb: void sub_8123BE0(void) /* no meaningful inputs or outputs; r4-r7 saved and restored, caller-
-// symdb: visible state unchanged */
+// symdb: Configures AI state from a vtable-derived data block and forwards to applyAIDataToAttackTable with constant args.
+// symdb: (r0=dword_8123BFC ptr (r0=1, r2=&ai_data byte array 0x81233E0, r1=0x20, r3=5, r4=0x5c, r6=0)) ->
+// symdb: r0=0x20 ; side effects: clobbers r0-r7,lr; tail-calls
+// symdb: battleObject_applyAIDataToAttackTable_8123C20
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
 	thumb_local_start
 sub_8123BE0:
@@ -1383,11 +1384,10 @@ dword_8123BFC:
 	.word 0x5A5856
 	thumb_func_end sub_8123BE0
 
-// symdb: Thin wrapper that loads a fixed argument set (three-entry color table 0x5B5957, work buffer byte_81233E8, constants 0x40/6/0x60/1) and tail-calls sub_8123C20.
-// symdb: void sub_8123C20_wrapper(void) — no meaningful inputs of its own; forwards caller's r5 (and
-// symdb: whatever sub_8123C20 reads) through; returns whatever sub_8123C20 leaves in r0-r3 and flags;
-// symdb: preserves r4-r7.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123C00.yaml
+// symdb: Runs an AI/attack phase on a battle object: prepares an AI data context (0x40 bytes) from a per-object state blob at 0x81233E8, then calls sub_8123C20 with 6 entries.
+// symdb: (r5 = toolkit ptr, r10 = some battle-obj ptr carried in) -> r0 = 0x40 (size hint) ; side
+// symdb: effects: writes to AI scratch memory and object state via sub_8123C20
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C00.yaml
 	thumb_local_start
 sub_8123C00:
 	push {r4-r7,lr}

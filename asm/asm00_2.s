@@ -2967,9 +2967,9 @@ sub_801010C:
 	pop {pc}
 	thumb_func_end sub_801010C
 
-// symdb: Clears the Power Attack (PwrAtk) state and button fields in the battle object's AIAttackVars sub-struct and then runs the lone helper battleObject_clearAIDataUnknown_80E1662.
+// symdb: Clears the Power Attack (PwrAtk) state and button fields in the battle object's AIAttackVars sub-struct and then runs the lone helper sub_80E1662.
 // symdb: (r5 = BattleObject*) -> void ; clears AIAttackVars.Unk_1d = 0, AIAttackVars.Unk_1e = 0 (u16),
-// symdb: then tail-calls battleObject_clearAIDataUnknown_80E1662 with r5 preserved
+// symdb: then tail-calls sub_80E1662 with r5 preserved
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearPwrAtkStateFromBattleObject_801011A.yaml
 	thumb_func_start ai_clearPwrAtkStateFromBattleObject_801011A
 ai_clearPwrAtkStateFromBattleObject_801011A:

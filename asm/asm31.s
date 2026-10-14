@@ -27051,6 +27051,10 @@ sub_80C46C6:
 	mov pc, lr
 	thumb_func_end sub_80C46C6
 
+// symdb: Returns the element/element-like damage code for an attacking battle object, or falls back to its sprite palette.
+// symdb: (r5 = attacker BattleObject*) -> r0 = element byte (0xff when not applicable) ; reads attacker
+// symdb: ExtraVars[4..8], no side effects on caller-visible state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C46CC.yaml
 	thumb_local_start
 sub_80C46CC:
 	push {r4,lr}
@@ -88288,9 +88292,9 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: Initializes a 4-slot name-range lookup table for an enemy's cross-element weak-point search
-// symdb: (r5 = BattleObject*, r10 = Toolkit*, lr) -> r0 = 0 ; side effects: writes 0x34 bytes on stack,
-// symdb: calls object_getEnemyByNameRange and sub_80E16CC
+// symdb: Allocates a stack scratch array of enemy-panel target slots, then probes the related object via sub_80E16CC for indices 0/1/2 (snake-arm candidate panels).
+// symdb: (r5 = *BattleObject self) -> r0 = ? ; side effects: writes 0x34 bytes of stack scratch, may
+// symdb: clobber r0..r3/r4/r6/r7/lr
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
