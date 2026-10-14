@@ -213,7 +213,7 @@ mapscript_806AFB2:
 
 mapscript_806AFDB:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_FC5 destination4=mapscript_806AFEC
-	ms_call_native_function ptr1=sub_808CB0C+1 word5=0x00000000
+	ms_call_native_function ptr1=pet_tryStartRandomEncounterStep_808CB0C+1 word5=0x00000000
 
 mapscript_806AFEC:
 	ms_end

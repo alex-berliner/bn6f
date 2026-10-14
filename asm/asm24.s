@@ -1168,9 +1168,9 @@ loc_808CB06:
 // symdb: Overworld per-frame step that drives the random-encounter progress (PET-Navi footsteps / "LocEnemy" state) and may start the encounter cutscene.
 // symdb: (no input args, r10 = Toolkit) -> side effects: may set state in 0x2000B40 area, play SE 0x13B,
 // symdb: start a cutscene via StartCutscene; nothing returned in r0/r1.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CB0C.yaml
-	thumb_func_start sub_808CB0C
-sub_808CB0C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_tryStartRandomEncounterStep_808CB0C.yaml
+	thumb_func_start pet_tryStartRandomEncounterStep_808CB0C
+pet_tryStartRandomEncounterStep_808CB0C:
 	push {r4-r7,lr}
 	ldr r5, off_808CB9C // =dword_808CA44
 	ldr r5, [r5]
@@ -1235,7 +1235,7 @@ dword_808CB98:
 	.word 0x13B
 off_808CB9C:
 	.word dword_808CA44
-	thumb_func_end sub_808CB0C
+	thumb_func_end pet_tryStartRandomEncounterStep_808CB0C
 
 	thumb_local_start
 sub_808CBA0:

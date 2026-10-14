@@ -548,7 +548,7 @@ off_812353C:
 battle_updateFrame_8123558:
 	push {lr}
 	bl battleObject_applyAIDataToAttackTable_8123BC0
-	bl sub_8123BE0
+	bl battleObject_runAttackTableApply_8123BE0
 	bl battleObject_runAITurnPhase_8123C00
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8123570
@@ -569,7 +569,7 @@ sub_8123574:
 	mov r0, #2
 	strh r0, [r5,#0x20]
 	bl battleObject_applyAIDataToAttackTable_8123BC0
-	bl sub_8123BE0
+	bl battleObject_runAttackTableApply_8123BE0
 	bl battleObject_runAITurnPhase_8123C00
 	bl sub_8123D70
 	mov r0, #1
@@ -648,7 +648,7 @@ loc_81235E8:
 loc_8123628:
 	bl drawBattleBackground_8123AB8
 	bl battleObject_applyAIDataToAttackTable_8123BC0
-	bl sub_8123BE0
+	bl battleObject_runAttackTableApply_8123BE0
 	bl battleObject_runAITurnPhase_8123C00
 	pop {pc}
 	.balign 4, 0
@@ -1362,9 +1362,9 @@ dword_8123BDC:
 // symdb: Thin AI-attack dispatcher that applies AIData to the attack table for the current battle-object phase
 // symdb: (r5 = AIData struct-ish state via toolkit, r10 = toolkit) -> r0 = 0x20 ; side effects: calls
 // symdb: battleObject_applyAIDataToAttackTable_8123C20
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runAttackTableApply_8123BE0.yaml
 	thumb_local_start
-sub_8123BE0:
+battleObject_runAttackTableApply_8123BE0:
 	push {r4-r7,lr}
 	ldr r0, off_8123BF8 // =dword_8123BFC
 	mov r1, #0x20 
@@ -1381,7 +1381,7 @@ off_8123BF8:
 	.word dword_8123BFC
 dword_8123BFC:
 	.word 0x5A5856
-	thumb_func_end sub_8123BE0
+	thumb_func_end battleObject_runAttackTableApply_8123BE0
 
 // symdb: Runs an AI/attack phase on a battle object: prepares an AI data context (0x40 bytes) from a per-object state blob at 0x81233E8, then calls sub_8123C20 with 6 entries.
 // symdb: (r5 = toolkit ptr, r10 = some battle-obj ptr carried in) -> r0 = 0x40 (size hint) ; side

@@ -32,7 +32,7 @@ int sub_810D998()
     unsigned __int8 *v0; // r6
     int result; // r0
 
-    result = sub_810DAF0();
+    result = battle_enemyAI_preCheckChipUsage_810DAF0();
     if ( !result )
         result = (*(&off_810D9B4 + *v0))();
     return result;
@@ -206,7 +206,7 @@ int sub_810DAE4()
 
 
 // 0x810daf0
-signed int sub_810DAF0()
+signed int battle_enemyAI_preCheckChipUsage_810DAF0()
 {
     int v0; // r5
     signed int v1; // r6
@@ -2718,7 +2718,7 @@ int sub_810FD70()
     v1 = *(*(v0 + 84) + 112);
     if ( v1 && v1 & 0xC000000 )
         object_clearCollisionRegion();
-    return sub_8016B02();
+    return battleObject_initAndRunAI_8016B02();
 }
 
 
@@ -6857,7 +6857,7 @@ void ai_8113038()
 int sub_81130E4()
 {
     sub_8113114();
-    return sub_8016B02();
+    return battleObject_initAndRunAI_8016B02();
 }
 
 
@@ -11198,7 +11198,7 @@ int sprite_fallingObjectStepDown_8116BC0()
 
 
 // 0x8116bfc
-signed int sub_8116BFC()
+signed int battleObject_sprOutWindTick_8116BFC()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -12174,7 +12174,7 @@ signed int battle_getObjectPairOddByteClamped8_811774C()
 
 
 // 0x8117768
-int sub_8117768()
+int battle_clampEnemyCountByBattleStartProgress_8117768()
 {
     int result; // r0
 

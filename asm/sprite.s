@@ -1866,9 +1866,9 @@ sprite_getCoordinates:
 
 // symdb: Look up the per-frame (dx, dy) shadow offset entry for a sprite given the current frame index.
 // symdb: (r0 = spriteDataPtr?, r1 = frameIndex) -> r0 = dx, r1 = dy (or both 0 if missing/none)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80030BA.yaml
-	thumb_func_start sub_80030BA
-sub_80030BA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_getShadowOffsetForFrame_80030BA.yaml
+	thumb_func_start sprite_getShadowOffsetForFrame_80030BA
+sprite_getShadowOffsetForFrame_80030BA:
 	push {r4-r7,lr}
 	mov r5, r0
 	ldrb r3, [r5,#oObjectHeader_TypeAndSpriteOffset]
@@ -1904,7 +1904,7 @@ loc_80030F4:
 	mov r0, #0
 	mov r1, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80030BA
+	thumb_func_end sprite_getShadowOffsetForFrame_80030BA
 	.balign 4, 0x00
 
 /*For debugging purposes, connect comment at any range!*/

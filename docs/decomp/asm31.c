@@ -771,7 +771,7 @@ void battleObject_syncSpriteFromRelatedObject_80B8932()
     v5[2] = v4;
     *(v0 + 58) += 32;
     *(v0 + 62) += 31;
-    *(v0 + 52) += (sub_80030BA(v2, 1) << 16) * v1;
+    *(v0 + 52) += (sprite_getShadowOffsetForFrame_80030BA(v2, 1) << 16) * v1;
     *(v0 + 56) += v6 << 16;
     *v0 = *v0 & 0xFD | **(v0 + 76) & 2;
     v7 = sprite_getColorShader(*(v0 + 76));
@@ -47560,7 +47560,7 @@ int battleObject_dispatchCurPhaseByJumpTable_80D4570()
 
 
 // 0x80d458c
-int sub_80D458C()
+int battleObject_phaseTickToNext_80D458C()
 {
     int v0; // r5
     int v1; // r0
@@ -67862,19 +67862,19 @@ int battle_ai_findEnemyTargets_80E1670()
     int v2; // [sp+0h] [bp-44h]
 
     *(&v2 + object_getEnemyByNameRange(&v2, 0, 451, *(v0 + 22) ^ 1)) = 0;
-    result = sub_80E16CC(0, *(v0 + 76));
+    result = battleObject_computeMoveTargetPanel_80E16CC(0, *(v0 + 76));
     if ( !result )
     {
-        result = sub_80E16CC(1, *(v0 + 76));
+        result = battleObject_computeMoveTargetPanel_80E16CC(1, *(v0 + 76));
         if ( !result )
-            result = sub_80E16CC(2, *(v0 + 76));
+            result = battleObject_computeMoveTargetPanel_80E16CC(2, *(v0 + 76));
     }
     return result;
 }
 
 
 // 0x80e16cc
-int __fastcall sub_80E16CC(int a1, int a2)
+int __fastcall battleObject_computeMoveTargetPanel_80E16CC(int a1, int a2)
 {
     int v2; // r4
 
@@ -132561,7 +132561,7 @@ int battle_objectTickWithExtraHandler_8109F6A()
 // 0x8109f7e
 int sub_8109F7E()
 {
-    sub_8016B02();
+    battleObject_initAndRunAI_8016B02();
     return battle_object_onAction8EndClearExtraVars_8109FA2();
 }
 
@@ -133162,7 +133162,7 @@ int sub_810A5D6()
         *(v0 + 96) = 0;
         *(v0 + 100) = 0;
     }
-    return sub_8016B02();
+    return battleObject_initAndRunAI_8016B02();
 }
 
 
@@ -135020,7 +135020,7 @@ int sub_810BBF6()
         sub_80D9284(*(v0 + 100));
         sub_810BB64();
     }
-    return sub_8016B02();
+    return battleObject_initAndRunAI_8016B02();
 }
 
 

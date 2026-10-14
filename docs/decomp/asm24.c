@@ -135,7 +135,7 @@ int __fastcall sub_808CAD4(int a1)
 
 
 // 0x808cb0c
-void sub_808CB0C()
+void pet_tryStartRandomEncounterStep_808CB0C()
 {
     int v0; // r10
     char v1; // zf

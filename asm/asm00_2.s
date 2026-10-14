@@ -12281,9 +12281,9 @@ off_80141C4:
 // symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers sub_801E0BC for the enemy-side network invert.
 // symdb: (r5 = *BattleObject) -> (flags Z) ; side effects: writes [r5+0x24..0x27] (HP/MaxHP) and may call
 // symdb: sub_801E0BC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80141C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPlayerMaxHPFromStats_80141C8.yaml
 	thumb_local_start
-sub_80141C8:
+battleObject_initPlayerMaxHPFromStats_80141C8:
 	push {lr}
 	mov r1, #0x42 
 	bl GetBattleNaviStatsHword_AllianceFromBattleObject
@@ -12303,7 +12303,7 @@ loc_80141E6:
 	bl sub_801E0BC
 locret_80141F2:
 	pop {pc}
-	thumb_func_end sub_80141C8
+	thumb_func_end battleObject_initPlayerMaxHPFromStats_80141C8
 
 // symdb: Raises a flag (0x400) in the battle AI data's 0x48 field unless the board uses a standard column pattern or the battle is the Dustman mini game.
 // symdb: void sub_80141F4(void); // no meaningful inputs/outputs; r1/r3 pass through from callees, only
@@ -13685,7 +13685,7 @@ off_8014AB4:
 	.word sub_8014B18+1
 	.word sub_8014B98+1
 	.word battle_runTransformationIntroStep_8014BEE+1
-	.word sub_8014CC0+1
+	.word battle_aiAttackTickBeastSp_8014CC0+1
 off_8014AC4:
 	.word off_8014AC8
 off_8014AC8:
@@ -13914,9 +13914,9 @@ locret_8014CBE:
 // symdb: new Alliance value passed to sub_800AB2E ; side effects: edits ActorAIData->AttackVars offsets
 // symdb: 0x01 and 0x10, clears AIData bits 0x80 / 0x80000, AIData->Unk_44 bits 0x80008600, battle-state
 // symdb: flags 0x20, then calls object_exitAttackState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014CC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackTickBeastSp_8014CC0.yaml
 	thumb_local_start
-sub_8014CC0:
+battle_aiAttackTickBeastSp_8014CC0:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -13950,7 +13950,7 @@ dword_8014D00:
 	.word 0x80000
 dword_8014D04:
 	.word 0x80008600
-	thumb_func_end sub_8014CC0
+	thumb_func_end battle_aiAttackTickBeastSp_8014CC0
 
 	thumb_local_start
 sub_8014D08:
@@ -17702,7 +17702,7 @@ byte_8016A9C:
 sub_8016AD0:
 	push {lr}
 	bl battle_getStateUnk40_800A704
-	mov r1, #0x1a // (sub_8016B02 - 0x8016ae8)
+	mov r1, #0x1a // (battleObject_initAndRunAI_8016B02 - 0x8016ae8)
 	svc 6
 	ldr r0, off_8016AE4 // =off_8016AE8 
 	ldrb r0, [r0,r1]
@@ -17720,9 +17720,9 @@ off_8016AE8:
 // symdb: Battle object per-frame handler that initializes an object's AI on first call, dispatches its AI handler, then commits a pending state transition if one was staged in Unk_5c
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: clears OBJECT_FLAGS_INVULNERABLE in
 // symdb: the collision data, dispatches AI, resets collision state, mutates object fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016B02.yaml
-	thumb_func_start sub_8016B02
-sub_8016B02:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initAndRunAI_8016B02.yaml
+	thumb_func_start battleObject_initAndRunAI_8016B02
+battleObject_initAndRunAI_8016B02:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -17747,7 +17747,7 @@ loc_8016B20:
 	str r0, [r5,#oBattleObject_Unk_5c]
 locret_8016B34:
 	pop {pc}
-	thumb_func_end sub_8016B02
+	thumb_func_end battleObject_initAndRunAI_8016B02
 
 	thumb_func_start sub_8016B36
 sub_8016B36:
@@ -18872,7 +18872,7 @@ loc_801735A:
 	mov r1, #1
 	mov r2, #2
 	bl object_setupCollisionData
-	bl sub_80141C8
+	bl battleObject_initPlayerMaxHPFromStats_80141C8
 	bl sub_8013892
 	bl sub_801086C
 	mov r1, #0x29
@@ -30417,7 +30417,7 @@ off_801DA6C:
 	.word sub_801DD7C+1
 	.word setupBattleBackground_801DDF6+1
 	.word sub_801DE3C+1
-	.word sub_801E006+1
+	.word battle_setUnkFlags44_0x40_801E006+1
 	.word background_applyFixedTilePatch_801E03E+1
 	.word sub_801E1E4+1
 	.word sub_801E144+1
@@ -31313,15 +31313,15 @@ chatbox_openMessageWindow_801DFEA:
 // symdb: Sets bit 0x40 in the eStruct2035280 flags word (offset 0x44) to mark some battle state flag.
 // symdb: (none) -> r0 = 0x40 ; side effect: ORs 0x40 into eStruct2035280+0x44 via
 // symdb: flagSetBits_eStruct2035280_801BEB8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E006.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setUnkFlags44_0x40_801E006.yaml
 	thumb_local_start
-sub_801E006:
+battle_setUnkFlags44_0x40_801E006:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #6
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {pc}
-	thumb_func_end sub_801E006
+	thumb_func_end battle_setUnkFlags44_0x40_801E006
 
 	thumb_local_start
 sub_801E012:

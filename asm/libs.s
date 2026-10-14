@@ -22666,9 +22666,9 @@ loc_814E7DC:
 // symdb: Reads one byte from the battle stream and stores it into AIData.Version_17, resetting version/charge flags when the byte is zero.
 // symdb: (r0 = AIDataPtr, r1 = StreamPtr) -> r0 = AIDataPtr ; side effects: writes AIData.Version_17; on
 // symdb: zero, calls battle_aiData_resetVersionAndChargeFlags_814E7A4(r1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
-	thumb_func_start sub_814E7E0
-sub_814E7E0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiData_readNextByteIntoVersion_814E7E0.yaml
+	thumb_func_start battle_aiData_readNextByteIntoVersion_814E7E0
+battle_aiData_readNextByteIntoVersion_814E7E0:
 	mov r12, lr
 	bl streamReadNextByte_814E7C0
 	strb r3, [r1,#0x17]
@@ -22678,7 +22678,7 @@ sub_814E7E0:
 loc_814E7F0:
 	bx r12
 	.balign 4, 0x00
-	thumb_func_end sub_814E7E0
+	thumb_func_end battle_aiData_readNextByteIntoVersion_814E7E0
 
 // symdb: Interpolates between two adjacent decoded audio samples, blends by an 8-bit fraction, and scales by the caller struct's amplitude field.
 // symdb: u32 audio_interpSample_814E7F4(SampleStruct *struct_ptr /*r0*/, u8 sample_index /*r1*/, u8
@@ -23286,7 +23286,7 @@ cgbSoundInit_814EB84:
 	str r0, [r1,#0x20] // (off_3005590 - 0x3005570)
 	ldr r0, off_814EC68 // =battle_aiData_processStreamByte_814E7CC+1 
 	str r0, [r1,#0x44] // (off_30055B4 - 0x3005570)
-	ldr r0, off_814EC6C // =sub_814E7E0+1 
+	ldr r0, off_814EC6C // =battle_aiData_readNextByteIntoVersion_814E7E0+1 
 	str r0, [r1,#0x4c] // (off_30055BC - 0x3005570)
 	ldr r0, off_814EC70 // =sub_814FD54+1 
 	str r0, [r1,#0x70] // (off_30055E0 - 0x3005570)
@@ -23364,7 +23364,7 @@ off_814EC64:
 off_814EC68:
 	.word battle_aiData_processStreamByte_814E7CC+1
 off_814EC6C:
-	.word sub_814E7E0+1
+	.word battle_aiData_readNextByteIntoVersion_814E7E0+1
 off_814EC70:
 	.word sub_814FD54+1
 off_814EC74:

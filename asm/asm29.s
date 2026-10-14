@@ -2951,7 +2951,7 @@ JumpTable_80A6ABC:
 	.word sub_80A6E0C+1
 	.word sub_80A6E22+1
 	.word sub_80A6E3A+1
-	.word sub_80A6E4A+1
+	.word battle_emptyReturnZero_80A6E4A+1
 	thumb_func_end battleObject_runActionSubroutineDispatch_80A6A62
 
 	thumb_local_start
@@ -3412,13 +3412,13 @@ sub_80A6E3A:
 
 // symdb: Trivial stub that returns 0 to its caller.
 // symdb: () -> r0 = 0 ; side effects: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E4A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_emptyReturnZero_80A6E4A.yaml
 	thumb_local_start
-sub_80A6E4A:
+battle_emptyReturnZero_80A6E4A:
 	push {lr}
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_80A6E4A
+	thumb_func_end battle_emptyReturnZero_80A6E4A
 
 	thumb_local_start
 sub_80A6E50:

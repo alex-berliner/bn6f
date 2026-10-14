@@ -133,7 +133,7 @@ mapscript_8069392:
 
 mapscript_80693B4:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_9DA destination4=byte_80693C5
-	ms_call_native_function ptr1=sub_808CB0C+1 word5=0x00000000
+	ms_call_native_function ptr1=pet_tryStartRandomEncounterStep_808CB0C+1 word5=0x00000000
 
 byte_80693C5:
 	ms_end
@@ -157,7 +157,7 @@ byte_80693E6:
 
 mapscript_80693F2:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_9DB destination4=mapscript_8069403
-	ms_call_native_function ptr1=sub_808CB0C+1 word5=0x00000000
+	ms_call_native_function ptr1=pet_tryStartRandomEncounterStep_808CB0C+1 word5=0x00000000
 
 mapscript_8069403:
 	ms_end
@@ -208,7 +208,7 @@ mapscript_806947A:
 
 mapscript_80694A3:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_9DC destination4=mapscript_80694B4
-	ms_call_native_function ptr1=sub_808CB0C+1 word5=0x00000000
+	ms_call_native_function ptr1=pet_tryStartRandomEncounterStep_808CB0C+1 word5=0x00000000
 
 mapscript_80694B4:
 	ms_end

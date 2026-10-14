@@ -13711,7 +13711,7 @@ loc_80093B0:
 	bne loc_8009414
 	mov r0, #1
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
@@ -13747,7 +13747,7 @@ loc_8009414:
 	bne loc_8009452
 	mov r0, #2
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
@@ -14329,7 +14329,7 @@ loc_800981E:
 	bne loc_8009870
 	mov r0, #1
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
@@ -14353,7 +14353,7 @@ loc_8009870:
 	bne loc_80098A8
 	mov r0, #2
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
@@ -14760,7 +14760,7 @@ loc_8009B30:
 	bne loc_8009B60
 	mov r0, #1
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
@@ -14770,7 +14770,7 @@ loc_8009B60:
 	bne loc_8009B98
 	mov r0, #2
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
@@ -15214,7 +15214,7 @@ loc_8009E66:
 	bne loc_8009E96
 	mov r0, #1
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
@@ -15224,7 +15224,7 @@ loc_8009E96:
 	bne loc_8009ECE
 	mov r0, #2
 	bl setTwoStructs_800A840
-	bl sub_800AF84
+	bl battle_bustingLevelCategoryForEffect_800AF84
 	strb r0, [r5,#oBattleState_Unk_1e]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
@@ -18107,9 +18107,9 @@ locret_800AF82:
 // symdb: Picks a busting-level category (0/1/2) for sub_800AC20 based on battle-effects flags and battle state's Unk_0d byte, then forwards to sub_800AC20.
 // symdb: (r0 = unused, r1 = unused, r10 = Toolkit ptr) -> r0 = category arg for sub_800AC20 (0, 1, or 2);
 // symdb: side effects: clobbers r0/r1/r2/r3 and the C/V flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AF84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_bustingLevelCategoryForEffect_800AF84.yaml
 	thumb_local_start
-sub_800AF84:
+battle_bustingLevelCategoryForEffect_800AF84:
 	push {lr}
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -18137,7 +18137,7 @@ loc_800AFB2:
 loc_800AFB4:
 	bl sub_800AC20
 	pop {pc}
-	thumb_func_end sub_800AF84
+	thumb_func_end battle_bustingLevelCategoryForEffect_800AF84
 
 	thumb_func_start sub_800AFBA
 sub_800AFBA:
@@ -18543,7 +18543,7 @@ loc_800B2A2:
 	ldr r0, dword_800B2D4 // =0x12345678
 	str r0, [r4]
 	mov r0, #0x3e
-	bl sub_80200A4
+	bl battle_requestSetBattleMode_80200A4
 	pop {r4,r6,pc}
 	.balign 4, 0
 off_800B2BC:
@@ -18659,7 +18659,7 @@ loc_800B334:
 	thumb_func_end battle_copyStructsIncludingBattleStats_800b2d8
 
 // symdb: Snapshots the current battle state (work buffer, active Navi stats, and a small inventory block) into backup buffers and stamps a validity marker before the battle is restarted or restored.
-// symdb: (r10: Toolkit*, r3: unused) -> r2, r3 and c/v flags as left by sub_80200A4(0x32); clobbers r0,
+// symdb: (r10: Toolkit*, r3: unused) -> r2, r3 and c/v flags as left by battle_requestSetBattleMode_80200A4(0x32); clobbers r0,
 // symdb: r1, lr, nz
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_backupStateForRestart_800B3A2.yaml
 	thumb_func_start battle_backupStateForRestart_800B3A2
@@ -18684,7 +18684,7 @@ battle_backupStateForRestart_800B3A2:
 	mov r2, #0x10
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, #0x32
-	bl sub_80200A4
+	bl battle_requestSetBattleMode_80200A4
 	pop {pc}
 	thumb_func_end battle_backupStateForRestart_800B3A2
 
@@ -18732,8 +18732,8 @@ locret_800B426:
 	pop {r4,pc}
 	thumb_func_end transferBattleHandNaviStats_800B3D8
 
-// symdb: Reinitializes some global work structure, stamps a magic word next to it, and issues a mode-4 request to the state/screen manager at sub_80200A4.
-// symdb: void sub_800B428(void); // r1-r3 out are whatever sub_80200A4 left in them (passed straight
+// symdb: Reinitializes some global work structure, stamps a magic word next to it, and issues a mode-4 request to the state/screen manager at battle_requestSetBattleMode_80200A4.
+// symdb: void sub_800B428(void); // r1-r3 out are whatever battle_requestSetBattleMode_80200A4 left in them (passed straight
 // symdb: through); c/v out come from that call
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B428.yaml
 	thumb_local_start
@@ -18745,7 +18745,7 @@ sub_800B428:
 	ldr r1, off_800B644 // =dword_203CBE0
 	str r0, [r1]
 	mov r0, #4
-	bl sub_80200A4
+	bl battle_requestSetBattleMode_80200A4
 	pop {pc}
 	.balign 4, 0
 off_800B440:
@@ -18815,7 +18815,7 @@ sub_800B484:
 	mov r2, #0x3c
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, #0x10
-	bl sub_80200A4
+	bl battle_requestSetBattleMode_80200A4
 	pop {r4,pc}
 	thumb_func_end sub_800B484
 
@@ -18843,7 +18843,7 @@ sub_800B4B2:
 	str r4, [r1]
 	str r5, [r1,#0x4] // (byte_203CBE8 - 0x203cbe4)
 	mov r0, #3
-	bl sub_80200A4
+	bl battle_requestSetBattleMode_80200A4
 	pop {r4,r5,pc}
 	thumb_func_end sub_800B4B2
 

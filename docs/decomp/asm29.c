@@ -2066,7 +2066,7 @@ signed int sub_80A6E3A()
 
 
 // 0x80a6e4a
-int sub_80A6E4A()
+int battle_emptyReturnZero_80A6E4A()
 {
     return 0;
 }

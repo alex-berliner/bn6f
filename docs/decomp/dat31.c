@@ -1319,7 +1319,7 @@ int sub_810D5A6()
 
     if ( !*(v0 + 11) && *(v0 + 96) )
         sub_810D4E8();
-    sub_8016B02();
+    battleObject_initAndRunAI_8016B02();
     result = *(v0 + 9);
     if ( result != 4 )
     {

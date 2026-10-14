@@ -46121,7 +46121,7 @@ off_81C0418::
 	.word sub_814E1FC+1
 	.word battle_aiData_processStreamByte_814E7CC+1
 	.word battleObject_runChargeTickAndStoreChargeTime_814E210+1
-	.word sub_814E7E0+1
+	.word battle_aiData_readNextByteIntoVersion_814E7E0+1
 	.word battleObject_markAIDataUnk18AndMarkDirty_814E21C+1
 	.word ply_fine+1
 	.word ply_fine+1

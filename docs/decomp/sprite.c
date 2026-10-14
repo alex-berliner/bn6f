@@ -1206,7 +1206,7 @@ int sprite_getCoordinates()
 
 
 // 0x80030ba
-int __fastcall sub_80030BA(int a1, int a2)
+int __fastcall sprite_getShadowOffsetForFrame_80030BA(int a1, int a2)
 {
     unsigned int v2; // r5
     int v3; // r3

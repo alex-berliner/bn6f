@@ -237,7 +237,7 @@ int __fastcall sub_801FFD6(int result)
 
 
 // 0x80200a4
-int __fastcall sub_80200A4(char a1)
+int __fastcall battle_requestSetBattleMode_80200A4(char a1)
 {
     int result; // r0
 

@@ -8660,7 +8660,7 @@ void __fastcall battle_stepRunAndDecideResult_800938A(int a1, int a2, int a3, in
         if ( v17 == 1 )
         {
             v6 = setTwoStructs_800A840(1);
-            v7 = sub_800AF84(v6);
+            v7 = battle_bustingLevelCategoryForEffect_800AF84(v6);
             *(v4 + 30) = v7;
             v8 = eStruct200A008_setUnk00(v7);
             sub_800B6F2(v8);
@@ -8692,7 +8692,7 @@ void __fastcall battle_stepRunAndDecideResult_800938A(int a1, int a2, int a3, in
         else if ( v17 == 2 )
         {
             v13 = setTwoStructs_800A840(2);
-            v14 = sub_800AF84(v13);
+            v14 = battle_bustingLevelCategoryForEffect_800AF84(v13);
             *(v4 + 30) = v14;
             eStruct200A008_setUnk00(v14);
             v15 = sub_802D246();
@@ -9237,7 +9237,7 @@ void __fastcall sub_800980E(int a1, int a2, int a3, int a4)
         {
             case 1:
                 v6 = setTwoStructs_800A840(1);
-                v7 = sub_800AF84(v6);
+                v7 = battle_bustingLevelCategoryForEffect_800AF84(v6);
                 *(v4 + 30) = v7;
                 v8 = eStruct200A008_setUnk00(v7);
                 sub_800B6F2(v8);
@@ -9255,7 +9255,7 @@ void __fastcall sub_800980E(int a1, int a2, int a3, int a4)
                 break;
             case 2:
                 v12 = setTwoStructs_800A840(2);
-                v13 = sub_800AF84(v12);
+                v13 = battle_bustingLevelCategoryForEffect_800AF84(v12);
                 *(v4 + 30) = v13;
                 eStruct200A008_setUnk00(v13);
                 v14 = sub_802D246();
@@ -9627,14 +9627,14 @@ void __fastcall battle_runBattleStep_8009B20(int a1, int a2, int a3, int a4)
         {
             case 1:
                 v6 = setTwoStructs_800A840(1);
-                v7 = sub_800AF84(v6);
+                v7 = battle_bustingLevelCategoryForEffect_800AF84(v6);
                 *(v4 + 30) = v7;
                 v8 = eStruct200A008_setUnk00(v7);
                 sub_800B6F2(v8);
                 break;
             case 2:
                 v9 = setTwoStructs_800A840(2);
-                v10 = sub_800AF84(v9);
+                v10 = battle_bustingLevelCategoryForEffect_800AF84(v9);
                 *(v4 + 30) = v10;
                 eStruct200A008_setUnk00(v10);
                 v11 = sub_802D246();
@@ -10045,14 +10045,14 @@ void __fastcall sub_8009E56(int a1, int a2, int a3, int a4)
         {
             case 1:
                 v6 = setTwoStructs_800A840(1);
-                v7 = sub_800AF84(v6);
+                v7 = battle_bustingLevelCategoryForEffect_800AF84(v6);
                 *(v4 + 30) = v7;
                 v8 = eStruct200A008_setUnk00(v7);
                 sub_800B6F2(v8);
                 break;
             case 2:
                 v9 = setTwoStructs_800A840(2);
-                v10 = sub_800AF84(v9);
+                v10 = battle_bustingLevelCategoryForEffect_800AF84(v9);
                 *(v4 + 30) = v10;
                 eStruct200A008_setUnk00(v10);
                 v11 = sub_802D246();
@@ -12165,7 +12165,7 @@ signed int sub_800AF50()
 
 
 // 0x800af84
-signed int __fastcall sub_800AF84(int a1)
+signed int __fastcall battle_bustingLevelCategoryForEffect_800AF84(int a1)
 {
     int v1; // r10
     char v2; // r0
@@ -12415,7 +12415,7 @@ int battle_initBattleStateBuffer_800B144()
     dword_203CCA0 = v17;
     dword_203CCA4 = gameState_getProtectedBugfrags_803D0F4();
     dword_203CBE0[0] = 305419896;
-    return sub_80200A4(62);
+    return battle_requestSetBattleMode_80200A4(62);
 }
 
 
@@ -12464,7 +12464,7 @@ int battle_backupStateForRestart_800B3A2()
     v1 = sub_8013682(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
     CopyWords(v1, byte_203CC34, 0x64u);
     CopyWords(&byte_203CED0, byte_203CC98, 0x10u);
-    return sub_80200A4(50);
+    return battle_requestSetBattleMode_80200A4(50);
 }
 
 
@@ -12486,7 +12486,7 @@ int sub_800B428()
 {
     sub_802C8FA(&dword_203CBE4);
     dword_203CBE0[0] = 523190095;
-    return sub_80200A4(4);
+    return battle_requestSetBattleMode_80200A4(4);
 }
 
 
@@ -12532,7 +12532,7 @@ int sub_800B484()
 {
     dword_203CBE0[0] = -235802127;
     CopyWords(byte_203F6D0, &dword_203CBE4, 0x3Cu);
-    return sub_80200A4(16);
+    return battle_requestSetBattleMode_80200A4(16);
 }
 
 
@@ -12555,7 +12555,7 @@ int __fastcall sub_800B4B2(int a1, int a2)
     dword_203CBE0[0] = -1447508010;
     dword_203CBE4 = v2;
     *byte_203CBE8 = v3;
-    return sub_80200A4(3);
+    return battle_requestSetBattleMode_80200A4(3);
 }
 
 

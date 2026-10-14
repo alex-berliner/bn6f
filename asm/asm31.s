@@ -1021,7 +1021,7 @@ battleObject_syncSpriteFromRelatedObject_80B8932:
 	strh r0, [r5,#oBattleObject_Z16]
 	mov r0, r4
 	mov r1, #1
-	bl sub_80030BA
+	bl sprite_getShadowOffsetForFrame_80030BA
 	lsl r0, r0, #0x10
 	mul r0, r6
 	lsl r1, r1, #0x10
@@ -32685,7 +32685,7 @@ off_80C7284:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80C734E+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017E26+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -42679,7 +42679,7 @@ off_80CBC8C:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CBDE6+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -45351,7 +45351,7 @@ off_80CD0B8:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CD1BE+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -46063,7 +46063,7 @@ off_80CD62C:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CD700+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -46520,7 +46520,7 @@ off_80CD9F4:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CDBE8+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -47055,7 +47055,7 @@ off_80CDE20:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CDE44+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -49702,7 +49702,7 @@ off_80CF1B8:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CF1DC+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -50781,7 +50781,7 @@ off_80CFA48:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80CFB2C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017E26+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -56269,7 +56269,7 @@ jt_80D2348:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D239C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017E26+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -58773,7 +58773,7 @@ off_80D35B8:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D36CE+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -60313,7 +60313,7 @@ off_80D4170:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D42E8+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -60865,7 +60865,7 @@ locret_80D456E:
 	pop {pc}
 	thumb_func_end battleObject_updateMovementHighlight_80D4544
 
-// symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select sub_80D458C or sub_80D45AE, then returns
+// symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select battleObject_phaseTickToNext_80D458C or sub_80D45AE, then returns
 // symdb: (r5 = BattleObjectPtr) -> r0 = ... ; no fixed return contract, side effect is jumping to one of
 // symdb: two phase handlers based on CurPhase
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCurPhaseByJumpTable_80D4570.yaml
@@ -60882,16 +60882,16 @@ battleObject_dispatchCurPhaseByJumpTable_80D4570:
 off_80D4580:
 	.word off_80D4584
 off_80D4584:
-	.word sub_80D458C+1
+	.word battleObject_phaseTickToNext_80D458C+1
 	.word sub_80D45AE+1
 	thumb_func_end battleObject_dispatchCurPhaseByJumpTable_80D4570
 
 // symdb: BattleObject phase tick: if not yet initialized, seed Timer from Param2; each call decrements Timer and on reaching zero, reset Timer to 8 and set CurPhaseAndPhaseInitialized to 4.
 // symdb: (r5 = BattleObject*) -> r0 = leftover Timer; side effects writes BattleObject->PhaseInitialized,
 // symdb: Timer, CurPhaseAndPhaseInitialized
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D458C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_phaseTickToNext_80D458C.yaml
 	thumb_local_start
-sub_80D458C:
+battleObject_phaseTickToNext_80D458C:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	cmp r0, #0
@@ -60911,7 +60911,7 @@ loc_80D459C:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80D45AC:
 	pop {pc}
-	thumb_func_end sub_80D458C
+	thumb_func_end battleObject_phaseTickToNext_80D458C
 
 	thumb_local_start
 sub_80D45AE:
@@ -61172,7 +61172,7 @@ off_80D479C:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D4888+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -61920,7 +61920,7 @@ off_80D4D60:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D4EFC+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -67402,7 +67402,7 @@ off_80D7798:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D787C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017CC0+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -69068,7 +69068,7 @@ off_80D8508:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D855C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017E26+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -72802,7 +72802,7 @@ off_80DA134:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80DA2EC+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_80DA37A+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -75042,7 +75042,7 @@ off_80DB174:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80DB252+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word sub_8017E26+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -88313,10 +88313,10 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: finds enemy (virus/navi) battle objects on the opposite alliance and stores them into a stack-local array, with sub_80E16CC probing specific related-target slots
+// symdb: finds enemy (virus/navi) battle objects on the opposite alliance and stores them into a stack-local array, with battleObject_computeMoveTargetPanel_80E16CC probing specific related-target slots
 // symdb: (r5 = self BattleObject, r10 = Toolkit) -> r0 = 0 (Alliance-precomputed count of stored slots),
 // symdb: r5 preserved ; side effects: writes a 0x34-byte scratch buffer on the stack and queries
-// symdb: object_getEnemyByNameRange plus three sub_80E16CC probes
+// symdb: object_getEnemyByNameRange plus three battleObject_computeMoveTargetPanel_80E16CC probes
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_findEnemyTargets_80E1670.yaml
 	thumb_local_start
 battle_ai_findEnemyTargets_80E1670:
@@ -88338,19 +88338,19 @@ battle_ai_findEnemyTargets_80E1670:
 	mov r0, #0
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r2, r4
-	bl sub_80E16CC
+	bl battleObject_computeMoveTargetPanel_80E16CC
 	cmp r0, #0
 	bne loc_80E16BA
 	mov r0, #1
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r2, r4
-	bl sub_80E16CC
+	bl battleObject_computeMoveTargetPanel_80E16CC
 	cmp r0, #0
 	bne loc_80E16BA
 	mov r0, #2
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r2, r4
-	bl sub_80E16CC
+	bl battleObject_computeMoveTargetPanel_80E16CC
 	cmp r0, #0
 	bne loc_80E16BA
 loc_80E16BA:
@@ -88365,9 +88365,9 @@ byte_80E16C4:
 // symdb: Decides a target panel (high byte = direction, low byte = column) for a battle object's step/move toward a chosen enemy/ally.
 // symdb: (r0 = actorType, r1 = battleObject ptr, r2 = unknown) -> r0 = result of sub_80E1704 ; side
 // symdb: effects (BattleObject->PanelX read/written via path constants)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E16CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computeMoveTargetPanel_80E16CC.yaml
 	thumb_local_start
-sub_80E16CC:
+battleObject_computeMoveTargetPanel_80E16CC:
 	push {r4,r6,r7,lr}
 	mov r6, r1
 	mov r7, r2
@@ -88398,7 +88398,7 @@ loc_80E16F4:
 loc_80E16FE:
 	bl sub_80E1704
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80E16CC
+	thumb_func_end battleObject_computeMoveTargetPanel_80E16CC
 
 	thumb_local_start
 sub_80E1704:
@@ -172096,7 +172096,7 @@ off_8109B74:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -172610,14 +172610,14 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
-// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
+// symdb: Tiny wrapper that runs two initialization steps in order (battleObject_initAndRunAI_8016B02, then sub_8109FA2) and returns.
 // symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
-// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
+// symdb: whatever sub_8109FA2 (and battleObject_initAndRunAI_8016B02) leave behind
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:
 	push {lr}
-	bl sub_8016B02
+	bl battleObject_initAndRunAI_8016B02
 	bl battle_object_onAction8EndClearExtraVars_8109FA2
 	pop {pc}
 	thumb_func_end sub_8109F7E
@@ -173420,7 +173420,7 @@ sub_810A5D6:
 	str r0, [r5,#oBattleObject_ExtraVars]
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 loc_810A5E4:
-	bl sub_8016B02
+	bl battleObject_initAndRunAI_8016B02
 	pop {pc}
 	thumb_func_end sub_810A5D6
 
@@ -173869,7 +173869,7 @@ off_810A9EC:
 	.word sub_810ABF6+1
 	.word sub_810AA90+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -174974,7 +174974,7 @@ off_810B2D0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810B338+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -176060,7 +176060,7 @@ sub_810BBF6:
 	bl sub_80D9284
 	bl sub_810BB64
 loc_810BC0A:
-	bl sub_8016B02
+	bl battleObject_initAndRunAI_8016B02
 	pop {pc}
 	thumb_func_end sub_810BBF6
 
@@ -176709,7 +176709,7 @@ off_810C170:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1

@@ -8508,7 +8508,7 @@ int SetBeastOutCounterTo3()
 
 
 // 0x80141c8
-int __fastcall sub_80141C8(int a1)
+int __fastcall battleObject_initPlayerMaxHPFromStats_80141C8(int a1)
 {
     int v1; // r5
     __int16 v2; // r0
@@ -9736,7 +9736,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
 
 
 // 0x8014cc0
-void sub_8014CC0()
+void battle_aiAttackTickBeastSp_8014CC0()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -12527,12 +12527,12 @@ void sub_8016AD0()
 {
     battle_getStateUnk40_800A704();
     __asm { SVC         6 }
-    sprite_setPallete(*sub_8016B02);
+    sprite_setPallete(*battleObject_initAndRunAI_8016B02);
 }
 
 
 // 0x8016b02
-int sub_8016B02()
+int battleObject_initAndRunAI_8016B02()
 {
     int v0; // r5
     int result; // r0
@@ -13380,7 +13380,7 @@ int __noreturn playerObject_init_80172F0()
     v14 = v12;
     battle_IsNoCustomPlusActive_80107C0(v12);
     v16 = object_setupCollisionData(v14, 1, 2, v15);
-    sub_80141C8(v16);
+    battleObject_initPlayerMaxHPFromStats_80141C8(v16);
     sub_8013892();
     v18 = sub_801086C(v17);
     if ( !sub_8013774(v18, 41) )
@@ -20885,7 +20885,7 @@ int __noreturn chatbox_openMessageWindow_801DFEA()
 
 
 // 0x801e006
-int sub_801E006()
+int battle_setUnkFlags44_0x40_801E006()
 {
     return flagSetBits_eStruct2035280_801BEB8(64);
 }

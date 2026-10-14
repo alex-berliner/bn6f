@@ -28,7 +28,7 @@ sub_810D98C:
 	pop {pc}
 	thumb_func_end sub_810D98C
 
-// symdb: Battle enemy AI state-machine step: runs a pre-check (sub_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
+// symdb: Battle enemy AI state-machine step: runs a pre-check (battle_enemyAI_preCheckChipUsage_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
 // symdb: void aiStepDispatch(u32 r4, u32 r5, u32 r6, u32 r7, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12,
 // symdb: u32 lr); /* returns r1, r5, r8, r9, r10, r11, r12; clobbers nz/c/v, r0, r2, r3, r7, lr;
 // symdb: preserves r4, r6 */
@@ -36,7 +36,7 @@ sub_810D98C:
 	thumb_func_start sub_810D998
 sub_810D998:
 	push {r4,r6,lr}
-	bl sub_810DAF0
+	bl battle_enemyAI_preCheckChipUsage_810DAF0
 	cmp r0, #0
 	bne locret_810D9AC
 	ldr r1, off_810D9B0 // =off_810D9B4
@@ -238,9 +238,9 @@ sub_810DAE4:
 // symdb: Battle enemy AI pre-check: if the actor has a chip selected for use and the battle state's Unk_40 has reached 0x12C, write chip params, set attack 0 and reset state, signalling the AI to pause its state handler.
 // symdb: (r5 = BattleObject*, r10 = BattleState*) -> r0 = bool pauseAI ; side effects: writes AI params,
 // symdb: sets attack index to 0, resets selected chip state, may advance BattleState-derived counters
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810DAF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_enemyAI_preCheckChipUsage_810DAF0.yaml
 	thumb_local_start
-sub_810DAF0:
+battle_enemyAI_preCheckChipUsage_810DAF0:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -261,7 +261,7 @@ sub_810DAF0:
 loc_810DB1C:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810DAF0
+	thumb_func_end battle_enemyAI_preCheckChipUsage_810DAF0
 
 // symdb: AI helper that picks the next valid panel one step closer to its target along the Y axis (preferred) or X axis, validated via object_checkPanelParameters.
 // symdb: void aiStepPanelTowardTarget_810DB20(u32 /*r5*/ battle_obj, u32 /*r6*/ ai_state); // out: r0 =
@@ -948,7 +948,7 @@ off_810E120:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810E37A+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -1735,7 +1735,7 @@ off_810E7B0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810E8DA+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -2692,7 +2692,7 @@ off_810F010:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -3080,7 +3080,7 @@ off_810F39C:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_810F402+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -4165,7 +4165,7 @@ sub_810FD70:
 	beq loc_810FD84
 	bl object_clearCollisionRegion // () -> void
 loc_810FD84:
-	bl sub_8016B02
+	bl battleObject_initAndRunAI_8016B02
 	pop {pc}
 	.balign 4, 0
 dword_810FD8C:
@@ -5052,7 +5052,7 @@ off_81104D4:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_8110518+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -6142,7 +6142,7 @@ off_8110DC0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -6719,7 +6719,7 @@ off_8111330:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -8005,7 +8005,7 @@ off_8111DC0:
 	.word sub_8111DF0+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -8458,7 +8458,7 @@ off_81121F0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -9349,7 +9349,7 @@ off_81129A0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_8112A1E+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -10236,7 +10236,7 @@ byte_81130D8:
 byte_81130DE:
 	.byte 0x0, 0x0, 0x1, 0x1, 0x1, 0x1
 
-// symdb: Trivial sequence that calls sub_8113114 then sub_8016B02, then returns to the caller.
+// symdb: Trivial sequence that calls sub_8113114 then battleObject_initAndRunAI_8016B02, then returns to the caller.
 // symdb: void callAndReturn_81130E4(void) /* uses r4 r5 r10 from caller; clobbers most regs; no preserved
 // symdb: regs */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81130E4.yaml
@@ -10244,7 +10244,7 @@ byte_81130DE:
 sub_81130E4:
 	push {lr}
 	bl sub_8113114
-	bl sub_8016B02
+	bl battleObject_initAndRunAI_8016B02
 	pop {pc}
 	thumb_func_end sub_81130E4
 
@@ -10838,7 +10838,7 @@ off_81135CC:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811363C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -11735,7 +11735,7 @@ off_8113D50:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -12893,7 +12893,7 @@ snakearmAttackTable_8114710:
 	.word snakearmAI_setMovingThenCall_sub_80165B8_8114FAA+1 // 0x1
 	.word battle_objectUpdateDispatchPhase_80165C2+1 // 0x2
 	.word sub_80166AE+1 // 0x3
-	.word sub_8016B02+1 // 0x4
+	.word battleObject_initAndRunAI_8016B02+1 // 0x4
 	.word battleObjectStateDispatcher_8016CE8+1 // 0x5
 	.word sub_8016B36+1 // 0x6
 	.word sub_8016B72+1 // 0x7
@@ -14495,7 +14495,7 @@ off_81154F0:
 	.word sub_811555C+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -14973,7 +14973,7 @@ off_8115950:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_81159C4+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -15477,7 +15477,7 @@ off_8115DE0:
 	.word sub_81162AE+1
 	.word battle_objectUpdateDispatchPhase_80165C2+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -16105,7 +16105,7 @@ off_81163F0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811648C+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -16344,7 +16344,7 @@ off_81166B0:
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_811670E+1
 	.word sub_80166AE+1
-	.word sub_8016B02+1
+	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_8016B36+1
 	.word sub_8016B72+1
@@ -17015,7 +17015,7 @@ off_8116BB0:
 	.word off_8116BB4
 off_8116BB4:
 	.word sprite_fallingObjectStepDown_8116BC0+1
-	.word sub_8116BFC+1
+	.word battleObject_sprOutWindTick_8116BFC+1
 	.word sprite_scrollStepAndCullOffscreen_8116C14+1
 	thumb_func_end sprite_dispatchVariantUpdate_8116B9C
 
@@ -17053,9 +17053,9 @@ byte_8116BEC:
 // symdb: Per-frame tick for a SprOut "wind" sub-record: nudges the sub-record's +0xC time field up/down by 2, advances the allied sprite's palette animation, and queues destruction (CurAction = CUR_STATE_DESTROY) once the wind has fully expired.
 // symdb: (r5 = BattleObject*, r7 = byte ptr to a record/cur-state byte) -> void; side effect: may write
 // symdb: [r5+9] (CurAction) = 0x08, plus whatever the two callees mutate
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116BFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_sprOutWindTick_8116BFC.yaml
 	thumb_local_start
-sub_8116BFC:
+battleObject_sprOutWindTick_8116BFC:
 	push {lr}
 	bl record_adjustNthSubRecordFieldC_8116C40
 	bl sub_8116C78
@@ -17067,7 +17067,7 @@ sub_8116BFC:
 locret_8116C10:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8116BFC
+	thumb_func_end battleObject_sprOutWindTick_8116BFC
 
 // symdb: Moves a sprite along one axis by 8x its signed scroll-speed field, then if the coordinate went negative clears its scale counter and marks it unscalable (it has scrolled off/shrunk away).
 // symdb: void sprite_scrollStepAndCullOffscreen_8116C14(Sprite* sprite /* r7 */); returns with r0/r1 =
@@ -18596,7 +18596,7 @@ off_811773C:
 off_8117740:
 	.word battle_getObjectPairOddByteClamped8_811774C+1
 	.word sub_8117764+1
-	.word sub_8117768+1
+	.word battle_clampEnemyCountByBattleStartProgress_8117768+1
 	thumb_func_end battle_playObjectTripleSound_81176D0
 
 // symdb: Reads the odd byte of a byte-pair indexed by the object's [r5+4] field from table unk_201C400 and clamps it to at most 8.
@@ -18631,9 +18631,9 @@ sub_8117764:
 
 // symdb: Clamps enemy (virus) count for the battle by checking progress flag 0x75 (min 4, max 8 viruses)
 // symdb: (r10 = toolkit, lr = return) -> r0 = clamped enemy count (4..8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117768.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clampEnemyCountByBattleStartProgress_8117768.yaml
 	thumb_local_start
-sub_8117768:
+battle_clampEnemyCountByBattleStartProgress_8117768:
 	push {lr}
 	mov r0, #0x75
 	bl CheckKeyItem
@@ -18647,7 +18647,7 @@ loc_8117778:
 	mov r0, #8
 locret_811777E:
 	pop {pc}
-	thumb_func_end sub_8117768
+	thumb_func_end battle_clampEnemyCountByBattleStartProgress_8117768
 
 	thumb_func_start sub_8117780
 sub_8117780:
