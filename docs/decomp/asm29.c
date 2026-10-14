@@ -504,7 +504,7 @@ void owMapObject_bbsObjectUpdate_80A5588()
                 owPlayer_isBusyOrCutsceneActive_809E462();
                 if ( v2 )
                 {
-                    sub_80A55D4();
+                    reqBBS_updateBobbingCameraAndPlayChime_80A55D4();
                     TestEventFlagFromImmediate(4, 234);
                     if ( v2 )
                     {
@@ -531,7 +531,7 @@ int sub_80A55CC()
 
 
 // 0x80a55d4
-signed int sub_80A55D4()
+signed int reqBBS_updateBobbingCameraAndPlayChime_80A55D4()
 {
     int v0; // r5
     int v1; // r6
@@ -3590,7 +3590,7 @@ signed int battle_isInputAllowedOrBattleBusy_80A7C58()
 
 
 // 0x80a7c84
-int sub_80A7C84()
+int battleObject_dispatchCurAction_80A7C84()
 {
     int v0; // r5
 

@@ -914,12 +914,12 @@ getWorkAreaPtr_2006CF8_813BD0C:
 
 // symdb: Returns the EWRAM pointer to the NaviCust program table
 // symdb: () -> r7 = unk_2006C88 ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadNavicustProgramTable_813BD10.yaml
 	thumb_local_start
-sub_813BD10:
+battle_loadNavicustProgramTable_813BD10:
 	ldr r7, off_813BD1C // =unk_2006C88 
 	mov pc, lr
-	thumb_func_end sub_813BD10
+	thumb_func_end battle_loadNavicustProgramTable_813BD10
 
 // symdb: Tiny helper that loads the base address of the IWRAM data block at 0x2006CC0 into r7 (a work-area/global-struct pointer getter).
 // symdb: void getWorkAreaPtr_2006CC0(void); // out: r7 = &unk_2006CC0
@@ -938,7 +938,7 @@ off_813BD20:
 
 // symdb: Iterates all 0x31 battle rows and, for each entry with the enabled bit set, collects target panels in the four cardinal neighbours of the entry's panel and runs a finalize helper.
 // symdb: () -> ; side effects: zero-fills a 0x31-byte scratch buffer and writes per-entry panels via
-// symdb: battleObject_collectTargetsInRegion + sub_813BE38
+// symdb: battleObject_collectTargetsInRegion + battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateTargetPanelsAllRows_813BD24.yaml
 	thumb_local_start
 battle_updateTargetPanelsAllRows_813BD24:
@@ -982,7 +982,7 @@ loc_813BD2C:
 	ldrb r3, [r7,#5]
 	bl battleObject_collectTargetsInRegion_813BD90
 	ldrh r0, [r7]
-	bl sub_813BE38
+	bl battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 loc_813BD82:
 	add r6, #1
 	cmp r6, #0x31 
@@ -1094,9 +1094,9 @@ loc_813BE1E:
 // symdb: (r0 = battleObject index, r6 = saved caller Element, r10 = toolkit) -> r0 = 0 ; side effects:
 // symdb: increments byte in Unk200431c (toolkit+0x60) for every other live battle object with the same
 // symdb: Element
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BE38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38.yaml
 	thumb_local_start
-sub_813BE38:
+battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r6, [sp]
@@ -1138,7 +1138,7 @@ loc_813BE7C:
 	.balign 4, 0
 off_813BE88:
 	.word byte_2006C50
-	thumb_func_end sub_813BE38
+	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
 	thumb_local_start
 sub_813BE8C:
@@ -2162,7 +2162,7 @@ loc_813C6D6:
 	sub r6, #1
 	bge loc_813C698
 	mov r6, #0
-	bl sub_813BD10
+	bl battle_loadNavicustProgramTable_813BD10
 	str r7, [sp]
 loc_813C6E2:
 	ldr r7, [sp]

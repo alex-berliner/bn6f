@@ -31849,9 +31849,9 @@ locret_811E020:
 // symdb: Tail-call dispatch on a battle object's CurAction/curstate byte via a 3-entry Thumb jump table
 // symdb: (r5 = BattleObject*) -> r2/r3/r5 = whatever the tail-called function returns; no preserved lr
 // symdb: (uses pop {pc})
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E024.yaml
-	thumb_func_start sub_811E024
-sub_811E024:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectState_811E024.yaml
+	thumb_func_start battle_dispatchObjectState_811E024
+battle_dispatchObjectState_811E024:
 	push {lr}
 	ldr r6, off_811E044 // =eStruct2001010
 	ldr r0, off_811E034 // =off_811E038
@@ -31869,7 +31869,7 @@ off_811E038:
 	.word sub_811E0B2+1
 off_811E044:
 	.word eStruct2001010
-	thumb_func_end sub_811E024
+	thumb_func_end battle_dispatchObjectState_811E024
 
 	thumb_local_start
 sub_811E048:

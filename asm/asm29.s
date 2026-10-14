@@ -1002,7 +1002,7 @@ owMapObject_bbsObjectUpdate_80A5588:
 	bne locret_80A55CA
 	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_80A55CA
-	bl sub_80A55D4
+	bl reqBBS_updateBobbingCameraAndPlayChime_80A55D4
 	movflag EVENT_4EA
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_80A55C6
@@ -1032,9 +1032,9 @@ sub_80A55CC:
 // symdb: BBS Overworld object per-frame step: ticking a down-counter, picking a BBS message id, drifting the camera, projecting it onto the screen and playing a "new request" jingle when a message becomes available.
 // symdb: (r5 = BBS object ptr, r6 = ?, r10 = toolkit) -> side effects only; r0/flags side effects from
 // symdb: callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A55D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_updateBobbingCameraAndPlayChime_80A55D4.yaml
 	thumb_local_start
-sub_80A55D4:
+reqBBS_updateBobbingCameraAndPlayChime_80A55D4:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x2c]
 	sub r0, #1
@@ -1127,7 +1127,7 @@ byte_80A567C:
 	.byte 0xA, 0x0
 dword_80A568C:
 	.word 0x17F
-	thumb_func_end sub_80A55D4
+	thumb_func_end reqBBS_updateBobbingCameraAndPlayChime_80A55D4
 
 // symdb: Tests whether the field camera lies within any rectangular hotspot region defined for the current map group.
 // symdb: void sub_80A5690(u32 /*r5*/ camera, u32 /*r6*/ param,                  u32 /*r10*/ toolkit) ->
@@ -5406,9 +5406,9 @@ loc_80A7C7E:
 // symdb: (r5 = BattleObjectPtr, r10 = Toolkit) -> r0 = handler return; side effects: jumps to the
 // symdb: function pointer at off_80A7C98[r5+8] with r0=tableBase and r1=byte at r5+8, then returns
 // symdb: whatever that handler returns.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7C84.yaml
-	thumb_func_start sub_80A7C84
-sub_80A7C84:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCurAction_80A7C84.yaml
+	thumb_func_start battleObject_dispatchCurAction_80A7C84
+battleObject_dispatchCurAction_80A7C84:
 	push {r4-r7,lr}
 	ldr r0, off_80A7C94 // =off_80A7C98 
 	ldrb r1, [r5,#8]
@@ -5423,7 +5423,7 @@ off_80A7C98:
 	.word sub_80A7CA4+1
 	.word sub_80A7CEA+1
 	.word sub_80A7CF6+1
-	thumb_func_end sub_80A7C84
+	thumb_func_end battleObject_dispatchCurAction_80A7C84
 
 	thumb_local_start
 sub_80A7CA4:

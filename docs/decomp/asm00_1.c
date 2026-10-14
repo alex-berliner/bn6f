@@ -8768,7 +8768,7 @@ int battle_waitLinkSync_8009478()
 
 
 // 0x80094b6
-int sub_80094B6()
+int battle_updateChipSelectInit_80094B6()
 {
     int v0; // r5
     int result; // r0
@@ -9413,7 +9413,7 @@ int sub_8009966()
 
 
 // 0x80099a4
-int sub_80099A4()
+int battle_dispatchByIndex_80099A4()
 {
     int v0; // r5
 
@@ -9597,7 +9597,7 @@ int sub_8009AFC()
 
 
 // 0x8009b20
-void __fastcall sub_8009B20(int a1, int a2, int a3, int a4)
+void __fastcall battle_runBattleStep_8009B20(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0

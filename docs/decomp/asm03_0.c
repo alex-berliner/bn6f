@@ -7844,7 +7844,7 @@ signed int sub_802BDB4()
 
 
 // 0x802bdc0
-int sub_802BDC0()
+int battle_chipSelectStep_802BDC0()
 {
     int v0; // r5
 
@@ -16314,7 +16314,7 @@ int __fastcall sub_8031C64(_DWORD *a1)
 
 
 // 0x8031c7c
-int __fastcall sub_8031C7C(_DWORD *a1)
+int __fastcall chatbox_renderBattleCursorStep_8031C7C(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -16327,7 +16327,7 @@ int __fastcall sub_8031C7C(_DWORD *a1)
 
 
 // 0x8031c94
-int __fastcall sub_8031C94(_DWORD *a1)
+int __fastcall battle_aiStorySub3_8031C94(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

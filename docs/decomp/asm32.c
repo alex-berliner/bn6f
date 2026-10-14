@@ -20149,7 +20149,7 @@ int sub_811E000()
 
 
 // 0x811e024
-int sub_811E024()
+int battle_dispatchObjectState_811E024()
 {
     int v0; // r5
 

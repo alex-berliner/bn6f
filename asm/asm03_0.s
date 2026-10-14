@@ -11997,7 +11997,7 @@ off_802BD9C:
 	.word off_802BDA0
 off_802BDA0:
 	.word sub_802BDB4+1
-	.word sub_802BDC0+1
+	.word battle_chipSelectStep_802BDC0+1
 	.word sub_802C348+1
 off_802BDAC:
 	.word eS20364C0
@@ -12021,9 +12021,9 @@ sub_802BDB4:
 // symdb: chip-select state dispatcher: indexes a jump table by chip-select state and forwards to the matching handler, then plays the chip-select sound
 // symdb: (r0 = chipSelectStateBase, r5 = chipSelectStruct (S20364C0*), r10 = Toolkit*, lr) -> r0 = return
 // symdb: value of last handler called
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BDC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipSelectStep_802BDC0.yaml
 	thumb_local_start
-sub_802BDC0:
+battle_chipSelectStep_802BDC0:
 	push {lr}
 	ldr r1, off_802BDD8 // =off_802BDDC 
 	ldrb r0, [r5,#1]
@@ -12042,7 +12042,7 @@ off_802BDDC:
 	.word sub_802C280+1
 	.word sub_802C2D0+1
 	.word battle_advanceFade_802C328+1
-	thumb_func_end sub_802BDC0
+	thumb_func_end battle_chipSelectStep_802BDC0
 
 	thumb_local_start
 sub_802BDF0:
@@ -25556,8 +25556,8 @@ jt_8031B10:
 	.word sub_8031C5A+1 // 0x14
 	.word sub_8031C5A+1 // 0x15
 	.word sub_8031C64+1 // 0x16
-	.word sub_8031C7C+1 // 0x17
-	.word sub_8031C94+1 // 0x18
+	.word chatbox_renderBattleCursorStep_8031C7C+1 // 0x17
+	.word battle_aiStorySub3_8031C94+1 // 0x18
 	.word sub_8031CAC+1 // 0x19
 dword_8031B78:
 	.word 0x16EF
@@ -25745,9 +25745,9 @@ sub_8031C64:
 // symdb: Advances the battle textbox cursor blink animation and reads back its visible/on state.
 // symdb: (r0 = AIData pointer 0x02009f5c) -> r0 = 2 ; side effects: writes to scratch buffer via
 // symdb: calcRelPosToTarget, updates textbox cursor blink state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_renderBattleCursorStep_8031C7C.yaml
 	thumb_local_start
-sub_8031C7C:
+chatbox_renderBattleCursorStep_8031C7C:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0xe
@@ -25757,14 +25757,14 @@ sub_8031C7C:
 	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031C7C
+	thumb_func_end chatbox_renderBattleCursorStep_8031C7C
 
 // symdb: AI step helper that recomputes target-relative position, advances cursor blink, then queries the AI selection byte
 // symdb: (r0 = scratch buffer, r5 = AI-related state) -> r0 = 0 or 2 ; side effects may_write ['nz', 'c',
 // symdb: 'v', 'r0', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'lr']
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiStorySub3_8031C94.yaml
 	thumb_local_start
-sub_8031C94:
+battle_aiStorySub3_8031C94:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25774,7 +25774,7 @@ sub_8031C94:
 	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031C94
+	thumb_func_end battle_aiStorySub3_8031C94
 
 // symdb: Computes the target's relative position, then runs a fixed-point half-plane (cross-area) test against a hard-coded test point/normal, and finally calls sub_8031B7C.
 // symdb: void sub_8031CAC(void);  // clobbers r2,r3,r4,r6,r7; touches flags N,Z,C,V

@@ -903,7 +903,7 @@ int submenu_subchip_81240BC()
     int result; // r0
     char v2; // zf
 
-    sub_81244EC();
+    submenu_subchip_tickOamAndAdvanceAnimTable_81244EC();
     result = IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -957,7 +957,7 @@ void submenu_subchip_81240D0()
     {
         submenu_ConfirmExitAndFade_811FB64(8, v2, v3);
     }
-    sub_81244EC();
+    submenu_subchip_tickOamAndAdvanceAnimTable_81244EC();
 }
 
 
@@ -1180,7 +1180,7 @@ int __fastcall submenu_subchip_8124350(int a1)
     int result; // r0
     char v3; // zf
 
-    sub_81244EC();
+    submenu_subchip_tickOamAndAdvanceAnimTable_81244EC();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
     result = IsPaletteFadeActive();
@@ -1262,7 +1262,7 @@ void subchip_initGfx_81243B0()
 
 
 // 0x81244ec
-void sub_81244EC()
+void submenu_subchip_tickOamAndAdvanceAnimTable_81244EC()
 {
     int v0; // r5
     int v1; // r0

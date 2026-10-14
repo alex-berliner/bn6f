@@ -1424,7 +1424,7 @@ jt_80038E8:
 	.word 0x0
 	.word 0x0
 	.word 0x1
-	.word sub_808FEA4+1
+	.word battle_runBattleFrameForCyberWorld_808FEA4+1
 	.word 0x0
 	.word 0x0
 	.word 0x1
@@ -3130,7 +3130,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A77A8+1
 	.word battleObject_dispatchOnSubtype_80A781C+1
 	.word battle_aiDispatchByAIDataBLeftAbility_80A78B8+1
-	.word sub_80A7C84+1
+	.word battleObject_dispatchCurAction_80A7C84+1
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1
 	.word battle_dispatchCustomJumptableByIndex_80A8208+1
 	.word sub_80A8394+1
@@ -10346,7 +10346,7 @@ off_8007B50:
 	.word sub_8009158+1
 	.word sub_8009158+1
 	.word sub_800961C+1
-	.word sub_80099A4+1
+	.word battle_dispatchByIndex_80099A4+1
 	.word sub_8009158+1
 	.word sub_8009C94+1
 	.word sub_8009158+1
@@ -13781,7 +13781,7 @@ locret_800945A:
 
 // symdb: Dispatches a battle-state phase byte (offset 2 of the struct in r5) to one of two phase handlers via a jump table.
 // symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to sub_8009478 (phase 0) or
-// symdb: sub_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
+// symdb: battle_updateChipSelectInit_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DispatchStatePhase_800945C.yaml
 	thumb_local_start
 battle_DispatchStatePhase_800945C:
@@ -13797,7 +13797,7 @@ off_800946C:
 	.word off_8009470
 off_8009470:
 	.word battle_waitLinkSync_8009478+1
-	.word sub_80094B6+1
+	.word battle_updateChipSelectInit_80094B6+1
 	thumb_func_end battle_DispatchStatePhase_800945C
 
 // symdb: Link-battle sync wait state handler — waits until both linked GBA systems report the same tracked ID (or a ~3 s timeout) before letting the battle advance.
@@ -13845,9 +13845,9 @@ locret_80094B4:
 // symdb: Initialises the battle chip-select screen once per battle result phase and advances to the result screen when the chip-select init returns true.
 // symdb: (r5 = BattleStatePtr) -> r0 = battle_initChipSelect_802BD60's return ; writes BattleState_Unk_03
 // symdb: (+0xD), Index_01 (+0x1), Unk_02_03 (+0x2)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80094B6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateChipSelectInit_80094B6.yaml
 	thumb_local_start
-sub_80094B6:
+battle_updateChipSelectInit_80094B6:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -13866,7 +13866,7 @@ loc_80094C8:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_80094D8:
 	pop {pc}
-	thumb_func_end sub_80094B6
+	thumb_func_end battle_updateChipSelectInit_80094B6
 
 // symdb: Drives a battle-end fade-out and hands off to the post-battle state when the fade finishes.
 // symdb: (no input registers from caller) -> r0 = fade colour slot (1 or 4) on the first entry, nothing
@@ -14527,9 +14527,9 @@ off_80099A0:
 
 // symdb: Dispatches to a battle-state handler based on `BattleState.Index_01`.
 // symdb: (r5 = BattleState* via toolkit r10) -> r0 = target-subroutine-return ; clobbers r0/r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80099A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchByIndex_80099A4.yaml
 	thumb_local_start
-sub_80099A4:
+battle_dispatchByIndex_80099A4:
 	push {lr}
 	ldr r1, off_80099B4 // =off_80099B8
 	ldrb r0, [r5,#oBattleState_Index_01]
@@ -14544,14 +14544,14 @@ off_80099B8:
 	.word sub_80099E0+1
 	.word sub_8009A88+1
 	.word NULL
-	.word sub_8009B20+1
+	.word battle_runBattleStep_8009B20+1
 	.word sub_8009BAC+1
 	.word sub_8009C2A+1
 	.word NULL
 	.word NULL
 	.word NULL
 	.word sub_8009C56+1
-	thumb_func_end sub_80099A4
+	thumb_func_end battle_dispatchByIndex_80099A4
 
 	thumb_local_start
 sub_80099E0:
@@ -14737,9 +14737,9 @@ locret_8009B1E:
 // symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_Unk_03,
 // symdb: oBattleState_Index_01, oBattleState_Unk_1e, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
 // symdb: pending event flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009B20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleStep_8009B20.yaml
 	thumb_local_start
-sub_8009B20:
+battle_runBattleStep_8009B20:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -14802,7 +14802,7 @@ loc_8009BA4:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_8009BAA:
 	pop {r4,pc}
-	thumb_func_end sub_8009B20
+	thumb_func_end battle_runBattleStep_8009B20
 
 	thumb_local_start
 sub_8009BAC:

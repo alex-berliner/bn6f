@@ -519,7 +519,7 @@ void *cutsceneWeather_update_808FE74()
 
 
 // 0x808fea4
-int sub_808FEA4()
+int battle_runBattleFrameForCyberWorld_808FEA4()
 {
     int v0; // r10
     int result; // r0

@@ -68270,7 +68270,7 @@ signed int battle_objectSetTimerFromParam1Table_80E19DC()
 
 
 // 0x80e19f4
-int sub_80E19F4()
+int battleObject_runActionDispatcher_80E19F4()
 {
     int v0; // r5
 

@@ -1088,7 +1088,7 @@ loc_8046794:
 	.balign 4, 0
 off_804679C:
 	.word sub_811DF1C+1
-	.word sub_811E024+1
+	.word battle_dispatchObjectState_811E024+1
 	.word sub_811E168+1
 	.word battle_dispatchScenarioEffect_811E248+1
 	.word sub_811E360+1

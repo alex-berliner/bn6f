@@ -2035,7 +2035,7 @@ jt_81240A0:
 	thumb_local_start
 submenu_subchip_81240BC: // (struct UnkSubMenu* state_a5) -> void
 	push {lr}
-	bl sub_81244EC
+	bl submenu_subchip_tickOamAndAdvanceAnimTable_81244EC
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81240CC
 	mov r0, #4
@@ -2093,7 +2093,7 @@ loc_8124112:
 	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x14]
 loc_8124128:
-	bl sub_81244EC
+	bl submenu_subchip_tickOamAndAdvanceAnimTable_81244EC
 	pop {pc}
 	.balign 4, 0
 off_8124130:
@@ -2439,7 +2439,7 @@ locret_812434C:
 	thumb_local_start
 submenu_subchip_8124350: // (struct UnkSubMenu* state_a5) -> void
 	push {lr}
-	bl sub_81244EC
+	bl submenu_subchip_tickOamAndAdvanceAnimTable_81244EC
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 
@@ -2624,9 +2624,9 @@ off_8124498:
 // symdb: Sub-chip submenu per-frame OAM tick — queues an OAM entry from a sprite/animation row table, advances the local anim timer, and on expiry looks up the next anim row.
 // symdb: (r5 = submenu state base, r10 = toolkit) -> void (out only preserves r5) ; side effects: writes
 // symdb: OAM via battleObject_queueOamFromTableRow_811FAF4, mutates r5+0xc/0xd/0x12
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81244EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_subchip_tickOamAndAdvanceAnimTable_81244EC.yaml
 	thumb_local_start
-sub_81244EC:
+submenu_subchip_tickOamAndAdvanceAnimTable_81244EC:
 	push {r4,lr}
 	ldrb r1, [r5,#0xc]
 	tst r1, r1
@@ -2666,7 +2666,7 @@ dword_8124534:
 	.word 0x40000000
 off_8124538:
 	.word dword_8123F3C
-	thumb_func_end sub_81244EC
+	thumb_func_end submenu_subchip_tickOamAndAdvanceAnimTable_81244EC
 
 // symdb: Renders the next character of the active chatbox text into the text-box tile buffer and then runs the chatbox follow-up update.
 // symdb: Next chatbox_renderNextChar_812453C(ChatboxState *r5); // r5 = chatbox/text state pointer in and

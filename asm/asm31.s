@@ -88827,7 +88827,7 @@ dword_80E19B8:
 // symdb: caller) // out: r5, r8-r12 preserved by callee convention; NZCV + r0-r4,r6-r7,r11 clobbered //
 // symdb: Reads: [r5 + oBattleObject_CurState] (u8 index into JumpTable80E19CC) //
 // symdb: JumpTable80E19CC[i] -> THUMB handler (+1 set in THUMB BX convention): //         0 ->
-// symdb: battle_objectSetTimerFromParam1Table_80E19DC //         1 -> sub_80E19F4 //         2 ->
+// symdb: battle_objectSetTimerFromParam1Table_80E19DC //         1 -> battleObject_runActionDispatcher_80E19F4 //         2 ->
 // symdb: battle_object_freeWithPhaseReset_80E1A5E
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x11_80E19BC.yaml
 	thumb_func_start t4_0x11_80E19BC
@@ -88842,7 +88842,7 @@ t4_0x11_80E19BC:
 	.balign 4, 0x00
 JumpTable80E19CC:
 	.word battle_objectSetTimerFromParam1Table_80E19DC+1
-	.word sub_80E19F4+1
+	.word battleObject_runActionDispatcher_80E19F4+1
 	.word battle_object_freeWithPhaseReset_80E1A5E+1
 JumpTable80E19CC_p:
 	.word JumpTable80E19CC
@@ -88870,9 +88870,9 @@ dword_80E19F0:
 // symdb: Dispatches BattleObject CurAction to a per-action handler via a one-entry vtable (default tail calls sub_80E1A0C)
 // symdb: (r5 = BattleObjectPtr) -> r0 = handler's r0 ; side effects: clobbers r1-r3,r10,lr; jumps to
 // symdb: function pointer chosen from a small table; tail-popped so the handler returns to the caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E19F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionDispatcher_80E19F4.yaml
 	thumb_local_start
-sub_80E19F4:
+battleObject_runActionDispatcher_80E19F4:
 	push {lr}
 	ldr r1, off_80E1A04 // =off_80E1A08
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -88885,7 +88885,7 @@ off_80E1A04:
 	.word off_80E1A08
 off_80E1A08:
 	.word sub_80E1A0C+1
-	thumb_func_end sub_80E19F4
+	thumb_func_end battleObject_runActionDispatcher_80E19F4
 
 	thumb_local_start
 sub_80E1A0C:

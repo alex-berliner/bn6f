@@ -774,7 +774,7 @@ void getWorkAreaPtr_2006CF8_813BD0C()
 
 
 // 0x813bd10
-void sub_813BD10()
+void battle_loadNavicustProgramTable_813BD10()
 {
     ;
 }
@@ -809,7 +809,7 @@ int battle_updateTargetPanelsAllRows_813BD24()
             battleObject_collectTargetsInRegion_813BD90(*v3, v3[3] + 1, v3[4], v3[5]);
             battleObject_collectTargetsInRegion_813BD90(*v3, v3[3], v3[4] - 1, v3[5]);
             battleObject_collectTargetsInRegion_813BD90(*v3, v3[3], v3[4] + 1, v3[5]);
-            sub_813BE38(*v3);
+            battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38(*v3);
         }
         ++v1;
     }
@@ -906,7 +906,7 @@ _BYTE *__fastcall battleObject_collectTargetsInRegion_813BD90(int a1, int a2, in
 
 
 // 0x813be38
-int __fastcall sub_813BE38(int a1)
+int __fastcall battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38(int a1)
 {
     int v1; // r6
     int v2; // r10
@@ -1636,7 +1636,7 @@ LABEL_8:
     }
     while ( !((v1 < 0) ^ v7) );
     v8 = 0;
-    sub_813BD10();
+    battle_loadNavicustProgramTable_813BD10();
     do
     {
         if ( *(v0 + v8) )
