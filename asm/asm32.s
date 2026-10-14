@@ -2751,9 +2751,9 @@ off_810F088:
 // symdb: If the BattleObject's CollisionData reports panel damage across multiple slots, set a "hit/cracked" flag in ExtraVars (unless already flagged).
 // symdb: (r5 = BattleObjectPtr) -> no meaningful return ; side effect: writes [r5 +
 // symdb: oBattleObject_ExtraVars + 4] = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810F090.yaml
-	thumb_func_start sub_810F090
-sub_810F090:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_markCrackedOrElementHit_810F090.yaml
+	thumb_func_start battleObject_markCrackedOrElementHit_810F090
+battleObject_markCrackedOrElementHit_810F090:
 	push {r4,lr}
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0x82
@@ -2779,7 +2779,7 @@ sub_810F090:
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 locret_810F0BE:
 	pop {r4,pc}
-	thumb_func_end sub_810F090
+	thumb_func_end battleObject_markCrackedOrElementHit_810F090
 
 	thumb_local_start
 sub_810F0C0:
@@ -7517,7 +7517,7 @@ off_8111A14:
 	.word sub_8111A72+1
 	.word sub_8111A8C+1
 	.word sub_8111AEC+1
-	.word sub_81097DC+1
+	.word aiAttack_tickAiAttackVarsTimer_81097DC+1
 	thumb_func_end sub_8111A00
 
 	thumb_local_start
@@ -8558,7 +8558,7 @@ loc_81122D2:
 	str r1, [r5,#oBattleObject_ExtraVars+4]
 	b loc_811233A
 loc_81122E8:
-	bl sub_8112630
+	bl battle_clearAnimationAndFreeTimer_8112630
 	bl sub_81124D4
 	cmp r0, #0
 	bne loc_8112302
@@ -8976,9 +8976,9 @@ loc_811262C:
 
 // symdb: Clears a battle object's current animation and frees/disarms its extra-vars timer slot.
 // symdb: (r5 = BattleObject*) -> void ; clobbers r0, r1, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112630.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearAnimationAndFreeTimer_8112630.yaml
 	thumb_local_start
-sub_8112630:
+battle_clearAnimationAndFreeTimer_8112630:
 	push {r4,lr}
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -8991,7 +8991,7 @@ sub_8112630:
 	str r0, [r5,#oBattleObject_ExtraVars+0x10]
 locret_8112646:
 	pop {r4,pc}
-	thumb_func_end sub_8112630
+	thumb_func_end battle_clearAnimationAndFreeTimer_8112630
 
 	thumb_local_start
 sub_8112648:
@@ -20363,7 +20363,7 @@ off_8118354:
 	.word off_8118358
 off_8118358:
 	.word sub_8118368+1
-	.word sub_81183C4+1
+	.word battle_beastOut_runBattleStep_81183C4+1
 	.word sub_81185B8+1
 off_8118364:
 	.word sSubmenu
@@ -20400,7 +20400,7 @@ sub_8118368:
 	bl sprite_setCoordinates
 	mov r0, #0
 	strb r0, [r5,#0xc]
-	bl sub_81183C4
+	bl battle_beastOut_runBattleStep_81183C4
 	pop {pc}
 	.balign 4, 0
 off_81183BC:
@@ -20413,9 +20413,9 @@ off_81183C0:
 // symdb: (r6 = BattleObject*, r10 = Toolkit*) -> r0 = alive-enemy-row count (0x1C60 baseline saved in
 // symdb: r5); side effects: r2/r3/r5 clobbered, all caller-saved regs touched, tail-call via r6->byte2
 // symdb: dispatch.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81183C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOut_runBattleStep_81183C4.yaml
 	thumb_local_start
-sub_81183C4:
+battle_beastOut_runBattleStep_81183C4:
 	push {lr}
 	ldr r0, off_81183E4 // =off_81183E8
 	ldrb r1, [r6,#2]
@@ -20446,7 +20446,7 @@ off_81183E8:
 	.word sub_81185A8+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_81184A8+1
-	thumb_func_end sub_81183C4
+	thumb_func_end battle_beastOut_runBattleStep_81183C4
 
 	thumb_local_start
 sub_8118424:

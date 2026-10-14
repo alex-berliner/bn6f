@@ -755,7 +755,7 @@ battle_initState_813BBD4:
 	mov r0, r7
 	bl sub_813BC98
 	bl battle_updateTargetPanelsAllRows_813BD24
-	bl sub_813BE8C
+	bl battle_resetIOPadScratchEntries_813BE8C
 	bl sub_813BEA8
 	mov r0, r7
 	bl battleItems_countByType_813C584
@@ -1146,9 +1146,9 @@ off_813BE88:
 // symdb: Walks the 0x31-entry 8-byte I/O scratch array (toolkit oUnk2004190_Ptr) and zeroes the halfword flag of each entry on battle init.
 // symdb: () -> void ; side effects: clears each entry's halfword at +0 of its 8-byte slot in the
 // symdb: Unk2004190 array
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetIOPadScratchEntries_813BE8C.yaml
 	thumb_local_start
-sub_813BE8C:
+battle_resetIOPadScratchEntries_813BE8C:
 	push {r4-r7,lr}
 	mov r6, #0
 loc_813BE90:
@@ -1164,7 +1164,7 @@ loc_813BE9E:
 	blt loc_813BE90
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BE8C
+	thumb_func_end battle_resetIOPadScratchEntries_813BE8C
 
 // symdb: Scans the toolkit's unknown-entry table, collects up to 0x31 unique info-table IDs into a scratch buffer, and bumps one of two tally bytes on the counter (oToolkit_Unk200431c_Ptr) by 1 or 2 when 5 or more distinct IDs are found.
 // symdb: void sub_813BEA8(void /* r10 = toolkit ptr */); /* r7 preserved; clobbers r0/r2, NZCV */
@@ -4646,9 +4646,9 @@ off_813DA90:
 // symdb: Dispatches one step of the title-screen state machine by indexing into a two-entry table stored in EWRAM and calling the matching handler.
 // symdb: () -> r0 = handler return (0 on handled/continue, 1 on skipped/finished) ; may clobber r0-r3,
 // symdb: r5, r12, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DA94.yaml
-	thumb_func_start sub_813DA94
-sub_813DA94:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startScreen_runJumpTable_813DA94.yaml
+	thumb_func_start startScreen_runJumpTable_813DA94
+startScreen_runJumpTable_813DA94:
 	push {r4,r5,lr}
 	mov r4, #1
 	ldr r5, off_813DAB0 // =eS200BC50 
@@ -4671,7 +4671,7 @@ off_813DAB4:
 off_813DAB8: 
 	.word sub_813DAC0+1
 	.word sub_813DADC+1
-	thumb_func_end sub_813DA94
+	thumb_func_end startScreen_runJumpTable_813DA94
 
 	thumb_local_start
 sub_813DAC0:

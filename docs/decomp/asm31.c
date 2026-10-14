@@ -23738,7 +23738,7 @@ LABEL_6:
 
 
 // 0x80c58e0
-char *sub_80C58E0()
+char *battleObject_throwAndLandAction_80C58E0()
 {
     int v0; // r5
     int v1; // r1
@@ -28465,7 +28465,7 @@ int __noreturn battleObject_initSpriteAndCollision_80C8708()
 
 
 // 0x80c876c
-void __noreturn sub_80C876C()
+void __noreturn object_runCollisionUpdate_80C876C()
 {
     int v0; // r5
     int v1; // r0
@@ -33413,7 +33413,7 @@ int sub_80CBA34()
     result = sprite_getFrameParameters();
     if ( result & 0x80 )
     {
-        sub_80CBAFA();
+        battleObject_decideEnemyYTargetDirection_80CBAFA();
         *(v0 + 16) = 0;
         *(v0 + 9) = 4;
         result = 0;
@@ -33453,7 +33453,7 @@ int battleObject_processSnakeArmPhase_80CBA52()
         *(v0 + 56) += *(v0 + 68);
         object_setPanelsFromCoordinates(v0);
         object_updateCollisionPanels(v0);
-        sub_80CBAFA();
+        battleObject_decideEnemyYTargetDirection_80CBAFA();
         v3 = *(v0 + 32);
         v4 = __OFSUB__(v3, 1);
         result = v3 - 1;
@@ -33521,7 +33521,7 @@ int __fastcall sub_80CBAF2(int result)
 
 
 // 0x80cbafa
-int sub_80CBAFA()
+int battleObject_decideEnemyYTargetDirection_80CBAFA()
 {
     int v0; // r5
     int result; // r0
@@ -94867,7 +94867,7 @@ void __fastcall battleObject_aiSpawnSnakeArmAttack_80F1808(int a1, int a2, int a
 
 
 // 0x80f1888
-void sub_80F1888()
+void battleObject_attackVars_tickExitTimer_80F1888()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -131918,7 +131918,7 @@ void sub_81097D6()
 
 
 // 0x81097dc
-void sub_81097DC()
+void aiAttack_tickAiAttackVarsTimer_81097DC()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -135305,7 +135305,7 @@ signed int sub_810BE8E()
 
 
 // 0x810bfb8
-int sub_810BFB8()
+int battle_aiAttackDispatch_810BFB8()
 {
     unsigned __int8 *v0; // r7
 

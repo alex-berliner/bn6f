@@ -618,7 +618,7 @@ int battle_initState_813BBD4()
     battle_categorizeRandomIds_813BC1C(v1);
     sub_813BC98(v1);
     battle_updateTargetPanelsAllRows_813BD24();
-    sub_813BE8C();
+    battle_resetIOPadScratchEntries_813BE8C();
     sub_813BEA8();
     return battleItems_countByType_813C584(v1);
 }
@@ -949,7 +949,7 @@ int __fastcall battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
 
 // 0x813be8c
-int sub_813BE8C()
+int battle_resetIOPadScratchEntries_813BE8C()
 {
     int v0; // r6
     int result; // r0
@@ -3198,7 +3198,7 @@ void __fastcall sub_813DA84(int a1, int a2, int a3, int a4)
 
 
 // 0x813da94
-signed int sub_813DA94()
+signed int startScreen_runJumpTable_813DA94()
 {
     signed int v0; // r4
 

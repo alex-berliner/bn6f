@@ -3772,7 +3772,7 @@ int battleObject_clearActionPhaseUnk09_80A7E44()
 
 
 // 0x80a7e4c
-int sub_80A7E4C()
+int battle_dispatchAIActionByAction_80A7E4C()
 {
     int v0; // r5
 
@@ -5919,7 +5919,7 @@ int __noreturn sub_80A9458()
     if ( v3 )
     {
         sprite_hasShadow();
-        sub_80A95EC();
+        owMapObject_updateLayerPriorityForPlayerZ_80A95EC();
     }
     ClearEventFlagFromImmediate(11, 252);
     *(v0 + 36) = 0;
@@ -5927,7 +5927,7 @@ int __noreturn sub_80A9458()
     if ( v4 || (sub_80A9628(), v4) )
     {
         *(v0 + 8) = 4;
-        sub_80A94DC();
+        object_mrWeatherStep_80A94DC();
     }
     *(v0 + 8) = 12;
     return sub_80A9568();
@@ -5935,7 +5935,7 @@ int __noreturn sub_80A9458()
 
 
 // 0x80a94dc
-void __noreturn sub_80A94DC()
+void __noreturn object_mrWeatherStep_80A94DC()
 {
     Battle *v0; // r5
     char v1; // zf
@@ -5943,7 +5943,7 @@ void __noreturn sub_80A94DC()
     TestEventFlagFromImmediate(11, 252);
     if ( v1 )
         sub_80A95A8();
-    sub_80A95EC();
+    owMapObject_updateLayerPriorityForPlayerZ_80A95EC();
     sprite_update(v0);
 }
 
@@ -6025,7 +6025,7 @@ int sub_80A95A8()
 
 
 // 0x80a95ec
-int sub_80A95EC()
+int owMapObject_updateLayerPriorityForPlayerZ_80A95EC()
 {
     int v0; // r5
     int result; // r0

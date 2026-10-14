@@ -7100,7 +7100,7 @@ loc_813381E:
 	bne loc_8133864
 	bl sub_8133C0C
 	bne loc_8133864
-	bl sub_8134A3C
+	bl folderEdit_AConfirmPress_8134A3C
 	bne loc_8133864
 loc_8133830:
 	bl chatbox_selectPress_8133C58
@@ -7151,7 +7151,7 @@ folderEdit_step_813388C:
 	bne loc_81338C6
 	bl sub_8133C0C
 	bne loc_81338C6
-	bl sub_8134A3C
+	bl folderEdit_AConfirmPress_8134A3C
 	bne loc_81338C6
 	ldrh r0, [r5,#0x28]
 	tst r0, r0
@@ -9527,9 +9527,9 @@ off_8134A38:
 
 // symdb: Folder-edit helper that reacts to a freshly-pressed A button by incrementing a counter, swapping or advancing two slot buffers at +0x44/+0x48, and playing the menu-select sound.
 // symdb: () -> r0 = bool (1 if A was just pressed and the gesture was handled, 0 otherwise)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134A3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folderEdit_AConfirmPress_8134A3C.yaml
 	thumb_local_start
-sub_8134A3C:
+folderEdit_AConfirmPress_8134A3C:
 	push {lr}
 	mov r6, #0
 	mov r0, #JOYPAD_A
@@ -9592,7 +9592,7 @@ loc_8134AB4:
 	tst r0, r0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8134A3C
+	thumb_func_end folderEdit_AConfirmPress_8134A3C
 
 	thumb_local_start
 sub_8134ABC:

@@ -4272,7 +4272,7 @@ void __fastcall __noreturn sub_81337E8(int a1)
         sub_8133C0C();
         if ( !v3 )
             goto LABEL_20;
-        sub_8134A3C();
+        folderEdit_AConfirmPress_8134A3C();
         if ( !v3 )
             goto LABEL_20;
     }
@@ -4326,7 +4326,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
         sub_8133C0C();
         if ( v3 )
         {
-            sub_8134A3C();
+            folderEdit_AConfirmPress_8134A3C();
             if ( v3 )
             {
                 if ( !*(v1 + 40) || !menu_adjustCursorOrValue_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 10) )
@@ -5475,7 +5475,7 @@ signed int sub_81349E8()
 
 
 // 0x8134a3c
-signed int sub_8134A3C()
+signed int folderEdit_AConfirmPress_8134A3C()
 {
     unsigned __int8 *v0; // r5
     signed int v1; // r6

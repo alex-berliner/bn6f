@@ -11516,7 +11516,7 @@ startScreen_AnimatePressStart_803E978:
 	mov r6, #1
 	bl startScreen_TstZero // () -> !zf
 	bne loc_803EA0A
-	bl sub_813DA94
+	bl startScreen_runJumpTable_813DA94
 	tst r0, r0
 	bne loc_803E9A8
 	bl test0x200bc50_0x5_813D60C

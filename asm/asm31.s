@@ -29289,7 +29289,7 @@ loc_80C58C2:
 off_80C58D4:
 	.word off_80C58D8
 off_80C58D8:
-	.word sub_80C58E0+1
+	.word battleObject_throwAndLandAction_80C58E0+1
 	.word sub_80C59B6+1
 	thumb_func_end battleObject_auraUpdateOrDestroy_80C5886
 
@@ -29297,9 +29297,9 @@ off_80C58D8:
 // symdb: (r5 = oBattleObject; r10 = toolkit) -> void ; side effects: writes
 // symdb: XVelocity/YVelocity/ZVelocity, Timer, CurAnim, PanelX/Y, Z and routes through panel helpers /
 // symdb: collision-region setter.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C58E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_throwAndLandAction_80C58E0.yaml
 	thumb_local_start
-sub_80C58E0:
+battleObject_throwAndLandAction_80C58E0:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -29402,7 +29402,7 @@ locret_80C599C:
 byte_80C59A4:
 	.byte 0x0, 0xF4, 0x8, 0xF4, 0x8, 0xF8, 0x8, 0xFC, 0x0, 0xFC, 0xF8
 	.byte 0xFC, 0xF8, 0xF8, 0xF8, 0xF4, 0x0, 0xF8
-	thumb_func_end sub_80C58E0
+	thumb_func_end battleObject_throwAndLandAction_80C58E0
 
 	thumb_local_start
 sub_80C59B6:
@@ -35499,7 +35499,7 @@ off_80C86F8:
 	.word off_80C86FC
 off_80C86FC:
 	.word battleObject_initSpriteAndCollision_80C8708+1
-	.word sub_80C876C+1
+	.word object_runCollisionUpdate_80C876C+1
 	.word sub_80C87DC+1
 	thumb_func_end sub_80C86B0
 
@@ -35551,9 +35551,9 @@ locret_80C876A:
 // symdb: Per-frame collision update entry for a battle object — tears down stale collision, spawns effects, and dispatches to a per-action handler (or marks the object destroyed when the battle is over).
 // symdb: (r5 = BattleObject*) -> void ; side effects: modifies the object, calls other object_*/battle_*
 // symdb: helpers, may clobber r0/r1/r2/r3/r4/r6/lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C876C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_runCollisionUpdate_80C876C.yaml
 	thumb_local_start
-sub_80C876C:
+object_runCollisionUpdate_80C876C:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -35591,7 +35591,7 @@ off_80C87B0:
 	.word off_80C87B4
 off_80C87B4:
 	.word sub_80C87B8+1
-	thumb_func_end sub_80C876C
+	thumb_func_end object_runCollisionUpdate_80C876C
 
 	thumb_local_start
 sub_80C87B8:
@@ -42388,7 +42388,7 @@ sub_80CBA34:
 	mov r1, #0x80
 	tst r0, r1
 	beq locret_80CBA50
-	bl sub_80CBAFA
+	bl battleObject_decideEnemyYTargetDirection_80CBAFA
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #4
@@ -42403,7 +42403,7 @@ locret_80CBA50:
 // symdb: (r5 = obj, r10 = toolkit) -> r0 = 0; side effects: clobbers r0..r7, lr; writes oBattleObject_X,
 // symdb: oBattleObject_Y, oBattleObject_XVelocity, oBattleObject_YVelocity, oBattleObject_CurPhase,
 // symdb: oBattleObject_CurAction, oBattleObject_CurStateActionPhaseAndPhaseInitialized,
-// symdb: oBattleObject_Timer; clears the object's collision region; recurses into sub_80CBAFA.
+// symdb: oBattleObject_Timer; clears the object's collision region; recurses into battleObject_decideEnemyYTargetDirection_80CBAFA.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processSnakeArmPhase_80CBA52.yaml
 	thumb_local_start
 battleObject_processSnakeArmPhase_80CBA52:
@@ -42447,7 +42447,7 @@ loc_80CBA8E:
 	str r0, [r5,#oBattleObject_Y]
 	bl object_setPanelsFromCoordinates
 	bl object_updateCollisionPanels
-	bl sub_80CBAFA
+	bl battleObject_decideEnemyYTargetDirection_80CBAFA
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
@@ -42502,9 +42502,9 @@ sub_80CBAF2:
 // symdb: Decides whether the AI's Y-panel target should be above, below, or matching the closest enemy
 // symdb: (r5 = self BattleObject) -> out r1/r5 ; sets self->ExtraVars+4 to 1 (move up), -1 (move down),
 // symdb: or 0 (same row)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CBAFA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_decideEnemyYTargetDirection_80CBAFA.yaml
 	thumb_local_start
-sub_80CBAFA:
+battleObject_decideEnemyYTargetDirection_80CBAFA:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -42545,7 +42545,7 @@ dword_80CBB3C:
 	.word 0x280000
 dword_80CBB40:
 	.word 0xF800000
-	thumb_func_end sub_80CBAFA
+	thumb_func_end battleObject_decideEnemyYTargetDirection_80CBAFA
 
 	thumb_func_start t3_0x3e_80CBB44
 t3_0x3e_80CBB44:
@@ -122905,7 +122905,7 @@ byte_80F17BC:
 
 // symdb: AI attack dispatch table for SnakeArm — branches on AIAttackVars[0] via ThumbBX
 // symdb: (r7 = pointer to AIData, lr = return) -> r0..r3 overwritten by the chosen handler; tail-calls
-// symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / sub_80F1888
+// symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / battleObject_attackVars_tickExitTimer_80F1888
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiDispatchAttack_80F17C4.yaml
 	thumb_local_start
 battleObject_aiDispatchAttack_80F17C4:
@@ -122922,7 +122922,7 @@ off_80F17D4:
 off_80F17D8:
 	.word sub_80F17E4+1
 	.word battleObject_aiSpawnSnakeArmAttack_80F1808+1
-	.word sub_80F1888+1
+	.word battleObject_attackVars_tickExitTimer_80F1888+1
 	thumb_func_end battleObject_aiDispatchAttack_80F17C4
 
 	thumb_local_start
@@ -123021,9 +123021,9 @@ dword_80F1884:
 // symdb: Ticks an AIAttackVars countdown and exits the attack state when it elapses, else plays the victory/finish anim on first entry.
 // symdb: (r5 = battleObject*, r7 = AIData*) -> void ; side effects: writes AIData->AIAttackVars[].Unk_01
 // symdb: / Unk_10, BattleObject->CurAnim
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F1888.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_attackVars_tickExitTimer_80F1888.yaml
 	thumb_local_start
-sub_80F1888:
+battleObject_attackVars_tickExitTimer_80F1888:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -123043,7 +123043,7 @@ loc_80F189E:
 	bl object_exitAttackState
 locret_80F18AA:
 	pop {pc}
-	thumb_func_end sub_80F1888
+	thumb_func_end battleObject_attackVars_tickExitTimer_80F1888
 
 	thumb_local_start
 sub_80F18AC:
@@ -171182,7 +171182,7 @@ off_81091D0:
 	// 0x34
 	.word sub_810E854+1
 	// 0x38
-	.word sub_810F090+1
+	.word battleObject_markCrackedOrElementHit_810F090+1
 	// 0x3C
 	.word nullsub_13+1
 	// 0x40
@@ -171746,9 +171746,9 @@ sub_81097D6:
 
 // symdb: Tick AIAttackVars.Unk_10 countdown, run conditional callback each frame, exit attack when timer hits zero or callback returns nonzero
 // symdb: (r7 = AIAttackVars ptr) -> side effects only (void-like)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81097DC.yaml
-	thumb_func_start sub_81097DC
-sub_81097DC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/aiAttack_tickAiAttackVarsTimer_81097DC.yaml
+	thumb_func_start aiAttack_tickAiAttackVarsTimer_81097DC
+aiAttack_tickAiAttackVarsTimer_81097DC:
 	push {r6,lr}
 	mov r6, #0
 loc_81097E0:
@@ -171771,7 +171771,7 @@ loc_81097FE:
 	bl object_exitAttackState
 locret_8109802:
 	pop {r6,pc}
-	thumb_func_end sub_81097DC
+	thumb_func_end aiAttack_tickAiAttackVarsTimer_81097DC
 
 // symdb: tail-call dispatcher that jumps to one of two AI-attack handlers based on a selector byte from the AI attack-vars block
 // symdb: void aiAttackDispatch_8109804(u32 selector /* r0 read from stack index? effectively r0=selector,
@@ -176593,9 +176593,9 @@ byte_810BEF8:
 
 // symdb: AI attack dispatcher that reads an AI attack-vars index and tails into one of several attack handlers.
 // symdb: (r0 = junk/clobbered, r7 = AI/BattleObject base, r5/r6/r10/lr = preserved) -> r0 = whatever
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BFB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackDispatch_810BFB8.yaml
 	thumb_local_start
-sub_810BFB8:
+battle_aiAttackDispatch_810BFB8:
 	push {lr}
 	ldr r1, off_810BFC8 // =off_810BFCC
 	ldrb r0, [r7,#oAIAttackVars_Unk_00]
@@ -176612,7 +176612,7 @@ off_810BFCC:
 	.word sub_810C070+1
 	.word sub_810C0E4+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_810BFB8
+	thumb_func_end battle_aiAttackDispatch_810BFB8
 
 	thumb_local_start
 sub_810BFE0:
@@ -176829,7 +176829,7 @@ off_810C170:
 	.word sub_8016B72+1
 	.word sub_810C1D8+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_810BFB8+1
+	.word battle_aiAttackDispatch_810BFB8+1
 byte_810C19C:
 	.byte 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x5, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x7, 0x0, 0x0
 	.byte 0x0, 0x6, 0x0, 0x0, 0x0, 0x8, 0x0

@@ -5646,7 +5646,7 @@ off_80A7E28:
 	.word off_80A7E2C
 off_80A7E2C:
 	.word battleObject_clearActionPhaseUnk09_80A7E44+1
-	.word sub_80A7E4C+1
+	.word battle_dispatchAIActionByAction_80A7E4C+1
 	.word battleObject_aiBeastOutStage_80A7EDA+1
 	.word sub_80A7F58+1
 	.word sub_80A8006+1
@@ -5668,9 +5668,9 @@ battleObject_clearActionPhaseUnk09_80A7E44:
 // symdb: (r0 = AIData base via r5, r1 = log2 of step?, r2 = ?, r3 = saved ptr) -> r0 = new r0 written by
 // symdb: callee (varies: 0x4, 0x1d, 0x14, 0x13, 0x12, 0x11, ...); side effects: jumps via tail-call into
 // symdb: one of sub_80A7E6C / sub_80A7EA4 / sub_80A7EBE; no other stack use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIActionByAction_80A7E4C.yaml
 	thumb_local_start
-sub_80A7E4C:
+battle_dispatchAIActionByAction_80A7E4C:
 	push {r4-r7,lr}
 	ldr r0, off_80A7E5C // =off_80A7E60 
 	ldrb r1, [r5,#9]
@@ -5685,7 +5685,7 @@ off_80A7E60:
 	.word sub_80A7E6C+1
 	.word sub_80A7EA4+1
 	.word sub_80A7EBE+1
-	thumb_func_end sub_80A7E4C
+	thumb_func_end battle_dispatchAIActionByAction_80A7E4C
 
 	thumb_local_start
 sub_80A7E6C:
@@ -8497,7 +8497,7 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, object_mrWeatherStep_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
@@ -8514,7 +8514,7 @@ off_80A9440:
 	.word off_80A9444
 off_80A9444:
 	.word sub_80A9458+1
-	.word sub_80A94DC+1
+	.word object_mrWeatherStep_80A94DC+1
 	.word sub_80A94F8+1
 	.word sub_80A9568+1
 off_80A9454:
@@ -8555,7 +8555,7 @@ sub_80A9458:
 	cmp r0, #0
 	beq loc_80A94AC
 	bl sprite_hasShadow
-	bl sub_80A95EC
+	bl owMapObject_updateLayerPriorityForPlayerZ_80A95EC
 loc_80A94AC:
 	movflag EVENT_BFC
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -8573,27 +8573,27 @@ loc_80A94AC:
 loc_80A94D2:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A94DC
+	bl object_mrWeatherStep_80A94DC
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9458
 
 // symdb: Per-frame step for the Mr. Weather comp map object: if story event 0xBFC is unset, hand it off to the proximity trigger; then run generic step and sprite update.
 // symdb: (r5 = OverworldMapObject*, r6/r10 preserved, lr = return) -> r0 = OverworldMapObject* ; no other
 // symdb: outputs the caller relies on
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A94DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_mrWeatherStep_80A94DC.yaml
 	thumb_local_start
-sub_80A94DC:
+object_mrWeatherStep_80A94DC:
 	push {r4-r7,lr}
 	movflag EVENT_BFC
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_80A94EC
 	bl sub_80A95A8
 loc_80A94EC:
-	bl sub_80A95EC
+	bl owMapObject_updateLayerPriorityForPlayerZ_80A95EC
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A94DC
+	thumb_func_end object_mrWeatherStep_80A94DC
 
 	thumb_local_start
 sub_80A94F8:
@@ -8718,9 +8718,9 @@ off_80A95E8:
 // symdb: For an overworld NPC object (r5), reads the player Z and sets the sprite's OAM priority to 3 if the player is below it, otherwise calls the standard layer resolver and applies the resulting priority.
 // symdb: (r5 = overworld NPC object ptr) -> ; side effects: updates sprite OAM priority at
 // symdb: object+r5->Unk_14..r5+0x12 area
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A95EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_updateLayerPriorityForPlayerZ_80A95EC.yaml
 	thumb_local_start
-sub_80A95EC:
+owMapObject_updateLayerPriorityForPlayerZ_80A95EC:
 	push {r4,lr}
 	ldrb r0, [r5,#7]
 	cmp r0, #0
@@ -8739,7 +8739,7 @@ loc_80A9604:
 locret_80A9610:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A95EC
+	thumb_func_end owMapObject_updateLayerPriorityForPlayerZ_80A95EC
 
 // symdb: Mr. Weather comp: sets the object's per-instance event flag — SetEventFlag(byte_80A9648[[r5+4]]), i.e. flag 0x0BF4 + instance index.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9614.yaml

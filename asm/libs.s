@@ -21733,9 +21733,9 @@ battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8:
 // symdb: Tail thunk: invokes sub_814E0D0 with (r0=ActorType ptr, r1=AIData ptr), then sets AIData.Unk_0f=r3 result and OR-s 0xC into AIData byte 0; returns the actor-type pointer.
 // symdb: (r0 = ActorType-ish pointer, r1 = AIData pointer) -> r0 = same pointer ; side effect: AIData[0]
 // symdb: |= 0x0C, AIData[0xf] = r3 (from sub_814E0D0 return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E1FC.yaml
-	thumb_func_start sub_814E1FC
-sub_814E1FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateRoutine_814E1FC.yaml
+	thumb_func_start battleObject_runUpdateRoutine_814E1FC
+battleObject_runUpdateRoutine_814E1FC:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0xf]
@@ -21745,7 +21745,7 @@ sub_814E1FC:
 	strb r3, [r1]
 	bx r12
 	.byte 0, 0
-	thumb_func_end sub_814E1FC
+	thumb_func_end battleObject_runUpdateRoutine_814E1FC
 
 // symdb: Runs the battle object's update routine (r1->r0,r3) and stores the returned charge-time byte into AIData.PwrAtkCurChargeTime (r1+0x1b).
 // symdb: (r0 = BattleObject*, r1 = AIData*) -> r0 = BattleObject*, flags untouched ; no side effects

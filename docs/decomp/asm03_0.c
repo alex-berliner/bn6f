@@ -8093,7 +8093,7 @@ int sub_802C044()
     int v10; // [sp+0h] [bp-78h]
     int v11; // [sp+4h] [bp-74h]
 
-    sub_802C588(&v11);
+    battle_fillChipSelectRow_802C588(&v11);
     v1 = *(v0 + 11);
     if ( v1 - 42 < 0 )
     {
@@ -8522,7 +8522,7 @@ signed int __fastcall decodePackedIdFields_802C54C(unsigned int a1)
 
 
 // 0x802c588
-_WORD *__fastcall sub_802C588(_WORD *result)
+_WORD *__fastcall battle_fillChipSelectRow_802C588(_WORD *result)
 {
     signed int v1; // r1
     signed int v2; // r2

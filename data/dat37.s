@@ -46118,7 +46118,7 @@ off_81C0418::
 	.word battleObj_runUpdateAndSetActive_814E1C0+1
 	.word sprite_moveYUp64AndMarkDirty_814E1D4+1
 	.word battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8+1
-	.word sub_814E1FC+1
+	.word battleObject_runUpdateRoutine_814E1FC+1
 	.word battle_aiData_processStreamByte_814E7CC+1
 	.word battleObject_runChargeTickAndStoreChargeTime_814E210+1
 	.word battle_aiData_readNextByteIntoVersion_814E7E0+1

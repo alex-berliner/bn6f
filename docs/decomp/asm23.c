@@ -143,7 +143,7 @@ signed int sub_808964C()
         sub_809E2AE(4);
         v3 = sub_809E2B8();
         sub_809E13C(v3);
-        sub_8089CB0(0);
+        ai_setAIDataUnk18_8089CB0(0);
         *v0 = 116;
     }
     else
@@ -324,7 +324,7 @@ signed int battleObject_beastOut_checkOrInit_80897A6()
                 v2 = battle_getScenarioEffectStateField_81421D0();
                 sub_81421B2(v2);
                 sub_80468EC(1);
-                sub_8089CB0(10);
+                ai_setAIDataUnk18_8089CB0(10);
                 *v0 = 32;
             }
         }
@@ -363,7 +363,7 @@ signed int sub_8089808()
     if ( !v1 )
     {
         engine_setScreeneffect(0, 16);
-        sub_8089CB0(5);
+        ai_setAIDataUnk18_8089CB0(5);
         *v0 = 40;
     }
     return 1;
@@ -398,7 +398,7 @@ signed int sub_808983A()
     {
         sub_8089D44();
         *(v1 + 12) = sub_814216E();
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v0 = 48;
     }
     return 1;
@@ -406,7 +406,7 @@ signed int sub_808983A()
 
 
 // 0x808985a
-signed int sub_808985A()
+signed int battle_tickBeastSp_808985A()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -470,7 +470,7 @@ signed int sub_80898B2()
         sub_814216E();
         if ( v1 )
         {
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
             *v0 = 92;
         }
         else
@@ -515,7 +515,7 @@ signed int sub_80898FC()
     if ( sub_8142C20(16) )
     {
         sub_8089CA4(8);
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v0 = 68;
     }
     return 1;
@@ -541,7 +541,7 @@ signed int sub_808991C()
             v3 = sub_809E2B8();
             sub_809E13C(byte_8089958[v3]);
             sub_8089CDC();
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
             *v0 = 72;
         }
     }
@@ -578,7 +578,7 @@ signed int sub_808997E()
     if ( !v1 )
     {
         engine_setScreeneffect(0, 16);
-        sub_8089CB0(5);
+        ai_setAIDataUnk18_8089CB0(5);
         *v0 = 80;
     }
     return 1;
@@ -599,12 +599,12 @@ signed int __fastcall sub_808999C(int a1)
         v3 = sub_8142224();
         if ( v3 && (sub_8142C46(v3), v4 = getPETNaviSelect(), GetMaxAndCurHPForCurPETNavi_80010D4(v4)) )
         {
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
         }
         else
         {
             sub_814223E();
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
             *v1 = 84;
         }
     }
@@ -662,7 +662,7 @@ signed int __fastcall sub_8089A10(int a1)
         *(v1 + 60) = v3;
         sub_8036F98(v3);
         *(v1 + 19) = 1;
-        sub_8089CB0(60);
+        ai_setAIDataUnk18_8089CB0(60);
         *v1 = 96;
     }
     return 1;
@@ -701,7 +701,7 @@ signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
             v8 = sub_8036E44();
             sub_8036E78(v8, v9, v10);
         }
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v1 = 100;
     }
     return 1;
@@ -718,7 +718,7 @@ signed int __fastcall sub_8089ACA(int a1)
     if ( !v2 )
     {
         sub_8089CA4(12);
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v1 = 104;
     }
     return 1;
@@ -746,12 +746,12 @@ signed int battle_handleBeastOutStep_8089AE8()
             sub_809E13C(v3);
             if ( *(v1 + 16) )
             {
-                sub_8089CB0(30);
+                ai_setAIDataUnk18_8089CB0(30);
                 *v0 = 108;
             }
             else
             {
-                sub_8089CB0(0);
+                ai_setAIDataUnk18_8089CB0(0);
                 *v0 = 112;
             }
         }
@@ -772,7 +772,7 @@ signed int __fastcall sub_8089B2E(int a1)
     {
         chatbox_8045EDC(2, *(v2 + 16));
         sub_8089CA4(17);
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v1 = 112;
     }
     return 1;
@@ -860,7 +860,7 @@ signed int sub_8089BC0()
     {
         SetEventFlagFromImmediate(7, 69);
         v0[8] = 0;
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v0 = 28;
     }
     return 1;
@@ -893,7 +893,7 @@ signed int sub_8089BFA()
     if ( v1 )
     {
         v0[8] = 0;
-        sub_8089CB0(30);
+        ai_setAIDataUnk18_8089CB0(30);
         *v0 = 28;
     }
     return 1;
@@ -916,7 +916,7 @@ signed int sub_8089C16()
         {
             v2 = sub_809E2B8();
             sub_809E13C(v2);
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
             sub_814216E();
             if ( !v3 && (sub_814219C(), v3) )
             {
@@ -924,7 +924,7 @@ signed int sub_8089C16()
             }
             else
             {
-                sub_8089CB0(0);
+                ai_setAIDataUnk18_8089CB0(0);
                 *v0 = 28;
             }
         }
@@ -933,7 +933,7 @@ signed int sub_8089C16()
             v0[8] = 0;
             if ( !getPETNaviSelect() )
                 sub_809E13C(58);
-            sub_8089CB0(30);
+            ai_setAIDataUnk18_8089CB0(30);
             *v0 = -124;
         }
     }
@@ -967,7 +967,7 @@ void __fastcall sub_8089CA4(int a1)
 
 
 // 0x8089cb0
-int __fastcall sub_8089CB0(int result)
+int __fastcall ai_setAIDataUnk18_8089CB0(int result)
 {
     int v1; // r5
 

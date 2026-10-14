@@ -830,7 +830,7 @@ jt_80895C0:
 	.word sub_8089808+1
 	.word sub_8089826+1
 	.word sub_808983A+1
-	.word sub_808985A+1
+	.word battle_tickBeastSp_808985A+1
 	.word sub_808989C+1
 	.word sub_80898B2+1
 	.word sub_80898E8+1
@@ -865,7 +865,7 @@ sub_808964C:
 	bl GetOWPlayerFacingDirection
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	mov r0, #0
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x74 
 	strb r0, [r5]
 	b loc_80896A0
@@ -1061,7 +1061,7 @@ loc_80897C8:
 	mov r0, #1
 	bl sub_80468EC
 	mov r0, #0xa
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x20 
 	strb r0, [r5]
 loc_80897E4:
@@ -1100,7 +1100,7 @@ sub_8089808:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #5
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x28 
 	strb r0, [r5]
 loc_8089822:
@@ -1130,7 +1130,7 @@ sub_808983A:
 	bl sub_814216E
 	str r0, [r7,#0xc]
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x30 
 	strb r0, [r5]
 loc_8089856:
@@ -1141,9 +1141,9 @@ loc_8089856:
 // symdb: Per-frame BeastOut/SP-cust cursor lockout/orchestration step for a battle actor; sets sub-action byte and returns 1
 // symdb: (r5 = AIData-like struct, r7 = battle state?, r10 = Toolkit) -> r0 = 1 ; side effects: writes
 // symdb: sub-action byte at [r5]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808985A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickBeastSp_808985A.yaml
 	thumb_local_start
-sub_808985A:
+battle_tickBeastSp_808985A:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl sub_8142C20
@@ -1174,7 +1174,7 @@ loc_8089892:
 loc_8089898:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_808985A
+	thumb_func_end battle_tickBeastSp_808985A
 
 	thumb_local_start
 sub_808989C:
@@ -1199,7 +1199,7 @@ sub_80898B2:
 	bl sub_814216E
 	bne loc_80898CE
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x5c 
 	strb r0, [r5]
 	b loc_80898E4
@@ -1242,7 +1242,7 @@ sub_80898FC:
 	mov r0, #8
 	bl sub_8089CA4
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x44 
 	strb r0, [r5]
 loc_8089918:
@@ -1266,7 +1266,7 @@ sub_808991C:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	bl sub_8089CDC
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x48 
 	strb r0, [r5]
 loc_808994E:
@@ -1306,7 +1306,7 @@ sub_808997E:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #5
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x50 
 	strb r0, [r5]
 loc_8089998:
@@ -1327,7 +1327,7 @@ sub_808999C:
 loc_80899B2:
 	bl sub_814223E
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x54 
 	strb r0, [r5]
 	b loc_80899D4
@@ -1337,7 +1337,7 @@ loc_80899C2:
 	tst r0, r0
 	beq loc_80899B2
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 loc_80899D4:
 	mov r0, #1
 	pop {r4-r7,pc}
@@ -1389,7 +1389,7 @@ sub_8089A10:
 	mov r0, #1
 	strb r0, [r5,#0x13]
 	mov r0, #0x3c 
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x60 
 	strb r0, [r5]
 loc_8089A36:
@@ -1412,7 +1412,7 @@ off_8089A40:
 // symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
 // symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
-// symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
+// symdb: PlayMapMusic, calls ai_setAIDataUnk18_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipLockoutTransition_8089A60.yaml
 	thumb_local_start
 battle_handleChipLockoutTransition_8089A60:
@@ -1447,7 +1447,7 @@ battle_handleChipLockoutTransition_8089A60:
 	bl PlayMapMusic // () -> ()
 loc_8089ABA:
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x64 
 	strb r0, [r5]
 	b loc_8089AC6
@@ -1464,7 +1464,7 @@ sub_8089ACA:
 	mov r0, #0xc
 	bl sub_8089CA4
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x68 
 	strb r0, [r5]
 	b loc_8089AE4
@@ -1476,7 +1476,7 @@ loc_8089AE4:
 // symdb: Beast-out AI step: when chatbox/cutscene flag 0x80 is clear, advance chip-lockout and decide the controlled beast's next facing/animation state.
 // symdb: (r0 = toolkit via r10, r5 = battleObject, r7 = ?, lr) -> r0 = 1 ; side effects: clears PanelY in
 // symdb: battle object, sets OW player facing to 4 (down), pushes a fixed OW player animation via
-// symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls sub_8089CB0(0|0x1e)
+// symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls ai_setAIDataUnk18_8089CB0(0|0x1e)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleBeastOutStep_8089AE8.yaml
 	thumb_local_start
 battle_handleBeastOutStep_8089AE8:
@@ -1497,13 +1497,13 @@ battle_handleBeastOutStep_8089AE8:
 	tst r0, r0
 	bne loc_8089B20
 	mov r0, #0
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x70 
 	strb r0, [r5]
 	b loc_8089B2A
 loc_8089B20:
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x6c 
 	strb r0, [r5]
 loc_8089B2A:
@@ -1522,7 +1522,7 @@ sub_8089B2E:
 	mov r0, #0x11
 	bl sub_8089CA4
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x70 
 	strb r0, [r5]
 	b loc_8089B50
@@ -1609,7 +1609,7 @@ sub_8089BC0:
 	mov r0, #0
 	strb r0, [r5,#8]
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x1c
 	strb r0, [r5]
 loc_8089BE0:
@@ -1640,7 +1640,7 @@ sub_8089BFA:
 	mov r0, #0
 	strb r0, [r5,#8]
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x1c
 	strb r0, [r5]
 loc_8089C12:
@@ -1668,7 +1668,7 @@ sub_8089C16:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 loc_8089C3E:
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x84
 	strb r0, [r5]
 	b loc_8089C74
@@ -1676,7 +1676,7 @@ loc_8089C4A:
 	bl GetOWPlayerFacingDirection
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	mov r0, #0x1e
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	bl sub_814216E
 	beq loc_8089C6A
 	bl sub_814219C
@@ -1686,7 +1686,7 @@ loc_8089C4A:
 	b loc_8089C74
 loc_8089C6A:
 	mov r0, #0
-	bl sub_8089CB0
+	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x1c
 	strb r0, [r5]
 loc_8089C74:
@@ -1730,12 +1730,12 @@ sub_8089CA4:
 // symdb: Stores the halfword from r0 into AIData+0x18 (Unk_18) of the AIData struct pointed to by r5.
 // symdb: (r0 = halfword value, r5 = AIData*) -> (none, void); side effect: *(AIData* r5 + 0x18) = r0 as
 // symdb: u16
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setAIDataUnk18_8089CB0.yaml
 	thumb_local_start
-sub_8089CB0:
+ai_setAIDataUnk18_8089CB0:
 	strh r0, [r5,#0x18]
 	mov pc, lr
-	thumb_func_end sub_8089CB0
+	thumb_func_end ai_setAIDataUnk18_8089CB0
 
 // symdb: decrements ChipLockoutTimer (AIData+0x18) and returns whether it hit/exceeded zero this frame
 // symdb: (r5 = *AIData) -> r0 = 0 if timer remained >0 after decrement, 1 if it reached 0 or was already

@@ -12433,7 +12433,7 @@ sub_802C044:
 	sub sp, sp, #0x74
 	mov r6, sp
 	add r0, r6, #4
-	bl sub_802C588
+	bl battle_fillChipSelectRow_802C588
 	ldrb r0, [r5,#0xb]
 	cmp r0, #0x2a 
 	bmi loc_802C060
@@ -13199,9 +13199,9 @@ dword_802C584:
 // symdb: Writes a contiguous ascending halfword run (0xC1E8..) into a chip-select row buffer, 0x2A halfwords wide.
 // symdb: (r0 = dst halfword buffer) -> void ; side effects: none beyond writing 0x2A halfwords to
 // symdb: [r0..r0+0x53]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C588.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fillChipSelectRow_802C588.yaml
 	thumb_local_start
-sub_802C588:
+battle_fillChipSelectRow_802C588:
 	ldr r1, dword_802C598 // =0xc1e8 
 	mov r2, #0x2a 
 loc_802C58C:
@@ -13214,7 +13214,7 @@ loc_802C58C:
 	.balign 4, 0
 dword_802C598:
 	.word 0xC1E8
-	thumb_func_end sub_802C588
+	thumb_func_end battle_fillChipSelectRow_802C588
 
 // symdb: Fills a 42-halfword tilemap region (e.g. the chip folder screen) with the blank tile entry 0x90C6.
 // symdb: void sub_802C59C(u16 *dst /* r0 */); clobbers r0-r2 and NZCV flags, returns via lr

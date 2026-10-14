@@ -10180,7 +10180,7 @@ int __fastcall battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8(int a1
 
 
 // 0x814e1fc
-int __fastcall sub_814E1FC(int a1, int a2)
+int __fastcall battleObject_runUpdateRoutine_814E1FC(int a1, int a2)
 {
     _BYTE *v2; // r1
     char v3; // r3

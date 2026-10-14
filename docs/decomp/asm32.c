@@ -1870,7 +1870,7 @@ int sub_810F040()
 
 
 // 0x810f090
-char *sub_810F090()
+char *battleObject_markCrackedOrElementHit_810F090()
 {
     _DWORD *v0; // r5
     char *result; // r0
@@ -5574,7 +5574,7 @@ LABEL_11:
         v5 = byte_8112260[*(v0 + 22)];
         goto LABEL_5;
     }
-    sub_8112630();
+    battle_clearAnimationAndFreeTimer_8112630();
     if ( !sub_81124D4() )
     {
         *(v3 + 24) = 18;
@@ -5944,7 +5944,7 @@ signed int battleObject_tryStartChipAttack_8112600()
 
 
 // 0x8112630
-int sub_8112630()
+int battle_clearAnimationAndFreeTimer_8112630()
 {
     int v0; // r5
     int result; // r0
@@ -13266,12 +13266,12 @@ void __noreturn sub_8118368()
     v0->currState = 4;
     sprite_setCoordinates(230, 20 * *(v1 + 32) + 27);
     v0->pad_0C[0] = 0;
-    sub_81183C4();
+    battle_beastOut_runBattleStep_81183C4();
 }
 
 
 // 0x81183c4
-void sub_81183C4()
+void battle_beastOut_runBattleStep_81183C4()
 {
     Battle *v0; // r5
     int v1; // r6

@@ -13127,7 +13127,7 @@ signed int startScreen_AnimatePressStart_803E978()
     startScreen_TstZero();
     if ( v1 )
     {
-        if ( !sub_813DA94() )
+        if ( !startScreen_runJumpTable_813DA94() )
         {
             v2 = test0x200bc50_0x5_813D60C();
             if ( v1 )
