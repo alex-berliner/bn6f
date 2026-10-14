@@ -5097,8 +5097,9 @@ jt_802886C:
 	.word sub_8028938+1
 	thumb_func_end battle_custMenuDispatchSelection_8028820
 
-// symdb: Computes a (x, y) pair for selecting a B-button attack entry from AIData BPwrAtk and BLeftAbility, returning coords in (r0, r1)
-// symdb: (r5 = AIData*) -> r0 = x, r1 = y ; no side effects
+// symdb: returns a (sprite, frame) pair as (r0, r1) for a battle object's BPwrAtk chip-code chip
+// symdb: (r5 = BattleObject*) -> r0 = tile/sprite offset, r1 = frame offset added to base 0x68 ; side
+// symdb: effects: none (uses r6)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
 	thumb_local_start
 sub_8028894:
@@ -25674,9 +25675,8 @@ battleObject_checkInAttackRange_08031BE2:
 	pop {pc}
 	thumb_func_end battleObject_checkInAttackRange_08031BE2
 
-// symdb: Runs a fixed three-step sequence, forwarding caller arguments to sub_803172E, then calling sub_8031570 with fixed args (0, 0x10, 0x10, 0) and finally sub_8031B7C
-// symdb: void sub_8031BFA(regs r0, r5) — returns to caller via pop {pc}; all register results and NZCV
-// symdb: flags are whatever sub_8031B7C leaves behind
+// symdb: One step of an AI action: compute entity's relative pos to target, run sub_8031570 with r2=0/r4=0x10/r3=0x10/r5=0, then test sub_8031B7C and return its result in r0.
+// symdb: (r0 = ???, r5 preserved) -> r0 = 0 or 3 ; side effects: clobbers r2-r7, flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BFA.yaml
 	thumb_local_start
 sub_8031BFA:
@@ -25720,10 +25720,10 @@ battle_calcRelPosAndAdvanceTextboxBlink_8031C2A:
 	pop {pc}
 	thumb_func_end battle_calcRelPosAndAdvanceTextboxBlink_8031C2A
 
-// symdb: Thin battle-side wrapper that calls helper sub_803172E, then invokes sub_80315DC with a fixed parameter block (0, 14, 14, 0) and passes its results on to sub_8031B7C.
-// symdb: void sub_8031C42(int r0, int r5) // r0/r5 forwarded to sub_803172E; returns whatever sub_8031B7C
-// symdb: leaves in r0/r2/r3/r4/r5 and NZCV
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C42.yaml
+// symdb: AI helper that returns 1 if the AI's target battle object is on the left side of a directed line through two reference points (else 0), used as a directional/spatiality test for AI decisions.
+// symdb: (r0 = scratch/result buffer @02009f5c, r5 = some context ptr) -> r0 = 1 if left-of-line, 0
+// symdb: otherwise ; sets Z flag accordingly
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C42.yaml
 	thumb_local_start
 sub_8031C42:
 	push {lr}

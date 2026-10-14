@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Cutscene submode driver for the JackOut / BBS-request selection step (advances sub-state, loads GFX anims, manages event flags and call-script pointers)
-// symdb: in=(r10 = ToolkitPtr) ; side effects: scratch regs r0-r6, r12, lr; nz clobbered; calls into
-// symdb: cutscene/event-flag/gfx-anim/BBS helpers
+// symdb: Per-frame cutscene script dispatcher that advances the active cutscene script and handles gated event flags and GFX animation loads for cutscene flow control
+// symdb: (r10 = toolkit) -> none (void; r2/r3/r4/r5/r7/r8/r9/r12 are caller-saved scratch) ; touches
+// symdb: CutsceneState, EventFlags, and possibly loads cutscene GFX anims
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,9 +8218,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Beast-server AI step for an enemy battle actor: branches by event flag and delegates to sub-phases.
-// symdb: (r2 = BattleObject* ?) -> r0 = 0, r2/r3/r5/r7 live for caller ; calls into
-// symdb: sub_8086FD8/sub_808711C/sub_8087140/sub_8087184/sub_80871F4
+// symdb: AI dispatch for Beast/SP-style enemy turn (r2=actor idx), testing event flags and stepping per-actor sub-states
+// symdb: (r2 = actor index in current panel; r10 = Toolkit; lr) -> r0 = 0 ; may clobber r0-r7, flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

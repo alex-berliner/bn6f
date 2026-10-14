@@ -4529,9 +4529,9 @@ locret_8010C4E:
 	pop {r4,pc}
 	thumb_func_end sub_8010C06
 
-// symdb: Looks up the BattleObject for a given alliance and, if found, triggers a chip activation handler with the chip's element code minus 0x3FF.
-// symdb: (r0 = chipId, r1 = alliance) -> r0 = sub_8010D04 return ; side effects: reads chip database and
-// symdb: possibly mutates the player's BattleObject/AIData via sub_8010D04
+// symdb: Sets a player BattleObject's PwrAtk charge time to the chip's charge value when the chip is a BeastOut/charge-style chip (ID != 0x3FF) and the alliance side has a player battle object.
+// symdb: (r0 = chipId, r1 = alliance, r10 = ToolkitPtr) -> r0 = chipId (or 0x1E on chip id miss); side
+// symdb: effects: writes AIData fields (charge time) via sub_8010D04 when player found
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8010C50.yaml
 	thumb_local_start
 sub_8010C50:
@@ -19379,6 +19379,12 @@ dword_8017764:
 	.word 0x20005F
 	thumb_func_end sub_8017688
 
+// symdb: Per-frame update for a battle object's jump/landing sequence — initialises the hop on the first tick, decays a hop timer while a button is held, reads a Z arc from a lookup table, and ends the hop with a sound, Z=0 and CurState=CUR_STATE_UPDATE.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes BattleObject fields (PhaseInitialized,
+// symdb: CollisionData flags, CurAnim/CurAnimCopy, Z, PanelX/PanelY, RelatedObject1Ptr, AIData+0x68),
+// symdb: plays sound effects (0x12E = takeoff, 0x125 = landing), reads joypad from AIData, increments
+// symdb: byte_203EAE0[Alliance][3] by 1 saturated.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017768.yaml
 	thumb_func_start sub_8017768
 sub_8017768:
 	push {lr}

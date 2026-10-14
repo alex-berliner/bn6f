@@ -8675,7 +8675,7 @@ off_81275C4:
 	.word byte_8126930
 	thumb_func_end background_drawSceneSection_81275A8
 
-// symdb: Renders the three Battle Chip selection slots (BG slots 8/9/10) of a toolkit selection row, loading each slot's selected chip byte from r5+0x14/0x15/0x16 into a toolkit object's +8 field and dispatching each render via chatbox_renderGlyph_8127580 with palette offsets 0x000/0x400/0x800.
+// symdb: Renders the three Battle Chip selection slots (BG slots 8/9/10) of a toolkit selection row, loading each slot's selected chip byte from r5+0x14/0x15/0x16 into a toolkit object's +8 field and dispatching each render via sub_8127580 with palette offsets 0x000/0x400/0x800.
 // symdb: void sub_81275C8(u32 r5 /* chip-slots struct */, u32 r10 /* toolkit_obj_ptr */, u32 r7 /*
 // symdb: unused? */, u32 lr /* ret addr */); /* outs: r5 r7 r8 r9 r10 r11 r12 preserved; r0 r1 r2 r3
 // symdb: clobbered by callee; NZCV clobbered */

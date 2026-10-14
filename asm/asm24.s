@@ -1299,6 +1299,9 @@ dword_808CC0C:
 	.word 0x13B
 	thumb_func_end sub_808CBD8
 
+// symdb: If the battle actor at r5 is a player actor (Unk_04 == 2) and story flag EVENT_9D8 is unset, sets the flag and marks the result true; otherwise returns false.
+// symdb: (r5 = SomeBattleActorPtr, r10 = toolkit) -> flags only (r4 holds result)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC10.yaml
 	thumb_local_start
 sub_808CC10:
 	push {r4-r7,lr}
@@ -1520,6 +1523,10 @@ byte_808CDAA:
 	.byte 0xD0, 0xF, 0xD1, 0xF, 0x0, 0x0
 	thumb_func_end sub_808CD24
 
+// symdb: Walk an event-flag table whose pointer is selected by sub_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
+// symdb: () -> r0 = match flag (0/1), r1 = group index (0..N), r2 = (3*group + entry) ; side effects: r10
+// symdb: (Toolkit) read-only, NZ/CV flags preserved by TestEventFlag calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CDC4.yaml
 	thumb_local_start
 sub_808CDC4:
 	push {r4-r7,lr}
@@ -1723,6 +1730,10 @@ byte_808CF84:
 	.byte 0xDA, 0x9, 0xDB, 0x9, 0xDC, 0x9, 0xC5, 0xF
 	thumb_func_end sub_808CF50
 
+// symdb: If event flag 9D9 is set, copies a battle object's ID-word (low half) into the chatbox MugshotColorFilter slot (offset 0x4C) and plays sound effect 0x122, returning 1; otherwise returns 0
+// symdb: (r5 = some battle object, r10 = toolkit) -> r0 = 1 if flag set else 0 ; may play SFX, may
+// symdb: clobber r0/r1/r2/r3
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808CF8C.yaml
 	thumb_local_start
 sub_808CF8C:
 	push {r4,lr}
@@ -1751,7 +1762,7 @@ dword_808CFB4:
 // symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
 // symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
 // symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
-// symdb: SOUND_CANT_JACK_IN), calls battleObject_computePanelOffsetFromCoords_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
+// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/jackIn_attemptJackInCheck_808CFB8.yaml
 	thumb_local_start
 jackIn_attemptJackInCheck_808CFB8:
@@ -1847,6 +1858,10 @@ battleObject_computePanelOffsetFromCoords_808D034:
 	pop {r4,r5,pc}
 	thumb_func_end battleObject_computePanelOffsetFromCoords_808D034
 
+// symdb: Looks up an element and a partner element for a given battle panel/terrain type from a 4-entry signed-byte table.
+// symdb: (r0 = element/pair index) -> r0 = signed byte 0 (primary element), r1 = signed byte 1 (partner
+// symdb: element); side effects none beyond callee-save (lr saved/restored)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808D060.yaml
 	thumb_local_start
 sub_808D060:
 	push {lr}
@@ -1866,6 +1881,9 @@ byte_808D07C:
 	.byte 0x4, 0xE, 0xC, 0x4, 0xA, 0x4, 0xFC, 0xF6
 	thumb_func_end sub_808D060
 
+// symdb: Returns the AI mode selector for the current map group (3 for map group 0x85, otherwise MapNumber byte).
+// symdb: () -> r0 = AI mode index (3 if MapGroup==0x85, else oToolkit_GameStatePtr->MapNumber)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D084.yaml
 	thumb_local_start
 sub_808D084:
 	push {lr}

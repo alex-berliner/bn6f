@@ -36971,6 +36971,11 @@ sub_80C91C4:
 	pop {pc}
 	thumb_func_end sub_80C91C4
 
+// symdb: Battle object action dispatcher that either runs a per-action sub-handler (selected by CurAction on the related object) or destroys the object, with time-stop and battle-over guards.
+// symdb: (r5 = BattleObject*) -> side effects on r5 (CurStateActionPhaseAndPhaseInitialized), or jumps
+// symdb: into per-action handler via table at off_80C9234; flags Z/C/V from sub-handler may be visible to
+// symdb: caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C91FE.yaml
 	thumb_local_start
 sub_80C91FE:
 	push {lr}
@@ -48042,7 +48047,7 @@ off_80CE548:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x50_80CE530
 
-// symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater battleObject_finishAndDespawn_80CE5F0.
+// symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater sub_80CE5F0.
 // symdb: void battleObject_initFastLunge(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initFastLunge_80CE554.yaml
 	thumb_local_start
@@ -92354,6 +92359,11 @@ loc_80E334E:
 	pop {r7,pc}
 	thumb_func_end sub_80E32D8
 
+// symdb: Per-frame update for a battle object: bails out (sets CurState=DESTROY, calls sub_80E33D2) when its ExtraVars submode is invalid, NaviStats transformation is out of range, or its target object's CurAction is past 0x10; otherwise ticks Timer, runs sprite_update, and toggles OBJECT_FLAG_VISIBLE every other frame when a sub-flag is unset.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes
+// symdb: BattleObject->CurStateActionPhaseAndPhaseInitialized, Timer, Header.Flags; calls sprite_update,
+// symdb: battle_isPaused, GetBattleNaviStatsByte, sub_80E33D2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E336E.yaml
 	thumb_local_start
 sub_80E336E:
 	push {lr}
@@ -93044,10 +93054,9 @@ sub_80E3824:
 	pop {pc}
 	thumb_func_end sub_80E3824
 
-// symdb: Beast-Out action dispatcher that copies a related object's UPDATE_DURING_TIMESTOP flag onto the current battle object and routes execution to one of five action handlers (or destroys the object on the no-handler path).
-// symdb: (r5 = BattleObject*) -> void ; side effects: modifies the object's ObjectHeader.Flags (bit 1),
-// symdb: CurStateActionPhaseAndPhaseInitialized, and tail-calls one of sub_80E38C8 / sub_80E38EE /
-// symdb: sub_80E3904 / sub_80E3930 / sub_80E3950.
+// symdb: Beast-Out extra-action state for a battle object: jumps to one of five sub-actions by CurAction or destroys the object
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; modifies r5-relative battle object (flags,
+// symdb: CurStateActionPhaseAndPhaseInitialized)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
 	thumb_local_start
 sub_80E386A:
@@ -172641,10 +172650,10 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
-// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
-// symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
-// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
+// symdb: Battle-object per-tick dispatcher: runs the object's AI routine and, when action 8 ends, clears the AI extra-vars/Param4 state.
+// symdb: (r4 = toolkit, r5 = battle object, r10 = ?toolkit alias, lr = return) -> void (no r0..r3
+// symdb: returned to caller; callee-saves restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:
 	push {lr}
@@ -172916,6 +172925,11 @@ locret_810A124:
 	pop {pc}
 	thumb_func_end sub_810A0EE
 
+// symdb: Story-Navi AI turn handler that either uses the selected battle chip or falls back to a basic attack based on HP/threshold checks
+// symdb: (r0 = some state byte (unused), r1 = this function's address 0x0810a127 caller-side, r2 = r5, r3
+// symdb: = r3, r5 = AIData ptr, r6 = AIState ptr, r7 = AIAttackVars ptr) -> r0 = 0 ; side effects: writes
+// symdb: object attack, AIState bytes, AIAttackVars fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A126.yaml
 	thumb_local_start
 sub_810A126:
 	push {r4,lr}

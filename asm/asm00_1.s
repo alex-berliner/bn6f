@@ -18770,9 +18770,9 @@ sub_800B444:
 	pop {pc}
 	thumb_func_end sub_800B444
 
-// symdb: Zeroes two 32-bit work-RAM variables at 0x203F4A0 and 0x203F5A0 before returning.
-// symdb: void sub_800B460(void)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B460.yaml
+// symdb: Clears the two EWRAM link-sync tracking words at 0x203F4A0 and 0x203F5A0 to zero; called at the end of a battle phase and before/after waiting on link sync.
+// symdb: () -> void ; writes 0x00000000 to EWRAM word 0x203F4A0 and EWRAM word 0x203F5A0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B460.yaml
 	thumb_func_start sub_800B460
 sub_800B460:
 	mov r0, #0

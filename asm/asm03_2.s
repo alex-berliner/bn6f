@@ -2704,10 +2704,10 @@ off_8047588:
 	.word dword_86A5D60
 	thumb_func_end chatbox_uploadWindowTileGfx_804754C
 
-// symdb: One-instruction trampoline that tail-calls sub_80478D4 and returns whatever it returns.
-// symdb: void wrapper_sub_80478D4(void) — no registers set up or inspected; all callee-visible state is
-// symdb: passed straight through and r4-r9 are preserved.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804758C.yaml
+// symdb: Thin tail-call trampoline that simply re-renders the currently highlighted mail entry by jumping into mail_drawSelectedEntry_80478D4 with no extra work.
+// symdb: () -> r0 = result of mail_drawSelectedEntry_80478D4 ; side effects: redraws the selected mail
+// symdb: entry's icon tiles, name strip and reader text (see callee).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804758C.yaml
 	thumb_local_start
 sub_804758C:
 	push {r5,lr}
@@ -10834,6 +10834,10 @@ dword_804C76C:
 	.word 0x1F09
 	thumb_func_end sub_804C72C
 
+// symdb: Sets the BG3/BG2 viewport offset, dispatches a "post-init" callback chosen from r5+0xd, rolls a random ambient-SFX timer, and copies a 0x20×0x20 tile block to BG tile area 3.
+// symdb: (r5 = battle object pointer, r10 = toolkit ptr) -> side effects only (modifies RenderInfo, calls
+// symdb: a thunk, sets SFX timer, copies tiles)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C770.yaml
 	thumb_local_start
 sub_804C770:
 	push {r4-r7,lr}

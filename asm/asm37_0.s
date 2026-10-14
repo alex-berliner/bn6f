@@ -87,6 +87,9 @@ dword_813B7E8:
 	.word 0x2660
 	thumb_func_end battleObject_runAIDispatchTable_813B7A0
 
+// symdb: Copies 0x31 bytes of chip/buster data from a beastSP buffer (r7) into a battle object (r4).
+// symdb: (r0=r7=src buffer ptr, r1=r4=dest battle object ptr, r2=0x31) -> side effects only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B7EC.yaml
 	thumb_local_start
 sub_813B7EC:
 	push {lr}
@@ -1140,8 +1143,8 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: iterates entries 0..0x30 of the oToolkit_Unk2004190_Ptr scratch table and early-exits each iteration as a no-op (looks intended to clear slot data on battle init).
-// symdb: () -> void ; side effects: reads halfword at each oToolkit_Unk2004190_Ptr[i] and branches on it
+// symdb: Walks the 0x31-entry 8-byte array pointed to by toolkit's oToolkit_Unk2004190_Ptr and reads the halfword at offset 0 of each entry, doing nothing meaningful with it; the captured-call memory is zero-filled.
+// symdb: (r10 = toolkit) -> side effects only; no return value used by caller
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:
