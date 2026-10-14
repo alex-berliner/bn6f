@@ -24712,9 +24712,10 @@ loc_80315B4:
 	mov pc, lr
 	thumb_func_end math_pointCrossHalfPlaneTest_8031594
 
-// symdb: Returns 1 if the (r4,r5) and (r3,r2) deltas cross-product *into* a 2x2 cross-shaped hit area defined by a struct passed in r0; otherwise 0.
-// symdb: (r0 = ptr to a small struct of two u32 pairs; r2,r3,r4,r5 = signed 16.16 coords forming two
-// symdb: vectors) -> r0 = 1 if test passes else 0 ; side effects none
+// symdb: Tests whether a character cell (column r4, row r3) inside a chatbox text block at r0 lies inside a non-blank tile using 2D cross-product-style sign tests
+// symdb: (r0 = chatbox/text-block struct ptr, r1 = ?unused/0x6fd6, r2 = height-in-cells (r5), r3 = ?cell
+// symdb: coord (used both as row count and index), r4 = ?cell coord, r5 = width-in-cells (r6)) -> r0 = 1
+// symdb: if hit, 0 if blank; side effects none beyond return value
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80315B8.yaml
 	thumb_local_start
 sub_80315B8:
@@ -25634,9 +25635,9 @@ textbox_StepAndRefreshWindow_8031BCA:
 	pop {pc}
 	thumb_func_end textbox_StepAndRefreshWindow_8031BCA
 
-// symdb: Runs a three-call setup/update sequence, passing fixed tile parameters (0, 0x10, 0xC, 0xC) to the middle call.
-// symdb: void sub_8031BE2(int r0, void* r5); // calls sub_803172E(r0,r5), sub_8031594(r0, 0, 0x10, 0xC,
-// symdb: 0xC), then sub_8031B7C(r0, r5); returns whatever the last callee leaves in r0/r3-r7 and flags
+// symdb: Thin tail-call wrapper that computes relative coordinates to a target and runs a half-plane cross test (and a follow-up call).
+// symdb: (r0 = some context ptr, r5 = ?, lr = ?) -> r0 = sub_8031B7C result, lr = sub_8031B7C tail; side
+// symdb: effects: clobbers r2-r7.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BE2.yaml
 	thumb_local_start
 sub_8031BE2:

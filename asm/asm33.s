@@ -1742,6 +1742,10 @@ byte_8123E4C:
 	.byte 0x7, 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x9, 0x0, 0x0, 0x0
 	thumb_func_end sub_8123E24
 
+// symdb: PET menu per-frame redraw that picks one of two OAM sprite rows for the current navi status and toggles a frame/animation byte.
+// symdb: (r5 = SubMenuPtr) -> r0 = new CurAnim frame index ; side effects OAM queue, mutates SubMenu+0x10
+// symdb: and SubMenu+0x11
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123E58.yaml
 	thumb_local_start
 sub_8123E58:
 	push {r4,r6,lr}

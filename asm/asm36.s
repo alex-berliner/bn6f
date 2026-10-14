@@ -11337,6 +11337,10 @@ dword_81357BC:
 off_81357C0:
 	.word byte_8135628
 	thumb_func_end sub_81356F4
+// symdb: Dispatches a beast-sp (beast-out special) battle update handler selected by a type byte, then runs the standard entity/sprite tick
+// symdb: (r5 = beastsp context, r5+0x2 = type byte) -> r0 = 0 ; side effects: jumps through handler
+// symdb: table, then calls entity_runAllUpdateHandlers_80465BC and battle_updateEStructSprites_80465F8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81357C4.yaml
 	thumb_local_start
 sub_81357C4:
 	push {lr}

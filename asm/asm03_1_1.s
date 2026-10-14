@@ -9885,6 +9885,10 @@ sub_803DEAC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803DEAC
 
+// symdb: Per-frame camera/timer step for battle: applies timer mode flags, shakes/shifts the camera, and returns a link-state result code used by the link-battle subsystem.
+// symdb: (no explicit params; reads/writes globals) -> r0 = link-state code (1 = nominal, 4 = some mode,
+// symdb: 2/8/0x20 = special-cased); side effects: writes to eLinkState fields and other EWRAM globals
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DEB4.yaml
 	thumb_func_start sub_803DEB4
 sub_803DEB4:
 	push {r4-r7,lr}

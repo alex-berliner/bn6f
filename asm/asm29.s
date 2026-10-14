@@ -1925,11 +1925,11 @@ loc_80A5C98:
 	pop {r4-r7,pc}
 	thumb_func_end battle_ai_checkBeastOutTrigger_80A5C74
 
-// symdb: Runs the one-shot intro text shown to the player's Beast during a PET/Beast-out sequence (player locked, script fired, chatbox closed on finish) and reports its result.
-// symdb: (r5 = ReqBBS state pointer, r10 = Toolkit) -> r0 = 0 done / 1 finished talking / 2 keep stepping
-// symdb: ; side effects: locks/unlocks the OW player, drives a reqBBS text script, reads/writes chatbox
-// symdb: state and a flag at [r5+0xa].
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5C9C.yaml
+// symdb: Drives one step of an AIData's "Beast SP" text-page sub-state: starts the text script the first time, then polls chatbox state to finish and unlock the player.
+// symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> r0 = 2 while running, 1 if page ended cleanly, 0 if
+// symdb: chatbox flag 0x80 was already cleared at entry ; side effects: locks/unlocks OW player and
+// symdb: clears eFlags2009F38 dialogue busy state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5C9C.yaml
 	thumb_local_start
 sub_80A5C9C:
 	push {r4-r7,lr}
@@ -3518,7 +3518,7 @@ loc_80A6F20:
 // symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
-// symdb: sprite_update, calls battleObject_stepBeastOut_80A6F78/sub_80A70FC/sub_80A7160/battleObject_copyPwrAtkFieldsToTempBuffer_80A7238.
+// symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimation_80A6F2C.yaml
 	thumb_local_start
 battleObject_updateAnimation_80A6F2C:
@@ -3622,6 +3622,9 @@ locret_80A6FD8:
 	.balign 4, 0x00
 	thumb_func_end battleObject_stepBeastOut_80A6F78
 
+// symdb: Looks up a battle object's APwrAtk/BPwrAtk/BButton entries in a small 4×3 jump table and stores two attack-stat words into the object's AIData at offsets 0x24/0x28 (zeroing the index on sentinel).
+// symdb: (r5 = BattleObjectPtr) -> void ; side effects writes [r5+0x24], [r5+0x28], [r5+0x6]
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A6FDC.yaml
 	thumb_local_start
 sub_80A6FDC:
 	push {lr}
@@ -3674,6 +3677,9 @@ off_80A7044:
 	.word byte_8140D58
 	thumb_func_end sub_80A6FDC
 
+// symdb: Swaps the beast-out form sprite/animation on a battle object when its target panel changes.
+// symdb: (r5 = BattleObjectPtr) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A704C.yaml
 	thumb_local_start
 sub_80A704C:
 	push {r4,lr}
@@ -3706,6 +3712,9 @@ byte_80A7084:
 	.byte 0x1, 0x1, 0x0, 0x3, 0x2, 0x0, 0x0, 0x0
 	thumb_func_end sub_80A704C
 
+// symdb: For a Beasts+ beastman-style battle object, picks the facing-table entry (0 or 1) based on the horizontal angle between two positions stored on the object and writes it to oBattleObject+0x30.
+// symdb: (r5 = BattleObject*) -> r0 = 0x0001C000 ; side effects: writes oBattleObject+0x30
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A708C.yaml
 	thumb_local_start
 sub_80A708C:
 	push {r4,lr}
@@ -3771,9 +3780,9 @@ off_80A70EC:
 	.word byte_80A6E90
 	thumb_func_end sub_80A70C0
 
-// symdb: One-shot overworld check that raises a beast-out flag and bumps AIData Anger when the player enters a particular map-object box (or the player Z is non-zero and the same box holds).
-// symdb: void (r5=owMapObject*, r6=owMapObject* r6+0x84 context, r10=toolkit) ; sets flag EVENT_5F1 and
-// symdb: `[r5+0x34]=1` on success
+// symdb: Overworld beast-out spotted check: tests EVENT_5F1, then if the player is inside a small box (0x120000, ~18 px) around the OW map object's interact area center (r6+0x7C), sets EVENT_5F1 and writes 1 to [r5+0x34] (Anger/flag field); else if player is inside the larger box (r6+0x7C/0x80 box coords with reach) and r6+0x84 (some object-relative counter/timer) is 0, also triggers the flag+write.
+// symdb: (r5 = toolkit-ish ptr with +0xC/+0x10 coords and +0x34 anger field, r6 = OverworldMapObject-ish
+// symdb: ptr, r10 = event flag token) -> void ; side effects: may set EVENT_5F1 and str 1 into [r5+0x34]
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A70FC.yaml
 	thumb_local_start
 sub_80A70FC:
@@ -4106,9 +4115,10 @@ sub_80A7398:
 	pop {pc}
 	thumb_func_end sub_80A7398
 
-// symdb: Battle object: project position, update sub-state, run post-projection X/Y clamp helper
-// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A73A0.yaml
+// symdb: Per-frame Beast-out movement step for a battle object (sliding on its X or Y slot by a slot-width delta, clamped to the lane bounds), with optional sub-state advancement.
+// symdb: (r5 = battle object, r10 = toolkit) -> void ; reads/writes battle object
+// symdb: +0x5..+0x10,+0x18,+0x1c; calls render projector at +0xc
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A73A0.yaml
 	thumb_local_start
 sub_80A73A0:
 	push {r4-r7,lr}
@@ -6077,9 +6087,9 @@ off_80A82CC:
 	.word byte_80A8114
 	thumb_func_end sub_80A82A4
 
-// symdb: If a story-progress (event) flag is set for the current map/group, bump the sprite's OAM priority on the object passed in r5 and return 1; otherwise return 0.
-// symdb: (r5 = object ptr, r10 = toolkit ptr) -> r0 = 0 (no priority bump) or 1 (priority was bumped to
-// symdb: 3)
+// symdb: Tests an event flag selected by current map/object index; if set, returns 1 and bumps the battle object's sprite OAM priority to 3
+// symdb: (r5 = BattleObjectPtr) -> r0 = 0/1 ; side effects: may call TestEventFlag and
+// symdb: sprite_setPriority_8002E14
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
 	thumb_local_start
 sub_80A82DC:

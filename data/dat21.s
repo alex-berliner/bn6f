@@ -3834,8 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Drives the cutscene-state → BBS-request path that handles L-Message / AskJackOut cutscenes for the player's PET Navi, including event-flag tests/sets and several GFX anim loads.
-// symdb: () -> side effects only (no return value used)
+// symdb: Function at 0x8083df0 has no asm in the project and is only referenced through call-graph edges; its register contract and callees point at a cutscene/BBS preload routine but the assembly is missing so I cannot confirm
+// symdb: (in: r10 = Toolkit, lr) -> flags nz + many r2/r3/r4/r5/r7/r8/r9/r12 ; side effects: manipulates
+// symdb: cutscene script flags, event/story flags, and loads GFX anims
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8217,6 +8218,11 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
+// symdb: Battle beast-out / cross-mega handler that checks a story event flag and dispatches into per-state sub-handlers for the beast transformation.
+// symdb: (r2 = event flag index/handle, r10 = Toolkit ptr) -> r2/r3/r5/r7 (state result / out params) ;
+// symdb: side effects: updates battle/AIData state via the sub-handlers it calls, clobbers many caller-
+// symdb: saved regs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:
 	push {r4-r7, lr}

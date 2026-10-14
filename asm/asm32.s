@@ -8920,6 +8920,10 @@ byte_81125F0:
 	.byte 0x0
 	thumb_func_end sub_8112562
 
+// symdb: If the AI's battle object has a chip selected and the battle is past the opening phase, performs the chip-attack startup sequence (write chip params, set attack action, post-update) and returns 1.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = 1 if a chip attack was initiated, else 0 ; side
+// symdb: effects: mutates the battle object, reads/writes battle state.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112600.yaml
 	thumb_local_start
 sub_8112600:
 	push {r4,r6,lr}
@@ -14999,6 +15003,10 @@ loc_81159DA:
 	pop {pc}
 	thumb_func_end sub_81159C4
 
+// symdb: Per-frame counter that decrements a BattleObject ExtraVar and, every 2nd tick while the battle is running and not paused, refreshes sprite color-shader id 0xF.
+// symdb: (r5 = BattleObject*) -> (void) ; side effect: writes oBattleObject_ExtraVars+4 and calls
+// symdb: sprite_setColorShader on the object's sprite block
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81159DC.yaml
 	thumb_func_start sub_81159DC
 sub_81159DC:
 	push {lr}
@@ -22787,10 +22795,11 @@ off_81196B8:
 	.word nullStub_8119800+1
 	thumb_func_end battle_dispatchSpriteAction_81196A0
 
-// symdb: SubMenu index dispatcher that jumps to one of five handler routines based on `oSubMenu+0x9` (Idx_00's neighbour byte), via a Thumb-BX table, then returns through `lr`.
-// symdb: (r5 = oSubMenuPtr implicit, r9 = toolkit implicit) -> r0 = 0x40000000 ; side effects: jumps to
-// symdb: one of five handler routines and returns to caller; no other saved-state effects.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196C4.yaml
+// symdb: Submenu object action dispatcher — reads `oBattleObject+9` (CurAction) and jumps through a small thunk table to one of the submenu sub-actions (panel chip info, generic step, NPC chain state, sprite zoom-shrink), then calls `sprite_setUnk0x2cFromLoader_81198E8` to store the sprite's `0x2C` loader addr.
+// symdb: (r5 = battleObjectPtr, r10 = toolkit, lr = return) -> r0 = 0x40000000 ; side effects: dispatches
+// symdb: to one of 5 submenu action handlers; sprite unk0x2c is written by the
+// symdb: `sprite_setUnk0x2cFromLoader` follow-up.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81196C4.yaml
 	thumb_local_start
 sub_81196C4:
 	push {lr}
@@ -32319,6 +32328,11 @@ off_811E3C8:
 	.word 0x280
 	thumb_func_end sub_811E384
 
+// symdb: Adjusts a battle object's sprite X/Y using a cutscene-script-relative offset (subtract 0x14/0x10-byte row, +8) when its source-cutscene script slot index 0 matches, then runs sprite_update
+// symdb: (r5 = BattleObject*, r6 = ?, r10 = Toolkit/CutsceneState base; lr = return into caller) -> (r0 =
+// symdb: 0x1AC, NZ flag set) ; side effects: writes Object[5] in scratch mem, sets Coordinates of
+// symdb: object's sprite sub-entry, runs sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E3CC.yaml
 	thumb_local_start
 sub_811E3CC:
 	push {lr}
@@ -34039,10 +34053,10 @@ locret_811F1B6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811F184
 
-// symdb: Initializes two small parameter-pair tables by dispatching each pair to a setter (sub_802FE28).
-// symdb: void sub_811F1B8(void);  // takes no inputs, returns void; r4-r7 preserved, nzcv r0-r3 r5 r7
-// symdb: clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F1B8.yaml
+// symdb: Queues four corner-arrow OAM tiles (top-left + top-right + bottom-left + bottom-right) for the PET/Navi-select screen overlay.
+// symdb: () -> void ; queues four 8x8 OAM sprites via sprite_queueOamEntryThunk_802FE28 using two paired
+// symdb: descriptor tables (r0=tilePtr/u16 attr, r2=0, r3=1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F1B8.yaml
 	thumb_local_start
 sub_811F1B8:
 	push {r4-r7,lr}

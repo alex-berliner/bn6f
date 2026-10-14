@@ -921,6 +921,9 @@ battle_getScenarioEffectStateField_81421D0:
 	pop {r4-r7,pc}
 	thumb_func_end battle_getScenarioEffectStateField_81421D0
 
+// symdb: Returns the address of a sub-struct inside the scenario/effect global state (base 0x02000780 + 0x18).
+// symdb: () -> r0 = 0x02000798 ; no other writes (callee-saved r4-r7/lr preserved)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81421D8.yaml
 	thumb_func_start sub_81421D8
 sub_81421D8:
 	push {r4-r7,lr}

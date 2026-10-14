@@ -88275,10 +88275,9 @@ sub_80E1662:
 	mov pc, lr
 	thumb_func_end sub_80E1662
 
-// symdb: On the AI's battle object (`r5`), locate a 4-slot enemy-name-range array using the flipped alliance, then probe RelatedObject1Ptr for matching names at slot indices 0, 1 and 2 via sub_80E16CC.
-// symdb: (r5 = AI/target BattleObjectPtr, r6 caller-saved, r7 caller-saved, r10 = toolkit, lr) -> r0 =
-// symdb: last sub_80E16CC return (probe hit flag), r5 preserved (callee-saved) ; side effects: stack
-// symdb: scratch `0x34` bytes, calls object_getEnemyByNameRange and sub_80E16CC three times.
+// symdb: Checks the alliance of the BattleObject's RelatedObject1Ptr against the caller's alliance, returning a result via sub_80E16CC into a stack buffer.
+// symdb: (r5 = caller BattleObject, r10 = toolkit) -> r0 = 0 ; side effects: stack scratch, may read
+// symdb: RelatedObject1Ptr chain
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
@@ -109521,7 +109520,7 @@ loc_80EB432:
 	thumb_func_end sub_80EB402
 
 // symdb: AI attack dispatcher that tail-calls one of two attack routines selected by the first byte of the AI attack-vars block.
-// symdb: void battle_aiAttackDispatch(void /* r7 = &AIAttackVars */); tail-calls sub_80EB450/aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502,
+// symdb: void battle_aiAttackDispatch(void /* r7 = &AIAttackVars */); tail-calls sub_80EB450/sub_80EB502,
 // symdb: which return directly to this function's caller
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackDispatch_80EB436.yaml
 	thumb_local_start
@@ -122820,6 +122819,10 @@ locret_80F1806:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80F17E4
 
+// symdb: Drives the AI "snake-arm" sub-attack over a few frames: starts it (sets phase 4, animation 0x10, SFX 0x0B), waits 0x1E frames, then spawns the collision region at the front panel of `r5` and a type-1/0 effect at the mirrored front panel offset.
+// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> void ; mutates r5's CurAnim, r7's
+// symdb: Unk_01/Unk_10/Unk_00, plays SFX, spawns a collision region and an effect object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F1808.yaml
 	thumb_local_start
 sub_80F1808:
 	push {r4,r6,lr}

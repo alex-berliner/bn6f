@@ -989,6 +989,11 @@ loc_813BD82:
 	.byte 0, 0
 	thumb_func_end sub_813BD24
 
+// symdb: For each (panelX, panelY) within a 7x3 window, appends panel indices of valid AI attack targets into an out-buffer using a per-actor displacement table
+// symdb: (r0 = actorIndex, r1 = centerPanelX, r2 = centerPanelY, r3 = ?, r8 = outBufPtr, r6 = iteration
+// symdb: count+1) -> r0 = updated outBufPtr written to r8 ; side effects: writes to byte array at
+// symdb: *r10->Unk200414c_Ptr[actorIndex*7+col]
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BD90.yaml
 	thumb_local_start
 sub_813BD90:
 	push {r4-r7,lr}
@@ -1424,10 +1429,10 @@ off_813C068:
 	.word 0x14C
 	thumb_func_end sub_813C030
 
-// symdb: Per-beastOut-index loop: scans the 0x31-byte `Unk200414c` array for matching actors and writes a 16-bit code from `byte_813C188` (or an alternate based on r2 and item-flag checks) into `unk_30019E0` slots keyed by the matched actor's entry pointer; also sets the AIData `Unk_03`-derived second slot.
-// symdb: (r0 = ?, r1 = ?, r2 = beastOutIndex?, r10 = ToolkitPtr) -> r0 = 0 ; no other caller-visible
-// symdb: outputs; side effects: writes to unk_30019E0 u16 slots
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813C06C.yaml
+// symdb: Iterates the battle slot table for the beast-out forms, swaps in matched chip/animation pairs into `unk_30019E0` when the active navi owns the appropriate flag.
+// symdb: (r0 = ?, r1 = ?, r2 = modeFlag, r10 = toolkit) -> r0 = 0 ; side effects: writes to unk_30019E0
+// symdb: entry table
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C06C.yaml
 	thumb_func_start sub_813C06C
 sub_813C06C:
 	push {r4-r7,lr}

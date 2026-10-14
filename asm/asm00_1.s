@@ -12244,6 +12244,10 @@ off_8008988:
 	.word dword_203CA70
 	thumb_func_end battle_dispatchPostMoveSubstate_8008950
 
+// symdb: Initialises or finalises the cross-net battle lobby handoff within the battle context (advances both navi AI joypads, flips the toolkit battle state to 4 once comms are ready, and clears gauges).
+// symdb: (r5 = BattleState-like ctx, r10 = Toolkit, lr = ret) -> flags NZ/C/V ; void-like (callers only
+// symdb: use NZ/C/V)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800898C.yaml
 	thumb_local_start
 sub_800898C:
 	push {lr}
