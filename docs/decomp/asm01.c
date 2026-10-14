@@ -257,7 +257,7 @@ void __fastcall eStruct2038160_clearStruct(int a1, int a2, int a3, int a4)
 
 
 // 0x8020140
-int __fastcall sub_8020140(int a1)
+int __fastcall battleObject_checkTerminateFlagAndDispatch_8020140(int a1)
 {
     int result; // r0
     char v2; // zf

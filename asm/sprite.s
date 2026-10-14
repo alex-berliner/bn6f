@@ -212,9 +212,9 @@ off_80027B0:
 
 // symdb: Writes 0x1 to the render-flush latch at EWRAM 0x0200F350, signalling that the next render-flush pass should execute.
 // symdb: (lr = caller's return address) -> r0 = 0x0200F350, r1 = 0x1 (trashed); no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027B4.yaml
-	thumb_func_start sub_80027B4
-sub_80027B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setRenderFlushState_80027B4.yaml
+	thumb_func_start sprite_setRenderFlushState_80027B4
+sprite_setRenderFlushState_80027B4:
 	ldr r0, off_80027BC // =dword_200F350
 	ldr r1, dword_80027C0 // =0x1
 	str r1, [r0]
@@ -224,7 +224,7 @@ off_80027BC:
 	.word dword_200F350
 dword_80027C0:
 	.word 0x1
-	thumb_func_end sub_80027B4
+	thumb_func_end sprite_setRenderFlushState_80027B4
 
 	thumb_func_start sub_80027C4
 sub_80027C4:
@@ -343,14 +343,14 @@ off_8002868:
 
 // symdb: Resets the sprite palette count at 0x0200F340 (dword_200F340) to 0 after it's been recorded into byte_200F389 by sprite_recordPaletteCount_80028C0.
 // symdb: () -> r0 = 0x0200F340 ; no return value to caller (only r0/r1 are clobbered)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800286C.yaml
-	thumb_func_start sub_800286C
-sub_800286C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_resetPaletteCount_800286C.yaml
+	thumb_func_start sprite_resetPaletteCount_800286C
+sprite_resetPaletteCount_800286C:
 	ldr r0, off_80028CC // =dword_200F340
 	mov r1, #0
 	str r1, [r0]
 	mov pc, lr
-	thumb_func_end sub_800286C
+	thumb_func_end sprite_resetPaletteCount_800286C
 
 // symdb: Ensures an object's current animation frame's tile graphics are loaded into its VRAM slot, queueing a transfer only when the frame changed.
 // symdb: void sprite_loadAnimFrameTiles_8002874(r5: AnimState *state); // preserves r4-r7, clobbers

@@ -939,7 +939,7 @@ int event_ackNewFlagByte_8003AEA()
 
 
 // 0x8003afa
-int sub_8003AFA()
+int object_dispatchByType_8003AFA()
 {
 	int result; // r0
 
@@ -1038,7 +1038,7 @@ char *TryUpdateEachOWPlayerObject_8003BA2()
 
 
 // 0x8003bf4
-int sub_8003BF4()
+int owMapObject_renderAll_8003BF4()
 {
 	signed int v0; // r0
 	signed int v1; // r1
@@ -1183,7 +1183,7 @@ int sub_8004218()
 
 
 // 0x8004298
-int sub_8004298()
+int sprite_finalizeBattleSpriteGroupQueue_8004298()
 {
 	return sub_80028C0(3);
 }
@@ -1236,7 +1236,7 @@ int sub_8004510()
 
 
 // 0x8004590
-int sub_8004590()
+int sprite_finishGroup_8004590()
 {
 	return sub_80028C0(4);
 }
@@ -2341,17 +2341,17 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     sub_809F942();
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
+    object_dispatchByType_8003AFA();
     checkOWObjectInteractions_80037f4();
     camera_802FFF4();
     scrollBGTileMapToCamera_8030580();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     sub_80058D0();
@@ -2369,14 +2369,14 @@ int __fastcall battle_init_80052D8(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = tickCountdownGate_803F530();
@@ -2442,14 +2442,14 @@ int __fastcall sub_800536E(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2499,14 +2499,14 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2551,14 +2551,14 @@ int pet_menuUpdateAndHandleExit_8005462()
     }
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     if ( byte_200DF21 != 4 || (IsPaletteFadeActive(), v1) )
@@ -2638,14 +2638,14 @@ _BYTE *__fastcall sub_800555A(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2684,14 +2684,14 @@ _BYTE *__fastcall gamestate_runOverworldSceneStep_80055CE(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2730,14 +2730,14 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2776,14 +2776,14 @@ _BYTE *__fastcall sub_80056B8(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2822,14 +2822,14 @@ _BYTE *__fastcall sub_800572C(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2868,14 +2868,14 @@ _BYTE *__fastcall sub_80057A0(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2912,14 +2912,14 @@ _BYTE *__fastcall mainState_runFrame_8005814(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -2947,14 +2947,14 @@ _BYTE *__fastcall sub_800585A(int a1)
 
     dispatch_80339CC();
     sub_80039AA();
-    sub_8003AFA();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    object_dispatchByType_8003AFA();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     owMapObject_queueSprites_8004934();
     event_runArmedCallback_80024AE();
     result = IsPaletteFadeActive();
@@ -5647,7 +5647,7 @@ int battle_main_8007800()
     unsigned __int8 *v2; // r5
 
     sub_801FE6C();
-    sub_8020140(v1);
+    battleObject_checkTerminateFlagAndDispatch_8020140(v1);
     v2 = *(v0 + oToolkit_S2034880_Ptr);
     (*(&JumpTable8007838 + *v2))();
     ++*(v2 + 24);
@@ -5920,7 +5920,7 @@ int battle_update_8007A44()
             camera_802FFF4();
             panel_800BFC4();
             setChipsForPlayerObjects_800FDC0();
-            sub_801BEE0();
+            battle_dispatchFlaggedUpdates_801BEE0();
             runPendingHandlerForEntryPair_802CEC8();
             handleVariableDamageChip_800AEE8();
             if ( !*(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_0a) )
@@ -5946,19 +5946,19 @@ int battle_update_8007A44()
         }
     }
 .loc_8007B10:
-    sub_80027B4();
-    sub_800286C();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
     sub_8003E18();
     sub_8004218();
     sub_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
-    sub_802E156();
+    battle_updateCustGaugeFromAI_802E156();
     sub_8003C70();
     gameMode_switchToMode2_80046F8();
     sub_80049B0();
-    sub_8009FCC();
-    return sub_803C59C(224, 144);
+    battle_queueAllOamEntries_8009FCC();
+    return battleObject_setupCustomChipCursorState_803C59C(224, 144);
 }
 
 
@@ -5980,8 +5980,8 @@ int sub_8007B9C()
     (*(&off_8007BC8 + *(v0 + 2)))();
     RunBattleObjectLogic();
     panel_800BFC4();
-    sub_80027B4();
-    sub_800286C();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
     return sub_800A01C();
 }
 
@@ -6257,18 +6257,18 @@ signed int sub_8007E62()
     signed int result; // r0
 
     (*(&off_8007EAC + *(v0 + 1)))();
-    sub_80027B4();
-    sub_800286C();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
     sub_8003E18();
     sub_8004218();
     sub_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
-    sub_802E156();
+    battle_updateCustGaugeFromAI_802E156();
     sub_8003C70();
     gameMode_switchToMode2_80046F8();
     sub_80049B0();
-    sub_8009FCC();
+    battle_queueAllOamEntries_8009FCC();
     result = 2;
     eStruct203F7D8[1] = 2;
     return result;
@@ -6362,18 +6362,18 @@ signed int __fastcall sub_8007F4E(int a1)
 
     sub_800A01C();
     (*(&off_8007F9C + *(v1 + 2)))();
-    sub_80027B4();
-    sub_800286C();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
     sub_8003E18();
     sub_8004218();
     sub_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
-    sub_802E156();
+    battle_updateCustGaugeFromAI_802E156();
     sub_8003C70();
     gameMode_switchToMode2_80046F8();
     sub_80049B0();
-    sub_8009FCC();
+    battle_queueAllOamEntries_8009FCC();
     result = 2;
     eStruct203F7D8[1] = 2;
     return result;
@@ -10210,7 +10210,7 @@ int sub_8009F8A()
 
 
 // 0x8009fcc
-int sub_8009FCC()
+int battle_queueAllOamEntries_8009FCC()
 {
     int v0; // r6
     signed int *v1; // r7

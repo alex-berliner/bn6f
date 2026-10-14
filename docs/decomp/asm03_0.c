@@ -7172,7 +7172,7 @@ int sub_802B270()
 {
     int v0; // r5
 
-    return sub_811FA98(6422540, 0x10002u, *(v0 + 30), *(v0 + 36));
+    return object_computeAndQueueOamEntry_811FA98(6422540, 0x10002u, *(v0 + 30), *(v0 + 36));
 }
 
 
@@ -11251,7 +11251,7 @@ int sub_802E112()
 
 
 // 0x802e156
-int sub_802E156()
+int battle_updateCustGaugeFromAI_802E156()
 {
     int v0; // r10
     int result; // r0

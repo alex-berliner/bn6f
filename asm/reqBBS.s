@@ -664,7 +664,7 @@ loc_813E57A:
 	mov r4, #8
 	ldr r6, dword_813E59C // =0xc000 
 	mov r7, #0x7c 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r5,pc}
 	.balign 4, 0
 dword_813E598:
@@ -2615,7 +2615,7 @@ loc_813F936:
 	mov r4, #8
 	ldr r6, dword_813F960 // =0xc000 
 	mov r7, #0x7c 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r5,pc}
 dword_813F95C:
 	.word 0x20002

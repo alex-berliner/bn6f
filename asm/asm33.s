@@ -1131,7 +1131,7 @@ off_8123A4C:
 	.word eTextScript201C220
 	thumb_func_end sub_8123A40
 
-// symdb: Plays the "battle chip use" SFX entry sample for the chip identified by the object at r5, dispatching it through the sound driver sub_811FA98.
+// symdb: Plays the "battle chip use" SFX entry sample for the chip identified by the object at r5, dispatching it through the sound driver object_computeAndQueueOamEntry_811FA98.
 // symdb: void sub_8123A50(u32 chipObject /* r5 */); // r5 in (preserved), r5 out (preserved); clobbers
 // symdb: r0-r3, lr, N Z C V; preserves r4,r6,r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sfx_playChipUseSound_8123A50.yaml
@@ -1148,7 +1148,7 @@ sfx_playChipUseSound_8123A50:
 	mov r4, #5
 	ldr r6, dword_8123A70 // =0xc24c 
 	mov r7, #0x46 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8123A6C:
@@ -7128,7 +7128,7 @@ loc_81267CC:
 	mov r4, #7
 	ldr r6, dword_81267EC // =0xc24c 
 	mov r7, #0x6a 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 locret_81267E4:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -8371,7 +8371,7 @@ sub_8127374:
 	mov r4, #4
 	ldr r6, byte_81273AC // =0x4c
 	mov r7, #0x34 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 locret_81273A6:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -9961,7 +9961,7 @@ dword_8127FE0:
 	.word 0x3
 	thumb_func_end sub_8127F90
 
-// symdb: Thin wrapper that sets up registers (object pointer fields, table base, count) and forwards an object's initialization/dispatch to the large sub_811FA98 helper.
+// symdb: Thin wrapper that sets up registers (object pointer fields, table base, count) and forwards an object's initialization/dispatch to the large object_computeAndQueueOamEntry_811FA98 helper.
 // symdb: void sub_8127FE4(struct Object *obj /* r5 */); // inputs:  r5 = object pointer, r4/r6/r7 carried
 // symdb: in by caller and not consumed // outputs: r5 preserved // clobbers: r0,r1,r2,r3,lr; NZCV //
 // symdb: preserves: r4,r5,r6,r7
@@ -9979,7 +9979,7 @@ sub_8127FE4:
 	mov r4, #4
 	ldr r6, dword_8128004 // =0x30ca4c 
 	mov r7, #0x35 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8128000:
@@ -11539,7 +11539,7 @@ battle_queueHpUpdate_8128C20:
 	mov r4, #4
 	ldr r6, byte_8128C48 // =0x40
 	mov r7, #0x37 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8128C44:
@@ -12019,7 +12019,7 @@ sub_812907C:
 	mov r4, #7
 	ldr r6, dword_81290A0 // =0xb370 
 	mov r7, #0x48 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8129098:
@@ -15292,7 +15292,7 @@ loc_812A878:
 	beq loc_812A88E
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 	b locret_812A892
 loc_812A88E:
 	bl sprite_drawIfFlagSet_812B504
@@ -15329,7 +15329,7 @@ loc_812A8B8:
 	beq loc_812A8D4
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 	b locret_812A8D8
 loc_812A8D4:
 	bl sprite_drawIfFlagSet_812B504
@@ -17412,7 +17412,7 @@ loc_812B842:
 	beq locret_812B852
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_812B852:
 	pop {pc}
 	.balign 4, 0
@@ -17463,7 +17463,7 @@ loc_812B8AA:
 	beq locret_812B8BA
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_812B8BA:
 	pop {pc}
 	.balign 4, 0

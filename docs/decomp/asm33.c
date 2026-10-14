@@ -558,7 +558,7 @@ signed int sfx_playChipUseSound_8123A50()
 {
     int v0; // r5
 
-    return sub_811FA98(14286909, 0x20002u, 30, *(v0 + *(&dword_8123A7C + *(v0 + 12))));
+    return object_computeAndQueueOamEntry_811FA98(14286909, 0x20002u, 30, *(v0 + *(&dword_8123A7C + *(v0 + 12))));
 }
 
 
@@ -3841,11 +3841,11 @@ signed int sub_81267A8()
         result = *(v2 + 18);
         if ( result < 7 )
             return result;
-        return sub_811FA98(14811162, 0, *(v2 + 18), *(v2 + 24));
+        return object_computeAndQueueOamEntry_811FA98(14811162, 0, *(v2 + 18), *(v2 + 24));
     }
     result = *(v0 + 4 * v1 + 88);
     if ( result >= 7 )
-        return sub_811FA98(14811162, 0, *(v2 + 18), *(v2 + 24));
+        return object_computeAndQueueOamEntry_811FA98(14811162, 0, *(v2 + 18), *(v2 + 24));
     return result;
 }
 
@@ -4531,7 +4531,7 @@ signed int sub_8127374()
     {
         v2 = 8 * (*(v0 + 13) - *(v0 + 14)) + *(v0 + 50);
         *(v0 + 50) = v2;
-        result = sub_811FA98((v2 << 16) | 0x14, 0x20002u, *(v0 + 30), *(v0 + 36));
+        result = object_computeAndQueueOamEntry_811FA98((v2 << 16) | 0x14, 0x20002u, *(v0 + 30), *(v0 + 36));
     }
     return result;
 }
@@ -5327,7 +5327,7 @@ signed int sub_8127FE4()
 {
     int v0; // r5
 
-    return sub_811FA98(14745620, 0x20002u, *(v0 + 30), *(v0 + 36));
+    return object_computeAndQueueOamEntry_811FA98(14745620, 0x20002u, *(v0 + 30), *(v0 + 36));
 }
 
 
@@ -6185,7 +6185,7 @@ signed int battle_queueHpUpdate_8128C20()
 {
     int v0; // r5
 
-    return sub_811FA98(14745619, 0x20002u, *(v0 + 30) - 2 * (*(v0 + 30) >> 1) + (*(v0 + 30) >> 1), *(v0 + 36));
+    return object_computeAndQueueOamEntry_811FA98(14745619, 0x20002u, *(v0 + 30) - 2 * (*(v0 + 30) >> 1) + (*(v0 + 30) >> 1), *(v0 + 36));
 }
 
 
@@ -6398,7 +6398,7 @@ signed int sub_812907C()
 {
     int v0; // r5
 
-    return sub_811FA98(6422540, 0x10002u, *(v0 + 30), *(v0 + 36));
+    return object_computeAndQueueOamEntry_811FA98(6422540, 0x10002u, *(v0 + 30), *(v0 + 36));
 }
 
 
@@ -8833,7 +8833,7 @@ LABEL_29:
 LABEL_30:
     sub_812B26C();
     if ( eStruct200BC30_getJumpOffset00() )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     else
         result = sprite_drawIfFlagSet_812B504();
     return result;
@@ -8850,7 +8850,7 @@ int sub_812A8A4()
         cb_8048FD4();
     (*(&off_812A8E4 + *(v0 + 2)))();
     if ( eStruct200BC30_getJumpOffset00() )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     else
         result = sprite_drawIfFlagSet_812B504();
     return result;
@@ -10163,7 +10163,7 @@ int sub_812B80C()
         sub_812B25C(18);
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     return result;
 }
 
@@ -10181,7 +10181,7 @@ int sub_812B874()
         sub_812B25C(18);
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     return result;
 }
 

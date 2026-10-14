@@ -2436,7 +2436,7 @@ signed int cb_8048FD4()
     (*(&off_8048FF8 + eS200A290))();
     result = IsCurSubsystemInUse();
     if ( v1 )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     return result;
 }
 
@@ -4568,7 +4568,7 @@ int __fastcall sub_804AA74(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
-    return sub_811FA98((a1 << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
+    return object_computeAndQueueOamEntry_811FA98((a1 << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
 }
 
 

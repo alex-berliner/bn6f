@@ -10801,7 +10801,7 @@ sub_802B270:
 	mov r4, #7
 	ldr r6, dword_802B294 // =0xb370 
 	mov r7, #0x48 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_802B28C:
@@ -17029,9 +17029,9 @@ locret_802E154:
 // symdb: If battle flag 0x40 is set, refreshes the custom-gauge display using the matched AI entry's CustomGauge field.
 // symdb: (no caller-visible inputs; uses r10 = Toolkit) -> no return value; side effects: may call
 // symdb: SetCustGauge to refresh the custom gauge
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E156.yaml
-	thumb_func_start sub_802E156
-sub_802E156:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateCustGaugeFromAI_802E156.yaml
+	thumb_func_start battle_updateCustGaugeFromAI_802E156
+battle_updateCustGaugeFromAI_802E156:
 	push {r4,lr}
 	bl TestBattleFlag_0x40
 	beq locret_802E170
@@ -17062,7 +17062,7 @@ DebugStr802E1A2:
 	.hword 0x814
 	.asciz "%02x,%02x,%04x"
 	.byte 0x0
-	thumb_func_end sub_802E156
+	thumb_func_end battle_updateCustGaugeFromAI_802E156
 
 	thumb_local_start
 sub_802E1B4:

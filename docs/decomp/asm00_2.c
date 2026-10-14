@@ -12715,7 +12715,7 @@ int sub_8016C9C()
 
 
 // 0x8016ca4
-signed int sub_8016CA4()
+signed int battleObject_applyEmotionShaderIfCounterReady_8016CA4()
 {
     Battle *v0; // r5
     int v1; // r10
@@ -13995,7 +13995,7 @@ int sub_8017A38()
 
 
 // 0x8017ab4
-int sub_8017AB4()
+int battle_aiPlayerUseChipAction_8017AB4()
 {
     int v0; // r5
     int v1; // r0
@@ -14069,7 +14069,7 @@ LABEL_13:
 
 
 // 0x8017bc0
-void sub_8017BC0()
+void battle_ai_dispatchQueuedAttacks_8017BC0()
 {
     _DWORD *v0; // r5
     int v1; // r6
@@ -15246,7 +15246,7 @@ int object_getFlag2()
 
 
 // 0x801a186
-char *sub_801A186()
+char *object_updatePoisonPanelStatus_801A186()
 {
     Battle *v0; // r5
     int v1; // r10
@@ -15432,7 +15432,7 @@ int battleObject_resetCollisionState_801A2B0()
 
 
 // 0x801a2cc
-char *sub_801A2CC()
+char *battleObject_clearChipSelectionOnAirShoe_801A2CC()
 {
     int v0; // r5
     char *result; // r0
@@ -15503,7 +15503,7 @@ int sub_801A324()
 
 
 // 0x801a36a
-void sub_801A36A()
+void object_tickIcePanelFreeze_801A36A()
 {
     int v0; // r5
     int v1; // r7
@@ -15594,7 +15594,7 @@ void sub_801A400()
 
 
 // 0x801a420
-int sub_801A420()
+int battleObject_tickCounterTimer_801A420()
 {
     int v0; // r5
     int v1; // r3
@@ -16108,7 +16108,7 @@ int battle_clearAIDataAndBarrier_801A7F4()
 
 
 // 0x801a802
-int sub_801A802()
+int battleObject_updateBarrierStatus_801A802()
 {
     int v0; // r5
     int result; // r0
@@ -16321,9 +16321,9 @@ int battleObject_processCollisionResults_801A9B8()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
-                sub_801A186();
-                sub_801A36A();
+                battleObject_updateBarrierStatus_801A802();
+                object_updatePoisonPanelStatus_801A186();
+                object_tickIcePanelFreeze_801A36A();
                 battle_tickAiSelfDrain_8010230();
                 battleObject_handleImpact_802CFF8();
                 hiveBlockHappensHere_802CEF4();
@@ -16335,7 +16335,7 @@ int battleObject_processCollisionResults_801A9B8()
                 v5 = *(v0 + 40);
                 if ( v5 < 293 || v5 > 298 )
                     battleObject_applyStatusEffect_801A554();
-                sub_801A2CC();
+                battleObject_clearChipSelectionOnAirShoe_801A2CC();
                 battle_toggleAllianceAndAccumulateCollisionToAiData_801A308();
                 object_calculateFinalDamage1();
             }
@@ -16366,9 +16366,9 @@ int sub_801AA48()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
-                sub_801A186();
-                sub_801A36A();
+                battleObject_updateBarrierStatus_801A802();
+                object_updatePoisonPanelStatus_801A186();
+                object_tickIcePanelFreeze_801A36A();
                 battle_tickAiSelfDrain_8010230();
                 battleObject_handleImpact_802CFF8();
                 hiveBlockHappensHere_802CEF4();
@@ -16378,7 +16378,7 @@ int sub_801AA48()
                 sub_801AF0E();
                 battle_applyFlattenHitStatus_800EB26();
                 battleObject_applyStatusEffect_801A554();
-                sub_801A2CC();
+                battleObject_clearChipSelectionOnAirShoe_801A2CC();
                 battle_toggleAllianceAndAccumulateCollisionToAiData_801A308();
                 object_calculateFinalDamage1();
             }
@@ -16409,9 +16409,9 @@ int battleObject_processCollisionResultsByMode_801AAC0()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
-                sub_801A186();
-                sub_801A36A();
+                battleObject_updateBarrierStatus_801A802();
+                object_updatePoisonPanelStatus_801A186();
+                object_tickIcePanelFreeze_801A36A();
                 if ( sub_802D234() != 10 )
                     battle_tickAiSelfDrain_8010230();
                 battleObject_handleImpact_802CFF8();
@@ -16422,7 +16422,7 @@ int battleObject_processCollisionResultsByMode_801AAC0()
                 sub_801AEB0();
                 battle_applyFlattenHitStatus_800EB26();
                 battleObject_applyStatusEffect_801A554();
-                sub_801A2CC();
+                battleObject_clearChipSelectionOnAirShoe_801A2CC();
                 battle_toggleAllianceAndAccumulateCollisionToAiData_801A308();
                 object_calculateFinalDamage1();
             }
@@ -16453,9 +16453,9 @@ int sub_801AB40()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
-                sub_801A186();
-                sub_801A36A();
+                battleObject_updateBarrierStatus_801A802();
+                object_updatePoisonPanelStatus_801A186();
+                object_tickIcePanelFreeze_801A36A();
                 battle_tickAiSelfDrain_8010230();
                 battleObject_handleImpact_802CFF8();
                 hiveBlockHappensHere_802CEF4();
@@ -16465,7 +16465,7 @@ int sub_801AB40()
                 sub_801AF0E();
                 battle_applyFlattenHitStatus_800EB26();
                 sub_801A58E();
-                sub_801A2CC();
+                battleObject_clearChipSelectionOnAirShoe_801A2CC();
                 battle_toggleAllianceAndAccumulateCollisionToAiData_801A308();
                 object_calculateFinalDamage1();
             }
@@ -16500,9 +16500,9 @@ int battleObject_processCollisionResultsForEnemy_801ABB8()
                 result = object_getFlag();
                 if ( !(result & 0x100) )
                 {
-                    sub_801A802();
-                    sub_801A186();
-                    sub_801A36A();
+                    battleObject_updateBarrierStatus_801A802();
+                    object_updatePoisonPanelStatus_801A186();
+                    object_tickIcePanelFreeze_801A36A();
                     v3 = battle_objectDieOnCollisionHit_801A6D6();
                     battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A(v3, v4, v5);
                     battle_aiAddCounterFromCollision_8013B20();
@@ -16526,7 +16526,7 @@ int battleObject_processCollisionResultsForEnemy_801ABB8()
                     }
                     battle_applyFlattenHitStatus_800EB26();
                     battleObject_applyStatusEffect_801A554();
-                    sub_801A2CC();
+                    battleObject_clearChipSelectionOnAirShoe_801A2CC();
                     battle_toggleAllianceAndAccumulateCollisionToAiData_801A308();
                     object_calculateFinalDamage1();
                 }
@@ -16561,9 +16561,9 @@ int battleObject_processCollisionResultsForPlayer_801AC6C()
             result = object_getFlag();
             if ( !(result & 0x100) )
             {
-                sub_801A802();
-                sub_801A186();
-                sub_801A36A();
+                battleObject_updateBarrierStatus_801A802();
+                object_updatePoisonPanelStatus_801A186();
+                object_tickIcePanelFreeze_801A36A();
                 battle_tickAiSelfDrain_8010230();
                 battleObject_handleImpact_802CFF8();
                 hiveBlockHappensHere_802CEF4();
@@ -16580,7 +16580,7 @@ int battleObject_processCollisionResultsForPlayer_801AC6C()
                     if ( v7 != 7 && v7 != 19 && !sub_8013774(v7, 82) )
                         battleObject_applyStatusEffect_801A554();
                 }
-                sub_801A2CC();
+                battleObject_clearChipSelectionOnAirShoe_801A2CC();
                 sub_801A324();
                 object_calculateFinalDamage1();
             }
@@ -16853,7 +16853,7 @@ void __fastcall ai_eventuallyRunsAIAttack_801AF44(int a1)
     sub_801A45C(v4);
     sub_801A506();
     applyDamageToPlayer_801ba12();
-    sub_801BADE();
+    battleObject_clearCollisionIfHitAction_801BADE();
     if ( object_getFlag() & 0x100 )
         goto LABEL_42;
     if ( object_getFlag2() & 1 )
@@ -16870,20 +16870,20 @@ LABEL_42:
         v14 = battle_applyStatusSpriteTint_80168C8(v13);
         object_applyTintIfFlag16_80168F0(v14);
         blindVisualHandledHere_8016934();
-        v15 = sub_8016CA4();
+        v15 = battleObject_applyEmotionShaderIfCounterReady_8016CA4();
         battle_applyDimmerShaderTo_801728E(v15);
         if ( !(object_getFlag() & 0x100) )
         {
             battle_isPaused();
             if ( !v5 && *(v1 + 9) )
             {
-                sub_8017BC0();
+                battle_ai_dispatchQueuedAttacks_8017BC0();
                 return;
             }
             battle_isTimeStop();
             if ( !v5 )
             {
-                sub_8017AB4();
+                battle_aiPlayerUseChipAction_8017AB4();
                 return;
             }
         }
@@ -17037,7 +17037,7 @@ LABEL_40:
         battle_spawnHitEffectAtArm_801A42E();
         v4 = battle_spawnArmHitEffect_801A4A6();
         sub_801A45C(v4);
-        sub_801BADE();
+        battleObject_clearCollisionIfHitAction_801BADE();
         if ( v2[64]
             && (v5 = v2[64], sprite_forceWhitePallete(),
                                              PlaySoundEffect(109, v6, v7),
@@ -17114,7 +17114,7 @@ LABEL_40:
     v16 = battle_applyStatusSpriteTint_80168C8(v15);
     object_applyTintIfFlag16_80168F0(v16);
     blindVisualHandledHere_8016934();
-    sub_8016CA4();
+    battleObject_applyEmotionShaderIfCounterReady_8016CA4();
     if ( object_getFlag() & 0x100 || (battle_isTimeStop(), v9) )
         result = RunAIAttack(v17);
     else
@@ -17705,7 +17705,7 @@ signed int battle_checkObjectAction6Flag_801BABE()
 
 
 // 0x801bade
-signed int sub_801BADE()
+signed int battleObject_clearCollisionIfHitAction_801BADE()
 {
     int v0; // r5
     int v1; // r6
@@ -18254,7 +18254,7 @@ int __fastcall flags_clearBits_eStruct2035280_801BED6(int result)
 
 // 0x801bee0
 // () ->
-int sub_801BEE0()
+int battle_dispatchFlaggedUpdates_801BEE0()
 {
     int (**v0)(void); // r6
     unsigned int v1; // r7
@@ -18388,19 +18388,19 @@ int __fastcall sub_801C002(int a1)
 // 0x801c06e
 int battle_RequestEndBattle_801C06E()
 {
-    return sub_801C082(1);
+    return battle_drawChipCountsOAM_801C082(1);
 }
 
 
 // 0x801c078
 int sub_801C078()
 {
-    return sub_801C082(0);
+    return battle_drawChipCountsOAM_801C082(0);
 }
 
 
 // 0x801c082
-int __fastcall sub_801C082(int a1)
+int __fastcall battle_drawChipCountsOAM_801C082(int a1)
 {
     int v1; // r5
     int v2; // r10

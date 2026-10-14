@@ -1753,9 +1753,9 @@ event_ackNewFlagByte_8003AEA:
 // symdb: Per-frame dispatch into an object-type function table, indexed by the global ObjectList's current type index.
 // symdb: (no explicit args; reads EWRAM eStruct2001010) -> r0 = 0 ; side effects: tail-calls one of
 // symdb: several handlers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003AFA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchByType_8003AFA.yaml
 	thumb_local_start
-sub_8003AFA:
+object_dispatchByType_8003AFA:
 	push {r4-r7,lr}
 	ldr r5, off_8003B40 // =eStruct2001010
 	ldrb r0, [r5]
@@ -1774,7 +1774,7 @@ sub_8003AFA:
 	bx r0
 locret_8003B1A:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8003AFA
+	thumb_func_end object_dispatchByType_8003AFA
 
 	thumb_func_start Is_eStruct2001010_Initialized
 Is_eStruct2001010_Initialized:
@@ -1940,9 +1940,9 @@ off_8003BF0:
 // symdb: Per-frame overworld render: walks the OWPlayerObject list, projects/culls/queues visible sprites into OAM and records the palette count.
 // symdb: () -> void ; side effects: queues OAM pieces, increments palette count at 0x0200f389, no caller-
 // symdb: visible return.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003BF4.yaml
-	thumb_func_start sub_8003BF4
-sub_8003BF4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_renderAll_8003BF4.yaml
+	thumb_func_start owMapObject_renderAll_8003BF4
+owMapObject_renderAll_8003BF4:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2008,7 +2008,7 @@ off_8003C68:
 	.word sprite_projectAndCull+1
 off_8003C6C:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8003BF4
+	thumb_func_end owMapObject_renderAll_8003BF4
 
 // symdb: Trivial wrapper that invokes sub_80028C0 with r0 = 0, apparently resetting or clearing whatever state that routine manages.
 // symdb: void sub_8003C70(void)
@@ -2534,16 +2534,16 @@ off_8004294:
 
 // symdb: Flush the queued sprite group and record its palette count into the third slot of the sprite palette counter array.
 // symdb: ()
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004298.yaml
-	thumb_func_start sub_8004298
-sub_8004298:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_finalizeBattleSpriteGroupQueue_8004298.yaml
+	thumb_func_start sprite_finalizeBattleSpriteGroupQueue_8004298
+sprite_finalizeBattleSpriteGroupQueue_8004298:
 	push {lr}
 	mov r0, #3
 	bl sub_80028C0
 	pop {pc}
 	mov r0, #0x30
 	ldr r3, off_80042BC // =eT3BattleObject0_LinkedList
-	thumb_func_end sub_8004298
+	thumb_func_end sprite_finalizeBattleSpriteGroupQueue_8004298
 
 	thumb_local_start
 sub_80042A6:
@@ -2788,14 +2788,14 @@ off_800458C:
 // symdb: Closes out a sprite-queue group by recording the final palette-count (dword_200F340) into byte slot 4 of byte_200F389.
 // symdb: () -> r0 = 0x4 ; side effect: writes the latest palette-count (dword_200F340) into
 // symdb: byte_200F389[4] via sub_80028C0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004590.yaml
-	thumb_func_start sub_8004590
-sub_8004590:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_finishGroup_8004590.yaml
+	thumb_func_start sprite_finishGroup_8004590
+sprite_finishGroup_8004590:
 	push {lr}
 	mov r0, #4
 	bl sub_80028C0
 	pop {pc}
-	thumb_func_end sub_8004590
+	thumb_func_end sprite_finishGroup_8004590
 
 	thumb_local_start
 dead_800459A:
@@ -4612,17 +4612,17 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl dispatch_80339CC // () -> ()
 
 	bl sub_80039AA
-	bl sub_8003AFA
+	bl object_dispatchByType_8003AFA
 	bl checkOWObjectInteractions_80037f4
 	bl camera_802FFF4
 	bl scrollBGTileMapToCamera_8030580
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl sub_80058D0
@@ -4642,14 +4642,14 @@ battle_init_80052D8: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 
@@ -4736,14 +4736,14 @@ sub_800536E: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -4789,14 +4789,14 @@ scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -4846,14 +4846,14 @@ pet_menuUpdateAndHandleExit_8005462: // (self: * GameState $r5) -> ()
 loc_8005474:
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	ldr r7, off_8005520 // =ePETMenuData
@@ -4935,14 +4935,14 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -4976,14 +4976,14 @@ gamestate_runOverworldSceneStep_80055CE: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5018,14 +5018,14 @@ scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5058,14 +5058,14 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5097,14 +5097,14 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5136,14 +5136,14 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5178,14 +5178,14 @@ mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -5202,14 +5202,14 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
-	bl sub_8003AFA
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl object_dispatchByType_8003AFA
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
@@ -9824,7 +9824,7 @@ battle_main_8007800:
 
 	bl sub_801FE6C
 
-	bl sub_8020140
+	bl battleObject_checkTerminateFlagAndDispatch_8020140
 
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
@@ -10263,7 +10263,7 @@ loc_8007A9A:
 	bl camera_802FFF4
 	bl panel_800BFC4
 	bl setChipsForPlayerObjects_800FDC0
-	bl sub_801BEE0
+	bl battle_dispatchFlaggedUpdates_801BEE0
 	bl runPendingHandlerForEntryPair_802CEC8
 	bl handleVariableDamageChip_800AEE8
 	mov r7, r10
@@ -10303,21 +10303,21 @@ loc_8007B0A:
 	add r0, #1
 	str r0, [r5,#oBattleState_Unk_64]
 loc_8007B10:
-	bl sub_80027B4
-	bl sub_800286C
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
-	bl sub_802E156
+	bl battle_updateCustGaugeFromAI_802E156
 	bl sub_8003C70
 	bl gameMode_switchToMode2_80046F8
 	bl sub_80049B0
-	bl sub_8009FCC
+	bl battle_queueAllOamEntries_8009FCC
 	mov r0, #0xe0
 	mov r1, #0x90
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 	pop {r4,pc}
 	.balign 4, 0
 off_8007B4C:
@@ -10371,8 +10371,8 @@ sub_8007B9C: // (self: *mut BattleState $r5) -> ()
 	bx r1
 	bl RunBattleObjectLogic // () -> ()
 	bl panel_800BFC4
-	bl sub_80027B4
-	bl sub_800286C
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
 	bl sub_800A01C
 	pop {pc}
 	.balign 4, 0
@@ -10717,18 +10717,18 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_80027B4
-	bl sub_800286C
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
-	bl sub_802E156
+	bl battle_updateCustGaugeFromAI_802E156
 	bl sub_8003C70
 	bl gameMode_switchToMode2_80046F8
 	bl sub_80049B0
-	bl sub_8009FCC
+	bl battle_queueAllOamEntries_8009FCC
 	ldr r1, off_8008008 // =eStruct203F7D8
 	mov r0, #2
 	strb r0, [r1,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
@@ -10834,18 +10834,18 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_80027B4
-	bl sub_800286C
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
 	bl sub_8004218
 	bl sub_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
-	bl sub_802E156
+	bl battle_updateCustGaugeFromAI_802E156
 	bl sub_8003C70
 	bl gameMode_switchToMode2_80046F8
 	bl sub_80049B0
-	bl sub_8009FCC
+	bl battle_queueAllOamEntries_8009FCC
 	ldr r1, off_8008018 // =eStruct203F7D8
 	mov r0, #2
 	strb r0, [r1,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
@@ -15340,9 +15340,9 @@ off_8009FC8:
 
 // symdb: Drains the battle OAM queue by submitting each queued entry to the sprite OAM committer `sub_802FE28` until a per-frame count is exhausted.
 // symdb: void (no explicit return; preserves callee-saved registers r4-r7 and lr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueAllOamEntries_8009FCC.yaml
 	thumb_local_start
-sub_8009FCC:
+battle_queueAllOamEntries_8009FCC:
 	push {r5-r7,lr}
 	ldr r6, off_8009FF4 // =byte_3000EA8
 	ldr r6, [r6]
@@ -15367,7 +15367,7 @@ off_8009FF0:
 	.word dword_3002180
 off_8009FF4:
 	.word byte_3000EA8
-	thumb_func_end sub_8009FCC
+	thumb_func_end battle_queueAllOamEntries_8009FCC
 
 // symdb: Appends one 16-byte record to a FIFO ring buffer at dword_3002180, advancing the write counter at byte_3000EA8.
 // symdb: void fifo_pushRecord16(u32 w0, u32 w1, u32 w2, u32 w3) /* r0..r3 in; NZCV set from the counter

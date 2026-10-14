@@ -374,7 +374,7 @@ sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	mov r0, #0
 	bl gfxTransfer_8033DA0 // (a0: u32?) -> ()
 	pop {pc}
@@ -389,7 +389,7 @@ onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033BE8
 	mov r0, #0
 	bl gfxTransfer_8033DA0 // (a0: u32?) -> ()
@@ -402,7 +402,7 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
 	pop {pc}
 	thumb_func_end sub_8033AB0
@@ -417,7 +417,7 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
 	bl sub_8033BE8
 	pop {pc}
@@ -429,7 +429,7 @@ sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 	mov r0, #1
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
 	pop {pc}
 	thumb_func_end sub_8033ADC
@@ -440,7 +440,7 @@ sub_8033AF0: // (self: * S2011E30 $r5) -> ()
 	mov r0, #1
 	bl sub_8033B80
 	mov r0, #0
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
 	bl sub_8033BE8
 	pop {pc}
@@ -457,7 +457,7 @@ sub_8033B0C: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end sub_8033B0C
@@ -471,7 +471,7 @@ onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end onUpdateInInternet_8033B1E
@@ -481,7 +481,7 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033D88
 	bl RenderMapName_8033EE8
 	pop {pc}
@@ -492,7 +492,7 @@ sub_8033B46: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033D88
 	bl RenderMapName_8033EE8
 	pop {pc}
@@ -503,7 +503,7 @@ sub_8033B5C: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end sub_8033B5C
@@ -513,7 +513,7 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl sub_8033E0C
 	mov r0, #1
-	bl sub_8033F80
+	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end sub_8033B6E
@@ -995,9 +995,9 @@ byte_8033F50:
 // symdb: Conditionally DMA-loads the battle-start overlay tilemap/sprite frame and queues a battle-start OAM entry based on a game-state flag.
 // symdb: (r0 = battle subsystem index/id 0) -> (nothing) ; side effect: DMA queues a 0x80-byte chunk from
 // symdb: ROM 0x86C1AA0 to VRAM 0x6017580 and queues one OAM sprite at the tile-id constant 0xC7AC.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033F80.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawBattleStartOverlay_8033F80.yaml
 	thumb_local_start
-sub_8033F80:
+battle_drawBattleStartOverlay_8033F80:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl notZero_eByte200AD04
@@ -1026,7 +1026,7 @@ byte_8033FB4:
 	.byte 0x6, 0x0, 0x24, 0x40, 0x0, 0x0, 0x30, 0x40
 dword_8033FBC:
 	.word 0xC7AC
-	thumb_func_end sub_8033F80
+	thumb_func_end battle_drawBattleStartOverlay_8033F80
 
 // symdb: Queues a PET effect by writing its index into the eS2011E30 state block, clearing the pending-effect flag, and playing sound 0x9B for effect 3.
 // symdb: void pet_SetEffect_8033fc0(u32 effect /* r0 */); // returns r0 = effect (or PlaySoundEffect

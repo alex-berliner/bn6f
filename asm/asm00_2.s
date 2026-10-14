@@ -17803,9 +17803,9 @@ sub_8016C9C:
 // symdb: When the battle is running and the object's alliance differs from the battle's emotion-state byte, and that emotion state is 2 (an "enemy of the player's emotion"?), and the collision-data counter-timer is non-zero, applies a palette-color-shader (from the table at 0x8016CE4, indexed by Unk_40 & 2) to this battle object's sprite; otherwise leaves the sprite shader alone.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects may write the sprite-block
 // symdb: color-shader of this BattleObject via sprite_setColorShader
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016CA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyEmotionShaderIfCounterReady_8016CA4.yaml
 	thumb_local_start
-sub_8016CA4:
+battleObject_applyEmotionShaderIfCounterReady_8016CA4:
 	push {lr}
 	bl battle_isBattleOver
 	tst r0, r0
@@ -17838,7 +17838,7 @@ off_8016CE0:
 	.word dword_8016CE4
 dword_8016CE4:
 	.word 0x7C000000
-	thumb_func_end sub_8016CA4
+	thumb_func_end battleObject_applyEmotionShaderIfCounterReady_8016CA4
 
 // symdb: Reads a battle object's state byte and tail-jumps to one of three per-state handlers, passing the state byte through.
 // symdb: void sub_8016CE8(struct BattleObject* obj /* in r5 */); // r0 = state byte and r1 = handler
@@ -19602,9 +19602,9 @@ dword_8017AB0:
 
 // symdb: AI player actor's chip-use battle action: validates and launches the currently selected battle chip, draws a replacement, and handles the post-hit jitter animation
 // symdb: (r5 = *BattleObject) -> void ; no return value to caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017AB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiPlayerUseChipAction_8017AB4.yaml
 	thumb_local_start
-sub_8017AB4:
+battle_aiPlayerUseChipAction_8017AB4:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x50
 	ldrh r0, [r5,#oBattleObject_NameID]
@@ -19734,15 +19734,15 @@ loc_8017BB2:
 off_8017BB8:
 	.word off_802CCB4
 	.word off_802CD5C
-	thumb_func_end sub_8017AB4
+	thumb_func_end battle_aiPlayerUseChipAction_8017AB4
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
 // symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017BC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
-sub_8017BC0:
+battle_ai_dispatchQueuedAttacks_8017BC0:
 	push {r4,r6,r7,lr}
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #0xa0
@@ -19851,7 +19851,7 @@ off_8017CAC:
 	.word LCDControl
 byte_8017CB0:
 	.byte 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_8017BC0
+	thumb_func_end battle_ai_dispatchQueuedAttacks_8017BC0
 
 	thumb_func_start sub_8017CC0
 sub_8017CC0:
@@ -22399,9 +22399,9 @@ object_getFlag2:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = 2 (constant return after `bl battle_isTimeStop`
 // symdb: falls through) ; side effects: writes to oCollisionData_PoisonPanelTimer and the halfword at
 // symdb: oBattleObject+0x8c, may call object_addHP(1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A186.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updatePoisonPanelStatus_801A186.yaml
 	thumb_local_start
-sub_801A186:
+object_updatePoisonPanelStatus_801A186:
 	push {r7,lr}
 	bl battle_isTimeStop
 	bne locret_801A1FA
@@ -22462,7 +22462,7 @@ locret_801A1FA:
 	.balign 4, 0
 dword_801A1FC:
 	.word 0x8000028
-	thumb_func_end sub_801A186
+	thumb_func_end object_updatePoisonPanelStatus_801A186
 
 	thumb_local_start
 sub_801A200:
@@ -22605,9 +22605,9 @@ battleObject_resetCollisionState_801A2B0:
 // symdb: Clears the queue/Chip field of a BattleObject when its CollisionData FlagsFromCollision has bit 0x10 set; if the actor is a PLAYER it also pops a slot back into the hand.
 // symdb: (r5 = *BattleObject) -> ; side effects — writes r5->Chip = 0xFFFF and ChipsHeld = 0, and on the
 // symdb: PLAYER branch increments the hand slot's count, popping the chip back to the battle hand.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A2CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearChipSelectionOnAirShoe_801A2CC.yaml
 	thumb_local_start
-sub_801A2CC:
+battleObject_clearChipSelectionOnAirShoe_801A2CC:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r0, [r3,#oCollisionData_FlagsFromCollision]
@@ -22639,7 +22639,7 @@ loc_801A2EA:
 	strb r1, [r0]
 locret_801A306:
 	pop {pc}
-	thumb_func_end sub_801A2CC
+	thumb_func_end battleObject_clearChipSelectionOnAirShoe_801A2CC
 
 // symdb: Flips a battle object's alliance to the opposite side, then adds its collision-data halfword at +0x92 into that side's AI data byte oAIData_Unk_10.
 // symdb: void battle_toggleAllianceAndAccumulateCollisionToAiData(BattleObject* object /* r5 */); also
@@ -22700,9 +22700,9 @@ locret_801A368:
 
 // symdb: Decrements an AIData ice-freeze counter and clears the object's frozen/immobilized flags when it expires on a cracked panel.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A36A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickIcePanelFreeze_801A36A.yaml
 	thumb_local_start
-sub_801A36A:
+object_tickIcePanelFreeze_801A36A:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
 	bl battle_isPaused
@@ -22754,7 +22754,7 @@ loc_801A3B8:
 	pop {r4,r7,pc}
 locret_801A3D8:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801A36A
+	thumb_func_end object_tickIcePanelFreeze_801A36A
 
 	thumb_local_start
 sub_801A3DA:
@@ -22800,9 +22800,9 @@ locret_801A41E:
 // symdb: Decrements the CollisionData::CounterTimer of the battle object held in r5 by 1 when non-zero
 // symdb: (r5 = BattleObject*) -> r0 = decremented value (only when timer was non-zero) ; modifies the
 // symdb: held byte; Z flag set if branch taken (timer was 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A420.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickCounterTimer_801A420.yaml
 	thumb_local_start
-sub_801A420:
+battleObject_tickCounterTimer_801A420:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldrb r0, [r3,#oCollisionData_CounterTimer]
 	tst r0, r0
@@ -22811,7 +22811,7 @@ sub_801A420:
 	strb r0, [r3,#oCollisionData_CounterTimer]
 locret_801A42C:
 	mov pc, lr
-	thumb_func_end sub_801A420
+	thumb_func_end battleObject_tickCounterTimer_801A420
 
 // symdb: While a battle object is being hit, computes its arm position and spawns the hit/damage effect there.
 // symdb: void sub_801A42E(battleObject* obj /* r5 */, void* r4 /* preserved only */, ...); no meaningful
@@ -23455,9 +23455,9 @@ battle_clearAIDataAndBarrier_801A7F4:
 
 // symdb: Per-frame update of a BattleObject's barrier status (incl. Wood/Aqua barrier countdown, panel-type interactions, and reset of damage/hit modifiers).
 // symdb: (r5 = BattleObjectPtr, r10 = Toolkit) -> void ; clobbers flags, r0-r4, r6, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A802.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBarrierStatus_801A802.yaml
 	thumb_local_start
-sub_801A802:
+battleObject_updateBarrierStatus_801A802:
 	push {r4,r6,lr}
 	bl battle_isPaused
 	beq loc_801A80C
@@ -23685,7 +23685,7 @@ loc_801A96E:
 	str r1, [r4,#oCollisionData_FlagsFromCollision]
 locret_801A9A2:
 	pop {r4,r6,pc}
-	thumb_func_end sub_801A802
+	thumb_func_end battleObject_updateBarrierStatus_801A802
 
 	thumb_local_start
 sub_801A9A4:
@@ -23726,9 +23726,9 @@ battleObject_processCollisionResults_801A9B8:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AA3C
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl battle_tickAiSelfDrain_8010230
 	bl battleObject_handleImpact_802CFF8
 	bl hiveBlockHappensHere_802CEF4
@@ -23747,10 +23747,10 @@ battleObject_processCollisionResults_801A9B8:
 loc_801AA1C:
 	bl battleObject_applyStatusEffect_801A554
 loc_801AA20:
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -23781,9 +23781,9 @@ sub_801AA48:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AABE
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl battle_tickAiSelfDrain_8010230
 	bl battleObject_handleImpact_802CFF8
 	bl hiveBlockHappensHere_802CEF4
@@ -23793,10 +23793,10 @@ sub_801AA48:
 	bl sub_801AF0E
 	bl battle_applyFlattenHitStatus_800EB26
 	bl battleObject_applyStatusEffect_801A554
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -23825,9 +23825,9 @@ battleObject_processCollisionResultsByMode_801AAC0:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AB3E
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl GetBattleMode
 	cmp r0, #0xa
 	beq loc_801AB02
@@ -23841,10 +23841,10 @@ loc_801AB02:
 	bl sub_801AEB0
 	bl battle_applyFlattenHitStatus_800EB26
 	bl battleObject_applyStatusEffect_801A554
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -23870,9 +23870,9 @@ sub_801AB40:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801ABB6
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl battle_tickAiSelfDrain_8010230
 	bl battleObject_handleImpact_802CFF8
 	bl hiveBlockHappensHere_802CEF4
@@ -23882,10 +23882,10 @@ sub_801AB40:
 	bl sub_801AF0E
 	bl battle_applyFlattenHitStatus_800EB26
 	bl sub_801A58E
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -23918,9 +23918,9 @@ battleObject_processCollisionResultsForEnemy_801ABB8:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AC6A
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl battle_objectDieOnCollisionHit_801A6D6
 	bl battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A
 	bl battle_aiAddCounterFromCollision_8013B20
@@ -23956,10 +23956,10 @@ loc_801AC32:
 loc_801AC46:
 	bl battle_applyFlattenHitStatus_800EB26
 	bl battleObject_applyStatusEffect_801A554
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
 	bl battle_clearInvisFlashTimer_801A648
 	bl object_spawnHiteffect
@@ -23989,9 +23989,9 @@ battleObject_processCollisionResultsForPlayer_801AC6C:
 	lsl r1, r1, #8
 	tst r0, r1
 	bne locret_801AD10
-	bl sub_801A802
-	bl sub_801A186
-	bl sub_801A36A
+	bl battleObject_updateBarrierStatus_801A802
+	bl object_updatePoisonPanelStatus_801A186
+	bl object_tickIcePanelFreeze_801A36A
 	bl battle_tickAiSelfDrain_8010230
 	bl battleObject_handleImpact_802CFF8
 	bl hiveBlockHappensHere_802CEF4
@@ -24017,10 +24017,10 @@ battleObject_processCollisionResultsForPlayer_801AC6C:
 	bne loc_801ACEC
 	bl battleObject_applyStatusEffect_801A554
 loc_801ACEC:
-	bl sub_801A2CC
+	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
 	bl sub_801A324
 	bl object_calculateFinalDamage1
-	bl sub_801A420
+	bl battleObject_tickCounterTimer_801A420
 	bl battle_runObjectAI_80143FC
 	bl sub_80142DC
 	bl battle_objectClearPendingHitIfCollisionProcessed_8010198
@@ -24326,7 +24326,7 @@ loc_801AF5E:
 	bl sub_801A45C
 	bl sub_801A506
 	bl applyDamageToPlayer_801ba12
-	bl sub_801BADE
+	bl battleObject_clearCollisionIfHitAction_801BADE
 	bl object_getFlag // () -> int
 	mov r1, #1
 	lsl r1, r1, #8
@@ -24537,7 +24537,7 @@ loc_801B142:
 	bl battle_applyStatusSpriteTint_80168C8
 	bl object_applyTintIfFlag16_80168F0
 	bl blindVisualHandledHere_8016934
-	bl sub_8016CA4
+	bl battleObject_applyEmotionShaderIfCounterReady_8016CA4
 	bl battle_applyDimmerShaderTo_801728E
 	bl object_getFlag // () -> int
 	mov r1, #1
@@ -24558,10 +24558,10 @@ loc_801B18E:
 	bl RunAIAttack // (extra_ai_attack_jumptable: * [* Fn]) -> ()
 	b loc_801B1A0
 loc_801B196:
-	bl sub_8017AB4
+	bl battle_aiPlayerUseChipAction_8017AB4
 	b loc_801B1A0
 loc_801B19C:
-	bl sub_8017BC0
+	bl battle_ai_dispatchQueuedAttacks_8017BC0
 loc_801B1A0:
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
@@ -24652,7 +24652,7 @@ loc_801B21C:
 	bl battle_spawnHitEffectAtArm_801A42E
 	bl battle_spawnArmHitEffect_801A4A6
 	bl sub_801A45C
-	bl sub_801BADE
+	bl battleObject_clearCollisionIfHitAction_801BADE
 
 	mov r0, #oCollisionData_FinalDamage
 	ldrh r0, [r6,r0]
@@ -24837,7 +24837,7 @@ loc_801B338:
 
 	bl blindVisualHandledHere_8016934
 
-	bl sub_8016CA4
+	bl battleObject_applyEmotionShaderIfCounterReady_8016CA4
 
 	bl object_getFlag // () -> int
 	mov r1, #1
@@ -25852,9 +25852,9 @@ loc_801BADA:
 // symdb: (r5 = AIData*, r6 = BattleObject*) -> r0 = 0/1 ; side effects: may call
 // symdb: battleObject_resetCollisionState_801A2B0 (mutates r5's AIData+0x78 BattleObject pointer and
 // symdb: BattleObject structure)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BADE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearCollisionIfHitAction_801BADE.yaml
 	thumb_local_start
-sub_801BADE:
+battleObject_clearCollisionIfHitAction_801BADE:
 	push {r4,lr}
 	mov r4, #0
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -25886,7 +25886,7 @@ dword_801BB14:
 	.word 0x40000
 off_801BB18:
 	.word 0x8000000
-	thumb_func_end sub_801BADE
+	thumb_func_end battleObject_clearCollisionIfHitAction_801BADE
 
 // symdb: Attempts to claim (reserve) the panel under one object for another object, marking the panel reserved and flagging the reserving object; fails if there is no panel or it is already reserved.
 // symdb: bool object_reservePanel(ObjectHeader *targetObject /*r0*/, u32 unused /*r1*/, ObjectHeader
@@ -26543,9 +26543,9 @@ flags_clearBits_eStruct2035280_801BED6:
 // symdb: Iterates a 16-bit dispatch mask at Struct2035280+0x40 and calls matching battle update handlers in order until exhausted
 // symdb: (no explicit return; pairs of `[mask_bit, handler]` are walked LSB-first) -> void; side effects:
 // symdb: invokes a sequence of battle handlers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BEE0.yaml
-	thumb_func_start sub_801BEE0
-sub_801BEE0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchFlaggedUpdates_801BEE0.yaml
+	thumb_func_start battle_dispatchFlaggedUpdates_801BEE0
+battle_dispatchFlaggedUpdates_801BEE0:
 	push {r5-r7,lr}
 	ldr r5, off_801BFE8 // =eStruct2035280
 	ldr r6, off_801BF00 // =off_801BF04 
@@ -26592,7 +26592,7 @@ off_801BF04:
 	.word sub_801D548+1
 	.word sub_801D590+1
 	.word sub_801D71A+1
-	thumb_func_end sub_801BEE0
+	thumb_func_end battle_dispatchFlaggedUpdates_801BEE0
 
 // symdb: Run the callbacks whose bits are set in eStruct2035280+0x44, lowest bit first.
 // symdb: (r10) -> for each set bit k of [eStruct2035280 + 0x44]: call off_801BF88[k]; r5-r7 preserved
@@ -26739,18 +26739,18 @@ loc_801C062:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801C002
 
-// symdb: Wrapper that passes 1 to sub_801C082, requesting the battle to end.
-// symdb: void battle_RequestEndBattle_ADDRESS(void); // tail-calls sub_801C082(1)
+// symdb: Wrapper that passes 1 to battle_drawChipCountsOAM_801C082, requesting the battle to end.
+// symdb: void battle_RequestEndBattle_ADDRESS(void); // tail-calls battle_drawChipCountsOAM_801C082(1)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_RequestEndBattle_801C06E.yaml
 	thumb_local_start
 battle_RequestEndBattle_801C06E:
 	push {lr}
 	mov r0, #1
-	bl sub_801C082
+	bl battle_drawChipCountsOAM_801C082
 	pop {pc}
 	thumb_func_end battle_RequestEndBattle_801C06E
 
-// symdb: Thin trampoline that invokes sub_801C082 with r0 set to 0; no logic of its own.
+// symdb: Thin trampoline that invokes battle_drawChipCountsOAM_801C082 with r0 set to 0; no logic of its own.
 // symdb: void sub_801C078(void)  /* callers pass r4, r5, r6, r7, r10; NZCV and r0-r3 come back from the
 // symdb: callee */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C078.yaml
@@ -26758,15 +26758,15 @@ battle_RequestEndBattle_801C06E:
 sub_801C078:
 	push {lr}
 	mov r0, #0
-	bl sub_801C082
+	bl battle_drawChipCountsOAM_801C082
 	pop {pc}
 	thumb_func_end sub_801C078
 
 // symdb: Iterates an array of 6 chip-count OAM slots at dword_20352E0, projecting each owning battle object's screen X/Y and queuing an OAM entry for that actor's selected chip with a run of stacked OAM tiles.
 // symdb: (r0 = playerAlliance?) -> r0 = 0 ; side effects: queues OAM entries via sub_802FE28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C082.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipCountsOAM_801C082.yaml
 	thumb_local_start
-sub_801C082:
+battle_drawChipCountsOAM_801C082:
 	push {r4-r7,lr}
 	push {r0}
 	ldr r4, off_801C148 // =dword_20352E0 
@@ -26880,7 +26880,7 @@ off_801C160:
 	.word dword_872CE94
 dword_801C164:
 	.word 0x100000
-	thumb_func_end sub_801C082
+	thumb_func_end battle_drawChipCountsOAM_801C082
 
 	thumb_local_start
 sub_801C168:

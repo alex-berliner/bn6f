@@ -58,7 +58,7 @@ int sub_812F094()
 	battle_updateEStructSprites_80465F8();
 	result = eStruct200BC30_getJumpOffset00();
 	if ( result )
-		result = sub_803C59C(0, 0);
+		result = battleObject_setupCustomChipCursorState_803C59C(0, 0);
 	return result;
 }
 

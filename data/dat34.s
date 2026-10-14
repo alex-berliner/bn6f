@@ -30,7 +30,7 @@ sub_812DAE4::
 	beq locret_812DB08
 	mov r0, #0
 	mov r1, #0
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_812DB08::
 	pop {pc}
 	.balign 4, 0

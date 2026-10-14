@@ -1321,7 +1321,7 @@ cb_80395A4:
 	bne locret_80395C0
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_80395C0:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -7290,9 +7290,9 @@ off_803C598:
 
 // symdb: Appends a custom-screen OAM entry and uploads the next chip-cursor tile to VRAM each frame, gated on the chip-cursor singleton's state.
 // symdb: (r0 = packed_OAM_word0, r1 = packed_OAM_word1) -> r0 = packed_OAM_word0 ; r0/r1 also clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C59C.yaml
-	thumb_func_start sub_803C59C
-sub_803C59C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setupCustomChipCursorState_803C59C.yaml
+	thumb_func_start battleObject_setupCustomChipCursorState_803C59C
+battleObject_setupCustomChipCursorState_803C59C:
 	push {r4-r7,lr}
 	ldr r5, off_803C600 // =byte_200BC60
 	push {r0,r1}
@@ -7343,7 +7343,7 @@ dword_803C5FC:
 	.word 0x6017E80
 off_803C600:
 	.word byte_200BC60
-	thumb_func_end sub_803C59C
+	thumb_func_end battleObject_setupCustomChipCursorState_803C59C
 
 	thumb_func_start sub_803C604
 sub_803C604:

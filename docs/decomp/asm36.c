@@ -411,7 +411,7 @@ signed int sub_813064C()
 	sub_8130250();
 	result = v0[12];
 	if ( v0[12] )
-		result = sub_811FA98(12189757, 0x20002u, 30, *&v0[*(&dword_8130688 + result - 1)]);
+		result = object_computeAndQueueOamEntry_811FA98(12189757, 0x20002u, 30, *&v0[*(&dword_8130688 + result - 1)]);
 	return result;
 }
 
@@ -3137,7 +3137,7 @@ int sub_81327B0()
         *(v0 + 46) = byte_100;
         sub_811AE5C(byte_100, 72, 1);
         *(v0 + 72) = 12;
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     }
     return result;
 }
@@ -3158,14 +3158,14 @@ int sub_81327E8()
         *(v0 + 46) = 126;
     }
     sub_811AE5C(v1, 72, 1);
-    return sub_803C59C(218, 2);
+    return battleObject_setupCustomChipCursorState_803C59C(218, 2);
 }
 
 
 // 0x8132810
 int sub_8132810()
 {
-    return sub_803C59C(218, 2);
+    return battleObject_setupCustomChipCursorState_803C59C(218, 2);
 }
 
 
@@ -5100,7 +5100,7 @@ signed int __fastcall object_resolveTableEntry_8134558(int a1, int a2, int a3, i
 {
     int v4; // r5
 
-    return sub_811FA98(((a1 - 8 * *(v4 + 24)) << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
+    return object_computeAndQueueOamEntry_811FA98(((a1 - 8 * *(v4 + 24)) << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
 }
 
 
@@ -11103,13 +11103,13 @@ int __fastcall sub_8138848(int a1, int a2, int a3, int a4)
     TryUpdateEachOverworldMapObject_80048D2();
     checkOWObjectInteractions_80037f4();
     camera_802FFF4();
-    sub_80027B4();
-    sub_800286C();
-    sub_8003BF4();
+    sprite_setRenderFlushState_80027B4();
+    sprite_resetPaletteCount_800286C();
+    owMapObject_renderAll_8003BF4();
     sub_8003E98();
     npc_drawSprites_800467C();
-    sub_8004298();
-    sub_8004590();
+    sprite_finalizeBattleSpriteGroupQueue_8004298();
+    sprite_finishGroup_8004590();
     return owMapObject_queueSprites_8004934();
 }
 

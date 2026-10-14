@@ -22147,7 +22147,7 @@ LABEL_12:
 
 
 // 0x811fa98
-signed int __fastcall sub_811FA98(signed int result, unsigned int a2, int a3, int a4)
+signed int __fastcall object_computeAndQueueOamEntry_811FA98(signed int result, unsigned int a2, int a3, int a4)
 {
     int v4; // r4
     __int16 v5; // r6

@@ -518,7 +518,7 @@ signed int __fastcall sub_812DA08(int a1, int a2, int a3, int a4)
 {
 	int v4; // r5
 
-	return sub_811FA98((a1 << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
+	return object_computeAndQueueOamEntry_811FA98((a1 << 16) | a2, 0x20002u, *(v4 + a3), *(v4 + a4));
 }
 
 

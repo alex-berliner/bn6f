@@ -519,9 +519,9 @@ eStruct2038160_clearStruct:
 
 // symdb: When the 0x200BC50.5 flag is set and the EWRAM 0x200BC30 jump-offset pair is exactly 0x0C, calls sub_813D66C + dispatch_803C620 and stores r0 into eStruct2038160 byte 0x01; otherwise no-op.
 // symdb: () -> void; r0 = dispatch result becomes the new value at 0x2038161 (eStruct2038160 byte 1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8020140.yaml
-	thumb_func_start sub_8020140
-sub_8020140:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkTerminateFlagAndDispatch_8020140.yaml
+	thumb_func_start battleObject_checkTerminateFlagAndDispatch_8020140
+battleObject_checkTerminateFlagAndDispatch_8020140:
 	push {r7,lr}
 	bl test0x200bc50_0x5_813D60C
 	beq locret_802015C
@@ -537,7 +537,7 @@ sub_8020140:
 
 locret_802015C:
 	pop {r7,pc}
-	thumb_func_end sub_8020140
+	thumb_func_end battleObject_checkTerminateFlagAndDispatch_8020140
 
 // symdb: Reads the BattleTerminate01 flag byte from the global eStruct2038160 and returns it in r0.
 // symdb: uint8_t eStruct2038160_getBattleTerminate01(void); // inputs: lr; outputs: r0

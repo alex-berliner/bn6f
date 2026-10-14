@@ -140,7 +140,7 @@ signed int __fastcall sub_800279C(int a1)
 
 
 // 0x80027b4
-int *sub_80027B4()
+int *sprite_setRenderFlushState_80027B4()
 {
     int *result; // r0
 
@@ -230,7 +230,7 @@ int sprite_loadPalette_8002818()
 
 
 // 0x800286c
-int *sub_800286C()
+int *sprite_resetPaletteCount_800286C()
 {
     int *result; // r0
 

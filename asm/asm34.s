@@ -939,7 +939,7 @@ sub_812DA08:
 	mov r4, #7
 	ldr r6, dword_812DA38 // =0xc24c 
 	mov r7, #0x64 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
 	.balign 4, 0

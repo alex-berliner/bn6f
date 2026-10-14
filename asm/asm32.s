@@ -35102,9 +35102,9 @@ loc_811FA90:
 // symdb: (r0 = baseTileId, r1 = packedX|Y_field ?, r2 = totalEntryCount, r3 = strideNumerator, r4 =
 // symdb: maxIndex, r7 = paletteShifted8Bits16) -> r0 = unpacked 0xFF ; side effects: pushes one OAM entry
 // symdb: via sub_802FE28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FA98.yaml
-	thumb_func_start sub_811FA98
-sub_811FA98:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_computeAndQueueOamEntry_811FA98.yaml
+	thumb_func_start object_computeAndQueueOamEntry_811FA98
+object_computeAndQueueOamEntry_811FA98:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	str r6, [sp,#0xc]
@@ -35152,7 +35152,7 @@ loc_811FAEC:
 	.balign 4, 0
 dword_811FAF0:
 	.word 0x8000
-	thumb_func_end sub_811FA98
+	thumb_func_end object_computeAndQueueOamEntry_811FA98
 
 	thumb_func_start sub_811FAF4
 sub_811FAF4:

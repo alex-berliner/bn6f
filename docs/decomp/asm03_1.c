@@ -407,7 +407,7 @@ void RenderMapName_8033EE8()
 
 
 // 0x8033f80
-signed int __fastcall sub_8033F80(int a1)
+signed int __fastcall battle_drawBattleStartOverlay_8033F80(int a1)
 {
     int v1; // r4
     signed int result; // r0
@@ -5953,7 +5953,7 @@ signed int cb_80395A4()
     (*(&JumpTable80395C8 + eS200A290))();
     result = IsCurSubsystemInUse();
     if ( zf )
-        result = sub_803C59C(218, 2);
+        result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     return result;
 }
 
@@ -10272,7 +10272,7 @@ int sub_803C58C()
 
 
 // 0x803c59c
-int __fastcall sub_803C59C(int a1, int a2)
+int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
 {
     int result; // r0
     char v3; // zf

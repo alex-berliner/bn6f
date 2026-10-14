@@ -92,7 +92,7 @@ sub_812F094::
 	beq locret_812F0B8
 	mov r0, #0
 	mov r1, #0
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_812F0B8::
 	pop {pc}
 	.balign 4, 0

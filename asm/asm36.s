@@ -828,7 +828,7 @@ sub_813064C:
 	mov r4, #5
 	ldr r6, dword_813067C // =0xc24c 
 	mov r7, #0x46 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 locret_8130676:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1166,7 +1166,7 @@ loc_8130920:
 	beq loc_8130930
 	mov r0, #0
 	mov r1, #0
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 loc_8130930:
 	pop {pc}
 	.balign 4, 0
@@ -5028,7 +5028,7 @@ sub_81327B0:
 	strb r1, [r5,r0]
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_81327E0:
 	pop {pc}
 	.balign 4, 0
@@ -5055,7 +5055,7 @@ loc_81327FE:
 	bl sub_811AE5C
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 	pop {pc}
 	thumb_func_end sub_81327E8
 
@@ -5064,7 +5064,7 @@ sub_8132810:
 	push {lr}
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 	pop {pc}
 	thumb_func_end sub_8132810
 
@@ -8756,7 +8756,7 @@ sub_8134548:
 	pop {pc}
 	thumb_func_end sub_8134548
 
-// symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to sub_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
+// symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to object_computeAndQueueOamEntry_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
 // symdb: void object_resolveTableEntry_8134558(u32 index, u32 sub_id, u32 attr_a_off, u32 attr_b_off,
 // symdb: /*r5=*/u32 entry_ptr);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_resolveTableEntry_8134558.yaml
@@ -8782,7 +8782,7 @@ object_resolveTableEntry_8134558:
 	mov r4, #7
 	ldr r6, dword_8134590 // =0xc24c 
 	mov r7, #0x64 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -17615,13 +17615,13 @@ sub_8138848:
 	bl TryUpdateEachOverworldMapObject_80048D2 // () -> ()
 	bl checkOWObjectInteractions_80037f4
 	bl camera_802FFF4
-	bl sub_80027B4
-	bl sub_800286C
-	bl sub_8003BF4
+	bl sprite_setRenderFlushState_80027B4
+	bl sprite_resetPaletteCount_800286C
+	bl owMapObject_renderAll_8003BF4
 	bl sub_8003E98
 	bl npc_drawSprites_800467C
-	bl sub_8004298
-	bl sub_8004590
+	bl sprite_finalizeBattleSpriteGroupQueue_8004298
+	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	pop {pc}
 	thumb_func_end sub_8138848

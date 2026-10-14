@@ -4800,7 +4800,7 @@ cb_8048FD4:
 	bne locret_8048FF0
 	mov r0, #0xda
 	mov r1, #2
-	bl sub_803C59C
+	bl battleObject_setupCustomChipCursorState_803C59C
 locret_8048FF0:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -8241,7 +8241,7 @@ sub_804AA74:
 	mov r4, #7
 	ldr r6, dword_804AAA0 // =0xc24c 
 	mov r7, #0x64 
-	bl sub_811FA98
+	bl object_computeAndQueueOamEntry_811FA98
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
 	.balign 4, 0
