@@ -479,14 +479,14 @@ int sub_80B86A4()
     {
         *(v0 + 9) = 4;
         *(v0 + 10) = 0;
-        result = sub_80B86C4();
+        result = battleObject_stepSprite_80B86C4();
     }
     return result;
 }
 
 
 // 0x80b86c4
-int sub_80B86C4()
+int battleObject_stepSprite_80B86C4()
 {
     sub_80B8800();
     sub_80B8810();
@@ -34553,7 +34553,7 @@ void __noreturn sub_80CC4EC()
 
 
 // 0x80cc562
-void __noreturn sub_80CC562()
+void __noreturn object_dieOrUpdateCollision_80CC562()
 {
     int v0; // r5
     int v1; // r1
@@ -87108,7 +87108,7 @@ int ai_attack_dispatch_80ED13E()
 
 
 // 0x80ed154
-void sub_80ED154()
+void battle_object_aiSnakeArmUpdate_80ED154()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -91256,7 +91256,7 @@ int sub_80EF550()
 
 
 // 0x80ef608
-void sub_80EF608()
+void battle_aiAttackTickDown_80EF608()
 {
     Battle *v0; // r5
     _WORD *v1; // r7

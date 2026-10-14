@@ -824,9 +824,9 @@ jt_80895C0:
 	.word sub_80896D4+1
 	.word sub_8089792+1
 	.word battleObject_beastOut_checkOrInit_80897A6+1
-	.word sub_8089C16+1
+	.word beastOverworldAi_decideTransformOrIdle_8089C16+1
 	.word sub_8089C78+1
-	.word sub_80897E8+1
+	.word battle_tickChipLockoutAndFade_80897E8+1
 	.word sub_8089808+1
 	.word sub_8089826+1
 	.word sub_808983A+1
@@ -845,7 +845,7 @@ jt_80895C0:
 	.word battle_handleChipLockoutTransition_8089A60+1
 	.word sub_8089ACA+1
 	.word battle_handleBeastOutStep_8089AE8+1
-	.word sub_8089B2E+1
+	.word battle_tickChipLockoutLockoutAndAttack_8089B2E+1
 	.word owPlayer_handleBeastSpawnTransition_8089B54+1
 	.word sub_8089B7E+1
 	.word sub_8089B94+1
@@ -926,7 +926,7 @@ loc_80896D0:
 	thumb_local_start
 sub_80896D4:
 	push {r4-r7,lr}
-	bl sub_8089704
+	bl battleObject_scenarioEffectInputHandler_8089704
 	beq loc_8089700
 	cmp r0, #1
 	beq loc_80896FA
@@ -954,9 +954,9 @@ loc_8089700:
 // symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;
 // symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via sub_81421C8, and
 // symdb: reads scenario-effect active flag and sub_8142A84.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089704.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInputHandler_8089704.yaml
 	thumb_local_start
-sub_8089704:
+battleObject_scenarioEffectInputHandler_8089704:
 	push {r4-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_JoypadPtr]
@@ -1025,7 +1025,7 @@ loc_808978C:
 	mov r0, r4
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089704
+	thumb_func_end battleObject_scenarioEffectInputHandler_8089704
 
 	thumb_local_start
 sub_8089792:
@@ -1077,9 +1077,9 @@ loc_80897E4:
 // symdb: Per-frame handler: if eFlags2009F38 bit 0x80 is unset, tick chip lockout via sub_8089CB4 and on its non-zero return trigger a screen fade (0x4 / 0xff) and write 0x24 to the r5-pointed state's byte; always returns 1
 // symdb: (r5 = battle state pointer) -> r0 = 1 ; side effects: may call SetScreenFade(4, 0xff) and store
 // symdb: 0x24 to [r5]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80897E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockoutAndFade_80897E8.yaml
 	thumb_local_start
-sub_80897E8:
+battle_tickChipLockoutAndFade_80897E8:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1094,7 +1094,7 @@ sub_80897E8:
 loc_8089804:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80897E8
+	thumb_func_end battle_tickChipLockoutAndFade_80897E8
 
 	thumb_local_start
 sub_8089808:
@@ -1132,7 +1132,7 @@ sub_808983A:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8089856
 	bl sub_8089D44
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	str r0, [r7,#0xc]
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
@@ -1151,14 +1151,14 @@ loc_8089856:
 battle_tickBeastSp_808985A:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_8142C20
+	bl battle_countAliveActorsOnTeam_8142C20
 	mov r4, r0
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	cmp r0, r4
 	bne loc_8089898
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089898
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	ldr r1, [r7,#0xc]
 	cmp r0, r1
 	beq loc_8089882
@@ -1201,7 +1201,7 @@ sub_80898B2:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_80898E4
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	bne loc_80898CE
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
@@ -1241,7 +1241,7 @@ loc_80898F8:
 sub_80898FC:
 	push {r4-r7,lr}
 	mov r0, #0x10
-	bl sub_8142C20
+	bl battle_countAliveActorsOnTeam_8142C20
 	tst r0, r0
 	beq loc_8089918
 	mov r0, #8
@@ -1367,9 +1367,9 @@ loc_80899EE:
 sub_80899F2:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_8142C20
+	bl battle_countAliveActorsOnTeam_8142C20
 	mov r4, r0
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	cmp r0, r4
 	bne loc_8089A0C
 	bl sub_8089CDC
@@ -1519,9 +1519,9 @@ loc_8089B2A:
 // symdb: AI handler that locks the chip queue and queues a PwrAtk chip when the chip lockout timer is active.
 // symdb: (r5 = AIData*, r7 = ?, r10 = Toolkit*) -> r0 = 1 ; side effects: writes AIData[0x18]=0x70, calls
 // symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089B2E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockoutLockoutAndAttack_8089B2E.yaml
 	thumb_local_start
-sub_8089B2E:
+battle_tickChipLockoutLockoutAndAttack_8089B2E:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B50
@@ -1538,7 +1538,7 @@ sub_8089B2E:
 loc_8089B50:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089B2E
+	thumb_func_end battle_tickChipLockoutLockoutAndAttack_8089B2E
 
 // symdb: Overworld player handler that, when chatbox event flag 0x80 is set, finishes a BeastOut spawn by facing the player toward their navi, kicking off its fixed animation and clearing a request BBS flag, then writes 0x18 into the AI state's byte at r5.
 // symdb: (r5 = ptr to AI/BattleObject state, r10 = toolkit) -> r0 = 1 ; sets BYTE [r5+?] = 0x18, mutates
@@ -1661,9 +1661,9 @@ loc_8089C12:
 // symdb: (r5 = AIData ptr, r10 = Toolkit ptr) -> r0 = 1 ; side effects: writes AIData+0x00, AIData+0x08,
 // symdb: AIData+0x13, anim field in s200ace0, possibly raises event 0x1719 via
 // symdb: owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089C16.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastOverworldAi_decideTransformOrIdle_8089C16.yaml
 	thumb_local_start
-sub_8089C16:
+beastOverworldAi_decideTransformOrIdle_8089C16:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x13]
 	tst r0, r0
@@ -1691,7 +1691,7 @@ loc_8089C4A:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
-	bl sub_814216E
+	bl battleScenarioEffect_isActive_814216E
 	beq loc_8089C6A
 	bl sub_814219C
 	bne loc_8089C6A
@@ -1706,7 +1706,7 @@ loc_8089C6A:
 loc_8089C74:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089C16
+	thumb_func_end beastOverworldAi_decideTransformOrIdle_8089C16
 
 	thumb_local_start
 sub_8089C78:

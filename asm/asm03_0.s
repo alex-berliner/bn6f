@@ -660,7 +660,7 @@ loc_802694C:
 	strb r0, [r5,#0x5] // (dword_20364C4+1 - 0x20364c0)
 	bl sub_8027E2C
 	mov r0, #1
-	bl sub_8028250
+	bl battle_customScreenReloadFromChipEntries_8028250
 	mov r1, #4
 loc_802696E:
 	ldr r0, dword_80269B4 // =0x1ff 
@@ -4227,9 +4227,9 @@ dword_802824C:
 // symdb: Reloads the Custom-screen chip grid from the ten active chip entries, then either redraws the BG tile block or recolors the chip icons.
 // symdb: (r0 = reloadKind: 0=redraw BG tile block 3, !=0=recolor chip icon OBPals) -> void ; side
 // symdb: effects: VRAM BG tile block 3, sprite OBPals, r10 implicitly read
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028250.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customScreenReloadFromChipEntries_8028250.yaml
 	thumb_local_start
-sub_8028250:
+battle_customScreenReloadFromChipEntries_8028250:
 	push {r4-r7,lr}
 	push {r0}
 	mov r0, #0
@@ -4256,7 +4256,7 @@ loc_802827E:
 	bl sub_80283C8
 locret_8028282:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8028250
+	thumb_func_end battle_customScreenReloadFromChipEntries_8028250
 
 // symdb: Streams the chip-icon tiles for one entry of the chip selection screen into the queued graphics transfer.
 // symdb: void chipSelect_QueueEntryIconGfx_8028284(void); // entry struct in r4 (callee-local); clobbers
@@ -5875,7 +5875,7 @@ customScreen_ExitSequence_8028E32:
 	bl battle_updateActiveChipSlotB_state_8028F48
 	bl battle_updateExtraSlotChipKeepFlag_8028F84
 	mov r0, #0
-	bl sub_8028250
+	bl battle_customScreenReloadFromChipEntries_8028250
 	pop {pc}
 	thumb_func_end customScreen_ExitSequence_8028E32
 
@@ -12248,9 +12248,9 @@ locret_802BF0A:
 	pop {pc}
 	thumb_func_end object_countdownTick_802BEFC
 
-// symdb: Chooses an animation/state index for a battle object — either a scripted state derived from the object's +0xC byte, or a 0/1 alternation driven by bit 3 of the global frame counter — and passes it to sub_802C810.
+// symdb: Chooses an animation/state index for a battle object — either a scripted state derived from the object's +0xC byte, or a 0/1 alternation driven by bit 3 of the global frame counter — and passes it to battle_drawChipSelectRowTilemapBlock_802C810.
 // symdb: battle_pickObjectAnimState_802BF0C(BattleObj *obj /* r5 */, u32 r6, Toolkit *r10); no return
-// symdb: value; preserves r5/r6/r10; calls sub_802C810 with r0 = state index and r7 = context pointer
+// symdb: value; preserves r5/r6/r10; calls battle_drawChipSelectRowTilemapBlock_802C810 with r0 = state index and r7 = context pointer
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pickObjectAnimState_802BF0C.yaml
 	thumb_local_start
 battle_pickObjectAnimState_802BF0C:
@@ -12273,7 +12273,7 @@ loc_802BF28:
 loc_802BF2A:
 	strh r0, [r5,#2]
 	mov r0, #0
-	bl sub_802C810
+	bl battle_drawChipSelectRowTilemapBlock_802C810
 	b locret_802BF44
 loc_802BF34:
 	mov r7, r10
@@ -12282,7 +12282,7 @@ loc_802BF34:
 	mov r1, #8
 	and r0, r1
 	lsr r0, r0, #3
-	bl sub_802C810
+	bl battle_drawChipSelectRowTilemapBlock_802C810
 locret_802BF44:
 	pop {pc}
 	.balign 4, 0
@@ -13536,9 +13536,9 @@ byte_802C7EC:
 // symdb: (r0 = animStateIndex 0..1) -> side effects only (writes halfwords into the row buffer via
 // symdb: blitTileBlockToRowBuffer_802C4B6; returns r0=0xA, callee-saved r5/r6/r7 clobbered across the
 // symdb: blit)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C810.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipSelectRowTilemapBlock_802C810.yaml
 	thumb_local_start
-sub_802C810:
+battle_drawChipSelectRowTilemapBlock_802C810:
 	push {r5,lr}
 	ldr r2, off_802C828 // =off_802C82C 
 	lsl r0, r0, #2
@@ -13563,7 +13563,7 @@ byte_802C848:
 	.byte 0xBA, 0x90, 0xBB, 0x90, 0xBC, 0x90, 0xBD, 0x90, 0xBE
 	.byte 0x90, 0xBF, 0x90, 0xC0, 0x90, 0xC1, 0x90, 0xC2, 0x90
 	.byte 0xC3, 0x90
-	thumb_func_end sub_802C810
+	thumb_func_end battle_drawChipSelectRowTilemapBlock_802C810
 
 // symdb: Draws the CustGauge/Mood-style meter block tiles (border + filled segments) into the 24x32 chip-select row buffer using the current frame's bit-4 to choose one of two tile palettes.
 // symdb: (r5 = battle object / chip-select ctx, r10 = Toolkit) -> r0 = 0 ; side effect: writes up to 4

@@ -195,7 +195,7 @@ signed int __fastcall sub_80896D4(int a1, int a2, int a3)
     signed int v4; // r0
     char v5; // zf
 
-    v4 = sub_8089704(a1, a2, a3);
+    v4 = battleObject_scenarioEffectInputHandler_8089704(a1, a2, a3);
     if ( !v5 )
     {
         if ( v4 == 1 )
@@ -218,7 +218,7 @@ signed int __fastcall sub_80896D4(int a1, int a2, int a3)
 
 
 // 0x8089704
-signed int __fastcall sub_8089704(int a1, int a2, int a3)
+signed int __fastcall battleObject_scenarioEffectInputHandler_8089704(int a1, int a2, int a3)
 {
     int v3; // r10
     __int16 v4; // r7
@@ -334,7 +334,7 @@ signed int battleObject_beastOut_checkOrInit_80897A6()
 
 
 // 0x80897e8
-signed int sub_80897E8()
+signed int battle_tickChipLockoutAndFade_80897E8()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -397,7 +397,7 @@ signed int sub_808983A()
     if ( !v2 )
     {
         sub_8089D44();
-        *(v1 + 12) = sub_814216E();
+        *(v1 + 12) = battleScenarioEffect_isActive_814216E();
         ai_setAIDataUnk18_8089CB0(30);
         *v0 = 48;
     }
@@ -413,13 +413,13 @@ signed int battle_tickBeastSp_808985A()
     int v2; // r4
     char v3; // zf
 
-    v2 = sub_8142C20(0);
-    if ( sub_814216E() == v2 )
+    v2 = battle_countAliveActorsOnTeam_8142C20(0);
+    if ( battleScenarioEffect_isActive_814216E() == v2 )
     {
         battle_tickChipLockout_8089CB4();
         if ( !v3 )
         {
-            if ( sub_814216E() == *(v1 + 12) )
+            if ( battleScenarioEffect_isActive_814216E() == *(v1 + 12) )
             {
                 sub_8142ADA();
                 if ( v3 )
@@ -467,7 +467,7 @@ signed int sub_80898B2()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
     {
-        sub_814216E();
+        battleScenarioEffect_isActive_814216E();
         if ( v1 )
         {
             ai_setAIDataUnk18_8089CB0(30);
@@ -512,7 +512,7 @@ signed int sub_80898FC()
 {
     _BYTE *v0; // r5
 
-    if ( sub_8142C20(16) )
+    if ( battle_countAliveActorsOnTeam_8142C20(16) )
     {
         sub_8089CA4(8);
         ai_setAIDataUnk18_8089CB0(30);
@@ -638,8 +638,8 @@ signed int sub_80899F2()
     _BYTE *v0; // r5
     int v1; // r4
 
-    v1 = sub_8142C20(0);
-    if ( sub_814216E() == v1 )
+    v1 = battle_countAliveActorsOnTeam_8142C20(0);
+    if ( battleScenarioEffect_isActive_814216E() == v1 )
     {
         sub_8089CDC();
         *v0 = 24;
@@ -761,7 +761,7 @@ signed int battle_handleBeastOutStep_8089AE8()
 
 
 // 0x8089b2e
-signed int __fastcall sub_8089B2E(int a1)
+signed int __fastcall battle_tickChipLockoutLockoutAndAttack_8089B2E(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r7
@@ -901,7 +901,7 @@ signed int sub_8089BFA()
 
 
 // 0x8089c16
-signed int sub_8089C16()
+signed int beastOverworldAi_decideTransformOrIdle_8089C16()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -917,7 +917,7 @@ signed int sub_8089C16()
             v2 = sub_809E2B8();
             sub_809E13C(v2);
             ai_setAIDataUnk18_8089CB0(30);
-            sub_814216E();
+            battleScenarioEffect_isActive_814216E();
             if ( !v3 && (sub_814219C(), v3) )
             {
                 *v0 = 124;

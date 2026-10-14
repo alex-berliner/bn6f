@@ -5127,7 +5127,7 @@ sub_811055C:
 off_811056C:
 	.word off_8110570
 off_8110570:
-	.word sub_8110574+1
+	.word battle_aiSnakeArmAttack_tick_8110574+1
 	thumb_func_end sub_811055C
 
 // symdb: AI step for a SnakeArm chip attack: highlights the target panel, waits a version-indexed number of frames, then queues an attack and resets the AI substate.
@@ -5136,9 +5136,9 @@ off_8110570:
 // symdb: AIAttackVars.Damage/Unk_0a/Unk_10/Unk_12/Unk_28/Unk_30/Unk_34, calls
 // symdb: object_getFlag/object_setAttack0/sub_800E360/highlightPanelIfSomeCondition_8109660, may
 // symdb: highlight a panel
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8110574.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiSnakeArmAttack_tick_8110574.yaml
 	thumb_local_start
-sub_8110574:
+battle_aiSnakeArmAttack_tick_8110574:
 	push {lr}
 	ldrb r0, [r6,#oAIState_Unk_02]
 	cmp r0, #0
@@ -5213,7 +5213,7 @@ loc_81105D4:
 	strb r0, [r6,#oAIState_Unk_02]
 locret_8110608:
 	pop {pc}
-	thumb_func_end sub_8110574
+	thumb_func_end battle_aiSnakeArmAttack_tick_8110574
 
 	thumb_func_start sub_811060A
 sub_811060A:
@@ -16782,7 +16782,7 @@ off_81169C8:
 off_81169CC:
 	.word npc_tickDisappearTimer_81169D8+1
 	.word battle_reloadObjectSprite_8116A04+1
-	.word sub_8116A28+1
+	.word battleObject_setCurStateAndQueueOamForShadow_8116A28+1
 	thumb_func_end petMenu_updateObject_81169B0
 
 // symdb: Counts an object's disappear timer down; when it expires, switches the object to state 4 with animation 0x23 and resets its sprite (animation 1, no shadow).
@@ -16839,9 +16839,9 @@ locret_8116A26:
 // symdb: Sets a battle object's CurState to 0x8 (CUR_STATE_DESTROY) when its current state is already 0x8, then queues OAM entries via the battleObject shadow helper.
 // symdb: (r5 = BattleObject*, r7 = some u8* state mirror) -> void ; side effects: writes [r5+8] = 0x8
 // symdb: when [r7] == 8, then bl to battle_queueOamEntriesForBattleObjectStateShadow_8116A44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116A28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setCurStateAndQueueOamForShadow_8116A28.yaml
 	thumb_local_start
-sub_8116A28:
+battleObject_setCurStateAndQueueOamForShadow_8116A28:
 	push {lr}
 	ldrb r0, [r7]
 	cmp r0, #8
@@ -16852,7 +16852,7 @@ loc_8116A34:
 	bl battle_queueOamEntriesForBattleObjectStateShadow_8116A44
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8116A28
+	thumb_func_end battleObject_setCurStateAndQueueOamForShadow_8116A28
 
 	thumb_local_start
 sub_8116A3C:

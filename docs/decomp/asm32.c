@@ -3348,7 +3348,7 @@ int sub_811055C()
 
 
 // 0x8110574
-int sub_8110574()
+int battle_aiSnakeArmAttack_tick_8110574()
 {
     int v0; // r4
     int v1; // r5
@@ -11057,7 +11057,7 @@ int battle_reloadObjectSprite_8116A04()
 
 
 // 0x8116a28
-void __noreturn sub_8116A28()
+void __noreturn battleObject_setCurStateAndQueueOamForShadow_8116A28()
 {
     int v0; // r5
     _BYTE *v1; // r7

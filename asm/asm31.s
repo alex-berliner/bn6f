@@ -635,7 +635,7 @@ off_80B8694:
 	.word off_80B8698
 off_80B8698:
 	.word sub_80B86A4+1
-	.word sub_80B86C4+1
+	.word battleObject_stepSprite_80B86C4+1
 	.word sub_80B86D4+1
 	thumb_func_end battleObject_syncVisualStateFromRelatedObject_80B863A
 
@@ -651,7 +651,7 @@ sub_80B86A4:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
-	bl sub_80B86C4
+	bl battleObject_stepSprite_80B86C4
 locret_80B86C2:
 	pop {pc}
 	thumb_func_end sub_80B86A4
@@ -659,15 +659,15 @@ locret_80B86C2:
 // symdb: Tail-call wrapper that runs the battle object's sprite/animation step when the object is alive and unfrozen.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> tail-calls
 // symdb: battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B86C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSprite_80B86C4.yaml
 	thumb_local_start
-sub_80B86C4:
+battleObject_stepSprite_80B86C4:
 	push {lr}
 	bl sub_80B8800
 	bl sub_80B8810
 	bl battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
 	pop {pc}
-	thumb_func_end sub_80B86C4
+	thumb_func_end battleObject_stepSprite_80B86C4
 
 	thumb_local_start
 sub_80B86D4:
@@ -43822,7 +43822,7 @@ off_80CC4DC:
 	.word off_80CC4E0
 off_80CC4E0:
 	.word sub_80CC4EC+1
-	.word sub_80CC562+1
+	.word object_dieOrUpdateCollision_80CC562+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x41_80CC4C4
 
@@ -43880,9 +43880,9 @@ locret_80CC560:
 // symdb: For a battle object, tears down collision immediately if the battle is over, otherwise removes+sprays and then refreshes collision for a final hit.
 // symdb: (r4,r5,r7,r8,r10 = caller battle object + toolkit context) -> void ; side effects: clears region
 // symdb: / spawns hit effect / transitions to CUR_STATE_DESTROY, or continues present-collision flow.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC562.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dieOrUpdateCollision_80CC562.yaml
 	thumb_local_start
-sub_80CC562:
+object_dieOrUpdateCollision_80CC562:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -43897,7 +43897,7 @@ loc_80CC57A:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80CC582:
 	pop {pc}
-	thumb_func_end sub_80CC562
+	thumb_func_end object_dieOrUpdateCollision_80CC562
 
 	thumb_local_start
 sub_80CC584:
@@ -113519,14 +113519,14 @@ ai_attack_dispatch_80ED13E:
 off_80ED14C:
 	.word off_80ED150
 off_80ED150:
-	.word sub_80ED154+1
+	.word battle_object_aiSnakeArmUpdate_80ED154+1
 	thumb_func_end ai_attack_dispatch_80ED13E
 
 // symdb: Per-frame AI helper for the SnakeArm (object 0x2B) held by a battle object: on first call sets up the arm, then each tick hits the front panel with damage = AIAttackVars.Damage + AttackBoost, spawning hit effects/projectiles, and tears the arm down after Unk_0c frames.
 // symdb: (r5 = owner BattleObject, r7 = AIAttackVars ptr, lr) -> side effects only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80ED154.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_object_aiSnakeArmUpdate_80ED154.yaml
 	thumb_local_start
-sub_80ED154:
+battle_object_aiSnakeArmUpdate_80ED154:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -113647,7 +113647,7 @@ byte_80ED24C:
 	.byte 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0
 byte_80ED254:
 	.byte 0x0, 0x0, 0x0, 0x51, 0x0, 0x0, 0x0, 0xA2
-	thumb_func_end sub_80ED154
+	thumb_func_end battle_object_aiSnakeArmUpdate_80ED154
 
 	thumb_local_start
 sub_80ED25C:
@@ -118392,7 +118392,7 @@ off_80EF544:
 	.word off_80EF548
 off_80EF548:
 	.word sub_80EF550+1
-	.word sub_80EF608+1
+	.word battle_aiAttackTickDown_80EF608+1
 	thumb_func_end sub_80EF534
 
 	thumb_local_start
@@ -118488,9 +118488,9 @@ byte_80EF606:
 // symdb: (r5 = AIData*, r6 = ?, r7 = AIAttackVars*, lr) -> r0..r3/r6/r7 clobbered ; side effects: writes
 // symdb: AIAttackVars[0x10], AIAttackVars[0x12], AIAttackVars[0x00]; on expiry calls object_clearFlag(r5,
 // symdb: 0x400000) and object_exitAttackState(r5,r6,r7)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EF608.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackTickDown_80EF608.yaml
 	thumb_local_start
-sub_80EF608:
+battle_aiAttackTickDown_80EF608:
 	push {r4,r6,r7,lr}
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	sub r0, #1
@@ -118510,7 +118510,7 @@ loc_80EF620:
 	bl object_exitAttackState
 locret_80EF62C:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80EF608
+	thumb_func_end battle_aiAttackTickDown_80EF608
 
 	thumb_local_start
 sub_80EF62E:

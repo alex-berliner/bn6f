@@ -8727,10 +8727,10 @@ int sub_80143CE()
     int result; // r0
     char v1; // zf
 
-    result = sub_801445C();
+    result = battle_aiAIDataUnk32IsZero_801445C();
     if ( v1 )
     {
-        result = sub_8014490();
+        result = battle_checkAIDataUnk36IsNonZero_8014490();
         if ( v1 )
             result = object_setFlag2(byte_200);
     }
@@ -8844,7 +8844,7 @@ int __fastcall sub_801444E(int a1)
 
 
 // 0x801445c
-int sub_801445C()
+int battle_aiAIDataUnk32IsZero_801445C()
 {
     int v0; // r5
 
@@ -8895,7 +8895,7 @@ int __fastcall sub_8014482(int a1)
 
 
 // 0x8014490
-int sub_8014490()
+int battle_checkAIDataUnk36IsNonZero_8014490()
 {
     int v0; // r5
 
@@ -9358,7 +9358,7 @@ LABEL_13:
 
 
 // 0x80148cc
-int sub_80148CC()
+int battle_dispatchBeastOutEvent_80148CC()
 {
     int v0; // r5
 
@@ -11253,10 +11253,10 @@ char *__fastcall battle_setPlayerNaviStatsField0E_8015BEC(int a1, char a2)
     result = battle_findPlayer(a1);
     if ( result )
     {
-        result = sub_801445C();
+        result = battle_aiAIDataUnk32IsZero_801445C();
         if ( v5 )
         {
-            result = sub_8014490();
+            result = battle_checkAIDataUnk36IsNonZero_8014490();
             if ( v5 )
             {
                 result = sub_8013682(v2);
@@ -14878,7 +14878,7 @@ int __fastcall object_freeCollisionData(int result)
 
 
 // 0x8019f44
-int __fastcall sub_8019F44(int a1, int a2)
+int __fastcall object_applySelfCollision_8019F44(int a1, int a2)
 {
     int v2; // r7
     int v3; // r4
@@ -14985,7 +14985,7 @@ int __fastcall object_setupCollisionData(int a1, int a2, int a3, char a4)
     if ( battle_isTimeStop() )
         *(v5 + 48) |= 0x10000u;
     *(v5 + 52) = object_getTableEntry_801A0BA(*(v4 + 22), v7);
-    return sub_8019F44(v5, v8);
+    return object_applySelfCollision_8019F44(v5, v8);
 }
 
 
@@ -15102,7 +15102,7 @@ int __fastcall object_updateCollisionData(int a1, int a2, int a3, char a4)
         v7 = 0x10000;
         *(v5 + 48) |= 0x10000u;
     }
-    return sub_8019F44(v5, v7);
+    return object_applySelfCollision_8019F44(v5, v7);
 }
 
 
@@ -15331,10 +15331,10 @@ char *battleObject_onCollision_801A200()
                 v4 = sub_80136CC(v3, 44);
                 if ( !v4 || v4 == 11 || v4 == 12 )
                 {
-                    sub_801445C();
+                    battle_aiAIDataUnk32IsZero_801445C();
                     if ( v5 )
                     {
-                        sub_8014490();
+                        battle_checkAIDataUnk36IsNonZero_8014490();
                         if ( v5 )
                             battle_setPlayerNaviStatsField0E_8015BEC(v3, 255);
                     }

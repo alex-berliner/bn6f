@@ -11297,7 +11297,7 @@ sub_804CC7E:
 
 // symdb: Jump-table dispatcher that selects one of two beast-spawn routines based on the AIData Unk_0c byte read from r5.
 // symdb: (r0 = junk loaded from table, r1 = dispatch index<<2, r5 = AIData ptr) -> (tail call into
-// symdb: sub_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
+// symdb: battle_dispatchBeastOutUpdateOrAnim_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_spawnIndexDispatcher_804CC8E.yaml
 	thumb_local_start
 beastSp_spawnIndexDispatcher_804CC8E:
@@ -11313,22 +11313,22 @@ beastSp_spawnIndexDispatcher_804CC8E:
 off_804CCA0:
 	.word off_804CCA4
 off_804CCA4:
-	.word sub_804CCBC+1
-	.word sub_804CCBC+1
-	.word sub_804CCBC+1
-	.word sub_804CCBC+1
+	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
+	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
+	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
+	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
 	.word sub_804CCC0+1
 	.word sub_804CCC0+1
 	thumb_func_end beastSp_spawnIndexDispatcher_804CC8E
 
 // symdb: Empty stub: push/pop with no body and no callees; behaves as an instantaneous no-op tail-return
 // symdb: (lr) -> ; no return value, side effects only on r4-r7 in the saved set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchBeastOutUpdateOrAnim_804CCBC.yaml
 	thumb_local_start
-sub_804CCBC:
+battle_dispatchBeastOutUpdateOrAnim_804CCBC:
 	push {r4-r7,lr}
 	pop {r4-r7,pc}
-	thumb_func_end sub_804CCBC
+	thumb_func_end battle_dispatchBeastOutUpdateOrAnim_804CCBC
 
 	thumb_local_start
 sub_804CCC0:

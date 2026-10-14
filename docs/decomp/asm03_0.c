@@ -464,7 +464,7 @@ char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
     expireBattleFlag_802A646();
     BYTE1(dword_20364C4) = battle_countFolderChips_8027D58();
     sub_8027E2C();
-    sub_8028250(1);
+    battle_customScreenReloadFromChipEntries_8028250(1);
     v16 = 4;
     do
     {
@@ -2794,7 +2794,7 @@ int sprite_clearObjVramEntry_8028238()
 
 
 // 0x8028250
-void __fastcall sub_8028250(int a1)
+void __fastcall battle_customScreenReloadFromChipEntries_8028250(int a1)
 {
     char *v1; // r4
     signed int v2; // r7
@@ -3801,7 +3801,7 @@ void customScreen_ExitSequence_8028E32()
     updateCustomScreen_WhenUnselectingChip_8028EC8();
     battle_updateActiveChipSlotB_state_8028F48();
     battle_updateExtraSlotChipKeepFlag_8028F84();
-    sub_8028250(0);
+    battle_customScreenReloadFromChipEntries_8028250(0);
 }
 
 
@@ -7976,13 +7976,13 @@ int battle_pickObjectAnimState_802BF0C()
     signed __int16 v2; // r0
 
     if ( !((dword_2036824 | dword_203682C) & 1) )
-        return sub_802C810((**(v1 + oToolkit_CurFramePtr) & 8u) >> 3);
+        return battle_drawChipSelectRowTilemapBlock_802C810((**(v1 + oToolkit_CurFramePtr) & 8u) >> 3);
     if ( *(v0 + 12) <= 1 )
         v2 = 4;
     else
         v2 = 12;
     *(v0 + 2) = v2;
-    return sub_802C810(0);
+    return battle_drawChipSelectRowTilemapBlock_802C810(0);
 }
 
 
@@ -8685,7 +8685,7 @@ int __fastcall __noreturn sub_802C75C(unsigned int a1, int a2)
 
 
 // 0x802c810
-int __fastcall sub_802C810(int a1)
+int __fastcall battle_drawChipSelectRowTilemapBlock_802C810(int a1)
 {
     return blitTileBlockToRowBuffer_802C4B6(2, 14, off_802C82C[a1], 10);
 }

@@ -150,7 +150,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
                             if ( v1 )
                                 battle_beastSpEvolveStep_8141A10(v6, v7, v8, v9);
                             else
-                                sub_8141A70();
+                                battleObject_tickBeastOutActionCooldown_8141A70();
                         }
                     }
                 }
@@ -223,7 +223,7 @@ int __fastcall battle_beastSpEvolveStep_8141A10(int a1, int a2, int a3, int a4)
 
 
 // 0x8141a70
-int sub_8141A70()
+int battleObject_tickBeastOutActionCooldown_8141A70()
 {
     unsigned __int8 *v0; // r5
     int result; // r0
@@ -507,7 +507,7 @@ int __fastcall sub_8142166(int result)
 
 
 // 0x814216e
-int sub_814216E()
+int battleScenarioEffect_isActive_814216E()
 {
     return byte_200078E;
 }
@@ -1356,7 +1356,7 @@ signed int sub_8142BFA()
 
 
 // 0x8142c20
-int __fastcall sub_8142C20(int a1)
+int __fastcall battle_countAliveActorsOnTeam_8142C20(int a1)
 {
     char *v1; // r5
     signed int v2; // r4

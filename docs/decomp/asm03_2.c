@@ -6415,7 +6415,7 @@ int beastSp_spawnIndexDispatcher_804CC8E()
 
 
 // 0x804ccbc
-void sub_804CCBC()
+void battle_dispatchBeastOutUpdateOrAnim_804CCBC()
 {
     ;
 }

@@ -12612,9 +12612,9 @@ loc_80143B6:
 	thumb_local_start
 sub_80143CE:
 	push {lr}
-	bl sub_801445C
+	bl battle_aiAIDataUnk32IsZero_801445C
 	bne locret_80143E2
-	bl sub_8014490
+	bl battle_checkAIDataUnk36IsNonZero_8014490
 	bne locret_80143E2
 	ldr r0, off_80144B4 // =0x200 
 	bl object_setFlag2
@@ -12730,14 +12730,14 @@ sub_801444E:
 
 // symdb: Returns true iff the calling BattleObject's AIData `Unk_32` (u16) field equals zero, leaving the flag set.
 // symdb: (r5 = BattleObject*) -> r0 = value of AIData->Unk_32; flags Z/C/V reflect `cmp r0, #0`
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801445C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAIDataUnk32IsZero_801445C.yaml
 	thumb_local_start
-sub_801445C:
+battle_aiAIDataUnk32IsZero_801445C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrh r0, [r0,#oAIData_Unk_32]
 	cmp r0, #0
 	mov pc, lr
-	thumb_func_end sub_801445C
+	thumb_func_end battle_aiAIDataUnk32IsZero_801445C
 
 // symdb: Empty stub function that does nothing and returns immediately.
 // symdb: void nullsub_6(void)
@@ -12781,14 +12781,14 @@ sub_8014482:
 // symdb: Returns whether the battle object's AIData `Unk_36` halfword is non-zero (sets r0 to that value and Z flag accordingly)
 // symdb: (r5 = BattleObject*) -> r0 = AIData->Unk_36 (halfword, zero-extended) ; Z set when that halfword
 // symdb: is 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014490.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkAIDataUnk36IsNonZero_8014490.yaml
 	thumb_local_start
-sub_8014490:
+battle_checkAIDataUnk36IsNonZero_8014490:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrh r0, [r0,#oAIData_Unk_36]
 	cmp r0, #0
 	mov pc, lr
-	thumb_func_end sub_8014490
+	thumb_func_end battle_checkAIDataUnk36IsNonZero_8014490
 
 // symdb: Applies a 1-HP gradual damage tick (e.g. poison) to a battle object once per call when its AI-data flag is armed, skipping if the battle is over or HP is already 1.
 // symdb: void sub_8014498(BattleObject *obj /*r5*/); // r5 = battle object, r10 passed but unused;
@@ -13387,7 +13387,7 @@ off_801485C:
 	.word dword_20367F0
 off_8014860:
 	.word sub_801486C+1
-	.word sub_80148CC+1
+	.word battle_dispatchBeastOutEvent_80148CC+1
 	.word sub_8014A00+1
 	thumb_func_end battle_runControllerStep_801483C
 
@@ -13450,9 +13450,9 @@ loc_80148C8:
 
 // symdb: Beast Out sub-state dispatch for an actor: dispatches on actor type to a per-event routine
 // symdb: (r5 = actor-related state) -> tail-call to one of three routines; returns their result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80148CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchBeastOutEvent_80148CC.yaml
 	thumb_local_start
-sub_80148CC:
+battle_dispatchBeastOutEvent_80148CC:
 	push {lr}
 	ldr r1, off_80148DC // =off_80148E0 
 	ldrb r0, [r5,#1]
@@ -13467,7 +13467,7 @@ off_80148E0:
 	.word battle_toggleBattleScreenFadeOrSomething_80148EC+1
 	.word activateCrossHappensHere_8014944+1
 	.word battle_runBeastOutIntro_801498E+1
-	thumb_func_end sub_80148CC
+	thumb_func_end battle_dispatchBeastOutEvent_80148CC
 
 // symdb: Drives the post-battle intro/outro fade-out for turn-end-of-beast-sp behaviour: kicks the screen fade, dispatches a large flag payload, then waits for it to finish and dispatches the next payload.
 // symdb: (r5 = S20047CC*, r10 = toolkit) -> no return value ; writes S20047CC+0x1, S20047CC+0x2,
@@ -15902,9 +15902,9 @@ battle_setPlayerNaviStatsField0E_8015BEC:
 	cmp r0, #0
 	beq locret_8015C10
 	mov r5, r0
-	bl sub_801445C
+	bl battle_aiAIDataUnk32IsZero_801445C
 	bne locret_8015C10
-	bl sub_8014490
+	bl battle_checkAIDataUnk36IsNonZero_8014490
 	bne locret_8015C10
 	mov r0, r6
 	bl GetBattleNaviStatsAddr // (alliance: bool) -> * NaviStats
@@ -22158,9 +22158,9 @@ byte_8019C7C:
 // symdb: Applies SelfDamage flag bits to a battle object's CollisionData: clears/clamps SelfDamage, doubles it on DAMAGE_DOUBLE, sets status/hit modifiers on DAMAGE_PARALYZE/DAMAGE_UNINSTALL, and dispatches sub_801A4D0 for DAMAGE_ERASECROSS_SKULL_HIT/DAMAGE_NOTHING.
 // symdb: (r0 = CollisionData* @0x02XXXXXX, r1 = ???) -> r0 = ??? ; side effects: mutates CollisionData
 // symdb: fields SelfDamage (0x2e), StatusEffectBase (0x10), HitModifierBase (0x0e); calls sub_801A4D0.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8019F44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_applySelfCollision_8019F44.yaml
 	thumb_local_start
-sub_8019F44:
+object_applySelfCollision_8019F44:
 	push {r4,r6,r7,lr}
 	mov r7, r0
 	ldrh r4, [r7,#oCollisionData_SelfDamage]
@@ -22197,7 +22197,7 @@ loc_8019F80:
 	bcc locret_8019F84
 locret_8019F84:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8019F44
+	thumb_func_end object_applySelfCollision_8019F44
 
 // symdb: Stores a hit modifier value into a battle object's collision data and returns the collision data pointer.
 // symdb: u32* battle_SetObjectHitModifier(u8 hitModifier /* r0 */, BattleObject* obj /* r5 */)
@@ -22257,7 +22257,7 @@ off_8019FB0:
    r1 = self collision type
    r2 = target collision type
    r3 = collision modifier*/
-// symdb: Initializes a battle object's collision-data block from its parent object, resolves self/target collision-type flag tables, applies a time-stop bit, and finalizes via sub_8019F44.
+// symdb: Initializes a battle object's collision-data block from its parent object, resolves self/target collision-type flag tables, applies a time-stop bit, and finalizes via object_applySelfCollision_8019F44.
 // symdb: void object_setupCollisionData(u32 outCollisionPtr, u32 selfTableIdx, u32 targetTableIdx, u8
 // symdb: hitModifierBase /* r3 */, u32 parentBattleObject /* r5 */, u32 unused_r10) -> {u32 r0, u32 r1,
 // symdb: u32 r6} (clobbers r3, lr, flags NZCV)
@@ -22304,7 +22304,7 @@ loc_8019FFC:
 	bl object_getTableEntry_801A0BA
 	str r0, [r7,#oCollisionData_TargetCollisionTypeFlags]
 	mov r0, r7
-	bl sub_8019F44
+	bl object_applySelfCollision_8019F44
 	pop {r4,r7,pc}
 	thumb_func_end object_setupCollisionData
 
@@ -22441,7 +22441,7 @@ object_updateCollisionData:
 	str r2, [r7,#oCollisionData_SelfCollisionTypeFlags]
 loc_801A0B2:
 	mov r0, r7
-	bl sub_8019F44
+	bl object_applySelfCollision_8019F44
 	pop {r4,r7,pc}
 	thumb_func_end object_updateCollisionData
 
@@ -22722,9 +22722,9 @@ battleObject_onCollision_801A200:
 	cmp r2, #0xc
 	bne loc_801A24C
 loc_801A236:
-	bl sub_801445C
+	bl battle_aiAIDataUnk32IsZero_801445C
 	bne loc_801A24C
-	bl sub_8014490
+	bl battle_checkAIDataUnk36IsNonZero_8014490
 	bne loc_801A24C
 	mov r0, r6
 	mov r1, #0xff

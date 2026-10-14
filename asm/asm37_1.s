@@ -204,7 +204,7 @@ loc_81419CC:
 	bl battle_beastSpEvolveStep_8141A10
 	b loc_8141A0C
 loc_8141A08:
-	bl sub_8141A70
+	bl battleObject_tickBeastOutActionCooldown_8141A70
 loc_8141A0C:
 	mov r0, #0
 	pop {r4-r7,pc}
@@ -272,9 +272,9 @@ off_8141A6C:
 
 // symdb: Ticks and gates a BattleObject's "Beast Out" Power-Atk-charge state machine (cooldown/charge timer and rearm logic)
 // symdb: (r5 = BattleObject*) -> (none returned; flags may_write); side effects on the object's fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141A70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickBeastOutActionCooldown_8141A70.yaml
 	thumb_local_start
-sub_8141A70:
+battleObject_tickBeastOutActionCooldown_8141A70:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
@@ -306,7 +306,7 @@ loc_8141AA2:
 	strb r0, [r5,#0x11]
 locret_8141AA6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8141A70
+	thumb_func_end battleObject_tickBeastOutActionCooldown_8141A70
 
 // symdb: Checks whether the current map group is in the PET-menu's allowed "beast-sp" map whitelist.
 // symdb: () -> r0 = bool (0 = allowed, 1 = not allowed / flag set); flags Z set on success path
@@ -845,15 +845,15 @@ sub_8142166:
 // symdb: returns true (r0=1 -> 7) while the per-battle scenario-effect state at eScenarioEffectState2000780+0xE is non-zero, serving as a guard for the scenario-effect handlers
 // symdb: () -> r0 = 1 if scenario-effect state+0xE != 0 else 0 ; sets NZ, clobbers r4, restores lr via
 // symdb: tail-call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814216E.yaml
-	thumb_func_start sub_814216E
-sub_814216E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleScenarioEffect_isActive_814216E.yaml
+	thumb_func_start battleScenarioEffect_isActive_814216E
+battleScenarioEffect_isActive_814216E:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	ldrb r0, [r5,#0xe] // (byte_200078E - 0x2000780)
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814216E
+	thumb_func_end battleScenarioEffect_isActive_814216E
 
 	thumb_local_start
 sub_8142178:
@@ -2089,9 +2089,9 @@ loc_8142C16:
 
 // symdb: counts active battle entries whose team byte matches the given team id
 // symdb: (r0 = team id) -> r0 = count ; side effects: none (clobbers nzcv, r4-r7)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C20.yaml
-	thumb_func_start sub_8142C20
-sub_8142C20:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_countAliveActorsOnTeam_8142C20.yaml
+	thumb_func_start battle_countAliveActorsOnTeam_8142C20
+battle_countAliveActorsOnTeam_8142C20:
 	push {r4-r7,lr}
 	mov r7, r0
 	ldr r5, off_8142C8C // =byte_2006670 
@@ -2113,7 +2113,7 @@ loc_8142C38:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142C20
+	thumb_func_end battle_countAliveActorsOnTeam_8142C20
 
 	thumb_func_start sub_8142C46
 sub_8142C46:
