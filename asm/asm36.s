@@ -7239,10 +7239,11 @@ loc_813390E:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end battleObject_submenuFolderEditTick_81338D4
-// symdb: Scene step: handles joypad cursor input for the menu (gated by state checks) then runs a fixed tail of scene/anim updates and palette/OBJ bank setups.
-// symdb: void sub_8133944(void);  /* uses toolkit via R10, menu state object via R5; no explicit returns;
-// symdb: clobbers r0-r3,r9-r12,lr; flags NZCV clobbered; preserves r4-r8,r10 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133944.yaml
+// symdb: Per-frame main update for a battle object's sub-menu state (e.g. Beast/Custom-Anger confirm screen): cancels on START/B, confirms on A, scrolls the cursor through up to 8 entries on d-pad, and re-renders the folder-edit/submenu graphics and AI-related callbacks each tick.
+// symdb: (r2, r4, r5, r6, r7, r8, r10, lr = various preserved live regs incl. submenu ptr in r5 and
+// symdb: Toolkit ptr in r10) -> no return value (pop {pc}); side effects: writes tile-flag palette, BG
+// symdb: tilemap, custom-gfx, AI turn-handler dispatch, cursor index stored back at r5+0x34
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133944.yaml
 	thumb_local_start
 sub_8133944:
 	push {lr}
@@ -8167,8 +8168,9 @@ off_81340D8:
 	.word byte_813313C
 	thumb_func_end sub_81340AC
 
-// symdb: Runs an update routine on some battle data, then snaps the sprite of battle struct slot 3 to screen position (0xC0, 3) if that slot is occupied.
-// symdb: void sub_81340DC(void) /* r2,r3 pass through to sprite_setCoordinates; r4-r7 preserved */
+// symdb: From the chip-select overlay "submenu open" branch, spawns the overlay's eStruct records and, if the index-3 record slot is in use, positions its sprite at (0xC0, 3).
+// symdb: (r0 unused) -> void ; side effects: creates eStruct records in eStructArr2008450, may move a
+// symdb: sprite on the index-3 eStruct
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81340DC.yaml
 	thumb_local_start
 sub_81340DC:
@@ -9101,9 +9103,9 @@ loc_813472C:
 off_813473C:
 	.word unk_203486C
 	thumb_func_end copyBackgroundTiles_sub_813471C
-// symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from battleObject_advanceAnimTableBy0xFF_8120CC8 when it reaches zero.
+// symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from sub_8120CC8 when it reaches zero.
 // symdb: void sub_8134740(u32 battleObj /* r5 */); /* r5 preserved; nz/c/v clobbered; r0-r3,r4,lr
-// symdb: clobbered via sub_811FAF4/battleObject_advanceAnimTableBy0xFF_8120CC8 */
+// symdb: clobbered via sub_811FAF4/sub_8120CC8 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
 	thumb_local_start
 sub_8134740:

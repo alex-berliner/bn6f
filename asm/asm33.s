@@ -223,11 +223,10 @@ locret_81232F8:
 	.pool // 81232FC
 	thumb_func_end sub_8123208
 
-// symdb: Decompresses the current PET Navi's LZ77-compressed tile graphic into a destination buffer, using a per-Navi bank offset.
-// symdb: void sub_8123300(u32 r0 /* bank_table */, u32 r1 /* dest_buf */, u32 r2 /* out_buf */); clobbers
-// symdb: r0, r2, r3, lr, flags; preserves r1 (and is reloaded into r1 from the stack); r7 is scratch; r4
-// symdb: is unused but preserved.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8123300.yaml
+// symdb: Selects one of four navi-specific LZ77 blobs (indexed by current PET navi), decompresses it to a work-RAM buffer, then bulk-copies the post-header payload to a destination buffer using the narrowest safe width.
+// symdb: (r0 = ptr to table-of-4 ptrs to LZ77 blobs, r1 = dest buffer, r2 = ?) -> r0 = r2+4; side
+// symdb: effects: r7 used as the navi-index selector
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123300.yaml
 	thumb_func_start sub_8123300
 sub_8123300:
 	push {r7,lr}
@@ -4376,6 +4375,10 @@ off_8125384:
 	.word NULL
 	thumb_func_end sub_81252C0
 
+// symdb: One-shot battle-transition pump: draws player/enemy row sprites, ticks chip/eStruct/entities, and (if the `r5+0x70` flag is set) clears it, reloads the static+scene tilemaps and redraws the 32x32 background tiles.
+// symdb: (r5 = battle state ptr, r10 = toolkit ptr) -> (none, void) ; side effects: OAM/VRAM writes via
+// symdb: callees, sets [r5+0x70] = 0 when consumed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125444.yaml
 	thumb_local_start
 sub_8125444:
 	push {lr}
@@ -8320,7 +8323,7 @@ dword_8127308:
 // symdb: r6? r10 = toolkit, r7 = OAM id) -> r0 = the new low-nibble cell id (the packed byte at [r5+r3]
 // symdb: recomposed as (new_hi_nibble<<4 | old_lo_nibble)); also NZCV, r1-r3, r5-r7, lr clobbered. Side
 // symdb: effects: writes one byte at [r5+r3] (twice), one word at [r5+r3] via strb; calls into
-// symdb: battleObject_queueOamFromTableRow_811FAF4 and battleObject_advanceAnimTableBy0xFF_8120CC8.
+// symdb: battleObject_queueOamFromTableRow_811FAF4 and sub_8120CC8.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCmdSpawnChild_812730C.yaml
 	thumb_local_start
 battleObject_dispatchCmdSpawnChild_812730C:
@@ -12263,7 +12266,7 @@ CommMenuJumpTable81291FC:
 // symdb: Initializes the battle scene by clearing VRAM/GFX buffers, priming the toolkit's render-info block (0x1F40 at offset 0, rest zeroed), starting the opening cutscene, and writing the variant sub-bytes pulled from dword_8129180 into the state struct held in r5.
 // symdb: void battle_initScene_8129248(void /* r5=state, r10=toolkit */);   // inputs:  r5 (state struct
 // symdb: ptr), r10 (toolkit ptr), lr   // outputs: r0 = 0, r1 = low byte of the dword_8129180 entry that
-// symdb: battleObject_advanceAnimTableBy0xFF_8120CC8 returned in r1;   //          NZ reflects r0; preserves r4-r7.
+// symdb: sub_8120CC8 returned in r1;   //          NZ reflects r0; preserves r4-r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initScene_8129248.yaml
 	thumb_func_start battle_initScene_8129248
 battle_initScene_8129248:
@@ -12909,7 +12912,7 @@ locret_8129734:
 	.balign 4, 0x00
 	thumb_func_end sub_81296D8
 
-// symdb: Advances a battle object into state 3 (slot +0x1D) if a battleObject_advanceChipAnimFrames_812B318(3) gate succeeds, recomputing its stat field at +2 from the +0xE byte and clearing +3.
+// symdb: Advances a battle object into state 3 (slot +0x1D) if a sub_812B318(3) gate succeeds, recomputing its stat field at +2 from the +0xE byte and clearing +3.
 // symdb: void sub_8129738(void); /* r5 = battle object pointer; no return */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_advanceState3_8129738.yaml
 	thumb_local_start
@@ -12931,7 +12934,7 @@ locret_8129754:
 	.balign 4, 0x00
 	thumb_func_end battle_object_advanceState3_8129738
 
-// symdb: Dispatches on an entity's 0x1D byte: consults battleObject_advanceChipAnimFrames_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
+// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
 // symdb: void sub_8129758(void *entity /* r5 */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129758.yaml
 	thumb_local_start
@@ -13046,7 +13049,7 @@ off_81297F4:
 	.word sub_81298F8+1
 	thumb_func_end sub_81297DC
 
-// symdb: Battle object hook that reads the +0x1D state index, queries battleObject_advanceChipAnimFrames_812B318 (with an optional battleObject_advanceChipAnimFrames_812B318-cleanup call when battleObject_advanceChipAnimFrames_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
+// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
 // symdb: void sub_8129808(struct BattleObject* obj /* r5 */);  /* clobbers r0-r3, lr, N Z C V; preserves
 // symdb: r4-r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129808.yaml
@@ -13198,7 +13201,7 @@ locret_81298F6:
 	pop {r4,pc}
 	thumb_func_end battleObj_setCanceledPose_81298D4
 
-// symdb: Attempts to put a battle object into its attack/selected pose, guarded by battleObject_advanceChipAnimFrames_812B318.
+// symdb: Attempts to put a battle object into its attack/selected pose, guarded by sub_812B318.
 // symdb: void sub_81298F8(uint32_t r5 /*battle object ptr*/, uint32_t lr); clobbers r0-r3, lr, flags
 // symdb: (nz,c,v); preserves r4,r5,r6,r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81298F8.yaml

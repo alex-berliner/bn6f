@@ -3526,6 +3526,10 @@ off_8027E28:
 	.word unk_20365C0
 	thumb_func_end getLocOfActiveChips_8027E1C
 
+// symdb: Initializes the chip-select active-state (12 active-chip records), updates beast-out counter, and sets up the first row of selectable chips from the folder.
+// symdb: () -> r0 = 0x0b ; side effects: clears 0x90 bytes at the active-chip array, rewrites the beast-
+// symdb: out counter byte, resets record slots, writes to r4+4 and r5+6.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027E2C.yaml
 	thumb_local_start
 sub_8027E2C:
 	push {r4,r6,r7,lr}
@@ -25650,7 +25654,7 @@ battleObject_checkCollisionWithTarget_8031B9A:
 
 // symdb: Standard three-step textbox setup — initialise textbox state, open the message window box, then begin printing the text.
 // symdb: void text_setupTextboxAndStartPrint(r0 arg0, r5 arg5); // returns to caller with
-// symdb: r0/r2/r3/r4/r5/r6/r7/flags as left by chatbox_getCursorBlinkState_8031B7C
+// symdb: r0/r2/r3/r4/r5/r6/r7/flags as left by sub_8031B7C
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/text_setupTextboxAndStartPrint_8031BB2.yaml
 	thumb_local_start
 text_setupTextboxAndStartPrint_8031BB2:
@@ -25700,7 +25704,7 @@ battleObject_checkInAttackRange_08031BE2:
 	thumb_func_end battleObject_checkInAttackRange_08031BE2
 
 // symdb: Advances one battle AI tick: computes the entity's relative position to its target, then runs a small AI helper that returns a value to a flag-check callee.
-// symdb: (r0 = entity pointer, r5 = AI state-ish struct) -> r0 = 0/3 from chatbox_getCursorBlinkState_8031B7C (cached-AI-active
+// symdb: (r0 = entity pointer, r5 = AI state-ish struct) -> r0 = 0/3 from sub_8031B7C (cached-AI-active
 // symdb: flag); tail call via pop {pc}.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiUpdate_8031BFA.yaml
 	thumb_local_start
@@ -25730,7 +25734,7 @@ sub_8031C12:
 	thumb_func_end sub_8031C12
 
 // symdb: Computes the actor's relative position to the target, then advances the textbox cursor blink with two constants and queries a sub-state.
-// symdb: (r0 = BattleObject ptr, r5 = ?) -> r0 = chatbox_getCursorBlinkState_8031B7C result ; r5 preserved, lr-tail-called
+// symdb: (r0 = BattleObject ptr, r5 = ?) -> r0 = sub_8031B7C result ; r5 preserved, lr-tail-called
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcRelPosAndAdvanceTextboxBlink_8031C2A.yaml
 	thumb_local_start
 battle_calcRelPosAndAdvanceTextboxBlink_8031C2A:
@@ -25762,8 +25766,8 @@ battle_aiPointLeftOfLineSideTest_8031C42:
 	pop {pc}
 	thumb_func_end battle_aiPointLeftOfLineSideTest_8031C42
 
-// symdb: Call chatbox_getCursorBlinkState_8031B7C with r0 = 1 and return its results.
-// symdb: () -> as chatbox_getCursorBlinkState_8031B7C(1)
+// symdb: Call sub_8031B7C with r0 = 1 and return its results.
+// symdb: () -> as sub_8031B7C(1)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C5A.yaml
 	thumb_local_start
 sub_8031C5A:
@@ -25820,7 +25824,7 @@ battle_aiStorySub3_8031C94:
 	pop {pc}
 	thumb_func_end battle_aiStorySub3_8031C94
 
-// symdb: Computes the target's relative position, then runs a fixed-point half-plane (cross-area) test against a hard-coded test point/normal, and finally calls chatbox_getCursorBlinkState_8031B7C.
+// symdb: Computes the target's relative position, then runs a fixed-point half-plane (cross-area) test against a hard-coded test point/normal, and finally calls sub_8031B7C.
 // symdb: void sub_8031CAC(void);  // clobbers r2,r3,r4,r6,r7; touches flags N,Z,C,V
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8031CAC.yaml
 	thumb_local_start

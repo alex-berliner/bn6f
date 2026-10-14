@@ -17451,10 +17451,10 @@ loc_801685C:
 	mov pc, lr
 	thumb_func_end sub_801683C
 
-// symdb: Per-frame battle-object update that pulses the object's sprite color shader via a 32-entry triangular ramp table.
-// symdb: void sub_8016860(u32 r5_battleObject /* battle object base, in r5 */);   // inputs: r5 = battle
-// symdb: object, r10, lr   // outputs: r4   // clobbers: nz c v r0 r1 r3 lr   // preserved: r4 r6
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8016860.yaml
+// symdb: Recolor a battle object's sprite as a warm/cool gradient depending on its navi version.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> r0 = 0 ; side effects: writes the object's high-
+// symdb: nibble sprite color shader via sprite_setColorShader.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016860.yaml
 	thumb_local_start
 sub_8016860:
 	push {r4,lr}
@@ -19565,7 +19565,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (battleObject_initMoveStep_80178D4 / sub_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml

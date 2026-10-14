@@ -3834,10 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: BBS / PET request subsystem state handler that reacts to story/event flags and the cutscene-script pointer, gating and triggering event-flag updates and loading the request-menu GFX anims.
-// symdb: (r10 = toolkit) -> nz ; side effects: clears/sets/tests event flags 0x1C84.., mutates ReqBBS
-// symdb: state, loads GFX anims
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
+// symdb: Per-frame state machine that drives a cutscene/intro animation (states 0–4, then terminate), gating start on event flags and the overworld busy flag, and clearing a large set of related event flags when finished.
+// symdb: () -> r0 = 0/1 (continuation flag for the caller's "still active" check); no other args used.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
 	push {r4-r7, lr}

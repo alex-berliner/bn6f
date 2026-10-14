@@ -27,10 +27,11 @@ off_80A49AC:
 	.word OverworldMapObjects
 	thumb_func_end ho_80A4984
 
-// symdb: Creates and fully initializes a field/overworld sprite from a configuration block: loads the sprite resource, sets animation/palette/priority, optionally applies Z-coordinate layer effects, clears shadow flags, and fires a post-init event.
-// symdb: void sprite_initFromConfig_80A49B0(u32 r5 /*sprite obj*/, u32 r7 /*config block ptr*/, u32 r10);
-// symdb: /* returns r2 from post-init event, may update r5 from sprite_load */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A49B0.yaml
+// symdb: Overworld map object initializer: loads its sprite/animation/palette, applies Z-modifiers and layer priority, and kicks off the post-spawn event.
+// symdb: (r5 = overworldMapObjectPtr, r7 = descriptor block pointed at by r5+0x4 maybe) -> r0 == 0 (ZR on
+// symdb: exit); side effects: writes sprite slots, palette, Z/layer overrides on the OW object and runs
+// symdb: the spawn event.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A49B0.yaml
 	thumb_local_start
 sub_80A49B0:
 	push {lr}

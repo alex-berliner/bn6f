@@ -24547,9 +24547,8 @@ off_811A298:
 	.word unk_2037780
 	thumb_func_end menu_getTableEntryForStateIndex_811A268
 
-// symdb: Tweaks a sprite's unk0x2c field based on the current menu-state table entry (sets a per-state bit otherwise clears/OR-in default bits)
-// symdb: return: void; clobbers: r0 r1 r2 r3 lr; flags NZCV; preserved: r4 r5 r6 r7; stack: pushes
-// symdb: {r4-r7,lr}; pops {r4-r7,pc}
+// symdb: Per-frame update of an object's sprite 0x2c state/collision flag field using a table-derived offset.
+// symdb: (r5 = battle object ptr) -> side effects on object+0x2c ; side effects on object sprite Unk_2c
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A29C.yaml
 	thumb_local_start
 sub_811A29C:
@@ -28248,11 +28247,10 @@ loc_811BE16:
 	.balign 4, 0x00
 	thumb_func_end sprite_setPositionByStructIndex_811BDFC
 
-// symdb: Initialize (or restamp) the GUI sprite for a PET-Navi slot, setting up animation, palette, priority, and position from per-kind tables; skips work if the slot has no entry.
-// symdb: void sub_811BE1C(u32 slot_index /* r0 */, u32 sprite_record /* r5 */,                  u32
-// symdb: caller_r3_in /* r3 */) -> u32 /* r3, from sprite_setCoordinates */   // clobbers r0, r1, r2, lr;
-// symdb: flags N Z C V; preserves r4, r5, r6
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811BE1C.yaml
+// symdb: Configures the PET navi sprite's appearance (init sprite, animation, palette, priority, coordinates) based on the currently selected navi and stats.
+// symdb: (r0 = navi/state index, r1 = 1, r2 = table byte, r5 = sprite object) -> void ; side effects:
+// symdb: writes sprite/palette/anim/coord fields of object in r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BE1C.yaml
 	thumb_local_start
 sub_811BE1C:
 	push {lr}
@@ -34452,7 +34450,7 @@ byte_811F4F8:
 	thumb_func_end getCurrentMapBgm_811F290
 
 // () -> void
-// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via battleObject_advanceAnimTableBy0xFF_8120CC8 when it expires.
+// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
 // symdb: void sub_811F508(void); /* inputs: r5,r10,lr; outputs: r7; clobbers nzcv,r0-r3,lr; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811F508.yaml

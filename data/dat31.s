@@ -2225,11 +2225,11 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Updates the battle object's attack-related state (flags, counter, panel highlights) per frame, returning the active movement/attack panel list size in r0.
-// symdb: (r0 = BattleObject*, r1 = AIData*, r5 = toolkit) -> r0 = number of attack-panel highlights ;
-// symdb: side effects: mutates BattleObject +0x8..+0x20 fields, CollisionData ObjectFlags1, panel
-// symdb: highlights
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
+// symdb: Ticks a charged-beam attack timer in AIAttackVars, plays the windup/recoil anims, and spawns the projectile once the timer expires.
+// symdb: (r4 = AIDataPtr, r5 = BattleObjectPtr, r7 = AIAttackVarsPtr, r10 = ToolkitPtr) -> r0 = remaining
+// symdb: windup frames (or final state); writes AIAttackVars fields, BattleObject.CurAnim, CollisionData
+// symdb: flag, and a child battle object via sub_80C5578.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::
 	push {r4,r6,lr}

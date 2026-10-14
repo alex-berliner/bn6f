@@ -1556,12 +1556,10 @@ scenario_ClearEffectActiveFlag_800399A:
 	pop {r4-r7,pc}
 	thumb_func_end scenario_ClearEffectActiveFlag_800399A
 
-// symdb: Dispatches a scenario/cutscene effect by indexing a 16-byte-stride jump table at jt_80038E8 using the sub-id byte at 0x2000781, after gating on the active/complete byte at 0x2000780.
-// symdb: void dispatchScenarioEffect_80039AA(void);   // caller-supplied registers passed through to the
-// symdb: dispatched handler:   //   in:  r2, r3, r4, r6, r8, r9, r10, r11, r12, lr   //   out (to handler
-// symdb: and back to caller via pushed r4-r7): r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12   //
-// symdb: clobbers internally: nz, c, v, r0, r1, lr   //   preserved across the call: r4, r5, r6, r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80039AA.yaml
+// symdb: Per-frame scenario effect dispatch: indexes `jt_80038E8` by `eScenarioEffectState2000780.Index` and tail-calls the resulting handler.
+// symdb: (no args passed by callee — caller-set r10 toolkit + lr drive behaviour) -> r0 from the
+// symdb: dispatched handler ; no side effects on r4-r9/r12 when no handler runs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80039AA.yaml
 	thumb_local_start
 sub_80039AA:
 	push {r4-r7,lr}
@@ -2014,7 +2012,7 @@ off_8003C6C:
 	.word sprite_queueFramePieces+1
 	thumb_func_end owMapObject_renderAll_8003BF4
 
-// symdb: Resets the queued sprite palette count slot (r0) to 0 via sprite_recordPaletteCountToGroupSlot_80028C0.
+// symdb: Resets the queued sprite palette count slot (r0) to 0 via sub_80028C0.
 // symdb: (r0 = slot index 0) -> r0 = 0 ; side effect: writes to battle sprite palette bookkeeping
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetSpritePaletteCount_8003C70.yaml
 	thumb_local_start
@@ -2220,9 +2218,10 @@ off_8003E94:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003E18
 
-// symdb: Calls sprite_recordPaletteCountToGroupSlot_80028C0 with mode 1 to reset/teardown battle objects at scene exit.
-// symdb: void battle_resetObjects_8003E98(void); /* clobbers r0-r2, lr */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
+// symdb: Per-frame vblank/battle tick helper that records the current queued-sprite palette count into group slot 1 and then falls through into a T1-battle-object palette-count zeroing loop.
+// symdb: (none) -> r0 = 1 ; side effect: byte_200F389[1] = current sprite-palette count, and for 32 T1
+// symdb: battle objects sets object_sprite_Unk14 + 0x24 to 0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
 	thumb_func_start sub_8003E98
 sub_8003E98:
 	push {lr}
@@ -2723,7 +2722,7 @@ T4BattleObjectJumptable:
 
 // symdb: Iterate every battle object's sprite group (OBJ_GROUP) and either queue/cull/draw them, or clear their frame-piece flags if their sprites aren't active this frame.
 // symdb: (r10 = Toolkit ptr, lr = retaddr) -> r0 = 4 ; side effects: writes battle-object OAM data, calls
-// symdb: sprite_recordPaletteCountToGroupSlot_80028C0 to record palette count.
+// symdb: sub_80028C0 to record palette count.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateSprites_8004510.yaml
 	thumb_local_start
 battle_updateSprites_8004510:
@@ -2798,7 +2797,7 @@ off_800458C:
 
 // symdb: Closes out a sprite-queue group by recording the final palette-count (dword_200F340) into byte slot 4 of byte_200F389.
 // symdb: () -> r0 = 0x4 ; side effect: writes the latest palette-count (dword_200F340) into
-// symdb: byte_200F389[4] via sprite_recordPaletteCountToGroupSlot_80028C0
+// symdb: byte_200F389[4] via sub_80028C0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_finishGroup_8004590.yaml
 	thumb_func_start sprite_finishGroup_8004590
 sprite_finishGroup_8004590:
@@ -2985,7 +2984,7 @@ off_8004678:
 // symdb: () -> for each of the 16 NPCs: OBJECT_FLAG_VISIBLE: sprite_projectAndCull(r0 = NPC+0x24, r5 =
 // symdb: NPC), sprite_ensureGfxResident(2), sprite_queueFramePieces(layer 2, bias 0x60, r5 = NPC+0xA0);
 // symdb: else: on-screen piece mask (sprite+0x24) = 0, and if OBJECT_FLAG_ACTIVE still
-// symdb: sprite_projectAndCull. Then sprite_recordPaletteCountToGroupSlot_80028C0(2). Exit: C=1, V=0 (the loop's last cmp), r3 = last
+// symdb: sprite_projectAndCull. Then sub_80028C0(2). Exit: C=1, V=0 (the loop's last cmp), r3 = last
 // symdb: path's, r4-r9/r12 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_drawSprites_800467C.yaml
 	thumb_func_start npc_drawSprites_800467C
@@ -3076,7 +3075,7 @@ off_80046F4:
 	.word sprite_queueFramePieces+1
 	thumb_func_end npc_drawSprites_800467C
 
-// symdb: Trivial wrapper that switches the game into mode/state 2 via sprite_recordPaletteCountToGroupSlot_80028C0.
+// symdb: Trivial wrapper that switches the game into mode/state 2 via sub_80028C0.
 // symdb: void sub_80046F8(void)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gameMode_switchToMode2_80046F8.yaml
 	thumb_local_start
@@ -3460,7 +3459,7 @@ off_80049AC:
 
 // symdb: Finalises a queued battle sprite group by recording the current sprite palette count (dword_200F340) into slot 5 of the per-group byte array at byte_200F389.
 // symdb: (no input args used) -> r0 = 5 (slot index); side effect: byte_200F389[5] = LO(dword_200F340)
-// symdb: after a tail-call to sprite_recordPaletteCountToGroupSlot_80028C0
+// symdb: after a tail-call to sub_80028C0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_finishQueuedSpriteGroup_80049B0.yaml
 	thumb_local_start
 battleObject_finishQueuedSpriteGroup_80049B0:
@@ -5249,12 +5248,10 @@ locret_80058CC:
 	.byte 0, 0
 	thumb_func_end sub_800585A
 
-// symdb: Overworld tick that arms a warp when the player stands on a map warp trigger whose "warp seen" event flag is still clear, dispatching to the cutscene matching the warp's type.
-// symdb: void sub_80058D0(struct Toolkit *toolkit /* r10 */); // returns in r5 (preserved), with r1..r12
-// symdb: set up for the dispatched cutscene // handler (r1 = JumpTable8005948, r2 = this warp's data
-// symdb: entry, r4 = entry // offset, r5 = GameState*); r0 untouched on return; clobbers r0,r1,r2,r3, //
-// symdb: r4,r6,r7,lr and the N/Z/C/V flags; preserves r5.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80058D0.yaml
+// symdb: Per-frame overworld check that consumes a coordinate trigger and dispatches to one of nine warp cutscene routines based on the warp type.
+// symdb: () -> void ; triggers a warp via Toolkit's Warp2011bb0 state. No register contract for callers
+// symdb: (saves r5,lr only)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80058D0.yaml
 	thumb_local_start
 sub_80058D0:
 	push {r5,lr}
