@@ -1324,7 +1324,7 @@ loc_808CC2E:
 // symdb: Picks one of four BattleState-related init/data pointer pairs based on event flag 9D4 and three sub-checks, returning (ptr0, ptr1) to its caller.
 // symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
 // symdb: call return); side effects: may read EVENT_9D4, may call
-// symdb: battle_checkPlayerActorStoryFlag_808CC10/sub_808CF8C/ai_getAIModeForMapGroup_808D084/battle_checkLockedEventTable_808CDC4
+// symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickBattleStateInitPtr_808CC34.yaml
 	thumb_local_start
 battle_pickBattleStateInitPtr_808CC34:
@@ -1523,7 +1523,7 @@ byte_808CDAA:
 	.byte 0xD0, 0xF, 0xD1, 0xF, 0x0, 0x0
 	thumb_func_end sub_808CD24
 
-// symdb: Walk an event-flag table whose pointer is selected by ai_getAIModeForMapGroup_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
+// symdb: Walk an event-flag table whose pointer is selected by sub_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
 // symdb: () -> r0 = match flag (0/1), r1 = group index (0..N), r2 = (3*group + entry) ; side effects: r10
 // symdb: (Toolkit) read-only, NZ/CV flags preserved by TestEventFlag calls
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkLockedEventTable_808CDC4.yaml
@@ -1730,10 +1730,10 @@ byte_808CF84:
 	.byte 0xDA, 0x9, 0xDB, 0x9, 0xDC, 0x9, 0xC5, 0xF
 	thumb_func_end sub_808CF50
 
-// symdb: If event flag 9D9 is set, copies a battle object's ID-word (low half) into the chatbox MugshotColorFilter slot (offset 0x4C) and plays sound effect 0x122, returning 1; otherwise returns 0
-// symdb: (r5 = some battle object, r10 = toolkit) -> r0 = 1 if flag set else 0 ; may play SFX, may
-// symdb: clobber r0/r1/r2/r3
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808CF8C.yaml
+// symdb: If event flag EVENT_9D9 is set in battle, writes a u16 from the battle object's slot data into the chatbox `Unk_4C` and plays SFX 0x122 (battle-tied cue line)
+// symdb: (r5 = battle object, r10 = toolkit) -> r0 = 1 if the flag was set, else 0; side effects: writes
+// symdb: to chatbox+0x4C and calls PlaySoundEffect(0x122)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CF8C.yaml
 	thumb_local_start
 sub_808CF8C:
 	push {r4,lr}
@@ -1858,10 +1858,10 @@ battleObject_computePanelOffsetFromCoords_808D034:
 	pop {r4,r5,pc}
 	thumb_func_end battleObject_computePanelOffsetFromCoords_808D034
 
-// symdb: Looks up an element and a partner element for a given battle panel/terrain type from a 4-entry signed-byte table.
-// symdb: (r0 = element/pair index) -> r0 = signed byte 0 (primary element), r1 = signed byte 1 (partner
-// symdb: element); side effects none beyond callee-save (lr saved/restored)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808D060.yaml
+// symdb: Looks up an AI behaviour pair for the current map group's battle by indexing a small 4-byte-pair table with the AI mode returned from `ai_getAIModeForMapGroup_808D084`.
+// symdb: (r10 = Toolkit ptr) -> r0 = signed byte 0 from byte_808D07C[2*mode+0], r1 = signed byte 1 from
+// symdb: byte_808D07C[2*mode+1] ; no other side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D060.yaml
 	thumb_local_start
 sub_808D060:
 	push {lr}

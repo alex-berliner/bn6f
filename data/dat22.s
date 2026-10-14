@@ -4,6 +4,9 @@ byte_80871D8::
 	.byte 0x5, 0xF6, 0x5, 0xF7, 0x5, 0xF8, 0x5, 0xF9, 0x5, 0xFA, 0x5, 0xFB
 	.byte 0x5, 0xFC, 0x5, 0xFD, 0x5, 0xFE, 0x5, 0xC2, 0xF, 0xC3, 0xF, 0xC4
 	.byte 0xF, 0x0, 0x0
+// symdb: Per-tick stepper for a Beast/SP-style enemy actor's AI sub-state (advances sub-state machine, no other side effect on EWRAM)
+// symdb: (r2 = actor index, others caller-saved) -> r0 = 0 ; side effects: may_write r0-r4, r6, lr, flags
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80871F4.yaml
 	thumb_func_start sub_80871F4
 sub_80871F4::
 	push {lr}

@@ -4064,6 +4064,10 @@ loc_801083E:
 	pop {r4,pc}
 	thumb_func_end sub_8010820
 
+// symdb: Sets the battle object's secondary-element weakness using stat look-ups of the actor's and its foe NaviStats.
+// symdb: () -> void ; side effects: writes SecondaryElementWeakness and SecondaryElement on the actor's
+// symdb: CollisionData (r5->r0 via battle object lookup)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801086C.yaml
 	thumb_func_start sub_801086C
 sub_801086C:
 	push {r4,lr}
@@ -4529,10 +4533,10 @@ locret_8010C4E:
 	pop {r4,pc}
 	thumb_func_end sub_8010C06
 
-// symdb: Sets a player BattleObject's PwrAtk charge time to the chip's charge value when the chip is a BeastOut/charge-style chip (ID != 0x3FF) and the alliance side has a player battle object.
-// symdb: (r0 = chipId, r1 = alliance, r10 = ToolkitPtr) -> r0 = chipId (or 0x1E on chip id miss); side
-// symdb: effects: writes AIData fields (charge time) via sub_8010D04 when player found
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8010C50.yaml
+// symdb: Charge the player's PowerAttack timer for a chip based on a chip ID and battle alliance.
+// symdb: (r0 = chip_id, r1 = alliance_bool) -> r0 = power-atk charge time in frames (0x1e) ; side
+// symdb: effects: may write player BattleObject
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010C50.yaml
 	thumb_local_start
 sub_8010C50:
 	push {r4-r6,lr}
@@ -12674,6 +12678,9 @@ battleObject_aiGetUnk4cPtr_801442C:
 	mov pc, lr
 	thumb_func_end battleObject_aiGetUnk4cPtr_801442C
 
+// symdb: Increments the AIData.Unk_4c counter for the current battle object's AI data.
+// symdb: (r5 = current BattleObject*) -> r0 = AIData* ; side effect: AIData+0x4c += 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014432.yaml
 	thumb_local_start
 sub_8014432:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -17198,6 +17205,11 @@ sub_80166AE:
 	pop {pc}
 	thumb_func_end sub_80166AE
 
+// symdb: Dispatches an AI-specific callback based on the BattleObject's Unk_1f field, used by attack-event functions
+// symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
+// symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
+// symdb: object's Unk_1f byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80166B6.yaml
 	thumb_local_start
 sub_80166B6:
 	push {lr}

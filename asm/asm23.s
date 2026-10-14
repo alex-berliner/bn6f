@@ -1513,6 +1513,10 @@ loc_8089B50:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089B2E
 
+// symdb: Overworld player handler that, when chatbox event flag 0x80 is set, finishes a BeastOut spawn by facing the player toward their navi, kicking off its fixed animation and clearing a request BBS flag, then writes 0x18 into the AI state's byte at r5.
+// symdb: (r5 = ptr to AI/BattleObject state, r10 = toolkit) -> r0 = 1 ; sets BYTE [r5+?] = 0x18, mutates
+// symdb: OWPlayer facing and eStruct200ace0, clears flag in oReqBBS2001150
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089B54.yaml
 	thumb_local_start
 sub_8089B54:
 	push {r4-r7,lr}

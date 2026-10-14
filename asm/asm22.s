@@ -286,6 +286,9 @@ off_808713C:
 	.word byte_8086678+0x20
 	thumb_func_end sub_808711C
 
+// symdb: Returns AIData.PanelY (offset 0x13) of the BattleObject pointed to by the Toolkit's current actor slot
+// symdb: () -> r0 = u8 PanelY
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087140.yaml
 	thumb_local_start
 sub_8087140:
 	push {r4,lr}

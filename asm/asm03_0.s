@@ -2651,6 +2651,9 @@ off_8027708:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80276D6
 
+// symdb: Dispatches the chip-select animation tick for a BattleObject based on its S20364C0 sub-state (JumpOffset00)
+// symdb: (r5 = * S20364C0 self) -> ()
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802770C.yaml
 	thumb_local_start
 sub_802770C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -5097,9 +5100,8 @@ jt_802886C:
 	.word sub_8028938+1
 	thumb_func_end battle_custMenuDispatchSelection_8028820
 
-// symdb: returns a (sprite, frame) pair as (r0, r1) for a battle object's BPwrAtk chip-code chip
-// symdb: (r5 = BattleObject*) -> r0 = tile/sprite offset, r1 = frame offset added to base 0x68 ; side
-// symdb: effects: none (uses r6)
+// symdb: Returns a pointer into a small per-BPwrAtk lookup table for the current actor
+// symdb: (r5 = AIData*) -> r0 = pointer into byte_80288B0 ; r1 = 0x68 or 0x80 ; side effects none
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
 	thumb_local_start
 sub_8028894:
@@ -25675,9 +25677,10 @@ battleObject_checkInAttackRange_08031BE2:
 	pop {pc}
 	thumb_func_end battleObject_checkInAttackRange_08031BE2
 
-// symdb: One step of an AI action: compute entity's relative pos to target, run sub_8031570 with r2=0/r4=0x10/r3=0x10/r5=0, then test sub_8031B7C and return its result in r0.
-// symdb: (r0 = ???, r5 preserved) -> r0 = 0 or 3 ; side effects: clobbers r2-r7, flags
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BFA.yaml
+// symdb: Advances one battle AI tick: computes the entity's relative position to its target, then runs a small AI helper that returns a value to a flag-check callee.
+// symdb: (r0 = entity pointer, r5 = AI state-ish struct) -> r0 = 0/3 from sub_8031B7C (cached-AI-active
+// symdb: flag); tail call via pop {pc}.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031BFA.yaml
 	thumb_local_start
 sub_8031BFA:
 	push {lr}

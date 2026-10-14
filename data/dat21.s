@@ -3834,9 +3834,10 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Per-frame cutscene script dispatcher that advances the active cutscene script and handles gated event flags and GFX animation loads for cutscene flow control
-// symdb: (r10 = toolkit) -> none (void; r2/r3/r4/r5/r7/r8/r9/r12 are caller-saved scratch) ; touches
-// symdb: CutsceneState, EventFlags, and possibly loads cutscene GFX anims
+// symdb: (inferred) Overworld cutscene/pet subsystem step that queries cutscene script position, sets/clears an event flag in event byte 0x17 (0x2001F68.7) and drives one of several gfx/anim substates.
+// symdb: (no explicit r0..r3 args; r10 = toolkit, lr = return) -> flags nz ; may clobber r0-r9, r12, lr ;
+// symdb: side effects: EWRAM event flags, BBS request state, GFX anim state, some EWRAM struct copy via
+// symdb: struct_copy_80840C4
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,8 +8219,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: AI dispatch for Beast/SP-style enemy turn (r2=actor idx), testing event flags and stepping per-actor sub-states
-// symdb: (r2 = actor index in current panel; r10 = Toolkit; lr) -> r0 = 0 ; may clobber r0-r7, flags
+// symdb: Runs AI beast-out / chip selection sub-decisions per battle object, dispatching by event flag
+// symdb: (r2 = actorIndex or actor-slot, r10 = Toolkit, lr) -> r5 preserved, other regs/clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

@@ -1143,8 +1143,9 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: Walks the 0x31-entry 8-byte array pointed to by toolkit's oToolkit_Unk2004190_Ptr and reads the halfword at offset 0 of each entry, doing nothing meaningful with it; the captured-call memory is zero-filled.
-// symdb: (r10 = toolkit) -> side effects only; no return value used by caller
+// symdb: Polls the 0x31-entry Unk2004190 array; returns void when all entries report idle (r7 holds last entry ptr).
+// symdb: (no args) -> void ; side effects: clobbers r0-r2 via 49 bls to
+// symdb: toolkit_getUnk2004190EntryPtr_813B9FC
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:

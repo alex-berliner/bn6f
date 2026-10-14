@@ -5747,6 +5747,10 @@ locret_80A7ED8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7EBE
 
+// symdb: Per-actor AI beast-out stage dispatcher that jumps through a thumb thunk based on AIData.Unk_09.
+// symdb: (r5 = BattleObject*; AIData accessed via object offset) -> r0 = handler return value; callee-
+// symdb: saved r5/r10/lr preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7EDA.yaml
 	thumb_local_start
 sub_80A7EDA:
 	push {r4-r7,lr}

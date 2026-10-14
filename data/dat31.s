@@ -1199,10 +1199,9 @@ loc_810CE14::
 	pop {pc}
 	thumb_func_end sub_810CDEA
 
-// symdb: AI turn action that picks a row opponent, decides an attack target on a panel, and stages the chip use (hypothesis from callees only)
-// symdb: (r10 = toolkit, plus saved r4–r7 -> r0 = 0 success/non-null, r1 = ?, r5 = ?; r0..r7, lr
-// symdb: clobbered) ; side effects: AIData.attack-vars and battle-object flags/attack params are written
-// symdb: (per callees)
+// symdb: AI turn-step for a Navi-controlled battle object that rolls a target row, picks an opponent, and triggers a chip attack.
+// symdb: (r0 = BattleObject ptr, r5 = AIData ptr, r7 = ?, r10 = Toolkit) → void ; side effects: writes
+// symdb: attack state to the object's AIData and CollisionData
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CE1A.yaml
 	thumb_local_start
 sub_810CE1A::
@@ -1352,13 +1351,10 @@ sub_810CF46::
 	pop {r4,r7,pc}
 	thumb_func_end sub_810CF46
 
-// symdb: AI handler that selects a battle object's chip and writes the resulting attack parameters to its AIData
-// symdb: (r4 = AIDataPtr, r5 = BattleObjectPtr, r7 = ?, r10 = ToolkitPtr, lr = ret) -> r0 = chip
-// symdb: descriptor ptr, r1 = flags/status; side effects: writes AIAttackVars via
-// symdb: somethingWriteChipParams_80126E4, may set OBJECT_FLAGS_2_DO_UPDATE_COLLISION_PANELS via
-// symdb: object_setAttack0, writes chip-related AIData fields, calls sub_800F322 (likely block0/chip-use
-// symdb: reset)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CF4A.yaml
+// symdb: AI attack step: selects the chip for use on the chosen target panel and stages it on the AI's battle object
+// symdb: (r0 = ?, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = ?, r1 = ? ; side effects write the AI's selected
+// symdb: chip and attack params into battle object / related object state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CF4A.yaml
 	thumb_local_start
 sub_810CF4A::
 	push {r4,r6,lr}
@@ -2230,10 +2226,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Tick handler for a battle object's per-action update (advance state, retarget by facing, refresh counter/highlight), given battle object and an internal action id.
-// symdb: (r0 = 0, r1 = &ret_810D808 thunk for caller -> this function at 0x810D809, r2 = 0x80, r3 = 3,
-// symdb: r4..r7/r10/lr from caller) -> r0 = an exit small value (often 0x24, 0x25, 0x7F) ; no side effect
-// symdb: contract on global EWRAM shown.
+// symdb: AI/state tick handler that drives a battle object through its current state, updating counters, panel highlights, and object flags per frame.
+// symdb: (r0 = object ptr? -> set up via r4/r5/r7/r10) ; r5 (battle object?) and r1 (return status) are
+// symdb: live for caller; side effects mutate battle object state, panels, and AIData
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

@@ -6555,6 +6555,10 @@ loc_8133410:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end battle_objectUpdate_8133400
+// symdb: Submenu dispatch: clears the bg if not open, runs beast status, and routes the B/exit button — either closing the submenu (or transitioning to state 4) based on chatbox flag 0x80 and sub-state 0x20.
+// symdb: (r5 = SubMenu state ptr, r10 = Toolkit) -> void ; side effects: writes [r5+2], [r5+3], may call
+// symdb: PlaySoundEffect / submenu_ConfirmExitAndFade, mutates chatbox-related state
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8133434.yaml
 	thumb_local_start
 sub_8133434:
 	push {lr}

@@ -38431,6 +38431,10 @@ loc_80C9C56:
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_initBriefCollisionObject_80C9BE8
 
+// symdb: Tear down then re-present a battle object's collision data for its current action, or destroy it if the battle is over.
+// symdb: (r5 = oBattleObject*) -> void ; side effects: mutates the BattleObject and its CollisionData,
+// symdb: may flip CurState to CUR_STATE_DESTROY
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9C5C.yaml
 	thumb_local_start
 sub_80C9C5C:
 	push {r7,lr}
@@ -93054,9 +93058,10 @@ sub_80E3824:
 	pop {pc}
 	thumb_func_end sub_80E3824
 
-// symdb: Beast-Out extra-action state for a battle object: jumps to one of five sub-actions by CurAction or destroys the object
-// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; modifies r5-relative battle object (flags,
-// symdb: CurStateActionPhaseAndPhaseInitialized)
+// symdb: Beast-Out power-atk object dispatch: copies object-flag bit 2 from the related object, then jumps to one of five state handlers indexed by CurAction (or destroys the object if CurAction is not 0xb and Param1 != 4).
+// symdb: (r5 = this battle object, r10 = toolkit) -> void ; side effects: writes oObjectHeader_Flags, may
+// symdb: branch to one of sub_80E38C8 / sub_80E38EE / sub_80E3904 / sub_80E3930 / sub_80E3950, may set
+// symdb: CurState to CUR_STATE_DESTROY
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
 	thumb_local_start
 sub_80E386A:
@@ -111851,6 +111856,9 @@ dword_80EC5B8:
 	.word 0x10000
 	thumb_func_end sub_80EC556
 
+// symdb: Dispatches an AI action based on AIAttackVars Unk_00; if the resulting flag has bits 0x8600 set, calls sub_801056A
+// symdb: () -> side effects; no caller-visible return values (tail-pops with pop {pc})
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EC5BC.yaml
 	thumb_local_start
 sub_80EC5BC:
 	push {lr}
@@ -172719,6 +172727,10 @@ loc_8109FD0:
 	pop {pc}
 	thumb_func_end battle_object_updatePhaseTick_8109FC4
 
+// symdb: AI dispatch trampoline: reads the battle object's AIState and tail-calls one of the per-state AI handlers
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, lr = return) -> r1 = AIState byte loaded value? (per
+// symdb: contract out=r1) ; side effects clobber r0-r7, lr, flags; calls through LR
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109FD6.yaml
 	thumb_local_start
 sub_8109FD6:
 	push {r4,r6,r7,lr}
@@ -176145,6 +176157,12 @@ loc_810BC3E:
 	pop {pc}
 	thumb_func_end sub_810BC2A
 
+// symdb: Per-frame battle AI action dispatcher: gates on battle-over flag, kicks the object out of state 8 if an attack trigger is set, otherwise tries to start a chip attack, then dispatches to a per-AIState handler.
+// symdb: (r0..r3 scratch in r4 = object ptr, r5 = owner battle object ptr, r6 = aiState ptr, r10 =
+// symdb: toolkit) -> r0 = bool "started attack this frame" ; writes BattleObject.CurAnim,
+// symdb: BattleObject.oBattleObject+0x88 (timer), AIData related fields, aiState.Unk_00, may pop via
+// symdb: r6->[Unk_00] dispatch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BC44.yaml
 	thumb_local_start
 sub_810BC44:
 	push {r4,r6,lr}
