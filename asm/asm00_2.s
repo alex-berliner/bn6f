@@ -19003,6 +19003,10 @@ off_801740C:
 	.word battle_tickIntroState_80174BE+1
 	thumb_func_end sub_80173F4
 
+// symdb: Resets a battle object to its post-destroy / dormant state: clears its collision region/state, PwrAtk charge, AI data, slot reservation, future-panel reservation, chip counters, sprite flip, alliance bookkeeping, and dispatches destroy-subevents; marks CurPhaseAndPhaseInitialized with phase 4.
+// symdb: (r5 = oBattleObject*, r10 = oToolkit*) -> r1 (clobbered), r5 (preserved) ; no meaningful return;
+// symdb: tailcalls render/cleanup subevents and tail-pops
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801741C.yaml
 	thumb_local_start
 sub_801741C:
 	push {lr}

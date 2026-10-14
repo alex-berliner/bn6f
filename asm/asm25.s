@@ -71,6 +71,11 @@ loc_808F8A6:
 	.balign 4, 0x00
 	thumb_func_end weatherComp_putPlayerBack_808F810
 
+// symdb: After the Mr. Weather comp reset cutscene, places the overworld player sprite back on screen at sprite 0x80 (palette index 3, animation 0x14), copies their current map coords into the player's Next-coords with Z forced to 0x40, clears interaction-lock, and primes a latched state byte — returning 0 when done.
+// symdb: () -> r0 = 0 ; side effects: loads sprite 0x80/anim 0x1c on the OW player object, sets s2000aa0
+// symdb: fields, writes NextX/NextY/NextZ=0x40 and propagates new position to the player object, clears
+// symdb: InteractionLocked, writes 4 via loc_809E306
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F8AC.yaml
 	thumb_local_start
 sub_808F8AC:
 	push {r5,lr}

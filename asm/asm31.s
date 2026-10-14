@@ -9513,6 +9513,11 @@ byte_80BC758:
 	.byte 0x0
 	thumb_func_end battleObject_beastSpecial_init_80BC670
 
+// symdb: Drives the "Beast Change" leap-and-spawn effect on a beast form's object, flashing the palette white, arcing the object across the field, then freeing it and spawning the follow-up effect object on its tile.
+// symdb: (r5 = battleObject, r10 = toolkit, r2 = battleState, lr = ret) -> void ; writes the object's
+// symdb: palette/timer/position/ExtraVars, plays a sound, spawns a type-4 effect, and frees the original
+// symdb: object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BC78C.yaml
 	thumb_local_start
 sub_80BC78C:
 	push {r4,r6,r7,lr}
@@ -28490,6 +28495,10 @@ off_80C52C4:
 	.word object_genericDestroy+1
 	thumb_func_end battle_t3id3_main_80c52b0
 
+// symdb: Per-frame init/update handler for a battle object that owns a chained child collision-data block, syncing its panel coordinates then transitioning to UPDATE.
+// symdb: (r5 = battleObj, r10 = toolkit, r4/r8 preserved) -> void ; reads/writes r5-battleObj and its
+// symdb: CollisionData; pres r4/r8 for caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C52D0.yaml
 	thumb_local_start
 sub_80C52D0:
 	push {lr}
@@ -39640,7 +39649,7 @@ off_80CA55C:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x33_80CA544
 
-// symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater battleObject_updatePanelBreakBounce_80CA61A.
+// symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater sub_80CA61A.
 // symdb: void battleObject_initPanelBreakBounce(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPanelBreakBounce_80CA568.yaml
 	thumb_local_start
@@ -42323,6 +42332,13 @@ locret_80CB962:
 	pop {pc}
 	thumb_func_end sub_80CB924
 
+// symdb: BeastSpOut battle-object INIT state — initialises sprite/collision, spawns the throw-release effect if sprite load fails, otherwise sets HP/collision and a launch X-velocity toward the opposing side, then advances to CUR_STATE_UPDATE.
+// symdb: (r5 = self) -> void ; side effects: writes self->oBattleObject_*, calls
+// symdb: object_setCoordinatesFromPanels / battleObject_initSpriteAndCollision_8011504 /
+// symdb: object_setCollisionHitEffect / object_setCollisionStatusEffect1 / object_presentCollisionData /
+// symdb: object_getFrontDirection / PlaySoundEffect / sub_80E5B88 / spawn_t1_0x0_EffectObject /
+// symdb: object_freeMemory.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CB964.yaml
 	thumb_local_start
 sub_80CB964:
 	push {r4,lr}
@@ -72840,11 +72856,11 @@ sub_80DA070:
 	pop {pc}
 	thumb_func_end sub_80DA070
 
-// symdb: Initializes a poison-panel hazard battle object (sprite 0x80, anim 0x0A, collision type 3/0x13/0x14), sets HP/timer/NameID, and runs its first present-collision step; frees the slot on collision-allocation failure.
-// symdb: (r5 = battle object slot) -> void ; side effects: writes object header flags, sprite state, Z=0,
-// symdb: FuturePanelXY, NameID=0xE4, HP/MaxHP, Timer, palette, Param3, ExtraVars+0x18, CurState =
-// symdb: CUR_STATE_UPDATE; may free the object and return early via pop {pc}.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80DA07C.yaml
+// symdb: Initializes a battle object as an HP-recovering lantern: sets ACTIVE+VISIBLE flags, loads sprite 0x80/0x04 layer 5, animation 0x0A, anchors position at the object's current panel, seeds HP/MaxHP from Param2, sets a 0x2D0 timer, copies a panel-Y table entry into Param3, then allocates/sets up collision data. On collision-slot exhaustion, frees the object and returns without advancing state.
+// symdb: (r5 = obj, r10 = toolkit) -> void ; side effects: writes obj header flags/sprite/anim,
+// symdb: HP/MaxHP/Timer/NameID/Z/PanelXY/Param3, creates a collision slot, sets CurState =
+// symdb: CUR_STATE_UPDATE, branches to r5-relative sub_80DA108
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DA07C.yaml
 	thumb_local_start
 sub_80DA07C:
 	push {lr}
@@ -110176,6 +110192,10 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
+// symdb: AI attack-vars helper that marks the current panel non-sliding, optionally reserves it, then either spawns an illusion object (setting the home panel) or advances to anim 4 / phase 0xC.
+// symdb: (r5 = BattleObjectPtr, r7 = AIAttackVarsPtr) -> r1 = ?, r5 preserved ; no defined caller return
+// symdb: value (out only flags + callee-saved r5)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
 	push {r4,r6,lr}

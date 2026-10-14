@@ -2218,10 +2218,10 @@ off_8003E94:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003E18
 
-// symdb: Per-frame vblank/battle tick helper that records the current queued-sprite palette count into group slot 1 and then falls through into a T1-battle-object palette-count zeroing loop.
-// symdb: (none) -> r0 = 1 ; side effect: byte_200F389[1] = current sprite-palette count, and for 32 T1
-// symdb: battle objects sets object_sprite_Unk14 + 0x24 to 0
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
+// symdb: Records the current queued-sprite palette count into group slot 1 once per frame, then returns.
+// symdb: () -> r0 = 1 ; side effects: writes byte_200F389 + 1 to sprite group counter; tail-only dead
+// symdb: init branch is unreachable
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
 	thumb_func_start sub_8003E98
 sub_8003E98:
 	push {lr}
@@ -14553,6 +14553,11 @@ off_80099B8:
 	.word sub_8009C56+1
 	thumb_func_end battle_dispatchByIndex_80099A4
 
+// symdb: Battle state step that, after a battle is paused mid-introduction, finishes the intro by spawning the type-4 enemy object and enemy objects, plays battle music, then advances BattleState Index_00 from pause intro (4) to either the next state or returns to the chip-select dispatch.
+// symdb: (r5 = BattleStatePtr) -> void ; side effects: writes to BattleState
+// symdb: Unk_03/Unk_02/Index_01/Unk_02_03/Unk_1a, may play music, pause battle, set event flag 0x1735,
+// symdb: set request bits at dword_20352C0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80099E0.yaml
 	thumb_local_start
 sub_80099E0:
 	push {r4,r6,r7,lr}

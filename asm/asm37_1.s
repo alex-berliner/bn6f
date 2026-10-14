@@ -550,6 +550,12 @@ byte_8141F64:
 	.byte 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0
 	thumb_func_end battle_canBeastOut_8141AD2
 
+// symdb: Overworld handler run after Beast-Out: gates a one-shot boss/beast spawn on EVENT_700 + floor tiles, runs floor-specific object spawns and possibly an intro cutscene, then clears EVENT_700.
+// symdb: () -> void ; side effects: zero-fills the unk_2000BE0 buffer, may
+// symdb: TestEventFlagFromImmediate/Clear event flags, may SpawnOverworldMapObject /
+// symdb: SpawnObjectsFromList, may StartCutscene, may set GameState Unk_09 to 0x54 ("can't jack out") and
+// symdb: set event flag 0x17:7, clears EVENT_700
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8141F7C.yaml
 	thumb_local_start
 sub_8141F7C:
 	push {r4-r7,lr}
@@ -1185,6 +1191,11 @@ byte_81424BC:
 	.byte 0x7B, 0x1, 0x2, 0x0, 0x0, 0xFF, 0xFF
 	thumb_func_end battle_getBeastOutAvailability_81422BE
 
+// symdb: Applies the SoulWeapons (Beast Out / Soul Unleash) map state: clears per-weapon flags, spawns overworld objects, drives the BBS request flag and value, and starts the matching cutscene.
+// symdb: (no args — uses r10 = Toolkit) -> void ; side effects: many event flags cleared/set, one OW map
+// symdb: object spawned per unacquired slot, BBS flag e17b0f7 set, AIData.Unk_15 set from a per-map
+// symdb: table, and possibly StartCutscene(byte_8089448, 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142510.yaml
 	thumb_local_start
 sub_8142510:
 	push {r4-r7,lr}

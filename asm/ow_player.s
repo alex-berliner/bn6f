@@ -1857,9 +1857,11 @@ loc_809DF24:
 	pop {pc}
 	thumb_func_end ow_tryTileInteraction_809DF00
 
-// symdb: Overworld player per-frame dispatcher; bypasses the real handler when the player's substate jumptable index is 0x10 (locked/skip-this-tick), otherwise falls through into the real per-frame handler at eStruct200ace0.
-// symdb: void sub_809DF28(struct OWPlayerObject* r5) -> uint8_t r0; clobbers r7, nz, c, v
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809DF28.yaml
+// symdb: Returns 0 in r0 if the overworld player's JumptableIndex_09 is 0x10, otherwise falls through to another handler (r7) which presumably clears the running flag and advances the main jumptable.
+// symdb: (none — uses r5=OWPlayerObject, lr) -> r0 = 0 when the player is in sub-state 0x10 (idle/main
+// symdb: advance), else falls into loc_809DF3A which manipulates r0/r7 and returns ; may_write r0, r7,
+// symdb: NZ/CV flags.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DF28.yaml
 	thumb_local_start
 sub_809DF28:
 	push {lr}

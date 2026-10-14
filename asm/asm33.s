@@ -223,10 +223,10 @@ locret_81232F8:
 	.pool // 81232FC
 	thumb_func_end sub_8123208
 
-// symdb: Selects one of four navi-specific LZ77 blobs (indexed by current PET navi), decompresses it to a work-RAM buffer, then bulk-copies the post-header payload to a destination buffer using the narrowest safe width.
-// symdb: (r0 = ptr to table-of-4 ptrs to LZ77 blobs, r1 = dest buffer, r2 = ?) -> r0 = r2+4; side
-// symdb: effects: r7 used as the navi-index selector
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123300.yaml
+// symdb: Picks the per-PET-navi tile grid blob from a small table, LZ77-decompresses it into a staging buffer, then copies the post-header payload into a destination buffer using the fastest legal width.
+// symdb: (r0 = *LZ77-table *, r1 = *outBuffer, r2 = *stagingBufferWithHeader) -> r0 = ptr just past
+// symdb: staging header (r2+4)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123300.yaml
 	thumb_func_start sub_8123300
 sub_8123300:
 	push {r7,lr}
@@ -894,10 +894,10 @@ locret_81237DC:
 	.byte 0, 0
 	thumb_func_end pet_menu_runFrame_81237BC
 
-// symdb: Initialises a PETNavi battle object on entry to a battle, optionally wiping VRAM/GFX buffers and HP on first entry, then starting an 8-frame fade-in.
-// symdb: void battle_initNaviObject(u32 first_entry_flag /* r0 */, u32 battle_state_ptr /* r1 */, u32
-// symdb: navi_obj /* r5 */, u32 toolkit /* r10 */);  // r7 = toolkit, r4/r5 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81237E0.yaml
+// symdb: Initialize/render setup for the chip folder submenu screen, clearing VRAM/palettes, indexing an anim table, and kicking off the screen fade
+// symdb: (r0 = submenu init flag (0/1), r1 = pointer stored into screen state @ r5+0x4c) -> r0 = 0 ; side
+// symdb: effects VRAM/palette zeroed on r0!=0, sets up render info, calls SetScreenFade(8,0x10)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81237E0.yaml
 	thumb_local_start
 sub_81237E0:
 	push {r4,lr}

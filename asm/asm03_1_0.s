@@ -561,9 +561,10 @@ byte_8033BB8:
 	.byte 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1
 	thumb_func_end sprite_queueOamByFrameIndex_8033B80
 
-// symdb: Queues the current PET navi's graphics chunk into VRAM and triggers the update for the battle screen.
-// symdb: void sub_8033BE8(void)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8033BE8.yaml
+// symdb: Battle-context helper that swaps in the correct "real-world navi" OAM tile/palette for the current PET navi and queues one GFX sprite transfer.
+// symdb: (r10 = toolkit) -> r0 = 0xff ; side effects: QueueWordAlignedGFXTransfer (0x80-byte src ->
+// symdb: 0x06017380), sprite_queueOamEntryThunk(0x40120006, 0xC79C, 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033BE8.yaml
 	thumb_local_start
 sub_8033BE8:
 	push {lr}

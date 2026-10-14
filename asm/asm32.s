@@ -21540,6 +21540,10 @@ off_8118BC4:
 	.word sSubmenu
 	thumb_func_end battleObject_updateDispatcher_8118BA4
 
+// symdb: Initialise a battle-object sprite for the in-battle panel-cursor graphic (animation 0, OAM prio 3, 0x1E0 slot, palette 0) and run one update tick.
+// symdb: (r5 = BattleObject*, r6 = parent context) -> void ; side effects: mutates the sprite fields
+// symdb: (Unk_0, CurAnim/Unk_0c/d, palette, OAM prio, x/y), then tails the per-type update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118BC8.yaml
 	thumb_local_start
 sub_8118BC8:
 	push {lr}
@@ -21935,6 +21939,10 @@ off_8118EA4:
 	.word sSubmenu
 	thumb_func_end sub_8118E84
 
+// symdb: Initialises a battle object's sprite for a BeastOut-state visual: GUI sprite init, animation, palette, priority, and a per-actor coordinate table lookup.
+// symdb: (r5 = battle object, r6 = secondary context) -> void ; side effects: writes object/sprite
+// symdb: fields, sets up OAM, no return value to caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118EA8.yaml
 	thumb_local_start
 sub_8118EA8:
 	push {lr}
@@ -24547,9 +24555,10 @@ off_811A298:
 	.word unk_2037780
 	thumb_func_end menu_getTableEntryForStateIndex_811A268
 
-// symdb: Per-frame update of an object's sprite 0x2c state/collision flag field using a table-derived offset.
-// symdb: (r5 = battle object ptr) -> side effects on object+0x2c ; side effects on object sprite Unk_2c
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811A29C.yaml
+// symdb: Per-frame object update pass that adjusts the object's sprite 0x2c flag bits from the active menu state and a per-index byte in byte_8124B1C.
+// symdb: (r5 = Toolkit* or Object-like record) -> void ; may write r0..r7 (r0 contains intermediate flag
+// symdb: word reused by callees)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A29C.yaml
 	thumb_local_start
 sub_811A29C:
 	push {r4-r7,lr}
@@ -32276,6 +32285,12 @@ off_811E268:
 	.word eScenarioEffectState2000780
 	thumb_func_end battle_dispatchScenarioEffect_811E248
 
+// symdb: Initializes the player BattleObject sprite used during Beast Out / Cross Fusion and runs its first frame update
+// symdb: (r5 = ptr to player's BattleObject) -> void ; mutates r5's object header (offset
+// symdb: 0x08=0x04/CUR_STATE_UPDATE, byte 0x05=animation), sprite data
+// symdb: (animation/palette/priority/flags), and ExtraVars[0x08]=0x04 ; falls into per-frame update at
+// symdb: end
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E26C.yaml
 	thumb_local_start
 sub_811E26C:
 	push {lr}
@@ -32430,6 +32445,10 @@ off_811E380:
 	.word eScenarioEffectState2000780
 	thumb_func_end battleObject_dispatchCurStateAction_811E360
 
+// symdb: Initialises the GUI sprite attached to a battle object (slot type 0x23, sprite 0x36) — sets animation 0, palette 0, OAM priority 0, no shadow, palette bank 0xA, OAM slot table entry 0x280, and coordinates taken from the active cutscene script slot 0.
+// symdb: (r5 = BattleObject*, r6 = ?, r10 = Toolkit*) -> void ; side effects: writes many sprite/state
+// symdb: fields on the object at r5 plus performs a cutscene-script coordinate lookup
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E384.yaml
 	thumb_local_start
 sub_811E384:
 	push {lr}

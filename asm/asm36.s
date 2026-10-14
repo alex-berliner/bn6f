@@ -8168,10 +8168,9 @@ off_81340D8:
 	.word byte_813313C
 	thumb_func_end sub_81340AC
 
-// symdb: From the chip-select overlay "submenu open" branch, spawns the overlay's eStruct records and, if the index-3 record slot is in use, positions its sprite at (0xC0, 3).
-// symdb: (r0 unused) -> void ; side effects: creates eStruct records in eStructArr2008450, may move a
-// symdb: sprite on the index-3 eStruct
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81340DC.yaml
+// symdb: Loads the submenu-open chip-select header entries from a small per-view record table and positions the first eStruct sprite for the chip-select menu.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81340DC.yaml
 	thumb_local_start
 sub_81340DC:
 	push {r4-r7,lr}
@@ -11278,6 +11277,15 @@ off_81356E8:
 	.word battle_beastSpExitOrFinishBattle_8135B54+1
 	thumb_func_end beastsp_dispatchHandler_81356D4
 
+// symdb: Initialize / boot the Navi Customizer battle scene: clear VRAM/palette/GFX, configure fade, reset e-struct records, install the BattleObject table, and play the customizer BGM.
+// symdb: () -> void ; side effects: clears VRAM (0x6000000-0x600DFFF), zeroes IWRAM 0x3001960 and BG tile
+// symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
+// symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
+// symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
+// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
+// symdb: SONG_NAVI_CUSTOMIZER.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81356F4.yaml
 	thumb_local_start
 sub_81356F4:
 	push {lr}

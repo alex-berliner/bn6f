@@ -27,11 +27,10 @@ off_80A49AC:
 	.word OverworldMapObjects
 	thumb_func_end ho_80A4984
 
-// symdb: Overworld map object initializer: loads its sprite/animation/palette, applies Z-modifiers and layer priority, and kicks off the post-spawn event.
-// symdb: (r5 = overworldMapObjectPtr, r7 = descriptor block pointed at by r5+0x4 maybe) -> r0 == 0 (ZR on
-// symdb: exit); side effects: writes sprite slots, palette, Z/layer overrides on the OW object and runs
-// symdb: the spawn event.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A49B0.yaml
+// symdb: Initialise an OverworldNPCObject-style object (r5) from a per-object parameter table (r7): load its sprite, set animation/no-shadow, then conditionally apply Z-coord/layer priority and a sprite priority/palette, before stamping CurState=4 and calling the post-event hook event_80A4A08.
+// symdb: (r5 = object base, r7 = params table) -> void ; side effects: mutates r5's header/sprite and
+// symdb: writes object field 0x8 = 4, 0x6 = 0, 0x7 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A49B0.yaml
 	thumb_local_start
 sub_80A49B0:
 	push {lr}
@@ -6735,6 +6734,11 @@ off_80A873C:
 	.word sub_80A87E8+1
 	thumb_func_end sub_80A8728
 
+// symdb: Initialize/sync an overworld map object whose sprite depends on the current scenario/effect index (Beast/Link style); positions it relative to the player, plays an optional SFX, and runs one sprite update.
+// symdb: (r5 = owoPtr, r10 = toolkit) -> r0 = scenario/effect index byte (0xE8 sentinel) ; side effects:
+// symdb: writes object+0x0, +0x14 (panel coords), +0xC (spr layer), object sprite, plays optional sound
+// symdb: effect
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8748.yaml
 	thumb_local_start
 sub_80A8748:
 	push {r4-r7,lr}
@@ -8522,6 +8526,9 @@ off_80A9454:
 	.word eWeatherCompState
 	thumb_func_end sub_80A9430
 
+// symdb: Initialize the Mr. Weather overworld NPC object (r5): set up sprite 0x80/anim 0, compute a position from sub_80A9570, clear event 0xBFC, and jump to either the "active" sub-init or the normal step fn depending on event 0xBFB and the per-instance 0xBF4 flag.
+// symdb: (r5 = owMapObject self, r10 = ToolkitPtr, lr) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9458.yaml
 	thumb_local_start
 sub_80A9458:
 	push {r4-r7,lr}
