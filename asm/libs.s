@@ -21742,11 +21742,10 @@ sub_814E1FC:
 	.byte 0, 0
 	thumb_func_end sub_814E1FC
 
-// symdb: Thin wrapper that calls sub_814E0D0 and stores the byte result it leaves in r3 at [r1+0x1B].
-// symdb: void sub_814E210(...); // tail-style: preserves LR in r12, calls sub_814E0D0(r0,r1,...), then
-// symdb: writes the callee's r3 byte to *(u8*)(r1+0x1B); all other registers and flags pass through from
-// symdb: the callee
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E210.yaml
+// symdb: Runs the battle object's update routine (r1->r0,r3) and stores the returned charge-time byte into AIData.PwrAtkCurChargeTime (r1+0x1b).
+// symdb: (r0 = BattleObject*, r1 = AIData*) -> r0 = BattleObject*, flags untouched ; no side effects
+// symdb: beyond the strb at r1+0x1b
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E210.yaml
 	thumb_func_start sub_814E210
 sub_814E210:
 	mov r12, lr
@@ -21756,11 +21755,10 @@ sub_814E210:
 	.balign 4, 0x00
 	thumb_func_end sub_814E210
 
-// symdb: After resolving a record via sub_814E0D0, stores the record's new state byte and flags the record as dirty/needs-refresh when the state changed.
-// symdb: void sub_814E21C(void); // all actual inputs/outputs flow through the call to sub_814E0D0, which
-// symdb: returns a record pointer in r1 and a state value in r3; returns r12=lr with flags left from
-// symdb: CMP/ORR
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E21C.yaml
+// symdb: Marks AIData Unk_18 = 0 and sets the OBJECT_FLAG_DIRTY (bit 0x80) on the owning BattleObject so the next AI tick re-evaluates, then returns to caller via r12.
+// symdb: (r0 = unk, r1 = AIDataPtr, r2 = unk, r3 = unk) -> ; no caller-visible return; side effects:
+// symdb: writes [r1+0x18] = r3 and ORs 0x80 into [r1+0]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E21C.yaml
 	thumb_func_start sub_814E21C
 sub_814E21C:
 	mov r12, lr
@@ -22648,10 +22646,10 @@ streamReadNextByte_814E7C0:
 	.balign 4, 0x00
 	thumb_func_end streamReadNextByte_814E7C0
 
-// symdb: Tiny wrapper: stores a computed byte at [struct+0x19] and, when that byte is zero, runs an extra fixup call.
-// symdb: unknown inputs (r0..r11, lr as live on entry); returns flags (nz c v) and registers as left by
-// symdb: callees; r0-r3,r12 clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7CC.yaml
+// symdb: Reads the next byte from a stream into the AIData struct's ChipLockoutTimer (0x19), and resets version/charge flags when the byte is zero
+// symdb: (r0 = AIDataPtr, r1 = stream/state ptr) -> r0 = AIDataPtr unchanged ; side effects writes
+// symdb: AIDataPtr[0x19]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7CC.yaml
 	thumb_func_start sub_814E7CC
 sub_814E7CC:
 	mov r12, lr
@@ -22665,9 +22663,9 @@ loc_814E7DC:
 	.byte 0, 0
 	thumb_func_end sub_814E7CC
 
-// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (sub_814E7A4) only when that result is zero.
-// symdb: unknown /* inputs include r0, r1 (r1 points to a struct whose +0x17 byte field is written) and
-// symdb: lr; returns via the saved lr in r12; clobbers r0-r3 and flags per the callees */
+// symdb: Reads one byte from a battle byte stream (via r1) into AIData.Version_17 (r0+0x17), and resets Version_16/charge flags via sub_814E7A4 when the byte is 0.
+// symdb: (r0 = AIData*, r1 = byte stream ptr) -> r0 = AIData* ; writes byte to [r0+0x17], conditionally
+// symdb: tail-calls sub_814E7A4(r1)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
 	thumb_func_start sub_814E7E0
 sub_814E7E0:

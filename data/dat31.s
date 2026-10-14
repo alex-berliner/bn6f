@@ -2218,8 +2218,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Address-only placeholder; assembly unavailable so role is unknown. Likely a battle AI/panel preview handler invoked from story6 capture sites, but no instruction-level evidence available.
-// symdb: unknown
+// symdb: Likely an AI/exec step that updates the active battle object's panel/timer state and may highlight panels based on the object's alliance direction; called from a story6 site
+// symdb: (r0 = 0, r1 = 0x0810d809 thumb-pop address, r2 = 0x80, r3 = 3) -> r0 = battle-related result
+// symdb: byte (0x24/0x25/0x7f observed), flags vary
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

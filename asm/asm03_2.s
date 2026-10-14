@@ -10382,11 +10382,10 @@ byte_804C3F0:
 	.word 0x106060
 	thumb_func_end sub_804C3C4
 
-// symdb: AI handler dispatcher that reads an AIData state byte and an event index, then tail-calls one of two handler routines via an indirect jump table
-// symdb: (r0 = AIData-related pointer/routine derived from byte_804C3F0 entry 0x14*r5->0xc, r1 = event
-// symdb: index from r5->0x10) -> returns whatever the dispatched handler returns in r0; side effects are
-// symdb: entirely the dispatched handler's
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C404.yaml
+// symdb: Dispatcher that calls one of two AIData sub-handlers based on an actor slot index and an action selector from a 0x14-byte AIData entry.
+// symdb: (r5 = AIData table base?, r5+0xc = slot index, r5+0x10 = action selector) -> returns whatever
+// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or sub_804C478
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C404.yaml
 	thumb_local_start
 sub_804C404:
 	push {r4-r7,lr}
@@ -10455,10 +10454,10 @@ dword_804C474:
 	.word 0x1F82
 	thumb_func_end sub_804C43C
 
-// symdb: Battle render-update helper: forces a renderInfo flag and queues a sprite transform through loc_80024D8 using a per-object origin/y-offset pair.
-// symdb: (r5 = BattleObject, r7 = camera/coord state, r10 = Toolkit) -> void ; side effects: mutates
-// symdb: *RenderInfo (sets bit 0x4800), stacks a 12-byte coord payload and tail-calls loc_80024D8
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C478.yaml
+// symdb: Enables OBJ blur (0x4800) on RenderInfo then drives a GFX anim frame for the current battle object
+// symdb: (r5 = ptr to AIData-like struct, r7 = GFX anim state ptr, r10 = Toolkit) -> no return; side
+// symdb: effect: RenderInfo word 0 ORed with 0x4800
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C478.yaml
 	thumb_local_start
 sub_804C478:
 	push {r4-r7,lr}

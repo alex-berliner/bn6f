@@ -14066,9 +14066,10 @@ dword_8014E04:
 	.word 0x80000
 	thumb_func_end sub_8014D70
 
-// symdb: Drives the AI attack step that forces the sprite white, plays a recovery jingle, sets text/name, and on timer expiry completes the turn-opening process.
-// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> void ; side effects: battle sprite/animation flips,
-// symdb: NaviStats byte 0x2C updated, sound 0x100 played
+// symdb: AI attack-vars phase handler that drives the "Beast Out" style transformation step — flashes it white, performs a sprite change/animation, plays a sound, and on expiry runs turn-open post-processing before handing off to the next AI phase.
+// symdb: (r5 = battleObject, r7 = aiAttackVars, r10 = toolkit) -> void ; side effects: battle object's
+// symdb: sprite, animation, palette and NaviStats transformation byte are mutated, plus battle-wide setup
+// symdb: callbacks fire.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
 	thumb_local_start
 sub_8014E08:
@@ -15397,6 +15398,9 @@ sub_8015952:
 	pop {r4,pc}
 	thumb_func_end sub_8015952
 
+// symdb: Reads three AIData fields (ActorType, AIIndex, Unk_03) for the AI slot given by r0 and returns them in r0/r1/r3.
+// symdb: (r0 = aiSlotIndex) -> r0 = ActorType, r1 = AIIndex, r3 = Unk_03 ; side effects: none (leaf)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801595E.yaml
 	thumb_local_start
 sub_801595E:
 	mov r3, #0x10
@@ -15420,6 +15424,9 @@ locret_801597A:
 	pop {r5,pc}
 	thumb_func_end sub_801596E
 
+// symdb: Returns 1 if battle object AIData has Unk_48 & 0x80 set, else 0 (nullptr-safe).
+// symdb: (r0 = *BattleObject) -> r0 = 0 or 1 ; side effects: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801597C.yaml
 	thumb_local_start
 sub_801597C:
 	push {r5,lr}
@@ -18522,7 +18529,7 @@ byte_80170A4:
 
 // symdb: If the battle is not paused, dispatches to a CurPhase-specific handler for the BattleObject in r5 via a 2-entry tail-call table; otherwise returns immediately.
 // symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (sub_80170E4 /
-// symdb: battleObject_runWindRecoveryState_8017122) returns (a per-phase status/result byte)
+// symdb: sub_8017122) returns (a per-phase status/result byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchPhaseByPaused_80170C4.yaml
 	thumb_func_start battleObject_dispatchPhaseByPaused_80170C4
 battleObject_dispatchPhaseByPaused_80170C4:

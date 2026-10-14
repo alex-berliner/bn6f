@@ -86456,6 +86456,10 @@ loc_80E08BE:
 	pop {pc}
 	thumb_func_end sprite_updateDestroyWhenAnimEnds_80E08A6
 
+// symdb: Spawns a battle effect object of type 4 (with caller params) and links it to the caller battle object via RelatedObject1Ptr, copying Alliance.
+// symdb: (r0 = type-related param, r1 = sub-param, r2 = sub-param, r3 = sub-param, r5 = caller battle
+// symdb: object) -> r0 = new battle object pointer (or 0 if spawn failed)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E08C4.yaml
 	thumb_func_start sub_80E08C4
 sub_80E08C4:
 	push {lr}
@@ -88305,10 +88309,11 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: Look up this object's `RelatedObject1Ptr`'s opponents at indices 0,1,2 and store any matches from an enemy name list into a small stack buffer
-// symdb: (r5 = self BattleObject*, r10 = toolkit, lr = return) -> r0 = bool (from last sub call); side
-// symdb: effects: writes ~0x34 bytes to stack
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
+// symdb: finds enemy (virus/navi) battle objects on the opposite alliance and stores them into a stack-local array, with sub_80E16CC probing specific related-target slots
+// symdb: (r5 = self BattleObject, r10 = Toolkit) -> r0 = 0 (Alliance-precomputed count of stored slots),
+// symdb: r5 preserved ; side effects: writes a 0x34-byte scratch buffer on the stack and queries
+// symdb: object_getEnemyByNameRange plus three sub_80E16CC probes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
 	push {r4,r6,r7,lr}

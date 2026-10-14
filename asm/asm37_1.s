@@ -335,6 +335,10 @@ loc_8141ACE:
 	pop {r4-r7,pc}
 	thumb_func_end pet_testIsMapGroupAllowed_8141AA8
 
+// symdb: Returns 0 when beast-out is allowed for the player's current location, 1 otherwise (used to gate the beast-out input handling)
+// symdb: () -> r0 = bool (0 = beast-out permitted, 1 = not permitted) ; side effects: reads toolkit
+// symdb: GameState->MapGroup and an AIData[0x11]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141AD2.yaml
 	thumb_local_start
 sub_8141AD2:
 	push {r4-r7,lr}

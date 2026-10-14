@@ -1358,6 +1358,10 @@ loc_80A581E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A57D0
 
+// symdb: Drives a beast-out Navi's per-tick PwrAtk hand-off animation: copies target coords, runs the hand-off sub-state until it finishes, then resets.
+// symdb: (r5 = BattleObject, r6 = AIData) -> void ; no return; writes AIData.Unk_07 (sub-state),
+// symdb: BattleObject.CurState/CurAction, then runs sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5828.yaml
 	thumb_local_start
 sub_80A5828:
 	push {r4-r7,lr}

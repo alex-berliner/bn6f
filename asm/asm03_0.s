@@ -8116,6 +8116,11 @@ byte_8029CAC:
 	.byte 0x0, 0x40, 0x0, 0x0
 	thumb_func_end battleObject_chipSelectAnimTick_8029C08
 
+// symdb: Updates one custom-screen chip-slot row in the IWRAM tile buffer at unk_2035000 (tile-id table) and, when r2==0, uploads 3×3 tile data via CopyBackgroundTiles.
+// symdb: (r0 = rowIndex, r1 = colIndex, r2 = drawFlag, r10 = toolkit) -> void ; writes 4 halfwords into
+// symdb: unk_2035000 + offset; on r2==0 calls CopyBackgroundTiles; side-effect: tweaks unk_2035000 tile-
+// symdb: id table and copies 0xA×0xF of tile data from unk_203505A
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029CD4.yaml
 	thumb_local_start
 sub_8029CD4:
 	push {r4-r6,lr}
@@ -24624,6 +24629,11 @@ locret_803151E:
 	pop {pc}
 	thumb_func_end sub_80314CC
 
+// symdb: Performs one incremental scroll step (and optional collision-test second half) during battle panel-by-panel scrolling
+// symdb: (r0 = BattleState ptr, r1 = scroll counter/state, r2 = ???, r12 = accumulated result bitmask, r5
+// symdb: = ???) -> r0 = BattleState ptr, r12 = updated bitmask ; mutates camera scroll via
+// symdb: camera_moveByDelta_80310B0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031520.yaml
 	thumb_local_start
 sub_8031520:
 	push {lr}

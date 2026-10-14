@@ -2077,6 +2077,10 @@ loc_813C61E:
 	.balign 4, 0x00
 	thumb_func_end battleItems_countByType_813C584
 
+// symdb: Looks up a Beast-SP AI affinity/availability byte from a packed 7-byte-per-row table indexed by beast index and selector.
+// symdb: (r0 = beastIndex/row, r1 = colSelector, r2 = colSelector2) -> r0 = byte at
+// symdb: byte_813C640[beastIndex*7 + colSelector] ; side effects: preserves r0..r2 via push/pop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C624.yaml
 	thumb_local_start
 sub_813C624:
 	push {r0,r2,lr}
