@@ -7370,7 +7370,7 @@ sub_804A360:
 	bl sub_804A61C
 	mov r0, #0
 	ldr r1, off_804A3EC // =unk_202A3E0 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0x12]
@@ -8200,7 +8200,7 @@ loc_804AA0E:
 	sub r1, #1
 	bne loc_804AA3C
 	ldr r1, off_804AA54 // =dword_804A2AC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_804AA3C:
@@ -8834,7 +8834,7 @@ sub_804AE68:
 	sub r1, #1
 	bne loc_804AE9E
 	ldr r1, off_804AEC0 // =dword_804A2AC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	mov r2, #0x15
 	strb r0, [r5,r2]
 loc_804AE9E:

@@ -479,7 +479,7 @@ int __fastcall sub_81237E0(int a1, int a2)
     *(v2 + 16) = 0;
     *(v2 + 17) = 0;
     *(v2 + 24) = 0;
-    v5 = sub_8120CC8(0, &dword_81233D4);
+    v5 = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_81233D4);
     *(v2 + 18) = v5 | 16 * v6;
     *(v2 + 20) = getPETNaviSelect();
     if ( v4 )
@@ -764,7 +764,7 @@ int __fastcall sub_8123D98(int a1, int a2, int a3, int a4)
     v9 = battleObject_queueOamFromTableRow_811FAF4(v6 | (a2 + 16 * v7), 0x20005u, v8 & 0xF, v4);
     v10 = (v8 >> 4) - 1;
     if ( v8 >> 4 == 1 )
-        *(v5 + v12) = sub_8120CC8(v9, &dword_81233D4);
+        *(v5 + v12) = battleObject_advanceAnimTableBy0xFF_8120CC8(v9, &dword_81233D4);
     result = *(v5 + v12) & 0xF | 16 * v10;
     *(v5 + v12) = result;
     return result;
@@ -1276,7 +1276,7 @@ void submenu_subchip_tickOamAndAdvanceAnimTable_81244EC()
         *(v0 + 18) = v2;
         if ( !v2 )
         {
-            *(v0 + 13) = sub_8120CC8(v1, &dword_8123F3C);
+            *(v0 + 13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v1, &dword_8123F3C);
             *(v0 + 18) = v3;
         }
     }
@@ -3695,7 +3695,7 @@ int __fastcall sub_8126570(int a1, int a2, int a3, int a4)
     v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), 2u, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
-        *(v5 + v13) = sub_8120CC8(v10, v6);
+        *(v5 + v13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v10, v6);
     result = *(v5 + v13) & 0xF | 16 * v11;
     *(v5 + v13) = result;
     return result;
@@ -4020,7 +4020,7 @@ void __fastcall __noreturn battle_petNaviDisplayInit_8126B6C(int a1, int a2, int
     *(v4 + 50) = 474;
     *(v4 + 56) = 1;
     *(v4 + 40) = 3;
-    v11 = sub_8120CC8(0, &dword_81268F8);
+    v11 = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_81268F8);
     v13 = v11 | 16 * v12;
     *(v4 + 19) = v13;
     *(v4 + 18) = v13;
@@ -4512,7 +4512,7 @@ int __fastcall battleObject_dispatchCmdSpawnChild_812730C(int a1, int a2, int a3
     v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), 0x20002u, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
-        *(v5 + v13) = sub_8120CC8(v10, v6);
+        *(v5 + v13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v10, v6);
     result = *(v5 + v13) & 0xF | 16 * v11;
     *(v5 + v13) = result;
     return result;
@@ -5016,7 +5016,7 @@ void submenu_HandleInput_8127B18()
             {
                 *(v0 + 2) = 12;
                 PlaySoundEffect(129, v7, v8);
-                *(v0 + 15) = sub_8120CC8(0, &dword_8127980);
+                *(v0 + 15) = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8127980);
                 *(v0 + 16) = v9;
             }
         }
@@ -5294,7 +5294,7 @@ void fieldEntityTileAnimTick_8127F54()
         *(v0 + 14) = v2;
         if ( !v2 )
         {
-            *(v0 + 12) = sub_8120CC8(v1, &dword_8127980);
+            *(v0 + 12) = battleObject_advanceAnimTableBy0xFF_8120CC8(v1, &dword_8127980);
             *(v0 + 14) = v3;
         }
     }
@@ -5314,7 +5314,7 @@ int sub_8127F90()
     *(v0 + 16) = v2;
     if ( !v2 )
     {
-        result = sub_8120CC8(result, &dword_8127980);
+        result = battleObject_advanceAnimTableBy0xFF_8120CC8(result, &dword_8127980);
         *(v0 + 15) = result;
         *(v0 + 16) = v3;
     }
@@ -5518,7 +5518,7 @@ int __fastcall battleObject_tickOamSubFlagAnimSlot_81282C0(int a1)
     byte_2026870[v1 + 1] = v3;
     if ( !v3 )
     {
-        result = sub_8120CC8(result, byte_812798A);
+        result = battleObject_advanceAnimTableBy0xFF_8120CC8(result, byte_812798A);
         byte_2026870[v1] = result;
         byte_2026870[v1 + 1] = v4;
     }
@@ -6235,7 +6235,7 @@ void __noreturn sub_8128CD8()
     *(v0 + 30) = v8;
     if ( v8 )
         sub_802B51C(byte_201BB60, 37076);
-    *(v0 + 12) = sub_8120CC8(0, &dword_8129180);
+    *(v0 + 12) = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
     *(v0 + 13) = v9;
     *(v0 + 15) = 0;
     *(v0 + 16) = -1;
@@ -6386,7 +6386,7 @@ int __fastcall sub_8129018(int a1, int a2, int a3, int a4)
     v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), v6, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
-        *(v5 + v13) = sub_8120CC8(v10, &dword_8129180);
+        *(v5 + v13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v10, &dword_8129180);
     result = *(v5 + v13) & 0xF | 16 * v11;
     *(v5 + v13) = result;
     return result;
@@ -6496,7 +6496,7 @@ int __fastcall battle_initScene_8129248(int a1, int a2, int a3, int a4)
     v4[1] = 4;
     v4[2] = 0;
     byte_200BC3C = 60;
-    v4[23] = sub_8120CC8(0, &dword_8129180);
+    v4[23] = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
     v4[24] = v11;
     result = 0;
     v4[27] = 0;
@@ -6798,7 +6798,7 @@ int sub_8129598()
 
 
 // 0x81295d8
-int sub_81295D8()
+int menu_runScreens3Step_81295D8()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -6940,7 +6940,7 @@ int battle_object_advanceState3_8129738()
     _BYTE *v0; // r5
     int result; // r0
 
-    result = sub_812B318(3);
+    result = battleObject_advanceChipAnimFrames_812B318(3);
     if ( !result )
     {
         v0[29] = 3;
@@ -6961,7 +6961,7 @@ int sub_8129758()
     int v3; // r4
     int v4; // r1
 
-    result = sub_812B318(*(v0 + 29));
+    result = battleObject_advanceChipAnimFrames_812B318(*(v0 + 29));
     v3 = v2;
     if ( v4 )
         result = sub_812B218();
@@ -7048,7 +7048,7 @@ int sub_8129808()
     int v3; // r4
     int v4; // r1
 
-    result = sub_812B318(*(v0 + 29));
+    result = battleObject_advanceChipAnimFrames_812B318(*(v0 + 29));
     v3 = v2;
     if ( v4 )
         result = sub_812B218();
@@ -7149,7 +7149,7 @@ int battleObj_setCanceledPose_81298D4()
     _BYTE *v0; // r5
     int result; // r0
 
-    result = sub_812B318(3);
+    result = battleObject_advanceChipAnimFrames_812B318(3);
     if ( !result )
     {
         v0[29] = 3;
@@ -7168,7 +7168,7 @@ int sub_81298F8()
     _BYTE *v0; // r5
     int result; // r0
 
-    result = sub_812B318(3);
+    result = battleObject_advanceChipAnimFrames_812B318(3);
     if ( !result )
     {
         v0[29] = 3;
@@ -7201,7 +7201,7 @@ int sub_8129948()
     int v3; // r4
     int v4; // r1
 
-    result = sub_812B318(*(v0 + 29));
+    result = battleObject_advanceChipAnimFrames_812B318(*(v0 + 29));
     v3 = v2;
     if ( v4 )
         result = sub_812B218();
@@ -7312,7 +7312,7 @@ int sub_8129A28()
     int v3; // r4
     int v4; // r1
 
-    result = sub_812B318(*(v0 + 29));
+    result = battleObject_advanceChipAnimFrames_812B318(*(v0 + 29));
     v3 = v2;
     if ( v4 )
         result = sub_812B218();
@@ -7379,7 +7379,7 @@ int decideBattleAction_8129AC8()
     int v2; // r2
     int v3; // r1
 
-    result = sub_812B318(*(v0 + 29));
+    result = battleObject_advanceChipAnimFrames_812B318(*(v0 + 29));
     if ( v3 )
     {
         if ( v2 == 2 )
@@ -7485,7 +7485,7 @@ int chipSelectInit_8129B90()
     _BYTE *v0; // r5
     int result; // r0
 
-    result = sub_812B318(2);
+    result = battleObject_advanceChipAnimFrames_812B318(2);
     if ( !result )
     {
         v0[29] = 3;
@@ -7575,7 +7575,7 @@ int sub_8129C74()
     int result; // r0
     int v4; // r0
 
-    sub_812B318(v0[29]);
+    battleObject_advanceChipAnimFrames_812B318(v0[29]);
     result = v0[32];
     if ( result != 2 || v1 )
     {
@@ -7687,7 +7687,7 @@ int sub_8129D58()
     _BYTE *v0; // r5
     int result; // r0
 
-    result = sub_812B318(v0[32]);
+    result = battleObject_advanceChipAnimFrames_812B318(v0[32]);
     if ( !result )
     {
         v0[29] = 3;
@@ -9701,7 +9701,7 @@ int __fastcall sub_812B2C4(int a1)
         v1[24] = v4;
         if ( !v4 )
         {
-            result = sub_8120CC8(result, &dword_8129180);
+            result = battleObject_advanceAnimTableBy0xFF_8120CC8(result, &dword_8129180);
             v1[23] = result;
             v1[24] = v5;
         }
@@ -9711,7 +9711,7 @@ int __fastcall sub_812B2C4(int a1)
 
 
 // 0x812b318
-signed int __fastcall sub_812B318(int a1)
+signed int __fastcall battleObject_advanceChipAnimFrames_812B318(int a1)
 {
     int v1; // r5
     int v2; // r7

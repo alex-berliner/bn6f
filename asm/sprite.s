@@ -413,9 +413,9 @@ off_80028BC:
 // symdb: Records the current queued-sprite palette count (dword_200F340) into byte slot r0 of the per-group counter array at byte_200F389.
 // symdb: (r0 = groupSlot) -> side effects only (r1/r2 clobbered, NZ flags set); writes byte_200F389[r0] =
 // symdb: (byte) dword_200F340
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80028C0.yaml
-	thumb_func_start sub_80028C0
-sub_80028C0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_recordPaletteCountToGroupSlot_80028C0.yaml
+	thumb_func_start sprite_recordPaletteCountToGroupSlot_80028C0
+sprite_recordPaletteCountToGroupSlot_80028C0:
 	ldr r1, off_80028CC // =dword_200F340
 	ldr r1, [r1]
 	ldr r2, off_80028D0 // =byte_200F389
@@ -426,7 +426,7 @@ off_80028CC:
 	.word dword_200F340
 off_80028D0:
 	.word byte_200F389
-	thumb_func_end sub_80028C0
+	thumb_func_end sprite_recordPaletteCountToGroupSlot_80028C0
 
 // symdb: Initializes the 0x50-byte uncompressed-sprite work block at byte_200DCA0, recording the sprite data pointer and pre-filling its tables before a sprite is decompressed into it.
 // symdb: void resetUncompSpriteWorkBlock_80028d4(const void *spriteData /* r0 */); // preserves r3, r5;

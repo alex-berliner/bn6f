@@ -1958,7 +1958,7 @@ sub_812E9AC::
 	bl sub_812EF20
 	mov r0, #0
 	ldr r1, off_812EA40 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x17]
 	strb r1, [r5,#0x18]
 	strb r0, [r5,#0x19]

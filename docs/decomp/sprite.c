@@ -265,7 +265,7 @@ void __fastcall sprite_resetObjVars_800289C(int a1, int a2, int a3, int a4)
 
 
 // 0x80028c0
-int __fastcall sub_80028C0(int result)
+int __fastcall sprite_recordPaletteCountToGroupSlot_80028C0(int result)
 {
     byte_200F389[result] = dword_200F340;
     return result;

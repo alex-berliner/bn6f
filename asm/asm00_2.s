@@ -19565,7 +19565,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (battleObject_initMoveStep_80178D4 / sub_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml
@@ -19581,7 +19581,7 @@ sub_80178B6:
 off_80178C4:
 	.word off_80178C8
 off_80178C8:
-	.word sub_80178D4+1
+	.word battleObject_initMoveStep_80178D4+1
 	.word sub_8017992+1
 	.word sub_8017A38+1
 	thumb_func_end sub_80178B6
@@ -19590,9 +19590,9 @@ off_80178C8:
 // symdb: (r5 = battleObject) -> r0 = 0x4 or 0x8 ; side effects: writes AIData Unk_68 = 0,
 // symdb: RelatedObject1Ptr = 0, sets CurAnim, copies FuturePanelXY -> PanelXY, sets XVelocity/YVelocity,
 // symdb: reserves next panel, etc.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80178D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initMoveStep_80178D4.yaml
 	thumb_local_start
-sub_80178D4:
+battleObject_initMoveStep_80178D4:
 	push {r6,r7,lr}
 	bl battle_dispatchActorTurnByTypeAndAIIdx_800F404
 	ldr r0, dword_8017A90 // =0x500000 
@@ -19674,7 +19674,7 @@ loc_8017988:
 	mov r0, #8
 	strb r0, [r5,#oBattleObject_Unk_0d]
 	pop {r6,r7,pc}
-	thumb_func_end sub_80178D4
+	thumb_func_end battleObject_initMoveStep_80178D4
 
 	thumb_local_start
 sub_8017992:

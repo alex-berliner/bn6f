@@ -1099,12 +1099,12 @@ LABEL_12:
     }
 LABEL_13:
     *(v0 + 8) = 4;
-    sub_80B8DA6();
+    battleObject_syncSpriteFromOwner_80B8DA6();
 }
 
 
 // 0x80b8da6
-void sub_80B8DA6()
+void battleObject_syncSpriteFromOwner_80B8DA6()
 {
     int v0; // r5
     int v1; // r4
@@ -23452,7 +23452,7 @@ int sub_80C55D4()
 
 
 // 0x80c55e4
-int __noreturn sub_80C55E4()
+int __noreturn battleObject_initBeastOut_80C55E4()
 {
     int v0; // r5
     int v1; // r0
@@ -23655,7 +23655,7 @@ int sub_80C57E4()
 
 
 // 0x80c57f4
-void sub_80C57F4()
+void battleObject_auraInit_80C57F4()
 {
     int v0; // r5
     int v1; // r0
@@ -27293,7 +27293,7 @@ void t3_0x1c_80C7C18()
 
 
 // 0x80c7c3c
-int __noreturn sub_80C7C3C()
+int __noreturn battleObject_panelShaker_init_80C7C3C()
 {
     int v0; // r5
     int v1; // r0
@@ -34514,7 +34514,7 @@ void t3_0x41_80CC4C4()
 
 
 // 0x80cc4ec
-void __noreturn sub_80CC4EC()
+void __noreturn battleObject_initFromPanelSpriteAndCollision_80CC4EC()
 {
     int v0; // r5
     int v1; // r0
@@ -34590,7 +34590,7 @@ _BYTE *__fastcall sub_80CC584(char a1, int a2, int a3, int a4)
         v4[18] = v6;
         v4[19] = v7;
         v4[22] = *(v8 + 22);
-        sub_80CC4EC();
+        battleObject_initFromPanelSpriteAndCollision_80CC4EC();
     }
     return result;
 }
@@ -35929,7 +35929,7 @@ void t3_0x49_80CD2EC()
 
 
 // 0x80cd310
-void __noreturn sub_80CD310()
+void __noreturn battleObject_initSnakeArmHead_80CD310()
 {
     int v0; // r5
     char v1; // r0
@@ -40789,7 +40789,7 @@ void t3_0x5f_80D0394()
 
 
 // 0x80d03b8
-int __noreturn sub_80D03B8()
+int __noreturn battleObject_initSpawnedObject_80D03B8()
 {
     int v0; // r5
     int v1; // r0
@@ -51267,7 +51267,7 @@ void t3_0x8c_80D6A20()
 
 
 // 0x80d6a44
-int __noreturn sub_80D6A44()
+int __noreturn battleObject_snakeArmSpawn_80D6A44()
 {
     int v0; // r5
     int v1; // r0
@@ -52440,7 +52440,7 @@ int t3_0x93_80D75FC()
 
 
 // 0x80d761c
-int __noreturn sub_80D761C()
+int __noreturn battleObject_initStaticActor_80D761C()
 {
     Battle *obj; // r5
     int v1; // r0
@@ -65785,7 +65785,7 @@ void __noreturn battleObject_destroyOnCollision_80DFEA8()
 
 
 // 0x80dfee8
-int sub_80DFEE8()
+int battleObject_crackPanelAction_80DFEE8()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -71099,7 +71099,7 @@ int t4_0x28_80E32B8()
 
 
 // 0x80e32d8
-void __noreturn sub_80E32D8()
+void __noreturn battleObject_initSpriteFromRelatedOrParam2_80E32D8()
 {
     int v0; // r5
     int v1; // r1

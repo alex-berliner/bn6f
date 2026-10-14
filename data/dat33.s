@@ -2078,7 +2078,7 @@ sub_812D298::
 	bl sub_812D528
 	mov r0, #0
 	ldr r1, off_812D30C // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x17]
 	strb r1, [r5,#0x18]
 	mov r0, #8

@@ -9,7 +9,7 @@ int object_timefreezeEnd()
     if ( *(v0 + 11) )
         return object_freeMemory();
     sub_800B884(*(v0 + 22));
-    result = sub_800B892(*(v0 + 22) ^ 1);
+    result = battleObject_getIndex_800B892(*(v0 + 22) ^ 1);
     if ( result == 5 || !result )
     {
         if ( sub_800B8D8(*(v0 + 22)) )

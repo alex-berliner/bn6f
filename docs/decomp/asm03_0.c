@@ -6359,7 +6359,7 @@ void __noreturn sub_802A8A4()
     sub_802B4D4(&unk_2035000, 36976, 100699648, v1);
     sub_802B51C(&unk_2035000, 37076);
     *(v0 + 30) = sub_802B2A0(word_2031000);
-    v2 = sub_8120CC8(0, &dword_8129180);
+    v2 = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
     *(v0 + 12) = v2;
     *(v0 + 13) = v3;
     *(v0 + 15) = 0;
@@ -7160,7 +7160,7 @@ int __fastcall sub_802B20C(int a1, int a2, int a3, int a4)
     v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), v6, v9 & 0xF, v4);
     v11 = (v9 >> 4) - 1;
     if ( v9 >> 4 == 1 )
-        *(v5 + v13) = sub_8120CC8(v10, &dword_8129180);
+        *(v5 + v13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v10, &dword_8129180);
     result = *(v5 + v13) & 0xF | 16 * v11;
     *(v5 + v13) = result;
     return result;
@@ -16170,7 +16170,7 @@ signed int __fastcall checkCoordinateTrigger_8031a7a(int a1)
 
 
 // 0x8031b7c
-int __fastcall sub_8031B7C(int a1)
+int __fastcall chatbox_getCursorBlinkState_8031B7C(int a1)
 {
     int result; // r0
 
@@ -16198,7 +16198,7 @@ int __fastcall battleObject_checkCollisionWithTarget_8031B9A(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 4, 4);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16211,7 +16211,7 @@ int __fastcall text_setupTextboxAndStartPrint_8031BB2(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 8, 8);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16224,7 +16224,7 @@ int __fastcall textbox_StepAndRefreshWindow_8031BCA(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16237,7 +16237,7 @@ int __fastcall battleObject_checkInAttackRange_08031BE2(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16250,7 +16250,7 @@ int __fastcall battle_aiUpdate_8031BFA(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = battleObject_isHitByPanelRectangle_8031570(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16263,7 +16263,7 @@ int __fastcall sub_8031C12(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16276,7 +16276,7 @@ int __fastcall battle_calcRelPosAndAdvanceTextboxBlink_8031C2A(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 1, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16289,14 +16289,14 @@ int __fastcall battle_aiPointLeftOfLineSideTest_8031C42(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointLeftOfLineTest_80315DC(v1, v2, 0, 14);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
 // 0x8031c5a
 int sub_8031C5A()
 {
-    return sub_8031B7C(1);
+    return chatbox_getCursorBlinkState_8031B7C(1);
 }
 
 
@@ -16309,7 +16309,7 @@ int __fastcall sub_8031C64(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 2, 2);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16322,7 +16322,7 @@ int __fastcall chatbox_renderBattleCursorStep_8031C7C(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 14, 14);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16335,7 +16335,7 @@ int __fastcall battle_aiStorySub3_8031C94(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 
@@ -16348,7 +16348,7 @@ int __fastcall sub_8031CAC(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 0, 16);
-    return sub_8031B7C(v3);
+    return chatbox_getCursorBlinkState_8031B7C(v3);
 }
 
 

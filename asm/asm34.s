@@ -385,7 +385,7 @@ loc_812D61E:
 	sub r1, #1
 	bne loc_812D64C
 	ldr r1, off_812D664 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_812D64C:

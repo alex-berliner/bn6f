@@ -922,7 +922,7 @@ sub_81237E0:
 	strh r0, [r5,#0x18]
 	mov r0, #0
 	ldr r1, off_8123868 // =dword_81233D4
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0x12]
@@ -1671,7 +1671,7 @@ loc_8123DB6:
 	sub r1, #1
 	bne loc_8123DE4
 	ldr r1, off_8123E04 // =dword_81233D4
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_8123DE4:
@@ -1971,7 +1971,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 
 	mov r0, #0
 	ldr r1, off_8124078 // =dword_8123F3C
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 
 	strb r0, [r5,#0xd]
 	strb r1, [r5,#0x12]
@@ -2654,7 +2654,7 @@ submenu_subchip_tickOamAndAdvanceAnimTable_81244EC:
 	strb r1, [r5,#0x12]
 	bne locret_8124520
 	ldr r1, off_8124538 // =dword_8123F3C
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xd]
 	strb r1, [r5,#0x12]
 locret_8124520:
@@ -3369,7 +3369,7 @@ loc_8124BCC:
 	bl sub_812546C
 	mov r0, #0
 	ldr r1, off_8124C2C // =dword_8124A94
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0xc]
@@ -6845,7 +6845,7 @@ loc_812658E:
 	sub r1, #1
 	bne loc_81265BC
 	mov r1, r7
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_81265BC:
@@ -7462,7 +7462,7 @@ battle_petNaviDisplayInit_8126B6C:
 	strh r0, [r5,#0x28]
 	mov r0, #0
 	ldr r1, off_8126CBC // =dword_81268F8
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0x13]
@@ -8320,7 +8320,7 @@ dword_8127308:
 // symdb: r6? r10 = toolkit, r7 = OAM id) -> r0 = the new low-nibble cell id (the packed byte at [r5+r3]
 // symdb: recomposed as (new_hi_nibble<<4 | old_lo_nibble)); also NZCV, r1-r3, r5-r7, lr clobbered. Side
 // symdb: effects: writes one byte at [r5+r3] (twice), one word at [r5+r3] via strb; calls into
-// symdb: battleObject_queueOamFromTableRow_811FAF4 and sub_8120CC8.
+// symdb: battleObject_queueOamFromTableRow_811FAF4 and battleObject_advanceAnimTableBy0xFF_8120CC8.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCmdSpawnChild_812730C.yaml
 	thumb_local_start
 battleObject_dispatchCmdSpawnChild_812730C:
@@ -8359,7 +8359,7 @@ loc_812732A:
 	sub r1, #1
 	bne loc_8127358
 	mov r1, r7
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_8127358:
@@ -9337,7 +9337,7 @@ battle_sceneReset_8127A1C:
 	strh r0, [r5,#0x30]
 	mov r0, #0
 	ldr r1, off_8127AC8 // =dword_8127980
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xc]
 	strb r1, [r5,#0xe]
 	strb r0, [r5,#0xf]
@@ -9453,7 +9453,7 @@ loc_8127B4C:
 	bl PlaySoundEffect
 	mov r0, #0
 	ldr r1, off_8127B90 // =dword_8127980
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xf]
 	strb r1, [r5,#0x10]
 	b locret_8127B8E
@@ -9949,7 +9949,7 @@ fieldEntityTileAnimTick_8127F54:
 	strb r1, [r5,#0xe]
 	bne locret_8127F8E
 	ldr r1, off_8127FD4 // =dword_8127980
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xc]
 	strb r1, [r5,#0xe]
 locret_8127F8E:
@@ -9976,7 +9976,7 @@ sub_8127F90:
 	strb r1, [r5,#0x10]
 	bne locret_8127FBE
 	ldr r1, off_8127FD4 // =dword_8127980
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xf]
 	strb r1, [r5,#0x10]
 locret_8127FBE:
@@ -10466,7 +10466,7 @@ battleObject_tickOamSubFlagAnimSlot_81282C0:
 	strb r1, [r4,r6]
 	bne locret_81282F8
 	ldr r1, off_8128314 // =byte_812798A
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r4,r7]
 	strb r1, [r4,r6]
 locret_81282F8:
@@ -11671,7 +11671,7 @@ sub_8128CD8:
 loc_8128D4A:
 	mov r0, #0
 	ldr r1, off_8128DB4 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0xc]
 	strb r1, [r5,#0xd]
 	mov r0, #0
@@ -12033,7 +12033,7 @@ loc_8129036:
 	sub r1, #1
 	bne loc_8129064
 	ldr r1, off_8129078 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_8129064:
@@ -12263,7 +12263,7 @@ CommMenuJumpTable81291FC:
 // symdb: Initializes the battle scene by clearing VRAM/GFX buffers, priming the toolkit's render-info block (0x1F40 at offset 0, rest zeroed), starting the opening cutscene, and writing the variant sub-bytes pulled from dword_8129180 into the state struct held in r5.
 // symdb: void battle_initScene_8129248(void /* r5=state, r10=toolkit */);   // inputs:  r5 (state struct
 // symdb: ptr), r10 (toolkit ptr), lr   // outputs: r0 = 0, r1 = low byte of the dword_8129180 entry that
-// symdb: sub_8120CC8 returned in r1;   //          NZ reflects r0; preserves r4-r7.
+// symdb: battleObject_advanceAnimTableBy0xFF_8120CC8 returned in r1;   //          NZ reflects r0; preserves r4-r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initScene_8129248.yaml
 	thumb_func_start battle_initScene_8129248
 battle_initScene_8129248:
@@ -12295,7 +12295,7 @@ battle_initScene_8129248:
 	strb r0, [r1,#0xc] // (byte_200BC3C - 0x200bc30)
 	mov r0, #0
 	ldr r1, off_81292A4 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x17]
 	strb r1, [r5,#0x18]
 	mov r0, #0
@@ -12706,7 +12706,7 @@ loc_81295A4:
 off_81295B0:
 	.word off_81295B4
 off_81295B4:
-	.word sub_81295D8+1
+	.word menu_runScreens3Step_81295D8+1
 	.word sub_8129658+1
 	.word sub_81297DC+1
 	.word sub_8129A98+1
@@ -12720,9 +12720,9 @@ off_81295B4:
 // symdb: Per-frame tick of the "screens3" sub-menu: advances the entity update/sprite pipelines, then either toggles an in/out transition step on the active entity record or triggers a fade-in chatbox prompt.
 // symdb: () -> r0 = 0x1 ; side effects: mutates entity record at [r5+0x1b..0x3], eFlags2009F38 |= 0x40,
 // symdb: requests a screen fade(8,16) and a chatbox script 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81295D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_runScreens3Step_81295D8.yaml
 	thumb_local_start
-sub_81295D8:
+menu_runScreens3Step_81295D8:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -12777,7 +12777,7 @@ locret_8129650:
 	.balign 4, 0
 off_8129654:
 	.word byte_812913C
-	thumb_func_end sub_81295D8
+	thumb_func_end menu_runScreens3Step_81295D8
 
 // symdb: Dispatches the battle AI's current sub-state to one of seven handlers, then fires event 0xE.
 // symdb: void sub_8129658(void);   // uses: r4 r5 r6 r7 r10 in; r5 r8 r9 r10 r11 r12 out   // clobbers:
@@ -12909,14 +12909,14 @@ locret_8129734:
 	.balign 4, 0x00
 	thumb_func_end sub_81296D8
 
-// symdb: Advances a battle object into state 3 (slot +0x1D) if a sub_812B318(3) gate succeeds, recomputing its stat field at +2 from the +0xE byte and clearing +3.
+// symdb: Advances a battle object into state 3 (slot +0x1D) if a battleObject_advanceChipAnimFrames_812B318(3) gate succeeds, recomputing its stat field at +2 from the +0xE byte and clearing +3.
 // symdb: void sub_8129738(void); /* r5 = battle object pointer; no return */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_object_advanceState3_8129738.yaml
 	thumb_local_start
 battle_object_advanceState3_8129738:
 	push {lr}
 	mov r0, #3
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	tst r0, r0
 	bne locret_8129754
 	mov r0, #3
@@ -12931,14 +12931,14 @@ locret_8129754:
 	.balign 4, 0x00
 	thumb_func_end battle_object_advanceState3_8129738
 
-// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
+// symdb: Dispatches on an entity's 0x1D byte: consults battleObject_advanceChipAnimFrames_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
 // symdb: void sub_8129758(void *entity /* r5 */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129758.yaml
 	thumb_local_start
 sub_8129758:
 	push {lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r4, r2
 	tst r1, r1
 	beq loc_812976A
@@ -13046,7 +13046,7 @@ off_81297F4:
 	.word sub_81298F8+1
 	thumb_func_end sub_81297DC
 
-// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
+// symdb: Battle object hook that reads the +0x1D state index, queries battleObject_advanceChipAnimFrames_812B318 (with an optional battleObject_advanceChipAnimFrames_812B318-cleanup call when battleObject_advanceChipAnimFrames_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
 // symdb: void sub_8129808(struct BattleObject* obj /* r5 */);  /* clobbers r0-r3, lr, N Z C V; preserves
 // symdb: r4-r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129808.yaml
@@ -13054,7 +13054,7 @@ off_81297F4:
 sub_8129808:
 	push {r4,lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r4, r2
 	tst r1, r1
 	beq loc_812981A
@@ -13181,7 +13181,7 @@ locret_81298D2:
 battleObj_setCanceledPose_81298D4:
 	push {r4,lr}
 	mov r0, #3
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	tst r0, r0
 	bne locret_81298F6
 	mov r0, #3
@@ -13198,7 +13198,7 @@ locret_81298F6:
 	pop {r4,pc}
 	thumb_func_end battleObj_setCanceledPose_81298D4
 
-// symdb: Attempts to put a battle object into its attack/selected pose, guarded by sub_812B318.
+// symdb: Attempts to put a battle object into its attack/selected pose, guarded by battleObject_advanceChipAnimFrames_812B318.
 // symdb: void sub_81298F8(uint32_t r5 /*battle object ptr*/, uint32_t lr); clobbers r0-r3, lr, flags
 // symdb: (nz,c,v); preserves r4,r5,r6,r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81298F8.yaml
@@ -13206,7 +13206,7 @@ locret_81298F6:
 sub_81298F8:
 	push {lr}
 	mov r0, #3
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	tst r0, r0
 	bne locret_8129916
 	mov r0, #3
@@ -13257,7 +13257,7 @@ off_8129930:
 sub_8129948:
 	push {lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r4, r2
 	tst r1, r1
 	beq loc_812995A
@@ -13391,7 +13391,7 @@ sub_8129A20:
 sub_8129A28:
 	push {lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r4, r2
 	tst r1, r1
 	beq loc_8129A3A
@@ -13486,7 +13486,7 @@ off_8129AB0:
 decideBattleAction_8129AC8:
 	push {r4,lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r4, r2
 	tst r1, r1
 	beq locret_8129AEC
@@ -13603,7 +13603,7 @@ locret_8129B8E:
 chipSelectInit_8129B90:
 	push {lr}
 	mov r0, #2
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	tst r0, r0
 	bne locret_8129BAE
 	mov r0, #3
@@ -13729,7 +13729,7 @@ off_8129C40:
 sub_8129C74:
 	push {r4,lr}
 	ldrb r0, [r5,#0x1d]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	mov r3, #0x20 
 	ldrb r0, [r5,r3]
 	cmp r0, #2
@@ -13863,7 +13863,7 @@ sub_8129D58:
 	push {lr}
 	mov r3, #0x20 
 	ldrb r0, [r5,r3]
-	bl sub_812B318
+	bl battleObject_advanceChipAnimFrames_812B318
 	tst r0, r0
 	bne locret_8129D76
 	mov r0, #3
@@ -16694,7 +16694,7 @@ sub_812B2C4:
 	strb r1, [r5,#0x18]
 	bne locret_812B2FC
 	ldr r1, off_812B308 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x17]
 	strb r1, [r5,#0x18]
 locret_812B2FC:
@@ -16718,9 +16718,9 @@ dword_812B314:
 // symdb: (r0 = maxEntries (= original +1), r5 = current battle object) -> r0 = 1 if the object should
 // symdb: continue, 0 if the slot was reset; r1 = count of ready entries; r2 = count of "fast" (high-bit
 // symdb: set) entries
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B318.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_advanceChipAnimFrames_812B318.yaml
 	thumb_local_start
-sub_812B318:
+battleObject_advanceChipAnimFrames_812B318:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	add r7, r0, #1
@@ -16789,7 +16789,7 @@ off_812B390:
 	.word byte_812B394
 byte_812B394:
 	.byte 0x0, 0x3, 0x6, 0x9, 0xC, 0xFF, 0x0, 0x0
-	thumb_func_end sub_812B318
+	thumb_func_end battleObject_advanceChipAnimFrames_812B318
 
 // symdb: Runs a chatbox script chosen by an object's text-variant byte.
 // symdb: void sub_812B39C(void); /* in: r4 r5 r10 lr; out: r4 r5 r6; clobbers NZCV r0 r1 r2 r3 lr */

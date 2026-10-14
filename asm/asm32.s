@@ -16946,7 +16946,7 @@ sub_8116ADC:
 off_8116AEC:
 	.word off_8116AF0
 off_8116AF0:
-	.word sub_8116B00+1
+	.word battleObject_navigationArrowInit_8116B00+1
 	.word sprite_dispatchVariantUpdate_8116B9C+1
 	.word sub_8116C38+1
 off_8116AFC:
@@ -16956,9 +16956,9 @@ off_8116AFC:
 // symdb: Initializes a battle navigation arrow object's sprite and animation state.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr, lr) -> void ; sets up sprite sub-record + animation for
 // symdb: navi arrow
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116B00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_navigationArrowInit_8116B00.yaml
 	thumb_local_start
-sub_8116B00:
+battleObject_navigationArrowInit_8116B00:
 	push {r4,lr}
 	mov r0, #0x23
 	ldrb r1, [r5,#4]
@@ -17028,7 +17028,7 @@ off_8116B90:
 	.word dword_8116B98
 dword_8116B98:
 	.word 0x20
-	thumb_func_end sub_8116B00
+	thumb_func_end battleObject_navigationArrowInit_8116B00
 
 // symdb: Runs the variant-specific update routine selected by the sprite object's type byte (r5+9), then advances the sprite's animation.
 // symdb: void sprite_dispatchVariantUpdate_8116B9C(void *obj /* in r5 */)
@@ -33463,7 +33463,7 @@ pet_initMenu_811EC10:
 	strh r0, [r4,#0x10] // (word_200DF30 - 0x200df20)
 	mov r0, #0
 	ldr r1, off_811EC48 // =byte_811EBDA
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r4,#0xa] // (byte_200DF2A - 0x200df20)
 	strb r1, [r4,#0xb] // (byte_200DF2B - 0x200df20)
 	bl battle_resetEStructRecords_8046664 // () -> void
@@ -34452,7 +34452,7 @@ byte_811F4F8:
 	thumb_func_end getCurrentMapBgm_811F290
 
 // () -> void
-// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
+// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via battleObject_advanceAnimTableBy0xFF_8120CC8 when it expires.
 // symdb: void sub_811F508(void); /* inputs: r5,r10,lr; outputs: r7; clobbers nzcv,r0-r3,lr; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811F508.yaml
@@ -34478,7 +34478,7 @@ sub_811F508:
 	bne locret_811F538
 	strb r0, [r5,#0xa]
 	ldr r1, off_811F548 // =byte_811EBDA
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r1, [r5,#0xb]
 locret_811F538:
 	pop {r4,pc}
@@ -38042,9 +38042,9 @@ loc_8120CAE:
 
 // symdb: Looks up the next animation table entry for a battle object — fetches `t[i]` from `r1`; if the byte is `0xFF` it returns the first byte of the table instead.
 // symdb: (r0 = index, r1 = table ptr) -> r0 = byte ; preserves lr via tail-call, no memory writes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120CC8.yaml
-	thumb_func_start sub_8120CC8
-sub_8120CC8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_advanceAnimTableBy0xFF_8120CC8.yaml
+	thumb_func_start battleObject_advanceAnimTableBy0xFF_8120CC8
+battleObject_advanceAnimTableBy0xFF_8120CC8:
 	mov r3, r0
 	mov r2, r1
 	ldrb r1, [r2,r3]
@@ -38054,7 +38054,7 @@ sub_8120CC8:
 	ldrb r1, [r2,r0]
 locret_8120CD6:
 	mov pc, lr
-	thumb_func_end sub_8120CC8
+	thumb_func_end battleObject_advanceAnimTableBy0xFF_8120CC8
 
 	push {r4-r7,lr}
 	mov r7, #1

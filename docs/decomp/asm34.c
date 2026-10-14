@@ -183,7 +183,7 @@ int __fastcall sub_812D600(int a1, int a2, int a3, int a4)
 	v10 = battleObject_queueOamFromTableRow_811FAF4(v7 | (a2 + 16 * v8), v6, v9 & 0xF, v4);
 	v11 = (v9 >> 4) - 1;
 	if ( v9 >> 4 == 1 )
-		*(v5 + v13) = sub_8120CC8(v10, &dword_8129180);
+		*(v5 + v13) = battleObject_advanceAnimTableBy0xFF_8120CC8(v10, &dword_8129180);
 	result = *(v5 + v13) & 0xF | 16 * v11;
 	*(v5 + v13) = result;
 	return result;

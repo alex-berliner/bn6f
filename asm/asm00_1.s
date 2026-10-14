@@ -1999,7 +1999,7 @@ loc_8003C4C:
 	cmp r1, r0
 	blt loc_8003C04
 	mov r0, #0
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2014,14 +2014,14 @@ off_8003C6C:
 	.word sprite_queueFramePieces+1
 	thumb_func_end owMapObject_renderAll_8003BF4
 
-// symdb: Resets the queued sprite palette count slot (r0) to 0 via sub_80028C0.
+// symdb: Resets the queued sprite palette count slot (r0) to 0 via sprite_recordPaletteCountToGroupSlot_80028C0.
 // symdb: (r0 = slot index 0) -> r0 = 0 ; side effect: writes to battle sprite palette bookkeeping
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetSpritePaletteCount_8003C70.yaml
 	thumb_local_start
 battle_resetSpritePaletteCount_8003C70:
 	push {lr}
 	mov r0, #0
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	thumb_func_end battle_resetSpritePaletteCount_8003C70
 
@@ -2205,7 +2205,7 @@ loc_8003E76:
 	b loc_8003E28
 loc_8003E7A:
 	mov r0, #1
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2220,14 +2220,14 @@ off_8003E94:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8003E18
 
-// symdb: Calls sub_80028C0 with mode 1 to reset/teardown battle objects at scene exit.
+// symdb: Calls sprite_recordPaletteCountToGroupSlot_80028C0 with mode 1 to reset/teardown battle objects at scene exit.
 // symdb: void battle_resetObjects_8003E98(void); /* clobbers r0-r2, lr */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
 	thumb_func_start sub_8003E98
 sub_8003E98:
 	push {lr}
 	mov r0, #1
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	mov r0, #0
 	ldr r3, off_8003EB8 // =eT1BattleObject0
@@ -2524,7 +2524,7 @@ loc_8004276:
 	b loc_8004228
 loc_800427A:
 	mov r0, #3
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2546,7 +2546,7 @@ off_8004294:
 sprite_finalizeBattleSpriteGroupQueue_8004298:
 	push {lr}
 	mov r0, #3
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	mov r0, #0x30
 	ldr r3, off_80042BC // =eT3BattleObject0_LinkedList
@@ -2723,7 +2723,7 @@ T4BattleObjectJumptable:
 
 // symdb: Iterate every battle object's sprite group (OBJ_GROUP) and either queue/cull/draw them, or clear their frame-piece flags if their sprites aren't active this frame.
 // symdb: (r10 = Toolkit ptr, lr = retaddr) -> r0 = 4 ; side effects: writes battle-object OAM data, calls
-// symdb: sub_80028C0 to record palette count.
+// symdb: sprite_recordPaletteCountToGroupSlot_80028C0 to record palette count.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateSprites_8004510.yaml
 	thumb_local_start
 battle_updateSprites_8004510:
@@ -2781,7 +2781,7 @@ loc_800456E:
 	b loc_8004520
 loc_8004572:
 	mov r0, #4
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -2798,13 +2798,13 @@ off_800458C:
 
 // symdb: Closes out a sprite-queue group by recording the final palette-count (dword_200F340) into byte slot 4 of byte_200F389.
 // symdb: () -> r0 = 0x4 ; side effect: writes the latest palette-count (dword_200F340) into
-// symdb: byte_200F389[4] via sub_80028C0
+// symdb: byte_200F389[4] via sprite_recordPaletteCountToGroupSlot_80028C0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_finishGroup_8004590.yaml
 	thumb_func_start sprite_finishGroup_8004590
 sprite_finishGroup_8004590:
 	push {lr}
 	mov r0, #4
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	thumb_func_end sprite_finishGroup_8004590
 
@@ -2985,7 +2985,7 @@ off_8004678:
 // symdb: () -> for each of the 16 NPCs: OBJECT_FLAG_VISIBLE: sprite_projectAndCull(r0 = NPC+0x24, r5 =
 // symdb: NPC), sprite_ensureGfxResident(2), sprite_queueFramePieces(layer 2, bias 0x60, r5 = NPC+0xA0);
 // symdb: else: on-screen piece mask (sprite+0x24) = 0, and if OBJECT_FLAG_ACTIVE still
-// symdb: sprite_projectAndCull. Then sub_80028C0(2). Exit: C=1, V=0 (the loop's last cmp), r3 = last
+// symdb: sprite_projectAndCull. Then sprite_recordPaletteCountToGroupSlot_80028C0(2). Exit: C=1, V=0 (the loop's last cmp), r3 = last
 // symdb: path's, r4-r9/r12 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_drawSprites_800467C.yaml
 	thumb_func_start npc_drawSprites_800467C
@@ -3060,7 +3060,7 @@ loc_80046D4:
 	blt loop_800468C
 
 	mov r0, #2
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 
 	pop {r4-r6}
 	mov r8, r4
@@ -3076,14 +3076,14 @@ off_80046F4:
 	.word sprite_queueFramePieces+1
 	thumb_func_end npc_drawSprites_800467C
 
-// symdb: Trivial wrapper that switches the game into mode/state 2 via sub_80028C0.
+// symdb: Trivial wrapper that switches the game into mode/state 2 via sprite_recordPaletteCountToGroupSlot_80028C0.
 // symdb: void sub_80046F8(void)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gameMode_switchToMode2_80046F8.yaml
 	thumb_local_start
 gameMode_switchToMode2_80046F8:
 	push {lr}
 	mov r0, #2
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	thumb_func_end gameMode_switchToMode2_80046F8
 
@@ -3443,7 +3443,7 @@ loc_800498C:
 	cmp r1, r0
 	blt loc_8004944
 	mov r0, #5
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {r4-r6}
 	mov r8, r4
 	mov r9, r5
@@ -3460,13 +3460,13 @@ off_80049AC:
 
 // symdb: Finalises a queued battle sprite group by recording the current sprite palette count (dword_200F340) into slot 5 of the per-group byte array at byte_200F389.
 // symdb: (no input args used) -> r0 = 5 (slot index); side effect: byte_200F389[5] = LO(dword_200F340)
-// symdb: after a tail-call to sub_80028C0
+// symdb: after a tail-call to sprite_recordPaletteCountToGroupSlot_80028C0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_finishQueuedSpriteGroup_80049B0.yaml
 	thumb_local_start
 battleObject_finishQueuedSpriteGroup_80049B0:
 	push {lr}
 	mov r0, #5
-	bl sub_80028C0
+	bl sprite_recordPaletteCountToGroupSlot_80028C0
 	pop {pc}
 	thumb_func_end battleObject_finishQueuedSpriteGroup_80049B0
 

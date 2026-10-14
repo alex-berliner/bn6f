@@ -13834,7 +13834,7 @@ int sub_80178B6()
 
 
 // 0x80178d4
-signed int __noreturn sub_80178D4()
+signed int __noreturn battleObject_initMoveStep_80178D4()
 {
     int v0; // r5
     int v1; // r0

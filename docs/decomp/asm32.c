@@ -11127,7 +11127,7 @@ int sub_8116ADC()
 
 
 // 0x8116b00
-void __noreturn sub_8116B00()
+void __noreturn battleObject_navigationArrowInit_8116B00()
 {
     int v0; // r5
     int v1; // r7
@@ -21101,7 +21101,7 @@ void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
     ZeroFillByWord(&ePETMenuData, 24);
     sub_811EBE8(1);
     word_200DF30 = -32;
-    byte_200DF2A = sub_8120CC8(0, byte_811EBDA);
+    byte_200DF2A = battleObject_advanceAnimTableBy0xFF_8120CC8(0, byte_811EBDA);
     byte_200DF2B = v5;
     battle_resetEStructRecords_8046664();
 }
@@ -21622,7 +21622,7 @@ int sub_811F508()
         if ( !v2 )
         {
             *(v0 + 10) = result;
-            result = sub_8120CC8(result, byte_811EBDA);
+            result = battleObject_advanceAnimTableBy0xFF_8120CC8(result, byte_811EBDA);
             *(v0 + 11) = v3;
         }
     }
@@ -23850,7 +23850,7 @@ int __fastcall gfx_fillTilemapConsecutiveBanded_8120C94(int a1, int a2, int a3, 
 
 
 // 0x8120cc8
-int __fastcall sub_8120CC8(int result, unsigned __int8 *a2)
+int __fastcall battleObject_advanceAnimTableBy0xFF_8120CC8(int result, unsigned __int8 *a2)
 {
     int v2; // r1
 

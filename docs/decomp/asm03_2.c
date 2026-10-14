@@ -4549,7 +4549,7 @@ int __fastcall sub_804A9F0(int a1, int a2, int a3, int a4)
     v9 = battleObject_queueOamFromTableRow_811FAF4(v6 | (a2 + 16 * v7), 0x20002u, v8 & 0xF, v4);
     v10 = (v8 >> 4) - 1;
     if ( v8 >> 4 == 1 )
-        *(v5 + v12) = sub_8120CC8(v9, &dword_804A2AC);
+        *(v5 + v12) = battleObject_advanceAnimTableBy0xFF_8120CC8(v9, &dword_804A2AC);
     result = *(v5 + v12) & 0xF | 16 * v10;
     *(v5 + v12) = result;
     return result;
@@ -5015,7 +5015,7 @@ int sub_804AE68()
     v2 = battleObject_queueOamFromTableRow_811FAF4((16 * *(v0 + 52) + 32) | 0xA40000, 2u, v1 & 0xF, byte_804A29C);
     v3 = (v1 >> 4) - 1;
     if ( v1 >> 4 == 1 )
-        *(v0 + 21) = sub_8120CC8(v2, &dword_804A2AC);
+        *(v0 + 21) = battleObject_advanceAnimTableBy0xFF_8120CC8(v2, &dword_804A2AC);
     result = *(v0 + 21) & 0x15 | 16 * v3;
     *(v0 + 21) = result;
     return result;

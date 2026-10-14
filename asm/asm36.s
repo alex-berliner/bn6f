@@ -86,7 +86,7 @@ sub_8130084:
 	bl sub_81304EC
 	mov r0, #0
 	ldr r1, off_8130104 // =dword_8129180
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x17]
 	strb r1, [r5,#0x18]
 	mov r0, #8
@@ -404,7 +404,7 @@ loc_8130326:
 	sub r1, #1
 	bne loc_8130354
 	ldr r1, off_813036C // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_8130354:
@@ -2481,7 +2481,7 @@ loc_8131350:
 
 	mov r0, #0
 	ldr r1, off_813138C // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r7,#0x12]
@@ -2664,7 +2664,7 @@ loc_813149E:
 	sub r1, #1
 	bne loc_81314CC
 	ldr r1, off_81314E0 // =dword_8129180 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_81314CC:
@@ -6301,10 +6301,10 @@ battleObject_dispatchUpdateByState_8133200:
 off_8133210:
 	.word off_8133214
 off_8133214:
-	.word sub_8133228+1
+	.word battle_initChipSelectFromOverlay_8133228+1
 	.word battle_dispatchObjectUpdateOrEffect_81333A0+1
 	.word sub_813399C+1
-	.word sub_8133228+1
+	.word battle_initChipSelectFromOverlay_8133228+1
 	.word sub_8133A44+1
 	thumb_func_end battleObject_dispatchUpdateByState_8133200
 
@@ -6312,9 +6312,9 @@ off_8133214:
 // symdb: (r5 = BattleState-like overlay state, r10 = Toolkit) -> r0 = 4 ; side effects: zeroes large
 // symdb: IWRAM buffers, clears BG tile data, kicks off the chip-pack/chip-search table builds, runs a
 // symdb: chatbox script, runs the "Battle Start" script, and sets r5->curSubscreen = 4.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133228.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelectFromOverlay_8133228.yaml
 	thumb_local_start
-sub_8133228:
+battle_initChipSelectFromOverlay_8133228:
 	push {r4-r7,lr}
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
@@ -6358,7 +6358,7 @@ sub_8133228:
 	str r0, [r5,#0x48]
 	mov r0, #0
 	ldr r1, off_813336C // =dword_81331FC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0x12]
@@ -6481,7 +6481,7 @@ off_8133398:
 	.word unk_20251A0
 off_813339C:
 	.word unk_20376AC
-	thumb_func_end sub_8133228
+	thumb_func_end battle_initChipSelectFromOverlay_8133228
 // symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
 // symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
 // symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
@@ -7056,7 +7056,7 @@ sub_81337C4:
 off_81337D4:
 	.word off_81337D8
 off_81337D8:
-	.word sub_81337E8+1
+	.word battleObject_runSubmenuInputHandler_81337E8+1
 	.word folderEdit_step_813388C+1
 	.word battleObject_submenuFolderEditTick_81338D4+1
 	.word sub_8133944+1
@@ -7066,9 +7066,9 @@ off_81337D8:
 // symdb: (r5 = sSubmenu/this battle object, r10 = Toolkit, r2 = ?, r4 / lr saved) -> r0 = 0x40 ; side
 // symdb: effects: writes sSubmenu.unk_02/unk_1B/obj+1/obj+2, runs script 0x17, plays SFX, dispatches into
 // symdb: chatbox_*/folder-edit/object_saveState/BG/AI helpers.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81337E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runSubmenuInputHandler_81337E8.yaml
 	thumb_local_start
-sub_81337E8:
+battleObject_runSubmenuInputHandler_81337E8:
 	push {lr}
 	bl submenu_isOpen_81355D8
 	beq loc_813381E
@@ -7145,7 +7145,7 @@ loc_8133864:
 	.balign 4, 0x00
 off_8133888:
 	.word sSubmenu
-	thumb_func_end sub_81337E8
+	thumb_func_end battleObject_runSubmenuInputHandler_81337E8
 // symdb: One frame of the folder-edit object step: passes three outer guards, checks an input-locked flag and the held-joypad buttons for a folder-edit gesture, otherwise delegates L/R handling to the folder-edit helper, and saves state into state 8 when handled.
 // symdb: void sub_813388C(void); /* uses r5 = folder_obj, r10 = toolkit; clobbers nz c v r0 r1 r2 r3 r4
 // symdb: r6 r12; preserves r7 r8 r10 */
@@ -8983,7 +8983,7 @@ loc_8134642:
 	sub r1, #1
 	bne loc_813467A
 	ldr r1, off_8134718 // =dword_81331FC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x16]
 loc_813467A:
 	ldrb r0, [r5,#0x16]
@@ -9044,7 +9044,7 @@ loc_81346B2:
 	sub r1, #1
 	bne loc_81346E0
 	ldr r1, off_8134718 // =dword_81331FC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_81346E0:
@@ -9101,9 +9101,9 @@ loc_813472C:
 off_813473C:
 	.word unk_203486C
 	thumb_func_end copyBackgroundTiles_sub_813471C
-// symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from sub_8120CC8 when it reaches zero.
+// symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from battleObject_advanceAnimTableBy0xFF_8120CC8 when it reaches zero.
 // symdb: void sub_8134740(u32 battleObj /* r5 */); /* r5 preserved; nz/c/v clobbered; r0-r3,r4,lr
-// symdb: clobbered via sub_811FAF4/sub_8120CC8 */
+// symdb: clobbered via sub_811FAF4/battleObject_advanceAnimTableBy0xFF_8120CC8 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
 	thumb_local_start
 sub_8134740:
@@ -9133,7 +9133,7 @@ loc_813474E:
 	sub r1, #1
 	bne loc_813477A
 	ldr r1, off_81347A0 // =dword_81331FC
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	strb r0, [r5,#0x15]
 loc_813477A:
 	ldrb r0, [r5,#0x15]
@@ -15780,7 +15780,7 @@ loc_8137906:
 	strb r0, [r5,#2]
 	mov r0, #0
 	ldr r1, off_813795C // =dword_81378A0 
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r5,#0xc]
@@ -16740,7 +16740,7 @@ loc_8138122:
 	sub r1, #1
 	bne loc_8138150
 	mov r1, r7
-	bl sub_8120CC8
+	bl battleObject_advanceAnimTableBy0xFF_8120CC8
 	ldr r2, [sp,#8]
 	strb r0, [r5,r2]
 loc_8138150:

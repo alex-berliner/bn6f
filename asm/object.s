@@ -15,14 +15,14 @@ sub_800B884:
 
 // symdb: Returns the byte at offset 0x1 of the entry that byte_203CF00_getEntryPtr points at for the given slot index.
 // symdb: (r0 = slotIndex) -> r0 = entry.byte_1 ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B892.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getIndex_800B892.yaml
 	thumb_local_start
-sub_800B892:
+battleObject_getIndex_800B892:
 	push {lr}
 	bl byte_203CF00_getEntryPtr_800BF5C
 	ldrb r0, [r0,#1]
 	pop {pc}
-	thumb_func_end sub_800B892
+	thumb_func_end battleObject_getIndex_800B892
 
 // symdb: Resets a battle object's animation state, clearing its current animation frame and animation timer to 0.
 // symdb: void battle_resetObjAnimState(void *battleObj /* r0 in, passed through to sub_800BF5C */); //
@@ -226,7 +226,7 @@ object_drawChipName:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #3
 	beq loc_800B9D4
 	cmp r0, #0
@@ -282,7 +282,7 @@ loc_800BA28:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #0
 	beq loc_800BA56
 	cmp r0, #5
@@ -331,7 +331,7 @@ battleObject_stepSnakeArm_800BA8A:
 	tst r0, r0
 	bne loc_800BB08
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #4
 	beq loc_800BAB8
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -340,7 +340,7 @@ battleObject_stepSnakeArm_800BA8A:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #3
 	beq loc_800BAB8
 	cmp r0, #0
@@ -403,7 +403,7 @@ loc_800BB1C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #0
 	beq loc_800BB46
 	cmp r0, #5
@@ -478,7 +478,7 @@ sub_800BBA8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #3
 	beq loc_800BBCC
 	cmp r0, #0
@@ -542,7 +542,7 @@ loc_800BC2C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #0
 	beq loc_800BC5A
 	cmp r0, #5
@@ -586,7 +586,7 @@ object_undimScreen:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #5
 	beq loc_800BCA4
 	cmp r0, #0
@@ -619,7 +619,7 @@ sub_800BCC0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #5
 	beq loc_800BCDC
 	cmp r0, #0
@@ -651,7 +651,7 @@ sub_800BCF6:
 	ldrb r0, [r5,#0x16]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #5
 	beq loc_800BD1A
 	cmp r0, #0
@@ -695,7 +695,7 @@ loc_800BD42:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_800B892
+	bl battleObject_getIndex_800B892
 	cmp r0, #5
 	beq loc_800BD5E
 	cmp r0, #0
