@@ -29593,10 +29593,10 @@ battle_matchTrackedSpriteAndShrink_811CBD0:
 	pop {pc}
 	thumb_func_end battle_matchTrackedSpriteAndShrink_811CBD0
 
-// symdb: Runs the action implemented by sub_811CC4E and then reports success by returning 1.
-// symdb: void sub_811CC02(r5 in /* context passed through to sub_811CC4E */, lr); out r0 = 1 (success),
-// symdb: r1 = whatever sub_811CC4E left, NZ from r0=1, C = whatever sub_811CC4E left
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811CC02.yaml
+// symdb: Initializes an object's state handler table entry and returns 1.
+// symdb: (r5 = object pointer) -> r0 = 1 ; side effects: writes the state-handler pointer into the object
+// symdb: via object_SetStateHandler_811CC4E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CC02.yaml
 	thumb_local_start
 sub_811CC02:
 	push {lr}
@@ -31796,6 +31796,10 @@ locret_811DF18:
 	.byte 0x0, 0x0
 	thumb_func_end sub_811DF0C
 
+// symdb: weather composition dispatcher that reads eWeatherCompState and jumps to one of three weather composition handlers, passing a BattleObject* derived from r5 in r0 and a byte from the object at r5+8 in r1
+// symdb: (r0 = ???, r5 = BattleObject*) -> r0 = ???, r1 = ??? ; branches via r0-derived function pointer;
+// symdb: reads eWeatherCompState global
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811DF1C.yaml
 	thumb_func_start sub_811DF1C
 sub_811DF1C:
 	push {lr}
@@ -31987,9 +31991,9 @@ off_811E08C:
 	.word 0x298
 	thumb_func_end sub_811E048
 
-// symdb: For a battle object, toggles a "hidden by shadow" flag on its ObjectSprite based on byte 0xE of the BattleObject, then sets sprite coords to (0xbc, 0x0a) and runs sprite_update.
-// symdb: (r5 = BattleObjectPtr, r6 = ?) -> r0 = 0x040c ; side effects: writes battle object byte at [r5],
-// symdb: sprite pos, sprite state
+// symdb: Beast-out battle object per-frame hook: toggles a flag bit on the object's header flags based on its element, then sets sprite coords to (0xbc, 0xa) and runs sprite_update.
+// symdb: (r5 = battleObjectPtr, r6 = AIDataPtr) -> r5 = battleObjectPtr ; side effects write to *(r5+0),
+// symdb: sprite coords and sprite state via r5
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811E090.yaml
 	thumb_local_start
 sub_811E090:

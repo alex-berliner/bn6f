@@ -58,10 +58,9 @@ locret_801FE5C:
 	pop {r4,pc}
 	thumb_func_end sub_801FE24
 
-// symdb: Trivial getter that returns the first byte (u8) of the global struct at 0x203F7D8, also leaving the struct's address in r3.
-// symdb: void -> u8 (r0 = byte at eStruct203F7D8, r3 = address of eStruct203F7D8); clobbers nothing else,
-// symdb: uses no flags
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801FE5E.yaml
+// symdb: Returns a byte from a global battle sub-state struct (offset 0, likely a finished/idle flag) by loading it from EWRAM pointer `eStruct203F7D8`.
+// symdb: () -> r0 = eStruct203F7D8[0]; no side effects beyond reading the byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801FE5E.yaml
 	thumb_func_start sub_801FE5E
 sub_801FE5E:
 	ldr r3, off_80200D0 // =eStruct203F7D8

@@ -23614,6 +23614,10 @@ dword_814EE28:
 	.word 0x2710
 	thumb_func_end SampleFreqSet_814EDC0
 
+// symdb: m4a sound driver control register update (handles D-ma/pcm wave volume bits and a sample-rate reroll guarded by the "Smsh" header magic)
+// symdb: (r0 = 32-bit control bits) -> r0 = saved lr (return address); updates m4a driver's direct-sound
+// symdb: state at *byte_3007FF0, writes to hardware regs via SoundPWMControl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EE2C.yaml
 	thumb_func_start sub_814EE2C
 sub_814EE2C:
 	push {r4,r5,lr}

@@ -950,6 +950,9 @@ sub_808FF30:
 	pop {pc}
 	thumb_func_end sub_808FF30
 
+// symdb: Toggles/clears a player's ally lockout flag and resets its associated counters during battle.
+// symdb: (r5 = ptr to battle-related struct) -> r5 preserved ; r1/r2/r3 clobbered ; NZ flags updated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF44.yaml
 	thumb_local_start
 sub_808FF44:
 	push {lr}

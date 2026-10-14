@@ -12248,9 +12248,9 @@ locret_802BF0A:
 	pop {pc}
 	thumb_func_end object_countdownTick_802BEFC
 
-// symdb: Chooses an animation/state index for a battle object — either a scripted state derived from the object's +0xC byte, or a 0/1 alternation driven by bit 3 of the global frame counter — and passes it to battle_drawChipSelectRowTilemapBlock_802C810.
+// symdb: Chooses an animation/state index for a battle object — either a scripted state derived from the object's +0xC byte, or a 0/1 alternation driven by bit 3 of the global frame counter — and passes it to sub_802C810.
 // symdb: battle_pickObjectAnimState_802BF0C(BattleObj *obj /* r5 */, u32 r6, Toolkit *r10); no return
-// symdb: value; preserves r5/r6/r10; calls battle_drawChipSelectRowTilemapBlock_802C810 with r0 = state index and r7 = context pointer
+// symdb: value; preserves r5/r6/r10; calls sub_802C810 with r0 = state index and r7 = context pointer
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pickObjectAnimState_802BF0C.yaml
 	thumb_local_start
 battle_pickObjectAnimState_802BF0C:
@@ -24249,11 +24249,10 @@ camera_initAndActivate_803123E:
 	pop {r0-r2,r5,pc}
 	thumb_func_end camera_initAndActivate_803123E
 
-// symdb: story3 battle helper: finalizes the textbox update via sub_8031122/0x30F04, derives a camera scroll delta and feeds it to camera_moveByDelta_80310B0, then ORs 3 into the high bit of r12 (likely a state/flag word the caller owns) and returns
-// symdb: (r0 = a state struct pointer also passed to sub_8031122, r1 = 0x8466, r2 = 0x02027C50, r3 = 0,
-// symdb: r5, r12, lr) -> r0 = pointer (unchanged), r12 |= 3, lr popped; r1, r2, r3, r5 clobbered as side
-// symdb: effects via callees
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031264.yaml
+// symdb: Advances the cinematic camera based on textbox progress during story battles
+// symdb: (r0 = textbox/state ptr, r12 = flag word ptr) -> r12 = flag word ptr with bits OR'd by 3 ; side
+// symdb: effects: manipulates camera + writes to dword_200F3E0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031264.yaml
 	thumb_local_start
 sub_8031264:
 	push {r0-r2,r5,lr}
@@ -24698,6 +24697,10 @@ locret_803156E:
 	pop {pc}
 	thumb_func_end battle_scrollAdvanceByPanelStep_8031520
 
+// symdb: Tests whether a battle-object cell rectangle intersects a fixed rectangle from a PanelData-like struct, returning 1 on hit.
+// symdb: (r0 = panelStructPtr, r2 = rectX, r3 = rectY, r4 = rectW, r5 = rectH) -> r0 = 0|1 ; side effects
+// symdb: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031570.yaml
 	thumb_local_start
 sub_8031570:
 	sub r6, r5, r4
@@ -25628,6 +25631,10 @@ sub_8031B94:
 	pop {pc}
 	thumb_func_end sub_8031B94
 
+// symdb: Computes whether an object's relation to its target yields a "near/on-target" condition by chaining relative-position computation, half-plane edge test, and a state check.
+// symdb: (r0 = *BattleObject, r5 = ?) -> r0 = 0 or 1 (nz/Z flag reflects result) ; side effects: r2..r7
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031B9A.yaml
 	thumb_local_start
 sub_8031B9A:
 	push {lr}

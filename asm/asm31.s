@@ -639,6 +639,10 @@ off_80B8698:
 	.word sub_80B86D4+1
 	thumb_func_end battleObject_syncVisualStateFromRelatedObject_80B863A
 
+// symdb: Step a battle object's sprite/animation by calling per-object sprite/animation helpers, force CurAction=4 and clear CurPhase/PhaseInitialized when the battle state's Unk_5c shifted out of bit 1, then dispatch to the object's sprite step state machine.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes r5+CurAction,
+// symdb: r5+CurPhaseAndPhaseInitialized, calls several subs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B86A4.yaml
 	thumb_local_start
 sub_80B86A4:
 	push {lr}
@@ -838,6 +842,10 @@ locret_80B87FE:
 	mov pc, lr
 	thumb_func_end sub_80B87F0
 
+// symdb: Copies the 0x34 coord triple (X, Y, Z) from this object's RelatedObject1Ptr into its own
+// symdb: (r5 = oBattleObject) -> r1 = oRelated->X, r2 = oRelated->Y, r3 = oRelated->Z ; side effects:
+// symdb: writes oBattleObject+0x34..0x3F with the same three u32s
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8800.yaml
 	thumb_local_start
 sub_80B8800:
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -850,6 +858,10 @@ sub_80B8800:
 	mov pc, lr
 	thumb_func_end sub_80B8800
 
+// symdb: Clamps the related-object's CurAnim to <=3 and stores the result back into the calling BattleObject's CurAnim.
+// symdb: (r5 = battleObject *) -> r0 = clamped value, NZ/C/V flags reflect the final value ; no side
+// symdb: effects beyond the store
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8810.yaml
 	thumb_local_start
 sub_80B8810:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -28804,6 +28816,12 @@ loc_80C5520:
 	pop {r7,pc}
 	thumb_func_end sub_80C54E0
 
+// symdb: Per-frame update for a SnakeArm-style battle object: while ticking, spawn sibling "body segment" objects ahead in its facing direction each beat, then clean up and self-destruct when its outer life counter expires.
+// symdb: (r5 = BattleObjectPtr) -> r0 = previous oBattleObject_Param1 value ; may_write:
+// symdb: oBattleObject_Timer, oBattleObject_Param2, oBattleObject_Param1,
+// symdb: oBattleObject_CurStateActionPhaseAndPhaseInitialized on the parent, and spawns one or more child
+// symdb: BattleObjects via sub_80C5590
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C552A.yaml
 	thumb_local_start
 sub_80C552A:
 	push {r4,r6,r7,lr}
@@ -56319,6 +56337,9 @@ jt_80D2348:
 	.word sub_80D2398+1
 	thumb_func_end battleObject_runUpdateActionsAndCollisions_80D2320
 
+// symdb: If the deletion-state battle flag is set, clear the object's ACTIVE bit, set PAUSE_UPDATE, force CurAction=8 and zero CurPhaseAndPhaseInitialized.
+// symdb: (r5 = BattleObject*) -> side effects only; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D236C.yaml
 	thumb_local_start
 sub_80D236C:
 	push {lr}
@@ -136282,6 +136303,11 @@ off_80F8444:
 	.word sub_80F8448+1
 	thumb_func_end sub_80F8428
 
+// symdb: Reads self-HP vs MaxHP and AIState.Unk_04/05 timers to choose which scripted AI attack/thinker routine to install this tick
+// symdb: (r5 = BattleObject self, r6 = AIState, r7 = AIAttackVars, r10 = Toolkit) -> void ; side effects:
+// symdb: writes AIState.Unk_04/05, AIAttackVars fields (Unk_02/03/18/28/2c/30), sets CurAction via
+// symdb: object_setAttack0/object_setAttack4
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F8448.yaml
 	thumb_local_start
 sub_80F8448:
 	push {r4,r6,lr}

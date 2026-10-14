@@ -11297,7 +11297,7 @@ sub_804CC7E:
 
 // symdb: Jump-table dispatcher that selects one of two beast-spawn routines based on the AIData Unk_0c byte read from r5.
 // symdb: (r0 = junk loaded from table, r1 = dispatch index<<2, r5 = AIData ptr) -> (tail call into
-// symdb: battle_dispatchBeastOutUpdateOrAnim_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
+// symdb: sub_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_spawnIndexDispatcher_804CC8E.yaml
 	thumb_local_start
 beastSp_spawnIndexDispatcher_804CC8E:
@@ -11379,6 +11379,9 @@ dword_804CD1C:
 	.word 0x800
 	thumb_func_end sub_804CCF0
 
+// symdb: Dispatches through a CurAnim-keyed jump table to one of two BattleObject CurAnim handlers, returning the callee's r0.
+// symdb: (r5 = BattleObjectPtr) -> r0 = whatever the dispatched handler returns ; tail-call via saved lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CD20.yaml
 	thumb_local_start
 sub_804CD20:
 	push {r4-r7,lr}
@@ -11463,6 +11466,11 @@ sub_804CDCC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804CDCC
 
+// symdb: Sets a BG layer 3 flag in RenderInfo, branches on a story flag (EVENT_BF0) to call a layout helper, then copies a 32x32 tile block from ROM into BG tile block 3 at (0,0).
+// symdb: (r5 = toolkit-related; r10 = ToolkitPtr) -> void ; side effects: writes to eRenderInfo (BG
+// symdb: control reg bits), conditionally calls sub_804CE3C, always calls sub_804CE0C, then
+// symdb: CopyBackgroundTiles(r0=0, r1=0, r2=3, r3=byte_86A3F40, r4=0x20, r5=0x20)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CDD4.yaml
 	thumb_local_start
 sub_804CDD4:
 	push {r4-r7,lr}

@@ -11818,6 +11818,11 @@ locret_8135B52:
 	pop {pc}
 	thumb_func_end sub_8135B38
 
+// symdb: BattleSystem frame step that either exits back to the overworld (r5 == 0x28) or finishes the battle by zeroing the submenu and restarting the map music.
+// symdb: (r5 = battle-result/state byte, r10 = *Toolkit, r2/lr = save/lr) -> void ; side effects: runs
+// symdb: entity+sprite updates, may clear chatbox flags, zero 0x80-byte submenu buffer, switch map music,
+// symdb: may unlock player and exit to map.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135B54.yaml
 	thumb_local_start
 sub_8135B54:
 	push {r4,lr}

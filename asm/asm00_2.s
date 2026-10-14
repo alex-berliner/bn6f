@@ -22257,7 +22257,7 @@ off_8019FB0:
    r1 = self collision type
    r2 = target collision type
    r3 = collision modifier*/
-// symdb: Initializes a battle object's collision-data block from its parent object, resolves self/target collision-type flag tables, applies a time-stop bit, and finalizes via object_applySelfCollision_8019F44.
+// symdb: Initializes a battle object's collision-data block from its parent object, resolves self/target collision-type flag tables, applies a time-stop bit, and finalizes via sub_8019F44.
 // symdb: void object_setupCollisionData(u32 outCollisionPtr, u32 selfTableIdx, u32 targetTableIdx, u8
 // symdb: hitModifierBase /* r3 */, u32 parentBattleObject /* r5 */, u32 unused_r10) -> {u32 r0, u32 r1,
 // symdb: u32 r6} (clobbers r3, lr, flags NZCV)
@@ -31275,9 +31275,9 @@ dword_801DF88:
 	.word 0x20
 	thumb_func_end sub_801DF32
 
-// symdb: Setter that writes a 16-bit value into the 0x22 field of the eStruct2035280 struct.
-// symdb: void eStruct2035280_SetField22(halfword value /* r0 */)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801DF8C.yaml
+// symdb: Stores the looked-up enemy-virus count (0x10/0x20/0x40) into eStruct2035280.NaviStatusGfxIdx (offset 0x22).
+// symdb: (r0 = u16 enemyVirusCount) -> void ; side effect: writes r0 as a u16 to eStruct2035280+0x22
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DF8C.yaml
 	thumb_func_start sub_801DF8C
 sub_801DF8C:
 	ldr r1, off_801E0D8 // =eStruct2035280

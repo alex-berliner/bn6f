@@ -3834,10 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Cutscene-graphics-orchestrator (reads L-Message / AskJackOut cutscene script markers, sets/clocks GFX anims 0x8083FC0/0x8083FFC/0x08084068, and toggles event flag 0x17 bit 7 via the BBS request handlers) — placeholder for the scene that runs at 0x8083DF0.
-// symdb: (r10 = oToolkit, lr = return) -> nz flags ; side effects: event flag bit (0x17, 0x07)
-// symdb: read/cleared/set, three GFX anim state slots loaded and ticked, sub_8083F80 / sub_80840C4 /
-// symdb: sub_8084080 / sub_8084180 / sub_8084214 / sub_80842D8 driven, sub_809E462 called
+// symdb: Initializes/refreshes a beast-out related battle object (loads gfx anims, manages event flags and cutscene-script sentinels) and writes into the battle object's AIData/extras; result is a void-like side-effect call used by beast-out AI processing.
+// symdb: (r10 = Toolkit) ; side effects on battle object in r5, BBS request flags, event flags 0x17[7] /
+// symdb: 0x17[?], and several EWRAM-backed data slots
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8219,8 +8218,9 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: placeholder - cannot propose a real name; assembly for this function is missing from the disassembly
-// symdb: (r2 in, r10 = toolkit, lr) -> r2, r3, r5, r7 out ; side effects unknown
+// symdb: Possibly dispatches an AI tick for a battle actor (reads AIData, runs state-specific AI helpers, and returns an action/state code to the caller).
+// symdb: (r2 = actor index/AI data ptr? , r10 = toolkit ptr) -> r2 = next state/action? ; reads/writes
+// symdb: actor AIData via toolkit, no r0 return
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

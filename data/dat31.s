@@ -2225,9 +2225,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Cannot determine; assembly not provided, callers list empty.
-// symdb: unknown — contract lists r4/r5/r7/r10/lr in and r1/r5 out, but I have not observed how those are
-// symdb: populated or consumed.
+// symdb: Battle object step routine reachable from a story-6 storyboard dispatch (likely a per-tick script handler); returns a small status code in r0 and touches a panel/sprite routine.
+// symdb: (r0 = ?, r1 = ?, r2 = 0x80 ? , r3 = 3 ? , r4/r5/r7/r10/lr = saved) -> r0 = status byte (e.g.
+// symdb: 0x24/0x25 or 0x7F), r1/r5/flags clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::
