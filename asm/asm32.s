@@ -14201,6 +14201,10 @@ loc_811526C:
 	pop {pc}
 	thumb_func_end sub_811523C
 
+// symdb: Drives a single slide/recoil step of a battle object along an axis, decrementing the step counter and landing on a target panel
+// symdb: (r5 = battle object, r7 = AIAttackVars) -> r0 = some return ; side effects: mutates object X and
+// symdb: collision region
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8115272.yaml
 	thumb_local_start
 sub_8115272:
 	push {lr}
@@ -17868,6 +17872,10 @@ off_8117124:
 	.word sub_81171CC+1
 	thumb_func_end battleObject_dispatchBeastOutAction_8117110
 
+// symdb: Initializes a beast-out battle object: sets object flags, picks a sprite/animation setup based on the beast-out index, configures palette, priority, animation, sub-entry bank, and chains to sub_81171B4
+// symdb: (r5 = ptr to BattleObject) -> r2/r3/r5 preserved by callee-save ; no meaningful return; stack
+// symdb: pop {pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117130.yaml
 	thumb_local_start
 sub_8117130:
 	push {lr}
@@ -19760,6 +19768,10 @@ off_8117EDC:
 	.word sub_81180FC+1
 	thumb_func_end battleObject_aiStateJumpTableDispatcher_8117EC8
 
+// symdb: Initialise a BeastSP battle object: set type, load GUI sprite/animation, set priority 3, pick a slot/halfword, write the initial coords, then dispatch the action.
+// symdb: (r5 = BattleObject*) -> void ; sets r5+0x0..r5+0x14 from in-RAM table byte_8117F68 and
+// symdb: off_8117F44, side effects on r0..r4,r6..r9 via callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117EE8.yaml
 	thumb_local_start
 sub_8117EE8:
 	push {lr}
@@ -20379,6 +20391,11 @@ off_8118364:
 	.word sSubmenu
 	thumb_func_end submenu_dispatchByIndex_8118344
 
+// symdb: Initializes a Beast-out / Program-Advance actor battle object: sets state 0x23, attaches a sprite from unk_201F6F0, configures animation/priority/palette, places it on the field by panel column (r6+0x20), zero-fills two fields, and hands off to the per-frame Battle step.
+// symdb: in = (r5 = BattleObject*, r6 = BattleState*, r10 = Toolkit*) -> flags set by
+// symdb: battle_beastOut_runBattleStep (Z on exit); side effects: object + sprite state written via the
+// symdb: sprite_* helpers, plus AIData.TotalDamageTaken (0x20) read to position the actor.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118368.yaml
 	thumb_local_start
 sub_8118368:
 	push {lr}
@@ -28585,6 +28602,9 @@ off_811C130:
 	.word sub_811C1A4+1
 	thumb_func_end sub_811C11C
 
+// symdb: Initialise the GUI/overworld object used to visualise the Navi's beast-out form, configuring its sprite/animation/palette/priority and absolute on-battlefield coordinates.
+// symdb: (r5 = battle object ptr) -> side effects only; no value returned to callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C13C.yaml
 	thumb_local_start
 sub_811C13C:
 	push {lr}
@@ -32141,7 +32161,7 @@ off_811E164:
 
 // symdb: AI state-machine dispatcher that jumps (ARM-mode BX) to one of three handlers based on a sub-state byte in the AIData pointed to by r5
 // symdb: (r5 = AIData*, lr = return addr) -> r0 = AIData+0x8 byte used as index into 3-entry handler
-// symdb: table ; side effects: tail-bx into one of battleObject_beastSpInit_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
+// symdb: table ; side effects: tail-bx into one of sub_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
 // symdb: preserves r5 (callee-saved)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiState_dispatchStateMachine_811E168.yaml
 	thumb_func_start battle_aiState_dispatchStateMachine_811E168
@@ -33625,9 +33645,10 @@ off_811ED54:
 	thumb_func_end ho_811ED1C
 
 // () -> void
-// symdb: Per-frame tick that advances the PET window's signed animation timer, reloads GFX animation scripts on overflow, replays sprite frames, and copies PET/Navi background tiles.
-// symdb: void pet_windowTick(PETWindow *state /* r5 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811ED58.yaml
+// symdb: PET/Navi-select start-screen per-frame tick: advances an init timer, then on maturity loads GFX anim scripts, spawns eStruct records, and finally queues corner OAM, replays sprite frames, updates the cursor pulse, initialises PET comm-save slots, and scrolls/redraws the BG (with the Navi overlay redraw only after the init phase finishes).
+// symdb: (r5 = startScreen state scratch, r10 = toolkit) -> side effects only; clobbers scratch regs as
+// symdb: listed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811ED58.yaml
 	thumb_local_start
 sub_811ED58:
 	push {lr}
@@ -33813,6 +33834,10 @@ byte_811EEC8:
 	.byte 0xE0, 0xFF, 0xFF, 0xFF, 0x20, 0x0, 0x0, 0x0
 	thumb_func_end battle_state_tick_811EE98
 
+// symdb: Initializes the PET navi/customize sub-screen state: loads PET graphics, queues VRAM transfers, plays the unselect cue, forces the navi icon to MegaMan (when story flag 163 is set and current PET navi is 0), sets an internal sub-state byte, kicks the cursor pulse animation, resets PET-comm save slots, and copies the PET background tiles.
+// symdb: () -> void ; side effects: VRAM/IWRAM graphics loads, M4A sound playback, [r5+1] = 8, toolkit
+// symdb: side state (cursor pulse, comm-save slots)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EED0.yaml
 	thumb_local_start
 sub_811EED0:
 	push {lr}
@@ -36874,11 +36899,11 @@ loc_81204B6:
 	pop {r4-r7,pc}
 	thumb_func_end battle_loadChipIconSlots_8120458
 
-// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via sub_8120504, and zeroing entries for empty slots.
-// symdb: void battle_processChipSlotArray(s32 startIdx /*r0*/, void* chipArrayBase /*r1*/, void* dest
-// symdb: /*r2*/, void* extraParam /*r3*/, s32 count /*r5*/); /* writes 8*count bytes at dest; r0-r3,lr
-// symdb: clobbered; r4-r7,preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81204C4.yaml
+// symdb: Fills a contiguous run of 8-byte chip-pack entries (r2..r2+8*r0) from a chip list at r1 (records of 0x20 bytes), keeping only entries whose high bit of the halfword at offset 0x1c is set, and zeroing the rest
+// symdb: (r0 = chipCount, r1 = *chipList0x20, r2 = *packEntries8, r3 = packEntryStructSize, r5 =
+// symdb: chipRecStride? maybe totalArg, lr) -> r0 = end-of-input struct? ; side effects: writes 8-byte
+// symdb: pack entries to *r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81204C4.yaml
 	thumb_func_start sub_81204C4
 sub_81204C4:
 	push {r4-r7,lr}

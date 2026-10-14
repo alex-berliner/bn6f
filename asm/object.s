@@ -762,7 +762,7 @@ off_800BDC4:
 	.word sub_800BE2C+1
 	thumb_func_end sub_800BDB2
 
-// symdb: Battle-object phase step: when an action slot's Unk_30 is in the 0xDD..0x118 window and the cross-team table lookup yields 0xBA, run the panel-targeted sub-animation (object_setBattleEffectParam2_800B884) and a panel-XY helper (sub_800ABC6) and set phase to 4; otherwise just bump CurAction by 4 and zero the phase field.
+// symdb: Battle-object phase step: when an action slot's Unk_30 is in the 0xDD..0x118 window and the cross-team table lookup yields 0xBA, run the panel-targeted sub-animation (sub_800B884) and a panel-XY helper (sub_800ABC6) and set phase to 4; otherwise just bump CurAction by 4 and zero the phase field.
 // symdb: void sub_800BDD0(void);          // r5 = battle object base, r10 = ?, lr = return
 // symdb: // clobbers r0,r1,r2,r3,lr and nz,cv; preserves r4,r5,r6,r7,r10
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800BDD0.yaml

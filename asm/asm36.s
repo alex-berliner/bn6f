@@ -8490,7 +8490,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/battle_buildChipFolderOamPack_81203E4/sub_8120458/sub_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:

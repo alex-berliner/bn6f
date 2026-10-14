@@ -17228,7 +17228,7 @@ sub_80166AE:
 
 // symdb: Dispatches an AI-specific callback based on the BattleObject's Unk_1f field, used by attack-event functions
 // symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
-// symdb: effects: jumps to sub_80166D0 or battleObject_stepMoveToFuturePanel_8016730 via a function pointer table indexed by the
+// symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
 // symdb: object's Unk_1f byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIDispatchByType_80166B6.yaml
 	thumb_local_start
@@ -18133,6 +18133,10 @@ dword_8016D88:
 	.word 0x60000
 	thumb_func_end battleAdvanceObjectPhase_8016D08
 
+// symdb: Advances a battle object toward its reserved destination panel and snaps the FuturePanelX/Y, releasing/re-reserving panels as it crosses panel boundaries.
+// symdb: in=(r5 = oBattleObject*) ; out= r4/r5/r6/r7 caller-saved, r0 not surfaced as a meaningful value
+// symdb: (write to memory only); no return to caller other than saving r4, jumps via `pop {r4,pc}`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016D8C.yaml
 	thumb_local_start
 sub_8016D8C:
 	push {r4,lr}
@@ -18623,9 +18627,10 @@ off_80170DC:
 	.word battleObject_runWindRecoveryState_8017122+1
 	thumb_func_end battleObject_dispatchPhaseByPaused_80170C4
 
-// symdb: Tears down a battle object's active state (clears collision, AI data, chip slot/hand, reapplies sprite flip), optionally checks for battle end, and sets the object's phase to 4.
-// symdb: void sub_80170E4(battleObject_t* r5 /* in */);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80170E4.yaml
+// symdb: Destroy handler for a battle object — clears its collision state, charges, chips, AI/barrier, sprite flip, decrements alliance, dispatches destroy events, and sets phase to 0x4 (CUR_STATE_UPDATE).
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: many object fields overwritten;
+// symdb: calls sub-battle functions
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80170E4.yaml
 	thumb_local_start
 sub_80170E4:
 	push {lr}
@@ -23092,10 +23097,11 @@ locret_801A45A:
 	pop {r4,pc}
 	thumb_func_end battle_spawnHitEffectAtArm_801A42E
 
-// symdb: Handles a 0x40-flagged collision reaction for a battle object: swaps alliance, bumps an enemy column counter via row table, resets collision counter, plays a select SFX, and lets the window/panel subsystem tick.
-// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: writes r0 (sub-call return)
-// symdb: only via stack; preserves r4-r10
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801A45C.yaml
+// symdb: Handles a crouch/slide result of 0x40 in the object's collision flag set: flips the partner's alliance state, adds the player's churn-row column 8 counter, resets the object counter-timer, refreshes the chatbox window panel, and plays the "crouch" sound effect.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: sub_802E032(0x1500),
+// symdb: tableAddSaturatedByte_800AB46(...), PlaySoundEffect(SOUND_SELECT_86), sub_801E270 (window panel
+// symdb: update)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A45C.yaml
 	thumb_local_start
 sub_801A45C:
 	push {r4,r6,lr}

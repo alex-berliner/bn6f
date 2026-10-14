@@ -3103,7 +3103,7 @@ byte_808F668::
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-// symdb: Mr. Weather comp cutscene for a 0x6x trigger: lock the player, set flag 0x1731, run busStation_runBusMoveSequence_controller_808F900, game-state byte 9 = 0, unlock.
+// symdb: Mr. Weather comp cutscene for a 0x6x trigger: lock the player, set flag 0x1731, run sub_808F900, game-state byte 9 = 0, unlock.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_808F67C.yaml
 byte_808F67C::
 	cs_lock_player_for_non_npc_dialogue_809e0b0

@@ -3020,6 +3020,11 @@ off_3007034:
 	.word 0x1D0
 	thumb_func_end sub_3006F8C
 
+// symdb: Blits one chatbox text-line tile strip (3 u32 words = 12 tiles) from a per-line ROM template into a destination slot table, masked to `0x3FF` tiles and right-rotated by an amount derived from the line byte width.
+// symdb: (r1 = line index, r6 = packed tile range/width metadata, r8 = dest slot base?, r12 = current) ->
+// symdb: r0..r3 trashed; no return to caller (void-like leaf). Side effects: writes to EWRAM at
+// symdb: `unk_200BEA0` (per-line slot table) and ROM reads at `byte_86ACD60`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007038.yaml
 	thumb_func_start sub_3007038
 sub_3007038:
 	push {r1,r4-r7,lr}
@@ -4036,6 +4041,10 @@ dword_3007778:
 	.word 0xC000000
 	thumb_func_end sub_3007708
 
+// symdb: Walks a battle object's collision footprint and updates the panel(s) it occupies each frame, with a second mode that scans the whole 6x3 grid.
+// symdb: (r0 = CollisionData*) -> void ; side effects: panel data and per-panel collision state mutated
+// symdb: via sub_3007868 and _object_updatePanelParameters
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_300777C.yaml
 	thumb_func_start sub_300777C
 sub_300777C:
 	push {r4-r7,lr}

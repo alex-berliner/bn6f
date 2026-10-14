@@ -4032,7 +4032,7 @@ byte_80A729C:
 
 // symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
-// symdb: dispatched routine returns ; side effects: tail-calls into battleObject_beastOutSpawn_80A72D8 / sub_80A7354 /
+// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
 // symdb: sub_80A7398 depending on (r5+0x8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAIData_80A72B4.yaml
 	thumb_func_start battleObject_dispatchAIData_80A72B4
@@ -5598,6 +5598,10 @@ off_80A7DAC:
 	.word sub_80A7E0C+1
 	thumb_func_end battleObject_runAIDispatchWithCurState_80A7D90
 
+// symdb: Init handler for a Beast-SP battle object: sets state to CUR_STATE_INITIALIZE (3), loads sprite 0x80/0x1c/0x4e, hooks the soul-weapon cursor camera coords into X/Y/Z, then falls through to the update dispatcher.
+// symdb: (r5 = BattleObject, r10 = toolkit) -> void ; side effects: writes BattleObject[0x8] = 3, sprite
+// symdb: data, Coords X/Y/Z, OAM priority, then tail-calls the update dispatcher.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7DB8.yaml
 	thumb_local_start
 sub_80A7DB8:
 	push {r4-r7,lr}

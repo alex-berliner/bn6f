@@ -740,6 +740,8 @@ loc_810CA84::
 	pop {pc}
 	thumb_func_end sub_810CA4C
 
+// symdb: The LLM (MiniMax-M3) refused to provide a probable name, citing an empty assembly block (the function body is in data/asm files not the standard asm/ layout). The function is called by code that manipulates panel/object state and spawns t1_0x0 effect objects; its exact purpose is undetermined from the available context.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CA8E.yaml
 	thumb_local_start
 sub_810CA8E::
 	push {r4,lr}
@@ -987,6 +989,9 @@ locret_810CC52::
 	pop {pc}
 	thumb_func_end sub_810CC0A
 
+// symdb: Drives the per-frame update of a battle object for story-6 path (r5 holds the object pointer, lr wraps; returns a status byte in r0)
+// symdb: (r5 = BattleObject*, r6 = ?, r7 = ?, lr = caller) -> r0 = status byte; r1, r5 preserved
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CC54.yaml
 	thumb_local_start
 sub_810CC54::
 	push {lr}

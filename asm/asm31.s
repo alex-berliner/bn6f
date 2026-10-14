@@ -18394,9 +18394,10 @@ JumpTable80C07CC_p:
 	.word JumpTable80C07CC
 	thumb_func_end t1_0x2c_80C07BC
 
-// symdb: Initialize a battle object's sprite by loading tiles, animation, position, flip, palette and color shader, then transition to the update phase.
-// symdb: void sub_80C07DC(u32 r4, u32 r5 /*this*/, u32 r7, u32 r10); (no flags)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C07DC.yaml
+// symdb: Initializes a battle object's per-spawn sprite setup (decompress, load, animate, palettize) then chains into its first update tick.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes BattleObject header flags, sprite state, Z,
+// symdb: palette, color shader, and CurStateActionPhaseAndPhaseInitialized; returns via sub_80C0840
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C07DC.yaml
 	thumb_local_start
 sub_80C07DC:
 	push {lr}
@@ -19397,9 +19398,11 @@ off_80C0E18:
 	.word object_freeMemory+1
 	thumb_func_end t1_0x2d_80C0E04
 
-// symdb: On a battle-object's UPDATE action, if it represents a real Navi (ExtraVars == 2), initialize its sprite, palette, animation and related-objects from the underlying BattleNavi stats; otherwise just advance the state phase.
-// symdb: void sub_80C0E24(battleObject *r5); // clobbers r0-r3, r6, r7, lr, flags; preserves r4
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C0E24.yaml
+// symdb: Battle-object sub-state that initialises/swaps its sprite from the related object's Navi palette, fires off dependent UI/effects tied to the related object's NameID, then hands off to the destroy-after-delay sub-state.
+// symdb: (r5 = self, r10 = toolkit) -> r0 = 0x6c28 or 0x6b88 ; side effects: mutates *self (Anim, flags,
+// symdb: related-object2 ptr fields), loads sprite/palette/animation on self, calls sub_80C0EE2 to
+// symdb: schedule self-destruct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C0E24.yaml
 	thumb_local_start
 sub_80C0E24:
 	push {r4,lr}
@@ -29046,6 +29049,11 @@ off_80C56AC:
 	.word sub_80C5760+1
 	thumb_func_end sub_80C5654
 
+// symdb: Throws a battle object in an arc from (Param3,Param4) to (r5+0x34 target) over Param2 frames, then spawns a hit effect and self-destructs; if the landing panel is solid, snaps to a collision-stuck idle instead.
+// symdb: (r5 = self) -> void ; side effects: mutates self's X/Y/Z/XVelocity/YVelocity/ZVelocity/Timer/Pha
+// symdb: seInitialized/CurAction/CurPhaseAndPhaseInitialized/CurStateActionPhaseAndPhaseInitialized and
+// symdb: Flags; may spawn an effect battle object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C56B4.yaml
 	thumb_local_start
 sub_80C56B4:
 	push {r4,r6,r7,lr}
@@ -56320,6 +56328,11 @@ off_80D22A4:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x6e_80D2290
 
+// symdb: Battle-object initializer that spawns an inanimate "obstacle" (no AI, no chip) with a shadow, set panel coords/Z, 0x1F4 HP/MaxHP, 6000-frame timer, and a null-element collision; transitions CurState to UPDATE on success.
+// symdb: (r5 = BattleObject slot, r10 = Toolkit, r8 = ?globals) -> void ; side effects: writes the battle
+// symdb: object, allocates/links a CollisionData slot (or frees the object if allocation fails), runs one
+// symdb: collision-handler tick
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D22B0.yaml
 	thumb_local_start
 sub_80D22B0:
 	push {lr}
@@ -60865,6 +60878,10 @@ sub_80D4464:
 	pop {pc}
 	thumb_func_end sub_80D4464
 
+// symdb: Initialize (or fail) a battle object of unknown chip/Param1=4 type at frame 0x1e and CUR_STATE_UPDATE, spawning an effect object on failure.
+// symdb: (r5 = this) -> r0 = unused ; side effects: may allocate collision sprite, write
+// symdb: HP/MaxHP/Timer/CurState, reserve current panel, free self or spawn effect on failure
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80D4472.yaml
 	thumb_local_start
 sub_80D4472:
 	push {r4,lr}
@@ -110204,9 +110221,9 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
-// symdb: One tick of the AI "illusion/double" step for a battle object — possibly spawns or copies an illusion, reserves the panel, and refreshes the parent object.
-// symdb: (r5 = *BattleObject, r7 = *AIAttackVars) -> void ; side effects on battle object
-// symdb: (panel/facing/animation), AIAttackVars state, and an illusion object spawned via sub_80E33FA
+// symdb: AI attack-vars step that reserves the navi's current panel, then spawns a mirror "illusion" object one panel away (flipped by `getFlip()`) and jumps the source object's panel to the illusion's tile, or sets a holding animation if no path was returned.
+// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> side effects only ; out r1/r5 preserved as in
+// symdb: contract
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
@@ -150018,6 +150035,11 @@ byte_80FEEA8:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_80FEE44
 
+// symdb: Advances one frame of an AI-launched throw/arc move (e.g. cannon/anchor) for the battle object in r5, integrating velocity, decaying Z velocity, and finishing by snapping the object to its destination panel and marking it currently-moving.
+// symdb: (r5 = battleObject, r7 = aiAttackVars) -> void ; side effects: writes r5 object
+// symdb: X/Y/Z/Velocities, PanelX/Y, FuturePanelX/Y, Z16, CollisionData flags/region, and r7
+// symdb: Unk_01/Unk_00/Unk_10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FEEB8.yaml
 	thumb_local_start
 sub_80FEEB8:
 	push {r4,r6,lr}
@@ -150316,6 +150338,11 @@ byte_80FF0CC:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_80FF068
 
+// symdb: AI attack-vars sub-step that lobs the object along a parabolic trajectory toward its reserved future panel, then settles on arrival.
+// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> void ; writes object X/Y/Z,
+// symdb: XVelocity/YVelocity/ZVelocity, PanelX/PanelY, collision region, ObjectFlags1,
+// symdb: AIAttackVars.Unk_01 and Unk_10/Unk_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FF0DC.yaml
 	thumb_local_start
 sub_80FF0DC:
 	push {r4,r6,lr}

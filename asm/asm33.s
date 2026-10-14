@@ -7711,6 +7711,11 @@ loc_8126E0A:
 	pop {pc}
 	thumb_func_end chatbox_fadeGuardThenRunState_8126DF8
 
+// symdb: In-battle cursor/page editor for the sentry/Navi wheel/folder (the "open submenu X" handler): handles START/B cancel, horizontal cursor movement, and finally queues the next battle-object command.
+// symdb: (r2 = ?, r5/r10 = toolkit/BattleObject-ish context, r4/r6/r7 = callee-saved) -> r5/r8-r10/r12
+// symdb: preserved, r0/r1/r3 trashed; side effects: writes fields on the object ptr in r5, sets chatbox
+// symdb: event flag bits, plays selection sounds, tail-calls battle_dispatchNextCmd
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126E10.yaml
 	thumb_local_start
 sub_8126E10:
 	push {r4,lr}
