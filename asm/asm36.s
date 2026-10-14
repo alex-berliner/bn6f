@@ -6476,7 +6476,7 @@ off_813339C:
 	thumb_func_end sub_8133228
 // symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
 // symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
-// symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of battleObject_runActionShieldOrStatusEffect_81345D4,
+// symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
 // symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
 // symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectUpdateOrEffect_81333A0.yaml
@@ -8768,9 +8768,9 @@ object_resolveTableEntryByIndex_8134538:
 	pop {pc}
 	thumb_func_end object_resolveTableEntryByIndex_8134538
 
-// symdb: Tail-call wrapper that invokes sub_8134558 with four fixed constant arguments (0x182, 0x1C, 0x28, 0x2E).
-// symdb: void sub_8134548(void) // no meaningful inputs or outputs; forwards callee's results
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134548.yaml
+// symdb: Thin tail-call wrapper that calls object_resolveTableEntry_8134558 with fixed args (table 0x182, fields 0x1C/0x28/0x2E) and returns its result.
+// symdb: (r0, r1, r2, r3) -> r0 ; tail-calls to object_resolveTableEntry_8134558
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134548.yaml
 	thumb_local_start
 sub_8134548:
 	push {lr}
@@ -8841,9 +8841,10 @@ locret_81345AC:
 	.byte 0, 0
 	thumb_func_end submenu_clearBgIfClosed_8134594
 
-// symdb: Fixed-parameter thunk that instantiates a sprite/effect (ID 0xF3, type 0x16) by calling a common object-init routine with a ROM data table and flag 0x10000000.
-// symdb: void sprite_initEffectF3_81345B0(void); // r4-r7 preserved, r0-r3 clobbered, lr clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345B0.yaml
+// symdb: Triggers a single beast/transform-style status effect update on the active battle object (id 0xF3, param 0x16, 0x11) via battleObject_updateShieldOrStatusEffect_813468C
+// symdb: (r10 = Toolkit) -> void ; side effect: dispatches a status-effect step through the shield/status
+// symdb: helper
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81345B0.yaml
 	thumb_local_start
 sub_81345B0:
 	push {r4-r7,lr}

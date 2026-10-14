@@ -2369,6 +2369,11 @@ byte_810ECAC:
 	.byte 0x34, 0xB3, 0x34, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_810EBB8
 
+// symdb: AI attack-vars dispatcher: exits the current attack state under battle-over / enemy-friendly conditions, otherwise jumps through a sub_810EDB8/EE04/EE3E table indexed by AIAttackVars.Unk_00.
+// symdb: (r5 = *BattleObject, r6..r7 = scratch, r10 = *Toolkit, lr = ret) -> r0 = 0 ; side effects may
+// symdb: transition BattleObject out of attack state via object_exitAttackState_801171C, or tail-call a
+// symdb: sub-handler with r0 = AIAttackVars.Unk_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810ED70.yaml
 	thumb_local_start
 sub_810ED70:
 	push {lr}
@@ -2502,7 +2507,7 @@ locret_810EE62:
 	pop {pc}
 	thumb_func_end sub_810EE3E
 
-// symdb: Puffy AI step with no RNG: frame-parameter checks and object_exitAttackState_801171C timer setup.
+// symdb: Puffy AI step with no RNG: frame-parameter checks and sub_801171C timer setup.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EE64.yaml
 	thumb_local_start
 sub_810EE64:
@@ -18480,10 +18485,10 @@ sub_81176B0:
 	pop {pc}
 	thumb_func_end sub_81176B0
 
-// symdb: One-instruction trampoline that tail-calls sub_81176D0; behavior is entirely that of the callee.
-// symdb: void sub_81176C0(void) — no arguments set up or results handled here; all registers and flags
-// symdb: pass through untouched to sub_81176D0 (r4-r7 listed as preserved by the callee's contract).
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81176C0.yaml
+// symdb: Thin Tail-call wrapper that just tail-calls battle_playObjectTripleSound_81176D0; used as a CurState=UPDATE phase entrypoint for one battle-object type.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr, lr = return) -> r0 = 0x80000 (set by callee) ; side
+// symdb: effects: sound registers / SIO per callee, callee-saved r5 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81176C0.yaml
 	thumb_local_start
 sub_81176C0:
 	push {lr}
@@ -19660,6 +19665,10 @@ sub_8117EC0:
 	pop {pc}
 	thumb_func_end sub_8117EC0
 
+// symdb: AI-state jump-table dispatcher for a battle object; indexes one of three routines using byte at r5+8 (the object's CurState) and tail-calls it via `mov lr,pc; bx`.
+// symdb: (no explicit params; r5 = battle object, r10 = toolkit) -> r0 = result of dispatched routine;
+// symdb: tail-call (no return), caller pushes lr and pops pc
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117EC8.yaml
 	thumb_func_start sub_8117EC8
 sub_8117EC8:
 	push {lr}
@@ -19734,6 +19743,10 @@ byte_8117F68:
 	.byte 0x0, 0x62, 0x0, 0x0, 0x0
 	thumb_func_end sub_8117EE8
 
+// symdb: BeastSP battle object dispatch: invokes an init/update routine via CurAction, then calls sprite_update.
+// symdb: (r5 = BattleObject, r10 = Toolkit, lr = retaddr) -> r0/r1 clobbered, r2/r3/r5 returned ; side
+// symdb: effects: sprite frame advanced and one of two action handlers run
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117F78.yaml
 	thumb_local_start
 sub_8117F78:
 	push {lr}
@@ -19775,6 +19788,10 @@ locret_8117FC2:
 	pop {pc}
 	thumb_func_end sub_8117F9C
 
+// symdb: Beast-SP entry dispatcher: jumps to one of six sub-handlers based on the actor's CurPhase, then copies the actor's Timer into the returned object's FuturePanelRef-style field at offset 0xE.
+// symdb: (r5 = BattleObject*) -> r0 = new struct ptr (EWRAM/heap object) ; side effects writes a u16 from
+// symdb: r5+0x14 into r0+0xE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117FC4.yaml
 	thumb_local_start
 sub_8117FC4:
 	push {lr}
@@ -20152,6 +20169,11 @@ byte_811829C:
 	.byte 0x9, 0x0, 0x1, 0x8, 0xA, 0x1, 0x0, 0x8
 	thumb_func_end sub_8118234
 
+// symdb: Sets the battle object's CurPhase (and related PanelXY/FuturePanelXY fields) for the Beast-Out / Cross-Megaman transformation, choosing different sprite-scaling/sprite-state setups based on the submenu's Unk_0C mode byte.
+// symdb: (r5 = battle object, lr = return) -> r0 = sSubmenu (0x02009A30), no other caller-visible writes;
+// symdb: side effects write to battle object fields 0x0A/0x10/0x12/0x14/0x16 and the sprite-data area,
+// symdb: and call sprite_makeScalable/sprite_setScaleParameters/sprite_setUnk0x2c.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81182A4.yaml
 	thumb_local_start
 sub_81182A4:
 	push {r4-r7,lr}
@@ -23049,9 +23071,9 @@ loc_8119874:
 	.byte 0, 0
 	thumb_func_end sprite_setPositionForIdRange3_8119854
 
-// symdb: Returns whether the battle action menu is locked because a submenu is open, gated by an AIData lookup of the actor's APwrAtk
-// symdb: (r5 = ??? ptr) -> r0 = (r0==0: 0 if locked, 1 if unlocked) ; out: nz/c/v from comparison, side
-// symdb: effects may write r6 (sSubmenu) via submenu_isOpen path
+// symdb: Returns 1 (probably forcing AI skip/guard) only when the actor's APwrAtk slot lookup in a small byte table returns zero and the submenu state byte at sSubmenu+0xE differs from sSubmenu+0xF; otherwise falls through to the Z-set path.
+// symdb: (r5 = actor/AIData, lr = unk) -> flags Z set when the submenu-byte pair matches, clear
+// symdb: otherwise; r0/r1/r6/lr may be clobbered; no callee-saved registers used.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
 	thumb_local_start
 sub_8119880:
@@ -36675,11 +36697,10 @@ loc_81204F4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81204C4
 
-// symdb: Pack a single chip-ID/code into an 8-byte chip descriptor (code+ID in low dword, code+ID+1 in high dword) and store it via a pointer; scratch helper for the chip-select summary writer.
-// symdb: (r0 = scratch0_hi = 0xA, r1 = scratch0_lo = svc-result / tmp, r2 = chipIDAndCode, r3 unused) ;
-// symdb: r7 = outPtr ; side effect: [r7+0] = ((chipIDAndCode+1)<<16 | chipIDAndCode) , [r7+4] =
-// symdb: ((chipIDAndCode+0xC)<<16 | chipIDAndCode+0xB) ; returns r0 = (chipIDAndCode+1)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8120504.yaml
+// symdb: Pack a chip ID into an 8-byte battle "chip pack" entry (slot id, code A/B, element, xxxx).
+// symdb: (r0 = count (unused after), r1 = outPtr (entry[0]), r2 = chipId, r3 = unused) -> r0 =
+// symdb: (elementIdx<<16)|(codeB<<8)|(chipId+1) ; r0/r1 clobbered, r4..r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120504.yaml
 	thumb_local_start
 sub_8120504:
 	push {r4-r7,lr}
@@ -36917,7 +36938,7 @@ dword_8120688:
 	thumb_func_end sub_8120618
 
 // symdb: Searches a row-based lookup table for a packed position, fires a handler (with the row index bumped by 0x16) when a hit is found, then re-searches with the hit's index shifted down by 8.
-// symdb: int sub_812068C(int value, int row, int arg2, int arg3) — returns whatever sprite_queueTwoOamEntries_81205C0 leaves in
+// symdb: int sub_812068C(int value, int row, int arg2, int arg3) — returns whatever sub_81205C0 leaves in
 // symdb: r0 on the second call; NZCV flags come from that same final call; r4-r7 preserved.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_812068C.yaml
 	thumb_local_start

@@ -2811,6 +2811,10 @@ byte_80A69EA:
 	.byte 0x2, 0x0, 0x40, 0x0, 0x10, 0x0, 0x4, 0x0, 0x2, 0x0, 0x44, 0x0, 0x24, 0x0
 	thumb_func_end battleObject_loadAIDataEntry_80A6014
 
+// symdb: Dispatches a battle object's per-state action routine by indexing a 3-entry table on `CurState` (0x8) of the object in r5.
+// symdb: (r5 = battle object ptr, r1 = 0x20) -> r0 = whatever the called routine returns ; side effects
+// symdb: depend on the dispatched routine; lr clobbered via tail-call (bx)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A16.yaml
 	thumb_func_start sub_80A6A16
 sub_80A6A16:
 	push {lr}
@@ -4824,6 +4828,10 @@ sub_80A78E0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A78E0
 
+// symdb: Per-frame BeastOut driver: syncs velocity/position scratch with the AIData scratch, runs a state sub-jump table, then writes the results back and refreshes the sprite.
+// symdb: (r5 = battleObject, r6 = AIData scratch view, r10 = toolkit, r7 = script cursor ptr) ->
+// symdb: r2/r3/r10 live for caller; r0/r1 clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7912.yaml
 	thumb_local_start
 sub_80A7912:
 	push {r4-r7,lr}
@@ -5098,6 +5106,11 @@ sub_80A7AFA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7AFA
 
+// symdb: Checks if a battle object (r5) is within attack range of the overworld player's projected panel, and triggers a battle reaction if so.
+// symdb: (r5 = suspected-attacker BattleObject*, r10 = Toolkit*) -> r0 = 0 (out of range / input not
+// symdb: allowed) or 1 (in range, signaled); side effects: when in range, calls sub_80A7BA2 with r0=2
+// symdb: then returns 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B32.yaml
 	thumb_local_start
 sub_80A7B32:
 	push {r4-r7,lr}
@@ -5200,6 +5213,10 @@ sub_80A7BBA:
 	mov pc, lr
 	thumb_func_end sub_80A7BBA
 
+// symdb: Checks whether the BeastSP trigger zone is active and, if so, sets the EVENT_1731 flag, plays a sound, and starts the BeastSP cutscene.
+// symdb: (r5 = *BeastSPTriggerZone, r10 = *Toolkit) -> void ; side effects: writes to r5+4 flag/byte,
+// symdb: sets EVENT_1731, plays sound 0x73, kicks off cutscene byte_8089DD8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7BC0.yaml
 	thumb_local_start
 sub_80A7BC0:
 	push {r4-r7,lr}

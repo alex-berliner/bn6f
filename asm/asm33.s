@@ -10363,7 +10363,7 @@ off_812827C:
 	.word 0x100
 	thumb_func_end palette_fillBufferWithFadeByte_8128260
 
-// symdb: Iterates the four battle object slots whose indices follow obj_flags; for each whose matching event flag (sub_flag + 0x1DA0) is unset, calls battleObject_tickOamSubFlagAnimSlot_81282C0 with the slot index.
+// symdb: Iterates the four battle object slots whose indices follow obj_flags; for each whose matching event flag (sub_flag + 0x1DA0) is unset, calls sub_81282C0 with the slot index.
 // symdb: void sub_8128280(struct BattleObj *r5 /* in/out, preserved */, void *r10 /* in, preserved */);
 // symdb: // returns via RETURN_TO_CALLER(); clobbers r0-r3, lr, N Z C V; preserves r4, r6, r7.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkSubFlags_8128280.yaml

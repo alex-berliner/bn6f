@@ -460,6 +460,10 @@ loc_80033FC:
 	pop {r7,pc}
 	thumb_func_end sub_80033E4
 
+// symdb: Inserts a freshly-spawned battle object into the doubly-linked list just before the node held in eUnkBattleObjectLinkedList, falling back to UpdateBattleObjectLinkedList when there is no previous entry.
+// symdb: (r5 = pointer to new BattleObject payload) -> r0 = same pointer ; side effects: rewrites the
+// symdb: Prev/Next fields of three list nodes (new node, U node, and U's old Next)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003400.yaml
 	thumb_local_start
 sub_8003400:
 	push {lr}

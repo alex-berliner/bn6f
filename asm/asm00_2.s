@@ -4205,6 +4205,11 @@ off_80109A0:
 	.word 0x190
 	thumb_func_end sub_8010940
 
+// symdb: Dispatches a battle chip's "use" handler from the static chip data, then jumps into it with (r0=chipID, r1=targetStruct).
+// symdb: (r0 = chipID, r1 = user data pointer) -> r0 = return value from the dispatched handler ; side
+// symdb: effects: jumps through a handler table indexed by ChipData[chipID].Unk_1a (offset 0x1a in the
+// symdb: 44-byte chip record), threads into the per-chip effect routine.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80109A4.yaml
 	thumb_func_start sub_80109A4
 sub_80109A4:
 	push {r4,r7,lr}
@@ -9884,6 +9889,9 @@ locret_8013234:
 	pop {r4,r6,r7,pc}
 	thumb_func_end pwrAtkRelated_readsFromJoypad_8012FC8
 
+// symdb: Decides whether the enemy AI may play the chip currently sitting in its battle hand this frame, considering chip ID, alliance, element and the owner's element/attack modifiers.
+// symdb: in r0 = chip ID to test -> r0 = 1 if the AI is allowed to use the chip, 0 if it is blocked
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013236.yaml
 	thumb_local_start
 sub_8013236:
 	push {r4,r6,r7,lr}
@@ -21301,10 +21309,10 @@ battleObject_computeAIStepForwardDeltaX_8018856:
 	pop {pc}
 	thumb_func_end battleObject_computeAIStepForwardDeltaX_8018856
 
-// symdb: Returns a pointer to a 0x44-byte sprite/animation record from one of three tables, optionally remapping the sub-index through a 16-entry LUT when the table index is 0.
-// symdb: const void *u8(u16 tableIdx, u16 subIdx); // r0=tableIdx, r1=subIdx -> r0=ptr; clobbers
-// symdb: r1,r2,r3; flags NZCV clobbered; preserves nothing
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8018886.yaml
+// symdb: Looks up a per-form entry in one of three animation sequence tables indexed by a form id and row index, optionally remapped by a 16-byte remap table.
+// symdb: (r0 = formID, r1 = rowIdx) -> r0 = pointer to a 0x44-byte row inside one of three variant tables
+// symdb: ; side effects: none (leaf, returns via mov pc, lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018886.yaml
 	thumb_local_start
 sub_8018886:
 	cmp r0, #0

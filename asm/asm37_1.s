@@ -850,6 +850,10 @@ sub_8142184:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142184
 
+// symdb: Returns whether a given scenario effect slot is currently active.
+// symdb: (r0 = slot index 0..N) -> r0 = non-zero if the slot is active, zero otherwise ; sets nz/cv via
+// symdb: tst; no other side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142190.yaml
 	thumb_func_start sub_8142190
 sub_8142190:
 	push {r4-r7,lr}

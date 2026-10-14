@@ -39314,6 +39314,9 @@ off_80CA39C:
 	.word byte_80CA26C
 	thumb_func_end battleObject_initProjectileFromTable_80CA2D4
 
+// symdb: Per-frame collision update dispatcher for a battle object: tears down prior collision, checks for end-of-battle, then runs an action-specific sub-handler and re-establishes the object's collision region/panels (or destroys it).
+// symdb: (r5 = BattleObject*) -> void ; no caller-visible return value (only r5/r8 in out)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA3A0.yaml
 	thumb_local_start
 sub_80CA3A0:
 	push {r7,lr}
@@ -108995,6 +108998,10 @@ off_80EB074:
 	.word sub_80EB1F8+1
 	thumb_func_end aiAttack_stepStateMachine_80EB04C
 
+// symdb: AI attack state action that picks a destination panel and commits a "move toward target" reservation for the actor.
+// symdb: () -> void ; updates AIData/AIAttackVars at r7 and the current BattleObject at r5
+// symdb: (panel/FuturePanel, flags, anim, plus an Alliance-row counter)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB088.yaml
 	thumb_local_start
 sub_80EB088:
 	push {lr}
@@ -109072,6 +109079,11 @@ locret_80EB126:
 	pop {pc}
 	thumb_func_end sub_80EB088
 
+// symdb: Per-tick AI-attack step that finalises a panel move: clears an AI flag, may roll a panel change under the object, commits the panel move (release reserve, sync coords/collision), plays a column-pattern reaction, and resets the attack timer/phase.
+// symdb: (r5 = battle object, r7 = AIAttackVars, r10 = toolkit, lr) -> r0 = next state/phase code (1, 2
+// symdb: or 8) ; side effects: writes AIData+0x48 flag, mutates BattleObject
+// symdb: PanelX/PanelY/FuturePanelX/FuturePanelY and timer fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB128.yaml
 	thumb_local_start
 sub_80EB128:
 	push {r4,r6,lr}
@@ -148028,7 +148040,7 @@ locret_80FE1FC:
 	pop {pc}
 	thumb_func_end battle_aiAttack_stepGlide_80FE1B4
 
-// symdb: Ticks one AI attack's countdown, arming it on first call and firing it (via object_exitAttackState_801171C) once the timer expires.
+// symdb: Ticks one AI attack's countdown, arming it on first call and firing it (via sub_801171C) once the timer expires.
 // symdb: void sub_80FE1FE(oAIAttackVars *attack /*r7*/); // caller-visible: r0-r3 clobbered, nz/c/v
 // symdb: reflect last op, r5/r6/r7 pass through, lr popped
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiTickAttackTimer_80FE1FE.yaml

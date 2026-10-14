@@ -12055,10 +12055,10 @@ off_802BE04:
 	.word sub_802BE36+1
 	thumb_func_end sub_802BDF0
 
-// symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls battle_eStruct2035280_postEvent_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
+// symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls sub_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
 // symdb: void sub_802BE0C(void); callers pass garbage in r0-r3 but r5 must hold the object pointer and
 // symdb: r10 the toolkit pointer; r4/r5 are preserved; returns with r0=4 and NZ flags set from "mov
-// symdb: r0,#4", r1-r3 as left by battle_eStruct2035280_postEvent_801E0A0
+// symdb: r0,#4", r1-r3 as left by sub_801E0A0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/objStepFinishSetState4_802BE0C.yaml
 	thumb_local_start
 objStepFinishSetState4_802BE0C:
@@ -12983,9 +12983,9 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end setupNaviDisplay_802C34E
 
-// symdb: Battle chip-select screen input handler: reacts to APwrAtk/BPwrAtk key presses to advance the cursor between chip slots on a particular row, clamping at the row's bounds.
-// symdb: (r5 = s_20364C0 chip-select state ptr, r6 = ???, r10 = toolkit) -> r0 = (unchanged from entry) ;
-// symdb: side effects may include calling sub_802C490 and call_sub_3005EBA
+// symdb: Computes the charge column difference (signed) between a battle object's A- and B-button power attacks and triggers a chip-use update when non-zero.
+// symdb: (r5 = object, r6 ?, r10 = toolkit, lr = ret) -> r0 = (preserved); r4,r5,r6,r7 clobbered;
+// symdb: r1,r2,r3 caller-saved (write-visible). Side effects: may call sub_802C490 and call_sub_3005EBA.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:

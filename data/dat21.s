@@ -3834,8 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Substate/dispatch inside the BBS-style chatbox/result cutscene: tests cutscene script sentinels, sets/clears the request-BBS flag at 0x2001F68 bit 0x7, and loads+animates the request-bbs GFX via a sequence of helpers.
-// symdb: (r10 = toolkit) -> side-effects only; preserves r4-r9/r12 per contract
+// symdb: BBS request dispatcher that reads/clauses the request entry, asks the cutscene engine which script sent it, and routes to the appropriate per-request handler (set/clear flag, NSF animation loaders, set-event-flag helpers).
+// symdb: (r10 = eToolkit ptr, lr = return) -> flags nz ; side effects on r0-r9/r12, EWRAM via r10, calls
+// symdb: a chain of subsystem helpers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
