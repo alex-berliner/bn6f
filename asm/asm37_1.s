@@ -651,6 +651,9 @@ off_8142064:
 	.word off_8141B18
 	thumb_func_end sub_8142050
 
+// symdb: Returns a pointer to one of up to four AIData slots stored at unk_2000BE0, indexed by r0.
+// symdb: (r0 = actor index 0..3) -> r0 = &unk_2000BE0 + r0 * 0x28 ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142068.yaml
 	thumb_func_start sub_8142068
 sub_8142068:
 	ldr r6, off_8142130 // =unk_2000BE0 

@@ -12611,6 +12611,9 @@ battle_clearAIDataField4c_8014424:
 	mov pc, lr
 	thumb_func_end battle_clearAIDataField4c_8014424
 
+// symdb: Loads AIData +0x4c from a BattleObject for the AI script helpers
+// symdb: (r5 = BattleObject*) -> r0 = *(BattleObject->AIData + 0x4c) ; side effects none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801442C.yaml
 	thumb_local_start
 sub_801442C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -30446,9 +30449,10 @@ sub_801DB54:
 	pop {pc}
 	thumb_func_end sub_801DB54
 
-// symdb: One-line thunk that tail-calls sub_801BEB8 with argument 1.
-// symdb: void sub_801DB60(void); /* returns callee's r0-r2 and NZ flags */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801DB60.yaml
+// symdb: Sets the flag bit 0x1 in eStruct2035280+0x44 (story-battle related flag word)
+// symdb: () -> r0 = 1 ; side effects ORs 0x1 into eStruct2035280+0x44 and returns the updated word in r2
+// symdb: (via callee)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DB60.yaml
 	thumb_local_start
 sub_801DB60:
 	push {lr}
@@ -30647,10 +30651,9 @@ sub_801DC60:
 	pop {pc}
 	thumb_func_end sub_801DC60
 
-// symdb: One-line wrapper that invokes sub_801BEB8 with the single flag value 4 (bit 2), likely requesting/setting one state bit in whatever subsystem that routine services.
-// symdb: void sub_801DC6E(void); // takes no register inputs (callers only pass lr and incoming carry);
-// symdb: r0-r2 and N/Z/C on return are whatever sub_801BEB8 leaves
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801DC6E.yaml
+// symdb: Sets the bit 0x04 of the flag word at eStruct2035280+0x44 (no inputs, no outputs).
+// symdb: () -> (no caller-visible return; flag word at eStruct2035280+0x44 |= 0x04)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DC6E.yaml
 	thumb_local_start
 sub_801DC6E:
 	push {lr}

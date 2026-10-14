@@ -3834,9 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Drives cutscene GFX/anim loading and event-flag toggling (BBS flag 0x17/0x7) when the cutscene state's originally-saved script was a sentinel cutscript.
-// symdb: (in = r10 = ToolkitPtr, lr = ret addr) -> nz flags (loop-control condition); preserves r4-r9,
-// symdb: r12 through callees; r0-r3 clobbered
+// symdb: Cutscene/BBS handler that runs the big BBS-branch script flow (event-flag gates, sub_8083F80 ladder, cutscript sentinel checks) and ultimately exec()'s into sub_8084080 and the cutscene-step chain.
+// symdb: () -> nz ; side effects (event flags, cutscene state, sound/animation sets)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

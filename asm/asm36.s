@@ -6477,7 +6477,7 @@ off_813339C:
 // symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
 // symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
 // symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
-// symdb: battle_spawnFixedArgEffect_wrapper_81345E8, battleObject_queueOamPanelGrid_8134610 (Type != 0xC, [r5+3] != 0xC), or
+// symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
 // symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectUpdateOrEffect_81333A0.yaml
 	thumb_local_start
@@ -6590,6 +6590,11 @@ locret_8133482:
 	pop {pc}
 	thumb_func_end sub_8133434
 
+// symdb: Beast-SP submenu jump table dispatcher: picks one of four sub-handlers from the AIData's Beast-SP index, then chains submenu/folder/AI init and runs the turn handler.
+// symdb: (r0 = BattleObject self ptr, r1 = AIData ptr, r2 = index/state word, r5 = Toolkit ptr (r10
+// symdb: convention), lr = return) -> r0 = Beast-SP index (0x40) ; side effects: calls submenu/folder
+// symdb: render, calls sub_81353F0 twice with handler indices 5 and 6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133484.yaml
 	thumb_local_start
 sub_8133484:
 	push {lr}
@@ -7165,6 +7170,10 @@ loc_81338C6:
 	bl sub_8134548
 	pop {pc}
 	thumb_func_end folderEdit_step_813388C
+// symdb: Per-frame tick for the in-battle submenu folder-edit screen: animates the folder panel, then redraws the scrolling background, submenu bg, folder/chip graphics and dispatches chip-select AI ticks for slots 5/6.
+// symdb: (r5 = submenu state ptr, r10 = toolkit ptr, lr = return) -> no meaningful return; side effects
+// symdb: mutate submenu state, BG, submenu GFX, dispatch chip-select AI updates
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81338D4.yaml
 	thumb_local_start
 sub_81338D4:
 	push {r4-r7,lr}
@@ -8856,9 +8865,9 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
-// symdb: thin wrapper that calls battleObject_updateShieldOrStatusEffect_813468C with a fixed five-argument record (0x5A, 0x20, 0x20, 0x12) and one global byte/word
-// symdb: (r5 = ?, r10 = toolkit) -> r0 = callee return value ; side effects: clobbers r4-r7 per ARM
-// symdb: convention; relies on toolkit/BattleState globals
+// symdb: Thin caller that forwards fixed arguments to the per-actor shield/status-effect updater for one frame.
+// symdb: (r0 = ?, r1 = ?, r2 = ?, r3 = ?) -> r0 = updater return code (varies:
+// symdb: 0x11/0x40/0x42/0x50/0x52/0x62); side effects: none of its own besides the call
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
 sub_81345D4:
@@ -10838,10 +10847,10 @@ sub_81353B8:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81353B8
-// symdb: Zero-argument wrapper that invokes sub_81348DC with one fixed parameter set (0x24, 0xA5, 0x28, 4, 6) and returns its r2/r3 results.
-// symdb: void sub_81353DC(void); // passes fixed r0=0x24, r1=0xA5, r2=0x28, r3=4, r4=6 into sub_81348DC;
-// symdb: returns callee's r2/r3 to caller, preserves r4-r7
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353DC.yaml
+// symdb: Hard-coded row-alignment check for the BattleObject at panel column 6, used as a one-shot reposition helper.
+// symdb: () -> r0 = "offset delta result" (1); side effects: clobbers r0-r3, may invoke
+// symdb: `battle_alignRowCheck_81348DC`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81353DC.yaml
 	thumb_local_start
 sub_81353DC:
 	push {r4,lr}

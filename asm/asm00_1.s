@@ -11542,9 +11542,9 @@ locret_8008490:
 	pop {pc}
 	thumb_func_end sub_8008452
 
-// symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in battle_runControllerStep_801483C.
+// symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in sub_801483C.
 // symdb: void sub_8008492(void); /* in: r5 = battle object/work struct ptr; out: none (r0 holds 4/6 or
-// symdb: the battle_runControllerStep_801483C result on the early-return path, NZ flags per last tst/mov) */
+// symdb: the sub_801483C result on the early-return path, NZ flags per last tst/mov) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objAdvanceStateTimer_8008492.yaml
 	thumb_local_start
 battle_objAdvanceStateTimer_8008492:
@@ -15817,7 +15817,7 @@ loc_800A218:
 
 // symdb: Returns 1 only when the battle is not time-stopped, not over, and the current anim state == 0x4000; otherwise 0.
 // symdb: () -> r0 = 1 if condition met else 0 ; side effects: reads toolkit (r10) state and a word from
-// symdb: battle_getTotalDamageTakenForActor_801DFE4; sets nz/c/v flags
+// symdb: sub_801DFE4; sets nz/c/v flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_shouldPlayDeathAnim_800A21C.yaml
 	thumb_local_start
 battle_shouldPlayDeathAnim_800A21C:
@@ -17192,10 +17192,10 @@ battle_clearEnemyFadeinList:
 	pop {pc}
 	thumb_func_end battle_clearEnemyFadeinList
 
-// symdb: Returns 1 if the Next[1] pointer in the active battle object's AI block matches a battle object index passed in r5, else 0.
-// symdb: (r5 = battle object index) -> r0 = 0/1 ; r0 = slot pointer from `getNextEntryAddress_800AAAE`,
-// symdb: r1 = array base, side effect: clobbers flags
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AA06.yaml
+// symdb: Returns true if the battle object whose AIData is at index r0 matches the battle object passed in r5.
+// symdb: (r0 = aiDataIndex, r5 = battleObjectPtr) -> r0 = 1 if match else 0 ; sets flags Z (equal) and C
+// symdb: (carry) via the cmp/bne path; r1/r2 are clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA06.yaml
 	thumb_func_start sub_800AA06
 sub_800AA06:
 	push {lr}
@@ -17297,11 +17297,11 @@ locret_800AA90:
 	pop {r4,pc}
 	thumb_func_end compactEntryWords_800AA64
 
-// symdb: Fetches a pointer to an eight-entry u32 table from sub_800AAAE and returns how many of the eight entries are nonzero.
-// symdb: int countNonzeroTableEntries(void) — in: none meaningful (lr only); out: r0 = count of nonzero
-// symdb: entries, r1 = last word read, r2 = 0x20, r3 = table pointer; c set / v clear from the final cmp
-// symdb: r2,#0x20
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AA92.yaml
+// symdb: Counts how many non-zero entries exist in the "Next" array (at 0x2038170) and returns that as the number of alive/active battle actors queued.
+// symdb: (no explicit args read; r0 holds whatever the caller passed in but is overwritten immediately to
+// symdb: 0) -> r0 = number of non-zero u32 entries (each 0x20 bytes apart) in the entry block at
+// symdb: 0x2038170 + r0*0x20 ; no side effects beyond reading the array and restoring lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA92.yaml
 	thumb_func_start sub_800AA92
 sub_800AA92:
 	push {lr}

@@ -723,9 +723,9 @@ locret_80269E0:
 	pop {pc}
 	thumb_func_end camera_isObjectInFrontOfCamera_80269D0
 
-// symdb: Tests two status bytes at RAM eS20364C0 against a set of "blocking" values and returns 1 if either matches, 0 otherwise (preserving the final CMP flags).
-// symdb: void sub_80269E2(void); /* in: lr; out: r0 (0 or 1); clobbers nz c v r1; preserves r5 */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80269E2.yaml
+// symdb: Returns 1 when the camera should NOT skip the second BG layer pair's scroll, by checking the eS20364C0 (chip select) jump offsets against an allowlist.
+// symdb: () -> r0 = 1 (apply both) / 0 (skip second pair) ; flags NZCV clobbered, no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80269E2.yaml
 	thumb_local_start
 sub_80269E2:
 	push {r5,lr}
@@ -4599,6 +4599,10 @@ locret_80284E0:
 	pop {pc}
 	thumb_func_end sub_8028476
 
+// symdb: Battle side-effect routine that streams the chip-activation panel graphics (chip name tiles, icon, element palette, attack counter BCD digits) into VRAM for the active battle object's side.
+// symdb: (r0 = chip_id_word, r1 = ?, r2 = ?, r3 = toolkit-derived pointer) -> r0 = pointer into gfx chunk
+// symdb: table (e.g. 0x0802a6c0) or VRAM-side data; only caller-saved regs (r4-r10) survive
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80284E2.yaml
 	thumb_local_start
 sub_80284E2:
 	push {r4,lr}
@@ -4828,8 +4832,8 @@ loc_8028692:
 	pop {r0-r4,pc}
 	thumb_func_end battle_loadGfxChunkBySelectorWithRows_802868C
 
-// symdb: Loads the three sprite sheets used by the Beast Out selection screen into VRAM slots 1-3 via battle_loadGfxChunkBySelectorWithRows_802868C.
-// symdb: void sub_802869E(int r2 /* forwarded to battle_loadGfxChunkBySelectorWithRows_802868C, untouched */); returns with r1=0x6009B60
+// symdb: Loads the three sprite sheets used by the Beast Out selection screen into VRAM slots 1-3 via sub_802868C.
+// symdb: void sub_802869E(int r2 /* forwarded to sub_802868C, untouched */); returns with r1=0x6009B60
 // symdb: and r3=3 from the last call setup
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/beastout_LoadSelectionScreenSpriteSheets_802869E.yaml
 	thumb_local_start
@@ -12979,10 +12983,10 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end setupNaviDisplay_802C34E
 
-// symdb: Reads two byte positions from an object, scans the span between them (via sub_802C490), and if something is found along the way raises a type-3 notification.
-// symdb: void scanSpanBetween(Object* obj) — object pointer passed in r5; r4, r6, r7, r10 are inputs the
-// symdb: callee must preserve; returns nothing meaningful, but c/v and r1-r3 are left as side effects of
-// symdb: the early-out CMP and the callees.
+// symdb: Compare two signed bytes on a struct in r5 (offsets 6 and 7); when they differ, dispatch to a helper that likely swaps something and conditionally calls a follow-up function if that helper sets r2.
+// symdb: (r5 = pointer to a struct whose +6 and +7 are signed bytes; r6, r10 unchanged) -> r0 = result of
+// symdb: follow-up call_sub_3005EBA (often 0); side effects: may call sub_802C490 and call_sub_3005EBA;
+// symdb: clobbers r0-r4,r7; preserves only lr via return
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:

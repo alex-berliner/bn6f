@@ -560,7 +560,7 @@ off_80A51F4:
 // symdb: Map-entry show/hide controller: when the entry's trigger flag is set, load its sprite, clear its pair of flags and switch to state 3 (shown); when clear, set both flags, mark hidden (state 0x10) and tear down.
 // symdb: void sub_80A51F8(void);                 // uses caller-provided r5 = control struct, r7 = entry
 // symdb: struct, r10 = bank base   in:  r5 (control struct), r7 (entry struct), r10 (bank/base), lr
-// symdb: (return)   out: r0/r2/r5/r10 (forwarded from tail call mapEntry_onUpdate_80A5268 or sub_80A5350); NZ/CV
+// symdb: (return)   out: r0/r2/r5/r10 (forwarded from tail call sub_80A5268 or sub_80A5350); NZ/CV
 // symdb: reflect that tail's flags   clobbers: r0, r1, r2, r3, lr; preserves r4, r5, r6, r7, r10
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mapEntry_update_80A51F8.yaml
 	thumb_local_start
@@ -982,10 +982,10 @@ loc_80A557A:
 	.word 0x17F
 	thumb_func_end sub_80A5514
 
-// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or sub_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
-// symdb: void Next_sub_80A5588(void);  /* inputs: r5, r6, r10, lr  outputs: r2, r5, r10, r11  clobbers
-// symdb: nz/c/v, r0, r1, r3, lr; preserves r4-r9, r12 */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
+// symdb: Per-frame update for the BBS overworld object (spawned by sub_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
+// symdb: (r5 = owMapObjectPtr, r6 = ???, r10 = toolkitPtr, lr) -> void ; side effects: events flags
+// symdb: EVENT_4EA/EVENT_4EB tested/possibly set, sprite updated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
 	thumb_local_start
 sub_80A5588:
 	push {lr}
@@ -5522,6 +5522,9 @@ off_80A7E2C:
 	.word sub_80A800A+1
 	thumb_func_end battleObject_beastSP_battlerUpdate_80A7E14
 
+// symdb: Clears the `Unk_09` byte at offset 0x9 of an unknown struct passed in r5 (no return value).
+// symdb: (r5 = ptr to a struct with a byte field at offset 0x9) -> void
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7E44.yaml
 	thumb_local_start
 sub_80A7E44:
 	push {r4-r7,lr}
@@ -7965,7 +7968,7 @@ off_80A9194:
 	.word byte_8143704
 	thumb_func_end owMapObject_weatherTornado_getParams_80A916C
 
-// symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (overworldObject_withinBoxCheck_signed_80011D6).
+// symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (sub_80011D6).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_checkHitPlayer_80A91A4.yaml

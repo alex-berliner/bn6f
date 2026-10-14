@@ -26951,6 +26951,10 @@ locret_80C464A:
 	pop {pc}
 	thumb_func_end sub_80C461C
 
+// symdb: Per-frame sprite/animation tick for a battle object, picking one of three update paths based on Param3 and skipping when the collision flags forbid it.
+// symdb: (r5 = oBattleObjectPtr, r10 = oToolkitPtr) -> void ; side effects: refreshes mosaic + alpha on
+// symdb: the object's sprite via the toolkit, then advances its animation
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C464C.yaml
 	thumb_local_start
 sub_80C464C:
 	push {lr}
@@ -85169,6 +85173,9 @@ loc_80DFE8C:
 	pop {r7,pc}
 	thumb_func_end sub_80DFE64
 
+// symdb: Tear-down path for a battle object after collision: remove its collision data, spawn the destruction effect, and either destroy the object (if it should not persist during the destruction effect) or continue running its per-action collision handler.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DFEA8.yaml
 	thumb_local_start
 sub_80DFEA8:
 	push {r4,r7,lr}
@@ -108821,6 +108828,10 @@ locret_80EAF34:
 	mov pc, lr
 	thumb_func_end getSlashBeastWaveAttackLockonTypeMaybe_80EAF26
 
+// symdb: Finalizes a battle object's power-attack action: commits the move to the destination panel, exits the attack state (or falls into the sub-attack handler) when the power-attack bookkeeping resolves, and may draw the next chip into hand if a charged attack finished.
+// symdb: (r5 = object, r6 = AIState, r7 = ???) -> void ; no return value consumed by callers; r5/r6/r7
+// symdb: callee-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EAF36.yaml
 	thumb_local_start
 sub_80EAF36:
 	push {lr}
@@ -109141,6 +109152,10 @@ locret_80EB1C2:
 	pop {pc}
 	thumb_func_end aiAttack_TimerTickEnd_80EB194
 
+// symdb: AI tick: decrements AIAttackVars.Unk_10 countdown; on expiry resolves an outcome and either exits the attack state or advances a sub-step.
+// symdb: (r4 = AIDataPtr, r7 = AIAttackVarsPtr) -> r0 = 0..3 (success/result); side effects updates
+// symdb: AIAttackVars.Unk_10, AIData.Unk_1a; may call object_exitAttackState.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB1C4.yaml
 	thumb_local_start
 sub_80EB1C4:
 	push {lr}

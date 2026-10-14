@@ -10265,9 +10265,11 @@ loc_811311E:
 	pop {pc}
 	thumb_func_end sub_8113114
 
-// symdb: Per-frame AI state dispatcher for a battle object, dispatching through an 8-entry jump table indexed by AIState[0].
-// symdb: (uses r5 = battle object, r6 = ???, r10 = toolkit) -> tail-jumps to a state handler; no return
-// symdb: value to callers
+// symdb: Battle-object AI dispatcher that first tries the low-HP chip-usage helper and, if allowed, jumps into an AI-state handler chosen from a per-AI-state table.
+// symdb: (r0 = object-relative AIState index used to index off_8113144, caller-provided ctx in
+// symdb: r4..r7,r10) -> r0 = handler return / unused; no live return for callers (out has only r5 callee-
+// symdb: saved) ; side effects: dispatches via off_8113148 jump table, may set/clear flags and call
+// symdb: sub_81131D8, object_getFlag
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8113124.yaml
 	thumb_local_start
 sub_8113124:
@@ -16770,9 +16772,9 @@ locret_8116A26:
 	pop {pc}
 	thumb_func_end battle_reloadObjectSprite_8116A04
 
-// symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into battle_queueOamEntriesForBattleObjectStateShadow_8116A44
+// symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into sub_8116A44
 // symdb: void sub_8116A28(r5=destStructPtr, r7=counterBytePtr /*, r4/r6 also live inputs; r4-r7
-// symdb: preserved*/); returns via battle_queueOamEntriesForBattleObjectStateShadow_8116A44 in r0-r3 with nzcv set
+// symdb: preserved*/); returns via sub_8116A44 in r0-r3 with nzcv set
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A28.yaml
 	thumb_local_start
 sub_8116A28:
@@ -23046,10 +23048,9 @@ loc_8119874:
 	.byte 0, 0
 	thumb_func_end sprite_setPositionForIdRange3_8119854
 
-// symdb: Compares two status bytes (+0xE, +0xF) on the active submenu struct, returning their difference with flags set NZ; only runs when the caller's incoming Z flag was clear.
-// symdb: bool sub_8119880(u32 r5 /* ctx */, u32 *r6 /* in/out: submenu ptr */); // input also gates on
-// symdb: caller-supplied Z flag (early-exit path) // returns the difference (field_E - field_F) with N/Z
-// symdb: flags set
+// symdb: Checks the B-attack slot's charge state to decide whether a submenu-driven B-button action should be allowed this frame.
+// symdb: (r5 = AIDataPtr) -> NZ = charge state allows a B-button submenu action ; side effects: clobbers
+// symdb: r0, r1, r6, may set N/Z
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
 	thumb_local_start
 sub_8119880:
@@ -31853,6 +31854,10 @@ sub_811E0B2:
 	pop {pc}
 	thumb_func_end sub_811E0B2
 
+// symdb: Prepares and VRAM-queues a 0x140-byte background-tile lattice (or "no-data" filler) used by the chip-select/lattice battle-screen effect, branching on `eStruct2001010+0x10`.
+// symdb: () -> void ; queues a 0x140-byte GFX transfer from EWRAM `byte_2027200` to VRAM `0x06015580` via
+// symdb: `QueueEightWordAlignedGFXTransfer`; reads/writes `eStruct2001010+0x10..0x12`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E0BA.yaml
 	thumb_func_start sub_811E0BA
 sub_811E0BA:
 	push {r4-r7,lr}
@@ -36704,10 +36709,10 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
-// symdb: spawns a damage-number OAM overlay for a battle object given an effect descriptor
-// symdb: (r0 = damageEffectId, r1 = oamSlot/battleObject?, r2 = packed(oamIndex|flags)|0x37, r3 =
-// symdb: oS20047CCptr) -> r0 = 0xFF ; side effects: queues OAM via sprite_queueOamEntryThunk_802FE28
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
+// symdb: Queue an OAM sprite entry for a battle object's status / damage indicator, if the previous draw step succeeded
+// symdb: (r0 = draw result code, r1 = battle object ptr, r2 = ?) -> r0 = 0xff ; side effects: queues an
+// symdb: OAM entry via sprite_queueOamEntryThunk_802FE28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C
 sub_812053C:
 	push {r4-r7,lr}

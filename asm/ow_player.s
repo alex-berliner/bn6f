@@ -869,6 +869,9 @@ locret_809D7D6:
 	pop {pc}
 	thumb_func_end ow_player_setCounterTalkStateAfterNpcInteract_809D7C8
 
+// symdb: When chatbox event-flag bit 0x80 is clear, zero the OW player's Unk_10 game-state byte, the Unk_07/Unk_09/Unk_0a OWPlayerObject bytes, then return.
+// symdb: () -> void ; side effects: writes eGameState+0x10, writes r5+0x07/0x09/0x0a
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7D8.yaml
 	thumb_local_start
 sub_809D7D8:
 	push {lr}
