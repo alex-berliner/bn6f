@@ -1750,6 +1750,10 @@ event_ackNewFlagByte_8003AEA:
 	pop {r4-r7,pc}
 	thumb_func_end event_ackNewFlagByte_8003AEA
 
+// symdb: Per-frame dispatch into an object-type function table, indexed by the global ObjectList's current type index.
+// symdb: (no explicit args; reads EWRAM eStruct2001010) -> r0 = 0 ; side effects: tail-calls one of
+// symdb: several handlers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003AFA.yaml
 	thumb_local_start
 sub_8003AFA:
 	push {r4-r7,lr}
@@ -1933,10 +1937,10 @@ off_8003BF0:
 	.word off_8003B48
 	thumb_func_end TryUpdateEachOWPlayerObject_8003BA2
 
-// symdb: Per-frame draw driver for the overworld object list (starting at the player); projects each visible sprite, ensures its tiles are resident, queues OAM pieces, then flushes the queue.
-// symdb: void sub_8003BF4(void)  // inputs: r10, lr; outputs: none; clobbers r0-r3, r10, NZCV; preserves
-// symdb: r4-r9, r12 (saved/restored around the work)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8003BF4.yaml
+// symdb: Per-frame overworld render: walks the OWPlayerObject list, projects/culls/queues visible sprites into OAM and records the palette count.
+// symdb: () -> void ; side effects: queues OAM pieces, increments palette count at 0x0200f389, no caller-
+// symdb: visible return.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003BF4.yaml
 	thumb_func_start sub_8003BF4
 sub_8003BF4:
 	push {r4-r7,lr}
@@ -2528,10 +2532,9 @@ off_8004294:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8004218
 
-// symdb: Tiny thunk that invokes sub_80028C0 with argument 3 (likely a mode/state or battle-related dispatcher call); leftover dead tail bytes reference the battle object linked list.
-// symdb: void sub_8004298(void)  /* in: lr only; out: nothing meaningful (returns via pop {pc}); clobbers
-// symdb: r0-r2, lr, NZ */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8004298.yaml
+// symdb: Flush the queued sprite group and record its palette count into the third slot of the sprite palette counter array.
+// symdb: ()
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004298.yaml
 	thumb_func_start sub_8004298
 sub_8004298:
 	push {lr}
@@ -2782,9 +2785,10 @@ off_800458C:
 	.word sprite_queueFramePieces+1
 	thumb_func_end sub_8004510
 
-// symdb: One-line thunk that tail-calls sub_80028C0 with the constant argument 4; purpose unknown until sub_80028C0 is identified.
-// symdb: void sub_8004590(void) // calls sub_80028C0(4) and returns its result to the caller
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8004590.yaml
+// symdb: Closes out a sprite-queue group by recording the final palette-count (dword_200F340) into byte slot 4 of byte_200F389.
+// symdb: () -> r0 = 0x4 ; side effect: writes the latest palette-count (dword_200F340) into
+// symdb: byte_200F389[4] via sub_80028C0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004590.yaml
 	thumb_func_start sub_8004590
 sub_8004590:
 	push {lr}
@@ -15334,10 +15338,9 @@ off_8009FC8:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009F8A
 
-// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sub_802FE28 until the count at 0x3000EA8 runs out.
-// symdb: void processPendingQueue_8009FCC(void); /* reads count from byte_3000EA8, entries from
-// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sub_802FE28 call */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
+// symdb: Drains the battle OAM queue by submitting each queued entry to the sprite OAM committer `sub_802FE28` until a per-frame count is exhausted.
+// symdb: void (no explicit return; preserves callee-saved registers r4-r7 and lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
 	thumb_local_start
 sub_8009FCC:
 	push {r5-r7,lr}
@@ -15393,8 +15396,8 @@ off_800A018:
 	.word byte_3000EA8
 	thumb_func_end fifo_pushRecord16_8009FF8
 
-// symdb: Writes 0 to the 32-bit state word at IWRAM 0x3000EA8 and returns that pointer with flags set from zero.
-// symdb: void clearFlagWord_3000EA8(void); // in: lr only; out: r0 = 0, r1 = &byte_3000EA8, NZ from r0
+// symdb: Zeroes the byte at 0x03000EA8 (unidentified battle subsystem flag) and returns void
+// symdb: () -> void ; side effect: writes 0 to [0x03000EA8]
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800A01C.yaml
 	thumb_local_start
 sub_800A01C:

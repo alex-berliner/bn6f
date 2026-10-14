@@ -992,6 +992,10 @@ byte_8033F50:
 	.byte 0xE2, 0x97, 0xE2
 	thumb_func_end RenderMapName_8033EE8
 
+// symdb: Conditionally DMA-loads the battle-start overlay tilemap/sprite frame and queues a battle-start OAM entry based on a game-state flag.
+// symdb: (r0 = battle subsystem index/id 0) -> (nothing) ; side effect: DMA queues a 0x80-byte chunk from
+// symdb: ROM 0x86C1AA0 to VRAM 0x6017580 and queues one OAM sprite at the tile-id constant 0xC7AC.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033F80.yaml
 	thumb_local_start
 sub_8033F80:
 	push {r4-r7,lr}
@@ -1445,7 +1449,7 @@ map_beginEnterMapOnWarpStep4_80342EC:
 // [break] jack-in
 // symdb: Decompresses the jack-in animation GFX and primes the chip-select screen's animation state object (r5) for playback.
 // symdb: void decompJackInAnimationGfx_8034314(u32 *animStateObj /* r5 */) -> /* r5 returned; r2/r3 +
-// symdb: nz/c/v left by tail callee battle_spawnEStructRecordsFromTable_80465A0 */ r4 r6 r7
+// symdb: nz/c/v left by tail callee sub_80465A0 */ r4 r6 r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/decompJackInAnimationGfx_8034314.yaml
 	thumb_local_start
 decompJackInAnimationGfx_8034314:

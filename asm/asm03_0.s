@@ -17026,6 +17026,10 @@ locret_802E154:
 	pop {pc}
 	thumb_func_end sub_802E112
 
+// symdb: If battle flag 0x40 is set, refreshes the custom-gauge display using the matched AI entry's CustomGauge field.
+// symdb: (no caller-visible inputs; uses r10 = Toolkit) -> no return value; side effects: may call
+// symdb: SetCustGauge to refresh the custom gauge
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E156.yaml
 	thumb_func_start sub_802E156
 sub_802E156:
 	push {r4,lr}

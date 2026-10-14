@@ -7288,6 +7288,9 @@ off_803C598:
 	.word eS200A290
 	thumb_func_end sub_803C58C
 
+// symdb: Appends a custom-screen OAM entry and uploads the next chip-cursor tile to VRAM each frame, gated on the chip-cursor singleton's state.
+// symdb: (r0 = packed_OAM_word0, r1 = packed_OAM_word1) -> r0 = packed_OAM_word0 ; r0/r1 also clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C59C.yaml
 	thumb_func_start sub_803C59C
 sub_803C59C:
 	push {r4-r7,lr}

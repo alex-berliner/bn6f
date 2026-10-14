@@ -1566,7 +1566,7 @@ loc_8123D3A:
 	.balign 4, 0x00
 	thumb_func_end sub_8123D24
 
-// symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine battle_spawnEStructRecordsFromTable_80465A0.
+// symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine sub_80465A0.
 // symdb: void sub_8123D54(u32 selection /* r0 */)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123D54.yaml
 	thumb_local_start
@@ -7365,7 +7365,7 @@ byte_8126B1C:
 
 // symdb: Top-level state-machine dispatcher for the MegaMan status menu, tail-calling one of three state handlers based on the menu object's state byte.
 // symdb: void statusMenu_dispatchState(void* menu /* r5 */) — reads menu->state (u8 at r5+1, values 0/4/8
-// symdb: as byte offsets), tail-dispatches to sub_8126B6C / battle_petNaviDisplayUpdate_8126CC0 / sub_8126FF0; no outputs of its
+// symdb: as byte offsets), tail-dispatches to sub_8126B6C / sub_8126CC0 / sub_8126FF0; no outputs of its
 // symdb: own, the handler returns directly to this function's caller.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/HandleMegaManStatusMenu8126B4C.yaml
 	thumb_func_start HandleMegaManStatusMenu8126B4C

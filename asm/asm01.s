@@ -517,6 +517,9 @@ eStruct2038160_clearStruct:
 	pop {pc}
 	thumb_func_end eStruct2038160_clearStruct
 
+// symdb: When the 0x200BC50.5 flag is set and the EWRAM 0x200BC30 jump-offset pair is exactly 0x0C, calls sub_813D66C + dispatch_803C620 and stores r0 into eStruct2038160 byte 0x01; otherwise no-op.
+// symdb: () -> void; r0 = dispatch result becomes the new value at 0x2038161 (eStruct2038160 byte 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8020140.yaml
 	thumb_func_start sub_8020140
 sub_8020140:
 	push {r7,lr}

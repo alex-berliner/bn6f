@@ -35098,6 +35098,11 @@ loc_811FA90:
 	.balign 4, 0x00
 	thumb_func_end menu_moveCursorUpDown_811FA22
 
+// symdb: Computes a packed (tile-id,attribute) OAM piece from a base tile and a sub-index, then forwards it to the OAM queue.
+// symdb: (r0 = baseTileId, r1 = packedX|Y_field ?, r2 = totalEntryCount, r3 = strideNumerator, r4 =
+// symdb: maxIndex, r7 = paletteShifted8Bits16) -> r0 = unpacked 0xFF ; side effects: pushes one OAM entry
+// symdb: via sub_802FE28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FA98.yaml
 	thumb_func_start sub_811FA98
 sub_811FA98:
 	push {r4-r7,lr}
