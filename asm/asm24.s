@@ -1324,7 +1324,7 @@ loc_808CC2E:
 // symdb: Picks one of four BattleState-related init/data pointer pairs based on event flag 9D4 and three sub-checks, returning (ptr0, ptr1) to its caller.
 // symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
 // symdb: call return); side effects: may read EVENT_9D4, may call
-// symdb: sub_808CC10/battle_chatbox_setCursorTextFromEventFlag_808CF8C/sub_808D084/sub_808CDC4
+// symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickBattleStateInitPtr_808CC34.yaml
 	thumb_local_start
 battle_pickBattleStateInitPtr_808CC34:
@@ -1829,7 +1829,7 @@ off_808D030:
 	.word dword_808CA44
 	thumb_func_end jackIn_attemptJackInCheck_808CFB8
 
-// symdb: Converts 16.16 absolute world (X,Y) returned by ai_getAIModeForChipForMapGroup_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
+// symdb: Converts 16.16 absolute world (X,Y) returned by sub_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
 // symdb: (r0 = xQ12, r1 = yQ12, r5 = BattleObject*, r10 = Toolkit) -> r2 = (panelCol<<1 | low bit), r3 =
 // symdb: (panelRow<<1 | low bit) ; writes [r5+8] and [r5+9] bytes
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computePanelOffsetFromCoords_808D034.yaml

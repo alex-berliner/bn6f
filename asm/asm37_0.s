@@ -1143,9 +1143,8 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: Polls the 0x31-entry Unk2004190 array; returns void when all entries report idle (r7 holds last entry ptr).
-// symdb: (no args) -> void ; side effects: clobbers r0-r2 via 49 bls to
-// symdb: toolkit_getUnk2004190EntryPtr_813B9FC
+// symdb: Iterates 0x31 entries in the toolkit's Unk2004190 array, loading each entry's pointer and discarding the first u16; appears to be a no-op clear/reset pass for those battle I/O scratch buffers during battle init.
+// symdb: (no args) -> (no return; preserves r10)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:

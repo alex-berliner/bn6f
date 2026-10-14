@@ -894,6 +894,10 @@ locret_800F320: // endif
 	mov pc, lr
 	thumb_func_end battle_SetObjectAIDataField78_800F318
 
+// symdb: Consume one chip from the battle object's queue and clear the current chip ID when the queue empties
+// symdb: (r5 = BattleObject*) -> ; side effects: writes r5->ChipsHeld, conditionally writes r5->Chip;
+// symdb: clobbers r0 and NZCV
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F322.yaml
 	thumb_func_start sub_800F322
 sub_800F322:
 	ldrb r0, [r5,#oBattleObject_ChipsHeld]
@@ -4624,6 +4628,10 @@ loc_8010D00:
 	pop {r4,pc}
 	thumb_func_end sub_8010CE0
 
+// symdb: Looks up a 2-byte beast power-Atk base entry at byte_80212D4 + 2*idx and forwards (idx, two table bytes) to sub_8012642.
+// symdb: (r0 = beast-power-Atk table index) -> r0 = ... (forwarded from callee, captured as 0x1e) ; no
+// symdb: side effects in this frame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010D04.yaml
 	thumb_local_start
 sub_8010D04:
 	push {lr}
@@ -5036,6 +5044,9 @@ battle_getObjectNameID_8011020:
 	pop {pc}
 	thumb_func_end battle_getObjectNameID_8011020
 
+// symdb: Dispatches an actor's action handler by (ActorType, AIIndex) via a 2D jump table.
+// symdb: (r0 = actorNameID: u8) -> r0 = handlerRoutinePtr: u32 (moved to lr and jumped to)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801102A.yaml
 	thumb_local_start
 sub_801102A:
 	push {lr}
@@ -22184,6 +22195,9 @@ battle_SetObjectHitModifier_8019F86:
 	mov pc, lr
 	thumb_func_end battle_SetObjectHitModifier_8019F86
 
+// symdb: Writes a packed-elements byte into both BattleObject.Element and CollisionData.{PrimaryElement,SecondaryElement}, splitting the low/high nibbles.
+// symdb: (r0 = packed element byte, r5 = *BattleObject) -> side effects only; r2 clobbered to 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8019F8C.yaml
 	thumb_func_start sub_8019F8C
 sub_8019F8C:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]

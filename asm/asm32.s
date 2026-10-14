@@ -20647,6 +20647,9 @@ sub_81185B8:
 	pop {pc}
 	thumb_func_end sub_81185B8
 
+// symdb: AI helper: return the count of alive enemy battle-objects in a row (incremented when found)
+// symdb: (r5 = AIData? r6 = BattleState?) -> r0 = u8 count of alive enemies in row ; side effects none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81185C0.yaml
 	thumb_local_start
 sub_81185C0:
 	push {lr}
@@ -20961,6 +20964,10 @@ sub_81187DC:
 	.balign 4, 0x00
 	thumb_func_end sub_81187DC
 
+// symdb: Dispatches the SubMenu's current CurAction through a 3-entry Thumb jump table using the SubMenu object's CurAction byte.
+// symdb: (r5 = SubMenu*) -> r0/r1/r2/r3 clobbered by callee ; side effect: jumps to sub_811880C,
+// symdb: sub_8118874 or sub_8118AA8 based on [r5+8]
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81187E8.yaml
 	thumb_func_start sub_81187E8
 sub_81187E8:
 	push {lr}
@@ -21032,6 +21039,10 @@ off_8118870:
 	.word unk_20218F0
 	thumb_func_end sub_811880C
 
+// symdb: BeastSP object sprite update dispatcher: copies 0xC->0xD and jumps to one of 14 sprite routines indexed by the object's SpriteOffset (low nibble of header byte 2), then chains into sprite_update.
+// symdb: (r5 = object ptr, r6 = related ptr) -> r0 = 0x5EC ; side effect: byte [r5+0xD] := byte [r5+0xC],
+// symdb: then calls the sprite handler chosen from off_8118890[r6[2]] and finally sprite_update(r5)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118874.yaml
 	thumb_local_start
 sub_8118874:
 	push {lr}
@@ -21471,6 +21482,10 @@ sub_8118B98:
 	.balign 4, 0x00
 	thumb_func_end sub_8118B98
 
+// symdb: Tail-call dispatcher that branches on the current submenu state's index (r5->offset 0x8) to one of three Thumb handlers in sSubmenu's state machine
+// symdb: (r5 = sSubmenu base pointer (state struct in EWRAM)) -> tail-call; side effects: clobbers r0-r3,
+// symdb: r5, lr per handler; Z flag from final r0
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8118BA4.yaml
 	thumb_func_start sub_8118BA4
 sub_8118BA4:
 	push {lr}
@@ -21535,6 +21550,10 @@ off_8118C28:
 	.word unk_2021FF0
 	thumb_func_end sub_8118BC8
 
+// symdb: Battle-object per-frame dispatcher: copies CurAnim (offset 0xc) into a backup byte (0xd), then tail-calls an animation-update routine picked from a small jump table indexed by `header.Type` (0x2), finally running the standard sprite update.
+// symdb: (r5 = BattleObject*, r6 = header-staging ptr, lr = return) -> r0 = 0x24c ; r2/r3/r5 caller-saved
+// symdb: ; side effects: writes [r5+0xd], dispatches via jump table, calls sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118C2C.yaml
 	thumb_local_start
 sub_8118C2C:
 	push {lr}

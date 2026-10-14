@@ -88453,6 +88453,9 @@ locret_80E172E:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_aiIterateOverBattleObjectsByRow_80E1704
 
+// symdb: Picks the battle object (among r4 and r7) whose PanelY best matches the current object's PanelY
+// symdb: (r0 = objA, r3 = objB, r6 = refObj) -> r0 = chosenObj ; side effects: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1730.yaml
 	thumb_local_start
 sub_80E1730:
 	push {r4,r7,lr}
@@ -93058,11 +93061,10 @@ sub_80E3824:
 	pop {pc}
 	thumb_func_end sub_80E3824
 
-// symdb: Beast-Out power-atk object dispatch: copies object-flag bit 2 from the related object, then jumps to one of five state handlers indexed by CurAction (or destroys the object if CurAction is not 0xb and Param1 != 4).
-// symdb: (r5 = this battle object, r10 = toolkit) -> void ; side effects: writes oObjectHeader_Flags, may
-// symdb: branch to one of sub_80E38C8 / sub_80E38EE / sub_80E3904 / sub_80E3930 / sub_80E3950, may set
-// symdb: CurState to CUR_STATE_DESTROY
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
+// symdb: Battle object step that toggles the pause-update flag bit via `RelatedObject1Ptr->CurAction`/param and dispatches via the jump table at off_80E38B4
+// symdb: (r5 = this BattleObject*, r10 = toolkit, lr = return) -> void ; no return value, side effect on
+// symdb: r5's `oObjectHeader_Flags` and possibly state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
 	thumb_local_start
 sub_80E386A:
 	push {lr}
@@ -111856,8 +111858,10 @@ dword_80EC5B8:
 	.word 0x10000
 	thumb_func_end sub_80EC556
 
-// symdb: Dispatches an AI action based on AIAttackVars Unk_00; if the resulting flag has bits 0x8600 set, calls sub_801056A
-// symdb: () -> side effects; no caller-visible return values (tail-pops with pop {pc})
+// symdb: Battle dispatcher that routes based on the AI attack vars index byte: if AIData.Unk_44 matches a known pattern (0x8600), a reset/process action runs; otherwise an alternate handler runs.
+// symdb: (r7 = AIData/AIState/AIAttackVars-like struct ptr; r0..r12 = preserved caller state) -> r0 = Tst
+// symdb: result state, NZ/C/V flags ; side effects may call into battle action or AI attack vars
+// symdb: processors
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EC5BC.yaml
 	thumb_local_start
 sub_80EC5BC:

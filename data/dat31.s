@@ -1199,9 +1199,10 @@ loc_810CE14::
 	pop {pc}
 	thumb_func_end sub_810CDEA
 
-// symdb: AI turn-step for a Navi-controlled battle object that rolls a target row, picks an opponent, and triggers a chip attack.
-// symdb: (r0 = BattleObject ptr, r5 = AIData ptr, r7 = ?, r10 = Toolkit) → void ; side effects: writes
-// symdb: attack state to the object's AIData and CollisionData
+// symdb: AI attack-decision routine that picks a random battle object in the opposing row and fires one of several helper sub-selectors
+// symdb: (r0 = AIData base/related ptr?, r1 = 0x20, r5 = battle object, r7 = alliance/alliance-mask?) ->
+// symdb: r0 = 0 ; side effects: may mutate the chosen battle object (via sub_810CEAE / sub_810CF4A /
+// symdb: object_setAttack0) and the RNG state
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CE1A.yaml
 	thumb_local_start
 sub_810CE1A::
@@ -2226,9 +2227,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: AI/state tick handler that drives a battle object through its current state, updating counters, panel highlights, and object flags per frame.
-// symdb: (r0 = object ptr? -> set up via r4/r5/r7/r10) ; r5 (battle object?) and r1 (return status) are
-// symdb: live for caller; side effects mutate battle object state, panels, and AIData
+// symdb: One update tick of a SnakeArm-style battle object, selecting the next panel along its arm and resetting the object's wait timer.
+// symdb: (r0..r3 not meaningful, caller saves its own state; returns r1 = scratch, r5 = pointer of true
+// symdb: owning battle object for the caller) -> void-like for callers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

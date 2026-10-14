@@ -5100,9 +5100,10 @@ jt_802886C:
 	.word sub_8028938+1
 	thumb_func_end battle_custMenuDispatchSelection_8028820
 
-// symdb: Returns a pointer into a small per-BPwrAtk lookup table for the current actor
-// symdb: (r5 = AIData*) -> r0 = pointer into byte_80288B0 ; r1 = 0x68 or 0x80 ; side effects none
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
+// symdb: Computes a base offset and slot-index pair (returned in r0/r1) from a battle object's B-button chip slot byte
+// symdb: (r5 = BattleObject*) -> r0 = base, r1 = slot index; side effects: r6 set to &byte_80288B0, lr
+// symdb: saved/restored via push {lr}/pop {pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
 	thumb_local_start
 sub_8028894:
 	push {lr}
@@ -18837,9 +18838,10 @@ byte_802EF4C:
 	.byte 0x0
 	thumb_func_end sub_802EEC4
 
-// symdb: If a condition check (sub_800A8F8) reports active, drives the sub_802EF74 state machine twice with argument 0 then 1.
-// symdb: void sub_802EF5C(void); returns whatever flags/r0-r2 the last callee left
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802EF5C.yaml
+// symdb: If battle flag 0x40 is set, dispatches a paired "0 then 1" signal to the battle object's destroy sub-event handler (sub_802EF74), then returns; otherwise no-op.
+// symdb: () -> ; side effect: when BATTLE flag 0x40 is set, calls sub_802EF74(r0=0) then
+// symdb: sub_802EF74(r0=1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EF5C.yaml
 	thumb_func_start sub_802EF5C
 sub_802EF5C:
 	push {lr}

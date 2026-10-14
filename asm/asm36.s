@@ -6555,10 +6555,10 @@ loc_8133410:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end battle_objectUpdate_8133400
-// symdb: Submenu dispatch: clears the bg if not open, runs beast status, and routes the B/exit button — either closing the submenu (or transitioning to state 4) based on chatbox flag 0x80 and sub-state 0x20.
-// symdb: (r5 = SubMenu state ptr, r10 = Toolkit) -> void ; side effects: writes [r5+2], [r5+3], may call
-// symdb: PlaySoundEffect / submenu_ConfirmExitAndFade, mutates chatbox-related state
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8133434.yaml
+// symdb: Advances the submenu selection state for the "main submenu" widget: refreshes its target row, runs beast-status effect / object resolve helpers, and either stays on the cursor (option busy) or commits the highlighted row by playing the menu-select SFX, switching the highlight to the "OK" row and fading out.
+// symdb: (r5 = submenu state ptr, r10 = toolkit ptr) -> side effects only ; writes
+// symdb: submenu->idx_00/Possibly wantsNewRow/HoveredIndex; plays SFX and starts screen fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133434.yaml
 	thumb_local_start
 sub_8133434:
 	push {lr}
@@ -9153,6 +9153,11 @@ off_81347A0:
 	.word dword_81331FC
 	thumb_func_end sub_8134740
 
+// symdb: A-button confirm step for the custom-style AI/anger menu: stores the picked slot index, plays the select SFX, flips a state byte through a 2-byte cursor pair, then dispatches a per-mode handler via `battle_fieldLockDispatch_8120018` and rewrites the three tracked target slots so they no longer match their stored enemy references.
+// symdb: (r2 = scene ctx, r5 = AI menu state, r8 = ?, r10 = Toolkit, lr) -> r0 = 1 if A was newly
+// symdb: pressed, else 0; side effects: PlaySoundEffect(SOUND_MENU_SELECT), writes AIData-related fields
+// symdb: on r5 and the cursor pair at s_2001c04, calls battle_fieldLockDispatch_8120018
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81347A4.yaml
 	thumb_local_start
 sub_81347A4:
 	push {r4-r7,lr}
@@ -11235,6 +11240,10 @@ byte_813565C:
 	.byte 0x21, 0xFB, 0x21
 	thumb_func_end sub_813561C
 
+// symdb: Indirect dispatcher keyed by r5+0x1: reads a byte and tail-calls one of three handler routines via a thumb-BX table
+// symdb: (r5 = base of a beast-state struct, AIIndex at +0x1 used as the dispatch key) -> r0 = 0 ; tail-
+// symdb: call returns whatever the chosen handler returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81356D4.yaml
 	thumb_func_start sub_81356D4
 sub_81356D4:
 	push {lr}

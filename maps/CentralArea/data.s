@@ -928,6 +928,9 @@ loc_8072B6C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8072B54
 
+// symdb: Body not found in bn6f/asm.
+// symdb: (no assembly) -> unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8072B70.yaml
 	thumb_local_start
 sub_8072B70:
 	push {r4-r7,lr}

@@ -1715,6 +1715,10 @@ sub_8089CB0:
 	mov pc, lr
 	thumb_func_end sub_8089CB0
 
+// symdb: decrements ChipLockoutTimer (AIData+0x18) and returns whether it hit/exceeded zero this frame
+// symdb: (r5 = *AIData) -> r0 = 0 if timer remained >0 after decrement, 1 if it reached 0 or was already
+// symdb: <=0; r0 holds the new timer value on the 0 path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CB4.yaml
 	thumb_local_start
 sub_8089CB4:
 	ldrh r0, [r5,#0x18]
