@@ -1402,13 +1402,11 @@ dword_8123C1C:
 	.word 0x5B5957
 	thumb_func_end sub_8123C00
 
-// symdb: Performs the per-battle-object column-alignment check for the active actor: looks up a panel slot index, writes it into the actor's AIData state, marks the side bit, and either runs the AI panel-range attack or the row-alignment repair.
-// symdb: (r0 = color/slot table ptr, r1 = flag bitmask to OR into side bits, r2 = record spawn table ptr,
-// symdb: r3 = work buffer ptr, r4 = AI state field offset, r5 = AIData* (toolkit ptr in r10), r6 =
-// symdb: caller's flag-mask constant) -> void ; side effects: AIState field at AIData+<r4> is set,
-// symdb: AIData.Unk_4c |= r1, and one of battle_aiCheckPanelRangeAndDoAttack_8134930 or
-// symdb: battle_alignRowCheck_81348DC is invoked.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123C20.yaml
+// symdb: Applies a single AI attack/variant entry to a battle object, optionally spawning attack effect records and dispatching to row-alignment or panel-range AI routines.
+// symdb: (r0 = byte_table_ptr (tbl of u8 lookup bytes), r1 = spawn_bitmask, r2 = spawn_table_ptr, r3 =
+// symdb: bit_idx, r4 = u16 store_offset, r5 = battle_object_ptr, r10 = toolkit_ptr, lr = ret) -> void ;
+// symdb: clobbers r0/r1/r2/r3/r6/r7/lr; mutates battle object + toolkit/BG/scene state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C20.yaml
 	thumb_local_start
 sub_8123C20:
 	push {lr}
@@ -1616,7 +1614,7 @@ byte_8123D90:
 	.byte 0x4F, 0x0, 0x0, 0x0, 0x55, 0x0, 0x0, 0x0
 	thumb_func_end sub_8123D70
 
-// symdb: Refreshes one spawn slot in a battle-object array, decrementing its tier and looking up the next entry via battleObject_queueOamFromTableRow_811FAF4 when the tier runs out.
+// symdb: Refreshes one spawn slot in a battle-object array, decrementing its tier and looking up the next entry via sub_811FAF4 when the tier runs out.
 // symdb: void battle_refreshSpawnSlot(u32 page /*r0*/, u32 offset /*r1*/, u32 table_idx /*r2*/, u32
 // symdb: slot_off /*r3*/, u32 fwd_r3 /*r4*/, void *base /*r5*/, u32 fwd_r4 /*r6*/); // preserves r4-r7,
 // symdb: no register outputs, clobbers flags
@@ -16983,7 +16981,7 @@ off_812B500:
 	.word byte_8129150
 	thumb_func_end sub_812B4AC
 
-// symdb: If bit 4 (0x10) of the flag byte at [r5+0x1B] is set, calls the draw/render helper battleObject_queueOamFromTableRow_811FAF4 with a fixed argument block; otherwise returns immediately.
+// symdb: If bit 4 (0x10) of the flag byte at [r5+0x1B] is set, calls the draw/render helper sub_811FAF4 with a fixed argument block; otherwise returns immediately.
 // symdb: void sub_812B504(void* obj /*r5*/); clobbers r0-r3, preserved r4; flags on early-exit path come
 // symdb: from tst of (byte & 0x10)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_drawIfFlagSet_812B504.yaml

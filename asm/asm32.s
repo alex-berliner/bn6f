@@ -22767,9 +22767,10 @@ off_81196DC:
 	.word sprite_stepZoomShrinkOut_811976C+1
 	thumb_func_end sub_81196C4
 
-// symdb: Battle-object state sync/rollback stub — copies primary HP/ID/position fields to their backups, or rolls the backup forward to current values when the gate (sub_8119880) flags them stale, marking state=4.
-// symdb: void sub_81196F0(u32 *battleObj /* r5 */) -> preserves r4-r9, returns current pos in r0 and
-// symdb: sub_8119438's flags; clobbers r0-r3, r12, lr.
+// symdb: Compares the chip-panel submenu's current chip fields (+0xC/E/18) against the previous render and re-renders the chip image/text only on change, otherwise writes a "frame" stamp at +0x9.
+// symdb: (r0 = caller's tail-call frame setup word, low bit = selector; r5 = active submenu ptr from r10
+// symdb: toolkit; r10 = Toolkit*) -> void ; no value returned to callers (only caller-saved r4–r9
+// symdb: clobbered, lr popped as pc).
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196F0.yaml
 	thumb_local_start
 sub_81196F0:
@@ -33844,9 +33845,10 @@ off_811F0C4:
 	.word dword_86A5D60
 	thumb_func_end drawCurrentMapName_811F08C
 
-// symdb: Dispatches on entity sub-state at r5+4: if 8, runs sub_811F184 with bytes r5+6/r5+7 and stores results back; otherwise loads a halfword from a constant table into the global 'word_3001B2C'.
-// symdb: void sub_811F0C8(void); // uses r5 as a struct pointer (r5+4 sub-state, r5+6/r5+7 scratch bytes)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F0C8.yaml
+// symdb: Per-frame PET/Navi-select cursor pulse: either loads a pulsing palette index into word_3001B2C from a script table, or calls sub_811F184 to advance a sub-frame animation timer and writes the new pulse state back into the r5 toolkit scratch.
+// symdb: (r5 = toolkit pointer, r10 = ?, lr = ret) -> r0 = 0x019A ; side effect: writes halfword 0x019A
+// symdb: to word_3001B2C, or writes the pair (r5+6, r5+7) returned from sub_811F184
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F0C8.yaml
 	thumb_local_start
 sub_811F0C8:
 	push {lr}
@@ -34239,7 +34241,7 @@ byte_811F4F8:
 	thumb_func_end getCurrentMapBgm_811F290
 
 // () -> void
-// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to battleObject_queueOamFromTableRow_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
+// symdb: Per-frame tick for a chip-use/custom-data controller: on flag, dispatches to sub_811FAF4 then reloads a per-instance timer via sub_8120CC8 when it expires.
 // symdb: void sub_811F508(void); /* inputs: r5,r10,lr; outputs: r7; clobbers nzcv,r0-r3,lr; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811F508.yaml
@@ -36699,8 +36701,10 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
-// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sub_802FE28 with a small index offset.
-// symdb: (u32 r0, u32 r1, u32 r2, u32 lr) -> u32 r0; flags out: N,Z,C,V
+// symdb: Build and queue a single OAM entry derived from a 4th field of a battle-related object (called from per-battle-object sprite list code).
+// symdb: (r0 = some index/kind, r1 = pointer/0x8160, r2 = packed data with 0xC bits = animation/OAM
+// symdb: offset 0x37, r3 = 0x020047CC pointer) -> r0 = 0xFF on early return, else result of sub_81205C0;
+// symdb: side effects: queues OAM via sprite_queueOamEntryThunk_802FE28
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C
 sub_812053C:

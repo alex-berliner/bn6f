@@ -1328,6 +1328,10 @@ off_8046928:
 	.word byte_2011860
 	thumb_func_end sub_804691A
 
+// symdb: Tests each hitbox slot in the AIData's collision hitbox table against the panel grid and updates a per-direction-overlap bitfield plus a "hitbox touches any enemy/ally panel" object flag.
+// symdb: (r5 = AIData pointer) -> r3 written back to AIData+0x03 (battle-object Flags bits 1/3), r7
+// symdb: (overlap bitmap) stored to AIData+0x28; side effects: mutates the caller's AIData
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804692C.yaml
 	thumb_local_start
 sub_804692C:
 	push {r5,lr}

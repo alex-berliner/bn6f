@@ -206,6 +206,9 @@ loc_8141A0C:
 	pop {r4-r7,pc}
 	thumb_func_end battle_performBeastOutBattleAiTick_81419A0
 
+// symdb: Per-frame Beast+ form-evolution trigger: watches a counter on the active battle object and calls StartCutscene to play one of the Beast+ evolution scenes (params 5/6/7) when the threshold is reached.
+// symdb: (r5 = *BattleObject) -> void ; side effects: writes BattleObject fields, may call StartCutscene
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141A10.yaml
 	thumb_local_start
 sub_8141A10:
 	push {r4-r7,lr}
@@ -1460,6 +1463,9 @@ byte_81427BC:
 	.byte 0x7, 0xC8, 0x7, 0xDC, 0x7, 0x0, 0x0
 	thumb_func_end sub_81427A4
 
+// symdb: Returns a SoulWeapons per-row base value (0x7F0..0x7F7) indexed by the current SoulWeapons map index.
+// symdb: () -> r0 = u16 base value (0x7F0..0x7F7)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427CE.yaml
 	thumb_func_start sub_81427CE
 sub_81427CE:
 	push {r4-r7,lr}
@@ -1891,10 +1897,10 @@ loc_8142B1A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142B04
 
-// symdb: Checks if the overworld player is at the same position as an OW object entry and returns a u16 from the matched battle object (likely an interaction id or panel/type id).
-// symdb: (r5 = OWMapObjectPtr, r10 = toolkit) -> r0 = u16 id (or 0); side effects: r4-r7 modified; may
-// symdb: clobber r0-r3,lr; Z flag set if non-zero
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8142B28.yaml
+// symdb: Looks up the battle object at the player's current overworld tile and returns its panel chip id (the halfword at offset 4), or 0 if no object matches
+// symdb: (r5 = pointer to a battle object state with bytes at +0 and +1 used) -> r0 = halfword from
+// symdb: matching object's +4, or 0 ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B28.yaml
 	thumb_local_start
 sub_8142B28:
 	push {r4-r7,lr}

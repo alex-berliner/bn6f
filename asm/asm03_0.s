@@ -903,12 +903,11 @@ off_8026AA4:
 	.word sub_8027A58+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenuMainMaybe_8026A88
 
-// symdb: CustMenu tick that drives a per-frame tile animation downward from 0x78 across four chip slots, then either chains into an enemy-virus/player-damage side effect, sub_802728C or the custMenuUpdateWaitSelectionState_8026CCC waiting state.
-// symdb: () -> () (void-ish; callee-saves preserved); only side effects are writing to S20364C0 (at
-// symdb: oS20364C0_Extra_Unk_40/0x44 and Unk_02), RenderInfo+0x18, Camera+0x34, eStruct2035280+0x17, IO
-// symdb: regs via chatbox sub_POI/dispatch_801DACC, BG tile map via bgmap_WriteTileIdAtBlock_800187C,
-// symdb: audio via PlaySoundEffect, S2035280+0x17 via sub_801E71C, and Sound via GetBattleMode.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
+// symdb: Battle chip-select sub-state: animates the chip cursor sliding right to the OK column and writes the per-frame BG tile IDs; commits the selected chips on completion by damaging the player and queueing the next menu state.
+// symdb: (r5 = *S20364C0 chip-select state, r10 = *Toolkit) -> void ; side effects: BG tile map writes at
+// symdb: chip-select block, plays sound effect 0x79 (select), updates chatbox/eRenderInfo, damages player
+// symdb: HP, switches JumpOffset01 to either 0x2C or 0x4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
 	thumb_local_start
 sub_8026B04: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -14406,10 +14405,10 @@ zeroFill_802CE54:
 	pop {pc}
 	thumb_func_end zeroFill_802CE54
 
-// symdb: Looks up one 16-byte entry from a battle table, scrambling the index with the current battle's shuffle key so the returned entry is shuffled but deterministic per battle.
-// symdb: battle_getShuffledTableEntry(u32 index /* r0 */) -> entryHalfword0 /* r0 */, entryWord4 /* r1
-// symdb: */, entryHalfword2 /* r2 */; uses r10 = toolkit
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802CE60.yaml
+// symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_Unk_0d), reading r0=lo16, r1=hi16, r2=upper from a global table
+// symdb: (r0 = selector 0..n, r10 = toolkit) -> r0 = u16 entry[0], r2 = u16 entry[2], r1 = u32 entry[4] ;
+// symdb: no side effects, returns through r0/r1/r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CE60.yaml
 	thumb_func_start sub_802CE60
 sub_802CE60:
 	mov r1, r10
@@ -16582,9 +16581,9 @@ off_802DE58:
 	.word 0x2000
 	thumb_func_end sub_802DD70
 
-// symdb: If the 0x40 battle flag is set, recalculates the Pressure-style chip picks by calling sub_802E2C4 first with argument 0 (likely clears the previous selection), then with 1 (likely commits the new one).
-// symdb: () -> void ; side effects: calls sub_802E2C4 twice with r0 = 0 then r0 = 1 when battle flag 0x40
-// symdb: is set
+// symdb: When the 0x40 battle flag is set, sequentially runs two battle sub-routines (with r10 toolkit), first with r0=0 then r0=1.
+// symdb: (r10 = Toolkit*) -> void ; side effects: calls TestBattleFlag_0x40 and up to two calls to
+// symdb: sub_802E2C4
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
 	thumb_func_start sub_802DE5C
 sub_802DE5C:
@@ -23623,6 +23622,11 @@ loc_8030E86:
 	pop {pc}
 	thumb_func_end sub_8030E14
 
+// symdb: Given a camera struct (or two) and source/dest fields, returns a (deltaX, deltaY) pair to apply when scrolling between battlefield positions; returns 0,0 when the source/dest are aligned.
+// symdb: (r0 = cameraStructPtr, r1 = ?, r2 = destField1, r3 = destField2, r4 = srcField1, r5 = srcField2,
+// symdb: r6 = out_ptr_or_field?, r12 = ?) -> r0 = deltaX, r1 = deltaY ; side effects: writes r8/r9
+// symdb: (return regs preserved through callees)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030E8C.yaml
 	thumb_local_start
 sub_8030E8C:
 	push {lr}
@@ -23687,10 +23691,9 @@ loc_8030EFE:
 	pop {pc}
 	thumb_func_end sub_8030E8C
 
-// symdb: Computes signed per-axis clip/penetration deltas for two battle objects against an axis-aligned bounding box reference
-// symdb: (r0 = objOrAabbPtr, r1 = otherObjPtr, r2 = aabbHalfWidthDelta, r3 = aabbHalfHeightDelta, r4 =
-// symdb: otherHalfWidth, r5 = otherHalfHeight, r6 = axisMaskOrDim, r7 = ?, lr) -> r0 = negY, r1 = negX
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8030F04.yaml
+// symdb: Battle textbox update helper called from camera-scroll/textbox transition sequences; returns 0,0 on early-out, otherwise two deltas used by callers' r12 accumulator.
+// symdb: (r0 = ptr, r2 = ?, r3 = ?, r4 = ?, r5 = ?, r6 = ?) -> r0 = deltaLo (or 0), r1 = deltaHi (or 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030F04.yaml
 	thumb_local_start
 sub_8030F04:
 	push {lr}
@@ -25245,8 +25248,8 @@ dword_8031918:
 	.word NULL
 	thumb_func_end checkLayerPriority_80318b0
 
-// symdb: Returns one of two hard-coded state word values (3 when r0==1, 2 otherwise) using dword_2013940 as scratch; appears to be a battle-AI helper queried with a selector.
-// symdb: (r0 = selector) -> r0 = 2 or 3; side effects: loads dword_2013940 into r5 (no write observed)
+// symdb: Returns the chip-lockout colour/state index for a battle object's chip-lockout timer (3 if some condition, else 2).
+// symdb: (r0 = ?) -> r0 = 2 or 3 ; side effects: r5 = dword_2013940 (read once)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
 	thumb_local_start
 sub_8031980:
@@ -25377,8 +25380,8 @@ sub_8031A46:
 	pop {pc}
 	thumb_func_end sub_8031A46
 
-// symdb: Tiny battle helper that calls sub_8031980 with r0=1 and returns its result in r0.
-// symdb: () -> r0 = result of sub_8031980(1) ; no other side effects (only lr is pushed/popped)
+// symdb: Initializes an AI sub-state for an enemy/virus battle actor by calling the type-3 init helper with selector 1
+// symdb: () -> r0 = state word returned by sub_8031980
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
 	thumb_local_start
 sub_8031A5E:

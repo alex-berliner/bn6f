@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: (cannot be verified) probable helper that tests/clears/sets cutscene- and BBS-related event flags and kicks off three GFX anim states as part of the start-screen flow.
-// symdb: (in = r10 toolkit; out = nz; side effects: r2-r9,r12 clobbered, lr clobbered; no r0 returned
-// symdb: value.)
+// symdb: Battle graphics/animation loader that toggles several event flags (BBS request flag 0x7, AskJackOut/L-Message sentinels, etc.) and dispatches to multiple `load_gfx_anim_*` helpers
+// symdb: () -> nz ; r2/r3/r4/r5/r7/r8/r9/r12 callee-saved; side effects: GFXAnimState slots and story
+// symdb: event flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

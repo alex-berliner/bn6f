@@ -1775,7 +1775,7 @@ locret_80A5B6C:
 // symdb: per-frame state machine that drives the player's Beast Out transformation and un-transformation during battle
 // symdb: (r5 = BeastOutAIData-like ctx, r6 = related BattleObject, r10 = toolkit) -> void ; side effects:
 // symdb: mutates ctx/r5 and BattleObject/r6 state, sets/clears event flags
-// symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with battleObject_loadAIDataEntry_80A6014 + sprite_update
+// symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with sub_80A6014 + sprite_update
 // symdb: on r5's sprite
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTick_80A5B70.yaml
 	thumb_local_start
@@ -3412,6 +3412,9 @@ sub_80A6E70:
 	mov pc, lr
 	thumb_func_end sub_80A6E70
 
+// symdb: Reads a 32-bit entry from a [r5, r6] base+offset battle-object linked-list node and returns it in r0.
+// symdb: (r5 = linked-list node base, r6 = byte offset) -> r0 = *(u32*)(r5 + r6) ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E78.yaml
 	thumb_local_start
 sub_80A6E78:
 	ldr r0, [r5,r6]

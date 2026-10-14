@@ -2330,6 +2330,10 @@ sub_800FCFC:
 	mov pc, lr
 	thumb_func_end sub_800FCFC
 
+// symdb: Compute a per-battle-actor beast-out cost multiplier (NaviStats 0x29 * mapping byte) for AI choice
+// symdb: (r5 = BattleObject) -> r0 = byte_80212BB[mapping_idx(NaviStats_0x29)] * cost_factor ; side
+// symdb: effects: clobbers r4,r7,nz,cv
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FD0A.yaml
 	thumb_local_start
 sub_800FD0A:
 	push {r4,r7,lr}

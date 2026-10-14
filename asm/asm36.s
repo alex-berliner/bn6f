@@ -6526,7 +6526,7 @@ off_81333EC:
 // symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
 // symdb: void battle_objectUpdate_8133400(     u32 r4 /* context */, u32 *r5 /* battle object ptr */,
 // symdb: u32 r6 /* context */, u32 r7 /* context */, u32 r10, u32 lr ); /* returns via lr; r0-r3, nz, c,
-// symdb: v carry the residue of the last battle_aiRunTurnHandler_81353F0 call */
+// symdb: v carry the residue of the last sub_81353F0 call */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdate_8133400.yaml
 	thumb_local_start
 battle_objectUpdate_8133400:
@@ -8855,9 +8855,9 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
-// symdb: Parameterless wrapper that invokes battleObject_updateShieldOrStatusEffect_813468C with one hard-coded argument set (0x5A, 0x20, 0x20, 0x12, table byte_81331F4, flag 0x40000000) and passes the caller's r5/r7 through untouched.
-// symdb: void sub_81345D4(void); // inputs r5, r7 forwarded to battleObject_updateShieldOrStatusEffect_813468C; no meaningful return value
-// symdb: (r4-r7 preserved)
+// symdb: Reset a battle-object shield/status-effect slot using a table lookup and return its previous value.
+// symdb: (r5 = toolkit (held in callee), r10 = toolkit) -> r0 = previous content of byte_81331F4[0x5a]
+// symdb: (shield/status-effect kind); side effects: writes byte_81331F4[0x5a] = 0 via the callee.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
 sub_81345D4:
@@ -8872,7 +8872,7 @@ sub_81345D4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345D4
 
-// symdb: Parameterless wrapper that spawns/queues one effect via battleObject_updateShieldOrStatusEffect_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
+// symdb: Parameterless wrapper that spawns/queues one effect via sub_813468C with a hard-coded argument set (position 240,32, params 42/19, data table byte_81331F4, flag word 0x40000000).
 // symdb: void sub_81345E8(void); /* takes nothing from callers; returns callee's r1-r3, preserves r4-r7
 // symdb: */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnFixedArgEffect_wrapper_81345E8.yaml
@@ -8902,6 +8902,10 @@ sub_81345FC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345FC
 
+// symdb: Per-frame OAM submit for a battle object — wraps queueOamFromTableRow, optionally advancing its anim frame index.
+// symdb: (no in regs; object ptr in r5, toolkit ptr in r10, per "void-like" contract) -> no out to
+// symdb: callers
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134610.yaml
 	thumb_local_start
 sub_8134610:
 	push {r4,lr}
@@ -8972,7 +8976,7 @@ loc_8134686:
 // symdb: Applies a shield/status effect overlay to a battle object by patching the related-object byte with a packed (nibble) tag looked up from dword_81331FC when the high nibble of the source byte equals 1, then spawns the overlay sprite.
 // symdb: (r0 = packed value, r1 = ?, r2 = ?, r3 = relatedObjectOffsetInO1, r5 = toolkit/object, r4 =
 // symdb: ptrToTableOrArgs, r6 = ptrToTableOrArgs) -> r0 = original lower nibble; side effects: writes the
-// symdb: related-object byte at oBattleObject+0x4c and dispatches battleObject_queueOamFromTableRow_811FAF4.
+// symdb: related-object byte at oBattleObject+0x4c and dispatches sub_811FAF4.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateShieldOrStatusEffect_813468C.yaml
 	thumb_local_start
 battleObject_updateShieldOrStatusEffect_813468C:
@@ -9074,7 +9078,7 @@ off_813473C:
 	thumb_func_end copyBackgroundTiles_sub_813471C
 // symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from sub_8120CC8 when it reaches zero.
 // symdb: void sub_8134740(u32 battleObj /* r5 */); /* r5 preserved; nz/c/v clobbered; r0-r3,r4,lr
-// symdb: clobbered via battleObject_queueOamFromTableRow_811FAF4/sub_8120CC8 */
+// symdb: clobbered via sub_811FAF4/sub_8120CC8 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
 	thumb_local_start
 sub_8134740:
@@ -9355,7 +9359,7 @@ loc_813492A:
 // symdb: Checks an actor's panel position against a target's column/row index and triggers a panel-based attack if aligned.
 // symdb: (r0 = HP-offset 0x24, r1 = x-offset 0xA5, r2 = alliance/whatever-offset 0x28, r3 = attacker-flag
 // symdb: index, r5 = BattleObject ptr, r7 = AIAttackVars ptr) -> r0 = 0x20 if HP-bit set, 0x40 if not (or
-// symdb: 1 on branch); calls battleObject_setFlags6Bit_81171F4/sub_81171D4 on AIAttackVars
+// symdb: 1 on branch); calls sub_81171F4/sub_81171D4 on AIAttackVars
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiCheckPanelRangeAndDoAttack_8134930.yaml
 	thumb_func_start battle_aiCheckPanelRangeAndDoAttack_8134930
 battle_aiCheckPanelRangeAndDoAttack_8134930:
