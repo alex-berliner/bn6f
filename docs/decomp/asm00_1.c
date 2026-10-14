@@ -6428,7 +6428,7 @@ int battle_runMainStep_800801C()
     int v0; // r0
 
     v0 = (*(&off_8008038 + dword_203CA70))();
-    sub_802DE5C(v0);
+    battleObject_runAIScript_802DE5C(v0);
     return byte_203CA74[0];
 }
 
@@ -6848,7 +6848,7 @@ int sub_800840C()
         sub_80147E4(byte_203F558, byte_203F658);
         *(v0 + 3) = 4;
     }
-    result = sub_801483C();
+    result = battle_runControllerStep_801483C();
     if ( !result )
     {
         if ( *(v0 + 2) )
@@ -6919,7 +6919,7 @@ int __fastcall battle_objAdvanceStateTimer_8008492(int a1)
         if ( !v2 )
             goto LABEL_10;
     }
-    result = sub_801483C();
+    result = battle_runControllerStep_801483C();
     if ( result )
         return result;
     if ( *(v1 + 2) )
@@ -7457,7 +7457,7 @@ int sub_8008950()
     int v0; // r0
 
     v0 = (*(&off_800896C + dword_203CA70))();
-    sub_802DE5C(v0);
+    battleObject_runAIScript_802DE5C(v0);
     return byte_203CA74[0];
 }
 
@@ -7915,7 +7915,7 @@ int sub_8008D60()
     int v0; // r0
 
     v0 = (*(&off_8008D7C + dword_203CA70))();
-    sub_802DE5C(v0);
+    battleObject_runAIScript_802DE5C(v0);
     return byte_203CA74[0];
 }
 
@@ -10541,7 +10541,7 @@ BOOL battle_shouldPlayDeathAnim_800A21C()
     char v0; // zf
 
     battle_isTimeStop();
-    return v0 && !battle_isBattleOver() && sub_801DFE4() == 0x4000;
+    return v0 && !battle_isBattleOver() && battle_getTotalDamageTakenForActor_801DFE4() == 0x4000;
 }
 
 

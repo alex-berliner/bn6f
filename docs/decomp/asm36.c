@@ -3808,7 +3808,7 @@ void __noreturn battle_objectUpdate_8133400()
         *(v0 + 3) = 0;
     }
     submenu_clearBgIfClosed_8134594(v1);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     battleObject_submenuRenderFolderAndChips_81341A0();
 }
 
@@ -3823,7 +3823,7 @@ int __fastcall sub_8133434(int a1)
     int v5; // r2
 
     submenu_clearBgIfClosed_8134594(a1);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     sub_8134548();
     chatbox_mask_eFlags2009F38(128);
@@ -4238,7 +4238,7 @@ int sub_8133788()
         }
     }
     submenu_clearBgIfClosed_8134594(v1);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     return sub_8134548();
 }
@@ -4394,7 +4394,7 @@ void __fastcall __noreturn sub_8133944(int a1)
     {
         submenu_clearBgIfClosed_8134594(v3);
         sub_81345B0();
-        sub_8134538();
+        object_resolveTableEntryByIndex_8134538();
         sub_8134548();
         battleObject_submenuRenderFolderAndChips_81341A0();
     }
@@ -4455,7 +4455,7 @@ int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
         *(v1 + 2) = 0;
     }
     submenu_clearBgIfClosed_8134594(v2);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     return sub_8134548();
 }
@@ -4532,7 +4532,7 @@ int __fastcall sub_8133A68(int a1)
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     return sub_8134548();
 }
@@ -4568,7 +4568,7 @@ int __fastcall sub_8133B18(int a1)
     sub_81345D4();
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v3);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     return sub_8134548();
 }
@@ -4597,7 +4597,7 @@ int __fastcall sub_8133B74(int a1)
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
-    sub_8134538();
+    object_resolveTableEntryByIndex_8134538();
     sub_81345B0();
     return sub_8134548();
 }
@@ -5082,7 +5082,7 @@ void __fastcall __noreturn menu_drawSubmenuBox_8134490(int a1)
 
 
 // 0x8134538
-int sub_8134538()
+int object_resolveTableEntryByIndex_8134538()
 {
     return object_resolveTableEntry_8134558(226, 28, 30, 36);
 }
@@ -5146,7 +5146,7 @@ int sub_81345FC()
 
 
 // 0x8134610
-int sub_8134610()
+int battleObject_queueOamPanelGrid_8134610()
 {
     int v0; // r5
     int result; // r0

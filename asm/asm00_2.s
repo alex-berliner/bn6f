@@ -2966,9 +2966,9 @@ sub_801010C:
 // symdb: Clears the Power Attack (PwrAtk) state and button fields in the battle object's AIAttackVars sub-struct and then runs the lone helper sub_80E1662.
 // symdb: (r5 = BattleObject*) -> void ; clears AIAttackVars.Unk_1d = 0, AIAttackVars.Unk_1e = 0 (u16),
 // symdb: then tail-calls sub_80E1662 with r5 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801011A.yaml
-	thumb_func_start sub_801011A
-sub_801011A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearPwrAtkStateFromBattleObject_801011A.yaml
+	thumb_func_start ai_clearPwrAtkStateFromBattleObject_801011A
+ai_clearPwrAtkStateFromBattleObject_801011A:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	add r0, #0xa0
@@ -2977,7 +2977,7 @@ sub_801011A:
 	strh r1, [r0,#oAIAttackVars_Unk_1e]
 	bl sub_80E1662
 	pop {pc}
-	thumb_func_end sub_801011A
+	thumb_func_end ai_clearPwrAtkStateFromBattleObject_801011A
 
 	thumb_local_start
 sub_801012C:
@@ -4397,7 +4397,7 @@ sub_8010B78:
 	add r0, r0, r1
 	b loc_8010B96
 loc_8010B92:
-	bl sub_801DFE4
+	bl battle_getTotalDamageTakenForActor_801DFE4
 loc_8010B96:
 	mov r1, r0
 	mov r0, #0xa
@@ -5880,7 +5880,7 @@ loc_8011698:
 	add r1, #0xa0
 	strh r0, [r1,#oAIAttackVars_Unk_00]
 	strb r2, [r1,#oAIAttackVars_Unk_1c]
-	bl sub_801011A
+	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	pop {pc}
 	thumb_func_end object_setAttack2
 	thumb_func_end object_setAttack3
@@ -13283,9 +13283,9 @@ off_8014838:
 // symdb: (no caller-supplied inputs) -> r0 = sub-handler's r0 ; side effects: reads controller-state byte
 // symdb: at dword_20367F0, calls one of three handlers, returns handler's r0 and writes handler's r0 back
 // symdb: to dword_20367F0+4.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801483C.yaml
-	thumb_func_start sub_801483C
-sub_801483C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runControllerStep_801483C.yaml
+	thumb_func_start battle_runControllerStep_801483C
+battle_runControllerStep_801483C:
 	push {r5-r7,lr}
 	ldr r5, off_801485C // =dword_20367F0 
 	mov r6, #8
@@ -13308,7 +13308,7 @@ off_8014860:
 	.word sub_801486C+1
 	.word sub_80148CC+1
 	.word sub_8014A00+1
-	thumb_func_end sub_801483C
+	thumb_func_end battle_runControllerStep_801483C
 
 // symdb: Steps the action timer in two BattleObject slots, triggers beast-out when eligible, and reports whether either slot holds a pending (type-assigned-but-idle) entry.
 // symdb: void battle_stepSlotsAndCheckBeastGate_801486C(BattleSlot *slotA /* r6 */, BattleSlot *slotB /*
@@ -24529,7 +24529,7 @@ loc_801B052:
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	str r0, [r5,#oBattleObject_Unk_5c]
 loc_801B06E:
-	bl sub_801011A
+	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	bl battleObject_clearHitFlags_801A29A
 	bl battleObject_resetCollisionState_801A2B0
 	bl object_getFlag2
@@ -24593,7 +24593,7 @@ loc_801B0EC:
 	beq loc_801B126
 	mov r0, r1
 	bl object_clearFlag2
-	bl sub_801011A
+	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	bl battle_object_postAction4CheckClearFlags_801BA92
 	push {r0}
 	bl battle_checkObjectAction6Flag_801BABE
@@ -26674,7 +26674,7 @@ off_801BF04:
 	.word battle_tickLowHpWarning_801C840+1
 	.word object_countdownTimer_801CA0C+1
 	.word nullsub_58+1
-	.word sub_801C984+1
+	.word battle_initObjectStoryFlags_801C984+1
 	.word nullsub_58+1
 	.word sub_801CA28+1
 	.word nullsub_58+1
@@ -28140,9 +28140,9 @@ dword_801C980:
 
 // symdb: Initializes an AIData struct's BLeftAbility (offset 0x7) and Unk_09 (offset 0x9) from story flags 0 and 1.
 // symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> void ; side effects: writes [r5+7] and [r5+9]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C984.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initObjectStoryFlags_801C984.yaml
 	thumb_local_start
-sub_801C984:
+battle_initObjectStoryFlags_801C984:
 	push {lr}
 	mov r0, #0
 	bl battle_getStoryFlagFromBattleState_802CE60
@@ -28159,7 +28159,7 @@ loc_801C992:
 loc_801C9A0:
 	strb r0, [r5,#9]
 	pop {pc}
-	thumb_func_end sub_801C984
+	thumb_func_end battle_initObjectStoryFlags_801C984
 
 // symdb: Compares two target byte fields of a struct against their "current" copies and, whenever they differ, updates the copy and raises a notification event (6 for the first field, 0x1A for the second) via sub_801C9C8.
 // symdb: void sub_801C9A4(struct* r5); // r4, r6, r7, r10 also live on entry (passed through to
@@ -31191,13 +31191,13 @@ loc_801DFDC:
 
 // symdb: Returns the cumulative damage-taken counter (TotalDamageTaken) for the actor's AIData.
 // symdb: () -> r0 = u16 TotalDamageTaken for the currently-bound AIData record
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DFE4.yaml
-	thumb_func_start sub_801DFE4
-sub_801DFE4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getTotalDamageTakenForActor_801DFE4.yaml
+	thumb_func_start battle_getTotalDamageTakenForActor_801DFE4
+battle_getTotalDamageTakenForActor_801DFE4:
 	ldr r0, off_801E0D8 // =eStruct2035280
 	ldrh r0, [r0,#0x20] // (word_20352A0 - 0x2035280)
 	mov pc, lr
-	thumb_func_end sub_801DFE4
+	thumb_func_end battle_getTotalDamageTakenForActor_801DFE4
 
 // symdb: Lays out a standard dialogue message window (18x3 cells at the screen origin, box style 0x11 on layer 2) and activates it with mode 0x40.
 // symdb: void sub_801DFEA(void); // returns r0 = 0x40, r1/r2 as left by sub_801BEC2, r3 = 0, flags from
@@ -32309,14 +32309,14 @@ byte_801E700:
 // symdb: Writes a one-byte value into oStruct2035280 + 0x12 (the Navi status GFX index slot) and returns the input untouched.
 // symdb: (r0 = new GFX index byte, lr = return) -> r0 = unchanged ; side effect: strb r0 to (off_801E77C
 // symdb: + 0x12) [byte_2035292]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E71C.yaml
-	thumb_func_start sub_801E71C
-sub_801E71C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setNaviStatusGfx_801E71C.yaml
+	thumb_func_start battle_setNaviStatusGfx_801E71C
+battle_setNaviStatusGfx_801E71C:
 	push {r1,lr}
 	ldr r1, off_801E77C // =eStruct2035280
 	strb r0, [r1,#0x12] // (byte_2035292 - 0x2035280)
 	pop {r1,pc}
-	thumb_func_end sub_801E71C
+	thumb_func_end battle_setNaviStatusGfx_801E71C
 
 // symdb: Records a new navi status graphics index and status value into the navi status state block, carrying over the previous display index and flagging a pending update.
 // symdb: void naviStatus_SetGfxAndStatus(u8 gfxIdx /*r0*/, u8 status /*r1*/); returns displayIdx in r2,

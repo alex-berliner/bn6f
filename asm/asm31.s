@@ -108858,7 +108858,7 @@ sub_80EAF36:
 	bl sub_80E1662
 	b locret_80EAFC0
 loc_80EAF80:
-	bl sub_801011A
+	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]

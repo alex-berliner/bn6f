@@ -553,7 +553,7 @@ int object_runFrameUpdate_8026A6C()
 int custMenuMainMaybe_8026A88()
 {
     (*(&off_8026AA4 + BYTE1(eS20364C0)))();
-    sub_802A2B0();
+    custMenu_dispatchState_802A2B0();
     return 0;
 }
 
@@ -578,7 +578,7 @@ int __fastcall battle_custMenuAnimateCursorToOK_8026B04(int a1, int a2, int a3)
     {
         PlaySoundEffect(121, a2, a3);
         *(v4[2] + 24) = 120;
-        sub_801E71C(0);
+        battle_setNaviStatusGfx_801E71C(0);
         dispatch_801DACC(128);
         sub_801E0A0(15, 0);
         *(v3 + 68) = 15;
@@ -614,7 +614,7 @@ int __fastcall battle_custMenuAnimateCursorToOK_8026B04(int a1, int a2, int a3)
         *(v4[3] + 52) -= 98304;
     *(v3 + 64) = v15;
     *(v4[2] + 24) = v15;
-    sub_801E71C(120 - v15);
+    battle_setNaviStatusGfx_801E71C(120 - v15);
     if ( !v15 )
     {
         if ( *(v4[6] + 7) == 1 )
@@ -670,7 +670,7 @@ int scrollStrip_update_8026BF4()
         *(*(v1 + oToolkit_CameraPtr) + 52) += 98304;
     *(v0 + 64) = v6;
     *(*(v1 + oToolkit_RenderInfoPtr) + 24) = v6;
-    sub_801E71C(120 - v6);
+    battle_setNaviStatusGfx_801E71C(120 - v6);
     if ( v6 == 120 )
     {
         *(v0 + 1) = *(v0 + 11);
@@ -738,7 +738,7 @@ int sub_8026D06()
         {
             *(v0 + 2) = 1;
             *(v2 + 24) = 120;
-            sub_801E71C(0);
+            battle_setNaviStatusGfx_801E71C(0);
             dispatch_801DACC(&loc_2000);
             sub_8029D80();
         }
@@ -746,7 +746,7 @@ int sub_8026D06()
         {
             *(v0 + 2) = 2;
             *(v2 + 24) = 0;
-            sub_801E71C(120);
+            battle_setNaviStatusGfx_801E71C(120);
             CopyBackgroundTiles(0, 0, 3, &unk_2035000, 15, dword_14);
             battleObject_chipSelectAnimTick_8029C08();
             PlaySoundEffect(128, v5, v6);
@@ -2264,7 +2264,7 @@ int battle_customGauge_EndTurn_8027D78()
     int v3; // r0
 
     *(*(v0 + oToolkit_RenderInfoPtr) + 24) = 0;
-    sub_801E71C(0);
+    battle_setNaviStatusGfx_801E71C(0);
     dispatch_801DACC(128);
     sub_801E0A0(0, 0);
     eStruct2035280_SetRequestBits_801BECC(&byte_400);
@@ -2903,7 +2903,7 @@ void __fastcall battle_loadGfxChunkBySelector_8028320(int a1, int a2, int a3)
     if ( v3 == 1 )
         (loc_8000AC8)(&byte_86E79CC[768], a2, byte_100);
     else
-        sub_802868C(byte_802A700, a2, a3, 3);
+        battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A700, a2, a3, 3);
 }
 
 
@@ -3082,7 +3082,7 @@ void __fastcall __noreturn sub_80284E2(unsigned int a1)
         v19 = v9;
     }
     if ( v9 != 3 )
-        sub_802868C(byte_802A6C0, 100703072, v8, 3 - v9);
+        battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A6C0, 100703072, v8, 3 - v9);
 LABEL_15:
     v11 = v19;
     if ( v19 )
@@ -3130,7 +3130,7 @@ void __fastcall __noreturn sub_80285FE(__int16 a1)
 
 
 // 0x802868c
-void __fastcall sub_802868C(int a1, int a2, int a3, int a4)
+void __fastcall battle_loadGfxChunkBySelectorWithRows_802868C(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
 
@@ -3150,9 +3150,9 @@ void __fastcall beastout_LoadSelectionScreenSpriteSheets_802869E(int a1, int a2,
     int v3; // r2
     int v4; // r2
 
-    sub_802868C(byte_802A6C0, 100702880, a3, 1);
-    sub_802868C(byte_802A680, 100702944, v3, 2);
-    sub_802868C(byte_802A6C0, 100703072, v4, 3);
+    battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A6C0, 100702880, a3, 1);
+    battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A680, 100702944, v3, 2);
+    battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A6C0, 100703072, v4, 3);
 }
 
 
@@ -3245,7 +3245,7 @@ int __fastcall sub_80287A4(_BYTE *a1, int a2, int a3)
 // 0x80287d2
 int __fastcall loadOneSpriteTileRow_80287D2(int a1, int a2, int a3)
 {
-    sub_802868C(byte_802A6C0, 100701024, a3, 8);
+    battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A6C0, 100701024, a3, 8);
     return (loc_8000AC8)(byte_86E587C, &unk_3001A80, 32);
 }
 
@@ -5904,7 +5904,7 @@ signed int sub_802A220()
 
 
 // 0x802a2b0
-int sub_802A2B0()
+int custMenu_dispatchState_802A2B0()
 {
     int v0; // r5
     int result; // r0
@@ -10898,7 +10898,7 @@ int __fastcall sub_802DD70(int a1, int a2)
 
 
 // 0x802de5c
-int __fastcall sub_802DE5C(int a1)
+int __fastcall battleObject_runAIScript_802DE5C(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -13732,7 +13732,7 @@ void camera_updateDerivedOffsets_803007C()
 
 
 // 0x80300ac
-void sub_80300AC()
+void battle_clampCameraToBounds_80300AC()
 {
     int v0; // r5
     int v1; // r1
@@ -15105,10 +15105,10 @@ int __fastcall sub_8030E14(_DWORD *a1, int a2, int a3, int a4)
     if ( v10 + *a1 * (v5 - v4) + a1[1] * v9 >= 0 || v7 != 1 && v10 + a1[3] * v8 + a1[4] * v9 < 0 )
         return 0;
     v11 = -(*a1 * v8 + v10);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     v13 = v9 - *(v12 + 4);
     v15 = -(*(v12 + 4) * v9 + v14);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     return v5 - v4 - *v16;
 }
 
@@ -15137,10 +15137,10 @@ int __fastcall camera_computeScrollDelta_8030E8C(_DWORD *a1, int a2, int a3, int
     if ( v10 + *a1 * (v5 - v4) + a1[1] * v9 >= 0 || v7 != 1 && v10 + a1[3] * v8 + a1[4] * v9 < 0 )
         return 0;
     v11 = -(*a1 * v8 + v10);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     v13 = v9 - *(v12 + 4);
     v15 = -(*(v12 + 4) * v9 + v14);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     return v5 - v4 - *v16;
 }
 
@@ -15169,10 +15169,10 @@ int __fastcall battle_runTextboxUpdateAndSetStateBit1_8030F04(_DWORD *a1, int a2
     if ( v10 + *a1 * (v5 - v4) + a1[1] * v9 <= 0 || v7 != 1 && v10 + a1[3] * v8 + a1[4] * v9 > 0 )
         return 0;
     v11 = -(*a1 * v8 + v10);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     v13 = v9 - *(v12 + 4);
     v15 = -(*(v12 + 4) * v9 + v14);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     return v5 - v4 - *v16;
 }
 
@@ -15201,16 +15201,16 @@ int __fastcall sub_8030F7C(_DWORD *a1, int a2, int a3, int a4)
     if ( v10 + *a1 * (v5 - v4) + a1[1] * v9 <= 0 || v7 != 1 && v10 + a1[3] * v8 + a1[4] * v9 > 0 )
         return 0;
     v11 = -(*a1 * v8 + v10);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     v13 = v9 - *(v12 + 4);
     v15 = -(*(v12 + 4) * v9 + v14);
-    sub_8031048();
+    battleObject_collisionProjectRay_8031048();
     return v5 - v4 - *v16;
 }
 
 
 // 0x8031048
-void sub_8031048()
+void battleObject_collisionProjectRay_8031048()
 {
     int v0; // r6
     int v1; // r7
@@ -15962,7 +15962,7 @@ int __fastcall checkLayerPriority_80318b0(int a1)
 
 
 // 0x8031980
-signed int __fastcall sub_8031980(int a1)
+signed int __fastcall battle_aiIndexToActorCount_8031980(int a1)
 {
     signed int result; // r0
 
@@ -15990,7 +15990,7 @@ signed int __fastcall sub_803199E(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 4, 4);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16003,7 +16003,7 @@ signed int __fastcall sub_80319B6(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = sub_80315B8(v1, v2, 8, 8);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16016,7 +16016,7 @@ signed int __fastcall sub_80319CE(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = sub_80315B8(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16029,7 +16029,7 @@ signed int __fastcall sub_80319E6(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16042,7 +16042,7 @@ signed int __fastcall sub_80319FE(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = sub_8031570(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16055,7 +16055,7 @@ signed int __fastcall sub_8031A16(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointCrossHalfPlaneTest_8031594(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16068,7 +16068,7 @@ signed int __fastcall sub_8031A2E(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = sub_80315B8(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
@@ -16081,14 +16081,14 @@ signed int __fastcall sub_8031A46(_DWORD *a1)
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
     v3 = math_pointLeftOfLineTest_80315DC(v1, v2, 0, 16);
-    return sub_8031980(v3);
+    return battle_aiIndexToActorCount_8031980(v3);
 }
 
 
 // 0x8031a5e
-signed int sub_8031A5E()
+signed int battleObject_getChipLockColourOne_8031A5E()
 {
-    return sub_8031980(1);
+    return battle_aiIndexToActorCount_8031980(1);
 }
 
 

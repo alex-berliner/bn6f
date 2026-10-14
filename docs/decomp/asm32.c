@@ -11050,7 +11050,7 @@ int battle_reloadObjectSprite_8116A04()
         sprite_setAnimation(v0, 0);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_8116A44();
+        battle_queueOamEntriesForBattleObjectStateShadow_8116A44();
     }
     return result;
 }
@@ -11064,7 +11064,7 @@ void __noreturn sub_8116A28()
 
     if ( *v1 == 8 )
         *(v0 + 8) = 8;
-    sub_8116A44();
+    battle_queueOamEntriesForBattleObjectStateShadow_8116A44();
 }
 
 
@@ -11076,7 +11076,7 @@ int sub_8116A3C()
 
 
 // 0x8116a44
-signed int __noreturn sub_8116A44()
+signed int __noreturn battle_queueOamEntriesForBattleObjectStateShadow_8116A44()
 {
     signed int *v0; // r7
     signed int v1; // r6
@@ -14762,7 +14762,7 @@ int sub_81196C4()
 
 
 // 0x81196f0
-signed int sub_81196F0()
+signed int submenu_updatePanelChipInfoIfDirty_81196F0()
 {
     int v0; // r5
     int v1; // r0

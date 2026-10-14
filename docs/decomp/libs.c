@@ -10166,7 +10166,7 @@ int __fastcall sprite_moveYUp64AndMarkDirty_814E1D4(int a1, int a2)
 
 
 // 0x814e1e8
-int __fastcall sub_814E1E8(int a1, int a2)
+int __fastcall battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8(int a1, int a2)
 {
     char v2; // r3
     _BYTE *v3; // r1

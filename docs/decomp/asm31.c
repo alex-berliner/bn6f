@@ -83980,7 +83980,7 @@ void sub_80EAF36()
     else
     {
 LABEL_11:
-        sub_801011A();
+        ai_clearPwrAtkStateFromBattleObject_801011A();
         v5 = v0->futurePanelX;
         v0->panelX = v5;
         v6 = v0->futurePanelY;

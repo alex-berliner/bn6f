@@ -6477,7 +6477,7 @@ off_813339C:
 // symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
 // symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
 // symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
-// symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
+// symdb: battle_spawnFixedArgEffect_wrapper_81345E8, battleObject_queueOamPanelGrid_8134610 (Type != 0xC, [r5+3] != 0xC), or
 // symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchObjectUpdateOrEffect_81333A0.yaml
 	thumb_local_start
@@ -6504,7 +6504,7 @@ battle_dispatchObjectUpdateOrEffect_81333A0:
 loc_81333CC:
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
-	bl sub_8134610
+	bl battleObject_queueOamPanelGrid_8134610
 	b locret_81333E4
 loc_81333DA:
 	ldrb r0, [r5,#3]
@@ -6539,7 +6539,7 @@ battle_objectUpdate_8133400:
 	strb r0, [r5,#3]
 loc_8133410:
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl sub_81353DC
@@ -6556,7 +6556,7 @@ loc_8133410:
 sub_8133434:
 	push {lr}
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	mov r0, #0x80
@@ -6601,7 +6601,7 @@ sub_8133484:
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
@@ -7015,7 +7015,7 @@ loc_81337A8:
 	strb r0, [r5,#3]
 loc_81337B0:
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
@@ -7115,7 +7115,7 @@ loc_8133864:
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
@@ -7203,7 +7203,7 @@ loc_813390E:
 
 	bl submenu_clearBgIfClosed_8134594
 	bl sub_81345B0
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_8134548
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 	bl battleObject_drawFolderEditScreenGfx_8134310
@@ -7242,7 +7242,7 @@ loc_8133964:
 loc_813396C:
 	bl submenu_clearBgIfClosed_8134594
 	bl sub_81345B0
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_8134548
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
@@ -7331,7 +7331,7 @@ loc_8133A1E:
 	strb r0, [r5,#2]
 loc_8133A2A:
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
@@ -7424,7 +7424,7 @@ loc_8133AE2:
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
@@ -7471,7 +7471,7 @@ loc_8133B4C:
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
@@ -7499,7 +7499,7 @@ loc_8133B8E:
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_8134538
+	bl object_resolveTableEntryByIndex_8134538
 	bl sub_81345B0
 	bl sub_8134548
 	pop {pc}
@@ -8747,9 +8747,9 @@ dword_8134528:
 // symdb: Thin wrapper that resolves a fixed (0xE2/0x1C/0x1E/0x24) object-table entry via object_resolveTableEntry_8134558 and returns its byte in r0.
 // symdb: () -> r0 = resolved byte (0xFF in captured calls) ; side effects: none within this function (no
 // symdb: stack writes beyond lr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134538.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_resolveTableEntryByIndex_8134538.yaml
 	thumb_local_start
-sub_8134538:
+object_resolveTableEntryByIndex_8134538:
 	push {lr}
 	mov r0, #0xe2
 	mov r1, #0x1c
@@ -8757,7 +8757,7 @@ sub_8134538:
 	mov r3, #0x24 
 	bl object_resolveTableEntry_8134558
 	pop {pc}
-	thumb_func_end sub_8134538
+	thumb_func_end object_resolveTableEntryByIndex_8134538
 
 // symdb: Tail-call wrapper that invokes sub_8134558 with four fixed constant arguments (0x182, 0x1C, 0x28, 0x2E).
 // symdb: void sub_8134548(void) // no meaningful inputs or outputs; forwards callee's results
@@ -8907,9 +8907,9 @@ sub_81345FC:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, lr = return) -> r0 = 0 (preserved through callee), flags
 // symdb: NZCV clobbered ; side effect: writes back object 0x16/0x17 ("AllianceAndDirectionFlip" packed
 // symdb: byte) with a new row index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134610.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueOamPanelGrid_8134610.yaml
 	thumb_local_start
-sub_8134610:
+battleObject_queueOamPanelGrid_8134610:
 	push {r4,lr}
 	sub sp, sp, #4
 	mov r0, #0x44 
@@ -8973,7 +8973,7 @@ loc_8134686:
 	add sp, sp, #4
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8134610
+	thumb_func_end battleObject_queueOamPanelGrid_8134610
 
 // symdb: Applies a shield/status effect overlay to a battle object by patching the related-object byte with a packed (nibble) tag looked up from dword_81331FC when the high nibble of the source byte equals 1, then spawns the overlay sprite.
 // symdb: (r0 = packed value, r1 = ?, r2 = ?, r3 = relatedObjectOffsetInO1, r5 = toolkit/object, r4 =

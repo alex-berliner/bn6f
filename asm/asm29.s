@@ -549,7 +549,7 @@ off_80A51DC:
 	.word off_80A51E0
 off_80A51E0:
 	.word mapEntry_update_80A51F8+1
-	.word sub_80A5268+1
+	.word mapEntry_onUpdate_80A5268+1
 	.word sub_80A52E4+1
 	.word sub_80A5304+1
 	.word sub_80A5350+1
@@ -560,7 +560,7 @@ off_80A51F4:
 // symdb: Map-entry show/hide controller: when the entry's trigger flag is set, load its sprite, clear its pair of flags and switch to state 3 (shown); when clear, set both flags, mark hidden (state 0x10) and tear down.
 // symdb: void sub_80A51F8(void);                 // uses caller-provided r5 = control struct, r7 = entry
 // symdb: struct, r10 = bank base   in:  r5 (control struct), r7 (entry struct), r10 (bank/base), lr
-// symdb: (return)   out: r0/r2/r5/r10 (forwarded from tail call sub_80A5268 or sub_80A5350); NZ/CV
+// symdb: (return)   out: r0/r2/r5/r10 (forwarded from tail call mapEntry_onUpdate_80A5268 or sub_80A5350); NZ/CV
 // symdb: reflect that tail's flags   clobbers: r0, r1, r2, r3, lr; preserves r4, r5, r6, r7, r10
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mapEntry_update_80A51F8.yaml
 	thumb_local_start
@@ -595,7 +595,7 @@ mapEntry_update_80A51F8:
 	bl ClearEventFlag // (u16 entryFlagBitfield) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A5268
+	bl mapEntry_onUpdate_80A5268
 	pop {pc}
 loc_80A524E:
 	ldrh r0, [r7,#2]
@@ -613,9 +613,9 @@ loc_80A524E:
 // symdb: Step the overworld map-entry object's show/hide FSM: gate on event flag + screen fade, set/clear flags, swap animation, drive state to 3 (shown), 8 (idle) or 0x10 (hidden), then tick the sprite.
 // symdb: (r5 = map-entry object, r7 = entry sub-struct, r10 = toolkit) -> void ; side effects: event flag
 // symdb: set/cleared, PlaySoundEffect, sprite animation swapped, sprite_loadAnimationData + sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5268.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mapEntry_onUpdate_80A5268.yaml
 	thumb_local_start
-sub_80A5268:
+mapEntry_onUpdate_80A5268:
 	push {lr}
 	ldrh r0, [r7]
 	mov r0, r0
@@ -672,7 +672,7 @@ loc_80A52DA:
 	.balign 4, 0
 dword_80A52E0:
 	.word 0xFFFF
-	thumb_func_end sub_80A5268
+	thumb_func_end mapEntry_onUpdate_80A5268
 
 // symdb: Sprite object step that signals its wait event and marks itself done when its animation ends, then ticks the sprite.
 // symdb: void sub_80A52E4(struct object* r5, struct spriteObj* r7, void* r10); returns r2, r5
@@ -3762,7 +3762,7 @@ sub_80A70FC:
 	ldr r1, [r5,#0x10]
 	mov r4, #0x12
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne loc_80A712E
 	mov r2, #0x7c 
@@ -3784,7 +3784,7 @@ loc_80A712E:
 	ldr r3, [r6,r4]
 	mov r4, #0x12
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A715C
 loc_80A7150:
@@ -4410,7 +4410,7 @@ sub_80A75DC:
 	ldr r1, [r5,#0x10]
 	mov r4, #0x12
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne loc_80A760E
 	mov r2, #0x7c 
@@ -4432,7 +4432,7 @@ loc_80A760E:
 	ldr r3, [r6,r4]
 	mov r4, #0x12
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A763C
 loc_80A7630:
@@ -6422,7 +6422,7 @@ sub_80A860C:
 	ldr r1, [r5,#0x10]
 	mov r4, #8
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A8640
 	movflag EVENT_9D9
@@ -7965,7 +7965,7 @@ off_80A9194:
 	.word byte_8143704
 	thumb_func_end owMapObject_weatherTornado_getParams_80A916C
 
-// symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (sub_80011D6).
+// symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (overworldObject_withinBoxCheck_signed_80011D6).
 // symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
 // symdb: toolkit
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_checkHitPlayer_80A91A4.yaml
@@ -7982,7 +7982,7 @@ owMapObject_weatherTornado_checkHitPlayer_80A91A4:
 	ldr r1, [r5,#0x10]
 	mov r4, #0x14
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A91D0
 	movflag EVENT_BE6
@@ -8530,7 +8530,7 @@ sub_80A95A8:
 	ldr r1, [r5,#0x10]
 	mov r4, #0xc
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A95E6
 	movflag EVENT_BFC
@@ -8801,7 +8801,7 @@ loc_80A97BC:
 	ldr r1, [r5,#0x10]
 	mov r4, #0x12
 	lsl r4, r4, #0x10
-	bl sub_80011D6
+	bl overworldObject_withinBoxCheck_signed_80011D6
 	cmp r0, #1
 	bne locret_80A97F0
 	movflag EVENT_BE8

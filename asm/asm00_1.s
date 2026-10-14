@@ -10962,7 +10962,7 @@ battle_runMainStep_800801C:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_802DE5C
+	bl battleObject_runAIScript_802DE5C
 	ldrb r0, [r5,#0x4] // (byte_203CA74 - 0x203ca70)
 	pop {r5,pc}
 	.balign 4, 0
@@ -11487,7 +11487,7 @@ sub_800840C:
 	mov r0, #4
 	strb r0, [r5,#3]
 loc_8008420:
-	bl sub_801483C
+	bl battle_runControllerStep_801483C
 	tst r0, r0
 	bne locret_8008450
 	ldrb r0, [r5,#2]
@@ -11542,9 +11542,9 @@ locret_8008490:
 	pop {pc}
 	thumb_func_end sub_8008452
 
-// symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in sub_801483C.
+// symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in battle_runControllerStep_801483C.
 // symdb: void sub_8008492(void); /* in: r5 = battle object/work struct ptr; out: none (r0 holds 4/6 or
-// symdb: the sub_801483C result on the early-return path, NZ flags per last tst/mov) */
+// symdb: the battle_runControllerStep_801483C result on the early-return path, NZ flags per last tst/mov) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objAdvanceStateTimer_8008492.yaml
 	thumb_local_start
 battle_objAdvanceStateTimer_8008492:
@@ -11555,7 +11555,7 @@ battle_objAdvanceStateTimer_8008492:
 	bl TestBattleFlag_0x40
 	bne loc_80084BA
 loc_80084A2:
-	bl sub_801483C
+	bl battle_runControllerStep_801483C
 	tst r0, r0
 	bne locret_80084BE
 	ldrb r0, [r5,#2]
@@ -12218,7 +12218,7 @@ sub_8008950:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_802DE5C
+	bl battleObject_runAIScript_802DE5C
 	ldrb r0, [r5,#0x4] // (byte_203CA74 - 0x203ca70)
 	pop {r5,pc}
 	.balign 4, 0
@@ -12768,7 +12768,7 @@ sub_8008D60:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_802DE5C
+	bl battleObject_runAIScript_802DE5C
 	ldrb r0, [r5,#0x4] // (byte_203CA74 - 0x203ca70)
 	pop {r5,pc}
 	.balign 4, 0
@@ -15817,7 +15817,7 @@ loc_800A218:
 
 // symdb: Returns 1 only when the battle is not time-stopped, not over, and the current anim state == 0x4000; otherwise 0.
 // symdb: () -> r0 = 1 if condition met else 0 ; side effects: reads toolkit (r10) state and a word from
-// symdb: sub_801DFE4; sets nz/c/v flags
+// symdb: battle_getTotalDamageTakenForActor_801DFE4; sets nz/c/v flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_shouldPlayDeathAnim_800A21C.yaml
 	thumb_local_start
 battle_shouldPlayDeathAnim_800A21C:
@@ -15827,7 +15827,7 @@ battle_shouldPlayDeathAnim_800A21C:
 	bl battle_isBattleOver
 	tst r0, r0
 	bne loc_800A23A
-	bl sub_801DFE4
+	bl battle_getTotalDamageTakenForActor_801DFE4
 	ldr r1, dword_800A240 // =0x4000
 	cmp r0, r1
 	bne loc_800A23A

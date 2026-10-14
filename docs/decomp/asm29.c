@@ -247,7 +247,7 @@ int mapEntry_update_80A51F8()
         ClearEventFlag(v1[1]);
         ClearEventFlag(v1[2]);
         v0->currState = 4;
-        sub_80A5268();
+        mapEntry_onUpdate_80A5268();
     }
     SetEventFlag(v1[1]);
     SetEventFlag(v1[2]);
@@ -257,7 +257,7 @@ int mapEntry_update_80A51F8()
 
 
 // 0x80a5268
-void __noreturn sub_80A5268()
+void __noreturn mapEntry_onUpdate_80A5268()
 {
     int v0; // r5
     unsigned __int16 *v1; // r7
@@ -2377,8 +2377,8 @@ signed int sub_80A70FC()
     result = TestEventFlagFromImmediate(5, 241);
     if ( v3 )
     {
-        if ( (v4 = sub_809E1AE(), !v5) && sub_80011D6(v0[3], v0[4], v4, SHIDWORD(v4)) == 1 && !v1[33]
-            || (result = v0[3], !v1[33]) && (result = sub_80011D6(result, v0[4], v1[31], v1[32]), result == 1) )
+        if ( (v4 = sub_809E1AE(), !v5) && overworldObject_withinBoxCheck_signed_80011D6(v0[3], v0[4], v4, SHIDWORD(v4)) == 1 && !v1[33]
+            || (result = v0[3], !v1[33]) && (result = overworldObject_withinBoxCheck_signed_80011D6(result, v0[4], v1[31], v1[32]), result == 1) )
         {
             SetEventFlagFromImmediate(5, 241);
             result = 1;
@@ -2885,8 +2885,8 @@ signed int sub_80A75DC()
     result = TestEventFlagFromImmediate(5, 241);
     if ( v3 )
     {
-        if ( (v4 = sub_809E1AE(), !v5) && sub_80011D6(v0[3], v0[4], v4, SHIDWORD(v4)) == 1 && !v1[33]
-            || (result = v0[3], !v1[33]) && (result = sub_80011D6(result, v0[4], v1[31], v1[32]), result == 1) )
+        if ( (v4 = sub_809E1AE(), !v5) && overworldObject_withinBoxCheck_signed_80011D6(v0[3], v0[4], v4, SHIDWORD(v4)) == 1 && !v1[33]
+            || (result = v0[3], !v1[33]) && (result = overworldObject_withinBoxCheck_signed_80011D6(result, v0[4], v1[31], v1[32]), result == 1) )
         {
             SetEventFlagFromImmediate(5, 241);
             result = 1;
@@ -4471,7 +4471,7 @@ int sub_80A860C()
     if ( v2 )
     {
         v3 = sub_809E1AE();
-        result = sub_80011D6(*(v0 + 12), *(v0 + 16), v3, SHIDWORD(v3));
+        result = overworldObject_withinBoxCheck_signed_80011D6(*(v0 + 12), *(v0 + 16), v3, SHIDWORD(v3));
         if ( result == 1 )
         {
             SetEventFlagFromImmediate(9, 217);
@@ -5651,7 +5651,7 @@ int owMapObject_weatherTornado_checkHitPlayer_80A91A4()
     if ( !v2 )
     {
         v3 = sub_809E1AE();
-        result = sub_80011D6(*(v0 + 12), *(v0 + 16), v3, SHIDWORD(v3));
+        result = overworldObject_withinBoxCheck_signed_80011D6(*(v0 + 12), *(v0 + 16), v3, SHIDWORD(v3));
         if ( result == 1 )
             result = SetEventFlagFromImmediate(11, 230);
     }
@@ -6009,7 +6009,7 @@ int sub_80A95A8()
     v2 = sub_809E1AE();
     if ( v3 == *(v0 + 20) )
     {
-        LODWORD(v2) = sub_80011D6(*(v0 + 12), *(v0 + 16), v2, SHIDWORD(v2));
+        LODWORD(v2) = overworldObject_withinBoxCheck_signed_80011D6(*(v0 + 12), *(v0 + 16), v2, SHIDWORD(v2));
         if ( v2 == 1 )
         {
             SetEventFlagFromImmediate(11, 252);
@@ -6209,7 +6209,7 @@ int sub_80A979C()
                 if ( !v3 )
                 {
                     v5 = sub_809E1AE();
-                    result = sub_80011D6(*(v0 + 12), *(v0 + 16), v5, SHIDWORD(v5));
+                    result = overworldObject_withinBoxCheck_signed_80011D6(*(v0 + 12), *(v0 + 16), v5, SHIDWORD(v5));
                     if ( result == 1 )
                     {
                         SetEventFlagFromImmediate(11, 232);

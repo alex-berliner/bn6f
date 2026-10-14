@@ -845,7 +845,7 @@ custMenuMainMaybe_8026A88: // (self: * S20364C0 $r5) -> u8
 	mov lr, pc
 	bx r1
 
-	bl sub_802A2B0 // (self: * S20364C0 $r5) -> ()
+	bl custMenu_dispatchState_802A2B0 // (self: * S20364C0 $r5) -> ()
 
 	mov r0, #0
 	pop {r5,pc}
@@ -926,7 +926,7 @@ battle_custMenuAnimateCursorToOK_8026B04: // (self: * S20364C0 $r5) -> ()
 	strh r0, [r1,#0x18]
 
 	mov r0, #0
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 
 	mov r0, #0x80
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -995,7 +995,7 @@ loc_8026B8C:
 	mov r1, r0
 	mov r0, #0x78 
 	sub r0, r0, r1
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 	pop {r0}
 	cmp r0, #0
 	bne loc_8026BE8
@@ -1137,7 +1137,7 @@ loc_8026C5C: // endif
 	mov r1, r0
 	mov r0, #0x78 
 	sub r0, r0, r1
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 	pop {r0}
 	cmp r0, #0x78 
 	bne loc_8026C7E
@@ -1219,7 +1219,7 @@ sub_8026D06: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0x78 
 	strh r0, [r3,#0x18]
 	mov r0, #0
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 	ldr r0, off_8026DA8 // =0x2000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	bl sub_8029D80
@@ -1250,7 +1250,7 @@ loc_8026D5C:
 	mov r0, #0
 	strh r0, [r3,#0x18]
 	mov r0, #0x78 
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 	push {r4,r5}
 	// j
 	mov r0, #0
@@ -3439,7 +3439,7 @@ battle_customGauge_EndTurn_8027D78:
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0
 	strh r0, [r1,#0x18]
-	bl sub_801E71C
+	bl battle_setNaviStatusGfx_801E71C
 	mov r0, #0x80
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	mov r0, #0
@@ -4375,7 +4375,7 @@ battle_loadGfxChunkBySelector_8028320:
 loc_8028334:
 	ldr r0, off_8028368 // =byte_802A700 
 	mov r3, #3
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	add r1, #0xc0
 locret_802833E:
 	pop {pc}
@@ -4714,7 +4714,7 @@ loc_80285C6:
 	beq loc_80285D4
 	ldr r0, off_8028668 // =byte_802A6C0 
 	ldr r1, dword_8028654 // =0x6009b60 
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 loc_80285D4:
 	ldr r3, [sp,#8]
 	cmp r3, #0
@@ -4814,9 +4814,9 @@ dword_8028688:
 // symdb: = src_ptr (preserved), r1 = dest advanced by row_count*0x40, r2..r7 = clobbered, NZCV clobbered,
 // symdb: PC = lr ; side effect: enqueues (row_count) GFX DMA transfers via
 // symdb: QueueEightWordAlignedGFXTransfer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802868C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadGfxChunkBySelectorWithRows_802868C.yaml
 	thumb_local_start
-sub_802868C:
+battle_loadGfxChunkBySelectorWithRows_802868C:
 	push {r0-r4,lr}
 	mov r4, r3
 	mov r2, #0x40 
@@ -4826,10 +4826,10 @@ loc_8028692:
 	sub r4, #1
 	bne loc_8028692
 	pop {r0-r4,pc}
-	thumb_func_end sub_802868C
+	thumb_func_end battle_loadGfxChunkBySelectorWithRows_802868C
 
-// symdb: Loads the three sprite sheets used by the Beast Out selection screen into VRAM slots 1-3 via sub_802868C.
-// symdb: void sub_802869E(int r2 /* forwarded to sub_802868C, untouched */); returns with r1=0x6009B60
+// symdb: Loads the three sprite sheets used by the Beast Out selection screen into VRAM slots 1-3 via battle_loadGfxChunkBySelectorWithRows_802868C.
+// symdb: void sub_802869E(int r2 /* forwarded to battle_loadGfxChunkBySelectorWithRows_802868C, untouched */); returns with r1=0x6009B60
 // symdb: and r3=3 from the last call setup
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/beastout_LoadSelectionScreenSpriteSheets_802869E.yaml
 	thumb_local_start
@@ -4838,15 +4838,15 @@ beastout_LoadSelectionScreenSpriteSheets_802869E:
 	ldr r1, dword_80286C0 // =0x6009aa0 
 	ldr r0, off_80286D0 // =byte_802A6C0 
 	mov r3, #1
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	ldr r1, dword_80286C4 // =0x6009ae0 
 	ldr r0, off_80286CC // =byte_802A680 
 	mov r3, #2
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	ldr r1, dword_80286C8 // =0x6009b60 
 	ldr r0, off_80286D0 // =byte_802A6C0 
 	mov r3, #3
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	pop {pc}
 	.balign 4, 0
 dword_80286C0:
@@ -5003,7 +5003,7 @@ loadOneSpriteTileRow_80287D2:
 	ldr r1, dword_8028808 // =0x6009360 
 	ldr r0, off_802880C // =byte_802A6C0 
 	mov r3, #8
-	bl sub_802868C
+	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	ldr r0, off_8028818 // =byte_86E587C 
 	ldr r1, off_802881C // =unk_3001A80 
 	mov r2, #0x20 
@@ -8830,9 +8830,9 @@ off_802A2AC:
 
 // symdb: Per-frame step of the custom-menu (chip select) state machine: dispatches the current state's handler, then advances an internal counter and rolls over state when applicable.
 // symdb: (r5 = *S20364C0) -> (void, scratch clobbered; out r2/r3/r4/r6)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A2B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/custMenu_dispatchState_802A2B0.yaml
 	thumb_local_start
-sub_802A2B0: // (self: * S20364C0 $r5) -> ()
+custMenu_dispatchState_802A2B0: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_802A2D4 // =off_802A2D8 
 
@@ -8865,7 +8865,7 @@ off_802A2D8:
 	.word sub_802A30C+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A33E+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A362+1 // (self: * S20364C0 $r5) -> ()
-	thumb_func_end sub_802A2B0
+	thumb_func_end custMenu_dispatchState_802A2B0
 
 // symdb: If a condition (sub_802A394) is met, starts a screen fade (0x54 and 0x5C with length 0xA) and advances this object's state machine to step 4.
 // symdb: void sub_802A2E8(S20364C0 *self /* r5 */) -> void; flags NZ returned (from CMP r0,#0 or the
@@ -16592,9 +16592,9 @@ off_802DE58:
 
 // symdb: Runs two consecutive sub-steps of an AI script step when battle flag 0x40 is clear
 // symdb: () -> void ; tests battle flag 0x40 via r10
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
-	thumb_func_start sub_802DE5C
-sub_802DE5C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runAIScript_802DE5C.yaml
+	thumb_func_start battleObject_runAIScript_802DE5C
+battleObject_runAIScript_802DE5C:
 	push {lr}
 	bl TestBattleFlag_0x40
 	beq locret_802DE70
@@ -16605,7 +16605,7 @@ sub_802DE5C:
 locret_802DE70:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_802DE5C
+	thumb_func_end battleObject_runAIScript_802DE5C
 
 	thumb_local_start
 sub_802DE74:
@@ -21382,7 +21382,7 @@ off_8030064:
 off_8030068:
 	.word camera_updateDerivedOffsets_803007C+1
 	.word camera_updateDerivedOffsets_803007C+1
-	.word sub_80300AC+1
+	.word battle_clampCameraToBounds_80300AC+1
 	.word sub_8030104+1
 	.word camera_updateDerivedOffsets_803007C+1
 	thumb_func_end camera_dispatchUpdate_8030054
@@ -21422,9 +21422,9 @@ camera_updateDerivedOffsets_803007C:
 // symdb: Clamps the battle camera's next (X, Y, Z) position into allowed ranges derived from fields on the Camera struct, then stores the clamped 16.16 values and their 16-bit integer halves back.
 // symdb: (r5 = &Camera) -> none (void); side effects: writes to Camera fields 0x04, 0x06, 0x18..0x24,
 // symdb: 0x28, 0x2c, 0x3c..0x44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80300AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clampCameraToBounds_80300AC.yaml
 	thumb_local_start
-sub_80300AC:
+battle_clampCameraToBounds_80300AC:
 	ldr r1, [r5,#oCamera_nextX_3c]
 	ldr r2, [r5,#oCamera_Unk_18]
 	cmp r1, r2
@@ -21476,7 +21476,7 @@ loc_80300FA:
 	strh r6, [r5,#oCamera_Unk_06]
 locret_8030102:
 	mov pc, lr
-	thumb_func_end sub_80300AC
+	thumb_func_end battle_clampCameraToBounds_80300AC
 
 	thumb_local_start
 sub_8030104:
@@ -23609,7 +23609,7 @@ loc_8030E4C:
 	push {r6,r7}
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0,#4]
 	sub r4, r7, r4
 	mov r8, r4
@@ -23621,7 +23621,7 @@ loc_8030E4C:
 	mov r4, r6
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0]
 	sub r4, r7, r4
 	mov r9, r4
@@ -23678,7 +23678,7 @@ loc_8030EC4:
 	push {r6,r7}
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0,#4]
 	sub r4, r7, r4
 	mov r8, r4
@@ -23690,7 +23690,7 @@ loc_8030EC4:
 	mov r4, r6
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0]
 	sub r4, r7, r4
 	mov r9, r4
@@ -23745,7 +23745,7 @@ loc_8030F3C:
 	push {r6,r7}
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0,#4]
 	sub r4, r7, r4
 	mov r8, r4
@@ -23757,7 +23757,7 @@ loc_8030F3C:
 	mov r4, r6
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0]
 	sub r4, r7, r4
 	mov r9, r4
@@ -23812,7 +23812,7 @@ loc_8030FB4:
 	push {r6,r7}
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0,#4]
 	sub r4, r7, r4
 	mov r8, r4
@@ -23824,7 +23824,7 @@ loc_8030FB4:
 	mov r4, r6
 	mov r6, r3
 	mov r7, r4
-	bl sub_8031048
+	bl battleObject_collisionProjectRay_8031048
 	ldr r4, [r0]
 	sub r4, r7, r4
 	mov r9, r4
@@ -23858,9 +23858,9 @@ DebugStr8031037:
 // symdb: A small tail routine for the line/point hit-test helpers that returns the projected (dx, dy) along a ray, with both components made positive (the ray is normalized so the longer axis of (r6, r7) goes into r7 and the shorter remains in r6).
 // symdb: (r6 = |dy|, r7 = |dx|, r2 = scratch, r3 = sign) -> r6 = shorter-leg remainder, r7 = longer-leg
 // symdb: steps; pushes/pops {r2, r3, lr} and returns via `pop {pc}`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031048.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_collisionProjectRay_8031048.yaml
 	thumb_local_start
-sub_8031048:
+battleObject_collisionProjectRay_8031048:
 	push {r2,r3,lr}
 	mov r2, #0
 	mov r3, #0
@@ -23889,7 +23889,7 @@ loc_803106C:
 	neg r6, r6
 locret_8031076:
 	pop {r2,r3,pc}
-	thumb_func_end sub_8031048
+	thumb_func_end battleObject_collisionProjectRay_8031048
 
 	thumb_local_start
 sub_8031078:
@@ -25253,7 +25253,7 @@ dword_8031918:
 	.word NULL
 	.word NULL
 	.word NULL
-	.word sub_8031A5E+1
+	.word battleObject_getChipLockColourOne_8031A5E+1
 	.word NULL
 	.word NULL
 	.word NULL
@@ -25266,9 +25266,9 @@ dword_8031918:
 
 // symdb: Returns the per-actor count for an AI sub-state (3 for AIIndex 1, else 2).
 // symdb: (r0 = AIIndex selector) -> r0 = 2 or 3 ; clobbers r5, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiIndexToActorCount_8031980.yaml
 	thumb_local_start
-sub_8031980:
+battle_aiIndexToActorCount_8031980:
 	push {lr}
 	ldr r5, off_8031994 // =dword_2013940 
 	cmp r0, #1
@@ -25283,7 +25283,7 @@ loc_803198E:
 	.balign 4, 0
 off_8031994:
 	.word dword_2013940
-	thumb_func_end sub_8031980
+	thumb_func_end battle_aiIndexToActorCount_8031980
 
 	thumb_local_start
 sub_8031998:
@@ -25301,7 +25301,7 @@ sub_803199E:
 	mov r3, #4
 	mov r5, #0x10
 	bl math_pointCrossHalfPlaneTest_8031594
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_803199E
 
@@ -25314,7 +25314,7 @@ sub_80319B6:
 	mov r3, #8
 	mov r5, #0x10
 	bl sub_80315B8
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319B6
 
@@ -25327,7 +25327,7 @@ sub_80319CE:
 	mov r3, #0x10
 	mov r5, #8
 	bl sub_80315B8
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319CE
 
@@ -25340,7 +25340,7 @@ sub_80319E6:
 	mov r3, #0x10
 	mov r5, #0xc
 	bl math_pointCrossHalfPlaneTest_8031594
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319E6
 
@@ -25353,7 +25353,7 @@ sub_80319FE:
 	mov r3, #0x10
 	mov r5, #0
 	bl sub_8031570
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319FE
 
@@ -25366,7 +25366,7 @@ sub_8031A16:
 	mov r3, #0x10
 	mov r5, #0x10
 	bl math_pointCrossHalfPlaneTest_8031594
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_8031A16
 
@@ -25379,7 +25379,7 @@ sub_8031A2E:
 	mov r3, #0x10
 	mov r5, #0x10
 	bl sub_80315B8
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_8031A2E
 
@@ -25392,20 +25392,20 @@ sub_8031A46:
 	mov r3, #0x10
 	mov r5, #0
 	bl math_pointLeftOfLineTest_80315DC
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_8031A46
 
 // symdb: Thin wrapper that returns the chip-lockout palette index 3 (locked) by forwarding `r0 = 1` to the chip-lockout colour helper and returning its result.
 // symdb: () -> r0 = 3 (carry set in all captured snapshots); no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getChipLockColourOne_8031A5E.yaml
 	thumb_local_start
-sub_8031A5E:
+battleObject_getChipLockColourOne_8031A5E:
 	push {lr}
 	mov r0, #1
-	bl sub_8031980
+	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
-	thumb_func_end sub_8031A5E
+	thumb_func_end battleObject_getChipLockColourOne_8031A5E
 
 // symdb: Reads one 32-bit entry from an overworld script/data stream into object 55's value field, advances the stream pointer, and resets its two sentinel bytes to 0xFE.
 // symdb: void overworldObject55_ReadStreamEntry(u32* stream) // r0 in: pointer to the entry to consume;

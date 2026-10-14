@@ -1459,7 +1459,7 @@ int __fastcall sub_80011C0(int a1, int a2)
 
 
 // 0x80011d6
-BOOL __fastcall sub_80011D6(int a1, int a2, int a3, int a4)
+BOOL __fastcall overworldObject_withinBoxCheck_signed_80011D6(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
 

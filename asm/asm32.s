@@ -16763,16 +16763,16 @@ battle_reloadObjectSprite_8116A04:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
-	bl sub_8116A44
+	bl battle_queueOamEntriesForBattleObjectStateShadow_8116A44
 	mov r0, #8
 	strb r0, [r5,#9]
 locret_8116A26:
 	pop {pc}
 	thumb_func_end battle_reloadObjectSprite_8116A04
 
-// symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into sub_8116A44
+// symdb: If a state/counter byte pointed to by r7 has reached 8, writes 8 into r5+8 to keep the two bytes in sync, then tail-continues into battle_queueOamEntriesForBattleObjectStateShadow_8116A44
 // symdb: void sub_8116A28(r5=destStructPtr, r7=counterBytePtr /*, r4/r6 also live inputs; r4-r7
-// symdb: preserved*/); returns via sub_8116A44 in r0-r3 with nzcv set
+// symdb: preserved*/); returns via battle_queueOamEntriesForBattleObjectStateShadow_8116A44 in r0-r3 with nzcv set
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A28.yaml
 	thumb_local_start
 sub_8116A28:
@@ -16783,7 +16783,7 @@ sub_8116A28:
 	mov r0, #8
 	strb r0, [r5,#8]
 loc_8116A34:
-	bl sub_8116A44
+	bl battle_queueOamEntriesForBattleObjectStateShadow_8116A44
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8116A28
@@ -16797,9 +16797,9 @@ sub_8116A3C:
 
 // symdb: Queues a fixed set of sprite/OAM entries (3 + 3 + 2 entries) into OAM using sprite_queueOamEntryThunk_802FE28, presumably redrawing/rehiding battle object/shadow tiles when an object's state transitions to 8.
 // symdb: () -> r0 = 0xFF (NZ-C-) ; side effects: writes OAM via sub_802FE28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116A44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueOamEntriesForBattleObjectStateShadow_8116A44.yaml
 	thumb_local_start
-sub_8116A44:
+battle_queueOamEntriesForBattleObjectStateShadow_8116A44:
 	push {r4-r7,lr}
 	ldr r7, off_8116A90 // =dword_8116A94
 	mov r6, #0
@@ -16860,7 +16860,7 @@ dword_8116ACC:
 byte_8116AD0:
 	.byte 0xA0, 0xE2, 0x0, 0x0, 0x52, 0x0, 0xC8, 0x40, 0xA8, 0xE2
 	.byte 0x0, 0x0
-	thumb_func_end sub_8116A44
+	thumb_func_end battle_queueOamEntriesForBattleObjectStateShadow_8116A44
 
 // symdb: Dispatches the ePET menu update routine by a variant byte stored at offset 8 of the battle object, setting r7 to the global menu-data pointer before calling through a 3-entry jump table.
 // symdb: void epetMenuVariantDispatch(u32 r5 /* battle_obj */); // outputs r2,r3,r5,r10,r11; clobbers
@@ -22763,7 +22763,7 @@ sub_81196C4:
 off_81196D8:
 	.word off_81196DC
 off_81196DC:
-	.word sub_81196F0+1
+	.word submenu_updatePanelChipInfoIfDirty_81196F0+1
 	.word sub_8119730+1
 	.word sub_811974C+1
 	.word npc_stepChainSetState0x10_811975C+1
@@ -22774,9 +22774,9 @@ off_81196DC:
 // symdb: (r5 = SubMenu*, r10 = Toolkit*) -> r5 preserved ; side effects: may redraw chip gfx/text via
 // symdb: chipPanel_renderChipGfxAndText_8119438 and writes fields (+0x9, +0x10, +0x1a) on the submenu
 // symdb: struct.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81196F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updatePanelChipInfoIfDirty_81196F0.yaml
 	thumb_local_start
-sub_81196F0:
+submenu_updatePanelChipInfoIfDirty_81196F0:
 	push {r4-r7,lr}
 	bl sub_8119880
 	beq loc_811970A
@@ -22810,7 +22810,7 @@ loc_8119722:
 locret_811972C:
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_81196F0
+	thumb_func_end submenu_updatePanelChipInfoIfDirty_81196F0
 
 	thumb_local_start
 sub_8119730:

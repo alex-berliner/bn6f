@@ -21711,9 +21711,9 @@ sprite_moveYUp64AndMarkDirty_814E1D4:
 // symdb: One-shot update routine that bumps the battle object's element index and marks the routine as finished
 // symdb: (r0 = BattleObject*, r1 = AIData*) -> r0 = BattleObject* ; sets Element, ORs flags, returns same
 // symdb: BattleObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E1E8.yaml
-	thumb_func_start sub_814E1E8
-sub_814E1E8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8.yaml
+	thumb_func_start battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8
+battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	sub r3, #0x40 
@@ -21723,7 +21723,7 @@ sub_814E1E8:
 	orr r3, r2
 	strb r3, [r1]
 	bx r12
-	thumb_func_end sub_814E1E8
+	thumb_func_end battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8
 
 // symdb: Recomputes a status byte for the object/state structure in r1 via sub_814E0D0, stores it at +0xF, and sets the 0xC flag bits in the control byte at +0.
 // symdb: void sub_814E1FC(u8* state /* r1 */); // calls sub_814E0D0 (result in r3); flags NZ updated from

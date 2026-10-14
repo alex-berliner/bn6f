@@ -2294,9 +2294,9 @@ loc_80011D0:
 // symdb: Returns 1 if an overworld object (or NPC) lies within a signed-axis-aligned cube of half-extent `r4` around the point `(r0, r1)` on the XY plane with both Z extents checked `>= 0`; 0 otherwise.
 // symdb: (r0 = X0 unsigned fixed, r1 = Y0 unsigned fixed, r2 = X1 unsigned fixed, r3 = Y1 unsigned fixed,
 // symdb: r4 = half-extent in q16.16 + Z-extent also r4) -> r0 = 0/1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011D6.yaml
-	thumb_func_start sub_80011D6
-sub_80011D6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/overworldObject_withinBoxCheck_signed_80011D6.yaml
+	thumb_func_start overworldObject_withinBoxCheck_signed_80011D6
+overworldObject_withinBoxCheck_signed_80011D6:
 	sub r0, r0, r2
 	add r0, r0, r4
 	lsl r2, r4, #1
@@ -2311,7 +2311,7 @@ sub_80011D6:
 loc_80011EC:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_80011D6
+	thumb_func_end overworldObject_withinBoxCheck_signed_80011D6
 
 	thumb_local_start
 sub_80011F0:

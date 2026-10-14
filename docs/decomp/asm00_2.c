@@ -1995,7 +1995,7 @@ int sub_801010C()
 
 
 // 0x801011a
-int sub_801011A()
+int ai_clearPwrAtkStateFromBattleObject_801011A()
 {
     int v0; // r5
     int v1; // r0
@@ -3024,7 +3024,7 @@ int __fastcall sub_8010B78(int a1, int a2)
     v10 = a2;
     battle_testFlag0x40_800A8F8(a1);
     if ( _ZF )
-        v3 = sub_801DFE4();
+        v3 = battle_getTotalDamageTakenForActor_801DFE4();
     else
         v3 = &loc_1500 + *(getEntryPtr_2036120_1D0_802E070(v10) + 20);
     v4 = v3;
@@ -3977,7 +3977,7 @@ int __fastcall object_setAttack2(char a1)
     v2 = *(v1 + 88) + 160;
     *v2 = 0;
     *(v2 + 28) = 2;
-    return sub_801011A();
+    return ai_clearPwrAtkStateFromBattleObject_801011A();
 }
 
 
@@ -9299,7 +9299,7 @@ signed int timer_resetAndStart_801482C()
 
 
 // 0x801483c
-int sub_801483C()
+int battle_runControllerStep_801483C()
 {
     (*(&off_8014860 + dword_20367F0))();
     return byte_20367F4[0];
@@ -16928,7 +16928,7 @@ LABEL_48:
                     object_clearFlag2(256);
                     if ( !*(v1 + 92) )
                         *(v1 + 92) = *(v1 + 8);
-                    sub_801011A();
+                    ai_clearPwrAtkStateFromBattleObject_801011A();
                     battleObject_clearHitFlags_801A29A();
                     battleObject_resetCollisionState_801A2B0();
                     LOWORD(v7) = object_getFlag2();
@@ -16962,7 +16962,7 @@ LABEL_48:
                     if ( object_getFlag2() & 4 )
                     {
                         object_clearFlag2(4);
-                        sub_801011A();
+                        ai_clearPwrAtkStateFromBattleObject_801011A();
                         v8 = battle_object_postAction4CheckClearFlags_801BA92();
                         v9 = battle_checkObjectAction6Flag_801BABE() | v8;
                         if ( !v9 || v9 & 2 )
@@ -19194,7 +19194,7 @@ int __noreturn sub_801C906()
 
 
 // 0x801c984
-BOOL sub_801C984()
+BOOL battle_initObjectStoryFlags_801C984()
 {
     int v0; // r5
     int v1; // r0
@@ -20870,7 +20870,7 @@ signed int __fastcall sub_801DFD0(signed int result)
 
 
 // 0x801dfe4
-int sub_801DFE4()
+int battle_getTotalDamageTakenForActor_801DFE4()
 {
     return word_20352A0;
 }
@@ -21455,7 +21455,7 @@ int battleObject_resolveEmotionPalette_801E6A8()
 
 
 // 0x801e71c
-int __fastcall sub_801E71C(int result)
+int __fastcall battle_setNaviStatusGfx_801E71C(int result)
 {
     byte_2035292 = result;
     return result;
