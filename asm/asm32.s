@@ -32165,7 +32165,7 @@ off_811E2B0:
 
 // symdb: Updates the Beast Out / Cross Fusion player's battle object sprite each frame, including a flip-state bit, optional sprite/animation reload and cutscene-driven coordinate offset.
 // symdb: (r5 = ptr to BattleObject, r6 = ptr to related object / extra struct) -> void ; side effects:
-// symdb: mutates object header flags and animation index, calls sprite_setCoordinates / battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314 /
+// symdb: mutates object header flags and animation index, calls sprite_setCoordinates / sub_811E314 /
 // symdb: sprite_update, pushes two args for cutscene_checkOriginalCutsceneScriptPos_8036F70
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSp_update_811E2B4.yaml
 	thumb_local_start

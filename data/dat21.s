@@ -3834,8 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Handles the BBS request screen state machine, managing updates based on player input.
-// symdb: () -> void ; updates BBS state, manipulates event flags, modifies render/cutscene globals
+// symdb: Unknown — no assembly available in the provided context
+// symdb: unknown
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

@@ -29230,6 +29230,11 @@ loc_80C586C:
 	pop {r4,pc}
 	thumb_func_end sub_80C57F4
 
+// symdb: Aura-style battle object update: on battle over spawn the death effect, otherwise process collision (time-stop aware), and on collision resolution self-destroy.
+// symdb: (r5 = oBattleObject self, r10 = oToolkit) -> void ; side effects: removes collision, spawns a
+// symdb: type-4 effect on battle over, clears collision region and transitions CurState to
+// symdb: CUR_STATE_DESTROY
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5886.yaml
 	thumb_local_start
 sub_80C5886:
 	push {lr}
@@ -56215,6 +56220,9 @@ dword_80D231C:
 	.word 0x1770
 	thumb_func_end sub_80D22B0
 
+// symdb: Per-frame battle object action step: forces VISIBLE, clears final palette, dispatches the CurAction handler, then refreshes collision and sprite state.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> side effects on the object only; void.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D2320.yaml
 	thumb_local_start
 sub_80D2320:
 	push {lr}
@@ -61503,6 +61511,10 @@ loc_80D4A72:
 	pop {r4,pc}
 	thumb_func_end sub_80D4A48
 
+// symdb: Destroy-phase handler for a battle object: tears down collision, spawns a death/hit effect, optionally restores the panel it left, dispatches via CurAction table, then ticks sprite/collision.
+// symdb: (r5 = objectPtr) -> void ; side effects: collision data for r5 reset, effect sprite spawned at
+// symdb: r5+0x34..0x40, jumps via CurAction jumptable at 0x80D4AFC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4A98.yaml
 	thumb_local_start
 sub_80D4A98:
 	push {r4,r7,lr}
@@ -88258,9 +88270,10 @@ sub_80E1662:
 	mov pc, lr
 	thumb_func_end sub_80E1662
 
-// symdb: Initialise a stack-local list of allied/enemy BattleObject pointers (5-word slots) by collecting opponents via object_getEnemyByNameRange, then zeroing the self-slot.
-// symdb: (r5 = self BattleObject) -> r0 = 0 (always); side effects: writes 0x34 bytes of stack temp,
-// symdb: mutates self→RelatedObject1Ptr via sub_80E16CC
+// symdb: Resolve opposing-side enemies within an enemy-name ID range and store their object pointers into a caller-provided 4-entry table on the stack.
+// symdb: (r5 = self BattleObject*, r6..r10 scratch) -> void ; stack: out [BattleObject*, BattleObject*,
+// symdb: BattleObject*, u8] indexed by alliance-flipping enemy name IDs, side-effect-only (caller-
+// symdb: provided scratch + stack)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
@@ -110803,6 +110816,10 @@ locret_80EBEB0:
 	pop {r4,pc}
 	thumb_func_end battle_aiBusterAttackTick_80EBE54
 
+// symdb: AI attack step that drives the Unk_10/Unk_12 charge timer in AIAttackVars and exits to player-action path on completion
+// symdb: (r5 = BattleObject, r6 = ?, r7 = AttackVars, r10 = Toolkit, lr = ret) -> r0 = 0; side effects
+// symdb: via r5/r7/AIDataPtr writes and r6/r10/lr touched in callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EBEB2.yaml
 	thumb_local_start
 sub_80EBEB2:
 	push {r4,lr}

@@ -24195,6 +24195,11 @@ dword_814F1E4:
 	.word 0x68736D53
 	thumb_func_end sound_814F104
 
+// symdb: Sets the "stop" flag magic on a music player struct and, if it was just toggled on this call, kicks the per-channel bank tear-down.
+// symdb: (r0 = musicPlayerStruct*) -> void ; side effect: writes `0x68736D53` (`"Smsh"` little-endian)
+// symdb: into `[r0+0x34]`, may OR `0x80000000` into `[r0+4]`, and stops `r4 = [r0+8]` banks of channels
+// symdb: pointed at by `[r0+0x2C]` (each 0x50 bytes) via `sound_stopAllChannelsInBank_814E4DC`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F1E8.yaml
 	thumb_local_start
 sub_814F1E8:
 	push {r4-r6,lr}

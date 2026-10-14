@@ -797,6 +797,11 @@ cutscenescript_808956E:
 
 	thumb_func_end sub_8089370
 
+// symdb: BattleObject dispatch — read the 1-byte state at [r5] and tail-jump to one of 34 state-specific handlers, returning their NZ-flag as boolean in r0.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (r0==0 false, non-zero true) ; side effects:
+// symdb: full state handler called via jump table at 0x80895C0; clobbers r0-r3,r6,r12,lr; preserves
+// symdb: r4,r5,r7-r10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80895A8.yaml
 	thumb_local_start
 sub_80895A8:
 	push {r4-r7,lr}

@@ -1925,6 +1925,11 @@ loc_80A5C98:
 	pop {r4-r7,pc}
 	thumb_func_end battle_ai_checkBeastOutTrigger_80A5C74
 
+// symdb: Runs the one-shot intro text shown to the player's Beast during a PET/Beast-out sequence (player locked, script fired, chatbox closed on finish) and reports its result.
+// symdb: (r5 = ReqBBS state pointer, r10 = Toolkit) -> r0 = 0 done / 1 finished talking / 2 keep stepping
+// symdb: ; side effects: locks/unlocks the OW player, drives a reqBBS text script, reads/writes chatbox
+// symdb: state and a flag at [r5+0xa].
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5C9C.yaml
 	thumb_local_start
 sub_80A5C9C:
 	push {r4-r7,lr}
@@ -3436,6 +3441,10 @@ byte_80A6E90:
 	.byte 0x78, 0x0, 0x26, 0xFE, 0x1A, 0x0, 0xE4, 0xFF
 	thumb_func_end battleObject_getFromListPair_80A6E78
 
+// symdb: AI dispatch wrapper that picks one of three handlers from a jump table using BattleObject.CurState (offset 0x8) and calls it via lr/bx, returning its r0 directly.
+// symdb: (r5 = *BattleObject, r1 = ?, others caller-saved) -> r0 = handler result (e.g. 0x26 from
+// symdb: samples)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E98.yaml
 	thumb_func_start sub_80A6E98
 sub_80A6E98:
 	push {lr}
@@ -3506,6 +3515,11 @@ loc_80A6F20:
 	.balign 4, 0x00
 	thumb_func_end sub_80A6EBC
 
+// symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
+// symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
+// symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
+// symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6F2C.yaml
 	thumb_local_start
 sub_80A6F2C:
 	push {r4-r7,lr}
@@ -4037,10 +4051,10 @@ loc_80A7342:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A72D8
 
-// symdb: Beast-Out/MegaBeast action-1 (Beast Cannon/etc.) substep: chooses the per-tick script flow (sub_80A7640 or write CurState=8) and runs sprite update + a phase helper.
-// symdb: in: r5 = battle object whose CurAction==1, r6 = battle object, r10 = toolkit ; out:
-// symdb: r2-r3-r4-r5-r8-r9-r10 (no caller-visible return; callee-saved only)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7354.yaml
+// symdb: Advances a battle object's CurAction state machine, updating the sprite and chaining per-state helpers (handles BeastOut/L-Message/AskJackOut gating around state 1)
+// symdb: (r5 = object ptr, r6 = ?, r10 = toolkit) -> void ; side effects: may mutate object state and
+// symdb: call sprite_update plus per-state helpers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7354.yaml
 	thumb_local_start
 sub_80A7354:
 	push {r4-r7,lr}
@@ -4410,6 +4424,10 @@ off_80A75CC:
 	.word byte_80A729C
 	thumb_func_end sub_80A75A4
 
+// symdb: Overworld map-object Beast-Out state helper: if EVENT_5F1 is unset, checks the player against an OW interaction box and sets the flag + writes 1 to [r5+0x24] on hit.
+// symdb: (r5 = some object, r6 = some object) -> void ; may read/write event flag EVENT_5F1; writes 1 to
+// symdb: [r5+0x24] on trigger
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A75DC.yaml
 	thumb_local_start
 sub_80A75DC:
 	push {r4-r7,lr}
@@ -4708,6 +4726,10 @@ sub_80A7812:
 	.balign 4, 0x00
 	thumb_func_end sub_80A7812
 
+// symdb: Tail-calls one of three handlers chosen by BattleObject[+0x8]'s low byte (likely CurState or related).
+// symdb: (r0 = [r5,#8] selector used for jump table, r5 = object base, r10 = toolkit, lr = return) -> r0
+// symdb: = handler's r0 ; void-like tail call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A781C.yaml
 	thumb_func_start sub_80A781C
 sub_80A781C:
 	push {lr}
@@ -4748,6 +4770,11 @@ sub_80A783C:
 	pop {pc}
 	thumb_func_end sub_80A783C
 
+// symdb: Configure a battle object's sprite slot for a Beast-Out style transformation (priority 2, optional alpha-off, then reload animation if the anim changed).
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, r4 in = some init context) -> side effects only ; writes
+// symdb: r5+0..0x5, r5+0xc..0x14, calls
+// symdb: sprite_disableAlpha/setPriority/setAnimation/loadAnimationData/update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A786C.yaml
 	thumb_local_start
 sub_80A786C:
 	push {lr}
@@ -5975,6 +6002,9 @@ sub_80A822C:
 	.balign 4, 0x00
 	thumb_func_end sub_80A822C
 
+// symdb: If a derived animation id differs from the cached one, reload the object's sprite animation data and shadow flag, then always run sprite_update.
+// symdb: (r5 = BattleObject*) -> void ; side effects sprite state, flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A827C.yaml
 	thumb_local_start
 sub_80A827C:
 	push {r4-r7,lr}
@@ -6029,6 +6059,10 @@ off_80A82CC:
 	.word byte_80A8114
 	thumb_func_end sub_80A82A4
 
+// symdb: For an overworld map object (r5), if its "tier/event" event flag for the current map is set, raise its sprite OAM priority to 3, and report whether the flag was set.
+// symdb: (r5 = OWMapObjectPtr, r10 = ToolkitPtr) -> r0 = 0/1 (event flag set?); side effect: may call
+// symdb: sprite_setPriority with priority=3 on the object's sprite
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
 	thumb_local_start
 sub_80A82DC:
 	push {r4,lr}

@@ -12985,10 +12985,10 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end setupNaviDisplay_802C34E
 
-// symdb: Performs a B-button panel swap in the chip-select screen by comparing A-panel vs B-panel slot indices and triggering the swap routine when they differ.
-// symdb: (r0 = diff-into-blend?, r1 = ?, r5 = ?, r6 = ?, r10 = toolkit) -> r0 = unchanged (ldrsb diff
-// symdb: result) ; side effects: calls sub_802C490 and call_sub_3005EBA to actually do the swap
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
+// symdb: handles up/down arrow D-pad input on the chip-select screen, advancing/retreating a cursor row and animating the chip icon when it changes column
+// symdb: (r5 = s_20364C0_struct*, r6 = joypad/AI flags, r10 = Toolkit*) -> side effects on
+// symdb: s_20364C0_struct and chip-select UI state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:
 	push {r4,r5,lr}
@@ -25098,6 +25098,10 @@ sub_8031808:
 	pop {pc}
 	thumb_func_end sub_8031808
 
+// symdb: Computes a Manhattan-style panel distance between the entity at r0 and its target, returning a panel count adjusted by an entry header.
+// symdb: (r0 = entity/AI-data ptr, r5 = context) -> r0 = adjusted panel distance ; side effects: reads
+// symdb: dword_2011A20 table header, reads [r1] as a fixed-point coord
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803182A.yaml
 	thumb_local_start
 sub_803182A:
 	push {lr}

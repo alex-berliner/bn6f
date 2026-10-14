@@ -636,6 +636,10 @@ sub_814204C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_814204C
 
+// symdb: Returns an AI data pointer for the given enemy slot using the toolkit/enemy-index lookup table.
+// symdb: (r0 = enemyIndex) -> r0 = ptr (in r7, copied to r0 on exit); r10 = toolkit (preserved by callee-
+// symdb: saved)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142050.yaml
 	thumb_func_start sub_8142050
 sub_8142050:
 	push {r4-r6,lr}
@@ -906,6 +910,9 @@ sub_81421C8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421C8
 
+// symdb: returns the byte at eScenarioEffectState2000780+0xb (an EWRAM scratch byte used by battle scenario effects)
+// symdb: () -> r0 = eScenarioEffectState2000780[0xb] ; no side effects
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81421D0.yaml
 	thumb_func_start sub_81421D0
 sub_81421D0:
 	push {r4-r7,lr}
@@ -1884,6 +1891,10 @@ loc_8142AF6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142ADA
 
+// symdb: Iterates the overworld map object array (eOverworldMapObjects), calling battleObject_getPanelChipByIndexAtPlayerPos_8142B28 per entry, and counts how many objects' returned "panel chip" value matches r0; returns that count (0 if none match).
+// symdb: (r0 = key chip value, r10 = toolkit) -> r0 = match count ; side effects: walks the global OW
+// symdb: map-object array of 0x38 (56) entries and consumes r0..r5/r6/r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B04.yaml
 	thumb_func_start sub_8142B04
 sub_8142B04:
 	push {r4-r7,lr}

@@ -1810,6 +1810,10 @@ dword_800F960:
 	.word 0x200000
 	thumb_func_end sub_800F90E
 
+// symdb: For the current battle object in r5, returns the panel it would walk onto next given its facing alliance (or 0 if invalid / sliding)
+// symdb: (r0 = unused arg passed to dirOffsetFromAlliance) -> r0 = next-panel-X, r1 = next-panel-Y ;
+// symdb: returns (r0,r1) = (PanelX,PanelY) when valid, otherwise r0=0,r1=undefined
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F964.yaml
 	thumb_func_start sub_800F964
 sub_800F964:
 	push {r6,r7,lr}
@@ -5892,6 +5896,11 @@ loc_8011698:
 	thumb_func_end object_setAttack4
 	thumb_func_end object_setAttack5
 
+// symdb: Initializes AI attack vars (Unk_0c/Unk_03/Unk_18/Unk_2c), sets the battle object's AttackVar[4] to 0x10, and immediately steps the AI attack state machine.
+// symdb: (r0 = byte to Unk_0c, r1 = u16 to Unk_18, r2 = byte to Unk_03, r5 = BattleObject*, r10 =
+// symdb: toolkit) -> r0 = original r0 ; side effects writes AIAttackVars at AIDataPtr + 0xa0, then sets
+// symdb: object AttackVar[4] = 0x10 and runs one step of the AI attack state machine
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80116AE.yaml
 	thumb_func_start sub_80116AE
 sub_80116AE:
 	push {r4,r7,lr}
@@ -14154,6 +14163,11 @@ dword_8014F00:
 	.word 0x30E00
 	thumb_func_end sub_8014E08
 
+// symdb: Countdown-then-exit routine for an AI attack-vars state, clearing AI/battle flags and tearing the object out of its attack state.
+// symdb: (r7 = BattleObject*, r6 = related object?, r5 = related object?, r10 = toolkit) -> side effects
+// symdb: only (no value returned to callers); clears AI flag 0x80 and the AI Unk_44 flag 0x80000000,
+// symdb: clears battle-state flag 0x20, and exits the object's attack state via object_exitAttackState.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014F04.yaml
 	thumb_local_start
 sub_8014F04:
 	push {r4,lr}
