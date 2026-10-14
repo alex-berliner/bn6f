@@ -610,10 +610,10 @@ loc_80A524E:
 	pop {pc}
 	thumb_func_end mapEntry_update_80A51F8
 
-// symdb: Per-frame step for a sub-object that drives sprite animation/sound based on event flags and a screen-fade tick, transitioning the parent's sub-state machine.
-// symdb: void sub_80A5268(u32 r2, u32 r4, parent* r5, u32 r6, sub_object* r7, u32 r10, lr); clobbers
-// symdb: r0,r1,r3,lr; preserves r4,r5,r6,r7,r10; outputs r2,r5,r10
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5268.yaml
+// symdb: Step the overworld map-entry object's show/hide FSM: gate on event flag + screen fade, set/clear flags, swap animation, drive state to 3 (shown), 8 (idle) or 0x10 (hidden), then tick the sprite.
+// symdb: (r5 = map-entry object, r7 = entry sub-struct, r10 = toolkit) -> void ; side effects: event flag
+// symdb: set/cleared, PlaySoundEffect, sprite animation swapped, sprite_loadAnimationData + sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5268.yaml
 	thumb_local_start
 sub_80A5268:
 	push {lr}
@@ -2849,7 +2849,7 @@ sub_80A6A34:
 	pop {pc}
 	thumb_func_end sub_80A6A34
 
-// symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from battleObject_getFromListPair_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
+// symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from sub_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
 // symdb: (r5 = battle object, plus inherited r2/r3/r8/r9/r10/r11/r12/lr) -> no out value, void-like ;
 // symdb: side effects: clobbers r0-r4/r6/r7, sets [r5+0x14], updates sprite priority + sprite OAM
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionSubroutineDispatch_80A6A62.yaml

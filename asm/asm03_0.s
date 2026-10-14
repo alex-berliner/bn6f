@@ -4809,6 +4809,12 @@ dword_8028688:
 	.word 0x1FF
 	thumb_func_end sub_80285FE
 
+// symdb: Queues N successive 0x40-byte GFX chunks from a ROM source (r0) into a destination buffer (r1), advancing the destination by 0x40 each step.
+// symdb: (r0 = queued_src_ptr, r1 = mut_queued_dest_ptr, r2 = ?, r3 = row_count, lr = return_addr) -> r0
+// symdb: = src_ptr (preserved), r1 = dest advanced by row_count*0x40, r2..r7 = clobbered, NZCV clobbered,
+// symdb: PC = lr ; side effect: enqueues (row_count) GFX DMA transfers via
+// symdb: QueueEightWordAlignedGFXTransfer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802868C.yaml
 	thumb_local_start
 sub_802868C:
 	push {r0-r4,lr}
@@ -8822,6 +8828,9 @@ off_802A2AC:
 	.word dword_20349A0
 	thumb_func_end sub_802A220
 
+// symdb: Per-frame step of the custom-menu (chip select) state machine: dispatches the current state's handler, then advances an internal counter and rolls over state when applicable.
+// symdb: (r5 = *S20364C0) -> (void, scratch clobbered; out r2/r3/r4/r6)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A2B0.yaml
 	thumb_local_start
 sub_802A2B0: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -16581,10 +16590,9 @@ off_802DE58:
 	.word 0x2000
 	thumb_func_end sub_802DD70
 
-// symdb: When the 0x40 battle flag is set, sequentially runs two battle sub-routines (with r10 toolkit), first with r0=0 then r0=1.
-// symdb: (r10 = Toolkit*) -> void ; side effects: calls TestBattleFlag_0x40 and up to two calls to
-// symdb: sub_802E2C4
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
+// symdb: Runs two consecutive sub-steps of an AI script step when battle flag 0x40 is clear
+// symdb: () -> void ; tests battle flag 0x40 via r10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
 	thumb_func_start sub_802DE5C
 sub_802DE5C:
 	push {lr}
@@ -21411,6 +21419,10 @@ camera_updateDerivedOffsets_803007C:
 	mov pc, lr
 	thumb_func_end camera_updateDerivedOffsets_803007C
 
+// symdb: Clamps the battle camera's next (X, Y, Z) position into allowed ranges derived from fields on the Camera struct, then stores the clamped 16.16 values and their 16-bit integer halves back.
+// symdb: (r5 = &Camera) -> none (void); side effects: writes to Camera fields 0x04, 0x06, 0x18..0x24,
+// symdb: 0x28, 0x2c, 0x3c..0x44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80300AC.yaml
 	thumb_local_start
 sub_80300AC:
 	ldr r1, [r5,#oCamera_nextX_3c]
@@ -23843,6 +23855,10 @@ DebugStr8031037:
 	.asciz "03 X:%8X Y:%8X"
 	thumb_func_end sub_8030F7C
 
+// symdb: A small tail routine for the line/point hit-test helpers that returns the projected (dx, dy) along a ray, with both components made positive (the ray is normalized so the longer axis of (r6, r7) goes into r7 and the shorter remains in r6).
+// symdb: (r6 = |dy|, r7 = |dx|, r2 = scratch, r3 = sign) -> r6 = shorter-leg remainder, r7 = longer-leg
+// symdb: steps; pushes/pops {r2, r3, lr} and returns via `pop {pc}`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031048.yaml
 	thumb_local_start
 sub_8031048:
 	push {r2,r3,lr}
@@ -24177,7 +24193,7 @@ loc_8031234:
 	pop {r0-r2,r5,pc}
 	thumb_func_end sub_80311F4
 
-// symdb: Initializes a camera via sub_8031122, snaps it to its current center (halved coords from camera_computeScrollDelta_8030E8C) via camera_moveByDelta_80310B0, and sets bits 0 and 1 of the caller's r12 to mark it active and ready.
+// symdb: Initializes a camera via sub_8031122, snaps it to its current center (halved coords from sub_8030E8C) via camera_moveByDelta_80310B0, and sets bits 0 and 1 of the caller's r12 to mark it active and ready.
 // symdb: void camera_initAndActivate_803123E(u32 savedR0, u32 savedR1, u32 savedR2, u32 savedR5, u32*
 // symdb: cameraState);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_initAndActivate_803123E.yaml
@@ -25248,9 +25264,9 @@ dword_8031918:
 	.word NULL
 	thumb_func_end checkLayerPriority_80318b0
 
-// symdb: Returns the chip-lockout colour/state index for a battle object's chip-lockout timer (3 if some condition, else 2).
-// symdb: (r0 = ?) -> r0 = 2 or 3 ; side effects: r5 = dword_2013940 (read once)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
+// symdb: Returns the per-actor count for an AI sub-state (3 for AIIndex 1, else 2).
+// symdb: (r0 = AIIndex selector) -> r0 = 2 or 3 ; clobbers r5, flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
 	thumb_local_start
 sub_8031980:
 	push {lr}
@@ -25380,9 +25396,9 @@ sub_8031A46:
 	pop {pc}
 	thumb_func_end sub_8031A46
 
-// symdb: Initializes an AI sub-state for an enemy/virus battle actor by calling the type-3 init helper with selector 1
-// symdb: () -> r0 = state word returned by sub_8031980
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
+// symdb: Thin wrapper that returns the chip-lockout palette index 3 (locked) by forwarding `r0 = 1` to the chip-lockout colour helper and returning its result.
+// symdb: () -> r0 = 3 (carry set in all captured snapshots); no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
 	thumb_local_start
 sub_8031A5E:
 	push {lr}

@@ -8744,9 +8744,10 @@ dword_8134528:
 	.word unk_20018EC
 	.byte 0x60, 0x71, 0x0, 0x0, 0x16, 0x0, 0xB6, 0x0
 	thumb_func_end menu_drawSubmenuBox_8134490
-// symdb: Zero-argument wrapper that invokes sub_8134558 with a fixed argument set (0xE2, 0x1C, 0x1E, 0x24).
-// symdb: void sub_8134538(void); /* returns whatever sub_8134558 leaves in r0/flags */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134538.yaml
+// symdb: Thin wrapper that resolves a fixed (0xE2/0x1C/0x1E/0x24) object-table entry via object_resolveTableEntry_8134558 and returns its byte in r0.
+// symdb: () -> r0 = resolved byte (0xFF in captured calls) ; side effects: none within this function (no
+// symdb: stack writes beyond lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134538.yaml
 	thumb_local_start
 sub_8134538:
 	push {lr}
@@ -8855,9 +8856,9 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
-// symdb: Reset a battle-object shield/status-effect slot using a table lookup and return its previous value.
-// symdb: (r5 = toolkit (held in callee), r10 = toolkit) -> r0 = previous content of byte_81331F4[0x5a]
-// symdb: (shield/status-effect kind); side effects: writes byte_81331F4[0x5a] = 0 via the callee.
+// symdb: thin wrapper that calls battleObject_updateShieldOrStatusEffect_813468C with a fixed five-argument record (0x5A, 0x20, 0x20, 0x12) and one global byte/word
+// symdb: (r5 = ?, r10 = toolkit) -> r0 = callee return value ; side effects: clobbers r4-r7 per ARM
+// symdb: convention; relies on toolkit/BattleState globals
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
 sub_81345D4:
@@ -8902,10 +8903,11 @@ sub_81345FC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81345FC
 
-// symdb: Per-frame OAM submit for a battle object — wraps queueOamFromTableRow, optionally advancing its anim frame index.
-// symdb: (no in regs; object ptr in r5, toolkit ptr in r10, per "void-like" contract) -> no out to
-// symdb: callers
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134610.yaml
+// symdb: Per-battle-object sprite OAM queueing for the panel grid (allocates one OAM row per object, with row index advancement every 7 frames).
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, lr = return) -> r0 = 0 (preserved through callee), flags
+// symdb: NZCV clobbered ; side effect: writes back object 0x16/0x17 ("AllianceAndDirectionFlip" packed
+// symdb: byte) with a new row index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134610.yaml
 	thumb_local_start
 sub_8134610:
 	push {r4,lr}

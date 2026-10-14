@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Battle graphics/animation loader that toggles several event flags (BBS request flag 0x7, AskJackOut/L-Message sentinels, etc.) and dispatches to multiple `load_gfx_anim_*` helpers
-// symdb: () -> nz ; r2/r3/r4/r5/r7/r8/r9/r12 callee-saved; side effects: GFXAnimState slots and story
-// symdb: event flags
+// symdb: Drives cutscene GFX/anim loading and event-flag toggling (BBS flag 0x17/0x7) when the cutscene state's originally-saved script was a sentinel cutscript.
+// symdb: (in = r10 = ToolkitPtr, lr = ret addr) -> nz flags (loop-control condition); preserves r4-r9,
+// symdb: r12 through callees; r0-r3 clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

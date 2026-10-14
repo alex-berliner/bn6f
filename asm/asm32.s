@@ -10265,6 +10265,10 @@ loc_811311E:
 	pop {pc}
 	thumb_func_end sub_8113114
 
+// symdb: Per-frame AI state dispatcher for a battle object, dispatching through an 8-entry jump table indexed by AIState[0].
+// symdb: (uses r5 = battle object, r6 = ???, r10 = toolkit) -> tail-jumps to a state handler; no return
+// symdb: value to callers
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8113124.yaml
 	thumb_local_start
 sub_8113124:
 	push {r4,r6,lr}
@@ -16791,10 +16795,9 @@ sub_8116A3C:
 	pop {pc}
 	thumb_func_end sub_8116A3C
 
-// symdb: On initialization, drives sub_802FE28 over three small packed (a1,a2) tables (3+3+2 entries) with notUsed=0 and a4=1.
-// symdb: void sub_8116A44(void);  // no inputs; clobbers r0-r3, lr, N/Z/C/V; preserves r4-r7, r5 is
-// symdb: reported output by caller analysis but not set here
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A44.yaml
+// symdb: Queues a fixed set of sprite/OAM entries (3 + 3 + 2 entries) into OAM using sprite_queueOamEntryThunk_802FE28, presumably redrawing/rehiding battle object/shadow tiles when an object's state transitions to 8.
+// symdb: () -> r0 = 0xFF (NZ-C-) ; side effects: writes OAM via sub_802FE28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116A44.yaml
 	thumb_local_start
 sub_8116A44:
 	push {r4-r7,lr}
@@ -22767,11 +22770,11 @@ off_81196DC:
 	.word sprite_stepZoomShrinkOut_811976C+1
 	thumb_func_end sub_81196C4
 
-// symdb: Compares the chip-panel submenu's current chip fields (+0xC/E/18) against the previous render and re-renders the chip image/text only on change, otherwise writes a "frame" stamp at +0x9.
-// symdb: (r0 = caller's tail-call frame setup word, low bit = selector; r5 = active submenu ptr from r10
-// symdb: toolkit; r10 = Toolkit*) -> void ; no value returned to callers (only caller-saved r4–r9
-// symdb: clobbered, lr popped as pc).
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196F0.yaml
+// symdb: Refreshes the active submenu panel's chip visuals/text and copies status fields forward when the chip selection has changed.
+// symdb: (r5 = SubMenu*, r10 = Toolkit*) -> r5 preserved ; side effects: may redraw chip gfx/text via
+// symdb: chipPanel_renderChipGfxAndText_8119438 and writes fields (+0x9, +0x10, +0x1a) on the submenu
+// symdb: struct.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81196F0.yaml
 	thumb_local_start
 sub_81196F0:
 	push {r4-r7,lr}
@@ -36701,10 +36704,9 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
-// symdb: Build and queue a single OAM entry derived from a 4th field of a battle-related object (called from per-battle-object sprite list code).
-// symdb: (r0 = some index/kind, r1 = pointer/0x8160, r2 = packed data with 0xC bits = animation/OAM
-// symdb: offset 0x37, r3 = 0x020047CC pointer) -> r0 = 0xFF on early return, else result of sub_81205C0;
-// symdb: side effects: queues OAM via sprite_queueOamEntryThunk_802FE28
+// symdb: spawns a damage-number OAM overlay for a battle object given an effect descriptor
+// symdb: (r0 = damageEffectId, r1 = oamSlot/battleObject?, r2 = packed(oamIndex|flags)|0x37, r3 =
+// symdb: oS20047CCptr) -> r0 = 0xFF ; side effects: queues OAM via sprite_queueOamEntryThunk_802FE28
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C
 sub_812053C:

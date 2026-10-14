@@ -21463,10 +21463,9 @@ loc_814E0A2:
 	.balign 4, 0x00
 	thumb_func_end sub_814E09C
 
-// symdb: Trivial thunk: reads a byte from an AIData pointer (Pet) into r3 as a setup for the next call.
-// symdb: (r0 = ?, r1 = ?, r2 = AIData* pet, r3 = ?) -> r0 unchanged, r3 = AIData[0]; side effects: none
-// symdb: observed
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0B4.yaml
+// symdb: Thumb entry stub: loads a byte from *r2 into r3 then tail-merges into sub_814E0B6
+// symdb: (r2 = ptr) -> r0 = r0 ; r3 = *(u8*)r2 ; side effects: none beyond the load
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E0B4.yaml
 	thumb_local_start
 sub_814E0B4:
 	ldrb r3, [r2]
@@ -21709,10 +21708,10 @@ sprite_moveYUp64AndMarkDirty_814E1D4:
 	bx r12
 	thumb_func_end sprite_moveYUp64AndMarkDirty_814E1D4
 
-// symdb: Advances the battle object's update routine's script PC, then sets bit 0x0C in the object flags and subtracts 0x40 from the BattleObject.Element field.
-// symdb: (r0 = battleObject, r1 = scriptContext/AIState) -> r0 = battleObject ; side effects: writes
-// symdb: [r1+0xE] (subtract 0x40), ORs 0xC into [r0 object flags], preserves r4-r11/lr per contract
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1E8.yaml
+// symdb: One-shot update routine that bumps the battle object's element index and marks the routine as finished
+// symdb: (r0 = BattleObject*, r1 = AIData*) -> r0 = BattleObject* ; sets Element, ORs flags, returns same
+// symdb: BattleObject
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E1E8.yaml
 	thumb_func_start sub_814E1E8
 sub_814E1E8:
 	mov r12, lr

@@ -2963,6 +2963,10 @@ sub_801010C:
 	pop {pc}
 	thumb_func_end sub_801010C
 
+// symdb: Clears the Power Attack (PwrAtk) state and button fields in the battle object's AIAttackVars sub-struct and then runs the lone helper sub_80E1662.
+// symdb: (r5 = BattleObject*) -> void ; clears AIAttackVars.Unk_1d = 0, AIAttackVars.Unk_1e = 0 (u16),
+// symdb: then tail-calls sub_80E1662 with r5 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801011A.yaml
 	thumb_func_start sub_801011A
 sub_801011A:
 	push {lr}
@@ -13275,6 +13279,11 @@ off_8014838:
 	.word dword_20367F0
 	thumb_func_end timer_resetAndStart_801482C
 
+// symdb: Dispatches a battle controller state to one of three step handlers indexed by an internal byte.
+// symdb: (no caller-supplied inputs) -> r0 = sub-handler's r0 ; side effects: reads controller-state byte
+// symdb: at dword_20367F0, calls one of three handlers, returns handler's r0 and writes handler's r0 back
+// symdb: to dword_20367F0+4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801483C.yaml
 	thumb_func_start sub_801483C
 sub_801483C:
 	push {r5-r7,lr}
@@ -28129,11 +28138,9 @@ dword_801C980:
 	.word 0xAAAA
 	thumb_func_end sub_801C906
 
-// symdb: Calls the checker at battle_getStoryFlagFromBattleState_802CE60 twice (with 0 and 1) and stores each answer as a 0/1 boolean into two byte fields of the struct at r5.
-// symdb: void sub_801C984(struct *r5 /* +7, +9 written */); callers pass r5, r10 (unused here) and lr;
-// symdb: returns r0 = (battle_getStoryFlagFromBattleState_802CE60(1) != 0 ? 1 : raw second answer), r1-r2 and NZCV from the tail of the
-// symdb: second query's compare/mov sequence
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C984.yaml
+// symdb: Initializes an AIData struct's BLeftAbility (offset 0x7) and Unk_09 (offset 0x9) from story flags 0 and 1.
+// symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> void ; side effects: writes [r5+7] and [r5+9]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C984.yaml
 	thumb_local_start
 sub_801C984:
 	push {lr}
@@ -31182,6 +31189,9 @@ loc_801DFDC:
 	.word 0x4000
 	thumb_func_end sub_801DFD0
 
+// symdb: Returns the cumulative damage-taken counter (TotalDamageTaken) for the actor's AIData.
+// symdb: () -> r0 = u16 TotalDamageTaken for the currently-bound AIData record
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DFE4.yaml
 	thumb_func_start sub_801DFE4
 sub_801DFE4:
 	ldr r0, off_801E0D8 // =eStruct2035280
@@ -32296,9 +32306,10 @@ byte_801E700:
 	.byte 0x0, 0x5, 0x6, 0x7, 0x8, 0x9, 0x5, 0x6, 0x7, 0x8, 0x9, 0x14, 0x14, 0xF, 0x10, 0x11, 0x12, 0x13, 0xf, 0x10, 0x11, 0x12, 0x13, 0x16, 0x16, 0x0, 0x0, 0x0
 	thumb_func_end battleObject_resolveEmotionPalette_801E6A8
 
-// symdb: Setter that writes a one-byte value into field 0x12 of the global struct at 0x2035280.
-// symdb: void sub_801E71C(u8 value); // reads r0, preserves r1, returns to caller via lr
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801E71C.yaml
+// symdb: Writes a one-byte value into oStruct2035280 + 0x12 (the Navi status GFX index slot) and returns the input untouched.
+// symdb: (r0 = new GFX index byte, lr = return) -> r0 = unchanged ; side effect: strb r0 to (off_801E77C
+// symdb: + 0x12) [byte_2035292]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E71C.yaml
 	thumb_func_start sub_801E71C
 sub_801E71C:
 	push {r1,lr}

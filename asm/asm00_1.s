@@ -17192,10 +17192,9 @@ battle_clearEnemyFadeinList:
 	pop {pc}
 	thumb_func_end battle_clearEnemyFadeinList
 
-// symdb: Resolves a handle to its record via sub_800AAAE and reports whether the record's id field equals the expected id in r5.
-// symdb: bool handleIdMatches(u32 handle /* r0 */, u32 expectedId /* r5 */); returns 1 on match, 0
-// symdb: otherwise; also leaves the result in r2 and sets flags from the final mov (nz clobbered, c/v
-// symdb: listed as outputs by the lifter)
+// symdb: Returns 1 if the Next[1] pointer in the active battle object's AI block matches a battle object index passed in r5, else 0.
+// symdb: (r5 = battle object index) -> r0 = 0/1 ; r0 = slot pointer from `getNextEntryAddress_800AAAE`,
+// symdb: r1 = array base, side effect: clobbers flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800AA06.yaml
 	thumb_func_start sub_800AA06
 sub_800AA06:
