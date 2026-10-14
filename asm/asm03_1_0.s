@@ -365,9 +365,10 @@ callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end callback_noop_8033A7C
 
-// symdb: Initializes/resumes the three render subsystems (OAM/affine, BG map, and GFX transfer) with reset argument 0.
-// symdb: void sub_8033A80(void) /* clobbers r0/r2/r3 and flags; r5/r10/lr passed in */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033A80.yaml
+// symdb: Initializes the battle-start UI overlay by queuing its OAM tiles and PET navi tileset DMA, then drawing the overlay frame 0.
+// symdb: (r5 = *S2011E30, r10 = *Toolkit) -> none ; side effects: queues OAM, queues a 32-byte PET navi
+// symdb: tileset DMA into VRAM staging area at 0x030016D0, draws battle-start overlay
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033A80.yaml
 	thumb_local_start
 sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	push {lr}

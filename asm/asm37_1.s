@@ -153,8 +153,9 @@ sub_8141998:
 	pop {r4-r7, pc}
 	thumb_func_end sub_8141998
 
-// symdb: Top-level per-frame handler for the overworld PET "Beast Spam"/BeastOut gating check that, given clean input, either processes inputs (sub_8141A10) or finishes a sequence (sub_8141A70) — i.e. tick of `eStruct2001010` while no cutscene/screen-fade/subsystem block is active and not paused.
-// symdb: (r0..r3 not inputs; toolkit in r10) -> r0 = 0 ; no other returns
+// symdb: Per-frame battle update: drives AI dispatch, sprite GFX, cutscene/cursor gating, and chip-custom-screen selection (subsystem 4 only).
+// symdb: (r10 = toolkit) -> r0 = 0 ; side effects: many (writes AIData flags, calls AI dispatch, sprite
+// symdb: GFX, game select, cutscene poll, screen-fade poll)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81419A0.yaml
 	thumb_func_start sub_81419A0
 sub_81419A0:
@@ -984,6 +985,9 @@ sub_814223E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_814223E
 
+// symdb: Per-frame battle object update: clears a one-shot scenario flag, dispatches AI, and refreshes sprites.
+// symdb: () -> r0 = 0 (always returns 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142248.yaml
 	thumb_func_start sub_8142248
 sub_8142248:
 	push {r4-r7,lr}
@@ -1580,6 +1584,9 @@ sub_8142896:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142896
 
+// symdb: Returns a pointer to the nth BattleObject entry in the EWRAM `byte_2006670` array (8-byte stride).
+// symdb: (r0 = index) -> r0 = &byte_2006670[index*8] ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81428C2.yaml
 	thumb_func_start sub_81428C2
 sub_81428C2:
 	push {r4-r7,lr}
@@ -1881,6 +1888,10 @@ loc_8142B1A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142B04
 
+// symdb: Returns the overworld map object's `Unk_4` field when the passed `r5` describes a Beast-Out player Navi (ActorType=0, AIIndex=0xF) standing on the same panel as the OW player and the type matches; otherwise returns 0.
+// symdb: (r5 = pointer to a Beast-Out AIData-like record) -> r0 = u16 panel-data value or 0 ; side
+// symdb: effects: writes r0 (used as trash by callers), flags NZ depend on the read at `[r0,#4]`
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8142B28.yaml
 	thumb_local_start
 sub_8142B28:
 	push {r4-r7,lr}

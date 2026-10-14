@@ -10949,11 +10949,10 @@ off_8008018:
 	.word eStruct203F7D8
 	thumb_func_end sub_8007FD2
 
-// symdb: Battle-object state dispatcher (per-frame tick of an object's state timer/handler).
-// symdb: void sub_800801C(void /* pass-through r2 r3 r4 r6 r7 r10 lr */);   returns nothing explicit; r0
-// symdb: = byte at object+4 (0x203CA74); r2..r12 clobbered;   nz/c/v flags clobbered; r5 preserved (via
-// symdb: push {r5,lr} / pop {r5,pc}).
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800801C.yaml
+// symdb: Per-frame main battle step dispatcher: reads the toolkit's battle step index and indirect-calls the matching handler through a small jumptable stored at 0x08008038.
+// symdb: (uses r10 as toolkit; reads dword_203CA70[0] = CurStep, also [4] later) -> r0 = 0 ; side
+// symdb: effects: pops {r5,pc} and tail-bx's into the chosen step handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800801C.yaml
 	thumb_local_start
 sub_800801C:
 	push {r5,lr}
@@ -15811,9 +15810,10 @@ loc_800A218:
 	pop {pc}
 	thumb_func_end battle_checkNaviFreeze_800A1D0
 
-// symdb: Returns whether the B-to-skip-turn shortcut should be accepted this frame (battle running, not over, not time-stopped, and sub_801DFE4 returns 0x4000)
-// symdb: () -> r0 = 1 if skip-battle shortcut should fire, else 0 ; no side effects
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800A21C.yaml
+// symdb: Returns 1 only when the battle is not time-stopped, not over, and the current anim state == 0x4000; otherwise 0.
+// symdb: () -> r0 = 1 if condition met else 0 ; side effects: reads toolkit (r10) state and a word from
+// symdb: sub_801DFE4; sets nz/c/v flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A21C.yaml
 	thumb_local_start
 sub_800A21C:
 	push {lr}

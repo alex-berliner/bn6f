@@ -1694,6 +1694,10 @@ byte_80A5ABC:
 	.byte 0x10, 0x0, 0x3, 0x34
 	thumb_func_end sub_80A5A5C
 
+// symdb: Thunk that dispatches to one of three AIData update routines indexed by `AIData.Unk_04` (the AI phase byte), tail-called with `r5 = AIData*`, `r10 = toolkit`, and return through `unk_2011A90`.
+// symdb: (r0 = , r1 = , r5 = AIData*, r10 = toolkit, lr = return) -> r0 = subroutine return;
+// symdb: r2/r3/r4/r5/r8/r9/r10/r12 preserved
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5AD4.yaml
 	thumb_func_start sub_80A5AD4
 sub_80A5AD4:
 	push {lr}
@@ -1769,6 +1773,12 @@ locret_80A5B6C:
 	.byte 0, 0
 	thumb_func_end sub_80A5AF8
 
+// symdb: per-frame state machine that drives the player's Beast Out transformation and un-transformation during battle
+// symdb: (r5 = BeastOutAIData-like ctx, r6 = related BattleObject, r10 = toolkit) -> void ; side effects:
+// symdb: mutates ctx/r5 and BattleObject/r6 state, sets/clears event flags
+// symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with sub_80A6014 + sprite_update
+// symdb: on r5's sprite
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5B70.yaml
 	thumb_local_start
 sub_80A5B70:
 	push {r4-r7,lr}
@@ -5338,9 +5348,9 @@ sub_80A7CF6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CF6
 
-// symdb: Overworld trigger that, if the player is inside an X/Y rectangle (relative to the OWPlayerObject) and the conditions are clear, sets event flag 0x1731 and starts a beast-sp related cutscene.
-// symdb: (no explicit args; r5 holds a small script-param struct, r10 = Toolkit) -> no return ; may start
-// symdb: a cutscene.
+// symdb: Polls the "Beast SP gate" trigger — when the overworld player overlaps the gate rect, no flag/cutscene/fade is busy, sets EVENT_1731 and starts one of two cutscenes depending on the player's facing/param.
+// symdb: (r5 = this trigger struct, r10 = toolkit) -> r5 retained; r0 may be clobbered transitively ;
+// symdb: side effects: writes event flag, starts a cutscene
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7CFE.yaml
 	thumb_local_start
 sub_80A7CFE:
@@ -5862,6 +5872,11 @@ byte_80A81F0:
 	.byte 0xD0, 0xF, 0xD1, 0xF
 	thumb_func_end sub_80A8038
 
+// symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
+// symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
+// symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
+// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8208.yaml
 	thumb_func_start sub_80A8208
 sub_80A8208:
 	push {lr}

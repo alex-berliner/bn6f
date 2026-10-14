@@ -3834,10 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Loader/dispatcher for gfx-anim subcommands (loads gfx-anim scripts into GFXAnimState slots, reads story event flags, and advances a per-state step counter)
-// symdb: (r10 = toolkit) -> nz ; side effects: r2/r3/r4/r5/r7/r8/r9/r12 clobbered, event flags at 0x17.x
-// symdb: tested/set/cleared, BBS request flag 0x17:7 manipulated, GFXAnimState entries populated via
-// symdb: sub_8083F80/4080/4180/4214/42D8
+// symdb: GFX animation init helper that loads an animation frame value or sets a script/cutscene flag; called by multiple init_gfx_anim_* routines and story/cutscene flag helpers.
+// symdb: () -> r0 = unknown ; side effects: unknown
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

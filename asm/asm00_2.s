@@ -749,10 +749,9 @@ off_800F260:
 	.word off_80EA8D8
 	thumb_func_end enemy_getStruct2
 
-// symdb: Resolves a battle-object arm/attachment slot index to its (x, y) attachment offset plus extra metadata, with a fixed fallback for invalid slot ids (>=0xCD).
-// symdb: (r0 = slotId) -> r0 = attachment0, r1 = attachment1, r2 = attachment2, r3 = attachment3, r4 =
-// symdb: attachment4 ; side effects: none
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
+// symdb: Resolves an arm/part slot id (0xCD..0xFF) to a 5-byte record of (x, y, ?, ?, ?) from a packed table, or otherwise returns the AI struct's first two bytes for normal actor ids.
+// symdb: (r0 = slotOrActorIndex) -> r0 = x, r1 = y, r2 = ?, r3 = ?, r4 = ? ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
 	thumb_func_start sub_800F26C
 sub_800F26C:
 	push {lr}
@@ -825,6 +824,10 @@ object_setAnimation:
 	pop {pc}
 	thumb_func_end object_setAnimation
 
+// symdb: Refresh the battle object's sprite facing/arm position each frame (player objects get a custom arm-position write, others use the tracked-arm table).
+// symdb: (r5 = battleObject) -> void ; side effects: updates the object's sprite flip and arm-position
+// symdb: table entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F2C6.yaml
 	thumb_func_start sub_800F2C6
 sub_800F2C6:
 	push {lr}
@@ -13459,6 +13462,11 @@ locret_801498C:
 	pop {pc}
 	thumb_func_end activateCrossHappensHere_8014944
 
+// symdb: Triggers and runs the fade/screen transition for the Beast Out pet-transformation intro and dispatches the next battle step.
+// symdb: (r5 = beast-state scratch, r10 = toolkit) -> r0 = 1 if fade is still active (exits early),
+// symdb: otherwise void-like ; side effects: starts a screen fade, writes [r5,#0] and [r5,#3], dispatches
+// symdb: a battle step
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801498E.yaml
 	thumb_local_start
 sub_801498E:
 	push {lr}
@@ -19800,7 +19808,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (battle_runBeastTransformationAction_8014A38 / sub_8015614 / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -26744,10 +26752,10 @@ battle_loadChipPreviewGfxInit_801BFEE:
 	pop {pc}
 	thumb_func_end battle_loadChipPreviewGfxInit_801BFEE
 
-// symdb: Thin trampoline that tail-calls sub_801C002 with a zero first argument, passing its register and flag results straight back to the caller.
-// symdb: void sub_801BFF8(void) — callers supply live r4-r7/r10 state that the callee expects; returns
-// symdb: whatever sub_801C002 returns in r0-r3 and NZCV.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801BFF8.yaml
+// symdb: Wrapper that calls sub_801C002 with r0=0 to load chip preview graphics from the hand table using default index 0
+// symdb: (r0 = ...) -> r0 = ... ; side effects: clobbers r0-r3, may clobber r4-r7 (preserved), branches
+// symdb: to sub_801C002
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BFF8.yaml
 	thumb_local_start
 sub_801BFF8:
 	push {lr}
@@ -28355,9 +28363,9 @@ dword_801CAD8:
 	.word 0xD1DA
 	thumb_func_end sub_801CA80
 
-// symdb: Battle-object per-frame anim/state update: refreshes CurAnim when NegaWisp (id 0x29) flag set, ticks a future-panel timer/anim, and dispatches to either battleObject_loadBeastOutFormGfx_801CC34 or battle_updateObjectAnim_801CB38.
+// symdb: Battle-object per-frame anim/state update: refreshes CurAnim when NegaWisp (id 0x29) flag set, ticks a future-panel timer/anim, and dispatches to either sub_801CC34 or battle_updateObjectAnim_801CB38.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes r5+0x14/0x15/0x1f, calls
-// symdb: GetBattleNaviStatsByte/battleObject_loadBeastOutFormGfx_801CC34/battle_updateObjectAnim_801CB38/sub_801CC94
+// symdb: GetBattleNaviStatsByte/sub_801CC34/battle_updateObjectAnim_801CB38/sub_801CC94
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimAndState_801CADC.yaml
 	thumb_local_start
 battleObject_updateAnimAndState_801CADC:

@@ -903,9 +903,9 @@ off_8026AA4:
 	.word sub_8027A58+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenuMainMaybe_8026A88
 
-// symdb: Drives the tile-animation/wipe state of a battle custom-menu object, scrolling tiles and the camera, then transitions to either the wait-selection or trigger-selection phase.
-// symdb: void sub_8026B04(u32 self /* r5 */, u32 toolkit /* r10 */, u32 r4, u32 r6 /* forwarded into
-// symdb: battleObject_chipSelectAnimTick_8029C08 */); clobbers r0 r1 r2 r3 r8 r9 r11 r12 lr, flags
+// symdb: Cust-menu animation tick that pulses the player's HP-bar/value and either finalises the chip-select or jumps to the next menu phase (Lose or WaitSelect) based on the player's HP remaining.
+// symdb: (r5 = *S20364C0 self) -> ; side effects: sounds, chatbox state, BG tile draws at unk_2035000,
+// symdb: camera Y, render info, state writes into S20364C0 and the battle state
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
 	thumb_local_start
 sub_8026B04: // (self: * S20364C0 $r5) -> ()
@@ -1888,7 +1888,7 @@ off_80271F4:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80271C2
 
-// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then battleObject_chipSelectAnimTick_8029C08 and sub_802899C.
+// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80271F8.yaml
 	thumb_local_start
 sub_80271F8: // (self: * S20364C0 $r5) -> ()
@@ -21514,6 +21514,10 @@ camera_LoadPositionFromSource_8030126:
 	mov pc, lr
 	thumb_func_end camera_LoadPositionFromSource_8030126
 
+// symdb: Applies the camera's positional delta (Unk_04/Unk_06 minus Unk_08/Unk_0a) to the toolkit's RenderInfo scroll register pair (Unk_10/12) and writes the same value to its offset copy (Unk_14/16).
+// symdb: (r5 = Camera*, r10 = Toolkit*; uses both) -> no return value ; side effect: writes
+// symdb: Toolkit->RenderInfo+0x10, +0x12, +0x14, +0x16
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030136.yaml
 	thumb_local_start
 sub_8030136:
 	ldrh r1, [r5,#oCamera_Unk_04]
@@ -24373,7 +24377,7 @@ sub_8031388:
 	thumb_func_end sub_8031388
 
 // symdb: Runs the full battle message-window setup sequence (prepare, 32x32 layout, finalize) and flags the request as handled in r12.
-// symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to battle_scrollAccumulateStep_8031176; r12 = flag word
+// symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to sub_8031176; r12 = flag word
 // symdb: in/out; preserves r0, r1, r2, r5; NZCV on exit reflect (r12|1) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupMessageWindow_80313B0.yaml
 	thumb_local_start
@@ -25234,9 +25238,8 @@ dword_8031918:
 	.word NULL
 	thumb_func_end checkLayerPriority_80318b0
 
-// symdb: Loads the address of a state/word from RAM into r5 and returns a small mode id (3 for selector 1, otherwise 2) for the caller to act on.
-// symdb: int sub_8031980(int selector); /* returns 3 if selector==1 else 2; also sets r5 =
-// symdb: &dword_2013940; flags: nz from result, c/v from cmp with 1 */
+// symdb: Returns 3 if r0 == 1, else 2; tiny AI/data helper at the end of a likely shared ai_data slot
+// symdb: (r0 = tag/selector) -> r0 = 3 if r0==1 else 2; side effects: clobbers r5
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
 	thumb_local_start
 sub_8031980:
@@ -25367,8 +25370,8 @@ sub_8031A46:
 	pop {pc}
 	thumb_func_end sub_8031A46
 
-// symdb: Trivial one-line wrapper that invokes sub_8031980 with argument 1.
-// symdb: void sub_8031A5E(void); // lr only; passes through r0, r5 and NZCV from sub_8031980
+// symdb: Tail-call wrapper that asks sub_8031980 to look up a state word for selector 1 and forwards the result back as its own return value.
+// symdb: () -> r0 = (3 if selector 1 matches, otherwise 2) ; side effects: same as sub_8031980
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
 	thumb_local_start
 sub_8031A5E:

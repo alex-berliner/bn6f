@@ -9353,6 +9353,11 @@ loc_813492A:
 	.byte 0, 0
 	thumb_func_end battle_alignRowCheck_81348DC
 
+// symdb: Checks an actor's panel position against a target's column/row index and triggers a panel-based attack if aligned.
+// symdb: (r0 = HP-offset 0x24, r1 = x-offset 0xA5, r2 = alliance/whatever-offset 0x28, r3 = attacker-flag
+// symdb: index, r5 = BattleObject ptr, r7 = AIAttackVars ptr) -> r0 = 0x20 if HP-bit set, 0x40 if not (or
+// symdb: 1 on branch); calls sub_81171F4/sub_81171D4 on AIAttackVars
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134930.yaml
 	thumb_func_start sub_8134930
 sub_8134930:
 	push {r4-r7,lr}
@@ -10845,9 +10850,9 @@ sub_81353DC:
 	.byte 0, 0
 	thumb_func_end sub_81353DC
 
-// symdb: Thin wrapper that tail-calls sub_8134930 with fixed parameters (0x24, 0xA5, 0x28) and argument 6, forwarding two caller values through.
-// symdb: void sub_81353F0(u32 arg0 /* -> callee r7 */, u32 arg1 /* -> callee r3 */); clobbers r0-r3 and
-// symdb: flags, preserves r4-r7
+// symdb: Thin per-frame wrapper that calls sub_8134930 with fixed opcode parameters (0x24, 0xa5, 0x28) on a battle object.
+// symdb: (r0 = ?, r1 = ?, r5 = ?, lr) -> r2 = ?, r3 = ?, r5 = preserved, r6 = ? ; side effects via
+// symdb: sub_8134930
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
 	thumb_local_start
 sub_81353F0:

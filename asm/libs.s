@@ -21493,9 +21493,10 @@ off_814E0CC:
 	.word off_81C0418
 	thumb_func_end sub_814E0B6
 
-// symdb: Advances the routine pointer at [r1+0x40] and reads the byte it points to, returning it in r3 with a validity check on the original pointer.
-// symdb: (r1 = object-like state struct) -> r0 = r1 (preserved by tail-call), r2 = old pointer, r3 = byte
-// symdb: at *oldPointer ; side effects updates the script/routine pointer at [r1+0x40]
+// symdb: Advances a battle object's script-position pointer by one byte, reads that byte, and feeds it to sub_814E0B6 for validation as a RAM pointer (r2 is the script position, r1 is the object).
+// symdb: (r0 = ptr-to-call-result-helper-buf, r1 = battle object/state ptr) -> r0 = r0, r2 = the
+// symdb: validated byte stored at [r1+0x40]; tail-call into sub_814E0B6 which marks r3 as invalid when r2
+// symdb: is not in 0x02000000-0x03FFFFFF
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
 	thumb_local_start
 sub_814E0D0:
@@ -24452,11 +24453,9 @@ loc_814F396:
 	.balign 4, 0x00
 	thumb_func_end m4a_plyNote_applyPitchAndVolume_814F2F0
 
-// symdb: Mode-selecting packed/single-byte LUT lookup with linear interpolation between adjacent packed entries, used as a generic helper across multiple subsystems.
-// symdb: u32 interpLutLookup_814F3A4(u8 mode, u8 index, u8 frac); /* inputs: r0=mode, r1=index, r2=frac,
-// symdb: r3/r4/r5/r6/r7/lr=unused; outputs: r0=result, r1=lr (return), r2=0 or frac, r3=table addr,
-// symdb: r12=frac (interp path) or frac (simple); flags set by final add (interp: add(interp, 0x800);
-// symdb: simple: add(idx, table_addr)) */
+// symdb: Computes a screen-x or screen-y position from a panel coordinate and a fixed-point table, used by battle-object positioning code.
+// symdb: (r0 = selector: 4 = single-table branch, otherwise double-table; r1 = raw panel coord; r2 =
+// symdb: unused (saved to r12)) -> r0 = position with 0x800 bias ; side effects: none
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814F3A4.yaml
 	thumb_local_start
 sub_814F3A4:

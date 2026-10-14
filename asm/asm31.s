@@ -27806,10 +27806,9 @@ sub_80C4C4C:
 	mov pc, lr
 	thumb_func_end sub_80C4C4C
 
-// symdb: Returns a per-Row-name animation override (0xC/0xD) for a battle object's related object, otherwise just returns the actor-type in r1.
-// symdb: (r5 = related BattleObject*) -> r1 = {0xC, 0xD, or returned actor-type value}; side effects:
-// symdb: none observed
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80C4C52.yaml
+// symdb: Picks the death/disappear effect id (0xc or 0xd) for the related battle object based on its enemy NameID.
+// symdb: (r5 = current BattleObject*) -> r1 = effect id ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4C52.yaml
 	thumb_local_start
 sub_80C4C52:
 	push {lr}
@@ -73707,7 +73706,7 @@ off_80DA828:
 
 // symdb: Initializes a battle object—position, collision, HP, palette, state, and first action—then hands off to the action state machine.
 // symdb: void battle_initObject_80DA834(struct BattleObject *obj /* r5 */); /* r4,r6-r12,lr pass-through;
-// symdb: outputs r0-r3,r4-r12,lr,nzcv from battle_objectDestructOnHitPhase_80DA886 */
+// symdb: outputs r0-r3,r4-r12,lr,nzcv from sub_80DA886 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initObject_80DA834.yaml
 	thumb_local_start
 battle_initObject_80DA834:
