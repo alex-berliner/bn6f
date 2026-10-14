@@ -525,9 +525,9 @@ off_802683C:
 // symdb: One-time-per-run init of the battle custom (chip-select) screen: resets battle state words, loads the chip-select tilemap/OBJ graphics, initialises the eS20364C0 state (NaviIndex, folder chip count, selectable PET-Navi candidates) and advances the battle phase counter.
 // symdb: void battle_initCustomScreen(void) : r10 (toolkit) -> [r2 r3 r4 r5 r6 r8 r9] (callee-saved
 // symdb: restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026840.yaml
-	thumb_func_start sub_8026840
-sub_8026840:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initCustomScreen_8026840.yaml
+	thumb_func_start battle_initCustomScreen_8026840
+battle_initCustomScreen_8026840:
 	push {r4-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
@@ -705,7 +705,7 @@ off_80269C8:
 	.word unk_2035000
 off_80269CC:
 	.word dword_20349A0
-	thumb_func_end sub_8026840
+	thumb_func_end battle_initCustomScreen_8026840
 
 // symdb: Queries some global status via sub_800A9E2 with argument 0 and reduces the result to a boolean that is true when bits 0 or 2 are set.
 // symdb: int checkStatusBits0Or2(void); returns 1 if (statusValue & 0x5) != 0 else 0; carry and overflow
@@ -20111,7 +20111,7 @@ dword_802F700:
 startScreen_UpdateAndRenderFrame_802F704: // (self: *mut StartScreen $r5) -> ()
 	push {lr}
 	bl sub_802F81C
-	bl sub_802F8D8 // (self: *mut StartScreen $r5) -> ()
+	bl startScreen_updateFrame_802F8D8 // (self: *mut StartScreen $r5) -> ()
 	pop {pc}
 	thumb_func_end startScreen_UpdateAndRenderFrame_802F704
 
@@ -20126,7 +20126,7 @@ startScreen_update_802F710: // (self: *mut StartScreen $r5) -> ()
 	cmp r0, #0
 	ble loc_802F71C
 
-	bl sub_802F8D8 // (self: *mut StartScreen $r5) -> ()
+	bl startScreen_updateFrame_802F8D8 // (self: *mut StartScreen $r5) -> ()
 
 loc_802F71C:
 
@@ -20378,10 +20378,10 @@ byte_802F8AC:
 	thumb_func_end sub_802F88E
 
 // symdb: Per-frame title screen drawing: steps the animation counters, places the cursor, runs the OAM scripts and one script per achievement flag set.
-// symdb: void sub_802F8D8(StartScreen *self /* r5 */)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F8D8.yaml
+// symdb: void startScreen_updateFrame_802F8D8(StartScreen *self /* r5 */)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startScreen_updateFrame_802F8D8.yaml
 	thumb_local_start
-sub_802F8D8: // (self: *mut StartScreen $r5) -> ()
+startScreen_updateFrame_802F8D8: // (self: *mut StartScreen $r5) -> ()
 	push {r4-r7,lr}
 	ldrb r0, [r5,#6]
 	add r0, #1
@@ -20407,7 +20407,7 @@ loc_802F8F0:
 	ldr r0, [r0,r2]
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5,#8]
 	bl sprite_submitOamSet_802F994
 	ldrb r0, [r5,#2]
@@ -20449,7 +20449,7 @@ byte_802F970:
 	.byte 0x11, 0x40, 0x11, 0x44, 0x11, 0x44, 0x11, 0x44, 0x11
 	.byte 0x44, 0x11, 0x44, 0x11, 0x44, 0x11, 0x48, 0x11, 0x48
 	.byte 0x11, 0x48, 0x11, 0x48, 0x11, 0x48, 0x11, 0x48, 0x11
-	thumb_func_end sub_802F8D8
+	thumb_func_end startScreen_updateFrame_802F8D8
 
 // symdb: Selects one of three ROM OAM sprite data sets by index and passes it to the sprite rendering routine for on-screen submission.
 // symdb: void sprite_submitOamSet_802F994(u32 index /*0-2*/); // clobbers: r0, r1, c, v; preserves r4-r7
@@ -20977,12 +20977,12 @@ off_802FE24:
 
 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 // symdb: Thumb→ARM tail-call trampoline that forwards r0–r3 and lr into sprite_queueOamEntry and returns straight to this function's caller.
-// symdb: void sub_802FE28(u32 r0, u32 r1, u32 r2, u32 r3);   // lr = caller return   // preserved: r4,
+// symdb: void sprite_queueOamEntryThunk_802FE28(u32 r0, u32 r1, u32 r2, u32 r3);   // lr = caller return   // preserved: r4,
 // symdb: r5, r6, r7   // clobbers : NZCV (flags), r0, r4–r7, lr via tail call   // tail-calls
 // symdb: sprite_queueOamEntry (ARM, +1) with identical r0..r3 and lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802FE28.yaml
-	thumb_func_start sub_802FE28
-sub_802FE28:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntryThunk_802FE28.yaml
+	thumb_func_start sprite_queueOamEntryThunk_802FE28
+sprite_queueOamEntryThunk_802FE28:
 	push {r4,lr}
 	ldr r4, off_802FE34 // =sprite_queueOamEntry+1 
 	mov lr, pc
@@ -20991,7 +20991,7 @@ sub_802FE28:
 	.balign 4, 0x00
 off_802FE34:
 	.word sprite_queueOamEntry+1
-	thumb_func_end sub_802FE28
+	thumb_func_end sprite_queueOamEntryThunk_802FE28
 
 	thumb_local_start
 sub_802FE38:

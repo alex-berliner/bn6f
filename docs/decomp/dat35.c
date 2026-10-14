@@ -55,7 +55,7 @@ int sub_812F094()
 
 	(*(&off_812F0C0 + *(v0 + 2)))();
 	entity_runAllUpdateHandlers_80465BC();
-	sub_80465F8();
+	battle_updateEStructSprites_80465F8();
 	result = eStruct200BC30_getJumpOffset00();
 	if ( result )
 		result = sub_803C59C(0, 0);
@@ -581,7 +581,7 @@ void sub_812F530()
 										if ( !v15 )
 										{
 											engine_setScreeneffect(8, 16);
-											sub_8046664();
+											battle_resetEStructRecords_8046664();
 											sub_81301DC();
 											sub_8130208();
 											sub_813064C();
@@ -978,7 +978,7 @@ void sub_812F920()
                                     {
                                         engine_setScreeneffect(8, 16);
                                         *(v0 + 3) = 4;
-                                        sub_8046664();
+                                        battle_resetEStructRecords_8046664();
                                         sub_81301DC();
                                         sub_8130208();
                                         sub_8130250();

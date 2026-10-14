@@ -13566,7 +13566,7 @@ off_8014AB0:
 off_8014AB4:
 	.word sub_8014B18+1
 	.word sub_8014B98+1
-	.word sub_8014BEE+1
+	.word battle_runTransformationIntroStep_8014BEE+1
 	.word sub_8014CC0+1
 off_8014AC4:
 	.word off_8014AC8
@@ -13708,9 +13708,9 @@ locret_8014BEC:
 // symdb: Transformation-intro step for the player navi (state 2 of the off_8014AB4 step table): sets up the new form's sprite/name/per-form init, plays the log-in SFX, then after a 10-frame countdown hands off to the turn-open processing.
 // symdb: void battle_runTransformationIntroStep(u32 r5 /* battle object */, u32 r7 /* AIAttackVars */) :
 // symdb: r5 r7 -> [r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014BEE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runTransformationIntroStep_8014BEE.yaml
 	thumb_local_start
-sub_8014BEE:
+battle_runTransformationIntroStep_8014BEE:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
@@ -13789,7 +13789,7 @@ loc_8014C9E:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8014CBE:
 	pop {r4,pc}
-	thumb_func_end sub_8014BEE
+	thumb_func_end battle_runTransformationIntroStep_8014BEE
 
 	thumb_local_start
 sub_8014CC0:
@@ -18159,9 +18159,9 @@ locret_8016F54:
 // symdb: Init-state handler of an enemy-navi battle object: loads its sprite/animation/palette/flip from the enemy data record, sets element and secondary weakness, builds collision data with ability flags, queues the name popup and advances to the update state.
 // symdb: void battleObject_initNaviObject(u32 r5 /* battle object */) : r5 -> [r4 r5 r6 r7 r10] (r0 =
 // symdb: CUR_STATE_UPDATE on the captured exits)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016F56.yaml
-	thumb_func_start sub_8016F56
-sub_8016F56:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initNaviObject_8016F56.yaml
+	thumb_func_start battleObject_initNaviObject_8016F56
+battleObject_initNaviObject_8016F56:
 	push {r4,r6,r7,lr}
 
 	// will dispatch some logic based on the alliance/ai index, but most are nullsubs. 
@@ -18382,7 +18382,7 @@ off_80170A0:
 byte_80170A4:
 	.byte 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_8016F56
+	thumb_func_end battleObject_initNaviObject_8016F56
 
 	thumb_func_start sub_80170C4
 sub_80170C4:
@@ -18916,9 +18916,9 @@ loc_80174E0:
 // symdb: Flinch action handler (CurAction 3, 'on flinch' in the PlayerObjectAIAttackJumptables annotation): dispatches the AI, commits the pushed-back FuturePanel position, plays animation 1 for 23 frames, then ends the action.
 // symdb: void battleObject_actionFlinch(u32 r5 /* battle object */) : r5 -> [r5 r10] (captured exits r0 =
 // symdb: Timer countdown)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80174FE.yaml
-	thumb_func_start sub_80174FE
-sub_80174FE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_actionFlinch_80174FE.yaml
+	thumb_func_start battleObject_actionFlinch_80174FE
+battleObject_actionFlinch_80174FE:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -18995,7 +18995,7 @@ dword_80175B0:
 	.word 0x400400
 dword_80175B4:
 	.word 0x20005F
-	thumb_func_end sub_80174FE
+	thumb_func_end battleObject_actionFlinch_80174FE
 
 	thumb_func_start sub_80175B8
 sub_80175B8:
@@ -23668,9 +23668,9 @@ dword_801A9B4:
 
 // symdb: Per-frame collision/damage processing pipeline for a battle object: the base navi-AI variant, skipping battleObject_applyStatusEffect for NameIDs 0x125-0x12A.
 // symdb: void battleObject_processCollisionResults(u32 r5 /* battle object */) : r5 -> [r4 r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A9B8.yaml
-	thumb_func_start sub_801A9B8
-sub_801A9B8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processCollisionResults_801A9B8.yaml
+	thumb_func_start battleObject_processCollisionResults_801A9B8
+battleObject_processCollisionResults_801A9B8:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -23722,7 +23722,7 @@ dword_801AA40:
 	.word 0x125
 dword_801AA44:
 	.word 0x12A
-	thumb_func_end sub_801A9B8
+	thumb_func_end battleObject_processCollisionResults_801A9B8
 
 	thumb_func_start sub_801AA48
 sub_801AA48:
@@ -23767,9 +23767,9 @@ locret_801AABE:
 
 // symdb: Per-frame collision/damage processing pipeline for a battle object: the navi-AI variant that skips battle_tickAiSelfDrain when the battle mode is 0xA, and applies the status effect unconditionally.
 // symdb: void battleObject_processCollisionResultsByMode(u32 r5 /* battle object */) : r5 -> [r4 r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AAC0.yaml
-	thumb_func_start sub_801AAC0
-sub_801AAC0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processCollisionResultsByMode_801AAC0.yaml
+	thumb_func_start battleObject_processCollisionResultsByMode_801AAC0
+battleObject_processCollisionResultsByMode_801AAC0:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -23811,7 +23811,7 @@ loc_801AB02:
 	bl object_spawnHiteffect
 locret_801AB3E:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AAC0
+	thumb_func_end battleObject_processCollisionResultsByMode_801AAC0
 
 	thumb_func_start sub_801AB40
 sub_801AB40:
@@ -23857,9 +23857,9 @@ locret_801ABB6:
 // symdb: Per-frame collision/damage processing pipeline for an enemy battle object (r5): the enemy-side variant of the family, with a pause gate, AI hit hooks and HitModifierFinal flag reactions.
 // symdb: void battleObject_processCollisionResultsForEnemy(u32 r5 /* battle object */) : r5 -> [r4 r5
 // symdb: r10] (nz c v r0-r3, r12 clobbered for callers)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801ABB8.yaml
-	thumb_func_start sub_801ABB8
-sub_801ABB8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_processCollisionResultsForEnemy_801ABB8.yaml
+	thumb_func_start battleObject_processCollisionResultsForEnemy_801ABB8
+battleObject_processCollisionResultsForEnemy_801ABB8:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -23926,14 +23926,14 @@ loc_801AC46:
 	bl object_spawnHiteffect
 locret_801AC6A:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801ABB8
+	thumb_func_end battleObject_processCollisionResultsForEnemy_801ABB8
 
 // symdb: Per-frame collision resolution pipeline for the active battle object
-// symdb: void sub_801AC6C(u32 r4, u32 r5, u32 r6, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12) -> r5, r8,
+// symdb: void battleObject_processCollisionResultsForPlayer_801AC6C(u32 r4, u32 r5, u32 r6, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12) -> r5, r8,
 // symdb: r9, r10, r11, r12; flags NZCV clobbered; r4 and r7 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801AC6C.yaml
-	thumb_func_start sub_801AC6C
-sub_801AC6C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_processCollisionResultsForPlayer_801AC6C.yaml
+	thumb_func_start battleObject_processCollisionResultsForPlayer_801AC6C
+battleObject_processCollisionResultsForPlayer_801AC6C:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -23989,7 +23989,7 @@ loc_801ACEC:
 	bl object_spawnHiteffect
 locret_801AD10:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AC6C
+	thumb_func_end battleObject_processCollisionResultsForPlayer_801AC6C
 
 	thumb_func_start sub_801AD12
 sub_801AD12:
@@ -24837,9 +24837,9 @@ dword_801B390:
 // symdb: Applies a battle object's pending collision damage (white flash, hit SFX, HP subtraction, defeat/status transitions) and then dispatches its CurAction handler from the caller-supplied table.
 // symdb: void battleObject_dispatchActionHandler(r0 = handler table (function pointers indexed by
 // symdb: CurAction*4), u32 r5 /* battle object */) : r0 r5 -> [r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B394.yaml
-	thumb_func_start sub_801B394
-sub_801B394: // JP: 0x801b904
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchActionHandler_801B394.yaml
+	thumb_func_start battleObject_dispatchActionHandler_801B394
+battleObject_dispatchActionHandler_801B394: // JP: 0x801b904
 	push {r6,r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -24995,7 +24995,7 @@ dword_801B4CC:
 	.word 0x30000000
 dword_801B4D0:
 	.word 0x8000
-	thumb_func_end sub_801B394
+	thumb_func_end battleObject_dispatchActionHandler_801B394
 
 	thumb_func_start sub_801B4D4
 sub_801B4D4:
@@ -26784,7 +26784,7 @@ loc_801C108:
 	mov r2, #2
 	mov r3, r5
 	add r3, #0xd0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, [sp,#4]
 	ldr r1, [sp]
 	mul r0, r1
@@ -26998,7 +26998,7 @@ loc_801C26A:
 	add r1, r1, r2
 	mov r2, #2
 	mov r3, #0xdf
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_801C284:
 	pop {r3}
 loc_801C286:
@@ -27252,12 +27252,12 @@ sub_801C416:
 	ldr r1, dword_801C460 // =0x9768 
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_801C464 // =0x40a80090 
 	ldr r1, dword_801C468 // =0x976c 
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4,r5,pc}
 	.balign 4, 0
 dword_801C444:
@@ -28047,10 +28047,10 @@ sub_801C9E4:
 	ldr r1, dword_801CA00 // =0xe370 
 	mov r2, #0
 	mov r3, #6
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_801CA04 // =0x84803f 
 	ldr r1, dword_801CA08 // =0xe378 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {pc}
 	.balign 4, 0
 dword_801C9FC:
@@ -28592,11 +28592,11 @@ palette_QueueObjectPalettePair_801CDEC:
 	ldr r0, dword_801CE18 // =0x80004012 
 	add r0, r0, r4
 	ldr r1, dword_801CE1C // =0xcbb4 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_801CE20 // =0x40200012 
 	add r0, r0, r4
 	ldr r1, dword_801CE24 // =0xcbbc 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_801CE14:
 	pop {r4-r6,pc}
 	.balign 4, 0
@@ -28821,7 +28821,7 @@ sub_801CF3C:
 	mov r4, #5
 loc_801CF5C:
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	add r0, r0, r5
 	add r1, #8
@@ -28842,7 +28842,7 @@ loc_801CF5C:
 	ldr r1, word_801CF9C // =0xb398
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_801CF8E:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -28876,7 +28876,7 @@ sub_801CF9E:
 	ldrb r4, [r7,#9]
 loc_801CFBE:
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	add r0, r0, r5
 	add r1, #2
@@ -28895,7 +28895,7 @@ loc_801CFBE:
 	add r0, r0, r6
 	ldr r1, dword_801D034 // =0xb380 
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	mov r5, #0x20 
 	lsl r5, r5, #0x10
@@ -28909,7 +28909,7 @@ loc_801CFBE:
 	sub r0, r0, r4
 	ldr r1, dword_801D038 // =0xb388 
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	mov r5, #0x20 
 	lsl r5, r5, #0x10
@@ -28923,7 +28923,7 @@ loc_801D012:
 	ldr r1, dword_801D03C // =0x40000100 
 	orr r0, r1
 	ldr r1, dword_801D044 // =0xb390 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_801D026:
 	pop {r4-r6,pc}
 	.balign 4, 0
@@ -29185,7 +29185,7 @@ sub_801D1F6:
 	ldrb r4, [r7,#0x9] // (byte_2036859 - 0x2036850)
 loc_801D212:
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	add r0, r0, r5
 	add r1, #2
@@ -29204,7 +29204,7 @@ loc_801D212:
 	add r0, r0, r6
 	ldr r1, dword_801D28C // =0xb3a4 
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	mov r5, #0x20 
 	lsl r5, r5, #0x10
@@ -29218,7 +29218,7 @@ loc_801D212:
 	sub r0, r0, r4
 	ldr r1, dword_801D290 // =0xb3ac 
 	mov r6, r0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, r6
 	mov r5, #0x20 
 	lsl r5, r5, #0x10
@@ -29232,7 +29232,7 @@ loc_801D266:
 	ldr r1, dword_801D294 // =0x40000000 
 	orr r0, r1
 	ldr r1, dword_801D29C // =0xb390 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_801D27A:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -29516,13 +29516,13 @@ loc_801D4AA:
 	lsl r1, r1, #0x10
 	add r0, r0, r1
 	ldr r1, dword_801D4F4 // =0xc3c0 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r2, #3
 	mov r3, #0
 	ldr r0, dword_801D4F8 // =0x8090 
 	add r0, r0, r4
 	ldr r1, dword_801D4FC // =0xc3c8 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r2, #3
 	mov r3, #0
 	ldr r0, dword_801D4F8 // =0x8090 
@@ -29534,7 +29534,7 @@ loc_801D4AA:
 	lsl r1, r1, #0x1c
 	orr r0, r1
 	ldr r1, dword_801D4FC // =0xc3c8 
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r6,pc}
 	.balign 4, 0
 dword_801D4F0:
@@ -29611,12 +29611,12 @@ sub_801D564:
 	ldr r1, dword_801D584 // =0xd368 
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_801D588 // =0x7c8000 
 	ldr r1, dword_801D58C // =0xd36c 
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_801D580:
@@ -29775,13 +29775,13 @@ loc_801D688:
 	mov r2, #2
 	mov r3, #0
 	push {r0,r1}
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r0,r1}
 	add r0, #9
 	add r1, #4
 	mov r2, #2
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_801D6C8:
 	pop {r4-r7,pc}
 	.balign 4, 0

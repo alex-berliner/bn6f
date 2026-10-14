@@ -9658,7 +9658,7 @@ int sub_8014B98()
 
 
 // 0x8014bee
-int __cdecl sub_8014BEE(int a1, int a2, int a3)
+int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7
@@ -12983,7 +12983,7 @@ int sub_8016F1A()
 
 
 // 0x8016f56
-int __noreturn sub_8016F56()
+int __noreturn battleObject_initNaviObject_8016F56()
 {
     int v0; // r5
     int v1; // r6
@@ -13535,7 +13535,7 @@ signed int battle_tickIntroState_80174BE()
 
 
 // 0x80174fe
-int __usercall sub_80174FE@<R0>(Battle *obj@<R5>)
+int __usercall battleObject_actionFlinch_80174FE@<R0>(Battle *obj@<R5>)
 {
     int v1; // r0
     int v2; // r1
@@ -16300,7 +16300,7 @@ int __fastcall sub_801A9AA(int result)
 
 
 // 0x801a9b8
-int sub_801A9B8()
+int battleObject_processCollisionResults_801A9B8()
 {
     int v0; // r5
     int v1; // r7
@@ -16389,7 +16389,7 @@ int sub_801AA48()
 
 
 // 0x801aac0
-int sub_801AAC0()
+int battleObject_processCollisionResultsByMode_801AAC0()
 {
     int v0; // r5
     int v1; // r7
@@ -16476,7 +16476,7 @@ int sub_801AB40()
 
 
 // 0x801abb8
-int sub_801ABB8()
+int battleObject_processCollisionResultsForEnemy_801ABB8()
 {
     int v0; // r5
     int v1; // r7
@@ -16538,7 +16538,7 @@ int sub_801ABB8()
 
 
 // 0x801ac6c
-int sub_801AC6C()
+int battleObject_processCollisionResultsForPlayer_801AC6C()
 {
     int v0; // r5
     int v1; // r7
@@ -17124,7 +17124,7 @@ LABEL_40:
 
 
 // 0x801b394
-int __fastcall sub_801B394(int a1)
+int __fastcall battleObject_dispatchActionHandler_801B394(int a1)
 {
     int v1; // r5
     int v2; // r6
@@ -18451,7 +18451,7 @@ int __fastcall sub_801C082(int a1)
                             v12 = (((result + *(v3 + 1) * v15 - v15 - 8) & 0x1FF) << 16) + ((v10 + *(v3 + 2)) & 0xFF);
                             do
                             {
-                                sub_802FE28(v12 + 0x40000000, v5, 2, v1 + 208);
+                                sprite_queueOamEntryThunk_802FE28(v12 + 0x40000000, v5, 2, v1 + 208);
                                 v13 = v12 - (v15 * v14 << 17);
                                 result = v13 >> 8 << 8;
                                 v12 = (v13 - 2) & 0xFF | result;
@@ -18606,7 +18606,7 @@ signed int sub_801C202()
             v7 = v1[4] + v12;
             v8 = v1[5] - (*(*(v0 + oToolkit_CameraPtr) + 52) >> 16);
 LABEL_9:
-            result = sub_802FE28(((v7 << 16) | v8) & 0x1FF00FF | 0x80004000, v11 - 5328, 2, 223);
+            result = sprite_queueOamEntryThunk_802FE28(((v7 << 16) | v8) & 0x1FF00FF | 0x80004000, v11 - 5328, 2, 223);
             goto LABEL_10;
         }
         result = projectObjectToScreen_800362C((*(v1 + 3) + 52));
@@ -18781,8 +18781,8 @@ int __fastcall sub_801C3EE(signed int a1, int a2, int a3)
 int __noreturn sub_801C416()
 {
     CopyBackgroundTiles(17, 18, 0, word_801D904, 10, &byte_0[2]);
-    sub_802FE28(1081606288, 38760, 1, 0);
-    return sub_802FE28(1084752016, 38764, 1, 0);
+    sprite_queueOamEntryThunk_802FE28(1081606288, 38760, 1, 0);
+    return sprite_queueOamEntryThunk_802FE28(1084752016, 38764, 1, 0);
 }
 
 
@@ -19248,8 +19248,8 @@ int __noreturn sub_801C9E4()
     int v0; // r2
     int v1; // r3
 
-    sub_802FE28(-2140913601, 58224, 0, 6);
-    return sub_802FE28(8683583, 58232, v0, v1);
+    sprite_queueOamEntryThunk_802FE28(-2140913601, 58224, 0, 6);
+    return sprite_queueOamEntryThunk_802FE28(8683583, 58232, v0, v1);
 }
 
 
@@ -19622,8 +19622,8 @@ int palette_QueueObjectPalettePair_801CDEC()
     if ( result != 6 && result != 5 )
     {
         v2 = *(v0 + 18) << 16;
-        sub_802FE28(v2 - 2147467246, 52148, 0, 0);
-        result = sub_802FE28(v2 + 1075838994, 52156, v3, v4);
+        sprite_queueOamEntryThunk_802FE28(v2 - 2147467246, 52148, 0, 0);
+        result = sprite_queueOamEntryThunk_802FE28(v2 + 1075838994, 52156, v3, v4);
     }
     return result;
 }
@@ -19763,7 +19763,7 @@ int sub_801CF3C()
     do
     {
         v6 = v1;
-        sub_802FE28(v1, v2, v3, v4);
+        sprite_queueOamEntryThunk_802FE28(v1, v2, v3, v4);
         v1 = v6 + 0x200000;
         v2 = v7 + 8;
         --v5;
@@ -19771,7 +19771,7 @@ int sub_801CF3C()
     while ( v5 );
     result = v0[8];
     if ( result == 1 )
-        result = sub_802FE28((v0[5] + (v0[4] << 16) + 1073742080) | (v0[6] << 25), 45976, 0, 0);
+        result = sprite_queueOamEntryThunk_802FE28((v0[5] + (v0[4] << 16) + 1073742080) | (v0[6] << 25), 45976, 0, 0);
     return result;
 }
 
@@ -19800,7 +19800,7 @@ int sub_801CF9E()
     do
     {
         v6 = result;
-        sub_802FE28(result, v2, v3, v4);
+        sprite_queueOamEntryThunk_802FE28(result, v2, v3, v4);
         result = v6 + 0x80000;
         v2 = v7 + 2;
         --v5;
@@ -19809,16 +19809,16 @@ int sub_801CF9E()
     if ( v0[10] )
     {
         v8 = v6 + 491264 - ((4 - v0[10]) << 19) - 2147467008;
-        sub_802FE28(v8, 45952, v3, v4);
+        sprite_queueOamEntryThunk_802FE28(v8, 45952, v3, v4);
         result = v8 + 0x200000;
         if ( v0[11] )
         {
             v11 = result - ((4 - v0[11]) << 19);
-            sub_802FE28(v11, 45960, v9, v10);
+            sprite_queueOamEntryThunk_802FE28(v11, 45960, v9, v10);
             result = v11 + 0x200000;
         }
         if ( v0[12] )
-            result = sub_802FE28(result & 0x3FFF3FFF | 0x40000100, 45968, v9, v10);
+            result = sprite_queueOamEntryThunk_802FE28(result & 0x3FFF3FFF | 0x40000100, 45968, v9, v10);
     }
     return result;
 }
@@ -19938,7 +19938,7 @@ int __noreturn sub_801D1F6()
     do
     {
         v5 = result;
-        sub_802FE28(result, v1, v2, v3);
+        sprite_queueOamEntryThunk_802FE28(result, v1, v2, v3);
         result = v5 + 0x80000;
         v1 = v6 + 2;
         --v4;
@@ -19947,16 +19947,16 @@ int __noreturn sub_801D1F6()
     if ( byte_203685A )
     {
         v7 = v5 + 491520 - ((4 - byte_203685A) << 19) - 2147467264;
-        sub_802FE28(v7, 45988, v2, v3);
+        sprite_queueOamEntryThunk_802FE28(v7, 45988, v2, v3);
         result = v7 + 0x200000;
         if ( byte_203685B )
         {
             v10 = result - ((4 - byte_203685B) << 19);
-            sub_802FE28(v10, 45996, v8, v9);
+            sprite_queueOamEntryThunk_802FE28(v10, 45996, v8, v9);
             result = v10 + 0x200000;
         }
         if ( byte_203685C )
-            result = sub_802FE28(result & 0x3FFF3FFF | 0x40000000, 45968, v8, v9);
+            result = sprite_queueOamEntryThunk_802FE28(result & 0x3FFF3FFF | 0x40000000, 45968, v8, v9);
     }
     return result;
 }
@@ -20084,9 +20084,9 @@ int sub_801D47A()
     v3 = *(v0 + 54);
     if ( v3 >= 3 )
         v3 -= 3;
-    sub_802FE28(*(&dword_801D510 + v3) - 2147204992 + v2 + 1310720, 50112, 3, 0);
-    sub_802FE28(v2 + 32912, 50120, 3, 0);
-    return sub_802FE28((v2 + 4751504) | 0x10000000, 50120, 3, 0);
+    sprite_queueOamEntryThunk_802FE28(*(&dword_801D510 + v3) - 2147204992 + v2 + 1310720, 50112, 3, 0);
+    sprite_queueOamEntryThunk_802FE28(v2 + 32912, 50120, 3, 0);
+    return sprite_queueOamEntryThunk_802FE28((v2 + 4751504) | 0x10000000, 50120, 3, 0);
 }
 
 
@@ -20133,8 +20133,8 @@ int sub_801D548()
 // 0x801d564
 int __noreturn sub_801D564()
 {
-    sub_802FE28(1080819712, 54120, 0, 0);
-    return sub_802FE28(8159232, 54124, 0, 0);
+    sprite_queueOamEntryThunk_802FE28(1080819712, 54120, 0, 0);
+    return sprite_queueOamEntryThunk_802FE28(8159232, 54124, 0, 0);
 }
 
 
@@ -20215,8 +20215,8 @@ char *sub_801D65C()
             {
                 v5 = sub_801D6D8(result, v3);
                 v7 = ((v5 & 0x1FF) << 16) + v6 + 1073758208;
-                sub_802FE28(v7, 51124, 2, 0);
-                result = sub_802FE28(v7 + 9, 51128, 2, 0);
+                sprite_queueOamEntryThunk_802FE28(v7, 51124, 2, 0);
+                result = sprite_queueOamEntryThunk_802FE28(v7 + 9, 51128, 2, 0);
             }
         }
     }

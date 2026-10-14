@@ -24,7 +24,7 @@ sub_812DAE4::
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	beq locret_812DB08
@@ -712,7 +712,7 @@ loc_812E046::
 	mov r0, #0
 	bl sub_812EE78
 	bl sub_812EF20
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812EB88
 	bl sub_812EB78
 	bl CopyBackgroundTiles812EAAC
@@ -1069,7 +1069,7 @@ loc_812E306::
 	bl sub_812EE78
 	mov r0, #1
 	bl sub_812EE78
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812EB88
 	bl sub_812EB78
 	bl sub_812EF20
@@ -1920,7 +1920,7 @@ sub_812E9AC::
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]

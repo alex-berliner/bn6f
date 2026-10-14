@@ -26029,7 +26029,7 @@ off_80C3EF0:
 	.word off_80C3EF4
 off_80C3EF4:
 	.word battleObj_initSprite_80C3F00+1
-	.word sub_80C3F52+1
+	.word t1_0x54_updateFromRelatedObject_80C3F52+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x54_80C3EE0
 
@@ -26067,15 +26067,15 @@ loc_80C3F3C:
 	bl sprite_setFlip
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80C3F52
+	bl t1_0x54_updateFromRelatedObject_80C3F52
 	pop {r4-r7,pc}
 	thumb_func_end battleObj_initSprite_80C3F00
 
 // symdb: UPDATE handler of the t1_0x54 follower object type: copies position/animation state from its related (parent) object and re-anchors itself each frame.
 // symdb: void t1_0x54_updateFromRelatedObject(u32 r5 /* battle object */) : r5 -> [r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C3F52.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_0x54_updateFromRelatedObject_80C3F52.yaml
 	thumb_local_start
-sub_80C3F52:
+t1_0x54_updateFromRelatedObject_80C3F52:
 	push {r4-r7,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r0, #0x34 
@@ -26183,7 +26183,7 @@ loc_80C402C:
 	bl object_freeMemory
 locret_80C4036:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80C3F52
+	thumb_func_end t1_0x54_updateFromRelatedObject_80C3F52
 
 	thumb_func_start sub_80C4038
 sub_80C4038:
@@ -26313,7 +26313,7 @@ off_80C40E8:
 	.word off_80C40EC
 off_80C40EC:
 	.word sub_80C40F8+1
-	.word sub_80C4146+1
+	.word t1_0x55_updateFromRelatedObject_80C4146+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x55_80C40D8
 
@@ -26352,9 +26352,9 @@ sub_80C40F8:
 
 // symdb: UPDATE handler of the t1_0x55 follower object type: the sibling of t1_0x54_updateFromRelatedObject_80C3F52 with the same follow-the-parent behaviour and a slightly different field set.
 // symdb: void t1_0x55_updateFromRelatedObject(u32 r5 /* battle object */) : r5 -> [r5 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4146.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_0x55_updateFromRelatedObject_80C4146.yaml
 	thumb_local_start
-sub_80C4146:
+t1_0x55_updateFromRelatedObject_80C4146:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r0, #0x34 
@@ -26415,7 +26415,7 @@ loc_80C41C0:
 	bl object_freeMemory
 locret_80C41D6:
 	pop {r4,pc}
-	thumb_func_end sub_80C4146
+	thumb_func_end t1_0x55_updateFromRelatedObject_80C4146
 
 	thumb_func_start sub_80C41D8
 sub_80C41D8:
@@ -30268,16 +30268,16 @@ t3_0xb_80C60A8:
 off_80C60BC:
 	.word off_80C60C0
 off_80C60C0:
-	.word sub_80C60CC+1
+	.word battleObject_initTrainArrowVariant_80C60CC+1
 	.word trainArrow_80C619C+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0xb_80C60A8
 
 // symdb: Table-driven init handler of the train-arrow projectile family: Param1 selects one of the 0x10-byte config entries at byte_80C6038 (sprite, element, velocities, collision params), entry 6 takes its look from ExtraVars, then hands off to trainArrow_80C619C.
 // symdb: void battleObject_initTrainArrowVariant(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C60CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initTrainArrowVariant_80C60CC.yaml
 	thumb_local_start
-sub_80C60CC:
+battleObject_initTrainArrowVariant_80C60CC:
 	push {r4,r6,r7,lr}
 	ldr r6, [r5,#oBattleObject_ExtraVars]
 	ldrb r4, [r5,#oBattleObject_Param1]
@@ -30374,7 +30374,7 @@ loc_80C6190:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl trainArrow_80C619C
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80C60CC
+	thumb_func_end battleObject_initTrainArrowVariant_80C60CC
 
 	thumb_local_start
 trainArrow_80C619C:
@@ -32631,7 +32631,7 @@ loc_80C7268:
 	bl sprite_clearFinalPalette
 	bl sub_801AD9E
 	ldr r0, off_80C7280 // =off_80C7284 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_presentCollisionData
 	bl object_updateSpritePaused
 	pop {pc}
@@ -38322,16 +38322,16 @@ t3_0x2f_80C9BC4:
 off_80C9BD8:
 	.word off_80C9BDC
 off_80C9BDC:
-	.word sub_80C9BE8+1
+	.word battleObject_initBriefCollisionObject_80C9BE8+1
 	.word sub_80C9C5C+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x2f_80C9BC4
 
 // symdb: Init handler of a short-lived shadowless sprite object: appears on its panel for about two frames with a 0xFF (no-op) hit effect, then runs the standard update; no sound, no private updater.
 // symdb: void battleObject_initBriefCollisionObject(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9BE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBriefCollisionObject_80C9BE8.yaml
 	thumb_local_start
-sub_80C9BE8:
+battleObject_initBriefCollisionObject_80C9BE8:
 	push {r4,r7,lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -38376,7 +38376,7 @@ sub_80C9BE8:
 loc_80C9C56:
 	bl object_freeMemory
 	pop {r4,r7,pc}
-	thumb_func_end sub_80C9BE8
+	thumb_func_end battleObject_initBriefCollisionObject_80C9BE8
 
 	thumb_local_start
 sub_80C9C5C:
@@ -39523,16 +39523,16 @@ t3_0x33_80CA544:
 off_80CA558:
 	.word off_80CA55C
 off_80CA55C:
-	.word sub_80CA568+1
+	.word battleObject_initPanelBreakBounce_80CA568+1
 	.word sub_80CA61A+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x33_80CA544
 
 // symdb: Init handler of a bouncing panel-break attack object: breaks the panel it spawns on (or only cracks it when the panel is already damaged or occupied), plays SFX 0xDA, sets up sprite and a hopping trajectory, and hands off to the bounce updater sub_80CA61A.
 // symdb: void battleObject_initPanelBreakBounce(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA568.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPanelBreakBounce_80CA568.yaml
 	thumb_local_start
-sub_80CA568:
+battleObject_initPanelBreakBounce_80CA568:
 	push {r4,r7,lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0x34 
@@ -39607,7 +39607,7 @@ loc_80CA5FC:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl sub_80CA61A
 	pop {r4,r7,pc}
-	thumb_func_end sub_80CA568
+	thumb_func_end battleObject_initPanelBreakBounce_80CA568
 
 // symdb: Per-tick physics update for a bouncing battle object: integrates vertical arc, resolves horizontal landing on the target panel, counts down bounces, and transitions to destroy when contact is lost or bounces are exhausted.
 // symdb: void battle_tickCollisionBounce(void); // inputs r4,r5,r7,r8; outputs r5,r8; preserves r4,r6,r7
@@ -40604,16 +40604,16 @@ t3_0x37_80CAD28:
 off_80CAD3C:
 	.word off_80CAD40
 off_80CAD40:
-	.word sub_80CAD4C+1
+	.word battleObject_initRisingShot_80CAD4C+1
 	.word sub_80CADE0+1
 	.word sub_80CAEC0+1
 	thumb_func_end t3_0x37_80CAD28
 
 // symdb: Init handler of a forward-flying, slowly rising projectile: forward speed picked from the four-word table byte_80CADCC by Param1, ZVelocity +1.0/frame, then hands off to the standard update; no sound, no private updater.
 // symdb: void battleObject_initRisingShot(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CAD4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initRisingShot_80CAD4C.yaml
 	thumb_local_start
-sub_80CAD4C:
+battleObject_initRisingShot_80CAD4C:
 	push {lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xff
@@ -40671,7 +40671,7 @@ byte_80CADCC:
 	.byte 0x9, 0x0
 dword_80CADDC:
 	.word 0x10000
-	thumb_func_end sub_80CAD4C
+	thumb_func_end battleObject_initRisingShot_80CAD4C
 
 // symdb: Per-frame collision-update step for a battle object: clears/respawns its collision data, then either destroys the object (battle over or collision flags set), freezes it during time stop, or runs its current action's movement handler.
 // symdb: void battle_objectUpdateCollision_80CADE0(BattleObject* obj /* r5 */); callers pass the object
@@ -42614,7 +42614,7 @@ loc_80CBC74:
 	bl sub_801ADFA
 loc_80CBC78:
 	ldr r0, off_80CBC88 // =off_80CBC8C 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -45280,7 +45280,7 @@ sub_80CD08C:
 	bl sub_801AD12
 	bl sub_800F672
 	ldr r0, off_80CD0B4 // =off_80CD0B8 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -46449,7 +46449,7 @@ sub_80CD9CA:
 loc_80CD9DC:
 	bl sub_801AD12
 	ldr r0, off_80CD9F0 // =off_80CD9F4 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -47974,16 +47974,16 @@ t3_0x50_80CE530:
 off_80CE544:
 	.word off_80CE548
 off_80CE548:
-	.word sub_80CE554+1
+	.word battleObject_initFastLunge_80CE554+1
 	.word sub_80CE5F0+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x50_80CE530
 
 // symdb: Init handler of a fast lunging attack object: starts 9 px behind its panel and 13 px up, charges forward at 0.75 px/frame for 12 frames while rising, plays SFX 0xB3, and hands off to its updater sub_80CE5F0.
 // symdb: void battleObject_initFastLunge(u32 r5 /* battle object */) : r5 -> [r5 r8 r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE554.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initFastLunge_80CE554.yaml
 	thumb_local_start
-sub_80CE554:
+battleObject_initFastLunge_80CE554:
 	push {r4,lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -48046,7 +48046,7 @@ loc_80CE5BA:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl sub_80CE5F0
 	pop {r4,pc}
-	thumb_func_end sub_80CE554
+	thumb_func_end battleObject_initFastLunge_80CE554
 
 	thumb_local_start
 sub_80CE5F0:
@@ -49626,7 +49626,7 @@ sub_80CF18C:
 	bl sub_801AD12
 	bl sub_800F672
 	ldr r0, off_80CF1B4 // =off_80CF1B8 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_presentCollisionData
 	bl object_updateSprite
 	pop {pc}
@@ -50705,7 +50705,7 @@ sub_80CFA18:
 	bl object_spawnCollisionEffect
 	bl sub_800F672
 	ldr r0, off_80CFA44 // =off_80CFA48 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -56190,7 +56190,7 @@ sub_80D2320:
 	bl sprite_clearFinalPalette
 	bl sub_801AD9E
 	ldr r0, off_80D2344 // =jt_80D2348 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_presentCollisionData
 	bl object_updateSpriteTimestop
 	pop {pc}
@@ -58694,7 +58694,7 @@ sub_80D358C:
 	bl sub_801AD12
 	bl sub_800F672
 	ldr r0, off_80D35B4 // =off_80D35B8 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -60234,7 +60234,7 @@ sub_80D4144:
 	bl sub_801AD12
 	bl sub_800F672
 	ldr r0, off_80D416C // =off_80D4170 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -61077,7 +61077,7 @@ sub_80D4754:
 	bl object_clearCollisionRegion // () -> void
 loc_80D4786:
 	ldr r0, off_80D4798 // =off_80D479C 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl sub_801BC24
 	bl object_presentCollisionData
 	pop {pc}
@@ -68969,7 +68969,7 @@ battleObject_respawn_80D84DE:
 	mov r0, #1
 	strh r0, [r5,#oBattleObject_HP]
 	ldr r0, off_80D8504 // =off_80D8508 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_presentCollisionData
 	bl object_updateSpriteTimestop
 	pop {pc}
@@ -72703,7 +72703,7 @@ sub_80DA108:
 	bl sub_801AD12
 	bl sub_800F672
 	ldr r0, off_80DA130 // =off_80DA134 
-	bl sub_801B394
+	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
 	bl object_presentCollisionData
 	pop {pc}
@@ -97104,13 +97104,13 @@ sub_80E5600:
 	bne loc_80E5616
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurPhase]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0x28 
 	strh r0, [r5,#oBattleObject_Timer]
 	b locret_80E566A
 loc_80E5616:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
@@ -107979,7 +107979,7 @@ playerObject_update_80EA484:
 	push {r4,lr}
 	bl sub_8012E74
 	bl battle_naviAI_tick_8013DA0
-	bl sub_801AC6C
+	bl battleObject_processCollisionResultsForPlayer_801AC6C
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r0,#oAIData_AIIndex]
 	lsl r4, r0, #2
@@ -108035,7 +108035,7 @@ off_80EA52C:
 	.word RunSpawnAnimationMaybe_8016380+1 // 0x0
 	.word battle_endTurnMarkActed_8017888+1 // battle start function 2? // 0x01
 	.word sub_80173F4+1 // on delete? // 0x02
-	.word sub_80174FE+1 // on flinch // 0x03
+	.word battleObject_actionFlinch_80174FE+1 // on flinch // 0x03
 	.word sub_80175B8+1 // on paralyze // 0x04
 	.word sub_80178B6+1 // on push // 0x05
 	.word sub_8017688+1 // on freeze? // 0x06
@@ -108045,7 +108045,7 @@ off_80EA550:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108057,7 +108057,7 @@ off_80EA57C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108069,7 +108069,7 @@ off_80EA5A8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108081,7 +108081,7 @@ off_80EA5D4:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108093,7 +108093,7 @@ off_80EA600:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108105,7 +108105,7 @@ off_80EA62C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108117,7 +108117,7 @@ off_80EA658:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108129,7 +108129,7 @@ off_80EA684:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108141,7 +108141,7 @@ off_80EA6B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108153,7 +108153,7 @@ off_80EA6DC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -108167,7 +108167,7 @@ off_80EA710:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80173F4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -124267,7 +124267,7 @@ sub_80F2330:
 off_80F2344:
 	.word off_80F2348
 off_80F2348:
-	.word sub_8016F56+1
+	.word battleObject_initNaviObject_8016F56+1
 	.word sub_80F2354+1
 	.word sub_8016C4E+1
 	thumb_func_end sub_80F2330
@@ -124348,31 +124348,31 @@ off_80F23AC:
 	.word off_81068E8
 	.word off_8107C10
 off_80F2410:
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
 	.word sub_801AA48+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801AAC0+1
-	.word sub_801AAC0+1
-	.word sub_801AAC0+1
-	.word sub_801AAC0+1
-	.word sub_801AAC0+1
-	.word sub_801AAC0+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResultsByMode_801AAC0+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
 	.word sub_801AB40+1
 	.word sub_801AB40+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
-	.word sub_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
+	.word battleObject_processCollisionResults_801A9B8+1
 off_80F2474:
 	.word nullsub_106+1
 	.word nullsub_106+1
@@ -124751,7 +124751,7 @@ off_80F29B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -124845,7 +124845,7 @@ off_80F2B14:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -126734,7 +126734,7 @@ off_80F39CC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -128561,7 +128561,7 @@ off_80F4894:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -130621,7 +130621,7 @@ off_80F58F8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -132044,7 +132044,7 @@ off_80F6454:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -134233,7 +134233,7 @@ off_80F763C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -135979,7 +135979,7 @@ off_80F83F4:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -137455,7 +137455,7 @@ off_80F8FAC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -139124,7 +139124,7 @@ off_80F9D40:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -141179,7 +141179,7 @@ off_80FAD9C:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -142697,7 +142697,7 @@ off_80FB9A0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80FBC8A+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -145709,7 +145709,7 @@ off_80FD104:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -147397,7 +147397,7 @@ off_80FDDB0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -148843,7 +148843,7 @@ off_80FE890:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -150886,7 +150886,7 @@ off_80FF8B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -152140,7 +152140,7 @@ off_81002A8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -154341,7 +154341,7 @@ off_8101328:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -155059,7 +155059,7 @@ off_8101940:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -159916,7 +159916,7 @@ sub_8103DBC:
 	thumb_local_start
 sub_8103DFA:
 	push {r4,lr}
-	bl sub_80174FE
+	bl battleObject_actionFlinch_80174FE
 	mov r0, #0x41 
 	strb r0, [r5,#oBattleObject_CurAnim]
 	pop {r4,pc}
@@ -162994,7 +162994,7 @@ locret_8105616:
 	thumb_local_start
 sub_8105618:
 	push {r4,lr}
-	bl sub_80174FE
+	bl battleObject_actionFlinch_80174FE
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurAnim]
 	pop {r4,pc}
@@ -165450,7 +165450,7 @@ off_81068E8:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -167947,7 +167947,7 @@ off_8107C10:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_endTurnMarkActed_8017888+1
 	.word sub_80170C4+1
-	.word sub_80174FE+1
+	.word battleObject_actionFlinch_80174FE+1
 	.word sub_80175B8+1
 	.word sub_80178B6+1
 	.word sub_8017688+1
@@ -170577,7 +170577,7 @@ battleObject_dispatch_8108F50:
 off_8108F64:
 	.word off_8108F68
 off_8108F68:
-	.word sub_8016F56+1
+	.word battleObject_initNaviObject_8016F56+1
 	.word battle_8108F74+1
 	.word sub_8016C4E+1
 	thumb_func_end battleObject_dispatch_8108F50
@@ -170588,7 +170588,7 @@ off_8108F68:
 battle_8108F74:
 	push {r4,lr}
 	bl enemy_applyVersionChange_81095D0
-	bl sub_801ABB8
+	bl battleObject_processCollisionResultsForEnemy_801ABB8
 	ldrh r0, [r5,#oBattleObject_NameID]
 	cmp r0, #0x49 
 	bne loc_8108FA6

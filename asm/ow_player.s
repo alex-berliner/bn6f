@@ -140,7 +140,7 @@ off_809D258:
 	.word off_809D25C
 off_809D25C:
 	.word sub_809D270+1
-	.word sub_809D348+1
+	.word owPlayer_update_809D348+1
 	.word sub_809D7F8+1
 off_809D268:
 	.word eStruct2000aa0
@@ -234,7 +234,7 @@ sub_809D270:
 	str r0, [r5,#oOWPlayerObject_NextX]
 	str r1, [r5,#oOWPlayerObject_NextY]
 	str r2, [r5,#oOWPlayerObject_NextZ]
-	bl sub_809D348
+	bl owPlayer_update_809D348
 	pop {r4,pc}
 	.balign 4, 0
 off_809D324:
@@ -255,9 +255,9 @@ dword_809D344:
 // symdb: Per-frame update of the overworld player: resets the movement-step state, runs the movement-state jumptable handler, resolves collisions/slip-run, updates layer and sprite priority, and feeds the walk/encounter counters.
 // symdb: void owPlayer_update(u32 r5 /* OWPlayerObject */) : r5 -> [r4 r5 r8 r9 r10 r11 r12] (captured
 // symdb: exits r0 = 0x80 is caller residue, not a return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D348.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_update_809D348.yaml
 	thumb_local_start
-sub_809D348:
+owPlayer_update_809D348:
 	push {lr}
 	mov r0, #0
 	mov r7, r10
@@ -379,7 +379,7 @@ off_809D450:
 off_809D468:
 	.word off_809D450
 	.word 0xFFFF
-	thumb_func_end sub_809D348
+	thumb_func_end owPlayer_update_809D348
 
 	thumb_local_start
 sub_809D470:

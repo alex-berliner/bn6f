@@ -2624,7 +2624,7 @@ byte_20349A4:: // 0x20349a4
 	.space 1
 byte_20349A5:: // 0x20349a5
 	.space 3
-// symdb: Run-away attempt counter: sub_8026F1A reads it as the index into the off_8027014 threshold row and increments it per attempt (word +8 of the block at 0x020349A0, zeroed at battle start by sub_8026840).
+// symdb: Run-away attempt counter: sub_8026F1A reads it as the index into the off_8027014 threshold row and increments it per attempt (word +8 of the block at 0x020349A0, zeroed at battle start by battle_initCustomScreen_8026840).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_20349A8.yaml
 dword_20349A8:: // 0x20349a8
 	.space 4

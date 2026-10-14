@@ -19,7 +19,7 @@ unsigned int Underground_EnterMapGroup()
     uncompSprite_8002906(*(&off_8079380 + *(v0 + 5)));
     chatbox_uncompMapTextArchives_803FD08();
     Underground_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 

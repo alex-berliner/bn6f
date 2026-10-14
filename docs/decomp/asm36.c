@@ -56,7 +56,7 @@ int sub_8130084()
 	ZeroFill_byte_3001960(v3, v4, v5, v6);
 	ZeroFillGFX30025c0();
 	toolkit_applyOverlayPalette_80015FC(16);
-	sub_8046664();
+	battle_resetEStructRecords_8046664();
 	chatbox_8040818();
 	v7 = *(v1 + oToolkit_RenderInfoPtr);
 	*v7 = 8000;
@@ -172,7 +172,7 @@ signed int sub_8130250()
 	v2 = 8;
 	do
 	{
-		sub_802FE28(v1, v0, 0, 5);
+		sprite_queueOamEntryThunk_802FE28(v1, v0, 0, 5);
 		v1 += 0x80000;
 		result = 2;
 		v0 += 2;
@@ -310,7 +310,7 @@ void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
 	int v4; // r5
 
 	ZeroFillGFX30025c0();
-	sub_8046664();
+	battle_resetEStructRecords_8046664();
 	CopyBackgroundTiles(0, 0, 1, &unk_201F320, 30, dword_14);
 	sub_8130290();
 	sub_81302F4(*(v4 + 42), 0);
@@ -1622,7 +1622,7 @@ void __noreturn sub_81312FC()
     ZeroFill_byte_3001960(v3, v4, v5, v6);
     ZeroFillGFX30025c0();
     toolkit_applyOverlayPalette_80015FC(16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     chatbox_8040818();
     v7 = *(v1 + oToolkit_RenderInfoPtr);
     *v7 = 8000;
@@ -3074,7 +3074,7 @@ int sub_8132670()
 void __fastcall __noreturn sub_81326D4(int a1, int a2, int a3, int a4)
 {
     ZeroFillGFX30025c0();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     decompAndCopyData(&dword_8132718);
     sub_80465A0(byte_81326C8);
     sub_811AE7C(1, 0);
@@ -3299,7 +3299,7 @@ signed int __fastcall sub_81329C8(int a1, int a2, int a3)
             break;
         v9 = v10;
         v10 += 16;
-        result = sub_802FE28((v9 << 16) | v11 | 0x40001000, v12 + 4 * v6++, 2, 7);
+        result = sprite_queueOamEntryThunk_802FE28((v9 << 16) | v11 | 0x40001000, v12 + 4 * v6++, 2, 7);
     }
     return result;
 }
@@ -3316,7 +3316,7 @@ void __fastcall __noreturn sub_8132A14(int a1, int a2, int a3, int a4)
     v5 = ((a1 << 16) | a2) + 4096;
     v6 = v4 | (a3 << 12);
     v7 = memory_bcdConvert(a4);
-    sub_802FE28(v5 + 1835008, v6 + (v7 & 0xF), 2, 7);
+    sprite_queueOamEntryThunk_802FE28(v5 + 1835008, v6 + (v7 & 0xF), 2, 7);
     JUMPOUT(loc_8132A42);
 }
 
@@ -3339,7 +3339,7 @@ int __fastcall __noreturn sub_8132A50(int a1, int a2, __int16 a3, int a4)
     v4 = 2;
     do
     {
-        sub_802FE28(((v7 << 16) | v8) - 2147463168, v10 | (v9 << 12) | 0x400, 2, 7);
+        sprite_queueOamEntryThunk_802FE28(((v7 << 16) | v8) - 2147463168, v10 | (v9 << 12) | 0x400, 2, 7);
         result = v7 + 32;
         v7 += 32;
         v10 += 8;
@@ -3384,7 +3384,7 @@ void __noreturn OpenSaveMenu8132BA8(int a1, int a2, int a3, int a4)
     *(v4 + 1) = 4;
     *(v4 + 2) = 0;
     engine_setScreeneffect(8, 16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     *(v4 + 12) = countEventFlagChips_81207F8(0);
     *(v4 + 14) = countEventFlagChips_81207F8(1);
     *(v4 + 16) = countEventFlagChips_81207F8(2);
@@ -3728,7 +3728,7 @@ void __fastcall __noreturn sub_8133228(int a1, int a2, int a3, int a4)
     v6[12] = 0;
     v6[13] = 0;
     engine_setScreeneffect(8, 16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     *(v4 + 24) = 0;
     *(v4 + 26) = 0;
     *(v4 + 14) = 0;
@@ -4427,11 +4427,11 @@ int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
 
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     v2 = IsPaletteFadeActive();
     if ( !v3 )
     {
-        sub_8046664();
+        battle_resetEStructRecords_8046664();
         zeroFill_e2002230();
         timer_setNoTimeout_8137700();
         sub_81206C4(&unk_202A3E0);
@@ -4528,7 +4528,7 @@ int __fastcall sub_8133A68(int a1)
     }
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
@@ -4564,7 +4564,7 @@ int __fastcall sub_8133B18(int a1)
     }
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_81345D4();
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v3);
@@ -4593,7 +4593,7 @@ int __fastcall sub_8133B74(int a1)
     }
     battle_setFieldsFromObj_81340FC();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_81345D4();
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
@@ -6678,7 +6678,7 @@ void __fastcall __noreturn sub_81356F4(int a1, int a2, int a3, int a4)
     *(v4 + 1) = 4;
     *(v4 + 2) = 0;
     engine_setScreeneffect(8, 16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     *(v4 + 23) = 0;
     *(v4 + 12) = 0;
     *(v4 + 19) = 0;
@@ -6709,7 +6709,7 @@ int sub_81357C4()
 
     (*(&off_81357E0 + *(v0 + 2)))();
     entity_runAllUpdateHandlers_80465BC();
-    return sub_80465F8();
+    return battle_updateEStructSprites_80465F8();
 }
 
 
@@ -7122,7 +7122,7 @@ int sub_8135B54()
     int v6; // r2
 
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     result = IsPaletteFadeActive();
     if ( !v3 )
     {
@@ -7634,7 +7634,7 @@ int sub_8136218()
     sub_813629C(v2);
     if ( v5 )
     {
-        sub_8046664();
+        battle_resetEStructRecords_8046664();
     }
     else
     {
@@ -9857,7 +9857,7 @@ void __fastcall __noreturn sub_81378D4(int a1, int a2, int a3, int a4)
     ZeroFill_byte_3001960(v4, v5, v6, v7);
     ZeroFillGFX30025c0();
     toolkit_applyOverlayPalette_80015FC(16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     sub_8137ACC();
 }
 
@@ -9869,7 +9869,7 @@ void sub_8137964()
 
     (*(&off_8137984 + *(v0 + 2)))();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_81380E0();
     JUMPOUT(locret_813797E);
 }
@@ -9987,7 +9987,7 @@ signed int sub_8137A7C()
     char v2; // zf
 
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_81380E0();
     IsPaletteFadeActive();
     if ( !v2 )
@@ -10588,7 +10588,7 @@ int sub_8138348()
     }
     while ( v1 );
     entity_runAllUpdateHandlers_80465BC();
-    v2 = sub_80465F8();
+    v2 = battle_updateEStructSprites_80465F8();
     return sub_8138848(v2, v3, v4, v5);
 }
 

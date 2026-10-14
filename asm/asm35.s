@@ -429,7 +429,7 @@ sub_812ED94:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	mov r1, #0
 	mov r2, #1

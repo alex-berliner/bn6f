@@ -6,7 +6,7 @@ int sub_812DAE4()
 
     (*(&off_812DB10 + *(v0 + 2)))();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
         result = sub_803C59C(0, 0);
@@ -816,7 +816,7 @@ void sub_812E280()
                                         *(v0 + 3) = 4;
                                         sub_812EE78(0);
                                         sub_812EE78(1);
-                                        sub_8046664();
+                                        battle_resetEStructRecords_8046664();
                                         sub_812EB88();
                                         sub_812EB78();
                                         sub_812EF20();
@@ -1485,7 +1485,7 @@ void __noreturn sub_812E9AC()
     ZeroFill_byte_3001960(v2, v3, v4, v5);
     ZeroFillGFX30025c0();
     toolkit_applyOverlayPalette_80015FC(16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     chatbox_8040818();
     v6 = *(v0 + oToolkit_RenderInfoPtr);
     *v6 = -16576;

@@ -381,7 +381,7 @@ int sub_8026726()
 
 
 // 0x8026840
-char *__fastcall sub_8026840(int a1, int a2, int a3, int a4)
+char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r4
@@ -13039,7 +13039,7 @@ int sub_802F6B2()
 void __fastcall __noreturn startScreen_UpdateAndRenderFrame_802F704(int a1, int a2, int a3)
 {
     sub_802F81C(a1, a2, a3);
-    sub_802F8D8();
+    startScreen_updateFrame_802F8D8();
 }
 
 
@@ -13058,7 +13058,7 @@ int startScreen_update_802F710()
     int v9; // r3
 
     if ( v0[2] > 0 )
-        sub_802F8D8();
+        startScreen_updateFrame_802F8D8();
     result = IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -13237,7 +13237,7 @@ int sub_802F88E()
 
 
 // 0x802f8d8
-int __noreturn sub_802F8D8()
+int __noreturn startScreen_updateFrame_802F8D8()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -13252,7 +13252,7 @@ int __noreturn sub_802F8D8()
     if ( v2 >= 64 )
         LOBYTE(v2) = 0;
     v0[7] = v2;
-    sub_802FE28(*&byte_802F960[4 * v0[8]], *&byte_802F970[2 * v0[6]], 0, 0);
+    sprite_queueOamEntryThunk_802FE28(*&byte_802F960[4 * v0[8]], *&byte_802F970[2 * v0[6]], 0, 0);
     sprite_submitOamSet_802F994(v0[8]);
     if ( v0[2] )
     {
@@ -13505,7 +13505,7 @@ void copyObjAttributesToIWRAM_802FE0C()
 
 // 0x802fe28
 // (u32 a1, u16 a2, int notUsed, int a4) -> void
-signed int __fastcall sub_802FE28(signed int a1, __int16 a2, int a3, int a4)
+signed int __fastcall sprite_queueOamEntryThunk_802FE28(signed int a1, __int16 a2, int a3, int a4)
 {
     return sprite_queueOamEntry(a1, a2, a3, a4);
 }

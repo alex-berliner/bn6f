@@ -1997,7 +1997,7 @@ loc_800104A:
 	mov r3, #0xff
 	and r3, r5
 	lsr r2, r5, #0x10
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	tst r4, r4
 	beq locret_8001078
 	mov r7, #0xf
@@ -2188,7 +2188,7 @@ sub_8001154:
 	thumb_func_end sub_8001154
 
 // () -> void
-// symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sub_802FE28.
+// symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sprite_queueOamEntryThunk_802FE28.
 // symdb: void sub_8001158(const void *scriptTable);  // r0 = list ptr; clobbers r0-r3, r5, lr; flags NZ
 // symdb: clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/scriptListRun_8001158.yaml
@@ -2203,7 +2203,7 @@ loc_800115C:
 	ldr r1, [r7,#4]
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	b loc_800115C
 locret_8001170:

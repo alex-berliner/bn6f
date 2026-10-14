@@ -43,7 +43,7 @@ HomePages_EnterMapGroup:
 
 	bl HomePages_SpawnMapObjectsForMap
 
-	bl sub_8034FB8
+	bl cutscene_TryStartOnMapEnterAfterJackIn_8034FB8
 
 	pop {r4-r7,pc}
 	.balign 4, 0

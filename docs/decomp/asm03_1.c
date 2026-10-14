@@ -169,7 +169,7 @@ int __fastcall __noreturn sub_8033B80(int a1)
     int v1; // r5
     int result; // r0
 
-    sub_802FE28((byte_8033BB8[24 * a1 + *(v1 + 5)] << 16) - 2147319805, 51088, 1, 0);
+    sprite_queueOamEntryThunk_802FE28((byte_8033BB8[24 * a1 + *(v1 + 5)] << 16) - 2147319805, 51088, 1, 0);
     result = *(v1 + 5) + 1;
     if ( result >= 24 )
         result = 0;
@@ -193,7 +193,7 @@ signed int sub_8033BE8()
             v0 = 12;
     }
     (loc_8000AC4)(off_8033C24[v0], 100758400, byte_80);
-    return sub_802FE28(1074921478, 51100, 1, 0);
+    return sprite_queueOamEntryThunk_802FE28(1074921478, 51100, 1, 0);
 }
 
 
@@ -214,8 +214,8 @@ int updateChipSlotGfx_8033C68()
     if ( v1 >= 18 )
         LOBYTE(v1) = 0;
     *(v0 + 6) = v1;
-    sub_802FE28(-2145959683, 51104, 1, 0);
-    sub_802FE28(-1609089011, 51104, 1, 0);
+    sprite_queueOamEntryThunk_802FE28(-2145959683, 51104, 1, 0);
+    sprite_queueOamEntryThunk_802FE28(-1609089011, 51104, 1, 0);
     v4 = *(v0 + 7);
     v5 = __OFSUB__(v4, 1);
     result = v4 - 1;
@@ -244,8 +244,8 @@ signed int sub_8033CF0()
     if ( v1 >= 18 )
         LOBYTE(v1) = 0;
     *(v0 + 6) = v1;
-    sub_802FE28(-2145959683, 51104, 1, 0);
-    return sub_802FE28(-1609089011, 51104, 1, 0);
+    sprite_queueOamEntryThunk_802FE28(-2145959683, 51104, 1, 0);
+    return sprite_queueOamEntryThunk_802FE28(-1609089011, 51104, 1, 0);
 }
 
 
@@ -377,14 +377,14 @@ signed int __noreturn sub_8033E0C()
         {
             LOWORD(v15) = 11;
         }
-        sub_802FE28(v16, 2 * v15 - 14446, 1, 0);
+        sprite_queueOamEntryThunk_802FE28(v16, 2 * v15 - 14446, 1, 0);
         v11 = v19;
         v14 = v18 + 8;
         v13 -= 4;
     }
     while ( v20 >= 4 );
-    sub_802FE28(0x8000, 51088, 1, 0);
-    return sub_802FE28(271089664, 51088, 1, 0);
+    sprite_queueOamEntryThunk_802FE28(0x8000, 51088, 1, 0);
+    return sprite_queueOamEntryThunk_802FE28(271089664, 51088, 1, 0);
 }
 
 
@@ -418,7 +418,7 @@ signed int __fastcall sub_8033F80(int a1)
     if ( !v3 )
     {
         (loc_8000AC8)(byte_86C1AA0, 100758912, 128);
-        result = sub_802FE28(*&byte_8033FB4[4 * v1], 51116, 1, 0);
+        result = sprite_queueOamEntryThunk_802FE28(*&byte_8033FB4[4 * v1], 51116, 1, 0);
     }
     return result;
 }
@@ -721,7 +721,7 @@ void __cdecl decompJackInAnimationGfx_8034314()
     decompAndCopyData(&initRefs_8034338);
     *(v0 + 3) = 0;
     *(v0 + 6) = 2;
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     sub_80465A0(byte_8034370);
 }
 
@@ -761,7 +761,7 @@ int sub_80343B0()
     (loc_8000AC4)(*(v2 + 1), palette_3001960, 32);
     CopyBackgroundTiles(0, 0, 1, eTileIds2017A04, 32, dword_14);
     entity_runAllUpdateHandlers_80465BC();
-    return sub_80465F8();
+    return battle_updateEStructSprites_80465F8();
 }
 
 
@@ -1233,7 +1233,7 @@ signed int __fastcall maybeStartEntranceCutscene_8034F68(int a1)
 
 
 // 0x8034fb8
-unsigned int sub_8034FB8()
+unsigned int cutscene_TryStartOnMapEnterAfterJackIn_8034FB8()
 {
     int v0; // r10
     unsigned __int8 *v1; // r4
@@ -5344,7 +5344,7 @@ int cb_8038AD0()
     sub_8046818();
     sub_8046854();
     entity_runAllUpdateHandlers_80465BC();
-    return sub_80465F8();
+    return battle_updateEStructSprites_80465F8();
 }
 
 
@@ -5580,7 +5580,7 @@ int sub_8038CF4()
         }
         else
         {
-            sub_8046664();
+            battle_resetEStructRecords_8046664();
             *(v0 + 2) = 16;
             result = 20;
             *(v0 + 4) = 20;
@@ -5675,7 +5675,7 @@ int sub_8038E14()
     {
         LoadGFXAnim(byte_80387FC);
         LoadGFXAnim(byte_803888C);
-        sub_8046664();
+        battle_resetEStructRecords_8046664();
         sub_80390D8();
         *(v0 + 2) = 40;
         result = 214;
@@ -6028,7 +6028,7 @@ int sub_8039658()
 
     (*(&off_8039674 + *(v0 + 1)))();
     entity_runAllUpdateHandlers_80465BC();
-    return sub_80465F8();
+    return battle_updateEStructSprites_80465F8();
 }
 
 
@@ -6052,7 +6052,7 @@ signed int __fastcall __noreturn sub_8039694(int a1, int a2, int a3, int a4)
     v5 = engine_setScreeneffect(8, 16);
     copyData_803B216(v5, v6, v7, v8);
     sub_803C2EC();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     chatbox_8040818();
     v4[5] = 3;
     if ( v4[20] )
@@ -6283,7 +6283,7 @@ int sub_80398B0()
 
     SetRenderInfoLCDControl(8000);
     sub_803BB2C(v0[4]);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     sub_803993A(v1);
     engine_setScreeneffect(0, 16);
     v0[1] = 8;
@@ -6355,7 +6355,7 @@ int __fastcall sub_803993A(int a1)
     int result; // r0
 
     v1 = &dword_80394CC;
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     while ( 1 )
     {
         result = *v1;
@@ -6439,7 +6439,7 @@ signed int sub_8039A58()
     copyData_803B2E4(v1, v2, v3, v4);
     chatbox_8040818();
     sub_803BE30(2);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     sub_80465A0(byte_8039390);
     sub_803C40C();
     sub_803C1A8(v0 + 240, v0 + 48, v0 + 256, v0 + 144);
@@ -9096,7 +9096,7 @@ signed int __fastcall sub_803B814(int a1, int a2, int a3, _BYTE *a4)
         if ( !*i )
             break;
         v8 = a2 + chatbox_8045ED0(algn_2027201[8 * byte_80391A8[result] + 1]);
-        result = sub_802FE28((v9 << 16) | v10 | 0x40001000, v11 + 4 * byte_80391A8[*i], 2, 7);
+        result = sprite_queueOamEntryThunk_802FE28((v9 << 16) | v10 | 0x40001000, v11 + 4 * byte_80391A8[*i], 2, 7);
     }
     return result;
 }
@@ -9123,7 +9123,7 @@ void __noreturn sub_803B880()
 // 0x803b8f8
 signed int __fastcall __noreturn sub_803B8F8(int a1, int a2, __int16 a3)
 {
-    return sub_802FE28((a1 << 16) | a2 | 0x9000, 2 * a3 - 16256, 0, 0);
+    return sprite_queueOamEntryThunk_802FE28((a1 << 16) | a2 | 0x9000, 2 * a3 - 16256, 0, 0);
 }
 
 
@@ -9157,7 +9157,7 @@ signed int __fastcall __noreturn sub_803B9C0(int a1, int a2, int a3, int a4)
     v7 = 28;
     do
     {
-        result = sub_802FE28(v4 + (v7 << 16), v5 + (v6 & 0xF), 2, 7);
+        result = sprite_queueOamEntryThunk_802FE28(v4 + (v7 << 16), v5 + (v6 & 0xF), 2, 7);
         v6 >>= 4;
         v9 = __OFSUB__(v7, 7);
         v7 -= 7;
@@ -9390,7 +9390,7 @@ int __fastcall __noreturn sub_803BBA4(int a1, int a2, int a3)
     int result; // r0
 
     v4 = a3;
-    sub_802FE28(a2 | (a1 << 16) | 0x40001000, *&byte_803BBDC[2 * *(v3 + 7)] | 0x800, 2, 7);
+    sprite_queueOamEntryThunk_802FE28(a2 | (a1 << 16) | 0x40001000, *&byte_803BBDC[2 * *(v3 + 7)] | 0x800, 2, 7);
     result = *(v3 + 7) + v4;
     if ( result >= 18 )
         result = 0;
@@ -9413,8 +9413,8 @@ int __fastcall __noreturn sub_803BC7C(int a1)
         v2 += 5;
     v3 = &byte_803BD18[4 * v2];
     v4 = v3[1] | (*v3 << 16);
-    sub_802FE28(v4 | 0x9000, *&byte_803BCE4[2 * *(v1 + 10)], 0, 0);
-    sub_802FE28((v4 | 0x9000) + (v3[2] << 16), *&byte_803BCE4[2 * *(v1 + 10)] + 2, 0, 0);
+    sprite_queueOamEntryThunk_802FE28(v4 | 0x9000, *&byte_803BCE4[2 * *(v1 + 10)], 0, 0);
+    sprite_queueOamEntryThunk_802FE28((v4 | 0x9000) + (v3[2] << 16), *&byte_803BCE4[2 * *(v1 + 10)] + 2, 0, 0);
     result = *(v1 + 10) + 1;
     if ( result >= 24 )
         result = 0;
@@ -10288,7 +10288,7 @@ int __fastcall sub_803C59C(int a1, int a2)
     if ( !v3 )
     {
         byte_200BC61 = sub_8146BB8() - 1;
-        sub_802FE28(v7 | (v6 << 16) | 0x40000000, 58356, 0, 0);
+        sprite_queueOamEntryThunk_802FE28(v7 | (v6 << 16) | 0x40000000, 58356, 0, 0);
         v4 = byte_200BC60++ + 1;
         v5 = (v4 >> 4) & 3;
         if ( v5 > byte_200BC61 )

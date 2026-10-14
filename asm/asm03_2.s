@@ -139,7 +139,7 @@ loc_8046062:
 	orr r1, r2
 	ldrb r2, [r6,#4]
 	ldrb r3, [r6,#6]
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r2, #0x10
 	add r7, r7, r2
 	mov r4, r7
@@ -809,9 +809,9 @@ off_80465F4:
 // symdb: Per-frame sprite pipeline over the eStruct record array: for each of the 15 records whose flag byte has bit 0x2 (active/visible), rescans hitboxes, reloads palette and the current anim frame's tiles when flagged, and rebuilds its render data.
 // symdb: void battle_updateEStructSprites(void) : (nothing, only lr) -> [nz c v r0 r1 r2 r3 r4 r5 r6 r7
 // symdb: r8 r9 r12] (callee-saved restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80465F8.yaml
-	thumb_func_start sub_80465F8
-sub_80465F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateEStructSprites_80465F8.yaml
+	thumb_func_start battle_updateEStructSprites_80465F8
+battle_updateEStructSprites_80465F8:
 	mov r0, #0
 	b loc_80465FC
 loc_80465FC:
@@ -867,19 +867,19 @@ loc_8046652:
 	mov r9, r5
 	mov r12, r6
 	pop {r4-r7,pc}
-	thumb_func_end sub_80465F8
+	thumb_func_end battle_updateEStructSprites_80465F8
 
 // () -> void
 // symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after sub_80466AA, so scene ticks returning from a battle overlay start from clean records.
-// symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046664.yaml
-	thumb_func_start sub_8046664
-sub_8046664:
+// symdb: void battle_resetEStructRecords_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetEStructRecords_8046664.yaml
+	thumb_func_start battle_resetEStructRecords_8046664
+battle_resetEStructRecords_8046664:
 	push {r4-r7,lr}
 	bl sub_80466AA // () -> void
 	bl battle_initEStructArr_804657C // () -> void
 	pop {r4-r7,pc}
-	thumb_func_end sub_8046664
+	thumb_func_end battle_resetEStructRecords_8046664
 
 // symdb: Initializes one 0x58-byte entry of the struct array at 0x2008450 as "type 9", storing an id byte, a parameter word, and clearing its counter/state word.
 // symdb: struct* initType9Entry(u8 id /*r0*/, u32 slot /*r1*/, u32 param /*r2*/); returns r0 = pointer to
@@ -1701,19 +1701,19 @@ battle_objectAdvanceCounterToState8_8046DDC:
 	mov r0, #8
 	strb r0, [r5]
 loc_8046DF0:
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #0
 	pop {pc}
 	thumb_func_end battle_objectAdvanceCounterToState8_8046DDC
 
-// symdb: Runs two update passes in sequence (sub_8047950 then sub_8047134) and always returns 0.
+// symdb: Runs two update passes in sequence (sub_8047950 then shopBuyMenu_updateFrame_8047134) and always returns 0.
 // symdb: void sub_8046DF8(void) /* no inputs; returns r0 = 0 with N/Z set from it */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046DF8.yaml
 	thumb_local_start
 sub_8046DF8:
 	push {lr}
 	bl battleMenu_navigate_8047950
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_8046DF8
@@ -1750,7 +1750,7 @@ scramblePanel_tick_8046E06:
 	mov r1, #0xc
 	bl SetScreenFade // (int a1, int a2) -> void
 loc_8046E40:
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #0
 	pop {pc}
 	thumb_func_end scramblePanel_tick_8046E06
@@ -1761,7 +1761,7 @@ loc_8046E40:
 	thumb_local_start
 dialogueEnd_unlockPlayer_8046E48:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8046E80
 	ldr r1, [r5,#0x28]
@@ -1795,7 +1795,7 @@ loc_8046E80:
 	thumb_local_start
 sub_8046E84:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_JoypadPtr]
 	ldrh r0, [r7,#oJoypad_Pressed]
@@ -1838,7 +1838,7 @@ loc_8046ECE:
 	thumb_local_start
 chatbox_confirmShopPurchase_8046ED2:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8046EF2
@@ -2006,7 +2006,7 @@ off_8047024:
 	thumb_local_start
 chatbox_stepContextScript_8047028:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_804704C
@@ -2029,7 +2029,7 @@ loc_804704C:
 	thumb_local_start
 sub_8047050:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8047062
@@ -2043,7 +2043,7 @@ loc_8047062:
 	thumb_local_start
 sub_8047066:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8047094
@@ -2072,7 +2072,7 @@ dword_8047098:
 	thumb_local_start
 sub_804709C:
 	push {lr}
-	bl sub_8047134
+	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8047130
@@ -2140,9 +2140,9 @@ loc_8047130:
 // symdb: Per-frame update/render of the shop buy menu: runs the entity/state updates, rebuilds and draws the 5-row purchasable-item list, draws the cursor and scroll arrows, and refreshes the background.
 // symdb: void shopBuyMenu_updateFrame(u32 r5 /* menu state */) : r5 -> [r1-r10 r12] (callee-saved
 // symdb: restored; no caller-live return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047134.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shopBuyMenu_updateFrame_8047134.yaml
 	thumb_local_start
-sub_8047134:
+shopBuyMenu_updateFrame_8047134:
 	push {r4-r7,lr}
 	push {r5}
 	mov r0, #0
@@ -2154,7 +2154,7 @@ sub_8047134:
 	bl call_sub_3005EBA
 	pop {r5}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl dispatchStateHandler_81179AE
 	bl sub_80473E6
 	bne loc_8047174
@@ -2231,7 +2231,7 @@ locret_80471F0:
 	.balign 4, 0
 off_80471F4:
 	.word byte_2019A00
-	thumb_func_end sub_8047134
+	thumb_func_end shopBuyMenu_updateFrame_8047134
 
 // symdb: LZ77-decompresses the three compressed blobs the message/text-script system works from (a scene-dependent blob plus two fixed text data files) into their EWRAM buffers.
 // symdb: void uncomp_80471F8(u32* r5 /*handle*/); inputs r2,r3,r5 (r5 = pointer to a struct whose [0x1C]
@@ -2296,7 +2296,7 @@ sub_804722C:
 	orr r1, r2
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_804725E:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -2320,7 +2320,7 @@ byte_8047268:
 	.byte 0x10, 0xE0, 0x10, 0xE0, 0x10, 0xE0, 0x10, 0xE0
 	thumb_func_end sub_804722C
 
-// symdb: Feeds one column of a per-column sprite/attr table to the writer at sub_802FE28 and advances an 18-column counter that wraps to 0.
+// symdb: Feeds one column of a per-column sprite/attr table to the writer at sprite_queueOamEntryThunk_802FE28 and advances an 18-column counter that wraps to 0.
 // symdb: void sub_80472E8(u16 upper /*r0*/, u16 lower /*r1*/, u32 column /*r2*/) — returns the column's
 // symdb: table entry in r1, the next (wrapped) column counter in r2, and 0 in r3; r0 is scratch, r4-r7/lr
 // symdb: preserved, flags clobbered.
@@ -2338,7 +2338,7 @@ sprite_emitColumnEntry_80472E8:
 	ldrh r1, [r1,r2]
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r2, r7
 	add r2, #1
 	cmp r2, #0x12
@@ -2579,7 +2579,7 @@ off_8047478:
 copyData_804747C:
 	push {r5,lr}
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// initRefs
 	ldr r0, off_8047490 // =off_8047494 
 	bl decompAndCopyData // (u32 *initRefs) -> void
@@ -4921,7 +4921,7 @@ sub_8049104:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x12
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl copyData_8049AAC
 	bl chatbox_8040818
 	mov r0, #2
@@ -5735,7 +5735,7 @@ sub_8049770:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x13
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl copyData_8049A18
 	mov r0, #8
 	mov r1, #0x10
@@ -6311,7 +6311,7 @@ loc_8049BC4:
 	add r0, r0, r2
 	mov r2, #2
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, off_8049CB4 // =eTextScript202BA04 // TextScriptArchive
 	lsl r1, r7, #9
 	add r0, r0, r1
@@ -6714,7 +6714,7 @@ sub_8049EBC:
 	bl renderInfo_80017A0 // () -> ()
 	mov r0, #0x13
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl copyData_804A0AC
 	mov r0, #8
 	mov r1, #0x10
@@ -7256,7 +7256,7 @@ sub_804A2CC:
 	ldr r1, [r1,#oToolkit_GameStatePtr]
 	ldrh r0, [r1,#oGameState_MapGroup]
 	strh r0, [r1,#oGameState_LastMapGroup]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	pop {r5,pc}
 	thumb_func_end sub_804A2CC
 
@@ -7294,7 +7294,7 @@ ChipTraderControl:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_804AFB8
 	bl sub_804AFE4
 	bl GetRNG // () -> u32?
@@ -7327,7 +7327,7 @@ sub_804A360:
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// memBlock
 	ldr r0, off_804A3F0 // =word_202A020 
 	// size
@@ -7445,7 +7445,7 @@ sub_804A460:
 	bl sub_804AA58
 	bl IsScreenFadeActive // () -> zf
 	beq loc_804A4CC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 	bl next_exitToMap_811F728
 	bl sub_8120AB8

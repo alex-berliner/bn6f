@@ -59,7 +59,7 @@ sub_8130084:
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
@@ -276,7 +276,7 @@ loc_813025E:
 	mov r1, r6
 	ldr r2, dword_8130284 // =0x0 
 	mov r3, #5
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, #8
 	lsl r0, r0, #0x10
 	add r4, r4, r0
@@ -559,7 +559,7 @@ sub_8130464:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	mov r1, #0
 	mov r2, #1
@@ -1159,7 +1159,7 @@ sub_8130904:
 	tst r0, r1
 	bne loc_8130920
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8
+	bl battle_updateEStructSprites_80465F8
 loc_8130920:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
@@ -2449,7 +2449,7 @@ sub_81312FC:
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
@@ -4915,7 +4915,7 @@ byte_81326C8:
 sub_81326D4:
 	push {lr}
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// initRefs
 	ldr r0, off_8132714 // =dword_8132718 
 	bl decompAndCopyData // (u32 *initRefs) -> void
@@ -5312,7 +5312,7 @@ loc_81329E4:
 	add r1, r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #1
 	b loc_81329E4
 loc_8132A0C:
@@ -5346,7 +5346,7 @@ loc_8132A2C:
 	add r1, r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 
 	lsr r6, r6, #4
 	sub r7, #7
@@ -5382,7 +5382,7 @@ loc_8132A5E:
 	orr r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, [sp]
 	add r0, #0x20 
 	str r0, [sp]
@@ -5413,7 +5413,7 @@ sub_8132A9E:
 	mov r1, r5
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r7,pc}
 	.byte 0x0, 0x0
 	.balign 4, 0
@@ -5498,7 +5498,7 @@ OpenSaveMenu8132BA8:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 
 	mov r0, #0
 	bl countEventFlagChips_81207F8
@@ -6325,7 +6325,7 @@ sub_8133228:
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	strh r0, [r5,#0x18]
 	strh r0, [r5,#0x1a]
@@ -6490,7 +6490,7 @@ sub_81333A0:
 	bl sub_8134490
 
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldrb r0, [r5,#2]
 	cmp r0, #0xc
 	beq loc_81333DA
@@ -7285,10 +7285,10 @@ petNavi_perFrameUpdate_81339BC:
 	push {lr}
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8133A2A
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl zeroFill_e2002230
 	bl timer_setNoTimeout_8137700
 	ldr r0, off_8133A40 // =unk_202A3E0 
@@ -7418,7 +7418,7 @@ loc_8133AC6:
 loc_8133AE2:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
@@ -7465,7 +7465,7 @@ loc_8133B2C:
 loc_8133B4C:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
@@ -7493,7 +7493,7 @@ loc_8133B8A:
 loc_8133B8E:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_81345D4
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
@@ -11247,7 +11247,7 @@ sub_81356F4:
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	strb r0, [r5,#0x17]
 	strb r0, [r5,#0xc]
@@ -11301,7 +11301,7 @@ sub_81357C4:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
 off_81357DC:
@@ -11757,7 +11757,7 @@ locret_8135B52:
 sub_8135B54:
 	push {r4,lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8135B90
 	bl chatbox_8040818
@@ -12625,7 +12625,7 @@ sub_8136218:
 	mov r6, r0
 	bl sub_813629C
 	bne loc_8136236
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	b loc_813625A
 loc_8136236:
 	ldr r0, off_8136278 // =0x14c 
@@ -15659,7 +15659,7 @@ sub_81378D4:
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_8137ACC
 
 	mov r0, #0
@@ -15722,7 +15722,7 @@ sub_8137964:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_81380E0
 	mov r0, #0
 
@@ -15852,7 +15852,7 @@ off_8137A78:
 sub_8137A7C:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_81380E0
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8137AC8
@@ -16856,7 +16856,7 @@ playCreditsScene_81382D0:
 	strh r1, [r0,#0x18]
 	strh r1, [r0,#0x1a]
 
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 
 	bl sub_8138768
 
@@ -16927,7 +16927,7 @@ loc_8138354:
 	bne loc_8138354
 loc_8138368:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_8138848
 	pop {r7,pc}
 	.balign 4, 0

@@ -19,7 +19,7 @@ unsigned int SeasideArea_EnterMapGroup()
     uncompSprite_8002906(*(&off_80754B0 + *(v0 + 5)));
     chatbox_uncompMapTextArchives_803FD08();
     SeasideArea_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 

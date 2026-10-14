@@ -16787,7 +16787,7 @@ sub_8116A3C:
 	pop {pc}
 	thumb_func_end sub_8116A3C
 
-// symdb: On initialization, drives sub_802FE28 over three small packed (a1,a2) tables (3+3+2 entries) with notUsed=0 and a4=1.
+// symdb: On initialization, drives sprite_queueOamEntryThunk_802FE28 over three small packed (a1,a2) tables (3+3+2 entries) with notUsed=0 and a4=1.
 // symdb: void sub_8116A44(void);  // no inputs; clobbers r0-r3, lr, N/Z/C/V; preserves r4-r7, r5 is
 // symdb: reported output by caller analysis but not set here
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A44.yaml
@@ -16801,7 +16801,7 @@ loc_8116A4A:
 	ldr r1, [r7,#0x4] // (byte_8116A98 - 0x8116a94)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #3
@@ -16813,7 +16813,7 @@ loc_8116A62:
 	ldr r1, [r7,#0x4] // (byte_8116AB4 - 0x8116ab0)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #3
@@ -16825,7 +16825,7 @@ loc_8116A7A:
 	ldr r1, [r7,#0x4] // (byte_8116AD0 - 0x8116acc)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #2
@@ -18518,7 +18518,7 @@ loc_81176E4:
 	orr r1, r2
 	mov r2, #0
 	mov r3, #3
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, #8
 	lsl r0, r0, #0x10
 	add r4, r4, r0
@@ -22038,7 +22038,7 @@ loc_8119098:
 	mov r1, r6
 	ldr r2, dword_81190C4 // =0x0
 	mov r3, #5
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, #8
 	lsl r0, r0, #0x10
 	add r4, r4, r0
@@ -24771,7 +24771,7 @@ loc_811A522:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #4
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_811A558:
 	add r7, #1
 	add r6, #1
@@ -25537,7 +25537,7 @@ loc_811AACC:
 	mov r1, r6
 	ldr r2, dword_811AAF8 // =0x0
 	mov r3, #5
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, #8
 	lsl r0, r0, #0x10
 	add r4, r4, r0
@@ -25789,7 +25789,7 @@ loc_811ACC8:
 	mov r1, r6
 	ldr r2, dword_811ACE8 // =0x0
 	mov r3, #3
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r0, #8
 	lsl r0, r0, #0x10
 	add r4, r4, r0
@@ -33237,7 +33237,7 @@ pet_initMenu_811EC10:
 	bl sub_8120CC8
 	strb r0, [r4,#0xa] // (byte_200DF2A - 0x200df20)
 	strb r1, [r4,#0xb] // (byte_200DF2B - 0x200df20)
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	pop {r4,pc}
 	.balign 4, 0
 dword_811EC44:
@@ -33351,7 +33351,7 @@ ho_811ED1C:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_811F508 // () -> void
 	pop {r5,pc}
 	.balign 4, 0
@@ -33604,7 +33604,7 @@ initPetSelectScreen_811EF28:
 	push {lr}
 	mov r0, #0
 	strh r0, [r5,#0x10]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_811EF64 // =byte_811EBA4
 	bl sub_80465A0 // (void *a1) -> void
@@ -33955,7 +33955,7 @@ locret_811F1B6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811F184
 
-// symdb: Initializes two small parameter-pair tables by dispatching each pair to a setter (sub_802FE28).
+// symdb: Initializes two small parameter-pair tables by dispatching each pair to a setter (sprite_queueOamEntryThunk_802FE28).
 // symdb: void sub_811F1B8(void);  // takes no inputs, returns void; r4-r7 preserved, nzcv r0-r3 r5 r7
 // symdb: clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F1B8.yaml
@@ -33969,7 +33969,7 @@ loc_811F1BE:
 	ldr r1, [r7,#0x4] // (byte_811F1F4 - 0x811f1f0)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #2
@@ -33981,7 +33981,7 @@ loc_811F1D6:
 	ldr r1, [r7,#0x4] // (byte_811F208 - 0x811f204)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #2
@@ -34004,7 +34004,7 @@ byte_811F208:
 	.byte 0x0
 	thumb_func_end sub_811F1B8
 
-// symdb: Iterates a built-in three-entry table and passes each (word0, word1) pair to sub_802FE28 with fixed arguments (0, 1), most likely registering three related display/animation entries.
+// symdb: Iterates a built-in three-entry table and passes each (word0, word1) pair to sprite_queueOamEntryThunk_802FE28 with fixed arguments (0, 1), most likely registering three related display/animation entries.
 // symdb: void runEntryTableTriple_811F214(void)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F214.yaml
 	thumb_local_start
@@ -34017,7 +34017,7 @@ loc_811F21A:
 	ldr r1, [r7,#0x4] // (byte_811F238 - 0x811f234)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	cmp r6, #3
@@ -34054,7 +34054,7 @@ loc_811F25C:
 	ldr r1, [r7,#0x4] // (byte_811F27C - 0x811f278)
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #8
 	add r6, #1
 	ldrb r0, [r5,#0xc]
@@ -35138,7 +35138,7 @@ sub_811FA98:
 	orr r1, r2
 	ldr r2, [sp,#4]
 	ldr r3, [sp,#8]
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_811FAEC:
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
@@ -35201,7 +35201,7 @@ loc_811FB42:
 	mov r0, r6
 	ldr r2, [sp,#4]
 	ldr r3, [sp,#8]
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_811FB5A:
 	mov r0, r7
 	add sp, sp, #0xc
@@ -36656,7 +36656,7 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
-// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sub_802FE28 with a small index offset.
+// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sprite_queueOamEntryThunk_802FE28 with a small index offset.
 // symdb: (u32 r0, u32 r1, u32 r2, u32 lr) -> u32 r0; flags out: N,Z,C,V
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C
@@ -36675,7 +36675,7 @@ sub_812053C:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_812055E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_812053C
@@ -36699,7 +36699,7 @@ sub_8120568:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28
+	bl sprite_queueOamEntryThunk_802FE28
 loc_8120586:
 	lsl r1, r7, #0x10
 	lsr r1, r1, #0x10
@@ -36721,7 +36721,7 @@ loc_8120586:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28
+	bl sprite_queueOamEntryThunk_802FE28
 loc_81205B4:
 	pop {r4-r7, pc}
 	.pool
@@ -36759,7 +36759,7 @@ loc_81205EC:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_81205F8:
 	lsl r1, r7, #0x10
 	lsr r1, r1, #0x10
@@ -36871,7 +36871,7 @@ sub_812068C:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 loc_81206AA:
 	lsl r1, r7, #0x10
 	lsr r1, r1, #0x10

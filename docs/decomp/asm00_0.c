@@ -1237,7 +1237,7 @@ int __fastcall sub_8001040(int a1, int a2, int a3, int a4)
     int v9; // r2
 
     v6 = **(v5 + oToolkit_CurFramePtr);
-    result = sub_802FE28((a1 << 16) | a2 | a3, a4 + ((v6 & 0x10u) >> 2), 1, 0);
+    result = sprite_queueOamEntryThunk_802FE28((a1 << 16) | a2 | a3, a4 + ((v6 & 0x10u) >> 2), 1, 0);
     if ( v4 )
     {
         if ( !(v6 & 0xF) )
@@ -1400,7 +1400,7 @@ int __fastcall scriptListRun_8001158(int *a1)
         result = *i;
         if ( !*i )
             break;
-        sub_802FE28(result, i[1], 0, 0);
+        sprite_queueOamEntryThunk_802FE28(result, i[1], 0, 0);
     }
     return result;
 }

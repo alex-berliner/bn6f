@@ -518,7 +518,7 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B6E
 
-// symdb: Tick a state's per-frame animation index and dispatch the matching guest routine via sub_802FE28.
+// symdb: Tick a state's per-frame animation index and dispatch the matching guest routine via sprite_queueOamEntryThunk_802FE28.
 // symdb: void sub_8033B80(u32 index, void *state /* r5 */); clobbers r0-r3, lr; flags NZCV; preserves
 // symdb: r4-r7.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
@@ -537,7 +537,7 @@ sub_8033B80:
 	ldr r1, dword_8033BB0 // =0xc790
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5,#5]
 	add r0, #1
 	cmp r0, #0x18
@@ -584,7 +584,7 @@ loc_8033C02:
 	ldr r1, dword_8033C64 // =0xc79c 
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {pc}
 	.balign 4, 0
 off_8033C20:
@@ -642,12 +642,12 @@ loc_8033C8E:
 	ldr r1, dword_8033CE8 // =0xc7a0
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_8033CEC // =0xa017400d
 	ldr r1, dword_8033CE8 // =0xc7a0
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5,#7]
 	sub r0, #1
 	bgt loc_8033CBA
@@ -700,12 +700,12 @@ loc_8033D0C:
 	ldr r1, dword_8033D80 // =0xc7a0
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_8033D84 // =0xa017400d
 	ldr r1, dword_8033D80 // =0xc7a0
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {pc}
 	.balign 4, 0
 off_8033D28:
@@ -889,7 +889,7 @@ loc_8033E9E:
 	add r1, r1, r2
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r0,r2,r7}
 	add r0, #8
 	sub r7, #4
@@ -898,12 +898,12 @@ loc_8033E9E:
 	ldr r1, dword_8033EE0 // =0xc790
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_8033EE4 // =0x10288000
 	ldr r1, dword_8033EE0 // =0xc790
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r5,pc}
 	.balign 4, 0
 off_8033ED0:
@@ -1008,7 +1008,7 @@ sub_8033F80:
 	ldr r1, dword_8033FBC // =0xc7ac
 	mov r2, #1
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 locret_8033FA4:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1458,7 +1458,7 @@ decompJackInAnimationGfx_8034314:
 	strb r0, [r5,#3]
 	ldr r0, [r3,#0x8] // (dword_8034408 - 0x8034400)
 	strh r0, [r5,#6]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, a1 // =byte_8034370
 	bl sub_80465A0 // (void *a1) -> void
@@ -1538,7 +1538,7 @@ loc_80343D0:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80343FC:
@@ -2547,9 +2547,9 @@ off_8034FB4:
 // symdb: Map-enter trigger: when the map actually changed (number or group) or EVENT_1703 is pending and no cutscene is running, starts the after-jack-in cutscene (or its EVENT_127 variant), then clears the trigger flags.
 // symdb: void cutscene_TryStartOnMapEnterAfterJackIn(void) : r10 (toolkit) -> [r0 r1 r2 r3] (captured
 // symdb: exits r0 = 0x80, the last flag id handled)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034FB8.yaml
-	thumb_func_start sub_8034FB8
-sub_8034FB8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_TryStartOnMapEnterAfterJackIn_8034FB8.yaml
+	thumb_func_start cutscene_TryStartOnMapEnterAfterJackIn_8034FB8
+cutscene_TryStartOnMapEnterAfterJackIn_8034FB8:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
@@ -2593,7 +2593,7 @@ off_8035020:
 	.word CutsceneScriptOnMapEnterAfterJackIn_809895C // CutsceneScript
 off_8035024:
 	.word byte_80989C1 // CutsceneScript
-	thumb_func_end sub_8034FB8
+	thumb_func_end cutscene_TryStartOnMapEnterAfterJackIn_8034FB8
 
 	thumb_local_start
 sub_8035028: // JP 0x8035fd8

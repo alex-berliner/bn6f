@@ -2357,7 +2357,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     sub_80058D0();
     checkThenStartBattle_8005A8C();
     nullsub_8005B6A();
-    sub_8005AF4();
+    gamestate_openPetMenuOnStartPress_8005AF4();
 }
 
 
@@ -2534,7 +2534,7 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
 
 // 0x8005462
 // () -> void
-int sub_8005462()
+int pet_menuUpdateAndHandleExit_8005462()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -2591,7 +2591,7 @@ int sub_8005462()
         pet_prepareMenuOnReturn_811F6C0(v2, v3, v4, v5);
         mainState_resetGameAndGoto28_8005524();
         TerminateGFXAnim(17);
-        sub_8046664();
+        battle_resetEStructRecords_8046664();
         result = chatbox_8040818();
     }
     return result;
@@ -3206,7 +3206,7 @@ void checkThenStartBattle_8005A8C()
 
 
 // 0x8005af4
-void sub_8005AF4()
+void gamestate_openPetMenuOnStartPress_8005AF4()
 {
     int v0; // r10
     _BYTE *v1; // r5
@@ -8596,7 +8596,7 @@ int sub_8009338()
     {
         setBattleStateUnk11Flag_800A9CA(4);
         *(v0 + 3) = 1;
-        sub_8026840(1, v1, v2, v3);
+        battle_initCustomScreen_8026840(1, v1, v2, v3);
     }
     result = sub_8026A28();
     if ( result )
@@ -10220,7 +10220,7 @@ int sub_8009FCC()
     v1 = dword_3002180;
     while ( v0 )
     {
-        result = sub_802FE28(*v1, *(dword_4 + v1), *(&dword_8 + v1), *(&dword_C + v1));
+        result = sprite_queueOamEntryThunk_802FE28(*v1, *(dword_4 + v1), *(&dword_8 + v1), *(&dword_C + v1));
         --v0;
         v1 += 4;
     }

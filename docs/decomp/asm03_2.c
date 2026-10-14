@@ -68,7 +68,7 @@ signed int __fastcall sub_8046038(int a1, int a2, int a3, int a4)
     {
         do
         {
-            sub_802FE28(result | (v4 << 16) | v5, v11 | (v9[5] << 10), v9[4], v9[6]);
+            sprite_queueOamEntryThunk_802FE28(result | (v4 << 16) | v5, v11 | (v9[5] << 10), v9[4], v9[6]);
             v8 += 16;
             v4 = v8;
             result = v12;
@@ -451,7 +451,7 @@ int entity_runAllUpdateHandlers_80465BC()
 
 // 0x80465f8
 // () -> void
-int sub_80465F8()
+int battle_updateEStructSprites_80465F8()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -491,7 +491,7 @@ int sub_80465F8()
 
 // 0x8046664
 // () -> void
-void __cdecl sub_8046664()
+void __cdecl battle_resetEStructRecords_8046664()
 {
     sub_80466AA();
     battle_initEStructArr_804657C();
@@ -961,7 +961,7 @@ void __noreturn battle_objectAdvanceCounterToState8_8046DDC()
         v0[8] = 21;
         *v0 = 8;
     }
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
@@ -969,7 +969,7 @@ void __noreturn battle_objectAdvanceCounterToState8_8046DDC()
 void __fastcall __noreturn sub_8046DF8(int a1, int a2, int a3)
 {
     battleMenu_navigate_8047950(a1, a2, a3);
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
@@ -1005,61 +1005,61 @@ void __noreturn scramblePanel_tick_8046E06()
             }
         }
     }
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8046e48
 void __fastcall __noreturn dialogueEnd_unlockPlayer_8046E48(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8046e84
 void __fastcall __noreturn sub_8046E84(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8046ed2
 void __fastcall __noreturn chatbox_confirmShopPurchase_8046ED2(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8047028
 void __fastcall __noreturn chatbox_stepContextScript_8047028(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8047050
 void __fastcall __noreturn sub_8047050(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8047066
 void __fastcall __noreturn sub_8047066(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x804709c
 void __fastcall __noreturn sub_804709C(int a1)
 {
-    sub_8047134();
+    shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x8047134
-void __noreturn sub_8047134()
+void __noreturn shopBuyMenu_updateFrame_8047134()
 {
     int v0; // r0
     int v1; // r1
@@ -1071,7 +1071,7 @@ void __noreturn sub_8047134()
 
     call_sub_3005EBA(0, 0, 2, 0);
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     v0 = dispatchStateHandler_81179AE();
     sub_80473E6(v0, v1, v2);
     if ( v5 && !*(v6 + 14) )
@@ -1105,7 +1105,7 @@ signed int __fastcall sub_804722C(signed int result, int a2, __int16 a3)
     int v4; // r10
 
     if ( !*(v3 + 5) )
-        result = sub_802FE28((result << 16) | a2, *&byte_8047268[2 * (**(v4 + oToolkit_CurFramePtr) & 0x1F)] + 2 * a3, 0, 1);
+        result = sprite_queueOamEntryThunk_802FE28((result << 16) | a2, *&byte_8047268[2 * (**(v4 + oToolkit_CurFramePtr) & 0x1F)] + 2 * a3, 0, 1);
     return result;
 }
 
@@ -1113,7 +1113,7 @@ signed int __fastcall sub_804722C(signed int result, int a2, __int16 a3)
 // 0x80472e8
 signed int __fastcall __noreturn sprite_emitColumnEntry_80472E8(int a1, int a2, int a3)
 {
-    return sub_802FE28(a2 | (a1 << 16) | 0x40000000, *&byte_8047318[2 * a3], 0, 0);
+    return sprite_queueOamEntryThunk_802FE28(a2 | (a1 << 16) | 0x40000000, *&byte_8047318[2 * a3], 0, 0);
 }
 
 
@@ -1268,7 +1268,7 @@ int __fastcall battleFindEntryByFieldByte_8047456(int result)
 void __fastcall copyData_804747C(int a1, int a2, int a3, int a4)
 {
     ZeroFillGFX30025c0();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     decompAndCopyData(off_8047494);
 }
 
@@ -2521,7 +2521,7 @@ signed int sub_8049104()
     renderInfo_8001788();
     renderInfo_80017A0();
     toolkit_applyOverlayPalette_80015FC(18);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     copyData_8049AAC(v1, v2, v3, v4);
     chatbox_8040818();
     sub_803BE30(2);
@@ -3289,7 +3289,7 @@ void __noreturn sub_8049770()
     renderInfo_8001788();
     renderInfo_80017A0();
     toolkit_applyOverlayPalette_80015FC(19);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     copyData_8049A18(v1, v2, v3, v4);
     engine_setScreeneffect(8, 16);
     v0[8] = 0;
@@ -3636,7 +3636,7 @@ void sub_8049BC0()
             v4 = v3 & 0xF;
             v5 = v3 >> 4;
             CopyWords(off_8049C84[v4], off_8049C70[v0], 0x20u);
-            sub_802FE28(32 * v0 + 1074855968, (byte_8049C58[v4] + 2864) | (*(&dword_8049C68 + v0) << 12), 2, 0);
+            sprite_queueOamEntryThunk_802FE28(32 * v0 + 1074855968, (byte_8049C58[v4] + 2864) | (*(&dword_8049C68 + v0) << 12), 2, 0);
             (loc_8000AC8)(&eTextScript202BA04[512 * v5], (v0 << 9) + 100756992, 512);
             sub_8132A50(166, 32 * v0 + 19, 1, 16 * v0 + 880);
         }
@@ -3852,7 +3852,7 @@ void __noreturn sub_8049EBC()
     renderInfo_8001788();
     renderInfo_80017A0();
     toolkit_applyOverlayPalette_80015FC(19);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     copyData_804A0AC(v1, v2, v3, v4);
     engine_setScreeneffect(8, 16);
     v0[8] = 0;
@@ -4174,7 +4174,7 @@ void __fastcall sub_804A2CC(int a1, int a2, int a3, int a4)
     sub_804A2E8(a1, a2, a3, a4);
     dword_200ACB0 = v5;
     *(*(v4 + oToolkit_GameStatePtr) + oGameState_LastMapGroup) = *(*(v4 + oToolkit_GameStatePtr) + oGameState_MapGroup);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
 }
 
 
@@ -4195,7 +4195,7 @@ int __noreturn ChipTraderControl()
 
     (*(&JumpOffset804A33C + sSubmenu.unk_00))();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     sub_804AFB8();
     sub_804AFE4();
     GetRNG();
@@ -4221,7 +4221,7 @@ void __fastcall __noreturn sub_804A360(int a1, int a2, int a3, int a4)
     ZeroFill_byte_3001960(v6, v7, v8, v9);
     ZeroFillGFX30025c0();
     toolkit_applyOverlayPalette_80015FC(16);
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     ZeroFillByWord(word_202A020, &dword_3C0);
     sub_8120A88();
     v12 = buildChipSearchTable_811FE7C(&unk_202A3E0, 1, v10, v11);

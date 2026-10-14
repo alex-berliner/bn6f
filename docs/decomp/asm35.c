@@ -249,7 +249,7 @@ void __fastcall __noreturn sub_812ED94(int a1, int a2, int a3, int a4)
     int v5; // r0
 
     ZeroFillGFX30025c0();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     CopyBackgroundTiles(0, 0, 1, &unk_201E920, 30, dword_14);
     sub_812EB92();
     v5 = sub_812EC2C(*(v4 + 42), 0, 4);

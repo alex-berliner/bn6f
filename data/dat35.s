@@ -86,7 +86,7 @@ sub_812F094::
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	beq locret_812F0B8
@@ -761,7 +761,7 @@ loc_812F5EE::
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_813064C
@@ -1251,7 +1251,7 @@ loc_812F9A6::
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
 	strb r0, [r5,#3]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_8130250

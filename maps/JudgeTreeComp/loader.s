@@ -33,7 +33,7 @@ JudgeTreeComp_EnterMapGroup:
 	bl uncompSprite_8002906 // (sprite_load_data: *const SpriteLoadData) -> bool
 	bl chatbox_uncompMapTextArchives_803FD08 // () -> int
 	bl JudgeTreeComp_SpawnMapObjectsForMap
-	bl sub_8034FB8
+	bl cutscene_TryStartOnMapEnterAfterJackIn_8034FB8
 	pop {r4-r7,pc}
 	.balign 4, 0
 	thumb_func_end JudgeTreeComp_EnterMapGroup

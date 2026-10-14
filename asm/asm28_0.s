@@ -1171,7 +1171,7 @@ loc_809A15C:
 	mov r0, #0x20
 	strb r0, [r5,#4]
 	bl sub_809A308
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A1B0 // =byte_8099E90
 	bl sub_80465A0 // (void *a1) -> void
@@ -1222,7 +1222,7 @@ loc_809A1CC:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
 	bl sub_809A360
 	movflag EVENT_F5
@@ -1252,7 +1252,7 @@ loc_809A208:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A252
@@ -1791,7 +1791,7 @@ loc_809A64E:
 	mov r0, #0x20 
 	strb r0, [r5,#4]
 	bl sub_809A308
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A6A0 // =byte_8099E90
 	bl sub_80465A0 // (void *a1) -> void
@@ -1841,7 +1841,7 @@ loc_809A6BC:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
 	bl sub_809A80C
 	movflag EVENT_F5
@@ -1871,7 +1871,7 @@ loc_809A6F8:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A74E
@@ -2145,7 +2145,7 @@ loc_809A90A:
 	strb r2, [r5,#5]
 	bl sub_8003984
 	bl sub_8003AD4
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// initRefs
 	ldr r0, off_809A930 // =byte_809A934
 	bl decompAndCopyData // (u32 *initRefs) -> void
@@ -2219,7 +2219,7 @@ loc_809A9A4:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	movflag EVENT_F5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_809A9C8
@@ -2246,7 +2246,7 @@ loc_809A9D8:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_809A9FA
@@ -2334,7 +2334,7 @@ sub_809AAB8:
 	ldr r0, off_809AD78 // =eTextScript2033404 // TextScriptArchive
 	mov r1, #0xa
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	strb r0, [r5,#8]
 	pop {r4-r7,pc}
@@ -2632,7 +2632,7 @@ loc_809ACFA:
 	mov r7, #0
 loc_809AD00:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, r7
 	pop {r4-r7,pc}
 	thumb_func_end sub_809ACD0
@@ -2657,7 +2657,7 @@ loc_809AD22:
 	bl sprite_setPositionForIdRange3_8119854
 loc_809AD30:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r7, #1
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int

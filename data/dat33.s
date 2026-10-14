@@ -27,7 +27,7 @@ sub_812C2C0::
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	beq locret_812C2E4
@@ -730,7 +730,7 @@ loc_812C846::
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812D528
 	bl sub_812D378
 	bl sub_812D3E4
@@ -1091,7 +1091,7 @@ loc_812CB0A::
 	bl sub_812D99C
 	mov r0, #1
 	bl sub_812D99C
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812D528
 	bl sub_812D378
 	bl sub_812D3E4
@@ -2054,7 +2054,7 @@ sub_812D298::
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]

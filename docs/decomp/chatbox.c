@@ -354,7 +354,7 @@ int chatbox_804017C()
         do
         {
             v6 = result;
-            sub_802FE28(
+            sprite_queueOamEntryThunk_802FE28(
                 *&byte_8040200[v4] | ((32 * result + v1) << 16) | (v2 + 4 * v4),
                 v3 + 12 * v4 + (result << *&byte_8040210[v4]),
                 0,
@@ -400,11 +400,11 @@ signed int chatbox_emitTextGridOAM_804021C()
             v6 = 4 * v4;
             v7 = *&byte_8040314[v6];
             v6 >>= 2;
-            sub_802FE28(((32 * v5 + v1) << 16) | v7 | (*(&dword_8040340 + v6) + v2), v3 + byte_8040324[8 * v6 + v5], 0, 3);
+            sprite_queueOamEntryThunk_802FE28(((32 * v5 + v1) << 16) | v7 | (*(&dword_8040340 + v6) + v2), v3 + byte_8040324[8 * v6 + v5], 0, 3);
             v6 *= 4;
             v8 = *&byte_8040314[v6];
             v6 >>= 2;
-            sub_802FE28(
+            sprite_queueOamEntryThunk_802FE28(
                 ((32 * (v5 + 1) + v1) << 16) | v8 | (*(&dword_8040340 + v6) + v2),
                 v9 + byte_8040324[8 * v6 + 1 + v5],
                 0,
@@ -413,7 +413,7 @@ signed int chatbox_emitTextGridOAM_804021C()
             v6 *= 4;
             v11 = *&byte_8040314[v6];
             v4 = v6 >> 2;
-            result = sub_802FE28(
+            result = sprite_queueOamEntryThunk_802FE28(
                                  ((32 * v10 + v1) << 16) | v11 | (*(&dword_8040340 + v4) + v2),
                                  v12 + byte_8040324[8 * v4 + v10],
                                  0,
@@ -765,7 +765,7 @@ signed int chatbox_804082C()
             v7 = *v4;
         }
         v0[23] = v6;
-        result = sub_802FE28(v5 | 0x40000000, 58360, 0, 4);
+        result = sprite_queueOamEntryThunk_802FE28(v5 | 0x40000000, 58360, 0, 4);
     }
     return result;
 }
@@ -846,7 +846,7 @@ signed int chatbox_ED_select_8040944()
     if ( *(&dword_80409B0 + v2 + 2) == 255 )
         LOBYTE(v2) = 1;
     *(v0 + 22) = v2;
-    return sub_802FE28(v1 | 0x40000000, 58364, 0, 4);
+    return sprite_queueOamEntryThunk_802FE28(v1 | 0x40000000, 58364, 0, 4);
 }
 
 
@@ -873,12 +873,12 @@ signed int __usercall chatbox_80409E0@<R0>(ChatBoxPropreties *cb@<R5>)
     if ( cb->choiceCursorPos == cb->unk_80 - 1 )
         v1 = cb->unk_70 + cb->textCoord + 11;
     v2 = (v1 << 16) | (14 * cb->amount_of_box_appeared + cb->unk_19 - 2);
-    sub_802FE28(v2 | 0x8000, 58364, 0, 1);
+    sprite_queueOamEntryThunk_802FE28(v2 | 0x8000, 58364, 0, 1);
     v4 = v2;
     v5 = 8;
     if ( cb->choiceCursorPos == cb->unk_80 - 1 )
         v5 = 18;
-    result = sub_802FE28((v4 + (v5 << 16)) | 0x8000, 58366, v3, 1);
+    result = sprite_queueOamEntryThunk_802FE28((v4 + (v5 << 16)) | 0x8000, 58366, v3, 1);
     v7 = cb->unk_16 + 1;
     if ( byte_8040A80[v7] == 255 )
         LOBYTE(v7) = 1;
@@ -898,8 +898,8 @@ signed int chatbox_8040A9A()
 
     (loc_8000AC8)(&dword_86A4A40[32 * *(&word_8040B20 + *(v0 + 22))], 100761472, 128);
     v1 = ((*(v0 + 112) + *(v0 + 24) + 4) << 16) | (14 * *(v0 + 15) + *(v0 + 25) - 2);
-    sub_802FE28(v1 | 0x8000, 58364, 0, 1);
-    result = sub_802FE28((v1 + 1441792) | 0x8000, 58366, v2, 1);
+    sprite_queueOamEntryThunk_802FE28(v1 | 0x8000, 58364, 0, 1);
+    result = sprite_queueOamEntryThunk_802FE28((v1 + 1441792) | 0x8000, 58366, v2, 1);
     v4 = *(v0 + 22) + 1;
     if ( *(&word_8040B20 + v4) == 255 )
         LOBYTE(v4) = 1;
@@ -1035,7 +1035,7 @@ signed int chatbox_8040CD0()
         v2 = off_8045DD4[*(&dword_1EC + i + v0)];
         (loc_8000AC8)(*&(*v2)[8], *&(*v2)[12], *&(*v2)[16]);
         (loc_8000AC8)(*&(*v2)[20], *&(*v2)[24], *&(*v2)[28]);
-        result = sub_802FE28(
+        result = sprite_queueOamEntryThunk_802FE28(
                              *v2 | (14 * *(v0 + i + 488) + *(v0 + 25) - 4) | ((*(v0 + 4 * i + 472) + *(v0 + 148)) << 16),
                              *&(*v2)[4],
                              0,

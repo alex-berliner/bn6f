@@ -42,7 +42,7 @@
 	u16 Unk_38 // loc=0x38
 	u16 Unk_3a // loc=0x3a
 
-	// sub_8026840 implies 0x70, but this conflicts with unk_2036500 which has references. So up to conflict is 0x40
+	// battle_initCustomScreen_8026840 implies 0x70, but this conflicts with unk_2036500 which has references. So up to conflict is 0x40
   // But we do see uses in sub_8026B04 of 0x40 and 0x44
 	struct_org 0x40
 	u0 Size // loc=0x40

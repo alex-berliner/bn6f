@@ -637,7 +637,7 @@ sub_8089370:
 	ldr r1, [r1,#4]
 	mov r2, #0
 	mov r3, #1
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8089388: 

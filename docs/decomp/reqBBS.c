@@ -397,7 +397,7 @@ void __noreturn reqBBS_813E534()
     reqBBS_GUI *v0; // r5
 
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     reqBBS_813E8CC(v0, v0->pagePos);
     reqBBS_drawRequestBBS();
 }
@@ -511,7 +511,7 @@ void __usercall reqBBS_vram_813E6D0(reqBBS_GUI *gui@<R5>)
     decompAndCopyData(byte_813E6FC);
     decompAndCopyData(off_813E758[gui->unk_04]);
     ZeroFillGFX30025c0();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
 }
 
 
@@ -884,7 +884,7 @@ void reqBBS_813EDE4()
     if ( *(&dword_813EE40 + v2 + 2) == 255 )
         LOBYTE(v2) = 1;
     *(v0 + 9) = v2;
-    sub_802FE28(v1 | 0x40000000, 50172, 0, 3);
+    sprite_queueOamEntryThunk_802FE28(v1 | 0x40000000, 50172, 0, 3);
 }
 
 
@@ -1371,7 +1371,7 @@ void __noreturn reqBBS_813F8F0()
     int v0; // r5
 
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     reqBBS_renderRequestNames(*(v0 + 36));
 }
 
@@ -1749,7 +1749,7 @@ void __fastcall reqBBS_813FDA8(int a1, int a2, int a3, int a4)
     decompAndCopyData(byte_813FDCC);
     reqBBS_8140600();
     ZeroFillGFX30025c0();
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
 }
 
 
@@ -2236,7 +2236,7 @@ void reqBBS_animateCursor()
     if ( *(&dword_81406E4 + v2 + 2) == 255 )
         LOBYTE(v2) = 1;
     *(v0 + 9) = v2;
-    sub_802FE28(v1 | 0x40000000, 50172, 0, 3);
+    sprite_queueOamEntryThunk_802FE28(v1 | 0x40000000, 50172, 0, 3);
 }
 
 

@@ -114,7 +114,7 @@ int sub_8089280()
 // 0x8089370
 signed int __fastcall __noreturn sub_8089370(int a1)
 {
-    return sub_802FE28(*&byte_808938C[8 * a1], *&byte_808938C[8 * a1 + 4], 0, 1);
+    return sprite_queueOamEntryThunk_802FE28(*&byte_808938C[8 * a1], *&byte_808938C[8 * a1 + 4], 0, 1);
 }
 
 

@@ -11090,7 +11090,7 @@ signed int __noreturn sub_8116A44()
     v1 = 0;
     do
     {
-        sub_802FE28(*v0, *(dword_4 + v0), 0, 1);
+        sprite_queueOamEntryThunk_802FE28(*v0, *(dword_4 + v0), 0, 1);
         v0 += 2;
         ++v1;
     }
@@ -11099,7 +11099,7 @@ signed int __noreturn sub_8116A44()
     v3 = 0;
     do
     {
-        sub_802FE28(*v2, *(dword_4 + v2), 0, 1);
+        sprite_queueOamEntryThunk_802FE28(*v2, *(dword_4 + v2), 0, 1);
         v2 += 2;
         ++v3;
     }
@@ -11108,7 +11108,7 @@ signed int __noreturn sub_8116A44()
     v5 = 0;
     do
     {
-        result = sub_802FE28(*v4, *(dword_4 + v4), 0, 1);
+        result = sprite_queueOamEntryThunk_802FE28(*v4, *(dword_4 + v4), 0, 1);
         v4 += 2;
         ++v5;
     }
@@ -12150,7 +12150,7 @@ signed int battle_playObjectTripleSound_81176D0()
     do
     {
         v3 = (*(&off_8117740 + v2))();
-        sub_802FE28(v1, v3 | 0xA800, 0, 3);
+        sprite_queueOamEntryThunk_802FE28(v1, v3 | 0xA800, 0, 3);
         result = 0x80000;
         v1 += 0x80000;
         ++v2;
@@ -14494,7 +14494,7 @@ signed int __noreturn sub_8119084()
     v4 = 8;
     do
     {
-        sub_802FE28(v3, v2, 0, 5);
+        sprite_queueOamEntryThunk_802FE28(v3, v2, 0, 5);
         v3 += 0x80000;
         result = 2;
         LOWORD(v2) = v2 + 2;
@@ -15974,7 +15974,7 @@ signed int sub_811A51C()
         v5 = v4 - 9;
         result = v3 - 32 + 8 * v1;
         if ( result >= 0 )
-            result = sub_802FE28((result << 16) | v5 | 0x8000, (*&byte_811A56C[4 * *(v0 + 6)] | 0x800) + 2 * v1, 0, 4);
+            result = sprite_queueOamEntryThunk_802FE28((result << 16) | v5 | 0x8000, (*&byte_811A56C[4 * *(v0 + 6)] | 0x800) + 2 * v1, 0, 4);
         ++v1;
         ++v2;
     }
@@ -16404,7 +16404,7 @@ signed int __noreturn sub_811AAB8()
     v4 = 8;
     do
     {
-        sub_802FE28(v3, v2, 0, 5);
+        sprite_queueOamEntryThunk_802FE28(v3, v2, 0, 5);
         v3 += 0x80000;
         result = 2;
         LOWORD(v2) = v2 + 2;
@@ -16527,7 +16527,7 @@ signed int __noreturn sub_811ACA8()
     v5 = 8;
     do
     {
-        sub_802FE28(v3, v4, 0, 3);
+        sprite_queueOamEntryThunk_802FE28(v3, v4, 0, 3);
         v3 += 0x80000;
         result = 2;
         LOWORD(v4) = v4 + 2;
@@ -21103,7 +21103,7 @@ void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
     word_200DF30 = -32;
     byte_200DF2A = sub_8120CC8(0, byte_811EBDA);
     byte_200DF2B = v5;
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
 }
 
 
@@ -21167,7 +21167,7 @@ int ho_811ED1C()
 {
     (*(jt_811ED3C + ePETMenuData))();
     entity_runAllUpdateHandlers_80465BC();
-    sub_80465F8();
+    battle_updateEStructSprites_80465F8();
     return sub_811F508();
 }
 
@@ -21349,7 +21349,7 @@ void __noreturn initPetSelectScreen_811EF28()
     int v0; // r5
 
     *(v0 + 16) = 0;
-    sub_8046664();
+    battle_resetEStructRecords_8046664();
     sub_80465A0(byte_811EBA4);
     *v0 = 4;
     LoadGFXAnim(byte_811EAD4);
@@ -21525,7 +21525,7 @@ signed int __noreturn sub_811F1B8()
     v1 = 0;
     do
     {
-        sub_802FE28(*v0, *(dword_4 + v0), 0, 1);
+        sprite_queueOamEntryThunk_802FE28(*v0, *(dword_4 + v0), 0, 1);
         v0 += 2;
         ++v1;
     }
@@ -21534,7 +21534,7 @@ signed int __noreturn sub_811F1B8()
     v3 = 0;
     do
     {
-        result = sub_802FE28(*v2, *(dword_4 + v2), 0, 1);
+        result = sprite_queueOamEntryThunk_802FE28(*v2, *(dword_4 + v2), 0, 1);
         v2 += 2;
         ++v3;
     }
@@ -21554,7 +21554,7 @@ signed int __noreturn sub_811F214()
     v1 = 0;
     do
     {
-        result = sub_802FE28(*v0, *(dword_4 + v0), 0, 1);
+        result = sprite_queueOamEntryThunk_802FE28(*v0, *(dword_4 + v0), 0, 1);
         v0 += 2;
         ++v1;
     }
@@ -21579,7 +21579,7 @@ int replaySpriteFrames_811F24C()
     v3 = 0;
     do
     {
-        sub_802FE28(*v2, *(dword_4 + v2), 0, 1);
+        sprite_queueOamEntryThunk_802FE28(*v2, *(dword_4 + v2), 0, 1);
         v2 += 2;
         ++v3;
         result = *(v0 + 12);
@@ -22162,7 +22162,7 @@ signed int __fastcall sub_811FA98(signed int result, unsigned int a2, int a3, in
     if ( result >= 0 && a3 > v4 )
     {
         __asm { SVC         6 }
-        result = sub_802FE28(
+        result = sprite_queueOamEntryThunk_802FE28(
                              (result >> 16 << 16) | (result + (((v6 << 16) * a4) >> 12)) | 0x8000,
                              v5 | (v12 << 10),
                              v7,
@@ -22204,7 +22204,7 @@ unsigned int __fastcall sub_811FAF4(int a1, unsigned int a2, int a3, int *a4)
                 v8 = 0;
             }
             v6 = (v8 >> 1) + 1;
-            sub_802FE28(v7, v9 | (v11 << 10), a2 >> 8, a2);
+            sprite_queueOamEntryThunk_802FE28(v7, v9 | (v11 << 10), a2 >> 8, a2);
         }
     }
     return v6;
@@ -23145,7 +23145,7 @@ signed int __fastcall sub_812053C(int a1, __int16 a2, int a3)
     v3 = a2;
     result = sub_81205C0(a1, a2, a3, 0);
     if ( !((result < 0) ^ v5) )
-        result = sub_802FE28(result & 0x3FFF7FFF | 0x4000, v3 + 12, 0, 1);
+        result = sprite_queueOamEntryThunk_802FE28(result & 0x3FFF7FFF | 0x4000, v3 + 12, 0, 1);
     return result;
 }
 
@@ -23178,7 +23178,7 @@ int __fastcall sub_81205C0(int a1, __int16 a2, int a3, int a4)
             v12 = *(&v17 + v11);
             if ( v11 || v12 )
                 ++v12;
-            sub_802FE28(v4, (v12 << v6) + v5, 0, 1);
+            sprite_queueOamEntryThunk_802FE28(v4, (v12 << v6) + v5, 0, 1);
         }
         v13 = v4;
         v14 = v4 >> 16;
@@ -23256,7 +23256,7 @@ int __fastcall sub_812068C(int a1, __int16 a2, int a3, int a4)
     v6 = sub_81205C0(a1, a2, a3, 1);
     v7 = v6;
     if ( v6 >= 0 )
-        sub_802FE28(v6, v4 + 22, 0, 1);
+        sprite_queueOamEntryThunk_802FE28(v6, v4 + 22, 0, 1);
     return sub_81205C0(v5, v4, (((v7 >> 16) + 8) << 16) | v7, 1);
 }
 

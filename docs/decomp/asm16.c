@@ -19,7 +19,7 @@ unsigned int GreenArea_EnterMapGroup()
     uncompSprite_8002906(*(&off_8077D64 + *(v0 + 5)));
     chatbox_uncompMapTextArchives_803FD08();
     GreenArea_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 

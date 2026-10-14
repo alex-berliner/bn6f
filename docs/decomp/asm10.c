@@ -19,7 +19,7 @@ unsigned int RobotControlComp_EnterMapGroup()
     uncompSprite_8002906(off_8066434[*(v0 + 5)]);
     chatbox_uncompMapTextArchives_803FD08();
     RobotControlComp_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 
@@ -100,7 +100,7 @@ unsigned int AquariumComp_EnterMapGroup()
     uncompSprite_8002906(off_8067BC0[*(v0 + 5)]);
     chatbox_uncompMapTextArchives_803FD08();
     AquariumComp_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 

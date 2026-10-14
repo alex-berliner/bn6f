@@ -313,7 +313,7 @@ cb_8038AD0:
 	bl sub_8046818
 	bl sub_8046854
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
 off_8038AF0:
@@ -344,7 +344,7 @@ sub_8038B04:
 	bl decomp_initGfx_8038F30 // () -> void
 	bl sub_8038F74
 	bl sub_80468BA
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	ldr r0, off_8038B60 // =byte_80386E8
 	bl sub_80467FC
 	bl chatbox_8040818
@@ -600,7 +600,7 @@ loc_8038D1E:
 	add r0, #1
 	cmp r0, #5
 	blt loc_8038D66
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0x10
 	strb r0, [r5,#2]
 	mov r0, #0x14
@@ -724,7 +724,7 @@ sub_8038E14:
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
 	ldr r0, off_8038E40 // =byte_803888C
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_80390D8
 	mov r0, #0x28
 	strb r0, [r5,#2]
@@ -1404,7 +1404,7 @@ sub_8039658:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8039670:
@@ -1437,7 +1437,7 @@ sub_8039694:
 	bl SetScreenFade // (int a1, int a2) -> void
 	bl copyData_803B216
 	bl sub_803C2EC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, #3
 	strb r0, [r5,#5]
@@ -1704,7 +1704,7 @@ sub_80398B0:
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	ldrb r0, [r5,#4]
 	bl sub_803BB2C
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_803993A
 	mov r0, #0
 	mov r1, #0x10
@@ -1776,7 +1776,7 @@ loc_8039932:
 sub_803993A:
 	push {r4-r7,lr}
 	ldr r7, off_8039958 // =dword_80394CC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 loc_8039942:
 	ldr r0, [r7]
 	cmp r0, #2
@@ -1944,7 +1944,7 @@ sub_8039A58:
 	bl chatbox_8040818
 	mov r0, #2
 	bl sub_803BE30
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8039AB4 // =byte_8039390
 	bl sub_80465A0 // (void *a1) -> void
@@ -2849,7 +2849,7 @@ loc_803A194:
 	mov r2, r4
 	bl sub_803BBA4
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A186
 
@@ -2870,7 +2870,7 @@ loc_803A1C4:
 	cmp r6, #4
 	blt loc_803A1C4
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 locret_803A1D6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A1B0
@@ -5511,7 +5511,7 @@ loc_803B828:
 	add r1, r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #1
 	b loc_803B828
 loc_803B86C:
@@ -5598,7 +5598,7 @@ sub_803B8F8:
 	add r1, r1, r4
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_803B914:
@@ -5668,7 +5668,7 @@ loc_803B9DA:
 	add r1, r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	lsr r6, r6, #4
 	sub r7, #7
 	bge loc_803B9DA
@@ -5694,7 +5694,7 @@ sub_803BA00:
 	ldr r1, dword_803BA24 // =0x41e
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_803BA20:
@@ -5973,7 +5973,7 @@ sub_803BBA4:
 	orr r1, r2
 	mov r2, #2
 	mov r3, #7
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5,#7]
 	add r0, r0, r4
 	cmp r0, #0x12
@@ -6017,14 +6017,14 @@ sub_803BC02:
 	add r7, r1, #4
 	mov r2, r4
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	mov r2, #0x10
 	lsl r2, r2, #0x10
 	add r0, r6, r2
 	mov r1, r7
 	mov r2, r4
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r2}
 	ldrb r0, [r5,#7]
 	add r0, r0, r2
@@ -6076,7 +6076,7 @@ loc_803BC8A:
 	ldrh r1, [r1,r2]
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldr r0, dword_803BCDC // =0x9000
 	orr r0, r6
 	ldrb r1, [r4,#2]
@@ -6089,7 +6089,7 @@ loc_803BC8A:
 	add r1, #2
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5,#0xa]
 	add r0, #1
 	cmp r0, #0x18
@@ -7308,7 +7308,7 @@ sub_803C59C:
 	ldr r1, dword_803C5F4 // =0xe3f4
 	mov r2, #0
 	mov r3, #0
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	ldrb r0, [r5]
 	add r0, #1
 	strb r0, [r5]

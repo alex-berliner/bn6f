@@ -622,7 +622,7 @@ loc_813E52A:
 reqBBS_813E534:
 	push {r5,lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldrh r0, [r5,#0x24]
 	bl reqBBS_813E8CC
 	bl reqBBS_drawRequestBBS
@@ -873,7 +873,7 @@ reqBBS_vram_813E6D0:
 	ldr r0, [r1,r0]
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	pop {r5,pc}
 	.balign 4, 0
 off_813E6F8:
@@ -1639,7 +1639,7 @@ loc_813EE18:
 	orr r1, r2
 	mov r2, #0
 	mov r3, #3
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r0-r7,pc}
 	.balign 4, 0
 dword_813EE30:
@@ -2570,7 +2570,7 @@ loc_813F8E6:
 reqBBS_813F8F0:
 	push {r5,lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldrh r0, [r5,#0x24]
 	bl reqBBS_renderRequestNames
 
@@ -3211,7 +3211,7 @@ reqBBS_813FDA8:
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	bl reqBBS_8140600
 	bl ZeroFillGFX30025c0
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	pop {r5,pc}
 	.balign 4, 0
 off_813FDC8:
@@ -4297,7 +4297,7 @@ loc_81406BC:
 	orr r1, r2
 	mov r2, #0
 	mov r3, #3
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r0-r7,pc}
 	.balign 4, 0
 dword_81406D4:

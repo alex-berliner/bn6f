@@ -19,7 +19,7 @@ unsigned int SkyACDCArea_EnterMapGroup()
     uncompSprite_8002906(off_807A944[*(v0 + 5)]);
     chatbox_uncompMapTextArchives_803FD08();
     SkyACDCArea_SpawnMapObjectsForMap();
-    return sub_8034FB8();
+    return cutscene_TryStartOnMapEnterAfterJackIn_8034FB8();
 }
 
 

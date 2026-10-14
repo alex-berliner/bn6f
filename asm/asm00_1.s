@@ -4416,7 +4416,7 @@ GameStateJumptable:
 	// 0x14
 	.word scene_nextOrUpdate_80053E4+1 // (self: * GameState $r5) -> ()
 	// 0x18
-	.word sub_8005462+1 // (self: * GameState $r5) -> ()
+	.word pet_menuUpdateAndHandleExit_8005462+1 // (self: * GameState $r5) -> ()
 	// 0x1C
 	.word sub_800555A+1 // (self: * GameState $r5) -> ()
 	// 0x20
@@ -4622,7 +4622,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl sub_80058D0
 	bl checkThenStartBattle_8005A8C // () -> ()
 	bl nullsub_8005B6A
-	bl sub_8005AF4
+	bl gamestate_openPetMenuOnStartPress_8005AF4
 
 	pop {pc}
 	thumb_func_end gamestate_OnMapUpdate_8005268
@@ -4826,9 +4826,9 @@ word_8005460:
 // symdb: Per-frame main state handler of the PET menu subsystem (game state 0x18): runs the PET scene pipeline each tick and handles the exit modes - fade-out back to main state 0x28, or the final return to the overworld.
 // symdb: void pet_menuUpdateAndHandleExit(u32 r5 /* GameState */) : r5 -> [r4 r5 r6 r8 r9 r10 r11 r12]
 // symdb: (captured exits r0 = 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005462.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_menuUpdateAndHandleExit_8005462.yaml
 	thumb_local_start
-sub_8005462: // (self: * GameState $r5) -> ()
+pet_menuUpdateAndHandleExit_8005462: // (self: * GameState $r5) -> ()
 	push {r7,lr}
 	ldr r7, off_8005520 // =ePETMenuData
 	ldrb r0, [r7,#0x8] // (byte_200DF28 - 0x200df20)
@@ -4863,7 +4863,7 @@ loc_8005474:
 	bl mainState_resetGameAndGoto28_8005524
 	mov r0, #0x11
 	bl TerminateGFXAnim
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	b locret_800551C
 loc_80054D6:
@@ -4897,7 +4897,7 @@ locret_800551C:
 	.balign 4, 0
 off_8005520:
 	.word ePETMenuData
-	thumb_func_end sub_8005462
+	thumb_func_end pet_menuUpdateAndHandleExit_8005462
 
 // symdb: Tears down the current game mode (frees type-0x21 objects, runs the standard init/clear passes) and advances the main jumptable to state 0x28.
 // symdb: void sub_8005524(void); uses r10 = toolkit pointer on entry; sets the main jumptable state to
@@ -5588,9 +5588,9 @@ locret_8005AF2:
 
 // symdb: From the overworld tick: on a fresh START press, with every blocker clear, boots or resumes the PET menu subsystem by switching the game state to subsystem 0x18.
 // symdb: void gamestate_openPetMenuOnStartPress(void) : r10 (toolkit) -> [r10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005AF4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gamestate_openPetMenuOnStartPress_8005AF4.yaml
 	thumb_local_start
-sub_8005AF4:
+gamestate_openPetMenuOnStartPress_8005AF4:
 	push {r5,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -5644,12 +5644,12 @@ sub_8005AF4:
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
 loc_8005B64:
-  // trigger sub_8005462 via cbGameState_80050EC
+  // trigger pet_menuUpdateAndHandleExit_8005462 via cbGameState_80050EC
 	mov r0, #0x18
 	strb r0, [r5,#oGameState_SubsystemIndex]
 locret_8005B68:
 	pop {r5,pc}
-	thumb_func_end sub_8005AF4
+	thumb_func_end gamestate_openPetMenuOnStartPress_8005AF4
 
 // symdb: Empty stub function that does nothing and immediately returns.
 // symdb: void nullsub_8005B6A(r5 /* preserved, unused */)
@@ -13579,7 +13579,7 @@ locret_8009336:
 	pop {pc}
 	thumb_func_end sub_8009314
 
-// symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (sub_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
+// symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (battle_initCustomScreen_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
 // symdb: (r5 = battle state)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009338.yaml
 	thumb_local_start
@@ -13592,7 +13592,7 @@ sub_8009338:
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
 	strb r0, [r5,#oBattleState_Unk_03]
-	bl sub_8026840
+	bl battle_initCustomScreen_8026840
 loc_800934E:
 	bl sub_8026A28
 	cmp r0, #0
@@ -15326,9 +15326,9 @@ off_8009FC8:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009F8A
 
-// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sub_802FE28 until the count at 0x3000EA8 runs out.
+// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sprite_queueOamEntryThunk_802FE28 until the count at 0x3000EA8 runs out.
 // symdb: void processPendingQueue_8009FCC(void); /* reads count from byte_3000EA8, entries from
-// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sub_802FE28 call */
+// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sprite_queueOamEntryThunk_802FE28 call */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
 	thumb_local_start
 sub_8009FCC:
@@ -15345,7 +15345,7 @@ loc_8009FD4:
 	ldr r2, [r7,#0x8] // (dword_3002188 - 0x3002180)
 	ldr r3, [r7,#0xc] // (dword_300218C - 0x3002180)
 	push {r6,r7}
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	pop {r6,r7}
 	add r7, #0x10
 	b loc_8009FD4

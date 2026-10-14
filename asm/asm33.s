@@ -427,7 +427,7 @@ chipFolder_screenInit_812345C:
 	mov r0, #1
 	bl sub_81237E0
 	bl chipFolder_initGfx_812386C
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8123510 // =byte_8123400
 	bl sub_80465A0 // (void *a1) -> void
@@ -458,7 +458,7 @@ chipFolder_init_812349C:
 	mov r0, #0
 	bl sub_81237E0
 	bl chipFolder_initGfx_812386C
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8123510 // =byte_8123400
 	bl sub_80465A0 // (void *a1) -> void
@@ -519,7 +519,7 @@ sub_8123514:
 	bl sub_8123C98
 	bl sub_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
 off_8123538:
@@ -874,7 +874,7 @@ pet_menu_runFrame_81237BC:
 	bl sub_8123C98
 	bl sub_8123E58
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81237DC
 	bl pet_menuExitToMap_811F708
@@ -1883,7 +1883,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl buildKeyItemFlagsTable_8124384
 
 	mov r0, #6
@@ -1994,7 +1994,7 @@ submenu_subchip_dispatch_812407C: // (struct UnkSubMenu* state_a5) -> void
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_812453C
 	bl background_updateSceneStrips_812475C
 	pop {pc}
@@ -2423,13 +2423,13 @@ submenu_subchip_8124350: // (struct UnkSubMenu* state_a5) -> void
 	push {lr}
 	bl sub_81244EC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 
   // if (IsScreenFadeActive()) return
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8124380
 
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 
   // 0 if (cond1)
 	ldrb r0, [r5,#0x11]
@@ -3338,7 +3338,7 @@ loc_8124BCC:
 	strh r0, [r5,#0x30]
 	bl buildComChipFilter_8125C08
 	strh r0, [r5,#0x3a]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8124C28 // =byte_8124AE0
 	bl sub_80465A0 // (void *a1) -> void
@@ -4360,7 +4360,7 @@ sub_8125444:
 	bl drawBattleRowSprites_81265DC
 	bl battle_updateChipSprite_8126630
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldr r0, [r5,#0x70]
 	cmp r0, #0
 	beq locret_8125468
@@ -7412,7 +7412,7 @@ battle_petNaviDisplayInit_8126B6C:
 	strb r0, [r5,#1]
 	mov r0, #0
 	strb r0, [r5,#2]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl initTitleScreens_81270D0
 	bl sub_8127800
 	mov r0, #0
@@ -7602,7 +7602,7 @@ loc_8126D4C:
 	bl sub_811B48C
 	b loc_8126D56
 loc_8126D56:
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl sub_8123360 // () -> bool
 	tst r0, r0
 	bne loc_8126D76
@@ -7948,7 +7948,7 @@ pet_menuScreenTick_8126FF0:
 	mov r1, #5
 	bl sub_811BED4
 loc_8127006:
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl battle_dispatchNextCmd_81272C4
 	bl sub_8127374
 	bl IsScreenFadeActive // () -> zf
@@ -7956,7 +7956,7 @@ loc_8127006:
 	mov r0, #0x40 
 	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	bl sub_81440D8 // static () -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	movflag EVENT_1713
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r1, #1
@@ -9275,7 +9275,7 @@ battle_sceneReset_8127A1C:
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl battle_setupSceneTiles_8127CB8
 	ldr r0, off_8127ABC // =dword_2001140 
 	ldr r0, [r0]
@@ -9327,7 +9327,7 @@ off_8127AC8:
 
 // symdb: Email menu state 1 (HandleEmailMenu81279F8's table): run the sub-state handler (off_8127AF8 by byte 2), then the common updates.
 // symdb: (r5 = menu state) -> handler entered with r0 = handler, r1 = sub-state (sub_8127B94 reads r1);
-// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, sub_80465F8
+// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, battle_updateEStructSprites_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127ACC.yaml
 	thumb_local_start
 sub_8127ACC:
@@ -9342,7 +9342,7 @@ sub_8127ACC:
 	bl sub_8127FE4
 	bl battle_checkSubFlags_8128280
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
 off_8127AF4:
@@ -9547,10 +9547,10 @@ scene_updateClosing_8127C64:
 	bl sub_8127FE4
 	bl battle_checkSubFlags_8128280
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8127CB6
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_8127EF4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
@@ -10308,7 +10308,7 @@ loc_81281F2:
 	orr r1, r2
 	mov r2, #0
 	mov r3, #2
-	bl sub_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
+	bl sprite_queueOamEntryThunk_802FE28 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 	add r7, #1
 	cmp r7, r6
 	blt loc_81281F2
@@ -11608,7 +11608,7 @@ sub_8128CD8:
 	ldr r1, dword_8128DBC // =0x9060 
 	ldr r2, dword_8128DC0 // =0x6008c00 
 	bl sub_8129104
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_8128DC8 // =byte_8128CB0
 	bl sub_80465A0 // (void *a1) -> void
@@ -11651,7 +11651,7 @@ loc_8128D7C:
 	mov r0, #4
 	strb r0, [r5,#1]
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8128D98:
@@ -11691,7 +11691,7 @@ sub_8128DCC:
 	mov lr, pc
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	.balign 4, 0
 off_8128DE4:
@@ -12226,7 +12226,7 @@ battle_initScene_8129248:
 	bl ZeroFillGFX30025c0
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r7, r10
 	ldr r0, [r7,#oToolkit_RenderInfoPtr]
 	ldr r1, dword_81292A0 // =0x1f40 
@@ -12299,7 +12299,7 @@ battle_initFullCutscene_81292D8:
 	bl sprite_drawIfFlagSet_812B504
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129336
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #4
 	strb r0, [r5,#2]
 	bl clearStruct200BC30_803EBAC
@@ -12430,7 +12430,7 @@ loc_81293D6:
 	bl SetScreenFade // (int a1, int a2) -> void
 loc_81293E8:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B29C
 	pop {r4,pc}
@@ -12450,7 +12450,7 @@ scene_runFadePopTick_8129400:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8129438
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	mov r0, #0
 	strb r0, [r5,#0xd]
 	mov r0, #0xc
@@ -12470,7 +12470,7 @@ scene_runFadePopTick_8129400:
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 loc_8129438:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B29C
 	pop {pc}
@@ -12576,7 +12576,7 @@ loc_81294FA:
 	bl SetScreenFade // (int a1, int a2) -> void
 loc_8129514:
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
 	bl sub_812B288
 	pop {pc}
@@ -12591,7 +12591,7 @@ dword_8129528:
 sub_812952C:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129548
 	mov r0, #0xc
@@ -12608,7 +12608,7 @@ locret_8129548:
 sub_812954C:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812956A
 	bl chatbox_8040818
@@ -12624,7 +12624,7 @@ locret_812956A:
 sub_812956C:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129594
 	mov r0, #0
@@ -12678,7 +12678,7 @@ off_81295B4:
 sub_81295D8:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129650
 	bl eStruct200BC30_getJumpOffset00
@@ -12961,7 +12961,7 @@ off_81297BC:
 sub_81297C0:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81297D8
 	mov r0, #4
@@ -14040,7 +14040,7 @@ sub_8129EE4:
 	push {lr}
 	bl sprite_drawIfFlagSet_812B504
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129F00
 	mov r0, #4
@@ -16118,7 +16118,7 @@ off_812AEC4:
 pet_tickEntitiesAndExitToMap_812AEC8:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812AEDC
 	bl pet_menuExitToMap_811F708
@@ -16562,7 +16562,7 @@ sub_812B25C:
 	push {lr}
 	bl sub_812B2C4
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}
 	thumb_func_end sub_812B25C
 
@@ -17109,7 +17109,7 @@ sub_812B5C8:
 	cmp r0, #0x1c
 	bne locret_812B5EC
 	bl entity_runAllUpdateHandlers_80465BC
-	bl sub_80465F8 // () -> void
+	bl battle_updateEStructSprites_80465F8 // () -> void
 locret_812B5EC:
 	pop {r4,pc}
 	.balign 4, 0
@@ -17173,7 +17173,7 @@ loc_812B652:
 	beq locret_812B696
 	mov r0, #8
 	strb r0, [r5,#2]
-	bl sub_8046664 // () -> void
+	bl battle_resetEStructRecords_8046664 // () -> void
 	bl chatbox_8040818
 	mov r0, #0x21 
 	bl FreeAllObjectsOfSpecifiedTypes
