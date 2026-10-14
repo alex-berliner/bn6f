@@ -518,9 +518,9 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B6E
 
-// symdb: Tick a state's per-frame animation index and dispatch the matching guest routine via sub_802FE28.
-// symdb: void sub_8033B80(u32 index, void *state /* r5 */); clobbers r0-r3, lr; flags NZCV; preserves
-// symdb: r4-r7.
+// symdb: Queues one OAM row for a "Battle Start" cinematic sprite from a 24-frame table, then advances a frame counter held in r5+5.
+// symdb: (r0 = frameIndex, r5 = battleWorkPtr) -> r0 = nextFrameIndex ; side effect: queues an OAM entry
+// symdb: via sprite_queueOamEntryThunk_802FE28 and updates the frame counter at battleWorkPtr+0x05
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
 	thumb_local_start
 sub_8033B80:

@@ -873,6 +873,10 @@ sub_809D7F8:
 	pop {pc}
 	thumb_func_end sub_809D7F8
 
+// symdb: Per-frame update of the overworld player object: write back next-position into current XYZ, sync eStruct200ace0 mirror, choose animation/jumptable step, clamp into bbox, recompute Z, update layer and sprite priority.
+// symdb: () -> void ; side effects: mutates OWPlayerObject in r5, eStruct200ace0, and calls into
+// symdb: sprite/animation/collision routines
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D800.yaml
 	thumb_local_start
 sub_809D800:
 	push {lr}
@@ -1885,6 +1889,10 @@ locret_809DFBE:
 	pop {pc}
 	thumb_func_end owPlayer_isMoving_809DFA0
 
+// symdb: OW player jumptable step that, while not yet fully landed, ORs the player's current facing direction bits into a per-step landing accumulator at r5+0x56, and finalizes the landing (sets oOWPlayerObject_Unk_18=0xa) once all 8 facing bits are seen.
+// symdb: (r5 = OWPlayerObjectPtr) -> void ; side effects: writes [r5+0x56] (byte), [r5+0x18] (halfword)
+// symdb: on full landing
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DFC0.yaml
 	thumb_local_start
 sub_809DFC0:
 	push {lr}
@@ -2839,10 +2847,9 @@ MakeOWPlayerInvisible:
 	mov pc, lr
 	thumb_func_end MakeOWPlayerInvisible
 
-// symdb: Tests a flag byte (oGameState_Unk_10) in the current game state and returns it with NZ flags set so callers can branch on zero/nonzero.
-// symdb: bool gameState_checkFlagByteUnk10(Toolkit* toolkit) // in: r10 = toolkit, lr return; out: r0 =
-// symdb: flag byte, r1 = GameState*, NZ flags from r0
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809E462.yaml
+// symdb: Returns NZ if the overworld player is currently busy / a cutscene is running (GameState+0x10 != 0), used as a "do not interrupt" guard.
+// symdb: () -> nz = 1 if busy, 0 if idle (tst r0,r0) ; reads Toolkit->GameStatePtr +0x10, no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E462.yaml
 	thumb_func_start sub_809E462
 sub_809E462:
 	push {lr}

@@ -8756,7 +8756,7 @@ sub_8134548:
 	pop {pc}
 	thumb_func_end sub_8134548
 
-// symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to object_computeAndQueueOamEntry_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
+// symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to sub_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
 // symdb: void object_resolveTableEntry_8134558(u32 index, u32 sub_id, u32 attr_a_off, u32 attr_b_off,
 // symdb: /*r5=*/u32 entry_ptr);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_resolveTableEntry_8134558.yaml

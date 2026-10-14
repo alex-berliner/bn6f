@@ -371,6 +371,10 @@ zeroFill_80007B2:
 	pop {pc}
 	thumb_func_end zeroFill_80007B2
 
+// symdb: Drains the pending sound-request queue at dword_200A490, dispatching callbacks/continuations and submitting a queued SSEQ request to the sound engine.
+// symdb: (r0..r3 caller-saved, lr restored) -> r0 = 0 ; no other return value; side effects: clears the
+// symdb: queue and posts one pending request to sound_8000808
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80007BE.yaml
 	thumb_func_start sub_80007BE
 sub_80007BE:
 	push {r4-r7,lr}

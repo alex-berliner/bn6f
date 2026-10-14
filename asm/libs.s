@@ -20596,6 +20596,10 @@ loc_814DA58:
 	nop 
 	thumb_func_end sub_814DA28
 
+// symdb: One-instruction Thumb tail-call stub that just `bx r1` to whatever the caller parked in r1 — used as an RFU library indirect-call trampoline.
+// symdb: (r0 = scratch, r1 = target function pointer to `bx` into) -> returns whatever the callee returns
+// symdb: ; no side effect at this stub itself (it never executes any code after entry)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA64.yaml
 	thumb_local_start
 sub_814DA64:
 	bx r1
@@ -22142,6 +22146,10 @@ loc_814E4BC:
 	pop {r3}
 	thumb_func_end MPlayMain
 
+// symdb: Indirect-jump trampoline used as the track-end callback for m4a MPlay tracks; reaches the real routine through r3.
+// symdb: (r0 = MPlayTrackInfo*, r1 = MPlayChannel*, r2 = 0x68736D53 'Smsh' tag, r3 = target_fn) -> r0 =
+// symdb: ?, flags clobbered; tail-call into r3 with r4-r12/lr preserved.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E4CC.yaml
 	thumb_local_start
 sub_814E4CC:
 	bx r3

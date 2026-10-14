@@ -707,10 +707,9 @@ off_80269CC:
 	.word dword_20349A0
 	thumb_func_end battle_initCustomScreen_8026840
 
-// symdb: Queries some global status via sub_800A9E2 with argument 0 and reduces the result to a boolean that is true when bits 0 or 2 are set.
-// symdb: int checkStatusBits0Or2(void); returns 1 if (statusValue & 0x5) != 0 else 0; carry and overflow
-// symdb: flags from the inner call pass through to the caller
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80269D0.yaml
+// symdb: Battle camera: returns 1 if the current battle actor (from r10's BattleState) is in front of the camera, else 0.
+// symdb: () -> r0 = 0 or 1 (Z set on r0); no side effects beyond r0, r1, r3.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80269D0.yaml
 	thumb_local_start
 sub_80269D0:
 	push {lr}

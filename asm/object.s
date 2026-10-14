@@ -1616,9 +1616,10 @@ locret_800C486:
 	pop {r4-r7,pc}
 	thumb_func_end panelObject_update_800C380
 
-// symdb: r1 = 480 in battle mode 1, else 600, keeping r0/r2/r3 (likely a timer length in frames).
-// symdb: () -> r1 = GetBattleMode() == 1 ? 0x1E0 : 0x258; r0, r2, r3 preserved
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800C488.yaml
+// symdb: Picks a panel-grid dimension constant for the player-side battle grid based on battle mode.
+// symdb: (r10 = toolkit) -> r1 = 0x1E0 if GetBattleMode()==1 else 0x258, r0 unchanged; side effects:
+// symdb: flags N set on the r0==1 branch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C488.yaml
 	thumb_local_start
 sub_800C488:
 	push {r0,r2,r3,lr}
@@ -5555,6 +5556,12 @@ loc_800E72C:
 	mov pc, lr
 	thumb_func_end sub_800E708
 
+// symdb: Per-frame update for a battle object's status-effect timers (paralysis, blind, confuse, freeze, superarmor, immobilize, anger, invuln) and the corresponding action resets in BattleObject + CollisionData.
+// symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several
+// symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
+// symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
+// symdb: sub_80E4B34 / sub_80E9BDC.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E730.yaml
 	thumb_func_start sub_800E730
 sub_800E730:
 	push {r4,r6,r7,lr}
@@ -6169,6 +6176,10 @@ locret_800EB6A:
 	pop {r4,pc}
 	thumb_func_end sub_800EB4E
 
+// symdb: Returns 0 if the opposing alliance of `r0` has a player who's been blinded; else 1 (treats r0 as the requester's alliance bit, flips it, looks up that player, and tests for OBJECT_FLAGS_BLIND on the found player).
+// symdb: (r0 = requesterAlliance: bool) -> r0 = 0 when the opposing player is blind, 1 otherwise ; side
+// symdb: effects: clobbers r4/r5, also calls battle_networkInvert/battle_findPlayer/object_getFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EB6C.yaml
 	thumb_func_start sub_800EB6C
 sub_800EB6C:
 	push {r4,r5,lr}

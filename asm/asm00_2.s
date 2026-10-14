@@ -2079,6 +2079,11 @@ byte_800FB4C:
 	.byte 0x80, 0x0, 0x88, 0xD, 0x80, 0x0, 0x88, 0xE
 	thumb_func_end scanFrontPanels_800FAF6
 
+// symdb: Player AI: if A-pressed/held, try to fire the queued attack chip for the controlled battle object, clearing the pending-input flag and returning the chosen chip id, damage and attack boost.
+// symdb: (r5 = *BattleObject, r10 = *Toolkit) -> r0 = chip id (u16), r1 = damage (u16), r2 = attack boost
+// symdb: (u16); side effects mutate AIData+0x44 flags, AIData+0xA0 AttackVars and call object_setAttack2
+// symdb: / useChipRelated_80127C0 / sub_80117BA / sub_8012CB2.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FB54.yaml
 	thumb_func_start sub_800FB54
 sub_800FB54:
 	push {r4,r7,lr}
@@ -2834,9 +2839,9 @@ battle_getPlayerAIData_8010022:
 	pop {pc}
 	thumb_func_end battle_getPlayerAIData_8010022
 
-// symdb: For a battle object whose AIData ActorType is ACTOR_TYPE_PLAYER (2), compute and return a "battle palette index" used for the navi sprite palette; otherwise return 0, with a special path that falls through to sub_800FD0A when the alliance NaviStats byte is non-zero (i.e. cross/beast transformation case).
-// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = paletteIndex (or value from sub_800FD0A); out has
-// symdb: r0/r1/r2 plus callee-saved r4-r7; side effects: clobbers many regs via callees
+// symdb: Computes which palette slot to use for a Navi battle object's sprite, dispatching on the player's transformation/element
+// symdb: (r5 = battle object, r10 = toolkit) -> r0 = palette index offset ; side effects: reads NaviStats
+// symdb: at offsets 0x29/0x2c/0x10/0xe; may call sub_800FD0A to recompute palettes
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801002C.yaml
 	thumb_func_start sub_801002C
 sub_801002C:
@@ -9312,6 +9317,10 @@ off_8012E70:
 	.word dword_2036820
 	thumb_func_end battle_updateNaviAIJoypad_8012DFC
 
+// symdb: Per-frame AI tick on the player's AIData: if the battle isn't over or paused, run the AI joypad helpers; otherwise clear the four AI joypad latches.
+// symdb: (r5 = *AIData, r10 = *Toolkit) -> void ; side effects: writes
+// symdb: AIData.JoypadHeld/Pressed/Up/Released
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012E74.yaml
 	thumb_func_start sub_8012E74
 sub_8012E74:
 	push {r4,r6,lr}
@@ -22464,6 +22473,10 @@ dword_801A1FC:
 	.word 0x8000028
 	thumb_func_end object_updatePoisonPanelStatus_801A186
 
+// symdb: Handles a battle-object collision event, clearing a "damage" state and lowering the Navi's mood on the opposing side.
+// symdb: (r5 = attacker BattleObjectPtr, r10 = ToolkitPtr) -> void ; no return value (clobbers
+// symdb: r2,r3,r4,r5,r6; leaves flags undefined)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A200.yaml
 	thumb_local_start
 sub_801A200:
 	push {r4,r6,lr}
@@ -26681,6 +26694,10 @@ sub_801BFF8:
 	pop {pc}
 	thumb_func_end sub_801BFF8
 
+// symdb: Loads the per-slot chip icon GFX (0x80 bytes per entry, 6 slots) for the chip-selection preview panel from the active-hand table, using either the chip database's sprite or a fixed "special effect" override tile.
+// symdb: (r0 = actor_side_tag: 0 or 1) -> r0 = 0 ; side effects: 6 DMA queue ops into VRAM at
+// symdb: 0x6016a00..0x6016c80
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C002.yaml
 	thumb_local_start
 sub_801C002:
 	push {r4,r6,r7,lr}
@@ -26739,8 +26756,8 @@ loc_801C062:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_801C002
 
-// symdb: Wrapper that passes 1 to battle_drawChipCountsOAM_801C082, requesting the battle to end.
-// symdb: void battle_RequestEndBattle_ADDRESS(void); // tail-calls battle_drawChipCountsOAM_801C082(1)
+// symdb: Wrapper that passes 1 to sub_801C082, requesting the battle to end.
+// symdb: void battle_RequestEndBattle_ADDRESS(void); // tail-calls sub_801C082(1)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_RequestEndBattle_801C06E.yaml
 	thumb_local_start
 battle_RequestEndBattle_801C06E:
@@ -26750,7 +26767,7 @@ battle_RequestEndBattle_801C06E:
 	pop {pc}
 	thumb_func_end battle_RequestEndBattle_801C06E
 
-// symdb: Thin trampoline that invokes battle_drawChipCountsOAM_801C082 with r0 set to 0; no logic of its own.
+// symdb: Thin trampoline that invokes sub_801C082 with r0 set to 0; no logic of its own.
 // symdb: void sub_801C078(void)  /* callers pass r4, r5, r6, r7, r10; NZCV and r0-r3 come back from the
 // symdb: callee */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C078.yaml
@@ -28500,6 +28517,11 @@ loc_801CC76:
 	pop {r0,r4,r7,pc}
 	thumb_func_end sub_801CC34
 
+// symdb: AI tick that, when any allied Navi bonus is active, randomly queues one or two "PwrAtk" button presses (with a 12-tick inter-press delay) into AIData and refreshes a 0x20-byte blank GFX region.
+// symdb: (r5 = *mut AIData, r10 = *Toolkit, lr) -> void ; side effects: writes AIData+PwrAtkState (0x1d),
+// symdb: AIData+Unk_15/Unk_0f/PwrAtkButton/Unk_38 areas; may call QueueEightWordAlignedGFXTransfer(0x20
+// symdb: zeros -> 0x030016d0); pushes/pops r5; calls r10-anchored helpers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CC94.yaml
 	thumb_local_start
 sub_801CC94:
 	push {lr}

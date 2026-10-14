@@ -1131,7 +1131,7 @@ off_8123A4C:
 	.word eTextScript201C220
 	thumb_func_end sub_8123A40
 
-// symdb: Plays the "battle chip use" SFX entry sample for the chip identified by the object at r5, dispatching it through the sound driver object_computeAndQueueOamEntry_811FA98.
+// symdb: Plays the "battle chip use" SFX entry sample for the chip identified by the object at r5, dispatching it through the sound driver sub_811FA98.
 // symdb: void sub_8123A50(u32 chipObject /* r5 */); // r5 in (preserved), r5 out (preserved); clobbers
 // symdb: r0-r3, lr, N Z C V; preserves r4,r6,r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sfx_playChipUseSound_8123A50.yaml
@@ -9961,7 +9961,7 @@ dword_8127FE0:
 	.word 0x3
 	thumb_func_end sub_8127F90
 
-// symdb: Thin wrapper that sets up registers (object pointer fields, table base, count) and forwards an object's initialization/dispatch to the large object_computeAndQueueOamEntry_811FA98 helper.
+// symdb: Thin wrapper that sets up registers (object pointer fields, table base, count) and forwards an object's initialization/dispatch to the large sub_811FA98 helper.
 // symdb: void sub_8127FE4(struct Object *obj /* r5 */); // inputs:  r5 = object pointer, r4/r6/r7 carried
 // symdb: in by caller and not consumed // outputs: r5 preserved // clobbers: r0,r1,r2,r3,lr; NZCV //
 // symdb: preserves: r4,r5,r6,r7

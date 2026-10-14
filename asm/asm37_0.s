@@ -18,6 +18,9 @@ toolkit_resetToolState_813B768:
 	.byte 0, 0
 	thumb_func_end toolkit_resetToolState_813B768
 
+// symdb: Returns a pointer to the 0x10-byte battle-object descriptor slot in the global StructArr_813944C indexed by r0.
+// symdb: (r0 = index) -> r0 = &StructArr_813944C[index*0x10] ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B780.yaml
 	thumb_func_start sub_813B780
 sub_813B780:
 	ldr r1, off_813B78C // =StructArr_813944C

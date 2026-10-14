@@ -2010,9 +2010,9 @@ off_8003C6C:
 	.word sprite_queueFramePieces+1
 	thumb_func_end owMapObject_renderAll_8003BF4
 
-// symdb: Trivial wrapper that invokes sub_80028C0 with r0 = 0, apparently resetting or clearing whatever state that routine manages.
-// symdb: void sub_8003C70(void)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8003C70.yaml
+// symdb: Resets the queued sprite palette count slot (r0) to 0 via sub_80028C0.
+// symdb: (r0 = slot index 0) -> r0 = 0 ; side effect: writes to battle sprite palette bookkeeping
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003C70.yaml
 	thumb_local_start
 sub_8003C70:
 	push {lr}
@@ -2461,6 +2461,9 @@ T3BattleObjectJumptable:
 	.word t3_0xd4_80DFFB8+1 // 0xd4
 	thumb_func_end sub_8003E98
 
+// symdb: Per-frame, iterate the active battle-object list and project, ensure gfx, and queue visible sprite frame pieces for each one (then record the post-group OBJ palette count).
+// symdb: (r10 = ToolkitPtr) -> r0 = 3 ; no other side-effectful return; clobbers nz/c/v + r0..r6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004218.yaml
 	thumb_local_start
 sub_8004218:
 	push {r4-r7,lr}
@@ -2714,6 +2717,10 @@ T4BattleObjectJumptable:
 	.word t4_0x0_80E0548+1 // 0x91
 	thumb_func_end sub_80042A6
 
+// symdb: Iterate every battle object's sprite group (OBJ_GROUP) and either queue/cull/draw them, or clear their frame-piece flags if their sprites aren't active this frame.
+// symdb: (r10 = Toolkit ptr, lr = retaddr) -> r0 = 4 ; side effects: writes battle-object OAM data, calls
+// symdb: sub_80028C0 to record palette count.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004510.yaml
 	thumb_local_start
 sub_8004510:
 	push {r4-r7,lr}
@@ -3447,9 +3454,10 @@ off_80049AC:
 	.word sprite_queueFramePieces+1
 	thumb_func_end owMapObject_queueSprites_8004934
 
-// symdb: One-line thunk that invokes sub_80028C0 with the constant 5 and returns.
-// symdb: void sub_80049B0(void); /* result of the tail-called routine arrives in r2 */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80049B0.yaml
+// symdb: Finalises a queued battle sprite group by recording the current sprite palette count (dword_200F340) into slot 5 of the per-group byte array at byte_200F389.
+// symdb: (no input args used) -> r0 = 5 (slot index); side effect: byte_200F389[5] = LO(dword_200F340)
+// symdb: after a tail-call to sub_80028C0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80049B0.yaml
 	thumb_local_start
 sub_80049B0:
 	push {lr}
@@ -4727,10 +4735,10 @@ locret_800536C:
 	pop {pc}
 	thumb_func_end HandlesBattleMainUntilEndOfBattleThenTriggersEnterMap
 
-// symdb: Overworld per-frame tick: runs all overworld subsystem updates, then if a screen fade is active drives the warp-landing countdown, playing cue sounds at fixed steps and finally triggering the chatbox and the map's on-warp-enter event when the timer expires.
-// symdb: void sub_800536E(struct GameState *self /* r5 */); // preserves r4..r7; clobbers r0..r3, lr, N Z
-// symdb: C V; returns none // (callees leave r8..r12 untouched on exit)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800536E.yaml
+// symdb: Overworld per-frame tick: drives the PET-menu dispatcher, scenario/sprite/owMapObject/battle pipelines, runs the armed callback, and counts down a per-map post-enter-map jingle delay (plays 0x9E or 0x71 SSEs) before triggering a map warp.
+// symdb: (r5 = * GameState, r10 = * Toolkit) -> void (caller-saved r4-r7, r10; only branch flags and the
+// symdb: screen-fade wait are observable side-effects on r5->Unk_68)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800536E.yaml
 	thumb_local_start
 sub_800536E: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -15396,9 +15404,9 @@ off_800A018:
 	.word byte_3000EA8
 	thumb_func_end fifo_pushRecord16_8009FF8
 
-// symdb: Zeroes the byte at 0x03000EA8 (unidentified battle subsystem flag) and returns void
-// symdb: () -> void ; side effect: writes 0 to [0x03000EA8]
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800A01C.yaml
+// symdb: Resets the FIFO ring-buffer write counter (byte_3000EA8, the write index of dword_3002180) to 0; companion to fifo_pushRecord16_8009FF8.
+// symdb: (void) -> nz flags ; side effect: writes 0 to byte_3000EA8 (0x03000EA8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A01C.yaml
 	thumb_local_start
 sub_800A01C:
 	mov r0, #0

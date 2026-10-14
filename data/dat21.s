@@ -3834,6 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
+// symdb: Boot helper that primes the ReqBBS scene GFX anims and ensures the "asked to jack out" / L-message cutscene sentinels are registered by setting/clearing the relevant event flags.
+// symdb: (void) -> void ; side effects on GameState/Gfx anims and one oBB.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
 	push {r4-r7, lr}
