@@ -19384,9 +19384,9 @@ dword_8017764:
 // symdb: CollisionData flags, CurAnim/CurAnimCopy, Z, PanelX/PanelY, RelatedObject1Ptr, AIData+0x68),
 // symdb: plays sound effects (0x12E = takeoff, 0x125 = landing), reads joypad from AIData, increments
 // symdb: byte_203EAE0[Alliance][3] by 1 saturated.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017768.yaml
-	thumb_func_start sub_8017768
-sub_8017768:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_jumpLandStep_8017768.yaml
+	thumb_func_start battleObject_jumpLandStep_8017768
+battleObject_jumpLandStep_8017768:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -19501,7 +19501,7 @@ off_8017864:
 byte_8017868:
 	.byte 0x1, 0x2, 0x3, 0x4, 0x4, 0x5, 0x5, 0x6, 0x6, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0, 0xFF
 	.byte 0xFE, 0xFD, 0xFC, 0xFC, 0xFB, 0xFB, 0xFA, 0xFA, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x0
-	thumb_func_end sub_8017768
+	thumb_func_end battleObject_jumpLandStep_8017768
 
 // symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (sub_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
 // symdb: void sub_8017888(battle_object *obj /* r5 */); returns r0 = 0; clobbers r0-r3, r7 (scratch,

@@ -5831,7 +5831,7 @@ int battle_state_finishBattlePhase_80079d0()
     result = battle_doBothTrackedIdsMatch_800B46C(305419896);
     if ( result )
     {
-        sub_800B460();
+        battle_resetLinkSyncFlags_800B460();
         battle_copyStructsIncludingBattleStats_800b2d8();
         result = 12;
         *(v0 + 2) = 12;
@@ -8740,7 +8740,7 @@ int battle_waitLinkSync_8009478()
     {
         if ( battle_doBothTrackedIdsMatch_800B46C(523190095) )
         {
-            sub_800B460();
+            battle_resetLinkSyncFlags_800B460();
             sub_800B444();
             result = 4;
             *(v0 + 2) = 4;
@@ -9304,7 +9304,7 @@ int sub_80098D8()
     {
         if ( battle_doBothTrackedIdsMatch_800B46C(523190095) )
         {
-            sub_800B460();
+            battle_resetLinkSyncFlags_800B460();
             sub_800B444();
             result = 4;
             *(v0 + 2) = 4;
@@ -9683,7 +9683,7 @@ int sub_8009BC8()
     {
         if ( battle_doBothTrackedIdsMatch_800B46C(523190095) )
         {
-            sub_800B460();
+            battle_resetLinkSyncFlags_800B460();
             sub_800B444();
             result = 4;
             *(v0 + 2) = 4;
@@ -10101,7 +10101,7 @@ int sub_8009EFC()
     {
         if ( battle_doBothTrackedIdsMatch_800B46C(523190095) )
         {
-            sub_800B460();
+            battle_resetLinkSyncFlags_800B460();
             sub_800B444();
             result = 4;
             *(v0 + 2) = 4;
@@ -12502,7 +12502,7 @@ char *sub_800B444()
 
 
 // 0x800b460
-int sub_800B460()
+int battle_resetLinkSyncFlags_800B460()
 {
     int result; // r0
 

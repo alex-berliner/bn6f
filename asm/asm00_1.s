@@ -10142,7 +10142,7 @@ battle_state_finishBattlePhase_80079d0:
 	tst r0, r0
 	beq locret_80079EA
 
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl battle_copyStructsIncludingBattleStats_800b2d8
 
 	// trigger battle_RevealFieldColumnsStep_80079F0 via battle_dispatchPhase_8007978
@@ -13822,7 +13822,7 @@ loc_800948E:
 	bl battle_doBothTrackedIdsMatch_800B46C
 	tst r0, r0
 	beq loc_80094A6
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -14421,7 +14421,7 @@ loc_80098EE:
 	bl battle_doBothTrackedIdsMatch_800B46C
 	tst r0, r0
 	beq loc_8009906
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -14838,7 +14838,7 @@ loc_8009BDE:
 	bl battle_doBothTrackedIdsMatch_800B46C
 	tst r0, r0
 	beq loc_8009BF6
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -15291,7 +15291,7 @@ loc_8009F12:
 	bl battle_doBothTrackedIdsMatch_800B46C
 	tst r0, r0
 	beq loc_8009F2A
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -18772,16 +18772,16 @@ sub_800B444:
 
 // symdb: Clears the two EWRAM link-sync tracking words at 0x203F4A0 and 0x203F5A0 to zero; called at the end of a battle phase and before/after waiting on link sync.
 // symdb: () -> void ; writes 0x00000000 to EWRAM word 0x203F4A0 and EWRAM word 0x203F5A0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B460.yaml
-	thumb_func_start sub_800B460
-sub_800B460:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetLinkSyncFlags_800B460.yaml
+	thumb_func_start battle_resetLinkSyncFlags_800B460
+battle_resetLinkSyncFlags_800B460:
 	mov r0, #0
 	ldr r1, off_800B658 // =dword_203F4A0
 	str r0, [r1]
 	ldr r1, off_800B65C // =dword_203F5A0
 	str r0, [r1]
 	mov pc, lr
-	thumb_func_end sub_800B460
+	thumb_func_end battle_resetLinkSyncFlags_800B460
 
 // symdb: Returns TRUE only if both tracked id slots (dword_203F4A0 and dword_203F5A0) hold the given id, else FALSE.
 // symdb: bool battle_doBothTrackedIdsMatch(u32 id); // in: r0=id, lr; out: r0=TRUE(1)/FALSE(0),

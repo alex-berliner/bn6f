@@ -1301,9 +1301,9 @@ dword_808CC0C:
 
 // symdb: If the battle actor at r5 is a player actor (Unk_04 == 2) and story flag EVENT_9D8 is unset, sets the flag and marks the result true; otherwise returns false.
 // symdb: (r5 = SomeBattleActorPtr, r10 = toolkit) -> flags only (r4 holds result)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPlayerActorStoryFlag_808CC10.yaml
 	thumb_local_start
-sub_808CC10:
+battle_checkPlayerActorStoryFlag_808CC10:
 	push {r4-r7,lr}
 	mov r4, #0
 	ldrb r0, [r5,#4]
@@ -1319,12 +1319,12 @@ loc_808CC2E:
 	tst r4, r4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CC10
+	thumb_func_end battle_checkPlayerActorStoryFlag_808CC10
 
 // symdb: Picks one of four BattleState-related init/data pointer pairs based on event flag 9D4 and three sub-checks, returning (ptr0, ptr1) to its caller.
 // symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
 // symdb: call return); side effects: may read EVENT_9D4, may call
-// symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
+// symdb: battle_checkPlayerActorStoryFlag_808CC10/sub_808CF8C/ai_getAIModeForMapGroup_808D084/battle_checkLockedEventTable_808CDC4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickBattleStateInitPtr_808CC34.yaml
 	thumb_local_start
 battle_pickBattleStateInitPtr_808CC34:
@@ -1337,7 +1337,7 @@ battle_pickBattleStateInitPtr_808CC34:
 	ldr r4, off_808CC80 // =byte_808C930
 	b loc_808CC6C
 loc_808CC48:
-	bl sub_808CC10
+	bl battle_checkPlayerActorStoryFlag_808CC10
 	beq loc_808CC52
 	ldr r4, off_808CC74 // =byte_808CA48
 	b loc_808CC6C
@@ -1345,11 +1345,11 @@ loc_808CC52:
 	bl sub_808CF8C
 	beq loc_808CC62
 	ldr r4, off_808CC7C // =byte_808C428
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	mov r6, r0
 	b loc_808CC6C
 loc_808CC62:
-	bl sub_808CDC4
+	bl battle_checkLockedEventTable_808CDC4
 	beq loc_808CC6C
 	ldr r4, off_808CC78 // =byte_808C74C
 	mov r6, r1
@@ -1477,7 +1477,7 @@ sub_808CD24:
 	push {r4-r7,lr}
 	ldr r5, off_808D030 // =dword_808CA44
 	ldr r5, [r5]
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	lsl r0, r0, #2
 	ldr r4, off_808CD64 // =off_808CD68 
 	ldr r4, [r4,r0]
@@ -1523,17 +1523,17 @@ byte_808CDAA:
 	.byte 0xD0, 0xF, 0xD1, 0xF, 0x0, 0x0
 	thumb_func_end sub_808CD24
 
-// symdb: Walk an event-flag table whose pointer is selected by sub_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
+// symdb: Walk an event-flag table whose pointer is selected by ai_getAIModeForMapGroup_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
 // symdb: () -> r0 = match flag (0/1), r1 = group index (0..N), r2 = (3*group + entry) ; side effects: r10
 // symdb: (Toolkit) read-only, NZ/CV flags preserved by TestEventFlag calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CDC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkLockedEventTable_808CDC4.yaml
 	thumb_local_start
-sub_808CDC4:
+battle_checkLockedEventTable_808CDC4:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
 	mov r4, #0
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	mov r8, r0
 	lsl r0, r0, #2
 	ldr r6, off_808CEB8 // =off_808CEBC 
@@ -1581,14 +1581,14 @@ loc_808CE14:
 	mov r8, r2
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CDC4
+	thumb_func_end battle_checkLockedEventTable_808CDC4
 
 	thumb_local_start
 sub_808CE28:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	mov r8, r0
 	lsl r0, r0, #2
 	ldr r4, off_808CEB8 // =off_808CEBC 
@@ -1629,7 +1629,7 @@ sub_808CE70:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	mov r8, r0
 	lsl r0, r0, #2
 	ldr r4, off_808CEB8 // =off_808CEBC 
@@ -1688,7 +1688,7 @@ byte_808CF14:
 sub_808CF34:
 	push {r4-r7,lr}
 	mov r4, #0
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	lsl r0, r0, #1
 	ldr r1, off_808CF78 // =byte_808CF84 
 	ldrh r1, [r1,r0]
@@ -1704,7 +1704,7 @@ loc_808CF4C:
 	thumb_local_start
 sub_808CF50:
 	push {r4-r7,lr}
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	lsl r0, r0, #1
 	mov r4, r0
 	ldr r1, off_808CF74 // =byte_808CF7C 
@@ -1865,7 +1865,7 @@ battleObject_computePanelOffsetFromCoords_808D034:
 	thumb_local_start
 sub_808D060:
 	push {lr}
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	ldr r3, off_808D078 // =byte_808D07C
 	lsl r0, r0, #1
 	add r3, r3, r0
@@ -1883,9 +1883,9 @@ byte_808D07C:
 
 // symdb: Returns the AI mode selector for the current map group (3 for map group 0x85, otherwise MapNumber byte).
 // symdb: () -> r0 = AI mode index (3 if MapGroup==0x85, else oToolkit_GameStatePtr->MapNumber)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D084.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForMapGroup_808D084.yaml
 	thumb_local_start
-sub_808D084:
+ai_getAIModeForMapGroup_808D084:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -1898,14 +1898,14 @@ loc_808D094:
 	ldrb r0, [r0,#5]
 locret_808D096:
 	pop {pc}
-	thumb_func_end sub_808D084
+	thumb_func_end ai_getAIModeForMapGroup_808D084
 
 	thumb_local_start
 sub_808D098:
 	push {r4-r7,lr}
 	push {r0,r1}
 	mov r6, #0
-	bl sub_808D084
+	bl ai_getAIModeForMapGroup_808D084
 	cmp r0, #3
 	beq loc_808D0D8
 	mov r4, r0

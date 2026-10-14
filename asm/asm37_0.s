@@ -77,7 +77,7 @@ loc_813B7BC:
 off_813B7D0:
 	.word off_813B7D4
 off_813B7D4:
-	.word sub_813B7EC+1
+	.word battleObject_copyBeastSpChipData_813B7EC+1
 	.word sub_813B7FC+1
 	.word sub_813B818+1
 	.word sub_813B830+1
@@ -89,9 +89,9 @@ dword_813B7E8:
 
 // symdb: Copies 0x31 bytes of chip/buster data from a beastSP buffer (r7) into a battle object (r4).
 // symdb: (r0=r7=src buffer ptr, r1=r4=dest battle object ptr, r2=0x31) -> side effects only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B7EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_copyBeastSpChipData_813B7EC.yaml
 	thumb_local_start
-sub_813B7EC:
+battleObject_copyBeastSpChipData_813B7EC:
 	push {lr}
 	mov r0, r7
 	mov r1, r4
@@ -99,7 +99,7 @@ sub_813B7EC:
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813B7EC
+	thumb_func_end battleObject_copyBeastSpChipData_813B7EC
 
 	thumb_local_start
 sub_813B7FC:

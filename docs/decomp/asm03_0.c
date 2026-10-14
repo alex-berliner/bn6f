@@ -796,7 +796,7 @@ signed int battle_endChipSelectionBeginTurn_8026DC4()
     result = battle_doBothTrackedIdsMatch_800B46C(1450742051);
     if ( result )
     {
-        v2 = sub_800B460();
+        v2 = battle_resetLinkSyncFlags_800B460();
         transferBattleHandNaviStats_800B3D8(v2);
         if ( sub_802D246() & 8 )
         {
@@ -16281,7 +16281,7 @@ int __fastcall battle_calcRelPosAndAdvanceTextboxBlink_8031C2A(_DWORD *a1)
 
 
 // 0x8031c42
-int __fastcall sub_8031C42(_DWORD *a1)
+int __fastcall battle_aiPointLeftOfLineSideTest_8031C42(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

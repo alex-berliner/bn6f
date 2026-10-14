@@ -13731,7 +13731,7 @@ int sub_8017688()
 
 
 // 0x8017768
-int sub_8017768()
+int battleObject_jumpLandStep_8017768()
 {
     int v0; // r5
     int v1; // r1

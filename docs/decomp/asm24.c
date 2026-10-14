@@ -238,7 +238,7 @@ int sub_808CBD8()
 
 
 // 0x808cc10
-int sub_808CC10()
+int battle_checkPlayerActorStoryFlag_808CC10()
 {
     int v0; // r5
     int result; // r0
@@ -265,20 +265,20 @@ char *battle_pickBattleStateInitPtr_808CC34()
     TestEventFlagFromImmediate(9, 212);
     if ( !v1 )
         return byte_808C930;
-    sub_808CC10();
+    battle_checkPlayerActorStoryFlag_808CC10();
     if ( !v1 )
         return byte_808CA48;
     sub_808CF8C();
     if ( v1 )
     {
-        sub_808CDC4();
+        battle_checkLockedEventTable_808CDC4();
         if ( !v1 )
             v0 = byte_808C74C;
     }
     else
     {
         v0 = byte_808C428;
-        sub_808D084();
+        ai_getAIModeForMapGroup_808D084();
     }
     return v0;
 }
@@ -399,7 +399,7 @@ int __fastcall sub_808CD24(int a1)
     int v4; // r1
     int v5; // r2
 
-    v1 = *&(**(&off_808CD68 + sub_808D084()))[2 * (byte_2000B45 - 192)];
+    v1 = *&(**(&off_808CD68 + ai_getAIModeForMapGroup_808D084()))[2 * (byte_2000B45 - 192)];
     result = TestEventFlag(v1);
     if ( v3 )
     {
@@ -416,7 +416,7 @@ int __fastcall sub_808CD24(int a1)
 
 
 // 0x808cdc4
-signed int sub_808CDC4()
+signed int battle_checkLockedEventTable_808CDC4()
 {
     int v0; // r4
     signed int v1; // r8
@@ -428,7 +428,7 @@ signed int sub_808CDC4()
     unsigned __int8 v7; // vf
 
     v0 = 0;
-    v1 = sub_808D084();
+    v1 = ai_getAIModeForMapGroup_808D084();
     v2 = off_808CEBC[v1];
     v3 = 0;
     while ( 1 )
@@ -472,7 +472,7 @@ int sub_808CE28()
     int v8; // [sp-4h] [bp-18h]
 
     v8 = v0;
-    v1 = sub_808D084();
+    v1 = ai_getAIModeForMapGroup_808D084();
     v2 = off_808CEBC[v1];
     v3 = 0;
     do
@@ -509,7 +509,7 @@ int sub_808CE70()
     int v7; // [sp-4h] [bp-18h]
 
     v7 = v0;
-    v1 = sub_808D084();
+    v1 = ai_getAIModeForMapGroup_808D084();
     v2 = off_808CEBC[v1];
     v3 = 0;
     do
@@ -541,7 +541,7 @@ signed int __fastcall sub_808CF34(int a1)
     char v3; // zf
 
     v1 = 0;
-    v2 = sub_808D084();
+    v2 = ai_getAIModeForMapGroup_808D084();
     TestEventFlag(*&byte_808CF84[2 * v2]);
     if ( !v3 )
         v1 = 1;
@@ -556,7 +556,7 @@ unsigned int __fastcall sub_808CF50(int a1)
     unsigned int result; // r0
     char v3; // zf
 
-    v1 = 2 * sub_808D084();
+    v1 = 2 * ai_getAIModeForMapGroup_808D084();
     result = TestEventFlag(*&byte_808CF7C[v1]);
     if ( v3 )
         result = SetEventFlag(*&byte_808CF84[v1]);
@@ -658,7 +658,7 @@ int __fastcall sub_808D060(int a1)
     int result; // r0
     int v3; // r1
 
-    v1 = &byte_808D07C[2 * sub_808D084()];
+    v1 = &byte_808D07C[2 * ai_getAIModeForMapGroup_808D084()];
     result = *v1;
     v3 = v1[1];
     return result;
@@ -666,7 +666,7 @@ int __fastcall sub_808D060(int a1)
 
 
 // 0x808d084
-signed int sub_808D084()
+signed int ai_getAIModeForMapGroup_808D084()
 {
     int v0; // r10
     int v1; // r0
@@ -692,7 +692,7 @@ signed int __fastcall __spoils<R0,R2,R3,R12> sub_808D098(signed int a1)
 
     v5 = a1;
     v1 = 0;
-    v2 = sub_808D084();
+    v2 = ai_getAIModeForMapGroup_808D084();
     if ( v2 == 3 )
     {
         if ( v6 <= byte_808D0FC[6] && v6 >= byte_808D0FC[7] )

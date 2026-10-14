@@ -29592,7 +29592,7 @@ signed int __noreturn sub_80C91C4()
 
 
 // 0x80c91fe
-int sub_80C91FE()
+int battleObject_dispatchActionByParam1_80C91FE()
 {
     Battle *obj; // r5
     int result; // r0
@@ -71148,12 +71148,12 @@ void __noreturn sub_80E32D8()
     *(v0 + 32) = 0;
     sprite_setColorShader(v0, *(v0 + 96));
     *(v0 + 8) = 4;
-    sub_80E336E();
+    battleObject_updateMysteryData_80E336E();
 }
 
 
 // 0x80e336e
-int sub_80E336E()
+int battleObject_updateMysteryData_80E336E()
 {
     int v0; // r5
     int v1; // r0
@@ -122565,7 +122565,7 @@ signed int sub_8103E1E()
     int v0; // r5
     signed int result; // r0
 
-    sub_8017768();
+    battleObject_jumpLandStep_8017768();
     result = 65;
     *(v0 + 16) = 65;
     return result;
@@ -125092,7 +125092,7 @@ signed int sub_810563C()
     int v0; // r5
     signed int result; // r0
 
-    sub_8017768();
+    battleObject_jumpLandStep_8017768();
     result = 20;
     *(v0 + 16) = 20;
     return result;
@@ -132559,7 +132559,7 @@ int battle_objectTickWithExtraHandler_8109F6A()
 
 
 // 0x8109f7e
-int sub_8109F7E()
+int battleObject_runAIDispatcher_8109F7E()
 {
     battleObject_initAndRunAI_8016B02();
     return battle_object_onAction8EndClearExtraVars_8109FA2();
@@ -132759,7 +132759,7 @@ int sub_810A0EE()
 
 
 // 0x810a126
-int sub_810A126()
+int battle_aiSelectAndUseChip_810A126()
 {
     int v0; // r4
     int v1; // r5

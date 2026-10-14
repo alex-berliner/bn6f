@@ -1328,7 +1328,7 @@ loc_8026DEC:
 	bl battle_doBothTrackedIdsMatch_800B46C
 	tst r0, r0
 	beq locret_8026E40
-	bl sub_800B460
+	bl battle_resetLinkSyncFlags_800B460
 	bl transferBattleHandNaviStats_800B3D8
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -25565,7 +25565,7 @@ jt_8031B10:
 	.word sub_8031BFA+1 // 0x09
 	.word sub_8031C12+1 // 0x0a
 	.word battle_calcRelPosAndAdvanceTextboxBlink_8031C2A+1 // 0x0b
-	.word sub_8031C42+1 // 0x0c
+	.word battle_aiPointLeftOfLineSideTest_8031C42+1 // 0x0c
 	.word 0x0 // 0x0d
 	.word 0x0 // 0x0e
 	.word 0x0 // 0x0f
@@ -25723,9 +25723,9 @@ battle_calcRelPosAndAdvanceTextboxBlink_8031C2A:
 // symdb: AI helper that returns 1 if the AI's target battle object is on the left side of a directed line through two reference points (else 0), used as a directional/spatiality test for AI decisions.
 // symdb: (r0 = scratch/result buffer @02009f5c, r5 = some context ptr) -> r0 = 1 if left-of-line, 0
 // symdb: otherwise ; sets Z flag accordingly
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C42.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiPointLeftOfLineSideTest_8031C42.yaml
 	thumb_local_start
-sub_8031C42:
+battle_aiPointLeftOfLineSideTest_8031C42:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25735,7 +25735,7 @@ sub_8031C42:
 	bl math_pointLeftOfLineTest_80315DC
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031C42
+	thumb_func_end battle_aiPointLeftOfLineSideTest_8031C42
 
 // symdb: Call sub_8031B7C with r0 = 1 and return its results.
 // symdb: () -> as sub_8031B7C(1)

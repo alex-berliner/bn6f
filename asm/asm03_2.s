@@ -1656,7 +1656,7 @@ shop_initScreen_8046D4C:
 	mov r0, #0
 	ldr r1, off_8046DCC // =byte_2019A00 
 	bl drawChipListFiveRows_8047594
-	bl sub_804758C
+	bl mail_redrawSelectedEntry_804758C
 	bl background_LoadAreaTiles_8047800
 	// a1
 	ldr r0, off_8046DD8 // =byte_8046B8C
@@ -2192,7 +2192,7 @@ loc_8047174:
 	bl drawChipListFiveRows_8047594
 	bl sub_8047834
 loc_8047188:
-	bl sub_804758C
+	bl mail_redrawSelectedEntry_804758C
 	bl background_LoadAreaTiles_8047800
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_RenderInfoPtr]
@@ -2707,13 +2707,13 @@ off_8047588:
 // symdb: Thin tail-call trampoline that simply re-renders the currently highlighted mail entry by jumping into mail_drawSelectedEntry_80478D4 with no extra work.
 // symdb: () -> r0 = result of mail_drawSelectedEntry_80478D4 ; side effects: redraws the selected mail
 // symdb: entry's icon tiles, name strip and reader text (see callee).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804758C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mail_redrawSelectedEntry_804758C.yaml
 	thumb_local_start
-sub_804758C:
+mail_redrawSelectedEntry_804758C:
 	push {r5,lr}
 	bl mail_drawSelectedEntry_80478D4
 	pop {r5,pc}
-	thumb_func_end sub_804758C
+	thumb_func_end mail_redrawSelectedEntry_804758C
 
 // symdb: draws five rows of a chip list (name, code letter, value strip) from an array of 8-byte entries
 // symdb: static u32 draw_chip_list_rows(u32 first, u32 entries, u32 menu, u32 toolkit) returns the entry
@@ -10784,7 +10784,7 @@ off_804C710:
 	.word off_804C714
 off_804C714:
 	.word sub_804C72C+1
-	.word sub_804C770+1
+	.word battleObject_initBattleFieldTilesAndSfxTimer_804C770+1
 	thumb_func_end sub_804C700
 
 	thumb_func_start sub_804C71C
@@ -10817,7 +10817,7 @@ sub_804C72C:
 	bl sub_804C844
 	mov r0, #4
 	strb r0, [r5,#0x10]
-	bl sub_804C770
+	bl battleObject_initBattleFieldTilesAndSfxTimer_804C770
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C758:
@@ -10837,9 +10837,9 @@ dword_804C76C:
 // symdb: Sets the BG3/BG2 viewport offset, dispatches a "post-init" callback chosen from r5+0xd, rolls a random ambient-SFX timer, and copies a 0x20×0x20 tile block to BG tile area 3.
 // symdb: (r5 = battle object pointer, r10 = toolkit ptr) -> side effects only (modifies RenderInfo, calls
 // symdb: a thunk, sets SFX timer, copies tiles)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C770.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBattleFieldTilesAndSfxTimer_804C770.yaml
 	thumb_local_start
-sub_804C770:
+battleObject_initBattleFieldTilesAndSfxTimer_804C770:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
@@ -10878,7 +10878,7 @@ off_804C7B4:
 	.word sub_804C7EC+1
 dword_804C7C0:
 	.word 0x800
-	thumb_func_end sub_804C770
+	thumb_func_end battleObject_initBattleFieldTilesAndSfxTimer_804C770
 
 	thumb_local_start
 sub_804C7C4:

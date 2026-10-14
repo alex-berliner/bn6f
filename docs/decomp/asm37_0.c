@@ -45,7 +45,7 @@ void *__fastcall battleObject_runAIDispatchTable_813B7A0(int a1, int a2)
 
 
 // 0x813b7ec
-int sub_813B7EC()
+int battleObject_copyBeastSpChipData_813B7EC()
 {
     int v0; // r4
     int v1; // r7

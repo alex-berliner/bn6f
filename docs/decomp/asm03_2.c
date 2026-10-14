@@ -1077,7 +1077,7 @@ void __noreturn shopBuyMenu_updateFrame_8047134()
     if ( v5 && !*(v6 + 14) )
     {
         if ( !*(v6 + 13) )
-            sub_804758C();
+            mail_redrawSelectedEntry_804758C();
         *(v6 + 13) = 0;
         *(v6 + 18) = sub_8047B88(0, v3, v4, 0);
     }
@@ -1285,7 +1285,7 @@ int __noreturn chatbox_uploadWindowTileGfx_804754C()
 
 
 // 0x804758c
-int __noreturn sub_804758C()
+int __noreturn mail_redrawSelectedEntry_804758C()
 {
     return mail_drawSelectedEntry_80478D4();
 }
@@ -6142,12 +6142,12 @@ void sub_804C72C()
     *(*(v1 + oToolkit_RenderInfoPtr) + 10) = 7945;
     sub_804C844();
     *(v0 + 16) = 4;
-    sub_804C770();
+    battleObject_initBattleFieldTilesAndSfxTimer_804C770();
 }
 
 
 // 0x804c770
-void sub_804C770()
+void battleObject_initBattleFieldTilesAndSfxTimer_804C770()
 {
     int v0; // r5
     int v1; // r10
