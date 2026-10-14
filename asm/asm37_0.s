@@ -1140,8 +1140,9 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: Loops over the 0x31 8-byte Unk2004190 entries and clears/initializes the ones whose first halfword is already zero.
-// symdb: (no args, r10 = oToolkit) -> void; r7 clobbered, no return value
+// symdb: Clears (or tests) the 0x31-entry Unk2004190 scratch array by iterating indices 0..0x30 and reading each entry's halfword, leaving r7 as the last read pointer.
+// symdb: (r10 = Toolkit*) -> r0 = 0, NZC/V flags clobbered ; side effects: walks
+// symdb: Toolkit->Unk2004190[0..0x30], reads each entry's halfword, clobbers r0/r1/r2/r4/r5/r6/r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:

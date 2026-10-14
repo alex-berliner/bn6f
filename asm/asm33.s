@@ -586,6 +586,12 @@ locret_81235A0:
 	.balign 4, 0x00
 	thumb_func_end sub_8123574
 
+// symdb: Handles Start/B to exit and A to confirm in a battle chip-use submenu, then refreshes chip-use stats and steps the battle-object update phases.
+// symdb: void (r5 = navi/battle use-context struct, r10 = Toolkit); side effects: exits submenu on
+// symdb: Start/B, plays SFX, mutates r5 fields (+2=anim, +3, +0xc cursor, +0x1e/+0x20/+0x28/+0x32 AIData
+// symdb: counters, +0x32 again), refreshes chip-use stats; then calls drawBattleBackground + AI/attack-
+// symdb: table apply phases.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81235A4.yaml
 	thumb_local_start
 sub_81235A4:
 	push {lr}
@@ -8362,6 +8368,10 @@ off_8127370:
 	.word dword_81268F8
 	thumb_func_end sub_812730C
 
+// symdb: On the PET menu screen, if a dialogue/text shadow sprite's animation timer is past its initial phase, advance its shake offset, then queue/update its OAM entry.
+// symdb: (r5 = pointer to a PET menu text-shadow sprite struct) -> void (clobbers r0-r4,r6,r7,lr; flags
+// symdb: N/Z/C/V) ; side effects: queues one OAM entry via object_computeAndQueueOamEntry_811FA98
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8127374.yaml
 	thumb_local_start
 sub_8127374:
 	push {r4-r7,lr}

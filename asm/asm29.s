@@ -1690,8 +1690,8 @@ sub_80A5A1C:
 	.balign 4, 0x00
 	thumb_func_end sub_80A5A1C
 
-// symdb: Stores BattleObject.r5.CurAction into an EWRAM mirror byte
-// symdb: (r5 = BattleObject*) -> void ; side effect: writes byte at 0x2000EC0
+// symdb: Copies byte at offset 0x9 from the AIData struct (r5) into the global byte at 0x02000EC0; tail-call only
+// symdb: (r5 = AIData*) -> ; side effect: writes AIData[0x9] to byte_2000EC0
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5A5C.yaml
 	thumb_local_start
 sub_80A5A5C:

@@ -60865,7 +60865,7 @@ locret_80D456E:
 	pop {pc}
 	thumb_func_end battleObject_updateMovementHighlight_80D4544
 
-// symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select battleObject_phaseTickToNext_80D458C or sub_80D45AE, then returns
+// symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select sub_80D458C or sub_80D45AE, then returns
 // symdb: (r5 = BattleObjectPtr) -> r0 = ... ; no fixed return contract, side effect is jumping to one of
 // symdb: two phase handlers based on CurPhase
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCurPhaseByJumpTable_80D4570.yaml
@@ -73872,6 +73872,10 @@ locret_80DA906:
 	pop {pc}
 	thumb_func_end sub_80DA8EC
 
+// symdb: Handles the object's destroy/cleanup phase: clears collision and switches state, with a small per-update timer branch.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: mutates the BattleObject pointed to
+// symdb: by r5 (CurAnim, CurAction, CurPhase/PhaseInitialized, byte 0x0b, halfword 0x20)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DA908.yaml
 	thumb_local_start
 sub_80DA908:
 	push {lr}
@@ -88313,10 +88317,10 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: finds enemy (virus/navi) battle objects on the opposite alliance and stores them into a stack-local array, with battleObject_computeMoveTargetPanel_80E16CC probing specific related-target slots
+// symdb: finds enemy (virus/navi) battle objects on the opposite alliance and stores them into a stack-local array, with sub_80E16CC probing specific related-target slots
 // symdb: (r5 = self BattleObject, r10 = Toolkit) -> r0 = 0 (Alliance-precomputed count of stored slots),
 // symdb: r5 preserved ; side effects: writes a 0x34-byte scratch buffer on the stack and queries
-// symdb: object_getEnemyByNameRange plus three battleObject_computeMoveTargetPanel_80E16CC probes
+// symdb: object_getEnemyByNameRange plus three sub_80E16CC probes
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_findEnemyTargets_80E1670.yaml
 	thumb_local_start
 battle_ai_findEnemyTargets_80E1670:
@@ -88400,6 +88404,10 @@ loc_80E16FE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battleObject_computeMoveTargetPanel_80E16CC
 
+// symdb: Walks the battle-object list and returns an object whose PanelX matches a packed Y:X byte in r4.
+// symdb: (r0 = accumulator/result, r4 = packed Y:X byte, r6 = ?, r7 = list head pointer) -> r0 = matched
+// symdb: object pointer (or 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1704.yaml
 	thumb_local_start
 sub_80E1704:
 	push {r4,r6,r7,lr}
@@ -95625,6 +95633,9 @@ sub_80E4A6E:
 	pop {r4,pc}
 	thumb_func_end sub_80E4A6E
 
+// symdb: Recomputes a battle object's X/Y/Z from its RelatedObject1Ptr's arm/part offset, syncs panel coords, applies mosaic alpha, and queues destroy when off-panel with a non-zero ExtraVars sentinel.
+// symdb: (r5 = BattleObject *) -> void ; clobbers r0-r7, lr; nz/c/v
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E4AAE.yaml
 	thumb_local_start
 sub_80E4AAE:
 	push {r4,r6,r7,lr}
@@ -122837,6 +122848,9 @@ byte_80F17BC:
 	.byte 0xF4, 0x1, 0x0, 0x8, 0xA, 0x0, 0x0, 0x0
 	thumb_func_end sub_80F1756
 
+// symdb: Dispatches to one of three AI attack handlers based on AIAttackVars byte 0; the picked function runs with r0=that byte and r7 (battle object) live.
+// symdb: () -> r0,r1-r12,flags inherited from the dispatched callee ; side effects via the chosen handler
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F17C4.yaml
 	thumb_local_start
 sub_80F17C4:
 	push {r7,lr}
@@ -172496,6 +172510,10 @@ locret_8109EC2:
 	pop {pc}
 	thumb_func_end sub_8109E98
 
+// symdb: Beast-Out reaction: when this object is the current-turn actor, set its animation to 4 (Beast-Out ready), mark attack vars, and clear OBJECT_FLAGS_INK_EQUIV_1 from its collision flags
+// symdb: (r5 = ptr to this BattleObject, r7 = ptr to its AIAttackVars) -> side effects only ; no return
+// symdb: value to callers (only r1 may_write, condition codes)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109EC4.yaml
 	thumb_local_start
 sub_8109EC4:
 	push {lr}
@@ -172610,9 +172628,9 @@ loc_8109F78:
 	pop {pc}
 	thumb_func_end battle_objectTickWithExtraHandler_8109F6A
 
-// symdb: Tiny wrapper that runs two initialization steps in order (battleObject_initAndRunAI_8016B02, then sub_8109FA2) and returns.
+// symdb: Tiny wrapper that runs two initialization steps in order (sub_8016B02, then sub_8109FA2) and returns.
 // symdb: void sub_8109F7E(void); // no meaningful register contract of its own; nzcv/r0-r3 reflect
-// symdb: whatever sub_8109FA2 (and battleObject_initAndRunAI_8016B02) leave behind
+// symdb: whatever sub_8109FA2 (and sub_8016B02) leave behind
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8109F7E.yaml
 	thumb_local_start
 sub_8109F7E:

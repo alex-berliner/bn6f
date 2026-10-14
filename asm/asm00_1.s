@@ -18659,7 +18659,7 @@ loc_800B334:
 	thumb_func_end battle_copyStructsIncludingBattleStats_800b2d8
 
 // symdb: Snapshots the current battle state (work buffer, active Navi stats, and a small inventory block) into backup buffers and stamps a validity marker before the battle is restarted or restored.
-// symdb: (r10: Toolkit*, r3: unused) -> r2, r3 and c/v flags as left by battle_requestSetBattleMode_80200A4(0x32); clobbers r0,
+// symdb: (r10: Toolkit*, r3: unused) -> r2, r3 and c/v flags as left by sub_80200A4(0x32); clobbers r0,
 // symdb: r1, lr, nz
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_backupStateForRestart_800B3A2.yaml
 	thumb_func_start battle_backupStateForRestart_800B3A2
@@ -18732,8 +18732,8 @@ locret_800B426:
 	pop {r4,pc}
 	thumb_func_end transferBattleHandNaviStats_800B3D8
 
-// symdb: Reinitializes some global work structure, stamps a magic word next to it, and issues a mode-4 request to the state/screen manager at battle_requestSetBattleMode_80200A4.
-// symdb: void sub_800B428(void); // r1-r3 out are whatever battle_requestSetBattleMode_80200A4 left in them (passed straight
+// symdb: Reinitializes some global work structure, stamps a magic word next to it, and issues a mode-4 request to the state/screen manager at sub_80200A4.
+// symdb: void sub_800B428(void); // r1-r3 out are whatever sub_80200A4 left in them (passed straight
 // symdb: through); c/v out come from that call
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B428.yaml
 	thumb_local_start

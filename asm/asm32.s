@@ -28,7 +28,7 @@ sub_810D98C:
 	pop {pc}
 	thumb_func_end sub_810D98C
 
-// symdb: Battle enemy AI state-machine step: runs a pre-check (battle_enemyAI_preCheckChipUsage_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
+// symdb: Battle enemy AI state-machine step: runs a pre-check (sub_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
 // symdb: void aiStepDispatch(u32 r4, u32 r5, u32 r6, u32 r7, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12,
 // symdb: u32 lr); /* returns r1, r5, r8, r9, r10, r11, r12; clobbers nz/c/v, r0, r2, r3, r7, lr;
 // symdb: preserves r4, r6 */
@@ -10236,7 +10236,7 @@ byte_81130D8:
 byte_81130DE:
 	.byte 0x0, 0x0, 0x1, 0x1, 0x1, 0x1
 
-// symdb: Trivial sequence that calls sub_8113114 then battleObject_initAndRunAI_8016B02, then returns to the caller.
+// symdb: Trivial sequence that calls sub_8113114 then sub_8016B02, then returns to the caller.
 // symdb: void callAndReturn_81130E4(void) /* uses r4 r5 r10 from caller; clobbers most regs; no preserved
 // symdb: regs */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81130E4.yaml
@@ -10550,6 +10550,11 @@ locret_8113398:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8113350
 
+// symdb: Advance a battle object one step of its AI-driven move: update collision/region, integrate X velocity into X, recompute panel coords and either spawn an effect (target reached) or continue moving, then mark "currently moving".
+// symdb: (r5 = obj, r6 = AIState, r7 = AIAttackVars) -> void ; side effects to obj (X, PanelX/Y, Region,
+// symdb: ObjectFlags1), AIState (Unk_04), AIAttackVars (Unk_00/Unk_10/Unk_12/Unk_3c), spawns t1/effect
+// symdb: object on arrival
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811339A.yaml
 	thumb_local_start
 sub_811339A:
 	push {r4,lr}
@@ -32333,6 +32338,10 @@ dword_811E358:
 	.word eScenarioEffectState2000780
 	thumb_func_end battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314
 
+// symdb: Dispatches a BattleObject's CurState via a small jump table after reading offset 0x8
+// symdb: (r5 = BattleObjectPtr, r10 = toolkit ptr, lr) → side effects only; clobbers r0-r4, r6, r7, lr;
+// symdb: NZCV flags modified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E360.yaml
 	thumb_func_start sub_811E360
 sub_811E360:
 	push {lr}

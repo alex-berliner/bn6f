@@ -1023,6 +1023,11 @@ locret_809D8F0:
 	.balign 4, 0x00
 	thumb_func_end sub_809D8CC
 
+// symdb: Overworld-player secondary jumptable dispatcher for `OWPlayerObject.Unk_0a`; on a successful per-frame tick it clears the 0x10-locked pending slot and the EVENT_1717_PLAYER_ADVANCE_FORWARD flag, then advances the player's main jumptable index to 0x10.
+// symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr) -> none ; side effects: writes OWPlayerObject+0x0b,
+// symdb: clears a story-progress event flag, writes OWPlayerObject->JumptableIndex_09 (or its pending
+// symdb: slot)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D8F4.yaml
 	thumb_local_start
 sub_809D8F4:
 	push {lr}

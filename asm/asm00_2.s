@@ -3438,6 +3438,10 @@ battle_preUpdateAndGetPlayerObject_80103EC:
 	pop {pc}
 	thumb_func_end battle_preUpdateAndGetPlayerObject_80103EC
 
+// symdb: Finds the closest enemy BattleObject to a panel (panel coords passed via stack) and returns it
+// symdb: (r0 = actorIndex 0..3 [OpponentActors slot index], r5 = self BattleObject*) -> r0 = closest
+// symdb: enemy BattleObject* (or NULL); side effects: stack scratch for two (X,Y) pairs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80103F8.yaml
 	thumb_func_start sub_80103F8
 sub_80103F8:
 	push {r4-r7,lr}
@@ -8204,6 +8208,10 @@ sub_801263A:
 	pop {pc}
 	thumb_func_end sub_801263A
 
+// symdb: Battle helper: add (baseDamage * beastOutMulti) to running total, with the multiplier clamped to 5.
+// symdb: (r0 = currentDamageTotal, r1 = baseDamage) -> r0 = currentDamageTotal + baseDamage *
+// symdb: clamp(beastDamageCap, 0, 5) ; r1 unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012642.yaml
 	thumb_local_start
 sub_8012642:
 	push {lr}
@@ -14076,10 +14084,10 @@ dword_8014E04:
 	.word 0x80000
 	thumb_func_end sub_8014D70
 
-// symdb: AI attack sub-state that handles the sequence just before/after a battle object transforms (Beast Out / Soul Unison / etc.) — flashes white, swaps sprite+anim, plays the transform SFX, updates the NaviStats Transformation byte, then opens the post-transform turn
-// symdb: (r4 = unused?, r5 = *battleObject, r6 = ??, r7 = *aiAttackVars, r10 = *toolkit) -> void ; side
-// symdb: effects: rewrites object sprite+anim, NaviStats[0x2C], triggers beginTurnOpenProcess
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
+// symdb: AI step 3 for a battle object's attack vars — plays the load/charge-in animation, sets a 10-frame counter, plays a sound, and on expiry runs the turn-open / sprite-restoration cleanup and sets the next state to 0xC.
+// symdb: (r5 = battle object, r7 = AI attack vars, r10 = toolkit, lr = ret) -> void ; no return value to
+// symdb: callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
 	thumb_local_start
 sub_8014E08:
 	push {r4,lr}

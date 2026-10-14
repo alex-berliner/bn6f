@@ -1347,9 +1347,9 @@ sub_810CF46::
 	pop {r4,r7,pc}
 	thumb_func_end sub_810CF46
 
-// symdb: Runs the AI-driven chip use sequence for an enemy actor: fetches its selected chip, writes chip params, sets its Attack0, then dispatches an attack-side update.
-// symdb: (r4 = AIDataPtr?, r5 = BattleObject?, r7 = chip param struct?, r10 = Toolkit) -> r0, r1; side
-// symdb: effects on AIData/AIState/BattleObject/CollisionData
+// symdb: Looks up the chip this battle object has selected and kicks off chip-attack handling on the object (returns 0/1).
+// symdb: (r5 = BattleObjectPtr, r7 = ?, r10 = ToolkitPtr) -> r0 = bool/int (flag), r1 = ?; preserves
+// symdb: r4..r7
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CF4A.yaml
 	thumb_local_start
 sub_810CF4A::
@@ -2222,9 +2222,11 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Per-tick SnakeArm battle-object driver: highlights the panel pattern from the current panel, refreshes the object's counter timer/facing flags, resets the wait timer, and returns a per-step state byte.
-// symdb: () -> r0 = step status (0x25/0x24 final, 0x7f mid); r5 = preserved; side effects: panel
-// symdb: highlights + battle object timer/counter/flag updates.
+// symdb: Battle-object AI step (story-boss Anpanman/Snake-arm logic): resets the object's timer to 8, refreshes its panel highlight set with a directional side offset, sets a counter time and the INVISIBLE flag, then lets the side-sign fall back through the helper.
+// symdb: (r0 = ignored, r1 = &this function = 0x0810d809, r2 = 0x80, r3 = 3) -> r0 = 0x25 | 0x24 | 0x7f ;
+// symdb: writes the visible panels via sub_8109660, mutates the battle object's CollisionData/Timer, sets
+// symdb: OBJECT_FLAGS_INVIS on the object, leaves r1 with the side-direction multiplier the caller
+// symdb: preserves in r5.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

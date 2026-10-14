@@ -3018,10 +3018,9 @@ dword_80279C4:
 	.word 0x55
 	thumb_func_end sub_802794A
 
-// symdb: Finishes the chip-select subsystem: ticks the selection anim, refills a 4-slot chip row, then runs the Custom-screen exit sequence.
-// symdb: (r5 = *S20364C0, r10 = *Toolkit, lr) -> void ; side effects: writes to chip-select state at r5+8
-// symdb: (NumChipsSelected) and to Toolkit/BattleObject state during the exit sequence
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80279C8.yaml
+// symdb: In-battle Custom Screen cleanup: ticks the chip-select anim, queues its gfx, refreshes 5 slot sprites with new availability, then runs the close-out sequence.
+// symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80279C8.yaml
 	thumb_local_start
 sub_80279C8:
 	push {r4,lr}
@@ -15663,10 +15662,10 @@ memBlock_ClearWorkArea_802D638:
 	pop {pc}
 	thumb_func_end memBlock_ClearWorkArea_802D638
 
-// symdb: Increments one byte-sized counter in an IWRAM array (byte_2000070) selected by index, saturating at 255 instead of wrapping.
-// symdb: void sub_802D644(u32 index /* r0 */); returns r2 = incremented (possibly clamped) value, flags
-// symdb: from cmp against 0xFF
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802D644.yaml
+// symdb: Increments the per-collision-region counter at EWRAM 0x2000070[r0] for the given region index, saturating at 0xFF.
+// symdb: (r0 = region index 0..N) -> r0 = region index (untouched); r2 = new value written, with C/V
+// symdb: clobbered by the saturating cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D644.yaml
 	thumb_func_start sub_802D644
 sub_802D644:
 	ldr r1, off_802D690 // =byte_2000070
@@ -24590,9 +24589,11 @@ locret_80314CA:
 	pop {pc}
 	thumb_func_end sub_8031478
 
-// symdb: Steps the battle grid/scroll by 1 pixel (or 0x20 / 8 pixels in the alternate path) per frame using line-vs-point tests, accumulating axis deltas into a packed result held in r12.
-// symdb: (r0 = ?, r1 = ?, r2 = ?, r5 = ?, r12 in/out) -> r0 = r0 (unchanged), flags NZCV ; side effect:
-// symdb: writes axis-step bits into r12 across calls
+// symdb: Advances the battle camera/scroll by one collision-resolving step using line/wedge hit helpers
+// symdb: (r0 = someObjOrStatePtr, r1 = someDeltaOrParam, r2 = something, r5 = something, r12 = someAccum,
+// symdb: lr = ret) -> r0 = sameObjPtr, r12 updated with collision bits, flags ZC set/cleared by `cmp
+// symdb: r3,#1` ; side effects: pushes/pops {r0-r2,r5,lr}, calls two camera-move helpers and two hit-test
+// symdb: helpers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80314CC.yaml
 	thumb_local_start
 sub_80314CC:

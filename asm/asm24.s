@@ -1318,6 +1318,10 @@ loc_808CC2E:
 	.balign 4, 0x00
 	thumb_func_end sub_808CC10
 
+// symdb: Selects an address/row pair from one of four data tables based on an event flag and several per-row tests.
+// symdb: (no input registers; r10 = toolkit, r5 = ?) -> r0 = base address (one of four tables), r1 =
+// symdb: derived row index ; side effects: none persistent beyond saved regs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808CC34.yaml
 	thumb_local_start
 sub_808CC34:
 	push {r4,r6,lr}
@@ -1440,6 +1444,10 @@ loc_808CCFC:
 	.balign 4, 0x00
 	thumb_func_end sub_808CCAC
 
+// symdb: Polls the on-touch BBS request and caches its id if it falls in the 0xC0..0xCC range.
+// symdb: () -> r0 = bool (1 if the touch request id was accepted and stored, 0 otherwise) ; side effects:
+// symdb: stores the request id byte at *(dword_808CA44+5) when in range
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CD04.yaml
 	thumb_local_start
 sub_808CD04:
 	push {r4-r7,lr}
@@ -1738,6 +1746,12 @@ dword_808CFB4:
 	.word 0x122
 	thumb_func_end sub_808CF8C
 
+// symdb: Decides whether the overworld player can jack in at their current position/conditions, updates an encounter bitmap and counter, and returns a status code (0=idle, 1=moved, 2=jack-in blocked).
+// symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
+// symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
+// symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
+// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CFB8.yaml
 	thumb_local_start
 sub_808CFB8:
 	push {r4-r7,lr}
