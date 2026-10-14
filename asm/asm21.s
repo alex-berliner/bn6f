@@ -14,10 +14,11 @@ off_8080D9C:
 	.word eBGScrollCBCounters
 	thumb_func_end bgScroll_ResetScrollCBCounters_8080D90
 
-// symdb: Loads the per-field BG scroll callbacks, BG-anim script, sprite/GFX anim scripts, and LCD-control mask for the current battle field, and preloads the death-anim set when not in a real battle.
-// symdb: void battle_loadFieldData_8080DA0(void);  /* r10 in: field index; clobbers r0..r3, r6..r12, lr,
-// symdb: nzc/v */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8080DA0.yaml
+// symdb: Installs the BG scroll callbacks, BG-anim data and per-puzzle-field GFX anim scripts for the current battle, then conditionally loads the death GFX.
+// symdb: (r10 = toolkit) -> void ; side effects: writes DISPCNT via SetRenderInfoLCDControl, arms IRQ4
+// symdb: HBlank via SetBGScrollCallbacks, queues GFX anim scripts via LoadGFXAnims, and conditionally
+// symdb: loads battle-loadDeathAnims_8035424 when battle mode != 1.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8080DA0.yaml
 	thumb_func_start sub_8080DA0
 sub_8080DA0:
 	push {r4-r7,lr}

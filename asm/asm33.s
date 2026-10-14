@@ -14257,10 +14257,10 @@ off_8129FF4:
 	.word sub_812A0CC+1
 	thumb_func_end sub_8129FE0
 
-// symdb: Per-frame e-Link (guest) state handler: redraws the sprite, runs its palette/animation start hook, and on incoming data resets the e-Link state machine to phase 4 / sub-phase 3.
-// symdb: void eLinkState_RunFrame_812A008(struct eLinkState *r5 /* work area */, void *r10 /* sprite regs
-// symdb: */, lr /* return */); preserves r4..r8, r5, r6; clobbers r0..r3, r12, lr, N Z C V
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812A008.yaml
+// symdb: SubMenu state handler — draws the sub-menu sprite, then runs `sub_81465BC` and on success (r0 != 0) resets the eLink state, sets the sub-menu phase byte to 4 and the sub-menu counter to 3.
+// symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = result of sub_81465BC (0 if unchanged, 3 otherwise) ;
+// symdb: side effects: may reset eLink state and patch [r5+2] = 4, [r5+0x28] = 3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A008.yaml
 	thumb_local_start
 sub_812A008:
 	push {lr}

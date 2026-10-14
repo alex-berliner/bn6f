@@ -26357,6 +26357,10 @@ off_80C40EC:
 	.word object_freeMemory+1
 	thumb_func_end t1_0x55_80C40D8
 
+// symdb: Initializes a beast-spawned megaman's sprite state, palette, flip and panel position from Param1, then queues the UPDATE phase.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes object state/sprite/header fields, queues
+// symdb: CUR_STATE_UPDATE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C40F8.yaml
 	thumb_local_start
 sub_80C40F8:
 	push {lr}
@@ -26863,6 +26867,10 @@ off_80C4544:
 	.word object_freeMemory+1
 	thumb_func_end t1_0x57_80C4530
 
+// symdb: Initialize a battle object's sprite (load, palette, animation) by copying parameters and anim index from its RelatedObject1Ptr, then transition into CUR_STATE_UPDATE.
+// symdb: (r5 = BattleObject*) -> void ; side effects: loads a sprite, sets palette/animation, writes
+// symdb: CurState/CurAction/CurPhase/PhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4550.yaml
 	thumb_local_start
 sub_80C4550:
 	push {lr}
@@ -36830,6 +36838,10 @@ loc_80C9060:
 	pop {pc}
 	thumb_func_end battleObject_initSnakeArmMover_80C9024
 
+// symdb: Per-frame update for a moving battle object: drops collision, walks one panel using XVelocity, and either bounces off walls into a self-destroy sequence or re-registers collision when the new panel is valid.
+// symdb: (r5 = oBattleObjectPtr) -> void ; writes r5/r10 object's panel X, anim bytes, timer,
+// symdb: CurStateActionPhaseAndPhaseInitialized, header Flags, and CollisionDataPtr-derived state.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9074.yaml
 	thumb_local_start
 sub_80C9074:
 	push {r4,r6,r7,lr}
@@ -60878,9 +60890,8 @@ sub_80D4464:
 	pop {pc}
 	thumb_func_end sub_80D4464
 
-// symdb: Initialize (or fail) a battle object of unknown chip/Param1=4 type at frame 0x1e and CUR_STATE_UPDATE, spawning an effect object on failure.
-// symdb: (r5 = this) -> r0 = unused ; side effects: may allocate collision sprite, write
-// symdb: HP/MaxHP/Timer/CurState, reserve current panel, free self or spawn effect on failure
+// symdb: Initialize the SnakeArm/GroundLine-style "tile/object" trap battle object (sprite + collision + reserved panel + lifespan) or fail and clean up.
+// symdb: (r5 = self = BattleObject*, r10 = toolkit) -> void (no caller-visible return)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80D4472.yaml
 	thumb_local_start
 sub_80D4472:
@@ -93451,6 +93462,11 @@ off_80E39C4:
 	.word object_freeMemory+1
 	thumb_func_end t4_0x2e_80E39A0
 
+// symdb: Beast-SP battle object first-state (CurState==INITIALIZE) handler — picks a sprite, sets animation, flips it correctly, then jumps into the per-CurAction Beast-SP dispatcher.
+// symdb: (r5 = battleObjectPtr, r10 = toolkit, lr) -> void ; side effects: writes
+// symdb: Z16/Y16/Flags/CurAnim/CurAnimCopy/CurState of r5, loads a sprite, then enters
+// symdb: runBeastSpActionHandler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E39D0.yaml
 	thumb_local_start
 sub_80E39D0:
 	push {lr}
@@ -110221,9 +110237,9 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
-// symdb: AI attack-vars step that reserves the navi's current panel, then spawns a mirror "illusion" object one panel away (flipped by `getFlip()`) and jumps the source object's panel to the illusion's tile, or sets a holding animation if no path was returned.
-// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> side effects only ; out r1/r5 preserved as in
-// symdb: contract
+// symdb: One AI attack-vars step that may spawn an illusion copy of the object's owner battle object (Navis with Transformation in 0x0B..0x18), set CannotSlide, claim its panel and teleport.
+// symdb: (r5 = owner battle object, r7 = AIAttackVars) -> no return value ; side effects may move the
+// symdb: owner and rewrite r5/r7 and the battle panel grid
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
@@ -118538,6 +118554,10 @@ off_80EF548:
 	.word battle_aiAttackTickDown_80EF608+1
 	thumb_func_end sub_80EF534
 
+// symdb: Drives the multi-frame SnakeArm wind-up/swing animation: plays SFX per segment, sets an UnkBit_22 flag the first frame, and spawns the appropriate hit-effect + collision-region objects on the target panel each swing.
+// symdb: (inherits working object r5, AttackVars r7, toolkit r10) -> void ; plays SFX, mutates
+// symdb: AttackVars, spawns 1-2 child objects, sets working object flag/anim.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EF550.yaml
 	thumb_local_start
 sub_80EF550:
 	push {r4,r6,r7,lr}

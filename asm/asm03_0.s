@@ -4550,12 +4550,9 @@ byte_8028470:
 	.byte 0x0, 0xB0, 0x0, 0xC0, 0x0, 0x90
 	thumb_func_end sub_80283C8
 
-// symdb: For a battle object, look up the side's active-chip entry and dispatch on its kind byte to the matching handler (chip activation, beast-out palette GFX, or one of several chip-side effects).
-// symdb: // void sub_8028476(u32 r5_battleObject) //   reads r2 r3 r5 r6 r8 r9 r10 r11 r12 lr as inputs,
-// symdb: ignores them //   writes r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 lr as outputs (whichever callees
-// symdb: leave behind) //   clobbers N Z C V and r0 //   preserves r4, r7 //   uses r5 as the battle
-// symdb: object pointer and reads its side byte at +7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8028476.yaml
+// symdb: Custom-screen chip-use dispatcher: reads the active chip's kind byte and invokes the matching panel/GFX/handler routine for the selected battle object.
+// symdb: (r5 -> r0 via [r5,#7]) -> r0 ; r5 = source struct ptr (battle object / chip-slot context)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028476.yaml
 	thumb_local_start
 sub_8028476:
 	push {lr}

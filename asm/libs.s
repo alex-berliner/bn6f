@@ -1,11 +1,10 @@
 
 // static () -> void
-// symdb: Tears down the link-communication hardware prior to a hardware/mode hand-off: backs up and masks the master interrupt state, trims IE to 0xFF3F (clearing the timer IRQs), stops SIO and Timer 3, pokes the SIO control register, then BIOS-fills the timer-enable block at 0x200F460 (0x266 halfwords) and the SIO buffer at 0x200F44C (2 words) with zeros and clears its second byte.
-// symdb: void Next sub_81440D8(void);              /* entry: no GBA regs in/out */ call_SWI_CpuSet_result
-// symdb: reset_comm_hardware(void);   /* sets r1 = unk_200F44C, r2 = 0x1000002, r3 = 0x1000002 (last
-// symdb: CpuSet      mode word), flags = ADD(r1, 0) so C=0 V=0 N=0 Z=0;      preserves r4/r5 across the
-// symdb: prologue, writes lr via bx r0 from saved      pop; clobbers r0 as scratch. */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81440D8.yaml
+// symdb: Resets GBA link-cable/SIO/Timer3 hardware and zeroes the link subsystem's IWRAM state (200F44C block, eTimerEnable200F460) then tail-pops the saved LR to caller.
+// symdb: () -> r0 = saved LR (jump target); side effects: clobbers IME/IE/SIOCNT/TM3CNT/RTC and clears
+// symdb: 0x200F44C..0x200F4xx + eTimerEnable200F460 area; pops original LR into PC (tail-call
+// symdb: trampoline).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81440D8.yaml
 	thumb_func_start sub_81440D8
 sub_81440D8:
 	push {r4,r5,lr}

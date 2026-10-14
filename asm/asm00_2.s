@@ -18604,7 +18604,7 @@ byte_80170A4:
 	thumb_func_end battleObject_initNaviObject_8016F56
 
 // symdb: If the battle is not paused, dispatches to a CurPhase-specific handler for the BattleObject in r5 via a 2-entry tail-call table; otherwise returns immediately.
-// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (battleObject_destroy_80170E4 /
+// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (sub_80170E4 /
 // symdb: sub_8017122) returns (a per-phase status/result byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchPhaseByPaused_80170C4.yaml
 	thumb_func_start battleObject_dispatchPhaseByPaused_80170C4
@@ -19689,6 +19689,10 @@ loc_8017988:
 	pop {r6,r7,pc}
 	thumb_func_end battleObject_initMoveStep_80178D4
 
+// symdb: Ticks one battle object's per-frame kinematic motion toward its FuturePanel, updating panel reservation/state when arrival or blocking panel conditions occur.
+// symdb: (r5 = oBattleObject *) -> void ; side effects on oBattleObject_(FuturePanelX/Y, X, Y, Timer,
+// symdb: Timer2, Unk_0d) and on the underlying PanelData (reserve/release)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017992.yaml
 	thumb_local_start
 sub_8017992:
 	push {r4,lr}
@@ -22341,7 +22345,7 @@ object_removeCollisionData:
 
 // symdb: Refreshes a battle object's collision state for the current frame while it is present in a collision, clearing one-shot hit/status data (unless time is stopped) and then running the shared collision handler.
 // symdb: void object_presentCollisionData(void) // r5 = battle object, r1 = new collision flags, r3 =
-// symdb: context for the collision handler; preserves r4-r7, returns r0-r3 as left by object_updateCollisionPanels_300777C
+// symdb: context for the collision handler; preserves r4-r7, returns r0-r3 as left by sub_300777C
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_presentCollisionData.yaml
 	thumb_func_start object_presentCollisionData
 object_presentCollisionData:

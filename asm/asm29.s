@@ -926,10 +926,11 @@ off_80A5510:
 	.word unk_2013960
 	thumb_func_end battleObject_panelSnapshotBufferInit_80A54F0
 
-// symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to sub_80A5588.
-// symdb: void owObject_spawnSetup_80A5514(u32 r5 /*owObject*/, u32 r6 /*sourceObject*/, u32 r10
-// symdb: /*toolkit*/) -> r2 r5 r10 r11; clobbers nz c v r0 r1 r3 lr; preserves r4 r6 r7 r8 r9 r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A5514.yaml
+// symdb: CurState=0 initialiser for the BBS overworld map object: sets CurState=3, picks a sprite, kicks off sub-state 4 BBS logic and an optional exclamation/SE cue.
+// symdb: (r5 = OW NPC object ptr, r6 = related object ptr, r10 = toolkit ptr, lr = ret) -> r0 = 0x71c ;
+// symdb: side effects: writes to *r5 sprite/header fields, may play SE 0x17F, writes *r6 byte 0xF,
+// symdb: schedules *r5 byte 8 = 4 then jumps into owMapObject_bbsObjectUpdate_80A5588.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5514.yaml
 	thumb_local_start
 sub_80A5514:
 	push {r4-r7,lr}
@@ -1750,6 +1751,10 @@ off_80A5AF4:
 	.word unk_2011A90
 	thumb_func_end battle_beastOutDispatch_80A5AD4
 
+// symdb: Initialize a player's Beast Out transformation BattleObject (sprite, anim, OAM layer, then hand off to the per-frame driver).
+// symdb: r5 = player BattleObject (BattleObject*) ; r10 = toolkit ; side effects: writes fields at
+// symdb: offsets 0,5,6,7,8,0xc,0xd,0xe,0x10,0x24,0x34 of the object and schedules its first tick.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5AF8.yaml
 	thumb_local_start
 sub_80A5AF8:
 	push {r4-r7,lr}
@@ -8706,7 +8711,9 @@ off_80A9598:
 	.word byte_81437CC
 	thumb_func_end sub_80A9570
 
-// symdb: Mr. Weather comp map object (type 0x1C) step: MegaMan within 12 px at the same Z -> flag 0xBFC, sound 0x1A4, sets the object's per-instance event flag (byte_80A9648[i], i = [r5+4]), removes the shadow, state 8.
+// symdb: Mr. Weather comp map object's proximity trigger: if the player is on the same Z and within ±0xC0000 of the object's (X,Y), set story event 0xBFC, copy the object index into r6, mark the per-instance event flag, hide the shadow, force state byte to 8 and play sound 0x1A4.
+// symdb: (r5 = Mr. Weather object ptr, r6 = other object, r10 = Toolkit) -> void ; side effects: event
+// symdb: flag 0xBFC, per-instance flag 0x0BF4+idx, r6+4 byte, sprite shadow cleared, [r5+8]=8, SFX 0x1A4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A95A8.yaml
 	thumb_local_start
 sub_80A95A8:

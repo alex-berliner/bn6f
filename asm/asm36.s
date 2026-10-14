@@ -7528,10 +7528,11 @@ loc_8133B8E:
 	pop {pc}
 	thumb_func_end sub_8133B74
 
-// symdb: Handles a B-button press in the Navi customizer/submenu: either clears an in-progress exit flag with its SFX, kicks off the quit-and-fade confirm, or fires a chatbox script with the "can't jack-in" cue.
-// symdb: void sub_8133BB4(u32 r2, u32 r4 /*chatbox?*/, u32 r5 /*submenu state struct*/, u32 r10
-// symdb: /*toolkit*/) -> out NZ, r2, r5, r10 (all clobbered)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133BB4.yaml
+// symdb: In the in-battle custom-screen submenu object, handles a newly pressed B button by either reversing a previous "yes/no to exit" prompt, running the "can't jack out" rejection when the player tries to exit but isn't allowed, or running the standard "confirm exit and fade" submenu teardown.
+// symdb: () -> r0 = 2 (handled flag) ; side effects: clobbers r5, r10, plays SOUND_EXIT_SUBMENU or
+// symdb: SOUND_CANT_JACK_IN, runs text script 2 in the chatbox, calls submenu_ConfirmExitAndFade_811FB64,
+// symdb: writes submenu object's 0x02/0x03/0x0d/0x17/0x44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133BB4.yaml
 	thumb_local_start
 sub_8133BB4:
 	push {lr}
@@ -8490,7 +8491,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/battle_fillChipPackEntries_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:

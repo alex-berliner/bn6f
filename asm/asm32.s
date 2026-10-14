@@ -14201,10 +14201,10 @@ loc_811526C:
 	pop {pc}
 	thumb_func_end sub_811523C
 
-// symdb: Drives a single slide/recoil step of a battle object along an axis, decrementing the step counter and landing on a target panel
-// symdb: (r5 = battle object, r7 = AIAttackVars) -> r0 = some return ; side effects: mutates object X and
-// symdb: collision region
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8115272.yaml
+// symdb: One step of an AI battle object's scripted panel-by-panel move along the field
+// symdb: (r5 = battleObject, r7 = aiAttackVars) -> void ; advances PanelXY/XY, decrements step counter,
+// symdb: syncs collision
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115272.yaml
 	thumb_local_start
 sub_8115272:
 	push {lr}
@@ -31855,6 +31855,10 @@ off_811DF3C:
 	.word eWeatherCompState
 	thumb_func_end sub_811DF1C
 
+// symdb: Initialise a battle object's sprite + position for one of the pre-battle Navi roster tiles (e.g. the lineup icon shown at the start of a NetBattle).
+// symdb: (r5 = BattleObject*, r10 = is the Toolkit) -> void ; side effects: clobbers r0-r6, sprite sub-
+// symdb: state and sprite slot fields, then tail-calls sub_811DF94.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DF40.yaml
 	thumb_local_start
 sub_811DF40:
 	push {lr}
@@ -31995,6 +31999,11 @@ off_811E044:
 	.word eStruct2001010
 	thumb_func_end battle_dispatchObjectState_811E024
 
+// symdb: Initialise a Beast-out navi's battle sprite (animation 0, palette bank 0xB, OAM priority 1, palette 0, no shadow) and chain into the Beast-out per-frame sprite update hook.
+// symdb: (r5 = battle object) -> void ; side effects: writes object header flags byte at [r5]+0 (0x23),
+// symdb: object CurState at [r5,#8] = 0x4, sprite sub-record nibbles/palettes; called from one Beast-out
+// symdb: caller at 0x0811E032.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E048.yaml
 	thumb_local_start
 sub_811E048:
 	push {lr}

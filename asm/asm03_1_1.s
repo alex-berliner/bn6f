@@ -13596,9 +13596,11 @@ off_803F6AC:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803F674
 
-// symdb: Initialize a new link-comm encounter scene for the chosen scenario: clear the link buffer, run the crt0 trampoline, reset link state, configure the comm window, dispatch the scenario-specific loader, set the camera dwell, and raise event flag 0x172F.
-// symdb: void sub_803F6B0(u32 scenario /* r0 */); /* clobbers nz,r0,r1,r2,r3,lr; preserves r4-r7 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_803F6B0.yaml
+// symdb: Initializes the eLinkState/eStruct200F360/camera/"BRE5" subsystems and sets event flag 0x172F
+// symdb: (r0 = mode index, r10 = toolkit) -> r0 = 1 ; side effects: clears eStruct200F360 (0x40 bytes),
+// symdb: resets eLinkState, runs a tail-call sub, inits camera block, writes a "BRE5" tag at 0x200B1B0,
+// symdb: sets Camera.unk_0C=0x3C, sets event flag EVENT_172F
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F6B0.yaml
 	thumb_func_start sub_803F6B0
 sub_803F6B0:
 	push {r4,r5,lr}
@@ -13794,7 +13796,10 @@ loc_803F814:
 	pop {r1-r7,pc}
 	thumb_func_end save_writeAndVerifyEWRAMToSRAM_803F79E
 
-// symdb: Saves the game: copies the 0x6710-byte EWRAM block 0x02000000-0x0200670F (both RNG seeds, mystery data, event flags, chip pack, ...) to 0x0E000100.
+// symdb: Re-initialise the save/toolkit work area: zero and checksum the 0x6710-byte EWRAM buffer, re-seed RNG and the extra-toolkit pointer block, and set EVENT_1704 to reflect whether the on-disk save was tampered with or outdated.
+// symdb: (r10 = Toolkit, plus any caller globals) -> r0 = bool (FALSE if work area + info-text are still
+// symdb: current, TRUE if either failed); ZF cleared/!ZF based on r0 (tst r0,r0 then pop with PC); side
+// symdb: effects clobber r0..r3 (toolkit/callee state).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F838.yaml
 	thumb_func_start sub_803F838
 sub_803F838: // () -> !zf

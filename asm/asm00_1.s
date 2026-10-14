@@ -2144,9 +2144,10 @@ T1BattleObjectJumptable:
 
 	thumb_func_end sub_8003C7A
 
-// symdb: Iterates the battle object list and updates/queues each sprite, then finalizes the frame.
-// symdb: void sub_8003E18(void); // clobbers r0-r3, r10, r12, flags, lr; preserves r4-r9, r11
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8003E18.yaml
+// symdb: Walks all alive battle objects, projects/culls + uploads GFX + queues OAM for visible ones
+// symdb: (none) -> (none) ; consumes r10 (toolkit pointer) and walks the battle-object pointer table; OAM
+// symdb: is queued
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003E18.yaml
 	thumb_local_start
 sub_8003E18:
 	push {r4-r7,lr}
@@ -11245,10 +11246,12 @@ locret_8008258:
 	pop {r4,r6,pc}
 	thumb_func_end battle_runVictorySequence_80081A4
 
-// symdb: Per-frame update of the post-battle wait state that performs end-of-fight bookkeeping on the first call, then ticks a countdown and hands control to the next state once the link layer releases and the timer expires.
-// symdb: void sub_800825A(u32 r3, u32 r5 controller, u32 r6, u32 r7, u32 r10 toolkit, u32 lr) -> u32
-// symdb: r2-r12; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800825A.yaml
+// symdb: Drives the post-loss/lose-screen battle sequence: clears the eStruct flag, flips a battle-state byte, swaps to the loser BGM, picks an effect timer, kicks off the "lose"-style battle intro effect, then finishes by flipping game-state + OW-player flags and notifying overworld state once the timer/cross-net gate lets it.
+// symdb: (r5 = per-actor local state, r10 = ToolkitPtr) -> void ; side effects: eStruct2035280+0x40
+// symdb: cleared; BattleState->Unk_10 toggled vs Unk_0d; music changed to SONG_LOSER if effects bit 0x8
+// symdb: set; battle intro effect kind 0x18 (else kind 0) dispatched; r5[+0x3] set to 4; r5[+0x8] set to
+// symdb: 0x66 or 0x5e; r5[+0x4] = 2, GameState->Unk_14 = 2, eStruct200A008+0x2 = 1 on exit
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800825A.yaml
 	thumb_local_start
 sub_800825A:
 	push {r4,lr}
