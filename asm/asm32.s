@@ -7522,7 +7522,7 @@ off_8111A10:
 off_8111A14:
 	.word sub_8111A28+1
 	.word sub_8111A72+1
-	.word sub_8111A8C+1
+	.word battleObject_performMovementStep_8111A8C+1
 	.word sub_8111AEC+1
 	.word aiAttack_tickAiAttackVarsTimer_81097DC+1
 	thumb_func_end sub_8111A00
@@ -7574,7 +7574,7 @@ sub_8111A72:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_Unk_00]
-	bl sub_8111A8C
+	bl battleObject_performMovementStep_8111A8C
 locret_8111A8A:
 	pop {pc}
 	thumb_func_end sub_8111A72
@@ -7582,9 +7582,9 @@ locret_8111A8A:
 // symdb: Advances a battle object one frame along an in-progress panel-to-panel move, snapping to its destination panel and entering a post-move completion state when the move timer elapses.
 // symdb: (r5 = *BattleObject, r7 = *AIAttackVars) -> void ; mutates r5's
 // symdb: X/Y/PanelX/PanelY/CollisionData/ObjectFlags1/CurAnim and r7's Unk_10/Unk_1a/Unk_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111A8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_performMovementStep_8111A8C.yaml
 	thumb_local_start
-sub_8111A8C:
+battleObject_performMovementStep_8111A8C:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -7629,7 +7629,7 @@ loc_8111AB8:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8111AEA:
 	pop {pc}
-	thumb_func_end sub_8111A8C
+	thumb_func_end battleObject_performMovementStep_8111A8C
 
 	thumb_local_start
 sub_8111AEC:

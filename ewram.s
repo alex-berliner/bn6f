@@ -2624,7 +2624,7 @@ byte_20349A4:: // 0x20349a4
 	.space 1
 byte_20349A5:: // 0x20349a5
 	.space 3
-// symdb: Run-away attempt counter: sub_8026F1A reads it as the index into the off_8027014 threshold row and increments it per attempt (word +8 of the block at 0x020349A0, zeroed at battle start by sub_8026840).
+// symdb: Run-away attempt counter: battle_custMenuTickPlayerChipCursor_8026F1A reads it as the index into the off_8027014 threshold row and increments it per attempt (word +8 of the block at 0x020349A0, zeroed at battle start by sub_8026840).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_20349A8.yaml
 dword_20349A8:: // 0x20349a8
 	.space 4
@@ -2721,7 +2721,7 @@ word_203631C:: // 0x203631c
 	.space 24
 dword_2036334:: // 0x2036334
 	.space 396
-// symdb: Battle custom-screen / hand state (struct S20364C0): +0x04 the Run-away outcome (2 escaped, 1 failed; written by sub_8026F1A, read by battle_runTutorialDialog_8026FC0), +0x06 the current hand size (the hand is eBattleFolder's first N entries).
+// symdb: Battle custom-screen / hand state (struct S20364C0): +0x04 the Run-away outcome (2 escaped, 1 failed; written by battle_custMenuTickPlayerChipCursor_8026F1A, read by battle_runTutorialDialog_8026FC0), +0x06 the current hand size (the hand is eBattleFolder's first N entries).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/eS20364C0.yaml
 eS20364C0:: // 0x20364c0
 	s_20364C0_struct eS20364C0

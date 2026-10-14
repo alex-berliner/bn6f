@@ -2280,7 +2280,7 @@ int __fastcall EnterMap(int a1)
         sub_8036F24();
         clearBattleStateIfEvent1708Pending_809F90C();
         ClearEventFlagFromImmediate(23, 49);
-        sub_803F6B0(0, v18, v19, v20);
+        battle_resetStateForNewBattle_803F6B0(0, v18, v19, v20);
         sub_803F500();
         RandomizeExtraToolkitPointers();
         TestEventFlagFromImmediate(23, 65);

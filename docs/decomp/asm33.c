@@ -1609,7 +1609,7 @@ void __noreturn sub_8124C94()
     if ( !v3 )
         menu_handleStartAndDpad_8125594(0, v1, v2);
     battle_runTransition_8125444();
-    sub_8125D10();
+    battle_drawCustFolderSlots_8125D10();
 }
 
 
@@ -1629,7 +1629,7 @@ void __noreturn sub_8124CE8()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125D10();
+    battle_drawCustFolderSlots_8125D10();
 }
 
 
@@ -1649,7 +1649,7 @@ void __noreturn battle_objTickTimerAndRefreshSpritePairs_8124D30()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125D10();
+    battle_drawCustFolderSlots_8125D10();
 }
 
 
@@ -2030,7 +2030,7 @@ void __fastcall __noreturn battle_runUpdatesAndCheckFade_81250E0(int a1)
     sub_812674C();
     sub_81267A8();
     battle_runTransition_8125444();
-    sub_8125D10();
+    battle_drawCustFolderSlots_8125D10();
 }
 
 
@@ -3135,7 +3135,7 @@ int __fastcall buildComChipFilter_8125C08(int a1, int a2, int a3, int a4)
 
 
 // 0x8125d10
-void __noreturn sub_8125D10()
+void __noreturn battle_drawCustFolderSlots_8125D10()
 {
     int v0; // r5
 
@@ -7010,7 +7010,7 @@ signed int sub_812977C()
 
 
 // 0x81297c0
-int sub_81297C0()
+int battle_runSubsystemSlice_81297C0()
 {
     int v0; // r5
     int result; // r0
@@ -10061,7 +10061,7 @@ void __noreturn sub_812B708()
         rfu_waitREQComplete();
     }
     v1 = v0[27];
-    v2 = sub_8144240();
+    v2 = link_initAndReset_8144240();
     battle_initScene_8129248(v2, v3, v4, v5);
     loadEntityJumpOffset00Gfx_812B530();
     v0[27] = ~v1 & 1;

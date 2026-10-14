@@ -226,7 +226,7 @@ LABEL_16:
             {
                 if ( cb->amount_of_box_appeared )
                     v10 = cb->currLine;
-                sub_30070B4(v10);
+                chatbox_drawCustomBoxTiles_30070B4(v10);
                 cb->currLine = cb->amount_of_box_appeared;
             }
             chatbox_emitTextGridOAM_804021C();
@@ -298,7 +298,7 @@ signed int chatbox_interpreteAndDrawDialogChar_1()
         {
             while ( 1 )
             {
-                sub_30070B4(cb->currLine);
+                chatbox_drawCustomBoxTiles_30070B4(cb->currLine);
                 v8 = cb->currLine + 1;
                 if ( cb->amount_of_box_appeared < v8 )
                     break;

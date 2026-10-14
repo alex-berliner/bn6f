@@ -2747,7 +2747,7 @@ CutsceneScriptNotification_809AE68:
 	cs_wait_screen_fade
 	cs_free_all_ow_npc_objects_if_different_map
 	cs_spawn_ow_npc_objects_from_map
-	cs_call_native_with_return_value ptr1=sub_809AF00+1
+	cs_call_native_with_return_value ptr1=owMapObject_loadSpawnAndCenterCameraOnEntry_809AF00+1
 	cs_disable_ow_player_wall_collision_809e254
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
@@ -2785,9 +2785,9 @@ cutscenescript_809AEC6:
 // symdb: Spawn the story-5 entry overworld map object and recenter the camera on the player at that spot
 // symdb: (r5 = GameState/JumpTable scratch, r10 = Toolkit) -> r0 = 0 ; side effects: sets player
 // symdb: coords/facing/anim, raises an event flag, spawns a map object, recenters camera
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AF00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_loadSpawnAndCenterCameraOnEntry_809AF00.yaml
 	thumb_local_start
-sub_809AF00:
+owMapObject_loadSpawnAndCenterCameraOnEntry_809AF00:
 	push {r4-r7,lr}
 	ldr r7, off_809AFBC // =byte_809ADB4
 	mov r1, r10
@@ -2841,7 +2841,7 @@ loc_809AF5A:
 	bl SetCameraXYZ
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_809AF00
+	thumb_func_end owMapObject_loadSpawnAndCenterCameraOnEntry_809AF00
 
 // symdb: Selects a CopyBot tutorial cutscene entry from a per-map table (picking the "pre-CopyBot" variant if the CopyBot event flag is unset), stores it on the work struct, then warps and poses the overworld player to that entry's coordinates/facing/anim and clears the Navi palette.
 // symdb: void owPlayer_prepareCopyBotScene_809AF7C(struct work *r5, struct r10_state *r10);  // returns
@@ -4949,7 +4949,7 @@ sub_809CC00:
 	str r0, [r5,#0x70]
 	bl clear_e200AD04 // () -> ()
 	mov r0, #0
-	bl sub_803F6B0
+	bl battle_resetStateForNewBattle_803F6B0
 	bl loc_803F512
 	b loc_809CC56
 loc_809CC1C:
@@ -5109,7 +5109,7 @@ sub_809CD60:
 	str r0, [r5,#0x70]
 	bl clear_e200AD04 // () -> ()
 	mov r0, #0
-	bl sub_803F6B0
+	bl battle_resetStateForNewBattle_803F6B0
 	bl loc_803F512
 	b loc_809CDBA
 loc_809CD7C:

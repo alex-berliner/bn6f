@@ -3365,7 +3365,7 @@ loc_8124BCC:
 	ldr r0, off_8124C28 // =byte_8124AE0
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	bl sub_81252C0
-	bl sub_8125D10
+	bl battle_drawCustFolderSlots_8125D10
 	bl sub_812546C
 	mov r0, #0
 	ldr r1, off_8124C2C // =dword_8124A94
@@ -3449,7 +3449,7 @@ sub_8124C94:
 	bl menu_handleStartAndDpad_8125594
 loc_8124CBC:
 	bl battle_runTransition_8125444
-	bl sub_8125D10
+	bl battle_drawCustFolderSlots_8125D10
 	bl sub_81264F4
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -3486,7 +3486,7 @@ loc_8124D02:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125D10
+	bl battle_drawCustFolderSlots_8125D10
 	bl sub_8125D94
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -3526,7 +3526,7 @@ loc_8124D4A:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125D10
+	bl battle_drawCustFolderSlots_8125D10
 	bl sub_8125D94
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -3998,7 +3998,7 @@ battle_runUpdatesAndCheckFade_81250E0:
 	bl sub_812674C
 	bl sub_81267A8
 	bl battle_runTransition_8125444
-	bl sub_8125D10
+	bl battle_drawCustFolderSlots_8125D10
 	bl sub_81264F4
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8125100
@@ -5652,9 +5652,9 @@ dword_8125D0C:
 // symdb: Battle chip-select / custom-screen background draw pass: paints the chip-slot strips, packed-up chips and 2x14 chip graphics for the custom-cust screen using BG tile block 2.
 // symdb: (r5 = battleStatePtr, r10 = toolkitPtr) -> void ; writes tile-block 2 graphics via the bg_ /
 // symdb: pack helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125D10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawCustFolderSlots_8125D10.yaml
 	thumb_local_start
-sub_8125D10:
+battle_drawCustFolderSlots_8125D10:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrh r0, [r7,#0x18]
@@ -5713,7 +5713,7 @@ dword_8125D8C:
 	.word 0x6006C00
 off_8125D90:
 	.word byte_81249A4
-	thumb_func_end sub_8125D10
+	thumb_func_end battle_drawCustFolderSlots_8125D10
 
 	thumb_local_start
 sub_8125D94:
@@ -12817,7 +12817,7 @@ off_8129670:
 	.word battle_object_advanceState3_8129738+1
 	.word sub_8129758+1
 	.word sub_812977C+1
-	.word sub_81297C0+1
+	.word battle_runSubsystemSlice_81297C0+1
 	thumb_func_end sub_8129658
 
 // symdb: On screen-fade-complete, clears chatbox flag 0x40 and sets the calling struct's state byte to 4.
@@ -13016,9 +13016,9 @@ off_81297BC:
 // symdb: () -> r0 = 1 if not done, 0 if IsScreenFadeActive ; side effects: writes battle run-state bytes
 // symdb: at r5+1 and r5+2, calls entity update handlers and eStruct sprite refresh, queries
 // symdb: IsScreenFadeActive.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81297C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runSubsystemSlice_81297C0.yaml
 	thumb_local_start
-sub_81297C0:
+battle_runSubsystemSlice_81297C0:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -13031,7 +13031,7 @@ sub_81297C0:
 locret_81297D8:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81297C0
+	thumb_func_end battle_runSubsystemSlice_81297C0
 
 // symdb: Battle-state dispatcher that reads a phase/handler index from r5+3, jumps through the off_81297F4 table to handle the corresponding action, then posts battle message 0x12 via sub_812B25C.
 // symdb: void sub_81297DC(u32 r4, u32 r5, u32 r6, u32 r7, u32 r10) -> u32 r5, u32 r8, u32 r9, u32 r10,
@@ -17314,7 +17314,7 @@ sub_812B708:
 	bl rfu_waitREQComplete
 loc_812B71A:
 	ldrb r4, [r5,#0x1b]
-	bl sub_8144240
+	bl link_initAndReset_8144240
 	bl battle_initScene_8129248
 	bl loadEntityJumpOffset00Gfx_812B530
 	mov r0, #1

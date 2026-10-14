@@ -9878,14 +9878,14 @@ eLinkState_ResetForNewUse_803DE88:
 	.balign 4, 0x00
 	thumb_func_end eLinkState_ResetForNewUse_803DE88
 
-// symdb: Trivial tail-call wrapper that immediately invokes sub_8144240 and returns its result to the caller.
+// symdb: Trivial tail-call wrapper that immediately invokes link_initAndReset_8144240 and returns its result to the caller.
 // symdb: Next sub_803DEAC(void) — entry with lr as return address; r4-r7 are passed through and preserved
 // symdb: by the callee; flags (nz c v) clobbered by the callee.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DEAC.yaml
 	thumb_func_start sub_803DEAC
 sub_803DEAC:
 	push {r4-r7,lr}
-	bl sub_8144240
+	bl link_initAndReset_8144240
 	pop {r4-r7,pc}
 	thumb_func_end sub_803DEAC
 
@@ -11546,7 +11546,7 @@ loc_803E9A8:
 	strb r0, [r5,#0x1] // (byte_200B1A1 - 0x200b1a0)
 	bl clear_e200AD04 // () -> ()
 	mov r0, #0
-	bl sub_803F6B0
+	bl battle_resetStateForNewBattle_803F6B0
 	bl sub_803F50C
 	b loc_803EA0A
 loc_803E9C8:
@@ -13598,12 +13598,12 @@ off_803F6AC:
 
 // symdb: Reset eLink/battle state blocks and zero-fill related battle buffers when a fresh battle (or battle-equivalent screen) begins.
 // symdb: (r0 = battle-context selector 0..N, r10 = Toolkit) -> r0 = 1 (the flag set) ; side effects:
-// symdb: zeroes eStruct200F360, resets eLinkState+side buffers, queues a sub_8144240 call, initialises
+// symdb: zeroes eStruct200F360, resets eLinkState+side buffers, queues a link_initAndReset_8144240 call, initialises
 // symdb: camera state, initialises the BRE5 magic block, sets Camera.unk_0C = 0x3C, sets event flag
 // symdb: 0x172F.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F6B0.yaml
-	thumb_func_start sub_803F6B0
-sub_803F6B0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetStateForNewBattle_803F6B0.yaml
+	thumb_func_start battle_resetStateForNewBattle_803F6B0
+battle_resetStateForNewBattle_803F6B0:
 	push {r4,r5,lr}
 	mov r4, r0
 	ldr r0, off_803F73C // =eStruct200F360
@@ -13631,7 +13631,7 @@ sub_803F6B0:
 	movflag EVENT_172F
 	bl SetEventFlagFromImmediate
 	pop {r4,r5,pc}
-	thumb_func_end sub_803F6B0
+	thumb_func_end battle_resetStateForNewBattle_803F6B0
 
 	thumb_local_start
 sub_803F6F4:

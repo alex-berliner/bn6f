@@ -183,7 +183,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
         }
         else
         {
-            sub_808CD24(v5);
+            pet_randomEncounterRewardStep_808CD24(v5);
         }
         v6 = battle_pickBattleStateInitPtr_808CC34();
         if ( v6 )
@@ -391,7 +391,7 @@ signed int reqBBS_pollTouchTrigger_808CD04()
 
 
 // 0x808cd24
-int __fastcall sub_808CD24(int a1)
+int __fastcall pet_randomEncounterRewardStep_808CD24(int a1)
 {
     unsigned int v1; // r4
     int result; // r0

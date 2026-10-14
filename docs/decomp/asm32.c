@@ -4897,14 +4897,14 @@ int sub_8111A72()
     {
         *(v0 + 16) = 2;
         *v1 = 8;
-        result = sub_8111A8C();
+        result = battleObject_performMovementStep_8111A8C();
     }
     return result;
 }
 
 
 // 0x8111a8c
-int sub_8111A8C()
+int battleObject_performMovementStep_8111A8C()
 {
     Battle *v0; // r5
     int v1; // r7

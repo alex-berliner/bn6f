@@ -1303,7 +1303,7 @@ int sub_809ADA8()
 
 
 // 0x809af00
-int sub_809AF00()
+int owMapObject_loadSpawnAndCenterCameraOnEntry_809AF00()
 {
     int v0; // r5
     int v1; // r10
@@ -2204,7 +2204,7 @@ signed int sub_809CC00()
     {
         *(v0 + 112) = 1;
         clear_e200AD04();
-        sub_803F6B0(0, v1, v2, v3);
+        battle_resetStateForNewBattle_803F6B0(0, v1, v2, v3);
         (loc_803F512)();
         return 1;
     }
@@ -2341,7 +2341,7 @@ signed int sub_809CD60()
     {
         *(v0 + 112) = 1;
         clear_e200AD04();
-        sub_803F6B0(0, v1, v2, v3);
+        battle_resetStateForNewBattle_803F6B0(0, v1, v2, v3);
         (loc_803F512)();
     }
     return 1;

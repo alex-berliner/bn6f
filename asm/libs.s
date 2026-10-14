@@ -196,16 +196,16 @@ off_814423C:
 // symdb: Link subsystem initializer: re-initializes link registers via the two helper init routines and tail-pop returns to caller.
 // symdb: () -> r0 = caller's LR side effects: hardware SIO/Timer3 reset and EWRAM link state zeroed by
 // symdb: callees; no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
-	thumb_func_start sub_8144240
-sub_8144240:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_initAndReset_8144240.yaml
+	thumb_func_start link_initAndReset_8144240
+link_initAndReset_8144240:
 	push {lr}
 	bl link_initAndClear_8144158
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	pop {r0}
 	bx r0
 	.byte 0, 0
-	thumb_func_end sub_8144240
+	thumb_func_end link_initAndReset_8144240
 
 // symdb: Drives the e-Reader / link-cable state machine for one tick (state stored in eTimerEnable200F460+1), performs its action, then packs and returns a status bitfield.
 // symdb: (r0 = small struct ptr {byte 0 = lastMode}, r1 = ptr2, r2 = ptr3) -> r0 = packed status word ;

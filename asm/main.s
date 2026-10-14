@@ -358,7 +358,7 @@ loc_80004C0:
 	bl sub_80062EC
 	bl sub_8006910
 	bl sub_803DE5C
-	bl sub_8144240
+	bl link_initAndReset_8144240
 	bl resetAndInitStruct200BC30_803EBC8
 	bl zeroFill_813D960
 	bl reset_flags32_20093A4 // () -> void

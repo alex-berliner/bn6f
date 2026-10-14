@@ -1214,7 +1214,7 @@ loc_808CB5A:
 loc_808CB6A:
 	bl reqBBS_pollTouchTrigger_808CD04
 	beq loc_808CB76
-	bl sub_808CD24
+	bl pet_randomEncounterRewardStep_808CD24
 	b loc_808CB8A
 loc_808CB76:
 	movflag EVENT_BF1
@@ -1475,9 +1475,9 @@ loc_808CD1C:
 // symdb: Overworld random-encounter "step" that, on the first run per map group, sets a story flag, marks the per-day LocEnemy flag (0x0F__ range), and plays the SE 0xD4 jingle once.
 // symdb: () -> r0/flags caller-don't-care ; side effects: sets one story flag and one daily progress
 // symdb: flag, plays sound effect 0xD4 on first encounter per area
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CD24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_randomEncounterRewardStep_808CD24.yaml
 	thumb_local_start
-sub_808CD24:
+pet_randomEncounterRewardStep_808CD24:
 	push {r4-r7,lr}
 	ldr r5, off_808D030 // =dword_808CA44
 	ldr r5, [r5]
@@ -1525,7 +1525,7 @@ byte_808CDAA:
 	.byte 0xC6, 0xF, 0xC7, 0xF, 0xC8, 0xF, 0xC9, 0xF, 0xCA, 0xF
 	.byte 0xCB, 0xF, 0xCC, 0xF, 0xCD, 0xF, 0xCE, 0xF, 0xCF, 0xF
 	.byte 0xD0, 0xF, 0xD1, 0xF, 0x0, 0x0
-	thumb_func_end sub_808CD24
+	thumb_func_end pet_randomEncounterRewardStep_808CD24
 
 // symdb: Walk an event-flag table whose pointer is selected by sub_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
 // symdb: () -> r0 = match flag (0/1), r1 = group index (0..N), r2 = (3*group + entry) ; side effects: r10

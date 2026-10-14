@@ -13732,7 +13732,7 @@ loc_8014AA8:
 off_8014AB0:
 	.word off_8014AB4
 off_8014AB4:
-	.word sub_8014B18+1
+	.word battleObject_commitMoveLanding_8014B18+1
 	.word sub_8014B98+1
 	.word battle_runTransformationIntroStep_8014BEE+1
 	.word battle_aiAttackTickBeastSp_8014CC0+1
@@ -13772,9 +13772,9 @@ dword_8014B14:
 // symdb: (r5 = battle object, r7 = AIAttackVars) -> r0 = 4 ; side effects: panel coords/pixel
 // symdb: coords/collision/facing updated; AI flag 0x80000 cleared; PwrAtkState cleared; AIAttackVars[0]
 // symdb: := 6 then 4; RelatedObject2 may be flagged 0x14/1 if non-null
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014B18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_commitMoveLanding_8014B18.yaml
 	thumb_local_start
-sub_8014B18:
+battleObject_commitMoveLanding_8014B18:
 	push {r4,lr}
 	ldr r0, dword_8014B94 // =0x80000 
 	bl SetAIDataUnk0x48Flag
@@ -13828,7 +13828,7 @@ loc_8014B8A:
 	.balign 4, 0
 dword_8014B94:
 	.word 0x80000
-	thumb_func_end sub_8014B18
+	thumb_func_end battleObject_commitMoveLanding_8014B18
 
 	thumb_local_start
 sub_8014B98:

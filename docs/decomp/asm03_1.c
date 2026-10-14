@@ -11970,7 +11970,7 @@ void __fastcall eLinkState_ResetForNewUse_803DE88(int a1, int a2, int a3, int a4
 // 0x803deac
 int sub_803DEAC()
 {
-    return sub_8144240();
+    return link_initAndReset_8144240();
 }
 
 
@@ -13172,7 +13172,7 @@ signed int startScreen_AnimatePressStart_803E978()
         {
             byte_200B1A1 = 1;
             clear_e200AD04();
-            sub_803F6B0(0, v3, v4, v5);
+            battle_resetStateForNewBattle_803F6B0(0, v3, v4, v5);
             sub_803F50C();
         }
     }
@@ -14493,7 +14493,7 @@ __int64 sub_803F674()
 
 
 // 0x803f6b0
-void __fastcall sub_803F6B0(int a1, int a2, int a3, int a4)
+void __fastcall battle_resetStateForNewBattle_803F6B0(int a1, int a2, int a3, int a4)
 {
     ZeroFillByHalfword(&eStruct200F360, 0x20u, a3, a4);
     crt0_entry_trampoline_8000288();

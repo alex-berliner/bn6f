@@ -912,7 +912,7 @@ LABEL_9:
 
 
 // 0x8026f1a
-int sub_8026F1A()
+int battle_custMenuTickPlayerChipCursor_8026F1A()
 {
     ChatBoxPropreties *cb; // r5
     Toolkit *tk; // r10
@@ -11521,7 +11521,7 @@ signed int battle_getAllianceEntryStatus_802E4B8()
 
 
 // 0x802e4e4
-unsigned int sub_802E4E4()
+unsigned int battleObject_tickAITimerFlags_802E4E4()
 {
     int v0; // r5
     char *v1; // r7
@@ -13070,7 +13070,7 @@ int startScreen_update_802F710()
             link_resetHardwareAndClearLinkBuffers_81440D8();
             zeroFill_813D960();
             clear_e200AD04();
-            sub_803F6B0(0, v7, v8, v9);
+            battle_resetStateForNewBattle_803F6B0(0, v7, v8, v9);
             (loc_803F512)();
             result = init_eStartScreenAnimationControl200B1A0_2();
         }

@@ -1439,7 +1439,7 @@ off_8026EB8:
 	.word off_8026EBC
 off_8026EBC:
 	.word runBattleDialog_8026EC8+1
-	.word sub_8026F1A+1
+	.word battle_custMenuTickPlayerChipCursor_8026F1A+1
 	.word sub_8026FAA+1
 	thumb_func_end battle_updateObjectByKind_8026E98
 
@@ -1496,9 +1496,9 @@ loc_8026F0E:
 // symdb: Advances the chip-select/customize sub-menu cursor one beat, with a chance to swap player element via Puppeteer
 // symdb: (r2 = curBeat counter?, r5 = S20364C0 state ptr, r10 = Toolkit) -> void ; writes to S20364C0
 // symdb: fields, Puppeteer element, byte_20366C0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026F1A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_custMenuTickPlayerChipCursor_8026F1A.yaml
 	thumb_local_start
-sub_8026F1A:
+battle_custMenuTickPlayerChipCursor_8026F1A:
 	push {r4,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1570,7 +1570,7 @@ loc_8026FA0:
 	strh r0, [r5,#2]
 locret_8026FA8:
 	pop {r4,pc}
-	thumb_func_end sub_8026F1A
+	thumb_func_end battle_custMenuTickPlayerChipCursor_8026F1A
 
 	thumb_local_start
 sub_8026FAA:
@@ -1635,7 +1635,7 @@ off_802700C:
 	.word byte_20366C0
 off_8027010:
 	.word off_8027014
-// symdb: Run-away threshold rows for sub_8026F1A: { 4, 8, 15 }, { 8, 12, 15 }, { 12, 14, 15 }; the row is picked by how the battle's busting level compares to the escape stat, the byte index is the attempt counter dword_20349A8.
+// symdb: Run-away threshold rows for battle_custMenuTickPlayerChipCursor_8026F1A: { 4, 8, 15 }, { 8, 12, 15 }, { 12, 14, 15 }; the row is picked by how the battle's busting level compares to the escape stat, the byte index is the attempt counter dword_20349A8.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8027014.yaml
 off_8027014:
 	.word byte_8027020
@@ -17566,9 +17566,9 @@ loc_802E4DA:
 // symdb: Polls two AIData Unk_44 timer-style flags and reacts when they fire (kick state + bubble if timer expired, full invulnerability if bubble expired).
 // symdb: (r5 = battle object) -> void ; side effects: clears Unk_44 flag bits and writes BattleObject
 // symdb: +0x50/+0x54/+0x30/Unk_5c + AIData
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E4E4.yaml
-	thumb_func_start sub_802E4E4
-sub_802E4E4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickAITimerFlags_802E4E4.yaml
+	thumb_func_start battleObject_tickAITimerFlags_802E4E4
+battleObject_tickAITimerFlags_802E4E4:
 	push {r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
@@ -17611,7 +17611,7 @@ off_802E53C:
 	.word 0x1E0
 dword_802E540:
 	.word 0xFFFF
-	thumb_func_end sub_802E4E4
+	thumb_func_end battleObject_tickAITimerFlags_802E4E4
 
 // symdb: Zero-fills the fixed 0x170-byte work buffer at IWRAM address unk_20000A0.
 // symdb: void clearWorkBuffer_20000A0(uint32 r2_passthrough); /* r2 in: forwarded to ZeroFillByByte, must
@@ -20210,7 +20210,7 @@ loc_802F72E:
 	bl zeroFill_813D960
 	bl clear_e200AD04 // () -> ()
 	mov r0, #0
-	bl sub_803F6B0
+	bl battle_resetStateForNewBattle_803F6B0
 	bl loc_803F512
 	bl init_eStartScreenAnimationControl200B1A0_1
 

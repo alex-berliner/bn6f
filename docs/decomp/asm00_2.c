@@ -9570,7 +9570,7 @@ void battle_runBeastTransformationAction_8014A38()
 
 
 // 0x8014b18
-signed int __noreturn sub_8014B18()
+signed int __noreturn battleObject_commitMoveLanding_8014B18()
 {
     Battle *v0; // r5
     _WORD *v1; // r7

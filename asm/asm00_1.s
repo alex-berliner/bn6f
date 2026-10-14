@@ -4487,7 +4487,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 
 	mov r0, #0
-	bl sub_803F6B0
+	bl battle_resetStateForNewBattle_803F6B0
 
 	bl sub_803F500
 

@@ -23317,7 +23317,7 @@ signed int battleObject_initSnakeArm_80C53FA()
 
 
 // 0x80c54e0
-char *__noreturn sub_80C54E0()
+char *__noreturn battleObject_snakeArmUpdate_80C54E0()
 {
     int v0; // r5
     int v1; // r0
@@ -23480,14 +23480,14 @@ int __noreturn battleObject_initBeastOut_80C55E4()
         object_presentCollisionData(v4, v5);
         *(**(v0 + 76) + 1) = *(v0 + 76);
         *(v0 + 8) = 4;
-        sub_80C5654();
+        battleObject_beastOutUpdate_80C5654();
     }
     return object_freeMemory();
 }
 
 
 // 0x80c5654
-void __noreturn sub_80C5654()
+void __noreturn battleObject_beastOutUpdate_80C5654()
 {
     int v0; // r5
     int v1; // r0
@@ -24109,7 +24109,7 @@ LABEL_6:
 
 
 // 0x80c5c9c
-int sub_80C5C9C()
+int battleObject_updateBombPanelBomb_80C5C9C()
 {
     int v0; // r5
     int v1; // r9
@@ -28279,7 +28279,7 @@ void t3_0x22_80C853C()
 
 
 // 0x80c856c
-signed int __noreturn sub_80C856C()
+signed int __noreturn battleObject_spawnBeastOutActor_80C856C()
 {
     int v0; // r5
     int v1; // r0
@@ -32530,7 +32530,7 @@ void t3_0x39_80CB0DC()
 
 
 // 0x80cb10c
-signed int __noreturn sub_80CB10C()
+signed int __noreturn battleObject_beastOutInit_80CB10C()
 {
     int v0; // r5
     int v1; // r0
@@ -42283,7 +42283,7 @@ void __noreturn sub_80D124E()
 
 
 // 0x80d12ca
-void sub_80D12CA()
+void object_bombUpdate_80D12CA()
 {
     int v0; // r5
     int v1; // r1
@@ -43291,7 +43291,7 @@ void __noreturn sub_80D1C5A()
 
 
 // 0x80d1d14
-int __noreturn sub_80D1D14()
+int __noreturn object_runCollisionState_80D1D14()
 {
     int v0; // r5
     int v1; // r7
@@ -47479,7 +47479,7 @@ int sub_80D4464()
 
 
 // 0x80d4472
-void __noreturn sub_80D4472()
+void __noreturn battleObject_initActorStateT4_80D4472()
 {
     Battle *v0; // r5
 
@@ -72118,7 +72118,7 @@ void t4_0x30_80E3B70()
 
 
 // 0x80e3b94
-signed int __noreturn sub_80E3B94()
+signed int __noreturn battleObject_initFromRelatedObject_init_80E3B94()
 {
     int v0; // r5
     int v5; // r2
@@ -92544,7 +92544,7 @@ int __usercall playerAI_sub_80F0354@<R0>(Battle *obj@<R5>)
         v7 = getCurChipInBattleHand_8010004();
         goto LABEL_61;
     }
-    sub_802E4E4();
+    battleObject_tickAITimerFlags_802E4E4();
     v8 = battle_getAllianceEntryStatus_802E4B8();
     if ( v8 == 13 )
     {

@@ -3097,9 +3097,9 @@ off_30070B0:
 // symdb: dword_200CDA0+0x080; else -> stage buffer at dword_200CDA0+0x680) -> no meaningful return ; side
 // symdb: effects: writes 0x20 bytes per palette group into the staging buffer, queues a 0xF00-byte DMA to
 // symdb: OBJ VRAM 0x06015700, may set Chatbox+0x3D to 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30070B4.yaml
-	thumb_func_start sub_30070B4
-sub_30070B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_drawCustomBoxTiles_30070B4.yaml
+	thumb_func_start chatbox_drawCustomBoxTiles_30070B4
+chatbox_drawCustomBoxTiles_30070B4:
 	push {r4-r7,lr}
 	mov r1, r8
 	push {r1}
@@ -3279,7 +3279,7 @@ off_300720C:
 	.word off_8044314
 	.word off_8044378
 	.word off_804440C
-	thumb_func_end sub_30070B4
+	thumb_func_end chatbox_drawCustomBoxTiles_30070B4
 
 	thumb_local_start
 sub_3007218:
@@ -3790,7 +3790,7 @@ loc_3007570:
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
 	mov r2, r5
-	bl sub_3007708
+	bl object_applyElementPanelRules_3007708
 loc_30075B8:
 	add r4, #2
 	b loc_3007570
@@ -3814,7 +3814,7 @@ loc_30075C0:
 	mov r0, r6
 	mov r1, r7
 	mov r2, r5
-	bl sub_3007708
+	bl object_applyElementPanelRules_3007708
 loc_30075E8:
 	add r6, #1
 	cmp r6, #6
@@ -3989,9 +3989,9 @@ loc_30076D6:
 // symdb: For a battle object, applies element/panel-type rules when stepping off a collision panel — turns grass/lava/cracked panels under specific element objects into broken panels (type 2).
 // symdb: (r0 = panelX, r1 = panelY, r2 = collisionDataPtr, r10 = toolkit, lr) -> void ; side effects: may
 // symdb: write panel type via _object_setPanelType
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007708.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_applyElementPanelRules_3007708.yaml
 	thumb_local_start
-sub_3007708:
+object_applyElementPanelRules_3007708:
 	push {r4,r6,r7,lr}
 	push {r0-r2}
 	ldr r0, off_30078B4 // =battle_isPaused+1
@@ -4049,7 +4049,7 @@ locret_3007774:
 	.balign 4, 0
 dword_3007778:
 	.word 0xC000000
-	thumb_func_end sub_3007708
+	thumb_func_end object_applyElementPanelRules_3007708
 
 // symdb: Walks a battle object's collision footprint and updates the panel(s) it occupies each frame, with a second mode that scans the whole 6x3 grid.
 // symdb: (r0 = CollisionData*) -> void ; side effects: panel data and per-panel collision state mutated

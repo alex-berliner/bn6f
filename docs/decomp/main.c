@@ -203,7 +203,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     sub_80062EC();
     sub_8006910();
     sub_803DE5C();
-    sub_8144240();
+    link_initAndReset_8144240();
     resetAndInitStruct200BC30_803EBC8();
     zeroFill_813D960();
     reset_flags32_20093A4();

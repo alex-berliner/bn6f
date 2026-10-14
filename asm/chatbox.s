@@ -518,7 +518,7 @@ loc_803FFF8:
 	beq loc_8040008
 	ldrb r0, [r5,#oChatbox_CurrLine]
 loc_8040008:
-	ldr r1, off_8040034 // =sub_30070B4+1
+	ldr r1, off_8040034 // =chatbox_drawCustomBoxTiles_30070B4+1
 	mov lr, pc
 	bx r1
 	ldrb r0, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -538,7 +538,7 @@ byte_8040028:
 off_8040030:
 	.word FLAGS_3E_HIDE_CHATBOX
 off_8040034:
-	.word sub_30070B4+1
+	.word chatbox_drawCustomBoxTiles_30070B4+1
 off_8040038:
 	.word sub_3006F8C+1
 	.word byte_8040040
@@ -632,7 +632,7 @@ loc_80400E2:
 	bne loc_8040112
 loc_80400F8:
 	ldrb r0, [r5,#oChatbox_CurrLine]
-	ldr r1, off_8040134 // =sub_30070B4+1
+	ldr r1, off_8040134 // =chatbox_drawCustomBoxTiles_30070B4+1
 	mov lr, pc
 	bx r1
 	ldrb r0, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -659,7 +659,7 @@ byte_8040128:
 Flags8040130:
 	.word FLAGS_3E_HIDE_CHATBOX
 off_8040134:
-	.word sub_30070B4+1
+	.word chatbox_drawCustomBoxTiles_30070B4+1
 off_8040138:
 	.word sub_3006F8C+1
 	.word byte_8040140

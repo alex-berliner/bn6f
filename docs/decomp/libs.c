@@ -52,7 +52,7 @@ int link_initAndClear_8144158()
 
 
 // 0x8144240
-int sub_8144240()
+int link_initAndReset_8144240()
 {
     int v1; // [sp+0h] [bp-4h]
 

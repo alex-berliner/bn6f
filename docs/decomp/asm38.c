@@ -1850,7 +1850,7 @@ signed int __fastcall chatbox_renderLineSubtitleGfx_03007038(int a1, int a2)
 
 
 // 0x30070b4
-int __fastcall sub_30070B4(int a1)
+int __fastcall chatbox_drawCustomBoxTiles_30070B4(int a1)
 {
     int v1; // r10
     int *v2; // r7
@@ -2183,7 +2183,7 @@ int _object_removeCollisionData()
                 {
                     _object_updatePanelParameters(v9, v8);
                     sub_30075FC(v9, v8, v1);
-                    result = sub_3007708(v9, v8, v1);
+                    result = object_applyElementPanelRules_3007708(v9, v8, v1);
                 }
                 ++v9;
             }
@@ -2209,7 +2209,7 @@ int _object_removeCollisionData()
                 sub_3007880(v10, v11, v6);
                 _object_updatePanelParameters(v10, v11);
                 sub_30075FC(v10, v11, v1);
-                sub_3007708(v10, v11, v1);
+                object_applyElementPanelRules_3007708(v10, v11, v1);
             }
             v3 += 2;
         }
@@ -2335,7 +2335,7 @@ int __fastcall sub_3007692(int a1, int a2)
 
 
 // 0x3007708
-int __fastcall sub_3007708(int a1, int a2, int a3)
+int __fastcall object_applyElementPanelRules_3007708(int a1, int a2, int a3)
 {
     bool v3; // zf
     int result; // r0
