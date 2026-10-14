@@ -3834,10 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: cutscene/gfx-anim state step: tests original-cutscene-script sentinels, toggles event flags, and runs one of several load_gfx_anim_* / struct_copy helpers
-// symdb: (r10 = Toolkit*) -> flags nz ; side effects: may clear/set event flags 0x17/0x07, may invoke
-// symdb: load_gfx_anim_8083FC0 / 8083FFC / 8084068, sub_8083F80, sub_8084080, sub_8084180, sub_8084214,
-// symdb: sub_80842D8, struct_copy_80840C4, sub_809E462, and reqBBS flag helpers
+// symdb: Cutscene-time handler that tests event flags then drives GFX anims and request-BBS flag updates for a BBS request screen
+// symdb: (r10 = Toolkit ptr) -> side effects only; no return value to callers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

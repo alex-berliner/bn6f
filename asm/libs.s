@@ -6011,10 +6011,11 @@ loc_8146BF0:
 	bx r1
 	thumb_func_end sub_8146BB8
 
-// symdb: Reads the state byte of the singleton object tracked by dword_2010CC0 and returns 1 if it is in state 0 or 1, else 0.
-// symdb: bool sub_8146BF4(void) // in: lr (return addr); out: r0 = 1 if state==0 or state==1 else 0;
-// symdb: NZ/C/V left per final CMP/MOV so callers can branch
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8146BF4.yaml
+// symdb: Returns 1 when the comms-busy flag at dword_2010CC0->byte0 is 0 or 1, else 0
+// symdb: () -> r0 = bool (0/1); NZCV set from `cmp r0,#1` and the final `mov r0,#0` vs `mov r0,#1` (the
+// symdb: listed nz/c/v are an artefact of the ldr-merged-then-cmp sequence); no side effects besides
+// symdb: reading EWRAM pointer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146BF4.yaml
 	thumb_func_start sub_8146BF4
 sub_8146BF4:
 	push {lr}
@@ -21492,6 +21493,11 @@ off_814E0CC:
 	.word off_81C0418
 	thumb_func_end sub_814E0B6
 
+// symdb: Reads the next script command byte from a battle-object script stream and advances the script pointer, validating the decoded opcode.
+// symdb: (r1 = script state / context object) -> r0 = r1 (unchanged), r3 = validated opcode byte; side
+// symdb: effects: advances the script cursor at [r1+0x40] by one, may clear r0 in sub_814E0B6 when the
+// symdb: address is out of RAM range.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
 	thumb_local_start
 sub_814E0D0:
 	ldr r2, [r1,#0x40]
@@ -22606,11 +22612,9 @@ loc_814E79E:
 	.balign 4, 0x00
 	thumb_func_end sub_814E758
 
-// symdb: Resets two status bytes of a battle-side struct and ORs a mode value (0xC or 3) into its flags byte depending on a delay/counter byte.
-// symdb: void battle_resetActionState(struct* r1); /* writes bytes +0x00, +0x16, +0x1A of *r1; returns r2
-// symdb: = mode (0xC or 3), r3 = new flags byte; N/Z set from OR result, C=1/V=0 left over from the CMP
-// symdb: */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7A4.yaml
+// symdb: Resets AIData version/charge-byte fields and ORs a BeastOut-state bit (0x0C vs 0x03) into the object header flags
+// symdb: (r1 = AIData*) -> no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7A4.yaml
 	thumb_local_start
 sub_814E7A4:
 	mov r2, #0
@@ -24226,6 +24230,10 @@ dword_814F224:
 	.word 0x68736D53
 	thumb_func_end sub_814F1E8
 
+// symdb: Drives the m4a sound-player fade timer once per frame, ramps the volume down to 0, then stops every channel in the player bank and clears its entry bit.
+// symdb: (r0 = SoundMainPlayerState*) -> (popped PC into r0, no other return value) ; mutates
+// symdb: SoundMainPlayerState fade fields, sets low byte of r0 from the saved LR
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F228.yaml
 	thumb_func_start sub_814F228
 sub_814F228:
 	push {r4-r7,lr}
@@ -24339,9 +24347,11 @@ loc_814F2EA:
 	bx r0
 	thumb_func_end sub_814F228
 
-// symdb: m4a sound channel envelope/LFO mixer step used by the music player (likely an xcmd/vcmd handler dispatching on voice flags)
-// symdb: (r1 = SoundChannel* voice state) -> r0 = saved LR (tail-call return)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814F2F0.yaml
+// symdb: MPlay note callback that scales a track's current/volume bytes by attacker FPorta's bend and possibly a Beast-Out rage offset, then writes back to the channel state.
+// symdb: (r0 = ChannelPtr (SoundChannel*, unused), r1 = ChannelPtr / NoteTrack) -> r0 = saved LR (return
+// symdb: address); side effects: writes TrackState[0x8], TrackState[0x9], TrackState[0x10],
+// symdb: TrackState[0x11], TrackState[0], and pops {r4,pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F2F0.yaml
 	thumb_func_start sub_814F2F0
 sub_814F2F0:
 	push {r4,lr}

@@ -9833,11 +9833,10 @@ sub_803DE68:
 	pop {pc}
 	thumb_func_end sub_803DE68
 
-// symdb: Dispatches a global handler read from unk_200A284 to libSIOControlPoll_81445F8 if non-null.
-// symdb: void sub_803DE72(void);  /* reads: r0 (handler ptr) via unk_200A284; writes: r0 (handler ptr
-// symdb: forwarded), r1-r3, lr (clobbered by call), nz/c/v flags; preserves r4; returns to lr via pop
-// symdb: {pc} */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803DE72.yaml
+// symdb: Polls the SIO link library once per frame when SIO comms are enabled (battle)
+// symdb: (no args) -> no return ; reads globals `unk_200A284` and calls `libSIOControlPoll_81445F8` when
+// symdb: that word is non-zero
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DE72.yaml
 	thumb_func_start sub_803DE72
 sub_803DE72:
 	push {lr}

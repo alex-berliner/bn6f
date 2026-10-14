@@ -42287,10 +42287,10 @@ loc_80CB98E:
 	pop {r4,pc}
 	thumb_func_end sub_80CB964
 
-// symdb: Per-frame handler for a battle object that removes stale collision data, emits a collision-effect spawn, and either routes to a CurAction dispatch or tears the object down via CUR_STATE_DESTROY.
-// symdb: (r4 = prev linked-list ptr, r5 = BattleObject*, r7 = ?, r8 = ?, r10 = Toolkit*) -> void ;
-// symdb: mutates r5->CollisionDataPtr, r5->CurStateActionPhaseAndPhaseInitialized, r0/r1/r2/r3
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80CB9E2.yaml
+// symdb: Per-frame battle-object collision update: tears down current collision, spawns the matching effect, possibly damages the owner (Buster-style HP loss), and either dispatches to the cur-action handler or marks the object for destruction.
+// symdb: (r5 = BattleObject*, r10 = Toolkit) -> void ; mutates the BattleObject at r5 (state, collision
+// symdb: region), side effects: spawns collision effect, plays damage, may destroy object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CB9E2.yaml
 	thumb_local_start
 sub_80CB9E2:
 	push {r4,r7,lr}

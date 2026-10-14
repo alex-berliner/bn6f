@@ -441,10 +441,11 @@ loc_800F094:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_chipElementWeaknessBonus_800EF34
 
-// symdb: For a given chip ID and a battle object, look up which battle object on the opposite alliance is targeted (returns a battle object index in r0 and a category/tag in r1).
-// symdb: (r0 = chipId, r1 = ?battleObject) -> r0 = targetBattleObjectIndex, r1 = targetCategory ; side
-// symdb: effects: reads chip DB and alliance team table
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F09E.yaml
+// symdb: For a chip ID and the current navi stat byte, looks up a custom-style "stat boost" pairing in the chip table and a per-team table, returning the bonus byte.
+// symdb: (r0 = chipId, r1 = naviStatsByte, r5 = battleObjectPtr) -> r0 = baseBoost (0 or param), r1 =
+// symdb: bonusIndex (0 or 0xC..0x12) ; side effects: reads alliance-team table and a 15-byte-wide lookup
+// symdb: at 0x02021300
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F09E.yaml
 	thumb_local_start
 sub_800F09E:
 	push {r4,r6,r7,lr}
@@ -11081,6 +11082,9 @@ locret_80139C2:
 	pop {r6,r7,pc}
 	thumb_func_end sub_801393A
 
+// symdb: From a player BattleObject's update hook, spawns the pink counter-hit ring when the player is in BeastOut/FormChange state and has not yet spawned one this counter opportunity.
+// symdb: (r5 = *BattleObject) -> void ; no explicit r0 return used; clobbers NZCV and many scratch regs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80139C4.yaml
 	thumb_func_start sub_80139C4
 sub_80139C4:
 	push {r7,lr}
@@ -26944,6 +26948,9 @@ dword_801C164:
 	.word 0x100000
 	thumb_func_end battle_drawChipCountsOAM_801C082
 
+// symdb: Per-frame update loop that drives the 4 battle HP/Damage meter UI bars (read actor HP, dispatch into one of two update paths, store current HP back)
+// symdb: () -> r0 = 1 ; side effects: writes 4 * 0x14-byte meter entries at `byte_203EB50`
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C168.yaml
 	thumb_local_start
 sub_801C168:
 	push {r4,r6,lr}
@@ -27047,6 +27054,10 @@ locret_801C200:
 	mov pc, lr
 	thumb_func_end easeValueTowardTarget_801C1EA
 
+// symdb: Render the four floating battle HP readouts (players + enemies) by queueing one OAM entry per active panel, drawing the HP digits and conditionally loading battle portraits.
+// symdb: (r10 = toolkit) -> void ; side effects: queues OAM entries, decompresses portrait tiles into
+// symdb: VRAM, reads/writes small per-portrait state on byte_203EB50
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C202.yaml
 	thumb_local_start
 sub_801C202:
 	push {r4-r7,lr}
@@ -27194,13 +27205,9 @@ loc_801C2F6:
 	pop {r3,r6,pc}
 	thumb_func_end renderHpDigits_801C296
 
-// symdb: Decompresses four battle-portrait tile pairs into VRAM, selecting the source table by an effect index, skipping tile index 0xB.
-// symdb: inputs: r3: preserved (input, untouched, must survive); r4: effect-index struct (byte at +8
-// symdb: selects one of three source-pointer tables); r5: destination VRAM pointer (advances by 0x20 per
-// symdb: tile pair); r7: pointer to four tile-index bytes (walked from offset 3 down to 0); lr: return
-// symdb: address; outputs: r3: preserved; r4: clobbered in body (rebased to the resolved source table),
-// symdb: caller-visible; r5: final dst pointer (advanced four times by 0x20); r6: clobbered (loop
-// symdb: counter, caller-visible); r7: clobbered (caller-visible); flags: nz, c, v clobbered
+// symdb: Queues GFX tile uploads for a battle object's next animation frame, dispatching per-state source tables and skipping slot 0xb
+// symdb: (r4 = *object, r7 = *memory_base, r5 = vram_dest) -> r0 = final source pointer (after 0x40 bytes
+// symdb: consumed per element) ; side effects: 2 GFX transfers enqueued per non-skipped slot
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C304.yaml
 	thumb_local_start
 sub_801C304:

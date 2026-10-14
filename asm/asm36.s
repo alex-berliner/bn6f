@@ -8467,7 +8467,7 @@ dword_813430C:
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
-// symdb: battle_loadFolderChipGfx/sub_81203E4/battle_loadChipIconSlots_8120458/sub_81204C4/sub_8120618.
+// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
 battleObject_drawFolderEditScreenGfx_8134310:
@@ -8658,11 +8658,10 @@ off_8134488:
 off_813448C:
 	.word 0x200
 	thumb_func_end battleObject_drawFolderEditScreenGfx_8134310
-// symdb: Draws a row of tile ids from `unk_20347D8` and `unk_2034814` onto two background tile blocks, then queues a sub-`sub_812053C` palette/VRAM-flagged word indexed by submenu-open state vs. a navi-stats byte, using `r5->0x18` as a column-shifted origin.
-// symdb: (r5 = ?, r10 = toolkit, lr) -> r0 = 0xff ; side effects: tile-block writes via
-// symdb: CopyBackgroundTiles, tilemap fills via sub_81202FC / sub_8120348, and a sub_812053C call that
-// symdb: builds a "0x4000"-flagged VRAM/palette word
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134490.yaml
+// symdb: Draws a submenu's two side border strips (with blank-fill inside) and dispatches a per-state palette/VRAM word for the submenu widget, varying the strip layout and palette id by submenu state and current submenu-vs-no-submenu branch.
+// symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = 0xFF ; side effects: writes tilemap blocks via
+// symdb: CopyBackgroundTiles and queues a sub_812053C dispatch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134490.yaml
 	thumb_local_start
 sub_8134490:
 	push {r4-r7,lr}
@@ -8970,6 +8969,12 @@ loc_8134686:
 	.balign 4, 0x00
 	thumb_func_end sub_8134610
 
+// symdb: Spawns/initializes a child battle object/effect with a packed spawn coordinate (x derived from caller's int offset, y from r1, z from param r2), passing derived params, table data byte_81331F4, a packed position word, and r5-relative lookup bytes through sub_811FAF4.
+// symdb: (r0 = packed x? or base offset, r1 = y, r2 = z, r3 = some param, r4 = some param, r5 = battle
+// symdb: object ptr, r6 = data table, r10 = toolkit) -> r0 = updated byte at r5[r3] ; side effects:
+// symdb: writes back to r5[r3] (lo nibble + shifted hi nibble), calls sub_811FAF4 and possibly
+// symdb: sub_8120CC8
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813468C.yaml
 	thumb_local_start
 sub_813468C:
 	push {r4,lr}

@@ -10378,6 +10378,10 @@ sub_81131A2:
 	pop {pc}
 	thumb_func_end sub_81131A2
 
+// symdb: If its HP is at or below half of MaxHP, has the BattleObject in r5 use its currently selected chip
+// symdb: (r5 = BattleObject*) -> r0 = bool (1 = used a chip, 0 = did not) ; side effects: may call
+// symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / sub_800F322 on r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81131D8.yaml
 	thumb_local_start
 sub_81131D8:
 	push {r4,r6,lr}
@@ -34723,6 +34727,11 @@ IsButtonPressed:
 	.balign 4, 0x00
 	thumb_func_end IsButtonPressed
 
+// symdb: Adjusts a cursor/selection index by ±1 on D-pad/shoulder input, clamps to a min/max range, writes the new index back into a slot state word, and returns whether the value changed.
+// symdb: (r0 = joypad-held flags, r1 = joypad struct ptr, r2 = flags/mask, r3 = caller scratch, r5 =
+// symdb: toolkit ptr) -> r0 = 0xff if value changed, 0x00 if unchanged ; also writes the new halfword
+// symdb: back to [r5 + r3 + 0x20] and [r5 + r3 + 0x24]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F7F8.yaml
 	thumb_func_start sub_811F7F8
 sub_811F7F8:
 	push {r4-r7,lr}

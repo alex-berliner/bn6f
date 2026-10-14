@@ -14330,11 +14330,11 @@ wrapCountersAt203CFB0ToU16_802CDFE:
 	mov pc, lr
 	thumb_func_end wrapCountersAt203CFB0ToU16_802CDFE
 
-// symdb: Adjusts an attacker's per-panel damage against its own battle object depending on alliance, returning the final per-panel damage value when the attacker is the current battle object.
-// symdb: (r0 = damage value to fold in, r5 = current BattleObject*) -> r0 = damage value (may be summed
-// symdb: into FinalDamage for self, or stored as PanelDamage1 if r5 differs); side effects: writes
-// symdb: FinalDamage for ally or PanelDamage1 for enemy in eS20364C0 Extra
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802CE10.yaml
+// symdb: Updates the per-ally / per-enemy per-turn maximum-damage tracker, returning the new higher-of-two value to the caller for clamping FinalDamage.
+// symdb: (r0 = newDamage, r5 = battleObject) -> r0 = max(newDamage + thisObjBonus, storedMax); r2 =
+// symdb: dword_203CFB0 / +0xC ; side effects: writes 0x0 / 0x2 (or 0xC / 0xE) of dword_203CFB0 when r0
+// symdb: exceeds the stored max
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CE10.yaml
 	thumb_func_start sub_802CE10
 sub_802CE10:
 	ldr r1, off_802CE50 // =dword_203CFB0 
@@ -21014,10 +21014,10 @@ off_802FE44:
 	.word sprite_queueOamEntries+1
 	thumb_func_end sub_802FE38
 
-// symdb: Allocates one of 16 ID slots tracked in a bitfield at dword_2009A2C, returning the slot index (or 0xFF when all are taken).
-// symdb: u32 allocSlotFromBitmap16(void); // in: lr only; out: r0 = slot index 0..15 or 0xFF if full, r1
-// symdb: = updated bitmap word, r2 = mask of the bit claimed, r3 = &dword_2009A2C; clobbers NZCV
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802FE48.yaml
+// symdb: Allocates a free actor slot index from a 16-bit bitmap in EWRAM and returns the slot index (or 0xFF if full)
+// symdb: (no args) -> r0 = allocated slot index (0..15) or 0xFF on full ; side effect: sets the
+// symdb: corresponding bit in the 16-bit bitmap at 0x2009A2C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE48.yaml
 	thumb_func_start sub_802FE48
 sub_802FE48:
 	ldr r3, off_802FF44 // =dword_2009A2C 
@@ -21138,6 +21138,10 @@ off_802FF0C:
 	.word math_cosTable
 	thumb_func_end sprite_setAffineTransform_802FE7A
 
+// symdb: AI helper that divides 0x100 by r3 (loop count), returning quotient in r3 and remainder in r1; tail-called from sub_802FE7A.
+// symdb: (r1 = 0x100 dividend, r2 = 0, r3 = divisor) -> r1 = remainder, r3 = quotient ; caller-supplied
+// symdb: r0/r2 pushed/popped, lr tail-returned
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FF10.yaml
 	thumb_local_start
 sub_802FF10:
 	push {r1,r2}

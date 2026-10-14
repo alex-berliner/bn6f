@@ -810,6 +810,10 @@ off_8033E08:
 	.word byte_30016D0
 	thumb_func_end gfxTransfer_8033DA0
 
+// symdb: Draws the PET navi's current HP as 4 OAM digits in the Internet overworld UI, copying a sprite template for the current HP block.
+// symdb: (no r0-r3 contract documented by caller) -> side effects only; mutates [r5+0x8] and queues OAM
+// symdb: sprites
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033E0C.yaml
 	thumb_local_start
 sub_8033E0C:
 	push {r5,lr}
@@ -2239,6 +2243,9 @@ byte_8034D70:
 	.byte 0x0, 0x0, 0xC, 0x0, 0xFF, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0
 	thumb_func_end cutscene_tryJackInOrJackOut_8034CB6
 
+// symdb: Overworld tick that starts the "L-button message" cutscene (CutsceneScriptLMessage_80991F4) when the L shoulder button is held, slip-run is not active, and the L-message story flag is not set.
+// symdb: () -> r0 = 1 if no cutscene was started (early-out), 0 if StartCutscene was invoked
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034D7C.yaml
 	thumb_local_start
 sub_8034D7C:
 	push {r4-r7,lr}
@@ -2267,6 +2274,11 @@ off_8034DAC:
 	.word CutsceneScriptLMessage_80991F4 // CutsceneScript
 	thumb_func_end sub_8034D7C
 
+// symdb: Picks and starts one of four cutscene scripts based on the overworld player coord interaction value, when not slip-run and not in a cutscene
+// symdb: () -> r0 = 0 on cutscene-started, 1 on no-op ; side effects: may call
+// symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, sub_8034E88, and StartCutscene to load
+// symdb: eS200AC80+4 as script
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034DB0.yaml
 	thumb_local_start
 sub_8034DB0:
 	push {r4-r7,lr}

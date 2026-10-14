@@ -1304,6 +1304,11 @@ overworldObj_testStateBit10_809DAF8:
 	mov pc, lr
 	thumb_func_end overworldObj_testStateBit10_809DAF8
 
+// symdb: Overworld-player per-frame check that, when the player's state halfword has bit 0x20 set, runs the four Sliprun event-flag guards and, on the slip-unlock combo, sets the unlock flags and plays a reward SFX.
+// symdb: (r5 = OWPlayer object ptr, r10 = toolkit ptr) -> r0 = preserved halfword & 0x20 ; side effects:
+// symdb: may set EVENT_IN_SLIPRUN_STATE / EVENT_173E and call PlaySoundEffect(0x35) when EVENT_173F is
+// symdb: unset, EVENT_1716 is set, and the player is in the slip-run state.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DB02.yaml
 	thumb_local_start
 sub_809DB02:
 	push {lr}
@@ -1855,6 +1860,9 @@ sub_809DF28:
 	pop {pc}
 	thumb_func_end sub_809DF28
 
+// symdb: Reads the player's frozen-animation byte from eStruct200ace0 and returns its current value.
+// symdb: () -> r0 = byte at eStruct200ace0+0 ; clobbers r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DF36.yaml
 	thumb_local_start
 sub_809DF36:
 	push {lr}
