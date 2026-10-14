@@ -5896,7 +5896,7 @@ void sub_804C3C4()
 
 
 // 0x804c404
-int sub_804C404()
+int battle_dispatchJumpByActorSlotAndAction_804C404()
 {
     int v0; // r5
     int v1; // r0
@@ -5933,12 +5933,12 @@ int sub_804C43C()
     *(v2 + 9) = 63;
     *(v2 + 10) = 23;
     *(v0 + 16) = 4;
-    return sub_804C478();
+    return battle_render_setBlurAndAnimUpdate_804C478();
 }
 
 
 // 0x804c478
-int sub_804C478()
+int battle_render_setBlurAndAnimUpdate_804C478()
 {
     int v0; // r5
     int v1; // r7

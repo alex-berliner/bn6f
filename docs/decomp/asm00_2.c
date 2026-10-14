@@ -7747,7 +7747,7 @@ int __fastcall battleObject_applyStatusEffectOnTurnEnd_80139F6(char *a1)
                     return sub_800FF5E(a1);
                 case 248:
                     sub_80140EE(a1);
-                    sub_80E08C4(0x100000, v1[13], v1[14], v1[15] + 0x100000);
+                    object_spawnRelatedChildEffect_80E08C4(0x100000, v1[13], v1[14], v1[15] + 0x100000);
                     a1 = PlaySoundEffect(142, v8, v9);
                     return sub_800FF5E(a1);
                 case 245:
@@ -9419,10 +9419,10 @@ int activateCrossHappensHere_8014944()
 
     if ( *(v0 + 3) )
     {
-        result = sub_801597C(*(v1 + 2));
+        result = battleObject_checkAIUnk0x48Flag0x80_801597C(*(v1 + 2));
         if ( !result )
         {
-            result = sub_801597C(*(v2 + 2));
+            result = battleObject_checkAIUnk0x48Flag0x80_801597C(*(v2 + 2));
             if ( !result )
             {
                 *v1 = -1;
@@ -9534,7 +9534,7 @@ void battle_runBeastTransformationAction_8014A38()
     unsigned __int8 *v1; // r7
     signed int v2; // r0
 
-    v2 = sub_801595E(*(v0 + 22));
+    v2 = battle_ai_getActorInfo_801595E(*(v0 + 22));
     if ( v2 < 1 || v2 > 24 )
     {
         ClearAIDataUnk0x48Flag(128);
@@ -9630,7 +9630,7 @@ int sub_8014B98()
         *(v1 + 16) = result;
         if ( result >= 0 )
             return result;
-        sub_801595E(*(v0 + 22));
+        battle_ai_getActorInfo_801595E(*(v0 + 22));
         sub_80BC844(*(v0 + 18), *(v0 + 19), v3, 20);
         *(v1 + 16) = 48;
         *(v1 + 48) = 0;
@@ -9690,7 +9690,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
         v3->ai->unk_68 = 0;
         v5 = sub_8013774(0, 44);
         sub_8011384(v5);
-        v6 = sub_801595E(v3->Alliance);
+        v6 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v7 = v6;
         v8 = sub_8013774(v6, 41);
         chip_class_lookup_800FC9E(v8, v7);
@@ -9705,7 +9705,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
         sprite_forceWhitePallete();
         object_setCoordinatesFromPanels(v3);
         *(v4 + 16) = 10;
-        v12 = sub_801595E(v3->Alliance);
+        v12 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v13 = sub_8013754(v12, 44, v12);
         v14 = sub_8013774(v13, 44);
         if ( v14 >= 1 && v14 <= 24 )
@@ -9835,7 +9835,7 @@ int sub_8014D70()
             *v6 |= 4u;
             v0->y += 12582912;
             sub_800AB2E(v0->Alliance, 2, 1);
-            v7 = sub_801595E(v0->Alliance);
+            v7 = battle_ai_getActorInfo_801595E(v0->Alliance);
             v9 = byte_1CC;
             if ( v7 != 11 )
                 v9 = byte_1CD;
@@ -9895,7 +9895,7 @@ int __cdecl sub_8014E08(int a1, int a2, int a3)
     {
         v5 = sub_8013774(*(v4 + 1), 44);
         sub_8011384(v5);
-        v6 = sub_801595E(v3->Alliance);
+        v6 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v7 = v6;
         v8 = sub_8013774(v6, 41);
         chip_class_lookup_800FC9E(v8, v7);
@@ -9910,7 +9910,7 @@ int __cdecl sub_8014E08(int a1, int a2, int a3)
         object_setCoordinatesFromPanels(v3);
         *(v4 + 16) = 10;
         sprite_forceWhitePallete();
-        v12 = sub_801595E(v3->Alliance);
+        v12 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v13 = sub_8013754(v12, 44, v12);
         sub_80E11E0(v13, v14, v15, v16);
         v19 = PlaySoundEffect(256, v17, v18);
@@ -10050,7 +10050,7 @@ int sub_8014FA8()
             *v6 |= 4u;
             v0->y += 12582912;
             sub_800AB2E(v0->Alliance, 2, 1);
-            v7 = sub_801595E(v0->Alliance);
+            v7 = battle_ai_getActorInfo_801595E(v0->Alliance);
             v9 = byte_1CC;
             if ( v7 >= 18 )
                 v9 = byte_1CD;
@@ -10107,7 +10107,7 @@ int sub_8015040()
     {
         v2 = sub_8013774(*(v1 + 1), 44);
         sub_8011384(v2);
-        v3 = sub_801595E(v0->Alliance);
+        v3 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v4 = v3;
         v5 = sub_8013774(v3, 41);
         chip_class_lookup_800FC9E(v5, v4);
@@ -10122,7 +10122,7 @@ int sub_8015040()
         object_setCoordinatesFromPanels(v0);
         *(v1 + 16) = 10;
         sprite_forceWhitePallete();
-        v9 = sub_801595E(v0->Alliance);
+        v9 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v10 = sub_8013754(v9, 44, v9);
         sub_80E11E0(v10, v11, v12, v13);
         v16 = PlaySoundEffect(256, v14, v15);
@@ -10257,7 +10257,7 @@ int __fastcall sub_80151D4(int a1, int a2, int a3)
         if ( result >= 0 )
             return result;
         SetAIDataUnk0x48Flag(0x80000);
-        v6 = sub_801595E(v3->Alliance) - 23;
+        v6 = battle_ai_getActorInfo_801595E(v3->Alliance) - 23;
         v7 = v6 << 17;
         v8 = (v6 + 63) | (v3->Alliance << 8);
         spawn_t1_0x0_EffectObject(v3, 0x200000, v3->x, v3->y, v3->z + 0x200000);
@@ -10275,7 +10275,7 @@ int __fastcall sub_80151D4(int a1, int a2, int a3)
                 *v15 |= 4u;
                 v3->y += 12582912;
                 sub_800AB2E(v3->Alliance, 2, 1);
-                v16 = sub_801595E(v3->Alliance);
+                v16 = battle_ai_getActorInfo_801595E(v3->Alliance);
                 v18 = byte_1CC;
                 if ( v16 != 23 )
                     v18 = byte_1CD;
@@ -10337,7 +10337,7 @@ int sub_80152C8()
     {
         v2 = sub_8013774(*(v1 + 1), 44);
         sub_8011384(v2);
-        v3 = sub_801595E(v0->Alliance);
+        v3 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v4 = v3;
         v5 = sub_8013774(v3, 41);
         chip_class_lookup_800FC9E(v5, v4);
@@ -10353,7 +10353,7 @@ int sub_80152C8()
         *(v1 + 16) = 10;
         battle_clearObjectStatusFlagsAndTimers_801A264();
         sprite_forceWhitePallete();
-        v9 = sub_801595E(v0->Alliance);
+        v9 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v10 = sub_8013754(v9, 44, v9);
         sub_80E11E0(v10, v11, v12, v13);
         v16 = PlaySoundEffect(256, v14, v15);
@@ -10468,7 +10468,7 @@ int sub_801544C()
         *(v1 + 16) = result;
         if ( result >= 0 )
             return result;
-        sub_801595E(*(v0 + 22));
+        battle_ai_getActorInfo_801595E(*(v0 + 22));
         sub_80BC844(*(v0 + 18), *(v0 + 19), v3, 20);
         *(v1 + 16) = 48;
         *(v1 + 48) = 0;
@@ -10538,7 +10538,7 @@ int sub_80154C8()
         sub_8011384(v3);
         v0->parent = 0;
         v0->ai->unk_68 = 0;
-        v4 = sub_801595E(v0->Alliance);
+        v4 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v5 = v4;
         v6 = sub_8013774(v4, 41);
         chip_class_lookup_800FC9E(v6, v5);
@@ -10553,7 +10553,7 @@ int sub_80154C8()
         object_setCoordinatesFromPanels(v0);
         *(v1 + 16) = 10;
         sprite_forceWhitePallete();
-        v10 = sub_801595E(v0->Alliance);
+        v10 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v11 = sub_8013754(v10, 44, v10);
         v12 = sub_8013774(v11, 44);
         if ( v12 >= 1 && v12 <= 24 )
@@ -10919,7 +10919,7 @@ int __fastcall sub_8015952(int result, char a2, char a3)
 
 
 // 0x801595e
-int __fastcall sub_801595E(int a1)
+int __fastcall battle_ai_getActorInfo_801595E(int a1)
 {
     unsigned __int8 *v1; // r3
     int result; // r0
@@ -10944,7 +10944,7 @@ int __fastcall sub_801596E(int result)
 
 
 // 0x801597c
-signed int __fastcall sub_801597C(signed int result)
+signed int __fastcall battleObject_checkAIUnk0x48Flag0x80_801597C(signed int result)
 {
     char v1; // r0
     signed int v2; // r2
@@ -15131,7 +15131,7 @@ void object_spawnCollisionEffect()
     {
         v3 = *(v0 + 52);
         v4 = sub_801BDDE(0xFu);
-        sub_80E08C4(v4, v5, v6, v7);
+        object_spawnRelatedChildEffect_80E08C4(v4, v5, v6, v7);
     }
 }
 
@@ -15157,7 +15157,7 @@ void sub_801A100()
         v4 = convertXYToPanelXY_800E258(v0[13]);
         object_getCoordinatesForPanels(v4);
         v5 = sub_801BDDE(0xFu);
-        sub_80E08C4(v5, v6, v7, v8);
+        object_spawnRelatedChildEffect_80E08C4(v5, v6, v7, v8);
     }
 }
 

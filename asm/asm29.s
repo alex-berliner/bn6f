@@ -1315,7 +1315,7 @@ off_80A57BC:
 	.word off_80A57C0
 off_80A57C0:
 	.word sub_80A57D0+1
-	.word sub_80A5828+1
+	.word battleObject_updateBeastOutPwrAtk_80A5828+1
 	.word sub_80A5888+1
 off_80A57CC:
 	.word unk_2011A90
@@ -1354,16 +1354,16 @@ sub_80A57D0:
 loc_80A581E:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A5828
+	bl battleObject_updateBeastOutPwrAtk_80A5828
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A57D0
 
 // symdb: Drives a beast-out Navi's per-tick PwrAtk hand-off animation: copies target coords, runs the hand-off sub-state until it finishes, then resets.
 // symdb: (r5 = BattleObject, r6 = AIData) -> void ; no return; writes AIData.Unk_07 (sub-state),
 // symdb: BattleObject.CurState/CurAction, then runs sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5828.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBeastOutPwrAtk_80A5828.yaml
 	thumb_local_start
-sub_80A5828:
+battleObject_updateBeastOutPwrAtk_80A5828:
 	push {r4-r7,lr}
 	ldrb r0, [r6,#7]
 	cmp r0, #0
@@ -1412,7 +1412,7 @@ loc_80A587E:
 	bl sub_80A5A5C
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5828
+	thumb_func_end battleObject_updateBeastOutPwrAtk_80A5828
 
 	thumb_local_start
 sub_80A5888:

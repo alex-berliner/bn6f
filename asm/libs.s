@@ -21745,22 +21745,22 @@ sub_814E1FC:
 // symdb: Runs the battle object's update routine (r1->r0,r3) and stores the returned charge-time byte into AIData.PwrAtkCurChargeTime (r1+0x1b).
 // symdb: (r0 = BattleObject*, r1 = AIData*) -> r0 = BattleObject*, flags untouched ; no side effects
 // symdb: beyond the strb at r1+0x1b
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E210.yaml
-	thumb_func_start sub_814E210
-sub_814E210:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runChargeTickAndStoreChargeTime_814E210.yaml
+	thumb_func_start battleObject_runChargeTickAndStoreChargeTime_814E210
+battleObject_runChargeTickAndStoreChargeTime_814E210:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0x1b]
 	bx r12
 	.balign 4, 0x00
-	thumb_func_end sub_814E210
+	thumb_func_end battleObject_runChargeTickAndStoreChargeTime_814E210
 
 // symdb: Marks AIData Unk_18 = 0 and sets the OBJECT_FLAG_DIRTY (bit 0x80) on the owning BattleObject so the next AI tick re-evaluates, then returns to caller via r12.
 // symdb: (r0 = unk, r1 = AIDataPtr, r2 = unk, r3 = unk) -> ; no caller-visible return; side effects:
 // symdb: writes [r1+0x18] = r3 and ORs 0x80 into [r1+0]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E21C.yaml
-	thumb_func_start sub_814E21C
-sub_814E21C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_markAIDataUnk18AndMarkDirty_814E21C.yaml
+	thumb_func_start battleObject_markAIDataUnk18AndMarkDirty_814E21C
+battleObject_markAIDataUnk18AndMarkDirty_814E21C:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	ldrb r0, [r1,#0x18]
@@ -21773,7 +21773,7 @@ sub_814E21C:
 	strb r3, [r1]
 loc_814E232:
 	bx r12
-	thumb_func_end sub_814E21C
+	thumb_func_end battleObject_markAIDataUnk18AndMarkDirty_814E21C
 
 // symdb: Fetches the next glyph code from the text stream and writes it (minus 0x40) into a print-buffer state record, flagging the record as holding a glyph.
 // symdb: void chatbox_PrintBuffer_WriteNextGlyph(void* fontCtx /* r0 */, PrintBuffer* pb /* r1 */)
@@ -22649,9 +22649,9 @@ streamReadNextByte_814E7C0:
 // symdb: Reads the next byte from a stream into the AIData struct's ChipLockoutTimer (0x19), and resets version/charge flags when the byte is zero
 // symdb: (r0 = AIDataPtr, r1 = stream/state ptr) -> r0 = AIDataPtr unchanged ; side effects writes
 // symdb: AIDataPtr[0x19]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7CC.yaml
-	thumb_func_start sub_814E7CC
-sub_814E7CC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiData_processStreamByte_814E7CC.yaml
+	thumb_func_start battle_aiData_processStreamByte_814E7CC
+battle_aiData_processStreamByte_814E7CC:
 	mov r12, lr
 	bl streamReadNextByte_814E7C0
 	strb r3, [r1,#0x19]
@@ -22661,7 +22661,7 @@ sub_814E7CC:
 loc_814E7DC:
 	bx r12
 	.byte 0, 0
-	thumb_func_end sub_814E7CC
+	thumb_func_end battle_aiData_processStreamByte_814E7CC
 
 // symdb: Reads one byte from a battle byte stream (via r1) into AIData.Version_17 (r0+0x17), and resets Version_16/charge flags via sub_814E7A4 when the byte is 0.
 // symdb: (r0 = AIData*, r1 = byte stream ptr) -> r0 = AIData* ; writes byte to [r0+0x17], conditionally
@@ -23284,7 +23284,7 @@ cgbSoundInit_814EB84:
 	ldr r1, off_814EC60 // =off_3005570 
 	ldr r0, off_814EC64 // =sub_814FBFC+1 
 	str r0, [r1,#0x20] // (off_3005590 - 0x3005570)
-	ldr r0, off_814EC68 // =sub_814E7CC+1 
+	ldr r0, off_814EC68 // =battle_aiData_processStreamByte_814E7CC+1 
 	str r0, [r1,#0x44] // (off_30055B4 - 0x3005570)
 	ldr r0, off_814EC6C // =sub_814E7E0+1 
 	str r0, [r1,#0x4c] // (off_30055BC - 0x3005570)
@@ -23362,7 +23362,7 @@ off_814EC60:
 off_814EC64:
 	.word sub_814FBFC+1
 off_814EC68:
-	.word sub_814E7CC+1
+	.word battle_aiData_processStreamByte_814E7CC+1
 off_814EC6C:
 	.word sub_814E7E0+1
 off_814EC70:

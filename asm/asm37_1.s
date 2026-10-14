@@ -199,7 +199,7 @@ loc_81419CC:
 	ldrb r0, [r0,#oGameState_SubsystemIndex]
 	cmp r0, #4
 	bne loc_8141A0C
-	bl sub_8141AD2
+	bl battle_canBeastOut_8141AD2
 	bne loc_8141A08
 	bl battle_beastSpEvolveStep_8141A10
 	b loc_8141A0C
@@ -338,9 +338,9 @@ loc_8141ACE:
 // symdb: Returns 0 when beast-out is allowed for the player's current location, 1 otherwise (used to gate the beast-out input handling)
 // symdb: () -> r0 = bool (0 = beast-out permitted, 1 = not permitted) ; side effects: reads toolkit
 // symdb: GameState->MapGroup and an AIData[0x11]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141AD2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_canBeastOut_8141AD2.yaml
 	thumb_local_start
-sub_8141AD2:
+battle_canBeastOut_8141AD2:
 	push {r4-r7,lr}
 	movflag EVENT_701
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -545,7 +545,7 @@ byte_8141F5D:
 byte_8141F64:
 	.byte 0x5, 0xE, 0x0, 0x0, 0x0, 0x0, 0xA0, 0x1, 0x0, 0x0, 0xEE, 0xFE, 0x0, 0x0
 	.byte 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0
-	thumb_func_end sub_8141AD2
+	thumb_func_end battle_canBeastOut_8141AD2
 
 	thumb_local_start
 sub_8141F7C:

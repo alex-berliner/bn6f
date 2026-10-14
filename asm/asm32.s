@@ -2786,16 +2786,16 @@ sub_810F0C0:
 off_810F0D0:
 	.word off_810F0D4
 off_810F0D4:
-	.word sub_810F0D8+1
+	.word battle_aiBeastOutTick_810F0D8+1
 	thumb_func_end sub_810F0C0
 
 // symdb: Beast-Out AI tick step: when the beast-AI flag is set, advance the turn counter and queue an attack; otherwise countdown and either pick a chip attack or queue a counter/decide.
 // symdb: (r4 = AIData, r5 = BattleObject, r6 = AIState, r7 = AIAttackVars) -> void ; side effects:
 // symdb: AIAttackVars (damage/flags/cmd), object_setAttack0, possibly sub_80103F8 reads from the
 // symdb: opposite-ally battle object.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810F0D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiBeastOutTick_810F0D8.yaml
 	thumb_local_start
-sub_810F0D8:
+battle_aiBeastOutTick_810F0D8:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	cmp r0, #0
@@ -2888,7 +2888,7 @@ byte_810F192:
 byte_810F1A4:
 	.byte 0x14, 0x14, 0x14, 0x14, 0x14, 0x14, 0xA, 0xA, 0xA
 	.byte 0xA, 0xA, 0xA, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1
-	thumb_func_end sub_810F0D8
+	thumb_func_end battle_aiBeastOutTick_810F0D8
 
 // symdb: Per-actor AI helper that fires a selected battle chip when charge/threshold gates pass.
 // symdb: (r5 = battle object AI data ptr?, r10 = toolkit, r7/r4/r6 = preserved callee-saved) -> r0 = 1 if
@@ -17812,9 +17812,9 @@ dword_811710C:
 // symdb: Beast-out action dispatcher: jumps to one of three handlers selected by `AIData.Unk_08` (the B-Left ability) on the current battle object
 // symdb: (r5 = AIData pointer) -> r0/r1/r2/r3 = whatever the chosen handler returns ; side effects: jumps
 // symdb: to a routine via the function pointer table at off_8117124, returns its result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117110.yaml
-	thumb_func_start sub_8117110
-sub_8117110:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchBeastOutAction_8117110.yaml
+	thumb_func_start battleObject_dispatchBeastOutAction_8117110
+battleObject_dispatchBeastOutAction_8117110:
 	push {lr}
 	ldr r0, off_8117120 // =off_8117124
 	ldrb r1, [r5,#8]
@@ -17829,7 +17829,7 @@ off_8117124:
 	.word sub_8117130+1
 	.word sub_81171B4+1
 	.word sub_81171CC+1
-	thumb_func_end sub_8117110
+	thumb_func_end battleObject_dispatchBeastOutAction_8117110
 
 	thumb_local_start
 sub_8117130:
@@ -17916,9 +17916,9 @@ sub_81171CC:
 // symdb: (r0 = posX/u16, r1 = posY/u16, r2 = eStructArr2008450 index, lr = return) -> r0 = r0
 // symdb: (unchanged), flags unknown; side effects: writes object sprite X/Y for object at
 // symdb: eStructArr2008450[r2] when its in-use flag is non-zero
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81171D4.yaml
-	thumb_func_start sub_81171D4
-sub_81171D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4.yaml
+	thumb_func_start battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4
+battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r0, [sp]
@@ -17934,7 +17934,7 @@ loc_81171EE:
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81171D4
+	thumb_func_end battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4
 
 // symdb: Sets or clears bit 1 of the byte at offset 0x6 of the eStructArr2008450 entry whose index is in r1, depending on the flag in r0; bails out if the entry is not in use.
 // symdb: (r0 = bool flag, r1 = entry index into eStructArr2008450) -> no return value ; side effect: bit
@@ -20454,7 +20454,7 @@ loc_8118454:
 	bl sprite_disableAlpha
 	bl sprite_zeroColorShader
 	bl battleObject_setPaletteFromOffsetTable_81185E4
-	bl sub_8118604
+	bl battleObject_updateBeastSpSlotMask_8118604
 	pop {r4-r7,pc}
 	thumb_func_end beastOutOrProgramAdvanceSetTransform_811842C
 
@@ -20478,7 +20478,7 @@ loc_8118496:
 	strb r4, [r5]
 	bl sub_81186A8
 	bl battleObject_setPaletteFromOffsetTable_81185E4
-	bl sub_8118604
+	bl battleObject_updateBeastSpSlotMask_8118604
 	pop {r4-r7,pc}
 	thumb_func_end sub_811847C
 
@@ -20676,9 +20676,9 @@ battleObject_setPaletteFromOffsetTable_81185E4:
 // symdb: For each battle-object beast-sp row, OR-clears the corresponding bit of a slot mask and writes the resulting u32 to the object's sprite Unk0x2c.
 // symdb: (r5 = ?, r6 = battleObject*, r10 = toolkit*) -> r0 = 0x7F7BFFFF ; clobbers r0-r3,r7 ; side
 // symdb: effects: writes ObjectSprite+0x2c via sprite_setUnk0x2c
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118604.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBeastSpSlotMask_8118604.yaml
 	thumb_local_start
-sub_8118604:
+battleObject_updateBeastSpSlotMask_8118604:
 	push {r4-r7,lr}
 	ldrh r0, [r6,#0x3a]
 	ldrh r1, [r6,#0x38]
@@ -20722,7 +20722,7 @@ loc_8118648:
 	bl sprite_setUnk0x2c
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8118604
+	thumb_func_end battleObject_updateBeastSpSlotMask_8118604
 
 	thumb_local_start
 sub_8118658:
@@ -32047,7 +32047,7 @@ off_811E164:
 
 // symdb: AI state-machine dispatcher that jumps (ARM-mode BX) to one of three handlers based on a sub-state byte in the AIData pointed to by r5
 // symdb: (r5 = AIData*, lr = return addr) -> r0 = AIData+0x8 byte used as index into 3-entry handler
-// symdb: table ; side effects: tail-bx into one of sub_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
+// symdb: table ; side effects: tail-bx into one of sub_811E18C / battleObject_setCoordsAndUpdateSprite_811E1D4 / sub_811E1FA (Thumb),
 // symdb: preserves r5 (callee-saved)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiState_dispatchStateMachine_811E168.yaml
 	thumb_func_start battle_aiState_dispatchStateMachine_811E168
@@ -32065,7 +32065,7 @@ off_811E178:
 	.word off_811E17C
 off_811E17C:
 	.word sub_811E18C+1
-	.word sub_811E1D4+1
+	.word battleObject_setCoordsAndUpdateSprite_811E1D4+1
 	.word sub_811E1FA+1
 off_811E188:
 	.word eStruct2001010
@@ -32094,7 +32094,7 @@ sub_811E18C:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811E1D4
+	bl battleObject_setCoordsAndUpdateSprite_811E1D4
 	pop {pc}
 	.balign 4, 0
 off_811E1D0:
@@ -32104,9 +32104,9 @@ off_811E1D0:
 // symdb: BattleObject stage-update: toggle a header flag from AIData Unk_0e, snap sprite to (0xCC, 0x1E) and refresh.
 // symdb: (r5 = BattleObject*, r6 = AIData*) -> void ; side effects: mutates BattleObject header byte 0
 // symdb: (bit1), calls into sub_811E202 / sprite_setCoordinates(0xCC, 0x1E) / sprite_update.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E1D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setCoordsAndUpdateSprite_811E1D4.yaml
 	thumb_local_start
-sub_811E1D4:
+battleObject_setCoordsAndUpdateSprite_811E1D4:
 	push {lr}
 	ldrb r4, [r5]
 	mov r1, #2
@@ -32125,7 +32125,7 @@ loc_811E1E6:
 	bl sprite_setCoordinates
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811E1D4
+	thumb_func_end battleObject_setCoordsAndUpdateSprite_811E1D4
 
 	thumb_local_start
 sub_811E1FA:

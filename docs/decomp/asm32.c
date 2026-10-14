@@ -1899,7 +1899,7 @@ int sub_810F0C0()
 
 
 // 0x810f0d8
-void sub_810F0D8()
+void battle_aiBeastOutTick_810F0D8()
 {
     int v0; // r4
     int v1; // r5
@@ -11659,7 +11659,7 @@ int __fastcall sub_81170C0(char a1)
 
 
 // 0x8117110
-int sub_8117110()
+int battleObject_dispatchBeastOutAction_8117110()
 {
     int v0; // r5
 
@@ -11717,7 +11717,7 @@ int sub_81171CC()
 
 
 // 0x81171d4
-int __fastcall sub_81171D4(int a1, __int16 a2, int a3)
+int __fastcall battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -13317,7 +13317,7 @@ int beastOutOrProgramAdvanceSetTransform_811842C()
     sprite_disableAlpha();
     sprite_zeroColorShader();
     battleObject_setPaletteFromOffsetTable_81185E4();
-    return sub_8118604();
+    return battleObject_updateBeastSpSlotMask_8118604();
 }
 
 
@@ -13344,7 +13344,7 @@ int sub_811847C()
     *v0 = v2;
     sub_81186A8();
     battleObject_setPaletteFromOffsetTable_81185E4();
-    return sub_8118604();
+    return battleObject_updateBeastSpSlotMask_8118604();
 }
 
 
@@ -13528,7 +13528,7 @@ void battleObject_setPaletteFromOffsetTable_81185E4()
 
 
 // 0x8118604
-int sub_8118604()
+int battleObject_updateBeastSpSlotMask_8118604()
 {
     int v0; // r6
     _BYTE *v1; // r7
@@ -20297,12 +20297,12 @@ void __fastcall __noreturn sub_811E18C(int a1, int a2)
     sprite_setPriority_8002E14(1);
     sprite_setPallete(0);
     v2->currState = 4;
-    sub_811E1D4();
+    battleObject_setCoordsAndUpdateSprite_811E1D4();
 }
 
 
 // 0x811e1d4
-void __noreturn sub_811E1D4()
+void __noreturn battleObject_setCoordsAndUpdateSprite_811E1D4()
 {
     Battle *v0; // r5
     int v1; // r6

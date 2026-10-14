@@ -11252,7 +11252,7 @@ loc_8013A94:
 	ldr r0, dword_8013CB0 // =0x100000 
 	add r3, r3, r0
 	mov r4, #0xe
-	bl sub_80E08C4
+	bl object_spawnRelatedChildEffect_80E08C4
 	mov r0, #0x8e
 	bl PlaySoundEffect
 	b loc_8013ADC
@@ -13491,11 +13491,11 @@ loc_8014964:
 	b locret_801498C
 loc_801496A:
 	ldr r0, [r6,#8]
-	bl sub_801597C
+	bl battleObject_checkAIUnk0x48Flag0x80_801597C
 	tst r0, r0
 	bne locret_801498C
 	ldr r0, [r7,#8]
-	bl sub_801597C
+	bl battleObject_checkAIUnk0x48Flag0x80_801597C
 	tst r0, r0
 	bne locret_801498C
 	mov r0, #0xff
@@ -13614,7 +13614,7 @@ locret_8014A36:
 battle_runBeastTransformationAction_8014A38:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	cmp r0, #1
 	blt loc_8014AA8
 	cmp r0, #0x18
@@ -13784,7 +13784,7 @@ sub_8014B98:
 	b locret_8014BEC
 loc_8014BAA:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r4, r0
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -13838,7 +13838,7 @@ battle_runTransformationIntroStep_8014BEE:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	push {r0}
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -13860,7 +13860,7 @@ battle_runTransformationIntroStep_8014BEE:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14029,7 +14029,7 @@ loc_8014D82:
 	mov r2, #1
 	bl sub_800AB2E
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_8014DFC // =0x1cc 
 	cmp r0, #0xb
 	beq loc_8014DD0
@@ -14082,7 +14082,7 @@ sub_8014E08:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	push {r0}
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14104,7 +14104,7 @@ sub_8014E08:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14300,7 +14300,7 @@ loc_8014FBA:
 	mov r2, #1
 	bl sub_800AB2E
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_8015034 // =0x1cc 
 	cmp r0, #0x12
 	blt loc_8015008
@@ -14348,7 +14348,7 @@ sub_8015040:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	push {r0}
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14370,7 +14370,7 @@ sub_8015040:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14527,7 +14527,7 @@ loc_80151E6:
 	ldr r0, dword_80152B0 // =0x80000 
 	bl SetAIDataUnk0x48Flag
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	sub r0, #0x17
 	lsl r6, r0, #0x11
 	mov r4, #0x3f 
@@ -14580,7 +14580,7 @@ loc_80151E6:
 	mov r2, #1
 	bl sub_800AB2E
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_80152C0 // =0x1cc 
 	cmp r0, #0x17
 	beq loc_801526E
@@ -14643,7 +14643,7 @@ sub_80152C8:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	push {r0}
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14666,7 +14666,7 @@ sub_80152C8:
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14812,7 +14812,7 @@ sub_801544C:
 	b locret_80154C6
 loc_801545E:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	sub r0, #0xc
 	mov r4, r0
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -14888,7 +14888,7 @@ loc_80154E2:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	str r0, [r1,#oAIData_Unk_68]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	push {r0}
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -14910,7 +14910,7 @@ loc_80154E2:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_801595E
+	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
@@ -15400,9 +15400,9 @@ sub_8015952:
 
 // symdb: Reads three AIData fields (ActorType, AIIndex, Unk_03) for the AI slot given by r0 and returns them in r0/r1/r3.
 // symdb: (r0 = aiSlotIndex) -> r0 = ActorType, r1 = AIIndex, r3 = Unk_03 ; side effects: none (leaf)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801595E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_getActorInfo_801595E.yaml
 	thumb_local_start
-sub_801595E:
+battle_ai_getActorInfo_801595E:
 	mov r3, #0x10
 	mul r3, r0
 	ldr r0, off_8015B3C // =unk_203A980 
@@ -15411,7 +15411,7 @@ sub_801595E:
 	ldrb r1, [r3,#1]
 	ldrb r3, [r3,#3]
 	mov pc, lr
-	thumb_func_end sub_801595E
+	thumb_func_end battle_ai_getActorInfo_801595E
 
 	thumb_local_start
 sub_801596E:
@@ -15426,9 +15426,9 @@ locret_801597A:
 
 // symdb: Returns 1 if battle object AIData has Unk_48 & 0x80 set, else 0 (nullptr-safe).
 // symdb: (r0 = *BattleObject) -> r0 = 0 or 1 ; side effects: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801597C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkAIUnk0x48Flag0x80_801597C.yaml
 	thumb_local_start
-sub_801597C:
+battleObject_checkAIUnk0x48Flag0x80_801597C:
 	push {r5,lr}
 	mov r5, r0
 	beq locret_8015992
@@ -15442,7 +15442,7 @@ loc_8015990:
 	mov r0, r2
 locret_8015992:
 	pop {r5,pc}
-	thumb_func_end sub_801597C
+	thumb_func_end battleObject_checkAIUnk0x48Flag0x80_801597C
 
 	thumb_local_start
 sub_8015994:
@@ -22406,7 +22406,7 @@ object_spawnCollisionEffect:
 	ldmia r0!, {r1-r3}
 	mov r0, #0xf
 	bl AddRandomVarianceToTwoCoords
-	bl sub_80E08C4
+	bl object_spawnRelatedChildEffect_80E08C4
 locret_801A0FE:
 	pop {r4,r6,pc}
 	thumb_func_end object_spawnCollisionEffect
@@ -22436,7 +22436,7 @@ sub_801A100:
 	lsl r3, r3, #0x10
 	mov r0, #0xf
 	bl AddRandomVarianceToTwoCoords
-	bl sub_80E08C4
+	bl object_spawnRelatedChildEffect_80E08C4
 locret_801A138:
 	pop {r4,r6,pc}
 	.balign 4, 0

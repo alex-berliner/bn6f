@@ -669,7 +669,7 @@ loc_802696E:
 	ldr r0, [sp]
 	mov r1, #0
 	mov r2, #1
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	pop {r1}
 	sub r1, #1
 	bpl loc_802696E
@@ -2326,7 +2326,7 @@ loc_802748E:
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	bl sub_8028476
 	mov r0, #0x97
 	add r0, #0xff
@@ -3035,7 +3035,7 @@ loc_80279D8:
 	mov r1, #1
 loc_80279E6:
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	sub r4, #1
 	bpl loc_80279D8
 	bl customScreen_ExitSequence_8028E32
@@ -5652,7 +5652,7 @@ sub_8028CCC:
 	sub r0, #1
 	mov r1, #1
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	ldrb r0, [r5,#7]
 	bl sprite_clearObjVramEntry_8028238
 	mov r0, #2
@@ -5747,7 +5747,7 @@ sub_8028D6C:
 	sub r0, #1
 	mov r1, #1
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 
@@ -6230,7 +6230,7 @@ loc_8029066:
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	bl battle_ClearPendingEventFlag_802A0EC
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
@@ -6261,7 +6261,7 @@ loc_80290C2:
 	ldrb r0, [r5,#8]
 	mov r1, #0
 	mov r2, #0
-	bl sub_8029CD4
+	bl customScreen_redrawChipSlot_8029CD4
 	ldrb r0, [r4,#5]
 	cmp r0, #0
 	beq loc_80290F2
@@ -8120,9 +8120,9 @@ byte_8029CAC:
 // symdb: (r0 = rowIndex, r1 = colIndex, r2 = drawFlag, r10 = toolkit) -> void ; writes 4 halfwords into
 // symdb: unk_2035000 + offset; on r2==0 calls CopyBackgroundTiles; side-effect: tweaks unk_2035000 tile-
 // symdb: id table and copies 0xA×0xF of tile data from unk_203505A
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029CD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_redrawChipSlot_8029CD4.yaml
 	thumb_local_start
-sub_8029CD4:
+customScreen_redrawChipSlot_8029CD4:
 	push {r4-r6,lr}
 	mov r4, #0x89
 	lsl r1, r1, #1
@@ -8171,7 +8171,7 @@ off_8029D28:
 	.word 0x3FF
 off_8029D30:
 	.word unk_2035000
-	thumb_func_end sub_8029CD4
+	thumb_func_end customScreen_redrawChipSlot_8029CD4
 
 // symdb: While a battle is ending, swaps the background tile block 3 strip for the ending sequence, or delegates to a late-phase handler past phase 0x1C.
 // symdb: void battle_endingBgUpdate_8029D34(void) // r5=battle_state (phase @ +0x40, &0x1F), r4 forwarded
@@ -23343,7 +23343,7 @@ dword_8030C40:
 	.word sub_8031420+1 // 0x05 corner right
 	.word sub_8031478+1 // 0x06 corner down
 	.word sub_80314CC+1 // 0x07 corner up
-	.word sub_8031520+1 // 0x08 corner left
+	.word battle_scrollAdvanceByPanelStep_8031520+1 // 0x08 corner left
 	.word sub_80311F4+1 // 0x09 vertical right
 	.word camera_initAndActivate_803123E+1 // 0x0a horizontal down
 	.word sub_8031264+1 // 0x0b horizontal up
@@ -24633,9 +24633,9 @@ locret_803151E:
 // symdb: (r0 = BattleState ptr, r1 = scroll counter/state, r2 = ???, r12 = accumulated result bitmask, r5
 // symdb: = ???) -> r0 = BattleState ptr, r12 = updated bitmask ; mutates camera scroll via
 // symdb: camera_moveByDelta_80310B0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031520.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollAdvanceByPanelStep_8031520.yaml
 	thumb_local_start
-sub_8031520:
+battle_scrollAdvanceByPanelStep_8031520:
 	push {lr}
 	push {r0-r2,r5}
 	bl battle_scrollAccumulateStep_8031176
@@ -24673,7 +24673,7 @@ loc_8031550:
 	pop {r0-r2,r5}
 locret_803156E:
 	pop {pc}
-	thumb_func_end sub_8031520
+	thumb_func_end battle_scrollAdvanceByPanelStep_8031520
 
 	thumb_local_start
 sub_8031570:

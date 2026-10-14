@@ -878,7 +878,7 @@ _BYTE *__fastcall battleObject_collectTargetsInRegion_813BD90(int a1, int a2, in
                                     ++v17;
                                     if ( ++v16 >= 49 )
                                     {
-                                        sub_813C624(v15, v23, v11);
+                                        beastAi_getAttackTypeAffinity_813C624(v15, v23, v11);
                                         if ( !v19 )
                                             *v22++ = v18;
                                         break;
@@ -1566,7 +1566,7 @@ LABEL_13:
 
 
 // 0x813c624
-void __fastcall sub_813C624(int a1, int a2, int a3)
+void __fastcall beastAi_getAttackTypeAffinity_813C624(int a1, int a2, int a3)
 {
     int v3; // r1
 

@@ -86459,9 +86459,9 @@ loc_80E08BE:
 // symdb: Spawns a battle effect object of type 4 (with caller params) and links it to the caller battle object via RelatedObject1Ptr, copying Alliance.
 // symdb: (r0 = type-related param, r1 = sub-param, r2 = sub-param, r3 = sub-param, r5 = caller battle
 // symdb: object) -> r0 = new battle object pointer (or 0 if spawn failed)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E08C4.yaml
-	thumb_func_start sub_80E08C4
-sub_80E08C4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_spawnRelatedChildEffect_80E08C4.yaml
+	thumb_func_start object_spawnRelatedChildEffect_80E08C4
+object_spawnRelatedChildEffect_80E08C4:
 	push {lr}
 	push {r5}
 	mov r0, #4
@@ -86477,7 +86477,7 @@ locret_80E08DA:
 	.balign 4, 0
 off_80E08DC:
 	.word off_80E0804
-	thumb_func_end sub_80E08C4
+	thumb_func_end object_spawnRelatedChildEffect_80E08C4
 
 	thumb_func_start nullsub_99
 nullsub_99:
@@ -88186,7 +88186,7 @@ loc_80E159A:
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	cmp r0, #0
 	bne loc_80E15F4
-	bl sub_80E1670
+	bl battle_ai_findEnemyTargets_80E1670
 	mov r4, r0
 	ldrh r0, [r4,#oBattleObject_NameID]
 	ldr r1, dword_80E17DC // =0x173 
@@ -88313,9 +88313,9 @@ battleObject_clearAIDataUnknown_80E1662:
 // symdb: (r5 = self BattleObject, r10 = Toolkit) -> r0 = 0 (Alliance-precomputed count of stored slots),
 // symdb: r5 preserved ; side effects: writes a 0x34-byte scratch buffer on the stack and queries
 // symdb: object_getEnemyByNameRange plus three sub_80E16CC probes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_findEnemyTargets_80E1670.yaml
 	thumb_local_start
-sub_80E1670:
+battle_ai_findEnemyTargets_80E1670:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x34
 	mov r4, sp
@@ -88356,7 +88356,7 @@ loc_80E16BA:
 	.word byte_80E16C4
 byte_80E16C4:
 	.byte 0xA0, 0xA4, 0xAC, 0xB0, 0xB4, 0xB8, 0xBC, 0xFF
-	thumb_func_end sub_80E1670
+	thumb_func_end battle_ai_findEnemyTargets_80E1670
 
 	thumb_local_start
 sub_80E16CC:

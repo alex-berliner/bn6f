@@ -5388,7 +5388,7 @@ int __fastcall battle_alignRowCheck_81348DC(int a1, int a2, int a3, int a4)
         }
         else
         {
-            sub_81171D4(a2 - 8 * *(v5 + 24), v12 + 16 * v10, v13);
+            battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4(a2 - 8 * *(v5 + 24), v12 + 16 * v10, v13);
             result = battleObject_setFlags6Bit_81171F4(0, v13);
         }
     }
@@ -5425,7 +5425,7 @@ int __fastcall battle_aiCheckPanelRangeAndDoAttack_8134930(int a1, int a2, int a
         }
         else
         {
-            sub_81171D4(a2 - 8 * *(v5 + 24), v13 + 16 * v11, v6);
+            battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4(a2 - 8 * *(v5 + 24), v13 + 16 * v11, v6);
             result = battleObject_setFlags6Bit_81171F4(0, v6);
         }
     }
@@ -5440,7 +5440,7 @@ int __fastcall sub_81349B4(int a1, int a2, __int16 a3, int a4)
     int v5; // ST0C_4
 
     v5 = a4;
-    sub_81171D4(a2 - 8 * *(v4 + 24), a3 + 16 * *(v4 + a1), a4);
+    battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4(a2 - 8 * *(v4 + 24), a3 + 16 * *(v4 + a1), a4);
     return battleObject_setFlags6Bit_81171F4(0, v5);
 }
 

@@ -746,12 +746,12 @@ void __noreturn sub_80A57D0()
     if ( !v3 )
         sub_80A5A1C();
     *(v0 + 8) = 4;
-    sub_80A5828();
+    battleObject_updateBeastOutPwrAtk_80A5828();
 }
 
 
 // 0x80a5828
-void __noreturn sub_80A5828()
+void __noreturn battleObject_updateBeastOutPwrAtk_80A5828()
 {
     int v0; // r5
     int v1; // r6

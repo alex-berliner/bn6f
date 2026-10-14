@@ -46119,10 +46119,10 @@ off_81C0418::
 	.word sprite_moveYUp64AndMarkDirty_814E1D4+1
 	.word battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8+1
 	.word sub_814E1FC+1
-	.word sub_814E7CC+1
-	.word sub_814E210+1
+	.word battle_aiData_processStreamByte_814E7CC+1
+	.word battleObject_runChargeTickAndStoreChargeTime_814E210+1
 	.word sub_814E7E0+1
-	.word sub_814E21C+1
+	.word battleObject_markAIDataUnk18AndMarkDirty_814E21C+1
 	.word ply_fine+1
 	.word ply_fine+1
 	.word chatbox_PrintBuffer_WriteNextGlyph_814E234+1

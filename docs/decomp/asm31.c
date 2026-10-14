@@ -66515,7 +66515,7 @@ void __noreturn sprite_updateDestroyWhenAnimEnds_80E08A6()
 
 
 // 0x80e08c4
-Battle *__fastcall sub_80E08C4(int a1, int a2, int a3, int a4)
+Battle *__fastcall object_spawnRelatedChildEffect_80E08C4(int a1, int a2, int a3, int a4)
 {
     Battle *v4; // r5
     Battle *result; // r0
@@ -67740,7 +67740,7 @@ void battleObject_snakeArmTick_80E1566()
             goto LABEL_24;
         if ( !*(v0 + 100) )
         {
-            v4 = sub_80E1670();
+            v4 = battle_ai_findEnemyTargets_80E1670();
             v5 = v4;
             v6 = *(v4 + 40);
             if ( v6 < 371 || v6 > &byte_178 || *(v5 + 16) != 79 )
@@ -67855,7 +67855,7 @@ int battleObject_clearAIDataUnknown_80E1662()
 
 
 // 0x80e1670
-int sub_80E1670()
+int battle_ai_findEnemyTargets_80E1670()
 {
     int v0; // r5
     int result; // r0

@@ -9361,7 +9361,7 @@ loc_8134912:
 	lsl r2, r2, #4
 	add r1, r1, r2
 	ldr r2, [sp,#0xc]
-	bl sub_81171D4
+	bl battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0xc]
 	bl battleObject_setFlags6Bit_81171F4
@@ -9374,7 +9374,7 @@ loc_813492A:
 // symdb: Checks an actor's panel position against a target's column/row index and triggers a panel-based attack if aligned.
 // symdb: (r0 = HP-offset 0x24, r1 = x-offset 0xA5, r2 = alliance/whatever-offset 0x28, r3 = attacker-flag
 // symdb: index, r5 = BattleObject ptr, r7 = AIAttackVars ptr) -> r0 = 0x20 if HP-bit set, 0x40 if not (or
-// symdb: 1 on branch); calls sub_81171F4/sub_81171D4 on AIAttackVars
+// symdb: 1 on branch); calls sub_81171F4/battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4 on AIAttackVars
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiCheckPanelRangeAndDoAttack_8134930.yaml
 	thumb_func_start battle_aiCheckPanelRangeAndDoAttack_8134930
 battle_aiCheckPanelRangeAndDoAttack_8134930:
@@ -9418,7 +9418,7 @@ loc_8134972:
 	lsl r2, r2, #4
 	add r1, r1, r2
 	ldr r2, [sp,#0x10]
-	bl sub_81171D4
+	bl battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0x10]
 	bl battleObject_setFlags6Bit_81171F4
@@ -9459,7 +9459,7 @@ sub_81349B4:
 	lsl r2, r2, #4
 	add r1, r1, r2
 	ldr r2, [sp,#0xc]
-	bl sub_81171D4
+	bl battleObject_setSpriteCoordsFromEStructEntryIfActive_81171D4
 	mov r0, #0
 	ldr r1, [sp,#0xc]
 	bl battleObject_setFlags6Bit_81171F4

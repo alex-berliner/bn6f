@@ -10194,7 +10194,7 @@ int __fastcall sub_814E1FC(int a1, int a2)
 
 
 // 0x814e210
-int __fastcall sub_814E210(int a1, int a2)
+int __fastcall battleObject_runChargeTickAndStoreChargeTime_814E210(int a1, int a2)
 {
     int v2; // r1
     char v3; // r3
@@ -10207,7 +10207,7 @@ int __fastcall sub_814E210(int a1, int a2)
 
 
 // 0x814e21c
-int __fastcall sub_814E21C(int a1, int a2)
+int __fastcall battleObject_markAIDataUnk18AndMarkDirty_814E21C(int a1, int a2)
 {
     _BYTE *v2; // r1
     int v3; // r3
@@ -10853,7 +10853,7 @@ void __fastcall streamReadNextByte_814E7C0(int a1, int a2)
 
 
 // 0x814e7cc
-int __fastcall sub_814E7CC(int a1, int a2)
+int __fastcall battle_aiData_processStreamByte_814E7CC(int a1, int a2)
 {
     int v2; // r0
     _BYTE *v3; // r1
@@ -11225,7 +11225,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
     {
         **byte_3007FF0 = 1752395092;
         off_3005590 = sub_814FBFC;
-        off_30055B4 = sub_814E7CC;
+        off_30055B4 = battle_aiData_processStreamByte_814E7CC;
         off_30055BC = sub_814E7E0;
         off_30055E0 = sub_814FD54;
         off_30055E4 = sub_814E758;

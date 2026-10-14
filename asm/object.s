@@ -6233,7 +6233,7 @@ object_spawnHiteffect:
 	mov r0, #0xf
 	bl AddRandomVarianceToTwoCoords
 	mov r4, #8
-	bl sub_80E08C4
+	bl object_spawnRelatedChildEffect_80E08C4
 locret_800EBCE:
 	pop {r4,r6,pc}
 	.balign 4, 0

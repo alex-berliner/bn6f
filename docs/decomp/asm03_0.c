@@ -470,7 +470,7 @@ char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
     {
         v17 = v16;
         sprite_CopyObjTilesToVramSlot_80281D4(511);
-        sub_8029CD4(v17, 0, 1);
+        customScreen_redrawChipSlot_8029CD4(v17, 0, 1);
         v16 = v17 - 1;
     }
     while ( v17 - 1 >= 0 );
@@ -2036,7 +2036,7 @@ int __fastcall sub_80279C8(int a1)
         v4 = 0;
         if ( v3 <= *(v1 + 8) - 1 )
             v4 = 1;
-        sub_8029CD4(v3--, v4, 0);
+        customScreen_redrawChipSlot_8029CD4(v3--, v4, 0);
     }
     while ( v3 >= 0 );
     return customScreen_ExitSequence_8028E32();
@@ -3639,7 +3639,7 @@ int __fastcall sub_8028CCC(int a1, int a2, int a3)
         v6 = getChipID_802A54E(**(v3 + 8));
         v7 = *(v4 + 8);
         sprite_CopyObjTilesToVramSlot_80281D4(v6);
-        sub_8029CD4(*(v4 + 8) - 1, 1, 0);
+        customScreen_redrawChipSlot_8029CD4(*(v4 + 8) - 1, 1, 0);
         v8 = *(v4 + 7);
         sprite_clearObjVramEntry_8028238();
         *(v3 + 7) = 2;
@@ -3708,7 +3708,7 @@ signed int __fastcall sub_8028D6C(int a1, int a2, int a3)
         v7 = sub_802A034();
         v8 = *(v4 + 8);
         sprite_CopyObjTilesToVramSlot_80281D4(v7);
-        sub_8029CD4(*(v4 + 8) - 1, 1, 0);
+        customScreen_redrawChipSlot_8029CD4(*(v4 + 8) - 1, 1, 0);
         PlaySoundEffect(129, v9, v10);
         *(v4 + 1) = 72;
         *(v4 + 2) = 0;
@@ -4078,7 +4078,7 @@ int __fastcall customScreen_ExitAction_8029032(int a1, int a2, int a3)
         {
             --v3[8];
             sprite_CopyObjTilesToVramSlot_80281D4(511);
-            sub_8029CD4(v3[8], 0, 0);
+            customScreen_redrawChipSlot_8029CD4(v3[8], 0, 0);
             battle_ClearPendingEventFlag_802A0EC();
             PlaySoundEffect(131, v7, v8);
             PlaySoundEffect(466, v9, v10);
@@ -4094,7 +4094,7 @@ int __fastcall customScreen_ExitAction_8029032(int a1, int a2, int a3)
             }
             --v3[8];
             sprite_CopyObjTilesToVramSlot_80281D4(511);
-            sub_8029CD4(v3[8], 0, 0);
+            customScreen_redrawChipSlot_8029CD4(v3[8], 0, 0);
             v15 = v6[5];
             if ( v6[5] )
             {
@@ -5552,7 +5552,7 @@ int battleObject_chipSelectAnimTick_8029C08()
 
 
 // 0x8029cd4
-void __fastcall sub_8029CD4(int a1, int a2, int a3)
+void __fastcall customScreen_redrawChipSlot_8029CD4(int a1, int a2, int a3)
 {
     int v3; // r4
     char *v4; // r1
@@ -15616,7 +15616,7 @@ void __fastcall sub_80314CC(__int64 a1)
 
 
 // 0x8031520
-void __fastcall sub_8031520(__int64 a1)
+void __fastcall battle_scrollAdvanceByPanelStep_8031520(__int64 a1)
 {
     _DWORD *v1; // r0
     int v2; // r1

@@ -3637,7 +3637,7 @@ Battle *object_spawnHiteffect()
             PlaySoundEffect(110, 0x20000, v2);
             v4 = *(v0 + 52);
             v5 = sub_801BDDE(0xFu);
-            result = sub_80E08C4(v5, v6, v7, v8);
+            result = object_spawnRelatedChildEffect_80E08C4(v5, v6, v7, v8);
         }
     }
     return result;

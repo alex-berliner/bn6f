@@ -660,7 +660,7 @@ off_804646C:
 	.word sub_8116ADC+1
 	.word sub_8116CE0+1
 	.word stateDispatcher_3states_8116E10+1
-	.word sub_8117110+1
+	.word battleObject_dispatchBeastOutAction_8117110+1
 	.word sub_8117218+1
 	.word sub_81172B0+1
 	.word sub_8117404+1
@@ -10384,10 +10384,10 @@ byte_804C3F0:
 
 // symdb: Dispatcher that calls one of two AIData sub-handlers based on an actor slot index and an action selector from a 0x14-byte AIData entry.
 // symdb: (r5 = AIData table base?, r5+0xc = slot index, r5+0x10 = action selector) -> returns whatever
-// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or sub_804C478
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C404.yaml
+// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or battle_render_setBlurAndAnimUpdate_804C478
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchJumpByActorSlotAndAction_804C404.yaml
 	thumb_local_start
-sub_804C404:
+battle_dispatchJumpByActorSlotAndAction_804C404:
 	push {r4-r7,lr}
 	ldr r7, off_804C428 // =byte_804C3F0 
 	ldrb r0, [r5,#0xc]
@@ -10405,10 +10405,10 @@ off_804C41C:
 	.word off_804C420
 off_804C420:
 	.word sub_804C43C+1
-	.word sub_804C478+1
+	.word battle_render_setBlurAndAnimUpdate_804C478+1
 off_804C428:
 	.word byte_804C3F0
-	thumb_func_end sub_804C404
+	thumb_func_end battle_dispatchJumpByActorSlotAndAction_804C404
 
 	thumb_local_start
 sub_804C42C:
@@ -10441,7 +10441,7 @@ sub_804C43C:
 	strb r0, [r1,#0xa]
 	mov r0, #4
 	strb r0, [r5,#0x10]
-	bl sub_804C478
+	bl battle_render_setBlurAndAnimUpdate_804C478
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C468:
@@ -10457,9 +10457,9 @@ dword_804C474:
 // symdb: Enables OBJ blur (0x4800) on RenderInfo then drives a GFX anim frame for the current battle object
 // symdb: (r5 = ptr to AIData-like struct, r7 = GFX anim state ptr, r10 = Toolkit) -> no return; side
 // symdb: effect: RenderInfo word 0 ORed with 0x4800
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C478.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_render_setBlurAndAnimUpdate_804C478.yaml
 	thumb_local_start
-sub_804C478:
+battle_render_setBlurAndAnimUpdate_804C478:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -10504,7 +10504,7 @@ dword_804C4E0:
 	gfx_anim_data data=0x800014A5 delay=0x00000004
 	gfx_anim_loop
 
-	thumb_func_end sub_804C478
+	thumb_func_end battle_render_setBlurAndAnimUpdate_804C478
 
 	thumb_local_start
 sub_804C510:

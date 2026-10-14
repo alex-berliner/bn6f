@@ -1060,7 +1060,7 @@ loc_813BDF4:
 	cmp r1, #0x31 
 	blt loc_813BDF4
 	ldr r1, [sp,#0x14]
-	bl sub_813C624
+	bl beastAi_getAttackTypeAffinity_813C624
 	tst r1, r1
 	bne loc_813BE14
 	ldr r4, [sp,#0x10]
@@ -2080,9 +2080,9 @@ loc_813C61E:
 // symdb: Looks up a Beast-SP AI affinity/availability byte from a packed 7-byte-per-row table indexed by beast index and selector.
 // symdb: (r0 = beastIndex/row, r1 = colSelector, r2 = colSelector2) -> r0 = byte at
 // symdb: byte_813C640[beastIndex*7 + colSelector] ; side effects: preserves r0..r2 via push/pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C624.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastAi_getAttackTypeAffinity_813C624.yaml
 	thumb_local_start
-sub_813C624:
+beastAi_getAttackTypeAffinity_813C624:
 	push {r0,r2,lr}
 	mov r0, #7
 	mul r2, r0
@@ -2105,7 +2105,7 @@ byte_813C640:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0xFF, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF
-	thumb_func_end sub_813C624
+	thumb_func_end beastAi_getAttackTypeAffinity_813C624
 
 // symdb: Writes zero to the halfword pointed at by the toolkit's Unk2004334 pointer (likely resetting some global UI/state counter).
 // symdb: void sub_813C678(Toolkit* toolkit /* r10 */)

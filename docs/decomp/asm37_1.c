@@ -146,7 +146,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
                     {
                         if ( **(v0 + oToolkit_GameStatePtr) == 4 )
                         {
-                            v6 = sub_8141AD2();
+                            v6 = battle_canBeastOut_8141AD2();
                             if ( v1 )
                                 battle_beastSpEvolveStep_8141A10(v6, v7, v8, v9);
                             else
@@ -289,7 +289,7 @@ signed int pet_testIsMapGroupAllowed_8141AA8()
 
 
 // 0x8141ad2
-signed int sub_8141AD2()
+signed int battle_canBeastOut_8141AD2()
 {
     int v0; // r5
     int v1; // r10
