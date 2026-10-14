@@ -42390,6 +42390,12 @@ locret_80CBA50:
 	pop {pc}
 	thumb_func_end sub_80CBA34
 
+// symdb: Per-frame battle object driver: drives a "snake-arm" style phase by moving the object along its current X/Y velocities, syncing panel/collision state, and self-destructing if the object drifts off the battlefield.
+// symdb: (r5 = obj, r10 = toolkit) -> r0 = 0; side effects: clobbers r0..r7, lr; writes oBattleObject_X,
+// symdb: oBattleObject_Y, oBattleObject_XVelocity, oBattleObject_YVelocity, oBattleObject_CurPhase,
+// symdb: oBattleObject_CurAction, oBattleObject_CurStateActionPhaseAndPhaseInitialized,
+// symdb: oBattleObject_Timer; clears the object's collision region; recurses into sub_80CBAFA.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CBA52.yaml
 	thumb_local_start
 sub_80CBA52:
 	push {lr}
@@ -42484,6 +42490,12 @@ sub_80CBAF2:
 	pop {r5,pc}
 	thumb_func_end sub_80CBAF2
 
+// symdb: (hypothesis) If the current BattleObject is on its alliance's starting/front column, compare its PanelY against the nearest enemy BattleObject's PanelY (from battleObject_findClosestEnemyBattleObject_80103F8) and store a {-1,0,+1} signed row delta in the BattleObject's ExtraVars+4 slot; no-op otherwise.
+// symdb: in r5 = self BattleObject, r10 = Toolkit ; out no documented caller-visible return (only r1/r5
+// symdb: preserved per the contract; r0 ends as 1 in captures but is not annotated as live) ; writes
+// symdb: self->ExtraVars+4 (signed -1/0/+1) only when self->PanelX equals 1 (ally side) or 5 (opponent
+// symdb: side); r2 is clobbered for the comparison result; no other side effects observed
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80CBAFA.yaml
 	thumb_local_start
 sub_80CBAFA:
 	push {lr}
@@ -111858,11 +111870,9 @@ dword_80EC5B8:
 	.word 0x10000
 	thumb_func_end sub_80EC556
 
-// symdb: Battle dispatcher that routes based on the AI attack vars index byte: if AIData.Unk_44 matches a known pattern (0x8600), a reset/process action runs; otherwise an alternate handler runs.
-// symdb: (r7 = AIData/AIState/AIAttackVars-like struct ptr; r0..r12 = preserved caller state) -> r0 = Tst
-// symdb: result state, NZ/C/V flags ; side effects may call into battle action or AI attack vars
-// symdb: processors
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EC5BC.yaml
+// symdb: Dispatches an AI action based on the AIAttackVars[Unk_00] subtype, calling the matching handler and, if bit flags 0x8600 are set in the per-actor Unk_44 word, invoking sub_801056A(r7, 0, 0).
+// symdb: void (no caller-visible return value); r7 = AIDataPtr, lr = return address preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EC5BC.yaml
 	thumb_local_start
 sub_80EC5BC:
 	push {lr}
@@ -173202,6 +173212,10 @@ byte_810A2EC:
 	.byte 0xFF, 0xFF, 0xFF
 	thumb_func_end sub_810A254
 
+// symdb: Dispatches to one of seven AI attack-vars handlers based on the actor's AIAttackVars.Unk_00 value (0..6).
+// symdb: () -> r0 = whatever the dispatched handler returns in r0 ; side effects: r1 preserved-then-
+// symdb: clobbered, lr saved/restored via push/pop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A3AC.yaml
 	thumb_local_start
 sub_810A3AC:
 	push {lr}
@@ -173638,7 +173652,7 @@ sub_810A6C0:
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused; relies on r5 = battle object pointer, r10 =
 // symdb: BattleState toolkit ptr) -> r0 = 1 if the chip attack was set up, 0 otherwise ; side effects:
 // symdb: BattleState.Unk_40 (turn counter?) compared against 0x12c, and on success calls write-chip-
-// symdb: params / set-attack-0 / battleObject_decrementChipHeldAndClearChip_800F322
+// symdb: params / set-attack-0 / sub_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_useSelectedChipIfReady_810A6F4.yaml
 	thumb_local_start
 battle_useSelectedChipIfReady_810A6F4:
@@ -176384,7 +176398,7 @@ dword_810BDC0:
 // symdb: AI helper that, when the actor has a chip selected and battle turn state is high enough, queues that chip for use by writing its parameters, setting attack0, and starting the chip-use sub-state.
 // symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
 // symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
-// symdb: AttackVars/Attack0 and triggers battleObject_decrementChipHeldAndClearChip_800F322
+// symdb: AttackVars/Attack0 and triggers sub_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryStartChipAttack_810BDC4.yaml
 	thumb_local_start
 battle_tryStartChipAttack_810BDC4:
@@ -176907,6 +176921,9 @@ locret_810C280:
 	pop {pc}
 	thumb_func_end sub_810C212
 
+// symdb: AI helper: when a battle object has a chip selected and Unk_40 has reached a threshold, push chip params, set attack0 and consume the held chip, returning whether it acted.
+// symdb: (r5 = BattleObject) -> r0 = 1 if the beast-out chip attack was committed, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C282.yaml
 	thumb_local_start
 sub_810C282:
 	push {r4,r6,lr}

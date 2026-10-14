@@ -1199,11 +1199,9 @@ loc_810CE14::
 	pop {pc}
 	thumb_func_end sub_810CDEA
 
-// symdb: AI attack-decision routine that picks a random battle object in the opposing row and fires one of several helper sub-selectors
-// symdb: (r0 = AIData base/related ptr?, r1 = 0x20, r5 = battle object, r7 = alliance/alliance-mask?) ->
-// symdb: r0 = 0 ; side effects: may mutate the chosen battle object (via sub_810CEAE / sub_810CF4A /
-// symdb: object_setAttack0) and the RNG state
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CE1A.yaml
+// symdb: Enemy AI action-decision step that picks a random row target, maybe picks B-button / PwrAtk inputs, and dispatches into attack sub-helpers.
+// symdb: () -> r0 = 0 ; side effects: reads/writes AIData (r5) and BattleState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CE1A.yaml
 	thumb_local_start
 sub_810CE1A::
 	push {r4,r6,r7,lr}
@@ -2227,9 +2225,10 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: One update tick of a SnakeArm-style battle object, selecting the next panel along its arm and resetting the object's wait timer.
-// symdb: (r0..r3 not meaningful, caller saves its own state; returns r1 = scratch, r5 = pointer of true
-// symdb: owning battle object for the caller) -> void-like for callers
+// symdb: Battle object hook that resets the object's timer, ORs a flag bit, updates a counter and highlights a panel range relative to the object's facing direction.
+// symdb: (r0 = unused, r1 = thispc+1 (called via tail-call), r2 = ?, r3 = ?, r4/r5/r7/r10 = preserved
+// symdb: object/toolkit; lr = return) -> r0 = counter value (0x24..0x7f), r1 = panel side-sign, r5 =
+// symdb: preserved; NZCV clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

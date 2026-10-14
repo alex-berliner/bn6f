@@ -208,6 +208,11 @@ sub_8144240:
 	.byte 0, 0
 	thumb_func_end sub_8144240
 
+// symdb: Drives the e-Reader / link-cable state machine for one tick (state stored in eTimerEnable200F460+1), performs its action, then packs and returns a status bitfield.
+// symdb: (r0 = small struct ptr {byte 0 = lastMode}, r1 = ptr2, r2 = ptr3) -> r0 = packed status word ;
+// symdb: side effects: IWRAM/EWRAM at eTimerEnable200F460+ (link-state, SIO control), call to
+// symdb: link/teardown helpers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144250.yaml
 	thumb_func_start sub_8144250
 sub_8144250:
 	push {r4-r7,lr}

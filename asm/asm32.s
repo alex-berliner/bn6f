@@ -8243,6 +8243,9 @@ locret_8111FAC:
 	pop {pc}
 	thumb_func_end sub_8111F94
 
+// symdb: If a battle object has a chip selected and the battle state is past 0x12C, commit it: write chip params, set attack 0, and decrement the chip count.
+// symdb: (r5 = BattleObject) -> r0 = 1 if a chip was used, 0 otherwise ; no other side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111FAE.yaml
 	thumb_local_start
 sub_8111FAE:
 	push {r4,r6,lr}
@@ -9866,6 +9869,11 @@ byte_8112E24:
 	.byte 0x0
 	thumb_func_end sub_8112DC0
 
+// symdb: Initializes the per-attack state for the BeastOut/Rush/Fish attack (timers, animation, facing-direction) when a related battle object is present.
+// symdb: (r5 = self BattleObject*, r7 = AIAttackVars*, r10 = toolkit) -> void ; side effects: writes to
+// symdb: BattleObject and AIAttackVars, calls object_setCounterTime(0x1e),
+// symdb: battle_SetObjectExtraFlag14_80C4086
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112E34.yaml
 	thumb_local_start
 sub_8112E34:
 	push {lr}
@@ -10416,7 +10424,7 @@ sub_81131A2:
 
 // symdb: If its HP is at or below half of MaxHP, has the BattleObject in r5 use its currently selected chip
 // symdb: (r5 = BattleObject*) -> r0 = bool (1 = used a chip, 0 = did not) ; side effects: may call
-// symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / battleObject_decrementChipHeldAndClearChip_800F322 on r5
+// symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / sub_800F322 on r5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_object_tryUseChipWhenLowHP_81131D8.yaml
 	thumb_local_start
 battle_object_tryUseChipWhenLowHP_81131D8:
@@ -20324,6 +20332,10 @@ loc_8118340:
 	mov pc, lr
 	thumb_func_end sub_8118320
 
+// symdb: 3-way state dispatcher for the SubMenu subsystem, indexing into a handler table by the byte at r5+8 and tail-calling one of three Thumb handlers.
+// symdb: (r0 = ???, r5 = ???, r10 = Toolkit) -> does not return normally (tail-calls a handler via bx
+// symdb: r0); side effects: clobbers r0-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118344.yaml
 	thumb_func_start sub_8118344
 sub_8118344:
 	push {lr}
@@ -20390,6 +20402,10 @@ off_81183C0:
 	.word unk_201F6F0
 	thumb_func_end sub_8118368
 
+// symdb: Dispatches a per-actor "beast out / program advance" transform step on the r5 BattleObject by jumping through an off_81183E8 table indexed by the object's Type byte.
+// symdb: (no r0..r3 args from callers) -> void ; r5 = BattleObject, r6 = ?, r10 = Toolkit; side effects:
+// symdb: dispatches sprite/animation updates on the BattleObject
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81183C4.yaml
 	thumb_local_start
 sub_81183C4:
 	push {lr}
@@ -20964,10 +20980,11 @@ sub_81187DC:
 	.balign 4, 0x00
 	thumb_func_end sub_81187DC
 
-// symdb: Dispatches the SubMenu's current CurAction through a 3-entry Thumb jump table using the SubMenu object's CurAction byte.
-// symdb: (r5 = SubMenu*) -> r0/r1/r2/r3 clobbered by callee ; side effect: jumps to sub_811880C,
-// symdb: battleObject_dispatchSpriteUpdate_8118874 or sub_8118AA8 based on [r5+8]
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81187E8.yaml
+// symdb: Jumps through a small Thumb jump table indexed by `submenu->idx_00` (byte at offset 0x00), forwarding call to one of three handlers with `r5` (the Submenu pointer) as the receiver.
+// symdb: (r5 = submenu struct ptr) -> tail call to a per-index handler; the called handler returns
+// symdb: whatever its own contract returns (out list mentions r2/r3/r5 as caller-visible, but that's just
+// symdb: because the caller's callee-save list reflects the tail-called handler's full contract).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81187E8.yaml
 	thumb_func_start sub_81187E8
 sub_81187E8:
 	push {lr}
@@ -21482,10 +21499,10 @@ sub_8118B98:
 	.balign 4, 0x00
 	thumb_func_end sub_8118B98
 
-// symdb: Tail-call dispatcher that branches on the current submenu state's index (r5->offset 0x8) to one of three Thumb handlers in sSubmenu's state machine
-// symdb: (r5 = sSubmenu base pointer (state struct in EWRAM)) -> tail-call; side effects: clobbers r0-r3,
-// symdb: r5, lr per handler; Z flag from final r0
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8118BA4.yaml
+// symdb: Battle object per-frame dispatcher that selects one of three update routines by the object's type byte at [r5+8] (BattleObject.CurState).
+// symdb: (r5 = BattleObjectPtr) -> side effects via the called routine; no value returned (void-like;
+// symdb: r0..r4, r6, lr clobbered transitively, pc popped from stack)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118BA4.yaml
 	thumb_func_start sub_8118BA4
 sub_8118BA4:
 	push {lr}

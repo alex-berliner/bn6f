@@ -1069,6 +1069,10 @@ loc_80897E4:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastOut_checkOrInit_80897A6
 
+// symdb: When the chatbox flag 0x80 is clear and the chip lockout timer has expired, fades the screen white and starts a Beast-Out cancel/exit transition by storing 0x24 into the object byte pointed to by r5.
+// symdb: (r5 = pointer to a battle/AIData state byte) -> r0 = 1 ; no other observable side effects on
+// symdb: caller-visible regs
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80897E8.yaml
 	thumb_local_start
 sub_80897E8:
 	push {r4-r7,lr}
@@ -1134,6 +1138,10 @@ loc_8089856:
 	pop {r4-r7,pc}
 	thumb_func_end sub_808983A
 
+// symdb: Per-frame beast-out chip-lockout tick for an AI actor in r5; advances timer/state and writes the resulting phase to AIData.Unk_0c
+// symdb: (r5 = AIData, r7 = ?, r10 = Toolkit) -> r0 = 1 ; side effects: r5->Unk_0c written
+// symdb: (0x18/0x34/0x3c), r5->Unk_0b written
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808985A.yaml
 	thumb_local_start
 sub_808985A:
 	push {r4-r7,lr}
@@ -1401,6 +1409,11 @@ off_8089A40:
 	.word byte_80894CC
 	thumb_func_end sub_8089A10
 
+// symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
+// symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
+// symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
+// symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089A60.yaml
 	thumb_local_start
 sub_8089A60:
 	push {r4-r7,lr}
@@ -1460,6 +1473,11 @@ loc_8089AE4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089ACA
 
+// symdb: Beast-out AI step: when chatbox/cutscene flag 0x80 is clear, advance chip-lockout and decide the controlled beast's next facing/animation state.
+// symdb: (r0 = toolkit via r10, r5 = battleObject, r7 = ?, lr) -> r0 = 1 ; side effects: clears PanelY in
+// symdb: battle object, sets OW player facing to 4 (down), pushes a fixed OW player animation via
+// symdb: eStruct200ace0, rewrites battle object byte0 to either 0x70 or 0x6c, calls sub_8089CB0(0|0x1e)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089AE8.yaml
 	thumb_local_start
 sub_8089AE8:
 	push {r4-r7,lr}

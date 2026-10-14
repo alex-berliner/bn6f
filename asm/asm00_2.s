@@ -5032,9 +5032,9 @@ sub_8011004:
 	pop {r4,pc}
 	thumb_func_end sub_8011004
 
-// symdb: Tiny helper that reads the NameID field of a battle object (passed in r5) and tail-calls battle_callActorActionHandler_801102A with it.
+// symdb: Tiny helper that reads the NameID field of a battle object (passed in r5) and tail-calls sub_801102A with it.
 // symdb: void sub_8011020(void) — takes the battle object pointer implicitly in r5; returns whatever
-// symdb: battle_callActorActionHandler_801102A returns in r0 (not forwarded here; it branches via pop {pc} after the call returns)
+// symdb: sub_801102A returns in r0 (not forwarded here; it branches via pop {pc} after the call returns)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getObjectNameID_8011020.yaml
 	thumb_func_start battle_getObjectNameID_8011020
 battle_getObjectNameID_8011020:

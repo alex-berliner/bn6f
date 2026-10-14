@@ -14203,6 +14203,11 @@ off_8136DDC:
 	.word unk_30019A0
 	thumb_func_end sub_8136DC8
 
+// symdb: Run a saved function table entry for the Beast-SP context, saving/restoring AIData timer fields across the call
+// symdb: (r0 = beast-sp subsystem object ptr, r1 = 0x28) -> r0 = ? (caller treats as unknown); side
+// symdb: effects: writes EWRAM 0x2009398..0xC and calls one of 0x24 dispatch targets then invokes
+// symdb: beastsp_dispatchHandler_81356D4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136DE0.yaml
 	thumb_func_start sub_8136DE0
 sub_8136DE0:
 	push {r4-r7,lr}

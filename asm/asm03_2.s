@@ -9846,10 +9846,10 @@ off_804C024:
 	.word byte_804B011
 	thumb_func_end selectChipTraderRewardList_804BFF0
 
-// symdb: tail-dispatcher that runs the currently-selected chatbox step handler
-// symdb: void sub_804C058(void); /* in: r5=chatbox object; out/clobber: r0-r3,r8-r12,lzcv; preserved:
-// symdb: r4-r7 */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C058.yaml
+// symdb: Tail-call dispatcher that jumps to a chatbox-step routine chosen by Toolkit pointer + 0x10
+// symdb: (r5 = EWRAM pointer; r10 = Toolkit) -> r0 = result from chosen routine ; side effects: jumps
+// symdb: into one of two chatbox helpers, preserves {r4-r7}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C058.yaml
 	thumb_func_start sub_804C058
 sub_804C058:
 	push {r4-r7,lr}
@@ -10179,10 +10179,10 @@ off_804C294:
 	.word 0x400
 	thumb_func_end sub_804C244
 
-// symdb: Copies a handful of bytes from the source object (r5) and two halfwords/bytes from the toolkit's render-info and unk_2009740 pointers into the scratch buffer at unk_2000AC0, and returns the unk_2009740 pointer in r2.
-// symdb: void sub_804C298(u32* r5_obj, u32* r10_toolkit) -> r2=unk_2009740_ptr; clobbers r0, r3;
-// symdb: preserves r5; no flag contract.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C298.yaml
+// symdb: Copies OW navi sprite state (animation/palette/transform/coord shader) into unk_2000AC0 for chatbox rendering
+// symdb: (r5 = OWPlayerObject*, r10 = Toolkit*) -> r2 = RenderInfo/unk_2009740 derived pointer ; side
+// symdb: effects: writes 14 bytes to unk_2000AC0 + 0x0F..0x1D
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C298.yaml
 	thumb_local_start
 sub_804C298:
 	push {r5,lr}

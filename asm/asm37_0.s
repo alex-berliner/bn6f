@@ -1143,8 +1143,9 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: Iterates 0x31 entries in the toolkit's Unk2004190 array, loading each entry's pointer and discarding the first u16; appears to be a no-op clear/reset pass for those battle I/O scratch buffers during battle init.
-// symdb: (no args) -> (no return; preserves r10)
+// symdb: Iterates 0x31 entries in the toolkit's Unk2004190 8-byte-array and, for each, reads the first halfword (likely a "in-use" flag) into r0 each iteration.
+// symdb: (r10 = toolkit) -> no caller-visible return; side effects: only volatile (loop reads toolkit
+// symdb: array).
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:

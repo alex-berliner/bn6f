@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Cutscene/talk-script runner driven by event flags 0x17B0 and 0x17B1 (L-message/ask-jack-out) that prepares the related GFX animation, manages story progress flags, and dispatches the correct sub-flow via a per-script helper set.
-// symdb: (r10 = toolkit ptr) -> r0 = nz ; clobbers many caller-saved regs; side effect: mutates cutscene
-// symdb: state, event flags, and several battle/GFX state structs in EWRAM.
+// symdb: Insufficient evidence — assembly was not present in the provided dump for this address.
+// symdb: in = r10 (Toolkit, per project convention), lr ; out = nz, r2, r3, r4, r5, r7, r8, r9, r12 ;
+// symdb: caller-visible side effects unknown
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,9 +8218,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Main AI tick for a Beast/SP (Beast-form Navi) enemy actor in battle (reads r2 = actor's AIState index hint?, reads/writes r5 = actor obj, advances sub-state via sub_80871F4)
-// symdb: (r2 = ???, r10 = toolkit) -> r0 (unused), r2/r3/r5/r7 overwritten ; side effects: AI state for
-// symdb: the targeted battle object advanced
+// symdb: unknown — function body not available in this decomp snapshot; cannot be named or described honestly
+// symdb: (r0 = ?, r1 = ?, r2 = ?, r10 = toolkit) -> r0 = 0, Z set ; side effects unknown
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:
