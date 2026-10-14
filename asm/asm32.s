@@ -2575,7 +2575,7 @@ loc_810EECE:
 	bl sub_8015C94
 locret_810EEDC:
 	pop {r4,r6,pc}
-// symdb: Puffy AI step: after object_getFlag / battleObject_findClosestEnemyBattleObject_80103F8, rolls GetPositiveSignedRNG & 0xF.
+// symdb: Puffy AI step: after object_getFlag / sub_80103F8, rolls GetPositiveSignedRNG & 0xF.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EEDE.yaml
 	thumb_local_start
 sub_810EEDE:
@@ -2795,7 +2795,7 @@ off_810F0D4:
 
 // symdb: Beast-Out AI tick step: when the beast-AI flag is set, advance the turn counter and queue an attack; otherwise countdown and either pick a chip attack or queue a counter/decide.
 // symdb: (r4 = AIData, r5 = BattleObject, r6 = AIState, r7 = AIAttackVars) -> void ; side effects:
-// symdb: AIAttackVars (damage/flags/cmd), object_setAttack0, possibly battleObject_findClosestEnemyBattleObject_80103F8 reads from the
+// symdb: AIAttackVars (damage/flags/cmd), object_setAttack0, possibly sub_80103F8 reads from the
 // symdb: opposite-ally battle object.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiBeastOutTick_810F0D8.yaml
 	thumb_local_start
@@ -8509,6 +8509,11 @@ off_8112294:
 	.word sub_811239A+1
 	thumb_func_end sub_8112278
 
+// symdb: AI combat-init dispatcher that picks the initial attack script based on the object's collision flags, sets up AIState/AttackVars, and saves the spawn panel coordinates into ExtraVars.
+// symdb: (void battle object in r5, AIState in r6, AIAttackVars in r7, AIData in r4, toolkit in r10) ->
+// symdb: r0 = 0 ; side effects: writes AIState.Unk_00/04/0c, AIState.Unk_08,
+// symdb: BattleObject.ExtraVars[0..0xf], AIAttackVars.Unk_10/18/28/2c, and the object's Param1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81122A0.yaml
 	thumb_local_start
 sub_81122A0:
 	push {lr}
@@ -23368,6 +23373,10 @@ dword_8119A44:
 	.word 0x600B800
 	thumb_func_end sub_81199E4
 
+// symdb: Per-step Beast SP meter/bar advance that draws/replaces the bar's tile strip and pings SFX 0x7E every 4 increments when the chatbox flag is clear.
+// symdb: (r5 = beastSp state ptr, r10 = toolkit) -> side effects only (modifies r5->state, copies BG
+// symdb: tiles, plays SFX)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119A48.yaml
 	thumb_local_start
 sub_8119A48:
 	push {r4-r7,lr}

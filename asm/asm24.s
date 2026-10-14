@@ -1318,10 +1318,11 @@ loc_808CC2E:
 	.balign 4, 0x00
 	thumb_func_end sub_808CC10
 
-// symdb: Selects an address/row pair from one of four data tables based on an event flag and several per-row tests.
-// symdb: (no input registers; r10 = toolkit, r5 = ?) -> r0 = base address (one of four tables), r1 =
-// symdb: derived row index ; side effects: none persistent beyond saved regs
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808CC34.yaml
+// symdb: Picks one of four BattleState-related init/data pointer pairs based on event flag 9D4 and three sub-checks, returning (ptr0, ptr1) to its caller.
+// symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
+// symdb: call return); side effects: may read EVENT_9D4, may call
+// symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC34.yaml
 	thumb_local_start
 sub_808CC34:
 	push {r4,r6,lr}
@@ -1817,6 +1818,10 @@ off_808D030:
 	.word dword_808CA44
 	thumb_func_end jackIn_attemptJackInCheck_808CFB8
 
+// symdb: Converts 16.16 absolute world (X,Y) returned by sub_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
+// symdb: (r0 = xQ12, r1 = yQ12, r5 = BattleObject*, r10 = Toolkit) -> r2 = (panelCol<<1 | low bit), r3 =
+// symdb: (panelRow<<1 | low bit) ; writes [r5+8] and [r5+9] bytes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D034.yaml
 	thumb_local_start
 sub_808D034:
 	push {r4,r5,lr}

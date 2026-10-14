@@ -4529,6 +4529,10 @@ locret_8010C4E:
 	pop {r4,pc}
 	thumb_func_end sub_8010C06
 
+// symdb: Looks up the BattleObject for a given alliance and, if found, triggers a chip activation handler with the chip's element code minus 0x3FF.
+// symdb: (r0 = chipId, r1 = alliance) -> r0 = sub_8010D04 return ; side effects: reads chip database and
+// symdb: possibly mutates the player's BattleObject/AIData via sub_8010D04
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8010C50.yaml
 	thumb_local_start
 sub_8010C50:
 	push {r4-r6,lr}
@@ -5643,6 +5647,12 @@ off_8011500:
 	.word 0xA0C
 	thumb_func_end nullsub_43
 
+// symdb: Loads a battle object's sprite/animation, sets its shadow flag, installs a collision-data slot, configures collision data and horizontal flip, returning 1 on success.
+// symdb: (r0 = packed sprite/anim/shadow params, r1 = packed collision-init params, r5 = BattleObject*,
+// symdb: r10 = Toolkit*) -> r0 = 1 on success, 0 if no collision slot was free ; side effects: writes
+// symdb: CurAnim/CurAnimCopy on the object, allocates/links a CollisionData block, populates it, sets
+// symdb: sprite flip bits.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011504.yaml
 	thumb_func_start sub_8011504
 sub_8011504:
 	push {r6,r7,lr}
@@ -13431,6 +13441,10 @@ off_80148E0:
 	.word battle_runBeastOutIntro_801498E+1
 	thumb_func_end sub_80148CC
 
+// symdb: Drives the post-battle intro/outro fade-out for turn-end-of-beast-sp behaviour: kicks the screen fade, dispatches a large flag payload, then waits for it to finish and dispatches the next payload.
+// symdb: (r5 = S20047CC*, r10 = toolkit) -> no return value ; writes S20047CC+0x1, S20047CC+0x2,
+// symdb: S20047CC+0x3 and triggers SetScreenFade / dispatch_801DACC.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80148EC.yaml
 	thumb_local_start
 sub_80148EC:
 	push {lr}
@@ -30666,11 +30680,11 @@ locret_801DC04:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battleRefreshTrackedObjectArmPos_801DBD4
 
-// symdb: Looks up an entry by 32-bit id in a fixed 6-slot, 8-bytes-per-slot work table and patches two of its bytes, returning 1 if no entry with that id exists.
-// symdb: int sub_801DC06(u8 value /*r0*/, u8 amount /*r1*/, u32 id /*r5*/); returns r0 = value and r1 =
-// symdb: amount - 8 on a hit (flags from subs r1,#8), or r0 = 1 (flags from mov) when no slot matches;
-// symdb: r4/r6/r7 preserved, r2 ends as the last 'in use' flag byte read, r3 as the remaining slot count
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801DC06.yaml
+// symdb: Searches a small 6-entry custom-gauge animation slot table for an entry matching the caller's battle-object pointer (r5) and, if found, stores the requested panel coords and panel-index byte into that slot.
+// symdb: (r0 = animId/u8, r1 = panelX | (panelY<<8)) -> r0 = 1 if no match found (slot scan exhausted),
+// symdb: else r0 = passed-in animId ; side effects: writes to the matched entry in the dword_20352E0
+// symdb: 6-entry slot table at +1 (anim id) and +2 (panelX-1, panelY-1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DC06.yaml
 	thumb_local_start
 sub_801DC06:
 	push {r4,r6,r7,lr}

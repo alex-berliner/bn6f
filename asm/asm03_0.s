@@ -5097,10 +5097,8 @@ jt_802886C:
 	.word sub_8028938+1
 	thumb_func_end battle_custMenuDispatchSelection_8028820
 
-// symdb: Reads an ID byte from a work area and returns a pair of structure offsets (r0 = id*16+8, r1 = 0x68 or 0x80) plus the address of a small lookup table in r6.
-// symdb: int sub_8028894(void* r5) // in: r5 = struct pointer whose +7 byte is the ID, lr = return; out:
-// symdb: r0 = (id % group)*16 + 8, r1 = 0x68 or 0x68+0x18, r6 = &byte_80288B0, NZCV set from the final
-// symdb: add
+// symdb: Computes a (x, y) pair for selecting a B-button attack entry from AIData BPwrAtk and BLeftAbility, returning coords in (r0, r1)
+// symdb: (r5 = AIData*) -> r0 = x, r1 = y ; no side effects
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8028894.yaml
 	thumb_local_start
 sub_8028894:
@@ -24589,12 +24587,10 @@ locret_80314CA:
 	pop {pc}
 	thumb_func_end sub_8031478
 
-// symdb: Advances the battle camera/scroll by one collision-resolving step using line/wedge hit helpers
-// symdb: (r0 = someObjOrStatePtr, r1 = someDeltaOrParam, r2 = something, r5 = something, r12 = someAccum,
-// symdb: lr = ret) -> r0 = sameObjPtr, r12 updated with collision bits, flags ZC set/cleared by `cmp
-// symdb: r3,#1` ; side effects: pushes/pops {r0-r2,r5,lr}, calls two camera-move helpers and two hit-test
-// symdb: helpers
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80314CC.yaml
+// symdb: Applies a battle camera scroll step, blending a line-vs-point shake/projection check and a line-vs-wedge secondary test, accumulating results into r12.
+// symdb: (r0 = BattleObjectPtr, r1 = ?, r2 = ?, r5 = ?, r12 = accumulator) -> r0 = BattleObjectPtr ; side
+// symdb: effects: camera X/Y may move, r12 accumulates hit bits
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80314CC.yaml
 	thumb_local_start
 sub_80314CC:
 	push {lr}

@@ -8311,6 +8311,17 @@ dword_8127308:
 	.word 0x10000000
 	thumb_func_end battle_dispatchNextCmd_81272C4
 
+// symdb: Spawns a queued child battle-object entry from a CMD_B spawn dispatch, queueing an OAM row via battleObject_queueOamFromTableRow and, when the spawned object's high-nibble cell id was 0, picking a replacement cell id via a 0xFF-terminated lookup table.
+// symdb: (r0 = packed spawn id (high half: command id; low half: cell table index? actually r0 carries a
+// symdb: packed value), r1 = ptr to child-cell-id array base (multiplied by r2-derived index), r2 =
+// symdb: offset into the cell table (in bytes from a base ptr in r5), r3 = offset into some "object state
+// symdb: byte" (read/written via r5 base), r4 = table row id to feed to the OAM queue, r5 = base ptr for
+// symdb: [r2] byte read and [r3] byte read/write (the battle state / actor scratch?), r6 = copied into
+// symdb: r6? r10 = toolkit, r7 = OAM id) -> r0 = the new low-nibble cell id (the packed byte at [r5+r3]
+// symdb: recomposed as (new_hi_nibble<<4 | old_lo_nibble)); also NZCV, r1-r3, r5-r7, lr clobbered. Side
+// symdb: effects: writes one byte at [r5+r3] (twice), one word at [r5+r3] via strb; calls into
+// symdb: battleObject_queueOamFromTableRow_811FAF4 and sub_8120CC8.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812730C.yaml
 	thumb_local_start
 sub_812730C:
 	push {r4,lr}
@@ -8368,10 +8379,9 @@ off_8127370:
 	.word dword_81268F8
 	thumb_func_end sub_812730C
 
-// symdb: On the PET menu screen, if a dialogue/text shadow sprite's animation timer is past its initial phase, advance its shake offset, then queue/update its OAM entry.
-// symdb: (r5 = pointer to a PET menu text-shadow sprite struct) -> void (clobbers r0-r4,r6,r7,lr; flags
-// symdb: N/Z/C/V) ; side effects: queues one OAM entry via object_computeAndQueueOamEntry_811FA98
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8127374.yaml
+// symdb: For the PET menu cursor entity, queue one OAM entry of its battle-chip cursor sprite at its current position.
+// symdb: (r5 = ptr to PET-menu cursor entity) -> side effects only; queues an OAM entry.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127374.yaml
 	thumb_local_start
 sub_8127374:
 	push {r4-r7,lr}
@@ -8609,6 +8619,11 @@ sub_8127578:
 	.byte 0, 0
 	thumb_func_end sub_8127578
 
+// symdb: Renders one glyph chunk into the chatbox/text tile area at a given palette offset.
+// symdb: (r0 = glyphIndex, r1 = paletteOffset, r2 = VRAM tile dest, r3 = toolkit text renderer state,
+// symdb: r4..r7/r10/lr = toolkit live) -> r0 = 0xB or 0x4 (sub-renderer return) ; side effect: text-gfx
+// symdb: base ptr published via renderTextGfx_8045F8C, plus tile write into r2+r1/r0 region
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127580.yaml
 	thumb_local_start
 sub_8127580:
 	push {r4-r7,lr}

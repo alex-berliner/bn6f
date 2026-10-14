@@ -31855,6 +31855,10 @@ loc_80C6C60:
 	pop {r7,pc}
 	thumb_func_end sub_80C6C14
 
+// symdb: Per-frame step handler for battle-object kind 0x16 (snake-arm); counts down a timer, then spawns a kind-0x16 child segment one panel ahead (or via sub_80C6D1E when Param1 is 0xC/0xD/0xE), animates, and parks it off-screen with collision cleared on the last frame.
+// symdb: (r5 = battle object ptr) -> r0 = 0, r1 preserved, r5 preserved ; writes to the object at r5 and
+// symdb: to spawned children
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C6C6A.yaml
 	thumb_local_start
 sub_80C6C6A:
 	push {r4,r6,lr}
@@ -48107,6 +48111,9 @@ loc_80CE5BA:
 	pop {r4,pc}
 	thumb_func_end battleObject_initFastLunge_80CE554
 
+// symdb: Tear down the current battle object: clear its collision flags/region, optionally spawn a 0x34-byte-aligned "destroy" effect from its coords, and mark its state as DESTROY.
+// symdb: (r5 = battle object) -> void ; clobbers r0/r1/r4/r5/r6/r7/r10 via the callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE5F0.yaml
 	thumb_local_start
 sub_80CE5F0:
 	push {lr}
@@ -88367,7 +88374,7 @@ byte_80E16C4:
 	thumb_func_end battle_ai_findEnemyTargets_80E1670
 
 // symdb: Decides a target panel (high byte = direction, low byte = column) for a battle object's step/move toward a chosen enemy/ally.
-// symdb: (r0 = actorType, r1 = battleObject ptr, r2 = unknown) -> r0 = result of battle_aiIterateOverBattleObjectsByRow_80E1704 ; side
+// symdb: (r0 = actorType, r1 = battleObject ptr, r2 = unknown) -> r0 = result of sub_80E1704 ; side
 // symdb: effects (BattleObject->PanelX read/written via path constants)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computeMoveTargetPanel_80E16CC.yaml
 	thumb_local_start
@@ -93037,6 +93044,11 @@ sub_80E3824:
 	pop {pc}
 	thumb_func_end sub_80E3824
 
+// symdb: Beast-Out action dispatcher that copies a related object's UPDATE_DURING_TIMESTOP flag onto the current battle object and routes execution to one of five action handlers (or destroys the object on the no-handler path).
+// symdb: (r5 = BattleObject*) -> void ; side effects: modifies the object's ObjectHeader.Flags (bit 1),
+// symdb: CurStateActionPhaseAndPhaseInitialized, and tail-calls one of sub_80E38C8 / sub_80E38EE /
+// symdb: sub_80E3904 / sub_80E3930 / sub_80E3950.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E386A.yaml
 	thumb_local_start
 sub_80E386A:
 	push {lr}
@@ -122848,9 +122860,10 @@ byte_80F17BC:
 	.byte 0xF4, 0x1, 0x0, 0x8, 0xA, 0x0, 0x0, 0x0
 	thumb_func_end sub_80F1756
 
-// symdb: Dispatches to one of three AI attack handlers based on AIAttackVars byte 0; the picked function runs with r0=that byte and r7 (battle object) live.
-// symdb: () -> r0,r1-r12,flags inherited from the dispatched callee ; side effects via the chosen handler
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F17C4.yaml
+// symdb: AI attack dispatch table for SnakeArm — branches on AIAttackVars[0] via ThumbBX
+// symdb: (r7 = pointer to AIData, lr = return) -> r0..r3 overwritten by the chosen handler; tail-calls
+// symdb: into sub_80F17E4 / battleObject_aiSpawnSnakeArmAttack_80F1808 / sub_80F1888
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F17C4.yaml
 	thumb_local_start
 sub_80F17C4:
 	push {r7,lr}
@@ -173591,6 +173604,12 @@ sub_810A6C0:
 	pop {pc}
 	thumb_func_end sub_810A6C0
 
+// symdb: Triggers the AI/NPC actor's selected battle-chip attack when ready (turn counter gate), and returns whether it fired.
+// symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused; relies on r5 = battle object pointer, r10 =
+// symdb: BattleState toolkit ptr) -> r0 = 1 if the chip attack was set up, 0 otherwise ; side effects:
+// symdb: BattleState.Unk_40 (turn counter?) compared against 0x12c, and on success calls write-chip-
+// symdb: params / set-attack-0 / sub_800F322
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A6F4.yaml
 	thumb_local_start
 sub_810A6F4:
 	push {r4,r6,lr}
@@ -176326,6 +176345,11 @@ dword_810BDC0:
 	.word 0x100
 	thumb_func_end sub_810BD94
 
+// symdb: AI helper that, when the actor has a chip selected and battle turn state is high enough, queues that chip for use by writing its parameters, setting attack0, and starting the chip-use sub-state.
+// symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
+// symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
+// symdb: AttackVars/Attack0 and triggers sub_800F322
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BDC4.yaml
 	thumb_local_start
 sub_810BDC4:
 	push {r4,r6,lr}

@@ -3834,8 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Unknown — assembly not present in bn6f/asm dump; cannot be characterised.
-// symdb: (in=r10, lr ; out=nz, r2, r3, r4, r5, r7, r8, r9, r12 ; may write r0..r9, r12, lr, nz/c/v)
+// symdb: Cutscene submode driver for the JackOut / BBS-request selection step (advances sub-state, loads GFX anims, manages event flags and call-script pointers)
+// symdb: in=(r10 = ToolkitPtr) ; side effects: scratch regs r0-r6, r12, lr; nz clobbered; calls into
+// symdb: cutscene/event-flag/gfx-anim/BBS helpers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8217,9 +8218,9 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: unknown — assembly not present in project asm, no callers available
-// symdb: (r2 = small int, r10 = Toolkit ptr, lr = return address) -> r2 = ?, r3/r5/r7 = ? ; side effects
-// symdb: unknown
+// symdb: Beast-server AI step for an enemy battle actor: branches by event flag and delegates to sub-phases.
+// symdb: (r2 = BattleObject* ?) -> r0 = 0, r2/r3/r5/r7 live for caller ; calls into
+// symdb: sub_8086FD8/sub_808711C/sub_8087140/sub_8087184/sub_80871F4
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

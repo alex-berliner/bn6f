@@ -1347,9 +1347,9 @@ sub_810CF46::
 	pop {r4,r7,pc}
 	thumb_func_end sub_810CF46
 
-// symdb: Looks up the chip this battle object has selected and kicks off chip-attack handling on the object (returns 0/1).
-// symdb: (r5 = BattleObjectPtr, r7 = ?, r10 = ToolkitPtr) -> r0 = bool/int (flag), r1 = ?; preserves
-// symdb: r4..r7
+// symdb: Stages a chip-use from the AI's currently selected chip by filling attack vars and writing params.
+// symdb: (r5 = AIDataPtr) -> r0 = ?, r1 = ? ; mutates AIData, attack vars, and the battle object's chip
+// symdb: params
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CF4A.yaml
 	thumb_local_start
 sub_810CF4A::
@@ -2222,11 +2222,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Battle-object AI step (story-boss Anpanman/Snake-arm logic): resets the object's timer to 8, refreshes its panel highlight set with a directional side offset, sets a counter time and the INVISIBLE flag, then lets the side-sign fall back through the helper.
-// symdb: (r0 = ignored, r1 = &this function = 0x0810d809, r2 = 0x80, r3 = 3) -> r0 = 0x25 | 0x24 | 0x7f ;
-// symdb: writes the visible panels via sub_8109660, mutates the battle object's CollisionData/Timer, sets
-// symdb: OBJECT_FLAGS_INVIS on the object, leaves r1 with the side-direction multiplier the caller
-// symdb: preserves in r5.
+// symdb: Drives one battle object's per-frame panel-highlight pass (counter-timer reset, side-flip direction lookup, panel highlight for matching cells, related flag set).
+// symdb: (r0=ignored, r1=`BattleObject*` aliased with `r5`, r2=0x80, r3=3; out=r0=panel slot/iteration
+// symdb: byte, r1=possibly the cur-chip slot index; r4/r5/r7/r10/lr are callee-saved)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::
