@@ -14868,7 +14868,7 @@ int npc_dispatchStateHandler_811979C()
 
 
 // 0x81197b4
-void sub_81197B4()
+void submenu_updateChipPalette_81197B4()
 {
     int v0; // r5
     char v1; // zf
@@ -20398,7 +20398,7 @@ void __noreturn battleObject_beastSp_update_811E2B4()
     v0->objFlags = v3;
     if ( LOBYTE(v0->objParams) )
     {
-        v4 = sub_81421D0() + 1;
+        v4 = battle_getScenarioEffectStateField_81421D0() + 1;
         if ( v4 != BYTE1(v0->objParams) )
         {
             BYTE1(v0->objParams) = v4;
@@ -20490,7 +20490,7 @@ void __noreturn sub_811E3CC()
     else
         v3 = v2 | 2;
     v0->objFlags = v3;
-    v7 = 16 * sub_81421D0() + 12;
+    v7 = 16 * battle_getScenarioEffectStateField_81421D0() + 12;
     sub_8036F70(&dword_8089128);
     v4 = 220;
     v5 = v7;
@@ -22852,7 +22852,7 @@ int __fastcall sub_81202B4(unsigned __int8 *a1, int a2, _WORD *a3, _WORD *a4)
 
 
 // 0x81202fc
-int __fastcall sub_81202FC(int a1, _WORD *a2, int a3, int a4)
+int __fastcall chatbox_initFolderNameDisplayBuffer_81202FC(int a1, _WORD *a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // ST10_4

@@ -15856,7 +15856,7 @@ sub_802D7A0:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
 	bl battle_getObjectNameID_8011020
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0x29 
 	bl GetBattleNaviStats2034A60Byte
@@ -15946,7 +15946,7 @@ loc_802D88C:
 loc_802D890:
 	bl battle_dispatchActorByTypeAndAIIdx_800F378
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0

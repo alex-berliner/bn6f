@@ -2739,7 +2739,7 @@ signed int __fastcall battle_applyInvisibleClear_80106C0(int a1)
 
 
 // 0x8010740
-signed int __fastcall sub_8010740(int a1)
+signed int __fastcall battleObject_stealChipFromEnemyNavi_8010740(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -5433,7 +5433,7 @@ signed int sub_8012464()
     int v1; // r7
     signed int result; // r0
 
-    if ( sub_8010740(382) )
+    if ( battleObject_stealChipFromEnemyNavi_8010740(382) )
     {
         object_exitAttackState(v0);
         result = 8;
@@ -5950,7 +5950,7 @@ int __usercall useChipRelated_80127C0@<R0>(Battle *obj@<R5>, int a1@<R0>)
         {
             if ( v15 != 2 )
                 goto LABEL_16;
-            sub_80143A6();
+            battleObject_markUsedAction_80143A6();
         }
         PlaySoundEffect(135, v16, v17);
     }
@@ -8050,7 +8050,7 @@ char *battle_naviAI_tick_8013DA0()
             {
                 if ( sub_8013774(result, 44) )
                 {
-                    sub_80143A6();
+                    battleObject_markUsedAction_80143A6();
                     result = sub_8014446();
                 }
                 else
@@ -8061,7 +8061,7 @@ char *battle_naviAI_tick_8013DA0()
                     if ( result >= 60 )
                     {
                         *(v3 + 58) = 0;
-                        sub_80143A6();
+                        battleObject_markUsedAction_80143A6();
                         sub_8014446();
                         v4 = *(v3 + 11);
                         v5 = 0;
@@ -8684,7 +8684,7 @@ int battle_updatePlayerAngerState_8014326()
             if ( !*(v2 + 52)
                 || (v6 = __OFSUB__(v5, 1), result = v5 - 1, *(v2 + 52) = result, ((result < 0) ^ v6) | (result == 0)) )
             {
-                result = sub_80143A6();
+                result = battleObject_markUsedAction_80143A6();
             }
         }
         else
@@ -8704,7 +8704,7 @@ int battle_updatePlayerAngerState_8014326()
 
 
 // 0x80143a6
-int sub_80143A6()
+int battleObject_markUsedAction_80143A6()
 {
     int v0; // r5
     int v1; // r1
@@ -9725,7 +9725,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
     if ( ((result < 0) ^ v23) | (result == 0) )
     {
         battle_beginTurnOpenProcess_80144C0();
-        sub_80143A6();
+        battleObject_markUsedAction_80143A6();
         battle_setPlayerNaviStatsField0E_8015BEC(v3->Alliance, 128);
         object_clearInvulnerableTime();
         result = 12;
@@ -9938,7 +9938,7 @@ int __cdecl sub_8014E08(int a1, int a2, int a3)
             v29 = 1;
         v30 = v29;
         battle_beginTurnOpenProcess_80144C0();
-        sub_80143A6();
+        battleObject_markUsedAction_80143A6();
         if ( v30 )
             battle_setPlayerNaviStatsField0E_8015BEC(v3->Alliance, 255);
         object_clearInvulnerableTime();
@@ -10149,7 +10149,7 @@ int sub_8015040()
     if ( ((result < 0) ^ v23) | (result == 0) )
     {
         battle_beginTurnOpenProcess_80144C0();
-        sub_80143A6();
+        battleObject_markUsedAction_80143A6();
         battle_setPlayerNaviStatsField0E_8015BEC(v0->Alliance, 128);
         object_clearInvulnerableTime();
         result = 12;
@@ -10376,7 +10376,7 @@ int sub_80152C8()
     if ( ((result < 0) ^ v23) | (result == 0) )
     {
         battle_beginTurnOpenProcess_80144C0();
-        sub_80143A6();
+        battleObject_markUsedAction_80143A6();
         battle_setPlayerNaviStatsField0E_8015BEC(v0->Alliance, 128);
         if ( v0->childobject2 )
             sprite_clearFinalPalette();
@@ -10579,7 +10579,7 @@ int sub_80154C8()
     if ( ((result < 0) ^ v22) | (result == 0) )
     {
         battle_beginTurnOpenProcess_80144C0();
-        sub_80143A6();
+        battleObject_markUsedAction_80143A6();
         battle_setPlayerNaviStatsField0E_8015BEC(v0->Alliance, 128);
         object_clearInvulnerableTime();
         if ( v0->childobject2 )

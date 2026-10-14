@@ -239,7 +239,7 @@ signed int __fastcall sub_8089704(int a1, int a2, int a3)
     v5 = 0;
     if ( v4 & 1 )
     {
-        v6 = sub_81421D0();
+        v6 = battle_getScenarioEffectStateField_81421D0();
         battle_checkScenarioEffectActive_8142190(v6);
         if ( v9 )
         {
@@ -266,7 +266,7 @@ signed int __fastcall sub_8089704(int a1, int a2, int a3)
         if ( v12 & 0x40 )
         {
             PlaySoundEffect(102, a2, a3);
-            v13 = sub_81421D0();
+            v13 = battle_getScenarioEffectStateField_81421D0();
             v14 = __OFSUB__(v13, 1);
             v15 = v13 - 1;
             if ( (v15 < 0) ^ v14 )
@@ -277,7 +277,7 @@ signed int __fastcall sub_8089704(int a1, int a2, int a3)
         else if ( v12 & 0x80 )
         {
             PlaySoundEffect(102, a2, a3);
-            v16 = sub_81421D0() + 1;
+            v16 = battle_getScenarioEffectStateField_81421D0() + 1;
             if ( v16 >= 4 )
                 v16 = 0;
             sub_81421C8(v16);
@@ -294,7 +294,7 @@ signed int __fastcall sub_8089792(int a1)
     _BYTE *v1; // r5
     int v2; // r0
 
-    v2 = sub_81421D0();
+    v2 = battle_getScenarioEffectStateField_81421D0();
     sub_8089CA4(v2 + 2);
     *v1 = 20;
     return 1;
@@ -321,7 +321,7 @@ signed int sub_80897A6()
             else
             {
                 sub_8089D0E();
-                v2 = sub_81421D0();
+                v2 = battle_getScenarioEffectStateField_81421D0();
                 sub_81421B2(v2);
                 sub_80468EC(1);
                 sub_8089CB0(10);

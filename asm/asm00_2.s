@@ -3891,9 +3891,9 @@ dword_801073C:
 // symdb: Attempts to steal a chip from the enemy Navi by clearing their anti-steal flag and spawning a steal effect at their panel; returns whether the steal was performed.
 // symdb: (r0 = chipID, r5 = actor BattleObject / caller context, r10 = toolkit) -> r0 = 1 on success, 0
 // symdb: if any guard failed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010740.yaml
-	thumb_func_start sub_8010740
-sub_8010740:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stealChipFromEnemyNavi_8010740.yaml
+	thumb_func_start battleObject_stealChipFromEnemyNavi_8010740
+battleObject_stealChipFromEnemyNavi_8010740:
 	push {r4,r6,r7,lr}
 	mov r4, r0
 	bl GetBattleEffects // () -> int
@@ -3952,7 +3952,7 @@ loc_80107B6:
 	.balign 4, 0
 off_80107BC:
 	.word 0x179
-	thumb_func_end sub_8010740
+	thumb_func_end battleObject_stealChipFromEnemyNavi_8010740
 
 // symdb: Tests the battle-effects bitmask's bit 3 and returns 3 when that flag is set (Custom+ disabled), otherwise 0.
 // symdb: int battle_IsNoCustomPlusActive(void) // r10 in (ignored by body), r3 out = 3 if effect bit set
@@ -7872,7 +7872,7 @@ sub_801245A:
 sub_8012464:
 	push {lr}
 	ldr r0, dword_80126DC // =0x17e 
-	bl sub_8010740
+	bl battleObject_stealChipFromEnemyNavi_8010740
 	tst r0, r0
 	beq loc_8012478
 	bl object_exitAttackState
@@ -8491,7 +8491,7 @@ loc_801284E:
 loc_8012872:
 	cmp r1, #2
 	bne loc_8012880
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 loc_801287A:
 	mov r0, #SOUND_HIT_87
 	bl PlaySoundEffect
@@ -11676,7 +11676,7 @@ battle_naviAI_tick_8013DA0:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
 	beq loc_8013DD2
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	bl sub_8014446
 	b loc_8013E38
 loc_8013DD2:
@@ -11688,7 +11688,7 @@ loc_8013DD2:
 	blt loc_8013E38
 	mov r0, #0
 	strh r0, [r4,#oAIData_Unk_3a]
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	bl sub_8014446
 	ldrb r6, [r4,#oAIData_Unk_0b]
 	ldr r0, off_8013E3C // =byte_8013E44
@@ -12528,7 +12528,7 @@ loc_801437A:
 	strh r0, [r4,#oAIData_Anger]
 	bgt locret_80143A4
 loc_801438E:
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	b locret_80143A4
 loc_8014394:
 	mov r0, #1
@@ -12545,9 +12545,9 @@ locret_80143A4:
 // symdb: (r5 = *BattleObject whose AIDataPtr is set up) -> r0 = 0 ; side effects: clears
 // symdb: `object_clearFlag(1<<0x15)` and `object_clearFlag2(0x200)`, writes 0x80 to NaviStats+0xe, writes
 // symdb: 0 to AIData.Anger and AIData.Unk_4c
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80143A6.yaml
-	thumb_func_start sub_80143A6
-sub_80143A6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_markUsedAction_80143A6.yaml
+	thumb_func_start battleObject_markUsedAction_80143A6
+battleObject_markUsedAction_80143A6:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl GetBattleNaviStatsAddr // (alliance: bool) -> * NaviStats
@@ -12569,7 +12569,7 @@ loc_80143B6:
 	strh r0, [r1,#oAIData_Anger]
 	str r0, [r1,#oAIData_Unk_4c]
 	pop {pc}
-	thumb_func_end sub_80143A6
+	thumb_func_end battleObject_markUsedAction_80143A6
 	thumb_func_end sub_80143B4
 
 	thumb_local_start
@@ -13894,7 +13894,7 @@ loc_8014C9E:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8014CBE
 	bl battle_beginTurnOpenProcess_80144C0
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0x80
 	bl battle_setPlayerNaviStatsField0E_8015BEC
@@ -14146,7 +14146,7 @@ loc_8014EB8:
 loc_8014ECE:
 	push {r1}
 	bl battle_beginTurnOpenProcess_80144C0
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	pop {r0}
 	cmp r0, #0
 	beq loc_8014EE6
@@ -14412,7 +14412,7 @@ loc_8015100:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_8015120
 	bl battle_beginTurnOpenProcess_80144C0
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0x80
 	bl battle_setPlayerNaviStatsField0E_8015BEC
@@ -14700,7 +14700,7 @@ loc_801537C:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80153A8
 	bl battle_beginTurnOpenProcess_80144C0
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0x80
 	bl battle_setPlayerNaviStatsField0E_8015BEC
@@ -14947,7 +14947,7 @@ loc_8015594:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80155C4
 	bl battle_beginTurnOpenProcess_80144C0
-	bl sub_80143A6
+	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0x80
 	bl battle_setPlayerNaviStatsField0E_8015BEC

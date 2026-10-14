@@ -1725,7 +1725,7 @@ int __fastcall sub_809B9EC(int a1, int a2, int a3, int a4)
 
 
 // 0x809ba14
-__int64 sub_809BA14()
+__int64 battle_loadBeastSpDmg_809BA14()
 {
     int v0; // r10
     int v1; // r5

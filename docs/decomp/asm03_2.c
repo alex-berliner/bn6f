@@ -5147,7 +5147,7 @@ int sub_804AF84()
 // 0x804afb8
 void sub_804AFB8()
 {
-    sub_81202FC(10, word_2034814, 11, 12);
+    chatbox_initFolderNameDisplayBuffer_81202FC(10, word_2034814, 11, 12);
     CopyBackgroundTiles(1, 2, 2, word_2034814, 20, &byte_0[2]);
 }
 

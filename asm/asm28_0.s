@@ -3617,9 +3617,9 @@ sub_809B9EC:
 // symdb: Load the 5-word Beast SP damage/info table from CutsceneState into r0-r4, clamping the fourth word to 0x10
 // symdb: (no explicit args; uses Toolkit->CutsceneStatePtr) -> r0=word0, r1=word1, r2=word2, r3=word3,
 // symdb: r4=min(word4,0x10)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BA14.yaml
-	thumb_func_start sub_809BA14
-sub_809BA14:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBeastSpDmg_809BA14.yaml
+	thumb_func_start battle_loadBeastSpDmg_809BA14
+battle_loadBeastSpDmg_809BA14:
 	push {r5-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_CutsceneStatePtr]
@@ -3635,7 +3635,7 @@ sub_809BA14:
 	mov r4, #0x10
 locret_809BA2E:
 	pop {r5-r7,pc}
-	thumb_func_end sub_809BA14
+	thumb_func_end battle_loadBeastSpDmg_809BA14
 byte_809BA30:
 	.word 0x0126008A, 0x00070050, 0x005E0032, 0x008C0096, 0xFFFF0038, 0xFFE6008A, 0x00030050, 0x005E0032
 	.word 0x00780082, 0xFFFF0000, 0x0086FFEA, 0x00010050, 0x005E0032, 0x008C0096, 0xFFFF0039, 0x0086FFEA

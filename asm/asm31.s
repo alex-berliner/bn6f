@@ -26921,7 +26921,7 @@ loc_80C45B8:
 off_80C4610:
 	.word off_80C4614
 off_80C4614:
-	.word sub_80C461C+1
+	.word battleObject_updateSpriteMosaicAndExitIfNotScaled_80C461C+1
 	.word battleObject_updateSprite_80C464C+1
 	thumb_func_end battleObject_copyStateAndSyncSpriteFromRelated_80C458C
 
@@ -26929,9 +26929,9 @@ off_80C4614:
 // symdb: (r5 = BattleObject) -> r0 = updated sprite state ; side effects: writes
 // symdb: CurAction/CurPhaseAndPhaseInitialized, clears an ObjectHeader bit, conditionally invokes
 // symdb: sub_80C464C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C461C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteMosaicAndExitIfNotScaled_80C461C.yaml
 	thumb_local_start
-sub_80C461C:
+battleObject_updateSpriteMosaicAndExitIfNotScaled_80C461C:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getMosaicScalingParameters
@@ -26954,7 +26954,7 @@ loc_80C463E:
 	bl battleObject_updateSprite_80C464C
 locret_80C464A:
 	pop {pc}
-	thumb_func_end sub_80C461C
+	thumb_func_end battleObject_updateSpriteMosaicAndExitIfNotScaled_80C461C
 
 // symdb: Per-frame sprite/animation tick for a battle object, picking one of three update paths based on Param3 and skipping when the collision flags forbid it.
 // symdb: (r5 = oBattleObjectPtr, r10 = oToolkitPtr) -> void ; side effects: refreshes mosaic + alpha on
@@ -109521,7 +109521,7 @@ loc_80EB432:
 	thumb_func_end sub_80EB402
 
 // symdb: AI attack dispatcher that tail-calls one of two attack routines selected by the first byte of the AI attack-vars block.
-// symdb: void battle_aiAttackDispatch(void /* r7 = &AIAttackVars */); tail-calls sub_80EB450/sub_80EB502,
+// symdb: void battle_aiAttackDispatch(void /* r7 = &AIAttackVars */); tail-calls sub_80EB450/aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502,
 // symdb: which return directly to this function's caller
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackDispatch_80EB436.yaml
 	thumb_local_start
@@ -109537,7 +109537,7 @@ off_80EB444:
 	.word jt_80EB448
 jt_80EB448:
 	.word sub_80EB450+1
-	.word sub_80EB502+1
+	.word aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502+1
 	thumb_func_end battle_aiAttackDispatch_80EB436
 
 	thumb_local_start
@@ -109630,9 +109630,9 @@ locret_80EB500:
 // symdb: (r5 = BattleObject, r6 = ?, r7 = AIAttackVars, r10 = Toolkit) -> void ; side effects: writes to
 // symdb: AIAttackVars (Unk_01, Unk_10, Unk_12), clears BattleObject.RelatedObject1Ptr and AIData.Unk_68,
 // symdb: calls object_exitAttackState, and may dispatch aiAttack_initVarsAndStart_80116AE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB502.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502.yaml
 	thumb_local_start
-sub_80EB502:
+aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -109676,7 +109676,7 @@ loc_80EB528:
 	bl aiAttack_initVarsAndStart_80116AE
 locret_80EB560:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80EB502
+	thumb_func_end aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502
 
 	thumb_local_start
 sub_80EB562:
@@ -114219,7 +114219,7 @@ off_80ED758:
 	.word off_80ED75C
 off_80ED75C:
 	.word sub_80ED764+1
-	.word sub_80ED7A2+1
+	.word aiAttack_walkForwardThenAttack_80ED7A2+1
 	thumb_func_end sub_80ED748
 
 	thumb_local_start
@@ -114260,9 +114260,9 @@ locret_80ED7A0:
 // symdb: (no explicit return) ; side effects: mutates AIAttackVars (Unk_01 init flag, Unk_10 free-panel
 // symdb: count), BattleObject->RelatedObject1Ptr, AIData->Unk_68, exits the attack state and starts the
 // symdb: normal ai attack via aiAttack_initVarsAndStart_80116AE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80ED7A2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/aiAttack_walkForwardThenAttack_80ED7A2.yaml
 	thumb_local_start
-sub_80ED7A2:
+aiAttack_walkForwardThenAttack_80ED7A2:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -114311,7 +114311,7 @@ loc_80ED7D6:
 	bl aiAttack_initVarsAndStart_80116AE
 locret_80ED80E:
 	pop {r4,pc}
-	thumb_func_end sub_80ED7A2
+	thumb_func_end aiAttack_walkForwardThenAttack_80ED7A2
 
 	thumb_local_start
 sub_80ED810:
@@ -120272,7 +120272,7 @@ loc_80F057C:
 	b loc_80F05F2
 loc_80F058C:
 	mov r0, r7
-	bl sub_8010740
+	bl battleObject_stealChipFromEnemyNavi_8010740
 	tst r0, r0
 	beq loc_80F059C
 	bl object_exitAttackState
@@ -171652,7 +171652,7 @@ off_8109814:
 	.word off_8109818
 off_8109818:
 	.word sub_8109820+1
-	.word sub_810986E+1
+	.word battleObject_advanceAIStepMove_810986E+1
 	thumb_func_end sub_8109804
 
 // symdb: Per-step AI attack panel selector: validate and reserve the AI's chosen destination panel, set the cannot-slide flag, dispatch to one of two next-step routines, then advance the AI attack state.
@@ -171689,7 +171689,7 @@ sub_8109820:
 loc_810985A:
 	bl sub_810990E
 loc_810985E:
-	bl sub_810986E
+	bl battleObject_advanceAIStepMove_810986E
 	b locret_810986C
 loc_8109864:
 	mov r0, #0
@@ -171702,9 +171702,9 @@ locret_810986C:
 // symdb: Per-tick AI attack motion: integrate velocity into X/Y, periodically re-sync panel/collision, and finalize the move when the AI step counter expires (snap to destination, release reservation, raise cannot-slide, set currently-moving flag, mark Unk_1a=1, then exit attack state).
 // symdb: (r5 = BattleObject*, r6 = ?, r7 = AIData*) -> void ; side effects: mutates BattleObject
 // symdb: X/Y/PanelX/PanelY/CollisionData flags and AIData AttackVars Unk_10/Unk_1a
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810986E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_advanceAIStepMove_810986E.yaml
 	thumb_local_start
-sub_810986E:
+battleObject_advanceAIStepMove_810986E:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -171742,7 +171742,7 @@ loc_8109890:
 	bl object_exitAttackState_801171C
 locret_81098C2:
 	pop {pc}
-	thumb_func_end sub_810986E
+	thumb_func_end battleObject_advanceAIStepMove_810986E
 
 // symdb: Sets a battle object's X/Y velocity to slide it onto the AI's current target panel and computes the frame count until it arrives.
 // symdb: void sub_81098C4(struct BattleObject *obj /* r5 */, struct AIAttackVars *ai /* r7 */);
@@ -172300,16 +172300,16 @@ aiAttackDispatch_8109DD2:
 off_8109DE0:
 	.word off_8109DE4
 off_8109DE4:
-	.word sub_8109DEC+1
+	.word aiAttackVars_runKeyItemTrapStep_8109DEC+1
 	.word aiAttackTimer_tick_8109E4A+1
 	thumb_func_end aiAttackDispatch_8109DD2
 
 // symdb: Drives a multi-frame key-item trap AI: arms it on first call, plays the "armed" anim, fires the kind-0x16 hitbox, then resolves after a timer elapses.
 // symdb: (r5 = battleObject, r7 = AIAttackVars, r10 = toolkit) -> r0 = residual Timer value (0..0x3f);
 // symdb: side effects mutate AIAttackVars + battleObject CurAnim and spawn a kind-0x16 projectile
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109DEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/aiAttackVars_runKeyItemTrapStep_8109DEC.yaml
 	thumb_local_start
-sub_8109DEC:
+aiAttackVars_runKeyItemTrapStep_8109DEC:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	cmp r0, #0
@@ -172357,7 +172357,7 @@ loc_8109E38:
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_8109E48:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8109DEC
+	thumb_func_end aiAttackVars_runKeyItemTrapStep_8109DEC
 
 // symdb: Ticks an AI attack's countdown timer and tears down the attack when it expires.
 // symdb: void ai_runtick(u32 r5_battleObj, u32 r7_aiVars)

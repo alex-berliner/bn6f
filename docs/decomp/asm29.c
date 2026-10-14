@@ -2192,14 +2192,14 @@ void __noreturn battleObject_updateAnimation_80A6F2C()
                 }
                 else
                 {
-                    sub_80A6F78();
+                    battleObject_stepBeastOut_80A6F78();
                     sub_80A70FC();
                 }
             }
         }
     }
     sprite_update(v0);
-    sub_80A7238();
+    battleObject_copyPwrAtkFieldsToTempBuffer_80A7238();
 }
 
 
@@ -2211,7 +2211,7 @@ int sub_80A6F70()
 
 
 // 0x80a6f78
-int sub_80A6F78()
+int battleObject_stepBeastOut_80A6F78()
 {
     int v0; // r5
     int v1; // r2
@@ -2487,7 +2487,7 @@ int sub_80A7208()
 
 
 // 0x80a7238
-int sub_80A7238()
+int battleObject_copyPwrAtkFieldsToTempBuffer_80A7238()
 {
     int v0; // r5
     int v1; // r3
@@ -2586,7 +2586,7 @@ void __noreturn battleObject_updateFromCurAction_80A7354()
         }
     }
     sprite_update(v0);
-    sub_80A775C();
+    battle_beastsp_setAITemplateStats_80A775C();
 }
 
 
@@ -3012,7 +3012,7 @@ unsigned int __noreturn sub_80A76E8()
 
 
 // 0x80a775c
-int sub_80A775C()
+int battle_beastsp_setAITemplateStats_80A775C()
 {
     int v0; // r5
     int v1; // r6
@@ -3121,7 +3121,7 @@ void __noreturn sprite_setupBeastOutSprite_80A786C()
     char v5; // r4
     int v6; // r0
 
-    *(v1 + 12) = sub_809BA14();
+    *(v1 + 12) = battle_loadBeastSpDmg_809BA14();
     *(v1 + 20) = v2;
     *(v1 + 4) = v3;
     v4 = v0;
@@ -4561,7 +4561,7 @@ void beastSP_initOrUpdate_80A86B4()
     v2 = *&sub_81421D8()[4 * *(v0 + 4)];
     if ( v2 )
     {
-        v3 = sub_81421D0();
+        v3 = battle_getScenarioEffectStateField_81421D0();
         battle_checkScenarioEffectActive_8142190(v3);
         if ( !v6 )
         {
@@ -4613,7 +4613,7 @@ void __noreturn sub_80A8748()
 
     v1 = *(v0 + 4);
     if ( !*(v0 + 4) )
-        v1 = sub_81421D0();
+        v1 = battle_getScenarioEffectStateField_81421D0();
     v2 = v1;
     v3 = &byte_80A87B0[4 * v1];
     *v0 = 3;

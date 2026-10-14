@@ -411,7 +411,7 @@ off_8123444:
 	.word off_8123448
 off_8123448:
 	.word chipFolder_screenInit_812345C+1
-	.word sub_8123514+1
+	.word battleObject_runUpdateHandlerByType_8123514+1
 	.word pet_menu_runFrame_81237BC+1
 	.word chipFolder_init_812349C+1
 	.word sub_81234DC+1
@@ -512,9 +512,9 @@ off_8123510:
 // symdb: jumps through off_812353C, then calls sfx_playChipUseSound_8123C98,
 // symdb: pet_menu_drawCharacterStatBlock_8123C98, sub_8123E58, entity_runAllUpdateHandlers_80465BC,
 // symdb: battle_updateEStructSprites_80465F8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123514.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateHandlerByType_8123514.yaml
 	thumb_local_start
-sub_8123514:
+battleObject_runUpdateHandlerByType_8123514:
 	push {lr}
 	ldr r0, off_8123538 // =off_812353C 
 	ldrb r1, [r5,#2]
@@ -538,7 +538,7 @@ off_812353C:
 	.word sub_812377C+1
 	.word sub_8123790+1
 	.word sub_8123574+1
-	thumb_func_end sub_8123514
+	thumb_func_end battleObject_runUpdateHandlerByType_8123514
 
 // symdb: Per-frame battle update: runs three battle sub-routines and, once the screen fade finishes, advances the battle-object state to phase 4
 // symdb: void battle_updateFrame_8123558(BattleObject* r5) -> r0 (4 on phase transition, else

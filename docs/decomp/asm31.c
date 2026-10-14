@@ -21914,7 +21914,7 @@ int battleObject_copyStateAndSyncSpriteFromRelated_80C458C()
 
 
 // 0x80c461c
-void sub_80C461C()
+void battleObject_updateSpriteMosaicAndExitIfNotScaled_80C461C()
 {
     int v0; // r5
     int v1; // r0
@@ -84499,7 +84499,7 @@ int __fastcall sub_80EB450(int a1, int a2, int a3)
 
 
 // 0x80eb502
-void sub_80EB502()
+void aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -87804,7 +87804,7 @@ int __fastcall sub_80ED764(int a1, int a2, int a3)
 
 
 // 0x80ed7a2
-void sub_80ED7A2()
+void aiAttack_walkForwardThenAttack_80ED7A2()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -92638,7 +92638,7 @@ LABEL_61:
         {
             object_exitAttackState(obj);
         }
-        else if ( sub_8010740(v25) )
+        else if ( battleObject_stealChipFromEnemyNavi_8010740(v25) )
         {
             object_exitAttackState(obj);
         }
@@ -131968,14 +131968,14 @@ int __fastcall sub_8109820(int a1)
             sub_81098C4();
         else
             sub_810990E();
-        result = sub_810986E();
+        result = battleObject_advanceAIStepMove_810986E();
     }
     return result;
 }
 
 
 // 0x810986e
-int sub_810986E()
+int battleObject_advanceAIStepMove_810986E()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -132391,7 +132391,7 @@ int aiAttackDispatch_8109DD2()
 
 
 // 0x8109dec
-int sub_8109DEC()
+int aiAttackVars_runKeyItemTrapStep_8109DEC()
 {
     Battle *v0; // r5
     int v1; // r7

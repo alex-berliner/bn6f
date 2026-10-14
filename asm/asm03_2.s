@@ -9009,7 +9009,7 @@ sub_804AFB8:
 	mov r2, #0xb
 	mov r3, #0xc
 	mov r4, #0x14
-	bl sub_81202FC
+	bl chatbox_initFolderNameDisplayBuffer_81202FC
 	mov r2, #0x1e
 	mov r1, r2
 	mov r0, #0x1f

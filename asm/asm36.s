@@ -3219,7 +3219,7 @@ loc_813189A:
 loc_81318A0:
 	strb r0, [r5,#0x1b]
 	ldr r5, off_81318AC // =unk_2037700 
-	bl sub_8133200
+	bl battleObject_dispatchUpdateByState_8133200
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_81318AC:
@@ -6287,9 +6287,9 @@ dword_81331FC:
 
 // symdb: Thunk that reads the battle object's CurState (offset 0) and tail-calls one of several per-state handlers via an indirect jump table
 // symdb: (r5 = BattleObject*) -> tail-call to selected handler ; side effects none of its own
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133200.yaml
-	thumb_func_start sub_8133200
-sub_8133200:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchUpdateByState_8133200.yaml
+	thumb_func_start battleObject_dispatchUpdateByState_8133200
+battleObject_dispatchUpdateByState_8133200:
 	push {r4-r7,lr}
 	ldr r0, off_8133210 // =off_8133214 
 	ldrb r1, [r5,#1]
@@ -6306,7 +6306,7 @@ off_8133214:
 	.word sub_813399C+1
 	.word sub_8133228+1
 	.word sub_8133A44+1
-	thumb_func_end sub_8133200
+	thumb_func_end battleObject_dispatchUpdateByState_8133200
 
 	thumb_local_start
 sub_8133228:
@@ -8685,7 +8685,7 @@ menu_drawSubmenuBox_8134490:
 	mov r2, #0xb
 	mov r3, #1
 	mov r4, #0xf
-	bl sub_81202FC
+	bl chatbox_initFolderNameDisplayBuffer_81202FC
 	b loc_81344B8
 loc_81344AA:
 	ldrb r0, [r7,#0xc]
@@ -8716,7 +8716,7 @@ loc_81344B8:
 	mov r2, #0xb
 	mov r3, #0xc
 	mov r4, #0x14
-	bl sub_81202FC
+	bl chatbox_initFolderNameDisplayBuffer_81202FC
 	mov r1, #0x18
 	ldrsh r2, [r7,r1]
 	mov r1, r2

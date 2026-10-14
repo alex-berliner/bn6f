@@ -22949,14 +22949,14 @@ npc_dispatchStateHandler_811979C:
 off_81197AC:
 	.word off_81197B0
 off_81197B0:
-	.word sub_81197B4+1
+	.word submenu_updateChipPalette_81197B4+1
 	thumb_func_end npc_dispatchStateHandler_811979C
 
 // symdb: Refreshes the chip-select submenu's sprite palette based on the currently highlighted chip and its element
 // symdb: (r5 = *SubMenu) -> void ; updates SubMenu palette + sprite-setPalette
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81197B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateChipPalette_81197B4.yaml
 	thumb_local_start
-sub_81197B4:
+submenu_updateChipPalette_81197B4:
 	push {r4-r7,lr}
 	bl submenu_isStateChanged_81198B0
 	bne loc_81197C6
@@ -22995,7 +22995,7 @@ off_81197F4:
 	.word byte_81197F8
 byte_81197F8:
 	.byte 0x0, 0x1, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_81197B4
+	thumb_func_end submenu_updateChipPalette_81197B4
 
 // symdb: Empty placeholder function that immediately returns to the caller without doing anything.
 // symdb: void sub_8119800(void)
@@ -32192,7 +32192,7 @@ loc_811E2C6:
 	ldrb r0, [r5,#4]
 	tst r0, r0
 	beq loc_811E2E4
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	add r0, #1
 	ldrb r1, [r5,#5]
 	cmp r0, r1
@@ -32333,7 +32333,7 @@ loc_811E3DC:
 	orr r4, r1
 loc_811E3DE:
 	strb r4, [r5]
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	mov r1, #0x10
 	mul r1, r0
 	add r1, #0xc
@@ -34758,7 +34758,7 @@ JumpTable811F7A0:
   // 0x1C
 	.word HandleSaveMenu8132B88+1
   // 0x20
-	.word sub_8133200+1
+	.word battleObject_dispatchUpdateByState_8133200+1
   // 0x24
 	.word sub_81356D4+1
   // 0x28
@@ -36423,9 +36423,9 @@ loc_81202F6:
 // symdb: secondary u16 count, r4 = VRAM tile base) -> r0 = 4 ; side effects writes r1..r1+2*r2-1 and
 // symdb: r1..r1+2*r4-1? wait: writes to two buffers derived from r1 and r3*sizes, plus EWRAM at
 // symdb: 0x02034814 captured
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81202FC.yaml
-	thumb_func_start sub_81202FC
-sub_81202FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initFolderNameDisplayBuffer_81202FC.yaml
+	thumb_func_start chatbox_initFolderNameDisplayBuffer_81202FC
+chatbox_initFolderNameDisplayBuffer_81202FC:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r3, [sp,#0x10]
@@ -36464,7 +36464,7 @@ off_8120340:
 	.word TextScriptFolderNames
 off_8120344:
 	.word 0x200
-	thumb_func_end sub_81202FC
+	thumb_func_end chatbox_initFolderNameDisplayBuffer_81202FC
 
 // symdb: Fills two spans of a tilemap with the blank text-box tile ((palette<<12)|0x200), then hands the leftover run to a continuation filler.
 // symdb: void sub_8120348(u32 passthrough, u16 *tilemapDest, u32 palette, s32 runLength, s32

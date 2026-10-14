@@ -75,7 +75,7 @@ signed int sub_8086FA4()
 
 
 // 0x8086fd8
-void *sub_8086FD8()
+void *startScreen_runBeastCutscene_8086FD8()
 {
     _BYTE *v0; // r5
     int v1; // r10

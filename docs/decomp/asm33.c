@@ -159,7 +159,7 @@ void __fastcall __noreturn sub_81234DC(int a1, int a2)
 
 
 // 0x8123514
-int sub_8123514()
+int battleObject_runUpdateHandlerByType_8123514()
 {
     int v0; // r5
 

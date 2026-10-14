@@ -3518,7 +3518,7 @@ loc_80A6F20:
 // symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
-// symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
+// symdb: sprite_update, calls battleObject_stepBeastOut_80A6F78/sub_80A70FC/sub_80A7160/battleObject_copyPwrAtkFieldsToTempBuffer_80A7238.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimation_80A6F2C.yaml
 	thumb_local_start
 battleObject_updateAnimation_80A6F2C:
@@ -3545,11 +3545,11 @@ loc_80A6F58:
 	strb r0, [r5,#8]
 	b loc_80A6F66
 loc_80A6F5E:
-	bl sub_80A6F78
+	bl battleObject_stepBeastOut_80A6F78
 	bl sub_80A70FC
 loc_80A6F66:
 	bl sprite_update
-	bl sub_80A7238
+	bl battleObject_copyPwrAtkFieldsToTempBuffer_80A7238
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_updateAnimation_80A6F2C
 
@@ -3563,9 +3563,9 @@ sub_80A6F70:
 // symdb: Advances a Beast Out beastSP offset toward its target, applying the delta and incrementing a phase counter on stall
 // symdb: (r5 = ptr AIData/AIState?) -> void ; side effects: writes AIData+0xc/0x10 (offsets toward
 // symdb: JoypadHeld/JoypadReleased targets) and AIState[+6] phase counter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6F78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepBeastOut_80A6F78.yaml
 	thumb_local_start
-sub_80A6F78:
+battleObject_stepBeastOut_80A6F78:
 	push {r4-r7,lr}
 	bl sub_80A6FDC
 	bl sub_80A704C
@@ -3620,7 +3620,7 @@ loc_80A6FCE:
 locret_80A6FD8:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A6F78
+	thumb_func_end battleObject_stepBeastOut_80A6F78
 
 	thumb_local_start
 sub_80A6FDC:
@@ -3940,9 +3940,9 @@ sub_80A7208:
 
 // symdb: Copies a BattleObject's power-attack / beast-out fields (BPwrAtk, BButton, Anger, AIData ptrs) into a scratch EWRAM table indexed by the object's slot id.
 // symdb: (r5 = BattleObjectPtr) -> side effects only; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7238.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_copyPwrAtkFieldsToTempBuffer_80A7238.yaml
 	thumb_local_start
-sub_80A7238:
+battleObject_copyPwrAtkFieldsToTempBuffer_80A7238:
 	push {r4-r7,lr}
 	ldr r7, off_80A7268 // =byte_2000EC0 
 	ldrb r0, [r5,#5]
@@ -3982,7 +3982,7 @@ byte_80A729C:
 	.byte 0xBA, 0xFE, 0xE6, 0xFF, 0x0, 0x0, 0x0, 0x11, 0x5A, 0xFF
 	.byte 0x64, 0x0, 0x2, 0x0, 0x0, 0x1A, 0xBA, 0xFF, 0xE6, 0x0
 	.byte 0x0, 0x0, 0x0, 0x40
-	thumb_func_end sub_80A7238
+	thumb_func_end battleObject_copyPwrAtkFieldsToTempBuffer_80A7238
 
 // symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
@@ -4095,7 +4095,7 @@ loc_80A7386:
 	bl owMapObject_event5F1Trigger_80A75DC
 loc_80A738E:
 	bl sprite_update
-	bl sub_80A775C
+	bl battle_beastsp_setAITemplateStats_80A775C
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_updateFromCurAction_80A7354
 
@@ -4638,9 +4638,9 @@ locret_80A775A:
 // symdb: Copies selected fields from a BattleObject AIData struct (APwrAtk, BButton, BPwrAtk, version, joypad) into a per-fighter template buffer at 0x2000EC0.
 // symdb: (r5 = BattleObject*, r6 = AIData-derived or per-fighter stats base) -> r3 = last offset used;
 // symdb: side effect writes several bytes into byte_2000EC0.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A775C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastsp_setAITemplateStats_80A775C.yaml
 	thumb_local_start
-sub_80A775C:
+battle_beastsp_setAITemplateStats_80A775C:
 	push {r4-r7,lr}
 	ldr r7, off_80A77A4 // =byte_2000EC0 
 	ldrb r3, [r5,#4]
@@ -4679,7 +4679,7 @@ sub_80A775C:
 	.balign 4, 0x00
 off_80A77A4:
 	.word byte_2000EC0
-	thumb_func_end sub_80A775C
+	thumb_func_end battle_beastsp_setAITemplateStats_80A775C
 
 	thumb_func_start sub_80A77A8
 sub_80A77A8:
@@ -4796,7 +4796,7 @@ sub_80A783C:
 	thumb_local_start
 sprite_setupBeastOutSprite_80A786C:
 	push {lr}
-	bl sub_809BA14
+	bl battle_loadBeastSpDmg_809BA14
 	str r0, [r5,#0xc]
 	str r1, [r5,#0x10]
 	str r2, [r5,#0x14]
@@ -6603,7 +6603,7 @@ beastSP_initOrUpdate_80A86B4:
 	mov r6, r0
 	tst r0, r0
 	beq loc_80A86EA
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	bl battle_checkScenarioEffectActive_8142190
 	beq loc_80A86EA
 	mov r4, #3
@@ -6670,7 +6670,7 @@ sub_80A8748:
 	ldrb r0, [r5,#4]
 	tst r0, r0
 	bne loc_80A8754
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 loc_80A8754:
 	mov r6, r0
 	ldr r7, off_80A87AC // =byte_80A87B0

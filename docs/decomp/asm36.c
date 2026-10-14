@@ -2055,7 +2055,7 @@ int __fastcall sub_813188C(int a1)
     else
         v2 = *(v1 + 27) & 0xBF;
     *(v1 + 27) = v2;
-    return sub_8133200();
+    return battleObject_dispatchUpdateByState_8133200();
 }
 
 
@@ -3698,7 +3698,7 @@ int gfx_fillAllBandedTilemaps_81330AC()
 
 
 // 0x8133200
-int sub_8133200()
+int battleObject_dispatchUpdateByState_8133200()
 {
     int v0; // r5
 
@@ -5075,7 +5075,7 @@ void __fastcall __noreturn menu_drawSubmenuBox_8134490(int a1)
     if ( v2 )
         sub_8120348(*(v1 + 12), word_20347D8, 11, 1);
     else
-        sub_81202FC(7, word_20347D8, 11, 1);
+        chatbox_initFolderNameDisplayBuffer_81202FC(7, word_20347D8, 11, 1);
     CopyBackgroundTiles(11 - *(v1 + 24), 2, 2, word_20347D8, 15, &byte_0[2]);
     JUMPOUT(loc_81344D0);
 }

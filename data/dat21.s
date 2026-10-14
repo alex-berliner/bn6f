@@ -8227,7 +8227,7 @@ sub_8086EA8:
 	beq loc_8086EBA
 	bl sub_8087184
 loc_8086EBA:
-	bl sub_8086FD8
+	bl startScreen_runBeastCutscene_8086FD8
 	movflag EVENT_5ED
 	bl TestEventFlagFromImmediate
 	beq loc_8086ECC

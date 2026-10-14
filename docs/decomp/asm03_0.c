@@ -10333,7 +10333,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     v3 = sub_8013774(a1, 44);
     sub_8011384(v3);
     battle_getObjectNameID_8011020();
-    sub_80143A6();
+    battleObject_markUsedAction_80143A6();
     v4 = GetBattleNaviStats2034A60Byte(v1->Alliance, 41);
     v5 = v4;
     v6 = sub_8013774(v4, 41);
@@ -10386,7 +10386,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     }
     battle_dispatchActorByTypeAndAIIdx_800F378();
     battle_clearObjectStatusFlagsAndTimers_801A264();
-    v22 = sub_80143A6();
+    v22 = battleObject_markUsedAction_80143A6();
     v23 = sub_8013774(v22, 41);
     if ( v23 )
     {

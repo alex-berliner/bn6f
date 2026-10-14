@@ -912,14 +912,14 @@ sub_81421C8:
 
 // symdb: Returns the byte at offset 0xB of the scenario/effect state (eScenarioEffectState2000780).
 // symdb: () -> r0 = byte at state + 0xB ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81421D0.yaml
-	thumb_func_start sub_81421D0
-sub_81421D0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getScenarioEffectStateField_81421D0.yaml
+	thumb_func_start battle_getScenarioEffectStateField_81421D0
+battle_getScenarioEffectStateField_81421D0:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	ldrb r0, [r5,#0xb] // (byte_200078B - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81421D0
+	thumb_func_end battle_getScenarioEffectStateField_81421D0
 
 	thumb_func_start sub_81421D8
 sub_81421D8:
@@ -1762,7 +1762,7 @@ sub_81429CA:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	bl sub_8142990
 	mov r4, r0
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	ldr r7, off_8142A18 // =off_8142A1C 
 	lsl r0, r0, #2
 	ldr r7, [r7,r0]

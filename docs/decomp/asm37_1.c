@@ -564,7 +564,7 @@ int __fastcall sub_81421C8(int result)
 
 
 // 0x81421d0
-int sub_81421D0()
+int battle_getScenarioEffectStateField_81421D0()
 {
     return byte_200078B[0];
 }
@@ -1084,7 +1084,7 @@ int sub_81429CA()
     v0 = sub_81421D8();
     ZeroFillByWord(v0, 16);
     v1 = sub_8142990();
-    v2 = *(&off_8142A1C + sub_81421D0());
+    v2 = *(&off_8142A1C + battle_getScenarioEffectStateField_81421D0());
     result = 2 * (sub_809E2B8() >> 1);
     for ( i = (v2 + result); ; i += 8 )
     {

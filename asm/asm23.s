@@ -960,7 +960,7 @@ sub_8089704:
 	mov r0, #1
 	tst r0, r7
 	beq loc_8089738
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	bl battle_checkScenarioEffectActive_8142190
 	beq loc_8089730
 	bl sub_8142A84
@@ -993,7 +993,7 @@ loc_8089748:
 	mov r0, #0x66 
 loc_8089756:
 	bl PlaySoundEffect
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	sub r0, #1
 	bge loc_8089764
 	mov r0, #3
@@ -1007,7 +1007,7 @@ loc_808976C:
 	beq loc_808978C
 	mov r0, #SOUND_UNK_66
 	bl PlaySoundEffect
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	add r0, #1
 	cmp r0, #4
 	blt loc_8089784
@@ -1025,7 +1025,7 @@ loc_808978C:
 	thumb_local_start
 sub_8089792:
 	push {r4-r7,lr}
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	add r0, #2
 	bl sub_8089CA4
 	mov r0, #0x14
@@ -1052,7 +1052,7 @@ sub_80897A6:
 	b loc_80897E4
 loc_80897C8:
 	bl sub_8089D0E
-	bl sub_81421D0
+	bl battle_getScenarioEffectStateField_81421D0
 	bl sub_81421B2
 	mov r0, #1
 	bl sub_80468EC
