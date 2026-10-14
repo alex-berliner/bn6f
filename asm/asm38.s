@@ -168,7 +168,7 @@ off_3005D04:
 jt_81D620C:
 	.word iJumpTable3005D10
 iJumpTable3005D10:
-	.word sub_803DE72+1
+	.word battle_pollSIOLinkIfActive_803DE72+1
 	.word sub_813D5DC+1
 	.word sub_813D5DC+1
 	.word sub_813D5DC+1

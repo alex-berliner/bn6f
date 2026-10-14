@@ -42191,7 +42191,7 @@ off_80CB914:
 	.word off_80CB918
 off_80CB918:
 	.word sub_80CB964+1
-	.word sub_80CB9E2+1
+	.word battleObject_handleCollisionFrame_80CB9E2+1
 	.word sub_80CB924+1
 	thumb_func_end t3_0x3d_80CB900
 
@@ -42290,9 +42290,9 @@ loc_80CB98E:
 // symdb: Per-frame battle-object collision update: tears down current collision, spawns the matching effect, possibly damages the owner (Buster-style HP loss), and either dispatches to the cur-action handler or marks the object for destruction.
 // symdb: (r5 = BattleObject*, r10 = Toolkit) -> void ; mutates the BattleObject at r5 (state, collision
 // symdb: region), side effects: spawns collision effect, plays damage, may destroy object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CB9E2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleCollisionFrame_80CB9E2.yaml
 	thumb_local_start
-sub_80CB9E2:
+battleObject_handleCollisionFrame_80CB9E2:
 	push {r4,r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -42329,7 +42329,7 @@ off_80CBA28:
 off_80CBA2C:
 	.word sub_80CBA34+1
 	.word sub_80CBA52+1
-	thumb_func_end sub_80CB9E2
+	thumb_func_end battleObject_handleCollisionFrame_80CB9E2
 
 	thumb_local_start
 sub_80CBA34:

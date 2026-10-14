@@ -2793,7 +2793,7 @@ signed int sub_8146BB8()
 
 
 // 0x8146bf4
-BOOL sub_8146BF4()
+BOOL library_isCommsBusy_8146BF4()
 {
     return *dword_2010CC0 == 1 || !*dword_2010CC0;
 }
@@ -10299,7 +10299,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
         if ( result[1] >= 0 )
         {
             v7 = *byte_3007FF0;
-            sub_814F228(result);
+            sound_main_tickFadesAndStopBank_814F228(result);
             if ( v6[1] >= 0 )
             {
                 for ( i = *(v6 + 17) + *(v6 + 16); ; i = *(v6 + 17) - 150 )
@@ -10430,7 +10430,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                     if ( *v27 & 0x80 && *v27 & 0xF )
                     {
                         v28 = v26;
-                        sub_814F2F0(v6, v27);
+                        m4a_plyNote_applyPitchAndVolume_814F2F0(v6, v27);
                         v29 = *(v27 + 32);
                         if ( v29 )
                         {
@@ -10743,8 +10743,8 @@ LABEL_42:
     v30 = *(v3 + 27);
     *(v3 + 28) = v30;
     if ( v30 )
-        sub_814E7A4(v30, v3);
-    sub_814F2F0(v35, v3);
+        battle_aiData_resetVersionAndChargeFlags_814E7A4(v30, v3);
+    m4a_plyNote_applyPitchAndVolume_814F2F0(v35, v3);
     *(v19 + 16) = *(v3 + 4);
     *(v19 + 19) = v39;
     *(v19 + 8) = v37;
@@ -10826,7 +10826,7 @@ signed int __fastcall sub_814E758(int a1, int a2)
 
 
 // 0x814e7a4
-void __fastcall sub_814E7A4(int a1, _BYTE *a2)
+void __fastcall battle_aiData_resetVersionAndChargeFlags_814E7A4(int a1, _BYTE *a2)
 {
     char v2; // r2
 
@@ -10863,7 +10863,7 @@ int __fastcall sub_814E7CC(int a1, int a2)
     streamReadNextByte_814E7C0(a1, a2);
     v3[25] = v5;
     if ( !v5 )
-        sub_814E7A4(v2, v3);
+        battle_aiData_resetVersionAndChargeFlags_814E7A4(v2, v3);
     return v4();
 }
 
@@ -10879,7 +10879,7 @@ int __fastcall sub_814E7E0(int a1, int a2)
     streamReadNextByte_814E7C0(a1, a2);
     v3[23] = v5;
     if ( !v5 )
-        sub_814E7A4(v2, v3);
+        battle_aiData_resetVersionAndChargeFlags_814E7A4(v2, v3);
     return v4();
 }
 
@@ -11231,8 +11231,8 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
         off_30055E4 = sub_814E758;
         off_30055E8 = SampleFreqSet_814EDC0;
         off_30055EC = sound_stopAllChannelsInBank_814E4DC;
-        off_30055F0 = sub_814F228;
-        off_30055F4 = sub_814F2F0;
+        off_30055F0 = sound_main_tickFadesAndStopBank_814F228;
+        off_30055F4 = m4a_plyNote_applyPitchAndVolume_814F2F0;
         *(v2 + 28) = a1;
         *(v2 + 40) = CgbSound;
         *(v2 + 44) = soundStartChannel_814F44C;
@@ -11608,7 +11608,7 @@ int __fastcall sub_814F1E8(int a1, int a2, int a3)
 
 
 // 0x814f228
-int __fastcall sub_814F228(int a1)
+int __fastcall sound_main_tickFadesAndStopBank_814F228(int a1)
 {
     int v1; // r6
     __int16 v2; // r1
@@ -11680,7 +11680,7 @@ LABEL_15:
 
 
 // 0x814f2f0
-int __fastcall sub_814F2F0(int a1, char *a2)
+int __fastcall m4a_plyNote_applyPitchAndVolume_814F2F0(int a1, char *a2)
 {
     char *v2; // r2
     unsigned int v3; // r3

@@ -6906,7 +6906,7 @@ int sub_8113124()
     unsigned __int8 *v0; // r6
     int result; // r0
 
-    result = sub_81131D8();
+    result = battle_object_tryUseChipWhenLowHP_81131D8();
     if ( !result )
     {
         result = object_getFlag();
@@ -6954,7 +6954,7 @@ void __fastcall battle_initAttackFromPreset_8113162(int a1, int a2, int a3)
 
 
 // 0x81131d8
-signed int sub_81131D8()
+signed int battle_object_tryUseChipWhenLowHP_81131D8()
 {
     int v0; // r5
     signed int v1; // r6
@@ -21882,7 +21882,7 @@ void JoypadKeyPressed()
 
 
 // 0x811f7f8
-signed int __fastcall sub_811F7F8(int a1, unsigned int a2, int a3, int a4)
+signed int __fastcall menu_adjustCursorOrValue_811F7F8(int a1, unsigned int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r8

@@ -4263,7 +4263,7 @@ LABEL_11:
         sub_804AB10();
     }
     if ( menu->unk_28 )
-        sub_811F7F8(tk->joystick->keyPress, 7u, 0, 10);
+        menu_adjustCursorOrValue_811F7F8(tk->joystick->keyPress, 7u, 0, 10);
     goto LABEL_11;
 }
 

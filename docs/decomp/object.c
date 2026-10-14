@@ -2872,7 +2872,7 @@ unsigned int __noreturn object_calculateFinalDamage1()
         v7 = __OFSUB__(v4--, 1);
     }
     while ( !(((v4 < 0) ^ v7) | (v4 == 0)) );
-    result = sub_802CE10(v5);
+    result = battleObject_accumulateFinalDamageUpperBound_802CE10(v5);
     *(*(v0 + 84) + 128) = result;
     return result;
 }

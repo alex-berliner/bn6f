@@ -280,13 +280,13 @@ LABEL_47:
         v4 = v3;
         return battle_addBarrierHitAdjust_800F1DC(v4, SHIDWORD(v4), v2);
     }
-    v4 = sub_800F09E(v2);
+    v4 = battle_getNaviCustStyleStatBoostFromChip_800F09E(v2);
     return battle_addBarrierHitAdjust_800F1DC(v4, SHIDWORD(v4), v2);
 }
 
 
 // 0x800f09e
-__int64 __fastcall sub_800F09E(int a1)
+__int64 __fastcall battle_getNaviCustStyleStatBoostFromChip_800F09E(int a1)
 {
     int v1; // r4
     __int64 v2; // r6
@@ -18474,7 +18474,7 @@ int __fastcall battle_drawChipCountsOAM_801C082(int a1)
 
 
 // 0x801c168
-int sub_801C168()
+int battleObject_updateHPMeters_801C168()
 {
     char *v0; // r4
     signed int v1; // r6
@@ -18571,7 +18571,7 @@ int __fastcall easeValueTowardTarget_801C1EA(int a1, int a2)
 
 
 // 0x801c202
-signed int sub_801C202()
+signed int battle_renderHpOverlays_801C202()
 {
     int v0; // r10
     char *v1; // r4

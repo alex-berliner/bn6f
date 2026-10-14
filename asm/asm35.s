@@ -314,7 +314,7 @@ sub_812ECAC:
 	mov r1, #6
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	pop {r5,r7}
 	tst r0, r0
 	beq loc_812ECE4

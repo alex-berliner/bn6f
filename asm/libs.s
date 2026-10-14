@@ -6015,9 +6015,9 @@ loc_8146BF0:
 // symdb: () -> r0 = bool (0/1); NZCV set from `cmp r0,#1` and the final `mov r0,#0` vs `mov r0,#1` (the
 // symdb: listed nz/c/v are an artefact of the ldr-merged-then-cmp sequence); no side effects besides
 // symdb: reading EWRAM pointer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146BF4.yaml
-	thumb_func_start sub_8146BF4
-sub_8146BF4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/library_isCommsBusy_8146BF4.yaml
+	thumb_func_start library_isCommsBusy_8146BF4
+library_isCommsBusy_8146BF4:
 	push {lr}
 	ldr r0, off_8146C08 // =dword_2010CC0 
 	ldr r0, [r0]
@@ -6038,7 +6038,7 @@ loc_8146C0E:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8146BF4
+	thumb_func_end library_isCommsBusy_8146BF4
 
 	ldr r1, off_8146C1C // =word_2010168
 	mov r0, #0
@@ -21849,7 +21849,7 @@ loc_814E294:
 	ldr r0, [r0]
 	mov r8, r0
 	mov r0, r7
-	bl sub_814F228
+	bl sound_main_tickFadesAndStopBank_814F228
 	ldr r0, [r7,#4]
 	cmp r0, #0
 	bge loc_814E2A8
@@ -22067,7 +22067,7 @@ loc_814E40E:
 	mov r9, r2
 	mov r0, r7
 	mov r1, r5
-	bl sub_814F2F0
+	bl m4a_plyNote_applyPitchAndVolume_814F2F0
 	ldr r4, [r5,#0x20]
 	cmp r4, #0
 	beq loc_814E4A8
@@ -22474,11 +22474,11 @@ loc_814E6AC:
 	cmp r0, r1
 	beq loc_814E6BE
 	mov r1, r5
-	bl sub_814E7A4
+	bl battle_aiData_resetVersionAndChargeFlags_814E7A4
 loc_814E6BE:
 	ldr r0, [sp]
 	mov r1, r5
-	bl sub_814F2F0
+	bl m4a_plyNote_applyPitchAndVolume_814F2F0
 	ldr r0, [r5,#4]
 	str r0, [r4,#0x10]
 	ldr r0, [sp,#stack_814E558_unk_10]
@@ -22614,9 +22614,9 @@ loc_814E79E:
 
 // symdb: Resets AIData version/charge-byte fields and ORs a BeastOut-state bit (0x0C vs 0x03) into the object header flags
 // symdb: (r1 = AIData*) -> no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E7A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiData_resetVersionAndChargeFlags_814E7A4.yaml
 	thumb_local_start
-sub_814E7A4:
+battle_aiData_resetVersionAndChargeFlags_814E7A4:
 	mov r2, #0
 	strb r2, [r1,#0x16]
 	strb r2, [r1,#0x1a]
@@ -22633,7 +22633,7 @@ loc_814E7B6:
 	strb r3, [r1]
 	bx lr
 	.byte 0, 0
-	thumb_func_end sub_814E7A4
+	thumb_func_end battle_aiData_resetVersionAndChargeFlags_814E7A4
 
 // symdb: Reads the next byte from a byte stream (script/message or data reader), advancing the stream's cursor.
 // symdb: int streamReadNextByte(void* stream /* r1 */); // returns byte in r3, address of the byte in r2
@@ -22659,13 +22659,13 @@ sub_814E7CC:
 	strb r3, [r1,#0x19]
 	cmp r3, #0
 	bne loc_814E7DC
-	bl sub_814E7A4
+	bl battle_aiData_resetVersionAndChargeFlags_814E7A4
 loc_814E7DC:
 	bx r12
 	.byte 0, 0
 	thumb_func_end sub_814E7CC
 
-// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (sub_814E7A4) only when that result is zero.
+// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (battle_aiData_resetVersionAndChargeFlags_814E7A4) only when that result is zero.
 // symdb: unknown /* inputs include r0, r1 (r1 points to a struct whose +0x17 byte field is written) and
 // symdb: lr; returns via the saved lr in r12; clobbers r0-r3 and flags per the callees */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml
@@ -22676,7 +22676,7 @@ sub_814E7E0:
 	strb r3, [r1,#0x17]
 	cmp r3, #0
 	bne loc_814E7F0
-	bl sub_814E7A4
+	bl battle_aiData_resetVersionAndChargeFlags_814E7A4
 loc_814E7F0:
 	bx r12
 	.balign 4, 0x00
@@ -23300,10 +23300,10 @@ cgbSoundInit_814EB84:
 	str r0, [r1,#0x7c] // (off_30055EC - 0x3005570)
 	mov r2, r1
 	add r2, #0x80
-	ldr r0, off_814EC80 // =sub_814F228+1 
+	ldr r0, off_814EC80 // =sound_main_tickFadesAndStopBank_814F228+1 
 	str r0, [r2]
 	add r1, #0x84
-	ldr r0, off_814EC84 // =sub_814F2F0+1 
+	ldr r0, off_814EC84 // =m4a_plyNote_applyPitchAndVolume_814F2F0+1 
 	str r0, [r1]
 	str r5, [r4,#0x1c]
 	ldr r0, off_814EC88 // =CgbSound+1 
@@ -23376,9 +23376,9 @@ off_814EC78:
 off_814EC7C:
 	.word sound_stopAllChannelsInBank_814E4DC+1
 off_814EC80:
-	.word sub_814F228+1
+	.word sound_main_tickFadesAndStopBank_814F228+1
 off_814EC84:
-	.word sub_814F2F0+1
+	.word m4a_plyNote_applyPitchAndVolume_814F2F0+1
 off_814EC88:
 	.word CgbSound+1
 off_814EC8C:
@@ -24233,9 +24233,9 @@ dword_814F224:
 // symdb: Drives the m4a sound-player fade timer once per frame, ramps the volume down to 0, then stops every channel in the player bank and clears its entry bit.
 // symdb: (r0 = SoundMainPlayerState*) -> (popped PC into r0, no other return value) ; mutates
 // symdb: SoundMainPlayerState fade fields, sets low byte of r0 from the saved LR
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F228.yaml
-	thumb_func_start sub_814F228
-sub_814F228:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_main_tickFadesAndStopBank_814F228.yaml
+	thumb_func_start sound_main_tickFadesAndStopBank_814F228
+sound_main_tickFadesAndStopBank_814F228:
 	push {r4-r7,lr}
 	mov r6, r0
 	ldrh r1, [r6,#0x24]
@@ -24345,15 +24345,15 @@ loc_814F2EA:
 	pop {r4-r7}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_814F228
+	thumb_func_end sound_main_tickFadesAndStopBank_814F228
 
 // symdb: MPlay note callback that scales a track's current/volume bytes by attacker FPorta's bend and possibly a Beast-Out rage offset, then writes back to the channel state.
 // symdb: (r0 = ChannelPtr (SoundChannel*, unused), r1 = ChannelPtr / NoteTrack) -> r0 = saved LR (return
 // symdb: address); side effects: writes TrackState[0x8], TrackState[0x9], TrackState[0x10],
 // symdb: TrackState[0x11], TrackState[0], and pops {r4,pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F2F0.yaml
-	thumb_func_start sub_814F2F0
-sub_814F2F0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/m4a_plyNote_applyPitchAndVolume_814F2F0.yaml
+	thumb_func_start m4a_plyNote_applyPitchAndVolume_814F2F0
+m4a_plyNote_applyPitchAndVolume_814F2F0:
 	push {r4,lr}
 	mov r2, r1
 	ldrb r1, [r2]
@@ -24451,7 +24451,7 @@ loc_814F396:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_814F2F0
+	thumb_func_end m4a_plyNote_applyPitchAndVolume_814F2F0
 
 // symdb: Mode-selecting packed/single-byte LUT lookup with linear interpolation between adjacent packed entries, used as a generic helper across multiple subsystems.
 // symdb: u32 interpLutLookup_814F3A4(u8 mode, u8 index, u8 frac); /* inputs: r0=mode, r1=index, r2=frac,

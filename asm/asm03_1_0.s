@@ -455,7 +455,7 @@ noop_8033B08: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 sub_8033B0C: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
@@ -469,7 +469,7 @@ sub_8033B0C: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
@@ -479,7 +479,7 @@ onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033D88
@@ -490,7 +490,7 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 sub_8033B46: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033D88
@@ -501,7 +501,7 @@ sub_8033B46: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 sub_8033B5C: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
@@ -511,7 +511,7 @@ sub_8033B5C: // (self: * S2011E30 $r5) -> ()
 	thumb_local_start
 sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	push {lr}
-	bl sub_8033E0C
+	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
@@ -813,9 +813,9 @@ off_8033E08:
 // symdb: Draws the PET navi's current HP as 4 OAM digits in the Internet overworld UI, copying a sprite template for the current HP block.
 // symdb: (no r0-r3 contract documented by caller) -> side effects only; mutates [r5+0x8] and queues OAM
 // symdb: sprites
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033E0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/internet_drawHpDigits_8033E0C.yaml
 	thumb_local_start
-sub_8033E0C:
+internet_drawHpDigits_8033E0C:
 	push {r5,lr}
 	movflag EVENT_1732
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -923,7 +923,7 @@ dword_8033EE0:
 	.word 0xC790
 dword_8033EE4:
 	.word 0x10288000
-	thumb_func_end sub_8033E0C
+	thumb_func_end internet_drawHpDigits_8033E0C
 
 // Always running on map update
 	thumb_local_start
@@ -2034,9 +2034,9 @@ cutscene_8034BB8:
 	bl HandleCoordinateInteractionCutscene
 	bl maybeStartEntranceCutscene_8034F68
 	bl npc_80350BC
-	bl sub_8034DB0
+	bl cutscene_runTriggeredOverworldCutscene_8034DB0
 	bl cutscene_tryJackInOrJackOut_8034CB6
-	bl sub_8034D7C
+	bl cutscene_tryStartLMessageCutscene_8034D7C
 	bl ghostNaviCheck_8035274
 	bl tryStartNotificationCutscene_8035054
 	bl cutscene_TryStartNotification_8035084
@@ -2245,9 +2245,9 @@ byte_8034D70:
 
 // symdb: Overworld tick that starts the "L-button message" cutscene (CutsceneScriptLMessage_80991F4) when the L shoulder button is held, slip-run is not active, and the L-message story flag is not set.
 // symdb: () -> r0 = 1 if no cutscene was started (early-out), 0 if StartCutscene was invoked
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034D7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_tryStartLMessageCutscene_8034D7C.yaml
 	thumb_local_start
-sub_8034D7C:
+cutscene_tryStartLMessageCutscene_8034D7C:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_8034DA4
@@ -2272,15 +2272,15 @@ off_8034DA8:
 	.word 0x200
 off_8034DAC:
 	.word CutsceneScriptLMessage_80991F4 // CutsceneScript
-	thumb_func_end sub_8034D7C
+	thumb_func_end cutscene_tryStartLMessageCutscene_8034D7C
 
 // symdb: Picks and starts one of four cutscene scripts based on the overworld player coord interaction value, when not slip-run and not in a cutscene
 // symdb: () -> r0 = 0 on cutscene-started, 1 on no-op ; side effects: may call
 // symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, sub_8034E88, and StartCutscene to load
 // symdb: eS200AC80+4 as script
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034DB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_runTriggeredOverworldCutscene_8034DB0.yaml
 	thumb_local_start
-sub_8034DB0:
+cutscene_runTriggeredOverworldCutscene_8034DB0:
 	push {r4-r7,lr}
 	bl IsNotSlipRunningAndNotInCutscene
 	beq loc_8034E22
@@ -2344,7 +2344,7 @@ off_8034E34:
 	.word byte_809AA34 // CutsceneScript
 off_8034E38:
 	.word byte_809CAD8 // CutsceneScript
-	thumb_func_end sub_8034DB0
+	thumb_func_end cutscene_runTriggeredOverworldCutscene_8034DB0
 
 // symdb: Searches one of three hardcoded u16 lists for the halfword at [r7,#4] and returns the byte offset of the match (or of the 0xFFFF terminator if absent), with the Z flag marking "not found".
 // symdb: u32 sub_8034E3C(u32 listIndex /*r1*/, /*r7*/ struct with u16 field at +4); out: r0 = r2 = byte

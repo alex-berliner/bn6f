@@ -667,7 +667,7 @@ signed int sub_8002D20()
 
     if ( *(v0 + 17) & 3 )
         return 0;
-    v1 = sub_802FE48();
+    v1 = battle_allocateActorIndex_802FE48();
     if ( v1 == 255 )
         return 0;
     *(v0 + 17) |= 3u;

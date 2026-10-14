@@ -6489,7 +6489,7 @@ battle_dispatchObjectUpdateOrEffect_81333A0:
 	mov lr, pc
 	bx r0
 	bl battle_setFieldsFromObj_81340FC
-	bl sub_8134490
+	bl menu_drawSubmenuBox_8134490
 
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -6705,7 +6705,7 @@ sub_8133564:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	bne locret_81335B6
 	mov r0, #JOYPAD_A
@@ -6898,7 +6898,7 @@ sub_81336C4:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	bne locret_8133738
 	mov r0, #JOYPAD_A
@@ -7099,7 +7099,7 @@ loc_8133830:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	bne loc_8133864
 	bl submenu_isOpen_81355D8
@@ -7150,7 +7150,7 @@ folderEdit_step_813388C:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0xa
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	bne loc_81338C6
 loc_81338BA:
@@ -7268,7 +7268,7 @@ sub_813399C:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8134490
+	bl menu_drawSubmenuBox_8134490
 	pop {pc}
 	.byte 0, 0
 off_81339B0:
@@ -7350,7 +7350,7 @@ sub_8133A44:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8134490
+	bl menu_drawSubmenuBox_8134490
 	pop {pc}
 	.balign 4, 0
 off_8133A58:
@@ -8661,9 +8661,9 @@ off_813448C:
 // symdb: Draws a submenu's two side border strips (with blank-fill inside) and dispatches a per-state palette/VRAM word for the submenu widget, varying the strip layout and palette id by submenu state and current submenu-vs-no-submenu branch.
 // symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = 0xFF ; side effects: writes tilemap blocks via
 // symdb: CopyBackgroundTiles and queues a sub_812053C dispatch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134490.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_drawSubmenuBox_8134490.yaml
 	thumb_local_start
-sub_8134490:
+menu_drawSubmenuBox_8134490:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl submenu_isOpen_81355D8
@@ -8743,7 +8743,7 @@ dword_8134528:
 	.word 0xC20016
 	.word unk_20018EC
 	.byte 0x60, 0x71, 0x0, 0x0, 0x16, 0x0, 0xB6, 0x0
-	thumb_func_end sub_8134490
+	thumb_func_end menu_drawSubmenuBox_8134490
 // symdb: Zero-argument wrapper that invokes sub_8134558 with a fixed argument set (0xE2, 0x1C, 0x1E, 0x24).
 // symdb: void sub_8134538(void); /* returns whatever sub_8134558 leaves in r0/flags */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134538.yaml
@@ -11431,7 +11431,7 @@ loc_81358C2:
 	mov r1, #4
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq loc_81358E0
 	mov r4, r1
@@ -15814,7 +15814,7 @@ loc_81379F0:
 loc_81379FE:
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq locret_8137A1A
 	bl sub_8137D20

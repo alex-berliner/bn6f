@@ -124,42 +124,42 @@ void noop_8033B08()
 // 0x8033b0c
 void __noreturn sub_8033B0C()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
 // 0x8033b1e
 void __noreturn onUpdateInInternet_8033B1E()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
 // 0x8033b30
 void __noreturn sub_8033B30()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
 // 0x8033b46
 void __noreturn sub_8033B46()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
 // 0x8033b5c
 void __noreturn sub_8033B5C()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
 // 0x8033b6e
 void __noreturn sub_8033B6E()
 {
-    sub_8033E0C();
+    internet_drawHpDigits_8033E0C();
 }
 
 
@@ -295,7 +295,7 @@ int __fastcall gfxTransfer_8033DA0(int a1)
 
 
 // 0x8033e0c
-signed int __noreturn sub_8033E0C()
+signed int __noreturn internet_drawHpDigits_8033E0C()
 {
     int v0; // r5
     char v1; // zf
@@ -822,9 +822,9 @@ int __fastcall cutscene_8034BB8(int a1)
             v2 = HandleCoordinateInteractionCutscene();
             maybeStartEntranceCutscene_8034F68(v2);
             npc_80350BC();
-            sub_8034DB0();
+            cutscene_runTriggeredOverworldCutscene_8034DB0();
             cutscene_tryJackInOrJackOut_8034CB6();
-            sub_8034D7C();
+            cutscene_tryStartLMessageCutscene_8034D7C();
             ghostNaviCheck_8035274();
             tryStartNotificationCutscene_8035054();
             cutscene_TryStartNotification_8035084();
@@ -1011,7 +1011,7 @@ signed int cutscene_tryJackInOrJackOut_8034CB6()
 
 
 // 0x8034d7c
-signed int sub_8034D7C()
+signed int cutscene_tryStartLMessageCutscene_8034D7C()
 {
     int v0; // r10
     char v1; // zf
@@ -1033,7 +1033,7 @@ signed int sub_8034D7C()
 
 
 // 0x8034db0
-signed int sub_8034DB0()
+signed int cutscene_runTriggeredOverworldCutscene_8034DB0()
 {
     Toolkit *tk; // r10
     int v1; // r1
@@ -10283,7 +10283,7 @@ int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
 
     v6 = a1;
     v7 = a2;
-    sub_8146BF4();
+    library_isCommsBusy_8146BF4();
     result = v6;
     if ( !v3 )
     {
@@ -11939,7 +11939,7 @@ u32 *sub_803DE68()
 
 
 // 0x803de72
-u32 sub_803DE72()
+u32 battle_pollSIOLinkIfActive_803DE72()
 {
     u32 result; // r0
 

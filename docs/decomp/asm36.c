@@ -3789,7 +3789,7 @@ void __noreturn battle_dispatchObjectUpdateOrEffect_81333A0()
 
     (*(&off_81333EC + *(v0 + 2)))();
     v1 = battle_setFieldsFromObj_81340FC();
-    sub_8134490(v1);
+    menu_drawSubmenuBox_8134490(v1);
 }
 
 
@@ -3943,7 +3943,7 @@ void sub_8133564()
     int v5; // r4
 
     chatbox_mask_eFlags2009F38(128);
-    if ( v2 && !sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
+    if ( v2 && !menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
     {
         JoypadKeyPressed();
         if ( v2 )
@@ -4124,7 +4124,7 @@ void sub_81336C4()
     int v6; // r4
 
     chatbox_mask_eFlags2009F38(128);
-    if ( v2 && !sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
+    if ( v2 && !menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
     {
         JoypadKeyPressed();
         if ( v2 )
@@ -4293,7 +4293,7 @@ void __fastcall __noreturn sub_81337E8(int a1)
     chatbox_selectPress_8133C58();
     if ( v3 )
     {
-        if ( !sub_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
+        if ( !menu_adjustCursorOrValue_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 0) )
         {
             submenu_isOpen_81355D8();
             if ( v3 )
@@ -4329,7 +4329,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
             sub_8134A3C();
             if ( v3 )
             {
-                if ( !*(v1 + 40) || !sub_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 10) )
+                if ( !*(v1 + 40) || !menu_adjustCursorOrValue_811F7F8(*(*(v2 + oToolkit_JoypadPtr) + 4), 7u, 0, 10) )
                 {
                     checkLeftRightInputForFolderEdit_8133E3C(3, v4);
                     if ( v3 )
@@ -4412,7 +4412,7 @@ void __noreturn sub_813399C()
     int v1; // r0
 
     v1 = (*(&off_81339B4 + *(v0 + 2)))();
-    sub_8134490(v1);
+    menu_drawSubmenuBox_8134490(v1);
 }
 
 
@@ -4468,7 +4468,7 @@ void __noreturn sub_8133A44()
     int v1; // r0
 
     v1 = (*(&off_8133A5C + *(v0 + 2)))();
-    sub_8134490(v1);
+    menu_drawSubmenuBox_8134490(v1);
 }
 
 
@@ -5066,7 +5066,7 @@ void __noreturn battleObject_drawFolderEditScreenGfx_8134310()
 
 
 // 0x8134490
-void __fastcall __noreturn sub_8134490(int a1)
+void __fastcall __noreturn menu_drawSubmenuBox_8134490(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -6783,7 +6783,7 @@ int sub_8135830()
             sub_8135FA4();
             sub_8135F5C();
         }
-        if ( sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
+        if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
             sub_8135F18();
     }
     v8 = *(v0 + 12);
@@ -9930,7 +9930,7 @@ signed int sub_81379A0()
         v8 = v0[30];
         if ( v8 >= 7 )
             v8 = 7;
-        result = sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), v8, 0, 0);
+        result = menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), v8, 0, 0);
         if ( result )
             sub_8137D20(result, v9, v10, v11);
     }

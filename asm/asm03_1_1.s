@@ -7296,7 +7296,7 @@ battleObject_setupCustomChipCursorState_803C59C:
 	push {r4-r7,lr}
 	ldr r5, off_803C600 // =byte_200BC60
 	push {r0,r1}
-	bl sub_8146BF4
+	bl library_isCommsBusy_8146BF4
 	pop {r0,r1}
 	beq locret_803C5EC
 	push {r0,r1}
@@ -9836,9 +9836,9 @@ sub_803DE68:
 // symdb: Polls the SIO link library once per frame when SIO comms are enabled (battle)
 // symdb: (no args) -> no return ; reads globals `unk_200A284` and calls `libSIOControlPoll_81445F8` when
 // symdb: that word is non-zero
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DE72.yaml
-	thumb_func_start sub_803DE72
-sub_803DE72:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pollSIOLinkIfActive_803DE72.yaml
+	thumb_func_start battle_pollSIOLinkIfActive_803DE72
+battle_pollSIOLinkIfActive_803DE72:
 	push {lr}
 	ldr r0, =unk_200A284
 	ldr r0, [r0]
@@ -9850,7 +9850,7 @@ locret_803DE80:
 	.balign 4, 0x00
 // 0x803DE84
 	.pool
-	thumb_func_end sub_803DE72
+	thumb_func_end battle_pollSIOLinkIfActive_803DE72
 
 // symdb: Resets the eLink/link-battle state block and its side buffers, then stores the caller's state pointer at eLinkState+0x58.
 // symdb: void sub_803DE88(void *statePtr /* r0 */); clobbers r0/r1/nz/c/v, preserves r2-r7

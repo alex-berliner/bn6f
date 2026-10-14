@@ -219,7 +219,7 @@ void sub_812D690()
 		sub_812D700();
 		if ( !v3 )
 			return;
-		sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 10);
+		menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 10);
 	}
 	JoypadKeyPressed();
 	if ( !v3 )

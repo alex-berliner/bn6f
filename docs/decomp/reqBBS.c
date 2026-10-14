@@ -708,7 +708,7 @@ int __fastcall reqBBS_static_813EC10(int a1, int a2, int a3)
         result = *(v5 + 4);
         if ( result & &dword_3C0 )
         {
-            result = sub_811F7F8(result, 8u, 0, 0);
+            result = menu_adjustCursorOrValue_811F7F8(result, 8u, 0, 0);
             *(v3 + 11) = v5;
         }
     }
@@ -2035,7 +2035,7 @@ int __fastcall reqBBS_8140358(int a1, int a2, int a3)
         result = *(v5 + 4);
         if ( result & &dword_3C0 )
         {
-            result = sub_811F7F8(result, 8u, 0, 0);
+            result = menu_adjustCursorOrValue_811F7F8(result, 8u, 0, 0);
             *(v3 + 11) = v5;
         }
     }

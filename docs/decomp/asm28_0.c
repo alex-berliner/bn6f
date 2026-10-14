@@ -2677,7 +2677,7 @@ int ow_player_perFrameSubstateDispatcher_809D470()
         return sub_809E004(20);
     if ( overworldObj_testStateBit10_809DAF8() )
         return sub_809E004(4);
-    if ( sub_809DB02() )
+    if ( owPlayer_checkSliprunRewardAndPlaySfx_809DB02() )
         return sub_809E004(8);
     if ( ow_gatePendingTileInteraction_809DED4() )
         return sub_809E004(12);
@@ -2716,7 +2716,7 @@ int owPlayer_tickPerFrame_809D4DC()
     }
     else
     {
-        if ( !sub_809DB02() )
+        if ( !owPlayer_checkSliprunRewardAndPlaySfx_809DB02() )
             JUMPOUT(byte_809D530);
         sub_809E004(8);
         result = v0[19];
@@ -2843,7 +2843,7 @@ LABEL_8:
     {
         sub_809E004(4);
     }
-    else if ( !sub_809DB02() )
+    else if ( !owPlayer_checkSliprunRewardAndPlaySfx_809DB02() )
     {
         return sub_809E004(0);
     }
@@ -3007,7 +3007,7 @@ int ow_player_updateCollisionAndPos_809D800()
     {
         *(v0 + 20) = byte_200ACE2;
     }
-    if ( !sub_809DF36() )
+    if ( !owMapObject_checkPlayerFacingFreeze_809DF36() )
         *(v0 + 8) = *&byte_809D89C[4 * byte_0[v1 + 1]];
     if ( *(v0 + 12) )
     {
@@ -3254,7 +3254,7 @@ int overworldObj_testStateBit10_809DAF8()
 
 
 // 0x809db02
-int sub_809DB02()
+int owPlayer_checkSliprunRewardAndPlaySfx_809DB02()
 {
     int v0; // r5
     char v1; // zf
@@ -3510,7 +3510,7 @@ int sub_809DF28()
 
 
 // 0x809df36
-int sub_809DF36()
+int owMapObject_checkPlayerFacingFreeze_809DF36()
 {
     return byte_200ACE0;
 }

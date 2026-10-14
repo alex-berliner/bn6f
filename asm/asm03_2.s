@@ -7429,7 +7429,7 @@ loc_804A436:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0xa
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 loc_804A44C:
 	bl sub_804A8F4
 	bl menuCopyBackgroundTiles_804A7C0

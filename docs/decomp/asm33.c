@@ -4185,7 +4185,7 @@ int sub_8126E10()
         chatbox_set_eFlags2009F38(64);
     }
     if ( v0[16] == 1 )
-        sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 0x44u, 0, 0);
+        menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 0x44u, 0, 0);
     return battle_dispatchNextCmd_81272C4();
 }
 
@@ -5006,7 +5006,7 @@ void submenu_HandleInput_8127B18()
             JoypadKeyPressed();
             if ( v4 )
             {
-                if ( sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
+                if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
                 {
                     sub_8128008();
                     bg_ReloadBackgroundRegion_5_3_81281C0();
@@ -5844,7 +5844,7 @@ void sub_8128800()
             {
                 v8 = *(v0 + 30);
                 *(v0 + 30) = (v8 + 1) >> 1;
-                v9 = sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0);
+                v9 = menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0);
                 *(v0 + 30) = v8;
                 if ( v9 )
                 {
@@ -6288,7 +6288,7 @@ int sub_8128E2C()
 
     *(v0 + 38) = *(v0 + 36);
     *(v0 + 34) = *(v0 + 32);
-    if ( sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
+    if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
     {
         if ( *(v0 + 36) != *(v0 + 38) )
             sub_802B358(byte_201BDB8, eDecompBuffer2013A00);

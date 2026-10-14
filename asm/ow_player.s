@@ -411,7 +411,7 @@ loc_809D492:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	pop {r4,pc}
 loc_809D4A2:
-	bl sub_809DB02
+	bl owPlayer_checkSliprunRewardAndPlaySfx_809DB02
 	tst r0, r0
 	beq loc_809D4B2
 	mov r0, #8
@@ -480,7 +480,7 @@ loc_809D510:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b locret_809D552
 loc_809D520:
-	bl sub_809DB02
+	bl owPlayer_checkSliprunRewardAndPlaySfx_809DB02
 	tst r0, r0
 	beq loc_809D530
 	mov r0, #8
@@ -674,7 +674,7 @@ loc_809D68A:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	b loc_809D6AA
 loc_809D69A:
-	bl sub_809DB02
+	bl owPlayer_checkSliprunRewardAndPlaySfx_809DB02
 	tst r0, r0
 	bne loc_809D6AA
 	mov r0, #0
@@ -927,7 +927,7 @@ loc_809D828:
 	mov lr, pc
 	bx r7
 loc_809D832:
-	bl sub_809DF36
+	bl owMapObject_checkPlayerFacingFreeze_809DF36
 	tst r0, r0
 	bne loc_809D844
 	ldr r6, off_809D8A8 // =byte_809D89C
@@ -1308,9 +1308,9 @@ overworldObj_testStateBit10_809DAF8:
 // symdb: (r5 = OWPlayer object ptr, r10 = toolkit ptr) -> r0 = preserved halfword & 0x20 ; side effects:
 // symdb: may set EVENT_IN_SLIPRUN_STATE / EVENT_173E and call PlaySoundEffect(0x35) when EVENT_173F is
 // symdb: unset, EVENT_1716 is set, and the player is in the slip-run state.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DB02.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_checkSliprunRewardAndPlaySfx_809DB02.yaml
 	thumb_local_start
-sub_809DB02:
+owPlayer_checkSliprunRewardAndPlaySfx_809DB02:
 	push {lr}
 	mov r3, #0x4c 
 	ldrh r0, [r5,r3]
@@ -1340,7 +1340,7 @@ loc_809DB4A:
 	pop {r0,r1}
 	and r0, r1
 	pop {pc}
-	thumb_func_end sub_809DB02
+	thumb_func_end owPlayer_checkSliprunRewardAndPlaySfx_809DB02
 
 // symdb: Returns whether the queued "player advance forward" event request (EVENT_1717_PLAYER_ADVANCE_FORWARD) is set, passing the answer through the condition flags.
 // symdb: bool sub_809DB50(void) // in: nothing (r10/lr unused); out: Z flag cleared = request pending (R0
@@ -1862,9 +1862,9 @@ sub_809DF28:
 
 // symdb: Reads the player's frozen-animation byte from eStruct200ace0 and returns its current value.
 // symdb: () -> r0 = byte at eStruct200ace0+0 ; clobbers r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DF36.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_checkPlayerFacingFreeze_809DF36.yaml
 	thumb_local_start
-sub_809DF36:
+owMapObject_checkPlayerFacingFreeze_809DF36:
 	push {lr}
 	ldr r7, off_809DF40 // =eStruct200ace0 
 loc_809DF3A:
@@ -1873,7 +1873,7 @@ loc_809DF3A:
 	.byte 0, 0
 off_809DF40:
 	.word eStruct200ace0
-	thumb_func_end sub_809DF36
+	thumb_func_end owMapObject_checkPlayerFacingFreeze_809DF36
 
 	thumb_local_start
 sub_809DF44:

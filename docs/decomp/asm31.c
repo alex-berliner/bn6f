@@ -33380,7 +33380,7 @@ void __noreturn sub_80CB964()
 
 
 // 0x80cb9e2
-void __noreturn sub_80CB9E2()
+void __noreturn battleObject_handleCollisionFrame_80CB9E2()
 {
     int v0; // r5
     int v1; // r0

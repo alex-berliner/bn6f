@@ -1346,7 +1346,7 @@ loc_813EC38:
 	mov r1, #8
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	strb r7, [r5,#0xb]
 locret_813EC4C:
 	pop {r4-r7,pc}
@@ -3817,7 +3817,7 @@ loc_814038C:
 	mov r1, #8
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	strb r7, [r5,#0xb]
 locret_81403A0:
 	pop {r4-r7,pc}

@@ -176,7 +176,7 @@ void sub_812ECAC()
     *(v2 + 19) = *(v2 + 18);
     if ( *(v2 + 15) )
     {
-        if ( sub_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 6u, 0, 0) )
+        if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 6u, 0, 0) )
             sub_812EF20();
         if ( v2[12] != 12 )
             v2[12] = sub_812EEEC();

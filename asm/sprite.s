@@ -1129,7 +1129,7 @@ loc_8002D22:
 	mov r1, #3
 	tst r1, r0
 	bne loc_8002D4E
-	bl sub_802FE48
+	bl battle_allocateActorIndex_802FE48
 	cmp r0, #0xff
 	beq loc_8002D4E
 	ldrb r2, [r5,#oObjectSprite_Unk_11]

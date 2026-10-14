@@ -527,7 +527,7 @@ int sub_8026A50()
     int v0; // r5
     int v1; // r0
 
-    v1 = sub_802FE48();
+    v1 = battle_allocateActorIndex_802FE48();
     *(v0 + 14) = v1;
     sprite_setAffineTransform_802FE7A(0, 0x40u, 0x40u, v1);
     *v0 = 4;
@@ -6515,7 +6515,7 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
         *(v3 + 2) = 4;
         PlaySoundEffect(127, 16, a3);
     }
-    else if ( sub_811F7F8(*(*(v4 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
+    else if ( menu_adjustCursorOrValue_811F7F8(*(*(v4 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
     {
         if ( *(v3 + 36) != *(v3 + 38) )
             sub_802B358(word_2031000, &decomp_2032000);
@@ -9251,7 +9251,7 @@ int *wrapCountersAt203CFB0ToU16_802CDFE()
 
 
 // 0x802ce10
-unsigned int __fastcall sub_802CE10(unsigned int result)
+unsigned int __fastcall battleObject_accumulateFinalDamageUpperBound_802CE10(unsigned int result)
 {
     int v1; // r5
     int *v2; // r1
@@ -13519,7 +13519,7 @@ int __fastcall sub_802FE38(int a1, int a2)
 
 
 // 0x802fe48
-signed int sub_802FE48()
+signed int battle_allocateActorIndex_802FE48()
 {
     unsigned int v0; // r2
     signed int result; // r0
@@ -13573,13 +13573,13 @@ int __fastcall sprite_setAffineTransform_802FE7A(int a1, unsigned int a2, unsign
     v9 = &word_200A6F0[v8];
     LOBYTE(word_200A6F0[v8 + 4]) = 0;
     *(v7 + 8) = v4;
-    sub_802FF10(v7, v8 * 2, 2 * v4, v5);
+    battle_aiDivMod_802FF10(v7, v8 * 2, 2 * v4, v5);
     *(v10 + 9) = v11;
     *v9 = (*math_cosTable * v5) >> 4;
     *v10 = (*&math_cosTable[v12] * v5) >> 4;
     v9[1] = (*math_sinTable * v5) >> 4;
     *(v10 + 2) = (*&math_sinTable[v12] * v5) >> 4;
-    sub_802FF10(v10, math_sinTable, v12, v6);
+    battle_aiDivMod_802FF10(v10, math_sinTable, v12, v6);
     *(result + 10) = v14;
     v9[3] = (*math_cosTable * v6) >> 4;
     *(result + 6) = (*&math_cosTable[v15] * v6) >> 4;
@@ -13590,7 +13590,7 @@ int __fastcall sprite_setAffineTransform_802FE7A(int a1, unsigned int a2, unsign
 
 
 // 0x802ff10
-void __fastcall sub_802FF10(int a1, int a2, int a3, signed int a4)
+void __fastcall battle_aiDivMod_802FF10(int a1, int a2, int a3, signed int a4)
 {
     signed int v4; // r1
     int v5; // r2

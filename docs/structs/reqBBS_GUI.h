@@ -80,7 +80,7 @@ typedef struct {
 		u8 pad_0A[0x01];
 	/*
 	Seems to hold state of some kind? (TODO: MMBN6F)
-	r7 from this is stored in loc_0b: sub_811F7F8(result, 8u, 0, 0);
+	r7 from this is stored in loc_0b: menu_adjustCursorOrValue_811F7F8(result, 8u, 0, 0);
 	*/
 	u8 unk_0B;						// loc=0xB
 		u8 pad_0C[0x01];

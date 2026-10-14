@@ -7735,7 +7735,7 @@ loc_8126E68:
 	mov r1, #0x44 
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	b loc_8126E80
 loc_8126E80:
 	bl battle_dispatchNextCmd_81272C4
@@ -9423,7 +9423,7 @@ loc_8127B72:
 	mov r1, #4
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq locret_8127B8E
 	bl sub_8128008
@@ -10989,7 +10989,7 @@ loc_8128866:
 	mov r1, #4
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	strh r7, [r5,#0x1e]
 	tst r0, r0
 	beq loc_81288A4
@@ -11747,7 +11747,7 @@ sub_8128E2C:
 	mov r1, #5
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq loc_8128EA4
 	ldrh r0, [r5,#0x24]

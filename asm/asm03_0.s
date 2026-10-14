@@ -795,13 +795,13 @@ off_8026A3C:
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
 
-// symdb: Queries some value via sub_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
+// symdb: Queries some value via battle_allocateActorIndex_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
 // symdb: u8 sub_8026A50(S20364C0* self /* r5 */); /* returns 0 in r0, sets Z=1 N=0, clobbers r1-r3 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026A50.yaml
 	thumb_local_start
 sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	push {lr}
-	bl sub_802FE48
+	bl battle_allocateActorIndex_802FE48
 	strb r0, [r5,#oS20364C0_Unk_0e]
 	mov r3, r0
 	mov r1, #0x40 
@@ -9840,7 +9840,7 @@ loc_802AAE0:
 	mov r1, #5
 	mov r2, #0
 	mov r3, #0
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq loc_802AB20
 	ldrh r0, [r5,#0x24]
@@ -14334,9 +14334,9 @@ wrapCountersAt203CFB0ToU16_802CDFE:
 // symdb: (r0 = newDamage, r5 = battleObject) -> r0 = max(newDamage + thisObjBonus, storedMax); r2 =
 // symdb: dword_203CFB0 / +0xC ; side effects: writes 0x0 / 0x2 (or 0xC / 0xE) of dword_203CFB0 when r0
 // symdb: exceeds the stored max
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CE10.yaml
-	thumb_func_start sub_802CE10
-sub_802CE10:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_accumulateFinalDamageUpperBound_802CE10.yaml
+	thumb_func_start battleObject_accumulateFinalDamageUpperBound_802CE10
+battleObject_accumulateFinalDamageUpperBound_802CE10:
 	ldr r1, off_802CE50 // =dword_203CFB0 
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	tst r2, r2
@@ -14356,7 +14356,7 @@ loc_802CE26:
 	strh r0, [r1]
 locret_802CE2E:
 	mov pc, lr
-	thumb_func_end sub_802CE10
+	thumb_func_end battleObject_accumulateFinalDamageUpperBound_802CE10
 
 // symdb: Returns 1 if the current battle object's entry in the battle order table matches R5 and its next pointer is non-zero, else 0 (used to validate the caller as the front-of-order battler of its team).
 // symdb: bool checkBattleOrderMatch_802CE30(void); /* in: r5 = battle object; out: r0 = 0/1, NZ flags */
@@ -21017,9 +21017,9 @@ off_802FE44:
 // symdb: Allocates a free actor slot index from a 16-bit bitmap in EWRAM and returns the slot index (or 0xFF if full)
 // symdb: (no args) -> r0 = allocated slot index (0..15) or 0xFF on full ; side effect: sets the
 // symdb: corresponding bit in the 16-bit bitmap at 0x2009A2C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE48.yaml
-	thumb_func_start sub_802FE48
-sub_802FE48:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_allocateActorIndex_802FE48.yaml
+	thumb_func_start battle_allocateActorIndex_802FE48
+battle_allocateActorIndex_802FE48:
 	ldr r3, off_802FF44 // =dword_2009A2C 
 	ldr r1, [r3]
 	mov r2, #0x80
@@ -21040,7 +21040,7 @@ loc_802FE60:
 loc_802FE66:
 	mov r0, #0xff
 	mov pc, lr
-	thumb_func_end sub_802FE48
+	thumb_func_end battle_allocateActorIndex_802FE48
 
 // symdb: Clears one bit, selected by an MSB-first index in r0, in the 32-bit flag word at dword_2009A2C.
 // symdb: void flags_clearFlagWordBit(u8 bitIndex /* r0, 0 = bit 31 of the word ... 31 = bit 0 */);
@@ -21084,7 +21084,7 @@ sprite_setAffineTransform_802FE7A:
 	lsl r2, r2, #1
 	pop {r3}
 	mov r7, r3
-	bl sub_802FF10
+	bl battle_aiDivMod_802FF10
 	strb r3, [r0,#9]
 	mov r3, r7
 	ldr r1, off_802FF0C // =math_cosTable 
@@ -21107,7 +21107,7 @@ sprite_setAffineTransform_802FE7A:
 	strh r4, [r0,#2]
 	pop {r3}
 	mov r7, r3
-	bl sub_802FF10
+	bl battle_aiDivMod_802FF10
 	strb r3, [r0,#0xa]
 	mov r3, r7
 	ldr r1, off_802FF0C // =math_cosTable 
@@ -21141,9 +21141,9 @@ off_802FF0C:
 // symdb: AI helper that divides 0x100 by r3 (loop count), returning quotient in r3 and remainder in r1; tail-called from sub_802FE7A.
 // symdb: (r1 = 0x100 dividend, r2 = 0, r3 = divisor) -> r1 = remainder, r3 = quotient ; caller-supplied
 // symdb: r0/r2 pushed/popped, lr tail-returned
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FF10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiDivMod_802FF10.yaml
 	thumb_local_start
-sub_802FF10:
+battle_aiDivMod_802FF10:
 	push {r1,r2}
 	mov r1, #0x10
 	lsl r1, r1, #4
@@ -21160,7 +21160,7 @@ loc_802FF26:
 	mov r3, r2
 	pop {r1,r2}
 	mov pc, lr
-	thumb_func_end sub_802FF10
+	thumb_func_end battle_aiDivMod_802FF10
 
 // symdb: Resets a global state word to 0 and zeroes a 0x180-byte work buffer, likely preparing shared game/battle scratch state for reuse.
 // symdb: void state_resetAndClearBuffer(void); // r2/r3 preserved, r0/r1/lr clobbered, flags whatever

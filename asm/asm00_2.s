@@ -259,7 +259,7 @@ battle_chipElementWeaknessBonus_800EF34:
 	beq loc_800EF54
 	mov r0, r4
 	ldr r1, [sp]
-	bl sub_800F09E
+	bl battle_getNaviCustStyleStatBoostFromChip_800F09E
 	b loc_800F094
 loc_800EF54:
 	ldr r0, dword_800F208 // =0xffff 
@@ -445,9 +445,9 @@ loc_800F094:
 // symdb: (r0 = chipId, r1 = naviStatsByte, r5 = battleObjectPtr) -> r0 = baseBoost (0 or param), r1 =
 // symdb: bonusIndex (0 or 0xC..0x12) ; side effects: reads alliance-team table and a 15-byte-wide lookup
 // symdb: at 0x02021300
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F09E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getNaviCustStyleStatBoostFromChip_800F09E.yaml
 	thumb_local_start
-sub_800F09E:
+battle_getNaviCustStyleStatBoostFromChip_800F09E:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	str r1, [sp]
@@ -616,7 +616,7 @@ loc_800F1D4:
 	mov r1, r7
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800F09E
+	thumb_func_end battle_getNaviCustStyleStatBoostFromChip_800F09E
 
 // symdb: If the incoming hit/event type targets a barrier (types 0x5F-0x61 or 0x150) and the battle object has an active barrier, adds 50 (0x32) to the value passed in r0.
 // symdb: u32 battle_addBarrierHitAdjust(u32 value /*r0*/, u32 arg1 /*r1, preserved*/, u32 hitType /*r2*/,
@@ -26632,7 +26632,7 @@ off_801BF00:
 off_801BF04:
 	.word sub_801BFEE+1
 	.word sub_801BFF8+1
-	.word sub_801C168+1
+	.word battleObject_updateHPMeters_801C168+1
 	.word sub_801C368+1
 	.word battleObject_tickCustomGauge_801C470+1
 	.word sub_801C4AE+1
@@ -26685,7 +26685,7 @@ off_801BF84:
 off_801BF88:
 	.word battle_RequestEndBattle_801C06E+1
 	.word sub_801C078+1
-	.word sub_801C202+1
+	.word battle_renderHpOverlays_801C202+1
 	.word sub_801C416+1
 	.word battle_drawTimerTiles_801C4E4+1
 	.word sub_801C576+1
@@ -26950,9 +26950,9 @@ dword_801C164:
 
 // symdb: Per-frame update loop that drives the 4 battle HP/Damage meter UI bars (read actor HP, dispatch into one of two update paths, store current HP back)
 // symdb: () -> r0 = 1 ; side effects: writes 4 * 0x14-byte meter entries at `byte_203EB50`
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C168.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateHPMeters_801C168.yaml
 	thumb_local_start
-sub_801C168:
+battleObject_updateHPMeters_801C168:
 	push {r4,r6,lr}
 	ldr r4, off_801C334 // =byte_203EB50 
 	mov r6, #4
@@ -27012,7 +27012,7 @@ loc_801C1C8:
 	sub r6, #1
 	bne loc_801C16E
 	pop {r4,r6,pc}
-	thumb_func_end sub_801C168
+	thumb_func_end battleObject_updateHPMeters_801C168
 
 	thumb_local_start
 sub_801C1D0:
@@ -27057,9 +27057,9 @@ locret_801C200:
 // symdb: Render the four floating battle HP readouts (players + enemies) by queueing one OAM entry per active panel, drawing the HP digits and conditionally loading battle portraits.
 // symdb: (r10 = toolkit) -> void ; side effects: queues OAM entries, decompresses portrait tiles into
 // symdb: VRAM, reads/writes small per-portrait state on byte_203EB50
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C202.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderHpOverlays_801C202.yaml
 	thumb_local_start
-sub_801C202:
+battle_renderHpOverlays_801C202:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	mov r7, sp
@@ -27136,7 +27136,7 @@ loc_801C286:
 	bne loc_801C210
 	add sp, sp, #8
 	pop {r4-r7,pc}
-	thumb_func_end sub_801C202
+	thumb_func_end battle_renderHpOverlays_801C202
 
 	thumb_local_start
 // print HP?
@@ -32399,7 +32399,7 @@ battle_dispatchKindEffect_801E792:
 	mov r2, #0
 	strb r2, [r5,#0x7] // (byte_2036847 - 0x2036840)
 	strb r2, [r5]
-	bl sub_802FE48
+	bl battle_allocateActorIndex_802FE48
 	cmp r0, #0xff
 	beq loc_801E81C
 	strb r0, [r5,#0x6] // (byte_2036846 - 0x2036840)

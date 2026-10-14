@@ -450,7 +450,7 @@ sub_812D690:
 	mov r1, #7
 	mov r2, #0
 	mov r3, #0xa
-	bl sub_811F7F8
+	bl menu_adjustCursorOrValue_811F7F8
 	pop {r5,r7}
 loc_812D6C4:
 	mov r0, #JOYPAD_B

@@ -10268,7 +10268,7 @@ loc_811311E:
 	thumb_local_start
 sub_8113124:
 	push {r4,r6,lr}
-	bl sub_81131D8
+	bl battle_object_tryUseChipWhenLowHP_81131D8
 	cmp r0, #0
 	bne locret_8113142
 	bl object_getFlag // () -> int
@@ -10381,9 +10381,9 @@ sub_81131A2:
 // symdb: If its HP is at or below half of MaxHP, has the BattleObject in r5 use its currently selected chip
 // symdb: (r5 = BattleObject*) -> r0 = bool (1 = used a chip, 0 = did not) ; side effects: may call
 // symdb: battle_getSelectedChipForUse / somethingWriteChipParams / object_setAttack / sub_800F322 on r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81131D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_object_tryUseChipWhenLowHP_81131D8.yaml
 	thumb_local_start
-sub_81131D8:
+battle_object_tryUseChipWhenLowHP_81131D8:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -10462,7 +10462,7 @@ byte_8113268:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
-	thumb_func_end sub_81131D8
+	thumb_func_end battle_object_tryUseChipWhenLowHP_81131D8
 
 	thumb_local_start
 sub_8113330:
@@ -34731,9 +34731,9 @@ IsButtonPressed:
 // symdb: (r0 = joypad-held flags, r1 = joypad struct ptr, r2 = flags/mask, r3 = caller scratch, r5 =
 // symdb: toolkit ptr) -> r0 = 0xff if value changed, 0x00 if unchanged ; also writes the new halfword
 // symdb: back to [r5 + r3 + 0x20] and [r5 + r3 + 0x24]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811F7F8.yaml
-	thumb_func_start sub_811F7F8
-sub_811F7F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_adjustCursorOrValue_811F7F8.yaml
+	thumb_func_start menu_adjustCursorOrValue_811F7F8
+menu_adjustCursorOrValue_811F7F8:
 	push {r4-r7,lr}
 	mov r6, r8
 	push {r6}
@@ -34889,7 +34889,7 @@ off_811F914:
 	.word 0x200
 off_811F918:
 	.word 0x100
-	thumb_func_end sub_811F7F8
+	thumb_func_end menu_adjustCursorOrValue_811F7F8
 
 	thumb_func_start sub_811F91C
 sub_811F91C:
