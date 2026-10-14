@@ -187,7 +187,7 @@ void __cdecl main_initToolkitAndOtherSubsystems()
     zeroFill_8003AB2();
     bg_ClearTilesAndReloadGraphics_80015B4();
     resetOverworldScene_800260C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     sub_802FDB0();
     clearWord_e200AC1C();
     clearChatboxAndEvent();

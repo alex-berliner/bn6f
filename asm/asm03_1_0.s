@@ -372,7 +372,7 @@ callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	mov r0, #0
@@ -387,7 +387,7 @@ sub_8033A80: // (self: * S2011E30 $r5) -> ()
 onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033BE8
@@ -400,7 +400,7 @@ onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
@@ -415,7 +415,7 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
@@ -427,7 +427,7 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #1
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
@@ -438,7 +438,7 @@ sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 sub_8033AF0: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #1
-	bl sub_8033B80
+	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
@@ -522,9 +522,9 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 // symdb: (r0 = OAM tile-id-ish arg / 24-frame slot, r5 = some struct base) -> r0 = next-frame index used
 // symdb: by next call (0..0x17) ; side effects queues OAM via sprite_queueOamEntryThunk_802FE28, writes
 // symdb: [r5+5] (next frame index)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamByFrameIndex_8033B80.yaml
 	thumb_local_start
-sub_8033B80:
+sprite_queueOamByFrameIndex_8033B80:
 	push {lr}
 	mov r2, #0x18
 	mul r2, r0
@@ -558,7 +558,7 @@ byte_8033BB8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1, 0x0, 0x1, 0x2, 0x3
 	.byte 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1, 0x0, 0x1, 0x2, 0x3, 0x2, 0x1
-	thumb_func_end sub_8033B80
+	thumb_func_end sprite_queueOamByFrameIndex_8033B80
 
 // symdb: Queues the current PET navi's graphics chunk into VRAM and triggers the update for the battle screen.
 // symdb: void sub_8033BE8(void)

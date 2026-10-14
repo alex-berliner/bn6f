@@ -228,9 +228,9 @@ dword_80027C0:
 
 // symdb: initialises a small graphics/fade state struct used by the battle fade pipeline
 // symdb: () -> r0 = 0x32f ; side effects: writes [0x20098A8] = 0x0C, [0x20098A9] = 0, [0x20098AA] = 0x32F
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027C4.yaml
-	thumb_func_start sub_80027C4
-sub_80027C4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initBattleFadeGfxState_80027C4.yaml
+	thumb_func_start sprite_initBattleFadeGfxState_80027C4
+sprite_initBattleFadeGfxState_80027C4:
 	ldr r1, off_8002804 // =byte_20098A8
 	mov r0, #0
 	strb r0, [r1,#0x1] // (byte_20098A9 - 0x20098a8)
@@ -239,7 +239,7 @@ sub_80027C4:
 	ldr r0, dword_8002808 // =0x32f
 	strh r0, [r1,#0x2] // (word_20098AA - 0x20098a8)
 	mov pc, lr
-	thumb_func_end sub_80027C4
+	thumb_func_end sprite_initBattleFadeGfxState_80027C4
 
 // symdb: Initializes the palette-DMA transfer task state at byte_20098A8, setting entry size 4, entry count 10, and a halfword transfer length of 0x2FF.
 // symdb: void sub_80027D4(void)
@@ -951,7 +951,7 @@ loc_8002C36:
 	and r3, r1
 	lsr r3, r3, #1
 	pop {r0-r2}
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 	pop {r5,pc}
 loc_8002C4E:
 	pop {r0-r2}

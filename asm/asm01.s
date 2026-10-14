@@ -81,9 +81,9 @@ sub_801FE64:
 // symdb: (in: r5=cur state byte, r8..r12=toolkit/BattleState-preserved) -> r0 = pointer to eStruct2036780
 // symdb: ; side effects: writes eStruct2083197D8 (offsets 0 and 1), may copy 0x10 bytes from
 // symdb: unk_20399F0/unk_2039A00 into eStruct2036780.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801FE6C.yaml
-	thumb_func_start sub_801FE6C
-sub_801FE6C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateCustomGauge_801FE6C.yaml
+	thumb_func_start battle_updateCustomGauge_801FE6C
+battle_updateCustomGauge_801FE6C:
 	push {r4,r6,lr}
 	ldr r4, off_80200D8 // =eStruct203F7D8
 	ldrb r6, [r4,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
@@ -149,7 +149,7 @@ loc_801FED2:
 
 locret_801FEE6:
 	pop {r4,r6,pc}
-	thumb_func_end sub_801FE6C
+	thumb_func_end battle_updateCustomGauge_801FE6C
 
 // symdb: Trivial getter returning the unknown byte field at offset 1 of the global struct eStruct203F7D8.
 // symdb: Next eStruct203F7D8_getUnk01(void); returns u8 in r0 (zero-extended byte at eStruct203F7D8+1).

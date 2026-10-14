@@ -6540,7 +6540,7 @@ battle_objectUpdate_8133400:
 loc_8133410:
 	bl submenu_clearBgIfClosed_8134594
 	bl sub_8134538
-	bl sub_81341A0
+	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl sub_81353DC
 	mov r0, #5
@@ -6598,7 +6598,7 @@ sub_8133484:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_81341A0
+	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl submenu_clearBgIfClosed_8134594
 	bl sub_8134538
@@ -7112,7 +7112,7 @@ loc_8133830:
 	mov r1, #3
 	bl entity_setLookupEntryStateFromFlag_8117D10
 loc_8133864:
-	bl sub_81341A0
+	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl submenu_clearBgIfClosed_8134594
 	bl sub_8134538
@@ -7159,7 +7159,7 @@ loc_81338BA:
 	bne loc_81338C6
 	bl object_saveStateAndSetState8_8133E7C
 loc_81338C6:
-	bl sub_8134310
+	bl battleObject_drawFolderEditScreenGfx_8134310
 
 	bl sub_81345B0
 	bl sub_8134548
@@ -7205,8 +7205,8 @@ loc_813390E:
 	bl sub_81345B0
 	bl sub_8134538
 	bl sub_8134548
-	bl sub_81341A0
-	bl sub_8134310
+	bl battleObject_submenuRenderFolderAndChips_81341A0
+	bl battleObject_drawFolderEditScreenGfx_8134310
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
@@ -7244,9 +7244,9 @@ loc_813396C:
 	bl sub_81345B0
 	bl sub_8134538
 	bl sub_8134548
-	bl sub_81341A0
+	bl battleObject_submenuRenderFolderAndChips_81341A0
 
-	bl sub_8134310
+	bl battleObject_drawFolderEditScreenGfx_8134310
 	bl sub_81353DC
 	mov r0, #5
 	mov r1, #0
@@ -8279,9 +8279,9 @@ off_813419C:
 // symdb: (r5 = submenu/BattleObject-like struct with u16 anim/id at +0x24 and s16 scrollIndex at +0x18)
 // symdb: -> r0 = 0x1c ; side effects: BG tile blocks 2/1/2/1/2 at column offsets derived from
 // symdb: scrollIndex; queue/decompress folder chip GFX; queue u16 tile-id writes.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81341A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuRenderFolderAndChips_81341A0.yaml
 	thumb_local_start
-sub_81341A0:
+battleObject_submenuRenderFolderAndChips_81341A0:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrh r0, [r7,#0x24]
@@ -8463,14 +8463,14 @@ off_8134308:
 	.word unk_20345C4
 dword_813430C:
 	.word 0x34F
-	thumb_func_end sub_81341A0
+	thumb_func_end battleObject_submenuRenderFolderAndChips_81341A0
 // symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
 // symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
 // symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
 // symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134310.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_drawFolderEditScreenGfx_8134310.yaml
 	thumb_local_start
-sub_8134310:
+battleObject_drawFolderEditScreenGfx_8134310:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrh r0, [r7,#0x2e]
@@ -8657,7 +8657,7 @@ off_8134488:
 	.word eTileIds20347A0
 off_813448C:
 	.word 0x200
-	thumb_func_end sub_8134310
+	thumb_func_end battleObject_drawFolderEditScreenGfx_8134310
 	thumb_local_start
 sub_8134490:
 	push {r4-r7,lr}

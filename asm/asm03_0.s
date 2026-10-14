@@ -795,7 +795,7 @@ off_8026A3C:
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
 
-// symdb: Queries some value via sub_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
+// symdb: Queries some value via sub_802FE48, stores it on the object, starts sprite_setAffineTransform_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
 // symdb: u8 sub_8026A50(S20364C0* self /* r5 */); /* returns 0 in r0, sets Z=1 N=0, clobbers r1-r3 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026A50.yaml
 	thumb_local_start
@@ -807,7 +807,7 @@ sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	mov r1, #0x40 
 	mov r2, #0x40 
 	mov r0, #0
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 	mov r0, #4
 	str r0, [r5]
 	mov r0, #0
@@ -8077,7 +8077,7 @@ loc_8029C82:
 	ldrb r0, [r1,r0]
 	mov r1, r2
 	ldrb r3, [r5,#oS20364C0_Unk_0e]
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 locret_8029C9A:
 	pop {pc}
 	.balign 4, 0
@@ -11939,9 +11939,9 @@ off_802BCB0:
 // symdb: Initializes the chip-select/custom-screen state at eS20364C0, dispatches by Index_00 to a tile-copy routine, then runs a panel scan
 // symdb: (r0 = unused=4) -> r0 = 1 ; side effects: writes eS20364C0.Unk_05, copies tiles to a BG block,
 // symdb: calls sub_802C460
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BD60.yaml
-	thumb_func_start sub_802BD60
-sub_802BD60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelect_802BD60.yaml
+	thumb_func_start battle_initChipSelect_802BD60
+battle_initChipSelect_802BD60:
 	push {r5,lr}
 	ldr r5, off_802BDAC // =eS20364C0 
 	mov r0, #1
@@ -11983,7 +11983,7 @@ off_802BDAC:
 	.word eS20364C0
 off_802BDB0:
 	.word unk_2034B30
-	thumb_func_end sub_802BD60
+	thumb_func_end battle_initChipSelect_802BD60
 
 // symdb: Runs helper sub_802C97E, then stores 4 into the word at r5, likely advancing a battle state/phase counter to its next step.
 // symdb: void sub_802BDB4(r4 context?, r5 outStatePtr, r10 work?); writes u32 4 to *r5; returns with NZCV
@@ -17475,7 +17475,7 @@ sub_802E4A0:
 	ldr r1, [r5,#0x58]
 	mov r0, #0
 	strb r0, [r1,#0x1e]
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, dword_802E4B4 // =0x40000 
 	bl ClearAIData_Unk_44_Flag
 	pop {r6,pc}
@@ -21060,9 +21060,9 @@ flags_clearFlagWordBit_802FE6A:
 // symdb: Computes two 2D affine matrices (rotation/scale + shear) at word_200A6F0 for sprite affine rendering, using cos/sin tables and the sin/cos inputs derived from r1/r2.
 // symdb: (r0 = obj, r1 = sin/cos raw angle arg, r2 = sin/cos raw angle arg, r3 = ?) -> r0 = &word_200A6F0
 // symdb: ; side effects: writes to word_200A6F0 and an offset within it (12-byte affine matrix records)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE7A.yaml
-	thumb_func_start sub_802FE7A
-sub_802FE7A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setAffineTransform_802FE7A.yaml
+	thumb_func_start sprite_setAffineTransform_802FE7A
+sprite_setAffineTransform_802FE7A:
 	push {r4-r7,lr}
 	lsr r1, r1, #2
 	lsr r2, r2, #2
@@ -21136,7 +21136,7 @@ off_802FF08:
 	.word math_sinTable
 off_802FF0C:
 	.word math_cosTable
-	thumb_func_end sub_802FE7A
+	thumb_func_end sprite_setAffineTransform_802FE7A
 
 	thumb_local_start
 sub_802FF10:

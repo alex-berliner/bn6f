@@ -49,7 +49,7 @@ sub_8038630:
 	bl renderInfo_80017A0 // () -> ()
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl initGfx_80386CC
 	mov r0, #0x63
 	bl music_80005F2 // (bg_music_indicator: u8) -> ()
@@ -340,7 +340,7 @@ sub_8038B04:
 	bl renderInfo_80017A0 // () -> ()
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl decomp_initGfx_8038F30 // () -> void
 	bl sub_8038F74
 	bl sub_80468BA
@@ -2443,7 +2443,7 @@ sub_8039E80:
 	bl copyMemory_8001850
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl RandomizeExtraToolkitPointers // () -> ?
 	mov r0, #0
 	bl getBattleSettingsFromList0 // (int battleSettingsIdx) -> BattleSettings*
@@ -8221,7 +8221,7 @@ sub_803CBD0:
 	bl renderInfo_80017A0 // () -> ()
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl copyData_803CC60
 	mov r0, #0x63
 	bl music_80005F2 // (bg_music_indicator: u8) -> ()
@@ -8385,7 +8385,7 @@ sub_803CCFC:
 	bl renderInfo_80017A0 // () -> ()
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl sub_803CD58
 	mov r0, #0x63
 	bl music_80005F2 // (bg_music_indicator: u8) -> ()
@@ -9211,7 +9211,7 @@ loc_803D212:
 
 	bl runSetupStepAndClearWorkArea_8005F6C
 
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 
 	bl logoScreen_loadLogoTiles_803D2B8
 
@@ -14460,7 +14460,7 @@ copyTileData_803FC64:
 	push {r5,lr}
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	// initRefs
 	ldr r0, off_803FCA0 // =initRefs803FCA4
 	bl decompAndCopyData // (u32 *initRefs) -> void

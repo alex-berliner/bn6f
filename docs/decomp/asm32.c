@@ -14598,7 +14598,7 @@ void __fastcall __noreturn battle_spriteInit_8119384(int a1, int a2, int a3, int
     *(v4 + 13) = -1;
     *(v4 + 26) = 255;
     *(v4 + 19) = 0;
-    sub_81196A0();
+    battle_dispatchSpriteAction_81196A0();
 }
 
 
@@ -14742,7 +14742,7 @@ __int64 __fastcall sub_81195E4(int a1, int a2, int a3, int a4)
 
 
 // 0x81196a0
-void sub_81196A0()
+void battle_dispatchSpriteAction_81196A0()
 {
     int v0; // r5
 

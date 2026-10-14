@@ -4467,7 +4467,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl InitializeOverworldMapObjectStructs
 	bl copy_8002668
 	bl zeroFill_80024A2
@@ -4819,7 +4819,7 @@ scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	strb r1, [r0]
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -4925,7 +4925,7 @@ mainState_resetGameAndGoto28_8005524:
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -4961,7 +4961,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5002,7 +5002,7 @@ gamestate_runOverworldSceneStep_80055CE: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5044,7 +5044,7 @@ scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5084,7 +5084,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5123,7 +5123,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5162,7 +5162,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -5228,7 +5228,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	bl npc_clearOverworldNpcStateWord_8004702
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -6060,7 +6060,7 @@ sub_8005D88:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -6085,7 +6085,7 @@ battle_initFullSetup_8005DBE:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -6105,7 +6105,7 @@ sub_8005DF0:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -6125,7 +6125,7 @@ sub_8005E22:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -6145,7 +6145,7 @@ dead_8005E54:
 	bl FreeAllObjectsOfSpecifiedTypes
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl zeroFill_80024A2
 	bl scenario_initEffectState_8003962
 	bl zeroFill_8003AB2
@@ -9830,7 +9830,7 @@ dword_80077FC:
 battle_main_8007800:
 	push {r4,r5,lr}
 
-	bl sub_801FE6C
+	bl battle_updateCustomGauge_801FE6C
 
 	bl battleObject_checkTerminateFlagAndDispatch_8020140
 
@@ -9863,7 +9863,7 @@ off_8007834:
 	.word JumpTable8007838
 JumpTable8007838: 
   // 0x00
-  .word sub_8007850+1 // (self: * BattleState $r5) -> ()
+  .word battle_finishBattle_8007850+1 // (self: * BattleState $r5) -> ()
   // 0x04
 	.word battle_update_8007A44+1 // (self: * BattleState $r5) -> ()
   // 0x08
@@ -9879,9 +9879,9 @@ JumpTable8007838:
 // symdb: Battle-state transition routine that resolves a finished battle (success/timeout/comm-fail) by stamping the battle result, setting up the next state, and clearing timers.
 // symdb: (r5 = *BattleState) -> void ; writes BattleState fields Index_00/Index_01, Unk_02_03, Unk_20;
 // symdb: sets event flags 1733/1735 when battle-effects bit 0x08 is off
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007850.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_finishBattle_8007850.yaml
 	thumb_local_start
-sub_8007850: // (self: * BattleState $r5) -> ()
+battle_finishBattle_8007850: // (self: * BattleState $r5) -> ()
 	push {r4,lr}
 	bl eStruct203F7D8_getUnk01
 	mov r4, r0
@@ -10029,7 +10029,7 @@ off_8007940:
   .word sub_800794C+1
 	.word battle_dispatchPhase_8007978+1
 	.word battle_initEntry_8007A0C+1
-	thumb_func_end sub_8007850
+	thumb_func_end battle_finishBattle_8007850
 
 	thumb_local_start
 sub_800794C:
@@ -10044,7 +10044,7 @@ sub_800794C:
 	bl resetBattleBuffers_801BE70
 	bl copy_8002668
 
-  // trigger battle_dispatchPhase_8007978 via sub_8007850
+  // trigger battle_dispatchPhase_8007978 via battle_finishBattle_8007850
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 
@@ -10367,16 +10367,16 @@ off_8007B90:
 	.word off_8007B94
 off_8007B94: 
   // 0x00
-  .word sub_8007B9C+1 // (self: *mut BattleState $r5) -> ()
+  .word battle_runFrame_8007B9C+1 // (self: *mut BattleState $r5) -> ()
   // 0x04
 	.word battle_state_tick_8007CA0+1 // (self: *mut BattleState $r5) -> ()
 	thumb_func_end sub_8007B80
 
 // symdb: Per-frame battle driver: resets the FIFO write pointer, dispatches a per-BattleState handler (countdown or dispatch), walks the battle-object list, flushes the panel and sprite rendering subsystems, then resets the FIFO again.
 // symdb: (r5 = *BattleState) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007B9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runFrame_8007B9C.yaml
 	thumb_local_start
-sub_8007B9C: // (self: *mut BattleState $r5) -> ()
+battle_runFrame_8007B9C: // (self: *mut BattleState $r5) -> ()
 	push {lr}
 	bl fifo_resetWriteCounter_800A01C
 	ldr r1, off_8007BC4 // =off_8007BC8
@@ -10396,7 +10396,7 @@ off_8007BC4:
 off_8007BC8:
 	.word battle_stateCountdownTick_8007BD0+1
 	.word eStruct200BC30_dispatchJumpOffset00_8007BF0+1
-	thumb_func_end sub_8007B9C
+	thumb_func_end battle_runFrame_8007B9C
 
 // symdb: Ticks a 10-frame countdown in the battle state object, then flips its phase field to 4 when the timer expires.
 // symdb: void battle_stateCountdownTick(BattleState* r5); /* out: r0 = remaining timer (or 4 when
@@ -12223,7 +12223,7 @@ off_8008968:
 	.word off_800896C
 off_800896C:
 	.word sub_800898C+1
-	.word sub_80089CC+1
+	.word battle_advancePostMovePhase_80089CC+1
 	.word sub_8008A7C+1
 	.word sub_8008B7C+1
 	.word sub_8008BF0+1
@@ -12268,9 +12268,9 @@ locret_80089CA:
 // symdb: Per-frame post-move phase driver: unpauses, ticks AI joypad, advances phase state, and dispatches to a "wait for ready" / chip-lockout / move-result state machine.
 // symdb: (r10 = toolkit, r5 = some scratch object/state ptr) -> void ; side effects: writes *r5, advances
 // symdb: BattleState counters, sets CustGauge, sets/clears paused flag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80089CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advancePostMovePhase_80089CC.yaml
 	thumb_local_start
-sub_80089CC:
+battle_advancePostMovePhase_80089CC:
 	push {lr}
 	mov r0, #0
 	bl battle_updateNaviAIJoypad_8012DFC
@@ -12342,7 +12342,7 @@ locret_8008A60:
 	.word byte_8008A74
 byte_8008A74:
 	.byte 0x10, 0x0, 0x25, 0x33, 0x64, 0x0, 0x0, 0x0
-	thumb_func_end sub_80089CC
+	thumb_func_end battle_advancePostMovePhase_80089CC
 
 	thumb_local_start
 sub_8008A7C:
@@ -13829,7 +13829,7 @@ sub_80094B6:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_80094C8:
-	bl sub_802BD60
+	bl battle_initChipSelect_802BD60
 	tst r0, r0
 	bne locret_80094D8
 	mov r0, #0x14
@@ -14420,7 +14420,7 @@ sub_8009916:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009928:
-	bl sub_802BD60
+	bl battle_initChipSelect_802BD60
 	tst r0, r0
 	bne locret_8009938
 	mov r0, #0x14
@@ -14829,7 +14829,7 @@ sub_8009C06:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009C18:
-	bl sub_802BD60
+	bl battle_initChipSelect_802BD60
 	tst r0, r0
 	bne locret_8009C28
 	mov r0, #0x14
@@ -15282,7 +15282,7 @@ sub_8009F3A:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_8009F4C:
-	bl sub_802BD60
+	bl battle_initChipSelect_802BD60
 	tst r0, r0
 	bne locret_8009F5C
 	mov r0, #0x14

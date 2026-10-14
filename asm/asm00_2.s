@@ -34,7 +34,7 @@ battle_getSelectedChipForUse_800ED90:
 	mov r7, r0
 	ldrh r0, [r7]
 	mov r1, #0
-	bl sub_800EF34
+	bl battle_chipElementWeaknessBonus_800EF34
 	ldrh r2, [r7,#0x18]
 	add r2, r2, r0
 	ldrh r0, [r7,#0x24]
@@ -51,8 +51,8 @@ loc_800EDC6:
 	pop {r5,r7,pc}
 	thumb_func_end battle_getSelectedChipForUse_800ED90
 
-// symdb: Gather state/info fields for a battle object, branching on whether it is an actor (type 2) — actor path reads hand-slot data and calls sub_800EF34, otherwise returns chip metadata.
-// symdb: // In:  r0 = battle object ptr, r1 = caller-saved value forwarded to sub_800EF34, //      r4 =
+// symdb: Gather state/info fields for a battle object, branching on whether it is an actor (type 2) — actor path reads hand-slot data and calls battle_chipElementWeaknessBonus_800EF34, otherwise returns chip metadata.
+// symdb: // In:  r0 = battle object ptr, r1 = caller-saved value forwarded to battle_chipElementWeaknessBonus_800EF34, //      r4 =
 // symdb: preserved-through value, r10 / lr used by caller // Out: r0..r4 = (see details); nz/c/v/lr
 // symdb: clobbered; r5..r7 preserved SubEdd0Out getBattleObjectStateInfo_800EDD0(u32 obj, u32 callerR1,
 // symdb: u32 r4_in);
@@ -77,7 +77,7 @@ getBattleObjectStateInfo_800EDD0:
 	mov r7, r0
 	ldrh r0, [r7]
 	ldr r1, [sp]
-	bl sub_800EF34
+	bl battle_chipElementWeaknessBonus_800EF34
 	mov r3, r1
 	ldrh r2, [r7,#0x18]
 	add r2, r2, r0
@@ -117,7 +117,7 @@ sub_800EE26:
 	bl sub_800EE98
 	ldrh r0, [r6,#0x34]
 	mov r1, #0
-	bl sub_800EF34
+	bl battle_chipElementWeaknessBonus_800EF34
 	push {r0,r1}
 	// idx
 	ldrh r0, [r6,#0x34]
@@ -223,7 +223,7 @@ sub_800EF02:
 	bne loc_800EF2A
 	mov r0, r6
 	mov r1, #0
-	bl sub_800EF34
+	bl battle_chipElementWeaknessBonus_800EF34
 	push {r0,r1}
 	mov r0, r6
 	ldrb r1, [r5,#oBattleObject_Alliance]
@@ -244,9 +244,9 @@ locret_800EF32:
 // symdb: Computes an elemental chip bonus (additive damage + element id) based on the selected chip and the user's Navi/custom-equipment profile.
 // symdb: (r0 = chipID, r1 = ?) -> r0 = damageBonus, r1 = elementID ; side effects: none beyond the final
 // symdb: barrier-hit adjustment
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EF34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipElementWeaknessBonus_800EF34.yaml
 	thumb_local_start
-sub_800EF34:
+battle_chipElementWeaknessBonus_800EF34:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	str r1, [sp]
@@ -439,7 +439,7 @@ loc_800F094:
 	bl battle_addBarrierHitAdjust_800F1DC
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800EF34
+	thumb_func_end battle_chipElementWeaknessBonus_800EF34
 
 	thumb_local_start
 sub_800F09E:
@@ -5960,7 +5960,7 @@ loc_801173E:
 	strb r0, [r1,#oAIData_Unk_1a]
 	ldr r0, dword_8011760 // =0x1000003f 
 	bl ClearAIData_Unk_44_Flag
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	mov r0, #1
 	lsl r0, r0, #0x16
 	bl object_clearFlag // (int bitfield) -> void
@@ -9367,9 +9367,9 @@ sub_8012EA0:
 // symdb: Clears the active PwrAtk (charged/Press A) state of a battle object: zeros the AIData charge-related bytes and clears the 0x60000 flag in the AI flag word.
 // symdb: (r5 = BattleObjectPtr) -> r0 = 0x60000 ; side effects: writes AIData offsets 0x1b/0x1d/0x1e to 0
 // symdb: and clears bits 0x60000 in AIData Unk_44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012EA8.yaml
-	thumb_func_start sub_8012EA8
-sub_8012EA8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearPwrAtkState_8012EA8.yaml
+	thumb_func_start battleObject_clearPwrAtkState_8012EA8
+battleObject_clearPwrAtkState_8012EA8:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
@@ -9379,7 +9379,7 @@ sub_8012EA8:
 	ldr r0, dword_8012FAC // =0x60000 
 	bl ClearAIData_Unk_44_Flag
 	pop {pc}
-	thumb_func_end sub_8012EA8
+	thumb_func_end battleObject_clearPwrAtkState_8012EA8
 
 // symdb: Advances the AI battle object's power-attack (B/A-button) charge timer when not time-stopped and the AI is holding the appropriate button.
 // symdb: (r5 = AIDataPtr, r10 = toolkit/BattleStatePtr) -> void ; side effects: mutates AIData
@@ -12757,7 +12757,7 @@ loc_801450C:
 	bl battle_SetObjectHitModifier_8019F86
 	mov r0, #1
 	bl object_setCollisionRegion
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	tst r7, r7
 	bne loc_8014528
 	bl battleObject_initAIData_800FEEC
@@ -13652,7 +13652,7 @@ sub_8014B18:
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl sub_800F2C6
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
 	bl sub_80C4C3A
@@ -13878,7 +13878,7 @@ sub_8014D08:
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl sub_800F2C6
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
 	bl sub_80C4C3A
@@ -14139,7 +14139,7 @@ sub_8014F40:
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl sub_800F2C6
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
 	bl sub_80C4C3A
@@ -14392,7 +14392,7 @@ sub_801516C:
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl sub_800F2C6
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
 	bl sub_80C4C3A
@@ -14685,7 +14685,7 @@ sub_80153EC:
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl sub_800F2C6
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
 	bl sub_80C4C3A
@@ -18453,7 +18453,7 @@ sub_80170E4:
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
@@ -18829,7 +18829,7 @@ sub_801741C:
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
 	bl battle_resetCollisionState_80101C4
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl releaseSlotByValue_801DC36
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ChipsHeld]
@@ -18974,7 +18974,7 @@ battleObject_actionFlinch_80174FE:
 	bl ClearAIDataUnk0x48Flag
 	ldr r0, dword_80175A4 // =0x100041 
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl object_getFlag // () -> int
 	mov r1, #1
 	lsl r1, r1, #0xc
@@ -19053,7 +19053,7 @@ battleObject_actionParalyze_80175B8:
 	bl battle_resetCollisionState_80101C4
 	ldr r0, dword_8017684 // =0x20005f 
 	bl ClearAIDataUnk0x48Flag
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl object_getFlag // () -> int
 	mov r1, #1
 	lsl r1, r1, #0xc
@@ -19152,7 +19152,7 @@ sub_8017688:
 	bl PlaySoundEffect
 	ldr r0, dword_8017764 // =0x20005f 
 	bl ClearAIDataUnk0x48Flag
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl object_getFlag // () -> int
 	mov r1, #1
 	lsl r1, r1, #0xc
@@ -19250,7 +19250,7 @@ sub_8017768:
 	bl PlaySoundEffect
 	ldr r0, dword_8017860 // =0x20005f 
 	bl ClearAIDataUnk0x48Flag
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl object_getFlag // () -> int
 	mov r1, #1
 	lsl r1, r1, #0xc
@@ -19426,7 +19426,7 @@ loc_8017900:
 	mov r0, #0xff
 	strb r0, [r5,#oBattleObject_CurAnimCopy]
 	bl sub_8011450
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
 	ldrh r0, [r5,#oBattleObject_FuturePanelXY]
@@ -22698,9 +22698,9 @@ battle_toggleAllianceAndAccumulateCollisionToAiData_801A308:
 
 // symdb: Heal the opposing battle actor by the counter-damage stored in their AIData Unk_10, then spawn a +HP effect object and play the heal sound.
 // symdb: (r5 = self BattleObjectPtr) -> (r5/r10 preserved; no return value)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A324.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyCounterHealAndSpawnEffect_801A324.yaml
 	thumb_local_start
-sub_801A324:
+battle_applyCounterHealAndSpawnEffect_801A324:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -22733,7 +22733,7 @@ sub_801A324:
 	bl PlaySoundEffect
 locret_801A368:
 	pop {r4,pc}
-	thumb_func_end sub_801A324
+	thumb_func_end battle_applyCounterHealAndSpawnEffect_801A324
 
 // symdb: Decrements an AIData ice-freeze counter and clears the object's frozen/immobilized flags when it expires on a cracked panel.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void
@@ -22993,9 +22993,9 @@ loc_801A502:
 
 // symdb: Battle AI: if the target battle object's collision data has a non-zero damage multiplier and non-zero DamageElements flags, set AIData Unk_44 bit 0x80000000
 // symdb: (r5 = AI work pointer) -> void ; may set AIData Unk_44 flag and clobber r0/r1/r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A506.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_markWindBoxReady_801A506.yaml
 	thumb_local_start
-sub_801A506:
+battle_ai_markWindBoxReady_801A506:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	mov r0, #0x75 
@@ -23035,7 +23035,7 @@ off_801A54C:
 	.word 0x1500
 off_801A550:
 	.word eCollisionData
-	thumb_func_end sub_801A506
+	thumb_func_end battle_ai_markWindBoxReady_801A506
 
 // symdb: Applies the battle object's current status effect to itself by patching a collision-data field and setting an object flag from a status-effect table.
 // symdb: void sub_801A554(r5=battle object) -> r2 (left over from last flag helper); clobbers
@@ -23140,9 +23140,9 @@ battle_ClearObjectCollisionResult_801A5E2:
 // symdb: Per-tick handler that decrements and finishes a battle object's flashing/invisibility duration, clearing the invis flag and playing the disappearance SFX.
 // symdb: (r5 = BattleObjectPtr) -> void ; side effects: mutates FlashingInvisTimer and
 // symdb: ObjectFlags1/ObjectFlags2 of r5->CollisionDataPtr; may call PlaySoundEffect(0x94)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A5EE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleFlashingInvisTick_801A5EE.yaml
 	thumb_local_start
-sub_801A5EE:
+battleObject_handleFlashingInvisTick_801A5EE:
 	push {r6,lr}
 	bl battle_getFlags
 	mov r1, #1
@@ -23186,7 +23186,7 @@ locret_801A642:
 	.balign 4, 0
 dword_801A644:
 	.word 0x202
-	thumb_func_end sub_801A5EE
+	thumb_func_end battleObject_handleFlashingInvisTick_801A5EE
 
 // symdb: Ends a fighter's post-hit flashing-invisibility by clearing the flash countdown in its collision data, once the hit flag is set and no persistent invisibility remains.
 // symdb: battle_clearInvisFlashTimer(battleObj r5, battleState r10) -> collisionData r3
@@ -24058,7 +24058,7 @@ battleObject_processCollisionResultsForPlayer_801AC6C:
 	bl battleObject_applyStatusEffect_801A554
 loc_801ACEC:
 	bl battleObject_clearChipSelectionOnAirShoe_801A2CC
-	bl sub_801A324
+	bl battle_applyCounterHealAndSpawnEffect_801A324
 	bl object_calculateFinalDamage1
 	bl battleObject_tickCounterTimer_801A420
 	bl battle_runObjectAI_80143FC
@@ -24364,7 +24364,7 @@ loc_801AF5E:
 	bl battle_spawnHitEffectAtArm_801A42E
 	bl battle_spawnArmHitEffect_801A4A6
 	bl sub_801A45C
-	bl sub_801A506
+	bl battle_ai_markWindBoxReady_801A506
 	bl applyDamageToPlayer_801ba12
 	bl battleObject_clearCollisionIfHitAction_801BADE
 	bl object_getFlag // () -> int
@@ -24559,7 +24559,7 @@ loc_801B11E:
 	lsl r0, r0, #0xe
 	bl object_clearFlag2
 loc_801B126:
-	bl sub_801A5EE
+	bl battleObject_handleFlashingInvisTick_801A5EE
 	bl object_tickStatusEffectTimers_800E730
 	bl battle_tickCollisionTimer_8010162
 	bl battle_updatePlayerAngerState_8014326
@@ -24714,7 +24714,7 @@ loc_801B24E:
 	mov r0, #oCollisionData_PanelDamage6
 	ldrh r0, [r6,r0]
 	bl object_subtractHP
-	bl sub_801B9BC
+	bl battleObject_killIfBubbleFlag_801B9BC
 	ldrh r0, [r5,#oBattleObject_HP]
 	tst r0, r0
 	bne loc_801B266
@@ -25706,9 +25706,9 @@ dword_801B9B8:
 
 // symdb: If the object's AIData says it's a clean-trigger kill and the related battle object has the 0x100 object flag (BUBBLED), set HP to 0 to mark it dead.
 // symdb: (r5 = BattleObject*) -> void ; side effect: may zero oBattleObject_HP on the related object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B9BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_killIfBubbleFlag_801B9BC.yaml
 	thumb_local_start
-sub_801B9BC:
+battleObject_killIfBubbleFlag_801B9BC:
 	push {r5,lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	tst r3, r3
@@ -25730,7 +25730,7 @@ sub_801B9BC:
 	strh r0, [r5,#oBattleObject_HP]
 locret_801B9E4:
 	pop {r5,pc}
-	thumb_func_end sub_801B9BC
+	thumb_func_end battleObject_killIfBubbleFlag_801B9BC
 
 // symdb: Runs one step of an enemy's "extra AI attack" script by dispatching through the caller's handler table or the shared AIAttackJumptable based on the object's CurAction.
 // symdb: void battle_runAIAttackDispatcher_801b9e6(u32 **callerAttackTable /* r0 */, BattleObject *obj /*
@@ -26618,7 +26618,7 @@ off_801BF04:
 	.word sub_801C470+1
 	.word sub_801C4AE+1
 	.word nullsub_58+1
-	.word sub_801C840+1
+	.word battle_tickLowHpWarning_801C840+1
 	.word object_countdownTimer_801CA0C+1
 	.word nullsub_58+1
 	.word sub_801C984+1
@@ -27895,9 +27895,9 @@ off_801C83C:
 // symdb: Battle per-frame updater that bumps an internal "low-HP" timer, plays SOUND_LOW_HP every 0x2d frames while the alive-player-actor count is non-zero, and animates the navi's HP gauge toward the live HP value.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: PlaySoundEffect(SOUND_LOW_HP),
 // symdb: mutates r5[BButton_offset], r5[Unk_03], r5[Unk_05], r5[Unk_24] and r5[Unk_26]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C840.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickLowHpWarning_801C840.yaml
 	thumb_local_start
-sub_801C840:
+battle_tickLowHpWarning_801C840:
 	push {r7,lr}
 	ldr r7, [r5,#0x48]
 	bl GetBattleMode
@@ -28005,7 +28005,7 @@ loc_801C902:
 	strb r0, [r5,#3]
 locret_801C904:
 	pop {r7,pc}
-	thumb_func_end sub_801C840
+	thumb_func_end battle_tickLowHpWarning_801C840
 
 // symdb: redraws a field object's four-digit HP readout by stamping right-aligned digit glyphs into background tile block 3 and queuing the companion 32-byte tile upload for VRAM
 // symdb: void drawNumberLabel_801C906(void); /* r5 in: label object; r4-r7 preserved; r3/r4-r7 out:
@@ -28387,7 +28387,7 @@ battle_updateObjectAnim_801CB38:
 	bne loc_801CB54
 	mov r0, #0
 	strb r0, [r5,#0x13]
-	bl sub_801E6A8
+	bl battleObject_resolveEmotionPalette_801E6A8
 	strb r0, [r5,#0x10]
 	strb r0, [r5,#0x11]
 	strb r1, [r5,#0xe]
@@ -28407,7 +28407,7 @@ loc_801CB60:
 	ldrb r0, [r5,#0x16]
 	cmp r0, #0
 	bne loc_801CB72
-	bl sub_801E6A8
+	bl battleObject_resolveEmotionPalette_801E6A8
 	b loc_801CB76
 loc_801CB72:
 	bl sub_801E69C
@@ -28461,7 +28461,7 @@ loc_801CBBE:
 	ldr r2, off_801CD6C // =0x100 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	push {r0-r3}
-	bl sub_801D814
+	bl battle_shouldUseSimpleAnimMode_801D814
 	tst r0, r0
 	pop {r0-r3}
 	bne loc_801CBEC
@@ -28538,7 +28538,7 @@ sub_801CC34:
 	mov r0, #0xff
 	strb r0, [r5,#0x10]
 loc_801CC64:
-	bl sub_801E6A8
+	bl battleObject_resolveEmotionPalette_801E6A8
 	mov r1, #0
 	ldrb r2, [r5,#0x17]
 	cmp r2, #0xff
@@ -28775,7 +28775,7 @@ off_801CE5C:
 	thumb_func_end sub_801CE28
 
 // symdb: Ticks a staged screen fade-out, dropping the fade parameter by 0x20 each step until the work block advances to state 4.
-// symdb: void sub_801CE6C(u8* work /* r5 */); calls sub_802FE7A(0, 0x40, 0xE0 - 0x20*work[7], work[6]);
+// symdb: void sub_801CE6C(u8* work /* r5 */); calls sprite_setAffineTransform_802FE7A(0, 0x40, 0xE0 - 0x20*work[7], work[6]);
 // symdb: returns r0 = step counter (0 on finishing tick); preserves r4-r7; c/v from `cmp counter,#5`, nz
 // symdb: from `movs r0,#0` only on the finishing tick
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/screenFadeOutStepTick_801CE6C.yaml
@@ -28790,7 +28790,7 @@ screenFadeOutStepTick_801CE6C:
 	ldrb r3, [r5,#6]
 	mov r0, #0
 	mov r1, #0x40 
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 	ldrb r0, [r5,#7]
 	cmp r0, #5
 	blt locret_801CE90
@@ -28834,7 +28834,7 @@ loc_801CEB8:
 	mov r0, #0
 	mov r1, #0x40 
 	ldrb r3, [r5,#6]
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 loc_801CEC2:
 	ldrb r0, [r5,#7]
 	cmp r0, #0x30 
@@ -28862,7 +28862,7 @@ flags_clearWordSlicesTaskStep_801CED2:
 	ldrb r3, [r5,#6]
 	mov r0, #0
 	mov r1, #0x40 
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 	ldrb r0, [r5,#7]
 	cmp r0, #5
 	blt locret_801CEF8
@@ -30090,9 +30090,9 @@ dword_801D810:
 
 // symdb: Returns 1 when the battle's object animation stepper should use a "simple" code path, based on battle mode, two event flags, a battle-flag bit, and a battle-effects bit; otherwise 0.
 // symdb: (r10 = ToolkitPtr) -> r0 = 0 or 1 (bool)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D814.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_shouldUseSimpleAnimMode_801D814.yaml
 	thumb_local_start
-sub_801D814:
+battle_shouldUseSimpleAnimMode_801D814:
 	push {r4,lr}
 	mov r4, #0
 	bl GetBattleMode
@@ -30211,7 +30211,7 @@ byte_801D9B4:
 	.byte 0xA5, 0xD2, 0x0, 0x0, 0x0, 0x0, 0xA7, 0xD2, 0xA9
 	.byte 0xD2, 0xAB, 0xD2, 0xAD, 0xD2, 0xAF, 0xD2, 0xB1, 0xD2
 	.byte 0xB3, 0xD2, 0xB5, 0xD2
-	thumb_func_end sub_801D814
+	thumb_func_end battle_shouldUseSimpleAnimMode_801D814
 
 // symdb: Per-frame battle-scene setup — queues the battle scene's graphics transfers, sets a render-info value, and refreshes the stored player battle object pointer.
 // symdb: void sub_801DA24(void); /* r10 = toolkit base in, clobbers r0-r2, lr; no meaningful outputs (c/v
@@ -32187,9 +32187,9 @@ sub_801E69C:
 // symdb: Looks up the emotion palette/effect index for a battle object's current emotion/transformation, with special-cased boosts for BeastOut/transformed states.
 // symdb: (r5 = BattleObject*) -> r0 = emotion/pose id, r1 = r3 (some flag from caller) ; side effects:
 // symdb: clobbers r4, r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E6A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_resolveEmotionPalette_801E6A8.yaml
 	thumb_local_start
-sub_801E6A8:
+battleObject_resolveEmotionPalette_801E6A8:
 	push {r4,r6,lr}
 	ldr r0, [r5,#0x48]
 	ldrb r0, [r0,#oBattleObject_Alliance]
@@ -32239,7 +32239,7 @@ off_801E6FC:
 	.word byte_801E700
 byte_801E700:
 	.byte 0x0, 0x5, 0x6, 0x7, 0x8, 0x9, 0x5, 0x6, 0x7, 0x8, 0x9, 0x14, 0x14, 0xF, 0x10, 0x11, 0x12, 0x13, 0xf, 0x10, 0x11, 0x12, 0x13, 0x16, 0x16, 0x0, 0x0, 0x0
-	thumb_func_end sub_801E6A8
+	thumb_func_end battleObject_resolveEmotionPalette_801E6A8
 
 // symdb: Setter that writes a one-byte value into field 0x12 of the global struct at 0x2035280.
 // symdb: void sub_801E71C(u8 value); // reads r0, preserves r1, returns to caller via lr
@@ -32375,7 +32375,7 @@ sub_801E792:
 	mov r0, #0
 	mov r1, #0x40 
 	mov r2, #0xe0
-	bl sub_802FE7A
+	bl sprite_setAffineTransform_802FE7A
 	ldr r0, [sp]
 	cmp r0, #0
 	bne loc_801E7D8

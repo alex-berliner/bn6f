@@ -3809,7 +3809,7 @@ void __noreturn battle_objectUpdate_8133400()
     }
     submenu_clearBgIfClosed_8134594(v1);
     sub_8134538();
-    sub_81341A0();
+    battleObject_submenuRenderFolderAndChips_81341A0();
 }
 
 
@@ -3863,7 +3863,7 @@ void __noreturn sub_8133484()
     int v0; // r5
 
     (*(&off_81334B8 + *(v0 + 3)))();
-    sub_81341A0();
+    battleObject_submenuRenderFolderAndChips_81341A0();
 }
 
 
@@ -4308,7 +4308,7 @@ void __fastcall __noreturn sub_81337E8(int a1)
         }
     }
 LABEL_20:
-    sub_81341A0();
+    battleObject_submenuRenderFolderAndChips_81341A0();
 }
 
 
@@ -4338,7 +4338,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
             }
         }
     }
-    sub_8134310();
+    battleObject_drawFolderEditScreenGfx_8134310();
 }
 
 
@@ -4396,7 +4396,7 @@ void __fastcall __noreturn sub_8133944(int a1)
         sub_81345B0();
         sub_8134538();
         sub_8134548();
-        sub_81341A0();
+        battleObject_submenuRenderFolderAndChips_81341A0();
     }
     sub_81347A4();
     if ( v4 )
@@ -5044,7 +5044,7 @@ void __fastcall chatbox_runScript_803FD9C_on_eTextScript2028A20(int a1)
 
 
 // 0x81341a0
-void __noreturn sub_81341A0()
+void __noreturn battleObject_submenuRenderFolderAndChips_81341A0()
 {
     int v0; // r5
 
@@ -5055,7 +5055,7 @@ void __noreturn sub_81341A0()
 
 
 // 0x8134310
-void __noreturn sub_8134310()
+void __noreturn battleObject_drawFolderEditScreenGfx_8134310()
 {
     int v0; // r5
 

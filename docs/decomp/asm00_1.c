@@ -2268,7 +2268,7 @@ int __fastcall EnterMap(int a1)
     {
         resetAllGraphicsState_8005F40(result, v3, v4, v5);
         runSetupStepAndClearWorkArea_8005F6C();
-        v6 = sub_80027C4();
+        v6 = sprite_initBattleFadeGfxState_80027C4();
         InitializeOverworldMapObjectStructs(v6, v7, v8, v9);
         copy_8002668();
         zeroFill_80024A2();
@@ -2519,7 +2519,7 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
         *v8 = 8;
         resetAllGraphicsState_8005F40(v8, 8, v9, v10);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2612,7 +2612,7 @@ _BYTE *mainState_resetGameAndGoto28_8005524()
     v1 = npc_clearOverworldNpcStateWord_8004702();
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -2656,7 +2656,7 @@ _BYTE *__fastcall sub_800555A(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2702,7 +2702,7 @@ _BYTE *__fastcall gamestate_runOverworldSceneStep_80055CE(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2748,7 +2748,7 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2794,7 +2794,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2840,7 +2840,7 @@ _BYTE *__fastcall sub_800572C(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2886,7 +2886,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -2965,7 +2965,7 @@ _BYTE *__fastcall sub_800585A(int a1)
         v4 = npc_clearOverworldNpcStateWord_8004702();
         resetAllGraphicsState_8005F40(v4, v5, v6, v7);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         zeroFill_80024A2();
         scenario_initEffectState_8003962();
         zeroFill_8003AB2();
@@ -3548,7 +3548,7 @@ int sub_8005D88()
     v1 = sub_80035A2(0x25u);
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -3575,7 +3575,7 @@ int __noreturn battle_initFullSetup_8005DBE()
     v1 = sub_80035A2(0x25u);
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -3597,7 +3597,7 @@ int __noreturn sub_8005DF0()
     v1 = sub_80035A2(0x25u);
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -3619,7 +3619,7 @@ int __noreturn sub_8005E22()
     v1 = sub_80035A2(0x25u);
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -3641,7 +3641,7 @@ int __noreturn dead_8005E54()
     v1 = sub_80035A2(0x25u);
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     zeroFill_80024A2();
     scenario_initEffectState_8003962();
     zeroFill_8003AB2();
@@ -5646,7 +5646,7 @@ int battle_main_8007800()
     int v1; // r0
     unsigned __int8 *v2; // r5
 
-    sub_801FE6C();
+    battle_updateCustomGauge_801FE6C();
     battleObject_checkTerminateFlagAndDispatch_8020140(v1);
     v2 = *(v0 + oToolkit_S2034880_Ptr);
     (*(&JumpTable8007838 + *v2))();
@@ -5658,7 +5658,7 @@ int battle_main_8007800()
 
 
 // 0x8007850
-int sub_8007850()
+int battle_finishBattle_8007850()
 {
     int v0; // r5
     int v1; // r0
@@ -5972,7 +5972,7 @@ int sub_8007B80()
 
 
 // 0x8007b9c
-int sub_8007B9C()
+int battle_runFrame_8007B9C()
 {
     int v0; // r5
 
@@ -7490,7 +7490,7 @@ int sub_800898C()
 
 
 // 0x80089cc
-int sub_80089CC()
+int battle_advancePostMovePhase_80089CC()
 {
     int v0; // r5
     int v1; // r10
@@ -8778,7 +8778,7 @@ int sub_80094B6()
         setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = battle_initChipSelect_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -9342,7 +9342,7 @@ int sub_8009916()
         setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = battle_initChipSelect_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -9721,7 +9721,7 @@ int sub_8009C06()
         setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = battle_initChipSelect_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;
@@ -10139,7 +10139,7 @@ int sub_8009F3A()
         setupNaviDisplay_802C34E(&unk_2035260);
         *(v0 + 3) = 4;
     }
-    result = sub_802BD60();
+    result = battle_initChipSelect_802BD60();
     if ( !result )
     {
         *(v0 + 1) = 20;

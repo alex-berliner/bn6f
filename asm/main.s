@@ -342,7 +342,7 @@ loc_80004C0:
 	bl zeroFill_8003AB2
 	bl bg_ClearTilesAndReloadGraphics_80015B4
 	bl resetOverworldScene_800260C
-	bl sub_80027C4
+	bl sprite_initBattleFadeGfxState_80027C4
 	bl sub_802FDB0
 	bl clearWord_e200AC1C
 	bl clearChatboxAndEvent

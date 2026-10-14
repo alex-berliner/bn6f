@@ -75,42 +75,42 @@ void callback_noop_8033A7C()
 // 0x8033a80
 void __noreturn sub_8033A80()
 {
-    sub_8033B80(0);
+    sprite_queueOamByFrameIndex_8033B80(0);
 }
 
 
 // 0x8033a96
 void __noreturn onUpdateInRealWorld_8033A96()
 {
-    sub_8033B80(0);
+    sprite_queueOamByFrameIndex_8033B80(0);
 }
 
 
 // 0x8033ab0
 void __noreturn sub_8033AB0()
 {
-    sub_8033B80(0);
+    sprite_queueOamByFrameIndex_8033B80(0);
 }
 
 
 // 0x8033ac4
 void __noreturn battle_resetState_8033AC4()
 {
-    sub_8033B80(0);
+    sprite_queueOamByFrameIndex_8033B80(0);
 }
 
 
 // 0x8033adc
 void __noreturn sub_8033ADC()
 {
-    sub_8033B80(1);
+    sprite_queueOamByFrameIndex_8033B80(1);
 }
 
 
 // 0x8033af0
 void __noreturn sub_8033AF0()
 {
-    sub_8033B80(1);
+    sprite_queueOamByFrameIndex_8033B80(1);
 }
 
 
@@ -164,7 +164,7 @@ void __noreturn sub_8033B6E()
 
 
 // 0x8033b80
-int __fastcall __noreturn sub_8033B80(int a1)
+int __fastcall __noreturn sprite_queueOamByFrameIndex_8033B80(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -5228,7 +5228,7 @@ signed int __fastcall __noreturn sub_8038630(int a1)
     renderInfo_80017A0();
     resetAllGraphicsState_8005F40(v2, v3, v4, v5);
     runSetupStepAndClearWorkArea_8005F6C();
-    v6 = sub_80027C4();
+    v6 = sprite_initBattleFadeGfxState_80027C4();
     initGfx_80386CC(v6, v7, v8, v9);
     music_80005F2(99, v10, v11);
     engine_setScreeneffect(8, 8);
@@ -5369,7 +5369,7 @@ void __fastcall __noreturn sub_8038B04(int a1, int a2, int a3, int a4)
     renderInfo_80017A0();
     resetAllGraphicsState_8005F40(v8, v9, v10, v11);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     decomp_initGfx_8038F30();
     sub_8038F74();
 }
@@ -6920,7 +6920,7 @@ int __fastcall sub_8039E80(int a1)
         copyMemory_8001850();
         resetAllGraphicsState_8005F40(v2, v3, v4, v5);
         runSetupStepAndClearWorkArea_8005F6C();
-        sub_80027C4();
+        sprite_initBattleFadeGfxState_80027C4();
         RandomizeExtraToolkitPointers();
         v6 = getBattleSettingsFromList0(0);
         initBattleStructsAndVram_80071D4(v6, v7, v8, v9);
@@ -10901,7 +10901,7 @@ void __fastcall __noreturn sub_803CBD0(int a1)
     renderInfo_80017A0();
     resetAllGraphicsState_8005F40(v1, v2, v3, v4);
     runSetupStepAndClearWorkArea_8005F6C();
-    v5 = sub_80027C4();
+    v5 = sprite_initBattleFadeGfxState_80027C4();
     copyData_803CC60(v5, v6, v7, v8);
 }
 
@@ -11020,7 +11020,7 @@ signed int __fastcall __noreturn sub_803CCFC(int a1)
     renderInfo_80017A0();
     resetAllGraphicsState_8005F40(v2, v3, v4, v5);
     runSetupStepAndClearWorkArea_8005F6C();
-    v6 = sub_80027C4();
+    v6 = sprite_initBattleFadeGfxState_80027C4();
     sub_803CD58(v6, v7, v8, v9);
     music_80005F2(99, v10, v11);
     engine_setScreeneffect(8, 8);
@@ -11662,7 +11662,7 @@ void __noreturn logoScreen_init_803D1FC()
     v3 = engine_setScreeneffect(v1, 255);
     resetAllGraphicsState_8005F40(v3, v4, v5, v6);
     runSetupStepAndClearWorkArea_8005F6C();
-    v7 = sub_80027C4();
+    v7 = sprite_initBattleFadeGfxState_80027C4();
     logoScreen_loadLogoTiles_803D2B8(v7, v8, v9, v10);
 }
 
@@ -15049,7 +15049,7 @@ void __fastcall __noreturn copyTileData_803FC64(int a1, int a2, int a3, int a4)
 {
     resetAllGraphicsState_8005F40(a1, a2, a3, a4);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027C4();
+    sprite_initBattleFadeGfxState_80027C4();
     decompAndCopyData(&initRefs803FCA4);
     ZeroFillGFX30025c0();
     CopyBackgroundTiles(0, 0, 1, eTileIds2018A04, 32, dword_14);

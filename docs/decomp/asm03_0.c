@@ -529,7 +529,7 @@ int sub_8026A50()
 
     v1 = sub_802FE48();
     *(v0 + 14) = v1;
-    sub_802FE7A(0, 0x40u, 0x40u, v1);
+    sprite_setAffineTransform_802FE7A(0, 0x40u, 0x40u, v1);
     *v0 = 4;
     return 0;
 }
@@ -5535,7 +5535,7 @@ int sub_8029C08()
         if ( result < 20 )
         {
             v0[15] = result + 1;
-            result = sub_802FE7A(
+            result = sprite_setAffineTransform_802FE7A(
                                  byte_8029CAC[2 * (result - 1)],
                                  byte_8029CAC[2 * (result - 1) + 1],
                                  byte_8029CAC[2 * (result - 1) + 1],
@@ -7818,7 +7818,7 @@ void __fastcall sub_802BA34(int a1, int a2, int a3, __int16 a4)
 
 
 // 0x802bd60
-int sub_802BD60()
+int battle_initChipSelect_802BD60()
 {
     BYTE1(dword_20364C4) = 1;
     dword_20364D8 = battle_getStateTableEntryPtr_802C8EA();
@@ -11500,7 +11500,7 @@ int sub_802E4A0()
     Battle *v0; // r5
 
     v0->ai->unk_1E = 0;
-    sub_8012EA8(v0);
+    battleObject_clearPwrAtkState_8012EA8(v0);
     return sub_800FFEE(0x40000);
 }
 
@@ -13550,7 +13550,7 @@ int __fastcall flags_clearFlagWordBit_802FE6A(int result)
 
 
 // 0x802fe7a
-int __fastcall sub_802FE7A(int a1, unsigned int a2, unsigned int a3, int a4)
+int __fastcall sprite_setAffineTransform_802FE7A(int a1, unsigned int a2, unsigned int a3, int a4)
 {
     int v4; // ST00_4
     signed int v5; // ST04_4

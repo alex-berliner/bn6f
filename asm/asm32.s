@@ -22300,7 +22300,7 @@ off_8119374:
 	.word off_8119378
 off_8119378:
 	.word battle_spriteInit_8119384+1
-	.word sub_81196A0+1
+	.word battle_dispatchSpriteAction_81196A0+1
 	.word sub_8119804+1
 	thumb_func_end npc_StateModeDispatcher_8119364
 
@@ -22388,7 +22388,7 @@ loc_8119420:
 	strh r0, [r5,#0x1a]
 	mov r0, #0
 	strb r0, [r5,#0x13]
-	bl sub_81196A0
+	bl battle_dispatchSpriteAction_81196A0
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end battle_spriteInit_8119384
@@ -22717,9 +22717,9 @@ off_811969C:
 // symdb: Battle sprite update dispatcher that branches on the object's sprite header byte2 into one of three handlers (self/npc/null stub)
 // symdb: r5 = battle object ptr (live across call: out keeps it) ; side effects: chains via bx into the
 // symdb: selected handler, only lr is preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81196A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchSpriteAction_81196A0.yaml
 	thumb_local_start
-sub_81196A0:
+battle_dispatchSpriteAction_81196A0:
 	push {lr}
 	ldr r0, off_81196B4 // =off_81196B8
 	ldrb r1, [r5,#4]
@@ -22736,7 +22736,7 @@ off_81196B8:
 	.word sub_81196C4+1
 	.word npc_dispatchStateHandler_811979C+1
 	.word nullStub_8119800+1
-	thumb_func_end sub_81196A0
+	thumb_func_end battle_dispatchSpriteAction_81196A0
 
 	thumb_local_start
 sub_81196C4:

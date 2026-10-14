@@ -26829,7 +26829,7 @@ off_80C4540:
 	.word off_80C4544
 off_80C4544:
 	.word sub_80C4550+1
-	.word sub_80C458C+1
+	.word battleObject_copyStateAndSyncSpriteFromRelated_80C458C+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x57_80C4530
 
@@ -26854,16 +26854,16 @@ sub_80C4550:
 	bl sprite_update
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80C458C
+	bl battleObject_copyStateAndSyncSpriteFromRelated_80C458C
 	pop {pc}
 	thumb_func_end sub_80C4550
 
 // symdb: Copies positional/animation state and sprite attrs (palette, shader, flip) from a battle object's RelatedObject1Ptr into itself, then dispatches to a per-CurAction handler.
 // symdb: (r5 = this BattleObject*) -> void ; side effects: writes to *r5 sprite + header, then tail-calls
 // symdb: a per-action handler chosen by oBattleObject_CurAction
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C458C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_copyStateAndSyncSpriteFromRelated_80C458C.yaml
 	thumb_local_start
-sub_80C458C:
+battleObject_copyStateAndSyncSpriteFromRelated_80C458C:
 	push {lr}
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r0, [r4,#oBattleObject_CurAnim]
@@ -26926,7 +26926,7 @@ off_80C4610:
 off_80C4614:
 	.word sub_80C461C+1
 	.word sub_80C464C+1
-	thumb_func_end sub_80C458C
+	thumb_func_end battleObject_copyStateAndSyncSpriteFromRelated_80C458C
 
 	thumb_local_start
 sub_80C461C:
@@ -108239,7 +108239,7 @@ loc_80EA764:
 	bx r0
 	pop {pc}
 loc_80EA778:
-	bl sub_8012EA8
+	bl battleObject_clearPwrAtkState_8012EA8
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	mov r0, #0x42 
 	bl dispatch_801DACC // (a0: flags32) -> ()

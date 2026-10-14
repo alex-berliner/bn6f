@@ -151,7 +151,7 @@ int *sprite_setRenderFlushState_80027B4()
 
 
 // 0x80027c4
-signed int sub_80027C4()
+signed int sprite_initBattleFadeGfxState_80027C4()
 {
     signed int result; // r0
 
@@ -540,7 +540,7 @@ int __fastcall sprite_setScaleParameters(int result, int a2, int a3)
 
     v4 = v3 + 16 * (*(v3 + 2) >> 4);
     if ( *(v4 + 17) & 3 )
-        result = sub_802FE7A(result, a2, a3, (*(v4 + 19) & 0x3Eu) >> 1);
+        result = sprite_setAffineTransform_802FE7A(result, a2, a3, (*(v4 + 19) & 0x3Eu) >> 1);
     return result;
 }
 

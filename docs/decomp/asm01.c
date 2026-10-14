@@ -55,7 +55,7 @@ int sub_801FE64()
 
 
 // 0x801fe6c
-void sub_801FE6C()
+void battle_updateCustomGauge_801FE6C()
 {
     char v0; // r6
     char v1; // zf

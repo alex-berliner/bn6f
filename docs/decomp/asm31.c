@@ -21859,12 +21859,12 @@ void __noreturn sub_80C4550()
     sprite_loadAnimationData(v0);
     sprite_update(v0);
     *(v0 + 8) = 4;
-    sub_80C458C();
+    battleObject_copyStateAndSyncSpriteFromRelated_80C458C();
 }
 
 
 // 0x80c458c
-int sub_80C458C()
+int battleObject_copyStateAndSyncSpriteFromRelated_80C458C()
 {
     int v0; // r5
     int v1; // r4
@@ -83725,7 +83725,7 @@ void __usercall playerAI_update_80EA734(Battle *obj@<R5>)
 
     if ( battle_isBattleOver() )
     {
-        sub_8012EA8(obj);
+        battleObject_clearPwrAtkState_8012EA8(obj);
         battle_clearObjectStatusFlagsAndTimers_801A264();
         v4 = dispatch_801DACC(66);
         if ( battle_isAllianceActiveAndAiFlag0x4000_802DD2A(v4) )
