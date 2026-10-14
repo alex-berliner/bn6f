@@ -60796,7 +60796,7 @@ off_80D4530:
 	.word off_80D4534
 off_80D4534:
 	.word sub_80D4544+1
-	.word sub_80D4570+1
+	.word battleObject_dispatchCurPhaseByJumpTable_80D4570+1
 	.word sub_80D45EC+1
 	.word sub_80D4604+1
 	thumb_func_end battleObject_handleDestroyByInvincibility_80D44D2
@@ -60831,9 +60831,9 @@ locret_80D456E:
 // symdb: Trampoline that jumps through a 2-entry table using the BattleObject's CurPhase to select sub_80D458C or sub_80D45AE, then returns
 // symdb: (r5 = BattleObjectPtr) -> r0 = ... ; no fixed return contract, side effect is jumping to one of
 // symdb: two phase handlers based on CurPhase
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4570.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchCurPhaseByJumpTable_80D4570.yaml
 	thumb_local_start
-sub_80D4570:
+battleObject_dispatchCurPhaseByJumpTable_80D4570:
 	push {lr}
 	ldr r1, off_80D4580 // =off_80D4584 
 	ldrb r0, [r5,#oBattleObject_CurPhase]
@@ -60847,7 +60847,7 @@ off_80D4580:
 off_80D4584:
 	.word sub_80D458C+1
 	.word sub_80D45AE+1
-	thumb_func_end sub_80D4570
+	thumb_func_end battleObject_dispatchCurPhaseByJumpTable_80D4570
 
 	thumb_local_start
 sub_80D458C:
@@ -61120,7 +61120,7 @@ sub_80D4754:
 loc_80D4786:
 	ldr r0, off_80D4798 // =off_80D479C 
 	bl battleObject_dispatchActionHandler_801B394
-	bl sub_801BC24
+	bl battleObject_tickSpriteAnim_801BC24
 	bl object_presentCollisionData
 	pop {pc}
 	.balign 4, 0
@@ -95497,7 +95497,7 @@ t4_0x3c_80E4A1C:
 	bl battleObject_updateSpriteAnimIfChanged_801BCD0
 	b locret_80E4A38
 loc_80E4A34:
-	bl sub_801BC24
+	bl battleObject_tickSpriteAnim_801BC24
 locret_80E4A38:
 	pop {pc}
 	.balign 4, 0
@@ -106742,7 +106742,7 @@ t4_0x89_80E9AF0:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_801BC24
+	bl battleObject_tickSpriteAnim_801BC24
 	pop {pc}
 	.balign 4, 0
 off_80E9B04:
@@ -111759,7 +111759,7 @@ off_80EC5DC:
 	.word off_80EC5E0
 off_80EC5E0:
 	.word sub_80EC5EC+1
-	.word sub_80EC67E+1
+	.word battle_aiAttackVarsTryResetAndProcessAction_80EC67E+1
 dword_80EC5E8:
 	.word 0x8600
 	thumb_func_end sub_80EC5BC
@@ -111844,9 +111844,9 @@ locret_80EC67C:
 // symdb: (r5 = current BattleObject, r7 = AI AttackVars block, r10 = toolkit) -> r0/r1/r2/r3 =
 // symdb: scratch/clobbered ; side effects: writes to AIData->Unk_44 bit, AIData->Unk_30/Unk_00,
 // symdb: AttackVars->Unk_01/10/30, and jumps into sub_80EC792/sub_80116AE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EC67E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackVarsTryResetAndProcessAction_80EC67E.yaml
 	thumb_local_start
-sub_80EC67E:
+battle_aiAttackVarsTryResetAndProcessAction_80EC67E:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_Unk_01]
 	tst r0, r0
@@ -111917,7 +111917,7 @@ off_80EC708:
 	.word dword_80EC70C
 dword_80EC70C:
 	.word 0x2C241C16
-	thumb_func_end sub_80EC67E
+	thumb_func_end battle_aiAttackVarsTryResetAndProcessAction_80EC67E
 
 	thumb_local_start
 sub_80EC710:

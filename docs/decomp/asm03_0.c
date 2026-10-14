@@ -689,12 +689,12 @@ int __usercall custMenuUpdateWaitSelectionState_8026CCC@<R0>(void *r5@<R5>)
     int v4; // r7
     int v5; // r0
 
-    v2 = sub_802A220();
+    v2 = battleObject_computePuppeteerSwitchElement_802A220();
     if ( v2 == 255 )
     {
         v4 = *(v1 + oToolkit_JoypadPtr);
         custMenuSomeHandler_8028B74(r5);
-        sub_8028820();
+        battle_custMenuDispatchSelection_8028820();
         battleObject_chipSelectAnimTick_8029C08();
         v5 = sub_802899C();
         battle_endingBgUpdate_8029D34(v5);
@@ -742,7 +742,7 @@ int sub_8026D06()
             dispatch_801DACC(&loc_2000);
             sub_8029D80();
         }
-        if ( *(v1[1] + 2) || (v3 = v1[2], result = sub_802A220(), v2 = v3, result != 255) )
+        if ( *(v1[1] + 2) || (v3 = v1[2], result = battleObject_computePuppeteerSwitchElement_802A220(), v2 = v3, result != 255) )
         {
             *(v0 + 2) = 2;
             *(v2 + 24) = 0;
@@ -831,7 +831,7 @@ int chatbox_stateMaybeFinishText_8026E4C()
 
     if ( !chatbox_mask_eFlags2009F38(128) )
         goto LABEL_4;
-    if ( sub_802A220() != 255 )
+    if ( battleObject_computePuppeteerSwitchElement_802A220() != 255 )
     {
         chatbox_8040818();
 LABEL_4:
@@ -929,7 +929,7 @@ int sub_8026F1A()
 
     if ( chatbox_mask_eFlags2009F38(128) )
     {
-        result = sub_802A220();
+        result = battleObject_computePuppeteerSwitchElement_802A220();
         if ( result == 255 )
             return result;
         chatbox_8040818();
@@ -3251,7 +3251,7 @@ int __fastcall loadOneSpriteTileRow_80287D2(int a1, int a2, int a3)
 
 
 // 0x8028820
-int sub_8028820()
+int battle_custMenuDispatchSelection_8028820()
 {
     int v0; // r5
     int v1; // r6
@@ -5865,7 +5865,7 @@ signed int battle_setUnk20349A5Flag_802A210()
 
 
 // 0x802a220
-signed int sub_802A220()
+signed int battleObject_computePuppeteerSwitchElement_802A220()
 {
     int v0; // r5
     int v1; // r10
@@ -15886,7 +15886,7 @@ int __fastcall sub_803182A(_DWORD *a1)
 
 
 // 0x8031852
-int __fastcall sub_8031852(_DWORD *a1)
+int __fastcall battle_calcDistPanelBetween_8031852(_DWORD *a1)
 {
     int *v1; // ST00_4
     int v2; // r0

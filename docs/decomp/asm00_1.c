@@ -7563,7 +7563,7 @@ int sub_8008A7C()
 
 
 // 0x8008aa0
-int sub_8008AA0()
+int battle_tickPreBattleInit_8008AA0()
 {
     int v0; // r5
     int v1; // r10

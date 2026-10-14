@@ -345,7 +345,7 @@ unsigned int sub_8141F7C()
         ZeroFillByWord(&unk_2000BE0, 320);
         sub_814189A(v3, v4, v5, v6);
     }
-    v7 = (&off_8141B18)[sub_8142080()];
+    v7 = (&off_8141B18)[battle_getEnemyIndexFromMapGroup_8142080()];
     v8 = 0;
     while ( *v7 )
     {
@@ -356,9 +356,9 @@ unsigned int sub_8141F7C()
         ++v8;
         ++v7;
     }
-    v13 = sub_8142080();
+    v13 = battle_getEnemyIndexFromMapGroup_8142080();
     sub_81418DA(*(&dword_8142044 + v13), 15);
-    v14 = sub_8142080();
+    v14 = battle_getEnemyIndexFromMapGroup_8142080();
     SpawnObjectsFromList(off_8141B24[v14]);
     TestEventFlagFromImmediate(7, 2);
     if ( !v2 )
@@ -391,7 +391,7 @@ unsigned int __fastcall sub_8142050(int a1)
     char (*v3)[72]; // r7
 
     v1 = a1;
-    result = sub_8142080();
+    result = battle_getEnemyIndexFromMapGroup_8142080();
     v3 = (&off_8141B18)[result][v1];
     return result * 4;
 }
@@ -413,7 +413,7 @@ int sub_8142072()
 
 
 // 0x8142080
-unsigned int sub_8142080()
+unsigned int battle_getEnemyIndexFromMapGroup_8142080()
 {
     int v0; // r10
     unsigned int i; // r6
@@ -430,7 +430,7 @@ unsigned int sub_8142080()
 // 0x81420b0
 int sub_81420B0()
 {
-    return *(&dword_81420C4 + sub_8142080()) << 16;
+    return *(&dword_81420C4 + battle_getEnemyIndexFromMapGroup_8142080()) << 16;
 }
 
 
@@ -459,7 +459,7 @@ int __fastcall sub_81420C8(int a1)
 // 0x81420f0
 int __fastcall sub_81420F0(int a1)
 {
-    return *&byte_8142120[4 * sub_8142080()] + a1;
+    return *&byte_8142120[4 * battle_getEnemyIndexFromMapGroup_8142080()] + a1;
 }
 
 
@@ -468,7 +468,7 @@ unsigned int sub_8142102()
 {
     unsigned int v0; // r0
 
-    v0 = sub_8142080();
+    v0 = battle_getEnemyIndexFromMapGroup_8142080();
     return ClearEventFlagRange(*&byte_8142120[4 * v0], *&byte_8142120[4 * v0 + 2], *&byte_8142120[4 * v0 + 2]);
 }
 

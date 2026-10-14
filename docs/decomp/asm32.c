@@ -12875,7 +12875,7 @@ void battleObject_beastSpDispatchAction_8117F78()
     Battle *v0; // r5
 
     (*(&off_8117F94 + v0->currAction))();
-    sub_8118234();
+    submenu_updateChipPalette_8118234();
     sprite_update(v0);
 }
 
@@ -12913,14 +12913,14 @@ unsigned int battle_beastsp_dispatchToPhaseHandler_8117FC4()
     unsigned int result; // r0
 
     (*(&off_8117FE0 + *(v0 + 10)))();
-    result = sub_8118314();
+    result = battleObject_getCurStateRowPtr_8118314();
     *(result + 14) = *(v0 + 20);
     return result;
 }
 
 
 // 0x8117ff8
-MenuControl *__fastcall sub_8117FF8(int a1)
+MenuControl *__fastcall battleObject_clearBeastOutSubmenuFlag_8117FF8(int a1)
 {
     int v1; // r5
     MenuControl *result; // r0
@@ -13114,7 +13114,7 @@ int sub_81181DC()
 
 
 // 0x8118234
-void sub_8118234()
+void submenu_updateChipPalette_8118234()
 {
     _BYTE *v0; // r5
     signed int v1; // r4
@@ -13167,7 +13167,7 @@ MenuControl *__fastcall battleObject_setBeastOutPhaseAndSprite_81182A4(int a1)
     int v5; // r4
     int v6; // r0
 
-    v2 = sub_8118314();
+    v2 = battleObject_getCurStateRowPtr_8118314();
     v3 = 0;
     result = &sSubmenu;
     v5 = sSubmenu.unk_0C;
@@ -13207,7 +13207,7 @@ MenuControl *__fastcall battleObject_setBeastOutPhaseAndSprite_81182A4(int a1)
 
 
 // 0x8118314
-unsigned int sub_8118314()
+unsigned int battleObject_getCurStateRowPtr_8118314()
 {
     int v0; // r5
 
@@ -14775,7 +14775,7 @@ signed int submenu_updatePanelChipInfoIfDirty_81196F0()
     int v8; // r6
     int v9; // r3
 
-    v1 = sub_8119880();
+    v1 = battleObject_checkPwrAtkTargetSwitch_8119880();
     if ( v5 )
     {
         v7 = *(v0 + 14);
@@ -14992,7 +14992,7 @@ int __fastcall sprite_setPositionForIdRange3_8119854(int a1, __int16 a2, int a3)
 
 
 // 0x8119880
-int sub_8119880()
+int battleObject_checkPwrAtkTargetSwitch_8119880()
 {
     char v0; // zf
     int v1; // r5
@@ -20347,7 +20347,7 @@ int __fastcall sub_811E202(int a1)
 
 
 // 0x811e248
-int sub_811E248()
+int battle_dispatchScenarioEffect_811E248()
 {
     int v0; // r5
 
@@ -20374,12 +20374,12 @@ void __noreturn sub_811E26C()
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     *(v0 + 8) = 4;
-    sub_811E2B4();
+    battleObject_beastSp_update_811E2B4();
 }
 
 
 // 0x811e2b4
-void __noreturn sub_811E2B4()
+void __noreturn battleObject_beastSp_update_811E2B4()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -20415,7 +20415,7 @@ void __noreturn sub_811E2B4()
         v6 = 44;
     }
     sprite_setCoordinates(v5, v6);
-    sub_811E314();
+    battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314();
     sprite_update(v0);
 }
 
@@ -20428,7 +20428,7 @@ int sub_811E30C()
 
 
 // 0x811e314
-int sub_811E314()
+int battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314()
 {
     unsigned int v0; // r7
     unsigned int v1; // r7

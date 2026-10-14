@@ -47551,7 +47551,7 @@ int sub_80D4544()
 
 
 // 0x80d4570
-int sub_80D4570()
+int battleObject_dispatchCurPhaseByJumpTable_80D4570()
 {
     int v0; // r5
 
@@ -47806,7 +47806,7 @@ void __noreturn sub_80D4754()
         object_clearCollisionRegion();
     }
     battleObject_dispatchActionHandler_801B394(&off_80D479C);
-    sub_801BC24();
+    battleObject_tickSpriteAnim_801BC24();
     object_presentCollisionData(v3, v4);
 }
 
@@ -73731,7 +73731,7 @@ void t4_0x3c_80E4A1C()
     if ( *(v0 + 8) == 8 )
         battleObject_updateSpriteAnimIfChanged_801BCD0();
     else
-        sub_801BC24();
+        battleObject_tickSpriteAnim_801BC24();
 }
 
 
@@ -82694,7 +82694,7 @@ void t4_0x89_80E9AF0()
     int v0; // r5
 
     (*(&off_80E9B08 + *(v0 + 8)))();
-    sub_801BC24();
+    battleObject_tickSpriteAnim_801BC24();
 }
 
 
@@ -85979,7 +85979,7 @@ int __fastcall sub_80EC5EC(int a1, int a2, int a3)
 
 
 // 0x80ec67e
-void sub_80EC67E()
+void battle_aiAttackVarsTryResetAndProcessAction_80EC67E()
 {
     int v0; // r5
     int v1; // r7

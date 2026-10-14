@@ -174,7 +174,7 @@ sub_8089EBC:
 	strh r0, [r5, #0x18]
 	bl sub_809E35E
 	bl reqBBS_setFlag_e17b0f7_8140A00
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r3, =byte_8089F10
 	lsl r0, r0, #4
 	add r3, r3, r0
@@ -497,7 +497,7 @@ sub_808A174:
 sub_808A19C:
 	push {r4-r7, lr}
 	bl sub_8142102
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	lsl r0, r0, #1
 	ldr r1, =byte_808A1D0
 	ldrh r0, [r1, r0]

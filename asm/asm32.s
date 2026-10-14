@@ -19755,7 +19755,7 @@ battleObject_beastSpDispatchAction_8117F78:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8118234
+	bl submenu_updateChipPalette_8118234
 	bl sprite_update
 	pop {pc}
 	.balign 4, 0
@@ -19800,7 +19800,7 @@ battle_beastsp_dispatchToPhaseHandler_8117FC4:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8118314
+	bl battleObject_getCurStateRowPtr_8118314
 	ldrh r1, [r5,#0x14]
 	strh r1, [r0,#0xe]
 	pop {pc}
@@ -19808,7 +19808,7 @@ battle_beastsp_dispatchToPhaseHandler_8117FC4:
 off_8117FDC:
 	.word off_8117FE0
 off_8117FE0:
-	.word sub_8117FF8+1
+	.word battleObject_clearBeastOutSubmenuFlag_8117FF8+1
 	.word sub_811800C+1
 	.word sub_8118030+1
 	.word sub_811805C+1
@@ -19819,9 +19819,9 @@ off_8117FE0:
 // symdb: After setting a BattleObject's beast-out phase/sprite, clears the Submenu's unk_0D byte when the phase is zero (i.e. when not actually beast-out)
 // symdb: (r5 = ptr to some BattleObject context) -> r0 = ptr to sSubmenu ; side effect: may clear
 // symdb: sSubmenu.unk_0D
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117FF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearBeastOutSubmenuFlag_8117FF8.yaml
 	thumb_local_start
-sub_8117FF8:
+battleObject_clearBeastOutSubmenuFlag_8117FF8:
 	push {lr}
 
 	bl battleObject_setBeastOutPhaseAndSprite_81182A4
@@ -19837,7 +19837,7 @@ sub_8117FF8:
 
 locret_811800A:
 	pop {pc}
-	thumb_func_end sub_8117FF8
+	thumb_func_end battleObject_clearBeastOutSubmenuFlag_8117FF8
 
 	thumb_local_start
 sub_811800C:
@@ -20118,9 +20118,9 @@ byte_811820C:
 // symdb: (r0 = unused, r1 = unused, r5 = battle object ptr) -> r0 = non-zero (typically 1, sometimes 5) ;
 // symdb: side effects on r5's flags byte, Unk_0c/0xd/0xe, plus GBA palette hardware via
 // symdb: sprite_setPalette/sprite_setSubEntryPaletteBank
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118234.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateChipPalette_8118234.yaml
 	thumb_local_start
-sub_8118234:
+submenu_updateChipPalette_8118234:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r6, #0xa
@@ -20176,7 +20176,7 @@ off_8118298:
 	.word byte_811829C
 byte_811829C:
 	.byte 0x9, 0x0, 0x1, 0x8, 0xA, 0x1, 0x0, 0x8
-	thumb_func_end sub_8118234
+	thumb_func_end submenu_updateChipPalette_8118234
 
 // symdb: Sets the battle object's CurPhase (and related PanelXY/FuturePanelXY fields) for the Beast-Out / Cross-Megaman transformation, choosing different sprite-scaling/sprite-state setups based on the submenu's Unk_0C mode byte.
 // symdb: (r5 = battle object, lr = return) -> r0 = sSubmenu (0x02009A30), no other caller-visible writes;
@@ -20186,7 +20186,7 @@ byte_811829C:
 	thumb_local_start
 battleObject_setBeastOutPhaseAndSprite_81182A4:
 	push {r4-r7,lr}
-	bl sub_8118314
+	bl battleObject_getCurStateRowPtr_8118314
 	mov r3, r0
 	mov r7, #0
 	ldr r0, off_8118310 // =sSubmenu
@@ -20241,16 +20241,16 @@ off_8118310:
 // symdb: Returns a pointer to one of two rows of the BattleObject CurState/CurAction byte-pair (16-byte aligned)
 // symdb: (r5 = BattleObject ptr) -> r0 = pointer to either BaseRow+0x8 or BaseRow+0x18 ; side effects:
 // symdb: none (nz/c/v flags clobbered)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118314.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getCurStateRowPtr_8118314.yaml
 	thumb_local_start
-sub_8118314:
+battleObject_getCurStateRowPtr_8118314:
 	ldrb r0, [r5,#2]
 	lsr r0, r0, #4
 	lsl r0, r0, #4
 	add r0, r0, r5
 	mov pc, lr
 	.byte 0, 0
-	thumb_func_end sub_8118314
+	thumb_func_end battleObject_getCurStateRowPtr_8118314
 
 	thumb_local_start
 sub_8118320:
@@ -22816,7 +22816,7 @@ off_81196DC:
 	thumb_local_start
 submenu_updatePanelChipInfoIfDirty_81196F0:
 	push {r4-r7,lr}
-	bl sub_8119880
+	bl battleObject_checkPwrAtkTargetSwitch_8119880
 	beq loc_811970A
 	bl chipPanel_renderChipGfxAndText_8119438
 	ldrh r0, [r5,#0xe]
@@ -23087,9 +23087,9 @@ loc_8119874:
 // symdb: Battle-object helper that returns 0/1 based on whether the current "select" / "switch" submenu slots differ while a submenu other than 0x20 is open, using the B-press data at r5+5.
 // symdb: (r5 = AIDataPtr-in-BattleObject?) -> r0 = 0/1 in Z ; sets Z on the return path; clobbers r0, r1,
 // symdb: r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkPwrAtkTargetSwitch_8119880.yaml
 	thumb_local_start
-sub_8119880:
+battleObject_checkPwrAtkTargetSwitch_8119880:
 	push {lr}
 	ldrb r0, [r5,#5]
 	ldr r1, off_81198AC // =byte_811935C
@@ -23117,7 +23117,7 @@ off_81198A8:
 	.word sSubmenu
 off_81198AC:
 	.word byte_811935C
-	thumb_func_end sub_8119880
+	thumb_func_end battleObject_checkPwrAtkTargetSwitch_8119880
 
 // symdb: Returns whether the submenu's state byte has changed, treating submenu states 1-5 as always-changed and otherwise comparing bytes at +0xE and +0xF of either sSubmenu or the active submenu pointer (when the submenu popup is open).
 // symdb: bool submenu_isStateChanged_81198B0(u32* submenu_r5, u32 r1_unused) -> r1=byte+0xF, NZ=state1-5
@@ -32110,9 +32110,9 @@ dword_811E240:
 
 // symdb: Tail-calls a scenario-effect step handler chosen by scenario-substate byte at r5+8
 // symdb: (r5 = scenario-effect state) -> r0 = 0x5e0 ; r5 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E248.yaml
-	thumb_func_start sub_811E248
-sub_811E248:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchScenarioEffect_811E248.yaml
+	thumb_func_start battle_dispatchScenarioEffect_811E248
+battle_dispatchScenarioEffect_811E248:
 	push {lr}
 	ldr r6, off_811E268 // =eScenarioEffectState2000780
 	ldr r0, off_811E258 // =off_811E25C
@@ -32126,11 +32126,11 @@ off_811E258:
 	.word off_811E25C
 off_811E25C:
 	.word sub_811E26C+1
-	.word sub_811E2B4+1
+	.word battleObject_beastSp_update_811E2B4+1
 	.word sub_811E30C+1
 off_811E268:
 	.word eScenarioEffectState2000780
-	thumb_func_end sub_811E248
+	thumb_func_end battle_dispatchScenarioEffect_811E248
 
 	thumb_local_start
 sub_811E26C:
@@ -32156,7 +32156,7 @@ sub_811E26C:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811E2B4
+	bl battleObject_beastSp_update_811E2B4
 	pop {pc}
 	.balign 4, 0
 off_811E2B0:
@@ -32165,11 +32165,11 @@ off_811E2B0:
 
 // symdb: Updates the Beast Out / Cross Fusion player's battle object sprite each frame, including a flip-state bit, optional sprite/animation reload and cutscene-driven coordinate offset.
 // symdb: (r5 = ptr to BattleObject, r6 = ptr to related object / extra struct) -> void ; side effects:
-// symdb: mutates object header flags and animation index, calls sprite_setCoordinates / sub_811E314 /
+// symdb: mutates object header flags and animation index, calls sprite_setCoordinates / battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314 /
 // symdb: sprite_update, pushes two args for cutscene_checkOriginalCutsceneScriptPos_8036F70
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E2B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSp_update_811E2B4.yaml
 	thumb_local_start
-sub_811E2B4:
+battleObject_beastSp_update_811E2B4:
 	push {lr}
 	ldrb r4, [r5]
 	mov r1, #2
@@ -32205,13 +32205,13 @@ loc_811E2E4:
 	add r1, #8
 loc_811E2F8:
 	bl sprite_setCoordinates
-	bl sub_811E314
+	bl battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314
 	bl sprite_update
 	pop {pc}
 	.balign 4, 0
 off_811E308:
 	.word dword_8089128 // CutsceneScript
-	thumb_func_end sub_811E2B4
+	thumb_func_end battleObject_beastSp_update_811E2B4
 
 	thumb_local_start
 sub_811E30C:
@@ -32223,9 +32223,9 @@ sub_811E30C:
 // symdb: Builds a per-battle-object sprite-Unk0x2c bitmask by clearing scenario-effect bits, then stores it on the object's sprite
 // symdb: (r5 = object pointer in r5 per caller convention) -> r0 = updated Unk0x2c value, r5 preserved ;
 // symdb: side effects: writes to r5's ObjectSprite Unk_2c; clobbers r0,r2,r3,r4,r6,r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E314.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314.yaml
 	thumb_local_start
-sub_811E314:
+battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314:
 	push {r4-r7,lr}
 	ldr r7, dword_811E358 // =0xfffffff
 	mov r0, #0
@@ -32259,7 +32259,7 @@ sub_811E314:
 dword_811E358:
 	.word 0xFFFFFFF
 	.word eScenarioEffectState2000780
-	thumb_func_end sub_811E314
+	thumb_func_end battleObject_updateSpriteUnk0x2cFromScenarioFlags_811E314
 
 	thumb_func_start sub_811E360
 sub_811E360:

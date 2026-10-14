@@ -656,7 +656,7 @@ signed int sub_80A5690()
         else
             v12 = v8 - v10;
         v15 = v12;
-        if ( v11 <= sub_80A5724() << 16 && v15 <= v13 << 16 )
+        if ( v11 <= owMap_getHotspotBoundaryForMapGroup_80A5724() << 16 && v15 <= v13 << 16 )
             return 1;
         ++v5;
     }
@@ -666,7 +666,7 @@ signed int sub_80A5690()
 
 
 // 0x80a5724
-int sub_80A5724()
+int owMap_getHotspotBoundaryForMapGroup_80A5724()
 {
     int v0; // r6
     int v1; // r3
@@ -713,7 +713,7 @@ int pickBBSMsgForMapGroup_80A5764()
 
 
 // 0x80a57ac
-int sub_80A57AC()
+int battleObject_dispatchAICustomOp_80A57AC()
 {
     int v0; // r5
 
@@ -2506,7 +2506,7 @@ int sub_80A7238()
 
 
 // 0x80a72b4
-int sub_80A72B4()
+int battleObject_dispatchAIData_80A72B4()
 {
     int v0; // r5
 
@@ -3178,12 +3178,12 @@ void __noreturn sub_80A78E0()
     sprite_setPriority_8002E14(2);
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80A7912();
+    battle_beastSpStepper_80A7912();
 }
 
 
 // 0x80a7912
-void sub_80A7912()
+void battle_beastSpStepper_80A7912()
 {
     int v0; // r5
     _DWORD *v1; // r6
@@ -3542,12 +3542,12 @@ void *battle_checkBeastSpTrigger_80A7BC0()
                         sub_81418F0();
                         sub_81418E4();
                         v15 = v14;
-                        v16 = sub_8142080();
+                        v16 = battle_getEnemyIndexFromMapGroup_8142080();
                         result = sub_81420C8(v16);
                         if ( result == v15 )
                         {
                             SetEventFlagFromImmediate(23, 49);
-                            v17 = sub_8142080();
+                            v17 = battle_getEnemyIndexFromMapGroup_8142080();
                             result = StartCutscene(byte_8089DD8, v17, v18, v19);
                         }
                     }
@@ -4514,7 +4514,7 @@ void __noreturn sub_80A8674()
 {
     int v0; // r5
 
-    sub_80A86B4();
+    beastSP_initOrUpdate_80A86B4();
     sprite_load(v0, 128, 16, 39);
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
@@ -4530,7 +4530,7 @@ void __noreturn sub_80A86A0()
 {
     Battle *v0; // r5
 
-    sub_80A86B4();
+    beastSP_initOrUpdate_80A86B4();
     sprite_update(v0);
 }
 
@@ -4543,7 +4543,7 @@ int sub_80A86AC()
 
 
 // 0x80a86b4
-void sub_80A86B4()
+void beastSP_initOrUpdate_80A86B4()
 {
     int v0; // r5
     char v1; // r4

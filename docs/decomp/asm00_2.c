@@ -13038,7 +13038,7 @@ int __noreturn battleObject_initNaviObject_8016F56()
         object_setFlag1(16);
     if ( v7 & 1 )
         object_setFlag1(0x20000);
-    sub_801DB84();
+    battleObject_registerCustomArm_801DB84();
     v9 = battle_findPlayer(*(v0 + 22) ^ 1);
     battle_SetObjectAIDataField78_800F318(v9);
     v10 = sub_802D26A();
@@ -13392,7 +13392,7 @@ int __noreturn playerObject_init_80172F0()
     sub_8011268(v20);
     v21 = battle_beginTurnOpenProcess_80144C0();
     sub_8013E58(v21);
-    sub_801DB84();
+    battleObject_registerCustomArm_801DB84();
     v22 = battleObject_computeAIStepForwardDeltaX_8018856(3);
     sub_801DC06(v22, -v23);
     if ( sub_802D246() & 8 && battle_networkInvert(*(v0 + 22)) )
@@ -17855,7 +17855,7 @@ void object_updateSpriteTimestop()
 
 
 // 0x801bc24
-void sub_801BC24()
+void battleObject_tickSpriteAnim_801BC24()
 {
     Battle *v0; // r5
     char v1; // zf
@@ -20452,7 +20452,7 @@ int sub_801DB78()
 
 
 // 0x801db84
-int sub_801DB84()
+int battleObject_registerCustomArm_801DB84()
 {
     int v0; // r5
     int result; // r0

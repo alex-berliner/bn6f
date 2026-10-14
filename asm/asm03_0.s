@@ -1172,7 +1172,7 @@ dword_8026CC8:
 custMenuUpdateWaitSelectionState_8026CCC: // (self: * S20364C0 $r5) -> ()
 	push {r7,lr}
 
-	bl sub_802A220
+	bl battleObject_computePuppeteerSwitchElement_802A220
 	cmp r0, #0xff
 	beq loc_8026CE6
 
@@ -1193,7 +1193,7 @@ loc_8026CE6:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_JoypadPtr]
 	bl custMenuSomeHandler_8028B74 // (self: * S20364C0 $r5) -> ()
-	bl sub_8028820
+	bl battle_custMenuDispatchSelection_8028820
 	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	bl battle_endingBgUpdate_8029D34
@@ -1240,7 +1240,7 @@ loc_8026D46:
 	cmp r0, #0
 	bne loc_8026D5C
 	push {r3}
-	bl sub_802A220
+	bl battleObject_computePuppeteerSwitchElement_802A220
 	pop {r3}
 	cmp r0, #0xff
 	beq locret_8026DA6
@@ -1379,7 +1379,7 @@ chatbox_stateMaybeFinishText_8026E4C: // (self: * S20364C0 $r5) -> ()
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	cmp r0, #0
 	beq loc_8026E64
-	bl sub_802A220
+	bl battleObject_computePuppeteerSwitchElement_802A220
 	cmp r0, #0xff
 	beq loc_8026E72
 	bl chatbox_8040818
@@ -1502,7 +1502,7 @@ sub_8026F1A:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	cmp r0, #0
 	beq loc_8026F34
-	bl sub_802A220
+	bl battleObject_computePuppeteerSwitchElement_802A220
 	cmp r0, #0xff
 	beq locret_8026FA8
 	bl chatbox_8040818
@@ -5041,9 +5041,9 @@ off_802881C:
 // symdb: Custom-menu chip-select dispatcher: routes per selected-slot index to a small handler that packs (row,column) pair-coords into FIFO records.
 // symdb: (r5 = active-chip-array base, r6 = out-pair-table base; saves r4-r6,lr) -> flags ; side effects
 // symdb: writes records into the FIFO at dword_3002180 via fifo_pushRecord16_8009FF8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028820.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_custMenuDispatchSelection_8028820.yaml
 	thumb_local_start
-sub_8028820:
+battle_custMenuDispatchSelection_8028820:
 	push {r4-r6,lr}
 	ldrb r0, [r5,#7]
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -5092,7 +5092,7 @@ jt_802886C:
 	.word sub_8028894+1
 	.word sub_8028938+1
 	.word sub_8028938+1
-	thumb_func_end sub_8028820
+	thumb_func_end battle_custMenuDispatchSelection_8028820
 
 // symdb: Reads an ID byte from a work area and returns a pair of structure offsets (r0 = id*16+8, r1 = 0x68 or 0x80) plus the address of a small lookup table in r6.
 // symdb: int sub_8028894(void* r5) // in: r5 = struct pointer whose +7 byte is the ID, lr = return; out:
@@ -8759,9 +8759,9 @@ locret_802A21E:
 // symdb: Decides whether the puppeteer (L+R swap mechanic) should swap to a new element for the player's MegaMan this frame, returning that element code or 0xFF if no swap.
 // symdb: (r2 -> used as save 0xb selection; r5 = ?, r10 = toolkit) -> r0 = element code (0..0xB) if a
 // symdb: swap is due, else 0xFF
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A220.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computePuppeteerSwitchElement_802A220.yaml
 	thumb_local_start
-sub_802A220:
+battleObject_computePuppeteerSwitchElement_802A220:
 	push {r4,r6,r7,lr}
 	mov r4, #0xff
 	movflag EVENT_163
@@ -8832,7 +8832,7 @@ dword_802A2A8:
 	.word 0x200000
 off_802A2AC:
 	.word dword_20349A0
-	thumb_func_end sub_802A220
+	thumb_func_end battleObject_computePuppeteerSwitchElement_802A220
 
 // symdb: Per-frame step of the custom-menu (chip select) state machine: dispatches the current state's handler, then advances an internal counter and rolls over state when applicable.
 // symdb: (r5 = *S20364C0) -> (void, scratch clobbered; out r2/r3/r4/r6)
@@ -24872,7 +24872,7 @@ dword_8031690:
 	.word table_GetCurrentEntryColumnCount_80317FA+1 // 0x11
 	.word sub_8031808+1 // 0x12
 	.word sub_803182A+1 // 0x13
-	.word sub_8031852+1 // 0x14
+	.word battle_calcDistPanelBetween_8031852+1 // 0x14
 	.word sub_8031874+1 // 0x15
 	.word NULL // 0x16
 	.word NULL // 0x17
@@ -25123,9 +25123,9 @@ sub_803182A:
 // symdb: Computes a one-dimensional panel-column distance between a battle object and its target reference point (used by AI ranged targeting)
 // symdb: (r0 = AIData scratch, r5 = actor BattleObject) -> r0 = panel-column distance from target ; side
 // symdb: effects: clobbers r1,r2,r3; preserves r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031852.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcDistPanelBetween_8031852.yaml
 	thumb_local_start
-sub_8031852:
+battle_calcDistPanelBetween_8031852:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	push {r0}
@@ -25141,7 +25141,7 @@ sub_8031852:
 	mov r1, #2
 	lsr r1, r3
 	pop {pc}
-	thumb_func_end sub_8031852
+	thumb_func_end battle_calcDistPanelBetween_8031852
 
 	thumb_local_start
 sub_8031874:

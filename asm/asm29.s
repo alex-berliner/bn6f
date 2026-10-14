@@ -1176,7 +1176,7 @@ loc_80A56E0:
 	sub r1, r3, r1
 loc_80A56E2:
 	push {r0,r1}
-	bl sub_80A5724
+	bl owMap_getHotspotBoundaryForMapGroup_80A5724
 	mov r2, r0
 	mov r3, r1
 	pop {r0,r1}
@@ -1212,9 +1212,9 @@ dword_80A5720:
 // symdb: Returns a hotspot boundary byte pair for a given map group's hotspot region during overworld camera hotspot tests.
 // symdb: (r6 = ptr to map group hotspot context, byte at r6+5 = region index) -> r0 = byte from
 // symdb: dword_80A573C[region], r1 = byte from dword_80A5740[region]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5724.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMap_getHotspotBoundaryForMapGroup_80A5724.yaml
 	thumb_local_start
-sub_80A5724:
+owMap_getHotspotBoundaryForMapGroup_80A5724:
 	push {r4,lr}
 	ldrb r3, [r6,#5]
 	ldr r2, off_80A5734 // =dword_80A573C
@@ -1231,7 +1231,7 @@ dword_80A573C:
 	.word 0x180C200C
 dword_80A5740:
 	.word 0xC200C20
-	thumb_func_end sub_80A5724
+	thumb_func_end owMap_getHotspotBoundaryForMapGroup_80A5724
 
 // symdb: After a BBS request, set event flag 4/234 (EVENT_4EA) if the live request byte differs from the previously saved one.
 // symdb: void checkBbsReqFlag_80A5744(void);  // inputs: r5,r6,r10,lr (caller-saved pointer/state slots);
@@ -1291,9 +1291,9 @@ byte_80A579C:
 
 // symdb: jump-table dispatcher that calls an AIData B-button custom-op handler based on `[r5+8]`
 // symdb: (none meaningful — callee uses r5/r10 from caller) -> flags; tails via `pop {pc}`
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A57AC.yaml
-	thumb_func_start sub_80A57AC
-sub_80A57AC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAICustomOp_80A57AC.yaml
+	thumb_func_start battleObject_dispatchAICustomOp_80A57AC
+battleObject_dispatchAICustomOp_80A57AC:
 	push {lr}
 	ldr r6, off_80A57CC // =unk_2011A90 
 	ldr r0, off_80A57BC // =off_80A57C0 
@@ -1311,7 +1311,7 @@ off_80A57C0:
 	.word sub_80A5888+1
 off_80A57CC:
 	.word unk_2011A90
-	thumb_func_end sub_80A57AC
+	thumb_func_end battleObject_dispatchAICustomOp_80A57AC
 
 	thumb_local_start
 sub_80A57D0:
@@ -3963,9 +3963,9 @@ byte_80A729C:
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
 // symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
 // symdb: sub_80A7398 depending on (r5+0x8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A72B4.yaml
-	thumb_func_start sub_80A72B4
-sub_80A72B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAIData_80A72B4.yaml
+	thumb_func_start battleObject_dispatchAIData_80A72B4
+battleObject_dispatchAIData_80A72B4:
 	push {lr}
 	ldr r6, off_80A72D4 // =unk_2011A90 
 	ldr r0, off_80A72C4 // =off_80A72C8 
@@ -3983,7 +3983,7 @@ off_80A72C8:
 	.word sub_80A7398+1
 off_80A72D4:
 	.word unk_2011A90
-	thumb_func_end sub_80A72B4
+	thumb_func_end battleObject_dispatchAIData_80A72B4
 
 	thumb_local_start
 sub_80A72D8:
@@ -4811,7 +4811,7 @@ off_80A78CC:
 	.word off_80A78D0
 off_80A78D0:
 	.word sub_80A78E0+1
-	.word sub_80A7912+1
+	.word battle_beastSpStepper_80A7912+1
 	.word sub_80A796C+1
 	.word sub_80A79D4+1
 	thumb_func_end battle_aiDispatchByAIDataBLeftAbility_80A78B8
@@ -4835,7 +4835,7 @@ sub_80A78E0:
 	str r0, [r5,#0x24]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A7912
+	bl battle_beastSpStepper_80A7912
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A78E0
 
@@ -4843,9 +4843,9 @@ sub_80A78E0:
 // symdb: (r5 = AIDataPtr, r6 = BattleObjectPtr, r10 = ToolkitPtr, r7 = byte-table cursor, lr) -> void ;
 // symdb: side effects: r0-r7/r10/lr/flags; mutates AIData+0xc/0x10/0x14 and BattleObject+8/0xc/0x10;
 // symdb: calls sub_8142050, sub_80A7BC0, sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7912.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpStepper_80A7912.yaml
 	thumb_local_start
-sub_80A7912:
+battle_beastSpStepper_80A7912:
 	push {r4-r7,lr}
 	ldr r0, [r6,#8]
 	str r0, [r5,#0xc]
@@ -4884,7 +4884,7 @@ off_80A7950:
 	.word sub_80A7AE0+1
 	.word sub_80A7AFA+1
 	.word battle_checkEnemyInAttackRangeAndTrigger_80A7B32+1
-	thumb_func_end sub_80A7912
+	thumb_func_end battle_beastSpStepper_80A7912
 
 	thumb_local_start
 sub_80A796C:
@@ -5271,13 +5271,13 @@ battle_checkBeastSpTrigger_80A7BC0:
 	bl sub_81418F0
 	bl sub_81418E4
 	mov r4, r2
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	bl sub_81420C8
 	cmp r0, r4
 	bne locret_80A7C3C
 	movflag EVENT_1731
 	bl SetEventFlagFromImmediate
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	mov r1, r0
 	ldr r0, off_80A7C54 // =byte_8089DD8 // CutsceneScript
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -6505,7 +6505,7 @@ off_80A8668:
 	thumb_local_start
 sub_80A8674:
 	push {r4-r7,lr}
-	bl sub_80A86B4
+	bl beastSP_initOrUpdate_80A86B4
 	mov r0, #0x80
 	mov r1, #0x10
 	mov r2, #0x27 
@@ -6525,7 +6525,7 @@ sub_80A8674:
 	thumb_local_start
 sub_80A86A0:
 	push {r4-r7,lr}
-	bl sub_80A86B4
+	bl beastSP_initOrUpdate_80A86B4
 	bl sprite_update
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A86A0
@@ -6539,9 +6539,9 @@ sub_80A86AC:
 
 // symdb: Initialize-or-update step for a "Beast SP" overworld cursor/indicator object: picks sprite/palette/priority by SoulWeaponCursorCameraCoords and (rarely) plays a one-shot SE.
 // symdb: (r5 = object, r10 = toolkit) -> r0 = palette index (4 or 5)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A86B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSP_initOrUpdate_80A86B4.yaml
 	thumb_local_start
-sub_80A86B4:
+beastSP_initOrUpdate_80A86B4:
 	push {r4-r7,lr}
 	mov r4, #1
 	bl sub_81421D8
@@ -6592,7 +6592,7 @@ loc_80A871E:
 	bl sprite_setPalette // (int pallete) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A86B4
+	thumb_func_end beastSP_initOrUpdate_80A86B4
 
 	thumb_func_start sub_80A8728
 sub_80A8728:

@@ -564,7 +564,7 @@ loc_8141FA4:
 	bl sub_814189A
 	pop {r0-r7}
 loc_8141FB4:
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	lsl r0, r0, #2
 	ldr r7, off_8142034 // =off_8141B18 
 	ldr r7, [r7,r0]
@@ -587,12 +587,12 @@ loc_8141FDE:
 	add r7, #4
 	b loc_8141FC0
 loc_8141FE4:
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r1, off_8142040 // =dword_8142044 
 	ldrb r0, [r1,r0]
 	mov r1, #0xf
 	bl sub_81418DA
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r7, off_814203C // =off_8141B24 
 	lsl r0, r0, #2
 	ldr r0, [r7,r0]
@@ -640,7 +640,7 @@ sub_814204C:
 sub_8142050:
 	push {r4-r6,lr}
 	lsl r4, r0, #2
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	lsl r0, r0, #2
 	ldr r7, off_8142064 // =off_8141B18 
 	ldr r7, [r7,r0]
@@ -675,9 +675,9 @@ sub_8142072:
 
 // symdb: Looks up an index in a small 3-entry table (byte_81420A8) by matching against the current MapGroup, returning the table index or 0xff.
 // symdb: (r10 = ToolkitPtr, lr = return) -> r0 = index (0..n) or 0xff if no match/empty entry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142080.yaml
-	thumb_func_start sub_8142080
-sub_8142080:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getEnemyIndexFromMapGroup_8142080.yaml
+	thumb_func_start battle_getEnemyIndexFromMapGroup_8142080
+battle_getEnemyIndexFromMapGroup_8142080:
 	push {r4-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
@@ -704,12 +704,12 @@ off_81420A4:
 	.word byte_81420A8
 byte_81420A8:
 	.byte 0x91, 0x0, 0x91, 0x1, 0x91, 0x2, 0x0, 0x0
-	thumb_func_end sub_8142080
+	thumb_func_end battle_getEnemyIndexFromMapGroup_8142080
 
 	thumb_func_start sub_81420B0
 sub_81420B0:
 	push {r4-r7,lr}
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r1, off_81420C0 // =dword_81420C4 
 	ldrb r0, [r1,r0]
 	lsl r0, r0, #0x10
@@ -751,7 +751,7 @@ loc_81420EC:
 sub_81420F0:
 	push {r4-r7,lr}
 	mov r4, r0
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r1, off_814211C // =byte_8142120 
 	lsl r0, r0, #2
 	ldrh r0, [r1,r0]
@@ -762,7 +762,7 @@ sub_81420F0:
 	thumb_local_start
 sub_8142102:
 	push {r4-r7,lr}
-	bl sub_8142080
+	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r1, off_814211C // =byte_8142120 
 	lsl r0, r0, #2
 	add r1, r1, r0

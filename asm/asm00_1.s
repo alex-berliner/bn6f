@@ -3122,11 +3122,11 @@ OverworldMapObjectUpdateJumptable:
 	.word npc_stateDispatchStep_80A51C4+1
 	.word sub_80A5428+1
 	.word sub_80A54F0+1
-	.word sub_80A57AC+1
+	.word battleObject_dispatchAICustomOp_80A57AC+1
 	.word battle_beastOutDispatch_80A5AD4+1
 	.word battleObject_dispatchRunActionByState_80A6A16+1
 	.word sub_80A6E98+1
-	.word sub_80A72B4+1
+	.word battleObject_dispatchAIData_80A72B4+1
 	.word sub_80A77A8+1
 	.word sub_80A781C+1
 	.word battle_aiDispatchByAIDataBLeftAbility_80A78B8+1
@@ -12368,7 +12368,7 @@ sub_8008A7C:
 off_8008A8C:
 	.word off_8008A90
 off_8008A90:
-	.word sub_8008AA0+1
+	.word battle_tickPreBattleInit_8008AA0+1
 	.word sub_8008B10+1
 	.word sub_8008B2E+1
 	.word sub_8008B52+1
@@ -12377,9 +12377,9 @@ off_8008A90:
 // symdb: Battle-mode pre-fight tick that dispatches the pre-battle init phase once, picks and plays a battle/pre-battle song, decrements a per-tick counter, and hands off to the next state when the linked-partner sync is ready.
 // symdb: (r5 = BattleModePreBState, r10 = Toolkit) -> ; side effects writes to eBattleModePreBState
 // symdb: (offset 3 as phase, 8 as timer), plays music via PlayMusic, dispatches effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008AA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickPreBattleInit_8008AA0.yaml
 	thumb_local_start
-sub_8008AA0:
+battle_tickPreBattleInit_8008AA0:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12431,7 +12431,7 @@ loc_8008AF4:
 	strh r0, [r5,#2]
 locret_8008B0E:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8008AA0
+	thumb_func_end battle_tickPreBattleInit_8008AA0
 
 	thumb_local_start
 sub_8008B10:

@@ -18418,7 +18418,7 @@ loc_8017026: // endif
 
 loc_8017034: // endif
 
-	bl sub_801DB84
+	bl battleObject_registerCustomArm_801DB84
 
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -18833,7 +18833,7 @@ loc_801738A:
 	bl sub_8011268
 	bl battle_beginTurnOpenProcess_80144C0
 	bl sub_8013E58
-	bl sub_801DB84
+	bl battleObject_registerCustomArm_801DB84
 	mov r0, #3
 	bl battleObject_computeAIStepForwardDeltaX_8018856
 	neg r1, r1
@@ -26184,9 +26184,9 @@ locret_801BC22:
 // symdb: Advance a battle object's sprite animation (load+set on change, update on no-change) unless paused/invisible/sprite-frozen or in a non-time-stopped state when the object isn't flagged to update during time-stop.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: may load sprite animation data, set
 // symdb: sprite animation index, run sprite_update, write CurAnimCopy
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BC24.yaml
-	thumb_func_start sub_801BC24
-sub_801BC24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_tickSpriteAnim_801BC24.yaml
+	thumb_func_start battleObject_tickSpriteAnim_801BC24
+battleObject_tickSpriteAnim_801BC24:
 	push {lr}
 	bl battle_isPaused
 	bne locret_801BC62
@@ -26217,7 +26217,7 @@ loc_801BC5E:
 	bl sprite_update
 locret_801BC62:
 	pop {pc}
-	thumb_func_end sub_801BC24
+	thumb_func_end battleObject_tickSpriteAnim_801BC24
 
 // symdb: Advances one battle object's sprite for the current frame, skipping it when inactive, sprite-update-locked, caught by an active timestop, or when collision-attached with animation locked.
 // symdb: void UpdateBattleObjectSprite(struct BattleObject *obj /* r5 */, struct BattleSpriteState *state
@@ -30518,9 +30518,9 @@ sub_801DB78:
 // symdb: Claims a free slot in dword_20352E0's 6-slot custom-arm table for this battle object's NameID and stores its mirrored arm attachment offset, then links the battle object into it.
 // symdb: (r5 = battleObject) -> r0 = 1 ; side effects: writes to the 6-slot table at 0x020352E0 (per-
 // symdb: entry 8 bytes: status, x, y, ptr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DB84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_registerCustomArm_801DB84.yaml
 	thumb_local_start
-sub_801DB84:
+battleObject_registerCustomArm_801DB84:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -30564,7 +30564,7 @@ loc_801DBB6:
 	strb r0, [r4]
 locret_801DBD2:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801DB84
+	thumb_func_end battleObject_registerCustomArm_801DB84
 
 // symdb: Finds the tracking-table slot (6 slots at 0x20352E0) that holds the given battle object and rewrites its stored x/y arm position, returning 1 if the object is not tracked.
 // symdb: int battleRefreshTrackedObjectArmPos_801DBD4(void); // in: r5 = battle object ptr; out: r0 = 0
