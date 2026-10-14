@@ -938,7 +938,7 @@ off_813BD20:
 
 // symdb: Iterates all 0x31 battle rows and, for each entry with the enabled bit set, collects target panels in the four cardinal neighbours of the entry's panel and runs a finalize helper.
 // symdb: () -> ; side effects: zero-fills a 0x31-byte scratch buffer and writes per-entry panels via
-// symdb: battleObject_collectTargetsInRegion + battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
+// symdb: battleObject_collectTargetsInRegion + sub_813BE38
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateTargetPanelsAllRows_813BD24.yaml
 	thumb_local_start
 battle_updateTargetPanelsAllRows_813BD24:

@@ -3834,10 +3834,10 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Overworld/jack-out BBS request handler that tests L-Message / AskJackOut cutscene sentinels, clears or sets a story flag, refreshes the ReqBBS GUI, and loads player/navi battle graphics
-// symdb: (r10 = Toolkit) -> nz (caller-tested); side effects: clears or sets BBS event flags,
-// symdb: clears/loads several GFX anim states, refreshes ReqBBS2001150 and eReqBBSGui, and may load a
-// symdb: battle object set
+// symdb: BBS request handler that drives the ReqBBS "Mystery Data" (?) flow: gates/manipulates the BBS state and related cutscene by testing/setting event flags, copies event-flag state, drives the local `gfx_anim_*` loader pipeline, and registers/clears a BBS request — all keyed off the toolkit in r10
+// symdb: (no input registers; r10 = toolkit) -> nz ; side effects: writes through r10 (toolkit state, BBS
+// symdb: request state, event flags, cutscene/script state, mystery-data scratch), uses r5 as a scratch
+// symdb: pointer to a scratch state struct
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8219,8 +8219,9 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Unidentified function in the 0x808xxxx battle range; not in bn6f/asm yet.
-// symdb: unknown (no callers or callees provided; in=['r2','r10','lr'], out=['r2','r3','r5','r7'])
+// symdb: Spawns a "beast" Pet/Actor (likely related to the Beast-Out mechanic), testing an event flag before doing so.
+// symdb: (r10 = Toolkit) -> (out: r5 = object ptr?, r7 = ?; flags ZC set on exit) ; side effects:
+// symdb: allocates/initializes a battle object and possibly manipulates related state
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

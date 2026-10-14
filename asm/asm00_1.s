@@ -13781,7 +13781,7 @@ locret_800945A:
 
 // symdb: Dispatches a battle-state phase byte (offset 2 of the struct in r5) to one of two phase handlers via a jump table.
 // symdb: Next sub_800945C(void *battleState /* r5 */); tail-dispatches to sub_8009478 (phase 0) or
-// symdb: battle_updateChipSelectInit_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
+// symdb: sub_80094B6 (phase != 0), passing the phase byte in r0 and the handler's Thumb address in r1
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_DispatchStatePhase_800945C.yaml
 	thumb_local_start
 battle_DispatchStatePhase_800945C:

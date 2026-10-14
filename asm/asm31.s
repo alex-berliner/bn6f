@@ -48317,6 +48317,11 @@ loc_80CE75A:
 	pop {r4,pc}
 	thumb_func_end sub_80CE730
 
+// symdb: Battle-object destruction step that tears down collision data, then either despawns or hands off to a per-action dispatcher
+// symdb: (r5 = BattleObject*, r10 = toolkit) -> void ; side effects: clears/writes the object's collision
+// symdb: region, writes `oBattleObject_CurStateActionPhaseAndPhaseInitialized = CUR_STATE_DESTROY (0x8)`,
+// symdb: and may set `oBattleObject_CurStateActionPhaseAndPhaseInitialized` via the per-action dispatcher
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE782.yaml
 	thumb_local_start
 sub_80CE782:
 	push {r4,r7,lr}
@@ -60828,6 +60833,11 @@ off_80D4534:
 	.word sub_80D4604+1
 	thumb_func_end battleObject_handleDestroyByInvincibility_80D44D2
 
+// symdb: Per-frame battle object update: re-highlights the panel under the object while its movement timer has bit 0x4 clear, decrements the timer, and on expiry marks the object paused with CurAction=4 and clears CurPhase/PhaseInitialized.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes oBattleObject_Flags,
+// symdb: oBattleObject_CurAction, oBattleObject_CurPhaseAndPhaseInitialized; may call
+// symdb: object_highlightPanel
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4544.yaml
 	thumb_local_start
 sub_80D4544:
 	push {lr}
@@ -88135,6 +88145,9 @@ sub_80E1540:
 	pop {r4,pc}
 	thumb_func_end sub_80E1540
 
+// symdb: Per-tick update for a SnakeArm-style extra battle object: toggles its pause flag, copies arm world coords from a partner Navi, and frees the object if the battle ends or its targets are gone.
+// symdb: (r5 = battle object) -> void ; may clear OBJECT_FLAG_PAUSE_UPDATE on the object and free it
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1566.yaml
 	thumb_local_start
 sub_80E1566:
 	push {r4,r6,r7,lr}
@@ -88292,9 +88305,9 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: For a battle object, populate a stack scratch buffer with the opponent-side actors returned by `object_getEnemyByNameRange` matching the index 0/1/2, based on the object's alliance.
-// symdb: (r5 = current battle object, r10 = toolkit, lr = return) -> r0 = scratch return (latest
-// symdb: sub_80E16CC return, or 0), r5 = current battle object preserved
+// symdb: Look up this object's `RelatedObject1Ptr`'s opponents at indices 0,1,2 and store any matches from an enemy name list into a small stack buffer
+// symdb: (r5 = self BattleObject*, r10 = toolkit, lr = return) -> r0 = bool (from last sub call); side
+// symdb: effects: writes ~0x34 bytes to stack
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
@@ -88827,7 +88840,7 @@ dword_80E19B8:
 // symdb: caller) // out: r5, r8-r12 preserved by callee convention; NZCV + r0-r4,r6-r7,r11 clobbered //
 // symdb: Reads: [r5 + oBattleObject_CurState] (u8 index into JumpTable80E19CC) //
 // symdb: JumpTable80E19CC[i] -> THUMB handler (+1 set in THUMB BX convention): //         0 ->
-// symdb: battle_objectSetTimerFromParam1Table_80E19DC //         1 -> battleObject_runActionDispatcher_80E19F4 //         2 ->
+// symdb: battle_objectSetTimerFromParam1Table_80E19DC //         1 -> sub_80E19F4 //         2 ->
 // symdb: battle_object_freeWithPhaseReset_80E1A5E
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x11_80E19BC.yaml
 	thumb_func_start t4_0x11_80E19BC
@@ -93268,6 +93281,10 @@ word_80E3A30:
 	.hword 0x201
 	thumb_func_end sub_80E39D0
 
+// symdb: Beast-SP battle-object action dispatcher — if the object is dying/finished or its related target is doing action 0xB, force CUR_STATE_DESTROY; otherwise (when Param3==1 or not time-stopped) jump into the per-CurAction handler table at off_80E3A70.
+// symdb: (r5 = BattleObject*) -> void ; out=r0 only inside the per-action handler tail; no return value
+// symdb: consumed by the lone caller.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E3A32.yaml
 	thumb_local_start
 sub_80E3A32:
 	push {lr}
@@ -108736,6 +108753,11 @@ sub_80EADDC:
 	pop {r6,pc}
 	thumb_func_end sub_80EADDC
 
+// symdb: Per-frame AI state update for a Slash Beast-style wave/beast-jump action: starts wind-up, then on expiry picks a lock-on target and teleports the battle object to a chosen panel with a midpoint interpolation and final landing animation.
+// symdb: (r5 = *BattleObject, r7 = *AIData, r3 = *AIAttackVars scratch, r6 already preserved) -> void ;
+// symdb: updates AIAttackVars scratch, battle object's PanelX/PanelY/X/Y/Z, sets anim 4/0, sets word at
+// symdb: r6+0x0 to 8 (frame counter)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EAE28.yaml
 	thumb_local_start
 sub_80EAE28:
 	push {r4,r6,lr}
@@ -115286,6 +115308,10 @@ locret_80EDF0A:
 	pop {pc}
 	thumb_func_end sub_80EDEF6
 
+// symdb: AI attack-vars step: count down Unk_10, then on expiry clear the AI flag bits 0x1000/0x2000 (flip direction + refresh sprite/arm) and call object_exitAttackState.
+// symdb: (r5 = BattleObject, r7 = AIAttackVars) -> void ; mutates AIData->Unk_44 (clears 0x1000|0x2000),
+// symdb: BattleObject->DirectionFlip, AIAttackVars->Unk_01/Unk_10, then arms/exits attack state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EDF0C.yaml
 	thumb_local_start
 sub_80EDF0C:
 	push {lr}

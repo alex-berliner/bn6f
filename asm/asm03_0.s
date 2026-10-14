@@ -13547,6 +13547,10 @@ byte_802C848:
 	.byte 0xC3, 0x90
 	thumb_func_end sub_802C810
 
+// symdb: Draws the CustGauge/Mood-style meter block tiles (border + filled segments) into the 24x32 chip-select row buffer using the current frame's bit-4 to choose one of two tile palettes.
+// symdb: (r5 = battle object / chip-select ctx, r10 = Toolkit) -> r0 = 0 ; side effect: writes up to 4
+// symdb: tile rows into the chip-select row buffer at unk_2034B30 via blitTileBlockToRowBuffer_802C4B6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C85C.yaml
 	thumb_local_start
 sub_802C85C:
 	push {lr}

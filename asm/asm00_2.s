@@ -14066,6 +14066,10 @@ dword_8014E04:
 	.word 0x80000
 	thumb_func_end sub_8014D70
 
+// symdb: Drives the AI attack step that forces the sprite white, plays a recovery jingle, sets text/name, and on timer expiry completes the turn-opening process.
+// symdb: (r5 = BattleObject*, r7 = AIAttackVars*) -> void ; side effects: battle sprite/animation flips,
+// symdb: NaviStats byte 0x2C updated, sound 0x100 played
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8014E08.yaml
 	thumb_local_start
 sub_8014E08:
 	push {r4,lr}
@@ -18516,6 +18520,10 @@ byte_80170A4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end battleObject_initNaviObject_8016F56
 
+// symdb: If the battle is not paused, dispatches to a CurPhase-specific handler for the BattleObject in r5 via a 2-entry tail-call table; otherwise returns immediately.
+// symdb: (r5 = BattleObject*, r10 = Toolkit) -> r0 = whatever the dispatched handler (sub_80170E4 /
+// symdb: sub_8017122) returns (a per-phase status/result byte)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80170C4.yaml
 	thumb_func_start sub_80170C4
 sub_80170C4:
 	push {lr}
@@ -18565,6 +18573,11 @@ loc_8017118:
 	pop {pc}
 	thumb_func_end sub_80170E4
 
+// symdb: Per-frame update for the Wind-style recovery state of a battle object: on first entry, freezes animation and spawns a linked wind effect + sparkle effect with an 0x5A-frame timer; once the timer expires, releases any reserved panel, removes the actor from the alive list, clears alliance targeting, and destroys the object.
+// symdb: (r5 = BattleObject*, r3/r10/lr not really inputs — r3 is destroyed, r10 = toolkit) -> void ;
+// symdb: side effects: writes to AIData, spawns two battle objects, removes panel reservation, removes
+// symdb: the actor from BattleState.AliveBattleActors, sets CUR_STATE_DESTROY.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017122.yaml
 	thumb_local_start
 sub_8017122:
 	push {r4,r7,lr}

@@ -10382,6 +10382,11 @@ byte_804C3F0:
 	.word 0x106060
 	thumb_func_end sub_804C3C4
 
+// symdb: AI handler dispatcher that reads an AIData state byte and an event index, then tail-calls one of two handler routines via an indirect jump table
+// symdb: (r0 = AIData-related pointer/routine derived from byte_804C3F0 entry 0x14*r5->0xc, r1 = event
+// symdb: index from r5->0x10) -> returns whatever the dispatched handler returns in r0; side effects are
+// symdb: entirely the dispatched handler's
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C404.yaml
 	thumb_local_start
 sub_804C404:
 	push {r4-r7,lr}
@@ -10450,6 +10455,10 @@ dword_804C474:
 	.word 0x1F82
 	thumb_func_end sub_804C43C
 
+// symdb: Battle render-update helper: forces a renderInfo flag and queues a sprite transform through loc_80024D8 using a per-object origin/y-offset pair.
+// symdb: (r5 = BattleObject, r7 = camera/coord state, r10 = Toolkit) -> void ; side effects: mutates
+// symdb: *RenderInfo (sets bit 0x4800), stacks a 12-byte coord payload and tail-calls loc_80024D8
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804C478.yaml
 	thumb_local_start
 sub_804C478:
 	push {r4-r7,lr}

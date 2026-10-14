@@ -1417,10 +1417,10 @@ sub_80A5888:
 	pop {pc}
 	thumb_func_end sub_80A5888
 
-// symdb: Copies a 3-word offset (e.g. delta x/y/z) from r6+0x7c into r5+0xc and triggers the player direction/animation update.
-// symdb: (r5 = OWPlayerObject*, r6 = ? struct with data at +0x7c) -> r0 = 0 ; side effects: writes three
-// symdb: u32s into [r5+0xc..0x14], clobbers r0-r3, calls owPlayer_setDirectionAnimFromOffset_80A5974
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5890.yaml
+// symdb: Copies the AI state's direction/anim offset triple (offsets 0x7C..0x84) into the player battle object and triggers a direction/anim update.
+// symdb: (r5 = player BattleObject*, r6 = AIData*) -> void ; side effects on player BattleObject at
+// symdb: offsets 0xC,0x10,0x14; calls owPlayer_setDirectionAnimFromOffset_80A5974
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5890.yaml
 	thumb_local_start
 sub_80A5890:
 	push {lr}
@@ -5456,10 +5456,10 @@ sub_80A7CA4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CA4
 
-// symdb: Per-object update callback for a "BeastSp" overworld map object: re-checks encounter bounds then advances the sprite
-// symdb: (r5 = overworld map object, r10 = toolkit, lr = return address) -> r0/r1/r2/r3 caller-defined ;
-// symdb: none returned as live value
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7CEA.yaml
+// symdb: Overworld map object tick for Beast SP encounter: checks bounds and starts the encounter, then runs the standard sprite update.
+// symdb: (in: r5 = some object pointer; r10 = toolkit; lr = return) -> side effects only; r0/flags may be
+// symdb: clobbered via sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CEA.yaml
 	thumb_local_start
 sub_80A7CEA:
 	push {r4-r7,lr}

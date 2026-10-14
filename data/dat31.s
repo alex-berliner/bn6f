@@ -2218,6 +2218,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
+// symdb: Address-only placeholder; assembly unavailable so role is unknown. Likely a battle AI/panel preview handler invoked from story6 capture sites, but no instruction-level evidence available.
+// symdb: unknown
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::
 	push {r4,r6,lr}

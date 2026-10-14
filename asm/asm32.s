@@ -17903,6 +17903,10 @@ sub_81171CC:
 	pop {pc}
 	thumb_func_end sub_81171CC
 
+// symdb: If a battle object's panel slot is occupied (per the eStructArr2008450 array), repositions that object's sprite by its (PanelX, PanelY) base coordinates.
+// symdb: (r0 = object ptr, r1 = sprite coord (probably PanelXY), r2 = struct index) -> no return; side
+// symdb: effect: may write the sprite's position via sprite_setCoordinates
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81171D4.yaml
 	thumb_func_start sub_81171D4
 sub_81171D4:
 	push {r4-r7,lr}
@@ -20638,9 +20642,9 @@ locret_81185E2:
 	pop {pc}
 	thumb_func_end sub_81185C0
 
-// symdb: Set a battle object's sprite palette using an index table referenced from its AIData.
-// symdb: (r6 = BattleObject*) -> void ; side effect: writes sprite palette index
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81185E4.yaml
+// symdb: For the battle object in r6, look up a palette id from a 16-bit table at 0x0201DA80 indexed by (r6+0x3A)+(r6+0x38), subtract 0x90, and write that to the object's sprite palette via sprite_setPalette.
+// symdb: (r6 = BattleObject*) -> void ; side effect: writes palette index into the object's sprite data
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81185E4.yaml
 	thumb_local_start
 sub_81185E4:
 	push {lr}
@@ -20659,9 +20663,9 @@ sub_81185E4:
 	pop {pc}
 	thumb_func_end sub_81185E4
 
-// symdb: Dispatches AI by Y-coord-indexed entry on r6's BattleObject, scans AI attack vars slots to build a bitmask, then stores the result into sprite field 0x2c.
-// symdb: (r6 = BattleObject*, r5/r10 = toolkit) -> r0/r1/r2/r3 = modified; side effects: AIData
-// symdb: dispatched, sprite 0x2c of r6's object overwritten
+// symdb: Builds a per-element "alive enemy" bitmask from AI dispatch results and writes it to the sprite's 0x2c field
+// symdb: (r6 = battleObject) -> r0 = elementAliveMask ; side effect: sprite_setUnk0x2c stores r0 into
+// symdb: object sprite field 0x2c
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8118604.yaml
 	thumb_local_start
 sub_8118604:
@@ -32031,10 +32035,11 @@ off_811E164:
 	.word eStruct2001010
 	thumb_func_end battle_gfx_renderLatticeOrSpinner_811E0BA
 
-// symdb: battle-object dispatch stub that branches on the object's beast/sp-out flag (BLeftAbility?) to one of three sub-handlers
-// symdb: (r5 = battleObject) -> r0, r2, r3, flags ; side-effect-only (via tail call into sub_811E18C /
-// symdb: sub_811E1D4 / sub_811E1FA)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811E168.yaml
+// symdb: AI state-machine dispatcher that jumps (ARM-mode BX) to one of three handlers based on a sub-state byte in the AIData pointed to by r5
+// symdb: (r5 = AIData*, lr = return addr) -> r0 = AIData+0x8 byte used as index into 3-entry handler
+// symdb: table ; side effects: tail-bx into one of sub_811E18C / sub_811E1D4 / sub_811E1FA (Thumb),
+// symdb: preserves r5 (callee-saved)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E168.yaml
 	thumb_func_start sub_811E168
 sub_811E168:
 	push {lr}
@@ -32115,11 +32120,9 @@ sub_811E1FA:
 	pop {pc}
 	thumb_func_end sub_811E1FA
 
-// symdb: Clears four index-derived bits in BattleObject sprite field 0x2c using a 10-bit-packed version value, then writes the masked constant 0x1FFFFFF8 to sprite field 0x2c.
-// symdb: (no explicit args read from registers by the function; r5 carries the AIDataPtr-like state used
-// symdb: by callees; side effects: writes the current sprite's 0x2c field). No r0 value is returned
-// symdb: (post-call r0 = 0x0dffbf78 is just a sprite base pointer left by sprite_setUnk0x2c's seed).
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811E202.yaml
+// symdb: Builds a bitmask from AI versioning fields and writes it into the battle object's sprite Unk_2c.
+// symdb: (r5 = current BattleObject*) -> void ; side effects: writes sprite field 0x2c on the object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E202.yaml
 	thumb_local_start
 sub_811E202:
 	push {r4-r7,lr}

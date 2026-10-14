@@ -1359,9 +1359,9 @@ dword_8123BDC:
 	.word 0x302F2E
 	thumb_func_end battleObject_applyAIDataToAttackTable_8123BC0
 
-// symdb: Configures and dispatches battle-object attack-variable (AIData) initialisation for the per-frame battle setup chain.
-// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> no return; side-effect: populates AIData at 0x020047CC
-// symdb: via sub_8123C20 with arg block in IWRAM at 0x081233D8
+// symdb: Initialises a battle-object AI attack table with a fixed packed data blob (Z, V, S, X) and zeroes the per-attack counter
+// symdb: (no explicit args; uses r5=touched battle object, r10=Toolkit) -> no return value ; side effects
+// symdb: EWRAM at byte_81233E0 and possibly counter offsets
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
 	thumb_local_start
 sub_8123BE0:
