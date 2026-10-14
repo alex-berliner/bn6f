@@ -16787,7 +16787,7 @@ sub_8116A3C:
 	pop {pc}
 	thumb_func_end sub_8116A3C
 
-// symdb: On initialization, drives sprite_queueOamEntryThunk_802FE28 over three small packed (a1,a2) tables (3+3+2 entries) with notUsed=0 and a4=1.
+// symdb: On initialization, drives sub_802FE28 over three small packed (a1,a2) tables (3+3+2 entries) with notUsed=0 and a4=1.
 // symdb: void sub_8116A44(void);  // no inputs; clobbers r0-r3, lr, N/Z/C/V; preserves r4-r7, r5 is
 // symdb: reported output by caller analysis but not set here
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8116A44.yaml
@@ -33417,6 +33417,8 @@ off_811EDB0:
 	.word byte_811EAB8
 	thumb_func_end sub_811ED58
 
+// symdb: Per-frame update of the PET navi-select screen: refreshes both background layers and the sprite frame table, handles A/B/START/d-pad input to pick a navi slot (or back out), and refreshes the PET comm-save state.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EDB4.yaml
 	thumb_local_start
 sub_811EDB4:
 	push {r4,lr}
@@ -33955,7 +33957,7 @@ locret_811F1B6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811F184
 
-// symdb: Initializes two small parameter-pair tables by dispatching each pair to a setter (sprite_queueOamEntryThunk_802FE28).
+// symdb: Initializes two small parameter-pair tables by dispatching each pair to a setter (sub_802FE28).
 // symdb: void sub_811F1B8(void);  // takes no inputs, returns void; r4-r7 preserved, nzcv r0-r3 r5 r7
 // symdb: clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F1B8.yaml
@@ -34004,7 +34006,7 @@ byte_811F208:
 	.byte 0x0
 	thumb_func_end sub_811F1B8
 
-// symdb: Iterates a built-in three-entry table and passes each (word0, word1) pair to sprite_queueOamEntryThunk_802FE28 with fixed arguments (0, 1), most likely registering three related display/animation entries.
+// symdb: Iterates a built-in three-entry table and passes each (word0, word1) pair to sub_802FE28 with fixed arguments (0, 1), most likely registering three related display/animation entries.
 // symdb: void runEntryTableTriple_811F214(void)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811F214.yaml
 	thumb_local_start
@@ -36656,7 +36658,7 @@ loc_8120520:
 	.balign 4, 0x00
 	thumb_func_end sub_8120504
 
-// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sprite_queueOamEntryThunk_802FE28 with a small index offset.
+// symdb: Builds a low "0x4000"-flagged VRAM/palette-ish word from sub_81205C0's result and dispatches it via sub_802FE28 with a small index offset.
 // symdb: (u32 r0, u32 r1, u32 r2, u32 lr) -> u32 r0; flags out: N,Z,C,V
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_812053C.yaml
 	thumb_func_start sub_812053C

@@ -3372,6 +3372,8 @@ off_800492C:
 	.word dword_2013920
 	thumb_func_end TryUpdateEachOverworldMapObject_80048D2
 
+// symdb: Per-frame draw step for the overworld map-object table: for each of the 56 entries projects/culls, ensures gfx resident, queues OAM pieces when visible (or clears the queued count when hidden), then records the sprite-group palette count in slot 5.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004934.yaml
 	thumb_func_start sub_8004934
 sub_8004934:
 	push {r4-r7,lr}
@@ -4963,6 +4965,8 @@ locret_80055CC:
 	pop {pc}
 	thumb_func_end sub_800555A
 
+// symdb: Main-state 0x30 handler: runs one frame of the overworld/PET scene pipeline, and once a screen fade is running tears the scene down and switches the main jumptable to state 0x44.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80055CE.yaml
 	thumb_local_start
 sub_80055CE: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -11017,6 +11021,8 @@ locret_80080D0:
 	pop {pc}
 	thumb_func_end sub_8008064
 
+// symdb: Per-frame tick of the battle main-flow state machine: refreshes both navis' virtual joypads, unpauses the battle, ticks the phase state machine, and writes the next main-flow state id (0xC/0x10/0x18/0x1C/0x20) into the caller's state word.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80080D2.yaml
 	thumb_local_start
 sub_80080D2:
 	push {lr}
@@ -11117,6 +11123,8 @@ locret_80081A2:
 	pop {pc}
 	thumb_func_end sub_80080D2
 
+// symdb: Per-frame battle-end (victory) phase handler: on first entry clears result flags, runs player HP regen, counts leftover opponent actors, plays the winner BGM, then after a countdown marks the battle finished for the overworld flow.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80081A4.yaml
 	thumb_local_start
 sub_80081A4:
 	push {r4,r6,lr}
@@ -13350,7 +13358,7 @@ dword_80091EC:
 	.word 0x11A
 	thumb_func_end sub_8009158
 
-// symdb: Battle-start sequence: spawns the field objects (battle_spawnType4ObjectWithActiveFlag_80E06F8, battle_SpawnEnemyObjects_8007358 — which runs the held-chip roll), pauses the battle, applies the navi-stat table, sets up music and the frame task, all behind GetBattleEffects checks.
+// symdb: Battle-intro step of the battle-start state machine: spawns the field/enemy actors, applies navi stats, starts the battle BGM, then polls the intro task and hands off to the battle-flow index (0x04, or 0x24 when EVENT_1735 is set).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80091F0.yaml
 	thumb_local_start
 sub_80091F0:
@@ -13579,7 +13587,7 @@ locret_8009336:
 	pop {pc}
 	thumb_func_end sub_8009314
 
-// symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (battle_initCustomScreen_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
+// symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (sub_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
 // symdb: (r5 = battle state)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009338.yaml
 	thumb_local_start
@@ -15326,9 +15334,9 @@ off_8009FC8:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009F8A
 
-// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sprite_queueOamEntryThunk_802FE28 until the count at 0x3000EA8 runs out.
+// symdb: Walks a queue of pending 16-byte entries at 0x3002180 and dispatches each one to the handler sub_802FE28 until the count at 0x3000EA8 runs out.
 // symdb: void processPendingQueue_8009FCC(void); /* reads count from byte_3000EA8, entries from
-// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sprite_queueOamEntryThunk_802FE28 call */
+// symdb: dword_3002180; r4-r7 preserved, r0-r3/c/v left over from the last sub_802FE28 call */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8009FCC.yaml
 	thumb_local_start
 sub_8009FCC:

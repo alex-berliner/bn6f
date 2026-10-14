@@ -12388,6 +12388,8 @@ locret_8014324:
 	pop {r4,pc}
 	thumb_func_end sub_80142DC
 
+// symdb: Per-frame anger-state maintenance for the player-side battle actor: on the anger trigger sets the anger flag and a 600-frame oAIData_Anger timer, counts it down, and clears anger on expiry or when the emotion already supersedes it.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014326.yaml
 	thumb_local_start
 sub_8014326:
 	push {r4,lr}
@@ -18997,6 +18999,8 @@ dword_80175B4:
 	.word 0x20005F
 	thumb_func_end battleObject_actionFlinch_80174FE
 
+// symdb: Paralyze action handler (CurAction 4, 'on paralyze' in the action tables): commits the pushed-back position, plays animation 2, then waits out the paralysis counter (shortened by button mashing) before ending the action.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80175B8.yaml
 	thumb_func_start sub_80175B8
 sub_80175B8:
 	push {lr}
@@ -23929,7 +23933,7 @@ locret_801AC6A:
 	thumb_func_end battleObject_processCollisionResultsForEnemy_801ABB8
 
 // symdb: Per-frame collision resolution pipeline for the active battle object
-// symdb: void battleObject_processCollisionResultsForPlayer_801AC6C(u32 r4, u32 r5, u32 r6, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12) -> r5, r8,
+// symdb: void sub_801AC6C(u32 r4, u32 r5, u32 r6, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12) -> r5, r8,
 // symdb: r9, r10, r11, r12; flags NZCV clobbered; r4 and r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_processCollisionResultsForPlayer_801AC6C.yaml
 	thumb_func_start battleObject_processCollisionResultsForPlayer_801AC6C
@@ -24055,6 +24059,8 @@ locret_801AD9C:
 	pop {r4,r7,pc}
 	thumb_func_end sub_801AD6A
 
+// symdb: Applies a collision hit to a battle object: guards against battle flags/dead targets, on HitModifierFinal bit 0x40 marks the hit state (ObjectFlags2 0x100, clear 0x4, Unk_0f=1), then recomputes final damage and spawns the hit effect.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AD9E.yaml
 	thumb_func_start sub_801AD9E
 sub_801AD9E:
 	push {r4,r7,lr}
@@ -27611,6 +27617,8 @@ byte_801C6E8:
 	.byte 0x6A, 0x1, 0x69, 0x1, 0x8F, 0x0
 	thumb_func_end sub_801C640
 
+// symdb: Draws the battle actor's selected chip as name text plus a right-aligned damage number (and optional second value / marker glyph) into the battle BG tile map; does nothing when no chip is selected.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C6EE.yaml
 	thumb_local_start
 sub_801C6EE:
 	push {r4-r7,lr}

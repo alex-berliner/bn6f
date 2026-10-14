@@ -744,6 +744,8 @@ off_804659C:
 	thumb_func_end battle_initEStructArr_804657C
 
 // (void *a1) -> void
+// symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via sub_8046670.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80465A0.yaml
 	thumb_func_start sub_80465A0
 sub_80465A0:
 	push {r4-r7,lr}
@@ -871,7 +873,7 @@ loc_8046652:
 
 // () -> void
 // symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after sub_80466AA, so scene ticks returning from a battle overlay start from clean records.
-// symdb: void battle_resetEStructRecords_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
+// symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetEStructRecords_8046664.yaml
 	thumb_func_start battle_resetEStructRecords_8046664
 battle_resetEStructRecords_8046664:
@@ -1624,6 +1626,8 @@ off_8046D48:
 	.word byte_2011C10
 	thumb_func_end ShopControl
 
+// symdb: One-time setup of the shop screen: packs the chip stock lists, loads graphics/text assets, builds the purchasable list, draws the five-row chip list, spawns the shop's eStruct records, runs the greeting script and picks the currency (zenny or bug-frags).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046D4C.yaml
 	thumb_local_start
 sub_8046D4C:
 	push {lr}
@@ -1706,7 +1710,7 @@ loc_8046DF0:
 	pop {pc}
 	thumb_func_end battle_objectAdvanceCounterToState8_8046DDC
 
-// symdb: Runs two update passes in sequence (sub_8047950 then shopBuyMenu_updateFrame_8047134) and always returns 0.
+// symdb: Runs two update passes in sequence (sub_8047950 then sub_8047134) and always returns 0.
 // symdb: void sub_8046DF8(void) /* no inputs; returns r0 = 0 with N/Z set from it */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046DF8.yaml
 	thumb_local_start
@@ -2320,7 +2324,7 @@ byte_8047268:
 	.byte 0x10, 0xE0, 0x10, 0xE0, 0x10, 0xE0, 0x10, 0xE0
 	thumb_func_end sub_804722C
 
-// symdb: Feeds one column of a per-column sprite/attr table to the writer at sprite_queueOamEntryThunk_802FE28 and advances an 18-column counter that wraps to 0.
+// symdb: Feeds one column of a per-column sprite/attr table to the writer at sub_802FE28 and advances an 18-column counter that wraps to 0.
 // symdb: void sub_80472E8(u16 upper /*r0*/, u16 lower /*r1*/, u32 column /*r2*/) — returns the column's
 // symdb: table entry in r1, the next (wrapped) column counter in r2, and 0 in r3; r0 is scratch, r4-r7/lr
 // symdb: preserved, flags clobbered.

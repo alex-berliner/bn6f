@@ -7534,6 +7534,8 @@ off_8126CBC:
 	.word dword_81268F8
 	thumb_func_end battle_petNaviDisplayInit_8126B6C
 
+// symdb: Per-frame update of the PET navi-display scene (sibling of battle_petNaviDisplayInit_8126B6C): runs its 9-entry state table, positions the selected entry's sprites, syncs PET-navi-dependent status entries, and redraws the scene.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126CC0.yaml
 	thumb_local_start
 sub_8126CC0:
 	push {r4-r7,lr}
@@ -9327,7 +9329,7 @@ off_8127AC8:
 
 // symdb: Email menu state 1 (HandleEmailMenu81279F8's table): run the sub-state handler (off_8127AF8 by byte 2), then the common updates.
 // symdb: (r5 = menu state) -> handler entered with r0 = handler, r1 = sub-state (sub_8127B94 reads r1);
-// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, battle_updateEStructSprites_80465F8
+// symdb: then sub_81281E0, sub_8127F54, sub_8127FE4, sub_8128280, sub_80465BC, sub_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127ACC.yaml
 	thumb_local_start
 sub_8127ACC:

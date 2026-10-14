@@ -1304,6 +1304,8 @@ locret_8026DC2:
 	pop {pc}
 	thumb_func_end sub_8026DB0
 
+// symdb: Turn-transition handler of the chip-selection state machine (S20364C0): runs the once-per-turn custom-gauge teardown + folder tally + restart snapshot, transfers the hand on the first turn, then requests the next state.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026DC4.yaml
 	thumb_local_start
 sub_8026DC4: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -20378,7 +20380,7 @@ byte_802F8AC:
 	thumb_func_end sub_802F88E
 
 // symdb: Per-frame title screen drawing: steps the animation counters, places the cursor, runs the OAM scripts and one script per achievement flag set.
-// symdb: void startScreen_updateFrame_802F8D8(StartScreen *self /* r5 */)
+// symdb: void sub_802F8D8(StartScreen *self /* r5 */)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/startScreen_updateFrame_802F8D8.yaml
 	thumb_local_start
 startScreen_updateFrame_802F8D8: // (self: *mut StartScreen $r5) -> ()
@@ -20977,7 +20979,7 @@ off_802FE24:
 
 // (u32 a1, u16 a2, int notUsed, int a4) -> void
 // symdb: Thumb→ARM tail-call trampoline that forwards r0–r3 and lr into sprite_queueOamEntry and returns straight to this function's caller.
-// symdb: void sprite_queueOamEntryThunk_802FE28(u32 r0, u32 r1, u32 r2, u32 r3);   // lr = caller return   // preserved: r4,
+// symdb: void sub_802FE28(u32 r0, u32 r1, u32 r2, u32 r3);   // lr = caller return   // preserved: r4,
 // symdb: r5, r6, r7   // clobbers : NZCV (flags), r0, r4–r7, lr via tail call   // tail-calls
 // symdb: sprite_queueOamEntry (ARM, +1) with identical r0..r3 and lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntryThunk_802FE28.yaml

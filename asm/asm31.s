@@ -26570,6 +26570,8 @@ off_80C43C0:
 	.word off_80C42D4
 	thumb_func_end battleObject_setupSprite_80C4368
 
+// symdb: Syncs a battle object's animation, position, visibility, palette/shader and flip with its related parent object (with a +-1.0 Y/Z offset mode), then dispatches into its CurAction table (single entry: battleObject_updateSprite_80C4484).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C43C4.yaml
 	thumb_local_start
 sub_80C43C4:
 	push {r4,lr}
@@ -27877,6 +27879,8 @@ off_80C4E70:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x0_80C4E58
 
+// symdb: Init handler of a table-driven attack object: Param1 selects a 12-byte definition (off_80C4C78) supplying collision shape, element, sprite, hit/status effects, then hands off to battle_object_collisionPhase_80C4F02.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4E7C.yaml
 	thumb_local_start
 sub_80C4E7C:
 	push {r7,lr}
@@ -29139,6 +29143,8 @@ sub_80C57E4:
 	pop {pc}
 	thumb_func_end sub_80C57E4
 
+// symdb: Init handler of an aura-style battle object: fixed sprite (0x80/0x10/0x17) with palette from Param1*4, flip depends on which side of Param3's column it sits on, two animation tables by adjacency, then hands off to sub_80C5886.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80C57F4.yaml
 	thumb_local_start
 sub_80C57F4:
 	push {r4,lr}
@@ -35452,6 +35458,8 @@ off_80C86FC:
 	.word sub_80C87DC+1
 	thumb_func_end sub_80C86B0
 
+// symdb: Init handler of a shadowless ground-level battle object: sprite 0x80/0xC/0x1A, palette 0, Z forced to the ground plane, collision (0xA,5,3) with hit effect 2, then CUR_STATE_UPDATE.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C8708.yaml
 	thumb_local_start
 sub_80C8708:
 	push {lr}
@@ -39188,6 +39196,8 @@ sub_80CA2CC:
 	pop {pc}
 	thumb_func_end sub_80CA2CC
 
+// symdb: Init handler of a velocity-driven projectile: sprite 0x80/0x10/7 (0x57 when Param1==4), X/Y velocities from the 12-byte-per-variant table byte_80CA26C (YVelocity negated on the bottom row), then CUR_STATE_UPDATE via tail call.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA2D4.yaml
 	thumb_local_start
 sub_80CA2D4:
 	push {lr}
@@ -109965,6 +109975,8 @@ loc_80EB856:
 	mov pc, lr
 	thumb_func_end aiAttack_BeginAttackSequence_80EB84C
 
+// symdb: AI attack-sequence step (state 2 of the AIAttackVars table off_80EB788): plays the attack animation and a variant SFX, composes the spawn parameter and creates the linked temp attack object, then runs the fuse/illusion countdown before ending the step.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB862.yaml
 	thumb_local_start
 sub_80EB862:
 	push {r4,r6,r7,lr}
@@ -110381,6 +110393,8 @@ off_80EBC20:
 	.word aiAttack_windupTick_80EBD3C+1
 	thumb_func_end aiAttack_dispatchStateHandler_80EBC0E
 
+// symdb: AI charged-attack step (state in an AIAttackVars table): arms the attack (animation, temp attack object, flag) on entry, spawns charge visuals at the arm during the wind-up, fires the hit object with SFX 0xAE at tick 0xF, ends after 0x1D frames.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EBC28.yaml
 	thumb_local_start
 sub_80EBC28:
 	push {r4,r6,r7,lr}

@@ -2188,7 +2188,7 @@ sub_8001154:
 	thumb_func_end sub_8001154
 
 // () -> void
-// symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sprite_queueOamEntryThunk_802FE28.
+// symdb: Walks a script table (array of {cmd, arg} pairs terminated by a zero cmd) and dispatches each pair to sub_802FE28.
 // symdb: void sub_8001158(const void *scriptTable);  // r0 = list ptr; clobbers r0-r3, r5, lr; flags NZ
 // symdb: clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/scriptListRun_8001158.yaml

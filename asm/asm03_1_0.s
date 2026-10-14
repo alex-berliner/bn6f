@@ -518,7 +518,7 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B6E
 
-// symdb: Tick a state's per-frame animation index and dispatch the matching guest routine via sprite_queueOamEntryThunk_802FE28.
+// symdb: Tick a state's per-frame animation index and dispatch the matching guest routine via sub_802FE28.
 // symdb: void sub_8033B80(u32 index, void *state /* r5 */); clobbers r0-r3, lr; flags NZCV; preserves
 // symdb: r4-r7.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
