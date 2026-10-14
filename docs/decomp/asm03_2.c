@@ -683,7 +683,7 @@ unsigned __int8 *__fastcall sub_80467FC(unsigned __int8 *result)
 
 
 // 0x8046818
-int sub_8046818()
+int battle_callAIDispatch_8046818()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -705,7 +705,7 @@ int sub_8046818()
 
 
 // 0x8046854
-int sub_8046854()
+int battleObject_updateSpriteGfxForAll_8046854()
 {
     char *v0; // r5
     signed int v1; // r7

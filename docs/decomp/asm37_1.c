@@ -129,8 +129,8 @@ int sub_81419A0()
             sub_80468C6(1, 0, 0);
             sub_80468C6(2, 1, 0);
         }
-        sub_8046818();
-        v2 = sub_8046854();
+        battle_callAIDispatch_8046818();
+        v2 = battleObject_updateSpriteGfxForAll_8046854();
         sub_811E0BA(v2, v3, v4, v5);
         s_2011C50_ptr_1C_isNull();
         if ( v1 )
@@ -661,8 +661,8 @@ int sub_8142248()
             sub_80468BA();
             sub_80468C6(3, 0, 0);
         }
-        sub_8046818();
-        sub_8046854();
+        battle_callAIDispatch_8046818();
+        battleObject_updateSpriteGfxForAll_8046854();
     }
     sub_8142C90();
     return 0;
@@ -2103,8 +2103,8 @@ int sub_8143482()
             sub_80468C6(8, 0, 0);
             sub_80468C6(9, 1, 0);
         }
-        sub_8046818();
-        sub_8046854();
+        battle_callAIDispatch_8046818();
+        battleObject_updateSpriteGfxForAll_8046854();
     }
     return 0;
 }
@@ -2761,8 +2761,8 @@ int sub_8144048()
             sub_80468C6(12, 1, 0);
             sub_80468C6(13, 2, 0);
         }
-        sub_8046818();
-        sub_8046854();
+        battle_callAIDispatch_8046818();
+        battleObject_updateSpriteGfxForAll_8046854();
         v2 = sub_804691A(3);
         if ( !v1 )
             sub_811E744(v2, v3, v4, v5);

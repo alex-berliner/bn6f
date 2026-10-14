@@ -533,8 +533,8 @@ int sub_808FEA4()
         result = byte_2000315;
         if ( !byte_2000315 )
         {
-            sub_8046818();
-            result = sub_8046854();
+            battle_callAIDispatch_8046818();
+            result = battleObject_updateSpriteGfxForAll_8046854();
         }
     }
     return result;

@@ -11084,9 +11084,9 @@ locret_80139C2:
 
 // symdb: On a live player BattleObject, spawns the pink counter-hit ring (obj 0x5E) when the player is in beast-out mode and the AIData+0x5c counter-target pointer is still unset.
 // symdb: (r5 = *BattleObject, r10 = *Toolkit) -> void ; side effects: allocates obj 0x5E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80139C4.yaml
-	thumb_func_start sub_80139C4
-sub_80139C4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_playerCounterSpawnPinkRingIfReady_80139C4.yaml
+	thumb_func_start battleObject_playerCounterSpawnPinkRingIfReady_80139C4
+battleObject_playerCounterSpawnPinkRingIfReady_80139C4:
 	push {r7,lr}
 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
@@ -11120,7 +11120,7 @@ sub_80139C4:
 
 locret_80139F4:
 	pop {r7,pc}
-	thumb_func_end sub_80139C4
+	thumb_func_end battleObject_playerCounterSpawnPinkRingIfReady_80139C4
 
 // symdb: Applies a per-turn status/elemental effect (e.g. poison, paralyze, freeze, root, blind, soft-delete) to the navi represented by `r5`'s BattleObject using the byte at `CollisionData+0xA4/0xA5`.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, ...caller-saved r4..r12/lr) -> void
@@ -13554,9 +13554,9 @@ locret_8014A36:
 // symdb: Dispatch handler for an AIData beast-out/transform action: picks the per-state sub-routine based on Alliance/NaviStats, clears the action flag if not applicable.
 // symdb: side effects only (no return value to callers); reads r5 = AIData*, r7 = AIAttackVars*,
 // symdb: reads/writes AIData->Unk_48 flag, Alliance via r5, AIAttackVars->Unk_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014A38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBeastTransformationAction_8014A38.yaml
 	thumb_local_start
-sub_8014A38:
+battle_runBeastTransformationAction_8014A38:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl sub_801595E
@@ -13657,7 +13657,7 @@ off_8014B04:
 	.word sub_80155CC+1
 dword_8014B14:
 	.word 0x80000
-	thumb_func_end sub_8014A38
+	thumb_func_end battle_runBeastTransformationAction_8014A38
 
 	thumb_local_start
 sub_8014B18:
@@ -16989,7 +16989,7 @@ dword_80165EC:
 	.word 0x40000000
 off_80165F0:
 	.word battle_teardownObject_80165F8+1
-	.word sub_801664E+1
+	.word battle_fadeOutAndDespawnSelfActor_801664E+1
 	thumb_func_end battle_objectUpdateDispatchPhase_80165C2
 
 // symdb: Teardown routine for a single battle object: clears its collision region and result, releases its slot, blanks chip/related-object state, clears AI/barrier data, dispatches a version-specific actor init based on the enemy record, optionally signals the battle is over, and sets the object's phase to 4.
@@ -17041,9 +17041,9 @@ loc_8016644:
 // symdb: (r5 = self BattleObject; r10 = Toolkit) -> r0 non-zero ; side effects mutates self BattleObject
 // symdb: Timer / PhaseInitialized / CurState / ObjectHeader Flags, self AIData+0x74, sprite palette,
 // symdb: alliance target slot, alive-actor list, panel reservation.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801664E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fadeOutAndDespawnSelfActor_801664E.yaml
 	thumb_local_start
-sub_801664E:
+battle_fadeOutAndDespawnSelfActor_801664E:
 	push {r4,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -17087,7 +17087,7 @@ loc_80166A4:
 	bl sprite_forceWhitePalette
 locret_80166AC:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801664E
+	thumb_func_end battle_fadeOutAndDespawnSelfActor_801664E
 
 	thumb_func_start sub_80166AE
 sub_80166AE:
@@ -17808,9 +17808,9 @@ locret_8016C4C:
 // symdb: Performs a battle object's destroy-phase cleanup (releases panel reserves, frees its collision slot, decrements alliance counter, marks phase initialized=4, then drops the object).
 // symdb: (r5 = BattleObject*; r10 = toolkit) -> void ; side effects: mutates battle object, AI data,
 // symdb: collision slot, panel reserves, alliance counter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016C4E.yaml
-	thumb_func_start sub_8016C4E
-sub_8016C4E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_destroy_8016C4E.yaml
+	thumb_func_start battleObject_destroy_8016C4E
+battleObject_destroy_8016C4E:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
@@ -17839,7 +17839,7 @@ loc_8016C84:
 	bl object_freeMemory
 locret_8016C88:
 	pop {r4,pc}
-	thumb_func_end sub_8016C4E
+	thumb_func_end battleObject_destroy_8016C4E
 
 // symdb: Generic battle-object destructor that releases the object's panel tile reserves, its collision data, and the object's memory.
 // symdb: void object_genericDestroy(void); // r5 = battle object pointer, clobbers r0-r3 and flags,
@@ -19800,7 +19800,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (battle_runBeastTransformationAction_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -19813,7 +19813,7 @@ battle_ai_dispatchQueuedAttacks_8017BC0:
 	mov r1, #0x80
 	tst r0, r1
 	beq loc_8017BD8
-	bl sub_8014A38
+	bl battle_runBeastTransformationAction_8014A38
 	pop {r4,r6,r7,pc}
 loc_8017BD8:
 	bl GetAIDataUnk0x48Flag
@@ -26643,7 +26643,7 @@ locret_801BEFC:
 off_801BF00:
 	.word off_801BF04
 off_801BF04:
-	.word sub_801BFEE+1
+	.word battle_loadChipPreviewGfxInit_801BFEE+1
 	.word sub_801BFF8+1
 	.word battleObject_updateHPMeters_801C168+1
 	.word sub_801C368+1
@@ -26735,14 +26735,14 @@ nullsub_58:
 // symdb: Battle chip-preview GFx init trampoline that passes the "open chip preview" flag (=1) into sub_801C002, which is the project's hand-table chip-preview GFX loader.
 // symdb: (none — only uses callee-saved r4, r6, r7, r10, lr) -> void ; side effects: triggers the chip-
 // symdb: preview GFX load via r0=1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BFEE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadChipPreviewGfxInit_801BFEE.yaml
 	thumb_local_start
-sub_801BFEE:
+battle_loadChipPreviewGfxInit_801BFEE:
 	push {lr}
 	mov r0, #1
 	bl battle_loadChipPreviewGfxFromHandTable_801C002
 	pop {pc}
-	thumb_func_end sub_801BFEE
+	thumb_func_end battle_loadChipPreviewGfxInit_801BFEE
 
 // symdb: Thin trampoline that tail-calls sub_801C002 with a zero first argument, passing its register and flag results straight back to the caller.
 // symdb: void sub_801BFF8(void) — callers supply live r4-r7/r10 state that the callee expects; returns
@@ -27086,7 +27086,7 @@ loc_801C210:
 	tst r1, r0
 	beq loc_801C286
 	bl renderHpDigits_801C296
-	bl sub_801C304
+	bl chatbox_uploadFrameTileGFX_801C304
 	ldrb r0, [r4]
 	mov r1, #8
 	tst r0, r1
@@ -27221,9 +27221,9 @@ loc_801C2F6:
 // symdb: Chatbox text/frame GFX upload helper — copies 0x20 bytes (one tile row) from each of the 4 chatbox GFX source slots to VRAM, skipping slot 0x0B, and chaining a second upload 0x80 bytes further into the destination.
 // symdb: (r4 = arm, r5 = dest base in VRAM, r7 = index table base) -> r0 = dest end pointer ; r4/r5/r6/r7
 // symdb: preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C304.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_uploadFrameTileGFX_801C304.yaml
 	thumb_local_start
-sub_801C304:
+chatbox_uploadFrameTileGFX_801C304:
 	push {r3-r6,lr}
 	ldrb r0, [r4,#8]
 	lsl r0, r0, #2
@@ -27271,7 +27271,7 @@ dword_801C360:
 	.word 0x1FF00FF
 dword_801C364:
 	.word 0xB0B0B0B
-	thumb_func_end sub_801C304
+	thumb_func_end chatbox_uploadFrameTileGFX_801C304
 
 	thumb_local_start
 sub_801C368:
@@ -28355,9 +28355,9 @@ dword_801CAD8:
 	.word 0xD1DA
 	thumb_func_end sub_801CA80
 
-// symdb: Battle-object per-frame anim/state update: refreshes CurAnim when NegaWisp (id 0x29) flag set, ticks a future-panel timer/anim, and dispatches to either sub_801CC34 or battle_updateObjectAnim_801CB38.
+// symdb: Battle-object per-frame anim/state update: refreshes CurAnim when NegaWisp (id 0x29) flag set, ticks a future-panel timer/anim, and dispatches to either battleObject_loadBeastOutFormGfx_801CC34 or battle_updateObjectAnim_801CB38.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes r5+0x14/0x15/0x1f, calls
-// symdb: GetBattleNaviStatsByte/sub_801CC34/battle_updateObjectAnim_801CB38/sub_801CC94
+// symdb: GetBattleNaviStatsByte/battleObject_loadBeastOutFormGfx_801CC34/battle_updateObjectAnim_801CB38/sub_801CC94
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimAndState_801CADC.yaml
 	thumb_local_start
 battleObject_updateAnimAndState_801CADC:
@@ -28403,7 +28403,7 @@ loc_801CB22:
 	cmp r0, #0
 	beq loc_801CB2C
 loc_801CB26:
-	bl sub_801CC34
+	bl battleObject_loadBeastOutFormGfx_801CC34
 	b loc_801CB30
 loc_801CB2C:
 	bl battle_updateObjectAnim_801CB38
@@ -28556,9 +28556,9 @@ loc_801CC2A:
 // symdb: (r0 = emotionIdx (1-based), r4 = ?, r5 = BattleObject*, r10 = Toolkit*) -> r0 = emotionIdx
 // symdb: (unchanged) ; side effects: GFX/VRAM queued via QueueEightWordAlignedGFXTransfer; writes
 // symdb: BattleObject+0x10 and +0x11
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CC34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_loadBeastOutFormGfx_801CC34.yaml
 	thumb_local_start
-sub_801CC34:
+battleObject_loadBeastOutFormGfx_801CC34:
 	push {r0,r4,r7,lr}
 	sub sp, sp, #0x30
 	mov r2, r0
@@ -28605,7 +28605,7 @@ loc_801CC76:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	add sp, sp, #0x30
 	pop {r0,r4,r7,pc}
-	thumb_func_end sub_801CC34
+	thumb_func_end battleObject_loadBeastOutFormGfx_801CC34
 
 // symdb: AI tick that, when any allied Navi bonus is active, randomly queues one or two "PwrAtk" button presses (with a 12-tick inter-press delay) into AIData and refreshes a 0x20-byte blank GFX region.
 // symdb: (r5 = *mut AIData, r10 = *Toolkit, lr) -> void ; side effects: writes AIData+PwrAtkState (0x1d),

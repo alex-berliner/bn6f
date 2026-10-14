@@ -57390,7 +57390,7 @@ void __noreturn battle_initObject_80DA834()
 
 
 // 0x80da886
-void __noreturn sub_80DA886()
+void __noreturn battle_objectDestructOnHitPhase_80DA886()
 {
     int v0; // r5
     signed int v1; // r0
@@ -83707,7 +83707,7 @@ void __usercall playerObject_update_80EA484(Battle *obj@<R5>)
     ai_eventuallyRunsAIAttack_801AF44(PlayerObjectAIAttackJumptables[v1]);
     (playerObjectUpdateJumptable_80EA93C[v1])();
     battle_tickBattleObject_80107D4();
-    v2 = sub_80139C4();
+    v2 = battleObject_playerCounterSpawnPinkRingIfReady_80139C4();
     battle_refreshNaviSpritePaletteFromForm_80100EC(v2);
     v3 = battle_isPaused();
     if ( v5 )

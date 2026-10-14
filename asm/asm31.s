@@ -9209,7 +9209,7 @@ off_80BC514:
 off_80BC518:
 	.word sub_80BC524+1
 	.word sub_80BC56E+1
-	.word sub_8016C4E+1
+	.word battleObject_destroy_8016C4E+1
 	thumb_func_end t1_0x1a_80BC4FC
 
 	thumb_local_start
@@ -16961,7 +16961,7 @@ off_80BFE14:
 off_80BFE18:
 	.word sub_80BFE24+1
 	.word sub_80BFE6E+1
-	.word sub_8016C4E+1
+	.word battleObject_destroy_8016C4E+1
 	thumb_func_end t1_0x26_80BFDFC
 
 	thumb_local_start
@@ -73701,13 +73701,13 @@ off_80DA824:
 	.word off_80DA828
 off_80DA828:
 	.word battle_initObject_80DA834+1
-	.word sub_80DA886+1
+	.word battle_objectDestructOnHitPhase_80DA886+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0xa9_80DA80C
 
 // symdb: Initializes a battle object—position, collision, HP, palette, state, and first action—then hands off to the action state machine.
 // symdb: void battle_initObject_80DA834(struct BattleObject *obj /* r5 */); /* r4,r6-r12,lr pass-through;
-// symdb: outputs r0-r3,r4-r12,lr,nzcv from sub_80DA886 */
+// symdb: outputs r0-r3,r4-r12,lr,nzcv from battle_objectDestructOnHitPhase_80DA886 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initObject_80DA834.yaml
 	thumb_local_start
 battle_initObject_80DA834:
@@ -73744,7 +73744,7 @@ battle_initObject_80DA834:
 	mov r2, #4
 loc_80DA87E:
 	strb r2, [r5,#oBattleObject_CurAction]
-	bl sub_80DA886
+	bl battle_objectDestructOnHitPhase_80DA886
 	pop {pc}
 	thumb_func_end battle_initObject_80DA834
 
@@ -73752,9 +73752,9 @@ loc_80DA87E:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: oBattleObject_CurStateActionPhaseAndPhaseInitialized, plays SFX 0x85, may spawn effect object,
 // symdb: tears down collision.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DA886.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectDestructOnHitPhase_80DA886.yaml
 	thumb_local_start
-sub_80DA886:
+battle_objectDestructOnHitPhase_80DA886:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -73797,7 +73797,7 @@ off_80DA8DC:
 	.word sub_80DA908+1
 	.word sub_80DA956+1
 	.word battle_objectLingerThenDestroyPhase_80DA974+1
-	thumb_func_end sub_80DA886
+	thumb_func_end battle_objectDestructOnHitPhase_80DA886
 
 	thumb_local_start
 sub_80DA8EC:
@@ -108012,7 +108012,7 @@ off_80EA474:
 off_80EA478:
 	.word playerObject_init_80172F0+1
 	.word playerObject_update_80EA484+1
-	.word sub_8016C4E+1
+	.word battleObject_destroy_8016C4E+1
 	thumb_func_end playerObject_main_80EA460
 
 	thumb_local_start
@@ -108035,7 +108035,7 @@ playerObject_update_80EA484:
 
 	// this creates a battle object 0x5e
   // Disabling this causes the pink ring around MegaMan to no longer appear when we hit a counter
-	bl sub_80139C4
+	bl battleObject_playerCounterSpawnPinkRingIfReady_80139C4
 
 	bl battle_refreshNaviSpritePaletteFromForm_80100EC
 
@@ -124318,7 +124318,7 @@ off_80F2344:
 off_80F2348:
 	.word battleObject_initNaviObject_8016F56+1
 	.word sub_80F2354+1
-	.word sub_8016C4E+1
+	.word battleObject_destroy_8016C4E+1
 	thumb_func_end sub_80F2330
 
 // symdb: Navi battle object main dispatch: indexes four AI tables by AIData.AIIndex * 4 — actions off_80F2410, the ai_eventuallyRunsAIAttack_801AF44 flag table off_80F23AC, off_80F2474, off_80F25A0 — and decrements AIData.ChipLockoutTimer.
@@ -170628,7 +170628,7 @@ off_8108F64:
 off_8108F68:
 	.word battleObject_initNaviObject_8016F56+1
 	.word battle_8108F74+1
-	.word sub_8016C4E+1
+	.word battleObject_destroy_8016C4E+1
 	thumb_func_end battleObject_dispatch_8108F50
 
 // symdb: Virus/enemy per-frame update: special-cases a few NameIDs, then indexes the four AI tables by AIData.AIIndex * 4 — actions off_8109050 (to battle_801B1C4), hooks off_81091D0 (long-call) — and stores the object Z into AIData+0x3C unless CurAction == 7.

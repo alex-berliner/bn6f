@@ -633,7 +633,7 @@ int __fastcall sub_8026B04(int a1, int a2, int a3)
             *(v3 + 2) = 0;
         }
     }
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -676,7 +676,7 @@ int scrollStrip_update_8026BF4()
         *(v0 + 1) = *(v0 + 11);
         *(v0 + 2) = 0;
     }
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -695,7 +695,7 @@ int __usercall custMenuUpdateWaitSelectionState_8026CCC@<R0>(void *r5@<R5>)
         v4 = *(v1 + oToolkit_JoypadPtr);
         custMenuSomeHandler_8028B74(r5);
         sub_8028820();
-        sub_8029C08();
+        battleObject_chipSelectAnimTick_8029C08();
         v5 = sub_802899C();
         battle_endingBgUpdate_8029D34(v5);
         result = *(r5 + 16) + 1;
@@ -727,7 +727,7 @@ int sub_8026D06()
     v2 = v1[2];
     if ( *(v0 + 2) == 2 )
     {
-        sub_8029C08();
+        battleObject_chipSelectAnimTick_8029C08();
         *(v0 + 1) = 4;
         result = 0;
         *(v0 + 2) = 0;
@@ -748,7 +748,7 @@ int sub_8026D06()
             *(v2 + 24) = 0;
             sub_801E71C(120);
             CopyBackgroundTiles(0, 0, 3, &unk_2035000, 15, dword_14);
-            sub_8029C08();
+            battleObject_chipSelectAnimTick_8029C08();
             PlaySoundEffect(128, v5, v6);
             result = *(v1[6] + 7);
             if ( result == 1 )
@@ -839,7 +839,7 @@ LABEL_4:
         *(v0 + 1) = 4;
         *(v0 + 2) = 0;
     }
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -856,7 +856,7 @@ int sub_8026E78()
         *(v0 + 1) = 84;
         *(v0 + 2) = 0;
     }
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -867,7 +867,7 @@ int __fastcall battle_updateObjectByKind_8026E98(int a1)
 
     sub_802D246();
     (*(&off_8026EBC + *(v1 + 2)))();
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -1026,7 +1026,7 @@ int sub_8027044()
     int v0; // r5
 
     (*(&off_8027060 + *(v0 + 2)))();
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -1203,7 +1203,7 @@ int sub_80271F8()
     int v0; // r5
 
     (*(&off_8027214 + *(v0 + 2)))();
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -1275,7 +1275,7 @@ int sub_802728C()
 
     v1 = *(v0 + 64);
     (*(&off_80272A4 + *(v0 + 2)))();
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -1433,7 +1433,7 @@ int chatbox_resetTextStateIfHidden_80273EC()
         *(v0 + 1) = *(v0 + 13);
         *(v0 + 2) = 0;
     }
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -1444,7 +1444,7 @@ int sub_8027406()
 
     getLocOfActiveChips_8027E1C(8);
     (*(&off_8027428 + *(v0 + 2)))();
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -1539,7 +1539,7 @@ int sub_8027548()
     int v0; // r5
 
     (*(&off_8027564 + *(v0 + 2)))();
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -1622,7 +1622,7 @@ int sub_80275EC()
     int v0; // r5
 
     (*(&off_8027604 + *(v0 + 2)))();
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -1759,7 +1759,7 @@ int sub_802770C()
     int v0; // r5
 
     (*(&off_8027724 + *(v0 + 2)))();
-    return sub_8029C08();
+    return battleObject_chipSelectAnimTick_8029C08();
 }
 
 
@@ -1954,7 +1954,7 @@ int __fastcall sub_802790C(int a1, int a2, int a3)
         *(v3 + 1) = 4;
         *(v3 + 2) = 0;
     }
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -2027,7 +2027,7 @@ int __fastcall sub_80279C8(int a1)
     int v3; // r4
     int v4; // r1
 
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     v2 = sub_802899C();
     battle_endingBgUpdate_8029D34(v2);
     v3 = 4;
@@ -2072,7 +2072,7 @@ int sub_8027A58()
     int v0; // r5
 
     (*(&off_8027A74 + *(v0 + 2)))();
-    sub_8029C08();
+    battleObject_chipSelectAnimTick_8029C08();
     return sub_802899C();
 }
 
@@ -5493,7 +5493,7 @@ signed int sub_8029BE6()
 
 
 // 0x8029c08
-int sub_8029C08()
+int battleObject_chipSelectAnimTick_8029C08()
 {
     unsigned __int8 *v0; // r5
     int v1; // r10
@@ -15308,7 +15308,7 @@ _DWORD *sub_8031122()
 
 
 // 0x8031136
-_DWORD *__fastcall sub_8031136(_DWORD *a1)
+_DWORD *__fastcall battleObject_applyShakeOffsetAndProject_8031136(_DWORD *a1)
 {
     _DWORD *v1; // r6
 
@@ -15325,7 +15325,7 @@ _DWORD *__fastcall sub_8031136(_DWORD *a1)
 
 
 // 0x8031176
-_DWORD *__fastcall sub_8031176(_DWORD *a1)
+_DWORD *__fastcall battle_scrollAccumulateStep_8031176(_DWORD *a1)
 {
     _DWORD *v1; // r6
 
@@ -15495,7 +15495,7 @@ void __fastcall sub_8031388(_DWORD *a1)
     int v2; // r1
     int v3; // r0
 
-    v1 = sub_8031136(a1);
+    v1 = battleObject_applyShakeOffsetAndProject_8031136(a1);
     v3 = sub_8030E14(v1, v2, -1, -1);
     camera_moveByDelta_80310B0(v3, 0);
 }
@@ -15508,7 +15508,7 @@ void __fastcall battle_setupMessageWindow_80313B0(_DWORD *a1)
     int v2; // r1
     int v3; // r0
 
-    v1 = sub_8031176(a1);
+    v1 = battle_scrollAccumulateStep_8031176(a1);
     v3 = sub_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
 }
@@ -15521,7 +15521,7 @@ void __fastcall battle_runTextboxUpdateAndSetStateBit1_80313D4(_DWORD *a1)
     int v2; // r1
     int v3; // r1
 
-    v1 = sub_8031136(a1);
+    v1 = battleObject_applyShakeOffsetAndProject_8031136(a1);
     sub_8030F04(v1, v2, 32, 0);
     camera_moveByDelta_80310B0(0, v3);
 }
@@ -15534,7 +15534,7 @@ void __fastcall sub_80313FC(_DWORD *a1)
     int v2; // r1
     int v3; // r1
 
-    v1 = sub_8031176(a1);
+    v1 = battle_scrollAccumulateStep_8031176(a1);
     sub_8030F7C(v1, v2, 0, 32);
     camera_moveByDelta_80310B0(0, v3);
 }
@@ -15553,12 +15553,12 @@ void __fastcall sub_8031420(__int64 a1)
     _DWORD *v8; // [sp+0h] [bp-14h]
 
     v8 = a1;
-    v1 = sub_8031136(a1);
+    v1 = battleObject_applyShakeOffsetAndProject_8031136(a1);
     v3 = sub_8030E14(v1, v2, -1, -1);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {
-        v5 = sub_8031136(v8);
+        v5 = battleObject_applyShakeOffsetAndProject_8031136(v8);
         sub_8030F04(v5, v6, 32, 0);
         camera_moveByDelta_80310B0(0, v7);
     }
@@ -15578,12 +15578,12 @@ void __fastcall sub_8031478(__int64 a1)
     _DWORD *v8; // [sp+0h] [bp-14h]
 
     v8 = a1;
-    v1 = sub_8031176(a1);
+    v1 = battle_scrollAccumulateStep_8031176(a1);
     v3 = sub_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {
-        v5 = sub_8031136(v8);
+        v5 = battleObject_applyShakeOffsetAndProject_8031136(v8);
         sub_8030F04(v5, v6, 32, 0);
         camera_moveByDelta_80310B0(0, v7);
     }
@@ -15603,12 +15603,12 @@ void __fastcall sub_80314CC(__int64 a1)
     _DWORD *v8; // [sp+0h] [bp-14h]
 
     v8 = a1;
-    v1 = sub_8031136(a1);
+    v1 = battleObject_applyShakeOffsetAndProject_8031136(a1);
     v3 = sub_8030E14(v1, v2, -1, -1);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {
-        v5 = sub_8031176(v8);
+        v5 = battle_scrollAccumulateStep_8031176(v8);
         sub_8030F7C(v5, v6, 0, 32);
         camera_moveByDelta_80310B0(0, v7);
     }
@@ -15628,12 +15628,12 @@ void __fastcall sub_8031520(__int64 a1)
     _DWORD *v8; // [sp+0h] [bp-14h]
 
     v8 = a1;
-    v1 = sub_8031176(a1);
+    v1 = battle_scrollAccumulateStep_8031176(a1);
     v3 = sub_8030E8C(v1, v2, 32, 32);
     camera_moveByDelta_80310B0(v3, 0);
     if ( v4 != 1 )
     {
-        v5 = sub_8031176(v8);
+        v5 = battle_scrollAccumulateStep_8031176(v8);
         sub_8030F7C(v5, v6, 0, 32);
         camera_moveByDelta_80310B0(0, v7);
     }

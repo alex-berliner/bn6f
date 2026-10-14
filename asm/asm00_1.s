@@ -3127,7 +3127,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A781C+1
 	.word sub_80A78B8+1
 	.word sub_80A7C84+1
-	.word sub_80A7D90+1
+	.word battleObject_runAIDispatchWithCurState_80A7D90+1
 	.word sub_80A8208+1
 	.word sub_80A8394+1
 	.word sub_80A8654+1
@@ -10971,7 +10971,7 @@ off_8008034:
 	.word off_8008038
 off_8008038:
 	.word sub_800840C+1
-	.word sub_8008064+1
+	.word battle_runPerFrameStoryStep_8008064+1
 	.word battle_updateMainFlow_80080D2+1
 	.word battle_runVictorySequence_80081A4+1
 	.word sub_800825A+1
@@ -10987,9 +10987,9 @@ off_8008060:
 // symdb: Story-step per-frame driver: ticks the battle navi AI joypads, kicks off a story-battle idle "KindEffect" dispatch (skipping or applying effects when the battle is ending or has a specific battle-effect flag), and falls back to a "no cross-net yet" path that resets navi status gfx + state.
 // symdb: () -> void ; side effects on a per-battle state struct (r5), toolkit/r10 state, AI joypads, navi
 // symdb: status block, struct 0x2035280 field 0x26
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008064.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runPerFrameStoryStep_8008064.yaml
 	thumb_local_start
-sub_8008064:
+battle_runPerFrameStoryStep_8008064:
 	push {lr}
 	mov r0, #0
 	bl battle_updateNaviAIJoypad_8012DFC
@@ -11042,7 +11042,7 @@ loc_80080B2:
 	str r0, [r5]
 locret_80080D0:
 	pop {pc}
-	thumb_func_end sub_8008064
+	thumb_func_end battle_runPerFrameStoryStep_8008064
 
 // symdb: Per-frame tick of the battle main-flow state machine: refreshes both navis' virtual joypads, unpauses the battle, ticks the phase state machine, and writes the next main-flow state id (0xC/0x10/0x18/0x1C/0x20) into the caller's state word.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateMainFlow_80080D2.yaml

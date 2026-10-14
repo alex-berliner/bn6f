@@ -5341,8 +5341,8 @@ _BYTE *sub_8038A9C()
 int cb_8038AD0()
 {
     (*(&off_8038AF4 + byte_2011E40))();
-    sub_8046818();
-    sub_8046854();
+    battle_callAIDispatch_8046818();
+    battleObject_updateSpriteGfxForAll_8046854();
     entity_runAllUpdateHandlers_80465BC();
     return battle_updateEStructSprites_80465F8();
 }

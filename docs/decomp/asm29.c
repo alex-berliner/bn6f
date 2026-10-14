@@ -1153,7 +1153,7 @@ LABEL_24:
         v3 = *(v0 + 9);
         if ( v3 <= 0 )
         {
-            if ( !sub_80A5C74() || !*(v0 + 36) )
+            if ( !battle_ai_checkBeastOutTrigger_80A5C74() || !*(v0 + 36) )
                 goto LABEL_21;
             SetEventFlagFromImmediate(23, 7);
             SetEventFlagFromImmediate(23, 40);
@@ -1205,7 +1205,7 @@ int sub_80A5C6C()
 
 
 // 0x80a5c74
-signed int sub_80A5C74()
+signed int battle_ai_checkBeastOutTrigger_80A5C74()
 {
     int v0; // r5
     signed int v1; // r4
@@ -1671,12 +1671,12 @@ void sub_80A6A34()
     sprite_noShadow(v0);
     *(v0 + 8) = 4;
     sub_80A6E50();
-    sub_80A6A62();
+    battleObject_runActionSubroutineDispatch_80A6A62();
 }
 
 
 // 0x80a6a62
-void sub_80A6A62()
+void battleObject_runActionSubroutineDispatch_80A6A62()
 {
     int v0; // r5
     unsigned __int16 *v1; // r0
@@ -3705,7 +3705,7 @@ void *sub_80A7CFE()
 
 
 // 0x80a7d90
-int sub_80A7D90()
+int battleObject_runAIDispatchWithCurState_80A7D90()
 {
     int v0; // r5
 
@@ -3737,7 +3737,7 @@ void __noreturn sub_80A7DB8()
     v4 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v4);
     *(v0 + 8) = 4;
-    sub_80A7E14();
+    battleObject_beastSP_battlerUpdate_80A7E14();
 }
 
 
@@ -3749,7 +3749,7 @@ int sub_80A7E0C()
 
 
 // 0x80a7e14
-void __noreturn sub_80A7E14()
+void __noreturn battleObject_beastSP_battlerUpdate_80A7E14()
 {
     Battle *v0; // r5
     int v1; // r7

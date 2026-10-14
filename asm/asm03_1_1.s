@@ -310,8 +310,8 @@ cb_8038AD0:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {pc}

@@ -177,8 +177,8 @@ sub_81419A0:
 	mov r2, #0
 	bl sub_80468C6
 loc_81419CC:
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 	bl sub_811E0BA
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_8141A0C
@@ -1001,8 +1001,8 @@ sub_8142248:
 	mov r2, #0
 	bl sub_80468C6
 loc_814226A:
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 loc_8142272:
 	bl sub_8142C90
 	mov r0, #0
@@ -3143,8 +3143,8 @@ sub_8143482:
 	mov r2, #0
 	bl sub_80468C6
 loc_81434AE:
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 loc_81434B6:
 	mov r0, #0
 	pop {r4-r7,pc}
@@ -4271,8 +4271,8 @@ sub_8144048:
 	mov r2, #0
 	bl sub_80468C6
 loc_814407E:
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 	mov r0, #3
 	bl sub_804691A
 	beq loc_8144092

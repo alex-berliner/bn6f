@@ -6434,7 +6434,7 @@ int sub_800801C()
 
 
 // 0x8008064
-int sub_8008064()
+int battle_runPerFrameStoryStep_8008064()
 {
     int v0; // r5
     int v1; // r10

@@ -905,7 +905,7 @@ off_8026AA4:
 
 // symdb: Drives the tile-animation/wipe state of a battle custom-menu object, scrolling tiles and the camera, then transitions to either the wait-selection or trigger-selection phase.
 // symdb: void sub_8026B04(u32 self /* r5 */, u32 toolkit /* r10 */, u32 r4, u32 r6 /* forwarded into
-// symdb: sub_8029C08 */); clobbers r0 r1 r2 r3 r8 r9 r11 r12 lr, flags
+// symdb: battleObject_chipSelectAnimTick_8029C08 */); clobbers r0 r1 r2 r3 r8 r9 r11 r12 lr, flags
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
 	thumb_local_start
 sub_8026B04: // (self: * S20364C0 $r5) -> ()
@@ -1044,7 +1044,7 @@ loc_8026BE0:
 	strh r0, [r5,#oS20364C0_Unk_02]
 
 loc_8026BE8:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8026BF0:
@@ -1148,7 +1148,7 @@ loc_8026C5C: // endif
 
 loc_8026C7E: // endif
 
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8026C84:
@@ -1193,7 +1193,7 @@ loc_8026CE6:
 	ldr r7, [r7,#oToolkit_JoypadPtr]
 	bl custMenuSomeHandler_8028B74 // (self: * S20364C0 $r5) -> ()
 	bl sub_8028820
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	bl battle_endingBgUpdate_8029D34
 	ldr r0, [r5,#0x40]
@@ -1263,7 +1263,7 @@ loc_8026D5C:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4,r5}
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	mov r0, #SOUND_CUR_MOVE_80
 	bl PlaySoundEffect
 	mov r0, r10
@@ -1275,7 +1275,7 @@ loc_8026D5C:
 	bl dispatch_801DA48
 	b locret_8026DA6
 loc_8026D9A:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -1390,7 +1390,7 @@ loc_8026E64:
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8026E72:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	thumb_func_end chatbox_stateMaybeFinishText_8026E4C
 
@@ -1408,7 +1408,7 @@ sub_8026E78: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8026E92:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8026E78
 
@@ -1431,7 +1431,7 @@ loc_8026EA8:
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {r4,pc}
 	.balign 4, 0
 off_8026EB8:
@@ -1664,7 +1664,7 @@ sub_8027044: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -1888,7 +1888,7 @@ off_80271F4:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80271C2
 
-// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
+// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then battleObject_chipSelectAnimTick_8029C08 and sub_802899C.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80271F8.yaml
 	thumb_local_start
 sub_80271F8: // (self: * S20364C0 $r5) -> ()
@@ -1898,7 +1898,7 @@ sub_80271F8: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -1982,7 +1982,7 @@ sub_802728C: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {r4,pc}
 	.balign 4, 0
 off_80272A0:
@@ -2225,7 +2225,7 @@ chatbox_resetTextStateIfHidden_80273EC: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8027400:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	thumb_func_end chatbox_resetTextStateIfHidden_80273EC
 
@@ -2240,7 +2240,7 @@ sub_8027406: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {r4,pc}
 	.balign 4, 0
@@ -2408,7 +2408,7 @@ sub_8027548: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -2503,7 +2503,7 @@ sub_80275EC: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8027600:
@@ -2658,7 +2658,7 @@ sub_802770C: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8027720:
@@ -2942,7 +2942,7 @@ loc_8027922:
 	mov r0, #0
 	strh r0, [r5,#2]
 loc_8027940:
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	thumb_func_end sub_802790C
@@ -3020,7 +3020,7 @@ dword_80279C4:
 	thumb_local_start
 sub_80279C8:
 	push {r4,lr}
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	bl battle_endingBgUpdate_8029D34
 	mov r4, #4
@@ -3103,7 +3103,7 @@ sub_8027A58: // (self: * S20364C0 $r5) -> ()
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
-	bl sub_8029C08 // (self: * S20364C0 $r5) -> ()
+	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
 	.balign 4, 0
@@ -7996,9 +7996,9 @@ off_8029C04:
 // symdb: Per-frame chip-slot pulse animation step: pushes an OAM affine-transform record to the render FIFO and walks the pulse phase byte of the chip-select object.
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effect: writes one 16-byte FIFO record (command
 // symdb: 0xB782) and updates oS20364C0_Unk_0f pulse phase
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029C08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_8029C08.yaml
 	thumb_local_start
-sub_8029C08: // (self: * S20364C0 $r5) -> ()
+battleObject_chipSelectAnimTick_8029C08: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
 	ldrb r0, [r5,#oS20364C0_JumpOffset01]
@@ -8099,7 +8099,7 @@ byte_8029CAC:
 	.byte 0xD8, 0x38, 0xE0, 0x39, 0xE8, 0x3A, 0xEC, 0x3B, 0xF0
 	.byte 0x3C, 0xF4, 0x3D, 0xF8, 0x3E, 0xFB, 0x3F, 0xFE, 0x40
 	.byte 0x0, 0x40, 0x0, 0x0
-	thumb_func_end sub_8029C08
+	thumb_func_end battleObject_chipSelectAnimTick_8029C08
 
 	thumb_local_start
 sub_8029CD4:
@@ -23996,9 +23996,9 @@ sub_8031122:
 // symdb: Computes a delta between a passed-in battle object's two coords and the current camera-relative offsets, zeroes it (or stores the deltas when both axes match a specific profile), then re-projects the object via sprite_worldToScreenPos_80310EC.
 // symdb: (r0 = battleObject*) -> r0 = &dword_200F3E0 ; side effects: writes camera deltas at
 // symdb: (dword_200F3E0)+0x18/+0x1c, calls sprite_worldToScreenPos_80310EC on r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031136.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyShakeOffsetAndProject_8031136.yaml
 	thumb_local_start
-sub_8031136:
+battleObject_applyShakeOffsetAndProject_8031136:
 	push {lr}
 	mov r6, r0
 	ldr r0, off_80311F0 // =dword_200F3E0 
@@ -24034,15 +24034,15 @@ loc_8031168:
 loc_8031170:
 	bl sprite_worldToScreenPos_80310EC
 	pop {pc}
-	thumb_func_end sub_8031136
+	thumb_func_end battleObject_applyShakeOffsetAndProject_8031136
 
 // symdb: Computes a per-step scroll delta for a battle object against a 16.16 fixed-point world offset, then nudges its sprite by the camera scroll amount.
 // symdb: (r0 = object*) -> r0 = sprite worldToScreenPos result ; side effects: writes two 16.16 scroll
 // symdb: deltas to dword_200F3E0+0x18/0x1c and converts the object's sprite via
 // symdb: sprite_worldToScreenPos_80310EC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031176.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollAccumulateStep_8031176.yaml
 	thumb_local_start
-sub_8031176:
+battle_scrollAccumulateStep_8031176:
 	push {lr}
 	mov r6, r0
 	ldr r0, off_80311F0 // =dword_200F3E0 
@@ -24078,7 +24078,7 @@ loc_80311A8:
 loc_80311B0:
 	bl sprite_worldToScreenPos_80310EC
 	pop {pc}
-	thumb_func_end sub_8031176
+	thumb_func_end battle_scrollAccumulateStep_8031176
 
 // symdb: Computes an entity's movement delta since its last recorded position (dropping diagonal moves) and stores it in the scroll/camera state before converting that state's world position to screen coordinates.
 // symdb: u32 scroll_updateObjectDelta_80311B6(void* obj /*r0*/, void* aux /*r5, passed through*/);
@@ -24354,7 +24354,7 @@ camera_recenterAndSetCtrlBits_803135E:
 	thumb_local_start
 sub_8031388:
 	push {r0-r2,r5,lr}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0
 	sub r2, #1
 	mov r4, #0x20 
@@ -24373,13 +24373,13 @@ sub_8031388:
 	thumb_func_end sub_8031388
 
 // symdb: Runs the full battle message-window setup sequence (prepare, 32x32 layout, finalize) and flags the request as handled in r12.
-// symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to sub_8031176; r12 = flag word
+// symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to battle_scrollAccumulateStep_8031176; r12 = flag word
 // symdb: in/out; preserves r0, r1, r2, r5; NZCV on exit reflect (r12|1) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupMessageWindow_80313B0.yaml
 	thumb_local_start
 battle_setupMessageWindow_80313B0:
 	push {r0-r2,r5,lr}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0x20 
 	mov r4, #0
 	mov r3, #0x20 
@@ -24403,7 +24403,7 @@ battle_setupMessageWindow_80313B0:
 	thumb_local_start
 battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	push {r0-r2,r5,lr}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0x20 
 	mov r4, #0
 	sub r4, #1
@@ -24428,7 +24428,7 @@ battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	thumb_local_start
 sub_80313FC:
 	push {r0-r2,r5,lr}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0
 	mov r4, #0x20 
 	mov r3, #0x20 
@@ -24454,7 +24454,7 @@ sub_80313FC:
 sub_8031420:
 	push {lr}
 	push {r0-r2,r5}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0
 	sub r2, #1
 	mov r4, #0x20 
@@ -24473,7 +24473,7 @@ sub_8031420:
 	cmp r3, #1
 	beq locret_8031476
 	push {r0-r2,r5}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0x20 
 	mov r4, #0
 	sub r4, #1
@@ -24501,7 +24501,7 @@ locret_8031476:
 sub_8031478:
 	push {lr}
 	push {r0-r2,r5}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0x20 
 	mov r4, #0
 	mov r3, #0x20 
@@ -24518,7 +24518,7 @@ sub_8031478:
 	cmp r3, #1
 	beq locret_80314CA
 	push {r0-r2,r5}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0x20 
 	mov r4, #0
 	sub r4, #1
@@ -24542,7 +24542,7 @@ locret_80314CA:
 sub_80314CC:
 	push {lr}
 	push {r0-r2,r5}
-	bl sub_8031136
+	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0
 	sub r2, #1
 	mov r4, #0x20 
@@ -24561,7 +24561,7 @@ sub_80314CC:
 	cmp r3, #1
 	beq locret_803151E
 	push {r0-r2,r5}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0
 	mov r4, #0x20 
 	mov r3, #0x20 
@@ -24585,7 +24585,7 @@ locret_803151E:
 sub_8031520:
 	push {lr}
 	push {r0-r2,r5}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0x20 
 	mov r4, #0
 	mov r3, #0x20 
@@ -24603,7 +24603,7 @@ loc_8031540:
 	cmp r3, #1
 	beq locret_803156E
 	push {r0-r2,r5}
-	bl sub_8031176
+	bl battle_scrollAccumulateStep_8031176
 loc_8031550:
 	mov r2, #0
 	mov r4, #0x20 

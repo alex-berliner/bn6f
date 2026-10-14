@@ -1787,7 +1787,7 @@ loc_80A5B82:
 	ldrb r7, [r5,#9]
 	cmp r7, #0
 	bgt loc_80A5BB0
-	bl sub_80A5C74
+	bl battle_ai_checkBeastOutTrigger_80A5C74
 	cmp r0, #0
 	beq loc_80A5C62
 	ldr r0, [r5,#0x24]
@@ -1890,9 +1890,9 @@ sub_80A5C6C:
 // symdb: Checks if a beast-out / fugit activation condition is met for a given AIData and sets its triggered flag.
 // symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> r0 = bool (1 if triggered, else 0) ; side effect: stores 1
 // symdb: to AIDataPtr+0x24 when condition matches.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5C74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_checkBeastOutTrigger_80A5C74.yaml
 	thumb_local_start
-sub_80A5C74:
+battle_ai_checkBeastOutTrigger_80A5C74:
 	push {r4-r7,lr}
 	mov r4, #0
 	bl reqBBS_81409F4
@@ -1912,7 +1912,7 @@ sub_80A5C74:
 loc_80A5C98:
 	mov r0, r4
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5C74
+	thumb_func_end battle_ai_checkBeastOutTrigger_80A5C74
 
 	thumb_local_start
 sub_80A5C9C:
@@ -2811,7 +2811,7 @@ off_80A6A24:
 	.word off_80A6A28
 off_80A6A28:
 	.word sub_80A6A34+1
-	.word sub_80A6A62+1
+	.word battleObject_runActionSubroutineDispatch_80A6A62+1
 	.word sub_80A6B08+1
 	thumb_func_end sub_80A6A16
 
@@ -2832,16 +2832,16 @@ sub_80A6A34:
 	strb r0, [r5,#8]
 	mov r6, #0x24
 	bl sub_80A6E50
-	bl sub_80A6A62
+	bl battleObject_runActionSubroutineDispatch_80A6A62
 	pop {pc}
 	thumb_func_end sub_80A6A34
 
 // symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from sub_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
 // symdb: (r5 = battle object, plus inherited r2/r3/r8/r9/r10/r11/r12/lr) -> no out value, void-like ;
 // symdb: side effects: clobbers r0-r4/r6/r7, sets [r5+0x14], updates sprite priority + sprite OAM
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A62.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionSubroutineDispatch_80A6A62.yaml
 	thumb_local_start
-sub_80A6A62:
+battleObject_runActionSubroutineDispatch_80A6A62:
 	push {lr}
 	mov r4, #9
 	mov r6, #0x24
@@ -2904,7 +2904,7 @@ JumpTable_80A6ABC:
 	.word sub_80A6E22+1
 	.word sub_80A6E3A+1
 	.word sub_80A6E4A+1
-	thumb_func_end sub_80A6A62
+	thumb_func_end battleObject_runActionSubroutineDispatch_80A6A62
 
 	thumb_local_start
 sub_80A6B08:
@@ -5415,9 +5415,9 @@ off_80A7D8C:
 // symdb: Dispatches an AI actor's per-state handler via a 3-entry table indexed by `AIData+8`.
 // symdb: (r5 = AIData*, r10 = Toolkit*, lr = caller LR) -> r0 = result of indirect call ; r4-r10/LR
 // symdb: preserved (call-pushed)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7D90.yaml
-	thumb_func_start sub_80A7D90
-sub_80A7D90:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runAIDispatchWithCurState_80A7D90.yaml
+	thumb_func_start battleObject_runAIDispatchWithCurState_80A7D90
+battleObject_runAIDispatchWithCurState_80A7D90:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	bl sub_81428C2
@@ -5433,9 +5433,9 @@ off_80A7DA8:
 	.word off_80A7DAC
 off_80A7DAC:
 	.word sub_80A7DB8+1
-	.word sub_80A7E14+1
+	.word battleObject_beastSP_battlerUpdate_80A7E14+1
 	.word sub_80A7E0C+1
-	thumb_func_end sub_80A7D90
+	thumb_func_end battleObject_runAIDispatchWithCurState_80A7D90
 
 	thumb_local_start
 sub_80A7DB8:
@@ -5469,7 +5469,7 @@ sub_80A7DB8:
 	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A7E14
+	bl battleObject_beastSP_battlerUpdate_80A7E14
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7DB8
 
@@ -5483,9 +5483,9 @@ sub_80A7E0C:
 // symdb: Beast-SP battle object update dispatcher, picking one of six state handlers via an inline thumb-table indexed by the object's CurState byte.
 // symdb: (r5 = toolkit BattleState ptr, r7 = battle object ptr, r10 = toolkit, lr = state update caller)
 // symdb: -> void ; no meaningful return written to r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSP_battlerUpdate_80A7E14.yaml
 	thumb_local_start
-sub_80A7E14:
+battleObject_beastSP_battlerUpdate_80A7E14:
 	push {r4-r7,lr}
 	ldr r0, off_80A7E28 // =off_80A7E2C 
 	ldrb r1, [r7,#6]
@@ -5504,7 +5504,7 @@ off_80A7E2C:
 	.word sub_80A7F58+1
 	.word sub_80A8006+1
 	.word sub_80A800A+1
-	thumb_func_end sub_80A7E14
+	thumb_func_end battleObject_beastSP_battlerUpdate_80A7E14
 
 	thumb_local_start
 sub_80A7E44:

@@ -7660,7 +7660,7 @@ int sub_801393A()
 
 
 // 0x80139c4
-int sub_80139C4()
+int battleObject_playerCounterSpawnPinkRingIfReady_80139C4()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -9528,7 +9528,7 @@ int sub_8014A00()
 
 
 // 0x8014a38
-void sub_8014A38()
+void battle_runBeastTransformationAction_8014A38()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -12119,7 +12119,7 @@ signed int __fastcall battle_teardownObject_80165F8(int a1)
 
 
 // 0x801664e
-int sub_801664E()
+int battle_fadeOutAndDespawnSelfActor_801664E()
 {
     int v0; // r5
     int result; // r0
@@ -12664,7 +12664,7 @@ int stepBattleObjectWobble_8016BFC()
 
 
 // 0x8016c4e
-int sub_8016C4E()
+int battleObject_destroy_8016C4E()
 {
     int v0; // r5
     int v1; // r4
@@ -14077,7 +14077,7 @@ void battle_ai_dispatchQueuedAttacks_8017BC0()
     v1 = v0[22];
     if ( GetAIDataUnk0x48Flag() & 0x80 )
     {
-        sub_8014A38();
+        battle_runBeastTransformationAction_8014A38();
     }
     else if ( GetAIDataUnk0x48Flag() & byte_100 )
     {
@@ -18319,7 +18319,7 @@ void nullsub_58()
 
 
 // 0x801bfee
-int sub_801BFEE()
+int battle_loadChipPreviewGfxInit_801BFEE()
 {
     return battle_loadChipPreviewGfxFromHandTable_801C002(1);
 }
@@ -18597,7 +18597,7 @@ signed int battle_renderHpOverlays_801C202()
         if ( !(*v1 & 2) )
             goto LABEL_11;
         renderHpDigits_801C296();
-        sub_801C304();
+        chatbox_uploadFrameTileGFX_801C304();
         if ( *v1 & 8 )
             v12 = 0;
         v11 = v6;
@@ -18674,7 +18674,7 @@ unsigned int renderHpDigits_801C296()
 
 
 // 0x801c304
-int sub_801C304()
+int chatbox_uploadFrameTileGFX_801C304()
 {
     int v0; // r4
     int v1; // r5
@@ -19398,7 +19398,7 @@ int battleObject_updateAnimAndState_801CADC() { // could not decompile
         cmp r0, #0\
         beq loc_801CB2C\
     loc_801CB26:\
-        bl sub_801CC34\
+        bl battleObject_loadBeastOutFormGfx_801CC34\
         b loc_801CB30\
     loc_801CB2C:\
         bl battle_updateObjectAnim_801CB38\
@@ -19521,7 +19521,7 @@ int __fastcall sub_801CBD0(int a1, int a2, int a3, int a4, int a5, int a6, int a
 
 
 // 0x801cc34
-void __fastcall sub_801CC34(int a1)
+void __fastcall battleObject_loadBeastOutFormGfx_801CC34(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r2

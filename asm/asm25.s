@@ -868,8 +868,8 @@ loc_808FEBA:
 	ldrb r0, [r5,#0x5] // (byte_2000315 - 0x2000310)
 	cmp r0, #0
 	bne locret_808FED0
-	bl sub_8046818
-	bl sub_8046854
+	bl battle_callAIDispatch_8046818
+	bl battleObject_updateSpriteGfxForAll_8046854
 locret_808FED0:
 	pop {r4-r7,pc}
 	.balign 4, 0
