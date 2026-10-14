@@ -33476,10 +33476,10 @@ off_811EC4C:
 	.word ePETMenuData
 	thumb_func_end pet_initMenu_811EC10
 
-// symdb: Top-level per-frame updater that runs the subsystem's five update steps in order and returns.
-// symdb: void runFrameUpdateSequence(void); // no meaningful inputs or outputs; r0-r3/lr and nzcv on
-// symdb: return are just whatever the final callee (sub_811F08C) leaves
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811EC50.yaml
+// symdb: Runs the per-frame map-name display sequence: queues GFX transfers, updates the map-name display, and renders the map-name screens.
+// symdb: (r10 = toolkit ptr, lr = return addr) -> r4-r6/r8-r9 preserved ; side effects: submits GFX
+// symdb: transfers, updates map-name VRAM/tilemap and renders current map name
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EC50.yaml
 	thumb_func_start sub_811EC50
 sub_811EC50:
 	push {lr}
@@ -35635,6 +35635,10 @@ sub_811FCA4:
 	.balign 4, 0x00
 	thumb_func_end sub_811FCA4
 
+// symdb: Fills a 30-slot chip-pack buffer from the folder's chip-use stats and records hit counters for the chosen chips
+// symdb: (r0 = folderIndex, r1 = *ChipPackOut, r2 = takeFromPackFlag, r3 = *HitCounters) -> r0 = 0
+// symdb: success / 1 empty
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FCB8.yaml
 	thumb_func_start sub_811FCB8
 sub_811FCB8:
 	push {r4-r7,lr}

@@ -17037,9 +17037,9 @@ sub_802E0D4:
 	pop {r7,pc}
 	thumb_func_end sub_802E0D4
 
-// symdb: Sets battle flag 0x40 when the current battle is a network-style "gate" fight (gate-byte nonzero, or network battle with event flag 0x1722 set), skipping crossover, tomahawk/dustman minigames, virus battler, and while the 0x200000 battle effect is active.
-// symdb: void sub_802E112(void); /* uses r10/lr from caller, clobbers nzcv r0-r3 lr */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802E112.yaml
+// symdb: In real (non-minigame, non-crossover) link battles, sets the 0x40 battle flag (a "Beast Link"/link-battle related state bit) so the battle can take the link-battle code path.
+// symdb: () -> void ; side effects: may OR 0x40 into BattleState.flags via battle_setFlags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E112.yaml
 	thumb_func_start sub_802E112
 sub_802E112:
 	push {lr}
@@ -24183,7 +24183,7 @@ off_80311F0:
 	.word dword_200F3E0
 	thumb_func_end sub_80311B6
 
-// symdb: Likely a small per-frame effect routine that, when battleObject_isHitByPanelRectangle_8031570 reports a hit/non-zero event, re-runs sub_8031122/sub_80311B6 setup, queries sub_8030E14 for a position delta, neg-halves it via neg;lsr
+// symdb: Likely a small per-frame effect routine that, when sub_8031570 reports a hit/non-zero event, re-runs sub_8031122/sub_80311B6 setup, queries sub_8030E14 for a position delta, neg-halves it via neg;lsr
 // symdb: void sub_80311F4(u32* io /* r0 */, u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg5 /* r5 */, u32*
 // symdb: ioFlags /* r12, gets |=3 */)   -> sets r0/r1/r2/r5/r12; clobbers r4/r6/r7/r8/r9 and NZCV;
 // symdb: preserves caller r0/r1/r2/r5

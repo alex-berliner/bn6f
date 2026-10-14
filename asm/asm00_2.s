@@ -12261,8 +12261,8 @@ loc_8014174:
 	pop {r4,pc}
 	thumb_func_end getCurNaviStatTier_8014150
 
-// symdb: Reads two stat slots (kind 8) of the current navi, indexes a 12-byte table with stat1*3+stat0, and hands the looked-up value (0x10/0x20/0x40) to battle_setEnemyCountFromNaviStats_801DF8C.
-// symdb: void sub_8014178(void); // in: r4, r6 preserved across call, lr; out: byte passed to battle_setEnemyCountFromNaviStats_801DF8C
+// symdb: Reads two stat slots (kind 8) of the current navi, indexes a 12-byte table with stat1*3+stat0, and hands the looked-up value (0x10/0x20/0x40) to sub_801DF8C.
+// symdb: void sub_8014178(void); // in: r4, r6 preserved across call, lr; out: byte passed to sub_801DF8C
 // symdb: in r0; clobbers r0, r1, lr, NZ flags; C/V reflect the final index add
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyNaviStatTableEntry_8014178.yaml
 	thumb_func_start battle_applyNaviStatTableEntry_8014178
@@ -22492,6 +22492,9 @@ locret_801A0FE:
 	pop {r4,r6,pc}
 	thumb_func_end object_spawnCollisionEffect
 
+// symdb: Spawns the visual hit-effect child object at the panel the battle object currently occupies, jittered around the panel center.
+// symdb: (r5 = BattleObject*) -> r0 = 0x2 (seldomly read) ; side effects: may spawn a child effect object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A100.yaml
 	thumb_func_start sub_801A100
 sub_801A100:
 	push {r4,r6,lr}
@@ -23999,6 +24002,12 @@ dword_801AA44:
 	.word 0x12A
 	thumb_func_end battleObject_processCollisionResults_801A9B8
 
+// symdb: Per-frame battle-object update driver that clears leftover hit-flash palette and, when its barrier/collision-data is gone, bails out early; otherwise fans out into the object's panel/status/damage/AI/impact handlers.
+// symdb: (r5 = *BattleObject, r10 = *Toolkit) -> void ; side effects: clears sprite high-palette nibble,
+// symdb: tears down collision data when its Enable bit + DEAD flag are set, then runs ~20 child handlers
+// symdb: updating collision damage, hit-flash timer, status effect, counter timer, AI self-drain, impact,
+// symdb: hive, alliance stats, etc.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AA48.yaml
 	thumb_func_start sub_801AA48
 sub_801AA48:
 	push {r4,r7,lr}
@@ -24088,6 +24097,9 @@ locret_801AB3E:
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_processCollisionResultsByMode_801AAC0
 
+// symdb: Per-frame battle object update: clear final palette, optionally tear down collision data, and run the full per-tick pipeline (barrier/poison/ice, impact, hive, alliance stats, alliance flip, damage, flatten, counter, hit-effect).
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; r4/r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AB40.yaml
 	thumb_func_start sub_801AB40
 sub_801AB40:
 	push {r4,r7,lr}
@@ -24266,6 +24278,11 @@ locret_801AD10:
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_processCollisionResultsForPlayer_801AC6C
 
+// symdb: Tear down / wind down a battle object's collision after a hit, applying the flag-0x100 shield effect when applicable, then recompute final damage and spawn the hit spark.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: clears sprite final-palette high
+// symdb: nibble, frees or mutates CollisionData, sets ObjectFlags2 bits 0x100 / clears bit 0x4, writes
+// symdb: object/0x0F = 1, recomputes FinalDamage, may spawn hit effect
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AD12.yaml
 	thumb_func_start sub_801AD12
 sub_801AD12:
 	push {r4,r7,lr}
@@ -25738,6 +25755,12 @@ dword_801B874:
 	.word 0x8000
 	thumb_func_end sub_801B750
 
+// symdb: Per-frame per-object "action state machine" step for a battle object: handles freeze/sleep/paralysis/flash damage reactions, then dispatches to a per-CurAction handler via the jump table in r0.
+// symdb: (r0 = ptr to per-CurAction function table, r5 = BattleObject*) -> r0 = void ; side effects:
+// symdb: writes to BattleObject (HP, CurAction, CurPhase, flags, PreventAnim, AIData+0x5c, etc.), plays
+// symdb: sound 0x85 on hit, may re-white-palette/zero-shader via sprite helpers, tail-calls one of the
+// symdb: CurAction handlers.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B878.yaml
 	thumb_func_start sub_801B878
 sub_801B878:
 	push {r6,r7,lr}
@@ -31619,6 +31642,10 @@ sub_801E144:
 	.word dword_86E1C78
 	thumb_func_end sub_801E144
 
+// symdb: Plays the "Beast Out" transformation transition: clears/loads beast-out graphics, fires dispatch effects, and plays the SE 0x9f jingle.
+// symdb: (r10 = toolkit) -> side effects only; side effects: clears bit 0x10000 of dword_20352C0,
+// symdb: dispatches flags 0x10000 and 0x200, queues a 3-entry GFX transfer list, plays sound 0x9f
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E15C.yaml
 	thumb_func_start sub_801E15C
 sub_801E15C:
 	push {lr}

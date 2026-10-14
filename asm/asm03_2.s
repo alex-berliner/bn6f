@@ -883,10 +883,10 @@ battle_resetEStructRecords_8046664:
 	pop {r4-r7,pc}
 	thumb_func_end battle_resetEStructRecords_8046664
 
-// symdb: Initializes one 0x58-byte entry of the struct array at 0x2008450 as "type 9", storing an id byte, a parameter word, and clearing its counter/state word.
-// symdb: struct* initType9Entry(u8 id /*r0*/, u32 slot /*r1*/, u32 param /*r2*/); returns r0 = pointer to
-// symdb: the 0x58-byte entry, r1 = slot*0x58, flags N/Z from the returned pointer (C set, V clear)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8046670.yaml
+// symdb: Initialises one EmotionData slot in the 0x58-byte EWRAM array at 0x02008450 with a type byte, a fixed 0x09 tag, and a flags value.
+// symdb: (r0 = actorType/AIIndex?, r1 = slotIndex, r2 = flags) -> r0 = pointer to the 0x58-byte slot at
+// symdb: 0x02008450 + slotIndex*0x58 ; side effects: writes slot bytes [0]=9, [1]=r0, [4]=r2, [8]=0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046670.yaml
 	thumb_func_start sub_8046670
 sub_8046670:
 	push {r4-r7,lr}
@@ -1258,6 +1258,10 @@ sub_80468BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80468BA
 
+// symdb: Initializes a 0x58-byte AI chip-queue slot in EWRAM at 0x02011860 for a given actor slot index
+// symdb: (r0 = ActorType (1=virus, 2=player), r1 = slot index, r2 = BattleObject ptr) -> r0 = pointer to
+// symdb: initialized 0x58-byte slot
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80468C6.yaml
 	thumb_func_start sub_80468C6
 sub_80468C6:
 	push {r4-r7,lr}

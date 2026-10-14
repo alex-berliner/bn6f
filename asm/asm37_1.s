@@ -1777,6 +1777,11 @@ loc_81429C4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_814299C
 
+// symdb: Writes the per-direction player-coordinate delta table into a scenario-effect buffer, indexed by the player's overworld facing direction.
+// symdb: (no explicit r0/r1) -> r0 = nothing to caller (out is only r3/r5 which the caller restores);
+// symdb: side effects: writes a variable number of u32 entries to *r6 = buffer returned from
+// symdb: battleObject_scenarioEffectStateAddr_81421D8, indexed by player's facing direction
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81429CA.yaml
 	thumb_func_start sub_81429CA
 sub_81429CA:
 	push {r4-r7,lr}

@@ -5607,9 +5607,10 @@ dword_803B918:
 	.word 0xC080
 	thumb_func_end sub_803B8F8
 
-// symdb: Looks up one of a small hard-coded table of chatbox/script descriptors (12-byte stride) and dispatches it through sub_8001890.
-// symdb: void sub_803B91C(u32 entryIndex /* r0 */); flags: NZCV clobbered
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803B91C.yaml
+// symdb: Copies one of a small palette/toolkit BG-tile-id entry (loaded from a 12-byte table) into the toolkit's iBGTileIdBlocks blit buffer via sub_8001890.
+// symdb: (r0 = table index) -> r0 = 0 ; side effects: writes to one of the toolkit's BG tile-id block
+// symdb: buffers through sub_8001890.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B91C.yaml
 	thumb_func_start sub_803B91C
 sub_803B91C:
 	push {r4-r7,lr}
@@ -8578,6 +8579,10 @@ loc_803CE3E:
 	.balign 4, 0x00
 	thumb_func_end CheckKeyItem
 
+// symdb: Syncs the Active Navi's MaxHP (stat 0x42) and CurHP copy into the toolkit's NaviStats entry, only when MapGroup < 0x80 and a "PET navi active" event flag is set.
+// symdb: (no args; uses r10 = Toolkit) -> r0 = 0x90 (unused by caller) ; side effect: writes
+// symdb: 0x3e/0x40/0x42 fields of the current PET Navi's NaviStats entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CE44.yaml
 	thumb_func_start sub_803CE44
 sub_803CE44:
 	push {r4-r7,lr}
@@ -13712,6 +13717,10 @@ sub_803F798:
 	b loc_803F7A2
 	thumb_func_end sub_803F798
 
+// symdb: Mirrors the 0x10-byte EWRAM work buffer (0x2000000..0x6710) to Game Pak SRAM, verifying the round-trip checksum before committing and toggling event flag 0x1704.
+// symdb: (r0..r3 ignored) -> r0 = 1 on successful verify-write-clear, 0 on verify-fail-then-set-flag
+// symdb: retry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F79E.yaml
 	thumb_func_start sub_803F79E
 sub_803F79E:
 	push {r1-r7,lr}

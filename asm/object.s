@@ -321,6 +321,10 @@ locret_800BA88:
 	pop {pc}
 	thumb_func_end object_drawChipName
 
+// symdb: Per-tick handler for the "SnakeArm" battle object: when not initialized, checks if a chip can be triggered and queues a 0x4C/0x50 battle effect; once initialized, waits for cross-net readiness and then advances the action/phase state machine.
+// symdb: (r5 = *BattleObject) -> void ; side effects: clears/dispatches 0x10000 flag, plays SE 0x73,
+// symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes dword_200F3B8[Alliance]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BA8A.yaml
 	thumb_func_start sub_800BA8A
 sub_800BA8A:
 	push {lr}
@@ -4926,6 +4930,12 @@ loc_800E2F8:
 	mov pc, lr
 	thumb_func_end object_addHP
 
+// symdb: Applies an HP delta to the current battle object and dispatches special-case handling for name ID 0xBD (likely a heal/revive or split-damage effect)
+// symdb: (r0 = HP delta, r1 = flag meaning "skip the 0xBD special"; r5 = battle object pointer) -> r0 = 0
+// symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
+// symdb: type-4 effect object, plays sound 0x8A, calls several
+// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E2FC.yaml
 	thumb_func_start sub_800E2FC
 sub_800E2FC:
 	push {r4,r6,r7,lr}
@@ -5454,6 +5464,10 @@ byte_800E660:
 	.byte 0x80, 0x0, 0x88, 0x7
 	thumb_func_end playerObjectMovingToPanelValidityRelated_800E618
 
+// symdb: Picks panel-state mask/anti-mask pair for an object's alliance and tests whether the panel at (col,row) of a battle grid matches that pair, returning 1/0.
+// symdb: (r0 = panelColumn, r1 = panelRow, r5 = BattleObject*) -> r0 = 1 if panel matches the alliance
+// symdb: pair, 0 otherwise ; r2/r3/r4-r7 callee-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E680.yaml
 	thumb_func_start sub_800E680
 sub_800E680:
 	push {r6,r7,lr}
@@ -6370,10 +6384,10 @@ locret_800EC7E:
 	thumb_func_end sub_800EC66
 
 // also returns enemy_idx
-// symdb: Bumps an enemy chip-drop index up by the navi's current stat tier (floored with a stubbed contribution), capped by the enemy's version for actor type 0 (boss-style enemies); other actor types pass through unchanged.
-// symdb: u32 sub_800EC80(u32 enemy_idx /* r0 */) -> u32 /* r0 */ ; clobbers r1,r3; preserves r4-r7; flags
-// symdb: clobbered (n/z/c/v)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800EC80.yaml
+// symdb: Computes an enemy-encounter rarity tier for a given enemy index by clamping the current PET Navi stat tier against the version's virus or navi tier cap, then adding the clamped tier to the base enemy id.
+// symdb: (r0 = enemy_idx) -> r0 = enemy_idx + clamped_tier ; side effects: calls
+// symdb: getCurNaviStatTier_8014150, GetVerActorTyAndAIIdx_80182B4, stub_returnZero_8000E30
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EC80.yaml
 	thumb_func_start sub_800EC80
 sub_800EC80: // (enemy_idx: u16) -> u16
 	push {r4,r5,r7,lr}

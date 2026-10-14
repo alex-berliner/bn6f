@@ -8286,6 +8286,9 @@ off_8006EA0:
 	.word byte_20008A0
 	thumb_func_end encryption_testPack_8006e84
 
+// symdb: Returns true if the player holds one or more of `chip_id` in the pack with the requested `code` letter (A/B/C/D… or any, 0xFF).
+// symdb: (r0 = chip_id, r1 = code letter, r10 = toolkit) -> r0 = 0 or 1 ; side effects: clobbers r2–r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006EA4.yaml
 	thumb_func_start sub_8006EA4
 sub_8006EA4:
 	push {r1-r7,lr}
@@ -17269,6 +17272,9 @@ loc_800AA3C:
 	pop {r7,pc}
 	thumb_func_end list_tryAddUniqueEntry_800AA1A
 
+// symdb: Removes a battle object's AI attack reference from the "Next" entries list at 0x2038170, then compacts the entry.
+// symdb: (r5 = u32 value to remove) -> side effects only; r0/r1/r3/r4/lr clobbered, no return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA40.yaml
 	thumb_func_start sub_800AA40
 sub_800AA40:
 	push {lr}
@@ -18139,6 +18145,9 @@ loc_800AFB4:
 	pop {pc}
 	thumb_func_end battle_bustingLevelCategoryForEffect_800AF84
 
+// symdb: Returns whether the chosen chip (low byte of input word) can be used in the current battle, considering navi level, dark chips, and pack integrity.
+// symdb: (r0 = chip_and_flags_word, r10 = toolkit) -> r0 = 0 (usable) or 1 (blocked); flags NZ
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AFBA.yaml
 	thumb_func_start sub_800AFBA
 sub_800AFBA:
 	push {r1-r7,lr}

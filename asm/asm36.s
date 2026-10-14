@@ -10700,6 +10700,11 @@ loc_8135294:
 	.byte 0, 0
 	thumb_func_end battle_copyStateSlotsAndZeroNext_813527C
 
+// symdb: Repositions a battle object to the correct column based on its row, or resets its column counter when misaligned, also clearing a chip-related stats byte in that case.
+// symdb: (r0 = battle-object/row param table ptr, r1 = ?, r2 = row index, r3 = row param, r4 = alignment
+// symdb: arg, r5 = ? control struct, r7 = PetStats field offset, r10 = toolkit) -> r0 = 0xff or 1 ; side
+// symdb: effects writes [r5+0x14], [r5+0x1c], [r5+0x4c], NaviStats byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81352A0.yaml
 	thumb_func_start sub_81352A0
 sub_81352A0:
 	push {r4-r7,lr}

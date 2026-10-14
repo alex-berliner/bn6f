@@ -1891,6 +1891,10 @@ locret_8000FAA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000F86
 
+// symdb: On entering a map, if the destination differs from the last map, or event flag 0x170C is set, clear the current battle data pointer and three overworld walk-step counters, then always clear flag 0x170C.
+// symdb: () -> ; side effects: may zero GameState.CurBattleDataPtr and three counters in S2001c04; clears
+// symdb: event flag 0x170C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000FAC.yaml
 	thumb_func_start sub_8000FAC
 sub_8000FAC:
 	push {r4-r7,lr}
@@ -2214,9 +2218,10 @@ locret_8001170:
 	pop {r4-r7,pc}
 	thumb_func_end scriptListRun_8001158
 
-// symdb: Writes a caller-supplied byte into GameState+0x09 (an unnamed one-byte state field), via the toolkit's game state pointer.
-// symdb: void sub_8001172(u8 value /*r0*/); // r10 = toolkit; returns r3 = game state pointer
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8001172.yaml
+// symdb: Sets GameState's Unk_09 byte (related to "can't jack out" / L-button-message-style control flag) to the given u8
+// symdb: (r0 = value) -> void ; side effects: writes Toolkit->GameStatePtr->Unk_09 (a single byte at
+// symdb: offset 0x9)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001172.yaml
 	thumb_func_start sub_8001172
 sub_8001172:
 	mov r3, r10
