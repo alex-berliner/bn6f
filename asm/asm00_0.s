@@ -1875,7 +1875,7 @@ loc_8000F80:
 sub_8000F86:
 	push {r4-r7,lr}
 	mov r4, r0
-	bl sub_803F838 // () -> !zf
+	bl toolkit_initAndVerifyWorkArea_0803F838 // () -> !zf
 	bne locret_8000FAA
 	// flag 7 @ 0x2001C88[0xE<<5 + 0x0] (=2001E48)
 	movflag EVENT_E00

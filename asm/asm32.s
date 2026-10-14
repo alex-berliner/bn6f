@@ -14116,7 +14116,7 @@ off_81151B0:
 off_81151B4:
 	.word sub_81151CC+1
 	.word sub_811523C+1
-	.word sub_8115272+1
+	.word ai_attackVars_runMoveStep_8115272+1
 	.word sub_8115340+1
 	.word sub_8115398+1
 	.word sub_8115404+1
@@ -14204,9 +14204,9 @@ loc_811526C:
 // symdb: One step of an AI battle object's scripted panel-by-panel move along the field
 // symdb: (r5 = battleObject, r7 = aiAttackVars) -> void ; advances PanelXY/XY, decrements step counter,
 // symdb: syncs collision
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115272.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackVars_runMoveStep_8115272.yaml
 	thumb_local_start
-sub_8115272:
+ai_attackVars_runMoveStep_8115272:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r0, [r3,#oCollisionData_FlagsFromCollision]
@@ -14299,7 +14299,7 @@ allianceDependentPanelFlags_8115330:
 	.word 0x03800000
 	.word 0x00000010
 	.word 0x03800000
-	thumb_func_end sub_8115272
+	thumb_func_end ai_attackVars_runMoveStep_8115272
 
 	thumb_local_start
 sub_8115340:
@@ -31848,7 +31848,7 @@ sub_811DF1C:
 off_811DF2C:
 	.word off_811DF30
 off_811DF30:
-	.word sub_811DF40+1
+	.word battleObject_initNaviRosterEntry_811DF40+1
 	.word sub_811DF94+1
 	.word sub_811DFCC+1
 off_811DF3C:
@@ -31858,9 +31858,9 @@ off_811DF3C:
 // symdb: Initialise a battle object's sprite + position for one of the pre-battle Navi roster tiles (e.g. the lineup icon shown at the start of a NetBattle).
 // symdb: (r5 = BattleObject*, r10 = is the Toolkit) -> void ; side effects: clobbers r0-r6, sprite sub-
 // symdb: state and sprite slot fields, then tail-calls sub_811DF94.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DF40.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initNaviRosterEntry_811DF40.yaml
 	thumb_local_start
-sub_811DF40:
+battleObject_initNaviRosterEntry_811DF40:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -31892,7 +31892,7 @@ sub_811DF40:
 	.balign 4, 0
 off_811DF90:
 	.word 0x270
-	thumb_func_end sub_811DF40
+	thumb_func_end battleObject_initNaviRosterEntry_811DF40
 
 	thumb_local_start
 sub_811DF94:
@@ -31992,7 +31992,7 @@ battle_dispatchObjectState_811E024:
 off_811E034:
 	.word off_811E038
 off_811E038:
-	.word sub_811E048+1
+	.word battle_beastOutInitSprite_811E048+1
 	.word sub_811E090+1
 	.word sub_811E0B2+1
 off_811E044:
@@ -32003,9 +32003,9 @@ off_811E044:
 // symdb: (r5 = battle object) -> void ; side effects: writes object header flags byte at [r5]+0 (0x23),
 // symdb: object CurState at [r5,#8] = 0x4, sprite sub-record nibbles/palettes; called from one Beast-out
 // symdb: caller at 0x0811E032.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E048.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutInitSprite_811E048.yaml
 	thumb_local_start
-sub_811E048:
+battle_beastOutInitSprite_811E048:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -32032,7 +32032,7 @@ sub_811E048:
 	.balign 4, 0
 off_811E08C:
 	.word 0x298
-	thumb_func_end sub_811E048
+	thumb_func_end battle_beastOutInitSprite_811E048
 
 // symdb: Beast-out battle object per-frame hook: toggles a flag bit on the object's header flags based on its element, then sets sprite coords to (0xbc, 0xa) and runs sprite_update.
 // symdb: (r5 = battleObjectPtr, r6 = AIDataPtr) -> r5 = battleObjectPtr ; side effects write to *(r5+0),

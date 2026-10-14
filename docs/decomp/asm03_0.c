@@ -474,7 +474,7 @@ char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
         v16 = v17 - 1;
     }
     while ( v17 - 1 >= 0 );
-    sub_8028476();
+    battleObject_runCustomScreenChipPickerEffect_8028476();
     sub_8015940();
     return battle_ClearPendingEventFlag_802A0EC();
 }
@@ -1256,7 +1256,7 @@ unsigned int __fastcall sub_802723A(int a1, int a2, int a3)
             if ( !v8 )
                 v7 = 1;
             v6[7] = v7;
-            sub_8028476();
+            battleObject_runCustomScreenChipPickerEffect_8028476();
             *(v3 + 1) = 4;
             *(v3 + 2) = 0;
         }
@@ -1950,7 +1950,7 @@ int __fastcall sub_802790C(int a1, int a2, int a3)
     {
         sub_80279FC();
         battle_customScreen_clearSelection_80279C8(v6);
-        sub_8028476();
+        battleObject_runCustomScreenChipPickerEffect_8028476();
         *(v3 + 1) = 4;
         *(v3 + 2) = 0;
     }
@@ -2125,7 +2125,7 @@ int sub_8027AAE()
         sub_802A088(*(v0 + 26));
         sub_80279FC();
         battle_customScreen_clearSelection_80279C8(v2);
-        sub_8028476();
+        battleObject_runCustomScreenChipPickerEffect_8028476();
         PlaySoundEffect(146, v3, v4);
         result = 12;
         *(v0 + 2) = 12;
@@ -2146,7 +2146,7 @@ int sub_8027ADE()
     {
         sub_80279FC();
         battle_customScreen_clearSelection_80279C8(v2);
-        sub_8028476();
+        battleObject_runCustomScreenChipPickerEffect_8028476();
         *(v0 + 1) = 4;
         result = 0;
         *(v0 + 2) = 0;
@@ -2970,7 +2970,7 @@ int sub_80283C8()
 
 
 // 0x8028476
-void sub_8028476()
+void battleObject_runCustomScreenChipPickerEffect_8028476()
 {
     int v0; // r5
     char *v1; // r0
@@ -3575,7 +3575,7 @@ LABEL_16:
                 *(r5 + 7) = result;
                 PlaySoundEffect(127, v7, v2);
             }
-            sub_8028476();
+            battleObject_runCustomScreenChipPickerEffect_8028476();
             return result;
         }
         if ( result & 4 )
@@ -4117,7 +4117,7 @@ int __fastcall customScreen_ExitAction_8029032(int a1, int a2, int a3)
         battle_ClearPendingEventFlag_802A0EC();
     }
     customScreen_ExitSequence_8028E32();
-    sub_8028476();
+    battleObject_runCustomScreenChipPickerEffect_8028476();
     return PlaySoundEffect(131, v16, v17);
 }
 
@@ -12885,7 +12885,7 @@ int __usercall startScreen_initGfx_802F574@<R0>(StartScreen *scr@<R5>)
     scr->jo_00 = 4;
     scr->unk_02 = 0;
     sub_803FA42();
-    sub_803F838();
+    toolkit_initAndVerifyWorkArea_0803F838();
     if ( v8 )
     {
         scr->unk_02 = 1;
@@ -13067,7 +13067,7 @@ int startScreen_update_802F710()
             zeroFill_e20094C0();
             palette_clearEPalette20097a0_80023A8(v3, v4, v5, v6);
             (call_803D1AC)();
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
             zeroFill_813D960();
             clear_e200AD04();
             sub_803F6B0(0, v7, v8, v9);
@@ -13108,7 +13108,7 @@ int load_game_802F756()
         {
             scenario_prepareEnterMap_8004D48();
             SetEventFlagFromImmediate(23, 4);
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
             result = rfu_REQ_stopMode();
         }
         else
@@ -13120,7 +13120,7 @@ int load_game_802F756()
             eStruct200BC30_setJumpOffset00(12);
             if ( *(v0 + 2) )
                 SetEventFlagFromImmediate(23, 4);
-            result = sub_81440D8();
+            result = link_resetHardwareAndClearLinkBuffers_81440D8();
         }
     }
     else
@@ -13128,7 +13128,7 @@ int load_game_802F756()
         resetOverworldScene_800260C();
         initNewGameData_8004DF0();
         scenario_prepareEnterMap_8004D48();
-        sub_81440D8();
+        link_resetHardwareAndClearLinkBuffers_81440D8();
         rfu_REQ_stopMode();
         result = *(v0 + 2);
         if ( *(v0 + 2) )

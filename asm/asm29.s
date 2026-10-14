@@ -919,7 +919,7 @@ battleObject_panelSnapshotBufferInit_80A54F0:
 off_80A5500:
 	.word off_80A5504
 off_80A5504:
-	.word sub_80A5514+1
+	.word owMapObject_bbsObjectInit_80A5514+1
 	.word owMapObject_bbsObjectUpdate_80A5588+1
 	.word sub_80A55CC+1
 off_80A5510:
@@ -930,9 +930,9 @@ off_80A5510:
 // symdb: (r5 = OW NPC object ptr, r6 = related object ptr, r10 = toolkit ptr, lr = ret) -> r0 = 0x71c ;
 // symdb: side effects: writes to *r5 sprite/header fields, may play SE 0x17F, writes *r6 byte 0xF,
 // symdb: schedules *r5 byte 8 = 4 then jumps into owMapObject_bbsObjectUpdate_80A5588.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5514.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_bbsObjectInit_80A5514.yaml
 	thumb_local_start
-sub_80A5514:
+owMapObject_bbsObjectInit_80A5514:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -985,9 +985,9 @@ loc_80A557A:
 	bl owMapObject_bbsObjectUpdate_80A5588
 	pop {r4-r7,pc}
 	.word 0x17F
-	thumb_func_end sub_80A5514
+	thumb_func_end owMapObject_bbsObjectInit_80A5514
 
-// symdb: Per-frame update for the BBS overworld object (spawned by sub_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
+// symdb: Per-frame update for the BBS overworld object (spawned by owMapObject_bbsObjectInit_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
 // symdb: (r5 = owMapObjectPtr, r6 = ???, r10 = toolkitPtr, lr) -> void ; side effects: events flags
 // symdb: EVENT_4EA/EVENT_4EB tested/possibly set, sprite updated
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_bbsObjectUpdate_80A5588.yaml
@@ -1744,7 +1744,7 @@ battle_beastOutDispatch_80A5AD4:
 off_80A5AE4:
 	.word off_80A5AE8
 off_80A5AE8:
-	.word sub_80A5AF8+1
+	.word battle_beastOutInit_80A5AF8+1
 	.word battle_beastOutTick_80A5B70+1
 	.word sub_80A5C6C+1
 off_80A5AF4:
@@ -1754,9 +1754,9 @@ off_80A5AF4:
 // symdb: Initialize a player's Beast Out transformation BattleObject (sprite, anim, OAM layer, then hand off to the per-frame driver).
 // symdb: r5 = player BattleObject (BattleObject*) ; r10 = toolkit ; side effects: writes fields at
 // symdb: offsets 0,5,6,7,8,0xc,0xd,0xe,0x10,0x24,0x34 of the object and schedules its first tick.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5AF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutInit_80A5AF8.yaml
 	thumb_local_start
-sub_80A5AF8:
+battle_beastOutInit_80A5AF8:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -1807,7 +1807,7 @@ loc_80A5B64:
 locret_80A5B6C:
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A5AF8
+	thumb_func_end battle_beastOutInit_80A5AF8
 
 // symdb: per-frame state machine that drives the player's Beast Out transformation and un-transformation during battle
 // symdb: (r5 = BeastOutAIData-like ctx, r6 = related BattleObject, r10 = toolkit) -> void ; side effects:
@@ -8618,7 +8618,7 @@ object_mrWeatherStep_80A94DC:
 	movflag EVENT_BFC
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_80A94EC
-	bl sub_80A95A8
+	bl object_mrWeatherProximityTrigger_80A95A8
 loc_80A94EC:
 	bl owMapObject_updateLayerPriorityForPlayerZ_80A95EC
 	bl sprite_update
@@ -8714,9 +8714,9 @@ off_80A9598:
 // symdb: Mr. Weather comp map object's proximity trigger: if the player is on the same Z and within ±0xC0000 of the object's (X,Y), set story event 0xBFC, copy the object index into r6, mark the per-instance event flag, hide the shadow, force state byte to 8 and play sound 0x1A4.
 // symdb: (r5 = Mr. Weather object ptr, r6 = other object, r10 = Toolkit) -> void ; side effects: event
 // symdb: flag 0xBFC, per-instance flag 0x0BF4+idx, r6+4 byte, sprite shadow cleared, [r5+8]=8, SFX 0x1A4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A95A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_mrWeatherProximityTrigger_80A95A8.yaml
 	thumb_local_start
-sub_80A95A8:
+object_mrWeatherProximityTrigger_80A95A8:
 	push {r4,lr}
 	bl ReadOWPlayerObjectCoords
 	ldr r3, [r5,#0x14]
@@ -8746,7 +8746,7 @@ locret_80A95E6:
 	.balign 4, 0
 off_80A95E8:
 	.word 0x1A4
-	thumb_func_end sub_80A95A8
+	thumb_func_end object_mrWeatherProximityTrigger_80A95A8
 
 // symdb: For an overworld NPC object (r5), reads the player Z and sets the sprite's OAM priority to 3 if the player is below it, otherwise calls the standard layer resolver and applies the resulting priority.
 // symdb: (r5 = overworld NPC object ptr) -> ; side effects: updates sprite OAM priority at

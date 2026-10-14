@@ -2279,7 +2279,7 @@ LABEL_12:
             writeCurPETNaviToS2001c04_Unk07_80010c6();
             chatbox_runScript(&eTextScript2033404, 32);
 LABEL_11:
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
             *(v0 + 8) = 1;
             result = 0;
         }

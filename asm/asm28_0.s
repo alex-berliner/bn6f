@@ -5048,7 +5048,7 @@ loc_809CCC0:
 	mov r1, #0x20
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 loc_809CCE4:
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	mov r0, #1
 	strb r0, [r5,#8]
 	mov r0, #0

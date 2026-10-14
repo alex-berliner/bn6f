@@ -13898,7 +13898,7 @@ signed int __noreturn battleObject_initMoveStep_80178D4()
 
 
 // 0x8017992
-int sub_8017992()
+int battleObject_applyVerticalMovement_8017992()
 {
     int v0; // r5
     int v1; // r1

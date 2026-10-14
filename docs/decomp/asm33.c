@@ -4353,7 +4353,7 @@ void pet_menuScreenTick_8126FF0()
     if ( !v2 )
     {
         chatbox_clear_eFlags2009F38(64);
-        sub_81440D8();
+        link_resetHardwareAndClearLinkBuffers_81440D8();
         battle_resetEStructRecords_8046664();
         ClearEventFlagFromImmediate(23, 19);
         v3 = *(v0 + 12);
@@ -7978,7 +7978,7 @@ int sub_8129FE0()
 
 
 // 0x812a008
-void __fastcall __noreturn sub_812A008(int a1)
+void __fastcall __noreturn menu_subMenu_dispatchByIndex_812A008(int a1)
 {
     sprite_drawIfFlagSet_812B504();
     crt0_start_800027C();
@@ -9207,7 +9207,7 @@ signed int sub_812AC1A()
         if ( !result )
         {
 LABEL_18:
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
 LABEL_15:
             result = 4;
             *(v0 + 2) = 4;

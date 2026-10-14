@@ -629,7 +629,7 @@ void sub_8130864()
 	if ( eStruct200BC30_getJumpOffset00() )
 		sub_803C754();
 	else
-		sub_81440D8();
+		link_resetHardwareAndClearLinkBuffers_81440D8();
 	v0[2] = 28;
 	v0[12] = 0;
 	v0[3] = 0;
@@ -2067,7 +2067,7 @@ void sub_81318B0()
     if ( eStruct200BC30_getJumpOffset00() )
         sub_803C754();
     else
-        sub_81440D8();
+        link_resetHardwareAndClearLinkBuffers_81440D8();
     v0[22] = v0[2];
     v0[2] = 36;
     v0[12] = 0;
@@ -4266,7 +4266,7 @@ void __fastcall __noreturn battleObject_runSubmenuInputHandler_81337E8(int a1)
     submenu_isOpen_81355D8();
     if ( v3 )
     {
-        sub_8133BB4();
+        battleObject_submenuHandleBPress_8133BB4();
         if ( !v3 )
             goto LABEL_20;
         sub_8133C0C();
@@ -4320,7 +4320,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
     char v3; // zf
     int v4; // r1
 
-    sub_8133BB4();
+    battleObject_submenuHandleBPress_8133BB4();
     if ( v3 )
     {
         sub_8133C0C();
@@ -4604,7 +4604,7 @@ int __fastcall sub_8133B74(int a1)
 
 
 // 0x8133bb4
-void sub_8133BB4()
+void battleObject_submenuHandleBPress_8133BB4()
 {
     int v0; // r5
     int v1; // r10

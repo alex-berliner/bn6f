@@ -6,7 +6,7 @@ int bgScroll_ResetScrollCBCounters_8080D90()
 
 
 // 0x8080da0
-int sub_8080DA0()
+int battle_initBGScrollAndAnimForPuzzleField_8080DA0()
 {
     signed int v0; // r0
     signed int v1; // r4

@@ -14591,7 +14591,7 @@ LABEL_7:
 
 
 // 0x803f838
-signed int sub_803F838()
+signed int toolkit_initAndVerifyWorkArea_0803F838()
 {
     char v0; // zf
     signed int v1; // r4

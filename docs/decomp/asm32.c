@@ -20050,7 +20050,7 @@ int sub_811DF1C()
 
 
 // 0x811df40
-void __noreturn sub_811DF40()
+void __noreturn battleObject_initNaviRosterEntry_811DF40()
 {
     Battle *v0; // r5
 
@@ -20158,7 +20158,7 @@ int battle_dispatchObjectState_811E024()
 
 
 // 0x811e048
-void __fastcall __noreturn sub_811E048(int a1, int a2)
+void __fastcall __noreturn battle_beastOutInitSprite_811E048(int a1, int a2)
 {
     Battle *v2; // r5
 

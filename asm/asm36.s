@@ -1117,7 +1117,7 @@ sub_8130864:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	bne loc_8130874
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_8130878
 loc_8130874:
 	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
@@ -3232,7 +3232,7 @@ sub_81318B0:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	bne loc_81318C0
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_81318C4
 loc_81318C0:
 	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
@@ -7102,7 +7102,7 @@ battleObject_runSubmenuInputHandler_81337E8:
 
 	b loc_8133864
 loc_813381E:
-	bl sub_8133BB4
+	bl battleObject_submenuHandleBPress_8133BB4
 	bne loc_8133864
 	bl sub_8133C0C
 	bne loc_8133864
@@ -7153,7 +7153,7 @@ off_8133888:
 	thumb_local_start
 folderEdit_step_813388C:
 	push {lr}
-	bl sub_8133BB4
+	bl battleObject_submenuHandleBPress_8133BB4
 	bne loc_81338C6
 	bl sub_8133C0C
 	bne loc_81338C6
@@ -7532,9 +7532,9 @@ loc_8133B8E:
 // symdb: () -> r0 = 2 (handled flag) ; side effects: clobbers r5, r10, plays SOUND_EXIT_SUBMENU or
 // symdb: SOUND_CANT_JACK_IN, runs text script 2 in the chatbox, calls submenu_ConfirmExitAndFade_811FB64,
 // symdb: writes submenu object's 0x02/0x03/0x0d/0x17/0x44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133BB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuHandleBPress_8133BB4.yaml
 	thumb_local_start
-sub_8133BB4:
+battleObject_submenuHandleBPress_8133BB4:
 	push {lr}
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
@@ -7577,7 +7577,7 @@ loc_8133BFC:
 	tst r0, r0
 locret_8133C0A:
 	pop {pc}
-	thumb_func_end sub_8133BB4
+	thumb_func_end battleObject_submenuHandleBPress_8133BB4
 
 // symdb: Handles START / B cancel input for a sub-menu screen: enters or exits the cancel state (0x0C), saving/restoring the prior state and playing the corresponding SFX.
 // symdb: void sub_8133C0C(u32 menu_ptr /* r5 in */); /* leaves r0 = 0, Z set, NZ clr */

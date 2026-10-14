@@ -7988,7 +7988,7 @@ loc_8127006:
 	beq locret_812705E
 	mov r0, #0x40 
 	bl chatbox_clear_eFlags2009F38 // (int a1) ->
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	bl battle_resetEStructRecords_8046664 // () -> void
 	movflag EVENT_1713
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -14250,7 +14250,7 @@ sub_8129FE0:
 off_8129FF0:
 	.word off_8129FF4
 off_8129FF4:
-	.word sub_812A008+1
+	.word menu_subMenu_dispatchByIndex_812A008+1
 	.word sub_812A028+1
 	.word sub_812A058+1
 	.word sub_812A14C+1
@@ -14260,9 +14260,9 @@ off_8129FF4:
 // symdb: SubMenu state handler — draws the sub-menu sprite, then runs `sub_81465BC` and on success (r0 != 0) resets the eLink state, sets the sub-menu phase byte to 4 and the sub-menu counter to 3.
 // symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = result of sub_81465BC (0 if unchanged, 3 otherwise) ;
 // symdb: side effects: may reset eLink state and patch [r5+2] = 4, [r5+0x28] = 3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A008.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_subMenu_dispatchByIndex_812A008.yaml
 	thumb_local_start
-sub_812A008:
+menu_subMenu_dispatchByIndex_812A008:
 	push {lr}
 	bl sprite_drawIfFlagSet_812B504
 	bl crt0_start_800027C
@@ -14277,7 +14277,7 @@ sub_812A008:
 	strh r0, [r5,#0x28]
 locret_812A026:
 	pop {pc}
-	thumb_func_end sub_812A008
+	thumb_func_end menu_subMenu_dispatchByIndex_812A008
 	thumb_local_start
 sub_812A028:
 	push {lr}
@@ -15865,7 +15865,7 @@ loc_812AC6E:
 	tst r0, r0
 	bne locret_812AC7E
 loc_812AC76:
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 loc_812AC7A:
 	mov r0, #4
 	strb r0, [r5,r7]

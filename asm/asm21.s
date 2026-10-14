@@ -18,9 +18,9 @@ off_8080D9C:
 // symdb: (r10 = toolkit) -> void ; side effects: writes DISPCNT via SetRenderInfoLCDControl, arms IRQ4
 // symdb: HBlank via SetBGScrollCallbacks, queues GFX anim scripts via LoadGFXAnims, and conditionally
 // symdb: loads battle-loadDeathAnims_8035424 when battle mode != 1.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8080DA0.yaml
-	thumb_func_start sub_8080DA0
-sub_8080DA0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBGScrollAndAnimForPuzzleField_8080DA0.yaml
+	thumb_func_start battle_initBGScrollAndAnimForPuzzleField_8080DA0
+battle_initBGScrollAndAnimForPuzzleField_8080DA0:
 	push {r4-r7,lr}
 	bl sub_8081308
 	mov r4, r0
@@ -50,7 +50,7 @@ sub_8080DA0:
 	bl battle_loadDeathAnims_8035424
 locret_8080DE8:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8080DA0
+	thumb_func_end battle_initBGScrollAndAnimForPuzzleField_8080DA0
 
 	thumb_local_start
 sub_8080DEA:

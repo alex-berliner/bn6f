@@ -1135,7 +1135,7 @@ int __fastcall sub_8000F86(int a1)
     char v4; // zf
 
     v2 = a1;
-    result = sub_803F838();
+    result = toolkit_initAndVerifyWorkArea_0803F838();
     if ( v4 )
     {
         SetEventFlagFromImmediate(14, 0);

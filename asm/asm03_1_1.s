@@ -13800,9 +13800,9 @@ loc_803F814:
 // symdb: (r10 = Toolkit, plus any caller globals) -> r0 = bool (FALSE if work area + info-text are still
 // symdb: current, TRUE if either failed); ZF cleared/!ZF based on r0 (tst r0,r0 then pop with PC); side
 // symdb: effects clobber r0..r3 (toolkit/callee state).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F838.yaml
-	thumb_func_start sub_803F838
-sub_803F838: // () -> !zf
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/toolkit_initAndVerifyWorkArea_0803F838.yaml
+	thumb_func_start toolkit_initAndVerifyWorkArea_0803F838
+toolkit_initAndVerifyWorkArea_0803F838: // () -> !zf
 	push {r1-r7,lr}
 	ldr r0, dword_803F88C // =0xe000100
 	ldr r1, off_803F888 // =timer_2000000
@@ -13843,7 +13843,7 @@ dword_803F88C:
 	.word 0xE000100
 dword_803F890:
 	.word 0x6710
-	thumb_func_end sub_803F838
+	thumb_func_end toolkit_initAndVerifyWorkArea_0803F838
 
 // symdb: Computes a byte checksum over 16 bytes of EWRAM at 0x2000000+0x6700 and stores it (+24) into the S2001c04 work area's field at offset 0x68.
 // symdb: u32 sub_803F894(void) — reads the S2001c04 pointer from the toolkit (r10); returns the checksum

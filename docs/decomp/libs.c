@@ -1,6 +1,6 @@
 // 0x81440d8
 // static () -> void
-int sub_81440D8()
+int link_resetHardwareAndClearLinkBuffers_81440D8()
 {
     int v1; // [sp+0h] [bp-14h]
     __int16 v2; // [sp+4h] [bp-10h]
@@ -57,7 +57,7 @@ int sub_8144240()
     int v1; // [sp+0h] [bp-4h]
 
     link_initAndClear_8144158();
-    sub_81440D8();
+    link_resetHardwareAndClearLinkBuffers_81440D8();
     return v1;
 }
 
@@ -80,7 +80,7 @@ int __fastcall link_stateMachineRunStep_8144250(_BYTE *a1, int a2, int a3)
     switch ( byte_200F461 )
     {
         case 0:
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
             byte_200F461 = 1;
             break;
         case 1:

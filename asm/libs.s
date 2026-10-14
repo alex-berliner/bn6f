@@ -4,9 +4,9 @@
 // symdb: () -> r0 = saved LR (jump target); side effects: clobbers IME/IE/SIOCNT/TM3CNT/RTC and clears
 // symdb: 0x200F44C..0x200F4xx + eTimerEnable200F460 area; pops original LR into PC (tail-call
 // symdb: trampoline).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81440D8.yaml
-	thumb_func_start sub_81440D8
-sub_81440D8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_resetHardwareAndClearLinkBuffers_81440D8.yaml
+	thumb_func_start link_resetHardwareAndClearLinkBuffers_81440D8
+link_resetHardwareAndClearLinkBuffers_81440D8:
 	push {r4,r5,lr}
 	sub sp, sp, #8
 	ldr r0, off_8144130 // =word_2006DFC 
@@ -69,7 +69,7 @@ off_8144150:
 	.word unk_200F44C
 dword_8144154:
 	.word 0x1000002
-	thumb_func_end sub_81440D8
+	thumb_func_end link_resetHardwareAndClearLinkBuffers_81440D8
 
 // symdb: Reset GBA link-cable hardware and zero multiplayer comm buffers/state.
 // symdb: void sub_8144158(void) /* no registers in/out: lr passes through; preserved {r4-r7}; clobbers nz
@@ -193,7 +193,7 @@ off_814423C:
 	.word word_2006E04
 	thumb_func_end link_initAndClear_8144158
 
-// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then sub_81440D8) for its subsystem, likely once per frame.
+// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then link_resetHardwareAndClearLinkBuffers_81440D8) for its subsystem, likely once per frame.
 // symdb: void sub_8144240(void); // no meaningful inputs or outputs; caller-saved r0-r3 and flags are
 // symdb: clobbered, r4-r7 preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
@@ -201,7 +201,7 @@ off_814423C:
 sub_8144240:
 	push {lr}
 	bl link_initAndClear_8144158
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	pop {r0}
 	bx r0
 	.byte 0, 0
@@ -243,7 +243,7 @@ jpt_8144268:
 	.word loc_81442FA
 	.word loc_814430C
 loc_814428C:
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	ldr r1, off_8144298 // =eTimerEnable200F460 
 	mov r0, #1
 	strb r0, [r1,#0x1] // (byte_200F461 - 0x200f460)

@@ -673,7 +673,7 @@ loc_802696E:
 	pop {r1}
 	sub r1, #1
 	bpl loc_802696E
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	bl sub_8015940
 	bl battle_ClearPendingEventFlag_802A0EC
 	pop {r4-r7,pc}
@@ -1952,7 +1952,7 @@ sub_802723A:
 	mov r2, #1
 loc_802726A:
 	strb r2, [r0,#7]
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -2327,7 +2327,7 @@ loc_802748E:
 	mov r1, #0
 	mov r2, #0
 	bl customScreen_redrawChipSlot_8029CD4
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #0x97
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -2940,7 +2940,7 @@ loc_8027922:
 	ble loc_8027940
 	bl sub_80279FC
 	bl battle_customScreen_clearSelection_80279C8
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -3165,7 +3165,7 @@ sub_8027AAE:
 	bl sub_802A088
 	bl sub_80279FC
 	bl battle_customScreen_clearSelection_80279C8
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #0x92
 	bl PlaySoundEffect
 	mov r0, #0xc
@@ -3182,7 +3182,7 @@ sub_8027ADE:
 	bne locret_8027B1A
 	bl sub_80279FC
 	bl battle_customScreen_clearSelection_80279C8
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -4552,9 +4552,9 @@ byte_8028470:
 
 // symdb: Custom-screen chip-use dispatcher: reads the active chip's kind byte and invokes the matching panel/GFX/handler routine for the selected battle object.
 // symdb: (r5 -> r0 via [r5,#7]) -> r0 ; r5 = source struct ptr (battle object / chip-slot context)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028476.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runCustomScreenChipPickerEffect_8028476.yaml
 	thumb_local_start
-sub_8028476:
+battleObject_runCustomScreenChipPickerEffect_8028476:
 	push {lr}
 	ldrb r0, [r5,#7]
 	bl getLocOfActiveChips_8027E1C // (int a1) -> void*
@@ -4608,7 +4608,7 @@ loc_80284DA:
 	b locret_80284E0
 locret_80284E0:
 	pop {pc}
-	thumb_func_end sub_8028476
+	thumb_func_end battleObject_runCustomScreenChipPickerEffect_8028476
 
 // symdb: Battle side-effect routine that streams the chip-activation panel graphics (chip name tiles, icon, element palette, attack counter BCD digits) into VRAM for the active battle object's side.
 // symdb: (r0 = chip_id_word, r1 = ?, r2 = ?, r3 = toolkit-derived pointer) -> r0 = pointer into gfx chunk
@@ -5513,7 +5513,7 @@ loc_8028BD8:
 	mov r0, #SOUND_MENU_CUR_MOVE
 	bl PlaySoundEffect
 loc_8028BE6:
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	b locret_8028C96
 loc_8028BEC:
 	ldrh r0, [r7,#oJoypad_Pressed]
@@ -6289,7 +6289,7 @@ loc_80290F2:
 	strb r0, [r4,#7]
 loc_80290F6:
 	bl customScreen_ExitSequence_8028E32
-	bl sub_8028476
+	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 locret_8029104:
@@ -19893,7 +19893,7 @@ startScreen_initGfx_802F574: // (self: *mut StartScreen $r5) -> ()
 
 	bl sub_803FA42
 
-	bl sub_803F838 // () -> !zf
+	bl toolkit_initAndVerifyWorkArea_0803F838 // () -> !zf
 	bne loc_802F5BE
 
 	mov r0, #1
@@ -20203,7 +20203,7 @@ loc_802F72E:
 	bl zeroFill_e20094C0
 	bl palette_clearEPalette20097a0_80023A8
 	bl call_803D1AC // () -> void
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	bl zeroFill_813D960
 	bl clear_e200AD04 // () -> ()
 	mov r0, #0
@@ -20255,7 +20255,7 @@ loc_802F776:
   // EnterMap is triggered via cbGameState_80050EC here
 	bl scenario_prepareEnterMap_8004D48
 
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 
 	bl rfu_REQ_stopMode
 
@@ -20276,7 +20276,7 @@ loc_802F79A:
 	movflag EVENT_1704
 	bl SetEventFlagFromImmediate
 
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 
 	bl rfu_REQ_stopMode
 
@@ -20302,7 +20302,7 @@ loc_802F7B6:
 	movflag EVENT_1704
 	bl SetEventFlagFromImmediate
 loc_802F7DC:
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 locret_802F7E0:
 	pop {pc}
 	.balign 4, 0

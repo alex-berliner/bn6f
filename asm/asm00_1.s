@@ -2147,9 +2147,9 @@ T1BattleObjectJumptable:
 // symdb: Walks all alive battle objects, projects/culls + uploads GFX + queues OAM for visible ones
 // symdb: (none) -> (none) ; consumes r10 (toolkit pointer) and walks the battle-object pointer table; OAM
 // symdb: is queued
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003E18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_projectAndQueueSprites_8003E18.yaml
 	thumb_local_start
-sub_8003E18:
+battleObject_projectAndQueueSprites_8003E18:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2217,7 +2217,7 @@ off_8003E90:
 	.word sprite_projectAndCull+1
 off_8003E94:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8003E18
+	thumb_func_end battleObject_projectAndQueueSprites_8003E18
 
 // symdb: Records the current queued-sprite palette count into group slot 1 once per frame, then returns.
 // symdb: () -> r0 = 1 ; side effects: writes byte_200F389 + 1 to sprite group counter; tail-only dead
@@ -8919,7 +8919,7 @@ loc_8007236:
 	bl fifo_resetWriteCounter_800A01C
 	bl loadSceneGfx_80075CA
 	bl bgScroll_ResetScrollCBCounters_8080D90
-	bl sub_8080DA0
+	bl battle_initBGScrollAndAnimForPuzzleField_8080DA0
 	bl battle_initDisplayTables_8007628
 	bl chatbox_resetPrinterState_801FE00
 	bl eStruct2038160_clearStruct
@@ -9901,7 +9901,7 @@ loc_8007862:
 	beq loc_8007872
 	cmp r0, #8
 	beq loc_8007872
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 loc_8007872:
 	bl sub_801FE64
 	mov r4, #5
@@ -10326,7 +10326,7 @@ loc_8007B0A:
 loc_8007B10:
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
-	bl sub_8003E18
+	bl battleObject_projectAndQueueSprites_8003E18
 	bl battle_renderObjectSprites_8004218
 	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
@@ -10481,7 +10481,7 @@ loc_8007C2E:
 	cmp r0, #2
 	beq locret_8007C4C
 loc_8007C3C:
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	bl sub_801FE64
 loc_8007C44:
 	mov r0, #4
@@ -10743,7 +10743,7 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	bx r1
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
-	bl sub_8003E18
+	bl battleObject_projectAndQueueSprites_8003E18
 	bl battle_renderObjectSprites_8004218
 	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
@@ -10770,7 +10770,7 @@ off_8007EAC:
 sub_8007EB8:
 	push {r4,lr}
 	bl PauseBattle
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	bl sub_801FE64
 	ldr r0, dword_800800C // =0x280000
 	bl flags_clearBits_eStruct2035280_801BED6
@@ -10860,7 +10860,7 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	bx r1
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
-	bl sub_8003E18
+	bl battleObject_projectAndQueueSprites_8003E18
 	bl battle_renderObjectSprites_8004218
 	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
@@ -10982,7 +10982,7 @@ off_8008038:
 	.word battle_runPerFrameStoryStep_8008064+1
 	.word battle_updateMainFlow_80080D2+1
 	.word battle_runVictorySequence_80081A4+1
-	.word sub_800825A+1
+	.word battle_runLoserSequence_800825A+1
 	.word sub_80082DC+1
 	.word sub_800834A+1
 	.word sub_80083E4+1
@@ -11251,9 +11251,9 @@ locret_8008258:
 // symdb: cleared; BattleState->Unk_10 toggled vs Unk_0d; music changed to SONG_LOSER if effects bit 0x8
 // symdb: set; battle intro effect kind 0x18 (else kind 0) dispatched; r5[+0x3] set to 4; r5[+0x8] set to
 // symdb: 0x66 or 0x5e; r5[+0x4] = 2, GameState->Unk_14 = 2, eStruct200A008+0x2 = 1 on exit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800825A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runLoserSequence_800825A.yaml
 	thumb_local_start
-sub_800825A:
+battle_runLoserSequence_800825A:
 	push {r4,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -11315,7 +11315,7 @@ loc_80082B4:
 	bl eStruct200A008_setUnk02
 locret_80082DA:
 	pop {r4,pc}
-	thumb_func_end sub_800825A
+	thumb_func_end battle_runLoserSequence_800825A
 
 	thumb_local_start
 sub_80082DC:

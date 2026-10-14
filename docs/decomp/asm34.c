@@ -560,7 +560,7 @@ void sub_812DA60()
 	if ( eStruct200BC30_getJumpOffset00() )
 		sub_803C754();
 	else
-		sub_81440D8();
+		link_resetHardwareAndClearLinkBuffers_81440D8();
 	v0[2] = 28;
 	v0[12] = 0;
 	v0[3] = 0;

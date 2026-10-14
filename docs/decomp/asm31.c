@@ -21506,7 +21506,7 @@ int t1_0x55_80C40D8()
 
 
 // 0x80c40f8
-signed int __noreturn sub_80C40F8()
+signed int __noreturn battle_object_spawnBeast_80C40F8()
 {
     int v0; // r5
     unsigned __int8 *v1; // r0
@@ -21842,7 +21842,7 @@ int t1_0x57_80C4530()
 
 
 // 0x80c4550
-void __noreturn sub_80C4550()
+void __noreturn battleObject_initFromRelatedAndLoadSprite_80C4550()
 {
     int v0; // r5
     int v1; // r0
@@ -29426,7 +29426,7 @@ void __noreturn battleObject_initSnakeArmMover_80C9024()
 
 
 // 0x80c9074
-void __noreturn sub_80C9074()
+void __noreturn battleObject_movingObjectHitStep_80C9074()
 {
     int v0; // r5
     int v1; // r1
@@ -71922,7 +71922,7 @@ void t4_0x2e_80E39A0()
 
 
 // 0x80e39d0
-int __noreturn sub_80E39D0()
+int __noreturn battleObject_initBeastSp_80E39D0()
 {
     int v0; // r5
     u8 v1; // r0
@@ -91193,7 +91193,7 @@ int sub_80EF534()
 
 
 // 0x80ef550
-int sub_80EF550()
+int battleObject_runSnakeArmAttackPart_80EF550()
 {
     Battle *v0; // r5
     int v1; // r7

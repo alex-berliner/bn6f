@@ -19578,7 +19578,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / battleObject_applyVerticalMovement_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml
@@ -19595,7 +19595,7 @@ off_80178C4:
 	.word off_80178C8
 off_80178C8:
 	.word battleObject_initMoveStep_80178D4+1
-	.word sub_8017992+1
+	.word battleObject_applyVerticalMovement_8017992+1
 	.word sub_8017A38+1
 	thumb_func_end sub_80178B6
 
@@ -19692,9 +19692,9 @@ loc_8017988:
 // symdb: Ticks one battle object's per-frame kinematic motion toward its FuturePanel, updating panel reservation/state when arrival or blocking panel conditions occur.
 // symdb: (r5 = oBattleObject *) -> void ; side effects on oBattleObject_(FuturePanelX/Y, X, Y, Timer,
 // symdb: Timer2, Unk_0d) and on the underlying PanelData (reserve/release)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017992.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyVerticalMovement_8017992.yaml
 	thumb_local_start
-sub_8017992:
+battleObject_applyVerticalMovement_8017992:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -19771,7 +19771,7 @@ loc_8017A2E:
 	bl object_setPanelsFromCoordinates
 	bl object_updateCollisionPanels
 	pop {r4,pc}
-	thumb_func_end sub_8017992
+	thumb_func_end battleObject_applyVerticalMovement_8017992
 
 // symdb: Battle object timer tick: when the per-object timer expires, either flip to action 4 (clear stuck flag) or run the full knock-down/recovery sequence (action 8).
 // symdb: void battleObject_tickTimer_8017A38(void);  // r5 = object pointer in

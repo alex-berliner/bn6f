@@ -988,7 +988,7 @@ loc_812DA72:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	bne loc_812DA80
-	bl sub_81440D8 // static () -> void
+	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_812DA84
 loc_812DA80:
 	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)

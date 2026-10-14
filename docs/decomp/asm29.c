@@ -447,7 +447,7 @@ int battleObject_panelSnapshotBufferInit_80A54F0()
 
 
 // 0x80a5514
-void __noreturn sub_80A5514()
+void __noreturn owMapObject_bbsObjectInit_80A5514()
 {
     int v0; // r5
     int v1; // r6
@@ -1069,7 +1069,7 @@ int battle_beastOutDispatch_80A5AD4()
 
 
 // 0x80a5af8
-char *sub_80A5AF8()
+char *battle_beastOutInit_80A5AF8()
 {
     int v0; // r5
     char *result; // r0
@@ -5942,7 +5942,7 @@ void __noreturn object_mrWeatherStep_80A94DC()
 
     TestEventFlagFromImmediate(11, 252);
     if ( v1 )
-        sub_80A95A8();
+        object_mrWeatherProximityTrigger_80A95A8();
     owMapObject_updateLayerPriorityForPlayerZ_80A95EC();
     sprite_update(v0);
 }
@@ -5997,7 +5997,7 @@ char *sub_80A9570()
 
 
 // 0x80a95a8
-int sub_80A95A8()
+int object_mrWeatherProximityTrigger_80A95A8()
 {
     int v0; // r5
     int v1; // r6

@@ -1112,7 +1112,7 @@ signed int sub_8003C7A()
 
 
 // 0x8003e18
-int sub_8003E18()
+int battleObject_projectAndQueueSprites_8003E18()
 {
 	int v0; // r6
 	int *i; // r7
@@ -5145,7 +5145,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     v10 = fifo_resetWriteCounter_800A01C();
     loadSceneGfx_80075CA(v10, v11, v12, v13);
     bgScroll_ResetScrollCBCounters_8080D90();
-    sub_8080DA0();
+    battle_initBGScrollAndAnimForPuzzleField_8080DA0();
     v14 = battle_initDisplayTables_8007628();
     chatbox_resetPrinterState_801FE00(v14, v15, v16);
     eStruct2038160_clearStruct(v17, v18, v19, v20);
@@ -5679,7 +5679,7 @@ int battle_finishBattle_8007850()
 LABEL_3:
         v3 = eStruct200BC30_getJumpOffset00();
         if ( v3 != 4 && v3 != 8 )
-            sub_81440D8();
+            link_resetHardwareAndClearLinkBuffers_81440D8();
         sub_801FE64();
         v4 = 5;
         v5 = eStruct200BC30_getJumpOffset00();
@@ -5948,7 +5948,7 @@ int battle_update_8007A44()
 .loc_8007B10:
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
-    sub_8003E18();
+    battleObject_projectAndQueueSprites_8003E18();
     battle_renderObjectSprites_8004218();
     battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
@@ -6044,7 +6044,7 @@ signed int battle_stepSubstateToState4_8007C14()
     }
     if ( !sub_803DE24() || (result = *(v0 + 1), result != 2) )
     {
-        sub_81440D8();
+        link_resetHardwareAndClearLinkBuffers_81440D8();
         sub_801FE64();
 LABEL_7:
         *(v1 + 1) = 4;
@@ -6259,7 +6259,7 @@ signed int sub_8007E62()
     (*(&off_8007EAC + *(v0 + 1)))();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
-    sub_8003E18();
+    battleObject_projectAndQueueSprites_8003E18();
     battle_renderObjectSprites_8004218();
     battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
@@ -6286,7 +6286,7 @@ signed int sub_8007EB8()
     signed int result; // r0
 
     sub_800A028();
-    sub_81440D8();
+    link_resetHardwareAndClearLinkBuffers_81440D8();
     sub_801FE64();
     flags_clearBits_eStruct2035280_801BED6(2621440);
     dispatch_801DACC(2621440);
@@ -6364,7 +6364,7 @@ signed int __fastcall sub_8007F4E(int a1)
     (*(&off_8007F9C + *(v1 + 2)))();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
-    sub_8003E18();
+    battleObject_projectAndQueueSprites_8003E18();
     battle_renderObjectSprites_8004218();
     battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
@@ -6646,7 +6646,7 @@ int battle_runVictorySequence_80081A4()
 
 
 // 0x800825a
-int sub_800825A()
+int battle_runLoserSequence_800825A()
 {
     int v0; // r5
     int v1; // r10
