@@ -749,9 +749,9 @@ off_800F260:
 	.word off_80EA8D8
 	thumb_func_end enemy_getStruct2
 
-// symdb: Given an enemy ID, returns a small set of per-enemy display parameters: a fixed 5-byte table record for IDs 0xCD..0xFF, otherwise the first two bytes of the enemy's own struct with the rest zeroed.
-// symdb: u32x5 enemy_getVisualParams(u32 id /* r0 */); in: r0 = enemy ID; out: r0..r3 = bytes 0-3 of the
-// symdb: record (r4 = byte 4 on the table path, untouched garbage on the struct path); flags clobbered.
+// symdb: Resolves a battle-object arm/attachment slot index to its (x, y) attachment offset plus extra metadata, with a fixed fallback for invalid slot ids (>=0xCD).
+// symdb: (r0 = slotId) -> r0 = attachment0, r1 = attachment1, r2 = attachment2, r3 = attachment3, r4 =
+// symdb: attachment4 ; side effects: none
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
 	thumb_func_start sub_800F26C
 sub_800F26C:
@@ -11082,9 +11082,9 @@ locret_80139C2:
 	pop {r6,r7,pc}
 	thumb_func_end sub_801393A
 
-// symdb: From a player BattleObject's update hook, spawns the pink counter-hit ring when the player is in BeastOut/FormChange state and has not yet spawned one this counter opportunity.
-// symdb: (r5 = *BattleObject) -> void ; no explicit r0 return used; clobbers NZCV and many scratch regs
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80139C4.yaml
+// symdb: On a live player BattleObject, spawns the pink counter-hit ring (obj 0x5E) when the player is in beast-out mode and the AIData+0x5c counter-target pointer is still unset.
+// symdb: (r5 = *BattleObject, r10 = *Toolkit) -> void ; side effects: allocates obj 0x5E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80139C4.yaml
 	thumb_func_start sub_80139C4
 sub_80139C4:
 	push {r7,lr}
@@ -13551,6 +13551,10 @@ locret_8014A36:
 	pop {pc}
 	thumb_func_end sub_8014A00
 
+// symdb: Dispatch handler for an AIData beast-out/transform action: picks the per-state sub-routine based on Alliance/NaviStats, clears the action flag if not applicable.
+// symdb: side effects only (no return value to callers); reads r5 = AIData*, r7 = AIAttackVars*,
+// symdb: reads/writes AIData->Unk_48 flag, Alliance via r5, AIAttackVars->Unk_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014A38.yaml
 	thumb_local_start
 sub_8014A38:
 	push {lr}
@@ -17033,6 +17037,11 @@ loc_8016644:
 	pop {pc}
 	thumb_func_end battle_teardownObject_80165F8
 
+// symdb: Phase-gated per-frame tick for an in-battle actor that fades to white, then clears alliance targeting, releases its panel reservation, removes itself from the alive-actor list, zeros its AIData+0x74, and finally queues itself for destruction.
+// symdb: (r5 = self BattleObject; r10 = Toolkit) -> r0 non-zero ; side effects mutates self BattleObject
+// symdb: Timer / PhaseInitialized / CurState / ObjectHeader Flags, self AIData+0x74, sprite palette,
+// symdb: alliance target slot, alive-actor list, panel reservation.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801664E.yaml
 	thumb_local_start
 sub_801664E:
 	push {r4,r7,lr}
@@ -17796,6 +17805,10 @@ locret_8016C4C:
 	pop {pc}
 	thumb_func_end stepBattleObjectWobble_8016BFC
 
+// symdb: Performs a battle object's destroy-phase cleanup (releases panel reserves, frees its collision slot, decrements alliance counter, marks phase initialized=4, then drops the object).
+// symdb: (r5 = BattleObject*; r10 = toolkit) -> void ; side effects: mutates battle object, AI data,
+// symdb: collision slot, panel reserves, alliance counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016C4E.yaml
 	thumb_func_start sub_8016C4E
 sub_8016C4E:
 	push {r4,lr}
@@ -26719,10 +26732,10 @@ nullsub_58:
 	mov pc, lr
 	thumb_func_end nullsub_58
 
-// symdb: Tiny wrapper that tail-calls sub_801C002 with a fixed argument of 1 (some "enable"/mode-1 flag); all outputs come from the callee.
-// symdb: void sub_801BFEE(void) -> results (r0-r3, nzcv flags) inherited from sub_801C002(r0=1, r4-r7/r10
-// symdb: passthrough)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801BFEE.yaml
+// symdb: Battle chip-preview GFx init trampoline that passes the "open chip preview" flag (=1) into sub_801C002, which is the project's hand-table chip-preview GFX loader.
+// symdb: (none — only uses callee-saved r4, r6, r7, r10, lr) -> void ; side effects: triggers the chip-
+// symdb: preview GFX load via r0=1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BFEE.yaml
 	thumb_local_start
 sub_801BFEE:
 	push {lr}
@@ -27205,10 +27218,10 @@ loc_801C2F6:
 	pop {r3,r6,pc}
 	thumb_func_end renderHpDigits_801C296
 
-// symdb: Queues GFX tile uploads for a battle object's next animation frame, dispatching per-state source tables and skipping slot 0xb
-// symdb: (r4 = *object, r7 = *memory_base, r5 = vram_dest) -> r0 = final source pointer (after 0x40 bytes
-// symdb: consumed per element) ; side effects: 2 GFX transfers enqueued per non-skipped slot
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C304.yaml
+// symdb: Chatbox text/frame GFX upload helper — copies 0x20 bytes (one tile row) from each of the 4 chatbox GFX source slots to VRAM, skipping slot 0x0B, and chaining a second upload 0x80 bytes further into the destination.
+// symdb: (r4 = arm, r5 = dest base in VRAM, r7 = index table base) -> r0 = dest end pointer ; r4/r5/r6/r7
+// symdb: preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C304.yaml
 	thumb_local_start
 sub_801C304:
 	push {r3-r6,lr}
@@ -28539,6 +28552,11 @@ loc_801CC2A:
 	pop {r0,r4,r6,r7,pc}
 	thumb_func_end battle_updateObjectAnim_801CB38
 
+// symdb: Queues GFX/vram transfers for a battle object's beast-out form change and picks the emotion palette
+// symdb: (r0 = emotionIdx (1-based), r4 = ?, r5 = BattleObject*, r10 = Toolkit*) -> r0 = emotionIdx
+// symdb: (unchanged) ; side effects: GFX/VRAM queued via QueueEightWordAlignedGFXTransfer; writes
+// symdb: BattleObject+0x10 and +0x11
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CC34.yaml
 	thumb_local_start
 sub_801CC34:
 	push {r0,r4,r7,lr}

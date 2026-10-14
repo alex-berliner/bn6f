@@ -27806,6 +27806,10 @@ sub_80C4C4C:
 	mov pc, lr
 	thumb_func_end sub_80C4C4C
 
+// symdb: Returns a per-Row-name animation override (0xC/0xD) for a battle object's related object, otherwise just returns the actor-type in r1.
+// symdb: (r5 = related BattleObject*) -> r1 = {0xC, 0xD, or returned actor-type value}; side effects:
+// symdb: none observed
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80C4C52.yaml
 	thumb_local_start
 sub_80C4C52:
 	push {lr}
@@ -73744,6 +73748,11 @@ loc_80DA87E:
 	pop {pc}
 	thumb_func_end battle_initObject_80DA834
 
+// symdb: Battle-object UPDATE handler that handles the moment the object takes a killing hit: tears down its collision, spawns a destruction effect, plays a death SFX, and transitions the object to CUR_STATE_DESTROY.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes
+// symdb: oBattleObject_CurStateActionPhaseAndPhaseInitialized, plays SFX 0x85, may spawn effect object,
+// symdb: tears down collision.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DA886.yaml
 	thumb_local_start
 sub_80DA886:
 	push {lr}

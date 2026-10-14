@@ -10984,6 +10984,10 @@ off_8008060:
 	.word dword_203CA70
 	thumb_func_end sub_800801C
 
+// symdb: Story-step per-frame driver: ticks the battle navi AI joypads, kicks off a story-battle idle "KindEffect" dispatch (skipping or applying effects when the battle is ending or has a specific battle-effect flag), and falls back to a "no cross-net yet" path that resets navi status gfx + state.
+// symdb: () -> void ; side effects on a per-battle state struct (r5), toolkit/r10 state, AI joypads, navi
+// symdb: status block, struct 0x2035280 field 0x26
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008064.yaml
 	thumb_local_start
 sub_8008064:
 	push {lr}
@@ -15807,6 +15811,9 @@ loc_800A218:
 	pop {pc}
 	thumb_func_end battle_checkNaviFreeze_800A1D0
 
+// symdb: Returns whether the B-to-skip-turn shortcut should be accepted this frame (battle running, not over, not time-stopped, and sub_801DFE4 returns 0x4000)
+// symdb: () -> r0 = 1 if skip-battle shortcut should fire, else 0 ; no side effects
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800A21C.yaml
 	thumb_local_start
 sub_800A21C:
 	push {lr}

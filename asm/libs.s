@@ -21493,10 +21493,9 @@ off_814E0CC:
 	.word off_81C0418
 	thumb_func_end sub_814E0B6
 
-// symdb: Reads the next script command byte from a battle-object script stream and advances the script pointer, validating the decoded opcode.
-// symdb: (r1 = script state / context object) -> r0 = r1 (unchanged), r3 = validated opcode byte; side
-// symdb: effects: advances the script cursor at [r1+0x40] by one, may clear r0 in sub_814E0B6 when the
-// symdb: address is out of RAM range.
+// symdb: Advances the routine pointer at [r1+0x40] and reads the byte it points to, returning it in r3 with a validity check on the original pointer.
+// symdb: (r1 = object-like state struct) -> r0 = r1 (preserved by tail-call), r2 = old pointer, r3 = byte
+// symdb: at *oldPointer ; side effects updates the script/routine pointer at [r1+0x40]
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
 	thumb_local_start
 sub_814E0D0:
@@ -22665,7 +22664,7 @@ loc_814E7DC:
 	.byte 0, 0
 	thumb_func_end sub_814E7CC
 
-// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (battle_aiData_resetVersionAndChargeFlags_814E7A4) only when that result is zero.
+// symdb: Tiny wrapper that calls sub_814E7C0, writes its byte result to [r1+0x17], and runs a follow-up call (sub_814E7A4) only when that result is zero.
 // symdb: unknown /* inputs include r0, r1 (r1 points to a struct whose +0x17 byte field is written) and
 // symdb: lr; returns via the saved lr in r12; clobbers r0-r3 and flags per the callees */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E7E0.yaml

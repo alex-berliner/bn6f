@@ -1151,6 +1151,10 @@ locret_8046816:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80467FC
 
+// symdb: Iterates up to 5 AI slots in the battle dispatch table and dispatches handlers based on a per-slot flag and sub-index; void, used as a per-frame AI tick.
+// symdb: () -> void ; side effects: calls function pointers loaded from off_804679C[idx] via a hand-
+// symdb: rolled `bx r0` (push/pop r7 around it), preserves r4-r9/r12.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046818.yaml
 	thumb_func_start sub_8046818
 sub_8046818:
 	push {r4-r7,lr}
@@ -1188,6 +1192,9 @@ off_8046850:
 	.word off_804679C
 	thumb_func_end sub_8046818
 
+// symdb: Iterates the 6 (0..5) battle-object sprite slots at byte_2011860 and, for each whose object-header flag bit 0x02 is set, refreshes palette, anim-frame tiles and queues frame-piece sub-8002694
+// symdb: () -> r0 = 0 (always returns 0 in r0; no other return; all caller-saved regs trashed)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046854.yaml
 	thumb_func_start sub_8046854
 sub_8046854:
 	push {r4-r7,lr}

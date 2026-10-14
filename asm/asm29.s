@@ -1887,6 +1887,10 @@ sub_80A5C6C:
 	pop {pc}
 	thumb_func_end sub_80A5C6C
 
+// symdb: Checks if a beast-out / fugit activation condition is met for a given AIData and sets its triggered flag.
+// symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> r0 = bool (1 if triggered, else 0) ; side effect: stores 1
+// symdb: to AIDataPtr+0x24 when condition matches.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5C74.yaml
 	thumb_local_start
 sub_80A5C74:
 	push {r4-r7,lr}
@@ -2832,6 +2836,10 @@ sub_80A6A34:
 	pop {pc}
 	thumb_func_end sub_80A6A34
 
+// symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from sub_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
+// symdb: (r5 = battle object, plus inherited r2/r3/r8/r9/r10/r11/r12/lr) -> no out value, void-like ;
+// symdb: side effects: clobbers r0-r4/r6/r7, sets [r5+0x14], updates sprite priority + sprite OAM
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A62.yaml
 	thumb_local_start
 sub_80A6A62:
 	push {lr}
@@ -5330,6 +5338,10 @@ sub_80A7CF6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CF6
 
+// symdb: Overworld trigger that, if the player is inside an X/Y rectangle (relative to the OWPlayerObject) and the conditions are clear, sets event flag 0x1731 and starts a beast-sp related cutscene.
+// symdb: (no explicit args; r5 holds a small script-param struct, r10 = Toolkit) -> no return ; may start
+// symdb: a cutscene.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7CFE.yaml
 	thumb_local_start
 sub_80A7CFE:
 	push {r4-r7,lr}
@@ -5400,6 +5412,10 @@ off_80A7D8C:
 	.word byte_8089FD8 // CutsceneScript
 	thumb_func_end sub_80A7CFE
 
+// symdb: Dispatches an AI actor's per-state handler via a 3-entry table indexed by `AIData+8`.
+// symdb: (r5 = AIData*, r10 = Toolkit*, lr = caller LR) -> r0 = result of indirect call ; r4-r10/LR
+// symdb: preserved (call-pushed)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7D90.yaml
 	thumb_func_start sub_80A7D90
 sub_80A7D90:
 	push {r4-r7,lr}
@@ -5464,6 +5480,10 @@ sub_80A7E0C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7E0C
 
+// symdb: Beast-SP battle object update dispatcher, picking one of six state handlers via an inline thumb-table indexed by the object's CurState byte.
+// symdb: (r5 = toolkit BattleState ptr, r7 = battle object ptr, r10 = toolkit, lr = state update caller)
+// symdb: -> void ; no meaningful return written to r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E14.yaml
 	thumb_local_start
 sub_80A7E14:
 	push {r4-r7,lr}

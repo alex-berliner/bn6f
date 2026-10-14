@@ -795,7 +795,7 @@ off_8026A3C:
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
 
-// symdb: Queries some value via battle_allocateActorIndex_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
+// symdb: Queries some value via sub_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
 // symdb: u8 sub_8026A50(S20364C0* self /* r5 */); /* returns 0 in r0, sets Z=1 N=0, clobbers r1-r3 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026A50.yaml
 	thumb_local_start
@@ -7993,6 +7993,10 @@ off_8029C04:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_8029BE6
 
+// symdb: Per-frame chip-slot pulse animation step: pushes an OAM affine-transform record to the render FIFO and walks the pulse phase byte of the chip-select object.
+// symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effect: writes one 16-byte FIFO record (command
+// symdb: 0xB782) and updates oS20364C0_Unk_0f pulse phase
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029C08.yaml
 	thumb_local_start
 sub_8029C08: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -23989,6 +23993,10 @@ sub_8031122:
 	pop {pc}
 	thumb_func_end sub_8031122
 
+// symdb: Computes a delta between a passed-in battle object's two coords and the current camera-relative offsets, zeroes it (or stores the deltas when both axes match a specific profile), then re-projects the object via sprite_worldToScreenPos_80310EC.
+// symdb: (r0 = battleObject*) -> r0 = &dword_200F3E0 ; side effects: writes camera deltas at
+// symdb: (dword_200F3E0)+0x18/+0x1c, calls sprite_worldToScreenPos_80310EC on r6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031136.yaml
 	thumb_local_start
 sub_8031136:
 	push {lr}
@@ -24028,6 +24036,11 @@ loc_8031170:
 	pop {pc}
 	thumb_func_end sub_8031136
 
+// symdb: Computes a per-step scroll delta for a battle object against a 16.16 fixed-point world offset, then nudges its sprite by the camera scroll amount.
+// symdb: (r0 = object*) -> r0 = sprite worldToScreenPos result ; side effects: writes two 16.16 scroll
+// symdb: deltas to dword_200F3E0+0x18/0x1c and converts the object's sprite via
+// symdb: sprite_worldToScreenPos_80310EC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031176.yaml
 	thumb_local_start
 sub_8031176:
 	push {lr}

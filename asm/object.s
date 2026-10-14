@@ -5049,7 +5049,7 @@ calcFinalDamageAsPanelDamage1to5SumReturnFinalDamage_r0_PanelDamage6_r1_800E3BE:
 
 // symdb: Sum the five panel-damage entries of a battle object's CollisionData into FinalDamage, halving each entry (rounding up) if the object stands on a holy panel, and clamp the result.
 // symdb: void object_calcFinalDamageOnHoly_800E3DE(u32 /*r5*/ object, r4/r6 scratch in, lr); returns r2
-// symdb: as left by battleObject_accumulateFinalDamageUpperBound_802CE10, sets C/V via `add r3,
+// symdb: as left by sub_802CE10, sets C/V via `add r3,
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_calculateFinalDamage1.yaml
 	thumb_func_start object_calculateFinalDamage1
 object_calculateFinalDamage1:

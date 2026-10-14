@@ -153,6 +153,9 @@ sub_8141998:
 	pop {r4-r7, pc}
 	thumb_func_end sub_8141998
 
+// symdb: Top-level per-frame handler for the overworld PET "Beast Spam"/BeastOut gating check that, given clean input, either processes inputs (sub_8141A10) or finishes a sequence (sub_8141A70) — i.e. tick of `eStruct2001010` while no cutscene/screen-fade/subsystem block is active and not paused.
+// symdb: (r0..r3 not inputs; toolkit in r10) -> r0 = 0 ; no other returns
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81419A0.yaml
 	thumb_func_start sub_81419A0
 sub_81419A0:
 	push {r4-r7,lr}
