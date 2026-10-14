@@ -3849,7 +3849,7 @@ int sub_80A7EBE()
 
 
 // 0x80a7eda
-int sub_80A7EDA()
+int battleObject_aiBeastOutStage_80A7EDA()
 {
     int v0; // r5
 

@@ -1227,7 +1227,7 @@ loc_810CE38::
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	bl ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486
 	str r0, [sp]
-	bl sub_810CF4A
+	bl battle_ai_setupAttackOnTargetPanel_810CF4A
 	cmp r0, #0
 	bne loc_810CEA6
 	mov r0, #0
@@ -1354,9 +1354,9 @@ sub_810CF46::
 // symdb: AI attack step: selects the chip for use on the chosen target panel and stages it on the AI's battle object
 // symdb: (r0 = ?, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = ?, r1 = ? ; side effects write the AI's selected
 // symdb: chip and attack params into battle object / related object state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CF4A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_setupAttackOnTargetPanel_810CF4A.yaml
 	thumb_local_start
-sub_810CF4A::
+battle_ai_setupAttackOnTargetPanel_810CF4A::
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -1392,7 +1392,7 @@ loc_810CF7E::
 loc_810CF8E::
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810CF4A
+	thumb_func_end battle_ai_setupAttackOnTargetPanel_810CF4A
 	.balign 4, 0
 	.word byte_810CF98
 byte_810CF98::

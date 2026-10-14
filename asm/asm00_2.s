@@ -4067,9 +4067,9 @@ loc_801083E:
 // symdb: Sets the battle object's secondary-element weakness using stat look-ups of the actor's and its foe NaviStats.
 // symdb: () -> void ; side effects: writes SecondaryElementWeakness and SecondaryElement on the actor's
 // symdb: CollisionData (r5->r0 via battle object lookup)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801086C.yaml
-	thumb_func_start sub_801086C
-sub_801086C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C.yaml
+	thumb_func_start battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
+battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C:
 	push {r4,lr}
 	ldr r4, off_80108B0 // =byte_80108B8 
 	mov r1, #0x29 
@@ -4121,7 +4121,7 @@ off_80108F4:
 	.word 0x200
 off_80108F8:
 	.word 0x400
-	thumb_func_end sub_801086C
+	thumb_func_end battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 
 	thumb_func_start sub_80108FC
 sub_80108FC:
@@ -4282,28 +4282,28 @@ off_80109DC:
 	.word sub_8010BD0+1
 	.word sub_8010BF0+1
 	.word sub_8010C06+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
-	.word sub_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
+	.word battle_chargePwrAtk_8010C50+1
 	thumb_func_end battle_chipEffectDispatcher_80109A4
 
 	thumb_local_start
@@ -4536,9 +4536,9 @@ locret_8010C4E:
 // symdb: Charge the player's PowerAttack timer for a chip based on a chip ID and battle alliance.
 // symdb: (r0 = chip_id, r1 = alliance_bool) -> r0 = power-atk charge time in frames (0x1e) ; side
 // symdb: effects: may write player BattleObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010C50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chargePwrAtk_8010C50.yaml
 	thumb_local_start
-sub_8010C50:
+battle_chargePwrAtk_8010C50:
 	push {r4-r6,lr}
 	mov r4, r0
 	mov r6, r1
@@ -4557,7 +4557,7 @@ sub_8010C50:
 	bl sub_8010D04
 locret_8010C74:
 	pop {r4-r6,pc}
-	thumb_func_end sub_8010C50
+	thumb_func_end battle_chargePwrAtk_8010C50
 
 	thumb_func_start sub_8010C76
 sub_8010C76:
@@ -12646,7 +12646,7 @@ battle_runObjectAI_80143FC:
 	ldr r1, off_8014420 // =0xc00 
 	tst r0, r1
 	beq loc_801441A
-	bl sub_8014432
+	bl battle_incrementAIDataUnk4c_8014432
 	b locret_801441E
 loc_801441A:
 	bl battle_clearAIDataField4c_8014424
@@ -12680,15 +12680,15 @@ battleObject_aiGetUnk4cPtr_801442C:
 
 // symdb: Increments the AIData.Unk_4c counter for the current battle object's AI data.
 // symdb: (r5 = current BattleObject*) -> r0 = AIData* ; side effect: AIData+0x4c += 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014432.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_incrementAIDataUnk4c_8014432.yaml
 	thumb_local_start
-sub_8014432:
+battle_incrementAIDataUnk4c_8014432:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r1, [r0,#oAIData_Unk_4c]
 	add r1, #1
 	str r1, [r0,#oAIData_Unk_4c]
 	mov pc, lr
-	thumb_func_end sub_8014432
+	thumb_func_end battle_incrementAIDataUnk4c_8014432
 
 	thumb_func_start sub_801443C
 sub_801443C:
@@ -12856,7 +12856,7 @@ loc_801450C:
 	bl battleObject_initAIData_800FEEC
 loc_8014528:
 	bl sub_8014536
-	bl sub_801086C
+	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 	bl battle_applySelfDamageFromBattleEffect_80142C2
 	pop {r4,r7,pc}
 	thumb_func_end battle_beginTurnOpenProcess_80144C0
@@ -17209,9 +17209,9 @@ sub_80166AE:
 // symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
 // symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
 // symdb: object's Unk_1f byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80166B6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIDispatchByType_80166B6.yaml
 	thumb_local_start
-sub_80166B6:
+battle_dispatchAIDispatchByType_80166B6:
 	push {lr}
 	ldr r1, off_80166C4 // =off_80166C8 
 	ldrb r0, [r5,#oBattleObject_Unk_1f]
@@ -17224,7 +17224,7 @@ off_80166C4:
 off_80166C8:
 	.word sub_80166D0+1
 	.word sub_8016730+1
-	thumb_func_end sub_80166B6
+	thumb_func_end battle_dispatchAIDispatchByType_80166B6
 
 	thumb_local_start
 sub_80166D0:
@@ -18908,7 +18908,7 @@ loc_801735A:
 	bl object_setupCollisionData
 	bl battleObject_initPlayerMaxHPFromStats_80141C8
 	bl sub_8013892
-	bl sub_801086C
+	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 	mov r1, #0x29
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
@@ -24688,7 +24688,7 @@ loc_801B0BC:
 	beq loc_801B0D6
 	mov r0, r1
 	bl object_clearFlag2
-	bl sub_80166B6
+	bl battle_dispatchAIDispatchByType_80166B6
 	b loc_801B0EC
 loc_801B0D6:
 	bl object_getFlag // () -> int
@@ -24696,7 +24696,7 @@ loc_801B0D6:
 	lsl r1, r1, #0xc
 	tst r0, r1
 	beq loc_801B0E8
-	bl sub_80166B6
+	bl battle_dispatchAIDispatchByType_80166B6
 	b loc_801B0EC
 loc_801B0E8:
 	mov r0, #0
@@ -24989,7 +24989,7 @@ loc_801B2E8: // endif
 	mov r0, r1
 	bl object_clearFlag2
 
-	bl sub_80166B6
+	bl battle_dispatchAIDispatchByType_80166B6
 	b loc_801B318
 
 loc_801B302: // endif
@@ -25001,7 +25001,7 @@ loc_801B302: // endif
 	beq loc_801B314
 	// if OBJECT_FLAGS_SLIDING set
 
-	bl sub_80166B6
+	bl battle_dispatchAIDispatchByType_80166B6
 	b loc_801B318
 
 loc_801B314: // endif

@@ -268,7 +268,7 @@ char *battle_pickBattleStateInitPtr_808CC34()
     battle_checkPlayerActorStoryFlag_808CC10();
     if ( !v1 )
         return byte_808CA48;
-    sub_808CF8C();
+    battle_chatbox_setCursorTextFromEventFlag_808CF8C();
     if ( v1 )
     {
         battle_checkLockedEventTable_808CDC4();
@@ -565,7 +565,7 @@ unsigned int __fastcall sub_808CF50(int a1)
 
 
 // 0x808cf8c
-signed int sub_808CF8C()
+signed int battle_chatbox_setCursorTextFromEventFlag_808CF8C()
 {
     int v0; // r5
     int v1; // r10
@@ -644,7 +644,7 @@ int __fastcall battleObject_computePanelOffsetFromCoords_808D034(int a1, int a2)
     int result; // r0
 
     v3 = a2;
-    result = ((sub_808D060(a1) + (a1 >> 16)) >> 5) + 128;
+    result = ((ai_getAIModeForChipForMapGroup_808D060(a1) + (a1 >> 16)) >> 5) + 128;
     *(v2 + 8) = result;
     *(v2 + 9) = ((v4 + (v3 >> 16)) >> 5) + -128;
     return result;
@@ -652,7 +652,7 @@ int __fastcall battleObject_computePanelOffsetFromCoords_808D034(int a1, int a2)
 
 
 // 0x808d060
-int __fastcall sub_808D060(int a1)
+int __fastcall ai_getAIModeForChipForMapGroup_808D060(int a1)
 {
     char *v1; // r3
     int result; // r0

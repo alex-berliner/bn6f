@@ -1324,7 +1324,7 @@ loc_808CC2E:
 // symdb: Picks one of four BattleState-related init/data pointer pairs based on event flag 9D4 and three sub-checks, returning (ptr0, ptr1) to its caller.
 // symdb: () -> r0 = chosen byte_* pointer (4-way switch result), r1 = secondary chosen word (0 or sub-
 // symdb: call return); side effects: may read EVENT_9D4, may call
-// symdb: sub_808CC10/sub_808CF8C/sub_808D084/sub_808CDC4
+// symdb: sub_808CC10/battle_chatbox_setCursorTextFromEventFlag_808CF8C/sub_808D084/sub_808CDC4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickBattleStateInitPtr_808CC34.yaml
 	thumb_local_start
 battle_pickBattleStateInitPtr_808CC34:
@@ -1342,7 +1342,7 @@ loc_808CC48:
 	ldr r4, off_808CC74 // =byte_808CA48
 	b loc_808CC6C
 loc_808CC52:
-	bl sub_808CF8C
+	bl battle_chatbox_setCursorTextFromEventFlag_808CF8C
 	beq loc_808CC62
 	ldr r4, off_808CC7C // =byte_808C428
 	bl ai_getAIModeForMapGroup_808D084
@@ -1733,9 +1733,9 @@ byte_808CF84:
 // symdb: If event flag EVENT_9D9 is set in battle, writes a u16 from the battle object's slot data into the chatbox `Unk_4C` and plays SFX 0x122 (battle-tied cue line)
 // symdb: (r5 = battle object, r10 = toolkit) -> r0 = 1 if the flag was set, else 0; side effects: writes
 // symdb: to chatbox+0x4C and calls PlaySoundEffect(0x122)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CF8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chatbox_setCursorTextFromEventFlag_808CF8C.yaml
 	thumb_local_start
-sub_808CF8C:
+battle_chatbox_setCursorTextFromEventFlag_808CF8C:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_9D9
@@ -1756,7 +1756,7 @@ loc_808CFAC:
 	.balign 4, 0
 dword_808CFB4:
 	.word 0x122
-	thumb_func_end sub_808CF8C
+	thumb_func_end battle_chatbox_setCursorTextFromEventFlag_808CF8C
 
 // symdb: Decides whether the overworld player can jack in at their current position/conditions, updates an encounter bitmap and counter, and returns a status code (0=idle, 1=moved, 2=jack-in blocked).
 // symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
@@ -1829,7 +1829,7 @@ off_808D030:
 	.word dword_808CA44
 	thumb_func_end jackIn_attemptJackInCheck_808CFB8
 
-// symdb: Converts 16.16 absolute world (X,Y) returned by sub_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
+// symdb: Converts 16.16 absolute world (X,Y) returned by ai_getAIModeForChipForMapGroup_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
 // symdb: (r0 = xQ12, r1 = yQ12, r5 = BattleObject*, r10 = Toolkit) -> r2 = (panelCol<<1 | low bit), r3 =
 // symdb: (panelRow<<1 | low bit) ; writes [r5+8] and [r5+9] bytes
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computePanelOffsetFromCoords_808D034.yaml
@@ -1837,7 +1837,7 @@ off_808D030:
 battleObject_computePanelOffsetFromCoords_808D034:
 	push {r4,r5,lr}
 	push {r0,r1}
-	bl sub_808D060
+	bl ai_getAIModeForChipForMapGroup_808D060
 	pop {r3,r4}
 	asr r3, r3, #0x10
 	asr r4, r4, #0x10
@@ -1861,9 +1861,9 @@ battleObject_computePanelOffsetFromCoords_808D034:
 // symdb: Looks up an AI behaviour pair for the current map group's battle by indexing a small 4-byte-pair table with the AI mode returned from `ai_getAIModeForMapGroup_808D084`.
 // symdb: (r10 = Toolkit ptr) -> r0 = signed byte 0 from byte_808D07C[2*mode+0], r1 = signed byte 1 from
 // symdb: byte_808D07C[2*mode+1] ; no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D060.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForChipForMapGroup_808D060.yaml
 	thumb_local_start
-sub_808D060:
+ai_getAIModeForChipForMapGroup_808D060:
 	push {lr}
 	bl ai_getAIModeForMapGroup_808D084
 	ldr r3, off_808D078 // =byte_808D07C
@@ -1879,7 +1879,7 @@ off_808D078:
 	.word byte_808D07C
 byte_808D07C:
 	.byte 0x4, 0xE, 0xC, 0x4, 0xA, 0x4, 0xFC, 0xF6
-	thumb_func_end sub_808D060
+	thumb_func_end ai_getAIModeForChipForMapGroup_808D060
 
 // symdb: Returns the AI mode selector for the current map group (3 for map group 0x85, otherwise MapNumber byte).
 // symdb: () -> r0 = AI mode index (3 if MapGroup==0x85, else oToolkit_GameStatePtr->MapNumber)

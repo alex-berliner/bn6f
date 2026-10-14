@@ -38376,7 +38376,7 @@ off_80C9BD8:
 	.word off_80C9BDC
 off_80C9BDC:
 	.word battleObject_initBriefCollisionObject_80C9BE8+1
-	.word sub_80C9C5C+1
+	.word battleObject_handleActionCollision_80C9C5C+1
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x2f_80C9BC4
 
@@ -38434,9 +38434,9 @@ loc_80C9C56:
 // symdb: Tear down then re-present a battle object's collision data for its current action, or destroy it if the battle is over.
 // symdb: (r5 = oBattleObject*) -> void ; side effects: mutates the BattleObject and its CollisionData,
 // symdb: may flip CurState to CUR_STATE_DESTROY
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C9C5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleActionCollision_80C9C5C.yaml
 	thumb_local_start
-sub_80C9C5C:
+battleObject_handleActionCollision_80C9C5C:
 	push {r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -38467,7 +38467,7 @@ loc_80C9C98:
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	pop {r7,pc}
-	thumb_func_end sub_80C9C5C
+	thumb_func_end battleObject_handleActionCollision_80C9C5C
 
 // symdb: Ticks a battle object's countdown timer and, when it hits zero, fires its attack on the panel toward the player and moves the object to action 4.
 // symdb: void sub_80C9CA2(void) /* r5 = battle object; preserves r4-r7, clobbers r0-r3, returns NZCV from
@@ -172595,14 +172595,14 @@ ForMettaur_8109EF4:
 	.word sub_8109F96+1
 	// 0x20 (0x08) (CurAction -via setAttack-> 0x09, 0x0a, 0x0b, 0x0c, )
 	// triggered immediately start of battle following CurAction 0x01
-	.word sub_8109FD6+1
+	.word battle_aiDispatchByState_8109FD6+1
 	// 0x24 (0x09)
 	.word battle_attackTimerTick_8109CBC+1
 	// 0x28 (0x0A)
-	// setting this to sub_8109FD6+1 (0x08) causes mettaurs not to move up/down to player and always attack taking turns between mettaurs
+	// setting this to battle_aiDispatchByState_8109FD6+1 (0x08) causes mettaurs not to move up/down to player and always attack taking turns between mettaurs
 	.word sub_8109CE6+1
 	// 0x2C (0x0B)
-	// setting this to sub_8109FD6+1 (0x08) causes mettaurs to track player movement but not attack
+	// setting this to battle_aiDispatchByState_8109FD6+1 (0x08) causes mettaurs to track player movement but not attack
 	.word aiAttackDispatch_8109DD2+1
 	// 0x30 (0x0C)
 	.word sub_8109E7A+1
@@ -172730,9 +172730,9 @@ loc_8109FD0:
 // symdb: AI dispatch trampoline: reads the battle object's AIState and tail-calls one of the per-state AI handlers
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, lr = return) -> r1 = AIState byte loaded value? (per
 // symdb: contract out=r1) ; side effects clobber r0-r7, lr, flags; calls through LR
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8109FD6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiDispatchByState_8109FD6.yaml
 	thumb_local_start
-sub_8109FD6:
+battle_aiDispatchByState_8109FD6:
 	push {r4,r6,r7,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	mov r6, #0x80
@@ -172752,7 +172752,7 @@ off_8109FF0:
 	.word sub_810A0BA+1
 	.word battle_aiSelectAndUseChip_810A126+1
 	.word sub_810A204+1
-	thumb_func_end sub_8109FD6
+	thumb_func_end battle_aiDispatchByState_8109FD6
 
 // symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (sub_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A004.yaml
@@ -176093,7 +176093,7 @@ off_810BB94:
 	.word sub_810BE8E+1
 	.word sub_810BC10+1
 	.word sub_810BC2A+1
-	.word sub_810BC44+1
+	.word battle_tryUseChipAction_810BC44+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_810B878+1
 	.word genericAI_movementRelated_8109952+1
@@ -176162,9 +176162,9 @@ loc_810BC3E:
 // symdb: toolkit) -> r0 = bool "started attack this frame" ; writes BattleObject.CurAnim,
 // symdb: BattleObject.oBattleObject+0x88 (timer), AIData related fields, aiState.Unk_00, may pop via
 // symdb: r6->[Unk_00] dispatch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BC44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryUseChipAction_810BC44.yaml
 	thumb_local_start
-sub_810BC44:
+battle_tryUseChipAction_810BC44:
 	push {r4,r6,lr}
 	bl battle_isBattleOver
 	tst r0, r0
@@ -176211,7 +176211,7 @@ off_810BC94:
 	.word sub_810BCA0+1
 	.word sub_810BCBC+1
 	.word sub_810BCFC+1
-	thumb_func_end sub_810BC44
+	thumb_func_end battle_tryUseChipAction_810BC44
 
 	thumb_local_start
 sub_810BCA0:

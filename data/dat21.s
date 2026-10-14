@@ -8227,7 +8227,7 @@ sub_8086EA8:
 	push {r4-r7, lr}
 	ldr r5, off_8086ED4 // =off_8086D18
 	ldr r5, [r5, #0]
-	bl sub_8087140
+	bl battle_aiGetCurActionPanelY_8087140
 	cmp r0, #0
 	beq loc_8086EBA
 	bl sub_8087184

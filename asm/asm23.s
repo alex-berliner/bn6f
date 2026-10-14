@@ -846,7 +846,7 @@ jt_80895C0:
 	.word sub_8089ACA+1
 	.word sub_8089AE8+1
 	.word sub_8089B2E+1
-	.word sub_8089B54+1
+	.word owPlayer_handleBeastSpawnTransition_8089B54+1
 	.word sub_8089B7E+1
 	.word sub_8089B94+1
 	.word sub_8089BAA+1
@@ -1516,9 +1516,9 @@ loc_8089B50:
 // symdb: Overworld player handler that, when chatbox event flag 0x80 is set, finishes a BeastOut spawn by facing the player toward their navi, kicking off its fixed animation and clearing a request BBS flag, then writes 0x18 into the AI state's byte at r5.
 // symdb: (r5 = ptr to AI/BattleObject state, r10 = toolkit) -> r0 = 1 ; sets BYTE [r5+?] = 0x18, mutates
 // symdb: OWPlayer facing and eStruct200ace0, clears flag in oReqBBS2001150
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089B54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_handleBeastSpawnTransition_8089B54.yaml
 	thumb_local_start
-sub_8089B54:
+owPlayer_handleBeastSpawnTransition_8089B54:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1535,7 +1535,7 @@ sub_8089B54:
 loc_8089B7A:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089B54
+	thumb_func_end owPlayer_handleBeastSpawnTransition_8089B54
 
 	thumb_local_start
 sub_8089B7E:

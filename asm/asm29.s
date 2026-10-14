@@ -5647,7 +5647,7 @@ off_80A7E28:
 off_80A7E2C:
 	.word battleObject_clearActionPhaseUnk09_80A7E44+1
 	.word sub_80A7E4C+1
-	.word sub_80A7EDA+1
+	.word battleObject_aiBeastOutStage_80A7EDA+1
 	.word sub_80A7F58+1
 	.word sub_80A8006+1
 	.word sub_80A800A+1
@@ -5750,9 +5750,9 @@ locret_80A7ED8:
 // symdb: Per-actor AI beast-out stage dispatcher that jumps through a thumb thunk based on AIData.Unk_09.
 // symdb: (r5 = BattleObject*; AIData accessed via object offset) -> r0 = handler return value; callee-
 // symdb: saved r5/r10/lr preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7EDA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiBeastOutStage_80A7EDA.yaml
 	thumb_local_start
-sub_80A7EDA:
+battleObject_aiBeastOutStage_80A7EDA:
 	push {r4-r7,lr}
 	ldr r0, off_80A7EE8 // =off_80A7EEC 
 	ldrb r1, [r5,#9]
@@ -5766,7 +5766,7 @@ off_80A7EEC:
 	.word sub_80A7EF8+1
 	.word sub_80A7F14+1
 	.word sub_80A7F26+1
-	thumb_func_end sub_80A7EDA
+	thumb_func_end battleObject_aiBeastOutStage_80A7EDA
 
 	thumb_local_start
 sub_80A7EF8:

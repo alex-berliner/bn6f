@@ -288,9 +288,9 @@ off_808713C:
 
 // symdb: Returns AIData.PanelY (offset 0x13) of the BattleObject pointed to by the Toolkit's current actor slot
 // symdb: () -> r0 = u8 PanelY
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087140.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiGetCurActionPanelY_8087140.yaml
 	thumb_local_start
-sub_8087140:
+battle_aiGetCurActionPanelY_8087140:
 	push {r4,lr}
 	mov r1, r10
 	ldr r1, [r1,#0x3c]
@@ -299,7 +299,7 @@ sub_8087140:
 	mov r0, r4
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8087140
+	thumb_func_end battle_aiGetCurActionPanelY_8087140
 
 	thumb_func_start sub_8087150
 sub_8087150:

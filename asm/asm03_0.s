@@ -890,7 +890,7 @@ off_8026AA4:
 	// 0x44
 	.word sub_80275EC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x48
-	.word sub_802770C+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObject_chipSelectAnimTick_802770C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x4C
 	.word sub_8027834+1 // (self: * S20364C0 $r5) -> ()
 	// 0x50
@@ -2653,9 +2653,9 @@ off_8027708:
 
 // symdb: Dispatches the chip-select animation tick for a BattleObject based on its S20364C0 sub-state (JumpOffset00)
 // symdb: (r5 = * S20364C0 self) -> ()
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802770C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_802770C.yaml
 	thumb_local_start
-sub_802770C: // (self: * S20364C0 $r5) -> ()
+battleObject_chipSelectAnimTick_802770C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027720 // =off_8027724 
 	ldrb r0, [r5,#2]
@@ -2673,7 +2673,7 @@ off_8027724:
 	.word sub_802777C+1
 	.word sub_8027796+1
 	.word sub_8027806+1
-	thumb_func_end sub_802770C
+	thumb_func_end battleObject_chipSelectAnimTick_802770C
 
 	thumb_local_start
 sub_8027738:
@@ -5755,7 +5755,7 @@ sub_8028D6C:
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 
-	// trigger sub_802770C via custMenuMainMaybe_8026A88
+	// trigger battleObject_chipSelectAnimTick_802770C via custMenuMainMaybe_8026A88
 	mov r0, #0x48 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -15988,7 +15988,7 @@ loc_802D8C0:
 	bl sub_800EA0E
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_801086C
+	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 	bl sub_8014216
 	bl object_clearInvulnerableTime
 	mov r0, #8
@@ -16160,7 +16160,7 @@ sub_802D9B0:
 	bl sub_800EA0E
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_801086C
+	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 	bl sub_8014216
 	bl object_clearInvulnerableTime
 	mov r0, #8
@@ -16366,7 +16366,7 @@ sub_802DB80:
 	bl object_removePanelReserve
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
-	bl sub_801086C
+	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 	bl sub_8014216
 	bl object_clearInvulnerableTime
 	ldrb r0, [r5,#0x16]
@@ -25564,7 +25564,7 @@ jt_8031B10:
 	.word 0x0 // 0x06
 	.word 0x0 // 0x07
 	.word 0x0 // 0x08
-	.word sub_8031BFA+1 // 0x09
+	.word battle_aiUpdate_8031BFA+1 // 0x09
 	.word sub_8031C12+1 // 0x0a
 	.word battle_calcRelPosAndAdvanceTextboxBlink_8031C2A+1 // 0x0b
 	.word battle_aiPointLeftOfLineSideTest_8031C42+1 // 0x0c
@@ -25680,9 +25680,9 @@ battleObject_checkInAttackRange_08031BE2:
 // symdb: Advances one battle AI tick: computes the entity's relative position to its target, then runs a small AI helper that returns a value to a flag-check callee.
 // symdb: (r0 = entity pointer, r5 = AI state-ish struct) -> r0 = 0/3 from sub_8031B7C (cached-AI-active
 // symdb: flag); tail call via pop {pc}.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031BFA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiUpdate_8031BFA.yaml
 	thumb_local_start
-sub_8031BFA:
+battle_aiUpdate_8031BFA:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25692,7 +25692,7 @@ sub_8031BFA:
 	bl sub_8031570
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031BFA
+	thumb_func_end battle_aiUpdate_8031BFA
 
 	thumb_local_start
 sub_8031C12:

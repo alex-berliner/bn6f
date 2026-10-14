@@ -30661,7 +30661,7 @@ signed int battleObject_initBriefCollisionObject_80C9BE8()
 
 
 // 0x80c9c5c
-void __noreturn sub_80C9C5C()
+void __noreturn battleObject_handleActionCollision_80C9C5C()
 {
     int v0; // r5
     int v1; // r0
@@ -132617,7 +132617,7 @@ int battle_object_updatePhaseTick_8109FC4()
 
 
 // 0x8109fd6
-int sub_8109FD6()
+int battle_aiDispatchByState_8109FD6()
 {
     int v0; // r5
 
@@ -135053,7 +135053,7 @@ int sub_810BC2A()
 
 
 // 0x810bc44
-signed int sub_810BC44()
+signed int battle_tryUseChipAction_810BC44()
 {
     int v0; // r5
     _BYTE *v1; // r6

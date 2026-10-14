@@ -780,7 +780,7 @@ signed int __fastcall sub_8089B2E(int a1)
 
 
 // 0x8089b54
-signed int sub_8089B54()
+signed int owPlayer_handleBeastSpawnTransition_8089B54()
 {
     _BYTE *v0; // r5
     char v1; // zf

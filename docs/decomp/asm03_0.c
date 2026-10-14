@@ -1754,7 +1754,7 @@ int sub_80276D6()
 
 
 // 0x802770c
-int sub_802770C()
+int battleObject_chipSelectAnimTick_802770C()
 {
     int v0; // r5
 
@@ -10405,7 +10405,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     battleRefreshTrackedObjectArmPos_801DBD4();
     sub_800EA0E();
     v27 = object_clearFlag(GameEntryPoint);
-    sub_801086C(v27);
+    battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v27);
     sub_8014216();
     object_clearInvulnerableTime();
     result = 8;
@@ -10558,7 +10558,7 @@ signed int __noreturn sub_802D9B0()
     sub_80108FC(v0->Alliance);
     sub_800EA0E();
     v17 = object_clearFlag(GameEntryPoint);
-    sub_801086C(v17);
+    battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
     sub_8014216();
     object_clearInvulnerableTime();
     result = 8;
@@ -10753,7 +10753,7 @@ signed int __noreturn sub_802DB80()
     sub_801A66C();
     object_removePanelReserve(v0->futurePanelX, v0->futurePanelY);
     v17 = object_clearFlag(GameEntryPoint);
-    sub_801086C(v17);
+    battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
     sub_8014216();
     object_clearInvulnerableTime();
     if ( battle_networkInvert(v0->Alliance) )
@@ -16242,7 +16242,7 @@ int __fastcall battleObject_checkInAttackRange_08031BE2(_DWORD *a1)
 
 
 // 0x8031bfa
-int __fastcall sub_8031BFA(_DWORD *a1)
+int __fastcall battle_aiUpdate_8031BFA(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

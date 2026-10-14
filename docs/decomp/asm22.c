@@ -211,7 +211,7 @@ void *__fastcall sub_808711C(int a1, int a2, int a3, int a4)
 
 
 // 0x8087140
-int sub_8087140()
+int battle_aiGetCurActionPanelY_8087140()
 {
     int v0; // r10
 

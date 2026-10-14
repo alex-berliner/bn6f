@@ -2839,7 +2839,7 @@ int sub_8010820()
 
 
 // 0x801086c
-int __fastcall sub_801086C(int a1)
+int __fastcall battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(int a1)
 {
     int v1; // r0
     int v2; // r0
@@ -3128,7 +3128,7 @@ int __fastcall sub_8010C06(int a1, int a2)
 
 
 // 0x8010c50
-int __fastcall sub_8010C50(int a1, int a2)
+int __fastcall battle_chargePwrAtk_8010C50(int a1, int a2)
 {
     int v2; // r4
     int result; // r0
@@ -8764,7 +8764,7 @@ int battle_runObjectAI_80143FC()
         if ( v1 )
         {
             if ( object_getFlag() & &loc_C00 )
-                result = sub_8014432();
+                result = battle_incrementAIDataUnk4c_8014432();
             else
                 result = battle_clearAIDataField4c_8014424();
         }
@@ -8795,7 +8795,7 @@ int battleObject_aiGetUnk4cPtr_801442C()
 
 
 // 0x8014432
-int sub_8014432()
+int battle_incrementAIDataUnk4c_8014432()
 {
     int v0; // r5
     int result; // r0
@@ -8960,7 +8960,7 @@ int battle_beginTurnOpenProcess_80144C0()
     v6 = battleObject_clearPwrAtkState_8012EA8(v0);
     v7 = battleObject_initAIData_800FEEC(v6);
     v8 = sub_8014536(v7);
-    v9 = sub_801086C(v8);
+    v9 = battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v8);
     return battle_applySelfDamageFromBattleEffect_80142C2(v9);
 }
 
@@ -12179,7 +12179,7 @@ int sub_80166AE()
 
 
 // 0x80166b6
-int sub_80166B6()
+int battle_dispatchAIDispatchByType_80166B6()
 {
     int v0; // r5
 
@@ -13382,7 +13382,7 @@ int __noreturn playerObject_init_80172F0()
     v16 = object_setupCollisionData(v14, 1, 2, v15);
     battleObject_initPlayerMaxHPFromStats_80141C8(v16);
     sub_8013892();
-    v18 = sub_801086C(v17);
+    v18 = battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
     if ( !sub_8013774(v18, 41) )
     {
         v19 = sub_8013774(0, 44);
@@ -16949,11 +16949,11 @@ LABEL_48:
                     if ( object_getFlag2() & 0x10 )
                     {
                         object_clearFlag2(16);
-                        sub_80166B6();
+                        battle_dispatchAIDispatchByType_80166B6();
                     }
                     else if ( object_getFlag() & 0x1000 )
                     {
-                        sub_80166B6();
+                        battle_dispatchAIDispatchByType_80166B6();
                     }
                     else
                     {
@@ -17086,11 +17086,11 @@ LABEL_40:
                         if ( object_getFlag2() & 0x10 )
                         {
                             object_clearFlag2(16);
-                            sub_80166B6();
+                            battle_dispatchAIDispatchByType_80166B6();
                         }
                         else if ( object_getFlag() & 0x1000 )
                         {
-                            sub_80166B6();
+                            battle_dispatchAIDispatchByType_80166B6();
                         }
                         else
                         {
