@@ -26837,10 +26837,9 @@ battle_RequestEndBattle_801C06E:
 	pop {pc}
 	thumb_func_end battle_RequestEndBattle_801C06E
 
-// symdb: Thin trampoline that invokes sub_801C082 with r0 set to 0; no logic of its own.
-// symdb: void sub_801C078(void)  /* callers pass r4, r5, r6, r7, r10; NZCV and r0-r3 come back from the
-// symdb: callee */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C078.yaml
+// symdb: Trivial battle helper that calls battle_drawChipCountsOAM_801C082 with r0=0 and returns 0.
+// symdb: () -> r0 = 0 ; side effects: delegates to battle_drawChipCountsOAM_801C082(r0=0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C078.yaml
 	thumb_local_start
 sub_801C078:
 	push {lr}

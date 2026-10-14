@@ -1694,10 +1694,9 @@ byte_80A5ABC:
 	.byte 0x10, 0x0, 0x3, 0x34
 	thumb_func_end sub_80A5A5C
 
-// symdb: Thunk that dispatches to one of three AIData update routines indexed by `AIData.Unk_04` (the AI phase byte), tail-called with `r5 = AIData*`, `r10 = toolkit`, and return through `unk_2011A90`.
-// symdb: (r0 = , r1 = , r5 = AIData*, r10 = toolkit, lr = return) -> r0 = subroutine return;
-// symdb: r2/r3/r4/r5/r8/r9/r10/r12 preserved
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5AD4.yaml
+// symdb: Beast-Out AI dispatch table that calls one of three per-state handlers based on the AIData sub-state byte at r5+8.
+// symdb: (r5 = AIState* or AIData*, r10 = Toolkit*, lr = return) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5AD4.yaml
 	thumb_func_start sub_80A5AD4
 sub_80A5AD4:
 	push {lr}
@@ -2393,6 +2392,10 @@ loc_80A5FF2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A5FD0
 
+// symdb: copies one AI data entry (HP/Element/Param1-3) from a BattleObject into an AIData scratch slot
+// symdb: (r5 = BattleObject*, r6 = AI scratch buffer in EWRAM) -> no return; side effect: writes 3 bytes
+// symdb: + 3 dwords into the scratch buffer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6014.yaml
 	thumb_local_start
 sub_80A6014:
 	push {r4-r7,lr}
@@ -5348,10 +5351,10 @@ sub_80A7CF6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CF6
 
-// symdb: Polls the "Beast SP gate" trigger — when the overworld player overlaps the gate rect, no flag/cutscene/fade is busy, sets EVENT_1731 and starts one of two cutscenes depending on the player's facing/param.
-// symdb: (r5 = this trigger struct, r10 = toolkit) -> r5 retained; r0 may be clobbered transitively ;
-// symdb: side effects: writes event flag, starts a cutscene
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7CFE.yaml
+// symdb: Overworld interaction trigger: if the player is inside a fixed 0xE0000..0x1C0000 X/Y box and conditions hold (no chatbox 0x80, no cutscene, no busy player, not faded), set event flag 0x1731 and start the BeastSp encounter cutscene (script selected by player id).
+// symdb: (r5 = unknown 0x14-byte param for StartCutscene) -> void ; uses overworld player coords from
+// symdb: tk->GameState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CFE.yaml
 	thumb_local_start
 sub_80A7CFE:
 	push {r4-r7,lr}

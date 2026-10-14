@@ -45,6 +45,10 @@ off_813B79C:
 	.word byte_20096D8
 	thumb_func_end sub_813B790
 
+// symdb: Battle AI dispatcher: looks up the caller's battle object, picks an AIData field (0x8 or 0xc) based on event flag 0x2660+actorIndex, then tail-calls through a 4-entry thunk table.
+// symdb: (r0 = actorIndex, r1 = dispatchId) -> r0 = unk_2009F00 ; side effects: reads battle object
+// symdb: AIData, tests event flag, tail-jumps to dispatchId[0..3]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B7A0.yaml
 	thumb_func_start sub_813B7A0
 sub_813B7A0:
 	push {r4,r6,r7,lr}

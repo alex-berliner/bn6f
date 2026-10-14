@@ -1402,6 +1402,13 @@ dword_8123C1C:
 	.word 0x5B5957
 	thumb_func_end sub_8123C00
 
+// symdb: Performs the per-battle-object column-alignment check for the active actor: looks up a panel slot index, writes it into the actor's AIData state, marks the side bit, and either runs the AI panel-range attack or the row-alignment repair.
+// symdb: (r0 = color/slot table ptr, r1 = flag bitmask to OR into side bits, r2 = record spawn table ptr,
+// symdb: r3 = work buffer ptr, r4 = AI state field offset, r5 = AIData* (toolkit ptr in r10), r6 =
+// symdb: caller's flag-mask constant) -> void ; side effects: AIState field at AIData+<r4> is set,
+// symdb: AIData.Unk_4c |= r1, and one of battle_aiCheckPanelRangeAndDoAttack_8134930 or
+// symdb: battle_alignRowCheck_81348DC is invoked.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123C20.yaml
 	thumb_local_start
 sub_8123C20:
 	push {lr}

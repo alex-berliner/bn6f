@@ -903,9 +903,11 @@ off_8026AA4:
 	.word sub_8027A58+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenuMainMaybe_8026A88
 
-// symdb: Cust-menu animation tick that pulses the player's HP-bar/value and either finalises the chip-select or jumps to the next menu phase (Lose or WaitSelect) based on the player's HP remaining.
-// symdb: (r5 = *S20364C0 self) -> ; side effects: sounds, chatbox state, BG tile draws at unk_2035000,
-// symdb: camera Y, render info, state writes into S20364C0 and the battle state
+// symdb: CustMenu tick that drives a per-frame tile animation downward from 0x78 across four chip slots, then either chains into an enemy-virus/player-damage side effect, sub_802728C or the custMenuUpdateWaitSelectionState_8026CCC waiting state.
+// symdb: () -> () (void-ish; callee-saves preserved); only side effects are writing to S20364C0 (at
+// symdb: oS20364C0_Extra_Unk_40/0x44 and Unk_02), RenderInfo+0x18, Camera+0x34, eStruct2035280+0x17, IO
+// symdb: regs via chatbox sub_POI/dispatch_801DACC, BG tile map via bgmap_WriteTileIdAtBlock_800187C,
+// symdb: audio via PlaySoundEffect, S2035280+0x17 via sub_801E71C, and Sound via GetBattleMode.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026B04.yaml
 	thumb_local_start
 sub_8026B04: // (self: * S20364C0 $r5) -> ()
@@ -16580,8 +16582,9 @@ off_802DE58:
 	.word 0x2000
 	thumb_func_end sub_802DD70
 
-// symdb: When test-battle flag 0x40 is set, runs the sub_802E2C4 handler for indices 0 and 1; otherwise does nothing.
-// symdb: void sub_802DE5C(void)
+// symdb: If the 0x40 battle flag is set, recalculates the Pressure-style chip picks by calling sub_802E2C4 first with argument 0 (likely clears the previous selection), then with 1 (likely commits the new one).
+// symdb: () -> void ; side effects: calls sub_802E2C4 twice with r0 = 0 then r0 = 1 when battle flag 0x40
+// symdb: is set
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802DE5C.yaml
 	thumb_func_start sub_802DE5C
 sub_802DE5C:
@@ -23684,6 +23687,10 @@ loc_8030EFE:
 	pop {pc}
 	thumb_func_end sub_8030E8C
 
+// symdb: Computes signed per-axis clip/penetration deltas for two battle objects against an axis-aligned bounding box reference
+// symdb: (r0 = objOrAabbPtr, r1 = otherObjPtr, r2 = aabbHalfWidthDelta, r3 = aabbHalfHeightDelta, r4 =
+// symdb: otherHalfWidth, r5 = otherHalfHeight, r6 = axisMaskOrDim, r7 = ?, lr) -> r0 = negY, r1 = negX
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8030F04.yaml
 	thumb_local_start
 sub_8030F04:
 	push {lr}
@@ -25238,8 +25245,8 @@ dword_8031918:
 	.word NULL
 	thumb_func_end checkLayerPriority_80318b0
 
-// symdb: Returns 3 if r0 == 1, else 2; tiny AI/data helper at the end of a likely shared ai_data slot
-// symdb: (r0 = tag/selector) -> r0 = 3 if r0==1 else 2; side effects: clobbers r5
+// symdb: Returns one of two hard-coded state word values (3 when r0==1, 2 otherwise) using dword_2013940 as scratch; appears to be a battle-AI helper queried with a selector.
+// symdb: (r0 = selector) -> r0 = 2 or 3; side effects: loads dword_2013940 into r5 (no write observed)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031980.yaml
 	thumb_local_start
 sub_8031980:
@@ -25370,8 +25377,8 @@ sub_8031A46:
 	pop {pc}
 	thumb_func_end sub_8031A46
 
-// symdb: Tail-call wrapper that asks sub_8031980 to look up a state word for selector 1 and forwards the result back as its own return value.
-// symdb: () -> r0 = (3 if selector 1 matches, otherwise 2) ; side effects: same as sub_8031980
+// symdb: Tiny battle helper that calls sub_8031980 with r0=1 and returns its result in r0.
+// symdb: () -> r0 = result of sub_8031980(1) ; no other side effects (only lr is pushed/popped)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031A5E.yaml
 	thumb_local_start
 sub_8031A5E:

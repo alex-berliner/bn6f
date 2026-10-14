@@ -17894,6 +17894,10 @@ loc_81171EE:
 	.balign 4, 0x00
 	thumb_func_end sub_81171D4
 
+// symdb: Sets or clears bit 1 of the byte at offset 0x6 of the eStructArr2008450 entry whose index is in r1, depending on the flag in r0; bails out if the entry is not in use.
+// symdb: (r0 = bool flag, r1 = entry index into eStructArr2008450) -> no return value ; side effect: bit
+// symdb: 1 of entry[idx].Unk_06 is OR'd or BIC'd
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81171F4.yaml
 	thumb_func_start sub_81171F4
 sub_81171F4:
 	push {r4-r7,lr}
@@ -35172,6 +35176,11 @@ dword_811FAF0:
 	.word 0x8000
 	thumb_func_end object_computeAndQueueOamEntry_811FA98
 
+// symdb: Looks up an OAM tile/attribute pair from r3 (u16 table) by r2 (row index, sign-extended), queues one sprite OAM entry via sprite_queueOamEntryThunk_802FE28 and returns the next row index (r2/2+1) — i.e. walks the descriptor table by one row.
+// symdb: (r0 = packed X|Y render bits, r1 = packed 16-bit position+flags, r2 = signed row/entry index
+// symdb: (low bits used), r3 = ptr to u16 descriptor table) -> r0 = next row index ((index2>>1)+1) ; side
+// symdb: effects: calls sprite_queueOamEntryThunk_802FE28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FAF4.yaml
 	thumb_func_start sub_811FAF4
 sub_811FAF4:
 	push {r4-r7,lr}

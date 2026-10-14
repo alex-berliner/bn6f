@@ -7217,10 +7217,9 @@ off_804A248:
 	.word eS200A290
 	thumb_func_end sub_804A230
 
-// symdb: Returns a pointer into unk_2001850 at an offset taken from the dword_804A25C lookup table indexed by r0.
-// symdb: u32 getDword_804A25CEntry(u32 index /* r0 */) -> /* r0 */ pointer into unk_2001850; preserves
-// symdb: r4-r7; clobbers nzcv/r1
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_804A24C.yaml
+// symdb: Resolves a text-script index to a pointer in the text-script pool at EWRAM 0x02001850 via a 0x40-byte LUT at 0x0804a25c, returning a u8* into the pool.
+// symdb: (r0 = textScriptIndex) -> r0 = u8* into unk_2001850 pool ; clobbers r0, r1; preserves r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A24C.yaml
 	thumb_func_start sub_804A24C
 sub_804A24C:
 	push {r4-r7,lr}

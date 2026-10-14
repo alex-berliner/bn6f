@@ -21468,11 +21468,11 @@ sub_814E0B4:
 	ldrb r3, [r2]
 	thumb_func_end sub_814E0B4
 
-// symdb: Range-checks the value in r2 and treats it as valid (leaves r3 alone) only when it is a RAM pointer (bit 25 set, i.e. 0x02000000-0x03FFFFFF); otherwise it clears r3 to signal "invalid".
-// symdb: void checkIsRamPointer(void) // in: r2 = value to test, r3 = caller's flag (must be pre-set
-// symdb: nonzero for a meaningful pass); out: r3 = 0 on failure, untouched on success; r0 always
-// symdb: preserved; flags set as side effects of the last shift/compare
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0B6.yaml
+// symdb: Validates an incoming script-position pointer (r2) by zeroing r3 if the address is outside the in-RAM script range, leaving r0 and r1 untouched.
+// symdb: (r0 = scratch/preserved, r1 = scratch/preserved, r2 = candidate pointer to validate, lr =
+// symdb: return) -> r0 = preserved, r3 = 0 when r2 is outside the allowed range, else r3 untouched; side
+// symdb: effects: none observable (push/pop of r0 only)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E0B6.yaml
 	thumb_local_start
 sub_814E0B6:
 	push {r0}
@@ -21493,11 +21493,10 @@ off_814E0CC:
 	.word off_81C0418
 	thumb_func_end sub_814E0B6
 
-// symdb: Advances a battle object's script-position pointer by one byte, reads that byte, and feeds it to sub_814E0B6 for validation as a RAM pointer (r2 is the script position, r1 is the object).
-// symdb: (r0 = ptr-to-call-result-helper-buf, r1 = battle object/state ptr) -> r0 = r0, r2 = the
-// symdb: validated byte stored at [r1+0x40]; tail-call into sub_814E0B6 which marks r3 as invalid when r2
-// symdb: is not in 0x02000000-0x03FFFFFF
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
+// symdb: Reads the next command byte from a battle-object's per-update script pointer at [r1+0x40], advances the pointer, then falls through into a RAM-pointer validator.
+// symdb: (r1 = battleObject/state ptr) -> r0 = ?, r2 = advanced script pointer, r3 = command byte (or
+// symdb: cleared if invalid); falls through into sub_814E0B6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E0D0.yaml
 	thumb_local_start
 sub_814E0D0:
 	ldr r2, [r1,#0x40]
@@ -24453,10 +24452,10 @@ loc_814F396:
 	.balign 4, 0x00
 	thumb_func_end m4a_plyNote_applyPitchAndVolume_814F2F0
 
-// symdb: Computes a screen-x or screen-y position from a panel coordinate and a fixed-point table, used by battle-object positioning code.
-// symdb: (r0 = selector: 4 = single-table branch, otherwise double-table; r1 = raw panel coord; r2 =
-// symdb: unused (saved to r12)) -> r0 = position with 0x800 bias ; side effects: none
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814F3A4.yaml
+// symdb: Computes a BattleChip damage value by looking up the chip's row in a damage table and scaling by a row-level multiplier.
+// symdb: (r0 = row type 0..6, r1 = chip index, r2 = slot/level index 0..3) -> r0 = final damage (raw
+// symdb: value + 0x800) ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F3A4.yaml
 	thumb_local_start
 sub_814F3A4:
 	push {r4-r7,lr}

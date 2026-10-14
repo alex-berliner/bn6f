@@ -3834,8 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: GFX animation init helper that loads an animation frame value or sets a script/cutscene flag; called by multiple init_gfx_anim_* routines and story/cutscene flag helpers.
-// symdb: () -> r0 = unknown ; side effects: unknown
+// symdb: (cannot be verified) probable helper that tests/clears/sets cutscene- and BBS-related event flags and kicks off three GFX anim states as part of the start-screen flow.
+// symdb: (in = r10 toolkit; out = nz; side effects: r2-r9,r12 clobbered, lr clobbered; no r0 returned
+// symdb: value.)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

@@ -566,6 +566,9 @@ off_809D5BC:
 	.word byte_809D0DC
 	thumb_func_end sub_809D560
 
+// symdb: Per-tick handler that runs when the overworld player's countdown is still active: reads a Z-coordinate modifier (notably "shoes on a given Z layer"), gates a doubling case on event flag EVENT_1716, and slides the player by Unk_38/Unk_3c shifted by the chosen Z layer.
+// symdb: (r5 = OWPlayerObject*) -> void ; side effects: writes Unk_13, X, Y on the player object via r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D5C4.yaml
 	thumb_local_start
 sub_809D5C4:
 	push {lr}

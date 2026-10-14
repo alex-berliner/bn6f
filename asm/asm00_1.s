@@ -13660,6 +13660,11 @@ locret_8009388:
 	pop {pc}
 	thumb_func_end sub_8009338
 
+// symdb: Drives the "pre-result / run-away" sub-phase of battle: validates chip hand, runs the inner battle step, and then decides which battle-result code (0x8, 0x10, 0x14, 0x18, 0x1c, 0x20) to store into BattleState.Index_01.
+// symdb: (no args via registers; toolkit/BattleState ptr in r10) -> r0 = 0 ; side effects: writes
+// symdb: BattleState.Unk_03, BattleState.Index_01, BattleState.Unk_02_03, BattleState.Unk_1e, clears
+// symdb: dword_203CA70 record, calls several battle helpers.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800938A.yaml
 	thumb_local_start
 sub_800938A:
 	push {r4,lr}

@@ -153,10 +153,10 @@ sub_8141998:
 	pop {r4-r7, pc}
 	thumb_func_end sub_8141998
 
-// symdb: Per-frame battle update: drives AI dispatch, sprite GFX, cutscene/cursor gating, and chip-custom-screen selection (subsystem 4 only).
-// symdb: (r10 = toolkit) -> r0 = 0 ; side effects: many (writes AIData flags, calls AI dispatch, sprite
-// symdb: GFX, game select, cutscene poll, screen-fade poll)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81419A0.yaml
+// symdb: Beast-SP Battle AI per-frame dispatch (init sub-mode, run AI, conditionally run sub-routines) returning 0.
+// symdb: (r10 = ToolkitPtr) -> r0 = 0 ; updates r4–r7/r8/r9/r12, calls many subsystems, may call
+// symdb: chatbox_mask_eFlags2009F38
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81419A0.yaml
 	thumb_func_start sub_81419A0
 sub_81419A0:
 	push {r4-r7,lr}
@@ -1041,6 +1041,9 @@ sub_81422B4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81422B4
 
+// symdb: Returns 0 only when the current soul-weapon beast is unlocked and its required event flags are set; otherwise 1.
+// symdb: () -> r0 = bool (0 = beast available, 1 = unavailable) ; side effects: clobbers r0-r3,r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81422BE.yaml
 	thumb_local_start
 sub_81422BE:
 	push {r4-r7,lr}
@@ -1888,9 +1891,9 @@ loc_8142B1A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142B04
 
-// symdb: Returns the overworld map object's `Unk_4` field when the passed `r5` describes a Beast-Out player Navi (ActorType=0, AIIndex=0xF) standing on the same panel as the OW player and the type matches; otherwise returns 0.
-// symdb: (r5 = pointer to a Beast-Out AIData-like record) -> r0 = u16 panel-data value or 0 ; side
-// symdb: effects: writes r0 (used as trash by callers), flags NZ depend on the read at `[r0,#4]`
+// symdb: Checks if the overworld player is at the same position as an OW object entry and returns a u16 from the matched battle object (likely an interaction id or panel/type id).
+// symdb: (r5 = OWMapObjectPtr, r10 = toolkit) -> r0 = u16 id (or 0); side effects: r4-r7 modified; may
+// symdb: clobber r0-r3,lr; Z flag set if non-zero
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8142B28.yaml
 	thumb_local_start
 sub_8142B28:

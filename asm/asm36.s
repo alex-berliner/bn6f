@@ -8969,12 +8969,11 @@ loc_8134686:
 	.balign 4, 0x00
 	thumb_func_end sub_8134610
 
-// symdb: Spawns/initializes a child battle object/effect with a packed spawn coordinate (x derived from caller's int offset, y from r1, z from param r2), passing derived params, table data byte_81331F4, a packed position word, and r5-relative lookup bytes through sub_811FAF4.
-// symdb: (r0 = packed x? or base offset, r1 = y, r2 = z, r3 = some param, r4 = some param, r5 = battle
-// symdb: object ptr, r6 = data table, r10 = toolkit) -> r0 = updated byte at r5[r3] ; side effects:
-// symdb: writes back to r5[r3] (lo nibble + shifted hi nibble), calls sub_811FAF4 and possibly
-// symdb: sub_8120CC8
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813468C.yaml
+// symdb: Applies a shield/status effect overlay to a battle object by patching the related-object byte with a packed (nibble) tag looked up from dword_81331FC when the high nibble of the source byte equals 1, then spawns the overlay sprite.
+// symdb: (r0 = packed value, r1 = ?, r2 = ?, r3 = relatedObjectOffsetInO1, r5 = toolkit/object, r4 =
+// symdb: ptrToTableOrArgs, r6 = ptrToTableOrArgs) -> r0 = original lower nibble; side effects: writes the
+// symdb: related-object byte at oBattleObject+0x4c and dispatches sub_811FAF4.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813468C.yaml
 	thumb_local_start
 sub_813468C:
 	push {r4,lr}
@@ -10850,10 +10849,10 @@ sub_81353DC:
 	.byte 0, 0
 	thumb_func_end sub_81353DC
 
-// symdb: Thin per-frame wrapper that calls battle_aiCheckPanelRangeAndDoAttack_8134930 with fixed opcode parameters (0x24, 0xa5, 0x28) on a battle object.
-// symdb: (r0 = ?, r1 = ?, r5 = ?, lr) -> r2 = ?, r3 = ?, r5 = preserved, r6 = ? ; side effects via
-// symdb: battle_aiCheckPanelRangeAndDoAttack_8134930
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
+// symdb: Dispatches an AI turn action (r0=row/action id) with r1 (often a 0/1 sub-mode) into the AI panel-range/attack routine using constants 0x24, 0xA5, 0x28, 6.
+// symdb: (r0 = action index [5..6], r1 = sub-flag [0..1], r5 = caller's object/AIData, lr = caller's lr)
+// symdb: -> r0 = result bitmask/status word ; no other return registers per contract
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
 	thumb_local_start
 sub_81353F0:
 	push {r4-r7,lr}
