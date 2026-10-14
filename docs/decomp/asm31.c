@@ -21851,7 +21851,7 @@ void __noreturn sub_80C4550()
     sprite_load(v0, 128, *(v0 + 4), *(v0 + 5));
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    v1 = sub_80C46CC();
+    v1 = battleObject_getDamageElementOrPalette_80C46CC();
     sprite_setPallete(v1);
     v2 = *(*(v0 + 76) + 16) + *(v0 + 7);
     *(v0 + 16) = v2;
@@ -21898,7 +21898,7 @@ int battleObject_copyStateAndSyncSpriteFromRelated_80C458C()
     v5[1] = v3;
     v5[2] = v4;
     *v0 = *v0 & 0xFD | *v1 & 2;
-    v6 = sub_80C46CC();
+    v6 = battleObject_getDamageElementOrPalette_80C46CC();
     sprite_setPallete(v6);
     v7 = sprite_getColorShader(*(v0 + 76));
     sprite_setColorShader(v0, v7);
@@ -22022,7 +22022,7 @@ int __fastcall sub_80C46C6(int result)
 
 
 // 0x80c46cc
-int sub_80C46CC()
+int battleObject_getDamageElementOrPalette_80C46CC()
 {
     int *v0; // r5
     int result; // r0

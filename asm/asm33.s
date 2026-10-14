@@ -547,9 +547,9 @@ off_812353C:
 	thumb_local_start
 battle_updateFrame_8123558:
 	push {lr}
-	bl sub_8123BC0
+	bl battleObject_applyAIDataToAttackTable_8123BC0
 	bl sub_8123BE0
-	bl sub_8123C00
+	bl battleObject_runAITurnPhase_8123C00
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8123570
 	mov r0, #4
@@ -568,9 +568,9 @@ sub_8123574:
 	push {lr}
 	mov r0, #2
 	strh r0, [r5,#0x20]
-	bl sub_8123BC0
+	bl battleObject_applyAIDataToAttackTable_8123BC0
 	bl sub_8123BE0
-	bl sub_8123C00
+	bl battleObject_runAITurnPhase_8123C00
 	bl sub_8123D70
 	mov r0, #1
 	mov r1, #3
@@ -647,9 +647,9 @@ loc_81235E8:
 	bl refreshChipUseStats_8123A80
 loc_8123628:
 	bl drawBattleBackground_8123AB8
-	bl sub_8123BC0
+	bl battleObject_applyAIDataToAttackTable_8123BC0
 	bl sub_8123BE0
-	bl sub_8123C00
+	bl battleObject_runAITurnPhase_8123C00
 	pop {pc}
 	.balign 4, 0
 off_812363C:
@@ -1339,9 +1339,9 @@ dword_8123BBC:
 // symdb: Forwards fixed AI-attack parameter table plus per-frame params into battleObject_applyAIDataToAttackTable_8123C20 for all battle objects on the field.
 // symdb: (r0 = dword_8123BDC = 0x0302F2E, r1 = 0x1, r2 = byte_81233D8, r3 = 0x4, r4 = 0x1c) -> void ;
 // symdb: side effects: jumps into the per-battle-object loop in 8123C20
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123BC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyAIDataToAttackTable_8123BC0.yaml
 	thumb_local_start
-sub_8123BC0:
+battleObject_applyAIDataToAttackTable_8123BC0:
 	push {r4-r7,lr}
 	ldr r0, off_8123BD8 // =dword_8123BDC
 	mov r1, #1
@@ -1357,7 +1357,7 @@ off_8123BD8:
 	.word dword_8123BDC
 dword_8123BDC:
 	.word 0x302F2E
-	thumb_func_end sub_8123BC0
+	thumb_func_end battleObject_applyAIDataToAttackTable_8123BC0
 
 // symdb: Configures AI state from a vtable-derived data block and forwards to applyAIDataToAttackTable with constant args.
 // symdb: (r0=dword_8123BFC ptr (r0=1, r2=&ai_data byte array 0x81233E0, r1=0x20, r3=5, r4=0x5c, r6=0)) ->
@@ -1387,9 +1387,9 @@ dword_8123BFC:
 // symdb: Runs an AI/attack phase on a battle object: prepares an AI data context (0x40 bytes) from a per-object state blob at 0x81233E8, then calls sub_8123C20 with 6 entries.
 // symdb: (r5 = toolkit ptr, r10 = some battle-obj ptr carried in) -> r0 = 0x40 (size hint) ; side
 // symdb: effects: writes to AI scratch memory and object state via sub_8123C20
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runAITurnPhase_8123C00.yaml
 	thumb_local_start
-sub_8123C00:
+battleObject_runAITurnPhase_8123C00:
 	push {r4-r7,lr}
 	ldr r0, off_8123C18 // =dword_8123C1C
 	mov r1, #0x40 
@@ -1406,7 +1406,7 @@ off_8123C18:
 	.word dword_8123C1C
 dword_8123C1C:
 	.word 0x5B5957
-	thumb_func_end sub_8123C00
+	thumb_func_end battleObject_runAITurnPhase_8123C00
 
 // symdb: Applies a single AI attack/variant entry to a battle object, optionally spawning attack effect records and dispatching to row-alignment or panel-range AI routines.
 // symdb: (r0 = byte_table_ptr (tbl of u8 lookup bytes), r1 = spawn_bitmask, r2 = spawn_table_ptr, r3 =

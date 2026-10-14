@@ -3159,7 +3159,7 @@ signed int chatbox_80424E0()
         }
         goto LABEL_8;
     }
-    v3 = sub_803D0F4();
+    v3 = gameState_getProtectedBugfrags_803D0F4();
     v5 = 255;
     if ( v3 < 10 )
 LABEL_8:
@@ -3713,7 +3713,7 @@ signed int chatbox_8042C18()
             return 1;
         }
         v18 = v0[2] | (v0[3] << 8) | (v0[4] << 16) | (v0[5] << 24);
-        v16 = sub_803D0F4();
+        v16 = gameState_getProtectedBugfrags_803D0F4();
         v8 = v18;
         v17 = 0;
         if ( v16 != v18 )

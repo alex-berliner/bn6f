@@ -1919,7 +1919,7 @@ void sub_810F0D8()
         *(v3 + 12) = v4;
         object_setAttack0();
     }
-    else if ( !sub_810F1B6() )
+    else if ( !battle_aiTryChipAttack_0810F1B6() )
     {
         v5 = *(v1 + 108) - 1;
         *(v1 + 108) = v5;
@@ -1952,7 +1952,7 @@ void sub_810F0D8()
 
 
 // 0x810f1b6
-signed int sub_810F1B6()
+signed int battle_aiTryChipAttack_0810F1B6()
 {
     int v0; // r5
     signed int v1; // r6
@@ -6285,12 +6285,12 @@ void sub_8112A64()
 
     *(v1 + 8) = byte_81129D6[*(v0 + 22)];
     *v1 = 4;
-    sub_8112A78();
+    battle_aiSnakeArmTickStep_8112A78();
 }
 
 
 // 0x8112a78
-void sub_8112A78()
+void battle_aiSnakeArmTickStep_8112A78()
 {
     int v0; // r4
     _DWORD *v1; // r5
@@ -20336,7 +20336,7 @@ int __fastcall sub_811E202(int a1)
     char v1; // r0
     char v6; // r1
 
-    v1 = sub_81418E4();
+    v1 = battle_getAIDataVersionFields_81418E4();
     __asm
     {
         SVC         6
@@ -21415,7 +21415,7 @@ int __noreturn drawMapNamesScreen_811F050()
 {
     int v0; // r10
 
-    *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = sub_803D0F4();
+    *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = gameState_getProtectedBugfrags_803D0F4();
     renderTextGfx_8045F8C(TextScriptMapNames, 242, &unk_200C2A0, 0);
     return sprite_repackAndQueueTiles_811F5DC(&unk_200C2A0, byte_200D220, 100750336, 6);
 }

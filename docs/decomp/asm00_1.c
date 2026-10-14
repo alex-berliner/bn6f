@@ -12413,7 +12413,7 @@ int battle_initBattleStateBuffer_800B144()
     else
         v17 = sub_8121198();
     dword_203CCA0 = v17;
-    dword_203CCA4 = sub_803D0F4();
+    dword_203CCA4 = gameState_getProtectedBugfrags_803D0F4();
     dword_203CBE0[0] = 305419896;
     return sub_80200A4(62);
 }

@@ -5875,7 +5875,7 @@ loc_80424F0:
 	bl chatbox_setflags_3e // (int mask) -> void
 	b loc_8042526
 loc_8042508:
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	mov r1, #0xff
 	cmp r0, #0xa
 	bge loc_8042514
@@ -7021,7 +7021,7 @@ loc_8042CB0:
 	orr r0, r2
 	orr r0, r3
 	push {r0,r2,r3}
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	mov r1, r0
 	pop {r0,r2,r3}
 	mov r2, #0

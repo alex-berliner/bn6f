@@ -26843,7 +26843,7 @@ sub_80C4550:
 	bl sprite_load // (int a1, int a2, int a3) ->
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
-	bl sub_80C46CC
+	bl battleObject_getDamageElementOrPalette_80C46CC
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r0, [r0,#oBattleObject_CurAnim]
@@ -26899,7 +26899,7 @@ loc_80C45B8:
 	and r1, r2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_80C46CC
+	bl battleObject_getDamageElementOrPalette_80C46CC
 	bl sprite_setPalette // (int pallete) -> void
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sprite_getColorShader
@@ -27054,9 +27054,9 @@ sub_80C46C6:
 // symdb: Returns the element/element-like damage code for an attacking battle object, or falls back to its sprite palette.
 // symdb: (r5 = attacker BattleObject*) -> r0 = element byte (0xff when not applicable) ; reads attacker
 // symdb: ExtraVars[4..8], no side effects on caller-visible state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C46CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getDamageElementOrPalette_80C46CC.yaml
 	thumb_local_start
-sub_80C46CC:
+battleObject_getDamageElementOrPalette_80C46CC:
 	push {r4,lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	cmp r0, #0xff
@@ -27083,7 +27083,7 @@ dword_80C46F4:
 	.word 0x10000
 dword_80C46F8:
 	.word 0x100800
-	thumb_func_end sub_80C46CC
+	thumb_func_end battleObject_getDamageElementOrPalette_80C46CC
 
 	thumb_func_start t1_0x58_80C46FC
 t1_0x58_80C46FC:

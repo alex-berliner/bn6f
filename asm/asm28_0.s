@@ -993,7 +993,7 @@ sub_8099FFC:
 	bl sub_802D15E
 	b loc_809A01C
 loc_809A018:
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 loc_809A01C:
 	str r0, [r5,#0x70]
 	bl sub_8003984
@@ -1163,7 +1163,7 @@ sub_809A138:
 	str r0, [r5,#0x70]
 	b loc_809A1A4
 loc_809A15C:
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	str r0, [r5,#0x70]
 	movflag EVENT_F5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1256,7 +1256,7 @@ loc_809A208:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_809A252
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	mov r7, r0
 	cmp r7, #0xa
 	blt loc_809A238

@@ -59,7 +59,7 @@ int __fastcall sub_81418DA(int result, char a2)
 
 
 // 0x81418e4
-int sub_81418E4()
+int battle_getAIDataVersionFields_81418E4()
 {
     return BYTE2(dword_2001024);
 }
@@ -119,7 +119,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
     int v8; // r2
     int v9; // r3
 
-    sub_8141AA8();
+    pet_testIsMapGroupAllowed_8141AA8();
     if ( v1 )
     {
         if ( byte_2001013 )
@@ -269,7 +269,7 @@ int sub_8141A70()
 
 
 // 0x8141aa8
-signed int sub_8141AA8()
+signed int pet_testIsMapGroupAllowed_8141AA8()
 {
     int v0; // r10
     char v1; // zf
@@ -792,7 +792,7 @@ int sub_8142510()
 
 
 // 0x8142618
-unsigned int sub_8142618()
+unsigned int cutscene_dispatchEventFlags_8142618()
 {
     int v0; // r10
     int v1; // r0

@@ -3121,7 +3121,7 @@ OverworldMapObjectUpdateJumptable:
 	.word menu_stateDispatch_80A4BDC+1
 	.word npc_stateDispatchStep_80A51C4+1
 	.word sub_80A5428+1
-	.word sub_80A54F0+1
+	.word battleObject_panelSnapshotBufferInit_80A54F0+1
 	.word battleObject_dispatchAICustomOp_80A57AC+1
 	.word battle_beastOutDispatch_80A5AD4+1
 	.word battleObject_dispatchRunActionByState_80A6A16+1
@@ -18525,7 +18525,7 @@ loc_800B2A0:
 loc_800B2A2:
 	mov r1, #0xc0 // (dword_203CCA0 - 0x203cbe0)
 	str r0, [r4,r1]
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	mov r1, #0xc4 // (dword_203CCA4 - 0x203cbe0)
 	str r0, [r4,r1]
 	ldr r0, dword_800B2D4 // =0x12345678

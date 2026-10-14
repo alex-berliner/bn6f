@@ -15489,7 +15489,7 @@ void __fastcall camera_recenterAndSetCtrlBits_803135E(_DWORD *a1)
 
 
 // 0x8031388
-void __fastcall sub_8031388(_DWORD *a1)
+void __fastcall battleObject_applyFullscreenShakeAndCameraBump_8031388(_DWORD *a1)
 {
     _DWORD *v1; // r0
     int v2; // r1
@@ -16268,7 +16268,7 @@ int __fastcall sub_8031C12(_DWORD *a1)
 
 
 // 0x8031c2a
-int __fastcall sub_8031C2A(_DWORD *a1)
+int __fastcall battle_calcRelPosAndAdvanceTextboxBlink_8031C2A(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

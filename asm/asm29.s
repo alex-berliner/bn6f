@@ -904,9 +904,9 @@ off_80A54E4:
 // symdb: Trampoline/jump-table dispatcher that calls one of three BBS-related sub-functions selected by an index byte on an object pointed to by r5.
 // symdb: (no explicit arguments) -> returns to caller via `pop {pc}`; r0 ultimately carries the result of
 // symdb: the dispatched function (0x6f8 in all captured calls)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A54F0.yaml
-	thumb_func_start sub_80A54F0
-sub_80A54F0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_panelSnapshotBufferInit_80A54F0.yaml
+	thumb_func_start battleObject_panelSnapshotBufferInit_80A54F0
+battleObject_panelSnapshotBufferInit_80A54F0:
 	push {lr}
 	ldr r6, off_80A5510 // =unk_2013960 
 	ldr r0, off_80A5500 // =off_80A5504 
@@ -924,7 +924,7 @@ off_80A5504:
 	.word sub_80A55CC+1
 off_80A5510:
 	.word unk_2013960
-	thumb_func_end sub_80A54F0
+	thumb_func_end battleObject_panelSnapshotBufferInit_80A54F0
 
 // symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to sub_80A5588.
 // symdb: void owObject_spawnSetup_80A5514(u32 r5 /*owObject*/, u32 r6 /*sourceObject*/, u32 r10
@@ -1425,7 +1425,7 @@ sub_80A5890:
 	str r0, [r5,#0xc]
 	str r1, [r5,#0x10]
 	str r2, [r5,#0x14]
-	bl sub_80A5974
+	bl owPlayer_setDirectionAnimFromOffset_80A5974
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_80A5890
@@ -1556,9 +1556,9 @@ sub_80A596C:
 // symdb: (r5 = OWPlayerObject*) -> void ; side effects: triggers sprite_setAnimation /
 // symdb: sprite_loadAnimationData / sprite_noShadow on the same object; updates r5+0x30 with the new anim
 // symdb: index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5974.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_setDirectionAnimFromOffset_80A5974.yaml
 	thumb_local_start
-sub_80A5974:
+owPlayer_setDirectionAnimFromOffset_80A5974:
 	push {r4,lr}
 	bl ReadOWPlayerObjectCoords
 loc_80A597A:
@@ -1591,7 +1591,7 @@ off_80A59AC:
 	.word byte_80A59B0
 byte_80A59B0:
 	.byte 0x2, 0x2, 0x0, 0x6, 0x4, 0x0, 0x0, 0x0
-	thumb_func_end sub_80A5974
+	thumb_func_end owPlayer_setDirectionAnimFromOffset_80A5974
 
 	thumb_local_start
 sub_80A59B8:
@@ -5340,7 +5340,7 @@ battle_checkBeastSpTrigger_80A7BC0:
 	mov r0, #SOUND_UNK_73
 	bl PlaySoundEffect
 	bl sub_81418F0
-	bl sub_81418E4
+	bl battle_getAIDataVersionFields_81418E4
 	mov r4, r2
 	bl battle_getEnemyIndexFromMapGroup_8142080
 	bl sub_81420C8

@@ -617,7 +617,7 @@ int battle_initState_813BBD4()
     ZeroFillByByte(&unk_2006CC0, 49);
     battle_categorizeRandomIds_813BC1C(v1);
     sub_813BC98(v1);
-    sub_813BD24();
+    battle_updateTargetPanelsAllRows_813BD24();
     sub_813BE8C();
     sub_813BEA8();
     return battleItems_countByType_813C584(v1);
@@ -788,7 +788,7 @@ void getWorkAreaPtr_2006CC0_813BD14()
 
 
 // 0x813bd24
-int sub_813BD24()
+int battle_updateTargetPanelsAllRows_813BD24()
 {
     int v0; // r8
     int v1; // r6

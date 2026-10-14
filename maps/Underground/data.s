@@ -101,7 +101,7 @@ mapscript_80795D0:
 
 mapscript_80795DC:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_807960B
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_68C destination4=byte_807960B
 	ms_write_word ptr1=unk_2011EAC word5=0x00000000
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_16F3
@@ -187,7 +187,7 @@ mapscript_807971E:
 
 mapscript_8079747:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=mapscript_807975D
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump destination1=mapscript_807975D
 
 mapscript_807975D:

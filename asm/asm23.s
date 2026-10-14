@@ -146,7 +146,7 @@ cutscenescript_8088DC8:
 	cs_wait_screen_fade
 	cs_kill_cutscene_process byte1=0x20
 	cs_do_camera_shake byte1=0x00 byte2=0x00 byte3=0x00
-	cs_init_eStruct200a6a0 ptr1=sub_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
 	cs_set_var byte1=0x08 byte2=0x01
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_set_screen_fade byte1=0xFF byte2=0x00 byte3=0x02
@@ -181,7 +181,7 @@ cutscenescript_8088E72:
 	cs_do_camera_shake byte1=0x00 byte2=0x00 byte3=0x00
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_680
 	cs_run_eStruct200a6a0_callback
-	cs_init_eStruct200a6a0 ptr1=sub_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
 	cs_spawn_ow_npc_objects_from_map
 	cs_stop_cutscene_camera_script
 	cs_chatbox_cmd_8037a70

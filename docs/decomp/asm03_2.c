@@ -6317,7 +6317,7 @@ void nullsub_804CBA0()
 
 
 // 0x804cba4
-int sub_804CBA4()
+int battleObject_dispatchBeastOutAction_804CBA4()
 {
     int v0; // r5
 
@@ -6355,7 +6355,7 @@ int sub_804CBDC()
     (*(&off_804CC40 + *(v0 + 12)))();
     sub_804CCF0();
     *(v0 + 16) = 4;
-    return sub_804CC8E();
+    return beastSp_spawnIndexDispatcher_804CC8E();
 }
 
 
@@ -6406,7 +6406,7 @@ signed int sub_804CC7E()
 
 
 // 0x804cc8e
-int sub_804CC8E()
+int beastSp_spawnIndexDispatcher_804CC8E()
 {
     int v0; // r5
 

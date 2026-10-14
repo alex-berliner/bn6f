@@ -751,7 +751,7 @@ battle_initState_813BBD4:
 	bl battle_categorizeRandomIds_813BC1C
 	mov r0, r7
 	bl sub_813BC98
-	bl sub_813BD24
+	bl battle_updateTargetPanelsAllRows_813BD24
 	bl sub_813BE8C
 	bl sub_813BEA8
 	mov r0, r7
@@ -939,9 +939,9 @@ off_813BD20:
 // symdb: Iterates all 0x31 battle rows and, for each entry with the enabled bit set, collects target panels in the four cardinal neighbours of the entry's panel and runs a finalize helper.
 // symdb: () -> ; side effects: zero-fills a 0x31-byte scratch buffer and writes per-entry panels via
 // symdb: battleObject_collectTargetsInRegion + sub_813BE38
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateTargetPanelsAllRows_813BD24.yaml
 	thumb_local_start
-sub_813BD24:
+battle_updateTargetPanelsAllRows_813BD24:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
@@ -991,7 +991,7 @@ loc_813BD82:
 	mov r8, r0
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_813BD24
+	thumb_func_end battle_updateTargetPanelsAllRows_813BD24
 
 // symdb: Scan a 7x7 panel region around a battle object and append valid targets to the AI target list.
 // symdb: (r0 = actorIndex, r1 = centerPanelX, r2 = centerPanelY, r3 = ?, r6 = ?, r8 = outListPtr, r10 =

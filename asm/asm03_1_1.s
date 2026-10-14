@@ -8984,9 +8984,9 @@ loc_803D0F0:
 // symdb: Returns the anti-tamper Protected BugFrags counter from the global GameState, or 0 if the integrity check fails.
 // symdb: () -> r0 = ProtectedBugfrags (u32), or 0 when integrity check fails ; sets Z according to the
 // symdb: integrity-check result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D0F4.yaml
-	thumb_func_start sub_803D0F4
-sub_803D0F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameState_getProtectedBugfrags_803D0F4.yaml
+	thumb_func_start gameState_getProtectedBugfrags_803D0F4
+gameState_getProtectedBugfrags_803D0F4:
 	push {lr}
 	bl encryption_bugfrags_8006fd0
 	bne loc_803D104
@@ -8997,7 +8997,7 @@ sub_803D0F4:
 loc_803D104:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_803D0F4
+	thumb_func_end gameState_getProtectedBugfrags_803D0F4
 
 	thumb_func_start GiveNaviCustPrograms
 GiveNaviCustPrograms:
@@ -9889,9 +9889,9 @@ sub_803DEAC:
 // symdb: code (1, 2, 4, 8, 0x20, or 4) ; side effects: writes to eLinkState and the camera-struct fields
 // symdb: at +0x04 (pad_54), +0x06 (pad_56), +0x07 (pad_56+1), +0x0C (eCamera.unk_5C), +0x48; calls
 // symdb: TestEventFlagFromImmediate on EVENT_172F.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DEB4.yaml
-	thumb_func_start sub_803DEB4
-sub_803DEB4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateLinkState_803DEB4.yaml
+	thumb_func_start battle_updateLinkState_803DEB4
+battle_updateLinkState_803DEB4:
 	push {r4-r7,lr}
 	mov r6, #1
 	ldr r7, off_803DF9C // =eLinkState
@@ -10020,7 +10020,7 @@ off_803DFA0:
 off_803DFA4:
 	.word unk_2009480
 	.word eTimerEnable200F460
-	thumb_func_end sub_803DEB4
+	thumb_func_end battle_updateLinkState_803DEB4
 
 	thumb_local_start
 sub_803DFAC:
@@ -11775,14 +11775,14 @@ off_803EAF8:
 	.word sub_803EB60+1
 	thumb_func_end sub_803EAE4
 
-// symdb: Thin dispatcher that calls sub_803DEB4 and, only when it returns 2, additionally calls sub_803ED1C.
+// symdb: Thin dispatcher that calls battle_updateLinkState_803DEB4 and, only when it returns 2, additionally calls sub_803ED1C.
 // symdb: void sub_803EB04(void); /* uses r3 r4 r5 r6 r8 r9 r10 r11 r12 lr in; clobbers nz- c- v? r0 r1 r2
 // symdb: r3 r8 r9 r10 r11 r12 lr; preserves r4 r5 r6 r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803EB04.yaml
 	thumb_local_start
 sub_803EB04:
 	push {lr}
-	bl sub_803DEB4
+	bl battle_updateLinkState_803DEB4
 	cmp r0, #2
 	bne locret_803EB12
 	bl sub_803ED1C
@@ -13398,7 +13398,7 @@ off_803F55C:
 battle_getLinkStateCode_803F560:
 	push {r4,r6,r7,lr}
 	mov r6, #0xff
-	bl sub_803DEB4
+	bl battle_updateLinkState_803DEB4
 	cmp r0, #2
 	beq loc_803F574
 	cmp r0, #4

@@ -11505,7 +11505,7 @@ void TakeBugfrags()
 
 
 // 0x803d0f4
-int sub_803D0F4()
+int gameState_getProtectedBugfrags_803D0F4()
 {
     int v0; // r10
     char v1; // zf
@@ -11975,7 +11975,7 @@ int sub_803DEAC()
 
 
 // 0x803deb4
-signed int sub_803DEB4()
+signed int battle_updateLinkState_803DEB4()
 {
     signed int v0; // r6
     int v1; // r0
@@ -13321,7 +13321,7 @@ signed int sub_803EB04()
 {
     signed int result; // r0
 
-    result = sub_803DEB4();
+    result = battle_updateLinkState_803DEB4();
     if ( result == 2 )
         result = sub_803ED1C(2);
     return result;
@@ -14371,7 +14371,7 @@ signed int battle_getLinkStateCode_803F560()
     signed int v3; // r7
 
     v1 = 255;
-    v2 = sub_803DEB4();
+    v2 = battle_updateLinkState_803DEB4();
     if ( v2 == 2 )
     {
         if ( sub_813DB24(0, 1) != 255 )

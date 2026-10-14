@@ -77,16 +77,16 @@ sub_81418DA:
 // symdb: reads AIData.Version_15..Version_17 into r0..r2 from the EWRAM AIData struct
 // symdb: () -> r0 = AIData.Unk_15, r1 = AIData.Version_16, r2 = AIData.Version_14 ; no side effects
 // symdb: beyond register output
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81418E4.yaml
-	thumb_func_start sub_81418E4
-sub_81418E4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAIDataVersionFields_81418E4.yaml
+	thumb_func_start battle_getAIDataVersionFields_81418E4
+battle_getAIDataVersionFields_81418E4:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
 	ldrb r0, [r5,#0x16] // (dword_2001024+2 - 0x2001010)
 	ldrb r1, [r5,#0x15] // (dword_2001024+1 - 0x2001010)
 	ldrb r2, [r5,#0x14] // (dword_2001024 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81418E4
+	thumb_func_end battle_getAIDataVersionFields_81418E4
 
 	thumb_func_start sub_81418F0
 sub_81418F0:
@@ -165,7 +165,7 @@ sub_8141998:
 battle_performBeastOutBattleAiTick_81419A0:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
-	bl sub_8141AA8
+	bl pet_testIsMapGroupAllowed_8141AA8
 	bne loc_8141A0C
 	ldrb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	tst r0, r0
@@ -307,9 +307,9 @@ locret_8141AA6:
 
 // symdb: Checks whether the current map group is in the PET-menu's allowed "beast-sp" map whitelist.
 // symdb: () -> r0 = bool (0 = allowed, 1 = not allowed / flag set); flags Z set on success path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141AA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_testIsMapGroupAllowed_8141AA8.yaml
 	thumb_local_start
-sub_8141AA8:
+pet_testIsMapGroupAllowed_8141AA8:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -333,7 +333,7 @@ loc_8141ACA:
 loc_8141ACE:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8141AA8
+	thumb_func_end pet_testIsMapGroupAllowed_8141AA8
 
 	thumb_local_start
 sub_8141AD2:
@@ -1285,9 +1285,9 @@ byte_8142610:
 // symdb: Overworld per-frame cutscene dispatcher: checks soul-weapon / beast / cross-progress event flags and fires the matching cutscene scripts, clearing them once handled.
 // symdb: (in r10 = *Toolkit, lr = return) -> no caller-visible result; side effects = sets/clears
 // symdb: EVENT_742/743/746/747 and may StartCutscene with one of three scripts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142618.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_dispatchEventFlags_8142618.yaml
 	thumb_local_start
-sub_8142618:
+cutscene_dispatchEventFlags_8142618:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814266C
@@ -1357,7 +1357,7 @@ off_81426BC:
 off_81426C0:
 	.word dword_8089128 // CutsceneScript
 	.byte 0x82, 0x4E, 0x8, 0x21, 0x48, 0x43, 0x36, 0x18
-	thumb_func_end sub_8142618
+	thumb_func_end cutscene_dispatchEventFlags_8142618
 
 	thumb_local_start
 nullsub_37:

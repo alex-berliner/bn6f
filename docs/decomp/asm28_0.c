@@ -113,7 +113,7 @@ int __fastcall sub_8099FFC(int a1, int a2, int a3)
     if ( *(v3 + 8) == 50 )
         v6 = sub_802D15E();
     else
-        v6 = sub_803D0F4();
+        v6 = gameState_getProtectedBugfrags_803D0F4();
     *(v3 + 112) = v6;
     sub_8003984();
     sub_8003AD4();
@@ -263,7 +263,7 @@ signed int sub_809A138()
         v4 = v2 - 1;
         if ( (v4 < 0) ^ _VF )
         {
-            *(v0 + 112) = sub_803D0F4();
+            *(v0 + 112) = gameState_getProtectedBugfrags_803D0F4();
             TestEventFlagFromImmediate(0, 245);
             if ( !_ZF )
             {
@@ -343,7 +343,7 @@ signed int sub_809A1FC()
     }
     else
     {
-        if ( sub_803D0F4() < 10 || chatbox_GetState_8045F4C() )
+        if ( gameState_getProtectedBugfrags_803D0F4() < 10 || chatbox_GetState_8045F4C() )
         {
             *(v0 + 9) = 0;
             sub_809A360(*(v0 + 116));

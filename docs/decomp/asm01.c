@@ -70,7 +70,7 @@ void battle_updateCustomGauge_801FE6C()
             if ( sub_802D246() & 8 )
                 eStruct203F7D8[1] = v0;
             else
-                eStruct203F7D8[1] = sub_803DEB4();
+                eStruct203F7D8[1] = battle_updateLinkState_803DEB4();
         }
         else
         {

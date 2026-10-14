@@ -1881,7 +1881,7 @@ cutscenescript_808B0A4:
 	cs_spawn_ow_npc_objects_from_list ptr2=npcscript_list_8055DD4
 	cs_make_ow_player_invisible
 	cs_disable_ow_player_wall_collision_809e254
-	cs_init_eStruct200a6a0 ptr1=sub_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000004
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000004
 	cs_do_pet_effect byte1=0xFF byte2=0x00
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
 	cs_wait_screen_fade
@@ -2123,7 +2123,7 @@ cutscenescript_808B348:
 	cs_run_text_script_not_from_mem byte2=0x00
 	cs_wait_chatbox byte1=0x80
 	cs_pause byte1=0xFF byte2=0x3C
-	cs_init_eStruct200a6a0 ptr1=sub_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000004
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000004
 	cs_do_pet_effect byte1=0xFF byte2=0x00
 	cs_disable_cutscene_skip_script
 	cs_set_screen_fade byte1=0xFF byte2=0x18 byte3=0xFF

@@ -179,9 +179,9 @@ int battle_updateFrame_8123558()
     int result; // r0
     char v2; // zf
 
-    sub_8123BC0();
+    battleObject_applyAIDataToAttackTable_8123BC0();
     sub_8123BE0();
-    sub_8123C00();
+    battleObject_runAITurnPhase_8123C00();
     result = IsPaletteFadeActive();
     if ( !v2 )
     {
@@ -201,9 +201,9 @@ int sub_8123574()
     char v3; // zf
 
     *(v0 + 32) = 2;
-    sub_8123BC0();
+    battleObject_applyAIDataToAttackTable_8123BC0();
     sub_8123BE0();
-    v1 = sub_8123C00();
+    v1 = battleObject_runAITurnPhase_8123C00();
     sub_8123D70(v1);
     sub_811B314(1, 3);
     result = IsPaletteFadeActive();
@@ -600,7 +600,7 @@ void __noreturn drawBattleBackground_8123AB8()
 
 
 // 0x8123bc0
-int sub_8123BC0()
+int battleObject_applyAIDataToAttackTable_8123BC0()
 {
     return battleObject_applyAIDataToAttackTable_8123C20(&dword_8123BDC, 1, byte_81233D8, 4);
 }
@@ -614,7 +614,7 @@ int sub_8123BE0()
 
 
 // 0x8123c00
-int sub_8123C00()
+int battleObject_runAITurnPhase_8123C00()
 {
     return battleObject_applyAIDataToAttackTable_8123C20(&dword_8123C1C, 64, byte_81233E8, 6);
 }

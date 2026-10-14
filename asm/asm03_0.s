@@ -23323,7 +23323,7 @@ off_8030C3C:
 	.word dword_8030C40
 dword_8030C40:
 	.word 0x0
-	.word sub_8031388+1 // 0x01 up left
+	.word battleObject_applyFullscreenShakeAndCameraBump_8031388+1 // 0x01 up left
 	.word battle_setupMessageWindow_80313B0+1 // 0x02 down right
 	.word battle_runTextboxUpdateAndSetStateBit1_80313D4+1 // 0x03 down left
 	.word battle_scrollTickStepOrStop_80313FC+1 // 0x04 up right
@@ -24385,9 +24385,9 @@ camera_recenterAndSetCtrlBits_803135E:
 // symdb: (r0 = battle object ptr, r12 = some bitfield ptr) -> r0 = battle object ptr ; side effects:
 // symdb: camera position shifted by tiny fixed delta via camera_moveByDelta, sub_8030E14 (hit test)
 // symdb: called, r12 ORed with 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031388.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyFullscreenShakeAndCameraBump_8031388.yaml
 	thumb_local_start
-sub_8031388:
+battleObject_applyFullscreenShakeAndCameraBump_8031388:
 	push {r0-r2,r5,lr}
 	bl battleObject_applyShakeOffsetAndProject_8031136
 	mov r2, #0
@@ -24405,7 +24405,7 @@ sub_8031388:
 	orr r0, r1
 	mov r12, r0
 	pop {r0-r2,r5,pc}
-	thumb_func_end sub_8031388
+	thumb_func_end battleObject_applyFullscreenShakeAndCameraBump_8031388
 
 // symdb: Runs the full battle message-window setup sequence (prepare, 32x32 layout, finalize) and flags the request as handled in r12.
 // symdb: void sub_80313B0(void); /* args in r0, r1, r2, r5 passed through to sub_8031176; r12 = flag word
@@ -25540,7 +25540,7 @@ jt_8031B10:
 	.word 0x0 // 0x08
 	.word sub_8031BFA+1 // 0x09
 	.word sub_8031C12+1 // 0x0a
-	.word sub_8031C2A+1 // 0x0b
+	.word battle_calcRelPosAndAdvanceTextboxBlink_8031C2A+1 // 0x0b
 	.word sub_8031C42+1 // 0x0c
 	.word 0x0 // 0x0d
 	.word 0x0 // 0x0e
@@ -25683,9 +25683,9 @@ sub_8031C12:
 
 // symdb: Computes the actor's relative position to the target, then advances the textbox cursor blink with two constants and queries a sub-state.
 // symdb: (r0 = BattleObject ptr, r5 = ?) -> r0 = sub_8031B7C result ; r5 preserved, lr-tail-called
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C2A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcRelPosAndAdvanceTextboxBlink_8031C2A.yaml
 	thumb_local_start
-sub_8031C2A:
+battle_calcRelPosAndAdvanceTextboxBlink_8031C2A:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #1
@@ -25695,7 +25695,7 @@ sub_8031C2A:
 	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031C2A
+	thumb_func_end battle_calcRelPosAndAdvanceTextboxBlink_8031C2A
 
 // symdb: Thin battle-side wrapper that calls helper sub_803172E, then invokes sub_80315DC with a fixed parameter block (0, 14, 14, 0) and passes its results on to sub_8031B7C.
 // symdb: void sub_8031C42(int r0, int r5) // r0/r5 forwarded to sub_803172E; returns whatever sub_8031B7C

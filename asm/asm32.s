@@ -2805,7 +2805,7 @@ sub_810F0D8:
 	bl object_setAttack0
 	b locret_810F178
 loc_810F0F4:
-	bl sub_810F1B6
+	bl battle_aiTryChipAttack_0810F1B6
 	cmp r0, #0
 	bne locret_810F178
 	mov r1, #0x6c
@@ -2889,9 +2889,9 @@ byte_810F1A4:
 // symdb: (r5 = battle object AI data ptr?, r10 = toolkit, r7/r4/r6 = preserved callee-saved) -> r0 = 1 if
 // symdb: chip was triggered, 0 otherwise ; side effects: may write chip params, set attack, and update
 // symdb: related object state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810F1B6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiTryChipAttack_0810F1B6.yaml
 	thumb_local_start
-sub_810F1B6:
+battle_aiTryChipAttack_0810F1B6:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -2912,7 +2912,7 @@ sub_810F1B6:
 loc_810F1E2:
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810F1B6
+	thumb_func_end battle_aiTryChipAttack_0810F1B6
 
 	thumb_local_start
 sub_810F1E6:
@@ -9427,7 +9427,7 @@ off_8112A58:
 	.word off_8112A5C
 off_8112A5C:
 	.word sub_8112A64+1
-	.word sub_8112A78+1
+	.word battle_aiSnakeArmTickStep_8112A78+1
 	thumb_func_end sub_8112A4A
 
 	thumb_local_start
@@ -9439,16 +9439,16 @@ sub_8112A64:
 	strh r0, [r6,#oAIState_Unk_08]
 	mov r0, #4
 	strb r0, [r6,#oAIState_Unk_00]
-	bl sub_8112A78
+	bl battle_aiSnakeArmTickStep_8112A78
 	pop {pc}
 	thumb_func_end sub_8112A64
 
 // symdb: AI tick for SnakeArm-style battle object: counts down Unk_08 then fires two stage checks (0x74/0x7F/0x84 and 0x64/0x7F/0x84) before deciding whether to schedule attack 0xB (or fall through to attack 0xA)
 // symdb: (r4 = AIData ptr, r5 = BattleObject ptr, r6 = AIState ptr, r7 = AIAttackVars ptr, r10 = toolkit)
 // symdb: -> flags; writes AIData.Version_16 into AttackVars.Unk_03 and several AttackVars fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112A78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiSnakeArmTickStep_8112A78.yaml
 	thumb_local_start
-sub_8112A78:
+battle_aiSnakeArmTickStep_8112A78:
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0x14]
@@ -9517,7 +9517,7 @@ loc_8112A9A:
 	bl object_setAttack0
 locret_8112B04:
 	pop {pc}
-	thumb_func_end sub_8112A78
+	thumb_func_end battle_aiSnakeArmTickStep_8112A78
 
 	thumb_local_start
 sub_8112B06:
@@ -32113,7 +32113,7 @@ sub_811E1FA:
 sub_811E202:
 	push {r4-r7,lr}
 	ldr r7, dword_811E240 // =0x1ffffff8
-	bl sub_81418E4
+	bl battle_getAIDataVersionFields_81418E4
 	mov r4, r1
 	mov r1, #0xa
 	svc 6
@@ -33874,13 +33874,13 @@ off_811F04C:
 	thumb_func_end updateMapNameDisplay_811F014
 
 // symdb: Renders the "map names" text screen (text script 0xF2) into a work buffer and uploads the resulting tiles/tilemap to VRAM.
-// symdb: void drawMapNamesScreen_811F050(void); // no meaningful inputs; returns sub_803D0F4's result
+// symdb: void drawMapNamesScreen_811F050(void); // no meaningful inputs; returns gameState_getProtectedBugfrags_803D0F4's result
 // symdb: indirectly via the toolkit struct
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawMapNamesScreen_811F050.yaml
 	thumb_local_start
 drawMapNamesScreen_811F050:
 	push {r4-r7,lr}
-	bl sub_803D0F4
+	bl gameState_getProtectedBugfrags_803D0F4
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_Unk200a220_Ptr]
 	str r0, [r6,#8]

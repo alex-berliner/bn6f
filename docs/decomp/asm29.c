@@ -438,7 +438,7 @@ char *lookupMapEntryPair_80A54A4()
 
 
 // 0x80a54f0
-int sub_80A54F0()
+int battleObject_panelSnapshotBufferInit_80A54F0()
 {
     int v0; // r5
 
@@ -817,7 +817,7 @@ int sub_80A5890()
     v0[3] = v1[31];
     v0[4] = v2;
     v0[5] = v3;
-    return sub_80A5974();
+    return owPlayer_setDirectionAnimFromOffset_80A5974();
 }
 
 
@@ -960,7 +960,7 @@ void sub_80A596C()
 
 
 // 0x80a5974
-int sub_80A5974()
+int owPlayer_setDirectionAnimFromOffset_80A5974()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -3540,7 +3540,7 @@ void *battle_checkBeastSpTrigger_80A7BC0()
                         *(v0 + 8) = 8;
                         PlaySoundEffect(115, v12, v13);
                         sub_81418F0();
-                        sub_81418E4();
+                        battle_getAIDataVersionFields_81418E4();
                         v15 = v14;
                         v16 = battle_getEnemyIndexFromMapGroup_8142080();
                         result = sub_81420C8(v16);

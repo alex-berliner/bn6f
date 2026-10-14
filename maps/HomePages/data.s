@@ -312,7 +312,7 @@ byte_806C989::
 
 byte_806C995::
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_680 destination4=mapscript_806C9AF
-	ms_init_eStruct200a6a0 ptr1=sub_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
+	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
 	ms_jump destination1=mapscript_806C9AF
 
 mapscript_806C9AF:

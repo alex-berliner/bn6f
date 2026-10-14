@@ -128,7 +128,7 @@ loc_801FEB6:
 	pop {r5}
 	bne loc_801FECC
 
-	bl sub_803DEB4
+	bl battle_updateLinkState_803DEB4
 	strb r0, [r4,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
 
 	b locret_801FEE6

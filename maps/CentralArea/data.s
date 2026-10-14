@@ -407,7 +407,7 @@ mapscript_80722B1:
 
 mapscript_80722D3:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072373
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_686 destination4=byte_8072373
 	ms_write_word ptr1=unk_2011EB8 word5=0x00000000
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_16F6
@@ -587,7 +587,7 @@ mapscript_80725B6:
 
 mapscript_80725D4:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_807263D
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump destination1=byte_807263D
 
 mapscript_80725EA:
@@ -823,7 +823,7 @@ mapscript_80729AF:
 
 mapscript_80729CD:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072B01
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump destination1=byte_8072B01
 
 mapscript_80729E3:
@@ -844,12 +844,12 @@ mapscript_8072A0C:
 
 mapscript_8072A35:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072B01
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump destination1=byte_8072B01
 
 mapscript_8072A4B:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072B01
-	ms_call_native_function ptr1=sub_8142618+1 word5=0x00000000
+	ms_call_native_function ptr1=cutscene_dispatchEventFlags_8142618+1 word5=0x00000000
 	ms_jump destination1=byte_8072B01
 
 byte_8072A61:
