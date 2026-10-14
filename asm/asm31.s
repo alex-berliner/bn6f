@@ -661,14 +661,14 @@ sub_80B86C4:
 	push {lr}
 	bl sub_80B8800
 	bl sub_80B8810
-	bl sub_80B881E
+	bl battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
 	pop {pc}
 	thumb_func_end sub_80B86C4
 
 	thumb_local_start
 sub_80B86D4:
 	push {lr}
-	bl sub_80B881E
+	bl battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
 	cmp r0, #0
 	beq locret_80B86E8
 	ldr r1, off_80B86EC // =off_80B86F0 
@@ -861,9 +861,9 @@ loc_80B881A:
 // symdb: Steps a battle object's sprite one frame when the battle is running, the related object is alive, and not frozen/invisible/flashing/bubbled/dead.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (1 if sprite was stepped, 0 otherwise); side
 // symdb: effects: advances the object's sprite animation one frame on success
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B881E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSpriteIfAliveAndUnfrozen_80B881E.yaml
 	thumb_local_start
-sub_80B881E:
+battleObject_stepSpriteIfAliveAndUnfrozen_80B881E:
 	push {r4,lr}
 	mov r4, #0
 	bl battle_isPaused
@@ -882,7 +882,7 @@ sub_80B881E:
 loc_80B8840:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80B881E
+	thumb_func_end battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
 
 	thumb_local_start
 sub_80B8844:
@@ -43254,7 +43254,7 @@ off_80CC100:
 	.word off_80CC104
 off_80CC104:
 	.word sub_80CC110+1
-	.word sub_80CC1A0+1
+	.word object_dispatchCollisionPhase_80CC1A0+1
 	.word sub_80CC472+1
 	thumb_func_end t3_0x40_80CC0E8
 
@@ -43326,9 +43326,9 @@ locret_80CC19E:
 // symdb: [r5+oBattleObject_CurPhaseAndPhaseInitialized] (also CurStateActionPhaseAndPhaseInitialized),
 // symdb: reads/writes CollisionDataPtr/FlagsFromCollision/Alliance/CurAction, tail-calls via bx through
 // symdb: the CurAction table at 0x80CC1F0.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC1A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchCollisionPhase_80CC1A0.yaml
 	thumb_local_start
-sub_80CC1A0:
+object_dispatchCollisionPhase_80CC1A0:
 	push {lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -43374,7 +43374,7 @@ off_80CC1FC:
 	.word byte_80CC200
 byte_80CC200:
 	.byte 0x0, 0x0, 0x80, 0x5, 0x0, 0x0, 0x80, 0xA
-	thumb_func_end sub_80CC1A0
+	thumb_func_end object_dispatchCollisionPhase_80CC1A0
 
 	thumb_local_start
 sub_80CC208:
@@ -88276,9 +88276,9 @@ sub_80E1654:
 
 // symdb: Clears AIData fields (Unk_40 → 0 at +0x64, Unk_10 = 0) on the AI block of the BattleObject pointed to by r5
 // symdb: (r5 = BattleObject*) -> r0 = 0 ; r1 = AIData ptr ; sets Z flag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1662.yaml
-	thumb_func_start sub_80E1662
-sub_80E1662:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearAIDataUnknown_80E1662.yaml
+	thumb_func_start battleObject_clearAIDataUnknown_80E1662
+battleObject_clearAIDataUnknown_80E1662:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	ldr r1, [r1,#oAIData_Unk_40]
 	mov r0, #0
@@ -88286,7 +88286,7 @@ sub_80E1662:
 	mov r0, #0
 	strb r0, [r1,#0x10]
 	mov pc, lr
-	thumb_func_end sub_80E1662
+	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
 // symdb: Initializes a 4-slot name-range lookup table for an enemy's cross-element weak-point search
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, lr) -> r0 = 0 ; side effects: writes 0x34 bytes on stack,
@@ -108907,7 +108907,7 @@ object_endPwrAtkAction_80EAF36:
 	strb r0, [r1,#4]
 	mov r0, #0xc
 	strb r0, [r6,#oAIState_Unk_05]
-	bl sub_80E1662
+	bl battleObject_clearAIDataUnknown_80E1662
 	b locret_80EAFC0
 loc_80EAF80:
 	bl ai_clearPwrAtkStateFromBattleObject_801011A

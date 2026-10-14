@@ -2244,9 +2244,9 @@ calcAngle_800117C:
 // symdb: Wraps calcAngle_800117C into one of four octant buckets (1..4) for AI/range logic, returning 0 when the input vector is zero.
 // symdb: (r0 = dx, r1 = dy) -> r0 = 0 when r0|r1==0, else a value in {1,2,3,4} (octant bucket derived
 // symdb: from the 0..255 angle)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800118A.yaml
-	thumb_func_start sub_800118A
-sub_800118A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcAngleOctant_800118A.yaml
+	thumb_func_start battle_calcAngleOctant_800118A
+battle_calcAngleOctant_800118A:
 	push {lr}
 	mov r2, r0
 	orr r2, r1
@@ -2258,7 +2258,7 @@ sub_800118A:
 	add r0, #1
 locret_800119E:
 	pop {pc}
-	thumb_func_end sub_800118A
+	thumb_func_end battle_calcAngleOctant_800118A
 
 	thumb_func_start sub_80011A0
 sub_80011A0:

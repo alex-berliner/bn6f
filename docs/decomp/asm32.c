@@ -13298,7 +13298,7 @@ signed int sub_8118424()
 
 
 // 0x811842c
-int sub_811842C()
+int beastOutOrProgramAdvanceSetTransform_811842C()
 {
     char *v0; // r5
     int v1; // r6

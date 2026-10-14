@@ -970,7 +970,7 @@ int sub_80A5974()
     v1 = sub_809E1AE();
     LODWORD(v1) = v1 - *(v0 + 12);
     HIDWORD(v1) -= *(v0 + 16);
-    result = sub_800118A(v1);
+    result = battle_calcAngleOctant_800118A(v1);
     if ( result )
     {
         result = byte_80A59B0[result];
@@ -1038,7 +1038,7 @@ int sub_80A5A1C()
     v4 = sub_809E1AE();
     LODWORD(v4) = v4 - dword_2000F88;
     HIDWORD(v4) -= *algn_2000F8C;
-    v5 = sub_800118A(v4);
+    v5 = battle_calcAngleOctant_800118A(v4);
     (loc_80A598C)(v5);
     *v0 = 3;
     result = byte_2000EC0[0];
@@ -1443,7 +1443,7 @@ int __fastcall sub_80A5E08(int a1, int a2)
 
     LODWORD(v3) = a1 - *(v2 + 12);
     HIDWORD(v3) = a2 - *(v2 + 16);
-    result = sub_800118A(v3);
+    result = battle_calcAngleOctant_800118A(v3);
     if ( result )
     {
         result = byte_80A5E3C[result];
@@ -1471,7 +1471,7 @@ int sub_80A5E44()
     v1 = sub_809E1AE();
     LODWORD(v1) = *(v0 + 12) - v1;
     HIDWORD(v1) = *(v0 + 16) - HIDWORD(v1);
-    result = sub_800118A(v1);
+    result = battle_calcAngleOctant_800118A(v1);
     if ( result )
     {
         v3 = result;
@@ -2193,7 +2193,7 @@ void __noreturn battleObject_updateAnimation_80A6F2C()
                 else
                 {
                     battleObject_stepBeastOut_80A6F78();
-                    sub_80A70FC();
+                    battle_beastOut_checkPlayerInBoxTrigger_80A70FC();
                 }
             }
         }
@@ -2222,7 +2222,7 @@ int battleObject_stepBeastOut_80A6F78()
     int result; // r0
     int v7; // r1
 
-    sub_80A6FDC();
+    battle_setObjectChargeParamsFromTable_80A6FDC();
     battleObject_updateBeastOutSprite_80A704C();
     v1 = battleObject_pickBeastSpFace_80A708C();
     v2 = 0;
@@ -2277,7 +2277,7 @@ LABEL_15:
 
 
 // 0x80a6fdc
-int sub_80A6FDC()
+int battle_setObjectChargeParamsFromTable_80A6FDC()
 {
     int v0; // r5
     char *v1; // r2
@@ -2311,7 +2311,7 @@ int battleObject_updateBeastOutSprite_80A704C()
 
     LODWORD(v1) = *(v0 + 36) - *(v0 + 12);
     HIDWORD(v1) = *(v0 + 40) - *(v0 + 16);
-    result = sub_800118A(v1);
+    result = battle_calcAngleOctant_800118A(v1);
     if ( result )
     {
         result = byte_80A7084[result];
@@ -2365,7 +2365,7 @@ int sub_80A70C0()
 
 
 // 0x80a70fc
-signed int sub_80A70FC()
+signed int battle_beastOut_checkPlayerInBoxTrigger_80A70FC()
 {
     int *v0; // r5
     int *v1; // r6
@@ -2614,7 +2614,7 @@ int battleObject_beastStepUpdate_80A73A0()
     if ( v2 && *(v0 + 6) >= 3 )
         v1 = 1;
     *(v0 + 7) = v1;
-    if ( sub_80A743C() == 1 )
+    if ( battleObject_checkPanelMatch_80A743C() == 1 )
     {
         ++*(v0 + 6);
         if ( *(v0 + 7) )
@@ -2629,7 +2629,7 @@ int battleObject_beastStepUpdate_80A73A0()
             sub_80A7514();
         }
     }
-    v3 = sub_80A7590();
+    v3 = battle_ai_selectAIPtrFromTable_80A7590();
     v4 = *(v0 + 24);
     v5 = *(v0 + 28);
     v6 = *(v0 + 5);
@@ -2667,7 +2667,7 @@ LABEL_19:
 
 
 // 0x80a743c
-signed int sub_80A743C()
+signed int battleObject_checkPanelMatch_80A743C()
 {
     _DWORD *v0; // r5
     signed int result; // r0
@@ -2696,7 +2696,7 @@ int sub_80A7454()
     v1 = sub_809E1AE();
     LODWORD(v1) = v1 - *(v0 + 12);
     HIDWORD(v1) -= *(v0 + 16);
-    v2 = sub_800118A(v1);
+    v2 = battle_calcAngleOctant_800118A(v1);
     if ( v2 )
         v3 = v2 - 1;
     else
@@ -2753,7 +2753,7 @@ int sub_80A74A8()
     v6 = sub_809E1AE();
     LODWORD(v6) = v6 - *(v0 + 12);
     HIDWORD(v6) -= *(v0 + 16);
-    v7 = sub_800118A(v6);
+    v7 = battle_calcAngleOctant_800118A(v6);
     if ( v7 )
     {
         if ( v7 >= 4 )
@@ -2844,7 +2844,7 @@ char *sub_80A755C()
 
 
 // 0x80a7590
-int sub_80A7590()
+int battle_ai_selectAIPtrFromTable_80A7590()
 {
     int v0; // r5
     int result; // r0
@@ -4057,7 +4057,7 @@ void __noreturn sub_80A822C()
     *v0 = 3;
     sprite_load(v0, 128, 28, 86);
     sub_80A8324();
-    v1 = sub_80A82DC();
+    v1 = battleObject_checkSetPriorityByEventFlag_80A82DC();
     *(v0 + 5) = v1;
     sprite_setAnimation(v0, v1);
     sprite_loadAnimationData(v0);
@@ -4078,7 +4078,7 @@ void __fastcall __noreturn battleObject_updateSpriteAndMaybeReloadAnim_80A827C(i
     int v1; // r5
     signed int v2; // r0
 
-    v2 = sub_80A82DC();
+    v2 = battleObject_checkSetPriorityByEventFlag_80A82DC();
     if ( v2 != *(v1 + 5) )
     {
         sprite_setAnimation(v1, v2);
@@ -4114,7 +4114,7 @@ char *sub_80A82A4()
 
 
 // 0x80a82dc
-signed int sub_80A82DC()
+signed int battleObject_checkSetPriorityByEventFlag_80A82DC()
 {
     int v0; // r5
     int v1; // r10
@@ -4336,7 +4336,7 @@ int __fastcall sub_80A8518(int a1, int a2)
 
     LODWORD(v3) = (a1 << 16) - *(v2 + 12);
     HIDWORD(v3) = (a2 << 16) - *(v2 + 16);
-    v4 = sub_800118A(v3);
+    v4 = battle_calcAngleOctant_800118A(v3);
     if ( v4 )
         result = byte_80A8540[v4];
     else
@@ -4501,7 +4501,7 @@ int sub_80A8644()
 
 
 // 0x80a8654
-int sub_80A8654()
+int battleObject_dispatchUpdateByCurAction_80A8654()
 {
     int v0; // r5
 
@@ -4521,12 +4521,12 @@ void __noreturn sub_80A8674()
     sprite_noShadow(v0);
     *(v0 + 8) = 4;
     *(v0 + 36) = 0;
-    sub_80A86A0();
+    battle_beastSP_updateOrInit_80A86A0();
 }
 
 
 // 0x80a86a0
-void __noreturn sub_80A86A0()
+void __noreturn battle_beastSP_updateOrInit_80A86A0()
 {
     Battle *v0; // r5
 

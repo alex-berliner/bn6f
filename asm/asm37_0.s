@@ -958,25 +958,25 @@ loc_813BD2C:
 	sub r1, #1
 	ldrb r2, [r7,#4]
 	ldrb r3, [r7,#5]
-	bl sub_813BD90
+	bl battleObject_collectTargetsInRegion_813BD90
 	ldrh r0, [r7]
 	ldrb r1, [r7,#3]
 	add r1, #1
 	ldrb r2, [r7,#4]
 	ldrb r3, [r7,#5]
-	bl sub_813BD90
+	bl battleObject_collectTargetsInRegion_813BD90
 	ldrh r0, [r7]
 	ldrb r1, [r7,#3]
 	ldrb r2, [r7,#4]
 	sub r2, #1
 	ldrb r3, [r7,#5]
-	bl sub_813BD90
+	bl battleObject_collectTargetsInRegion_813BD90
 	ldrh r0, [r7]
 	ldrb r1, [r7,#3]
 	ldrb r2, [r7,#4]
 	add r2, #1
 	ldrb r3, [r7,#5]
-	bl sub_813BD90
+	bl battleObject_collectTargetsInRegion_813BD90
 	ldrh r0, [r7]
 	bl sub_813BE38
 loc_813BD82:
@@ -993,9 +993,9 @@ loc_813BD82:
 // symdb: (r0 = actorIndex, r1 = centerPanelX, r2 = centerPanelY, r3 = ?, r6 = ?, r8 = outListPtr, r10 =
 // symdb: toolkit) -> r0 = updated outListPtr ; side effects: writes through byte_2006C50 (r0..r0+0x31)
 // symdb: and through the toolkit's Unk200414c_Ptr panel grid
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_collectTargetsInRegion_813BD90.yaml
 	thumb_local_start
-sub_813BD90:
+battleObject_collectTargetsInRegion_813BD90:
 	push {r4-r7,lr}
 	sub sp, sp, #0x20
 	str r0, [sp]
@@ -1084,7 +1084,7 @@ loc_813BE1E:
 	add sp, sp, #0x20
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BD90
+	thumb_func_end battleObject_collectTargetsInRegion_813BD90
 
 	thumb_local_start
 sub_813BE38:
@@ -1466,7 +1466,7 @@ loc_813C08C:
 	ldrb r0, [r7,#3]
 	lsl r0, r0, #1
 	push {r0}
-	bl sub_813C4A8
+	bl battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8
 	pop {r0}
 	ldrb r1, [r1,r4]
 	tst r1, r1
@@ -1492,7 +1492,7 @@ loc_813C0D4:
 	ldr r1, dword_813C138 // =0x5a91 
 loc_813C0DE:
 	push {r0,r1}
-	bl sub_813C4C8
+	bl submenu_getBeastOutGateAnimScriptTablePtr_813C4C8
 	mov r3, r1
 	pop {r0,r1}
 	ldr r2, off_813C12C // =unk_30019E0 
@@ -1506,7 +1506,7 @@ loc_813C0DE:
 loc_813C0F8:
 	ldrh r1, [r5,r0]
 	push {r0,r1}
-	bl sub_813C4C8
+	bl submenu_getBeastOutGateAnimScriptTablePtr_813C4C8
 	mov r3, r1
 	pop {r0,r1}
 	ldr r2, off_813C12C // =unk_30019E0 
@@ -1600,7 +1600,7 @@ loc_813C1E4:
 loc_813C1FA:
 	lsl r0, r0, #1
 	push {r0}
-	bl sub_813C4A8
+	bl battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8
 	pop {r0}
 	ldrb r1, [r1,r4]
 	tst r1, r1
@@ -1626,7 +1626,7 @@ loc_813C224:
 	ldr r1, dword_813C288 // =0x5a91 
 loc_813C22E:
 	push {r0,r1}
-	bl sub_813C4C8
+	bl submenu_getBeastOutGateAnimScriptTablePtr_813C4C8
 	mov r3, r1
 	pop {r0,r1}
 	ldr r2, off_813C27C // =unk_30019E0 
@@ -1640,7 +1640,7 @@ loc_813C22E:
 loc_813C248:
 	ldrh r1, [r5,r0]
 	push {r0,r1}
-	bl sub_813C4C8
+	bl submenu_getBeastOutGateAnimScriptTablePtr_813C4C8
 	mov r3, r1
 	pop {r0,r1}
 	ldr r2, off_813C27C // =unk_30019E0 
@@ -1917,9 +1917,9 @@ loc_813C4A2:
 
 // symdb: Look up the beast-out A-press power attack handler index from a 0x71 key-item check and return its handler pointer
 // symdb: (r10 = toolkit) -> r0 = handler function pointer ; r1 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C4A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8.yaml
 	thumb_local_start
-sub_813C4A8:
+battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8:
 	push {lr}
 	mov r0, #0x71 
 	bl CheckKeyItem
@@ -1934,14 +1934,14 @@ pt_813C4BC:
 	.word byte_813B3AE+225
 	.word byte_813B3AE+274
 	.word byte_813B3AE+323
-	thumb_func_end sub_813C4A8
+	thumb_func_end battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8
 
 // symdb: Returns a per-CSV beast-out gate-animation row-script table for one of the three supported PETs based on which key item the player owns.
 // symdb: in: r10 = toolkit (for CheckKeyItem lookup) ; out: r1 = pointer into a row-script byte table ;
 // symdb: side effects: reads key-item 0x71 ("BeastLink/Beast Out upgrade") via CheckKeyItem
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C4C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getBeastOutGateAnimScriptTablePtr_813C4C8.yaml
 	thumb_local_start
-sub_813C4C8:
+submenu_getBeastOutGateAnimScriptTablePtr_813C4C8:
 	push {lr}
 	mov r0, #0x71 
 	bl CheckKeyItem
@@ -1977,7 +1977,7 @@ byte_813C550:
 	.byte 0x5D, 0x2D, 0x26, 0x2A, 0x46, 0x4A, 0x5A, 0x5C, 0x2E
 	.byte 0x64, 0x66, 0x68, 0x6A, 0x74, 0x78, 0x2F, 0x6C, 0x6D
 	.byte 0x6E, 0x6F, 0x76, 0x77, 0x0, 0x0, 0x0
-	thumb_func_end sub_813C4C8
+	thumb_func_end submenu_getBeastOutGateAnimScriptTablePtr_813C4C8
 
 // symdb: Scans the battle-item grid, counting each item into a per-type tally array supplied by the caller.
 // symdb: void sub_813C584(u8* count_array /* r0 */);

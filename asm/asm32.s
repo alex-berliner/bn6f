@@ -20373,7 +20373,7 @@ off_81183E4:
 	.word off_81183E8
 off_81183E8:
 	.word sub_8118424+1
-	.word sub_811842C+1
+	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_811847C+1
 	.word sub_81184A8+1
 	.word sub_81184C0+1
@@ -20383,9 +20383,9 @@ off_81183E8:
 	.word sub_8118550+1
 	.word sub_811857C+1
 	.word sub_8118510+1
-	.word sub_811842C+1
+	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_81185A8+1
-	.word sub_811842C+1
+	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_81184A8+1
 	thumb_func_end sub_81183C4
 
@@ -20399,9 +20399,9 @@ sub_8118424:
 
 // symdb: BeastOut/ProgramAdvance sprite initialization step: writes a state byte and CurAnim into the beast-sprite object, then snaps its position and resets palette/alpha effects.
 // symdb: (r5 = beast sprite object ptr, r6 = parent battle object / AIData ptr, r10 = toolkit) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811842C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastOutOrProgramAdvanceSetTransform_811842C.yaml
 	thumb_local_start
-sub_811842C:
+beastOutOrProgramAdvanceSetTransform_811842C:
 	push {r4-r7,lr}
 	mov r4, #1
 	ldrb r0, [r6]
@@ -20438,7 +20438,7 @@ loc_8118454:
 	bl sub_81185E4
 	bl sub_8118604
 	pop {r4-r7,pc}
-	thumb_func_end sub_811842C
+	thumb_func_end beastOutOrProgramAdvanceSetTransform_811842C
 
 	thumb_local_start
 sub_811847C:

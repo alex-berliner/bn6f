@@ -3134,7 +3134,7 @@ OverworldMapObjectUpdateJumptable:
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1
 	.word battle_dispatchCustomJumptableByIndex_80A8208+1
 	.word sub_80A8394+1
-	.word sub_80A8654+1
+	.word battleObject_dispatchUpdateByCurAction_80A8654+1
 	.word sub_80A8728+1
 	.word sub_80A87F0+1
 	.word 0x0

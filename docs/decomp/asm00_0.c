@@ -1425,7 +1425,7 @@ unsigned int __fastcall calcAngle_800117C(int a1, int a2)
 
 
 // 0x800118a
-int __fastcall sub_800118A(__int64 a1)
+int __fastcall battle_calcAngleOctant_800118A(__int64 a1)
 {
     if ( a1 )
         LODWORD(a1) = ((calcAngle_800117C(a1, SHIDWORD(a1)) + 32) << 24 >> 30) + 1;

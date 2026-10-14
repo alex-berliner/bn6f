@@ -1557,7 +1557,7 @@ loc_80A597A:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq locret_80A59AA
 	b loc_80A598E
@@ -1659,7 +1659,7 @@ sub_80A5A1C:
 	ldr r3, [r7,r4]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	bl loc_80A598C
 	mov r0, #3
 	strb r0, [r5]
@@ -2146,7 +2146,7 @@ loc_80A5E0A:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq locret_80A5E36
 	mov r4, r0
@@ -2179,7 +2179,7 @@ sub_80A5E44:
 	ldr r1, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq locret_80A5E70
 	mov r4, r0
@@ -3518,7 +3518,7 @@ loc_80A6F20:
 // symdb: Per-frame update for an enemy battle object: gates its curAction animation logic on cutscene / chatbox state, then runs the common sprite + end-of-frame hook.
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
-// symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
+// symdb: sprite_update, calls sub_80A6F78/battle_beastOut_checkPlayerInBoxTrigger_80A70FC/sub_80A7160/sub_80A7238.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimation_80A6F2C.yaml
 	thumb_local_start
 battleObject_updateAnimation_80A6F2C:
@@ -3546,7 +3546,7 @@ loc_80A6F58:
 	b loc_80A6F66
 loc_80A6F5E:
 	bl battleObject_stepBeastOut_80A6F78
-	bl sub_80A70FC
+	bl battle_beastOut_checkPlayerInBoxTrigger_80A70FC
 loc_80A6F66:
 	bl sprite_update
 	bl battleObject_copyPwrAtkFieldsToTempBuffer_80A7238
@@ -3567,7 +3567,7 @@ sub_80A6F70:
 	thumb_local_start
 battleObject_stepBeastOut_80A6F78:
 	push {r4-r7,lr}
-	bl sub_80A6FDC
+	bl battle_setObjectChargeParamsFromTable_80A6FDC
 	bl battleObject_updateBeastOutSprite_80A704C
 	bl battleObject_pickBeastSpFace_80A708C
 	mov r2, r0
@@ -3624,9 +3624,9 @@ locret_80A6FD8:
 
 // symdb: Looks up a charge/attack parameter pair (u16,u16) for a battle object from a 3-level data table and stores them at object+0x24/0x28.
 // symdb: (r5 = battle object pointer) -> void ; side effects clobbers r0-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6FDC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setObjectChargeParamsFromTable_80A6FDC.yaml
 	thumb_local_start
-sub_80A6FDC:
+battle_setObjectChargeParamsFromTable_80A6FDC:
 	push {lr}
 loc_80A6FDE:
 	ldr r2, off_80A700C // =off_80A7010 
@@ -3675,7 +3675,7 @@ off_80A7038:
 off_80A7044:
 	.word byte_8140D1C
 	.word byte_8140D58
-	thumb_func_end sub_80A6FDC
+	thumb_func_end battle_setObjectChargeParamsFromTable_80A6FDC
 
 // symdb: Swaps the beast-out form sprite/animation on a battle object when its target panel changes.
 // symdb: (r5 = BattleObjectPtr) -> void
@@ -3689,7 +3689,7 @@ battleObject_updateBeastOutSprite_80A704C:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq locret_80A707E
 	mov r4, r0
@@ -3783,9 +3783,9 @@ off_80A70EC:
 // symdb: Beast-Out check: if EVENT_5F1 unset and player is within a trigger box, set EVENT_5F1 and raise a flag.
 // symdb: (in r5 = some struct ptr, r6 = another struct ptr) -> void ; may set EVENT_5F1 and write
 // symdb: [r5+0x34]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A70FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOut_checkPlayerInBoxTrigger_80A70FC.yaml
 	thumb_local_start
-sub_80A70FC:
+battle_beastOut_checkPlayerInBoxTrigger_80A70FC:
 	push {r4-r7,lr}
 	movflag EVENT_5F1
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3832,7 +3832,7 @@ loc_80A7150:
 locret_80A715C:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A70FC
+	thumb_func_end battle_beastOut_checkPlayerInBoxTrigger_80A70FC
 
 	thumb_local_start
 sub_80A7160:
@@ -4134,7 +4134,7 @@ battleObject_beastStepUpdate_80A73A0:
 	mov r0, #1
 loc_80A73B8:
 	strb r0, [r5,#7]
-	bl sub_80A743C
+	bl battleObject_checkPanelMatch_80A743C
 	cmp r0, #1
 	bne loc_80A73E4
 	ldrb r0, [r5,#6]
@@ -4152,7 +4152,7 @@ loc_80A73D8:
 	mov r0, #0
 	strb r0, [r5,#6]
 loc_80A73E4:
-	bl sub_80A7590
+	bl battle_ai_selectAIPtrFromTable_80A7590
 	mov r2, r0
 	ldr r6, [r5,#0x18]
 	ldr r7, [r5,#0x1c]
@@ -4209,9 +4209,9 @@ locret_80A743A:
 
 // symdb: Returns 1 if the battle object's two (FuturePanelX,FuturePanelY) pairs (r5+0x18/0x1c) match its (PanelX,PanelY) pair (r5+0xc/0x10), else 0
 // symdb: (r5 = BattleObject*) -> r0 = 0|1 ; side effects: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A743C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkPanelMatch_80A743C.yaml
 	thumb_local_start
-sub_80A743C:
+battleObject_checkPanelMatch_80A743C:
 	push {lr}
 	mov r0, #0
 	ldr r1, [r5,#0x18]
@@ -4225,7 +4225,7 @@ sub_80A743C:
 	mov r0, #1
 locret_80A7452:
 	pop {pc}
-	thumb_func_end sub_80A743C
+	thumb_func_end battleObject_checkPanelMatch_80A743C
 
 	thumb_local_start
 sub_80A7454:
@@ -4235,7 +4235,7 @@ sub_80A7454:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	bne loc_80A746E
 	ldrb r4, [r5,#5]
@@ -4291,7 +4291,7 @@ sub_80A74A8:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq loc_80A74DC
 	cmp r0, #4
@@ -4409,9 +4409,9 @@ off_80A7580:
 // symdb: Loads a 4-byte AI routine pointer from a packed u16-indexed table and stores it into the battle object's AIData+0x28 slot.
 // symdb: (r5 = BattleObject*) -> r0 = ptr read from table; side effect: writes that ptr into
 // symdb: r5->AIData+0x28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7590.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_selectAIPtrFromTable_80A7590.yaml
 	thumb_local_start
-sub_80A7590:
+battle_ai_selectAIPtrFromTable_80A7590:
 	push {r4,lr}
 	ldr r1, [r5,#0x2c]
 	lsl r1, r1, #2
@@ -4422,7 +4422,7 @@ sub_80A7590:
 	.byte 0, 0
 off_80A75A0:
 	.word byte_8140C60
-	thumb_func_end sub_80A7590
+	thumb_func_end battle_ai_selectAIPtrFromTable_80A7590
 
 	thumb_local_start
 sub_80A75A4:
@@ -6012,7 +6012,7 @@ sub_80A822C:
 	mov r2, #0x56 
 	bl sprite_load // (int a1, int a2, int a3) ->
 	bl sub_80A8324
-	bl sub_80A82DC
+	bl battleObject_checkSetPriorityByEventFlag_80A82DC
 	strb r0, [r5,#5]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -6043,7 +6043,7 @@ sub_80A822C:
 	thumb_local_start
 battleObject_updateSpriteAndMaybeReloadAnim_80A827C:
 	push {r4-r7,lr}
-	bl sub_80A82DC
+	bl battleObject_checkSetPriorityByEventFlag_80A82DC
 	ldrb r1, [r5,#5]
 	cmp r0, r1
 	beq loc_80A8294
@@ -6096,9 +6096,9 @@ off_80A82CC:
 
 // symdb: Checks a per-map/event-flag pair to decide if a battle object's sprite should be raised to OAM priority 3, returning a bool.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> r0 = 1 if priority was raised else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkSetPriorityByEventFlag_80A82DC.yaml
 	thumb_local_start
-sub_80A82DC:
+battleObject_checkSetPriorityByEventFlag_80A82DC:
 	push {r4,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -6134,7 +6134,7 @@ off_80A8314:
 	.word byte_80A81CC
 	.word byte_80A81DE
 	.word byte_80A81F0
-	thumb_func_end sub_80A82DC
+	thumb_func_end battleObject_checkSetPriorityByEventFlag_80A82DC
 
 	thumb_local_start
 sub_80A8324:
@@ -6379,7 +6379,7 @@ sub_80A8518:
 	ldr r3, [r5,#0x10]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq loc_80A8536
 	mov r4, r0
@@ -6555,9 +6555,9 @@ sub_80A8644:
 // symdb: Dispatches a battle object's per-action update by jumping through a small table keyed off its CurAction byte.
 // symdb: (r5 = BattleObject*, r2 = ?, lr = caller) -> r0 = 0x2f8, NZ set; side effects: tail-calls one of
 // symdb: three updaters via off_80A8668
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8654.yaml
-	thumb_func_start sub_80A8654
-sub_80A8654:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchUpdateByCurAction_80A8654.yaml
+	thumb_func_start battleObject_dispatchUpdateByCurAction_80A8654
+battleObject_dispatchUpdateByCurAction_80A8654:
 	push {r4-r7,lr}
 	ldr r0, off_80A8664 // =off_80A8668 
 	ldrb r1, [r5,#8]
@@ -6570,9 +6570,9 @@ off_80A8664:
 	.word off_80A8668
 off_80A8668:
 	.word sub_80A8674+1
-	.word sub_80A86A0+1
+	.word battle_beastSP_updateOrInit_80A86A0+1
 	.word sub_80A86AC+1
-	thumb_func_end sub_80A8654
+	thumb_func_end battleObject_dispatchUpdateByCurAction_80A8654
 
 	thumb_local_start
 sub_80A8674:
@@ -6590,7 +6590,7 @@ sub_80A8674:
 	strb r0, [r5,#8]
 	mov r0, #0
 	str r0, [r5,#0x24]
-	bl sub_80A86A0
+	bl battle_beastSP_updateOrInit_80A86A0
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8674
 
@@ -6598,14 +6598,14 @@ sub_80A8674:
 // symdb: (no meaningful args passed via regs; the BeastSP object is reached through r10-derived pointers
 // symdb: the callees know about) -> (no return; caller restores r4–r7); side effects: writes the BeastSP
 // symdb: object and its sprite
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A86A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSP_updateOrInit_80A86A0.yaml
 	thumb_local_start
-sub_80A86A0:
+battle_beastSP_updateOrInit_80A86A0:
 	push {r4-r7,lr}
 	bl beastSP_initOrUpdate_80A86B4
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A86A0
+	thumb_func_end battle_beastSP_updateOrInit_80A86A0
 
 	thumb_local_start
 sub_80A86AC:

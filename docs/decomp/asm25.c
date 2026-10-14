@@ -206,7 +206,7 @@ int __fastcall sub_808FA38(int a1)
     v1 = sub_809E1AE();
     LODWORD(v1) = (word_2000322 << 16) - v1;
     HIDWORD(v1) = (dword_2000324 << 16) - HIDWORD(v1);
-    result = sub_800118A(v1);
+    result = battle_calcAngleOctant_800118A(v1);
     if ( result )
     {
         result = byte_808FA74[result];

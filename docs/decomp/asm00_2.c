@@ -2003,7 +2003,7 @@ int ai_clearPwrAtkStateFromBattleObject_801011A()
     v1 = *(v0 + 88) + 160;
     *(v1 + 29) = 0;
     *(v1 + 30) = 0;
-    return sub_80E1662();
+    return battleObject_clearAIDataUnknown_80E1662();
 }
 
 

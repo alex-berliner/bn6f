@@ -270,7 +270,7 @@ sub_808FA38:
 	lsl r1, r1, #0x10
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_800118A
+	bl battle_calcAngleOctant_800118A
 	cmp r0, #0
 	beq locret_808FA6E
 	mov r4, r0

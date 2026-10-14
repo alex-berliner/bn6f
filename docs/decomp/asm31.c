@@ -490,7 +490,7 @@ int sub_80B86C4()
 {
     sub_80B8800();
     sub_80B8810();
-    return sub_80B881E();
+    return battleObject_stepSpriteIfAliveAndUnfrozen_80B881E();
 }
 
 
@@ -500,7 +500,7 @@ int __fastcall sub_80B86D4(int a1)
     int v1; // r5
     int result; // r0
 
-    result = sub_80B881E();
+    result = battleObject_stepSpriteIfAliveAndUnfrozen_80B881E();
     if ( result )
         result = (*(&off_80B86F0 + *(v1 + 10)))();
     return result;
@@ -647,7 +647,7 @@ signed int sub_80B8810()
 
 
 // 0x80b881e
-signed int sub_80B881E()
+signed int battleObject_stepSpriteIfAliveAndUnfrozen_80B881E()
 {
     int v0; // r5
     signed int v1; // r4
@@ -34134,7 +34134,7 @@ void __noreturn sub_80CC110()
 
 
 // 0x80cc1a0
-void __noreturn sub_80CC1A0()
+void __noreturn object_dispatchCollisionPhase_80CC1A0()
 {
     int v0; // r5
     int v1; // r0
@@ -67840,7 +67840,7 @@ signed int sub_80E1654()
 
 
 // 0x80e1662
-int sub_80E1662()
+int battleObject_clearAIDataUnknown_80E1662()
 {
     int v0; // r5
     int v1; // r1
@@ -83975,7 +83975,7 @@ void object_endPwrAtkAction_80EAF36()
         *v4 = 4;
         *(v4 + 4) = 0;
         *(v1 + 5) = 12;
-        sub_80E1662();
+        battleObject_clearAIDataUnknown_80E1662();
     }
     else
     {

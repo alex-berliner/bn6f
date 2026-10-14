@@ -805,10 +805,10 @@ int sub_813BD24()
         v4 = *v2;
         if ( v4 )
         {
-            sub_813BD90(v4, v3[3] - 1, v3[4], v3[5]);
-            sub_813BD90(*v3, v3[3] + 1, v3[4], v3[5]);
-            sub_813BD90(*v3, v3[3], v3[4] - 1, v3[5]);
-            sub_813BD90(*v3, v3[3], v3[4] + 1, v3[5]);
+            battleObject_collectTargetsInRegion_813BD90(v4, v3[3] - 1, v3[4], v3[5]);
+            battleObject_collectTargetsInRegion_813BD90(*v3, v3[3] + 1, v3[4], v3[5]);
+            battleObject_collectTargetsInRegion_813BD90(*v3, v3[3], v3[4] - 1, v3[5]);
+            battleObject_collectTargetsInRegion_813BD90(*v3, v3[3], v3[4] + 1, v3[5]);
             sub_813BE38(*v3);
         }
         ++v1;
@@ -819,7 +819,7 @@ int sub_813BD24()
 
 
 // 0x813bd90
-_BYTE *__fastcall sub_813BD90(int a1, int a2, int a3, int a4)
+_BYTE *__fastcall battleObject_collectTargetsInRegion_813BD90(int a1, int a2, int a3, int a4)
 {
     int v4; // r6
     _BYTE *v5; // r8
@@ -1195,7 +1195,7 @@ int __fastcall battle_beastOutApplyCrossChanges_813C06C(int a1, int a2, int a3)
             v9 = toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
             v10 = battleObject_getByIndex_813B780(*v9);
             v19 = 2 * *(v10 + 3);
-            sub_813C4A8();
+            battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8();
             if ( *(v11 + v7) )
             {
                 v12 = *&v5[v19];
@@ -1213,7 +1213,7 @@ int __fastcall battle_beastOutApplyCrossChanges_813C06C(int a1, int a2, int a3)
                 }
                 v14 = v19;
                 v20 = v13;
-                sub_813C4C8();
+                submenu_getBeastOutGateAnimScriptTablePtr_813C4C8();
                 result = v14;
                 if ( *(v15 + v7) )
                     word_30019E0[*(v15 + v7)] = v20;
@@ -1222,7 +1222,7 @@ int __fastcall battle_beastOutApplyCrossChanges_813C06C(int a1, int a2, int a3)
             {
                 v18 = v19;
                 v21 = *&v5[v19];
-                sub_813C4C8();
+                submenu_getBeastOutGateAnimScriptTablePtr_813C4C8();
                 result = v18;
                 if ( *(v16 + v7) )
                 {
@@ -1291,7 +1291,7 @@ int __fastcall sub_813C1C0(int a1)
             v7 = &byte_813C2A0;
         }
         v18 = 2 * v6;
-        sub_813C4A8();
+        battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8();
         if ( *(v9 + v5) )
         {
             v10 = *&v3[v18];
@@ -1308,7 +1308,7 @@ int __fastcall sub_813C1C0(int a1)
                     v11 = 14696;
             }
             v16 = __PAIR__(v11, v18);
-            sub_813C4C8();
+            submenu_getBeastOutGateAnimScriptTablePtr_813C4C8();
             result = v16;
             if ( *(v12 + v5) )
                 word_30019E0[*(v12 + v5)] = WORD2(v16);
@@ -1317,7 +1317,7 @@ int __fastcall sub_813C1C0(int a1)
         {
             v17 = v18;
             v19 = *&v3[v18];
-            sub_813C4C8();
+            submenu_getBeastOutGateAnimScriptTablePtr_813C4C8();
             result = v17;
             if ( *(v14 + v5) )
             {
@@ -1470,7 +1470,7 @@ signed int checkCurPETNaviStats1FIsOne_813C490()
 
 
 // 0x813c4a8
-int sub_813C4A8()
+int battle_getBeastOutAPwrAtkHandlerByItemCheck_813C4A8()
 {
     int result; // r0
     void *v1; // r1
@@ -1482,7 +1482,7 @@ int sub_813C4A8()
 
 
 // 0x813c4c8
-int sub_813C4C8()
+int submenu_getBeastOutGateAnimScriptTablePtr_813C4C8()
 {
     int result; // r0
     char (*v1)[52]; // r1

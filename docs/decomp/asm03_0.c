@@ -15528,7 +15528,7 @@ void __fastcall battle_runTextboxUpdateAndSetStateBit1_80313D4(_DWORD *a1)
 
 
 // 0x80313fc
-void __fastcall sub_80313FC(_DWORD *a1)
+void __fastcall battle_scrollTickStepOrStop_80313FC(_DWORD *a1)
 {
     _DWORD *v1; // r0
     int v2; // r1
@@ -15661,7 +15661,7 @@ BOOL __fastcall math_pointCrossHalfPlaneTest_8031594(_DWORD *a1, int a2, int a3,
 
 
 // 0x80315b8
-BOOL __fastcall sub_80315B8(_DWORD *a1, int a2, int a3, int a4)
+BOOL __fastcall textbox_computeCursorBlinkAdvance_80315B8(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -15817,7 +15817,7 @@ __int64 __fastcall sub_80317A6(_DWORD *a1)
     int v4; // r1
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 8, 8);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 8, 8);
     return (table_GetCurrentEntryHeader_8031760(v3) + v4);
 }
 
@@ -15831,7 +15831,7 @@ __int64 __fastcall sub_80317C2(_DWORD *a1)
     int v4; // r1
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 0, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
     return (table_GetCurrentEntryHeader_8031760(v3) + v4);
 }
 
@@ -16002,7 +16002,7 @@ signed int __fastcall sub_80319B6(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 8, 8);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 8, 8);
     return battle_aiIndexToActorCount_8031980(v3);
 }
 
@@ -16015,7 +16015,7 @@ signed int __fastcall sub_80319CE(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 0, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
     return battle_aiIndexToActorCount_8031980(v3);
 }
 
@@ -16067,7 +16067,7 @@ signed int __fastcall sub_8031A2E(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 0, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
     return battle_aiIndexToActorCount_8031980(v3);
 }
 
@@ -16210,7 +16210,7 @@ int __fastcall text_setupTextboxAndStartPrint_8031BB2(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 8, 8);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 8, 8);
     return sub_8031B7C(v3);
 }
 
@@ -16223,13 +16223,13 @@ int __fastcall textbox_StepAndRefreshWindow_8031BCA(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 0, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
     return sub_8031B7C(v3);
 }
 
 
 // 0x8031be2
-int __fastcall sub_8031BE2(_DWORD *a1)
+int __fastcall battleObject_checkInAttackRange_08031BE2(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -16275,7 +16275,7 @@ int __fastcall sub_8031C2A(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 1, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 1, 16);
     return sub_8031B7C(v3);
 }
 
@@ -16321,7 +16321,7 @@ int __fastcall sub_8031C7C(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 14, 14);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 14, 14);
     return sub_8031B7C(v3);
 }
 
@@ -16334,7 +16334,7 @@ int __fastcall sub_8031C94(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_80315B8(v1, v2, 0, 16);
+    v3 = textbox_computeCursorBlinkAdvance_80315B8(v1, v2, 0, 16);
     return sub_8031B7C(v3);
 }
 

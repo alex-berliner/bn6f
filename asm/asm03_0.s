@@ -23326,7 +23326,7 @@ dword_8030C40:
 	.word sub_8031388+1 // 0x01 up left
 	.word battle_setupMessageWindow_80313B0+1 // 0x02 down right
 	.word battle_runTextboxUpdateAndSetStateBit1_80313D4+1 // 0x03 down left
-	.word sub_80313FC+1 // 0x04 up right
+	.word battle_scrollTickStepOrStop_80313FC+1 // 0x04 up right
 	.word sub_8031420+1 // 0x05 corner right
 	.word sub_8031478+1 // 0x06 corner down
 	.word sub_80314CC+1 // 0x07 corner up
@@ -24458,9 +24458,9 @@ battle_runTextboxUpdateAndSetStateBit1_80313D4:
 // symdb: Per-frame step for the scrolling battlefield: collects a scroll delta, tests the wedge clamp, and either nudges the camera or sets the "arrived at target" bit.
 // symdb: (r0 = BattleObject*, r5 = ?, r12 = BattleObject*'s header/state word, lr = ret) -> r0 =
 // symdb: BattleObject* (unchanged), r12 = header/state word with bit 0x2 OR'd in ; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80313FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollTickStepOrStop_80313FC.yaml
 	thumb_local_start
-sub_80313FC:
+battle_scrollTickStepOrStop_80313FC:
 	push {r0-r2,r5,lr}
 	bl battle_scrollAccumulateStep_8031176
 	mov r2, #0
@@ -24476,7 +24476,7 @@ sub_80313FC:
 	orr r0, r1
 	mov r12, r0
 	pop {r0-r2,r5,pc}
-	thumb_func_end sub_80313FC
+	thumb_func_end battle_scrollTickStepOrStop_80313FC
 
 // symdb: Drives the camera across a map edge into the adjacent map, in two half-scroll passes (first half via one delta provider, second half via another), folding each pass's completion status into the caller's r12 accumulator.
 // symdb: void sub_8031420(u32 r0, u32 r1, u32 r2, u32 r5 /* camera anchor */, u32 r12 /* status
@@ -24714,9 +24714,9 @@ loc_80315B4:
 // symdb: Computes whether the textbox cursor blink should advance this step, returning 1 if so and 0 otherwise.
 // symdb: (r0 = textbox-like struct ptr, r2 = step? delta, r3 = step? delta, r4 = step? delta, r5 = step?
 // symdb: delta) -> r0 = 0 or 1 ; side effects: none observed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80315B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/textbox_computeCursorBlinkAdvance_80315B8.yaml
 	thumb_local_start
-sub_80315B8:
+textbox_computeCursorBlinkAdvance_80315B8:
 	sub r6, r5, r4
 	sub r7, r2, r3
 	mul r3, r4
@@ -24737,7 +24737,7 @@ loc_80315CC: // likely fake pointer
 loc_80315D8:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_80315B8
+	thumb_func_end textbox_computeCursorBlinkAdvance_80315B8
 
 // symdb: Returns 1 if the point stored at r0 lies on the left side of the directed line through (r2,r4)->(r3,r5), else 0.
 // symdb: int math_pointLeftOfLineTest(const Point* point /*r0*/, int p1x /*r2*/, int p2x /*r3*/, int p1y
@@ -25032,7 +25032,7 @@ sub_80317A6:
 	mov r4, #0
 	mov r3, #8
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl table_GetCurrentEntryHeader_8031760
 	add r0, r0, r1
 	mov r1, #0
@@ -25047,7 +25047,7 @@ sub_80317C2:
 	mov r4, #8
 	mov r3, #0x10
 	mov r5, #8
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl table_GetCurrentEntryHeader_8031760
 	add r0, r0, r1
 	mov r1, #0
@@ -25332,7 +25332,7 @@ sub_80319B6:
 	mov r4, #0
 	mov r3, #8
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319B6
@@ -25345,7 +25345,7 @@ sub_80319CE:
 	mov r4, #8
 	mov r3, #0x10
 	mov r5, #8
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319CE
@@ -25397,7 +25397,7 @@ sub_8031A2E:
 	mov r4, #0
 	mov r3, #0x10
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_8031A2E
@@ -25532,7 +25532,7 @@ jt_8031B10:
 	.word sub_8031B9A+1 // 0x01
 	.word text_setupTextboxAndStartPrint_8031BB2+1 // 0x02
 	.word textbox_StepAndRefreshWindow_8031BCA+1 // 0x03
-	.word sub_8031BE2+1 // 0x04
+	.word battleObject_checkInAttackRange_08031BE2+1 // 0x04
 	.word 0x0 // 0x05
 	.word 0x0 // 0x06
 	.word 0x0 // 0x07
@@ -25611,7 +25611,7 @@ text_setupTextboxAndStartPrint_8031BB2:
 	mov r4, #0
 	mov r3, #8
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end text_setupTextboxAndStartPrint_8031BB2
@@ -25628,7 +25628,7 @@ textbox_StepAndRefreshWindow_8031BCA:
 	mov r4, #8
 	mov r3, #0x10
 	mov r5, #8
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end textbox_StepAndRefreshWindow_8031BCA
@@ -25636,9 +25636,9 @@ textbox_StepAndRefreshWindow_8031BCA:
 // symdb: Tests whether a battle object is within attack range of its target by computing position relative to a doubled target reference point and performing a half-plane intersection test.
 // symdb: (r0 = BattleObjectPtr, r5 = saved, lr = ret) -> r0 = 0 or 1 (boolean result) ; side effects: may
 // symdb: read/write structure fields via the called helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031BE2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkInAttackRange_08031BE2.yaml
 	thumb_local_start
-sub_8031BE2:
+battleObject_checkInAttackRange_08031BE2:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25648,7 +25648,7 @@ sub_8031BE2:
 	bl math_pointCrossHalfPlaneTest_8031594
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031BE2
+	thumb_func_end battleObject_checkInAttackRange_08031BE2
 
 // symdb: Runs a fixed three-step sequence, forwarding caller arguments to sub_803172E, then calling sub_8031570 with fixed args (0, 0x10, 0x10, 0) and finally sub_8031B7C
 // symdb: void sub_8031BFA(regs r0, r5) — returns to caller via pop {pc}; all register results and NZCV
@@ -25693,7 +25693,7 @@ sub_8031C2A:
 	mov r4, #1
 	mov r3, #0x10
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end sub_8031C2A
@@ -25739,7 +25739,7 @@ sub_8031C64:
 	pop {pc}
 	thumb_func_end sub_8031C64
 
-// symdb: Thin battle-mode wrapper that calls sub_803172E with the caller's args, invokes sub_80315B8 with the fixed parameters (14, 14, 0, 16), then calls sub_8031B7C to finish a short setup sequence.
+// symdb: Thin battle-mode wrapper that calls sub_803172E with the caller's args, invokes textbox_computeCursorBlinkAdvance_80315B8 with the fixed parameters (14, 14, 0, 16), then calls sub_8031B7C to finish a short setup sequence.
 // symdb: void sub_8031C7C(int r0, int r5); /* tail-ish: returns whatever the last callee leaves in r0,
 // symdb: r2-r7 and NZCV */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
@@ -25751,7 +25751,7 @@ sub_8031C7C:
 	mov r4, #0
 	mov r3, #0xe
 	mov r5, #0x10
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end sub_8031C7C
@@ -25768,7 +25768,7 @@ sub_8031C94:
 	mov r4, #2
 	mov r3, #0x10
 	mov r5, #2
-	bl sub_80315B8
+	bl textbox_computeCursorBlinkAdvance_80315B8
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end sub_8031C94
