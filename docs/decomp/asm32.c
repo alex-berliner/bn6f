@@ -12286,7 +12286,7 @@ void sub_8117872()
 
     v0 = sub_81178AC();
     if ( v0 )
-        v0 = *(sub_813B780(v0 - 144) + 3) - 1;
+        v0 = *(battleObject_getByIndex_813B780(v0 - 144) + 3) - 1;
     sprite_setPallete(v0);
 }
 
@@ -12302,7 +12302,7 @@ signed int sub_811788C()
     v1 = 0;
     if ( v0 )
     {
-        v2 = sub_813B780(v0 - 144);
+        v2 = battleObject_getByIndex_813B780(v0 - 144);
         v1 = 0;
         if ( *(v2 + 1) )
             v1 = 1;
@@ -12482,7 +12482,7 @@ int sub_8117AB4()
     int *v2; // r7
 
     sub_8117B5C();
-    v1 = sub_813B780(*(v0 + 2));
+    v1 = battleObject_getByIndex_813B780(*(v0 + 2));
     sub_8117B4A(*(v1 + 3));
     v1 += 4;
     sub_8117B4A(*(v1 + 3));
@@ -12490,7 +12490,7 @@ int sub_8117AB4()
     sub_8117B4A(*(v1 + 3));
     sub_8117B4A(*(v1 + 19));
     ZeroFillByEightWords(&unk_2016400, 256);
-    v2 = sub_813B780(*(v0 + 2));
+    v2 = battleObject_getByIndex_813B780(*(v0 + 2));
     sub_8117B38(*(v0 + 2), *(v2 + 3));
     v2 += 4;
     sub_8117B38(*(v0 + 2), *(v2 + 3));
@@ -13508,7 +13508,7 @@ int sub_81185C0()
     int *v2; // r1
     int result; // r0
 
-    v2 = sub_813B780(word_201DA80[2 * (*(v1 + 58) + *(v1 + 56))] - 144);
+    v2 = battleObject_getByIndex_813B780(word_201DA80[2 * (*(v1 + 58) + *(v1 + 56))] - 144);
     result = *(v0 + 12);
     if ( *(v2 + 1) )
         ++result;
@@ -13522,7 +13522,7 @@ void sub_81185E4()
     int v0; // r6
     int *v1; // r0
 
-    v1 = sub_813B780(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144);
+    v1 = battleObject_getByIndex_813B780(word_201DA80[2 * (*(v0 + 58) + *(v0 + 56))] - 144);
     sprite_setPallete(*(v1 + 3) - 1);
 }
 
@@ -17369,7 +17369,7 @@ int sub_811B814()
             sprite_setUnk0x2c(0x100000);
             v5 = 0;
         }
-        v7 = sub_813B780(v5);
+        v7 = battleObject_getByIndex_813B780(v5);
         sprite_setAnimation(v0, *(v7 + 3));
         sprite_loadAnimationData(v0);
         result = sprite_noShadow(v0);
@@ -17589,7 +17589,7 @@ int sub_811BAF4()
     int *v2; // r1
     int result; // r0
 
-    v2 = sub_813B780(word_2023FA0[2 * (*(v1 + 60) + *(v1 + 62))] - 144);
+    v2 = battleObject_getByIndex_813B780(word_2023FA0[2 * (*(v1 + 60) + *(v1 + 62))] - 144);
     result = *(v0 + 12);
     if ( *(v2 + 1) )
         ++result;
@@ -17604,7 +17604,7 @@ int sub_811BB18()
     int *v1; // r1
     int result; // r0
 
-    v1 = sub_813B780(*(v0 + 14) - 144);
+    v1 = battleObject_getByIndex_813B780(*(v0 + 14) - 144);
     result = *(v0 + 12);
     if ( *(v1 + 1) )
         ++result;
@@ -17618,7 +17618,7 @@ void sub_811BB30()
     int v0; // r6
     int *v1; // r0
 
-    v1 = sub_813B780(word_2023FA0[2 * (*(v0 + 62) + *(v0 + 60))] - 144);
+    v1 = battleObject_getByIndex_813B780(word_2023FA0[2 * (*(v0 + 62) + *(v0 + 60))] - 144);
     sprite_setPallete(*(v1 + 3) - 1);
 }
 
@@ -17629,7 +17629,7 @@ void sub_811BB50()
     int v0; // r5
     int *v1; // r0
 
-    v1 = sub_813B780(*(v0 + 14) - 144);
+    v1 = battleObject_getByIndex_813B780(*(v0 + 14) - 144);
     sprite_setPallete(*(v1 + 3) - 1);
 }
 

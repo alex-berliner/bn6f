@@ -9049,7 +9049,7 @@ sub_803D148:
 	mov r5, r1
 loc_803D152:
 	add r0, r4, r6
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	cmp r0, r5
@@ -9085,7 +9085,7 @@ sub_803D180:
 	mov r5, #0
 loc_803D18A:
 	add r0, r4, r6
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	cmp r0, r5

@@ -179,7 +179,7 @@ loc_81419CC:
 	bl sub_811E0BA
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_8141A0C
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_8141A0C
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8141A0C

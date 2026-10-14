@@ -135,7 +135,7 @@ int sub_81419A0()
         s_2011C50_ptr_1C_isNull();
         if ( v1 )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v1 )
             {
                 IsPaletteFadeActive();

@@ -20,9 +20,9 @@ toolkit_resetToolState_813B768:
 
 // symdb: Returns a pointer to the 0x10-byte battle-object descriptor slot in the global StructArr_813944C indexed by r0.
 // symdb: (r0 = index) -> r0 = &StructArr_813944C[index*0x10] ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B780.yaml
-	thumb_func_start sub_813B780
-sub_813B780:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getByIndex_813B780.yaml
+	thumb_func_start battleObject_getByIndex_813B780
+battleObject_getByIndex_813B780:
 	ldr r1, off_813B78C // =StructArr_813944C
 	mov r2, #0x10
 	mul r0, r2
@@ -31,7 +31,7 @@ sub_813B780:
 	.balign 4, 0x00
 off_813B78C:
 	.word StructArr_813944C
-	thumb_func_end sub_813B780
+	thumb_func_end battleObject_getByIndex_813B780
 
 	thumb_local_start
 sub_813B790:
@@ -50,7 +50,7 @@ sub_813B7A0:
 	push {r4,r6,r7,lr}
 	mov r6, r1
 	mov r4, r0
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	mov r2, #8
 	ldr r1, dword_813B7E8 // =0x2660 
@@ -796,7 +796,7 @@ loc_813BC46:
 	ldrh r0, [r0]
 	tst r0, r0
 	beq loc_813BC8E
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#1]
 	cmp r0, #2
@@ -867,7 +867,7 @@ loc_813BCC0:
 	ldrh r0, [r7]
 	tst r0, r0
 	beq loc_813BD02
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#1]
 	cmp r0, #2
@@ -1078,7 +1078,7 @@ sub_813BE38:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r6, [sp]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r4, [r7,#3]
 	mov r6, #0
@@ -1096,7 +1096,7 @@ loc_813BE4A:
 	ldrh r0, [r7]
 	tst r0, r0
 	beq loc_813BE7C
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	cmp r0, r4
@@ -1160,7 +1160,7 @@ loc_813BEBA:
 	ldrh r0, [r7]
 	tst r0, r0
 	beq loc_813BEE2
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	mov r1, #0
@@ -1444,7 +1444,7 @@ loc_813C08C:
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
 	ldrh r0, [r7]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	lsl r0, r0, #1
@@ -1577,7 +1577,7 @@ loc_813C1E4:
 	ldrh r0, [r7]
 	tst r0, r0
 	beq loc_813C1FA
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 loc_813C1FA:
@@ -2030,7 +2030,7 @@ loc_813C5FC:
 	sub r0, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r0, [r0]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0,#4]
 	ldr r0, [sp]
 	ldrb r2, [r0,r1]
@@ -2104,7 +2104,7 @@ loc_813C698:
 	tst r4, r4
 	beq loc_813C6D6
 	mov r0, r4
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0]
 	tst r1, r1
 	beq loc_813C6CA

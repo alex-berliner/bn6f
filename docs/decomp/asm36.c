@@ -7262,7 +7262,7 @@ int *sub_8135E18()
             while ( v3 < 25 );
             if ( v2 )
             {
-                if ( *(sub_813B780(v1 - 144) + 3) )
+                if ( *(battleObject_getByIndex_813B780(v1 - 144) + 3) )
                 {
                     *v5 = v1;
                     v5[1] = v2;
@@ -7311,7 +7311,7 @@ unsigned __int16 *sub_8135E6C()
             if ( v3 )
             {
                 v5 = *(&off_8135EDC + v1);
-                result = sub_813B780(v5 - 144);
+                result = battleObject_getByIndex_813B780(v5 - 144);
                 if ( *(result + 3) )
                 {
                     *v6 = v5;
@@ -7686,7 +7686,7 @@ int __fastcall sub_813629C(int a1)
     int *v2; // r0
 
     v1 = a1;
-    v2 = sub_813B780(a1 - 144);
+    v2 = battleObject_getByIndex_813B780(a1 - 144);
     return sub_803D138(4 * (v1 >> 2), *(v2 + 3));
 }
 
@@ -7756,7 +7756,7 @@ int sub_8136364()
     int *v2; // r0
 
     v1 = sub_8136290(*(v0 + 58) + *(v0 + 56));
-    v2 = sub_813B780(*v1 - 144);
+    v2 = battleObject_getByIndex_813B780(*v1 - 144);
     return CheckKeyItem(*(v2 + 3) + 79);
 }
 
@@ -8080,7 +8080,7 @@ int sub_81366D0()
     signed int v2; // r6
     int result; // r0
 
-    v1 = *(sub_813B780(*(v0 + 24)) + 3);
+    v1 = *(battleObject_getByIndex_813B780(*(v0 + 24)) + 3);
     v2 = 0;
     do
     {
@@ -8123,7 +8123,7 @@ int *sub_81366FC()
     v1 = sub_813B9B4(*(v0 + 40), *(v0 + 44));
     v9 = v1 - 1;
     v2 = *toolkit_getUnk2004190EntryPtr_813B9FC(v1 - 1);
-    v3 = *(sub_813B780(v2) + 3);
+    v3 = *(battleObject_getByIndex_813B780(v2) + 3);
     v4 = 0;
     while ( 1 )
     {
@@ -8132,7 +8132,7 @@ int *sub_81366FC()
             v5 = *toolkit_getUnk2004190EntryPtr_813B9FC(v4);
             if ( v5 )
             {
-                result = sub_813B780(v5);
+                result = battleObject_getByIndex_813B780(v5);
                 if ( *(result + 3) == v3 )
                     break;
             }

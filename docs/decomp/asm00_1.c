@@ -1086,7 +1086,7 @@ int owMapObject_renderAll_8003BF4()
 
 
 // 0x8003c70
-int sub_8003C70()
+int battle_resetSpritePaletteCount_8003C70()
 {
 	return sub_80028C0(0);
 }
@@ -1151,7 +1151,7 @@ int sub_8003E98()
 
 
 // 0x8004218
-int sub_8004218()
+int battle_renderObjectSprites_8004218()
 {
 	int v0; // r6
 	int *i; // r7
@@ -1204,7 +1204,7 @@ signed int __fastcall sub_80042A6(signed int result, int a2, int a3, int a4)
 
 
 // 0x8004510
-int sub_8004510()
+int battle_updateSprites_8004510()
 {
 	int v0; // r6
 	char *i; // r7
@@ -1622,7 +1622,7 @@ int owMapObject_queueSprites_8004934()
 
 
 // 0x80049b0
-int sub_80049B0()
+int battleObject_finishQueuedSpriteGroup_80049B0()
 {
 	return sub_80028C0(5);
 }
@@ -2430,7 +2430,7 @@ int HandlesBattleMainUntilEndOfBattleThenTriggersEnterMap()
 
 
 // 0x800536e
-int __fastcall sub_800536E(int a1)
+int __fastcall overworld_owMap_renderAndTickSubsystems_800536E(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -2992,7 +2992,7 @@ void sub_80058D0()
     v1 = *(v0 + oToolkit_GameStatePtr);
     if ( *v1 == 4 )
     {
-        sub_809E462();
+        owPlayer_isBusyOrCutsceneActive_809E462();
         if ( v2 )
         {
             warp_LoadCurrentAndReadUnk10_8005F28();
@@ -3162,7 +3162,7 @@ void checkThenStartBattle_8005A8C()
         TestEventFlagFromImmediate(23, 23);
         if ( v1 )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v1 )
             {
                 TestEventFlagFromImmediate(23, 0);
@@ -3227,7 +3227,7 @@ void gamestate_openPetMenuOnStartPress_8005AF4()
             TestEventFlagFromImmediate(23, 61);
             if ( v2 )
             {
-                sub_809E462();
+                owPlayer_isBusyOrCutsceneActive_809E462();
                 if ( v2 )
                 {
                     warp_LoadCurrentAndReadUnk10_8005F28();
@@ -3288,7 +3288,7 @@ int __fastcall sub_8005B6E(int a1, int a2, int a3, int a4, int a5, int (__fastca
         v7 = TestEventFlagFromImmediate(23, 23);
         if ( v8 )
         {
-            v7 = sub_809E462();
+            v7 = owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v8 )
             {
                 v7 = warp_LoadCurrentAndReadUnk10_8005F28();
@@ -5142,7 +5142,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     ZeroFillByByte(dword_2036820, 16);
     ZeroFillByEightWords((*(v4 + oToolkit_iBGTileIdBlocks_Ptr) + 2048), 6144);
     sCamera.unk_4C = 0;
-    v10 = sub_800A01C();
+    v10 = fifo_resetWriteCounter_800A01C();
     loadSceneGfx_80075CA(v10, v11, v12, v13);
     bgScroll_ResetScrollCBCounters_8080D90();
     sub_8080DA0();
@@ -5913,7 +5913,7 @@ int battle_update_8007A44()
                     v4 = 10;
                 goto .loc_8007A8E;
             }
-            sub_800A01C();
+            fifo_resetWriteCounter_800A01C();
             v7 = sub_802D234();
             (*(&JumpTable8007B50 + v7))();
             RunBattleObjectLogic();
@@ -5949,14 +5949,14 @@ int battle_update_8007A44()
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     sub_8003E18();
-    sub_8004218();
-    sub_8004510();
+    battle_renderObjectSprites_8004218();
+    battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     battle_updateCustGaugeFromAI_802E156();
-    sub_8003C70();
+    battle_resetSpritePaletteCount_8003C70();
     gameMode_switchToMode2_80046F8();
-    sub_80049B0();
+    battleObject_finishQueuedSpriteGroup_80049B0();
     battle_queueAllOamEntries_8009FCC();
     return battleObject_setupCustomChipCursorState_803C59C(224, 144);
 }
@@ -5976,13 +5976,13 @@ int sub_8007B9C()
 {
     int v0; // r5
 
-    sub_800A01C();
+    fifo_resetWriteCounter_800A01C();
     (*(&off_8007BC8 + *(v0 + 2)))();
     RunBattleObjectLogic();
     panel_800BFC4();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
-    return sub_800A01C();
+    return fifo_resetWriteCounter_800A01C();
 }
 
 
@@ -6260,14 +6260,14 @@ signed int sub_8007E62()
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     sub_8003E18();
-    sub_8004218();
-    sub_8004510();
+    battle_renderObjectSprites_8004218();
+    battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     battle_updateCustGaugeFromAI_802E156();
-    sub_8003C70();
+    battle_resetSpritePaletteCount_8003C70();
     gameMode_switchToMode2_80046F8();
-    sub_80049B0();
+    battleObject_finishQueuedSpriteGroup_80049B0();
     battle_queueAllOamEntries_8009FCC();
     result = 2;
     eStruct203F7D8[1] = 2;
@@ -6360,19 +6360,19 @@ signed int __fastcall sub_8007F4E(int a1)
     int v1; // r5
     signed int result; // r0
 
-    sub_800A01C();
+    fifo_resetWriteCounter_800A01C();
     (*(&off_8007F9C + *(v1 + 2)))();
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     sub_8003E18();
-    sub_8004218();
-    sub_8004510();
+    battle_renderObjectSprites_8004218();
+    battle_updateSprites_8004510();
     updateBattlePanels_800C5E0();
     runFlaggedCallbacks_801BF64();
     battle_updateCustGaugeFromAI_802E156();
-    sub_8003C70();
+    battle_resetSpritePaletteCount_8003C70();
     gameMode_switchToMode2_80046F8();
-    sub_80049B0();
+    battleObject_finishQueuedSpriteGroup_80049B0();
     battle_queueAllOamEntries_8009FCC();
     result = 2;
     eStruct203F7D8[1] = 2;
@@ -10247,7 +10247,7 @@ int __fastcall fifo_pushRecord16_8009FF8(int result, int a2, int a3, int a4)
 
 // 0x800a01c
 // () -> void
-int sub_800A01C()
+int fifo_resetWriteCounter_800A01C()
 {
     int result; // r0
 

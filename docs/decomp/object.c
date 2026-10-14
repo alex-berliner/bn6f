@@ -397,7 +397,7 @@ void __fastcall panelObject_update_800C380(int a1, int a2)
                 *(v2 + 6) = v11;
                 break;
             case 3:
-                sub_800C488(3);
+                battle_panelGridFinalizeOrPickDimension_800C488(3);
                 *(v2 + 14) = v6;
                 *(v2 + 18) = &loc_708;
                 v12 = *(v2 + 24);
@@ -408,7 +408,7 @@ void __fastcall panelObject_update_800C380(int a1, int a2)
                 }
                 break;
             case 8:
-                sub_800C488(8);
+                battle_panelGridFinalizeOrPickDimension_800C488(8);
                 *(v2 + 14) = v7;
                 *(v2 + 18) = &loc_708;
                 v13 = 140;
@@ -420,13 +420,13 @@ void __fastcall panelObject_update_800C380(int a1, int a2)
             default:
                 if ( v5 < 9 || v5 > 12 )
                 {
-                    sub_800C488(v5);
+                    battle_panelGridFinalizeOrPickDimension_800C488(v5);
                     *(v2 + 14) = v9;
                     *(v2 + 18) = &loc_708;
                 }
                 else
                 {
-                    sub_800C488(v5);
+                    battle_panelGridFinalizeOrPickDimension_800C488(v5);
                     *(v2 + 14) = v8;
                     v14 = *(v2 + 18) - 1;
                     *(v2 + 18) = v14;
@@ -447,7 +447,7 @@ void __fastcall panelObject_update_800C380(int a1, int a2)
 
 
 // 0x800c488
-void __fastcall sub_800C488(int a1)
+void __fastcall battle_panelGridFinalizeOrPickDimension_800C488(int a1)
 {
     sub_802D234();
 }
@@ -512,7 +512,7 @@ int __fastcall battle_buildPlayerPanelGrid_800C4BC(int a1, unsigned int a2)
             v8[12] = v13;
             v8[10] = v7;
             v8[11] = v6;
-            sub_800C488(v13);
+            battle_panelGridFinalizeOrPickDimension_800C488(v13);
             *(v8 + 7) = v14;
             *(v8 + 9) = &loc_708;
             ++v7;
@@ -3107,7 +3107,7 @@ signed int __fastcall sub_800E708(int a1, int a2, int a3)
 
 
 // 0x800e730
-int sub_800E730()
+int object_tickStatusEffectTimers_800E730()
 {
     int v0; // r5
     int v1; // r6
@@ -3603,7 +3603,7 @@ int sub_800EB4E()
 
 
 // 0x800eb6c
-BOOL __fastcall sub_800EB6C(int a1)
+BOOL __fastcall battle_findPlayerByAlliance_800EB6C(int a1)
 {
     int v1; // r10
     int v2; // r4

@@ -861,7 +861,7 @@ BOOL check_playerCanAdvanceForward_8034C36()
             TestEventFlagFromImmediate(23, 61);
             if ( v0 )
             {
-                sub_809E462();
+                owPlayer_isBusyOrCutsceneActive_809E462();
                 if ( v0 )
                 {
                     chatbox_mask_eFlags2009F38(128);
@@ -892,7 +892,7 @@ BOOL playerAdvanceForwardCheck_8034C6E()
         TestEventFlagFromImmediate(23, 23);
         if ( v0 )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v0 )
             {
                 chatbox_mask_eFlags2009F38(128);
@@ -11576,7 +11576,7 @@ int __fastcall sub_803D148(int a1, int a2)
     v2 = 0;
     v3 = a1 - 144;
     v4 = a2;
-    while ( *(sub_813B780(v3 + v2) + 3) != v4 )
+    while ( *(battleObject_getByIndex_813B780(v3 + v2) + 3) != v4 )
     {
         if ( ++v2 >= 4 )
             return 0;
@@ -11603,7 +11603,7 @@ int __fastcall sub_803D180(int a1)
 
     v1 = 0;
     v2 = a1 - 144;
-    while ( !*(sub_813B780(v2 + v1) + 3) )
+    while ( !*(battleObject_getByIndex_813B780(v2 + v1) + 3) )
     {
         if ( ++v1 >= 4 )
             return 0;

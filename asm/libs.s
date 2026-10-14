@@ -3971,7 +3971,7 @@ loc_8145DA8:
 	cmp r1, #0
 	beq loc_8145DC4
 	mov r0, r6
-	bl sub_814DA64
+	bl rfufunc_tailCallStub_814DA64
 	bl rfu_waitREQComplete
 	ldrb r0, [r4,#0x2] // (byte_200FE02 - 0x200fe00)
 	cmp r0, #2
@@ -15359,7 +15359,7 @@ loc_814B1B2:
 	cmp r1, #0
 	beq loc_814B1EE
 	mov r0, #0x27 
-	bl sub_814DA64
+	bl rfufunc_tailCallStub_814DA64
 	b loc_814B1EE
 	.balign 4, 0x00
 off_814B1D4:
@@ -20599,12 +20599,12 @@ loc_814DA58:
 // symdb: One-instruction Thumb tail-call stub that just `bx r1` to whatever the caller parked in r1 — used as an RFU library indirect-call trampoline.
 // symdb: (r0 = scratch, r1 = target function pointer to `bx` into) -> returns whatever the callee returns
 // symdb: ; no side effect at this stub itself (it never executes any code after entry)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfufunc_tailCallStub_814DA64.yaml
 	thumb_local_start
-sub_814DA64:
+rfufunc_tailCallStub_814DA64:
 	bx r1
 	.hword 0x46C0
-	thumb_func_end sub_814DA64
+	thumb_func_end rfufunc_tailCallStub_814DA64
 
 	thumb_local_start
 sub_814DA68:
@@ -21817,7 +21817,7 @@ loc_814E26A:
 	cmp r3, #0
 	beq loc_814E27C
 	ldr r0, [r0,#0x3c]
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 loc_814E27C:
 	pop {r0}
 	push {r4-r7}
@@ -21934,7 +21934,7 @@ loc_814E33C:
 	sub r0, #0xcf
 	mov r1, r7
 	mov r2, r5
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 	b loc_814E37E
 loc_814E352:
 	cmp r1, #0xb0
@@ -21948,7 +21948,7 @@ loc_814E352:
 	ldr r3, [r3,r0]
 	mov r0, r7
 	mov r1, r5
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 	ldrb r0, [r5]
 	cmp r0, #0
 	beq loc_814E3DA
@@ -22100,7 +22100,7 @@ loc_814E46E:
 	mov r1, r2
 	ldrb r2, [r5,#9]
 	mov r0, r6
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 	str r0, [r4,#0x20]
 	ldrb r0, [r4,#0x1d]
 	mov r1, #2
@@ -22149,9 +22149,9 @@ loc_814E4BC:
 // symdb: Indirect-jump trampoline used as the track-end callback for m4a MPlay tracks; reaches the real routine through r3.
 // symdb: (r0 = MPlayTrackInfo*, r1 = MPlayChannel*, r2 = 0x68736D53 'Smsh' tag, r3 = target_fn) -> r0 =
 // symdb: ?, flags clobbered; tail-call into r3 with r4-r12/lr preserved.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E4CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/m4a_mplay_trackEndJumpStub_814E4CC.yaml
 	thumb_local_start
-sub_814E4CC:
+m4a_mplay_trackEndJumpStub_814E4CC:
 	bx r3
 
 	.byte 0, 0
@@ -22161,7 +22161,7 @@ off_814E4D4:
 	.word byte_3007FF0
 dword_814E4D8:
 	.word 0x68736D53
-	thumb_func_end sub_814E4CC
+	thumb_func_end m4a_mplay_trackEndJumpStub_814E4CC
 
 	thumb_func_start sub_814E4DC
 sub_814E4DC:
@@ -22186,7 +22186,7 @@ loc_814E4F0:
 	ldr r3, off_814E524 // =byte_3007FF0 
 	ldr r3, [r3]
 	ldr r3, [r3,#0x2c]
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 loc_814E508:
 	strb r6, [r4]
 loc_814E50A:
@@ -22510,7 +22510,7 @@ loc_814E714:
 	ldr r3, [sp,#stack_814E558_unk_04]
 
 	ldr r3, [r3,#0x30] /*+0a*/
-	bl sub_814E4CC
+	bl m4a_mplay_trackEndJumpStub_814E4CC
 
 	b loc_814E730
 loc_814E726:
@@ -23381,7 +23381,7 @@ sub_814ECA0:
 	push {lr}
 	ldr r1, off_814ECB0 // =off_30055F8 
 	ldr r1, [r1]
-	bl sub_814DA64
+	bl rfufunc_tailCallStub_814DA64
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -23394,7 +23394,7 @@ sub_814ECB4:
 	push {lr}
 	ldr r1, off_814ECC4 // =off_30055FC 
 	ldr r1, [r1]
-	bl sub_814DA64
+	bl rfufunc_tailCallStub_814DA64
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -23704,7 +23704,7 @@ loc_814EEEE:
 	lsl r0, r5, #0x18
 	lsr r0, r0, #0x18
 	ldr r1, [r6,#0x2c]
-	bl sub_814DA64
+	bl rfufunc_tailCallStub_814DA64
 	strb r7, [r4]
 	add r5, #1
 	add r4, #0x40 

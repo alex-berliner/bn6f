@@ -1197,7 +1197,7 @@ sub_80B8AD4:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80B8AF0
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -6294,7 +6294,7 @@ sub_80BB00C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80BB028
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -6742,7 +6742,7 @@ sub_80BB35C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80BB378
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -23990,7 +23990,7 @@ sub_80C30C2:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80C30DE
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -27308,7 +27308,7 @@ sub_80C48FC:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80C4918
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -27668,7 +27668,7 @@ battleObject_refreshAndMirrorRelated_80C4B84:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80C4BA8
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -37684,7 +37684,7 @@ sub_80C9726:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80C974C
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -86457,7 +86457,7 @@ sub_80E0954:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80E0976
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -86666,7 +86666,7 @@ sub_80E0B8C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80E0BAC
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -86737,7 +86737,7 @@ loc_80E0BF6:
 	mov lr, pc
 	bx r1
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80E0C3E
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -87067,7 +87067,7 @@ loc_80E0E4A:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r4,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80E0E66
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -87858,7 +87858,7 @@ sub_80E13DC:
 	push {r5}
 	mov r5, r7
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	pop {r5}
 	beq loc_80E140A
@@ -95890,7 +95890,7 @@ loc_80E4D56:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800EB6C
+	bl battle_findPlayerByAlliance_800EB6C
 	tst r0, r0
 	bne loc_80E4D72
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -107987,7 +107987,7 @@ off_80EA478:
 	thumb_local_start
 playerObject_update_80EA484:
 	push {r4,lr}
-	bl sub_8012E74
+	bl battleObject_playerAIUpdate_8012E74
 	bl battle_naviAI_tick_8013DA0
 	bl battleObject_processCollisionResultsForPlayer_801AC6C
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -120121,7 +120121,7 @@ loc_80F051A:
 	mov r0, #1
 	pop {r4,r6,r7,pc}
 loc_80F0526:
-	bl sub_800FB54
+	bl playerAI_tryExecuteAttackChip_800FB54
 	ldr r3, dword_80F06E4 // =0xffff 
 	cmp r0, r3
 	bne loc_80F057C

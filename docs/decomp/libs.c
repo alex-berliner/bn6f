@@ -1836,7 +1836,7 @@ int __fastcall sub_8145D54(unsigned __int16 a1)
         }
     }
     if ( dword_200FE44 )
-        return sub_814DA64(v1, dword_200FE44);
+        return rfufunc_tailCallStub_814DA64(v1, dword_200FE44);
     byte_200FE0F = 0;
     byte_200FE0E = v2;
     return v5;
@@ -7010,7 +7010,7 @@ int __fastcall rfu_REQ_sendData(unsigned __int8 a1)
         {
             v4 = *(dword_2010CCC + 28);
             if ( v4 )
-                return sub_814DA64(39, v4);
+                return rfufunc_tailCallStub_814DA64(39, v4);
         }
         else
         {
@@ -9219,7 +9219,7 @@ int __fastcall sub_814DA28(_BYTE *a1, _BYTE *a2, int a3, int a4)
 
 
 // 0x814da64
-int __fastcall sub_814DA64(int a1, int (__fastcall *a2)(int))
+int __fastcall rfufunc_tailCallStub_814DA64(int a1, int (__fastcall *a2)(int))
 {
     return (a2)(a1, a2);
 }
@@ -10291,7 +10291,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
         result[13] = 1752395092;
         v5 = result[14];
         if ( v5 )
-            return sub_814E4CC(result[15], a2, 1752395091, v5);
+            return m4a_mplay_trackEndJumpStub_814E4CC(result[15], a2, 1752395091, v5);
         v33 = v2;
         v34 = v3;
         v35 = v4;
@@ -10371,11 +10371,11 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                                     v16 = *(v25 + 7);
                                 }
                                 if ( v16 >= 0xCF )
-                                    return sub_814E4CC(v16 - 207, v6, v25, *(v7 + 56));
+                                    return m4a_mplay_trackEndJumpStub_814E4CC(v16 - 207, v6, v25, *(v7 + 56));
                                 if ( v16 > 0xB0 )
                                 {
                                     *(v6 + 10) = v16 + 79;
-                                    return sub_814E4CC(v6, v25, v15, *(*(v7 + 52) + 4 * (v16 - 177)));
+                                    return m4a_mplay_trackEndJumpStub_814E4CC(v6, v25, v15, *(*(v7 + 52) + 4 * (v16 - 177)));
                                 }
                                 *(v25 + 1) = byte_81C068C[v16 - 128];
                             }
@@ -10451,7 +10451,7 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
                                         if ( v31 < 0 )
                                             v31 = 0;
                                         if ( v30 )
-                                            return sub_814E4CC(v30, v31, *(v27 + 9), *(v7 + 48));
+                                            return m4a_mplay_trackEndJumpStub_814E4CC(v30, v31, *(v27 + 9), *(v7 + 48));
                                         *(v29 + 32) = sub_814E7F4(*(v29 + 36), v31, *(v27 + 9));
                                     }
                                 }
@@ -10483,14 +10483,14 @@ _DWORD *__fastcall MPlayMain(_DWORD *result, int a2)
         }
 LABEL_71:
         v6[13] = 1752395091;
-        result = sub_814E4CC(v33, v34, v35, v36);
+        result = m4a_mplay_trackEndJumpStub_814E4CC(v33, v34, v35, v36);
     }
     return result;
 }
 
 
 // 0x814e4cc
-int __fastcall sub_814E4CC(int a1, int a2, int a3, int (__fastcall *a4)(int, int, int))
+int __fastcall m4a_mplay_trackEndJumpStub_814E4CC(int a1, int a2, int a3, int (__fastcall *a4)(int, int, int))
 {
     return (a4)(a1, a2, a3, a4);
 }
@@ -10517,7 +10517,7 @@ int __fastcall sub_814E4DC(int a1, unsigned __int8 *a2, int a3)
                 if ( *v5 )
                 {
                     if ( *(v5 + 1) & 7 )
-                        return sub_814E4CC(*(v5 + 1) & 7, v4, a3, *(*byte_3007FF0 + 44));
+                        return m4a_mplay_trackEndJumpStub_814E4CC(*(v5 + 1) & 7, v4, a3, *(*byte_3007FF0 + 44));
                     *v5 = 0;
                 }
                 *(v5 + 44) = 0;
@@ -10770,7 +10770,7 @@ LABEL_42:
     if ( *(v14 + 3) & 0x80 || !(*(v14 + 3) & 0x70) )
         v33 = 8;
     *(v19 + 31) = v33;
-    return sub_814E4CC(v38, v32, *(v3 + 9), *(v36 + 48));
+    return m4a_mplay_trackEndJumpStub_814E4CC(v38, v32, *(v3 + 9), *(v36 + 48));
 }
 
 
@@ -11258,14 +11258,14 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
 // 0x814eca0
 int __fastcall sub_814ECA0(int a1)
 {
-    return sub_814DA64(a1, off_30055F8);
+    return rfufunc_tailCallStub_814DA64(a1, off_30055F8);
 }
 
 
 // 0x814ecb4
 int __fastcall sub_814ECB4(int a1)
 {
-    return sub_814DA64(a1, off_30055FC);
+    return rfufunc_tailCallStub_814DA64(a1, off_30055FC);
 }
 
 
@@ -11398,7 +11398,7 @@ int sub_814EEC0()
         }
         while ( v1 > 0 );
         if ( *(v0 + 28) )
-            return sub_814DA64(1, *(v0 + 44));
+            return rfufunc_tailCallStub_814DA64(1, *(v0 + 44));
         *v0 = 1752395091;
     }
     return v4;

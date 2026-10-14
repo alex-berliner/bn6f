@@ -60,7 +60,7 @@ loc_812EB06:
 	beq loc_812EB28
 	mov r0, r4
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0,#3]
 	cmp r1, #0
 	beq loc_812EB28

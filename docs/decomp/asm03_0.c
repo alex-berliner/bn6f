@@ -481,7 +481,7 @@ char *__fastcall battle_initCustomScreen_8026840(int a1, int a2, int a3, int a4)
 
 
 // 0x80269d0
-BOOL sub_80269D0()
+BOOL camera_isObjectInFrontOfCamera_80269D0()
 {
     return (battle_GetObjectByteAt14_800A9E2(0) & 5) != 0;
 }
@@ -9942,7 +9942,7 @@ signed int __usercall sub_802D358@<R0>(Battle *obj@<R5>)
         v2 = sub_80E164A();
         ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486(v2, v3, obj->Alliance);
     }
-    if ( getCurChipInBattleHand_8010004() == 0xFFFF || (v4 = sub_800FFE4(4), sub_800FB54(obj, v4) == 0xFFFF) )
+    if ( getCurChipInBattleHand_8010004() == 0xFFFF || (v4 = sub_800FFE4(4), playerAI_tryExecuteAttackChip_800FB54(obj, v4) == 0xFFFF) )
     {
         *v1 = 4;
         result = 0;
@@ -13948,7 +13948,7 @@ int camera_doShakeEffect_80301e8()
     int v5; // r0
     int v6; // r0
 
-    if ( (sub_80269D0() || (IsCurSubsystemInUse(), v1) || battle_isTimeStopPauseOrBattleFlags0x20_800a0a4()) && *(v0 + 12) )
+    if ( (camera_isObjectInFrontOfCamera_80269D0() || (IsCurSubsystemInUse(), v1) || battle_isTimeStopPauseOrBattleFlags0x20_800a0a4()) && *(v0 + 12) )
     {
         v2 = &byte_8030284[8 * *(v0 + 14)];
         --*(v0 + 12);

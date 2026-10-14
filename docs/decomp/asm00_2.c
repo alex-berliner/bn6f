@@ -1378,7 +1378,7 @@ int __fastcall scanFrontPanels_800FAF6(int a1, int a2, int a3)
 
 
 // 0x800fb54
-signed int __usercall sub_800FB54@<R0>(Battle *obj@<R5>, int a1@<R0>)
+signed int __usercall playerAI_tryExecuteAttackChip_800FB54@<R0>(Battle *obj@<R5>, int a1@<R0>)
 {
     u8 *v2; // r7
     int v3; // r0
@@ -6518,7 +6518,7 @@ signed int __fastcall battle_updateNaviAIJoypad_8012DFC(int a1)
 
 
 // 0x8012e74
-signed int sub_8012E74()
+signed int battleObject_playerAIUpdate_8012E74()
 {
     int v0; // r5
     _WORD *v1; // r4
@@ -15310,7 +15310,7 @@ char *object_updatePoisonPanelStatus_801A186()
 
 
 // 0x801a200
-char *sub_801A200()
+char *battleObject_onCollision_801A200()
 {
     int v0; // r5
     char *result; // r0
@@ -16970,7 +16970,7 @@ LABEL_48:
                         object_clearFlag2(0x4000);
                     }
                     sub_801A5EE();
-                    v10 = sub_800E730();
+                    v10 = object_tickStatusEffectTimers_800E730();
                     battle_tickCollisionTimer_8010162(v10);
                     battle_updatePlayerAngerState_8014326();
                     nullsub_6();
@@ -17048,7 +17048,7 @@ LABEL_40:
         {
             object_setFlag2(1);
         }
-        sub_801A200();
+        battleObject_onCollision_801A200();
         if ( !(object_getFlag() & 0x100) )
         {
             if ( object_getFlag2() & 1 )
@@ -17101,7 +17101,7 @@ LABEL_40:
                             object_clearFlag(514);
                         else
                             object_setFlag1(512);
-                        sub_800E730();
+                        object_tickStatusEffectTimers_800E730();
                     }
                 }
             }
@@ -17624,7 +17624,7 @@ LABEL_12:
         object_subtractHP(v0, *(v1 + 140));
         v9 = v0->HP;
         if ( v0->HP )
-            return sub_801A200();
+            return battleObject_onCollision_801A200();
         goto LABEL_13;
     }
     battle_aiAddTotalDamageTaken_8010548(*(v1 + 128));
@@ -17657,7 +17657,7 @@ LABEL_13:
         sub_800FFE4(GameEntryPoint);
     else
         object_setFlag2(1);
-    return sub_801A200();
+    return battleObject_onCollision_801A200();
 }
 
 
@@ -18321,19 +18321,19 @@ void nullsub_58()
 // 0x801bfee
 int sub_801BFEE()
 {
-    return sub_801C002(1);
+    return battle_loadChipPreviewGfxFromHandTable_801C002(1);
 }
 
 
 // 0x801bff8
 int sub_801BFF8()
 {
-    return sub_801C002(0);
+    return battle_loadChipPreviewGfxFromHandTable_801C002(0);
 }
 
 
 // 0x801c002
-int __fastcall sub_801C002(int a1)
+int __fastcall battle_loadChipPreviewGfxFromHandTable_801C002(int a1)
 {
     int *v1; // r4
     signed int v2; // r6
@@ -19404,7 +19404,7 @@ int sub_801CADC() { // could not decompile
         bl battle_updateObjectAnim_801CB38\
     loc_801CB30:\
         strb r0, [r5,#0x15]\
-        bl sub_801CC94\
+        bl battle_ai_tickPwrAtkPresses_801CC94\
         pop {pc}\
     .endfunc // sub_801CADC"
     );
@@ -19553,7 +19553,7 @@ void __fastcall sub_801CC34(int a1)
 
 
 // 0x801cc94
-signed int sub_801CC94()
+signed int battle_ai_tickPwrAtkPresses_801CC94()
 {
     int v0; // r5
     signed int result; // r0

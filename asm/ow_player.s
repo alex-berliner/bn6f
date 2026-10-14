@@ -366,7 +366,7 @@ loc_809D438:
 loc_809D444:
 	str r0, [r7,#0x28]
 loc_809D446:
-	bl sub_809DFC0
+	bl owPlayer_checkJumpLandingAccumulateFacing_809DFC0
 	bl sub_809DE98
 	pop {pc}
 off_809D450:
@@ -374,7 +374,7 @@ off_809D450:
 	.word sub_809D4DC+1
 	.word sub_809D61A+1
 	.word ow_player_processAction_809D75E+1
-	.word sub_809D800+1
+	.word ow_player_updateCollisionAndPos_809D800+1
 	.word sub_809D8F4+1
 off_809D468:
 	.word off_809D450
@@ -876,9 +876,9 @@ sub_809D7F8:
 // symdb: Per-frame update of the overworld player object: write back next-position into current XYZ, sync eStruct200ace0 mirror, choose animation/jumptable step, clamp into bbox, recompute Z, update layer and sprite priority.
 // symdb: () -> void ; side effects: mutates OWPlayerObject in r5, eStruct200ace0, and calls into
 // symdb: sprite/animation/collision routines
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D800.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_player_updateCollisionAndPos_809D800.yaml
 	thumb_local_start
-sub_809D800:
+ow_player_updateCollisionAndPos_809D800:
 	push {lr}
 	ldr r7, off_809D8AC // =eStruct200ace0 
 	ldr r0, [r5,#oOWPlayerObject_X]
@@ -965,11 +965,11 @@ off_809D8B0:
 	.word sub_809D4DC+1
 	.word sub_809D61A+1
 	.word ow_player_processAction_809D75E+1
-	.word sub_809D800+1
+	.word ow_player_updateCollisionAndPos_809D800+1
 	.word sub_809D8F4+1
 off_809D8C8:
 	.word off_809D8B0
-	thumb_func_end sub_809D800
+	thumb_func_end ow_player_updateCollisionAndPos_809D800
 
 	thumb_local_start
 sub_809D8CC:
@@ -1892,9 +1892,9 @@ locret_809DFBE:
 // symdb: OW player jumptable step that, while not yet fully landed, ORs the player's current facing direction bits into a per-step landing accumulator at r5+0x56, and finalizes the landing (sets oOWPlayerObject_Unk_18=0xa) once all 8 facing bits are seen.
 // symdb: (r5 = OWPlayerObjectPtr) -> void ; side effects: writes [r5+0x56] (byte), [r5+0x18] (halfword)
 // symdb: on full landing
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DFC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_checkJumpLandingAccumulateFacing_809DFC0.yaml
 	thumb_local_start
-sub_809DFC0:
+owPlayer_checkJumpLandingAccumulateFacing_809DFC0:
 	push {lr}
 	ldrb r0, [r5,#oOWPlayerObject_JumptableIndex_09]
 	cmp r0, #4
@@ -1931,7 +1931,7 @@ off_809DFF8:
 	.word byte_809DFFC
 byte_809DFFC:
 	.byte 0x1, 0x3, 0x2, 0x6, 0x4, 0xC, 0x8, 0x9
-	thumb_func_end sub_809DFC0
+	thumb_func_end owPlayer_checkJumpLandingAccumulateFacing_809DFC0
 
 // symdb: Writes a new value into the overworld player's jumptable index (offset 0x09), unless it currently equals 0x10, in which case the value is parked in the pending slot (offset 0x0b) instead.
 // symdb: void owPlayer_writeJumptableIndexOrPending(u8 value /*r0*/, OWPlayerObject *player /*r5*/);
@@ -2201,7 +2201,7 @@ owPlayer_RequestFixedAnimation_809E14C:
 	push {r4-r7,lr}
 	mov r4, r0
 	ldr r7, off_809E184 // =eStruct200ace0 
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_809E164
 	strb r4, [r7,#oS200ace0_owPlayerFixedAnimationSelect_02] // (byte_200ACE2 - 0x200ace0)
 	movflag EVENT_1719
@@ -2849,16 +2849,16 @@ MakeOWPlayerInvisible:
 
 // symdb: Returns NZ if the overworld player is currently busy / a cutscene is running (GameState+0x10 != 0), used as a "do not interrupt" guard.
 // symdb: () -> nz = 1 if busy, 0 if idle (tst r0,r0) ; reads Toolkit->GameStatePtr +0x10, no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E462.yaml
-	thumb_func_start sub_809E462
-sub_809E462:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_isBusyOrCutsceneActive_809E462.yaml
+	thumb_func_start owPlayer_isBusyOrCutsceneActive_809E462
+owPlayer_isBusyOrCutsceneActive_809E462:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
 	ldrb r0, [r1,#oGameState_Unk_10]
 	tst r0, r0
 	pop {pc}
-	thumb_func_end sub_809E462
+	thumb_func_end owPlayer_isBusyOrCutsceneActive_809E462
 
 // symdb: Overworld hook that checks the player's coordinate trigger tile and, if it is one of the "player advances forward" tiles (0x48-0x4F), records which one it is and sets the advance-forward event flag.
 // symdb: void sub_809E46E(void); // no register inputs; r10 holds the toolkit pointer. Outputs: none

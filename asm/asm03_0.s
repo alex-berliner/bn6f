@@ -709,9 +709,9 @@ off_80269CC:
 
 // symdb: Battle camera: returns 1 if the current battle actor (from r10's BattleState) is in front of the camera, else 0.
 // symdb: () -> r0 = 0 or 1 (Z set on r0); no side effects beyond r0, r1, r3.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80269D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_isObjectInFrontOfCamera_80269D0.yaml
 	thumb_local_start
-sub_80269D0:
+camera_isObjectInFrontOfCamera_80269D0:
 	push {lr}
 	mov r0, #0
 	bl battle_GetObjectByteAt14_800A9E2
@@ -721,7 +721,7 @@ sub_80269D0:
 	mov r0, #1
 locret_80269E0:
 	pop {pc}
-	thumb_func_end sub_80269D0
+	thumb_func_end camera_isObjectInFrontOfCamera_80269D0
 
 // symdb: Tests two status bytes at RAM eS20364C0 against a set of "blocking" values and returns 1 if either matches, 0 otherwise (preserving the final CMP flags).
 // symdb: void sub_80269E2(void); /* in: lr; out: r0 (0 or 1); clobbers nz c v r1; preserves r5 */
@@ -15274,7 +15274,7 @@ loc_802D37A:
 	beq loc_802D3A0
 	mov r0, #4
 	bl SetAIData_Unk_44_Flag
-	bl sub_800FB54
+	bl playerAI_tryExecuteAttackChip_800FB54
 	ldr r3, dword_802D628 // =0xffff 
 	cmp r0, r3
 	beq loc_802D3A0
@@ -21630,7 +21630,7 @@ SetCameraXYZ:
 	thumb_local_start
 camera_doShakeEffect_80301e8:
 	push {lr}
-	bl sub_80269D0
+	bl camera_isObjectInFrontOfCamera_80269D0
 	tst r0, r0
 	bne loc_8030200
 	bl IsCurSubsystemInUse // () -> (bool, !zf)

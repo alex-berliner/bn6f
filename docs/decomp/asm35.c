@@ -37,7 +37,7 @@ int sub_812EAC4()
                 ++v3;
             }
             while ( v3 < 49 );
-            if ( v2 && *(sub_813B780(v1 - 144) + 3) )
+            if ( v2 && *(battleObject_getByIndex_813B780(v1 - 144) + 3) )
             {
                 *v8 = v1;
                 v8[1] = v2;

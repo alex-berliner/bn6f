@@ -915,7 +915,7 @@ int sub_80B8AD4()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    if ( !sub_800EB6C(v0[22]) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0[22]) )
         *v0 &= 0xFDu;
     return (*(&off_80B8B00 + v0[10]))();
 }
@@ -5290,7 +5290,7 @@ int sub_80BB00C()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    if ( !sub_800EB6C(v0[22]) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0[22]) )
         *v0 &= 0xFDu;
     return (*(&off_80BB038 + v0[10]))();
 }
@@ -5694,7 +5694,7 @@ int sub_80BB35C()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    if ( !sub_800EB6C(v0[22]) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0[22]) )
         *v0 &= 0xFDu;
     return (*(&off_80BB388 + v0[10]))();
 }
@@ -19662,7 +19662,7 @@ int sub_80C30C2()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    if ( !sub_800EB6C(v0[22]) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0[22]) )
         *v0 &= 0xFDu;
     return (*(&off_80C30F4 + v0[9]))();
 }
@@ -22250,7 +22250,7 @@ void sub_80C48FC()
     _BYTE *v0; // r5
 
     *v0 |= 2u;
-    if ( !sub_800EB6C(v0[22]) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0[22]) )
         *v0 &= 0xFDu;
     (*(&off_80C4930 + v0[4]))();
     object_updateSpriteTimestop();
@@ -22544,7 +22544,7 @@ int battleObject_refreshAndMirrorRelated_80C4B84()
     sub_80C4C52();
     *(v0 + 16) = v1;
     *v0 |= 2u;
-    if ( sub_800EB6C(*(v0 + 22)) )
+    if ( battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
     {
         *v0 |= 2u;
         if ( !*(v0 + 12) )
@@ -30057,7 +30057,7 @@ int sub_80C9726()
 
     (*(&off_80C976C + *(v0 + 9)))();
     *v0 |= 2u;
-    if ( !sub_800EB6C(*(v0 + 22)) )
+    if ( !battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
         *v0 &= 0xFDu;
     v3 = v0;
     v1 = *(v0 + 76);
@@ -66592,7 +66592,7 @@ void sub_80E0954()
     if ( v1 )
     {
         *v0 |= 2u;
-        if ( !sub_800EB6C(*(v0 + 22)) )
+        if ( !battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
         {
             v2 = 2;
             *v0 &= 0xFDu;
@@ -66736,7 +66736,7 @@ void sub_80E0B8C()
 
     v1 = *(v0 + 76);
     *v0 |= 2u;
-    if ( sub_800EB6C(*(v0 + 22)) )
+    if ( battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
     {
         *v0 |= 2u;
         if ( !*(v0 + 12) )
@@ -66766,7 +66766,7 @@ void sub_80E0B8C()
     *(v0 + 52) += getIndexedSignedBytePair_8018842(v7, v8, *(*(v0 + 96) + 4)) * v6 << 16;
     *(v0 + 60) += v9 << 16;
     (*(&off_80E0C68 + *(v0 + 9)))();
-    if ( sub_800EB6C(*(v0 + 22)) )
+    if ( battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
     {
         if ( !*(v0 + 12) )
             *v0 &= 0xFDu;
@@ -67002,7 +67002,7 @@ void chargeShotChargeObject_update_80E0E20()
         if ( **(v0 + 96) )
         {
             *v0 |= 2u;
-            if ( sub_800EB6C(*(v1 + 22)) )
+            if ( battle_findPlayerByAlliance_800EB6C(*(v1 + 22)) )
             {
                 *v0 |= 2u;
                 if ( *(v0 + 100) )
@@ -67588,7 +67588,7 @@ int __fastcall sub_80E13DC(int a1)
 
     v1 = a1;
     v2 = *(a1 + 84);
-    if ( !(object_getFlag() & 4) && sub_800EB6C(*(v1 + 22)) )
+    if ( !(object_getFlag() & 4) && battle_findPlayerByAlliance_800EB6C(*(v1 + 22)) )
         *v1 |= 2u;
     ClearAIDataUnk0x48Flag(0x100000);
     v3 = *(v1 + 88);
@@ -74099,7 +74099,7 @@ signed int sub_80E4D1E()
     }
     v0->currAnimation = v5;
     v0->objFlags |= 2u;
-    if ( !sub_800EB6C(v0->Alliance) )
+    if ( !battle_findPlayerByAlliance_800EB6C(v0->Alliance) )
         v0->objFlags &= 0xFDu;
     result = v0->bPhaseInitialized;
     if ( !v0->bPhaseInitialized )
@@ -83700,7 +83700,7 @@ void __usercall playerObject_update_80EA484(Battle *obj@<R5>)
     int v4; // r1
     char v5; // zf
 
-    sub_8012E74();
+    battleObject_playerAIUpdate_8012E74();
     battle_naviAI_tick_8013DA0();
     battleObject_processCollisionResultsForPlayer_801AC6C();
     v1 = obj->ai->AI_index;
@@ -92629,7 +92629,7 @@ LABEL_34:
         object_setAttack1();
         return 1;
     }
-    v7 = sub_800FB54(obj, v16);
+    v7 = playerAI_tryExecuteAttackChip_800FB54(obj, v16);
     if ( v7 != 0xFFFF )
     {
 LABEL_61:

@@ -18723,7 +18723,7 @@ sub_8117872:
 	tst r0, r0
 	beq loc_8117886
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	sub r0, #1
 loc_8117886:
@@ -18739,7 +18739,7 @@ sub_811788C:
 	tst r0, r0
 	beq loc_81178A8
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r2, #0
 	ldrb r1, [r0,#1]
 	cmp r1, #0
@@ -19069,7 +19069,7 @@ sub_8117AB4:
 	ldr r6, off_8117B34 // =byte_30016A8
 	bl sub_8117B5C
 	ldrh r0, [r4,#2]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrb r0, [r7,#3]
 	bl sub_8117B4A
@@ -19088,7 +19088,7 @@ sub_8117AB4:
 	lsl r1, r1, #4
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	ldrh r0, [r4,#2]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	ldrh r0, [r4,#2]
 	ldrb r1, [r7,#3]
@@ -20558,7 +20558,7 @@ sub_81185C0:
 	add r0, r0, r1
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r1, r0
 	ldrb r0, [r5,#0xc]
 	ldrb r1, [r1,#1]
@@ -20580,7 +20580,7 @@ sub_81185E4:
 	add r0, r0, r1
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	sub r0, #1
 	bl sprite_setPalette // (int pallete) -> void
@@ -27284,7 +27284,7 @@ loc_811B840:
 	bl sprite_setUnk0x2c
 	pop {r0}
 loc_811B84A:
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -27622,7 +27622,7 @@ sub_811BAF4:
 	add r0, r0, r1
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r1, r0
 	ldrb r0, [r5,#0xc]
 	ldrb r1, [r1,#1]
@@ -27638,7 +27638,7 @@ sub_811BB18:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r1, r0
 	ldrb r0, [r5,#0xc]
 	ldrb r1, [r1,#1]
@@ -27660,7 +27660,7 @@ sub_811BB30:
 	add r0, r0, r1
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	sub r0, #1
 	bl sprite_setPalette // (int pallete) -> void
@@ -27672,7 +27672,7 @@ sub_811BB50:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	sub r0, #1
 	bl sprite_setPalette // (int pallete) -> void

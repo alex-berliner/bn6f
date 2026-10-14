@@ -2012,14 +2012,14 @@ off_8003C6C:
 
 // symdb: Resets the queued sprite palette count slot (r0) to 0 via sub_80028C0.
 // symdb: (r0 = slot index 0) -> r0 = 0 ; side effect: writes to battle sprite palette bookkeeping
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003C70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetSpritePaletteCount_8003C70.yaml
 	thumb_local_start
-sub_8003C70:
+battle_resetSpritePaletteCount_8003C70:
 	push {lr}
 	mov r0, #0
 	bl sub_80028C0
 	pop {pc}
-	thumb_func_end sub_8003C70
+	thumb_func_end battle_resetSpritePaletteCount_8003C70
 
 	thumb_local_start
 sub_8003C7A:
@@ -2463,9 +2463,9 @@ T3BattleObjectJumptable:
 
 // symdb: Per-frame, iterate the active battle-object list and project, ensure gfx, and queue visible sprite frame pieces for each one (then record the post-group OBJ palette count).
 // symdb: (r10 = ToolkitPtr) -> r0 = 3 ; no other side-effectful return; clobbers nz/c/v + r0..r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004218.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderObjectSprites_8004218.yaml
 	thumb_local_start
-sub_8004218:
+battle_renderObjectSprites_8004218:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2533,7 +2533,7 @@ off_8004290:
 	.word sprite_projectAndCull+1
 off_8004294:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8004218
+	thumb_func_end battle_renderObjectSprites_8004218
 
 // symdb: Flush the queued sprite group and record its palette count into the third slot of the sprite palette counter array.
 // symdb: ()
@@ -2720,9 +2720,9 @@ T4BattleObjectJumptable:
 // symdb: Iterate every battle object's sprite group (OBJ_GROUP) and either queue/cull/draw them, or clear their frame-piece flags if their sprites aren't active this frame.
 // symdb: (r10 = Toolkit ptr, lr = retaddr) -> r0 = 4 ; side effects: writes battle-object OAM data, calls
 // symdb: sub_80028C0 to record palette count.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004510.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateSprites_8004510.yaml
 	thumb_local_start
-sub_8004510:
+battle_updateSprites_8004510:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2790,7 +2790,7 @@ off_8004588:
 	.word sprite_projectAndCull+1
 off_800458C:
 	.word sprite_queueFramePieces+1
-	thumb_func_end sub_8004510
+	thumb_func_end battle_updateSprites_8004510
 
 // symdb: Closes out a sprite-queue group by recording the final palette-count (dword_200F340) into byte slot 4 of byte_200F389.
 // symdb: () -> r0 = 0x4 ; side effect: writes the latest palette-count (dword_200F340) into
@@ -3457,14 +3457,14 @@ off_80049AC:
 // symdb: Finalises a queued battle sprite group by recording the current sprite palette count (dword_200F340) into slot 5 of the per-group byte array at byte_200F389.
 // symdb: (no input args used) -> r0 = 5 (slot index); side effect: byte_200F389[5] = LO(dword_200F340)
 // symdb: after a tail-call to sub_80028C0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80049B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_finishQueuedSpriteGroup_80049B0.yaml
 	thumb_local_start
-sub_80049B0:
+battleObject_finishQueuedSpriteGroup_80049B0:
 	push {lr}
 	mov r0, #5
 	bl sub_80028C0
 	pop {pc}
-	thumb_func_end sub_80049B0
+	thumb_func_end battleObject_finishQueuedSpriteGroup_80049B0
 
 	thumb_local_start
 sub_80049BA:
@@ -4426,7 +4426,7 @@ GameStateJumptable:
 	// 0x0C
 	.word HandlesBattleMainUntilEndOfBattleThenTriggersEnterMap+1 // (self: * GameState $r5) -> ()
 	// 0x10
-	.word sub_800536E+1 // (self: * GameState $r5) -> ()
+	.word overworld_owMap_renderAndTickSubsystems_800536E+1 // (self: * GameState $r5) -> ()
 	// 0x14
 	.word scene_nextOrUpdate_80053E4+1 // (self: * GameState $r5) -> ()
 	// 0x18
@@ -4738,9 +4738,9 @@ locret_800536C:
 // symdb: Overworld per-frame tick: drives the PET-menu dispatcher, scenario/sprite/owMapObject/battle pipelines, runs the armed callback, and counts down a per-map post-enter-map jingle delay (plays 0x9E or 0x71 SSEs) before triggering a map warp.
 // symdb: (r5 = * GameState, r10 = * Toolkit) -> void (caller-saved r4-r7, r10; only branch flags and the
 // symdb: screen-fade wait are observable side-effects on r5->Unk_68)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800536E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/overworld_owMap_renderAndTickSubsystems_800536E.yaml
 	thumb_local_start
-sub_800536E: // (self: * GameState $r5) -> ()
+overworld_owMap_renderAndTickSubsystems_800536E: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -4787,7 +4787,7 @@ off_80053DC:
 	.word hword_80053E0
 hword_80053E0:
 	.hword 0xE7, 0xEC
-	thumb_func_end sub_800536E
+	thumb_func_end overworld_owMap_renderAndTickSubsystems_800536E
 
 // symdb: Per-frame GameState tick: runs all scene sub-updates (dispatch, NPC AI, sprites, events), and when a screen fade is active performs a full scene-transition reset (free objects, clear buffers, set jump-table step 8, reinit graphics/LCD).
 // symdb: void scene_nextOrUpdate_80053E4(GameState *self /*r5*/, Toolkit *toolkit /*r10*/)
@@ -5265,7 +5265,7 @@ sub_80058D0:
 	cmp r0, #4
 	bne .doNotCheckWarp
 
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne .doNotCheckWarp
 
 	bl warp_LoadCurrentAndReadUnk10_8005F28
@@ -5369,7 +5369,7 @@ gameState_beginEndingSequence_800596C: // (self: * GameState $r5) -> ()
 
 	bl timer_tickCountdownTable_8035738
 
-  // trigger sub_800536E via cbGameState_80050EC
+  // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -5391,7 +5391,7 @@ sub_8005990: // (self: * GameState $r5) -> ()
 
 	bl timer_tickCountdownTable_8035738
 
-  // trigger sub_800536E via cbGameState_80050EC
+  // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -5497,7 +5497,7 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 	mov r0, #0x3c
 	str r0, [r5,#oGameState_Unk_68]
 
-  // trigger sub_800536E via cbGameState_80050EC
+  // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -5523,7 +5523,7 @@ sub_8005A50: // (self: * GameState $r5) -> ()
 	mov r0, #0xa0
 	str r0, [r5,#oGameState_Unk_68]
 
-  // trigger sub_800536E via cbGameState_80050EC
+  // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -5559,7 +5559,7 @@ checkThenStartBattle_8005A8C: // () -> ()
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne locret_8005AF2
 
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_8005AF2
 
 	movflag EVENT_1700
@@ -5623,7 +5623,7 @@ gamestate_openPetMenuOnStartPress_8005AF4:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne locret_8005B68
 
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_8005B68
 
 	bl warp_LoadCurrentAndReadUnk10_8005F28
@@ -5686,7 +5686,7 @@ sub_8005B6E:
 	movflag EVENT_1717_PLAYER_ADVANCE_FORWARD
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne locret_8005BC6
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_8005BC6
 	bl warp_LoadCurrentAndReadUnk10_8005F28
 	bne locret_8005BC6
@@ -6264,7 +6264,7 @@ warp_setSubsystemIndexTo0x10AndOthers_8005f00:
 	push {r4-r7,lr}
 	bl warp_ArmPendingTransition_8005EEC
 
-  // trigger sub_800536E via cbGameState_80050EC
+  // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	mov r0, #0x10
@@ -8911,7 +8911,7 @@ loc_8007236:
 	ldr r1, off_800730C // =eCamera+76
 	strb r0, [r1]
 
-	bl sub_800A01C
+	bl fifo_resetWriteCounter_800A01C
 	bl loadSceneGfx_80075CA
 	bl bgScroll_ResetScrollCBCounters_8080D90
 	bl sub_8080DA0
@@ -10258,7 +10258,7 @@ loc_8007A8E:
 
 	b loc_8007B10
 loc_8007A9A:
-	bl sub_800A01C
+	bl fifo_resetWriteCounter_800A01C
 
 	bl GetBattleMode
 	lsl r0, r0, #2
@@ -10314,14 +10314,14 @@ loc_8007B10:
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
-	bl sub_8004218
-	bl sub_8004510
+	bl battle_renderObjectSprites_8004218
+	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl battle_updateCustGaugeFromAI_802E156
-	bl sub_8003C70
+	bl battle_resetSpritePaletteCount_8003C70
 	bl gameMode_switchToMode2_80046F8
-	bl sub_80049B0
+	bl battleObject_finishQueuedSpriteGroup_80049B0
 	bl battle_queueAllOamEntries_8009FCC
 	mov r0, #0xe0
 	mov r1, #0x90
@@ -10371,7 +10371,7 @@ off_8007B94:
 	thumb_local_start
 sub_8007B9C: // (self: *mut BattleState $r5) -> ()
 	push {lr}
-	bl sub_800A01C
+	bl fifo_resetWriteCounter_800A01C
 	ldr r1, off_8007BC4 // =off_8007BC8
 	ldrb r0, [r5,#oBattleState_Unk_02]
 	ldr r1, [r1,r0]
@@ -10381,7 +10381,7 @@ sub_8007B9C: // (self: *mut BattleState $r5) -> ()
 	bl panel_800BFC4
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
-	bl sub_800A01C
+	bl fifo_resetWriteCounter_800A01C
 	pop {pc}
 	.balign 4, 0
 off_8007BC4:
@@ -10728,14 +10728,14 @@ sub_8007E62: // (self: * BattleState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
-	bl sub_8004218
-	bl sub_8004510
+	bl battle_renderObjectSprites_8004218
+	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl battle_updateCustGaugeFromAI_802E156
-	bl sub_8003C70
+	bl battle_resetSpritePaletteCount_8003C70
 	bl gameMode_switchToMode2_80046F8
-	bl sub_80049B0
+	bl battleObject_finishQueuedSpriteGroup_80049B0
 	bl battle_queueAllOamEntries_8009FCC
 	ldr r1, off_8008008 // =eStruct203F7D8
 	mov r0, #2
@@ -10836,7 +10836,7 @@ locret_8007F4C:
 	thumb_local_start
 sub_8007F4E: // (self: * BattleState $r5) -> ()
 	push {lr}
-	bl sub_800A01C
+	bl fifo_resetWriteCounter_800A01C
 	ldr r1, off_8007F98 // =off_8007F9C
 	ldrb r0, [r5,#oBattleState_Unk_02]
 	ldr r1, [r1,r0]
@@ -10845,14 +10845,14 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl sub_8003E18
-	bl sub_8004218
-	bl sub_8004510
+	bl battle_renderObjectSprites_8004218
+	bl battle_updateSprites_8004510
 	bl updateBattlePanels_800C5E0
 	bl runFlaggedCallbacks_801BF64
 	bl battle_updateCustGaugeFromAI_802E156
-	bl sub_8003C70
+	bl battle_resetSpritePaletteCount_8003C70
 	bl gameMode_switchToMode2_80046F8
-	bl sub_80049B0
+	bl battleObject_finishQueuedSpriteGroup_80049B0
 	bl battle_queueAllOamEntries_8009FCC
 	ldr r1, off_8008018 // =eStruct203F7D8
 	mov r0, #2
@@ -15406,16 +15406,16 @@ off_800A018:
 
 // symdb: Resets the FIFO ring-buffer write counter (byte_3000EA8, the write index of dword_3002180) to 0; companion to fifo_pushRecord16_8009FF8.
 // symdb: (void) -> nz flags ; side effect: writes 0 to byte_3000EA8 (0x03000EA8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A01C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/fifo_resetWriteCounter_800A01C.yaml
 	thumb_local_start
-sub_800A01C:
+fifo_resetWriteCounter_800A01C:
 	mov r0, #0
 	ldr r1, off_800A024 // =byte_3000EA8
 	str r0, [r1]
 	mov pc, lr
 off_800A024:
 	.word byte_3000EA8
-	thumb_func_end sub_800A01C
+	thumb_func_end fifo_resetWriteCounter_800A01C
 
 // symdb: Sets the "battle paused" flag on the current game state, pausing the ongoing battle.
 // symdb: PauseBattle(r10 toolkit) -> r0 = 1, r1 = game state ptr; NZ set from r0

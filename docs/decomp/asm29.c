@@ -501,7 +501,7 @@ void sub_80A5588()
             chatbox_mask_eFlags2009F38(128);
             if ( v2 )
             {
-                sub_809E462();
+                owPlayer_isBusyOrCutsceneActive_809E462();
                 if ( v2 )
                 {
                     sub_80A55D4();
@@ -3572,7 +3572,7 @@ signed int sub_80A7C58()
         s_2011C50_ptr_1C_isNull();
         if ( v1 )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v1 )
             {
                 IsPaletteFadeActive();
@@ -3675,7 +3675,7 @@ void *sub_80A7CFE()
                     result = s_2011C50_ptr_1C_isNull();
                     if ( v10 )
                     {
-                        result = sub_809E462();
+                        result = owPlayer_isBusyOrCutsceneActive_809E462();
                         if ( v10 )
                         {
                             result = IsPaletteFadeActive();
@@ -4231,7 +4231,7 @@ void __noreturn sub_80A8424()
         s_2011C50_ptr_1C_isNull();
         if ( v1 )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v1 )
             {
                 chatbox_mask_eFlags2009F38(128);
@@ -5239,7 +5239,7 @@ signed int sub_80A8DF0()
         sub_8036F70(134791920);
         if ( !v1 || (s_2011C50_ptr_1C_isNull(), v1) )
         {
-            sub_809E462();
+            owPlayer_isBusyOrCutsceneActive_809E462();
             if ( v1 )
             {
                 IsPaletteFadeActive();

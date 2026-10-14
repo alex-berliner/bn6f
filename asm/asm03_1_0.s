@@ -2080,7 +2080,7 @@ check_playerCanAdvanceForward_8034C36:
 	movflag EVENT_IN_SLIPRUN_STATE
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_8034C6A
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_8034C6A
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2105,7 +2105,7 @@ playerAdvanceForwardCheck_8034C6E:
 	movflag EVENT_1717_PLAYER_ADVANCE_FORWARD
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_8034C98
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_8034C98
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int

@@ -1493,7 +1493,7 @@ loc_800C38E:
 loc_800C398:
 	cmp r0, #3
 	bne loc_800C3A8
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1501,7 +1501,7 @@ loc_800C398:
 loc_800C3A8:
 	cmp r0, #8
 	bne loc_800C3B8
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1511,11 +1511,11 @@ loc_800C3B8:
 	blt loc_800C3C8
 	cmp r0, #0xc
 	bgt loc_800C3C8
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	b loc_800C45C
 loc_800C3C8:
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C4B4 // =0x708 
 	strh r1, [r7,#0x12]
@@ -1531,7 +1531,7 @@ loc_800C3D4:
 	mov r0, r4
 	mov r1, r5
 	bl object_updatePanelParameters
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	pop {r4-r7,pc}
 loc_800C3F2:
@@ -1563,7 +1563,7 @@ loc_800C402:
 	mov r0, r4
 	mov r1, r5
 	bl object_updatePanelParameters
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	mov r0, #0x97
 	bl PlaySoundEffect
@@ -1619,9 +1619,9 @@ locret_800C486:
 // symdb: Picks a panel-grid dimension constant for the player-side battle grid based on battle mode.
 // symdb: (r10 = toolkit) -> r1 = 0x1E0 if GetBattleMode()==1 else 0x258, r0 unchanged; side effects:
 // symdb: flags N set on the r0==1 branch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C488.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_panelGridFinalizeOrPickDimension_800C488.yaml
 	thumb_local_start
-sub_800C488:
+battle_panelGridFinalizeOrPickDimension_800C488:
 	push {r0,r2,r3,lr}
 	bl GetBattleMode
 	ldr r1, off_800C498 // =0x258 
@@ -1645,7 +1645,7 @@ off_800C4B4:
 	.word 0x708
 off_800C4B8:
 	.word byte_203CB04
-	thumb_func_end sub_800C488
+	thumb_func_end battle_panelGridFinalizeOrPickDimension_800C488
 
 // symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
 // symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
@@ -1734,7 +1734,7 @@ loc_800C53C:
 	strb r0, [r7,#0xc]
 	strb r4, [r7,#0xa]
 	strb r5, [r7,#0xb]
-	bl sub_800C488
+	bl battle_panelGridFinalizeOrPickDimension_800C488
 	strh r1, [r7,#0xe]
 	ldr r1, off_800C58C // =0x708 
 	strh r1, [r7,#0x12]
@@ -5561,9 +5561,9 @@ loc_800E72C:
 // symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
 // symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
 // symdb: sub_80E4B34 / sub_80E9BDC.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E730.yaml
-	thumb_func_start sub_800E730
-sub_800E730:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickStatusEffectTimers_800E730.yaml
+	thumb_func_start object_tickStatusEffectTimers_800E730
+object_tickStatusEffectTimers_800E730:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	bl object_getFlag2
@@ -5861,7 +5861,7 @@ dword_800E98C:
 	.word 0x4000
 off_800E990:
 	.word 0x2000
-	thumb_func_end sub_800E730
+	thumb_func_end object_tickStatusEffectTimers_800E730
 
 // symdb: Classifies a signed (dx, dy) delta between two points into one of six direction codes (0=origin, 1=up, 2=down, 3/4=other axes depending on r4 flag, 5=out of range) used to drive an entity toward/away from a target.
 // symdb: u32 sub_800E994(u32 ax, u32 ay, u32 bx, u32 by, u32 flag) -> r0=code (0..5), r1=dy (raw unsigned
@@ -6179,9 +6179,9 @@ locret_800EB6A:
 // symdb: Returns 0 if the opposing alliance of `r0` has a player who's been blinded; else 1 (treats r0 as the requester's alliance bit, flips it, looks up that player, and tests for OBJECT_FLAGS_BLIND on the found player).
 // symdb: (r0 = requesterAlliance: bool) -> r0 = 0 when the opposing player is blind, 1 otherwise ; side
 // symdb: effects: clobbers r4/r5, also calls battle_networkInvert/battle_findPlayer/object_getFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EB6C.yaml
-	thumb_func_start sub_800EB6C
-sub_800EB6C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findPlayerByAlliance_800EB6C.yaml
+	thumb_func_start battle_findPlayerByAlliance_800EB6C
+battle_findPlayerByAlliance_800EB6C:
 	push {r4,r5,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_BattleStatePtr]
@@ -6206,7 +6206,7 @@ loc_800EB8C:
 loc_800EB9A:
 	mov r0, #1
 	pop {r4,r5,pc}
-	thumb_func_end sub_800EB6C
+	thumb_func_end battle_findPlayerByAlliance_800EB6C
 
 // symdb: Plays the hit sound and spawns a hit-spark effect (effect type 8) over a battle object when it takes a collision carrying the hit-effect flag.
 // symdb: void object_spawnHiteffect(BattleObject* obj /* r5, object just hit */); preserves r4-r7,r10;

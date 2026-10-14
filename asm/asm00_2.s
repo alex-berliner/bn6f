@@ -2083,9 +2083,9 @@ byte_800FB4C:
 // symdb: (r5 = *BattleObject, r10 = *Toolkit) -> r0 = chip id (u16), r1 = damage (u16), r2 = attack boost
 // symdb: (u16); side effects mutate AIData+0x44 flags, AIData+0xA0 AttackVars and call object_setAttack2
 // symdb: / useChipRelated_80127C0 / sub_80117BA / sub_8012CB2.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FB54.yaml
-	thumb_func_start sub_800FB54
-sub_800FB54:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/playerAI_tryExecuteAttackChip_800FB54.yaml
+	thumb_func_start playerAI_tryExecuteAttackChip_800FB54
+playerAI_tryExecuteAttackChip_800FB54:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #oAIData_AttackVars
@@ -2196,7 +2196,7 @@ off_800FC28:
 	.word 0x1000
 dword_800FC2C:
 	.word 0xFFFF
-	thumb_func_end sub_800FB54
+	thumb_func_end playerAI_tryExecuteAttackChip_800FB54
 
 	thumb_func_start sub_800FC30
 sub_800FC30:
@@ -9320,9 +9320,9 @@ off_8012E70:
 // symdb: Per-frame AI tick on the player's AIData: if the battle isn't over or paused, run the AI joypad helpers; otherwise clear the four AI joypad latches.
 // symdb: (r5 = *AIData, r10 = *Toolkit) -> void ; side effects: writes
 // symdb: AIData.JoypadHeld/Pressed/Up/Released
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012E74.yaml
-	thumb_func_start sub_8012E74
-sub_8012E74:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_playerAIUpdate_8012E74.yaml
+	thumb_func_start battleObject_playerAIUpdate_8012E74
+battleObject_playerAIUpdate_8012E74:
 	push {r4,r6,lr}
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	bl battle_isBattleOver
@@ -9342,7 +9342,7 @@ loc_8012E90:
 	strh r1, [r4,#oAIData_JoypadUp]
 	pop {r4,r6,pc}
 	.word dword_2036820
-	thumb_func_end sub_8012E74
+	thumb_func_end battleObject_playerAIUpdate_8012E74
 
 	thumb_local_start
 sub_8012EA0:
@@ -22476,9 +22476,9 @@ dword_801A1FC:
 // symdb: Handles a battle-object collision event, clearing a "damage" state and lowering the Navi's mood on the opposing side.
 // symdb: (r5 = attacker BattleObjectPtr, r10 = ToolkitPtr) -> void ; no return value (clobbers
 // symdb: r2,r3,r4,r5,r6; leaves flags undefined)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A200.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_onCollision_801A200.yaml
 	thumb_local_start
-sub_801A200:
+battleObject_onCollision_801A200:
 	push {r4,r6,lr}
 	bl battle_isBattleOver
 	tst r0, r0
@@ -22520,7 +22520,7 @@ loc_801A24C:
 	bl navi_DecreaseMood_8015C12
 locret_801A256:
 	pop {r4,r6,pc}
-	thumb_func_end sub_801A200
+	thumb_func_end battleObject_onCollision_801A200
 
 // symdb: Writes a status-effect base value into the collision data of a battle object.
 // symdb: void object_setCollisionStatusEffect1(u8 statusEffectBase /* r0 */, struct BattleObject* obj /*
@@ -24533,7 +24533,7 @@ loc_801B11E:
 	bl object_clearFlag2
 loc_801B126:
 	bl sub_801A5EE
-	bl sub_800E730
+	bl object_tickStatusEffectTimers_800E730
 	bl battle_tickCollisionTimer_8010162
 	bl battle_updatePlayerAngerState_8014326
 	bl nullsub_6
@@ -24697,7 +24697,7 @@ loc_801B260: // HP reached zero
 	bl object_setFlag2
 
 loc_801B266:
-	bl sub_801A200
+	bl battleObject_onCollision_801A200
 
 	// branch if OBJECT_FLAGS_DEAD set
 	bl object_getFlag // () -> int
@@ -24833,7 +24833,7 @@ loc_801B32C:
 	lsl r0, r0, #9 // OBJECT_FLAGS_FLASHING
 	bl object_setFlag1 // (int a1) -> void
 loc_801B334:
-	bl sub_800E730
+	bl object_tickStatusEffectTimers_800E730
 
 loc_801B338:
 
@@ -25805,7 +25805,7 @@ loc_801BA86:
 	mov r0, #1
 	bl object_setFlag2
 loc_801BA8C:
-	bl sub_801A200
+	bl battleObject_onCollision_801A200
 	pop {r4,pc}
 	thumb_func_end applyDamageToPlayer_801ba12
 
@@ -26670,36 +26670,36 @@ nullsub_58:
 	mov pc, lr
 	thumb_func_end nullsub_58
 
-// symdb: Tiny wrapper that tail-calls sub_801C002 with a fixed argument of 1 (some "enable"/mode-1 flag); all outputs come from the callee.
-// symdb: void sub_801BFEE(void) -> results (r0-r3, nzcv flags) inherited from sub_801C002(r0=1, r4-r7/r10
+// symdb: Tiny wrapper that tail-calls battle_loadChipPreviewGfxFromHandTable_801C002 with a fixed argument of 1 (some "enable"/mode-1 flag); all outputs come from the callee.
+// symdb: void sub_801BFEE(void) -> results (r0-r3, nzcv flags) inherited from battle_loadChipPreviewGfxFromHandTable_801C002(r0=1, r4-r7/r10
 // symdb: passthrough)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801BFEE.yaml
 	thumb_local_start
 sub_801BFEE:
 	push {lr}
 	mov r0, #1
-	bl sub_801C002
+	bl battle_loadChipPreviewGfxFromHandTable_801C002
 	pop {pc}
 	thumb_func_end sub_801BFEE
 
-// symdb: Thin trampoline that tail-calls sub_801C002 with a zero first argument, passing its register and flag results straight back to the caller.
+// symdb: Thin trampoline that tail-calls battle_loadChipPreviewGfxFromHandTable_801C002 with a zero first argument, passing its register and flag results straight back to the caller.
 // symdb: void sub_801BFF8(void) — callers supply live r4-r7/r10 state that the callee expects; returns
-// symdb: whatever sub_801C002 returns in r0-r3 and NZCV.
+// symdb: whatever battle_loadChipPreviewGfxFromHandTable_801C002 returns in r0-r3 and NZCV.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801BFF8.yaml
 	thumb_local_start
 sub_801BFF8:
 	push {lr}
 	mov r0, #0
-	bl sub_801C002
+	bl battle_loadChipPreviewGfxFromHandTable_801C002
 	pop {pc}
 	thumb_func_end sub_801BFF8
 
 // symdb: Loads the per-slot chip icon GFX (0x80 bytes per entry, 6 slots) for the chip-selection preview panel from the active-hand table, using either the chip database's sprite or a fixed "special effect" override tile.
 // symdb: (r0 = actor_side_tag: 0 or 1) -> r0 = 0 ; side effects: 6 DMA queue ops into VRAM at
 // symdb: 0x6016a00..0x6016c80
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C002.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadChipPreviewGfxFromHandTable_801C002.yaml
 	thumb_local_start
-sub_801C002:
+battle_loadChipPreviewGfxFromHandTable_801C002:
 	push {r4,r6,r7,lr}
 	push {r0}
 	ldr r4, off_801C148 // =dword_20352E0 
@@ -26754,7 +26754,7 @@ loc_801C062:
 	bne loc_801C00C
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801C002
+	thumb_func_end battle_loadChipPreviewGfxFromHandTable_801C002
 
 // symdb: Wrapper that passes 1 to sub_801C082, requesting the battle to end.
 // symdb: void battle_RequestEndBattle_ADDRESS(void); // tail-calls sub_801C082(1)
@@ -28324,7 +28324,7 @@ loc_801CB2C:
 	bl battle_updateObjectAnim_801CB38
 loc_801CB30:
 	strb r0, [r5,#0x15]
-	bl sub_801CC94
+	bl battle_ai_tickPwrAtkPresses_801CC94
 	pop {pc}
 	thumb_func_end sub_801CADC
 
@@ -28521,9 +28521,9 @@ loc_801CC76:
 // symdb: (r5 = *mut AIData, r10 = *Toolkit, lr) -> void ; side effects: writes AIData+PwrAtkState (0x1d),
 // symdb: AIData+Unk_15/Unk_0f/PwrAtkButton/Unk_38 areas; may call QueueEightWordAlignedGFXTransfer(0x20
 // symdb: zeros -> 0x030016d0); pushes/pops r5; calls r10-anchored helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CC94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_tickPwrAtkPresses_801CC94.yaml
 	thumb_local_start
-sub_801CC94:
+battle_ai_tickPwrAtkPresses_801CC94:
 	push {lr}
 	ldrb r0, [r5,#0x1d]
 	cmp r0, #0
@@ -28649,7 +28649,7 @@ off_801CDD8:
 byte_801CDDC:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x0, 0x80, 0x52, 0x3
 	.byte 0x2
-	thumb_func_end sub_801CC94
+	thumb_func_end battle_ai_tickPwrAtkPresses_801CC94
 
 // symdb: Queues two palette transfers (two paired palette blobs) for an object, targeting slots selected by the object's byte at +0x12, skipping objects whose state byte at +0x0F is 5 or 6.
 // symdb: void palette_QueueObjectPalettePair(Obj *obj /* r5; r4/r6/r7 passed in but unused, preserved */)

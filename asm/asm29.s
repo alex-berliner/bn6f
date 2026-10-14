@@ -982,7 +982,7 @@ loc_80A557A:
 	.word 0x17F
 	thumb_func_end sub_80A5514
 
-// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or sub_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
+// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or owPlayer_isBusyOrCutsceneActive_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
 // symdb: void Next_sub_80A5588(void);  /* inputs: r5, r6, r10, lr  outputs: r2, r5, r10, r11  clobbers
 // symdb: nz/c/v, r0, r1, r3, lr; preserves r4-r9, r12 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
@@ -996,7 +996,7 @@ sub_80A5588:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne locret_80A55CA
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_80A55CA
 	bl sub_80A55D4
 	movflag EVENT_4EA
@@ -5250,7 +5250,7 @@ sub_80A7C58:
 	bne loc_80A7C7E
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_80A7C7E
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_80A7C7E
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80A7C7E
@@ -5357,7 +5357,7 @@ sub_80A7CFE:
 	bne locret_80A7D70
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne locret_80A7D70
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne locret_80A7D70
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80A7D70
@@ -6121,7 +6121,7 @@ sub_80A8424:
 loc_80A843A:
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_80A8478
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_80A8478
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -7405,7 +7405,7 @@ sub_80A8DF0:
 	bl IsCutsceneScriptNonNull // () -> !zf
 	bne loc_80A8E18
 loc_80A8E0A:
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	bne loc_80A8E18
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80A8E18

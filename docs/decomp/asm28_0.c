@@ -2653,7 +2653,7 @@ unsigned int owPlayer_update_809D348()
             *(v7 + 10) = v12;
         }
     }
-    sub_809DFC0();
+    owPlayer_checkJumpLandingAccumulateFacing_809DFC0();
     return sub_809DE98();
 }
 
@@ -2980,7 +2980,7 @@ int sub_809D7F8()
 
 
 // 0x809d800
-int sub_809D800()
+int ow_player_updateCollisionAndPos_809D800()
 {
     int v0; // r5
     void (*v1)(void); // r7
@@ -3542,7 +3542,7 @@ signed int owPlayer_isMoving_809DFA0()
 
 
 // 0x809dfc0
-int sub_809DFC0()
+int owPlayer_checkJumpLandingAccumulateFacing_809DFC0()
 {
     int v0; // r5
     int v1; // r0
@@ -3754,7 +3754,7 @@ int __fastcall owPlayer_RequestFixedAnimation_809E14C(int a1)
     char v3; // zf
 
     v1 = a1;
-    result = sub_809E462();
+    result = owPlayer_isBusyOrCutsceneActive_809E462();
     if ( v3 )
     {
         byte_200ACE2 = v1;
@@ -4288,7 +4288,7 @@ int MakeOWPlayerInvisible()
 
 
 // 0x809e462
-int sub_809E462()
+int owPlayer_isBusyOrCutsceneActive_809E462()
 {
     int v0; // r10
 

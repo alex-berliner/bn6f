@@ -1074,7 +1074,7 @@ signed int sub_812E5A8()
     {
         __asm { SVC         6 }
         v6 = 4 * v1;
-        v7 = sub_813B780(4 * v1 - 144);
+        v7 = battleObject_getByIndex_813B780(4 * v1 - 144);
         TakeNaviCustPrograms(v6, *(v7 + 67), 1);
     }
     v8 = *(v0 + 44) & 0x7FFF;
@@ -1082,7 +1082,7 @@ signed int sub_812E5A8()
     {
         __asm { SVC         6 }
         v9 = 4 * v8;
-        v10 = sub_813B780(4 * v8 - 144);
+        v10 = battleObject_getByIndex_813B780(4 * v8 - 144);
         GiveNaviCustPrograms(v9, *(v10 + 67), 1);
     }
     sub_803F798();

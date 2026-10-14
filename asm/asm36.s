@@ -12100,7 +12100,7 @@ loc_8135E3C:
 	beq loc_8135E5E
 	mov r0, r4
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0,#3]
 	cmp r1, #0
 	beq loc_8135E5E
@@ -12153,7 +12153,7 @@ loc_8135E98:
 	ldr r0, [r1,r4]
 	mov r6, r0
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0,#3]
 	cmp r1, #0
 	beq loc_8135EBE
@@ -12688,7 +12688,7 @@ sub_813629C:
 	push {r4,lr}
 	mov r4, r0
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r2, r0
 	lsr r0, r4, #2
 	lsl r0, r0, #2
@@ -12797,7 +12797,7 @@ sub_8136364:
 	bl sub_8136290
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r0, [r0,#3]
 	add r0, #0x4f 
 	bl CheckKeyItem
@@ -13236,7 +13236,7 @@ byte_81366C8:
 sub_81366D0:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x18]
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r4, [r0,#3]
 	ldr r7, off_8136798 // =unk_2022B70 
 	mov r6, #0
@@ -13276,7 +13276,7 @@ sub_81366FC:
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	ldrh r0, [r0]
 loc_8136712:
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r4, [r0,#3]
 	mov r6, #0
 loc_813671A:
@@ -13288,7 +13288,7 @@ loc_813671A:
 	ldrh r0, [r0]
 	tst r0, r0
 	beq loc_8136736
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	ldrb r1, [r0,#3]
 	cmp r1, r4
 	beq loc_8136768

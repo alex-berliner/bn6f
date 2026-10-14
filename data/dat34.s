@@ -1409,7 +1409,7 @@ sub_812E5A8::
 	push {r0,r1}
 	mov r1, #0x90
 	sub r0, r0, r1
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	pop {r0,r1}
 	mov r2, #0x10
@@ -1431,7 +1431,7 @@ loc_812E5D8::
 	push {r0,r1}
 	mov r1, #0x90
 	sub r0, r0, r1
-	bl sub_813B780
+	bl battleObject_getByIndex_813B780
 	mov r7, r0
 	pop {r0,r1}
 	mov r2, #0x10

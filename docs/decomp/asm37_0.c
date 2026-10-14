@@ -9,7 +9,7 @@ int toolkit_resetToolState_813B768()
 
 
 // 0x813b780
-int *__fastcall sub_813B780(int a1)
+int *__fastcall battleObject_getByIndex_813B780(int a1)
 {
     return &StructArr_813944C[4 * a1];
 }
@@ -34,7 +34,7 @@ void *__fastcall sub_813B7A0(int a1, int a2)
 
     v2 = a2;
     v3 = a1;
-    v4 = sub_813B780(a1);
+    v4 = battleObject_getByIndex_813B780(a1);
     TestEventFlag(v3 + 9824);
     if ( !v6 )
         v5 = 3;
@@ -674,7 +674,7 @@ int __fastcall battle_categorizeRandomIds_813BC1C(int a1)
             result = *toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
             if ( result )
             {
-                v5 = sub_813B780(result);
+                v5 = battleObject_getByIndex_813B780(result);
                 v6 = v5;
                 v7 = *(v5 + 1);
                 if ( v7 != 2 )
@@ -740,7 +740,7 @@ int __fastcall sub_813BC98(int a1)
                 result = *toolkit_getUnk2004190EntryPtr_813B9FC(v3);
                 if ( result )
                 {
-                    v6 = sub_813B780(result);
+                    v6 = battleObject_getByIndex_813B780(result);
                     v7 = v6;
                     result = *(v6 + 1);
                     if ( result == 2 || result )
@@ -918,7 +918,7 @@ int __fastcall sub_813BE38(int a1)
     int v8; // [sp+0h] [bp-18h]
 
     v8 = v1;
-    v3 = *(sub_813B780(a1) + 3);
+    v3 = *(battleObject_getByIndex_813B780(a1) + 3);
     v4 = 0;
     do
     {
@@ -930,7 +930,7 @@ int __fastcall sub_813BE38(int a1)
                 result = *toolkit_getUnk2004190EntryPtr_813B9FC(result);
                 if ( result )
                 {
-                    v6 = sub_813B780(result);
+                    v6 = battleObject_getByIndex_813B780(result);
                     v7 = v6;
                     result = *(v6 + 3);
                     if ( result == v3 )
@@ -981,7 +981,7 @@ int sub_813BEA8()
         v3 = *toolkit_getUnk2004190EntryPtr_813B9FC(v1);
         if ( v3 )
         {
-            v4 = *(sub_813B780(v3) + 3);
+            v4 = *(battleObject_getByIndex_813B780(v3) + 3);
             v5 = 0;
             while ( byte_2006D30[v5] != v4 )
             {
@@ -1193,7 +1193,7 @@ int __fastcall sub_813C06C(int a1, int a2, int a3)
         if ( result == v24 && *(v6 + v7) )
         {
             v9 = toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
-            v10 = sub_813B780(*v9);
+            v10 = battleObject_getByIndex_813B780(*v9);
             v19 = 2 * *(v10 + 3);
             sub_813C4A8();
             if ( *(v11 + v7) )
@@ -1282,7 +1282,7 @@ int __fastcall sub_813C1C0(int a1)
             v6 = *v8;
             if ( v6 )
             {
-                v7 = sub_813B780(v6);
+                v7 = battleObject_getByIndex_813B780(v6);
                 v6 = *(v7 + 3);
             }
         }
@@ -1558,7 +1558,7 @@ LABEL_13:
         if ( !byte_2006DA0[i] )
             break;
         v12 = toolkit_getUnk2004190EntryPtr_813B9FC(result - 1);
-        v13 = *(sub_813B780(*v12) + 4);
+        v13 = *(battleObject_getByIndex_813B780(*v12) + 4);
         ++*(v14 + v13);
     }
     return result;
@@ -1613,7 +1613,7 @@ int applyNavicustPrograms_813C684()
             v3 = *v2;
             if ( *v2 )
             {
-                v4 = sub_813B780(*v2);
+                v4 = battleObject_getByIndex_813B780(*v2);
                 v5 = *v4;
                 if ( *v4 )
                 {

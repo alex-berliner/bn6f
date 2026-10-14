@@ -3846,7 +3846,7 @@ sub_8083DF0:
 	bne loc_8083E08
 	bl cutscene_checkOriginalCutsceneScriptPos_8036F58
 	bne loc_8083E08
-	bl sub_809E462
+	bl owPlayer_isBusyOrCutsceneActive_809E462
 	beq loc_8083E18
 loc_8083E08:
 	bl struct_copy_80840C4
