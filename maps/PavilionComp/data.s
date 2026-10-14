@@ -286,7 +286,7 @@ byte_806B0B5:
 	ms_jump destination1=mapscript_806B0CA
 
 byte_806B0C1:
-	ms_call_native_function ptr1=sub_808FE74+1 word5=0x00000000
+	ms_call_native_function ptr1=cutsceneWeather_update_808FE74+1 word5=0x00000000
 
 mapscript_806B0CA:
 	ms_jump_if_progress_in_range byte1=0x60 byte2=0x6F destination3=mapscript_806B0D6

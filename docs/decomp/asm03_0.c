@@ -3041,7 +3041,7 @@ void __fastcall __noreturn battleObject_loadChipPanelGfx_80284E2(unsigned int a1
     v2 = chip_SelectNameTextTable_8027D10(a1);
     renderTextGfx_8045F8C(v2, v3, byte_203C4E0, 100701024);
     v4 = v16;
-    v20 = sub_80109A4(v17 & 0x1FF, *(*(v1 + oToolkit_S2034880_Ptr) + 13));
+    v20 = battle_chipEffectDispatcher_80109A4(v17 & 0x1FF, *(*(v1 + oToolkit_S2034880_Ptr) + 13));
     v18 = getChip8021DA8(v17 & 0x1FF);
     if ( v18[9] )
     {
@@ -4191,7 +4191,7 @@ int __fastcall sub_8029110(int a1, int a2, int a3, int a4)
                 if ( v16 >= byte_190 )
                     word_20349AC |= 1 << (v16 - byte_190 + 1);
                 v17 = v16;
-                *(v9 + 6) = sub_80109A4(v16, *(*(v5 + oToolkit_S2034880_Ptr) + 13));
+                *(v9 + 6) = battle_chipEffectDispatcher_80109A4(v16, *(*(v5 + oToolkit_S2034880_Ptr) + 13));
                 *(v9 + 18) = *(getChip8021DA8(v17) + 6);
                 v9 = (v9 + 2);
             }
@@ -4339,7 +4339,7 @@ int __fastcall sub_80292CC(int a1, int a2, int a3)
     v6 = a3 - 1;
     *(dword_2033000 + a2) = a1;
     v7 = a1;
-    v4[6] = sub_80109A4(a1, *(*(v3 + oToolkit_S2034880_Ptr) + 13));
+    v4[6] = battle_chipEffectDispatcher_80109A4(a1, *(*(v3 + oToolkit_S2034880_Ptr) + 13));
     v4[18] = *(getChip8021DA8(v7) + 6);
     v8 = 31;
     do
@@ -10993,7 +10993,7 @@ int sub_802DED8()
             if ( v7 & 4 )
                 v9 = v8 + *(v1 + 28);
         }
-        v10 = __PAIR__(sub_80109A4(v11, *(v0 + 22)), v11);
+        v10 = __PAIR__(battle_chipEffectDispatcher_80109A4(v11, *(v0 + 22)), v11);
         getChip8021DA8(v11);
         result = v10;
     }

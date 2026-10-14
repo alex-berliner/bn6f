@@ -94,7 +94,7 @@ int __fastcall sub_800EE26(int a1)
         sub_800EE98();
         v9 = battle_chipElementWeaknessBonus_800EF34(v3[26], 0);
         *(v1 + 29) = *(getChip8021DA8(v3[26]) + 15);
-        sub_80109A4(v3[26], *(v2 + 22));
+        battle_chipEffectDispatcher_80109A4(v3[26], *(v2 + 22));
         v4 = *(getChip8021DA8(v3[26]) + 9);
         if ( v4 & 2 )
         {
@@ -164,7 +164,7 @@ int __fastcall sub_800EF02(int a1)
     if ( unpackVerActorTyAndAIIdx_800F29C(*(v1 + 40)) == 2 )
     {
         battle_chipElementWeaknessBonus_800EF34(v2, 0);
-        sub_80109A4(v2, *(v1 + 22));
+        battle_chipEffectDispatcher_80109A4(v2, *(v1 + 22));
         result = v2;
     }
     else
@@ -2926,7 +2926,7 @@ int __fastcall sub_8010940(int result, int a2)
 
 
 // 0x80109a4
-int __fastcall sub_80109A4(int a1, int a2)
+int __fastcall battle_chipEffectDispatcher_80109A4(int a1, int a2)
 {
     int v2; // r7
     int v3; // r4
@@ -5774,7 +5774,7 @@ int __fastcall somethingWriteChipParams_80126E4(int a1)
     v3 = getChip8021DA8(a1);
     v4 = v3;
     *(v2 + 12) = *(v3 + 4);
-    *(v2 + 8) = (v3[10] << 16) + sub_80109A4(*(v2 + 20), *(v1 + 22));
+    *(v2 + 8) = (v3[10] << 16) + battle_chipEffectDispatcher_80109A4(*(v2 + 20), *(v1 + 22));
     *(v2 + 5) = v4[20];
     *(v2 + 6) = 0;
     *(v2 + 3) = v4[12];
@@ -6905,7 +6905,7 @@ LABEL_71:
 
 
 // 0x8013236
-signed int __fastcall sub_8013236(int a1)
+signed int __fastcall ai_tryUseChipFromHand_8013236(int a1)
 {
     _BYTE *v1; // r7
     int v2; // r4
@@ -6993,7 +6993,7 @@ signed int aiTrySelectChipFromHand_801336C()
     if ( *(v1 + 5) == 255 && *(v1 + 17) == 255 || (returnBoolIfAIDataFlagsAreSet_8012F3E(), v2) || (v3 = getCurChipInBattleHand_8010004(), v3 == 0xFFFF) )
         result = 0;
     else
-        result = sub_8013236(v3);
+        result = ai_tryUseChipFromHand_8013236(v3);
     return result;
 }
 
@@ -14771,7 +14771,7 @@ int __fastcall getIndexedSignedBytePair_8018842(int a1, int a2, int a3)
     int result; // r0
     int v5; // r1
 
-    v3 = &sub_8018886(a1, a2)[2 * a3];
+    v3 = &getAnmSeqRowIndexTableEntry_8018886(a1, a2)[2 * a3];
     result = *v3;
     v5 = v3[1];
     return result;
@@ -14801,7 +14801,7 @@ int __fastcall battleObject_computeAIStepForwardDeltaX_8018856(int a1)
 
 
 // 0x8018886
-char *__fastcall sub_8018886(int a1, int a2)
+char *__fastcall getAnmSeqRowIndexTableEntry_8018886(int a1, int a2)
 {
     if ( !a1 )
         a2 = byte_80188B0[a2];

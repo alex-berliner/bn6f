@@ -491,7 +491,7 @@ int __fastcall sub_808FE64(int a1, int a2, int a3, int a4)
 
 
 // 0x808fe74
-void *sub_808FE74()
+void *cutsceneWeather_update_808FE74()
 {
     void *result; // r0
     char v1; // zf

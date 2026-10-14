@@ -240,7 +240,7 @@ signed int __fastcall sub_8089704(int a1, int a2, int a3)
     if ( v4 & 1 )
     {
         v6 = sub_81421D0();
-        sub_8142190(v6);
+        battle_checkScenarioEffectActive_8142190(v6);
         if ( v9 )
         {
             PlaySoundEffect(105, v7, v8);

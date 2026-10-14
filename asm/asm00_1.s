@@ -319,7 +319,7 @@ object_spawnType1: // (obj_idx: u8, x: u32, y: u32, z: u32, params: u32) -> * Ba
 	tst r5, r5
 	beq loc_8003338
 
-	bl sub_8003400
+	bl object_attachToEUnkBattleObjectLinkedList_8003400
 
 loc_8003338: // endif
 	add sp, sp, #0x14
@@ -346,7 +346,7 @@ loc_8003354:
 // symdb: Spawns a battle object of type 3 from five caller-supplied arguments and runs its initializer if the spawn succeeded.
 // symdb: BattleObject* battle_spawnObjectType3(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4); /* r0-r4 in; r5
 // symdb: out = new object pointer or NULL; flags set from tst r5,r5 when no initializer ran, otherwise
-// symdb: from sub_8003400; r4/r6/r7 preserved */
+// symdb: from object_attachToEUnkBattleObjectLinkedList_8003400; r4/r6/r7 preserved */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_spawnType3.yaml
 	thumb_func_start object_spawnType3
 object_spawnType3:
@@ -359,7 +359,7 @@ object_spawnType3:
 	bl SpawnBattleObjectCommon // (obj_type: u8, ctx_stack: * ()) -> * BattleObject $r5
 	tst r5, r5
 	beq loc_8003370
-	bl sub_8003400
+	bl object_attachToEUnkBattleObjectLinkedList_8003400
 loc_8003370:
 	add sp, sp, #0x14
 	pop {r7,pc}
@@ -420,7 +420,7 @@ object_spawnType4:
 	bl SpawnBattleObjectCommon // (obj_type: u8, ctx_stack: * ()) -> * BattleObject $r5
 	tst r5, r5
 	beq loc_80033C4
-	bl sub_8003400
+	bl object_attachToEUnkBattleObjectLinkedList_8003400
 loc_80033C4:
 	add sp, sp, #0x14
 	pop {r7,pc}
@@ -463,9 +463,9 @@ loc_80033FC:
 // symdb: Inserts a freshly-spawned battle object into the doubly-linked list just before the node held in eUnkBattleObjectLinkedList, falling back to UpdateBattleObjectLinkedList when there is no previous entry.
 // symdb: (r5 = pointer to new BattleObject payload) -> r0 = same pointer ; side effects: rewrites the
 // symdb: Prev/Next fields of three list nodes (new node, U node, and U's old Next)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003400.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_attachToEUnkBattleObjectLinkedList_8003400.yaml
 	thumb_local_start
-sub_8003400:
+object_attachToEUnkBattleObjectLinkedList_8003400:
 	push {lr}
 
 	// double linkedlist node comes before the payload BattleObject
@@ -521,7 +521,7 @@ sub_8003400:
 	.balign 4, 0
 off_8003424:
 	.word eUnkBattleObjectLinkedList
-	thumb_func_end sub_8003400
+	thumb_func_end object_attachToEUnkBattleObjectLinkedList_8003400
 
 // symdb: Appends a freshly created battle object to the tail of the battle object doubly-linked list, just before the sentinel.
 // symdb: void battle_appendObjectToLinkedList(u32 objectEnd /* r5 */); returns r0 = new object, r1 =
@@ -3124,7 +3124,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A54F0+1
 	.word sub_80A57AC+1
 	.word battle_beastOutDispatch_80A5AD4+1
-	.word sub_80A6A16+1
+	.word battleObject_dispatchRunActionByState_80A6A16+1
 	.word sub_80A6E98+1
 	.word sub_80A72B4+1
 	.word sub_80A77A8+1
@@ -18009,7 +18009,7 @@ handleVariableDamageChip_800AEE8:
 	beq loc_800AF0E
 	mov r0, r6
 	mov r1, #0
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	strh r0, [r5,#0xc]
 loc_800AF0E:
 	add r4, #0x50
@@ -18027,7 +18027,7 @@ loc_800AF0E:
 	beq locret_800AF32
 	mov r0, r6
 	mov r1, #1
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	strh r0, [r5,#0xc]
 locret_800AF32:
 	pop {r4-r6,pc}

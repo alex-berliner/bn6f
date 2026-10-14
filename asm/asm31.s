@@ -39203,7 +39203,7 @@ off_80CA2BC:
 	.word off_80CA2C0
 off_80CA2C0:
 	.word battleObject_initProjectileFromTable_80CA2D4+1
-	.word sub_80CA3A0+1
+	.word object_presentCollisionAndHandleHit_80CA3A0+1
 	.word sub_80CA2CC+1
 	thumb_func_end t3_0x32_80CA2A8
 
@@ -39316,9 +39316,9 @@ off_80CA39C:
 
 // symdb: Per-frame collision update dispatcher for a battle object: tears down prior collision, checks for end-of-battle, then runs an action-specific sub-handler and re-establishes the object's collision region/panels (or destroys it).
 // symdb: (r5 = BattleObject*) -> void ; no caller-visible return value (only r5/r8 in out)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CA3A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_presentCollisionAndHandleHit_80CA3A0.yaml
 	thumb_local_start
-sub_80CA3A0:
+object_presentCollisionAndHandleHit_80CA3A0:
 	push {r7,lr}
 	bl object_removeCollisionData
 	bl object_spawnCollisionEffect
@@ -39366,7 +39366,7 @@ off_80CA400:
 	.word off_80CA404
 off_80CA404:
 	.word sub_80CA408+1
-	thumb_func_end sub_80CA3A0
+	thumb_func_end object_presentCollisionAndHandleHit_80CA3A0
 
 	thumb_local_start
 sub_80CA408:
@@ -108991,8 +108991,8 @@ locret_80EB06C:
 off_80EB070:
 	.word off_80EB074
 off_80EB074:
-	.word sub_80EB088+1
-	.word sub_80EB128+1
+	.word battleObject_aiAttackStepMoveTowardTarget_80EB088+1
+	.word battle_aiAttack_applyPanelMove_80EB128+1
 	.word aiAttack_TimerTickEnd_80EB194+1
 	.word ai_attackStepRunDecrement_80EB1C4+1
 	.word sub_80EB1F8+1
@@ -109001,9 +109001,9 @@ off_80EB074:
 // symdb: AI attack state action that picks a destination panel and commits a "move toward target" reservation for the actor.
 // symdb: () -> void ; updates AIData/AIAttackVars at r7 and the current BattleObject at r5
 // symdb: (panel/FuturePanel, flags, anim, plus an Alliance-row counter)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB088.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiAttackStepMoveTowardTarget_80EB088.yaml
 	thumb_local_start
-sub_80EB088:
+battleObject_aiAttackStepMoveTowardTarget_80EB088:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0x16
@@ -109077,15 +109077,15 @@ loc_80EB122:
 	bl object_exitAttackState_801171C
 locret_80EB126:
 	pop {pc}
-	thumb_func_end sub_80EB088
+	thumb_func_end battleObject_aiAttackStepMoveTowardTarget_80EB088
 
 // symdb: Per-tick AI-attack step that finalises a panel move: clears an AI flag, may roll a panel change under the object, commits the panel move (release reserve, sync coords/collision), plays a column-pattern reaction, and resets the attack timer/phase.
 // symdb: (r5 = battle object, r7 = AIAttackVars, r10 = toolkit, lr) -> r0 = next state/phase code (1, 2
 // symdb: or 8) ; side effects: writes AIData+0x48 flag, mutates BattleObject
 // symdb: PanelX/PanelY/FuturePanelX/FuturePanelY and timer fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB128.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttack_applyPanelMove_80EB128.yaml
 	thumb_local_start
-sub_80EB128:
+battle_aiAttack_applyPanelMove_80EB128:
 	push {r4,r6,lr}
 	mov r0, #0xf
 	bl ClearAIDataUnk0x48Flag
@@ -109132,7 +109132,7 @@ locret_80EB188:
 	pop {r4,r6,pc}
 	.balign 4, 0x00
 	.byte 0xE0, 0x83, 0x0, 0x0, 0x14, 0x0, 0x1, 0x1
-	thumb_func_end sub_80EB128
+	thumb_func_end battle_aiAttack_applyPanelMove_80EB128
 
 // symdb: Per-frame tick of an AI attack action's countdown; when the timer expires it frees the object to move, reloads the timer, resets the animation if told to, and switches the AI state to 0xC.
 // symdb: void aiAttack_TimerTickEnd_80EB194(void)  /* r7 = object's AI attack vars; returns flags in

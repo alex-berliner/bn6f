@@ -2814,9 +2814,9 @@ byte_80A69EA:
 // symdb: Dispatches a battle object's per-state action routine by indexing a 3-entry table on `CurState` (0x8) of the object in r5.
 // symdb: (r5 = battle object ptr, r1 = 0x20) -> r0 = whatever the called routine returns ; side effects
 // symdb: depend on the dispatched routine; lr clobbered via tail-call (bx)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A16.yaml
-	thumb_func_start sub_80A6A16
-sub_80A6A16:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchRunActionByState_80A6A16.yaml
+	thumb_func_start battleObject_dispatchRunActionByState_80A6A16
+battleObject_dispatchRunActionByState_80A6A16:
 	push {lr}
 	ldr r0, off_80A6A24 // =off_80A6A28
 	ldrb r1, [r5,#8]
@@ -2830,7 +2830,7 @@ off_80A6A28:
 	.word sub_80A6A34+1
 	.word battleObject_runActionSubroutineDispatch_80A6A62+1
 	.word sub_80A6B08+1
-	thumb_func_end sub_80A6A16
+	thumb_func_end battleObject_dispatchRunActionByState_80A6A16
 
 	thumb_local_start
 sub_80A6A34:
@@ -4852,7 +4852,7 @@ loc_80A7920:
 	mov lr, pc
 	bx r0
 	bne loc_80A7920
-	bl sub_80A7BC0
+	bl battle_checkBeastSpTrigger_80A7BC0
 	ldr r0, [r5,#0xc]
 	str r0, [r6,#8]
 	ldr r0, [r5,#0x10]
@@ -4871,7 +4871,7 @@ off_80A7950:
 	.word sub_80A7AD4+1
 	.word sub_80A7AE0+1
 	.word sub_80A7AFA+1
-	.word sub_80A7B32+1
+	.word battle_checkEnemyInAttackRangeAndTrigger_80A7B32+1
 	thumb_func_end sub_80A7912
 
 	thumb_local_start
@@ -5110,9 +5110,9 @@ sub_80A7AFA:
 // symdb: (r5 = suspected-attacker BattleObject*, r10 = Toolkit*) -> r0 = 0 (out of range / input not
 // symdb: allowed) or 1 (in range, signaled); side effects: when in range, calls sub_80A7BA2 with r0=2
 // symdb: then returns 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B32.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkEnemyInAttackRangeAndTrigger_80A7B32.yaml
 	thumb_local_start
-sub_80A7B32:
+battle_checkEnemyInAttackRangeAndTrigger_80A7B32:
 	push {r4-r7,lr}
 	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7B76
@@ -5148,7 +5148,7 @@ sub_80A7B32:
 loc_80A7B76:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7B32
+	thumb_func_end battle_checkEnemyInAttackRangeAndTrigger_80A7B32
 
 	thumb_local_start
 sub_80A7B7A:
@@ -5216,9 +5216,9 @@ sub_80A7BBA:
 // symdb: Checks whether the BeastSP trigger zone is active and, if so, sets the EVENT_1731 flag, plays a sound, and starts the BeastSP cutscene.
 // symdb: (r5 = *BeastSPTriggerZone, r10 = *Toolkit) -> void ; side effects: writes to r5+4 flag/byte,
 // symdb: sets EVENT_1731, plays sound 0x73, kicks off cutscene byte_8089DD8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7BC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkBeastSpTrigger_80A7BC0.yaml
 	thumb_local_start
-sub_80A7BC0:
+battle_checkBeastSpTrigger_80A7BC0:
 	push {r4-r7,lr}
 	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne locret_80A7C3C
@@ -5284,7 +5284,7 @@ dword_80A7C50:
 	.word 0x100000
 off_80A7C54:
 	.word byte_8089DD8 // CutsceneScript
-	thumb_func_end sub_80A7BC0
+	thumb_func_end battle_checkBeastSpTrigger_80A7BC0
 
 // symdb: Returns 1 (busy/locked-out) if any of chatbox-flag 0x80, an active cutscene script, busy OW player/cutscene, a screen fade, or a non-zero beast-sp flag is set; otherwise returns 0.
 // symdb: () -> r0 = 1 if battle input should be locked out, 0 if free; ZF=1 when r0=0, ZF=0 when r0=1
@@ -6537,7 +6537,7 @@ sub_80A86B4:
 	tst r0, r0
 	beq loc_80A86EA
 	bl sub_81421D0
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	beq loc_80A86EA
 	mov r4, #3
 	ldrb r0, [r5,#4]

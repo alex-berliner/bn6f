@@ -826,9 +826,9 @@ sub_808FE64:
 
 // symdb: Drives the overworld "weather" cutscene trigger each frame: while the screen fade is inactive, asks a state helper to spawn/update a weather-component battle object near the player, picks a cutscene script, and starts it if one is returned.
 // symdb: (r10 = *Toolkit) -> void ; no return; reads Toolkit globals, may call StartCutscene
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FE74.yaml
-	thumb_func_start sub_808FE74
-sub_808FE74:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutsceneWeather_update_808FE74.yaml
+	thumb_func_start cutsceneWeather_update_808FE74
+cutsceneWeather_update_808FE74:
 	push {r4-r7,lr}
 	ldr r5, off_808FEA0 // =off_808FDB8 
 	ldr r5, [r5]
@@ -849,7 +849,7 @@ locret_808FE9C:
 	.balign 4, 0
 off_808FEA0:
 	.word off_808FDB8
-	thumb_func_end sub_808FE74
+	thumb_func_end cutsceneWeather_update_808FE74
 
 	thumb_func_start sub_808FEA4
 sub_808FEA4:

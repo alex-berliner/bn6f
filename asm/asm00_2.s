@@ -126,7 +126,7 @@ sub_800EE26:
 	strb r0, [r7,#oAIAttackVars_Unk_1d]
 	ldrh r0, [r6,#0x34]
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	mov r1, r0
 	pop {r2,r3}
 	push {r1-r3}
@@ -227,7 +227,7 @@ sub_800EF02:
 	push {r0,r1}
 	mov r0, r6
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	mov r1, r0
 	pop {r2,r3}
 	mov r0, r6
@@ -4209,9 +4209,9 @@ off_80109A0:
 // symdb: (r0 = chipID, r1 = user data pointer) -> r0 = return value from the dispatched handler ; side
 // symdb: effects: jumps through a handler table indexed by ChipData[chipID].Unk_1a (offset 0x1a in the
 // symdb: 44-byte chip record), threads into the per-chip effect routine.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80109A4.yaml
-	thumb_func_start sub_80109A4
-sub_80109A4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipEffectDispatcher_80109A4.yaml
+	thumb_func_start battle_chipEffectDispatcher_80109A4
+battle_chipEffectDispatcher_80109A4:
 	push {r4,r7,lr}
 	mov r7, r0
 	mov r4, r1
@@ -4288,7 +4288,7 @@ off_80109DC:
 	.word sub_8010C50+1
 	.word sub_8010C50+1
 	.word sub_8010C50+1
-	thumb_func_end sub_80109A4
+	thumb_func_end battle_chipEffectDispatcher_80109A4
 
 	thumb_local_start
 sub_8010A90:
@@ -8287,7 +8287,7 @@ loc_80126F6:
 	str r1, [r7,#oAIAttackVars_Unk_0c]
 	ldrh r0, [r7,#oAIAttackVars_Unk_14]
 	ldrb r1, [r5,#oBattleObject_Alliance]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	ldrb r1, [r6,#0xa]
 	lsl r1, r1, #0x10
 	add r1, r1, r0
@@ -9891,9 +9891,9 @@ locret_8013234:
 
 // symdb: Decides whether the enemy AI may play the chip currently sitting in its battle hand this frame, considering chip ID, alliance, element and the owner's element/attack modifiers.
 // symdb: in r0 = chip ID to test -> r0 = 1 if the AI is allowed to use the chip, 0 if it is blocked
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013236.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tryUseChipFromHand_8013236.yaml
 	thumb_local_start
-sub_8013236:
+ai_tryUseChipFromHand_8013236:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -10067,9 +10067,9 @@ loc_8013366:
 	mov r0, #1
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8013236
+	thumb_func_end ai_tryUseChipFromHand_8013236
 
-// symdb: Checks whether the enemy AI may play the chip waiting in its battle hand this frame (no attack-power hint set, AI condition flags allow acting, hand not empty) and if so performs the chip selection via sub_8013236.
+// symdb: Checks whether the enemy AI may play the chip waiting in its battle hand this frame (no attack-power hint set, AI condition flags allow acting, hand not empty) and if so performs the chip selection via ai_tryUseChipFromHand_8013236.
 // symdb: bool sub_801336C(battleObject* obj /* r4, r5 = the battle object */, ...)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiTrySelectChipFromHand_801336C.yaml
 	thumb_local_start
@@ -10089,7 +10089,7 @@ loc_801337C:
 	ldr r1, dword_80133E0 // =0xffff 
 	cmp r0, r1
 	beq loc_8013392
-	bl sub_8013236
+	bl ai_tryUseChipFromHand_8013236
 	pop {pc}
 loc_8013392:
 	mov r0, #0
@@ -21274,7 +21274,7 @@ loc_801883C:
 getIndexedSignedBytePair_8018842:
 	push {r4,lr}
 	add r4, r2, r2
-	bl sub_8018886
+	bl getAnmSeqRowIndexTableEntry_8018886
 	add r4, r4, r0
 	mov r0, #0
 	ldrsb r0, [r4,r0]
@@ -21312,9 +21312,9 @@ battleObject_computeAIStepForwardDeltaX_8018856:
 // symdb: Looks up a per-form entry in one of three animation sequence tables indexed by a form id and row index, optionally remapped by a 16-byte remap table.
 // symdb: (r0 = formID, r1 = rowIdx) -> r0 = pointer to a 0x44-byte row inside one of three variant tables
 // symdb: ; side effects: none (leaf, returns via mov pc, lr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018886.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getAnmSeqRowIndexTableEntry_8018886.yaml
 	thumb_local_start
-sub_8018886:
+getAnmSeqRowIndexTableEntry_8018886:
 	cmp r0, #0
 	bne loc_801888E
 	ldr r2, off_80188AC // =byte_80188B0
@@ -21678,7 +21678,7 @@ byte_80191C8:
 	.byte 0x18, 0x26, 0x16, 0x27, 0x18, 0x27, 0x18, 0x27, 0x19, 0x26, 0x4
 	.byte 0x20, 0x18, 0x27, 0x28, 0x26, 0xF8, 0x1C, 0x0, 0x14, 0x0, 0x0
 	.byte 0x0, 0x0
-	thumb_func_end sub_8018886
+	thumb_func_end getAnmSeqRowIndexTableEntry_8018886
 
 // symdb: Resets the collision system by clearing the active-collision bitfield, reinitializing all 32 collision data slots with unique one-hot index bits, and clearing the collision scratch buffer.
 // symdb: void sub_801986C(void); // reads toolkit ptr from r10; preserves r2-r5 and r10; clobbers

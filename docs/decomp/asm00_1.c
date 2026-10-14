@@ -113,7 +113,7 @@ int *__fastcall object_spawnType1(int a1, int a2, int a3, int a4)
 	v11 = v4;
 	result = SpawnBattleObjectCommon(1, &v7);
 	if ( v5 )
-		result = sub_8003400();
+		result = object_attachToEUnkBattleObjectLinkedList_8003400();
 	return result;
 }
 
@@ -161,7 +161,7 @@ int *__fastcall object_spawnType3(int a1, int a2, int a3, int a4)
 	v11 = v4;
 	result = SpawnBattleObjectCommon(3, &v7);
 	if ( obj )
-		result = sub_8003400();
+		result = object_attachToEUnkBattleObjectLinkedList_8003400();
 	return result;
 }
 
@@ -232,7 +232,7 @@ int *__usercall object_spawnType4@<R0>(Battle *obj@<R5>, int a1@<R0>, int a2@<R1
 	v11 = v5;
 	result = SpawnBattleObjectCommon(4, &v7);
 	if ( obj )
-		result = sub_8003400();
+		result = object_attachToEUnkBattleObjectLinkedList_8003400();
 	return result;
 }
 
@@ -286,7 +286,7 @@ _DWORD *__fastcall sub_80033E4(int a1, int a2, int a3, int a4)
 
 
 // 0x8003400
-int *sub_8003400()
+int *object_attachToEUnkBattleObjectLinkedList_8003400()
 {
 	Battle *obj; // r5
 	int *result; // r0
@@ -12114,13 +12114,13 @@ char *handleVariableDamageChip_800AEE8()
     v0 = &byte_20349C0[2 * byte_20349C0[0] + 2];
     v1 = *v0;
     if ( *(getChip8021DA8(v1) + 9) & 0x80 )
-        *(v0 + 6) = sub_80109A4(v1, 0);
+        *(v0 + 6) = battle_chipEffectDispatcher_80109A4(v1, 0);
     v2 = &byte_2034A10[2 * byte_2034A10[0] + 2];
     v3 = *v2;
     result = getChip8021DA8(v3);
     if ( result[9] & 0x80 )
     {
-        result = sub_80109A4(v3, 1);
+        result = battle_chipEffectDispatcher_80109A4(v3, 1);
         *(v2 + 6) = result;
     }
     return result;

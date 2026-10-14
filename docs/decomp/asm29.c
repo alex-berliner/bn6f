@@ -1651,7 +1651,7 @@ signed int battleObject_loadAIDataEntry_80A6014()
 
 
 // 0x80a6a16
-int sub_80A6A16()
+int battleObject_dispatchRunActionByState_80A6A16()
 {
     int v0; // r5
 
@@ -3200,7 +3200,7 @@ void sub_80A7912()
         (*(&off_80A7950 + *v2))();
     }
     while ( !v3 );
-    sub_80A7BC0();
+    battle_checkBeastSpTrigger_80A7BC0();
     v1[2] = *(v0 + 12);
     v1[3] = *(v0 + 16);
     v1[4] = *(v0 + 20);
@@ -3390,7 +3390,7 @@ signed int __noreturn sub_80A7AFA()
 
 
 // 0x80a7b32
-signed int sub_80A7B32()
+signed int battle_checkEnemyInAttackRangeAndTrigger_80A7B32()
 {
     _DWORD *v0; // r5
     int v1; // r7
@@ -3490,7 +3490,7 @@ void sub_80A7BBA()
 
 
 // 0x80a7bc0
-void *sub_80A7BC0()
+void *battle_checkBeastSpTrigger_80A7BC0()
 {
     int v0; // r5
     int v1; // r10
@@ -4562,7 +4562,7 @@ void sub_80A86B4()
     if ( v2 )
     {
         v3 = sub_81421D0();
-        sub_8142190(v3);
+        battle_checkScenarioEffectActive_8142190(v3);
         if ( !v6 )
         {
             v1 = 3;

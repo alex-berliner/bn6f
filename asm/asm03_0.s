@@ -4625,7 +4625,7 @@ battleObject_loadChipPanelGfx_80284E2:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#oBattleState_Unk_0d]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	str r0, [sp,#0x10]
 	pop {r0}
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
@@ -6363,7 +6363,7 @@ loc_802918C:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#0xd]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	strh r0, [r4,#0xc]
 	pop {r0}
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
@@ -6551,7 +6551,7 @@ sub_80292CC:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r1, [r1,#0xd]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	strh r0, [r4,#0xc]
 	pop {r0}
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
@@ -16702,7 +16702,7 @@ loc_802DF14:
 	pop {r0}
 	push {r0,r2}
 	ldrb r1, [r5,#0x16]
-	bl sub_80109A4
+	bl battle_chipEffectDispatcher_80109A4
 	mov r1, r0
 	pop {r0,r2}
 	push {r0-r2}

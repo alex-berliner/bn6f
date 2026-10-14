@@ -120,7 +120,7 @@ mapscript_806A373:
 	ms_jump destination1=mapscript_806A388
 
 mapscript_806A37F:
-	ms_call_native_function ptr1=sub_808FE74+1 word5=0x00000000
+	ms_call_native_function ptr1=cutsceneWeather_update_808FE74+1 word5=0x00000000
 
 mapscript_806A388:
 	ms_jump_if_progress_in_range byte1=0x40 byte2=0x4F destination3=mapscript_806A394
@@ -189,7 +189,7 @@ byte_806A449:
 	ms_jump destination1=mapscript_806A45E
 
 byte_806A455:
-	ms_call_native_function ptr1=sub_808FE74+1 word5=0x00000000
+	ms_call_native_function ptr1=cutsceneWeather_update_808FE74+1 word5=0x00000000
 
 mapscript_806A45E:
 	ms_end
@@ -268,7 +268,7 @@ byte_806A54A:
 	ms_jump destination1=mapscript_806A55F
 
 mapscript_806A556:
-	ms_call_native_function ptr1=sub_808FE74+1 word5=0x00000000
+	ms_call_native_function ptr1=cutsceneWeather_update_808FE74+1 word5=0x00000000
 
 mapscript_806A55F:
 	ms_jump_if_progress_in_range byte1=0x40 byte2=0x4F destination3=mapscript_806A56B

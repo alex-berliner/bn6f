@@ -2373,9 +2373,9 @@ byte_810ECAC:
 // symdb: (r5 = *BattleObject, r6..r7 = scratch, r10 = *Toolkit, lr = ret) -> r0 = 0 ; side effects may
 // symdb: transition BattleObject out of attack state via object_exitAttackState_801171C, or tail-call a
 // symdb: sub-handler with r0 = AIAttackVars.Unk_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810ED70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackDispatch_810ED70.yaml
 	thumb_local_start
-sub_810ED70:
+battle_aiAttackDispatch_810ED70:
 	push {lr}
 	ldr r0, [r7,#oAIAttackVars_Unk_28]
 	ldr r0, [r0]
@@ -2410,7 +2410,7 @@ off_810EDAC:
 	.word sub_810EDB8+1
 	.word sub_810EE04+1
 	.word sub_810EE3E+1
-	thumb_func_end sub_810ED70
+	thumb_func_end battle_aiAttackDispatch_810ED70
 
 	thumb_local_start
 sub_810EDB8:
@@ -2694,7 +2694,7 @@ off_810F010:
 	.word sub_8016B72+1
 	.word sub_810F0C0+1
 	.word sub_81097D6+1
-	.word sub_810ED70+1
+	.word battle_aiAttackDispatch_810ED70+1
 	.word sub_810EE64+1
 	thumb_func_end sub_810EF40
 
@@ -18467,12 +18467,12 @@ off_81176A0:
 	.word off_81176A4
 off_81176A4:
 	.word sub_81176B0+1
-	.word sub_81176C0+1
+	.word battleObject_runTripleSoundDispatch_81176C0+1
 	.word sub_81176C8+1
 	thumb_func_end sub_8117690
 
 // symdb: Sets a state-struct entity to active with mode/counter 4 and immediately runs its shared update routine.
-// symdb: void sub_81176B0(r5 = state struct); NZCV and r0-r3 reflect the tail work done by sub_81176C0
+// symdb: void sub_81176B0(r5 = state struct); NZCV and r0-r3 reflect the tail work done by battleObject_runTripleSoundDispatch_81176C0
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81176B0.yaml
 	thumb_local_start
 sub_81176B0:
@@ -18481,20 +18481,20 @@ sub_81176B0:
 	strb r0, [r5]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_81176C0
+	bl battleObject_runTripleSoundDispatch_81176C0
 	pop {pc}
 	thumb_func_end sub_81176B0
 
 // symdb: Thin Tail-call wrapper that just tail-calls battle_playObjectTripleSound_81176D0; used as a CurState=UPDATE phase entrypoint for one battle-object type.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr, lr = return) -> r0 = 0x80000 (set by callee) ; side
 // symdb: effects: sound registers / SIO per callee, callee-saved r5 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81176C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runTripleSoundDispatch_81176C0.yaml
 	thumb_local_start
-sub_81176C0:
+battleObject_runTripleSoundDispatch_81176C0:
 	push {lr}
 	bl battle_playObjectTripleSound_81176D0
 	pop {pc}
-	thumb_func_end sub_81176C0
+	thumb_func_end battleObject_runTripleSoundDispatch_81176C0
 
 	thumb_local_start
 sub_81176C8:
@@ -19668,9 +19668,9 @@ sub_8117EC0:
 // symdb: AI-state jump-table dispatcher for a battle object; indexes one of three routines using byte at r5+8 (the object's CurState) and tail-calls it via `mov lr,pc; bx`.
 // symdb: (no explicit params; r5 = battle object, r10 = toolkit) -> r0 = result of dispatched routine;
 // symdb: tail-call (no return), caller pushes lr and pops pc
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117EC8.yaml
-	thumb_func_start sub_8117EC8
-sub_8117EC8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_aiStateJumpTableDispatcher_8117EC8.yaml
+	thumb_func_start battleObject_aiStateJumpTableDispatcher_8117EC8
+battleObject_aiStateJumpTableDispatcher_8117EC8:
 	push {lr}
 	ldr r0, off_8117ED8 // =off_8117EDC
 	ldrb r1, [r5,#8]
@@ -19683,9 +19683,9 @@ off_8117ED8:
 	.word off_8117EDC
 off_8117EDC:
 	.word sub_8117EE8+1
-	.word sub_8117F78+1
+	.word battleObject_beastSpDispatchAction_8117F78+1
 	.word sub_81180FC+1
-	thumb_func_end sub_8117EC8
+	thumb_func_end battleObject_aiStateJumpTableDispatcher_8117EC8
 
 	thumb_local_start
 sub_8117EE8:
@@ -19721,7 +19721,7 @@ sub_8117EE8:
 	ldrh r1, [r3,r2]
 	strh r1, [r5,#0x14]
 	bl sprite_setCoordinates
-	bl sub_8117F78
+	bl battleObject_beastSpDispatchAction_8117F78
 	pop {pc}
 	.balign 4, 0
 off_8117F40:
@@ -19746,9 +19746,9 @@ byte_8117F68:
 // symdb: BeastSP battle object dispatch: invokes an init/update routine via CurAction, then calls sprite_update.
 // symdb: (r5 = BattleObject, r10 = Toolkit, lr = retaddr) -> r0/r1 clobbered, r2/r3/r5 returned ; side
 // symdb: effects: sprite frame advanced and one of two action handlers run
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117F78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSpDispatchAction_8117F78.yaml
 	thumb_local_start
-sub_8117F78:
+battleObject_beastSpDispatchAction_8117F78:
 	push {lr}
 	ldr r0, off_8117F90 // =off_8117F94
 	ldrb r1, [r5,#9]
@@ -19763,8 +19763,8 @@ off_8117F90:
 	.word off_8117F94
 off_8117F94:
 	.word sub_8117F9C+1
-	.word sub_8117FC4+1
-	thumb_func_end sub_8117F78
+	.word battle_beastsp_dispatchToPhaseHandler_8117FC4+1
+	thumb_func_end battleObject_beastSpDispatchAction_8117F78
 
 	thumb_local_start
 sub_8117F9C:
@@ -19779,7 +19779,7 @@ loc_8117FAA:
 	bl sub_8118104
 	bl sub_8118134
 	bl sub_81181DC
-	bl sub_81182A4
+	bl battleObject_setBeastOutPhaseAndSprite_81182A4
 	mov r0, #4
 	strb r0, [r5,#9]
 	mov r0, #0
@@ -19791,9 +19791,9 @@ locret_8117FC2:
 // symdb: Beast-SP entry dispatcher: jumps to one of six sub-handlers based on the actor's CurPhase, then copies the actor's Timer into the returned object's FuturePanelRef-style field at offset 0xE.
 // symdb: (r5 = BattleObject*) -> r0 = new struct ptr (EWRAM/heap object) ; side effects writes a u16 from
 // symdb: r5+0x14 into r0+0xE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117FC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastsp_dispatchToPhaseHandler_8117FC4.yaml
 	thumb_local_start
-sub_8117FC4:
+battle_beastsp_dispatchToPhaseHandler_8117FC4:
 	push {lr}
 	ldr r0, off_8117FDC // =off_8117FE0
 	ldrb r1, [r5,#0xa]
@@ -19814,13 +19814,13 @@ off_8117FE0:
 	.word sub_811805C+1
 	.word loc_8118098+1
 	.word sub_81180E0+1
-	thumb_func_end sub_8117FC4
+	thumb_func_end battle_beastsp_dispatchToPhaseHandler_8117FC4
 
 	thumb_local_start
 sub_8117FF8:
 	push {lr}
 
-	bl sub_81182A4
+	bl battleObject_setBeastOutPhaseAndSprite_81182A4
 
 	ldrb r0, [r5,#0xa]
 
@@ -20173,9 +20173,9 @@ byte_811829C:
 // symdb: (r5 = battle object, lr = return) -> r0 = sSubmenu (0x02009A30), no other caller-visible writes;
 // symdb: side effects write to battle object fields 0x0A/0x10/0x12/0x14/0x16 and the sprite-data area,
 // symdb: and call sprite_makeScalable/sprite_setScaleParameters/sprite_setUnk0x2c.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81182A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setBeastOutPhaseAndSprite_81182A4.yaml
 	thumb_local_start
-sub_81182A4:
+battleObject_setBeastOutPhaseAndSprite_81182A4:
 	push {r4-r7,lr}
 	bl sub_8118314
 	mov r3, r0
@@ -20227,7 +20227,7 @@ byte_8118304:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x12, 0x0, 0x0, 0x0, 0xEE, 0xFF, 0xFF, 0xFF
 off_8118310:
 	.word sSubmenu
-	thumb_func_end sub_81182A4
+	thumb_func_end battleObject_setBeastOutPhaseAndSprite_81182A4
 
 	thumb_local_start
 sub_8118314:
@@ -32204,25 +32204,25 @@ sub_811E314:
 	push {r4-r7,lr}
 	ldr r7, dword_811E358 // =0xfffffff
 	mov r0, #0
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	mov r2, #1
 	lsl r2, r2, #0x1b
 	lsr r2, r0
 	bic r7, r2
 	mov r0, #1
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	mov r2, #1
 	lsl r2, r2, #0x14
 	lsr r2, r0
 	bic r7, r2
 	mov r0, #2
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	mov r2, #1
 	lsl r2, r2, #0xd
 	lsr r2, r0
 	bic r7, r2
 	mov r0, #3
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	mov r2, #1
 	lsl r2, r2, #6
 	lsr r2, r0
@@ -36655,7 +36655,7 @@ loc_81204B6:
 	pop {r4-r7,pc}
 	thumb_func_end battle_loadChipIconSlots_8120458
 
-// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via sub_8120504, and zeroing entries for empty slots.
+// symdb: Iterates a range of 32-byte chip slots, converting each occupied slot's chip type into an 8-byte output entry via battle_packChipIntoBattlePackEntry_8120504, and zeroing entries for empty slots.
 // symdb: void battle_processChipSlotArray(s32 startIdx /*r0*/, void* chipArrayBase /*r1*/, void* dest
 // symdb: /*r2*/, void* extraParam /*r3*/, s32 count /*r5*/); /* writes 8*count bytes at dest; r0-r3,lr
 // symdb: clobbered; r4-r7,preserved */
@@ -36680,7 +36680,7 @@ loc_81204D6:
 	ldrb r0, [r0,#8]
 	mov r1, r7
 	mov r2, r4
-	bl sub_8120504
+	bl battle_packChipIntoBattlePackEntry_8120504
 	b loc_81204F4
 loc_81204EE:
 	mov r0, #0
@@ -36700,9 +36700,9 @@ loc_81204F4:
 // symdb: Pack a chip ID into an 8-byte battle "chip pack" entry (slot id, code A/B, element, xxxx).
 // symdb: (r0 = count (unused after), r1 = outPtr (entry[0]), r2 = chipId, r3 = unused) -> r0 =
 // symdb: (elementIdx<<16)|(codeB<<8)|(chipId+1) ; r0/r1 clobbered, r4..r7 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120504.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_packChipIntoBattlePackEntry_8120504.yaml
 	thumb_local_start
-sub_8120504:
+battle_packChipIntoBattlePackEntry_8120504:
 	push {r4-r7,lr}
 	mov r7, r1
 	mov r4, r2
@@ -36733,7 +36733,7 @@ loc_8120520:
 	str r0, [r7,#4]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8120504
+	thumb_func_end battle_packChipIntoBattlePackEntry_8120504
 
 // symdb: Queue an OAM sprite entry for a battle object's status / damage indicator, if the previous draw step succeeded
 // symdb: (r0 = draw result code, r1 = battle object ptr, r2 = ?) -> r0 = 0xff ; side effects: queues an

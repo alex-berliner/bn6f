@@ -3824,8 +3824,8 @@ int __fastcall sub_8133434(int a1)
 
     submenu_clearBgIfClosed_8134594(a1);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    object_resolveTableEntryWrapper_8134548();
     chatbox_mask_eFlags2009F38(128);
     if ( v2 )
     {
@@ -4239,8 +4239,8 @@ int sub_8133788()
     }
     submenu_clearBgIfClosed_8134594(v1);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    return sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    return object_resolveTableEntryWrapper_8134548();
 }
 
 
@@ -4393,9 +4393,9 @@ void __fastcall __noreturn sub_8133944(int a1)
     if ( !v4 )
     {
         submenu_clearBgIfClosed_8134594(v3);
-        sub_81345B0();
+        battleObject_runBeastStatusEffect_81345B0();
         object_resolveTableEntryByIndex_8134538();
-        sub_8134548();
+        object_resolveTableEntryWrapper_8134548();
         battleObject_submenuRenderFolderAndChips_81341A0();
     }
     sub_81347A4();
@@ -4456,8 +4456,8 @@ int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
     }
     submenu_clearBgIfClosed_8134594(v2);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    return sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    return object_resolveTableEntryWrapper_8134548();
 }
 
 
@@ -4533,8 +4533,8 @@ int __fastcall sub_8133A68(int a1)
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    return sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    return object_resolveTableEntryWrapper_8134548();
 }
 
 
@@ -4569,8 +4569,8 @@ int __fastcall sub_8133B18(int a1)
     v3 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v3);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    return sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    return object_resolveTableEntryWrapper_8134548();
 }
 
 
@@ -4598,8 +4598,8 @@ int __fastcall sub_8133B74(int a1)
     v4 = battle_spawnFixedArgEffect_wrapper_81345E8();
     submenu_clearBgIfClosed_8134594(v4);
     object_resolveTableEntryByIndex_8134538();
-    sub_81345B0();
-    return sub_8134548();
+    battleObject_runBeastStatusEffect_81345B0();
+    return object_resolveTableEntryWrapper_8134548();
 }
 
 
@@ -5089,7 +5089,7 @@ int object_resolveTableEntryByIndex_8134538()
 
 
 // 0x8134548
-int sub_8134548()
+int object_resolveTableEntryWrapper_8134548()
 {
     return object_resolveTableEntry_8134558(386, 28, 40, 46);
 }
@@ -5118,7 +5118,7 @@ int __fastcall submenu_clearBgIfClosed_8134594(int a1)
 
 
 // 0x81345b0
-int sub_81345B0()
+int battleObject_runBeastStatusEffect_81345B0()
 {
     return battleObject_updateShieldOrStatusEffect_813468C(243, 22, 0, 17);
 }

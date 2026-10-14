@@ -956,7 +956,7 @@ sub_8089704:
 	tst r0, r7
 	beq loc_8089738
 	bl sub_81421D0
-	bl sub_8142190
+	bl battle_checkScenarioEffectActive_8142190
 	beq loc_8089730
 	bl sub_8142A84
 	beq loc_808972E

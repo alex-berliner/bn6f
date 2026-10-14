@@ -528,7 +528,7 @@ int sub_8142184()
 
 
 // 0x8142190
-int __fastcall sub_8142190(int a1)
+int __fastcall battle_checkScenarioEffectActive_8142190(int a1)
 {
     return byte_2000780[a1 + 16];
 }

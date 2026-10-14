@@ -31318,7 +31318,7 @@ int __noreturn battleObject_initProjectileFromTable_80CA2D4()
 
 
 // 0x80ca3a0
-int __noreturn sub_80CA3A0()
+int __noreturn object_presentCollisionAndHandleHit_80CA3A0()
 {
     int v0; // r5
     int v1; // r0
@@ -84055,7 +84055,7 @@ signed int aiAttack_stepStateMachine_80EB04C()
 
 
 // 0x80eb088
-void sub_80EB088()
+void battleObject_aiAttackStepMoveTowardTarget_80EB088()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -84122,7 +84122,7 @@ LABEL_14:
 
 
 // 0x80eb128
-int sub_80EB128()
+int battle_aiAttack_applyPanelMove_80EB128()
 {
     Battle *v0; // r5
     int v1; // r7

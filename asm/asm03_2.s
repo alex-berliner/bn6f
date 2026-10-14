@@ -670,7 +670,7 @@ off_804646C:
 	.word object_dispatchModeHandler_81178D8+1
 	.word sub_8117BC8+1
 	.word objectStateDispatcher_8117D2C+1
-	.word sub_8117EC8+1
+	.word battleObject_aiStateJumpTableDispatcher_8117EC8+1
 	.word sub_8118344+1
 	.word sub_81187E8+1
 	.word sub_8118BA4+1

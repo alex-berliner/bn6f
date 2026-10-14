@@ -6557,8 +6557,8 @@ sub_8133434:
 	push {lr}
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne loc_8133458
@@ -7021,8 +7021,8 @@ loc_81337A8:
 loc_81337B0:
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8133788
@@ -7166,8 +7166,8 @@ loc_81338BA:
 loc_81338C6:
 	bl battleObject_drawFolderEditScreenGfx_8134310
 
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	thumb_func_end folderEdit_step_813388C
 // symdb: Per-frame tick for the in-battle submenu folder-edit screen: animates the folder panel, then redraws the scrolling background, submenu bg, folder/chip graphics and dispatches chip-select AI ticks for slots 5/6.
@@ -7211,9 +7211,9 @@ loc_813390E:
 	bl sub_8133E88
 
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_81345B0
+	bl battleObject_runBeastStatusEffect_81345B0
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_8134548
+	bl object_resolveTableEntryWrapper_8134548
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 	bl battleObject_drawFolderEditScreenGfx_8134310
 	bl battleObject_alignRowOffsetCheckSN3_81353DC
@@ -7250,9 +7250,9 @@ loc_8133964:
 	bl sub_8134740
 loc_813396C:
 	bl submenu_clearBgIfClosed_8134594
-	bl sub_81345B0
+	bl battleObject_runBeastStatusEffect_81345B0
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_8134548
+	bl object_resolveTableEntryWrapper_8134548
 	bl battleObject_submenuRenderFolderAndChips_81341A0
 
 	bl battleObject_drawFolderEditScreenGfx_8134310
@@ -7341,8 +7341,8 @@ loc_8133A1E:
 loc_8133A2A:
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	.balign 4, 0
 off_8133A3C:
@@ -7434,8 +7434,8 @@ loc_8133AE2:
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	.balign 4, 0
 off_8133B08:
@@ -7481,8 +7481,8 @@ loc_8133B4C:
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8133B18
@@ -7509,8 +7509,8 @@ loc_8133B8E:
 	bl battle_spawnFixedArgEffect_wrapper_81345E8
 	bl submenu_clearBgIfClosed_8134594
 	bl object_resolveTableEntryByIndex_8134538
-	bl sub_81345B0
-	bl sub_8134548
+	bl battleObject_runBeastStatusEffect_81345B0
+	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	thumb_func_end sub_8133B74
 
@@ -8770,9 +8770,9 @@ object_resolveTableEntryByIndex_8134538:
 
 // symdb: Thin tail-call wrapper that calls object_resolveTableEntry_8134558 with fixed args (table 0x182, fields 0x1C/0x28/0x2E) and returns its result.
 // symdb: (r0, r1, r2, r3) -> r0 ; tail-calls to object_resolveTableEntry_8134558
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134548.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_resolveTableEntryWrapper_8134548.yaml
 	thumb_local_start
-sub_8134548:
+object_resolveTableEntryWrapper_8134548:
 	push {lr}
 	ldr r0, dword_8134588 // =0x182 
 	mov r1, #0x1c
@@ -8780,7 +8780,7 @@ sub_8134548:
 	mov r3, #0x2e 
 	bl object_resolveTableEntry_8134558
 	pop {pc}
-	thumb_func_end sub_8134548
+	thumb_func_end object_resolveTableEntryWrapper_8134548
 
 // symdb: Computes a packed object ID from a table-index and sub-identifier, reads two 16-bit attributes from the referenced entry, and delegates resolution to sub_811FA98 (lookup type 0x20002, field 0xC24C, count 100, entry-type 7).
 // symdb: void object_resolveTableEntry_8134558(u32 index, u32 sub_id, u32 attr_a_off, u32 attr_b_off,
@@ -8844,9 +8844,9 @@ locret_81345AC:
 // symdb: Triggers a single beast/transform-style status effect update on the active battle object (id 0xF3, param 0x16, 0x11) via battleObject_updateShieldOrStatusEffect_813468C
 // symdb: (r10 = Toolkit) -> void ; side effect: dispatches a status-effect step through the shield/status
 // symdb: helper
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81345B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runBeastStatusEffect_81345B0.yaml
 	thumb_local_start
-sub_81345B0:
+battleObject_runBeastStatusEffect_81345B0:
 	push {r4-r7,lr}
 	mov r0, #0xf3
 	mov r1, #0x16
@@ -8864,7 +8864,7 @@ dword_81345CC:
 	.word 0x0
 dword_81345D0:
 	.word 0x10000000
-	thumb_func_end sub_81345B0
+	thumb_func_end battleObject_runBeastStatusEffect_81345B0
 
 // symdb: Run the battle-object action/state-update step for the shield-or-status-effect helper with hard-coded parameters (0x5a/0x20/0x20/0x12) and return its u8 result.
 // symdb: (r5/r10 = toolkit/aux; no caller-supplied arg registers meaningful here) -> r0 = u8 result from
