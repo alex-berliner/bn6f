@@ -51,8 +51,8 @@ loc_800EDC6:
 	pop {r5,r7,pc}
 	thumb_func_end battle_getSelectedChipForUse_800ED90
 
-// symdb: Gather state/info fields for a battle object, branching on whether it is an actor (type 2) — actor path reads hand-slot data and calls battle_chipElementWeaknessBonus_800EF34, otherwise returns chip metadata.
-// symdb: // In:  r0 = battle object ptr, r1 = caller-saved value forwarded to battle_chipElementWeaknessBonus_800EF34, //      r4 =
+// symdb: Gather state/info fields for a battle object, branching on whether it is an actor (type 2) — actor path reads hand-slot data and calls sub_800EF34, otherwise returns chip metadata.
+// symdb: // In:  r0 = battle object ptr, r1 = caller-saved value forwarded to sub_800EF34, //      r4 =
 // symdb: preserved-through value, r10 / lr used by caller // Out: r0..r4 = (see details); nz/c/v/lr
 // symdb: clobbered; r5..r7 preserved SubEdd0Out getBattleObjectStateInfo_800EDD0(u32 obj, u32 callerR1,
 // symdb: u32 r4_in);
@@ -441,6 +441,10 @@ loc_800F094:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_chipElementWeaknessBonus_800EF34
 
+// symdb: For a given chip ID and a battle object, look up which battle object on the opposite alliance is targeted (returns a battle object index in r0 and a category/tag in r1).
+// symdb: (r0 = chipId, r1 = ?battleObject) -> r0 = targetBattleObjectIndex, r1 = targetCategory ; side
+// symdb: effects: reads chip DB and alliance team table
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800F09E.yaml
 	thumb_local_start
 sub_800F09E:
 	push {r4,r6,r7,lr}
@@ -9357,6 +9361,10 @@ loc_8012E90:
 	.word dword_2036820
 	thumb_func_end battleObject_playerAIUpdate_8012E74
 
+// symdb: tail-call passthrough that runs the PWR-atk / joypad-related update
+// symdb: (in = r5, r10, lr) -> out r0 = result of pwrAtkRelated_readsFromJoypad_8012FC8 ; no side effects
+// symdb: beyond callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012EA0.yaml
 	thumb_local_start
 sub_8012EA0:
 	push {lr}
@@ -11110,6 +11118,9 @@ locret_80139F4:
 	pop {r7,pc}
 	thumb_func_end sub_80139C4
 
+// symdb: Applies a per-turn status/elemental effect (e.g. poison, paralyze, freeze, root, blind, soft-delete) to the navi represented by `r5`'s BattleObject using the byte at `CollisionData+0xA4/0xA5`.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, ...caller-saved r4..r12/lr) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80139F6.yaml
 	thumb_local_start
 sub_80139F6:
 	push {r4,lr}
@@ -12385,6 +12396,10 @@ dword_80142D8:
 	.word 0x400
 	thumb_func_end battle_applySelfDamageFromBattleEffect_80142C2
 
+// symdb: Tests several hostility/anger-related criteria for a battle object and sets the "anger" ObjectFlag2 bit if any condition triggers.
+// symdb: (r5 = battle object, r10 = toolkit) -> none ; side effects: may set OBJECT_FLAGS_2_UNK_BIT_21
+// symdb: (0x200) on the object's CollisionData.ObjectFlags2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80142DC.yaml
 	thumb_local_start
 sub_80142DC:
 	push {r4,lr}
@@ -27384,6 +27399,10 @@ off_801C46C:
 	.word off_801D92C
 	thumb_func_end sub_801C416
 
+// symdb: Drives the player's custom gauge forward each frame; on hitting 0x4000 sets the battle-flags custom-full bit and plays the full-gauge SFX.
+// symdb: (no args; r10 = battle toolkit) -> void ; side effects: reads/writes r5+0x20/0x22, sets battle
+// symdb: flags, plays SE 0x8F
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C470.yaml
 	thumb_local_start
 sub_801C470:
 	push {lr}
@@ -27630,10 +27649,10 @@ locret_801C63E:
 	pop {pc}
 	thumb_func_end sub_801C5F4
 
-// symdb: Draws/updates a battle cursor tile over the selected panel for the actor in r5, including a flashing variant and end-of-battle check.
-// symdb: (r5 = actor/BattleObject*, r10 = *Toolkit) -> r0 = unused ; side effects: writes BG tile ids via
-// symdb: bgmap, queues a 0x20-byte GFX upload, early-returns during end-of-battle
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C640.yaml
+// symdb: Renders the battle BG tile-id blocks and arrow indicators used by the turn-order selection BG overlay
+// symdb: (r5 = *Toolkit, r10 = ?, lr) -> r0 = ?, nz/c/v ; side effects: queue GFX transfers and write BG
+// symdb: tile-ids
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C640.yaml
 	thumb_local_start
 sub_801C640:
 	push {r4-r6,lr}
@@ -28775,7 +28794,7 @@ off_801CE5C:
 	thumb_func_end sub_801CE28
 
 // symdb: Ticks a staged screen fade-out, dropping the fade parameter by 0x20 each step until the work block advances to state 4.
-// symdb: void sub_801CE6C(u8* work /* r5 */); calls sprite_setAffineTransform_802FE7A(0, 0x40, 0xE0 - 0x20*work[7], work[6]);
+// symdb: void sub_801CE6C(u8* work /* r5 */); calls sub_802FE7A(0, 0x40, 0xE0 - 0x20*work[7], work[6]);
 // symdb: returns r0 = step counter (0 on finishing tick); preserves r4-r7; c/v from `cmp counter,#5`, nz
 // symdb: from `movs r0,#0` only on the finishing tick
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/screenFadeOutStepTick_801CE6C.yaml
@@ -32349,6 +32368,12 @@ locret_801E790:
 	mov pc, lr
 	thumb_func_end sub_801E780
 
+// symdb: Kicks off a battle sub-effect (intro/effect animation) identified by a kind byte: guards re-entry via eStruct2035280+0x40 bit 0x8000, allocates a sprite slot, picks the per-kind handler from off_801E944, runs it, then arms the eStruct request bit.
+// symdb: (r0 = kind, r1 = aux/param1, r2 = aux/param2, r3 = aux/param3) -> r0 = 0 on success, 1 if the
+// symdb: effect is already busy or no slot was free; side effects: writes 9 bytes at byte_2036840, sets
+// symdb: eStruct2035280+0x40 bit 0x8000, calls dispatch_801DA48(0x8000) and dispatch_801DACC(0x100) when
+// symdb: kind==0x24
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E792.yaml
 	thumb_func_start sub_801E792
 sub_801E792:
 	push {r4-r7,lr}

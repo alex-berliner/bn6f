@@ -723,6 +723,10 @@ off_81445F4:
 	.word word_2006DFC
 	thumb_func_end sub_81444E4
 
+// symdb: link-cable SIO control tick (EWRAM at eTimerEnable200F460) polled each frame by the global handler
+// symdb: () -> ; side effects: mutates EWRAM bytes eTimerEnable200F450/454/460..474 and (via
+// symdb: libSIOControlStart) the SIO hardware
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81445F8.yaml
 	thumb_func_start sub_81445F8
 sub_81445F8:
 	push {r4,lr}
@@ -22166,6 +22170,10 @@ dword_814E4D8:
 	.word 0x68736D53
 	thumb_func_end m4a_mplay_trackEndJumpStub_814E4CC
 
+// symdb: Stops all currently-playing sound channels in the sound bank when bit 0x80 of its flags is set
+// symdb: (r0 = ignored, r1 = sound bank struct ptr) -> r0 = saved LR (tail-call-style return); side
+// symdb: effects: clears each channel's state, calls m4a_mplay_trackEndJumpStub per channel
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E4DC.yaml
 	thumb_func_start sub_814E4DC
 sub_814E4DC:
 	push {r4-r6,lr}
@@ -24331,6 +24339,9 @@ loc_814F2EA:
 	bx r0
 	thumb_func_end sub_814F228
 
+// symdb: m4a sound channel envelope/LFO mixer step used by the music player (likely an xcmd/vcmd handler dispatching on voice flags)
+// symdb: (r1 = SoundChannel* voice state) -> r0 = saved LR (tail-call return)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814F2F0.yaml
 	thumb_func_start sub_814F2F0
 sub_814F2F0:
 	push {r4,lr}

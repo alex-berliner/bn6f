@@ -381,6 +381,11 @@ off_809D468:
 	.word 0xFFFF
 	thumb_func_end owPlayer_update_809D348
 
+// symdb: Overworld player's per-frame sub-state dispatcher that picks one of five JumptableIndex_09 sub-states based on event/state flags and writes the chosen state via owPlayer_setJumptableIndex09AndOthers_809e004.
+// symdb: (r5 = overworld player object ptr, r10 = toolkit ptr) -> void ; side effects: overwrites
+// symdb: r5+oOWPlayerObject_JumptableIndex_09 (or its pending slot at +0x0b), may write +0x0a, +0x09,
+// symdb: +0x14 fields on the player; no caller-visible return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D470.yaml
 	thumb_local_start
 sub_809D470:
 	push {r4,lr}
@@ -433,6 +438,13 @@ locret_809D4D6:
 	.word 0x2000AA0
 	thumb_func_end sub_809D470
 
+// symdb: Overworld player per-frame dispatcher: handles the player-object interaction probe first; otherwise picks the next player jumptable index based on per-frame checks (gate/tile interaction, door advance, advance-forward event, bit-0x10 state).
+// symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr, lr) -> r0 = result of the chosen sub-check (zero/non-
+// symdb: zero as flags); side effects: writes oOWPlayerObject_Unk_0a, sometimes oOWPlayerObject_Unk_13,
+// symdb: and oOWPlayerObject_JumptableIndex_09 (or its pending slot) via
+// symdb: owPlayer_setJumptableIndex09AndOthers_809e004; reads oOWPlayerObject_FacingDirection and
+// symdb: oOWPlayerObject_Unk_11.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D4DC.yaml
 	thumb_local_start
 sub_809D4DC:
 	push {lr}
@@ -742,6 +754,10 @@ off_809D728:
 	.word byte_809D0DC
 	thumb_func_end calledWhenUsingSlipRun_809D6BC
 
+// symdb: Overworld player per-frame move handler: if the countdown has not finished, integrates the cached X/Y velocities into the player's coordinates and marks the per-tick state as 2; otherwise snaps the player onto the precomputed target X/Y/Z.
+// symdb: (r5 = OWPlayerObject*) -> ; side effects: writes Unk_38/Unk_3c delta into X/Y (and sets Unk_13 =
+// symdb: 2), or copies NextX/Y/Z into X/Y/Z of the OW player object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D730.yaml
 	thumb_local_start
 sub_809D730:
 	push {lr}
@@ -1733,6 +1749,9 @@ off_809DE90:
 	.word byte_809D0DC
 	thumb_func_end sub_809DE60
 
+// symdb: Overworld player helper that clears SlipRun/related story flags when a guard story flag is set, otherwise only clears the SlipRun cancel flag unless B is held
+// symdb: () -> ; side effects: clears story/event flags via ClearEventFlagFromImmediate
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DE98.yaml
 	thumb_local_start
 sub_809DE98:
 	push {lr}

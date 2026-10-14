@@ -381,6 +381,10 @@ loc_813B9A0:
 	.balign 4, 0x00
 	thumb_func_end sub_813B950
 
+// symdb: Reads one byte from the toolkit's 0x200414c array at offset (r0 + r1*7) and returns its value/zero-flag through r0.
+// symdb: (r0 = item index, r1 = some other index/argument, r10 = toolkit ptr) -> r0 = byte at that offset
+// symdb: ; side effects: none (pure load via tail-return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B9B4.yaml
 	thumb_func_start sub_813B9B4
 sub_813B9B4:
 	mov r3, r10

@@ -29267,6 +29267,11 @@ sub_811CAE4:
 	pop {pc}
 	thumb_func_end sub_811CAE4
 
+// symdb: Per-frame battle object update that advances a floating/oscillation effect (rotates sprite, scales, and offsets coords by sin/cos), decrementing a frames-left counter and bumping the +0xC counter when done.
+// symdb: (r5 = BattleObject*) -> r0 = 0/1 (done flag) ; side effects: mutates BattleObject +0x9, +0x10,
+// symdb: +0x14, +0x16, +0x18, +0x1a, +0x1c, +0x1e, writes sprite scale and position, and increments a
+// symdb: 32-bit counter at +0xC by 0xE.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CAEC.yaml
 	thumb_local_start
 sub_811CAEC:
 	push {lr}
@@ -36026,6 +36031,11 @@ dword_81200E8:
 	.word 0x7FFFFFFF
 	thumb_func_end battle_fieldLockDispatch_8120018
 
+// symdb: Fills a tile block with chip-name tiles for the battle select screen names row
+// symdb: (r0 = rowCount, r1 = destBaseTilesBlock, r2 = srcStringsOrDstForZero, r3 = baseTile |
+// symdb: (0x200<<16)) -> r0 = 5 ; side effects writes tile buffer at r1+(i*0x20) with chip-name font
+// symdb: glyphs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81200EC.yaml
 	thumb_func_start sub_81200EC
 sub_81200EC:
 	push {r4-r7,lr}
@@ -36530,6 +36540,10 @@ dword_8120454:
 	.word 0x20002
 	thumb_func_end sub_81203E4
 
+// symdb: Loads per-battle icon slot descriptors (chip ID + alt code) for a list of battle objects into an out buffer.
+// symdb: (r0 = startIndex, r1 = basePtr, r2 = outSlotsPtr, r3 = altCode, r5 = count) -> void ; side
+// symdb: effect: writes 2 u16 per slot to r2 (id, id+1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120458.yaml
 	thumb_func_start sub_8120458
 sub_8120458:
 	push {r4-r7,lr}

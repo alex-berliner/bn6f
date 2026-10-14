@@ -13840,6 +13840,10 @@ locret_80094D8:
 	pop {pc}
 	thumb_func_end sub_80094B6
 
+// symdb: Drives a battle-end fade-out and hands off to the post-battle state when the fade finishes.
+// symdb: (no input registers from caller) -> r0 = fade colour slot (1 or 4) on the first entry, nothing
+// symdb: afterwards ; sets oBattleState_Unk_03 and oBattleState_Index_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80094DA.yaml
 	thumb_local_start
 sub_80094DA:
 	push {lr}

@@ -3834,11 +3834,10 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Per-frame BBS request handler for the "Navi Portraits" reward screen — checks story flags and cutscene markers, then draws/initiates the GFX anim state and object-portrait rendering.
-// symdb: () -> flags nz (caller-decides routine) ; side effects: event-flag set/clear/test on a handful
-// symdb: of (high-byte, low-byte) pairs, BBS request flag 0x17/0x07 set/clear, GFXAnimState and battle/OW
-// symdb: object structs populated via the load_gfx_anim_*, struct_copy_80840C4,
-// symdb: sub_8083F80/8084080/8084180/8084214/80842D8, and sub_809E462 helpers
+// symdb: cutscene/gfx-anim state step: tests original-cutscene-script sentinels, toggles event flags, and runs one of several load_gfx_anim_* / struct_copy helpers
+// symdb: (r10 = Toolkit*) -> flags nz ; side effects: may clear/set event flags 0x17/0x07, may invoke
+// symdb: load_gfx_anim_8083FC0 / 8083FFC / 8084068, sub_8083F80, sub_8084080, sub_8084180, sub_8084214,
+// symdb: sub_80842D8, struct_copy_80840C4, sub_809E462, and reqBBS flag helpers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

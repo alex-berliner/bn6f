@@ -8658,6 +8658,11 @@ off_8134488:
 off_813448C:
 	.word 0x200
 	thumb_func_end battleObject_drawFolderEditScreenGfx_8134310
+// symdb: Draws a row of tile ids from `unk_20347D8` and `unk_2034814` onto two background tile blocks, then queues a sub-`sub_812053C` palette/VRAM-flagged word indexed by submenu-open state vs. a navi-stats byte, using `r5->0x18` as a column-shifted origin.
+// symdb: (r5 = ?, r10 = toolkit, lr) -> r0 = 0xff ; side effects: tile-block writes via
+// symdb: CopyBackgroundTiles, tilemap fills via sub_81202FC / sub_8120348, and a sub_812053C call that
+// symdb: builds a "0x4000"-flagged VRAM/palette word
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134490.yaml
 	thumb_local_start
 sub_8134490:
 	push {r4-r7,lr}

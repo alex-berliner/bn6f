@@ -795,7 +795,7 @@ off_8026A3C:
 	.word eStruct200F360
 	thumb_func_end sub_8026A28
 
-// symdb: Queries some value via sub_802FE48, stores it on the object, starts sprite_setAffineTransform_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
+// symdb: Queries some value via sub_802FE48, stores it on the object, starts sub_802FE7A with (0,0x40,0x40,value), then moves the object to state 4 and returns 0.
 // symdb: u8 sub_8026A50(S20364C0* self /* r5 */); /* returns 0 in r0, sets Z=1 N=0, clobbers r1-r3 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8026A50.yaml
 	thumb_local_start
@@ -14330,10 +14330,10 @@ wrapCountersAt203CFB0ToU16_802CDFE:
 	mov pc, lr
 	thumb_func_end wrapCountersAt203CFB0ToU16_802CDFE
 
-// symdb: Updates one side's battle counter for the object's alliance, either adding the tracked object's stored increment to the given value or raising the counter's recorded maximum.
-// symdb: u32 battle_updateSideCounter(u32 amount /*r0*/, BattleObject *object /*r5*/); // returns updated
-// symdb: amount in r0 and the counter block's tracked-object pointer in r2; clobbers r1, r3 and NZCV
-// symdb: flags
+// symdb: Adjusts an attacker's per-panel damage against its own battle object depending on alliance, returning the final per-panel damage value when the attacker is the current battle object.
+// symdb: (r0 = damage value to fold in, r5 = current BattleObject*) -> r0 = damage value (may be summed
+// symdb: into FinalDamage for self, or stored as PanelDamage1 if r5 differs); side effects: writes
+// symdb: FinalDamage for ally or PanelDamage1 for enemy in eS20364C0 Extra
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802CE10.yaml
 	thumb_func_start sub_802CE10
 sub_802CE10:

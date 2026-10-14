@@ -994,12 +994,9 @@ sub_80B88F0:
 	pop {pc}
 	thumb_func_end sub_80B88F0
 
-// symdb: Per-frame step that promotes a related/sub-object into its parent's slot, copying three header words from r4+0x34 onto r5+0x34, translating Y/Z by 0x20/0x1f, propagating X/Y by the parent's facing × a sub_80030BA scalar, then mirroring sprite state (color shader, final palette, Unk_11+render-info bits, flip, mosaic/alpha) and finally calling object_updateSprite unless the battle is time-stopped or the related object's CollisionData flags disable updates.
-// symdb: (r5 = parent BattleObject*, r10 = Toolkit*) -> r0..r3,r0..r7 clobbered; lr restored ; side
-// symdb: effects: writes r5+0x34..+0x40, r5+Y/Z16, r5+X/Y, r5 Flags (bit 0x02), r5 DirectionFlip, and r5
-// symdb: SpriteData; reads r5+0x34..+0x40 and r4 = r5->RelatedObject1Ptr; conditionally calls
-// symdb: object_freeMemory in an unreachable tail.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80B8932.yaml
+// symdb: Syncs the battle object's sprite state from its RelatedObject1Ptr (copy pose/sprite-fields, palette, alpha, flip) and advances its animation when not time-stopped.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0..r7/lr clobbered, no meaningful return to caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8932.yaml
 	thumb_local_start
 sub_80B8932:
 	push {r4,r6,lr}
@@ -42290,6 +42287,10 @@ loc_80CB98E:
 	pop {r4,pc}
 	thumb_func_end sub_80CB964
 
+// symdb: Per-frame handler for a battle object that removes stale collision data, emits a collision-effect spawn, and either routes to a CurAction dispatch or tears the object down via CUR_STATE_DESTROY.
+// symdb: (r4 = prev linked-list ptr, r5 = BattleObject*, r7 = ?, r8 = ?, r10 = Toolkit*) -> void ;
+// symdb: mutates r5->CollisionDataPtr, r5->CurStateActionPhaseAndPhaseInitialized, r0/r1/r2/r3
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80CB9E2.yaml
 	thumb_local_start
 sub_80CB9E2:
 	push {r4,r7,lr}
@@ -120250,10 +120251,10 @@ nullsub_104:
 	mov pc, lr
 	thumb_func_end nullsub_104
 
-// symdb: Per-frame AI/element-charge tick: charges an element based on the navi's alliance/team chip held, and resolves a Navi custom-bug Z transition for certain battles
-// symdb: side-effecting on the battle object in r5 and its AIDataPtr/Z; no return value (out only
-// symdb: restores r4/r6)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F0608.yaml
+// symdb: Per-frame AI tick for a Navi battle object: charges/picks the next chip, advances chip cooldown timers, and (when not flinch-bubbled or action 0x50) snaps Z to 0 or to 0x140000.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects on r5->CurAction-derived state,
+// symdb: r5->Z, AIData->PwrAtkCurChargeTime and chip-charge halfword in the BattleHand slot
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F0608.yaml
 	thumb_local_start
 sub_80F0608:
 	push {r4,r6,lr}
