@@ -23700,12 +23700,12 @@ void sub_80C57F4()
     sprite_setAnimation(v0, v7);
     sprite_loadAnimationData(v0);
     *(v0 + 8) = 4;
-    sub_80C5886();
+    battleObject_auraUpdateOrDestroy_80C5886();
 }
 
 
 // 0x80c5886
-void __noreturn sub_80C5886()
+void __noreturn battleObject_auraUpdateOrDestroy_80C5886()
 {
     int v0; // r5
     int v1; // r0
@@ -43975,7 +43975,7 @@ void __noreturn sub_80D22B0()
 
 
 // 0x80d2320
-void __noreturn sub_80D2320()
+void __noreturn battleObject_runUpdateActionsAndCollisions_80D2320()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -48050,7 +48050,7 @@ void __noreturn sub_80D4A48()
 
 
 // 0x80d4a98
-void __noreturn sub_80D4A98()
+void __noreturn object_destroyPhase_80D4A98()
 {
     int v0; // r5
     int v1; // r0
@@ -84094,7 +84094,7 @@ void battleObject_aiAttackStepMoveTowardTarget_80EB088()
     }
     else
     {
-        v6 = sub_800F964(v4);
+        v6 = battleObject_tryGetNextPanelInFacingDirection_800F964(v4);
     }
     if ( !v6 )
     {
@@ -84419,7 +84419,7 @@ int __fastcall sub_80EB402(int a1, int a2)
     int v5; // r1
 
     if ( !a2 )
-        return sub_800F964(a1);
+        return battleObject_tryGetNextPanelInFacingDirection_800F964(a1);
     if ( a2 == 1 )
         return sub_800F998(*(v2 + 18), *(v2 + 19), a1);
     if ( a2 == 2 )
@@ -84539,7 +84539,7 @@ void sub_80EB502()
             if ( v7 )
             {
                 v8 = v7;
-                if ( sub_800F964(v7) )
+                if ( battleObject_tryGetNextPanelInFacingDirection_800F964(v7) )
                 {
                     v0->parent = 0;
                     v0->ai->unk_68 = 0;
@@ -84547,7 +84547,7 @@ void sub_80EB502()
                     v10 = battle_getCrossNaviTableByte_8010332(v9);
                     v11 = v10;
                     v12 = battle_GetAllianceFactionFromBattleObject_80103A8(v10);
-                    sub_80116AE(v8, v11, v12);
+                    aiAttack_initVarsAndStart_80116AE(v8, v11, v12);
                 }
             }
         }
@@ -85204,7 +85204,7 @@ int __fastcall battle_aiBusterAttackTick_80EBE54(int a1, int a2, int a3)
 
 
 // 0x80ebeb2
-int sub_80EBEB2()
+int battleObject_aiAttackTickCharge_80EBEB2()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -85241,7 +85241,7 @@ int sub_80EBEB2()
         if ( result )
         {
             v7 = result;
-            result = sub_800F964(result);
+            result = battleObject_tryGetNextPanelInFacingDirection_800F964(result);
             if ( result )
             {
                 v0->parent = 0;
@@ -85250,7 +85250,7 @@ int sub_80EBEB2()
                 v9 = battle_getCrossNaviTableByte_8010332(v8);
                 v10 = v9;
                 v11 = battle_GetAllianceFactionFromBattleObject_80103A8(v9);
-                result = sub_80116AE(v7, v10, v11);
+                result = aiAttack_initVarsAndStart_80116AE(v7, v10, v11);
             }
         }
     }
@@ -85858,7 +85858,7 @@ int __fastcall sub_80EC490(int a1, int a2, int a3)
                 if ( result )
                 {
                     v9 = result;
-                    result = sub_800F964(result);
+                    result = battleObject_tryGetNextPanelInFacingDirection_800F964(result);
                     if ( result )
                     {
                         v3->parent = 0;
@@ -85867,7 +85867,7 @@ int __fastcall sub_80EC490(int a1, int a2, int a3)
                         v11 = battle_getCrossNaviTableByte_8010332(v10);
                         v12 = v11;
                         v13 = battle_GetAllianceFactionFromBattleObject_80103A8(v11);
-                        result = sub_80116AE(v9, v12, v13);
+                        result = aiAttack_initVarsAndStart_80116AE(v9, v12, v13);
                     }
                 }
             }
@@ -86029,13 +86029,13 @@ void battle_aiAttackVarsTryResetAndProcessAction_80EC67E()
             if ( v9 )
             {
                 v10 = v9;
-                if ( sub_800F964(v9) )
+                if ( battleObject_tryGetNextPanelInFacingDirection_800F964(v9) )
                 {
                     sub_80EC792();
                     v12 = battle_getCrossNaviTableByte_8010332(v11);
                     v13 = v12;
                     v14 = battle_GetAllianceFactionFromBattleObject_80103A8(v12);
-                    sub_80116AE(v10, v13, v14);
+                    aiAttack_initVarsAndStart_80116AE(v10, v13, v14);
                 }
             }
         }
@@ -87846,7 +87846,7 @@ void sub_80ED7A2()
             if ( v8 )
             {
                 v9 = v8;
-                if ( sub_800F964(v8) )
+                if ( battleObject_tryGetNextPanelInFacingDirection_800F964(v8) )
                 {
                     v0->parent = 0;
                     v0->ai->unk_68 = 0;
@@ -87854,7 +87854,7 @@ void sub_80ED7A2()
                     v11 = battle_getCrossNaviTableByte_8010332(v10);
                     v12 = v11;
                     v13 = battle_GetAllianceFactionFromBattleObject_80103A8(v11);
-                    sub_80116AE(v9, v12, v13);
+                    aiAttack_initVarsAndStart_80116AE(v9, v12, v13);
                 }
             }
         }
@@ -92675,7 +92675,7 @@ LABEL_61:
         v21 = v18;
         LOWORD(v18) = v19;
         v22 = battle_GetAllianceFactionFromBattleObject_80103A8(v20);
-        result = sub_80116AE(v21, v18, v22);
+        result = aiAttack_initVarsAndStart_80116AE(v21, v18, v22);
     }
     else if ( sub_800FFFE() & 0x3000 )
     {

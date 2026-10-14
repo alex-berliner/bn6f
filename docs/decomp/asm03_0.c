@@ -7825,7 +7825,7 @@ int battle_initChipSelect_802BD60()
     HIBYTE(dword_20364C4) = BYTE2(dword_20364C4);
     (*(&off_802BDA0 + eS20364C0))();
     CopyBackgroundTiles(SBYTE2(dword_20364C4), 2, 3, &unk_2034B30, 24, &dword_10 + 2);
-    sub_802C460();
+    battle_chipSelect_handleUpDownInput_802C460();
     return BYTE1(dword_20364C4);
 }
 
@@ -8404,7 +8404,7 @@ int __fastcall setupNaviDisplay_802C34E(int a1)
 
 
 // 0x802c460
-void sub_802C460()
+void battle_chipSelect_handleUpDownInput_802C460()
 {
     int v0; // r5
     int v1; // r0
@@ -15872,7 +15872,7 @@ int __fastcall sub_8031808(_DWORD *a1)
 
 
 // 0x803182a
-int __fastcall sub_803182A(_DWORD *a1)
+int __fastcall battle_calcPanelDistance_803182A(_DWORD *a1)
 {
     int *v1; // ST00_4
     int v2; // r0

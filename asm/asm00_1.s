@@ -3125,10 +3125,10 @@ OverworldMapObjectUpdateJumptable:
 	.word battleObject_dispatchAICustomOp_80A57AC+1
 	.word battle_beastOutDispatch_80A5AD4+1
 	.word battleObject_dispatchRunActionByState_80A6A16+1
-	.word sub_80A6E98+1
+	.word battle_ai_dispatchBeastSp_80A6E98+1
 	.word battleObject_dispatchAIData_80A72B4+1
 	.word sub_80A77A8+1
-	.word sub_80A781C+1
+	.word battleObject_dispatchOnSubtype_80A781C+1
 	.word battle_aiDispatchByAIDataBLeftAbility_80A78B8+1
 	.word sub_80A7C84+1
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1

@@ -11044,7 +11044,7 @@ int __fastcall sub_814E9F0(int a1)
     v1 = sound_MusicTable + (8 * a1 & 0x7FFFF);
     v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
-        sub_814F1E8(v2, *v2, v2);
+        sound_musicPlayerSetStopFlag_814F1E8(v2, *v2, v2);
     return v4;
 }
 
@@ -11075,7 +11075,7 @@ int __fastcall sound_tickAllMusicPlayers_814EA58(int a1, int a2, int a3)
     v4 = 32;
     do
     {
-        sub_814F1E8(*v3, a2, a3);
+        sound_musicPlayerSetStopFlag_814F1E8(*v3, a2, a3);
         v3 += 3;
         --v4;
     }
@@ -11583,7 +11583,7 @@ LABEL_16:
 
 
 // 0x814f1e8
-int __fastcall sub_814F1E8(int a1, int a2, int a3)
+int __fastcall sound_musicPlayerSetStopFlag_814F1E8(int a1, int a2, int a3)
 {
     int v3; // r6
     int v4; // r4

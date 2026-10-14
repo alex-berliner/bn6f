@@ -639,9 +639,9 @@ sub_814204C:
 // symdb: Returns an AI data pointer for the given enemy slot using the toolkit/enemy-index lookup table.
 // symdb: (r0 = enemyIndex) -> r0 = ptr (in r7, copied to r0 on exit); r10 = toolkit (preserved by callee-
 // symdb: saved)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142050.yaml
-	thumb_func_start sub_8142050
-sub_8142050:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAIDataForEnemyIndex_8142050.yaml
+	thumb_func_start battle_getAIDataForEnemyIndex_8142050
+battle_getAIDataForEnemyIndex_8142050:
 	push {r4-r6,lr}
 	lsl r4, r0, #2
 	bl battle_getEnemyIndexFromMapGroup_8142080
@@ -653,7 +653,7 @@ sub_8142050:
 	.balign 4, 0
 off_8142064:
 	.word off_8141B18
-	thumb_func_end sub_8142050
+	thumb_func_end battle_getAIDataForEnemyIndex_8142050
 
 // symdb: Returns a pointer to one of up to four AIData slots stored at unk_2000BE0, indexed by r0.
 // symdb: (r0 = actor index 0..3) -> r0 = &unk_2000BE0 + r0 * 0x28 ; no side effects
@@ -1894,9 +1894,9 @@ loc_8142AF6:
 // symdb: Iterates the overworld map object array (eOverworldMapObjects), calling battleObject_getPanelChipByIndexAtPlayerPos_8142B28 per entry, and counts how many objects' returned "panel chip" value matches r0; returns that count (0 if none match).
 // symdb: (r0 = key chip value, r10 = toolkit) -> r0 = match count ; side effects: walks the global OW
 // symdb: map-object array of 0x38 (56) entries and consumes r0..r5/r6/r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B04.yaml
-	thumb_func_start sub_8142B04
-sub_8142B04:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_countByChipOrSomething_8142B04.yaml
+	thumb_func_start owMapObject_countByChipOrSomething_8142B04
+owMapObject_countByChipOrSomething_8142B04:
 	push {r4-r7,lr}
 	mov r7, r0
 	ldr r5, off_8142B54 // =eOverworldMapObjects
@@ -1916,7 +1916,7 @@ loc_8142B1A:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142B04
+	thumb_func_end owMapObject_countByChipOrSomething_8142B04
 
 // symdb: Looks up the battle object at the player's current overworld tile and returns its panel chip id (the halfword at offset 4), or 0 if no object matches
 // symdb: (r5 = pointer to a battle object state with bytes at +0 and +1 used) -> r0 = halfword from

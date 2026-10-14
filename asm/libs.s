@@ -23006,7 +23006,7 @@ sub_814E9F0:
 	cmp r1, r0
 	bne loc_814EA16
 	mov r0, r2
-	bl sub_814F1E8
+	bl sound_musicPlayerSetStopFlag_814F1E8
 loc_814EA16:
 	pop {r0}
 	bx r0
@@ -23048,7 +23048,7 @@ off_814EA54:
 	thumb_func_end sub_814EA24
 
 // symdb: Iterates the 32-entry music player table gMPlayTable and ticks every music player once (per-frame audio update).
-// symdb: void sub_814EA58(void); // takes no meaningful arguments; calls sub_814F1E8(playerInfo) for each
+// symdb: void sub_814EA58(void); // takes no meaningful arguments; calls sound_musicPlayerSetStopFlag_814F1E8(playerInfo) for each
 // symdb: entry; returns with r0 = return address
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_tickAllMusicPlayers_814EA58.yaml
 	thumb_func_start sound_tickAllMusicPlayers_814EA58
@@ -23063,7 +23063,7 @@ sound_tickAllMusicPlayers_814EA58:
 	mov r4, r0
 loc_814EA68:
 	ldr r0, [r5]
-	bl sub_814F1E8
+	bl sound_musicPlayerSetStopFlag_814F1E8
 	add r5, #0xc
 	sub r4, #1
 	cmp r4, #0
@@ -24199,9 +24199,9 @@ dword_814F1E4:
 // symdb: (r0 = musicPlayerStruct*) -> void ; side effect: writes `0x68736D53` (`"Smsh"` little-endian)
 // symdb: into `[r0+0x34]`, may OR `0x80000000` into `[r0+4]`, and stops `r4 = [r0+8]` banks of channels
 // symdb: pointed at by `[r0+0x2C]` (each 0x50 bytes) via `sound_stopAllChannelsInBank_814E4DC`.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F1E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_musicPlayerSetStopFlag_814F1E8.yaml
 	thumb_local_start
-sub_814F1E8:
+sound_musicPlayerSetStopFlag_814F1E8:
 	push {r4-r6,lr}
 	mov r6, r0
 	ldr r1, [r6,#0x34]
@@ -24237,7 +24237,7 @@ loc_814F21E:
 	.balign 4, 0
 dword_814F224:
 	.word 0x68736D53
-	thumb_func_end sub_814F1E8
+	thumb_func_end sound_musicPlayerSetStopFlag_814F1E8
 
 // symdb: Drives the m4a sound-player fade timer once per frame, ramps the volume down to 0, then stops every channel in the player bank and clears its entry bit.
 // symdb: (r0 = SoundMainPlayerState*) -> (popped PC into r0, no other return value) ; mutates

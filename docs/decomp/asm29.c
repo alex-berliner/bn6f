@@ -2121,7 +2121,7 @@ int battleObject_getFromListPair_80A6E78()
 
 
 // 0x80a6e98
-int sub_80A6E98()
+int battle_ai_dispatchBeastSp_80A6E98()
 {
     int v0; // r5
 
@@ -2159,12 +2159,12 @@ void __noreturn sub_80A6EBC()
     if ( !v3 )
         sub_80A7208();
     *(v0 + 8) = 4;
-    sub_80A6F2C();
+    battleObject_updateAnimation_80A6F2C();
 }
 
 
 // 0x80a6f2c
-void __noreturn sub_80A6F2C()
+void __noreturn battleObject_updateAnimation_80A6F2C()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -2546,12 +2546,12 @@ void __noreturn sub_80A72D8()
     if ( !v4 )
         sub_80A76E8();
     *(v0 + 8) = 4;
-    sub_80A7354();
+    battleObject_updateFromCurAction_80A7354();
 }
 
 
 // 0x80a7354
-void __noreturn sub_80A7354()
+void __noreturn battleObject_updateFromCurAction_80A7354()
 {
     int v0; // r5
     int v1; // r6
@@ -2580,7 +2580,7 @@ void __noreturn sub_80A7354()
                 else
                 {
                     sub_80A73A0();
-                    sub_80A75DC();
+                    owMapObject_event5F1Trigger_80A75DC();
                 }
             }
         }
@@ -2873,7 +2873,7 @@ char *sub_80A75A4()
 
 
 // 0x80a75dc
-signed int sub_80A75DC()
+signed int owMapObject_event5F1Trigger_80A75DC()
 {
     int *v0; // r5
     int *v1; // r6
@@ -3082,7 +3082,7 @@ int sub_80A7812()
 
 
 // 0x80a781c
-int sub_80A781C()
+int battleObject_dispatchOnSubtype_80A781C()
 {
     int v0; // r5
 
@@ -3106,12 +3106,12 @@ void __noreturn sub_80A783C()
     sprite_noShadow(v0);
     sprite_setPallete(0);
     *(v0 + 8) = 4;
-    sub_80A786C();
+    sprite_setupBeastOutSprite_80A786C();
 }
 
 
 // 0x80a786c
-void __noreturn sub_80A786C()
+void __noreturn sprite_setupBeastOutSprite_80A786C()
 {
     int v0; // r4
     int v1; // r5
@@ -3195,7 +3195,7 @@ void battle_beastSpStepper_80A7912()
     *(v0 + 20) = v1[4];
     do
     {
-        sub_8142050(*(v0 + 4));
+        battle_getAIDataForEnemyIndex_8142050(*(v0 + 4));
         v2 += *v1;
         (*(&off_80A7950 + *v2))();
     }
@@ -3359,7 +3359,7 @@ signed int sub_80A7AE0()
 
     sub_80A7B7A((v1 + 1));
     v3 = v2;
-    sub_8142050(*(v0 + 4));
+    battle_getAIDataForEnemyIndex_8142050(*(v0 + 4));
     sub_80A7B9E(v3 - v1);
     return 1;
 }
@@ -4068,12 +4068,12 @@ void __noreturn sub_80A822C()
     *(v0 + 16) = *(v2 + 1) << 16;
     *(v0 + 20) = *(v2 + 2) << 16;
     *(v0 + 8) = 4;
-    sub_80A827C(4);
+    battleObject_updateSpriteAndMaybeReloadAnim_80A827C(4);
 }
 
 
 // 0x80a827c
-void __fastcall __noreturn sub_80A827C(int a1)
+void __fastcall __noreturn battleObject_updateSpriteAndMaybeReloadAnim_80A827C(int a1)
 {
     int v1; // r5
     signed int v2; // r0
@@ -4582,7 +4582,7 @@ void beastSP_initOrUpdate_80A86B4()
     sprite_setPriority_8002E14(v9);
     *(v0 + 20) += 786432;
     v10 = 4;
-    sub_8142B04(v2);
+    owMapObject_countByChipOrSomething_8142B04(v2);
     if ( !v6 )
         v10 = 5;
     sprite_setPallete(v10);

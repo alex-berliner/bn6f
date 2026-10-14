@@ -1190,7 +1190,7 @@ int __fastcall sub_800F90E(int a1)
 
 
 // 0x800f964
-int __fastcall sub_800F964(int a1)
+int __fastcall battleObject_tryGetNextPanelInFacingDirection_800F964(int a1)
 {
     unsigned __int8 *v1; // r5
     int v2; // r6
@@ -3982,7 +3982,7 @@ int __fastcall object_setAttack2(char a1)
 
 
 // 0x80116ae
-int __fastcall sub_80116AE(char a1, __int16 a2, char a3)
+int __fastcall aiAttack_initVarsAndStart_80116AE(char a1, __int16 a2, char a3)
 {
     int v3; // r5
     int v4; // r7
@@ -9952,7 +9952,7 @@ int __cdecl sub_8014E08(int a1, int a2, int a3)
 
 
 // 0x8014f04
-void sub_8014F04()
+void object_aiAttackVarsExitState_8014F04()
 {
     Battle *v0; // r5
     int v1; // r7

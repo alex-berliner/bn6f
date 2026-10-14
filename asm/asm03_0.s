@@ -11958,7 +11958,7 @@ off_802BCB0:
 
 // symdb: Initializes the chip-select/custom-screen state at eS20364C0, dispatches by Index_00 to a tile-copy routine, then runs a panel scan
 // symdb: (r0 = unused=4) -> r0 = 1 ; side effects: writes eS20364C0.Unk_05, copies tiles to a BG block,
-// symdb: calls sub_802C460
+// symdb: calls battle_chipSelect_handleUpDownInput_802C460
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelect_802BD60.yaml
 	thumb_func_start battle_initChipSelect_802BD60
 battle_initChipSelect_802BD60:
@@ -11989,7 +11989,7 @@ battle_initChipSelect_802BD60:
 	mov r5, #0x12
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r5}
-	bl sub_802C460
+	bl battle_chipSelect_handleUpDownInput_802C460
 	ldrb r0, [r5,#5]
 	pop {r5,pc}
 	.balign 4, 0
@@ -12988,9 +12988,9 @@ off_802C45C:
 // symdb: handles up/down arrow D-pad input on the chip-select screen, advancing/retreating a cursor row and animating the chip icon when it changes column
 // symdb: (r5 = s_20364C0_struct*, r6 = joypad/AI flags, r10 = Toolkit*) -> side effects on
 // symdb: s_20364C0_struct and chip-select UI state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipSelect_handleUpDownInput_802C460.yaml
 	thumb_local_start
-sub_802C460:
+battle_chipSelect_handleUpDownInput_802C460:
 	push {r4,r5,lr}
 	mov r0, #6
 	ldrsb r0, [r5,r0]
@@ -13016,7 +13016,7 @@ loc_802C47A:
 	bl call_sub_3005EBA
 locret_802C48E:
 	pop {r4,r5,pc}
-	thumb_func_end sub_802C460
+	thumb_func_end battle_chipSelect_handleUpDownInput_802C460
 
 	thumb_local_start
 sub_802C490:
@@ -15358,7 +15358,7 @@ loc_802D3DA:
 	mov r1, #8
 	mov r2, #2
 	mov r0, #5
-	bl sub_80116AE
+	bl aiAttack_initVarsAndStart_80116AE
 	ldrh r0, [r6,#4]
 	add r0, #1
 	strh r0, [r6,#4]
@@ -24871,7 +24871,7 @@ dword_8031690:
 	.word NULL // 0x10
 	.word table_GetCurrentEntryColumnCount_80317FA+1 // 0x11
 	.word sub_8031808+1 // 0x12
-	.word sub_803182A+1 // 0x13
+	.word battle_calcPanelDistance_803182A+1 // 0x13
 	.word battle_calcDistPanelBetween_8031852+1 // 0x14
 	.word sub_8031874+1 // 0x15
 	.word NULL // 0x16
@@ -25101,9 +25101,9 @@ sub_8031808:
 // symdb: Computes a Manhattan-style panel distance between the entity at r0 and its target, returning a panel count adjusted by an entry header.
 // symdb: (r0 = entity/AI-data ptr, r5 = context) -> r0 = adjusted panel distance ; side effects: reads
 // symdb: dword_2011A20 table header, reads [r1] as a fixed-point coord
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803182A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcPanelDistance_803182A.yaml
 	thumb_local_start
-sub_803182A:
+battle_calcPanelDistance_803182A:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	push {r0}
@@ -25122,7 +25122,7 @@ sub_803182A:
 	mov r1, #2
 	lsr r1, r3
 	pop {pc}
-	thumb_func_end sub_803182A
+	thumb_func_end battle_calcPanelDistance_803182A
 
 // symdb: Computes a one-dimensional panel-column distance between a battle object and its target reference point (used by AI ranged targeting)
 // symdb: (r0 = AIData scratch, r5 = actor BattleObject) -> r0 = panel-column distance from target ; side

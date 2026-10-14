@@ -119,7 +119,7 @@ signed int __fastcall __noreturn sub_8089370(int a1)
 
 
 // 0x80895a8
-int sub_80895A8()
+int battleObject_runUpdateJumpTable_80895A8()
 {
     unsigned __int8 *v0; // r5
 

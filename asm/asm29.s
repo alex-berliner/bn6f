@@ -3444,9 +3444,9 @@ byte_80A6E90:
 // symdb: AI dispatch wrapper that picks one of three handlers from a jump table using BattleObject.CurState (offset 0x8) and calls it via lr/bx, returning its r0 directly.
 // symdb: (r5 = *BattleObject, r1 = ?, others caller-saved) -> r0 = handler result (e.g. 0x26 from
 // symdb: samples)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E98.yaml
-	thumb_func_start sub_80A6E98
-sub_80A6E98:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchBeastSp_80A6E98.yaml
+	thumb_func_start battle_ai_dispatchBeastSp_80A6E98
+battle_ai_dispatchBeastSp_80A6E98:
 	push {lr}
 	ldr r6, off_80A6EB8 // =unk_2011A90 
 	ldr r0, off_80A6EA8 // =off_80A6EAC 
@@ -3460,11 +3460,11 @@ off_80A6EA8:
 	.word off_80A6EAC
 off_80A6EAC:
 	.word sub_80A6EBC+1
-	.word sub_80A6F2C+1
+	.word battleObject_updateAnimation_80A6F2C+1
 	.word sub_80A6F70+1
 off_80A6EB8:
 	.word unk_2011A90
-	thumb_func_end sub_80A6E98
+	thumb_func_end battle_ai_dispatchBeastSp_80A6E98
 
 	thumb_local_start
 sub_80A6EBC:
@@ -3510,7 +3510,7 @@ sub_80A6EBC:
 loc_80A6F20:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A6F2C
+	bl battleObject_updateAnimation_80A6F2C
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_80A6EBC
@@ -3519,9 +3519,9 @@ loc_80A6F20:
 // symdb: (r5 = BattleObject*, r6 = ?AIData?, r10 = Toolkit*) -> void ; side effects: writes
 // symdb: BattleObject->CurState / CurAction (0x8..0x9), sets bit at eFlags2009F38 flag 0x80, calls
 // symdb: sprite_update, calls sub_80A6F78/sub_80A70FC/sub_80A7160/sub_80A7238.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6F2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateAnimation_80A6F2C.yaml
 	thumb_local_start
-sub_80A6F2C:
+battleObject_updateAnimation_80A6F2C:
 	push {r4-r7,lr}
 	bl cutscene_checkOriginalCutsceneScriptPos_8036F40 // () -> zf
 	bne loc_80A6F66
@@ -3551,7 +3551,7 @@ loc_80A6F66:
 	bl sprite_update
 	bl sub_80A7238
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A6F2C
+	thumb_func_end battleObject_updateAnimation_80A6F2C
 
 	thumb_local_start
 sub_80A6F70:
@@ -3975,7 +3975,7 @@ byte_80A729C:
 
 // symdb: Dispatches an AIData handler based on the actor's `BLeftAbility` byte (r5+8), tail-calling one of three thunked sub-routines via a small table
 // symdb: (r0 = actor AIDataPtr, r1 = ?, r5 = BattleObjectBase, r10 = Toolkit) -> r0 = whatever the
-// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / sub_80A7354 /
+// symdb: dispatched routine returns ; side effects: tail-calls into sub_80A72D8 / battleObject_updateFromCurAction_80A7354 /
 // symdb: sub_80A7398 depending on (r5+0x8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchAIData_80A72B4.yaml
 	thumb_func_start battleObject_dispatchAIData_80A72B4
@@ -3993,7 +3993,7 @@ off_80A72C4:
 	.word off_80A72C8
 off_80A72C8:
 	.word sub_80A72D8+1
-	.word sub_80A7354+1
+	.word battleObject_updateFromCurAction_80A7354+1
 	.word sub_80A7398+1
 off_80A72D4:
 	.word unk_2011A90
@@ -4045,7 +4045,7 @@ sub_80A72D8:
 loc_80A7342:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A7354
+	bl battleObject_updateFromCurAction_80A7354
 	movflag EVENT_5FF
 	bl SetEventFlagFromImmediate
 	pop {r4-r7,pc}
@@ -4054,9 +4054,9 @@ loc_80A7342:
 // symdb: Advances a battle object's CurAction state machine, updating the sprite and chaining per-state helpers (handles BeastOut/L-Message/AskJackOut gating around state 1)
 // symdb: (r5 = object ptr, r6 = ?, r10 = toolkit) -> void ; side effects: may mutate object state and
 // symdb: call sprite_update plus per-state helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7354.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateFromCurAction_80A7354.yaml
 	thumb_local_start
-sub_80A7354:
+battleObject_updateFromCurAction_80A7354:
 	push {r4-r7,lr}
 	bl cutscene_checkOriginalCutsceneScriptPos_8036F40 // () -> zf
 	bne loc_80A738E
@@ -4081,12 +4081,12 @@ loc_80A7380:
 	b loc_80A738E
 loc_80A7386:
 	bl sub_80A73A0
-	bl sub_80A75DC
+	bl owMapObject_event5F1Trigger_80A75DC
 loc_80A738E:
 	bl sprite_update
 	bl sub_80A775C
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7354
+	thumb_func_end battleObject_updateFromCurAction_80A7354
 
 	thumb_local_start
 sub_80A7398:
@@ -4427,9 +4427,9 @@ off_80A75CC:
 // symdb: Overworld map-object Beast-Out state helper: if EVENT_5F1 is unset, checks the player against an OW interaction box and sets the flag + writes 1 to [r5+0x24] on hit.
 // symdb: (r5 = some object, r6 = some object) -> void ; may read/write event flag EVENT_5F1; writes 1 to
 // symdb: [r5+0x24] on trigger
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A75DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_event5F1Trigger_80A75DC.yaml
 	thumb_local_start
-sub_80A75DC:
+owMapObject_event5F1Trigger_80A75DC:
 	push {r4-r7,lr}
 	movflag EVENT_5F1
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -4476,7 +4476,7 @@ loc_80A7630:
 locret_80A763C:
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A75DC
+	thumb_func_end owMapObject_event5F1Trigger_80A75DC
 
 	thumb_local_start
 sub_80A7640:
@@ -4729,9 +4729,9 @@ sub_80A7812:
 // symdb: Tail-calls one of three handlers chosen by BattleObject[+0x8]'s low byte (likely CurState or related).
 // symdb: (r0 = [r5,#8] selector used for jump table, r5 = object base, r10 = toolkit, lr = return) -> r0
 // symdb: = handler's r0 ; void-like tail call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A781C.yaml
-	thumb_func_start sub_80A781C
-sub_80A781C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchOnSubtype_80A781C.yaml
+	thumb_func_start battleObject_dispatchOnSubtype_80A781C
+battleObject_dispatchOnSubtype_80A781C:
 	push {lr}
 	ldr r0, off_80A782C // =off_80A7830 
 	ldrb r1, [r5,#8]
@@ -4744,9 +4744,9 @@ off_80A782C:
 	.word off_80A7830
 off_80A7830:
 	.word sub_80A783C+1
-	.word sub_80A786C+1
+	.word sprite_setupBeastOutSprite_80A786C+1
 	.word sub_80A78AE+1
-	thumb_func_end sub_80A781C
+	thumb_func_end battleObject_dispatchOnSubtype_80A781C
 
 	thumb_local_start
 sub_80A783C:
@@ -4766,7 +4766,7 @@ sub_80A783C:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A786C
+	bl sprite_setupBeastOutSprite_80A786C
 	pop {pc}
 	thumb_func_end sub_80A783C
 
@@ -4774,9 +4774,9 @@ sub_80A783C:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*, r4 in = some init context) -> side effects only ; writes
 // symdb: r5+0..0x5, r5+0xc..0x14, calls
 // symdb: sprite_disableAlpha/setPriority/setAnimation/loadAnimationData/update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A786C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setupBeastOutSprite_80A786C.yaml
 	thumb_local_start
-sub_80A786C:
+sprite_setupBeastOutSprite_80A786C:
 	push {lr}
 	bl sub_809BA14
 	str r0, [r5,#0xc]
@@ -4808,7 +4808,7 @@ loc_80A78A6:
 	strb r0, [r5,#5]
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80A786C
+	thumb_func_end sprite_setupBeastOutSprite_80A786C
 
 	thumb_local_start
 sub_80A78AE:
@@ -4869,7 +4869,7 @@ sub_80A78E0:
 // symdb: Drives a single Beast-Out AI step on the actuator: copies two BattleObject scratch regions, runs a per-action script (sub-handlers 0..6) with compare-and-loop semantics, optionally fires the Beast-SP trigger check, then commits and runs sprite_update.
 // symdb: (r5 = AIDataPtr, r6 = BattleObjectPtr, r10 = ToolkitPtr, r7 = byte-table cursor, lr) -> void ;
 // symdb: side effects: r0-r7/r10/lr/flags; mutates AIData+0xc/0x10/0x14 and BattleObject+8/0xc/0x10;
-// symdb: calls sub_8142050, sub_80A7BC0, sprite_update
+// symdb: calls battle_getAIDataForEnemyIndex_8142050, sub_80A7BC0, sprite_update
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpStepper_80A7912.yaml
 	thumb_local_start
 battle_beastSpStepper_80A7912:
@@ -4882,7 +4882,7 @@ battle_beastSpStepper_80A7912:
 	str r0, [r5,#0x14]
 loc_80A7920:
 	ldrb r0, [r5,#4]
-	bl sub_8142050
+	bl battle_getAIDataForEnemyIndex_8142050
 	ldrb r0, [r6]
 	add r7, r7, r0
 	ldrb r1, [r7]
@@ -5113,7 +5113,7 @@ sub_80A7AE0:
 	bl sub_80A7B7A
 	mov r4, r1
 	ldrb r0, [r5,#4]
-	bl sub_8142050
+	bl battle_getAIDataForEnemyIndex_8142050
 	sub r0, r4, r7
 	bl sub_80A7B9E
 	mov r0, #1
@@ -5944,7 +5944,7 @@ byte_80A81F0:
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
+// symdb: `sub_80A822C`, `battleObject_updateSpriteAndMaybeReloadAnim_80A827C`, or `sub_80A829C` (selected by index byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
@@ -5961,7 +5961,7 @@ off_80A8218:
 	.word off_80A821C
 off_80A821C:
 	.word sub_80A822C+1
-	.word sub_80A827C+1
+	.word battleObject_updateSpriteAndMaybeReloadAnim_80A827C+1
 	.word sub_80A829C+1
 off_80A8228:
 	.word unk_2000B40
@@ -5997,16 +5997,16 @@ sub_80A822C:
 	str r0, [r5,#0x14]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A827C
+	bl battleObject_updateSpriteAndMaybeReloadAnim_80A827C
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_80A822C
 
 // symdb: If a derived animation id differs from the cached one, reload the object's sprite animation data and shadow flag, then always run sprite_update.
 // symdb: (r5 = BattleObject*) -> void ; side effects sprite state, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A827C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteAndMaybeReloadAnim_80A827C.yaml
 	thumb_local_start
-sub_80A827C:
+battleObject_updateSpriteAndMaybeReloadAnim_80A827C:
 	push {r4-r7,lr}
 	bl sub_80A82DC
 	ldrb r1, [r5,#5]
@@ -6019,7 +6019,7 @@ loc_80A8294:
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A827C
+	thumb_func_end battleObject_updateSpriteAndMaybeReloadAnim_80A827C
 
 	thumb_local_start
 sub_80A829C:
@@ -6618,7 +6618,7 @@ loc_80A86EA:
 	str r0, [r5,#0x14]
 	mov r4, #4
 	mov r0, r6
-	bl sub_8142B04
+	bl owMapObject_countByChipOrSomething_8142B04
 	beq loc_80A871E
 	mov r4, #5
 loc_80A871E:

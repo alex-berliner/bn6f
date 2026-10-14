@@ -770,7 +770,7 @@ byte_8089554:
 	cs_nop_80377d0
 	cs_decomp_text_archive ptr1=TextScript87DE48C
 	cs_pause byte1=0xFF byte2=0x01
-	cs_call_native_with_return_value ptr1=sub_80895A8+1
+	cs_call_native_with_return_value ptr1=battleObject_runUpdateJumpTable_80895A8+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x00 destination3=cutscenescript_808956E
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
@@ -801,9 +801,9 @@ cutscenescript_808956E:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (r0==0 false, non-zero true) ; side effects:
 // symdb: full state handler called via jump table at 0x80895C0; clobbers r0-r3,r6,r12,lr; preserves
 // symdb: r4,r5,r7-r10
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80895A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateJumpTable_80895A8.yaml
 	thumb_local_start
-sub_80895A8:
+battleObject_runUpdateJumpTable_80895A8:
 	push {r4-r7,lr}
 	mov r7, #0x70 
 	add r7, r7, r5
@@ -853,7 +853,7 @@ jt_80895C0:
 	.word sub_8089BC0+1
 	.word sub_8089BE4+1
 	.word sub_8089BFA+1
-	thumb_func_end sub_80895A8
+	thumb_func_end battleObject_runUpdateJumpTable_80895A8
 
 	thumb_local_start
 sub_808964C:

@@ -384,7 +384,7 @@ void sub_814204C()
 
 
 // 0x8142050
-unsigned int __fastcall sub_8142050(int a1)
+unsigned int __fastcall battle_getAIDataForEnemyIndex_8142050(int a1)
 {
     int v1; // r4
     unsigned int result; // r0
@@ -1180,7 +1180,7 @@ int sub_8142ADA()
 
 
 // 0x8142b04
-int __fastcall sub_8142B04(int a1)
+int __fastcall owMapObject_countByChipOrSomething_8142B04(int a1)
 {
     int v1; // r7
     void **v2; // r5
