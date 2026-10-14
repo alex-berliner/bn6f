@@ -23407,6 +23407,10 @@ off_814ECB0:
 	.word off_30055F8
 	thumb_func_end m4a_ply_trampoline_814ECA0
 
+// symdb: m4a song-track tail-call trampoline that pops the saved LR and returns through the chosen track's IRQ handler.
+// symdb: (r0 = MPlayTrackInfo*) ; r0 = LR; no other output regs; no side effects on globals beyond the
+// symdb: tail call.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814ECB4.yaml
 	thumb_local_start
 sub_814ECB4:
 	push {lr}

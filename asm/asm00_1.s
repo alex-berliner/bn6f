@@ -12209,6 +12209,10 @@ off_8008940:
 	.byte 0, 0, 0, 0
 	thumb_func_end sub_8008928
 
+// symdb: Dispatches the battle's post-move substate by reading a state byte from EWRAM at 0x203CA70 and tail-calling the matching handler
+// symdb: () -> r0 = byte loaded from *(0x203CA70 + 0x4) ; side effects: tail-calls one of seven handlers
+// symdb: stored in `off_800896C`, preserving lr via r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008950.yaml
 	thumb_local_start
 sub_8008950:
 	push {r5,lr}

@@ -1471,6 +1471,10 @@ loc_8123C92:
 	.balign 4, 0x00
 	thumb_func_end battleObject_applyAIDataToAttackTable_8123C20
 
+// symdb: PET status sub-screen: clears the status tilemap area, fills it with the pre-loaded char stat tiles, and renders the status icon for the active PET navi.
+// symdb: (r5 = SubMenu* / runtime state, r10 = Toolkit*, lr = ret) -> void ; side effects: clobbers
+// symdb: r0–r7/lr, writes tilemap at unk_20347D8 and the status block bg tiles via CopyBackgroundTiles.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123C98.yaml
 	thumb_local_start
 sub_8123C98:
 	push {r4-r7,lr}
@@ -10401,6 +10405,10 @@ dword_81282BC:
 	.word 0x1DA0
 	thumb_func_end battle_checkSubFlags_8128280
 
+// symdb: Drives a per-slot OAM/animation entry for battle object sub-flag visuals (decrements a counter, queues an OAM row, advances to the next entry when it elapses).
+// symdb: (r0 = slot index) -> r0 = unk_2026870[2*slot] (current anim id) ; side effects: writes
+// symdb: unk_2026870[2*slot] and [2*slot+1]; r1/r4 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81282C0.yaml
 	thumb_local_start
 sub_81282C0:
 	push {r4-r7,lr}

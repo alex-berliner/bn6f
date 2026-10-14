@@ -12983,10 +12983,9 @@ off_802C45C:
 	.word byte_30016B0
 	thumb_func_end setupNaviDisplay_802C34E
 
-// symdb: Compare two signed bytes on a struct in r5 (offsets 6 and 7); when they differ, dispatch to a helper that likely swaps something and conditionally calls a follow-up function if that helper sets r2.
-// symdb: (r5 = pointer to a struct whose +6 and +7 are signed bytes; r6, r10 unchanged) -> r0 = result of
-// symdb: follow-up call_sub_3005EBA (often 0); side effects: may call sub_802C490 and call_sub_3005EBA;
-// symdb: clobbers r0-r4,r7; preserves only lr via return
+// symdb: Battle chip-select screen input handler: reacts to APwrAtk/BPwrAtk key presses to advance the cursor between chip slots on a particular row, clamping at the row's bounds.
+// symdb: (r5 = s_20364C0 chip-select state ptr, r6 = ???, r10 = toolkit) -> r0 = (unchanged from entry) ;
+// symdb: side effects may include calling sub_802C490 and call_sub_3005EBA
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C460.yaml
 	thumb_local_start
 sub_802C460:
@@ -21557,7 +21556,7 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	mov pc, lr
 	thumb_func_end camera_applyDeltaToRenderInfoScroll_8030136
 
-// symdb: Applies the camera's frame-to-frame movement delta to the background scroll positions, always scrolling the first background layer pair and also the second pair unless a check (camera_shouldApplyBgScrollToBothLayerPairs_80269E2) says not to.
+// symdb: Applies the camera's frame-to-frame movement delta to the background scroll positions, always scrolling the first background layer pair and also the second pair unless a check (sub_80269E2) says not to.
 // symdb: int sub_8030158(CameraState* camera /*r5*/, Toolkit* toolkit /*r10*/)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_applyScrollToBgLayers_8030158.yaml
 	thumb_local_start
@@ -25065,6 +25064,9 @@ sub_80317DE:
 	pop {pc}
 	thumb_func_end sub_80317DE
 
+// symdb: Reads the current table entry's column count (r0+r1) and returns total row size minus 2
+// symdb: () -> r0 = header.r0 + header.r1 ; side effects: calls table_GetCurrentEntryHeader_8031760
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80317FA.yaml
 	thumb_local_start
 sub_80317FA:
 	push {lr}

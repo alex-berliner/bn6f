@@ -119896,6 +119896,9 @@ locret_80F02A0:
 	pop {pc}
 	thumb_func_end sub_80F0262
 
+// symdb: Returns 0 only when the actor's AIAttackVars.Unk_0d is nonzero AND AIData.Unk_48 has bit 0x8000 set; otherwise returns 1.
+// symdb: (r7 = AIDataPtr) -> r0 = 1 or 0 ; r4 trashed, preserves r5/r7/lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F02A2.yaml
 	thumb_local_start
 sub_80F02A2:
 	push {r4,lr}
@@ -172571,7 +172574,7 @@ off_8109FF0:
 	.word sub_810A204+1
 	thumb_func_end sub_8109FD6
 
-// symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (battleObject_isCurrentTurnBattleObject_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
+// symdb: Mettaur normal-loop step with no RNG: waits on ExtraVars+4 (sub_800AA06), on Param4 == 0 arms the move (Param4 = 0x1E, AttackVars timer 0x1E, step 9), else continues; versions > 0 fall back to attack 0xC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810A004.yaml
 	thumb_local_start
 sub_810A004:

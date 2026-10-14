@@ -2375,6 +2375,11 @@ loc_809AB1A:
 	.byte 0, 0
 	thumb_func_end sub_809AADC
 
+// symdb: Step the lottery/reward mini-screen: decrement a counter, play unselect SFX, run chatbox scripts, and award chips/items/NaviCust on a winning draw.
+// symdb: (r2 = eventFlagValue, r5 = localLotteryStatePtr, r7..r12 = preserved scratch from callers) -> r0
+// symdb: = 0 to indicate "tick processed", 1 to indicate "chatbox still busy" ; side effects: text
+// symdb: scripts played, chip/item/NaviCust grants fired, counter/state bytes clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AB20.yaml
 	thumb_local_start
 sub_809AB20:
 	push {r4-r7,lr}

@@ -2103,6 +2103,9 @@ off_8142C8C:
 	.word byte_2006670
 	thumb_func_end sub_8142C46
 
+// symdb: empty stub function that immediately returns to its caller
+// symdb: (lr) -> ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C90.yaml
 	thumb_local_start
 sub_8142C90:
 	push {r4-r7,lr}

@@ -10265,12 +10265,10 @@ loc_811311E:
 	pop {pc}
 	thumb_func_end sub_8113114
 
-// symdb: Battle-object AI dispatcher that first tries the low-HP chip-usage helper and, if allowed, jumps into an AI-state handler chosen from a per-AI-state table.
-// symdb: (r0 = object-relative AIState index used to index off_8113144, caller-provided ctx in
-// symdb: r4..r7,r10) -> r0 = handler return / unused; no live return for callers (out has only r5 callee-
-// symdb: saved) ; side effects: dispatches via off_8113148 jump table, may set/clear flags and call
-// symdb: sub_81131D8, object_getFlag
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8113124.yaml
+// symdb: Dispatches the current AI state of a battle object via a jumptable after gating on low-HP chip usage and a flag check.
+// symdb: (r6 = BattleObject*) -> r0/r1 = scratch ; side effects: jumps through an AI-state dispatch table
+// symdb: at off_8113148
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8113124.yaml
 	thumb_local_start
 sub_8113124:
 	push {r4,r6,lr}
@@ -16365,6 +16363,9 @@ sub_811670E:
 	pop {pc}
 	thumb_func_end sub_811670E
 
+// symdb: For the battle object in r5, runs its AI state dispatch then refreshes the Custom Gauge from current HP/MaxHP/charge values.
+// symdb: |
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8116720.yaml
 	thumb_local_start
 sub_8116720:
 	push {r4,r6,lr}
@@ -23048,9 +23049,9 @@ loc_8119874:
 	.byte 0, 0
 	thumb_func_end sprite_setPositionForIdRange3_8119854
 
-// symdb: Checks the B-attack slot's charge state to decide whether a submenu-driven B-button action should be allowed this frame.
-// symdb: (r5 = AIDataPtr) -> NZ = charge state allows a B-button submenu action ; side effects: clobbers
-// symdb: r0, r1, r6, may set N/Z
+// symdb: Returns whether the battle action menu is locked because a submenu is open, gated by an AIData lookup of the actor's APwrAtk
+// symdb: (r5 = ??? ptr) -> r0 = (r0==0: 0 if locked, 1 if unlocked) ; out: nz/c/v from comparison, side
+// symdb: effects may write r6 (sSubmenu) via submenu_isOpen path
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8119880.yaml
 	thumb_local_start
 sub_8119880:
@@ -35810,10 +35811,9 @@ dword_811FF50:
 	.word 0x13A
 	thumb_func_end buildChipSearchTable_811FE7C
 
-// symdb: Maps a small index (0..11) through a fixed 12-byte ROM table, returning a permuted ID byte (indices 4 and 8 are swapped; index 11 clamps to 0).
-// symdb: int sub_811FF54(int index) -> int (r0 in = index, r0 out = byte at byte_811FF60[index]; clobbers
-// symdb: r1)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811FF54.yaml
+// symdb: Look up a chip-id-driven reordering table for chip-pack slot rows.
+// symdb: (r0 = chipIndexInSearchTable 0..0xA) -> r0 = remappedSlotIndex ; side effects none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FF54.yaml
 	thumb_local_start
 sub_811FF54:
 	push {lr}
@@ -36675,6 +36675,11 @@ loc_81204F4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81204C4
 
+// symdb: Pack a single chip-ID/code into an 8-byte chip descriptor (code+ID in low dword, code+ID+1 in high dword) and store it via a pointer; scratch helper for the chip-select summary writer.
+// symdb: (r0 = scratch0_hi = 0xA, r1 = scratch0_lo = svc-result / tmp, r2 = chipIDAndCode, r3 unused) ;
+// symdb: r7 = outPtr ; side effect: [r7+0] = ((chipIDAndCode+1)<<16 | chipIDAndCode) , [r7+4] =
+// symdb: ((chipIDAndCode+0xC)<<16 | chipIDAndCode+0xB) ; returns r0 = (chipIDAndCode+1)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8120504.yaml
 	thumb_local_start
 sub_8120504:
 	push {r4-r7,lr}
@@ -36782,6 +36787,10 @@ loc_81205B4:
 	thumb_func_end sub_8120568
 
 
+// symdb: Queues two sprite OAM entries (a top tile and a bottom tile) with overlapping/blended vertical extents, returning a packed status value.
+// symdb: (r0 = ?, r1 = base tile id low16, r2 = packed y/coord, r3 = flag, lr = ?) -> r0 = packed result
+// symdb: ; also clobbers r1, r2, r3, r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81205C0.yaml
 	thumb_local_start
 sub_81205C0:
 	push {r4-r7,lr}

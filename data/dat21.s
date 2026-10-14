@@ -3834,8 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Cutscene/BBS handler that runs the big BBS-branch script flow (event-flag gates, sub_8083F80 ladder, cutscript sentinel checks) and ultimately exec()'s into sub_8084080 and the cutscene-step chain.
-// symdb: () -> nz ; side effects (event flags, cutscene state, sound/animation sets)
+// symdb: Substate/dispatch inside the BBS-style chatbox/result cutscene: tests cutscene script sentinels, sets/clears the request-BBS flag at 0x2001F68 bit 0x7, and loads+animates the request-bbs GFX via a sequence of helpers.
+// symdb: (r10 = toolkit) -> side-effects only; preserves r4-r9/r12 per contract
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

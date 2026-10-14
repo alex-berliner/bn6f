@@ -5950,6 +5950,11 @@ object_exitAttackState:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	b loc_801171E
 
+// symdb: Tears down a battle object's current AI attack: zeroes attack-vars scratch, applies per-mode cleanup (chip lockout / Unk_15), clears AI-data flags, clears the power-atk state, clears the using-action bit, and parks the object in CurAction=8 with the AIAttackVars timer reset.
+// symdb: (r5 = battle object) -> void ; side effects: writes AIData + AIAttackVars + CurAction of the
+// symdb: object in r5, modifies the global AIData flags at Unk_44 (mask 0x1000003F), calls
+// symdb: battleObject_clearPwrAtkState_8012EA8 and object_clearFlag(OBJECT_FLAGS_USING_ACTION).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801171C.yaml
 	thumb_func_start sub_801171C
 sub_801171C:
 	push {r6,r7,lr}
@@ -21270,6 +21275,9 @@ getIndexedSignedBytePair_8018842:
 	pop {r4,pc}
 	thumb_func_end getIndexedSignedBytePair_8018842
 
+// symdb: Computes the per-frame X-axis step the AI moves toward an enemy based on a chip-class table, signed by the object's facing direction.
+// symdb: (r0 = chipClassTableIdx, r5 = BattleObjectPtr) -> r0 = signed X-step multiplier for AI movement
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018856.yaml
 	thumb_local_start
 sub_8018856:
 	push {lr}
@@ -26282,6 +26290,10 @@ locret_801BCCE:
 	pop {pc}
 	thumb_func_end object_updateSpritePaused
 
+// symdb: Refreshes a battle object's sprite animation index whenever CurAnim changes, then ticks the sprite one frame.
+// symdb: (r5 = BattleObject* this, lr = return) -> (r0, r1, r2, r3 clobbered; r4, r5, lr preserved for
+// symdb: tail-call; void return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BCD0.yaml
 	thumb_func_start sub_801BCD0
 sub_801BCD0:
 	push {lr}
@@ -27650,6 +27662,10 @@ locret_801C5F2:
 	pop {r4-r6,pc}
 	thumb_func_end sub_801C576
 
+// symdb: Plays a "counter hit" SFX from a small lookup table when the AIData's Anger/Timer tier increases between ticks, but only if battle flag 0x40 is set.
+// symdb: (r5 = AIData*, r10 = Toolkit*, lr) -> no meaningful r0 return; side effects:
+// symdb: PlaySoundEffect(r0=???)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C5F4.yaml
 	thumb_local_start
 sub_801C5F4:
 	push {lr}
@@ -31333,9 +31349,11 @@ off_801E09C:
 	.word byte_801EDFC
 	thumb_func_end sub_801E07C
 
-// symdb: Stores two byte parameters into the chatbox state struct, refreshes its counter halfword from the active entry, then runs the 0x80 chatbox update path.
-// symdb: void chatbox_setStateAndRunUpdate(u8 r0, u8 r1) // no return value; trashes r0-r3 and c/v flags
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801E0A0.yaml
+// symdb: Posts a battle subsystem event to eStruct2035280 by copying a halfword from +0x24 of a pointer at +0x48 into the struct's own +0x24, storing r0/r1 into byte fields, ORing bit 0x80 into the request dword, then dispatching with mask 0x80.
+// symdb: (r0 = param0 -> byte_2035281, r1 = param1 -> byte_2035282, r10 = toolkit) -> void ; side
+// symdb: effects: writes Struct2035280+0x24/0x1/0x2, ORs 0x80 into Struct2035280+0x40, then calls
+// symdb: dispatch_801DA48(r0=0x80)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E0A0.yaml
 	thumb_func_start sub_801E0A0
 sub_801E0A0:
 	push {lr}

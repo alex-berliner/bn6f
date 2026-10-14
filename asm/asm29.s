@@ -922,7 +922,7 @@ off_80A5510:
 	.word unk_2013960
 	thumb_func_end sub_80A54F0
 
-// symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to owMapObject_bbsObjectUpdate_80A5588.
+// symdb: Spawns an overworld object: assigns a sprite (special id 0x4E for map group 0x85, else 0x0B), loads graphics + animation, applies layer effect/priority, remembers the spawn position, optionally plays entry sound 0x17F, sets a 0x12-tick state timeout, then advances the object's sub-state to 4 and tail-dispatches to sub_80A5588.
 // symdb: void owObject_spawnSetup_80A5514(u32 r5 /*owObject*/, u32 r6 /*sourceObject*/, u32 r10
 // symdb: /*toolkit*/) -> r2 r5 r10 r11; clobbers nz c v r0 r1 r3 lr; preserves r4 r6 r7 r8 r9 r12
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A5514.yaml
@@ -4776,6 +4776,10 @@ sub_80A78AE:
 	.balign 4, 0x00
 	thumb_func_end sub_80A78AE
 
+// symdb: Dispatches to an AI subroutine indexed by `AIDataPtr->BLeftAbility`, after refreshing the AI data pointer from the battle object.
+// symdb: (in r5 = BattleObject*, in r10 = Toolkit*) -> no return (tail-calls the handler); side effects:
+// symdb: clobbers r0,r1,r2,r3,r6,r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A78B8.yaml
 	thumb_func_start sub_80A78B8
 sub_80A78B8:
 	push {r4-r7,lr}
@@ -5522,9 +5526,9 @@ off_80A7E2C:
 	.word sub_80A800A+1
 	thumb_func_end battleObject_beastSP_battlerUpdate_80A7E14
 
-// symdb: Clears the `Unk_09` byte at offset 0x9 of an unknown struct passed in r5 (no return value).
-// symdb: (r5 = ptr to a struct with a byte field at offset 0x9) -> void
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7E44.yaml
+// symdb: Stub that zeros a battle object's CurAction byte (offset 0x9).
+// symdb: (r5 = *BattleObject) -> r0 = 0 ; side effects: writes byte 0 at r5+0x9
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E44.yaml
 	thumb_local_start
 sub_80A7E44:
 	push {r4-r7,lr}

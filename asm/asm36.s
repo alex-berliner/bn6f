@@ -8669,7 +8669,7 @@ off_813448C:
 	thumb_func_end battleObject_drawFolderEditScreenGfx_8134310
 // symdb: Draws a submenu's two side border strips (with blank-fill inside) and dispatches a per-state palette/VRAM word for the submenu widget, varying the strip layout and palette id by submenu state and current submenu-vs-no-submenu branch.
 // symdb: (r5 = *SubMenu, r10 = *Toolkit) -> r0 = 0xFF ; side effects: writes tilemap blocks via
-// symdb: CopyBackgroundTiles and queues a battleObject_drawIndicatorOrStatusIcon_812053C dispatch
+// symdb: CopyBackgroundTiles and queues a sub_812053C dispatch
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_drawSubmenuBox_8134490.yaml
 	thumb_local_start
 menu_drawSubmenuBox_8134490:
@@ -8865,10 +8865,10 @@ dword_81345D0:
 	.word 0x10000000
 	thumb_func_end sub_81345B0
 
-// symdb: Thin caller that forwards fixed arguments to the per-actor shield/status-effect updater for one frame.
-// symdb: (r0 = ?, r1 = ?, r2 = ?, r3 = ?) -> r0 = updater return code (varies:
-// symdb: 0x11/0x40/0x42/0x50/0x52/0x62); side effects: none of its own besides the call
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
+// symdb: Run the battle-object action/state-update step for the shield-or-status-effect helper with hard-coded parameters (0x5a/0x20/0x20/0x12) and return its u8 result.
+// symdb: (r5/r10 = toolkit/aux; no caller-supplied arg registers meaningful here) -> r0 = u8 result from
+// symdb: battleObject_updateShieldOrStatusEffect_813468C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81345D4.yaml
 	thumb_local_start
 sub_81345D4:
 	push {r4-r7,lr}
@@ -15642,10 +15642,9 @@ off_8137880:
 	.word unk_20018EC
 	thumb_func_end takeChipsWhenGivingFolderIfFolderSlotInUseMaybe_813781C
 
-// symdb: Returns a byte selected by index from a lookup table stored in IWRAM at 0x20018EC.
-// symdb: u8 getByteFromTable_20018EC(u8 index) // r0 = index in, r0 = table[index] out; flags untouched
-// symdb: (tail 'mov pc, lr')
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8137884.yaml
+// symdb: Reads the current state byte (0/4/8 etc.) of the active battle object for a given slot/index.
+// symdb: (r0 = index) -> r0 = byte from unk_20018EC[r0] ; no other side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137884.yaml
 	thumb_func_start sub_8137884
 sub_8137884:
 	ldr r1, off_813788C // =unk_20018EC 
