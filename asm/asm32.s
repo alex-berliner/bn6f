@@ -29722,9 +29722,9 @@ counter_addU32_r5Plus0C_811CC60:
 	mov pc, lr
 	thumb_func_end counter_addU32_r5Plus0C_811CC60
 
-// symdb: Return the word at r5 + 0xC.
-// symdb: (r5) -> r0 = [r5 + 0xC]
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811CC68.yaml
+// symdb: Reads the cached pointer at BattleObject+0xC and returns it (used as a sin/cos table index by the floating-anim routine)
+// symdb: (r5 = BattleObject*) -> r0 = [r5+0xC]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CC68.yaml
 	thumb_local_start
 sub_811CC68:
 	ldr r0, [r5,#0xc]
@@ -31898,6 +31898,10 @@ off_811DF90:
 	.word 0x270
 	thumb_func_end battleObject_initNaviRosterEntry_811DF40
 
+// symdb: per-frame update for a Navi roster icon used in pre-battle lineup, branching on story flag
+// symdb: (r5 = BattleObject*, r6 = object-slot/state, r10 = Toolkit*) -> void ; updates sprite/animation
+// symdb: and runs sprite_update; branches via EVENT_BF2
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811DF94.yaml
 	thumb_local_start
 sub_811DF94:
 	push {r4,lr}

@@ -6721,9 +6721,13 @@ off_8049E98:
 	.word sceneUpdate_804A078+1
 	thumb_func_end sub_8049E84
 
-// symdb: Scene/cutscene initializer that configures LCD rendering, starts a 0x10 screen fade-in, clears state flags, fires setup hooks twice (idx 0 and 1), and transitions the state machine to phase 4.
-// symdb: void sceneInitFadeIn_8049EBC(struct State* r5); /* r10/lr input, r8/r9/r11/r12 preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8049EBC.yaml
+// symdb: Initializes the battle overlay/scene: zeroes the frame's render counters, sets a fixed LCD-control value (0x1F40), applies palette slot 0x13, resets the eStructArr2008450 scene-record array, decompresses init GFX, kicks off a screen fade (mode 8, speed 0x10), zeros key BattleState bytes, expands the text-script table, loads the overlay sprite + SFX, then loops sub_803B674 across slot indices 4..14 and 0x29..0x2C, runs two sub_803BE30 phases, calls chatbox_8040818, and writes 4 into BattleState.Index_01.
+// symdb: (no entry args, r10 = Toolkit*) -> void ; side effects: render-info counters cleared, palette
+// symdb: slot 0x13 loaded, eStructArr2008450 records reset, VRAM/GFX buffers zeroed + decompressed,
+// symdb: screen-fade set to mode 8, several BattleState fields cleared (offsets 0x08, 0x12, 0x13, 0x1c,
+// symdb: 0x1d, 0x01), text-script words expanded into 8-byte records, sprite tiles loaded + SFX played,
+// symdb: two sub_803BE30 invocations with r0=0 then r0=1, chatbox init.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049EBC.yaml
 	thumb_local_start
 sub_8049EBC:
 	push {r4-r7,lr}

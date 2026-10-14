@@ -28271,10 +28271,10 @@ locret_801C904:
 	pop {r7,pc}
 	thumb_func_end battle_tickLowHpWarning_801C840
 
-// symdb: redraws a field object's four-digit HP readout by stamping right-aligned digit glyphs into background tile block 3 and queuing the companion 32-byte tile upload for VRAM
-// symdb: void drawNumberLabel_801C906(void); /* r5 in: label object; r4-r7 preserved; r3/r4-r7 out:
-// symdb: leftover from callee, r4-r7 restored to entry values */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801C906.yaml
+// symdb: Builds per-digit tile rows for an HP display in the chatbox, copies them to a BG tile block and queues the digit GFX source into VRAM.
+// symdb: (r5 = AIData*, r10 = Toolkit*) -> r0 = pointer to digit-tile-id array (in stack temp / re-used);
+// symdb: no callee-restore outputs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C906.yaml
 	thumb_local_start
 sub_801C906:
 	push {r4,r6,r7,lr}

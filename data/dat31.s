@@ -740,10 +740,9 @@ loc_810CA84::
 	pop {pc}
 	thumb_func_end sub_810CA4C
 
-// symdb: Unknown battle-object step function: checks/unreserves an adjacent panel using a mask/state from the toolkit, sets per-step data on the object, and returns a per-call code (0x01, 0x02, 0x0B, 0x0C are all observed).
-// symdb: (r0 = 0x08, r1 = objPtr? 0x0810ca8f or 0x0810ca8e+1, r2 = 0x80, r3 = 0x03, r10 = toolkit, r5 =
-// symdb: battleObject, r7 = ?) -> r0 = per-call status code (varying 1..12); NZ/C set; side effects
-// symdb: update r1..r7, may call into panel/object/effect helpers and the status-list claimer.
+// symdb: Computes an available adjacent panel step from `r5`'s battle object towards `r10.Toolkit` (used by an AI/object pathing decision).
+// symdb: (r5 = battle object pointer) -> r0 = selected adjacent panel index 0x1..0xC (or 0x0 to indicate
+// symdb: none) ; r1 = side-effects (NZ flag set on success) ; kills many registers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CA8E.yaml
 	thumb_local_start
 sub_810CA8E::
@@ -992,10 +991,10 @@ locret_810CC52::
 	pop {pc}
 	thumb_func_end sub_810CC0A
 
-// symdb: per-tick step of a SnakeArm object's attack: pick the next panel along its column/row, reserve/release panels, and spawn a small effect object at each step.
-// symdb: (r5 = SnakeArm battle object, r6 = ?, r7 = ?) -> r1 = next-direction-bytes payload left in r1
-// symdb: for the caller; side effects: panel reservations, flag1 ORs/clears on r5 and its collision data,
-// symdb: an effect object is spawned.
+// symdb: Per-object attack-state cleanup that releases panel reservations, clears/flags ObjectFlags1, refreshes pixel coordinates and spawns a type-4 effect object 0 (Story 6 calibrated poke).
+// symdb: (r5 = BattleObjectPtr [in/out], r6 = ?, r7 = ?, lr = ?) -> r1 = spawned-effect BattleObjectPtr ;
+// symdb: side effects updates object panel reservation, ObjectFlags1, pixel coords and spawns a type-4
+// symdb: effect object 0.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CC54.yaml
 	thumb_local_start
 sub_810CC54::

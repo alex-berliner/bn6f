@@ -13323,10 +13323,11 @@ off_8009154:
 	.word 0x400
 	thumb_func_end sub_8009140
 
-// symdb: Battle state tick: runs the current state's phase handler (via the jump table at off_80091BC) and updates the low-HP warning siren based on the player's HP crossing a quarter of max.
-// symdb: void battle_dispatchStatePhase_8009158(void);  // r5 = battle state in/out;
-// symdb: r2,r3,r4,r5,r6,r8,r9,r10,r11,r12 carry callee return values; clobbers nz,c,v,r0,r1,r7,lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8009158.yaml
+// symdb: Top-level battle driver — dispatches the current BattleState sub-phase via a table jump keyed off Index_01, and checks if the player HP dropped below 1/4 to play a low-HP BGM cue.
+// symdb: (r5 = BattleStatePtr, r10 = ToolkitPtr, lr = ...) -> r0 = 0x049e2 (battle effects helper return)
+// symdb: ; side effects: may play/clear cue sounds, scratch r0-r7/r10, no callee-saved restore (r4-r6,
+// symdb: r8-r10 are live out)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009158.yaml
 	thumb_local_start
 sub_8009158:
 	push {lr}

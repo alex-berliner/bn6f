@@ -3660,6 +3660,10 @@ loc_8083C50:
 	pop {r4-r6, pc}
 	thumb_func_end sub_8083C3C
 
+// symdb: Handles a "story 7" on-touch BBS by clearing/storing event flags and then running the player NPC script-array trigger via reqBBS_81409E4.
+// symdb: (r0 = unused, r1 = 0x40, r2 = 0, r3 = pointer/word 0x02001d25) -> r0 = 0, NZ+C+ flags cleared ;
+// symdb: no other caller-visible state
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083C6C.yaml
 	thumb_local_start
 sub_8083C6C:
 	push {r4-r5, lr}

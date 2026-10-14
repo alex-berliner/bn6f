@@ -37760,10 +37760,10 @@ off_80C96BC:
 	.word object_freeMemory+1
 	thumb_func_end t3_0x2b_80C96A0
 
-// symdb: Initializes a spinning-shuriken battle object from a template entry indexed by Param2, loads sprite/anim/palette, plays spawn SFX, freezes velocity to current position, then transitions to the per-frame update state.
-// symdb: void battle_spawnShuriken_80C96C8(u32 r5 /*BattleObject*/, u32 r10 /*context*/); outputs r5 r8
-// symdb: r9 r10 r11 r12 via sub_80C9726; clobbers r0-r4 r6 lr flags; preserves r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C96C8.yaml
+// symdb: Initializes/animates a battle object after its Param2-driven ExtraVars setup: loads sprite+anim+no-shadow, sets cur anim/palette/flip, copies XYZ to velocity, plays spawn SFX 0xA0, sets state to CUR_STATE_UPDATE, and runs the cur-action handler.
+// symdb: (r5 = battleObjectPtr) -> void ; side effects: writes sprite/anim/flags on object, plays sound
+// symdb: effect 0xA0, tail-calls sub_80C9726
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C96C8.yaml
 	thumb_local_start
 sub_80C96C8:
 	push {r7,lr}
@@ -40832,11 +40832,10 @@ dword_80CADDC:
 	.word 0x10000
 	thumb_func_end battleObject_initRisingShot_80CAD4C
 
-// symdb: Per-frame collision-update step for a battle object: clears/respawns its collision data, then either destroys the object (battle over or collision flags set), freezes it during time stop, or runs its current action's movement handler.
-// symdb: void battle_objectUpdateCollision_80CADE0(BattleObject* obj /* r5 */); callers pass the object
-// symdb: in r5 (plus r4/r7/r8/r10 live context), and the routine clobbers r0-r4, r6, r7 and flags while
-// symdb: r5/r8-r12 survive to the caller.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80CADE0.yaml
+// symdb: Per-frame update for a battle object: removes its collision data, dispatches to an action handler, and either destroys the object or refreshes its collision region for the current frame.
+// symdb: (r5 = battleObject) -> r0 = some EWRAM ptr ; side effects: may mark object CUR_STATE_DESTROY
+// symdb: (writes 0x8 to [r5,#0x8])
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CADE0.yaml
 	thumb_local_start
 sub_80CADE0:
 	push {lr}
@@ -41105,6 +41104,9 @@ off_80CAFC4:
 	.word sub_80CAFC8+1
 	thumb_func_end sub_80CAF9C
 
+// symdb: Battle-object state that throws itself (or its 0x34-inline params) to a target panel as a parabolic projectile, spawning an impact effect and collision on arrival.
+// symdb: (r5 = oBattleObject*) -> void; updates object state, velocities, timer, panel highlight
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CAFC8.yaml
 	thumb_local_start
 sub_80CAFC8:
 	push {r4,r6,lr}
@@ -48436,6 +48438,10 @@ off_80CE724:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x51_80CE70C
 
+// symdb: Initializes a battle object's snake-arm attack state, spawning a hit effect on failure or launching the arm on success.
+// symdb: (r5 = battle object) -> void ; side effects: writes object state/flags, collision hit-effect,
+// symdb: palette, XVelocity, and may spawn a child effect object or free the parent
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CE730.yaml
 	thumb_local_start
 sub_80CE730:
 	push {r4,lr}
@@ -52068,6 +52074,10 @@ off_80D0280:
 	.word sub_80D035C+1
 	thumb_func_end t3_0x5e_80D0268
 
+// symdb: BattleObject "CUR_STATE_UPDATE" entry hook: sets Z to 0, loads sprite bank 0x80/anim 0x0e, picks animation 0x3e, palette 0, facing from object_getFlip, reserves the panel under (PanelX,PanelY) and bumps CurState/CurAction/Phase to CUR_STATE_UPDATE (0x4)/0/0.
+// symdb: (r5 = battle object) -> void ; side effects: writes the object's Z, sprite, animation, palette,
+// symdb: flip and reserves its panel
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D028C.yaml
 	thumb_local_start
 sub_80D028C:
 	push {lr}
@@ -61694,6 +61704,11 @@ off_80D4A3C:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x7b_80D4A28
 
+// symdb: Initialize-phase handler for a battle object: refreshes pixel coords from panels, installs its sprite/collision, then transitions to Update state.
+// symdb: (r5 = battleObjectPtr) -> r0 = init result from battleObject_initSpriteAndCollision ; side
+// symdb: effects: writes object flags, palette, XVelocity, sets CurState=CUR_STATE_UPDATE, falls through
+// symdb: to object_destroyPhase_80D4A98
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4A48.yaml
 	thumb_local_start
 sub_80D4A48:
 	push {r4,lr}
@@ -85400,10 +85415,10 @@ off_80DFE58:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0xd3_80DFE40
 
-// symdb: Activate a battle object by snapping it to panel coordinates, building its collision data, and handing it off to the per-frame update state.
-// symdb: void sub_80DFE64(void /* r5 = battle object */);  // inputs: r5, r8, r10, lr; outputs: r5, r8;
-// symdb: clobbers NzCV, r0-r3, lr; preserves r4, r6, r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80DFE64.yaml
+// symdb: Initializes a battle object's collision state for a new spawn (timer, collision-data, hit-effect=0, panel position) and enters CUR_STATE_UPDATE.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; preserves r5/r8 (r10/r8 live across, side effects
+// symdb: via callees)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DFE64.yaml
 	thumb_local_start
 sub_80DFE64:
 	push {r7,lr}
@@ -109847,6 +109862,10 @@ jt_80EB448:
 	.word aiAttack_handleMoveDirectionTimerAndStartNewAttack_80EB502+1
 	thumb_func_end battle_aiAttackDispatch_80EB436
 
+// symdb: AI buster attack step: plays the buster fire/hit sounds and spawns the buster shot, charge-pellet and the temporary attack object for an AttackVars-driven attack.
+// symdb: (r7 = AIAttackVars*, r5 = battle object (caster), r2, r10) -> no return ; side effects spawns
+// symdb: battle objects, plays SFX, mutates AIAttackVars and the caster's flag/animation
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB450.yaml
 	thumb_local_start
 sub_80EB450:
 	push {r4,r6,lr}
@@ -110268,10 +110287,10 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
-// symdb: AI attack-vars routine that spawns an illusion/clone on the user's panel and snaps the user to the spawned panel (with re-flip bookkeeping)
-// symdb: (r5 = battleObject, r7 = AIAttackVars, lr) -> r1 ; side effects: writes AIAttackVars fields,
-// symdb: animates object, possibly flips DirectionFlip, refreshes sprite/arm
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
+// symdb: AI attack-vars step that, when active and allowed, spawns an "illusion"-style object one panel behind the user and warps them there; otherwise cancels into animation 4 and idle state.
+// symdb: (r5 = *BattleObject, r7 = *AIAttackVars, lr) -> void ; side effects write r7->Unk_34,
+// symdb: AIAttackVars->Unk_00, may flip DirectionFlip, play anim 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
 	push {r4,r6,lr}
@@ -112482,6 +112501,11 @@ off_80EC898:
 	.word ai_attackTickDelayTimer_80EC90E+1
 	thumb_func_end battle_aiAttackStateDispatch_80EC884
 
+// symdb: Runs one frame of a battle object AI attack routine: phase 0 starts a charge, plays a sound, sets flags and spawns a type-1 temp attack object; phase 5 spawns the actual projectile via type-3 spawn at the panel in front of the attacker; in either case increments an `Unk_10` tick and writes `0x4` to `AIAttackVars.Unk_00` once it reaches `0xA`, treating the routine as done.
+// symdb: (r0/r1 caller-saved scratch) -> r0 = branch state (1/2/4 per captured exit) ; writes
+// symdb: AIAttackVars.Unk_01, Unk_00, Unk_10 on r7 and the working object's CollisionData flags via
+// symdb: object_setFlag1
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EC8A0.yaml
 	thumb_local_start
 sub_80EC8A0:
 	push {r4,r7,lr}
@@ -176972,9 +176996,10 @@ locret_810C0E2:
 	pop {pc}
 	thumb_func_end sub_810C070
 
-// symdb: AI attack step that plays the hit SFX, spawns a kind-0x16 impact object on the enemy's panel, and switches the attacker to its post-attack moving frame once the hit anim finishes
-// symdb: void(void) ; r5 = attacker battle object, r7 = AIAttackVars, r10 = toolkit ; mutates both
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810C0E4.yaml
+// symdb: Drives the BeastSp/SnakeArm-style attack AI on r5's BattleObject: increments the Unk_10 step counter, fires a hit on step 2 (SFX 0xC0, optional camera shake, spawns a type-0x16 hit object at the front panel), then on every frame checks the current sprite frame bit 0x80 to transition the attacker to a follow-up state.
+// symdb: (r2 = AIAttackVars ptr [r7], r5 = attacker BattleObject, r7 = also AIAttackVars? r10 = toolkit
+// symdb: [unused in body] lr = return) -> side effects ; returns nothing meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C0E4.yaml
 	thumb_local_start
 sub_810C0E4:
 	push {r4,r6,lr}

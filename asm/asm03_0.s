@@ -1635,7 +1635,7 @@ off_802700C:
 	.word byte_20366C0
 off_8027010:
 	.word off_8027014
-// symdb: Run-away threshold rows for battle_custMenuTickPlayerChipCursor_8026F1A: { 4, 8, 15 }, { 8, 12, 15 }, { 12, 14, 15 }; the row is picked by how the battle's busting level compares to the escape stat, the byte index is the attempt counter dword_20349A8.
+// symdb: Run-away threshold rows for sub_8026F1A: { 4, 8, 15 }, { 8, 12, 15 }, { 12, 14, 15 }; the row is picked by how the battle's busting level compares to the escape stat, the byte index is the attempt counter dword_20349A8.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_8027014.yaml
 off_8027014:
 	.word byte_8027020
@@ -6303,6 +6303,11 @@ dword_802910C:
 	.word 0x55
 	thumb_func_end customScreen_ExitAction_8029032
 
+// symdb: Custom Screen menu confirm handler: builds the per-slot chip-use command queue at dword_2033000 from the active-chip slots, validates opcodes/chip attributes, and kicks off processing of the queue.
+// symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effects write dword_2033000 (chip-use queue),
+// symdb: byte_20366C0..0x20366FE (per-slot use entries), byte_20349AC (chip-use bitmap), and r5+0xB =
+// symdb: 0x14 (or 0x10); processes the chip queue at the end
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029110.yaml
 	thumb_local_start
 sub_8029110:
 	push {r4,r6,r7,lr}
@@ -23806,9 +23811,10 @@ loc_8030F76:
 	pop {pc}
 	thumb_func_end battle_runTextboxUpdateAndSetStateBit1_8030F04
 
-// symdb: Tests whether a line segment crosses a two-edge wedge (stored in an object) and returns the intersection coordinates, or (0,0) on no-cross.
-// symdb: seg_result col_segEdgeIntersect(u32 obj, u32 xA, u32 yA, u32 xB, u32 yB, u32 mode)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8030F7C.yaml
+// symdb: Performs a line-vs-wedge hit test for battle camera/scroll queries, returning two offsets via r0/r1.
+// symdb: (r0 = CollisionData*, r1 = ?, r2 = lineY/r2_in, r3 = lineX/r3_in, r4 = ?, r5 = ?, r6 = ?, lr =
+// symdb: ?) -> r0 = dyComp/r9, r1 = dxComp/r8 ; side effects trashes r2-r7, r8, r9
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030F7C.yaml
 	thumb_local_start
 sub_8030F7C:
 	push {lr}

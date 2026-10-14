@@ -7579,9 +7579,10 @@ locret_8133C0A:
 	pop {pc}
 	thumb_func_end battleObject_submenuHandleBPress_8133BB4
 
-// symdb: Handles START / B cancel input for a sub-menu screen: enters or exits the cancel state (0x0C), saving/restoring the prior state and playing the corresponding SFX.
-// symdb: void sub_8133C0C(u32 menu_ptr /* r5 in */); /* leaves r0 = 0, Z set, NZ clr */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133C0C.yaml
+// symdb: Handles START/B input to confirm or cancel a submenu/folder-edit screen; flips a state byte and resets Anger-like halfword to 0.
+// symdb: (r5 = AIData-like struct, r10 = toolkit) -> void ; side effects may write r0 for sound ID, may
+// symdb: call IsButtonPressed and PlaySoundEffect
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133C0C.yaml
 	thumb_local_start
 sub_8133C0C:
 	push {lr}

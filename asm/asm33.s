@@ -3152,9 +3152,9 @@ byte_8124864:
 	.byte 0x0
 	thumb_func_end sub_81247EC
 
-// symdb: Picks one of two BCD-digit tile tables for the scoreboard based on the current vs. half value, then rebuilds the scoreboard's BCD tilemap.
-// symdb: void scoreboard_drawCurrent_8124870(struct ScoreState* r5 /* scoreboard state, fields: +0x18
-// symdb: width, +0x1A value */);
+// symdb: Re-renders the Sub-chip "amount" mini-tilemap row on the sub-chip submenu using current cursor/stack counts.
+// symdb: (no args; reads r5 SubMenu and r10 Toolkit) -> r0 = 2 (work restored to r5) ; blits a tilemap
+// symdb: row via CopyBackgroundTiles
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8124870.yaml
 	thumb_local_start
 sub_8124870:
@@ -6583,11 +6583,10 @@ locret_812642E:
 	pop {r4-r7,pc}
 	thumb_func_end bg_drawTileStripTileBlock2_8126404
 
-// symdb: Loads one row of 7 chip slots from a chip-id table into a chip-data block, copying the chip's data record (0x80 bytes from offset 0x20) per slot and zeroing 8-byte output pairs for empty or flagged slots; this is part of a chip-select / folder rendering pipeline.
-// symdb: void sub_8126430(u32 r0_slot_scale, u32 r1_chip_id_table, u32 r2_out8, u32
-// symdb: r3_src_for_initial_copy, u32 r4_chip_data_dest); returns r4 preserved; clobbers
-// symdb: r0,r1,r2,r7,lr,NZCV; preserves r3,r4,r5,r6,r7.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8126430.yaml
+// symdb: Loads up to 7 chip icon GFX (0x80 bytes each from the chip DB at offset 0x20) into an icon buffer array, given an icon buffer ptr, a folder-index array and a target chip-count buffer; empty slots are zeroed.
+// symdb: (r0 = icon_count, r1 = *icon_sprite_buf [u8; 0x380], r2 = *folder_chip_u16_arr, r3 =
+// symdb: *chip_target_destination_ptr, r4 = icon_byte_size, lr) -> void ; r7 used as loop counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126430.yaml
 	thumb_local_start
 sub_8126430:
 	push {r4-r7,lr}
@@ -7193,6 +7192,11 @@ off_8126814:
 	.word byte_8124A9E
 	thumb_func_end sub_81267F0
 
+// symdb: Initialises a small buffer at oToolkit_Unk200f3a0 (chip-sprite slot staging area) for an idle chip-frame sprite: writes fixed tile-index/palette bytes, picks left/right slot positions from the linked battle object's Unk_3a, then writes the final frame-and-duration slots (id 0x2F, y=0x58).
+// symdb: (r0 = stageBuffer base ptr OR 0 to default, r5 = linked BattleObject, r10 = Toolkit) -> r0 =
+// symdb: oToolkit_Unk200f3a0_Ptr ; no caller-visible side effects beyond the buffer and the two shared
+// symdb: sprite halfword slots at offset 0x10/0x14 of that buffer.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126818.yaml
 	thumb_local_start
 sub_8126818:
 	push {r4-r7,lr}
