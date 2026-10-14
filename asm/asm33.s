@@ -510,7 +510,7 @@ off_8123510:
 // symdb: Dispatches one battle object's per-frame update through a type-indexed jump table, then runs chip SFX, the PET menu stat block, and the standard entity/BattleObject update passes.
 // symdb: (r2 = ?, r4..r7, r10 = toolkit, r5 = current battle object) -> r5, r8..r10, r12 ; side effects:
 // symdb: jumps through off_812353C, then calls sfx_playChipUseSound_8123C98,
-// symdb: pet_menu_drawCharacterStatBlock_8123C98, pet_menu_drawStatusIcons_8123E58, entity_runAllUpdateHandlers_80465BC,
+// symdb: pet_menu_drawCharacterStatBlock_8123C98, sub_8123E58, entity_runAllUpdateHandlers_80465BC,
 // symdb: battle_updateEStructSprites_80465F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runUpdateHandlerByType_8123514.yaml
 	thumb_local_start

@@ -3622,9 +3622,9 @@ locret_80A6FD8:
 	.balign 4, 0x00
 	thumb_func_end battleObject_stepBeastOut_80A6F78
 
-// symdb: Looks up a battle object's APwrAtk/BPwrAtk/BButton entries in a small 4×3 jump table and stores two attack-stat words into the object's AIData at offsets 0x24/0x28 (zeroing the index on sentinel).
-// symdb: (r5 = BattleObjectPtr) -> void ; side effects writes [r5+0x24], [r5+0x28], [r5+0x6]
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A6FDC.yaml
+// symdb: Looks up a charge/attack parameter pair (u16,u16) for a battle object from a 3-level data table and stores them at object+0x24/0x28.
+// symdb: (r5 = battle object pointer) -> void ; side effects clobbers r0-r3, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6FDC.yaml
 	thumb_local_start
 sub_80A6FDC:
 	push {lr}
@@ -3780,10 +3780,10 @@ off_80A70EC:
 	.word byte_80A6E90
 	thumb_func_end sub_80A70C0
 
-// symdb: Overworld beast-out spotted check: tests EVENT_5F1, then if the player is inside a small box (0x120000, ~18 px) around the OW map object's interact area center (r6+0x7C), sets EVENT_5F1 and writes 1 to [r5+0x34] (Anger/flag field); else if player is inside the larger box (r6+0x7C/0x80 box coords with reach) and r6+0x84 (some object-relative counter/timer) is 0, also triggers the flag+write.
-// symdb: (r5 = toolkit-ish ptr with +0xC/+0x10 coords and +0x34 anger field, r6 = OverworldMapObject-ish
-// symdb: ptr, r10 = event flag token) -> void ; side effects: may set EVENT_5F1 and str 1 into [r5+0x34]
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A70FC.yaml
+// symdb: Beast-Out check: if EVENT_5F1 unset and player is within a trigger box, set EVENT_5F1 and raise a flag.
+// symdb: (in r5 = some struct ptr, r6 = another struct ptr) -> void ; may set EVENT_5F1 and write
+// symdb: [r5+0x34]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A70FC.yaml
 	thumb_local_start
 sub_80A70FC:
 	push {r4-r7,lr}
@@ -4207,6 +4207,9 @@ locret_80A743A:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastStepUpdate_80A73A0
 
+// symdb: Returns 1 if the battle object's two (FuturePanelX,FuturePanelY) pairs (r5+0x18/0x1c) match its (PanelX,PanelY) pair (r5+0xc/0x10), else 0
+// symdb: (r5 = BattleObject*) -> r0 = 0|1 ; side effects: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A743C.yaml
 	thumb_local_start
 sub_80A743C:
 	push {lr}
@@ -4403,6 +4406,10 @@ off_80A7580:
 	.word byte_814172C
 	thumb_func_end sub_80A755C
 
+// symdb: Loads a 4-byte AI routine pointer from a packed u16-indexed table and stores it into the battle object's AIData+0x28 slot.
+// symdb: (r5 = BattleObject*) -> r0 = ptr read from table; side effect: writes that ptr into
+// symdb: r5->AIData+0x28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7590.yaml
 	thumb_local_start
 sub_80A7590:
 	push {r4,lr}
@@ -6087,10 +6094,9 @@ off_80A82CC:
 	.word byte_80A8114
 	thumb_func_end sub_80A82A4
 
-// symdb: Tests an event flag selected by current map/object index; if set, returns 1 and bumps the battle object's sprite OAM priority to 3
-// symdb: (r5 = BattleObjectPtr) -> r0 = 0/1 ; side effects: may call TestEventFlag and
-// symdb: sprite_setPriority_8002E14
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
+// symdb: Checks a per-map/event-flag pair to decide if a battle object's sprite should be raised to OAM priority 3, returning a bool.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> r0 = 1 if priority was raised else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A82DC.yaml
 	thumb_local_start
 sub_80A82DC:
 	push {r4,lr}
@@ -6546,6 +6552,10 @@ sub_80A8644:
 	pop {r4,pc}
 	thumb_func_end sub_80A8644
 
+// symdb: Dispatches a battle object's per-action update by jumping through a small table keyed off its CurAction byte.
+// symdb: (r5 = BattleObject*, r2 = ?, lr = caller) -> r0 = 0x2f8, NZ set; side effects: tail-calls one of
+// symdb: three updaters via off_80A8668
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8654.yaml
 	thumb_func_start sub_80A8654
 sub_80A8654:
 	push {r4-r7,lr}
@@ -6584,6 +6594,11 @@ sub_80A8674:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8674
 
+// symdb: BeastSP secondary object tick: initialise/update the BeastSP object state, then drive its sprite.
+// symdb: (no meaningful args passed via regs; the BeastSP object is reached through r10-derived pointers
+// symdb: the callees know about) -> (no return; caller restores r4–r7); side effects: writes the BeastSP
+// symdb: object and its sprite
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A86A0.yaml
 	thumb_local_start
 sub_80A86A0:
 	push {r4-r7,lr}

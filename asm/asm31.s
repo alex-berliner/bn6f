@@ -858,6 +858,10 @@ loc_80B881A:
 	mov pc, lr
 	thumb_func_end sub_80B8810
 
+// symdb: Steps a battle object's sprite one frame when the battle is running, the related object is alive, and not frozen/invisible/flashing/bubbled/dead.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (1 if sprite was stepped, 0 otherwise); side
+// symdb: effects: advances the object's sprite animation one frame on success
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B881E.yaml
 	thumb_local_start
 sub_80B881E:
 	push {r4,lr}
@@ -43317,6 +43321,12 @@ locret_80CC19E:
 	pop {pc}
 	thumb_func_end sub_80CC110
 
+// symdb: Per-frame dispatch for a battle object's collision phase: tears down current collision data, spawns the post-hit effect, then either marks the object destroyed (battle over), clears its region and forces a phase re-init (self-hit), or runs the per-action handler (or the shared collision present handler if time-stopped).
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes
+// symdb: [r5+oBattleObject_CurPhaseAndPhaseInitialized] (also CurStateActionPhaseAndPhaseInitialized),
+// symdb: reads/writes CollisionDataPtr/FlagsFromCollision/Alliance/CurAction, tail-calls via bx through
+// symdb: the CurAction table at 0x80CC1F0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC1A0.yaml
 	thumb_local_start
 sub_80CC1A0:
 	push {lr}
@@ -88264,6 +88274,9 @@ sub_80E1654:
 	mov pc, lr
 	thumb_func_end sub_80E1654
 
+// symdb: Clears AIData fields (Unk_40 → 0 at +0x64, Unk_10 = 0) on the AI block of the BattleObject pointed to by r5
+// symdb: (r5 = BattleObject*) -> r0 = 0 ; r1 = AIData ptr ; sets Z flag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E1662.yaml
 	thumb_func_start sub_80E1662
 sub_80E1662:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -88275,9 +88288,9 @@ sub_80E1662:
 	mov pc, lr
 	thumb_func_end sub_80E1662
 
-// symdb: Checks the alliance of the BattleObject's RelatedObject1Ptr against the caller's alliance, returning a result via sub_80E16CC into a stack buffer.
-// symdb: (r5 = caller BattleObject, r10 = toolkit) -> r0 = 0 ; side effects: stack scratch, may read
-// symdb: RelatedObject1Ptr chain
+// symdb: Initializes a 4-slot name-range lookup table for an enemy's cross-element weak-point search
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, lr) -> r0 = 0 ; side effects: writes 0x34 bytes on stack,
+// symdb: calls object_getEnemyByNameRange and sub_80E16CC
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:

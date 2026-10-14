@@ -24381,10 +24381,9 @@ camera_recenterAndSetCtrlBits_803135E:
 	pop {r0-r2,r5,pc}
 	thumb_func_end camera_recenterAndSetCtrlBits_803135E
 
-// symdb: Runs the family's three-step helper sequence (prepare, draw/iterate over an unbounded 0x20-entry extent, finish) and then marks the r12 state flags as active by setting the low bit.
-// symdb: void sub_8031388(u32 arg0 /*r0*/, u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg5 /*r5*/); returns
-// symdb: with r0-r2/r5 preserved (restored from stack), r12 |= 1, NZ set from the new r12 value,
-// symdb: r3/r4/r6/r7-r9 whatever sub_80310B0 left.
+// symdb: Camera shake frame updater that does a 2D point-vs-line hit test to decide shake magnitude, then moves the camera.
+// symdb: (r0 = camera?, r5 = shakestate?, r12 = flag/result word, lr = ret) -> r0 = camera?; sets a bit
+// symdb: in r12 (0x1 ORed in)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031388.yaml
 	thumb_local_start
 sub_8031388:
@@ -24456,10 +24455,10 @@ battle_runTextboxUpdateAndSetStateBit1_80313D4:
 	pop {r0-r2,r5,pc}
 	thumb_func_end battle_runTextboxUpdateAndSetStateBit1_80313D4
 
-// symdb: Runs a fixed three-call sequence (step handler, a 0x20/0x20/0x20/1 parameterized setup, and a 0-arg call) and then sets bit 1 of the caller's state word in r12.
-// symdb: void sub_80313FC(void /* r0, r1, r2, r5: passed through and preserved; r12: in/out state word
-// symdb: */); returns updated state in r12 with NZ flags set from it
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80313FC.yaml
+// symdb: Per-frame step for the scrolling battlefield: collects a scroll delta, tests the wedge clamp, and either nudges the camera or sets the "arrived at target" bit.
+// symdb: (r0 = BattleObject*, r5 = ?, r12 = BattleObject*'s header/state word, lr = ret) -> r0 =
+// symdb: BattleObject* (unchanged), r12 = header/state word with bit 0x2 OR'd in ; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80313FC.yaml
 	thumb_local_start
 sub_80313FC:
 	push {r0-r2,r5,lr}
@@ -24712,11 +24711,10 @@ loc_80315B4:
 	mov pc, lr
 	thumb_func_end math_pointCrossHalfPlaneTest_8031594
 
-// symdb: Tests whether a character cell (column r4, row r3) inside a chatbox text block at r0 lies inside a non-blank tile using 2D cross-product-style sign tests
-// symdb: (r0 = chatbox/text-block struct ptr, r1 = ?unused/0x6fd6, r2 = height-in-cells (r5), r3 = ?cell
-// symdb: coord (used both as row count and index), r4 = ?cell coord, r5 = width-in-cells (r6)) -> r0 = 1
-// symdb: if hit, 0 if blank; side effects none beyond return value
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80315B8.yaml
+// symdb: Computes whether the textbox cursor blink should advance this step, returning 1 if so and 0 otherwise.
+// symdb: (r0 = textbox-like struct ptr, r2 = step? delta, r3 = step? delta, r4 = step? delta, r5 = step?
+// symdb: delta) -> r0 = 0 or 1 ; side effects: none observed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80315B8.yaml
 	thumb_local_start
 sub_80315B8:
 	sub r6, r5, r4
@@ -25635,10 +25633,10 @@ textbox_StepAndRefreshWindow_8031BCA:
 	pop {pc}
 	thumb_func_end textbox_StepAndRefreshWindow_8031BCA
 
-// symdb: Thin tail-call wrapper that computes relative coordinates to a target and runs a half-plane cross test (and a follow-up call).
-// symdb: (r0 = some context ptr, r5 = ?, lr = ?) -> r0 = sub_8031B7C result, lr = sub_8031B7C tail; side
-// symdb: effects: clobbers r2-r7.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031BE2.yaml
+// symdb: Tests whether a battle object is within attack range of its target by computing position relative to a doubled target reference point and performing a half-plane intersection test.
+// symdb: (r0 = BattleObjectPtr, r5 = saved, lr = ret) -> r0 = 0 or 1 (boolean result) ; side effects: may
+// symdb: read/write structure fields via the called helpers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031BE2.yaml
 	thumb_local_start
 sub_8031BE2:
 	push {lr}

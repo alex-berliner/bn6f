@@ -9438,6 +9438,11 @@ sub_8112A64:
 	pop {pc}
 	thumb_func_end sub_8112A64
 
+// symdb: AI counter-attack timer/state driver for a BattleObject's combat counter-throw state.
+// symdb: (r5 = BattleObject, r6 = AIState, r7 = AIAttackVars, r4 = AIData, r10 = Toolkit) -> void ; side
+// symdb: effects: writes AIState, BattleObject ExtraVars, AIAttackVars, calls object_setAttack0 /
+// symdb: object_getFlag / FindBattleActorsWithNonzeroParam_ReturnCountAndSum
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8112A78.yaml
 	thumb_local_start
 sub_8112A78:
 	push {lr}
@@ -20392,6 +20397,9 @@ sub_8118424:
 	pop {pc}
 	thumb_func_end sub_8118424
 
+// symdb: BeastOut/ProgramAdvance sprite initialization step: writes a state byte and CurAnim into the beast-sprite object, then snaps its position and resets palette/alpha effects.
+// symdb: (r5 = beast sprite object ptr, r6 = parent battle object / AIData ptr, r10 = toolkit) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811842C.yaml
 	thumb_local_start
 sub_811842C:
 	push {r4-r7,lr}

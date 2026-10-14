@@ -3834,9 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Function at 0x8083df0 has no asm in the project and is only referenced through call-graph edges; its register contract and callees point at a cutscene/BBS preload routine but the assembly is missing so I cannot confirm
-// symdb: (in: r10 = Toolkit, lr) -> flags nz + many r2/r3/r4/r5/r7/r8/r9/r12 ; side effects: manipulates
-// symdb: cutscene script flags, event/story flags, and loads GFX anims
+// symdb: Per-frame update for the BBS request subsystem that toggles event flags and dispatches GFX animations based on cutscene/cutscript and BBS request state.
+// symdb: (r10 = Toolkit) -> side effects only; no return value carried in r0 (caller restores r0). may
+// symdb: clobber r0..r5
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,10 +8218,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Battle beast-out / cross-mega handler that checks a story event flag and dispatches into per-state sub-handlers for the beast transformation.
-// symdb: (r2 = event flag index/handle, r10 = Toolkit ptr) -> r2/r3/r5/r7 (state result / out params) ;
-// symdb: side effects: updates battle/AIData state via the sub-handlers it calls, clobbers many caller-
-// symdb: saved regs
+// symdb: Empty placeholder; assembly not included, behaviour unverified.
+// symdb: (r0 = ?, r1 = ?, r2 = ?) -> r0 = ? ; side effects ?
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

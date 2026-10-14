@@ -989,11 +989,11 @@ loc_813BD82:
 	.byte 0, 0
 	thumb_func_end sub_813BD24
 
-// symdb: For each (panelX, panelY) within a 7x3 window, appends panel indices of valid AI attack targets into an out-buffer using a per-actor displacement table
-// symdb: (r0 = actorIndex, r1 = centerPanelX, r2 = centerPanelY, r3 = ?, r8 = outBufPtr, r6 = iteration
-// symdb: count+1) -> r0 = updated outBufPtr written to r8 ; side effects: writes to byte array at
-// symdb: *r10->Unk200414c_Ptr[actorIndex*7+col]
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BD90.yaml
+// symdb: Scan a 7x7 panel region around a battle object and append valid targets to the AI target list.
+// symdb: (r0 = actorIndex, r1 = centerPanelX, r2 = centerPanelY, r3 = ?, r6 = ?, r8 = outListPtr, r10 =
+// symdb: toolkit) -> r0 = updated outListPtr ; side effects: writes through byte_2006C50 (r0..r0+0x31)
+// symdb: and through the toolkit's Unk200414c_Ptr panel grid
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD90.yaml
 	thumb_local_start
 sub_813BD90:
 	push {r4-r7,lr}
@@ -1915,6 +1915,9 @@ loc_813C4A2:
 	.balign 4, 0x00
 	thumb_func_end checkCurPETNaviStats1FIsOne_813C490
 
+// symdb: Look up the beast-out A-press power attack handler index from a 0x71 key-item check and return its handler pointer
+// symdb: (r10 = toolkit) -> r0 = handler function pointer ; r1 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C4A8.yaml
 	thumb_local_start
 sub_813C4A8:
 	push {lr}
@@ -1933,6 +1936,10 @@ pt_813C4BC:
 	.word byte_813B3AE+323
 	thumb_func_end sub_813C4A8
 
+// symdb: Returns a per-CSV beast-out gate-animation row-script table for one of the three supported PETs based on which key item the player owns.
+// symdb: in: r10 = toolkit (for CheckKeyItem lookup) ; out: r1 = pointer into a row-script byte table ;
+// symdb: side effects: reads key-item 0x71 ("BeastLink/Beast Out upgrade") via CheckKeyItem
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C4C8.yaml
 	thumb_local_start
 sub_813C4C8:
 	push {lr}
