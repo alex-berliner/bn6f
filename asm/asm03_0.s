@@ -13196,11 +13196,10 @@ dword_802C584:
 	.word 0xFFFF
 	thumb_func_end decodePackedIdFields_802C54C
 
-// symdb: Writes 42 consecutive halfword values (0xC1E8..0xC211) to memory at r0, most plausibly the tile-index field of a run of OAM entries for one large sprite/animation frame.
-// symdb: void sprite_FillConsecutiveTileIndices(u16 *dst /*r0*/); returns with r0 = dst+0x54 (past the
-// symdb: filled range), r1 = 0xC212 (one past last value written), r2 = 0 (exhausted counter); clobbers
-// symdb: flags, preserves nothing
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_802C588.yaml
+// symdb: Writes a contiguous ascending halfword run (0xC1E8..) into a chip-select row buffer, 0x2A halfwords wide.
+// symdb: (r0 = dst halfword buffer) -> void ; side effects: none beyond writing 0x2A halfwords to
+// symdb: [r0..r0+0x53]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C588.yaml
 	thumb_local_start
 sub_802C588:
 	ldr r1, dword_802C598 // =0xc1e8 

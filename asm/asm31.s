@@ -29293,6 +29293,11 @@ off_80C58D8:
 	.word sub_80C59B6+1
 	thumb_func_end battleObject_auraUpdateOrDestroy_80C5886
 
+// symdb: Battle-object "throw" animation: phases 0 launches a gravity-affected projectile from its panel X/Y toward panel coords stored in Param3/Param4, ticking timers/animation frames; on landing, snaps position back, plays the hit SFX and hands off to CurAction 4.
+// symdb: (r5 = oBattleObject; r10 = toolkit) -> void ; side effects: writes
+// symdb: XVelocity/YVelocity/ZVelocity, Timer, CurAnim, PanelX/Y, Z and routes through panel helpers /
+// symdb: collision-region setter.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C58E0.yaml
 	thumb_local_start
 sub_80C58E0:
 	push {r4,r6,r7,lr}
@@ -35543,6 +35548,10 @@ locret_80C876A:
 	pop {pc}
 	thumb_func_end battleObject_initSpriteAndCollision_80C8708
 
+// symdb: Per-frame collision update entry for a battle object — tears down stale collision, spawns effects, and dispatches to a per-action handler (or marks the object destroyed when the battle is over).
+// symdb: (r5 = BattleObject*) -> void ; side effects: modifies the object, calls other object_*/battle_*
+// symdb: helpers, may clobber r0/r1/r2/r3/r4/r6/lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C876C.yaml
 	thumb_local_start
 sub_80C876C:
 	push {lr}
@@ -42490,12 +42499,10 @@ sub_80CBAF2:
 	pop {r5,pc}
 	thumb_func_end sub_80CBAF2
 
-// symdb: (hypothesis) If the current BattleObject is on its alliance's starting/front column, compare its PanelY against the nearest enemy BattleObject's PanelY (from battleObject_findClosestEnemyBattleObject_80103F8) and store a {-1,0,+1} signed row delta in the BattleObject's ExtraVars+4 slot; no-op otherwise.
-// symdb: in r5 = self BattleObject, r10 = Toolkit ; out no documented caller-visible return (only r1/r5
-// symdb: preserved per the contract; r0 ends as 1 in captures but is not annotated as live) ; writes
-// symdb: self->ExtraVars+4 (signed -1/0/+1) only when self->PanelX equals 1 (ally side) or 5 (opponent
-// symdb: side); r2 is clobbered for the comparison result; no other side effects observed
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80CBAFA.yaml
+// symdb: Decides whether the AI's Y-panel target should be above, below, or matching the closest enemy
+// symdb: (r5 = self BattleObject) -> out r1/r5 ; sets self->ExtraVars+4 to 1 (move up), -1 (move down),
+// symdb: or 0 (same row)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CBAFA.yaml
 	thumb_local_start
 sub_80CBAFA:
 	push {lr}
@@ -113507,6 +113514,11 @@ off_80ED150:
 	.word sub_80ED154+1
 	thumb_func_end ai_attack_dispatch_80ED13E
 
+// symdb: AI attack-vars step: spawns a guard/shield or snake-like sub-object (0x2B) on the user's arm slot, then updates the linked child over a duration and tears it down on timeout or movement completion.
+// symdb: (r5 = self BattleObject*, r6 = ???, r7 = AIAttackVars*) -> r0 = 0/1 ; side effects:
+// symdb: spawns/destroys linked 0x2B object, plays SFX 0xC5, mutates AIAttackVars and AIData Unk_68,
+// symdb: exits attack state on completion
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80ED154.yaml
 	thumb_local_start
 sub_80ED154:
 	push {r4,r6,lr}
@@ -123006,6 +123018,10 @@ dword_80F1884:
 	.word 0x1
 	thumb_func_end battleObject_aiSpawnSnakeArmAttack_80F1808
 
+// symdb: Ticks an AIAttackVars countdown and exits the attack state when it elapses, else plays the victory/finish anim on first entry.
+// symdb: (r5 = battleObject*, r7 = AIData*) -> void ; side effects: writes AIData->AIAttackVars[].Unk_01
+// symdb: / Unk_10, BattleObject->CurAnim
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F1888.yaml
 	thumb_local_start
 sub_80F1888:
 	push {lr}
@@ -171728,6 +171744,9 @@ sub_81097D6:
 	b loc_81097E0
 	thumb_func_end sub_81097D6
 
+// symdb: Tick AIAttackVars.Unk_10 countdown, run conditional callback each frame, exit attack when timer hits zero or callback returns nonzero
+// symdb: (r7 = AIAttackVars ptr) -> side effects only (void-like)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81097DC.yaml
 	thumb_func_start sub_81097DC
 sub_81097DC:
 	push {r6,lr}
@@ -176572,6 +176591,9 @@ byte_810BEF8:
 	.byte 0x34, 0xA3, 0x34
 	thumb_func_end sub_810BE8E
 
+// symdb: AI attack dispatcher that reads an AI attack-vars index and tails into one of several attack handlers.
+// symdb: (r0 = junk/clobbered, r7 = AI/BattleObject base, r5/r6/r10/lr = preserved) -> r0 = whatever
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BFB8.yaml
 	thumb_local_start
 sub_810BFB8:
 	push {lr}

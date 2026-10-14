@@ -5664,6 +5664,11 @@ battleObject_clearActionPhaseUnk09_80A7E44:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_clearActionPhaseUnk09_80A7E44
 
+// symdb: Indirect tail-call dispatch on battle object AIData by current action byte (r5->+9), invoking one of three action handlers.
+// symdb: (r0 = AIData base via r5, r1 = log2 of step?, r2 = ?, r3 = saved ptr) -> r0 = new r0 written by
+// symdb: callee (varies: 0x4, 0x1d, 0x14, 0x13, 0x12, 0x11, ...); side effects: jumps via tail-call into
+// symdb: one of sub_80A7E6C / sub_80A7EA4 / sub_80A7EBE; no other stack use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E4C.yaml
 	thumb_local_start
 sub_80A7E4C:
 	push {r4-r7,lr}
@@ -8572,6 +8577,10 @@ loc_80A94D2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9458
 
+// symdb: Per-frame step for the Mr. Weather comp map object: if story event 0xBFC is unset, hand it off to the proximity trigger; then run generic step and sprite update.
+// symdb: (r5 = OverworldMapObject*, r6/r10 preserved, lr = return) -> r0 = OverworldMapObject* ; no other
+// symdb: outputs the caller relies on
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A94DC.yaml
 	thumb_local_start
 sub_80A94DC:
 	push {r4-r7,lr}
@@ -8706,6 +8715,10 @@ off_80A95E8:
 	.word 0x1A4
 	thumb_func_end sub_80A95A8
 
+// symdb: For an overworld NPC object (r5), reads the player Z and sets the sprite's OAM priority to 3 if the player is below it, otherwise calls the standard layer resolver and applies the resulting priority.
+// symdb: (r5 = overworld NPC object ptr) -> ; side effects: updates sprite OAM priority at
+// symdb: object+r5->Unk_14..r5+0x12 area
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A95EC.yaml
 	thumb_local_start
 sub_80A95EC:
 	push {r4,lr}

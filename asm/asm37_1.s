@@ -270,6 +270,9 @@ off_8141A6C:
 	.word byte_808A128 // CutsceneScript
 	thumb_func_end battle_beastSpEvolveStep_8141A10
 
+// symdb: per-frame Beast Out gauge driver for a battle object's AI state
+// symdb: (r5 = AIDataPtr) -> no return; mutates AIData fields around the Beast Out timer
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8141A70.yaml
 	thumb_local_start
 sub_8141A70:
 	push {r4-r7,lr}

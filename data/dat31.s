@@ -2225,10 +2225,9 @@ off_810D7F8::
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
 
-// symdb: Battle object hook that resets the object's timer, ORs a flag bit, updates a counter and highlights a panel range relative to the object's facing direction.
-// symdb: (r0 = unused, r1 = thispc+1 (called via tail-call), r2 = ?, r3 = ?, r4/r5/r7/r10 = preserved
-// symdb: object/toolkit; lr = return) -> r0 = counter value (0x24..0x7f), r1 = panel side-sign, r5 =
-// symdb: preserved; NZCV clobbered
+// symdb: Picks a panel in the 6x3 grid in front of a battle object and highlights it, setting the in-front flag
+// symdb: (r0 = ?, r1 = self/pc_addr, r2 = 0x80, r3 = 3) -> r0 = highlighted panel index (0..0x7F or
+// symdb: sentinel)
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810D808.yaml
 	thumb_local_start
 sub_810D808::

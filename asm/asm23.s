@@ -1069,9 +1069,9 @@ loc_80897E4:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastOut_checkOrInit_80897A6
 
-// symdb: When the chatbox flag 0x80 is clear and the chip lockout timer has expired, fades the screen white and starts a Beast-Out cancel/exit transition by storing 0x24 into the object byte pointed to by r5.
-// symdb: (r5 = pointer to a battle/AIData state byte) -> r0 = 1 ; no other observable side effects on
-// symdb: caller-visible regs
+// symdb: On every tick, if the chip-lockout chatbox flag isn't active, advance the chip lockout timer and start a white screen fade when it expires, marking the screen state byte at [r5] with 0x24.
+// symdb: (r5 = pointer to a battle/screen state byte) -> r0 = 1 ; side effects: may write 0x24 to [r5],
+// symdb: may call SetScreenFade and battle_tickChipLockout_8089CB4
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80897E8.yaml
 	thumb_local_start
 sub_80897E8:
@@ -1138,10 +1138,10 @@ loc_8089856:
 	pop {r4-r7,pc}
 	thumb_func_end sub_808983A
 
-// symdb: Per-frame beast-out chip-lockout tick for an AI actor in r5; advances timer/state and writes the resulting phase to AIData.Unk_0c
-// symdb: (r5 = AIData, r7 = ?, r10 = Toolkit) -> r0 = 1 ; side effects: r5->Unk_0c written
-// symdb: (0x18/0x34/0x3c), r5->Unk_0b written
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808985A.yaml
+// symdb: Per-frame BeastOut/SP-cust cursor lockout/orchestration step for a battle actor; sets sub-action byte and returns 1
+// symdb: (r5 = AIData-like struct, r7 = battle state?, r10 = Toolkit) -> r0 = 1 ; side effects: writes
+// symdb: sub-action byte at [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808985A.yaml
 	thumb_local_start
 sub_808985A:
 	push {r4-r7,lr}
@@ -1727,6 +1727,10 @@ sub_8089CA4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089CA4
 
+// symdb: Stores the halfword from r0 into AIData+0x18 (Unk_18) of the AIData struct pointed to by r5.
+// symdb: (r0 = halfword value, r5 = AIData*) -> (none, void); side effect: *(AIData* r5 + 0x18) = r0 as
+// symdb: u16
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CB0.yaml
 	thumb_local_start
 sub_8089CB0:
 	strh r0, [r5,#0x18]

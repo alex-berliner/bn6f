@@ -9956,7 +9956,7 @@ dword_804C118:
 	.word 0x1E09
 	thumb_func_end sub_804C08C
 
-// symdb: Cutscene/chatbox tick: if PET flag 0x01 is clear, neither cutting-back cutscene position matches, and chatbox flag 0x80 is unset, run sub_804C144 then chatbox_copyNaviSpriteState_804C298.
+// symdb: Cutscene/chatbox tick: if PET flag 0x01 is clear, neither cutting-back cutscene position matches, and chatbox flag 0x80 is unset, run sub_804C144 then sub_804C298.
 // symdb: void sub_804C11C(void); /* in: r5, r10, lr; out: r2; clobbers r0,r1,r3,lr and nz,c,v; preserves
 // symdb: r4-r7 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepIfGatesOpen_804C11C.yaml

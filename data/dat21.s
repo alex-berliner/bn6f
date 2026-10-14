@@ -3834,9 +3834,8 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Insufficient evidence — assembly was not present in the provided dump for this address.
-// symdb: in = r10 (Toolkit, per project convention), lr ; out = nz, r2, r3, r4, r5, r7, r8, r9, r12 ;
-// symdb: caller-visible side effects unknown
+// symdb: Per-battle init helper that selects a battle-setup entry, copies pet/param struct, registers the object, sets a couple of event flags, and clears/stages cutscene state for the upcoming pet-wave animation.
+// symdb: (r10 = ToolkitPtr) -> nz ; r0/r2/r3/r4/r5/r7/r8/r9/r12 trashed; uses r5 and r12 heavily
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:
@@ -8218,8 +8217,8 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: unknown — function body not available in this decomp snapshot; cannot be named or described honestly
-// symdb: (r0 = ?, r1 = ?, r2 = ?, r10 = toolkit) -> r0 = 0, Z set ; side effects unknown
+// symdb: Per-frame Beast-Out AI dispatcher for a battle object (selects one of several beast-action paths based on event flags) — void
+// symdb: (r2 = beast-mode-related context/param, r10 = Toolkit) -> r2,r3,r5,r7 ; side effects
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:

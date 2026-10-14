@@ -21730,10 +21730,10 @@ battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8:
 	bx r12
 	thumb_func_end battleObject_removeElementAndFlagFromUpdateRoutine_814E1E8
 
-// symdb: Recomputes a status byte for the object/state structure in r1 via sub_814E0D0, stores it at +0xF, and sets the 0xC flag bits in the control byte at +0.
-// symdb: void sub_814E1FC(u8* state /* r1 */); // calls sub_814E0D0 (result in r3); flags NZ updated from
-// symdb: the ORed byte
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_814E1FC.yaml
+// symdb: Tail thunk: invokes sub_814E0D0 with (r0=ActorType ptr, r1=AIData ptr), then sets AIData.Unk_0f=r3 result and OR-s 0xC into AIData byte 0; returns the actor-type pointer.
+// symdb: (r0 = ActorType-ish pointer, r1 = AIData pointer) -> r0 = same pointer ; side effect: AIData[0]
+// symdb: |= 0x0C, AIData[0xf] = r3 (from sub_814E0D0 return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E1FC.yaml
 	thumb_func_start sub_814E1FC
 sub_814E1FC:
 	mov r12, lr

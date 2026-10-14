@@ -2748,6 +2748,10 @@ off_810F088:
 	.word 0x90
 	thumb_func_end sub_810F040
 
+// symdb: If the BattleObject's CollisionData reports panel damage across multiple slots, set a "hit/cracked" flag in ExtraVars (unless already flagged).
+// symdb: (r5 = BattleObjectPtr) -> no meaningful return ; side effect: writes [r5 +
+// symdb: oBattleObject_ExtraVars + 4] = 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810F090.yaml
 	thumb_func_start sub_810F090
 sub_810F090:
 	push {r4,lr}
@@ -8970,6 +8974,9 @@ loc_811262C:
 	pop {r4,r6,pc}
 	thumb_func_end battleObject_tryStartChipAttack_8112600
 
+// symdb: Clears a battle object's current animation and frees/disarms its extra-vars timer slot.
+// symdb: (r5 = BattleObject*) -> void ; clobbers r0, r1, flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112630.yaml
 	thumb_local_start
 sub_8112630:
 	push {r4,lr}
@@ -20402,10 +20409,11 @@ off_81183C0:
 	.word unk_201F6F0
 	thumb_func_end sub_8118368
 
-// symdb: Dispatches a per-actor "beast out / program advance" transform step on the r5 BattleObject by jumping through an off_81183E8 table indexed by the object's Type byte.
-// symdb: (no r0..r3 args from callers) -> void ; r5 = BattleObject, r6 = ?, r10 = Toolkit; side effects:
-// symdb: dispatches sprite/animation updates on the BattleObject
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81183C4.yaml
+// symdb: Beast-out / Program-Advance dispatcher that runs the per-frame battle step for the current actor (calls AI helper, sets sprite anim, loads animation data, updates sprite), then returns the alive-enemy-row count.
+// symdb: (r6 = BattleObject*, r10 = Toolkit*) -> r0 = alive-enemy-row count (0x1C60 baseline saved in
+// symdb: r5); side effects: r2/r3/r5 clobbered, all caller-saved regs touched, tail-call via r6->byte2
+// symdb: dispatch.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81183C4.yaml
 	thumb_local_start
 sub_81183C4:
 	push {lr}

@@ -9525,6 +9525,9 @@ off_8134A38:
 	.word word_202A020
 	thumb_func_end sub_81349E8
 
+// symdb: Folder-edit helper that reacts to a freshly-pressed A button by incrementing a counter, swapping or advancing two slot buffers at +0x44/+0x48, and playing the menu-select sound.
+// symdb: () -> r0 = bool (1 if A was just pressed and the gesture was handled, 0 otherwise)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134A3C.yaml
 	thumb_local_start
 sub_8134A3C:
 	push {lr}

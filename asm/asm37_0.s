@@ -1143,10 +1143,10 @@ off_813BE88:
 	.word byte_2006C50
 	thumb_func_end battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38
 
-// symdb: Iterates 0x31 entries in the toolkit's Unk2004190 8-byte-array and, for each, reads the first halfword (likely a "in-use" flag) into r0 each iteration.
-// symdb: (r10 = toolkit) -> no caller-visible return; side effects: only volatile (loop reads toolkit
-// symdb: array).
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
+// symdb: Walks the 0x31-entry 8-byte I/O scratch array (toolkit oUnk2004190_Ptr) and zeroes the halfword flag of each entry on battle init.
+// symdb: () -> void ; side effects: clears each entry's halfword at +0 of its 8-byte slot in the
+// symdb: Unk2004190 array
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BE8C.yaml
 	thumb_local_start
 sub_813BE8C:
 	push {r4-r7,lr}
@@ -4643,6 +4643,10 @@ off_813DA90:
 	.word byte_2010290
 	thumb_func_end sub_813DA84
 
+// symdb: Dispatches one step of the title-screen state machine by indexing into a two-entry table stored in EWRAM and calling the matching handler.
+// symdb: () -> r0 = handler return (0 on handled/continue, 1 on skipped/finished) ; may clobber r0-r3,
+// symdb: r5, r12, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DA94.yaml
 	thumb_func_start sub_813DA94
 sub_813DA94:
 	push {r4,r5,lr}
