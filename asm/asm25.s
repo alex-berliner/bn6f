@@ -871,7 +871,7 @@ battle_runBattleFrameForCyberWorld_808FEA4:
 loc_808FEBA:
 	ldr r5, off_808FED4 // =off_808FDB8 
 	ldr r5, [r5]
-	bl sub_808FF44
+	bl battleObject_togglePlayerAllyLockout_808FF44
 	ldrb r0, [r5,#0x5] // (byte_2000315 - 0x2000310)
 	cmp r0, #0
 	bne locret_808FED0
@@ -952,9 +952,9 @@ sub_808FF30:
 
 // symdb: Toggles/clears a player's ally lockout flag and resets its associated counters during battle.
 // symdb: (r5 = ptr to battle-related struct) -> r5 preserved ; r1/r2/r3 clobbered ; NZ flags updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_togglePlayerAllyLockout_808FF44.yaml
 	thumb_local_start
-sub_808FF44:
+battleObject_togglePlayerAllyLockout_808FF44:
 	push {lr}
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -976,7 +976,7 @@ loc_808FF68:
 locret_808FF6C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_808FF44
+	thumb_func_end battleObject_togglePlayerAllyLockout_808FF44
 
 	thumb_local_start
 sub_808FF70:

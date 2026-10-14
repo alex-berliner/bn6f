@@ -390,7 +390,7 @@ main_static_8000570:
 	push {lr}
 	bl m4aSoundInit
 	ldr r0, dword_800059C // =0x93040d
-	bl sub_814EE2C
+	bl sound_setM4AControl_814EE2C
 	mov r0, #8
 	ldr r1, off_80005A8 // =sound_vcountCallback+1
 	bl SetInterruptCallback

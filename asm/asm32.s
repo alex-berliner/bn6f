@@ -29422,7 +29422,7 @@ off_811CAC4:
 	.word battleObject_runFloatingAnim_811CAEC+1
 	.word timerCountdown_step_811CBA0+1
 	.word battle_matchTrackedSpriteAndShrink_811CBD0+1
-	.word sub_811CC02+1
+	.word object_setStateHandlerAndReturnOne_811CC02+1
 	.word battle_initObjectSpriteAndStartAnimation_811CC0C+1
 	.word sub_811CC26+1
 	.word sub_811CC3A+1
@@ -29596,14 +29596,14 @@ battle_matchTrackedSpriteAndShrink_811CBD0:
 // symdb: Initializes an object's state handler table entry and returns 1.
 // symdb: (r5 = object pointer) -> r0 = 1 ; side effects: writes the state-handler pointer into the object
 // symdb: via object_SetStateHandler_811CC4E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CC02.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setStateHandlerAndReturnOne_811CC02.yaml
 	thumb_local_start
-sub_811CC02:
+object_setStateHandlerAndReturnOne_811CC02:
 	push {lr}
 	bl object_SetStateHandler_811CC4E
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_811CC02
+	thumb_func_end object_setStateHandlerAndReturnOne_811CC02
 
 // symdb: Restarts a battle object's sprite — reads the object's sprite info, starts the animation stored in it, loads frame data, and switches the object to state 4.
 // symdb: int battle_initObjectSpriteAndStartAnimation_ADDRESS(void); /* reads r4, r5 (passed through to

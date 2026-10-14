@@ -23360,7 +23360,7 @@ dword_8030C40:
 	.word battle_scrollAdvanceByPanelStep_8031520+1 // 0x08 corner left
 	.word sub_80311F4+1 // 0x09 vertical right
 	.word camera_initAndActivate_803123E+1 // 0x0a horizontal down
-	.word sub_8031264+1 // 0x0b horizontal up
+	.word battle_advanceCinematicCameraByTextboxCharCount_8031264+1 // 0x0b horizontal up
 	.word sub_803128E+1 // 0x0c vertical left
 	.word sub_80312D0+1 // 0x0d ??? weird version of 0x9, used partially for the judge tree comp stump walls https://i.imgur.com/dcfOYtJ.png
 	.word sub_8031302+1 // 0x0e ??? likely a weird version of 0xa
@@ -24183,7 +24183,7 @@ off_80311F0:
 	.word dword_200F3E0
 	thumb_func_end sub_80311B6
 
-// symdb: Likely a small per-frame effect routine that, when sub_8031570 reports a hit/non-zero event, re-runs sub_8031122/sub_80311B6 setup, queries sub_8030E14 for a position delta, neg-halves it via neg;lsr
+// symdb: Likely a small per-frame effect routine that, when battleObject_isHitByPanelRectangle_8031570 reports a hit/non-zero event, re-runs sub_8031122/sub_80311B6 setup, queries sub_8030E14 for a position delta, neg-halves it via neg;lsr
 // symdb: void sub_80311F4(u32* io /* r0 */, u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg5 /* r5 */, u32*
 // symdb: ioFlags /* r12, gets |=3 */)   -> sets r0/r1/r2/r5/r12; clobbers r4/r6/r7/r8/r9 and NZCV;
 // symdb: preserves caller r0/r1/r2/r5
@@ -24197,7 +24197,7 @@ sub_80311F4:
 	mov r4, #0x20 
 	mov r3, #0x20 
 	mov r5, #0
-	bl sub_8031570
+	bl battleObject_isHitByPanelRectangle_8031570
 	mov r3, #0
 	cmp r0, #0
 	beq loc_8031234
@@ -24252,9 +24252,9 @@ camera_initAndActivate_803123E:
 // symdb: Advances the cinematic camera based on textbox progress during story battles
 // symdb: (r0 = textbox/state ptr, r12 = flag word ptr) -> r12 = flag word ptr with bits OR'd by 3 ; side
 // symdb: effects: manipulates camera + writes to dword_200F3E0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031264.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceCinematicCameraByTextboxCharCount_8031264.yaml
 	thumb_local_start
-sub_8031264:
+battle_advanceCinematicCameraByTextboxCharCount_8031264:
 	push {r0-r2,r5,lr}
 	bl sub_8031122
 	mov r2, #0
@@ -24273,7 +24273,7 @@ sub_8031264:
 	orr r0, r1
 	mov r12, r0
 	pop {r0-r2,r5,pc}
-	thumb_func_end sub_8031264
+	thumb_func_end battle_advanceCinematicCameraByTextboxCharCount_8031264
 
 // symdb: Resolves the player/camera pose, optionally pans the camera by half the right-pose delta, and flags the result by ORing 3 into the r12 camera-state word.
 // symdb: void sub_803128E(u32 r0, u32 r1, u32 r2, u32 r5, u32* r12 /* in/out */)
@@ -24700,9 +24700,9 @@ locret_803156E:
 // symdb: Tests whether a battle-object cell rectangle intersects a fixed rectangle from a PanelData-like struct, returning 1 on hit.
 // symdb: (r0 = panelStructPtr, r2 = rectX, r3 = rectY, r4 = rectW, r5 = rectH) -> r0 = 0|1 ; side effects
 // symdb: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031570.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_isHitByPanelRectangle_8031570.yaml
 	thumb_local_start
-sub_8031570:
+battleObject_isHitByPanelRectangle_8031570:
 	sub r6, r5, r4
 	sub r7, r2, r3
 	mul r3, r4
@@ -24725,7 +24725,7 @@ loc_803158C:
 loc_8031590:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_8031570
+	thumb_func_end battleObject_isHitByPanelRectangle_8031570
 
 // symdb: Evaluates the cross product of a point against a directed edge and returns 1 when the point falls on the negative (clockwise) side, used as the inner test of a polygon/hit-area fill routine.
 // symdb: int math_pointCrossHalfPlaneTest(Point* pt /* r0 = {x, y} */, int ax /* r2 */, int bx /* r3 */,
@@ -25416,7 +25416,7 @@ sub_80319FE:
 	mov r4, #0x10
 	mov r3, #0x10
 	mov r5, #0
-	bl sub_8031570
+	bl battleObject_isHitByPanelRectangle_8031570
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
 	thumb_func_end sub_80319FE
@@ -25574,7 +25574,7 @@ off_8031B0C:
 	.word jt_8031B10
 jt_8031B10:
 	.word 0x0
-	.word sub_8031B9A+1 // 0x01
+	.word battleObject_checkCollisionWithTarget_8031B9A+1 // 0x01
 	.word text_setupTextboxAndStartPrint_8031BB2+1 // 0x02
 	.word textbox_StepAndRefreshWindow_8031BCA+1 // 0x03
 	.word battleObject_checkInAttackRange_08031BE2+1 // 0x04
@@ -25634,9 +25634,9 @@ sub_8031B94:
 // symdb: Computes whether an object's relation to its target yields a "near/on-target" condition by chaining relative-position computation, half-plane edge test, and a state check.
 // symdb: (r0 = *BattleObject, r5 = ?) -> r0 = 0 or 1 (nz/Z flag reflects result) ; side effects: r2..r7
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031B9A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_checkCollisionWithTarget_8031B9A.yaml
 	thumb_local_start
-sub_8031B9A:
+battleObject_checkCollisionWithTarget_8031B9A:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #4
@@ -25646,7 +25646,7 @@ sub_8031B9A:
 	bl math_pointCrossHalfPlaneTest_8031594
 	bl sub_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031B9A
+	thumb_func_end battleObject_checkCollisionWithTarget_8031B9A
 
 // symdb: Standard three-step textbox setup — initialise textbox state, open the message window box, then begin printing the text.
 // symdb: void text_setupTextboxAndStartPrint(r0 arg0, r5 arg5); // returns to caller with
@@ -25711,7 +25711,7 @@ battle_aiUpdate_8031BFA:
 	mov r4, #0x10
 	mov r3, #0x10
 	mov r5, #0
-	bl sub_8031570
+	bl battleObject_isHitByPanelRectangle_8031570
 	bl sub_8031B7C
 	pop {pc}
 	thumb_func_end battle_aiUpdate_8031BFA

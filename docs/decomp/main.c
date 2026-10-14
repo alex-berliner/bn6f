@@ -222,7 +222,7 @@ __int16 *__cdecl main_static_8000570()
     __int16 *result; // r0
 
     m4aSoundInit();
-    sub_814EE2C(9634829);
+    sound_setM4AControl_814EE2C(9634829);
     SetInterruptCallback(8, sound_vcountCallback);
     result = &GeneralLCDStatus_STAT_LYC_;
     GeneralLCDStatus_STAT_LYC_ = GeneralLCDStatus_STAT_LYC_ | 0x5020;

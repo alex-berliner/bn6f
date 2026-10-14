@@ -829,10 +829,10 @@ jt_80895C0:
 	.word battle_tickChipLockoutAndFade_80897E8+1
 	.word sub_8089808+1
 	.word sub_8089826+1
-	.word sub_808983A+1
+	.word battle_initBeastOutAiTurn_808983A+1
 	.word battle_tickBeastSp_808985A+1
 	.word sub_808989C+1
-	.word sub_80898B2+1
+	.word battleObject_beastModeAiPhaseInit_80898B2+1
 	.word sub_80898E8+1
 	.word sub_80898FC+1
 	.word sub_808991C+1
@@ -841,7 +841,7 @@ jt_80895C0:
 	.word sub_808999C+1
 	.word sub_80899D8+1
 	.word sub_80899F2+1
-	.word sub_8089A10+1
+	.word battleObject_beastOutActivate_8089A10+1
 	.word battle_handleChipLockoutTransition_8089A60+1
 	.word sub_8089ACA+1
 	.word battle_handleBeastOutStep_8089AE8+1
@@ -1129,9 +1129,9 @@ loc_8089836:
 // symdb: Initializes AI state for a BeastOut attack turn during the first non-faded frame after a scene fade ends.
 // symdb: (r5 = AIData*, r7 = ?BattleObject*, lr) -> r0 = 1 ; no other side effects observable from
 // symdb: callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808983A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastOutAiTurn_808983A.yaml
 	thumb_local_start
-sub_808983A:
+battle_initBeastOutAiTurn_808983A:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8089856
@@ -1145,7 +1145,7 @@ sub_808983A:
 loc_8089856:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_808983A
+	thumb_func_end battle_initBeastOutAiTurn_808983A
 
 // symdb: Per-frame BeastOut/SP-cust cursor lockout/orchestration step for a battle actor; sets sub-action byte and returns 1
 // symdb: (r5 = AIData-like struct, r7 = battle state?, r10 = Toolkit) -> r0 = 1 ; side effects: writes
@@ -1201,9 +1201,9 @@ loc_80898AE:
 
 // symdb: Picks the next AI sub-phase for a Beast-mode battle object by picking one of three PwrAtk phase IDs (0x5C / 0x18 / 0x3C) into the AI's Unk_18 state byte.
 // symdb: (r5 = ...AIData) -> r0 = 1 ; side effect: stores a u8 to [r5+0x18], possibly calls init helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80898B2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastModeAiPhaseInit_80898B2.yaml
 	thumb_local_start
-sub_80898B2:
+battleObject_beastModeAiPhaseInit_80898B2:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1229,7 +1229,7 @@ loc_80898DE:
 loc_80898E4:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80898B2
+	thumb_func_end battleObject_beastModeAiPhaseInit_80898B2
 
 	thumb_local_start
 sub_80898E8:
@@ -1390,9 +1390,9 @@ loc_8089A0C:
 // symdb: Beast-Out activation handler for a battle object: when its chip-lockout flag clears, look up the soul-weapon script and start its Beast-Out camera/AI.
 // symdb: (r5 = BattleObjectAIDataPtr) -> r0 = 1 ; sets AIData Unk_3c / Unk_13 / Unk_18 / byte0, calls
 // symdb: cutscene camera + AI helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089A10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastOutActivate_8089A10.yaml
 	thumb_local_start
-sub_8089A10:
+battleObject_beastOutActivate_8089A10:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089A36
@@ -1423,7 +1423,7 @@ off_8089A40:
 	.word byte_80894BC
 	.word byte_80894C4
 	.word byte_80894CC
-	thumb_func_end sub_8089A10
+	thumb_func_end battleObject_beastOutActivate_8089A10
 
 // symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music

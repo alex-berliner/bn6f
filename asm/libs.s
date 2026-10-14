@@ -22813,7 +22813,7 @@ m4aSoundInit:
 	ldr r0, off_814E904 // =iCgbChannels 
 	bl cgbSoundInit_814EB84
 	ldr r0, dword_814E908 // =0x93f400 
-	bl sub_814EE2C
+	bl sound_setM4AControl_814EE2C
 	ldr r0, dword_814E90C // =0x20 
 	lsl r0, r0, #0x10
 	lsr r0, r0, #0x10
@@ -23617,9 +23617,9 @@ dword_814EE28:
 // symdb: m4a sound driver control register update (handles D-ma/pcm wave volume bits and a sample-rate reroll guarded by the "Smsh" header magic)
 // symdb: (r0 = 32-bit control bits) -> r0 = saved lr (return address); updates m4a driver's direct-sound
 // symdb: state at *byte_3007FF0, writes to hardware regs via SoundPWMControl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EE2C.yaml
-	thumb_func_start sub_814EE2C
-sub_814EE2C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_setM4AControl_814EE2C.yaml
+	thumb_func_start sound_setM4AControl_814EE2C
+sound_setM4AControl_814EE2C:
 	push {r4,r5,lr}
 	mov r5, r0
 	ldr r0, off_814EEB4 // =byte_3007FF0 
@@ -23701,7 +23701,7 @@ dword_814EEB8:
 	.word 0x68736D53
 off_814EEBC:
 	.word SoundPWMControl+1
-	thumb_func_end sub_814EE2C
+	thumb_func_end sound_setM4AControl_814EE2C
 
 	thumb_local_start
 sub_814EEC0:
@@ -24186,7 +24186,7 @@ loc_814F1C4:
 	beq loc_814F1D4
 
 	ldrb r0, [r7,#oRomStructLike81B820C_Unk_03]
-	bl sub_814EE2C
+	bl sound_setM4AControl_814EE2C
 
 loc_814F1D4:
 	ldr r0, dword_814F1E4 // =0x68736d53 

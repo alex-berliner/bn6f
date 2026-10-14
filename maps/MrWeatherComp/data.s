@@ -80,7 +80,7 @@ mapscript_806A2E0:
 mapscript_806A2F0:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_BE1 destination4=byte_806A33D
 	ms_terminate_gfx_anim byte1=0x01
-	ms_init_eStruct200a6a0 ptr1=sub_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battleObject_runCurAnimHandler_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_BE0 destination4=mapscript_806A31E
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_806A31E
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_BFB
@@ -157,7 +157,7 @@ mapscript_806A3E0:
 mapscript_806A3EC:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_BE2 destination4=byte_806A42C
 	ms_terminate_gfx_anim byte1=0x01
-	ms_init_eStruct200a6a0 ptr1=sub_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battleObject_runCurAnimHandler_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_BE0 destination4=mapscript_806A41A
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_806A41A
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_BFB
@@ -211,7 +211,7 @@ mapscript_806A47C:
 mapscript_806A488:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_BE3 destination4=byte_806A4C8
 	ms_terminate_gfx_anim byte1=0x01
-	ms_init_eStruct200a6a0 ptr1=sub_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battleObject_runCurAnimHandler_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_BE0 destination4=mapscript_806A4B6
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_806A4B6
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_BFB

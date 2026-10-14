@@ -6033,7 +6033,7 @@ signed int battle_stepSubstateToState4_8007C14()
     int v1; // r5
     signed int result; // r0
 
-    if ( !sub_801FE5E() )
+    if ( !battle_getSubstateFinishedFlag_801FE5E() )
         goto LABEL_7;
     if ( !*(v1 + 3) )
     {

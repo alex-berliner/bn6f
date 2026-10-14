@@ -11262,7 +11262,7 @@ off_81356E4:
 off_81356E8:
 	.word sub_81356F4+1
 	.word beastsp_dispatchHandler_81357C4+1
-	.word sub_8135B54+1
+	.word battle_beastSpExitOrFinishBattle_8135B54+1
 	thumb_func_end beastsp_dispatchHandler_81356D4
 
 	thumb_local_start
@@ -11822,9 +11822,9 @@ locret_8135B52:
 // symdb: (r5 = battle-result/state byte, r10 = *Toolkit, r2/lr = save/lr) -> void ; side effects: runs
 // symdb: entity+sprite updates, may clear chatbox flags, zero 0x80-byte submenu buffer, switch map music,
 // symdb: may unlock player and exit to map.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135B54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpExitOrFinishBattle_8135B54.yaml
 	thumb_local_start
-sub_8135B54:
+battle_beastSpExitOrFinishBattle_8135B54:
 	push {r4,lr}
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -11852,7 +11852,7 @@ loc_8135B88:
 locret_8135B90:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8135B54
+	thumb_func_end battle_beastSpExitOrFinishBattle_8135B54
 
 	thumb_local_start
 sub_8135B94:

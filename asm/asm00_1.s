@@ -10458,7 +10458,7 @@ off_8007C04:
 	thumb_local_start
 battle_stepSubstateToState4_8007C14:
 	push {lr}
-	bl sub_801FE5E
+	bl battle_getSubstateFinishedFlag_801FE5E
 	tst r0, r0
 	beq loc_8007C44
 	ldrb r0, [r5,#oBattleState_Unk_03]

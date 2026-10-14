@@ -12261,8 +12261,8 @@ loc_8014174:
 	pop {r4,pc}
 	thumb_func_end getCurNaviStatTier_8014150
 
-// symdb: Reads two stat slots (kind 8) of the current navi, indexes a 12-byte table with stat1*3+stat0, and hands the looked-up value (0x10/0x20/0x40) to sub_801DF8C.
-// symdb: void sub_8014178(void); // in: r4, r6 preserved across call, lr; out: byte passed to sub_801DF8C
+// symdb: Reads two stat slots (kind 8) of the current navi, indexes a 12-byte table with stat1*3+stat0, and hands the looked-up value (0x10/0x20/0x40) to battle_setEnemyCountFromNaviStats_801DF8C.
+// symdb: void sub_8014178(void); // in: r4, r6 preserved across call, lr; out: byte passed to battle_setEnemyCountFromNaviStats_801DF8C
 // symdb: in r0; clobbers r0, r1, lr, NZ flags; C/V reflect the final index add
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyNaviStatTableEntry_8014178.yaml
 	thumb_func_start battle_applyNaviStatTableEntry_8014178
@@ -12280,7 +12280,7 @@ battle_applyNaviStatTableEntry_8014178:
 	add r0, r0, r4
 	ldr r4, off_801419C // =byte_80141A0 
 	ldrb r0, [r4,r0]
-	bl sub_801DF8C
+	bl battle_setEnemyCountFromNaviStats_801DF8C
 	pop {r4,pc}
 	.balign 4, 0
 off_801419C:
@@ -31277,13 +31277,13 @@ dword_801DF88:
 
 // symdb: Stores the looked-up enemy-virus count (0x10/0x20/0x40) into eStruct2035280.NaviStatusGfxIdx (offset 0x22).
 // symdb: (r0 = u16 enemyVirusCount) -> void ; side effect: writes r0 as a u16 to eStruct2035280+0x22
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DF8C.yaml
-	thumb_func_start sub_801DF8C
-sub_801DF8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setEnemyCountFromNaviStats_801DF8C.yaml
+	thumb_func_start battle_setEnemyCountFromNaviStats_801DF8C
+battle_setEnemyCountFromNaviStats_801DF8C:
 	ldr r1, off_801E0D8 // =eStruct2035280
 	strh r0, [r1,#0x22] // (word_20352A2 - 0x2035280)
 	mov pc, lr
-	thumb_func_end sub_801DF8C
+	thumb_func_end battle_setEnemyCountFromNaviStats_801DF8C
 
 // symdb: Resets the in-battle custom gauge, zeroing its progress counter and clearing its gauge-related flag bits.
 // symdb: void ClearCustGauge(in u32 r10 /* unused by body, passed through context */, out u32 r1, out u32

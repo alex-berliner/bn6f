@@ -6451,7 +6451,7 @@ void sub_804CCF0()
 
 
 // 0x804cd20
-int sub_804CD20()
+int battleObject_runCurAnimHandler_804CD20()
 {
     int v0; // r5
 
@@ -6483,7 +6483,7 @@ int sub_804CD5C()
     v0[17] = 0;
     v0[21] = 2;
     SetDummyBGScrollCallbacks();
-    sub_804CDD4();
+    battle_renderBgLayer3TilesAndHandleEvent_804CDD4();
     v0[16] = 4;
     return sub_804CDCC(4);
 }
@@ -6492,12 +6492,12 @@ int sub_804CD5C()
 // 0x804cdcc
 void __fastcall sub_804CDCC(int a1)
 {
-    sub_804CDD4();
+    battle_renderBgLayer3TilesAndHandleEvent_804CDD4();
 }
 
 
 // 0x804cdd4
-void sub_804CDD4()
+void battle_renderBgLayer3TilesAndHandleEvent_804CDD4()
 {
     int v0; // r10
     char v1; // zf

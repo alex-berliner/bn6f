@@ -60,13 +60,13 @@ locret_801FE5C:
 
 // symdb: Returns a byte from a global battle sub-state struct (offset 0, likely a finished/idle flag) by loading it from EWRAM pointer `eStruct203F7D8`.
 // symdb: () -> r0 = eStruct203F7D8[0]; no side effects beyond reading the byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801FE5E.yaml
-	thumb_func_start sub_801FE5E
-sub_801FE5E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getSubstateFinishedFlag_801FE5E.yaml
+	thumb_func_start battle_getSubstateFinishedFlag_801FE5E
+battle_getSubstateFinishedFlag_801FE5E:
 	ldr r3, off_80200D0 // =eStruct203F7D8
 	ldrb r0, [r3]
 	mov pc, lr
-	thumb_func_end sub_801FE5E
+	thumb_func_end battle_getSubstateFinishedFlag_801FE5E
 
 	thumb_func_start sub_801FE64
 sub_801FE64:

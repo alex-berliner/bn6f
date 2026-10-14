@@ -237,7 +237,7 @@ mapscript_806B00C:
 mapscript_806B018:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_FD2 destination4=byte_806B058
 	ms_terminate_gfx_anim byte1=0x01
-	ms_init_eStruct200a6a0 ptr1=sub_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battleObject_runCurAnimHandler_804CD20+1 ptr5=unk_804CD3D word9=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_BE0 destination4=mapscript_806B046
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_806B046
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_BFB

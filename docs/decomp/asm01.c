@@ -37,7 +37,7 @@ int __fastcall sub_801FE24(int a1)
 
 
 // 0x801fe5e
-int sub_801FE5E()
+int battle_getSubstateFinishedFlag_801FE5E()
 {
     return eStruct203F7D8[0];
 }

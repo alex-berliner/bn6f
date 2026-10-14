@@ -11381,9 +11381,9 @@ dword_804CD1C:
 
 // symdb: Dispatches through a CurAnim-keyed jump table to one of two BattleObject CurAnim handlers, returning the callee's r0.
 // symdb: (r5 = BattleObjectPtr) -> r0 = whatever the dispatched handler returns ; tail-call via saved lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CD20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runCurAnimHandler_804CD20.yaml
 	thumb_local_start
-sub_804CD20:
+battleObject_runCurAnimHandler_804CD20:
 	push {r4-r7,lr}
 	ldr r0, off_804CD30 // =off_804CD34 
 	ldrb r1, [r5,#0x10]
@@ -11403,7 +11403,7 @@ unk_804CD3D:
 	.byte 0xBD
 	.byte 0x00
 	.byte 0x00
-	thumb_func_end sub_804CD20
+	thumb_func_end battleObject_runCurAnimHandler_804CD20
 
 	thumb_local_start
 sub_804CD5C:
@@ -11439,7 +11439,7 @@ sub_804CD5C:
 	mov r0, #2
 	strb r0, [r5,#0x15]
 	bl SetDummyBGScrollCallbacks
-	bl sub_804CDD4
+	bl battle_renderBgLayer3TilesAndHandleEvent_804CDD4
 	mov r0, #4
 	strb r0, [r5,#0x10]
 	bl sub_804CDCC
@@ -11462,7 +11462,7 @@ byte_804CDC4:
 	thumb_local_start
 sub_804CDCC:
 	push {r4-r7,lr}
-	bl sub_804CDD4
+	bl battle_renderBgLayer3TilesAndHandleEvent_804CDD4
 	pop {r4-r7,pc}
 	thumb_func_end sub_804CDCC
 
@@ -11470,9 +11470,9 @@ sub_804CDCC:
 // symdb: (r5 = toolkit-related; r10 = ToolkitPtr) -> void ; side effects: writes to eRenderInfo (BG
 // symdb: control reg bits), conditionally calls sub_804CE3C, always calls sub_804CE0C, then
 // symdb: CopyBackgroundTiles(r0=0, r1=0, r2=3, r3=byte_86A3F40, r4=0x20, r5=0x20)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CDD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderBgLayer3TilesAndHandleEvent_804CDD4.yaml
 	thumb_local_start
-sub_804CDD4:
+battle_renderBgLayer3TilesAndHandleEvent_804CDD4:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
@@ -11499,7 +11499,7 @@ locret_804CE06:
 	.balign 4, 0
 off_804CE08:
 	.word byte_86A3F40
-	thumb_func_end sub_804CDD4
+	thumb_func_end battle_renderBgLayer3TilesAndHandleEvent_804CDD4
 
 	thumb_local_start
 sub_804CE0C:

@@ -8493,7 +8493,7 @@ int battle_applyNaviStatTableEntry_8014178()
 
     v0 = sub_80136CC(0, 8);
     v1 = sub_80136CC(1, 8);
-    return sub_801DF8C(byte_80141A0[3 * v1 + v0]);
+    return battle_setEnemyCountFromNaviStats_801DF8C(byte_80141A0[3 * v1 + v0]);
 }
 
 
@@ -20818,7 +20818,7 @@ int sub_801DF32()
 
 
 // 0x801df8c
-int __fastcall sub_801DF8C(int result)
+int __fastcall battle_setEnemyCountFromNaviStats_801DF8C(int result)
 {
     word_20352A2 = result;
     return result;

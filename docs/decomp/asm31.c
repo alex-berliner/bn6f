@@ -463,15 +463,15 @@ int battleObject_syncVisualStateFromRelatedObject_80B863A()
 
 
 // 0x80b86a4
-int sub_80B86A4()
+int battleObject_stepSprite_80B86A4()
 {
     int v0; // r5
     unsigned int v1; // r0
     unsigned __int8 v2; // cf
     int result; // r0
 
-    sub_80B8800();
-    sub_80B8810();
+    battleObject_copyCoordsFromRelatedObject_80B8800();
+    battleObject_clampCurAnim_80B8810();
     v1 = battle_getStateUnk5c_800139A();
     v2 = __CFSHR__(v1, 2);
     result = v1 >> 2;
@@ -488,8 +488,8 @@ int sub_80B86A4()
 // 0x80b86c4
 int battleObject_stepSprite_80B86C4()
 {
-    sub_80B8800();
-    sub_80B8810();
+    battleObject_copyCoordsFromRelatedObject_80B8800();
+    battleObject_clampCurAnim_80B8810();
     return battleObject_stepSpriteIfAliveAndUnfrozen_80B881E();
 }
 
@@ -615,7 +615,7 @@ int __fastcall sub_80B87F0(int result)
 
 
 // 0x80b8800
-int sub_80B8800()
+int battleObject_copyCoordsFromRelatedObject_80B8800()
 {
     int v0; // r5
     int v1; // r2
@@ -633,7 +633,7 @@ int sub_80B8800()
 
 
 // 0x80b8810
-signed int sub_80B8810()
+signed int battleObject_clampCurAnim_80B8810()
 {
     int v0; // r5
     signed int result; // r0
@@ -23348,7 +23348,7 @@ char *__noreturn sub_80C54E0()
 
 
 // 0x80c552a
-int sub_80C552A()
+int battleObject_snakeArmUpdate_80C552A()
 {
     int v0; // r5
     int v1; // r0
@@ -43991,7 +43991,7 @@ void __noreturn battleObject_runUpdateActionsAndCollisions_80D2320()
 
 
 // 0x80d236c
-void sub_80D236C()
+void battleObject_clearActiveOnDeletionState_80D236C()
 {
     int v0; // r5
 
@@ -69469,7 +69469,7 @@ int sub_80E23E8()
         v2 = 16;
         if ( *(v0 + 4) )
             v2 = 64;
-        sub_801DF8C(v2);
+        battle_setEnemyCountFromNaviStats_801DF8C(v2);
         v3 = getEntryPtr_2036120_1D0_802E070(*(v0 + 22));
         if ( *(v0 + 4) )
         {

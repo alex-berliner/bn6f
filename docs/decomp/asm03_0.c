@@ -15371,7 +15371,7 @@ __int64 __fastcall sub_80311F4(__int64 a1)
 
     v8 = a1;
     v1 = sub_8031122();
-    if ( sub_8031570(v1, v2, 0, 32) )
+    if ( battleObject_isHitByPanelRectangle_8031570(v1, v2, 0, 32) )
     {
         v3 = sub_80311B6(v8);
         v5 = sub_8030E14(v3, v4, 0, 32);
@@ -15396,7 +15396,7 @@ void camera_initAndActivate_803123E()
 
 
 // 0x8031264
-void sub_8031264()
+void battle_advanceCinematicCameraByTextboxCharCount_8031264()
 {
     _DWORD *v0; // r0
     int v1; // r1
@@ -15641,7 +15641,7 @@ void __fastcall battle_scrollAdvanceByPanelStep_8031520(__int64 a1)
 
 
 // 0x8031570
-BOOL __fastcall sub_8031570(_DWORD *a1, int a2, int a3, int a4)
+BOOL __fastcall battleObject_isHitByPanelRectangle_8031570(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -16041,7 +16041,7 @@ signed int __fastcall sub_80319FE(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_8031570(v1, v2, 0, 16);
+    v3 = battleObject_isHitByPanelRectangle_8031570(v1, v2, 0, 16);
     return battle_aiIndexToActorCount_8031980(v3);
 }
 
@@ -16190,7 +16190,7 @@ int sub_8031B94()
 
 
 // 0x8031b9a
-int __fastcall sub_8031B9A(_DWORD *a1)
+int __fastcall battleObject_checkCollisionWithTarget_8031B9A(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -16249,7 +16249,7 @@ int __fastcall battle_aiUpdate_8031BFA(_DWORD *a1)
     int v3; // r0
 
     v1 = battle_calcRelPosToTarget_803172E(a1);
-    v3 = sub_8031570(v1, v2, 0, 16);
+    v3 = battleObject_isHitByPanelRectangle_8031570(v1, v2, 0, 16);
     return sub_8031B7C(v3);
 }
 

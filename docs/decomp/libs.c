@@ -10944,7 +10944,7 @@ int m4aSoundInit()
     SWI_CpuSet((&SoundMainRAM & 0xFFFFFFFE), byte_3005700, Timer0Counter_Reload);
     sub_814ECC8(iSoundInfo);
     cgbSoundInit_814EB84(iCgbChannels);
-    sub_814EE2C(9696256);
+    sound_setM4AControl_814EE2C(9696256);
     v0 = &gMPlayTable;
     v1 = 32;
     do
@@ -11336,7 +11336,7 @@ int __fastcall SampleFreqSet_814EDC0(int a1)
 
 
 // 0x814ee2c
-int __fastcall sub_814EE2C(int a1)
+int __fastcall sound_setM4AControl_814EE2C(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -11555,7 +11555,7 @@ int __fastcall sound_814F104(int a1, unsigned __int8 *a2)
             {
 LABEL_14:
                 if ( v3[3] & 0x80 )
-                    sub_814EE2C(v3[3]);
+                    sound_setM4AControl_814EE2C(v3[3]);
 LABEL_16:
                 *(v2 + 52) = 1752395091;
                 return v8;

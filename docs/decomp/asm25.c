@@ -529,7 +529,7 @@ int battle_runBattleFrameForCyberWorld_808FEA4()
     v2 = *(result + oGameState_MapGroup);
     if ( v2 == 131 || v2 == 133 && *(result + oGameState_MapNumber) == 2 )
     {
-        sub_808FF44();
+        battleObject_togglePlayerAllyLockout_808FF44();
         result = byte_2000315;
         if ( !byte_2000315 )
         {
@@ -593,7 +593,7 @@ int sub_808FF30()
 
 
 // 0x808ff44
-signed int sub_808FF44()
+signed int battleObject_togglePlayerAllyLockout_808FF44()
 {
     int v0; // r5
     char v1; // zf

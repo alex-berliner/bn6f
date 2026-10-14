@@ -634,7 +634,7 @@ battleObject_syncVisualStateFromRelatedObject_80B863A:
 off_80B8694:
 	.word off_80B8698
 off_80B8698:
-	.word sub_80B86A4+1
+	.word battleObject_stepSprite_80B86A4+1
 	.word battleObject_stepSprite_80B86C4+1
 	.word sub_80B86D4+1
 	thumb_func_end battleObject_syncVisualStateFromRelatedObject_80B863A
@@ -642,12 +642,12 @@ off_80B8698:
 // symdb: Step a battle object's sprite/animation by calling per-object sprite/animation helpers, force CurAction=4 and clear CurPhase/PhaseInitialized when the battle state's Unk_5c shifted out of bit 1, then dispatch to the object's sprite step state machine.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: writes r5+CurAction,
 // symdb: r5+CurPhaseAndPhaseInitialized, calls several subs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B86A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSprite_80B86A4.yaml
 	thumb_local_start
-sub_80B86A4:
+battleObject_stepSprite_80B86A4:
 	push {lr}
-	bl sub_80B8800
-	bl sub_80B8810
+	bl battleObject_copyCoordsFromRelatedObject_80B8800
+	bl battleObject_clampCurAnim_80B8810
 	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
 	bcc locret_80B86C2
@@ -658,7 +658,7 @@ sub_80B86A4:
 	bl battleObject_stepSprite_80B86C4
 locret_80B86C2:
 	pop {pc}
-	thumb_func_end sub_80B86A4
+	thumb_func_end battleObject_stepSprite_80B86A4
 
 // symdb: Tail-call wrapper that runs the battle object's sprite/animation step when the object is alive and unfrozen.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> tail-calls
@@ -667,8 +667,8 @@ locret_80B86C2:
 	thumb_local_start
 battleObject_stepSprite_80B86C4:
 	push {lr}
-	bl sub_80B8800
-	bl sub_80B8810
+	bl battleObject_copyCoordsFromRelatedObject_80B8800
+	bl battleObject_clampCurAnim_80B8810
 	bl battleObject_stepSpriteIfAliveAndUnfrozen_80B881E
 	pop {pc}
 	thumb_func_end battleObject_stepSprite_80B86C4
@@ -845,9 +845,9 @@ locret_80B87FE:
 // symdb: Copies the 0x34 coord triple (X, Y, Z) from this object's RelatedObject1Ptr into its own
 // symdb: (r5 = oBattleObject) -> r1 = oRelated->X, r2 = oRelated->Y, r3 = oRelated->Z ; side effects:
 // symdb: writes oBattleObject+0x34..0x3F with the same three u32s
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8800.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_copyCoordsFromRelatedObject_80B8800.yaml
 	thumb_local_start
-sub_80B8800:
+battleObject_copyCoordsFromRelatedObject_80B8800:
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	mov r0, #0x34 
 	add r0, r0, r1
@@ -856,14 +856,14 @@ sub_80B8800:
 	add r0, r0, r5
 	stmia r0!, {r1-r3}
 	mov pc, lr
-	thumb_func_end sub_80B8800
+	thumb_func_end battleObject_copyCoordsFromRelatedObject_80B8800
 
 // symdb: Clamps the related-object's CurAnim to <=3 and stores the result back into the calling BattleObject's CurAnim.
 // symdb: (r5 = battleObject *) -> r0 = clamped value, NZ/C/V flags reflect the final value ; no side
 // symdb: effects beyond the store
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8810.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clampCurAnim_80B8810.yaml
 	thumb_local_start
-sub_80B8810:
+battleObject_clampCurAnim_80B8810:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r0, [r0,#oBattleObject_CurAnim]
 	cmp r0, #3
@@ -872,7 +872,7 @@ sub_80B8810:
 loc_80B881A:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov pc, lr
-	thumb_func_end sub_80B8810
+	thumb_func_end battleObject_clampCurAnim_80B8810
 
 // symdb: Steps a battle object's sprite one frame when the battle is running, the related object is alive, and not frozen/invisible/flashing/bubbled/dead.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (1 if sprite was stepped, 0 otherwise); side
@@ -28808,7 +28808,7 @@ loc_80C54FE:
 off_80C5518:
 	.word off_80C551C
 off_80C551C:
-	.word sub_80C552A+1
+	.word battleObject_snakeArmUpdate_80C552A+1
 loc_80C5520:
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #CUR_STATE_DESTROY
@@ -28821,9 +28821,9 @@ loc_80C5520:
 // symdb: oBattleObject_Timer, oBattleObject_Param2, oBattleObject_Param1,
 // symdb: oBattleObject_CurStateActionPhaseAndPhaseInitialized on the parent, and spawns one or more child
 // symdb: BattleObjects via sub_80C5590
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C552A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_snakeArmUpdate_80C552A.yaml
 	thumb_local_start
-sub_80C552A:
+battleObject_snakeArmUpdate_80C552A:
 	push {r4,r6,r7,lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	ldr r0, [r0]
@@ -28861,7 +28861,7 @@ loc_80C556E:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80C5576:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80C552A
+	thumb_func_end battleObject_snakeArmUpdate_80C552A
 
 	thumb_func_start sub_80C5578
 sub_80C5578:
@@ -56326,7 +56326,7 @@ battleObject_runUpdateActionsAndCollisions_80D2320:
 off_80D2344:
 	.word jt_80D2348
 jt_80D2348:
-	.word sub_80D236C+1
+	.word battleObject_clearActiveOnDeletionState_80D236C+1
 	.word battle_ResetObjectActionState_80165B8+1
 	.word sub_80D239C+1
 	.word sub_80166AE+1
@@ -56339,9 +56339,9 @@ jt_80D2348:
 
 // symdb: If the deletion-state battle flag is set, clear the object's ACTIVE bit, set PAUSE_UPDATE, force CurAction=8 and zero CurPhaseAndPhaseInitialized.
 // symdb: (r5 = BattleObject*) -> side effects only; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D236C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_clearActiveOnDeletionState_80D236C.yaml
 	thumb_local_start
-sub_80D236C:
+battleObject_clearActiveOnDeletionState_80D236C:
 	push {lr}
 	bl battle_getFlags
 	mov r1, #1
@@ -56364,7 +56364,7 @@ loc_80D237E:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80D2396:
 	pop {pc}
-	thumb_func_end sub_80D236C
+	thumb_func_end battleObject_clearActiveOnDeletionState_80D236C
 
 	thumb_local_start
 sub_80D2398:
@@ -90431,7 +90431,7 @@ sub_80E23E8:
 	beq loc_80E23FA
 	mov r0, #0x40 
 loc_80E23FA:
-	bl sub_801DF8C
+	bl battle_setEnemyCountFromNaviStats_801DF8C
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
 	ldr r1, off_80E24DC // =0x1e0 

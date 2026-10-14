@@ -7111,7 +7111,7 @@ int sub_8135B38()
 
 
 // 0x8135b54
-int sub_8135B54()
+int battle_beastSpExitOrFinishBattle_8135B54()
 {
     _BYTE *v0; // r5
     int v1; // r10

@@ -18654,7 +18654,7 @@ signed int battle_matchTrackedSpriteAndShrink_811CBD0()
 
 
 // 0x811cc02
-signed int sub_811CC02()
+signed int object_setStateHandlerAndReturnOne_811CC02()
 {
     object_SetStateHandler_811CC4E();
     return 1;

@@ -387,7 +387,7 @@ signed int __fastcall sub_8089826(int a1)
 
 
 // 0x808983a
-signed int sub_808983A()
+signed int battle_initBeastOutAiTurn_808983A()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -459,7 +459,7 @@ signed int __fastcall sub_808989C(int a1)
 
 
 // 0x80898b2
-signed int sub_80898B2()
+signed int battleObject_beastModeAiPhaseInit_80898B2()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -649,7 +649,7 @@ signed int sub_80899F2()
 
 
 // 0x8089a10
-signed int __fastcall sub_8089A10(int a1)
+signed int __fastcall battleObject_beastOutActivate_8089A10(int a1)
 {
     int v1; // r5
     char v2; // zf
