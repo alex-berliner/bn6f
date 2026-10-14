@@ -30018,7 +30018,7 @@ void t3_0x2b_80C96A0()
 
 
 // 0x80c96c8
-int __noreturn sub_80C96C8()
+int __noreturn battleObject_initElement_80C96C8()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -32206,7 +32206,7 @@ int __noreturn battleObject_initRisingShot_80CAD4C()
 
 
 // 0x80cade0
-void __noreturn sub_80CADE0()
+void __noreturn battleObject_updateCollisionAndState_80CADE0()
 {
     int v0; // r5
     int v1; // r0
@@ -32394,7 +32394,7 @@ int sub_80CAF9C()
 
 
 // 0x80cafc8
-int sub_80CAFC8()
+int battleObject_throwProjectile_80CAFC8()
 {
     int v0; // r5
     int v1; // r1
@@ -37833,7 +37833,7 @@ void t3_0x51_80CE70C()
 
 
 // 0x80ce730
-void __noreturn sub_80CE730()
+void __noreturn battleObject_initSnakeArm_80CE730()
 {
     Battle *v0; // r5
 
@@ -40635,7 +40635,7 @@ void t3_0x5e_80D0268()
 
 
 // 0x80d028c
-signed int __noreturn sub_80D028C()
+signed int __noreturn battleObject_initializeFromStateUpdate_80D028C()
 {
     int v0; // r5
     int v1; // r0
@@ -48040,7 +48040,7 @@ int t3_0x7b_80D4A28()
 
 
 // 0x80d4a48
-void __noreturn sub_80D4A48()
+void __noreturn battleObject_initializePhase_80D4A48()
 {
     Battle *v0; // r5
 
@@ -65731,7 +65731,7 @@ void t3_0xd3_80DFE40()
 
 
 // 0x80dfe64
-int sub_80DFE64()
+int object_battleInitPhase_80DFE64()
 {
     int v0; // r5
     _BYTE *v1; // r0
@@ -84711,7 +84711,7 @@ int sub_80EB776()
 
 
 // 0x80eb79c
-signed int sub_80EB79C()
+signed int aiAttackVars_updateIllusionSpawnState_80EB79C()
 {
     unsigned __int8 *v0; // r5
     int v1; // r7
@@ -135441,7 +135441,7 @@ int sub_810C070()
 
 
 // 0x810c0e4
-int __fastcall sub_810C0E4(int a1, int a2, int a3)
+int __fastcall beastsp_executeAttackStep_810C0E4(int a1, int a2, int a3)
 {
     Battle *v3; // r5
     int v4; // r7

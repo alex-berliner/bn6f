@@ -3665,7 +3665,7 @@ int __fastcall custMenuPressOK_8028D3A(int a1, int a2, int a3, int a4)
     int v5; // r1
     int v6; // r2
 
-    sub_8029110(a1, a2, a3, a4);
+    custMenu_confirmAndProcessSelectedChips_8029110(a1, a2, a3, a4);
     sub_80293F8();
     if ( *(v4 + 25) )
     {
@@ -4123,7 +4123,7 @@ int __fastcall customScreen_ExitAction_8029032(int a1, int a2, int a3)
 
 
 // 0x8029110
-int __fastcall sub_8029110(int a1, int a2, int a3, int a4)
+int __fastcall custMenu_confirmAndProcessSelectedChips_8029110(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r10
@@ -15178,7 +15178,7 @@ int __fastcall battle_runTextboxUpdateAndSetStateBit1_8030F04(_DWORD *a1, int a2
 
 
 // 0x8030f7c
-int __fastcall sub_8030F7C(_DWORD *a1, int a2, int a3, int a4)
+int __fastcall battle_scrollHitTestLineVsWedge_8030F7C(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -15425,7 +15425,7 @@ __int64 __fastcall sub_803128E(__int64 a1)
     if ( math_pointLeftOfLineTest_80315DC(v1, v2, 0, 32) )
     {
         v3 = sub_80311B6(v8);
-        v5 = sub_8030F7C(v3, v4, 0, 32);
+        v5 = battle_scrollHitTestLineVsWedge_8030F7C(v3, v4, 0, 32);
         camera_moveByDelta_80310B0(v5 >> 1, v6 >> 1);
     }
     return v8;
@@ -15483,7 +15483,7 @@ void __fastcall camera_recenterAndSetCtrlBits_803135E(_DWORD *a1)
     unsigned int v4; // r1
 
     v1 = sub_80311B6(a1);
-    v3 = sub_8030F7C(v1, v2, 0, 32);
+    v3 = battle_scrollHitTestLineVsWedge_8030F7C(v1, v2, 0, 32);
     camera_moveByDelta_80310B0(v3 >> 1, v4 >> 1);
 }
 
@@ -15535,7 +15535,7 @@ void __fastcall battle_scrollTickStepOrStop_80313FC(_DWORD *a1)
     int v3; // r1
 
     v1 = battle_scrollAccumulateStep_8031176(a1);
-    sub_8030F7C(v1, v2, 0, 32);
+    battle_scrollHitTestLineVsWedge_8030F7C(v1, v2, 0, 32);
     camera_moveByDelta_80310B0(0, v3);
 }
 
@@ -15609,7 +15609,7 @@ void __fastcall battle_scrollStep_80314CC(__int64 a1)
     if ( v4 != 1 )
     {
         v5 = battle_scrollAccumulateStep_8031176(v8);
-        sub_8030F7C(v5, v6, 0, 32);
+        battle_scrollHitTestLineVsWedge_8030F7C(v5, v6, 0, 32);
         camera_moveByDelta_80310B0(0, v7);
     }
 }
@@ -15634,7 +15634,7 @@ void __fastcall battle_scrollAdvanceByPanelStep_8031520(__int64 a1)
     if ( v4 != 1 )
     {
         v5 = battle_scrollAccumulateStep_8031176(v8);
-        sub_8030F7C(v5, v6, 0, 32);
+        battle_scrollHitTestLineVsWedge_8030F7C(v5, v6, 0, 32);
         camera_moveByDelta_80310B0(0, v7);
     }
 }

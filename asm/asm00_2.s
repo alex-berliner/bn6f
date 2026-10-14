@@ -26925,7 +26925,7 @@ off_801BF88:
 	.word battle_drawTimerTiles_801C4E4+1
 	.word sub_801C576+1
 	.word battle_drawSelectedChipNameAndDamage_801C6EE+1
-	.word sub_801C906+1
+	.word chatbox_drawHPNumber_801C906+1
 	.word nullsub_58+1
 	.word sub_801C9E4+1
 	.word syncCurrentFieldsAndNotify_801C9A4+1
@@ -28274,9 +28274,9 @@ locret_801C904:
 // symdb: Builds per-digit tile rows for an HP display in the chatbox, copies them to a BG tile block and queues the digit GFX source into VRAM.
 // symdb: (r5 = AIData*, r10 = Toolkit*) -> r0 = pointer to digit-tile-id array (in stack temp / re-used);
 // symdb: no callee-restore outputs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C906.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_drawHPNumber_801C906.yaml
 	thumb_local_start
-sub_801C906:
+chatbox_drawHPNumber_801C906:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x10
 	mov r6, sp
@@ -28341,7 +28341,7 @@ dword_801C97C:
 	.word 0xD1A0
 dword_801C980:
 	.word 0xAAAA
-	thumb_func_end sub_801C906
+	thumb_func_end chatbox_drawHPNumber_801C906
 
 // symdb: Initializes an AIData struct's BLeftAbility (offset 0x7) and Unk_09 (offset 0x9) from story flags 0 and 1.
 // symdb: (r5 = AIDataPtr, r10 = ToolkitPtr) -> void ; side effects: writes [r5+7] and [r5+9]

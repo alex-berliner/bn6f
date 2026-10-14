@@ -3318,7 +3318,7 @@ battle_init_8124B5C:
 	strh r1, [r0,#0x18]
 	strh r1, [r0,#0x1a]
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #4
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -3433,7 +3433,7 @@ off_8124C44:
 sub_8124C94:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #0
 	mov r1, #1
 	bl sub_811983C
@@ -3472,7 +3472,7 @@ loc_8124CBC:
 sub_8124CE8:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	sub r0, #2
 	str r0, [r5,#0x74]
@@ -3512,7 +3512,7 @@ loc_8124D26:
 battle_objTickTimerAndRefreshSpritePairs_8124D30:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	add r0, #2
 	str r0, [r5,#0x74]
@@ -3552,7 +3552,7 @@ loc_8124D6E:
 sub_8124D78:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #1
 	mov r1, #1
 	bl sub_811983C
@@ -3592,7 +3592,7 @@ loc_8124DBA:
 sprite_shieldUpdate_8124DCC:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	sub r0, #2
 	str r0, [r5,#0x74]
@@ -3637,7 +3637,7 @@ loc_8124E1A:
 sub_8124E24:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	add r0, #2
 	str r0, [r5,#0x74]
@@ -3685,7 +3685,7 @@ loc_8124E72:
 sprite_stage2InitBattleState_8124E7C:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #2
 	mov r1, #1
 	bl sub_811983C
@@ -3725,7 +3725,7 @@ loc_8124EC4:
 sub_8124ED4:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	sub r0, #2
 	str r0, [r5,#0x74]
@@ -3773,7 +3773,7 @@ loc_8124F28:
 sub_8124F30:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	add r0, #2
 	str r0, [r5,#0x74]
@@ -3821,7 +3821,7 @@ loc_8124F84:
 sub_8124F8C:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #3
 	strb r0, [r5,#0xd]
 	ldrh r0, [r5,#0x32]
@@ -3859,7 +3859,7 @@ loc_8124FD0:
 sub_8124FE0:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	sub r0, #2
 	str r0, [r5,#0x74]
@@ -3907,7 +3907,7 @@ loc_8125034:
 sub_812503C:
 	push {lr}
 	mov r0, #1
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	add r0, #2
 	str r0, [r5,#0x74]
@@ -3960,7 +3960,7 @@ loc_8125090:
 battle_runIntro_812508C_812509C:
 	push {lr}
 	mov r0, #1
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	mov r0, #4
 	strb r0, [r5,#0xd]
 	ldrh r0, [r5,#0x3c]
@@ -4091,7 +4091,7 @@ locret_8125194:
 sub_8125198:
 	push {lr}
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	sub r0, #2
 	str r0, [r5,#0x74]
@@ -4139,7 +4139,7 @@ loc_81251EC:
 sub_81251F4:
 	push {lr}
 	mov r0, #1
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	ldr r0, [r5,#0x74]
 	add r0, #2
 	str r0, [r5,#0x74]
@@ -5686,7 +5686,7 @@ battle_drawCustFolderSlots_8125D10:
 	ldr r2, off_8125D84 // =byte_2017A00 
 	ldr r3, off_8125D90 // =byte_81249A4
 	ldr r4, dword_8125D8C // =0x6006c00 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0xa0
 	add r0, #0xf
@@ -5753,7 +5753,7 @@ sub_8125D94:
 	ldr r2, off_8125E68 // =byte_2017A00 
 	ldr r3, off_8125E74 // =byte_81249DC
 	ldr r4, dword_8125E70 // =0x6007000 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x83
 	add r0, #4
@@ -5791,7 +5791,7 @@ loc_8125E10:
 	ldr r2, off_8125E68 // =byte_2017A00 
 	ldr r3, off_8125E74 // =byte_81249DC
 	ldr r4, dword_8125E70 // =0x6007000 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x83
 	add r0, #1
@@ -5862,7 +5862,7 @@ bg_drawArenaTiles_8125E78:
 	ldr r2, off_8125F4C // =byte_2017A00 
 	ldr r3, off_8125F58 // =byte_8124A14
 	ldr r4, dword_8125F54 // =0x6007400 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x71 
 	add r0, #4
@@ -5900,7 +5900,7 @@ loc_8125EF4:
 	ldr r2, off_8125F4C // =byte_2017A00 
 	ldr r3, off_8125F58 // =byte_8124A14
 	ldr r4, dword_8125F54 // =0x6007400 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x71 
 	add r0, #1
@@ -5968,7 +5968,7 @@ sub_8125F5C:
 	ldr r2, off_8126104 // =byte_2017A00 
 	ldr r3, off_8126110 // =byte_8124A4C
 	ldr r4, dword_812610C // =0x6007800 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5f 
 	add r0, #4
@@ -6006,7 +6006,7 @@ loc_8125FD8:
 	ldr r2, off_8126104 // =byte_2017A00 
 	ldr r3, off_8126110 // =byte_8124A4C
 	ldr r4, dword_812610C // =0x6007800 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5f 
 	add r0, #1
@@ -6066,7 +6066,7 @@ sub_8126030:
 	ldr r2, off_8126104 // =byte_2017A00 
 	ldr r3, off_8126110 // =byte_8124A4C
 	ldr r4, dword_812610C // =0x6007800 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4d 
 	add r0, #4
@@ -6104,7 +6104,7 @@ loc_81260AC:
 	ldr r2, off_8126104 // =byte_2017A00 
 	ldr r3, off_8126110 // =byte_8124A4C
 	ldr r4, dword_812610C // =0x6007800 
-	bl sub_8126430
+	bl battle_loadChipIconSprites_8126430
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4d 
 	add r0, #1
@@ -6586,9 +6586,9 @@ locret_812642E:
 // symdb: Loads up to 7 chip icon GFX (0x80 bytes each from the chip DB at offset 0x20) into an icon buffer array, given an icon buffer ptr, a folder-index array and a target chip-count buffer; empty slots are zeroed.
 // symdb: (r0 = icon_count, r1 = *icon_sprite_buf [u8; 0x380], r2 = *folder_chip_u16_arr, r3 =
 // symdb: *chip_target_destination_ptr, r4 = icon_byte_size, lr) -> void ; r7 used as loop counter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126430.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadChipIconSprites_8126430.yaml
 	thumb_local_start
-sub_8126430:
+battle_loadChipIconSprites_8126430:
 	push {r4-r7,lr}
 	push {r0-r2}
 	mov r0, r3
@@ -6633,7 +6633,7 @@ loc_8126476:
 	cmp r7, #7
 	blt loc_8126448
 	pop {r4-r7,pc}
-	thumb_func_end sub_8126430
+	thumb_func_end battle_loadChipIconSprites_8126430
 
 // symdb: Draws a 2x14-tile strip of background graphics from a supplied tile-ID list, always using 32x32 tile block 2.
 // symdb: void bg_drawTileRegion2x14(u32 j, u32 i, const u16 *tileIds) — r0=j (x/column origin), r1=i
@@ -6966,7 +6966,7 @@ loc_8126652:
 	mov r2, #0
 	bl sprite_setPositionForIdRange3_8119854
 	mov r0, #0
-	bl sub_8126818
+	bl battleObject_initChipSpriteSlotBuffer_8126818
 	b locret_81266BE
 loc_8126686:
 	mov r0, #0
@@ -7196,9 +7196,9 @@ off_8126814:
 // symdb: (r0 = stageBuffer base ptr OR 0 to default, r5 = linked BattleObject, r10 = Toolkit) -> r0 =
 // symdb: oToolkit_Unk200f3a0_Ptr ; no caller-visible side effects beyond the buffer and the two shared
 // symdb: sprite halfword slots at offset 0x10/0x14 of that buffer.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126818.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initChipSpriteSlotBuffer_8126818.yaml
 	thumb_local_start
-sub_8126818:
+battleObject_initChipSpriteSlotBuffer_8126818:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r7, r10
@@ -7252,7 +7252,7 @@ loc_812686A:
 	strb r1, [r0,#6]
 locret_812687A:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8126818
+	thumb_func_end battleObject_initChipSpriteSlotBuffer_8126818
 
 	thumb_local_start
 sub_812687C:

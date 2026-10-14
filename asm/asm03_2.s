@@ -6710,7 +6710,7 @@ sub_8049E84:
 off_8049E94:
 	.word off_8049E98
 off_8049E98:
-	.word sub_8049EBC+1
+	.word battle_initOverlayScene_8049EBC+1
 	.word screenFadeUpdateTick_8049F32+1
 	.word sub_8049F8A+1
 	.word sub_8049FA4+1
@@ -6727,9 +6727,9 @@ off_8049E98:
 // symdb: screen-fade set to mode 8, several BattleState fields cleared (offsets 0x08, 0x12, 0x13, 0x1c,
 // symdb: 0x1d, 0x01), text-script words expanded into 8-byte records, sprite tiles loaded + SFX played,
 // symdb: two sub_803BE30 invocations with r0=0 then r0=1, chatbox init.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049EBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initOverlayScene_8049EBC.yaml
 	thumb_local_start
-sub_8049EBC:
+battle_initOverlayScene_8049EBC:
 	push {r4-r7,lr}
 	ldr r0, dword_8049F1C // =0x1f40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
@@ -6765,7 +6765,7 @@ sub_8049EBC:
 	.balign 4, 0
 dword_8049F1C:
 	.word 0x1F40
-	thumb_func_end sub_8049EBC
+	thumb_func_end battle_initOverlayScene_8049EBC
 
 // symdb: Loops indices 0x29..0x2C into sub_803B674, presumably initializing/tearing down a small set of slot-like objects.
 // symdb: void sub_8049F20(void) /* in: r10, lr (unused); out: r5 (forwarded from sub_803B674); clobbers N

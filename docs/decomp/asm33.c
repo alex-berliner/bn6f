@@ -1574,7 +1574,7 @@ void __fastcall __noreturn battle_init_8124B5C(int a1, int a2, int a3, int a4)
     v10[11] = 0;
     v10[12] = 0;
     v10[13] = 0;
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     *(v4 + 1) = 4;
     *(v4 + 2) = 0;
     initRefs_buildAndDecompressTable_8125280();
@@ -1600,7 +1600,7 @@ void __noreturn sub_8124C94()
     int v2; // r2
     char v3; // zf
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     sub_811983C(0, 1);
     *(v0 + 13) = 0;
     *(v0 + 22) = *(v0 + 20);
@@ -1619,7 +1619,7 @@ void __noreturn sub_8124CE8()
     int v0; // r5
     int v1; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) - 2;
     *(v0 + 116) = v1;
     if ( v1 <= 142 )
@@ -1639,7 +1639,7 @@ void __noreturn battle_objTickTimerAndRefreshSpritePairs_8124D30()
     int v0; // r5
     int v1; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) + 2;
     *(v0 + 116) = v1;
     if ( v1 >= 160 )
@@ -1662,7 +1662,7 @@ int sub_8124D78()
     int v3; // r1
     int v4; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     sub_811983C(1, 1);
     *(v0 + 13) = 1;
     *(v0 + 32) = *(v0 + 30);
@@ -1692,7 +1692,7 @@ int sprite_shieldUpdate_8124DCC()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) - 2;
     *(v0 + 116) = v1;
     if ( v1 <= 124 )
@@ -1732,7 +1732,7 @@ int sub_8124E24()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) + 2;
     *(v0 + 116) = v1;
     if ( v1 >= 142 )
@@ -1773,7 +1773,7 @@ int sprite_stage2InitBattleState_8124E7C()
     int v5; // r1
     int v6; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     sub_811983C(2, 1);
     *(v0 + 13) = 2;
     *(v0 + 42) = *(v0 + 40);
@@ -1807,7 +1807,7 @@ int sub_8124ED4()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) - 2;
     *(v0 + 116) = v1;
     if ( v1 <= 106 )
@@ -1849,7 +1849,7 @@ int sub_8124F30()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) + 2;
     *(v0 + 116) = v1;
     if ( v1 >= 124 )
@@ -1892,7 +1892,7 @@ int sub_8124F8C()
     int v5; // r1
     int v6; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     *(v0 + 13) = 3;
     *(v0 + 52) = *(v0 + 50);
     *(v0 + 56) = *(v0 + 54);
@@ -1926,7 +1926,7 @@ int sub_8124FE0()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) - 2;
     *(v0 + 116) = v1;
     if ( v1 <= 88 )
@@ -1968,7 +1968,7 @@ int sub_812503C()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(1);
+    battleObject_initChipSpriteSlotBuffer_8126818(1);
     v1 = *(v0 + 116) + 2;
     *(v0 + 116) = v1;
     if ( v1 >= 106 )
@@ -2007,7 +2007,7 @@ int battle_runIntro_812508C_812509C()
     int v0; // r5
     int v1; // r2
 
-    sub_8126818(1);
+    battleObject_initChipSpriteSlotBuffer_8126818(1);
     *(v0 + 13) = 4;
     *(v0 + 62) = *(v0 + 60);
     *(v0 + 66) = *(v0 + 64);
@@ -2133,7 +2133,7 @@ int sub_8125198()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(0);
+    battleObject_initChipSpriteSlotBuffer_8126818(0);
     v1 = *(v0 + 116) - 2;
     *(v0 + 116) = v1;
     if ( v1 <= 106 )
@@ -2175,7 +2175,7 @@ int sub_81251F4()
     int v4; // r1
     int v5; // r0
 
-    sub_8126818(1);
+    battleObject_initChipSpriteSlotBuffer_8126818(1);
     v1 = *(v0 + 116) + 2;
     *(v0 + 116) = v1;
     if ( v1 >= 124 )
@@ -3527,7 +3527,7 @@ void __fastcall __noreturn bg_drawTileStripTileBlock2_8126404(int a1, int a2, u1
 
 
 // 0x8126430
-void __fastcall sub_8126430(int a1, int a2, int a3, int a4)
+void __fastcall battle_loadChipIconSprites_8126430(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // ST00_4
@@ -3768,7 +3768,7 @@ _BYTE *battle_updateChipSprite_8126630()
             }
             setFieldsInThreeTableEntries_811980C(*(*(&off_81266C4 + v1) + 2 * (*(v0 + 10 * v1 + 20) + *(v0 + 10 * v1 + 24))), 255, 0, 0);
             sprite_setPositionForIdRange3_8119854(47, 88, 0);
-            result = sub_8126818(0);
+            result = battleObject_initChipSpriteSlotBuffer_8126818(0);
         }
     }
     return result;
@@ -3864,7 +3864,7 @@ int sub_81267F0()
 
 
 // 0x8126818
-_BYTE *__fastcall sub_8126818(int a1)
+_BYTE *__fastcall battleObject_initChipSpriteSlotBuffer_8126818(int a1)
 {
     int v1; // r5
     int v2; // r10

@@ -4269,7 +4269,7 @@ void __fastcall __noreturn battleObject_runSubmenuInputHandler_81337E8(int a1)
         battleObject_submenuHandleBPress_8133BB4();
         if ( !v3 )
             goto LABEL_20;
-        sub_8133C0C();
+        battleObject_submenuHandleExitStartOrB_8133C0C();
         if ( !v3 )
             goto LABEL_20;
         folderEdit_AConfirmPress_8134A3C();
@@ -4323,7 +4323,7 @@ void __fastcall __noreturn folderEdit_step_813388C(int a1)
     battleObject_submenuHandleBPress_8133BB4();
     if ( v3 )
     {
-        sub_8133C0C();
+        battleObject_submenuHandleExitStartOrB_8133C0C();
         if ( v3 )
         {
             folderEdit_AConfirmPress_8134A3C();
@@ -4389,7 +4389,7 @@ void __fastcall __noreturn battleObject_submenuLoopStep_8133944(int a1)
     int v3; // r0
     char v4; // zf
 
-    sub_8133C0C();
+    battleObject_submenuHandleExitStartOrB_8133C0C();
     if ( !v4 )
     {
         submenu_clearBgIfClosed_8134594(v3);
@@ -4640,7 +4640,7 @@ void battleObject_submenuHandleBPress_8133BB4()
 
 
 // 0x8133c0c
-void sub_8133C0C()
+void battleObject_submenuHandleExitStartOrB_8133C0C()
 {
     int v0; // r5
     int v1; // r1

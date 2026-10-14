@@ -3836,7 +3836,7 @@ int sub_8049E84()
 
 
 // 0x8049ebc
-void __noreturn sub_8049EBC()
+void __noreturn battle_initOverlayScene_8049EBC()
 {
     _BYTE *v0; // r5
     int v1; // r0

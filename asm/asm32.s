@@ -29427,14 +29427,14 @@ off_811CA90:
 	thumb_func_end install_object_state_handler_811CA1C
 
 // symdb: Drives a battle object's 7-state dispatch loop, then sets flag bit 1 based on a 0x1150 timer threshold and refreshes the sprite.
-// symdb: void sub_811CA94(void *r5 /* battle object */); // uses nz flags from sub_811CC68 each step,
+// symdb: void sub_811CA94(void *r5 /* battle object */); // uses nz flags from battleObject_getUnk_0cPtr_811CC68 each step,
 // symdb: loops while handler leaves NZ, then returns
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811CA94.yaml
 	thumb_local_start
 sub_811CA94:
 	push {lr}
 loc_811CA96:
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r0, [r0]
 	ldr r1, off_811CAC0 // =off_811CAC4
 	ldr r0, [r1,r0]
@@ -29489,7 +29489,7 @@ battleObject_runFloatingAnim_811CAEC:
 	bne loc_811CB12
 	mov r0, #1
 	strb r0, [r5,#9]
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r1, [r0,#2]
 	str r1, [r5,#0x10]
 	ldrh r1, [r0,#6]
@@ -29501,7 +29501,7 @@ battleObject_runFloatingAnim_811CAEC:
 	ldrh r1, [r0,#0xc]
 	strh r1, [r5,#0x1e]
 loc_811CB12:
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r1, [r0,#4]
 	ldr r2, off_811CC6C // =math_sinTable
 	lsl r3, r1, #1
@@ -29583,7 +29583,7 @@ timerCountdown_step_811CBA0:
 	bne loc_811CBB4
 	mov r0, #1
 	strb r0, [r5,#9]
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r0, [r0,#2]
 	str r0, [r5,#0x10]
 loc_811CBB4:
@@ -29610,13 +29610,13 @@ loc_811CBCC:
 	thumb_local_start
 battle_matchTrackedSpriteAndShrink_811CBD0:
 	push {lr}
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	mov r2, #4
 	ldrsh r1, [r0,r2]
 	mov r2, #2
 	ldrsh r0, [r0,r2]
 	bl sprite_setCoordinates
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r1, [r0,#6]
 	strh r1, [r5,#0x14]
 	ldrh r1, [r0,#8]
@@ -29650,7 +29650,7 @@ object_setStateHandlerAndReturnOne_811CC02:
 	thumb_local_start
 battle_initObjectSpriteAndStartAnimation_811CC0C:
 	push {lr}
-	bl sub_811CC68
+	bl battleObject_getUnk_0cPtr_811CC68
 	ldrh r0, [r0,#2]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -29724,16 +29724,16 @@ counter_addU32_r5Plus0C_811CC60:
 
 // symdb: Reads the cached pointer at BattleObject+0xC and returns it (used as a sin/cos table index by the floating-anim routine)
 // symdb: (r5 = BattleObject*) -> r0 = [r5+0xC]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CC68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getUnk_0cPtr_811CC68.yaml
 	thumb_local_start
-sub_811CC68:
+battleObject_getUnk_0cPtr_811CC68:
 	ldr r0, [r5,#0xc]
 	mov pc, lr
 off_811CC6C:
 	.word math_sinTable
 off_811CC70:
 	.word math_cosTable
-	thumb_func_end sub_811CC68
+	thumb_func_end battleObject_getUnk_0cPtr_811CC68
 
 	thumb_func_start sub_811CC74
 sub_811CC74:

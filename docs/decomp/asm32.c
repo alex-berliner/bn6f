@@ -18535,7 +18535,7 @@ void sub_811CA94()
 
     do
     {
-        v1 = sub_811CC68();
+        v1 = battleObject_getUnk_0cPtr_811CC68();
         (*(&off_811CAC4 + *v1))();
     }
     while ( !v2 );
@@ -18574,14 +18574,14 @@ signed int battleObject_runFloatingAnim_811CAEC()
     if ( !*(v0 + 9) )
     {
         *(v0 + 9) = 1;
-        v1 = sub_811CC68();
+        v1 = battleObject_getUnk_0cPtr_811CC68();
         *(v0 + 16) = v1[1];
         *(v0 + 22) = v1[3];
         *(v0 + 24) = v1[4];
         *(v0 + 28) = v1[5];
         *(v0 + 30) = v1[6];
     }
-    v2 = *(sub_811CC68() + 4);
+    v2 = *(battleObject_getUnk_0cPtr_811CC68() + 4);
     v3 = *&math_sinTable[2 * v2];
     v4 = *&math_cosTable[2 * v2];
     v5 = *(v0 + 22) + *(v0 + 20);
@@ -18619,7 +18619,7 @@ signed int timerCountdown_step_811CBA0()
     if ( !*(v0 + 9) )
     {
         *(v0 + 9) = 1;
-        *(v0 + 16) = *(sub_811CC68() + 2);
+        *(v0 + 16) = *(battleObject_getUnk_0cPtr_811CC68() + 2);
     }
     v1 = *(v0 + 16);
     v2 = __OFSUB__(v1--, 1);
@@ -18641,9 +18641,9 @@ signed int battle_matchTrackedSpriteAndShrink_811CBD0()
     int v2; // r0
     unsigned int v3; // r1
 
-    v1 = sub_811CC68();
+    v1 = battleObject_getUnk_0cPtr_811CC68();
     sprite_setCoordinates(*(v1 + 2), *(v1 + 4));
-    v2 = sub_811CC68();
+    v2 = battleObject_getUnk_0cPtr_811CC68();
     *(v0 + 20) = *(v2 + 6);
     v3 = *(v2 + 8);
     *(v0 + 26) = v3;
@@ -18667,7 +18667,7 @@ signed int __fastcall __noreturn battle_initObjectSpriteAndStartAnimation_811CC0
     Battle *v1; // r5
     int v2; // r0
 
-    v2 = sub_811CC68();
+    v2 = battleObject_getUnk_0cPtr_811CC68();
     sprite_setAnimation(v1, *(v2 + 2));
     sprite_loadAnimationData(v1);
     counter_addU32_r5Plus0C_811CC60(4);
@@ -18722,7 +18722,7 @@ int __fastcall counter_addU32_r5Plus0C_811CC60(int a1)
 
 
 // 0x811cc68
-int sub_811CC68()
+int battleObject_getUnk_0cPtr_811CC68()
 {
     int v0; // r5
 

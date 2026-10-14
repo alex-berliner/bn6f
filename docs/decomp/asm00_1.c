@@ -8367,7 +8367,7 @@ void __fastcall sub_8009140(int a1, int a2, int a3, int a4)
 
 
 // 0x8009158
-int sub_8009158()
+int battle_runBattlePhase_8009158()
 {
     int v0; // r5
     int result; // r0

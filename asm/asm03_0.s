@@ -5699,7 +5699,7 @@ locret_8028D38:
 	thumb_local_start
 custMenuPressOK_8028D3A:
 	push {lr}
-	bl sub_8029110
+	bl custMenu_confirmAndProcessSelectedChips_8029110
 	bl sub_80293F8
 
 	ldrb r0, [r5,#oS20364C0_Unk_19]
@@ -6307,9 +6307,9 @@ dword_802910C:
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effects write dword_2033000 (chip-use queue),
 // symdb: byte_20366C0..0x20366FE (per-slot use entries), byte_20349AC (chip-use bitmap), and r5+0xB =
 // symdb: 0x14 (or 0x10); processes the chip queue at the end
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029110.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/custMenu_confirmAndProcessSelectedChips_8029110.yaml
 	thumb_local_start
-sub_8029110:
+custMenu_confirmAndProcessSelectedChips_8029110:
 	push {r4,r6,r7,lr}
 
 	mov r0, #0x14
@@ -6455,7 +6455,7 @@ loc_8029202:
 	sub r3, #1
 	bne loc_8029202
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8029110
+	thumb_func_end custMenu_confirmAndProcessSelectedChips_8029110
 
 // symdb: Walks the chip-use command queue at 0x2033000, validating opcodes against chip attributes and applying per-opcode side effects.
 // symdb: void sub_8029224(u32 r3 /* target object for status-bit merge */);
@@ -23814,9 +23814,9 @@ loc_8030F76:
 // symdb: Performs a line-vs-wedge hit test for battle camera/scroll queries, returning two offsets via r0/r1.
 // symdb: (r0 = CollisionData*, r1 = ?, r2 = lineY/r2_in, r3 = lineX/r3_in, r4 = ?, r5 = ?, r6 = ?, lr =
 // symdb: ?) -> r0 = dyComp/r9, r1 = dxComp/r8 ; side effects trashes r2-r7, r8, r9
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030F7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollHitTestLineVsWedge_8030F7C.yaml
 	thumb_local_start
-sub_8030F7C:
+battle_scrollHitTestLineVsWedge_8030F7C:
 	push {lr}
 	mov r8, r6
 	sub r6, r5, r4
@@ -23895,7 +23895,7 @@ DebugStr8031026:
 DebugStr8031037:
 	.hword 0x1000
 	.asciz "03 X:%8X Y:%8X"
-	thumb_func_end sub_8030F7C
+	thumb_func_end battle_scrollHitTestLineVsWedge_8030F7C
 
 // symdb: A small tail routine for the line/point hit-test helpers that returns the projected (dx, dy) along a ray, with both components made positive (the ray is normalized so the longer axis of (r6, r7) goes into r7 and the shorter remains in r6).
 // symdb: (r6 = |dy|, r7 = |dx|, r2 = scratch, r3 = sign) -> r6 = shorter-leg remainder, r7 = longer-leg
@@ -24309,7 +24309,7 @@ sub_803128E:
 	mov r3, #0x20 
 	mov r5, #0
 	mov r6, #1
-	bl sub_8030F7C
+	bl battle_scrollHitTestLineVsWedge_8030F7C
 	lsr r0, r0, #1
 	lsr r1, r1, #1
 	bl camera_moveByDelta_80310B0
@@ -24411,7 +24411,7 @@ camera_recenterAndSetCtrlBits_803135E:
 	mov r5, #0
 	add r5, #0x20 
 	mov r6, #1
-	bl sub_8030F7C
+	bl battle_scrollHitTestLineVsWedge_8030F7C
 	lsr r0, r0, #1
 	lsr r1, r1, #1
 	bl camera_moveByDelta_80310B0
@@ -24510,7 +24510,7 @@ battle_scrollTickStepOrStop_80313FC:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #1
-	bl sub_8030F7C
+	bl battle_scrollHitTestLineVsWedge_8030F7C
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12
@@ -24648,7 +24648,7 @@ battle_scrollStep_80314CC:
 	mov r5, #0x20 
 	mov r6, #0
 loc_803150A:
-	bl sub_8030F7C
+	bl battle_scrollHitTestLineVsWedge_8030F7C
 loc_803150E:
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
@@ -24695,7 +24695,7 @@ loc_8031550:
 	mov r3, #0x20 
 	mov r5, #0x20 
 	mov r6, #0
-	bl sub_8030F7C
+	bl battle_scrollHitTestLineVsWedge_8030F7C
 	mov r0, #0
 	bl camera_moveByDelta_80310B0
 	mov r0, r12

@@ -10344,18 +10344,18 @@ loc_8007B10:
 off_8007B4C:
 	.word off_8007B50
 off_8007B50:
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
-	.word sub_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
 	.word sub_800961C+1
 	.word battle_dispatchByIndex_80099A4+1
-	.word sub_8009158+1
+	.word battle_runBattlePhase_8009158+1
 	.word sub_8009C94+1
-	.word sub_8009158+1
-	.word sub_8009158+1
+	.word battle_runBattlePhase_8009158+1
+	.word battle_runBattlePhase_8009158+1
 	thumb_func_end battle_update_8007A44
 
 // symdb: Dispatches to the current battle-state phase handler via the two-entry jump table at off_8007B94, selected by BattleState::index_01.
@@ -13327,9 +13327,9 @@ off_8009154:
 // symdb: (r5 = BattleStatePtr, r10 = ToolkitPtr, lr = ...) -> r0 = 0x049e2 (battle effects helper return)
 // symdb: ; side effects: may play/clear cue sounds, scratch r0-r7/r10, no callee-saved restore (r4-r6,
 // symdb: r8-r10 are live out)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009158.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattlePhase_8009158.yaml
 	thumb_local_start
-sub_8009158:
+battle_runBattlePhase_8009158:
 	push {lr}
 	ldr r1, off_80091B8 // =off_80091BC
 
@@ -13406,7 +13406,7 @@ off_80091E8:
 	.word 0x100
 dword_80091EC:
 	.word 0x11A
-	thumb_func_end sub_8009158
+	thumb_func_end battle_runBattlePhase_8009158
 
 // symdb: Battle-intro step of the battle-start state machine: spawns the field/enemy actors, applies navi stats, starts the battle BGM, then polls the intro task and hands off to the battle-flow index (0x04, or 0x24 when EVENT_1735 is set).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleIntroSpawnStep_80091F0.yaml

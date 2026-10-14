@@ -19165,7 +19165,7 @@ int __fastcall battle_tickLowHpWarning_801C840(int a1)
 
 
 // 0x801c906
-int __noreturn sub_801C906()
+int __noreturn chatbox_drawHPNumber_801C906()
 {
     int v0; // r5
     signed int v1; // r0

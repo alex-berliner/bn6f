@@ -7104,7 +7104,7 @@ battleObject_runSubmenuInputHandler_81337E8:
 loc_813381E:
 	bl battleObject_submenuHandleBPress_8133BB4
 	bne loc_8133864
-	bl sub_8133C0C
+	bl battleObject_submenuHandleExitStartOrB_8133C0C
 	bne loc_8133864
 	bl folderEdit_AConfirmPress_8134A3C
 	bne loc_8133864
@@ -7155,7 +7155,7 @@ folderEdit_step_813388C:
 	push {lr}
 	bl battleObject_submenuHandleBPress_8133BB4
 	bne loc_81338C6
-	bl sub_8133C0C
+	bl battleObject_submenuHandleExitStartOrB_8133C0C
 	bne loc_81338C6
 	bl folderEdit_AConfirmPress_8134A3C
 	bne loc_81338C6
@@ -7247,7 +7247,7 @@ loc_813390E:
 	thumb_local_start
 battleObject_submenuLoopStep_8133944:
 	push {lr}
-	bl sub_8133C0C
+	bl battleObject_submenuHandleExitStartOrB_8133C0C
 	bne loc_813396C
 	bl battleObject_selectAIDataHandler_81347A4
 	bne loc_8133964
@@ -7582,9 +7582,9 @@ locret_8133C0A:
 // symdb: Handles START/B input to confirm or cancel a submenu/folder-edit screen; flips a state byte and resets Anger-like halfword to 0.
 // symdb: (r5 = AIData-like struct, r10 = toolkit) -> void ; side effects may write r0 for sound ID, may
 // symdb: call IsButtonPressed and PlaySoundEffect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133C0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuHandleExitStartOrB_8133C0C.yaml
 	thumb_local_start
-sub_8133C0C:
+battleObject_submenuHandleExitStartOrB_8133C0C:
 	push {lr}
 	mov r0, #JOYPAD_START
 	bl IsButtonPressed
@@ -7623,7 +7623,7 @@ loc_8133C52:
 	tst r0, r0
 locret_8133C56:
 	pop {pc}
-	thumb_func_end sub_8133C0C
+	thumb_func_end battleObject_submenuHandleExitStartOrB_8133C0C
 
 // symdb: Handles a SELECT button press in the in-game chatbox menu: plays the confirm sound, dispatches the appropriate close/submenu script, and updates menu state flags.
 // symdb: chatbox_selectPress_8133C58(r5 = menu_state_ptr) -> nz (1 = action dispatched, 0 = ignored);
