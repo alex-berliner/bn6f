@@ -1141,14 +1141,14 @@ int __fastcall sub_8000F86(int a1)
         SetEventFlagFromImmediate(14, 0);
         SetEventFlagFromImmediate(16, 1);
         *(*(v1 + oToolkit_Unk2001c04_Ptr) + 24) = v2;
-        result = sub_803F79E();
+        result = save_writeAndVerifyEWRAMToSRAM_803F79E();
     }
     return result;
 }
 
 
 // 0x8000fac
-unsigned int sub_8000FAC()
+unsigned int battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC()
 {
     int v0; // r10
     int v1; // r5
@@ -1407,7 +1407,7 @@ int __fastcall scriptListRun_8001158(int *a1)
 
 
 // 0x8001172
-int __fastcall sub_8001172(int result)
+int __fastcall gameState_setUnk09_8001172(int result)
 {
     int v1; // r10
 

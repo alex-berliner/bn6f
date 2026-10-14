@@ -35,7 +35,7 @@ loc_8026464:
 	cmp r1, #3
 	bgt loc_802649E
 	push {r0,r1}
-	bl sub_800E680
+	bl object_checkEnemyOrAllyPanel_800E680
 	cmp r0, #0
 	pop {r0,r1}
 	bne loc_80264A4
@@ -85,7 +85,7 @@ loc_80264BC:
 	cmp r1, #3
 	bgt loc_8026506
 	push {r0,r1}
-	bl sub_800E680
+	bl object_checkEnemyOrAllyPanel_800E680
 	cmp r0, #0
 	pop {r0,r1}
 	beq loc_8026506
@@ -228,7 +228,7 @@ sub_80265FE:
 	beq locret_802661A
 	mov r1, #2
 	push {r0,r1}
-	bl sub_800E680
+	bl object_checkEnemyOrAllyPanel_800E680
 	cmp r0, #0
 	pop {r0,r1}
 	bne locret_802661A
@@ -9248,7 +9248,7 @@ off_802A538:
 sub_802A53C:
 	push {r1-r7,lr}
 	mov r4, r0
-	bl sub_800AFBA
+	bl battle_canUseChip_800AFBA
 	bne loc_802A54A
 	mov r0, r4
 	pop {r1-r7,pc}
@@ -17039,9 +17039,9 @@ sub_802E0D4:
 
 // symdb: In real (non-minigame, non-crossover) link battles, sets the 0x40 battle flag (a "Beast Link"/link-battle related state bit) so the battle can take the link-battle code path.
 // symdb: () -> void ; side effects: may OR 0x40 into BattleState.flags via battle_setFlags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E112.yaml
-	thumb_func_start sub_802E112
-sub_802E112:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setBeastLinkFlag_0802E112.yaml
+	thumb_func_start battle_setBeastLinkFlag_0802E112
+battle_setBeastLinkFlag_0802E112:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #1 // crossover
@@ -17072,7 +17072,7 @@ loc_802E14E:
 	bl battle_setFlags
 locret_802E154:
 	pop {pc}
-	thumb_func_end sub_802E112
+	thumb_func_end battle_setBeastLinkFlag_0802E112
 
 // symdb: If battle flag 0x40 is set, refreshes the custom-gauge display using the matched AI entry's CustomGauge field.
 // symdb: (no caller-visible inputs; uses r10 = Toolkit) -> no return value; side effects: may call

@@ -1782,7 +1782,7 @@ loc_8089CC0:
 	thumb_local_start
 sub_8089CC4:
 	push {r4-r7,lr}
-	bl sub_81429CA
+	bl battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA
 	ldr r0, off_8089CD8 // =byte_8089480
 	str r0, [r5,#0x3c]
 	bl SetCutsceneCameraScript
@@ -1848,13 +1848,13 @@ sub_8089D26:
 	mov r0, #4
 	mov r1, #1
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0
 	bl sub_80468EC
 	mov r0, #3
 	mov r1, #0
 	mov r2, #1
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089D26
 
@@ -1866,7 +1866,7 @@ sub_8089D44:
 	mov r0, #3
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	// <endpool> <endfile>
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089D44

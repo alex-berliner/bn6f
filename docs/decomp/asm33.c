@@ -570,7 +570,7 @@ int refreshChipUseStats_8123A80()
     int v2; // r6
     int result; // r0
 
-    sub_811FCB8(*(v0 + 12), &unk_201D220, 1, byte_20343E0);
+    battle_buildChipPackFromFolderEntries_811FCB8(*(v0 + 12), &unk_201D220, 1, byte_20343E0);
     v1 = 2 * *(v0 + 12) + 86;
     v2 = GetCurPETNaviStatsByte(*(v0 + 20));
     result = GetCurPETNaviStatsByte(*(v0 + 20)) + v2;
@@ -710,7 +710,7 @@ char *sub_8123D24()
         v4 = v3 << 8;
         if ( *(v0 + 12) == v3 )
             v4 |= 1u;
-        result = sub_8046670(21, v3++ + 7, v4 | 0x10000);
+        result = battle_initEmotionTableEntry_8046670(21, v3++ + 7, v4 | 0x10000);
     }
     while ( v3 < v2 );
     return result;
@@ -9602,12 +9602,12 @@ int __fastcall loadEntryPairTable_812B1DC(int a1, int a2, int a3, int a4)
 
     v4 = a1;
     ZeroFillByWord(dword_20251A0, 16);
-    sub_8046670(*v4, *(v4 + 1), *(v4 + 2));
+    battle_initEmotionTableEntry_8046670(*v4, *(v4 + 1), *(v4 + 2));
     v5 = (v4 + 4);
     v6 = 0;
     do
     {
-        dword_20251A0[v6] = sub_8046670(*v5, v5[1], *(v5 + 1) | (v6 << 16));
+        dword_20251A0[v6] = battle_initEmotionTableEntry_8046670(*v5, v5[1], *(v5 + 1) | (v6 << 16));
         ++v6;
         v5 += 4;
         result = *v5;
@@ -9628,7 +9628,7 @@ int sub_812B218()
     result = dword_20251A0[v1];
     if ( !result )
     {
-        dword_20251A0[v1] = sub_8046670(28, ((v1 * 4) >> 2) + 1, ((v1 * 4) >> 2 << 16) | 0x1000001) | 0x80000000;
+        dword_20251A0[v1] = battle_initEmotionTableEntry_8046670(28, ((v1 * 4) >> 2) + 1, ((v1 * 4) >> 2 << 16) | 0x1000001) | 0x80000000;
         result = *(v0 + 30) + 1;
         *(v0 + 30) = result;
     }

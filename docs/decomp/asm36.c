@@ -143,7 +143,7 @@ char *sub_81301DC()
 	v2 = 0;
 	do
 	{
-		result = sub_8046670(31, v2, v2 << 8);
+		result = battle_initEmotionTableEntry_8046670(31, v2, v2 << 8);
 		++v2;
 	}
 	while ( v2 < v1 );
@@ -337,7 +337,7 @@ void sub_81304BC()
 
 	v0 = sub_8130404()[12];
 	if ( v0 )
-		sub_811FCB8(v0 - 1, &unk_2023FB0, 1, &unk_2024370);
+		battle_buildChipPackFromFolderEntries_811FCB8(v0 - 1, &unk_2023FB0, 1, &unk_2024370);
 	else
 		battle_ClearBuffer_811FE34(&unk_2023FB0, v1, v2, v3);
 }
@@ -1656,7 +1656,7 @@ char *sub_8131390()
     v0 = 0;
     do
     {
-        result = sub_8046670(28, v0, *&byte_81313B0[4 * v0]);
+        result = battle_initEmotionTableEntry_8046670(28, v0, *&byte_81313B0[4 * v0]);
         ++v0;
     }
     while ( v0 < 4 );
@@ -3765,7 +3765,7 @@ void __fastcall __noreturn sub_8133228(int a1, int a2, int a3, int a4)
     submenu_isOpen_81355D8();
     if ( v10 )
     {
-        sub_811FCB8(*(v4 + 12), word_202A020, 0, byte_20343E0);
+        battle_buildChipPackFromFolderEntries_811FCB8(*(v4 + 12), word_202A020, 0, byte_20343E0);
         if ( !v10 )
             goto LABEL_5;
     }
@@ -6318,7 +6318,7 @@ void __fastcall battle_copyStateSlotsAndZeroNext_813527C(int a1, int a2, int a3,
 
 
 // 0x81352a0
-int __fastcall sub_81352A0(int a1, void *a2, int a3, int a4)
+int __fastcall battleObject_handleMoveAlignment_81352A0(int a1, void *a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5

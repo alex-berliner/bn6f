@@ -471,8 +471,8 @@ signed int sub_8093202()
 // 0x8093212
 char *sub_8093212()
 {
-    sub_80468C6(10, 3, 0);
-    return sub_80468C6(11, 4, 0);
+    battleObject_initAIChipQueueSlot_80468C6(10, 3, 0);
+    return battleObject_initAIChipQueueSlot_80468C6(11, 4, 0);
 }
 
 

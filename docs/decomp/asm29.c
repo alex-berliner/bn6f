@@ -4284,7 +4284,7 @@ signed int sub_80A8484()
         *(v0 + 7) = result;
         if ( !result )
         {
-            sub_8001172(0);
+            gameState_setUnk09_8001172(0);
             ClearEventFlagFromImmediate(9, 216);
             ClearEventFlagFromImmediate(9, 255);
             ClearEventFlagFromImmediate(9, 217);

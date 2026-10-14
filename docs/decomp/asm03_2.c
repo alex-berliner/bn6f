@@ -421,7 +421,7 @@ void __cdecl battle_spawnEStructRecordsFromTable_80465A0(void *a1)
     while ( *a1 != 255 )
     {
         v1 = a1;
-        sub_8046670(*a1, *(a1 + 1), *(a1 + 1));
+        battle_initEmotionTableEntry_8046670(*a1, *(a1 + 1), *(a1 + 1));
         a1 = v1 + 4;
     }
 }
@@ -499,7 +499,7 @@ void __cdecl battle_resetEStructRecords_8046664()
 
 
 // 0x8046670
-char *__fastcall sub_8046670(char a1, int a2, int a3)
+char *__fastcall battle_initEmotionTableEntry_8046670(char a1, int a2, int a3)
 {
     int v3; // r1
     char *v4; // r5
@@ -675,7 +675,7 @@ unsigned __int8 *__fastcall sub_80467FC(unsigned __int8 *result)
     while ( *result != 255 )
     {
         v1 = result;
-        sub_80468C6(*result, result[1], *(result + 1));
+        battleObject_initAIChipQueueSlot_80468C6(*result, result[1], *(result + 1));
         result = v1 + 4;
     }
     return result;
@@ -752,7 +752,7 @@ void sub_80468BA()
 
 
 // 0x80468c6
-char *__fastcall sub_80468C6(char a1, int a2, int a3)
+char *__fastcall battleObject_initAIChipQueueSlot_80468C6(char a1, int a2, int a3)
 {
     int v3; // r1
     char *v4; // r5
@@ -3566,7 +3566,7 @@ void __noreturn chatbox_closeFadeHandler_80499CE()
         sub_8049D70();
         sub_8049D4A();
         sub_8049D3A();
-        sub_803F79E();
+        save_writeAndVerifyEWRAMToSRAM_803F79E();
         zeroFillVRAM();
         ZeroFillGFX30025c0();
         copyMemory_8001850();

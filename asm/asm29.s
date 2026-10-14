@@ -6353,7 +6353,7 @@ sub_80A8484:
 	strb r0, [r5,#7]
 	bne locret_80A84BC
 	mov r0, #0
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	movflag EVENT_9D8
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_9FF

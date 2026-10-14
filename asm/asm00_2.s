@@ -8569,7 +8569,7 @@ loc_80128C2:
 	add r0, r0, r2
 	beq loc_80128D6
 	mov r1, #0
-	bl sub_800E2FC
+	bl battleObject_applyHPAndHandleSpecial_800E2FC
 loc_80128D6:
 	ldrb r0, [r4,#9]
 	mov r1, #4
@@ -16872,7 +16872,7 @@ loc_801644C:
 	bl sprite_disableAlpha
 	bl sprite_clearMosaic
 	mov r0, #0
-	bl sub_800AA40
+	bl battleObject_removeFromNextList_800AA40
 
 	mov r0, #8
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
@@ -22494,9 +22494,9 @@ locret_801A0FE:
 
 // symdb: Spawns the visual hit-effect child object at the panel the battle object currently occupies, jittered around the panel center.
 // symdb: (r5 = BattleObject*) -> r0 = 0x2 (seldomly read) ; side effects: may spawn a child effect object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A100.yaml
-	thumb_func_start sub_801A100
-sub_801A100:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_spawnHitEffectAtPanel_801A100.yaml
+	thumb_func_start battleObject_spawnHitEffectAtPanel_801A100
+battleObject_spawnHitEffectAtPanel_801A100:
 	push {r4,r6,lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r6, [r3,#oCollisionData_FlagsFromCollision]
@@ -22526,7 +22526,7 @@ locret_801A138:
 	.balign 4, 0
 dword_801A13C:
 	.word 0x3F800000
-	thumb_func_end sub_801A100
+	thumb_func_end battleObject_spawnHitEffectAtPanel_801A100
 
 // symdb: Stores the hit-effect type (e.g. what visual/effect kind a collision hit produces) into a battle object's collision data.
 // symdb: void object_setCollisionHitEffect(u8 hitEffect /*r0*/, struct BattleObject* obj /*r5*/); returns
@@ -24007,9 +24007,9 @@ dword_801AA44:
 // symdb: tears down collision data when its Enable bit + DEAD flag are set, then runs ~20 child handlers
 // symdb: updating collision damage, hit-flash timer, status effect, counter timer, AI self-drain, impact,
 // symdb: hive, alliance stats, etc.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AA48.yaml
-	thumb_func_start sub_801AA48
-sub_801AA48:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runPerFrameUpdate_801AA48.yaml
+	thumb_func_start battleObject_runPerFrameUpdate_801AA48
+battleObject_runPerFrameUpdate_801AA48:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -24047,7 +24047,7 @@ sub_801AA48:
 	bl object_spawnHiteffect
 locret_801AABE:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AA48
+	thumb_func_end battleObject_runPerFrameUpdate_801AA48
 
 // symdb: Per-frame collision/damage processing pipeline for a battle object: the navi-AI variant that skips battle_tickAiSelfDrain when the battle mode is 0xA, and applies the status effect unconditionally.
 // symdb: void battleObject_processCollisionResultsByMode(u32 r5 /* battle object */) : r5 -> [r4 r5 r10]
@@ -24099,9 +24099,9 @@ locret_801AB3E:
 
 // symdb: Per-frame battle object update: clear final palette, optionally tear down collision data, and run the full per-tick pipeline (barrier/poison/ice, impact, hive, alliance stats, alliance flip, damage, flatten, counter, hit-effect).
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; r4/r7 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AB40.yaml
-	thumb_func_start sub_801AB40
-sub_801AB40:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleCollisionAndStatusTick_801AB40.yaml
+	thumb_func_start battleObject_handleCollisionAndStatusTick_801AB40
+battleObject_handleCollisionAndStatusTick_801AB40:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -24139,7 +24139,7 @@ sub_801AB40:
 	bl object_spawnHiteffect
 locret_801ABB6:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AB40
+	thumb_func_end battleObject_handleCollisionAndStatusTick_801AB40
 
 // symdb: Per-frame collision/damage processing pipeline for an enemy battle object (r5): the enemy-side variant of the family, with a pause gate, AI hit hooks and HitModifierFinal flag reactions.
 // symdb: void battleObject_processCollisionResultsForEnemy(u32 r5 /* battle object */) : r5 -> [r4 r5
@@ -24282,9 +24282,9 @@ locret_801AD10:
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: clears sprite final-palette high
 // symdb: nibble, frees or mutates CollisionData, sets ObjectFlags2 bits 0x100 / clears bit 0x4, writes
 // symdb: object/0x0F = 1, recomputes FinalDamage, may spawn hit effect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AD12.yaml
-	thumb_func_start sub_801AD12
-sub_801AD12:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_finishCollisionHitReaction_801AD12.yaml
+	thumb_func_start object_finishCollisionHitReaction_801AD12
+object_finishCollisionHitReaction_801AD12:
 	push {r4,r7,lr}
 	bl sprite_clearFinalPalette
 	ldr r7, [r5,#oBattleObject_CollisionDataPtr]
@@ -24321,7 +24321,7 @@ loc_801AD60:
 	bl object_spawnHiteffect
 locret_801AD68:
 	pop {r4,r7,pc}
-	thumb_func_end sub_801AD12
+	thumb_func_end object_finishCollisionHitReaction_801AD12
 
 	thumb_func_start sub_801AD6A
 sub_801AD6A:
@@ -25760,9 +25760,9 @@ dword_801B874:
 // symdb: writes to BattleObject (HP, CurAction, CurPhase, flags, PreventAnim, AIData+0x5c, etc.), plays
 // symdb: sound 0x85 on hit, may re-white-palette/zero-shader via sprite helpers, tail-calls one of the
 // symdb: CurAction handlers.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B878.yaml
-	thumb_func_start sub_801B878
-sub_801B878:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runCurActionState_801B878.yaml
+	thumb_func_start battleObject_runCurActionState_801B878
+battleObject_runCurActionState_801B878:
 	push {r6,r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -25921,7 +25921,7 @@ dword_801B9B4:
 	.word 0x30000000
 dword_801B9B8:
 	.word 0x8000
-	thumb_func_end sub_801B878
+	thumb_func_end battleObject_runCurActionState_801B878
 
 // symdb: If the object's AIData says it's a clean-trigger kill and the related battle object has the 0x100 object flag (BUBBLED), set HP to 0 to mark it dead.
 // symdb: (r5 = BattleObject*) -> void ; side effect: may zero oBattleObject_HP on the related object
@@ -31645,9 +31645,9 @@ sub_801E144:
 // symdb: Plays the "Beast Out" transformation transition: clears/loads beast-out graphics, fires dispatch effects, and plays the SE 0x9f jingle.
 // symdb: (r10 = toolkit) -> side effects only; side effects: clears bit 0x10000 of dword_20352C0,
 // symdb: dispatches flags 0x10000 and 0x200, queues a 3-entry GFX transfer list, plays sound 0x9f
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E15C.yaml
-	thumb_func_start sub_801E15C
-sub_801E15C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_playBeastOutSequence_801E15C.yaml
+	thumb_func_start battle_playBeastOutSequence_801E15C
+battle_playBeastOutSequence_801E15C:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0x10
@@ -31675,7 +31675,7 @@ off_801E188:
 	.word 0x30016B0
 	.word 0x20
 	.word 0x0
-	thumb_func_end sub_801E15C
+	thumb_func_end battle_playBeastOutSequence_801E15C
 
 // symdb: Redraws the battle command-menu window frame (narrowed while the custom screen is open), clears battle flag 0x100, and advances the menu state if the battle is still running with the custom screen closed.
 // symdb: void sub_801E1A4(BattleWork* work /* r5 */); preserves r4-r6; returns callee-side r0-r3 and

@@ -4122,7 +4122,7 @@ void sub_809E31A()
     sprite_loadAnimationData(v1);
     sprite_noShadow(v1);
     sprite_update(v1);
-    sub_8001172(0);
+    gameState_setUnk09_8001172(0);
     SetEventFlagFromImmediate(6, 142);
     ClearEventFlagFromImmediate(6, 143);
 }
@@ -4142,7 +4142,7 @@ void __cdecl sub_809E35E()
     sprite_loadAnimationData(player);
     sprite_noShadow(player);
     sprite_update(player);
-    sub_8001172(84);
+    gameState_setUnk09_8001172(84);
     ClearEventFlagFromImmediate(6, 142);
     SetEventFlagFromImmediate(6, 143);
 }

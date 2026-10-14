@@ -961,7 +961,7 @@ loc_8038FBA:
 	ldr r2, [r0,r1]
 	mov r0, #0x3a
 	mov r1, r4
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	sub r4, #1
 	bge loc_8038FBA
 	mov r0, #0x3a
@@ -969,7 +969,7 @@ loc_8038FBA:
 	ldr r2, off_803900C // =byte_8039010
 	lsr r7, r7, #1
 	ldr r2, [r2,r7]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {r4,r7,pc}
 	.balign 4, 0
 off_8038FE0:
@@ -991,7 +991,7 @@ sub_8039024:
 	ldr r2, dword_8039050 // =0x607
 	mov r0, #0x3a
 	mov r1, #0
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	mov r4, #4
 loc_8039032:
 	mov r0, #0x3a
@@ -1000,7 +1000,7 @@ loc_8039032:
 	lsl r1, r1, #2
 	ldr r2, [r2,r1]
 	mov r1, r4
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	sub r4, #1
 	bgt loc_8039032
 	// src
@@ -1029,7 +1029,7 @@ sub_8039074:
 	mov r0, #0x3a
 	mov r1, #3
 	mov r2, #2
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_8039074
@@ -1043,14 +1043,14 @@ sub_8039084:
 	ldr r2, [r1,r0]
 	mov r0, #0x3a
 	mov r1, #4
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	mov r0, r4
 	lsl r0, r0, #2
 	ldr r1, off_80390C0 // =byte_80390C4
 	ldr r2, [r1,r0]
 	mov r0, #0x3a
 	mov r1, #5
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {r4,pc}
 	.balign 4, 0
 off_80390A8:
@@ -1071,11 +1071,11 @@ sub_80390D8:
 	ldr r2, dword_80390F0 // =0x8
 	mov r0, #0x3a
 	mov r1, #0
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	ldr r2, off_80390F4 // =0x108
 	mov r0, #0x3a
 	mov r1, #1
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {pc}
 	.balign 4, 0
 dword_80390F0:
@@ -1096,7 +1096,7 @@ loc_80390FC:
 	mov r1, #3
 	lsl r3, r4, #1
 	add r1, r1, r3
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	ldr r2, off_8039150 // =byte_8039154
 	lsl r1, r4, #2
 	ldr r2, [r2,r1]
@@ -1105,13 +1105,13 @@ loc_80390FC:
 	lsl r3, r4, #1
 	sub r3, #1
 	add r1, r1, r3
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	cmp r4, #1
 	bne loc_8039130
 	mov r0, #0x3a
 	mov r1, #0xc
 	ldr r2, dword_8039168 // =0x50d
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 loc_8039130:
 	sub r4, #1
 	bge loc_80390FC
@@ -1137,7 +1137,7 @@ sub_803916C:
 	ldr r2, dword_803917C // =0xb
 	mov r0, #0x3a
 	mov r1, #6
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {pc}
 	.balign 4, 0
 dword_803917C:
@@ -1743,7 +1743,7 @@ loc_8039900:
 	ldr r0, [r7,#4]
 	ldr r1, [r7,#8]
 	ldr r2, [r7,#0xc]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r7, #0x10
 	b loc_80398E8
 loc_803990E:
@@ -1784,7 +1784,7 @@ loc_8039942:
 	ldr r0, [r7,#4]
 	ldr r1, [r7,#8]
 	ldr r2, [r7,#0xc]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r7, #0x10
 	b loc_8039942
 locret_8039956:
@@ -8582,9 +8582,9 @@ loc_803CE3E:
 // symdb: Syncs the Active Navi's MaxHP (stat 0x42) and CurHP copy into the toolkit's NaviStats entry, only when MapGroup < 0x80 and a "PET navi active" event flag is set.
 // symdb: (no args; uses r10 = Toolkit) -> r0 = 0x90 (unused by caller) ; side effect: writes
 // symdb: 0x3e/0x40/0x42 fields of the current PET Navi's NaviStats entry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CE44.yaml
-	thumb_func_start sub_803CE44
-sub_803CE44:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_syncNaviActiveNaviMaxHP_803CE44.yaml
+	thumb_func_start pet_syncNaviActiveNaviMaxHP_803CE44
+pet_syncNaviActiveNaviMaxHP_803CE44:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -8632,7 +8632,7 @@ sub_803CE44:
 locret_803CEB4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803CE44
+	thumb_func_end pet_syncNaviActiveNaviMaxHP_803CE44
 
 // symdb: Sets the current PET navi's HP stat to its max HP, healing it to full.
 // symdb: void SetCurNaviHPToFull(void) -> r0=0, Z set / N clear on return; preserves r4-r7
@@ -13720,9 +13720,9 @@ sub_803F798:
 // symdb: Mirrors the 0x10-byte EWRAM work buffer (0x2000000..0x6710) to Game Pak SRAM, verifying the round-trip checksum before committing and toggling event flag 0x1704.
 // symdb: (r0..r3 ignored) -> r0 = 1 on successful verify-write-clear, 0 on verify-fail-then-set-flag
 // symdb: retry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F79E.yaml
-	thumb_func_start sub_803F79E
-sub_803F79E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/save_writeAndVerifyEWRAMToSRAM_803F79E.yaml
+	thumb_func_start save_writeAndVerifyEWRAMToSRAM_803F79E
+save_writeAndVerifyEWRAMToSRAM_803F79E:
 	push {r1-r7,lr}
 	mov r4, #1
 loc_803F7A2:
@@ -13792,7 +13792,7 @@ loc_803F814:
 	bl SetEventFlagFromImmediate
 	mov r0, #0
 	pop {r1-r7,pc}
-	thumb_func_end sub_803F79E
+	thumb_func_end save_writeAndVerifyEWRAMToSRAM_803F79E
 
 // symdb: Saves the game: copies the 0x6710-byte EWRAM block 0x02000000-0x0200670F (both RNG seeds, mystery data, event flags, chip pack, ...) to 0x0E000100.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F838.yaml

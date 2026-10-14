@@ -32,7 +32,7 @@ int __fastcall sub_8026450(int a1, int a2, char *a3)
             if ( v9 >= 0 && v9 <= 3 )
             {
                 v10 = v8;
-                v11 = sub_800E680(v8, v9) == 0;
+                v11 = object_checkEnemyOrAllyPanel_800E680(v8, v9) == 0;
                 result = v10;
                 if ( !v11 )
                     return result;
@@ -78,7 +78,7 @@ int __fastcall sub_80264A8(int a1, int a2, char *a3)
             {
                 v11 = v8;
                 v12 = v5[1] + v15;
-                if ( sub_800E680(v8, v9) )
+                if ( object_checkEnemyOrAllyPanel_800E680(v8, v9) )
                     sub_8026510(v11, v12, v13);
             }
         }
@@ -181,7 +181,7 @@ unsigned __int64 __fastcall sub_80265FE(unsigned __int64 a1)
 
     v1 = a1;
     v2 = __PAIR__(2, a1);
-    v3 = sub_800E680(a1, 2) == 0;
+    v3 = object_checkEnemyOrAllyPanel_800E680(a1, 2) == 0;
     result = v2;
     if ( v3 )
         result = v1;
@@ -6172,7 +6172,7 @@ unsigned int __fastcall sub_802A53C(unsigned int a1)
     unsigned int result; // r0
 
     v1 = a1;
-    sub_800AFBA(a1);
+    battle_canUseChip_800AFBA(a1);
     if ( v2 )
         result = v1;
     else
@@ -11228,7 +11228,7 @@ int __fastcall sub_802E0D4(int a1, char a2, __int16 a3)
 
 
 // 0x802e112
-int sub_802E112()
+int battle_setBeastLinkFlag_0802E112()
 {
     int result; // r0
     char v1; // zf

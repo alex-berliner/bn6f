@@ -587,7 +587,7 @@ int sub_808FF00()
 int sub_808FF30()
 {
     sub_80468BA();
-    sub_80468C6(0, 0, 0);
+    battleObject_initAIChipQueueSlot_80468C6(0, 0, 0);
     return 0;
 }
 
@@ -606,7 +606,7 @@ signed int battleObject_togglePlayerAllyLockout_808FF44()
         if ( *(v0 + 5) )
         {
             sub_80468BA();
-            sub_80468C6(0, 0, 0);
+            battleObject_initAIChipQueueSlot_80468C6(0, 0, 0);
             result = 0;
             *(v0 + 5) = 0;
         }
@@ -739,7 +739,7 @@ int sub_809003C()
     if ( !v1 )
     {
         (loc_809E306)(4);
-        sub_8001172(3);
+        gameState_setUnk09_8001172(3);
         result = reqBBS_setFlag_e17b0f7_8140A00();
     }
     return result;

@@ -99,7 +99,7 @@ int __fastcall sub_808CA68(int a1, int a2, int a3, int a4)
     sub_808CC84();
     ClearEventFlagFromImmediate(9, 216);
     ClearEventFlagFromImmediate(9, 217);
-    sub_8001172(0);
+    gameState_setUnk09_8001172(0);
     v4 = TestEventFlagFromImmediate(9, 211);
     if ( v5 )
         sub_808CF50(v4);
@@ -128,7 +128,7 @@ int __fastcall sub_808CAD4(int a1)
         SetEventFlagFromImmediate(9, 215);
         sub_808CBD8();
         reqBBS_setFlag_e17b0f7_8140A00();
-        sub_8001172(3);
+        gameState_setUnk09_8001172(3);
     }
     return 0;
 }
@@ -230,7 +230,7 @@ int sub_808CBD8()
 
     SpawnOverworldMapObject(17, 0, 0, 0);
     reqBBS_setFlag_e17b0f7_8140A00();
-    sub_8001172(3);
+    gameState_setUnk09_8001172(3);
     if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_MapGroup) != 133 )
         sound_8000672(31, 315, v1);
     return 0;

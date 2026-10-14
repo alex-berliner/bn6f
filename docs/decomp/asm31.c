@@ -24585,7 +24585,7 @@ int __noreturn trainArrow_80C619C()
 
     object_removeCollisionData();
     if ( *(v0 + 4) == 2 )
-        sub_801A100();
+        battleObject_spawnHitEffectAtPanel_801A100();
     else
         object_spawnCollisionEffect();
     v2 = *(*(v0 + 84) + 112);
@@ -33672,7 +33672,7 @@ void __noreturn sub_80CBC38()
     if ( *(v0 + 4) )
         sub_801ADFA();
     else
-        sub_801AD12();
+        object_finishCollisionHitReaction_801AD12();
     battleObject_dispatchActionHandler_801B394(&off_80CBC8C);
     object_updateSprite();
     object_presentCollisionData(v4, v5);
@@ -35669,7 +35669,7 @@ void __noreturn sub_80CD08C()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     battleObject_dispatchActionHandler_801B394(&off_80CD0B8);
     object_updateSprite();
@@ -36190,7 +36190,7 @@ void __noreturn sub_80CD5F8()
     int v2; // r1
 
     *v0 |= 2u;
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     object_spawnCollisionEffect();
     sub_80CD7A0();
     if ( !v0[4] )
@@ -36554,7 +36554,7 @@ void __noreturn sub_80CD9CA()
     sprite_clearFinalPalette();
     if ( battle_isBattleOver() )
         *(v0 + 36) = 0;
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     battleObject_dispatchActionHandler_801B394(&off_80CD9F4);
     object_updateSprite();
     object_presentCollisionData(v1, v2);
@@ -36908,7 +36908,7 @@ void __noreturn sub_80CDDFC()
     int v2; // r1
 
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     v1 = (*(&off_80CDE20 + *(v0 + 9)))();
     object_presentCollisionData(v1, v2);
     object_updateSprite();
@@ -38958,7 +38958,7 @@ void __noreturn sub_80CF18C()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     v1 = battleObject_dispatchActionHandler_801B394(&off_80CF1B8);
     object_presentCollisionData(v1, v2);
@@ -43068,7 +43068,7 @@ void __noreturn sub_80D1A64()
     char v3; // zf
 
     object_removeCollisionData();
-    sub_801A100();
+    battleObject_spawnHitEffectAtPanel_801A100();
     if ( battle_isBattleOver() )
     {
         object_clearCollisionRegion();
@@ -45945,7 +45945,7 @@ void __noreturn sub_80D358C()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     battleObject_dispatchActionHandler_801B394(&off_80D35B8);
     object_updateSprite();
@@ -47158,7 +47158,7 @@ void __noreturn sub_80D4144()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     battleObject_dispatchActionHandler_801B394(&off_80D4170);
     object_updateSprite();
@@ -47793,7 +47793,7 @@ void __noreturn sub_80D4754()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     object_spawnCollisionEffect();
     sub_800F672();
     v1 = *(v0 + 84);
@@ -48339,7 +48339,7 @@ void __noreturn sub_80D4D34()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     sub_801B4D4(&off_80D4D60);
     object_updateSprite();
@@ -52537,10 +52537,10 @@ void __noreturn sub_80D774C()
     int v3; // r1
 
     *v0 |= 2u;
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     object_spawnCollisionEffect();
     sub_800F672();
-    sub_801B878(&off_80D7798);
+    battleObject_runCurActionState_801B878(&off_80D7798);
     if ( *(v0 + 36) <= 3001 )
         *(v0 + 36) = 3001;
     sub_80D7A2A();
@@ -56621,7 +56621,7 @@ void __noreturn sub_80DA108()
 
     *v0 |= 2u;
     sprite_clearFinalPalette();
-    sub_801AD12();
+    object_finishCollisionHitReaction_801AD12();
     sub_800F672();
     battleObject_dispatchActionHandler_801B394(&off_80DA134);
     object_updateSprite();
@@ -57883,7 +57883,7 @@ void __noreturn sub_80DAD84()
     char v3; // zf
 
     object_removeCollisionData();
-    sub_801A100();
+    battleObject_spawnHitEffectAtPanel_801A100();
     if ( battle_isBattleOver() )
     {
         object_clearCollisionRegion();
@@ -75027,7 +75027,7 @@ char *sub_80E5600()
         if ( result == &dword_1C + 2 )
         {
             projectObjectToScreen_800362C((*(v0 + 76) + 52));
-            result = sub_8046670(52, 0, v5);
+            result = battle_initEmotionTableEntry_8046670(52, 0, v5);
         }
         else if ( result == &dword_18 + 1 )
         {
@@ -86130,7 +86130,7 @@ signed int __usercall sub_80EC844@<R0>(ChatBoxPropreties *cb@<R5>, void *r7@<R7>
 {
     signed int result; // r0
 
-    sub_800E2FC(cb, *&byte_80EC870[2 * *(r7 + 3)], 1);
+    battleObject_applyHPAndHandleSpecial_800E2FC(cb, *&byte_80EC870[2 * *(r7 + 3)], 1);
     tableAddSaturatedByte_800AB46(cb->unk_16, 5, 1);
     object_exitAttackState(cb);
     return result;
@@ -96009,7 +96009,7 @@ int sub_80F2180()
         goto LABEL_16;
     if ( v4 == 1 )
     {
-        sub_800E2FC(v0, 30, 0);
+        battleObject_applyHPAndHandleSpecial_800E2FC(v0, 30, 0);
 LABEL_13:
         result = 20;
         *v1 = 20;
@@ -131634,7 +131634,7 @@ LABEL_13:
         }
         else if ( *(*(v0 + 84) + 136) )
         {
-            sub_800E2FC(v0, *(v0 + 38), 0);
+            battleObject_applyHPAndHandleSpecial_800E2FC(v0, *(v0 + 38), 0);
             sub_800EADA();
             sub_811060A();
         }
@@ -132270,7 +132270,7 @@ void battle_attackTimerTick_8109CBC()
     {
         if ( **(v1 + 48) )
         {
-            sub_800AA40(*(v0 + 100));
+            battleObject_removeFromNextList_800AA40(*(v0 + 100));
             list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
             **(v1 + 48) = 0;
         }
@@ -132451,7 +132451,7 @@ void aiAttackTimer_tick_8109E4A()
     *(v1 + 16) = v2;
     if ( !v2 )
     {
-        sub_800AA40(*(v0 + 100));
+        battleObject_removeFromNextList_800AA40(*(v0 + 100));
         list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
         **(v1 + 48) = 0;
         object_exitAttackState(v0);
@@ -132553,7 +132553,7 @@ int battle_objectTickWithExtraHandler_8109F6A()
 
     v1 = *(v0 + 10);
     if ( !*(v0 + 10) )
-        v1 = sub_800AA40(*(v0 + 100));
+        v1 = battleObject_removeFromNextList_800AA40(*(v0 + 100));
     return battle_objectUpdateDispatchPhase_80165C2(v1);
 }
 
@@ -132594,7 +132594,7 @@ int battle_object_onAction8EndClearExtraVars_8109FA2()
         result = *(v0 + 96);
         if ( result )
         {
-            sub_800AA40(*(v0 + 100));
+            battleObject_removeFromNextList_800AA40(*(v0 + 100));
             list_tryAddUniqueEntry_800AA1A(*(v0 + 100));
             result = 0;
             *(v0 + 96) = 0;

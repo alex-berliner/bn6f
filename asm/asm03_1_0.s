@@ -1116,7 +1116,7 @@ loc_8034064:
 	strh r0, [r7,#0x12]
 	strh r0, [r7,#0x14]
 	mov r0, #0
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	movflag EVENT_79
 	bl SetEventFlagFromImmediate
 	movflag EVENT_1006

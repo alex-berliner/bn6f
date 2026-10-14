@@ -225,7 +225,7 @@ loc_8021BBC:
 GetChipCountOfCode:
 	push {r4,lr}
 	push {r0,r1}
-	bl sub_8006EA4
+	bl pack_hasChipOfCode_8006EA4
 	pop {r0,r1}
 	bne loc_8021BD4
 	bl getOffsetToQuantityOfChipCodeMaybe_8021c7c // (int chip_idx, int searchItem, int off) -> void*
@@ -300,7 +300,7 @@ loc_8021C28:
 	push {r0,r1}
 	mov r0, r6
 	mov r1, r7
-	bl sub_8006EA4
+	bl pack_hasChipOfCode_8006EA4
 	pop {r0,r1}
 	bne loc_8021C48
 	add r5, #1

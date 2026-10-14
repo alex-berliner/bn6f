@@ -473,7 +473,7 @@ int __fastcall resetPetNaviSetup_8033FDC(int a1)
     v3 = *(v1 + oToolkit_Unk2001c04_Ptr);
     *(v3 + 18) = 0;
     *(v3 + 20) = 0;
-    sub_8001172(0);
+    gameState_setUnk09_8001172(0);
     SetEventFlagFromImmediate(0, 121);
     ClearEventFlagFromImmediate(16, 6);
     ClearEventFlagFromImmediate(16, 9);
@@ -5825,11 +5825,11 @@ char *__fastcall sub_8038FB4(int a1)
     v2 = 1;
     do
     {
-        sub_8046670(58, v2, *&byte_8038FE4[4 * v2 + v1]);
+        battle_initEmotionTableEntry_8046670(58, v2, *&byte_8038FE4[4 * v2 + v1]);
         v3 = __OFSUB__(v2--, 1);
     }
     while ( !((v2 < 0) ^ v3) );
-    return sub_8046670(58, 2, *&byte_8039010[v1 >> 1]);
+    return battle_initEmotionTableEntry_8046670(58, 2, *&byte_8039010[v1 >> 1]);
 }
 
 
@@ -5839,11 +5839,11 @@ void sub_8039024()
     int v0; // r4
     unsigned __int8 v1; // vf
 
-    sub_8046670(58, 0, 1543);
+    battle_initEmotionTableEntry_8046670(58, 0, 1543);
     v0 = 4;
     do
     {
-        sub_8046670(58, v0, *&byte_8039058[4 * (v0 - 1)]);
+        battle_initEmotionTableEntry_8046670(58, v0, *&byte_8039058[4 * (v0 - 1)]);
         v1 = __OFSUB__(v0--, 1);
     }
     while ( !(((v0 < 0) ^ v1) | (v0 == 0)) );
@@ -5854,7 +5854,7 @@ void sub_8039024()
 // 0x8039074
 char *sub_8039074()
 {
-    return sub_8046670(58, 3, 2);
+    return battle_initEmotionTableEntry_8046670(58, 3, 2);
 }
 
 
@@ -5864,16 +5864,16 @@ char *__fastcall sub_8039084(int a1)
     int v1; // r4
 
     v1 = a1;
-    sub_8046670(58, 4, *&byte_80390AC[4 * a1]);
-    return sub_8046670(58, 5, *&byte_80390C4[4 * v1]);
+    battle_initEmotionTableEntry_8046670(58, 4, *&byte_80390AC[4 * a1]);
+    return battle_initEmotionTableEntry_8046670(58, 5, *&byte_80390C4[4 * v1]);
 }
 
 
 // 0x80390d8
 char *sub_80390D8()
 {
-    sub_8046670(58, 0, 8);
-    return sub_8046670(58, 1, &byte_108);
+    battle_initEmotionTableEntry_8046670(58, 0, 8);
+    return battle_initEmotionTableEntry_8046670(58, 1, &byte_108);
 }
 
 
@@ -5887,10 +5887,10 @@ char *sub_80390F8()
     v0 = 4;
     do
     {
-        sub_8046670(58, 2 * v0 + 3, *&byte_803913C[4 * v0]);
-        result = sub_8046670(58, 2 * v0 + 2, *&byte_8039154[4 * v0]);
+        battle_initEmotionTableEntry_8046670(58, 2 * v0 + 3, *&byte_803913C[4 * v0]);
+        result = battle_initEmotionTableEntry_8046670(58, 2 * v0 + 2, *&byte_8039154[4 * v0]);
         if ( v0 == 1 )
-            result = sub_8046670(58, 12, 1293);
+            result = battle_initEmotionTableEntry_8046670(58, 12, 1293);
         v2 = __OFSUB__(v0--, 1);
     }
     while ( !((v0 < 0) ^ v2) );
@@ -5901,7 +5901,7 @@ char *sub_80390F8()
 // 0x803916c
 char *sub_803916C()
 {
-    return sub_8046670(58, 6, 11);
+    return battle_initEmotionTableEntry_8046670(58, 6, 11);
 }
 
 
@@ -6316,7 +6316,7 @@ signed int sub_80398DC()
                 v6 = *v2;
                 if ( *v2 )
                     break;
-                sub_8046670(v2[1], v2[2], v2[3]);
+                battle_initEmotionTableEntry_8046670(v2[1], v2[2], v2[3]);
                 v2 += 4;
             }
             if ( v6 == 1 )
@@ -6361,7 +6361,7 @@ int __fastcall sub_803993A(int a1)
         result = *v1;
         if ( *v1 == 2 )
             break;
-        sub_8046670(v1[1], v1[2], v1[3]);
+        battle_initEmotionTableEntry_8046670(v1[1], v1[2], v1[3]);
         v1 += 4;
     }
     return result;
@@ -11194,7 +11194,7 @@ int __fastcall CheckKeyItem(signed int a1)
 
 
 // 0x803ce44
-int sub_803CE44()
+int pet_syncNaviActiveNaviMaxHP_803CE44()
 {
     int v0; // r10
     int result; // r0
@@ -14539,7 +14539,7 @@ void sub_803F798()
 
 
 // 0x803f79e
-signed int sub_803F79E()
+signed int save_writeAndVerifyEWRAMToSRAM_803F79E()
 {
     int v0; // r10
     char v1; // zf

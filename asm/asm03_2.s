@@ -744,7 +744,7 @@ off_804659C:
 	thumb_func_end battle_initEStructArr_804657C
 
 // (void *a1) -> void
-// symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via sub_8046670.
+// symdb: Table-driven spawner for eStruct records: walks a 0xFF-terminated table of 4-byte (id, slot, param) triples and creates one 0x58-byte record (type 9) of eStructArr2008450 per entry via battle_initEmotionTableEntry_8046670.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructRecordsFromTable_80465A0.yaml
 	thumb_func_start battle_spawnEStructRecordsFromTable_80465A0
 battle_spawnEStructRecordsFromTable_80465A0:
@@ -757,7 +757,7 @@ loc_80465A2:
 	ldrh r2, [r0,#2]
 	ldrb r1, [r0,#1]
 	ldrb r0, [r0]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	pop {r0}
 	add r0, #4
 	b loc_80465A2
@@ -886,9 +886,9 @@ battle_resetEStructRecords_8046664:
 // symdb: Initialises one EmotionData slot in the 0x58-byte EWRAM array at 0x02008450 with a type byte, a fixed 0x09 tag, and a flags value.
 // symdb: (r0 = actorType/AIIndex?, r1 = slotIndex, r2 = flags) -> r0 = pointer to the 0x58-byte slot at
 // symdb: 0x02008450 + slotIndex*0x58 ; side effects: writes slot bytes [0]=9, [1]=r0, [4]=r2, [8]=0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046670.yaml
-	thumb_func_start sub_8046670
-sub_8046670:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initEmotionTableEntry_8046670.yaml
+	thumb_func_start battle_initEmotionTableEntry_8046670
+battle_initEmotionTableEntry_8046670:
 	push {r4-r7,lr}
 	ldr r5, off_80466D4 // =eStructArr2008450 
 	mov r4, #0x58 
@@ -902,7 +902,7 @@ sub_8046670:
 	str r0, [r5,#8]
 	mov r0, r5
 	pop {r4-r7,pc}
-	thumb_func_end sub_8046670
+	thumb_func_end battle_initEmotionTableEntry_8046670
 
 // symdb: Zeros a sprite's scale/cycle counter byte and rebuilds the sprite as unscalable.
 // symdb: void sprite_clearScaleCounterAndMakeUnscalable(/* r5 */ u8* scaleCounter)
@@ -1143,7 +1143,7 @@ loc_80467FE:
 	ldrh r2, [r0,#2]
 	ldrb r1, [r0,#1]
 	ldrb r0, [r0]
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	pop {r0}
 	add r0, #4
 	b loc_80467FE
@@ -1261,9 +1261,9 @@ sub_80468BA:
 // symdb: Initializes a 0x58-byte AI chip-queue slot in EWRAM at 0x02011860 for a given actor slot index
 // symdb: (r0 = ActorType (1=virus, 2=player), r1 = slot index, r2 = BattleObject ptr) -> r0 = pointer to
 // symdb: initialized 0x58-byte slot
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80468C6.yaml
-	thumb_func_start sub_80468C6
-sub_80468C6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initAIChipQueueSlot_80468C6.yaml
+	thumb_func_start battleObject_initAIChipQueueSlot_80468C6
+battleObject_initAIChipQueueSlot_80468C6:
 	push {r4-r7,lr}
 	ldr r5, off_8046928 // =byte_2011860 
 	mov r4, #0x58 
@@ -1277,7 +1277,7 @@ sub_80468C6:
 	str r0, [r5,#8]
 	mov r0, r5
 	pop {r4-r7,pc}
-	thumb_func_end sub_80468C6
+	thumb_func_end battleObject_initAIChipQueueSlot_80468C6
 
 	thumb_func_start sub_80468E0
 sub_80468E0:
@@ -6109,7 +6109,7 @@ loc_80499E0:
 	bl sub_8049D70
 	bl sub_8049D4A
 	bl sub_8049D3A
-	bl sub_803F79E
+	bl save_writeAndVerifyEWRAMToSRAM_803F79E
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFillGFX30025c0
 	bl copyMemory_8001850

@@ -168,7 +168,7 @@ int __fastcall GetChipCountOfCode(signed int chipIdx, int a2)
 
     v4 = chipIdx;
     v5 = a2;
-    sub_8006EA4(chipIdx, a2);
+    pack_hasChipOfCode_8006EA4(chipIdx, a2);
     if ( v2 )
         result = *chip_8021C7C(v4, v5);
     else
@@ -230,7 +230,7 @@ int __fastcall sub_8021C02(int a1, int a2)
             {
                 v10 = a1;
                 v11 = a2;
-                sub_8006EA4(v8, v9);
+                pack_hasChipOfCode_8006EA4(v8, v9);
                 a1 = v10;
                 a2 = v11;
                 if ( v12 )

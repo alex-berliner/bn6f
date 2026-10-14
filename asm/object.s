@@ -324,9 +324,9 @@ locret_800BA88:
 // symdb: Per-tick handler for the "SnakeArm" battle object: when not initialized, checks if a chip can be triggered and queues a 0x4C/0x50 battle effect; once initialized, waits for cross-net readiness and then advances the action/phase state machine.
 // symdb: (r5 = *BattleObject) -> void ; side effects: clears/dispatches 0x10000 flag, plays SE 0x73,
 // symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes dword_200F3B8[Alliance]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BA8A.yaml
-	thumb_func_start sub_800BA8A
-sub_800BA8A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSnakeArm_800BA8A.yaml
+	thumb_func_start battleObject_stepSnakeArm_800BA8A
+battleObject_stepSnakeArm_800BA8A:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -465,7 +465,7 @@ dword_800BBA0:
 	.word 0x10000
 off_800BBA4:
 	.word dword_200F3B8
-	thumb_func_end sub_800BA8A
+	thumb_func_end battleObject_stepSnakeArm_800BA8A
 
 	thumb_func_start sub_800BBA8
 sub_800BBA8:
@@ -4935,9 +4935,9 @@ loc_800E2F8:
 // symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
 // symdb: type-4 effect object, plays sound 0x8A, calls several
 // symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E2FC.yaml
-	thumb_func_start sub_800E2FC
-sub_800E2FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHPAndHandleSpecial_800E2FC.yaml
+	thumb_func_start battleObject_applyHPAndHandleSpecial_800E2FC
+battleObject_applyHPAndHandleSpecial_800E2FC:
 	push {r4,r6,r7,lr}
 	mov r6, r0
 	tst r1, r1
@@ -4983,7 +4983,7 @@ loc_800E330:
 	mov r0, #1
 locret_800E35E:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800E2FC
+	thumb_func_end battleObject_applyHPAndHandleSpecial_800E2FC
 
 	thumb_func_start sub_800E360
 sub_800E360:
@@ -5467,9 +5467,9 @@ byte_800E660:
 // symdb: Picks panel-state mask/anti-mask pair for an object's alliance and tests whether the panel at (col,row) of a battle grid matches that pair, returning 1/0.
 // symdb: (r0 = panelColumn, r1 = panelRow, r5 = BattleObject*) -> r0 = 1 if panel matches the alliance
 // symdb: pair, 0 otherwise ; r2/r3/r4-r7 callee-saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E680.yaml
-	thumb_func_start sub_800E680
-sub_800E680:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_checkEnemyOrAllyPanel_800E680.yaml
+	thumb_func_start object_checkEnemyOrAllyPanel_800E680
+object_checkEnemyOrAllyPanel_800E680:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -5509,7 +5509,7 @@ byte_800E6C8:
 	.byte 0x10, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80, 0x7, 0x10, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x80, 0xB, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80, 0x7, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x80, 0xB
-	thumb_func_end sub_800E680
+	thumb_func_end object_checkEnemyOrAllyPanel_800E680
 
 	thumb_func_start IsR2BetweenR0AndR1
 // return (r0 <= r1 && r2 > r0 && r2 <= r1) || (r0 > r1 && r2 > r1 && r2 <= r0)
@@ -6387,9 +6387,9 @@ locret_800EC7E:
 // symdb: Computes an enemy-encounter rarity tier for a given enemy index by clamping the current PET Navi stat tier against the version's virus or navi tier cap, then adding the clamped tier to the base enemy id.
 // symdb: (r0 = enemy_idx) -> r0 = enemy_idx + clamped_tier ; side effects: calls
 // symdb: getCurNaviStatTier_8014150, GetVerActorTyAndAIIdx_80182B4, stub_returnZero_8000E30
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EC80.yaml
-	thumb_func_start sub_800EC80
-sub_800EC80: // (enemy_idx: u16) -> u16
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_computeEnemyEncounterRarity_800EC80.yaml
+	thumb_func_start battle_computeEnemyEncounterRarity_800EC80
+battle_computeEnemyEncounterRarity_800EC80: // (enemy_idx: u16) -> u16
 	push {r4,r5,r7,lr}
 	push {r0}
 	bl stub_returnZero_8000E30
@@ -6455,7 +6455,7 @@ off_800ECF0:
 	.word 0x0
 	.word 0x0
 	.word 0x0
-	thumb_func_end sub_800EC80
+	thumb_func_end battle_computeEnemyEncounterRarity_800EC80
 
 // symdb: Resets the eight-slot AI data pool, tagging each slot's owner field at +0x7C with a unique one-hot mask and clearing the "AI data in use" bitfield.
 // symdb: void sub_800ED00(void); // returns r0=0, r1=&eUsedAIDataBitfield, r2=8, r3=0x100; flags from

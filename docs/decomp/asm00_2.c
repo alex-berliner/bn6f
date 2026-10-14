@@ -5971,7 +5971,7 @@ LABEL_16:
     }
     vHP = sub_8013790(v19, 80) + v24;
     if ( vHP )
-        sub_800E2FC(obj, vHP, 0);
+        battleObject_applyHPAndHandleSpecial_800E2FC(obj, vHP, 0);
     if ( v8[9] & 4 )
         tableAddSaturatedByte_800AB46(obj->Alliance, 6, 1);
     sub_800B79A(*(v3 + 20));
@@ -11914,7 +11914,7 @@ int battle_object_tickHitFlashAlpha_801641A()
         {
             sprite_disableAlpha();
             sprite_clearMosaic();
-            sub_800AA40(0);
+            battleObject_removeFromNextList_800AA40(0);
             result = 8;
             *(v0 + 5) = 8;
         }
@@ -15137,7 +15137,7 @@ void object_spawnCollisionEffect()
 
 
 // 0x801a100
-void sub_801A100()
+void battleObject_spawnHitEffectAtPanel_801A100()
 {
     int *v0; // r5
     int v1; // r3
@@ -16346,7 +16346,7 @@ int battleObject_processCollisionResults_801A9B8()
 
 
 // 0x801aa48
-int sub_801AA48()
+int battleObject_runPerFrameUpdate_801AA48()
 {
     int v0; // r5
     int v1; // r7
@@ -16433,7 +16433,7 @@ int battleObject_processCollisionResultsByMode_801AAC0()
 
 
 // 0x801ab40
-int sub_801AB40()
+int battleObject_handleCollisionAndStatusTick_801AB40()
 {
     int v0; // r5
     int v1; // r7
@@ -16591,7 +16591,7 @@ int battleObject_processCollisionResultsForPlayer_801AC6C()
 
 
 // 0x801ad12
-int sub_801AD12()
+int object_finishCollisionHitReaction_801AD12()
 {
     int v0; // r5
     int v1; // r7
@@ -17479,7 +17479,7 @@ LABEL_28:
 
 
 // 0x801b878
-int __fastcall sub_801B878(int a1)
+int __fastcall battleObject_runCurActionState_801B878(int a1)
 {
     int v1; // r5
     int v2; // r6
@@ -21008,7 +21008,7 @@ int sub_801E144()
 
 
 // 0x801e15c
-int sub_801E15C()
+int battle_playBeastOutSequence_801E15C()
 {
     int v0; // r1
     int v1; // r2

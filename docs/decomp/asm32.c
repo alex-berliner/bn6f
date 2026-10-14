@@ -19896,7 +19896,7 @@ char *sub_811DBD0()
     char *result; // r0
 
     *(v0 + 5) += 5;
-    result = sub_8046670(58, 6, (*(v0 + 4) >> 8 << 8) | 5);
+    result = battle_initEmotionTableEntry_8046670(58, 6, (*(v0 + 4) >> 8 << 8) | 5);
     result[9] = 12;
     return result;
 }
@@ -21108,7 +21108,7 @@ void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
 
 
 // 0x811ec50
-void __noreturn sub_811EC50()
+void __noreturn mapName_runSequence_811EC50()
 {
     queueGFXTransfersFromTable_811EC68();
     sub_811EFB8();
@@ -22267,7 +22267,7 @@ void sub_811FCA4()
 
 
 // 0x811fcb8
-signed int __fastcall sub_811FCB8(int a1, int *a2, int a3, int a4)
+signed int __fastcall battle_buildChipPackFromFolderEntries_811FCB8(int a1, int *a2, int a3, int a4)
 {
     int v4; // r10
     int *v5; // r5

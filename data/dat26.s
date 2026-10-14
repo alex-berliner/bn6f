@@ -1293,11 +1293,11 @@ sub_8093212::
 	mov r0, #0xa
 	mov r1, #3
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0xb
 	mov r1, #4
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	pop {r4-r7,pc}
 	thumb_func_end sub_8093212
 

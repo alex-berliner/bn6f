@@ -1886,7 +1886,7 @@ sub_8000F86:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_S2001c04_Ptr]
 	str r4, [r0,#0x18]
-	bl sub_803F79E
+	bl save_writeAndVerifyEWRAMToSRAM_803F79E
 locret_8000FAA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8000F86
@@ -1894,9 +1894,9 @@ locret_8000FAA:
 // symdb: On entering a map, if the destination differs from the last map, or event flag 0x170C is set, clear the current battle data pointer and three overworld walk-step counters, then always clear flag 0x170C.
 // symdb: () -> ; side effects: may zero GameState.CurBattleDataPtr and three counters in S2001c04; clears
 // symdb: event flag 0x170C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000FAC.yaml
-	thumb_func_start sub_8000FAC
-sub_8000FAC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC.yaml
+	thumb_func_start battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC
+battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -1925,7 +1925,7 @@ loc_8000FDC:
 	movflag EVENT_170C
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_8000FAC
+	thumb_func_end battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC
 
 	thumb_local_start
 sub_8000FE6:
@@ -2221,15 +2221,15 @@ locret_8001170:
 // symdb: Sets GameState's Unk_09 byte (related to "can't jack out" / L-button-message-style control flag) to the given u8
 // symdb: (r0 = value) -> void ; side effects: writes Toolkit->GameStatePtr->Unk_09 (a single byte at
 // symdb: offset 0x9)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001172.yaml
-	thumb_func_start sub_8001172
-sub_8001172:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameState_setUnk09_8001172.yaml
+	thumb_func_start gameState_setUnk09_8001172
+gameState_setUnk09_8001172:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
 	strb r0, [r3,#oGameState_Unk_09]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_8001172
+	thumb_func_end gameState_setUnk09_8001172
 
 // symdb: Returns the direction of a fixed-point (x,y) vector as a single byte (0..255 over a full turn), via the BIOS ArcTan2 call.
 // symdb: u8 math_vectorAngleByte(s16_16p dx /* r0, upper 16 bits meaningful */, s16_16p dy /* r1, upper

@@ -1000,7 +1000,7 @@ signed int sub_8089CC4()
     int v0; // r5
     signed int result; // r0
 
-    sub_81429CA();
+    battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA();
     *(v0 + 60) = byte_8089480;
     sub_8036F98(byte_8089480);
     result = 1;
@@ -1066,9 +1066,9 @@ int sub_8089D0E()
 // 0x8089d26
 char *sub_8089D26()
 {
-    sub_80468C6(4, 1, 0);
+    battleObject_initAIChipQueueSlot_80468C6(4, 1, 0);
     sub_80468EC(0);
-    return sub_80468C6(3, 0, 1);
+    return battleObject_initAIChipQueueSlot_80468C6(3, 0, 1);
 }
 
 
@@ -1076,7 +1076,7 @@ char *sub_8089D26()
 char *sub_8089D44()
 {
     sub_80468EC(0);
-    return sub_80468C6(3, 0, 0);
+    return battleObject_initAIChipQueueSlot_80468C6(3, 0, 0);
 }
 
 

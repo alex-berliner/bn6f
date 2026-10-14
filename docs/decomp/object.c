@@ -2758,7 +2758,7 @@ int __usercall object_addHP@<R0>(Battle *obj@<R5>, int inc@<R0>)
 
 
 // 0x800e2fc
-signed int __usercall sub_800E2FC@<R0>(Battle *obj@<R5>, int HP@<R0>, int a2@<R1>)
+signed int __usercall battleObject_applyHPAndHandleSpecial_800E2FC@<R0>(Battle *obj@<R5>, int HP@<R0>, int a2@<R1>)
 {
     int vHP; // r6
     int v4; // r3
@@ -3044,7 +3044,7 @@ BOOL __fastcall playerObjectMovingToPanelValidityRelated_800E618(int a1, int a2)
 
 
 // 0x800e680
-BOOL __fastcall sub_800E680(int a1, int a2)
+BOOL __fastcall object_checkEnemyOrAllyPanel_800E680(int a1, int a2)
 {
     unsigned __int8 *v2; // r5
     int v3; // r6
@@ -3763,7 +3763,7 @@ _DWORD *sub_800EC66()
 
 
 // 0x800ec80
-int __fastcall sub_800EC80(int a1)
+int __fastcall battle_computeEnemyEncounterRarity_800EC80(int a1)
 {
     int v1; // r7
     signed int v2; // r0

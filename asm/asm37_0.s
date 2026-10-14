@@ -1907,7 +1907,7 @@ applyNaviStatsMaybe_813C458:
 	bl sub_813CBCC
 	mov r0, r4
 	bl SetCurPETNavi
-	bl sub_803CE44
+	bl pet_syncNaviActiveNaviMaxHP_803CE44
 	pop {r4,pc}
 	.byte 0, 0
 	thumb_func_end applyNaviStatsMaybe_813C458

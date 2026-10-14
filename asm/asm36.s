@@ -213,7 +213,7 @@ loc_81301EC:
 	lsl r3, r3, #8
 	mov r2, #0
 	orr r2, r3
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r6, #1
 	cmp r6, r4
 	blt loc_81301EC
@@ -618,7 +618,7 @@ loc_81304D2:
 	ldr r1, off_81304E4 // =unk_2023FB0 
 	mov r2, #1
 	ldr r3, off_81304E8 // =unk_2024370 
-	bl sub_811FCB8
+	bl battle_buildChipPackFromFolderEntries_811FCB8
 locret_81304DE:
 	pop {r4-r7,pc}
 	.word word_2023FA0
@@ -2513,7 +2513,7 @@ loc_8131394:
 	ldr r2, off_81313AC // =byte_81313B0
 	lsl r3, r4, #2
 	ldr r2, [r2,r3]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r4, #1
 	cmp r4, #4
 	blt loc_8131394
@@ -6387,7 +6387,7 @@ loc_81332C8:
 	ldr r1, off_813338C // =word_202A020 
 	mov r2, #0
 	ldr r3, off_8133390 // =unk_20343E0 
-	bl sub_811FCB8
+	bl battle_buildChipPackFromFolderEntries_811FCB8
 	beq loc_81332F2
 loc_81332D6:
 	bl sub_8133EC0
@@ -6443,7 +6443,7 @@ loc_8133338:
 	mov r2, #0xa5
 	mov r3, #0x28 
 	mov r4, #4
-	bl sub_81352A0
+	bl battleObject_handleMoveAlignment_81352A0
 	bl registerBattleStartScript_81355EC
 loc_8133358:
 	bl battle_setFieldsFromObj_81340FC
@@ -10704,9 +10704,9 @@ loc_8135294:
 // symdb: (r0 = battle-object/row param table ptr, r1 = ?, r2 = row index, r3 = row param, r4 = alignment
 // symdb: arg, r5 = ? control struct, r7 = PetStats field offset, r10 = toolkit) -> r0 = 0xff or 1 ; side
 // symdb: effects writes [r5+0x14], [r5+0x1c], [r5+0x4c], NaviStats byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81352A0.yaml
-	thumb_func_start sub_81352A0
-sub_81352A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_handleMoveAlignment_81352A0.yaml
+	thumb_func_start battleObject_handleMoveAlignment_81352A0
+battleObject_handleMoveAlignment_81352A0:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -10761,7 +10761,7 @@ off_813530C:
 	.word dword_8135310
 dword_8135310:
 	.word 0x302F2E
-	thumb_func_end sub_81352A0
+	thumb_func_end battleObject_handleMoveAlignment_81352A0
 
 // symdb: Battle setup: populates the two PET navi slots, accumulates their HP, and stores the total in the battle object.
 // symdb: u32 sub_8135314(u32 navi_data, u32 stats_arr, u32 arg2, u32 arg3, u32 ptr_array, u32

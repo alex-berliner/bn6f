@@ -1453,7 +1453,7 @@ int applyNaviStatsMaybe_813C458()
     applyNavicustPrograms_813C684();
     sub_813CBCC();
     sub_80010BE(v0);
-    return sub_803CE44();
+    return pet_syncNaviActiveNaviMaxHP_803CE44();
 }
 
 

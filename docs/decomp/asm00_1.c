@@ -2287,9 +2287,9 @@ int __fastcall EnterMap(int a1)
         if ( notScreeneffectAimating )
             reloadCurNaviStatBoosts_813c3ac();
         gs = tk->gamestate;
-        sub_8000FAC();
+        battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC();
         sub_80355EC();
-        sub_8001172(0);
+        gameState_setUnk09_8001172(0);
         gs->scriptOffIdx_LMsg_15 = 0;
         gs->unk_0E = 0;
         gs->unk_03 = 0;
@@ -2547,7 +2547,7 @@ int pet_menuUpdateAndHandleExit_8005462()
     if ( !byte_200DF28 )
     {
         byte_200DF28 = 1;
-        sub_811EC50();
+        mapName_runSequence_811EC50();
     }
     dispatch_80339CC();
     sub_80039AA();
@@ -4686,7 +4686,7 @@ signed int __fastcall sub_8006E84(signed int result)
 
 
 // 0x8006ea4
-BOOL __fastcall sub_8006EA4(signed int chipIdx, int a2)
+BOOL __fastcall pack_hasChipOfCode_8006EA4(signed int chipIdx, int a2)
 {
     int vChipIdx; // r7
     int v3; // r4
@@ -5237,7 +5237,7 @@ void spawnEnemy_80073E2()
     v2 = *v0 & 1;
     v3 = v0[2] + ((v0[3] << 8) & 0xFFF);
     if ( !(sub_802D246() & 0x8000) )
-        sub_800EC80(v3);
+        battle_computeEnemyEncounterRarity_800EC80(v3);
     battle_spawnEnemyObject_800768C();
 }
 
@@ -5767,7 +5767,7 @@ signed int sub_800794C()
     v5 = InitializeT1BattleObjectStructs(v1, v2, v3, v4);
     v9 = InitializeT3BattleObjectStructs(v5, v6, v7, v8);
     InitializeT4BattleObjectStructs(v9, v10, v11, v12);
-    sub_802E112();
+    battle_setBeastLinkFlag_0802E112();
     camera_resetToOrigin_8007338();
     v13 = clearBattleCounters_800A0C6();
     resetBattleBuffers_801BE70(v13, v14, v15, v16);
@@ -6534,7 +6534,7 @@ int battle_updateMainFlow_80080D2()
                 *(v0 + 5) = v6;
                 sub_800A028();
                 *v0 = 28;
-                return sub_801E15C();
+                return battle_playBeastOutSequence_801E15C();
             }
             v7 = battle_testFlag0x40_800A8F8(255);
             if ( v7 )
@@ -7038,7 +7038,7 @@ int sub_800855E()
                 *(v0 + 5) = v5;
                 sub_800A028();
                 *v0 = 24;
-                result = sub_801E15C();
+                result = battle_playBeastOutSequence_801E15C();
             }
             break;
     }
@@ -7545,7 +7545,7 @@ int battle_advancePostMovePhase_80089CC()
                 *(v0 + 5) = v5;
                 sub_800A028();
                 *v0 = 24;
-                result = sub_801E15C();
+                result = battle_playBeastOutSequence_801E15C();
             }
             break;
     }
@@ -8002,7 +8002,7 @@ int sub_8008DDC()
                 *(v0 + 5) = v5;
                 sub_800A028();
                 *v0 = 24;
-                result = sub_801E15C();
+                result = battle_playBeastOutSequence_801E15C();
             }
             break;
     }
@@ -11549,7 +11549,7 @@ signed int __fastcall list_tryAddUniqueEntry_800AA1A(int a1)
 
 
 // 0x800aa40
-int __fastcall sub_800AA40(int a1)
+int __fastcall battleObject_removeFromNextList_800AA40(int a1)
 {
     int v1; // r5
     char *v2; // r3
@@ -12196,7 +12196,7 @@ signed int __fastcall battle_bustingLevelCategoryForEffect_800AF84(int a1)
 
 
 // 0x800afba
-int __fastcall sub_800AFBA(unsigned int a1)
+int __fastcall battle_canUseChip_800AFBA(unsigned int a1)
 {
     int v1; // r10
     unsigned int v2; // r4
@@ -13157,7 +13157,7 @@ char *object_drawChipName()
 
 
 // 0x800ba8a
-char *sub_800BA8A()
+char *battleObject_stepSnakeArm_800BA8A()
 {
     int v0; // r5
     char *result; // r0

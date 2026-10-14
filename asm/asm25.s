@@ -945,7 +945,7 @@ sub_808FF30:
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_808FF30
@@ -966,7 +966,7 @@ battleObject_togglePlayerAllyLockout_808FF44:
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0
 	strb r0, [r5,#5]
 	b locret_808FF6C
@@ -1120,7 +1120,7 @@ sub_809003C:
 	mov r0, #4
 	bl loc_809E306
 	mov r0, #3
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	bl reqBBS_setFlag_e17b0f7_8140A00
 locret_8090058:
 	pop {r4,pc}

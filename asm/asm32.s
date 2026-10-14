@@ -31547,7 +31547,7 @@ sub_811DBD0:
 	orr r2, r0
 	mov r0, #0x3a
 	mov r1, #6
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	mov r1, #0xc
 	strb r1, [r0,#9]
 	pop {pc}
@@ -33479,9 +33479,9 @@ off_811EC4C:
 // symdb: Runs the per-frame map-name display sequence: queues GFX transfers, updates the map-name display, and renders the map-name screens.
 // symdb: (r10 = toolkit ptr, lr = return addr) -> r4-r6/r8-r9 preserved ; side effects: submits GFX
 // symdb: transfers, updates map-name VRAM/tilemap and renders current map name
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EC50.yaml
-	thumb_func_start sub_811EC50
-sub_811EC50:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mapName_runSequence_811EC50.yaml
+	thumb_func_start mapName_runSequence_811EC50
+mapName_runSequence_811EC50:
 	push {lr}
 	bl queueGFXTransfersFromTable_811EC68
 	bl sub_811EFB8
@@ -33489,7 +33489,7 @@ sub_811EC50:
 	bl drawMapNamesScreen_811F050
 	bl drawCurrentMapName_811F08C
 	pop {pc}
-	thumb_func_end sub_811EC50
+	thumb_func_end mapName_runSequence_811EC50
 
 // symdb: Builds the per-frame GFX transfer list in the staging buffer at unk_20096E0 (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
 // symdb: void sub_811EC68(void /* uses r10/lr as inputs per lifter, no meaningful args */)
@@ -35638,9 +35638,9 @@ sub_811FCA4:
 // symdb: Fills a 30-slot chip-pack buffer from the folder's chip-use stats and records hit counters for the chosen chips
 // symdb: (r0 = folderIndex, r1 = *ChipPackOut, r2 = takeFromPackFlag, r3 = *HitCounters) -> r0 = 0
 // symdb: success / 1 empty
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811FCB8.yaml
-	thumb_func_start sub_811FCB8
-sub_811FCB8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_buildChipPackFromFolderEntries_811FCB8.yaml
+	thumb_func_start battle_buildChipPackFromFolderEntries_811FCB8
+battle_buildChipPackFromFolderEntries_811FCB8:
 	push {r4-r7,lr}
 	sub sp, sp, #0x18
 	str r2, [sp,#0x10]
@@ -35771,7 +35771,7 @@ loc_811FDB0:
 	mov r0, #1
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_811FCB8
+	thumb_func_end battle_buildChipPackFromFolderEntries_811FCB8
 
 	thumb_func_start sub_811FDB8
 sub_811FDB8:

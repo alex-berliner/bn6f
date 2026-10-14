@@ -176,11 +176,11 @@ battle_performBeastOutBattleAiTick_81419A0:
 	mov r0, #1
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #2
 	mov r1, #1
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 loc_81419CC:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
@@ -623,7 +623,7 @@ loc_814201A:
 	bl owMapObject_isHoveringElevator_0809E3A2
 	beq loc_814202A
 	mov r0, #0x54 
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	bl reqBBS_setFlag_e17b0f7_8140A00
 loc_814202A:
 	movflag EVENT_700
@@ -1044,7 +1044,7 @@ battleObject_perFrameUpdate_8142248:
 	mov r0, #3
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 loc_814226A:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
@@ -1781,9 +1781,9 @@ loc_81429C4:
 // symdb: (no explicit r0/r1) -> r0 = nothing to caller (out is only r3/r5 which the caller restores);
 // symdb: side effects: writes a variable number of u32 entries to *r6 = buffer returned from
 // symdb: battleObject_scenarioEffectStateAddr_81421D8, indexed by player's facing direction
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81429CA.yaml
-	thumb_func_start sub_81429CA
-sub_81429CA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA.yaml
+	thumb_func_start battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA
+battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA:
 	push {r4-r7,lr}
 	bl battleObject_scenarioEffectStateAddr_81421D8
 	mov r6, r0
@@ -1841,7 +1841,7 @@ byte_8142A54:
 byte_8142A74:
 	.byte 0x3, 0x0, 0x0, 0x3, 0xFD, 0x0, 0x0, 0xFD, 0x7F, 0x7F, 0x7F, 0x7F
 	.byte 0x7F, 0x7F, 0x7F, 0x7F
-	thumb_func_end sub_81429CA
+	thumb_func_end battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA
 
 	thumb_func_start sub_8142A84
 sub_8142A84:
@@ -3214,11 +3214,11 @@ sub_8143482:
 	mov r0, #8
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #9
 	mov r1, #1
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 loc_81434AE:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
@@ -4338,15 +4338,15 @@ sub_8144048:
 	mov r0, #0xe
 	mov r1, #0
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0xc
 	mov r1, #1
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0xd
 	mov r1, #2
 	mov r2, #0
-	bl sub_80468C6
+	bl battleObject_initAIChipQueueSlot_80468C6
 loc_814407E:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854

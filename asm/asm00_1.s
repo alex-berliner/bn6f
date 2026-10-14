@@ -4505,12 +4505,12 @@ EnterMap: // (self: * GameState $r5) -> ()
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
 
-	bl sub_8000FAC
+	bl battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC
 
 	bl sub_80355EC
 
 	mov r0, #0
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 
 	mov r0, #0
 	strb r0, [r5,#oGameState_Unk_15]
@@ -4854,7 +4854,7 @@ pet_menuUpdateAndHandleExit_8005462: // (self: * GameState $r5) -> ()
 	bne loc_8005474
 	mov r0, #1
 	strb r0, [r7,#0x8] // (byte_200DF28 - 0x200df20)
-	bl sub_811EC50
+	bl mapName_runSequence_811EC50
 loc_8005474:
 	bl dispatch_80339CC // () -> ()
 	bl sub_80039AA
@@ -8288,9 +8288,9 @@ off_8006EA0:
 
 // symdb: Returns true if the player holds one or more of `chip_id` in the pack with the requested `code` letter (A/B/C/D… or any, 0xFF).
 // symdb: (r0 = chip_id, r1 = code letter, r10 = toolkit) -> r0 = 0 or 1 ; side effects: clobbers r2–r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006EA4.yaml
-	thumb_func_start sub_8006EA4
-sub_8006EA4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pack_hasChipOfCode_8006EA4.yaml
+	thumb_func_start pack_hasChipOfCode_8006EA4
+pack_hasChipOfCode_8006EA4:
 	push {r1-r7,lr}
 	mov r7, r0
 	mov r4, r1
@@ -8328,7 +8328,7 @@ loc_8006EE0:
 loc_8006EE4:
 	mov r0, #1
 	pop {r1-r7,pc}
-	thumb_func_end sub_8006EA4
+	thumb_func_end pack_hasChipOfCode_8006EA4
 
 // (int idx_8021DA8, int a2) -> bool
 	thumb_local_start
@@ -9173,7 +9173,7 @@ spawnEnemy_80073E2: // (self: * EnemySetup ) -> * BattleObject
 	pop {r0}
 	bne endif_8007416
 
-	bl sub_800EC80 // (enemy_idx: u16) -> u16
+	bl battle_computeEnemyEncounterRarity_800EC80 // (enemy_idx: u16) -> u16
 
 endif_8007416:
 	pop {r1-r3}
@@ -10045,7 +10045,7 @@ sub_800794C:
 	bl InitializeT1BattleObjectStructs
 	bl InitializeT3BattleObjectStructs
 	bl InitializeT4BattleObjectStructs
-	bl sub_802E112
+	bl battle_setBeastLinkFlag_0802E112
 	bl camera_resetToOrigin_8007338
 	bl clearBattleCounters_800A0C6
 	bl resetBattleBuffers_801BE70
@@ -11111,7 +11111,7 @@ loc_8008140:
 	bl PauseBattle
 	mov r0, #0x1c
 	str r0, [r5]
-	bl sub_801E15C
+	bl battle_playBeastOutSequence_801E15C
 	b locret_80081A2
 loc_8008158:
 	bl battle_testFlag0x40_800A8F8
@@ -11722,7 +11722,7 @@ loc_80085C4:
 	bl PauseBattle
 	mov r0, #0x18
 	str r0, [r5]
-	bl sub_801E15C
+	bl battle_playBeastOutSequence_801E15C
 	b locret_80085FC
 loc_80085DC:
 	bl battle_isTimeStop
@@ -12342,7 +12342,7 @@ loc_8008A34:
 	bl PauseBattle
 	mov r0, #0x18
 	str r0, [r5]
-	bl sub_801E15C
+	bl battle_playBeastOutSequence_801E15C
 	b locret_8008A60
 loc_8008A4C:
 	bl battle_shouldPlayDeathAnim_800A21C
@@ -12890,7 +12890,7 @@ loc_8008E3E:
 	bl PauseBattle
 	mov r0, #0x18
 	str r0, [r5]
-	bl sub_801E15C
+	bl battle_playBeastOutSequence_801E15C
 	b locret_8008E6A
 loc_8008E56:
 	bl battle_shouldPlayDeathAnim_800A21C
@@ -17274,9 +17274,9 @@ loc_800AA3C:
 
 // symdb: Removes a battle object's AI attack reference from the "Next" entries list at 0x2038170, then compacts the entry.
 // symdb: (r5 = u32 value to remove) -> side effects only; r0/r1/r3/r4/lr clobbered, no return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AA40.yaml
-	thumb_func_start sub_800AA40
-sub_800AA40:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_removeFromNextList_800AA40.yaml
+	thumb_func_start battleObject_removeFromNextList_800AA40
+battleObject_removeFromNextList_800AA40:
 	push {lr}
 	push {r0}
 	bl getNextEntryAddress_800AAAE
@@ -17295,7 +17295,7 @@ loc_800AA56:
 	pop {r0}
 	bl compactEntryWords_800AA64
 	pop {pc}
-	thumb_func_end sub_800AA40
+	thumb_func_end battleObject_removeFromNextList_800AA40
 
 // symdb: Compacts the 7-word (0x1C-byte) entry produced by getNextEntryAddress_800AAAE, sliding all non-zero words to the front and zero-filling the tail so the entry has no holes.
 // symdb: void compactEntryWords_800AA64(u32 r0 /* forwarded to getNextEntryAddress_800AAAE */, u32 r4 /*
@@ -18147,9 +18147,9 @@ loc_800AFB4:
 
 // symdb: Returns whether the chosen chip (low byte of input word) can be used in the current battle, considering navi level, dark chips, and pack integrity.
 // symdb: (r0 = chip_and_flags_word, r10 = toolkit) -> r0 = 0 (usable) or 1 (blocked); flags NZ
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AFBA.yaml
-	thumb_func_start sub_800AFBA
-sub_800AFBA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_canUseChip_800AFBA.yaml
+	thumb_func_start battle_canUseChip_800AFBA
+battle_canUseChip_800AFBA:
 	push {r1-r7,lr}
 	mov r4, r0
 	mov r6, #0
@@ -18202,7 +18202,7 @@ loc_800B01C:
 loc_800B01E:
 	pop {r0}
 	pop {r1-r7,pc}
-	thumb_func_end sub_800AFBA
+	thumb_func_end battle_canUseChip_800AFBA
 
 // (int a1) ->
 	thumb_func_start tooManyGigasMegasAntiCheatHappensHere_800B022

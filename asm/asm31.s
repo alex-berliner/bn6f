@@ -30455,7 +30455,7 @@ trainArrow_80C619C:
 	bl object_spawnCollisionEffect
 	b loc_80C61B2
 loc_80C61AE:
-	bl sub_801A100
+	bl battleObject_spawnHitEffectAtPanel_801A100
 loc_80C61B2:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r1, [r0,#oCollisionData_FlagsFromCollision]
@@ -42715,7 +42715,7 @@ loc_80CBC68:
 	ldrb r0, [r5,#oBattleObject_Param1]
 	tst r0, r0
 	bne loc_80CBC74
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	b loc_80CBC78
 loc_80CBC74:
 	bl sub_801ADFA
@@ -45394,7 +45394,7 @@ sub_80CD08C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80CD0B4 // =off_80CD0B8 
 	bl battleObject_dispatchActionHandler_801B394
@@ -46100,7 +46100,7 @@ sub_80CD5F8:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl object_spawnCollisionEffect
 	bl sub_80CD7A0
 	ldrb r0, [r5,#oBattleObject_Param1]
@@ -46564,7 +46564,7 @@ sub_80CD9CA:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_HP]
 loc_80CD9DC:
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	ldr r0, off_80CD9F0 // =off_80CD9F4 
 	bl battleObject_dispatchActionHandler_801B394
 	bl object_updateSprite
@@ -47095,7 +47095,7 @@ dword_80CDDF8:
 sub_80CDDFC:
 	push {lr}
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	ldr r1, off_80CDE1C // =off_80CDE20 
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	lsl r0, r0, #2
@@ -49748,7 +49748,7 @@ sub_80CF18C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80CF1B4 // =off_80CF1B8 
 	bl battleObject_dispatchActionHandler_801B394
@@ -55154,7 +55154,7 @@ locret_80D1A62:
 sub_80D1A64:
 	push {lr}
 	bl object_removeCollisionData
-	bl sub_801A100
+	bl battleObject_spawnHitEffectAtPanel_801A100
 	bl battle_isBattleOver
 	tst r0, r0
 	bne loc_80D1A98
@@ -58822,7 +58822,7 @@ sub_80D358C:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80D35B4 // =off_80D35B8 
 	bl battleObject_dispatchActionHandler_801B394
@@ -60362,7 +60362,7 @@ sub_80D4144:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80D416C // =off_80D4170 
 	bl battleObject_dispatchActionHandler_801B394
@@ -61208,7 +61208,7 @@ sub_80D4754:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl object_spawnCollisionEffect
 	bl sub_800F672
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
@@ -61969,7 +61969,7 @@ sub_80D4D34:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80D4D5C // =off_80D4D60 
 	bl sub_801B4D4
@@ -67432,11 +67432,11 @@ sub_80D774C:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl object_spawnCollisionEffect
 	bl sub_800F672
 	ldr r0, off_80D7794 // =off_80D7798 
-	bl sub_801B878
+	bl battleObject_runCurActionState_801B878
 	ldrh r0, [r5,#oBattleObject_HP]
 	ldr r1, dword_80D77D0 // =0xbb9 
 	cmp r0, r1
@@ -72851,7 +72851,7 @@ sub_80DA108:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	bl sprite_clearFinalPalette
-	bl sub_801AD12
+	bl object_finishCollisionHitReaction_801AD12
 	bl sub_800F672
 	ldr r0, off_80DA130 // =off_80DA134 
 	bl battleObject_dispatchActionHandler_801B394
@@ -74569,7 +74569,7 @@ locret_80DAD82:
 sub_80DAD84:
 	push {lr}
 	bl object_removeCollisionData
-	bl sub_801A100
+	bl battleObject_spawnHitEffectAtPanel_801A100
 	bl battle_isBattleOver
 	tst r0, r0
 	bne loc_80DADC0
@@ -88665,7 +88665,7 @@ off_80E1818:
 off_80E181C:
 	.word object_dimScreen+1
 	.word sub_800BDB2+1
-	.word sub_800BA8A+1
+	.word battleObject_stepSnakeArm_800BA8A+1
 	.word sub_80E1830+1
 	.word object_undimScreen+1
 	thumb_func_end sub_80E1808
@@ -97355,7 +97355,7 @@ loc_80E564E:
 	mov r2, r1
 	mov r0, #0x34 
 	mov r1, #0
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	b locret_80E566A
 loc_80E5664:
 	mov r0, #0xce
@@ -103041,7 +103041,7 @@ off_80E7F68:
 off_80E7F6C:
 	.word object_dimScreen+1
 	.word sub_800BDB2+1
-	.word sub_800BA8A+1
+	.word battleObject_stepSnakeArm_800BA8A+1
 	.word sub_80E7F80+1
 	.word object_undimScreen+1
 	thumb_func_end sub_80E7F58
@@ -105685,7 +105685,7 @@ off_80E9214:
 off_80E9218:
 	.word object_dimScreen+1
 	.word sub_800BDB2+1
-	.word sub_800BA8A+1
+	.word battleObject_stepSnakeArm_800BA8A+1
 	.word sub_80E922C+1
 	.word object_undimScreen+1
 	thumb_func_end sub_80E9204
@@ -112261,7 +112261,7 @@ locret_80EC842:
 	pop {pc}
 	thumb_func_end sub_80EC81E
 
-// symdb: AI attack handler that looks up a u16 from a table indexed by oAIAttackVars_Unk_03, optionally applies it via sub_800E2FC, then saturating-adds 5 to the battle object's alliance byte and exits the attack state.
+// symdb: AI attack handler that looks up a u16 from a table indexed by oAIAttackVars_Unk_03, optionally applies it via battleObject_applyHPAndHandleSpecial_800E2FC, then saturating-adds 5 to the battle object's alliance byte and exits the attack state.
 // symdb: void aiAttack_addSaturatedByte_80EC844(void); // r5=battle object*, r6/r7=AI vars*, r10=?,
 // symdb: lr=return; preserves r4/r5/r10; clobbers r0/r1/r2/r3/r6/r7/lr + nzcv
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80EC844.yaml
@@ -112274,7 +112274,7 @@ sub_80EC844:
 	add r4, r4, r0
 	ldrh r0, [r4]
 	mov r1, #1
-	bl sub_800E2FC
+	bl battleObject_applyHPAndHandleSpecial_800E2FC
 	tst r0, r0
 	bne loc_80EC85A
 loc_80EC85A:
@@ -124325,7 +124325,7 @@ sub_80F2180:
 loc_80F21A6:
 	mov r0, #0x1e
 	mov r1, #0
-	bl sub_800E2FC
+	bl battleObject_applyHPAndHandleSpecial_800E2FC
 	b loc_80F21E6
 loc_80F21B0:
 	lsl r0, r0, #1
@@ -124645,7 +124645,7 @@ off_80F2410:
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
-	.word sub_801AA48+1
+	.word battleObject_runPerFrameUpdate_801AA48+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
@@ -124660,8 +124660,8 @@ off_80F2410:
 	.word battleObject_processCollisionResultsByMode_801AAC0+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
-	.word sub_801AB40+1
-	.word sub_801AB40+1
+	.word battleObject_handleCollisionAndStatusTick_801AB40+1
+	.word battleObject_handleCollisionAndStatusTick_801AB40+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
 	.word battleObject_processCollisionResults_801A9B8+1
@@ -170941,7 +170941,7 @@ loc_8108FDA:
 	beq loc_8109020
 	ldrh r0, [r5,#oBattleObject_MaxHP]
 	mov r1, #0
-	bl sub_800E2FC
+	bl battleObject_applyHPAndHandleSpecial_800E2FC
 	bl sub_800EADA
 	bl sub_811060A
 	b loc_8109020
@@ -172310,7 +172310,7 @@ battle_attackTimerTick_8109CBC:
 	cmp r0, #0
 	beq loc_8109CE0
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA40
+	bl battleObject_removeFromNextList_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
@@ -172555,7 +172555,7 @@ loc_8109E5A:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bne locret_8109E78
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA40
+	bl battleObject_removeFromNextList_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0
@@ -172722,7 +172722,7 @@ battle_objectTickWithExtraHandler_8109F6A:
 	bne loc_8109F78
 
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA40
+	bl battleObject_removeFromNextList_800AA40
 loc_8109F78:
 	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
@@ -172770,7 +172770,7 @@ battle_object_onAction8EndClearExtraVars_8109FA2:
 	cmp r0, #0
 	beq locret_8109FC2
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	bl sub_800AA40
+	bl battleObject_removeFromNextList_800AA40
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	bl list_tryAddUniqueEntry_800AA1A
 	mov r0, #0

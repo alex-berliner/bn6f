@@ -1117,7 +1117,7 @@ sub_808CA68:
 	movflag EVENT_9D9
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #0
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	movflag EVENT_9D3
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_808CAA2
@@ -1158,7 +1158,7 @@ sub_808CAD4:
 	bl sub_808CBD8
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	mov r0, #3
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 loc_808CB06:
 	mov r0, #0
 	pop {r5,pc}
@@ -1282,7 +1282,7 @@ sub_808CBD8:
 	pop {r5}
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	mov r0, #3
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
 	ldrb r1, [r0,#oGameState_MapGroup]

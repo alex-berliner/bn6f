@@ -126,8 +126,8 @@ int battle_performBeastOutBattleAiTick_81419A0()
         {
             byte_2001013 = 0;
             sub_80468BA();
-            sub_80468C6(1, 0, 0);
-            sub_80468C6(2, 1, 0);
+            battleObject_initAIChipQueueSlot_80468C6(1, 0, 0);
+            battleObject_initAIChipQueueSlot_80468C6(2, 1, 0);
         }
         battle_callAIDispatch_8046818();
         v2 = battleObject_updateSpriteGfxForAll_8046854();
@@ -369,7 +369,7 @@ unsigned int sub_8141F7C()
     owMapObject_isHoveringElevator_0809E3A2();
     if ( !v2 )
     {
-        sub_8001172(84);
+        gameState_setUnk09_8001172(84);
         reqBBS_setFlag_e17b0f7_8140A00();
     }
     return ClearEventFlagFromImmediate(7, 0);
@@ -659,7 +659,7 @@ int battleObject_perFrameUpdate_8142248()
         {
             byte_2000783 = 0;
             sub_80468BA();
-            sub_80468C6(3, 0, 0);
+            battleObject_initAIChipQueueSlot_80468C6(3, 0, 0);
         }
         battle_callAIDispatch_8046818();
         battleObject_updateSpriteGfxForAll_8046854();
@@ -1072,7 +1072,7 @@ signed int __fastcall sub_814299C(unsigned int a1, unsigned int a2)
 
 
 // 0x81429ca
-int sub_81429CA()
+int battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA()
 {
     char *v0; // r6
     unsigned int v1; // r4
@@ -2100,8 +2100,8 @@ int sub_8143482()
         {
             byte_2001013 = 0;
             sub_80468BA();
-            sub_80468C6(8, 0, 0);
-            sub_80468C6(9, 1, 0);
+            battleObject_initAIChipQueueSlot_80468C6(8, 0, 0);
+            battleObject_initAIChipQueueSlot_80468C6(9, 1, 0);
         }
         battle_callAIDispatch_8046818();
         battleObject_updateSpriteGfxForAll_8046854();
@@ -2757,9 +2757,9 @@ int sub_8144048()
         {
             byte_2001013 = 0;
             sub_80468BA();
-            sub_80468C6(14, 0, 0);
-            sub_80468C6(12, 1, 0);
-            sub_80468C6(13, 2, 0);
+            battleObject_initAIChipQueueSlot_80468C6(14, 0, 0);
+            battleObject_initAIChipQueueSlot_80468C6(12, 1, 0);
+            battleObject_initAIChipQueueSlot_80468C6(13, 2, 0);
         }
         battle_callAIDispatch_8046818();
         battleObject_updateSpriteGfxForAll_8046854();

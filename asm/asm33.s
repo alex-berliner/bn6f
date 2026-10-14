@@ -438,7 +438,7 @@ chipFolder_screenInit_812345C:
 	mov r2, #0x9d
 	mov r3, #0x48 
 	mov r4, #4
-	bl sub_81352A0
+	bl battleObject_handleMoveAlignment_81352A0
 	ldr r0, off_81234F0 // =unk_201D220 
 	ldr r1, off_81234F8 // =off_81234FC 
 	mov r2, #0x9d
@@ -469,7 +469,7 @@ chipFolder_init_812349C:
 	mov r2, #0x9d
 	mov r3, #0x48 
 	mov r4, #4
-	bl sub_81352A0
+	bl battleObject_handleMoveAlignment_81352A0
 	ldr r0, off_81234F0 // =unk_201D220 
 	ldr r1, off_81234F8 // =off_81234FC 
 	mov r2, #0x9d
@@ -1186,7 +1186,7 @@ refreshChipUseStats_8123A80:
 	ldr r1, off_8123AB0 // =unk_201D220 
 	mov r2, #1
 	ldr r3, off_8123AB4 // =unk_20343E0 
-	bl sub_811FCB8
+	bl battle_buildChipPackFromFolderEntries_811FCB8
 	ldrb r0, [r5,#0xc]
 	lsl r0, r0, #1
 	mov r1, #0x56 
@@ -1578,7 +1578,7 @@ loc_8123D3A:
 	mov r0, #0x15
 	mov r1, #7
 	add r1, r1, r6
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r6, #1
 	cmp r6, r4
 	blt loc_8123D2E
@@ -16524,7 +16524,7 @@ byte_812B1C0:
 	.word NULL
 	thumb_func_end sub_812AFC8
 
-// symdb: Decodes a sentinel-terminated 4-byte-per-entry table through sub_8046670 and stores the results into the 4-slot scratch buffer unk_20251A0 (zeroed first).
+// symdb: Decodes a sentinel-terminated 4-byte-per-entry table through battle_initEmotionTableEntry_8046670 and stores the results into the 4-slot scratch buffer unk_20251A0 (zeroed first).
 // symdb: void loadEntryPairTable_812B1DC(const void *entryTable /* r0 */); // clobbers r0-r3, r4, r5, r6,
 // symdb: lr; NZCV; r4/r5/r6 preserved in // practice (set by callee but live across the call)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadEntryPairTable_812B1DC.yaml
@@ -16540,7 +16540,7 @@ loadEntryPairTable_812B1DC:
 	ldrh r2, [r4,#2]
 	ldrb r1, [r4,#1]
 	ldrb r0, [r4]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	add r4, #4
 	mov r6, #0
 loc_812B1F6:
@@ -16549,7 +16549,7 @@ loc_812B1F6:
 	orr r2, r3
 	ldrb r1, [r4,#1]
 	ldrb r0, [r4]
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	ldr r1, off_812B258 // =unk_20251A0 
 	lsl r2, r6, #2
 	str r0, [r1,r2]
@@ -16588,7 +16588,7 @@ sub_812B218:
 	orr r2, r3
 	mov r3, #1
 	orr r2, r3
-	bl sub_8046670
+	bl battle_initEmotionTableEntry_8046670
 	mov r1, #1
 	lsl r1, r1, #0x1f
 	orr r0, r1

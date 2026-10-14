@@ -2701,7 +2701,7 @@ sub_809E31A:
 	bl sprite_noShadow // () -> void
 	bl sprite_update
 	mov r0, #0
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	movflag EVENT_68E
 	bl SetEventFlagFromImmediate
 	movflag EVENT_68F
@@ -2729,7 +2729,7 @@ sub_809E35E:
 	bl sprite_noShadow // () -> void
 	bl sprite_update
 	mov r0, #0x54
-	bl sub_8001172
+	bl gameState_setUnk09_8001172
 	movflag EVENT_68E
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_68F
