@@ -1029,6 +1029,10 @@ sub_80A55CC:
 	pop {pc}
 	thumb_func_end sub_80A55CC
 
+// symdb: BBS Overworld object per-frame step: ticking a down-counter, picking a BBS message id, drifting the camera, projecting it onto the screen and playing a "new request" jingle when a message becomes available.
+// symdb: (r5 = BBS object ptr, r6 = ?, r10 = toolkit) -> side effects only; r0/flags side effects from
+// symdb: callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A55D4.yaml
 	thumb_local_start
 sub_80A55D4:
 	push {r4-r7,lr}
@@ -1413,6 +1417,10 @@ sub_80A5888:
 	pop {pc}
 	thumb_func_end sub_80A5888
 
+// symdb: Copies a 3-word offset (e.g. delta x/y/z) from r6+0x7c into r5+0xc and triggers the player direction/animation update.
+// symdb: (r5 = OWPlayerObject*, r6 = ? struct with data at +0x7c) -> r0 = 0 ; side effects: writes three
+// symdb: u32s into [r5+0xc..0x14], clobbers r0-r3, calls owPlayer_setDirectionAnimFromOffset_80A5974
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5890.yaml
 	thumb_local_start
 sub_80A5890:
 	push {lr}
@@ -5394,6 +5402,11 @@ loc_80A7C7E:
 	pop {r4-r7,pc}
 	thumb_func_end battle_isInputAllowedOrBattleBusy_80A7C58
 
+// symdb: Dispatches a battle object's CurAction byte to one of three handlers via a 3-entry thumb-function table (tail-call bx).
+// symdb: (r5 = BattleObjectPtr, r10 = Toolkit) -> r0 = handler return; side effects: jumps to the
+// symdb: function pointer at off_80A7C98[r5+8] with r0=tableBase and r1=byte at r5+8, then returns
+// symdb: whatever that handler returns.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7C84.yaml
 	thumb_func_start sub_80A7C84
 sub_80A7C84:
 	push {r4-r7,lr}
@@ -5443,6 +5456,10 @@ sub_80A7CA4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7CA4
 
+// symdb: Per-object update callback for a "BeastSp" overworld map object: re-checks encounter bounds then advances the sprite
+// symdb: (r5 = overworld map object, r10 = toolkit, lr = return address) -> r0/r1/r2/r3 caller-defined ;
+// symdb: none returned as live value
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A7CEA.yaml
 	thumb_local_start
 sub_80A7CEA:
 	push {r4-r7,lr}

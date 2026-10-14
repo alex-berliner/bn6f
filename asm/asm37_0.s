@@ -912,9 +912,9 @@ getWorkAreaPtr_2006CF8_813BD0C:
 	mov pc, lr
 	thumb_func_end getWorkAreaPtr_2006CF8_813BD0C
 
-// symdb: Tiny getter that loads the base address of the work/RAM area at 0x2006C88 into r7 for the caller.
-// symdb: void sub_813BD10(void); // out: r7 = 0x2006C88
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813BD10.yaml
+// symdb: Returns the EWRAM pointer to the NaviCust program table
+// symdb: () -> r7 = unk_2006C88 ; no side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BD10.yaml
 	thumb_local_start
 sub_813BD10:
 	ldr r7, off_813BD1C // =unk_2006C88 
@@ -1090,6 +1090,11 @@ loc_813BE1E:
 	.balign 4, 0x00
 	thumb_func_end battleObject_collectTargetsInRegion_813BD90
 
+// symdb: Bumps a per-battle counter for sibling battle objects sharing the caller's Element
+// symdb: (r0 = battleObject index, r6 = saved caller Element, r10 = toolkit) -> r0 = 0 ; side effects:
+// symdb: increments byte in Unk200431c (toolkit+0x60) for every other live battle object with the same
+// symdb: Element
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BE38.yaml
 	thumb_local_start
 sub_813BE38:
 	push {r4-r7,lr}

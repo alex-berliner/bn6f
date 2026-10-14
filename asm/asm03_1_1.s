@@ -11775,7 +11775,7 @@ off_803EAF8:
 	.word sub_803EB60+1
 	thumb_func_end sub_803EAE4
 
-// symdb: Thin dispatcher that calls battle_updateLinkState_803DEB4 and, only when it returns 2, additionally calls sub_803ED1C.
+// symdb: Thin dispatcher that calls sub_803DEB4 and, only when it returns 2, additionally calls sub_803ED1C.
 // symdb: void sub_803EB04(void); /* uses r3 r4 r5 r6 r8 r9 r10 r11 r12 lr in; clobbers nz- c- v? r0 r1 r2
 // symdb: r3 r8 r9 r10 r11 r12 lr; preserves r4 r5 r6 r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803EB04.yaml

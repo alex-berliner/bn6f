@@ -12018,6 +12018,10 @@ sub_802BDB4:
 	pop {pc}
 	thumb_func_end sub_802BDB4
 
+// symdb: chip-select state dispatcher: indexes a jump table by chip-select state and forwards to the matching handler, then plays the chip-select sound
+// symdb: (r0 = chipSelectStateBase, r5 = chipSelectStruct (S20364C0*), r10 = Toolkit*, lr) -> r0 = return
+// symdb: value of last handler called
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BDC0.yaml
 	thumb_local_start
 sub_802BDC0:
 	push {lr}
@@ -25738,11 +25742,10 @@ sub_8031C64:
 	pop {pc}
 	thumb_func_end sub_8031C64
 
-// symdb: Advances the custom-screen cursor blink/animation tick and refreshes its position relative to a target.
-// symdb: (r0 = pointer to BattleObject / scratch buffer) -> r0 = result of sub_8031B7C (likely a
-// symdb: counter/state value) ; side effects: writes via battle_calcRelPosToTarget_803172E,
-// symdb: textbox_computeCursorBlinkAdvance_80315B8, and sub_8031B7C
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
+// symdb: Advances the battle textbox cursor blink animation and reads back its visible/on state.
+// symdb: (r0 = AIData pointer 0x02009f5c) -> r0 = 2 ; side effects: writes to scratch buffer via
+// symdb: calcRelPosToTarget, updates textbox cursor blink state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C7C.yaml
 	thumb_local_start
 sub_8031C7C:
 	push {lr}
@@ -25756,10 +25759,10 @@ sub_8031C7C:
 	pop {pc}
 	thumb_func_end sub_8031C7C
 
-// symdb: Runs a fixed three-call setup sequence on an object (pointer in r0), then falls straight back to this function's own caller, passing everything through.
-// symdb: Next sub_8031C94(void) /* in: r0 (object ptr), r5, lr; out: flags nzcv and r0-r7,lr all passed
-// symdb: through from the last callee */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8031C94.yaml
+// symdb: AI step helper that recomputes target-relative position, advances cursor blink, then queries the AI selection byte
+// symdb: (r0 = scratch buffer, r5 = AI-related state) -> r0 = 0 or 2 ; side effects may_write ['nz', 'c',
+// symdb: 'v', 'r0', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'lr']
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C94.yaml
 	thumb_local_start
 sub_8031C94:
 	push {lr}

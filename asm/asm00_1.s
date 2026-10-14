@@ -13842,6 +13842,10 @@ locret_80094B4:
 	pop {pc}
 	thumb_func_end battle_waitLinkSync_8009478
 
+// symdb: Initialises the battle chip-select screen once per battle result phase and advances to the result screen when the chip-select init returns true.
+// symdb: (r5 = BattleStatePtr) -> r0 = battle_initChipSelect_802BD60's return ; writes BattleState_Unk_03
+// symdb: (+0xD), Index_01 (+0x1), Unk_02_03 (+0x2)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80094B6.yaml
 	thumb_local_start
 sub_80094B6:
 	push {lr}
@@ -14521,6 +14525,9 @@ off_80099A0:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009966
 
+// symdb: Dispatches to a battle-state handler based on `BattleState.Index_01`.
+// symdb: (r5 = BattleState* via toolkit r10) -> r0 = target-subroutine-return ; clobbers r0/r1, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80099A4.yaml
 	thumb_local_start
 sub_80099A4:
 	push {lr}
@@ -14726,6 +14733,11 @@ locret_8009B1E:
 	pop {pc}
 	thumb_func_end sub_8009AFC
 
+// symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
+// symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_Unk_03,
+// symdb: oBattleState_Index_01, oBattleState_Unk_1e, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
+// symdb: pending event flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009B20.yaml
 	thumb_local_start
 sub_8009B20:
 	push {r4,lr}

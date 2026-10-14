@@ -88292,9 +88292,9 @@ battleObject_clearAIDataUnknown_80E1662:
 	mov pc, lr
 	thumb_func_end battleObject_clearAIDataUnknown_80E1662
 
-// symdb: Allocates a stack scratch array of enemy-panel target slots, then probes the related object via sub_80E16CC for indices 0/1/2 (snake-arm candidate panels).
-// symdb: (r5 = *BattleObject self) -> r0 = ? ; side effects: writes 0x34 bytes of stack scratch, may
-// symdb: clobber r0..r3/r4/r6/r7/lr
+// symdb: For a battle object, populate a stack scratch buffer with the opponent-side actors returned by `object_getEnemyByNameRange` matching the index 0/1/2, based on the object's alliance.
+// symdb: (r5 = current battle object, r10 = toolkit, lr = return) -> r0 = scratch return (latest
+// symdb: sub_80E16CC return, or 0), r5 = current battle object preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1670.yaml
 	thumb_local_start
 sub_80E1670:
@@ -88867,6 +88867,10 @@ dword_80E19F0:
 	.word 0x205A20
 	thumb_func_end battle_objectSetTimerFromParam1Table_80E19DC
 
+// symdb: Dispatches BattleObject CurAction to a per-action handler via a one-entry vtable (default tail calls sub_80E1A0C)
+// symdb: (r5 = BattleObjectPtr) -> r0 = handler's r0 ; side effects: clobbers r1-r3,r10,lr; jumps to
+// symdb: function pointer chosen from a small table; tail-popped so the handler returns to the caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E19F4.yaml
 	thumb_local_start
 sub_80E19F4:
 	push {lr}

@@ -20638,9 +20638,8 @@ locret_81185E2:
 	pop {pc}
 	thumb_func_end sub_81185C0
 
-// symdb: Loads a BattleObject's palette index from a global u16 table indexed by an AIData-derived offset, looks up the BattleObject, and sets its sprite palette.
-// symdb: (r5 = AIData? base, r6 = related battle object, lr = return) -> void (r0 only used as scratch,
-// symdb: returned 0)
+// symdb: Set a battle object's sprite palette using an index table referenced from its AIData.
+// symdb: (r6 = BattleObject*) -> void ; side effect: writes sprite palette index
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81185E4.yaml
 	thumb_local_start
 sub_81185E4:
@@ -20660,10 +20659,9 @@ sub_81185E4:
 	pop {pc}
 	thumb_func_end sub_81185E4
 
-// symdb: Refreshes a battle object's BeastOut status and packs per-actor flag bits into r0 for sprite_setUnk0x2c.
-// symdb: (r5 = caller scratch, r6 = battle object ptr, r10 = toolkit ptr, lr = ret) -> r0 = packed flag
-// symdb: bitmask ; side effects: calls battleObject_runAIDispatchTable_813B7A0 and sprite_setUnk0x2c,
-// symdb: clobbers r0-r3/r7
+// symdb: Dispatches AI by Y-coord-indexed entry on r6's BattleObject, scans AI attack vars slots to build a bitmask, then stores the result into sprite field 0x2c.
+// symdb: (r6 = BattleObject*, r5/r10 = toolkit) -> r0/r1/r2/r3 = modified; side effects: AIData
+// symdb: dispatched, sprite 0x2c of r6's object overwritten
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8118604.yaml
 	thumb_local_start
 sub_8118604:
@@ -31848,6 +31846,10 @@ locret_811E020:
 	.balign 4, 0x00
 	thumb_func_end sub_811E000
 
+// symdb: Tail-call dispatch on a battle object's CurAction/curstate byte via a 3-entry Thumb jump table
+// symdb: (r5 = BattleObject*) -> r2/r3/r5 = whatever the tail-called function returns; no preserved lr
+// symdb: (uses pop {pc})
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E024.yaml
 	thumb_func_start sub_811E024
 sub_811E024:
 	push {lr}
@@ -32029,6 +32031,10 @@ off_811E164:
 	.word eStruct2001010
 	thumb_func_end battle_gfx_renderLatticeOrSpinner_811E0BA
 
+// symdb: battle-object dispatch stub that branches on the object's beast/sp-out flag (BLeftAbility?) to one of three sub-handlers
+// symdb: (r5 = battleObject) -> r0, r2, r3, flags ; side-effect-only (via tail call into sub_811E18C /
+// symdb: sub_811E1D4 / sub_811E1FA)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811E168.yaml
 	thumb_func_start sub_811E168
 sub_811E168:
 	push {lr}
@@ -32109,6 +32115,11 @@ sub_811E1FA:
 	pop {pc}
 	thumb_func_end sub_811E1FA
 
+// symdb: Clears four index-derived bits in BattleObject sprite field 0x2c using a 10-bit-packed version value, then writes the masked constant 0x1FFFFFF8 to sprite field 0x2c.
+// symdb: (no explicit args read from registers by the function; r5 carries the AIDataPtr-like state used
+// symdb: by callees; side effects: writes the current sprite's 0x2c field). No r0 value is returned
+// symdb: (post-call r0 = 0x0dffbf78 is just a sprite base pointer left by sprite_setUnk0x2c's seed).
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_811E202.yaml
 	thumb_local_start
 sub_811E202:
 	push {r4-r7,lr}
@@ -33874,7 +33885,7 @@ off_811F04C:
 	thumb_func_end updateMapNameDisplay_811F014
 
 // symdb: Renders the "map names" text screen (text script 0xF2) into a work buffer and uploads the resulting tiles/tilemap to VRAM.
-// symdb: void drawMapNamesScreen_811F050(void); // no meaningful inputs; returns gameState_getProtectedBugfrags_803D0F4's result
+// symdb: void drawMapNamesScreen_811F050(void); // no meaningful inputs; returns sub_803D0F4's result
 // symdb: indirectly via the toolkit struct
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/drawMapNamesScreen_811F050.yaml
 	thumb_local_start

@@ -851,6 +851,10 @@ off_808FEA0:
 	.word off_808FDB8
 	thumb_func_end cutsceneWeather_update_808FE74
 
+// symdb: Per-frame battle update gated to a specific cyberworld map (0x83 or 0x85:0x02)
+// symdb: (r10 = toolkit) -> void ; side effects: dispatches AI and refreshes battle-object sprite gfx
+// symdb: when the gate is open
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FEA4.yaml
 	thumb_func_start sub_808FEA4
 sub_808FEA4:
 	push {r4-r7,lr}

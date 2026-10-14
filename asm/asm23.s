@@ -1034,9 +1034,8 @@ sub_8089792:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089792
 
-// symdb: Advances an actor (r5 = BattleObject) through one beast-out power-charge tick, kicking off a PwrAtk if the B-button is held and the chatbox isn't running.
-// symdb: (r5 = *BattleObject) -> r0 = 1 ; side effects: writes [r5,#0x00] = 0x0C, 0x0A or 0x20 and may
-// symdb: write timer/state fields via callees
+// symdb: Beast Out AI guard — if Unk_13 set or eFlags2009F38 bit 0x80, exit; otherwise branch on chatbox state to set beast-out phase 0x0C (else path) or 0x20 (default path)
+// symdb: (r5 = AIData ptr) -> r0 = 1 ; side effects: writes AIData+0x00, possibly +0x13
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80897A6.yaml
 	thumb_local_start
 sub_80897A6:

@@ -11149,7 +11149,7 @@ nullsub_804CBA0:
 	pop {r4-r7,pc}
 	thumb_func_end nullsub_804CBA0
 
-// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `sub_804CBDC` or `beastSp_spawnIndexDispatcher_804CC8E`.
+// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `sub_804CBDC` or `sub_804CC8E`.
 // symdb: (r0 = ptr to a 2-entry fnptr table stored alongside `off_804CBB8`, r1 = u8 dispatch key) -> r0 =
 // symdb: return value forwarded from the chosen handler ; side effects: none in this stub itself; the
 // symdb: dispatched handler runs in r5/r10/lr-saved context.

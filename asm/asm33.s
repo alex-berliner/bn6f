@@ -1359,10 +1359,9 @@ dword_8123BDC:
 	.word 0x302F2E
 	thumb_func_end battleObject_applyAIDataToAttackTable_8123BC0
 
-// symdb: Configures AI state from a vtable-derived data block and forwards to applyAIDataToAttackTable with constant args.
-// symdb: (r0=dword_8123BFC ptr (r0=1, r2=&ai_data byte array 0x81233E0, r1=0x20, r3=5, r4=0x5c, r6=0)) ->
-// symdb: r0=0x20 ; side effects: clobbers r0-r7,lr; tail-calls
-// symdb: battleObject_applyAIDataToAttackTable_8123C20
+// symdb: Configures and dispatches battle-object attack-variable (AIData) initialisation for the per-frame battle setup chain.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> no return; side-effect: populates AIData at 0x020047CC
+// symdb: via sub_8123C20 with arg block in IWRAM at 0x081233D8
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8123BE0.yaml
 	thumb_local_start
 sub_8123BE0:
@@ -2622,12 +2621,10 @@ off_8124498:
 	.word NULL
 	thumb_func_end subchip_initGfx_81243B0
 
-// symdb: Per-frame update for an entity field-effect, packaging a render descriptor, decrementing a duration timer and rolling into the next (state, duration) pair when it expires.
-// symdb: void entityUpdate_81244EC(void /* r5 = entity*, r10 = ? */);     // in:  r5 = entity state
-// symdb: struct (fields +0xC active flag, +0xD state id,     //         +0x12 timer/duration, +0x14
-// symdb: index), r10 = unknown caller-saved ptr     // out: r5 preserved     // clobbers: r0-r3, LR;
-// symdb: trashes NZCV     // preserved: r4-r7
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81244EC.yaml
+// symdb: Sub-chip submenu per-frame OAM tick — queues an OAM entry from a sprite/animation row table, advances the local anim timer, and on expiry looks up the next anim row.
+// symdb: (r5 = submenu state base, r10 = toolkit) -> void (out only preserves r5) ; side effects: writes
+// symdb: OAM via battleObject_queueOamFromTableRow_811FAF4, mutates r5+0xc/0xd/0x12
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81244EC.yaml
 	thumb_local_start
 sub_81244EC:
 	push {r4,lr}
