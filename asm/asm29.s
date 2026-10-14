@@ -982,7 +982,7 @@ loc_80A557A:
 	.word 0x17F
 	thumb_func_end sub_80A5514
 
-// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or owPlayer_isBusyOrCutsceneActive_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
+// symdb: Cutscene/overworld per-frame step: bails while a script position lock, chatbox flag 0x80 or sub_809E462 is active; otherwise runs sub_80A55D4, optionally invokes sub_80A5744 when not gated by EVENT_4EA, EVENT_4EB, or the r6+8 byte being 2, and always calls sprite_update on exit.
 // symdb: void Next_sub_80A5588(void);  /* inputs: r5, r6, r10, lr  outputs: r2, r5, r10, r11  clobbers
 // symdb: nz/c/v, r0, r1, r3, lr; preserves r4-r9, r12 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A5588.yaml
@@ -5241,6 +5241,9 @@ off_80A7C54:
 	.word byte_8089DD8 // CutsceneScript
 	thumb_func_end sub_80A7BC0
 
+// symdb: Returns 1 (busy/locked-out) if any of chatbox-flag 0x80, an active cutscene script, busy OW player/cutscene, a screen fade, or a non-zero beast-sp flag is set; otherwise returns 0.
+// symdb: () -> r0 = 1 if battle input should be locked out, 0 if free; ZF=1 when r0=0, ZF=0 when r0=1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7C58.yaml
 	thumb_local_start
 sub_80A7C58:
 	push {r4-r7,lr}

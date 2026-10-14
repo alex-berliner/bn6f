@@ -3834,8 +3834,9 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: Boot helper that primes the ReqBBS scene GFX anims and ensures the "asked to jack out" / L-message cutscene sentinels are registered by setting/clearing the relevant event flags.
-// symdb: (void) -> void ; side effects on GameState/Gfx anims and one oBB.
+// symdb: BBS request handler for the battle subsystem; reacts to the L-button BBS cutscene state, sets/clears event flags, runs a GFX anim and updates battle state.
+// symdb: (r10 = oToolkit) -> void ; side effects: r0-r3/r12 (caller-saved), NZCV flags, event flags,
+// symdb: battle state
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

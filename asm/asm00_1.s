@@ -16490,6 +16490,9 @@ sub_800A672:
 	pop {pc}
 	thumb_func_end sub_800A672
 
+// symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_Unk_32` bit 0 is set, increment `oBattleState_Unk_40` (clamped to 0x8c9f).
+// symdb: (no args; r10 = Toolkit ptr) -> r0/r1/r2/r3 clobbered as temporaries, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A6A6.yaml
 	thumb_local_start
 sub_800A6A6:
 	push {lr}

@@ -6474,10 +6474,12 @@ off_8133398:
 off_813339C:
 	.word unk_20376AC
 	thumb_func_end sub_8133228
-// symdb: Dispatches a battle object's per-type update handler, then runs common entity/pipeline updates and applies post-update effects based on the object's type/sub-type.
-// symdb: void battle_runObjectUpdate_81333A0(void);  // uses globals; R5 = object ptr (in); NZ/C/V flags
-// symdb: come from internal comparisons; r0-r3,r8-r10,lr are caller-visible scratch
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81333A0.yaml
+// symdb: Battle object dispatcher: jumps to one of five per-object update handlers (by [r5+2].Type), runs shared post-update steps (entity handler loop, eStruct sprites), then conditionally spawns one of three battle effects.
+// symdb: (r5 = current battle object pointer, r10 = toolkit, lr = ret) -> void ; tail-calls update
+// symdb: handler; tail-calls entity/sprite update; conditionally tail-calls one of sub_81345D4,
+// symdb: battle_spawnFixedArgEffect_wrapper_81345E8, sub_8134610 (Type != 0xC, [r5+3] != 0xC), or
+// symdb: sub_81345FC (Type == 0xC, [r5+3] != 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81333A0.yaml
 	thumb_local_start
 sub_81333A0:
 	push {lr}

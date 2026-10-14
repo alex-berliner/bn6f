@@ -599,6 +599,11 @@ loc_809D60C:
 	pop {pc}
 	thumb_func_end sub_809D5C4
 
+// symdb: Overworld player slip-run substate: gates each frame on the EVENT_1716/EVENT_IN_SLIPRUN_STATE flags, dispatches via Unk_0a jumptable between slip-run and engine tick, and otherwise routes the player into normal per-frame updates (advance/forward, idle, tile-interaction) before ending the slip-run if conditions warrant.
+// symdb: (r5 = oOWPlayerObject*, r10 = oToolkit*) -> void ; side effects: writes the overworld player
+// symdb: jumptable index via owPlayer_setJumptableIndex09AndOthers_809e004, may clear
+// symdb: oOWPlayerObject_Unk_0a, may end slip-run state, may set EVENT_173F via callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D61A.yaml
 	thumb_local_start
 sub_809D61A:
 	push {lr}
@@ -1128,6 +1133,10 @@ off_809D9DC:
 	.word byte_809D07C
 	thumb_func_end sub_809D9A0
 
+// symdb: Overworld player interaction handler: builds a target XYZ ahead of the player's facing direction, runs the coordinate trigger check (e.g. examining an NPC/object via the A button), and packs the resulting "interaction" bits into the OW player's `Unk_4c` word, also updating `Unk_0d` / `FacingDirection` on no-input.
+// symdb: (uses r5=OWPlayer, r10=Toolkit) -> r0 unused, r2 carries result ; sets OWPlayer.Unk_4c,
+// symdb: OWPlayer.Unk_0d, OWPlayer.FacingDirection
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D9E0.yaml
 	thumb_local_start
 sub_809D9E0:
 	push {lr}
@@ -2690,10 +2699,10 @@ sub_809E35E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E35E
 
-// symdb: Loads the flag byte at byte_2000AA8 (offset 8 of eStruct2000aa0) and sets the NZ flags on it so callers can branch on whether it is zero.
-// symdb: void sub_809E3A2(void); // sets Z iff byte_2000AA8 == 0; returns r3 = &eStruct2000aa0, clobbers
-// symdb: r0
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_809E3A2.yaml
+// symdb: Returns NZ (Z=0) iff the byte at eStruct2000aa0+0x8 is non-zero (i.e. the overworld player Navi is currently in the elevator pose/animation).
+// symdb: () -> r0 = byte at (eStruct2000aa0 + 0x8); flags Z set when byte == 0, NZ otherwise ; no side
+// symdb: effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E3A2.yaml
 	thumb_func_start sub_809E3A2
 sub_809E3A2:
 	ldr r3, off_809E430 // =eStruct2000aa0 

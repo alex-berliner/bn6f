@@ -22714,6 +22714,10 @@ off_811969C:
 	.word sSubmenu
 	thumb_func_end sub_81195E4
 
+// symdb: NPC battle sprite tick dispatcher that reads an actor byte and jumps to a per-actor sprite updater, falling back to the generic sprite_update.
+// symdb: (r5 = BattleObject) -> r0/r1/r2/r3 clobbered by the dispatched call ; side effects: updates the
+// symdb: battle object's sprite via the dispatched handler
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81196A0.yaml
 	thumb_local_start
 sub_81196A0:
 	push {lr}

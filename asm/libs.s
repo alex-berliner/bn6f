@@ -20606,6 +20606,9 @@ rfufunc_tailCallStub_814DA64:
 	.hword 0x46C0
 	thumb_func_end rfufunc_tailCallStub_814DA64
 
+// symdb: Thumb trampoline that branches to the function pointer passed in r2 (tail-call), used to dispatch registered RFU callbacks
+// symdb: (none read) -> none returned (r0 from r2 may propagate via `bx r2`); no memory side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA68.yaml
 	thumb_local_start
 sub_814DA68:
 	bx r2
@@ -23376,6 +23379,9 @@ byte_814EC98:
 	.byte 0x40, 0x0, 0x0, 0x5, 0x2A, 0xDF, 0x70, 0x47
 	thumb_func_end cgbSoundInit_814EB84
 
+// symdb: tail-call trampoline for an MPlay note dispatch (MPlayMain / ply_note → common helper)
+// symdb: (r0 = ???) -> returns whatever the indirect helper returns via a tail jump
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814ECA0.yaml
 	thumb_local_start
 sub_814ECA0:
 	push {lr}

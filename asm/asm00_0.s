@@ -371,10 +371,10 @@ zeroFill_80007B2:
 	pop {pc}
 	thumb_func_end zeroFill_80007B2
 
-// symdb: Drains the pending sound-request queue at dword_200A490, dispatching callbacks/continuations and submitting a queued SSEQ request to the sound engine.
-// symdb: (r0..r3 caller-saved, lr restored) -> r0 = 0 ; no other return value; side effects: clears the
-// symdb: queue and posts one pending request to sound_8000808
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80007BE.yaml
+// symdb: Drains the battle tick jump-table queue at dword_200A490, calling each pending function pointer with its parameters, then plays any queued sound request via sound_8000808.
+// symdb: () -> void ; side effects: clobbers dword_200A490 (the pending-request queue), calls each queued
+// symdb: function pointer, may push to sound_8000808's pending SSEQ queue (dword_200A490 / sound queue).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80007BE.yaml
 	thumb_func_start sub_80007BE
 sub_80007BE:
 	push {r4-r7,lr}
@@ -5601,6 +5601,10 @@ off_8002690:
 	.word byte_3001710
 	thumb_func_end copy_8002668
 
+// symdb: Thumb↔ARM veneer that tail-calls sprite_queueFramePieces on the IWRAM sprite
+// symdb: (r0 = sprite param, r1 = chatbox mugshot?, r2/r3/.. = preserved) -> returns whatever
+// symdb: sprite_queueFramePieces returns; side effects: queues OAM for the current animation frame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002694.yaml
 	thumb_func_start sub_8002694
 sub_8002694:
 	push {lr}

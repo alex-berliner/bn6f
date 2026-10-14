@@ -518,9 +518,9 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B6E
 
-// symdb: Queues one OAM row for a "Battle Start" cinematic sprite from a 24-frame table, then advances a frame counter held in r5+5.
-// symdb: (r0 = frameIndex, r5 = battleWorkPtr) -> r0 = nextFrameIndex ; side effect: queues an OAM entry
-// symdb: via sprite_queueOamEntryThunk_802FE28 and updates the frame counter at battleWorkPtr+0x05
+// symdb: Queues an OAM entry for the battle-object whose index is given by r0, picking the tile/datasrc slot from a small 24-entry table indexed by the per-frame counter at r5+5; advances that counter and stores the next slot back into r5+5.
+// symdb: (r0 = battleObjectIndex, r1 = ?, r5 = per-frame/anim state struct) -> r0 = next frame index
+// symdb: (0..0x17) ; side effects: advances the OAM queue, updates r5+5 counter.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
 	thumb_local_start
 sub_8033B80:
@@ -2137,6 +2137,10 @@ IsNotSlipRunningAndNotInCutscene:
 	pop {r4-r7,pc}
 	thumb_func_end IsNotSlipRunningAndNotInCutscene
 
+// symdb: Overworld cutscene handler that, when the L button is pressed and the player stands on a jack-in/jack-out spot, starts the corresponding jack-in or jack-out cutscene (or plays the can't-jack-in sound).
+// symdb: () -> r0 = 0 if a cutscene was started, 1 otherwise ; side effects: may play SOUND_CANT_JACK_IN
+// symdb: or call StartCutscene with one of two cutscene scripts.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034CB6.yaml
 	thumb_local_start
 sub_8034CB6:
 	push {r4-r7,lr}

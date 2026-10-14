@@ -590,6 +590,10 @@ sub_80B8600:
 	pop {r7,pc}
 	thumb_func_end sub_80B8600
 
+// symdb: Copies visual state (flag bits, color shader, final palette, mosaic/alpha, flip) from the linked related object onto this BattleObject and dispatches a sub-action handler.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects update self BattleObject sprite
+// symdb: block and tail-call CurAction handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B863A.yaml
 	thumb_local_start
 sub_80B863A:
 	push {lr}
@@ -60720,6 +60724,9 @@ loc_80D44B4:
 	pop {r4,pc}
 	thumb_func_end sub_80D4472
 
+// symdb: Battle-object death handler (CurAction==0) that tears down collision, fires the death hit, then transitions the object into the destroy state.
+// symdb: (r5 = battleObject, r10 = toolkit) -> void ; may clobber r0-r3/r7 per ARM ABI
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D44D2.yaml
 	thumb_local_start
 sub_80D44D2:
 	push {r4,r7,lr}
@@ -87233,6 +87240,10 @@ locret_80E0F5C:
 	pop {pc}
 	thumb_func_end battle_setExtraAnimState_80E0F2E
 
+// symdb: Plays the buster-charge SFX at the right charge stage for a charge-shot object, or stays silent if the controller does not own the charge input.
+// symdb: (r5 = ChargeShotBattleObjectPtr) -> (no return used by caller); side effects: may call
+// symdb: PlaySoundEffect for SOUND_BUSTER_CHARGE or SOUND_UNK_72
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E0F5E.yaml
 	thumb_local_start
 sub_80E0F5E:
 	push {lr}
