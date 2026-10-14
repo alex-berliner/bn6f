@@ -1,8 +1,8 @@
 
-// symdb: Resolves an address from an object passed in r0 and writes the caller's byte value at offset +1, likely a one-byte field setter for some game entity/object.
-// symdb: u32 sub_800B884(void* object /*r0*/, u8 value /*r1*/); returns r0 = resolved address from
-// symdb: sub_800BF5C, r1 preserved, flags = whatever sub_800BF5C leaves
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_800B884.yaml
+// symdb: Writes the low byte of r1 to byte offset 0x1 of the (r0-indexed) entry in the byte_203CF00 0x50-byte-per-entry table and returns that entry pointer in r0.
+// symdb: (r0 = index, r1 = byte value) -> r0 = &byte_203CF00[index] ; no side effects beyond the one
+// symdb: store
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B884.yaml
 	thumb_local_start
 sub_800B884:
 	push {lr}

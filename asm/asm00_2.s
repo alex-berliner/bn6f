@@ -17294,6 +17294,10 @@ loc_8016722:
 	pop {r6,r7,pc}
 	thumb_func_end sub_80166D0
 
+// symdb: Per-frame step of a battle object's "moving to its future panel" state (slide / approach), decrementing the timer and finishing by either reverting to standing or starting a new sub-step.
+// symdb: (r5 = BattleObject*) -> void ; side effects: panel reserve/release, write to battle object
+// symdb: fields, possibly AI data word, clear/leave object collision flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016730.yaml
 	thumb_local_start
 sub_8016730:
 	push {r4,r6,r7,lr}
@@ -23088,12 +23092,10 @@ locret_801A45A:
 	pop {r4,pc}
 	thumb_func_end battle_spawnHitEffectAtArm_801A42E
 
-// symdb: Counter-hit resolution: shows the "Counter Hit" popup on the opposing side, credits their counter tally, resets this object's counter timer, and (while the battle is still going) fires the counter-hit event and plays the select SFX.
-// symdb: void sub_801A45C(void); // inputs : r5 = battle object (BattleObject*); r10, lr = caller frame
-// symdb: // outputs: r2 (0x40 on early-out, callee leftover otherwise) // clobbers: r0, r1, r2, r3, r8,
-// symdb: r9, r10, r11, r12, lr //           flags NZ, C, V // preserves: r4, r6 (saved/restored by the
-// symdb: function)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801A45C.yaml
+// symdb: Handles a 0x40-flagged collision reaction for a battle object: swaps alliance, bumps an enemy column counter via row table, resets collision counter, plays a select SFX, and lets the window/panel subsystem tick.
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: writes r0 (sub-call return)
+// symdb: only via stack; preserves r4-r10
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801A45C.yaml
 	thumb_local_start
 sub_801A45C:
 	push {r4,r6,lr}
@@ -24487,9 +24489,10 @@ byte_801AEA0:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	thumb_func_end sub_801AE56
 
-// symdb: Applies a collision's hit-modifier bits to the hit battle object: flinching, status flag 2, and the 0x10/0x100 reaction flags (skipping flinching when the object has superarmor/anger).
-// symdb: void sub_801AEB0(u32 /*r5 object*/, u32 /*r7 collision*/)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801AEB0.yaml
+// symdb: Translate the HitModifierFinal byte of a battle object's collision data into ObjectFlags2 side-effects and Unk_0f updates.
+// symdb: (r5 = BattleObject*, r7 = ?, lr) -> void (returns nothing to callers; r0/r1/r2/r4 are scratch
+// symdb: and r4/r7/lr are restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AEB0.yaml
 	thumb_local_start
 sub_801AEB0:
 	push {r4,r7,lr}
@@ -26483,10 +26486,10 @@ locret_801BCF2:
 	pop {pc}
 	thumb_func_end battleObject_updateSpriteAnimIfChanged_801BCD0
 
-// symdb: Per-frame sprite update for a battle object (loads new anim if changed, then advances sprite), gated by pause/time-stop/freeze flags.
-// symdb: u32 sub_801BCF4(u32 obj /* r5 */) -> r5 (obj unchanged); clobbers nz,c,v,r0-r3,lr; preserves
-// symdb: r4,r5
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801BCF4.yaml
+// symdb: Battle-object per-frame animation dispatcher: applies pause/timestop/stop-sprite-update flags, syncs CurAnim into the sprite slot, loads frame data, and ticks sprite_update.
+// symdb: (r5 = BattleObject*) -> void ; side effects: reads/writes object header flags and sprite slot;
+// symdb: calls sprite_setAnimation / sprite_loadAnimationData / sprite_update.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BCF4.yaml
 	thumb_func_start sub_801BCF4
 sub_801BCF4:
 	push {lr}

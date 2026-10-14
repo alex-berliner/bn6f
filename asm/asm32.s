@@ -19533,9 +19533,11 @@ off_8117D40:
 	.word sub_8117EC0+1
 	thumb_func_end objectStateDispatcher_8117D2C
 
-// symdb: Initializes and positions one of the four link-battle partner portrait sprites (graphics ID 0x23) by player slot.
-// symdb: void sprite_initLinkPortrait_8117D4C(SpriteBlock *obj /* r5 */);
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8117D4C.yaml
+// symdb: Initializes a damage-number (and related) counter battle object: sets its type/id, builds its sprite from a GUI template, then dispatches into the per-mode update handler.
+// symdb: (r5 = BattleObject*) -> r0/r2/r3 caller-saved ; side effects: writes many fields of *r5
+// symdb: (mode/type byte 0x23, Unk_0c, CurState=0x04) and configures its
+// symdb: sprite/animation/palette/priority/slot/palette-bank/coordinates.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117D4C.yaml
 	thumb_local_start
 sub_8117D4C:
 	push {r4,lr}
@@ -21027,6 +21029,10 @@ off_8118808:
 	.word sSubmenu
 	thumb_func_end submenu_dispatchByIndex_81187E8
 
+// symdb: BeastSP battle object's initialize-phase handler: primes its sprite/animation, halts the sprite-update chain, and leaves the object ready for the next state.
+// symdb: (r5 = object, r6 = unknown context) -> nothing explicit returned; side effects on sprite fields
+// symdb: plus TailCall into battleObject_dispatchSpriteUpdate_8118874
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811880C.yaml
 	thumb_local_start
 sub_811880C:
 	push {lr}
@@ -32159,6 +32165,10 @@ off_811E188:
 	.word eStruct2001010
 	thumb_func_end battle_aiState_dispatchStateMachine_811E168
 
+// symdb: Initializes a BeastOut "SP" overlay BattleObject: sets type 0x23, GUI sprite id 0x32, anim 0, palette bank 0xA, no shadow, halfword 0x258 stored, then hands off to its stage-update.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes many fields of the BattleObject/sprite and
+// symdb: animates via the stage-update.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E18C.yaml
 	thumb_local_start
 sub_811E18C:
 	push {lr}
@@ -36729,10 +36739,12 @@ loc_81203D2:
 	pop {r4-r7,pc}
 	thumb_func_end battle_loadFolderChipGfx_8120390
 
-// symdb: Builds a packed chip-slot address list from a chip-pack entry row of the folder table.
-// symdb: void sub_81203E4(u32 entry_index /* r0 */, u32 entry_base /* r1 */, u32 out_list /* r2 */, u32
-// symdb: slot_base /* r3 */, u32 count /* r5 */); /* r7 preserved; flags clobbered */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81203E4.yaml
+// symdb: Build OAM tile-attribute pairs for the chips in one folder for the chip-pack (folder preview) sprite layer
+// symdb: (r0 = folder_index, r1 = ptr to folder chip-IDs array of 0x20-stride slots, r2 = memBlock dest
+// symdb: (size 0x38), r3 = ptr to 4-byte-stride chip-element→OAM-base table, stack r5 = num_chip_slots)
+// symdb: -> r0 = num_oeams_written ; side effects ZeroFillByWord on the 0x38-byte dest, writes 8 bytes
+// symdb: per occupied slot
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81203E4.yaml
 	thumb_func_start sub_81203E4
 sub_81203E4:
 	push {r4-r7,lr}

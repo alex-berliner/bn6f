@@ -111,6 +111,12 @@ off_808F8FC:
 	.word off_808F5D4
 	thumb_func_end weatherComp_spawnPlayerAfterReset_808F8AC
 
+// symdb: Overworld bus-station state machine that drives MegaMan into the bus, the bus animates away, and MegaMan is teleported onto the next map at the destination stop.
+// symdb: (no explicit in regs - uses toolkit via r10) -> r0 = 0 when the whole sequence is finished, 1
+// symdb: while still running ; side effects: clears/raises event flags, mutates EWRAM struct at 0x2000310
+// symdb: (state + cached coords/anims), moves and recolours the OWPlayer Navi, calls
+// symdb: request_BBS_clear_8140A0C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F900.yaml
 	thumb_local_start
 sub_808F900:
 	push {r4-r7,lr}

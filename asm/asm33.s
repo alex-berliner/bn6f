@@ -894,9 +894,10 @@ locret_81237DC:
 	.byte 0, 0
 	thumb_func_end pet_menu_runFrame_81237BC
 
-// symdb: Initialize/render setup for the chip folder submenu screen, clearing VRAM/palettes, indexing an anim table, and kicking off the screen fade
-// symdb: (r0 = submenu init flag (0/1), r1 = pointer stored into screen state @ r5+0x4c) -> r0 = 0 ; side
-// symdb: effects VRAM/palette zeroed on r0!=0, sets up render info, calls SetScreenFade(8,0x10)
+// symdb: Initialize the chip folder screen state, clear VRAM/palette/BG tile blocks, fetch the current Navi palette idx, apply a default palette, and queue a screen fade.
+// symdb: (r0 = firstTimeInitFlag, r1 = ptr stored at submenu+0x4c) -> void ; side effects: writes
+// symdb: submenu+0x10..0x3a, +0x4c; clears VRAM and IWRAM 0x3001960; zeroes BG tile ID block at
+// symdb: 0x30025c0; sets render info 0x1f40; calls SetScreenFade(0x8, 0x10).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81237E0.yaml
 	thumb_local_start
 sub_81237E0:
@@ -16298,7 +16299,7 @@ loadDecompressedAsset_812AF78:
 	thumb_func_end loadDecompressedAsset_812AF78
 
 // symdb: Decompresses an embedded text-data blob into work RAM and hands the resulting script to the text-script engine to run.
-// symdb: void sub_812AF84(void); // no meaningful inputs; r1-r7 on return are whatever battle_loadTileGridByNavi_8123300
+// symdb: void sub_812AF84(void); // no meaningful inputs; r1-r7 on return are whatever sub_8123300
 // symdb: leaves, NZCV clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textScript_loadAndRunEmbeddedArchive_812AF84.yaml
 	thumb_func_start textScript_loadAndRunEmbeddedArchive_812AF84

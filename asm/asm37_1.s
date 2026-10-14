@@ -550,12 +550,11 @@ byte_8141F64:
 	.byte 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0
 	thumb_func_end battle_canBeastOut_8141AD2
 
-// symdb: Overworld handler run after Beast-Out: gates a one-shot boss/beast spawn on EVENT_700 + floor tiles, runs floor-specific object spawns and possibly an intro cutscene, then clears EVENT_700.
-// symdb: () -> void ; side effects: zero-fills the unk_2000BE0 buffer, may
-// symdb: TestEventFlagFromImmediate/Clear event flags, may SpawnOverworldMapObject /
-// symdb: SpawnObjectsFromList, may StartCutscene, may set GameState Unk_09 to 0x54 ("can't jack out") and
-// symdb: set event flag 0x17:7, clears EVENT_700
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8141F7C.yaml
+// symdb: Looks up a per-MapGroup beast-spread config; if the matching flag set hasn't been processed yet (or coords don't match), zeros a battle object buffer, spawns a set of scriptable overworld map objects (MapGroup-indexed) flagged by per-slot story flags, optionally drives a "beast spread" cutscene, then locks the elevator/jack-out state and clears setup flags.
+// symdb: (no args; uses r5 + r10 + lr from the caller) -> r0 = 0 or 0x10 (post-test Carry/non-carry
+// symdb: result); side effects: clears/loads `unk_2000BE0` (0x140 bytes), clears flag 0x700/0x702, may
+// symdb: start cutscene `byte_8089DF4` and call `gameState_setUnk09_8001172(0x54)`.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141F7C.yaml
 	thumb_local_start
 sub_8141F7C:
 	push {r4-r7,lr}

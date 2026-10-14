@@ -8217,10 +8217,10 @@ sub_8086E70:
 	pop {pc}
 	thumb_func_end sub_8086E70
 
-// symdb: Possibly dispatches an AI tick for a battle actor (reads AIData, runs state-specific AI helpers, and returns an action/state code to the caller).
-// symdb: (r2 = actor index/AI data ptr? , r10 = toolkit ptr) -> r2 = next state/action? ; reads/writes
-// symdb: actor AIData via toolkit, no r0 return
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
+// symdb: Per-frame update step for the Beast-form/SP (Beast-out) Navi's AI: refresh AIData from the actor's BattleObject, run/queue the beast intro cutscene, and advance any pending beast sub-state.
+// symdb: (r2 = ? , r10 = Toolkit, lr = ret) -> void ; no return value other than the clobbered scratch
+// symdb: registers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8086EA8.yaml
 	thumb_local_start
 sub_8086EA8:
 	push {r4-r7, lr}

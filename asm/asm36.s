@@ -9102,10 +9102,11 @@ loc_813472C:
 off_813473C:
 	.word unk_203486C
 	thumb_func_end copyBackgroundTiles_sub_813471C
-// symdb: Per-frame battle object tile blit: copies one tile row using a mode chosen by the palette-slot byte and decrements the upper-nibble animation counter in obj+0x15, reloading it from sub_8120CC8 when it reaches zero.
-// symdb: void sub_8134740(u32 battleObj /* r5 */); /* r5 preserved; nz/c/v clobbered; r0-r3,r4,lr
-// symdb: clobbered via sub_811FAF4/sub_8120CC8 */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
+// symdb: Per-frame OAM render for a battle object's submenu "anger/charge" gauge: queues one sprite tile from a descriptor table and animates the low-nibble timer through its 0x10 step sequence.
+// symdb: (r5 = battleObject AIData ptr, r10 = toolkit) -> r0 = next frame's low-nibble value (callee-
+// symdb: saved r5 live); side effects: OAM entry queued via battleObject_queueOamFromTableRow;
+// symdb: reads/writes battleObject.AIData.Unk_15 (frame timer).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134740.yaml
 	thumb_local_start
 sub_8134740:
 	push {r4,lr}

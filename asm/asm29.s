@@ -1321,6 +1321,12 @@ off_80A57CC:
 	.word unk_2011A90
 	thumb_func_end battleObject_dispatchAICustomOp_80A57AC
 
+// symdb: Beast-Out shrine's "player" battle object initializer (sets CurState=CUR_STATE_UPDATE, loads sprite 0x80, anim 0, copies AI state dir/anim into the player, optionally calls sub_80A5A1C when EVENT_5F2 is set, then drives the beast-out PwrAtk tick).
+// symdb: (r4 = player battle object ptr, r5 = this player battle object ptr, r6/r7/r10 = caller scratch,
+// symdb: lr = ret) -> r4/r5 preserved ; side effects: writes CurState=1, byte6/9=0, word30=0, byte8=4,
+// symdb: calls TestEventFlagFromImmediate(EVENT_5F2), conditional call to sub_80A5A1C, then
+// symdb: battleObject_updateBeastOutPwrAtk_80A5828
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A57D0.yaml
 	thumb_local_start
 sub_80A57D0:
 	push {r4-r7,lr}
@@ -3493,6 +3499,10 @@ off_80A6EB8:
 	.word unk_2011A90
 	thumb_func_end battle_ai_dispatchBeastSp_80A6E98
 
+// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run sub_80A7208 when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
+// symdb: (r5 = BattleObject*) -> r0 = 0x26 ; side effects: writes many BattleObject fields, may patch
+// symdb: coords from a returned table, may run a one-shot story-gated helper
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6EBC.yaml
 	thumb_local_start
 sub_80A6EBC:
 	push {r4-r7,lr}
@@ -4046,6 +4056,10 @@ off_80A72D4:
 	.word unk_2011A90
 	thumb_func_end battleObject_dispatchAIData_80A72B4
 
+// symdb: Spawns one battle object's beast-form (sprite 0x80/anim 0x2f, palette 0, no shadow, priority derived from +0xC) when CurState transitions from 3 to 4 (BattleObject in r5)
+// symdb: (r5 = BattleObject*, r10 = Toolkit*, lr) -> void; side effects: writes CurAction=3, then
+// symdb: CurState=4, sets EVENT_5FF, conditionally calls sub_80A76E8 when EVENT_5E5 is set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A72D8.yaml
 	thumb_local_start
 sub_80A72D8:
 	push {r4-r7,lr}
@@ -8502,7 +8516,7 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = owMapObject_mrWeatherInit_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:

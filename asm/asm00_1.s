@@ -10035,6 +10035,10 @@ off_8007940:
 	.word battle_initEntry_8007A0C+1
 	thumb_func_end battle_finishBattle_8007850
 
+// symdb: Initializes a battle: clears battle-object linked lists, initializes T1/T3/T4 battle-object structs, sets the beast-link flag, resets camera, zeroes battle counters, resets battle buffers, then writes 4 to oBattleState_Index_01 and returns via battle-state dispatch.
+// symdb: (no meaningful inputs) -> returns to caller via `pop {pc}`; side-effects a wide swath of EWRAM
+// symdb: battle state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800794C.yaml
 	thumb_local_start
 sub_800794C:
 	push {lr}
@@ -16135,7 +16139,9 @@ off_800A3E0:
 	.word eBattleFolder
 	thumb_func_end sub_800A318
 
-// symdb: Loads the battle folder into eBattleFolder and triggers shuffleFolder_800A570: source is the saved folder (oToolkit_S_Chip_2002178_Ptr = 0x02002178), a battle-mode table (dword_802137C) or unk_2039AA0 with effects bit 0x200000; Navi offset = GetCurPETNaviStatsByte(0x2D) * 0x3C; tag pairs land at +0x38/+0x3A.
+// symdb: Builds the 30-chip battle folder (eBattleFolder) from a navi stat block, applying Beast-Out/dark-chip overrides from battle state and optionally shuffling it
+// symdb: (r0..r3 ignored on entry) -> no return value ; side effects: writes eBattleFolder (30
+// symdb: halfwords), may set BattleState.Unk_17 / Unk_44, may shuffle folder
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A3E4.yaml
 	thumb_local_start
 sub_800A3E4:

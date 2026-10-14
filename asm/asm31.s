@@ -29733,6 +29733,13 @@ off_80C5BC8:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x8_80C5BB0
 
+// symdb: Initializes a battle object used by the SnakeArm scripted event after spawn: loads its sprite/animation, picks a starting anim index from Param1 (3 when Param1==2 else 1), sets up a small per-variant config table as ExtraVars, allocates/initializes collision data, sets hit effect 0xFF, and dispatches into the standard initial collision-event handler.
+// symdb: in (r5 = oBattleObject in toolkit's standard battle-object convention, r10 = toolkit base,
+// symdb: r7/r8/lr = extra callers' preserved state) -> void ; side effects: writes oBattleObject_Params,
+// symdb: oObjectHeader_Flags, oBattleObject_CurAnim/CurAnimCopy, oBattleObject_ExtraVars,
+// symdb: CollisionDataPtr (via object_createCollisionData), and the object's CollisionData fields; on
+// symdb: allocation failure calls object_freeMemory and tail-returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5BD4.yaml
 	thumb_local_start
 sub_80C5BD4:
 	push {lr}
@@ -31858,12 +31865,10 @@ off_80C6C10:
 	.word byte_80C6B00
 	thumb_func_end battle_objectInitFromParamTable_80C6B64
 
-// symdb: Per-frame tick for a battle object that is currently on a panel-based collision effect (grass/fire/swamp etc.); spawns the effect, dispatches to the object's current action handler, or destroys the object if the battle ended or the panel doesn't react.
-// symdb: void battleObject_collisionEffectTick_80C6C14(void); // inputs  (caller-saved on entry): r5
-// symdb: (battle object), r4, r8, r10, lr // outputs (caller-saved on exit):  r5, r8, r9, r10, r11, r12
-// symdb: // clobbers: nzcv, r0-r3, r4, r6, lr // preserved: r7 (holds the object's
-// symdb: oBattleObject_CollisionDataPtr internally)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C6C14.yaml
+// symdb: Update handler for battle objects whose CurAction is 0x16 (Snakearm); routes to a per-action step and tears down the object on battle-over or non-hole+non-solid panels.
+// symdb: (r5 = BattleObjectPtr, r8 = ?, r10 = Toolkit, r4/r7 = saved) -> void ; r0 trashed, flags
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C6C14.yaml
 	thumb_local_start
 sub_80C6C14:
 	push {r7,lr}
@@ -43564,6 +43569,9 @@ locret_80CC29C:
 	pop {pc}
 	thumb_func_end sub_80CC260
 
+// symdb: Phase handler for a rolling-cannon (SnakeArm-style projectile) battle object: initialises it on the front row, plays a firing sound, sets HP and velocity, then drives its left/right column travel via XVelocity and collision checks.
+// symdb: (r5 = battle object) -> void ; side effects: writes many BattleObject fields, plays SFX 0xFF
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC29E.yaml
 	thumb_local_start
 sub_80CC29E:
 	push {lr}
@@ -56546,6 +56554,10 @@ jt_80D2474:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x6f_80D2460
 
+// symdb: Initializes a battle object that materializes by walking in from the field edge, setting up its sprite/sound/velocity/timer/state
+// symdb: (r5 = battle object ptr) -> side effects only; object now has sprite, shake velocity and
+// symdb: CUR_STATE_UPDATE = 4 set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D2480.yaml
 	thumb_local_start
 sub_80D2480:
 	push {lr}
@@ -110192,9 +110204,9 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
-// symdb: AI attack-vars helper that marks the current panel non-sliding, optionally reserves it, then either spawns an illusion object (setting the home panel) or advances to anim 4 / phase 0xC.
-// symdb: (r5 = BattleObjectPtr, r7 = AIAttackVarsPtr) -> r1 = ?, r5 preserved ; no defined caller return
-// symdb: value (out only flags + callee-saved r5)
+// symdb: One tick of the AI "illusion/double" step for a battle object — possibly spawns or copies an illusion, reserves the panel, and refreshes the parent object.
+// symdb: (r5 = *BattleObject, r7 = *AIAttackVars) -> void ; side effects on battle object
+// symdb: (panel/facing/animation), AIAttackVars state, and an illusion object spawned via sub_80E33FA
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
@@ -136396,11 +136408,11 @@ off_80F8444:
 	.word sub_80F8448+1
 	thumb_func_end sub_80F8428
 
-// symdb: Reads self-HP vs MaxHP and AIState.Unk_04/05 timers to choose which scripted AI attack/thinker routine to install this tick
-// symdb: (r5 = BattleObject self, r6 = AIState, r7 = AIAttackVars, r10 = Toolkit) -> void ; side effects:
-// symdb: writes AIState.Unk_04/05, AIAttackVars fields (Unk_02/03/18/28/2c/30), sets CurAction via
-// symdb: object_setAttack0/object_setAttack4
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F8448.yaml
+// symdb: Handles one tick of an enemy AI's battle-AI routine, selecting an attack script and target based on HP ratios and difficulty tier.
+// symdb: (r5 = *BattleObject self, r6 = *AIState state, r7 = *AIAttackVars attackVars) -> void ; side
+// symdb: effects: mutates AIState counters (Unk_04/Unk_05) and AIAttackVars fields (Unk_02, Unk_03,
+// symdb: Unk_18, Unk_28, Unk_2c, Unk_30) and triggers object_setAttack0/4 on self
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8448.yaml
 	thumb_local_start
 sub_80F8448:
 	push {r4,r6,lr}
