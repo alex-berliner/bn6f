@@ -987,9 +987,9 @@ sub_814223E:
 
 // symdb: Per-frame battle object update: clears a one-shot scenario flag, dispatches AI, and refreshes sprites.
 // symdb: () -> r0 = 0 (always returns 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142248.yaml
-	thumb_func_start sub_8142248
-sub_8142248:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_perFrameUpdate_8142248.yaml
+	thumb_func_start battleObject_perFrameUpdate_8142248
+battleObject_perFrameUpdate_8142248:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	bl sub_81422BE
@@ -1011,7 +1011,7 @@ loc_8142272:
 	bl sub_8142C90
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142248
+	thumb_func_end battleObject_perFrameUpdate_8142248
 
 	thumb_func_start sub_814227A
 sub_814227A:
@@ -1586,9 +1586,9 @@ sub_8142896:
 
 // symdb: Returns a pointer to the nth BattleObject entry in the EWRAM `byte_2006670` array (8-byte stride).
 // symdb: (r0 = index) -> r0 = &byte_2006670[index*8] ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81428C2.yaml
-	thumb_func_start sub_81428C2
-sub_81428C2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_getByIndex_81428C2.yaml
+	thumb_func_start battleObject_getByIndex_81428C2
+battleObject_getByIndex_81428C2:
 	push {r4-r7,lr}
 	ldr r5, off_81428D0 // =byte_2006670 
 	mov r1, #8
@@ -1598,7 +1598,7 @@ sub_81428C2:
 	.byte 0, 0
 off_81428D0:
 	.word byte_2006670
-	thumb_func_end sub_81428C2
+	thumb_func_end battleObject_getByIndex_81428C2
 
 	thumb_func_start sub_81428D4
 sub_81428D4:
@@ -1908,7 +1908,7 @@ sub_8142B28:
 	cmp r0, r2
 	bne loc_8142B4C
 	ldrb r0, [r5,#4]
-	bl sub_81428C2
+	bl battleObject_getByIndex_81428C2
 	ldrh r4, [r0,#4]
 loc_8142B4C:
 	mov r0, r4

@@ -1713,7 +1713,7 @@ off_80A5AE4:
 	.word off_80A5AE8
 off_80A5AE8:
 	.word sub_80A5AF8+1
-	.word sub_80A5B70+1
+	.word battle_beastOutTick_80A5B70+1
 	.word sub_80A5C6C+1
 off_80A5AF4:
 	.word unk_2011A90
@@ -1767,7 +1767,7 @@ sub_80A5AF8:
 loc_80A5B64:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A5B70
+	bl battle_beastOutTick_80A5B70
 locret_80A5B6C:
 	pop {r4-r7,pc}
 	.byte 0, 0
@@ -1778,9 +1778,9 @@ locret_80A5B6C:
 // symdb: mutates ctx/r5 and BattleObject/r6 state, sets/clears event flags
 // symdb: 0x5F2/0x5F3/0x5F4/0x17-0x7/PET_DISABLED/L_MESSAGE_ACTIVE, ends with sub_80A6014 + sprite_update
 // symdb: on r5's sprite
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5B70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTick_80A5B70.yaml
 	thumb_local_start
-sub_80A5B70:
+battle_beastOutTick_80A5B70:
 	push {r4-r7,lr}
 	ldrb r4, [r6,#5]
 	cmp r4, #0
@@ -1888,7 +1888,7 @@ loc_80A5C62:
 	bl sub_80A6014
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5B70
+	thumb_func_end battle_beastOutTick_80A5B70
 
 	thumb_local_start
 sub_80A5C6C:
@@ -5430,7 +5430,7 @@ off_80A7D8C:
 battleObject_runAIDispatchWithCurState_80A7D90:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
-	bl sub_81428C2
+	bl battleObject_getByIndex_81428C2
 	mov r7, r0
 	ldr r0, off_80A7DA8 // =off_80A7DAC 
 	ldrb r1, [r5,#8]
@@ -5876,9 +5876,9 @@ byte_80A81F0:
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
 // symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8208.yaml
-	thumb_func_start sub_80A8208
-sub_80A8208:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
+	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
+battle_dispatchCustomJumptableByIndex_80A8208:
 	push {lr}
 	ldr r6, off_80A8228 // =unk_2000B40 
 	ldr r0, off_80A8218 // =off_80A821C 
@@ -5896,7 +5896,7 @@ off_80A821C:
 	.word sub_80A829C+1
 off_80A8228:
 	.word unk_2000B40
-	thumb_func_end sub_80A8208
+	thumb_func_end battle_dispatchCustomJumptableByIndex_80A8208
 
 	thumb_local_start
 sub_80A822C:

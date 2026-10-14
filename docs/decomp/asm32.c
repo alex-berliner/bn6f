@@ -7506,7 +7506,7 @@ signed int sub_8113984()
         object_setCoordinatesFromPanels(v0);
         object_updateCollisionPanels(v0);
         *(v0 + 23) = *(v0 + 103);
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         *(v0 + 110) = 0;
         object_setCollisionRegion(1);
         *v1 = 24;
@@ -7625,7 +7625,7 @@ void __noreturn sub_8113AB8()
     v7 = *(v1 + 101);
     sub_81141BC(*(v1 + 100));
     *(v1 + 23) = 0;
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     object_removePanelReserve(*(v1 + 100), *(v1 + 101));
     JUMPOUT(loc_8113B1A);
 }
@@ -8701,7 +8701,7 @@ int snakearmAI_update_0x8_8114910()
         snakearmAI_spawnCollisionRegionIfPanelTest_8115028();
     }
     *v2 = 0;
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     return snakearmAI_8115074();
 }
 
@@ -10302,7 +10302,7 @@ AI *sub_8115EF4()
         *(v1 + 107) = 0;
 LABEL_5:
         *v2 = 8;
-        return sub_800F2C6();
+        return battleObject_refreshSpriteAndArm_800F2C6();
     }
     v3 = *(v1 + 107) + 1;
     *(v1 + 107) = v3;
@@ -10310,7 +10310,7 @@ LABEL_5:
         goto LABEL_5;
     *(v1 + 107) = 0;
     *v2 = 4;
-    return sub_800F2C6();
+    return battleObject_refreshSpriteAndArm_800F2C6();
 }
 
 

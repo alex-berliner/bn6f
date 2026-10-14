@@ -11245,7 +11245,7 @@ loc_81139DC:
 	mov r1, #0x67
 	ldrb r0, [r5,r1]
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x6e
 	mov r1, #0
 	strb r1, [r5,r0]
@@ -11381,7 +11381,7 @@ sub_8113AB8:
 	bl sub_81141BC
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r2, #0x64
 	ldrb r0, [r5,r2]
 	mov r2, #0x65
@@ -13036,7 +13036,7 @@ loc_81148EC:
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_00]
 loc_81148F0:
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl snakearmAI_8115074
 	pop {r4-r7,pc}
 	.word 0
@@ -13133,7 +13133,7 @@ loc_81149B4:
 	mov r0, #0
 	strb r0, [r6,#oAIState_Unk_00]
 loc_81149B8:
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl snakearmAI_8115074
 	pop {r4-r7,pc}
 	.word 0, 0, 0
@@ -15593,7 +15593,7 @@ loc_8115F24:
 	mov r0, #8
 	strb r0, [r6,#oAIState_Unk_00]
 loc_8115F28:
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	pop {r4-r7,pc}
 	thumb_func_end sub_8115EF4
 

@@ -1152,7 +1152,7 @@ sub_80B8A3C:
 	b loc_80B8A70
 loc_80B8A66:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80B8A70:
@@ -6249,7 +6249,7 @@ sub_80BAF74:
 	b loc_80BAFA8
 loc_80BAF9E:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80BAFA8:
@@ -6697,7 +6697,7 @@ sub_80BB2C4:
 	b loc_80BB2F8
 loc_80BB2EE:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80BB2F8:
@@ -10036,7 +10036,7 @@ sub_80BCB74:
 	b loc_80BCBA8
 loc_80BCB9E:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80BCBA8:
@@ -10288,7 +10288,7 @@ loc_80BCD5E:
 	b loc_80BCD90
 loc_80BCD86:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80BCD90:
@@ -12293,7 +12293,7 @@ loc_80BDC00:
 	b loc_80BDC30
 loc_80BDC26:
 	ldrh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80BDC30:
@@ -20843,7 +20843,7 @@ loc_80C18E4:
 	lsl r0, r0, #2
 	ldr r5, [r6,r0]
 	ldrh r0, [r5,#0x28]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	cmp r0, #8
 	bne loc_80C190A
 	cmp r1, #0x14
@@ -20920,7 +20920,7 @@ loc_80C1970:
 	bgt loc_80C19AE
 	ldr r5, [r6]
 	ldrh r0, [r5,#0x28]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	cmp r0, #8
 	bne loc_80C19A2
 	cmp r1, #0x14
@@ -20962,7 +20962,7 @@ loc_80C19C6:
 	bne loc_80C19B0
 	mov r5, r4
 	ldrh r0, [r5,#0x28]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	cmp r0, #8
 	bne loc_80C19EE
 	cmp r1, #0x14
@@ -23942,7 +23942,7 @@ sub_80C3024:
 	b loc_80C3058
 loc_80C304E:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80C3058:
@@ -27251,7 +27251,7 @@ sub_80C4848:
 	b loc_80C487C
 loc_80C4872:
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 loc_80C487C:
@@ -27652,7 +27652,7 @@ battle_stateEnter_loadSprite0x80_80C4B48:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	bl sub_80C4C52
+	bl battleObject_decideDeathEffectKind_80C4C52
 	strb r1, [r5,#oBattleObject_CurAnim]
 	strb r1, [r5,#oBattleObject_CurAnimCopy]
 	mov r0, r1
@@ -27672,7 +27672,7 @@ battle_stateEnter_loadSprite0x80_80C4B48:
 	thumb_local_start
 battleObject_refreshAndMirrorRelated_80C4B84:
 	push {lr}
-	bl sub_80C4C52
+	bl battleObject_decideDeathEffectKind_80C4C52
 	strb r1, [r5,#oBattleObject_CurAnim]
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -27808,9 +27808,9 @@ sub_80C4C4C:
 
 // symdb: Picks the death/disappear effect id (0xc or 0xd) for the related battle object based on its enemy NameID.
 // symdb: (r5 = current BattleObject*) -> r1 = effect id ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C4C52.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_decideDeathEffectKind_80C4C52.yaml
 	thumb_local_start
-sub_80C4C52:
+battleObject_decideDeathEffectKind_80C4C52:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r0,#oBattleObject_NameID]
@@ -27868,7 +27868,7 @@ off_80C4C78:
 	.byte 0xFF, 0x0, 0xC, 0x0, 0x0, 0x0, 0x4, 0x5, 0x0, 0x0, 0x5, 0xFF, 0xFF, 0x0
 	.byte 0x6, 0x0, 0x0, 0x0, 0x4, 0x5, 0x0, 0x0, 0x5, 0xFF, 0xFF, 0x0, 0xFF, 0x50
 	.byte 0x0, 0x0, 0x4, 0x5, 0x0, 0x0, 0x5, 0xFF, 0xFF, 0x0, 0x7, 0x0, 0x0, 0x0
-	thumb_func_end sub_80C4C52
+	thumb_func_end battleObject_decideDeathEffectKind_80C4C52
 
 // symdb: Dispatches a battle object's per-state handler via a small jump table on CurState, then refreshes the object's sprite.
 // symdb: void t3_0x0_80C4E58(void);  // in: r5=object ptr  out: r5/r8-r12, NZCV clobbered; r7/r10
@@ -36797,7 +36797,7 @@ sub_80C90DC:
 	bl checkBattleOrderMatch_802CE30
 	beq loc_80C9124
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, #0x1b
 	bl getIndexedSignedBytePair_8018842
 	lsl r6, r0, #0x10
@@ -55813,7 +55813,7 @@ loc_80D1FF8:
 	mov r2, #1
 loc_80D2004:
 	strb r2, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 locret_80D200A:
 	pop {r4,pc}
 	thumb_func_end sub_80D1FD8
@@ -58593,7 +58593,7 @@ riskyHoneyObject_update_0x0_sub_80D3474:
 	mov r2, #1
 loc_80D348E:
 	strb r2, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 locret_80D3494:
 	pop {r4,pc}
 	thumb_func_end riskyHoneyObject_update_0x0_sub_80D3474
@@ -76297,7 +76297,7 @@ sub_80DBB64:
 	push {r4,lr}
 	sub sp, sp, #0x14
 	ldr r0, [r5,#oBattleObject_ExtraVars]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	cmp r0, #0xff
 	beq loc_80DBC02
 	str r0, [sp]
@@ -86744,7 +86744,7 @@ loc_80E0BF6:
 	bl object_getFlipDirection // (int a1, int a2) -> int
 	mov r6, r0
 	ldrh r0, [r4,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	ldr r2, [r5,#oBattleObject_ExtraVars]
 	ldrb r2, [r2,#4]
 	bl getIndexedSignedBytePair_8018842
@@ -92203,7 +92203,7 @@ sub_80E32D8:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r0, [r0,#oBattleObject_NameID]
 	strh r0, [r5,#oBattleObject_NameID]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r1
 	mov r1, r0
 	mov r0, #0x80
@@ -101159,7 +101159,7 @@ sub_80E72C8:
 	ble loc_80E73C4
 loc_80E7314:
 	str r4, [r5,#oBattleObject_ExtraVars]
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, #0x1b
 	bl getIndexedSignedBytePair_8018842
 	lsl r6, r0, #0x10
@@ -107663,7 +107663,7 @@ loc_80EA1D8:
 	strh r0, [r5,#oBattleObject_Z16]
 	ldrb r0, [r4,#oBattleObject_DirectionFlip]
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
 	ldr r0, [r0]
 	tst r0, r0
@@ -109964,7 +109964,7 @@ loc_80EB7D6:
 	mov r1, #1
 	eor r0, r1
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 loc_80EB82A:
 	b locret_80EB83A
@@ -110361,7 +110361,7 @@ loc_80EBBA8:
 	mov r1, #1
 	eor r0, r1
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 loc_80EBBC8:
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -115220,7 +115220,7 @@ loc_80EDF1C:
 	beq loc_80EDF42
 loc_80EDF38:
 	strb r2, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 loc_80EDF42:
 	ldr r0, dword_80EDF58 // =0x3000 
@@ -119273,7 +119273,7 @@ sub_80EFDB2:
 	bl object_updateCollisionPanels
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x34 
 	add r0, r0, r5
 	ldmia r0!, {r1-r3}
@@ -171339,7 +171339,7 @@ sub_81096A4:
 	thumb_func_start sub_81096BA
 sub_81096BA:
 	push {r4,lr}
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	pop {r4,pc}
 	thumb_func_end sub_81096BA
 

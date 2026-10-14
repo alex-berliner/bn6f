@@ -648,7 +648,7 @@ int sub_814223E()
 
 
 // 0x8142248
-int sub_8142248()
+int battleObject_perFrameUpdate_8142248()
 {
     char v0; // zf
 
@@ -996,7 +996,7 @@ unsigned int sub_8142896()
 
 
 // 0x81428c2
-char *__fastcall sub_81428C2(int a1)
+char *__fastcall battleObject_getByIndex_81428C2(int a1)
 {
     return &byte_2006670[8 * a1];
 }
@@ -1220,7 +1220,7 @@ int sub_8142B28()
         {
             sub_809E1AE();
             if ( *(v0 + 20) == v2 )
-                v1 = *(sub_81428C2(*(v0 + 4)) + 2);
+                v1 = *(battleObject_getByIndex_81428C2(*(v0 + 4)) + 2);
         }
     }
     return v1;

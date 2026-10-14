@@ -878,7 +878,7 @@ int __noreturn sub_80B8A3C()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 20));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 20));
         v8 = v10;
         v7 = v9;
     }
@@ -5253,7 +5253,7 @@ int __noreturn sub_80BAF74()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 20));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 20));
         v8 = v10;
         v7 = v9;
     }
@@ -5657,7 +5657,7 @@ int __noreturn sub_80BB2C4()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 20));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 20));
         v8 = v10;
         v7 = v9;
     }
@@ -8427,7 +8427,7 @@ int __noreturn sub_80BCB74()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 20));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 20));
         v8 = v10;
         v7 = v9;
     }
@@ -8657,7 +8657,7 @@ int __noreturn sub_80BCD38()
         }
         else
         {
-            v9 = sub_800F26C(*(v0 + 40));
+            v9 = enemy_getArmPosition_800F26C(*(v0 + 40));
             v2 = v10;
             v1 = v9;
         }
@@ -10263,7 +10263,7 @@ int __noreturn sub_80BDBC8()
             }
             else
             {
-                v11 = sub_800F26C(*(v0 + 40));
+                v11 = enemy_getArmPosition_800F26C(*(v0 + 40));
                 v5 = v12;
                 v4 = v11;
             }
@@ -17015,7 +17015,7 @@ int sub_80C18B0()
             v27 = result;
             v30 = v0;
             v9 = *(&v32 + result - 1);
-            if ( sub_800F26C(v9->nameID) != 8 || v10 != 20 )
+            if ( enemy_getArmPosition_800F26C(v9->nameID) != 8 || v10 != 20 )
             {
                 v11 = object_getFrontDirection(v9) + v9->panelX;
                 v12 = v9->panelY;
@@ -17090,7 +17090,7 @@ int sub_80C18B0()
                         --result;
                     }
                     while ( v29 != 1 );
-                    if ( sub_800F26C(v13->nameID) != 8 || v23 != 20 )
+                    if ( enemy_getArmPosition_800F26C(v13->nameID) != 8 || v23 != 20 )
                     {
                         result = object_getFrontDirection(v13) + v13->panelX;
                         v25 = v13->panelY;
@@ -17104,7 +17104,7 @@ int sub_80C18B0()
                 else
                 {
                     v18 = v32;
-                    if ( sub_800F26C(v32->nameID) != 8 || v19 != 20 )
+                    if ( enemy_getArmPosition_800F26C(v32->nameID) != 8 || v19 != 20 )
                     {
                         result = object_getFrontDirection(v18) + v18->panelX;
                         v21 = v18->panelY;
@@ -19622,7 +19622,7 @@ signed int __noreturn sub_80C3024()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 20));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 20));
         v8 = v10;
         v7 = v9;
     }
@@ -22209,7 +22209,7 @@ void __noreturn sub_80C4848()
     }
     else
     {
-        v9 = sub_800F26C(*(v1 + 40));
+        v9 = enemy_getArmPosition_800F26C(*(v1 + 40));
         v8 = v10;
         v7 = v9;
     }
@@ -22516,7 +22516,7 @@ void __noreturn battle_stateEnter_loadSprite0x80_80C4B48()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     *v0 |= 2u;
-    sub_80C4C52();
+    battleObject_decideDeathEffectKind_80C4C52();
     *(v0 + 16) = v1;
     *(v0 + 17) = v1;
     sprite_setAnimation(v0, v1);
@@ -22541,7 +22541,7 @@ int battleObject_refreshAndMirrorRelated_80C4B84()
     int result; // r0
     int v9; // [sp-4h] [bp-8h]
 
-    sub_80C4C52();
+    battleObject_decideDeathEffectKind_80C4C52();
     *(v0 + 16) = v1;
     *v0 |= 2u;
     if ( battle_findPlayerByAlliance_800EB6C(*(v0 + 22)) )
@@ -22629,7 +22629,7 @@ int __fastcall sub_80C4C4C(int result)
 
 
 // 0x80c4c52
-int sub_80C4C52()
+int battleObject_decideDeathEffectKind_80C4C52()
 {
     int v0; // r5
     int result; // r0
@@ -29482,7 +29482,7 @@ int sub_80C90DC()
     checkBattleOrderMatch_802CE30();
     if ( v2 )
         goto LABEL_6;
-    v3 = sub_800F26C(*(v1 + 40));
+    v3 = enemy_getArmPosition_800F26C(*(v1 + 40));
     v5 = getIndexedSignedBytePair_8018842(v3, v4, 27) << 16;
     v7 = v6 << 16;
     v8 = object_getFrontDirection(v0);
@@ -43677,7 +43677,7 @@ unsigned int sub_80D1FD8()
         if ( result >> 31 != v2 >> 31 )
             v4 = 1;
         *(v0 + 23) = v4;
-        result = sub_800F2C6();
+        result = battleObject_refreshSpriteAndArm_800F2C6();
     }
     return result;
 }
@@ -45854,7 +45854,7 @@ AI *riskyHoneyObject_update_0x0_sub_80D3474()
         if ( result >> 31 != v2 >> 31 )
             v3 = 1;
         *(v0 + 23) = v3;
-        result = sub_800F2C6();
+        result = battleObject_refreshSpriteAndArm_800F2C6();
     }
     return result;
 }
@@ -59251,7 +59251,7 @@ signed int sub_80DBB64()
     u8 v11; // [sp+8h] [bp-14h]
     int v12; // [sp+Ch] [bp-10h]
 
-    v2 = sub_800F26C(*(v1 + 96));
+    v2 = enemy_getArmPosition_800F26C(*(v1 + 96));
     if ( v2 == 255 )
         return object_freeMemory();
     v11 = v4;
@@ -66762,7 +66762,7 @@ void sub_80E0B8C()
         *(v0 + 62) -= 2;
     }
     v6 = object_getFlipDirection(*(v1 + 22), *(v1 + 23));
-    v7 = sub_800F26C(*(v1 + 40));
+    v7 = enemy_getArmPosition_800F26C(*(v1 + 40));
     *(v0 + 52) += getIndexedSignedBytePair_8018842(v7, v8, *(*(v0 + 96) + 4)) * v6 << 16;
     *(v0 + 60) += v9 << 16;
     (*(&off_80E0C68 + *(v0 + 9)))();
@@ -71116,7 +71116,7 @@ void __noreturn sub_80E32D8()
     {
         v2 = *(*(v0 + 76) + 40);
         *(v0 + 40) = v2;
-        v3 = sub_800F26C(v2);
+        v3 = enemy_getArmPosition_800F26C(v2);
         sprite_load(v0, 128, v3, v4);
         v5 = unpackVerActorTyAndAIIdx_800F29C(*(v0 + 40));
         sub_8010DF6(v5, v6);
@@ -83460,7 +83460,7 @@ int sub_80EA1BC()
     --*(v0 + 58);
     --*(v0 + 62);
     *(v0 + 23) = *(v1 + 23);
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     if ( **(v0 + 100) && (v5 = *(v1 + 84), *(v5 + 6)) )
     {
         result = *(v5 + 22);
@@ -84959,7 +84959,7 @@ int __fastcall sub_80EBB98(int a1)
         if ( *(v2 + 52) == 1 )
         {
             v1->directionFlip ^= 1u;
-            sub_800F2C6();
+            battleObject_refreshSpriteAndArm_800F2C6();
             battleRefreshTrackedObjectArmPos_801DBD4();
         }
         v5 = v1->futurePanelX;
@@ -88727,7 +88727,7 @@ void sub_80EDF0C()
         if ( v4 & 0x1000 || (v5 = 1, v4 & 0x2000) )
         {
             v0->directionFlip = v5;
-            sub_800F2C6();
+            battleObject_refreshSpriteAndArm_800F2C6();
             battleRefreshTrackedObjectArmPos_801DBD4();
         }
         sub_800FFEE(12288);
@@ -91998,7 +91998,7 @@ void sub_80EFDB2()
         object_setCoordinatesFromPanels(v0);
         object_updateCollisionPanels(v0);
         v0->directionFlip = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         spawn_t1_0x0_EffectObject(v0, 1310720, v0->x, v0->y, v0->z + 1310720);
         *v6 |= 4u;
         object_clearFlag(-2147410880);
@@ -131785,7 +131785,7 @@ int sub_81096A4()
 // 0x81096ba
 AI *sub_81096BA()
 {
-    return sub_800F2C6();
+    return battleObject_refreshSpriteAndArm_800F2C6();
 }
 
 

@@ -613,7 +613,7 @@ loc_80029BC:
 	lsr r2, r2, #0x17
 	add r0, r0, r2
 	push {r1}
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	lsl r0, r0, #8
 	orr r0, r1
 	pop {r1}

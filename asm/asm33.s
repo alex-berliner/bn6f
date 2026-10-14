@@ -1455,7 +1455,7 @@ loc_8123C6C:
 	beq loc_8123C8C
 	ldr r3, [sp,#0x14]
 	ldr r7, [sp,#0xc]
-	bl sub_8134930
+	bl battle_aiCheckPanelRangeAndDoAttack_8134930
 	b loc_8123C92
 loc_8123C8C:
 	ldr r3, [sp,#0xc]
@@ -1533,7 +1533,7 @@ sub_8123D10:
 	mov r1, #0x9d
 	mov r2, #0x48
 	mov r4, #4
-	bl sub_8134930
+	bl battle_aiCheckPanelRangeAndDoAttack_8134930
 	pop {r4-r7,pc}
 	thumb_func_end sub_8123D10
 

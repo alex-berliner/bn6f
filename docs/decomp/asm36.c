@@ -5397,7 +5397,7 @@ int __fastcall battle_alignRowCheck_81348DC(int a1, int a2, int a3, int a4)
 
 
 // 0x8134930
-int __fastcall sub_8134930(int a1, int a2, int a3, int a4)
+int __fastcall battle_aiCheckPanelRangeAndDoAttack_8134930(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -6403,7 +6403,7 @@ int __fastcall battle_setupPETNavis_8135314(int a1, int a2, int a3, int a4)
             battle_spawnEStructRecordsFromTable_80465A0(*(v15 + 4 * v6));
             *&(&off_813539C)[v6][v5] = v10;
             v11 = *(v18 + 4 * v6);
-            sub_8134930(36, v16, v17, v6);
+            battle_aiCheckPanelRangeAndDoAttack_8134930(36, v16, v17, v6);
             *(v5 + 76) |= *&byte_81353A8[4 * v6];
         }
         ++v6;
@@ -6440,7 +6440,7 @@ int sub_81353DC()
 // 0x81353f0
 int __fastcall sub_81353F0(int a1, int a2)
 {
-    return sub_8134930(36, 165, 40, a2);
+    return battle_aiCheckPanelRangeAndDoAttack_8134930(36, 165, 40, a2);
 }
 
 

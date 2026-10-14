@@ -1416,7 +1416,7 @@ checkOWObjectInteractionAreasOverlap_8003894:
 	pop {pc}
 	.balign 4, 0
 jt_80038E8:
-	.word sub_8142248+1
+	.word battleObject_perFrameUpdate_8142248+1
 	.word 0x0
 	.word 0x0
 	.word 0x1
@@ -3128,7 +3128,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A78B8+1
 	.word sub_80A7C84+1
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1
-	.word sub_80A8208+1
+	.word battle_dispatchCustomJumptableByIndex_80A8208+1
 	.word sub_80A8394+1
 	.word sub_80A8654+1
 	.word sub_80A8728+1
@@ -10952,9 +10952,9 @@ off_8008018:
 // symdb: Per-frame main battle step dispatcher: reads the toolkit's battle step index and indirect-calls the matching handler through a small jumptable stored at 0x08008038.
 // symdb: (uses r10 as toolkit; reads dword_203CA70[0] = CurStep, also [4] later) -> r0 = 0 ; side
 // symdb: effects: pops {r5,pc} and tail-bx's into the chosen step handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800801C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runMainStep_800801C.yaml
 	thumb_local_start
-sub_800801C:
+battle_runMainStep_800801C:
 	push {r5,lr}
 	ldr r5, off_8008060 // =dword_203CA70
 	ldr r1, off_8008034 // =off_8008038
@@ -10981,7 +10981,7 @@ off_8008038:
 	.word battle_objAdvanceStateTimer_8008492+1
 off_8008060:
 	.word dword_203CA70
-	thumb_func_end sub_800801C
+	thumb_func_end battle_runMainStep_800801C
 
 // symdb: Story-step per-frame driver: ticks the battle navi AI joypads, kicks off a story-battle idle "KindEffect" dispatch (skipping or applying effects when the battle is ending or has a specific battle-effect flag), and falls back to a "no cross-net yet" path that resets navi status gfx + state.
 // symdb: () -> void ; side effects on a per-battle state struct (r5), toolkit/r10 state, AI joypads, navi
@@ -11723,7 +11723,7 @@ loc_80085DC:
 	mov r0, #0xd
 	bl sub_801DFB8
 loc_80085E8:
-	bl sub_800A21C
+	bl battle_shouldPlayDeathAnim_800A21C
 	cmp r0, #0
 	beq locret_80085FC
 	cmp r0, #1
@@ -12330,7 +12330,7 @@ loc_8008A34:
 	bl sub_801E15C
 	b locret_8008A60
 loc_8008A4C:
-	bl sub_800A21C
+	bl battle_shouldPlayDeathAnim_800A21C
 	cmp r0, #0
 	beq locret_8008A60
 	cmp r0, #1
@@ -12874,7 +12874,7 @@ loc_8008E3E:
 	bl sub_801E15C
 	b locret_8008E6A
 loc_8008E56:
-	bl sub_800A21C
+	bl battle_shouldPlayDeathAnim_800A21C
 	cmp r0, #0
 	beq locret_8008E6A
 	cmp r0, #1
@@ -13670,7 +13670,7 @@ sub_800938A:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Unk_03]
 loc_800939A:
-	bl sub_800801C
+	bl battle_runMainStep_800801C
 	bl someChipHandValidationHappensHere_800B090
 	cmp r0, #6
 	bne loc_80093B0
@@ -15813,9 +15813,9 @@ loc_800A218:
 // symdb: Returns 1 only when the battle is not time-stopped, not over, and the current anim state == 0x4000; otherwise 0.
 // symdb: () -> r0 = 1 if condition met else 0 ; side effects: reads toolkit (r10) state and a word from
 // symdb: sub_801DFE4; sets nz/c/v flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A21C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_shouldPlayDeathAnim_800A21C.yaml
 	thumb_local_start
-sub_800A21C:
+battle_shouldPlayDeathAnim_800A21C:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A23A
@@ -15834,7 +15834,7 @@ loc_800A23A:
 	.balign 4, 0
 dword_800A240:
 	.word 0x4000
-	thumb_func_end sub_800A21C
+	thumb_func_end battle_shouldPlayDeathAnim_800A21C
 
 	thumb_local_start
 sub_800A244:

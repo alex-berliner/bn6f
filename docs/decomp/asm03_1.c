@@ -73,7 +73,7 @@ void callback_noop_8033A7C()
 
 
 // 0x8033a80
-void __noreturn sub_8033A80()
+void __noreturn battle_initBattleStartOverlay_8033A80()
 {
     sprite_queueOamByFrameIndex_8033B80(0);
 }

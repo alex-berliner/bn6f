@@ -374,7 +374,7 @@ signed int __fastcall decompSprites_80029A8(_BYTE *a1)
         if ( *i & 0xF0 )
         {
             v15 = v1;
-            v4 = sub_800F26C(i[2] + ((i[3] << 8) & 0x1FF));
+            v4 = enemy_getArmPosition_800F26C(i[2] + ((i[3] << 8) & 0x1FF));
             v6 = (v4 << 8) | v5;
             v7 = 0;
             while ( 1 )

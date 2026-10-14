@@ -9357,9 +9357,9 @@ loc_813492A:
 // symdb: (r0 = HP-offset 0x24, r1 = x-offset 0xA5, r2 = alliance/whatever-offset 0x28, r3 = attacker-flag
 // symdb: index, r5 = BattleObject ptr, r7 = AIAttackVars ptr) -> r0 = 0x20 if HP-bit set, 0x40 if not (or
 // symdb: 1 on branch); calls sub_81171F4/sub_81171D4 on AIAttackVars
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134930.yaml
-	thumb_func_start sub_8134930
-sub_8134930:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiCheckPanelRangeAndDoAttack_8134930.yaml
+	thumb_func_start battle_aiCheckPanelRangeAndDoAttack_8134930
+battle_aiCheckPanelRangeAndDoAttack_8134930:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -9420,7 +9420,7 @@ off_81349A0:
 	.word byte_81349AC
 byte_81349AC:
 	.byte 0x5, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0
-	thumb_func_end sub_8134930
+	thumb_func_end battle_aiCheckPanelRangeAndDoAttack_8134930
 
 	thumb_local_start
 sub_81349B4:
@@ -10782,7 +10782,7 @@ loc_8135328:
 	lsl r4, r4, #2
 	ldr r7, [r7,r4]
 	mov r4, #6
-	bl sub_8134930
+	bl battle_aiCheckPanelRangeAndDoAttack_8134930
 	pop {r4}
 	ldr r0, off_81353A4 // =byte_81353A8
 	lsl r1, r4, #2
@@ -10850,9 +10850,9 @@ sub_81353DC:
 	.byte 0, 0
 	thumb_func_end sub_81353DC
 
-// symdb: Thin per-frame wrapper that calls sub_8134930 with fixed opcode parameters (0x24, 0xa5, 0x28) on a battle object.
+// symdb: Thin per-frame wrapper that calls battle_aiCheckPanelRangeAndDoAttack_8134930 with fixed opcode parameters (0x24, 0xa5, 0x28) on a battle object.
 // symdb: (r0 = ?, r1 = ?, r5 = ?, lr) -> r2 = ?, r3 = ?, r5 = preserved, r6 = ? ; side effects via
-// symdb: sub_8134930
+// symdb: battle_aiCheckPanelRangeAndDoAttack_8134930
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81353F0.yaml
 	thumb_local_start
 sub_81353F0:
@@ -10863,7 +10863,7 @@ sub_81353F0:
 	mov r1, #0xa5
 	mov r2, #0x28 
 	mov r4, #6
-	bl sub_8134930
+	bl battle_aiCheckPanelRangeAndDoAttack_8134930
 	pop {r4-r7,pc}
 	thumb_func_end sub_81353F0
 

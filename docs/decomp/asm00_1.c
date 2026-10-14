@@ -6423,7 +6423,7 @@ int __fastcall sub_8007FD2(int a1)
 
 
 // 0x800801c
-int sub_800801C()
+int battle_runMainStep_800801C()
 {
     int v0; // r0
 
@@ -7022,7 +7022,7 @@ int sub_800855E()
                 battle_isTimeStop();
                 if ( v6 )
                     sub_801DFB8(13);
-                result = sub_800A21C();
+                result = battle_shouldPlayDeathAnim_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -7529,7 +7529,7 @@ int battle_advancePostMovePhase_80089CC()
             v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
-                result = sub_800A21C();
+                result = battle_shouldPlayDeathAnim_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -7986,7 +7986,7 @@ int sub_8008DDC()
             v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
-                result = sub_800A21C();
+                result = battle_shouldPlayDeathAnim_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -8645,7 +8645,7 @@ void __fastcall sub_800938A(int a1, int a2, int a3, int a4)
         clearDword_203CA70Record_80084C0(*(v4 + 3), a2, a3, a4);
         *(v4 + 3) = 4;
     }
-    sub_800801C();
+    battle_runMainStep_800801C();
     someChipHandValidationHappensHere_800B090();
     if ( v5 == 6 )
     {
@@ -10536,7 +10536,7 @@ BOOL battle_checkNaviFreeze_800A1D0()
 
 
 // 0x800a21c
-BOOL sub_800A21C()
+BOOL battle_shouldPlayDeathAnim_800A21C()
 {
     char v0; // zf
 

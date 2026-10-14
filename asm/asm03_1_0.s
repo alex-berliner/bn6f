@@ -325,7 +325,7 @@ off_8033A18:
 	.word JumpTable8033A1C
 JumpTable8033A1C:
 	.word callback_noop_8033A7C+1 // (self: *const S2011E30 $r5) -> ()
-	.word sub_8033A80+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_initBattleStartOverlay_8033A80+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033AB0+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_resetState_8033AC4+1 // (self: * S2011E30 $r5) -> ()
@@ -333,8 +333,8 @@ JumpTable8033A1C:
 	.word sub_8033AF0+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033A80+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033A80+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_initBattleStartOverlay_8033A80+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_initBattleStartOverlay_8033A80+1 // (self: * S2011E30 $r5) -> ()
 off_8033A48:
 	.word JumpTableInternet8033A4C
 // symdb: Internet-area spawn jumptable: one spawn routine per internet area (e.g. GreenArea_UnkFunction_8077e60, Underground_UnkFunction_8079468, ...), each spawning that area's map objects (e.g. MrWeatherComp_SpawnMapObjectsForMap -> SpawnObjectsFromList).
@@ -368,9 +368,9 @@ callback_noop_8033A7C: // (self: *const S2011E30 $r5) -> ()
 // symdb: Initializes the battle-start UI overlay by queuing its OAM tiles and PET navi tileset DMA, then drawing the overlay frame 0.
 // symdb: (r5 = *S2011E30, r10 = *Toolkit) -> none ; side effects: queues OAM, queues a 32-byte PET navi
 // symdb: tileset DMA into VRAM staging area at 0x030016D0, draws battle-start overlay
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033A80.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBattleStartOverlay_8033A80.yaml
 	thumb_local_start
-sub_8033A80: // (self: * S2011E30 $r5) -> ()
+battle_initBattleStartOverlay_8033A80: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
 	bl sprite_queueOamByFrameIndex_8033B80
@@ -379,7 +379,7 @@ sub_8033A80: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl gfxTransfer_8033DA0 // (a0: u32?) -> ()
 	pop {pc}
-	thumb_func_end sub_8033A80
+	thumb_func_end battle_initBattleStartOverlay_8033A80
 
 // symdb: Per-frame update handler for the scene/entity while in the real world — resets two per-frame state flags, runs the real-world update logic, then queues a graphics transfer.
 // symdb: void realWorld_onUpdate_8033A96(S2011E30* self /* in r5 */)

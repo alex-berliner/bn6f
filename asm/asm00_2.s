@@ -751,9 +751,9 @@ off_800F260:
 
 // symdb: Resolves an arm/part slot id (0xCD..0xFF) to a 5-byte record of (x, y, ?, ?, ?) from a packed table, or otherwise returns the AI struct's first two bytes for normal actor ids.
 // symdb: (r0 = slotOrActorIndex) -> r0 = x, r1 = y, r2 = ?, r3 = ?, r4 = ? ; no side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F26C.yaml
-	thumb_func_start sub_800F26C
-sub_800F26C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/enemy_getArmPosition_800F26C.yaml
+	thumb_func_start enemy_getArmPosition_800F26C
+enemy_getArmPosition_800F26C:
 	push {lr}
 	mov r2, #0xcd
 	sub r2, r0, r2
@@ -778,7 +778,7 @@ loc_800F286:
 	ldrb r4, [r3,#4]
 	ldrb r3, [r3,#3]
 	pop {pc}
-	thumb_func_end sub_800F26C
+	thumb_func_end enemy_getArmPosition_800F26C
 
 // symdb: Unpack an enemy's {version, actor type, AI index} record into registers.
 // symdb: (r0 = enemy index) -> r0 = actor type, r1 = AI index, r2 = version (bytes 1, 2, 0 of the record
@@ -827,9 +827,9 @@ object_setAnimation:
 // symdb: Refresh the battle object's sprite facing/arm position each frame (player objects get a custom arm-position write, others use the tracked-arm table).
 // symdb: (r5 = battleObject) -> void ; side effects: updates the object's sprite flip and arm-position
 // symdb: table entry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F2C6.yaml
-	thumb_func_start sub_800F2C6
-sub_800F2C6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_refreshSpriteAndArm_800F2C6.yaml
+	thumb_func_start battleObject_refreshSpriteAndArm_800F2C6
+battleObject_refreshSpriteAndArm_800F2C6:
 	push {lr}
 	bl object_getFlip // () -> int
 	bl sprite_setFlip
@@ -848,7 +848,7 @@ loc_800F2EA:
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 locret_800F2EE:
 	pop {pc}
-	thumb_func_end sub_800F2C6
+	thumb_func_end battleObject_refreshSpriteAndArm_800F2C6
 
 	thumb_local_start
 sub_800F2F0:
@@ -873,7 +873,7 @@ loc_800F30C:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 locret_800F316:
 	pop {pc}
 	thumb_func_end sub_800F2FC
@@ -13369,7 +13369,7 @@ off_80148DC:
 off_80148E0:
 	.word sub_80148EC+1
 	.word activateCrossHappensHere_8014944+1
-	.word sub_801498E+1
+	.word battle_runBeastOutIntro_801498E+1
 	thumb_func_end sub_80148CC
 
 	thumb_local_start
@@ -13466,9 +13466,9 @@ locret_801498C:
 // symdb: (r5 = beast-state scratch, r10 = toolkit) -> r0 = 1 if fade is still active (exits early),
 // symdb: otherwise void-like ; side effects: starts a screen fade, writes [r5,#0] and [r5,#3], dispatches
 // symdb: a battle step
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801498E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBeastOutIntro_801498E.yaml
 	thumb_local_start
-sub_801498E:
+battle_runBeastOutIntro_801498E:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13528,7 +13528,7 @@ dword_80149F8:
 	.word 0x24080
 dword_80149FC:
 	.word 0x4080
-	thumb_func_end sub_801498E
+	thumb_func_end battle_runBeastOutIntro_801498E
 
 	thumb_local_start
 sub_8014A00:
@@ -13682,7 +13682,7 @@ sub_8014B18:
 	bl object_clearInvulnerableTime
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
@@ -13908,7 +13908,7 @@ sub_8014D08:
 	bl object_clearInvulnerableTime
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
@@ -14169,7 +14169,7 @@ sub_8014F40:
 	bl object_clearInvulnerableTime
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
@@ -14422,7 +14422,7 @@ sub_801516C:
 	bl object_clearInvulnerableTime
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
@@ -14715,7 +14715,7 @@ sub_80153EC:
 	bl object_clearInvulnerableTime
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_Unk_5c]
@@ -15012,7 +15012,7 @@ loc_801565E:
 	bl object_updateCollisionPanels
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x34 
 	add r0, r0, r5
 	ldmia r0!, {r1-r3}
@@ -15134,7 +15134,7 @@ loc_801577C:
 	bl sub_8011450
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x34 
 	add r0, r0, r5
 	ldmia r0!, {r1-r3}
@@ -18416,7 +18416,7 @@ loc_801705C: // else
 
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 
 loc_8017064: // endif
 
@@ -21220,7 +21220,7 @@ loc_801881A:
 	mov r4, r1
 	mov r5, r2
 	mov r6, r3
-	bl sub_800F26C
+	bl enemy_getArmPosition_800F26C
 	mov r2, r4
 	bl getIndexedSignedBytePair_8018842
 	push {r0,r1}
@@ -26652,7 +26652,7 @@ off_801BF00:
 	.word off_801BF04
 off_801BF04:
 	.word battle_loadChipPreviewGfxInit_801BFEE+1
-	.word sub_801BFF8+1
+	.word battle_loadChipPreviewGfxDefault_801BFF8+1
 	.word battleObject_updateHPMeters_801C168+1
 	.word sub_801C368+1
 	.word battleObject_tickCustomGauge_801C470+1
@@ -26755,14 +26755,14 @@ battle_loadChipPreviewGfxInit_801BFEE:
 // symdb: Wrapper that calls sub_801C002 with r0=0 to load chip preview graphics from the hand table using default index 0
 // symdb: (r0 = ...) -> r0 = ... ; side effects: clobbers r0-r3, may clobber r4-r7 (preserved), branches
 // symdb: to sub_801C002
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BFF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadChipPreviewGfxDefault_801BFF8.yaml
 	thumb_local_start
-sub_801BFF8:
+battle_loadChipPreviewGfxDefault_801BFF8:
 	push {lr}
 	mov r0, #0
 	bl battle_loadChipPreviewGfxFromHandTable_801C002
 	pop {pc}
-	thumb_func_end sub_801BFF8
+	thumb_func_end battle_loadChipPreviewGfxDefault_801BFF8
 
 // symdb: Loads the per-slot chip icon GFX (0x80 bytes per entry, 6 slots) for the chip-selection preview panel from the active-hand table, using either the chip database's sprite or a fixed "special effect" override tile.
 // symdb: (r0 = actor_side_tag: 0 or 1) -> r0 = 0 ; side effects: 6 DMA queue ops into VRAM at

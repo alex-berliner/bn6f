@@ -10275,7 +10275,7 @@ int sub_802D738()
         v0->z = 0;
         object_updateCollisionPanels(v0);
         v0->directionFlip = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         v4 = object_clearFlag(7233);
         object_clearFlag2(v4);
         object_setAnimation(v0);
@@ -10475,7 +10475,7 @@ int sub_802D950()
         v0->z = 0;
         object_updateCollisionPanels(v0);
         v0->directionFlip = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         v4 = object_clearFlag(7233);
         object_clearFlag2(v4);
         object_setAnimation(v0);
@@ -10633,7 +10633,7 @@ int sub_802DACC()
         v0->z = 0;
         object_updateCollisionPanels(v0);
         v0->directionFlip = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         object_reservePanel(v0->futurePanelX, v0->futurePanelY);
         object_clearCollisionRegion();
         v4 = object_clearFlag(7233);
@@ -13813,7 +13813,7 @@ void camera_LoadPositionFromSource_8030126()
 
 
 // 0x8030136
-unsigned __int16 *sub_8030136()
+unsigned __int16 *camera_applyDeltaToRenderInfoScroll_8030136()
 {
     unsigned __int16 *v0; // r5
     int v1; // r10

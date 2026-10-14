@@ -657,7 +657,7 @@ int __fastcall sub_8123C20(int a1, int a2, void *a3, int a4)
         if ( v11 == 1 )
             result = battle_alignRowCheck_81348DC(v10, 157, 72, v13);
         else
-            result = sub_8134930(v10, 157, 72, v6);
+            result = battle_aiCheckPanelRangeAndDoAttack_8134930(v10, 157, 72, v6);
     }
     return result;
 }
@@ -689,7 +689,7 @@ int sub_8123CFC()
 // 0x8123d10
 int __fastcall sub_8123D10(int a1, int a2)
 {
-    return sub_8134930(36, 157, 72, a2);
+    return battle_aiCheckPanelRangeAndDoAttack_8134930(36, 157, 72, a2);
 }
 
 

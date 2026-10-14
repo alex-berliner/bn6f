@@ -15801,7 +15801,7 @@ sub_802D738:
 	bl object_updateCollisionPanels
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldr r0, dword_802D798 // =0x1c41 
 	bl object_clearFlag // (int bitfield) -> void
 	ldr r1, dword_802D79C // =0x10 
@@ -16035,7 +16035,7 @@ sub_802D950:
 	bl object_updateCollisionPanels
 	bl sub_800F46C
 	strb r0, [r5,#oBattleObject_DirectionFlip]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldr r0, dword_802DCB4 // =0x1c41 
 	bl object_clearFlag // (int bitfield) -> void
 	mov r1, #0x10
@@ -16201,7 +16201,7 @@ sub_802DACC:
 	bl object_updateCollisionPanels
 	bl sub_800F46C
 	strb r0, [r5,#0x17]
-	bl sub_800F2C6
+	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldrb r0, [r5,#0x14]
 	ldrb r1, [r5,#0x15]
 	bl object_reservePanel
@@ -21346,11 +21346,11 @@ off_8030034:
 off_803003C:
 	.word off_8030040
 off_8030040:
-	.word sub_8030136+1
-	.word sub_8030136+1
+	.word camera_applyDeltaToRenderInfoScroll_8030136+1
+	.word camera_applyDeltaToRenderInfoScroll_8030136+1
 	.word camera_applyScrollToBgLayers_8030158+1
 	.word sub_8030194+1
-	.word sub_8030136+1
+	.word camera_applyDeltaToRenderInfoScroll_8030136+1
 	thumb_func_end camera_802FFF4
 
 // symdb: Camera object update dispatcher — reads the camera's mode byte and jumps to the matching camera update handler from a small jump table.
@@ -21517,9 +21517,9 @@ camera_LoadPositionFromSource_8030126:
 // symdb: Applies the camera's positional delta (Unk_04/Unk_06 minus Unk_08/Unk_0a) to the toolkit's RenderInfo scroll register pair (Unk_10/12) and writes the same value to its offset copy (Unk_14/16).
 // symdb: (r5 = Camera*, r10 = Toolkit*; uses both) -> no return value ; side effect: writes
 // symdb: Toolkit->RenderInfo+0x10, +0x12, +0x14, +0x16
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030136.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_applyDeltaToRenderInfoScroll_8030136.yaml
 	thumb_local_start
-sub_8030136:
+camera_applyDeltaToRenderInfoScroll_8030136:
 	ldrh r1, [r5,#oCamera_Unk_04]
 	ldrh r2, [r5,#oCamera_Unk_08]
 	sub r1, r1, r2
@@ -21537,7 +21537,7 @@ sub_8030136:
 	strh r6, [r0,#oRenderInfo_Unk_14]
 	strh r7, [r0,#oRenderInfo_Unk_16]
 	mov pc, lr
-	thumb_func_end sub_8030136
+	thumb_func_end camera_applyDeltaToRenderInfoScroll_8030136
 
 // symdb: Applies the camera's frame-to-frame movement delta to the background scroll positions, always scrolling the first background layer pair and also the second pair unless a check (sub_80269E2) says not to.
 // symdb: int sub_8030158(CameraState* camera /*r5*/, Toolkit* toolkit /*r10*/)

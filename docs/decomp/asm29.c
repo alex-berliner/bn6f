@@ -1103,14 +1103,14 @@ char *sub_80A5AF8()
         if ( !v5 )
             sub_80A5FD0();
         *(v0 + 8) = 4;
-        sub_80A5B70();
+        battle_beastOutTick_80A5B70();
     }
     return result;
 }
 
 
 // 0x80a5b70
-void __noreturn sub_80A5B70()
+void __noreturn battle_beastOutTick_80A5B70()
 {
     int v0; // r5
     int v1; // r6
@@ -3709,7 +3709,7 @@ int battleObject_runAIDispatchWithCurState_80A7D90()
 {
     int v0; // r5
 
-    sub_81428C2(*(v0 + 4));
+    battleObject_getByIndex_81428C2(*(v0 + 4));
     return (*(&off_80A7DAC + *(v0 + 8)))();
 }
 
@@ -4039,7 +4039,7 @@ int __fastcall sub_80A8038(int a1)
 
 
 // 0x80a8208
-int sub_80A8208()
+int battle_dispatchCustomJumptableByIndex_80A8208()
 {
     int v0; // r5
 

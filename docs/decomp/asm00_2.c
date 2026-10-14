@@ -399,7 +399,7 @@ char *__fastcall enemy_getStruct2(int a1)
 
 
 // 0x800f26c
-int __fastcall sub_800F26C(int a1)
+int __fastcall enemy_getArmPosition_800F26C(int a1)
 {
     char (*v1)[8]; // r0
     int v2; // r1
@@ -475,7 +475,7 @@ void __usercall object_setAnimation(Battle *obj@<R5>)
 
 
 // 0x800f2c6
-AI *sub_800F2C6()
+AI *battleObject_refreshSpriteAndArm_800F2C6()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -531,7 +531,7 @@ AI *__fastcall sub_800F2FC(int a1)
         if ( ((v6 < 0) ^ v5) | (v6 == 0) )
             LOBYTE(result) = 1;
         v1[23] = result ^ v1[22];
-        result = sub_800F2C6();
+        result = battleObject_refreshSpriteAndArm_800F2C6();
     }
     return result;
 }
@@ -9447,7 +9447,7 @@ int activateCrossHappensHere_8014944()
 
 
 // 0x801498e
-int sub_801498E()
+int battle_runBeastOutIntro_801498E()
 {
     int v0; // r5
     int v1; // r0
@@ -9589,7 +9589,7 @@ signed int __noreturn sub_8014B18()
     object_updateCollisionPanels(v0);
     object_clearInvulnerableTime();
     v0->directionFlip = sub_800F46C();
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     battleObject_clearPwrAtkState_8012EA8(v0);
     sub_80C4C3A(*&v0->ai->pad_58[4]);
     sub_80158FA();
@@ -9782,7 +9782,7 @@ signed int __noreturn sub_8014D08()
     object_updateCollisionPanels(v0);
     object_clearInvulnerableTime();
     v0->directionFlip = sub_800F46C();
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     battleObject_clearPwrAtkState_8012EA8(v0);
     sub_80C4C3A(*&v0->ai->pad_58[4]);
     v0->parent = 0;
@@ -9997,7 +9997,7 @@ signed int __noreturn sub_8014F40()
     object_updateCollisionPanels(v0);
     object_clearInvulnerableTime();
     v0->directionFlip = sub_800F46C();
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     battleObject_clearPwrAtkState_8012EA8(v0);
     sub_80C4C3A(*&v0->ai->pad_58[4]);
     v0->parent = 0;
@@ -10206,7 +10206,7 @@ signed int __noreturn sub_801516C()
     object_updateCollisionPanels(v0);
     object_clearInvulnerableTime();
     v0->directionFlip = sub_800F46C();
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     battleObject_clearPwrAtkState_8012EA8(v0);
     sub_80C4C3A(*&v0->ai->pad_58[4]);
     v0->parent = 0;
@@ -10434,7 +10434,7 @@ signed int __noreturn sub_80153EC()
     object_updateCollisionPanels(v0);
     object_clearInvulnerableTime();
     v0->directionFlip = sub_800F46C();
-    sub_800F2C6();
+    battleObject_refreshSpriteAndArm_800F2C6();
     battleObject_clearPwrAtkState_8012EA8(v0);
     sub_80C4C3A(*&v0->ai->pad_58[4]);
     sub_80158FA();
@@ -10677,7 +10677,7 @@ void sub_801562C()
         object_setCoordinatesFromPanels(v0);
         object_updateCollisionPanels(v0);
         *(v0 + 23) = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         spawn_t1_0x0_EffectObject(v0, 1310720, *(v0 + 52), *(v0 + 56), *(v0 + 60) + 1310720);
         *v8 |= 4u;
         object_clearFlag(&loc_8001440);
@@ -10780,7 +10780,7 @@ signed int sub_8015766()
         v0->currAnimationCpy = -1;
         sub_8011450(v0);
         v0->directionFlip = sub_800F46C();
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
         spawn_t1_0x0_EffectObject(v0, 1310720, v0->x, v0->y, v0->z + 1310720);
         *v7 |= 4u;
         object_clearFlag(-2146362304);
@@ -13045,7 +13045,7 @@ int __noreturn battleObject_initNaviObject_8016F56()
     if ( v10 == 56 || v10 == 48 || v10 == 60 )
     {
         *(v0 + 23) = 0;
-        sub_800F2C6();
+        battleObject_refreshSpriteAndArm_800F2C6();
     }
     else
     {
@@ -14758,7 +14758,7 @@ int __fastcall getBattleArmPositionMaybe_8018810(int a1, int a2, int a3, int a4)
     v4 = a2;
     v5 = a3;
     v6 = a4;
-    v7 = sub_800F26C(a1);
+    v7 = enemy_getArmPosition_800F26C(a1);
     v9 = getIndexedSignedBytePair_8018842(v7, v8, v4);
     return v9 * object_getFlipDirection(v5, v6);
 }
@@ -18326,7 +18326,7 @@ int battle_loadChipPreviewGfxInit_801BFEE()
 
 
 // 0x801bff8
-int sub_801BFF8()
+int battle_loadChipPreviewGfxDefault_801BFF8()
 {
     return battle_loadChipPreviewGfxFromHandTable_801C002(0);
 }
