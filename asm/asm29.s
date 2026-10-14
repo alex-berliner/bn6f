@@ -20,7 +20,7 @@ ho_80A4984:
 off_80A499C:
 	.word jt_80A49A0
 jt_80A49A0:
-	.word sub_80A49B0+1
+	.word battleObject_initFromParams_80A49B0+1
 	.word event_80A4A08+1
 	.word sub_80A4A90+1
 off_80A49AC:
@@ -30,9 +30,9 @@ off_80A49AC:
 // symdb: Initialise an OverworldNPCObject-style object (r5) from a per-object parameter table (r7): load its sprite, set animation/no-shadow, then conditionally apply Z-coord/layer priority and a sprite priority/palette, before stamping CurState=4 and calling the post-event hook event_80A4A08.
 // symdb: (r5 = object base, r7 = params table) -> void ; side effects: mutates r5's header/sprite and
 // symdb: writes object field 0x8 = 4, 0x6 = 0, 0x7 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A49B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initFromParams_80A49B0.yaml
 	thumb_local_start
-sub_80A49B0:
+battleObject_initFromParams_80A49B0:
 	push {lr}
 	mov r0, #0x80
 	ldrb r1, [r7]
@@ -68,7 +68,7 @@ loc_80A49E8:
 	strb r0, [r5,#7]
 	bl event_80A4A08
 	pop {pc}
-	thumb_func_end sub_80A49B0
+	thumb_func_end battleObject_initFromParams_80A49B0
 
 	thumb_local_start
 event_80A4A08:
@@ -6729,7 +6729,7 @@ sub_80A8728:
 off_80A8738:
 	.word off_80A873C
 off_80A873C:
-	.word sub_80A8748+1
+	.word overworldObject_spawnFromScenarioEffectIndex_80A8748+1
 	.word sub_80A87D2+1
 	.word sub_80A87E8+1
 	thumb_func_end sub_80A8728
@@ -6738,9 +6738,9 @@ off_80A873C:
 // symdb: (r5 = owoPtr, r10 = toolkit) -> r0 = scenario/effect index byte (0xE8 sentinel) ; side effects:
 // symdb: writes object+0x0, +0x14 (panel coords), +0xC (spr layer), object sprite, plays optional sound
 // symdb: effect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8748.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/overworldObject_spawnFromScenarioEffectIndex_80A8748.yaml
 	thumb_local_start
-sub_80A8748:
+overworldObject_spawnFromScenarioEffectIndex_80A8748:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	tst r0, r0
@@ -6793,7 +6793,7 @@ off_80A87C4:
 	.word byte_80A87C8
 byte_80A87C8:
 	.byte 0xFA, 0x0, 0xB0, 0x0, 0xA, 0x1, 0xAF, 0x0, 0x0, 0x0
-	thumb_func_end sub_80A8748
+	thumb_func_end overworldObject_spawnFromScenarioEffectIndex_80A8748
 
 	thumb_local_start
 sub_80A87D2:
@@ -8502,7 +8502,7 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = owMapObject_mrWeatherInit_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
@@ -8518,7 +8518,7 @@ sub_80A9430:
 off_80A9440:
 	.word off_80A9444
 off_80A9444:
-	.word sub_80A9458+1
+	.word owMapObject_mrWeatherInit_80A9458+1
 	.word object_mrWeatherStep_80A94DC+1
 	.word sub_80A94F8+1
 	.word sub_80A9568+1
@@ -8528,9 +8528,9 @@ off_80A9454:
 
 // symdb: Initialize the Mr. Weather overworld NPC object (r5): set up sprite 0x80/anim 0, compute a position from sub_80A9570, clear event 0xBFC, and jump to either the "active" sub-init or the normal step fn depending on event 0xBFB and the per-instance 0xBF4 flag.
 // symdb: (r5 = owMapObject self, r10 = ToolkitPtr, lr) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9458.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_mrWeatherInit_80A9458.yaml
 	thumb_local_start
-sub_80A9458:
+owMapObject_mrWeatherInit_80A9458:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -8583,7 +8583,7 @@ loc_80A94D2:
 	strb r0, [r5,#8]
 	bl object_mrWeatherStep_80A94DC
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A9458
+	thumb_func_end owMapObject_mrWeatherInit_80A9458
 
 // symdb: Per-frame step for the Mr. Weather comp map object: if story event 0xBFC is unset, hand it off to the proximity trigger; then run generic step and sprite update.
 // symdb: (r5 = OverworldMapObject*, r6/r10 preserved, lr = return) -> r0 = OverworldMapObject* ; no other

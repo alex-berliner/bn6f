@@ -391,7 +391,7 @@ onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 	bl sprite_queueOamByFrameIndex_8033B80
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
-	bl sub_8033BE8
+	bl battleObject_queueRealWorldNaviIconOAM_8033BE8
 	mov r0, #0
 	bl gfxTransfer_8033DA0 // (a0: u32?) -> ()
 	pop {pc}
@@ -420,7 +420,7 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
-	bl sub_8033BE8
+	bl battleObject_queueRealWorldNaviIconOAM_8033BE8
 	pop {pc}
 	thumb_func_end battle_resetState_8033AC4
 
@@ -443,7 +443,7 @@ sub_8033AF0: // (self: * S2011E30 $r5) -> ()
 	mov r0, #0
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
-	bl sub_8033BE8
+	bl battleObject_queueRealWorldNaviIconOAM_8033BE8
 	pop {pc}
 	thumb_func_end sub_8033AF0
 
@@ -564,9 +564,9 @@ byte_8033BB8:
 // symdb: Battle-context helper that swaps in the correct "real-world navi" OAM tile/palette for the current PET navi and queues one GFX sprite transfer.
 // symdb: (r10 = toolkit) -> r0 = 0xff ; side effects: QueueWordAlignedGFXTransfer (0x80-byte src ->
 // symdb: 0x06017380), sprite_queueOamEntryThunk(0x40120006, 0xC79C, 1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033BE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueRealWorldNaviIconOAM_8033BE8.yaml
 	thumb_local_start
-sub_8033BE8:
+battleObject_queueRealWorldNaviIconOAM_8033BE8:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
@@ -614,7 +614,7 @@ dword_8033C60:
 	.word 0x40120006
 dword_8033C64:
 	.word 0xC79C
-	thumb_func_end sub_8033BE8
+	thumb_func_end battleObject_queueRealWorldNaviIconOAM_8033BE8
 
 // symdb: Per-frame chip-slot GFX animator that cycles a tile pointer through VRAM 0x06017400, runs paired window/HBlank DMA setups, and plays spin SFX 0x9A on a cooldown.
 // symdb: (u8 *state) -> (void)  // r5 = state pointer; r0/r1/r2/r3/r4/r6/r7/lr preserved aside from

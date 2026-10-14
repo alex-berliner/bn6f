@@ -18997,7 +18997,7 @@ sub_80173F4:
 off_8017408:
 	.word off_801740C
 off_801740C:
-	.word sub_801741C+1
+	.word battle_destroyBattleObject_801741C+1
 	.word sub_801746E+1
 	.word battle_objectTickTimerAndSetPhaseC_80174AA+1
 	.word battle_tickIntroState_80174BE+1
@@ -19006,9 +19006,9 @@ off_801740C:
 // symdb: Resets a battle object to its post-destroy / dormant state: clears its collision region/state, PwrAtk charge, AI data, slot reservation, future-panel reservation, chip counters, sprite flip, alliance bookkeeping, and dispatches destroy-subevents; marks CurPhaseAndPhaseInitialized with phase 4.
 // symdb: (r5 = oBattleObject*, r10 = oToolkit*) -> r1 (clobbered), r5 (preserved) ; no meaningful return;
 // symdb: tailcalls render/cleanup subevents and tail-pops
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801741C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_destroyBattleObject_801741C.yaml
 	thumb_local_start
-sub_801741C:
+battle_destroyBattleObject_801741C:
 	push {lr}
 	bl object_clearCollisionRegion // () -> void
 	bl battle_ClearObjectCollisionResult_801A5E2
@@ -19041,7 +19041,7 @@ loc_8017464:
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_801741C
+	thumb_func_end battle_destroyBattleObject_801741C
 
 // symdb: Starts a battle object's destruction sequence (sets anim 2, clears paired object and AI scratch, plays sound 0x6C, spawns two effect objects at the object's position, and arms a 21-frame countdown into phase 8); no-op while time stop is active.
 // symdb: void sub_801746E(u32 /*r5*/ obj) -> r1 (callee return), r5 (does r10 hold?); clobbers r0 r2 r3

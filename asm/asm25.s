@@ -36,7 +36,7 @@ loc_808F830:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	ldrb r0, [r5,#0x10] // (byte_2000320 - 0x2000310)
 	bl SetOWPlayerFacingDirection
-	bl sub_808F8AC
+	bl weatherComp_spawnPlayerAfterReset_808F8AC
 	movflag EVENT_BE4
 	bl SetEventFlagFromImmediate
 	b loc_808F8A6
@@ -75,9 +75,9 @@ loc_808F8A6:
 // symdb: () -> r0 = 0 ; side effects: loads sprite 0x80/anim 0x1c on the OW player object, sets s2000aa0
 // symdb: fields, writes NextX/NextY/NextZ=0x40 and propagates new position to the player object, clears
 // symdb: InteractionLocked, writes 4 via loc_809E306
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F8AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_spawnPlayerAfterReset_808F8AC.yaml
 	thumb_local_start
-sub_808F8AC:
+weatherComp_spawnPlayerAfterReset_808F8AC:
 	push {r5,lr}
 	mov r0, #3
 	bl owPlayer_setS2000AA0Param0x4_809e314
@@ -109,7 +109,7 @@ sub_808F8AC:
 	.balign 4, 0
 off_808F8FC:
 	.word off_808F5D4
-	thumb_func_end sub_808F8AC
+	thumb_func_end weatherComp_spawnPlayerAfterReset_808F8AC
 
 	thumb_local_start
 sub_808F900:

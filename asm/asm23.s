@@ -703,7 +703,7 @@ loc_8089434:
 	mov r0, #7
 	mov r1, #0x40
 	bl SetEventFlagFromImmediate
-	bl sub_8142510
+	bl soulWeapons_apply_8142510
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool

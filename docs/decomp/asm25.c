@@ -42,7 +42,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
             sub_809E188(word_2000322 << 16, dword_2000324 << 16, 0x400000);
             sub_809E13C(byte_200031F);
             sub_809E2AE(byte_2000320);
-            sub_808F8AC();
+            weatherComp_spawnPlayerAfterReset_808F8AC();
         }
     }
     return 1;
@@ -50,7 +50,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
 
 
 // 0x808f8ac
-void __noreturn sub_808F8AC()
+void __noreturn weatherComp_spawnPlayerAfterReset_808F8AC()
 {
     int v0; // r10
     Battle *v1; // r5

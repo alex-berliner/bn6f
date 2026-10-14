@@ -179,7 +179,7 @@ int __fastcall __noreturn sprite_queueOamByFrameIndex_8033B80(int a1)
 
 
 // 0x8033be8
-signed int sub_8033BE8()
+signed int battleObject_queueRealWorldNaviIconOAM_8033BE8()
 {
     signed int v0; // r4
     char v1; // zf

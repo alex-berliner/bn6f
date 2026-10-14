@@ -1144,7 +1144,7 @@ int sub_8003E18()
 
 
 // 0x8003e98
-int sub_8003E98()
+int scene_perFrame_paletteGroupRecordInit_8003E98()
 {
 	return sprite_recordPaletteCountToGroupSlot_80028C0(1);
 }
@@ -2348,7 +2348,7 @@ void __usercall gamestate_OnMapUpdate_8005268(GameState *gs@<R5>, int a1@<R0>)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2373,7 +2373,7 @@ int __fastcall battle_init_80052D8(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2446,7 +2446,7 @@ int __fastcall overworld_owMap_renderAndTickSubsystems_800536E(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2503,7 +2503,7 @@ int __fastcall scene_nextOrUpdate_80053E4(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2555,7 +2555,7 @@ int pet_menuUpdateAndHandleExit_8005462()
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2642,7 +2642,7 @@ _BYTE *__fastcall sub_800555A(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2688,7 +2688,7 @@ _BYTE *__fastcall gamestate_runOverworldSceneStep_80055CE(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2734,7 +2734,7 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2780,7 +2780,7 @@ _BYTE *__fastcall sub_80056B8(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2826,7 +2826,7 @@ _BYTE *__fastcall sub_800572C(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2872,7 +2872,7 @@ _BYTE *__fastcall sub_80057A0(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2916,7 +2916,7 @@ _BYTE *__fastcall mainState_runFrame_8005814(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -2951,7 +2951,7 @@ _BYTE *__fastcall sub_800585A(int a1)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();
@@ -9422,7 +9422,7 @@ int battle_dispatchByIndex_80099A4()
 
 
 // 0x80099e0
-unsigned int sub_80099E0()
+unsigned int battle_advanceIndexFromPauseIntro_80099E0()
 {
     int v0; // r5
     int v1; // r0

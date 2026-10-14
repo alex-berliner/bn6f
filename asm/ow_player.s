@@ -425,7 +425,7 @@ loc_809D4B2:
 	bl owPlayer_setJumptableIndex09AndOthers_809e004
 	pop {r4,pc}
 loc_809D4C2:
-	bl sub_809DF28
+	bl owPlayer_isJumptableIndex09At0x10_0809DF28
 	tst r0, r0
 	beq locret_809D4D6
 	mov r0, #0
@@ -464,7 +464,7 @@ loc_809D4F2:
 	mov lr, pc
 	bx r7
 loc_809D4FC:
-	bl sub_809DF28
+	bl owPlayer_isJumptableIndex09At0x10_0809DF28
 	tst r0, r0
 	beq loc_809D510
 	mov r0, #0
@@ -646,7 +646,7 @@ loc_809D646:
 	mov lr, pc
 	bx r7
 loc_809D650:
-	bl sub_809DF28
+	bl owPlayer_isJumptableIndex09At0x10_0809DF28
 	tst r0, r0
 	beq loc_809D668
 	mov r0, #0
@@ -807,7 +807,7 @@ ow_player_processAction_809D75E:
 	mov r0, #0xff
 	strb r0, [r7,#0x1c] // (byte_200ACFC - 0x200ace0)
 loc_809D778:
-	bl sub_809DF28
+	bl owPlayer_isJumptableIndex09At0x10_0809DF28
 	tst r0, r0
 	beq locret_809D796
 	mov r0, #2
@@ -1036,7 +1036,7 @@ owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4:
 	ldr r7, [r7,r0]
 	mov lr, pc
 	bx r7
-	bl sub_809DF28
+	bl owPlayer_isJumptableIndex09At0x10_0809DF28
 	tst r0, r0
 	beq locret_809D91A
 	mov r0, #0
@@ -1861,9 +1861,9 @@ loc_809DF24:
 // symdb: (none — uses r5=OWPlayerObject, lr) -> r0 = 0 when the player is in sub-state 0x10 (idle/main
 // symdb: advance), else falls into loc_809DF3A which manipulates r0/r7 and returns ; may_write r0, r7,
 // symdb: NZ/CV flags.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DF28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_isJumptableIndex09At0x10_0809DF28.yaml
 	thumb_local_start
-sub_809DF28:
+owPlayer_isJumptableIndex09At0x10_0809DF28:
 	push {lr}
 	ldr r7, off_809DF40 // =eStruct200ace0 
 	ldrb r0, [r5,#oOWPlayerObject_JumptableIndex_09]
@@ -1871,7 +1871,7 @@ sub_809DF28:
 	bne loc_809DF3A
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_809DF28
+	thumb_func_end owPlayer_isJumptableIndex09At0x10_0809DF28
 
 // symdb: Reads the player's frozen-animation byte from eStruct200ace0 and returns its current value.
 // symdb: () -> r0 = byte at eStruct200ace0+0 ; clobbers r7

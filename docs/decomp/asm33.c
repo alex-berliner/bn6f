@@ -50,7 +50,7 @@ int sub_8123208()
 
 
 // 0x8123300
-void sub_8123300(const void *textScriptPtrs, void *textScript, _DWORD *decompBuffer)
+void battle_loadTileGridByNavi_8123300(const void *textScriptPtrs, void *textScript, _DWORD *decompBuffer)
 {
     int v3; // r7
     u16 *v4; // r0
@@ -540,7 +540,7 @@ void __noreturn chipFolder_initGfx_812386C()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(&dword_8123964);
-    sub_8123300(&off_81238E4, &eTextScript201C220, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(&off_81238E4, &eTextScript201C220, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, eTextScript201BA20, 30, dword_14);
     CopyBackgroundTiles(9, 6, 1, eTextScript201BF20, 20, &dword_C + 1);
 }
@@ -1256,7 +1256,7 @@ void subchip_initGfx_81243B0()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(byte_8124488);
-    sub_8123300(&off_8124410, &eTextScript201C100, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(&off_8124410, &eTextScript201C100, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
 }
 
@@ -4424,7 +4424,7 @@ void initTitleScreens_81270D0()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(byte_8127188);
-    sub_8123300(off_8127120, eTextScript201BF20, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(off_8127120, eTextScript201BF20, eDecompBuffer2013A00);
 }
 
 
@@ -5189,7 +5189,7 @@ void __noreturn battle_setupSceneTiles_8127CB8()
     if ( v9 & 1 )
         v7 = &dword_8127D98;
     decompAndCopyData(v7);
-    sub_8123300(byte_8127D38, &eTextScript201BA00, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(byte_8127D38, &eTextScript201BA00, eDecompBuffer2013A00);
     v8 = &unk_201C200;
     if ( v9 & 1 )
         v8 = &unk_2028690;
@@ -9558,7 +9558,7 @@ void loadDecompressedAsset_812AF78()
 void textScript_loadAndRunEmbeddedArchive_812AF84()
 {
     decompAndCopyData(byte_812B168);
-    sub_8123300(off_812AFE4, eTextScript201BA20, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(off_812AFE4, eTextScript201BA20, eDecompBuffer2013A00);
 }
 
 

@@ -213,7 +213,7 @@ mapscript_8071F9B:
 
 mapscript_8071FA0:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072072
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_618 destination4=byte_8072072
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_686 destination4=byte_8072072
 	ms_write_word ptr1=unk_2011EB8 word5=0x08053B01
@@ -488,7 +488,7 @@ mapscript_8072422:
 
 mapscript_8072427:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=mapscript_80724B7
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump destination1=mapscript_80724B7
 
 mapscript_807243D:
@@ -690,7 +690,7 @@ mapscript_8072786:
 
 byte_807278B:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=mapscript_807279C
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 
 mapscript_807279C:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_60F destination4=dword_80727C4
@@ -721,12 +721,12 @@ byte_8072802:
 
 mapscript_8072813:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072891
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump destination1=byte_8072891
 
 mapscript_8072829:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072891
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump destination1=byte_8072891
 
 mapscript_807283F:

@@ -718,7 +718,7 @@ BOOL battle_getBeastOutAvailability_81422BE()
 
 
 // 0x8142510
-int sub_8142510()
+int soulWeapons_apply_8142510()
 {
     int v0; // r10
     int v1; // r0

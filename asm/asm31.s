@@ -9406,7 +9406,7 @@ off_80BC660:
 	.word off_80BC664
 off_80BC664:
 	.word battleObject_beastSpecial_init_80BC670+1
-	.word sub_80BC78C+1
+	.word battleObject_beastChangeLeapUpdate_80BC78C+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x1b_80BC650
 
@@ -9517,9 +9517,9 @@ byte_80BC758:
 // symdb: (r5 = battleObject, r10 = toolkit, r2 = battleState, lr = ret) -> void ; writes the object's
 // symdb: palette/timer/position/ExtraVars, plays a sound, spawns a type-4 effect, and frees the original
 // symdb: object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BC78C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastChangeLeapUpdate_80BC78C.yaml
 	thumb_local_start
-sub_80BC78C:
+battleObject_beastChangeLeapUpdate_80BC78C:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	tst r0, r0
@@ -9607,7 +9607,7 @@ loc_80BC81C:
 	bl object_freeMemory
 locret_80BC842:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80BC78C
+	thumb_func_end battleObject_beastChangeLeapUpdate_80BC78C
 
 	thumb_func_start sub_80BC844
 sub_80BC844:
@@ -28490,7 +28490,7 @@ battle_t3id3_main_80c52b0:
 off_80C52C0:
 	.word off_80C52C4
 off_80C52C4:
-	.word sub_80C52D0+1
+	.word battleObject_stepInitializeChainedCollision_80C52D0+1
 	.word battle_object_stepLifetimeDestroyOnHit_80C532E+1
 	.word object_genericDestroy+1
 	thumb_func_end battle_t3id3_main_80c52b0
@@ -28498,9 +28498,9 @@ off_80C52C4:
 // symdb: Per-frame init/update handler for a battle object that owns a chained child collision-data block, syncing its panel coordinates then transitioning to UPDATE.
 // symdb: (r5 = battleObj, r10 = toolkit, r4/r8 preserved) -> void ; reads/writes r5-battleObj and its
 // symdb: CollisionData; pres r4/r8 for caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C52D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepInitializeChainedCollision_80C52D0.yaml
 	thumb_local_start
-sub_80C52D0:
+battleObject_stepInitializeChainedCollision_80C52D0:
 	push {lr}
 	bl object_isCurrentPanelValid
 	tst r0, r0
@@ -28542,7 +28542,7 @@ loc_80C5320:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl battle_object_stepLifetimeDestroyOnHit_80C532E
 	pop {pc}
-	thumb_func_end sub_80C52D0
+	thumb_func_end battleObject_stepInitializeChainedCollision_80C52D0
 
 // symdb: Per-frame step for a battle object that owns collision data - decrements its lifetime, destroys it (with hit effect) on collision or timer expiry.
 // symdb: battle_object_stepLifetimeDestroyOnHit_80C532E(oBattleObject *obj /* r5 */) -> destroys obj via
@@ -42292,7 +42292,7 @@ t3_0x3d_80CB900:
 off_80CB914:
 	.word off_80CB918
 off_80CB918:
-	.word sub_80CB964+1
+	.word battleObject_beastSpOut_init_80CB964+1
 	.word battleObject_handleCollisionFrame_80CB9E2+1
 	.word sub_80CB924+1
 	thumb_func_end t3_0x3d_80CB900
@@ -42338,9 +42338,9 @@ locret_80CB962:
 // symdb: object_setCollisionHitEffect / object_setCollisionStatusEffect1 / object_presentCollisionData /
 // symdb: object_getFrontDirection / PlaySoundEffect / sub_80E5B88 / spawn_t1_0x0_EffectObject /
 // symdb: object_freeMemory.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CB964.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSpOut_init_80CB964.yaml
 	thumb_local_start
-sub_80CB964:
+battleObject_beastSpOut_init_80CB964:
 	push {r4,lr}
 	bl object_setCoordinatesFromPanels // () -> void
 	ldr r0, dword_80CBB34 // =0x1021025 
@@ -42394,7 +42394,7 @@ loc_80CB98E:
 	mov r0, #CUR_STATE_UPDATE
 	strb r0, [r5,#oBattleObject_CurState]
 	pop {r4,pc}
-	thumb_func_end sub_80CB964
+	thumb_func_end battleObject_beastSpOut_init_80CB964
 
 // symdb: Per-frame battle-object collision update: tears down current collision, spawns the matching effect, possibly damages the owner (Buster-style HP loss), and either dispatches to the cur-action handler or marks the object for destruction.
 // symdb: (r5 = BattleObject*, r10 = Toolkit) -> void ; mutates the BattleObject at r5 (state, collision
@@ -72843,7 +72843,7 @@ t3_0xa6_80DA050:
 off_80DA060:
 	.word off_80DA064
 off_80DA064:
-	.word sub_80DA07C+1
+	.word battleObject_hpLanternInit_80DA07C+1
 	.word sub_80DA108+1
 	.word sub_80DA070+1
 	thumb_func_end t3_0xa6_80DA050
@@ -72860,9 +72860,9 @@ sub_80DA070:
 // symdb: (r5 = obj, r10 = toolkit) -> void ; side effects: writes obj header flags/sprite/anim,
 // symdb: HP/MaxHP/Timer/NameID/Z/PanelXY/Param3, creates a collision slot, sets CurState =
 // symdb: CUR_STATE_UPDATE, branches to r5-relative sub_80DA108
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DA07C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_hpLanternInit_80DA07C.yaml
 	thumb_local_start
-sub_80DA07C:
+battleObject_hpLanternInit_80DA07C:
 	push {lr}
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -72920,7 +72920,7 @@ off_80DA100:
 	.word dword_80DA104
 dword_80DA104:
 	.word 0x10200
-	thumb_func_end sub_80DA07C
+	thumb_func_end battleObject_hpLanternInit_80DA07C
 
 	thumb_local_start
 sub_80DA108:

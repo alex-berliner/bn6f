@@ -21533,7 +21533,7 @@ battleObject_updateDispatcher_8118BA4:
 off_8118BB4:
 	.word off_8118BB8
 off_8118BB8:
-	.word sub_8118BC8+1
+	.word battleObject_initPanelCursor_8118BC8+1
 	.word battleObject_updateByType_8118C2C+1
 	.word sub_8118CEC+1
 off_8118BC4:
@@ -21543,9 +21543,9 @@ off_8118BC4:
 // symdb: Initialise a battle-object sprite for the in-battle panel-cursor graphic (animation 0, OAM prio 3, 0x1E0 slot, palette 0) and run one update tick.
 // symdb: (r5 = BattleObject*, r6 = parent context) -> void ; side effects: mutates the sprite fields
 // symdb: (Unk_0, CurAnim/Unk_0c/d, palette, OAM prio, x/y), then tails the per-type update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118BC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPanelCursor_8118BC8.yaml
 	thumb_local_start
-sub_8118BC8:
+battleObject_initPanelCursor_8118BC8:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -21585,7 +21585,7 @@ off_8118C24:
 	.word 0x1E0
 off_8118C28:
 	.word unk_2021FF0
-	thumb_func_end sub_8118BC8
+	thumb_func_end battleObject_initPanelCursor_8118BC8
 
 // symdb: Battle-object per-frame dispatcher: copies CurAnim (offset 0xc) into a backup byte (0xd), then tail-calls an animation-update routine picked from a small jump table indexed by `header.Type` (0x2), finally running the standard sprite update.
 // symdb: (r5 = BattleObject*, r6 = header-staging ptr, lr = return) -> r0 = 0x24c ; r2/r3/r5 caller-saved
@@ -21932,7 +21932,7 @@ sub_8118E84:
 off_8118E94:
 	.word off_8118E98
 off_8118E98:
-	.word sub_8118EA8+1
+	.word battleObject_initBeastOutSprite_8118EA8+1
 	.word sub_8118F14+1
 	.word sub_8118F1C+1
 off_8118EA4:
@@ -21942,9 +21942,9 @@ off_8118EA4:
 // symdb: Initialises a battle object's sprite for a BeastOut-state visual: GUI sprite init, animation, palette, priority, and a per-actor coordinate table lookup.
 // symdb: (r5 = battle object, r6 = secondary context) -> void ; side effects: writes object/sprite
 // symdb: fields, sets up OAM, no return value to caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118EA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastOutSprite_8118EA8.yaml
 	thumb_local_start
-sub_8118EA8:
+battleObject_initBeastOutSprite_8118EA8:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -21986,7 +21986,7 @@ off_8118F08:
 	.word byte_8118F0C
 byte_8118F0C:
 	.byte 0x4F, 0x60, 0x47, 0x60, 0x47, 0x58, 0x0, 0x0
-	thumb_func_end sub_8118EA8
+	thumb_func_end battleObject_initBeastOutSprite_8118EA8
 
 	thumb_local_start
 sub_8118F14:
@@ -24361,7 +24361,7 @@ object_runUpdateDispatch_811A190:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_811A29C
+	bl object_updateSpriteUnk0x2cFromMenuState_811A29C
 	bl sub_811A2EC
 	pop {pc}
 	.balign 4, 0
@@ -24558,9 +24558,9 @@ off_811A298:
 // symdb: Per-frame object update pass that adjusts the object's sprite 0x2c flag bits from the active menu state and a per-index byte in byte_8124B1C.
 // symdb: (r5 = Toolkit* or Object-like record) -> void ; may write r0..r7 (r0 contains intermediate flag
 // symdb: word reused by callees)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A29C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateSpriteUnk0x2cFromMenuState_811A29C.yaml
 	thumb_local_start
-sub_811A29C:
+object_updateSpriteUnk0x2cFromMenuState_811A29C:
 	push {r4-r7,lr}
 	bl menu_getTableEntryForStateIndex_811A268
 	tst r0, r0
@@ -24597,7 +24597,7 @@ dword_811A2E0:
 	.word 0x7E
 byte_811A2E4:
 	.byte 0x3E, 0x0, 0x0, 0x0, 0x9E, 0x7, 0x0, 0x0
-	thumb_func_end sub_811A29C
+	thumb_func_end object_updateSpriteUnk0x2cFromMenuState_811A29C
 
 // symdb: Updates a bit field of the sprite attribute word (offset 0x2C) of the menu table entry selected for the current state index, either resetting it to a fixed value or filling it while clearing one selected bit.
 // symdb: void menu_setStateSpriteAttrField_811A2EC(/*r0-r3 passed through to
@@ -32278,7 +32278,7 @@ battle_dispatchScenarioEffect_811E248:
 off_811E258:
 	.word off_811E25C
 off_811E25C:
-	.word sub_811E26C+1
+	.word battleObject_beastSp_init_811E26C+1
 	.word battleObject_beastSp_update_811E2B4+1
 	.word sub_811E30C+1
 off_811E268:
@@ -32290,9 +32290,9 @@ off_811E268:
 // symdb: 0x08=0x04/CUR_STATE_UPDATE, byte 0x05=animation), sprite data
 // symdb: (animation/palette/priority/flags), and ExtraVars[0x08]=0x04 ; falls into per-frame update at
 // symdb: end
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E26C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastSp_init_811E26C.yaml
 	thumb_local_start
-sub_811E26C:
+battleObject_beastSp_init_811E26C:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -32320,7 +32320,7 @@ sub_811E26C:
 	.balign 4, 0
 off_811E2B0:
 	.word 0x290
-	thumb_func_end sub_811E26C
+	thumb_func_end battleObject_beastSp_init_811E26C
 
 // symdb: Updates the Beast Out / Cross Fusion player's battle object sprite each frame, including a flip-state bit, optional sprite/animation reload and cutscene-driven coordinate offset.
 // symdb: (r5 = ptr to BattleObject, r6 = ptr to related object / extra struct) -> void ; side effects:
@@ -32438,7 +32438,7 @@ battleObject_dispatchCurStateAction_811E360:
 off_811E370:
 	.word off_811E374
 off_811E374:
-	.word sub_811E384+1
+	.word battleObject_initCutsceneSprite_811E384+1
 	.word battleObject_setCoordsFromCutsceneScript_811E3CC+1
 	.word sub_811E40C+1
 off_811E380:
@@ -32448,9 +32448,9 @@ off_811E380:
 // symdb: Initialises the GUI sprite attached to a battle object (slot type 0x23, sprite 0x36) — sets animation 0, palette 0, OAM priority 0, no shadow, palette bank 0xA, OAM slot table entry 0x280, and coordinates taken from the active cutscene script slot 0.
 // symdb: (r5 = BattleObject*, r6 = ?, r10 = Toolkit*) -> void ; side effects: writes many sprite/state
 // symdb: fields on the object at r5 plus performs a cutscene-script coordinate lookup
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E384.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initCutsceneSprite_811E384.yaml
 	thumb_local_start
-sub_811E384:
+battleObject_initCutsceneSprite_811E384:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -32477,7 +32477,7 @@ sub_811E384:
 	.balign 4, 0
 off_811E3C8:
 	.word 0x280
-	thumb_func_end sub_811E384
+	thumb_func_end battleObject_initCutsceneSprite_811E384
 
 // symdb: Adjusts a battle object's sprite X/Y using a cutscene-script-relative offset (subtract 0x14/0x10-byte row, +8) when its source-cutscene script slot index 0 matches, then runs sprite_update
 // symdb: (r5 = BattleObject*, r6 = ?, r10 = Toolkit/CutsceneState base; lr = return into caller) -> (r0 =

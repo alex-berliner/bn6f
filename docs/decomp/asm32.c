@@ -14110,7 +14110,7 @@ int battleObject_updateDispatcher_8118BA4()
 
 
 // 0x8118bc8
-void __noreturn sub_8118BC8()
+void __noreturn battleObject_initPanelCursor_8118BC8()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -14357,7 +14357,7 @@ int sub_8118E84()
 
 
 // 0x8118ea8
-void __noreturn sub_8118EA8()
+void __noreturn battleObject_initBeastOutSprite_8118EA8()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -15631,7 +15631,7 @@ int object_runUpdateDispatch_811A190()
     int v0; // r5
 
     (*(&off_811A1AC + *(v0 + 9)))();
-    sub_811A29C();
+    object_updateSpriteUnk0x2cFromMenuState_811A29C();
     return sub_811A2EC();
 }
 
@@ -15764,7 +15764,7 @@ int menu_getTableEntryForStateIndex_811A268()
 
 
 // 0x811a29c
-int sub_811A29C()
+int object_updateSpriteUnk0x2cFromMenuState_811A29C()
 {
     int v0; // r0
     int v1; // r1
@@ -20356,7 +20356,7 @@ int battle_dispatchScenarioEffect_811E248()
 
 
 // 0x811e26c
-void __noreturn sub_811E26C()
+void __noreturn battleObject_beastSp_init_811E26C()
 {
     int v0; // r5
     u8 v1; // r0
@@ -20453,7 +20453,7 @@ int battleObject_dispatchCurStateAction_811E360()
 
 
 // 0x811e384
-void __fastcall __noreturn sub_811E384(int a1, int a2)
+void __fastcall __noreturn battleObject_initCutsceneSprite_811E384(int a1, int a2)
 {
     Battle *v2; // r5
 

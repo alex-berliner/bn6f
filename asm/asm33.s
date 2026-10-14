@@ -226,9 +226,9 @@ locret_81232F8:
 // symdb: Picks the per-PET-navi tile grid blob from a small table, LZ77-decompresses it into a staging buffer, then copies the post-header payload into a destination buffer using the fastest legal width.
 // symdb: (r0 = *LZ77-table *, r1 = *outBuffer, r2 = *stagingBufferWithHeader) -> r0 = ptr just past
 // symdb: staging header (r2+4)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123300.yaml
-	thumb_func_start sub_8123300
-sub_8123300:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadTileGridByNavi_8123300.yaml
+	thumb_func_start battle_loadTileGridByNavi_8123300
+battle_loadTileGridByNavi_8123300:
 	push {r7,lr}
 
 	sub sp, sp, #0xc
@@ -287,7 +287,7 @@ loc_812335A:
 	add sp, sp, #0xc
 	pop {r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8123300
+	thumb_func_end battle_loadTileGridByNavi_8123300
 
 // symdb: Returns whether the currently selected PET navi counts as present for overworld HUD/dialogue behaviour.
 // symdb: bool isPetNaviPresent(Toolkit* r10) -> r0; preserves r4; clobbers r0 r1 r3 lr and flags
@@ -1006,7 +1006,7 @@ loc_8123888:
 	ldr r0, off_81238E0 // =off_81238E4
 	ldr r1, off_81238D8 // =eTextScript201C220
 	ldr r2, off_81238DC // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	// j
 	mov r0, #0
 	// i
@@ -2544,7 +2544,7 @@ loc_81243CC:
 	ldr r0, off_812440C // =off_8124410
 	ldr r1, off_8124444 // =eTextScript201C100
 	ldr r2, off_8124448 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	// j
 	mov r0, #0
 	// i
@@ -8119,7 +8119,7 @@ loc_81270EC:
 	ldr r0, off_812711C // =off_8127120 
 	ldr r1, off_8127154 // =eTextScript201BF20
 	ldr r2, off_8127158 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_812711C:
@@ -9676,7 +9676,7 @@ loc_8127D08:
 	ldr r0, off_8127D34 // =byte_8127D38
 	ldr r1, off_8127D6C // =eTextScript201BA00
 	ldr r2, off_8127D70 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	// j
 	mov r0, #0
 	// i
@@ -16298,7 +16298,7 @@ loadDecompressedAsset_812AF78:
 	thumb_func_end loadDecompressedAsset_812AF78
 
 // symdb: Decompresses an embedded text-data blob into work RAM and hands the resulting script to the text-script engine to run.
-// symdb: void sub_812AF84(void); // no meaningful inputs; r1-r7 on return are whatever sub_8123300
+// symdb: void sub_812AF84(void); // no meaningful inputs; r1-r7 on return are whatever battle_loadTileGridByNavi_8123300
 // symdb: leaves, NZCV clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/textScript_loadAndRunEmbeddedArchive_812AF84.yaml
 	thumb_func_start textScript_loadAndRunEmbeddedArchive_812AF84
@@ -16310,7 +16310,7 @@ textScript_loadAndRunEmbeddedArchive_812AF84:
 	ldr r0, off_812AFE0 // =off_812AFE4
 	ldr r1, off_812B018 // =eTextScript201BA20
 	ldr r2, off_812B01C // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	pop {pc}
 	thumb_func_end textScript_loadAndRunEmbeddedArchive_812AF84
 

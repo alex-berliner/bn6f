@@ -3485,7 +3485,7 @@ void __noreturn saveMenu_config_textscript_8132CB8()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(&off_8132D80);
-    sub_8123300(&TextScriptNetworkPtrs8132D18, eTextScript201BF00, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(&TextScriptNetworkPtrs8132D18, eTextScript201BF00, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
     JUMPOUT(locret_8132D10);
 }
@@ -4921,7 +4921,7 @@ void __noreturn sub_8133EC0()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(&off_8133FB8);
-    sub_8123300(&off_8133F30, &eTextScript2028A20, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(&off_8133F30, &eTextScript2028A20, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &unk_201CA20, 30, dword_14);
     JUMPOUT(loc_8133F18);
 }
@@ -4958,7 +4958,7 @@ int sub_81340AC()
 
 
 // 0x81340dc
-int sub_81340DC()
+int battle_spawnChipSelectHeaderEntries_81340DC()
 {
     int result; // r0
     char v1; // zf
@@ -6642,7 +6642,7 @@ int beastsp_dispatchHandler_81356D4()
 
 
 // 0x81356f4
-void __fastcall __noreturn sub_81356F4(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_initNaviCustomizerScene_81356F4(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r10
@@ -10042,7 +10042,7 @@ void __noreturn sub_8137ACC()
     *(&unk_20096E0 + v0) = 0;
     decompAndCopyData(&unk_20096E0);
     decompAndCopyData(&off_8137BA4);
-    sub_8123300(&off_8137B2C, eTextScript201BF00, eDecompBuffer2013A00);
+    battle_loadTileGridByNavi_8123300(&off_8137B2C, eTextScript201BF00, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
     JUMPOUT(locret_8137B24);
 }
@@ -11106,7 +11106,7 @@ int __fastcall sub_8138848(int a1, int a2, int a3, int a4)
     sprite_setRenderFlushState_80027B4();
     sprite_resetPaletteCount_800286C();
     owMapObject_renderAll_8003BF4();
-    sub_8003E98();
+    scene_perFrame_paletteGroupRecordInit_8003E98();
     npc_drawSprites_800467C();
     sprite_finalizeBattleSpriteGroupQueue_8004298();
     sprite_finishGroup_8004590();

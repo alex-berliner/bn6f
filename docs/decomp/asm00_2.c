@@ -13421,7 +13421,7 @@ int sub_80173F4()
 
 
 // 0x801741c
-signed int __fastcall __noreturn sub_801741C(int a1)
+signed int __fastcall __noreturn battle_destroyBattleObject_801741C(int a1)
 {
     int v1; // r5
     int v2; // r0

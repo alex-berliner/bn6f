@@ -10,7 +10,7 @@ int ho_80A4984()
 
 
 // 0x80a49b0
-void sub_80A49B0()
+void battleObject_initFromParams_80A49B0()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -4599,7 +4599,7 @@ int sub_80A8728()
 
 
 // 0x80a8748
-void __noreturn sub_80A8748()
+void __noreturn overworldObject_spawnFromScenarioEffectIndex_80A8748()
 {
     int v0; // r5
     int v1; // r0
@@ -5893,7 +5893,7 @@ int sub_80A9430()
 
 
 // 0x80a9458
-int __noreturn sub_80A9458()
+int __noreturn owMapObject_mrWeatherInit_80A9458()
 {
     int v0; // r5
     char *v1; // r4

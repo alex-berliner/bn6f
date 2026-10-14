@@ -1195,9 +1195,9 @@ byte_81424BC:
 // symdb: (no args — uses r10 = Toolkit) -> void ; side effects: many event flags cleared/set, one OW map
 // symdb: object spawned per unacquired slot, BBS flag e17b0f7 set, AIData.Unk_15 set from a per-map
 // symdb: table, and possibly StartCutscene(byte_8089448, 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142510.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/soulWeapons_apply_8142510.yaml
 	thumb_local_start
-sub_8142510:
+soulWeapons_apply_8142510:
 	push {r4-r7,lr}
 	movflag EVENT_1650
 	mov r2, #0x18
@@ -1302,7 +1302,7 @@ off_814260C:
 	.word byte_8142610
 byte_8142610:
 	.byte 0x2D, 0x2D, 0x2D, 0x3C, 0x3C, 0x3C, 0x96, 0x96
-	thumb_func_end sub_8142510
+	thumb_func_end soulWeapons_apply_8142510
 
 // symdb: Overworld per-frame cutscene dispatcher: checks soul-weapon / beast / cross-progress event flags and fires the matching cutscene scripts, clearing them once handled.
 // symdb: (in r10 = *Toolkit, lr = return) -> no caller-visible result; side effects = sets/clears

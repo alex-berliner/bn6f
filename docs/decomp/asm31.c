@@ -7961,7 +7961,7 @@ signed int __noreturn battleObject_beastSpecial_init_80BC670()
 
 
 // 0x80bc78c
-void __fastcall sub_80BC78C(int a1, int a2, int a3)
+void __fastcall battleObject_beastChangeLeapUpdate_80BC78C(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -23119,7 +23119,7 @@ int battle_t3id3_main_80c52b0()
 
 
 // 0x80c52d0
-int sub_80C52D0()
+int battleObject_stepInitializeChainedCollision_80C52D0()
 {
     int v0; // r5
     int v1; // r1
@@ -33370,7 +33370,7 @@ int __fastcall sub_80CB924(int a1, int a2, int a3)
 
 
 // 0x80cb964
-void __noreturn sub_80CB964()
+void __noreturn battleObject_beastSpOut_init_80CB964()
 {
     Battle *v0; // r5
 
@@ -56571,7 +56571,7 @@ int sub_80DA070()
 
 
 // 0x80da07c
-void __noreturn sub_80DA07C()
+void __noreturn battleObject_hpLanternInit_80DA07C()
 {
     int v0; // r5
     int v1; // r0

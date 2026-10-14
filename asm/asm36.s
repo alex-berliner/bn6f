@@ -5691,7 +5691,7 @@ loc_8132CD4:
 	ldr r0, TextScriptNetworkPtrs8132D18_p // =TextScriptNetworkPtrs8132D18
 	ldr r1, eTextScript201BF00_p // =eTextScript201BF00
 	ldr r2, off_8132D50 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 
   // Disabling this causes the save menu to have a black background
 	// j
@@ -6440,7 +6440,7 @@ loc_8133334:
 	strb r0, [r5,#2]
 loc_8133338:
 	bl sub_81340AC
-	bl sub_81340DC
+	bl battle_spawnChipSelectHeaderEntries_81340DC
 	bl submenu_isOpen_81355D8
 	bne loc_8133358
 	ldr r0, off_813338C // =word_202A020 
@@ -8008,7 +8008,7 @@ loc_8133EDC:
 	ldr r0, off_8133F2C // =off_8133F30
 	ldr r1, off_8133F64 // =eTextScript2028A20
 	ldr r2, off_8133F68 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	// j
 	mov r0, #0
 	// i
@@ -8170,9 +8170,9 @@ off_81340D8:
 
 // symdb: Loads the submenu-open chip-select header entries from a small per-view record table and positions the first eStruct sprite for the chip-select menu.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81340DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnChipSelectHeaderEntries_81340DC.yaml
 	thumb_local_start
-sub_81340DC:
+battle_spawnChipSelectHeaderEntries_81340DC:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_81340F8 // =byte_813314C
@@ -8189,7 +8189,7 @@ locret_81340F6:
 	.balign 4, 0
 off_81340F8:
 	.word byte_813314C
-	thumb_func_end sub_81340DC
+	thumb_func_end battle_spawnChipSelectHeaderEntries_81340DC
 
 // symdb: Looks up a battle-table entry via the object's index fields, unpacks two bit-fields from offset +0x1C, and forwards them to the shared three-table-entry setter.
 // symdb: void battle_setFieldsFromObj(u32 *obj /*r5*/); // outputs c v r1 r2 r3 (from callee); preserves
@@ -11272,7 +11272,7 @@ beastsp_dispatchHandler_81356D4:
 off_81356E4:
 	.word off_81356E8
 off_81356E8:
-	.word sub_81356F4+1
+	.word battle_initNaviCustomizerScene_81356F4+1
 	.word beastsp_dispatchHandler_81357C4+1
 	.word battle_beastSpExitOrFinishBattle_8135B54+1
 	thumb_func_end beastsp_dispatchHandler_81356D4
@@ -11285,9 +11285,9 @@ off_81356E8:
 // symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81356F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
-sub_81356F4:
+battle_initNaviCustomizerScene_81356F4:
 	push {lr}
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -11373,7 +11373,7 @@ dword_81357BC:
 	.word 0xDF40
 off_81357C0:
 	.word byte_8135628
-	thumb_func_end sub_81356F4
+	thumb_func_end battle_initNaviCustomizerScene_81356F4
 // symdb: Dispatches a beast-sp (beast-out special) battle update handler selected by a type byte, then runs the standard entity/sprite tick
 // symdb: (r5 = beastsp context, r5+0x2 = type byte) -> r0 = 0 ; side effects: jumps through handler
 // symdb: table, then calls entity_runAllUpdateHandlers_80465BC and battle_updateEStructSprites_80465F8
@@ -16016,7 +16016,7 @@ loc_8137AE8:
 	ldr r0, off_8137B28 // =off_8137B2C
 	ldr r1, off_8137B60 // =eTextScript201BF00
 	ldr r2, off_8137B64 // =eDecompBuffer2013A00
-	bl sub_8123300
+	bl battle_loadTileGridByNavi_8123300
 	// j
 	mov r0, #0
 	// i
@@ -17713,7 +17713,7 @@ sub_8138848:
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590

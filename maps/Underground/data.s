@@ -81,7 +81,7 @@ mapscript_8079584:
 
 mapscript_8079590:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_80795C3
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_C26 destination4=byte_80795C3
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_68C destination4=byte_80795C3
 	ms_write_word ptr1=unk_2011EAC word5=0x08070101
@@ -123,7 +123,7 @@ mapscript_807961C:
 
 mapscript_807962F:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8079695
-	ms_call_native_function ptr1=sub_8142510+1 word5=0x00000000
+	ms_call_native_function ptr1=soulWeapons_apply_8142510+1 word5=0x00000000
 	ms_jump destination1=byte_8079695
 
 mapscript_8079645:

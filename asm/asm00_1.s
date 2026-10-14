@@ -2221,9 +2221,9 @@ off_8003E94:
 // symdb: Records the current queued-sprite palette count into group slot 1 once per frame, then returns.
 // symdb: () -> r0 = 1 ; side effects: writes byte_200F389 + 1 to sprite group counter; tail-only dead
 // symdb: init branch is unreachable
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003E98.yaml
-	thumb_func_start sub_8003E98
-sub_8003E98:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/scene_perFrame_paletteGroupRecordInit_8003E98.yaml
+	thumb_func_start scene_perFrame_paletteGroupRecordInit_8003E98
+scene_perFrame_paletteGroupRecordInit_8003E98:
 	push {lr}
 	mov r0, #1
 	bl sprite_recordPaletteCountToGroupSlot_80028C0
@@ -2462,7 +2462,7 @@ T3BattleObjectJumptable:
 	.word t3_0xd2_80DFC38+1 // 0xd2
 	.word t3_0xd3_80DFE40+1 // 0xd3
 	.word t3_0xd4_80DFFB8+1 // 0xd4
-	thumb_func_end sub_8003E98
+	thumb_func_end scene_perFrame_paletteGroupRecordInit_8003E98
 
 // symdb: Per-frame, iterate the active battle-object list and project, ensure gfx, and queue visible sprite frame pieces for each one (then record the post-group OBJ palette count).
 // symdb: (r10 = ToolkitPtr) -> r0 = 3 ; no other side-effectful return; clobbers nz/c/v + r0..r6
@@ -4630,7 +4630,7 @@ gamestate_OnMapUpdate_8005268: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4657,7 +4657,7 @@ battle_init_80052D8: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4751,7 +4751,7 @@ overworld_owMap_renderAndTickSubsystems_800536E: // (self: * GameState $r5) -> (
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4804,7 +4804,7 @@ scene_nextOrUpdate_80053E4: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4861,7 +4861,7 @@ loc_8005474:
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4950,7 +4950,7 @@ sub_800555A: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -4991,7 +4991,7 @@ gamestate_runOverworldSceneStep_80055CE: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5033,7 +5033,7 @@ scenario_finalizeFrameOrRestart_8005642: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5073,7 +5073,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5112,7 +5112,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5151,7 +5151,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5193,7 +5193,7 @@ mainState_runFrame_8005814: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -5217,7 +5217,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C
 	bl owMapObject_renderAll_8003BF4
-	bl sub_8003E98
+	bl scene_perFrame_paletteGroupRecordInit_8003E98
 	bl npc_drawSprites_800467C
 	bl sprite_finalizeBattleSpriteGroupQueue_8004298
 	bl sprite_finishGroup_8004590
@@ -14541,7 +14541,7 @@ battle_dispatchByIndex_80099A4:
 off_80099B4:
 	.word off_80099B8
 off_80099B8:
-	.word sub_80099E0+1
+	.word battle_advanceIndexFromPauseIntro_80099E0+1
 	.word sub_8009A88+1
 	.word NULL
 	.word battle_runBattleStep_8009B20+1
@@ -14557,9 +14557,9 @@ off_80099B8:
 // symdb: (r5 = BattleStatePtr) -> void ; side effects: writes to BattleState
 // symdb: Unk_03/Unk_02/Index_01/Unk_02_03/Unk_1a, may play music, pause battle, set event flag 0x1735,
 // symdb: set request bits at dword_20352C0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80099E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceIndexFromPauseIntro_80099E0.yaml
 	thumb_local_start
-sub_80099E0:
+battle_advanceIndexFromPauseIntro_80099E0:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleState_Unk_03]
 	tst r0, r0
@@ -14624,7 +14624,7 @@ loc_8009A60:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 locret_8009A66:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80099E0
+	thumb_func_end battle_advanceIndexFromPauseIntro_80099E0
 
 	thumb_local_start
 sub_8009A68:

@@ -2681,7 +2681,7 @@ int ow_player_perFrameSubstateDispatcher_809D470()
         return sub_809E004(8);
     if ( ow_gatePendingTileInteraction_809DED4() )
         return sub_809E004(12);
-    result = sub_809DF28();
+    result = owPlayer_isJumptableIndex09At0x10_0809DF28();
     if ( result )
     {
         *(v1 + 1) = 0;
@@ -2705,7 +2705,7 @@ int owPlayer_tickPerFrame_809D4DC()
         v1 = *(&off_809D554 + v0[10]);
         (v1)();
     }
-    if ( sub_809DF28() )
+    if ( owPlayer_isJumptableIndex09At0x10_0809DF28() )
     {
         *(v1 + 1) = 0;
         result = sub_809E004(16);
@@ -2825,7 +2825,7 @@ int owPlayer_runSlipRunOrEngine_0809D61A()
     v1 = *(&off_809D6B0 + v0[10]);
     (v1)();
 LABEL_8:
-    if ( sub_809DF28() )
+    if ( owPlayer_isJumptableIndex09At0x10_0809DF28() )
     {
         *(v1 + 1) = 0;
         sub_809E004(16);
@@ -2928,7 +2928,7 @@ int ow_player_processAction_809D75E()
         v0[20] = byte_200ACFC;
         byte_200ACFC = -1;
     }
-    result = sub_809DF28();
+    result = owPlayer_isJumptableIndex09At0x10_0809DF28();
     if ( result )
     {
         byte_200ACE1 = 2;
@@ -3068,7 +3068,7 @@ int owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4()
 
     v1 = *(&off_809D91C + *(v0 + 10));
     (v1)();
-    result = sub_809DF28();
+    result = owPlayer_isJumptableIndex09At0x10_0809DF28();
     if ( result )
     {
         *(v1 + 1) = 0;
@@ -3499,7 +3499,7 @@ signed int ow_tryTileInteraction_809DF00()
 
 
 // 0x809df28
-int sub_809DF28()
+int owPlayer_isJumptableIndex09At0x10_0809DF28()
 {
     int v0; // r5
 
