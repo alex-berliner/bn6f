@@ -518,10 +518,11 @@ sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B6E
 
-// symdb: Queues an OAM entry for the battle-object whose index is given by r0, picking the tile/datasrc slot from a small 24-entry table indexed by the per-frame counter at r5+5; advances that counter and stores the next slot back into r5+5.
-// symdb: (r0 = battleObjectIndex, r1 = ?, r5 = per-frame/anim state struct) -> r0 = next frame index
-// symdb: (0..0x17) ; side effects: advances the OAM queue, updates r5+5 counter.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
+// symdb: Queues one OAM entry per call, picking tile offset from a 0x18-entry periodic table using frame counter at [r5+5].
+// symdb: (r0 = OAM tile-id-ish arg / 24-frame slot, r5 = some struct base) -> r0 = next-frame index used
+// symdb: by next call (0..0x17) ; side effects queues OAM via sprite_queueOamEntryThunk_802FE28, writes
+// symdb: [r5+5] (next frame index)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B80.yaml
 	thumb_local_start
 sub_8033B80:
 	push {lr}

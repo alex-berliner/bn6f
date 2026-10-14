@@ -3834,9 +3834,11 @@ loc_8083DE8:
 off_8083DEC::
 	.word off_8083C38
 
-// symdb: BBS request handler for the battle subsystem; reacts to the L-button BBS cutscene state, sets/clears event flags, runs a GFX anim and updates battle state.
-// symdb: (r10 = oToolkit) -> void ; side effects: r0-r3/r12 (caller-saved), NZCV flags, event flags,
-// symdb: battle state
+// symdb: Per-frame BBS request handler for the "Navi Portraits" reward screen — checks story flags and cutscene markers, then draws/initiates the GFX anim state and object-portrait rendering.
+// symdb: () -> flags nz (caller-decides routine) ; side effects: event-flag set/clear/test on a handful
+// symdb: of (high-byte, low-byte) pairs, BBS request flag 0x17/0x07 set/clear, GFXAnimState and battle/OW
+// symdb: object structs populated via the load_gfx_anim_*, struct_copy_80840C4,
+// symdb: sub_8083F80/8084080/8084180/8084214/80842D8, and sub_809E462 helpers
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8083DF0.yaml
 	thumb_local_start
 sub_8083DF0:

@@ -994,6 +994,12 @@ sub_80B88F0:
 	pop {pc}
 	thumb_func_end sub_80B88F0
 
+// symdb: Per-frame step that promotes a related/sub-object into its parent's slot, copying three header words from r4+0x34 onto r5+0x34, translating Y/Z by 0x20/0x1f, propagating X/Y by the parent's facing × a sub_80030BA scalar, then mirroring sprite state (color shader, final palette, Unk_11+render-info bits, flip, mosaic/alpha) and finally calling object_updateSprite unless the battle is time-stopped or the related object's CollisionData flags disable updates.
+// symdb: (r5 = parent BattleObject*, r10 = Toolkit*) -> r0..r3,r0..r7 clobbered; lr restored ; side
+// symdb: effects: writes r5+0x34..+0x40, r5+Y/Z16, r5+X/Y, r5 Flags (bit 0x02), r5 DirectionFlip, and r5
+// symdb: SpriteData; reads r5+0x34..+0x40 and r4 = r5->RelatedObject1Ptr; conditionally calls
+// symdb: object_freeMemory in an unreachable tail.
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80B8932.yaml
 	thumb_local_start
 sub_80B8932:
 	push {r4,r6,lr}
@@ -26852,6 +26858,10 @@ sub_80C4550:
 	pop {pc}
 	thumb_func_end sub_80C4550
 
+// symdb: Copies positional/animation state and sprite attrs (palette, shader, flip) from a battle object's RelatedObject1Ptr into itself, then dispatches to a per-CurAction handler.
+// symdb: (r5 = this BattleObject*) -> void ; side effects: writes to *r5 sprite + header, then tail-calls
+// symdb: a per-action handler chosen by oBattleObject_CurAction
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C458C.yaml
 	thumb_local_start
 sub_80C458C:
 	push {lr}
@@ -120240,6 +120250,10 @@ nullsub_104:
 	mov pc, lr
 	thumb_func_end nullsub_104
 
+// symdb: Per-frame AI/element-charge tick: charges an element based on the navi's alliance/team chip held, and resolves a Navi custom-bug Z transition for certain battles
+// symdb: side-effecting on the battle object in r5 and its AIDataPtr/Z; no return value (out only
+// symdb: restores r4/r6)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80F0608.yaml
 	thumb_local_start
 sub_80F0608:
 	push {r4,r6,lr}

@@ -9876,6 +9876,10 @@ JumpTable8007838:
 	.word removed_8007FEA+1 // (self: * BattleState $r5) -> ()
 	thumb_func_end battle_main_8007800
 
+// symdb: Battle-state transition routine that resolves a finished battle (success/timeout/comm-fail) by stamping the battle result, setting up the next state, and clearing timers.
+// symdb: (r5 = *BattleState) -> void ; writes BattleState fields Index_00/Index_01, Unk_02_03, Unk_20;
+// symdb: sets event flags 1733/1735 when battle-effects bit 0x08 is off
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007850.yaml
 	thumb_local_start
 sub_8007850: // (self: * BattleState $r5) -> ()
 	push {r4,lr}
@@ -10368,6 +10372,9 @@ off_8007B94:
 	.word battle_state_tick_8007CA0+1 // (self: *mut BattleState $r5) -> ()
 	thumb_func_end sub_8007B80
 
+// symdb: Per-frame battle driver: resets the FIFO write pointer, dispatches a per-BattleState handler (countdown or dispatch), walks the battle-object list, flushes the panel and sprite rendering subsystems, then resets the FIFO again.
+// symdb: (r5 = *BattleState) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007B9C.yaml
 	thumb_local_start
 sub_8007B9C: // (self: *mut BattleState $r5) -> ()
 	push {lr}
@@ -12258,6 +12265,10 @@ locret_80089CA:
 	pop {pc}
 	thumb_func_end sub_800898C
 
+// symdb: Per-frame post-move phase driver: unpauses, ticks AI joypad, advances phase state, and dispatches to a "wait for ready" / chip-lockout / move-result state machine.
+// symdb: (r10 = toolkit, r5 = some scratch object/state ptr) -> void ; side effects: writes *r5, advances
+// symdb: BattleState counters, sets CustGauge, sets/clears paused flag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80089CC.yaml
 	thumb_local_start
 sub_80089CC:
 	push {lr}

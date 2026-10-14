@@ -11936,6 +11936,10 @@ off_802BCB0:
 	.word NULL
 	thumb_func_end sub_802BA34
 
+// symdb: Initializes the chip-select/custom-screen state at eS20364C0, dispatches by Index_00 to a tile-copy routine, then runs a panel scan
+// symdb: (r0 = unused=4) -> r0 = 1 ; side effects: writes eS20364C0.Unk_05, copies tiles to a BG block,
+// symdb: calls sub_802C460
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BD60.yaml
 	thumb_func_start sub_802BD60
 sub_802BD60:
 	push {r5,lr}
@@ -21053,6 +21057,10 @@ flags_clearFlagWordBit_802FE6A:
 	mov pc, lr
 	thumb_func_end flags_clearFlagWordBit_802FE6A
 
+// symdb: Computes two 2D affine matrices (rotation/scale + shear) at word_200A6F0 for sprite affine rendering, using cos/sin tables and the sin/cos inputs derived from r1/r2.
+// symdb: (r0 = obj, r1 = sin/cos raw angle arg, r2 = sin/cos raw angle arg, r3 = ?) -> r0 = &word_200A6F0
+// symdb: ; side effects: writes to word_200A6F0 and an offset within it (12-byte affine matrix records)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE7A.yaml
 	thumb_func_start sub_802FE7A
 sub_802FE7A:
 	push {r4-r7,lr}

@@ -226,9 +226,9 @@ dword_80027C0:
 	.word 0x1
 	thumb_func_end sprite_setRenderFlushState_80027B4
 
-// symdb: Initializes a small sprite/GFX-anim state block at `byte_20098A8` (scale=0x0C, delay=0, idle/duration=0x032F) — a leaf resetter for an EWRAM aux state structure.
-// symdb: (lr) -> r0 = 0x032F ; side effects: writes byte_20098A8..+0x3
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80027C4.yaml
+// symdb: initialises a small graphics/fade state struct used by the battle fade pipeline
+// symdb: () -> r0 = 0x32f ; side effects: writes [0x20098A8] = 0x0C, [0x20098A9] = 0, [0x20098AA] = 0x32F
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027C4.yaml
 	thumb_func_start sub_80027C4
 sub_80027C4:
 	ldr r1, off_8002804 // =byte_20098A8

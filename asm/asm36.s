@@ -8275,6 +8275,11 @@ off_813419C:
 	.word eTextScript2028A20
 	thumb_func_end chatbox_runScript_803FD9C_on_eTextScript2028A20
 
+// symdb: Per-frame folder/chip-page background tile uploader for the battle custom-screen/submenu scene (writes five tile blocks via CopyBackgroundTiles, depending on the submenu scroll index at object+0x18).
+// symdb: (r5 = submenu/BattleObject-like struct with u16 anim/id at +0x24 and s16 scrollIndex at +0x18)
+// symdb: -> r0 = 0x1c ; side effects: BG tile blocks 2/1/2/1/2 at column offsets derived from
+// symdb: scrollIndex; queue/decompress folder chip GFX; queue u16 tile-id writes.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81341A0.yaml
 	thumb_local_start
 sub_81341A0:
 	push {r4-r7,lr}
@@ -8459,6 +8464,11 @@ off_8134308:
 dword_813430C:
 	.word 0x34F
 	thumb_func_end sub_81341A0
+// symdb: Folder-edit scene renderer: rebuilds the folder/column BG tilemap rows of the folder-edit menu and copies them into BG blocks at column offsets derived from the folder-edit object state.
+// symdb: (r5 = folderEdit object pointer, r10 = toolkit) -> r0 = computed next X base; side effects:
+// symdb: writes BG tile blocks via CopyBackgroundTiles and queues chip/folder GFX via
+// symdb: battle_loadFolderChipGfx/sub_81203E4/sub_8120458/sub_81204C4/sub_8120618.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134310.yaml
 	thumb_local_start
 sub_8134310:
 	push {r4-r7,lr}

@@ -241,6 +241,10 @@ locret_800EF32:
 	pop {r5-r7,pc}
 	thumb_func_end sub_800EF02
 
+// symdb: Computes an elemental chip bonus (additive damage + element id) based on the selected chip and the user's Navi/custom-equipment profile.
+// symdb: (r0 = chipID, r1 = ?) -> r0 = damageBonus, r1 = elementID ; side effects: none beyond the final
+// symdb: barrier-hit adjustment
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EF34.yaml
 	thumb_local_start
 sub_800EF34:
 	push {r4,r6,r7,lr}
@@ -2917,7 +2921,7 @@ byte_80100A8:
 
 // symdb: Updates a battle object's navi sprite palette, using a dedicated handler for cross/beast transformed states and a computed palette otherwise.
 // symdb: void battle_refreshNaviSpritePaletteFromForm(void *battleObj /* r0 */, ... /* r2-r7,r10 pass
-// symdb: through to helpers */) -> palette-related values in r0/r1 from battle_pickPaletteIndexForNavi_801002C path
+// symdb: through to helpers */) -> palette-related values in r0/r1 from sub_801002C path
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_refreshNaviSpritePaletteFromForm_80100EC.yaml
 	thumb_func_start battle_refreshNaviSpritePaletteFromForm_80100EC
 battle_refreshNaviSpritePaletteFromForm_80100EC:
@@ -9360,6 +9364,10 @@ sub_8012EA0:
 	pop {pc}
 	thumb_func_end sub_8012EA0
 
+// symdb: Clears the active PwrAtk (charged/Press A) state of a battle object: zeros the AIData charge-related bytes and clears the 0x60000 flag in the AI flag word.
+// symdb: (r5 = BattleObjectPtr) -> r0 = 0x60000 ; side effects: writes AIData offsets 0x1b/0x1d/0x1e to 0
+// symdb: and clears bits 0x60000 in AIData Unk_44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012EA8.yaml
 	thumb_func_start sub_8012EA8
 sub_8012EA8:
 	push {lr}
@@ -22688,6 +22696,9 @@ battle_toggleAllianceAndAccumulateCollisionToAiData_801A308:
 	pop {r4,pc}
 	thumb_func_end battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 
+// symdb: Heal the opposing battle actor by the counter-damage stored in their AIData Unk_10, then spawn a +HP effect object and play the heal sound.
+// symdb: (r5 = self BattleObjectPtr) -> (r5/r10 preserved; no return value)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A324.yaml
 	thumb_local_start
 sub_801A324:
 	push {r4,lr}
@@ -22980,10 +22991,9 @@ loc_801A502:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801A4DC
 
-// symdb: Conditionally sets AI data unk_44 flag 0x80000000 when the battle object's collision data has both byte 0x75 and halfword 0x80 non-zero.
-// symdb: void sub_801A506(void); /* in: r5 = battle object ptr; out: none; clobbers nzcv, r0, r1, r3, lr
-// symdb: */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801A506.yaml
+// symdb: Battle AI: if the target battle object's collision data has a non-zero damage multiplier and non-zero DamageElements flags, set AIData Unk_44 bit 0x80000000
+// symdb: (r5 = AI work pointer) -> void ; may set AIData Unk_44 flag and clobber r0/r1/r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A506.yaml
 	thumb_local_start
 sub_801A506:
 	push {lr}
@@ -23127,6 +23137,10 @@ battle_ClearObjectCollisionResult_801A5E2:
 	mov pc, lr
 	thumb_func_end battle_ClearObjectCollisionResult_801A5E2
 
+// symdb: Per-tick handler that decrements and finishes a battle object's flashing/invisibility duration, clearing the invis flag and playing the disappearance SFX.
+// symdb: (r5 = BattleObjectPtr) -> void ; side effects: mutates FlashingInvisTimer and
+// symdb: ObjectFlags1/ObjectFlags2 of r5->CollisionDataPtr; may call PlaySoundEffect(0x94)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A5EE.yaml
 	thumb_local_start
 sub_801A5EE:
 	push {r6,lr}
@@ -25690,10 +25704,9 @@ dword_801B9B8:
 	.word 0x8000
 	thumb_func_end sub_801B878
 
-// symdb: Kills (zeroes HP of) a battle object whose AIData targets a flagged object when the AI is set to actor type NAVI.
-// symdb: (r5 = battleObject*) -> void ; may clear oBattleObject_HP of the related object pointed to by
-// symdb: AI's AIData+0x54
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801B9BC.yaml
+// symdb: If the object's AIData says it's a clean-trigger kill and the related battle object has the 0x100 object flag (BUBBLED), set HP to 0 to mark it dead.
+// symdb: (r5 = BattleObject*) -> void ; side effect: may zero oBattleObject_HP on the related object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B9BC.yaml
 	thumb_local_start
 sub_801B9BC:
 	push {r5,lr}
@@ -27617,6 +27630,10 @@ locret_801C63E:
 	pop {pc}
 	thumb_func_end sub_801C5F4
 
+// symdb: Draws/updates a battle cursor tile over the selected panel for the actor in r5, including a flashing variant and end-of-battle check.
+// symdb: (r5 = actor/BattleObject*, r10 = *Toolkit) -> r0 = unused ; side effects: writes BG tile ids via
+// symdb: bgmap, queues a 0x20-byte GFX upload, early-returns during end-of-battle
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_801C640.yaml
 	thumb_local_start
 sub_801C640:
 	push {r4-r6,lr}
@@ -27875,6 +27892,10 @@ off_801C83C:
 	.word eStruct2035280
 	thumb_func_end battle_drawSelectedChipNameAndDamage_801C6EE
 
+// symdb: Battle per-frame updater that bumps an internal "low-HP" timer, plays SOUND_LOW_HP every 0x2d frames while the alive-player-actor count is non-zero, and animates the navi's HP gauge toward the live HP value.
+// symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: PlaySoundEffect(SOUND_LOW_HP),
+// symdb: mutates r5[BButton_offset], r5[Unk_03], r5[Unk_05], r5[Unk_24] and r5[Unk_26]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C840.yaml
 	thumb_local_start
 sub_801C840:
 	push {r7,lr}
@@ -30067,6 +30088,9 @@ dword_801D810:
 	.word 0xAAAA
 	thumb_func_end sub_801D792
 
+// symdb: Returns 1 when the battle's object animation stepper should use a "simple" code path, based on battle mode, two event flags, a battle-flag bit, and a battle-effects bit; otherwise 0.
+// symdb: (r10 = ToolkitPtr) -> r0 = 0 or 1 (bool)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D814.yaml
 	thumb_local_start
 sub_801D814:
 	push {r4,lr}
@@ -32160,6 +32184,10 @@ sub_801E69C:
 	b loc_801E6B2
 	thumb_func_end sub_801E69C
 
+// symdb: Looks up the emotion palette/effect index for a battle object's current emotion/transformation, with special-cased boosts for BeastOut/transformed states.
+// symdb: (r5 = BattleObject*) -> r0 = emotion/pose id, r1 = r3 (some flag from caller) ; side effects:
+// symdb: clobbers r4, r6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E6A8.yaml
 	thumb_local_start
 sub_801E6A8:
 	push {r4,r6,lr}
