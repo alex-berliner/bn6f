@@ -7579,6 +7579,10 @@ locret_8111A8A:
 	pop {pc}
 	thumb_func_end sub_8111A72
 
+// symdb: Advances a battle object one frame along an in-progress panel-to-panel move, snapping to its destination panel and entering a post-move completion state when the move timer elapses.
+// symdb: (r5 = *BattleObject, r7 = *AIAttackVars) -> void ; mutates r5's
+// symdb: X/Y/PanelX/PanelY/CollisionData/ObjectFlags1/CurAnim and r7's Unk_10/Unk_1a/Unk_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111A8C.yaml
 	thumb_local_start
 sub_8111A8C:
 	push {lr}

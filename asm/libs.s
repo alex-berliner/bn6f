@@ -193,10 +193,10 @@ off_814423C:
 	.word word_2006E04
 	thumb_func_end link_initAndClear_8144158
 
-// symdb: Tiny driver routine that runs two back-to-back update steps (sub_8144158 then link_resetHardwareAndClearLinkBuffers_81440D8) for its subsystem, likely once per frame.
-// symdb: void sub_8144240(void); // no meaningful inputs or outputs; caller-saved r0-r3 and flags are
-// symdb: clobbered, r4-r7 preserved
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
+// symdb: Link subsystem initializer: re-initializes link registers via the two helper init routines and tail-pop returns to caller.
+// symdb: () -> r0 = caller's LR side effects: hardware SIO/Timer3 reset and EWRAM link state zeroed by
+// symdb: callees; no other side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144240.yaml
 	thumb_func_start sub_8144240
 sub_8144240:
 	push {lr}

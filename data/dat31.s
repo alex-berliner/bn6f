@@ -740,9 +740,10 @@ loc_810CA84::
 	pop {pc}
 	thumb_func_end sub_810CA4C
 
-// symdb: Per-frame panel step for a battle object: pick a direction/panel, validate via object_checkPanelParameters, claim it, then move/face and refresh collision.
-// symdb: (r0 = slot, r1 = entry_lsb, r2 = mask_all, r3 = mask_none) -> r0 = result_counter ; r1/r5
-// symdb: modified (r5 = current object)
+// symdb: Unknown battle-object step function: checks/unreserves an adjacent panel using a mask/state from the toolkit, sets per-step data on the object, and returns a per-call code (0x01, 0x02, 0x0B, 0x0C are all observed).
+// symdb: (r0 = 0x08, r1 = objPtr? 0x0810ca8f or 0x0810ca8e+1, r2 = 0x80, r3 = 0x03, r10 = toolkit, r5 =
+// symdb: battleObject, r7 = ?) -> r0 = per-call status code (varying 1..12); NZ/C set; side effects
+// symdb: update r1..r7, may call into panel/object/effect helpers and the status-list claimer.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CA8E.yaml
 	thumb_local_start
 sub_810CA8E::
@@ -991,9 +992,10 @@ locret_810CC52::
 	pop {pc}
 	thumb_func_end sub_810CC0A
 
-// symdb: Type-4 battle object handler/phase routine that recalculates panel coords, manages panel reservation and collision flags, and spawns an effect object before returning a small numeric code in r0.
-// symdb: (r5 = ?, r6 = ?, r7 = ?) -> r0 = small value (0x1c..0x29 range per captures), r1 = ?, r5 =
-// symdb: preserved-ish; side effects on battle object at r5 and on panel data
+// symdb: per-tick step of a SnakeArm object's attack: pick the next panel along its column/row, reserve/release panels, and spawn a small effect object at each step.
+// symdb: (r5 = SnakeArm battle object, r6 = ?, r7 = ?) -> r1 = next-direction-bytes payload left in r1
+// symdb: for the caller; side effects: panel reservations, flag1 ORs/clears on r5 and its collision data,
+// symdb: an effect object is spawned.
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810CC54.yaml
 	thumb_local_start
 sub_810CC54::

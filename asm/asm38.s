@@ -3092,6 +3092,12 @@ off_30070B0:
 	.word byte_8043CA4
 	thumb_func_end chatbox_renderLineSubtitleGfx_03007038
 
+// symdb: Stages chatbox box-graphic tile data (3 tile sets x 8 palettes) into the EWRAM staging buffer pointed to by r0, then DMA-copies 0xF00 bytes to OBJ VRAM at 0x06015700, and finally sets chatbox.Unk_3D = 2 if FLAGS_3E_UNK_0400 is set.
+// symdb: (r0 = mode selector: 0 -> stage buffer at dword_200CDA0+0x680; 1 -> stage buffer at
+// symdb: dword_200CDA0+0x080; else -> stage buffer at dword_200CDA0+0x680) -> no meaningful return ; side
+// symdb: effects: writes 0x20 bytes per palette group into the staging buffer, queues a 0xF00-byte DMA to
+// symdb: OBJ VRAM 0x06015700, may set Chatbox+0x3D to 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30070B4.yaml
 	thumb_func_start sub_30070B4
 sub_30070B4:
 	push {r4-r7,lr}
@@ -3980,6 +3986,10 @@ loc_30076D6:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_3007692
 
+// symdb: For a battle object, applies element/panel-type rules when stepping off a collision panel — turns grass/lava/cracked panels under specific element objects into broken panels (type 2).
+// symdb: (r0 = panelX, r1 = panelY, r2 = collisionDataPtr, r10 = toolkit, lr) -> void ; side effects: may
+// symdb: write panel type via _object_setPanelType
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007708.yaml
 	thumb_local_start
 sub_3007708:
 	push {r4,r6,r7,lr}

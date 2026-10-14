@@ -28803,12 +28803,10 @@ byte_80C54DC:
 	.byte 0x0, 0x1, 0x1, 0x0
 	thumb_func_end battleObject_initSnakeArm_80C53FA
 
-// symdb: Per-action collision bookkeeping step for the battle object: drop old collision, spawn hit effect, then either destroy the object (if the battle is over) or run its CurAction collision handler, present the new collision data, and highlight its current panel.
-// symdb: void object_runCollisionStep_80C54E0(struct BattleObject* r5 /* battle object */, u32 r4 /*
-// symdb: unused in fn body but callee-saved in callers */, u32 r7 /* preserved */, u32 r8 /* r4 of
-// symdb: caller? (caller convention) */, u32 r10 /* ??? */); clobbers r0-r4, r6, r9, r11, r12, lr;
-// symdb: preserves r7; sets NZCV.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C54E0.yaml
+// symdb: Per-frame update for the SnakeArm battle object: tears down last-frame collision, conditionally clears the panel highlight, dispatches to a CurAction update routine, refreshes collision data, and re-highlights the panel; if the battle is over, destroys the object.
+// symdb: (r5 = oBattleObject, r10 = toolkit) -> r0 = pointer to object_snakeArmUpdate_80C552A+1; returns
+// symdb: void-like (only r5/r8 may_write)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C54E0.yaml
 	thumb_local_start
 sub_80C54E0:
 	push {r7,lr}
@@ -29011,6 +29009,10 @@ loc_80C562A:
 	pop {pc}
 	thumb_func_end battleObject_initBeastOut_80C55E4
 
+// symdb: Per-frame update for a beast-out (cross fuse) battle object: tears down collision, dispatches to per-action handlers, or schedules its own destruction when the battle ends.
+// symdb: (r5 = this BattleObject) -> void ; may set nz/c/v and trash r0-r3/r12; saves lr and callee-saved
+// symdb: regs implicitly via the caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5654.yaml
 	thumb_local_start
 sub_80C5654:
 	push {lr}
@@ -29857,6 +29859,10 @@ off_80C5C94:
 	.word sub_80C5D84+1
 	thumb_func_end battle_processCollisionEvent_80C5C40
 
+// symdb: Per-frame update for a BombMan-style "panel bomb" battle object that arcs, lands, then either explodes on a solid panel or self-destructs off-grid.
+// symdb: (r5 = BattleObject*) -> void ; reads/writes the battle object and its CollisionData, may play
+// symdb: SOUND_HIT_BOMB_1, may spawn a type-4 effect object, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C5C9C.yaml
 	thumb_local_start
 sub_80C5C9C:
 	push {r4,r6,r7,lr}
@@ -35360,6 +35366,11 @@ off_80C8560:
 	.word object_genericDestroy+1
 	thumb_func_end t3_0x22_80C853C
 
+// symdb: Initializes a freshly-spawned battle object for a beast-out transformation, placing it on its current panel, loading the beast sprite/animation, setting the flip, no shadow, and flipping it to the CUR_STATE_UPDATE phase.
+// symdb: (r5 = ptr to battle object whose header Flags bit 2 will be set) -> void ; side effects: writes
+// symdb: CurAnim/CurAnimCopy, CurStateActionPhaseAndPhaseInitialized, Z, X, sprite slot, sprite palette,
+// symdb: sprite flip bits; pushes/pops lr; trashes r0–r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C856C.yaml
 	thumb_local_start
 sub_80C856C:
 	push {lr}
@@ -41282,6 +41293,9 @@ off_80CB100:
 	.word sub_80CB1DA+1
 	thumb_func_end t3_0x39_80CB0DC
 
+// symdb: Sets up a battle object's panel coordinates, palette-flip flags, an animation, and a sound for a Beast-Out (cross-unison) transformation.
+// symdb: (r5 = BattleObject*) -> void ; side effects: writes BattleObject, sprite, sound
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CB10C.yaml
 	thumb_local_start
 sub_80CB10C:
 	push {lr}
@@ -54230,6 +54244,11 @@ loc_80D12C4:
 	pop {r4,pc}
 	thumb_func_end sub_80D124E
 
+// symdb: Per-frame update for the type-1 "bomb" battle object: tears down its collision on death/explode, plays the bomb-hit SFX, spawns an explosion effect object, drives a phase jump table (0x0 prep/spawning, 0x8 broken/damaged delay, 0xc hit/react), or dest_explodes the bomb.
+// symdb: (r5 = &oBattleObject self) -> void ; side effects: spawns a type-4 effect object, plays
+// symdb: SOUND_HIT_BOMB_1, mutates the object's CurAction/Timer/CurState/ExtraVars[8], refreshes its
+// symdb: collision when time-stop is inactive.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D12CA.yaml
 	thumb_local_start
 sub_80D12CA:
 	push {r4,r7,lr}
@@ -55571,6 +55590,11 @@ byte_80D1CE4:
 	.byte 0x0, 0x0, 0x66, 0xE6, 0x0, 0x0
 	thumb_func_end sub_80D1C5A
 
+// symdb: Drives a battle object's collision state machine: tears down prior collision data, spawns the collision effect, then either destroys the object or routes through a per-CurAction jump table (with branch overrides for time-stop and refresh).
+// symdb: (r5 = BattleObject*) -> void ; side effects: modifies the object (CurAction,
+// symdb: CurPhaseAndPhaseInitialized, CurState), its CollisionData, and battle collision regions; tail-
+// symdb: call dispatches to per-action handlers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D1D14.yaml
 	thumb_local_start
 sub_80D1D14:
 	push {r4,r7,lr}
@@ -60890,9 +60914,10 @@ sub_80D4464:
 	pop {pc}
 	thumb_func_end sub_80D4464
 
-// symdb: Initialize the SnakeArm/GroundLine-style "tile/object" trap battle object (sprite + collision + reserved panel + lifespan) or fail and clean up.
-// symdb: (r5 = self = BattleObject*, r10 = toolkit) -> void (no caller-visible return)
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80D4472.yaml
+// symdb: Initialises a type-4 battle object's running "actor" state: sets HP=1, reserves its panel, marks collision present, switches to CUR_STATE_UPDATE with a 30-frame timer, or on init failure spawns a default effect and frees the slot.
+// symdb: (r5 = BattleObject*) -> void ; side effects: EWRAM battle-object fields, panel reservation,
+// symdb: possible t4 EffectObject spawn
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D4472.yaml
 	thumb_local_start
 sub_80D4472:
 	push {r4,lr}
@@ -93723,6 +93748,12 @@ off_80E3B88:
 	.word object_freeMemory+1
 	thumb_func_end t4_0x30_80E3B70
 
+// symdb: Initialize a battle object from its related object's spawn template: sync panel coords, load its sprite, set it to face the related object, give it initial velocity/movement timer, register it as the related object's pointer, play sound effect 0x0E, and advance to CUR_STATE_UPDATE.
+// symdb: (r5 = self BattleObject*, lr = return to caller) -> r5 = same self, r10 preserved ; side
+// symdb: effects: writes self's Coords/PanelXY, sprite slot, animation index, palette, XVelocity, Timer2,
+// symdb: Header.Flags (sets OBJECT_FLAG_VISIBLE bit 2), and points the related object to self; plays SFX
+// symdb: 0x0E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E3B94.yaml
 	thumb_local_start
 sub_80E3B94:
 	push {r4,lr}
@@ -110237,9 +110268,9 @@ off_80EB788:
 	.word sub_80EBBE2+1
 	thumb_func_end sub_80EB776
 
-// symdb: One AI attack-vars step that may spawn an illusion copy of the object's owner battle object (Navis with Transformation in 0x0B..0x18), set CannotSlide, claim its panel and teleport.
-// symdb: (r5 = owner battle object, r7 = AIAttackVars) -> no return value ; side effects may move the
-// symdb: owner and rewrite r5/r7 and the battle panel grid
+// symdb: AI attack-vars routine that spawns an illusion/clone on the user's panel and snaps the user to the spawned panel (with re-flip bookkeeping)
+// symdb: (r5 = battleObject, r7 = AIAttackVars, lr) -> r1 ; side effects: writes AIAttackVars fields,
+// symdb: animates object, possibly flips DirectionFlip, refreshes sprite/arm
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80EB79C.yaml
 	thumb_local_start
 sub_80EB79C:
@@ -176941,6 +176972,9 @@ locret_810C0E2:
 	pop {pc}
 	thumb_func_end sub_810C070
 
+// symdb: AI attack step that plays the hit SFX, spawns a kind-0x16 impact object on the enemy's panel, and switches the attacker to its post-attack moving frame once the hit anim finishes
+// symdb: void(void) ; r5 = attacker battle object, r7 = AIAttackVars, r10 = toolkit ; mutates both
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_810C0E4.yaml
 	thumb_local_start
 sub_810C0E4:
 	push {r4,r6,lr}

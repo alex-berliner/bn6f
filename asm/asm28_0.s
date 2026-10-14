@@ -2782,6 +2782,10 @@ cutscenescript_809AEC6:
 	.byte 0x00
 	thumb_func_end sub_809ADA8
 
+// symdb: Spawn the story-5 entry overworld map object and recenter the camera on the player at that spot
+// symdb: (r5 = GameState/JumpTable scratch, r10 = Toolkit) -> r0 = 0 ; side effects: sets player
+// symdb: coords/facing/anim, raises an event flag, spawns a map object, recenters camera
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AF00.yaml
 	thumb_local_start
 sub_809AF00:
 	push {r4-r7,lr}

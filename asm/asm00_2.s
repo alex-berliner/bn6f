@@ -13768,6 +13768,11 @@ dword_8014B14:
 	.word 0x80000
 	thumb_func_end battle_runBeastTransformationAction_8014A38
 
+// symdb: Land a battle object on its queued panel: commit FuturePanelXY, recompute coords/collision, clear invulnerability and Press-A charge, restart the AI attack script, and reset the post-dash sprite/animation.
+// symdb: (r5 = battle object, r7 = AIAttackVars) -> r0 = 4 ; side effects: panel coords/pixel
+// symdb: coords/collision/facing updated; AI flag 0x80000 cleared; PwrAtkState cleared; AIAttackVars[0]
+// symdb: := 6 then 4; RelatedObject2 may be flagged 0x14/1 if non-null
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014B18.yaml
 	thumb_local_start
 sub_8014B18:
 	push {r4,lr}
@@ -19578,7 +19583,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / battleObject_applyVerticalMovement_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml

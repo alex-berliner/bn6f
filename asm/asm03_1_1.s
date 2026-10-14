@@ -13596,10 +13596,11 @@ off_803F6AC:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803F674
 
-// symdb: Initializes the eLinkState/eStruct200F360/camera/"BRE5" subsystems and sets event flag 0x172F
-// symdb: (r0 = mode index, r10 = toolkit) -> r0 = 1 ; side effects: clears eStruct200F360 (0x40 bytes),
-// symdb: resets eLinkState, runs a tail-call sub, inits camera block, writes a "BRE5" tag at 0x200B1B0,
-// symdb: sets Camera.unk_0C=0x3C, sets event flag EVENT_172F
+// symdb: Reset eLink/battle state blocks and zero-fill related battle buffers when a fresh battle (or battle-equivalent screen) begins.
+// symdb: (r0 = battle-context selector 0..N, r10 = Toolkit) -> r0 = 1 (the flag set) ; side effects:
+// symdb: zeroes eStruct200F360, resets eLinkState+side buffers, queues a sub_8144240 call, initialises
+// symdb: camera state, initialises the BRE5 magic block, sets Camera.unk_0C = 0x3C, sets event flag
+// symdb: 0x172F.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F6B0.yaml
 	thumb_func_start sub_803F6B0
 sub_803F6B0:

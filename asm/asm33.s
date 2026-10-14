@@ -5649,6 +5649,10 @@ dword_8125D0C:
 	.word 0x1F60
 	thumb_func_end buildComChipFilter_8125C08
 
+// symdb: Battle chip-select / custom-screen background draw pass: paints the chip-slot strips, packed-up chips and 2x14 chip graphics for the custom-cust screen using BG tile block 2.
+// symdb: (r5 = battleStatePtr, r10 = toolkitPtr) -> void ; writes tile-block 2 graphics via the bg_ /
+// symdb: pack helpers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125D10.yaml
 	thumb_local_start
 sub_8125D10:
 	push {r4-r7,lr}
@@ -13008,11 +13012,11 @@ off_81297BC:
 	.word unk_20251A0
 	thumb_func_end sub_812977C
 
-// symdb: Per-frame cutscene controller: runs entity updates and queued effects, and forces state "4:0" while a screen fade is active.
-// symdb: void cutscene_tick_81297C0(void)   /* inputs:  r5 = controller state struct ptr, r10 = ?, lr */
-// symdb: /* outputs: r4, r5, r6, r8, r9, r10, r11, r12 */   /* clobbers: r0, r1, r2, r3, lr; flags nz c v
-// symdb: */
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81297C0.yaml
+// symdb: Per-frame battle runtime tick: runs every entity's update handler, refreshes eStruct sprite render data, and on completion clears the chip/sub-menu run flag.
+// symdb: () -> r0 = 1 if not done, 0 if IsScreenFadeActive ; side effects: writes battle run-state bytes
+// symdb: at r5+1 and r5+2, calls entity update handlers and eStruct sprite refresh, queries
+// symdb: IsScreenFadeActive.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81297C0.yaml
 	thumb_local_start
 sub_81297C0:
 	push {lr}

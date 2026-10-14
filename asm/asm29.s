@@ -987,7 +987,7 @@ loc_80A557A:
 	.word 0x17F
 	thumb_func_end owMapObject_bbsObjectInit_80A5514
 
-// symdb: Per-frame update for the BBS overworld object (spawned by owMapObject_bbsObjectInit_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
+// symdb: Per-frame update for the BBS overworld object (spawned by sub_80A5514): poll cutscene/chatbox/player-busy gates, run sub-state 4 BBS request logic and sprite animation.
 // symdb: (r5 = owMapObjectPtr, r6 = ???, r10 = toolkitPtr, lr) -> void ; side effects: events flags
 // symdb: EVENT_4EA/EVENT_4EB tested/possibly set, sprite updated
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_bbsObjectUpdate_80A5588.yaml

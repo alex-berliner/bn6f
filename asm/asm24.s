@@ -1472,6 +1472,10 @@ loc_808CD1C:
 	.balign 4, 0x00
 	thumb_func_end reqBBS_pollTouchTrigger_808CD04
 
+// symdb: Overworld random-encounter "step" that, on the first run per map group, sets a story flag, marks the per-day LocEnemy flag (0x0F__ range), and plays the SE 0xD4 jingle once.
+// symdb: () -> r0/flags caller-don't-care ; side effects: sets one story flag and one daily progress
+// symdb: flag, plays sound effect 0xD4 on first encounter per area
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CD24.yaml
 	thumb_local_start
 sub_808CD24:
 	push {r4-r7,lr}

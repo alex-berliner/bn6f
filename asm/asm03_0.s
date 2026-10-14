@@ -1493,7 +1493,9 @@ loc_8026F0E:
 	pop {pc}
 	thumb_func_end runBattleDialog_8026EC8
 
-// symdb: Run-away (L button) attempt: t = (NaviStats+0x3E + 4) / 5 vs BattleSettings.Unk_01; if not an auto-win, a threshold byte from off_8027014 indexed by the attempt counter dword_20349A8 decides via one GetRNGSecondary ((r & 0xF) < threshold); writes the outcome (2 escaped) to S20364C0+4.
+// symdb: Advances the chip-select/customize sub-menu cursor one beat, with a chance to swap player element via Puppeteer
+// symdb: (r2 = curBeat counter?, r5 = S20364C0 state ptr, r10 = Toolkit) -> void ; writes to S20364C0
+// symdb: fields, Puppeteer element, byte_20366C0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026F1A.yaml
 	thumb_local_start
 sub_8026F1A:
@@ -17561,9 +17563,10 @@ loc_802E4DA:
 	.word 0xA000
 	thumb_func_end battle_getAllianceEntryStatus_802E4B8
 
-// symdb: Consumes two one-shot AI-data flag triggers (0x02000000 and 0x20000000) for a battle object, applying them as a timer-set on its alliance's panel/entry and as an indefinite invulnerability on the object itself.
-// symdb: void sub_802E4E4(u32 /*battle object*/ r5); clobbers nz, c, v, r0, r1, r2, r3, lr; preserves r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802E4E4.yaml
+// symdb: Polls two AIData Unk_44 timer-style flags and reacts when they fire (kick state + bubble if timer expired, full invulnerability if bubble expired).
+// symdb: (r5 = battle object) -> void ; side effects: clears Unk_44 flag bits and writes BattleObject
+// symdb: +0x50/+0x54/+0x30/Unk_5c + AIData
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E4E4.yaml
 	thumb_func_start sub_802E4E4
 sub_802E4E4:
 	push {r7,lr}
