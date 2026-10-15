@@ -5167,7 +5167,7 @@ sub_800E45E:
 battle_objectResolveContactOffset_800E468:
 	push {r4,lr}
 	sub sp, sp, #0x10
-	ldrb r0, [r5,#oBattleObject_Unk_0f]
+	ldrb r0, [r5,#oBattleObject_ContactState]
 	bl battle_dispatchObjectContactHandler_800E498
 	str r0, [sp,#4]
 	str r1, [sp,#8]

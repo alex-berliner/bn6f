@@ -17284,7 +17284,7 @@ sub_80166D0:
 	strb r0, [r5,#oBattleObject_Unk_1f]
 	pop {r6,r7,pc}
 loc_8016716:
-	ldrb r0, [r5,#oBattleObject_Unk_0f]
+	ldrb r0, [r5,#oBattleObject_ContactState]
 	cmp r0, #3
 	bne loc_8016722
 	mov r0, #5
@@ -17292,7 +17292,7 @@ loc_8016716:
 	strh r0, [r1,#oAIData_Unk_38]
 loc_8016722:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 	mov r0, #1
 	lsl r0, r0, #0xc
 	bl object_clearFlag // (int bitfield) -> void
@@ -17339,7 +17339,7 @@ loc_8016768:
 	mov r1, #0x24 
 	tst r0, r1
 	bne loc_80167B2
-	ldrb r0, [r5,#oBattleObject_Unk_0f]
+	ldrb r0, [r5,#oBattleObject_ContactState]
 	cmp r0, #3
 	bne loc_8016788
 	mov r0, #5
@@ -17356,7 +17356,7 @@ loc_8016788:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	strb r0, [r1,#oCollisionData_Direction]
 	mov r0, #3
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 	bl battle_objectResolveContactOffset_800E468
 	strb r0, [r5,#oBattleObject_Unk_1c]
 	strb r1, [r5,#oBattleObject_Unk_1d]
@@ -17406,7 +17406,7 @@ loc_80167E6:
 	lsl r0, r0, #0xc
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 	bl object_setCollisionPanelsToCurrent
 	pop {r4,r6,r7,pc}
 loc_801680E:
@@ -23036,7 +23036,7 @@ sub_801A3DA:
 	mov r0, #0x10
 	bl object_setFlag2
 	mov r0, #2
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 locret_801A3FE:
 	pop {r7,pc}
 	thumb_func_end sub_801A3DA
@@ -23055,7 +23055,7 @@ sub_801A400:
 	mov r0, #0x10
 	bl object_setFlag2
 	mov r0, #3
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 locret_801A41E:
 	pop {r7,pc}
 	thumb_func_end sub_801A400
@@ -24216,7 +24216,7 @@ battleObject_processCollisionResultsForEnemy_801ABB8:
 	mov r0, #4
 	bl object_clearFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 	b loc_801AC46
 loc_801AC32:
 	bl object_getFlag // () -> int
@@ -24226,7 +24226,7 @@ loc_801AC32:
 	mov r0, #0x10
 	bl object_setFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 loc_801AC46:
 	bl battle_applyFlattenHitStatus_800EB26
 	bl battleObject_applyStatusEffect_801A554
@@ -24341,7 +24341,7 @@ object_finishCollisionHitReaction_801AD12:
 	mov r0, #4
 	bl object_clearFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 loc_801AD60:
 	bl object_calculateFinalDamage2
 	bl object_spawnHiteffect
@@ -24408,7 +24408,7 @@ object_applyCollisionHit_801AD9E:
 	bl object_clearFlag2
 	bl sub_801A6A6
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 loc_801ADF0:
 	bl object_calculateFinalDamage2
 	bl object_spawnHiteffect
@@ -24449,7 +24449,7 @@ sub_801ADFA:
 	mov r0, #4
 	bl object_clearFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 loc_801AE4C:
 	bl object_calculateFinalDamage2
 	bl object_spawnHiteffect
@@ -24540,8 +24540,8 @@ loc_801AED6:
 	mov r0, #4
 	bl object_clearFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
+	strb r0, [r5,#oBattleObject_ContactState]
 	b locret_801AF0C
 loc_801AEF8:
 	bl object_getFlag // () -> int
@@ -24551,7 +24551,7 @@ loc_801AEF8:
 	mov r0, #0x10
 	bl object_setFlag2
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0f]
+	strb r0, [r5,#oBattleObject_ContactState]
 locret_801AF0C:
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_applyHitModifierFlags_801AEB0
