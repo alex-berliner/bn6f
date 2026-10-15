@@ -912,7 +912,7 @@ off_8026AA4:
 battle_custMenuAnimateCursorToOK_8026B04: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
-	ldrb r0, [r5,#oS20364C0_Unk_02]
+	ldrb r0, [r5,#oS20364C0_StateHandled]
 	cmp r0, #0
 	bne loc_8026B38
 
@@ -940,7 +940,7 @@ battle_custMenuAnimateCursorToOK_8026B04: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0x78 
 	str r0, [r5,#0x40]
 
-	strb r0, [r5,#oS20364C0_Unk_02]
+	strb r0, [r5,#oS20364C0_StateHandled]
 loc_8026B38:
 	ldr r0, [r5,#0x40]
 	sub r0, #0xc
@@ -1032,7 +1032,7 @@ loc_8026BD6:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	b loc_8026BE8
 loc_8026BE0:
@@ -1042,7 +1042,7 @@ loc_8026BE0:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 loc_8026BE8:
 	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
@@ -1060,7 +1060,7 @@ off_8026BF0:
 scrollStrip_update_8026BF4: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 
-	ldrb r0, [r5,#oS20364C0_Unk_02]
+	ldrb r0, [r5,#oS20364C0_StateHandled]
 	cmp r0, #FALSE
 	bne loc_8026C14
 
@@ -1069,7 +1069,7 @@ scrollStrip_update_8026BF4: // (self: * S20364C0 $r5) -> ()
 	str r0, [r5,#oS20364C0_Extra_Unk_40]
 
 	mov r0, #TRUE
-	strb r0, [r5,#oS20364C0_Unk_02]
+	strb r0, [r5,#oS20364C0_StateHandled]
 
 	ldr r0, off_8026CC4 // =0x2000 
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -1183,7 +1183,7 @@ custMenuUpdateWaitSelectionState_8026CCC: // (self: * S20364C0 $r5) -> ()
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strb r0, [r5,#oS20364C0_Unk_02]
+	strb r0, [r5,#oS20364C0_StateHandled]
 
 	mov r0, #0
 	str r0, [r5,#0x40]
@@ -5485,7 +5485,7 @@ loc_8028BB4:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	b locret_8028C96
 loc_8028BBE:
@@ -5567,7 +5567,7 @@ loc_8028C36:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	b locret_8028C96
 loc_8028C46:
@@ -5600,7 +5600,7 @@ loc_8028C60:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	b locret_8028C96
 loc_8028C80:
@@ -5616,7 +5616,7 @@ loc_8028C80:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 locret_8028C96:
 	pop {r4,pc}
@@ -5723,7 +5723,7 @@ loc_8028D5A: // endif
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	mov r0, #SOUND_SELECT_82
 	bl PlaySoundEffect
@@ -5768,7 +5768,7 @@ sub_8028D6C:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	mov r0, #0
 	b locret_8028DBA
@@ -5819,7 +5819,7 @@ loc_8028DE0:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
   
 	mov r0, #0x83
 	add r0, #0xff
@@ -9684,7 +9684,7 @@ sub_802A934:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG2ScrollX]
 loc_802A966:
 	mov r0, #1
 	strb r0, [r5,#4]
@@ -10503,7 +10503,7 @@ sub_802AF6C:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	mov r0, #0x78 
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG2ScrollX]
 	mov r0, #SOUND_SELECT_79
 	bl PlaySoundEffect
 	mov r0, #0xf
@@ -10546,7 +10546,7 @@ loc_802AFAE:
 	str r0, [r5,#0x38]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG2ScrollX]
 	cmp r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_802AF6C
@@ -10593,7 +10593,7 @@ loc_802AFF8:
 	str r0, [r5,#0x38]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#oRenderInfo_Unk_18]
+	strh r0, [r1,#oRenderInfo_BG2ScrollX]
 	cmp r0, #0x78 
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -11750,7 +11750,7 @@ off_802BA14:
 sub_802BA18:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r0,#oRenderInfo_Unk_18]
+	ldrh r0, [r0,#oRenderInfo_BG2ScrollX]
 	asr r0, r0, #3
 	add r0, #1
 	mov pc, lr
@@ -12103,7 +12103,7 @@ objStepFinishSetState4_802BE0C:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
 	mov r0, #0
-	strh r0, [r3,#oRenderInfo_Unk_18]
+	strh r0, [r3,#oRenderInfo_BG2ScrollX]
 	mov r1, #0
 	bl battle_eStruct2035280_postEvent_801E0A0
 	mov r0, #4
@@ -12217,7 +12217,7 @@ custMenu_handleInputQueuePop_802BED4:
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
 	mov r0, #0
-	strh r0, [r5,#oS20364C0_Unk_02]
+	strh r0, [r5,#oS20364C0_StateHandled]
 
 	b locret_802BEFA
 loc_802BEE8:
@@ -15544,7 +15544,7 @@ loc_802D524:
 	mov r0, #0
 	strh r0, [r6,#4]
 	bl sub_802D5A8
-	strh r0, [r7,#oAIAttackVars_Unk_14]
+	strh r0, [r7,#oAIAttackVars_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r4, r0
 	ldrb r1, [r4,#0xc]
@@ -15557,7 +15557,7 @@ loc_802D524:
 	mov r0, #0x80
 	orr r1, r0
 	strh r1, [r7,#oAIAttackVars_Unk_0a]
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldr r1, dword_802D634 // =0x153 
 	cmp r0, r1
 	bne loc_802D55A
@@ -21583,12 +21583,12 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_10]
+	ldrh r6, [r0,#oRenderInfo_BGScrollXOffset]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_12]
+	ldrh r7, [r0,#oRenderInfo_BGScrollY]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_10]
-	strh r7, [r0,#oRenderInfo_Unk_12]
+	strh r6, [r0,#oRenderInfo_BGScrollXOffset]
+	strh r7, [r0,#oRenderInfo_BGScrollY]
 	strh r6, [r0,#oRenderInfo_Unk_14]
 	strh r7, [r0,#oRenderInfo_Unk_16]
 	mov pc, lr
@@ -21621,11 +21621,11 @@ camera_applyScrollToBgLayers_8030158:
 	bne locret_8030192
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_18]
+	ldrh r6, [r0,#oRenderInfo_BG2ScrollX]
 	add r6, r6, r1
 	ldrh r7, [r0,#oRenderInfo_Unk_1a]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_18]
+	strh r6, [r0,#oRenderInfo_BG2ScrollX]
 	strh r7, [r0,#oRenderInfo_Unk_1a]
 locret_8030192:
 	pop {r4-r7,pc}
@@ -21641,12 +21641,12 @@ sub_8030194:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_10]
+	ldrh r6, [r0,#oRenderInfo_BGScrollXOffset]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_12]
+	ldrh r7, [r0,#oRenderInfo_BGScrollY]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_10]
-	strh r7, [r0,#oRenderInfo_Unk_12]
+	strh r6, [r0,#oRenderInfo_BGScrollXOffset]
+	strh r7, [r0,#oRenderInfo_BGScrollY]
 	mov pc, lr
 	thumb_func_end sub_8030194
 
@@ -21861,11 +21861,11 @@ camera_CopyScrollToRenderLayers_80302F8:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
+	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r3,#oRenderInfo_Unk_14]
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
+	strh r2, [r3,#oRenderInfo_BGScrollY]
 	strh r2, [r3,#oRenderInfo_Unk_16]
 	strh r2, [r3,#oRenderInfo_Unk_1a]
 	mov pc, lr
@@ -21884,13 +21884,13 @@ renderInfo_SnapScrollToCamera_8030316:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
+	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r3,#oRenderInfo_Unk_14]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
+	strh r2, [r3,#oRenderInfo_BGScrollY]
 	strh r2, [r3,#oRenderInfo_Unk_16]
 	mov r1, #0
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	strh r1, [r3,#oRenderInfo_Unk_1a]
 	mov pc, lr
 	thumb_func_end renderInfo_SnapScrollToCamera_8030316
@@ -21908,17 +21908,17 @@ render_ClearScrollOffsets_8030336:
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
+	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r3,#oRenderInfo_Unk_14]
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
+	strh r2, [r3,#oRenderInfo_BGScrollY]
 	strh r2, [r3,#oRenderInfo_Unk_16]
 	strh r2, [r3,#oRenderInfo_Unk_1a]
 	mov r1, #0
-	strh r1, [r3,#oRenderInfo_Unk_10]
-	strh r1, [r3,#oRenderInfo_Unk_12]
-	strh r1, [r3,#oRenderInfo_Unk_18]
+	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
+	strh r1, [r3,#oRenderInfo_BGScrollY]
+	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	strh r1, [r3,#oRenderInfo_Unk_1a]
 	mov pc, lr
 	thumb_func_end render_ClearScrollOffsets_8030336
@@ -21934,10 +21934,10 @@ sub_803035E:
 	lsl r4, r4, #1
 	add r4, #1
 	and r1, r4
-	strh r1, [r3,#oRenderInfo_Unk_10]
+	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
 	sub r2, #8
 	and r2, r4
-	strh r2, [r3,#oRenderInfo_Unk_12]
+	strh r2, [r3,#oRenderInfo_BGScrollY]
 	mov pc, lr
 	thumb_func_end sub_803035E
 

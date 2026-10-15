@@ -110,14 +110,14 @@ sub_810DA00:
 	strb r0, [r6,#oAIState_ScriptId]
 	b locret_810DA22
 loc_810DA1C:
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 	mov r0, #8
 	strb r0, [r6,#oAIState_ScriptId]
 locret_810DA22:
 	pop {pc}
 	thumb_func_end sub_810DA00
 
-// symdb: Dispatches to one of two AI state handlers based on the byte at offset oAIState_Unk_02 of the AI state struct in r6.
+// symdb: Dispatches to one of two AI state handlers based on the byte at offset oAIState_SubState of the AI state struct in r6.
 // symdb: void aiStateDispatch_810DA24(void); // r6 holds the AI state struct pointer; base
 // symdb: "off_810DA44:0" -> handler 0, "off_810DA44:1" -> handler 1
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DA24.yaml
@@ -125,7 +125,7 @@ locret_810DA22:
 sub_810DA24:
 	push {lr}
 	ldr r1, off_810DA40 // =off_810DA44
-	ldrb r0, [r6,#oAIState_Unk_02]
+	ldrb r0, [r6,#oAIState_SubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -190,7 +190,7 @@ loc_810DAA0:
 loc_810DAA2:
 	strb r3, [r6,#oAIState_TurnCounter]
 	mov r0, #4
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 locret_810DAA8:
 	pop {r4,pc}
 	thumb_func_end sub_810DA4C
@@ -401,8 +401,8 @@ sub_810DC00:
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	ldr r3, off_810DD04 // =byte_810DBF0
 	bl GetAllianceDependentPanelParamArgs
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r0, #0xa
 	bl object_setAttack0
 	bl sub_8109804
@@ -1544,7 +1544,7 @@ sub_810E63C:
 	mov r1, #9
 	strb r1, [r0,#0x10]
 loc_810E654:
-	ldrh r0, [r7,#oAIAttackVars_Unk_34]
+	ldrh r0, [r7,#oAIAttackVars_AiAttackParam]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0xc
 	strb r0, [r7,#oAIAttackVars_HitElement]
@@ -2121,7 +2121,7 @@ sub_810EAA6:
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #3
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl genericAI_movementRelated_8109952
@@ -2150,7 +2150,7 @@ sub_810EADE:
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldr r0, off_810EC5C // =byte_810E80A
 	ldrb r0, [r0,r1]
-	strh r0, [r7,#oAIAttackVars_Unk_34]
+	strh r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldr r0, off_810EC60 // =byte_810E810
 	ldrb r0, [r0,r1]
 	strh r0, [r7,#oAIAttackVars_AttackDuration]
@@ -2435,7 +2435,7 @@ sub_810EDB8:
 	mov r0, #0x1e
 	bl object_setCounterTime
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	b locret_810EE02
 loc_810EDE2:
 	bl sprite_getFrameParameters
@@ -2447,7 +2447,7 @@ loc_810EDE2:
 	lsl r0, r0, #2
 	ldr r1, off_810F004 // =off_810EFB0
 	ldr r0, [r1,r0]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldrb r0, [r5,#oBattleObject_CurAnim]
 	add r0, #1
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -2466,9 +2466,9 @@ loc_810EE0C:
 	lsl r1, r1, #8
 	orr r0, r1
 	lsl r0, r0, #0x10
-	ldr r4, [r7,#oAIAttackVars_Unk_34]
+	ldr r4, [r7,#oAIAttackVars_AiAttackParam]
 	add r6, r4, #1
-	str r6, [r7,#oAIAttackVars_Unk_34]
+	str r6, [r7,#oAIAttackVars_AiAttackParam]
 	ldrb r4, [r4]
 	lsl r4, r4, #8
 	orr r4, r0
@@ -3035,7 +3035,7 @@ sub_810F33C:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	lsl r1, r1, #4
 	orr r0, r1
-	ldr r3, [r7,#oAIAttackVars_Unk_34]
+	ldr r3, [r7,#oAIAttackVars_AiAttackParam]
 loc_810F356:
 	ldr r2, [r3]
 	cmp r2, #0
@@ -3043,10 +3043,10 @@ loc_810F356:
 	add r3, #4
 	b loc_810F356
 loc_810F360:
-	ldr r1, [r7,#oAIAttackVars_Unk_3c]
+	ldr r1, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	ldr r2, [r7,#oAIAttackVars_ScratchVar]
 	ldrb r4, [r7,#oAIAttackVars_TimerOrCycles]
-	ldr r6, [r7,#oAIAttackVars_Unk_38]
+	ldr r6, [r7,#oAIAttackVars_PanelParamFlags2]
 	lsl r6, r6, #8
 	orr r4, r6
 	ldr r6, [r7,#oAIAttackVars_Damage]
@@ -3193,15 +3193,15 @@ loc_810F470:
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #0x6c
 	add r0, r0, r5
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldr r0, [r5,#oBattleObject_ExtraVars+4]
-	str r0, [r7,#oAIAttackVars_Unk_38]
+	str r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	add r0, #1
 	mov r1, #3
 	and r0, r1
 	str r0, [r5,#oBattleObject_ExtraVars+4]
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
-	str r0, [r7,#oAIAttackVars_Unk_3c]
+	str r0, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	mov r0, #0x78
 	strh r0, [r7,#oAIAttackVars_AttackDuration]
 	bl object_getFlag // () -> int
@@ -4421,7 +4421,7 @@ loc_810FF46:
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #3
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl genericAI_movementRelated_8109952
@@ -4973,7 +4973,7 @@ sub_8110416:
 	add r4, #1
 	mov r2, #3
 	mov r3, #0
-	ldr r7, [r7,#oAIAttackVars_Unk_34]
+	ldr r7, [r7,#oAIAttackVars_AiAttackParam]
 	bl spawnDollThunderObject_80D5890
 	pop {r7}
 	mov r0, #0
@@ -4982,7 +4982,7 @@ sub_8110416:
 	mov r3, #0
 	ldr r4, dword_81104D0 // =0x10011104
 	bl sub_80C4038
-	ldr r1, [r7,#oAIAttackVars_Unk_34]
+	ldr r1, [r7,#oAIAttackVars_AiAttackParam]
 	add r1, #4
 	str r0, [r1]
 	bl sub_80C4090
@@ -5002,7 +5002,7 @@ sub_811046A:
 	lsl r1, r1, #0xc
 	tst r0, r1
 	bne loc_8110488
-	ldr r0, [r7,#oAIAttackVars_Unk_34]
+	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldr r0, [r0]
 	cmp r0, #0
 	beq loc_8110488
@@ -5011,7 +5011,7 @@ sub_811046A:
 	strh r0, [r7,#oAIAttackVars_ChargeCycles]
 	bgt locret_81104B0
 loc_8110488:
-	ldr r0, [r7,#oAIAttackVars_Unk_34]
+	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r1, #0
 	str r1, [r0]
 	ldr r2, [r7,#oAIAttackVars_PanelChooseCallback]
@@ -5019,7 +5019,7 @@ loc_8110488:
 	mov r1, #0
 	str r1, [r2]
 	bl battle_ResetObjectTimerTo8_80C4072
-	ldr r2, [r7,#oAIAttackVars_Unk_34]
+	ldr r2, [r7,#oAIAttackVars_AiAttackParam]
 	add r2, #4
 	ldr r0, [r2]
 	mov r1, #0
@@ -5140,11 +5140,11 @@ off_8110570:
 	thumb_local_start
 battle_aiSnakeArmAttack_tick_8110574:
 	push {lr}
-	ldrb r0, [r6,#oAIState_Unk_02]
+	ldrb r0, [r6,#oAIState_SubState]
 	cmp r0, #0
 	bne loc_8110598
 	mov r0, #1
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldr r0, off_8110610 // =byte_8110506
 	ldrb r0, [r0,r1]
@@ -5203,14 +5203,14 @@ loc_81105D4:
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #0x68
 	add r0, r0, r5
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0x64
 	add r0, r0, r5
 	str r0, [r7,#oAIAttackVars_PanelChooseCallback]
 	mov r0, #0xa
 	bl object_setAttack0
 	mov r0, #0
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 locret_8110608:
 	pop {pc}
 	thumb_func_end battle_aiSnakeArmAttack_tick_8110574
@@ -5326,7 +5326,7 @@ sub_811072C:
 	mov r0, #8
 	strb r0, [r6,#oAIState_ScriptId]
 	mov r0, #0
-	strh r0, [r6,#oAIState_Unk_02]
+	strh r0, [r6,#oAIState_SubState]
 	bl object_exitAttackState_801171C
 	b locret_811079E
 loc_8110794:
@@ -5360,8 +5360,8 @@ sub_81107BC:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r7,#oAIAttackVars_TargetPanelX]
 	ldrb r1, [r7,#oAIAttackVars_TargetPanelY]
-	ldr r2, [r7,#oAIAttackVars_Unk_34]
-	ldr r3, [r7,#oAIAttackVars_Unk_38]
+	ldr r2, [r7,#oAIAttackVars_AiAttackParam]
+	ldr r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	bl object_checkPanelParameters
 	cmp r0, #0
 	beq loc_81107E8
@@ -5511,7 +5511,7 @@ sub_81108E4:
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	cmp r0, #0
 	bne loc_8110900
-	ldrh r0, [r7,#oAIAttackVars_Unk_34]
+	ldrh r0, [r7,#oAIAttackVars_AiAttackParam]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -6235,7 +6235,7 @@ sub_8110EB8:
 	mov r0, #OBJECT_FLAGS_GUARD
 	bl object_setFlag1 // (int a1) -> void
 	ldr r1, off_8110ED0 // =off_8110ED4
-	ldrb r0, [r6,#oAIState_Unk_02]
+	ldrb r0, [r6,#oAIState_SubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -6295,7 +6295,7 @@ loc_8110F2C:
 	mov r0, #0
 	strb r0, [r6,#oAIState_ScriptId]
 	mov r0, #0
-	strh r0, [r6,#oAIState_Unk_02]
+	strh r0, [r6,#oAIState_SubState]
 	pop {pc}
 	thumb_func_end sub_8110EF8
 
@@ -6321,7 +6321,7 @@ sub_8110F36:
 	strh r0, [r7,#oAIAttackVars_Unk_32]
 	ldr r0, off_811110C // =byte_8110E50
 	ldrb r0, [r0,r1]
-	strh r0, [r7,#oAIAttackVars_Unk_34]
+	strh r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldr r0, off_8111110 // =byte_8110E58
 	ldrb r0, [r0,r1]
 	strh r0, [r7,#oAIAttackVars_Unk_36]
@@ -6430,8 +6430,8 @@ sub_8111030:
 	strh r0, [r7,#oAIAttackVars_AttackDuration]
 	mov r2, #0
 	ldr r3, dword_811112C // =0xf880080
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r0, #0x74
 	add r0, r0, r5
 	str r0, [r7,#oAIAttackVars_TargetObjectPtr]
@@ -6891,19 +6891,19 @@ loc_811145C:
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	b loc_8111498
 loc_8111490:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 loc_8111498:
 	ldr r0, off_81114C4 // =byte_8111364
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldrb r0, [r0,r1]
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl sub_8109974
@@ -7534,8 +7534,8 @@ sub_8111A28:
 	beq loc_8111A68
 	ldrb r0, [r7,#oAIAttackVars_TargetPanelX]
 	ldrb r1, [r7,#oAIAttackVars_TargetPanelY]
-	ldr r2, [r7,#oAIAttackVars_Unk_34]
-	ldr r3, [r7,#oAIAttackVars_Unk_38]
+	ldr r2, [r7,#oAIAttackVars_AiAttackParam]
+	ldr r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	bl object_checkPanelParameters
 	cmp r0, #0
 	beq loc_8111A68
@@ -8128,8 +8128,8 @@ loc_8111E9C:
 	strb r1, [r7,#oAIAttackVars_TargetPanelY]
 	ldr r3, off_8111FE4 // =byte_8111F60
 	bl GetAllianceDependentPanelParamArgs
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	ldrb r0, [r4,#oAIData_Version_16]
 	ldr r1, off_8111EE0 // =byte_8111EF0
 	ldrb r0, [r1,r0]
@@ -8372,7 +8372,7 @@ loc_8112124:
 	ble loc_8112130
 	mov r0, #3
 loc_8112130:
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	mov r0, #3
 	strb r0, [r5,#oBattleObject_CurAnim]
 	b loc_811214C
@@ -8404,7 +8404,7 @@ loc_811214C:
 loc_811216A:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	add r0, r0, r4
-	ldrb r1, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r1, [r7,#oAIAttackVars_AttackStepIndex]
 loc_8112170:
 	push {r0-r3}
 	bl highlightPanelIfSomeCondition_8109660
@@ -8442,7 +8442,7 @@ sub_811219C:
 	bl object_getFrontDirection // () -> int
 	ldrb r1, [r5,#oBattleObject_PanelX]
 	add r0, r0, r1
-	ldrb r1, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r1, [r7,#oAIAttackVars_AttackStepIndex]
 	mov r2, #4
 	mov r3, #8
 	lsl r3, r3, #0x10
@@ -8644,8 +8644,8 @@ sub_8112340:
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	ldr r3, off_811269C // =byte_81125E0
 	bl GetAllianceDependentPanelParamArgs
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r0, #0xc
 	bl object_setAttack0
 	bl sub_8109804
@@ -9034,7 +9034,7 @@ sub_8112666:
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #3
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	pop {pc}
@@ -9294,11 +9294,11 @@ sub_81128FA:
 	tst r0, r1
 	beq loc_811291E
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	b loc_8112922
 loc_811291E:
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 loc_8112922:
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
@@ -9328,7 +9328,7 @@ loc_8112944:
 	ldrb r0, [r7,#oAIAttackVars_SubStepIndex]
 	add r0, #1
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]
-	ldrb r1, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r1, [r7,#oAIAttackVars_AttackStepIndex]
 	cmp r0, r1
 	blt loc_8112962
 	ldrh r0, [r7,#oAIAttackVars_AttackDuration]
@@ -9915,7 +9915,7 @@ battle_initBeastOutAttack_8112E34:
 	mul r1, r2
 	strh r1, [r0,#oBattleObject_Timer]
 	bl object_getFrontDirection // () -> int
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0x1e
 	bl object_setCounterTime
 	mov r0, #8
@@ -9955,9 +9955,9 @@ loc_8112E90:
 	bl sub_8112EFA
 	cmp r0, #0
 	bne locret_8112EC2
-	ldr r0, [r7,#oAIAttackVars_Unk_34]
+	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
 	neg r0, r0
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	bl sub_8112EFA
 	b locret_8112EC2
 loc_8112EB8:
@@ -10004,7 +10004,7 @@ locret_8112EF8:
 	thumb_local_start
 sub_8112EFA:
 	push {lr}
-	ldr r1, [r7,#oAIAttackVars_Unk_34]
+	ldr r1, [r7,#oAIAttackVars_AiAttackParam]
 	ldrb r0, [r7,#oAIAttackVars_TargetPanelX]
 	add r0, r0, r1
 	ldrb r1, [r7,#oAIAttackVars_TargetPanelY]
@@ -10039,7 +10039,7 @@ ai_DealQueuedAttackDamage_8112F34:
 	ldrb r1, [r7,#oAIAttackVars_TargetPanelY]
 	mov r4, #0xa
 	lsl r4, r4, #8
-	ldrb r2, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r2, [r7,#oAIAttackVars_AttackStepIndex]
 	add r4, r4, r2
 	mov r2, #0
 	mov r3, #0
@@ -10138,7 +10138,7 @@ ai_attackState_SetupSpecial_8112FBA:
 	mul r1, r2
 	strh r1, [r0,#oBattleObject_Timer]
 	bl object_getFrontDirection // () -> int
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0x1e
 	bl object_setCounterTime
 	mov r0, #8
@@ -10595,11 +10595,11 @@ battleObject_advanceMoveStep_811339A:
 	tst r0, r1
 	beq loc_81133AE
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	str r0, [r7,#oAIAttackVars_Unk_3c]
+	str r0, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	bl object_clearCollisionRegion // () -> void
 loc_81133AE:
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	ldr r1, [r7,#oAIAttackVars_Unk_3c]
+	ldr r1, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	cmp r0, r1
 	beq loc_81133BC
 	mov r0, #1
@@ -10612,8 +10612,8 @@ loc_81133BC:
 	bl object_setPanelsFromCoordinates
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	ldr r2, [r7,#oAIAttackVars_Unk_34]
-	ldr r3, [r7,#oAIAttackVars_Unk_38]
+	ldr r2, [r7,#oAIAttackVars_AiAttackParam]
+	ldr r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	cmp r0, #0
 	beq loc_8113400
 	cmp r0, #7
@@ -11017,8 +11017,8 @@ loc_8113700:
 	strb r0, [r6,#oAIState_TurnCounter]
 	mov r2, #0
 	ldr r3, dword_811374C // =0x3800000
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	ldr r1, off_8113750 // =byte_81135FC
 	ldrb r0, [r4,#oAIData_Version_16]
 	lsl r0, r0, #2
@@ -11991,7 +11991,7 @@ sub_8113F10:
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #3
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl sub_8114214
@@ -12458,10 +12458,10 @@ loc_81142C2:
 	mov r1, #1
 	tst r0, r1
 	beq loc_81142E6
-	ldrb r0, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	strb r0, [r5,#oBattleObject_CurAnim]
 loc_81142E6:
-	ldr r0, [r7,#oAIAttackVars_Unk_34]
+	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
@@ -14157,7 +14157,7 @@ loc_811520A:
 	ldrb r0, [r7,#oAIAttackVars_AttackBoost2]
 	ldr r1, off_8115230 // =off_8115234
 	ldrb r0, [r1,r0]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #2
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0xc
@@ -14218,11 +14218,11 @@ ai_attackVars_runMoveStep_8115272:
 	tst r0, r1
 	beq loc_8115286
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	str r0, [r7,#oAIAttackVars_Unk_38]
+	str r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	bl object_clearCollisionRegion // () -> void
 loc_8115286:
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	ldr r1, [r7,#oAIAttackVars_Unk_38]
+	ldr r1, [r7,#oAIAttackVars_PanelParamFlags2]
 	cmp r0, r1
 	beq loc_8115294
 	mov r0, #1
@@ -14484,9 +14484,9 @@ locret_8115490:
 	thumb_local_start
 sub_8115492:
 	push {lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_0f]
+	ldrb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	add r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	mov r1, #4
 	tst r0, r1
 	bne locret_81154B6
@@ -14497,7 +14497,7 @@ sub_8115492:
 	ldrb r3, [r5,#oBattleObject_Alliance]
 	ldrb r2, [r5,#oBattleObject_DirectionFlip]
 	eor r3, r2
-	ldr r2, [r7,#oAIAttackVars_Unk_34]
+	ldr r2, [r7,#oAIAttackVars_AiAttackParam]
 	bl highlightPanelIfSomeCondition_8109660
 locret_81154B6:
 	pop {pc}
@@ -14669,8 +14669,8 @@ loc_811561C:
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	ldr r3, off_81156F8 // =allianceDependentPanelFlags_81156D0
 	bl GetAllianceDependentPanelParamArgs
-	str r2, [r7,#oAIAttackVars_Unk_34]
-	str r3, [r7,#oAIAttackVars_Unk_38]
+	str r2, [r7,#oAIAttackVars_AiAttackParam]
+	str r3, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r0, #0xa
 	bl object_setAttack0
 	bl sub_8109804
@@ -15159,7 +15159,7 @@ loc_8115A7E:
 	str r0, [r7,#oAIAttackVars_PanelChooseCallback]
 	mov r0, #3
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl genericAI_movementRelated_8109952
@@ -15744,7 +15744,7 @@ loc_8115F9E:
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldrb r0, [r0,r1]
 	str r0, [r7,#oAIAttackVars_ScratchVar]
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl sub_8109974
@@ -16270,11 +16270,11 @@ off_81164E8:
 	thumb_local_start
 sub_81164EC:
 	push {r4-r7,lr}
-	ldrb r0, [r6,#oAIState_Unk_02]
+	ldrb r0, [r6,#oAIState_SubState]
 	cmp r0, #0
 	bne loc_8116502
 	mov r0, #1
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 	mov r0, #0x64
 	ldrh r0, [r5,r0]
 	strh r0, [r6,#oAIState_Timer]
@@ -16285,7 +16285,7 @@ loc_8116502:
 	strh r0, [r6,#oAIState_Timer]
 	bne locret_811650E
 	mov r0, #0
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 locret_811650E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81164EC
@@ -16471,11 +16471,11 @@ off_8116754:
 	thumb_local_start
 sub_8116758:
 	push {lr}
-	ldrb r0, [r6,#oAIState_Unk_02]
+	ldrb r0, [r6,#oAIState_SubState]
 	cmp r0, #0
 	bne loc_811676C
 	mov r0, #1
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 	mov r0, #0x1e
 	strh r0, [r6,#oAIState_Timer]
 	bl sub_811677A
@@ -16485,7 +16485,7 @@ loc_811676C:
 	strh r0, [r6,#oAIState_Timer]
 	bne locret_8116778
 	mov r0, #0
-	strb r0, [r6,#oAIState_Unk_02]
+	strb r0, [r6,#oAIState_SubState]
 locret_8116778:
 	pop {pc}
 	thumb_func_end sub_8116758

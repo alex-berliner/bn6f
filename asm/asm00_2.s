@@ -642,7 +642,7 @@ loc_800F1EC:
 	bge locret_800F204
 	cmp r2, #8
 	bne loc_800F202
-	ldrb r2, [r3,#oCollisionData_Unk_16]
+	ldrb r2, [r3,#oCollisionData_BarrierHP]
 	cmp r2, #0
 	beq locret_800F204
 loc_800F202:
@@ -2138,7 +2138,7 @@ loc_800FB74:
 	mov r2, #0xa0
 	add r2, r2, r1
 	mov r0, #0
-	strh r0, [r2,#oAIAttackVars_Unk_14]
+	strh r0, [r2,#oAIAttackVars_ChipID]
 	ldrb r1, [r1,#oAIData_BeastOutAPwrAtk]
 	b loc_800FB9C
 loc_800FB9A:
@@ -2161,7 +2161,7 @@ loc_800FB9C:
 	cmp r1, #5
 	beq loc_800FBEC
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	mov r0, r1
 	bl sub_80117BA
 	push {r0}
@@ -2199,7 +2199,7 @@ loc_800FBEE:
 	bgt loc_800FC18
 loc_800FC0C:
 	// idx
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrb r0, [r0,#0xf]
 	strb r0, [r7,#oAIAttackVars_Unk_1d]
@@ -2207,7 +2207,7 @@ loc_800FC0C:
 loc_800FC18:
 	ldr r0, dword_800FED4 // =0x1000c 
 	bl ClearAIData_Unk_44_Flag
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldrh r1, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 	pop {r4,r7,pc}
@@ -2253,7 +2253,7 @@ loc_800FC5C:
 	bl object_setAttack2
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_1d]
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldrh r1, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 locret_800FC7A:
@@ -3679,18 +3679,18 @@ sub_801056A:
 	bl getTable2036720EntryFields_802CE78
 	str r1, [r7,#oAIAttackVars_Damage]
 	strh r2, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_14]
+	strh r0, [r7,#oAIAttackVars_ChipID]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, [sp,#4]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	ldr r0, [sp,#8]
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
 	tst r0, r0
 	beq loc_80105BE
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	tst r0, r0
 	beq loc_80105BE
 	ldrh r1, [r7,#oAIAttackVars_Damage]
@@ -3744,18 +3744,18 @@ sub_80105F2:
 	str r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_14]
+	strh r0, [r7,#oAIAttackVars_ChipID]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, [sp,#4]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	ldr r0, [sp,#8]
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
 	tst r0, r0
 	beq loc_8010646
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	tst r0, r0
 	beq loc_8010646
 	ldrh r1, [r7,#oAIAttackVars_Damage]
@@ -6016,12 +6016,12 @@ loc_801171E:
 	beq loc_8011754
 	cmp r6, #2
 	bne loc_8011736
-	ldrb r0, [r7,#oAIAttackVars_Unk_05]
+	ldrb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strb r0, [r1,#oAIData_ChipLockoutTimer]
 loc_8011736:
 	cmp r6, #3
 	bne loc_801173E
-	ldrb r0, [r7,#oAIAttackVars_Unk_05]
+	ldrb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strb r0, [r1,#oAIData_Unk_15]
 loc_801173E:
 	mov r0, #0
@@ -6296,10 +6296,10 @@ loc_8011A44:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r4, r0
@@ -6370,10 +6370,10 @@ loc_8011AC4:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x16
 	pop {r4,pc}
 	thumb_func_end busterBugChargeShotDamageCalcHappensHere_8011A7E
@@ -6384,8 +6384,8 @@ sub_8011ADA:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -6407,9 +6407,9 @@ loc_8011AFE:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -6454,9 +6454,9 @@ loc_8011B56:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -6502,9 +6502,9 @@ sub_8011BA2:
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	ldr r0, off_8011BCC // =0x23c 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x27 
@@ -6649,7 +6649,7 @@ sub_8011CA8:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x1c
 	mov pc, lr
 	thumb_func_end sub_8011CA8
@@ -6665,7 +6665,7 @@ sub_8011CB4:
 	bne loc_8011CCA
 loc_8011CC4:
 	mov r1, #1
-	strb r1, [r7,#oAIAttackVars_Unk_04]
+	strb r1, [r7,#oAIAttackVars_ChargeReadyFlag]
 	b locret_8011CD4
 loc_8011CCA:
 	cmp r0, #0x40 
@@ -6740,8 +6740,8 @@ sub_8011D20:
 sub_8011D38:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6757,8 +6757,8 @@ sub_8011D38:
 sub_8011D54:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6784,9 +6784,9 @@ sub_8011D74:
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	ldr r0, off_8011D98 // =0x1800 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x4d 
@@ -6800,8 +6800,8 @@ off_8011D98:
 sub_8011D9C:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6819,8 +6819,8 @@ sub_8011D9C:
 sub_8011DBC:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6838,8 +6838,8 @@ sub_8011DBC:
 sub_8011DDC:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6857,8 +6857,8 @@ sub_8011DDC:
 sub_8011DFC:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6876,8 +6876,8 @@ sub_8011DFC:
 sub_8011E1C:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6897,10 +6897,10 @@ sub_8011E1C:
 sub_8011E40:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x80
@@ -6929,10 +6929,10 @@ loc_8011E6C:
 sub_8011E78:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
@@ -6959,10 +6959,10 @@ loc_8011EA4:
 sub_8011EAC:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
@@ -6981,10 +6981,10 @@ sub_8011EAC:
 sub_8011ED0:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
@@ -7001,10 +7001,10 @@ sub_8011ED0:
 sub_8011EF0:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
@@ -7021,10 +7021,10 @@ sub_8011EF0:
 sub_8011F10:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
@@ -7059,9 +7059,9 @@ sub_8011F44:
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x56 
 	pop {pc}
 	thumb_func_end sub_8011F44
@@ -7078,9 +7078,9 @@ sub_8011F64:
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x57 
 	pop {pc}
 	thumb_func_end sub_8011F64
@@ -7088,7 +7088,7 @@ sub_8011F64:
 	thumb_local_start
 sub_8011F84:
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x58 
 	mov pc, lr
 	thumb_func_end sub_8011F84
@@ -7120,10 +7120,10 @@ loc_8011F9A:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #2
 	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x11
@@ -7158,10 +7158,10 @@ loc_8011FDC:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #2
 	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x11
@@ -7182,7 +7182,7 @@ sub_8012018:
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r1, #0x48 
@@ -7191,7 +7191,7 @@ sub_8012018:
 	ldr r0, off_8012040 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	pop {pc}
 	.balign 4, 0
@@ -7207,9 +7207,9 @@ sub_8012044:
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7263,14 +7263,14 @@ sub_80120A6:
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80120C8 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	pop {pc}
 	.balign 4, 0x00
@@ -7294,8 +7294,8 @@ sub_80120D6:
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -7316,7 +7316,7 @@ sub_80120FE:
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
@@ -7324,7 +7324,7 @@ sub_80120FE:
 	ldr r0, off_8012120 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	mov pc, lr
 	.byte 0, 0
@@ -7382,15 +7382,15 @@ sub_801216E:
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012190 // =0x214 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	mov pc, lr
 	.byte 0, 0
@@ -7405,8 +7405,8 @@ sub_8012194:
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
@@ -7414,7 +7414,7 @@ sub_8012194:
 	ldr r0, off_80121B8 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	mov pc, lr
 	.balign 4, 0x00
@@ -7428,7 +7428,7 @@ sub_80121BC:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -7437,7 +7437,7 @@ sub_80121BC:
 	mov r0, #0x1e
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0x46 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x5a 
 	mov pc, lr
 	thumb_func_end sub_80121BC
@@ -8041,7 +8041,7 @@ sub_8012526:
 	mov r0, #9
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x78 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x1c
@@ -8086,7 +8086,7 @@ sub_801255C:
 	mov r0, #0x25 
 	bl loc_80126EA
 	mov r1, #0x28 
-	strb r1, [r7,#oAIAttackVars_Unk_05]
+	strb r1, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #3
 	strb r1, [r7,#oAIAttackVars_Unk_1c]
 	mov r1, #1
@@ -8117,8 +8117,8 @@ sub_8012586:
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x32 
@@ -8126,7 +8126,7 @@ sub_8012586:
 	ldr r0, off_80125A8 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	mov pc, lr
 off_80125A8:
@@ -8140,15 +8140,15 @@ sub_80125AC:
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_04]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80125CC // =0x214 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x2b 
 	mov pc, lr
 off_80125CC:
@@ -8168,10 +8168,10 @@ sub_80125D0:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	strb r0, [r7,#oAIAttackVars_Unk_05]
+	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r1, #0x4f 
@@ -8326,12 +8326,12 @@ loc_80126EA:
 	ldr r7, [r5,#0x58]
 	add r7, #0xa0
 loc_80126F6:
-	strh r0, [r7,#oAIAttackVars_Unk_14]
+	strh r0, [r7,#oAIAttackVars_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r6, r0
 	ldr r1, [r6,#0x10]
 	str r1, [r7,#oAIAttackVars_AttackBoost2]
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	bl battle_chipEffectDispatcher_80109A4
 	ldrb r1, [r6,#0xa]
@@ -8339,7 +8339,7 @@ loc_80126F6:
 	add r1, r1, r0
 	str r1, [r7,#oAIAttackVars_Damage]
 	ldrb r1, [r6,#0x14] // chip use delay?
-	strb r1, [r7,#oAIAttackVars_Unk_05]
+	strb r1, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #0
 	strh r1, [r7,#oAIAttackVars_AttackBoost]
 	ldrb r1, [r6,#0xc]
@@ -8351,11 +8351,11 @@ loc_80126F6:
 	orr r1, r0
 	strb r1, [r7,#oAIAttackVars_InitFlag]
 	mov r1, #0
-	strb r1, [r7,#oAIAttackVars_Unk_04]
+	strb r1, [r7,#oAIAttackVars_ChargeReadyFlag]
 	tst r4, r4
 	beq loc_801273A
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	ldrh r1, [r7,#oAIAttackVars_Unk_14]
+	ldrh r1, [r7,#oAIAttackVars_ChipID]
 	bl incrementRecordCounterByte_8021D14
 loc_801273A:
 	ldrb r0, [r6,#0xb]
@@ -8485,10 +8485,10 @@ loc_80127E4:
 	mov r4, r0
 loc_8012822:
 	ldr r0, [sp,#4]
-	strh r0, [r7,#oAIAttackVars_Unk_14]
+	strh r0, [r7,#oAIAttackVars_ChipID]
 	bl somethingWriteChipParams_80126E4
 	ldr r0, [sp]
-	strb r0, [r7,#oAIAttackVars_Unk_04]
+	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	ldr r0, [sp,#8]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, [sp]
@@ -8508,7 +8508,7 @@ loc_801284E:
 	ldr r0, [sp,#0xc]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, r5
-	ldrh r1, [r7,#oAIAttackVars_Unk_14]
+	ldrh r1, [r7,#oAIAttackVars_ChipID]
 	ldrh r2, [r7,#oAIAttackVars_Damage]
 	ldr r3, [sp]
 	bl battle_aiClassifyChipCategory_8012A38
@@ -8533,7 +8533,7 @@ loc_8012880:
 	ldr r1, [sp,#0x14]
 	bl sub_8012C34
 	strh r0, [r7,#oAIAttackVars_Damage]
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldrh r1, [r7,#oAIAttackVars_Damage]
 	bl battle_orChipCrossNaviFlag_8012C4A
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -8580,7 +8580,7 @@ loc_80128D6:
 	mov r2, #1
 	bl tableAddSaturatedByte_800AB46
 loc_80128E8:
-	ldrh r0, [r7,#oAIAttackVars_Unk_14]
+	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	bl sub_800B79A
 	ldrb r0, [r4,#0xb]
 	add sp, sp, #0x1c
@@ -23691,7 +23691,7 @@ sub_801A7CC:
 	ldr r1, off_801A7EC // =byte_8020B2C 
 	add r0, r0, r1
 	ldrh r1, [r0]
-	strb r1, [r3,#oCollisionData_Unk_16]
+	strb r1, [r3,#oCollisionData_BarrierHP]
 	ldrh r1, [r0,#2]
 	strb r1, [r3,#oCollisionData_Unk_17]
 	ldrh r1, [r0,#4]
@@ -23736,14 +23736,14 @@ loc_801A80C:
 loc_801A816:
 	cmp r6, #0xa
 	bne loc_801A822
-	ldrh r0, [r4,#oCollisionData_Unk_16]
+	ldrh r0, [r4,#oCollisionData_BarrierHP]
 	tst r0, r0
 	beq loc_801A860
 	b loc_801A82C
 loc_801A822:
 	cmp r6, #8
 	bne loc_801A82C
-	ldrh r0, [r4,#oCollisionData_Unk_16]
+	ldrh r0, [r4,#oCollisionData_BarrierHP]
 	tst r0, r0
 	beq loc_801A860
 loc_801A82C:
@@ -23759,21 +23759,21 @@ loc_801A82C:
 loc_801A83E:
 	cmp r6, #8
 	bne loc_801A84A
-	ldrh r0, [r4,#oCollisionData_Unk_16]
+	ldrh r0, [r4,#oCollisionData_BarrierHP]
 	tst r0, r0
 	beq loc_801A860
 	b loc_801A854
 loc_801A84A:
 	cmp r6, #0xa
 	bne loc_801A854
-	ldrh r0, [r4,#oCollisionData_Unk_16]
+	ldrh r0, [r4,#oCollisionData_BarrierHP]
 	tst r0, r0
 	beq loc_801A860
 loc_801A854:
 	mov r6, #0x10
 	strb r6, [r4,#oCollisionData_Barrier]
 	mov r0, #0
-	strh r0, [r4,#oCollisionData_Unk_16]
+	strh r0, [r4,#oCollisionData_BarrierHP]
 	ldrb r0, [r4,#oCollisionData_HitModifierFinal]
 	strb r0, [r4,#oCollisionData_Unk_15]
 loc_801A860:
@@ -23798,7 +23798,7 @@ loc_801A874:
 	strb r0, [r4,#oCollisionData_Barrier]
 	b loc_801A8E0
 loc_801A888:
-	ldrh r1, [r4,#oCollisionData_Unk_16]
+	ldrh r1, [r4,#oCollisionData_BarrierHP]
 	tst r1, r1
 	bne loc_801A8E0
 	bl battle_isTimeStop
@@ -23814,11 +23814,11 @@ loc_801A888:
 	cmp r0, #0xf0
 	blt loc_801A8AC
 	mov r0, #1
-	strh r0, [r4,#oCollisionData_Unk_16]
+	strh r0, [r4,#oCollisionData_BarrierHP]
 loc_801A8AC:
 	b locret_801A9A2
 loc_801A8AE:
-	ldrh r1, [r4,#oCollisionData_Unk_16]
+	ldrh r1, [r4,#oCollisionData_BarrierHP]
 	tst r1, r1
 	beq loc_801A8CA
 	cmp r1, #0xc8
@@ -23828,7 +23828,7 @@ loc_801A8AE:
 	cmp r0, #6
 	blt loc_801A8C6
 	add r1, #1
-	strh r1, [r4,#oCollisionData_Unk_16]
+	strh r1, [r4,#oCollisionData_BarrierHP]
 	mov r0, #0
 loc_801A8C6:
 	strb r0, [r4,#oCollisionData_Unk_1a]
@@ -23842,7 +23842,7 @@ loc_801A8CA:
 	cmp r0, #0x78 
 	blt locret_801A9A2
 	mov r0, #0xc8
-	strh r0, [r4,#oCollisionData_Unk_16]
+	strh r0, [r4,#oCollisionData_BarrierHP]
 	b locret_801A9A2
 	.balign 4, 0
 loc_801A8E0: .align 1, 0
@@ -23873,7 +23873,7 @@ loc_801A90A:
 	strb r0, [r4,#oCollisionData_Barrier]
 	mov r0, #0
 	strh r0, [r4,#oCollisionData_Unk_1a_1b]
-	strb r0, [r4,#oCollisionData_Unk_16]
+	strb r0, [r4,#oCollisionData_BarrierHP]
 	b locret_801A9A2
 loc_801A916:
 	mov r0, #0x94
@@ -23904,9 +23904,9 @@ loc_801A948:
 	ldrb r1, [r4,#oCollisionData_Unk_17]
 	cmp r0, r1
 	blt loc_801A96E
-	ldrb r1, [r4,#oCollisionData_Unk_16]
+	ldrb r1, [r4,#oCollisionData_BarrierHP]
 	sub r1, r1, r0
-	strb r1, [r4,#oCollisionData_Unk_16]
+	strb r1, [r4,#oCollisionData_BarrierHP]
 	bgt loc_801A96E
 	cmp r6, #8
 	beq loc_801A968
@@ -23920,7 +23920,7 @@ loc_801A948:
 loc_801A968:
 	mov r0, #0
 	strh r0, [r4,#oCollisionData_Unk_1a_1b]
-	strb r0, [r4,#oCollisionData_Unk_16]
+	strb r0, [r4,#oCollisionData_BarrierHP]
 loc_801A96E:
 	mov r0, #0
 	mov r1, #0x82

@@ -783,7 +783,7 @@ loc_30060B8:
 	mov r0, r12
 	str r0, [r5,#0x24]
 loc_30060BE:
-	ldrb r1, [r5,#oObjectSprite_Unk_15]
+	ldrb r1, [r5,#oObjectSprite_OamAttributes]
 	mov r2, #0xf0
 	and r1, r2
 	mov r2, #0xf0
@@ -794,12 +794,12 @@ loc_30060BE:
 	tst r1, r2
 	bne locret_30060E2
 	bl sub_3006108
-	ldrb r1, [r5,#oObjectSprite_Unk_15]
+	ldrb r1, [r5,#oObjectSprite_OamAttributes]
 	mov r2, #0xf0
 	bic r1, r2
 	lsl r0, r0, #4
 	orr r1, r0
-	strb r1, [r5,#oObjectSprite_Unk_15]
+	strb r1, [r5,#oObjectSprite_OamAttributes]
 locret_30060E2:
 	pop {r5,pc}
 off_30060E4:
@@ -1689,7 +1689,7 @@ off_300672C:
 	thumb_func_start _sprite_loadAnimationData
 _sprite_loadAnimationData:
 	push {lr}
-	ldrb r0, [r5,#oObjectSprite_Unk_03]
+	ldrb r0, [r5,#oObjectSprite_SpriteFlags2]
 	mov r1, #0x80
 	and r0, r1
 	bne loc_300675A
@@ -1750,7 +1750,7 @@ loc_3006794:
 	strb r0, [r5,#oObjectSprite_Unk_01]
 	cmp r0, #0
 	bge loc_30067F8
-	ldrb r0, [r5,#oObjectSprite_Unk_03]
+	ldrb r0, [r5,#oObjectSprite_SpriteFlags2]
 	mov r1, #0x80
 	and r0, r1
 	bne loc_30067C0

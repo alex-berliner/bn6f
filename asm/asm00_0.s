@@ -3150,12 +3150,12 @@ renderInfo_8001788: // () -> ()
 	mov r1, #0
 	strh r1, [r0,#oRenderInfo_Unk_0c]
 	strh r1, [r0,#oRenderInfo_Unk_0e]
-	strh r1, [r0,#oRenderInfo_Unk_10]
-	strh r1, [r0,#oRenderInfo_Unk_12]
+	strh r1, [r0,#oRenderInfo_BGScrollXOffset]
+	strh r1, [r0,#oRenderInfo_BGScrollY]
 	strh r1, [r0,#oRenderInfo_Unk_14]
 	strh r1, [r0,#oRenderInfo_Unk_16]
 	strh r1, [r0,#oRenderInfo_Unk_1a]
-	strh r1, [r0,#oRenderInfo_Unk_18]
+	strh r1, [r0,#oRenderInfo_BG2ScrollX]
 	mov pc, lr
 	thumb_func_end renderInfo_8001788
 
@@ -3607,8 +3607,8 @@ BGScrollCB_BG1Diagonal3to2Scroll:
 	lsr r3, r3, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_10]
-	strh r3, [r1,#oRenderInfo_Unk_12]
+	strh r2, [r1,#oRenderInfo_BGScrollXOffset]
+	strh r3, [r1,#oRenderInfo_BGScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1Diagonal3to2Scroll
 
@@ -3629,7 +3629,7 @@ BGScrollCB_BG3Diagonal3to2Scroll:
 	lsr r3, r3, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_18]
+	strh r2, [r1,#oRenderInfo_BG2ScrollX]
 	strh r3, [r1,#oRenderInfo_Unk_1a]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3Diagonal3to2Scroll
@@ -3646,7 +3646,7 @@ BGScrollCB_BG1UpScroll:
 	lsr r3, r3, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r3, [r1,#oRenderInfo_Unk_12]
+	strh r3, [r1,#oRenderInfo_BGScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1UpScroll
 
@@ -3675,7 +3675,7 @@ BGScrollCB_BG1DownScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_12]
+	strh r2, [r1,#oRenderInfo_BGScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1DownScroll
 
@@ -3701,7 +3701,7 @@ BGScrollCB_BG1SlowRightScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_10]
+	strh r2, [r1,#oRenderInfo_BGScrollXOffset]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1SlowRightScroll
 
@@ -3714,7 +3714,7 @@ BGScrollCB_BG3SlowRightScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_18]
+	strh r2, [r1,#oRenderInfo_BG2ScrollX]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3SlowRightScroll
 
@@ -3727,7 +3727,7 @@ BGScrollCB_BG1FastLeftScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_10]
+	strh r2, [r1,#oRenderInfo_BGScrollXOffset]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1FastLeftScroll
 
@@ -3740,7 +3740,7 @@ BGScrollCB_BG3FastLeftScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_18]
+	strh r2, [r1,#oRenderInfo_BG2ScrollX]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3FastLeftScroll
 
@@ -3767,9 +3767,9 @@ loc_8001A9E:
 	asr r2, r2, #0x10
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	ldrh r3, [r1,#oRenderInfo_Unk_12]
+	ldrh r3, [r1,#oRenderInfo_BGScrollY]
 	sub r3, r3, r2
-	strh r3, [r1,#oRenderInfo_Unk_12]
+	strh r3, [r1,#oRenderInfo_BGScrollY]
 locret_8001AAC:
 	pop {pc}
 	.balign 4, 0

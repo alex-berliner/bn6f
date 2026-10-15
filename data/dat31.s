@@ -268,11 +268,11 @@ sub_810C604::
 	tst r0, r1
 	beq loc_810C618
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	str r0, [r7,#oAIAttackVars_Unk_3c]
+	str r0, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	bl object_clearCollisionRegion // () -> void
 loc_810C618::
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	ldr r1, [r7,#oAIAttackVars_Unk_3c]
+	ldr r1, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	cmp r0, r1
 	beq loc_810C626
 	mov r0, #1
@@ -329,11 +329,11 @@ sub_810C686::
 	tst r0, r1
 	beq loc_810C69A
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	str r0, [r7,#oAIAttackVars_Unk_3c]
+	str r0, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	bl object_clearCollisionRegion // () -> void
 loc_810C69A::
 	ldrh r0, [r5,#oBattleObject_PanelXY]
-	ldr r1, [r7,#oAIAttackVars_Unk_3c]
+	ldr r1, [r7,#oAIAttackVars_ScratchPointerOrPanel]
 	cmp r0, r1
 	beq loc_810C6A8
 	mov r0, #1
@@ -1239,7 +1239,7 @@ loc_810CE38::
 	cmp r0, #0
 	bne loc_810CEA6
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_38]
+	str r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	ldr r0, [sp]
 	bl sub_810CEAE
 	cmp r0, #0
@@ -1247,13 +1247,13 @@ loc_810CE38::
 	ldr r0, [sp]
 	str r0, [r7,#oAIAttackVars_TargetObjectPtr]
 	bl object_getFlag
-	str r0, [r7,#oAIAttackVars_Unk_38]
+	str r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	ldr r0, off_810CFE8 // sub_810CEAE+1
 	str r0, [r7,#oAIAttackVars_PanelChooseCallback]
 	ldr r0, off_810CFEC // sub_810CF40+1
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	ldr r0, off_810CFF0 // sub_810CF46+1
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	ldrb r0, [r4,#oAIData_Version_16]
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r1, off_810CFF4 // =byte_810CD9C 
@@ -1294,7 +1294,7 @@ sub_810CEAE::
 	lsl r1, r1, #0xe
 	tst r0, r1
 	bne loc_810CF14
-	ldr r1, [r7,#oAIAttackVars_Unk_38]
+	ldr r1, [r7,#oAIAttackVars_PanelParamFlags2]
 	orr r0, r1
 	mov r1, #1
 	lsl r1, r1, #0xd
@@ -1519,7 +1519,7 @@ sub_810D150::
 	mov r0, #4
 	strb r0, [r6,#oAIState_ScriptId]
 	mov r0, #0
-	strh r0, [r6,#oAIState_Unk_02]
+	strh r0, [r6,#oAIState_SubState]
 	pop {r4,pc}
 	thumb_func_end sub_810D150
 
@@ -1762,7 +1762,7 @@ sub_810D3EA::
 	cmp r0, #1
 	bne loc_810D3FE
 	bl sub_810D4E8
-	ldr r0, [r7,#oAIAttackVars_Unk_38]
+	ldr r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r1, #0
 	str r1, [r0]
 	b locret_810D412
@@ -1773,7 +1773,7 @@ loc_810D3FE::
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AttackElement]
 	bl sub_810D4BA
-	ldr r0, [r7,#oAIAttackVars_Unk_38]
+	ldr r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r1, #1
 	str r1, [r0]
 locret_810D412::
@@ -1896,7 +1896,7 @@ sub_810D4BA::
 	cmp r0, #0
 	beq loc_810D4E0
 	mov r1, #1
-	str r1, [r7,#oAIAttackVars_Unk_34]
+	str r1, [r7,#oAIAttackVars_AiAttackParam]
 	mov r3, sp
 loc_810D4CE::
 	push {r0-r3,r5}
@@ -1919,11 +1919,11 @@ dword_810D4E4::
 sub_810D4E8::
 	push {lr}
 	sub sp, sp, #0x20
-	ldr r0, [r7,#oAIAttackVars_Unk_34]
+	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
 	cmp r0, #0
 	beq loc_810D512
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, sp
 	bl sub_810D498
 	cmp r0, #0
@@ -2108,7 +2108,7 @@ loc_810D648::
 	strh r0, [r7,#oAIAttackVars_AttackDuration]
 	mov r0, #0x60 
 	add r0, r0, r5
-	str r0, [r7,#oAIAttackVars_Unk_38]
+	str r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r0, #0xb
 	bl object_setAttack0
 	b locret_810D698
@@ -2130,11 +2130,11 @@ loc_810D666::
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_0f]
+	strb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	mov r0, #0xc
 	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #0xe
-	str r0, [r7,#oAIAttackVars_Unk_34]
+	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, #0xa
 	bl object_setAttack0
 locret_810D698::
