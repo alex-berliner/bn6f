@@ -99,10 +99,10 @@
 	u8 AggressionFlag // loc=0x7
 	u16 Timer // loc=0x8
 	.space 0x2
-	u8 AiDifficultyTier // loc=0xc
-	u8 ChargeShotStepIndex // loc=0xd
-	u8 AISubordinateSlot // loc=0xe
-	u8 BeastOutLockoutTimer // loc=0xf
+	u8 Unk_0c // loc=0xc
+	u8 Unk_0d // loc=0xd
+	u8 Unk_0e // loc=0xe
+	u8 Unk_0f // loc=0xf
 	struct_org 0x20
 	u0 Size // loc=0x20
 	u0 End // loc=0x20
@@ -134,7 +134,7 @@
 	u16 AttackDuration // loc=0x18
 	u8 HasMoved // loc=0x1a
 	u8 IsInvincible // loc=0x1b
-	u8 PanelDamageReactionFlag // loc=0x1c
+	u8 Unk_1c // loc=0x1c
 	u8 PwrAtkState // loc=0x1d
 	u8 Unk_1e // loc=0x1e
 	struct_org 0x28
