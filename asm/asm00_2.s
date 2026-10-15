@@ -17912,7 +17912,7 @@ stepBattleObjectWobble_8016BFC:
 	tst r0, r0
 	bne loc_8016C14
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
@@ -17933,7 +17933,7 @@ loc_8016C22:
 	beq loc_8016C44
 	sub r0, #1
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -17945,7 +17945,7 @@ loc_8016C22:
 	stmia r0!, {r1-r3}
 	b locret_8016C4C
 loc_8016C44:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -19933,7 +19933,7 @@ loc_8017B64:
 	tst r0, r0
 	bne loc_8017B7A
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
@@ -19954,7 +19954,7 @@ loc_8017B88:
 	beq loc_8017BAA
 	sub r0, #1
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -19966,7 +19966,7 @@ loc_8017B88:
 	stmia r0!, {r1-r3}
 	b loc_8017BB2
 loc_8017BAA:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -20595,7 +20595,7 @@ sub_8018094:
 	ldrh r0, [r5,#oBattleObject_Unk_1e_Unk_1f]
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0xc
@@ -20606,7 +20606,7 @@ sub_8018094:
 	thumb_local_start
 sub_80180A8:
 	push {r7,lr}
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -20620,7 +20620,7 @@ sub_80180A8:
 	sub r0, #1
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bne locret_80180EA
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -20830,7 +20830,7 @@ sub_801823C:
 	tst r0, r0
 	bne loc_8018258
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
@@ -20851,7 +20851,7 @@ loc_8018266:
 	beq loc_8018288
 	sub r0, #1
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -20863,7 +20863,7 @@ loc_8018266:
 	stmia r0!, {r1-r3}
 	b locret_8018290
 loc_8018288:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]

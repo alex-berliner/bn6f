@@ -47511,7 +47511,7 @@ sub_80CE05E:
 	push {r5}
 	ldrb r2, [r5,#oBattleObject_Param1]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldr r7, [r5,#oBattleObject_Unk_30]
+	ldr r7, [r5,#oBattleObject_ChipID]
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sub_80E360E
 	mov r2, r0
@@ -47583,7 +47583,7 @@ sub_80CE0EC:
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 	ldrb r2, [r0,#oObjectHeader_Flags]
 	mov r1, #0x10
 	orr r2, r1
@@ -84344,7 +84344,7 @@ sub_80DF66A:
 	mov r0, #2
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -84360,7 +84360,7 @@ sub_80DF66A:
 	strh r0, [r5,#oBattleObject_Timer]
 	b locret_80DF6CC
 loc_80DF69E:
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -84374,7 +84374,7 @@ loc_80DF69E:
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
 	bgt locret_80DF6CC
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -84526,7 +84526,7 @@ sub_80DF7D6:
 	mov r0, #2
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldrh r0, [r5,#oBattleObject_X16]
-	strh r0, [r5,#oBattleObject_Unk_30]
+	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	bl sub_80DF8D2
@@ -84538,7 +84538,7 @@ sub_80DF7D6:
 	strh r0, [r5,#oBattleObject_Timer2]
 	b locret_80DF846
 loc_80DF802:
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
@@ -84562,7 +84562,7 @@ loc_80DF82E:
 	sub r0, #1
 	strh r0, [r5,#oBattleObject_Timer]
 	bgt locret_80DF846
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Unk_32]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -86581,7 +86581,7 @@ byte_80E07D0:
 // symdb: Spawns a type-3 child BattleObject inheriting the caller's panel coordinates, element, alliance/direction, and extra fields from a parent BattleObject passed in r5.
 // symdb: // r0-r3 = panelX, panelY, element (byte each) for the new object // r4,r5 = parent object
 // symdb: pointer / scratch (r5 is the parent; r4 preserved) // r6 =
-// symdb: oBattleObject_DamageAndStaminaDamageCounterDisabler value to copy // r7 = oBattleObject_Unk_30
+// symdb: oBattleObject_DamageAndStaminaDamageCounterDisabler value to copy // r7 = oBattleObject_ChipID
 // symdb: value to copy // returns: r0 = spawned object pointer (or 0 if spawn failed) // clobbers:
 // symdb: r0,r1,r2,r3, NZCV
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80E07E0.yaml
@@ -86601,7 +86601,7 @@ sub_80E07E0:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E0800:
 	pop {pc}
 	.balign 4, 0
@@ -88918,7 +88918,7 @@ timefreezeObjectRunFunction_80E1880:
 	mov lr, pc
 	bx r3
 	pop {r5}
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	sub r0, #0xdd
 	cmp r0, #0x3b 
 	bhi loc_80E18CA
@@ -89035,7 +89035,7 @@ loc_80E1944:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 	pop {pc}
 loc_80E1968:
 	push {r0,r1}
@@ -90702,7 +90702,7 @@ sub_80E24B8:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E24D8:
 	pop {pc}
 	.balign 4, 0
@@ -90799,7 +90799,7 @@ sub_80E2566:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E2586:
 	pop {pc}
 	.balign 4, 0
@@ -91454,7 +91454,7 @@ sub_80E2B5A:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E2B7A:
 	pop {pc}
 	thumb_func_end sub_80E2B5A
@@ -91765,7 +91765,7 @@ sub_80E2D76:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E2D96:
 	pop {pc}
 	thumb_func_end sub_80E2D76
@@ -91998,7 +91998,7 @@ sub_80E2F24:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E2F44:
 	pop {pc}
 	.balign 4, 0
@@ -92284,7 +92284,7 @@ sub_80E3128:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E3148:
 	pop {pc}
 	.balign 4, 0
@@ -92450,7 +92450,7 @@ sub_80E3242:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E3262:
 	pop {pc}
 	thumb_func_end sub_80E3242
@@ -92787,7 +92787,7 @@ sub_80E349E:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E34BE:
 	pop {pc}
 	thumb_func_end sub_80E349E
@@ -92842,7 +92842,7 @@ sub_80E3504:
 	bl sub_80E3560
 	mov r4, r0
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	ldrh r1, [r5,#oBattleObject_Unk_30]
+	ldrh r1, [r5,#oBattleObject_ChipID]
 	ldr r2, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
 	ldrh r3, [r5,#oBattleObject_Unk_32]
 	bl sub_802CE8A
@@ -92877,7 +92877,7 @@ spawnBattleTrapMaybe_80E353E:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E355E:
 	pop {pc}
 	thumb_func_end spawnBattleTrapMaybe_80E353E
@@ -92909,7 +92909,7 @@ sub_80E358C:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldr r7, [r5,#oBattleObject_Unk_30]
+	ldr r7, [r5,#oBattleObject_ChipID]
 	ldr r4, [r5,#oBattleObject_Params]
 	bl sub_80CE0EC
 	pop {pc}
@@ -92997,7 +92997,7 @@ sub_80E360E:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E362A:
 	pop {pc}
 	thumb_func_end sub_80E360E
@@ -93217,7 +93217,7 @@ sub_80E37D2:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E37F2:
 	pop {pc}
 	thumb_func_end sub_80E37D2
@@ -93734,7 +93734,7 @@ sub_80E3B50:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E3B6C:
 	pop {pc}
 	.byte 0, 0
@@ -94592,7 +94592,7 @@ sub_80E4164:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E4184:
 	pop {pc}
 	.balign 4, 0x00
@@ -94762,7 +94762,7 @@ sub_80E4288:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E42A8:
 	pop {pc}
 	thumb_func_end sub_80E4288
@@ -95360,7 +95360,7 @@ sub_80E46B6:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E46D6:
 	pop {pc}
 	thumb_func_end sub_80E46B6
@@ -95772,7 +95772,7 @@ sub_80E49A2:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E49C2:
 	pop {pc}
 	thumb_func_end sub_80E49A2
@@ -97618,7 +97618,7 @@ sub_80E56D0:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 	b locret_80E56FE
 loc_80E56FC:
 	pop {r3}
@@ -98031,7 +98031,7 @@ sub_80E59C6:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E59E6:
 	pop {pc}
 	thumb_func_end sub_80E59C6
@@ -98739,7 +98739,7 @@ sub_80E5EA8:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E5EC8:
 	pop {pc}
 	.balign 4, 0x00
@@ -98850,7 +98850,7 @@ sub_80E5F78:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E5F98:
 	pop {pc}
 	.balign 4, 0x00
@@ -99159,7 +99159,7 @@ sub_80E61D2:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E61F2:
 	pop {pc}
 	thumb_func_end sub_80E61D2
@@ -99605,7 +99605,7 @@ sub_80E64E8:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E6508:
 	pop {pc}
 	thumb_func_end sub_80E64E8
@@ -100016,7 +100016,7 @@ sub_80E67E6:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E6806:
 	pop {pc}
 	.balign 4, 0
@@ -100103,7 +100103,7 @@ sub_80E6878:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E6898:
 	pop {pc}
 	.balign 4, 0x00
@@ -101091,7 +101091,7 @@ sub_80E7008:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7028:
 	pop {pc}
 	.balign 4, 0x00
@@ -101182,7 +101182,7 @@ sub_80E70A6:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E70C6:
 	pop {pc}
 	thumb_func_end sub_80E70A6
@@ -101415,7 +101415,7 @@ sub_80E723E:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E725E:
 	pop {pc}
 	thumb_func_end sub_80E723E
@@ -101702,7 +101702,7 @@ sub_80E7464:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7484:
 	pop {pc}
 	thumb_func_end sub_80E7464
@@ -101842,7 +101842,7 @@ sub_80E7546:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7566:
 	pop {pc}
 	thumb_func_end sub_80E7546
@@ -101948,7 +101948,7 @@ sub_80E7600:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7620:
 	pop {pc}
 	.balign 4, 0x00
@@ -102060,7 +102060,7 @@ sub_80E76D4:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E76F4:
 	pop {pc}
 	.balign 4, 0x00
@@ -102836,7 +102836,7 @@ sub_80E7CA8:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7CC8:
 	pop {pc}
 	.balign 4, 0x00
@@ -103183,7 +103183,7 @@ sub_80E7F16:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7F36:
 	pop {pc}
 	thumb_func_end sub_80E7F16
@@ -103276,7 +103276,7 @@ sub_80E7FBA:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E7FDA:
 	pop {pc}
 	thumb_func_end sub_80E7FBA
@@ -103367,7 +103367,7 @@ spawnDblHeroSetupObject_80E8058:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E8078:
 	pop {pc}
 	.balign 4, 0x00
@@ -103559,7 +103559,7 @@ sub_80E81B4:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E81D4:
 	pop {pc}
 	.balign 4, 0x00
@@ -104842,7 +104842,7 @@ spawnSunMoonObject_80E8ADC:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E8AFC:
 	pop {pc}
 	.byte 0, 0
@@ -104980,7 +104980,7 @@ sub_80E8BC0:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E8BE0:
 	pop {pc}
 	thumb_func_end sub_80E8BC0
@@ -105718,7 +105718,7 @@ sub_80E90FE:
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	strb r1, [r0,#oBattleObject_Alliance]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E911E:
 	pop {pc}
 	thumb_func_end sub_80E90FE
@@ -105821,7 +105821,7 @@ sub_80E91B8:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 	mov r1, #0x60 
 	ldrb r2, [r0,#oBattleObject_Param1]
 	strb r2, [r0,r1]
@@ -105998,7 +105998,7 @@ sub_80E92EE:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E930E:
 	pop {pc}
 	thumb_func_end sub_80E92EE
@@ -106194,7 +106194,7 @@ sub_80E943E:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E945E:
 	pop {pc}
 	thumb_func_end sub_80E943E
@@ -106655,7 +106655,7 @@ sub_80E979C:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E97BC:
 	pop {pc}
 	thumb_func_end sub_80E979C
@@ -107603,7 +107603,7 @@ sub_80E9EFA:
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	str r7, [r0,#oBattleObject_Unk_30]
+	str r7, [r0,#oBattleObject_ChipID]
 locret_80E9F1A:
 	pop {pc}
 	thumb_func_end sub_80E9EFA

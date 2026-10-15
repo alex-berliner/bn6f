@@ -239,7 +239,7 @@ loc_800B9D4:
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl dispatch_801DACC // (a0: flags32) -> ()
-	ldrh r0, [r5,#oBattleObject_Unk_30] // idx
+	ldrh r0, [r5,#oBattleObject_ChipID] // idx
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r1, #0
 	mov r2, #0
@@ -249,7 +249,7 @@ loc_800B9D4:
 	ldrh r1, [r5,#oBattleObject_Damage]
 	ldrh r2, [r5,#oBattleObject_Unk_32]
 loc_800B9F8:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -352,7 +352,7 @@ loc_800BAB8:
 	ldr r0, dword_800BBA0 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r1, #0
 	mov r2, #0
@@ -362,7 +362,7 @@ loc_800BAB8:
 	ldrh r1, [r5,#oBattleObject_Damage]
 	ldrh r2, [r5,#oBattleObject_Unk_32]
 loc_800BAD8:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -434,7 +434,7 @@ loc_800BB46:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	b locret_800BB9E
 loc_800BB72:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	sub r0, #0xdd
 	cmp r0, #0x3b
 	bhi loc_800BB88
@@ -490,7 +490,7 @@ loc_800BBCC:
 	ldr r0, dword_800BF74 // =0x10000
 	bl dispatch_801DACC // (a0: flags32) -> ()
 	// idx
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r1, #0
 	mov r2, #0
@@ -500,7 +500,7 @@ loc_800BBCC:
 	ldrh r1, [r5,#oBattleObject_Damage]
 	ldrh r2, [r5,#oBattleObject_Unk_32]
 loc_800BBEC:
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -769,7 +769,7 @@ off_800BDC4:
 	thumb_local_start
 sub_800BDD0:
 	push {r4,lr}
-	ldrh r0, [r5,#oBattleObject_Unk_30]
+	ldrh r0, [r5,#oBattleObject_ChipID]
 	sub r0, #0xdd
 	cmp r0, #0x3b 
 	bhi loc_800BDE8
