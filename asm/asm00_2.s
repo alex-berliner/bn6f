@@ -2034,7 +2034,7 @@ battle_snapshotPlayerHP_800FAE0:
 	push {r4,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_BattleStatePtr]
-	ldrb r0, [r4,#oBattleState_Unk_0d]
+	ldrb r0, [r4,#oBattleState_PlayerSide]
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	tst r0, r0
 	beq locret_800FAF4
@@ -9676,7 +9676,7 @@ loc_8013008:
 	bge loc_801303C
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	cmp r0, r1
 	bne loc_8013044
@@ -16796,7 +16796,7 @@ battleObject_joinAlly_80163B4:
 	bne loc_80163E2
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	bne loc_80163D6
@@ -16902,7 +16902,7 @@ battle_objectIntroEntryAndActedSetup_8016460:
 	beq loc_801647E
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	beq loc_8016496
@@ -17057,7 +17057,7 @@ sub_801657E:
 	beq loc_8016594
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	beq loc_801659C
@@ -17612,7 +17612,7 @@ loc_8016944:
 loc_8016964:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_0d]
+	ldrb r0, [r1,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	beq loc_8016998
@@ -17666,7 +17666,7 @@ handleRenderBlindForSpecificObjectsMaybe_80169BE:
 loc_80169CE:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_0d]
+	ldrb r0, [r1,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	beq loc_8016A02
@@ -18022,7 +18022,7 @@ battleObject_applyEmotionShaderIfCounterReady_8016CA4:
 	bne locret_8016CDE
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	eor r1, r0
 	beq locret_8016CDE
@@ -20796,7 +20796,7 @@ hideSummonsWhenBlind_80181F6:
 loc_8018206:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_0d]
+	ldrb r0, [r1,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	eor r0, r1
 	beq locret_801823A
@@ -27095,7 +27095,7 @@ loc_801C08C:
 	mov r5, r3
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl object_getAllianceDirection
 	push {r0}
 	ldr r0, [r4,#4]
@@ -27499,7 +27499,7 @@ sub_801C368:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl sub_802D1B4
 	ldr r1, dword_801C444 // =0x600c980 
 	push {r0}
@@ -27510,7 +27510,7 @@ sub_801C368:
 	bl sub_801C3EE
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl sub_802D1BE
 	ldr r1, dword_801C448 // =0x600ca40 
 	push {r0}
@@ -28590,7 +28590,7 @@ battleObject_updateAnimAndState_801CADC:
 	bne loc_801CAF0
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte
 loc_801CAF0:
@@ -29884,7 +29884,7 @@ sub_801D47A:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl getEntryPtr_2036120_1D0_802E070
 	ldrh r1, [r0,#0x3e]
 	mov r4, #0x50 
@@ -30024,7 +30024,7 @@ sub_801D590:
 	push {r4,r6,r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl getEntryPtr_2036120_1D0_802E070
 	ldrh r1, [r0,#0x36]
 	cmp r1, #0

@@ -10119,7 +10119,7 @@ battle_state_endPhaseWithEffect_80079A8:
 loc_80079B8:
 	bl sub_803DD60
 loc_80079BC:
-	strb r0, [r5,#oBattleState_Unk_0d]
+	strb r0, [r5,#oBattleState_PlayerSide]
 	ldr r1, off_80079CC // =eCamera+76
 	strb r0, [r1]
 	bl battle_initBattleStateBuffer_800B144
@@ -10637,7 +10637,7 @@ loc_8007D72:
 	ldr r1, dword_8007FF4 // =0x10000
 	tst r0, r1
 	bne loc_8007D8A
-	ldrb r0, [r5,#oBattleState_Unk_0d]
+	ldrb r0, [r5,#oBattleState_PlayerSide]
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 loc_8007D8A:
 	push {r2}
@@ -10651,11 +10651,11 @@ loc_8007D8A:
 	ldr r2, dword_8007FF8 // =0x400000
 	tst r1, r2
 	bne loc_8007DC4
-	ldrb r0, [r5,#oBattleState_Unk_0d]
+	ldrb r0, [r5,#oBattleState_PlayerSide]
 	mov r1, #0x21
 	bl GetBattleNaviStatsByte
 	push {r0}
-	ldrb r0, [r5,#oBattleState_Unk_0d]
+	ldrb r0, [r5,#oBattleState_PlayerSide]
 	mov r1, #2
 	bl table_GetByte16Row_203EAE0_800AB3A
 	cmp r0, #0
@@ -11171,7 +11171,7 @@ loc_80081AE:
 	bl battle_playerHPRegenTick_8014040
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	strb r1, [r0,#oBattleState_Unk_10]
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -11264,7 +11264,7 @@ battle_runLoserSequence_800825A:
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
 	strb r1, [r0,#oBattleState_Unk_10]
@@ -11842,7 +11842,7 @@ sub_8008688:
 	bl battle_playerHPRegenTick_8014040
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	strb r1, [r0,#oBattleState_Unk_10]
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -11962,7 +11962,7 @@ sub_8008764:
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
 	strb r1, [r0,#oBattleState_Unk_10]
@@ -12405,7 +12405,7 @@ battle_tickPreBattleInit_8008AA0:
 	bl battle_playerHPRegenTick_8014040
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	strb r1, [r0,#oBattleState_Unk_10]
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -12525,7 +12525,7 @@ sub_8008B7C:
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
 	strb r1, [r0,#oBattleState_Unk_10]
@@ -12949,7 +12949,7 @@ sub_8008EA0:
 	bl battle_playerHPRegenTick_8014040
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	strb r1, [r0,#oBattleState_Unk_10]
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -13069,7 +13069,7 @@ sub_8008F7C:
 	bl flags_clearBits_eStruct2035280_801BED6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_0d]
+	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
 	strb r1, [r0,#oBattleState_Unk_10]
@@ -15736,7 +15736,7 @@ battle_getPhaseMode_800A152:
 	bne loc_800A18A
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r2, [r0,#oBattleState_Unk_0d]
+	ldrb r2, [r0,#oBattleState_PlayerSide]
 	ldrb r1, [r0,#oBattleState_Unk_04]
 	tst r1, r1
 	bne loc_800A170
@@ -16811,7 +16811,7 @@ loc_800A7DE:
 battle_getStateByte0d_800A7E2:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov pc, lr
 	thumb_func_end battle_getStateByte0d_800A7E2
 
@@ -17134,7 +17134,7 @@ LoadVirusNameIDsForUpToFourSlots_800A998: // (name_id_arr: *mut [u16; 4]) -> u8
 
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r1, [r3,#oBattleState_Unk_0d]
+	ldrb r1, [r3,#oBattleState_PlayerSide]
 
 	// This selects between AlivePlayerActors and AliveOpponentActors
 	mov r0, #1
@@ -17215,7 +17215,7 @@ battle_GetObjectByteAt14_800A9E2:
 battle_networkInvert:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r2, [r1,#oBattleState_Unk_0d]
+	ldrb r2, [r1,#oBattleState_PlayerSide]
 	eor r0, r2
 	mov pc, lr
 	thumb_func_end battle_networkInvert
@@ -17594,7 +17594,7 @@ sub_800ABC6:
 	add r3, r3, r3
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_BattleStatePtr]
-	ldrb r4, [r4,#oBattleState_Unk_0d]
+	ldrb r4, [r4,#oBattleState_PlayerSide]
 	lsl r4, r4, #8
 	add r4, #0x46
 	mov r0, #1
@@ -18145,7 +18145,7 @@ loc_800AFA0:
 	bl battle_getStateByteNibbles_800A832
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	cmp r0, #1
 	beq loc_800AFB2
 	mov r2, #1
@@ -18190,7 +18190,7 @@ loc_800AFCC:
 loc_800AFF0:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0xa
 	add r1, r1, r6
 	bl GetBattleNaviStatsByte
@@ -18247,7 +18247,7 @@ loc_800B034:
 loc_800B058:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #oNaviStats_MegaLevel - 1
 	add r1, r1, r6
 	bl GetBattleNaviStatsByte
@@ -18297,7 +18297,7 @@ someChipHandValidationHappensHere_800B090:
 	bne loc_800B0FA
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl getBattleHandAddr_8010018
 	mov r6, r0
 	mov r9, r0
@@ -18327,7 +18327,7 @@ someChipHandValidationHappensHere_800B090:
 loc_800B0DE:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0xa
 	add r1, r1, r7
 	bl GetBattleNaviStatsByte

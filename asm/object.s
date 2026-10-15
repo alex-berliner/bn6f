@@ -1115,7 +1115,7 @@ drawPanel_800C01C:
 	sub sp, sp, #0x28
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldrb r4, [r6,#oBattleState_Unk_0d]
+	ldrb r4, [r6,#oBattleState_PlayerSide]
 	cmp r4, #0
 	beq loc_800C038
 	cmp r2, #0xb
@@ -1193,7 +1193,7 @@ drawPanelOverlay_800C0BA:
 	sub sp, sp, #0x28
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldrb r4, [r6,#oBattleState_Unk_0d]
+	ldrb r4, [r6,#oBattleState_PlayerSide]
 	lsl r4, r4, #3
 	ldr r6, off_800C0FC // =byte_800C0AA 
 	add r6, r6, r4
@@ -1239,7 +1239,7 @@ drawPanelUnderStrip_800C100:
 	sub sp, sp, #0x28
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldrb r4, [r6,#oBattleState_Unk_0d]
+	ldrb r4, [r6,#oBattleState_PlayerSide]
 	eor r2, r4
 	lsl r4, r4, #3
 	ldr r6, off_800C174 // =byte_800C182 
@@ -1274,7 +1274,7 @@ sub_800C138:
 	sub sp, sp, #0x28
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldrb r4, [r6,#oBattleState_Unk_0d]
+	ldrb r4, [r6,#oBattleState_PlayerSide]
 	eor r2, r4
 	lsl r4, r4, #3
 	ldr r6, off_800C174 // =byte_800C182 

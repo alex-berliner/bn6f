@@ -552,7 +552,7 @@ loc_8026858:
 	ldr r5, off_8026BF0 // =eS20364C0 
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte
 	cmp r0, #0
@@ -600,7 +600,7 @@ loc_80268AC:
 	ldr r5, off_8026BF0 // =eS20364C0 
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0x29 
 	bl GetBattleNaviStatsByte
 	strb r0, [r5,#0x10]
@@ -3555,7 +3555,7 @@ loc_8027E52:
 	bl battle_BuildFolderEntryRecords_8027EE8
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#0x10]
 	cmp r1, #0
 	bne loc_8027E70
@@ -4637,7 +4637,7 @@ battleObject_loadChipPanelGfx_80284E2:
 	push {r0}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	bl battle_chipEffectDispatcher_80109A4
 	str r0, [sp,#0x10]
 	pop {r0}
@@ -9092,7 +9092,7 @@ loc_802A42C:
 	mov r0, #5
 	b loc_802A498
 loc_802A430:
-	ldrb r0, [r6,#oBattleState_Unk_0d]
+	ldrb r0, [r6,#oBattleState_PlayerSide]
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 	mov r4, #1
 	cmp r1, #0xa
@@ -9101,7 +9101,7 @@ loc_802A430:
 	beq loc_802A442
 	mov r4, #0
 loc_802A442:
-	ldrb r0, [r6,#oBattleState_Unk_0d]
+	ldrb r0, [r6,#oBattleState_PlayerSide]
 	mov r1, #0xa
 	bl GetBattleNaviStatsByte
 	ldr r1, off_802A4F8 // =dword_20349A0 
@@ -9125,7 +9125,7 @@ loc_802A45A:
 	ldrb r7, [r7,#0x11] // (byte_20349B1 - 0x20349a0)
 loc_802A470:
 	push {r0}
-	ldrb r0, [r6,#oBattleState_Unk_0d]
+	ldrb r0, [r6,#oBattleState_PlayerSide]
 	mov r1, #0x63 
 	bl GetBattleNaviStatsByte
 	mov r1, r0
@@ -9175,13 +9175,13 @@ tickBeastOutCounter_802A49C:
 	bne loc_802A4CE
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 	b loc_802A4D8
 loc_802A4CE:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl sub_8015B5C
 loc_802A4D8:
 	cmp r1, #5
@@ -9291,7 +9291,7 @@ battle_getActorEmotion_802A564:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	ldrb r1, [r5,#0x15]
 	cmp r1, #0
 	bne loc_802A578
@@ -9349,7 +9349,7 @@ battle_isBeastOverEnabled_802A5A0:
 	beq loc_802A5D6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0x61 
 	bl GetBattleNaviStatsByte
 	cmp r0, #1
@@ -9388,7 +9388,7 @@ battle_checkActiveSlot8NaviStatReady_802A5DA:
 loc_802A604:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r1, #0x60 
 	bl GetBattleNaviStatsByte
 	cmp r0, #1
@@ -12898,7 +12898,7 @@ setupNaviDisplay_802C34E:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	mov r2, #0xc
 	mul r1, r2
 	add r0, r0, r1
@@ -13665,7 +13665,7 @@ locret_802C8E8:
 battle_getStateTableEntryPtr_802C8EA:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r2, [r1,#oBattleState_Unk_0d]
+	ldrb r2, [r1,#oBattleState_PlayerSide]
 	mov r1, #8
 	mul r2, r1
 	ldr r0, off_802CAFC // =dword_2036820 
@@ -14038,7 +14038,7 @@ loc_802CB4E:
 	mov r6, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	mov r4, #2
 	eor r0, r6
 	beq loc_802CB66
@@ -14113,7 +14113,7 @@ sub_802CBCC:
 	ldrh r2, [r5,#0xa]
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r3, [r3,#oBattleState_Unk_0d]
+	ldrb r3, [r3,#oBattleState_PlayerSide]
 	tst r3, r3
 	beq loc_802CBE2
 	mov r3, r2
@@ -14206,7 +14206,7 @@ loc_802CC60:
 	ldrh r1, [r5,#0xa]
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r2, [r2,#oBattleState_Unk_0d]
+	ldrb r2, [r2,#oBattleState_PlayerSide]
 	tst r2, r2
 	beq loc_802CC7C
 	mov r2, r1
@@ -14453,7 +14453,7 @@ zeroFill_802CE54:
 	pop {pc}
 	thumb_func_end zeroFill_802CE54
 
-// symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_Unk_0d), reading r0=lo16, r1=hi16, r2=upper from a global table
+// symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_PlayerSide), reading r0=lo16, r1=hi16, r2=upper from a global table
 // symdb: (r0 = selector 0..n, r10 = toolkit) -> r0 = u16 entry[0], r2 = u16 entry[2], r1 = u32 entry[4] ;
 // symdb: no side effects, returns through r0/r1/r2
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getStoryFlagFromBattleState_802CE60.yaml
@@ -14461,7 +14461,7 @@ zeroFill_802CE54:
 battle_getStoryFlagFromBattleState_802CE60:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_0d]
+	ldrb r1, [r1,#oBattleState_PlayerSide]
 	eor r0, r1
 	mov r1, #0x10
 	mul r0, r1
@@ -17093,7 +17093,7 @@ battle_updateCustGaugeFromAI_802E156:
 	beq locret_802E170
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	bl getEntryPtr_2036120_1D0_802E070
 	mov r4, r0
 	ldrh r0, [r0,#0x28]
@@ -17371,7 +17371,7 @@ loc_802E37A:
 loc_802E37C:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_0d]
+	ldrb r0, [r0,#oBattleState_PlayerSide]
 	cmp r0, r6
 	bne loc_802E406
 	tst r1, r1
