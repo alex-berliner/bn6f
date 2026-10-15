@@ -23193,7 +23193,7 @@ sub_801A4DC:
 	push {r4,r5,lr}
 	ldr r2, [r5,#oBattleObject_CollisionDataPtr]
 	mov r5, r1
-	ldr r1, [r2,#oCollisionData_Unk_7c]
+	ldr r1, [r2,#oCollisionData_CollisionFlagsAccumulated]
 	ldr r2, off_801A550 // =eCollisionData 
 	mov r3, #0
 loc_801A4E8:

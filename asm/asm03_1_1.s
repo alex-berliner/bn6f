@@ -9131,7 +9131,7 @@ loc_803D1AE:
 	pop {r0}
 
 	ldr r1, off_803D1F8 // =eLogoScreenState
-	strb r0, [r1,#oLogoScreenState_Unk_05]
+	strb r0, [r1,#oLogoScreenState_State]
 
   // trigger logoScreen_dispatch_803D1CA via main_
 	mov r1, r10
@@ -9193,7 +9193,7 @@ logoScreen_init_803D1FC: // (self: *mut LogoScreenState $r5) -> ()
 	mov r4, #0xc
 	ldr r0, off_803D244 // =0x40
 
-	ldrb r1, [r5,#oLogoScreenState_Unk_05]
+	ldrb r1, [r5,#oLogoScreenState_State]
 	tst r1, r1
 	beq loc_803D212
 

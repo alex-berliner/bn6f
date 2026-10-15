@@ -5456,7 +5456,7 @@ custMenuSomeHandler_8028B74: // (self: * S20364C0 $r5) -> ()
 	pop {r0}
 	beq loc_8028BBE
 
-	ldrb r2, [r5,#oS20364C0_Unk_10]
+	ldrb r2, [r5,#oS20364C0_ChipSelectScrollTimer]
 	cmp r2, #0
 	bne loc_8028BBE
 
@@ -5710,7 +5710,7 @@ custMenuPressOK_8028D3A:
 	b loc_8028D5A
 loc_8028D50:
 
-	ldrh r0, [r5,#oS20364C0_Unk_3a]
+	ldrh r0, [r5,#oS20364C0_CursorAnimPhase]
 	tst r0, r0
 	beq loc_8028D5A
   
@@ -6313,7 +6313,7 @@ custMenu_confirmAndProcessSelectedChips_8029110:
 	push {r4,r6,r7,lr}
 
 	mov r0, #0x14
-	strb r0, [r5,#oS20364C0_Unk_0b]
+	strb r0, [r5,#oS20364C0_CustMenuStepTimer]
 
 	// memBlock
 	ldr r0, off_80293D4 // =dword_2033000 
@@ -6673,12 +6673,12 @@ loc_8029388:
 	bl sub_802A11C
 	mov r2, r0
 
-	ldrb r0, [r5,#oS20364C0_Unk_1a]
+	ldrb r0, [r5,#oS20364C0_EmotionSpriteVariant]
 	add r0, r0, r4
 	mov r1, #0
 	bl sub_8015952
 
-	ldrb r0, [r5,#oS20364C0_Unk_1a]
+	ldrb r0, [r5,#oS20364C0_EmotionSpriteVariant]
 	ldr r1, dword_80293E8 // =0x6 
 	add r0, r0, r1
 	sub r0, #1
@@ -6694,7 +6694,7 @@ loc_8029388:
 	thumb_local_start
 sub_80293B0:
 	push {r0-r4,lr}
-	ldrh r0, [r5,#oS20364C0_Unk_3a]
+	ldrh r0, [r5,#oS20364C0_CursorAnimPhase]
 	sub r0, #1
 	ldr r1, dword_80293F0 // =0xd 
 	add r0, r0, r1
@@ -8869,11 +8869,11 @@ custMenu_dispatchState_802A2B0: // (self: * S20364C0 $r5) -> ()
 	mov lr, pc
 	bx r1
 
-	ldrb r0, [r5,#oS20364C0_Unk_14]
+	ldrb r0, [r5,#oS20364C0_TickCounter]
 	add r0, #1
 	mov r1, #0x3f 
 	and r0, r1
-	strb r0, [r5,#oS20364C0_Unk_14]
+	strb r0, [r5,#oS20364C0_TickCounter]
 	bne locret_802A2D2
 
 	ldrb r0, [r5,#oS20364C0_JumpOffset12]
@@ -12222,7 +12222,7 @@ custMenu_handleInputQueuePop_802BED4:
 	b locret_802BEFA
 loc_802BEE8:
 
-	strh r0, [r5,#oS20364C0_Unk_10]
+	strh r0, [r5,#oS20364C0_ChipSelectScrollTimer]
 
 	mov r0, #1
 	ldrb r1, [r5,#oS20364C0_FirstBattleTutorialStep]
@@ -12232,7 +12232,7 @@ loc_802BEE8:
 
 	mov r0, #0x1e
 loc_802BEF4:
-	strb r0, [r5,#oS20364C0_Unk_0b]
+	strb r0, [r5,#oS20364C0_CustMenuStepTimer]
 	mov r0, #4
 	strb r0, [r5,#oS20364C0_Unk_03]
 locret_802BEFA:

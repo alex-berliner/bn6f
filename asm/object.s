@@ -1953,7 +1953,7 @@ loc_800C700:
 	tst r0, r0
 	beq loc_800C734
 	ldrb r1, [r0,#oPanelData_Alliance]
-	ldrb r2, [r0,#oPanelData_Unk_04]
+	ldrb r2, [r0,#oPanelData_StatusOrVariant]
 	cmp r1, r2
 	beq loc_800C734
 	add r6, #1
@@ -4304,7 +4304,7 @@ object_checkPanelTypeMatchesValue_800D618:
 	bl object_getPanelDataOffset
 	tst r0, r0
 	beq locret_800D634
-	ldrb r1, [r0,#oPanelData_Unk_04]
+	ldrb r1, [r0,#oPanelData_StatusOrVariant]
 	ldrb r2, [r0,#oPanelData_Alliance]
 	mov r0, #0
 	cmp r1, r2

@@ -3198,7 +3198,7 @@ SpawnOverworldMapObject:
 	str r3, [r5,#oOverworldMapObject_Z]
 	str r4, [r5,#oOverworldMapObject_ObjectID]
 	mov r0, #0
-	str r0, [r5,#oOverworldMapObject_Unk_08]
+	str r0, [r5,#oOverworldMapObject_ObjectPtr]
 	pop {pc}
 .noFreeMapObjects
 	mov r5, #0
@@ -6785,7 +6785,7 @@ loc_8006276:
 	mov r0, #1
 	strb r0, [r5]
 	mov r0, #1
-	strb r0, [r5,#oScreenFade_Unk_03]
+	strb r0, [r5,#oScreenFade_ActiveFlag]
 	mov r0, #0
 	strb r0, [r5,#2]
 	cmp r1, #0xff
@@ -6862,7 +6862,7 @@ isScreenFadeActive_80062FC:
 IsScreenFadeActive_common:
 	ldr r0, off_80063BC // =eScreenFade 
 	add r0, r0, r3
-	ldrb r0, [r0,#oScreenFade_Unk_03] // (byte_200A443 - 0x200a440)
+	ldrb r0, [r0,#oScreenFade_ActiveFlag] // (byte_200A443 - 0x200a440)
 	mov r1, #1
 	cmp r0, r1
 	mov pc, lr

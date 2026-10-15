@@ -522,7 +522,7 @@ sub_809D560:
 	ldrb r0, [r6,#oGameState_MapGroup]
 	cmp r0, #INTERNET_MAP_GROUP_START
 	blt loc_809D572
-	ldrb r1, [r7,#oS2000aa0_Unk_03] // (byte_2000AA3 - 0x2000aa0)
+	ldrb r1, [r7,#oS2000aa0_OWPlayerNaviInternetFlag] // (byte_2000AA3 - 0x2000aa0)
 loc_809D572:
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]
 	ldr r7, off_809D5AC // =off_809D5B0 
@@ -710,7 +710,7 @@ calledWhenUsingSlipRun_809D6BC:
 	ldrb r0, [r6,#oGameState_MapGroup]
 	cmp r0, #INTERNET_MAP_GROUP_START
 	blt .notInternetMapGroup
-	ldrb r1, [r7,#oS2000aa0_Unk_03] // (byte_2000AA3 - 0x2000aa0)
+	ldrb r1, [r7,#oS2000aa0_OWPlayerNaviInternetFlag] // (byte_2000AA3 - 0x2000aa0)
 .notInternetMapGroup
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]
 	ldr r7, off_809D718 // =off_809D71C 

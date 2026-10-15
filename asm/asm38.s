@@ -3444,9 +3444,9 @@ loc_3007330:
 	tst r2, r4
 	bne locret_3007430
 	ldr r3, [r7,#0x44]
-	ldr r2, [r6,#oCollisionData_Unk_7c]
+	ldr r2, [r6,#oCollisionData_CollisionFlagsAccumulated]
 	orr r2, r3
-	str r2, [r6,#oCollisionData_Unk_7c]
+	str r2, [r6,#oCollisionData_CollisionFlagsAccumulated]
 	ldr r3, [r7,#0x30]
 	ldr r2, [r6,#oCollisionData_FlagsFromCollision]
 	orr r2, r3

@@ -2104,7 +2104,7 @@ writeCurPETNaviToS2001c04_Unk07_80010c6:
 	bl GetCurPETNavi // () -> u8
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_S2001c04_Ptr]
-	strb r0, [r3,#oS2001c04_Unk_07]
+	strb r0, [r3,#oS2001c04_CurPETNaviId]
 	pop {pc}
 	thumb_func_end writeCurPETNaviToS2001c04_Unk07_80010c6
 
@@ -5121,11 +5121,11 @@ sub_8002378:
 	beq loc_8002396
 	tst r2, r2
 	beq loc_8002396
-	strb r0, [r7,#oPalette20097a0_Unk_01]
-	str r1, [r7,#oPalette20097a0_Unk_04]
-	strb r2, [r7,#oPalette20097a0_Unk_02]
+	strb r0, [r7,#oPalette20097a0_Priority]
+	str r1, [r7,#oPalette20097a0_SourceAddress]
+	strb r2, [r7,#oPalette20097a0_ColorCountOrDepth]
 	mov r3, #1
-	str r4, [r7,#oPalette20097a0_Unk_08]
+	str r4, [r7,#oPalette20097a0_PalettePointerOrIndex]
 loc_8002396:
 	strb r3, [r7,#oPalette20097a0_ActiveFlag]
 	pop {r5-r7,pc}
@@ -5211,10 +5211,10 @@ loc_80023FC:
 	ldrb r0, [r5,#oPalette20097a0_ActiveFlag]
 	tst r0, r0
 	beq loc_8002428
-	ldr r0, [r5,#oPalette20097a0_Unk_04] // (dword_20097A4 - 0x20097a0)
-	ldrb r2, [r5,#oPalette20097a0_Unk_01] // (byte_20097A1 - 0x20097a0)
-	ldrb r6, [r5,#oPalette20097a0_Unk_02] // (byte_20097A2 - 0x20097a0)
-	ldr r7, [r5,#oPalette20097a0_Unk_08] // (dword_20097A8 - 0x20097a0)
+	ldr r0, [r5,#oPalette20097a0_SourceAddress] // (dword_20097A4 - 0x20097a0)
+	ldrb r2, [r5,#oPalette20097a0_Priority] // (byte_20097A1 - 0x20097a0)
+	ldrb r6, [r5,#oPalette20097a0_ColorCountOrDepth] // (byte_20097A2 - 0x20097a0)
+	ldr r7, [r5,#oPalette20097a0_PalettePointerOrIndex] // (dword_20097A8 - 0x20097a0)
 	cmp r7, #6
 	bge loc_800241E
 	ldr r6, off_8002438 // =unk_200F388

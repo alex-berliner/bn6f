@@ -38282,7 +38282,7 @@ loc_8120DFA:
 	beq loc_8120E22
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_S2001c04_Ptr]
-	ldrb r0, [r0,#oS2001c04_Unk_07]
+	ldrb r0, [r0,#oS2001c04_CurPETNaviId]
 	cmp r1, #0x40
 	bne loc_8120E16
 	mov r1, #0x40

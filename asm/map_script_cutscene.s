@@ -2586,7 +2586,7 @@ StartCutscene: // (script: *const CutsceneScript, param: u32) -> ()
 	ldr r0, =eTextScript202DA04 // TextScriptArchive
 	str r0, [r5,#oCutsceneState_TextArchivePtr] // s_02011C50.ptr_30
 	ldr r0, =off_8036EC4
-	str r0, [r5,#oCutsceneState_Unk_34] // s_02011C50.ptr_34
+	str r0, [r5,#oCutsceneState_DefaultScriptTable] // s_02011C50.ptr_34
 	pop {r5,pc}
 	.balign 4, 0
 	.pool // 8036EBC
@@ -5689,7 +5689,7 @@ CutsceneCmd_warp_cmd_8038040:
 	mov r0, #0x80
 	tst r3, r0
 	beq .param0bit7clear
-	ldr r2, [r5,#oCutsceneState_Unk_34]
+	ldr r2, [r5,#oCutsceneState_DefaultScriptTable]
 .param0bit7clear
 	mov r0, #1
 	tst r3, r0
@@ -5722,7 +5722,7 @@ CutsceneCmd_warp_cmd_8038040:
 .subcmd0x20
 	mov r6, #2
 	bl ReadMapScriptWord
-	str r4, [r5,#oCutsceneState_Unk_34]
+	str r4, [r5,#oCutsceneState_DefaultScriptTable]
 	add r7, #6
 	mov r0, #1
 	pop {pc}

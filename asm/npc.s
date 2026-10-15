@@ -276,7 +276,7 @@ npc_nonCutsceneMovementInit_809E704:
 	add r0, r0, r1
 
 	// store in the new x coordinate for this iteration
-	str r0, [r5,#oOverworldNPCObject_Unk_70]
+	str r0, [r5,#oOverworldNPCObject_NextYBackup]
 
 	// do the same for y coordinate
 	ldr r0, [r5,#oOverworldNPCObject_Y]
@@ -424,7 +424,7 @@ loc_809E7EA:
 	sub r0, #1
 	strh r0, [r5,#oOverworldNPCObject_Timer]
 	bne loc_809E81A
-	ldr r0, [r5,#oOverworldNPCObject_Unk_70]
+	ldr r0, [r5,#oOverworldNPCObject_NextYBackup]
 	str r0, [r5,#oOverworldNPCObject_X]
 	ldr r0, [r5,#oOverworldNPCObject_Unk_74]
 	str r0, [r5,#oOverworldNPCObject_Y]
@@ -3320,9 +3320,9 @@ dword_809F5F8:
 npc_beginChatboxState_809F5FC:
 	push {lr}
 	ldrb r0, [r5,#oOverworldNPCObject_CurAction]
-	strb r0, [r5,#oOverworldNPCObject_Unk_1d]
+	strb r0, [r5,#oOverworldNPCObject_CurActionBackup]
 	ldrb r0, [r5,#oOverworldNPCObject_MovementFlag_0a]
-	strb r0, [r5,#oOverworldNPCObject_Unk_1e]
+	strb r0, [r5,#oOverworldNPCObject_MovementFlagBackup]
 	mov r0, #NPC_CUR_STATE_IN_CHATBOX
 	strb r0, [r5,#oOverworldNPCObject_CurState]
 	mov r0, #0
@@ -3340,9 +3340,9 @@ npc_resetToStandardState_809F612:
 	push {lr}
 	mov r0, #NPC_CUR_STATE_STANDARD
 	strb r0, [r5,#oOverworldNPCObject_CurState]
-	ldrb r0, [r5,#oOverworldNPCObject_Unk_1d]
+	ldrb r0, [r5,#oOverworldNPCObject_CurActionBackup]
 	strb r0, [r5,#oOverworldNPCObject_CurAction]
-	ldrb r0, [r5,#oOverworldNPCObject_Unk_1e]
+	ldrb r0, [r5,#oOverworldNPCObject_MovementFlagBackup]
 	strb r0, [r5,#oOverworldNPCObject_MovementFlag_0a]
 	ldr r0, [r5,#oOverworldNPCObject_UnkFlags_60]
 	ldr r1, dword_809F6B4 // =(OW_NPC_UNK_FLAGS_60_0x1000 | OW_NPC_UNK_FLAGS_60_FACE_PLAYER_WHEN_INTERACTED)
