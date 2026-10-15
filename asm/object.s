@@ -247,7 +247,7 @@ loc_800B9D4:
 	lsr r3, r3, #2
 	bcc loc_800B9F8
 	ldrh r1, [r5,#oBattleObject_Damage]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 loc_800B9F8:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}
@@ -360,7 +360,7 @@ loc_800BAB8:
 	lsr r3, r3, #2
 	bcc loc_800BAD8
 	ldrh r1, [r5,#oBattleObject_Damage]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 loc_800BAD8:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}
@@ -498,7 +498,7 @@ loc_800BBCC:
 	lsr r3, r3, #2
 	bcc loc_800BBEC
 	ldrh r1, [r5,#oBattleObject_Damage]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 loc_800BBEC:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	push {r0-r2}

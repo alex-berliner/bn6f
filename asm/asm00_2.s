@@ -17914,7 +17914,7 @@ stepBattleObjectWobble_8016BFC:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
@@ -17936,7 +17936,7 @@ loc_8016C22:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -17947,7 +17947,7 @@ loc_8016C22:
 loc_8016C44:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 locret_8016C4C:
 	pop {pc}
@@ -19935,7 +19935,7 @@ loc_8017B64:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
@@ -19957,7 +19957,7 @@ loc_8017B88:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -19968,7 +19968,7 @@ loc_8017B88:
 loc_8017BAA:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 loc_8017BB2:
 	add sp, sp, #0x50
@@ -20597,7 +20597,7 @@ sub_8018094:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	mov r0, #0xc
 	strb r0, [r5,#oBattleObject_PreventAnim]
 	pop {pc}
@@ -20609,7 +20609,7 @@ sub_80180A8:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -20622,7 +20622,7 @@ sub_80180A8:
 	bne locret_80180EA
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 	ldrb r0, [r5,#oBattleObject_Unk_1c]
 	ldrb r1, [r5,#oBattleObject_Unk_1d]
@@ -20832,7 +20832,7 @@ sub_801823C:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
@@ -20854,7 +20854,7 @@ loc_8018266:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -20865,7 +20865,7 @@ loc_8018266:
 loc_8018288:
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 locret_8018290:
 	pop {pc}

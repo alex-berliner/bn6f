@@ -84346,7 +84346,7 @@ sub_80DF66A:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_getCoordinatesForPanels // (int a1, int a2) -> (int n1, int n2)
@@ -84363,7 +84363,7 @@ loc_80DF69E:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -84376,7 +84376,7 @@ loc_80DF69E:
 	bgt locret_80DF6CC
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -84528,7 +84528,7 @@ sub_80DF7D6:
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_ChipID]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r5,#oBattleObject_Unk_32]
+	strh r0, [r5,#oBattleObject_Z16Save]
 	bl sub_80DF8D2
 	mov r0, #0x78 
 	strh r0, [r5,#oBattleObject_Timer]
@@ -84541,7 +84541,7 @@ loc_80DF802:
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	lsl r3, r3, #0x10
 	mov r0, #3
 	bl AddRandomVarianceToTwoCoords
@@ -84564,7 +84564,7 @@ loc_80DF82E:
 	bgt locret_80DF846
 	ldrh r0, [r5,#oBattleObject_ChipID]
 	strh r0, [r5,#oBattleObject_X16]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -86520,7 +86520,7 @@ sub_80E0754:
 	beq loc_80E0782
 	ldrb r4, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r2
 	ldrb r2, [r5,#oBattleObject_Element]
 	bl battle_spawnTypeFObjectInitState_80C6548
@@ -86537,7 +86537,7 @@ loc_80E0784:
 	beq loc_80E07B0
 	ldrb r4, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r2
 	mov r1, #1
 	ldrb r2, [r5,#oBattleObject_Element]
@@ -88905,7 +88905,7 @@ timefreezeObjectRunFunction_80E1880:
 	ldr r3, off_80E19B0 // =off_802CD5C 
 	ldr r3, [r3,r0]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r0
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -88931,7 +88931,7 @@ timefreezeObjectRunFunction_80E1880:
 	str r0, [r7,#0x4] // (dword_203C964 - 0x203c960)
 	ldr r0, [r5,#oBattleObject_Params]
 	str r0, [r7,#0x8] // (byte_203C968 - 0x203c960)
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r7,#0x2] // (word_203C962 - 0x203c960)
 loc_80E18CA:
 	mov r0, #4
@@ -91561,7 +91561,7 @@ sub_80E2C08:
 	tst r0, r0
 	beq loc_80E2C4E
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r2, [r5,#oBattleObject_Unk_32]
+	ldrh r2, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r2
 	ldrb r2, [r5,#oBattleObject_Element]
 	push {r0-r2}
@@ -91831,7 +91831,7 @@ loc_80E2DF4:
 	push {r0-r4}
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	bl sub_80CCD4A
 	pop {r0-r4}
@@ -92485,7 +92485,7 @@ sub_80E3290:
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	bl sub_80CDC7C
 loc_80E32AC:
@@ -92753,7 +92753,7 @@ sub_80E3470:
 	strh r0, [r5,#oBattleObject_Timer]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	bl sub_80CDF60
 	mov r0, #4
@@ -92844,7 +92844,7 @@ sub_80E3504:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldrh r1, [r5,#oBattleObject_ChipID]
 	ldr r2, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	bl sub_802CE8A
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
@@ -93070,7 +93070,7 @@ loc_80E368C:
 	ldr r4, [r3]
 	ldr r7, [r3,#4]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	bl object_spawnDimmingCollisionRegion
@@ -94712,7 +94712,7 @@ loc_80E4242:
 	ldrb r2, [r5,#oBattleObject_Element]
 	mov r4, #1
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	bl sub_80CF5B2
 locret_80E425E:
@@ -95213,7 +95213,7 @@ loc_80E45B0:
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r4, dword_80E45E4 // =0x1a050601 
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	mov r7, #3
@@ -97988,7 +97988,7 @@ sub_80E5988:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -98806,7 +98806,7 @@ sub_80E5F10:
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	bl sub_80D3742
@@ -99363,7 +99363,7 @@ sub_80E6338:
 	beq locret_80E6368
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	mov r7, #0x60 
@@ -99408,7 +99408,7 @@ loc_80E638A:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	add r4, #4
@@ -99464,7 +99464,7 @@ loc_80E63DE:
 	ldrb r2, [r5,#oBattleObject_Element]
 	push {r6}
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	pop {r6}
@@ -99979,7 +99979,7 @@ sub_80E679C:
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	bl sub_80D4FA6
 loc_80E67CC:
@@ -101053,7 +101053,7 @@ sub_80E6FCC:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -101145,7 +101145,7 @@ sub_80E7070:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -101378,7 +101378,7 @@ sub_80E7208:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -101905,7 +101905,7 @@ sub_80E75AC:
 	ldrb r1, [r4,#1]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	ldr r4, [r5,#oBattleObject_Params]
 	mov r7, #0xc
@@ -102792,7 +102792,7 @@ sub_80E7C40:
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	bl sub_80DA390
@@ -103028,7 +103028,7 @@ sub_80E7E08:
 	beq loc_80E7E28
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	ldrb r2, [r5,#oBattleObject_Element]
@@ -103146,7 +103146,7 @@ sub_80E7EE0:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -103239,7 +103239,7 @@ sub_80E7F80:
 	ldrb r3, [r5,#oBattleObject_Alliance]
 	ldr r4, [r5,#oBattleObject_Params]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r7, [r5,#oBattleObject_Unk_32]
+	ldrh r7, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r7
 	mov r7, #5
 	add r7, r7, r5
@@ -103329,7 +103329,7 @@ sub_80E8020:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -103521,7 +103521,7 @@ sub_80E817C:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -103610,7 +103610,7 @@ sub_80E821C:
 	bne loc_80E8234
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r0, [r5,#oBattleObject_Unk_32]
+	ldrh r0, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r0
 	bl sub_80E8396
 	mov r0, #4
@@ -103899,7 +103899,7 @@ sub_80E83FC:
 	ldrb r1, [r7,#1]
 	ldrh r4, [r7,#2]
 	ldrb r2, [r5,#oBattleObject_Element]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
 	add r6, r6, r3
 	mov r7, #6
@@ -103912,7 +103912,7 @@ sub_80E83FC:
 	ldrb r1, [r7,#5]
 	ldrh r4, [r7,#6]
 	ldrb r2, [r5,#oBattleObject_Element]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
 	add r6, r6, r3
 	mov r7, #7
@@ -104804,7 +104804,7 @@ sub_80E8AA4:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r7, #5
 	add r7, r7, r5
@@ -104989,7 +104989,7 @@ locret_80E8BE0:
 sub_80E8BE2:
 	push {r4,r6,r7,lr}
 	mov r4, r2
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
 	add r6, r6, r3
 	mov r3, #0x78 
@@ -105785,7 +105785,7 @@ sub_80E9164:
 	mov r4, #0x60 
 	ldr r4, [r5,r4]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	mov r3, #0
 	bl sub_80C17F4
@@ -105919,7 +105919,7 @@ sub_80E9272:
 	tst r0, r0
 	bne loc_80E92A0
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	ldrh r3, [r5,#oBattleObject_Unk_32]
+	ldrh r3, [r5,#oBattleObject_Z16Save]
 	add r6, r6, r3
 	ldrb r2, [r5,#oBattleObject_Element]
 	ldrh r3, [r5,#oBattleObject_AllianceAndDirectionFlip]
@@ -106094,7 +106094,7 @@ sub_80E93A0:
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 	push {r5}
 	ldrb r2, [r5,#oBattleObject_Element]
-	ldrh r6, [r5,#oBattleObject_Unk_32]
+	ldrh r6, [r5,#oBattleObject_Z16Save]
 	ldrh r0, [r5,#oBattleObject_StaminaDamageCounterDisabler]
 	lsl r0, r0, #0x10
 	orr r6, r0
@@ -106106,7 +106106,7 @@ sub_80E93A0:
 	pop {r5}
 	push {r5}
 	ldrb r2, [r5,#oBattleObject_Element]
-	ldrh r6, [r5,#oBattleObject_Unk_32]
+	ldrh r6, [r5,#oBattleObject_Z16Save]
 	ldrh r0, [r5,#oBattleObject_StaminaDamageCounterDisabler]
 	lsl r0, r0, #0x10
 	orr r6, r0
