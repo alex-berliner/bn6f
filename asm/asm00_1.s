@@ -10068,7 +10068,7 @@ battle_initForMatchStart_0800794C:
 battle_dispatchPhase_8007978:
 	push {lr}
 	ldr r1, off_8007988 // =off_800798C
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -10098,7 +10098,7 @@ battle_cueThenSetState4_800799C:
 
 	// trigger battle_state_endPhaseWithEffect_80079A8 via battle_dispatchPhase_8007978
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 
 	pop {pc}
 	thumb_func_end battle_cueThenSetState4_800799C
@@ -10126,7 +10126,7 @@ loc_80079BC:
 
 	// trigger battle_state_finishBattlePhase_80079d0 via battle_dispatchPhase_8007978
 	mov r0, #8
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 
 	pop {pc}
 	.balign 4, 0
@@ -10152,7 +10152,7 @@ battle_state_finishBattlePhase_80079d0:
 
 	// trigger battle_RevealFieldColumnsStep_80079F0 via battle_dispatchPhase_8007978
 	mov r0, #0xc
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 
 	b locret_80079EA
 locret_80079EA:
@@ -10389,7 +10389,7 @@ battle_runFrame_8007B9C: // (self: *mut BattleState $r5) -> ()
 	push {lr}
 	bl fifo_resetWriteCounter_800A01C
 	ldr r1, off_8007BC4 // =off_8007BC8
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -10854,7 +10854,7 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 	push {lr}
 	bl fifo_resetWriteCounter_800A01C
 	ldr r1, off_8007F98 // =off_8007F9C
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -13473,13 +13473,13 @@ loc_800923A: // endif
 
 loc_8009240:
 
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_800924E
 
 	bl task484_RunFrame_800927C
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 
 loc_800924E: // endif
 
@@ -13541,7 +13541,7 @@ off_800929C:
 battle_dispatchStatePhase_80092A0:
 	push {lr}
 	ldr r1, off_80092B0 // =off_80092B4
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -13795,7 +13795,7 @@ locret_800945A:
 battle_DispatchStatePhase_800945C:
 	push {lr}
 	ldr r1, off_800946C // =off_8009470
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -14112,12 +14112,12 @@ loc_80096A2:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_80096DE
 loc_80096A8:
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_80096B6
 	bl sub_80096E0
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 loc_80096B6:
 	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
@@ -14191,7 +14191,7 @@ locret_8009732:
 sub_8009734:
 	push {lr}
 	ldr r1, off_8009744 // =off_8009748
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -14399,7 +14399,7 @@ locret_80098BA:
 sub_80098BC:
 	push {lr}
 	ldr r1, off_80098CC // =off_80098D0
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -14607,12 +14607,12 @@ loc_8009A2A:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009A66
 loc_8009A30:
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_8009A3E
 	bl sub_8009A68
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 loc_8009A3E:
 	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
@@ -14655,7 +14655,7 @@ off_8009A84:
 sub_8009A88:
 	push {lr}
 	ldr r1, off_8009A98 // =off_8009A9C
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -14821,7 +14821,7 @@ locret_8009BAA:
 sub_8009BAC:
 	push {lr}
 	ldr r1, off_8009BBC // =off_8009BC0
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15021,12 +15021,12 @@ loc_8009D1A:
 	strb r0, [r5,#oBattleState_Unk_03]
 	b locret_8009D56
 loc_8009D20:
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_8009D2E
 	bl sub_8009D58
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_02]
+	strb r0, [r5,#oBattleState_StatePhase]
 loc_8009D2E:
 	bl battle_getStateUnk5c_800139A
 	lsr r0, r0, #2
@@ -15069,7 +15069,7 @@ off_8009D74:
 sub_8009D78:
 	push {lr}
 	ldr r1, off_8009D88 // =off_8009D8C
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15164,7 +15164,7 @@ locret_8009E0E:
 sub_8009E10:
 	push {lr}
 	ldr r1, off_8009E20 // =off_8009E24
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15275,7 +15275,7 @@ locret_8009EE0:
 sub_8009EE2:
 	push {lr}
 	ldr r1, off_8009EF0 // =off_8009EF4
-	ldrb r0, [r5,#oBattleState_Unk_02]
+	ldrb r0, [r5,#oBattleState_StatePhase]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
