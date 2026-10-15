@@ -86393,7 +86393,7 @@ sub_80E0684:
 	tst r0, r1
 	beq loc_80E06AC
 	mov r0, #0
-	ldrb r1, [r2,#oBattleState_Unk_1a]
+	ldrb r1, [r2,#oBattleState_State4EventCount]
 	cmp r1, #1
 	ble loc_80E06B8
 	mov r0, #8

@@ -15228,7 +15228,7 @@ battleSettings_802D2B2:
 	mov r4, r0
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_BattleStatePtr]
-	ldrb r0, [r7,#oBattleState_Unk_1a]
+	ldrb r0, [r7,#oBattleState_State4EventCount]
 	sub r0, #1
 	add r0, r0, r0
 	ldr r6, off_802D300 // =byte_203CA50 

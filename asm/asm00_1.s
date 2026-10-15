@@ -13425,14 +13425,14 @@ battle_runBattleIntroSpawnStep_80091F0:
 
 	ldr r1, [r5,#oBattleState_BattleSettings]
 	ldrb r1, [r1,#5]
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 
 	b loc_8009210
 loc_800920A: // else
 
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	add r1, #1
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 
 loc_8009210: // endif
 
@@ -13566,7 +13566,7 @@ battle_runState4CountdownOrAdvance_80092C0:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80092D8
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	tst r1, r1
 	beq loc_80092E6
 	mov r0, #0xa
@@ -13598,7 +13598,7 @@ sub_80092F0:
 	tst r0, r0
 	bne loc_8009306
 	mov r0, #0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
@@ -14083,12 +14083,12 @@ sub_8009658:
 	bne loc_8009672
 	ldr r1, [r5,#oBattleState_BattleSettings]
 	ldrb r1, [r1,#5]
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 	b loc_8009678
 loc_8009672:
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	add r1, #1
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 loc_8009678:
 	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
@@ -14211,7 +14211,7 @@ sub_8009754:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800976C
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	tst r1, r1
 	beq loc_800977A
 	mov r0, #0xa
@@ -14243,7 +14243,7 @@ sub_8009784:
 	tst r0, r0
 	bne loc_800979A
 	mov r0, #0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
@@ -14578,12 +14578,12 @@ battle_advanceIndexFromPauseIntro_80099E0:
 	bne loc_80099FA
 	ldr r1, [r5,#oBattleState_BattleSettings]
 	ldrb r1, [r1,#5]
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 	b loc_8009A00
 loc_80099FA:
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	add r1, #1
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 loc_8009A00:
 	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
@@ -14675,7 +14675,7 @@ sub_8009AA8:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009AC0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	tst r1, r1
 	beq loc_8009ACE
 	mov r0, #0xa
@@ -14707,7 +14707,7 @@ sub_8009AD8:
 	tst r0, r0
 	bne loc_8009AEE
 	mov r0, #0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
@@ -14992,12 +14992,12 @@ sub_8009CD0:
 	bne loc_8009CEA
 	ldr r1, [r5,#oBattleState_BattleSettings]
 	ldrb r1, [r1,#5]
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 	b loc_8009CF0
 loc_8009CEA:
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	add r1, #1
-	strb r1, [r5,#oBattleState_Unk_1a]
+	strb r1, [r5,#oBattleState_State4EventCount]
 loc_8009CF0:
 	bl battle_spawnType4ObjectWithActiveFlag_80E06F8
 	bl battle_SpawnEnemyObjects_8007358 // () -> ()
@@ -15089,7 +15089,7 @@ sub_8009D98:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009DB0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	tst r1, r1
 	beq loc_8009DBE
 	mov r0, #0xa
@@ -15121,7 +15121,7 @@ sub_8009DC8:
 	tst r0, r0
 	bne loc_8009DDE
 	mov r0, #0
-	ldrb r1, [r5,#oBattleState_Unk_1a]
+	ldrb r1, [r5,#oBattleState_State4EventCount]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
@@ -18094,7 +18094,7 @@ sub_800AF50:
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
 	ldrb r0, [r5,#oBattleState_Unk_18]
 	ldrb r1, [r5,#oBattleState_Unk_19]
-	ldrb r2, [r5,#oBattleState_Unk_1a]
+	ldrb r2, [r5,#oBattleState_State4EventCount]
 	neg r4, r2
 	add r4, #3
 	add r5, r1, r4
