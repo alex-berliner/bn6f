@@ -7,7 +7,7 @@
 	u8 Index_01 // loc=0x1
 
 	union
-	u8 Unk_02 // loc=0x2
+	u8 StatePhase // loc=0x2
 	u8 Unk_03 // loc=0x3
 	nextu
 	u16 Unk_02_03 // loc=0x2
