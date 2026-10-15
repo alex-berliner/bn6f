@@ -3990,7 +3990,7 @@ scenario_prepareEnterMap_8004D48:
 	strb r0, [r5,#oGameState_BGMusicIndicator]
 
 	mov r0, #0
-	strb r0, [r5,#oGameState_Unk_11]
+	strb r0, [r5,#oGameState_CoordInteractionTriggered]
 	strb r0, [r5,#oGameState_OWPlayerBusyOrCutscene]
 	ldr r1, off_8004DE4 // =byte_200F410
 	strb r0, [r1]
@@ -4102,7 +4102,7 @@ initNewGameData_8004DF0:
 	str r0, [r1,#0x30]
 
 	mov r0, #0
-	strb r0, [r5,#oGameState_Unk_02]
+	strb r0, [r5,#oGameState_SavedChipDescByte]
 	str r0, [r1,#0x24]
 	str r0, [r1,#0x28]
 
@@ -4125,7 +4125,7 @@ initNewGameData_8004DF0:
 	bl keyItems_ResetInventoryAndGrantScenarioItems_803CD74
 
 	mov r0, #0
-	strb r0, [r5,#oGameState_Unk_13]
+	strb r0, [r5,#oGameState_PendingByte]
 	str r0, [r5,#0x78]
 
 	bl resetPaletteScratch_802F2C8
@@ -10320,9 +10320,9 @@ loc_8007AF4:
 	mov r0, #1
 	bl handleCustHPBug_80102AC
 loc_8007B0A:
-	ldr r0, [r5,#oBattleState_Unk_64]
+	ldr r0, [r5,#oBattleState_SpriteRenderFrameCounter]
 	add r0, #1
-	str r0, [r5,#oBattleState_Unk_64]
+	str r0, [r5,#oBattleState_SpriteRenderFrameCounter]
 loc_8007B10:
 	bl sprite_setRenderFlushState_80027B4
 	bl sprite_resetPaletteCount_800286C

@@ -2563,7 +2563,7 @@ sub_8142FC8:
 	bne loc_8143010
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
-	ldrb r0, [r3,#oGameState_Unk_11]
+	ldrb r0, [r3,#oGameState_CoordInteractionTriggered]
 	tst r0, r0
 	beq loc_8143048
 	bl sub_81433DA

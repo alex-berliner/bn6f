@@ -262,7 +262,7 @@ owPlayer_update_809D348:
 	mov r0, #0
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
-	strb r0, [r7,#oGameState_Unk_11]
+	strb r0, [r7,#oGameState_CoordInteractionTriggered]
 	strb r0, [r5,#oOWPlayerObject_Unk_13]
 	strb r0, [r5,#oOWPlayerObject_Unk_13]
 	ldrb r1, [r5,#oOWPlayerObject_Unk_0e]
@@ -1222,7 +1222,7 @@ owMapObject_handlePlayerInteract_809D9E0:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
 	mov r2, #1
-	strb r2, [r7,#oGameState_Unk_11]
+	strb r2, [r7,#oGameState_CoordInteractionTriggered]
 	pop {r0,r1,r7}
 loc_809DA62:
 	ldrh r1, [r7,#oGameState_SubsystemIndex]
@@ -1400,7 +1400,7 @@ loc_809DB82:
 loc_809DB92:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
-	ldrb r0, [r7,#oGameState_Unk_11]
+	ldrb r0, [r7,#oGameState_CoordInteractionTriggered]
 	tst r0, r0
 	beq loc_809DBAC
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]

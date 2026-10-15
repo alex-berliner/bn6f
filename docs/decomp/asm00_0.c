@@ -1276,7 +1276,7 @@ int __fastcall sub_8001092(int result, int a2, int a3, int a4)
     v6[oGameState_CoordInteractionValue] = a2;
     v6[oGameState_BGMusicIndicator] = a3;
     v6[oGameState_OWPlayerBusyOrCutscene] = a4;
-    v6[oGameState_Unk_11] = v4;
+    v6[oGameState_CoordInteractionTriggered] = v4;
     return result;
 }
 
@@ -1290,7 +1290,7 @@ int __fastcall sub_80010A4(int result, int a2, int a3, int a4)
 
     v6 = *(v5 + oToolkit_GameStatePtr);
     v6[oGameState_Unk_12] = result;
-    v6[oGameState_Unk_13] = a2;
+    v6[oGameState_PendingByte] = a2;
     v6[oGameState_BattleEndSubState] = a3;
     v6[oGameState_Unk_15] = a4;
     v6[oGameState_EnterMapFadeParam1] = v4;

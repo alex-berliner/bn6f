@@ -830,7 +830,7 @@ sub_3006108:
 	add r1, r1, r2 // r1 = r1 + r2
 	lsl r1, r1, #5 // r1 = 32 * (r1 + r2)
 	add r0, r0, r1
-	ldrh r7, [r5,#oObjectSprite_Unk_06]
+	ldrh r7, [r5,#oObjectSprite_ColorShader]
 	tst r7, r7
 	beq loc_3006140
 	ldr r7, off_300619C // =iPallete3001750
@@ -840,7 +840,7 @@ loc_3006128:
 	ldr r3, [r0,r2]
 	str r3, [r7,r2]
 	bne loc_3006128
-	ldrh r0, [r5,#oObjectSprite_Unk_06]
+	ldrh r0, [r5,#oObjectSprite_ColorShader]
 	lsr r2, r0, #0xf
 	lsl r2, r2, #2
 	mov r6, #0x20 
@@ -1707,7 +1707,7 @@ _sprite_loadAnimationData:
 	ldrb r2, [r1,#1]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
-	strb r2, [r5,#oObjectSprite_Unk_02]
+	strb r2, [r5,#oObjectSprite_AttributeFlags]
 	b loc_3006778
 loc_300675A:
 	ldrb r0, [r5,#oObjectSprite_AnimationIndex]
@@ -1724,7 +1724,7 @@ loc_300675A:
 	ldrb r2, [r3,#0x10]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
-	strb r2, [r5,#oObjectSprite_Unk_02]
+	strb r2, [r5,#oObjectSprite_AttributeFlags]
 loc_3006778:
 	ldr r1, [r5,#oObjectSprite_Unk_20]
 	ldrb r2, [r1]
@@ -1737,7 +1737,7 @@ loc_3006778:
 	add r2, r2, r1
 	ldrb r1, [r2,#4]
 	lsr r1, r1, #4
-	strb r1, [r5,#oObjectSprite_Unk_05]
+	strb r1, [r5,#oObjectSprite_PaletteRowIndex]
 	pop {pc}
 	thumb_func_end _sprite_loadAnimationData
 
@@ -1765,7 +1765,7 @@ loc_3006794:
 	ldrb r2, [r1,#1]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
-	strb r2, [r5,#oObjectSprite_Unk_02]
+	strb r2, [r5,#oObjectSprite_AttributeFlags]
 	b loc_30067E4
 loc_30067C0:
 	ldr r3, [r5,#oObjectSprite_Unk_1c]
@@ -1785,7 +1785,7 @@ loc_30067C0:
 	ldrb r2, [r3,#0x10]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
-	strb r2, [r5,#oObjectSprite_Unk_02]
+	strb r2, [r5,#oObjectSprite_AttributeFlags]
 loc_30067E4:
 	b loc_3006794
 loc_30067E6:
@@ -1810,7 +1810,7 @@ loc_30067F8:
 	add r2, r2, r1
 	ldrb r1, [r2,#4]
 	lsr r1, r1, #4
-	strb r1, [r5,#oObjectSprite_Unk_05]
+	strb r1, [r5,#oObjectSprite_PaletteRowIndex]
 	pop {r4,pc}
 	.balign 4, 0x00
 	thumb_func_end _sprite_update

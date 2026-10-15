@@ -9621,7 +9621,7 @@ scene_updateClosing_8127C64:
 	str r0, [r1,#0x78]
 	b loc_8127C9E
 loc_8127C9C:
-	strb r0, [r1,#oGameState_Unk_13]
+	strb r0, [r1,#oGameState_PendingByte]
 loc_8127C9E:
 	ldrb r0, [r5,#0xd]
 	mov r1, #1

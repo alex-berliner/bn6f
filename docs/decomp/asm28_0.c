@@ -3203,7 +3203,7 @@ int owMapObject_handlePlayerInteract_809D9E0()
                             v13 = *(v0 + 32) + *&(*v9)[4];
                             v14 = *(v0 + 36) + *&(*v9)[8];
                             *(v0 + 13) = checkCoordinateTrigger_8031a7a(&v12);
-                            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_11) = 1;
+                            *(*(v1 + oToolkit_GameStatePtr) + oGameState_CoordInteractionTriggered) = 1;
                             result = 0;
                             v6 = v8;
                         }
@@ -3310,7 +3310,7 @@ int owPlayerInputTick_809DB60()
     TestEventFlagFromImmediate(23, 61);
     if ( !v2 || **(v1 + oToolkit_JoypadPtr) & 0xF0 )
         createOWPlayerInteractionArea_809DBC4(off_809DCEC[*(v0 + 16)], (v0 + 80));
-    if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_11) )
+    if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_CoordInteractionTriggered) )
         createOWPlayerInteractionArea_809DBC4(off_809DC0C[*(v0 + 16)], (v0 + 72));
     result = 0;
     *(v0 + 52) = 0;

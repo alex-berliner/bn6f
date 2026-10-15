@@ -5131,7 +5131,7 @@ int __fastcall scene_updateClosing_8127C64(int a1)
         if ( *(v1 + 13) & 1 )
             *(v6 + 120) = v5;
         else
-            *(v6 + oGameState_Unk_13) = v5;
+            *(v6 + oGameState_PendingByte) = v5;
         if ( *(v1 + 13) & 1 )
         {
             sub_811EBF4(1);

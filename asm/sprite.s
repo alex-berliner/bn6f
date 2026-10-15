@@ -127,14 +127,14 @@ sprite_initialize:
 	strb r0, [r5,#oObjectSprite_SpriteFlags2]
 	strb r0, [r5,#oObjectSprite_AnimationIndex]
 	str r0, [r5,#oObjectSprite_Unk_24]
-	strb r0, [r5,#oObjectSprite_Unk_04]
-	strh r0, [r5,#oObjectSprite_Unk_0a]
-	strh r0, [r5,#oObjectSprite_Unk_06]
+	strb r0, [r5,#oObjectSprite_PaletteIndex]
+	strh r0, [r5,#oObjectSprite_SpriteExtraBytes]
+	strh r0, [r5,#oObjectSprite_ColorShader]
 	str r0, [r5,#oObjectSprite_Unk_2c]
 	strh r0, [r5,#oObjectSprite_Unk_10]
-	strh r0, [r5,#oObjectSprite_Unk_12]
-	strb r0, [r5,#oObjectSprite_Unk_14]
-	strb r0, [r5,#oObjectSprite_Unk_05]
+	strh r0, [r5,#oObjectSprite_FrameCounter]
+	strb r0, [r5,#oObjectSprite_InitFlag]
+	strb r0, [r5,#oObjectSprite_PaletteRowIndex]
 	str r0, [r5,#oObjectSprite_Unk_30]
 	str r0, [r5,#oObjectSprite_Unk_34]
 	mvn r0, r0
@@ -142,7 +142,7 @@ sprite_initialize:
 	mov r0, #8
 	strb r0, [r5,#oObjectSprite_OamAttributes]
 	mov r0, #8
-	strh r0, [r5,#oObjectSprite_Unk_16]
+	strh r0, [r5,#oObjectSprite_CurFrame]
 	mov pc, lr
 	thumb_func_end sprite_initialize
 
@@ -947,7 +947,7 @@ loc_8002C36:
 	mov r1, #3
 	tst r0, r1
 	beq loc_8002C4E
-	ldrb r3, [r5,#oObjectSprite_Unk_13]
+	ldrb r3, [r5,#oObjectSprite_SpriteFlags3]
 	mov r1, #0x3e
 	and r3, r1
 	lsr r3, r3, #1
@@ -1138,12 +1138,12 @@ loc_8002D22:
 	orr r2, r1
 	strb r2, [r5,#oObjectSprite_SpriteFlags]
 	push {r7}
-	ldrb r7, [r5,#oObjectSprite_Unk_13]
+	ldrb r7, [r5,#oObjectSprite_SpriteFlags3]
 	mov r1, #0x3e
 	bic r7, r1
 	lsl r0, r0, #1
 	orr r7, r0
-	strb r7, [r5,#oObjectSprite_Unk_13]
+	strb r7, [r5,#oObjectSprite_SpriteFlags3]
 	pop {r7}
 	mov r0, #1
 	pop {r5,pc}
@@ -1172,13 +1172,13 @@ loc_8002D60:
 	beq locret_8002D7E
 	bic r0, r1
 	strb r0, [r5,#oObjectSprite_SpriteFlags]
-	ldrb r0, [r5,#oObjectSprite_Unk_13]
+	ldrb r0, [r5,#oObjectSprite_SpriteFlags3]
 	mov r2, r0
 	mov r1, #0x3e
 	and r0, r1
 	lsr r0, r0, #1
 	bic r2, r1
-	strb r2, [r5,#oObjectSprite_Unk_13]
+	strb r2, [r5,#oObjectSprite_SpriteFlags3]
 	bl flags_clearFlagWordBit_802FE6A
 locret_8002D7E:
 	pop {r5,pc}
@@ -1194,7 +1194,7 @@ sprite_setPalette:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	strb r0, [r3,#oObjectSprite_Unk_04]
+	strb r0, [r3,#oObjectSprite_PaletteIndex]
 	mov pc, lr
 	thumb_func_end sprite_setPalette
 
@@ -1208,7 +1208,7 @@ sprite_getPalette:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r0
-	ldrb r0, [r3,#oObjectSprite_Unk_04]
+	ldrb r0, [r3,#oObjectSprite_PaletteIndex]
 	mov pc, lr
 	thumb_func_end sprite_getPalette
 
@@ -1296,7 +1296,7 @@ sprite_getFrameParameters:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	ldrb r0, [r3,#oObjectSprite_Unk_02]
+	ldrb r0, [r3,#oObjectSprite_AttributeFlags]
 	ldrb r1, [r3,#oObjectSprite_AnimFrameDuration]
 	cmp r1, #0
 	beq loc_8002DFE
@@ -1439,10 +1439,10 @@ sub_8002EAC:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	ldrb r0, [r3,#oObjectSprite_Unk_16]
+	ldrb r0, [r3,#oObjectSprite_CurFrame]
 	mov r1, #2
 	orr r0, r1
-	strb r0, [r3,#oObjectSprite_Unk_16]
+	strb r0, [r3,#oObjectSprite_CurFrame]
 	mov pc, lr
 	thumb_func_end sub_8002EAC
 
@@ -1469,7 +1469,7 @@ sprite_setColorShader:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	strh r0, [r3,#oObjectSprite_Unk_06]
+	strh r0, [r3,#oObjectSprite_ColorShader]
 	mov pc, lr
 	thumb_func_end sprite_setColorShader
 
@@ -1482,7 +1482,7 @@ sprite_getColorShader:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r0
-	ldrh r0, [r3,#oObjectSprite_Unk_06]
+	ldrh r0, [r3,#oObjectSprite_ColorShader]
 	mov pc, lr
 	thumb_func_end sprite_getColorShader
 
@@ -1497,7 +1497,7 @@ sprite_zeroColorShader:
 	lsl r3, r3, #4
 	add r3, r3, r5
 	mov r0, #0
-	strh r0, [r3,#oObjectSprite_Unk_06]
+	strh r0, [r3,#oObjectSprite_ColorShader]
 	mov pc, lr
 	thumb_func_end sprite_zeroColorShader
 
@@ -1586,18 +1586,18 @@ sprite_setFlip:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	ldrb r2, [r3,#oObjectSprite_Unk_13]
+	ldrb r2, [r3,#oObjectSprite_SpriteFlags3]
 	mov r1, #0x30
 	bic r2, r1
 	lsl r0, r0, #4
 	orr r2, r0
-	strb r2, [r3,#oObjectSprite_Unk_13]
+	strb r2, [r3,#oObjectSprite_SpriteFlags3]
 	and r2, r1
-	ldrb r1, [r3,#oObjectSprite_Unk_16]
+	ldrb r1, [r3,#oObjectSprite_CurFrame]
 	mov r0, #0x30
 	bic r1, r0
 	orr r1, r2
-	strb r1, [r3,#oObjectSprite_Unk_16]
+	strb r1, [r3,#oObjectSprite_CurFrame]
 	mov pc, lr
 	thumb_func_end sprite_setFlip
 
@@ -1610,7 +1610,7 @@ sprite_getFlip:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r0
-	ldrb r0, [r3,#oObjectSprite_Unk_16]
+	ldrb r0, [r3,#oObjectSprite_CurFrame]
 	mov r1, #0x30
 	and r0, r1
 	lsr r0, r0, #4
@@ -1754,13 +1754,13 @@ sub_800302A:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	ldrb r1, [r3,#oObjectSprite_Unk_16]
+	ldrb r1, [r3,#oObjectSprite_CurFrame]
 	mov r2, #0xc
 	bic r1, r2
 	mov r2, #2
 	lsl r0, r2
 	orr r1, r0
-	strb r1, [r3,#oObjectSprite_Unk_16]
+	strb r1, [r3,#oObjectSprite_CurFrame]
 	ldrb r0, [r3,#oObjectSprite_SpriteFlags2]
 	mov r1, #0x40
 	orr r0, r1

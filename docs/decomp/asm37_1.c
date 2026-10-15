@@ -1631,7 +1631,7 @@ int sub_8142FC8()
     TestEventFlagFromImmediate(9, 98);
     if ( v4 )
     {
-        if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_11) )
+        if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_CoordInteractionTriggered) )
         {
             sub_81433DA();
             if ( v4 )
