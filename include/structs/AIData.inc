@@ -89,15 +89,15 @@
     // type: struct AIState
 	\set_struct_start_address \label
 	set_struct_label \struct_entry, \label
-	u8 Unk_00 // loc=0x0
+	u8 ScriptId // loc=0x0
 	u8 Unk_01 // loc=0x1
 	u8 Unk_02 // loc=0x2
 	u8 Unk_03 // loc=0x3
-	u8 Unk_04 // loc=0x4
-	u8 Unk_05 // loc=0x5
-	u8 Unk_06 // loc=0x6
+	u8 TurnCounter // loc=0x4
+	u8 AttackCounter // loc=0x5
+	u8 StepCounter // loc=0x6
 	u8 Unk_07 // loc=0x7
-	u16 Unk_08 // loc=0x8
+	u16 Timer // loc=0x8
 	.space 0x2
 	u8 Unk_0c // loc=0xc
 	u8 Unk_0d // loc=0xd
@@ -113,34 +113,34 @@
     // type: struct AIAttackVars
 	\set_struct_start_address \label
 	set_struct_label \struct_entry, \label
-	u8 Unk_00 // loc=0x0
-	u8 Unk_01 // loc=0x1
-	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 HitElement // loc=0x0
+	u8 AttackElement // loc=0x1
+	u8 InitFlag // loc=0x2
+	u8 AiDifficultyTier // loc=0x3
 	u8 Unk_04 // loc=0x4
 	u8 Unk_05 // loc=0x5
 	u16 AttackBoost // loc=0x6
 	u16 Damage // loc=0x8
 	u16 Unk_0a // loc=0xa
-	u8 Unk_0c // loc=0xc
-	u8 Unk_0d // loc=0xd
+	u8 AttackBoost2 // loc=0xc
+	u8 TimerOrCycles // loc=0xd
 	u8 Unk_0e // loc=0xe
 	u8 Unk_0f // loc=0xf
-	u16 Unk_10 // loc=0x10
-	u16 Unk_12 // loc=0x12
+	u16 StepTimer // loc=0x10
+	u16 ChargeCycles // loc=0x12
 	u16 Unk_14 // loc=0x14
-	u8 Unk_16 // loc=0x16
-	u8 Unk_17 // loc=0x17
-	u16 Unk_18 // loc=0x18
-	u8 Unk_1a // loc=0x1a
+	u8 TargetPanelX // loc=0x16
+	u8 TargetPanelY // loc=0x17
+	u16 AttackDuration // loc=0x18
+	u8 HasMoved // loc=0x1a
 	u8 Unk_1b // loc=0x1b
 	u8 Unk_1c // loc=0x1c
 	u8 Unk_1d // loc=0x1d
 	u8 Unk_1e // loc=0x1e
 	struct_org 0x28
-	u32 Unk_28 // loc=0x28
-	u32 Unk_2c // loc=0x2c
-	u16 Unk_30 // loc=0x30 // also size 4
+	u32 PanelChooseCallback // loc=0x28
+	u32 TargetObjectPtr // loc=0x2c
+	u16 ScratchVar // loc=0x30 // also size 4
 	u16 Unk_32 // loc=0x32
 	u16 Unk_34 // loc=0x34 // also size 4
 	u16 Unk_36 // loc=0x36
