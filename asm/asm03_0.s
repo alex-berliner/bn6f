@@ -3545,7 +3545,7 @@ battle_initChipSelectTurn_8027E2C:
 	bl resetBattleRecordSlots_8027E90
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_17]
+	ldrb r0, [r0,#oBattleState_BeastOutFlag]
 	cmp r0, #0
 	beq loc_8027E52
 	mov r0, #1
@@ -8761,14 +8761,14 @@ byte_802A148:
 	.byte 0x0, 0x42, 0x1, 0x0, 0x0
 
 
-// symdb: If the battle state's field oBattleState_Unk_15 is nonzero, writes 0xFF to byte_20349A5 (an unknown battle work buffer's byte 5), likely signaling a pending state/advance request.
+// symdb: If the battle state's field oBattleState_PendingFieldChange is nonzero, writes 0xFF to byte_20349A5 (an unknown battle work buffer's byte 5), likely signaling a pending state/advance request.
 // symdb: void sub_802A210(r5 = battle state ptr); sets c/v from (Unk_15 != 0) comparison; returns r3 =
 // symdb: 0x20349A0 when Unk_15 != 0 (callers read r3, per contract)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setUnk20349A5Flag_802A210.yaml
 	thumb_local_start
 battle_setUnk20349A5Flag_802A210:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_15]
+	ldrb r0, [r5,#oBattleState_PendingFieldChange]
 	cmp r0, #0
 	beq locret_802A21E
 	ldr r3, off_802A2AC // =dword_20349A0 

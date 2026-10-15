@@ -213,7 +213,7 @@ sub_801FF18:
 	mov r0, #0
 	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_20399F6 - 0x20399f0)
-	strb r1, [r6,#oBattleState_Unk_14]
+	strb r1, [r6,#oBattleState_BackgroundType]
 	ldrh r1, [r5,#0xc] // (word_20399FC - 0x20399f0)
 	ldr r0, off_80200FC // =unk_2036120 
 	strh r1, [r0,#0x2c] // (word_203614C - 0x2036120)
@@ -242,7 +242,7 @@ loc_801FF66:
 	mov r0, #1
 	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_2039A06 - 0x2039a00)
-	strb r1, [r6,#oBattleState_Unk_15]
+	strb r1, [r6,#oBattleState_PendingFieldChange]
 	ldrh r1, [r5,#0xc] // (word_2039A0C - 0x2039a00)
 	ldr r0, off_8020104 // =unk_20362F0 
 	strh r1, [r0,#0x2c] // (word_203631C - 0x20362f0)
@@ -331,7 +331,7 @@ loc_801FFEA:
 	mov r0, #0
 	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_20399F6 - 0x20399f0)
-	strb r1, [r6,#oBattleState_Unk_14]
+	strb r1, [r6,#oBattleState_BackgroundType]
 	ldrh r1, [r5,#0xc] // (word_20399FC - 0x20399f0)
 	ldr r0, off_802011C // =unk_2036120 
 	strh r1, [r0,#0x2c] // (word_203614C - 0x2036120)
@@ -360,7 +360,7 @@ loc_8020030:
 	mov r0, #1
 	bl input_recordStateChangeForEntry_800A0D6
 	ldrb r1, [r5,#0x6] // (byte_2039A06 - 0x2039a00)
-	strb r1, [r6,#oBattleState_Unk_15]
+	strb r1, [r6,#oBattleState_PendingFieldChange]
 	ldrh r1, [r5,#0xc] // (word_2039A0C - 0x2039a00)
 	ldr r0, off_8020124 // =unk_20362F0 
 	strh r1, [r0,#0x2c] // (word_203631C - 0x20362f0)

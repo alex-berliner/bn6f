@@ -11714,13 +11714,13 @@ battle_naviAI_tick_8013DA0:
 	b loc_8013E38
 loc_8013DD2:
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r4,#oAIData_Unk_3a]
+	ldrh r0, [r4,#oAIData_ActionRerollFrameCounter]
 	add r0, #1
-	strh r0, [r4,#oAIData_Unk_3a]
+	strh r0, [r4,#oAIData_ActionRerollFrameCounter]
 	cmp r0, #0x3c 
 	blt loc_8013E38
 	mov r0, #0
-	strh r0, [r4,#oAIData_Unk_3a]
+	strh r0, [r4,#oAIData_ActionRerollFrameCounter]
 	bl battleObject_markUsedAction_80143A6
 	bl sub_8014446
 	ldrb r6, [r4,#oAIData_AIScratchByte]
@@ -12706,7 +12706,7 @@ sub_801443C:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, dword_80144B8 // =0xffff 
-	strh r0, [r3,#oAIData_Unk_32]
+	strh r0, [r3,#oAIData_CounterHitChainFlag]
 	pop {pc}
 	thumb_func_end sub_801443C
 
@@ -12714,7 +12714,7 @@ sub_801443C:
 sub_8014446:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
-	strh r0, [r3,#oAIData_Unk_32]
+	strh r0, [r3,#oAIData_CounterHitChainFlag]
 	mov pc, lr
 	thumb_func_end sub_8014446
 
@@ -12734,7 +12734,7 @@ sub_801444E:
 	thumb_local_start
 battle_aiAIDataUnk32IsZero_801445C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_32]
+	ldrh r0, [r0,#oAIData_CounterHitChainFlag]
 	cmp r0, #0
 	mov pc, lr
 	thumb_func_end battle_aiAIDataUnk32IsZero_801445C
@@ -12752,7 +12752,7 @@ sub_8014466:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, off_80144BC // =0x3c0 
-	strh r0, [r3,#oAIData_Unk_36]
+	strh r0, [r3,#oAIData_PoisonDamagePerTick]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0
 	bl battle_setPlayerNaviStatsField0E_8015BEC
@@ -12785,7 +12785,7 @@ sub_8014482:
 	thumb_local_start
 battle_checkAIDataUnk36IsNonZero_8014490:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_36]
+	ldrh r0, [r0,#oAIData_PoisonDamagePerTick]
 	cmp r0, #0
 	mov pc, lr
 	thumb_func_end battle_checkAIDataUnk36IsNonZero_8014490
@@ -12802,7 +12802,7 @@ battle_tickPoisonHpLoss_8014498:
 	tst r0, r0
 	bne locret_80144B2
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r3,#oAIData_Unk_36]
+	ldrh r0, [r3,#oAIData_PoisonDamagePerTick]
 	cmp r0, #0
 	beq locret_80144B2
 	ldrh r1, [r5,#oBattleObject_HP]
@@ -15823,7 +15823,7 @@ possiblyGetBattleEmotion_8015B64: // (alliance: bool) -> (res0: enum8?, transfor
 
 	mov r0, #5
 
-	ldrh r3, [r4,#oAIData_Unk_36]
+	ldrh r3, [r4,#oAIData_PoisonDamagePerTick]
 	tst r3, r3
 	bne loc_8015BA2 /*+20*/
 
@@ -15838,7 +15838,7 @@ possiblyGetBattleEmotion_8015B64: // (alliance: bool) -> (res0: enum8?, transfor
 
 	mov r0, #1
 
-	ldrh r3, [r4,#oAIData_Unk_32]
+	ldrh r3, [r4,#oAIData_CounterHitChainFlag]
 	tst r3, r3
 	bne loc_8015BA2 /*+34*/
 
@@ -15871,7 +15871,7 @@ sub_8015BA8:
 	ldrb r1, [r6,r1]
 	ldrb r2, [r6,#0xe]
 	mov r0, #5
-	ldrh r3, [r4,#oAIData_Unk_36]
+	ldrh r3, [r4,#oAIData_PoisonDamagePerTick]
 	tst r3, r3
 	beq loc_8015BE6
 	cmp r2, #0
@@ -15881,7 +15881,7 @@ sub_8015BA8:
 	tst r3, r3
 	bne loc_8015BE6
 	mov r0, #1
-	ldrh r3, [r4,#oAIData_Unk_32]
+	ldrh r3, [r4,#oAIData_CounterHitChainFlag]
 	tst r3, r3
 	beq loc_8015BE6
 	mov r0, #2
@@ -17289,7 +17289,7 @@ loc_8016716:
 	bne loc_8016722
 	mov r0, #5
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	strh r0, [r1,#oAIData_Unk_38]
+	strh r0, [r1,#oAIData_CollisionFreezeTimer]
 loc_8016722:
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_ContactState]
@@ -17344,7 +17344,7 @@ loc_8016768:
 	bne loc_8016788
 	mov r0, #5
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	strh r0, [r1,#oAIData_Unk_38]
+	strh r0, [r1,#oAIData_CollisionFreezeTimer]
 	b loc_80167E6
 loc_8016788:
 	mov r0, #0x1c
@@ -17871,7 +17871,7 @@ loc_8016B9A:
 	and r0, r1
 	ldr r1, off_8016BD8 // =byte_8016BDC 
 	ldrsb r0, [r1,r0]
-	ldrh r1, [r4,#oAIData_Unk_3c]
+	ldrh r1, [r4,#oAIData_SavedZ16]
 	add r0, r0, r1
 	strh r0, [r5,#oBattleObject_Z16]
 	bl object_getFlag // () -> int
@@ -17886,7 +17886,7 @@ loc_8016B9A:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
 	str r0, [r5,#oBattleObject_PendingStateAction]
-	ldrh r0, [r4,#oAIData_Unk_3c]
+	ldrh r0, [r4,#oAIData_SavedZ16]
 	strh r0, [r5,#oBattleObject_Z16]
 locret_8016BD0:
 	pop {r4,pc}
@@ -22706,7 +22706,7 @@ loc_801A1CE:
 	ldrh r1, [r5,#oBattleObject_HP]
 	cmp r1, #9
 	bgt loc_801A1EE
-	ldrb r0, [r2,#oBattleState_Unk_16]
+	ldrb r0, [r2,#oBattleState_PanelTurnStepCounter]
 loc_801A1EE:
 	tst r0, r0
 	bne locret_801A1FA
@@ -22857,7 +22857,7 @@ battleObject_resetCollisionState_801A2B0:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	strh r0, [r3,#oCollisionData_HitStunTimer]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_3c]
+	ldrh r0, [r0,#oAIData_SavedZ16]
 	strh r0, [r5,#oBattleObject_Z16]
 	pop {pc}
 	thumb_func_end battleObject_resetCollisionState_801A2B0
@@ -22973,11 +22973,11 @@ object_tickIcePanelFreeze_801A36A:
 	bl battle_isTimeStop
 	bne loc_801A38A
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldrh r0, [r1,#oAIData_Unk_38]
+	ldrh r0, [r1,#oAIData_CollisionFreezeTimer]
 	tst r0, r0
 	beq loc_801A38A
 	sub r0, #1
-	strh r0, [r1,#oAIData_Unk_38]
+	strh r0, [r1,#oAIData_CollisionFreezeTimer]
 	bgt loc_801A38A
 	b loc_801A3B8
 loc_801A38A:
@@ -23045,7 +23045,7 @@ locret_801A3FE:
 sub_801A400:
 	push {r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
-	ldrh r1, [r7,#oAIData_Unk_38]
+	ldrh r1, [r7,#oAIData_CollisionFreezeTimer]
 	tst r1, r1
 	bne locret_801A41E
 	bl object_getFlag // () -> int
@@ -25962,7 +25962,7 @@ battleObject_killIfBubbleFlag_801B9BC:
 	ldrb r0, [r3,#oAIData_DisableCounterDecrement]
 	cmp r0, #1
 	bne locret_801B9E4
-	ldr r0, [r3,#oAIData_Unk_54]
+	ldr r0, [r3,#oAIData_BubbleSourceObjectPtr]
 	tst r0, r0
 	beq locret_801B9E4
 	push {r5}

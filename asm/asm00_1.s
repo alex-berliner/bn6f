@@ -8897,7 +8897,7 @@ loc_8007236:
 	bl battle_clearEnemyFadeinList
 
 	mov r0, #1
-	strb r0, [r5,#oBattleState_Unk_1b]
+	strb r0, [r5,#oBattleState_PanelSelectedCount]
 
 	ldr r0, off_8007308 // =dword_2036820
 	mov r1, #0x10
@@ -9706,7 +9706,7 @@ loc_8007708: // endif
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 
 	ldr r1, [sp,#stack_800768C_unk_14]
-	str r1, [r4,#oAIData_Unk_54]
+	str r1, [r4,#oAIData_BubbleSourceObjectPtr]
 
 	ldr r0, dword_80077FC // =0xffff
 	strh r0, [r5,#oBattleObject_Chip]
@@ -10301,13 +10301,13 @@ loc_8007A9A:
 	mov r0, #0
 loc_8007AE2:
 	strb r0, [r5,#oBattleState_PanelTurnCount]
-	ldrb r0, [r5,#oBattleState_Unk_16]
+	ldrb r0, [r5,#oBattleState_PanelTurnStepCounter]
 	add r0, #1
 	cmp r0, #0xb4
 	blt loc_8007AEE
 	mov r0, #0
 loc_8007AEE:
-	strb r0, [r5,#oBattleState_Unk_16]
+	strb r0, [r5,#oBattleState_PanelTurnStepCounter]
 loc_8007AF0:
 	bl wrapCountersAt203CFB0ToU16_802CDFE
 loc_8007AF4:
@@ -10565,12 +10565,12 @@ battle_state_tick_8007CA0: // (self: *mut BattleState $r5) -> ()
 	bl SetDummyBGScrollCallbacks
 	bl zeroFill_e20094C0
 	bl palette_clearEPalette20097a0_80023A8
-	ldr r1, [r5,#oBattleState_Unk_18]
+	ldr r1, [r5,#oBattleState_PhaseStepIndex]
 	push {r1}
 	bl battleSettings_802D2B2 // () -> BattleSettings*
 	bl loc_8007204
 	pop {r1}
-	str r1, [r5,#oBattleState_Unk_18]
+	str r1, [r5,#oBattleState_PhaseStepIndex]
 	b locret_8007E60
 loc_8007CF2:
 	mov r1, #3
@@ -11082,9 +11082,9 @@ loc_80080FE:
 	bl sub_800AAD6
 	b locret_80081A2
 loc_8008116:
-	ldrb r0, [r1,#oBattleState_Unk_18]
+	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_18]
+	strb r0, [r1,#oBattleState_PhaseStepIndex]
 	mov r0, #0xc
 	str r0, [r5]
 	b locret_80081A2
@@ -11438,9 +11438,9 @@ loc_80083AE:
 	bne loc_80083CA
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_18]
+	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_18]
+	strb r0, [r1,#oBattleState_PhaseStepIndex]
 	mov r0, #0xc
 	str r0, [r5]
 	b locret_80083E2
@@ -11695,9 +11695,9 @@ loc_800858E:
 	bne loc_80085A6
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_18]
+	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_18]
+	strb r0, [r1,#oBattleState_PhaseStepIndex]
 	mov r0, #8
 	str r0, [r5]
 	b locret_80085FC
@@ -12313,9 +12313,9 @@ loc_80089F8:
 	bne loc_8008A16
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_18]
+	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_18]
+	strb r0, [r1,#oBattleState_PhaseStepIndex]
 	ldr r0, dword_8008D50 // =0x4000
 	bl SetCustGauge
 	mov r0, #8
@@ -12863,9 +12863,9 @@ loc_8008E08:
 	bne loc_8008E20
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_18]
+	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_18]
+	strb r0, [r1,#oBattleState_PhaseStepIndex]
 	mov r0, #8
 	str r0, [r5]
 	b locret_8008E6A
@@ -15779,7 +15779,7 @@ battle_isBattleOver:
 	ldrb r1, [r3,#oBattleState_AliveAllianceCount]
 	tst r1, r1
 	beq locret_800A1A8
-	ldrb r1, [r3,#oBattleState_Unk_13]
+	ldrb r1, [r3,#oBattleState_BattleOverSecondaryFlag]
 	tst r1, r1
 	beq locret_800A1A8
 	ldrb r1, [r3,#oBattleState_BattleOverConditionFlag]
@@ -16199,7 +16199,7 @@ loc_800A432:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	mov r1, #1
-	strb r1, [r2,#oBattleState_Unk_17]
+	strb r1, [r2,#oBattleState_BeastOutFlag]
 loc_800A44E:
 	bl pet_getCurNaviStatusPair_800A506
 	add r2, r0, r0
@@ -16871,7 +16871,7 @@ loc_800A82E:
 battle_getStateByteNibbles_800A832:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_1f]
+	ldrb r0, [r0,#oBattleState_BattleResult]
 	lsr r1, r0, #4
 	mov r2, #0xf
 	and r0, r2
@@ -16887,7 +16887,7 @@ setTwoStructs_800A840:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	strb r0, [r1,#oBattleState_Unk_1f]
+	strb r0, [r1,#oBattleState_BattleResult]
 	bl eStruct200A008_setBattleResult
 	pop {pc}
 	thumb_func_end setTwoStructs_800A840
@@ -17715,7 +17715,7 @@ loc_800ACAE:
 	bcc loc_800ACC6
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_1b]
+	ldrb r0, [r1,#oBattleState_PanelSelectedCount]
 	sub r0, #1
 	add r0, r0, r0
 	ldr r1, [sp,#4]
@@ -17894,11 +17894,11 @@ battle_updatePhaseState_800AE0C:
 	push {r4,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_BattleStatePtr]
-	ldrb r0, [r4,#oBattleState_Unk_1c]
-	ldrb r1, [r4,#oBattleState_Unk_1b]
+	ldrb r0, [r4,#oBattleState_PhaseMessageDelayCounter]
+	ldrb r1, [r4,#oBattleState_PanelSelectedCount]
 	cmp r0, r1
 	ble loc_800AE32
-	strb r0, [r4,#oBattleState_Unk_1b]
+	strb r0, [r4,#oBattleState_PanelSelectedCount]
 	cmp r0, #2
 	blt loc_800AE32
 	push {r0}
@@ -17909,15 +17909,15 @@ battle_updatePhaseState_800AE0C:
 	sub r0, #2
 	bl eStruct2035280_DrawMessageMode_801E228
 loc_800AE32:
-	ldrb r0, [r4,#oBattleState_Unk_1d]
+	ldrb r0, [r4,#oBattleState_MessageTimer]
 	tst r0, r0
 	beq loc_800AE3E
 	sub r0, #1
-	strb r0, [r4,#oBattleState_Unk_1d]
+	strb r0, [r4,#oBattleState_MessageTimer]
 	b locret_800AE42
 loc_800AE3E:
 	mov r0, #0
-	strb r0, [r4,#oBattleState_Unk_1c]
+	strb r0, [r4,#oBattleState_PhaseMessageDelayCounter]
 locret_800AE42:
 	pop {r4,pc}
 	thumb_func_end battle_updatePhaseState_800AE0C
@@ -17930,11 +17930,11 @@ locret_800AE42:
 battle_bumpTimerAndReloadSubcount_800AE44:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_1c]
+	ldrb r0, [r1,#oBattleState_PhaseMessageDelayCounter]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_1c]
+	strb r0, [r1,#oBattleState_PhaseMessageDelayCounter]
 	mov r0, #0xa
-	strb r0, [r1,#oBattleState_Unk_1d]
+	strb r0, [r1,#oBattleState_MessageTimer]
 	mov pc, lr
 	thumb_func_end battle_bumpTimerAndReloadSubcount_800AE44
 
@@ -18092,7 +18092,7 @@ sub_800AF50:
 	push {r4,r5,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
-	ldrb r0, [r5,#oBattleState_Unk_18]
+	ldrb r0, [r5,#oBattleState_PhaseStepIndex]
 	ldrb r1, [r5,#oBattleState_CustGaugeChargeLevel]
 	ldrb r2, [r5,#oBattleState_State4EventCount]
 	neg r4, r2

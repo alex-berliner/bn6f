@@ -132631,7 +132631,7 @@ sub_80F650A:
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	mov r0, #1
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	strh r0, [r1,#oAIData_Unk_38]
+	strh r0, [r1,#oAIData_CollisionFreezeTimer]
 	pop {pc}
 	thumb_func_end sub_80F650A
 
@@ -171187,7 +171187,7 @@ loc_8109020:
 	beq locret_8109046
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	ldrh r0, [r5,#oBattleObject_Z16]
-	strh r0, [r1,#oAIData_Unk_3c]
+	strh r0, [r1,#oAIData_SavedZ16]
 locret_8109046:
 	pop {r4,pc}
 	.balign 4, 0
