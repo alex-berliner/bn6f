@@ -8,7 +8,7 @@
 
 	union
 	u8 StatePhase // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 SubPhaseInitFlag // loc=0x3
 	nextu
 	u16 Unk_02_03 // loc=0x2
 	endu
