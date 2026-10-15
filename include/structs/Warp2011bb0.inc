@@ -14,7 +14,7 @@
 	u32 X // loc=0x4
 	u32 Y // loc=0x8
 	u32 Z // loc=0xc
-	u8 Unk_10 // loc=0x10
+	u8 WarpState // loc=0x10
 	u8 WarpIndex // loc=0x11
 	u8 MapGroupTransitionType // loc=0x12
 	struct_org 0x14

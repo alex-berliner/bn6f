@@ -13,8 +13,8 @@
 	struct_org 0x12
 	// walk counter: >> 6, max 16, picks the encounter odds; 0x400 lets the next roll start a battle
 	// (vidsync runtime; recomp symbols/db/eStruct2001c04.yaml)
-	u16 Unk_12 // loc=0x12
-	u16 Unk_14 // loc=0x14
+	u16 EncounterStepAccumulator // loc=0x12
+	u16 EncounterRollValue // loc=0x14
 
 	struct_org 0x18
 	u32 GameTimeFrames // loc=0x18
