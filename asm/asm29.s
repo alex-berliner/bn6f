@@ -11254,7 +11254,7 @@ loop_80AA8A2:
 	tst r5, r5
 	beq loc_80AA8C2
 
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	bl sub_80AED50
 	lsr r7, r7, #4
 	mov r1, #0x1e

@@ -10418,14 +10418,14 @@ battle_stateCountdownTick_8007BD0:
 	tst r0, r0
 	bne loc_8007BE2
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8007BEE
 loc_8007BE2:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8007BEE
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -13570,14 +13570,14 @@ battle_runState4CountdownOrAdvance_80092C0:
 	tst r1, r1
 	beq loc_80092E6
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80092EE
 loc_80092D8:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_80092EE
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -13620,14 +13620,14 @@ sub_8009314:
 	tst r0, r0
 	bne loc_8009326
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009336
 loc_8009326:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009336
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
@@ -13821,7 +13821,7 @@ battle_waitLinkSync_8009478:
 	bne loc_800948E
 	bl sub_800B428
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80094B4
@@ -13836,9 +13836,9 @@ loc_800948E:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 	pop {pc}
 loc_80094A6:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	add r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	cmp r0, #0xb4
 	ble locret_80094B4
 
@@ -14215,14 +14215,14 @@ sub_8009754:
 	tst r1, r1
 	beq loc_800977A
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009782
 loc_800976C:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009782
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -14265,14 +14265,14 @@ sub_80097A8:
 	tst r0, r0
 	bne loc_80097BA
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80097CA
 loc_80097BA:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_80097CA
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
@@ -14420,7 +14420,7 @@ sub_80098D8:
 	bne loc_80098EE
 	bl sub_800B428
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009914
@@ -14435,9 +14435,9 @@ loc_80098EE:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 	pop {pc}
 loc_8009906:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	add r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	cmp r0, #0xb4
 	ble locret_8009914
 
@@ -14679,14 +14679,14 @@ sub_8009AA8:
 	tst r1, r1
 	beq loc_8009ACE
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009AD6
 loc_8009AC0:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009AD6
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -14729,14 +14729,14 @@ sub_8009AFC:
 	tst r0, r0
 	bne loc_8009B0E
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009B1E
 loc_8009B0E:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009B1E
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
@@ -14842,7 +14842,7 @@ sub_8009BC8:
 	bne loc_8009BDE
 	bl sub_800B428
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009C04
@@ -14857,9 +14857,9 @@ loc_8009BDE:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 	pop {pc}
 loc_8009BF6:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	add r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	cmp r0, #0xb4
 	ble locret_8009C04
 
@@ -15093,14 +15093,14 @@ sub_8009D98:
 	tst r1, r1
 	beq loc_8009DBE
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009DC6
 loc_8009DB0:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009DC6
 	mov r0, #4
 	strh r0, [r5,#oBattleState_Unk_02_03]
@@ -15143,14 +15143,14 @@ sub_8009DEC:
 	tst r0, r0
 	bne loc_8009DFE
 	mov r0, #0xa
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009E0E
 loc_8009DFE:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	sub r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009E0E
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
@@ -15295,7 +15295,7 @@ sub_8009EFC:
 	bne loc_8009F12
 	bl sub_800B428
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009F38
@@ -15310,9 +15310,9 @@ loc_8009F12:
 	strh r0, [r5,#oBattleState_Unk_02_03]
 	pop {pc}
 loc_8009F2A:
-	ldrh r0, [r5,#oBattleState_Unk_28]
+	ldrh r0, [r5,#oBattleState_CountdownTimer]
 	add r0, #1
-	strh r0, [r5,#oBattleState_Unk_28]
+	strh r0, [r5,#oBattleState_CountdownTimer]
 	cmp r0, #0xb4
 	ble locret_8009F38
 
