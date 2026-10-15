@@ -8,7 +8,7 @@
 	u8 MapMusic // loc=0x4
 
 	struct_org 0x7
-	u8 Unk_07 // loc=0x7
+	u8 CurPETNaviId // loc=0x7
 
 	struct_org 0x12
 	// walk counter: >> 6, max 16, picks the encounter odds; 0x400 lets the next roll start a battle

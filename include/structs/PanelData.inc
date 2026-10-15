@@ -7,7 +7,7 @@
 	u8 HighlightState // loc=0x1
 	u8 Type // loc=0x2
 	u8 Alliance // loc=0x3
-	u8 Unk_04 // loc=0x4
+	u8 StatusOrVariant // loc=0x4
 	struct_org 0x6
 	u8 Animation // loc=0x6
 	u8 CachedAlliance // loc=0x7

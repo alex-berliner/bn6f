@@ -39,7 +39,7 @@
 		struct_const CUTSCENE_FLAG_8, 0x8
 		struct_const CUTSCENE_FLAG_9, 0x9
 	TextScriptArchivePtr TextArchivePtr // loc=0x30
-	ptr Unk_34 // loc=0x34
+	ptr DefaultScriptTable // loc=0x34
 	ptr CutsceneScriptAfterCutsceneSkip // loc=0x38
 	ptr CutsceneCameraScriptPtr // loc=0x3c
 	ptr originalCutsceneScriptPos_40 // loc=0x40

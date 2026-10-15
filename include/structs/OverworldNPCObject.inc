@@ -65,8 +65,8 @@
 	u8 Undetected_1a // loc=0x1a
 	u8 Undetected_1b // loc=0x1b
 	u8 TextScriptIndex // loc=0x1c
-	u8 Unk_1d // loc=0x1d
-	u8 Unk_1e // loc=0x1e
+	u8 CurActionBackup // loc=0x1d
+	u8 MovementFlagBackup // loc=0x1e
 	u8 TerminateScript_1f // loc=0x1f
 	u16 Timer // loc=0x20
 	u16 Timer_22 // loc=0x22
@@ -114,7 +114,7 @@
 	u32 LayerPriorityOverride // loc=0x64
 	u32 HiddenOAMPieces // loc=0x68
 	u32 HiddenOAMPiecesUpdate // loc=0x6c
-	u32 Unk_70 // loc=0x70
+	u32 NextYBackup // loc=0x70
 	u32 Unk_74 // loc=0x74
 	u32 NPCSpriteCategory // loc=0x78
 	u32 Undetected_7c // loc=0x7c

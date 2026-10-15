@@ -161,7 +161,7 @@
 	u8 DamageElements // loc=0x76
 	u8 Unk_77 // loc=0x77
 	u32 ElecElementDamageAccumulator // loc=0x78
-	u32 Unk_7c // loc=0x7c
+	u32 CollisionFlagsAccumulated // loc=0x7c
 	u16 FinalDamage // loc=0x80
 	union
 	u16 PanelDamage1 // loc=0x82

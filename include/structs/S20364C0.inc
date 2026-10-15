@@ -17,22 +17,22 @@
 	u8 NumChipsSelected // loc=0x8
 	u8 Unk_09 // loc=0x9
 	u8 Unk_0a // loc=0xa
-	u8 Unk_0b // loc=0xb
+	u8 CustMenuStepTimer // loc=0xb
 	u8 FirstBattleTutorialStep // loc=0xc
 	u8 Unk_0d // loc=0xd
 	u8 ActorIndex // loc=0xe
 	u8 PulsePhase // loc=0xf
-	u16 Unk_10 // loc=0x10
+	u16 ChipSelectScrollTimer // loc=0x10
 	u8 JumpOffset12 // loc=0x12
   u8 FadeSeqIndex // loc=0x13
-	u8 Unk_14 // loc=0x14
+	u8 TickCounter // loc=0x14
 	u8 Unk_15 // loc=0x15
 	u8 Unk_16 // loc=0x16
   u8 Unk_17 // loc=0x17
 	// conflict, battle_initChipSelect_802BD60 treats 0x18 as ptr
 	u8 Unk_18 // loc=0x18
 	u8 Unk_19 // loc=0x19
-  u8 Unk_1a // loc=0x1a
+  u8 EmotionSpriteVariant // loc=0x1a
 
 	struct_org 0x1c
 	u32 Unk_1c // loc=0x1c
@@ -40,7 +40,7 @@
 
 	struct_org 0x38
 	u16 Unk_38 // loc=0x38
-	u16 Unk_3a // loc=0x3a
+	u16 CursorAnimPhase // loc=0x3a
 
 	// battle_initCustomScreen_8026840 implies 0x70, but this conflicts with unk_2036500 which has references. So up to conflict is 0x40
   // But we do see uses in battle_custMenuAnimateCursorToOK_8026B04 of 0x40 and 0x44

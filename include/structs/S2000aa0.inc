@@ -9,7 +9,7 @@
 		struct_const DEFAULT_OW_PLAYER_NAVI_VERTICAL_COMPRESS, 0x40
 	u8 OWPlayerNaviRotation // loc=0x2
 		struct_const DEFAULT_OW_PLAYER_NAVI_ROTATION, 0
-	u8 Unk_03 // loc=0x3
+	u8 OWPlayerNaviInternetFlag // loc=0x3
 	u8 Sprite_04
 	u8 OWPlayerNaviPaletteIndex // loc=0x5
 	u16 OWPlayerNaviColorShader // loc=0x6

@@ -252,7 +252,7 @@
 	object_header_struct \label, \struct_entry, \set_struct_start_address
 	// Index into the OverworldMapObjects array.
 	u32 ObjectID // loc=0x4
-	u32 Unk_08 // loc=0x8
+	u32 ObjectPtr // loc=0x8
 	u0 Coords // loc=0xc
 	s32 X // loc=0xc
 	s32 Y // loc=0x10

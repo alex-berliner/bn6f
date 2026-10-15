@@ -4,7 +4,7 @@
 	\set_struct_start_address
 	set_struct_label \struct_entry, \label
 	struct_org 0x3
-	u8 Unk_03 // loc=0x03
+	u8 ActiveFlag // loc=0x03
 	struct_org 0x20
 	u0 Size // loc=0x20
 	restore_struct_label
