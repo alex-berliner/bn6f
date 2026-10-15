@@ -7425,16 +7425,16 @@ loc_811187C:
 	ldr r0, dword_8111908 // =0x501040
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_exitAttackState_801171C
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	cmp r0, #0
 	beq loc_81118C2
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_81118C2
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_81118C2:
 	mov r0, #3
 	strb r0, [r5,#oBattleObject_CurAnim]

@@ -15108,7 +15108,7 @@ loc_801563A:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8015648:
 	mov r0, #0
-	ldr r1, [r5,#oBattleObject_Unk_5c]
+	ldr r1, [r5,#oBattleObject_PendingStateAction]
 	lsl r1, r1, #0x10
 	lsr r1, r1, #0x18
 	cmp r1, #4
@@ -15216,10 +15216,10 @@ loc_801573C:
 	bl object_exitAttackState
 	b locret_8015764
 loc_801575C:
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8015764:
 	pop {r4,pc}
 	thumb_func_end sub_801562C
@@ -17805,10 +17805,10 @@ loc_8016B20:
 	lsl r1, r1, #0xb
 	tst r0, r1
 	bne locret_8016B34
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8016B34:
 	pop {pc}
 	thumb_func_end battleObject_initAndRunAI_8016B02
@@ -17836,10 +17836,10 @@ loc_8016B5C:
 	lsl r1, r1, #0x10
 	tst r0, r1
 	bne locret_8016B70
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8016B70:
 	pop {pc}
 	thumb_func_end sub_8016B36
@@ -17882,10 +17882,10 @@ loc_8016B9A:
 	mov r0, #0x25 
 	add r0, #0xff
 	bl PlaySoundEffect
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 	ldrh r0, [r4,#oAIData_Unk_3c]
 	strh r0, [r5,#oBattleObject_Z16]
 locret_8016BD0:
@@ -18242,10 +18242,10 @@ battle_objectCountdownPhaseOrReset_8016E3C:
 	bl object_clearFlag2
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_Unk_1f]
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8016E5E:
 	pop {pc}
 	.balign 4, 0
@@ -20041,12 +20041,12 @@ loc_8017C2A:
 	ldr r0, off_8017C9C // =0x100 
 	bl SetAIDataUnk0x48Flag
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_8017C4E
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_8017C4E:
 	mov r0, #0x1c
 	bl object_setAttack0
@@ -20268,10 +20268,10 @@ sub_8017E0A:
 	mov r0, #1
 	lsl r0, r0, #0x14
 	bl object_clearFlag // (int bitfield) -> void
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8017E24:
 	pop {pc}
 	thumb_func_end sub_8017E0A
@@ -20505,10 +20505,10 @@ sub_8017FE6:
 	mov r0, #1
 	lsl r0, r0, #0x14
 	bl object_clearFlag // (int bitfield) -> void
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8018000:
 	pop {pc}
 	thumb_func_end sub_8017FE6
@@ -24710,11 +24710,11 @@ loc_801B052:
 	beq loc_801B0AA
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B06E
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B06E:
 	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	bl battleObject_clearHitFlags_801A29A
@@ -25016,12 +25016,12 @@ loc_801B298: // endif
 	bl battleObject_resetCollisionState_801A2B0
 	bl battle_object_postAction4CheckClearFlags_801BA92
 
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B2CA
 
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 
 loc_801B2CA: // endif
 
@@ -25267,11 +25267,11 @@ loc_801B460:
 	beq loc_801B48C
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B480
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B480:
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -25424,11 +25424,11 @@ loc_801B59C:
 	beq loc_801B5C8
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B5BC
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B5BC:
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -25583,11 +25583,11 @@ loc_801B6DC:
 	beq loc_801B708
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B6FC
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B6FC:
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -25739,11 +25739,11 @@ loc_801B816:
 	beq loc_801B842
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B836
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B836:
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -25899,11 +25899,11 @@ loc_801B94A:
 	beq loc_801B976
 	mov r0, r1
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_801B96A
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_801B96A:
 	mov r0, #5
 	strb r0, [r5,#oBattleObject_CurAction]

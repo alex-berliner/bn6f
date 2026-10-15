@@ -5604,11 +5604,11 @@ loc_800E75E:
 	beq loc_800E786
 	mov r0, #0x88
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E776
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E776:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5627,11 +5627,11 @@ loc_800E786:
 	bne loc_800E7AE
 	mov r0, r1
 	bl object_setFlag1 // (int a1) -> void
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E7A6
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E7A6:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5654,11 +5654,11 @@ loc_800E7C2:
 	beq loc_800E7EA
 	ldr r0, dword_800E96C // =0x30080 
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E7DA
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E7DA:
 	mov r0, #6
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5677,11 +5677,11 @@ loc_800E7EA:
 	bne loc_800E820
 	mov r0, r1
 	bl object_setFlag1 // (int a1) -> void
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E80A
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E80A:
 	mov r0, #6
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5711,11 +5711,11 @@ loc_800E836:
 	beq loc_800E85E
 	ldr r0, dword_800E97C // =0x20080 
 	bl object_clearFlag2
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E84E
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E84E:
 	mov r0, #7
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -5734,11 +5734,11 @@ loc_800E85E:
 	bne loc_800E894
 	mov r0, r1
 	bl object_setFlag1 // (int a1) -> void
-	ldr r0, [r5,#oBattleObject_Unk_5c]
+	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	tst r0, r0
 	bne loc_800E87E
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	str r0, [r5,#oBattleObject_Unk_5c]
+	str r0, [r5,#oBattleObject_PendingStateAction]
 loc_800E87E:
 	mov r0, #7
 	strb r0, [r5,#oBattleObject_CurAction]
