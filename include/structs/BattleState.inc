@@ -53,7 +53,7 @@
 	u8 Unk_16 // loc=0x16
 	u8 Unk_17 // loc=0x17
 	u8 Unk_18 // loc=0x18
-	u8 Unk_19 // loc=0x19
+	u8 CustGaugeChargeLevel // loc=0x19
 	u8 State4EventCount // loc=0x1a
 	u8 Unk_1b // loc=0x1b
 	u8 Unk_1c // loc=0x1c

@@ -121,7 +121,7 @@
 	u8 ChipUseDelay // loc=0x5
 	u16 AttackBoost // loc=0x6
 	u16 Damage // loc=0x8
-	u16 Unk_0a // loc=0xa
+	u16 ExtraDamage // loc=0xa
 	u8 AttackBoost2 // loc=0xc
 	u8 TimerOrCycles // loc=0xd
 	u8 SubStepIndex // loc=0xe
@@ -133,7 +133,7 @@
 	u8 TargetPanelY // loc=0x17
 	u16 AttackDuration // loc=0x18
 	u8 HasMoved // loc=0x1a
-	u8 Unk_1b // loc=0x1b
+	u8 IsInvincible // loc=0x1b
 	u8 Unk_1c // loc=0x1c
 	u8 Unk_1d // loc=0x1d
 	u8 Unk_1e // loc=0x1e

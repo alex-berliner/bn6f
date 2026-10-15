@@ -7,8 +7,8 @@
 	struct_org 0x2
 	u8 Unk_02 // loc=0x2
 	u8 Unk_03 // loc=0x3
-	u16 Unk_04 // loc=0x4
-	u16 Unk_06 // loc=0x6
+	u16 ScrollX // loc=0x4
+	u16 CameraYInt // loc=0x6
 	u16 Unk_08 // loc=0x8
 	u16 Unk_0a // loc=0xa
 	u16 Unk_0c // shake timer // loc=0xc

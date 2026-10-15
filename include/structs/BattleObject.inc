@@ -90,7 +90,7 @@
 
 	union
 	u8 Unk_1e // loc=0x1e
-	u8 Unk_1f // loc=0x1f
+	u8 AIType // loc=0x1f
 	nextu
 	u16 Unk_1e_Unk_1f // loc=0x1e
 	endu
