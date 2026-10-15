@@ -87,7 +87,7 @@
 	bool8 Enabled // loc=0x0
 	u8 Region // loc=0x1
 	u8 PrimaryElement // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 HitFlagMask // loc=0x3
 	
 	union
 	u8 Alliance // loc=0x4
@@ -116,26 +116,26 @@
 	u8 StatusEffectFinal // loc=0x11
 	u16 Bugs // loc=0x12
 	u8 BarrierIndex // loc=0x14
-	u8 Unk_15 // loc=0x15
+	u8 SavedHitModifier // loc=0x15
 	u8 BarrierHP // loc=0x16
-	u8 Unk_17 // loc=0x17
+	u8 BarrierRelatedValue // loc=0x17
 	u8 SecondaryElementWeakness // loc=0x18
 	u8 SecondaryElement // loc=0x19
 	
     union
 	u8 BarrierBreakCounter // loc=0x1a
-	u8 Unk_1b // loc=0x1b
+	u8 BarrierBreakCooldown // loc=0x1b
 	nextu
-	u16 Unk_1a_1b // loc=0x1a
+	u16 BarrierCounterU16 // loc=0x1a
 	endu
 	
-    u16 Unk_1c // loc=0x1c
-	u16 Unk_1e // loc=0x1e
+    u16 StatusEffectTimer1 // loc=0x1c
+	u16 StatusEffectTimer // loc=0x1e
 	u16 BlindTimer // loc=0x20
-	u16 Unk_22 // loc=0x22
+	u16 StatusEffectTimer8 // loc=0x22
 	u16 FlashingInvisTimer // loc=0x24
-	u16 Unk_26 // loc=0x26
-	u16 Unk_28 // loc=0x28
+	u16 HitCountdown // loc=0x26
+	u16 InvulnerabilityTimer // loc=0x28
 	u16 HitInvulTimer // loc=0x2a
 	u16 HitStunTimer // loc=0x2c
 	u16 SelfDamage // loc=0x2e
@@ -145,22 +145,22 @@
 	ObjectFlags1 ObjectFlags1 // loc=0x3c
 	ObjectFlags2 ObjectFlags2 // loc=0x40
 	u32 CollisionIndexBit // loc=0x44
-	u32 Unk_48 // loc=0x48
+	u32 LastHitObjectPtr // loc=0x48
 	struct_org 0x54	
-	u32 Unk_54 // loc=0x54
+	u32 CollisionFlagsAccumulator // loc=0x54
 	u32 Unk_58 // loc=0x58
 	struct_org 0x60
 	//u32 Unk_5c // loc=0x5c
-	u32 Unk_60 // loc=0x60
-	u32 Unk_64 // loc=0x64
+	u32 StunSubTimer // loc=0x60
+	u32 ExtraElementDamage // loc=0x64
 	u32 Unk_68 // loc=0x68
-	u32 Unk_6c // loc=0x6c
+	u32 CollisionFlags // loc=0x6c
 	flags32 FlagsFromCollision // loc=0x70
 	u8 ExclamationIndicator // loc=0x74
 	u8 DamageMultiplier // loc=0x75
 	u8 DamageElements // loc=0x76
 	u8 Unk_77 // loc=0x77
-	u32 Unk_78 // loc=0x78
+	u32 ElecElementDamageAccumulator // loc=0x78
 	u32 Unk_7c // loc=0x7c
 	u16 FinalDamage // loc=0x80
 	union

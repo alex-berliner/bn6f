@@ -101,13 +101,13 @@
 	u32 ScriptFlags // loc=0x74
 	u32 PrintDelay // loc=0x78
 	u32 Unk_7C // loc=0x7C
-	u8 Unk_80 // loc=0x80
+	u8 ChoiceSlotCount // loc=0x80
 
 	struct_org 0x84
 	u32 Unk_84 // loc=0x84
 	u32 Unk_88 // loc=0x88
 	u32 Und_8C // loc=0x8C
-	u32 Unk_90 // loc=0x90
+	u32 InitialUnk_90 // loc=0x90
 	u8 Unk_94 // loc=0x94
 
 	struct_org 0x9c

@@ -5,8 +5,8 @@
 	set_struct_label \struct_entry, \label
 
 	struct_org 0x2
-	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 Mode // loc=0x2
+	u8 ShakeEffectIndex // loc=0x3
 	u16 ScrollX // loc=0x4
 	u16 CameraYInt // loc=0x6
 	u16 SavedScrollX // loc=0x8
