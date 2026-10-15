@@ -109975,7 +109975,7 @@ loc_80EB512:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	b locret_80EB560
 loc_80EB528:
@@ -109991,7 +109991,7 @@ loc_80EB528:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	bl battle_getCrossNaviTableByte_8010332
 	mov r4, r0
@@ -110068,7 +110068,7 @@ loc_80EB5C2:
 	b loc_80EB606
 loc_80EB5D6:
 	mov r0, #0
-	str r0, [r7,#oAIData_Unk_68]
+	str r0, [r7,#oAIData_TempAttackObjectPtr]
 	b loc_80EB61A
 loc_80EB5DC:
 	ldrb r0, [r7,#oAIData_AIIndex]
@@ -110203,7 +110203,7 @@ loc_80EB69A:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 loc_80EB6DC:
 	ldrh r0, [r7,#oAIAttackVars_Unk_10]
 	add r0, #1
@@ -110565,7 +110565,7 @@ loc_80EB9C0:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	pop {r0}
@@ -110785,7 +110785,7 @@ loc_80EBBF8:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EBC0C:
 	pop {pc}
@@ -110953,7 +110953,7 @@ aiAttack_windupTick_80EBD3C:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #7
 	bl object_setAnimation
 	mov r0, #3
@@ -111178,7 +111178,7 @@ loc_80EBEC2:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 loc_80EBED6:
 	bl object_canMove
@@ -111193,7 +111193,7 @@ loc_80EBED6:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	bl battle_getCrossNaviTableByte_8010332
 	mov r4, r0
@@ -111279,7 +111279,7 @@ sub_80EBF6E:
 	ldrb r1, [r2,r1]
 	strh r1, [r7,#oAIAttackVars_Unk_12]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -111347,7 +111347,7 @@ battle_aiWindRackAttackStep_80EBFF4:
 	tst r0, r0
 	bne loc_80EC014
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -111365,7 +111365,7 @@ loc_80EC014:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EC028:
 	pop {pc}
@@ -111468,7 +111468,7 @@ loc_80EC0D0:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EC0E4:
 	pop {pc}
@@ -111611,7 +111611,7 @@ loc_80EC1D4:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EC1EE:
 	pop {pc}
@@ -112024,7 +112024,7 @@ loc_80EC510:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E58
 	bl object_exitAttackState
 	bl battle_getCrossNaviTableByte_8010332
@@ -112045,7 +112045,7 @@ sub_80EC556:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E58
 	ldrb r0, [r7,#oAIAttackVars_Unk_0d]
 	cmp r0, #0
@@ -112141,11 +112141,11 @@ sub_80EC5EC:
 	cmp r0, #0
 	beq loc_80EC618
 	push {r0}
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E58
 	pop {r0}
 	mov r1, #0
-	str r1, [r0,#oAIData_Unk_68]
+	str r1, [r0,#oAIData_TempAttackObjectPtr]
 loc_80EC618:
 	bl sub_80EB562
 	mov r0, #1
@@ -112342,7 +112342,7 @@ sub_80EC792:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E58
 	bl object_exitAttackState
 	pop {pc}
@@ -112443,7 +112443,7 @@ loc_80EC82E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EC842:
 	pop {pc}
@@ -112583,7 +112583,7 @@ loc_80EC91E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EC932:
 	pop {pc}
@@ -112822,7 +112822,7 @@ loc_80ECAB4:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ECAC8:
 	pop {pc}
@@ -112890,7 +112890,7 @@ sub_80ECB28:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #1
 	bl sub_80B8E70
 	mov r0, #4
@@ -112936,7 +112936,7 @@ sub_80ECB84:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #7
 	bl object_setAnimation
 	mov r0, #3
@@ -112987,7 +112987,7 @@ sub_80ECBCC:
 	ldrb r0, [r1,r0]
 	add r4, r4, r0
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
-	add r7, #oAIData_Unk_68 
+	add r7, #oAIData_TempAttackObjectPtr 
 	bl spawn_t1_0x5_tempAttackObject_80B8E30
 	pop {r7}
 	mov r0, #1
@@ -113004,7 +113004,7 @@ loc_80ECC08:
 	cmp r0, #1
 	ble locret_80ECC46
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -113063,7 +113063,7 @@ loc_80ECC70:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ECC84:
 	pop {pc}
@@ -113259,7 +113259,7 @@ loc_80ECDE6:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ECDFA:
 	pop {pc}
@@ -113343,7 +113343,7 @@ loc_80ECE7C:
 	add r0, #0xff
 	bl PlaySoundEffect
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -113378,7 +113378,7 @@ loc_80ECED2:
 	tst r0, r1
 	beq loc_80ECEEA
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -113392,7 +113392,7 @@ loc_80ECEEA:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ECEFE:
 	pop {pc}
@@ -113495,7 +113495,7 @@ sub_80ECF8E:
 	cmp r0, #2
 	beq loc_80ECFA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #1
 	strb r1, [r0,#0x10]
 	mov r0, #0xd
@@ -113573,7 +113573,7 @@ loc_80ED02E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED03A:
 	pop {r4,r6,pc}
@@ -113679,7 +113679,7 @@ loc_80ED0E6:
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	bl sub_80C67D8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -113710,7 +113710,7 @@ loc_80ED128:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED13C:
 	pop {pc}
@@ -113836,7 +113836,7 @@ loc_80ED218:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #1
 	bl object_clearFlag // (int bitfield) -> void
 loc_80ED226:
@@ -113849,7 +113849,7 @@ loc_80ED226:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #1
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_exitAttackState
@@ -114109,7 +114109,7 @@ sub_80ED41C:
 	tst r0, r0
 	bne loc_80ED436
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #0
 	bl sub_80B8E70
 	mov r0, #0xa
@@ -114127,7 +114127,7 @@ loc_80ED436:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED452:
 	pop {pc}
@@ -114231,7 +114231,7 @@ loc_80ED4FA:
 	b loc_80ED514
 loc_80ED514:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -114253,7 +114253,7 @@ sub_80ED52C:
 	tst r0, r0
 	bne loc_80ED546
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	sub r1, #1
 	strb r1, [r0,#0x10]
@@ -114269,7 +114269,7 @@ loc_80ED546:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED55A:
 	pop {pc}
@@ -114340,7 +114340,7 @@ sub_80ED5BE:
 	tst r0, r0
 	bne loc_80ED5DC
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -114387,7 +114387,7 @@ sub_80ED61C:
 	tst r0, r0
 	bne loc_80ED636
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	sub r1, #1
 	strb r1, [r0,#0x10]
@@ -114403,7 +114403,7 @@ loc_80ED636:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED64A:
 	pop {pc}
@@ -114625,7 +114625,7 @@ loc_80ED7C0:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	b locret_80ED80E
 loc_80ED7D6:
@@ -114641,7 +114641,7 @@ loc_80ED7D6:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	bl battle_getCrossNaviTableByte_8010332
 	mov r4, r0
@@ -114700,7 +114700,7 @@ loc_80ED85C:
 	cmp r0, #1
 	ble locret_80ED894
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -114744,7 +114744,7 @@ loc_80ED8A6:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80ED8C2:
 	pop {pc}
@@ -114944,7 +114944,7 @@ sub_80EDA0E:
 	mov r0, #3
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #1
 	strb r1, [r0,#0x10]
 	mov r1, #0xff
@@ -115033,7 +115033,7 @@ loc_80EDACA:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EDADE:
 	pop {pc}
@@ -115106,7 +115106,7 @@ loc_80EDB50:
 	sub r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_12]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -115253,7 +115253,7 @@ sub_80EDC78:
 	tst r0, r0
 	bne loc_80EDC92
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -115274,7 +115274,7 @@ loc_80EDC92:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EDCB4:
 	pop {pc}
@@ -115419,7 +115419,7 @@ riskyHoneyAttack_init_80EDDA0:
 	push {r7}
 	mov r4, #0x28 
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
-	add r7, #oAIData_Unk_68
+	add r7, #oAIData_TempAttackObjectPtr
 	bl spawn_t1_0x5_tempAttackObject_80B8E30
 	pop {r7}
 	mov r0, #1
@@ -115493,7 +115493,7 @@ loc_80EDE20:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldr r0, dword_80EE034 // =0x200000 
 	bl ClearAIDataUnk0x48Flag
 	bl object_exitAttackState
@@ -115521,7 +115521,7 @@ riskyHoneyAttack_update_sub_80EDE4A:
 	lsl r3, r3, #0x10
 	bl spawnRiskyHoneyObject_80D32FE
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #1
 	strb r1, [r0,#oBattleObject_CurAnim]
 	mov r1, #0xff
@@ -115897,7 +115897,7 @@ dollThunderAttack_update_80EE110:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80EE160
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -115937,7 +115937,7 @@ dollThunderAttack_exit_80EE162:
 	tst r0, r0
 	bne loc_80EE17C
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	sub r1, #1
 	strb r1, [r0,#0x10]
@@ -115953,7 +115953,7 @@ loc_80EE17C:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE190:
 	pop {pc}
@@ -116089,7 +116089,7 @@ loc_80EE284:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE298:
 	pop {pc}
@@ -116169,7 +116169,7 @@ loc_80EE30E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	pop {r0}
@@ -116190,7 +116190,7 @@ sub_80EE33A:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 	pop {pc}
 	thumb_func_end sub_80EE33A
@@ -116458,7 +116458,7 @@ loc_80EE548:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE55C:
 	pop {pc}
@@ -116514,7 +116514,7 @@ sub_80EE5A8:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80EE602
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -116561,7 +116561,7 @@ sub_80EE604:
 	tst r0, r0
 	bne loc_80EE61E
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	sub r1, #1
 	strb r1, [r0,#0x10]
@@ -116577,7 +116577,7 @@ loc_80EE61E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE632:
 	pop {pc}
@@ -116686,7 +116686,7 @@ loc_80EE6E2:
 loc_80EE6E8:
 	mov r0, #0
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE6F2:
 	pop {r4,r6,pc}
@@ -116748,7 +116748,7 @@ sub_80EE748:
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	bgt locret_80EE79E
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	add r1, #1
 	strb r1, [r0,#0x10]
@@ -116791,7 +116791,7 @@ sub_80EE7A0:
 	tst r0, r0
 	bne loc_80EE7BA
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	ldrb r1, [r0,#0x10]
 	sub r1, #1
 	strb r1, [r0,#0x10]
@@ -116807,7 +116807,7 @@ loc_80EE7BA:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EE7CE:
 	pop {pc}
@@ -117227,7 +117227,7 @@ loc_80EEAEC:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	pop {r4,r6,r7,pc}
@@ -117264,7 +117264,7 @@ loc_80EEB32:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EEB46:
 	pop {pc}
@@ -117369,7 +117369,7 @@ loc_80EEBF2:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EEC06:
 	pop {pc}
@@ -117520,7 +117520,7 @@ loc_80EED14:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_Unk_00]
 locret_80EED28:
@@ -117548,7 +117548,7 @@ loc_80EED40:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EED54:
 	pop {pc}
@@ -118074,7 +118074,7 @@ sub_80EF14A:
 	tst r0, r0
 	bne loc_80EF164
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #0
 	bl sub_80B8E70
 	mov r0, #0xa
@@ -118113,7 +118113,7 @@ loc_80EF164:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 locret_80EF1AC:
 	pop {r4,pc}
 	thumb_func_end sub_80EF14A
@@ -119195,7 +119195,7 @@ loc_80EFA0C:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_01]
 	pop {r4,r6,r7,pc}
@@ -119224,7 +119224,7 @@ loc_80EFA40:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EFA54:
 	pop {pc}
@@ -119528,7 +119528,7 @@ loc_80EFC9E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80EFCB2:
 	pop {pc}
@@ -119884,7 +119884,7 @@ loc_80EFF50:
 	tst r0, r0
 	bne loc_80EFF96
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E58
 	mov r0, #5
 	bl object_setAnimation
@@ -120024,7 +120024,7 @@ loc_80F007E:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80F0092:
 	pop {pc}
@@ -120142,7 +120142,7 @@ sub_80F014C:
 	b loc_80F0178
 loc_80F016A:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	bl sub_80B8E7C
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	bl battle_EndObjectCurrentAnim_80C44D2
@@ -120222,7 +120222,7 @@ loc_80F01F8:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_80F020C:
 	pop {r4,pc}
@@ -157242,7 +157242,7 @@ sub_81025DA:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #1
 	bl sub_80B8E70
 	mov r0, #0x10
@@ -157297,7 +157297,7 @@ loc_8102646:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl object_exitAttackState
@@ -157461,7 +157461,7 @@ loc_8102782:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAnim]
 	bl object_exitAttackState
@@ -157602,7 +157602,7 @@ loc_8102880:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_8102894:
 	pop {pc}
@@ -157720,7 +157720,7 @@ loc_810294C:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_exitAttackState
 locret_8102960:
 	pop {pc}
@@ -157842,7 +157842,7 @@ sub_8102A1C:
 	mov r0, #0x10
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #0x29 
 	ldr r4, off_8102C20 // =0x191 
 	ldrb r2, [r7,#oAIAttackVars_Unk_03]
@@ -157888,7 +157888,7 @@ sub_8102A6E:
 	mov r0, #0x11
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #0x2a 
 	ldrb r2, [r7,#oAIAttackVars_Unk_03]
 	cmp r2, #0
@@ -157958,7 +157958,7 @@ sub_8102AF2:
 	mov r0, #0x13
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_68]
+	ldr r0, [r0,#oAIData_TempAttackObjectPtr]
 	mov r1, #0x2b 
 	ldrb r2, [r7,#oAIAttackVars_Unk_03]
 	cmp r2, #0
@@ -157979,7 +157979,7 @@ loc_8102B18:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl object_exitAttackState
 	strh r0, [r7,#oAIAttackVars_Unk_00]

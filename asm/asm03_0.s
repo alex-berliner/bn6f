@@ -15860,7 +15860,7 @@ sub_802D738:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #1
 	bl object_setCollisionRegion
 	mov r0, #4
@@ -16094,7 +16094,7 @@ sub_802D950:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	str r0, [r1,#oAIData_Unk_5c]

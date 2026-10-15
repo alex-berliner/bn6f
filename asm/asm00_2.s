@@ -3668,7 +3668,7 @@ sub_801056A:
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	str r0, [r7,#oAIData_Unk_68]
+	str r0, [r7,#oAIData_TempAttackObjectPtr]
 	add r7, #0xa0
 	ldr r0, off_80108F0 // =0x810 
 	bl ClearAIDataUnk0x48Flag
@@ -3733,7 +3733,7 @@ sub_80105F2:
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
-	str r0, [r7,#oAIData_Unk_68]
+	str r0, [r7,#oAIData_TempAttackObjectPtr]
 	add r7, #0xa0
 	ldr r0, off_80108F0 // =0x810 
 	bl ClearAIDataUnk0x48Flag
@@ -6436,7 +6436,7 @@ loc_8011B3E:
 	strb r1, [r7,#oAIAttackVars_Unk_0d]
 	mov r1, #0
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	str r1, [r0,#oAIData_Unk_68]
+	str r1, [r0,#oAIData_TempAttackObjectPtr]
 	mov r0, #0x1e
 	pop {pc}
 	thumb_func_end sub_8011AF2
@@ -6483,7 +6483,7 @@ loc_8011B96:
 	strb r1, [r7,#oAIAttackVars_Unk_0d]
 	mov r1, #0
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	str r1, [r0,#oAIData_Unk_68]
+	str r1, [r0,#oAIData_TempAttackObjectPtr]
 	mov r0, #0x1d
 	pop {pc}
 	thumb_func_end sub_8011B4A
@@ -13808,7 +13808,7 @@ battleObject_commitMoveLanding_8014B18:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldr r0, dword_8014B94 // =0x80000 
 	bl ClearAIDataUnk0x48Flag
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
@@ -13892,7 +13892,7 @@ battle_runTransformationIntroStep_8014BEE:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
@@ -14028,7 +14028,7 @@ sub_8014D08:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl sub_80158FA
 	mov r0, #0x11
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -14298,7 +14298,7 @@ sub_8014F40:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl sub_80158FA
 	mov r0, #0x11
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -14551,7 +14551,7 @@ sub_801516C:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl sub_80158FA
 	mov r0, #0x11
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -14950,7 +14950,7 @@ loc_80154E2:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	push {r0}
@@ -15194,7 +15194,7 @@ loc_80156DC:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	str r0, [r1,#oAIData_Unk_40]
 	mov r0, #0xa1
 	add r0, #0xff
@@ -15344,7 +15344,7 @@ loc_8015878:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #0x1e
 	strh r0, [r7,#oAIAttackVars_Unk_10]
@@ -18680,7 +18680,7 @@ battleObject_runWindRecoveryState_8017122:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r2,#oAIData_Unk_68]
+	str r0, [r2,#oAIData_TempAttackObjectPtr]
 	mov r0, #2
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r4, #1
@@ -18773,7 +18773,7 @@ sub_80171D8:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r2,#oAIData_Unk_68]
+	str r0, [r2,#oAIData_TempAttackObjectPtr]
 	ldrh r0, [r5,#oBattleObject_NameID]
 	ldr r1, dword_80172E8 // =0x173 
 	cmp r0, r1
@@ -19075,7 +19075,7 @@ sub_801746E:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	str r0, [r1,#oAIData_Unk_5c]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0x6c 
 	bl PlaySoundEffect
 	mov r0, #0x34 
@@ -19198,7 +19198,7 @@ loc_8017554:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
 	mov r2, #1
@@ -19276,7 +19276,7 @@ loc_8017602:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
 	mov r2, #1
@@ -19375,7 +19375,7 @@ loc_80176E2:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
 	mov r2, #1
@@ -19479,7 +19479,7 @@ loc_80177BE:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #3
 	mov r2, #1
@@ -19618,7 +19618,7 @@ battleObject_initMoveStep_80178D4:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_68]
+	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_getFlag // () -> int
 	mov r2, #2
 	mov r1, #1
