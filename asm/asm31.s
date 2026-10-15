@@ -136,7 +136,7 @@ sub_80B82E0:
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0x1f
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0x94
 	bl PlaySoundEffect
 	mov r0, #0
@@ -159,16 +159,16 @@ loc_80B8304:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80B831E:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #2
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bgt locret_80B8336
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80B8336:
@@ -342,7 +342,7 @@ sub_80B843C:
 	thumb_local_start
 sub_80B844A:
 	push {lr}
-	ldrb r1, [r5,#oBattleObject_Unk_19]
+	ldrb r1, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsl r0, r1, #5
 	add r0, r0, r1
 	lsl r0, r0, #5
@@ -18508,7 +18508,7 @@ sub_80C088C:
 	mov r4, #0x26 
 	bl spawn_t1_0x0_EffectObject
 	mov r0, #0x1f
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0x94
 	bl PlaySoundEffect
 	mov r0, #0
@@ -18531,16 +18531,16 @@ loc_80C08BA:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80C08D4:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #2
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bgt locret_80C08EC
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80C08EC:
@@ -19317,7 +19317,7 @@ dword_80C0DAC:
 	thumb_local_start
 sub_80C0DB0:
 	push {lr}
-	ldrb r1, [r5,#oBattleObject_Unk_19]
+	ldrb r1, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsl r0, r1, #5
 	add r0, r0, r1
 	lsl r0, r0, #5
@@ -22786,7 +22786,7 @@ sub_80C27B4:
 	tst r0, r0
 	bne loc_80C27D0
 	mov r0, #0x1f
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0x94
 	bl PlaySoundEffect
 	mov r0, #0
@@ -22809,16 +22809,16 @@ loc_80C27D0:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80C27EA:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #2
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bgt locret_80C2802
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80C2802:
@@ -23137,7 +23137,7 @@ sub_80C2A2C:
 	thumb_local_start
 sub_80C2A3A:
 	push {lr}
-	ldrb r1, [r5,#oBattleObject_Unk_19]
+	ldrb r1, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsl r0, r1, #5
 	add r0, r0, r1
 	lsl r0, r0, #5
@@ -23275,7 +23275,7 @@ sub_80C2B3C:
 	tst r0, r0
 	bne loc_80C2B58
 	mov r0, #0x1f
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0x94
 	bl PlaySoundEffect
 	mov r0, #0
@@ -23298,16 +23298,16 @@ loc_80C2B58:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80C2B72:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #2
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bgt locret_80C2B8A
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80C2B8A:
@@ -23868,7 +23868,7 @@ sub_80C2F76:
 	thumb_local_start
 sub_80C2F84:
 	push {lr}
-	ldrb r1, [r5,#oBattleObject_Unk_19]
+	ldrb r1, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsl r0, r1, #5
 	add r0, r0, r1
 	lsl r0, r0, #5
@@ -88872,7 +88872,7 @@ sub_80E1854:
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	cmp r0, #0x17
 	beq loc_80E1872
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -88900,7 +88900,7 @@ timefreezeObjectRunFunction_80E1880:
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
 	bne loc_80E18CE
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsl r0, r0, #2
 	ldr r3, off_80E19B0 // =off_802CD5C 
 	ldr r3, [r3,r0]
@@ -88923,7 +88923,7 @@ timefreezeObjectRunFunction_80E1880:
 	cmp r0, #0x3b 
 	bhi loc_80E18CA
 	ldr r7, off_80E19B4 // =byte_203C960 
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	strb r0, [r7]
 	ldrb r0, [r5,#oBattleObject_Element]
 	strb r0, [r7,#0x1] // (byte_203C961 - 0x203c960)
@@ -88980,7 +88980,7 @@ sub_80E18F8:
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
 	bne loc_80E191A
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	cmp r0, #0
 	beq loc_80E1922
 	cmp r0, #0x17
@@ -89030,7 +89030,7 @@ loc_80E1944:
 	strb r2, [r0,#oBattleObject_PanelY]
 	strb r3, [r0,#oBattleObject_Element]
 	ldr r1, [r0,#oBattleObject_Z]
-	strb r1, [r0,#oBattleObject_Unk_19]
+	strb r1, [r0,#oBattleObject_WobbleOrEffectTimer]
 	str r5, [r0,#oBattleObject_RelatedObject1Ptr]
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]

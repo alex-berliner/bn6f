@@ -17916,7 +17916,7 @@ stepBattleObjectWobble_8016BFC:
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PreventAnim]
 loc_8016C14:
@@ -17926,13 +17926,13 @@ loc_8016C14:
 	tst r1, r1
 	beq loc_8016C22
 	mov r0, #0x1e
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 loc_8016C22:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	tst r0, r0
 	beq loc_8016C44
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrh r1, [r5,#oBattleObject_Unk_30]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
@@ -19937,7 +19937,7 @@ loc_8017B64:
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PreventAnim]
 loc_8017B7A:
@@ -19947,13 +19947,13 @@ loc_8017B7A:
 	tst r1, r1
 	beq loc_8017B88
 	mov r0, #0x1e
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 loc_8017B88:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	tst r0, r0
 	beq loc_8017BAA
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrh r1, [r5,#oBattleObject_Unk_30]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
@@ -20559,7 +20559,7 @@ loc_801803C:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	mov r0, #0x20 
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0x2b 
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -20576,9 +20576,9 @@ sub_8018076:
 	ldr r1, [r5,#oBattleObject_ZVelocity]
 	add r0, r0, r1
 	str r0, [r5,#oBattleObject_Z]
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bne locret_8018092
 	mov r0, #0x40 
 	lsl r0, r0, #0x10
@@ -20593,7 +20593,7 @@ locret_8018092:
 sub_8018094:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Unk_1e_Unk_1f]
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrh r0, [r5,#oBattleObject_X16]
 	strh r0, [r5,#oBattleObject_Unk_30]
 	ldrh r0, [r5,#oBattleObject_Z16]
@@ -20616,9 +20616,9 @@ sub_80180A8:
 	mov r7, #0x34 
 	add r7, r7, r5
 	stmia r7!, {r1-r3}
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bne locret_80180EA
 	ldrh r0, [r5,#oBattleObject_Unk_30]
 	strh r0, [r5,#oBattleObject_X16]
@@ -20629,7 +20629,7 @@ sub_80180A8:
 	strb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl sub_800F768
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0xd
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -20651,9 +20651,9 @@ sub_80180EC:
 	mov r7, #0x34 
 	add r7, r7, r5
 	stmia r7!, {r0-r2}
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bne locret_8018132
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -20717,7 +20717,7 @@ loc_8018164:
 	ldr r0, off_80182AC // =0x3000 
 	bl object_clearFlag2
 	mov r0, #0x3c 
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
@@ -20734,7 +20734,7 @@ sub_8018186:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	lsr r0, r0, #2
 	bcs loc_80181AA
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -20747,9 +20747,9 @@ sub_8018186:
 	mov r4, #0x42 
 	bl spawn_t1_0x0_EffectObject
 loc_80181AA:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	bne locret_80181F4
 	bl sub_800F806
 	mov r4, #1
@@ -20834,7 +20834,7 @@ sub_801823C:
 	ldrh r0, [r5,#oBattleObject_Z16]
 	strh r0, [r5,#oBattleObject_Unk_32]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PreventAnim]
 loc_8018258:
@@ -20844,13 +20844,13 @@ loc_8018258:
 	tst r1, r1
 	beq loc_8018266
 	mov r0, #0x1e
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 loc_8018266:
-	ldrb r0, [r5,#oBattleObject_Unk_19]
+	ldrb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	tst r0, r0
 	beq loc_8018288
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_19]
+	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	ldrh r1, [r5,#oBattleObject_Unk_30]
 	lsl r1, r1, #0x10
 	ldr r2, [r5,#oBattleObject_Y]
