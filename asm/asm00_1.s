@@ -10414,13 +10414,13 @@ off_8007BC8:
 	thumb_local_start
 battle_stateCountdownTick_8007BD0:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8007BE2
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8007BEE
 loc_8007BE2:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -10466,12 +10466,12 @@ battle_stepSubstateToState4_8007C14:
 	bl battle_getSubstateFinishedFlag_801FE5E
 	tst r0, r0
 	beq loc_8007C44
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8007C2E
 	bl sub_803DDA4
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8007C4C
 loc_8007C2E:
 	bl sub_803DE24
@@ -10511,11 +10511,11 @@ sub_8007C50:
 	tst r0, r0
 	beq loc_8007C90
 loc_8007C74:
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8007C84
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
 	b locret_8007C98
 loc_8007C84:
@@ -10885,7 +10885,7 @@ off_8007F9C:
 	thumb_local_start
 sub_8007FA4:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8007FC4
 	bl PauseBattle
@@ -10895,7 +10895,7 @@ sub_8007FA4:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8007FC4:
 	bl IsScreenFadeActive // () -> zf
 	tst r0, r0
@@ -13414,7 +13414,7 @@ dword_80091EC:
 battle_runBattleIntroSpawnStep_80091F0:
 	push {r4,r6,r7,lr}
 
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009240
 
@@ -13468,7 +13468,7 @@ loc_8009232: // endif
 loc_800923A: // endif
 
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009276
 
 loc_8009240:
@@ -13563,7 +13563,7 @@ off_80092B4:
 	thumb_local_start
 battle_runState4CountdownOrAdvance_80092C0:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80092D8
 	ldrb r1, [r5,#oBattleState_Unk_1a]
@@ -13572,7 +13572,7 @@ battle_runState4CountdownOrAdvance_80092C0:
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80092EE
 loc_80092D8:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -13594,14 +13594,14 @@ locret_80092EE:
 	thumb_local_start
 sub_80092F0:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009306
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009312
 loc_8009306:
 	bl comm_checkCrossNetBattleReady_801E754
@@ -13616,13 +13616,13 @@ locret_8009312:
 	thumb_local_start
 sub_8009314:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009326
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009336
 loc_8009326:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -13643,13 +13643,13 @@ locret_8009336:
 	thumb_local_start
 sub_8009338:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	cmp r0, #0
 	bne loc_800934E
 	mov r0, #4
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	bl battle_initCustomScreen_8026840
 loc_800934E:
 	bl sub_8026A28
@@ -13692,12 +13692,12 @@ locret_8009388:
 	thumb_local_start
 battle_stepRunAndDecideResult_800938A:
 	push {r4,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800939A
 	bl clearDword_203CA70Record_80084C0
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_800939A:
 	bl battle_runMainStep_800801C
 	bl someChipHandValidationHappensHere_800B090
@@ -13816,14 +13816,14 @@ off_8009470:
 	thumb_local_start
 battle_waitLinkSync_8009478:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800948E
 	bl sub_800B428
 	mov r0, #0
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80094B4
 loc_800948E:
 	ldr r0, =0x1f2f3f4f
@@ -13857,13 +13857,13 @@ locret_80094B4:
 	thumb_local_start
 battle_updateChipSelectInit_80094B6:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80094C8
 	ldr r0, =unk_2035260
 	bl setupNaviDisplay_802C34E
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_80094C8:
 	bl battle_initChipSelect_802BD60
 	tst r0, r0
@@ -13878,12 +13878,12 @@ locret_80094D8:
 
 // symdb: Drives a battle-end fade-out and hands off to the post-battle state when the fade finishes.
 // symdb: (no input registers from caller) -> r0 = fade colour slot (1 or 4) on the first entry, nothing
-// symdb: afterwards ; sets oBattleState_Unk_03 and oBattleState_Index_00
+// symdb: afterwards ; sets oBattleState_SubPhaseInitFlag and oBattleState_Index_00
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initFadeToBattleResult_80094DA.yaml
 	thumb_local_start
 battle_initFadeToBattleResult_80094DA:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009508
 	ldr r1, =0x173
@@ -13902,7 +13902,7 @@ loc_80094FC:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_800951C
 loc_8009508:
 	bl IsScreenFadeActive // () -> zf
@@ -13922,14 +13922,14 @@ locret_800951C:
 	thumb_local_start
 sub_800951E:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009534
 	ldr r0, =TextScriptBattleTutFullSynchro
 	mov r1, #0xa
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009550
 loc_8009534:
 	mov r0, #0x80
@@ -13952,7 +13952,7 @@ locret_8009550:
 	thumb_local_start
 sub_8009552:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009576
 	mov r2, r10
@@ -13968,7 +13968,7 @@ loc_800956A:
 	ldr r0, =TextScriptDadCybeastTut
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009592
 loc_8009576:
 	mov r0, #0x80
@@ -13991,14 +13991,14 @@ locret_8009592:
 	thumb_local_start
 sub_8009594:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80095AA
 	ldr r0, =TextScriptShukoCrossTut
 	mov r1, #3
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80095C6
 loc_80095AA:
 	mov r0, #0x80
@@ -14021,7 +14021,7 @@ locret_80095C6:
 	thumb_local_start
 sub_80095C8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80095E4
 	bl GetCurPETNavi // () -> u8
@@ -14030,7 +14030,7 @@ sub_80095C8:
 	ldr r0, =TextScriptCommError87370C0
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80095F4
 loc_80095E4:
 	mov r0, #0x80
@@ -14074,7 +14074,7 @@ off_8009630:
 	thumb_local_start
 sub_8009658:
 	push {r4,r6,r7,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80096A8
 	bl GetBattleEffects // () -> int
@@ -14109,7 +14109,7 @@ loc_800969A:
 	bl PlayMusic // (song: u8) -> ()
 loc_80096A2:
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80096DE
 loc_80096A8:
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -14208,7 +14208,7 @@ off_8009748:
 	thumb_local_start
 sub_8009754:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800976C
 	ldrb r1, [r5,#oBattleState_Unk_1a]
@@ -14217,7 +14217,7 @@ sub_8009754:
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009782
 loc_800976C:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -14239,14 +14239,14 @@ locret_8009782:
 	thumb_local_start
 sub_8009784:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800979A
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80097A6
 loc_800979A:
 	bl comm_checkCrossNetBattleReady_801E754
@@ -14261,13 +14261,13 @@ locret_80097A6:
 	thumb_local_start
 sub_80097A8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80097BA
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_80097CA
 loc_80097BA:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -14285,13 +14285,13 @@ locret_80097CA:
 	thumb_local_start
 sub_80097CC:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	cmp r0, #0
 	bne loc_80097E8
 	mov r0, #4
 	bl setBattleStateUnk11Flag_800A9CA // (flags: flags8) -> ()
 	mov r0, #1
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	bl sub_802A866
 	mov r0, #1
 	bl battle_setFlags
@@ -14318,12 +14318,12 @@ locret_800980C:
 	thumb_local_start
 sub_800980E:
 	push {r4,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_800981E
 	bl sub_8008928
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_800981E:
 	bl sub_80084F0
 	bl someChipHandValidationHappensHere_800B090
@@ -14415,14 +14415,14 @@ off_80098D0:
 	thumb_local_start
 sub_80098D8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_80098EE
 	bl sub_800B428
 	mov r0, #0
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009914
 loc_80098EE:
 	ldr r0, dword_8009998 // =0x1f2f3f4f
@@ -14452,13 +14452,13 @@ locret_8009914:
 	thumb_local_start
 sub_8009916:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009928
 	ldr r0, off_800999C // =unk_2035260
 	bl setupNaviDisplay_802C34E
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009928:
 	bl battle_initChipSelect_802BD60
 	tst r0, r0
@@ -14474,14 +14474,14 @@ locret_8009938:
 	thumb_local_start
 sub_800993A:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009950
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009964
 loc_8009950:
 	bl IsScreenFadeActive // () -> zf
@@ -14569,7 +14569,7 @@ off_80099B8:
 	thumb_local_start
 battle_advanceIndexFromPauseIntro_80099E0:
 	push {r4,r6,r7,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009A30
 	bl GetBattleEffects // () -> int
@@ -14604,7 +14604,7 @@ loc_8009A22:
 	bl PlayMusic // (song: u8) -> ()
 loc_8009A2A:
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009A66
 loc_8009A30:
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -14672,7 +14672,7 @@ off_8009A9C:
 	thumb_local_start
 sub_8009AA8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009AC0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
@@ -14681,7 +14681,7 @@ sub_8009AA8:
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009AD6
 loc_8009AC0:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -14703,14 +14703,14 @@ locret_8009AD6:
 	thumb_local_start
 sub_8009AD8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009AEE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009AFA
 loc_8009AEE:
 	bl comm_checkCrossNetBattleReady_801E754
@@ -14725,13 +14725,13 @@ locret_8009AFA:
 	thumb_local_start
 sub_8009AFC:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009B0E
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009B1E
 loc_8009B0E:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -14747,19 +14747,19 @@ locret_8009B1E:
 	thumb_func_end sub_8009AFC
 
 // symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
-// symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_Unk_03,
+// symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_SubPhaseInitFlag,
 // symdb: oBattleState_Index_01, oBattleState_Unk_1e, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
 // symdb: pending event flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleStep_8009B20.yaml
 	thumb_local_start
 battle_runBattleStep_8009B20:
 	push {r4,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009B30
 	bl sub_8008D40
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009B30:
 	bl battle_dispatchPostMoveSubstate_8008950
 	bl someChipHandValidationHappensHere_800B090
@@ -14837,14 +14837,14 @@ off_8009BC0:
 	thumb_local_start
 sub_8009BC8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009BDE
 	bl sub_800B428
 	mov r0, #0
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009C04
 loc_8009BDE:
 	ldr r0, dword_8009C88 // =0x1f2f3f4f
@@ -14874,13 +14874,13 @@ locret_8009C04:
 	thumb_local_start
 sub_8009C06:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009C18
 	ldr r0, off_8009C8C // =unk_2035260
 	bl setupNaviDisplay_802C34E
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009C18:
 	bl battle_initChipSelect_802BD60
 	tst r0, r0
@@ -14896,14 +14896,14 @@ locret_8009C28:
 	thumb_local_start
 sub_8009C2A:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009C40
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009C54
 loc_8009C40:
 	bl IsScreenFadeActive // () -> zf
@@ -14983,7 +14983,7 @@ off_8009CA8:
 	thumb_local_start
 sub_8009CD0:
 	push {r4,r6,r7,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009D20
 	bl GetBattleEffects // () -> int
@@ -15018,7 +15018,7 @@ loc_8009D12:
 	bl PlayMusic // (song: u8) -> ()
 loc_8009D1A:
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009D56
 loc_8009D20:
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -15086,7 +15086,7 @@ off_8009D8C:
 	thumb_local_start
 sub_8009D98:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009DB0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
@@ -15095,7 +15095,7 @@ sub_8009D98:
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009DC6
 loc_8009DB0:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -15117,14 +15117,14 @@ locret_8009DC6:
 	thumb_local_start
 sub_8009DC8:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009DDE
 	mov r0, #0
 	ldrb r1, [r5,#oBattleState_Unk_1a]
 	bl battle_dispatchKindEffect_801E792
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009DEA
 loc_8009DDE:
 	bl comm_checkCrossNetBattleReady_801E754
@@ -15139,13 +15139,13 @@ locret_8009DEA:
 	thumb_local_start
 sub_8009DEC:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009DFE
 	mov r0, #0xa
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009E0E
 loc_8009DFE:
 	ldrh r0, [r5,#oBattleState_Unk_28]
@@ -15208,12 +15208,12 @@ locret_8009E54:
 	thumb_local_start
 sub_8009E56:
 	push {r4,lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009E66
 	bl sub_8009140
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009E66:
 	bl sub_8008D60
 	bl someChipHandValidationHappensHere_800B090
@@ -15290,14 +15290,14 @@ off_8009EF4:
 	thumb_local_start
 sub_8009EFC:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009F12
 	bl sub_800B428
 	mov r0, #0
 	strh r0, [r5,#oBattleState_Unk_28]
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009F38
 loc_8009F12:
 	ldr r0, dword_8009FC0 // =0x1f2f3f4f
@@ -15327,13 +15327,13 @@ locret_8009F38:
 	thumb_local_start
 sub_8009F3A:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009F4C
 	ldr r0, off_8009FC4 // =unk_2035260
 	bl setupNaviDisplay_802C34E
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009F4C:
 	bl battle_initChipSelect_802BD60
 	tst r0, r0
@@ -15349,14 +15349,14 @@ locret_8009F5C:
 	thumb_local_start
 sub_8009F5E:
 	push {lr}
-	ldrb r0, [r5,#oBattleState_Unk_03]
+	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009F74
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #4
-	strb r0, [r5,#oBattleState_Unk_03]
+	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8009F88
 loc_8009F74:
 	bl IsScreenFadeActive // () -> zf
