@@ -66,7 +66,7 @@
 	u32 Unk_60 // loc=0x60
 
 	struct_org 0x68
-	u32 Unk_68 // loc=0x68
+	u32 TempAttackObjectPtr // loc=0x68
 	u32 Unk_6c // loc=0x6c
 	u32 Unk_70 // loc=0x70
 	u32 Unk_74 // loc=0x74
