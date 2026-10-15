@@ -692,7 +692,7 @@ signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
         sub_81422B4();
         SetEventFlagFromImmediate(7, 64);
         ClearEventFlagFromImmediate(2, 37);
-        *(*(v3 + oToolkit_GameStatePtr) + oGameState_Unk_15) = 0;
+        *(*(v3 + oToolkit_GameStatePtr) + oGameState_SavedByte) = 0;
         TestEventFlagFromImmediate(0, 40);
         if ( v4 && GetSoulWeaponsMapIndex() < 6 )
         {

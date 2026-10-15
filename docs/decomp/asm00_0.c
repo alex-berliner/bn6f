@@ -1292,7 +1292,7 @@ int __fastcall sub_80010A4(int result, int a2, int a3, int a4)
     v6[oGameState_Unk_12] = result;
     v6[oGameState_PendingByte] = a2;
     v6[oGameState_BattleEndSubState] = a3;
-    v6[oGameState_Unk_15] = a4;
+    v6[oGameState_SavedByte] = a4;
     v6[oGameState_EnterMapFadeParam1] = v4;
     return result;
 }

@@ -497,7 +497,7 @@ loc_8099282:
 	bl chatbox_uncompMapTextArchives_803FD3C // () -> int
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
-	ldrb r0, [r0,#oGameState_Unk_15]
+	ldrb r0, [r0,#oGameState_SavedByte]
 	bl chatbox_runTrainScript // (u8 scriptOffIdx) -> void
 
 loc_8099290:

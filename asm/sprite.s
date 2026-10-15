@@ -122,23 +122,23 @@ sprite8002728:
 	thumb_local_start
 sprite_initialize:
 	add r0, #4
-	str r0, [r5,#oObjectSprite_Unk_18]
+	str r0, [r5,#oObjectSprite_AnimationResourcePtr]
 	mov r0, #0
 	strb r0, [r5,#oObjectSprite_SpriteFlags2]
 	strb r0, [r5,#oObjectSprite_AnimationIndex]
-	str r0, [r5,#oObjectSprite_Unk_24]
+	str r0, [r5,#oObjectSprite_SpriteRenderDataPtr]
 	strb r0, [r5,#oObjectSprite_PaletteIndex]
 	strh r0, [r5,#oObjectSprite_SpriteExtraBytes]
 	strh r0, [r5,#oObjectSprite_ColorShader]
-	str r0, [r5,#oObjectSprite_Unk_2c]
+	str r0, [r5,#oObjectSprite_ScriptParam]
 	strh r0, [r5,#oObjectSprite_Unk_10]
 	strh r0, [r5,#oObjectSprite_FrameCounter]
 	strb r0, [r5,#oObjectSprite_InitFlag]
 	strb r0, [r5,#oObjectSprite_PaletteRowIndex]
-	str r0, [r5,#oObjectSprite_Unk_30]
-	str r0, [r5,#oObjectSprite_Unk_34]
+	str r0, [r5,#oObjectSprite_SpriteFlags4Ptr]
+	str r0, [r5,#oObjectSprite_ScratchByte]
 	mvn r0, r0
-	str r0, [r5,#oObjectSprite_Unk_28]
+	str r0, [r5,#oObjectSprite_SpriteAttrs2Ptr]
 	mov r0, #8
 	strb r0, [r5,#oObjectSprite_OamAttributes]
 	mov r0, #8
@@ -1527,12 +1527,12 @@ loc_8002F06:
 	strb r1, [r3,#oObjectSprite_SpriteFlags]
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r1, [r3,#oRenderInfo_Unk_02]
+	ldrh r1, [r3,#oRenderInfo_MosaicSize]
 	mov r2, #0xff
 	lsl r2, r2, #8
 	bic r1, r2
 	orr r1, r0
-	strh r1, [r3,#oRenderInfo_Unk_02]
+	strh r1, [r3,#oRenderInfo_MosaicSize]
 	mov pc, lr
 	thumb_func_end sprite_setMosaicSize
 
@@ -1568,7 +1568,7 @@ obj_getSpriteFlag10AndRenderInfoHigh_8002F3E:
 	and r2, r0
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r3,#oRenderInfo_Unk_02]
+	ldrh r0, [r3,#oRenderInfo_MosaicSize]
 	mov r1, #0xff
 	bic r0, r1
 	lsr r0, r0, #8
@@ -1648,7 +1648,7 @@ sprite_setUnk0x2c:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	str r0, [r3,#oObjectSprite_Unk_2c]
+	str r0, [r3,#oObjectSprite_ScriptParam]
 	mov pc, lr
 	thumb_func_end sprite_setUnk0x2c
 
@@ -1662,7 +1662,7 @@ sprite_getUnk0x2c:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r3, r3, r5
-	ldr r0, [r3,#oObjectSprite_Unk_2c]
+	ldr r0, [r3,#oObjectSprite_ScriptParam]
 	mov pc, lr
 	thumb_func_end sprite_getUnk0x2c
 
@@ -1876,12 +1876,12 @@ sprite_getShadowOffsetForFrame_80030BA:
 	lsr r3, r3, #4
 	lsl r3, r3, #4
 	add r5, r5, r3
-	ldr r3, [r5,#oObjectSprite_Unk_20]
+	ldr r3, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r3]
 	lsl r2, r2, #2
-	ldr r0, [r5,#oObjectSprite_Unk_1c]
+	ldr r0, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldr r0, [r0,#0xc]
-	ldr r3, [r5,#oObjectSprite_Unk_18]
+	ldr r3, [r5,#oObjectSprite_AnimationResourcePtr]
 	add r3, r3, r0
 	ldr r2, [r3,r2]
 	add r2, r2, r3

@@ -1448,7 +1448,7 @@ battle_handleChipLockoutTransition_8089A60:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
 	mov r1, #0
-	strb r1, [r0,#oGameState_Unk_15]
+	strb r1, [r0,#oGameState_SavedByte]
 	movflag EVENT_28
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_8089ABA

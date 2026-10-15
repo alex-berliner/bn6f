@@ -96,12 +96,12 @@ chatbox_runScript_803FD78: // (TextScriptArchive *archive, u8 scriptIdx) -> void
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 
 	// u16 src[4]: r0 = byte_803FD94
-	// dest: r1 = &r10->oToolkit_ChatboxPtr->oChatbox_Unk_68
+	// dest: r1 = &r10->oToolkit_ChatboxPtr->oChatbox_NextScriptDesc
 	// halfwordCount: r2 = 8
 	ldr r0, off_803FD90 // =byte_803FD94
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_ChatboxPtr]
-	add r1, #oChatbox_Unk_68
+	add r1, #oChatbox_NextScriptDesc
 	mov r2, #8
 	bl CopyHalfwords // (u16 *src, u16 *dest, int halfwordCount) -> void
 
@@ -557,7 +557,7 @@ chatbox_interpreteAndDrawDialogChar_1:
 	push {r4-r7,lr}
 	mov r0, #0
 	strb r0, [r5,#oChatbox_JumpTableOffset_11]
-	str r0, [r5,#oChatbox_Unk_74]
+	str r0, [r5,#oChatbox_ScriptFlags]
 	mov r0, #1
 	mov r1, #0x3d
 	strb r0, [r5,r1]
@@ -606,7 +606,7 @@ loc_80400B8:
 	ldrh r2, [r5,#oChatbox_flags_3E]
 	mov r3, #1
 	and r2, r3
-	ldr r3, [r5,#oChatbox_Unk_74]
+	ldr r3, [r5,#oChatbox_ScriptFlags]
 	orr r3, r2
 	cmp r3, #0
 	beq loc_8040070
@@ -1023,7 +1023,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #1
 	strb r0, [r5,#oChatbox_BoxYX]
 	mov r0, #1
-	str r0, [r5,#oChatbox_Unk_74]
+	str r0, [r5,#oChatbox_ScriptFlags]
 	strb r0, [r5,#oChatbox_JumpTableOffset_11] // ChatBoxPropreties.bxoff_11
 	mov r0, #4
 	str r0, [r5,#oChatbox_PrintDelay] // ChatBoxPropreties.unk_78
@@ -1181,7 +1181,7 @@ chatbox_reqBBS_80404C0:
 	mov r0, #1
 	strb r0, [r5,#0xc]
 	mov r0, #1
-	str r0, [r5,#oChatbox_Unk_74]
+	str r0, [r5,#oChatbox_ScriptFlags]
 	strb r0, [r5,#0x11] // ChatBoxPropreties.bxoff_11
 	mov r0, #4
 	str r0, [r5,#0x78] // ChatBoxPropreties.unk_78
@@ -1749,7 +1749,7 @@ chatbox_config_80408D0:
 	str r1, [r5,r0]
 	mov r1, #1
 	strb r1, [r5,#oChatbox_JumpTableOffset_11] // ChatBoxPropreties.bxoff_11
-	str r1, [r5,#oChatbox_Unk_74]
+	str r1, [r5,#oChatbox_ScriptFlags]
 	ldrb r1, [r5,#oChatbox_TextScriptPrintSpeed] // ChatBoxPropreties.typingSpeed
 	ldrb r0, [r5,#oChatbox_TextScriptCharIdx] // ChatBoxPropreties.textCoord
 	mov r1, r5
@@ -2659,7 +2659,7 @@ loc_8040F4E:
 	strb r0, [r5,#oChatbox_TextScriptState_04]
 	strh r0, [r5,#oChatbox_BoxYX]
 	mov r0, #1
-	str r0, [r5,#oChatbox_Unk_74]
+	str r0, [r5,#oChatbox_ScriptFlags]
 	add r4, #2
 	mov r0, #0
 	pop {pc}
@@ -3404,7 +3404,7 @@ loc_80413C0:
 	mov r1, #0
 	str r1, [r5,#oChatbox_TextScriptTimer] // ChatBoxPropreties.unk_64
 	mov r1, #1
-	str r1, [r5,#oChatbox_Unk_74]
+	str r1, [r5,#oChatbox_ScriptFlags]
 	str r4, [r5,#oChatbox_TextScriptCursorPtr] // ChatBoxPropreties.pScriptCursor
 	str r4, [r5,#oChatbox_CurrTextScriptPtr] // ChatBoxPropreties.pCurrScript
 	b loc_80413EE
@@ -4579,7 +4579,7 @@ loc_8041BF2:
 	str r0, [r5,#oChatbox_PrintDelay]
 	mov r0, #1
 	strb r0, [r5,#oChatbox_JumpTableOffset_11]
-	str r0, [r5,#oChatbox_Unk_74]
+	str r0, [r5,#oChatbox_ScriptFlags]
 	ldrb r0, [r5,#oChatbox_TextScriptPrintSpeed]
 	ldrb r0, [r5,#oChatbox_TextScriptCharIdx]
 	mov r1, r5

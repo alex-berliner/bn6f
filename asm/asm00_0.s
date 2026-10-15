@@ -3069,7 +3069,7 @@ render_flushDisplayRegisters_800172C:
 
 	// (r5_0_pRenderInfo) -> (r1_0_ioMosaicSize : ?, r2_0 : u16)
 	ldr r1, off_8001768 // =MosaicSize
-	ldrh r2, [r5,#oRenderInfo_Unk_02]
+	ldrh r2, [r5,#oRenderInfo_MosaicSize]
 	strh r2, [r1]
 
 	// (r5_0_pRenderInfo) -> (r0_0 : ?, r1_1_io : ?, r2_1 : usize)
@@ -3124,7 +3124,7 @@ off_8001774:
 SetRenderInfoLCDControl: // (a_00: u16) -> ()
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r0, [r1,#oRenderInfo_Unk_00]
+	strh r0, [r1,#oRenderInfo_LCDControl]
 	mov pc, lr
 	thumb_func_end SetRenderInfoLCDControl
 
@@ -3136,7 +3136,7 @@ SetRenderInfoLCDControl: // (a_00: u16) -> ()
 GetRenderInfoLCDControl: // () -> u16
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	ldrh r0, [r1,#oRenderInfo_Unk_00]
+	ldrh r0, [r1,#oRenderInfo_LCDControl]
 	mov pc, lr
 	thumb_func_end GetRenderInfoLCDControl
 
@@ -3152,8 +3152,8 @@ renderInfo_8001788: // () -> ()
 	strh r1, [r0,#oRenderInfo_Unk_0e]
 	strh r1, [r0,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r0,#oRenderInfo_BGScrollY]
-	strh r1, [r0,#oRenderInfo_Unk_14]
-	strh r1, [r0,#oRenderInfo_Unk_16]
+	strh r1, [r0,#oRenderInfo_BG1ScrollXAlt]
+	strh r1, [r0,#oRenderInfo_BGScrollY2]
 	strh r1, [r0,#oRenderInfo_BG3ScrollY]
 	strh r1, [r0,#oRenderInfo_BG2ScrollX]
 	mov pc, lr
@@ -3168,7 +3168,7 @@ renderInfo_80017A0: // () -> ()
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	mov r1, #0
-	strh r1, [r0,#oRenderInfo_Unk_02]
+	strh r1, [r0,#oRenderInfo_MosaicSize]
 	mov pc, lr
 	thumb_func_end renderInfo_80017A0
 

@@ -23685,7 +23685,7 @@ sub_801A7CC:
 	strb r0, [r3,#oCollisionData_Barrier]
 	ldr r1, off_801A7F0 // =byte_8020B8C 
 	ldrb r1, [r1,r0]
-	strb r1, [r3,#oCollisionData_Unk_14]
+	strb r1, [r3,#oCollisionData_BarrierIndex]
 	mov r1, #6
 	mul r0, r1
 	ldr r1, off_801A7EC // =byte_8020B2C 
@@ -23823,7 +23823,7 @@ loc_801A8AE:
 	beq loc_801A8CA
 	cmp r1, #0xc8
 	bge loc_801A8C6
-	ldrb r0, [r4,#oCollisionData_Unk_1a]
+	ldrb r0, [r4,#oCollisionData_BarrierBreakCounter]
 	add r0, #1
 	cmp r0, #6
 	blt loc_801A8C6
@@ -23831,7 +23831,7 @@ loc_801A8AE:
 	strh r1, [r4,#oCollisionData_BarrierHP]
 	mov r0, #0
 loc_801A8C6:
-	strb r0, [r4,#oCollisionData_Unk_1a]
+	strb r0, [r4,#oCollisionData_BarrierBreakCounter]
 	b loc_801A8E0
 loc_801A8CA:
 	bl battle_isTimeStop
@@ -23860,7 +23860,7 @@ loc_801A8E0: .align 1, 0
 	strh r0, [r4,r1]
 	b loc_801A90A
 loc_801A8FA:
-	ldrb r0, [r4,#oCollisionData_Unk_14]
+	ldrb r0, [r4,#oCollisionData_BarrierIndex]
 	cmp r0, #0
 	beq loc_801A916
 	lsl r0, r0, #1

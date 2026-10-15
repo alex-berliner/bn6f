@@ -1693,17 +1693,17 @@ _sprite_loadAnimationData:
 	mov r1, #0x80
 	and r0, r1
 	bne loc_300675A
-	ldr r1, [r5,#oObjectSprite_Unk_18]
+	ldr r1, [r5,#oObjectSprite_AnimationResourcePtr]
 	ldr r2, [r1]
 	add r3, r2, r1
-	str r3, [r5,#oObjectSprite_Unk_1c]
+	str r3, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldrb r0, [r5,#oObjectSprite_AnimationIndex]
 	lsl r0, r0, #2
 	ldr r2, [r3,#8]
 	add r1, r1, r2
 	ldr r2, [r1,r0]
 	add r1, r1, r2
-	str r1, [r5,#oObjectSprite_Unk_20]
+	str r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r1,#1]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
@@ -1712,26 +1712,26 @@ _sprite_loadAnimationData:
 loc_300675A:
 	ldrb r0, [r5,#oObjectSprite_AnimationIndex]
 	lsl r0, r0, #2
-	ldr r1, [r5,#oObjectSprite_Unk_18]
+	ldr r1, [r5,#oObjectSprite_AnimationResourcePtr]
 	ldr r2, [r1,r0]
 	add r3, r2, r1
-	str r3, [r5,#oObjectSprite_Unk_1c]
+	str r3, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldr r2, [r3,#8]
 	add r1, r1, r2
 	ldr r2, [r1]
 	add r1, r1, r2
-	str r1, [r5,#oObjectSprite_Unk_20]
+	str r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r3,#0x10]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
 	strb r2, [r5,#oObjectSprite_AttributeFlags]
 loc_3006778:
-	ldr r1, [r5,#oObjectSprite_Unk_20]
+	ldr r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r1]
 	lsl r2, r2, #2
-	ldr r0, [r5,#oObjectSprite_Unk_1c]
+	ldr r0, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldr r0, [r0,#0xc]
-	ldr r1, [r5,#oObjectSprite_Unk_18]
+	ldr r1, [r5,#oObjectSprite_AnimationResourcePtr]
 	add r1, r1, r0
 	ldr r2, [r1,r2]
 	add r2, r2, r1
@@ -1754,34 +1754,34 @@ loc_3006794:
 	mov r1, #0x80
 	and r0, r1
 	bne loc_30067C0
-	ldr r1, [r5,#oObjectSprite_Unk_20]
+	ldr r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r0, [r1,#2]
 	ldrb r4, [r1,#1]
 	mov r2, #0x80
 	tst r0, r2
 	bne loc_30067E6
 	add r1, #3
-	str r1, [r5,#oObjectSprite_Unk_20]
+	str r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r1,#1]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
 	strb r2, [r5,#oObjectSprite_AttributeFlags]
 	b loc_30067E4
 loc_30067C0:
-	ldr r3, [r5,#oObjectSprite_Unk_1c]
+	ldr r3, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldrb r0, [r3,#0x12]
 	ldrb r4, [r3,#0x10]
 	mov r2, #0x80
 	tst r0, r2
 	bne loc_30067E6
 	add r3, #0x14
-	str r3, [r5,#oObjectSprite_Unk_1c]
-	ldr r1, [r5,#oObjectSprite_Unk_18]
+	str r3, [r5,#oObjectSprite_AnimationSubFramePtr]
+	ldr r1, [r5,#oObjectSprite_AnimationResourcePtr]
 	ldr r2, [r3,#8]
 	add r1, r1, r2
 	ldr r2, [r1]
 	add r1, r1, r2
-	str r1, [r5,#oObjectSprite_Unk_20]
+	str r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r3,#0x10]
 	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
@@ -1799,12 +1799,12 @@ loc_30067F2:
 	bl _sprite_loadAnimationData
 	b loc_3006794
 loc_30067F8:
-	ldr r1, [r5,#oObjectSprite_Unk_20]
+	ldr r1, [r5,#oObjectSprite_AnimFrameDataPtr]
 	ldrb r2, [r1]
 	lsl r2, r2, #2
-	ldr r0, [r5,#oObjectSprite_Unk_1c]
+	ldr r0, [r5,#oObjectSprite_AnimationSubFramePtr]
 	ldr r0, [r0,#0xc]
-	ldr r1, [r5,#oObjectSprite_Unk_18]
+	ldr r1, [r5,#oObjectSprite_AnimationResourcePtr]
 	add r1, r1, r0
 	ldr r2, [r1,r2]
 	add r2, r2, r1

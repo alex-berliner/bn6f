@@ -3982,7 +3982,7 @@ scenario_prepareEnterMap_8004D48:
 	mov r0, #0
 	strb r0, [r5,#oGameState_CoordInteractionValue]
 	strb r0, [r5,#oGameState_Unk_03]
-	strb r0, [r5,#oGameState_Unk_15]
+	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_BattlePaused]
 	str r0, [r5,#oGameState_Unk_74]
 
@@ -4513,7 +4513,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	bl gameState_setUnk09_8001172
 
 	mov r0, #0
-	strb r0, [r5,#oGameState_Unk_15]
+	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_CoordInteractionValue]
 	strb r0, [r5,#oGameState_Unk_03]
 	str r0, [r5,#oGameState_Unk_68]
@@ -9042,7 +9042,7 @@ battle_SpawnEnemyObjects_8007358: // () -> ()
 	pop {pc}
 	thumb_func_end battle_SpawnEnemyObjects_8007358
 
-// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_Unk_04_05` to `oBattleState_Unk_12_13` and copies the alive-actor words over the battle-actor slots in the BattleState.
+// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_AliveActorAndOpponent` to `oBattleState_Unk_12_13` and copies the alive-actor words over the battle-actor slots in the BattleState.
 // symdb: void spawnBattleObjectsFromConfig_8007368( const EnemySetup *config /* r0 -> r6 */, BattleState
 // symdb: *state /* r5 */, BattleToolkit *toolkit /* r10 */, void *r4, void *r7, void *lr /* inherited */)
 // symdb: -> returns r5, r8, r9, r10, r11, r12; clobbers nzcv r0-r3, r4, r7, lr; preserves r6
@@ -9072,7 +9072,7 @@ loop_800736C:
 	b loop_800736C
 done_8007384:
 
-	ldrh r0, [r5,#oBattleState_Unk_04_05]
+	ldrh r0, [r5,#oBattleState_AliveActorAndOpponent]
 	strh r0, [r5,#oBattleState_Unk_12_13]
 
 	mov r2, r10

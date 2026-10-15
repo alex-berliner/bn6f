@@ -21589,8 +21589,8 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	add r7, r7, r4
 	strh r6, [r0,#oRenderInfo_BGScrollXOffset]
 	strh r7, [r0,#oRenderInfo_BGScrollY]
-	strh r6, [r0,#oRenderInfo_Unk_14]
-	strh r7, [r0,#oRenderInfo_Unk_16]
+	strh r6, [r0,#oRenderInfo_BG1ScrollXAlt]
+	strh r7, [r0,#oRenderInfo_BGScrollY2]
 	mov pc, lr
 	thumb_func_end camera_applyDeltaToRenderInfoScroll_8030136
 
@@ -21608,12 +21608,12 @@ camera_applyScrollToBgLayers_8030158:
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
-	ldrh r6, [r0,#oRenderInfo_Unk_14]
+	ldrh r6, [r0,#oRenderInfo_BG1ScrollXAlt]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_16]
+	ldrh r7, [r0,#oRenderInfo_BGScrollY2]
 	add r7, r7, r4
-	strh r6, [r0,#oRenderInfo_Unk_14]
-	strh r7, [r0,#oRenderInfo_Unk_16]
+	strh r6, [r0,#oRenderInfo_BG1ScrollXAlt]
+	strh r7, [r0,#oRenderInfo_BGScrollY2]
 	push {r1,r4}
 	bl camera_shouldApplyBgScrollToBothLayerPairs_80269E2
 	pop {r1,r4}
@@ -21862,11 +21862,11 @@ camera_CopyScrollToRenderLayers_80302F8:
 	mov r4, #0xff
 	and r1, r4
 	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
-	strh r1, [r3,#oRenderInfo_Unk_14]
+	strh r1, [r3,#oRenderInfo_BG1ScrollXAlt]
 	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	and r2, r4
 	strh r2, [r3,#oRenderInfo_BGScrollY]
-	strh r2, [r3,#oRenderInfo_Unk_16]
+	strh r2, [r3,#oRenderInfo_BGScrollY2]
 	strh r2, [r3,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end camera_CopyScrollToRenderLayers_80302F8
@@ -21885,10 +21885,10 @@ renderInfo_SnapScrollToCamera_8030316:
 	mov r4, #0xff
 	and r1, r4
 	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
-	strh r1, [r3,#oRenderInfo_Unk_14]
+	strh r1, [r3,#oRenderInfo_BG1ScrollXAlt]
 	and r2, r4
 	strh r2, [r3,#oRenderInfo_BGScrollY]
-	strh r2, [r3,#oRenderInfo_Unk_16]
+	strh r2, [r3,#oRenderInfo_BGScrollY2]
 	mov r1, #0
 	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	strh r1, [r3,#oRenderInfo_BG3ScrollY]
@@ -21909,11 +21909,11 @@ render_ClearScrollOffsets_8030336:
 	mov r4, #0xff
 	and r1, r4
 	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
-	strh r1, [r3,#oRenderInfo_Unk_14]
+	strh r1, [r3,#oRenderInfo_BG1ScrollXAlt]
 	strh r1, [r3,#oRenderInfo_BG2ScrollX]
 	and r2, r4
 	strh r2, [r3,#oRenderInfo_BGScrollY]
-	strh r2, [r3,#oRenderInfo_Unk_16]
+	strh r2, [r3,#oRenderInfo_BGScrollY2]
 	strh r2, [r3,#oRenderInfo_BG3ScrollY]
 	mov r1, #0
 	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
