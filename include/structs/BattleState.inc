@@ -21,7 +21,7 @@
 	endu
 
 	u8 BattleField // loc=0x6
-	u8 Unk_07 // loc=0x7
+	u8 BattlePhase // loc=0x7
 	u8 Unk_08 // loc=0x8
 	struct_org 0xa
 	u8 Unk_0a // loc=0xa
