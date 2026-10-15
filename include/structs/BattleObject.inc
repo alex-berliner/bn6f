@@ -47,7 +47,7 @@
 	u32 CurStateActionPhaseAndPhaseInitialized // loc=0x8
 	endu
 
-	u8 Unk_0c // loc=0xc
+	u8 DirectionAngle // loc=0xc
 	u8 Unk_0d // loc=0xd
 	u8 Element // loc=0xe
 	u8 Unk_0f // loc=0xf
