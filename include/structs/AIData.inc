@@ -7,33 +7,33 @@
 		struct_const ACTOR_TYPE_NAVI, 0x01
 		struct_const ACTOR_TYPE_PLAYER, 0x02
 	u8 AIIndex // loc=0x1
-	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
-	u8 Unk_04 // loc=0x4
+	u8 DisableCounterDecrement // loc=0x2
+	u8 VersionVariant // loc=0x3
+	u8 NaviBonusIndex // loc=0x4
 	u8 APwrAtk // loc=0x5
 	u8 BButton // loc=0x6
 	u8 BPwrAtk // loc=0x7
 	u8 BLeftAbility // loc=0x8
-	u8 Unk_09 // loc=0x9
-	u8 Unk_0a // loc=0xa
-	u8 Unk_0b // loc=0xb
-	u8 Unk_0c // loc=0xc
-	u8 Unk_0d // loc=0xd
-	u8 Unk_0e // loc=0xe
-	u8 Unk_0f // loc=0xf
-	u8 Unk_10 // loc=0x10
+	u8 PoisonTickCounter // loc=0x9
+	u8 SelfDestructTurnCounter // loc=0xa
+	u8 AIScratchByte // loc=0xb
+	u8 AiDifficultyTier // loc=0xc
+	u8 ChargeShotStepIndex // loc=0xd
+	u8 AISubordinateSlot // loc=0xe
+	u8 BeastOutLockoutTimer // loc=0xf
+	u8 CounterHealDamage // loc=0x10
 	u8 BeastOutAPwrAtk // loc=0x11
-	u8 Unk_12 // loc=0x12
-	u8 Unk_13 // loc=0x13
+	u8 CounterHitChain // loc=0x12
+	u8 BurstShotTimer // loc=0x13
 	.space 0x1
-	u8 Unk_15 // loc=0x15
+	u8 ChipUseDelayAlt // loc=0x15
 	u8 Version_16 // loc=0x16
 	u8 Version_17 // loc=0x17
 	u8 Unk_18 // loc=0x18
 	u8 ChipLockoutTimer // loc=0x19
-	u8 Unk_1a // loc=0x1a
+	u8 AttackTeardownScratch // loc=0x1a
 	u8 PwrAtkCurChargeTime // loc=0x1b
-	u8 Unk_1c // loc=0x1c
+	u8 PanelDamageReactionFlag // loc=0x1c
 	u8 PwrAtkState // loc=0x1d
 	u8 PwrAtkButton // loc=0x1e
 	struct_org 0x20
@@ -42,10 +42,10 @@
 	u16 JoypadPressed // loc=0x24
 	u16 JoypadUp // loc=0x26
 	u16 JoypadReleased // loc=0x28
-	u16 Unk_2a // loc=0x2a
-	u16 Unk_2c // loc=0x2c
-	u16 Unk_2e // loc=0x2e
-	u16 Unk_30 // loc=0x30
+	u16 FrozenJoypadReleased // loc=0x2a
+	u16 TimeStopMirrorHeld // loc=0x2c
+	u16 JoypadHeldPrev // loc=0x2e
+	u16 JoypadFrozen // loc=0x30
 	u16 Unk_32 // loc=0x32
 	// bool16???
 	u16 Anger // loc=0x34
@@ -99,10 +99,10 @@
 	u8 AggressionFlag // loc=0x7
 	u16 Timer // loc=0x8
 	.space 0x2
-	u8 Unk_0c // loc=0xc
-	u8 Unk_0d // loc=0xd
-	u8 Unk_0e // loc=0xe
-	u8 Unk_0f // loc=0xf
+	u8 AiDifficultyTier // loc=0xc
+	u8 ChargeShotStepIndex // loc=0xd
+	u8 AISubordinateSlot // loc=0xe
+	u8 BeastOutLockoutTimer // loc=0xf
 	struct_org 0x20
 	u0 Size // loc=0x20
 	u0 End // loc=0x20
@@ -134,7 +134,7 @@
 	u16 AttackDuration // loc=0x18
 	u8 HasMoved // loc=0x1a
 	u8 IsInvincible // loc=0x1b
-	u8 Unk_1c // loc=0x1c
+	u8 PanelDamageReactionFlag // loc=0x1c
 	u8 PwrAtkState // loc=0x1d
 	u8 Unk_1e // loc=0x1e
 	struct_org 0x28
