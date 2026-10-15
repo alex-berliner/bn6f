@@ -390,13 +390,13 @@ off_809D468:
 ow_player_perFrameSubstateDispatcher_809D470:
 	push {r4,lr}
 	bl owMapObject_handlePlayerInteract_809D9E0
-	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
+	ldrb r0, [r5,#oOWPlayerObject_ActionSubState]
 	tst r0, r0
 	bne loc_809D484
 	ldrb r0, [r5,#oOWPlayerObject_FacingDirection]
 	strb r0, [r5,#oOWPlayerObject_AnimationSelect]
 	mov r0, #4
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 loc_809D484:
 	bl event_TestPlayerAdvanceForward_809DB50
 	beq loc_809D492
@@ -440,7 +440,7 @@ locret_809D4D6:
 
 // symdb: Overworld player per-frame dispatcher: handles the player-object interaction probe first; otherwise picks the next player jumptable index based on per-frame checks (gate/tile interaction, door advance, advance-forward event, bit-0x10 state).
 // symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr, lr) -> r0 = result of the chosen sub-check (zero/non-
-// symdb: zero as flags); side effects: writes oOWPlayerObject_Unk_0a, sometimes oOWPlayerObject_Unk_13,
+// symdb: zero as flags); side effects: writes oOWPlayerObject_ActionSubState, sometimes oOWPlayerObject_Unk_13,
 // symdb: and oOWPlayerObject_JumptableIndex_09 (or its pending slot) via
 // symdb: owPlayer_setJumptableIndex09AndOthers_809e004; reads oOWPlayerObject_FacingDirection and
 // symdb: oOWPlayerObject_Unk_11.
@@ -456,10 +456,10 @@ owPlayer_tickPerFrame_809D4DC:
 	cmp r0, r1
 	beq loc_809D4F2
 	mov r0, #0
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 loc_809D4F2:
 	ldr r7, off_809D55C // =off_809D554 
-	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
+	ldrb r0, [r5,#oOWPlayerObject_ActionSubState]
 	ldr r7, [r7,r0]
 	mov lr, pc
 	bx r7
@@ -551,7 +551,7 @@ loc_809D592:
 	ldrb r0, [r7]
 	strb r0, [r5,#oOWPlayerObject_AnimationSelect]
 	mov r0, #4
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 	pop {pc}
 	.balign 4, 0
 off_809D5AC:
@@ -617,7 +617,7 @@ loc_809D60C:
 // symdb: Overworld player slip-run substate: gates each frame on the EVENT_1716/EVENT_IN_SLIPRUN_STATE flags, dispatches via Unk_0a jumptable between slip-run and engine tick, and otherwise routes the player into normal per-frame updates (advance/forward, idle, tile-interaction) before ending the slip-run if conditions warrant.
 // symdb: (r5 = oOWPlayerObject*, r10 = oToolkit*) -> void ; side effects: writes the overworld player
 // symdb: jumptable index via owPlayer_setJumptableIndex09AndOthers_809e004, may clear
-// symdb: oOWPlayerObject_Unk_0a, may end slip-run state, may set EVENT_173F via callees
+// symdb: oOWPlayerObject_ActionSubState, may end slip-run state, may set EVENT_173F via callees
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_runSlipRunOrEngine_0809D61A.yaml
 	thumb_local_start
 owPlayer_runSlipRunOrEngine_0809D61A:
@@ -637,11 +637,11 @@ loc_809D630:
 	cmp r0, r1
 	beq loc_809D646
 	mov r0, #0
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 	b loc_809D646
 loc_809D646:
 	ldr r7, off_809D6B8 // =off_809D6B0 
-	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
+	ldrb r0, [r5,#oOWPlayerObject_ActionSubState]
 	ldr r7, [r7,r0]
 	mov lr, pc
 	bx r7
@@ -740,7 +740,7 @@ calledWhenUsingSlipRun_809D6BC:
 	ldrb r0, [r7]
 	strb r0, [r5,#oOWPlayerObject_AnimationSelect]
 	mov r0, #4
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 	pop {pc}
 	.balign 4, 0
 off_809D714:
@@ -795,7 +795,7 @@ loc_809D750:
 ow_player_processAction_809D75E:
 	push {lr}
 	ldr r7, off_809D7A4 // =off_809D798 
-	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
+	ldrb r0, [r5,#oOWPlayerObject_ActionSubState]
 	ldr r7, [r7,r0]
 	mov lr, pc
 	bx r7
@@ -847,7 +847,7 @@ sub_809D7A8:
 	mov r0, #TRUE
 	strb r0, [r7,#oOverworldNPCObject_ChatTriggered]
 	mov r0, #4
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 locret_809D7C6:
 	pop {pc}
 	thumb_func_end sub_809D7A8
@@ -864,7 +864,7 @@ ow_player_setCounterTalkStateAfterNpcInteract_809D7C8:
 	cmp r0, #4
 	bne locret_809D7D6
 	mov r0, #8
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 locret_809D7D6:
 	pop {pc}
 	thumb_func_end ow_player_setCounterTalkStateAfterNpcInteract_809D7C8
@@ -888,7 +888,7 @@ loc_809D7E2:
 	mov r0, #0
 	strb r0, [r5,#oOWPlayerObject_JumptableIndex_09]
 	mov r0, #0
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 locret_809D7F6:
 	pop {pc}
 	thumb_func_end owPlayerObject_clearStateUnk10_809D7D8
@@ -1032,7 +1032,7 @@ locret_809D8F0:
 owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4:
 	push {lr}
 	ldr r7, off_809D928 // =off_809D91C 
-	ldrb r0, [r5,#oOWPlayerObject_Unk_0a]
+	ldrb r0, [r5,#oOWPlayerObject_ActionSubState]
 	ldr r7, [r7,r0]
 	mov lr, pc
 	bx r7
@@ -1082,7 +1082,7 @@ loc_809D938:
 	strb r0, [r5,#oOWPlayerObject_FacingDirection]
 	strb r0, [r5,#oOWPlayerObject_Unk_11]
 	mov r0, #4
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 	mov r0, #1
 	mov r1, #0x5c 
 	strb r0, [r5,r1]
@@ -1111,7 +1111,7 @@ loc_809D97E:
 	cmp r0, r3
 	bne loc_809D98E
 	mov r0, #8
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 loc_809D98E:
 	ldr r0, [r5,#oOWPlayerObject_Unk_38]
 	ldr r1, [r5,#oOWPlayerObject_X]
@@ -1149,7 +1149,7 @@ loc_809D9C4:
 	mov r0, #0
 	strb r0, [r5,#oOWPlayerObject_JumptableIndex_09]
 	mov r0, #0
-	strb r0, [r5,#oOWPlayerObject_Unk_0a]
+	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 	strb r0, [r5,#oOWPlayerObject_Unk_0b]
 locret_809D9D6:
 	pop {pc}
@@ -1990,7 +1990,7 @@ byte_809DFFC:
 owPlayer_setJumptableIndex09AndOthers_809e004:
 	push {lr}
 	mov r1, #0
-	strb r1, [r5,#oOWPlayerObject_Unk_0a]
+	strb r1, [r5,#oOWPlayerObject_ActionSubState]
 	ldrb r1, [r5,#oOWPlayerObject_JumptableIndex_09]
 	cmp r1, #0x10
 	bne loc_809E014
