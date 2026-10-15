@@ -19112,7 +19112,7 @@ sub_80C0C48:
 	bl sub_80E199A
 	mov r6, r0
 	ldrb r0, [r5,#oBattleObject_DirectionAngle]
-	ldrb r1, [r5,#oBattleObject_Unk_0d]
+	ldrb r1, [r5,#oBattleObject_MoveSubState]
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sub_80CE224
@@ -19360,7 +19360,7 @@ sub_80C0DD8:
 	strb r1, [r0,#oBattleObject_PanelX]
 	strb r1, [r0,#oBattleObject_DirectionAngle]
 	strb r2, [r0,#oBattleObject_PanelY]
-	strb r2, [r0,#oBattleObject_Unk_0d]
+	strb r2, [r0,#oBattleObject_MoveSubState]
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
 	str r6, [r0,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
@@ -73330,7 +73330,7 @@ locret_80DA378:
 	thumb_local_start
 sub_80DA37A:
 	push {lr}
-	ldrb r0, [r5,#oBattleObject_Unk_0d]
+	ldrb r0, [r5,#oBattleObject_MoveSubState]
 	cmp r0, #0
 	bne loc_80DA38A
 	mov r0, #1
@@ -107915,7 +107915,7 @@ sub_80EA11C:
 	strb r1, [r0,#oBattleObject_PanelX]
 	strb r1, [r0,#oBattleObject_DirectionAngle]
 	strb r2, [r0,#oBattleObject_PanelY]
-	strb r2, [r0,#oBattleObject_Unk_0d]
+	strb r2, [r0,#oBattleObject_MoveSubState]
 	strb r3, [r0,#oBattleObject_Element]
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	strh r1, [r0,#oBattleObject_AllianceAndDirectionFlip]
@@ -115449,7 +115449,7 @@ riskyHoneyAttack_update_80EDDE0:
 	cmp r0, #0
 	beq loc_80EDDEE
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_80EDDF2
 loc_80EDDEE:
 	bl riskyHoneyAttack_update_sub_80EDE4A

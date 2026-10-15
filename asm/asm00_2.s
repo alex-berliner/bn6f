@@ -18058,7 +18058,7 @@ dword_8016CE4:
 battleObjectStateDispatcher_8016CE8:
 	push {lr}
 	ldr r1, off_8016CF8 // =off_8016CFC 
-	ldrb r0, [r5,#oBattleObject_Unk_0d]
+	ldrb r0, [r5,#oBattleObject_MoveSubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -18121,13 +18121,13 @@ battleAdvanceObjectPhase_8016D08:
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_reservePanel
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 loc_8016D74:
 	mov r0, #0x18
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 	.balign 4, 0
 dword_8016D80:
@@ -18216,7 +18216,7 @@ loc_8016E14:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,pc}
 loc_8016E2A:
 	bl object_setPanelsFromCoordinates
@@ -19583,7 +19583,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_MoveSubState selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml
@@ -19591,7 +19591,7 @@ loc_80178AC:
 sub_80178B6:
 	push {lr}
 	ldr r1, off_80178C4 // =off_80178C8 
-	ldrb r0, [r5,#oBattleObject_Unk_0d]
+	ldrb r0, [r5,#oBattleObject_MoveSubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -19684,13 +19684,13 @@ loc_8017900:
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_reservePanel
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 loc_8017988:
 	mov r0, #0x18
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 	thumb_func_end battleObject_initMoveStep_80178D4
 
@@ -19770,7 +19770,7 @@ loc_8017A18:
 	mov r0, #0x14
 	strh r0, [r5,#oBattleObject_Timer]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,pc}
 loc_8017A2E:
 	bl object_setPanelsFromCoordinates
@@ -20100,7 +20100,7 @@ byte_8017CB0:
 sub_8017CC0:
 	push {lr}
 	ldr r1, off_8017CD0 // =off_8017CD4 
-	ldrb r0, [r5,#oBattleObject_Unk_0d]
+	ldrb r0, [r5,#oBattleObject_MoveSubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -20161,13 +20161,13 @@ sub_8017CE0:
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_reservePanel
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 loc_8017D4E:
 	mov r0, #0x18
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r6,r7,pc}
 	.balign 4, 0
 off_8017D58:
@@ -20250,7 +20250,7 @@ loc_8017DEA:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,pc}
 loc_8017E00:
 	bl object_setPanelsFromCoordinates
@@ -20280,7 +20280,7 @@ locret_8017E24:
 sub_8017E26:
 	push {lr}
 	ldr r1, off_8017E34 // =off_8017E38 
-	ldrb r0, [r5,#oBattleObject_Unk_0d]
+	ldrb r0, [r5,#oBattleObject_MoveSubState]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -20387,13 +20387,13 @@ loc_8017EE6:
 	strb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,r6,r7,pc}
 loc_8017F08:
 	mov r0, #0x18
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,r6,r7,pc}
 	.word 0, 0, 0
 	.balign 4, 0
@@ -20487,7 +20487,7 @@ loc_8017FC6:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleObject_CurPhase]
 	mov r0, #8
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	pop {r4,pc}
 loc_8017FDC:
 	bl object_setPanelsFromCoordinates
@@ -24740,7 +24740,7 @@ loc_801B096:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B142
 loc_801B0AA:
 	bl object_getFlag // () -> int
@@ -24753,7 +24753,7 @@ loc_801B0AA:
 	b loc_801B142
 loc_801B0BC:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	bl object_getFlag2
 	mov r1, #0x10
 	tst r0, r1
@@ -25030,7 +25030,7 @@ loc_801B2CA: // endif
 
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 
 	b loc_801B338
 
@@ -25050,7 +25050,7 @@ loc_801B2D6: // endif
 loc_801B2E8: // endif
 
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 
 	bl object_getFlag2
 	mov r1, #OBJECT_FLAGS_2_UNK_BIT_04
@@ -25277,7 +25277,7 @@ loc_801B480:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B4A2
 loc_801B48C:
 	bl object_getFlag // () -> int
@@ -25290,7 +25290,7 @@ loc_801B48C:
 	b loc_801B4A2
 loc_801B49E:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 loc_801B4A2:
 	bl sprite_zeroColorShader
 	bl hideSummonsWhenBlind_80181F6
@@ -25434,7 +25434,7 @@ loc_801B5BC:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B5DE
 loc_801B5C8:
 	bl object_getFlag // () -> int
@@ -25447,7 +25447,7 @@ loc_801B5C8:
 	b loc_801B5DE
 loc_801B5DA:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 loc_801B5DE:
 	bl sprite_zeroColorShader
 	bl hideSummonsWhenBlind_80181F6
@@ -25593,7 +25593,7 @@ loc_801B6FC:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B71E
 loc_801B708:
 	bl object_getFlag // () -> int
@@ -25606,7 +25606,7 @@ loc_801B708:
 	b loc_801B71E
 loc_801B71A:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 loc_801B71E:
 	bl sprite_zeroColorShader
 	bl hideSummonsWhenBlind_80181F6
@@ -25749,7 +25749,7 @@ loc_801B836:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B858
 loc_801B842:
 	bl object_getFlag // () -> int
@@ -25762,7 +25762,7 @@ loc_801B842:
 	b loc_801B858
 loc_801B854:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 loc_801B858:
 	bl sprite_zeroColorShader
 	bl hideSummonsWhenBlind_80181F6
@@ -25909,7 +25909,7 @@ loc_801B96A:
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurPhase]
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 	b loc_801B98C
 loc_801B976:
 	bl object_getFlag // () -> int
@@ -25922,7 +25922,7 @@ loc_801B976:
 	b loc_801B98C
 loc_801B988:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0d]
+	strb r0, [r5,#oBattleObject_MoveSubState]
 loc_801B98C:
 	bl sprite_zeroColorShader
 	bl hideSummonsWhenBlind_80181F6
