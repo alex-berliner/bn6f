@@ -88161,7 +88161,7 @@ loc_80E13CA:
 	lsr r6, r6, #1
 	bcs locret_80E13DA
 	ldr r0, [r7,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	tst r0, r0
 	beq locret_80E13DA
 	bl sub_80C4C46
@@ -88236,7 +88236,7 @@ loc_80E1452:
 	bl sub_80E0F28
 loc_80E145E:
 	ldr r0, [r7,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	tst r0, r0
 	beq locret_80E146A
 	bl sub_80C4C4C

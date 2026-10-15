@@ -16097,7 +16097,7 @@ sub_802D950:
 	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
-	str r0, [r1,#oAIData_Unk_5c]
+	str r0, [r1,#oAIData_AIScriptOffset]
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_Unk_10]
 	mov r0, #4

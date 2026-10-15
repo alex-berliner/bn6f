@@ -11178,7 +11178,7 @@ battleObject_playerCounterSpawnPinkRingIfReady_80139C4:
 	cmp r0, #2
 	bne locret_80139F4
 
-	add r7, #oAIData_Unk_5c
+	add r7, #oAIData_AIScriptOffset
 	ldr r0, [r7]
 	tst r0, r0
 	bne locret_80139F4
@@ -13791,7 +13791,7 @@ battleObject_commitMoveLanding_8014B18:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	bl sub_80C4C3A
 	bl sub_80158FA
 	mov r0, #6
@@ -14023,7 +14023,7 @@ sub_8014D08:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	bl sub_80C4C3A
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -14293,7 +14293,7 @@ sub_8014F40:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	bl sub_80C4C3A
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -14546,7 +14546,7 @@ sub_801516C:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	bl sub_80C4C3A
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -14839,7 +14839,7 @@ sub_80153EC:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_5c]
+	ldr r0, [r0,#oAIData_AIScriptOffset]
 	bl sub_80C4C3A
 	bl sub_80158FA
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
@@ -19074,7 +19074,7 @@ sub_801746E:
 	strb r0, [r5,#oBattleObject_PreventAnim]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
-	str r0, [r1,#oAIData_Unk_5c]
+	str r0, [r1,#oAIData_AIScriptOffset]
 	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r0, #0x6c 
 	bl PlaySoundEffect
