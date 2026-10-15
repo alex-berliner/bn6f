@@ -123,7 +123,7 @@ sub_800EE26:
 	ldrh r0, [r6,#0x34]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrb r0, [r0,#0xf]
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 	ldrh r0, [r6,#0x34]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	bl battle_chipEffectDispatcher_80109A4
@@ -1391,7 +1391,7 @@ setFieldBattleObject_800F614:
 	add r1, r1, r3
 	lsl r3, r2, #3
 	add r1, r1, r3
-	add r1, #oBattleState_Unk_a0
+	add r1, #oBattleState_BattleObjectList
 	tst r2, r2
 	bne loc_800F648
 	ldr r2, [r1]
@@ -1426,7 +1426,7 @@ locret_800F654:
 clearEntryOfBattleStateBattleObjectList_800F656:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	add r0, #oBattleState_Unk_a0
+	add r0, #oBattleState_BattleObjectList
 	mov r1, #0
 loc_800F65E:
 	ldr r2, [r0]
@@ -1625,7 +1625,7 @@ sub_800F7D4:
 	mov r0, #1
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	add r1, #oBattleState_Unk_a0
+	add r1, #oBattleState_BattleObjectList
 	mov r2, #0
 loc_800F7DE:
 	ldr r3, [r1]
@@ -1658,7 +1658,7 @@ sub_800F806:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	add r0, #oBattleState_Unk_a0
+	add r0, #oBattleState_BattleObjectList
 	mov r1, #0
 loc_800F810:
 	ldr r2, [r0]
@@ -2177,7 +2177,7 @@ loc_800FB9C:
 	bne loc_800FC18
 loc_800FBE0:
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 	b loc_800FC18
 loc_800FBE6:
 	bl sub_8012CB2
@@ -2202,7 +2202,7 @@ loc_800FC0C:
 	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrb r0, [r0,#0xf]
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 	b loc_800FC18
 loc_800FC18:
 	ldr r0, dword_800FED4 // =0x1000c 
@@ -2252,7 +2252,7 @@ loc_800FC5C:
 	beq locret_800FC7A
 	bl object_setAttack2
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldrh r1, [r7,#oAIAttackVars_Damage]
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
@@ -2981,7 +2981,7 @@ ai_clearPwrAtkStateFromBattleObject_801011A:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	add r0, #0xa0
 	mov r1, #0
-	strb r1, [r0,#oAIAttackVars_Unk_1d]
+	strb r1, [r0,#oAIAttackVars_PwrAtkState]
 	strh r1, [r0,#oAIAttackVars_Unk_1e]
 	bl battleObject_clearAIDataUnknown_80E1662
 	pop {pc}
@@ -3601,7 +3601,7 @@ sub_801050C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xc
 	mul r0, r1
-	add r0, #oBattleState_Unk_a0
+	add r0, #oBattleState_BattleObjectList
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_BattleStatePtr]
 	add r7, r7, r0
@@ -15414,7 +15414,7 @@ sub_80158FA:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
 	strh r1, [r0,#oCollisionData_HitStunTimer]
-	strh r1, [r0,#oCollisionData_Unk_2a]
+	strh r1, [r0,#oCollisionData_HitInvulTimer]
 	strh r1, [r0,#oCollisionData_Unk_1c]
 	str r1, [r0,#oCollisionData_Unk_58]
 	str r1, [r0,#oCollisionData_Unk_60]
@@ -17207,7 +17207,7 @@ loc_8016672:
 	bl RemoveGivenAliveBattleActorFromList
 	mov r1, #0
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	str r1, [r0,#oAIData_Unk_74]
+	str r1, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl battle_getObjectNameID_8011020
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
@@ -18370,7 +18370,7 @@ sub_8016F1A:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, r5
 	bl RemoveGivenAliveBattleActorFromList
@@ -18711,7 +18711,7 @@ loc_8017168:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	bl battle_getObjectNameID_8011020
 	mov r0, r5
@@ -18813,7 +18813,7 @@ loc_801722C:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	bl battle_getObjectNameID_8011020
 	mov r0, r5
@@ -22803,7 +22803,7 @@ battle_clearObjectStatusFlagsAndTimers_801A264:
 	strh r0, [r3,#oCollisionData_Unk_1e]
 	strh r0, [r3,#oCollisionData_BlindTimer]
 	strh r0, [r3,#oCollisionData_Unk_22]
-	strh r0, [r3,#oCollisionData_Unk_2a]
+	strh r0, [r3,#oCollisionData_HitInvulTimer]
 	strh r0, [r3,#oCollisionData_HitStunTimer]
 	pop {pc}
 	thumb_func_end battle_clearObjectStatusFlagsAndTimers_801A264
@@ -22838,7 +22838,7 @@ battleObject_clearHitFlags_801A29A:
 	bl object_clearFlag2
 	mov r0, #0
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r3,#oCollisionData_Unk_2a]
+	strh r0, [r3,#oCollisionData_HitInvulTimer]
 	pop {pc}
 	thumb_func_end battleObject_clearHitFlags_801A29A
 
@@ -23704,14 +23704,14 @@ off_801A7F0:
 	.word byte_8020B8C
 	thumb_func_end sub_801A7CC
 
-// symdb: Clears a battle object's AI state field (oAIData_Unk_60) and removes its barrier flag in its collision data.
+// symdb: Clears a battle object's AI state field (oAIData_SubordinateObjectPtr) and removes its barrier flag in its collision data.
 // symdb: battle_clearAIDataAndBarrier(BattleObject *obj /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearAIDataAndBarrier_801A7F4.yaml
 	thumb_func_start battle_clearAIDataAndBarrier_801A7F4
 battle_clearAIDataAndBarrier_801A7F4:
 	mov r0, #0
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	str r0, [r1,#oAIData_Unk_60]
+	str r0, [r1,#oAIData_SubordinateObjectPtr]
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
 	strb r1, [r0,#oCollisionData_Barrier]
@@ -26000,7 +26000,7 @@ RunAIAttack: // (extra_ai_attack_jumptable: * [* Fn]) -> ()
 	sub r1, #0x10
 	ldr r0, off_801BB10 // =AIAttackJumptable
 
-	ldrb r2, [r7,#oAIAttackVars_Unk_1d]
+	ldrb r2, [r7,#oAIAttackVars_PwrAtkState]
 	cmp r2, #1
 	bne loc_801BA08 /*+1a*/
 

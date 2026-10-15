@@ -13720,7 +13720,7 @@ loc_80093B0:
 	mov r0, #1
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
 	bl GetBattleMode
@@ -13756,7 +13756,7 @@ loc_8009414:
 	mov r0, #2
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -14338,7 +14338,7 @@ loc_800981E:
 	mov r0, #1
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
 	bl GetBattleEffects // () -> int
@@ -14362,7 +14362,7 @@ loc_8009870:
 	mov r0, #2
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -14748,7 +14748,7 @@ locret_8009B1E:
 
 // symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
 // symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_SubPhaseInitFlag,
-// symdb: oBattleState_Index_01, oBattleState_Unk_1e, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
+// symdb: oBattleState_Index_01, oBattleState_BustingLevelCategory, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
 // symdb: pending event flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleStep_8009B20.yaml
 	thumb_local_start
@@ -14774,7 +14774,7 @@ loc_8009B30:
 	mov r0, #1
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
 	b loc_8009BA2
@@ -14784,7 +14784,7 @@ loc_8009B60:
 	mov r0, #2
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -15228,7 +15228,7 @@ loc_8009E66:
 	mov r0, #1
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl sub_800B6F2
 	b loc_8009ED8
@@ -15238,7 +15238,7 @@ loc_8009E96:
 	mov r0, #2
 	bl setTwoStructs_800A840
 	bl battle_bustingLevelCategoryForEffect_800AF84
-	strb r0, [r5,#oBattleState_Unk_1e]
+	strb r0, [r5,#oBattleState_BustingLevelCategory]
 	bl eStruct200A008_setUnk00
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -18891,7 +18891,7 @@ loc_800B4F0:
 	add r1, #4
 	cmp r1, #oBattleState_Unk_c0
 	bne loc_800B4D8
-	mov r1, #oBattleState_Unk_a0
+	mov r1, #oBattleState_BattleObjectList
 	mov r3, #8
 loc_800B4FA:
 	ldr r2, [r0,r1]

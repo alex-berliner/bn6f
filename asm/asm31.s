@@ -8665,7 +8665,7 @@ locret_80BC0FE:
 	thumb_local_start
 sub_80BC100:
 	push {r4,r6,r7,lr}
-	mov r0, #oBattleState_Unk_a0
+	mov r0, #oBattleState_BattleObjectList
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_BattleStatePtr]
 	add r7, r7, r0
@@ -8992,7 +8992,7 @@ sub_80BC36E:
 	strh r0, [r5,#oBattleObject_Timer]
 	bne locret_80BC388
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -13765,7 +13765,7 @@ snakearmRelatedObject_t1_0x22_update_0x8_80BE6BC:
 	strh r0, [r5,#oBattleObject_Timer]
 	bne locret_80BE6D6
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -17316,7 +17316,7 @@ sub_80C0072:
 	strh r0, [r5,#oBattleObject_Timer]
 	bne locret_80C0096
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -19730,7 +19730,7 @@ sub_80C10AC:
 	strh r0, [r5,#oBattleObject_Timer]
 	bne locret_80C10C6
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -20161,7 +20161,7 @@ sub_80C13E4:
 	strh r0, [r5,#oBattleObject_Timer]
 	bne locret_80C13FE
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_74]
+	ldr r0, [r0,#oAIData_SpawnedSourceObjectPtr]
 	bl sub_80E1A86
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -38865,7 +38865,7 @@ sub_80C9ECE:
 	mov r7, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	add r0, #oBattleState_Unk_a0
+	add r0, #oBattleState_BattleObjectList
 	mov r3, #8
 loc_80C9EDA:
 	bl sub_80C9EE6
@@ -81516,7 +81516,7 @@ loc_80DE098:
 	mov r4, r0
 	bl sub_801A7CC
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r6,#oAIData_Unk_60]
+	ldr r0, [r6,#oAIData_SubordinateObjectPtr]
 	tst r0, r0
 	beq loc_80DE0E2
 	bl sub_80E0DC0
@@ -88114,7 +88114,7 @@ sub_80E1352:
 	lsr r6, r6, #1
 	bcs loc_80E1380
 	ldr r2, [r7,#oBattleObject_AIDataPtr]
-	ldr r1, [r2,#oAIData_Unk_60]
+	ldr r1, [r2,#oAIData_SubordinateObjectPtr]
 	tst r1, r1
 	beq loc_80E1380
 	mov r0, r1
@@ -88199,7 +88199,7 @@ loc_80E140A:
 	bl ClearAIDataUnk0x48Flag
 	pop {r5}
 	ldr r2, [r7,#oBattleObject_AIDataPtr]
-	ldr r1, [r2,#oAIData_Unk_60]
+	ldr r1, [r2,#oAIData_SubordinateObjectPtr]
 	tst r1, r1
 	beq loc_80E1424
 	mov r0, r1
@@ -88253,7 +88253,7 @@ sub_80E146C:
 	bic r2, r3
 	strb r2, [r0,#oObjectHeader_Flags]
 	ldr r2, [r0,#oBattleObject_AIDataPtr]
-	ldr r1, [r2,#oAIData_Unk_60]
+	ldr r1, [r2,#oAIData_SubordinateObjectPtr]
 	tst r1, r1
 	beq loc_80E1486
 	mov r0, r1
@@ -88290,7 +88290,7 @@ sub_80E14AC:
 	orr r2, r3
 	strb r2, [r0,#oObjectHeader_Flags]
 	ldr r2, [r0,#oBattleObject_AIDataPtr]
-	ldr r1, [r2,#oAIData_Unk_60]
+	ldr r1, [r2,#oAIData_SubordinateObjectPtr]
 	tst r1, r1
 	beq loc_80E14C6
 	mov r0, r1
@@ -93688,7 +93688,7 @@ sub_80E3AFC:
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
 	bl sub_801A7CC
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r6,#oAIData_Unk_60]
+	ldr r0, [r6,#oAIData_SubordinateObjectPtr]
 	tst r0, r0
 	beq loc_80E3B1C
 	bl sub_80E0DC0
@@ -118909,7 +118909,7 @@ loc_80EF7C6:
 	bgt locret_80EF7D2
 loc_80EF7CE:
 	ldrb r0, [r4,#0xf]
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 locret_80EF7D2:
 	pop {r4,pc}
 	.balign 4, 0
@@ -119086,7 +119086,7 @@ loc_80EF946:
 	bgt locret_80EF952
 loc_80EF94E:
 	ldrb r0, [r4,#0xf]
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 locret_80EF952:
 	pop {r4,pc}
 	.balign 4, 0
@@ -119644,7 +119644,7 @@ sub_80EFD74:
 	mov r7, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	add r0, #oBattleState_Unk_a0
+	add r0, #oBattleState_BattleObjectList
 	mov r3, #8
 loc_80EFD80:
 	bl sub_80EFD8C
@@ -146499,7 +146499,7 @@ sub_80FD31C:
 	ldrb r2, [r0,#oBattleObject_PanelY]
 	str r1, [sp]
 	str r2, [sp,#4]
-	mov r0, #oBattleState_Unk_a0
+	mov r0, #oBattleState_BattleObjectList
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
 	add r6, r6, r0
@@ -174275,7 +174275,7 @@ sub_810AA90:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	tst r0, r0
 	beq loc_810AAC4
-	ldr r0, [r0,#oAIData_Unk_60]
+	ldr r0, [r0,#oAIData_SubordinateObjectPtr]
 	tst r0, r0
 	beq loc_810AAC4
 	ldrb r1, [r0]

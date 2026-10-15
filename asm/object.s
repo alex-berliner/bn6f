@@ -5616,7 +5616,7 @@ loc_800E776:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	mov r0, #0
 	strh r0, [r6,#oCollisionData_Unk_1e]
-	strh r0, [r6,#oCollisionData_Unk_2a]
+	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	strh r0, [r6,#oCollisionData_HitStunTimer]
 loc_800E786:
 	ldr r0, dword_800E964 // =0x80018000 
@@ -5638,14 +5638,14 @@ loc_800E7A6:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 loc_800E7AE:
-	ldrh r0, [r6,#oCollisionData_Unk_2a]
+	ldrh r0, [r6,#oCollisionData_HitInvulTimer]
 	sub r0, #1
-	strh r0, [r6,#oCollisionData_Unk_2a]
+	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	bgt loc_800E7C2
 	ldr r0, dword_800E968 // =0x10000 
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_2a]
+	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	b loc_800E820
 loc_800E7C2:
 	ldr r1, [sp]
@@ -5724,7 +5724,7 @@ loc_800E84E:
 	mov r0, #0
 	strh r0, [r6,#oCollisionData_Unk_1e]
 	strh r0, [r6,#oCollisionData_Unk_1c]
-	strh r0, [r6,#oCollisionData_Unk_2a]
+	strh r0, [r6,#oCollisionData_HitInvulTimer]
 loc_800E85E:
 	ldr r0, dword_800E980 // =0x8000 
 	bl object_clearFlag // (int bitfield) -> void
@@ -5772,7 +5772,7 @@ loc_800E8B0:
 	bl object_clearFlag2
 	mov r0, #0
 	strh r0, [r6,#oCollisionData_Unk_1c]
-	strh r0, [r6,#oCollisionData_Unk_2a]
+	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	strh r0, [r6,#oCollisionData_HitStunTimer]
 loc_800E8C6:
 	ldr r0, dword_800E980 // =0x8000 

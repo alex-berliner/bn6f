@@ -3154,7 +3154,7 @@ renderInfo_8001788: // () -> ()
 	strh r1, [r0,#oRenderInfo_BGScrollY]
 	strh r1, [r0,#oRenderInfo_Unk_14]
 	strh r1, [r0,#oRenderInfo_Unk_16]
-	strh r1, [r0,#oRenderInfo_Unk_1a]
+	strh r1, [r0,#oRenderInfo_BG3ScrollY]
 	strh r1, [r0,#oRenderInfo_BG2ScrollX]
 	mov pc, lr
 	thumb_func_end renderInfo_8001788
@@ -3630,7 +3630,7 @@ BGScrollCB_BG3Diagonal3to2Scroll:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	strh r2, [r1,#oRenderInfo_BG2ScrollX]
-	strh r3, [r1,#oRenderInfo_Unk_1a]
+	strh r3, [r1,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3Diagonal3to2Scroll
 
@@ -3662,7 +3662,7 @@ BGScrollCB_BG3UpScroll:
 	lsr r3, r3, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r3, [r1,#oRenderInfo_Unk_1a]
+	strh r3, [r1,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3UpScroll
 
@@ -3688,7 +3688,7 @@ BGScrollCB_BG3DownScroll:
 	lsr r2, r2, #4
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
-	strh r2, [r1,#oRenderInfo_Unk_1a]
+	strh r2, [r1,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG3DownScroll
 

@@ -13698,7 +13698,7 @@ loc_802C91A:
 	str r0, [r7,#4]
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_1e]
+	ldrb r0, [r0,#oBattleState_BustingLevelCategory]
 	strb r0, [r7,#1]
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -14682,7 +14682,7 @@ loc_802CFB8:
 	mov r1, #0xa4
 	strh r0, [r4,r1]
 	strh r0, [r4,#oCollisionData_Unk_1c]
-	strh r0, [r4,#oCollisionData_Unk_2a]
+	strh r0, [r4,#oCollisionData_HitInvulTimer]
 	strh r0, [r4,#oCollisionData_HitStunTimer]
 	mov r1, #0x40 
 	ldr r0, [r4,#oCollisionData_FlagsFromCollision]
@@ -15570,7 +15570,7 @@ loc_802D55A:
 	ldrb r0, [r4,#0xb]
 	bl object_setAttack5
 	ldrb r0, [r4,#0xf]
-	strb r0, [r7,#oAIAttackVars_Unk_1d]
+	strb r0, [r7,#oAIAttackVars_PwrAtkState]
 	mov r0, #8
 	strh r0, [r6]
 	mov r0, #1
@@ -21623,10 +21623,10 @@ camera_applyScrollToBgLayers_8030158:
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	ldrh r6, [r0,#oRenderInfo_BG2ScrollX]
 	add r6, r6, r1
-	ldrh r7, [r0,#oRenderInfo_Unk_1a]
+	ldrh r7, [r0,#oRenderInfo_BG3ScrollY]
 	add r7, r7, r4
 	strh r6, [r0,#oRenderInfo_BG2ScrollX]
-	strh r7, [r0,#oRenderInfo_Unk_1a]
+	strh r7, [r0,#oRenderInfo_BG3ScrollY]
 locret_8030192:
 	pop {r4-r7,pc}
 	thumb_func_end camera_applyScrollToBgLayers_8030158
@@ -21867,7 +21867,7 @@ camera_CopyScrollToRenderLayers_80302F8:
 	and r2, r4
 	strh r2, [r3,#oRenderInfo_BGScrollY]
 	strh r2, [r3,#oRenderInfo_Unk_16]
-	strh r2, [r3,#oRenderInfo_Unk_1a]
+	strh r2, [r3,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end camera_CopyScrollToRenderLayers_80302F8
 
@@ -21891,7 +21891,7 @@ renderInfo_SnapScrollToCamera_8030316:
 	strh r2, [r3,#oRenderInfo_Unk_16]
 	mov r1, #0
 	strh r1, [r3,#oRenderInfo_BG2ScrollX]
-	strh r1, [r3,#oRenderInfo_Unk_1a]
+	strh r1, [r3,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end renderInfo_SnapScrollToCamera_8030316
 
@@ -21914,12 +21914,12 @@ render_ClearScrollOffsets_8030336:
 	and r2, r4
 	strh r2, [r3,#oRenderInfo_BGScrollY]
 	strh r2, [r3,#oRenderInfo_Unk_16]
-	strh r2, [r3,#oRenderInfo_Unk_1a]
+	strh r2, [r3,#oRenderInfo_BG3ScrollY]
 	mov r1, #0
 	strh r1, [r3,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r3,#oRenderInfo_BGScrollY]
 	strh r1, [r3,#oRenderInfo_BG2ScrollX]
-	strh r1, [r3,#oRenderInfo_Unk_1a]
+	strh r1, [r3,#oRenderInfo_BG3ScrollY]
 	mov pc, lr
 	thumb_func_end render_ClearScrollOffsets_8030336
 

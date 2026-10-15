@@ -986,7 +986,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	push {r4-r6,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_ChatboxPtr]
-	ldr r2, [r5,#oChatbox_Unk_4C] // ChatBoxPropreties.unk_4C
+	ldr r2, [r5,#oChatbox_TextParam1] // ChatBoxPropreties.unk_4C
 	ldr r3, [r5,#oChatbox_Unk_50] // ChatBoxPropreties.unk_50
 	ldr r4, [r5,#oChatbox_Unk_54] // ChatBoxPropreties.unk_54
 	ldr r6, [r5,#oChatbox_Unk_58] // ChatBoxPropreties.unk_58
@@ -998,7 +998,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	ldr r1, off_80404A4 // =0x230
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r0-r3}
-	str r2, [r5,#oChatbox_Unk_4C] // ChatBoxPropreties.unk_4C
+	str r2, [r5,#oChatbox_TextParam1] // ChatBoxPropreties.unk_4C
 	str r3, [r5,#oChatbox_Unk_50] // ChatBoxPropreties.unk_50
 	str r4, [r5,#oChatbox_Unk_54] // ChatBoxPropreties.unk_54
 	str r6, [r5,#oChatbox_Unk_58] // ChatBoxPropreties.unk_58
@@ -4671,7 +4671,7 @@ loc_8041CA0:
 	ldr r3, dword_8041CF0 // =0x72
 	sub r1, r0, r3
 	add r1, #1
-	str r1, [r5,#oChatbox_Unk_4C]
+	str r1, [r5,#oChatbox_TextParam1]
 loc_8041CB8:
 	ldrb r1, [r4,#3]
 	bl GiveItem
@@ -5721,7 +5721,7 @@ chatbox_80423DC:
 	lsl r1, r1, #0x18
 	orr r2, r1
 	mov r0, r2
-	str r0, [r5,#oChatbox_Unk_4C]
+	str r0, [r5,#oChatbox_TextParam1]
 	bl GiveZenny
 	ldrb r0, [r4,#2]
 	add r0, #1
@@ -5748,7 +5748,7 @@ chatbox_8042418:
 	ldrb r1, [r0,#1]
 	str r1, [r5,#oChatbox_Unk_50]
 	ldrb r0, [r0]
-	str r0, [r5,#oChatbox_Unk_4C]
+	str r0, [r5,#oChatbox_TextParam1]
 	push {r4}
 	bl GiveChips
 	pop {r4}
@@ -7274,7 +7274,7 @@ loc_8042EC0:
 chatbox_8042EC8:
 	push {r1-r7,lr}
 	mov r4, #0
-	ldr r0, [r5,#oChatbox_Unk_4C]
+	ldr r0, [r5,#oChatbox_TextParam1]
 	ldr r1, [r5,#oChatbox_Unk_54]
 	mov r2, #4
 	add r4, r4, r0
@@ -7282,7 +7282,7 @@ chatbox_8042EC8:
 	ldr r1, [r5,#oChatbox_Unk_58]
 	mov r2, #3
 	add r4, r4, r0
-	str r4, [r5,#oChatbox_Unk_4C]
+	str r4, [r5,#oChatbox_TextParam1]
 	mov r0, #0
 	cmp r4, #7
 	bne locret_8042EE6
@@ -7322,7 +7322,7 @@ off_8042F0C:
 	thumb_local_start
 chatbox_8042F10:
 	push {r2,lr}
-	ldr r0, [r5,#oChatbox_Unk_4C]
+	ldr r0, [r5,#oChatbox_TextParam1]
 	bl chatbox_8042F34
 	mov r3, r0
 	mov r0, #1
@@ -10769,7 +10769,7 @@ chatbox_setTextParams_8045EFC:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_ChatboxPtr]
-	str r0, [r4,#oChatbox_Unk_4C]
+	str r0, [r4,#oChatbox_TextParam1]
 	str r1, [r4,#oChatbox_Unk_50]
 	str r2, [r4,#oChatbox_Unk_54]
 	str r3, [r4,#oChatbox_Unk_58]

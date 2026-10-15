@@ -1027,7 +1027,7 @@ npc_inChatbox_curAction_init_809EB20:
 	ldr r7, [r7,#oToolkit_ChatboxPtr]
 	mov r1, #oOverworldNPCObject_Chatbox_90
 	ldr r0, [r5,r1]
-	str r0, [r7,#oChatbox_Unk_4C]
+	str r0, [r7,#oChatbox_TextParam1]
 	bl mysteryData_lookupForNavi_809FC96
 	str r0, [r7,#0x54]
 	str r1, [r7,#0x58]
