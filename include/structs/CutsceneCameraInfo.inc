@@ -19,7 +19,7 @@
 	u32 NewY // loc=0x18
 	u32 NewZ // loc=0x1c
 	u32 SmoothAutoScrollDelta // loc=0x20
-	u32 Unk_24 // loc=0x24
+	u32 CutsceneCameraBackupZ // loc=0x24
 	struct_org 0x40
 	u0 Size // loc=0x40
 	restore_struct_label

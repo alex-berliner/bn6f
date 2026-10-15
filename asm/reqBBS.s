@@ -16,7 +16,7 @@ reqBBS_813E07C: // (unk a1) ->
 	mov r1, #0x24 
 	mul r0, r1
 	add r0, r0, r2
-	str r0, [r5,#oReqBBS2001150_Unk_28]
+	str r0, [r5,#oReqBBS2001150_FrameCounter]
 
 	pop {r4-r7,pc}
 	.balign 4, 0

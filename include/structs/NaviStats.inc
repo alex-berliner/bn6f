@@ -46,9 +46,9 @@
 	u16 CurHP // loc=0x40
 	u16 MaxHP // loc=0x42
 	struct_org 0x4c
-	u8 Unk_4c // loc=0x4c
+	u8 NaviScriptState // loc=0x4c
 	struct_org 0x4f
-	u8 Unk_4f // loc=0x4f
+	u8 EmotionWindowBonusTurns // loc=0x4f
 	u16 ChipRecovery // loc=0x50
 	struct_org 0x56
 	u8 Folder1Tag1 // loc=0x56

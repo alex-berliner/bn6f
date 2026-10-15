@@ -9,7 +9,7 @@
 	u16 Unk_06 // loc=0x6
 	// Pointer to a map_bg_descriptor_struct.
 	u32 MapBGDescriptorPtr // loc=0x8
-	u32 Unk_0c // loc=0xc
+	u32 UnkCallback0C // loc=0xc
 	u32 PalettePtr // loc=0x10
 	// Pointer to two map_bg_tileset_header_struct-s.
 	u32 TilesetPtr // loc=0x14

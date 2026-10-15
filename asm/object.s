@@ -1088,7 +1088,7 @@ loc_800BFEC:
 	mov r1, r5
 	bl object_getPanelParameters
 loc_800C004:
-	str r0, [r7,#oPanelData_Unk_18]
+	str r0, [r7,#oPanelData_PanelParameters]
 	add r7, #oPanelData_Size 
 	add r4, #1
 	cmp r4, #6
@@ -2780,9 +2780,9 @@ object_setPanelTypeBlink:
 	bl object_getPanelDataOffset
 	pop {r2,r3}
 	mov r1, #1
-	strb r1, [r0,#oPanelData_Unk_0d]
-	strb r2, [r0,#oPanelData_Unk_08]
-	strb r3, [r0,#oPanelData_Unk_09]
+	strb r1, [r0,#oPanelData_TypeBlinkFlag]
+	strb r2, [r0,#oPanelData_BlinkParamA]
+	strb r3, [r0,#oPanelData_BlinkPanelTypeSecondary]
 	pop {pc}
 	thumb_func_end object_setPanelTypeBlink
 

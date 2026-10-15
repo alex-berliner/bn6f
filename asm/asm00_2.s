@@ -6344,7 +6344,7 @@ loc_8011A98:
 	mov r1, #0xa
 	mul r0, r1
 	strh r0, [r7,#oAIAttackVars_Damage]
-	mov r1, #oNaviStats_Unk_4f 
+	mov r1, #oNaviStats_EmotionWindowBonusTurns 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r4, r0
 	tst r4, r4
@@ -30490,7 +30490,7 @@ battle_sceneFrameSetup_801DA24:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_RenderInfoPtr]
 	ldr r0, dword_801DA44 // =0x1f09 
-	strh r0, [r1,#oRenderInfo_Unk_0a]
+	strh r0, [r1,#oRenderInfo_DisplayControlBits]
 	// dataList
 	ldr r0, off_801DA40 // =off_801ECB4 
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void

@@ -2294,7 +2294,7 @@ NPCCommand_pause_secondary_script:
 	push {lr}
 
 	mov r0, #0
-	strb r0, [r5,#oOverworldNPCObject_Unk_0b]
+	strb r0, [r5,#oOverworldNPCObject_ScriptPauseFlag]
 
 	ldrb r0, [r6,#1]
 	strh r0, [r5,#oOverworldNPCObject_Timer_22]

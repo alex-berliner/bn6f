@@ -153,7 +153,7 @@
 	//u32 Unk_5c // loc=0x5c
 	u32 StunSubTimer // loc=0x60
 	u32 ExtraElementDamage // loc=0x64
-	u32 Unk_68 // loc=0x68
+	u32 LinkedCollisionIndices // loc=0x68
 	u32 CollisionFlags // loc=0x6c
 	flags32 FlagsFromCollision // loc=0x70
 	u8 ExclamationIndicator // loc=0x74
@@ -184,9 +184,9 @@
 	u32 PanelDamage5and6 // misaligned // loc=0x8a
 	endu
 
-	u16 Unk_8e // loc=0x8e
-	u16 Unk_90 // loc=0x90
-	u16 Unk_92 // loc=0x92
+	u16 PanelDamage7 // loc=0x8e
+	u16 PanelDamageAccumulatorU16a // loc=0x90
+	u16 PanelDamageAccumulatorU16 // loc=0x92
 
 	u0 PrimaryElementDamages // loc=0x94
 	u16 NullElementDamage // loc=0x94
@@ -195,7 +195,7 @@
 	u16 ElecElementDamage // loc=0x9a
 	u16 WoodElementDamage // loc=0x9c
 	struct_org 0xa0
-	u32 Unk_a0 // loc=0xa0
+	u32 ExtraElementDamageAccumulator // loc=0xa0
 	u32 InflictedBugs // loc=0xa4
 	u0 Size // loc=0xa8
 	u0 End // loc=0xa8

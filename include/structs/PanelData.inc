@@ -11,13 +11,13 @@
 	struct_org 0x6
 	u8 Animation // loc=0x6
 	u8 CachedAlliance // loc=0x7
-	u8 Unk_08 // loc=0x8
-	u8 Unk_09 // loc=0x9
+	u8 BlinkParamA // loc=0x8
+	u8 BlinkPanelTypeSecondary // loc=0x9
 	struct_org 0xd
-	u8 Unk_0d // loc=0xd
+	u8 TypeBlinkFlag // loc=0xd
 	struct_org 0x10
 	u16 ClaimTimer // loc=0x10
-	u16 Unk_12 // loc=0x12
+	u16 PanelStatusFlags // loc=0x12
 	u32 Flags // loc=0x14
 	// 0x00000002 - blocks movement
 	// 0x00000020 - enemy panel
@@ -30,7 +30,7 @@
 	// 0x20000000 - ally attack object
 	// 0x40000000 - enemy attack
 	// 0x80000000 - ally attack
-	u32 Unk_18 // loc=0x18
+	u32 PanelParameters // loc=0x18
 	ptr ReserverObjectPtr // loc=0x1c
 	u0 Size // loc=0x20
 	u0 End // loc=0x20

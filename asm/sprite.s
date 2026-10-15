@@ -131,7 +131,7 @@ sprite_initialize:
 	strh r0, [r5,#oObjectSprite_SpriteExtraBytes]
 	strh r0, [r5,#oObjectSprite_ColorShader]
 	str r0, [r5,#oObjectSprite_ScriptParam]
-	strh r0, [r5,#oObjectSprite_Unk_10]
+	strh r0, [r5,#oObjectSprite_ScratchHalfword]
 	strh r0, [r5,#oObjectSprite_FrameCounter]
 	strb r0, [r5,#oObjectSprite_InitFlag]
 	strb r0, [r5,#oObjectSprite_PaletteRowIndex]

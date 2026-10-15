@@ -13,7 +13,7 @@
 	.space 0x2
 	u16 SpriteExtraBytes // loc=0xa
 	.space 0x4
-	u8 Unk_10 // loc=0x12 // also size 2
+	u8 ScratchHalfword // loc=0x12 // also size 2
 
 	// this might be written to bits 8-15 for obj attribute 0
 	// set this to 0x10 to give this sprite a mosaic

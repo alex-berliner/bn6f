@@ -38,7 +38,7 @@
 	*/
 	union
 		u8 MovementFlag_0a // loc=0xa
-		u8 Unk_0b // loc=0xb
+		u8 ScriptPauseFlag // loc=0xb
 	nextu
 		u16 MovementFlag_0a_Unk_0b // loc=0xa
 	endu

@@ -3565,7 +3565,7 @@ loc_300740A:
 	add r1, r1, r0
 	strh r1, [r6,r2]
 	ldr r1, [r7,#oCollisionData_ExtraElementDamage]
-	mov r3, #oCollisionData_Unk_a0
+	mov r3, #oCollisionData_ExtraElementDamageAccumulator
 	ldr r2, [r6,r3]
 	add r2, r2, r1
 	str r2, [r6,r3]
@@ -3852,12 +3852,12 @@ loc_300761A:
 	beq locret_300764A
 	b loc_3007646
 loc_3007622:
-	ldr r0, [r5,#oCollisionData_Unk_68]
+	ldr r0, [r5,#oCollisionData_LinkedCollisionIndices]
 	ldr r1, [r6,#0x44]
 	tst r0, r1
 	bne loc_3007646
 	orr r0, r1
-	str r0, [r5,#oCollisionData_Unk_68]
+	str r0, [r5,#oCollisionData_LinkedCollisionIndices]
 	ldr r0, [r6,#0x68]
 	ldr r1, [r5,#oCollisionData_CollisionIndexBit]
 	orr r0, r1
@@ -4378,7 +4378,7 @@ _object_setPanelType:
 	cmp r6, #0xc
 	bgt loc_30079C6
 	ldr r1, =0x708
-	strh r1, [r0,#oPanelData_Unk_12]
+	strh r1, [r0,#oPanelData_PanelStatusFlags]
 	b loc_30079C6
 loc_30079C6:
 	mov r0, r4

@@ -14669,11 +14669,11 @@ loc_802CFB8:
 	strh r0, [r1,#oCollisionData_PanelDamage3 - oCollisionData_PanelDamage1]
 	strh r0, [r1,#oCollisionData_PanelDamage4 - oCollisionData_PanelDamage1]
 	strh r0, [r1,#oCollisionData_PanelDamage5 - oCollisionData_PanelDamage1]
-	mov r1, #oCollisionData_Unk_8e
+	mov r1, #oCollisionData_PanelDamage7
 	strh r0, [r4,r1]
-	mov r1, #oCollisionData_Unk_90
+	mov r1, #oCollisionData_PanelDamageAccumulatorU16a
 	strh r0, [r4,r1]
-	mov r1, #oCollisionData_Unk_92
+	mov r1, #oCollisionData_PanelDamageAccumulatorU16
 	strh r0, [r4,r1]
 	mov r1, #0x74 
 	str r0, [r4,r1]
@@ -22018,7 +22018,7 @@ loc_8030398:
 	ldr r2, [r3,#oMapBGDescriptor_TilesetPtr]
 	str r2, [r5,#oMapTilesState200be70_TilesetPtr] // (dword_200BE84 - 0x200be70)
 
-	str r1, [r5,#oMapTilesState200be70_Unk_0c] // (dword_200BE7C - 0x200be70)
+	str r1, [r5,#oMapTilesState200be70_UnkCallback0C] // (dword_200BE7C - 0x200be70)
 
 	pop {r1-r3}
 	mov r8, r1

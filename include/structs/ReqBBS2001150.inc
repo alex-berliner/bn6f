@@ -6,7 +6,7 @@
     struct_org 0x04
     u8 Unk_04 // loc=0x04
     struct_org 0x28
-    u32 Unk_28 // loc=0x28
+    u32 FrameCounter // loc=0x28
 
 	u0 Size // loc=0x2c
 	

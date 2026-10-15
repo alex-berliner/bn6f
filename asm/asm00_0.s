@@ -3148,8 +3148,8 @@ renderInfo_8001788: // () -> ()
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	mov r1, #0
-	strh r1, [r0,#oRenderInfo_Unk_0c]
-	strh r1, [r0,#oRenderInfo_Unk_0e]
+	strh r1, [r0,#oRenderInfo_RenderEntryCountA]
+	strh r1, [r0,#oRenderInfo_RenderEntryCountB]
 	strh r1, [r0,#oRenderInfo_BGScrollXOffset]
 	strh r1, [r0,#oRenderInfo_BGScrollY]
 	strh r1, [r0,#oRenderInfo_BG1ScrollXAlt]

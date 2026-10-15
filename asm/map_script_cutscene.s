@@ -734,7 +734,7 @@ MapScriptCmd_jump_if_map_group_compare_last_map_group: // 8035C6E
 MapScriptCmd_switch_case_from_navi_stats_4c: // 8035CA0
 	push {lr}
 	mov r0, #0
-	mov r1, #oNaviStats_Unk_4c
+	mov r1, #oNaviStats_NaviScriptState
 	bl GetNaviStatsByte
 	cmp r0, #1
 	beq loc_8035CBE
@@ -3327,7 +3327,7 @@ CutsceneCameraCmd_smooth_auto_scroll_to_soul_weapons_cursor:
 	bl GetSoulWeaponCursorCameraCoords
 	str r0, [r5,#oCutsceneCameraInfo_NewX]
 	str r1, [r5,#oCutsceneCameraInfo_NewY]
-	ldr r2, [r7,#oCutsceneCameraInfo_Unk_24]
+	ldr r2, [r7,#oCutsceneCameraInfo_CutsceneCameraBackupZ]
 	str r2, [r5,#oCutsceneCameraInfo_NewZ]
 	pop {r0-r3}
 	b CutsceneCamera_InitializeSmoothAutoScroll
