@@ -41,12 +41,12 @@
 	u8 ChoiceCursorPos // loc=0x13
 	u8 Unk_14 // loc=0x14
 	u8 Unk_15 // loc=0x15
-	u8 Unk_16 // loc=0x16
-	u8 Unk_17 // loc=0x17
+	u8 SelectCursorFrame // loc=0x16
+	u8 MugshotAnimTableIdx // loc=0x17
 	u8 TextScriptCharIdx // loc=0x18
-	u8 Unk_19 // loc=0x19
+	u8 CursorY // loc=0x19
 	u8 CursorIdx // loc=0x1A
-	u8 Unk_1B // loc=0x1B
+	u8 CursorX // loc=0x1B
 	u8 CurTileXBlockPos // loc=0x1C
 	u8 CurTileYBlockPos // loc=0x1D
 	// size in number of u16 TileIds to copy

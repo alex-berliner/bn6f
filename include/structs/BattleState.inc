@@ -43,23 +43,23 @@
 
 	union
 	u8 AliveAllianceCount // loc=0x12
-	u8 Unk_13 // loc=0x13
+	u8 BattleOverSecondaryFlag // loc=0x13
 	nextu
 	u16 Unk_12_13 // loc=0x12
 	endu
 
-	u8 Unk_14 // loc=0x14
-	u8 Unk_15 // loc=0x15
-	u8 Unk_16 // loc=0x16
-	u8 Unk_17 // loc=0x17
-	u8 Unk_18 // loc=0x18
+	u8 BackgroundType // loc=0x14
+	u8 PendingFieldChange // loc=0x15
+	u8 PanelTurnStepCounter // loc=0x16
+	u8 BeastOutFlag // loc=0x17
+	u8 PhaseStepIndex // loc=0x18
 	u8 CustGaugeChargeLevel // loc=0x19
 	u8 State4EventCount // loc=0x1a
-	u8 Unk_1b // loc=0x1b
-	u8 Unk_1c // loc=0x1c
-	u8 Unk_1d // loc=0x1d
+	u8 PanelSelectedCount // loc=0x1b
+	u8 PhaseMessageDelayCounter // loc=0x1c
+	u8 MessageTimer // loc=0x1d
 	u8 BustingLevelCategory // loc=0x1e
-	u8 Unk_1f // loc=0x1f
+	u8 BattleResult // loc=0x1f
 	u16 Unk_20 // loc=0x20
 
 	struct_org 0x28

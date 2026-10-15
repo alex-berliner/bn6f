@@ -46,13 +46,13 @@
 	u16 TimeStopMirrorHeld // loc=0x2c
 	u16 JoypadHeldPrev // loc=0x2e
 	u16 JoypadFrozen // loc=0x30
-	u16 Unk_32 // loc=0x32
+	u16 CounterHitChainFlag // loc=0x32
 	// bool16???
 	u16 Anger // loc=0x34
-	u16 Unk_36 // loc=0x36
-	u16 Unk_38 // loc=0x38
-	u16 Unk_3a // loc=0x3a
-	u16 Unk_3c // loc=0x3c
+	u16 PoisonDamagePerTick // loc=0x36
+	u16 CollisionFreezeTimer // loc=0x38
+	u16 ActionRerollFrameCounter // loc=0x3a
+	u16 SavedZ16 // loc=0x3c
 
 	struct_org 0x40
 	u32 TargetObjectPtr // loc=0x40
@@ -60,7 +60,7 @@
 	u32 Flags // loc=0x48
 	u32 AIScriptCounter // loc=0x4c
 	u32 SubordinateObjectUnk // loc=0x50
-	u32 Unk_54 // loc=0x54
+	u32 BubbleSourceObjectPtr // loc=0x54
 	u32 SubordinateAIObjectPtr // loc=0x58
 	ptr AIScriptOffset // loc=0x5c
 	u32 SubordinateObjectPtr // loc=0x60
