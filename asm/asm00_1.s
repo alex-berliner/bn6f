@@ -11239,7 +11239,7 @@ loc_8008232:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #0
 	bl eStruct200A008_setUnk02
 locret_8008258:
@@ -11310,7 +11310,7 @@ loc_80082B4:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_80082DA:
@@ -11367,7 +11367,7 @@ loc_8008338:
 	mov r0, #3
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	strb r0, [r5,#4]
 locret_8008348:
 	pop {pc}
@@ -11943,7 +11943,7 @@ loc_800874A:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #0
 	bl eStruct200A008_setUnk02
 locret_8008762:
@@ -12002,7 +12002,7 @@ loc_80087B0:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_80087D6:
@@ -12058,7 +12058,7 @@ loc_8008834:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 locret_800883E:
 	pop {pc}
 	thumb_func_end sub_80087D8
@@ -12170,7 +12170,7 @@ loc_80088E6:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_80088FE:
@@ -12506,7 +12506,7 @@ loc_8008B62:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #0
 	bl eStruct200A008_setUnk02
 locret_8008B7A:
@@ -12565,7 +12565,7 @@ loc_8008BC8:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_8008BEE:
@@ -12621,7 +12621,7 @@ loc_8008C4C:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 locret_8008C56:
 	pop {pc}
 	thumb_func_end sub_8008BF0
@@ -12733,7 +12733,7 @@ loc_8008CFE:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_8008D16:
@@ -13050,7 +13050,7 @@ loc_8008F62:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #0
 	bl eStruct200A008_setUnk02
 locret_8008F7A:
@@ -13109,7 +13109,7 @@ loc_8008FC8:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_8008FEE:
@@ -13165,7 +13165,7 @@ loc_800904C:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 locret_8009056:
 	pop {pc}
 	thumb_func_end sub_8008FF0
@@ -13277,7 +13277,7 @@ loc_80090FE:
 	strb r0, [r5,#4]
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	strb r0, [r1,#oGameState_Unk_14]
+	strb r0, [r1,#oGameState_BattleEndSubState]
 	mov r0, #1
 	bl eStruct200A008_setUnk02
 locret_8009116:

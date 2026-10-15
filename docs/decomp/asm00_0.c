@@ -1291,7 +1291,7 @@ int __fastcall sub_80010A4(int result, int a2, int a3, int a4)
     v6 = *(v5 + oToolkit_GameStatePtr);
     v6[oGameState_Unk_12] = result;
     v6[oGameState_Unk_13] = a2;
-    v6[oGameState_Unk_14] = a3;
+    v6[oGameState_BattleEndSubState] = a3;
     v6[oGameState_Unk_15] = a4;
     v6[oGameState_EnterMapFadeParam1] = v4;
     return result;

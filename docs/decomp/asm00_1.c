@@ -6637,7 +6637,7 @@ int battle_runVictorySequence_80081A4()
         if ( result <= 0 )
         {
             *(v0 + 4) = 1;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 1;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 1;
             result = eStruct200A008_setUnk02(0);
         }
     }
@@ -6683,7 +6683,7 @@ int battle_runLoserSequence_800825A()
         if ( result <= 0 )
         {
             *(v0 + 4) = 2;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 2;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 2;
             result = eStruct200A008_setUnk02(1);
         }
     }
@@ -6730,7 +6730,7 @@ int sub_80082DC()
         {
             setTwoStructs_800A840(3);
             result = 3;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 3;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 3;
             *(v0 + 4) = 3;
         }
     }
@@ -7223,7 +7223,7 @@ int sub_800873A()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 1;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 1;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 1;
         result = eStruct200A008_setUnk02(0);
     }
     return result;
@@ -7262,7 +7262,7 @@ int sub_8008764()
         if ( result <= 0 )
         {
             *(v0 + 4) = 2;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 2;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 2;
             result = eStruct200A008_setUnk02(1);
         }
     }
@@ -7309,7 +7309,7 @@ int sub_80087D8()
         {
             result = 3;
             *(v0 + 4) = 3;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 3;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 3;
         }
     }
     return result;
@@ -7418,7 +7418,7 @@ int sub_80088D6()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 7;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 7;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 7;
         result = eStruct200A008_setUnk02(1);
     }
     return result;
@@ -7681,7 +7681,7 @@ int sub_8008B52()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 1;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 1;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 1;
         result = eStruct200A008_setUnk02(0);
     }
     return result;
@@ -7720,7 +7720,7 @@ int sub_8008B7C()
         if ( result <= 0 )
         {
             *(v0 + 4) = 2;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 2;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 2;
             result = eStruct200A008_setUnk02(1);
         }
     }
@@ -7767,7 +7767,7 @@ int sub_8008BF0()
         {
             result = 3;
             *(v0 + 4) = 3;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 3;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 3;
         }
     }
     return result;
@@ -7876,7 +7876,7 @@ int sub_8008CEE()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 7;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 7;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 7;
         result = eStruct200A008_setUnk02(1);
     }
     return result;
@@ -8138,7 +8138,7 @@ int sub_8008F52()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 1;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 1;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 1;
         result = eStruct200A008_setUnk02(0);
     }
     return result;
@@ -8177,7 +8177,7 @@ int sub_8008F7C()
         if ( result <= 0 )
         {
             *(v0 + 4) = 2;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 2;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 2;
             result = eStruct200A008_setUnk02(1);
         }
     }
@@ -8224,7 +8224,7 @@ int sub_8008FF0()
         {
             result = 3;
             *(v0 + 4) = 3;
-            *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 3;
+            *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 3;
         }
     }
     return result;
@@ -8333,7 +8333,7 @@ int sub_80090EE()
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
         *(v0 + 4) = 7;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_14) = 7;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_BattleEndSubState) = 7;
         result = eStruct200A008_setUnk02(1);
     }
     return result;
