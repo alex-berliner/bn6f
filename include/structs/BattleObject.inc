@@ -50,7 +50,7 @@
 	u8 DirectionAngle // loc=0xc
 	u8 MoveSubState // loc=0xd
 	u8 Element // loc=0xe
-	u8 Unk_0f // loc=0xf
+	u8 ContactState // loc=0xf
 
 	union
 	u8 CurAnim // loc=0x10
