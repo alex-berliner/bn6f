@@ -5,13 +5,13 @@
 \label:
 	u8 AnimationIndex // loc=0x0
 	u8 AnimFrameDuration // loc=0x1
-	u8 Unk_02 // loc=0x2
+	u8 AttributeFlags // loc=0x2
 	u8 SpriteFlags2 // loc=0x3
-	u8 Unk_04 // loc=0x4
-	u8 Unk_05 // loc=0x5
-	u16 Unk_06 // loc=0x6
+	u8 PaletteIndex // loc=0x4
+	u8 PaletteRowIndex // loc=0x5
+	u16 ColorShader // loc=0x6
 	.space 0x2
-	u16 Unk_0a // loc=0xa
+	u16 SpriteExtraBytes // loc=0xa
 	.space 0x4
 	u8 Unk_10 // loc=0x12 // also size 2
 
@@ -20,11 +20,11 @@
 	// but the mosaic size is at eRenderInfo+2
 	u8 SpriteFlags // loc=0x11
 
-	u8 Unk_12 // loc=0x12 // also size 2
-	u8 Unk_13 // loc=0x13
-	u8 Unk_14 // loc=0x14
+	u8 FrameCounter // loc=0x12 // also size 2
+	u8 SpriteFlags3 // loc=0x13
+	u8 InitFlag // loc=0x14
 	u8 OamAttributes // loc=0x15
-	u16 Unk_16 // loc=0x16
+	u16 CurFrame // loc=0x16
 	u32 Unk_18 // loc=0x18
 	u32 Unk_1c // loc=0x1c
 	u32 Unk_20 // loc=0x20

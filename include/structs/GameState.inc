@@ -16,7 +16,7 @@
 	u8 SubsystemIndex // loc=0x0
     // PET displayed icon
 	PETNavi CurPETNavi // loc=0x1
-	u8 Unk_02 // loc=0x2
+	u8 SavedChipDescByte // loc=0x2
 	u8 Unk_03 // loc=0x3
 	
     union
@@ -39,9 +39,9 @@
 	u8 CoordInteractionValue // loc=0xe
 	u8 BGMusicIndicator // loc=0xf
 	u8 OWPlayerBusyOrCutscene // loc=0x10
-	u8 Unk_11 // loc=0x11
+	u8 CoordInteractionTriggered // loc=0x11
 	u8 Unk_12 // loc=0x12
-	u8 Unk_13 // loc=0x13
+	u8 PendingByte // loc=0x13
 	u8 BattleEndSubState // loc=0x14
 	u8 Unk_15 // loc=0x15
 	u8 EnterMapFadeParam1 // loc=0x16

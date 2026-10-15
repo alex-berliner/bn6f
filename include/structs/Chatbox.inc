@@ -64,10 +64,10 @@
 	TextScriptArchivePtr TextScriptPtr // loc=0x30
 	// ?? check this
 	ptr CurrTextScriptPtr // loc=0x34
-	u32 Unk_38 // loc=0x38
+	u32 TextScriptSourcePtr // loc=0x38
 	u0 Und_3C_32 // suspect u32 access?
 	u8 Und_3C // loc=0x3C
-	u8 Unk_3D // loc=0x3D
+	u8 DroppedName // loc=0x3D
 	flags16 flags_3E // loc=0x3E
 		struct_const FLAGS_3E_UNK_0001,			  0x0001
 		struct_const FLAGS_3E_MUGSHOT_ACTIVE,		0x0002
@@ -83,15 +83,15 @@
 		struct_const FLAGS_3E_UNK_0800,			  0x0800
 		struct_const FLAGS_3E_UNK_1000,			  0x1000
 	u32 MugshotColorFilter_40 // loc=0x40
-	u32 Unk_44 // loc=0x44
+	u32 NextScriptCursorPtr // loc=0x44
 	u32 Und_48 // loc=0x48
 	u32 TextParam1 // loc=0x4C
-	u32 Unk_50 // loc=0x50
-	u32 Unk_54 // loc=0x54
-	u32 Unk_58 // loc=0x58
+	u32 TextParam2 // loc=0x50
+	u32 ParamC // loc=0x54
+	u32 TextParam4 // loc=0x58
 
 	struct_org 0x64
-	u16 Unk_64 // loc=0x64
+	u16 TextScriptTimer // loc=0x64
 	u16 Und_66 // loc=0x66
 	u16 Unk_68 // loc=0x68
 	u16 Unk_6A // loc=0x6A

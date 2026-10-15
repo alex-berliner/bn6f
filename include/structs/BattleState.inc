@@ -79,7 +79,7 @@
 	struct_org 0x5c
 	u32 AlliancePermissionFlags // loc=0x5c
 	u32 FrameCounter // loc=0x60
-	u32 Unk_64 // loc=0x64
+	u32 SpriteRenderFrameCounter // loc=0x64
 	struct_org 0x80
 	u0 AliveBattleActors // loc=0x80
 	u8_arr AlivePlayerActors, 0x10 // loc=0x80
