@@ -1287,7 +1287,7 @@ sub_800F55C:
 	mov r7, r1
 	bl object_isValidPanel
 	beq loc_800F580
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	sub r0, #1
 	lsl r0, r0, #3
 	ldr r3, off_800F584 // =byte_800F588 
@@ -1579,7 +1579,7 @@ sub_800F768:
 	push {r5}
 	bl calcAngle_800117C
 	pop {r5}
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r1, #8
 	lsl r1, r1, #0x10
 	push {r1}
@@ -20313,13 +20313,13 @@ sub_8017E44:
 	bl sub_800F598
 	strb r0, [r5,#oBattleObject_Unk_1c]
 	strb r1, [r5,#oBattleObject_Unk_1d]
-	strb r3, [r5,#oBattleObject_Unk_0c]
+	strb r3, [r5,#BattleObject_DirectionAngle]
 	mov r2, #6
 	strb r2, [r5,#oBattleObject_PhaseInitialized]
 	tst r2, r2
 	beq loc_8017F08
 	mov r4, #0
-	ldrb r2, [r5,#oBattleObject_Unk_0c]
+	ldrb r2, [r5,#BattleObject_DirectionAngle]
 	cmp r2, #1
 	beq loc_8017E88
 	add r4, #4
@@ -20332,7 +20332,7 @@ loc_8017E90:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_getPanelParameters
-	ldrb r2, [r5,#oBattleObject_Unk_0c]
+	ldrb r2, [r5,#BattleObject_DirectionAngle]
 	mov r1, #0x20 
 	tst r0, r1
 	beq loc_8017EA2
@@ -20342,7 +20342,7 @@ loc_8017EA2:
 	ldrb r0, [r0,r4]
 	cmp r0, #0
 	beq loc_8017EC8
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #0x1c
 	ldrsb r0, [r5,r0]
 	mov r1, #0x1d
@@ -20358,7 +20358,7 @@ loc_8017EA2:
 	b loc_8017EE6
 loc_8017EC8:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #0x1c
 	ldrsb r0, [r5,r0]
 	mov r1, #0x1d
@@ -20465,7 +20465,7 @@ loc_8017F8E:
 	add r1, r1, r2
 	mov r6, r0
 	mov r7, r1
-	ldrb r2, [r5,#oBattleObject_Unk_0c]
+	ldrb r2, [r5,#BattleObject_DirectionAngle]
 	cmp r2, #0
 	bne loc_8017FB6
 	bl sub_800F534

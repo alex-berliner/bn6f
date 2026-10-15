@@ -1434,7 +1434,7 @@ battle_initNaviSprite_80B8CF8:
 loc_80B8D36:
 	ldrb r0, [r4,#3]
 loc_80B8D38:
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	ldrb r0, [r5,#oBattleObject_Param2]
 	strb r0, [r5,#oBattleObject_CurAnim]
 	strb r0, [r5,#oBattleObject_CurAnimCopy]
@@ -10715,7 +10715,7 @@ sub_80BD084:
 	ldr r0, dword_80BD244 // =0x7fff 
 	bl sprite_setColorShader
 	mov r0, #0x1f
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #0x94
 	bl PlaySoundEffect
 	mov r0, #0
@@ -10738,16 +10738,16 @@ loc_80BD0A6:
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 loc_80BD0C0:
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	sub r0, #2
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	bgt locret_80BD0D8
 	ldrb r0, [r5,#oObjectHeader_Flags]
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #4
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80BD0D8:
@@ -11127,7 +11127,7 @@ loc_80BD35A:
 	thumb_local_start
 sub_80BD374:
 	push {lr}
-	ldrb r1, [r5,#oBattleObject_Unk_0c]
+	ldrb r1, [r5,#BattleObject_DirectionAngle]
 	lsl r0, r1, #5
 	add r0, r0, r1
 	lsl r0, r0, #5
@@ -14065,7 +14065,7 @@ loc_80BE8BE:
 	ldrb r0, [r7,#3]
 	mov r1, #1
 	eor r0, r1
-	strb r0, [r4,#oBattleObject_Unk_0c]
+	strb r0, [r4,#BattleObject_DirectionAngle]
 	ldrh r0, [r5,#oBattleObject_Timer2]
 	add r0, #1
 	strh r0, [r5,#oBattleObject_Timer2]
@@ -14536,7 +14536,7 @@ sub_80BEC84:
 	strh r0, [r5,#oBattleObject_PanelXY]
 	bl object_setCoordinatesFromPanels // () -> void
 	ldrb r0, [r5,#oBattleObject_DirectionFlip]
-	ldrb r1, [r5,#oBattleObject_Unk_0c]
+	ldrb r1, [r5,#BattleObject_DirectionAngle]
 	eor r0, r1
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl object_getFlip // () -> int
@@ -19111,7 +19111,7 @@ sub_80C0C48:
 	ldrh r0, [r5,#oBattleObject_Damage]
 	bl sub_80E199A
 	mov r6, r0
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	ldrb r1, [r5,#oBattleObject_Unk_0d]
 	push {r5}
 	ldr r5, [r5,#oBattleObject_RelatedObject1Ptr]
@@ -19358,7 +19358,7 @@ sub_80C0DD8:
 	pop {r1-r3,r5}
 	beq locret_80C0DFE
 	strb r1, [r0,#oBattleObject_PanelX]
-	strb r1, [r0,#oBattleObject_Unk_0c]
+	strb r1, [r0,#BattleObject_DirectionAngle]
 	strb r2, [r0,#oBattleObject_PanelY]
 	strb r2, [r0,#oBattleObject_Unk_0d]
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
@@ -25118,7 +25118,7 @@ locret_80C389E:
 	thumb_local_start
 sub_80C38A0:
 	push {lr}
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne locret_80C38B8
 	ldrh r0, [r5,#oBattleObject_Timer]
@@ -27746,7 +27746,7 @@ loc_80C4BA8:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne loc_80C4BBE
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -27825,7 +27825,7 @@ SpawnCounterPinkRingMaybe_80C4C12: // (x_maybe: u32 , y_maybe: u32 , z_maybe: u3
 	str r0, [r7]
 
 	mov r1, #1
-	strb r1, [r0,#oBattleObject_Unk_0c]
+	strb r1, [r0,#BattleObject_DirectionAngle]
 
 	ldrb r1, [r0,#oObjectHeader_Flags]
 	mov r2, #OBJECT_FLAG_PAUSE_UPDATE
@@ -46123,7 +46123,7 @@ sub_80CD50C:
 	push {r5}
 	bl calcAngle_800117C
 	pop {r5}
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	ldr r1, dword_80CD5EC // =0x2c000 
 	push {r1}
 	bl sub_80011A0
@@ -65282,7 +65282,7 @@ sub_80D6580:
 	ldr r0, off_80D67E4 // =0x168 
 	strh r0, [r5,#oBattleObject_Timer2]
 	mov r0, #0xff
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	bl sub_80D65E0
@@ -65309,7 +65309,7 @@ off_80D65F4:
 	thumb_local_start
 sub_80D65FC:
 	push {r4,lr}
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	cmp r0, #0xff
 	bne loc_80D6624
 	ldrh r0, [r5,#oBattleObject_Timer2]
@@ -65327,7 +65327,7 @@ sub_80D65FC:
 	beq loc_80D6624
 loc_80D6620:
 	ldrb r0, [r5,#oBattleObject_Param2]
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 loc_80D6624:
 	ldrh r4, [r5,#oBattleObject_PanelXY]
 	ldr r1, off_80D6688 // =off_80D668C 
@@ -65338,7 +65338,7 @@ loc_80D6624:
 	ldrh r0, [r5,#oBattleObject_PanelXY]
 	cmp r0, r4
 	beq locret_80D6686
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	cmp r0, #0xff
 	bne loc_80D6646
 	mov r0, #0xf
@@ -65347,7 +65347,7 @@ loc_80D6624:
 	b locret_80D6686
 loc_80D6646:
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	lsr r1, r4, #8
 	mov r0, #0xff
 	and r0, r4
@@ -65366,7 +65366,7 @@ loc_80D6646:
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	add r0, #1
 	str r0, [r5,#oBattleObject_ExtraVars]
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne locret_80D6686
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -67481,7 +67481,7 @@ battleObject_initStaticActor_80D761C:
 	push {r5}
 	bl calcAngle_800117C
 	pop {r5}
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	ldr r1, dword_80D7738 // =0x2c000 
 	push {r1}
 	bl sub_80011A0
@@ -70808,11 +70808,11 @@ sub_80D9024:
 	ldr r0, [r7,#oCollisionData_FlagsFromCollision]
 	tst r0, r0
 	beq loc_80D9044
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne loc_80D9044
 	mov r0, #1
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
@@ -72581,7 +72581,7 @@ sub_80D9D6C:
 	push {r5}
 	bl calcAngle_800117C
 	pop {r5}
-	strb r0, [r5,#oBattleObject_Unk_0c]
+	strb r0, [r5,#BattleObject_DirectionAngle]
 	ldr r1, dword_80D9E18 // =0x2c000 
 	push {r1}
 	bl sub_80011A0
@@ -87001,7 +87001,7 @@ loc_80E0BAC:
 	mov r1, #2
 	orr r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne loc_80E0BC2
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -87068,7 +87068,7 @@ loc_80E0BF6:
 	strb r0, [r5,#oObjectHeader_Flags]
 	b loc_80E0C4C
 loc_80E0C3E:
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 	bne loc_80E0C4C
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -87280,7 +87280,7 @@ sub_80E0D98:
 	orr r1, r2
 	strb r1, [r0,#oObjectHeader_Flags]
 	mov r1, #1
-	strb r1, [r0,#oBattleObject_Unk_0c]
+	strb r1, [r0,#BattleObject_DirectionAngle]
 locret_80E0DBE:
 	pop {pc}
 	thumb_func_end sub_80E0D98
@@ -87632,7 +87632,7 @@ sub_80E0FC0:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_update
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	bl sprite_setPriority_8002E14
 	mov r0, #0xa
 	strh r0, [r5,#oBattleObject_Timer]
@@ -87733,7 +87733,7 @@ sub_80E1084:
 	mov r2, r5
 	pop {r0,r5}
 	beq loc_80E109E
-	strb r0, [r2,#oBattleObject_Unk_0c]
+	strb r0, [r2,#BattleObject_DirectionAngle]
 	str r6, [r2,#oBattleObject_XVelocity]
 	mov r1, #0
 	str r1, [r2,#oBattleObject_YVelocity]
@@ -101915,7 +101915,7 @@ sub_80E75AC:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
 loc_80E75E8:
-	ldrb r0, [r5,#oBattleObject_Unk_0c]
+	ldrb r0, [r5,#BattleObject_DirectionAngle]
 	tst r0, r0
 loc_80E75EC:
 	bne locret_80E75F6
@@ -107913,7 +107913,7 @@ sub_80EA11C:
 	pop {r1-r3,r5}
 	beq locret_80EA14A
 	strb r1, [r0,#oBattleObject_PanelX]
-	strb r1, [r0,#oBattleObject_Unk_0c]
+	strb r1, [r0,#BattleObject_DirectionAngle]
 	strb r2, [r0,#oBattleObject_PanelY]
 	strb r2, [r0,#oBattleObject_Unk_0d]
 	strb r3, [r0,#oBattleObject_Element]
