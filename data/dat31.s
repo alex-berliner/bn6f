@@ -490,7 +490,7 @@ sub_810C7B6::
 	ldrb r0, [r1,r0]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0xb
 	bl object_setAttack0
 	mov r0, #1
@@ -1269,7 +1269,7 @@ loc_810CE38::
 	ldrb r1, [r1,r0]
 	strh r1, [r7,#oAIAttackVars_Damage]
 	mov r1, #0xa
-	strh r1, [r7,#oAIAttackVars_Unk_0a]
+	strh r1, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0xb
 	bl object_setAttack0
 	bl GetPositiveSignedRNG

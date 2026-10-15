@@ -99840,7 +99840,7 @@ sub_80E667C:
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
 	add r0, #0xa0
-	ldrb r0, [r0,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r0,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_80E66F6
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -110299,7 +110299,7 @@ aiAttackVars_updateIllusionSpawnState_80EB79C:
 	ldrb r4, [r7,#oAIAttackVars_AttackBoost2]
 	tst r4, r4
 	beq locret_80EB83A
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_80EB7D6
 	mov r1, #0x2c 
@@ -118809,7 +118809,7 @@ sub_80EF6FC:
 	beq loc_80EF712
 	cmp r0, #0x18
 	beq loc_80EF712
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	beq loc_80EF722
 loc_80EF712:
@@ -118884,7 +118884,7 @@ loc_80EF788:
 	str r1, [r7,#oAIAttackVars_AttackBoost2]
 	ldrb r0, [r4,#0xb]
 	bl object_setAttack0
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_80EF7CE
 	mov r1, #0x29 
@@ -118986,7 +118986,7 @@ sub_80EF87C:
 	beq loc_80EF892
 	cmp r0, #0x18
 	beq loc_80EF892
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	beq loc_80EF8A2
 loc_80EF892:
@@ -119061,7 +119061,7 @@ loc_80EF908:
 	str r1, [r7,#oAIAttackVars_AttackBoost2]
 	ldrb r0, [r4,#0xb]
 	bl object_setAttack0
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_80EF94E
 	mov r1, #0x29 
@@ -120663,7 +120663,7 @@ loc_80F059C:
 loc_80F05DE:
 	mov r3, #0xa0
 	add r3, r3, r6
-	ldrb r0, [r3,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r3,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_80F05F2
 	ldrb r0, [r3,#oAIAttackVars_Unk_1c]
@@ -156340,7 +156340,7 @@ sub_8101F2A:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102198 // =byte_810199C
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0xa
@@ -156368,7 +156368,7 @@ sub_8101F70:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021B0 // =byte_81019BC
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0xb
@@ -156390,7 +156390,7 @@ sub_8101FAE:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021C0 // =byte_81019D4
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, off_81021C4 // =0x100
@@ -156416,7 +156416,7 @@ sub_8101FE4:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021D4 // =byte_81019EC
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
@@ -156443,7 +156443,7 @@ sub_8102016:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021E8 // =byte_8101A08
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #1
@@ -156473,7 +156473,7 @@ sub_810205C:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_81021F8 // =byte_8101A20
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #1
@@ -156511,7 +156511,7 @@ sub_810209E:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102210 // =byte_8101A40
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	ldr r0, [r7,#oAIAttackVars_PanelParamFlags2]
@@ -156549,7 +156549,7 @@ sub_81020F0:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8102228 // =byte_8101A60
 	bl battle_aiGetVersionedTableEntry_800FE12
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0xd
@@ -173896,7 +173896,7 @@ sub_810A6C0:
 	ldrb r0, [r0,r1]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	lsl r1, r1, #2
 	ldr r0, off_810A828 // =byte_810A580
 	ldr r0, [r0,r1]
@@ -174137,7 +174137,7 @@ sub_810A94C:
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bne loc_810A98E
 	ldrh r0, [r7,#oAIAttackVars_Damage]
-	ldrh r1, [r7,#oAIAttackVars_Unk_0a]
+	ldrh r1, [r7,#oAIAttackVars_ExtraDamage]
 	lsl r1, r1, #0x10
 	orr r0, r1
 	mov r1, r0
@@ -174321,7 +174321,7 @@ sub_810AAE6:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_810AE1C // =byte_810AA28
 	ldrb r0, [r0,r1]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	mov r1, #0x68
 	strb r0, [r5,r1]
@@ -175852,7 +175852,7 @@ loc_810B70A:
 loc_810B70E:
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	ldrb r2, [r4,#oAIData_Version_16]
 	ldrb r0, [r1,r2]
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -176203,7 +176203,7 @@ dword_810BA54:
 sub_810BA58:
 	push {r4-r7,lr}
 	ldrh r0, [r7,#oAIAttackVars_Damage]
-	ldrh r1, [r7,#oAIAttackVars_Unk_0a]
+	ldrh r1, [r7,#oAIAttackVars_ExtraDamage]
 	lsl r1, r1, #0x10
 	orr r0, r1
 	mov r6, r0
@@ -176254,7 +176254,7 @@ sub_810BAAC:
 	ldrb r0, [r4,#oAIData_Version_16]
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	ldrh r0, [r7,#oAIAttackVars_Damage]
-	ldrh r1, [r7,#oAIAttackVars_Unk_0a]
+	ldrh r1, [r7,#oAIAttackVars_ExtraDamage]
 	lsl r1, r1, #0x10
 	orr r0, r1
 	mov r1, #0x80
@@ -176527,7 +176527,7 @@ sub_810BCBC:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_810BEC4 // =byte_810BBD0
 	ldrb r0, [r0,r1]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	bl sub_810BD94
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	bl sub_810BD5E
@@ -177157,7 +177157,7 @@ sub_810C212:
 	ldrb r0, [r0,r1]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	ldr r0, off_810C338 // =byte_810C19C
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]

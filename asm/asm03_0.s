@@ -14683,7 +14683,7 @@ loc_802CFB8:
 	strh r0, [r4,r1]
 	strh r0, [r4,#oCollisionData_Unk_1c]
 	strh r0, [r4,#oCollisionData_Unk_2a]
-	strh r0, [r4,#oCollisionData_Unk_2c]
+	strh r0, [r4,#oCollisionData_HitStunTimer]
 	mov r1, #0x40 
 	ldr r0, [r4,#oCollisionData_FlagsFromCollision]
 	bic r0, r1
@@ -15556,7 +15556,7 @@ loc_802D524:
 	ldrb r1, [r4,#0xa]
 	mov r0, #0x80
 	orr r1, r0
-	strh r1, [r7,#oAIAttackVars_Unk_0a]
+	strh r1, [r7,#oAIAttackVars_ExtraDamage]
 	ldrh r0, [r7,#oAIAttackVars_ChipID]
 	ldr r1, dword_802D634 // =0x153 
 	cmp r0, r1
@@ -21301,8 +21301,8 @@ camera_init_802FF4C: // (player_x: u32, player_y: u32, player_z: u32, map_group:
 	str r3, [r5,#oCamera_Z]
 
 	mov r1, #0
-	strh r1, [r5,#oCamera_Unk_04]
-	strh r1, [r5,#oCamera_Unk_06]
+	strh r1, [r5,#oCamera_ScrollX]
+	strh r1, [r5,#oCamera_CameraYInt]
 
 	pop {r0,r1}
 
@@ -21445,7 +21445,7 @@ camera_updateDerivedOffsets_803007C:
 	add r1, r1, r6
 	asr r1, r1, #0x10
 	neg r1, r1
-	strh r1, [r5,#oCamera_Unk_04]
+	strh r1, [r5,#oCamera_ScrollX]
 	mov r6, r7
 	mov r2, r8
 	sub r6, r6, r2
@@ -21456,7 +21456,7 @@ camera_updateDerivedOffsets_803007C:
 	add r6, r6, r2
 	asr r6, r6, #0x10
 	neg r6, r6
-	strh r6, [r5,#oCamera_Unk_06]
+	strh r6, [r5,#oCamera_CameraYInt]
 	mov pc, lr
 	thumb_func_end camera_updateDerivedOffsets_803007C
 
@@ -21479,7 +21479,7 @@ loc_80300B6:
 loc_80300BE:
 	str r1, [r5,#oCamera_nextX_3c]
 	asr r1, r1, #0x10
-	strh r1, [r5,#oCamera_Unk_04]
+	strh r1, [r5,#oCamera_ScrollX]
 	ldr r6, [r5,#oCamera_nextZ_44]
 	ldr r4, [r5,#oCamera_nextY_40]
 	ldr r2, [r5,#oCamera_Unk_24]
@@ -21514,7 +21514,7 @@ loc_80300FA:
 	str r4, [r5,#oCamera_nextZ_44]
 	sub r6, r6, r4
 	asr r6, r6, #0x10
-	strh r6, [r5,#oCamera_Unk_06]
+	strh r6, [r5,#oCamera_CameraYInt]
 locret_8030102:
 	mov pc, lr
 	thumb_func_end battle_clampCameraToBounds_80300AC
@@ -21525,12 +21525,12 @@ sub_8030104:
 	asr r4, r4, #0x10
 	add r4, #0x80
 	add r4, #8
-	strh r4, [r5,#oCamera_Unk_04]
+	strh r4, [r5,#oCamera_ScrollX]
 	ldr r4, [r5,#oCamera_nextY_40]
 	asr r4, r4, #0x10
 	add r4, #0x80
 	add r4, #0x30 
-	strh r4, [r5,#oCamera_Unk_06]
+	strh r4, [r5,#oCamera_CameraYInt]
 	mov pc, lr
 	thumb_func_end sub_8030104
 
@@ -21539,9 +21539,9 @@ sub_8030104:
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_SavePosition_803011A.yaml
 	thumb_local_start
 camera_SavePosition_803011A:
-	ldrh r1, [r5,#oCamera_Unk_04]
+	ldrh r1, [r5,#oCamera_ScrollX]
 	strh r1, [r5,#oCamera_Unk_08]
-	ldrh r1, [r5,#oCamera_Unk_06]
+	ldrh r1, [r5,#oCamera_CameraYInt]
 	strh r1, [r5,#oCamera_Unk_0a]
 	mov pc, lr
 	thumb_func_end camera_SavePosition_803011A
@@ -21575,10 +21575,10 @@ camera_LoadPositionFromSource_8030126:
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_applyDeltaToRenderInfoScroll_8030136.yaml
 	thumb_local_start
 camera_applyDeltaToRenderInfoScroll_8030136:
-	ldrh r1, [r5,#oCamera_Unk_04]
+	ldrh r1, [r5,#oCamera_ScrollX]
 	ldrh r2, [r5,#oCamera_Unk_08]
 	sub r1, r1, r2
-	ldrh r4, [r5,#oCamera_Unk_06]
+	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]
 	sub r4, r4, r2
 	mov r0, r10
@@ -21600,10 +21600,10 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	thumb_local_start
 camera_applyScrollToBgLayers_8030158:
 	push {r4-r7,lr}
-	ldrh r1, [r5,#oCamera_Unk_04]
+	ldrh r1, [r5,#oCamera_ScrollX]
 	ldrh r2, [r5,#oCamera_Unk_08]
 	sub r1, r1, r2
-	ldrh r4, [r5,#oCamera_Unk_06]
+	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]
 	sub r4, r4, r2
 	mov r0, r10
@@ -21633,10 +21633,10 @@ locret_8030192:
 
 	thumb_local_start
 sub_8030194:
-	ldrh r1, [r5,#oCamera_Unk_04]
+	ldrh r1, [r5,#oCamera_ScrollX]
 	ldrh r2, [r5,#oCamera_Unk_08]
 	sub r1, r1, r2
-	ldrh r4, [r5,#oCamera_Unk_06]
+	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]
 	sub r4, r4, r2
 	mov r0, r10
@@ -21856,8 +21856,8 @@ off_80302E4:
 camera_CopyScrollToRenderLayers_80302F8:
 	mov r7, r10
 	ldr r5, [r7,#oToolkit_CameraPtr]
-	ldrh r1, [r5,#oCamera_Unk_04]
-	ldrh r2, [r5,#oCamera_Unk_06]
+	ldrh r1, [r5,#oCamera_ScrollX]
+	ldrh r2, [r5,#oCamera_CameraYInt]
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
@@ -21879,8 +21879,8 @@ camera_CopyScrollToRenderLayers_80302F8:
 renderInfo_SnapScrollToCamera_8030316:
 	mov r7, r10
 	ldr r5, [r7,#oToolkit_CameraPtr]
-	ldrh r1, [r5,#oCamera_Unk_04]
-	ldrh r2, [r5,#oCamera_Unk_06]
+	ldrh r1, [r5,#oCamera_ScrollX]
+	ldrh r2, [r5,#oCamera_CameraYInt]
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
@@ -21903,8 +21903,8 @@ renderInfo_SnapScrollToCamera_8030316:
 render_ClearScrollOffsets_8030336:
 	mov r7, r10
 	ldr r5, [r7,#oToolkit_CameraPtr]
-	ldrh r1, [r5,#oCamera_Unk_04]
-	ldrh r2, [r5,#oCamera_Unk_06]
+	ldrh r1, [r5,#oCamera_ScrollX]
+	ldrh r2, [r5,#oCamera_CameraYInt]
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	and r1, r4
@@ -21927,8 +21927,8 @@ render_ClearScrollOffsets_8030336:
 sub_803035E:
 	mov r7, r10
 	ldr r5, [r7,#oToolkit_CameraPtr]
-	ldrh r1, [r5,#oCamera_Unk_04]
-	ldrh r2, [r5,#oCamera_Unk_06]
+	ldrh r1, [r5,#oCamera_ScrollX]
+	ldrh r2, [r5,#oCamera_CameraYInt]
 	ldr r3, [r7,#oToolkit_RenderInfoPtr]
 	mov r4, #0xff
 	lsl r4, r4, #1

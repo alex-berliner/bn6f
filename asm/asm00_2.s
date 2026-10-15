@@ -2187,7 +2187,7 @@ loc_800FBEC:
 loc_800FBEE:
 	bl useChipRelated_80127C0
 	bl object_setAttack2
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	bne loc_800FC0C
 	mov r1, #0x2c 
@@ -3534,7 +3534,7 @@ sub_8010488:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #oAIData_AttackVars
-	ldrb r0, [r7,#oAIAttackVars_Unk_1b]
+	ldrb r0, [r7,#oAIAttackVars_IsInvincible]
 	cmp r0, #0
 	beq loc_80104B6
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -6010,7 +6010,7 @@ loc_801171E:
 	mov r7, #0xa0
 	add r7, r7, r1
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_1b]
+	strb r0, [r7,#oAIAttackVars_IsInvincible]
 	ldrb r6, [r7,#oAIAttackVars_Unk_1c]
 	cmp r6, #4
 	beq loc_8011754
@@ -6298,7 +6298,7 @@ loc_8011A44:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -6372,7 +6372,7 @@ loc_8011AC4:
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x16
 	pop {r4,pc}
@@ -6387,7 +6387,7 @@ sub_8011ADA:
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x33 
@@ -6404,7 +6404,7 @@ sub_8011AF2:
 loc_8011AFE:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
@@ -6451,7 +6451,7 @@ sub_8011B4A:
 loc_8011B56:
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
@@ -6496,7 +6496,7 @@ sub_8011BA2:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
@@ -6522,7 +6522,7 @@ greatfireAPwrAtk_init_8011BD0:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x35 
@@ -6537,7 +6537,7 @@ sub_8011BE8:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x86
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3a 
@@ -6552,7 +6552,7 @@ sub_8011C00:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3c 
@@ -6567,7 +6567,7 @@ sub_8011C18:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x20 
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, dword_8011C34 // =0x2d3d00 
@@ -6589,7 +6589,7 @@ sub_8011C38:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
@@ -6611,7 +6611,7 @@ spoutcrossBPwrAtk_init_8011C5E: // spoutcross CS initialize? // JP: 801225e
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_8011C84 // =0xd 
@@ -6635,7 +6635,7 @@ sub_8011C88:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x20 
@@ -6686,7 +6686,7 @@ slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x80
@@ -6706,7 +6706,7 @@ sub_8011CF8:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r1, #0
@@ -6729,7 +6729,7 @@ sub_8011D20:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x40 
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x46 
@@ -6744,7 +6744,7 @@ sub_8011D38:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x28 
 	mov r1, #0x14
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6761,7 +6761,7 @@ sub_8011D54:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x5a 
 	mov r1, #0x14
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6780,7 +6780,7 @@ sub_8011D74:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
@@ -6804,7 +6804,7 @@ sub_8011D9C:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	mov r1, #0x1e
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6823,7 +6823,7 @@ sub_8011DBC:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	mov r1, #0x14
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6842,7 +6842,7 @@ sub_8011DDC:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x46 
 	mov r1, #0x1e
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6861,7 +6861,7 @@ sub_8011DFC:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x50 
 	mov r1, #0x14
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6880,7 +6880,7 @@ sub_8011E1C:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x9e
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	mov r1, #0xa
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -6902,7 +6902,7 @@ sub_8011E40:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x80
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	bl sub_800F4A8
@@ -6934,7 +6934,7 @@ sub_8011E78:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	bl sub_800F4A8
@@ -6964,7 +6964,7 @@ sub_8011EAC:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
@@ -6986,7 +6986,7 @@ sub_8011ED0:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x28 
@@ -7006,7 +7006,7 @@ sub_8011EF0:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
@@ -7026,7 +7026,7 @@ sub_8011F10:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
@@ -7055,7 +7055,7 @@ sub_8011F44:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
@@ -7074,7 +7074,7 @@ sub_8011F64:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x10
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
@@ -7117,12 +7117,12 @@ loc_8011F9A:
 	mov r0, #0xc8
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #2
 	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
@@ -7155,12 +7155,12 @@ loc_8011FDC:
 	mov r0, #0xc8
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r1, #2
 	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
@@ -7184,7 +7184,7 @@ sub_8012018:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r1, #0x48 
 	bl GetBattleNaviStatsHword_AllianceFromBattleObject
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -7212,7 +7212,7 @@ sub_8012044:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x50 
 	mov r1, #0xa
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -7234,7 +7234,7 @@ sub_801206E:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	pop {r0}
 	pop {pc}
 	thumb_func_end sub_801206E
@@ -7250,7 +7250,7 @@ sub_801208A:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	pop {r0}
 	pop {pc}
 	thumb_func_end sub_801208A
@@ -7265,7 +7265,7 @@ sub_80120A6:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80120C8 // =0x114 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -7298,7 +7298,7 @@ sub_80120D6:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x50 
 	mov r1, #0xa
 	bl battle_beastPwrAtk_addScaledBase_8012642
@@ -7318,7 +7318,7 @@ sub_80120FE:
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012120 // =0x114 
@@ -7342,7 +7342,7 @@ sub_8012124:
 	mul r0, r1
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x85
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #6
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0
@@ -7361,7 +7361,7 @@ sub_8012144:
 	mul r0, r1
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
@@ -7385,7 +7385,7 @@ sub_801216E:
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012190 // =0x214 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -7408,7 +7408,7 @@ sub_8012194:
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80121B8 // =0x114 
@@ -7430,7 +7430,7 @@ sub_80121BC:
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -7450,7 +7450,7 @@ sub_80121DC:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x1e
@@ -7467,7 +7467,7 @@ sub_80121F8:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7482,7 +7482,7 @@ sub_8012210:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7497,7 +7497,7 @@ sub_8012228:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7512,7 +7512,7 @@ sub_8012240:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7527,7 +7527,7 @@ tomahawkmanBPwrAtk_init_8012258:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x1e
@@ -7544,7 +7544,7 @@ sub_8012278:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
@@ -7563,7 +7563,7 @@ sub_8012292:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7578,7 +7578,7 @@ sub_80122AA:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7593,7 +7593,7 @@ sub_80122C2:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7608,7 +7608,7 @@ sub_80122DA:
 	bl battle_beastPwrAtk_addScaledBaseFromIndex_8010D04
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
@@ -7621,7 +7621,7 @@ sub_80122F2:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
@@ -7638,7 +7638,7 @@ sub_801230C:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
@@ -7661,7 +7661,7 @@ loc_801232C:
 	mov r0, #0x1e
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x5c 
 	mov pc, lr
 	thumb_func_end sub_8012326
@@ -7760,7 +7760,7 @@ bubbleSpreadBPwrAtk_init_80123AA:
 	mov r0, #0x46 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_80123C4 // =0x7 
@@ -7882,7 +7882,7 @@ sub_801244A:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	ldr r0, dword_80126D4 // =0x33c00 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x5e 
@@ -7939,7 +7939,7 @@ sub_8012498:
 	mov r0, #0x28 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_80124B4 // =0x8 
@@ -8015,7 +8015,7 @@ sub_80124FE:
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_8012518 // =0x4 
@@ -8120,7 +8120,7 @@ sub_8012586:
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80125A8 // =0x114 
@@ -8143,7 +8143,7 @@ sub_80125AC:
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80125CC // =0x214 
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -8170,7 +8170,7 @@ sub_80125D0:
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
-	strh r0, [r7,#oAIAttackVars_Unk_0a]
+	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -8451,7 +8451,7 @@ useChipRelated_80127C0: // called when you use a chip
 	b loc_80127E4
 loc_80127DA:
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_1b]
+	strb r0, [r7,#oAIAttackVars_IsInvincible]
 	mov r0, r5
 	bl sub_800EE26
 loc_80127E4:
@@ -15151,7 +15151,7 @@ loc_801565E:
 	mov r0, #0x10
 	bl object_clearFlag2
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	bl sub_8011384
@@ -15273,7 +15273,7 @@ loc_801577C:
 	mov r0, #0x10
 	bl object_clearFlag2
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #0
 	beq loc_80157EE
@@ -15408,12 +15408,12 @@ sub_80158FA:
 	mov r0, #0x10
 	bl object_clearFlag2
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	ldr r0, dword_801593C // =0x200800 
 	bl ClearAIDataUnk0x48Flag
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
-	strh r1, [r0,#oCollisionData_Unk_2c]
+	strh r1, [r0,#oCollisionData_HitStunTimer]
 	strh r1, [r0,#oCollisionData_Unk_2a]
 	strh r1, [r0,#oCollisionData_Unk_1c]
 	str r1, [r0,#oCollisionData_Unk_58]
@@ -17240,7 +17240,7 @@ sub_80166AE:
 battle_dispatchAIDispatchByType_80166B6:
 	push {lr}
 	ldr r1, off_80166C4 // =off_80166C8 
-	ldrb r0, [r5,#oBattleObject_Unk_1f]
+	ldrb r0, [r5,#oBattleObject_AIType]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -17281,7 +17281,7 @@ sub_80166D0:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_Unk_1e]
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	pop {r6,r7,pc}
 loc_8016716:
 	ldrb r0, [r5,#oBattleObject_ContactState]
@@ -17401,7 +17401,7 @@ loc_80167E6:
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	strb r0, [r1,#oCollisionData_Direction]
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	mov r0, #1
 	lsl r0, r0, #0xc
 	bl object_clearFlag // (int bitfield) -> void
@@ -18241,7 +18241,7 @@ battle_objectCountdownPhaseOrReset_8016E3C:
 	mov r0, #0x10
 	bl object_clearFlag2
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	ldr r0, [r5,#oBattleObject_PendingStateAction]
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 	mov r0, #0
@@ -19810,7 +19810,7 @@ loc_8017A5E:
 	mov r0, #0x10
 	bl object_clearFlag2
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 	mov r0, #0
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0xff
@@ -22804,7 +22804,7 @@ battle_clearObjectStatusFlagsAndTimers_801A264:
 	strh r0, [r3,#oCollisionData_BlindTimer]
 	strh r0, [r3,#oCollisionData_Unk_22]
 	strh r0, [r3,#oCollisionData_Unk_2a]
-	strh r0, [r3,#oCollisionData_Unk_2c]
+	strh r0, [r3,#oCollisionData_HitStunTimer]
 	pop {pc}
 	thumb_func_end battle_clearObjectStatusFlagsAndTimers_801A264
 
@@ -22855,7 +22855,7 @@ battleObject_resetCollisionState_801A2B0:
 	bl object_clearFlag2
 	mov r0, #0
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r3,#oCollisionData_Unk_2c]
+	strh r0, [r3,#oCollisionData_HitStunTimer]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrh r0, [r0,#oAIData_Unk_3c]
 	strh r0, [r5,#oBattleObject_Z16]
@@ -24772,7 +24772,7 @@ loc_801B0D6:
 	b loc_801B0EC
 loc_801B0E8:
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 loc_801B0EC:
 	bl object_getFlag2
 	mov r1, #4
@@ -25079,7 +25079,7 @@ loc_801B302: // endif
 loc_801B314: // endif
 
 	mov r0, #0
-	strb r0, [r5,#oBattleObject_Unk_1f]
+	strb r0, [r5,#oBattleObject_AIType]
 
 loc_801B318:
 

@@ -11093,9 +11093,9 @@ loc_8008122:
 	bne loc_8008136
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_19]
+	ldrb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_19]
+	strb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	mov r0, #0x10
 	str r0, [r5]
 	b locret_80081A2
@@ -11449,9 +11449,9 @@ loc_80083CA:
 	bne loc_80083DE
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_19]
+	ldrb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_19]
+	strb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	mov r0, #0x10
 	str r0, [r5]
 	b locret_80083E2
@@ -11706,9 +11706,9 @@ loc_80085A6:
 	bne loc_80085BA
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_19]
+	ldrb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_19]
+	strb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	mov r0, #0xc
 	str r0, [r5]
 	b locret_80085FC
@@ -12326,9 +12326,9 @@ loc_8008A16:
 	bne loc_8008A2A
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_19]
+	ldrb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_19]
+	strb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	mov r0, #0xc
 	str r0, [r5]
 	b locret_8008A60
@@ -12874,9 +12874,9 @@ loc_8008E20:
 	bne loc_8008E34
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_19]
+	ldrb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	add r0, #1
-	strb r0, [r1,#oBattleState_Unk_19]
+	strb r0, [r1,#oBattleState_CustGaugeChargeLevel]
 	mov r0, #0xc
 	str r0, [r5]
 	b locret_8008E6A
@@ -18093,7 +18093,7 @@ sub_800AF50:
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
 	ldrb r0, [r5,#oBattleState_Unk_18]
-	ldrb r1, [r5,#oBattleState_Unk_19]
+	ldrb r1, [r5,#oBattleState_CustGaugeChargeLevel]
 	ldrb r2, [r5,#oBattleState_State4EventCount]
 	neg r4, r2
 	add r4, #3
