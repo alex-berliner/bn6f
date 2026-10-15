@@ -3539,7 +3539,7 @@ sub_8010488:
 	beq loc_80104B6
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
-	ldrb r1, [r7,#oAIAttackVars_Unk_0c]
+	ldrb r1, [r7,#oAIAttackVars_AttackBoost2]
 	add r1, r1, r1
 	add r1, #0x36 
 	ldrh r2, [r7,#oAIAttackVars_Damage]
@@ -3681,11 +3681,11 @@ sub_801056A:
 	strh r2, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_14]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, [sp,#4]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	ldr r0, [sp,#8]
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
 	tst r0, r0
@@ -3746,11 +3746,11 @@ sub_80105F2:
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_14]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, [sp,#4]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	ldr r0, [sp,#8]
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
 	tst r0, r0
@@ -5920,7 +5920,7 @@ loc_8011698:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	add r1, #0xa0
-	strh r0, [r1,#oAIAttackVars_Unk_00]
+	strh r0, [r1,#oAIAttackVars_HitElement]
 	strb r2, [r1,#oAIAttackVars_Unk_1c]
 	bl ai_clearPwrAtkStateFromBattleObject_801011A
 	pop {pc}
@@ -5940,11 +5940,11 @@ aiAttack_initVarsAndStart_80116AE:
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
 	mov r7, #0xa0
 	add r7, r7, r4
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
-	strh r1, [r7,#oAIAttackVars_Unk_18]
-	strb r2, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
+	strh r1, [r7,#oAIAttackVars_AttackDuration]
+	strb r2, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_2c]
+	str r0, [r7,#oAIAttackVars_TargetObjectPtr]
 	mov r0, #0x10
 	bl object_setAttack4
 	bl aiAttack_stepStateMachine_80EB04C
@@ -5961,12 +5961,12 @@ sub_80116D8:
 	push {r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0xa0
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
-	strh r1, [r7,#oAIAttackVars_Unk_18]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
+	strh r1, [r7,#oAIAttackVars_AttackDuration]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_2c]
+	str r0, [r7,#oAIAttackVars_TargetObjectPtr]
 	mov r0, #0x10
 	bl object_setAttack4
 	bl aiAttack_stepStateMachine_80EB04C
@@ -6036,7 +6036,7 @@ loc_8011754:
 	mov r0, #8
 	strb r0, [r5,#oBattleObject_CurAction]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r6,r7,pc}
 	.balign 4, 0
 dword_8011760:
@@ -6295,7 +6295,7 @@ loc_8011A44:
 	bl computeBeastDamageCap_801265A
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6315,9 +6315,9 @@ loc_8011A6E:
 	beq loc_8011A74
 	mov r4, #0
 loc_8011A74:
-	strb r4, [r7,#oAIAttackVars_Unk_0c]
+	strb r4, [r7,#oAIAttackVars_AttackBoost2]
 	mov r1, #0
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x11
 	pop {r4,pc}
 	thumb_func_end megamanChargeShotBPwrAtk_init_8011A26
@@ -6365,11 +6365,11 @@ loc_8011ABE:
 loc_8011AC2:
 	mov r4, #6
 loc_8011AC4:
-	str r4, [r7,#oAIAttackVars_Unk_0c]
+	str r4, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
@@ -6381,15 +6381,15 @@ loc_8011AC4:
 	thumb_local_start
 sub_8011ADA:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x33 
 	mov pc, lr
 	thumb_func_end sub_8011ADA
@@ -6406,17 +6406,17 @@ loc_8011AFE:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r1, #0
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	bl battle_testFlag0x40_800A8F8
 	beq loc_8011B2C
 	bl battle_getAllianceEntryStatus_802E4B8
@@ -6433,7 +6433,7 @@ loc_8011B38:
 	strb r0, [r7,#oAIAttackVars_Unk_0e]
 	mov r1, #8
 loc_8011B3E:
-	strb r1, [r7,#oAIAttackVars_Unk_0d]
+	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r1, #0
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	str r1, [r0,#oAIData_TempAttackObjectPtr]
@@ -6453,17 +6453,17 @@ loc_8011B56:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r1, #0x4d 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r1, #0
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	bl battle_testFlag0x40_800A8F8
 	beq loc_8011B84
 	bl battle_getAllianceEntryStatus_802E4B8
@@ -6480,7 +6480,7 @@ loc_8011B90:
 	strb r0, [r7,#oAIAttackVars_Unk_0e]
 	mov r1, #8
 loc_8011B96:
-	strb r1, [r7,#oAIAttackVars_Unk_0d]
+	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r1, #0
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	str r1, [r0,#oAIData_TempAttackObjectPtr]
@@ -6498,15 +6498,15 @@ sub_8011BA2:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	ldr r0, off_8011BCC // =0x23c 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x27 
 	pop {pc}
 	.balign 4, 0
@@ -6524,7 +6524,7 @@ greatfireAPwrAtk_init_8011BD0:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x35 
 	pop {pc}
 	thumb_func_end greatfireAPwrAtk_init_8011BD0
@@ -6539,7 +6539,7 @@ sub_8011BE8:
 	mov r0, #0x86
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3a 
 	pop {pc}
 	thumb_func_end sub_8011BE8
@@ -6554,7 +6554,7 @@ sub_8011C00:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3c 
 	pop {pc}
 	thumb_func_end sub_8011C00
@@ -6569,9 +6569,9 @@ sub_8011C18:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x20 
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	ldr r0, dword_8011C34 // =0x2d3d00 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x3d 
 	pop {pc}
 	.balign 4, 0
@@ -6591,12 +6591,12 @@ sub_8011C38:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
 	lsl r0, r0, #8
 	add r0, #0xf
 	lsl r0, r0, #8
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x3e 
 	pop {pc}
 	thumb_func_end sub_8011C38
@@ -6613,11 +6613,11 @@ spoutcrossBPwrAtk_init_8011C5E: // spoutcross CS initialize? // JP: 801225e
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_8011C84 // =0xd 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x25 
 	pop {pc}
 	.balign 4, 0
@@ -6637,9 +6637,9 @@ sub_8011C88:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x20 
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3f 
 	pop {pc}
 	thumb_func_end sub_8011C88
@@ -6647,7 +6647,7 @@ sub_8011C88:
 	thumb_local_start
 sub_8011CA8:
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x1c
@@ -6671,7 +6671,7 @@ loc_8011CCA:
 	cmp r0, #0x40 
 	bne loc_8011CD2
 	mov r0, #0x11
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 loc_8011CD2:
 	mov r0, #0x41 
 locret_8011CD4:
@@ -6688,11 +6688,11 @@ slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x80
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #0x41 
 	pop {pc}
@@ -6714,9 +6714,9 @@ sub_8011CF8:
 	beq loc_8011D16
 	mov r1, #1
 loc_8011D16:
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x45 
 	pop {pc}
 	thumb_func_end sub_8011CF8
@@ -6731,7 +6731,7 @@ sub_8011D20:
 	mov r0, #0x9e
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x40 
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x46 
 	pop {pc}
 	thumb_func_end sub_8011D20
@@ -6767,7 +6767,7 @@ sub_8011D54:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x1a
 	pop {pc}
 	thumb_func_end sub_8011D54
@@ -6782,13 +6782,13 @@ sub_8011D74:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	ldr r0, off_8011D98 // =0x1800 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x4d 
 	pop {pc}
 	.balign 4, 0
@@ -6810,7 +6810,7 @@ sub_8011D9C:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x80
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x4c 
 	pop {pc}
 	thumb_func_end sub_8011D9C
@@ -6829,7 +6829,7 @@ sub_8011DBC:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x4e 
 	pop {pc}
 	thumb_func_end sub_8011DBC
@@ -6848,7 +6848,7 @@ sub_8011DDC:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x4f 
 	pop {pc}
 	thumb_func_end sub_8011DDC
@@ -6867,7 +6867,7 @@ sub_8011DFC:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x50 
 	pop {pc}
 	thumb_func_end sub_8011DFC
@@ -6886,9 +6886,9 @@ sub_8011E1C:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #2
-	strh r0, [r7,#oAIAttackVars_Unk_12]
+	strh r0, [r7,#oAIAttackVars_ChargeCycles]
 	mov r0, #0x52 
 	pop {pc}
 	thumb_func_end sub_8011E1C
@@ -6904,7 +6904,7 @@ sub_8011E40:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x80
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	bl sub_800F4A8
 	cmp r0, #1
 	blt loc_8011E68
@@ -6918,9 +6918,9 @@ loc_8011E68:
 	mov r1, #0
 loc_8011E6C:
 	strh r0, [r7,#oAIAttackVars_Damage]
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x13
 	pop {pc}
 	thumb_func_end sub_8011E40
@@ -6936,7 +6936,7 @@ sub_8011E78:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	bl sub_800F4A8
 	cmp r0, #1
 	blt loc_8011EA0
@@ -6950,7 +6950,7 @@ loc_8011EA0:
 	ldr r1, dword_8011F38 // =0x100501 
 loc_8011EA4:
 	strh r0, [r7,#oAIAttackVars_Damage]
-	str r1, [r7,#oAIAttackVars_Unk_0c]
+	str r1, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1f
 	pop {pc}
 	thumb_func_end sub_8011E78
@@ -6966,13 +6966,13 @@ sub_8011EAC:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r1, #8
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, off_8011F3C // =0x300 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1c
 	pop {pc}
 	thumb_func_end sub_8011EAC
@@ -6988,11 +6988,11 @@ sub_8011ED0:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x28 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x32 
 	pop {pc}
 	thumb_func_end sub_8011ED0
@@ -7008,11 +7008,11 @@ sub_8011EF0:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, dword_8011F40 // =0x3c1000 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x42 
 	pop {pc}
 	thumb_func_end sub_8011EF0
@@ -7028,13 +7028,13 @@ sub_8011F10:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x64 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r1, #1
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1c
 	pop {pc}
 dword_8011F34:
@@ -7057,7 +7057,7 @@ sub_8011F44:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -7076,7 +7076,7 @@ sub_8011F64:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -7113,19 +7113,19 @@ loc_8011F9A:
 	ldrh r1, [r2,r1]
 	lsl r1, r1, #0x10
 	orr r0, r1
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #0xc8
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r1, #2
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x11
 locret_8011FCC:
 	pop {pc}
@@ -7151,19 +7151,19 @@ loc_8011FDC:
 	ldrh r1, [r2,r1]
 	lsl r1, r1, #0x10
 	orr r0, r1
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #0xc8
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r1, #2
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x11
 locret_801200E:
 	pop {pc}
@@ -7178,9 +7178,9 @@ off_8012014:
 sub_8012018:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -7189,7 +7189,7 @@ sub_8012018:
 	bl GetBattleNaviStatsHword_AllianceFromBattleObject
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012040 // =0x114 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -7203,9 +7203,9 @@ off_8012040:
 sub_8012044:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	mov r0, #0
@@ -7218,7 +7218,7 @@ sub_8012044:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x13
 	pop {pc}
 	thumb_func_end sub_8012044
@@ -7259,16 +7259,16 @@ sub_801208A:
 sub_80120A6:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80120C8 // =0x114 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -7290,9 +7290,9 @@ sub_80120CC:
 sub_80120D6:
 	push {lr}
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
@@ -7304,7 +7304,7 @@ sub_80120D6:
 	bl battle_beastPwrAtk_addScaledBase_8012642
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x13
 	pop {pc}
 	thumb_func_end sub_80120D6
@@ -7312,9 +7312,9 @@ sub_80120D6:
 	thumb_local_start
 sub_80120FE:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
@@ -7322,7 +7322,7 @@ sub_80120FE:
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012120 // =0x114 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -7344,9 +7344,9 @@ sub_8012124:
 	mov r0, #0x85
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #6
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_12]
+	strh r0, [r7,#oAIAttackVars_ChargeCycles]
 	mov r0, #0x5d 
 	pop {pc}
 	thumb_func_end sub_8012124
@@ -7363,14 +7363,14 @@ sub_8012144:
 	mov r0, #0x94
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	mov r0, #6
 	lsl r0, r0, #0x18
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x38 
 	pop {pc}
 	thumb_func_end sub_8012144
@@ -7378,9 +7378,9 @@ sub_8012144:
 	thumb_local_start
 sub_801216E:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
@@ -7388,7 +7388,7 @@ sub_801216E:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_8012190 // =0x214 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -7401,9 +7401,9 @@ off_8012190:
 	thumb_local_start
 sub_8012194:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
@@ -7412,7 +7412,7 @@ sub_8012194:
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80121B8 // =0x114 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -7425,17 +7425,17 @@ off_80121B8:
 	thumb_local_start
 sub_80121BC:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x1e
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0x46 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x5a 
@@ -7452,9 +7452,9 @@ sub_80121DC:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x1e
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_80121DC
@@ -7469,7 +7469,7 @@ sub_80121F8:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_80121F8
@@ -7484,7 +7484,7 @@ sub_8012210:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_8012210
@@ -7499,7 +7499,7 @@ sub_8012228:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_8012228
@@ -7514,7 +7514,7 @@ sub_8012240:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_8012240
@@ -7529,11 +7529,11 @@ tomahawkmanBPwrAtk_init_8012258:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x1e
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1e
-	strb r0, [r7,#oAIAttackVars_Unk_0d]
+	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end tomahawkmanBPwrAtk_init_8012258
@@ -7546,11 +7546,11 @@ sub_8012278:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0d]
+	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_8012278
@@ -7565,7 +7565,7 @@ sub_8012292:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_8012292
@@ -7580,7 +7580,7 @@ sub_80122AA:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_80122AA
@@ -7595,7 +7595,7 @@ sub_80122C2:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_80122C2
@@ -7610,7 +7610,7 @@ sub_80122DA:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
 	thumb_func_end sub_80122DA
@@ -7623,11 +7623,11 @@ sub_80122F2:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0d]
+	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #0xb
 	pop {pc}
 	thumb_func_end sub_80122F2
@@ -7640,11 +7640,11 @@ sub_801230C:
 	mov r0, #0
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #6
-	strb r0, [r7,#oAIAttackVars_Unk_0d]
+	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #0xc
 	pop {pc}
 	thumb_func_end sub_801230C
@@ -7657,7 +7657,7 @@ loc_801232A:
 	mov r0, #3
 loc_801232C:
 	lsl r0, r0, #8
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1e
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x94
@@ -7762,11 +7762,11 @@ bubbleSpreadBPwrAtk_init_80123AA:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_80123C4 // =0x7 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x25 
 	pop {pc}
 dword_80123C4:
@@ -7884,7 +7884,7 @@ sub_801244A:
 	mov r0, #0x8a
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	ldr r0, dword_80126D4 // =0x33c00 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x5e 
 	mov pc, lr
 	thumb_func_end sub_801244A
@@ -7909,9 +7909,9 @@ sub_8012464:
 	b locret_8012482
 loc_8012478:
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x78 
-	strb r0, [r7,#oAIAttackVars_Unk_0c]
+	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x1c
 locret_8012482:
 	pop {pc}
@@ -7941,11 +7941,11 @@ sub_8012498:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_80124B4 // =0x8 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x25 
 	pop {pc}
 	.balign 4, 0x00
@@ -8017,11 +8017,11 @@ sub_80124FE:
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldr r0, dword_8012518 // =0x4 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #2
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x25 
 	pop {pc}
 dword_8012518:
@@ -8039,7 +8039,7 @@ sub_801251C:
 	thumb_local_start
 sub_8012526:
 	mov r0, #9
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x78 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0
@@ -8067,7 +8067,7 @@ sub_8012540:
 	thumb_local_start
 sub_801254A:
 	mov r0, #0x14
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x1c
 	mov pc, lr
 	thumb_func_end sub_801254A
@@ -8090,7 +8090,7 @@ sub_801255C:
 	mov r1, #3
 	strb r1, [r7,#oAIAttackVars_Unk_1c]
 	mov r1, #1
-	strb r1, [r7,#oAIAttackVars_Unk_0d]
+	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
 	pop {pc}
 	thumb_func_end sub_801255C
 
@@ -8113,9 +8113,9 @@ sub_801257C:
 	thumb_local_start
 sub_8012586:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
@@ -8124,7 +8124,7 @@ sub_8012586:
 	mov r0, #0x32 
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80125A8 // =0x114 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -8136,9 +8136,9 @@ off_80125A8:
 	thumb_local_start
 sub_80125AC:
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #3
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
@@ -8146,7 +8146,7 @@ sub_80125AC:
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	ldr r0, off_80125CC // =0x214 
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0x2b 
@@ -8165,15 +8165,15 @@ sub_80125D0:
 	mul r0, r1
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_02]
+	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	strb r0, [r7,#oAIAttackVars_Unk_04]
 	strh r0, [r7,#oAIAttackVars_AttackBoost]
 	strh r0, [r7,#oAIAttackVars_Unk_0a]
 	strb r0, [r7,#oAIAttackVars_Unk_05]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_0c]
+	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r1, #0x4f 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	mov r1, #6
@@ -8181,7 +8181,7 @@ sub_80125D0:
 	beq loc_8012602
 	mov r1, r0
 loc_8012602:
-	str r1, [r7,#oAIAttackVars_Unk_0c]
+	str r1, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x16
 	pop {pc}
 	thumb_func_end sub_80125D0
@@ -8199,7 +8199,7 @@ sub_8012612:
 	push {lr}
 	bl megamanChargeShotBPwrAtk_init_8011A26
 	mov r1, #1
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	pop {pc}
 	thumb_func_end sub_8012612
 
@@ -8330,7 +8330,7 @@ loc_80126F6:
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r6, r0
 	ldr r1, [r6,#0x10]
-	str r1, [r7,#oAIAttackVars_Unk_0c]
+	str r1, [r7,#oAIAttackVars_AttackBoost2]
 	ldrh r0, [r7,#oAIAttackVars_Unk_14]
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	bl battle_chipEffectDispatcher_80109A4
@@ -8343,13 +8343,13 @@ loc_80126F6:
 	mov r1, #0
 	strh r1, [r7,#oAIAttackVars_AttackBoost]
 	ldrb r1, [r6,#0xc]
-	strb r1, [r7,#oAIAttackVars_Unk_03]
+	strb r1, [r7,#oAIAttackVars_AiDifficultyTier]
 	ldrb r1, [r6,#4]
 	ldrb r2, [r6,#6]
 	ldr r0, off_80129E0 // =byte_80129E4
 	ldrb r0, [r0,r2]
 	orr r1, r0
-	strb r1, [r7,#oAIAttackVars_Unk_02]
+	strb r1, [r7,#oAIAttackVars_InitFlag]
 	mov r1, #0
 	strb r1, [r7,#oAIAttackVars_Unk_04]
 	tst r4, r4
@@ -13676,7 +13676,7 @@ battle_runBeastTransformationAction_8014A38:
 	cmp r0, #0x17
 	blt loc_8014A58
 	ldr r1, off_8014AEC // =off_8014AF0 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -13689,7 +13689,7 @@ loc_8014A58:
 	cmp r0, #0xa
 	bgt loc_8014A8E
 	ldr r1, off_8014AD8 // =off_8014ADC 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -13698,21 +13698,21 @@ loc_8014A72:
 	cmp r0, #0xb
 	blt loc_8014A82
 	ldr r1, off_8014AC4 // =off_8014AC8 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	b loc_8014A98
 loc_8014A82:
 	ldr r1, off_8014AB0 // =off_8014AB4 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
 	b loc_8014A98
 loc_8014A8E:
 	ldr r1, off_8014B00 // =off_8014B04 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -13795,7 +13795,7 @@ battleObject_commitMoveLanding_8014B18:
 	bl sub_80C4C3A
 	bl sub_80158FA
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #9
@@ -13822,7 +13822,7 @@ battleObject_commitMoveLanding_8014B18:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8014B8A:
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.word 0x80111C40
 	.balign 4, 0
@@ -13833,12 +13833,12 @@ dword_8014B94:
 	thumb_local_start
 sub_8014B98:
 	push {r4,r6,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014BCA
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bmi loc_8014BAA
 	b locret_8014BEC
 loc_8014BAA:
@@ -13851,29 +13851,29 @@ loc_8014BAA:
 	bl sub_80BC844
 	mov r0, #0x28 
 	add r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014BCA:
-	ldr r0, [r7,#oAIAttackVars_Unk_30]
+	ldr r0, [r7,#oAIAttackVars_ScratchVar]
 	add r0, #1
 	cmp r0, #6
 	bgt loc_8014BD8
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	bl sprite_forceWhitePalette
 loc_8014BD8:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_8014BEC
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 locret_8014BEC:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8014B98
@@ -13886,7 +13886,7 @@ locret_8014BEC:
 battle_runTransformationIntroStep_8014BEE:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014C9E
 	mov r0, #0
@@ -13917,7 +13917,7 @@ battle_runTransformationIntroStep_8014BEE:
 	bl sprite_forceWhitePalette
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	mov r1, #0x2c 
@@ -13946,11 +13946,11 @@ loc_8014C72:
 	mov r0, #SOUND_LOG_IN_77
 	bl PlaySoundEffect
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014C9E:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_8014CBE
 	bl battle_beginTurnOpenProcess_80144C0
 	bl battleObject_markUsedAction_80143A6
@@ -13959,7 +13959,7 @@ loc_8014C9E:
 	bl battle_setPlayerNaviStatsField0E_8015BEC
 	bl object_clearInvulnerableTime
 	mov r0, #0xc
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_8014CBE:
 	pop {r4,pc}
 	thumb_func_end battle_runTransformationIntroStep_8014BEE
@@ -13973,17 +13973,17 @@ locret_8014CBE:
 	thumb_local_start
 battle_aiAttackTickBeastSp_8014CC0:
 	push {r4,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014CD0
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014CD0:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_8014CFE
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
@@ -14043,12 +14043,12 @@ sub_8014D08:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8014D5A:
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0xc
 	mov r1, #5
 	bl sprite_decompressTemp
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.word 0x80111C40
 	thumb_func_end sub_8014D08
@@ -14056,12 +14056,12 @@ loc_8014D5A:
 	thumb_local_start
 sub_8014D70:
 	push {r4,r6,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014DE6
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bmi loc_8014D82
 	b locret_8014DF2
 loc_8014D82:
@@ -14107,16 +14107,16 @@ loc_8014DD0:
 	bl sub_80302B6
 loc_8014DDE:
 	mov r0, #0x36 
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014DE6:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_8014DF2
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_8014DF2:
 	pop {r4,r6,pc}
 	.word 0x200000
@@ -14139,7 +14139,7 @@ dword_8014E04:
 battle_ai_attackVars_step3_8014E08:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014EB8
 	mov r1, #0x2c 
@@ -14165,7 +14165,7 @@ battle_ai_attackVars_step3_8014E08:
 	bl sprite_setFlip
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
@@ -14200,11 +14200,11 @@ loc_8014EA8:
 	neg r1, r1
 	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014EB8:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_8014EFE
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
@@ -14233,7 +14233,7 @@ loc_8014EE6:
 	pop {r5}
 loc_8014EFA:
 	mov r0, #0xc
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_8014EFE:
 	pop {r4,pc}
 	.balign 4, 0
@@ -14249,17 +14249,17 @@ dword_8014F00:
 	thumb_local_start
 object_aiAttackVarsExitState_8014F04:
 	push {r4,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8014F14
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8014F14:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_8014F38
 	mov r0, #0x80
 	bl ClearAIDataUnk0x48Flag
@@ -14313,12 +14313,12 @@ sub_8014F40:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8014F92:
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0xc
 	mov r1, #5
 	bl sprite_decompressTemp
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.word 0x80111C40
 	thumb_func_end sub_8014F40
@@ -14326,12 +14326,12 @@ loc_8014F92:
 	thumb_local_start
 sub_8014FA8:
 	push {r4,r6,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_801501E
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bmi loc_8014FBA
 	b locret_801502A
 loc_8014FBA:
@@ -14377,16 +14377,16 @@ loc_8015008:
 	bl sub_80302B6
 loc_8015016:
 	mov r0, #0x36 
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_801501E:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_801502A
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_801502A:
 	pop {r4,r6,pc}
 	.word 0x200000
@@ -14405,7 +14405,7 @@ dword_801503C:
 sub_8015040:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8015100
 	mov r1, #0x2c 
@@ -14431,7 +14431,7 @@ sub_8015040:
 	bl sprite_setFlip
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
@@ -14474,11 +14474,11 @@ loc_80150F0:
 	neg r1, r1
 	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015100:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_8015120
 	bl battle_beginTurnOpenProcess_80144C0
 	bl battleObject_markUsedAction_80143A6
@@ -14487,7 +14487,7 @@ loc_8015100:
 	bl battle_setPlayerNaviStatsField0E_8015BEC
 	bl object_clearInvulnerableTime
 	mov r0, #0xc
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_8015120:
 	pop {r4,pc}
 	.balign 4, 0
@@ -14498,17 +14498,17 @@ dword_8015124:
 	thumb_local_start
 sub_8015128:
 	push {r4,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8015138
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015138:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_8015166
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
@@ -14566,12 +14566,12 @@ sub_801516C:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_80151BE:
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0xc
 	mov r1, #5
 	bl sprite_decompressTemp
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.word 0x80111C40
 	thumb_func_end sub_801516C
@@ -14579,12 +14579,12 @@ loc_80151BE:
 	thumb_local_start
 sub_80151D4:
 	push {r4,r6,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8015288
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bmi loc_80151E6
 	b locret_80152A6
 loc_80151E6:
@@ -14657,12 +14657,12 @@ loc_801526E:
 	bl sub_80302B6
 loc_801527C:
 	mov r0, #0x36 
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bl sub_80EA438
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015288:
-	ldr r0, [r7,#oAIAttackVars_Unk_10]
+	ldr r0, [r7,#oAIAttackVars_StepTimer]
 	cmp r0, #0x35 
 	beq loc_8015292
 	cmp r0, #0x25 
@@ -14672,12 +14672,12 @@ loc_8015292:
 	add r0, #0xff
 	bl PlaySoundEffect
 loc_801529A:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_80152A6
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_80152A6:
 	pop {r4,r6,pc}
 	.word 0x200000, 0xC00000
@@ -14700,7 +14700,7 @@ off_80152C4:
 sub_80152C8:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_801537C
 	mov r1, #0x2c 
@@ -14726,7 +14726,7 @@ sub_80152C8:
 	bl sprite_setFlip
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -14762,11 +14762,11 @@ loc_801536C:
 	neg r1, r1
 	bl battleObject_setCustomGaugeBarAnimate_801DC06
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_801537C:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_80153A8
 	bl battle_beginTurnOpenProcess_80144C0
 	bl battleObject_markUsedAction_80143A6
@@ -14782,7 +14782,7 @@ loc_801537C:
 	pop {r5}
 loc_80153A4:
 	mov r0, #0xc
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_80153A8:
 	pop {r4,pc}
 	.balign 4, 0
@@ -14793,17 +14793,17 @@ dword_80153AC:
 	thumb_local_start
 sub_80153B0:
 	push {r4,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_80153C0
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_80153C0:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_80153E4
 	mov r0, #0x80
 	bl ClearAIDataUnk0x48Flag
@@ -14853,9 +14853,9 @@ sub_80153EC:
 	strb r1, [r0,#oObjectHeader_Flags]
 loc_8015438:
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.balign 4, 0
 	.word 0x80111C40
@@ -14866,12 +14866,12 @@ dword_8015448:
 	thumb_local_start
 sub_801544C:
 	push {r4,r6,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8015480
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bmi loc_801545E
 	b locret_80154C6
 loc_801545E:
@@ -14885,17 +14885,17 @@ loc_801545E:
 	bl sub_80BC844
 	mov r0, #0x28 
 	add r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015480:
-	ldr r0, [r7,#oAIAttackVars_Unk_30]
+	ldr r0, [r7,#oAIAttackVars_ScratchVar]
 	add r0, #1
 	cmp r0, #6
 	bgt loc_801549E
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 	bl sprite_forceWhitePalette
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #0
@@ -14915,16 +14915,16 @@ loc_801549E:
 	bl sprite_clearFinalPalette
 	pop {r5}
 loc_80154B2:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_80154C6
 	mov r0, #6
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #8
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	mov r0, #0
-	str r0, [r7,#oAIAttackVars_Unk_30]
+	str r0, [r7,#oAIAttackVars_ScratchVar]
 locret_80154C6:
 	pop {r4,r6,pc}
 	thumb_func_end sub_801544C
@@ -14933,7 +14933,7 @@ locret_80154C6:
 sub_80154C8:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_8015594
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
@@ -14971,7 +14971,7 @@ loc_80154E2:
 	bl sprite_setFlip
 	bl object_setCoordinatesFromPanels // () -> void
 	mov r0, #0xa
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bl sprite_forceWhitePalette
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
@@ -15009,11 +15009,11 @@ loc_8015578:
 	mov r0, #SOUND_LOG_IN_77
 	bl PlaySoundEffect
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015594:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_80155C4
 	bl battle_beginTurnOpenProcess_80144C0
 	bl battleObject_markUsedAction_80143A6
@@ -15030,7 +15030,7 @@ loc_8015594:
 	pop {r5}
 loc_80155C0:
 	mov r0, #0xc
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_80155C4:
 	pop {r4,pc}
 	.balign 4, 0x00
@@ -15040,17 +15040,17 @@ locret_80155C4:
 	thumb_local_start
 sub_80155CC:
 	push {r4,lr}
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	bne loc_80155DC
 	mov r0, #0x14
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_80155DC:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bge locret_801560A
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
@@ -15078,7 +15078,7 @@ dword_8015610:
 sub_8015614:
 	push {lr}
 	ldr r1, off_8015624 // =off_8015628 
-	ldrb r0, [r7,#oAIAttackVars_Unk_00]
+	ldrb r0, [r7,#oAIAttackVars_HitElement]
 	ldr r1, [r1,r0]
 	mov lr, pc
 	bx r1
@@ -15094,7 +15094,7 @@ off_8015628:
 sub_801562C:
 	push {r4,lr}
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	beq loc_801563A
 	b loc_801573C
@@ -15121,7 +15121,7 @@ loc_801565C:
 	mov r0, #1
 loc_801565E:
 	add r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 	mov r0, #0x8e
 	bl PlaySoundEffect
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
@@ -15162,7 +15162,7 @@ loc_801565E:
 	bl sprite_load // (int a1, int a2, int a3) ->
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_hasShadow
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	cmp r0, #2
 	beq loc_80156DC
 	mov r0, #0
@@ -15200,17 +15200,17 @@ loc_80156DC:
 	add r0, #0xff
 	strh r0, [r5,#oBattleObject_NameID]
 	mov r0, #0x1e
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 loc_801573C:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt locret_8015764
 	ldr r0, dword_801592C // =0x1000863d 
 	bl ClearAIData_Unk_44_Flag
 	ldr r0, dword_8015930 // =0x200900 
 	bl ClearAIDataUnk0x48Flag
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	cmp r0, #2
 	beq loc_801575C
 	bl object_exitAttackState
@@ -15232,7 +15232,7 @@ sub_8015766:
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #0xa0
 	bl sprite_forceWhitePalette
-	ldrb r0, [r7,#oAIAttackVars_Unk_01]
+	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
 	beq loc_801577C
 	b loc_801589C
@@ -15347,13 +15347,13 @@ loc_8015878:
 	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	bl object_clearCollisionRegion // () -> void
 	mov r0, #0x1e
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r0, #4
-	strb r0, [r7,#oAIAttackVars_Unk_01]
+	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_801589C:
-	ldrh r0, [r7,#oAIAttackVars_Unk_10]
+	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
-	strh r0, [r7,#oAIAttackVars_Unk_10]
+	strh r0, [r7,#oAIAttackVars_StepTimer]
 	bgt loc_80158C6
 	ldr r0, dword_8015938 // =0x240800 
 	bl ClearAIDataUnk0x48Flag
@@ -15368,7 +15368,7 @@ loc_80158B4:
 	mov r0, #1
 	bl object_setCollisionRegion
 	mov r0, #0
-	strh r0, [r7,#oAIAttackVars_Unk_00]
+	strh r0, [r7,#oAIAttackVars_HitElement]
 	mov r6, #0
 loc_80158C6:
 	mov r0, r6
@@ -20016,7 +20016,7 @@ loc_8017BF8:
 	tst r0, r1
 	beq loc_8017C0C
 	mov r0, #0
-	strb r0, [r7,#oAIAttackVars_Unk_03]
+	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	bl sub_802D926
 	pop {r4,r6,r7,pc}
 loc_8017C0C:
