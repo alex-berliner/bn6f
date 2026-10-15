@@ -2226,7 +2226,7 @@ locret_8001170:
 gameState_setUnk09_8001172:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
-	strb r0, [r3,#oGameState_Unk_09]
+	strb r0, [r3,#oGameState_JackOutLockState]
 	mov pc, lr
 	.balign 4, 0x00
 	thumb_func_end gameState_setUnk09_8001172
@@ -2545,9 +2545,9 @@ math_getThrowSpeeds:
 battle_orStateFlags5c_8001382:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldr r2, [r1,#oBattleState_Unk_5c]
+	ldr r2, [r1,#oBattleState_AlliancePermissionFlags]
 	orr r2, r0
-	str r2, [r1,#oBattleState_Unk_5c]
+	str r2, [r1,#oBattleState_AlliancePermissionFlags]
 	mov pc, lr
 	thumb_func_end battle_orStateFlags5c_8001382
 
@@ -2555,9 +2555,9 @@ battle_orStateFlags5c_8001382:
 sub_800138E:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldr r2, [r1,#oBattleState_Unk_5c]
+	ldr r2, [r1,#oBattleState_AlliancePermissionFlags]
 	bic r2, r0
-	str r2, [r1,#oBattleState_Unk_5c]
+	str r2, [r1,#oBattleState_AlliancePermissionFlags]
 	mov pc, lr
 	thumb_func_end sub_800138E
 
@@ -2569,7 +2569,7 @@ sub_800138E:
 battle_getStateUnk5c_800139A:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldr r0, [r0,#oBattleState_Unk_5c]
+	ldr r0, [r0,#oBattleState_AlliancePermissionFlags]
 	mov pc, lr
 	thumb_func_end battle_getStateUnk5c_800139A
 
@@ -2580,7 +2580,7 @@ battle_getStateUnk5c_800139A:
 battle_SetStateUnk5c_80013A2:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	str r0, [r1,#oBattleState_Unk_5c]
+	str r0, [r1,#oBattleState_AlliancePermissionFlags]
 	mov pc, lr
 	thumb_func_end battle_SetStateUnk5c_80013A2
 

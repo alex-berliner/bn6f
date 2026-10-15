@@ -1411,7 +1411,7 @@ int __fastcall gameState_setUnk09_8001172(int result)
 {
     int v1; // r10
 
-    *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_09) = result;
+    *(*(v1 + oToolkit_GameStatePtr) + oGameState_JackOutLockState) = result;
     return result;
 }
 

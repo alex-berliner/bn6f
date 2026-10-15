@@ -1697,7 +1697,7 @@ _sprite_loadAnimationData:
 	ldr r2, [r1]
 	add r3, r2, r1
 	str r3, [r5,#oObjectSprite_Unk_1c]
-	ldrb r0, [r5,#oObjectSprite_Unk_00]
+	ldrb r0, [r5,#oObjectSprite_AnimationIndex]
 	lsl r0, r0, #2
 	ldr r2, [r3,#8]
 	add r1, r1, r2
@@ -1705,12 +1705,12 @@ _sprite_loadAnimationData:
 	add r1, r1, r2
 	str r1, [r5,#oObjectSprite_Unk_20]
 	ldrb r2, [r1,#1]
-	strb r2, [r5,#oObjectSprite_Unk_01]
+	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
 	strb r2, [r5,#oObjectSprite_Unk_02]
 	b loc_3006778
 loc_300675A:
-	ldrb r0, [r5,#oObjectSprite_Unk_00]
+	ldrb r0, [r5,#oObjectSprite_AnimationIndex]
 	lsl r0, r0, #2
 	ldr r1, [r5,#oObjectSprite_Unk_18]
 	ldr r2, [r1,r0]
@@ -1722,7 +1722,7 @@ loc_300675A:
 	add r1, r1, r2
 	str r1, [r5,#oObjectSprite_Unk_20]
 	ldrb r2, [r3,#0x10]
-	strb r2, [r5,#oObjectSprite_Unk_01]
+	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
 	strb r2, [r5,#oObjectSprite_Unk_02]
 loc_3006778:
@@ -1745,9 +1745,9 @@ loc_3006778:
 _sprite_update:
 	push {r4,lr}
 loc_3006794:
-	ldrb r0, [r5,#oObjectSprite_Unk_01]
+	ldrb r0, [r5,#oObjectSprite_AnimFrameDuration]
 	sub r0, #1
-	strb r0, [r5,#oObjectSprite_Unk_01]
+	strb r0, [r5,#oObjectSprite_AnimFrameDuration]
 	cmp r0, #0
 	bge loc_30067F8
 	ldrb r0, [r5,#oObjectSprite_SpriteFlags2]
@@ -1763,7 +1763,7 @@ loc_3006794:
 	add r1, #3
 	str r1, [r5,#oObjectSprite_Unk_20]
 	ldrb r2, [r1,#1]
-	strb r2, [r5,#oObjectSprite_Unk_01]
+	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r1,#2]
 	strb r2, [r5,#oObjectSprite_Unk_02]
 	b loc_30067E4
@@ -1783,7 +1783,7 @@ loc_30067C0:
 	add r1, r1, r2
 	str r1, [r5,#oObjectSprite_Unk_20]
 	ldrb r2, [r3,#0x10]
-	strb r2, [r5,#oObjectSprite_Unk_01]
+	strb r2, [r5,#oObjectSprite_AnimFrameDuration]
 	ldrb r2, [r3,#0x12]
 	strb r2, [r5,#oObjectSprite_Unk_02]
 loc_30067E4:
@@ -1793,7 +1793,7 @@ loc_30067E6:
 	tst r0, r2
 	bne loc_30067F2
 	mov r4, #1
-	strb r4, [r5,#oObjectSprite_Unk_01]
+	strb r4, [r5,#oObjectSprite_AnimFrameDuration]
 	b loc_3006794
 loc_30067F2:
 	bl _sprite_loadAnimationData

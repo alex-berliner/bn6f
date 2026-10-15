@@ -74172,7 +74172,7 @@ battle_objectLingerThenDestroyPhase_80DA974:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrh r1, [r5,#oBattleObject_Param1]
-	strh r1, [r0,#oBattleState_Unk_36]
+	strh r1, [r0,#oBattleState_Reward2Bonus]
 	mov r0, #1
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0x5a 
@@ -176660,7 +176660,7 @@ dword_810BDC0:
 
 // symdb: AI helper that, when the actor has a chip selected and battle turn state is high enough, queues that chip for use by writing its parameters, setting attack0, and starting the chip-use sub-state.
 // symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
-// symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
+// symdb: ; side effects writes to BattleState/oBattleState_ChipUseFrameCounter path, sets the object's
 // symdb: AttackVars/Attack0 and triggers sub_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryStartChipAttack_810BDC4.yaml
 	thumb_local_start

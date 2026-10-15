@@ -2025,7 +2025,7 @@ battle_SpawnObjectOnFrontPanel_800FAAC:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_SpawnObjectOnFrontPanel_800FAAC
 
-// symdb: Stores the player's current HP into the battle state (oBattleState_Unk_34), keeping a snapshot of the player's HP for later comparison.
+// symdb: Stores the player's current HP into the battle state (oBattleState_PlayerHPSnapshot), keeping a snapshot of the player's HP for later comparison.
 // symdb: void battle_snapshotPlayerHP(void); // in: r10 = toolkit; out: r2 as left by battle_findPlayer,
 // symdb: flags clobbered; r4-r6 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_snapshotPlayerHP_800FAE0.yaml
@@ -2039,7 +2039,7 @@ battle_snapshotPlayerHP_800FAE0:
 	tst r0, r0
 	beq locret_800FAF4
 	ldrh r1, [r0,#oBattleObject_HP]
-	strh r1, [r4,#oBattleState_Unk_34]
+	strh r1, [r4,#oBattleState_PlayerHPSnapshot]
 locret_800FAF4:
 	pop {r4,pc}
 	thumb_func_end battle_snapshotPlayerHP_800FAE0

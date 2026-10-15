@@ -1660,7 +1660,7 @@ chatbox_804082C:
 
 	cmp r0, #0
 	beq locret_8040886
-	ldrb r4, [r5,#oChatbox_Unk_03]
+	ldrb r4, [r5,#oChatbox_SubState]
 	ldr r1, off_8040894 // =off_8040898
 	lsl r2, r4, #2
 	ldr r6, [r1,r2]
@@ -1740,7 +1740,7 @@ chatbox_config_80408D0:
 	mov r1, #0
 	strb r1, [r5,#oChatbox_TextScriptState_04]
 	str r1, [r5,#oChatbox_Unk_64] // ChatBoxPropreties.unk_64
-	strb r1, [r5,#oChatbox_Unk_12] // ChatBoxPropreties.unk_12
+	strb r1, [r5,#oChatbox_ChoicesPageTag] // ChatBoxPropreties.unk_12
 	strb r1, [r5,#oChatbox_CurrLine] // ChatBoxPropreties.currLine
 	strb r1, [r5,#oChatbox_MugshotAnimTableIdx] // ChatBoxPropreties.unk_17
 	mov r0, #0x3d // ChatBoxPropreties.unk_3D
@@ -2090,7 +2090,7 @@ chatbox_loadMugshotPortrait_8040B3A:
 	mov r0, #0
 	strh r0, [r5,#0x14]
 	pop {r7}
-	ldrb r0, [r7,#oChatbox_Unk_0A]
+	ldrb r0, [r7,#oChatbox_ChoiceNumOptions]
 	cmp r0, #3
 	bne loc_8040B66
 	strb r0, [r5]
@@ -2608,7 +2608,7 @@ chatbox_E7_buttonhalt: // (&self@r5, char *script@r4) -> int
 	bl chatbox_setflags_3e // (int mask) -> void
 
 	mov r0, #0
-	strb r0, [r5,#oChatbox_Unk_03]
+	strb r0, [r5,#oChatbox_SubState]
 	ldrb r0, [r5,#oChatbox_TextScriptState_04]
 
 	cmp r0, #1
@@ -3200,7 +3200,7 @@ chatbox_EB_option:
 	str r3, [r5,r2]
 	add r0, #1
 	str r0, [r5,r1]
-	strb r0, [r5,#oChatbox_Unk_12]
+	strb r0, [r5,#oChatbox_ChoicesPageTag]
 	mov r0, #0
 	strb r0, [r5,#oChatbox_ChoiceCursorPos]
 	add r2, #4
@@ -3434,7 +3434,7 @@ loc_8041400:
 	bl chatbox_clear_eFlags2009F38 // (int a1) ->
 	mov r0, #0x80 // ChatBoxPropreties.unk_80
 	ldr r0, [r5,r0]
-	strb r0, [r5,#oChatbox_Unk_12] // ChatBoxPropreties.unk_12
+	strb r0, [r5,#oChatbox_ChoicesPageTag] // ChatBoxPropreties.unk_12
 	sub r0, #1
 	strb r0, [r5,#oChatbox_ChoiceCursorPos]
 	bl chatbox_set_eFlags2009F38
@@ -4568,7 +4568,7 @@ loc_8041BF2:
 	mov r0, #0
 	strb r0, [r5,#oChatbox_TextScriptState_04]
 	str r0, [r5,#oChatbox_Unk_64]
-	strb r0, [r5,#oChatbox_Unk_12]
+	strb r0, [r5,#oChatbox_ChoicesPageTag]
 	strb r0, [r5,#oChatbox_CurrLine]
 	strb r0, [r5,#oChatbox_MugshotAnimTableIdx]
 	mov r1, #oChatbox_Unk_3D
@@ -4770,12 +4770,12 @@ loc_8041D5C:
 	ldrb r7, [r2,#1]
 	mov r1, #0
 loc_8041D60:
-	strb r1, [r5,#oChatbox_Unk_14]
-	strb r7, [r5,#oChatbox_Unk_0A]
+	strb r1, [r5,#oChatbox_ScriptTokenParam]
+	strb r7, [r5,#oChatbox_ChoiceNumOptions]
 	mov r3, #0x98
 	strb r7, [r5,r3]
 	mov r2, #0xff
-	strb r2, [r5,#oChatbox_Unk_0B]
+	strb r2, [r5,#oChatbox_PageLoadReset]
 	bl chatbox_loadMugshotPortrait_8040B3A
 	add r4, #3
 	b loc_8041D9C
@@ -6385,7 +6385,7 @@ off_8042844:
 sub_804286C: // 0x804286C
 	ldr r0, off_804289C // =off_80428A0
 	ldrb r3, [r4,#4]
-	strb r3, [r5,#oChatbox_Unk_15]
+	strb r3, [r5,#oChatbox_ChoiceCursorSource]
 	lsl r3, r3, #3
 	add r0, r0, r3
 	ldrb r1, [r4,#2]
@@ -10867,7 +10867,7 @@ chatbox_resetAndClearBuffers_8045F60:
 	mov r0, #0
 	str r0, [r5,#oChatbox_TileBufferOffset]
 	strb r0, [r5,#oChatbox_BoxGfxLoadState_0F]
-	strb r0, [r5,#oChatbox_Unk_0E]
+	strb r0, [r5,#oChatbox_ResetFlag]
 	str r0, [r5,#oChatbox_Unk_7C]
 	ldr r0, off_8045F7C // =unk_200BEA0
 	ldr r1, off_8045F80 // =0xf00

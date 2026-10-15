@@ -12627,7 +12627,7 @@ loc_802C1A6:
 	mov r0, #SOUND_UNK_8A
 	bl PlaySoundEffect
 	ldrh r0, [r5,#oBattleObject_HP]
-	strh r0, [r7,#oBattleState_Unk_34]
+	strh r0, [r7,#oBattleState_PlayerHPSnapshot]
 	pop {r0,r5}
 	mov r0, #4
 	strb r0, [r5,#3]

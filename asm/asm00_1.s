@@ -9848,9 +9848,9 @@ battle_main_8007800:
 	mov lr, pc
 	bx r1
 
-	ldr r0, [r5,#oBattleState_Unk_60]
+	ldr r0, [r5,#oBattleState_FrameCounter]
 	add r0, #1
-	str r0, [r5,#oBattleState_Unk_60]
+	str r0, [r5,#oBattleState_FrameCounter]
 
 	bl GetBattleEffects // () -> int
 	mov r4, r0
@@ -9934,7 +9934,7 @@ loc_8007898:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 
 	bl GetBattleEffects // () -> int
 	mov r1, #8
@@ -9984,7 +9984,7 @@ loc_80078EC:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 
 	b locret_8007936
 loc_8007900:
@@ -10011,9 +10011,9 @@ loc_8007918:
 	cmp r0, #8
 	beq locret_8007936
 
-	ldrh r0, [r5,#oBattleState_Unk_20]
+	ldrh r0, [r5,#oBattleState_LowHPAlertTimers]
 	add r0, #1
-	strh r0, [r5,#oBattleState_Unk_20]
+	strh r0, [r5,#oBattleState_LowHPAlertTimers]
 
 	cmp r0, #0xb4
 	blt locret_8007936
@@ -10182,7 +10182,7 @@ battle_RevealFieldColumnsStep_80079F0:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 
 	pop {pc}
 	thumb_func_end battle_RevealFieldColumnsStep_80079F0
@@ -10428,7 +10428,7 @@ loc_8007BE2:
 	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8007BEE
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007BEE:
 	pop {pc}
 	thumb_func_end battle_stateCountdownTick_8007BD0
@@ -10487,7 +10487,7 @@ loc_8007C44:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007C4C:
 	pop {pc}
 	.byte 0, 0
@@ -10527,7 +10527,7 @@ loc_8007C90:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007C98:
 	pop {pc}
 	.balign 4, 0
@@ -10622,7 +10622,7 @@ loc_8007D4E:
 	beq loc_8007D72
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x40
-	ldrh r2, [r5,#oBattleState_Unk_34]
+	ldrh r2, [r5,#oBattleState_PlayerHPSnapshot]
 	cmp r2, #0
 	bne loc_8007D6E
 	mov r2, #1
@@ -10844,7 +10844,7 @@ sub_8007F2C:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007F4C:
 	pop {pc}
 	thumb_func_end sub_8007F2C
@@ -10901,7 +10901,7 @@ loc_8007FC4:
 	tst r0, r0
 	bne locret_8007FD0
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007FD0:
 	pop {pc}
 	thumb_func_end sub_8007FA4
@@ -10922,7 +10922,7 @@ sub_8007FD2:
 	strb r0, [r5,#oBattleState_Index_01]
 
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007FE8:
 	pop {pc}
 
@@ -11076,7 +11076,7 @@ loc_80080FE:
 	bne loc_8008122
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrh r0, [r1,#oBattleState_Unk_3a]
+	ldrh r0, [r1,#oBattleState_PendingBattleEndAction]
 	cmp r0, #0
 	beq loc_8008116
 	bl sub_800AAD6
@@ -13348,11 +13348,11 @@ battle_runBattlePhase_8009158:
 	lsr r1, r1, #2
 	cmp r0, r1
 	bgt loc_800919A
-	ldrh r0, [r5,#oBattleState_Unk_20]
+	ldrh r0, [r5,#oBattleState_LowHPAlertTimers]
 	cmp r0, #0
 	bne locret_80091B6
 	mov r0, #1
-	strh r0, [r5,#oBattleState_Unk_20]
+	strh r0, [r5,#oBattleState_LowHPAlertTimers]
 	mov r0, #0x1f
 	ldr r1, dword_80091E4 // =0xffff
 	ldr r2, off_80091E8 // =0x100
@@ -13362,11 +13362,11 @@ battle_runBattlePhase_8009158:
 	bl sound_8000672
 	b locret_80091B6
 loc_800919A:
-	ldrh r0, [r5,#oBattleState_Unk_20]
+	ldrh r0, [r5,#oBattleState_LowHPAlertTimers]
 	cmp r0, #0
 	beq locret_80091B6
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_20]
+	strh r0, [r5,#oBattleState_LowHPAlertTimers]
 	mov r0, #0x1f
 	ldr r1, dword_80091E4 // =0xffff
 	mov r2, #0
@@ -13503,7 +13503,7 @@ loc_800924E: // endif
 loc_8009270:
 	strb r4, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009276:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
@@ -13580,13 +13580,13 @@ loc_80092D8:
 	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_80092EE
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_80092E6:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80092EE:
 	pop {pc}
 	thumb_func_end battle_runState4CountdownOrAdvance_80092C0
@@ -13608,7 +13608,7 @@ loc_8009306:
 	tst r0, r0
 	bne locret_8009312
 	mov r0, #8
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009312:
 	pop {pc}
 	thumb_func_end sub_80092F0
@@ -13632,7 +13632,7 @@ loc_8009326:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009336:
 	pop {pc}
 	thumb_func_end sub_8009314
@@ -13679,7 +13679,7 @@ loc_8009380:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009388:
 	pop {pc}
 	thumb_func_end sub_8009338
@@ -13706,7 +13706,7 @@ loc_800939A:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	b locret_800945A
 loc_80093B0:
 	cmp r0, #0
@@ -13782,7 +13782,7 @@ loc_8009452:
 loc_8009454:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_800945A:
 	pop {r4,pc}
 	thumb_func_end battle_stepRunAndDecideResult_800938A
@@ -13833,7 +13833,7 @@ loc_800948E:
 	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_80094A6:
 	ldrh r0, [r5,#oBattleState_CountdownTimer]
@@ -13871,7 +13871,7 @@ loc_80094C8:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80094D8:
 	pop {pc}
 	thumb_func_end battle_updateChipSelectInit_80094B6
@@ -13944,7 +13944,7 @@ loc_8009534:
 loc_800954A:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009550:
 	pop {pc}
 	thumb_func_end sub_800951E
@@ -13983,7 +13983,7 @@ loc_8009576:
 loc_800958C:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009592:
 	pop {pc}
 	thumb_func_end sub_8009552
@@ -14013,7 +14013,7 @@ loc_80095AA:
 loc_80095C0:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80095C6:
 	pop {pc}
 	thumb_func_end sub_8009594
@@ -14039,7 +14039,7 @@ loc_80095E4:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80095F4:
 	pop {pc}
 	.balign 4, 0x00
@@ -14134,7 +14134,7 @@ loc_80096B6:
 loc_80096D8:
 	strb r4, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80096DE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8009658
@@ -14225,13 +14225,13 @@ loc_800976C:
 	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009782
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_800977A:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009782:
 	pop {pc}
 	thumb_func_end sub_8009754
@@ -14253,7 +14253,7 @@ loc_800979A:
 	tst r0, r0
 	bne locret_80097A6
 	mov r0, #8
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80097A6:
 	pop {pc}
 	thumb_func_end sub_8009784
@@ -14277,7 +14277,7 @@ loc_80097BA:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80097CA:
 	pop {pc}
 	thumb_func_end sub_80097A8
@@ -14310,7 +14310,7 @@ loc_80097FA:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_800980C:
 	pop {pc}
 	thumb_func_end sub_80097CC
@@ -14390,7 +14390,7 @@ loc_80098B2:
 loc_80098B4:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80098BA:
 	pop {r4,pc}
 	thumb_func_end sub_800980E
@@ -14432,7 +14432,7 @@ loc_80098EE:
 	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_8009906:
 	ldrh r0, [r5,#oBattleState_CountdownTimer]
@@ -14466,7 +14466,7 @@ loc_8009928:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009938:
 	pop {pc}
 	thumb_func_end sub_8009916
@@ -14629,7 +14629,7 @@ loc_8009A3E:
 loc_8009A60:
 	strb r4, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009A66:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_advanceIndexFromPauseIntro_80099E0
@@ -14689,13 +14689,13 @@ loc_8009AC0:
 	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009AD6
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_8009ACE:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009AD6:
 	pop {pc}
 	thumb_func_end sub_8009AA8
@@ -14717,7 +14717,7 @@ loc_8009AEE:
 	tst r0, r0
 	bne locret_8009AFA
 	mov r0, #8
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009AFA:
 	pop {pc}
 	thumb_func_end sub_8009AD8
@@ -14741,14 +14741,14 @@ loc_8009B0E:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009B1E:
 	pop {pc}
 	thumb_func_end sub_8009AFC
 
 // symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
 // symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_SubPhaseInitFlag,
-// symdb: oBattleState_Index_01, oBattleState_BustingLevelCategory, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
+// symdb: oBattleState_Index_01, oBattleState_BustingLevelCategory, oBattleState_StatePhaseAndInitFlag; calls sub_800B6F2 to fire
 // symdb: pending event flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleStep_8009B20.yaml
 	thumb_local_start
@@ -14812,7 +14812,7 @@ loc_8009BA2:
 loc_8009BA4:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009BAA:
 	pop {r4,pc}
 	thumb_func_end battle_runBattleStep_8009B20
@@ -14854,7 +14854,7 @@ loc_8009BDE:
 	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_8009BF6:
 	ldrh r0, [r5,#oBattleState_CountdownTimer]
@@ -14888,7 +14888,7 @@ loc_8009C18:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009C28:
 	pop {pc}
 	thumb_func_end sub_8009C06
@@ -15043,7 +15043,7 @@ loc_8009D2E:
 loc_8009D50:
 	strb r4, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009D56:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8009CD0
@@ -15103,13 +15103,13 @@ loc_8009DB0:
 	strh r0, [r5,#oBattleState_CountdownTimer]
 	bge locret_8009DC6
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_8009DBE:
 	mov r0, #8
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009DC6:
 	pop {pc}
 	thumb_func_end sub_8009D98
@@ -15131,7 +15131,7 @@ loc_8009DDE:
 	tst r0, r0
 	bne locret_8009DEA
 	mov r0, #8
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009DEA:
 	pop {pc}
 	thumb_func_end sub_8009DC8
@@ -15155,7 +15155,7 @@ loc_8009DFE:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009E0E:
 	pop {pc}
 	thumb_func_end sub_8009DEC
@@ -15186,7 +15186,7 @@ RunTextScriptDustManUndernetTut_8009E2C:
 	ldr r0, off_8009FBC // =TextScriptDustManUndernetTut
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 	thumb_func_end RunTextScriptDustManUndernetTut_8009E2C
 
@@ -15200,7 +15200,7 @@ sub_8009E40:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009E54:
 	pop {pc}
 	thumb_func_end sub_8009E40
@@ -15266,7 +15266,7 @@ loc_8009ED8:
 loc_8009EDA:
 	strb r2, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009EE0:
 	pop {r4,pc}
 	thumb_func_end sub_8009E56
@@ -15307,7 +15307,7 @@ loc_8009F12:
 	bl battle_resetLinkSyncFlags_800B460
 	bl sub_800B444
 	mov r0, #4
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 	pop {pc}
 loc_8009F2A:
 	ldrh r0, [r5,#oBattleState_CountdownTimer]
@@ -15341,7 +15341,7 @@ loc_8009F4C:
 	mov r0, #0x14
 	strb r0, [r5,#oBattleState_Index_01]
 	mov r0, #0
-	strh r0, [r5,#oBattleState_Unk_02_03]
+	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009F5C:
 	pop {pc}
 	thumb_func_end sub_8009F3A
@@ -15960,7 +15960,7 @@ off_800A2CC:
 sub_800A2D0:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	strh r0, [r1,#oBattleState_Unk_32]
+	strh r0, [r1,#oBattleState_BattleStateFlags]
 	mov pc, lr
 	thumb_func_end sub_800A2D0
 
@@ -15972,9 +15972,9 @@ sub_800A2D0:
 battle_setFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrh r2, [r1,#oBattleState_Unk_32]
+	ldrh r2, [r1,#oBattleState_BattleStateFlags]
 	orr r2, r0
-	strh r2, [r1,#oBattleState_Unk_32]
+	strh r2, [r1,#oBattleState_BattleStateFlags]
 	mov pc, lr
 	thumb_func_end battle_setFlags
 
@@ -15986,22 +15986,22 @@ battle_setFlags:
 battle_clearFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrh r2, [r1,#oBattleState_Unk_32]
+	ldrh r2, [r1,#oBattleState_BattleStateFlags]
 	bic r2, r0
-	strh r2, [r1,#oBattleState_Unk_32]
+	strh r2, [r1,#oBattleState_BattleStateFlags]
 	mov pc, lr
 	thumb_func_end battle_clearFlags
 
 	thumb_func_start battle_getFlags
 // 0x2 - cust gauge full
 // 0x4 - timestop
-// symdb: Return the halfword at oBattleState_Unk_32 of the battle state.
+// symdb: Return the halfword at oBattleState_BattleStateFlags of the battle state.
 // symdb: () -> r0 = battle state halfword 0x32
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getFlags.yaml
 battle_getFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrh r0, [r1,#oBattleState_Unk_32]
+	ldrh r0, [r1,#oBattleState_BattleStateFlags]
 	mov pc, lr
 	thumb_func_end battle_getFlags
 
@@ -16560,7 +16560,7 @@ sub_800A672:
 	pop {pc}
 	thumb_func_end sub_800A672
 
-// symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_Unk_32` bit 0 is set, increment `oBattleState_Unk_40` (clamped to 0x8c9f).
+// symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_BattleStateFlags` bit 0 is set, increment `oBattleState_ChipUseFrameCounter` (clamped to 0x8c9f).
 // symdb: (no args; r10 = Toolkit ptr) -> r0/r1/r2/r3 clobbered as temporaries, no meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceUnk40IfFlagSet_800A6A6.yaml
 	thumb_local_start
@@ -16578,14 +16578,14 @@ battle_advanceUnk40IfFlagSet_800A6A6:
 	beq locret_800A6D6
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldr r1, [r0,#oBattleState_Unk_40]
+	ldr r1, [r0,#oBattleState_ChipUseFrameCounter]
 	add r1, #1
 	ldr r2, dword_800A93C // =0x8c9f
 	cmp r1, r2
 	blt loc_800A6D4
 	mov r1, r2
 loc_800A6D4:
-	str r1, [r0,#oBattleState_Unk_40]
+	str r1, [r0,#oBattleState_ChipUseFrameCounter]
 locret_800A6D6:
 	pop {pc}
 	thumb_func_end battle_advanceUnk40IfFlagSet_800A6A6
@@ -16613,14 +16613,14 @@ locret_800A702:
 	pop {pc}
 	thumb_func_end sub_800A6D8
 
-// symdb: Returns the value of field oBattleState_Unk_40 from the current battle state.
+// symdb: Returns the value of field oBattleState_ChipUseFrameCounter from the current battle state.
 // symdb: uint32 battle_getStateUnk40_800A704(void) — reads r10 (toolkit pointer); returns r0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getStateUnk40_800A704.yaml
 	thumb_func_start battle_getStateUnk40_800A704
 battle_getStateUnk40_800A704:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldr r0, [r0,#oBattleState_Unk_40]
+	ldr r0, [r0,#oBattleState_ChipUseFrameCounter]
 	mov pc, lr
 	thumb_func_end battle_getStateUnk40_800A704
 
@@ -16727,7 +16727,7 @@ battle_canAllianceAct_800A772:
 	push {r0}
 	bl battle_getStateUnk5c_800139A
 	pop {r2}
-	// test battlestate+oBattleState_Unk_5c
+	// test battlestate+oBattleState_AlliancePermissionFlags
 	// if player alliance: test 4
 	// if opponent alliance: test 8
 	// current knowledge says this is never unset
@@ -17174,9 +17174,9 @@ continue_800A9BE:
 setBattleStateUnk11Flag_800A9CA: // (flags: flags8) -> ()
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r1, [r3,#oBattleState_Unk_11]
+	ldrb r1, [r3,#oBattleState_StateFlags]
 	orr r1, r0
-	strb r1, [r3,#oBattleState_Unk_11]
+	strb r1, [r3,#oBattleState_StateFlags]
 	mov pc, lr
 	thumb_func_end setBattleStateUnk11Flag_800A9CA
 
@@ -17188,9 +17188,9 @@ setBattleStateUnk11Flag_800A9CA: // (flags: flags8) -> ()
 clearBattleStateUnk11Flag_800A9D6: // (flags: flags8) -> ()
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r1, [r3,#oBattleState_Unk_11]
+	ldrb r1, [r3,#oBattleState_StateFlags]
 	bic r1, r0
-	strb r1, [r3,#oBattleState_Unk_11]
+	strb r1, [r3,#oBattleState_StateFlags]
 	mov pc, lr
 	thumb_func_end clearBattleStateUnk11Flag_800A9D6
 
@@ -17398,7 +17398,7 @@ battle_stateGotoPhase14_800AABC:
 	mov r1, #0x14
 	strb r1, [r0,#oBattleState_Index_01]
 	mov r1, #0
-	strh r1, [r0,#oBattleState_Unk_02_03]
+	strh r1, [r0,#oBattleState_StatePhaseAndInitFlag]
 	pop {r5,pc}
 	thumb_func_end battle_stateGotoPhase14_800AABC
 
@@ -17418,7 +17418,7 @@ sub_800AAE8:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	mov r0, #1
-	strh r0, [r1,#oBattleState_Unk_3a]
+	strh r0, [r1,#oBattleState_PendingBattleEndAction]
 	mov pc, lr
 	thumb_func_end sub_800AAE8
 

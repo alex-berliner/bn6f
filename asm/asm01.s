@@ -265,7 +265,7 @@ loc_801FF84:
 	str r1, [sp]
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_11]
+	ldrb r1, [r0,#oBattleState_StateFlags]
 	strb r1, [r5,#0x6] // (byte_2036786 - 0x2036780)
 	mov r0, #4
 	bl link_getSlotState_803F740
@@ -390,7 +390,7 @@ loc_802005A:
 	str r1, [sp]
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r1, [r0,#oBattleState_Unk_11]
+	ldrb r1, [r0,#oBattleState_StateFlags]
 	strb r1, [r5,#0x6] // (byte_2036786 - 0x2036780)
 	mov r0, #4
 	bl link_getSlotState_803F740

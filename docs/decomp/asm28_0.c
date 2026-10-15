@@ -3629,7 +3629,7 @@ int __fastcall spawnOWPlayerObjectForEnterMap_809e064(int a1, int a2, int a3, in
     {
         v7 = *(v5 + oToolkit_GameStatePtr);
         v7[oGameState_GameProgress] = v4;
-        *(v4 + 28) = v7[oGameState_Unk_09];
+        *(v4 + 28) = v7[oGameState_JackOutLockState];
         *(v4 + 32) = v7[oGameState_Unk_0a];
         *(v4 + 36) = v7[oGameState_Unk_0b];
         *(v4 + 16) = v7[oGameState_LastMapGroup];
