@@ -9,7 +9,7 @@
 	u8 Unk_07 // loc=0x7
 	u8 Unk_08 // loc=0x8
 	u8 JumptableIndex_09 // loc=0x9
-	u8 Unk_0a // loc=0xa
+	u8 ActionSubState // loc=0xa
 	u8 Unk_0b // loc=0xb
 	u8 wallCollision_0c // loc=0xc
 	u8 Unk_0d // loc=0xd
