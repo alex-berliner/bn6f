@@ -63,13 +63,13 @@
 	u32 Unk_54 // loc=0x54
 	u32 Unk_58 // loc=0x58
 	ptr AIScriptOffset // loc=0x5c
-	u32 Unk_60 // loc=0x60
+	u32 SubordinateObjectPtr // loc=0x60
 
 	struct_org 0x68
 	u32 TempAttackObjectPtr // loc=0x68
 	u32 Unk_6c // loc=0x6c
 	u32 Unk_70 // loc=0x70
-	u32 Unk_74 // loc=0x74
+	u32 SpawnedSourceObjectPtr // loc=0x74
   // * BattleObject
 	ptr BattleObjectPtr // loc=0x78
 	u32 Unk_7c // loc=0x7c
@@ -135,7 +135,7 @@
 	u8 HasMoved // loc=0x1a
 	u8 IsInvincible // loc=0x1b
 	u8 Unk_1c // loc=0x1c
-	u8 Unk_1d // loc=0x1d
+	u8 PwrAtkState // loc=0x1d
 	u8 Unk_1e // loc=0x1e
 	struct_org 0x28
 	u32 PanelChooseCallback // loc=0x28

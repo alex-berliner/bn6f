@@ -16,7 +16,7 @@
 	u16 Unk_14 // loc=0x14
 	u16 Unk_16 // loc=0x16
 	u16 BG2ScrollX // loc=0x18
-	u16 Unk_1a // loc=0x1a
+	u16 BG3ScrollY // loc=0x1a
 	struct_org 0x40
 	u0 Size // loc=0x40
 	restore_struct_label

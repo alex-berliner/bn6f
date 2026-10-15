@@ -136,7 +136,7 @@
 	u16 FlashingInvisTimer // loc=0x24
 	u16 Unk_26 // loc=0x26
 	u16 Unk_28 // loc=0x28
-	u16 Unk_2a // loc=0x2a
+	u16 HitStunTimer // loc=0x2a
 	u16 HitStunTimer // loc=0x2c
 	u16 SelfDamage // loc=0x2e
 	u32 SelfCollisionTypeFlags // loc=0x30

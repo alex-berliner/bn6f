@@ -85,7 +85,7 @@
 	u32 MugshotColorFilter_40 // loc=0x40
 	u32 Unk_44 // loc=0x44
 	u32 Und_48 // loc=0x48
-	u32 Unk_4C // loc=0x4C
+	u32 TextParam1 // loc=0x4C
 	u32 Unk_50 // loc=0x50
 	u32 Unk_54 // loc=0x54
 	u32 Unk_58 // loc=0x58

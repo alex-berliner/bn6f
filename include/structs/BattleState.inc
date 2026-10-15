@@ -58,7 +58,7 @@
 	u8 Unk_1b // loc=0x1b
 	u8 Unk_1c // loc=0x1c
 	u8 Unk_1d // loc=0x1d
-	u8 Unk_1e // loc=0x1e
+	u8 BustingLevelCategory // loc=0x1e
 	u8 Unk_1f // loc=0x1f
 	u16 Unk_20 // loc=0x20
 
@@ -84,7 +84,7 @@
 	u0 AliveBattleActors // loc=0x80
 	u8_arr AlivePlayerActors, 0x10 // loc=0x80
 	u8_arr AliveOpponentActors, 0x10 // loc=0x90
-	u0 Unk_a0 // loc=0xa0
+	u0 BattleObjectList // loc=0xa0
 	struct_org 0xc0
 	u0 Unk_c0 // loc=0xc0
 	struct_org 0xd0
