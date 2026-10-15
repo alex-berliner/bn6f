@@ -5,16 +5,16 @@
 	set_struct_label \struct_entry, \label
 	// look at render_flushDisplayRegisters_800172C for how data is transferred
 	// todo document rest of struct fields
-	u16 Unk_00 // loc=0x0
-	u16 Unk_02 // loc=0x2
+	u16 LCDControl // loc=0x0
+	u16 MosaicSize // loc=0x2
 	struct_org 0xa
 	u16 Unk_0a // loc=0xa
 	u16 Unk_0c // loc=0xc
 	u16 Unk_0e // loc=0xe
 	u16 BGScrollXOffset // loc=0x10
 	u16 BGScrollY // loc=0x12
-	u16 Unk_14 // loc=0x14
-	u16 Unk_16 // loc=0x16
+	u16 BG1ScrollXAlt // loc=0x14
+	u16 BGScrollY2 // loc=0x16
 	u16 BG2ScrollX // loc=0x18
 	u16 BG3ScrollY // loc=0x1a
 	struct_org 0x40

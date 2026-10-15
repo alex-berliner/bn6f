@@ -17,7 +17,7 @@
 	u8 AliveActorTurnIndex // loc=0x4
 	u8 OpponentAliveCount // loc=0x5
 	nextu
-	u16 Unk_04_05 // loc=0x4
+	u16 AliveActorAndOpponent // loc=0x4
 	endu
 
 	u8 BattleField // loc=0x6

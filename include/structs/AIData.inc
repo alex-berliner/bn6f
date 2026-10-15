@@ -29,7 +29,7 @@
 	u8 ChipUseDelayAlt // loc=0x15
 	u8 Version_16 // loc=0x16
 	u8 Version_17 // loc=0x17
-	u8 Unk_18 // loc=0x18
+	u8 AISubState // loc=0x18
 	u8 ChipLockoutTimer // loc=0x19
 	u8 AttackTeardownScratch // loc=0x1a
 	u8 PwrAtkCurChargeTime // loc=0x1b

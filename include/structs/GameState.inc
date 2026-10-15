@@ -43,7 +43,7 @@
 	u8 Unk_12 // loc=0x12
 	u8 PendingByte // loc=0x13
 	u8 BattleEndSubState // loc=0x14
-	u8 Unk_15 // loc=0x15
+	u8 SavedByte // loc=0x15
 	u8 EnterMapFadeParam1 // loc=0x16
 	u8 EnterMapFadeParam2 // loc=0x17
 	ptr OverworldPlayerObjectPtr // loc=0x18

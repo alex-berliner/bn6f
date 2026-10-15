@@ -93,12 +93,12 @@
 	struct_org 0x64
 	u16 TextScriptTimer // loc=0x64
 	u16 Und_66 // loc=0x66
-	u16 Unk_68 // loc=0x68
+	u16 NextScriptDesc // loc=0x68
 	u16 Unk_6A // loc=0x6A
 	u16 Unk_6C // loc=0x6C
 	u16 Unk_6E // loc=0x6E
 	u32 TileBufferOffset // loc=0x70
-	u32 Unk_74 // loc=0x74
+	u32 ScriptFlags // loc=0x74
 	u32 PrintDelay // loc=0x78
 	u32 Unk_7C // loc=0x7C
 	u8 Unk_80 // loc=0x80

@@ -25,14 +25,14 @@
 	u8 InitFlag // loc=0x14
 	u8 OamAttributes // loc=0x15
 	u16 CurFrame // loc=0x16
-	u32 Unk_18 // loc=0x18
-	u32 Unk_1c // loc=0x1c
-	u32 Unk_20 // loc=0x20
-	u32 Unk_24 // loc=0x24
-	u32 Unk_28 // loc=0x28
-	u32 Unk_2c // loc=0x2c
-	u32 Unk_30 // loc=0x30
-	u32 Unk_34 // loc=0x34
+	u32 AnimationResourcePtr // loc=0x18
+	u32 AnimationSubFramePtr // loc=0x1c
+	u32 AnimFrameDataPtr // loc=0x20
+	u32 SpriteRenderDataPtr // loc=0x24
+	u32 SpriteAttrs2Ptr // loc=0x28
+	u32 ScriptParam // loc=0x2c
+	u32 SpriteFlags4Ptr // loc=0x30
+	u32 ScratchByte // loc=0x34
 	u0 Size // loc=0x38
 	restore_struct_label
 	.endm

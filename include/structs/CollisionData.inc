@@ -115,7 +115,7 @@
 	u8 StatusEffectBase // loc=0x10
 	u8 StatusEffectFinal // loc=0x11
 	u16 Bugs // loc=0x12
-	u8 Unk_14 // loc=0x14
+	u8 BarrierIndex // loc=0x14
 	u8 Unk_15 // loc=0x15
 	u8 BarrierHP // loc=0x16
 	u8 Unk_17 // loc=0x17
@@ -123,7 +123,7 @@
 	u8 SecondaryElement // loc=0x19
 	
     union
-	u8 Unk_1a // loc=0x1a
+	u8 BarrierBreakCounter // loc=0x1a
 	u8 Unk_1b // loc=0x1b
 	nextu
 	u16 Unk_1a_1b // loc=0x1a
