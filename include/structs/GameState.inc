@@ -27,7 +27,7 @@
 	endu
 
 	u8 GameProgress // loc=0x6
-	u8 Unk_07 // loc=0x7
+	u8 MapSubArea // loc=0x7
 	// related to L button messages
 	u8 Unk_08 // loc=0x8
 	u8 Unk_09 // loc=0x9 // 03 = can't jack out
@@ -38,7 +38,7 @@
 	u8 LastMapNumber // loc=0xd
 	u8 CoordInteractionValue // loc=0xe
 	u8 BGMusicIndicator // loc=0xf
-	u8 Unk_10 // loc=0x10
+	u8 OWPlayerBusyOrCutscene // loc=0x10
 	u8 Unk_11 // loc=0x11
 	u8 Unk_12 // loc=0x12
 	u8 Unk_13 // loc=0x13

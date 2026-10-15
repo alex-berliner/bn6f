@@ -55,13 +55,13 @@
 	u16 Unk_3c // loc=0x3c
 
 	struct_org 0x40
-	u32 Unk_40 // loc=0x40
-	u32 Unk_44 // loc=0x44
-	u32 Unk_48 // loc=0x48
+	u32 TargetObjectPtr // loc=0x40
+	u32 AIFlags // loc=0x44
+	u32 Flags // loc=0x48
 	u32 AIScriptCounter // loc=0x4c
-	u32 Unk_50 // loc=0x50
+	u32 SubordinateObjectUnk // loc=0x50
 	u32 Unk_54 // loc=0x54
-	u32 Unk_58 // loc=0x58
+	u32 SubordinateAIObjectPtr // loc=0x58
 	ptr AIScriptOffset // loc=0x5c
 	u32 SubordinateObjectPtr // loc=0x60
 

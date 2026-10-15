@@ -14,23 +14,23 @@
 	endu
 
 	union
-	u8 Unk_04 // loc=0x4
-	u8 Unk_05 // loc=0x5
+	u8 AliveActorTurnIndex // loc=0x4
+	u8 OpponentAliveCount // loc=0x5
 	nextu
 	u16 Unk_04_05 // loc=0x4
 	endu
 
 	u8 BattleField // loc=0x6
 	u8 BattlePhase // loc=0x7
-	u8 Unk_08 // loc=0x8
+	u8 AllianceEntryCount // loc=0x8
 	struct_org 0xa
-	u8 Unk_0a // loc=0xa
-	u8 Unk_0b // loc=0xb
+	u8 PauseFlag // loc=0xa
+	u8 BattleOverConditionFlag // loc=0xb
 	struct_org 0xd
 	u8 PlayerSide // loc=0xd
-	u8 Unk_0e // loc=0xe
+	u8 PanelTurnCount // loc=0xe
 	u8 BattleType // loc=0xf
-	u8 Unk_10 // loc=0x10
+	u8 LoserSide // loc=0x10
 	flags8 Unk_11 // loc=0x11
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_00, 										0x01
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_01, 										0x02
@@ -42,7 +42,7 @@
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_07, 										0x80
 
 	union
-	u8 Unk_12 // loc=0x12
+	u8 AliveAllianceCount // loc=0x12
 	u8 Unk_13 // loc=0x13
 	nextu
 	u16 Unk_12_13 // loc=0x12

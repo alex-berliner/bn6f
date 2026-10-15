@@ -84,12 +84,12 @@
 	u8 PreventAnim // loc=0x18
 	u8 WobbleOrEffectTimer // loc=0x19
 	u8 ChipsHeld  // loc=0x1a
-	u8 Unk_1b // loc=0x1b
-	u8 Unk_1c // loc=0x1c
-	u8 Unk_1d // loc=0x1d
+	u8 PanelShiftCounter // loc=0x1b
+	u8 ContactPanelOffsetX // loc=0x1c
+	u8 ContactOffsetY // loc=0x1d
 
 	union
-	u8 Unk_1e // loc=0x1e
+	u8 MoveToFuturePanelStepTimer // loc=0x1e
 	u8 AIType // loc=0x1f
 	nextu
 	u16 Unk_1e_Unk_1f // loc=0x1e
