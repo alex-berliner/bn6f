@@ -13,16 +13,16 @@
 	bool8 Visible // loc=0x0
 	u8 TextScriptIdx // loc=0x1
 	u8 CurrLine // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 SubState // loc=0x3
 	u8 TextScriptState_04 // loc=0x4
 	u8 TextScriptDepth // loc=0x5
 	u8 Und_06 // loc=0x6
 	u8 MugshotPaletteIdx // loc=0x7
 	u8 TextScriptPrintSpeed // loc=0x8
 	bool8 CharInPrint // loc=0x9
-	u8 Unk_0A // loc=0xA
+	u8 ChoiceNumOptions // loc=0xA
 	// Set to -1 everytime a page loads for some reason
-	u8 Unk_0B // loc=0xB
+	u8 PageLoadReset // loc=0xB
 
 	// BoxX: 0x00 is neutral position
 	union
@@ -32,15 +32,15 @@
 	u16 BoxYX // loc=0xC
 	endu
 	
-	u8 Unk_0E // loc=0xE
+	u8 ResetFlag // loc=0xE
 	// box gfx loaded from 0x00 to 0x08 at max
 	u8 BoxGfxLoadState_0F // loc=0xF
 	enum8 OpenState_10 // loc=0x10
 	u8 JumpTableOffset_11 // loc=0x11
-	u8 Unk_12 // loc=0x12
+	u8 ChoicesPageTag // loc=0x12
 	u8 ChoiceCursorPos // loc=0x13
-	u8 Unk_14 // loc=0x14
-	u8 Unk_15 // loc=0x15
+	u8 ScriptTokenParam // loc=0x14
+	u8 ChoiceCursorSource // loc=0x15
 	u8 SelectCursorFrame // loc=0x16
 	u8 MugshotAnimTableIdx // loc=0x17
 	u8 TextScriptCharIdx // loc=0x18

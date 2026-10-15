@@ -3,8 +3,8 @@
     // type: struct ObjectSprite
 	set_struct_label \struct_entry, \label
 \label:
-	u8 Unk_00 // loc=0x0
-	u8 Unk_01 // loc=0x1
+	u8 AnimationIndex // loc=0x0
+	u8 AnimFrameDuration // loc=0x1
 	u8 Unk_02 // loc=0x2
 	u8 SpriteFlags2 // loc=0x3
 	u8 Unk_04 // loc=0x4

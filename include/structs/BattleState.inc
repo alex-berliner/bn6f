@@ -10,7 +10,7 @@
 	u8 StatePhase // loc=0x2
 	u8 SubPhaseInitFlag // loc=0x3
 	nextu
-	u16 Unk_02_03 // loc=0x2
+	u16 StatePhaseAndInitFlag // loc=0x2
 	endu
 
 	union
@@ -31,7 +31,7 @@
 	u8 PanelTurnCount // loc=0xe
 	u8 BattleType // loc=0xf
 	u8 LoserSide // loc=0x10
-	flags8 Unk_11 // loc=0x11
+	flags8 StateFlags // loc=0x11
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_00, 										0x01
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_01, 										0x02
 		struct_const BATTLE_STATE_UNK_11_FLAG_UNK_BIT_02, 										0x04
@@ -60,25 +60,25 @@
 	u8 MessageTimer // loc=0x1d
 	u8 BustingLevelCategory // loc=0x1e
 	u8 BattleResult // loc=0x1f
-	u16 Unk_20 // loc=0x20
+	u16 LowHPAlertTimers // loc=0x20
 
 	struct_org 0x28
 	u16 CountdownTimer // loc=0x28
 	struct_org 0x32
-	u16 Unk_32 // loc=0x32
-	u16 Unk_34 // loc=0x34
-	u16 Unk_36 // loc=0x36
+	u16 BattleStateFlags // loc=0x32
+	u16 PlayerHPSnapshot // loc=0x34
+	u16 Reward2Bonus // loc=0x36
 	u16 Unk_38 // loc=0x38
-	u16 Unk_3a // loc=0x3a
+	u16 PendingBattleEndAction // loc=0x3a
 	u32 BattleSettings // loc=0x3c
-	u32 Unk_40 // loc=0x40
+	u32 ChipUseFrameCounter // loc=0x40
 	// todo: figure out where these are accessed
 	// analyzer detects these but obviously not an imm read
 	u8 Unk_44 // loc=0x44
 	u8 Unk_45 // loc=0x45
 	struct_org 0x5c
-	u32 Unk_5c // loc=0x5c
-	u32 Unk_60 // loc=0x60
+	u32 AlliancePermissionFlags // loc=0x5c
+	u32 FrameCounter // loc=0x60
 	u32 Unk_64 // loc=0x64
 	struct_org 0x80
 	u0 AliveBattleActors // loc=0x80
