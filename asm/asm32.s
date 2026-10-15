@@ -29427,7 +29427,7 @@ off_811CA90:
 	thumb_func_end install_object_state_handler_811CA1C
 
 // symdb: Drives a battle object's 7-state dispatch loop, then sets flag bit 1 based on a 0x1150 timer threshold and refreshes the sprite.
-// symdb: void sub_811CA94(void *r5 /* battle object */); // uses nz flags from battleObject_getUnk_0cPtr_811CC68 each step,
+// symdb: void sub_811CA94(void *r5 /* battle object */); // uses nz flags from sub_811CC68 each step,
 // symdb: loops while handler leaves NZ, then returns
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811CA94.yaml
 	thumb_local_start
