@@ -3991,7 +3991,7 @@ scenario_prepareEnterMap_8004D48:
 
 	mov r0, #0
 	strb r0, [r5,#oGameState_Unk_11]
-	strb r0, [r5,#oGameState_Unk_10]
+	strb r0, [r5,#oGameState_OWPlayerBusyOrCutscene]
 	ldr r1, off_8004DE4 // =byte_200F410
 	strb r0, [r1]
 
@@ -4315,7 +4315,7 @@ initNewGameData_8004DF0:
 
 	mov r0, #0
 	strb r0, [r5,#oGameState_GameProgress]
-	strb r0, [r5,#oGameState_Unk_07]
+	strb r0, [r5,#oGameState_MapSubArea]
 	strb r0, [r5,#oGameState_Unk_08]
 
 	mov r0, #0
@@ -8875,7 +8875,7 @@ loc_8007208:
 	str r4, [r5,#oBattleState_BattleSettings]
 
 	mov r0, #1
-	strb r0, [r5,#oBattleState_Unk_0a]
+	strb r0, [r5,#oBattleState_PauseFlag]
 
 	bl resetAllGraphicsState_8005F40
 	bl sub_8005F78
@@ -9806,7 +9806,7 @@ battle_addObjectToAllianceEntryList_80077D2: // (obj: * BattleObject $r5) -> ()
 	ldrh r1, [r5,#oBattleObject_AllianceAndDirectionFlip]
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	mov r2, #oBattleState_Unk_08
+	mov r2, #oBattleState_AllianceEntryCount
 	add r2, r2, r1
 	ldrb r4, [r3,r2]
 	add r6, r4, #1
@@ -9858,7 +9858,7 @@ battle_main_8007800:
 
 	mov r2, r1
 	mov r1, r0
-	ldrb r0, [r5,#oBattleState_Unk_0a]
+	ldrb r0, [r5,#oBattleState_PauseFlag]
 	mov r3, r4
 	tst r0, r0
 
@@ -10294,13 +10294,13 @@ loc_8007A9A:
 	bne loc_8007AF4
 	bl battle_isTimeStop
 	bne loc_8007AF0
-	ldrb r0, [r5,#oBattleState_Unk_0e]
+	ldrb r0, [r5,#oBattleState_PanelTurnCount]
 	add r0, #1
 	cmp r0, #0x14
 	blt loc_8007AE2
 	mov r0, #0
 loc_8007AE2:
-	strb r0, [r5,#oBattleState_Unk_0e]
+	strb r0, [r5,#oBattleState_PanelTurnCount]
 	ldrb r0, [r5,#oBattleState_Unk_16]
 	add r0, #1
 	cmp r0, #0xb4
@@ -10727,7 +10727,7 @@ loc_8007E38:
 	movflag EVENT_1722_BEAST_LINK_GATE_RELATED
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	mov r0, #0
-	strb r0, [r5,#oBattleState_Unk_0a]
+	strb r0, [r5,#oBattleState_PauseFlag]
 	bl SetPrimaryToolkitPointers // () -> ()
 locret_8007E60:
 	pop {r4,r6,r7,pc}
@@ -11172,7 +11172,7 @@ loc_80081AE:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_PlayerSide]
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	mov r0, #4
 	strb r0, [r5,#3]
 	ldr r1, dword_80084D8 // =0x173
@@ -11267,7 +11267,7 @@ battle_runLoserSequence_800825A:
 	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	bl GetBattleEffects // () -> int
 	mov r1, #8
 	tst r0, r1
@@ -11755,13 +11755,13 @@ sub_80085FE:
 	ldr r0, [r5,r0]
 	mov r1, #oBattleState_AlivePlayerActors+4
 	ldr r1, [r5,r1]
-	ldrb r2, [r5,#oBattleState_Unk_04]
+	ldrb r2, [r5,#oBattleState_AliveActorTurnIndex]
 	bl sub_8008622
 	mov r0, #oBattleState_AliveOpponentActors
 	ldr r0, [r5,r0]
 	mov r1, #oBattleState_AliveOpponentActors+4
 	ldr r1, [r5,r1]
-	ldrb r2, [r5,#oBattleState_Unk_05]
+	ldrb r2, [r5,#oBattleState_OpponentAliveCount]
 	bl sub_8008622
 	pop {r5,pc}
 	thumb_func_end sub_80085FE
@@ -11843,7 +11843,7 @@ sub_8008688:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_PlayerSide]
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	mov r0, #4
 	strb r0, [r5,#3]
 	bl GetBattleEffects // () -> int
@@ -11965,7 +11965,7 @@ sub_8008764:
 	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	bl GetBattleEffects // () -> int
 	mov r1, #8
 	tst r0, r1
@@ -12406,7 +12406,7 @@ battle_tickPreBattleInit_8008AA0:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_PlayerSide]
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	mov r0, #4
 	strb r0, [r5,#3]
 	bl GetBattleEffects // () -> int
@@ -12528,7 +12528,7 @@ sub_8008B7C:
 	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	bl GetBattleEffects // () -> int
 	mov r1, #8
 	tst r0, r1
@@ -12950,7 +12950,7 @@ sub_8008EA0:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r1, [r0,#oBattleState_PlayerSide]
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	mov r0, #4
 	strb r0, [r5,#3]
 	bl GetBattleEffects // () -> int
@@ -13072,7 +13072,7 @@ sub_8008F7C:
 	ldrb r1, [r0,#oBattleState_PlayerSide]
 	mov r2, #1
 	eor r1, r2
-	strb r1, [r0,#oBattleState_Unk_10]
+	strb r1, [r0,#oBattleState_LoserSide]
 	bl GetBattleEffects // () -> int
 	mov r1, #8
 	tst r0, r1
@@ -15690,7 +15690,7 @@ locret_800A11A:
 	thumb_func_start relatedToIsBattleOver_800A11C
 relatedToIsBattleOver_800A11C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	add r0, #oBattleState_Unk_12
+	add r0, #oBattleState_AliveAllianceCount
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldrb r2, [r1,r0]
@@ -15737,7 +15737,7 @@ battle_getPhaseMode_800A152:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r2, [r0,#oBattleState_PlayerSide]
-	ldrb r1, [r0,#oBattleState_Unk_04]
+	ldrb r1, [r0,#oBattleState_AliveActorTurnIndex]
 	tst r1, r1
 	bne loc_800A170
 	mov r0, #2
@@ -15746,7 +15746,7 @@ battle_getPhaseMode_800A152:
 	mov r0, #1
 	b locret_800A18C
 loc_800A170:
-	ldrb r1, [r0,#oBattleState_Unk_05]
+	ldrb r1, [r0,#oBattleState_OpponentAliveCount]
 	tst r1, r1
 	bne loc_800A180
 	mov r0, #1
@@ -15755,7 +15755,7 @@ loc_800A170:
 	mov r0, #2
 	b locret_800A18C
 loc_800A180:
-	ldrb r1, [r0,#oBattleState_Unk_0b]
+	ldrb r1, [r0,#oBattleState_BattleOverConditionFlag]
 	tst r1, r1
 	beq loc_800A18A
 	mov r0, #7
@@ -15776,13 +15776,13 @@ battle_isBattleOver:
 	mov r0, #1
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r1, [r3,#oBattleState_Unk_12]
+	ldrb r1, [r3,#oBattleState_AliveAllianceCount]
 	tst r1, r1
 	beq locret_800A1A8
 	ldrb r1, [r3,#oBattleState_Unk_13]
 	tst r1, r1
 	beq locret_800A1A8
-	ldrb r1, [r3,#oBattleState_Unk_0b]
+	ldrb r1, [r3,#oBattleState_BattleOverConditionFlag]
 	tst r1, r1
 	bne locret_800A1A8
 	mov r0, #0
@@ -17567,7 +17567,7 @@ loc_800ABA4:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	mov r0, #1
-	strb r0, [r2,#oBattleState_Unk_0b]
+	strb r0, [r2,#oBattleState_BattleOverConditionFlag]
 loc_800ABAC:
 	ldrh r0, [r4,#0xa] // (word_203CA7A - 0x203ca70)
 	mov r1, #0x3c

@@ -554,8 +554,8 @@ int npc_inChatbox_curAction_waitClose_809EBBC()
     if ( v3 )
     {
         v4 = *(v1 + oToolkit_GameStatePtr);
-        result = *(v4 + oGameState_Unk_10);
-        if ( !*(v4 + oGameState_Unk_10) )
+        result = *(v4 + oGameState_OWPlayerBusyOrCutscene);
+        if ( !*(v4 + oGameState_OWPlayerBusyOrCutscene) )
         {
             *(v0 + 7) = 0;
             result = npc_resetToStandardState_809F612();

@@ -2498,7 +2498,7 @@ LABEL_17:
     }
     sprite_setPallete(byte_2000AA5);
     TestEventFlagFromImmediate(23, 61);
-    if ( v2 || *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_10) )
+    if ( v2 || *(*(v1 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene) )
         sprite_update(v0);
 }
 
@@ -2551,7 +2551,7 @@ unsigned int sub_809D270()
     *(v0 + 14) = 0;
     *(v0 + 15) = 0;
     *(v0 + 24) = 0;
-    *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_10) = 0;
+    *(*(v1 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene) = 0;
     v6 = *(v0 + 32);
     v7 = *(v0 + 36);
     *(v0 + 40) = *(v0 + 28);
@@ -2932,7 +2932,7 @@ int ow_player_processAction_809D75E()
     if ( result )
     {
         byte_200ACE1 = 2;
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_10) = 0;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene) = 0;
         v0[7] = 0;
         result = sub_809E004(16);
     }
@@ -2950,7 +2950,7 @@ signed int sub_809D7A8()
 
     if ( s_2011C50_ptr_1C_isNull() )
     {
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_10) = 0;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene) = 0;
         *(v0 + 7) = 0;
         *(v0 + 9) = 0;
         result = 0;
@@ -3491,7 +3491,7 @@ signed int ow_tryTileInteraction_809DF00()
     }
     else
     {
-        *(*(v1 + oToolkit_GameStatePtr) + oGameState_Unk_10) = 1;
+        *(*(v1 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene) = 1;
         result = 1;
     }
     return result;
@@ -4292,7 +4292,7 @@ int owPlayer_isBusyOrCutsceneActive_809E462()
 {
     int v0; // r10
 
-    return *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_10);
+    return *(*(v0 + oToolkit_GameStatePtr) + oGameState_OWPlayerBusyOrCutscene);
 }
 
 

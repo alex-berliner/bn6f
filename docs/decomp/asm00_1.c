@@ -2178,7 +2178,7 @@ void __cdecl initNewGameData_8004DF0()
     clearWorkBuffer_2000DC0_80356EC();
     *&gs->MapSelect = byte_100;
     gs->unk_44 = byte_100;
-    *&gs->pad_48[oGameState_Unk_10] = byte_100;
+    *&gs->pad_48[oGameState_OWPlayerBusyOrCutscene] = byte_100;
     gs->gameProgress = 0;
     gs->unk_07 = 0;
     gs->unk_08 = 0;
@@ -3420,9 +3420,9 @@ int map_triggerEnterMapOnWarp_8005C04()
     {
         v11 = *(v2 + oGameState_SavedInternetCoords_FacingDirection_MapId);
         v12 = *(v2 + (oGameState_SavedInternetCoords_FacingDirection_MapId|oGameState_MapGroup));
-        v13 = *(v2 + (oGameState_SavedRealWorldFacingDirection|oGameState_Unk_10));
-        v14 = *(v2 + (oGameState_SavedRealWorldMapId|oGameState_Unk_10));
-        v15 = *(v2 + (oGameState_SavedInternetCoords_FacingDirection_MapId|oGameState_Unk_10));
+        v13 = *(v2 + (oGameState_SavedRealWorldFacingDirection|oGameState_OWPlayerBusyOrCutscene));
+        v14 = *(v2 + (oGameState_SavedRealWorldMapId|oGameState_OWPlayerBusyOrCutscene));
+        v15 = *(v2 + (oGameState_SavedInternetCoords_FacingDirection_MapId|oGameState_OWPlayerBusyOrCutscene));
     }
     else
     {

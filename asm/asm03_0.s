@@ -9667,8 +9667,8 @@ sub_802A934:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r2, [r1,#oBattleState_Unk_04]
-	strb r2, [r1,#oBattleState_Unk_12]
+	ldrb r2, [r1,#oBattleState_AliveActorTurnIndex]
+	strb r2, [r1,#oBattleState_AliveAllianceCount]
 	mov r0, #0x80
 	add r0, r0, r1
 	add r1, #0xd0
@@ -10241,12 +10241,12 @@ sub_802AD84:
 	bl sub_800EC3C
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r0, [r1,#oBattleState_Unk_08]
+	ldrb r0, [r1,#oBattleState_AllianceEntryCount]
 	sub r0, #1
-	strb r0, [r1,#oBattleState_Unk_08]
-	ldrb r0, [r1,#oBattleState_Unk_04]
+	strb r0, [r1,#oBattleState_AllianceEntryCount]
+	ldrb r0, [r1,#oBattleState_AliveActorTurnIndex]
 	sub r0, #1
-	strb r0, [r1,#oBattleState_Unk_04]
+	strb r0, [r1,#oBattleState_AliveActorTurnIndex]
 loc_802ADB0:
 	bl sub_802AF38
 	ldrb r1, [r0]
@@ -13830,7 +13830,7 @@ battle_syncEffectSlotBetweenBuffers_802C9EA:
 	ldr r7, off_802CB18 // =unk_2035260 
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_10]
+	ldrb r0, [r0,#oBattleState_LoserSide]
 	tst r0, r0
 	beq loc_802CA08
 	ldr r6, off_802CB1C // =unk_2035260 
@@ -21540,7 +21540,7 @@ sub_8030104:
 	thumb_local_start
 camera_SavePosition_803011A:
 	ldrh r1, [r5,#oCamera_ScrollX]
-	strh r1, [r5,#oCamera_Unk_08]
+	strh r1, [r5,#oCamera_SavedScrollX]
 	ldrh r1, [r5,#oCamera_CameraYInt]
 	strh r1, [r5,#oCamera_Unk_0a]
 	mov pc, lr
@@ -21576,7 +21576,7 @@ camera_LoadPositionFromSource_8030126:
 	thumb_local_start
 camera_applyDeltaToRenderInfoScroll_8030136:
 	ldrh r1, [r5,#oCamera_ScrollX]
-	ldrh r2, [r5,#oCamera_Unk_08]
+	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]
@@ -21601,7 +21601,7 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 camera_applyScrollToBgLayers_8030158:
 	push {r4-r7,lr}
 	ldrh r1, [r5,#oCamera_ScrollX]
-	ldrh r2, [r5,#oCamera_Unk_08]
+	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]
@@ -21634,7 +21634,7 @@ locret_8030192:
 	thumb_local_start
 sub_8030194:
 	ldrh r1, [r5,#oCamera_ScrollX]
-	ldrh r2, [r5,#oCamera_Unk_08]
+	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
 	ldrh r2, [r5,#oCamera_Unk_0a]

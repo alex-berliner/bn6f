@@ -70500,7 +70500,7 @@ sub_80D8DEE:
 	mov r0, #0
 	strb r0, [r2,r1]
 	mov r1, #1
-	strb r1, [r2,#oBattleState_Unk_0b]
+	strb r1, [r2,#oBattleState_BattleOverConditionFlag]
 	mov r0, #8
 	bl battle_setFlags
 	pop {pc}
@@ -88153,7 +88153,7 @@ loc_80E13BA:
 	lsr r6, r6, #1
 	bcs loc_80E13CA
 	ldr r0, [r7,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_58]
+	ldr r0, [r0,#oAIData_SubordinateAIObjectPtr]
 	tst r0, r0
 	beq loc_80E13CA
 	bl sub_80E0F22
@@ -88230,7 +88230,7 @@ loc_80E1442:
 	bl dispatch_801DA48
 loc_80E1452:
 	ldr r0, [r7,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_58]
+	ldr r0, [r0,#oAIData_SubordinateAIObjectPtr]
 	tst r0, r0
 	beq loc_80E145E
 	bl sub_80E0F28
@@ -88515,7 +88515,7 @@ sub_80E1644:
 	thumb_func_start sub_80E164A
 sub_80E164A:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r1,#oAIData_Unk_40]
+	ldr r1, [r1,#oAIData_TargetObjectPtr]
 	ldrb r0, [r1,#0x12]
 	ldrb r1, [r1,#0x13]
 	mov pc, lr
@@ -88524,7 +88524,7 @@ sub_80E164A:
 	thumb_local_start
 sub_80E1654:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r1,#oAIData_Unk_40]
+	ldr r1, [r1,#oAIData_TargetObjectPtr]
 	mov r0, #1
 	str r0, [r1,#0x64]
 	mov r0, #1
@@ -88538,7 +88538,7 @@ sub_80E1654:
 	thumb_func_start battleObject_clearAIDataUnknown_80E1662
 battleObject_clearAIDataUnknown_80E1662:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r1,#oAIData_Unk_40]
+	ldr r1, [r1,#oAIData_TargetObjectPtr]
 	mov r0, #0
 	str r0, [r1,#0x64]
 	mov r0, #0

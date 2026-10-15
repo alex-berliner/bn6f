@@ -1897,7 +1897,7 @@ _BYTE *sub_803578C()
     result[oGameState_MapNumber] = 0;
     *result = 0;
     result[oGameState_GameProgress] = 101;
-    result[oGameState_Unk_07] = 98;
+    result[oGameState_MapSubArea] = 98;
     return result;
 }
 

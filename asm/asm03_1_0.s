@@ -3610,7 +3610,7 @@ sub_803578C:
 	strb r1, [r0,#oGameState_GameProgress]
 
 	mov r1, #0x62
-	strb r1, [r0,#oGameState_Unk_07]
+	strb r1, [r0,#oGameState_MapSubArea]
 
 	pop {r4-r7,pc}
 	thumb_func_end sub_803578C

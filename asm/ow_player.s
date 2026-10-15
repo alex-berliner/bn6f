@@ -128,7 +128,7 @@ loc_809D238:
 	beq loc_809D252
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
-	ldrb r0, [r0,#oGameState_Unk_10]
+	ldrb r0, [r0,#oGameState_OWPlayerBusyOrCutscene]
 	tst r0, r0
 	beq locret_809D256
 loc_809D252:
@@ -227,7 +227,7 @@ sub_809D270:
 	strh r0, [r5,#oOWPlayerObject_Unk_18]
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
-	strb r0, [r7,#oGameState_Unk_10]
+	strb r0, [r7,#oGameState_OWPlayerBusyOrCutscene]
 	ldr r0, [r5,#oOWPlayerObject_X]
 	ldr r1, [r5,#oOWPlayerObject_Y]
 	ldr r2, [r5,#oOWPlayerObject_Z]
@@ -815,7 +815,7 @@ loc_809D778:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
 	mov r0, #0
-	strb r0, [r7,#oGameState_Unk_10]
+	strb r0, [r7,#oGameState_OWPlayerBusyOrCutscene]
 	mov r0, #0
 	strb r0, [r5,#oOWPlayerObject_Unk_07]
 	mov r0, #0x10
@@ -882,7 +882,7 @@ loc_809D7E2:
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
 	mov r0, #0
-	strb r0, [r7,#oGameState_Unk_10]
+	strb r0, [r7,#oGameState_OWPlayerBusyOrCutscene]
 	mov r0, #0
 	strb r0, [r5,#oOWPlayerObject_Unk_07]
 	mov r0, #0
@@ -1841,7 +1841,7 @@ ow_tryTileInteraction_809DF00:
 	mov r0, #1
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
-	strb r0, [r7,#oGameState_Unk_10]
+	strb r0, [r7,#oGameState_OWPlayerBusyOrCutscene]
 	mov r0, #1
 	pop {pc}
 loc_809DF16:
@@ -2904,7 +2904,7 @@ owPlayer_isBusyOrCutsceneActive_809E462:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
-	ldrb r0, [r1,#oGameState_Unk_10]
+	ldrb r0, [r1,#oGameState_OWPlayerBusyOrCutscene]
 	tst r0, r0
 	pop {pc}
 	thumb_func_end owPlayer_isBusyOrCutsceneActive_809E462

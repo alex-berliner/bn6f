@@ -1089,7 +1089,7 @@ npc_inChatbox_curAction_waitClose_809EBBC:
 	bne locret_809EBDA
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
-	ldrb r0, [r7,#oGameState_Unk_10]
+	ldrb r0, [r7,#oGameState_OWPlayerBusyOrCutscene]
 	tst r0, r0
 	bne locret_809EBDA
 	mov r0, #0

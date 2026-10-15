@@ -2514,7 +2514,7 @@ playCertainMapMusicBasedOnEventByte_8036e44:
 	ldr r4, [r0,#oToolkit_S2001c04_Ptr]
 	ldrb r1, [r6,#oGameState_MapGroup]
 	ldrb r2, [r6,#oGameState_MapNumber]
-	ldrb r0, [r6,#oGameState_Unk_07]
+	ldrb r0, [r6,#oGameState_MapSubArea]
 	lsl r0, r0, #2
 	ldr r7, [r7,r0]
 loc_8036E58:

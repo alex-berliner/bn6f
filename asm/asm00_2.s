@@ -2787,9 +2787,9 @@ off_800FFE0:
 	thumb_func_start SetAIData_Unk_44_Flag
 SetAIData_Unk_44_Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r3,#oAIData_Unk_44]
+	ldr r1, [r3,#oAIData_AIFlags]
 	orr r1, r0
-	str r1, [r3,#oAIData_Unk_44]
+	str r1, [r3,#oAIData_AIFlags]
 	mov pc, lr
 	thumb_func_end SetAIData_Unk_44_Flag
 
@@ -2800,9 +2800,9 @@ SetAIData_Unk_44_Flag:
 	thumb_func_start ClearAIData_Unk_44_Flag
 ClearAIData_Unk_44_Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r3,#oAIData_Unk_44]
+	ldr r1, [r3,#oAIData_AIFlags]
 	bic r1, r0
-	str r1, [r3,#oAIData_Unk_44]
+	str r1, [r3,#oAIData_AIFlags]
 	mov pc, lr
 	thumb_func_end ClearAIData_Unk_44_Flag
 
@@ -2820,7 +2820,7 @@ sub_800FFF8:
 	thumb_func_start GetAIData_Unk_44_Flag
 GetAIData_Unk_44_Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r3,#oAIData_Unk_44]
+	ldr r0, [r3,#oAIData_AIFlags]
 	mov pc, lr
 	thumb_func_end GetAIData_Unk_44_Flag
 
@@ -3280,7 +3280,7 @@ sub_8010300:
 	add r1, #oBattleState_AliveBattleActors
 	ldr r1, [r2,r1]
 	ldr r1, [r1,#oBattleObject_AIDataPtr]
-	ldr r1, [r1,#oAIData_Unk_48]
+	ldr r1, [r1,#oAIData_Flags]
 	and r0, r1
 	mov pc, lr
 	thumb_func_end sub_8010300
@@ -3292,18 +3292,18 @@ sub_8010300:
 	thumb_func_start SetAIDataUnk0x48Flag
 SetAIDataUnk0x48Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r3,#oAIData_Unk_48]
+	ldr r1, [r3,#oAIData_Flags]
 	orr r1, r0
-	str r1, [r3,#oAIData_Unk_48]
+	str r1, [r3,#oAIData_Flags]
 	mov pc, lr
 	thumb_func_end SetAIDataUnk0x48Flag
 
 	thumb_func_start ClearAIDataUnk0x48Flag
 ClearAIDataUnk0x48Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r3,#oAIData_Unk_48]
+	ldr r1, [r3,#oAIData_Flags]
 	bic r1, r0
-	str r1, [r3,#oAIData_Unk_48]
+	str r1, [r3,#oAIData_Flags]
 	mov pc, lr
 	thumb_func_end ClearAIDataUnk0x48Flag
 
@@ -3317,7 +3317,7 @@ sub_8010326:
 	thumb_func_start GetAIDataUnk0x48Flag
 GetAIDataUnk0x48Flag:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r3,#oAIData_Unk_48]
+	ldr r0, [r3,#oAIData_Flags]
 	mov pc, lr
 	thumb_func_end GetAIDataUnk0x48Flag
 
@@ -11074,12 +11074,12 @@ loc_8013918:
 	ldr r0, off_8013CA8 // =0x8000000
 	bl object_clearFlag // (int bitfield) -> void
 	bl object_clearInvulnerableTime
-	ldr r0, [r7,#oAIData_Unk_50]
+	ldr r0, [r7,#oAIData_SubordinateObjectUnk]
 	tst r0, r0
 	beq loc_8013938
 	bl sub_80E5410
 	mov r0, #0
-	str r0, [r7,#oAIData_Unk_50]
+	str r0, [r7,#oAIData_SubordinateObjectUnk]
 loc_8013938:
 	b loc_8013956
 	thumb_func_end sub_801390C
@@ -15195,7 +15195,7 @@ loc_80156DC:
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	str r0, [r1,#oAIData_TempAttackObjectPtr]
-	str r0, [r1,#oAIData_Unk_40]
+	str r0, [r1,#oAIData_TargetObjectPtr]
 	mov r0, #0xa1
 	add r0, #0xff
 	strh r0, [r5,#oBattleObject_NameID]
@@ -17266,9 +17266,9 @@ sub_80166D0:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	bl battle_objectResolveContactOffset_800E468
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
-	strb r2, [r5,#oBattleObject_Unk_1b]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
+	strb r2, [r5,#oBattleObject_PanelShiftCounter]
 	tst r2, r2
 	beq loc_8016716
 	ldrb r3, [r5,#oBattleObject_PanelX]
@@ -17279,7 +17279,7 @@ sub_80166D0:
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_reservePanel
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_1e]
+	strb r0, [r5,#oBattleObject_MoveToFuturePanelStepTimer]
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_AIType]
 	pop {r6,r7,pc}
@@ -17306,9 +17306,9 @@ loc_8016722:
 	thumb_local_start
 battleObject_stepMoveToFuturePanel_8016730:
 	push {r4,r6,r7,lr}
-	ldrb r0, [r5,#oBattleObject_Unk_1e]
+	ldrb r0, [r5,#oBattleObject_MoveToFuturePanelStepTimer]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_1e]
+	strb r0, [r5,#oBattleObject_MoveToFuturePanelStepTimer]
 	bgt loc_801680E
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
@@ -17326,9 +17326,9 @@ battleObject_stepMoveToFuturePanel_8016730:
 	ldrb r0, [r0,#oCollisionData_PrimaryElement]
 	cmp r0, #2
 	beq loc_8016768
-	ldrb r0, [r5,#oBattleObject_Unk_1b]
+	ldrb r0, [r5,#oBattleObject_PanelShiftCounter]
 	add r0, #1
-	strb r0, [r5,#oBattleObject_Unk_1b]
+	strb r0, [r5,#oBattleObject_PanelShiftCounter]
 	b loc_80167B2
 loc_8016768:
 	cmp r4, #9
@@ -17358,18 +17358,18 @@ loc_8016788:
 	mov r0, #3
 	strb r0, [r5,#oBattleObject_ContactState]
 	bl battle_objectResolveContactOffset_800E468
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
 	tst r2, r2
 	beq loc_80167E6
-	ldrb r0, [r5,#oBattleObject_Unk_1b]
+	ldrb r0, [r5,#oBattleObject_PanelShiftCounter]
 	add r0, #1
-	strb r0, [r5,#oBattleObject_Unk_1b]
+	strb r0, [r5,#oBattleObject_PanelShiftCounter]
 	b loc_80167B2
 loc_80167B2:
-	ldrb r0, [r5,#oBattleObject_Unk_1b]
+	ldrb r0, [r5,#oBattleObject_PanelShiftCounter]
 	sub r0, #1
-	strb r0, [r5,#oBattleObject_Unk_1b]
+	strb r0, [r5,#oBattleObject_PanelShiftCounter]
 	ble loc_80167E6
 	mov r2, #0x1c
 	ldrsb r2, [r5,r2]
@@ -17384,7 +17384,7 @@ loc_80167B2:
 	bl battle_objectCheckPanelByAlliance_800E5AC
 	beq loc_80167E6
 	mov r0, #4
-	strb r0, [r5,#oBattleObject_Unk_1e]
+	strb r0, [r5,#oBattleObject_MoveToFuturePanelStepTimer]
 	mov r0, r6
 	mov r1, r7
 	strb r0, [r5,#oBattleObject_FuturePanelX]
@@ -18096,8 +18096,8 @@ battleAdvanceObjectPhase_8016D08:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	bl sub_800E45E
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
 	strb r2, [r5,#oBattleObject_PhaseInitialized]
 	tst r2, r2
 	beq loc_8016D74
@@ -19040,11 +19040,11 @@ battle_destroyBattleObject_801741C:
 	bl object_removePanelReserve
 	bl battle_clearAIDataAndBarrier_801A7F4
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r2,#oAIData_Unk_58]
+	ldr r1, [r2,#oAIData_SubordinateAIObjectPtr]
 	tst r1, r1
 	beq loc_801745A
 	mov r1, #0
-	str r1, [r2,#oAIData_Unk_58]
+	str r1, [r2,#oAIData_SubordinateAIObjectPtr]
 loc_801745A:
 	ldrb r0, [r5,#oBattleObject_Param2]
 	cmp r0, #1
@@ -19655,8 +19655,8 @@ loc_8017900:
 	mov r2, #1
 	bl tableAddSaturatedByte_800AB46
 	bl sub_800E45E
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
 	strh r2, [r5,#oBattleObject_Timer2]
 	tst r2, r2
 	beq loc_8017988
@@ -20132,8 +20132,8 @@ sub_8017CE0:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	bl sub_800F598
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
 	strb r2, [r5,#oBattleObject_PhaseInitialized]
 	tst r2, r2
 	beq loc_8017D4E
@@ -20311,8 +20311,8 @@ sub_8017E44:
 	ldrb r1, [r5,#oBattleObject_FuturePanelY]
 	bl object_removePanelReserve
 	bl sub_800F598
-	strb r0, [r5,#oBattleObject_Unk_1c]
-	strb r1, [r5,#oBattleObject_Unk_1d]
+	strb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	strb r1, [r5,#oBattleObject_ContactOffsetY]
 	strb r3, [r5,#oBattleObject_DirectionAngle]
 	mov r2, #6
 	strb r2, [r5,#oBattleObject_PhaseInitialized]
@@ -20324,7 +20324,7 @@ sub_8017E44:
 	beq loc_8017E88
 	add r4, #4
 loc_8017E88:
-	ldrb r0, [r5,#oBattleObject_Unk_1c]
+	ldrb r0, [r5,#oBattleObject_ContactPanelOffsetX]
 	cmp r0, r2
 	beq loc_8017E90
 	add r4, #2
@@ -20624,8 +20624,8 @@ sub_80180A8:
 	strh r0, [r5,#oBattleObject_X16]
 	ldrh r0, [r5,#oBattleObject_Z16Save]
 	strh r0, [r5,#oBattleObject_Z16]
-	ldrb r0, [r5,#oBattleObject_Unk_1c]
-	ldrb r1, [r5,#oBattleObject_Unk_1d]
+	ldrb r0, [r5,#oBattleObject_ContactPanelOffsetX]
+	ldrb r1, [r5,#oBattleObject_ContactOffsetY]
 	strb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r1, [r5,#oBattleObject_FuturePanelY]
 	bl sub_800F768
@@ -22702,7 +22702,7 @@ loc_801A1CE:
 	bne locret_801A1FA
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r0, [r2,#oBattleState_Unk_0e]
+	ldrb r0, [r2,#oBattleState_PanelTurnCount]
 	ldrh r1, [r5,#oBattleObject_HP]
 	cmp r1, #9
 	bgt loc_801A1EE
