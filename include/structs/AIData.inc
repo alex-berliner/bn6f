@@ -71,7 +71,7 @@
 	u32 Unk_70 // loc=0x70
 	u32 Unk_74 // loc=0x74
   // * BattleObject
-	ptr Unk_78 // loc=0x78
+	ptr BattleObjectPtr // loc=0x78
 	u32 Unk_7c // loc=0x7c
 	u0 AIState // loc=0x80
 
