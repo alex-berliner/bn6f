@@ -6,7 +6,7 @@
 	
 	u8 JumpOffset00 // loc=0x0
 	u8 JumpOffset01 // loc=0x1
-	bool Unk_02 // loc=0x2
+	bool StateHandled // loc=0x2
 	u8 Unk_03 // loc=0x3
 	u8 Unk_04 // loc=0x4
 	u8 Unk_05 // loc=0x5
