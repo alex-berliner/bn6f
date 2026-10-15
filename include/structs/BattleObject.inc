@@ -126,7 +126,7 @@
 	u32 DamageAndStaminaDamageCounterDisabler // loc=0x2c
 	endu
 
-	u16 Unk_30 // loc=0x30
+	u16 ChipID // loc=0x30
 	u16 Unk_32 // loc=0x32
 	u0 Coords // loc=0x34
 	u16 X // loc=0x34 size 4
