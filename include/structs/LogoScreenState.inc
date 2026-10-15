@@ -7,7 +7,7 @@
   u8 Index_00 // loc=0x0
 
   struct_org 0x05
-  u8 Unk_05 // loc=0x05
+  u8 State // loc=0x05
 
   // logoScreen_init_803D1A8 implies 0x08
   struct_org 0x08
