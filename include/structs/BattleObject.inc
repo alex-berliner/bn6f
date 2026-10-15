@@ -143,7 +143,7 @@
 	ptr RelatedObject2Ptr // loc=0x50
 	ptr CollisionDataPtr // loc=0x54
 	ptr AIDataPtr // loc=0x58
-	u32 Unk_5c // loc=0x5c
+	u32 PendingStateAction // loc=0x5c
 	u8_arr ExtraVars, \extra_vars_size // loc=0x60, 44 for t1 and t3, 28 for t4
 	u0 SizeWithoutSpriteDataAndLinkedList // loc=0x8c OR 0x7c
 	.space 4
