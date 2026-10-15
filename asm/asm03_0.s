@@ -21264,7 +21264,7 @@ camera_init_802FF4C: // (player_x: u32, player_y: u32, player_z: u32, map_group:
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_CameraPtr]
 	ldrb r0, [r5,#oCamera_ShakeEffectIndex]
-	ldr r1, [r5,#oCamera_Unk_14]
+	ldr r1, [r5,#oCamera_PositionSrcPtr]
 	push {r0,r1,r5}
 	mov r0, r10
 	// memBlock
@@ -21275,25 +21275,25 @@ camera_init_802FF4C: // (player_x: u32, player_y: u32, player_z: u32, map_group:
 
 	pop {r0,r1,r5}
 	strb r0, [r5,#oCamera_ShakeEffectIndex]
-	str r1, [r5,#oCamera_Unk_14]
+	str r1, [r5,#oCamera_PositionSrcPtr]
 
 	ldr r0, off_802FFF0 // =eMapTilesState200be70
 
 	ldrb r3, [r0,#oMapTilesState200be70_MapWidth]
 	sub r3, #0x1e
 	lsl r3, r3, #0x12
-	str r3, [r5,#oCamera_Unk_1c]
+	str r3, [r5,#oCamera_MaxScrollX]
 
 	neg r3, r3
-	str r3, [r5,#oCamera_Unk_18]
+	str r3, [r5,#oCamera_MinX16_16]
 
 	ldrb r3, [r0,#oMapTilesState200be70_MapHeight] // (byte_200BE71 - 0x200be70)
 	sub r3, #0x14
 	lsl r3, r3, #0x12
-	str r3, [r5,#oCamera_Unk_20]
+	str r3, [r5,#oCamera_CameraMinZ]
 
 	neg r3, r3
-	str r3, [r5,#oCamera_Unk_24]
+	str r3, [r5,#oCamera_MinY]
 
 	pop {r1-r3}
 	str r1, [r5,#oCamera_X]
@@ -21467,12 +21467,12 @@ camera_updateDerivedOffsets_803007C:
 	thumb_local_start
 battle_clampCameraToBounds_80300AC:
 	ldr r1, [r5,#oCamera_nextX_3c]
-	ldr r2, [r5,#oCamera_Unk_18]
+	ldr r2, [r5,#oCamera_MinX16_16]
 	cmp r1, r2
 	bge loc_80300B6
 	mov r1, r2
 loc_80300B6:
-	ldr r2, [r5,#oCamera_Unk_1c]
+	ldr r2, [r5,#oCamera_MaxScrollX]
 	cmp r1, r2
 	ble loc_80300BE
 	mov r1, r2
@@ -21482,13 +21482,13 @@ loc_80300BE:
 	strh r1, [r5,#oCamera_ScrollX]
 	ldr r6, [r5,#oCamera_nextZ_44]
 	ldr r4, [r5,#oCamera_nextY_40]
-	ldr r2, [r5,#oCamera_Unk_24]
+	ldr r2, [r5,#oCamera_MinY]
 	add r2, r2, r6
 	cmp r4, r2
 	bge loc_80300D2
 	mov r4, r2
 loc_80300D2:
-	ldr r2, [r5,#oCamera_Unk_20]
+	ldr r2, [r5,#oCamera_CameraMinZ]
 	add r2, r2, r6
 	cmp r4, r2
 	ble loc_80300DC
@@ -21497,14 +21497,14 @@ loc_80300DC:
 	str r4, [r5,#oCamera_nextY_40]
 	mov r6, r4
 	ldr r4, [r5,#oCamera_nextZ_44]
-	ldr r2, [r5,#oCamera_Unk_24]
+	ldr r2, [r5,#oCamera_MinY]
 	add r2, r2, r6
 	str r2, [r5,#oCamera_Unk_2c]
 	cmp r4, r2
 	bge loc_80300EE
 	mov r4, r2
 loc_80300EE:
-	ldr r2, [r5,#oCamera_Unk_20]
+	ldr r2, [r5,#oCamera_CameraMinZ]
 	add r2, r2, r6
 	str r2, [r5,#oCamera_Unk_28]
 	cmp r4, r2
@@ -21542,7 +21542,7 @@ camera_SavePosition_803011A:
 	ldrh r1, [r5,#oCamera_ScrollX]
 	strh r1, [r5,#oCamera_SavedScrollX]
 	ldrh r1, [r5,#oCamera_CameraYInt]
-	strh r1, [r5,#oCamera_Unk_0a]
+	strh r1, [r5,#oCamera_SavedCameraYInt]
 	mov pc, lr
 	thumb_func_end camera_SavePosition_803011A
 
@@ -21554,12 +21554,12 @@ nullsub_7:
 	mov pc, lr
 	thumb_func_end nullsub_7
 
-// symdb: Copies a camera position (X/Y/Z) from the data block pointed to by the camera object's field oCamera_Unk_14 into the camera's own X/Y/Z fields.
+// symdb: Copies a camera position (X/Y/Z) from the data block pointed to by the camera object's field oCamera_PositionSrcPtr into the camera's own X/Y/Z fields.
 // symdb: void sub_8030126(camera in r5); returns r7 = source block pointer, r2 = copied Z value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_LoadPositionFromSource_8030126.yaml
 	thumb_local_start
 camera_LoadPositionFromSource_8030126:
-	ldr r7, [r5,#oCamera_Unk_14]
+	ldr r7, [r5,#oCamera_PositionSrcPtr]
 	ldr r2, [r7]
 	str r2, [r5,#oCamera_X]
 	ldr r2, [r7,#4]
@@ -21579,7 +21579,7 @@ camera_applyDeltaToRenderInfoScroll_8030136:
 	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
-	ldrh r2, [r5,#oCamera_Unk_0a]
+	ldrh r2, [r5,#oCamera_SavedCameraYInt]
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
@@ -21604,7 +21604,7 @@ camera_applyScrollToBgLayers_8030158:
 	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
-	ldrh r2, [r5,#oCamera_Unk_0a]
+	ldrh r2, [r5,#oCamera_SavedCameraYInt]
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
@@ -21637,7 +21637,7 @@ sub_8030194:
 	ldrh r2, [r5,#oCamera_SavedScrollX]
 	sub r1, r1, r2
 	ldrh r4, [r5,#oCamera_CameraYInt]
-	ldrh r2, [r5,#oCamera_Unk_0a]
+	ldrh r2, [r5,#oCamera_SavedCameraYInt]
 	sub r4, r4, r2
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
@@ -21658,7 +21658,7 @@ camera_writeUnk03_14_80301b2:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
 	strb r0, [r2,#oCamera_ShakeEffectIndex]
-	str r1, [r2,#oCamera_Unk_14]
+	str r1, [r2,#oCamera_PositionSrcPtr]
 	mov pc, lr
 	thumb_func_end camera_writeUnk03_14_80301b2
 
@@ -21714,27 +21714,27 @@ camera_doShakeEffect_80301e8:
 	tst r0, r0
 	beq loc_8030214
 loc_8030200:
-	ldrh r0, [r5,#oCamera_Unk_0c]
+	ldrh r0, [r5,#oCamera_ShakeDuration]
 loc_8030202:
 	cmp r0, #0
 	beq loc_8030214
-	ldrh r6, [r5,#oCamera_Unk_0e]
+	ldrh r6, [r5,#oCamera_ShakeMagnitude]
 	lsl r6, r6, #3
 	ldr r7, off_8030280 // =byte_8030284
 	add r7, r7, r6
 	sub r1, r0, #1
-	strh r1, [r5,#oCamera_Unk_0c]
+	strh r1, [r5,#oCamera_ShakeDuration]
 	b loc_8030226
 loc_8030214:
-	ldrh r0, [r5,#oCamera_Unk_10]
+	ldrh r0, [r5,#oCamera_ShakeFrames]
 	cmp r0, #0
 	beq loc_8030266
-	ldrh r6, [r5,#oCamera_Unk_12]
+	ldrh r6, [r5,#oCamera_ShakeIndex]
 	lsl r6, r6, #3
 	ldr r7, off_8030280 // =byte_8030284
 	add r7, r7, r6
 	sub r1, r0, #1
-	strh r1, [r5,#oCamera_Unk_10]
+	strh r1, [r5,#oCamera_ShakeFrames]
 loc_8030226:
 	bl GetRNGSecondary // () -> void
 	ldr r2, [r7]
@@ -21746,14 +21746,14 @@ loc_8030226:
 	add r2, r2, r0
 	str r2, [r5,#oCamera_nextX_3c]
 	mov r4, #0
-	str r4, [r5,#oCamera_Unk_48]
+	str r4, [r5,#oCamera_ShakeOffsetX]
 	ldr r4, off_803027C // =eCamera+76 
 	ldrb r4, [r4]
 	tst r4, r4
 	beq loc_803024C
 	neg r0, r0
 	lsl r0, r0, #1
-	str r0, [r5,#oCamera_Unk_48]
+	str r0, [r5,#oCamera_ShakeOffsetX]
 loc_803024C:
 	bl GetRNGSecondary // () -> void
 	ldr r2, [r7]
@@ -21769,7 +21769,7 @@ loc_803024C:
 	pop {pc}
 loc_8030266:
 	mov r2, #0
-	strh r2, [r5,#oCamera_Unk_0e]
+	strh r2, [r5,#oCamera_ShakeMagnitude]
 	ldr r2, [r5,#oCamera_X]
 	str r2, [r5,#oCamera_nextX_3c]
 	ldr r2, [r5,#oCamera_Y]
@@ -21777,7 +21777,7 @@ loc_8030266:
 	ldr r2, [r5,#oCamera_Z]
 	str r2, [r5,#oCamera_nextZ_44]
 	mov r2, #0
-	str r2, [r5,#oCamera_Unk_48]
+	str r2, [r5,#oCamera_ShakeOffsetX]
 	pop {pc}
 	.balign 4, 0
 off_803027C:
@@ -21800,8 +21800,8 @@ byte_8030284:
 camera_initShakeEffect_80302a8:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
-	strh r0, [r2,#oCamera_Unk_0e]
-	strh r1, [r2,#oCamera_Unk_0c]
+	strh r0, [r2,#oCamera_ShakeMagnitude]
+	strh r1, [r2,#oCamera_ShakeDuration]
 	mov pc, lr
 	.word 0x21002000
 	thumb_func_end camera_initShakeEffect_80302a8
@@ -21810,8 +21810,8 @@ camera_initShakeEffect_80302a8:
 sub_80302B6:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
-	strh r0, [r2,#oCamera_Unk_12]
-	strh r1, [r2,#oCamera_Unk_10]
+	strh r0, [r2,#oCamera_ShakeIndex]
+	strh r1, [r2,#oCamera_ShakeFrames]
 	mov pc, lr
 	thumb_func_end sub_80302B6
 

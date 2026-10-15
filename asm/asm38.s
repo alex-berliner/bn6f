@@ -1198,7 +1198,7 @@ loc_3006392:
 	mov r2, #2
 	ldrsh r1, [r0,r2]
 	ldr r4, [r3,#oCamera_nextX_3c]
-	ldr r7, [r3,#oCamera_Unk_48]
+	ldr r7, [r3,#oCamera_ShakeOffsetX]
 	add r4, r4, r7
 	asr r4, r4, #0x10
 	sub r1, r1, r4

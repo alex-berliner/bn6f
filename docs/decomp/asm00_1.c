@@ -4576,7 +4576,7 @@ int gameState_GetUnk74_8006DEC()
 {
     int v0; // r10
 
-    return *(*(v0 + oToolkit_GameStatePtr) + oGameState_Unk_74);
+    return *(*(v0 + oToolkit_GameStatePtr) + oGameState_AntiTamperFlags);
 }
 
 

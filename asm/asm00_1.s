@@ -3984,7 +3984,7 @@ scenario_prepareEnterMap_8004D48:
 	strb r0, [r5,#oGameState_Unk_03]
 	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_BattlePaused]
-	str r0, [r5,#oGameState_Unk_74]
+	str r0, [r5,#oGameState_AntiTamperFlags]
 
 	mov r0, #0x63
 	strb r0, [r5,#oGameState_BGMusicIndicator]
@@ -4074,11 +4074,11 @@ initNewGameData_8004DF0:
 	mov r0, #0
 	str r0, [r5,#oGameState_ProtectedZenny]
 	str r0, [r5,#oGameState_ProtectedBugfrags]
-	str r0, [r5,#oGameState_Unk_74]
+	str r0, [r5,#oGameState_AntiTamperFlags]
 
 	mvn r0, r0
-	str r0, [r5,#oGameState_Unk_6c]
-	str r0, [r5,#oGameState_Unk_70]
+	str r0, [r5,#oGameState_ZennyChecksumMirror]
+	str r0, [r5,#oGameState_ProtectedBugfragsObfuscated]
 
 	mov r1, r10
 
@@ -4516,7 +4516,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_CoordInteractionValue]
 	strb r0, [r5,#oGameState_Unk_03]
-	str r0, [r5,#oGameState_Unk_68]
+	str r0, [r5,#oGameState_FrameCountdown]
 
 	movflag EVENT_1719
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -4760,10 +4760,10 @@ overworld_owMap_renderAndTickSubsystems_800536E: // (self: * GameState $r5) -> (
 	bl event_runArmedCallback_80024AE
 	bl IsScreenFadeActive // () -> zf
 	beq locret_80053DA
-	ldr r0, [r5,#oGameState_Unk_68]
+	ldr r0, [r5,#oGameState_FrameCountdown]
 	sub r0, #1
 	blt loc_80053D2
-	str r0, [r5,#oGameState_Unk_68]
+	str r0, [r5,#oGameState_FrameCountdown]
 	cmp r0, #0x29
 	bne loc_80053BC
 	mov r0, #0x72
@@ -5497,7 +5497,7 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 	bl timer_tickCountdownTable_8035738
 
 	mov r0, #0x3c
-	str r0, [r5,#oGameState_Unk_68]
+	str r0, [r5,#oGameState_FrameCountdown]
 
   // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
@@ -5523,7 +5523,7 @@ sub_8005A50: // (self: * GameState $r5) -> ()
 	bl timer_tickCountdownTable_8035738
 
 	mov r0, #0xa0
-	str r0, [r5,#oGameState_Unk_68]
+	str r0, [r5,#oGameState_FrameCountdown]
 
   // trigger overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
 	mov r0, #0x10
@@ -8130,7 +8130,7 @@ gameState_GetUnk74_8006DEC:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
-	ldr r0, [r4,#oGameState_Unk_74]
+	ldr r0, [r4,#oGameState_AntiTamperFlags]
 	pop {r4-r7,pc}
 	thumb_func_end gameState_GetUnk74_8006DEC
 
@@ -8403,12 +8403,12 @@ encryption_zenny_8006f54:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	ldr r0, [r4,#oGameState_ProtectedZenny]
-	ldr r1, [r4,#oGameState_Unk_74]
+	ldr r1, [r4,#oGameState_AntiTamperFlags]
 	mov r2, #1
 	tst r1, r2
 	bne loc_8006F68
 	mvn r1, r0
-	str r1, [r4,#oGameState_Unk_6c]
+	str r1, [r4,#oGameState_ZennyChecksumMirror]
 loc_8006F68:
 	ldr r1, off_8006FA8 // =dword_2000060
 	ldr r1, [r1]
@@ -8431,14 +8431,14 @@ encryption_zenny_8006f78:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	ldr r0, [r4,#oGameState_ProtectedZenny]
-	ldr r1, [r4,#oGameState_Unk_6c]
+	ldr r1, [r4,#oGameState_ZennyChecksumMirror]
 	mvn r1, r1
 	cmp r0, r1
 	beq loc_8006F90
-	ldr r1, [r4,#oGameState_Unk_74]
+	ldr r1, [r4,#oGameState_AntiTamperFlags]
 	mov r2, #1
 	orr r1, r2
-	str r1, [r4,#oGameState_Unk_74]
+	str r1, [r4,#oGameState_AntiTamperFlags]
 loc_8006F90:
 	ldr r1, off_8006FA8 // =dword_2000060
 	ldr r1, [r1]
@@ -8467,12 +8467,12 @@ encryption_bugfrags_8006fac:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	ldr r0, [r4,#oGameState_ProtectedBugfrags]
-	ldr r1, [r4,#oGameState_Unk_74]
+	ldr r1, [r4,#oGameState_AntiTamperFlags]
 	mov r2, #2
 	tst r1, r2
 	bne loc_8006FC0
 	mvn r1, r0
-	str r1, [r4,#oGameState_Unk_70]
+	str r1, [r4,#oGameState_ProtectedBugfragsObfuscated]
 loc_8006FC0:
 	ldr r1, off_8007000 // =dword_20018B8
 	ldr r1, [r1]
@@ -8494,14 +8494,14 @@ encryption_bugfrags_8006fd0:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
 	ldr r0, [r4,#oGameState_ProtectedBugfrags]
-	ldr r1, [r4,#oGameState_Unk_70]
+	ldr r1, [r4,#oGameState_ProtectedBugfragsObfuscated]
 	mvn r1, r1
 	cmp r0, r1
 	beq loc_8006FE8
-	ldr r1, [r4,#oGameState_Unk_74]
+	ldr r1, [r4,#oGameState_AntiTamperFlags]
 	mov r2, #2
 	orr r1, r2
-	str r1, [r4,#oGameState_Unk_74]
+	str r1, [r4,#oGameState_AntiTamperFlags]
 loc_8006FE8:
 	ldr r1, off_8007000 // =dword_20018B8
 	ldr r1, [r1]

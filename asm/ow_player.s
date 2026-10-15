@@ -2014,7 +2014,7 @@ ow_findInteractableNPC_809E01C:
 	ldr r2, dword_809E048 // =0xd80 
 	add r2, r2, r7
 loc_809E024:
-	ldr r0, [r7,#oOverworldNPCObject_Unk_50]
+	ldr r0, [r7,#oOverworldNPCObject_BusyFlag]
 	mov r1, #1
 	tst r0, r1
 	beq loc_809E03A

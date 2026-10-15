@@ -40,15 +40,15 @@ npc_init_809E590: // (self: *mut OverworldNPCObject $r5) -> ()
 	str r0, [r5,#oOverworldNPCObject_HiddenOAMPieces]
 	str r0, [r5,#oOverworldNPCObject_HiddenOAMPiecesUpdate]
 	strb r0, [r5,#oOverworldNPCObject_MovementDirection]
-	strb r0, [r5,#oOverworldNPCObject_Unk_0f]
+	strb r0, [r5,#oOverworldNPCObject_MovementDirectionPrev]
 	strb r0, [r5,#oOverworldNPCObject_InteractionLocked]
-	strb r0, [r5,#oOverworldNPCObject_Unk_07]
+	strb r0, [r5,#oOverworldNPCObject_MovementCoordOffset]
 	strb r0, [r5,#oOverworldNPCObject_PaletteIndex]
 	str r0, [r5,#oOverworldNPCObject_UnkFlags_60]
 	str r0, [r5,#oOverworldNPCObject_LayerPriorityOverride]
-	str r0, [r5,#oOverworldNPCObject_Unk_50]
-	str r0, [r5,#oOverworldNPCObject_Unk_54]
-	str r0, [r5,#oOverworldNPCObject_Unk_58]
+	str r0, [r5,#oOverworldNPCObject_BusyFlag]
+	str r0, [r5,#oOverworldNPCObject_InteractionAreaPtr]
+	str r0, [r5,#oOverworldNPCObject_InteractionAreaHandle]
 	strb r0, [r5,#oOverworldNPCObject_CenterOffsetX]
 	strb r0, [r5,#oOverworldNPCObject_CenterOffsetY]
 	strb r0, [r5,#oOverworldNPCObject_CenterOffsetZ]
@@ -160,7 +160,7 @@ loc_809E658:
 	bl sprite_setUnk0x2c
 loc_809E66E:
 	ldrb r0, [r5,#oOverworldNPCObject_MovementDirection]
-	strb r0, [r5,#oOverworldNPCObject_Unk_0f]
+	strb r0, [r5,#oOverworldNPCObject_MovementDirectionPrev]
 	ldrb r0, [r5,#oOverworldNPCObject_AnimationSelect]
 	strb r0, [r5,#oOverworldNPCObject_AnimationSelectUpdate]
 	ldrh r0, [r5,#oOverworldNPCObject_NPCSprite]
@@ -536,7 +536,7 @@ npc_doDiagonalMovement_809E878:
 	add r1, #1
 	ldrb r1, [r0,r1]
 
-	ldrb r0, [r5,#oOverworldNPCObject_Unk_07]
+	ldrb r0, [r5,#oOverworldNPCObject_MovementCoordOffset]
 	tst r1, r1
 	bne loc_809E89E
 
@@ -697,7 +697,7 @@ npc_updateLeapMovement_809e95e:
 	add r3, #1
 	ldrb r1, [r2,r3]
 
-	mov r3, #oOverworldNPCObject_Unk_07
+	mov r3, #oOverworldNPCObject_MovementCoordOffset
 	ldrb r2, [r5,r3]
 	tst r1, r1
 	beq .increaseCoord
@@ -790,7 +790,7 @@ npc_updateDiagonalLeapMovement_809e9da:
 	add r3, #1
 	ldrb r1, [r2,r3]
 
-	mov r3, #oOverworldNPCObject_Unk_07
+	mov r3, #oOverworldNPCObject_MovementCoordOffset
 	ldrb r2, [r5,r3]
 	tst r1, r1
 	beq .increaseCoord
@@ -1093,7 +1093,7 @@ npc_inChatbox_curAction_waitClose_809EBBC:
 	tst r0, r0
 	bne locret_809EBDA
 	mov r0, #0
-	strb r0, [r5,#oOverworldNPCObject_Unk_07]
+	strb r0, [r5,#oOverworldNPCObject_MovementCoordOffset]
 	bl npc_resetToStandardState_809F612
 locret_809EBDA:
 	pop {pc}
@@ -2920,7 +2920,7 @@ NPCCommand_init_leap:
 	strb r0, [r5,#oOverworldNPCObject_Undetected_06]
 
 	ldrb r0, [r6,#4]
-	strb r0, [r5,#oOverworldNPCObject_Unk_07]
+	strb r0, [r5,#oOverworldNPCObject_MovementCoordOffset]
 
 	mov r0, #MOVEMENT_FLAG_HOP_OR_LEAP
 	strb r0, [r5,#oOverworldNPCObject_CurAction]
@@ -2998,7 +2998,7 @@ NPCCommand_init_diagonal_leap:
 	strb r0, [r5,#oOverworldNPCObject_Undetected_06]
 
 	ldrb r0, [r6,#4]
-	strb r0, [r5,#oOverworldNPCObject_Unk_07]
+	strb r0, [r5,#oOverworldNPCObject_MovementCoordOffset]
 
 	mov r0, #MOVEMENT_FLAG_HOP_OR_LEAP
 	strb r0, [r5,#oOverworldNPCObject_CurAction]
@@ -3227,7 +3227,7 @@ loc_809F56C:
 	lsl r6, r6, #0x10
 	add r2, r2, r6
 
-	mov r6, #oOverworldNPCObject_Unk_50
+	mov r6, #oOverworldNPCObject_BusyFlag
 	add r6, r6, r5
 	ldrh r3, [r5,#oOverworldNPCObject_CollisionRadius_ZReach]
 	push {r0-r5}
@@ -3237,7 +3237,7 @@ loc_809F56C:
 	tst r7, r1
 	pop {r0-r5}
 	bne loc_809F596
-	mov r6, #oOverworldNPCObject_Unk_58 
+	mov r6, #oOverworldNPCObject_InteractionAreaHandle 
 	add r6, r6, r5
 	ldr r4, dword_809F5A8 // =OW_OBJECT_INTERACTION_AREA_FLAG_0x400000
 	ldr r5, dword_809F5AC // =(OW_OBJECT_INTERACTION_AREA_FLAG_0x200000 | OW_OBJECT_INTERACTION_AREA_FLAG_0x800000)
@@ -3246,8 +3246,8 @@ loc_809F596:
 	pop {r5}
 loc_809F598:
 	mov r0, #0
-	str r0, [r5,#oOverworldNPCObject_Unk_50]
-	str r0, [r5,#oOverworldNPCObject_Unk_58]
+	str r0, [r5,#oOverworldNPCObject_BusyFlag]
+	str r0, [r5,#oOverworldNPCObject_InteractionAreaHandle]
 	pop {r7,pc}
 	.balign 4, 0
 dword_809F5A0:
@@ -3293,7 +3293,7 @@ sub_809F5B0:
 	lsl r6, r6, #0x10
 	add r2, r2, r6
 
-	mov r6, #oOverworldNPCObject_Unk_54
+	mov r6, #oOverworldNPCObject_InteractionAreaPtr
 	add r6, r6, r5
 	ldr r3, dword_809F5F0 // =0x804 
 	ldr r4, dword_809F5F4 // =OW_OBJECT_INTERACTION_AREA_FLAG_0x80000
@@ -3302,7 +3302,7 @@ sub_809F5B0:
 	pop {r5}
 loc_809F5EA:
 	mov r0, #0
-	str r0, [r5,#oOverworldNPCObject_Unk_54]
+	str r0, [r5,#oOverworldNPCObject_InteractionAreaPtr]
 	pop {pc}
 	.balign 4, 0
 dword_809F5F0:
@@ -3366,7 +3366,7 @@ npc_overworld_CheckStateFlags50000_809F638:
 	push {lr}
 	mov r0, #0
 	ldr r2, dword_809F648 // =0x50000 
-	ldr r1, [r5,#oOverworldNPCObject_Unk_54]
+	ldr r1, [r5,#oOverworldNPCObject_InteractionAreaPtr]
 	tst r1, r2
 	beq locret_809F646
 	mov r0, #1
@@ -3443,10 +3443,10 @@ npc_clearAllBusyFlags_809F68C:
 	ldr r2, off_809F6A8 // =NUM_OVERWORLD_NPC_OBJECTS * oOverworldNPCObject_Size 
 	add r2, r2, r3
 loc_809F694:
-	ldr r0, [r3,#oOverworldNPCObject_Unk_50]
+	ldr r0, [r3,#oOverworldNPCObject_BusyFlag]
 	mov r1, #1
 	bic r0, r1
-	str r0, [r3,#oOverworldNPCObject_Unk_50]
+	str r0, [r3,#oOverworldNPCObject_BusyFlag]
 	add r3, #oOverworldNPCObject_Size 
 	cmp r3, r2
 	blt loc_809F694
