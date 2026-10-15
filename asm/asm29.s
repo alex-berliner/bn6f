@@ -10681,7 +10681,7 @@ loc_80AA514: // endif
 	cmp r2, r3
 	bge locret_80AA5DC
 
-	ldr r1, [r6,#oS2001c04_Unk_28]
+	ldr r1, [r6,#oS2001c04_EncounterGateFlag]
 	tst r1, r1
 	beq loc_80AA54E
 
@@ -10752,7 +10752,7 @@ loc_80AA584: // endif
 locGotBattleSettings_80AA59E: // success getting battle settings
 
 	str r0, [r7,#oGameState_CurBattleDataPtr]
-	ldr r1, [r6,#oS2001c04_Unk_24]
+	ldr r1, [r6,#oS2001c04_EncounterGate]
 	tst r1, r1
 	bne loc_80AA5B8
 

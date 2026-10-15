@@ -22,8 +22,8 @@
 
 	struct_org 0x24
   // SneakRun steps left (flag 0x170A) / LocEnemy steps left (flag 0x170B) (vidsync runtime)
-  u32 Unk_24 // loc=0x24
-  u32 Unk_28 // loc=0x28
+  u32 EncounterGate // loc=0x24
+  u32 EncounterGateFlag // loc=0x28
   u32 OptCurBattleDataPtr // loc=0x2c
 
 	struct_org 0x6c
