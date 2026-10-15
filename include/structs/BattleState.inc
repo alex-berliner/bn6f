@@ -63,7 +63,7 @@
 	u16 Unk_20 // loc=0x20
 
 	struct_org 0x28
-	u16 Unk_28 // loc=0x28
+	u16 CountdownTimer // loc=0x28
 	struct_org 0x32
 	u16 Unk_32 // loc=0x32
 	u16 Unk_34 // loc=0x34
