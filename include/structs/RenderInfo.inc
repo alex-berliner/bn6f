@@ -11,11 +11,11 @@
 	u16 Unk_0a // loc=0xa
 	u16 Unk_0c // loc=0xc
 	u16 Unk_0e // loc=0xe
-	u16 Unk_10 // loc=0x10
-	u16 Unk_12 // loc=0x12
+	u16 BGScrollXOffset // loc=0x10
+	u16 BGScrollY // loc=0x12
 	u16 Unk_14 // loc=0x14
 	u16 Unk_16 // loc=0x16
-	u16 Unk_18 // loc=0x18
+	u16 BG2ScrollX // loc=0x18
 	u16 Unk_1a // loc=0x1a
 	struct_org 0x40
 	u0 Size // loc=0x40

@@ -117,7 +117,7 @@
 	u16 Bugs // loc=0x12
 	u8 Unk_14 // loc=0x14
 	u8 Unk_15 // loc=0x15
-	u8 Unk_16 // loc=0x16
+	u8 BarrierHP // loc=0x16
 	u8 Unk_17 // loc=0x17
 	u8 SecondaryElementWeakness // loc=0x18
 	u8 SecondaryElement // loc=0x19

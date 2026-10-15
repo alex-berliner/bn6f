@@ -6,7 +6,7 @@
 	u8 Unk_00 // loc=0x0
 	u8 Unk_01 // loc=0x1
 	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 SpriteFlags2 // loc=0x3
 	u8 Unk_04 // loc=0x4
 	u8 Unk_05 // loc=0x5
 	u16 Unk_06 // loc=0x6
@@ -18,12 +18,12 @@
 	// this might be written to bits 8-15 for obj attribute 0
 	// set this to 0x10 to give this sprite a mosaic
 	// but the mosaic size is at eRenderInfo+2
-	u8 Unk_11 // loc=0x11
+	u8 SpriteFlags // loc=0x11
 
 	u8 Unk_12 // loc=0x12 // also size 2
 	u8 Unk_13 // loc=0x13
 	u8 Unk_14 // loc=0x14
-	u8 Unk_15 // loc=0x15
+	u8 OamAttributes // loc=0x15
 	u16 Unk_16 // loc=0x16
 	u32 Unk_18 // loc=0x18
 	u32 Unk_1c // loc=0x1c

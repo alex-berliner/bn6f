@@ -91,12 +91,12 @@
 	set_struct_label \struct_entry, \label
 	u8 ScriptId // loc=0x0
 	u8 Unk_01 // loc=0x1
-	u8 Unk_02 // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 SubState // loc=0x2
+	u8 AttackDecisionFlag // loc=0x3
 	u8 TurnCounter // loc=0x4
 	u8 AttackCounter // loc=0x5
 	u8 StepCounter // loc=0x6
-	u8 Unk_07 // loc=0x7
+	u8 AggressionFlag // loc=0x7
 	u16 Timer // loc=0x8
 	.space 0x2
 	u8 Unk_0c // loc=0xc
@@ -117,18 +117,18 @@
 	u8 AttackElement // loc=0x1
 	u8 InitFlag // loc=0x2
 	u8 AiDifficultyTier // loc=0x3
-	u8 Unk_04 // loc=0x4
-	u8 Unk_05 // loc=0x5
+	u8 ChargeReadyFlag // loc=0x4
+	u8 ChipUseDelay // loc=0x5
 	u16 AttackBoost // loc=0x6
 	u16 Damage // loc=0x8
 	u16 Unk_0a // loc=0xa
 	u8 AttackBoost2 // loc=0xc
 	u8 TimerOrCycles // loc=0xd
 	u8 SubStepIndex // loc=0xe
-	u8 Unk_0f // loc=0xf
+	u8 AttackStepIndex // loc=0xf
 	u16 StepTimer // loc=0x10
 	u16 ChargeCycles // loc=0x12
-	u16 Unk_14 // loc=0x14
+	u16 ChipID // loc=0x14
 	u8 TargetPanelX // loc=0x16
 	u8 TargetPanelY // loc=0x17
 	u16 AttackDuration // loc=0x18
@@ -142,10 +142,10 @@
 	u32 TargetObjectPtr // loc=0x2c
 	u16 ScratchVar // loc=0x30 // also size 4
 	u16 Unk_32 // loc=0x32
-	u16 Unk_34 // loc=0x34 // also size 4
+	u16 AiAttackParam // loc=0x34 // also size 4
 	u16 Unk_36 // loc=0x36
-	u32 Unk_38 // loc=0x38
-	u32 Unk_3c // loc=0x3c
+	u32 PanelParamFlags2 // loc=0x38
+	u32 ScratchPointerOrPanel // loc=0x3c
 	u32 Unk_40 // loc=0x40
 	u32 Unk_44 // loc=0x44
 	struct_org 0x50
