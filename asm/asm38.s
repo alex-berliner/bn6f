@@ -3409,9 +3409,9 @@ loc_30072DC:
 	ldrb r2, [r7,#5]
 	mov r0, #1
 	lsl r0, r2
-	ldrb r2, [r6,#oCollisionData_Unk_03]
+	ldrb r2, [r6,#oCollisionData_HitFlagMask]
 	orr r2, r0
-	strb r2, [r6,#oCollisionData_Unk_03]
+	strb r2, [r6,#oCollisionData_HitFlagMask]
 	ldr r2, byte_3007534 // =0x0
 	orr r3, r2
 loc_3007304:
@@ -3546,7 +3546,7 @@ loc_30073CC:
 	ldrb r1, [r7,#oCollisionData_PrimaryElement]
 	cmp r1, #ELEM_ELEC // elec, used for bblwrap additional damage, maybe bubble status as well
 	bne loc_300740A
-	mov r2, #oCollisionData_Unk_78
+	mov r2, #oCollisionData_ElecElementDamageAccumulator
 	ldrh r3, [r6,r2]
 	add r3, r3, r0
 	strh r3, [r6,r2]
@@ -3564,7 +3564,7 @@ loc_300740A:
 	ldrh r1, [r6,r2]
 	add r1, r1, r0
 	strh r1, [r6,r2]
-	ldr r1, [r7,#oCollisionData_Unk_64]
+	ldr r1, [r7,#oCollisionData_ExtraElementDamage]
 	mov r3, #oCollisionData_Unk_a0
 	ldr r2, [r6,r3]
 	add r2, r2, r1
@@ -3960,10 +3960,10 @@ loc_30076C4:
 	bne loc_30076D6
 	pop {r4,r6,r7,pc}
 loc_30076D6:
-	ldr r2, [r6,#oCollisionData_Unk_6c]
+	ldr r2, [r6,#oCollisionData_CollisionFlags]
 	ldr r3, [r7,#oCollisionData_SelfCollisionTypeFlags]
 	orr r2, r3
-	str r2, [r6,#oCollisionData_Unk_6c]
+	str r2, [r6,#oCollisionData_CollisionFlags]
 	ldrb r2, [r7,#oCollisionData_SecondaryElement]
 	mov r1, #oCollisionData_Unk_77
 	ldrb r0, [r6,r1]

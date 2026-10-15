@@ -5586,16 +5586,16 @@ object_tickStatusEffectTimers_800E730:
 	beq loc_800E744
 	b loc_800E95C
 loc_800E744:
-	ldrh r0, [r6,#oCollisionData_Unk_1c]
+	ldrh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	sub r0, #1
-	strh r0, [r6,#oCollisionData_Unk_1c]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	bgt loc_800E75E
 	ldr r0, off_800E960 // =0x800 
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #8
 	bl object_clearFlag2
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1c]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	b loc_800E7AE
 loc_800E75E:
 	ldr r1, [sp]
@@ -5615,7 +5615,7 @@ loc_800E776:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1e]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer]
 	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	strh r0, [r6,#oCollisionData_HitStunTimer]
 loc_800E786:
@@ -5665,8 +5665,8 @@ loc_800E7DA:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1e]
-	strh r0, [r6,#oCollisionData_Unk_1c]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	strh r0, [r6,#oCollisionData_HitStunTimer]
 loc_800E7EA:
 	ldr r0, dword_800E970 // =0x80008000 
@@ -5702,7 +5702,7 @@ loc_800E820:
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0
 	strh r0, [r6,#oCollisionData_HitStunTimer]
-	str r0, [r6,#oCollisionData_Unk_60]
+	str r0, [r6,#oCollisionData_StunSubTimer]
 	b loc_800E894
 loc_800E836:
 	ldr r1, [sp]
@@ -5722,8 +5722,8 @@ loc_800E84E:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1e]
-	strh r0, [r6,#oCollisionData_Unk_1c]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	strh r0, [r6,#oCollisionData_HitInvulTimer]
 loc_800E85E:
 	ldr r0, dword_800E980 // =0x8000 
@@ -5751,17 +5751,17 @@ loc_800E87E:
 	bne loc_800E8B0
 	bl sub_80E4B34
 loc_800E894:
-	ldrh r0, [r6,#oCollisionData_Unk_1e]
+	ldrh r0, [r6,#oCollisionData_StatusEffectTimer]
 	sub r0, #1
-	strh r0, [r6,#oCollisionData_Unk_1e]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer]
 	bgt loc_800E8B0
 	ldr r0, dword_800E980 // =0x8000 
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0x80
 	bl object_clearFlag2
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1e]
-	str r0, [r6,#oCollisionData_Unk_48]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer]
+	str r0, [r6,#oCollisionData_LastHitObjectPtr]
 	b loc_800E8E2
 loc_800E8B0:
 	ldr r1, [sp]
@@ -5771,7 +5771,7 @@ loc_800E8B0:
 	ldr r0, dword_800E984 // =0x30088 
 	bl object_clearFlag2
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_1c]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer1]
 	strh r0, [r6,#oCollisionData_HitInvulTimer]
 	strh r0, [r6,#oCollisionData_HitStunTimer]
 loc_800E8C6:
@@ -5787,14 +5787,14 @@ loc_800E8C6:
 	mov r4, #0
 	bl sub_80E09EE
 loc_800E8E2:
-	ldrh r0, [r6,#oCollisionData_Unk_22]
+	ldrh r0, [r6,#oCollisionData_StatusEffectTimer8]
 	sub r0, #1
-	strh r0, [r6,#oCollisionData_Unk_22]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer8]
 	bgt loc_800E8F6
 	ldr r0, dword_800E98C // =0x4000 
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_22]
+	strh r0, [r6,#oCollisionData_StatusEffectTimer8]
 	b loc_800E908
 loc_800E8F6:
 	ldr r1, [sp]
@@ -5832,14 +5832,14 @@ loc_800E920:
 	mov r4, #1
 	bl sub_80E09EE
 loc_800E942:
-	ldrh r0, [r6,#oCollisionData_Unk_28]
+	ldrh r0, [r6,#oCollisionData_InvulnerabilityTimer]
 	sub r0, #1
-	strh r0, [r6,#oCollisionData_Unk_28]
+	strh r0, [r6,#oCollisionData_InvulnerabilityTimer]
 	bgt loc_800E956
 	mov r0, #8
 	bl object_clearFlag // (int bitfield) -> void
 	mov r0, #0
-	strh r0, [r6,#oCollisionData_Unk_28]
+	strh r0, [r6,#oCollisionData_InvulnerabilityTimer]
 	b loc_800E95C
 loc_800E956:
 	mov r0, #OBJECT_FLAGS_INVULNERABLE
@@ -6098,7 +6098,7 @@ sub_800EADA:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
 	strh r1, [r0,#oCollisionData_HitStunTimer]
-	strh r1, [r0,#oCollisionData_Unk_1c]
+	strh r1, [r0,#oCollisionData_StatusEffectTimer1]
 	pop {pc}
 	thumb_func_end sub_800EADA
 
@@ -6112,7 +6112,7 @@ sub_800EAF6:
 object_setInvulnerableTime:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r1,#oCollisionData_Unk_28]
+	strh r0, [r1,#oCollisionData_InvulnerabilityTimer]
 	mov r0, #OBJECT_FLAGS_INVULNERABLE
 	bl object_setFlag1 // (int a1) -> void
 	pop {pc}
@@ -6127,7 +6127,7 @@ object_clearInvulnerableTime:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	mov r0, #0
-	strh r0, [r1,#oCollisionData_Unk_28]
+	strh r0, [r1,#oCollisionData_InvulnerabilityTimer]
 	mov r0, #8
 	bl object_clearFlag // (int bitfield) -> void
 	pop {pc}

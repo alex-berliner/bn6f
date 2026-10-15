@@ -1084,7 +1084,7 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	add r1, #0x94
 	strb r0, [r1]
 	mov r0, #0xd
-	mov r2, #oChatbox_Unk_90
+	mov r2, #oChatbox_InitialUnk_90
 	str r0, [r5,r2]
 	ldr r0, off_804046C // =dword_86BEB20 
 	ldr r1, dword_8040470 // =0x600dc80 
@@ -1242,7 +1242,7 @@ chatbox_reqBBS_80404C0:
 	add r1, #0x94
 	strb r0, [r1]
 	mov r0, #0xd
-	mov r2, #oChatbox_Unk_90
+	mov r2, #oChatbox_InitialUnk_90
 	str r0, [r5,r2]
 	ldr r0, off_80405A8 // =dword_86BEB20 
 	ldr r1, dword_80405AC // =0x600dc80 
@@ -1398,7 +1398,7 @@ dead_80405F8:
 	add r1, #0x94
 	strb r0, [r1]
 	mov r0, #0xd
-	mov r2, #oChatbox_Unk_90
+	mov r2, #oChatbox_InitialUnk_90
 	str r0, [r5,r2]
 	pop {r0,r2}
 	ldr r1, byte_80406E4 // =0x80
@@ -3171,7 +3171,7 @@ EB XX LR UD = Pressing left moves cursor to option L, right moves cursor to opti
 */
 // symdb: Appends one entry to the chatbox's option (choice) list, copying the option's parameter bytes into the next free slot and resetting the choice cursor.
 // symdb: chatbox_EB_option(u32 r1 /* unused */, const u8 *r4 optionDef, Chatbox *r5) -> r0=1,
-// symdb: r1=oChatbox_Unk_80, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_TileBufferOffset word,
+// symdb: r1=oChatbox_ChoiceSlotCount, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_TileBufferOffset word,
 // symdb: r4=optionDef+4; NZCV from ADDS r4,#4; r2/r3/r4/lr clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EB_option.yaml
 chatbox_EB_option:
@@ -3181,7 +3181,7 @@ chatbox_EB_option:
 	bl chatbox_setflags_3e // (int mask) -> void
 	mov r0, #0xa
 	strh r0, [r5,#oChatbox_BoxYX]
-	mov r1, #oChatbox_Unk_80
+	mov r1, #oChatbox_ChoiceSlotCount
 	ldr r0, [r5,r1]
 	mov r2, #0xa0
 	mov r3, #0x10
@@ -4573,7 +4573,7 @@ loc_8041BF2:
 	strb r0, [r5,#oChatbox_MugshotAnimTableIdx]
 	mov r1, #oChatbox_DroppedName
 	strb r0, [r5,r1]
-	mov r1, #oChatbox_Unk_80
+	mov r1, #oChatbox_ChoiceSlotCount
 	str r0, [r5,r1]
 	mov r0, #4
 	str r0, [r5,#oChatbox_PrintDelay]

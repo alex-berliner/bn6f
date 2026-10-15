@@ -3026,13 +3026,13 @@ locret_8010160:
 battle_tickCollisionTimer_8010162:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
-	ldrh r1, [r4,#oCollisionData_Unk_26]
+	ldrh r1, [r4,#oCollisionData_HitCountdown]
 	ldr r2, dword_8010228 // =0xffff 
 	cmp r1, r2
 	beq loc_801017E
 	sub r1, #1
 	blt loc_8010190
-	strh r1, [r4,#oCollisionData_Unk_26]
+	strh r1, [r4,#oCollisionData_HitCountdown]
 	tst r1, r1
 	bne loc_801017E
 	mov r0, #0x94
@@ -3060,14 +3060,14 @@ locret_8010196:
 battle_objectClearPendingHitIfCollisionProcessed_8010198:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
-	ldrh r1, [r3,#oCollisionData_Unk_26]
+	ldrh r1, [r3,#oCollisionData_HitCountdown]
 	tst r1, r1
 	beq locret_80101AC
 	ldr r0, [r3,#oCollisionData_FlagsFromCollision]
 	tst r0, r0
 	beq locret_80101AC
 	mov r0, #0
-	strh r0, [r3,#oCollisionData_Unk_26]
+	strh r0, [r3,#oCollisionData_HitCountdown]
 locret_80101AC:
 	pop {pc}
 	thumb_func_end battle_objectClearPendingHitIfCollisionProcessed_8010198
@@ -3076,7 +3076,7 @@ locret_80101AC:
 sub_80101AE:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r1,#oCollisionData_Unk_26]
+	strh r0, [r1,#oCollisionData_HitCountdown]
 	mov r0, #OBJECT_FLAGS_UNK_4
 	bl object_setFlag1 // (int a1) -> void
 	ldrb r0, [r5,#oObjectHeader_Flags]
@@ -3095,7 +3095,7 @@ battle_resetCollisionState_80101C4:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	mov r0, #0
-	strh r0, [r1,#oCollisionData_Unk_26]
+	strh r0, [r1,#oCollisionData_HitCountdown]
 	mov r0, #4
 	bl object_clearFlag // (int bitfield) -> void
 	pop {pc}
@@ -11867,7 +11867,7 @@ sub_8013EE6:
 	push {lr}
 	ldr r0, off_80141BC // =0x12c 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r1,#oCollisionData_Unk_1e]
+	strh r0, [r1,#oCollisionData_StatusEffectTimer]
 	pop {pc}
 	thumb_func_end sub_8013EE6
 
@@ -11903,7 +11903,7 @@ sub_8013F14:
 	push {lr}
 	ldr r0, off_80141C0 // =0x258 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r1,#oCollisionData_Unk_1e]
+	strh r0, [r1,#oCollisionData_StatusEffectTimer]
 	pop {pc}
 	thumb_func_end sub_8013F14
 
@@ -15415,9 +15415,9 @@ sub_80158FA:
 	mov r1, #0
 	strh r1, [r0,#oCollisionData_HitStunTimer]
 	strh r1, [r0,#oCollisionData_HitInvulTimer]
-	strh r1, [r0,#oCollisionData_Unk_1c]
+	strh r1, [r0,#oCollisionData_StatusEffectTimer1]
 	str r1, [r0,#oCollisionData_Unk_58]
-	str r1, [r0,#oCollisionData_Unk_60]
+	str r1, [r0,#oCollisionData_StunSubTimer]
 	pop {pc}
 	.balign 4, 0
 dword_8015924:
@@ -22357,16 +22357,16 @@ object_presentCollisionData:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r2, [r4,#oCollisionData_FlagsFromCollision]
-	ldr r0, [r4,#oCollisionData_Unk_54]
+	ldr r0, [r4,#oCollisionData_CollisionFlagsAccumulator]
 	orr r0, r2
-	str r1, [r4,#oCollisionData_Unk_54]
+	str r1, [r4,#oCollisionData_CollisionFlagsAccumulator]
 	bl battle_isTimeStop
 	tst r0, r0
 	bne loc_801A034
 	mov r0, #0
 	strb r0, [r4,#oCollisionData_HitModifierFinal]
-	strb r0, [r4,#oCollisionData_Unk_03]
-	str r0, [r4,#oCollisionData_Unk_54]
+	strb r0, [r4,#oCollisionData_HitFlagMask]
+	str r0, [r4,#oCollisionData_CollisionFlagsAccumulator]
 loc_801A034:
 	mov r1, #0
 	strb r1, [r4,#oCollisionData_StatusEffectFinal]
@@ -22799,10 +22799,10 @@ battle_clearObjectStatusFlagsAndTimers_801A264:
 	bl object_clearFlag2
 	mov r0, #0
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r3,#oCollisionData_Unk_1c]
-	strh r0, [r3,#oCollisionData_Unk_1e]
+	strh r0, [r3,#oCollisionData_StatusEffectTimer1]
+	strh r0, [r3,#oCollisionData_StatusEffectTimer]
 	strh r0, [r3,#oCollisionData_BlindTimer]
-	strh r0, [r3,#oCollisionData_Unk_22]
+	strh r0, [r3,#oCollisionData_StatusEffectTimer8]
 	strh r0, [r3,#oCollisionData_HitInvulTimer]
 	strh r0, [r3,#oCollisionData_HitStunTimer]
 	pop {pc}
@@ -22821,7 +22821,7 @@ battle_object_clearFlagsAndCollisionCounter_801A284:
 	bl object_clearFlag2
 	mov r0, #0
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
-	strh r0, [r3,#oCollisionData_Unk_1c]
+	strh r0, [r3,#oCollisionData_StatusEffectTimer1]
 	pop {pc}
 	thumb_func_end battle_object_clearFlagsAndCollisionCounter_801A284
 
@@ -23356,7 +23356,7 @@ locret_801A5E0:
 battle_ClearObjectCollisionResult_801A5E2:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0
-	str r1, [r0,#oCollisionData_Unk_48]
+	str r1, [r0,#oCollisionData_LastHitObjectPtr]
 	mov r2, #0x4c 
 	str r1, [r0,r2]
 	mov pc, lr
@@ -23644,7 +23644,7 @@ sub_801A77A:
 	mov r0, #8
 	bl object_setFlag2
 	mov r0, #0x96
-	strh r0, [r4,#oCollisionData_Unk_1c]
+	strh r0, [r4,#oCollisionData_StatusEffectTimer1]
 	ldrh r0, [r5,#oBattleObject_NameID]
 	ldr r1, dword_801A7C4 // =0x173 
 	sub r0, r0, r1
@@ -23693,9 +23693,9 @@ sub_801A7CC:
 	ldrh r1, [r0]
 	strb r1, [r3,#oCollisionData_BarrierHP]
 	ldrh r1, [r0,#2]
-	strb r1, [r3,#oCollisionData_Unk_17]
+	strb r1, [r3,#oCollisionData_BarrierRelatedValue]
 	ldrh r1, [r0,#4]
-	strh r1, [r3,#oCollisionData_Unk_1a_1b]
+	strh r1, [r3,#oCollisionData_BarrierCounterU16]
 	mov pc, lr
 	.balign 4, 0
 off_801A7EC:
@@ -23752,7 +23752,7 @@ loc_801A82C:
 	mov r1, #0x20 
 	tst r0, r1
 	bne loc_801A83E
-	ldr r0, [r4,#oCollisionData_Unk_6c]
+	ldr r0, [r4,#oCollisionData_CollisionFlags]
 	ldr r1, off_801A9B0 // =0xa20 
 	tst r0, r1
 	beq loc_801A860
@@ -23775,7 +23775,7 @@ loc_801A854:
 	mov r0, #0
 	strh r0, [r4,#oCollisionData_BarrierHP]
 	ldrb r0, [r4,#oCollisionData_HitModifierFinal]
-	strb r0, [r4,#oCollisionData_Unk_15]
+	strb r0, [r4,#oCollisionData_SavedHitModifier]
 loc_801A860:
 	cmp r6, #8
 	beq loc_801A888
@@ -23787,12 +23787,12 @@ loc_801A860:
 	bl battle_isTimeStop
 	bne loc_801A8E0
 loc_801A874:
-	ldrh r0, [r4,#oCollisionData_Unk_1a_1b]
+	ldrh r0, [r4,#oCollisionData_BarrierCounterU16]
 	ldr r1, dword_801A9B4 // =0xffff 
 	cmp r0, r1
 	beq loc_801A8E0
 	sub r0, #1
-	strh r0, [r4,#oCollisionData_Unk_1a_1b]
+	strh r0, [r4,#oCollisionData_BarrierCounterU16]
 	bgt loc_801A8E0
 	mov r0, #0
 	strb r0, [r4,#oCollisionData_Barrier]
@@ -23808,9 +23808,9 @@ loc_801A888:
 	beq loc_801A8AC
 	cmp r0, #6
 	beq loc_801A8AC
-	ldrh r0, [r4,#oCollisionData_Unk_1a_1b]
+	ldrh r0, [r4,#oCollisionData_BarrierCounterU16]
 	add r0, #1
-	strh r0, [r4,#oCollisionData_Unk_1a_1b]
+	strh r0, [r4,#oCollisionData_BarrierCounterU16]
 	cmp r0, #0xf0
 	blt loc_801A8AC
 	mov r0, #1
@@ -23836,9 +23836,9 @@ loc_801A8C6:
 loc_801A8CA:
 	bl battle_isTimeStop
 	bne locret_801A9A2
-	ldrb r0, [r4,#oCollisionData_Unk_1b]
+	ldrb r0, [r4,#oCollisionData_BarrierBreakCooldown]
 	add r0, #1
-	strb r0, [r4,#oCollisionData_Unk_1b]
+	strb r0, [r4,#oCollisionData_BarrierBreakCooldown]
 	cmp r0, #0x78 
 	blt locret_801A9A2
 	mov r0, #0xc8
@@ -23852,7 +23852,7 @@ loc_801A8E0: .align 1, 0
 	ldrh r1, [r4,r1]
 	tst r1, r1
 	beq loc_801A8FA
-	mov r2, #oCollisionData_Unk_78
+	mov r2, #oCollisionData_ElecElementDamageAccumulator
 	ldrh r2, [r4,r2]
 	mov r1, #oCollisionData_PanelDamage4
 	ldrh r0, [r4,r1]
@@ -23872,7 +23872,7 @@ loc_801A90A:
 	mov r0, #0
 	strb r0, [r4,#oCollisionData_Barrier]
 	mov r0, #0
-	strh r0, [r4,#oCollisionData_Unk_1a_1b]
+	strh r0, [r4,#oCollisionData_BarrierCounterU16]
 	strb r0, [r4,#oCollisionData_BarrierHP]
 	b locret_801A9A2
 loc_801A916:
@@ -23901,7 +23901,7 @@ loc_801A916:
 	add r0, #1
 	lsr r0, r0, #1
 loc_801A948:
-	ldrb r1, [r4,#oCollisionData_Unk_17]
+	ldrb r1, [r4,#oCollisionData_BarrierRelatedValue]
 	cmp r0, r1
 	blt loc_801A96E
 	ldrb r1, [r4,#oCollisionData_BarrierHP]
@@ -23919,7 +23919,7 @@ loc_801A948:
 	strb r0, [r4,#oCollisionData_Barrier]
 loc_801A968:
 	mov r0, #0
-	strh r0, [r4,#oCollisionData_Unk_1a_1b]
+	strh r0, [r4,#oCollisionData_BarrierCounterU16]
 	strb r0, [r4,#oCollisionData_BarrierHP]
 loc_801A96E:
 	mov r0, #0

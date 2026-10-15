@@ -14681,7 +14681,7 @@ loc_802CFB8:
 	strb r0, [r4,#oCollisionData_StatusEffectFinal]
 	mov r1, #0xa4
 	strh r0, [r4,r1]
-	strh r0, [r4,#oCollisionData_Unk_1c]
+	strh r0, [r4,#oCollisionData_StatusEffectTimer1]
 	strh r0, [r4,#oCollisionData_HitInvulTimer]
 	strh r0, [r4,#oCollisionData_HitStunTimer]
 	mov r1, #0x40 
@@ -21263,7 +21263,7 @@ camera_init_802FF4C: // (player_x: u32, player_y: u32, player_z: u32, map_group:
 
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_CameraPtr]
-	ldrb r0, [r5,#oCamera_Unk_03]
+	ldrb r0, [r5,#oCamera_ShakeEffectIndex]
 	ldr r1, [r5,#oCamera_Unk_14]
 	push {r0,r1,r5}
 	mov r0, r10
@@ -21274,7 +21274,7 @@ camera_init_802FF4C: // (player_x: u32, player_y: u32, player_z: u32, map_group:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 
 	pop {r0,r1,r5}
-	strb r0, [r5,#oCamera_Unk_03]
+	strb r0, [r5,#oCamera_ShakeEffectIndex]
 	str r1, [r5,#oCamera_Unk_14]
 
 	ldr r0, off_802FFF0 // =eMapTilesState200be70
@@ -21341,7 +21341,7 @@ loc_802FFC4:
 	// of all arrays are the same
 	ldr r0, [r3,r1]
 loc_802FFCA:
-	strb r0, [r5,#oCamera_Unk_02]
+	strb r0, [r5,#oCamera_Mode]
 	bl camera_doShakeEffect_80301e8
 	bl camera_dispatchUpdate_8030054
 	bl sub_80302D0
@@ -21370,7 +21370,7 @@ camera_802FFF4:
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_CameraPtr]
 	ldr r0, off_8030030 // =off_8030034 
-	ldrb r1, [r5,#oCamera_Unk_03]
+	ldrb r1, [r5,#oCamera_ShakeEffectIndex]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
 	mov lr, pc
@@ -21378,7 +21378,7 @@ camera_802FFF4:
 	bl camera_doShakeEffect_80301e8
 	bl camera_dispatchUpdate_8030054
 	ldr r0, off_803003C // =off_8030040
-	ldrb r1, [r5,#oCamera_Unk_02]
+	ldrb r1, [r5,#oCamera_Mode]
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
@@ -21412,7 +21412,7 @@ off_8030040:
 camera_dispatchUpdate_8030054:
 	push {lr}
 	ldr r0, off_8030064 // =off_8030068
-	ldrb r1, [r5,#oCamera_Unk_02]
+	ldrb r1, [r5,#oCamera_Mode]
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
@@ -21657,7 +21657,7 @@ sub_8030194:
 camera_writeUnk03_14_80301b2:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
-	strb r0, [r2,#oCamera_Unk_03]
+	strb r0, [r2,#oCamera_ShakeEffectIndex]
 	str r1, [r2,#oCamera_Unk_14]
 	mov pc, lr
 	thumb_func_end camera_writeUnk03_14_80301b2
@@ -21832,7 +21832,7 @@ locret_80302CE:
 sub_80302D0:
 	push {lr}
 	ldr r0, off_80302E0 // =off_80302E4
-	ldrb r1, [r5,#oCamera_Unk_02]
+	ldrb r1, [r5,#oCamera_Mode]
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0

@@ -28355,7 +28355,7 @@ sub_80C518C:
 	ldrb r1, [r5,#oBattleObject_Param1]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	str r0, [r2,#oCollisionData_Unk_64]
+	str r0, [r2,#oCollisionData_ExtraElementDamage]
 	pop {pc}
 off_80C519C:
 	.word byte_80C50AC
@@ -87120,7 +87120,7 @@ loc_80E0C92:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	b locret_80E0CA8
 loc_80E0C9C:
-	ldrb r0, [r3,#oCollisionData_Unk_15]
+	ldrb r0, [r3,#oCollisionData_SavedHitModifier]
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 	mov r0, #8
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -88122,7 +88122,7 @@ sub_80E1352:
 loc_80E1380:
 	lsr r6, r6, #1
 	bcs loc_80E1392
-	ldr r1, [r4,#oCollisionData_Unk_48]
+	ldr r1, [r4,#oCollisionData_LastHitObjectPtr]
 	tst r1, r1
 	beq loc_80E1392
 	ldrb r2, [r1]
@@ -88205,7 +88205,7 @@ loc_80E140A:
 	mov r0, r1
 	bl sub_80E0DD0
 loc_80E1424:
-	ldr r1, [r4,#oCollisionData_Unk_48]
+	ldr r1, [r4,#oCollisionData_LastHitObjectPtr]
 	tst r1, r1
 	beq loc_80E1432
 	ldrb r2, [r1]
@@ -88259,7 +88259,7 @@ sub_80E146C:
 	mov r0, r1
 	bl sub_80E0DCA
 loc_80E1486:
-	ldr r1, [r4,#oCollisionData_Unk_48]
+	ldr r1, [r4,#oCollisionData_LastHitObjectPtr]
 	tst r1, r1
 	beq loc_80E1494
 	ldrb r2, [r1]
@@ -88296,7 +88296,7 @@ sub_80E14AC:
 	mov r0, r1
 	bl sub_80E0DD0
 loc_80E14C6:
-	ldr r1, [r4,#oCollisionData_Unk_48]
+	ldr r1, [r4,#oCollisionData_LastHitObjectPtr]
 	tst r1, r1
 	beq loc_80E14D4
 	ldrb r2, [r1]
@@ -113783,7 +113783,7 @@ loc_80ED1A4:
 	ldrb r2, [r5,#oBattleObject_DirectionFlip]
 	mov r1, #1
 	lsl r1, r2
-	ldrb r2, [r0,#oCollisionData_Unk_03]
+	ldrb r2, [r0,#oCollisionData_HitFlagMask]
 	tst r1, r2
 	beq loc_80ED226
 	ldr r1, [r0,#oCollisionData_FlagsFromCollision]
