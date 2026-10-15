@@ -124,7 +124,7 @@
 	u16 Unk_0a // loc=0xa
 	u8 AttackBoost2 // loc=0xc
 	u8 TimerOrCycles // loc=0xd
-	u8 Unk_0e // loc=0xe
+	u8 SubStepIndex // loc=0xe
 	u8 Unk_0f // loc=0xf
 	u16 StepTimer // loc=0x10
 	u16 ChargeCycles // loc=0x12
