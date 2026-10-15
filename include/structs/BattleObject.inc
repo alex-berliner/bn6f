@@ -82,7 +82,7 @@
 	endu
 
 	u8 PreventAnim // loc=0x18
-	u8 Unk_19 // loc=0x19
+	u8 WobbleOrEffectTimer // loc=0x19
 	u8 ChipsHeld  // loc=0x1a
 	u8 Unk_1b // loc=0x1b
 	u8 Unk_1c // loc=0x1c
