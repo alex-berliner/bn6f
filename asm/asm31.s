@@ -155747,7 +155747,7 @@ loc_8101AF2:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101DF8 // =byte_8101DBC
 	bl sub_810222C
 	tst r0, r0
@@ -155772,7 +155772,7 @@ loc_8101B32:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101DFC // =byte_8101DC3
 	bl sub_810222C
 	tst r0, r0
@@ -155850,7 +155850,7 @@ loc_8101B9E:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E00 // =byte_8101DBC
 	bl sub_810222C
 	tst r0, r0
@@ -155874,7 +155874,7 @@ loc_8101BEA:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E04 // =byte_8101DC3
 	bl sub_810222C
 	tst r0, r0
@@ -155964,7 +155964,7 @@ loc_8101C7C:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E08 // =byte_8101DBC
 	bl sub_810222C
 	tst r0, r0
@@ -155972,7 +155972,7 @@ loc_8101C7C:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E0C // =byte_8101DD0
 	bl sub_810222C
 	tst r0, r0
@@ -156049,7 +156049,7 @@ loc_8101D1C:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E18 // =byte_8101DBC
 	bl sub_810222C
 	tst r0, r0
@@ -156057,7 +156057,7 @@ loc_8101D1C:
 	mov r0, #0
 	mov r1, #0
 	ldr r2, [r5,#oBattleObject_AIDataPtr]
-	ldr r2, [r2,#oAIData_Unk_78]
+	ldr r2, [r2,#oAIData_BattleObjectPtr]
 	ldr r3, off_8101E1C // =byte_8101DD0
 	bl sub_810222C
 	tst r0, r0
@@ -156304,7 +156304,7 @@ sub_8101F08:
 	push {lr}
 	str r0, [r7,#oAIAttackVars_Unk_28]
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_78]
+	ldr r0, [r0,#oAIData_BattleObjectPtr]
 	str r0, [r7,#oAIAttackVars_Unk_2c]
 	ldr r0, off_8102178 // =dword_8101978
 	bl sub_800FE28

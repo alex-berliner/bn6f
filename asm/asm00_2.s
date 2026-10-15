@@ -854,7 +854,7 @@ locret_800F2EE:
 sub_800F2F0:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_78]
+	ldr r0, [r0,#oAIData_BattleObjectPtr]
 	bl sub_800F2FC
 	pop {pc}
 	thumb_func_end sub_800F2F0
@@ -878,7 +878,7 @@ locret_800F316:
 	pop {pc}
 	thumb_func_end sub_800F2FC
 
-// symdb: Stores a value into a battle object's AI data at offset oAIData_Unk_78, if the object has AI data.
+// symdb: Stores a value into a battle object's AI data at offset oAIData_BattleObjectPtr, if the object has AI data.
 // symdb: void battle_SetObjectAIDataField78(u32 value /*r0*/, BattleObject* obj /*r5*/); // returns r1 =
 // symdb: AI data pointer (or NULL), clobbers NZ
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_SetObjectAIDataField78_800F318.yaml
@@ -888,7 +888,7 @@ battle_SetObjectAIDataField78_800F318:
 	tst r1, r1
 	beq locret_800F320
 
-	str r0, [r1,#oAIData_Unk_78]
+	str r0, [r1,#oAIData_BattleObjectPtr]
 
 locret_800F320: // endif
 	mov pc, lr
