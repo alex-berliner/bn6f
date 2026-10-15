@@ -62,7 +62,7 @@
 	u32 Unk_50 // loc=0x50
 	u32 Unk_54 // loc=0x54
 	u32 Unk_58 // loc=0x58
-	ptr Unk_5c // loc=0x5c
+	ptr AIScriptOffset // loc=0x5c
 	u32 Unk_60 // loc=0x60
 
 	struct_org 0x68
