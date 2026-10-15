@@ -8,7 +8,7 @@
 	u8 MovementSpeed // loc=0x4
 	u8 MovementDistance // loc=0x5
 	u8 Undetected_06 // loc=0x6
-	u8 Unk_07 // loc=0x7
+	u8 MovementCoordOffset // loc=0x7
 	nextu
 	u32 MovementSpeed_MovementTimer_Undetected_06_Unk_07 // loc=0x4
 	endu
@@ -51,7 +51,7 @@
 	endu
 
 	u8 MovementDirection // loc=0xe
-	u8 Unk_0f // loc=0xf
+	u8 MovementDirectionPrev // loc=0xf
 	u8 WhichNPCScript // loc=0x10
 	u8 CenterOffsetX // loc=0x11
 	u8 CenterOffsetY // loc=0x12
@@ -91,9 +91,9 @@
 		u32 HopDeltaCompounded // loc=0x48
 	endu
 	ptr AnimationScriptPtr // loc=0x4c
-	u32 Unk_50 // loc=0x50
-	u32 Unk_54 // loc=0x54
-	u32 Unk_58 // loc=0x58
+	u32 BusyFlag // loc=0x50
+	u32 InteractionAreaPtr // loc=0x54
+	u32 InteractionAreaHandle // loc=0x58
 	ptr UnkNPCScriptPtr_5c // loc=0x5c
   // Also accessed as a `*const NPCScript` ?
 	flags32 UnkFlags_60 // loc=0x60
