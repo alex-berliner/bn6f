@@ -12604,7 +12604,7 @@ loc_80143B6:
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	strh r0, [r1,#oAIData_Anger]
-	str r0, [r1,#oAIData_Unk_4c]
+	str r0, [r1,#oAIData_AIScriptCounter]
 	pop {pc}
 	thumb_func_end battleObject_markUsedAction_80143A6
 	thumb_func_end sub_80143B4
@@ -12675,7 +12675,7 @@ off_8014420:
 battle_clearAIDataField4c_8014424:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	mov r1, #0
-	str r1, [r0,#oAIData_Unk_4c]
+	str r1, [r0,#oAIData_AIScriptCounter]
 	mov pc, lr
 	thumb_func_end battle_clearAIDataField4c_8014424
 
@@ -12685,7 +12685,7 @@ battle_clearAIDataField4c_8014424:
 	thumb_local_start
 battleObject_aiGetUnk4cPtr_801442C:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r0, [r0,#oAIData_Unk_4c]
+	ldr r0, [r0,#oAIData_AIScriptCounter]
 	mov pc, lr
 	thumb_func_end battleObject_aiGetUnk4cPtr_801442C
 
@@ -12695,9 +12695,9 @@ battleObject_aiGetUnk4cPtr_801442C:
 	thumb_local_start
 battle_incrementAIDataUnk4c_8014432:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldr r1, [r0,#oAIData_Unk_4c]
+	ldr r1, [r0,#oAIData_AIScriptCounter]
 	add r1, #1
-	str r1, [r0,#oAIData_Unk_4c]
+	str r1, [r0,#oAIData_AIScriptCounter]
 	mov pc, lr
 	thumb_func_end battle_incrementAIDataUnk4c_8014432
 
