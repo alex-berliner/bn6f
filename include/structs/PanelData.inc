@@ -4,19 +4,19 @@
 	\set_struct_start_address \label
 	set_struct_label \struct_entry, \label
 	u8 Visible // loc=0x0
-	u8 Unk_01 // loc=0x1
+	u8 HighlightState // loc=0x1
 	u8 Type // loc=0x2
 	u8 Alliance // loc=0x3
 	u8 Unk_04 // loc=0x4
 	struct_org 0x6
 	u8 Animation // loc=0x6
-	u8 Unk_07 // loc=0x7
+	u8 CachedAlliance // loc=0x7
 	u8 Unk_08 // loc=0x8
 	u8 Unk_09 // loc=0x9
 	struct_org 0xd
 	u8 Unk_0d // loc=0xd
 	struct_org 0x10
-	u16 Unk_10 // loc=0x10
+	u16 ClaimTimer // loc=0x10
 	u16 Unk_12 // loc=0x12
 	u32 Flags // loc=0x14
 	// 0x00000002 - blocks movement

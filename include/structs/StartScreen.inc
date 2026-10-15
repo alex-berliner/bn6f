@@ -6,7 +6,7 @@
 	u0 Unk_00 // loc=0x00 accessed as u16
 	u8 JumpTableOff_00 // loc=0x0
 	u8 JumpTableOff_01 // loc=0x1
-	u8 Unk_02 // loc=0x2
+	u8 SubState // loc=0x2
 	u8 Unk_03 // loc=0x3
 	u16 LogoShowTimer // loc=0x4
 	u8 Unk_06 // loc=0x6

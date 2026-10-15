@@ -18,13 +18,13 @@
 	u8 Unk_09 // loc=0x9
 	u8 Unk_0a // loc=0xa
 	u8 Unk_0b // loc=0xb
-	u8 Unk_0c // loc=0xc
+	u8 FirstBattleTutorialStep // loc=0xc
 	u8 Unk_0d // loc=0xd
-	u8 Unk_0e // loc=0xe
-	u8 Unk_0f // loc=0xf
+	u8 ActorIndex // loc=0xe
+	u8 PulsePhase // loc=0xf
 	u16 Unk_10 // loc=0x10
 	u8 JumpOffset12 // loc=0x12
-  u8 Unk_13 // loc=0x13
+  u8 FadeSeqIndex // loc=0x13
 	u8 Unk_14 // loc=0x14
 	u8 Unk_15 // loc=0x15
 	u8 Unk_16 // loc=0x16

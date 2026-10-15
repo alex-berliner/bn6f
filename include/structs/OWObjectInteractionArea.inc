@@ -18,7 +18,7 @@
 	u32 Z_Radius_ZReachAmount // loc=0x4
 	endu
 
-	flags32 Unk_08 // loc=0x8
+	flags32 Flags // loc=0x8
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x1, 0x1
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x10000, 0x10000
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x20000, 0x20000
@@ -28,8 +28,8 @@
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x200000, 0x200000
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x400000, 0x400000
 		struct_const OW_OBJECT_INTERACTION_AREA_FLAG_0x800000, 0x800000
-	u32 Unk_0c // loc=0xc
-	u32 Unk_10 // loc=0x10
+	u32 InteractionFlagMask // loc=0xc
+	u32 InteractionFlags // loc=0x10
 	u0 Size // loc=0x14
 	u0 End // loc=0x14
 	restore_struct_label

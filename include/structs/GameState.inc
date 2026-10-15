@@ -17,7 +17,7 @@
     // PET displayed icon
 	PETNavi CurPETNavi // loc=0x1
 	u8 SavedChipDescByte // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 ChipDescDirtyFlag // loc=0x3
 	
     union
 	u8 MapGroup // loc=0x4
@@ -29,7 +29,7 @@
 	u8 GameProgress // loc=0x6
 	u8 MapSubArea // loc=0x7
 	// related to L button messages
-	u8 Unk_08 // loc=0x8
+	u8 ChatboxMessageSlot // loc=0x8
 	u8 JackOutLockState // loc=0x9 // 03 = can't jack out
 	u8 BattlePaused // loc=0xa
 	u8 Unk_0b // loc=0xb
