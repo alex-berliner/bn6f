@@ -1830,7 +1830,7 @@ chatbox_ED_select_8040944:
 	mov r2, r5
 	add r2, #0x94
 	ldrb r1, [r2]
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	add r0, r0, r1
 	sub r0, #6
 	ldrb r1, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -1907,7 +1907,7 @@ chatbox_80409E0:
 	mov r2, #0x80
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	ldrb r1, [r5,#oChatbox_TextScriptCharIdx]
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	add r0, r0, r1
 	add r0, #4
 	ldrb r1, [r5,#oChatbox_ChoiceCursorPos]
@@ -2000,7 +2000,7 @@ chatbox_8040A9A:
 	mov r2, #0x80
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	ldrb r1, [r5,#oChatbox_TextScriptCharIdx]
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	add r0, r0, r1
 	add r0, #4
 	ldrb r1, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -2966,7 +2966,7 @@ chatbox_E9_newline:
 	add r2, #1
 	strb r2, [r5,#oChatbox_BoxGfxLoadState_0F]
 	mov r0, #0
-	str r0, [r5,#oChatbox_Unk_70]
+	str r0, [r5,#oChatbox_TileBufferOffset]
 	cmp r2, #3
 	bne loc_804114C
 	mov r0, #1
@@ -3171,7 +3171,7 @@ EB XX LR UD = Pressing left moves cursor to option L, right moves cursor to opti
 */
 // symdb: Appends one entry to the chatbox's option (choice) list, copying the option's parameter bytes into the next free slot and resetting the choice cursor.
 // symdb: chatbox_EB_option(u32 r1 /* unused */, const u8 *r4 optionDef, Chatbox *r5) -> r0=1,
-// symdb: r1=oChatbox_Unk_80, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_Unk_70 word,
+// symdb: r1=oChatbox_Unk_80, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_TileBufferOffset word,
 // symdb: r4=optionDef+4; NZCV from ADDS r4,#4; r2/r3/r4/lr clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EB_option.yaml
 chatbox_EB_option:
@@ -3196,7 +3196,7 @@ chatbox_EB_option:
 	ldrb r3, [r4,#3]
 	strb r3, [r5,r2]
 	add r2, #3
-	ldr r3, [r5,#oChatbox_Unk_70]
+	ldr r3, [r5,#oChatbox_TileBufferOffset]
 	str r3, [r5,r2]
 	add r0, #1
 	str r0, [r5,r1]
@@ -3233,9 +3233,9 @@ chatbox_EC_label:
 	ldrb r1, [r4,#2]
 	mov r0, #8
 	mul r0, r1
-	ldr r2, [r5,#oChatbox_Unk_70]
+	ldr r2, [r5,#oChatbox_TileBufferOffset]
 	add r2, r2, r0
-	str r2, [r5,#oChatbox_Unk_70]
+	str r2, [r5,#oChatbox_TileBufferOffset]
 	ldr r1, [r5,#oChatbox_Unk_7C]
 	lsl r0, r0, #2
 	add r1, r1, r0
@@ -3245,9 +3245,9 @@ chatbox_EC_label:
 	pop {pc}
 loc_80412AA:
 	ldrb r0, [r4,#2]
-	ldr r2, [r5,#oChatbox_Unk_70]
+	ldr r2, [r5,#oChatbox_TileBufferOffset]
 	add r2, r2, r0
-	str r2, [r5,#oChatbox_Unk_70]
+	str r2, [r5,#oChatbox_TileBufferOffset]
 	ldr r1, [r5,#oChatbox_Unk_7C]
 	lsl r0, r0, #2
 	add r1, r1, r0
@@ -3351,7 +3351,7 @@ loc_8041362:
 	add r0, r1, r2
 	add r0, #8
 	ldr r1, [r5,r0]
-	str r1, [r5,#oChatbox_Unk_70] // ChatBoxPropreties.unk_70
+	str r1, [r5,#oChatbox_TileBufferOffset] // ChatBoxPropreties.unk_70
 	add r0, #4
 	ldrb r0, [r5,r0]
 	ldrb r1, [r5,#oChatbox_BoxGfxLoadState_0F] // ChatBoxPropreties.amount_of_box_appeared
@@ -6218,7 +6218,7 @@ chatbox_804271C:
 	mul r0, r2
 	ldr r2, [r1,#0x8] // (off_8042764 - 0x804275c)
 	add r2, r2, r0
-	ldr r3, [r5,#oChatbox_Unk_70]
+	ldr r3, [r5,#oChatbox_TileBufferOffset]
 	str r3, [r5,r2]
 loc_8042750:
 	add r4, #3
@@ -7646,7 +7646,7 @@ sub_804312C:
 	ldrb r0, [r4,#2]
 	strb r0, [r5,r2]
 	add r2, #4
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	str r0, [r5,r2]
 	add r2, #4
 	ldr r0, [r5,#oChatbox_Unk_7C]
@@ -7678,7 +7678,7 @@ chatbox_8043164:
 	add r7, #4
 	push {r0}
 	ldr r1, [r5,r7]
-	str r1, [r5,#oChatbox_Unk_70]
+	str r1, [r5,#oChatbox_TileBufferOffset]
 	ldrb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
 	sub r3, #2
 	strb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -7870,7 +7870,7 @@ loc_80432DC:
 	ldrb r0, [r4,#2]
 	strb r0, [r5,r2]
 	add r2, #4
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	str r0, [r5,r2]
 	add r2, #4
 	ldr r0, [r5,#oChatbox_Unk_7C]
@@ -7902,7 +7902,7 @@ chatbox_804330C:
 	add r7, #4
 	push {r0}
 	ldr r1, [r5,r7]
-	str r1, [r5,#oChatbox_Unk_70]
+	str r1, [r5,#oChatbox_TileBufferOffset]
 	ldrb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
 	sub r3, #2
 	strb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -8146,7 +8146,7 @@ chatbox_80434E0:
 	add r7, #4
 	push {r0}
 	ldr r1, [r5,r7]
-	str r1, [r5,#oChatbox_Unk_70]
+	str r1, [r5,#oChatbox_TileBufferOffset]
 	ldrb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
 	sub r3, #2
 	strb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -8386,7 +8386,7 @@ chatbox_80436B0:
 	ldrb r0, [r4,#2]
 	strb r0, [r5,r2]
 	add r2, #4
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	str r0, [r5,r2]
 	add r2, #4
 	ldr r0, [r5,#oChatbox_Unk_7C]
@@ -8450,7 +8450,7 @@ loc_8043720:
 loc_804373E:
 	pop {r7}
 	ldr r1, [r5,r7]
-	str r1, [r5,#oChatbox_Unk_70]
+	str r1, [r5,#oChatbox_TileBufferOffset]
 	ldrb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
 	sub r3, #1
 	strb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -8657,7 +8657,7 @@ chatbox_80438B4:
 	ldrb r0, [r4,#2]
 	strb r0, [r5,r2]
 	add r2, #4
-	ldr r0, [r5,#oChatbox_Unk_70]
+	ldr r0, [r5,#oChatbox_TileBufferOffset]
 	str r0, [r5,r2]
 	add r2, #4
 	ldr r0, [r5,#oChatbox_Unk_7C]
@@ -8720,7 +8720,7 @@ loc_804393C:
 	pop {r7}
 	strb r0, [r5,#oChatbox_ChoiceCursorPos]
 	ldr r1, [r5,r7]
-	str r1, [r5,#oChatbox_Unk_70]
+	str r1, [r5,#oChatbox_TileBufferOffset]
 	ldrb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
 	sub r3, #2
 	strb r3, [r5,#oChatbox_BoxGfxLoadState_0F]
@@ -10865,7 +10865,7 @@ off_8045F5C:
 chatbox_resetAndClearBuffers_8045F60:
 	push {lr}
 	mov r0, #0
-	str r0, [r5,#oChatbox_Unk_70]
+	str r0, [r5,#oChatbox_TileBufferOffset]
 	strb r0, [r5,#oChatbox_BoxGfxLoadState_0F]
 	strb r0, [r5,#oChatbox_Unk_0E]
 	str r0, [r5,#oChatbox_Unk_7C]

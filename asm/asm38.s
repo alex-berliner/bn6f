@@ -2951,9 +2951,9 @@ sub_3006F8C:
 	ldrb r4, [r4,r1]
 	push {r4}
 	push {r6}
-	ldr r6, [r5,#oChatbox_Unk_70]
+	ldr r6, [r5,#oChatbox_TileBufferOffset]
 	add r6, r6, r4
-	str r6, [r5,#oChatbox_Unk_70]
+	str r6, [r5,#oChatbox_TileBufferOffset]
 	pop {r6}
 	lsl r4, r4, #2
 	add r6, r6, r4
