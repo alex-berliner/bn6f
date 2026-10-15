@@ -27,7 +27,7 @@
 	u8 Unk_0a // loc=0xa
 	u8 Unk_0b // loc=0xb
 	struct_org 0xd
-	u8 Unk_0d // loc=0xd
+	u8 PlayerSide // loc=0xd
 	u8 Unk_0e // loc=0xe
 	u8 BattleType // loc=0xf
 	u8 Unk_10 // loc=0x10
