@@ -12966,7 +12966,7 @@ sub_80145C2:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	cmp r0, #1
 	beq locret_80145D2
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
@@ -13037,7 +13037,7 @@ sub_801462A:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	cmp r0, #1
 	beq loc_801463A
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
@@ -13178,7 +13178,7 @@ sub_801472A:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	cmp r0, #1
 	beq locret_801473A
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
@@ -13234,7 +13234,7 @@ sub_8014776:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	cmp r0, #1
 	beq loc_8014786
 	bl battle_clearObjectStatusFlagsAndTimers_801A264

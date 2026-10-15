@@ -106477,7 +106477,7 @@ loc_80E9634:
 	beq loc_80E966A
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r2, [r2,#oBattleState_Unk_07]
+	ldrb r2, [r2,#oBattleState_BattlePhase]
 	cmp r2, r0
 	blt loc_80E966A
 	add r2, #1

@@ -531,7 +531,7 @@ battle_initCustomScreen_8026840:
 	push {r4-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r0, [r2,#oBattleState_Unk_07]
+	ldrb r0, [r2,#oBattleState_BattlePhase]
 	cmp r0, #0
 	bne loc_8026858
 	// memBlock
@@ -631,9 +631,9 @@ loc_802690E:
 	strh r0, [r5,#0x20] // (word_20364E0 - 0x20364c0)
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r0, [r2,#oBattleState_Unk_07]
+	ldrb r0, [r2,#oBattleState_BattlePhase]
 	add r1, r0, #1
-	strb r1, [r2,#oBattleState_Unk_07]
+	strb r1, [r2,#oBattleState_BattlePhase]
 	cmp r0, #0
 	bne loc_8026936
 	bl GetBattleMode
@@ -1002,7 +1002,7 @@ loc_8026B8C:
 
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	cmp r0, #1
 	bne loc_8026BB6
 
@@ -9132,7 +9132,7 @@ loc_802A470:
 	pop {r0}
 	cmp r1, #0
 	beq loc_802A498
-	ldrb r2, [r6,#oBattleState_Unk_07]
+	ldrb r2, [r6,#oBattleState_BattlePhase]
 	cmp r2, r1
 	blt loc_802A498
 	sub r2, r2, r1

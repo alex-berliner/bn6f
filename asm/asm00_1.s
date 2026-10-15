@@ -11032,7 +11032,7 @@ loc_80080A6:
 	mov r0, #0xc
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
-	ldrb r1, [r1,#oBattleState_Unk_07]
+	ldrb r1, [r1,#oBattleState_BattlePhase]
 sub_80080AE:
 	bl battle_dispatchKindEffect_801E792
 loc_80080B2:
@@ -13712,7 +13712,7 @@ loc_80093B0:
 	cmp r0, #0
 	beq locret_800945A
 	push {r0}
-	ldrb r0, [r5,#oBattleState_Unk_07]
+	ldrb r0, [r5,#oBattleState_BattlePhase]
 	bl eStruct200A008_setUnk03
 	pop {r0}
 	cmp r0, #1
@@ -13957,7 +13957,7 @@ sub_8009552:
 	bne loc_8009576
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	ldrb r0, [r2,#oBattleState_Unk_07]
+	ldrb r0, [r2,#oBattleState_BattlePhase]
 	cmp r0, #1
 	bgt loc_8009568
 	mov r1, #0x10
@@ -14330,7 +14330,7 @@ loc_800981E:
 	cmp r0, #0
 	beq locret_80098BA
 	push {r0}
-	ldrb r0, [r5,#oBattleState_Unk_07]
+	ldrb r0, [r5,#oBattleState_BattlePhase]
 	bl eStruct200A008_setUnk03
 	pop {r0}
 	cmp r0, #1
@@ -14766,7 +14766,7 @@ loc_8009B30:
 	cmp r0, #0
 	beq locret_8009BAA
 	push {r0}
-	ldrb r0, [r5,#oBattleState_Unk_07]
+	ldrb r0, [r5,#oBattleState_BattlePhase]
 	bl eStruct200A008_setUnk03
 	pop {r0}
 	cmp r0, #1
@@ -15220,7 +15220,7 @@ loc_8009E66:
 	cmp r0, #0
 	beq locret_8009EE0
 	push {r0}
-	ldrb r0, [r5,#oBattleState_Unk_07]
+	ldrb r0, [r5,#oBattleState_BattlePhase]
 	bl eStruct200A008_setUnk03
 	pop {r0}
 	cmp r0, #1
@@ -16896,7 +16896,7 @@ setTwoStructs_800A840:
 sub_800A84E:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
-	ldrb r0, [r0,#oBattleState_Unk_07]
+	ldrb r0, [r0,#oBattleState_BattlePhase]
 	mov pc, lr
 	thumb_func_end sub_800A84E
 
@@ -17112,7 +17112,7 @@ battle_IsBattleEnding_800A97A:
 	beq loc_800A994
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
-	ldrb r1, [r3,#oBattleState_Unk_07]
+	ldrb r1, [r3,#oBattleState_BattlePhase]
 	cmp r1, #0xf
 	blt loc_800A994
 	mov r0, #1
