@@ -2578,7 +2578,7 @@ StartCutscene: // (script: *const CutsceneScript, param: u32) -> ()
 	pop {r0,r1}
 	str r0, [r5,#oCutsceneState_CutsceneScriptPos] // s_02011C50.ptr_1C
 	str r0, [r5,#oCutsceneState_originalCutsceneScriptPos_40] // s_02011C50.unk_40
-	str r1, [r5,#oCutsceneState_Unk_04]
+	str r1, [r5,#oCutsceneState_CutsceneParam32]
 	ldr r0, off_8036F20 // =DummyCutsceneScript
 	str r0, [r5,#oCutsceneState_CutsceneScriptPos2] // s_02011C50.ptr_20
 	str r0, [r5,#oCutsceneState_CutsceneScriptPos3] // s_02011C50.ptr_24
@@ -3357,7 +3357,7 @@ CutsceneCameraCmd_smooth_auto_scroll_to_soul_weapons_cursor:
 
 	thumb_local_start
 // 0x24 unused1to6 hword7
-// perform a smooth automatic scroll to the coords at [eCutsceneState_Unk_04]+0xc
+// perform a smooth automatic scroll to the coords at [eCutsceneState_CutsceneParam32]+0xc
 // unused1to6 - unused
 // hword7 - timer
 CutsceneCameraCmd_smooth_auto_scroll_cmd_80372ec:
@@ -3371,7 +3371,7 @@ CutsceneCameraCmd_smooth_auto_scroll_cmd_80372ec:
 	push {r0-r3}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_CutsceneStatePtr]
-	ldr r7, [r7,#oCutsceneState_Unk_04]
+	ldr r7, [r7,#oCutsceneState_CutsceneParam32]
 	ldr r0, [r7,#0xc]
 	ldr r1, [r7,#0x10]
 	ldr r2, [r7,#0x14]

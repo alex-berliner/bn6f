@@ -14,11 +14,11 @@
 	struct_org 0x18
 	union
 	u16 Unk_18 // loc=0x18
-	u16 Unk_1a // loc=0x1a
+	u16 ScriptTimer16 // loc=0x1a
 	nextu
 	u32 ScriptTimer // loc=0x18
 	endu
-	u32 Unk_1c // loc=0x1c
+	u32 PendingFixedAnimationId // loc=0x1c
 	u32 OWRoutinePointer // loc=0x20
 	u0 Size // loc=0x24
 	restore_struct_label

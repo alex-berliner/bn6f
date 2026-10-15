@@ -8,7 +8,7 @@
   u8 Idx_04 // loc=0x4
 
   struct_org 0x7
-  u8 Unk_07 // loc=0x7
+  u8 EffectPending // loc=0x7
   u16 CurPETNaviMaxHP // loc=0x8
 
 

@@ -4,11 +4,11 @@
 	\set_struct_start_address
 	set_struct_label \struct_entry, \label
 	struct_org 0x4
-	u8 Unk_04 // loc=0x4
+	u8 CutsceneParam32 // loc=0x4
 	u8 Unk_05 // loc=0x5
 	u8 Unk_06 // loc=0x6
 	u8 Unk_07 // loc=0x7
-	u0 Unk_08 // loc=0x8
+	u0 CutsceneScriptVars // loc=0x8
 	struct_org 0xc
 	u8 CutsceneScript1PauseTimer // loc=0xc
 	u8 CutsceneScript2PauseTimer // loc=0xd

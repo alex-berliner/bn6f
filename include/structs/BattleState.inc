@@ -45,7 +45,7 @@
 	u8 AliveAllianceCount // loc=0x12
 	u8 BattleOverSecondaryFlag // loc=0x13
 	nextu
-	u16 Unk_12_13 // loc=0x12
+	u16 HeldChipIndex // loc=0x12
 	endu
 
 	u8 BackgroundType // loc=0x14

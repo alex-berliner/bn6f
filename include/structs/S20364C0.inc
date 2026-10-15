@@ -7,7 +7,7 @@
 	u8 JumpOffset00 // loc=0x0
 	u8 JumpOffset01 // loc=0x1
 	bool StateHandled // loc=0x2
-	u8 Unk_03 // loc=0x3
+	u8 CustMenuStep // loc=0x3
 	u8 Unk_04 // loc=0x4
 	u8 Unk_05 // loc=0x5
 	u8 Unk_06 // loc=0x6
@@ -28,10 +28,10 @@
 	u8 TickCounter // loc=0x14
 	u8 Unk_15 // loc=0x15
 	u8 Unk_16 // loc=0x16
-  u8 Unk_17 // loc=0x17
+  u8 ChipSelectReady // loc=0x17
 	// conflict, battle_initChipSelect_802BD60 treats 0x18 as ptr
-	u8 Unk_18 // loc=0x18
-	u8 Unk_19 // loc=0x19
+	u8 BattleInitFlag // loc=0x18
+	u8 HasPendingAction // loc=0x19
   u8 EmotionSpriteVariant // loc=0x1a
 
 	struct_org 0x1c
@@ -39,7 +39,7 @@
 	u16 Unk_20 // loc=0x20
 
 	struct_org 0x38
-	u16 Unk_38 // loc=0x38
+	u16 PuppeteerSwitchElement // loc=0x38
 	u16 CursorAnimPhase // loc=0x3a
 
 	// battle_initCustomScreen_8026840 implies 0x70, but this conflicts with unk_2036500 which has references. So up to conflict is 0x40

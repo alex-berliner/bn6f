@@ -2257,7 +2257,7 @@ owPlayer_RequestFixedAnimation_809E14C:
 	bl SetEventFlagFromImmediate
 	pop {r4-r7,pc}
 loc_809E164:
-	strb r4, [r7,#oS200ace0_Unk_1c] // (byte_200ACFC - 0x200ace0)
+	strb r4, [r7,#oS200ace0_PendingFixedAnimationId] // (byte_200ACFC - 0x200ace0)
 	pop {r4-r7,pc}
 	thumb_func_end owPlayer_RequestFixedAnimation_809E14C
 
@@ -2405,7 +2405,7 @@ owPlayer_809e218:
 	ldrb r1, [r3,#oS200ace0_fixOWPlayerAnim_15] // (byte_200ACF5 - 0x200ace0)
 	tst r1, r1
 	beq locret_809E222
-	strh r0, [r3,#oS200ace0_Unk_1a] // (dword_200ACF8+2 - 0x200ace0)
+	strh r0, [r3,#oS200ace0_ScriptTimer16] // (dword_200ACF8+2 - 0x200ace0)
 locret_809E222:
 	mov pc, lr
 	.pool // 809E224

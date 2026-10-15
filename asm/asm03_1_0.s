@@ -1046,7 +1046,7 @@ doPETEffect_8033fc0:
 
   // trigger noop_8033B08 via dispatch_80339CC
 	mov r1, #0
-	strb r1, [r5,#oS2011E30_Unk_07]
+	strb r1, [r5,#oS2011E30_EffectPending]
 	strb r0, [r5,#oS2011E30_Idx_04]
 
 	cmp r0, #3
@@ -2656,7 +2656,7 @@ tryStartNotificationCutscene_8035054:
 	beq loc_803507A
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
-	ldrb r0, [r0,#oGameState_Unk_12]
+	ldrb r0, [r0,#oGameState_LastMapChangeCounter]
 	cmp r0, #0xff
 	beq loc_803507A
 	movflag EVENT_171A

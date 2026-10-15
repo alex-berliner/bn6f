@@ -4116,7 +4116,7 @@ initNewGameData_8004DF0:
 	strh r0, [r1,#0x16]
 
 	mov r0, #0xff
-	strb r0, [r5,#oGameState_Unk_12]
+	strb r0, [r5,#oGameState_LastMapChangeCounter]
 
 	bl toolkit_ClearAllEventFlags_802F0C4
 
@@ -9042,7 +9042,7 @@ battle_SpawnEnemyObjects_8007358: // () -> ()
 	pop {pc}
 	thumb_func_end battle_SpawnEnemyObjects_8007358
 
-// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_AliveActorAndOpponent` to `oBattleState_Unk_12_13` and copies the alive-actor words over the battle-actor slots in the BattleState.
+// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_AliveActorAndOpponent` to `oBattleState_HeldChipIndex` and copies the alive-actor words over the battle-actor slots in the BattleState.
 // symdb: void spawnBattleObjectsFromConfig_8007368( const EnemySetup *config /* r0 -> r6 */, BattleState
 // symdb: *state /* r5 */, BattleToolkit *toolkit /* r10 */, void *r4, void *r7, void *lr /* inherited */)
 // symdb: -> returns r5, r8, r9, r10, r11, r12; clobbers nzcv r0-r3, r4, r7, lr; preserves r6
@@ -9073,7 +9073,7 @@ loop_800736C:
 done_8007384:
 
 	ldrh r0, [r5,#oBattleState_AliveActorAndOpponent]
-	strh r0, [r5,#oBattleState_Unk_12_13]
+	strh r0, [r5,#oBattleState_HeldChipIndex]
 
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]

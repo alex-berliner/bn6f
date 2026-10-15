@@ -108,7 +108,7 @@
 
 	enum ccs_smooth_auto_scroll_cmd_80372ec_cmd // 0x24
 // 0x24 unused1to6 hword7
-// perform a smooth automatic scroll to the coords at [eCutsceneState_Unk_04]+0xc
+// perform a smooth automatic scroll to the coords at [eCutsceneState_CutsceneParam32]+0xc
 // unused1to6 - unused
 // hword7 - timer
 	.macro ccs_smooth_auto_scroll_cmd_80372ec hword7:req

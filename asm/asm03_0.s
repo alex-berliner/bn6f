@@ -1176,7 +1176,7 @@ custMenuUpdateWaitSelectionState_8026CCC: // (self: * S20364C0 $r5) -> ()
 	cmp r0, #0xff
 	beq loc_8026CE6
 
-	strh r0, [r5,#oS20364C0_Unk_38]
+	strh r0, [r5,#oS20364C0_PuppeteerSwitchElement]
 
 	// 0x04: trigger sub_8027548 via custMenuMainMaybe_8026A88
 	mov r0, #0x40 
@@ -5460,11 +5460,11 @@ custMenuSomeHandler_8028B74: // (self: * S20364C0 $r5) -> ()
 	cmp r2, #0
 	bne loc_8028BBE
 
-	ldrb r2, [r5,#oS20364C0_Unk_17]
+	ldrb r2, [r5,#oS20364C0_ChipSelectReady]
 	tst r2, r2
 	bne loc_8028BBE
 
-	ldrb r2, [r5,#oS20364C0_Unk_18]
+	ldrb r2, [r5,#oS20364C0_BattleInitFlag]
 	tst r2, r2
 	beq loc_8028BBE
 
@@ -5702,7 +5702,7 @@ custMenuPressOK_8028D3A:
 	bl custMenu_confirmAndProcessSelectedChips_8029110
 	bl sub_80293F8
 
-	ldrb r0, [r5,#oS20364C0_Unk_19]
+	ldrb r0, [r5,#oS20364C0_HasPendingAction]
 	tst r0, r0
 	beq loc_8028D50
 
@@ -12234,7 +12234,7 @@ loc_802BEE8:
 loc_802BEF4:
 	strb r0, [r5,#oS20364C0_CustMenuStepTimer]
 	mov r0, #4
-	strb r0, [r5,#oS20364C0_Unk_03]
+	strb r0, [r5,#oS20364C0_CustMenuStep]
 locret_802BEFA:
 	pop {pc}
 	thumb_func_end custMenu_handleInputQueuePop_802BED4
@@ -19908,7 +19908,7 @@ startScreen_initGfx_802F574: // (self: *mut StartScreen $r5) -> ()
 	strb r0, [r5, #oStartScreen_SubState]
 
 	bl GetTitleScreenIconCount // () -> (u8, u16)
-	strb r0, [r5, #oStartScreen_Unk_0C]
+	strb r0, [r5, #oStartScreen_NumIcons]
 	strh r1, [r5, #oStartScreen_AchievmentFlags]
 
 loc_802F5BE:
@@ -19941,7 +19941,7 @@ loc_802F5E2:
 	strb r7, [r5,#oStartScreen_NumChoices]
 
 	mov r0, #0
-	strb r0, [r5,#oStartScreen_Unk_03]
+	strb r0, [r5,#oStartScreen_SpriteIndex]
 
 	pop {pc}
 	.balign 4, 0

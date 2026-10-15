@@ -40,7 +40,7 @@
 	u8 BGMusicIndicator // loc=0xf
 	u8 OWPlayerBusyOrCutscene // loc=0x10
 	u8 CoordInteractionTriggered // loc=0x11
-	u8 Unk_12 // loc=0x12
+	u8 LastMapChangeCounter // loc=0x12
 	u8 PendingByte // loc=0x13
 	u8 BattleEndSubState // loc=0x14
 	u8 SavedByte // loc=0x15

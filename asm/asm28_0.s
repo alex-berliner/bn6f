@@ -933,8 +933,8 @@ byte_8099EA0:
 	cs_pause byte1=0xFF byte2=0x01
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
 	cs_decomp_text_archive ptr1=TextScriptChipTrader86C580C
-	cs_jump_if_byte_equals ptr2=eCutsceneState_Unk_08 destination6=cutscenescript_8099EDF byte10=0x0C
-	cs_jump_if_byte_equals ptr2=eCutsceneState_Unk_08 destination6=cutscenescript_8099F44 byte10=0x32
+	cs_jump_if_byte_equals ptr2=eCutsceneState_CutsceneScriptVars destination6=cutscenescript_8099EDF byte10=0x0C
+	cs_jump_if_byte_equals ptr2=eCutsceneState_CutsceneScriptVars destination6=cutscenescript_8099F44 byte10=0x32
 	cs_run_text_script_from_mem byte1=0x04
 	cs_wait_chatbox byte1=0x80
 	cs_call_native_with_return_value ptr1=sub_809A260+1

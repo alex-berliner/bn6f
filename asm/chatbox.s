@@ -3571,7 +3571,7 @@ loc_804152A:
 	ldrb r1, [r4,#3]
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CutsceneStatePtr]
-	add r2, #oCutsceneState_Unk_08
+	add r2, #oCutsceneState_CutsceneScriptVars
 	add r2, r2, r0
 	ldrb r0, [r2]
 	cmp r0, r1
@@ -7478,7 +7478,7 @@ chatbox_setCutsceneStateByte_8042FF4:
 	push {lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CutsceneStatePtr]
-	add r2, #oCutsceneState_Unk_08
+	add r2, #oCutsceneState_CutsceneScriptVars
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#3]
 	strb r1, [r2,r0]
@@ -8997,7 +8997,7 @@ byte_8043B54::
 	.byte 0x4, 0x0, 0x0, 0x0, 0x8A, 0x9A, 0x0, 0x2, 0x4, 0x0, 0x0, 0x0
 	.byte 0x8C, 0x9A, 0x0, 0x2, 0x4, 0x0, 0x0, 0x0
 off_8043C64:
-	.word eCutsceneState_Unk_04
+	.word eCutsceneState_CutsceneParam32
 	.word eCutsceneState_Unk_05
 	.word eCutsceneState_Unk_06
 	.word eCutsceneState_Unk_07
