@@ -2128,7 +2128,7 @@ loc_810D666::
 	mov r0, #0x15
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #2
 	strb r0, [r7,#oAIAttackVars_Unk_0f]
 	mov r0, #0xc
@@ -2290,7 +2290,7 @@ loc_810D836::
 	bl sub_80C5578
 	pop {r7}
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #2
 	strb r0, [r5,#oBattleObject_CurAnim]
 	ldr r0, [r7,#oAIAttackVars_PanelChooseCallback]
@@ -2332,12 +2332,12 @@ sub_810D8B2::
 	ldr r1, [r1]
 	cmp r1, #0
 	beq loc_810D8D8
-	ldrb r0, [r7,#oAIAttackVars_Unk_0e]
+	ldrb r0, [r7,#oAIAttackVars_SubStepIndex]
 	sub r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	bne loc_810D8D0
 	mov r0, #0x10
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #0x2c 
 	add r0, #0xff
 	bl PlaySoundEffect

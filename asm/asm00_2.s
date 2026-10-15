@@ -3543,7 +3543,7 @@ sub_8010488:
 	add r1, r1, r1
 	add r1, #0x36 
 	ldrh r2, [r7,#oAIAttackVars_Damage]
-	ldrh r3, [r7,#oAIAttackVars_Unk_0e]
+	ldrh r3, [r7,#oAIAttackVars_SubStepIndex]
 	add r2, r2, r3
 	ldrh r3, [r0,r1]
 	add r3, r3, r2
@@ -6430,7 +6430,7 @@ loc_8011B2C:
 	bne loc_8011B3E
 loc_8011B38:
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r1, #8
 loc_8011B3E:
 	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
@@ -6477,7 +6477,7 @@ loc_8011B84:
 	bne loc_8011B96
 loc_8011B90:
 	mov r0, #1
-	strb r0, [r7,#oAIAttackVars_Unk_0e]
+	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r1, #8
 loc_8011B96:
 	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
