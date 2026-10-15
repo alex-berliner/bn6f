@@ -922,7 +922,7 @@ getBattleObjectPalette_800F334: // (obj: * BattleObject $r5) -> u8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrb r1, [r0,#oAIData_ActorType]
 	ldrb r2, [r0,#oAIData_Version_16]
-	ldrb r3, [r0,#oAIData_Unk_03]
+	ldrb r3, [r0,#oAIData_VersionVariant]
 
 	cmp r1, #ACTOR_TYPE_VIRUS
 	bne loc_800F346
@@ -2515,7 +2515,7 @@ battle_aiGetVersionedTableEntry_800FE12:
 	ldrh r0, [r0,r2]
 	mov pc, lr
 loc_800FE20:
-	ldrb r2, [r1,#oAIData_Unk_0c]
+	ldrb r2, [r1,#oAIData_AiDifficultyTier]
 	ldrh r0, [r0,#8]
 	mul r0, r2
 	mov pc, lr
@@ -2545,7 +2545,7 @@ battle_getAiDifficultyTier_800FE36:
 	mov pc, lr
 loc_800FE40:
 	mov r0, #0
-	ldrb r2, [r1,#oAIData_Unk_0c]
+	ldrb r2, [r1,#oAIData_AiDifficultyTier]
 	cmp r2, #3
 	ble locret_800FE50
 	mov r0, #1
@@ -2662,7 +2662,7 @@ battleObject_initAIData_800FEEC:
 loc_800FF0A:
 	mov r0, #0xff
 loc_800FF0C:
-	strb r0, [r4,#oAIData_Unk_04]
+	strb r0, [r4,#oAIData_NaviBonusIndex]
 	mov r1, #4
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	strb r0, [r4,#oAIData_BButton]
@@ -2684,7 +2684,7 @@ loc_800FF36:
 	ldr r1, off_800FFE0 // =byte_8020354 
 	add r0, r0, r1
 	ldrb r1, [r0]
-	strb r1, [r4,#oAIData_Unk_04]
+	strb r1, [r4,#oAIData_NaviBonusIndex]
 	ldrb r1, [r0,#1]
 	strb r1, [r4,#oAIData_APwrAtk]
 	ldrb r1, [r0,#2]
@@ -2721,7 +2721,7 @@ sub_800FF5E:
 loc_800FF7C:
 	mov r0, #0xff
 loc_800FF7E:
-	strb r0, [r4,#oAIData_Unk_04]
+	strb r0, [r4,#oAIData_NaviBonusIndex]
 	mov r1, #4
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	strb r0, [r4,#oAIData_BButton]
@@ -3177,16 +3177,16 @@ battle_tickAiSelfDrain_8010230:
 	ldrb r0, [r1,r0]
 	tst r0, r0
 	beq loc_8010264
-	ldrb r3, [r4,#oAIData_Unk_09]
+	ldrb r3, [r4,#oAIData_PoisonTickCounter]
 	add r3, #1
-	strb r3, [r4,#oAIData_Unk_09]
+	strb r3, [r4,#oAIData_PoisonTickCounter]
 	cmp r3, r0
 	blt locret_8010268
 	mov r0, #1
 	bl object_subtractHP
 loc_8010264:
 	mov r0, #0
-	strb r0, [r4,#oAIData_Unk_09]
+	strb r0, [r4,#oAIData_PoisonTickCounter]
 locret_8010268:
 	pop {r4,pc}
 	thumb_func_end battle_tickAiSelfDrain_8010230
@@ -3207,21 +3207,21 @@ battleObject_processPoisonTick_801026A:
 	ldrh r0, [r5,#oBattleObject_HP]
 	cmp r0, #1
 	ble locret_801029E
-	ldrb r0, [r4,#oAIData_Unk_12]
+	ldrb r0, [r4,#oAIData_CounterHitChain]
 	ldr r1, off_80102A0 // =byte_80102A4 
 	ldrb r0, [r1,r0]
 	tst r0, r0
 	beq loc_801029A
-	ldrb r3, [r4,#oAIData_Unk_09]
+	ldrb r3, [r4,#oAIData_PoisonTickCounter]
 	add r3, #1
-	strb r3, [r4,#oAIData_Unk_09]
+	strb r3, [r4,#oAIData_PoisonTickCounter]
 	cmp r3, r0
 	blt locret_801029E
 	mov r0, #1
 	bl object_subtractHP
 loc_801029A:
 	mov r0, #0
-	strb r0, [r4,#oAIData_Unk_09]
+	strb r0, [r4,#oAIData_PoisonTickCounter]
 locret_801029E:
 	pop {r4,pc}
 	.balign 4, 0
@@ -3254,15 +3254,15 @@ handleCustHPBug_80102AC:
 	ldrh r0, [r5,#oBattleObject_HP]
 	cmp r0, #1
 	ble locret_80102F0
-	ldrb r3, [r4,#oAIData_Unk_0a]
+	ldrb r3, [r4,#oAIData_SelfDestructTurnCounter]
 	add r3, #1
-	strb r3, [r4,#oAIData_Unk_0a]
+	strb r3, [r4,#oAIData_SelfDestructTurnCounter]
 	cmp r3, r6
 	blt locret_80102F0
 	mov r0, #1
 	bl object_subtractHP
 	mov r0, #0
-	strb r0, [r4,#oAIData_Unk_0a]
+	strb r0, [r4,#oAIData_SelfDestructTurnCounter]
 locret_80102F0:
 	pop {r4-r6,pc}
 	.balign 4, 0
@@ -3996,11 +3996,11 @@ battle_tickBattleObject_80107D4:
 	sub r0, #1
 	strb r0, [r4,#oAIData_ChipLockoutTimer]
 loc_80107E8:
-	ldrb r0, [r4,#oAIData_Unk_15]
+	ldrb r0, [r4,#oAIData_ChipUseDelayAlt]
 	tst r0, r0
 	beq loc_80107F2
 	sub r0, #1
-	strb r0, [r4,#oAIData_Unk_15]
+	strb r0, [r4,#oAIData_ChipUseDelayAlt]
 loc_80107F2:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
@@ -6022,10 +6022,10 @@ loc_8011736:
 	cmp r6, #3
 	bne loc_801173E
 	ldrb r0, [r7,#oAIAttackVars_ChipUseDelay]
-	strb r0, [r1,#oAIData_Unk_15]
+	strb r0, [r1,#oAIData_ChipUseDelayAlt]
 loc_801173E:
 	mov r0, #0
-	strb r0, [r1,#oAIData_Unk_1a]
+	strb r0, [r1,#oAIData_AttackTeardownScratch]
 	ldr r0, dword_8011760 // =0x1000003f 
 	bl ClearAIData_Unk_44_Flag
 	bl battleObject_clearPwrAtkState_8012EA8
@@ -6066,7 +6066,7 @@ sub_801177A:
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
 	ldr r1, off_80117D0 // =off_80117D4 
-	ldrb r0, [r6,#oAIData_Unk_04]
+	ldrb r0, [r6,#oAIData_NaviBonusIndex]
 	lsl r0, r0, #2
 	ldr r1, [r1,r0]
 	mov lr, pc
@@ -7096,14 +7096,14 @@ sub_8011F84:
 	thumb_local_start
 sub_8011F8C:
 	push {lr}
-	ldrb r0, [r6,#oAIData_Unk_0d]
+	ldrb r0, [r6,#oAIData_ChargeShotStepIndex]
 	cmp r0, #0
 	bne loc_8011F9A
 	bl megamanChargeShotBPwrAtk_init_8011A26
 	b locret_8011FCC
 loc_8011F9A:
 	sub r0, #1
-	strb r0, [r6,#oAIData_Unk_0d]
+	strb r0, [r6,#oAIData_ChargeShotStepIndex]
 	add r0, #0x6c 
 	ldrb r0, [r6,r0]
 	ldr r2, off_8012010 // =byte_80E98C0
@@ -7134,14 +7134,14 @@ locret_8011FCC:
 	thumb_local_start
 sub_8011FCE:
 	push {lr}
-	ldrb r0, [r6,#oAIData_Unk_0d]
+	ldrb r0, [r6,#oAIData_ChargeShotStepIndex]
 	cmp r0, #0
 	bne loc_8011FDC
 	bl sub_8011AF2
 	b locret_801200E
 loc_8011FDC:
 	sub r0, #1
-	strb r0, [r6,#oAIData_Unk_0d]
+	strb r0, [r6,#oAIData_ChargeShotStepIndex]
 	add r0, #0x6c 
 	ldrb r0, [r6,r0]
 	ldr r2, off_8012014 // =byte_80E98C0
@@ -9372,22 +9372,22 @@ loc_8012E1E:
 	bl battle_isTimeStop
 	bne loc_8012E4E
 	mov r0, #0
-	strh r0, [r4,#oAIData_Unk_30]
-	strh r0, [r4,#oAIData_Unk_2a]
-	strh r0, [r4,#oAIData_Unk_2c]
-	strh r0, [r4,#oAIData_Unk_2e]
+	strh r0, [r4,#oAIData_JoypadFrozen]
+	strh r0, [r4,#oAIData_FrozenJoypadReleased]
+	strh r0, [r4,#oAIData_TimeStopMirrorHeld]
+	strh r0, [r4,#oAIData_JoypadHeldPrev]
 	b locret_8012E62
 loc_8012E4E:
 	mov r3, r6
-	ldrh r2, [r4,#oAIData_Unk_2a]
-	strh r2, [r4,#oAIData_Unk_30]
-	strh r3, [r4,#oAIData_Unk_2a]
+	ldrh r2, [r4,#oAIData_FrozenJoypadReleased]
+	strh r2, [r4,#oAIData_JoypadFrozen]
+	strh r3, [r4,#oAIData_FrozenJoypadReleased]
 	mvn r0, r2
 	and r0, r3
-	strh r0, [r4,#oAIData_Unk_2c]
+	strh r0, [r4,#oAIData_TimeStopMirrorHeld]
 	mvn r0, r3
 	and r0, r2
-	strh r0, [r4,#oAIData_Unk_2e]
+	strh r0, [r4,#oAIData_JoypadHeldPrev]
 locret_8012E62:
 	pop {r4,r6,pc}
 loc_8012E64:
@@ -9651,7 +9651,7 @@ loc_8012FE4:
 	lsl r1, r1, #0x10
 	lsr r1, r1, #0x10
 	beq locret_8013006
-	ldrh r0, [r4,#oAIData_Unk_2c]
+	ldrh r0, [r4,#oAIData_TimeStopMirrorHeld]
 	mov r1, #1
 	tst r0, r1
 	bne loc_8013000
@@ -9799,18 +9799,18 @@ loc_8013130:
 	ldrb r0, [r4,#oAIData_BLeftAbility]
 	cmp r0, #0xff
 	beq loc_8013176
-	ldrb r0, [r4,#oAIData_Unk_15]
+	ldrb r0, [r4,#oAIData_ChipUseDelayAlt]
 	tst r0, r0
 	bne loc_8013176
 	ldrh r2, [r4,#oAIData_JoypadPressed]
-	ldrb r0, [r4,#oAIData_Unk_13]
+	ldrb r0, [r4,#oAIData_BurstShotTimer]
 	tst r0, r0
 	bne loc_801314E
 	mov r1, #2
 	tst r2, r1
 	beq loc_8013176
 	mov r0, #8
-	strb r0, [r4,#oAIData_Unk_13]
+	strb r0, [r4,#oAIData_BurstShotTimer]
 loc_801314E:
 	mov r1, #0x20 
 	ldrb r3, [r5,#oBattleObject_DirectionFlip]
@@ -9829,11 +9829,11 @@ loc_8013158:
 	b loc_8013172
 loc_801316C:
 	sub r0, #1
-	strb r0, [r4,#oAIData_Unk_13]
+	strb r0, [r4,#oAIData_BurstShotTimer]
 	b loc_8013176
 loc_8013172:
 	mov r0, #0
-	strb r0, [r4,#oAIData_Unk_13]
+	strb r0, [r4,#oAIData_BurstShotTimer]
 loc_8013176:
 	ldrb r1, [r4,#oAIData_BButton]
 	cmp r1, #0xff
@@ -11350,7 +11350,7 @@ loc_8013B1C:
 	pop {pc}
 	thumb_func_end applyChipAllianceEffect_8013AE4
 
-// symdb: When a battle object's collision data reports event 0x18, adds the amount in the next collision byte to the AI's counter at oAIData_Unk_12, clamping it at 7.
+// symdb: When a battle object's collision data reports event 0x18, adds the amount in the next collision byte to the AI's counter at oAIData_CounterHitChain, clamping it at 7.
 // symdb: void sub_8013B20(battle_object *r5 /* in r5, object whose CollisionDataPtr/AIDataPtr are read
 // symdb: */); clobbers r0-r3, NZCV-defined; preserves r4
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAddCounterFromCollision_8013B20.yaml
@@ -11370,14 +11370,14 @@ battle_aiAddCounterFromCollision_8013B20:
 	str r2, [sp,#4]
 	cmp r1, #0x18
 	bne loc_8013B4A
-	ldrb r0, [r4,#oAIData_Unk_12]
+	ldrb r0, [r4,#oAIData_CounterHitChain]
 	ldr r2, [sp,#4]
 	add r2, r2, r0
 	cmp r2, #7
 	ble loc_8013B48
 	mov r2, #7
 loc_8013B48:
-	strb r2, [r4,#oAIData_Unk_12]
+	strb r2, [r4,#oAIData_CounterHitChain]
 loc_8013B4A:
 	add sp, sp, #8
 	pop {r4,pc}
@@ -11723,7 +11723,7 @@ loc_8013DD2:
 	strh r0, [r4,#oAIData_Unk_3a]
 	bl battleObject_markUsedAction_80143A6
 	bl sub_8014446
-	ldrb r6, [r4,#oAIData_Unk_0b]
+	ldrb r6, [r4,#oAIData_AIScratchByte]
 	ldr r0, off_8013E3C // =byte_8013E44
 	mov r2, #0
 	mov r7, #0
@@ -11747,7 +11747,7 @@ loc_8013E00:
 	svc 6
 	add r0, sp, #0
 	ldrb r0, [r0,r1]
-	strb r0, [r4,#oAIData_Unk_0b]
+	strb r0, [r4,#oAIData_AIScratchByte]
 	cmp r0, #2
 	beq loc_8013E2E
 	cmp r0, #1
@@ -11935,14 +11935,14 @@ handlePanelDamage_8013F1E:
 	ldrb r1, [r5,#oBattleObject_PreventAnim]
 	cmp r1, #0
 	bne loc_8013F4E
-	strb r1, [r0,#oAIData_Unk_1c]
+	strb r1, [r0,#oAIData_PanelDamageReactionFlag]
 	b loc_8013F58
 loc_8013F4E:
-	ldrb r1, [r0,#oAIData_Unk_1c]
+	ldrb r1, [r0,#oAIData_PanelDamageReactionFlag]
 	cmp r1, #0
 	bne locret_8013F68
 	mov r1, #1
-	strb r1, [r0,#oAIData_Unk_1c]
+	strb r1, [r0,#oAIData_PanelDamageReactionFlag]
 loc_8013F58:
 	mov r1, #0x16
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -15558,11 +15558,11 @@ canBattleObjectBeastOut_80159C6:
 	cmp r0, #1
 	beq .isCrossoverBattle
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldrb r1, [r0,#oAIData_Unk_0f]
+	ldrb r1, [r0,#oAIData_BeastOutLockoutTimer]
 	tst r1, r1
 	bne .failure
 	mov r1, #2
-	strb r1, [r0,#oAIData_Unk_0f]
+	strb r1, [r0,#oAIData_BeastOutLockoutTimer]
 	mov r1, #oNaviStats_BeastOutCounter 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
@@ -15604,13 +15604,13 @@ battle_TickAIDataTimer0f_8015A16:
 	cmp r0, #0
 	bne locret_8015A36
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldrb r2, [r1,#oAIData_Unk_0f]
+	ldrb r2, [r1,#oAIData_BeastOutLockoutTimer]
 	cmp r2, #0xff
 	beq locret_8015A36
 	tst r2, r2
 	beq locret_8015A36
 	sub r2, #1
-	strb r2, [r1,#oAIData_Unk_0f]
+	strb r2, [r1,#oAIData_BeastOutLockoutTimer]
 locret_8015A36:
 	pop {r5,pc}
 	thumb_func_end battle_TickAIDataTimer0f_8015A16
@@ -16748,7 +16748,7 @@ RunSpawnAnimationMaybe_8016380:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 
-	ldrb r0, [r0,#oAIData_Unk_02]
+	ldrb r0, [r0,#oAIData_DisableCounterDecrement]
 	cmp r0, #0
 	bne loc_8016390
 
@@ -17968,16 +17968,16 @@ battleObject_destroy_8016C4E:
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	bl object_freeCollisionData
 	bl battle_DecrementAllianceCounterSlot4_800A104
-	ldrb r0, [r4,#oAIData_Unk_0e]
+	ldrb r0, [r4,#oAIData_AISubordinateSlot]
 	cmp r0, #0xff
 	beq loc_8016C72
 	ldrh r1, [r5,#oBattleObject_HP]
 	mov r0, #0xff
-	strb r0, [r4,#oAIData_Unk_0e]
+	strb r0, [r4,#oAIData_AISubordinateSlot]
 loc_8016C72:
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_PhaseInitialized]
-	ldrb r1, [r4,#oAIData_Unk_02]
+	ldrb r1, [r4,#oAIData_DisableCounterDecrement]
 	cmp r1, #0
 	beq locret_8016C88
 	mov r0, r4
@@ -18589,7 +18589,7 @@ loc_8017080:
 loc_8017086:
 
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	strb r0, [r1,#oAIData_Unk_0c]
+	strb r0, [r1,#oAIData_AiDifficultyTier]
 
 	bl battle_dispatchActorByTypeAndAIIdx_800F378
 
@@ -22901,7 +22901,7 @@ locret_801A306:
 	pop {pc}
 	thumb_func_end battleObject_clearChipSelectionOnAirShoe_801A2CC
 
-// symdb: Flips a battle object's alliance to the opposite side, then adds its collision-data halfword at +0x92 into that side's AI data byte oAIData_Unk_10.
+// symdb: Flips a battle object's alliance to the opposite side, then adds its collision-data halfword at +0x92 into that side's AI data byte oAIData_CounterHealDamage.
 // symdb: void battle_toggleAllianceAndAccumulateCollisionToAiData(BattleObject* object /* r5 */); also
 // symdb: saves/restores r4; no meaningful return value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_toggleAllianceAndAccumulateCollisionToAiData_801A308.yaml
@@ -22916,9 +22916,9 @@ battle_toggleAllianceAndAccumulateCollisionToAiData_801A308:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	mov r2, #0x92
 	ldrh r0, [r3,r2]
-	ldrb r1, [r4,#oAIData_Unk_10]
+	ldrb r1, [r4,#oAIData_CounterHealDamage]
 	add r1, r1, r0
-	strb r1, [r4,#oAIData_Unk_10]
+	strb r1, [r4,#oAIData_CounterHealDamage]
 	pop {r4,pc}
 	thumb_func_end battle_toggleAllianceAndAccumulateCollisionToAiData_801A308
 
@@ -22936,13 +22936,13 @@ battle_applyCounterHealAndSpawnEffect_801A324:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	mov r2, #0x92
 	ldrh r0, [r3,r2]
-	ldrb r1, [r4,#oAIData_Unk_10]
+	ldrb r1, [r4,#oAIData_CounterHealDamage]
 	add r1, r1, r0
-	strb r1, [r4,#oAIData_Unk_10]
+	strb r1, [r4,#oAIData_CounterHealDamage]
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldrb r4, [r3,#oAIData_Unk_10]
+	ldrb r4, [r3,#oAIData_CounterHealDamage]
 	mov r0, #0
-	strb r0, [r3,#oAIData_Unk_10]
+	strb r0, [r3,#oAIData_CounterHealDamage]
 	ldrh r0, [r5,#oBattleObject_MaxHP]
 	mov r1, #0xa
 	svc 6
@@ -23621,13 +23621,13 @@ battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A:
 	cmp r1, #0xf6
 	bne locret_801A778
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
-	ldrb r0, [r3,#oAIData_Unk_12]
+	ldrb r0, [r3,#oAIData_CounterHitChain]
 	add r0, r2, #2
 	cmp r0, #7
 	ble loc_801A772
 	mov r0, #7
 loc_801A772:
-	strb r0, [r3,#oAIData_Unk_12]
+	strb r0, [r3,#oAIData_CounterHitChain]
 	bl sub_801A77A
 locret_801A778:
 	pop {r4,pc}
@@ -25959,7 +25959,7 @@ battleObject_killIfBubbleFlag_801B9BC:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	tst r3, r3
 	beq locret_801B9E4
-	ldrb r0, [r3,#oAIData_Unk_02]
+	ldrb r0, [r3,#oAIData_DisableCounterDecrement]
 	cmp r0, #1
 	bne locret_801B9E4
 	ldr r0, [r3,#oAIData_Unk_54]

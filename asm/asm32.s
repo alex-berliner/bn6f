@@ -9561,14 +9561,14 @@ sub_8112B06:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_reservePanel
-	ldrb r0, [r4,#oAIData_Unk_13]
+	ldrb r0, [r4,#oAIData_BurstShotTimer]
 	ldr r3, off_8112B8C // =byte_8112B60
 	bl GetAllianceDependentPanelParamArgs
 	add r7, sp, #0
 	bl sub_800D45C
 	tst r0, r0
 	bne loc_8112B36
-	ldrb r0, [r4,#oAIData_Unk_13]
+	ldrb r0, [r4,#oAIData_BurstShotTimer]
 	ldr r3, off_8112B90 // =byte_8112B60
 	bl GetAllianceDependentPanelParamArgs
 	add r7, sp, #0

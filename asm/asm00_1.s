@@ -9634,7 +9634,7 @@ loc_80076DA:
 loc_80076EE: // endif
 
 	ldr r1, [sp,#stack_800768C_unk_10]
-	strb r1, [r4,#oAIData_Unk_02]
+	strb r1, [r4,#oAIData_DisableCounterDecrement]
 	strb r1, [r5,#oBattleObject_Param2]
 
 	bl modifyBattleStateBasedOnAliveBattleActorsAndUnkCond_8007778
@@ -9675,7 +9675,7 @@ loc_8007708: // endif
 	bl enemy_getStruct1
 
 	ldrb r1, [r0,#2]
-	strb r1, [r4,#oAIData_Unk_03]
+	strb r1, [r4,#oAIData_VersionVariant]
 
 	ldr r0, [sp, #stack_800768C_enemy_index]
 	bl enemy_getStruct2
@@ -9712,7 +9712,7 @@ loc_8007708: // endif
 	strh r0, [r5,#oBattleObject_Chip]
 
 	mov r0, #0xff
-	strb r0, [r4,#oAIData_Unk_0e]
+	strb r0, [r4,#oAIData_AISubordinateSlot]
 
 	ldr r0, [sp,#stack_800768C_unk_10]
 	cmp r0, #0
@@ -9751,7 +9751,7 @@ loc_800778A:
 	bne loc_80077A8
 	str r5, [r3]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
-	ldrb r2, [r1,#oAIData_Unk_02]
+	ldrb r2, [r1,#oAIData_DisableCounterDecrement]
 	cmp r2, #1
 	beq loc_80077A4
 	ldrb r1, [r5,#oBattleObject_Alliance]
@@ -13666,7 +13666,7 @@ loc_8009360:
 	beq loc_8009370
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
 	mov r1, #1
-	strb r1, [r0,#oAIData_Unk_0f]
+	strb r1, [r0,#oAIData_BeastOutLockoutTimer]
 loc_8009370:
 	mov r0, #1
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
@@ -13674,7 +13674,7 @@ loc_8009370:
 	beq loc_8009380
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
 	mov r1, #1
-	strb r1, [r0,#oAIData_Unk_0f]
+	strb r1, [r0,#oAIData_BeastOutLockoutTimer]
 loc_8009380:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleState_Index_01]
@@ -15669,7 +15669,7 @@ off_800A100:
 	thumb_func_start battle_DecrementAllianceCounterSlot4_800A104
 battle_DecrementAllianceCounterSlot4_800A104:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
-	ldrb r0, [r0,#oAIData_Unk_02]
+	ldrb r0, [r0,#oAIData_DisableCounterDecrement]
 	cmp r0, #0
 	bne locret_800A11A
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -16920,7 +16920,7 @@ locret_800A86C:
 
 // symdb: Iterates the battle state's 8 "alive battle actor" slots, reading each occupied actor's AI-data unk_0e byte and HP, but writes nothing back — an apparent leftover/stub whose only visible effect is the last slot's values left in registers.
 // symdb: in: r10 = toolkit (battle state read via oToolkit_BattleStatePtr), r2 = fallback AI-data pointer
-// symdb: (kept if no slot is occupied); out: r0 = oAIData_Unk_0e of the last occupied slot's actor, r1 =
+// symdb: (kept if no slot is occupied); out: r0 = oAIData_AISubordinateSlot of the last occupied slot's actor, r1 =
 // symdb: its HP (skipped when unk_0e == 0xFF), r2 = AI-data pointer of last occupied slot (or incoming
 // symdb: r2), r3 = raw contents of the last slot (0 if empty); c/v set by the final cmp r4, #8 (equal, so
 // symdb: Z set per the C note, c/v reflect 8 vs 8); r4, r7 preserved
@@ -16937,7 +16937,7 @@ loc_800A878:
 	tst r3, r3
 	beq loc_800A888
 	ldr r2, [r3,#oBattleObject_AIDataPtr]
-	ldrb r0, [r2,#oAIData_Unk_0e]
+	ldrb r0, [r2,#oAIData_AISubordinateSlot]
 	cmp r0, #0xff
 	beq loc_800A888
 	ldrh r1, [r3,#oBattleObject_HP]

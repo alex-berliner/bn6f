@@ -5731,7 +5731,7 @@ sub_80BABAC:
 loc_80BABDA:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_2c]
+	ldrh r0, [r0,#oAIData_TimeStopMirrorHeld]
 	mov r1, #1
 	tst r0, r1
 	bne loc_80BAC34
@@ -6401,7 +6401,7 @@ sub_80BB098:
 loc_80BB0BA:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_2c]
+	ldrh r0, [r0,#oAIData_TimeStopMirrorHeld]
 	mov r1, #1
 	tst r0, r1
 	beq locret_80BB0D0
@@ -6860,7 +6860,7 @@ sub_80BB3F6:
 loc_80BB418:
 	ldr r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
-	ldrh r0, [r0,#oAIData_Unk_2c]
+	ldrh r0, [r0,#oAIData_TimeStopMirrorHeld]
 	mov r1, #1
 	tst r0, r1
 	beq locret_80BB42C
@@ -7506,7 +7506,7 @@ sub_80BB89C:
 	mov r0, #0
 	ldr r1, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r1,#oBattleObject_AIDataPtr]
-	ldrh r1, [r1,#oAIData_Unk_2c]
+	ldrh r1, [r1,#oAIData_TimeStopMirrorHeld]
 	mov r2, #1
 	tst r1, r2
 	beq locret_80BB8AE
@@ -65321,7 +65321,7 @@ sub_80D65FC:
 	tst r0, r0
 	beq loc_80D6624
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
-	ldrh r1, [r0,#oAIData_Unk_2c]
+	ldrh r1, [r0,#oAIData_TimeStopMirrorHeld]
 	mov r2, #1
 	tst r1, r2
 	beq loc_80D6624
@@ -106848,11 +106848,11 @@ sub_80E991C:
 	bgt loc_80E9968
 	ldr r4, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r4, [r4,#oBattleObject_AIDataPtr]
-	ldrb r0, [r4,#oAIData_Unk_0d]
+	ldrb r0, [r4,#oAIData_ChargeShotStepIndex]
 	cmp r0, #8
 	bge loc_80E9968
 	add r1, r0, #1
-	strb r1, [r4,#oAIData_Unk_0d]
+	strb r1, [r4,#oAIData_ChargeShotStepIndex]
 	add r0, #0x6c 
 	ldrb r1, [r5,#oBattleObject_Param1]
 	ldrb r2, [r5,#oBattleObject_CurAnim]
@@ -109534,7 +109534,7 @@ ai_attackStepRunDecrement_80EB1C4:
 loc_80EB1E0:
 	mov r0, #0
 loc_80EB1E2:
-	strb r0, [r4,#oAIData_Unk_1a]
+	strb r0, [r4,#oAIData_AttackTeardownScratch]
 	bl battle_aiAttack_checkMysteryDataUnk_80F02A2
 	tst r0, r0
 	beq loc_80EB1F2
@@ -120606,7 +120606,7 @@ loc_80F0552:
 	bl object_setAttack4
 	pop {r4,r6,r7,pc}
 loc_80F0564:
-	ldrb r0, [r6,#oAIData_Unk_1a]
+	ldrb r0, [r6,#oAIData_AttackTeardownScratch]
 	cmp r0, #0
 	beq loc_80F0578
 	push {r0}
@@ -171656,7 +171656,7 @@ enemy_applyVersionChange_81095D0:
 	cmp r0, r1
 	beq locret_8109628
 	strb r0, [r6,#oAIData_Version_17]
-	ldrb r1, [r6,#oAIData_Unk_03]
+	ldrb r1, [r6,#oAIData_VersionVariant]
 	mul r0, r1
 	bl sprite_setPalette // (int pallete) -> void
 	push {r4}
