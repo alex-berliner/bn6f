@@ -1225,9 +1225,9 @@ createOWObjectInteractionArea_80037ac:
 	add r7, r7, r0
 	str r1, [r7,#oOWObjectInteractionArea_xyPacked_00]
 	str r2, [r7,#oOWObjectInteractionArea_Z_Radius_ZReachAmount]
-	str r4, [r7,#oOWObjectInteractionArea_Unk_08]
-	str r5, [r7,#oOWObjectInteractionArea_Unk_0c]
-	str r6, [r7,#oOWObjectInteractionArea_Unk_10]
+	str r4, [r7,#oOWObjectInteractionArea_Flags]
+	str r5, [r7,#oOWObjectInteractionArea_InteractionFlagMask]
+	str r6, [r7,#oOWObjectInteractionArea_InteractionFlags]
 	ldr r7, =eNumOWObjectInteractionAreas
 	ldr r0, [r7]
 	add r0, #1
@@ -1272,8 +1272,8 @@ loc_800380A:
 	mov r0, #oOWObjectInteractionArea_Size
 	mul r0, r7
 	add r4, r5, r0
-	ldr r0, [r3,#oOWObjectInteractionArea_Unk_0c]
-	ldr r1, [r4,#oOWObjectInteractionArea_Unk_08]
+	ldr r0, [r3,#oOWObjectInteractionArea_InteractionFlagMask]
+	ldr r1, [r4,#oOWObjectInteractionArea_Flags]
 	tst r0, r1
 	beq loc_800386A
 	mov r0, r3
@@ -1284,14 +1284,14 @@ loc_800380A:
 	tst r0, r0
 	beq loc_800386A
 	push {r7}
-	ldr r0, [r3,#oOWObjectInteractionArea_Unk_0c]
-	ldr r1, [r4,#oOWObjectInteractionArea_Unk_08]
+	ldr r0, [r3,#oOWObjectInteractionArea_InteractionFlagMask]
+	ldr r1, [r4,#oOWObjectInteractionArea_Flags]
 	and r0, r1
-	ldr r7, [r3,#oOWObjectInteractionArea_Unk_10]
+	ldr r7, [r3,#oOWObjectInteractionArea_InteractionFlags]
 	ldr r1, [r7]
 	orr r0, r1
 	str r0, [r7]
-	ldr r0, [r3,#oOWObjectInteractionArea_Unk_08]
+	ldr r0, [r3,#oOWObjectInteractionArea_Flags]
 	ldr r1, dword_8003890 // =OW_OBJECT_INTERACTION_AREA_FLAG_0x200000
 	tst r0, r1
 	beq loc_800385C
@@ -1308,9 +1308,9 @@ loc_800380A:
 	strh r1, [r0,r2]
 	pop {r0-r2}
 loc_800385C:
-	ldr r1, [r4,#oOWObjectInteractionArea_Unk_0c]
+	ldr r1, [r4,#oOWObjectInteractionArea_InteractionFlagMask]
 	and r0, r1
-	ldr r7, [r4,#oOWObjectInteractionArea_Unk_10]
+	ldr r7, [r4,#oOWObjectInteractionArea_InteractionFlags]
 	ldr r1, [r7]
 	orr r0, r1
 	str r0, [r7]
@@ -3981,7 +3981,7 @@ scenario_prepareEnterMap_8004D48:
 
 	mov r0, #0
 	strb r0, [r5,#oGameState_CoordInteractionValue]
-	strb r0, [r5,#oGameState_Unk_03]
+	strb r0, [r5,#oGameState_ChipDescDirtyFlag]
 	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_BattlePaused]
 	str r0, [r5,#oGameState_AntiTamperFlags]
@@ -4316,7 +4316,7 @@ initNewGameData_8004DF0:
 	mov r0, #0
 	strb r0, [r5,#oGameState_GameProgress]
 	strb r0, [r5,#oGameState_MapSubArea]
-	strb r0, [r5,#oGameState_Unk_08]
+	strb r0, [r5,#oGameState_ChatboxMessageSlot]
 
 	mov r0, #0
 	str r0, [r5,#oGameState_PlayerX]
@@ -4515,7 +4515,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	mov r0, #0
 	strb r0, [r5,#oGameState_SavedByte]
 	strb r0, [r5,#oGameState_CoordInteractionValue]
-	strb r0, [r5,#oGameState_Unk_03]
+	strb r0, [r5,#oGameState_ChipDescDirtyFlag]
 	str r0, [r5,#oGameState_FrameCountdown]
 
 	movflag EVENT_1719
@@ -4584,7 +4584,7 @@ EnterMap: // (self: * GameState $r5) -> ()
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Warp2011bb0_Ptr]
 	mov r1, #0
-	strb r1, [r0,#oWarp2011bb0_Unk_10]
+	strb r1, [r0,#oWarp2011bb0_WarpState]
 
   // trigger gamestate_OnMapUpdate_8005268 via cbGameState_80050EC
 	mov r0, #4
@@ -5304,7 +5304,7 @@ owMap_checkWarpTrigger_80058D0:
 	ldr r2, [r2,#oToolkit_Warp2011bb0_Ptr]
 
 	mov r0, #1
-	strb r0, [r2,#oWarp2011bb0_Unk_10]
+	strb r0, [r2,#oWarp2011bb0_WarpState]
 	strb r4, [r2,#oWarp2011bb0_WarpIndex]
 
 	mov r0, #0
@@ -5874,7 +5874,7 @@ map_triggerEnterMapOnWarp_8005C04:
 	beq .realWorldToInternet
 
 	mov r1, #2
-	strb r1, [r7,#oWarp2011bb0_Unk_10]
+	strb r1, [r7,#oWarp2011bb0_WarpState]
 	ldr r1, [r7,#oWarp2011bb0_X]
 	ldr r2, [r7,#oWarp2011bb0_Y]
 	ldr r3, [r7,#oWarp2011bb0_Z]
@@ -5925,9 +5925,9 @@ map_triggerEnterMapOnWarp_8005C04:
 	ldr r7, [r7,#oToolkit_S2001c04_Ptr]
 
 	mov r0, #0
-	strh r0, [r7,#oS2001c04_Unk_12]
+	strh r0, [r7,#oS2001c04_EncounterStepAccumulator]
 
-	strh r0, [r7,#oS2001c04_Unk_14]
+	strh r0, [r7,#oS2001c04_EncounterRollValue]
 
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -6247,7 +6247,7 @@ warp_ArmPendingTransition_8005EEC:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_Warp2011bb0_Ptr]
 	mov r3, #1
-	strb r3, [r4,#oWarp2011bb0_Unk_10]
+	strb r3, [r4,#oWarp2011bb0_WarpState]
 	add r3, r1, #1
 	strb r3, [r4,#oWarp2011bb0_WarpIndex]
 	str r0, [r4,#oWarp2011bb0_WarpDataPtr]
@@ -6304,7 +6304,7 @@ warp_setSubsystemIndexTo0x14AndOthers_8005f14:
 warp_LoadCurrentAndReadUnk10_8005F28:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Warp2011bb0_Ptr]
-	ldrb r1, [r0,#oWarp2011bb0_Unk_10]
+	ldrb r1, [r0,#oWarp2011bb0_WarpState]
 	cmp r1, #0
 	mov pc, lr
 	thumb_func_end warp_LoadCurrentAndReadUnk10_8005F28
@@ -18889,7 +18889,7 @@ loc_800B4D8:
 	b loc_800B50A
 loc_800B4F0:
 	add r1, #4
-	cmp r1, #oBattleState_Unk_c0
+	cmp r1, #oBattleState_Drop
 	bne loc_800B4D8
 	mov r1, #oBattleState_BattleObjectList
 	mov r3, #8

@@ -5127,7 +5127,7 @@ sub_8002378:
 	mov r3, #1
 	str r4, [r7,#oPalette20097a0_Unk_08]
 loc_8002396:
-	strb r3, [r7,#oPalette20097a0_Unk_00]
+	strb r3, [r7,#oPalette20097a0_ActiveFlag]
 	pop {r5-r7,pc}
 	thumb_func_end sub_8002378
 
@@ -5142,7 +5142,7 @@ Terminate_ePalette20097a0_Transform:
 	mul r0, r1
 	add r2, r2, r0
 	mov r0, #0
-	strb r0, [r2,#oPalette20097a0_Unk_00]
+	strb r0, [r2,#oPalette20097a0_ActiveFlag]
 	mov pc, lr
 	thumb_func_end Terminate_ePalette20097a0_Transform
 
@@ -5169,7 +5169,7 @@ sub_80023B8:
 	mov r1, #oPalette20097a0_Size
 	mul r1, r0
 	add r2, r2, r1
-	ldrb r0, [r2,#oPalette20097a0_Unk_00]
+	ldrb r0, [r2,#oPalette20097a0_ActiveFlag]
 	tst r0, r0
 	mov pc, lr
 	thumb_func_end sub_80023B8
@@ -5208,7 +5208,7 @@ getPalleteAndTransition_80023E0:
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	ldr r5, off_8002464 // =ePalette20097a0
 loc_80023FC:
-	ldrb r0, [r5,#oPalette20097a0_Unk_00]
+	ldrb r0, [r5,#oPalette20097a0_ActiveFlag]
 	tst r0, r0
 	beq loc_8002428
 	ldr r0, [r5,#oPalette20097a0_Unk_04] // (dword_20097A4 - 0x20097a0)

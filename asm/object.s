@@ -2085,18 +2085,18 @@ loc_800C7EC:
 	mov r1, r7
 	bl object_getPanelDataOffset
 	ldrb r3, [r0,#oPanelData_Alliance]
-	strb r3, [r0,#oPanelData_Unk_07]
-	ldrh r1, [r0,#oPanelData_Unk_10]
+	strb r3, [r0,#oPanelData_CachedAlliance]
+	ldrh r1, [r0,#oPanelData_ClaimTimer]
 	tst r1, r1
 	beq loc_800C80E
 	sub r1, #1
-	strh r1, [r0,#oPanelData_Unk_10]
+	strh r1, [r0,#oPanelData_ClaimTimer]
 	mov r3, #4
 	and r3, r1
 	lsr r3, r3, #2
-	ldrb r4, [r0,#oPanelData_Unk_07]
+	ldrb r4, [r0,#oPanelData_CachedAlliance]
 	eor r4, r3
-	strb r4, [r0,#oPanelData_Unk_07]
+	strb r4, [r0,#oPanelData_CachedAlliance]
 loc_800C80E:
 	add r6, #1
 	cmp r6, #6
@@ -2692,7 +2692,7 @@ object_highlightPanel:
 	beq locret_800CBEC
 	bl object_getPanelDataOffset
 	mov r1, #1
-	strb r1, [r0,#oPanelData_Unk_01]
+	strb r1, [r0,#oPanelData_HighlightState]
 locret_800CBEC:
 	pop {pc}
 	thumb_func_end object_highlightPanel
@@ -2705,11 +2705,11 @@ object_highlightPanelBlue:
 	pop {r0,r1}
 	beq locret_800CC08
 	bl object_getPanelDataOffset
-	ldrb r1, [r0,#oPanelData_Unk_01]
+	ldrb r1, [r0,#oPanelData_HighlightState]
 	cmp r1, #1
 	beq locret_800CC08
 	mov r1, #2
-	strb r1, [r0,#oPanelData_Unk_01]
+	strb r1, [r0,#oPanelData_HighlightState]
 locret_800CC08:
 	pop {pc}
 	thumb_func_end object_highlightPanelBlue
@@ -2739,7 +2739,7 @@ object_setPanelAlliance:
 	beq locret_800CC34
 	strb r6, [r0,#oPanelData_Alliance]
 	mov r2, #0
-	strh r2, [r0,#oPanelData_Unk_10]
+	strh r2, [r0,#oPanelData_ClaimTimer]
 	mov r0, r4
 	mov r1, r5
 	bl object_updatePanelParameters

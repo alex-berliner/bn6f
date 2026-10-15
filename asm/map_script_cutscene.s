@@ -2615,8 +2615,8 @@ cutscene_end_8036ED4:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_S2001c04_Ptr]
 	mov r0, #0
-	strh r0, [r1,#oS2001c04_Unk_12]
-	strh r0, [r1,#oS2001c04_Unk_14]
+	strh r0, [r1,#oS2001c04_EncounterStepAccumulator]
+	strh r0, [r1,#oS2001c04_EncounterRollValue]
 	movflag EVENT_1731
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}

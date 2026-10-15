@@ -2190,7 +2190,7 @@ void __cdecl initNewGameData_8004DF0()
     *&gs->pad_48[oGameState_MapGroup] = 0;
     gs->unk_2C = 0;
     gs->unk_3C = 0;
-    *&gs->pad_48[oGameState_Unk_08] = 0;
+    *&gs->pad_48[oGameState_ChatboxMessageSlot] = 0;
     gs->unk_30 = 4;
     gs->unk_40 = 4;
     *&gs->pad_48[oGameState_LastMapGroup] = 4;
@@ -4778,7 +4778,7 @@ void sub_8006F54()
     v1 = *(v0 + oToolkit_GameStatePtr);
     v2 = v1[oGameState_EnterMapFadeParam2];
     if ( !(v1[oGameState_CurBattleDataPtr|oGameState_PETNaviIndex] & 1) )
-        v1[oGameState_OverworldPlayerObjectPtr|oGameState_Unk_03] = ~v2;
+        v1[oGameState_OverworldPlayerObjectPtr|oGameState_ChipDescDirtyFlag] = ~v2;
     **(v0 + 132) = v2 ^ dword_2000060;
 }
 
@@ -4790,7 +4790,7 @@ void sub_8006F78()
     _DWORD *v1; // r4
 
     v1 = *(v0 + oToolkit_GameStatePtr);
-    if ( v1[oGameState_EnterMapFadeParam2] != ~v1[oGameState_OverworldPlayerObjectPtr|oGameState_Unk_03] )
+    if ( v1[oGameState_EnterMapFadeParam2] != ~v1[oGameState_OverworldPlayerObjectPtr|oGameState_ChipDescDirtyFlag] )
         v1[oGameState_CurBattleDataPtr|oGameState_PETNaviIndex] |= 1u;
     **(v0 + 132);
 }

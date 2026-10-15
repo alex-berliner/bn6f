@@ -10618,15 +10618,15 @@ loc_80AA4D4:
 
 	sub r3, #0x80
 
-	ldrh r1, [r6,#oS2001c04_Unk_12]
-	ldrh r2, [r6,#oS2001c04_Unk_14]
+	ldrh r1, [r6,#oS2001c04_EncounterStepAccumulator]
+	ldrh r2, [r6,#oS2001c04_EncounterRollValue]
 
 	sub r1, r1, r2
 	cmp r1, #0x40 
 	bmi locret_80AA5DC
 
 	add r1, r1, r2
-	strh r1, [r6,#oS2001c04_Unk_14]
+	strh r1, [r6,#oS2001c04_EncounterRollValue]
 
 	ldrb r2, [r7,#oGameState_MapNumber]
 	lsl r3, r3, #4
@@ -10654,7 +10654,7 @@ loc_80AA506: // endif
 	mov r2, r4
 	pop {r0}
 
-	ldrh r3, [r6,#oS2001c04_Unk_12]
+	ldrh r3, [r6,#oS2001c04_EncounterStepAccumulator]
 	lsr r3, r3, #6
 	cmp r3, #0x11
 	bmi loc_80AA514
@@ -10783,8 +10783,8 @@ loc_80AA5B8: // endif
 	ble locret_80AA5DC
 
 	mov r0, #NULL
-	strh r0, [r6,#oS2001c04_Unk_12]
-	strh r0, [r6,#oS2001c04_Unk_14]
+	strh r0, [r6,#oS2001c04_EncounterStepAccumulator]
+	strh r0, [r6,#oS2001c04_EncounterRollValue]
 
 locret_80AA5DC:
 	tst r0, r0

@@ -97216,7 +97216,7 @@ sub_80E541A:
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_BattleStatePtr]
 	lsl r1, r1, #2
-	add r1, #oBattleState_Unk_c0
+	add r1, #oBattleState_Drop
 	add r4, r4, r1
 	ldr r3, [r4]
 	tst r3, r3
@@ -97236,7 +97236,7 @@ sub_80E543C:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	lsl r0, r0, #2
-	add r0, #oBattleState_Unk_c0
+	add r0, #oBattleState_Drop
 	add r2, r2, r0
 	ldr r0, [r2]
 	ldr r1, [r2,#8]
@@ -97247,7 +97247,7 @@ sub_80E543C:
 sub_80E544C:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
-	add r2, #oBattleState_Unk_c0
+	add r2, #oBattleState_Drop
 	mov r1, #0
 loc_80E5454:
 	ldr r3, [r2]

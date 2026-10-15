@@ -5213,7 +5213,7 @@ int sub_8127E9C()
         v3 = sub_8127EF4();
         v4 = *(v1 + oToolkit_GameStatePtr);
         if ( *(v0 + 13) & 1 )
-            v5 = *(v4 + (oGameState_ProtectedBugfragsObfuscated|oGameState_Unk_08));
+            v5 = *(v4 + (oGameState_ProtectedBugfragsObfuscated|oGameState_ChatboxMessageSlot));
         else
             v5 = *(v4 + 19);
         v2 = v3 == v5;

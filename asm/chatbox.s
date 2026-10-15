@@ -1451,7 +1451,7 @@ off_804072C:
 
 // symdb: Looks up a per-map compressed chatbox / L-button text script for the player's current map group/number and slot.
 // symdb: u8 chatbox_selectCompTextByMap_8040730(u8 idx, struct Toolkit* r10) -> r0 = LZ77-compressed text
-// symdb: script pointer; r2 = 4 * oGameState_Unk_08; r3 = &table[oGameState_Unk_08]; NZCV set from ADD
+// symdb: script pointer; r2 = 4 * oGameState_ChatboxMessageSlot; r3 = &table[oGameState_ChatboxMessageSlot]; NZCV set from ADD
 // symdb: r3, r2 (i.e. LD32(slotTable) + 4 * Unk_08). Clobbers: r1, r2, r3, NZCV. Preserves r4-r7. Uses
 // symdb: r10.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_selectCompTextByMap_8040730.yaml
@@ -1464,14 +1464,14 @@ chatbox_selectCompTextByMap_8040730: // (u8 idx) -> CompText*
 
 	// u8 vMapGroup: r0 = r10->oToolkit_GameStatePtr->oGameState_MapGroup
 	// u8 vMapNumber: r1 = r10->oToolkit_GameStatePtr->oGameState_MapNumber
-	// u8 vUnk_08: r2 = r10->oToolkit_GameStatePtr->oGameState_Unk_08
+	// u8 vUnk_08: r2 = r10->oToolkit_GameStatePtr->oGameState_ChatboxMessageSlot
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_GameStatePtr]
 	ldrb r0, [r2,#oGameState_MapGroup]
 	ldrb r1, [r2,#oGameState_MapNumber]
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_GameStatePtr]
-	ldrb r2, [r2,#oGameState_Unk_08]
+	ldrb r2, [r2,#oGameState_ChatboxMessageSlot]
 
 	// u8 vMapWorldSel: r6 = vMapGroup < INTERNET_MAP_GROUP_START ? 0 : 4
 	mov r6, #0

@@ -4274,7 +4274,7 @@ _object_updatePanelParameters:
 	ldr r3, [r3,r2]
 	orr r1, r3
 	ldrb r2, [r0,#oPanelData_Alliance]
-	strb r2, [r0,#oPanelData_Unk_07]
+	strb r2, [r0,#oPanelData_CachedAlliance]
 	lsl r2, r2, #5
 	orr r1, r2
 	ldr r2, [r0,#oPanelData_ReserverObjectPtr]

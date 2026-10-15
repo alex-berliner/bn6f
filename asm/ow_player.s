@@ -535,10 +535,10 @@ loc_809D584:
 	pop {r0,r1,r3-r5}
 	ldr r7, [r7,r1]
 	ldr r6, off_809D8AC // =eStruct200ace0 
-	ldr r1, [r6,#oS200ace0_Unk_18_1a] // (dword_200ACF8 - 0x200ace0)
+	ldr r1, [r6,#oS200ace0_ScriptTimer] // (dword_200ACF8 - 0x200ace0)
 	tst r1, r1
 	beq loc_809D592
-	ldr r7, [r6,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
+	ldr r7, [r6,#oS200ace0_OWRoutinePointer] // (dword_200AD00 - 0x200ace0)
 loc_809D592:
 	lsl r1, r0, #3
 	lsl r0, r0, #2
@@ -1851,7 +1851,7 @@ loc_809DF16:
 	strb r0, [r7,#oGameState_CoordInteractionValue]
 	tst r0, r0
 	beq loc_809DF24
-	strb r0, [r7,#oGameState_Unk_03]
+	strb r0, [r7,#oGameState_ChipDescDirtyFlag]
 loc_809DF24:
 	mov r0, #0
 	pop {pc}
@@ -2187,10 +2187,10 @@ owPlayer_809E0FC:
 	mov r0, #TRUE
 	strb r0, [r3,#oS200ace0_fixOWPlayerAnim_15] // (byte_200ACF5 - 0x200ace0)
 	mov r0, #0
-	str r0, [r3,#oS200ace0_Unk_18_1a] // (dword_200ACF8 - 0x200ace0)
-	str r0, [r3,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
+	str r0, [r3,#oS200ace0_ScriptTimer] // (dword_200ACF8 - 0x200ace0)
+	str r0, [r3,#oS200ace0_OWRoutinePointer] // (dword_200AD00 - 0x200ace0)
 	ldr r1, off_809E110 // =byte_809CF5C
-	str r1, [r3,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
+	str r1, [r3,#oS200ace0_OWRoutinePointer] // (dword_200AD00 - 0x200ace0)
 	mov pc, lr
 	.balign 4, 0
 off_809E110:
@@ -2203,8 +2203,8 @@ owPlayer_809E114:
 	mov r0, #FALSE
 	strb r0, [r3,#oS200ace0_fixOWPlayerAnim_15] // (byte_200ACF5 - 0x200ace0)
 	mov r0, #0
-	str r0, [r3,#oS200ace0_Unk_18_1a] // (dword_200ACF8 - 0x200ace0)
-	str r0, [r3,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
+	str r0, [r3,#oS200ace0_ScriptTimer] // (dword_200ACF8 - 0x200ace0)
+	str r0, [r3,#oS200ace0_OWRoutinePointer] // (dword_200AD00 - 0x200ace0)
 	mov pc, lr
 	thumb_func_end owPlayer_809E114
 
@@ -2939,7 +2939,7 @@ locret_809E494:
 	thumb_func_start owPlayer_writeS200aec0_Unk20_809e496
 owPlayer_writeS200aec0_Unk20_809e496:
 	ldr r1, =eStruct200ace0 
-	str r0, [r1,#oS200ace0_Unk_20] // (dword_200AD00 - 0x200ace0)
+	str r0, [r1,#oS200ace0_OWRoutinePointer] // (dword_200AD00 - 0x200ace0)
 	mov pc, lr
 	// 809E49C
 	.pool

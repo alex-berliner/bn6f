@@ -802,7 +802,7 @@ off_8026A3C:
 sub_8026A50: // (self: * S20364C0 $r5) -> u8
 	push {lr}
 	bl battle_allocateActorIndex_802FE48
-	strb r0, [r5,#oS20364C0_Unk_0e]
+	strb r0, [r5,#oS20364C0_ActorIndex]
 	mov r3, r0
 	mov r1, #0x40 
 	mov r2, #0x40 
@@ -1015,7 +1015,7 @@ loc_8026BB6:
 	mov r0, #1
 	bl battle_damagePlayerLeave1HP_8013FD0
 loc_8026BC2:
-	ldrb r0, [r5,#oS20364C0_Unk_0c]
+	ldrb r0, [r5,#oS20364C0_FirstBattleTutorialStep]
 	cmp r0, #0xff
 	beq loc_8026BE0
 	cmp r0, #5
@@ -5536,7 +5536,7 @@ loc_8028BEC:
 	cmp r0, #0
 	bne locret_8028C96
 
-	ldrb r0, [r5,#oS20364C0_Unk_0c]
+	ldrb r0, [r5,#oS20364C0_FirstBattleTutorialStep]
 	cmp r0, #0xff
 	beq locret_8028C96
 
@@ -8027,7 +8027,7 @@ off_8029C04:
 
 // symdb: Per-frame chip-slot pulse animation step: pushes an OAM affine-transform record to the render FIFO and walks the pulse phase byte of the chip-select object.
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effect: writes one 16-byte FIFO record (command
-// symdb: 0xB782) and updates oS20364C0_Unk_0f pulse phase
+// symdb: 0xB782) and updates oS20364C0_PulsePhase pulse phase
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_8029C08.yaml
 	thumb_local_start
 battleObject_chipSelectAnimTick_8029C08: // (self: * S20364C0 $r5) -> ()
@@ -8058,7 +8058,7 @@ loc_8029C22:
 	ldr r1, dword_8029C9C // =0x800001fc 
 	add r0, r0, r1
 
-	ldrb r1, [r5,#oS20364C0_Unk_0f]
+	ldrb r1, [r5,#oS20364C0_PulsePhase]
 	cmp r1, #2
 
 	blt loc_8029C46
@@ -8087,24 +8087,24 @@ loc_8029C54:
 	lsl r1, r1, #0x10
 	sub r0, r0, r1
 loc_8029C62:
-	ldrb r1, [r5,#oS20364C0_Unk_0e]
+	ldrb r1, [r5,#oS20364C0_ActorIndex]
 	lsl r1, r1, #0x19
 	orr r0, r1
 	ldr r1, dword_8029CA0 // =0xb782 
 	mov r2, #1
 	mov r3, #0
 	bl fifo_pushRecord16_8009FF8
-	ldrb r0, [r5,#oS20364C0_Unk_0f]
+	ldrb r0, [r5,#oS20364C0_PulsePhase]
 	cmp r0, #0
 	beq locret_8029C9A
 	cmp r0, #0x14
 	blt loc_8029C82
 	mov r0, #0
-	strb r0, [r5,#oS20364C0_Unk_0f]
+	strb r0, [r5,#oS20364C0_PulsePhase]
 	b locret_8029C9A
 loc_8029C82:
 	add r1, r0, #1
-	strb r1, [r5,#oS20364C0_Unk_0f]
+	strb r1, [r5,#oS20364C0_PulsePhase]
 	sub r0, #1
 	ldr r1, off_8029CA8 // =byte_8029CAC
 	lsl r0, r0, #1
@@ -8112,7 +8112,7 @@ loc_8029C82:
 	ldrb r2, [r1,r2]
 	ldrb r0, [r1,r0]
 	mov r1, r2
-	ldrb r3, [r5,#oS20364C0_Unk_0e]
+	ldrb r3, [r5,#oS20364C0_ActorIndex]
 	bl sprite_setAffineTransform_802FE7A
 locret_8029C9A:
 	pop {pc}
@@ -8912,7 +8912,7 @@ fadeScreenAndAdvanceState_802A2E8: // (self: * S20364C0 $r5) -> ()
 	mov r1, #0xa
 	bl loc_8006274 // (int a1, int a2) -> void
 	mov r0, #0
-	strb r0, [r5,#oS20364C0_Unk_13]
+	strb r0, [r5,#oS20364C0_FadeSeqIndex]
 
 	mov r0, #4
 	strb r0, [r5,#oS20364C0_JumpOffset12]
@@ -8924,7 +8924,7 @@ locret_802A30A:
 	thumb_local_start
 sub_802A30C: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
-	ldrb r4, [r5,#oS20364C0_Unk_13]
+	ldrb r4, [r5,#oS20364C0_FadeSeqIndex]
 	ldr r2, off_802A3E8 // =byte_802A3F4 
 	ldrh r2, [r2,r4]
 	ldr r1, dword_802A3F0 // =0xffff 
@@ -8936,7 +8936,7 @@ sub_802A30C: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0x16
 	bl sound_dispatchSoundRequest_8000642 // (idx: u8, a1: ?, a2: ?) -> ()
 	add r4, #2
-	strb r4, [r5,#oS20364C0_Unk_13]
+	strb r4, [r5,#oS20364C0_FadeSeqIndex]
 	bl IsScreenFadeActive // () -> zf
 	bl isScreenFadeActive_80062FC // () -> zf
 	cmp r0, #0
@@ -8962,7 +8962,7 @@ sub_802A33E: // (self: * S20364C0 $r5) -> ()
 	mov r1, #0xa
 	bl loc_8006274 // (int a1, int a2) -> void
 	mov r0, #0
-	strb r0, [r5,#oS20364C0_Unk_13]
+	strb r0, [r5,#oS20364C0_FadeSeqIndex]
 
 	mov r0, #0xc
 	strb r0, [r5,#oS20364C0_JumpOffset12]
@@ -8974,7 +8974,7 @@ locret_802A360:
 	thumb_local_start
 sub_802A362: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
-	ldrb r4, [r5,#oS20364C0_Unk_13]
+	ldrb r4, [r5,#oS20364C0_FadeSeqIndex]
 	ldr r2, off_802A3EC // =byte_802A400 
 	ldrh r2, [r2,r4]
 	ldr r1, dword_802A3F0 // =0xffff 
@@ -8986,7 +8986,7 @@ sub_802A362: // (self: * S20364C0 $r5) -> ()
 	mov r0, #0x16
 	bl sound_dispatchSoundRequest_8000642 // (idx: u8, a1: ?, a2: ?) -> ()
 	add r4, #2
-	strb r4, [r5,#oS20364C0_Unk_13]
+	strb r4, [r5,#oS20364C0_FadeSeqIndex]
 	bl IsScreenFadeActive // () -> zf
 	bl isScreenFadeActive_80062FC // () -> zf
 	cmp r0, #0
@@ -12225,7 +12225,7 @@ loc_802BEE8:
 	strh r0, [r5,#oS20364C0_Unk_10]
 
 	mov r0, #1
-	ldrb r1, [r5,#oS20364C0_Unk_0c]
+	ldrb r1, [r5,#oS20364C0_FirstBattleTutorialStep]
 
 	tst r1, r1
 	bne loc_802BEF4
@@ -19897,7 +19897,7 @@ startScreen_initGfx_802F574: // (self: *mut StartScreen $r5) -> ()
 	strb r0, [r5, #oStartScreen_JumpTableOff_00]
 
 	mov r0, #0
-	strb r0, [r5, #oStartScreen_Unk_02]
+	strb r0, [r5, #oStartScreen_SubState]
 
 	bl sub_803FA42
 
@@ -19905,14 +19905,14 @@ startScreen_initGfx_802F574: // (self: *mut StartScreen $r5) -> ()
 	bne loc_802F5BE
 
 	mov r0, #1
-	strb r0, [r5, #oStartScreen_Unk_02]
+	strb r0, [r5, #oStartScreen_SubState]
 
 	bl GetTitleScreenIconCount // () -> (u8, u16)
 	strb r0, [r5, #oStartScreen_Unk_0C]
 	strh r1, [r5, #oStartScreen_AchievmentFlags]
 
 loc_802F5BE:
-	ldrb r0, [r5, #oStartScreen_Unk_02]
+	ldrb r0, [r5, #oStartScreen_SubState]
 	tst r0, r0
 	bne loc_802F5D4
 

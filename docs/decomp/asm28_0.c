@@ -3486,7 +3486,7 @@ signed int ow_tryTileInteraction_809DF00()
         v4 = *(v1 + oToolkit_GameStatePtr);
         *(v4 + oGameState_CoordInteractionValue) = v3;
         if ( v3 )
-            *(v4 + oGameState_Unk_03) = v3;
+            *(v4 + oGameState_ChipDescDirtyFlag) = v3;
         result = 0;
     }
     else
