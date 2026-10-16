@@ -1451,7 +1451,7 @@ off_804072C:
 
 // symdb: Looks up a per-map compressed chatbox / L-button text script for the player's current map group/number and slot.
 // symdb: u8 chatbox_selectCompTextByMap_8040730(u8 idx, struct Toolkit* r10) -> r0 = LZ77-compressed text
-// symdb: script pointer; r2 = 4 * oGameState_ChatboxMessageSlot; r3 = &table[oGameState_ChatboxMessageSlot]; NZCV set from ADD
+// symdb: script pointer; r2 = 4 * oGameState_Unk_08; r3 = &table[oGameState_Unk_08]; NZCV set from ADD
 // symdb: r3, r2 (i.e. LD32(slotTable) + 4 * Unk_08). Clobbers: r1, r2, r3, NZCV. Preserves r4-r7. Uses
 // symdb: r10.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_selectCompTextByMap_8040730.yaml
@@ -3171,7 +3171,7 @@ EB XX LR UD = Pressing left moves cursor to option L, right moves cursor to opti
 */
 // symdb: Appends one entry to the chatbox's option (choice) list, copying the option's parameter bytes into the next free slot and resetting the choice cursor.
 // symdb: chatbox_EB_option(u32 r1 /* unused */, const u8 *r4 optionDef, Chatbox *r5) -> r0=1,
-// symdb: r1=oChatbox_ChoiceSlotCount, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_TileBufferOffset word,
+// symdb: r1=oChatbox_Unk_80, r2=offset of new entry's gfx-load-state byte, r3=oChatbox_Unk_70 word,
 // symdb: r4=optionDef+4; NZCV from ADDS r4,#4; r2/r3/r4/lr clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_EB_option.yaml
 chatbox_EB_option:

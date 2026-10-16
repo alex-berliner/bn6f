@@ -9042,7 +9042,7 @@ battle_SpawnEnemyObjects_8007358: // () -> ()
 	pop {pc}
 	thumb_func_end battle_SpawnEnemyObjects_8007358
 
-// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_AliveActorAndOpponent` to `oBattleState_HeldChipIndex` and copies the alive-actor words over the battle-actor slots in the BattleState.
+// symdb: Walks the per-battle entity setup list, spawning each MegaMan, enemy, mystery data, rock, cube or guardian via the matching handler, then carries over `oBattleState_Unk_04_05` to `oBattleState_Unk_12_13` and copies the alive-actor words over the battle-actor slots in the BattleState.
 // symdb: void spawnBattleObjectsFromConfig_8007368( const EnemySetup *config /* r0 -> r6 */, BattleState
 // symdb: *state /* r5 */, BattleToolkit *toolkit /* r10 */, void *r4, void *r7, void *lr /* inherited */)
 // symdb: -> returns r5, r8, r9, r10, r11, r12; clobbers nzcv r0-r3, r4, r7, lr; preserves r6
@@ -13878,7 +13878,7 @@ locret_80094D8:
 
 // symdb: Drives a battle-end fade-out and hands off to the post-battle state when the fade finishes.
 // symdb: (no input registers from caller) -> r0 = fade colour slot (1 or 4) on the first entry, nothing
-// symdb: afterwards ; sets oBattleState_SubPhaseInitFlag and oBattleState_Index_00
+// symdb: afterwards ; sets oBattleState_Unk_03 and oBattleState_Index_00
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initFadeToBattleResult_80094DA.yaml
 	thumb_local_start
 battle_initFadeToBattleResult_80094DA:
@@ -14747,8 +14747,8 @@ locret_8009B1E:
 	thumb_func_end sub_8009AFC
 
 // symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
-// symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_SubPhaseInitFlag,
-// symdb: oBattleState_Index_01, oBattleState_BustingLevelCategory, oBattleState_StatePhaseAndInitFlag; calls sub_800B6F2 to fire
+// symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_Unk_03,
+// symdb: oBattleState_Index_01, oBattleState_Unk_1e, oBattleState_Unk_02_03; calls sub_800B6F2 to fire
 // symdb: pending event flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleStep_8009B20.yaml
 	thumb_local_start
@@ -15995,7 +15995,7 @@ battle_clearFlags:
 	thumb_func_start battle_getFlags
 // 0x2 - cust gauge full
 // 0x4 - timestop
-// symdb: Return the halfword at oBattleState_BattleStateFlags of the battle state.
+// symdb: Return the halfword at oBattleState_Unk_32 of the battle state.
 // symdb: () -> r0 = battle state halfword 0x32
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getFlags.yaml
 battle_getFlags:
@@ -16560,7 +16560,7 @@ sub_800A672:
 	pop {pc}
 	thumb_func_end sub_800A672
 
-// symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_BattleStateFlags` bit 0 is set, increment `oBattleState_ChipUseFrameCounter` (clamped to 0x8c9f).
+// symdb: Each frame, if battle isn't paused/over/time-stopped and `oBattleState_Unk_32` bit 0 is set, increment `oBattleState_Unk_40` (clamped to 0x8c9f).
 // symdb: (no args; r10 = Toolkit ptr) -> r0/r1/r2/r3 clobbered as temporaries, no meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceUnk40IfFlagSet_800A6A6.yaml
 	thumb_local_start
@@ -16613,7 +16613,7 @@ locret_800A702:
 	pop {pc}
 	thumb_func_end sub_800A6D8
 
-// symdb: Returns the value of field oBattleState_ChipUseFrameCounter from the current battle state.
+// symdb: Returns the value of field oBattleState_Unk_40 from the current battle state.
 // symdb: uint32 battle_getStateUnk40_800A704(void) — reads r10 (toolkit pointer); returns r0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getStateUnk40_800A704.yaml
 	thumb_func_start battle_getStateUnk40_800A704
@@ -16920,7 +16920,7 @@ locret_800A86C:
 
 // symdb: Iterates the battle state's 8 "alive battle actor" slots, reading each occupied actor's AI-data unk_0e byte and HP, but writes nothing back — an apparent leftover/stub whose only visible effect is the last slot's values left in registers.
 // symdb: in: r10 = toolkit (battle state read via oToolkit_BattleStatePtr), r2 = fallback AI-data pointer
-// symdb: (kept if no slot is occupied); out: r0 = oAIData_AISubordinateSlot of the last occupied slot's actor, r1 =
+// symdb: (kept if no slot is occupied); out: r0 = oAIData_Unk_0e of the last occupied slot's actor, r1 =
 // symdb: its HP (skipped when unk_0e == 0xFF), r2 = AI-data pointer of last occupied slot (or incoming
 // symdb: r2), r3 = raw contents of the last slot (0 if empty); c/v set by the final cmp r4, #8 (equal, so
 // symdb: Z set per the C note, c/v reflect 8 vs 8); r4, r7 preserved

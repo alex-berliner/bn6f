@@ -86581,7 +86581,7 @@ byte_80E07D0:
 // symdb: Spawns a type-3 child BattleObject inheriting the caller's panel coordinates, element, alliance/direction, and extra fields from a parent BattleObject passed in r5.
 // symdb: // r0-r3 = panelX, panelY, element (byte each) for the new object // r4,r5 = parent object
 // symdb: pointer / scratch (r5 is the parent; r4 preserved) // r6 =
-// symdb: oBattleObject_DamageAndStaminaDamageCounterDisabler value to copy // r7 = oBattleObject_ChipID
+// symdb: oBattleObject_DamageAndStaminaDamageCounterDisabler value to copy // r7 = oBattleObject_Unk_30
 // symdb: value to copy // returns: r0 = spawned object pointer (or 0 if spawn failed) // clobbers:
 // symdb: r0,r1,r2,r3, NZCV
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80E07E0.yaml
@@ -111206,7 +111206,7 @@ locret_80EBF0E:
 	pop {r4,pc}
 	thumb_func_end battleObject_aiAttackTickCharge_80EBEB2
 
-// symdb: Dispatches an AI attack step to a per-type handler via a 3-entry jump table indexed by oAIAttackVars_HitElement.
+// symdb: Dispatches an AI attack step to a per-type handler via a 3-entry jump table indexed by oAIAttackVars_Unk_00.
 // symdb: void battle_aiAttackHandlerDispatch_80EBF10(void); // r7 = AI attack vars pointer (in) // r3,
 // symdb: r5, r6, r10, lr (caller's lr) used by callee (in) // r1, r5, r8, r9, r10, r11, r12 returned/used
 // symdb: (out) // NZCV + r0, r2, r3, r4, r6, r7, lr clobbered
@@ -112449,7 +112449,7 @@ locret_80EC842:
 	pop {pc}
 	thumb_func_end sub_80EC81E
 
-// symdb: AI attack handler that looks up a u16 from a table indexed by oAIAttackVars_AiDifficultyTier, optionally applies it via sub_800E2FC, then saturating-adds 5 to the battle object's alliance byte and exits the attack state.
+// symdb: AI attack handler that looks up a u16 from a table indexed by oAIAttackVars_Unk_03, optionally applies it via sub_800E2FC, then saturating-adds 5 to the battle object's alliance byte and exits the attack state.
 // symdb: void aiAttack_addSaturatedByte_80EC844(void); // r5=battle object*, r6/r7=AI vars*, r10=?,
 // symdb: lr=return; preserves r4/r5/r10; clobbers r0/r1/r2/r3/r6/r7/lr + nzcv
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80EC844.yaml
@@ -146746,7 +146746,7 @@ byte_80FD538:
 	.byte 0x0, 0x88, 0xF
 	thumb_func_end sub_80FD4E8
 
-// symdb: AI attack state: when the post-attack timer in `oAIAttackVars_StepTimer` reaches zero, play the recovery animation, commit the object to its future (panelX, panelY), refresh collision panels, and advance the AI state word to its next phase (`oAIAttackVars_StepTimer` = 4, `oAIAttackVars_HitElement` = 8).
+// symdb: AI attack state: when the post-attack timer in `oAIAttackVars_Unk_10` reaches zero, play the recovery animation, commit the object to its future (panelX, panelY), refresh collision panels, and advance the AI state word to its next phase (`oAIAttackVars_Unk_10` = 4, `oAIAttackVars_Unk_00` = 8).
 // symdb: void aiAttack_recoverCommit(r5 = BattleObject* this, r7 = AIAttackVars* vars, lr = return);   //
 // symdb: clobbers r0, r1, r2, r3, lr, N, Z, C, V   // preserves r4, r6   // no return value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80FD548.yaml
@@ -148484,7 +148484,7 @@ locret_80FE21C:
 // symdb: Battle AI attack dispatcher — reads the AI attack phase byte from an opponent's battle vars and tail-calls the matching phase handler through the off_80FE230 jump table.
 // symdb: void battle_aiAttackPhaseDispatch_80FE21E(u32 aiVars /* r7 */, u32 state /* r2 */, u32 entryA /*
 // symdb: r5 */, u32 entryB /* r6 */, u32 arg /* r10 */);   // uses: r7 preserved; reads aiVars +
-// symdb: "oAIAttackVars_HitElement"   // returns via phase handler (r1, r5, r8, r9, r10, r11, r12 observable
+// symdb: "oAIAttackVars_Unk_00"   // returns via phase handler (r1, r5, r8, r9, r10, r11, r12 observable
 // symdb: to caller)   // clobbers nzcv, r0, r2, r3, r4, r6, lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackPhaseDispatch_80FE21E.yaml
 	thumb_local_start
@@ -148825,7 +148825,7 @@ locret_80FE450:
 
 // symdb: Dispatches an AI attack-state handler call through a two-entry jump table indexed by the state byte at offset 0 of the r7 attack-state block.
 // symdb: void aiAttackDispatchHandler(void /* r7 = AI attack state block, flags passed through */); —
-// symdb: reads r7[oAIAttackVars_HitElement] (u8 selector), tail-invokes sub_80FE46C (selector 0) or
+// symdb: reads r7[oAIAttackVars_Unk_00] (u8 selector), tail-invokes sub_80FE46C (selector 0) or
 // symdb: sub_80FE4AC (anything else); returns to this wrapper's caller with r7 preserved, all other
 // symdb: registers and NZCV flags whatever the handler left.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttackDispatchHandler_80FE452.yaml
@@ -176660,7 +176660,7 @@ dword_810BDC0:
 
 // symdb: AI helper that, when the actor has a chip selected and battle turn state is high enough, queues that chip for use by writing its parameters, setting attack0, and starting the chip-use sub-state.
 // symdb: (r0 = battleObject, r5 = ?, r7 = ?, r10 = toolkit) -> r0 = 1 if a chip-use was initiated, else 0
-// symdb: ; side effects writes to BattleState/oBattleState_ChipUseFrameCounter path, sets the object's
+// symdb: ; side effects writes to BattleState/oBattleState_Unk_40 path, sets the object's
 // symdb: AttackVars/Attack0 and triggers sub_800F322
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryStartChipAttack_810BDC4.yaml
 	thumb_local_start

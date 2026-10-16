@@ -1138,6 +1138,9 @@ locret_8090058:
 	.balign 4, 0x00
 	thumb_func_end sub_809003C
 
+// symdb: Mr. Weather comp: the rainbow-orb trail. While flag 0xBE4 is set and eWeatherCompState+0x20 is 0: with A held (Joypad held & 1) and fewer than 0xFA orbs, every frame MegaMan moves (sub_8090308) counts +8 down and at 0 reloads it with 5 and returns 1 (the caller lays an orb, map object 0x1D); A released (or 0xFA orbs): +8 = 1 and, if there are orbs, the trail is dropped (+6 = 0, flags 0xBE5, PET_DISABLED, 0x1739 cleared, the ring points at 0x2011B30 zeroed).
+// symdb: r5 = eWeatherCompState, r10 = toolkit -> r0 = 1 (lay an orb) or 0, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809005C.yaml
 	thumb_local_start
 sub_809005C:
 	push {r4,lr}
@@ -1298,6 +1301,9 @@ off_8090198:
 	.word byte_808F6EC
 	thumb_func_end weatherComp_pickScript_8090104
 
+// symdb: Mr. Weather comp: while flag 0xBE8 (the ring closed) is set, each tornado i < +0xA inside the ring (weatherComp_isTornadoInRing_809022C) whose caught flag 0xBE9+i is clear gets flag 0xBEC+i, and +0xB (tornadoes left) drops by one; returns 1 when one was caught.
+// symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809019C.yaml
 	thumb_local_start
 sub_809019C:
 	push {r4-r7,lr}
@@ -1340,6 +1346,9 @@ loc_80901E4:
 	.balign 4, 0x00
 	thumb_func_end sub_809019C
 
+// symdb: Mr. Weather comp: the first tornado i (0..2) with flag 0xBEC+i set goes to eWeatherCompState+0xC and returns 1: weatherComp_pickScript_8090104 then starts byte_808F748, the capture cutscene ("The Rainbow Power washed the typhoon away.").
+// symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80901EC.yaml
 	thumb_local_start
 sub_80901EC:
 	push {r4,r6,lr}
@@ -1376,6 +1385,9 @@ byte_8090226:
 	.byte 0xE9, 0xB, 0xEA, 0xB, 0xEB, 0xB
 	thumb_func_end sub_80901EC
 
+// symdb: Mr. Weather comp: is tornado r0 inside the orb ring? A ray-crossing parity test of its saved place (eWeatherCompState +0x40+2i / +0x46+2i, s16 px) against the ring's points (0x2011B30: X at +2k, Y at +0x3C+2k, min(+6, 25) points, wrapping); the crossings counted at +9; odd = inside (returns 1).
+// symdb: r0 = tornado instance, r5 = eWeatherCompState -> r0 = 1 inside / 0, Z
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809022C.yaml
 	thumb_local_start
 sub_809022C:
 	push {r4-r7,lr}

@@ -8027,7 +8027,7 @@ off_8029C04:
 
 // symdb: Per-frame chip-slot pulse animation step: pushes an OAM affine-transform record to the render FIFO and walks the pulse phase byte of the chip-select object.
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effect: writes one 16-byte FIFO record (command
-// symdb: 0xB782) and updates oS20364C0_PulsePhase pulse phase
+// symdb: 0xB782) and updates oS20364C0_Unk_0f pulse phase
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_8029C08.yaml
 	thumb_local_start
 battleObject_chipSelectAnimTick_8029C08: // (self: * S20364C0 $r5) -> ()
@@ -8761,7 +8761,7 @@ byte_802A148:
 	.byte 0x0, 0x42, 0x1, 0x0, 0x0
 
 
-// symdb: If the battle state's field oBattleState_PendingFieldChange is nonzero, writes 0xFF to byte_20349A5 (an unknown battle work buffer's byte 5), likely signaling a pending state/advance request.
+// symdb: If the battle state's field oBattleState_Unk_15 is nonzero, writes 0xFF to byte_20349A5 (an unknown battle work buffer's byte 5), likely signaling a pending state/advance request.
 // symdb: void sub_802A210(r5 = battle state ptr); sets c/v from (Unk_15 != 0) comparison; returns r3 =
 // symdb: 0x20349A0 when Unk_15 != 0 (callers read r3, per contract)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setUnk20349A5Flag_802A210.yaml
@@ -14453,7 +14453,7 @@ zeroFill_802CE54:
 	pop {pc}
 	thumb_func_end zeroFill_802CE54
 
-// symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_PlayerSide), reading r0=lo16, r1=hi16, r2=upper from a global table
+// symdb: Returns a packed 4-word story/turn entry indexed by (param ^ oBattleState_Unk_0d), reading r0=lo16, r1=hi16, r2=upper from a global table
 // symdb: (r0 = selector 0..n, r10 = toolkit) -> r0 = u16 entry[0], r2 = u16 entry[2], r1 = u32 entry[4] ;
 // symdb: no side effects, returns through r0/r1/r2
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getStoryFlagFromBattleState_802CE60.yaml
@@ -21554,7 +21554,7 @@ nullsub_7:
 	mov pc, lr
 	thumb_func_end nullsub_7
 
-// symdb: Copies a camera position (X/Y/Z) from the data block pointed to by the camera object's field oCamera_PositionSrcPtr into the camera's own X/Y/Z fields.
+// symdb: Copies a camera position (X/Y/Z) from the data block pointed to by the camera object's field oCamera_Unk_14 into the camera's own X/Y/Z fields.
 // symdb: void sub_8030126(camera in r5); returns r7 = source block pointer, r2 = copied Z value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_LoadPositionFromSource_8030126.yaml
 	thumb_local_start

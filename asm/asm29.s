@@ -8974,6 +8974,9 @@ byte_80A978C:
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0xFF
 	thumb_func_end sub_80A974C
 
+// symdb: Mr. Weather comp orb (map object 0x1D): the ring's oldest orb (index +6 - 25, or 0 while fewer than 25) sets flag 0xBE8 (the ring closed, sound 0xD7) when MegaMan comes within 0x12 px of it, while flag 0xBE4 is set, 0xBE8 clear and there are at least 5 orbs.
+// symdb: r5 = the orb map object, r6 = eWeatherCompState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A979C.yaml
 	thumb_local_start
 sub_80A979C:
 	push {r4,lr}
@@ -9015,6 +9018,9 @@ locret_80A97F0:
 	.balign 4, 0x00
 	thumb_func_end sub_80A979C
 
+// symdb: Mr. Weather comp orb: records its place (s16 px) as ring point (index % 25): X at 0x2011B30 + 2k, Y at 0x2011B30 + 0x3C + 2k.
+// symdb: r5 = the orb map object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A97F4.yaml
 	thumb_local_start
 sub_80A97F4:
 	push {r4-r7,lr}
@@ -11297,7 +11303,7 @@ dword_80AA8DC:
 // symdb: Reward-1 wrapper for the result record: when enabled, runs the sub_80AA910 reward roll (sub_80AAA3C enemy-id pick + damage_jitter_80AAA98 / sub_80AAB04) and returns the packed reward in r0 with BattleState+0x36 (reward 2) in r1; disabled it returns (0, 0).
 // symdb: u32x2 sub_80AA8E0(u32 arg0 /*r0*/, u32 enable /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg4
 // symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of sub_80AA910, r1 =
-// symdb: battleState->oBattleState_Reward2Bonus (halfword, zero-extended); clobbers C/V.
+// symdb: battleState->oBattleState_Unk_36 (halfword, zero-extended); clobbers C/V.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA8E0.yaml
 	thumb_func_start sub_80AA8E0
 sub_80AA8E0:

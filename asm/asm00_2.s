@@ -878,7 +878,7 @@ locret_800F316:
 	pop {pc}
 	thumb_func_end sub_800F2FC
 
-// symdb: Stores a value into a battle object's AI data at offset oAIData_BattleObjectPtr, if the object has AI data.
+// symdb: Stores a value into a battle object's AI data at offset oAIData_Unk_78, if the object has AI data.
 // symdb: void battle_SetObjectAIDataField78(u32 value /*r0*/, BattleObject* obj /*r5*/); // returns r1 =
 // symdb: AI data pointer (or NULL), clobbers NZ
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_SetObjectAIDataField78_800F318.yaml
@@ -2025,7 +2025,7 @@ battle_SpawnObjectOnFrontPanel_800FAAC:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_SpawnObjectOnFrontPanel_800FAAC
 
-// symdb: Stores the player's current HP into the battle state (oBattleState_PlayerHPSnapshot), keeping a snapshot of the player's HP for later comparison.
+// symdb: Stores the player's current HP into the battle state (oBattleState_Unk_34), keeping a snapshot of the player's HP for later comparison.
 // symdb: void battle_snapshotPlayerHP(void); // in: r10 = toolkit; out: r2 as left by battle_findPlayer,
 // symdb: flags clobbered; r4-r6 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_snapshotPlayerHP_800FAE0.yaml
@@ -11350,7 +11350,7 @@ loc_8013B1C:
 	pop {pc}
 	thumb_func_end applyChipAllianceEffect_8013AE4
 
-// symdb: When a battle object's collision data reports event 0x18, adds the amount in the next collision byte to the AI's counter at oAIData_CounterHitChain, clamping it at 7.
+// symdb: When a battle object's collision data reports event 0x18, adds the amount in the next collision byte to the AI's counter at oAIData_Unk_12, clamping it at 7.
 // symdb: void sub_8013B20(battle_object *r5 /* in r5, object whose CollisionDataPtr/AIDataPtr are read
 // symdb: */); clobbers r0-r3, NZCV-defined; preserves r4
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAddCounterFromCollision_8013B20.yaml
@@ -19583,7 +19583,7 @@ loc_80178AC:
 	pop {r4,r7,pc}
 	thumb_func_end battle_endTurnMarkActed_8017888
 
-// symdb: Tail-call dispatch on a battle object's oBattleObject_MoveSubState selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
+// symdb: Tail-call dispatch on a battle object's oBattleObject_Unk_0d selector to one of three handlers (sub_80178D4 / sub_8017992 / sub_8017A38).
 // symdb: void dispatchBattleObjectHandler_80178B6(     /* r5 */ battleObject* obj,     /* r10 */ unused,
 // symdb: /* lr */ return_addr );
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80178B6.yaml
@@ -22901,7 +22901,7 @@ locret_801A306:
 	pop {pc}
 	thumb_func_end battleObject_clearChipSelectionOnAirShoe_801A2CC
 
-// symdb: Flips a battle object's alliance to the opposite side, then adds its collision-data halfword at +0x92 into that side's AI data byte oAIData_CounterHealDamage.
+// symdb: Flips a battle object's alliance to the opposite side, then adds its collision-data halfword at +0x92 into that side's AI data byte oAIData_Unk_10.
 // symdb: void battle_toggleAllianceAndAccumulateCollisionToAiData(BattleObject* object /* r5 */); also
 // symdb: saves/restores r4; no meaningful return value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_toggleAllianceAndAccumulateCollisionToAiData_801A308.yaml
@@ -23704,7 +23704,7 @@ off_801A7F0:
 	.word byte_8020B8C
 	thumb_func_end sub_801A7CC
 
-// symdb: Clears a battle object's AI state field (oAIData_SubordinateObjectPtr) and removes its barrier flag in its collision data.
+// symdb: Clears a battle object's AI state field (oAIData_Unk_60) and removes its barrier flag in its collision data.
 // symdb: battle_clearAIDataAndBarrier(BattleObject *obj /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearAIDataAndBarrier_801A7F4.yaml
 	thumb_func_start battle_clearAIDataAndBarrier_801A7F4

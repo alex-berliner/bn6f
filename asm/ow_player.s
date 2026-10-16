@@ -440,7 +440,7 @@ locret_809D4D6:
 
 // symdb: Overworld player per-frame dispatcher: handles the player-object interaction probe first; otherwise picks the next player jumptable index based on per-frame checks (gate/tile interaction, door advance, advance-forward event, bit-0x10 state).
 // symdb: (r5 = OWPlayerObjectPtr, r10 = ToolkitPtr, lr) -> r0 = result of the chosen sub-check (zero/non-
-// symdb: zero as flags); side effects: writes oOWPlayerObject_ActionSubState, sometimes oOWPlayerObject_Unk_13,
+// symdb: zero as flags); side effects: writes oOWPlayerObject_Unk_0a, sometimes oOWPlayerObject_Unk_13,
 // symdb: and oOWPlayerObject_JumptableIndex_09 (or its pending slot) via
 // symdb: owPlayer_setJumptableIndex09AndOthers_809e004; reads oOWPlayerObject_FacingDirection and
 // symdb: oOWPlayerObject_Unk_11.
@@ -617,7 +617,7 @@ loc_809D60C:
 // symdb: Overworld player slip-run substate: gates each frame on the EVENT_1716/EVENT_IN_SLIPRUN_STATE flags, dispatches via Unk_0a jumptable between slip-run and engine tick, and otherwise routes the player into normal per-frame updates (advance/forward, idle, tile-interaction) before ending the slip-run if conditions warrant.
 // symdb: (r5 = oOWPlayerObject*, r10 = oToolkit*) -> void ; side effects: writes the overworld player
 // symdb: jumptable index via owPlayer_setJumptableIndex09AndOthers_809e004, may clear
-// symdb: oOWPlayerObject_ActionSubState, may end slip-run state, may set EVENT_173F via callees
+// symdb: oOWPlayerObject_Unk_0a, may end slip-run state, may set EVENT_173F via callees
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_runSlipRunOrEngine_0809D61A.yaml
 	thumb_local_start
 owPlayer_runSlipRunOrEngine_0809D61A:

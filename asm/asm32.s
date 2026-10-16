@@ -28,7 +28,7 @@ sub_810D98C:
 	pop {pc}
 	thumb_func_end sub_810D98C
 
-// symdb: Battle enemy AI state-machine step: runs a pre-check (sub_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_ScriptId.
+// symdb: Battle enemy AI state-machine step: runs a pre-check (sub_810DAF0); if it returns nonzero, the AI is paused; otherwise the AI state's 4-entry handler is invoked via a jump table indexed by oAIState_Unk_00.
 // symdb: void aiStepDispatch(u32 r4, u32 r5, u32 r6, u32 r7, u32 r8, u32 r9, u32 r10, u32 r11, u32 r12,
 // symdb: u32 lr); /* returns r1, r5, r8, r9, r10, r11, r12; clobbers nz/c/v, r0, r2, r3, r7, lr;
 // symdb: preserves r4, r6 */
@@ -117,7 +117,7 @@ locret_810DA22:
 	pop {pc}
 	thumb_func_end sub_810DA00
 
-// symdb: Dispatches to one of two AI state handlers based on the byte at offset oAIState_SubState of the AI state struct in r6.
+// symdb: Dispatches to one of two AI state handlers based on the byte at offset oAIState_Unk_02 of the AI state struct in r6.
 // symdb: void aiStateDispatch_810DA24(void); // r6 holds the AI state struct pointer; base
 // symdb: "off_810DA44:0" -> handler 0, "off_810DA44:1" -> handler 1
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810DA24.yaml
