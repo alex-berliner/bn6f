@@ -503,10 +503,10 @@ void *cutsceneWeather_update_808FE74()
     result = IsPaletteFadeActive();
     if ( !v1 )
     {
-        sub_809019C();
+        weatherComp_checkRingCapture_809019C();
         if ( v1 )
         {
-            v2 = sub_809005C();
+            v2 = weatherComp_layOrbTrail_809005C();
             if ( !v1 )
                 weatherComp_spawnObject1DNearPlayer_80900C8(v2);
         }
@@ -747,7 +747,7 @@ int sub_809003C()
 
 
 // 0x809005c
-signed int sub_809005C()
+signed int weatherComp_layOrbTrail_809005C()
 {
     int v0; // r5
     int v1; // r10
@@ -845,7 +845,7 @@ char *weatherComp_pickScript_8090104()
             TestEventFlagFromImmediate(11, 230);
             if ( v2 )
             {
-                sub_80901EC();
+                weatherComp_findRingCapture_80901EC();
                 if ( v2 )
                 {
                     if ( !v0[11] )
@@ -883,7 +883,7 @@ char *weatherComp_pickScript_8090104()
 
 
 // 0x809019c
-signed int sub_809019C()
+signed int weatherComp_checkRingCapture_809019C()
 {
     int v0; // r5
     signed int v1; // r6
@@ -898,7 +898,7 @@ signed int sub_809019C()
         v3 = 0;
         do
         {
-            sub_809022C(v3);
+            weatherComp_isTornadoInRing_809022C(v3);
             if ( !v2 )
             {
                 TestEventFlag(*&byte_8090226[2 * v3]);
@@ -921,7 +921,7 @@ signed int sub_809019C()
 
 
 // 0x80901ec
-signed int sub_80901EC()
+signed int weatherComp_findRingCapture_80901EC()
 {
     int v0; // r5
     signed int v1; // r6
@@ -946,7 +946,7 @@ signed int sub_80901EC()
 
 
 // 0x809022c
-signed int __fastcall sub_809022C(int a1)
+signed int __fastcall weatherComp_isTornadoInRing_809022C(int a1)
 {
     int v1; // r5
     int v2; // r8

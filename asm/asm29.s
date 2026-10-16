@@ -8858,7 +8858,7 @@ sub_80A9680:
 	bl sprite_setPriority_8002E14
 	mov r0, #0
 	str r0, [r5,#0x24]
-	bl sub_80A97F4
+	bl owMapObject_weatherOrb_recordPlace_80A97F4
 	ldr r0, dword_80A96C4 // =0x1b3 
 	bl PlaySoundEffect
 	mov r0, #4
@@ -8873,7 +8873,7 @@ dword_80A96C4:
 	thumb_local_start
 sub_80A96C8:
 	push {r4-r7,lr}
-	bl sub_80A979C
+	bl owMapObject_weatherOrb_checkRingClosed_80A979C
 	bl sub_80A971C
 	beq loc_80A96EA
 	mov r0, #8
@@ -8976,9 +8976,9 @@ byte_80A978C:
 
 // symdb: Mr. Weather comp orb (map object 0x1D): the ring's oldest orb (index +6 - 25, or 0 while fewer than 25) sets flag 0xBE8 (the ring closed, sound 0xD7) when MegaMan comes within 0x12 px of it, while flag 0xBE4 is set, 0xBE8 clear and there are at least 5 orbs.
 // symdb: r5 = the orb map object, r6 = eWeatherCompState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A979C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherOrb_checkRingClosed_80A979C.yaml
 	thumb_local_start
-sub_80A979C:
+owMapObject_weatherOrb_checkRingClosed_80A979C:
 	push {r4,lr}
 	movflag EVENT_BE8
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -9016,13 +9016,13 @@ loc_80A97BC:
 locret_80A97F0:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A979C
+	thumb_func_end owMapObject_weatherOrb_checkRingClosed_80A979C
 
 // symdb: Mr. Weather comp orb: records its place (s16 px) as ring point (index % 25): X at 0x2011B30 + 2k, Y at 0x2011B30 + 0x3C + 2k.
 // symdb: r5 = the orb map object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A97F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherOrb_recordPlace_80A97F4.yaml
 	thumb_local_start
-sub_80A97F4:
+owMapObject_weatherOrb_recordPlace_80A97F4:
 	push {r4-r7,lr}
 	ldr r6, off_80A9820 // =byte_2011B30
 	ldrb r4, [r5,#4]
@@ -9049,7 +9049,7 @@ loc_80A9808:
 	.balign 4, 0
 off_80A9820:
 	.word byte_2011B30
-	thumb_func_end sub_80A97F4
+	thumb_func_end owMapObject_weatherOrb_recordPlace_80A97F4
 
 	thumb_func_start sub_80A9824
 sub_80A9824:

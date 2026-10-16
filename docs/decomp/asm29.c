@@ -6099,7 +6099,7 @@ void __noreturn sub_80A9680()
     v1 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v1);
     *(v0 + 36) = 0;
-    sub_80A97F4();
+    owMapObject_weatherOrb_recordPlace_80A97F4();
     PlaySoundEffect(435, v2, v3);
     *(v0 + 8) = 4;
     sub_80A96C8();
@@ -6112,7 +6112,7 @@ void sub_80A96C8()
     Battle *v0; // r5
     char v1; // zf
 
-    sub_80A979C();
+    owMapObject_weatherOrb_checkRingClosed_80A979C();
     sub_80A971C();
     if ( !v1 )
     {
@@ -6182,7 +6182,7 @@ void __noreturn sub_80A974C()
 
 
 // 0x80a979c
-int sub_80A979C()
+int owMapObject_weatherOrb_checkRingClosed_80A979C()
 {
     int v0; // r5
     int v1; // r6
@@ -6224,7 +6224,7 @@ int sub_80A979C()
 
 
 // 0x80a97f4
-int sub_80A97F4()
+int owMapObject_weatherOrb_recordPlace_80A97F4()
 {
     int v0; // r5
     signed int v1; // r4

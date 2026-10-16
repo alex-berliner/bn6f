@@ -845,9 +845,9 @@ cutsceneWeather_update_808FE74:
 	ldr r5, [r5]
 	bl IsScreenFadeActive // () -> zf
 	beq locret_808FE9C
-	bl sub_809019C
+	bl weatherComp_checkRingCapture_809019C
 	bne loc_808FE90
-	bl sub_809005C
+	bl weatherComp_layOrbTrail_809005C
 	beq loc_808FE90
 	bl weatherComp_spawnObject1DNearPlayer_80900C8
 loc_808FE90:
@@ -1140,9 +1140,9 @@ locret_8090058:
 
 // symdb: Mr. Weather comp: the rainbow-orb trail. While flag 0xBE4 is set and eWeatherCompState+0x20 is 0: with A held (Joypad held & 1) and fewer than 0xFA orbs, every frame MegaMan moves (sub_8090308) counts +8 down and at 0 reloads it with 5 and returns 1 (the caller lays an orb, map object 0x1D); A released (or 0xFA orbs): +8 = 1 and, if there are orbs, the trail is dropped (+6 = 0, flags 0xBE5, PET_DISABLED, 0x1739 cleared, the ring points at 0x2011B30 zeroed).
 // symdb: r5 = eWeatherCompState, r10 = toolkit -> r0 = 1 (lay an orb) or 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809005C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_layOrbTrail_809005C.yaml
 	thumb_local_start
-sub_809005C:
+weatherComp_layOrbTrail_809005C:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_BE4
@@ -1189,7 +1189,7 @@ loc_80900C2:
 	mov r0, r4
 	tst r0, r0
 	pop {r4,pc}
-	thumb_func_end sub_809005C
+	thumb_func_end weatherComp_layOrbTrail_809005C
 
 // symdb: Mr. Weather comp: spawns map object 0x1D near MegaMan, counts it in eWeatherCompState+6 and sets flags 0xBE5, PET_DISABLED and 0x1739.
 // symdb: r5 = eWeatherCompState
@@ -1220,7 +1220,7 @@ weatherComp_spawnObject1DNearPlayer_80900C8:
 	pop {pc}
 	thumb_func_end weatherComp_spawnObject1DNearPlayer_80900C8
 
-// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
+// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), weatherComp_findRingCapture_80901EC.
 // symdb: r5 = eWeatherCompState -> r4 = script or 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_pickScript_8090104.yaml
 	thumb_local_start
@@ -1270,7 +1270,7 @@ loc_809015A:
 	ldr r4, off_8090188 // =byte_808F690 
 	b loc_809017C
 loc_8090166:
-	bl sub_80901EC
+	bl weatherComp_findRingCapture_80901EC
 	beq loc_8090170
 	ldr r4, off_809018C // =byte_808F748 
 	b loc_809017C
@@ -1303,9 +1303,9 @@ off_8090198:
 
 // symdb: Mr. Weather comp: while flag 0xBE8 (the ring closed) is set, each tornado i < +0xA inside the ring (weatherComp_isTornadoInRing_809022C) whose caught flag 0xBE9+i is clear gets flag 0xBEC+i, and +0xB (tornadoes left) drops by one; returns 1 when one was caught.
 // symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809019C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkRingCapture_809019C.yaml
 	thumb_local_start
-sub_809019C:
+weatherComp_checkRingCapture_809019C:
 	push {r4-r7,lr}
 	mov r6, #0
 	movflag EVENT_BE8
@@ -1314,7 +1314,7 @@ sub_809019C:
 	mov r4, #0
 loc_80901AC:
 	mov r0, r4
-	bl sub_809022C
+	bl weatherComp_isTornadoInRing_809022C
 	beq loc_80901DC
 	ldr r0, off_809021C // =byte_8090226 
 	mov r1, r4
@@ -1344,13 +1344,13 @@ loc_80901E4:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809019C
+	thumb_func_end weatherComp_checkRingCapture_809019C
 
 // symdb: Mr. Weather comp: the first tornado i (0..2) with flag 0xBEC+i set goes to eWeatherCompState+0xC and returns 1: weatherComp_pickScript_8090104 then starts byte_808F748, the capture cutscene ("The Rainbow Power washed the typhoon away.").
 // symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80901EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_findRingCapture_80901EC.yaml
 	thumb_local_start
-sub_80901EC:
+weatherComp_findRingCapture_80901EC:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r4, #0
@@ -1383,13 +1383,13 @@ byte_8090220:
 	.byte 0xEC, 0xB, 0xED, 0xB, 0xEE, 0xB
 byte_8090226:
 	.byte 0xE9, 0xB, 0xEA, 0xB, 0xEB, 0xB
-	thumb_func_end sub_80901EC
+	thumb_func_end weatherComp_findRingCapture_80901EC
 
 // symdb: Mr. Weather comp: is tornado r0 inside the orb ring? A ray-crossing parity test of its saved place (eWeatherCompState +0x40+2i / +0x46+2i, s16 px) against the ring's points (0x2011B30: X at +2k, Y at +0x3C+2k, min(+6, 25) points, wrapping); the crossings counted at +9; odd = inside (returns 1).
 // symdb: r0 = tornado instance, r5 = eWeatherCompState -> r0 = 1 inside / 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809022C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_isTornadoInRing_809022C.yaml
 	thumb_local_start
-sub_809022C:
+weatherComp_isTornadoInRing_809022C:
 	push {r4-r7,lr}
 	mov r1, r8
 	push {r1}
@@ -1489,7 +1489,7 @@ loc_80902CE:
 	.balign 4, 0
 off_80902D8:
 	.word off_808FDB8
-	thumb_func_end sub_809022C
+	thumb_func_end weatherComp_isTornadoInRing_809022C
 
 // symdb: Mr. Weather comp: tests a per-map event flag and returns whether it is set — flag 0x0BE1 + MapNumber, or 0x0FD2 when the map group is 0x85 (undernet?). Table byte_8090300 = { 0x0BE1, 0x0BE2, 0x0BE3, 0x0FD2 }.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80902DC.yaml
