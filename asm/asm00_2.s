@@ -28276,9 +28276,9 @@ locret_801C904:
 	pop {r7,pc}
 	thumb_func_end battle_tickLowHpWarning_801C840
 
-// symdb: Builds per-digit tile rows for an HP display in the chatbox, copies them to a BG tile block and queues the digit GFX source into VRAM.
-// symdb: (r5 = AIData*, r10 = Toolkit*) -> r0 = pointer to digit-tile-id array (in stack temp / re-used);
-// symdb: no callee-restore outputs
+// symdb: Draws the battle HP box: eStruct2035280+0x24 (the shown HP) as BCD digit tiles into BG tile block 3 at the box's position, and queues the digit graphics.
+// symdb: (r5 = eStruct2035280, as runFlaggedCallbacks_801BF64 passes it; r10 = Toolkit*) -> nothing
+// symdb: meaningful; called for bit 7 of eStruct2035280+0x44
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_drawHPNumber_801C906.yaml
 	thumb_local_start
 chatbox_drawHPNumber_801C906:

@@ -2687,6 +2687,8 @@ byte_203526D:: // 0x203526d
 	.space 7
 dword_2035274:: // 0x2035274
 	.space 12
+// symdb: The battle screen's HUD state: the HP box's shown HP at +0x24 (a copy of MegaMan's, updated on hits and heals), its tile position, and the redraw/request bits.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eStruct2035280.yaml
 eStruct2035280:: // 0x2035280
 	s_2035280_struct eStruct2035280
 dword_20352E0:: // 0x20352e0
@@ -2964,6 +2966,8 @@ unk_2039AA0:: // 0x2039aa0
 unk_2039ADC:: // 0x2039adc
 	.space 4
 
+// symdb: The battle field's panels, 5 rows of 8 (0x20 bytes each, row-major); rows 1-3, columns 1-6 are played on (columns 1-3 MegaMan's side, 4-6 the enemy's), the rest a border of type 0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ePanelData.yaml
 ePanelData:: // 0x2039ae0
 	panel_data_struct ePanelData0_0 // 0x2039ae0
 	panel_data_struct ePanelData1_0
