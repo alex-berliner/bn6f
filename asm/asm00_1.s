@@ -797,6 +797,11 @@ InitializeOverworldMapObjectStructs:
 	thumb_func_end InitializeOverworldMapObjectStructs
 
 
+// symdb: Spawns every object of a list of 0x14-byte ObjectSpawnData entries (ended by a type byte 0xFF) through SpawnObjectJumptable[type]; returns how many spawned.
+// symdb: i32 SpawnObjectsFromList(const ObjectSpawnData *list /* r0 */) -> r0 = number of entries whose
+// symdb: spawn routine returned an object (r5 != 0); r4-r7 preserved (push/pop); r1-r3, lr, flags and
+// symdb: whatever the spawn routines clobber are not
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/SpawnObjectsFromList.yaml
 	thumb_func_start SpawnObjectsFromList
 SpawnObjectsFromList: // (data: *const MapObjectSpawnData) -> i32
 	push {r4-r7,lr}

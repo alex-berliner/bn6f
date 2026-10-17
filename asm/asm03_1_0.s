@@ -1799,6 +1799,8 @@ NPCList_maps80: // [Nullable<*const [*const [*const NPCScript]]>; INTERNET_NUM_G
 	.word NPCScriptsSkyACDCArea_807AE04 // [*const [*const NPCScript]; SKY_ACDC_AREA_NUM_MAPS]
 	.word NPCScriptsUndernet_807D310 // [Nullable<*const [*const NPCScript]>]; UNDERNET_NUM_MAPS]
 	.word NPCScriptsGraveyardImmortalArea_807F210 // [Nullable<*const [*const NPCScript]>]; GRAVEYARD_NUM_MAPS]
+// symdb: Per internet map group (0x80-0x96) the routine that spawns that area's map objects, or NULL; called by mapObject_spawnMapObjectsForMap with index MapGroup - 0x80.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/InternetSpawnMapObjectJumptable.yaml
 InternetSpawnMapObjectJumptable: 
   .word RobotControlComp_SpawnMapObjectsForMap+1
 	.word AquariumComp_SpawnMapObjectsForMap+1

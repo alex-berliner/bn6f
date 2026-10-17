@@ -1220,7 +1220,7 @@ weatherComp_spawnObject1DNearPlayer_80900C8:
 	pop {pc}
 	thumb_func_end weatherComp_spawnObject1DNearPlayer_80900C8
 
-// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), weatherComp_findRingCapture_80901EC.
+// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
 // symdb: r5 = eWeatherCompState -> r4 = script or 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_pickScript_8090104.yaml
 	thumb_local_start

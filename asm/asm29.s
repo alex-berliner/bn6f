@@ -7674,6 +7674,8 @@ owMapObject_weatherTornado_80A8E74:
 	.balign 4, 0
 off_80A8E84:
 	.word off_80A8E88
+// symdb: State table of the Mr. Weather comp tornado (map object type 0x1A): its state byte +8 (0, 4, 8, 0xC) is the byte offset of the handler: init, active, caught, free when the animation ends.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_80A8E88.yaml
 off_80A8E88:
 	.word owMapObject_weatherTornado_init_80A8E9C+1
 	.word owMapObject_weatherTornado_active_80A8F08+1
@@ -8456,6 +8458,8 @@ loc_80A93B4:
 	.balign 4, 0
 off_80A93BC:
 	.word byte_80A93C0
+// symdb: Brightness ramp of the Mr. Weather comp map object type 0x1B's fade: 4, 6, ..., 0x1E, 0x1F, then 0xFF (end); sub_80A937C applies entry [r5+0x24] >> 1 as a grey color shader.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_80A93C0.yaml
 byte_80A93C0:
 	.byte 0x4, 0x6, 0x8, 0xA, 0xC, 0xE, 0x10, 0x12, 0x14, 0x16, 0x18
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0xFF

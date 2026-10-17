@@ -2842,6 +2842,11 @@ dword_814321C:
 	.word 0x1E
 	thumb_func_end sub_8143204
 
+// symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (sub_81432FA).
+// symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (sub_81432FA's
+// symdb: ldrb), r1 = 0x14; r4-r7 preserved (push/pop r4-r7); clobbers r2, r3, lr and the flags. One
+// symdb: primary GetRNG.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143220.yaml
 	thumb_func_start sub_8143220
 sub_8143220:
 	push {r4-r7,lr}

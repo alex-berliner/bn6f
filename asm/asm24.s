@@ -1270,6 +1270,11 @@ loc_808CBBC:
 	.balign 4, 0x00
 	thumb_func_end sub_808CBA0
 
+// symdb: Spawns overworld map object type 0x11 (sub_80A8394), sets EVENT_1700 and GameState.JackOutLockState = 3, and plays sound_8000672(0x1F, 0x13B) except in map group 0x85; returns 0. Used in the JudgeTree and Pavilion comps.
+// symdb: (r10 = toolkit, r4 = passed on as the new object's ObjectID +4) -> r0 = 0 with Z set (a cutscene
+// symdb: native that does not wait); r5 preserved (the new object's pointer is dropped), r4-r7 preserved;
+// symdb: r1-r3, lr clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CBD8.yaml
 	thumb_local_start
 sub_808CBD8:
 	push {r4-r7,lr}

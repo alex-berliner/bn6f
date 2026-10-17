@@ -2283,6 +2283,11 @@ dword_812422C:
 	.word 0x3091E0
 	thumb_func_end submenu_subchip_81241A0
 
+// symdb: Sub-chip menu step for using SneakRun - sets EVENT_170A, starts its counter (eStruct2001c04+0x24 = 0x1770, 6000), moves the menu to state 0x10 and runs chatbox script 0xA with the menu's message halfword.
+// symdb: (r5 = sub-chip menu state, r10 = toolkit) -> void; writes EVENT_170A, the u32 at
+// symdb: eStruct2001c04+0x24, menu byte +0x02 and the chatbox's +0x4C; r4 preserved; returns whatever
+// symdb: chatbox_runScript201C100_812474C leaves in r0-r3.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_subchip_8124230.yaml
 	thumb_local_start
 submenu_subchip_8124230: // (struct UnkSubMenu* state_a5) -> void
 	push {r4,lr}

@@ -13827,6 +13827,12 @@ toolkit_initAndVerifyWorkArea_0803F838: // () -> !zf
 	movflag EVENT_1704
 	bl SetEventFlagFromImmediate
 	b loc_803F87E
+// symdb: Failure path inside toolkit_initAndVerifyWorkArea_0803F838, taken when the work area's checksum or the info-text timestamp check fails - result TRUE, EVENT_1704 cleared, primary RNG seed reset to 0xA338244F (SeedRNG).
+// symdb: A branch target, not a function (reached by bne from two places in
+// symdb: toolkit_initAndVerifyWorkArea_0803F838). Sets r4 = TRUE, clears EVENT_1704, calls SeedRNG, then
+// symdb: joins the shared tail at loc_803F87E (RandomizeExtraToolkitPointers, r0 = r4, tst r0, r0, pop
+// symdb: {r1-r7,pc}), so the function returns r0 = TRUE with Z clear.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/loc_803F870.yaml
 loc_803F870:
 	mov r4, #TRUE
 	movflag EVENT_1704

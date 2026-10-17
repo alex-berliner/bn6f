@@ -22494,6 +22494,11 @@ off_801A0D0:
 	.word byte_8019C7C
 	thumb_func_end object_getTableEntry_801A0BA
 
+// symdb: Spawns the hit-effect object for the battle object in r5's last collision at its own coordinates, jittered by up to 8 pixels in X and Z (1 primary GetRNG), unless the collision flags or a HitEffect of 0xFF rule it out.
+// symdb: (r5 = BattleObject *) -> when it spawns, r0 = the new effect object or 0
+// symdb: (object_spawnRelatedChildEffect_80E08C4, Z set on 0); when it returns early, r0 = the caller's
+// symdb: r0 or 0xFF; r4 and r6 preserved; clobbers r1-r3, lr and the flags.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_spawnCollisionEffect.yaml
 	thumb_func_start object_spawnCollisionEffect
 object_spawnCollisionEffect:
 	push {r4,r6,lr}

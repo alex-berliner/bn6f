@@ -95,6 +95,13 @@ loc_809FA5E:
 	pop {r4-r7,pc}
 	thumb_func_end mysteryData_processMapGroups_809F9DC
 
+// symdb: Rolls one mystery data record, a weighted pick of its placement and a weighted pick of its contents (contents indexes in an exclusion list weigh 0); the green mystery data roll at every jack-in and New Game.
+// symdb: (r0 = placement table or NULL, r1 = contents table, r2 = exclusion list of contents indexes,
+// symdb: ended by 0xFF) -> r0 = placement index (0 when r0 was NULL), r1 = contents index. Preserves
+// symdb: r4-r7; r2, r3 and flags clobbered. Uses a 0x20-byte weight buffer on the stack. Each pick calls
+// symdb: pickWeightedIndex_8000E3A, which advances the primary RNG 2 + (rng >> 30) + (iCurrFrame & 3)
+// symdb: times.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809FA68.yaml
 	thumb_local_start
 sub_809FA68:
 	push {r4-r7,lr}
@@ -573,6 +580,12 @@ loc_809FD6A:
 	pop {r4-r7,pc}
 	thumb_func_end mysteryData_lookupForNavi_809FC96
 
+// symdb: Rolls the gold mystery data at the start of each mystery data roll, picking a GoldMysteryDataEntries record (map) by weight and a contents index from its table, into byte_2000210+2..+5, and clearing +6.
+// symdb: () -> nothing meaningful. Writes byte_2000210 +2 (u8 contents index), +3 (u8 record index), +4
+// symdb: (u16 map: group in +4, map number in +5) and clears +6 (u16). Preserves r4-r7; r0-r3 and flags
+// symdb: clobbered. Uses 0x30 bytes of stack. Two weighted picks (pickWeightedIndex_8000E3A, the second
+// symdb: through sub_809FA68), each advancing the primary RNG 2 + (rng >> 30) + (iCurrFrame & 3) times.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FD70.yaml
 	thumb_local_start
 sub_809FD70:
 	push {r4-r7,lr}

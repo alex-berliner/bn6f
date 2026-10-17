@@ -3106,6 +3106,8 @@ byte_203CB04:: // 0x203cb04
 	navi_stats_struct eBattleNaviStats203CB10 // 0x203cb10
 	navi_stats_struct eBattleNaviStats203CB74 // 0x203cb74
 	.space 8
+// symdb: Word 0 of the outgoing battle link packet, a tag naming what the packet carries (0x12345678 the battle-start state, 0x1F2F3F4F the result record, ...); it is sent last, so the receiver waits for it to know the packet arrived.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_203CBE0.yaml
 dword_203CBE0:: // 0x203cbe0
 	.space 4
 // symdb: Payload of the outgoing battle link packet (dword_203CBE0 + 4); at battle phase 4 its first word is the battle's RNG seed snapshot.
@@ -3152,6 +3154,8 @@ byte_203CDA8:: // 0x203cda8
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eBattleFolder.yaml
 eBattleFolder:: // 0x203cdb0
 	.space 56
+// symdb: Slot 28 of the battle folder eBattleFolder (u16 chip id | code << 9); while the folder is built it holds the first Tag chip, which the shuffle then moves into the folder.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/word_203CDE8.yaml
 word_203CDE8:: // 0x203cde8
 	.space 2
 byte_203CDEA:: // 0x203cdea

@@ -7302,6 +7302,11 @@ off_804A300:
 	.word eS200AC80
 	thumb_func_end sub_804A2E8
 
+// symdb: Per-frame callback of the chip trader subsystem (main_subsystemJumpTable 0x34) that runs the trader screen's current state handler, updates its objects and advances the primary RNG once, discarding the value.
+// symdb: () -> nothing meaningful. Calls the state handler with r5 = &sSubmenu. Preserves r4-r7 and r8,
+// symdb: r9, r12 (saved on the stack); r0-r2 come back holding the caller's r8, r9, r12; r3 and flags
+// symdb: clobbered. Side effect: one GetRNG call (primary seed advanced), its result dropped.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ChipTraderControl.yaml
 	thumb_func_start ChipTraderControl
 ChipTraderControl:
 	push {r4-r7,lr}

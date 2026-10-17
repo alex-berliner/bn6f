@@ -4,6 +4,8 @@ CompText87385CC::
 	.incbin "data/textscript/compressed/CompText87385CC.s.lz"
 CompText87388A8::
 	.incbin "data/textscript/compressed/CompText87388A8.s.lz"
+// symdb: LZ-compressed text archive of MegaMan's Humor-program jokes, shown on an L press while Humor is installed; each area's script picks its joke with the random-branch text opcode F0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/CompText8738B24.yaml
 CompText8738B24::
 	.incbin "data/textscript/compressed/CompText8738B24.s.lz"
 CompText873A528::
@@ -825,6 +827,8 @@ CompText8783ED0::
 	.incbin "data/textscript/compressed/CompText8783ED0.s.lz"
 CompText878460C::
 	.incbin "data/textscript/compressed/CompText878460C.s.lz"
+// symdb: LZ-compressed NPC text archive of Central Area 1 (map 0x90/0x00, slot 4); its random-branch (F0) scripts are the NetCafe rumors retold and a 50/50 3000 Zenny or 10 BugFrags prize.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/CompText8784908.yaml
 CompText8784908::
 	.incbin "data/textscript/compressed/CompText8784908.s.lz"
 CompText87859C0::
@@ -1319,6 +1323,8 @@ EmptyCompText87A3168::
 	.incbin "data/textscript/compressed/EmptyCompText87A3168.s.lz"
 EmptyCompText87A3174::
 	.incbin "data/textscript/compressed/EmptyCompText87A3174.s.lz"
+// symdb: LZ-compressed NPC text archive of the Oxygen Tank Comp (map 0x8D/0x0A, slot 4), with the Virus Battle Machine V4 Mr. Prog whose repeat prize is a 50/50 random branch (F0) between 2000 Zenny and 8 BugFrags.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/CompText87A3180.yaml
 CompText87A3180::
 	.incbin "data/textscript/compressed/CompText87A3180.s.lz"
 CompText87A3624::

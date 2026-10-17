@@ -200,6 +200,10 @@ nullsub_69:
 	mov pc, lr
 	thumb_func_end nullsub_69
 
+// symdb: Mr. Weather comp (map group 0x83): spawns the current map's map objects by passing its spawn list (off_806A1F8[MapNumber]) to SpawnObjectsFromList.
+// symdb: (r10 = toolkit) -> r0 = the number of objects spawned (SpawnObjectsFromList's result); no
+// symdb: register arguments; r4-r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/MrWeatherComp_SpawnMapObjectsForMap.yaml
 	thumb_func_start MrWeatherComp_SpawnMapObjectsForMap
 MrWeatherComp_SpawnMapObjectsForMap:
 	push {lr}

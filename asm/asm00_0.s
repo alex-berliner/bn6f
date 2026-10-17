@@ -1416,6 +1416,11 @@ loc_8000CA8:
 	pop {r4-r6,pc}
 	thumb_func_end ShuffleByteList_SecondaryRNG
 
+// symdb: Shuffles a list of u16 in place with the primary RNG, making r2 swaps of two entries, each index a GetPositiveSignedRNG draw mod r1 (the list length).
+// symdb: (r0 = u16 *list, r1 = n, the list length (each index is a draw mod n), r2 = number of swaps,
+// symdb: must be nonzero) -> r0 = list, r1 = n, r2 = 0, r3 = 2 * the last swap's first index; r4-r6
+// symdb: preserved; clobbers lr and the flags. Two GetPositiveSignedRNG calls per swap.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ShuffleHwordList_PrimaryRNG.yaml
 	thumb_func_start ShuffleHwordList_PrimaryRNG
 ShuffleHwordList_PrimaryRNG:
 	push {r4-r6,lr}
@@ -1447,11 +1452,10 @@ loc_8000CDC:
 	pop {r4-r6,pc}
 	thumb_func_end ShuffleHwordList_PrimaryRNG
 
-// symdb: In-place Fisher–Yates-style shuffle of a u16 array using the secondary RNG and BIOS Sqrt as the index source.
-// symdb: void shuffleHwordList_SecondaryRNG_08000D12(const u16 *r0_array, u32 r1_rngState, u32 r2_count);
-// symdb: // returns r0 = r0_array, r1 = r1_rngState, r2 = 0, r3 = last computed halfword byte-offset; //
-// symdb: clobbers nz,c,v; preserves r0/r1/r4/r5/r6/r7.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/ShuffleHwordList_SecondaryRNG.yaml
+// symdb: Shuffles a u16 list in place by r2 random swaps: each swap picks two indices as secondary-RNG values modulo the list length (BIOS Div).
+// symdb: (r0 = u16 *list, r1 = list length, r2 = number of swaps, at least 1) -> r0, r1 unchanged, r2 =
+// symdb: 0, r3 = 2 * the first index of the last swap; r4-r6 restored; clobbers flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ShuffleHwordList_SecondaryRNG.yaml
 	thumb_func_start ShuffleHwordList_SecondaryRNG
 ShuffleHwordList_SecondaryRNG:
 	push {r4-r6,lr}

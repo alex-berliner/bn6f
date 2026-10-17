@@ -3063,6 +3063,8 @@ cutscenescript_808F5BA:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Warp data entry (WarpData, 0x10 bytes) for the Mr. Weather comp cleanup cutscene's jack-out warp: map 0x00:0x00, warp type 0, facing 4, X/Y/Z 0; with transition type 1 the destination comes from GameState's saved real-world place instead.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_808F5C4.yaml
 unk_808F5C4:
 	.word 0x04000000, 0x00000000, 0x00000000, 0x00000000
 off_808F5D4::
