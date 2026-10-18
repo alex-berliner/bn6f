@@ -2173,6 +2173,10 @@ sub_80A5E00:
 	b loc_80A5E0A
 	thumb_func_end sub_80A5E00
 
+// symdb: Picks an object's animation from the octant of the angle toward a target position, reapplying sprite state only when the chosen animation changes.
+// symdb: (r0 = target x, r1 = target y; r5 = object pointer) -> r0 = clobbered; updates object sprite
+// symdb: animation, shadow flag, and cached anim index at r5+0x34
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E08.yaml
 	thumb_local_start
 sub_80A5E08:
 	push {r4,lr}
@@ -4273,6 +4277,10 @@ locret_80A7452:
 	pop {pc}
 	thumb_func_end battleObject_checkPanelMatch_80A743C
 
+// symdb: Overworld object turns to face the player, picking a direction animation from a per-direction table and skipping disabled directions.
+// symdb: (r5 = object pointer, r0-r3 clobbered) -> r0 = chosen animation index; writes object fields 0x05
+// symdb: (current anim) and 0x30; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7454.yaml
 	thumb_local_start
 sub_80A7454:
 	push {r4-r7,lr}
@@ -6581,6 +6589,10 @@ loc_80A8608:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A85B4
 
+// symdb: NPC-side trigger: once story flag 1717 is set, sets event flag 9D9 and switches the object's state when the player walks within 8 units of it.
+// symdb: (r5 = object, fields +0xc/+0x10 = its X/Y) -> void; sets EVENT_9D9 and rewrites object state
+// symdb: bytes on trigger
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A860C.yaml
 	thumb_local_start
 sub_80A860C:
 	push {r4,lr}

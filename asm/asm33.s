@@ -5720,6 +5720,10 @@ off_8125D90:
 	.word byte_81249A4
 	thumb_func_end battle_drawCustFolderSlots_8125D10
 
+// symdb: Per-frame redraw of the chip-folder select screen, laying out tile strips, chip icons and selection slots into tile block 2, with a two-layout variant selected by screen state.
+// symdb: (r5/r7 = folder-screen work struct) -> r0 = undefined; no meaningful flags; draws via BG/callee
+// symdb: routines
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125D94.yaml
 	thumb_local_start
 sub_8125D94:
 	push {r4-r7,lr}

@@ -1341,6 +1341,9 @@ map_setupEnterMapAfterWarp_803423C:
 	thumb_func_end map_setupEnterMapAfterWarp_803423C
 
 // () -> void
+// symdb: One-time video/GFX setup and state reset that starts the jack-in animation screen (VRAM reset, overlay palette, decompressed GFX, LCD control, fade, state fields).
+// symdb: (no args; r5 = global jack-in/animation state object) -> r0 = 0; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034268.yaml
 	thumb_local_start
 sub_8034268:
 	push {lr}

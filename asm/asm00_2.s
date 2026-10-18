@@ -1442,6 +1442,10 @@ loc_800F668:
 	mov pc, lr
 	thumb_func_end clearEntryOfBattleStateBattleObjectList_800F656
 
+// symdb: Counts down a battle object's lifetime timer and destroys the object (HP=0, collision cleared) when it expires or the battle ends.
+// symdb: (r5 = battle object header) -> r0 = scratch; updates oBattleObject_Timer, oObjectHeader_Flags,
+// symdb: oBattleObject_HP; returns void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F672.yaml
 	thumb_func_start sub_800F672
 sub_800F672:
 	push {lr}
@@ -11059,6 +11063,10 @@ dword_8013908:
 	.word 0x10000
 	thumb_func_end sub_8013892
 
+// symdb: Per-battle-object start-of-turn reset: refresh navi stat bytes into AI data and clear per-turn combat state (flags, invulnerability, subordinate object).
+// symdb: (r0 = battle object ptr, kept in r5) -> r0 = clobbered; tail-branches into sub_801393A to
+// symdb: continue the per-object loop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801390C.yaml
 	thumb_local_start
 sub_801390C:
 	push {r6,r7,lr}

@@ -4294,6 +4294,10 @@ locret_810FE5A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_810FE18
 
+// symdb: Enemy AI attack setup: reserves its panel, targets the nearest enemy, and launches a version-indexed dash/lunge with attack 0xA.
+// symdb: (r5 = BattleObject, r6 = AI state, r7 = AI attack vars) -> r0 = 0 stored to oAIState_ScriptId;
+// symdb: sets velocities, attack vars, CANNOT_SLIDE flag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FE5C.yaml
 	thumb_local_start
 sub_810FE5C:
 	push {lr}
@@ -5383,6 +5387,10 @@ locret_81107F0:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_81107BC
 
+// symdb: Per-frame update for a dash/charge attack state: moves the object by its velocity, syncs panels mid-move, and on timer expiry commits it to the target panel and switches to the next attack state.
+// symdb: (r5 = battle object, r7 = AI attack vars) -> void; object fields X/Y updated, AIAttackVars
+// symdb: step/attack state mutated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81107F2.yaml
 	thumb_local_start
 sub_81107F2:
 	push {lr}
@@ -8612,6 +8620,10 @@ locret_811233E:
 	pop {pc}
 	thumb_func_end battleObject_aiSetupCombatInit_81122A0
 
+// symdb: AI attack-script step: decrements a turn counter and, while it is still positive, selects a target panel, records direction/panel params, and starts attack state 0xC; when the counter runs out it resets the script id.
+// symdb: (r5 = battle object, r6 = AI state block, r7 = AI attack-vars block) -> r0 = 1 after setup or
+// symdb: via callees; also writes script id (oAIState_ScriptId) and many oAIAttackVars_* fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112340.yaml
 	thumb_local_start
 sub_8112340:
 	push {lr}
@@ -9162,6 +9174,10 @@ locret_811281E:
 	pop {pc}
 	thumb_func_end sub_81127E8
 
+// symdb: AI attack-state step that counts down on a highlighted destination panel, then warps the enemy object onto it with spawn effects and resets the step timer.
+// symdb: (r0-r3 unused on entry; r5 = battle object, r7 = AI attack vars) -> r0 = 0/8 stored; flags from
+// symdb: comparisons and callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112820.yaml
 	thumb_local_start
 sub_8112820:
 	push {r4,lr}
@@ -14347,6 +14363,9 @@ locret_8115396:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8115340
 
+// symdb: Per-frame update for an AI attack's hop/leap: integrates X/Z velocity along an arc, then lands the object on its reserved future panel.
+// symdb: (r5 = battle object, r7 = oAIAttackVars) -> void; sets object anim, flags, and state timer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115398.yaml
 	thumb_local_start
 sub_8115398:
 	push {lr}
@@ -19400,6 +19419,9 @@ off_8117C64:
 	.word sub_8117CC4+1
 	thumb_func_end sub_8117C4C
 
+// symdb: Per-frame update for a menu cursor object: resets its sprite animation when flagged, then redraws the cursor/highlight.
+// symdb: (r0/r5 = cursor object pointer) -> r0 = clobbered; flags from tst of frame attribute byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117C70.yaml
 	thumb_local_start
 sub_8117C70:
 	push {lr}
@@ -23686,6 +23708,10 @@ loc_8119C02:
 	.balign 4, 0x00
 	thumb_func_end object_setSpritePosition_8119BE8
 
+// symdb: Computes the graphics/palette index used for the PET status icon sprite, based on whether a Navi is present, event flag 200AD04, and the Navi's stats byte 0x10.
+// symdb: () -> r0 = index into the PET status icon sprite resource table (0, 4, table[byte], or
+// symdb: byte*5+0x12, +4 when no Navi)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119C08.yaml
 	thumb_local_start
 sub_8119C08:
 	push {r4-r7,lr}
@@ -25082,6 +25108,10 @@ byte_811A600:
 	.byte 0x4C, 0x0, 0xD0, 0xFF, 0x5F, 0x0
 	thumb_func_end sprite_setPositionByFlags_811A5BC
 
+// symdb: Sets a battle entity's sprite animation to the given index (with data load and no-shadow flag), unless it already shows that animation.
+// symdb: (r0 = animation index, r1 = entity index into eStructArr2008450) -> void; flags from
+// symdb: getStructFrom2008450's status byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A610.yaml
 	thumb_func_start sub_811A610
 sub_811A610:
 	push {r4,r5,lr}
@@ -31965,6 +31995,9 @@ dword_811DFFC:
 	.word 0x3F800000
 	thumb_func_end sub_811DFD4
 
+// symdb: One-shot switch of an object's sprite to animation 1 (no shadow), guarded by a byte so it only runs the first frame it's reached.
+// symdb: (r5 = object pointer, set by caller) -> void; no flags relevant
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E000.yaml
 	thumb_local_start
 sub_811E000:
 	push {lr}
@@ -33976,6 +34009,10 @@ off_811EF9C:
 	.word NULL
 	thumb_func_end sub_811EF8C
 
+// symdb: Refreshes the overworld HUD tile graphics for the current area name, also caching the current PET navi's id and two HP-related stats.
+// symdb: () -> r0 undefined; writes toolkit Unk200a220 struct fields +8/+0xC, builds gfx in unk_200BEA0,
+// symdb: repacks into VRAM 0x06015000
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EFB8.yaml
 	thumb_local_start
 sub_811EFB8:
 	push {r4-r7,lr}

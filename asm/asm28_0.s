@@ -770,6 +770,9 @@ byte_8099D23:
 end_cutscene_8099D41:
   .align 2, 0
 
+// symdb: Applies a location/spawn entry from a 20-byte-per-entry table: restores a saved word, sets the overworld player's facing and coordinates, and positions the camera.
+// symdb: (r5 = state struct, entry id in [r5+4]) -> r0 = 0; r7 = table entry base
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099D44.yaml
 	thumb_local_start
 sub_8099D44:
 	push {r4-r7,lr}

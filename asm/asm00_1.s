@@ -12518,6 +12518,10 @@ locret_8008B7A:
 	pop {pc}
 	thumb_func_end sub_8008B52
 
+// symdb: Per-frame handler for the player-defeat battle phase: plays the lose music, dispatches the lose effect, waits out a timer, then hands off to the battle-end game state.
+// symdb: (r0..r4 scratch; r5 = battle-step struct, r10 = toolkit) -> void; sets [r5,#3] phase and
+// symdb: [r5,#4], writes oGameState_BattleEndSubState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008B7C.yaml
 	thumb_local_start
 sub_8008B7C:
 	push {r4,lr}
@@ -12814,6 +12818,10 @@ off_8008D98:
 	.word dword_203CA70
 	thumb_func_end sub_8008D60
 
+// symdb: Per-frame battle-start state handler: polls both players' virtual joypads, on first entry zeroes the custom gauge and kicks off the battle-intro effect, then holds the state until the link partner is ready.
+// symdb: (r5 = battle state struct: +0 word state, +3 byte substate, +4 byte flag, +8 halfword timer) ->
+// symdb: r0 = clobbered; may set state word to 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008D9C.yaml
 	thumb_local_start
 sub_8008D9C:
 	push {lr}
@@ -13062,6 +13070,10 @@ locret_8008F7A:
 	pop {pc}
 	thumb_func_end sub_8008F52
 
+// symdb: Per-frame handler for the defeat branch of the battle-end state machine: marks the losing side, plays the loss jingle, kicks off the lose effect, and after a countdown hands control back to the game state.
+// symdb: (r0 = battle-end state struct, fields at +3 step, +8 timer, +4 next step) -> r0 = garbage/struct
+// symdb: ptr from last callee; sets oGameState_BattleEndSubState = 2 when done
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008F7C.yaml
 	thumb_local_start
 sub_8008F7C:
 	push {r4,lr}
@@ -15351,6 +15363,10 @@ locret_8009F5C:
 	pop {pc}
 	thumb_func_end sub_8009F3A
 
+// symdb: Battle sub-phase that fades the screen out, then stops music, clears objects, and advances the battle state
+// symdb: (r0-r4 unused, r5 = battleState struct) -> void; sets oBattleState_Index_00 = 8 when fade
+// symdb: completes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009F5E.yaml
 	thumb_local_start
 sub_8009F5E:
 	push {lr}

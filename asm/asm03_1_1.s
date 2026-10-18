@@ -4808,6 +4808,11 @@ loc_803AFBC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AF90
 
+// symdb: Moves the chip-select/folder grid cursor in response to the D-pad and returns which button (B/A/Start/L/R) was pressed for the caller's state dispatcher.
+// symdb: (r0 = cursor-table index (0..1, callers pass 0); r5 = menu-state object: cursor slot at +8,
+// symdb: previous slot at +9; joypad via toolkit at r10) -> r0 = 0 if no action, else 1=B, 2=A, 3=Start,
+// symdb: 4=L, 5=R; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AFC2.yaml
 	thumb_func_start sub_803AFC2
 sub_803AFC2:
 	push {r4-r7,lr}
@@ -8748,6 +8753,9 @@ off_803CF70:
 	.word 0x3E8
 	thumb_func_end pet_addCurNaviStat0x3ECapped_803CF3C
 
+// symdb: Adds an amount to the current PET navi's HP stat (0x40), clamping it at the navi's max (stat 0x42).
+// symdb: (r0 = navi slot index, r1 = amount to add) -> r0 = undefined (destroyed); no meaningful flags.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CF74.yaml
 	thumb_local_start
 sub_803CF74:
 	push {r4-r7,lr}
