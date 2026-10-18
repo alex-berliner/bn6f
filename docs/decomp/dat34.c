@@ -1196,7 +1196,7 @@ int sub_812E6CC()
         *(v0 + 3) = 16;
         *(v0 + 30) = 0;
         ZeroFillByWord(dword_20251A0, 16);
-        sub_812AFC8();
+        screens3_loadBackgroundTiles();
     }
     return result;
 }

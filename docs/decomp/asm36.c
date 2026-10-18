@@ -1286,7 +1286,7 @@ int sub_8130F78()
         *(v0 + 3) = 32;
         *(v0 + 30) = 0;
         ZeroFillByWord(dword_20251A0, 16);
-        sub_812AFC8();
+        screens3_loadBackgroundTiles();
     }
     return result;
 }
@@ -4739,7 +4739,7 @@ LABEL_17:
         v5 += 4;
     }
     while ( v5 <= 96 );
-    v7 = sub_81349E8();
+    v7 = battle_checkSpawnCellCost();
     if ( !(v7 & 1) )
     {
         if ( !(*(v0 + 76) & 1) )
@@ -4795,7 +4795,7 @@ signed int sub_8133D64()
     }
     while ( v1 <= 6 );
     v3 = v1 - 5;
-    v4 = sub_81349E8();
+    v4 = battle_checkSpawnCellCost();
     v6 = v5;
     v7 = 2;
     if ( v4 & 2 )
@@ -5446,7 +5446,7 @@ int __fastcall sub_81349B4(int a1, int a2, __int16 a3, int a4)
 
 
 // 0x81349e8
-signed int sub_81349E8()
+signed int battle_checkSpawnCellCost()
 {
     int v0; // r5
     signed int v1; // r6
@@ -6727,7 +6727,7 @@ int sub_813581C()
 
 
 // 0x8135830
-int sub_8135830()
+int navicust_handleBoardInput()
 {
     int v0; // r5
     int v1; // r10
@@ -7186,7 +7186,7 @@ void __noreturn sub_8135B94()
 
 
 // 0x8135d8c
-signed int sub_8135D8C()
+signed int navicust_giveKeyItem14C()
 {
     return keyItems_RemoveFromInventoryAndGive_803CDF8(&dword_14C, 1);
 }
@@ -7203,7 +7203,7 @@ int __fastcall sub_8135D9C(int a1, int a2, int a3, int a4)
     if ( *v4 == 40 )
         sub_8135E6C();
     else
-        sub_8135E18();
+        battle_collectKeyItemCounts();
     *(v4 + 30) = 0;
     v5 = *(v4 + 32);
     *(v4 + 32) = 0;
@@ -7236,7 +7236,7 @@ int __fastcall sub_8135DF8(int a1)
 
 
 // 0x8135e18
-int *sub_8135E18()
+int *battle_collectKeyItemCounts()
 {
     _WORD *v0; // r6
     signed int v1; // r4
@@ -8736,7 +8736,7 @@ int sub_8136F40()
 
 
 // 0x8136f74
-int sub_8136F74()
+int navicust_runOnceDialog()
 {
     int result; // r0
     char v1; // zf
@@ -9470,7 +9470,7 @@ int sub_8137550()
 
 
 // 0x813756c
-int sub_813756C()
+int navicust_queueBeastOutDialog()
 {
     int result; // r0
     char v1; // zf

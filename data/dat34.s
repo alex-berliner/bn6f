@@ -1553,7 +1553,7 @@ loc_812E6E4::
 	ldr r0, off_812E70C // =unk_20251A0 
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812E710 // =byte_8129150 
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void

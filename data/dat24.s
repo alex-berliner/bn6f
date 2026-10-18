@@ -3143,7 +3143,7 @@ byte_808F690::
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_BE6
 	cs_write_gamestate_byte byte1=0x09 byte2=0x00
-	cs_call_native_with_return_value ptr1=sub_808FF9C+1
+	cs_call_native_with_return_value ptr1=ow_spawnMapObject1b+1
 	cs_chatbox_cmd_8037a70
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64

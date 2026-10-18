@@ -1237,7 +1237,7 @@ signed int battle_aiBeastSPageStep_80A5C9C()
     v1 = *(v0 + 10);
     if ( v1 <= 0 )
     {
-        sub_80A5CE4();
+        sprite_updateAnimFacingPlayer();
         updateFlags_809E0B0();
         sub_80A5E44();
         reqBBS_RunTextScriptWhoAmI(0, *(v0 + 6));
@@ -1257,7 +1257,7 @@ signed int battle_aiBeastSPageStep_80A5C9C()
 
 
 // 0x80a5ce4
-int sub_80A5CE4()
+int sprite_updateAnimFacingPlayer()
 {
     __int64 v0; // r0
 
@@ -3209,7 +3209,7 @@ void battle_beastSpStepper_80A7912()
 
 
 // 0x80a796c
-void __noreturn sub_80A796C()
+void __noreturn ow_objectBrightenToWhiteUpdate()
 {
     int v0; // r5
     int v1; // r3
@@ -3535,7 +3535,7 @@ void *battle_checkBeastSpTrigger_80A7BC0()
                     result = 0x100000;
                     if ( v9 <= 0x100000 && v10 <= 0x100000 )
                     {
-                        v11 = sub_81420F0(*(v0 + 4));
+                        v11 = beast_getMapGroupIdBase(*(v0 + 4));
                         SetEventFlag(v11);
                         *(v0 + 8) = 8;
                         PlaySoundEffect(115, v12, v13);
@@ -3781,7 +3781,7 @@ int battle_dispatchAIActionByAction_80A7E4C()
 
 
 // 0x80a7e6c
-signed int __noreturn sub_80A7E6C()
+signed int __noreturn ow_animWaitStep()
 {
     int v0; // r5
     int v1; // r7
@@ -3808,7 +3808,7 @@ signed int __noreturn sub_80A7E6C()
 
 
 // 0x80a7ea4
-int sub_80A7EA4()
+int object_waitThenSetAnim()
 {
     int v0; // r5
     int v1; // r7
@@ -4636,7 +4636,7 @@ void __noreturn overworldObject_spawnFromScenarioEffectIndex_80A8748()
 
 
 // 0x80a87d2
-void __noreturn sub_80A87D2()
+void __noreturn sprite_applyFrameAttrMode8()
 {
     Battle *v0; // r5
 
@@ -6835,12 +6835,12 @@ void __noreturn ow_initObjectSprite()
     *(v0 + 20) = sub_80AA04C(*(v0 + 4));
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80A9FB8();
+    ow_updateApproachObject();
 }
 
 
 // 0x80a9fb8
-void __noreturn sub_80A9FB8()
+void __noreturn ow_updateApproachObject()
 {
     int v0; // r5
     int v1; // r0
@@ -6913,12 +6913,12 @@ void __noreturn object_initSprite()
     *(v0 + 20) = sub_80AA134(*(v0 + 4));
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80AA0B8();
+    object_stepApproachTarget();
 }
 
 
 // 0x80aa0b8
-void __noreturn sub_80AA0B8()
+void __noreturn object_stepApproachTarget()
 {
     int v0; // r5
     int v1; // r0

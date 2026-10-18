@@ -843,7 +843,7 @@ jt_80895C0:
 	.word sub_80899F2+1
 	.word battleObject_beastOutActivate_8089A10+1
 	.word battle_handleChipLockoutTransition_8089A60+1
-	.word sub_8089ACA+1
+	.word ai_chipLockoutWaitState+1
 	.word battle_handleBeastOutStep_8089AE8+1
 	.word battle_tickChipLockoutLockoutAndAttack_8089B2E+1
 	.word owPlayer_handleBeastSpawnTransition_8089B54+1
@@ -883,7 +883,7 @@ loc_808966E:
 	bl sub_8089D26
 	mov r0, #0
 	bl sub_81421C8
-	bl sub_8089CC4
+	bl cutscene_startCameraScript
 	mov r0, #4
 	strb r0, [r5]
 loc_80896A0:
@@ -943,7 +943,7 @@ loc_80896F4:
 	strb r0, [r5]
 	b loc_8089700
 loc_80896FA:
-	bl sub_8089CC4
+	bl cutscene_startCameraScript
 	b loc_8089700
 loc_8089700:
 	mov r0, #1
@@ -1475,9 +1475,9 @@ loc_8089AC6:
 // symdb: AI state handler that idles while the chip lockout timer runs, then on expiry performs an action, restarts the 30-frame lockout, and switches the AI state to 0x68.
 // symdb: (r5 = AIData struct pointer, r0 unused on entry) -> r0 = 1 always; flags from
 // symdb: battle_tickChipLockout used internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089ACA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_chipLockoutWaitState.yaml
 	thumb_local_start
-sub_8089ACA:
+ai_chipLockoutWaitState:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089AE4
@@ -1491,7 +1491,7 @@ sub_8089ACA:
 loc_8089AE4:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089ACA
+	thumb_func_end ai_chipLockoutWaitState
 
 // symdb: Beast-out AI step: when chatbox/cutscene flag 0x80 is clear, advance chip-lockout and decide the controlled beast's next facing/animation state.
 // symdb: (r0 = toolkit via r10, r5 = battleObject, r7 = ?, lr) -> r0 = 1 ; side effects: clears PanelY in
@@ -1786,9 +1786,9 @@ loc_8089CC0:
 // symdb: Cutscene step that loads camera script byte_8089480 into a context object and starts it playing.
 // symdb: (r5 = scenario/cutscene context object; args unused) -> r0 clobbered; stores camera script ptr
 // symdb: at [r5,#0x3c], sets byte [r5,#0x13] = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_startCameraScript.yaml
 	thumb_local_start
-sub_8089CC4:
+cutscene_startCameraScript:
 	push {r4-r7,lr}
 	bl battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA
 	ldr r0, off_8089CD8 // =byte_8089480
@@ -1800,7 +1800,7 @@ sub_8089CC4:
 	.balign 4, 0
 off_8089CD8:
 	.word byte_8089480
-	thumb_func_end sub_8089CC4
+	thumb_func_end cutscene_startCameraScript
 
 	thumb_local_start
 sub_8089CDC:

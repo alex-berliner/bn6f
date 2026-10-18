@@ -3087,7 +3087,7 @@ void *startInMapWarpCutscene_80059D0()
 
 
 // 0x80059ec
-void *sub_80059EC()
+void *ow_startJackOutMapEnterCutscene()
 {
     int v0; // r2
     int v1; // r3
@@ -6669,7 +6669,7 @@ int battle_runLoserSequence_800825A()
             v3 = 102;
         *(v0 + 8) = v3;
         v4 = battle_getPhaseMode_800A152();
-        v5 = sub_800A8B2();
+        v5 = battle_getLoserEffectTimer();
         if ( v4 == 7 )
             v5 = 24;
         (battle_dispatchKindEffect_801E792)(v5);
@@ -8526,7 +8526,7 @@ int battle_runState4CountdownOrAdvance_80092C0()
 
 
 // 0x80092f0
-int sub_80092F0()
+int battle_stateIntroEffectWait()
 {
     int v0; // r5
     int result; // r0
@@ -8825,7 +8825,7 @@ signed int battle_initFadeToBattleResult_80094DA()
 
 
 // 0x800951e
-int sub_800951E()
+int battle_tutFullSynchroTextStep()
 {
     int v0; // r5
     int result; // r0
@@ -9116,7 +9116,7 @@ int sub_8009754()
 
 
 // 0x8009784
-int sub_8009784()
+int battle_state4WaitLinkReady()
 {
     int v0; // r5
     int result; // r0
@@ -11354,7 +11354,7 @@ int __fastcall battle_tickCustomScreenEffect_800A892(int a1)
 
 
 // 0x800a8b2
-int sub_800A8B2()
+int battle_getLoserEffectTimer()
 {
     int v0; // r0
 

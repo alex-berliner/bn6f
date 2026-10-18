@@ -70,7 +70,7 @@ void nullsub_27()
 
 
 // 0x806ff76
-int __fastcall sub_806FF76(int result, int a2)
+int __fastcall ow_swapStoryFlags(int result, int a2)
 {
     if ( result != 2 || a2 != 10 )
     {

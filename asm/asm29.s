@@ -1975,7 +1975,7 @@ battle_aiBeastSPageStep_80A5C9C:
 	ldrb r4, [r5,#0xa]
 	cmp r4, #0
 	bgt loc_80A5CBE
-	bl sub_80A5CE4
+	bl sprite_updateAnimFacingPlayer
 	bl owPlayer_lockPlayerForNonNPCDialogue_809E0B0 // () -> void
 	bl sub_80A5E44
 	mov r0, #0
@@ -2009,14 +2009,14 @@ locret_80A5CE0:
 // symdb: Updates a sprite object's animation so it faces toward the overworld player's position.
 // symdb: (r0 = object whose animation to update) -> r0 = animation-changed flag from
 // symdb: sprite_updateAnimByAngleToTarget; no flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5CE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateAnimFacingPlayer.yaml
 	thumb_local_start
-sub_80A5CE4:
+sprite_updateAnimFacingPlayer:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
 	bl sprite_updateAnimByAngleToTarget
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5CE4
+	thumb_func_end sprite_updateAnimFacingPlayer
 
 	thumb_local_start
 sub_80A5CF0:
@@ -4944,7 +4944,7 @@ off_80A78CC:
 off_80A78D0:
 	.word battle_beastSpInit+1
 	.word battle_beastSpStepper_80A7912+1
-	.word sub_80A796C+1
+	.word ow_objectBrightenToWhiteUpdate+1
 	.word sub_80A79D4+1
 	thumb_func_end battle_aiDispatchByAIDataBLeftAbility_80A78B8
 
@@ -5024,9 +5024,9 @@ off_80A7950:
 
 // symdb: Overworld object update handler that fades the object's sprite color from dark gray to white over ~30 frames and then frees the object.
 // symdb: (r5 = overworld object ptr; no args) -> void; updates object fields 0x14 and 0x24
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A796C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_objectBrightenToWhiteUpdate.yaml
 	thumb_local_start
-sub_80A796C:
+ow_objectBrightenToWhiteUpdate:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x24]
 	lsr r0, r0, #1
@@ -5068,7 +5068,7 @@ off_80A79C0:
 byte_80A79C4:
 	.byte 0x4, 0x6, 0x8, 0xA, 0xC, 0xE, 0x10, 0x12, 0x14, 0x16, 0x18
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0x1F
-	thumb_func_end sub_80A796C
+	thumb_func_end ow_objectBrightenToWhiteUpdate
 
 	thumb_local_start
 sub_80A79D4:
@@ -5400,7 +5400,7 @@ battle_checkBeastSpTrigger_80A7BC0:
 	cmp r3, r1
 	bgt locret_80A7C3C
 	ldrb r0, [r5,#4]
-	bl sub_81420F0
+	bl beast_getMapGroupIdBase
 	mov r0, r0
 	bl SetEventFlag
 	mov r0, #8
@@ -5721,7 +5721,7 @@ battleObject_clearActionPhaseUnk09_80A7E44:
 // symdb: Indirect tail-call dispatch on battle object AIData by current action byte (r5->+9), invoking one of three action handlers.
 // symdb: (r0 = AIData base via r5, r1 = log2 of step?, r2 = ?, r3 = saved ptr) -> r0 = new r0 written by
 // symdb: callee (varies: 0x4, 0x1d, 0x14, 0x13, 0x12, 0x11, ...); side effects: jumps via tail-call into
-// symdb: one of sub_80A7E6C / sub_80A7EA4 / sub_80A7EBE; no other stack use
+// symdb: one of ow_animWaitStep / object_waitThenSetAnim / sub_80A7EBE; no other stack use
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIActionByAction_80A7E4C.yaml
 	thumb_local_start
 battle_dispatchAIActionByAction_80A7E4C:
@@ -5736,17 +5736,17 @@ battle_dispatchAIActionByAction_80A7E4C:
 off_80A7E5C:
 	.word off_80A7E60
 off_80A7E60:
-	.word sub_80A7E6C+1
-	.word sub_80A7EA4+1
+	.word ow_animWaitStep+1
+	.word object_waitThenSetAnim+1
 	.word sub_80A7EBE+1
 	thumb_func_end battle_dispatchAIActionByAction_80A7E4C
 
 // symdb: Overworld NPC-script step: plays an animation variant, starts a ~30-frame wait, decrements a repeat counter, then advances the script state.
 // symdb: (r0-r3 = scratch; r5 = object struct ptr, r7 = script/state struct ptr) -> r0 = 4 written to
 // symdb: [r5,#9]; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7E6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_animWaitStep.yaml
 	thumb_local_start
-sub_80A7E6C:
+ow_animWaitStep:
 	push {r4-r7,lr}
 	ldrb r0, [r7,#3]
 	add r0, #4
@@ -5772,14 +5772,14 @@ loc_80A7E9E:
 	mov r0, #4
 	strb r0, [r5,#9]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7E6C
+	thumb_func_end ow_animWaitStep
 
 // symdb: Object tick that counts down a delay, then switches the object's sprite to a stored animation and marks the object state as 8.
 // symdb: () -> void; r5 = object (timer at +0x24, state byte at +9), r7 = struct whose +3 holds the
 // symdb: animation index; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7EA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_waitThenSetAnim.yaml
 	thumb_local_start
-sub_80A7EA4:
+object_waitThenSetAnim:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x24]
 	sub r0, #1
@@ -5792,7 +5792,7 @@ sub_80A7EA4:
 	strb r0, [r5,#9]
 locret_80A7EBC:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7EA4
+	thumb_func_end object_waitThenSetAnim
 
 	thumb_local_start
 sub_80A7EBE:
@@ -6803,7 +6803,7 @@ off_80A8738:
 	.word off_80A873C
 off_80A873C:
 	.word overworldObject_spawnFromScenarioEffectIndex_80A8748+1
-	.word sub_80A87D2+1
+	.word sprite_applyFrameAttrMode8+1
 	.word sub_80A87E8+1
 	thumb_func_end sub_80A8728
 
@@ -6871,9 +6871,9 @@ byte_80A87C8:
 // symdb: If the current sprite frame's attribute byte has bit 7 set, writes 8 to object field +8, then runs the sprite update.
 // symdb: (r0 = object/sprite ptr passed to sprite_getFrameParameters; r5 = object ptr, pre-set by caller)
 // symdb: -> r0 = result of sprite_update; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A87D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_applyFrameAttrMode8.yaml
 	thumb_local_start
-sub_80A87D2:
+sprite_applyFrameAttrMode8:
 	push {r4-r7,lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -6884,7 +6884,7 @@ sub_80A87D2:
 loc_80A87E2:
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A87D2
+	thumb_func_end sprite_applyFrameAttrMode8
 
 	thumb_local_start
 sub_80A87E8:
@@ -10013,12 +10013,12 @@ off_80A9F68:
 	.word off_80A9F6C
 off_80A9F6C:
 	.word ow_initObjectSprite+1
-	.word sub_80A9FB8+1
+	.word ow_updateApproachObject+1
 	.word sub_80A9FFC+1
 	thumb_func_end sub_80A9F58
 
 // symdb: Initializes an overworld object's sprite from fields in its struct: loads the sprite resource, sets animation, priority and palette, then advances the object's state.
-// symdb: () -> void; operates on the current object in r5, tail-calls sub_80A9FB8
+// symdb: () -> void; operates on the current object in r5, tail-calls ow_updateApproachObject
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_initObjectSprite.yaml
 	thumb_local_start
 ow_initObjectSprite:
@@ -10044,16 +10044,16 @@ ow_initObjectSprite:
 	str r0, [r5,#0x24]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A9FB8
+	bl ow_updateApproachObject
 	pop {pc}
 	thumb_func_end ow_initObjectSprite
 
 // symdb: Per-frame map-object update: steps the object's 16.16 value at +0x14 by 1 toward a target from sub_80AA04C, and for object kind 8 sets event flag EVENT_1640 while the value's high word equals 0x20.
 // symdb: (r0 = object kind byte from [r5+4], r5 = object struct) -> r0 = sprite_update result; updates
 // symdb: [r5+0x14] and event flag EVENT_1640
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9FB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateApproachObject.yaml
 	thumb_local_start
-sub_80A9FB8:
+ow_updateApproachObject:
 	push {lr}
 	mov r4, #1
 	ldrb r0, [r5,#4]
@@ -10086,7 +10086,7 @@ loc_80A9FD8:
 loc_80A9FF6:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80A9FB8
+	thumb_func_end ow_updateApproachObject
 
 	thumb_local_start
 sub_80A9FFC:
@@ -10144,7 +10144,7 @@ off_80AA068:
 	.word off_80AA06C
 off_80AA06C:
 	.word object_initSprite+1
-	.word sub_80AA0B8+1
+	.word object_stepApproachTarget+1
 	.word sub_80AA0FC+1
 	thumb_func_end sub_80AA058
 
@@ -10175,16 +10175,16 @@ object_initSprite:
 	str r0, [r5,#0x24]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80AA0B8
+	bl object_stepApproachTarget
 	pop {pc}
 	thumb_func_end object_initSprite
 
 // symdb: Per-frame object step that eases a 32-bit counter at obj+0x14 toward a target value returned by sub_80AA134 and raises event flag 1640 once the counter's high half reaches 0x20 while obj+4 is 0.
 // symdb: (r0 = unused on entry; r5 = overworld object struct) -> updates [r5+0x14] by ±1 toward
 // symdb: sub_80AA134([r5+4]) and sets/clears EVENT_1640; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA0B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepApproachTarget.yaml
 	thumb_local_start
-sub_80AA0B8:
+object_stepApproachTarget:
 	push {lr}
 	mov r4, #1
 	ldrb r0, [r5,#4]
@@ -10217,7 +10217,7 @@ loc_80AA0D8:
 loc_80AA0F6:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80AA0B8
+	thumb_func_end object_stepApproachTarget
 
 	thumb_local_start
 sub_80AA0FC:

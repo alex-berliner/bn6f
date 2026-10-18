@@ -5345,7 +5345,7 @@ JumpTable8005948:
   // jack out anim, auto camera scroll to another area in the same map, jack in anim, walk in direction
 	.word startInMapWarpCutscene_80059D0+1 // (self: * GameState $r5) -> ()
   // jack out warp
-	.word sub_80059EC+1 // (self: * GameState $r5) -> ()
+	.word ow_startJackOutMapEnterCutscene+1 // (self: * GameState $r5) -> ()
   // levbus warp
 	.word sub_8005A00+1 // (self: * GameState $r5) -> ()
   // underground warp
@@ -5449,9 +5449,9 @@ startInMapWarpCutscene_80059D0: // (self: * GameState $r5) -> ()
 // symdb: Clears story flag EVENT_1703 and launches the 'OnMapEnterAfterJackOut' cutscene with param 0, triggered when re-entering a map after jack-out.
 // symdb: (r5 = GameState* self, passed via fixed register per calling convention) -> r0 = undefined; no
 // symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80059EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startJackOutMapEnterCutscene.yaml
 	thumb_local_start
-sub_80059EC: // (self: * GameState $r5) -> ()
+ow_startJackOutMapEnterCutscene: // (self: * GameState $r5) -> ()
 	push {lr}
 	movflag EVENT_1703
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -5461,7 +5461,7 @@ sub_80059EC: // (self: * GameState $r5) -> ()
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 
 	pop {pc}
-	thumb_func_end sub_80059EC
+	thumb_func_end ow_startJackOutMapEnterCutscene
 
 	thumb_local_start
 sub_8005A00: // (self: * GameState $r5) -> ()
@@ -11296,7 +11296,7 @@ loc_800829A:
 	strh r4, [r5,#8]
 	bl battle_getPhaseMode_800A152
 	mov r4, r0
-	bl sub_800A8B2
+	bl battle_getLoserEffectTimer
 	cmp r4, #7
 	bne loc_80082AC
 	mov r0, #0x18
@@ -13414,7 +13414,7 @@ off_80091BC:
 	// 0x14
 	.word battle_initFadeToBattleResult_80094DA+1
 	// 0x18
-	.word sub_800951E+1
+	.word battle_tutFullSynchroTextStep+1
 	// 0x1C
 	.word sub_8009552+1
 	// 0x20
@@ -13572,7 +13572,7 @@ off_80092B0:
 	.word off_80092B4
 off_80092B4:
 	.word battle_runState4CountdownOrAdvance_80092C0+1
-	.word sub_80092F0+1
+	.word battle_stateIntroEffectWait+1
 	.word sub_8009314+1
 	thumb_func_end battle_dispatchStatePhase_80092A0
 
@@ -13615,9 +13615,9 @@ locret_80092EE:
 // symdb: Battle state handler: on entry fires the queued battle sub-effect (intro/effect kind), then waits until cross-net battle readiness allows advancing to state phase 8.
 // symdb: (r5 = battleState struct) -> void; reads/writes oBattleState_SubPhaseInitFlag,
 // symdb: oBattleState_State4EventCount, oBattleState_StatePhaseAndInitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80092F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateIntroEffectWait.yaml
 	thumb_local_start
-sub_80092F0:
+battle_stateIntroEffectWait:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -13636,7 +13636,7 @@ loc_8009306:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009312:
 	pop {pc}
-	thumb_func_end sub_80092F0
+	thumb_func_end battle_stateIntroEffectWait
 
 	thumb_local_start
 sub_8009314:
@@ -13948,9 +13948,9 @@ locret_800951C:
 // symdb: (r5 = *BattleState) -> void; writes oBattleState_Index_01 (0x10/0x14), sets
 // symdb: oBattleState_SubPhaseInitFlag = 4, zeroes oBattleState_StatePhaseAndInitFlag; flags set by
 // symdb: callee branches
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800951E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tutFullSynchroTextStep.yaml
 	thumb_local_start
-sub_800951E:
+battle_tutFullSynchroTextStep:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -13977,7 +13977,7 @@ loc_800954A:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009550:
 	pop {pc}
-	thumb_func_end sub_800951E
+	thumb_func_end battle_tutFullSynchroTextStep
 
 	thumb_local_start
 sub_8009552:
@@ -14234,7 +14234,7 @@ off_8009744:
 	.word off_8009748
 off_8009748:
 	.word sub_8009754+1
-	.word sub_8009784+1
+	.word battle_state4WaitLinkReady+1
 	.word sub_80097A8+1
 	thumb_func_end sub_8009734
 
@@ -14272,9 +14272,9 @@ locret_8009782:
 // symdb: Battle main-state phase handler: kicks off the battle intro effect once, then waits for the linked/cross-net battle to be ready before advancing the phase to 8.
 // symdb: (r5 = battle state struct) -> void; advances oBattleState_StatePhaseAndInitFlag to 8 when link
 // symdb: battle is ready
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009784.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_state4WaitLinkReady.yaml
 	thumb_local_start
-sub_8009784:
+battle_state4WaitLinkReady:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14293,7 +14293,7 @@ loc_800979A:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80097A6:
 	pop {pc}
-	thumb_func_end sub_8009784
+	thumb_func_end battle_state4WaitLinkReady
 
 	thumb_local_start
 sub_80097A8:
@@ -17030,9 +17030,9 @@ locret_800A8B0:
 
 // symdb: Looks up a frame-timer value for the loser sequence from a table indexed by a byte in the acting side's NaviStats record.
 // symdb: () -> r0 = byte from byte_800A8C8[NaviStats[side].0x29]; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A8B2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getLoserEffectTimer.yaml
 	thumb_local_start
-sub_800A8B2:
+battle_getLoserEffectTimer:
 	push {lr}
 	bl battle_getStateByte0d_800A7E2
 	mov r1, #0x29
@@ -17046,7 +17046,7 @@ off_800A8C4:
 byte_800A8C8:
 	.byte 0x8, 0x64, 0x68, 0x6C, 0x70, 0x74, 0x78, 0x7C, 0x80
 	.byte 0x84, 0x88, 0x8C
-	thumb_func_end sub_800A8B2
+	thumb_func_end battle_getLoserEffectTimer
 
 	thumb_local_start
 sub_800A8D4:

@@ -143,7 +143,7 @@ void __noreturn sub_8033B30()
 
 
 // 0x8033b46
-void __noreturn sub_8033B46()
+void __noreturn internet_redrawOverworldUi()
 {
     internet_drawHpDigits_8033E0C();
 }
@@ -656,7 +656,7 @@ int fadeTimerTick_80342A4()
 
 
 // 0x80342c6
-int sub_80342C6()
+int ow_worldMapTick()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -788,7 +788,7 @@ int __fastcall map_8034B4C(int mapGroup, int mapNumber)
     owPlayer_80350a8(v2, v3, v4, v5);
     npc_getMapSpriteScriptOffsets();
     sub_803537C();
-    sub_80353DA();
+    ow_loadEventGfxAnims();
     vRelMapGroup = vMapGroup;
     if ( vMapGroup >= 0x80 )
     {
@@ -1642,7 +1642,7 @@ unsigned int sub_803537C()
 
 
 // 0x80353da
-int sub_80353DA()
+int ow_loadEventGfxAnims()
 {
     char v0; // zf
 
@@ -11132,7 +11132,7 @@ signed int __fastcall GiveItem(signed int a1, int a2)
     if ( v9 == 113 )
         reloadCurNaviStatBoosts_813c3ac();
     pet_addCurNaviStat0x3ECapped_803CF3C(v11, v8);
-    sub_803CFB0();
+    pet_updateNaviStatByte9FromKeyItems();
     return v11;
 }
 
@@ -11328,7 +11328,7 @@ int __fastcall pet_addCurNaviHPCapped(int a1, int a2)
 
 
 // 0x803cfb0
-int sub_803CFB0()
+int pet_updateNaviStatByte9FromKeyItems()
 {
     int v0; // r10
     int v1; // r0

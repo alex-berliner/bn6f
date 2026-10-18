@@ -1115,7 +1115,7 @@ init_beastSpScenario:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0x20 
 	strb r0, [r5,#0x3] // (byte_2000B43 - 0x2000b40)
-	bl sub_808CC84
+	bl ow_storePlayerPosDup
 	movflag EVENT_9D8
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_9D9
@@ -1129,14 +1129,14 @@ init_beastSpScenario:
 loc_808CAA2:
 	movflag EVENT_9D3
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_8142C94
+	bl init_queueBeastSpGfx
 	bl sub_808CBA0
-	bl sub_808CF34
+	bl ai_testMapGroupEventFlag
 	cmp r0, #1
 	beq loc_808CABE
-	bl sub_808CE70
+	bl init_applyBeastSpScenarioEventFlags
 loc_808CABE:
-	bl sub_808CE28
+	bl init_clearBeastSpEventFlagTable
 	mov r0, #0x1f
 	ldr r1, dword_808CAD0 // =0x100
 	bl sound_8000672
@@ -1150,7 +1150,7 @@ dword_808CAD0:
 	thumb_local_start
 sub_808CAD4:
 	push {r5,lr}
-	bl sub_8142C94
+	bl init_queueBeastSpGfx
 	movflag EVENT_9D6
 	bl SetEventFlagFromImmediate
 	bl sub_808CBA0
@@ -1380,9 +1380,9 @@ off_808CC80:
 // symdb: Reads the overworld player object's X/Y position and stores it twice into the caller's work structure (as current and duplicate/previous coords).
 // symdb: (r0 = unused, r5 = target work struct) -> r0 destroyed; stores halfword X at +0x16/+0x1a and Y
 // symdb: at +0x18/+0x1c; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_storePlayerPosDup.yaml
 	thumb_local_start
-sub_808CC84:
+ow_storePlayerPosDup:
 	push {lr}
 	bl ReadOWPlayerObjectCoords
 	asr r0, r0, #0x10
@@ -1392,7 +1392,7 @@ sub_808CC84:
 	strh r0, [r5,#0x1a]
 	strh r1, [r5,#0x1c]
 	pop {pc}
-	thumb_func_end sub_808CC84
+	thumb_func_end ow_storePlayerPosDup
 
 	thumb_local_start
 sub_808CC98:
@@ -1602,9 +1602,9 @@ loc_808CE14:
 
 // symdb: In Beast+ scenario setup, looks up a per-AI-mode table and, for each entry whose gate flag is set, clears a consecutive range of event flags.
 // symdb: () -> void; reads current map group's AI mode, no args; clobbers r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CE28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_clearBeastSpEventFlagTable.yaml
 	thumb_local_start
-sub_808CE28:
+init_clearBeastSpEventFlagTable:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
@@ -1642,13 +1642,13 @@ loc_808CE68:
 	pop {r0}
 	mov r8, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_808CE28
+	thumb_func_end init_clearBeastSpEventFlagTable
 
 // symdb: Applies a per-AI-mode preset of Beast+ scenario event flags: sets one flag and clears a run of flags for each entry of the table selected by the current map group's AI mode.
 // symdb: () -> void; reads current map-group AI mode via ai_getAIModeForMapGroup_808D084
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CE70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_applyBeastSpScenarioEventFlags.yaml
 	thumb_local_start
-sub_808CE70:
+init_applyBeastSpScenarioEventFlags:
 	push {r4-r7,lr}
 	mov r0, r8
 	push {r0}
@@ -1705,13 +1705,13 @@ byte_808CF14:
 	.byte 0xFA, 0xF, 0xC6, 0xF, 0x3, 0x0, 0x0, 0x0, 0xFB, 0xF, 0xC9
 	.byte 0xF, 0x3, 0x0, 0x0, 0x0, 0xFC, 0xF, 0xCC, 0xF, 0x3, 0x0
 	.byte 0x0, 0x0, 0xFD, 0xF, 0xCF, 0xF, 0x3, 0x0, 0x0, 0x0
-	thumb_func_end sub_808CE70
+	thumb_func_end init_applyBeastSpScenarioEventFlags
 
 // symdb: Returns whether the event flag associated with the current map group's AI mode is set.
 // symdb: () -> r0 = 1 if event flag table[aiMode] is set, else 0; ZF clobbered by TestEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CF34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_testMapGroupEventFlag.yaml
 	thumb_local_start
-sub_808CF34:
+ai_testMapGroupEventFlag:
 	push {r4-r7,lr}
 	mov r4, #0
 	bl ai_getAIModeForMapGroup_808D084
@@ -1725,7 +1725,7 @@ sub_808CF34:
 loc_808CF4C:
 	mov r0, r4
 	pop {r4-r7,pc}
-	thumb_func_end sub_808CF34
+	thumb_func_end ai_testMapGroupEventFlag
 
 	thumb_local_start
 sub_808CF50:

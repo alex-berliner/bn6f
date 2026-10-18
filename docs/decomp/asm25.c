@@ -98,7 +98,7 @@ signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
     {
         sub_808FA84();
         sub_809E2FC();
-        sub_808FF9C();
+        ow_spawnMapObject1b();
         sub_808F990();
     }
     sub_808F9C4(a1);
@@ -457,7 +457,7 @@ int weatherComp_init_808FDC0()
     }
     sub_808FE64(v0, v1, v2, v3);
     sub_808FED8();
-    sub_808FF9C();
+    ow_spawnMapObject1b();
     sub_808FF30();
     sub_808FF70();
     initScenarioEffect_8003914(1u, v9, v10, v11);
@@ -475,7 +475,7 @@ int sub_808FE34()
     if ( v0 )
         ZeroFillByWord(&eWeatherCompState, 96);
     dword_2000330 = 255;
-    sub_808FF9C();
+    ow_spawnMapObject1b();
     sub_809003C();
     sub_809032C();
     return 0;
@@ -651,7 +651,7 @@ signed int sub_808FF8C()
 
 
 // 0x808ff9c
-int sub_808FF9C()
+int ow_spawnMapObject1b()
 {
     int v0; // r5
     int v1; // r0

@@ -2317,7 +2317,7 @@ byte_809AA87:
 	cs_call_native_with_return_value ptr1=sub_809AC88+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x00 destination3=cutscenescript_809AA50
 	cs_call_native_with_return_value ptr1=sub_809ACA4+1
-	cs_call_native_with_return_value ptr1=sub_809ACD0+1
+	cs_call_native_with_return_value ptr1=chatbox_animateWindowOpen+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_call_native_with_return_value ptr1=sub_809AD0C+1
 	cs_chatbox_cmd_8037a70
@@ -2622,9 +2622,9 @@ off_809ACCC:
 // symdb: Per-frame open animation for the dialog text window: advances an opening counter and slides the window's three sprites apart until fully open.
 // symdb: (r0 unused; r5 = window/dialog struct, r10+0x2c = ptr to window config) -> r0 = 1 while still
 // symdb: opening, 0 when fully open; clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809ACD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_animateWindowOpen.yaml
 	thumb_local_start
-sub_809ACD0:
+chatbox_animateWindowOpen:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	add r0, #0x10
@@ -2655,7 +2655,7 @@ loc_809AD00:
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, r7
 	pop {r4-r7,pc}
-	thumb_func_end sub_809ACD0
+	thumb_func_end chatbox_animateWindowOpen
 
 	thumb_local_start
 sub_809AD0C:

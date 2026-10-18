@@ -1982,7 +1982,7 @@ loc_8130F90:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_8130FC0 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -7733,7 +7733,7 @@ loc_8133CF0:
 	str r0, [r5,#0x68]
 	b locret_8133D5A
 loc_8133CFC:
-	bl sub_81349E8
+	bl battle_checkSpawnCellCost
 	mov r2, r1
 	mov r1, #1
 	tst r0, r1
@@ -7801,7 +7801,7 @@ loc_8133D68:
 loc_8133D76:
 	mov r0, #5
 	sub r4, r4, r0
-	bl sub_81349E8
+	bl battle_checkSpawnCellCost
 	mov r3, r1
 	mov r2, #2
 	tst r0, r2
@@ -9510,9 +9510,9 @@ sub_81349B4:
 // symdb: (r5 = handler struct: cell indices at +0x20/+0x24, value at +0x64, navi byte at +0x14) -> r0 =
 // symdb: 2-bit status (bit1 clear if 0x3C-[r5+0x64] >= value, bit0 clear if RegUP-or-0x1E >= value, 3 if
 // symdb: record flag unset), r1 = record value; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81349E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkSpawnCellCost.yaml
 	thumb_local_start
-sub_81349E8:
+battle_checkSpawnCellCost:
 	push {r4-r7,lr}
 	mov r6, #3
 	mov r4, #0
@@ -9557,7 +9557,7 @@ loc_8134A30:
 	.balign 4, 0
 off_8134A38:
 	.word word_202A020
-	thumb_func_end sub_81349E8
+	thumb_func_end battle_checkSpawnCellCost
 
 // symdb: Folder-edit helper that reacts to a freshly-pressed A button by incrementing a counter, swapping or advancing two slot buffers at +0x44/+0x48, and playing the menu-select sound.
 // symdb: () -> r0 = bool (1 if A was just pressed and the gesture was handled, 0 otherwise)
@@ -11314,7 +11314,7 @@ off_81356E8:
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
 // symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
-// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
+// symdb: navicust_giveKeyItem14C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
@@ -11393,7 +11393,7 @@ battle_initNaviCustomizerScene_81356F4:
 	mov r0, #0
 	bl navicust_drawBoardTilemap
 	bl sub_81362F8
-	bl sub_8135D8C
+	bl navicust_giveKeyItem14C
 	bl sub_8135D9C
 	ldr r0, off_81357C0 // =byte_8135628
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -11425,7 +11425,7 @@ off_81357DC:
 	.word off_81357E0
 off_81357E0:
 	.word sub_813581C+1
-	.word sub_8135830+1
+	.word navicust_handleBoardInput+1
 	.word sub_81358FC+1
 	.word sub_8135918+1
 	.word sub_8135938+1
@@ -11457,9 +11457,9 @@ locret_813582C:
 // symdb: Per-frame input handler for the Navi Customizer board screen: dispatches button presses (select/confirm/cancel/compress actions) and cursor movement, then updates the selected-cell state.
 // symdb: (r5 = navicust screen state struct, no r0 args) -> r0 = 0/bool; updates struct fields 0x02,
 // symdb: 0x0c, 0x0d, 0x13, 0x22, 0x26, 0x38, 0x3a
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135830.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardInput.yaml
 	thumb_local_start
-sub_8135830:
+navicust_handleBoardInput:
 	push {r4,lr}
 	mov r4, #0
 	ldrh r0, [r5,#0x20]
@@ -11552,7 +11552,7 @@ loc_81358EE:
 	mov r0, #0
 	strb r0, [r5,#0x13]
 	pop {r4,pc}
-	thumb_func_end sub_8135830
+	thumb_func_end navicust_handleBoardInput
 
 	thumb_local_start
 sub_81358FC:
@@ -12114,9 +12114,9 @@ off_8135D80:
 // symdb: Grants key item 0x14C to the player, called when the Navi Customizer battle scene initializes.
 // symdb: () -> r0 = destroyed (callee return); grants key item 0x14C via
 // symdb: keyItems_RemoveFromInventoryAndGive_803CDF8(r0=0x14C, r1=1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135D8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_giveKeyItem14C.yaml
 	thumb_local_start
-sub_8135D8C:
+navicust_giveKeyItem14C:
 	push {lr}
 	ldr r0, off_8135D98 // =0x14c 
 	mov r1, #1
@@ -12125,7 +12125,7 @@ sub_8135D8C:
 	.balign 4, 0
 off_8135D98:
 	.word 0x14C
-	thumb_func_end sub_8135D8C
+	thumb_func_end navicust_giveKeyItem14C
 
 	thumb_local_start
 sub_8135D9C:
@@ -12142,7 +12142,7 @@ sub_8135D9C:
 	bl sub_8135E6C
 	b loc_8135DBA
 loc_8135DB6:
-	bl sub_8135E18
+	bl battle_collectKeyItemCounts
 loc_8135DBA:
 	ldr r1, off_8135ECC // =word_201DA80 
 	mov r0, r6
@@ -12205,9 +12205,9 @@ loc_8135E12:
 // symdb: Builds a caller-supplied list of (id, remaining-count) pairs for items/chips 0x91-0x14C the player owns, after subtracting those already taken by the 25-slot toolkit list.
 // symdb: (r6 = cursor pointer to output buffer on entry) -> writes u16 pairs {id, count} at [r6],
 // symdb: advancing by 4; returns final cursor in r6; flags not meaningful.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135E18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectKeyItemCounts.yaml
 	thumb_local_start
-sub_8135E18:
+battle_collectKeyItemCounts:
 	push {r4,r5,r7,lr}
 	sub sp, sp, #4
 	str r6, [sp]
@@ -12251,7 +12251,7 @@ loc_8135E5E:
 	ldr r6, [sp]
 	add sp, sp, #4
 	pop {r4,r5,r7,pc}
-	thumb_func_end sub_8135E18
+	thumb_func_end battle_collectKeyItemCounts
 
 	thumb_local_start
 sub_8135E6C:
@@ -14332,7 +14332,7 @@ off_8136E2C:
 	.word sub_8136EF8+1
 	.word sub_8136F0C+1
 	.word sub_8136F40+1
-	.word sub_8136F74+1
+	.word navicust_runOnceDialog+1
 	.word sub_8136FA4+1
 	.word sub_8136FB8+1
 	.word sub_8137018+1
@@ -14361,7 +14361,7 @@ off_8136E2C:
 	.word sub_8137528+1
 	.word sub_8137538+1
 	.word sub_8137550+1
-	.word sub_813756C+1
+	.word navicust_queueBeastOutDialog+1
 	.word sub_813759C+1
 	.word sub_81375AC+1
 	.word sub_81375CC+1
@@ -14457,9 +14457,9 @@ locret_8136F70:
 // symdb: In the Navi Customizer, after story flag EVENT_EE, fires a one-time dialog (text script 3) and switches the menu state to 0x14.
 // symdb: (r5 = ptr to NaviCust state byte) -> void; writes r5[0] = 0x14 when the dialog is queued, no
 // symdb: return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136F74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_runOnceDialog.yaml
 	thumb_local_start
-sub_8136F74:
+navicust_runOnceDialog:
 	push {lr}
 	movflag EVENT_EE
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -14479,7 +14479,7 @@ sub_8136F74:
 	strb r0, [r5]
 locret_8136FA2:
 	pop {pc}
-	thumb_func_end sub_8136F74
+	thumb_func_end navicust_runOnceDialog
 
 	thumb_local_start
 sub_8136FA4:
@@ -15281,9 +15281,9 @@ locret_813756A:
 // symdb: Conditionally triggers MegaMan's NaviCust-context dialog about Beast Out and advances the owning task's state.
 // symdb: (r0 unused/none, r4-r5 = task/controller context) -> r0 clobbered; writes byte 0x88 to [r5];
 // symdb: flags preserved by pop {pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813756C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_queueBeastOutDialog.yaml
 	thumb_local_start
-sub_813756C:
+navicust_queueBeastOutDialog:
 	push {lr}
 	movflag EVENT_EE
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -15303,7 +15303,7 @@ sub_813756C:
 	strb r0, [r5]
 locret_813759A:
 	pop {pc}
-	thumb_func_end sub_813756C
+	thumb_func_end navicust_queueBeastOutDialog
 
 	thumb_local_start
 sub_813759C:

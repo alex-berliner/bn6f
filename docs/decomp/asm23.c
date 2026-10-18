@@ -156,7 +156,7 @@ signed int sub_808964C()
         sub_809E13C(byte_80896A8[v5]);
         sub_8089D26();
         sub_81421C8(0);
-        sub_8089CC4();
+        cutscene_startCameraScript();
         *v0 = 4;
     }
     return 1;
@@ -200,7 +200,7 @@ signed int __fastcall sub_80896D4(int a1, int a2, int a3)
     {
         if ( v4 == 1 )
         {
-            sub_8089CC4();
+            cutscene_startCameraScript();
         }
         else if ( v4 == 2 )
         {
@@ -709,7 +709,7 @@ signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
 
 
 // 0x8089aca
-signed int __fastcall sub_8089ACA(int a1)
+signed int __fastcall ai_chipLockoutWaitState(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -995,7 +995,7 @@ signed int battle_tickChipLockout_8089CB4()
 
 
 // 0x8089cc4
-signed int sub_8089CC4()
+signed int cutscene_startCameraScript()
 {
     int v0; // r5
     signed int result; // r0

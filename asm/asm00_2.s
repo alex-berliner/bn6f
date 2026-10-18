@@ -1129,9 +1129,9 @@ loc_800F468:
 // symdb: Returns a battle object's DirectionFlip for its panel-landing/emerge animation, forced to 0 when the battle's panel column pattern is one of three special layouts.
 // symdb: (implicit r5 = battle object ptr) -> r0 = DirectionFlip byte, or 0 if panel pattern is
 // symdb: 0x30/0x38/0x3c; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F46C.yaml
-	thumb_func_start sub_800F46C
-sub_800F46C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkEmergeDirectionFlip.yaml
+	thumb_func_start battle_checkEmergeDirectionFlip
+battle_checkEmergeDirectionFlip:
 	push {lr}
 	bl GetBattlePanelColumnPattern
 	cmp r0, #0x38 
@@ -1145,7 +1145,7 @@ sub_800F46C:
 loc_800F482:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800F46C
+	thumb_func_end battle_checkEmergeDirectionFlip
 
 	thumb_func_start sub_800F486
 sub_800F486:
@@ -1591,7 +1591,7 @@ sub_800F768:
 	mov r1, #8
 	lsl r1, r1, #0x10
 	push {r1}
-	bl sub_80011A0
+	bl math_getPolarVector
 	str r0, [r5,#oBattleObject_XVelocity]
 	str r1, [r5,#oBattleObject_YVelocity]
 	pop {r4}
@@ -11066,7 +11066,7 @@ loc_80138F2:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
 	bne loc_8013900
-	bl sub_801443C
+	bl ai_clearCounterHitChainFlag
 loc_8013900:
 	b loc_8013918
 	.balign 4, 0
@@ -11781,7 +11781,7 @@ loc_8013E2E:
 	bl sub_80143CE
 	b loc_8013E38
 loc_8013E34:
-	bl sub_801443C
+	bl ai_clearCounterHitChainFlag
 loc_8013E38:
 	add sp, sp, #0x10
 	pop {r4,r6,r7,pc}
@@ -12724,15 +12724,15 @@ battle_incrementAIDataUnk4c_8014432:
 // symdb: Resets the battle object's AI counter-hit chain field to the 0xFFFF 'none' sentinel.
 // symdb: (r5 = battle object) -> void; writes 0xFFFF to oAIData_CounterHitChainFlag of the object's AI
 // symdb: data; no return value, no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801443C.yaml
-	thumb_func_start sub_801443C
-sub_801443C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearCounterHitChainFlag.yaml
+	thumb_func_start ai_clearCounterHitChainFlag
+ai_clearCounterHitChainFlag:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, dword_80144B8 // =0xffff 
 	strh r0, [r3,#oAIData_CounterHitChainFlag]
 	pop {pc}
-	thumb_func_end sub_801443C
+	thumb_func_end ai_clearCounterHitChainFlag
 
 	thumb_func_start sub_8014446
 sub_8014446:
@@ -13810,13 +13810,13 @@ battleObject_commitMoveLanding_8014B18:
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
 	bl object_clearInvulnerableTime
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_AIScriptOffset]
-	bl sub_80C4C3A
+	bl object_resetAnimFrame
 	bl sub_80158FA
 	mov r0, #6
 	strh r0, [r7,#oAIAttackVars_StepTimer]
@@ -14046,13 +14046,13 @@ ai_relocateToFuturePanel:
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
 	bl object_clearInvulnerableTime
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_AIScriptOffset]
-	bl sub_80C4C3A
+	bl object_resetAnimFrame
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -14316,13 +14316,13 @@ sub_8014F40:
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
 	bl object_clearInvulnerableTime
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_AIScriptOffset]
-	bl sub_80C4C3A
+	bl object_resetAnimFrame
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -14569,13 +14569,13 @@ sub_801516C:
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
 	bl object_clearInvulnerableTime
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_AIScriptOffset]
-	bl sub_80C4C3A
+	bl object_resetAnimFrame
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -14862,13 +14862,13 @@ sub_80153EC:
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
 	bl object_clearInvulnerableTime
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	bl battleObject_clearPwrAtkState_8012EA8
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_AIScriptOffset]
-	bl sub_80C4C3A
+	bl object_resetAnimFrame
 	bl sub_80158FA
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #0
@@ -15159,7 +15159,7 @@ loc_801565E:
 	bl object_removePanelReserve
 	bl object_setCoordinatesFromPanels // () -> void
 	bl object_updateCollisionPanels
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x34 
@@ -15281,7 +15281,7 @@ loc_801577C:
 	mov r0, #0xff
 	strb r0, [r5,#oBattleObject_CurAnimCopy]
 	bl sub_8011450
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	mov r0, #0x34 
@@ -15420,7 +15420,7 @@ sub_80158CC:
 	blt locret_80158F8
 	cmp r0, #0x16
 	bgt loc_80158F4
-	bl sub_801443C
+	bl ai_clearCounterHitChainFlag
 	b locret_80158F8
 loc_80158F4:
 	bl sub_8014466
@@ -15595,7 +15595,7 @@ canBattleObjectBeastOut_80159C6:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	cmp r0, #0
 	bne .failure
-	bl sub_801443C
+	bl ai_clearCounterHitChainFlag
 .isCrossoverBattle
 	mov r1, #oNaviStats_Transformation 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -26906,7 +26906,7 @@ off_801BF04:
 	.word battleObject_updateHPMeters_801C168+1
 	.word sub_801C368+1
 	.word battleObject_tickCustomGauge_801C470+1
-	.word sub_801C4AE+1
+	.word battle_rollRareEvent+1
 	.word nullsub_58+1
 	.word battle_tickLowHpWarning_801C840+1
 	.word object_countdownTimer_801CA0C+1
@@ -27713,9 +27713,9 @@ locret_801C4AC:
 // symdb: At battle setup, rolls the battle RNG for a rare event: stores a scaled random halfword in the battle state, and on the rare hit sets battle flag 0x2 and plays sound 0x8F.
 // symdb: (r5 = battle state struct) -> writes halfword at [r5+0x20]; may set battle flag bit 1 via
 // symdb: battle_setFlags; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C4AE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_rollRareEvent.yaml
 	thumb_local_start
-sub_801C4AE:
+battle_rollRareEvent:
 	push {lr}
 	bl battle_getFlags
 	mov r1, #2
@@ -27741,7 +27741,7 @@ dword_801C4DC:
 	.word 0x4000
 off_801C4E0:
 	.word 0x2D0
-	thumb_func_end sub_801C4AE
+	thumb_func_end battle_rollRareEvent
 
 // symdb: Draws BG tile-id patterns (story-sequence 2 related) based on a counter threshold
 // symdb: (r5 = some battle-state ptr, r10 = toolkit) -> void ; side-effect: writes BG tile-id map blocks
@@ -30574,7 +30574,7 @@ off_801DA6C:
 	.word battle_setFlag0x04_eStruct2035280_801DC6E+1
 	.word sub_801DD7C+1
 	.word setupBattleBackground_801DDF6+1
-	.word sub_801DE3C+1
+	.word battle_loadOverlayTiles+1
 	.word battle_setUnkFlags44_0x40_801E006+1
 	.word background_applyFixedTilePatch_801E03E+1
 	.word sub_801E1E4+1
@@ -31187,9 +31187,9 @@ sub_801DE1E:
 // symdb: Queues a small GFX upload, draws an 18x2 run of background tiles from a static tile list, and sets bit 0x20 in the eStruct2035280 flag word.
 // symdb: () -> void; touches IWRAM GFX queue buffer unk_3001A80, BG tile VRAM via CopyBackgroundTiles,
 // symdb: and flag word eStruct2035280+0x44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DE3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadOverlayTiles.yaml
 	thumb_local_start
-sub_801DE3C:
+battle_loadOverlayTiles:
 	push {r4,r5,lr}
 	ldr r0, off_801DEC4 // =dword_86E1C78 
 	ldr r1, off_801DEC8 // =unk_3001A80 
@@ -31211,7 +31211,7 @@ sub_801DE3C:
 	lsl r0, r1
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {r4,r5,pc}
-	thumb_func_end sub_801DE3C
+	thumb_func_end battle_loadOverlayTiles
 
 	thumb_local_start
 sub_801DE64:

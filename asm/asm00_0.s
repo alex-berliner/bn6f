@@ -2272,9 +2272,9 @@ locret_800119E:
 // symdb: converts an angle index plus magnitude into a (dx, dy) vector using the cosine/sine tables, with the y component negated for screen coordinates
 // symdb: (r0 = angle table index, r1 = magnitude/scale) -> r0 = cos(angle)*mag >> 8, r1 = -sin(angle)*mag
 // symdb: >> 8; flags clobbered, r2-r3 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011A0.yaml
-	thumb_func_start sub_80011A0
-sub_80011A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/math_getPolarVector.yaml
+	thumb_func_start math_getPolarVector
+math_getPolarVector:
 	lsl r0, r0, #1
 	ldr r2, off_80011B8 // =math_cosTable
 	ldrsh r3, [r2,r0]
@@ -2291,7 +2291,7 @@ off_80011B8:
 	.word math_cosTable
 off_80011BC:
 	.word byte_80066E0
-	thumb_func_end sub_80011A0
+	thumb_func_end math_getPolarVector
 
 	thumb_local_start
 sub_80011C0:
@@ -2300,7 +2300,7 @@ sub_80011C0:
 	beq loc_80011D0
 	sub r0, #1
 	lsl r0, r0, #6
-	bl sub_80011A0
+	bl math_getPolarVector
 	pop {pc}
 loc_80011D0:
 	mov r0, #0
@@ -2354,9 +2354,9 @@ loc_800120A:
 // symdb: (r0 = target struct ptr: +0 dx, +4 dy, +8 target coord, all 8.8 fixed point; r1 = cur x, r2 =
 // symdb: cur y, r3 = cur coord on the driven axis, r4 = speed (0 = special case), r6 = divisor/param) ->
 // symdb: r0/r1 = computed step count and per-frame delta (rounded), or 0,0 when already at/past target
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800120E.yaml
-	thumb_func_start sub_800120E
-sub_800120E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcTargetApproach.yaml
+	thumb_func_start battle_calcTargetApproach
+battle_calcTargetApproach:
 	push {r5,lr}
 	tst r4, r4
 	bne loc_800123C
@@ -2418,7 +2418,7 @@ loc_800126A:
 	lsr r2, r2, #1
 	add r0, r0, r2
 	pop {r5,pc}
-	thumb_func_end sub_800120E
+	thumb_func_end battle_calcTargetApproach
 
 	thumb_local_start
 sub_8001288:
@@ -2483,7 +2483,7 @@ sub_80012C6:
 	svc 6
 	mov r1, r0
 	mov r0, r4
-	bl sub_80011A0
+	bl math_getPolarVector
 	pop {r4,r6}
 	push {r0,r1}
 	lsl r0, r4, #1
@@ -2533,7 +2533,7 @@ math_getThrowSpeeds:
 	svc 6
 	mov r1, r0
 	mov r0, r4
-	bl sub_80011A0
+	bl math_getPolarVector
 	pop {r5}
 	pop {r3,r4,r6}
 	push {r0,r1}

@@ -2491,7 +2491,7 @@ int sub_8049058()
         copyMemory_8001850();
         chatbox_8040818();
         SetRenderInfoLCDControl(&byte_40);
-        sub_811F758();
+        battle_resetAndInitScene();
     }
     return result;
 }
@@ -3572,7 +3572,7 @@ void __noreturn chatbox_closeFadeHandler_80499CE()
         copyMemory_8001850();
         SetRenderInfoLCDControl(&byte_40);
         chatbox_8040818();
-        sub_811F758();
+        battle_resetAndInitScene();
     }
     battle_moduleInit_803A820();
 }
@@ -6460,7 +6460,7 @@ int battleObject_runCurAnimHandler_804CD20()
 
 
 // 0x804cd5c
-int sub_804CD5C()
+int battle_initBeastspBackground()
 {
     _BYTE *v0; // r5
     int v1; // r10

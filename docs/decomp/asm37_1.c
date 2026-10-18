@@ -349,7 +349,7 @@ unsigned int beast_spawnObjectsAndSetup_8141F7C()
     v8 = 0;
     while ( *v7 )
     {
-        v9 = sub_81420F0(v8);
+        v9 = beast_getMapGroupIdBase(v8);
         TestEventFlag(v9);
         if ( v2 )
             SpawnOverworldMapObject(13, v10, v11, v12);
@@ -457,7 +457,7 @@ int __fastcall sub_81420C8(int a1)
 
 
 // 0x81420f0
-int __fastcall sub_81420F0(int a1)
+int __fastcall beast_getMapGroupIdBase(int a1)
 {
     return *&byte_8142120[4 * battle_getEnemyIndexFromMapGroup_8142080()] + a1;
 }
@@ -1418,7 +1418,7 @@ void battleObject_emptyStub_8142C90()
 
 
 // 0x8142c94
-int sub_8142C94()
+int init_queueBeastSpGfx()
 {
     return (loc_8000AC8)(dword_8619730, 100690944, &byte_420);
 }

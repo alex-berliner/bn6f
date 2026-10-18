@@ -8522,7 +8522,7 @@ loc_803CDE4:
 	mov r0, r3
 	push {r0}
 	bl pet_addCurNaviStat0x3ECapped_803CF3C
-	bl sub_803CFB0
+	bl pet_updateNaviStatByte9FromKeyItems
 	pop {r0}
 	pop {r4-r7,pc}
 	thumb_func_end GiveItem
@@ -8787,9 +8787,9 @@ locret_803CFAE:
 
 // symdb: After an item grant, recomputes a capped weighted count from three key-item counters and writes it to byte 9 of the NaviStats for record 0 and the currently selected PET navi.
 // symdb: (r0 = ignored (overwritten with 0)) -> r0 = clobbered; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CFB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_updateNaviStatByte9FromKeyItems.yaml
 	thumb_local_start
-sub_803CFB0:
+pet_updateNaviStatByte9FromKeyItems:
 	push {r4-r7,lr}
 	mov r0, #0
 	mov r4, r0
@@ -8824,7 +8824,7 @@ loc_803CFDE:
 	mov r1, #9
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {r4-r7,pc}
-	thumb_func_end sub_803CFB0
+	thumb_func_end pet_updateNaviStatByte9FromKeyItems
 
 // symdb: Adds the given amount of Zenny to the player's wallet (encrypted), capping at 999999 and returning a status code.
 // symdb: u32 giveZenny_803CFF8(s32 amount /* r0 */);  // returns 0=ok, 1=cheat-detected or already full,

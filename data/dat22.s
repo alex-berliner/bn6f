@@ -911,7 +911,7 @@ cutscenescript_8087A08:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_28
 	cs_set_event_flag_range byte1=0x06 event16_2=EVENT_29
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_681
-	cs_call_native_with_return_value ptr1=sub_80353DA+1
+	cs_call_native_with_return_value ptr1=ow_loadEventGfxAnims+1
 	cs_load_gfx_anim ptr1=byte_8071B00
 	cs_run_cutscene_camera_script ptr1=ccs_80879D0
 	cs_spawn_ow_map_object nybble1=0x00 byte2=0x08 hword3=0x0000 hword5=0x0000 hword7=0x0000 word9=0x00391C12

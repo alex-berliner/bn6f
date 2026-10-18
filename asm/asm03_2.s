@@ -4884,7 +4884,7 @@ sub_8049058:
 	bl chatbox_8040818
 	ldr r0, off_804907C // =0x40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
-	bl sub_811F758
+	bl battle_resetAndInitScene
 locret_804907A:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -6120,7 +6120,7 @@ loc_80499E0:
 	ldr r0, off_8049A14 // =0x40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl chatbox_8040818
-	bl sub_811F758
+	bl battle_resetAndInitScene
 	b locret_8049A12
 loc_8049A0E:
 	bl battle_moduleInit_803A820
@@ -11412,7 +11412,7 @@ battleObject_runCurAnimHandler_804CD20:
 off_804CD30:
 	.word off_804CD34
 off_804CD34:
-	.word sub_804CD5C+1, sub_804CDCC+1
+	.word battle_initBeastspBackground+1, sub_804CDCC+1
 	.byte 0xF0
 
 unk_804CD3D:
@@ -11424,9 +11424,9 @@ unk_804CD3D:
 
 // symdb: Initializes a static battle background: uploads its tiles and palette, resets scroll/render state, and renders the BG layer-3 tile map.
 // symdb: () -> void; no meaningful return, clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CD5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastspBackground.yaml
 	thumb_local_start
-sub_804CD5C:
+battle_initBeastspBackground:
 	push {r4-r7,lr}
 	ldr r0, off_804CDB0 // =byte_86A3EA0 
 	ldr r1, dword_804CDB4 // =0x600cc00 
@@ -11477,7 +11477,7 @@ off_804CDC0:
 	.word byte_3001B00
 byte_804CDC4:
 	.byte 0x9, 0x1F, 0x0, 0x0, 0xB, 0x1F, 0x0, 0x0
-	thumb_func_end sub_804CD5C
+	thumb_func_end battle_initBeastspBackground
 
 	thumb_local_start
 sub_804CDCC:

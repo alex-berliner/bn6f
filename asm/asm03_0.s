@@ -3779,7 +3779,7 @@ loc_8027FB0:
 	ldr r1, off_8027FCC // =byte_8027FD0
 	ldrb r1, [r1,r6]
 	add r0, r0, r1
-	bl sub_8028034
+	bl battle_findFirstRegularChipSlot
 	cmp r0, r6
 	bne loc_8027FC0
 	mov r0, #0xff
@@ -3832,7 +3832,7 @@ loc_8028008:
 	ldr r1, off_8028024 // =byte_8028028
 	ldrb r1, [r1,r6]
 	add r0, r0, r1
-	bl sub_8028034
+	bl battle_findFirstRegularChipSlot
 	cmp r0, r6
 	bne loc_8028018
 	mov r0, #0xff
@@ -3854,9 +3854,9 @@ byte_8028028:
 // symdb: Scans a chip slot list and returns the first slot whose active chip is not ID 0xA/0xB.
 // symdb: (r0 = pointer to byte list of active-chip slot indices, terminated in practice by a non-0xA/0xB
 // symdb: entry) -> r0 = first slot index whose chip's ID byte is not 0xA or 0xB; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028034.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findFirstRegularChipSlot.yaml
 	thumb_local_start
-sub_8028034:
+battle_findFirstRegularChipSlot:
 	push {r4,lr}
 	mov r4, r0
 loc_8028038:
@@ -3873,7 +3873,7 @@ loc_8028048:
 loc_802804C:
 	ldrb r0, [r4]
 	pop {r4,pc}
-	thumb_func_end sub_8028034
+	thumb_func_end battle_findFirstRegularChipSlot
 
 // symdb: Scans a table of 12-byte entries for the first one whose leading byte is not the empty marker 0x0A/0x0B, and stores its index (or 0x0A if none) into record+7.
 // symdb: void sub_8028050(u8 *cursor /*r4*/, u8 *record /*r5*/); tailcalls r6, preserved r4/r6, clobbers
@@ -3917,7 +3917,7 @@ loc_8028076:
 	bne loc_8028094
 	ldr r0, [r4,#8]
 	ldrh r0, [r0]
-	bl sub_802A53C
+	bl battle_getChipWordIfUsable
 	lsl r0, r0, #0x17
 	lsr r0, r0, #0x17
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
@@ -7561,7 +7561,7 @@ loc_8029930:
 	mov r1, r0
 	b loc_8029952
 loc_802993C:
-	bl sub_8029A1E
+	bl battle_tutorialCheckEmotionMsg
 	cmp r0, #0
 	beq locret_802996C
 	mov r1, r0
@@ -7711,9 +7711,9 @@ locret_8029A1C:
 // symdb: Tutorial-check routine for the cust tutorial: in state 0xB, when the player's emotion is clear, yields message id 0x26 to be played by the caller.
 // symdb: (r5 = tutorial state struct, reads [r5,#7]) -> r0 = message id (0x26) or 0; r3 flags from
 // symdb: emotion call also inspected
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029A1E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tutorialCheckEmotionMsg.yaml
 	thumb_local_start
-sub_8029A1E:
+battle_tutorialCheckEmotionMsg:
 	push {lr}
 	ldrb r0, [r5,#7]
 	cmp r0, #0xb
@@ -7727,7 +7727,7 @@ loc_8029A32:
 	mov r0, #0
 locret_8029A34:
 	pop {pc}
-	thumb_func_end sub_8029A1E
+	thumb_func_end battle_tutorialCheckEmotionMsg
 
 	thumb_local_start
 sub_8029A36:
@@ -9270,9 +9270,9 @@ off_802A538:
 // symdb: Returns the given battle chip word unchanged if the chip cannot be used in battle, otherwise returns the fixed word 0x3785.
 // symdb: (r0 = chip-selection word, chip id in low byte) -> r0 = same word if battle_canUseChip_800AFBA
 // symdb: returns 0, else literal 0x3785; flags clobbered by bl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A53C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getChipWordIfUsable.yaml
 	thumb_local_start
-sub_802A53C:
+battle_getChipWordIfUsable:
 	push {r1-r7,lr}
 	mov r4, r0
 	bl battle_canUseChip_800AFBA
@@ -9282,7 +9282,7 @@ sub_802A53C:
 loc_802A54A:
 	ldr r0, dword_802A560 // =0x3785 
 	pop {r1-r7,pc}
-	thumb_func_end sub_802A53C
+	thumb_func_end battle_getChipWordIfUsable
 
 // (int a1) -> int
 	thumb_local_start
@@ -12335,7 +12335,7 @@ off_802BF5C:
 	.word off_802BF60
 off_802BF60:
 	.word setupChipListVisual_802BF6C+1
-	.word sub_802C044+1
+	.word battle_chipSelectAnimTileStep+1
 	.word sub_802C0A4+1
 	thumb_func_end dispatchBattleObjectBehavior_802BF4C
 
@@ -12461,9 +12461,9 @@ dword_802C040:
 // symdb: Animates the chip-select screen reveal: draws one tile of a 7x6 tile block per call, with a tick sound every 4th tile, until all 42 tiles are placed.
 // symdb: (r0 = row buffer fill target? unused after fill, r5 = UI state struct ptr) -> void; r5+0xB
 // symdb: counter incremented, r5+3 set to 8 on completion
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C044.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipSelectAnimTileStep.yaml
 	thumb_local_start
-sub_802C044:
+battle_chipSelectAnimTileStep:
 	push {lr}
 	sub sp, sp, #0x74
 	mov r6, sp
@@ -12511,7 +12511,7 @@ loc_802C09A:
 	.balign 4, 0
 off_802C0A0:
 	.word unk_2035320
-	thumb_func_end sub_802C044
+	thumb_func_end battle_chipSelectAnimTileStep
 
 	thumb_local_start
 sub_802C0A4:
@@ -15871,7 +15871,7 @@ sub_802D738:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_Z]
 	bl object_updateCollisionPanels
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldr r0, dword_802D798 // =0x1c41 
@@ -16105,7 +16105,7 @@ sub_802D950:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_Z]
 	bl object_updateCollisionPanels
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#oBattleObject_DirectionFlip]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldr r0, dword_802DCB4 // =0x1c41 
@@ -16271,7 +16271,7 @@ sub_802DACC:
 	mov r0, #0
 	str r0, [r5,#0x3c]
 	bl object_updateCollisionPanels
-	bl sub_800F46C
+	bl battle_checkEmergeDirectionFlip
 	strb r0, [r5,#0x17]
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	ldrb r0, [r5,#0x14]
@@ -25342,7 +25342,7 @@ dword_8031918:
 	.word NULL
 	.word NULL
 	.word NULL
-	.word sub_80319FE+1
+	.word battle_aiTargetInRangeActorCount+1
 	.word sub_8031A16+1
 	.word sub_8031A2E+1
 	.word sub_8031A46+1
@@ -25444,9 +25444,9 @@ sub_80319E6:
 // symdb: Checks whether a target-relative position falls within a fixed half-panel rectangle and returns 3 if it does, else 2, for AI use.
 // symdb: (r0 = entity ptr, r1 = target ref?) -> r0 = 3 if the rectangle test hits, else 2; flags from
 // symdb: last call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80319FE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiTargetInRangeActorCount.yaml
 	thumb_local_start
-sub_80319FE:
+battle_aiTargetInRangeActorCount:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25456,7 +25456,7 @@ sub_80319FE:
 	bl battleObject_isHitByPanelRectangle_8031570
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
-	thumb_func_end sub_80319FE
+	thumb_func_end battle_aiTargetInRangeActorCount
 
 	thumb_local_start
 sub_8031A16:

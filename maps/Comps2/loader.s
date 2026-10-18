@@ -251,7 +251,7 @@ Comps2_UnkFunction_806ff08:
 off_806FF30:
 	.word jt_806FF34
 jt_806FF34:
-	.word sub_806FF76+1
+	.word ow_swapStoryFlags+1
 	.word sub_806FF94+1
 	.word nullsub_27+1
 	.word nullsub_27+1
@@ -276,9 +276,9 @@ nullsub_27:
 
 // symdb: Small overworld/story helper that clears one story event flag and sets another (a progress transition).
 // symdb: (no args apparent) -> r0 = ?; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_806FF76.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_swapStoryFlags.yaml
 	thumb_local_start
-sub_806FF76:
+ow_swapStoryFlags:
 	push {lr}
 	cmp r0, #2
 	bne loc_806FF82
@@ -291,7 +291,7 @@ loc_806FF82:
 	movflag EVENT_8F
 	bl SetEventFlagFromImmediate
 	pop {pc}
-	thumb_func_end sub_806FF76
+	thumb_func_end ow_swapStoryFlags
 
 	thumb_local_start
 sub_806FF94:

@@ -344,7 +344,7 @@ JumpTableInternet8033A4C:
 	.word sub_8033B0C+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033B30+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B46+1 // (self: * S2011E30 $r5) -> ()
+	.word internet_redrawOverworldUi+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033B5C+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033B6E+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
@@ -491,9 +491,9 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 // symdb: Redraws the Internet-overworld HUD: PET HP digits, battle-start overlay state, an extra UI layer, and the current map name.
 // symdb: (no register args; callee set uses r5 = self * S2011E30) -> no return value; r0 clobbered by
 // symdb: callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B46.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/internet_redrawOverworldUi.yaml
 	thumb_local_start
-sub_8033B46: // (self: * S2011E30 $r5) -> ()
+internet_redrawOverworldUi: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
@@ -501,7 +501,7 @@ sub_8033B46: // (self: * S2011E30 $r5) -> ()
 	bl sub_8033D88
 	bl RenderMapName_8033EE8
 	pop {pc}
-	thumb_func_end sub_8033B46
+	thumb_func_end internet_redrawOverworldUi
 
 	thumb_local_start
 sub_8033B5C: // (self: * S2011E30 $r5) -> ()
@@ -1317,7 +1317,7 @@ off_803422C:
 jt_8034230:
 	.word initJackInAnimationScreen+1
 	.word fadeTimerTick_80342A4+1
-	.word sub_80342C6+1
+	.word ow_worldMapTick+1
 	thumb_func_end ho_8034218
 
 // symdb: Starts the enter-map sequence after a warp — switches the main state machine to state 4, clears VRAM/GFX buffers, resets the fade param, and runs the warp-arrival and area-music updates.
@@ -1402,9 +1402,9 @@ loc_80342C0:
 // symdb: Per-frame update of the world-map screen: resets a state field to 8 while a screen fade is active, then advances the map's animation table.
 // symdb: () -> void; reads caller's r5 as state struct ptr; sets bytes [r5]=8, [r5+1]=0 conditionally;
 // symdb: flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80342C6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_worldMapTick.yaml
 	thumb_local_start
-sub_80342C6:
+ow_worldMapTick:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80342D6
@@ -1415,7 +1415,7 @@ sub_80342C6:
 loc_80342D6:
 	bl sub_80343B0 // () -> void
 	pop {pc}
-	thumb_func_end sub_80342C6
+	thumb_func_end ow_worldMapTick
 
 // symdb: Sets a state byte pointed to by r5 to 4, likely advancing a state machine to its fourth phase.
 // symdb: void sub_80342DC(u8* state /* r5 */) -> returns r0 = 4 with NZ flags set
@@ -1981,7 +1981,7 @@ map_8034B4C: // (map_group: u8, map_number: u8) -> ()
 
 	bl sub_803537C
 
-	bl sub_80353DA
+	bl ow_loadEventGfxAnims
 
 	pop {r0,r1}
 
@@ -3159,9 +3159,9 @@ word_80353B8:
 
 // symdb: Called by the map loader, conditionally loads a fixed pair of GFX animation scripts once story flag EVENT_28 is set.
 // symdb: (no args) -> r0 = 0 always; calls TestEventFlagFromImmediate and LoadGFXAnims
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80353DA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_loadEventGfxAnims.yaml
 	thumb_local_start
-sub_80353DA:
+ow_loadEventGfxAnims:
 	push {r4-r7,lr}
 	movflag EVENT_28
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3182,7 +3182,7 @@ off_80353FC:
 	.word byte_80349CC
 	.word byte_8034A1C
 	.word 0xFFFFFFFF
-	thumb_func_end sub_80353DA
+	thumb_func_end ow_loadEventGfxAnims
 
 	thumb_func_start sub_8035408
 sub_8035408:

@@ -147,7 +147,7 @@ loc_808F93A:
 	bgt loc_808F954
 	bl sub_808FA84
 	bl ZeroOWPlayerNaviPaletteIndex
-	bl sub_808FF9C
+	bl ow_spawnMapObject1b
 	bl sub_808F990
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
@@ -788,7 +788,7 @@ weatherComp_init_808FDC0:
 loc_808FE10:
 	bl sub_808FE64
 	bl sub_808FED8
-	bl sub_808FF9C
+	bl ow_spawnMapObject1b
 	bl sub_808FF30
 	bl sub_808FF70
 	mov r0, #1
@@ -814,7 +814,7 @@ sub_808FE34:
 loc_808FE4E:
 	mov r0, #0xff
 	str r0, [r5,#0x20] // (dword_2000330 - 0x2000310)
-	bl sub_808FF9C
+	bl ow_spawnMapObject1b
 	bl sub_809003C
 	bl sub_809032C
 	mov r0, #0
@@ -1026,9 +1026,9 @@ loc_808FF98:
 // symdb: () -> r0 = 0 (always); internally calls sub_808FFC0 to obtain r0-r3 args for
 // symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes sub_808FFC0's r3 low byte to new
 // symdb: object+5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnMapObject1b.yaml
 	thumb_local_start
-sub_808FF9C:
+ow_spawnMapObject1b:
 	push {r4-r7,lr}
 	bl sub_808FFC0
 	mov r6, r3
@@ -1045,7 +1045,7 @@ sub_808FF9C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_808FF9C
+	thumb_func_end ow_spawnMapObject1b
 
 	thumb_local_start
 sub_808FFC0:

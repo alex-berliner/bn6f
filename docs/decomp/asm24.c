@@ -96,7 +96,7 @@ int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
 
     ZeroFillByWord(&unk_2000B40, 152);
     byte_2000B43 = 32;
-    sub_808CC84();
+    ow_storePlayerPosDup();
     ClearEventFlagFromImmediate(9, 216);
     ClearEventFlagFromImmediate(9, 217);
     gameState_setUnk09_8001172(0);
@@ -104,11 +104,11 @@ int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
     if ( v5 )
         sub_808CF50(v4);
     ClearEventFlagFromImmediate(9, 211);
-    sub_8142C94();
+    init_queueBeastSpGfx();
     v6 = sub_808CBA0();
-    if ( sub_808CF34(v6) != 1 )
-        sub_808CE70();
-    sub_808CE28();
+    if ( ai_testMapGroupEventFlag(v6) != 1 )
+        init_applyBeastSpScenarioEventFlags();
+    init_clearBeastSpEventFlagTable();
     sound_8000672(31, 256, v7);
     return 0;
 }
@@ -119,7 +119,7 @@ int __fastcall sub_808CAD4(int a1)
 {
     char v1; // zf
 
-    sub_8142C94();
+    init_queueBeastSpGfx();
     SetEventFlagFromImmediate(9, 214);
     sub_808CBA0();
     TestEventFlagFromImmediate(9, 216);
@@ -285,7 +285,7 @@ char *battle_pickBattleStateInitPtr_808CC34()
 
 
 // 0x808cc84
-int sub_808CC84()
+int ow_storePlayerPosDup()
 {
     _WORD *v0; // r5
     __int64 v1; // r0
@@ -460,7 +460,7 @@ signed int battle_checkLockedEventTable_808CDC4()
 
 
 // 0x808ce28
-int sub_808CE28()
+int init_clearBeastSpEventFlagTable()
 {
     int v0; // r8
     signed int v1; // r8
@@ -498,7 +498,7 @@ int sub_808CE28()
 
 
 // 0x808ce70
-int sub_808CE70()
+int init_applyBeastSpScenarioEventFlags()
 {
     int v0; // r8
     signed int v1; // r8
@@ -534,7 +534,7 @@ int sub_808CE70()
 
 
 // 0x808cf34
-signed int __fastcall sub_808CF34(int a1)
+signed int __fastcall ai_testMapGroupEventFlag(int a1)
 {
     signed int v1; // r4
     signed int v2; // r0

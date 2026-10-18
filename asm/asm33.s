@@ -4565,7 +4565,7 @@ dword_8125590:
 	.word 0x600A000
 	thumb_func_end sub_81254FC
 
-// symdb: Joypad handler for a menu/state screen: Start/B triggers a confirm-exit/fade prompt, held-Up sets a flag and plays a sound, and held/pressed side d-pad directions (when state+0x12 is non-zero) feed into sub_8125820 while caching the joypad pointer in the state object.
+// symdb: Joypad handler for a menu/state screen: Start/B triggers a confirm-exit/fade prompt, held-Up sets a flag and plays a sound, and held/pressed side d-pad directions (when state+0x12 is non-zero) feed into submenu_moveListCursor while caching the joypad pointer in the state object.
 // symdb: /* caller-supplied: R0 saved into R8 (unused), R5 = state object, R10 = toolkit */ void
 // symdb: menu_handleStartAndDpad_8125594(u32 r0_scratch, u8 *state_obj /* r5*/, void *toolkit /* r10*/);
 // symdb: /* clobbers nzcv + r0-r3, r5, r8, r9, r10, r12, lr; preserves r4, r5, r6, r7, r10 */
@@ -4605,7 +4605,7 @@ loc_81255BE:
 	bic r0, r2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 	b locret_81255F2
 loc_81255DE:
@@ -4616,7 +4616,7 @@ loc_81255DE:
 	beq locret_81255F2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 locret_81255F2:
 	pop {r4-r7,pc}
@@ -4671,7 +4671,7 @@ loc_8125632:
 	bic r0, r2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 	b loc_812566C
 loc_8125658:
@@ -4682,7 +4682,7 @@ loc_8125658:
 	beq loc_812566C
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 loc_812566C:
 	pop {r1}
@@ -4748,7 +4748,7 @@ loc_81256BE:
 	bic r0, r2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 	b loc_81256F8
 loc_81256E4:
@@ -4759,7 +4759,7 @@ loc_81256E4:
 	beq loc_81256F8
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 loc_81256F8:
 	pop {r1}
@@ -4817,7 +4817,7 @@ loc_812573E:
 	bic r0, r2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 	b loc_8125778
 loc_8125764:
@@ -4828,7 +4828,7 @@ loc_8125764:
 	beq loc_8125778
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 loc_8125778:
 	pop {r1}
@@ -4840,7 +4840,7 @@ off_8125780:
 	.word 0x300
 	thumb_func_end sub_8125704
 
-// symdb: Per-frame battle-menu input dispatcher: Start+B exits, bit-0 hands off, Select switches state with cue 7A, otherwise routes cursor navigation to sub_8125820.
+// symdb: Per-frame battle-menu input dispatcher: Start+B exits, bit-0 hands off, Select switches state with cue 7A, otherwise routes cursor navigation to submenu_moveListCursor.
 // symdb: void battle_input_tick_8125784(u32 r0=u8 held, u32 r2=code_param, u32 r5=obj, u32 r10=toolkit);
 // symdb: clobbers nzcv r0 r1 r2 r3 lr; preserves r4 r5 r6 r7 r10
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_input_tick_8125784.yaml
@@ -4896,7 +4896,7 @@ loc_81257C6:
 	bic r0, r2
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 	b loc_8125800
 loc_81257EC:
@@ -4907,7 +4907,7 @@ loc_81257EC:
 	beq loc_8125800
 	mov r1, #7
 	mov r2, #0
-	bl sub_8125820
+	bl submenu_moveListCursor
 	str r7, [r5,#0x70]
 loc_8125800:
 	pop {r1}
@@ -4939,9 +4939,9 @@ menu_confirmExitAndFade_812580C:
 // symdb: (r0 = pressed-keys bitfield (L=0x200 R=0x100 Up=0x40 Down=0x80), r1 = rows per page, r2 = wrap-
 // symdb: around flag, struct in r5+r8 with u16 fields +0x12 count, +0x14 cursor row, +0x18 scroll offset)
 // symdb: -> r0 clobbered (=0x18), r7 = 0xFF if cursor moved else 0; updates +0x14/+0x18
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125820.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_moveListCursor.yaml
 	thumb_local_start
-sub_8125820:
+submenu_moveListCursor:
 	push {r5,lr}
 	mov r12, r2
 	sub r1, #1
@@ -5049,7 +5049,7 @@ off_81258E0:
 	.word 0x200
 off_81258E4:
 	.word 0x100
-	thumb_func_end sub_8125820
+	thumb_func_end submenu_moveListCursor
 
 // symdb: Plays sound effect 0x7A (a fixed, hardcoded SFX id) and returns.
 // symdb: void sub_81258E8(void); // r1-r7, r10 pass through preserved to PlaySoundEffect; r0 = 0x7A on
@@ -5676,7 +5676,7 @@ battle_drawCustFolderSlots_8125D10:
 	mov r1, #4
 	ldr r2, off_8125D84 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	ldrh r0, [r7,#0x18]
 	ldr r1, off_8125D88 // =unk_201DC20 
 	ldr r2, off_8125D84 // =byte_2017A00 
@@ -5747,7 +5747,7 @@ submenu_redrawFolderScreen:
 	mov r1, #4
 	ldr r2, off_8125E68 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	ldrh r0, [r7,#0x22]
 	ldr r1, off_8125E6C // =dword_201E420 
 	ldr r2, off_8125E68 // =byte_2017A00 
@@ -5856,7 +5856,7 @@ bg_drawArenaTiles_8125E78:
 	mov r1, #4
 	ldr r2, off_8125F4C // =byte_2017A00 
 	mov r3, #5
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	ldrh r0, [r7,#0x2c]
 	ldr r1, off_8125F50 // =dword_201EC20 
 	ldr r2, off_8125F4C // =byte_2017A00 
@@ -5962,7 +5962,7 @@ sub_8125F5C:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -6060,7 +6060,7 @@ sub_8126030:
 	mov r1, #4
 	ldr r2, off_8126104 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	ldrh r0, [r7,#0x36]
 	ldr r1, off_8126108 // =dword_201F420 
 	ldr r2, off_8126104 // =byte_2017A00 
@@ -6167,7 +6167,7 @@ sub_8126114:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	mov r0, #0x40 
 	ldrh r0, [r7,r0]
 	ldr r1, off_81261F8 // =dword_201FC20 
@@ -6223,7 +6223,7 @@ sub_8126184:
 	mov r1, #4
 	ldr r2, off_81261F4 // =byte_2017A00 
 	mov r3, #7
-	bl sub_812625C
+	bl bg_drawTileStrip3Wide
 	mov r0, #0x40 
 	ldrh r0, [r7,r0]
 	ldr r1, off_81261F8 // =dword_201FC20 
@@ -6324,9 +6324,9 @@ dword_8126258:
 // symdb: Thin wrapper that copies a 3-tile-wide vertical strip of tile IDs into BG tile block 2, used by battle/custom-screen and folder-screen redraws.
 // symdb: (r0 = start column j, r1 = start row i, r2 = tileIds *const u16, r3 = strip height in half-
 // symdb: tiles) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812625C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_drawTileStrip3Wide.yaml
 	thumb_local_start
-sub_812625C:
+bg_drawTileStrip3Wide:
 	push {r4-r7,lr}
 	lsl r5, r3, #1
 	// tileIds
@@ -6336,7 +6336,7 @@ sub_812625C:
 	mov r4, #3
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_812625C
+	thumb_func_end bg_drawTileStrip3Wide
 
 	thumb_local_start
 sub_812626C:
@@ -8494,7 +8494,7 @@ loc_81273D6:
 	ldr r2, dword_81273E4 // =0x600ac00 
 	ldr r3, off_81273E8 // =eTextScript201BF20
 	ldr r4, off_81273EC // =unk_201A600 
-	bl sub_8127578
+	bl chatbox_renderGlyphViaTable
 locret_81273E2:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -8556,7 +8556,7 @@ petNaviIntro_812741C:
 	ldr r2, dword_81274E0 // =0x6008020 
 	ldr r3, off_81274E4 // =eTextScript201BF20
 	ldr r4, off_81274E8 // =byte_2017A00 
-	bl sub_8127578
+	bl chatbox_renderGlyphViaTable
 	bl GetCurPETNavi // () -> u8
 	mov r1, #2
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
@@ -8569,7 +8569,7 @@ petNaviIntro_812741C:
 	ldr r2, dword_81274E0 // =0x6008020 
 	ldr r3, off_81274E4 // =eTextScript201BF20
 	ldr r4, off_81274E8 // =byte_2017A00 
-	bl sub_8127578
+	bl chatbox_renderGlyphViaTable
 	bl GetCurPETNavi // () -> u8
 	mov r1, #3
 	bl GetCurPETNaviStatsByte // (int a1, int a2) -> u8
@@ -8582,7 +8582,7 @@ petNaviIntro_812741C:
 	ldr r2, dword_81274E0 // =0x6008020 
 	ldr r3, off_81274E4 // =eTextScript201BF20
 	ldr r4, off_81274E8 // =byte_2017A00 
-	bl sub_8127578
+	bl chatbox_renderGlyphViaTable
 	bl GetCurPETNavi // () -> u8
 	tst r0, r0
 	bne loc_812749A
@@ -8626,7 +8626,7 @@ loc_81274CE:
 	ldr r2, dword_81274E0 // =0x6008020 
 	ldr r3, off_81274E4 // =eTextScript201BF20
 	ldr r4, off_81274E8 // =byte_2017A00 
-	bl sub_8127578
+	bl chatbox_renderGlyphViaTable
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_81274E0:
@@ -8663,14 +8663,14 @@ byte_812756C:
 // symdb: Tail-call shim that preloads a fixed table pointer into r6 and jumps into the chatbox glyph renderer.
 // symdb: (args as chatbox_renderGlyph_8127580) -> r6 = dword_86B7AE0, then tail-jumps to
 // symdb: chatbox_renderGlyph_8127580; returns/flags as that callee.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127578.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_renderGlyphViaTable.yaml
 	thumb_local_start
-sub_8127578:
+chatbox_renderGlyphViaTable:
 	push {r4-r7,lr}
 	ldr r6, off_81275A4 // =dword_86B7AE0 
 	b loc_8127584
 	.byte 0, 0
-	thumb_func_end sub_8127578
+	thumb_func_end chatbox_renderGlyphViaTable
 
 // symdb: Renders one glyph chunk into the chatbox/text tile area at a given palette offset.
 // symdb: (r0 = glyphIndex, r1 = paletteOffset, r2 = VRAM tile dest, r3 = toolkit text renderer state,
@@ -10965,7 +10965,7 @@ sub_8128750:
 	strh r0, [r5,#0x26]
 	strh r0, [r5,#0x22]
 	strb r0, [r5,#0xe]
-	bl sub_81289C4
+	bl submenu_buildKeyItemList
 	bl sub_8128A44
 	bl sub_8128AB0
 	bl sub_8128B34
@@ -11256,9 +11256,9 @@ off_8128994:
 // symdb: Builds the ordered list of owned key items into a work buffer for a menu screen, storing the entry count.
 // symdb: (r0 unused, r5 = screen state block) -> r0 = undefined; writes key-item list to
 // symdb: eTextScript201BF00 and count halfword to [r5+0x1E]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81289C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_buildKeyItemList.yaml
 	thumb_local_start
-sub_81289C4:
+submenu_buildKeyItemList:
 	push {r4-r7,lr}
 	ldr r0, off_8128A24 // =eTextScript201BF00
 	ldr r1, dword_8128A28 // =0xde 
@@ -11312,7 +11312,7 @@ loc_8128A18:
 	blt loc_81289FA
 	pop {r4-r7,pc}
 	.balign 4, 0
-	thumb_func_end sub_81289C4
+	thumb_func_end submenu_buildKeyItemList
 
 off_8128A24:
 	.word eTextScript201BF00
@@ -12546,7 +12546,7 @@ loc_81293E8:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
-	bl sub_812B29C
+	bl submenu_positionOptionSprite
 	pop {r4,pc}
 	.balign 4, 0
 off_81293F8:
@@ -12586,7 +12586,7 @@ loc_8129438:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
-	bl sub_812B29C
+	bl submenu_positionOptionSprite
 	pop {pc}
 	.balign 4, 0
 off_8129448:
@@ -12822,7 +12822,7 @@ loc_8129610:
 	strb r1, [r5,#0x1b]
 	b locret_8129650
 loc_8129620:
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	ldr r0, off_8129654 // =byte_812913C
 	bl loadEntryPairTable_812B1DC
 	mov r0, #0xe
@@ -14178,7 +14178,7 @@ sub_8129F04:
 	ldr r0, [r1,r0]
 	mov lr, pc
 	bx r0
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	pop {pc}
 	.balign 4, 0
 off_8129F18:
@@ -14856,7 +14856,7 @@ sub_812A424:
 	mov r0, #1
 	bl sub_811B010
 	bl battle_initScene_8129248
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	bl loadEntityJumpOffset00Gfx_812B530
 	mov r0, #8
 	strb r0, [r5,#1]
@@ -15164,7 +15164,7 @@ sub_812A694:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812A6EC
 	bl battle_initScene_8129248
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	bl loadEntityJumpOffset00Gfx_812B530
 	mov r0, #8
 	strb r0, [r5,#1]
@@ -15402,7 +15402,7 @@ loc_812A866:
 loc_812A876:
 	b loc_812A878
 loc_812A878:
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	beq loc_812A88E
@@ -15695,7 +15695,7 @@ loc_812AAAC:
 loc_812AAB6:
 	b loc_812AAB8
 loc_812AAB8:
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	pop {r4-r7,pc}
 	.byte 0, 0
 	thumb_func_end sub_812A8EC
@@ -15847,7 +15847,7 @@ loc_812ABD6:
 loc_812ABE0:
 	b loc_812ABE2
 loc_812ABE2:
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_812ABE8:
@@ -15862,7 +15862,7 @@ sub_812ABEC:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	pop {pc}
 	.balign 4, 0
 off_812AC00:
@@ -16112,7 +16112,7 @@ loc_812ADD2:
 loc_812ADDC:
 	b loc_812ADDE
 loc_812ADDE:
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
 	bne loc_812ADF0
@@ -16143,7 +16143,7 @@ loc_812AE10:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #0
 	bne locret_812AE2A
@@ -16211,7 +16211,7 @@ loc_812AE96:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812AEC4 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -16249,7 +16249,7 @@ locret_812AEDC:
 // symdb: void battle_object_updateDispatcher_(void); // inputs: r5 = battle object ptr; r6, r10 = caller-
 // symdb: set context (passed through unchanged) // indirect call: r0 = dispatch table entry for the
 // symdb: selected handler, r1 = r5->byte 2 (selector) // outputs: r5, r8, r9, r10, r11, r12 = post-update
-// symdb: routine (sub_812B26C) results // clobbers: nz c v r0 r1 r2 r3 r4 r6 r7 lr; preserved: -
+// symdb: routine (battle_stepWaitForStateRunUpdate) results // clobbers: nz c v r0 r1 r2 r3 r4 r6 r7 lr; preserved: -
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_812AEE0.yaml
 	thumb_local_start
 sub_812AEE0:
@@ -16259,7 +16259,7 @@ sub_812AEE0:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_812B26C
+	bl battle_stepWaitForStateRunUpdate
 	pop {pc}
 	.balign 4, 0
 off_812AEF4:
@@ -16434,9 +16434,9 @@ bg_LoadFullScreenTilesAndSetup_812AFB0:
 // symdb: Sets up one 'screens3' menu screen: copies a full 30x20 background tilemap into BG tile block 1 and then renders its two text GFX panels.
 // symdb: () -> (); no args or return value; calls CopyBackgroundTiles and sub_812B430, so r0-r3 are
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AFC8.yaml
-	thumb_func_start sub_812AFC8
-sub_812AFC8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/screens3_loadBackgroundTiles.yaml
+	thumb_func_start screens3_loadBackgroundTiles
+screens3_loadBackgroundTiles:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0
@@ -16597,7 +16597,7 @@ byte_812B1C0:
 	.word unk_201F820
 	.word eDecompBuffer2013A00
 	.word NULL
-	thumb_func_end sub_812AFC8
+	thumb_func_end screens3_loadBackgroundTiles
 
 // symdb: Decodes a sentinel-terminated 4-byte-per-entry table through sub_8046670 and stores the results into the 4-slot scratch buffer unk_20251A0 (zeroed first).
 // symdb: void loadEntryPairTable_812B1DC(const void *entryTable /* r0 */); // clobbers r0-r3, r4, r5, r6,
@@ -16694,9 +16694,9 @@ battle_runFrameUpdate:
 // symdb: Entity step wrapper that polls a state value and runs the battle frame update with command 0x13 when the state is 0x18 or 0x1c, otherwise 0x12.
 // symdb: () -> r0 = command id (0x13 if sub_8132290()==0x18 or 0x1c else 0x12) passed to
 // symdb: battle_runFrameUpdate; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B26C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepWaitForStateRunUpdate.yaml
 	thumb_local_start
-sub_812B26C:
+battle_stepWaitForStateRunUpdate:
 	push {r4,lr}
 	mov r4, #0x13
 	bl sub_8132290
@@ -16710,7 +16710,7 @@ loc_812B27E:
 	bl battle_runFrameUpdate
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812B26C
+	thumb_func_end battle_stepWaitForStateRunUpdate
 
 	thumb_local_start
 sub_812B288:
@@ -16728,9 +16728,9 @@ sub_812B288:
 
 // symdb: Repositions the sub-menu's option sprite (ID 0x78) to the x-slot matching the given option index, unless a flag disables it.
 // symdb: (r0 = option index into context struct at r5) -> void; r0-r3 clobbered, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B29C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_positionOptionSprite.yaml
 	thumb_local_start
-sub_812B29C:
+submenu_positionOptionSprite:
 	push {r4,r6,lr}
 	mov r6, r0
 	ldrb r0, [r5,#0x1b]
@@ -16752,7 +16752,7 @@ off_812B2BC:
 	.word 0x78
 off_812B2C0:
 	.word 0x28
-	thumb_func_end sub_812B29C
+	thumb_func_end submenu_positionOptionSprite
 
 	thumb_local_start
 sub_812B2C4:
@@ -17093,7 +17093,7 @@ sub_812B4AC:
 	ldr r0, off_812B4FC // =unk_20251A0 
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812B500 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -17402,7 +17402,7 @@ loc_812B71A:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 
 	ldr r0, off_812B754 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -18480,7 +18480,7 @@ sub_812BFAC:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812BFF0 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -18553,7 +18553,7 @@ sub_812C034:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812C078 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
@@ -18603,7 +18603,7 @@ sub_812C094:
 	// size
 	mov r1, #0x10
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_812AFC8
+	bl screens3_loadBackgroundTiles
 	// a1
 	ldr r0, off_812C0C8 // =byte_8129150
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void

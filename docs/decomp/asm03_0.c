@@ -2521,7 +2521,7 @@ int battle_updateActiveChipSlotId_8027F84()
             if ( v4 == 9 || v4 == 5 )
                 --v0;
         }
-        result = sub_8028034(&v3[byte_8027FD0[v0]]);
+        result = battle_findFirstRegularChipSlot(&v3[byte_8027FD0[v0]]);
         if ( result == v0 )
             result = 255;
         v1[2] = result;
@@ -2550,7 +2550,7 @@ int sub_8027FDC()
             if ( v4 == 8 || v4 == 4 )
                 ++v0;
         }
-        result = sub_8028034(&v3[byte_8028028[v0]]);
+        result = battle_findFirstRegularChipSlot(&v3[byte_8028028[v0]]);
         if ( result == v0 )
             result = 255;
         v1[3] = result;
@@ -2560,7 +2560,7 @@ int sub_8027FDC()
 
 
 // 0x8028034
-int __fastcall sub_8028034(unsigned __int8 *a1)
+int __fastcall battle_findFirstRegularChipSlot(unsigned __int8 *a1)
 {
     unsigned __int8 *i; // r4
     int v2; // r0
@@ -2619,7 +2619,7 @@ int folder_findFirstChipWithFlag_802806C()
             result = *v0;
             if ( !*v0 )
             {
-                v4 = sub_802A53C(**(v0 + 2));
+                v4 = battle_getChipWordIfUsable(**(v0 + 2));
                 result = *(getChip8021DA8(v4 & 0x1FF) + 9);
                 if ( result & 0x20 )
                     break;
@@ -5115,7 +5115,7 @@ int custMenu_80298F4()
             goto LABEL_20;
         case 4:
         case 5:
-            result = sub_8029A1E();
+            result = battle_tutorialCheckEmotionMsg();
             if ( !result )
                 return result;
             v3 = result;
@@ -5222,7 +5222,7 @@ signed int sub_80299FA()
 
 
 // 0x8029a1e
-signed int sub_8029A1E()
+signed int battle_tutorialCheckEmotionMsg()
 {
     int v0; // r5
     int v1; // r3
@@ -6165,7 +6165,7 @@ int folder_tallyChipsByClass_802A4FC()
 
 
 // 0x802a53c
-unsigned int __fastcall sub_802A53C(unsigned int a1)
+unsigned int __fastcall battle_getChipWordIfUsable(unsigned int a1)
 {
     unsigned int v1; // r4
     char v2; // zf
@@ -8082,7 +8082,7 @@ LABEL_19:
 
 
 // 0x802c044
-int sub_802C044()
+int battle_chipSelectAnimTileStep()
 {
     int v0; // r5
     int v1; // r0
@@ -10274,7 +10274,7 @@ int sub_802D738()
         object_setCoordinatesFromPanels(v0);
         v0->z = 0;
         object_updateCollisionPanels(v0);
-        v0->directionFlip = sub_800F46C();
+        v0->directionFlip = battle_checkEmergeDirectionFlip();
         battleObject_refreshSpriteAndArm_800F2C6();
         v4 = object_clearFlag(7233);
         object_clearFlag2(v4);
@@ -10474,7 +10474,7 @@ int sub_802D950()
         object_setCoordinatesFromPanels(v0);
         v0->z = 0;
         object_updateCollisionPanels(v0);
-        v0->directionFlip = sub_800F46C();
+        v0->directionFlip = battle_checkEmergeDirectionFlip();
         battleObject_refreshSpriteAndArm_800F2C6();
         v4 = object_clearFlag(7233);
         object_clearFlag2(v4);
@@ -10632,7 +10632,7 @@ int sub_802DACC()
         object_setCoordinatesFromPanels(v0);
         v0->z = 0;
         object_updateCollisionPanels(v0);
-        v0->directionFlip = sub_800F46C();
+        v0->directionFlip = battle_checkEmergeDirectionFlip();
         battleObject_refreshSpriteAndArm_800F2C6();
         object_reservePanel(v0->futurePanelX, v0->futurePanelY);
         object_clearCollisionRegion();
@@ -16034,7 +16034,7 @@ signed int __fastcall sub_80319E6(_DWORD *a1)
 
 
 // 0x80319fe
-signed int __fastcall sub_80319FE(_DWORD *a1)
+signed int __fastcall battle_aiTargetInRangeActorCount(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

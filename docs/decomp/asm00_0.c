@@ -1434,7 +1434,7 @@ int __fastcall battle_calcAngleOctant_800118A(__int64 a1)
 
 
 // 0x80011a0
-int __fastcall sub_80011A0(int a1, int a2)
+int __fastcall math_getPolarVector(int a1, int a2)
 {
     int v2; // r0
     int v3; // r2
@@ -1451,7 +1451,7 @@ int __fastcall sub_80011C0(int a1, int a2)
     int result; // r0
 
     if ( a1 )
-        result = sub_80011A0((a1 - 1) << 6, a2);
+        result = math_getPolarVector((a1 - 1) << 6, a2);
     else
         result = 0;
     return result;
@@ -1477,7 +1477,7 @@ BOOL __fastcall sub_80011F0(int a1, int a2, int a3, int a4)
 
 
 // 0x800120e
-unsigned int __fastcall sub_800120E(_DWORD *vect, int x, int y, int z)
+unsigned int __fastcall battle_calcTargetApproach(_DWORD *vect, int x, int y, int z)
 {
     unsigned int v4; // r4
     unsigned int v5; // r6
@@ -1566,7 +1566,7 @@ __int64 __fastcall sub_80012C6(_DWORD *a1, int a2, int a3)
     }
     v10 = v15;
     v11 = v16;
-    LODWORD(v13) = sub_80011A0(v5, ((v3 >> 8) * (v3 >> 8) + (v4 >> 8) * (v4 >> 8)) << 8);
+    LODWORD(v13) = math_getPolarVector(v5, ((v3 >> 8) * (v3 >> 8) + (v4 >> 8) * (v4 >> 8)) << 8);
     HIDWORD(v13) = v12;
     SWI_Div(v10 << 17, v11 * v11);
     return v13;
@@ -1589,7 +1589,7 @@ int __fastcall math_getThrowSpeeds(_DWORD *a1, int a2, int a3)
         SVC         8
         SVC         6
     }
-    result = sub_80011A0(v5, ((v3 >> 8) * (v3 >> 8) + (v4 >> 8) * (v4 >> 8)) << 8);
+    result = math_getPolarVector(v5, ((v3 >> 8) * (v3 >> 8) + (v4 >> 8) * (v4 >> 8)) << 8);
     __asm { SVC         6 }
     return result;
 }

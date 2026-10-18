@@ -1221,7 +1221,7 @@ int sub_809ACA4()
 
 
 // 0x809acd0
-signed int sub_809ACD0()
+signed int chatbox_animateWindowOpen()
 {
     int v0; // r5
     int v1; // r10
