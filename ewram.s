@@ -3284,6 +3284,8 @@ dword_203F4A0:: // 0x203f4a0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_203F4A4.yaml
 byte_203F4A4:: // 0x203f4a4
 	.space 8
+// symdb: Bytes 8.. of the received (loopback) battle link packet: at a battle's start the Navi stats copied into the four battle Navi slots; after it, the battle result record's reward (u16 item, u16 code) that goes on to the result screen.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eBattleNaviStats203F4AC.yaml
 eBattleNaviStats203F4AC:: // 0x203f4ac
 	.space 72
 byte_203F4F4:: // 0x203f4f4
