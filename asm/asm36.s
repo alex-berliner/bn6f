@@ -6636,6 +6636,10 @@ off_81334B8:
 	.word sub_81335EC+1
 	.word sub_8133770+1
 	thumb_func_end battleObject_submenuDispatchByBeastSpIndex_8133484
+// symdb: Input/state step handler for a beast-SP-related text sequence: reacts to B+Select and chatbox progress, playing sounds and advancing scripts 0xb/0x10/0x11 while updating a context's state bytes.
+// symdb: (r5 = context struct, caller-provided) -> r0 = last call's return; writes state bytes [r5+2],
+// symdb: [r5+3] and word [r5+0x68]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81334C8.yaml
 	thumb_local_start
 sub_81334C8:
 	push {r4,lr}
@@ -6710,6 +6714,9 @@ off_8133554:
 	.word sub_81335D8+1
 	thumb_func_end sub_8133540
 
+// symdb: Per-frame input handler for an open submenu: adjusts its cursor on D-pad input, advances to state 4 on A, and on B plays the exit sound, runs a closing text script, and closes itself.
+// symdb: (r5 = submenu state struct, r10 = toolkit) -> void; also uses global event flag word and joypad
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133564.yaml
 	thumb_local_start
 sub_8133564:
 	push {r4,lr}
@@ -7010,6 +7017,10 @@ locret_8133784:
 	.balign 4, 0x00
 	thumb_func_end sub_8133770
 
+// symdb: Per-frame state handler for the beast-out related submenu/effect: advances state bytes, runs text script 0x17 when a submenu is open, and triggers the beast status effect on the battle object.
+// symdb: (r0 unused/ignored; r5 = state struct pointer set up by caller) -> r0 = result of
+// symdb: object_resolveTableEntryWrapper; flags from final calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133788.yaml
 	thumb_local_start
 sub_8133788:
 	push {lr}
@@ -7667,6 +7678,10 @@ locret_8133C98:
 	.balign 4, 0x00
 	thumb_func_end chatbox_selectPress_8133C58
 
+// symdb: Confirms a panel selection for placing a battle object: cancels if the same panel is re-picked, rejects occupied or blocked spots, otherwise spawns the eStruct records there and advances the handler state.
+// symdb: (uses global context r5; r0 clobbered immediately with slot id 4) -> no return value; writes
+// symdb: handler state to [r5+0x68] (0, 8, or 0xC) and selection data to [r5+0x1C]/[r5+0x4C]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133C9C.yaml
 	thumb_local_start
 sub_8133C9C:
 	push {r4,lr}
@@ -8140,6 +8155,10 @@ off_81340A0:
 	.word eDecompBuffer2013A00
 	.word NULL
 	thumb_func_end sub_8133EC0
+// symdb: Spawns the chip-select screen's eStruct records from table byte_813313C, positions their sprites at a fixed spot, and links each record to the first one.
+// symdb: () -> void; spawns records into eStructArr2008450 and writes record[0]'s pointer to each
+// symdb: record's +0x14 field
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81340AC.yaml
 	thumb_local_start
 sub_81340AC:
 	push {r4-r7,lr}
@@ -9884,6 +9903,10 @@ loc_8134CDE:
 	.byte 0, 0
 	thumb_func_end sub_8134ADC
 
+// symdb: Folder/pack editor action handler: moves a 0x20-byte chip entry between the two chip lists, or swaps two entries within one list, with error sounds for invalid moves.
+// symdb: (r0..r3 unused; r5 = editor state struct) -> r0 = 0; writes entry tables word_202A020 /
+// symdb: unk_202A3E0, state fields [r5+0x17,0x28,0x3c,0x44,0x46,0x48,0x4a]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134CF0.yaml
 	thumb_local_start
 sub_8134CF0:
 	push {r4-r7,lr}
@@ -13710,6 +13733,10 @@ sub_81369B8:
 	.byte 0, 0
 	thumb_func_end sub_81369B8
 
+// symdb: Per-frame step of a scripted scene that, after a 80-frame delay, fully heals the current PET navi and plays a sound/effect flourish before advancing the scene state.
+// symdb: (r5 = scene/PET-event object, fields at +0x03/+0x12/+0x15/+0x1c) -> r0 = sub_8136B10 return
+// symdb: value; flags from callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81369D0.yaml
 	thumb_local_start
 sub_81369D0:
 	push {lr}
@@ -13820,6 +13847,10 @@ loc_8136A9A:
 	pop {pc}
 	thumb_func_end sub_8136A74
 
+// symdb: Cutscene/event step that waits on chatbox flags and state, then closes the textbox, resets the step's fields and fades the screen out.
+// symdb: (r5 = event/step object: [r5] step id, [r5+1] state, [r5+2..3] counters) -> r0 = 0 or state
+// symdb: byte; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136AA0.yaml
 	thumb_local_start
 sub_8136AA0:
 	push {lr}

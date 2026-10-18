@@ -8718,7 +8718,7 @@ loc_803CF30:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_803CF10
 
-// symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through pet_addCurNaviHPCapped.
+// symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through sub_803CF74.
 // symdb: void pet_addCurNaviStat0x3ECapped_803CF3C(u8 navi_slot /* r1 */, u32 mustBe0x70 /* r4 */); r4
 // symdb: must equal 0x70 or the call returns immediately; r4-r12 are preserved, flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviStat0x3ECapped_803CF3C.yaml

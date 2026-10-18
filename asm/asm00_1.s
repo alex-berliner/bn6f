@@ -14156,6 +14156,9 @@ locret_80096DE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8009658
 
+// symdb: Battle state handler that requests and dispatches battle state 0x404, sets up the scene frame, and zeroes the custom gauge at battle start.
+// symdb: () -> r0 clobbered; requests+dispatches state 0x404, sets custom gauge to 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80096E0.yaml
 	thumb_local_start
 sub_80096E0:
 	push {lr}
@@ -14299,6 +14302,9 @@ locret_80097CA:
 	pop {pc}
 	thumb_func_end sub_80097A8
 
+// symdb: Battle-state subphase handler: on first entry arms a check (sets Unk11 bit 4, battle flag 1), then polls sub_802A87C until it reports done, branching to phase 0x14 or to state step 0xC.
+// symdb: no args (r5 = battle state struct, set by caller) -> void; uses/clears battle-state flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80097CC.yaml
 	thumb_local_start
 sub_80097CC:
 	push {lr}
@@ -14651,6 +14657,10 @@ locret_8009A66:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_advanceIndexFromPauseIntro_80099E0
 
+// symdb: Per-frame handler for the battle state entered after the mid-intro pause: refreshes request bits and the battle scene, then posts a null event.
+// symdb: (no args) -> r0 = 0 after postEvent call; no meaningful return; sets eStruct2035280 request/flag
+// symdb: dword |= 0x404
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009A68.yaml
 	thumb_local_start
 sub_8009A68:
 	push {lr}
@@ -14910,6 +14920,9 @@ locret_8009C28:
 	pop {pc}
 	thumb_func_end sub_8009C06
 
+// symdb: Battle sub-phase that fades the screen out, then on fade completion stops the music, frees object type 0x1A, and advances the battle state to 8.
+// symdb: (r5 = battle state struct) -> void; sets oBattleState_SubPhaseInitFlag, oBattleState_Index_00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009C2A.yaml
 	thumb_local_start
 sub_8009C2A:
 	push {lr}
@@ -14997,6 +15010,10 @@ off_8009CA8:
 	.word sub_8009F8A+1
 	thumb_func_end sub_8009C94
 
+// symdb: Battle sub-phase handler: initializes the battle once (spawn enemies, pause, play battle BGM), then waits and transitions to the next battle state.
+// symdb: (r0 = battle state ptr in r5-style global) -> r0 = clobbered; sets
+// symdb: oBattleState_SubPhaseInitFlag/StatePhase/Index_01 on the battle state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009CD0.yaml
 	thumb_local_start
 sub_8009CD0:
 	push {r4,r6,r7,lr}
@@ -15065,6 +15082,9 @@ locret_8009D56:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8009CD0
 
+// symdb: One per-frame step of a battle transition/effect: raises request bits 0x404, runs the transition dispatch, refreshes the battle scene, and posts an empty event.
+// symdb: () -> r0 = 0/void; sets request bits 0x404 in eStruct2035280+0x40, posts event with r0=0, r1=0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009D58.yaml
 	thumb_local_start
 sub_8009D58:
 	push {lr}

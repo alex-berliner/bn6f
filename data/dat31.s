@@ -527,6 +527,9 @@ byte_810C81A::
 	.byte 0x46, 0x64, 0x96, 0xC8, 0x82, 0xC8
 	thumb_func_end sub_810C7B6
 
+// symdb: Processes the current battle object's selected battle chip: consumes it from the queue, loads its parameters, and kicks off its attack.
+// symdb: (r0 = battle object/state handle) -> r0 = result/status; flags unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C820.yaml
 	thumb_local_start
 sub_810C820::
 	push {r4,r6,lr}

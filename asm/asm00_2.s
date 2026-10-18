@@ -2222,6 +2222,10 @@ dword_800FC2C:
 	.word 0xFFFF
 	thumb_func_end playerAI_tryExecuteAttackChip_800FB54
 
+// symdb: AI-side check-and-fire: validates the object's state and held chip, then triggers the object's chip attack and reports chip ID/damage/boost, or 0xFFFF if the attack is not allowed.
+// symdb: (r5 = battle object ptr) -> r0 = chip ID (or 0xFFFF on refusal); r1/r2 also loaded with
+// symdb: Damage/AttackBoost on success; flags from final ldrh
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FC30.yaml
 	thumb_func_start sub_800FC30
 sub_800FC30:
 	push {r4,r7,lr}
@@ -4033,6 +4037,10 @@ locret_801081E:
 	pop {r4,pc}
 	thumb_func_end battle_tickBattleObject_80107D4
 
+// symdb: Adds an amount to a byte in the acting Navi's battle NaviStats (clamped to 9), then spawns an effect object at an arm-slot offset and plays sound 0x119.
+// symdb: (r0 = amount to add, r5 = battle object ptr) -> r0 = spawned effect object ptr; updates
+// symdb: NaviStats byte 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010820.yaml
 	thumb_func_start sub_8010820
 sub_8010820:
 	push {r4,lr}
@@ -14015,6 +14023,10 @@ dword_8014D04:
 	.word 0x80008600
 	thumb_func_end battle_aiAttackTickBeastSp_8014CC0
 
+// symdb: AI attack-state handler that warps a battle object onto its reserved future panel and finishes the move with an emerge-style animation.
+// symdb: (r5 = battle object, r7 = AI attack vars) -> void; moves object to FuturePanelX/Y, sets
+// symdb: CurAnim=0x11, StepTimer=6, HitElement=4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014D08.yaml
 	thumb_local_start
 sub_8014D08:
 	push {r4,lr}
@@ -17260,6 +17272,9 @@ off_80166C8:
 	.word battleObject_stepMoveToFuturePanel_8016730+1
 	thumb_func_end battle_dispatchAIDispatchByType_80166B6
 
+// symdb: Commits a battle object's planned panel move: teleports it onto its future panel, re-reserves that panel, and either starts the arrival animation or fully clears the moving state.
+// symdb: (r5 = battle object pointer, r0-r2 implicit) -> void; sets/clears ObjectFlags1 bit 0x1000
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80166D0.yaml
 	thumb_local_start
 sub_80166D0:
 	push {r6,r7,lr}
@@ -32904,6 +32919,10 @@ off_801E958:
 	.word byte_801FDC0
 	thumb_func_end sub_801E914
 
+// symdb: Builds and queues the display line for one chip entry (name plus numeric code digits) on a chip-list screen.
+// symdb: (r0 = ?, r1 = packed code word, r3 = chip id, r5 = entry struct) -> r0 = 0 on success / 1 via
+// symdb: alternate epilogue; clobbers r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E95C.yaml
 	thumb_local_start
 sub_801E95C:
 	push {r4-r7,lr}

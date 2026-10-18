@@ -344,6 +344,10 @@ loc_809915E:
 	.balign 4, 0
 	thumb_func_end start_battle_809913C
 
+// symdb: Loads a cutscene setup entry by ID: resolves its text archive and, if flagged, places the player (facing, animation, coords) and camera for the scene start.
+// symdb: (r5 = cutscene state struct, cutscene entry id at +6) -> r0 = 0; writes text archive ptr to
+// symdb: +0x30, entry byte to +6, bit7 of entry flags to +8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099164.yaml
 	thumb_local_start
 sub_8099164:
 	push {r4-r7, lr}
@@ -2344,6 +2348,10 @@ sub_809AAB8:
 	.balign 4, 0x00
 	thumb_func_end sub_809AAB8
 
+// symdb: Cutscene step that checks the chatbox-active flag and either queues follow-up script 0xC from the 0x2033404 archive (advancing a controller state) or re-queues script 0xB while the chatbox is busy.
+// symdb: (r0 unused, r5 = controller/task struct) -> r0 = 0 when a script was run, 1 when the chatbox
+// symdb: flag bit was clear; writes byte [r5+8], word [r5+0x84], event flag EVENT_1725
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AADC.yaml
 	thumb_local_start
 sub_809AADC:
 	push {r4-r7,lr}
@@ -4022,6 +4030,9 @@ off_809C018:
 	.word byte_809BF24
 	thumb_func_end sub_809BFE8
 
+// symdb: Resets game-progress story flags and reinitializes the selected PET navi, as if preparing a fresh scenario/playthrough state.
+// symdb: (r5 = toolkit or scenario struct; [r5,#0x34] = config struct) -> r0 = 0; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C01C.yaml
 	thumb_local_start
 sub_809C01C:
 	push {r4-r7,lr}

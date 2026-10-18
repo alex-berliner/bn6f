@@ -1582,6 +1582,10 @@ byte_813C1A4:
 	.byte 0x3B, 0x62, 0x5B, 0x0, 0x5, 0x6E, 0x2, 0x3
 	thumb_func_end battle_beastOutApplyCrossChanges_813C06C
 
+// symdb: Redraws the Navi Customizer board: for each of the 49 grid cells, resolves the part placed there and writes its tile-map halfword entries into the BG map buffer at unk_30019E0.
+// symdb: (r0 = graphic-state variant, 0 or 1) -> r0 = clobbered; writes halfword tile entries to
+// symdb: unk_30019E0, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C1C0.yaml
 	thumb_func_start sub_813C1C0
 sub_813C1C0:
 	push {r4-r7,lr}
@@ -1740,6 +1744,10 @@ off_813C330:
 	.word unk_2000090
 	thumb_func_end eraseMem_ClearBuffer_813C324
 
+// symdb: Checks the player's button presses against a 10-input secret code for the selected entry, and toggles 4 event flags when the full code is entered.
+// symdb: (r0 = entry selector (row id << 2), r1 = current input position 0-9) -> r0 = updated input
+// symdb: position (0 = reset/wrong, 10 = code completed); plays OK sound and toggles flags on completion
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C334.yaml
 	thumb_func_start sub_813C334
 sub_813C334:
 	push {r4-r7,lr}

@@ -2683,6 +2683,10 @@ owPlayer_setS2000AA0Param0x4_809e314:
 	thumb_func_end owPlayer_setS2000AA0Param0x4_809e314
 	thumb_func_end owPlayer_zeroS2000AA0Param0x4_809e312
 
+// symdb: Reloads the player's normal overworld sprite and clears beast-out state (event flags and control lockout).
+// symdb: () -> void; touches GameState.Unk_09 (set to 0), event flags EVENT_68E (set) / EVENT_68F
+// symdb: (cleared), eStruct2000aa0 fields 0x4 and 0x8 (zeroed)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E31A.yaml
 	thumb_local_start
 sub_809E31A:
 	push {r4-r7,lr}
@@ -2711,6 +2715,9 @@ sub_809E31A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809E31A
 
+// symdb: Applies the Beast Out appearance to the overworld player: loads the beast sprite, sets animation, disables the shadow, blocks jack-out, and flips the Beast Out event flags.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E35E.yaml
 	thumb_local_start
 sub_809E35E:
 	push {r4-r7,lr}

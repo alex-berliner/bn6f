@@ -6824,6 +6824,12 @@ off_812656C:
 	.word byte_8124A84
 	thumb_func_end sub_8126554
 
+// symdb: Queues one sprite OAM entry for an animated overlay element, using an animation-state byte in a per-element buffer and advancing its 0xFF-terminated animation table when the frame count expires.
+// symdb: (r0 = tile/attr word (u16), r1 = tile base offset, r2 = offset of u16 frame selector in state
+// symdb: buffer or 0, r3 = offset of anim-state byte, r4 = u16 OAM table ptr, r6 = position/flags word;
+// symdb: r5 = state buffer, r7 = animation table) -> r0 = queued; updates state byte at [r5+r3]; flags
+// symdb: from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126570.yaml
 	thumb_local_start
 sub_8126570:
 	push {r4,lr}
@@ -7134,6 +7140,10 @@ byte_81267A0:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x0, 0x0, 0x0
 	thumb_func_end sub_812674C
 
+// symdb: Queues a single OAM sprite entry for the battle-scene struct, but only when the selected sprite's counter/phase value has reached at least 7.
+// symdb: (r5 = battle/menu sprite struct base) -> r0 = void; queues one OAM entry via
+// symdb: object_computeAndQueueOamEntry_811FA98
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81267A8.yaml
 	thumb_local_start
 sub_81267A8:
 	push {r4-r7,lr}
@@ -7825,6 +7835,10 @@ loc_8126EB8:
 	.byte 0, 0
 	thumb_func_end sub_8126EA4
 
+// symdb: Per-frame update of a 3-choice menu: slides an animated cursor/offset by ±2 toward the selected entry's target value, and when it lands, performs the chosen action and advances the state machine.
+// symdb: (r5 = menu-state struct: +0x0D signed anim offset, +0x10 selection, +0x11 prev/target selection,
+// symdb: +0x02 state) -> r0 = 0; flags from final compares
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126EC0.yaml
 	thumb_local_start
 sub_8126EC0:
 	push {r4-r7,lr}
@@ -9502,6 +9516,10 @@ off_8127B90:
 	.word dword_8127980
 	thumb_func_end submenu_HandleInput_8127B18
 
+// symdb: When a cutscene/chatbox flag is active, completes the current story event: clears its 'in-progress' flag, sets its 'done' flag, reloads the background, and advances the scene to its next script step.
+// symdb: (r5 = cutscene/scene struct (fields +0x02, +0x20, +0x24 read); global table dword_2027590) -> r0
+// symdb: = clobbered; sets struct byte [r5+2] = 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127B94.yaml
 	thumb_local_start
 sub_8127B94:
 	push {r4,lr}
@@ -10997,6 +11015,9 @@ loc_81287E8:
 	.byte 0, 0
 	thumb_func_end sceneStep_81287DC
 
+// symdb: Per-frame state handler for a cursor-driven menu screen: handles exit confirmation, horizontal cursor movement with a scroll/animation counter, and launching the selected entry's text script.
+// symdb: (r0 = unused; r5 = screen/menu state struct, r10 = toolkit) -> void; r0 dead on return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128800.yaml
 	thumb_local_start
 sub_8128800:
 	push {r7,lr}
@@ -11131,6 +11152,9 @@ locret_81288F8:
 	.balign 4, 0x00
 	thumb_func_end sub_81288E4
 
+// symdb: Builds a decompAndCopyData reference list (with one pointer resolved via the keyed-table lookup), decompresses/copies the screen's graphics into VRAM/RAM, then copies a 30x20 background tilemap.
+// symdb: () -> void; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81288FC.yaml
 	thumb_local_start
 sub_81288FC:
 	push {r4-r7,lr}
@@ -14203,6 +14227,10 @@ dword_8129F84:
 	.word 0x2000
 	thumb_func_end sub_8129F48
 
+// symdb: Per-frame state handler for a submenu that waits for the B button, plays the exit sound and stores the previous selection to leave the submenu.
+// symdb: (no args read; uses r5 = submenu work struct pointer) -> r0 clobbered; updates state bytes at
+// symdb: r5+1..3, r5+0x28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129F88.yaml
 	thumb_local_start
 sub_8129F88:
 	push {lr}
@@ -16630,6 +16658,9 @@ off_812B258:
 	.word unk_20251A0
 	thumb_func_end sub_812B218
 
+// symdb: One per-frame battle-scene update step: first feeds the caller's command/message id into sub_812B2C4, then advances all entity update handlers and the eStruct sprite pipeline.
+// symdb: (r0 = command/message id, e.g. 0x12 or 0x13) -> r0 = ?; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B25C.yaml
 	thumb_local_start
 sub_812B25C:
 	push {lr}

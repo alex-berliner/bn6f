@@ -5135,6 +5135,10 @@ off_81465B8:
 	.word word_200FE50
 	thumb_func_end sub_8146588
 
+// symdb: Initializes the wireless adapter (rfu) API on a fixed work buffer, installs its timer interrupt, tears down any current link, and resets the eLink state block for a new link session.
+// symdb: (no args) -> r0 = 1 if rfu_initializeAPI succeeded (returned 0), else 0; calls
+// symdb: rfu_setTimerInterrupt(3, off_3000E8C-4), link_RequestDisconnect, eLinkState_ResetForNewUse(4)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81465BC.yaml
 	thumb_func_start sub_81465BC
 sub_81465BC:
 	push {r4,lr}

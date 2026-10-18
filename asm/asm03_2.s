@@ -3105,6 +3105,10 @@ off_8047830:
 	.word byte_202F800
 	thumb_func_end background_LoadAreaTiles_8047800
 
+// symdb: Runs one scripted overworld event step: per a state-table record, spawns objects, moves NPCs to screen center, plays a text script and updates chapter state.
+// symdb: (caller-context r5 = event/actor struct: [r5+5] enable flag, [r5+0x14]+[r5+0x18] = step index)
+// symdb: -> r0 = void; no flag contract visible
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047834.yaml
 	thumb_local_start
 sub_8047834:
 	push {r4-r7,lr}
@@ -5823,7 +5827,7 @@ loc_8049802:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80497EE
 
-// symdb: Thumb-side jump-table dispatcher that calls submenu_chipSelectCursorMove(0), tail-dispatches on its nonzero return through a 5-entry Thumb function table, and otherwise falls through to sub_803A7B8 + sub_803BC7C(0).
+// symdb: Thumb-side jump-table dispatcher that calls sub_803AFC2(0), tail-dispatches on its nonzero return through a 5-entry Thumb function table, and otherwise falls through to sub_803A7B8 + sub_803BC7C(0).
 // symdb: void sub_8049808(void); // r2/r4/r5/r10/lr caller-saved; r4-r7 preserved; c/v out, n/z clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049808.yaml
 	thumb_local_start

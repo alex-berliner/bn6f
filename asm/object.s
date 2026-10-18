@@ -941,6 +941,10 @@ loc_800BF12:
 	pop {pc}
 	thumb_func_end sub_800BEDA
 
+// symdb: Records an id into both request slots of the byte_203CF00 array (plus two work slots), then arms slot r0 as an active battle effect/spawn request with a type byte and parameter word.
+// symdb: (r0 = slot index (0/1), also recorded as a byte; r1 = type/kind byte; r2 = param word; r5 read
+// symdb: as-is from caller) -> r0 = entry pointer, no meaningful return; r1-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BF16.yaml
 	thumb_func_start sub_800BF16
 sub_800BF16:
 	push {r4,lr}
@@ -4232,6 +4236,9 @@ loc_800D5B6:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_scanPanelsInFront_800D58C
 
+// symdb: From a battle object's current panel column, walks backward (away from its facing) to the first column whose neighboring panels hold no enemy-alliance objects, restarting forward from the start column if it falls off the grid.
+// symdb: (r5 = battle object ptr) -> r0 = panel column (x) found; r4, r6, r7 clobbered; flags from tst
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D5BA.yaml
 	thumb_local_start
 sub_800D5BA:
 	push {r4,r6,r7,lr}

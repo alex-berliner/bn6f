@@ -3696,6 +3696,9 @@ locret_8027F40:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8027F10
 
+// symdb: During chip-select turn initialization, walks the 12 active-chip records and refreshes each non-Mega/Giga entry's selection index, slot chip id, and selected-chip pointer.
+// symdb: (void) -> void; only calls out, r6/r7 clobbered internally (saved)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027F42.yaml
 	thumb_local_start
 sub_8027F42:
 	push {r4,r6,r7,lr}
@@ -4918,6 +4921,10 @@ off_8028714:
 	.word dword_87257F4
 	thumb_func_end beastout_QueuePaletteGFXAndSheets_80286D4
 
+// symdb: Custom-screen chip-use GFX loader: queues a fixed graphics block plus one per-chip tile into VRAM/buffer, then reloads the Beast Out selection sprite sheets.
+// symdb: () -> (); queues a 0x540-byte ROM block to VRAM 0x6009560 and a 0x20-byte per-chip tile to
+// symdb: unk_3001AA0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802871C.yaml
 	thumb_local_start
 sub_802871C:
 	push {lr}

@@ -1101,6 +1101,10 @@ byte_808CA48:
 
 	thumb_func_end sub_808C644
 
+// symdb: Initializer for the Beast+ special-scenario mode: wipes its work buffer, clears related story flags, restores player control, and starts the scene's sound.
+// symdb: () -> r0 = 0; flags clobbered; zeroes 0x98 bytes at [dword_808CA44], sets state byte 0x3 = 0x20,
+// symdb: sets GameState Unk_09 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CA68.yaml
 	thumb_local_start
 sub_808CA68:
 	push {r5,lr}
