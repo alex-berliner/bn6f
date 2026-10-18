@@ -1669,7 +1669,7 @@ int sub_8124D78()
     *(v0 + 36) = *(v0 + 34);
     sub_81255F8(10, v1, v2);
     battle_runTransition_8125444();
-    sub_8125D94();
+    submenu_redrawFolderScreen();
     wrapper_sub8126570_fixedArgs_812650C();
     sprite_setStructHalfwordPairOnThree_8117084(*(v0 + 88), *(v0 + 18), 4);
     v3 = 0;
@@ -1702,7 +1702,7 @@ int sprite_shieldUpdate_8124DCC()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125D94();
+    submenu_redrawFolderScreen();
     bg_drawArenaTiles_8125E78();
     v2 = *(v0 + 88);
     v3 = *(v0 + 18);
@@ -1742,7 +1742,7 @@ int sub_8124E24()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125D94();
+    submenu_redrawFolderScreen();
     bg_drawArenaTiles_8125E78();
     v2 = *(v0 + 88);
     v3 = *(v0 + 18);
@@ -2044,7 +2044,7 @@ int __fastcall sub_8125104(int a1)
     sub_812674C();
     sub_81267A8();
     battle_runTransition_8125444();
-    sub_8125D94();
+    submenu_redrawFolderScreen();
     wrapper_sub8126570_fixedArgs_812650C();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -3145,7 +3145,7 @@ void __noreturn battle_drawCustFolderSlots_8125D10()
 
 
 // 0x8125d94
-int sub_8125D94()
+int submenu_redrawFolderScreen()
 {
     int v0; // r5
     int result; // r0
@@ -6968,7 +6968,7 @@ int sub_8129758()
     if ( v3 == 3 )
     {
         *(v0 + 3) = 20;
-        result = sub_811A610(0, 0);
+        result = sprite_setEntityAnimation(0, 0);
     }
     return result;
 }
@@ -7055,7 +7055,7 @@ int sub_8129808()
     if ( v3 == 3 )
     {
         *(v0 + 3) = 4;
-        result = sub_811A610(1, 0);
+        result = sprite_setEntityAnimation(1, 0);
     }
     return result;
 }
@@ -7208,7 +7208,7 @@ int sub_8129948()
     if ( v3 == 3 )
     {
         *(v0 + 3) = 4;
-        result = sub_811A610(3, 0);
+        result = sprite_setEntityAnimation(3, 0);
     }
     return result;
 }
@@ -7319,7 +7319,7 @@ int sub_8129A28()
     if ( v3 == 3 )
     {
         *(v0 + 3) = 20;
-        sub_811A610(3, 0);
+        sprite_setEntityAnimation(3, 0);
         result = engine_setScreeneffect(8, 16);
     }
     return result;
@@ -7385,7 +7385,7 @@ int decideBattleAction_8129AC8()
         if ( v2 == 2 )
         {
             *(v0 + 3) = 4;
-            result = sub_811A610(2, 0);
+            result = sprite_setEntityAnimation(2, 0);
         }
         else
         {
@@ -7515,7 +7515,7 @@ int __fastcall sub_8129BB0(int a1)
     while ( !(((v2 < 0) ^ v3) | (v2 == 0)) );
     *(v1 + 3) = 20;
     *(v1 + 27) |= 0x10u;
-    sub_811A610(2, 0);
+    sprite_setEntityAnimation(2, 0);
     return engine_setScreeneffect(8, 16);
 }
 
@@ -7589,7 +7589,7 @@ int sub_8129C74()
                 if ( v0[2] != 24 )
                     v4 = 7;
             }
-            result = sub_811A610(v4, 0);
+            result = sprite_setEntityAnimation(v4, 0);
         }
         else
         {
@@ -7735,7 +7735,7 @@ int __fastcall sub_8129D78(int a1)
         if ( v1[2] != 24 )
             v6 = 7;
     }
-    sub_811A610(v6, 0);
+    sprite_setEntityAnimation(v6, 0);
     v1[27] |= 0x10u;
     return engine_setScreeneffect(8, 16);
 }
@@ -9917,7 +9917,7 @@ int sub_812B5AC()
         if ( *(v0 + 2) != 24 )
             v1 = 7;
     }
-    return sub_811A610(v1, 0);
+    return sprite_setEntityAnimation(v1, 0);
 }
 
 

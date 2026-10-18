@@ -2815,7 +2815,7 @@ LABEL_5:
 
 
 // 0x810fe5c
-int __fastcall sub_810FE5C(int a1)
+int __fastcall ai_dashAttackInit(int a1)
 {
     int v1; // r4
     int v2; // r5
@@ -3480,7 +3480,7 @@ void __noreturn sub_81107BC()
         object_reservePanel(v2, v3);
         *v1 = 4;
         sub_8110840();
-        sub_81107F2();
+        ai_attackDashMoveStep();
     }
     else
     {
@@ -3491,7 +3491,7 @@ void __noreturn sub_81107BC()
 
 
 // 0x81107f2
-void sub_81107F2()
+void ai_attackDashMoveStep()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -5603,7 +5603,7 @@ LABEL_11:
 
 
 // 0x8112340
-int __fastcall sub_8112340(int a1, int a2, int a3)
+int __fastcall ai_prepareTargetedAttack(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r6
@@ -6030,7 +6030,7 @@ void __fastcall sub_81127E8(int a1)
 
 
 // 0x8112820
-int sub_8112820()
+int ai_teleportToPanelStep()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -12600,7 +12600,7 @@ void __noreturn sub_8117C4C()
 
 
 // 0x8117c70
-int sub_8117C70()
+int submenu_updateCursorSprite()
 {
     Battle *v0; // r5
     int result; // r0
@@ -16023,7 +16023,7 @@ int sprite_setPositionByFlags_811A5BC()
 
 
 // 0x811a610
-int __fastcall sub_811A610(int a1, int a2)
+int __fastcall sprite_setEntityAnimation(int a1, int a2)
 {
     int v2; // r4
     int result; // r0
@@ -21111,7 +21111,7 @@ void __fastcall pet_initMenu_811EC10(int a1, int a2, int a3, int a4)
 void __noreturn mapName_runSequence_811EC50()
 {
     queueGFXTransfersFromTable_811EC68();
-    sub_811EFB8();
+    ow_renderMapNameHudGfx();
 }
 
 
@@ -21376,7 +21376,7 @@ void sub_811EF8C()
 
 
 // 0x811efb8
-int __noreturn sub_811EFB8()
+int __noreturn ow_renderMapNameHudGfx()
 {
     int v0; // r10
     int v1; // r6

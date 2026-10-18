@@ -3492,7 +3492,7 @@ loc_8124D02:
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
 	bl battle_drawCustFolderSlots_8125D10
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
@@ -3532,7 +3532,7 @@ loc_8124D4A:
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
 	bl battle_drawCustFolderSlots_8125D10
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
 	mov r2, #4
@@ -3570,7 +3570,7 @@ sub_8124D78:
 	mov r0, #0xa
 	bl sub_81255F8
 	bl battle_runTransition_8125444
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	bl wrapper_sub8126570_fixedArgs_812650C
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -3611,7 +3611,7 @@ loc_8124DE6:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	bl bg_drawArenaTiles_8125E78
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -3656,7 +3656,7 @@ loc_8124E3E:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	bl bg_drawArenaTiles_8125E78
 	ldr r0, [r5,#0x58]
 	ldrh r1, [r5,#0x12]
@@ -4020,7 +4020,7 @@ sub_8125104:
 	bl sub_812674C
 	bl sub_81267A8
 	bl battle_runTransition_8125444
-	bl sub_8125D94
+	bl submenu_redrawFolderScreen
 	bl wrapper_sub8126570_fixedArgs_812650C
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8125124
@@ -5723,9 +5723,9 @@ off_8125D90:
 // symdb: Per-frame redraw of the chip-folder select screen, laying out tile strips, chip icons and selection slots into tile block 2, with a two-layout variant selected by screen state.
 // symdb: (r5/r7 = folder-screen work struct) -> r0 = undefined; no meaningful flags; draws via BG/callee
 // symdb: routines
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125D94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_redrawFolderScreen.yaml
 	thumb_local_start
-sub_8125D94:
+submenu_redrawFolderScreen:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, [r7,#0x5c]
@@ -5828,7 +5828,7 @@ dword_8125E70:
 	.word 0x6007000
 off_8125E74:
 	.word byte_81249DC
-	thumb_func_end sub_8125D94
+	thumb_func_end submenu_redrawFolderScreen
 
 // symdb: Renders the battle arena background floor tiles, selecting between a Dark-Chip-team layout (alliance==5) and a standard-team layout based on the object's team field.
 // symdb: void bg_drawArenaTiles_8125E78(arena_obj *r5)
@@ -12957,7 +12957,7 @@ locret_8129754:
 	.balign 4, 0x00
 	thumb_func_end battle_object_advanceState3_8129738
 
-// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
+// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sprite_setEntityAnimation(0, 0).
 // symdb: void sub_8129758(void *entity /* r5 */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129758.yaml
 	thumb_local_start
@@ -12976,7 +12976,7 @@ loc_812976A:
 	strb r0, [r5,#3]
 	mov r0, #0
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 locret_812977A:
 	pop {pc}
 	thumb_func_end sub_8129758
@@ -13072,7 +13072,7 @@ off_81297F4:
 	.word sub_81298F8+1
 	thumb_func_end sub_81297DC
 
-// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
+// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sprite_setEntityAnimation(1, 0).
 // symdb: void sub_8129808(struct BattleObject* obj /* r5 */);  /* clobbers r0-r3, lr, N Z C V; preserves
 // symdb: r4-r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129808.yaml
@@ -13092,7 +13092,7 @@ loc_812981A:
 	strb r0, [r5,#3]
 	mov r0, #1
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 locret_812982A:
 	pop {r4,pc}
 	thumb_func_end sub_8129808
@@ -13295,7 +13295,7 @@ loc_812995A:
 	strb r0, [r5,#3]
 	mov r0, #3
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 locret_812996A:
 	pop {pc}
 	thumb_func_end sub_8129948
@@ -13429,7 +13429,7 @@ loc_8129A3A:
 	strb r0, [r5,#3]
 	mov r0, #3
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -13525,7 +13525,7 @@ loc_8129AE0:
 	strb r0, [r5,#3]
 	mov r0, #2
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 locret_8129AEC:
 	pop {r4,pc}
 	.byte 0, 0
@@ -13661,7 +13661,7 @@ loc_8129BB4:
 	strb r0, [r5,#0x1b]
 	mov r0, #2
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -13748,7 +13748,7 @@ off_8129C40:
 	.word sub_8129DC4+1
 	thumb_func_end sub_8129C28
 
-// symdb: Reconciles a battle object's state byte (+0x20) against a lookup and either dispatches an event via sub_811A610 or triggers sub_812B218 to repair it.
+// symdb: Reconciles a battle object's state byte (+0x20) against a lookup and either dispatches an event via sprite_setEntityAnimation or triggers sub_812B218 to repair it.
 // symdb: void sub_8129C74(void *battleObj /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8129C74.yaml
 	thumb_local_start
@@ -13783,7 +13783,7 @@ loc_8129C96:
 	mov r0, #7
 loc_8129CAC:
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 locret_8129CB2:
 	pop {r4,pc}
 	thumb_func_end sub_8129C74
@@ -13936,7 +13936,7 @@ loc_8129D98:
 	mov r0, #7
 loc_8129DAC:
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 	mov r1, #0x10
 	ldrb r0, [r5,#0x1b]
 	orr r0, r1
@@ -17164,7 +17164,7 @@ sub_812B5AC:
 	mov r0, #7
 loc_812B5C0:
 	mov r1, #0
-	bl sub_811A610
+	bl sprite_setEntityAnimation
 	pop {pc}
 	thumb_func_end sub_812B5AC
 
