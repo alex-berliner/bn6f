@@ -503,6 +503,8 @@ CompText8761698::
 	.incbin "data/textscript/compressed/CompText8761698.s.lz"
 CompText87618C0::
 	.incbin "data/textscript/compressed/CompText87618C0.s.lz"
+// symdb: Undernet 2's text scripts; script 1 is the sealed road: it opens (EVENT_84 set, EVENT_CDA cleared) only with 100..200 standard chips in the library and EVENT_E00 (the beast's seal).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CompText876210C.yaml
 CompText876210C::
 	.incbin "data/textscript/compressed/CompText876210C.s.lz"
 CompText8762434::
