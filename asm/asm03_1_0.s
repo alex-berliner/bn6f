@@ -1311,7 +1311,7 @@ ho_8034218:
 off_803422C:
 	.word jt_8034230
 jt_8034230:
-	.word sub_8034268+1
+	.word initJackInAnimationScreen+1
 	.word fadeTimerTick_80342A4+1
 	.word sub_80342C6+1
 	thumb_func_end ho_8034218
@@ -1343,9 +1343,9 @@ map_setupEnterMapAfterWarp_803423C:
 // () -> void
 // symdb: One-time video/GFX setup and state reset that starts the jack-in animation screen (VRAM reset, overlay palette, decompressed GFX, LCD control, fade, state fields).
 // symdb: (no args; r5 = global jack-in/animation state object) -> r0 = 0; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8034268.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initJackInAnimationScreen.yaml
 	thumb_local_start
-sub_8034268:
+initJackInAnimationScreen:
 	push {lr}
 	mov r0, #9
 	bl toolkit_applyOverlayPalette_80015FC
@@ -1370,7 +1370,7 @@ dword_803429C:
 	.word 0x1341
 off_80342A0:
 	.word 0x50
-	thumb_func_end sub_8034268
+	thumb_func_end initJackInAnimationScreen
 
 // symdb: Advances the screen-fade countdown for one frame, kicking off the next fade phase when it expires, then runs the post-fade update step.
 // symdb: void fadeTimerTick_80342A4(void /* r5 = fade state ptr */);  // inputs: r5, r10, lr; outputs:

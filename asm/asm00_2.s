@@ -1445,9 +1445,9 @@ loc_800F668:
 // symdb: Counts down a battle object's lifetime timer and destroys the object (HP=0, collision cleared) when it expires or the battle ends.
 // symdb: (r5 = battle object header) -> r0 = scratch; updates oBattleObject_Timer, oObjectHeader_Flags,
 // symdb: oBattleObject_HP; returns void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F672.yaml
-	thumb_func_start sub_800F672
-sub_800F672:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectTimerCountdown.yaml
+	thumb_func_start battle_objectTimerCountdown
+battle_objectTimerCountdown:
 	push {lr}
 	bl battle_isBattleOver
 	tst r0, r0
@@ -1476,7 +1476,7 @@ loc_800F69A:
 	strb r0, [r5,#oObjectHeader_Flags]
 locret_800F6AA:
 	pop {pc}
-	thumb_func_end sub_800F672
+	thumb_func_end battle_objectTimerCountdown
 
 	thumb_local_start
 sub_800F6AC:
@@ -11066,9 +11066,9 @@ dword_8013908:
 // symdb: Per-battle-object start-of-turn reset: refresh navi stat bytes into AI data and clear per-turn combat state (flags, invulnerability, subordinate object).
 // symdb: (r0 = battle object ptr, kept in r5) -> r0 = clobbered; tail-branches into sub_801393A to
 // symdb: continue the per-object loop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801390C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beginTurnResetObject.yaml
 	thumb_local_start
-sub_801390C:
+battle_beginTurnResetObject:
 	push {r6,r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl GetBattleNaviStatsAddr // (alliance: bool) -> * NaviStats
@@ -11090,7 +11090,7 @@ loc_8013918:
 	str r0, [r7,#oAIData_SubordinateObjectUnk]
 loc_8013938:
 	b loc_8013956
-	thumb_func_end sub_801390C
+	thumb_func_end battle_beginTurnResetObject
 
 	thumb_func_start sub_801393A
 sub_801393A:
@@ -12837,7 +12837,7 @@ off_80144BC:
 battle_beginTurnOpenProcess_80144C0:
 	push {r4,r7,lr}
 	mov r7, #0
-	bl sub_801390C
+	bl battle_beginTurnResetObject
 	b loc_80144CE
 
 	thumb_local_start

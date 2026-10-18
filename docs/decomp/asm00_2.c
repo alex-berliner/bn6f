@@ -915,7 +915,7 @@ _DWORD *clearEntryOfBattleStateBattleObjectList_800F656()
 
 
 // 0x800f672
-unsigned int sub_800F672()
+unsigned int battle_objectTimerCountdown()
 {
     int v0; // r5
     unsigned int result; // r0
@@ -7586,7 +7586,7 @@ void sub_8013892()
 
 
 // 0x801390c
-void sub_801390C()
+void battle_beginTurnResetObject()
 {
     int v0; // r5
     char *v1; // r0
@@ -8939,7 +8939,7 @@ int battle_beginTurnOpenProcess_80144C0()
     int v8; // r0
     int v9; // r0
 
-    sub_801390C();
+    battle_beginTurnResetObject();
     v1 = getBattleHandAddr_8010018(v0->Alliance);
     ZeroFillByHalfword((v1 + 38), 0xCu, v2, v3);
     ClearAIDataUnk0x48Flag(32);

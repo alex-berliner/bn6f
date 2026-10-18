@@ -1262,7 +1262,7 @@ int sub_80A5CE4()
     __int64 v0; // r0
 
     v0 = sub_809E1AE();
-    return sub_80A5E08(v0, SHIDWORD(v0));
+    return sprite_updateAnimByAngleToTarget(v0, SHIDWORD(v0));
 }
 
 
@@ -1434,7 +1434,7 @@ void sub_80A5E00()
 
 
 // 0x80a5e08
-int __fastcall sub_80A5E08(int a1, int a2)
+int __fastcall sprite_updateAnimByAngleToTarget(int a1, int a2)
 {
     int v2; // r5
     __int64 v3; // r0
@@ -2625,7 +2625,7 @@ int battleObject_beastStepUpdate_80A73A0()
         }
         else
         {
-            sub_80A7454();
+            ow_facePlayerSetAnim();
             sub_80A7514();
         }
     }
@@ -2680,7 +2680,7 @@ signed int battleObject_checkPanelMatch_80A743C()
 
 
 // 0x80a7454
-int sub_80A7454()
+int ow_facePlayerSetAnim()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -4252,7 +4252,7 @@ void __noreturn sub_80A8424()
                                 *(v0 + 9) = v2 + 1;
                             }
                             sub_80A85B4();
-                            sub_80A860C();
+                            npc_playerProximityEventTrigger();
                         }
                     }
                 }
@@ -4460,7 +4460,7 @@ LABEL_15:
 
 
 // 0x80a860c
-int sub_80A860C()
+int npc_playerProximityEventTrigger()
 {
     int v0; // r5
     int result; // r0

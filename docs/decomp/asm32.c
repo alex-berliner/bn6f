@@ -9361,14 +9361,14 @@ int sub_8115340()
         object_clearFlag(1);
         *(v0 + 16) = 4;
         *v1 = 16;
-        result = sub_8115398();
+        result = ai_hopStepUpdate();
     }
     return result;
 }
 
 
 // 0x8115398
-int sub_8115398()
+int ai_hopStepUpdate()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -15227,7 +15227,7 @@ void __noreturn buildPetStatusIconSprite_8119AEC()
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    v6 = sub_8119C08();
+    v6 = pet_getStatusIconIndex();
     sprite_setPallete(v6);
     sprite_setPriority_8002E14(2);
     slotList_storeHalfwordAndClearField_800306C(0);
@@ -15244,7 +15244,7 @@ void __fastcall __noreturn sprite_applyComputedPaletteAndUpdate_8119BD0(int a1)
     Battle *v1; // r5
     int v2; // r0
 
-    v2 = sub_8119C08();
+    v2 = pet_getStatusIconIndex();
     sprite_setPallete(v2);
     sprite_update(v1);
 }
@@ -15275,7 +15275,7 @@ int __fastcall object_setSpritePosition_8119BE8(int a1, __int16 a2, int a3)
 
 
 // 0x8119c08
-int sub_8119C08()
+int pet_getStatusIconIndex()
 {
     char v0; // zf
     int v1; // r0
@@ -20091,7 +20091,7 @@ LABEL_5:
     TestEventFlagFromImmediate(11, 242);
     if ( v2 )
         goto LABEL_5;
-    sub_811E000();
+    sprite_playAltAnimationOnce();
 LABEL_6:
     sprite_update(v0);
 }
@@ -20129,7 +20129,7 @@ int sub_811DFD4()
 
 
 // 0x811e000
-int sub_811E000()
+int sprite_playAltAnimationOnce()
 {
     Battle *v0; // r5
     int v1; // r3

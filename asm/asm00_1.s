@@ -12248,7 +12248,7 @@ off_800896C:
 	.word battle_startCrossNet_800898C+1
 	.word battle_advancePostMovePhase_80089CC+1
 	.word sub_8008A7C+1
-	.word sub_8008B7C+1
+	.word battle_updateLoseSequence+1
 	.word sub_8008BF0+1
 	.word sub_8008C58+1
 	.word sub_8008D18+1
@@ -12521,9 +12521,9 @@ locret_8008B7A:
 // symdb: Per-frame handler for the player-defeat battle phase: plays the lose music, dispatches the lose effect, waits out a timer, then hands off to the battle-end game state.
 // symdb: (r0..r4 scratch; r5 = battle-step struct, r10 = toolkit) -> void; sets [r5,#3] phase and
 // symdb: [r5,#4], writes oGameState_BattleEndSubState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008B7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateLoseSequence.yaml
 	thumb_local_start
-sub_8008B7C:
+battle_updateLoseSequence:
 	push {r4,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12579,7 +12579,7 @@ loc_8008BC8:
 	bl eStruct200A008_setUnk02
 locret_8008BEE:
 	pop {r4,pc}
-	thumb_func_end sub_8008B7C
+	thumb_func_end battle_updateLoseSequence
 
 	thumb_local_start
 sub_8008BF0:
@@ -12807,10 +12807,10 @@ sub_8008D60:
 off_8008D78:
 	.word off_8008D7C
 off_8008D7C:
-	.word sub_8008D9C+1
+	.word battle_startIntro+1
 	.word sub_8008DDC+1
 	.word sub_8008E7C+1
-	.word sub_8008F7C+1
+	.word battle_stepLoseSequence+1
 	.word sub_8008FF0+1
 	.word sub_8009058+1
 	.word sub_8009118+1
@@ -12821,9 +12821,9 @@ off_8008D98:
 // symdb: Per-frame battle-start state handler: polls both players' virtual joypads, on first entry zeroes the custom gauge and kicks off the battle-intro effect, then holds the state until the link partner is ready.
 // symdb: (r5 = battle state struct: +0 word state, +3 byte substate, +4 byte flag, +8 halfword timer) ->
 // symdb: r0 = clobbered; may set state word to 4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008D9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startIntro.yaml
 	thumb_local_start
-sub_8008D9C:
+battle_startIntro:
 	push {lr}
 	mov r0, #0
 	bl battle_updateNaviAIJoypad_8012DFC
@@ -12852,7 +12852,7 @@ loc_8008DCE:
 	str r0, [r5]
 locret_8008DDA:
 	pop {pc}
-	thumb_func_end sub_8008D9C
+	thumb_func_end battle_startIntro
 
 	thumb_local_start
 sub_8008DDC:
@@ -13073,9 +13073,9 @@ locret_8008F7A:
 // symdb: Per-frame handler for the defeat branch of the battle-end state machine: marks the losing side, plays the loss jingle, kicks off the lose effect, and after a countdown hands control back to the game state.
 // symdb: (r0 = battle-end state struct, fields at +3 step, +8 timer, +4 next step) -> r0 = garbage/struct
 // symdb: ptr from last callee; sets oGameState_BattleEndSubState = 2 when done
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008F7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepLoseSequence.yaml
 	thumb_local_start
-sub_8008F7C:
+battle_stepLoseSequence:
 	push {r4,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13131,7 +13131,7 @@ loc_8008FC8:
 	bl eStruct200A008_setUnk02
 locret_8008FEE:
 	pop {r4,pc}
-	thumb_func_end sub_8008F7C
+	thumb_func_end battle_stepLoseSequence
 
 	thumb_local_start
 sub_8008FF0:
@@ -14990,7 +14990,7 @@ off_8009CA8:
 	.word sub_8009E10+1
 	.word sub_8009E56+1
 	.word sub_8009EE2+1
-	.word sub_8009F5E+1
+	.word battle_fadeOutPhase+1
 	.word NULL
 	.word NULL
 	.word NULL
@@ -15366,9 +15366,9 @@ locret_8009F5C:
 // symdb: Battle sub-phase that fades the screen out, then stops music, clears objects, and advances the battle state
 // symdb: (r0-r4 unused, r5 = battleState struct) -> void; sets oBattleState_Index_00 = 8 when fade
 // symdb: completes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009F5E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fadeOutPhase.yaml
 	thumb_local_start
-sub_8009F5E:
+battle_fadeOutPhase:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15392,7 +15392,7 @@ loc_8009F74:
 
 locret_8009F88:
 	pop {pc}
-	thumb_func_end sub_8009F5E
+	thumb_func_end battle_fadeOutPhase
 
 	thumb_local_start
 sub_8009F8A:

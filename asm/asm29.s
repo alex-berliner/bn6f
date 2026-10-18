@@ -2006,7 +2006,7 @@ locret_80A5CE0:
 sub_80A5CE4:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
-	bl sub_80A5E08
+	bl sprite_updateAnimByAngleToTarget
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A5CE4
 
@@ -2176,9 +2176,9 @@ sub_80A5E00:
 // symdb: Picks an object's animation from the octant of the angle toward a target position, reapplying sprite state only when the chosen animation changes.
 // symdb: (r0 = target x, r1 = target y; r5 = object pointer) -> r0 = clobbered; updates object sprite
 // symdb: animation, shadow flag, and cached anim index at r5+0x34
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateAnimByAngleToTarget.yaml
 	thumb_local_start
-sub_80A5E08:
+sprite_updateAnimByAngleToTarget:
 	push {r4,lr}
 loc_80A5E0A:
 	ldr r2, [r5,#0xc]
@@ -2206,7 +2206,7 @@ off_80A5E38:
 	.word byte_80A5E3C
 byte_80A5E3C:
 	.byte 0x2, 0x2, 0x0, 0x6, 0x4, 0x0, 0x0, 0x0
-	thumb_func_end sub_80A5E08
+	thumb_func_end sprite_updateAnimByAngleToTarget
 
 	thumb_local_start
 sub_80A5E44:
@@ -4193,7 +4193,7 @@ loc_80A73B8:
 	ldrb r0, [r5,#7]
 	cmp r0, #0
 	bne loc_80A73D8
-	bl sub_80A7454
+	bl ow_facePlayerSetAnim
 	bl sub_80A7514
 	b loc_80A73E4
 loc_80A73D8:
@@ -4280,9 +4280,9 @@ locret_80A7452:
 // symdb: Overworld object turns to face the player, picking a direction animation from a per-direction table and skipping disabled directions.
 // symdb: (r5 = object pointer, r0-r3 clobbered) -> r0 = chosen animation index; writes object fields 0x05
 // symdb: (current anim) and 0x30; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7454.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_facePlayerSetAnim.yaml
 	thumb_local_start
-sub_80A7454:
+ow_facePlayerSetAnim:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
 	ldr r2, [r5,#0xc]
@@ -4325,7 +4325,7 @@ loc_80A748A:
 	strb r4, [r5,#5]
 locret_80A74A6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7454
+	thumb_func_end ow_facePlayerSetAnim
 
 	thumb_local_start
 sub_80A74A8:
@@ -6365,7 +6365,7 @@ loc_80A843A:
 	strb r4, [r5,#9]
 loc_80A8470:
 	bl sub_80A85B4
-	bl sub_80A860C
+	bl npc_playerProximityEventTrigger
 loc_80A8478:
 	bl sub_80A8644
 	bl sprite_update
@@ -6592,9 +6592,9 @@ loc_80A8608:
 // symdb: NPC-side trigger: once story flag 1717 is set, sets event flag 9D9 and switches the object's state when the player walks within 8 units of it.
 // symdb: (r5 = object, fields +0xc/+0x10 = its X/Y) -> void; sets EVENT_9D9 and rewrites object state
 // symdb: bytes on trigger
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A860C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_playerProximityEventTrigger.yaml
 	thumb_local_start
-sub_80A860C:
+npc_playerProximityEventTrigger:
 	push {r4,lr}
 	movflag EVENT_1717_PLAYER_ADVANCE_FORWARD
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -6618,7 +6618,7 @@ sub_80A860C:
 locret_80A8640:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A860C
+	thumb_func_end npc_playerProximityEventTrigger
 
 	thumb_local_start
 sub_80A8644:

@@ -7689,7 +7689,7 @@ int sub_8008B52()
 
 
 // 0x8008b7c
-int sub_8008B7C()
+int battle_updateLoseSequence()
 {
     int v0; // r5
     int v1; // r10
@@ -7921,7 +7921,7 @@ int sub_8008D60()
 
 
 // 0x8008d9c
-int sub_8008D9C()
+int battle_startIntro()
 {
     int v0; // r5
     int result; // r0
@@ -8146,7 +8146,7 @@ int sub_8008F52()
 
 
 // 0x8008f7c
-int sub_8008F7C()
+int battle_stepLoseSequence()
 {
     int v0; // r5
     int v1; // r10
@@ -10151,7 +10151,7 @@ int sub_8009F3A()
 
 
 // 0x8009f5e
-signed int sub_8009F5E()
+signed int battle_fadeOutPhase()
 {
     int v0; // r5
     signed int result; // r0

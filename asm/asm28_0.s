@@ -740,7 +740,7 @@ byte_8099CEC:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_10C
 	cs_pause byte1=0xFF byte2=0x01
-	cs_call_native_with_return_value ptr1=sub_8099D44+1
+	cs_call_native_with_return_value ptr1=ow_applySpawnEntry+1
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
 	cs_disable_ow_player_wall_collision_809e254
 	cs_jump_if_var_equal byte1=0x05 byte2=0xFF destination3=byte_8099D23
@@ -772,9 +772,9 @@ end_cutscene_8099D41:
 
 // symdb: Applies a location/spawn entry from a 20-byte-per-entry table: restores a saved word, sets the overworld player's facing and coordinates, and positions the camera.
 // symdb: (r5 = state struct, entry id in [r5+4]) -> r0 = 0; r7 = table entry base
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099D44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_applySpawnEntry.yaml
 	thumb_local_start
-sub_8099D44:
+ow_applySpawnEntry:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	ldr r7, off_8099DA8 // =byte_809929C
@@ -823,7 +823,7 @@ loc_8099DA2:
 	.balign 4, 0
 off_8099DA8:
 	.word byte_809929C
-	thumb_func_end sub_8099D44
+	thumb_func_end ow_applySpawnEntry
 
 	thumb_local_start
 sub_8099DAC:

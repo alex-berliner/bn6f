@@ -14138,7 +14138,7 @@ off_81151B4:
 	.word sub_811523C+1
 	.word ai_attackVars_runMoveStep_8115272+1
 	.word sub_8115340+1
-	.word sub_8115398+1
+	.word ai_hopStepUpdate+1
 	.word sub_8115404+1
 	thumb_func_end sub_81151A0
 
@@ -14358,16 +14358,16 @@ loc_8115350:
 	strb r0, [r5,#oBattleObject_CurAnim]
 	mov r0, #0x10
 	strh r0, [r7,#oAIAttackVars_HitElement]
-	bl sub_8115398
+	bl ai_hopStepUpdate
 locret_8115396:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8115340
 
 // symdb: Per-frame update for an AI attack's hop/leap: integrates X/Z velocity along an arc, then lands the object on its reserved future panel.
 // symdb: (r5 = battle object, r7 = oAIAttackVars) -> void; sets object anim, flags, and state timer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115398.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_hopStepUpdate.yaml
 	thumb_local_start
-sub_8115398:
+ai_hopStepUpdate:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -14415,7 +14415,7 @@ loc_81153C2:
 	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_8115402:
 	pop {pc}
-	thumb_func_end sub_8115398
+	thumb_func_end ai_hopStepUpdate
 
 	thumb_local_start
 sub_8115404:
@@ -23635,7 +23635,7 @@ loc_8119B30:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
-	bl sub_8119C08
+	bl pet_getStatusIconIndex
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #2
 	bl sprite_setPriority_8002E14
@@ -23672,7 +23672,7 @@ byte_8119B74:
 	thumb_local_start
 sprite_applyComputedPaletteAndUpdate_8119BD0:
 	push {lr}
-	bl sub_8119C08
+	bl pet_getStatusIconIndex
 	bl sprite_setPalette // (int pallete) -> void
 	bl sprite_update
 	pop {pc}
@@ -23711,9 +23711,9 @@ loc_8119C02:
 // symdb: Computes the graphics/palette index used for the PET status icon sprite, based on whether a Navi is present, event flag 200AD04, and the Navi's stats byte 0x10.
 // symdb: () -> r0 = index into the PET status icon sprite resource table (0, 4, table[byte], or
 // symdb: byte*5+0x12, +4 when no Navi)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119C08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_getStatusIconIndex.yaml
 	thumb_local_start
-sub_8119C08:
+pet_getStatusIconIndex:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r7, #0
@@ -23754,7 +23754,7 @@ loc_8119C4C:
 	.balign 4, 0
 off_8119C54:
 	.word byte_80203EA
-	thumb_func_end sub_8119C08
+	thumb_func_end pet_getStatusIconIndex
 
 // symdb: Returns the given base pointer unchanged, or base+4 when the PET currently holds no navi (its 0xE stats byte reads 0xFF).
 // symdb: // u32 pet_GetNaviStatsBaseOrEmpty(u32 base) -> u32 ptr, u8 r1 == 0x0E
@@ -31955,7 +31955,7 @@ loc_811DFBA:
 	bl sub_811DFD4
 	b loc_811DFC4
 loc_811DFC0:
-	bl sub_811E000
+	bl sprite_playAltAnimationOnce
 loc_811DFC4:
 	bl sprite_update
 	pop {r4,pc}
@@ -31997,9 +31997,9 @@ dword_811DFFC:
 
 // symdb: One-shot switch of an object's sprite to animation 1 (no shadow), guarded by a byte so it only runs the first frame it's reached.
 // symdb: (r5 = object pointer, set by caller) -> void; no flags relevant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E000.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_playAltAnimationOnce.yaml
 	thumb_local_start
-sub_811E000:
+sprite_playAltAnimationOnce:
 	push {lr}
 	ldrb r3, [r5,#9]
 	cmp r3, #0
@@ -32015,7 +32015,7 @@ sub_811E000:
 locret_811E020:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811E000
+	thumb_func_end sprite_playAltAnimationOnce
 
 // symdb: Tail-call dispatch on a battle object's CurAction/curstate byte via a 3-entry Thumb jump table
 // symdb: (r5 = BattleObject*) -> r2/r3/r5 = whatever the tail-called function returns; no preserved lr

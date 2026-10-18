@@ -3972,7 +3972,7 @@ loc_803A9E0:
 sub_803A9E6:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_803AFC2
+	bl submenu_chipSelectCursorMove
 	beq loc_803A9FA
 	ldr r1, off_803AA08 // =dword_803AA0C
 	lsl r0, r0, #2
@@ -4392,7 +4392,7 @@ loc_803ACC0:
 sub_803ACC6:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_803AFC2
+	bl submenu_chipSelectCursorMove
 	beq loc_803ACDA
 	ldr r1, off_803ACE8 // =dword_803ACEC
 	lsl r0, r0, #2
@@ -4812,9 +4812,9 @@ loc_803AFBC:
 // symdb: (r0 = cursor-table index (0..1, callers pass 0); r5 = menu-state object: cursor slot at +8,
 // symdb: previous slot at +9; joypad via toolkit at r10) -> r0 = 0 if no action, else 1=B, 2=A, 3=Start,
 // symdb: 4=L, 5=R; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AFC2.yaml
-	thumb_func_start sub_803AFC2
-sub_803AFC2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_chipSelectCursorMove.yaml
+	thumb_func_start submenu_chipSelectCursorMove
+submenu_chipSelectCursorMove:
 	push {r4-r7,lr}
 	lsl r6, r0, #2
 	ldrb r0, [r5,#8]
@@ -4919,7 +4919,7 @@ byte_803B05C:
 	.byte 0x1E, 0x19, 0x19, 0x33, 0x1F, 0x37, 0x39, 0x34, 0x20, 0x38, 0x19, 0x35, 0x21
 	.byte 0x39, 0x3B, 0x36, 0x22, 0x3A, 0x19, 0x40, 0x3D, 0x22, 0x0, 0x40, 0x3E, 0x22
 	.byte 0x0, 0x3D, 0x3F, 0x27, 0x5, 0x3E, 0x40, 0x2C, 0xA, 0x3F, 0x3D, 0x31, 0xF
-	thumb_func_end sub_803AFC2
+	thumb_func_end submenu_chipSelectCursorMove
 
 	thumb_local_start
 sub_803B160:
@@ -8718,7 +8718,7 @@ loc_803CF30:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_803CF10
 
-// symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through sub_803CF74.
+// symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through pet_addCurNaviHPCapped.
 // symdb: void pet_addCurNaviStat0x3ECapped_803CF3C(u8 navi_slot /* r1 */, u32 mustBe0x70 /* r4 */); r4
 // symdb: must equal 0x70 or the call returns immediately; r4-r12 are preserved, flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviStat0x3ECapped_803CF3C.yaml
@@ -8746,7 +8746,7 @@ loc_803CF5A:
 	bl SetCurPETNaviStatsHword
 	mov r0, r6
 	mov r1, r7
-	bl sub_803CF74
+	bl pet_addCurNaviHPCapped
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803CF70:
@@ -8755,9 +8755,9 @@ off_803CF70:
 
 // symdb: Adds an amount to the current PET navi's HP stat (0x40), clamping it at the navi's max (stat 0x42).
 // symdb: (r0 = navi slot index, r1 = amount to add) -> r0 = undefined (destroyed); no meaningful flags.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CF74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviHPCapped.yaml
 	thumb_local_start
-sub_803CF74:
+pet_addCurNaviHPCapped:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -8783,7 +8783,7 @@ sub_803CF74:
 	bl SetCurPETNaviStatsHword
 locret_803CFAE:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803CF74
+	thumb_func_end pet_addCurNaviHPCapped
 
 	thumb_local_start
 sub_803CFB0:

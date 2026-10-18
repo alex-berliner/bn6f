@@ -5823,14 +5823,14 @@ loc_8049802:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80497EE
 
-// symdb: Thumb-side jump-table dispatcher that calls sub_803AFC2(0), tail-dispatches on its nonzero return through a 5-entry Thumb function table, and otherwise falls through to sub_803A7B8 + sub_803BC7C(0).
+// symdb: Thumb-side jump-table dispatcher that calls submenu_chipSelectCursorMove(0), tail-dispatches on its nonzero return through a 5-entry Thumb function table, and otherwise falls through to sub_803A7B8 + sub_803BC7C(0).
 // symdb: void sub_8049808(void); // r2/r4/r5/r10/lr caller-saved; r4-r7 preserved; c/v out, n/z clobbered
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8049808.yaml
 	thumb_local_start
 sub_8049808:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_803AFC2
+	bl submenu_chipSelectCursorMove
 	beq loc_804981C
 	ldr r1, off_8049828 // =dword_804982C 
 	lsl r0, r0, #2
@@ -5978,7 +5978,7 @@ loc_80498F2:
 sub_80498F8:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_803AFC2
+	bl submenu_chipSelectCursorMove
 	beq loc_804990C
 	ldr r1, off_8049918 // =dword_804991C 
 	lsl r0, r0, #2
@@ -6864,7 +6864,7 @@ loc_8049F9E:
 sub_8049FA4:
 	push {r4-r7,lr}
 	mov r0, #1
-	bl sub_803AFC2
+	bl submenu_chipSelectCursorMove
 	beq loc_8049FB8
 	ldr r1, off_8049FC4 // =dword_8049FC8 
 	lsl r0, r0, #2

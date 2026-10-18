@@ -3344,7 +3344,7 @@ void __fastcall sub_8049808(int a1, int a2, int a3)
     signed int v3; // r0
     char v4; // zf
 
-    v3 = sub_803AFC2(0, a2, a3);
+    v3 = submenu_chipSelectCursorMove(0, a2, a3);
     if ( !v4 )
         (dword_804982C[v3])();
     sub_803A7B8();
@@ -3457,7 +3457,7 @@ void __fastcall sub_80498F8(int a1, int a2, int a3)
     signed int v3; // r0
     char v4; // zf
 
-    v3 = sub_803AFC2(0, a2, a3);
+    v3 = submenu_chipSelectCursorMove(0, a2, a3);
     if ( !v4 )
         (dword_804991C[v3])();
     sub_803A7EC();
@@ -3948,7 +3948,7 @@ void __fastcall sub_8049FA4(int a1, int a2, int a3)
     signed int v3; // r0
     char v4; // zf
 
-    v3 = sub_803AFC2(1, a2, a3);
+    v3 = submenu_chipSelectCursorMove(1, a2, a3);
     if ( !v4 )
         (dword_8049FC8[v3])();
     sub_8049F50();

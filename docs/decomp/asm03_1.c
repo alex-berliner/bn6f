@@ -614,7 +614,7 @@ signed int __fastcall map_setupEnterMapAfterWarp_803423C(int a1, int a2, int a3,
 
 // 0x8034268
 // () -> void
-int sub_8034268()
+int initJackInAnimationScreen()
 {
     int v0; // r5
 
@@ -8041,7 +8041,7 @@ void __fastcall sub_803A9E6(int a1, int a2, int a3)
     signed int v3; // r0
     char v4; // zf
 
-    v3 = sub_803AFC2(0, a2, a3);
+    v3 = submenu_chipSelectCursorMove(0, a2, a3);
     if ( !v4 )
         (dword_803AA0C[v3])();
     sub_803A7B8();
@@ -8409,7 +8409,7 @@ void __fastcall sub_803ACC6(int a1, int a2, int a3)
     signed int v3; // r0
     char v4; // zf
 
-    v3 = sub_803AFC2(0, a2, a3);
+    v3 = submenu_chipSelectCursorMove(0, a2, a3);
     if ( !v4 )
         (dword_803ACEC[v3])();
     sub_803A7EC();
@@ -8783,7 +8783,7 @@ void __noreturn sub_803AF90()
 
 
 // 0x803afc2
-signed int __fastcall sub_803AFC2(int a1, int a2, int a3)
+signed int __fastcall submenu_chipSelectCursorMove(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -11303,12 +11303,12 @@ int __fastcall pet_addCurNaviStat0x3ECapped_803CF3C(int a1, int a2)
         v4 = &byte_3E8;
     v5 = v4;
     SetField16ToSelectedS20047CCStruct(0, 62, v4);
-    return sub_803CF74(v5, v3);
+    return pet_addCurNaviHPCapped(v5, v3);
 }
 
 
 // 0x803cf74
-int __fastcall sub_803CF74(int a1, int a2)
+int __fastcall pet_addCurNaviHPCapped(int a1, int a2)
 {
     int v2; // r7
     int v3; // r4

@@ -66,7 +66,7 @@ LABEL_12:
 
 
 // 0x8099d44
-int sub_8099D44()
+int ow_applySpawnEntry()
 {
     int v0; // r5
     char *v1; // r7
