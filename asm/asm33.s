@@ -12957,7 +12957,7 @@ locret_8129754:
 	.balign 4, 0x00
 	thumb_func_end battle_object_advanceState3_8129738
 
-// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sprite_setEntityAnimation(0, 0).
+// symdb: Dispatches on an entity's 0x1D byte: consults sub_812B318 for an action and an optional follow-up, and on action 3 transitions the entity into state 0x14 then triggers sub_811A610(0, 0).
 // symdb: void sub_8129758(void *entity /* r5 */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129758.yaml
 	thumb_local_start
@@ -13072,7 +13072,7 @@ off_81297F4:
 	.word sub_81298F8+1
 	thumb_func_end sub_81297DC
 
-// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sprite_setEntityAnimation(1, 0).
+// symdb: Battle object hook that reads the +0x1D state index, queries sub_812B318 (with an optional sub_812B318-cleanup call when sub_812B318 returns non-zero in r1), and when the cached r2 result equals 3 sets the object's +3 state byte to 4 and invokes sub_811A610(1, 0).
 // symdb: void sub_8129808(struct BattleObject* obj /* r5 */);  /* clobbers r0-r3, lr, N Z C V; preserves
 // symdb: r4-r7 */
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8129808.yaml
@@ -13748,7 +13748,7 @@ off_8129C40:
 	.word sub_8129DC4+1
 	thumb_func_end sub_8129C28
 
-// symdb: Reconciles a battle object's state byte (+0x20) against a lookup and either dispatches an event via sprite_setEntityAnimation or triggers sub_812B218 to repair it.
+// symdb: Reconciles a battle object's state byte (+0x20) against a lookup and either dispatches an event via sub_811A610 or triggers sub_812B218 to repair it.
 // symdb: void sub_8129C74(void *battleObj /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8129C74.yaml
 	thumb_local_start
