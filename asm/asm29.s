@@ -10607,7 +10607,7 @@ sub_80AA4B8:
 // symdb: Attempts to select and initiate an overworld random encounter battle, returning a BattleSettings pointer or NULL.
 // symdb: battle_tryEncounter_80AA4C0(void) -> BattleSettings* r0 (nz); uses r10 as toolkit context
 // symdb: pointer; preserves r4-r7; clobbers r0-r3, r8-r9, r11-r12, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryEncounter_80AA4C0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_tryEncounter_80AA4C0.yaml
 	thumb_func_start battle_tryEncounter_80AA4C0
 battle_tryEncounter_80AA4C0: // () -> (* BattleSettings, zf)
 	push {r4,r6,r7,lr}
@@ -10818,7 +10818,7 @@ chooseRandomEncounterMaybe_80aa5e4:
 // symdb: Picks a random encounter's battle-settings entry for the current map, filtered by a caller-supplied bitmask and chosen via event-flag-bank-6 table selection plus iCurrFrame round-robin.
 // symdb: u32 pickBattleSettingsEntry_80AA5F4(u32 filter /*r2*/, struct Toolkit *toolkit /*r10*/) -> u32
 // symdb: entry /*r0*/, plus r1/flags from callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pickBattleSettingsEntry_80AA5F4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pickBattleSettingsEntry_80AA5F4.yaml
 	thumb_func_start pickBattleSettingsEntry_80AA5F4
 pickBattleSettingsEntry_80AA5F4: // (a0: ? $r2) -> Nullable<const* BattleSettings>
 	push {r4-r7,lr}
@@ -11059,6 +11059,9 @@ loc_80AA774:
 	pop {r4,pc}
 	thumb_func_end isEventFlag212Set_80AA764
 
+// symdb: Battle-settings entry condition 4 (dispatchGameHandlerByIndex_80AA6A4): true while EVENT_213 is set.
+// symdb: () -> r0 = 1 if EVENT_213 is set, else 0; r4 restored
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA778.yaml
 	thumb_local_start
 sub_80AA778:
 	push {r4,lr}
@@ -11171,6 +11174,9 @@ loc_80AA820:
 	pop {r4,pc}
 	thumb_func_end sub_80AA810
 
+// symdb: A battle-settings entry's kind bits for pickBattleSettingsEntry_80AA5F4's filter: 0x20 when its setup has a Navi (enemy data byte 2 >= 4), else a bit per enemy family (bit from the enemy data's top nibble), plus 0x40 when the entry's byte 7 is 2.
+// symdb: (r0 = BattleSettings *) -> r0 = kind bits; r4, r6, r7 restored
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA824.yaml
 	thumb_local_start
 sub_80AA824:
 	push {r4,r6,r7,lr}
