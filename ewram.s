@@ -381,6 +381,8 @@ unk_2004338:: // 0x2004338
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eMysteryDataRolls.yaml
 eMysteryDataRolls:: // 0x2004348
 	.space 1156
+// symdb: The navis' NaviStats blocks (include/structs/NaviStats.inc, 0x64 each, MegaMan's first): +0x3E MaxBaseHP, +0x40 CurHP, +0x42 MaxHP. MegaMan's HP carries over between battles here.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eNaviStats.yaml
 eNaviStats:: // 0x20047cc
     navi_stats_struct eNaviStats0
     navi_stats_struct eNaviStats1
