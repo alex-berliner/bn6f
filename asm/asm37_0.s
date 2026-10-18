@@ -1585,9 +1585,9 @@ byte_813C1A4:
 // symdb: Redraws the Navi Customizer board: for each of the 49 grid cells, resolves the part placed there and writes its tile-map halfword entries into the BG map buffer at unk_30019E0.
 // symdb: (r0 = graphic-state variant, 0 or 1) -> r0 = clobbered; writes halfword tile entries to
 // symdb: unk_30019E0, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C1C0.yaml
-	thumb_func_start sub_813C1C0
-sub_813C1C0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_drawBoardTilemap.yaml
+	thumb_func_start navicust_drawBoardTilemap
+navicust_drawBoardTilemap:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r0, [sp,#4]
@@ -1726,7 +1726,7 @@ byte_813C308:
 	.byte 0x0, 0x81, 0x5D, 0x80, 0x2, 0xE4, 0x51, 0x7B, 0x6F
 	.byte 0x7B, 0x3, 0x3B, 0x62, 0x5B, 0x0, 0x5, 0x6E, 0x2
 	.byte 0x3
-	thumb_func_end sub_813C1C0
+	thumb_func_end navicust_drawBoardTilemap
 
 // symdb: Zero-fills the 8-byte work record at unk_2000090 in EWRAM, passing the caller's r2 through untouched.
 // symdb: void sub_813C324(void) /* in: r2 (pass-through value, preserved); out: r2 unchanged; clobbers
@@ -1747,9 +1747,9 @@ off_813C330:
 // symdb: Checks the player's button presses against a 10-input secret code for the selected entry, and toggles 4 event flags when the full code is entered.
 // symdb: (r0 = entry selector (row id << 2), r1 = current input position 0-9) -> r0 = updated input
 // symdb: position (0 = reset/wrong, 10 = code completed); plays OK sound and toggles flags on completion
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C334.yaml
-	thumb_func_start sub_813C334
-sub_813C334:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_checkSecretCode.yaml
+	thumb_func_start beastsp_checkSecretCode
+beastsp_checkSecretCode:
 	push {r4-r7,lr}
 	mov r6, r1
 	mov r7, r0
@@ -1813,7 +1813,7 @@ byte_813C3A4:
 	.hword JOYPAD_R // 0x2
 	.hword JOYPAD_A // 0x4
 	.hword JOYPAD_B // 0x6
-	thumb_func_end sub_813C334
+	thumb_func_end beastsp_checkSecretCode
 
 // symdb: Heals/clamps the current PET navi's HP (and slot 0's HP) to MaxHP, branching on map group and the EVENT_PET_NAVI_ACTIVE flag, with a MegaMan-only side effect when no PET navi is set.
 // symdb: void reloadCurNaviStatBoosts(u32 *toolkit /* r10 */); /* preserves r4-r7, returns NZCV + all
@@ -4685,7 +4685,7 @@ off_813DAB8:
 sub_813DAC0:
 	push {lr}
 	bl crt0_start_800027C
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	beq loc_813DAD4
 	ldrb r0, [r5,#2]

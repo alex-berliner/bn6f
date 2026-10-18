@@ -289,7 +289,7 @@ byte_80990DC:
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_pause byte1=0xFF byte2=0x01
-	cs_call_native_with_return_value ptr1=sub_8099164+1
+	cs_call_native_with_return_value ptr1=ow_cutsceneLoadEntry+1
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_play_music hword1=0xFFFF
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
@@ -347,9 +347,9 @@ loc_809915E:
 // symdb: Loads a cutscene setup entry by ID: resolves its text archive and, if flagged, places the player (facing, animation, coords) and camera for the scene start.
 // symdb: (r5 = cutscene state struct, cutscene entry id at +6) -> r0 = 0; writes text archive ptr to
 // symdb: +0x30, entry byte to +6, bit7 of entry flags to +8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099164.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_cutsceneLoadEntry.yaml
 	thumb_local_start
-sub_8099164:
+ow_cutsceneLoadEntry:
 	push {r4-r7, lr}
 	ldrb r0, [r5, #6]
 	ldr r7, =byte_8098E9C
@@ -405,7 +405,7 @@ loc_80991D2:
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_8099164
+	thumb_func_end ow_cutsceneLoadEntry
 
 	thumb_local_start
 sub_80991E0:
@@ -2292,7 +2292,7 @@ byte_809AA34:
 	cs_call_native_with_return_value ptr1=sub_809AAB8+1
 
 cutscenescript_809AA44:
-	cs_call_native_with_return_value ptr1=sub_809AADC+1
+	cs_call_native_with_return_value ptr1=chatbox_stepScriptAdvance+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809AA5F
 
 cutscenescript_809AA50:
@@ -2351,9 +2351,9 @@ sub_809AAB8:
 // symdb: Cutscene step that checks the chatbox-active flag and either queues follow-up script 0xC from the 0x2033404 archive (advancing a controller state) or re-queues script 0xB while the chatbox is busy.
 // symdb: (r0 unused, r5 = controller/task struct) -> r0 = 0 when a script was run, 1 when the chatbox
 // symdb: flag bit was clear; writes byte [r5+8], word [r5+0x84], event flag EVENT_1725
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AADC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_stepScriptAdvance.yaml
 	thumb_local_start
-sub_809AADC:
+chatbox_stepScriptAdvance:
 	push {r4-r7,lr}
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2384,7 +2384,7 @@ loc_809AB1A:
 	mov r0, #1
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_809AADC
+	thumb_func_end chatbox_stepScriptAdvance
 
 // symdb: Step the lottery/reward mini-screen: decrement a counter, play unselect SFX, run chatbox scripts, and award chips/items/NaviCust on a winning draw.
 // symdb: (r2 = eventFlagValue, r5 = localLotteryStatePtr, r7..r12 = preserved scratch from callers) -> r0
@@ -3989,7 +3989,7 @@ cutscenescript_809BFCA:
 	cs_set_screen_fade byte1=0x06 byte2=0xFF byte3=0xFF
 	cs_wait_screen_fade
 	cs_pause byte1=0xFF byte2=0x1E
-	cs_call_native_with_return_value ptr1=sub_809C01C+1
+	cs_call_native_with_return_value ptr1=start_resetProgressAndPetNavi+1
 	cs_warp_cmd_8038040_2 byte1=0x80 byte2=0x00 ptr3=NULL
 	cs_jump destination1=cutscenescript_809BFE3
 
@@ -4032,9 +4032,9 @@ off_809C018:
 
 // symdb: Resets game-progress story flags and reinitializes the selected PET navi, as if preparing a fresh scenario/playthrough state.
 // symdb: (r5 = toolkit or scenario struct; [r5,#0x34] = config struct) -> r0 = 0; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C01C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_resetProgressAndPetNavi.yaml
 	thumb_local_start
-sub_809C01C:
+start_resetProgressAndPetNavi:
 	push {r4-r7,lr}
 	ldr r7, [r5,#0x34]
 	ldrh r0, [r7,#0x16]
@@ -4066,7 +4066,7 @@ loc_809C050:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809C01C
+	thumb_func_end start_resetProgressAndPetNavi
 
 cutscenescript_809C068::
 	cs_lock_player_for_non_npc_dialogue_809e0b0

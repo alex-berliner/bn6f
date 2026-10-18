@@ -2194,7 +2194,7 @@ loc_8047174:
 	ldrh r0, [r5,#0x18]
 	ldr r1, off_80471F4 // =byte_2019A00 
 	bl drawChipListFiveRows_8047594
-	bl sub_8047834
+	bl ow_runEventStepFromStateTable
 loc_8047188:
 	bl mail_redrawSelectedEntry_804758C
 	bl background_LoadAreaTiles_8047800
@@ -3108,9 +3108,9 @@ off_8047830:
 // symdb: Runs one scripted overworld event step: per a state-table record, spawns objects, moves NPCs to screen center, plays a text script and updates chapter state.
 // symdb: (caller-context r5 = event/actor struct: [r5+5] enable flag, [r5+0x14]+[r5+0x18] = step index)
 // symdb: -> r0 = void; no flag contract visible
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047834.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_runEventStepFromStateTable.yaml
 	thumb_local_start
-sub_8047834:
+ow_runEventStepFromStateTable:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#5]
 	tst r0, r0
@@ -3172,7 +3172,7 @@ off_80478B0:
 	.word byte_2019A00
 off_80478B4:
 	.word byte_8046B84
-	thumb_func_end sub_8047834
+	thumb_func_end ow_runEventStepFromStateTable
 
 // symdb: Initializes four chapter/area state slots (0-3) via sub_8046696 during chapter setup.
 // symdb: void initChapterSlots_80478B8(void); // inputs: lr (return address); outputs: r2,r5,r7
@@ -5375,7 +5375,7 @@ sub_804946E:
 	add r0, r0, r5
 	bl sub_81469BC
 	bl sub_8132664
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_80494B6
 	bl sub_803C320
@@ -5464,7 +5464,7 @@ sub_804952C:
 	add r0, r0, r5
 	bl sub_81469BC
 	bl sub_8132664
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_804956E
 	bl sub_803C320

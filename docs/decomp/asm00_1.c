@@ -8987,7 +8987,7 @@ unsigned int sub_8009658()
     {
         if ( !*(v0 + 2) )
         {
-            sub_80096E0();
+            battle_stateBattleStart();
             *(v0 + 2) = 4;
         }
         v8 = battle_getStateUnk5c_800139A();
@@ -9032,7 +9032,7 @@ unsigned int sub_8009658()
 
 
 // 0x80096e0
-int sub_80096E0()
+int battle_stateBattleStart()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
@@ -9172,7 +9172,7 @@ int sub_80097A8()
 
 
 // 0x80097cc
-int sub_80097CC()
+int battle_stateWaitFinishPhase()
 {
     int v0; // r5
     int result; // r0
@@ -9441,7 +9441,7 @@ unsigned int battle_advanceIndexFromPauseIntro_80099E0()
     {
         if ( !*(v0 + 2) )
         {
-            sub_8009A68();
+            battle_pauseIntroResumeStateStep();
             *(v0 + 2) = 4;
         }
         v8 = battle_getStateUnk5c_800139A();
@@ -9486,7 +9486,7 @@ unsigned int battle_advanceIndexFromPauseIntro_80099E0()
 
 
 // 0x8009a68
-int sub_8009A68()
+int battle_pauseIntroResumeStateStep()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
@@ -9733,7 +9733,7 @@ int sub_8009C06()
 
 
 // 0x8009c2a
-signed int sub_8009C2A()
+signed int battle_subphaseFadeOut()
 {
     int v0; // r5
     signed int result; // r0
@@ -9801,7 +9801,7 @@ int sub_8009C94()
 
 
 // 0x8009cd0
-unsigned int sub_8009CD0()
+unsigned int battle_initBattlePhase()
 {
     int v0; // r5
     int v1; // r0
@@ -9820,7 +9820,7 @@ unsigned int sub_8009CD0()
     {
         if ( !*(v0 + 2) )
         {
-            sub_8009D58();
+            battle_transitionFrameStep();
             *(v0 + 2) = 4;
         }
         v8 = battle_getStateUnk5c_800139A();
@@ -9865,7 +9865,7 @@ unsigned int sub_8009CD0()
 
 
 // 0x8009d58
-int sub_8009D58()
+int battle_transitionFrameStep()
 {
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);

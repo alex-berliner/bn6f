@@ -1448,7 +1448,7 @@ void __noreturn background_LoadAreaTiles_8047800()
 
 
 // 0x8047834
-void sub_8047834()
+void ow_runEventStepFromStateTable()
 {
     int v0; // r5
     char *v1; // r7
@@ -2924,7 +2924,7 @@ void sub_804946E()
             v2 = sub_8049D7C();
             v3 = sub_81469BC(v0 + 256, v2);
             sub_8132664(v3);
-            if ( sub_81465BC() )
+            if ( rfu_initLinkSession() )
             {
                 sub_803BB2C(10);
                 *(v0 + 1) = 24;
@@ -3012,7 +3012,7 @@ void sub_804952C()
         v2 = sub_8049D7C();
         v3 = sub_81469BC(v0 + 256, v2);
         sub_8132664(v3);
-        if ( sub_81465BC() )
+        if ( rfu_initLinkSession() )
         {
             sub_803BB2C(10);
             *(v0 + 1) = 24;

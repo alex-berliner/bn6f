@@ -2686,9 +2686,9 @@ owPlayer_setS2000AA0Param0x4_809e314:
 // symdb: Reloads the player's normal overworld sprite and clears beast-out state (event flags and control lockout).
 // symdb: () -> void; touches GameState.Unk_09 (set to 0), event flags EVENT_68E (set) / EVENT_68F
 // symdb: (cleared), eStruct2000aa0 fields 0x4 and 0x8 (zeroed)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E31A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_restorePlayerSpriteAfterBeastOut.yaml
 	thumb_local_start
-sub_809E31A:
+ow_restorePlayerSpriteAfterBeastOut:
 	push {r4-r7,lr}
 	ldr r3, off_809E430 // =eStruct2000aa0 
 	mov r0, #0
@@ -2713,13 +2713,13 @@ sub_809E31A:
 	movflag EVENT_68F
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_809E31A
+	thumb_func_end ow_restorePlayerSpriteAfterBeastOut
 
 // symdb: Applies the Beast Out appearance to the overworld player: loads the beast sprite, sets animation, disables the shadow, blocks jack-out, and flips the Beast Out event flags.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E35E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_applyBeastOutForm.yaml
 	thumb_local_start
-sub_809E35E:
+ow_applyBeastOutForm:
 	push {r4-r7,lr}
 	ldr r3, off_809E430 // =eStruct2000aa0 
 	mov r0, #1
@@ -2744,7 +2744,7 @@ sub_809E35E:
 	movflag EVENT_68F
 	bl SetEventFlagFromImmediate
 	pop {r4-r7,pc}
-	thumb_func_end sub_809E35E
+	thumb_func_end ow_applyBeastOutForm
 
 // symdb: Returns NZ (Z=0) iff the byte at eStruct2000aa0+0x8 is non-zero (i.e. the overworld player Navi is currently in the elevator pose/animation).
 // symdb: () -> r0 = byte at (eStruct2000aa0 + 0x8); flags Z set when byte == 0, NZ otherwise ; no side

@@ -1601,7 +1601,7 @@ void __noreturn sub_8124C94()
     char v3; // zf
 
     battleObject_initChipSpriteSlotBuffer_8126818(0);
-    sub_811983C(0, 1);
+    e_setField13(0, 1);
     *(v0 + 13) = 0;
     *(v0 + 22) = *(v0 + 20);
     *(v0 + 26) = *(v0 + 24);
@@ -1663,7 +1663,7 @@ int sub_8124D78()
     int v4; // r0
 
     battleObject_initChipSpriteSlotBuffer_8126818(0);
-    sub_811983C(1, 1);
+    e_setField13(1, 1);
     *(v0 + 13) = 1;
     *(v0 + 32) = *(v0 + 30);
     *(v0 + 36) = *(v0 + 34);
@@ -1678,7 +1678,7 @@ int sub_8124D78()
         v3 = *(v0 + 28);
     sprite_setStructHalfwordPairOnThree_8117084(v4, v3, 7);
     sub_812674C();
-    return sub_81267A8();
+    return sprite_queueBattleOamEntry();
 }
 
 
@@ -1774,7 +1774,7 @@ int sprite_stage2InitBattleState_8124E7C()
     int v6; // r0
 
     battleObject_initChipSpriteSlotBuffer_8126818(0);
-    sub_811983C(2, 1);
+    e_setField13(2, 1);
     *(v0 + 13) = 2;
     *(v0 + 42) = *(v0 + 40);
     *(v0 + 46) = *(v0 + 44);
@@ -1793,7 +1793,7 @@ int sprite_stage2InitBattleState_8124E7C()
         v5 = *(v0 + 28);
     sprite_setStructHalfwordPairOnThree_8117084(v6, v5, 7);
     sub_812674C();
-    return sub_81267A8();
+    return sprite_queueBattleOamEntry();
 }
 
 
@@ -1912,7 +1912,7 @@ int sub_8124F8C()
         v5 = *(v0 + 48);
     sprite_setStructHalfwordPairOnThree_8117084(v6, v5, 7);
     sub_812674C();
-    return sub_81267A8();
+    return sprite_queueBattleOamEntry();
 }
 
 
@@ -2019,7 +2019,7 @@ int battle_runIntro_812508C_812509C()
         sub_8126184();
     sub_8126554();
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     return sub_81267F0();
 }
 
@@ -2028,7 +2028,7 @@ int battle_runIntro_812508C_812509C()
 void __fastcall __noreturn battle_runUpdatesAndCheckFade_81250E0(int a1)
 {
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     battle_drawCustFolderSlots_8125D10();
 }
@@ -2042,7 +2042,7 @@ int __fastcall sub_8125104(int a1)
     char v3; // zf
 
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     submenu_redrawFolderScreen();
     wrapper_sub8126570_fixedArgs_812650C();
@@ -2064,7 +2064,7 @@ int __fastcall sub_8125128(int a1)
     char v3; // zf
 
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
     sub_8126524();
@@ -2086,7 +2086,7 @@ int __fastcall sub_812514C(int a1)
     char v3; // zf
 
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     sub_8125F5C();
     sub_812653C();
@@ -2108,7 +2108,7 @@ int __fastcall battle_transitionTick_8125170(int a1)
     char v3; // zf
 
     sub_812674C();
-    sub_81267A8();
+    sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     sub_8126114();
     sub_8126554();
@@ -3639,40 +3639,40 @@ void __fastcall __noreturn bg_copyTilePatchBlock2_81264E4(int a1, int a2, u16 *a
 // 0x81264f4
 int sub_81264F4()
 {
-    return sub_8126570(90, 32, 20, 12);
+    return battle_queueAnimatedOamEntry(90, 32, 20, 12);
 }
 
 
 // 0x812650c
 int wrapper_sub8126570_fixedArgs_812650C()
 {
-    return sub_8126570(90, 32, 30, 12);
+    return battle_queueAnimatedOamEntry(90, 32, 30, 12);
 }
 
 
 // 0x8126524
 int sub_8126524()
 {
-    return sub_8126570(90, 32, 40, 12);
+    return battle_queueAnimatedOamEntry(90, 32, 40, 12);
 }
 
 
 // 0x812653c
 int sub_812653C()
 {
-    return sub_8126570(90, 32, 50, 12);
+    return battle_queueAnimatedOamEntry(90, 32, 50, 12);
 }
 
 
 // 0x8126554
 int sub_8126554()
 {
-    return sub_8126570(90, 32, 60, 12);
+    return battle_queueAnimatedOamEntry(90, 32, 60, 12);
 }
 
 
 // 0x8126570
-int __fastcall sub_8126570(int a1, int a2, int a3, int a4)
+int __fastcall battle_queueAnimatedOamEntry(int a1, int a2, int a3, int a4)
 {
     int *v4; // r4
     int v5; // r5
@@ -3820,14 +3820,14 @@ int sub_812674C()
     int v0; // r5
     int result; // r0
 
-    if ( !*(v0 + 13) || (sub_8126570(88, 20, 0, 15), result = *(v0 + 14), byte_81267A0[*(v0 + 13)] < result) )
-        result = sub_8126570(226, 20, 0, 16);
+    if ( !*(v0 + 13) || (battle_queueAnimatedOamEntry(88, 20, 0, 15), result = *(v0 + 14), byte_81267A0[*(v0 + 13)] < result) )
+        result = battle_queueAnimatedOamEntry(226, 20, 0, 16);
     return result;
 }
 
 
 // 0x81267a8
-signed int sub_81267A8()
+signed int sprite_queueBattleOamEntry()
 {
     int v0; // r5
     int v1; // r2
@@ -3858,7 +3858,7 @@ int sub_81267F0()
 
     result = *(v0 + 58);
     if ( *(v0 + 58) )
-        result = sub_8126570(67, 14, 0, 17);
+        result = battle_queueAnimatedOamEntry(67, 14, 0, 17);
     return result;
 }
 
@@ -3952,7 +3952,7 @@ int sub_81268D8()
     unsigned __int8 *v1; // r0
 
     v1 = getChip8021DA8(LOWORD(dword_201F420[*(v0 + 50) + *(v0 + 54)]));
-    return sub_811983C(v1[7], 1);
+    return e_setField13(v1[7], 1);
 }
 
 
@@ -4223,7 +4223,7 @@ int sub_8126EA4()
 
 
 // 0x8126ec0
-void __noreturn sub_8126EC0()
+void __noreturn submenu_stepSlideToSelection()
 {
     _BYTE *v0; // r5
     int v1; // r1
@@ -5038,7 +5038,7 @@ LABEL_2:
 
 
 // 0x8127b94
-void sub_8127B94()
+void chatbox_completeCutsceneStep()
 {
     int v0; // r5
     char v1; // zf
@@ -5765,7 +5765,7 @@ int __fastcall sub_8128750(int a1, int a2, int a3, int a4)
     v10[13] = 0;
     *(v4 + 1) = 4;
     *(v4 + 2) = 0;
-    sub_81288FC();
+    init_loadScreenAssets();
     *(v4 + 15) = 0;
     *(v4 + 16) = 0;
     *(v4 + 38) = 255;
@@ -5811,7 +5811,7 @@ int sceneStep_81287DC()
 
 
 // 0x8128800
-void sub_8128800()
+void menu_gridCursorScreenUpdate()
 {
     int v0; // r5
     int v1; // r10
@@ -5910,7 +5910,7 @@ int __fastcall sub_81288E4(int a1, int a2)
 
 
 // 0x81288fc
-void sub_81288FC()
+void init_loadScreenAssets()
 {
     int v0; // r6
     int v1; // r7
@@ -6839,7 +6839,7 @@ int sub_8129658()
     int v0; // r5
 
     (*(&off_8129670 + *(v0 + 3)))();
-    return sub_812B25C(14);
+    return battle_runFrameUpdate(14);
 }
 
 
@@ -7035,7 +7035,7 @@ int sub_81297DC()
     int v0; // r5
 
     (*(&off_81297F4 + *(v0 + 3)))();
-    return sub_812B25C(18);
+    return battle_runFrameUpdate(18);
 }
 
 
@@ -7188,7 +7188,7 @@ int sub_8129918()
     int v0; // r5
 
     (*(&off_8129930 + *(v0 + 3)))();
-    return sub_812B25C(18);
+    return battle_runFrameUpdate(18);
 }
 
 
@@ -7367,7 +7367,7 @@ int sub_8129A98()
     int v0; // r5
 
     (*(&off_8129AB0 + *(v0 + 3)))();
-    return sub_812B25C(18);
+    return battle_runFrameUpdate(18);
 }
 
 
@@ -7562,7 +7562,7 @@ int sub_8129C28()
     int v0; // r5
 
     (*(&off_8129C40 + *(v0 + 3)))();
-    return sub_812B25C(19);
+    return battle_runFrameUpdate(19);
 }
 
 
@@ -7930,7 +7930,7 @@ void __noreturn sub_8129F48()
 
 
 // 0x8129f88
-void sub_8129F88()
+void submenu_waitCancelButton()
 {
     int v0; // r5
     int v1; // r0
@@ -8031,7 +8031,7 @@ int __fastcall sub_812A058(int a1)
         v2 = sub_8049D7C();
         sub_81469BC(&unk_201FD40, v2);
     }
-    if ( sub_81465BC() )
+    if ( rfu_initLinkSession() )
     {
         engine_setScreeneffect(12, 16);
         if ( eStruct200BC30_getJumpOffset00() == 8 )
@@ -9637,7 +9637,7 @@ int sub_812B218()
 
 
 // 0x812b25c
-int __fastcall sub_812B25C(int a1)
+int __fastcall battle_runFrameUpdate(int a1)
 {
     sub_812B2C4(a1);
     entity_runAllUpdateHandlers_80465BC();
@@ -9655,7 +9655,7 @@ int sub_812B26C()
     v1 = sub_8132290();
     if ( v1 != 24 && v1 != 28 )
         v0 = 18;
-    return sub_812B25C(v0);
+    return battle_runFrameUpdate(v0);
 }
 
 
@@ -10160,7 +10160,7 @@ int sub_812B80C()
         sub_803C604();
     (*(&off_812B858 + *(v0 + 2)))();
     if ( *(v0 + 2) != 20 || *(v0 + 3) != 4 )
-        sub_812B25C(18);
+        battle_runFrameUpdate(18);
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
         result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
@@ -10178,7 +10178,7 @@ int sub_812B874()
         sub_803C604();
     (*(&off_812B8C0 + *(v0 + 2)))();
     if ( *(v0 + 2) != 20 || *(v0 + 3) != 4 )
-        sub_812B25C(18);
+        battle_runFrameUpdate(18);
     result = eStruct200BC30_getJumpOffset00();
     if ( result )
         result = battleObject_setupCustomChipCursorState_803C59C(218, 2);

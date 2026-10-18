@@ -176,7 +176,7 @@ BOOL sub_800BEDA()
 
 
 // 0x800bf16
-char *__fastcall sub_800BF16(int a1, char a2, int a3)
+char *__fastcall battle_queueEffectRequest(int a1, char a2, int a3)
 {
     int v3; // r5
     int v4; // ST00_4
@@ -2459,12 +2459,12 @@ int __fastcall sub_800D53C(int a1, int a2, int a3)
 // 0x800d58c
 void __noreturn battle_scanPanelsInFront_800D58C()
 {
-    sub_800D5BA();
+    battle_findPanelXAwayFromEnemies();
 }
 
 
 // 0x800d5ba
-void __noreturn sub_800D5BA()
+void __noreturn battle_findPanelXAwayFromEnemies()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -2771,7 +2771,7 @@ signed int __usercall battleObject_applyHPAndHandleSpecial_800E2FC@<R0>(Battle *
     if ( a2 && getTable2036720EntryFields_802CE78(obj->Alliance ^ 1) == 189 )
     {
         v8 = sub_80E37D2(obj->panelX, obj->panelY, 0, v4);
-        sub_800BF16(obj->Alliance, 1, v8);
+        battle_queueEffectRequest(obj->Alliance, 1, v8);
         sub_800ABC6(obj->panelX, obj->panelY);
         sub_802CEA6(obj->Alliance ^ 1);
         result = 1;
@@ -2800,7 +2800,7 @@ signed int __fastcall sub_800E360(int a1, int a2)
     if ( a2 && getTable2036720EntryFields_802CE78(v2->Alliance ^ 1) == 189 )
     {
         v6 = sub_80E37D2(v2->panelX, v2->panelY, 0, v4);
-        sub_800BF16(v2->Alliance, 1, v6);
+        battle_queueEffectRequest(v2->Alliance, 1, v6);
         sub_800ABC6(v2->panelX, v2->panelY);
         sub_802CEA6(v2->Alliance ^ 1);
         result = 1;

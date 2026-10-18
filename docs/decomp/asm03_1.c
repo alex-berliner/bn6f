@@ -6456,7 +6456,7 @@ int sub_8039AB8()
 {
     int v0; // r5
 
-    if ( sub_81465BC() )
+    if ( rfu_initLinkSession() )
     {
         *(v0 + 1) = 8;
     }
@@ -6502,7 +6502,7 @@ int sub_8039B0A()
     sub_814695C(v0 + 240);
     v1 = sub_803C418();
     sub_81469BC(v0 + 256, v1);
-    if ( sub_81465BC() )
+    if ( rfu_initLinkSession() )
     {
         engine_setScreeneffect(8, 16);
         sub_803BB2C(10);
@@ -6882,7 +6882,7 @@ int __fastcall sub_8039E2C(int a1)
             sub_814695C(v1 + 240);
             v3 = sub_803C418();
             sub_81469BC(v1 + 256, v3);
-            if ( sub_81465BC() )
+            if ( rfu_initLinkSession() )
             {
                 sub_803BB2C(10);
                 *(v1 + 1) = 24;
@@ -7082,7 +7082,7 @@ int sub_8039FEC()
         sub_814695C(v0 + 240);
         v2 = sub_803C418();
         sub_81469BC(v0 + 256, v2);
-        if ( sub_81465BC() )
+        if ( rfu_initLinkSession() )
         {
             sub_803BB2C(10);
             *(v0 + 1) = 24;

@@ -624,7 +624,7 @@ cutscenescript_808C55F:
 	cs_spawn_ow_map_objects_from_map
 	cs_stop_cutscene_camera_script
 	cs_chatbox_cmd_8037a70
-	cs_call_native_with_return_value ptr1=sub_808CA68+1
+	cs_call_native_with_return_value ptr1=init_beastSpScenario+1
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_jump_if_var_equal byte1=0x04 byte2=0x01 destination3=cutscenescript_808C5B0
 	cs_jump_if_var_equal byte1=0x04 byte2=0x02 destination3=cutscenescript_808C5BC
@@ -1104,9 +1104,9 @@ byte_808CA48:
 // symdb: Initializer for the Beast+ special-scenario mode: wipes its work buffer, clears related story flags, restores player control, and starts the scene's sound.
 // symdb: () -> r0 = 0; flags clobbered; zeroes 0x98 bytes at [dword_808CA44], sets state byte 0x3 = 0x20,
 // symdb: sets GameState Unk_09 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CA68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_beastSpScenario.yaml
 	thumb_local_start
-sub_808CA68:
+init_beastSpScenario:
 	push {r5,lr}
 	ldr r0, off_808CB9C // =dword_808CA44
 	ldr r0, [r0]
@@ -1145,7 +1145,7 @@ loc_808CABE:
 	.balign 4, 0
 dword_808CAD0:
 	.word 0x100
-	thumb_func_end sub_808CA68
+	thumb_func_end init_beastSpScenario
 
 	thumb_local_start
 sub_808CAD4:

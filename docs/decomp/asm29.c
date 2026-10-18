@@ -321,7 +321,7 @@ void __noreturn sub_80A52E4()
 
 
 // 0x80a5304
-void __noreturn sub_80A5304()
+void __noreturn object_beastRoarCutsceneTick()
 {
     int v0; // r5
     int v1; // r7
@@ -2619,7 +2619,7 @@ int battleObject_beastStepUpdate_80A73A0()
         ++*(v0 + 6);
         if ( *(v0 + 7) )
         {
-            sub_80A74A8();
+            ow_setAnimFromDirTable();
             sub_80A7514();
             *(v0 + 6) = 0;
         }
@@ -2728,7 +2728,7 @@ int ow_facePlayerSetAnim()
 
 
 // 0x80a74a8
-int sub_80A74A8()
+int ow_setAnimFromDirTable()
 {
     int v0; // r5
     int v1; // r4
@@ -3047,7 +3047,7 @@ int sub_80A77A8()
 
 
 // 0x80a77c8
-void __noreturn sub_80A77C8()
+void __noreturn sprite_setupObjectSprite()
 {
     int v0; // r5
 
@@ -3165,7 +3165,7 @@ int battle_aiDispatchByAIDataBLeftAbility_80A78B8()
 
 
 // 0x80a78e0
-void __noreturn sub_80A78E0()
+void __noreturn battle_beastSpInit()
 {
     int v0; // r5
     int v1; // r6
@@ -4214,12 +4214,12 @@ void __noreturn sub_80A83B8()
         ClearEventFlagFromImmediate(9, 215);
     }
     *(v0 + 8) = 4;
-    sub_80A8424();
+    npc_updateGuarded();
 }
 
 
 // 0x80a8424
-void __noreturn sub_80A8424()
+void __noreturn npc_updateGuarded()
 {
     int v0; // r5
     char v1; // zf
@@ -4271,7 +4271,7 @@ LABEL_18:
 
 
 // 0x80a8484
-signed int sub_80A8484()
+signed int ow_cleanupNpcAfterCutscene()
 {
     int v0; // r5
     signed int result; // r0
@@ -5735,7 +5735,7 @@ int sub_80A92B8()
 
 
 // 0x80a92e0
-void __noreturn sub_80A92E0()
+void __noreturn sprite_initBeastSp()
 {
     int v0; // r5
     int v1; // r6
@@ -6582,7 +6582,7 @@ int sub_80A9D10()
 
 
 // 0x80a9d30
-void __noreturn sub_80A9D30()
+void __noreturn ow_initSpriteObject()
 {
     int v0; // r5
     int v1; // r1
@@ -6632,7 +6632,7 @@ int sub_80A9DB8()
 
 
 // 0x80a9dc0
-int sub_80A9DC0()
+int object_timerStateTick()
 {
     int v0; // r5
     int result; // r0
@@ -6710,7 +6710,7 @@ int sub_80A9E48()
 
 
 // 0x80a9e5e
-int sub_80A9E5E()
+int e_decelRiseUpdate()
 {
     int v0; // r5
     int result; // r0
@@ -6766,7 +6766,7 @@ int sub_80A9ECC()
 
 
 // 0x80a9eec
-void __noreturn sub_80A9EEC()
+void __noreturn ow_startLogoutEffect()
 {
     int v0; // r5
     int v1; // r1
@@ -6821,7 +6821,7 @@ int sub_80A9F58()
 
 
 // 0x80a9f78
-void __noreturn sub_80A9F78()
+void __noreturn ow_initObjectSprite()
 {
     int v0; // r5
 
@@ -6899,7 +6899,7 @@ int sub_80AA058()
 
 
 // 0x80aa078
-void __noreturn sub_80AA078()
+void __noreturn object_initSprite()
 {
     int v0; // r5
 

@@ -6439,7 +6439,7 @@ loc_8133334:
 	mov r0, #0
 	strb r0, [r5,#2]
 loc_8133338:
-	bl sub_81340AC
+	bl battle_setupChipSelectEStructs
 	bl battle_spawnChipSelectHeaderEntries_81340DC
 	bl submenu_isOpen_81355D8
 	bne loc_8133358
@@ -6529,7 +6529,7 @@ off_81333EC:
 	.word sub_81337C4+1
 	.word submenu_handleSelectAFromList_8133434+1
 	.word battleObject_submenuDispatchByBeastSpIndex_8133484+1
-	.word sub_8133788+1
+	.word battle_beastOutMenuStateUpdate+1
 	thumb_func_end battle_dispatchObjectUpdateOrEffect_81333A0
 // symdb: Per-frame update tick for a battle object: guards against screen-fade transitions, then advances logic, animation, camera, and turn-reset subroutines.
 // symdb: void battle_objectUpdate_8133400(     u32 r4 /* context */, u32 *r5 /* battle object ptr */,
@@ -6631,7 +6631,7 @@ battleObject_submenuDispatchByBeastSpIndex_8133484:
 off_81334B4:
 	.word off_81334B8
 off_81334B8:
-	.word sub_81334C8+1
+	.word beastsp_handleInputAndScripts+1
 	.word sub_8133540+1
 	.word sub_81335EC+1
 	.word sub_8133770+1
@@ -6639,9 +6639,9 @@ off_81334B8:
 // symdb: Input/state step handler for a beast-SP-related text sequence: reacts to B+Select and chatbox progress, playing sounds and advancing scripts 0xb/0x10/0x11 while updating a context's state bytes.
 // symdb: (r5 = context struct, caller-provided) -> r0 = last call's return; writes state bytes [r5+2],
 // symdb: [r5+3] and word [r5+0x68]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81334C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_handleInputAndScripts.yaml
 	thumb_local_start
-sub_81334C8:
+beastsp_handleInputAndScripts:
 	push {r4,lr}
 	bl submenu_isOpen_81355D8
 	beq loc_81334E2
@@ -6693,7 +6693,7 @@ locret_8133534:
 	.balign 4, 0x00
 	.word byte_813316C
 	.word byte_8133174
-	thumb_func_end sub_81334C8
+	thumb_func_end beastsp_handleInputAndScripts
 
 	thumb_local_start
 sub_8133540:
@@ -6708,7 +6708,7 @@ sub_8133540:
 off_8133550:
 	.word off_8133554
 off_8133554:
-	.word sub_8133564+1
+	.word submenu_handleConfirmOrExitInput+1
 	.word sub_81335B8+1
 	.word sub_81335C0+1
 	.word sub_81335D8+1
@@ -6716,9 +6716,9 @@ off_8133554:
 
 // symdb: Per-frame input handler for an open submenu: adjusts its cursor on D-pad input, advances to state 4 on A, and on B plays the exit sound, runs a closing text script, and closes itself.
 // symdb: (r5 = submenu state struct, r10 = toolkit) -> void; also uses global event flag word and joypad
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133564.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_handleConfirmOrExitInput.yaml
 	thumb_local_start
-sub_8133564:
+submenu_handleConfirmOrExitInput:
 	push {r4,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -6757,12 +6757,12 @@ loc_81335A8:
 	str r0, [r5,#0x68]
 locret_81335B6:
 	pop {r4,pc}
-	thumb_func_end sub_8133564
+	thumb_func_end submenu_handleConfirmOrExitInput
 
 	thumb_local_start
 sub_81335B8:
 	push {lr}
-	bl sub_8133C9C
+	bl battle_confirmSpawnPanel
 	pop {pc}
 	thumb_func_end sub_81335B8
 
@@ -7020,9 +7020,9 @@ locret_8133784:
 // symdb: Per-frame state handler for the beast-out related submenu/effect: advances state bytes, runs text script 0x17 when a submenu is open, and triggers the beast status effect on the battle object.
 // symdb: (r0 unused/ignored; r5 = state struct pointer set up by caller) -> r0 = result of
 // symdb: object_resolveTableEntryWrapper; flags from final calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133788.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutMenuStateUpdate.yaml
 	thumb_local_start
-sub_8133788:
+battle_beastOutMenuStateUpdate:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -7048,7 +7048,7 @@ loc_81337B0:
 	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8133788
+	thumb_func_end battle_beastOutMenuStateUpdate
 
 // symdb: Folder-edit menu state machine dispatcher - reads the current step from [r5+3] and tail-jumps to the matching handler from a 4-entry table.
 // symdb: void sub_81337C4(void) /* in: r2,r4,r5(struct ptr),r6,r7,r8,r10; out: r5,r8,r9,r10,r11,r12;
@@ -7681,9 +7681,9 @@ locret_8133C98:
 // symdb: Confirms a panel selection for placing a battle object: cancels if the same panel is re-picked, rejects occupied or blocked spots, otherwise spawns the eStruct records there and advances the handler state.
 // symdb: (uses global context r5; r0 clobbered immediately with slot id 4) -> no return value; writes
 // symdb: handler state to [r5+0x68] (0, 8, or 0xC) and selection data to [r5+0x1C]/[r5+0x4C]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133C9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSpawnPanel.yaml
 	thumb_local_start
-sub_8133C9C:
+battle_confirmSpawnPanel:
 	push {r4,lr}
 	mov r0, #4
 	bl getStructFrom2008450
@@ -7785,7 +7785,7 @@ off_8133D5C:
 	.word byte_8133154
 dword_8133D60:
 	.word 0xFFFF
-	thumb_func_end sub_8133C9C
+	thumb_func_end battle_confirmSpawnPanel
 
 	thumb_local_start
 sub_8133D64:
@@ -8158,9 +8158,9 @@ off_81340A0:
 // symdb: Spawns the chip-select screen's eStruct records from table byte_813313C, positions their sprites at a fixed spot, and links each record to the first one.
 // symdb: () -> void; spawns records into eStructArr2008450 and writes record[0]'s pointer to each
 // symdb: record's +0x14 field
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81340AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupChipSelectEStructs.yaml
 	thumb_local_start
-sub_81340AC:
+battle_setupChipSelectEStructs:
 	push {r4-r7,lr}
 	// a1
 	ldr r0, off_81340D8 // =byte_813313C
@@ -8187,7 +8187,7 @@ loc_81340D0:
 	.balign 4, 0
 off_81340D8:
 	.word byte_813313C
-	thumb_func_end sub_81340AC
+	thumb_func_end battle_setupChipSelectEStructs
 
 // symdb: Loads the submenu-open chip-select header entries from a small per-view record table and positions the first eStruct sprite for the chip-select menu.
 // symdb: () -> void
@@ -9610,7 +9610,7 @@ loc_8134A90:
 	add r2, r0, #1
 	ldrb r0, [r5,r1]
 	strb r0, [r5,r2]
-	bl sub_8134CF0
+	bl folder_moveChipEntry
 	b loc_8134AB4
 loc_8134AAA:
 	bl sub_8134ABC
@@ -9906,9 +9906,9 @@ loc_8134CDE:
 // symdb: Folder/pack editor action handler: moves a 0x20-byte chip entry between the two chip lists, or swaps two entries within one list, with error sounds for invalid moves.
 // symdb: (r0..r3 unused; r5 = editor state struct) -> r0 = 0; writes entry tables word_202A020 /
 // symdb: unk_202A3E0, state fields [r5+0x17,0x28,0x3c,0x44,0x46,0x48,0x4a]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134CF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folder_moveChipEntry.yaml
 	thumb_local_start
-sub_8134CF0:
+folder_moveChipEntry:
 	push {r4-r7,lr}
 	mov r4, #0x44 
 	mov r6, #0x48 
@@ -10113,7 +10113,7 @@ dword_8134EA0:
 	.word 0x7FFF
 off_8134EA4:
 	.word unk_2035C6C
-	thumb_func_end sub_8134CF0
+	thumb_func_end folder_moveChipEntry
 
 	thumb_local_start
 sub_8134EA8:
@@ -11308,7 +11308,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / navicust_drawBoardTilemap / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -11386,7 +11386,7 @@ battle_initNaviCustomizerScene_81356F4:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	bl sub_81362F8
 	bl sub_8135D8C
 	bl sub_8135D9C
@@ -11512,7 +11512,7 @@ loc_8135896:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	b loc_81358EE
 loc_81358C2:
 	mov r0, r10
@@ -11632,7 +11632,7 @@ sub_8135968:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
@@ -11774,20 +11774,20 @@ loc_8135A74:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	ldrb r0, [r5,#0x16]
 	cmp r0, #4
 	beq loc_8135AB8
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	b locret_8135AF2
 loc_8135AB8:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	ldrh r0, [r5,#0x1a]
 	bl sub_8135DF8
 	cmp r0, #3
@@ -12561,7 +12561,7 @@ sub_81360B4:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	pop {pc}
@@ -12578,7 +12578,7 @@ sub_81360DC:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	pop {pc}
@@ -12756,7 +12756,7 @@ loc_8136236:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	b locret_8136274
@@ -13021,7 +13021,7 @@ loc_8136428:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	bl sub_81362F8
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
@@ -13052,7 +13052,7 @@ sub_8136450:
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	b locret_81364BA
@@ -13062,7 +13062,7 @@ loc_8136492:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
@@ -13221,7 +13221,7 @@ sub_813658C:
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	bl sub_8135D9C
 	mov r0, r6
 	bl sub_8135DF8
@@ -13546,7 +13546,7 @@ sub_8136804:
 	ldrh r0, [r0]
 	sub r0, #0x90
 	ldrb r1, [r5,#0x17]
-	bl sub_813C334
+	bl beastsp_checkSecretCode
 	strb r0, [r5,#0x17]
 locret_8136822:
 	pop {pc}
@@ -13640,10 +13640,10 @@ off_81368E8:
 	.word sub_813691C+1
 	.word sub_813691C+1
 	.word sub_81369B8+1
-	.word sub_81369D0+1
+	.word pet_naviHealCutsceneStep+1
 	.word sub_8136A0C+1
 	.word sub_8136A74+1
-	.word sub_8136AA0+1
+	.word e_waitChatboxThenFadeOut+1
 	.word sub_8136AE8+1
 	thumb_func_end sub_81368D4
 
@@ -13736,9 +13736,9 @@ sub_81369B8:
 // symdb: Per-frame step of a scripted scene that, after a 80-frame delay, fully heals the current PET navi and plays a sound/effect flourish before advancing the scene state.
 // symdb: (r5 = scene/PET-event object, fields at +0x03/+0x12/+0x15/+0x1c) -> r0 = sub_8136B10 return
 // symdb: value; flags from callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81369D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_naviHealCutsceneStep.yaml
 	thumb_local_start
-sub_81369D0:
+pet_naviHealCutsceneStep:
 	push {lr}
 	ldrb r0, [r5,#0x12]
 	add r0, #1
@@ -13766,7 +13766,7 @@ loc_81369FE:
 	.balign 4, 0
 off_8136A08:
 	.word byte_813683C
-	thumb_func_end sub_81369D0
+	thumb_func_end pet_naviHealCutsceneStep
 
 	thumb_local_start
 sub_8136A0C:
@@ -13838,7 +13838,7 @@ loc_8136A8C:
 	mov r0, #0x2c 
 	strb r0, [r5,#3]
 	mov r0, #0
-	bl sub_813C1C0
+	bl navicust_drawBoardTilemap
 	mov r0, #0
 	strb r0, [r5,#0x12]
 loc_8136A9A:
@@ -13850,9 +13850,9 @@ loc_8136A9A:
 // symdb: Cutscene/event step that waits on chatbox flags and state, then closes the textbox, resets the step's fields and fades the screen out.
 // symdb: (r5 = event/step object: [r5] step id, [r5+1] state, [r5+2..3] counters) -> r0 = 0 or state
 // symdb: byte; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136AA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_waitChatboxThenFadeOut.yaml
 	thumb_local_start
-sub_8136AA0:
+e_waitChatboxThenFadeOut:
 	push {lr}
 	ldrb r0, [r5]
 	cmp r0, #0x28 
@@ -13884,7 +13884,7 @@ locret_8136AE2:
 	.balign 4, 0
 dword_8136AE4:
 	.word 0x20
-	thumb_func_end sub_8136AA0
+	thumb_func_end e_waitChatboxThenFadeOut
 
 	thumb_local_start
 sub_8136AE8:

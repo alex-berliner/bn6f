@@ -111,7 +111,7 @@ byte_806935C:
 	ms_jump destination1=byte_8069379
 
 mapscript_8069370:
-	ms_call_native_function ptr1=sub_808CA68+1 word5=0x00000000
+	ms_call_native_function ptr1=init_beastSpScenario+1 word5=0x00000000
 
 byte_8069379:
 	ms_end
@@ -146,7 +146,7 @@ byte_80693C8:
 	ms_jump destination1=byte_80693E5
 
 mapscript_80693DC:
-	ms_call_native_function ptr1=sub_808CA68+1 word5=0x00000000
+	ms_call_native_function ptr1=init_beastSpScenario+1 word5=0x00000000
 
 byte_80693E5:
 	ms_end
@@ -168,7 +168,7 @@ byte_8069404:
 	ms_jump destination1=byte_8069421
 
 mapscript_8069418:
-	ms_call_native_function ptr1=sub_808CA68+1 word5=0x00000000
+	ms_call_native_function ptr1=init_beastSpScenario+1 word5=0x00000000
 
 byte_8069421:
 	ms_jump_if_progress_in_range byte1=0x30 byte2=0x3F destination3=byte_806942D

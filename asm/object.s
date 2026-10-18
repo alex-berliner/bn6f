@@ -944,9 +944,9 @@ loc_800BF12:
 // symdb: Records an id into both request slots of the byte_203CF00 array (plus two work slots), then arms slot r0 as an active battle effect/spawn request with a type byte and parameter word.
 // symdb: (r0 = slot index (0/1), also recorded as a byte; r1 = type/kind byte; r2 = param word; r5 read
 // symdb: as-is from caller) -> r0 = entry pointer, no meaningful return; r1-r3 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BF16.yaml
-	thumb_func_start sub_800BF16
-sub_800BF16:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueEffectRequest.yaml
+	thumb_func_start battle_queueEffectRequest
+battle_queueEffectRequest:
 	push {r4,lr}
 	push {r0-r2}
 	mov r4, r0
@@ -981,7 +981,7 @@ loc_800BF50:
 	mov r1, #1
 	strb r1, [r0,#1]
 	pop {r4,pc}
-	thumb_func_end sub_800BF16
+	thumb_func_end battle_queueEffectRequest
 
 // symdb: Address helper that converts a slot index into a pointer to that entry in the 0x50-byte-per-entry array at byte_203CF00.
 // symdb: u8* byte_203CF00_getEntryPtr(u32 index /* r0 */); // returns r0 = byte_203CF00 + index*0x50,
@@ -4214,7 +4214,7 @@ loc_800D586:
 	thumb_func_start battle_scanPanelsInFront_800D58C
 battle_scanPanelsInFront_800D58C:
 	push {r4,r6,r7,lr}
-	bl sub_800D5BA
+	bl battle_findPanelXAwayFromEnemies
 	mov r6, r0
 	ldrb r7, [r5,#oBattleObject_Alliance]
 	bl object_getFrontDirection // () -> int
@@ -4238,9 +4238,9 @@ loc_800D5B6:
 
 // symdb: From a battle object's current panel column, walks backward (away from its facing) to the first column whose neighboring panels hold no enemy-alliance objects, restarting forward from the start column if it falls off the grid.
 // symdb: (r5 = battle object ptr) -> r0 = panel column (x) found; r4, r6, r7 clobbered; flags from tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D5BA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findPanelXAwayFromEnemies.yaml
 	thumb_local_start
-sub_800D5BA:
+battle_findPanelXAwayFromEnemies:
 	push {r4,r6,r7,lr}
 	ldrb r6, [r5,#oBattleObject_PanelX]
 	ldrb r7, [r5,#oBattleObject_Alliance]
@@ -4267,7 +4267,7 @@ loc_800D5E4:
 	mov r4, r0
 	b loc_800D5C6
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800D5BA
+	thumb_func_end battle_findPanelXAwayFromEnemies
 
 // symdb: Counts how many of the three panels adjacent to a given panel position hold objects belonging to a different alliance (side) than the given one.
 // symdb: int battle_countAdjacentPanelsOfOtherAlliance_800D5F0(u32 position, u32 alliance); // r0 = panel
@@ -4940,7 +4940,7 @@ loc_800E2F8:
 // symdb: (r0 = HP delta, r1 = flag meaning "skip the 0xBD special"; r5 = battle object pointer) -> r0 = 0
 // symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
 // symdb: type-4 effect object, plays sound 0x8A, calls several
-// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
+// symdb: sub_80E37D2/battle_queueEffectRequest/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHPAndHandleSpecial_800E2FC.yaml
 	thumb_func_start battleObject_applyHPAndHandleSpecial_800E2FC
 battleObject_applyHPAndHandleSpecial_800E2FC:
@@ -4978,7 +4978,7 @@ loc_800E330:
 	mov r2, r0
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
-	bl sub_800BF16
+	bl battle_queueEffectRequest
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl sub_800ABC6
@@ -5025,7 +5025,7 @@ loc_800E38E:
 	mov r2, r0
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
-	bl sub_800BF16
+	bl battle_queueEffectRequest
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl sub_800ABC6

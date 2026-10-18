@@ -2225,9 +2225,9 @@ dword_800FC2C:
 // symdb: AI-side check-and-fire: validates the object's state and held chip, then triggers the object's chip attack and reports chip ID/damage/boost, or 0xFFFF if the attack is not allowed.
 // symdb: (r5 = battle object ptr) -> r0 = chip ID (or 0xFFFF on refusal); r1/r2 also loaded with
 // symdb: Damage/AttackBoost on success; flags from final ldrh
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FC30.yaml
-	thumb_func_start sub_800FC30
-sub_800FC30:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tryUseChipAttack.yaml
+	thumb_func_start ai_tryUseChipAttack
+ai_tryUseChipAttack:
 	push {r4,r7,lr}
 	mov r0, r5
 	mov r1, #0
@@ -2266,7 +2266,7 @@ loc_800FC5C:
 	ldrh r2, [r7,#oAIAttackVars_AttackBoost]
 locret_800FC7A:
 	pop {r4,r7,pc}
-	thumb_func_end sub_800FC30
+	thumb_func_end ai_tryUseChipAttack
 
 // symdb: Draws the next card from an alliance's deck into its battle hand during card selection, stopping at a full hand or an empty deck.
 // symdb: void battle_drawCardToHand_800FC7C(BattleObject* obj /* r5 */); leaves r1 = next card id (or
@@ -3825,7 +3825,7 @@ battle_lowHPTileTrigger_8010660:
 	mov r2, r0
 	mov r1, #1
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF16
+	bl battle_queueEffectRequest
 	mov r0, #1
 	pop {r4,r6,r7,pc}
 loc_80106B8:
@@ -3892,7 +3892,7 @@ loc_80106F6:
 	mov r2, r0
 	mov r1, #1
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF16
+	bl battle_queueEffectRequest
 	pop {r5}
 	mov r0, #1
 	pop {r4,r6,r7,pc}
@@ -3958,7 +3958,7 @@ battleObject_stealChipFromEnemyNavi_8010740:
 	mov r2, r0
 	mov r1, #1
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_800BF16
+	bl battle_queueEffectRequest
 	pop {r5}
 	mov r0, #1
 	pop {r4,r6,r7,pc}
@@ -4040,9 +4040,9 @@ locret_801081E:
 // symdb: Adds an amount to a byte in the acting Navi's battle NaviStats (clamped to 9), then spawns an effect object at an arm-slot offset and plays sound 0x119.
 // symdb: (r0 = amount to add, r5 = battle object ptr) -> r0 = spawned effect object ptr; updates
 // symdb: NaviStats byte 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010820.yaml
-	thumb_func_start sub_8010820
-sub_8010820:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_addNaviStatByteAndSpawnArmEffect.yaml
+	thumb_func_start battle_addNaviStatByteAndSpawnArmEffect
+battle_addNaviStatByteAndSpawnArmEffect:
 	push {r4,lr}
 	mov r0, #0xff
 	and r4, r0
@@ -4078,7 +4078,7 @@ loc_801083E:
 	add r0, #0xff
 	bl PlaySoundEffect
 	pop {r4,pc}
-	thumb_func_end sub_8010820
+	thumb_func_end battle_addNaviStatByteAndSpawnArmEffect
 
 // symdb: Sets the battle object's secondary-element weakness using stat look-ups of the actor's and its foe NaviStats.
 // symdb: () -> void ; side effects: writes SecondaryElementWeakness and SecondaryElement on the actor's
@@ -13755,7 +13755,7 @@ off_8014AB4:
 off_8014AC4:
 	.word off_8014AC8
 off_8014AC8:
-	.word sub_8014D08+1
+	.word ai_relocateToFuturePanel+1
 	.word sub_8014D70+1
 	.word battle_ai_attackVars_step3_8014E08+1
 	.word object_aiAttackVarsExitState_8014F04+1
@@ -14026,9 +14026,9 @@ dword_8014D04:
 // symdb: AI attack-state handler that warps a battle object onto its reserved future panel and finishes the move with an emerge-style animation.
 // symdb: (r5 = battle object, r7 = AI attack vars) -> void; moves object to FuturePanelX/Y, sets
 // symdb: CurAnim=0x11, StepTimer=6, HitElement=4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014D08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_relocateToFuturePanel.yaml
 	thumb_local_start
-sub_8014D08:
+ai_relocateToFuturePanel:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r0, [r5,#oBattleObject_PanelX]
@@ -14071,7 +14071,7 @@ loc_8014D5A:
 	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
 	.word 0x80111C40
-	thumb_func_end sub_8014D08
+	thumb_func_end ai_relocateToFuturePanel
 
 	thumb_local_start
 sub_8014D70:
@@ -17253,7 +17253,7 @@ sub_80166AE:
 
 // symdb: Dispatches an AI-specific callback based on the BattleObject's Unk_1f field, used by attack-event functions
 // symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
-// symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
+// symdb: effects: jumps to battle_objectArriveAtFuturePanel or sub_8016730 via a function pointer table indexed by the
 // symdb: object's Unk_1f byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIDispatchByType_80166B6.yaml
 	thumb_local_start
@@ -17268,15 +17268,15 @@ battle_dispatchAIDispatchByType_80166B6:
 off_80166C4:
 	.word off_80166C8
 off_80166C8:
-	.word sub_80166D0+1
+	.word battle_objectArriveAtFuturePanel+1
 	.word battleObject_stepMoveToFuturePanel_8016730+1
 	thumb_func_end battle_dispatchAIDispatchByType_80166B6
 
 // symdb: Commits a battle object's planned panel move: teleports it onto its future panel, re-reserves that panel, and either starts the arrival animation or fully clears the moving state.
 // symdb: (r5 = battle object pointer, r0-r2 implicit) -> void; sets/clears ObjectFlags1 bit 0x1000
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80166D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectArriveAtFuturePanel.yaml
 	thumb_local_start
-sub_80166D0:
+battle_objectArriveAtFuturePanel:
 	push {r6,r7,lr}
 	mov r0, #1
 	lsl r0, r0, #0xc
@@ -17320,7 +17320,7 @@ loc_8016722:
 	lsl r0, r0, #0xc
 	bl object_clearFlag // (int bitfield) -> void
 	pop {r6,r7,pc}
-	thumb_func_end sub_80166D0
+	thumb_func_end battle_objectArriveAtFuturePanel
 
 // symdb: Per-frame step of a battle object's "moving to its future panel" state (slide / approach), decrementing the timer and finishing by either reverting to standing or starting a new sub-step.
 // symdb: (r5 = BattleObject*) -> void ; side effects: panel reserve/release, write to battle object
@@ -32846,7 +32846,7 @@ sub_801E8CC:
 	push {r4,lr}
 	mov r4, #0
 	push {r0}
-	bl sub_801E95C
+	bl chip_renderListEntry
 	pop {r0}
 	cmp r0, #0x50 
 	bne locret_801E8E8
@@ -32922,9 +32922,9 @@ off_801E958:
 // symdb: Builds and queues the display line for one chip entry (name plus numeric code digits) on a chip-list screen.
 // symdb: (r0 = ?, r1 = packed code word, r3 = chip id, r5 = entry struct) -> r0 = 0 on success / 1 via
 // symdb: alternate epilogue; clobbers r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E95C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chip_renderListEntry.yaml
 	thumb_local_start
-sub_801E95C:
+chip_renderListEntry:
 	push {r4-r7,lr}
 	mov r6, #0
 	strb r6, [r5,#7]
@@ -33025,7 +33025,7 @@ loc_801E9FC:
 	pop {r1-r3,r5}
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_801E95C
+	thumb_func_end chip_renderListEntry
 
 // symdb: Queues four pairs of 0x20-byte GFX transfers (a base chunk and a +0x20 chunk to destination+0x80), stepping the destination back by 0x20 each time and indexing the source table off_801FD90 by the low-to-high nibbles of r4.
 // symdb: void sub_801EA34(u32 r1, u32 r4);  // r1 = current VRAM destination, r4 = packed nibble
@@ -33169,7 +33169,7 @@ sub_801EB18:
 	strb r4, [r5,#0x8] // (byte_2036858 - 0x2036850)
 	mov r4, #1
 	mov r3, r0
-	bl sub_801E95C
+	bl chip_renderListEntry
 	mov r4, #0x3c 
 	strb r4, [r5,#0x7] // (byte_2036857 - 0x2036850)
 	mov r0, #1

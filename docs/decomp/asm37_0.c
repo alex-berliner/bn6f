@@ -1242,7 +1242,7 @@ int __fastcall battle_beastOutApplyCrossChanges_813C06C(int a1, int a2, int a3)
 
 
 // 0x813c1c0
-int __fastcall sub_813C1C0(int a1)
+int __fastcall navicust_drawBoardTilemap(int a1)
 {
     int v1; // r10
     int v2; // r0
@@ -1343,7 +1343,7 @@ int eraseMem_ClearBuffer_813C324()
 
 
 // 0x813c334
-int __fastcall sub_813C334(unsigned int a1, int a2)
+int __fastcall beastsp_checkSecretCode(unsigned int a1, int a2)
 {
     int v2; // r10
     int v3; // r6

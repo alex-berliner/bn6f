@@ -87,7 +87,7 @@ int sub_808C644()
 
 
 // 0x808ca68
-int __fastcall sub_808CA68(int a1, int a2, int a3, int a4)
+int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     char v5; // zf

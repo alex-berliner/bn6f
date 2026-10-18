@@ -3571,7 +3571,7 @@ loc_8027E74:
 	bl sub_8027F10
 	bl battle_spawnMirrorFacingHelper_80280E0
 	bl selectChipTableEntryIntoActiveSlot9_80280A2
-	bl sub_8027F42
+	bl battle_initActiveChipEntries
 	bl table_findFirstOccupiedEntry_8028050
 	bl folder_findFirstChipWithFlag_802806C
 	pop {r4,r6,r7,pc}
@@ -3698,9 +3698,9 @@ locret_8027F40:
 
 // symdb: During chip-select turn initialization, walks the 12 active-chip records and refreshes each non-Mega/Giga entry's selection index, slot chip id, and selected-chip pointer.
 // symdb: (void) -> void; only calls out, r6/r7 clobbered internally (saved)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027F42.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initActiveChipEntries.yaml
 	thumb_local_start
-sub_8027F42:
+battle_initActiveChipEntries:
 	push {r4,r6,r7,lr}
 	mov r6, #0xb
 loc_8027F46:
@@ -3719,7 +3719,7 @@ loc_8027F64:
 	sub r6, #1
 	bpl loc_8027F46
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8027F42
+	thumb_func_end battle_initActiveChipEntries
 
 // symdb: After a Mega (0xA) or Giga (0xB) chip is chosen as the active chip, clears the active-chip selection index back to 0xFF (none).
 // symdb: void battle_clearActiveChipIfMegaGiga(struct ActiveChipState* state) // r7 = pointer to
@@ -4595,7 +4595,7 @@ loc_80284B8:
 	bl beastout_QueuePaletteGFXAndSheets_80286D4
 	b locret_80284E0
 loc_80284BE:
-	bl sub_802871C
+	bl beastout_loadSelectionScreenChipUseGfx
 	b locret_80284E0
 loc_80284C4:
 	bl sub_80287A4
@@ -4924,9 +4924,9 @@ off_8028714:
 // symdb: Custom-screen chip-use GFX loader: queues a fixed graphics block plus one per-chip tile into VRAM/buffer, then reloads the Beast Out selection sprite sheets.
 // symdb: () -> (); queues a 0x540-byte ROM block to VRAM 0x6009560 and a 0x20-byte per-chip tile to
 // symdb: unk_3001AA0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802871C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastout_loadSelectionScreenChipUseGfx.yaml
 	thumb_local_start
-sub_802871C:
+beastout_loadSelectionScreenChipUseGfx:
 	push {lr}
 	bl loadOneSpriteTileRow_80287D2
 	ldr r0, off_802874C // =byte_8723034 
@@ -4950,7 +4950,7 @@ off_802874C:
 	.word byte_8723034
 off_8028750:
 	.word dword_8725814
-	thumb_func_end sub_802871C
+	thumb_func_end beastout_loadSelectionScreenChipUseGfx
 
 	thumb_local_start
 sub_8028754:

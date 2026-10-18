@@ -94,7 +94,7 @@ end_cutscenescript_8089E26:
 	thumb_local_start
 sub_8089E28:
 	push {r4-r7, lr}
-	bl sub_809E31A
+	bl ow_restorePlayerSpriteAfterBeastOut
 	bl resetStruct2000aa0State_809E3B2
 	bl reqBBS_clearFlag_8140A0C
 	movflag EVENT_701
@@ -172,7 +172,7 @@ sub_8089EBC:
 	bl sub_80014D4
 	asr r0, r0, #0xd
 	strh r0, [r5, #0x18]
-	bl sub_809E35E
+	bl ow_applyBeastOutForm
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r3, =byte_8089F10
@@ -380,7 +380,7 @@ loc_808A0A2:
 	thumb_local_start
 sub_808A0A6:
 	push {r4-r7, lr}
-	bl sub_809E31A
+	bl ow_restorePlayerSpriteAfterBeastOut
 	bl resetStruct2000aa0State_809E3B2
 	bl reqBBS_clearFlag_8140A0C
 	ldrb r0, [r7, #4]

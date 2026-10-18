@@ -1028,7 +1028,7 @@ int __fastcall sub_809AAB8(int a1, int a2, int a3)
 
 
 // 0x809aadc
-signed int sub_809AADC()
+signed int chatbox_stepScriptAdvance()
 {
     int v0; // r5
     char v1; // zf
@@ -1866,7 +1866,7 @@ int sub_809BFE8()
 
 
 // 0x809c01c
-int sub_809C01C()
+int start_resetProgressAndPetNavi()
 {
     int v0; // r5
     int v1; // r10
@@ -4109,7 +4109,7 @@ int sub_809E312()
 
 
 // 0x809e31a
-void sub_809E31A()
+void ow_restorePlayerSpriteAfterBeastOut()
 {
     int v0; // r10
     Battle *v1; // r5
@@ -4129,7 +4129,7 @@ void sub_809E31A()
 
 
 // 0x809e35e
-void __cdecl sub_809E35E()
+void __cdecl ow_applyBeastOutForm()
 {
     Toolkit *tk; // r10
     Battle *player; // r5

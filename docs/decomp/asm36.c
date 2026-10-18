@@ -3868,7 +3868,7 @@ void __noreturn battleObject_submenuDispatchByBeastSpIndex_8133484()
 
 
 // 0x81334c8
-void __fastcall sub_81334C8(int a1)
+void __fastcall beastsp_handleInputAndScripts(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -3933,7 +3933,7 @@ int sub_8133540()
 
 
 // 0x8133564
-void sub_8133564()
+void submenu_handleConfirmOrExitInput()
 {
     int v0; // r5
     int v1; // r10
@@ -3972,7 +3972,7 @@ void sub_8133564()
 // 0x81335b8
 int sub_81335B8()
 {
-    return sub_8133C9C();
+    return battle_confirmSpawnPanel();
 }
 
 
@@ -4214,7 +4214,7 @@ int __fastcall sub_8133770(int a1)
 
 
 // 0x8133788
-int sub_8133788()
+int battle_beastOutMenuStateUpdate()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -4697,7 +4697,7 @@ void chatbox_selectPress_8133C58()
 
 
 // 0x8133c9c
-signed int sub_8133C9C()
+signed int battle_confirmSpawnPanel()
 {
     int v0; // r5
     int v1; // r1
@@ -4928,7 +4928,7 @@ void __noreturn sub_8133EC0()
 
 
 // 0x81340ac
-int sub_81340AC()
+int battle_setupChipSelectEStructs()
 {
     int v0; // r7
     int v1; // r6
@@ -5506,7 +5506,7 @@ signed int folderEdit_AConfirmPress_8134A3C()
             {
                 v0[69] = v0[68];
                 v0[73] = v0[72];
-                sub_8134CF0();
+                folder_moveChipEntry();
             }
             else
             {
@@ -5712,7 +5712,7 @@ int sub_8134ADC()
 
 
 // 0x8134cf0
-int sub_8134CF0()
+int folder_moveChipEntry()
 {
     int v0; // r5
     __int16 *v1; // r7
@@ -6883,7 +6883,7 @@ int sub_8135968()
         sub_8135D9C(v1, v2, v3, v4);
         v0[12] = 16;
         sub_813660C(1);
-        sub_813C1C0(1);
+        navicust_drawBoardTilemap(1);
         v0[14] = 0;
         v0[20] = 0;
         sub_813B920(0);
@@ -7023,14 +7023,14 @@ int sub_8135A44()
             while ( v3 < 25 );
             sub_8135D9C(v5, v6, v7, v8);
             sub_813660C(1);
-            sub_813C1C0(1);
+            navicust_drawBoardTilemap(1);
             if ( *(v0 + 22) != 4 )
             {
                 sub_813660C(1);
-                return sub_813C1C0(1);
+                return navicust_drawBoardTilemap(1);
             }
             sub_813660C(0);
-            sub_813C1C0(0);
+            navicust_drawBoardTilemap(0);
             v9 = sub_8135DF8(*(v0 + 26));
             if ( v9 > 3 )
             {
@@ -7648,7 +7648,7 @@ int sub_8136218()
         {
             *(v0 + 2) = 16;
             sub_813660C(1);
-            sub_813C1C0(1);
+            navicust_drawBoardTilemap(1);
             return PlaySoundEffect(129, v6, v7);
         }
     }
@@ -7833,7 +7833,7 @@ int __fastcall sub_813640C(int a1, int a2, int a3)
         *(v3 + 20) = 0;
         sub_813B920(0);
         sub_813660C(0);
-        sub_813C1C0(0);
+        navicust_drawBoardTilemap(0);
         sub_81362F8();
         result = PlaySoundEffect(131, v6, v7);
     }
@@ -7868,7 +7868,7 @@ int sub_8136450()
     }
     *(v0 + 16) = 0;
     sub_813660C(1);
-    sub_813C1C0(1);
+    navicust_drawBoardTilemap(1);
     *(v0 + 14) = 0;
     *(v0 + 20) = 0;
     sub_813B920(0);
@@ -8008,7 +8008,7 @@ signed int sub_813658C()
     sub_813B9C4(v1);
     sub_813BA48(v1);
     sub_813660C(1);
-    v7 = sub_813C1C0(1);
+    v7 = navicust_drawBoardTilemap(1);
     sub_8135D9C(v7, v8, v9, v10);
     *(v0 + 58) = sub_8135DF8(v3);
     *(v0 + 56) = 0;
@@ -8241,7 +8241,7 @@ int __fastcall sub_8136804(int result)
     if ( result & 0x303 )
     {
         v2 = sub_8136290(*(v1 + 36) + *(v1 + 32));
-        result = sub_813C334(*v2 - 144, *(v1 + 23));
+        result = beastsp_checkSecretCode(*v2 - 144, *(v1 + 23));
         *(v1 + 23) = result;
     }
     return result;
@@ -8336,7 +8336,7 @@ int sub_81369B8()
 
 
 // 0x81369d0
-int sub_81369D0()
+int pet_naviHealCutsceneStep()
 {
     int v0; // r5
     int v1; // r0
@@ -8414,7 +8414,7 @@ int sub_8136A74()
         if ( *v0 != 40 )
             chatbox_runScript_803FD9C_on_eTextScript201D280(1);
         v0[3] = 44;
-        sub_813C1C0(0);
+        navicust_drawBoardTilemap(0);
         v0[18] = 0;
     }
     result = 0;
@@ -8424,7 +8424,7 @@ int sub_8136A74()
 
 
 // 0x8136aa0
-int sub_8136AA0()
+int e_waitChatboxThenFadeOut()
 {
     _BYTE *v0; // r5
     int result; // r0

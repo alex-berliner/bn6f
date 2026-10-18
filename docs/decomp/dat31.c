@@ -297,7 +297,7 @@ int sub_810C776()
     char v6; // r2
 
     *(v1 + 96) = 0;
-    result = sub_810C820();
+    result = battle_useSelectedChip();
     if ( !result )
     {
         *(v3 + 40) = sub_810C850;
@@ -350,7 +350,7 @@ signed int sub_810C7B6()
 
 
 // 0x810c820
-signed int sub_810C820()
+signed int battle_useSelectedChip()
 {
     int v0; // r5
     signed int v1; // r6
@@ -1482,7 +1482,7 @@ int ai_attackVars_stepChargeAndShoot_810D808()
         v6 = object_getFrontDirection(v1);
         v7 = *(v2 + 8);
         v8 = *(v2 + 48);
-        sub_80C5578(v6 + v1->panelX, v1->panelY, 1, 0);
+        battle_spawnType4WithExtraVars(v6 + v1->panelX, v1->panelY, 1, 0);
         v2 = v12;
         *(v12 + 14) = 1;
         v1->currAnimation = 2;

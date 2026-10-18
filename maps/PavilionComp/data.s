@@ -173,7 +173,7 @@ byte_806AF3C:
 	ms_jump destination1=byte_806AF59
 
 mapscript_806AF50:
-	ms_call_native_function ptr1=sub_808CA68+1 word5=0x00000000
+	ms_call_native_function ptr1=init_beastSpScenario+1 word5=0x00000000
 
 byte_806AF59:
 	ms_jump_if_progress_in_range byte1=0x60 byte2=0x6F destination3=byte_806AF65

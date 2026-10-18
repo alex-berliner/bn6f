@@ -14078,7 +14078,7 @@ off_800962C:
 off_8009630:
 	.word sub_8009658+1
 	.word sub_8009734+1
-	.word sub_80097CC+1
+	.word battle_stateWaitFinishPhase+1
 	.word sub_800980E+1
 	.word sub_80098BC+1
 	.word sub_800993A+1
@@ -14132,7 +14132,7 @@ loc_80096A8:
 	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_80096B6
-	bl sub_80096E0
+	bl battle_stateBattleStart
 	mov r0, #4
 	strb r0, [r5,#oBattleState_StatePhase]
 loc_80096B6:
@@ -14158,9 +14158,9 @@ locret_80096DE:
 
 // symdb: Battle state handler that requests and dispatches battle state 0x404, sets up the scene frame, and zeroes the custom gauge at battle start.
 // symdb: () -> r0 clobbered; requests+dispatches state 0x404, sets custom gauge to 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80096E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateBattleStart.yaml
 	thumb_local_start
-sub_80096E0:
+battle_stateBattleStart:
 	push {lr}
 	ldr r0, off_8009700 // =0x404
 	bl eStruct2035280_SetRequestBits_801BECC
@@ -14174,7 +14174,7 @@ sub_80096E0:
 	.balign 4, 0
 off_8009700:
 	.word 0x404
-	thumb_func_end sub_80096E0
+	thumb_func_end battle_stateBattleStart
 
 	thumb_local_start
 sub_8009704:
@@ -14304,9 +14304,9 @@ locret_80097CA:
 
 // symdb: Battle-state subphase handler: on first entry arms a check (sets Unk11 bit 4, battle flag 1), then polls sub_802A87C until it reports done, branching to phase 0x14 or to state step 0xC.
 // symdb: no args (r5 = battle state struct, set by caller) -> void; uses/clears battle-state flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80097CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateWaitFinishPhase.yaml
 	thumb_local_start
-sub_80097CC:
+battle_stateWaitFinishPhase:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	cmp r0, #0
@@ -14336,7 +14336,7 @@ loc_80097FA:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_800980C:
 	pop {pc}
-	thumb_func_end sub_80097CC
+	thumb_func_end battle_stateWaitFinishPhase
 
 	thumb_local_start
 sub_800980E:
@@ -14577,7 +14577,7 @@ off_80099B8:
 	.word NULL
 	.word battle_runBattleStep_8009B20+1
 	.word sub_8009BAC+1
-	.word sub_8009C2A+1
+	.word battle_subphaseFadeOut+1
 	.word NULL
 	.word NULL
 	.word NULL
@@ -14633,7 +14633,7 @@ loc_8009A30:
 	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_8009A3E
-	bl sub_8009A68
+	bl battle_pauseIntroResumeStateStep
 	mov r0, #4
 	strb r0, [r5,#oBattleState_StatePhase]
 loc_8009A3E:
@@ -14660,9 +14660,9 @@ locret_8009A66:
 // symdb: Per-frame handler for the battle state entered after the mid-intro pause: refreshes request bits and the battle scene, then posts a null event.
 // symdb: (no args) -> r0 = 0 after postEvent call; no meaningful return; sets eStruct2035280 request/flag
 // symdb: dword |= 0x404
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009A68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pauseIntroResumeStateStep.yaml
 	thumb_local_start
-sub_8009A68:
+battle_pauseIntroResumeStateStep:
 	push {lr}
 	ldr r0, off_8009A84 // =0x404
 	bl eStruct2035280_SetRequestBits_801BECC
@@ -14676,7 +14676,7 @@ sub_8009A68:
 	.balign 4, 0
 off_8009A84:
 	.word 0x404
-	thumb_func_end sub_8009A68
+	thumb_func_end battle_pauseIntroResumeStateStep
 
 	thumb_local_start
 sub_8009A88:
@@ -14922,9 +14922,9 @@ locret_8009C28:
 
 // symdb: Battle sub-phase that fades the screen out, then on fade completion stops the music, frees object type 0x1A, and advances the battle state to 8.
 // symdb: (r5 = battle state struct) -> void; sets oBattleState_SubPhaseInitFlag, oBattleState_Index_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009C2A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_subphaseFadeOut.yaml
 	thumb_local_start
-sub_8009C2A:
+battle_subphaseFadeOut:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14948,7 +14948,7 @@ loc_8009C40:
 
 locret_8009C54:
 	pop {pc}
-	thumb_func_end sub_8009C2A
+	thumb_func_end battle_subphaseFadeOut
 
 	thumb_local_start
 sub_8009C56:
@@ -14998,7 +14998,7 @@ sub_8009C94:
 off_8009CA4:
 	.word off_8009CA8
 off_8009CA8:
-	.word sub_8009CD0+1
+	.word battle_initBattlePhase+1
 	.word sub_8009D78+1
 	.word sub_8009E10+1
 	.word sub_8009E56+1
@@ -15013,9 +15013,9 @@ off_8009CA8:
 // symdb: Battle sub-phase handler: initializes the battle once (spawn enemies, pause, play battle BGM), then waits and transitions to the next battle state.
 // symdb: (r0 = battle state ptr in r5-style global) -> r0 = clobbered; sets
 // symdb: oBattleState_SubPhaseInitFlag/StatePhase/Index_01 on the battle state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009CD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBattlePhase.yaml
 	thumb_local_start
-sub_8009CD0:
+battle_initBattlePhase:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15058,7 +15058,7 @@ loc_8009D20:
 	ldrb r0, [r5,#oBattleState_StatePhase]
 	tst r0, r0
 	bne loc_8009D2E
-	bl sub_8009D58
+	bl battle_transitionFrameStep
 	mov r0, #4
 	strb r0, [r5,#oBattleState_StatePhase]
 loc_8009D2E:
@@ -15080,13 +15080,13 @@ loc_8009D50:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009D56:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8009CD0
+	thumb_func_end battle_initBattlePhase
 
 // symdb: One per-frame step of a battle transition/effect: raises request bits 0x404, runs the transition dispatch, refreshes the battle scene, and posts an empty event.
 // symdb: () -> r0 = 0/void; sets request bits 0x404 in eStruct2035280+0x40, posts event with r0=0, r1=0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009D58.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_transitionFrameStep.yaml
 	thumb_local_start
-sub_8009D58:
+battle_transitionFrameStep:
 	push {lr}
 	ldr r0, off_8009D74 // =0x404
 	bl eStruct2035280_SetRequestBits_801BECC
@@ -15100,7 +15100,7 @@ sub_8009D58:
 	.balign 4, 0
 off_8009D74:
 	.word 0x404
-	thumb_func_end sub_8009D58
+	thumb_func_end battle_transitionFrameStep
 
 	thumb_local_start
 sub_8009D78:

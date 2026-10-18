@@ -2361,7 +2361,7 @@ signed int sub_8146588()
 
 
 // 0x81465bc
-signed int sub_81465BC()
+signed int rfu_initLinkSession()
 {
     int v0; // r1
     int v1; // r2

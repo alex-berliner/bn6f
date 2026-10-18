@@ -444,7 +444,7 @@ sub_810C776::
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
-	bl sub_810C820
+	bl battle_useSelectedChip
 	cmp r0, #0
 	bne locret_810C7A8
 	ldr r0, off_810C8C0 // =sub_810C850+1 
@@ -529,9 +529,9 @@ byte_810C81A::
 
 // symdb: Processes the current battle object's selected battle chip: consumes it from the queue, loads its parameters, and kicks off its attack.
 // symdb: (r0 = battle object/state handle) -> r0 = result/status; flags unknown
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C820.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_useSelectedChip.yaml
 	thumb_local_start
-sub_810C820::
+battle_useSelectedChip::
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r0, r5
@@ -552,7 +552,7 @@ sub_810C820::
 loc_810C84C::
 	mov r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810C820
+	thumb_func_end battle_useSelectedChip
 
 	thumb_local_start
 sub_810C850::
@@ -2240,7 +2240,7 @@ off_810D7F8::
 // symdb: Ticks a charged-beam attack timer in AIAttackVars, plays the windup/recoil anims, and spawns the projectile once the timer expires.
 // symdb: (r4 = AIDataPtr, r5 = BattleObjectPtr, r7 = AIAttackVarsPtr, r10 = ToolkitPtr) -> r0 = remaining
 // symdb: windup frames (or final state); writes AIAttackVars fields, BattleObject.CurAnim, CollisionData
-// symdb: flag, and a child battle object via sub_80C5578.
+// symdb: flag, and a child battle object via battle_spawnType4WithExtraVars.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackVars_stepChargeAndShoot_810D808.yaml
 	thumb_local_start
 ai_attackVars_stepChargeAndShoot_810D808::
@@ -2290,7 +2290,7 @@ loc_810D836::
 	mov r3, #0
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	ldr r7, [r7,#oAIAttackVars_ScratchVar]
-	bl sub_80C5578
+	bl battle_spawnType4WithExtraVars
 	pop {r7}
 	mov r0, #1
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]

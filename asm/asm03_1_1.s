@@ -1974,7 +1974,7 @@ off_8039AB4:
 	thumb_local_start
 sub_8039AB8:
 	push {r4-r7,lr}
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_8039ADA
 	bl sub_803C320
@@ -2028,7 +2028,7 @@ sub_8039B0A:
 	lsl r0, r0, #1
 	add r0, r0, r5
 	bl sub_81469BC
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_8039B48
 	bl sub_803C320
@@ -2414,7 +2414,7 @@ sub_8039E2C:
 	lsl r0, r0, #1
 	add r0, r0, r5
 	bl sub_81469BC
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_8039E70
 	bl sub_803C320
@@ -2631,7 +2631,7 @@ sub_8039FEC:
 	lsl r0, r0, #1
 	add r0, r0, r5
 	bl sub_81469BC
-	bl sub_81465BC
+	bl rfu_initLinkSession
 	tst r0, r0
 	bne loc_803A02A
 	bl sub_803C320

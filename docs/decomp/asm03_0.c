@@ -2350,7 +2350,7 @@ int battle_initChipSelectTurn_8027E2C()
     sub_8027F10(v7, v8);
     battle_spawnMirrorFacingHelper_80280E0();
     selectChipTableEntryIntoActiveSlot9_80280A2();
-    sub_8027F42();
+    battle_initActiveChipEntries();
     table_findFirstOccupiedEntry_8028050();
     return folder_findFirstChipWithFlag_802806C();
 }
@@ -2463,7 +2463,7 @@ signed int __fastcall sub_8027F10(int a1, _BYTE *a2)
 
 
 // 0x8027f42
-int sub_8027F42()
+int battle_initActiveChipEntries()
 {
     int v0; // r6
     int result; // r0
@@ -2991,7 +2991,7 @@ void battleObject_runCustomScreenChipPickerEffect_8028476()
     }
     else if ( v3 == 2 )
     {
-        sub_802871C(v1, 2, v2);
+        beastout_loadSelectionScreenChipUseGfx(v1, 2, v2);
     }
     else if ( v3 == 4 || v3 == 5 )
     {
@@ -3178,7 +3178,7 @@ void __fastcall beastout_QueuePaletteGFXAndSheets_80286D4(int a1, int a2, int a3
 
 
 // 0x802871c
-void __fastcall sub_802871C(int a1, int a2, int a3)
+void __fastcall beastout_loadSelectionScreenChipUseGfx(int a1, int a2, int a3)
 {
     char *v3; // r0
     int v4; // r0

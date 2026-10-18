@@ -1453,7 +1453,7 @@ LABEL_26:
 
 
 // 0x800fc30
-int sub_800FC30()
+int ai_tryUseChipAttack()
 {
     Battle *v0; // r5
     int result; // r0
@@ -2698,7 +2698,7 @@ signed int __fastcall battle_lowHPTileTrigger_8010660(int a1)
     v5 = sub_8013774(v4, 13);
     sub_8013754(v5 & 0xFFFFFFFB, 13, v5 & 0xFB);
     v6 = sub_80E90FE(*(v1 + 18), *(v1 + 19), 0, 0);
-    sub_800BF16(*(v1 + 22), 1, v6);
+    battle_queueEffectRequest(*(v1 + 22), 1, v6);
     return 1;
 }
 
@@ -2733,7 +2733,7 @@ signed int __fastcall battle_applyInvisibleClear_80106C0(int a1)
     v7 = battle_findPlayer(v3);
     v8 = v7;
     v9 = sub_80E90FE(*(v7 + 18), *(v7 + 19), 0, 0);
-    sub_800BF16(*(v8 + 22), 1, v9);
+    battle_queueEffectRequest(*(v8 + 22), 1, v9);
     return 1;
 }
 
@@ -2762,7 +2762,7 @@ signed int __fastcall battleObject_stealChipFromEnemyNavi_8010740(int a1)
     v6 = battle_findPlayer(v3);
     v7 = v6;
     v8 = sub_80E90FE(*(v6 + 18), *(v6 + 19), 0, 0);
-    sub_800BF16(*(v7 + 22), 1, v8);
+    battle_queueEffectRequest(*(v7 + 22), 1, v8);
     return 1;
 }
 
@@ -2810,7 +2810,7 @@ int battle_tickBattleObject_80107D4()
 
 
 // 0x8010820
-int sub_8010820()
+int battle_addNaviStatByteAndSpawnArmEffect()
 {
     unsigned __int8 v0; // r4
     Battle *v1; // r5
@@ -9764,7 +9764,7 @@ void battle_aiAttackTickBeastSp_8014CC0()
 
 
 // 0x8014d08
-signed int __noreturn sub_8014D08()
+signed int __noreturn ai_relocateToFuturePanel()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -12188,7 +12188,7 @@ int battle_dispatchAIDispatchByType_80166B6()
 
 
 // 0x80166d0
-int __noreturn sub_80166D0()
+int __noreturn battle_objectArriveAtFuturePanel()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -21597,7 +21597,7 @@ int battle_queueScoreAndTiles_801E838()
 // 0x801e8cc
 void __fastcall __noreturn sub_801E8CC(int a1, unsigned int a2, int a3, __int16 a4)
 {
-    sub_801E95C(a1, a2, a3, a4);
+    chip_renderListEntry(a1, a2, a3, a4);
 }
 
 
@@ -21639,7 +21639,7 @@ signed int sub_801E914()
 
 
 // 0x801e95c
-int __fastcall __noreturn sub_801E95C(int a1, unsigned int a2, int a3, __int16 a4)
+int __fastcall __noreturn chip_renderListEntry(int a1, unsigned int a2, int a3, __int16 a4)
 {
     int v4; // r5
     void *v5; // r0
@@ -21763,7 +21763,7 @@ void __fastcall __noreturn sub_801EB18(int a1, unsigned int a2, int a3)
 {
     word_2036852 = 8312;
     byte_2036858 = byte_801F556[0];
-    sub_801E95C(a1, a2, a3, a1);
+    chip_renderListEntry(a1, a2, a3, a1);
 }
 
 
