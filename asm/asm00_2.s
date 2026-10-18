@@ -1126,6 +1126,10 @@ loc_800F468:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800F436
 
+// symdb: Returns a battle object's DirectionFlip for its panel-landing/emerge animation, forced to 0 when the battle's panel column pattern is one of three special layouts.
+// symdb: (implicit r5 = battle object ptr) -> r0 = DirectionFlip byte, or 0 if panel pattern is
+// symdb: 0x30/0x38/0x3c; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F46C.yaml
 	thumb_func_start sub_800F46C
 sub_800F46C:
 	push {lr}
@@ -12717,6 +12721,10 @@ battle_incrementAIDataUnk4c_8014432:
 	mov pc, lr
 	thumb_func_end battle_incrementAIDataUnk4c_8014432
 
+// symdb: Resets the battle object's AI counter-hit chain field to the 0xFFFF 'none' sentinel.
+// symdb: (r5 = battle object) -> void; writes 0xFFFF to oAIData_CounterHitChainFlag of the object's AI
+// symdb: data; no return value, no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801443C.yaml
 	thumb_func_start sub_801443C
 sub_801443C:
 	push {lr}
@@ -17253,7 +17261,7 @@ sub_80166AE:
 
 // symdb: Dispatches an AI-specific callback based on the BattleObject's Unk_1f field, used by attack-event functions
 // symdb: (r5 = BattleObject*) -> tail-call to one of two helpers (r0 = ..., preserved in r5) ; side
-// symdb: effects: jumps to battle_objectArriveAtFuturePanel or sub_8016730 via a function pointer table indexed by the
+// symdb: effects: jumps to sub_80166D0 or sub_8016730 via a function pointer table indexed by the
 // symdb: object's Unk_1f byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIDispatchByType_80166B6.yaml
 	thumb_local_start
@@ -27702,6 +27710,10 @@ locret_801C4AC:
 	pop {pc}
 	thumb_func_end battleObject_tickCustomGauge_801C470
 
+// symdb: At battle setup, rolls the battle RNG for a rare event: stores a scaled random halfword in the battle state, and on the rare hit sets battle flag 0x2 and plays sound 0x8F.
+// symdb: (r5 = battle state struct) -> writes halfword at [r5+0x20]; may set battle flag bit 1 via
+// symdb: battle_setFlags; r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C4AE.yaml
 	thumb_local_start
 sub_801C4AE:
 	push {lr}
@@ -31172,6 +31184,10 @@ sub_801DE1E:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801DE1E
 
+// symdb: Queues a small GFX upload, draws an 18x2 run of background tiles from a static tile list, and sets bit 0x20 in the eStruct2035280 flag word.
+// symdb: () -> void; touches IWRAM GFX queue buffer unk_3001A80, BG tile VRAM via CopyBackgroundTiles,
+// symdb: and flag word eStruct2035280+0x44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DE3C.yaml
 	thumb_local_start
 sub_801DE3C:
 	push {r4,r5,lr}

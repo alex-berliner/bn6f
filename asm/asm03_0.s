@@ -3851,6 +3851,10 @@ byte_8028028:
 	.byte 0x1, 0x2, 0x3, 0x5, 0x7, 0x1, 0x2, 0x3, 0x4, 0x5, 0x0, 0x0
 	thumb_func_end sub_8027FDC
 
+// symdb: Scans a chip slot list and returns the first slot whose active chip is not ID 0xA/0xB.
+// symdb: (r0 = pointer to byte list of active-chip slot indices, terminated in practice by a non-0xA/0xB
+// symdb: entry) -> r0 = first slot index whose chip's ID byte is not 0xA or 0xB; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028034.yaml
 	thumb_local_start
 sub_8028034:
 	push {r4,lr}
@@ -7704,6 +7708,10 @@ locret_8029A1C:
 	pop {pc}
 	thumb_func_end sub_80299FA
 
+// symdb: Tutorial-check routine for the cust tutorial: in state 0xB, when the player's emotion is clear, yields message id 0x26 to be played by the caller.
+// symdb: (r5 = tutorial state struct, reads [r5,#7]) -> r0 = message id (0x26) or 0; r3 flags from
+// symdb: emotion call also inspected
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029A1E.yaml
 	thumb_local_start
 sub_8029A1E:
 	push {lr}
@@ -9259,6 +9267,10 @@ off_802A538:
 	.word dword_20367E0
 	thumb_func_end folder_tallyChipsByClass_802A4FC
 
+// symdb: Returns the given battle chip word unchanged if the chip cannot be used in battle, otherwise returns the fixed word 0x3785.
+// symdb: (r0 = chip-selection word, chip id in low byte) -> r0 = same word if battle_canUseChip_800AFBA
+// symdb: returns 0, else literal 0x3785; flags clobbered by bl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A53C.yaml
 	thumb_local_start
 sub_802A53C:
 	push {r1-r7,lr}
@@ -12446,6 +12458,10 @@ dword_802C040:
 	.word 0xFFFF
 	thumb_func_end setupChipListVisual_802BF6C
 
+// symdb: Animates the chip-select screen reveal: draws one tile of a 7x6 tile block per call, with a tick sound every 4th tile, until all 42 tiles are placed.
+// symdb: (r0 = row buffer fill target? unused after fill, r5 = UI state struct ptr) -> void; r5+0xB
+// symdb: counter incremented, r5+3 set to 8 on completion
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C044.yaml
 	thumb_local_start
 sub_802C044:
 	push {lr}
@@ -25425,6 +25441,10 @@ sub_80319E6:
 	pop {pc}
 	thumb_func_end sub_80319E6
 
+// symdb: Checks whether a target-relative position falls within a fixed half-panel rectangle and returns 3 if it does, else 2, for AI use.
+// symdb: (r0 = entity ptr, r1 = target ref?) -> r0 = 3 if the rectangle test hits, else 2; flags from
+// symdb: last call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80319FE.yaml
 	thumb_local_start
 sub_80319FE:
 	push {lr}

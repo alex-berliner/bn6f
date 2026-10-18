@@ -1472,6 +1472,10 @@ loc_8089AC6:
 	pop {r4-r7,pc}
 	thumb_func_end battle_handleChipLockoutTransition_8089A60
 
+// symdb: AI state handler that idles while the chip lockout timer runs, then on expiry performs an action, restarts the 30-frame lockout, and switches the AI state to 0x68.
+// symdb: (r5 = AIData struct pointer, r0 unused on entry) -> r0 = 1 always; flags from
+// symdb: battle_tickChipLockout used internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089ACA.yaml
 	thumb_local_start
 sub_8089ACA:
 	push {r4-r7,lr}
@@ -1779,6 +1783,10 @@ loc_8089CC0:
 	mov pc, lr
 	thumb_func_end battle_tickChipLockout_8089CB4
 
+// symdb: Cutscene step that loads camera script byte_8089480 into a context object and starts it playing.
+// symdb: (r5 = scenario/cutscene context object; args unused) -> r0 clobbered; stores camera script ptr
+// symdb: at [r5,#0x3c], sets byte [r5,#0x13] = 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CC4.yaml
 	thumb_local_start
 sub_8089CC4:
 	push {r4-r7,lr}

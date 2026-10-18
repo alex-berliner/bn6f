@@ -4940,7 +4940,7 @@ loc_800E2F8:
 // symdb: (r0 = HP delta, r1 = flag meaning "skip the 0xBD special"; r5 = battle object pointer) -> r0 = 0
 // symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
 // symdb: type-4 effect object, plays sound 0x8A, calls several
-// symdb: sub_80E37D2/battle_queueEffectRequest/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
+// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHPAndHandleSpecial_800E2FC.yaml
 	thumb_func_start battleObject_applyHPAndHandleSpecial_800E2FC
 battleObject_applyHPAndHandleSpecial_800E2FC:

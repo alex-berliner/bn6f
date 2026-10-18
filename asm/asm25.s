@@ -1022,6 +1022,11 @@ loc_808FF98:
 	pop {pc}
 	thumb_func_end sub_808FF8C
 
+// symdb: Spawns overworld map object type 0x1B (likely the bus entity) using position/parameters computed by sub_808FFC0, then stores a byte into the new object.
+// symdb: () -> r0 = 0 (always); internally calls sub_808FFC0 to obtain r0-r3 args for
+// symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes sub_808FFC0's r3 low byte to new
+// symdb: object+5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF9C.yaml
 	thumb_local_start
 sub_808FF9C:
 	push {r4-r7,lr}

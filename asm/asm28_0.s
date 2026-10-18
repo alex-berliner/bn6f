@@ -2619,6 +2619,10 @@ off_809ACCC:
 	.word byte_809AA24
 	thumb_func_end sub_809ACA4
 
+// symdb: Per-frame open animation for the dialog text window: advances an opening counter and slides the window's three sprites apart until fully open.
+// symdb: (r0 unused; r5 = window/dialog struct, r10+0x2c = ptr to window config) -> r0 = 1 while still
+// symdb: opening, 0 when fully open; clobbers r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809ACD0.yaml
 	thumb_local_start
 sub_809ACD0:
 	push {r4-r7,lr}

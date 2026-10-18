@@ -9506,6 +9506,11 @@ sub_81349B4:
 	.byte 0x0, 0x0
 	thumb_func_end sub_81349B4
 
+// symdb: Looks up a 0x20-byte record in the spawn-panel table at word_202A020 and returns flag bits telling whether its stored cost value fits the remaining 60-unit budget and the navi's RegUp allowance.
+// symdb: (r5 = handler struct: cell indices at +0x20/+0x24, value at +0x64, navi byte at +0x14) -> r0 =
+// symdb: 2-bit status (bit1 clear if 0x3C-[r5+0x64] >= value, bit0 clear if RegUP-or-0x1E >= value, 3 if
+// symdb: record flag unset), r1 = record value; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81349E8.yaml
 	thumb_local_start
 sub_81349E8:
 	push {r4-r7,lr}
@@ -11308,7 +11313,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / navicust_drawBoardTilemap / sub_81362F8 /
+// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -11449,6 +11454,10 @@ locret_813582C:
 	.byte 0, 0
 	thumb_func_end sub_813581C
 
+// symdb: Per-frame input handler for the Navi Customizer board screen: dispatches button presses (select/confirm/cancel/compress actions) and cursor movement, then updates the selected-cell state.
+// symdb: (r5 = navicust screen state struct, no r0 args) -> r0 = 0/bool; updates struct fields 0x02,
+// symdb: 0x0c, 0x0d, 0x13, 0x22, 0x26, 0x38, 0x3a
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135830.yaml
 	thumb_local_start
 sub_8135830:
 	push {r4,lr}
@@ -12102,6 +12111,10 @@ off_8135D80:
 	.word byte_201C780
 	.word unk_201CB80
 	thumb_func_end sub_8135B94
+// symdb: Grants key item 0x14C to the player, called when the Navi Customizer battle scene initializes.
+// symdb: () -> r0 = destroyed (callee return); grants key item 0x14C via
+// symdb: keyItems_RemoveFromInventoryAndGive_803CDF8(r0=0x14C, r1=1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135D8C.yaml
 	thumb_local_start
 sub_8135D8C:
 	push {lr}
@@ -12189,6 +12202,10 @@ loc_8135E12:
 	.balign 4, 0x00
 	thumb_func_end sub_8135DF8
 
+// symdb: Builds a caller-supplied list of (id, remaining-count) pairs for items/chips 0x91-0x14C the player owns, after subtracting those already taken by the 25-slot toolkit list.
+// symdb: (r6 = cursor pointer to output buffer on entry) -> writes u16 pairs {id, count} at [r6],
+// symdb: advancing by 4; returns final cursor in r6; flags not meaningful.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135E18.yaml
 	thumb_local_start
 sub_8135E18:
 	push {r4,r5,r7,lr}
@@ -14437,6 +14454,10 @@ locret_8136F70:
 	.balign 4, 0x00
 	thumb_func_end sub_8136F40
 
+// symdb: In the Navi Customizer, after story flag EVENT_EE, fires a one-time dialog (text script 3) and switches the menu state to 0x14.
+// symdb: (r5 = ptr to NaviCust state byte) -> void; writes r5[0] = 0x14 when the dialog is queued, no
+// symdb: return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136F74.yaml
 	thumb_local_start
 sub_8136F74:
 	push {lr}
@@ -15257,6 +15278,10 @@ locret_813756A:
 	pop {pc}
 	thumb_func_end sub_8137550
 
+// symdb: Conditionally triggers MegaMan's NaviCust-context dialog about Beast Out and advances the owning task's state.
+// symdb: (r0 unused/none, r4-r5 = task/controller context) -> r0 clobbered; writes byte 0x88 to [r5];
+// symdb: flags preserved by pop {pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813756C.yaml
 	thumb_local_start
 sub_813756C:
 	push {lr}

@@ -8785,6 +8785,9 @@ locret_803CFAE:
 	pop {r4-r7,pc}
 	thumb_func_end pet_addCurNaviHPCapped
 
+// symdb: After an item grant, recomputes a capped weighted count from three key-item counters and writes it to byte 9 of the NaviStats for record 0 and the currently selected PET navi.
+// symdb: (r0 = ignored (overwritten with 0)) -> r0 = clobbered; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CFB0.yaml
 	thumb_local_start
 sub_803CFB0:
 	push {r4-r7,lr}

@@ -11422,6 +11422,9 @@ unk_804CD3D:
 	.byte 0x00
 	thumb_func_end battleObject_runCurAnimHandler_804CD20
 
+// symdb: Initializes a static battle background: uploads its tiles and palette, resets scroll/render state, and renders the BG layer-3 tile map.
+// symdb: () -> void; no meaningful return, clobbers r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CD5C.yaml
 	thumb_local_start
 sub_804CD5C:
 	push {r4-r7,lr}

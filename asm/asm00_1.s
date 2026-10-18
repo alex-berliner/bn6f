@@ -5446,6 +5446,10 @@ startInMapWarpCutscene_80059D0: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end startInMapWarpCutscene_80059D0
 
+// symdb: Clears story flag EVENT_1703 and launches the 'OnMapEnterAfterJackOut' cutscene with param 0, triggered when re-entering a map after jack-out.
+// symdb: (r5 = GameState* self, passed via fixed register per calling convention) -> r0 = undefined; no
+// symdb: meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80059EC.yaml
 	thumb_local_start
 sub_80059EC: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -13608,6 +13612,10 @@ locret_80092EE:
 	pop {pc}
 	thumb_func_end battle_runState4CountdownOrAdvance_80092C0
 
+// symdb: Battle state handler: on entry fires the queued battle sub-effect (intro/effect kind), then waits until cross-net battle readiness allows advancing to state phase 8.
+// symdb: (r5 = battleState struct) -> void; reads/writes oBattleState_SubPhaseInitFlag,
+// symdb: oBattleState_State4EventCount, oBattleState_StatePhaseAndInitFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80092F0.yaml
 	thumb_local_start
 sub_80092F0:
 	push {lr}
@@ -13936,6 +13944,11 @@ locret_800951C:
 	pop {pc}
 	thumb_func_end battle_initFadeToBattleResult_80094DA
 
+// symdb: Battle-tutorial step: shows the Full Synchro tutorial text once, waits for the chatbox to close, then records whether Full Synchro was achieved and advances the tutorial state.
+// symdb: (r5 = *BattleState) -> void; writes oBattleState_Index_01 (0x10/0x14), sets
+// symdb: oBattleState_SubPhaseInitFlag = 4, zeroes oBattleState_StatePhaseAndInitFlag; flags set by
+// symdb: callee branches
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800951E.yaml
 	thumb_local_start
 sub_800951E:
 	push {lr}
@@ -14256,6 +14269,10 @@ locret_8009782:
 	pop {pc}
 	thumb_func_end sub_8009754
 
+// symdb: Battle main-state phase handler: kicks off the battle intro effect once, then waits for the linked/cross-net battle to be ready before advancing the phase to 8.
+// symdb: (r5 = battle state struct) -> void; advances oBattleState_StatePhaseAndInitFlag to 8 when link
+// symdb: battle is ready
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009784.yaml
 	thumb_local_start
 sub_8009784:
 	push {lr}
@@ -17011,6 +17028,9 @@ locret_800A8B0:
 	pop {pc}
 	thumb_func_end battle_tickCustomScreenEffect_800A892
 
+// symdb: Looks up a frame-timer value for the loser sequence from a table indexed by a byte in the acting side's NaviStats record.
+// symdb: () -> r0 = byte from byte_800A8C8[NaviStats[side].0x29]; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A8B2.yaml
 	thumb_local_start
 sub_800A8B2:
 	push {lr}

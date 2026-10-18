@@ -2240,7 +2240,7 @@ off_810D7F8::
 // symdb: Ticks a charged-beam attack timer in AIAttackVars, plays the windup/recoil anims, and spawns the projectile once the timer expires.
 // symdb: (r4 = AIDataPtr, r5 = BattleObjectPtr, r7 = AIAttackVarsPtr, r10 = ToolkitPtr) -> r0 = remaining
 // symdb: windup frames (or final state); writes AIAttackVars fields, BattleObject.CurAnim, CollisionData
-// symdb: flag, and a child battle object via battle_spawnType4WithExtraVars.
+// symdb: flag, and a child battle object via sub_80C5578.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackVars_stepChargeAndShoot_810D808.yaml
 	thumb_local_start
 ai_attackVars_stepChargeAndShoot_810D808::

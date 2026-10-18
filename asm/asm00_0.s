@@ -2269,6 +2269,10 @@ locret_800119E:
 	pop {pc}
 	thumb_func_end battle_calcAngleOctant_800118A
 
+// symdb: converts an angle index plus magnitude into a (dx, dy) vector using the cosine/sine tables, with the y component negated for screen coordinates
+// symdb: (r0 = angle table index, r1 = magnitude/scale) -> r0 = cos(angle)*mag >> 8, r1 = -sin(angle)*mag
+// symdb: >> 8; flags clobbered, r2-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011A0.yaml
 	thumb_func_start sub_80011A0
 sub_80011A0:
 	lsl r0, r0, #1
@@ -2346,6 +2350,11 @@ loc_800120A:
 	mov pc, lr
 	thumb_func_end sub_80011F0
 
+// symdb: Math helper that computes, from a target descriptor and current position, how many frames an approach takes and the per-frame step toward it.
+// symdb: (r0 = target struct ptr: +0 dx, +4 dy, +8 target coord, all 8.8 fixed point; r1 = cur x, r2 =
+// symdb: cur y, r3 = cur coord on the driven axis, r4 = speed (0 = special case), r6 = divisor/param) ->
+// symdb: r0/r1 = computed step count and per-frame delta (rounded), or 0,0 when already at/past target
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800120E.yaml
 	thumb_func_start sub_800120E
 sub_800120E:
 	push {r5,lr}

@@ -770,6 +770,9 @@ loc_81420EC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81420C8
 
+// symdb: Returns a per-MapGroup base value from a small table plus the caller's local index, used by the beast-spread object setup to build flag/object IDs for the current map group.
+// symdb: (r0 = local index/id to offset) -> r0 = tableBase[currentMapGroup] + r0; flags clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81420F0.yaml
 	thumb_func_start sub_81420F0
 sub_81420F0:
 	push {r4-r7,lr}
@@ -2173,6 +2176,9 @@ battleObject_emptyStub_8142C90:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_emptyStub_8142C90
 
+// symdb: Queues a 0x420-byte VRAM DMA of Beast+ special-scenario tile graphics from ROM into BG VRAM.
+// symdb: () -> r0 = queued transfer (src dword_8619730, dest 0x6006C00, size 0x420); no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C94.yaml
 	thumb_func_start sub_8142C94
 sub_8142C94:
 	push {lr}

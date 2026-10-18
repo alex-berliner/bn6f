@@ -488,6 +488,10 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033B30
 
+// symdb: Redraws the Internet-overworld HUD: PET HP digits, battle-start overlay state, an extra UI layer, and the current map name.
+// symdb: (no register args; callee set uses r5 = self * S2011E30) -> no return value; r0 clobbered by
+// symdb: callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B46.yaml
 	thumb_local_start
 sub_8033B46: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -1395,6 +1399,10 @@ loc_80342C0:
 	pop {pc}
 	thumb_func_end fadeTimerTick_80342A4
 
+// symdb: Per-frame update of the world-map screen: resets a state field to 8 while a screen fade is active, then advances the map's animation table.
+// symdb: () -> void; reads caller's r5 as state struct ptr; sets bytes [r5]=8, [r5+1]=0 conditionally;
+// symdb: flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80342C6.yaml
 	thumb_local_start
 sub_80342C6:
 	push {lr}
@@ -3149,6 +3157,9 @@ word_80353B8:
 	.byte 0x0, 0x0
 	thumb_func_end sub_803537C
 
+// symdb: Called by the map loader, conditionally loads a fixed pair of GFX animation scripts once story flag EVENT_28 is set.
+// symdb: (no args) -> r0 = 0 always; calls TestEventFlagFromImmediate and LoadGFXAnims
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80353DA.yaml
 	thumb_local_start
 sub_80353DA:
 	push {r4-r7,lr}

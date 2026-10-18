@@ -1377,6 +1377,10 @@ off_808CC80:
 	.word byte_808C930
 	thumb_func_end battle_pickBattleStateInitPtr_808CC34
 
+// symdb: Reads the overworld player object's X/Y position and stores it twice into the caller's work structure (as current and duplicate/previous coords).
+// symdb: (r0 = unused, r5 = target work struct) -> r0 destroyed; stores halfword X at +0x16/+0x1a and Y
+// symdb: at +0x18/+0x1c; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC84.yaml
 	thumb_local_start
 sub_808CC84:
 	push {lr}
@@ -1596,6 +1600,9 @@ loc_808CE14:
 	.balign 4, 0x00
 	thumb_func_end battle_checkLockedEventTable_808CDC4
 
+// symdb: In Beast+ scenario setup, looks up a per-AI-mode table and, for each entry whose gate flag is set, clears a consecutive range of event flags.
+// symdb: () -> void; reads current map group's AI mode, no args; clobbers r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CE28.yaml
 	thumb_local_start
 sub_808CE28:
 	push {r4-r7,lr}
@@ -1637,6 +1644,9 @@ loc_808CE68:
 	pop {r4-r7,pc}
 	thumb_func_end sub_808CE28
 
+// symdb: Applies a per-AI-mode preset of Beast+ scenario event flags: sets one flag and clears a run of flags for each entry of the table selected by the current map group's AI mode.
+// symdb: () -> void; reads current map-group AI mode via ai_getAIModeForMapGroup_808D084
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CE70.yaml
 	thumb_local_start
 sub_808CE70:
 	push {r4-r7,lr}
@@ -1697,6 +1707,9 @@ byte_808CF14:
 	.byte 0x0, 0x0, 0xFD, 0xF, 0xCF, 0xF, 0x3, 0x0, 0x0, 0x0
 	thumb_func_end sub_808CE70
 
+// symdb: Returns whether the event flag associated with the current map group's AI mode is set.
+// symdb: () -> r0 = 1 if event flag table[aiMode] is set, else 0; ZF clobbered by TestEventFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CF34.yaml
 	thumb_local_start
 sub_808CF34:
 	push {r4-r7,lr}

@@ -274,6 +274,9 @@ nullsub_27:
 	mov pc, lr
 	thumb_func_end nullsub_27
 
+// symdb: Small overworld/story helper that clears one story event flag and sets another (a progress transition).
+// symdb: (no args apparent) -> r0 = ?; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_806FF76.yaml
 	thumb_local_start
 sub_806FF76:
 	push {lr}

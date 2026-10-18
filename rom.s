@@ -13,6 +13,9 @@ start:
 	.include "asm/start.s"
 main:
 	.include "asm/main.s"
+// symdb: Thin wrapper the VCount interrupt path uses to invoke the M4A sound sequencer's per-frame update.
+// symdb: () -> r0 = clobbered (return of m4aSoundMain); no meaningful args or return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/asm00_0.yaml
 asm00_0:
 	.include "asm/asm00_0.s"
 sprite:
