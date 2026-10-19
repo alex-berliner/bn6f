@@ -2034,6 +2034,10 @@ locret_80A5D0A:
 	pop {r4,pc}
 	thumb_func_end sub_80A5CF0
 
+// symdb: Picks a per-map 8-byte Beast Out data entry for the object in r5, using the current map (group 0x81 uses its map number, everything else table slot 3).
+// symdb: (implicit r5 = BattleObject/transform record, implicit r10 = toolkit) -> r0 = pointer to an
+// symdb: 8-byte entry in a map-selected table; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5D0C.yaml
 	thumb_local_start
 sub_80A5D0C:
 	push {r4,lr}
@@ -2381,7 +2385,7 @@ sub_80A5F68:
 
 // symdb: Checks a story flag selected by a form index to gate whether a Beast Out transformation may activate.
 // symdb: (r5 = state struct ptr; field [r5,#6] = form/variant index) -> r0 = 1 if transformation not
-// symdb: allowed (flag clear), 0 if allowed; on allow sets [r5]=1, calls e_setFlagFromIndexTable, clears [r5,#7]
+// symdb: allowed (flag clear), 0 if allowed; on allow sets [r5]=1, calls sub_80A5E8C, clears [r5,#7]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutCheckUnlockFlag.yaml
 	thumb_local_start
 battle_beastOutCheckUnlockFlag:
@@ -4343,7 +4347,7 @@ locret_80A74A6:
 	thumb_func_end ow_facePlayerSetAnim
 
 // symdb: Overworld helper that picks an object's sprite animation from a per-direction table, defaulting to a facing computed toward the player when the entry is 0xFF.
-// symdb: (r0 = object ptr in r5 convention, table via ow_getMapDirAnimTableEntry) -> r0 = ?; sets object anim, loads
+// symdb: (r0 = object ptr in r5 convention, table via sub_80A7528) -> r0 = ?; sets object anim, loads
 // symdb: anim data, disables shadow
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setAnimFromDirTable.yaml
 	thumb_local_start
@@ -5199,6 +5203,11 @@ off_80A7AA0:
 	.word math_sinTable
 	thumb_func_end sub_80A7A40
 
+// symdb: Runs a one-shot countdown from a delay value in a config struct and, once it expires, triggers sub_80A7BA2 with mode 2 (beast-SP related action), returning 1 only on the tick it fires.
+// symdb: (r6 = state struct: +3 active flag byte, +4 remaining-ticks halfword; r7 = config struct: +1
+// symdb: delay halfword) -> r0 = 1 when the countdown expired and the action fired this call, else 0; no
+// symdb: meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7AA4.yaml
 	thumb_local_start
 sub_80A7AA4:
 	push {r4-r7,lr}
@@ -6490,6 +6499,10 @@ off_80A84F8:
 	.word math_sinTable
 	thumb_func_end sub_80A84C4
 
+// symdb: Returns a random fade/brightness amount chosen from an 8-entry ramp table, for a screen or sprite fade effect.
+// symdb: () -> r0 = byte from byte_80A8510[0..7] (one of 0x00,0x1F,0x3F,0x7F,0x9F,0xBF,0xDF,0xFF); flags
+// symdb: not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A84FC.yaml
 	thumb_local_start
 sub_80A84FC:
 	push {lr}
@@ -9975,7 +9988,7 @@ off_80A9EE0:
 	thumb_func_end sub_80A9ECC
 
 // symdb: Initializes an overworld object as a log-out effect: sets its state, fetches position values, loads sprite 0x1C with animation 0 and no shadow, plays the LOG_OUT sound, and advances its state machine.
-// symdb: (r5 = object/actor struct, set by caller/global) -> void; calls ow_applyCutsceneDirOffset which returns
+// symdb: (r5 = object/actor struct, set by caller/global) -> void; calls sub_809C890 which returns
 // symdb: r1/r2/r3 stored into the object, then tail-calls sub_80A9F30
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startLogoutEffect.yaml
 	thumb_local_start
@@ -10086,7 +10099,7 @@ ow_initObjectSprite:
 	pop {pc}
 	thumb_func_end ow_initObjectSprite
 
-// symdb: Per-frame map-object update: steps the object's 16.16 value at +0x14 by 1 toward a target from ow_getApproachTarget, and for object kind 8 sets event flag EVENT_1640 while the value's high word equals 0x20.
+// symdb: Per-frame map-object update: steps the object's 16.16 value at +0x14 by 1 toward a target from sub_80AA04C, and for object kind 8 sets event flag EVENT_1640 while the value's high word equals 0x20.
 // symdb: (r0 = object kind byte from [r5+4], r5 = object struct) -> r0 = sprite_update result; updates
 // symdb: [r5+0x14] and event flag EVENT_1640
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateApproachObject.yaml

@@ -191,6 +191,10 @@ jt_8026584:
 	.word sub_8026726+1
 	thumb_func_end battle_beastJumpLockOn_8026554
 
+// symdb: Walks a 0x7F-terminated table of signed tile offsets, mirrors each by the object's facing direction, and returns nonzero as soon as a checker on the resulting relative tile succeeds.
+// symdb: (r0 = arg pushed to stack; r6 = base object/pointer, r7 = checker arg, custom ABI) -> r0 = first
+// symdb: nonzero checker result, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80265D0.yaml
 	thumb_local_start
 sub_80265D0:
 	push {r4,lr}
@@ -3139,6 +3143,9 @@ sub_8027A84:
 	pop {pc}
 	thumb_func_end sub_8027A84
 
+// symdb: Per-frame tick that counts 16 frames, then starts a screen fade and advances a cutscene state.
+// symdb: () -> void; reads/writes state at [r5+0x40] (frame counter) and [r5+2] (next state)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027A90.yaml
 	thumb_local_start
 sub_8027A90:
 	push {lr}
@@ -3668,6 +3675,10 @@ off_8027F0C:
 	.word eBattleFolder
 	thumb_func_end battle_BuildFolderEntryRecords_8027EE8
 
+// symdb: Initializes the beast-out pseudo-chip entry of the chip-select turn state, skipping entirely when beast-out is unavailable.
+// symdb: (r4 = base of a chip-select record block, r5 = chip-select turn state struct, r7 = beast-out
+// symdb: chip id (0xA or 0x16)) -> r0 = clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027F10.yaml
 	thumb_local_start
 sub_8027F10:
 	push {r4,r6,lr}
@@ -7738,6 +7749,10 @@ locret_8029A34:
 	pop {pc}
 	thumb_func_end battle_tutorialCheckEmotionMsg
 
+// symdb: Tutorial-state check for the first battle tutorial custMenu: decides whether to fire a hint message (returns message id 4) based on battle state and the tutorial's tracked selection.
+// symdb: (r5 = tutorial state struct, r10 = toolkit) -> r0 = message id (4 = show message, 0 = none);
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029A36.yaml
 	thumb_local_start
 sub_8029A36:
 	push {lr}
@@ -8346,6 +8361,9 @@ byte_8029E88:
 	.byte 0xA1, 0x8F, 0xA1, 0x90, 0xA1, 0x91, 0xA1, 0x92, 0xA1
 	thumb_func_end sub_8029D94
 
+// symdb: Queues a 32-byte GFX transfer copying one tile (index r0) from a ROM sprite-sheet table into the fixed buffer unk_3001AA0.
+// symdb: (r0 = tile/frame index) -> r0 = preserved?; queues transfer via QueueEightWordAlignedGFXTransfer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029EAC.yaml
 	thumb_local_start
 sub_8029EAC:
 	push {lr}
@@ -10862,6 +10880,10 @@ off_802B26C:
 	.word dword_8129180
 	thumb_func_end sub_802B20C
 
+// symdb: Thin wrapper that queues one OAM entry for the object in r5 using a fixed tile base (0xB370) and fixed attribute constants, with the sub-index/position read from the object's fields.
+// symdb: (implicit r5 = object ptr; r2 = [r5+0x1E], r3 = [r5+0x24]) -> queues one OAM entry via
+// symdb: object_computeAndQueueOamEntry_811FA98; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B270.yaml
 	thumb_local_start
 sub_802B270:
 	push {r4-r7,lr}
@@ -21868,6 +21890,10 @@ locret_80302CE:
 	mov pc, lr
 	thumb_func_end sub_80302C0
 
+// symdb: Dispatches the camera's per-mode update routine based on the camera struct's mode field.
+// symdb: (r5 = camera struct, mode at oCamera_Mode selects handler) -> calls handler with r5 intact;
+// symdb: r0/r1 clobbered by the dispatch; returns handler's result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302D0.yaml
 	thumb_local_start
 sub_80302D0:
 	push {lr}
@@ -22727,6 +22753,10 @@ locret_80307D4:
 	.balign 4, 0x00
 	thumb_func_end drawBGTileMapBottomRows_803077C
 
+// symdb: Redraws both tilemap layers of the whole map window centered on the camera's current tile position.
+// symdb: (r10 = toolkit) -> void; calls redrawBGTileMapWholeWindow_803086C(eMapTilesState200be70,
+// symdb: camX>>3, camY>>3)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80307D8.yaml
 	thumb_func_start sub_80307D8
 sub_80307D8:
 	push {r4-r7,lr}

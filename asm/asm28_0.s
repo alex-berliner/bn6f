@@ -2576,6 +2576,10 @@ sub_809AC70:
 	.balign 4, 0x00
 	thumb_func_end sub_809AC70
 
+// symdb: Runs the lottery NPC's current dialogue script and resets (or, for script 15, sets to 28) the byte at r5+8, likely a re-talk cooldown/state field.
+// symdb: (r0 = TextScriptArchive (TextScriptLottery86C67E4), r1 = script_idx from [r5+0x74]) -> r0 = 0;
+// symdb: [r5+8] = 0 (or 0x1C if idx == 15)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AC88.yaml
 	thumb_local_start
 sub_809AC88:
 	push {r4-r7,lr}

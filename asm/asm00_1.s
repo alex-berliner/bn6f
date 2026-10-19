@@ -12504,6 +12504,10 @@ locret_8008B50:
 	pop {pc}
 	thumb_func_end sub_8008B2E
 
+// symdb: Per-frame countdown (30 frames) that, on expiry, advances the battle-end substate and clears a flag in the overworld player struct.
+// symdb: (r5 = battle-side struct with state at +3, timer at +8 halfword, result flag at +4; r10 =
+// symdb: toolkit) -> r0 = overworld struct base from callee; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008B52.yaml
 	thumb_local_start
 sub_8008B52:
 	push {lr}
@@ -12803,6 +12807,10 @@ off_8008D58:
 	.word 0x0
 	thumb_func_end sub_8008D40
 
+// symdb: Runs one step of the battle's main state machine: dispatches the current phase handler, then advances AI script steps.
+// symdb: () -> r0 = byte at dword_203CA74 (updated battle state/next-phase byte); flags from
+// symdb: battleObject_runAIScript_802DE5C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008D60.yaml
 	thumb_local_start
 sub_8008D60:
 	push {r5,lr}

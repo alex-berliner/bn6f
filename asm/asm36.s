@@ -4811,7 +4811,7 @@ dword_8132610:
 	.word 0x1C1814
 	thumb_func_end sub_81325F4
 
-// symdb: Dispatches on menu_dispatchStateHandler's menu choice, sets a flag byte, picks a sub-state via lookup, and writes the next handler index into the menu record.
+// symdb: Dispatches on sub_8132290's menu choice, sets a flag byte, picks a sub-state via lookup, and writes the next handler index into the menu record.
 // symdb: void sub_8132614(struct MenuRecord *r5) * ; returns nz=1 in Z due to `mov r0,
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8132614.yaml
 	thumb_func_start sub_8132614
@@ -10397,6 +10397,10 @@ locret_8135052:
 	pop {r4,pc}
 	thumb_func_end sub_8135038
 
+// symdb: Swaps a list-cursor/selected-index between old and new values after a chip entry is moved in the folder editor.
+// symdb: (r0 = list selector 0/1 picking field 0x5C/0x60, r2 = old index, r3 = new index, r5 = UI state
+// symdb: struct base) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135054.yaml
 	thumb_local_start
 sub_8135054:
 	push {r4,r6,lr}
@@ -11322,7 +11326,7 @@ off_81356E8:
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
 // symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
-// symdb: sub_8135D8C / submenu_rebuildKeyItemList, spawns the e-struct records at byte_8135628, and starts BGM
+// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
@@ -12361,6 +12365,10 @@ loc_8135F14:
 	pop {r4,pc}
 	thumb_func_end sub_8135EEC
 
+// symdb: Reads the Navi Cust board cell under the cursor/work position, converts its table value to a program/index ID, and dispatches it to a handler.
+// symdb: (r5 = navicust work struct; r0/r1 clobbered) -> r0 = id passed to sub_8135F34; returns that
+// symdb: callee's result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135F18.yaml
 	thumb_local_start
 sub_8135F18:
 	push {r4-r7,lr}
@@ -13382,6 +13390,10 @@ byte_81366C8:
 	.byte 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F, 0x0, 0x0
 	thumb_func_end sub_8136644
 
+// symdb: Registers a battle object's ID into a 6-slot unique-ID list at unk_2022B70 if not already present.
+// symdb: (r5 = current object ptr, reads [r5+0x18] as object index) -> r0 = descriptor byte 3 (leftover,
+// symdb: not a real return); no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81366D0.yaml
 	thumb_local_start
 sub_81366D0:
 	push {r4-r7,lr}
@@ -13759,6 +13771,9 @@ byte_81369B5:
 	.byte 0x15, 0x1C, 0x1C
 	thumb_func_end sub_813691C
 
+// symdb: Prepares the battle state for a new battle: sets a mode/phase byte, clears a counter, initializes the battle state, and starts the next step with flag 1.
+// symdb: (r0 = unused/ignored) -> r0 = return of sub_8136B10; writes [r5+3] = 0x20, [r5+0x12] = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81369B8.yaml
 	thumb_local_start
 sub_81369B8:
 	push {lr}
@@ -14649,6 +14664,10 @@ locret_81370AA:
 	pop {pc}
 	thumb_func_end sub_813709C
 
+// symdb: Waits ~20 frames, then shows NaviCust dialog script 0xF and advances the Beast-related state machine to state 0x2C.
+// symdb: (r5 = task/object state struct, frame counter at +0xe, state byte at +0x0) -> r0 = 0; flags from
+// symdb: cmp/blt
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81370AC.yaml
 	thumb_local_start
 sub_81370AC:
 	push {lr}
@@ -14872,6 +14891,10 @@ locret_8137242:
 	pop {pc}
 	thumb_func_end sub_8137234
 
+// symdb: Counts 20 frames, then runs NaviCust dialog script 0x19 and advances the state machine to 0x4c.
+// symdb: (r5 = state object; counter halfword at +0xe, state byte at +0x0) -> none; after 20 ticks runs
+// symdb: dialog script 0x19 and sets [r5+0x0] = 0x4c
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137244.yaml
 	thumb_local_start
 sub_8137244:
 	push {lr}
@@ -15193,6 +15216,10 @@ locret_81374AA:
 	pop {pc}
 	thumb_func_end sub_813749C
 
+// symdb: Counts 20 frames on an object, then once fires NaviCust dialog text 0x23 and switches the object's state byte to 0x70.
+// symdb: (r5 = state object, no args) -> r0 = text script id to callee; writes halfword [r5+0xE] counter
+// symdb: and byte [r5] = 0x70 on completion
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81374AC.yaml
 	thumb_local_start
 sub_81374AC:
 	push {lr}
@@ -15297,6 +15324,10 @@ locret_813754E:
 	pop {pc}
 	thumb_func_end sub_8137538
 
+// symdb: Counts frames on an object and, after 60 frames, fires a navi-cust dialog script and advances the object's state.
+// symdb: (r5 = object ptr, no args) -> r0 = 0x25/0x84 side effects only; increments halfword [r5+0xE],
+// symdb: sets byte [r5+0x0]=0x84 when done
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137550.yaml
 	thumb_local_start
 sub_8137550:
 	push {lr}
@@ -15383,6 +15414,10 @@ sub_81375CC:
 	.balign 4, 0x00
 	thumb_func_end sub_81375CC
 
+// symdb: Resets a small beastsp state record (zeroes two bytes) and clears the two event flags EVENT_EE/EVENT_EF.
+// symdb: (r5 = pointer to state struct, set by caller) -> r0 = 0 (from last mov, clobbered by calls);
+// symdb: flags from ClearEventFlagFromImmediate
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81375D8.yaml
 	thumb_local_start
 sub_81375D8:
 	push {lr}

@@ -936,6 +936,10 @@ loc_30061C2:
 	mov pc, lr
 	thumb_func_end sub_30061A8
 
+// symdb: Appends an 8-byte sprite resource request record {r7, r6} to a work queue, bumping the queue count.
+// symdb: (r7 = request field A, r6 = request field B) -> r0 = none; appends to dword_200A890[count],
+// symdb: increments dword_20093A8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30061C8.yaml
 	thumb_local_start
 sub_30061C8:
 	ldr r2, off_30061E0 // =dword_20093A8
@@ -1262,6 +1266,10 @@ locret_3006402:
 	mov pc, lr
 	thumb_func_end sub_300638C
 
+// symdb: Boolean range check used by sprite_ensureGfxResident: tests whether a tile/gfx index taken from a struct is below a limit kept in the sprite settings block.
+// symdb: (r0 = pointer to struct with a halfword index/offset field) -> r0 = 1 if (halfword - 0x30 + r4)
+// symdb: >= limit, else 0; destroys r2-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006404.yaml
 	thumb_local_start
 sub_3006404:
 	push {lr}
@@ -4198,6 +4206,10 @@ off_3007864:
 	.word PanelOffsetListsPointerTable
 	thumb_func_end sub_3007828
 
+// symdb: Sets one panel's collision-index bit in the battle panel-collision bitmap (unk_2034F60).
+// symdb: (r0 = word column index in bitmap, r1 = row index, r2 = ptr to collision data whose
+// symdb: CollisionIndexBit is the mask) -> r0/r1/r2 clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007868.yaml
 	thumb_local_start
 sub_3007868:
 	ldr r3, off_300787C // =unk_2034F60
@@ -4254,6 +4266,9 @@ off_30078C4:
 	.word object_getAllianceDirection+1
 	thumb_func_end sub_3007880
 
+// symdb: Recomputes battle board panel parameters for every panel coordinate on the field grid.
+// symdb: () -> r0 = undefined; clobbers r4, r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30078C8.yaml
 	thumb_func_start sub_30078C8
 sub_30078C8:
 	push {r4,r5,lr}

@@ -1806,6 +1806,10 @@ off_8089CD8:
 	.word byte_8089480
 	thumb_func_end cutscene_startCameraScript
 
+// symdb: Cutscene-object step that launches a fixed camera script and flags the object as camera-active.
+// symdb: (r5 = cutscene/state object, r0 = ignored on entry) -> r0 = 0 from callees; stores camera script
+// symdb: pointer at [r5+0x3C], sets byte [r5+0x13] = 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CDC.yaml
 	thumb_local_start
 sub_8089CDC:
 	push {r4-r7,lr}
@@ -1837,6 +1841,10 @@ loc_8089CFC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089CF8
 
+// symdb: Frees up to three overworld map objects whose pointers are stored consecutively in a caller-provided array.
+// symdb: (r7 = base of array of 3 object pointers) -> r0 = last FreeOverworldMapObject result; frees each
+// symdb: non-null entry, leaving the array contents unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D0E.yaml
 	thumb_local_start
 sub_8089D0E:
 	push {r4-r7,lr}
@@ -1854,6 +1862,9 @@ loc_8089D1C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089D0E
 
+// symdb: Initializes AI chip-queue slots for two specific battle actors (slots 4 and 3), as part of the Beast SP setup.
+// symdb: () -> void; no return value, flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D26.yaml
 	thumb_local_start
 sub_8089D26:
 	push {r4-r7,lr}

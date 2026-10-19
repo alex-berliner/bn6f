@@ -301,6 +301,10 @@ battle_aiGetCurActionPanelY_8087140:
 	.balign 4, 0x00
 	thumb_func_end battle_aiGetCurActionPanelY_8087140
 
+// symdb: Initializes a 10-entry overworld player position trail, stamping the player's current X/Y/Z into every 12-byte record.
+// symdb: (r5 = base of struct, from caller) -> writes player X at r5+0x10+0xC*i, Y at +0x14+0xC*i, Z at
+// symdb: +0x18+0xC*i for i in 0..9; r0-r3, r6 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087150.yaml
 	thumb_func_start sub_8087150
 sub_8087150:
 	push {r4-r7,lr}

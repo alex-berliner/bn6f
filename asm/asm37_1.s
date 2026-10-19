@@ -1559,6 +1559,10 @@ byte_8142804:
 	.byte 0x6, 0x8C, 0x6, 0x8D, 0x6, 0x0, 0x0
 	thumb_func_end sub_81427F2
 
+// symdb: Computes an index into the 256x256 map tile array (byte_2006670) for the tile under the cursor (camera position plus a caller-supplied 16.16 offset).
+// symdb: (r0 = 16.16 x-offset added to camera cursor x, r1 = 16.16 y-offset) -> r0 = tile index (x +
+// symdb: y*256) into byte_2006670; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142816.yaml
 	thumb_func_start sub_8142816
 sub_8142816:
 	push {r4-r7,lr}

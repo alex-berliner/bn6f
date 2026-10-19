@@ -2635,6 +2635,10 @@ off_8035024:
 	.word byte_80989C1 // CutsceneScript
 	thumb_func_end cutscene_TryStartOnMapEnterAfterJackIn_8034FB8
 
+// symdb: At map load, dispatches to a per-internet-map-group hook routine, passing the saved real-world map id's two bytes as arguments.
+// symdb: () -> tail-calls jumptable handler with r0 = savedRealWorldMapId & 0xFF, r1 =
+// symdb: savedRealWorldMapId >> 8; no return value of its own
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035028.yaml
 	thumb_local_start
 sub_8035028: // JP 0x8035fd8
 	push {r4-r7,lr}
@@ -3188,6 +3192,9 @@ off_80353FC:
 	.word 0xFFFFFFFF
 	thumb_func_end ow_loadEventGfxAnims
 
+// symdb: Registers the two GFX animation scripts used for the Beast-SP scenario sprites into the animation engine.
+// symdb: () -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035408.yaml
 	thumb_func_start sub_8035408
 sub_8035408:
 	push {r4-r7,lr}
@@ -3493,6 +3500,10 @@ clearWorkBuffer_2000DC0_80356EC:
 	pop {r4-r7,pc}
 	thumb_func_end clearWorkBuffer_2000DC0_80356EC
 
+// symdb: Appends a (r1, r0) entry to the first free slot of a 32-entry queue at dword_2000DC0, used by a cutscene script command.
+// symdb: (r0 = entry word stored at +4, r1 = entry word stored at +0) -> r0 = clobbered; no flags
+// symdb: meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80356F8.yaml
 	thumb_func_start sub_80356F8
 sub_80356F8:
 	push {r4-r7,lr}

@@ -934,6 +934,9 @@ sub_8046696:
 	thumb_func_end sub_8046696
 
 // () -> void
+// symdb: Sweeps all 15 entity slots and, for each active one, clears its sprite scale counter and marks the sprite unscalable.
+// symdb: () -> r0 = clobbered; touches every entity struct in eStructArr2008450 (0x58-byte stride)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80466AA.yaml
 	thumb_local_start
 sub_80466AA:
 	push {r4-r7,lr}
@@ -11204,6 +11207,9 @@ off_804CBB8:
 	.word beastSp_spawnIndexDispatcher_804CC8E+1
 	thumb_func_end battleObject_dispatchBeastOutAction_804CBA4
 
+// symdb: Tears down an active render/blend effect: clears the render-info flag and resets its state fields, then zeroes the effect scratch struct.
+// symdb: () -> r0 = zeroFill return; flags from zeroFill_e2009740
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CBC0.yaml
 	thumb_local_start
 sub_804CBC0:
 	push {r4-r7,lr}
@@ -11373,6 +11379,10 @@ byte_804CCE0:
 	.byte 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9
 	thumb_func_end sub_804CCC0
 
+// symdb: Clears BG scroll and loads a full 30x20-screen tile block (block 3) from a ROM tile-id table, then flags the background for redraw.
+// symdb: () -> void; sets bit 0x800 of toolkit RenderInfo word at [r10+oToolkit_RenderInfoPtr], zeroes
+// symdb: its +0x18/+0x1a scroll fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCF0.yaml
 	thumb_local_start
 sub_804CCF0:
 	push {r4-r7,lr}

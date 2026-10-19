@@ -2834,6 +2834,10 @@ off_812460C:
 	.word sub_812471C+1
 	thumb_func_end sub_81245D4
 
+// symdb: Advances the chatbox multi-page text display to the next page, or ends the text (script 6) when the last page is reached
+// symdb: (r0 = byte flag, 0x80 means use fixed page 0x32; r5 = text display object) -> r0 =
+// symdb: chatbox_runScript201C100 result; r5+0x02 state updated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124624.yaml
 	thumb_local_start
 sub_8124624:
 	push {r4,r7,lr}
@@ -2869,6 +2873,10 @@ locret_812465C:
 	.byte 0, 0
 	thumb_func_end sub_8124624
 
+// symdb: Displays one of two chatbox texts (script 7 or 11) depending on a Beast-out scenario flag, storing the chosen text id in a state object and the chatbox.
+// symdb: (r0 = text/dialog id byte, r5 = dialog state object) -> r0 = chatbox_runScript result; sets
+// symdb: [r5+0x10]=id, [r5+2]/[r5+3] state bytes, chatbox+0x4C=id
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124660.yaml
 	thumb_local_start
 sub_8124660:
 	push {r4,lr}
@@ -12763,6 +12771,10 @@ locret_8129594:
 	.balign 4, 0x00
 	thumb_func_end sub_812956C
 
+// symdb: Dispatches the menus3 screen state machine: calls the conditional sprite draw for nonzero states, then jumps to the step handler selected by the state byte.
+// symdb: (no args; context in r5, state byte at [r5+2]) -> tail-calls handler for state; never returns to
+// symdb: caller normally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129598.yaml
 	thumb_local_start
 sub_8129598:
 	push {lr}
@@ -14348,7 +14360,7 @@ menu_subMenu_dispatchByIndex_812A008:
 locret_812A026:
 	pop {pc}
 	thumb_func_end menu_subMenu_dispatchByIndex_812A008
-// symdb: Per-frame object update: draws the object's sprite if flagged, counts down a timer, and on expiry switches state and runs text script 0x5E; also checks rfu_checkIdMatch each frame to branch into an alternate state.
+// symdb: Per-frame object update: draws the object's sprite if flagged, counts down a timer, and on expiry switches state and runs text script 0x5E; also checks sub_813D648 each frame to branch into an alternate state.
 // symdb: (r5 = object state struct) -> void; sets [r5+1]/[r5+2] state bytes and [r5+0x10] substate when
 // symdb: timer expires, r0 clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timerDialogueUpdate.yaml
@@ -16704,7 +16716,7 @@ battle_runFrameUpdate:
 	thumb_func_end battle_runFrameUpdate
 
 // symdb: Entity step wrapper that polls a state value and runs the battle frame update with command 0x13 when the state is 0x18 or 0x1c, otherwise 0x12.
-// symdb: () -> r0 = command id (0x13 if menu_dispatchStateHandler()==0x18 or 0x1c else 0x12) passed to
+// symdb: () -> r0 = command id (0x13 if sub_8132290()==0x18 or 0x1c else 0x12) passed to
 // symdb: battle_runFrameUpdate; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepWaitForStateRunUpdate.yaml
 	thumb_local_start
@@ -16724,6 +16736,10 @@ loc_812B27E:
 	.balign 4, 0x00
 	thumb_func_end battle_stepWaitForStateRunUpdate
 
+// symdb: Moves the sub-menu's option sprite (ID 0x78) to the slot of an option index looked up from the submenu work area, unless the disable flag is set.
+// symdb: (r0 = index into submenu work struct r5) -> r0 = result of submenu_positionOptionSprite; r5 =
+// symdb: submenu struct (not saved by callee), flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B288.yaml
 	thumb_local_start
 sub_812B288:
 	push {r4,r6,lr}

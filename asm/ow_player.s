@@ -1089,6 +1089,10 @@ loc_809D938:
 	pop {pc}
 	thumb_func_end sub_809D92C
 
+// symdb: Per-frame step of a scripted forced player walk: moves the overworld player by a velocity, plays a footstep sound every 6 frames, and ends the action when the target coordinate is reached.
+// symdb: (r5 = oOWPlayerObject) -> r0 = undefined; updates player X/Y, byte 0x5C counter, byte
+// symdb: ActionSubState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D964.yaml
 	thumb_local_start
 sub_809D964:
 	push {lr}

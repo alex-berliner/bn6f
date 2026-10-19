@@ -898,6 +898,10 @@ off_808FED4:
 	.word off_808FDB8
 	thumb_func_end battle_runBattleFrameForCyberWorld_808FEA4
 
+// symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from sub_808FF00's return value.
+// symdb: (no args) -> r0 = 0 always; r4-r7 clobbered/restored, SpawnOverworldMapObject called N times
+// symdb: with r0=0x1A, r1=0, r2=0, r3=0x400000, r4=loop index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FED8.yaml
 	thumb_local_start
 sub_808FED8:
 	push {r4-r7,lr}
@@ -992,6 +996,9 @@ locret_808FF6C:
 	.byte 0, 0
 	thumb_func_end battleObject_togglePlayerAllyLockout_808FF44
 
+// symdb: Spawns seven overworld-map objects of type 0x1C with all-zero position/params, in a counted loop.
+// symdb: (no args) -> r0 = last SpawnOverworldMapObject result; clobbers r4 (loop counter)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF70.yaml
 	thumb_local_start
 sub_808FF70:
 	push {r4,lr}

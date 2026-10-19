@@ -1660,7 +1660,7 @@ off_800C4B8:
 
 // symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
 // symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
-// symdb: returns via battle_encodePanelRuns -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
+// symdb: returns via sub_800C67C -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buildPlayerPanelGrid_800C4BC.yaml
 	thumb_local_start
 battle_buildPlayerPanelGrid_800C4BC:
@@ -4415,6 +4415,10 @@ loc_800D6C8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_800D668
 
+// symdb: Verifies that all three panels of a battlefield panel-group still carry the alliance value recorded in the unk_2034010 entry for that group, returning 1 if they all match.
+// symdb: (r0 = group/panel-area index into unk_2034010 (8-byte records), r1 = alliance value to confirm)
+// symdb: -> r0 = 1 if group state byte equals r1 and all 3 panels' alliance byte equals it, else r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D6CC.yaml
 	thumb_local_start
 sub_800D6CC:
 	push {r4-r6,lr}
@@ -5239,6 +5243,9 @@ sub_800E4C0:
 	mov pc, lr
 	thumb_func_end sub_800E4C0
 
+// symdb: Returns a battle object's per-facing movement/delta triple looked up from a 2-entry table indexed by its alliance-based direction.
+// symdb: (r0 = battle object ptr) -> r0 = dir * table[0], r1 = table[1], r2 = table[2]; r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E4C8.yaml
 	thumb_local_start
 sub_800E4C8:
 	push {r4,lr}
@@ -6054,6 +6061,10 @@ locret_800EA8E:
 	pop {pc}
 	thumb_func_end sub_800EA4E
 
+// symdb: Halves five halfword timers in the object's AI/collision work area and decrements a master counter at +0x80 by their sum, returning whether the master did not change.
+// symdb: (r0 = unused/scratch, r5 = battle object) -> r0 = 1 if master timer at [collisionData+0x80] was
+// symdb: unchanged (all timers empty), else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA90.yaml
 	thumb_func_start sub_800EA90
 sub_800EA90:
 	push {r4,lr}
