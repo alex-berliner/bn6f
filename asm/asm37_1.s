@@ -4157,6 +4157,10 @@ loc_8143E62:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143DEA
 
+// symdb: Steps a packed (x|y<<8) tile coordinate n tiles in a facing direction using a per-direction (dx,dy) table.
+// symdb: (r0 = packed coords (low byte x, high byte y), r1 = direction index 0-7, r2 = step count) -> r0
+// symdb: = packed coords moved (x + dx*n, y + dy*n)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143E68.yaml
 	thumb_func_start sub_8143E68
 sub_8143E68:
 	push {r4-r7,lr}

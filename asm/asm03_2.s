@@ -4460,6 +4460,10 @@ loc_8048D4E:
 	pop {r4-r7,pc}
 	thumb_func_end shop_addItemStockEntry
 
+// symdb: Increments (saturating at 255) the per-item purchase counter for a given item id in one of the shop-data item lists.
+// symdb: (r0 = list/table index (e.g. 9 = shop), r1 = item id) -> r0 = destroyed; increments count byte
+// symdb: of matching record
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048D60.yaml
 	thumb_local_start
 sub_8048D60:
 	push {r4-r7,lr}

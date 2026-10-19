@@ -14224,6 +14224,10 @@ dword_802CB34:
 	.word 0xB200
 	thumb_func_end sub_802CAA6
 
+// symdb: Records both sides' total damage taken in the battle-result struct at 203EAD0 and stores which side took less damage.
+// symdb: (r0 = total damage taken by side 1, r1 = total damage taken by side 0) -> r0 = 0; writes
+// symdb: dword_203EAD0 struct and byte [r5,#0x10]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CB38.yaml
 	thumb_func_start sub_802CB38
 sub_802CB38:
 	push {r4,r6,r7,lr}

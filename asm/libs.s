@@ -5570,6 +5570,10 @@ off_8146804:
 	.word byte_2010288
 	thumb_func_end sub_81467A0
 
+// symdb: Searches the wireless peer list for the entry whose 13-byte record matches the record selected from unk_20098B0, returning its slot index or 4 if none matches.
+// symdb: (r0 = record index into unk_20098B0, stride 16) -> r0 = matching slot index, or 4 when no peer
+// symdb: matches; clobbers r4,r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146808.yaml
 	thumb_func_start sub_8146808
 sub_8146808:
 	push {r4,r5,lr}

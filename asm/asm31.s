@@ -4747,6 +4747,10 @@ sub_80BA388:
 	pop {pc}
 	thumb_func_end sub_80BA388
 
+// symdb: Dispatches to the per-action state handler for the battle object's current action (CurAction index).
+// symdb: (r5 = battle object, no args) -> tail-jumps to handler table[CurAction]; returns whatever the
+// symdb: handler returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BA3D8.yaml
 	thumb_local_start
 sub_80BA3D8:
 	push {lr}
@@ -6196,6 +6200,10 @@ locret_80BAD74:
 	pop {pc}
 	thumb_func_end sub_80BAD34
 
+// symdb: Battle-object update that waits 16 frames per step, fires sub_80BAEC0 for steps 0-2, then ends the action with CurAction 0x14.
+// symdb: (r5 = battle object) -> void; sets oBattleObject fields PhaseInitialized, Param3, Timer,
+// symdb: CurAction, CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BAD76.yaml
 	thumb_local_start
 sub_80BAD76:
 	push {lr}
@@ -8555,6 +8563,9 @@ locret_80BBDAA:
 	pop {pc}
 	thumb_func_end battle_earthquakeAttackUpdate
 
+// symdb: Battle-object update state that plays an animation for a fixed timer, then plays a sound, disables the object's hitbox, and destroys the object.
+// symdb: (r5 = battle object, implicit) -> void; no arguments, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BBDAC.yaml
 	thumb_local_start
 sub_80BBDAC:
 	push {lr}
@@ -9026,6 +9037,10 @@ locret_80BC0FE:
 	pop {pc}
 	thumb_func_end sub_80BC0DA
 
+// symdb: Scans the battle object list, writes the IDs of all 'standard' battle objects into the caller's object at +0x60 as an array, and returns how many were found.
+// symdb: (); caller's r5 = battle object base (implicit dest pointer) -> r0 = count of standard objects;
+// symdb: IDs stored at [r5 + 0x60 + i*4]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BC100.yaml
 	thumb_local_start
 sub_80BC100:
 	push {r4,r6,r7,lr}
@@ -21838,6 +21853,10 @@ dword_80C1A78:
 	.word 0x1B6
 	thumb_func_end battle_initEnemy438
 
+// symdb: Battle object dispatcher: jumps to the per-action handler selected by the object's CurAction field.
+// symdb: (r5 = battle object) -> tail-calls action handler for oBattleObject_CurAction; handler address
+// symdb: returned in r0 to caller's bx path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C1A7C.yaml
 	thumb_local_start
 sub_80C1A7C:
 	push {lr}
@@ -24555,6 +24574,10 @@ locret_80C2E6C:
 	pop {r4,pc}
 	thumb_func_end object_appearWaitState
 
+// symdb: Battle-object phase handler: one-time setup (anim 0xF, 60-frame timer, queue something one panel ahead via sub_80C2FBC), then counts down and on expiry returns to phase 0 with CurAction=8.
+// symdb: (r5 = battle object ptr; r0/r1 unused on entry) -> void; sets PhaseInitialized=4 on first run,
+// symdb: then Timer countdown, ends with CurPhaseAndPhaseInitialized=0 and CurAction=8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C2E6E.yaml
 	thumb_local_start
 sub_80C2E6E:
 	push {r4,lr}
@@ -61647,6 +61670,10 @@ locret_80D3BC0:
 	pop {r4,r6,pc}
 	thumb_func_end object_stepGlideToPanel
 
+// symdb: Per-frame battle-object phase step: counts down a per-Param1 duration for up to 4 repeat cycles (anim 0x14), with a periodic tick, then leaves the phase
+// symdb: (r0 = unused on entry; r5 = battle object) -> r0 = scratch; updates oBattleObject_Timer, Timer2,
+// symdb: Param4, CurAnim, CurAction, CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D3BC2.yaml
 	thumb_local_start
 sub_80D3BC2:
 	push {lr}
