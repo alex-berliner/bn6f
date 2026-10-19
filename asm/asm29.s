@@ -139,6 +139,10 @@ loc_80A4A8A:
 	pop {pc}
 	thumb_func_end event_80A4A08
 
+// symdb: Trivial wrapper that immediately calls FreeOverworldMapObject, forwarding its argument unchanged.
+// symdb: (r0 = overworld map object pointer/index) -> r0 = result of FreeOverworldMapObject; flags from
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A4A90.yaml
 	thumb_local_start
 sub_80A4A90:
 	push {lr}

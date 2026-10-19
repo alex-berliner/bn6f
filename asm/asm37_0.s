@@ -3277,6 +3277,10 @@ sub_813CE04:
 	pop {pc}
 	thumb_func_end sub_813CE04
 
+// symdb: Thin wrapper that adds 1 to the selected PET navi's NaviStats byte 0x18 and flags the record by setting byte 0x16 to 3.
+// symdb: (r0 = PET/navi selection passed through to callee) -> r0 = callee return; r4 clobbered (set to 1
+// symdb: as the addend)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE08.yaml
 	thumb_local_start
 sub_813CE08:
 	push {r4-r7,lr}
@@ -3285,6 +3289,9 @@ sub_813CE08:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CE08
 
+// symdb: Thin wrapper that adds 2 to byte 0x18 of the selected PET navi's NaviStats record and marks field 0x16 with the value 3.
+// symdb: (no args) -> r4 = 2 passed to callee; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE12.yaml
 	thumb_local_start
 sub_813CE12:
 	push {r4-r7,lr}

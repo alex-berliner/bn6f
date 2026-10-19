@@ -4379,6 +4379,10 @@ dword_810FDCC:
 	.word 0xC000000
 	thumb_func_end object_clearRegionIfCollided
 
+// symdb: AI-state dispatcher for an enemy actor: indexes a 3-entry handler table by the actor's script/state id and calls that handler.
+// symdb: (r6 = actor object, field oAIState_ScriptId = state index) -> r0 = whatever the dispatched
+// symdb: handler returns; returns to this function's caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FDD0.yaml
 	thumb_local_start
 sub_810FDD0:
 	push {r4,r6,lr}
@@ -15422,6 +15426,10 @@ byte_8115730:
 	.byte 0xFF, 0xFF, 0xFF
 	thumb_func_end ai_selectAdjacentPanel
 
+// symdb: AI attack trampoline: reads the AI attack var 'HitElement' from the current object and calls one of six per-element attack handlers from a jump table.
+// symdb: (r7 = AI attack vars struct base, r0 unused on entry) -> tail-calls handler chosen by
+// symdb: oAIAttackVars_HitElement; r0/r1 clobbered, flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81157F0.yaml
 	thumb_local_start
 sub_81157F0:
 	push {lr}
