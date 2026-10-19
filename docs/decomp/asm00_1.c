@@ -6808,7 +6808,7 @@ int sub_800838A()
     {
         v2 = battle_getPlayerTotalDamageTaken(1);
         v3 = battle_getPlayerTotalDamageTaken(0);
-        sub_802CB38(v2, v3);
+        battle_setDamageTakenComparison(v2, v3);
         result = 4;
         *(v0 + 3) = 4;
     }

@@ -2521,7 +2521,7 @@ int sub_81467A0()
 
 
 // 0x8146808
-unsigned int __fastcall sub_8146808(int a1)
+unsigned int __fastcall rfu_findMatchingPeerSlot(int a1)
 {
     unsigned __int8 *v1; // r5
     unsigned int i; // r4

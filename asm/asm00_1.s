@@ -11524,7 +11524,7 @@ sub_800838A:
 	bl battle_getPlayerTotalDamageTaken
 	mov r1, r0
 	pop {r0}
-	bl sub_802CB38
+	bl battle_setDamageTakenComparison
 	mov r0, #4
 	strb r0, [r5,#3]
 	b locret_80083E2

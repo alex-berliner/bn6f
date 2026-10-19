@@ -3828,7 +3828,7 @@ signed int __noreturn sub_80BA388()
 
 
 // 0x80ba3d8
-int sub_80BA3D8()
+int battle_dispatchCurActionHandler()
 {
     int v0; // r5
 
@@ -4954,7 +4954,7 @@ int sub_80BAD34()
 
 
 // 0x80bad76
-int sub_80BAD76()
+int battle_objectThreeStepDelayUpdate()
 {
     int v0; // r5
     int result; // r0
@@ -6901,7 +6901,7 @@ int __fastcall battle_earthquakeAttackUpdate(int a1, int a2, int a3)
 
 
 // 0x80bbdac
-int sub_80BBDAC()
+int battle_objectTimedSelfDestructUpdate()
 {
     int v0; // r5
     int result; // r0
@@ -7144,7 +7144,7 @@ int sub_80BBFE8()
         *(v0 + 32) = result;
         if ( result == 10 )
         {
-            result = sub_80BC100();
+            result = battle_collectStandardObjectIds();
             *(v0 + 4) = result;
             if ( result )
                 result = PlaySoundEffect(173, v2, v3);
@@ -7320,7 +7320,7 @@ int __fastcall sub_80BC0DA(char a1, int a2, int a3, int a4)
 
 
 // 0x80bc100
-int sub_80BC100()
+int battle_collectStandardObjectIds()
 {
     int v0; // r5
     int v1; // r10
@@ -17159,7 +17159,7 @@ signed int __noreturn battle_initEnemy438()
 
 
 // 0x80c1a7c
-int sub_80C1A7C()
+int battle_objectRunCurrentAction()
 {
     int v0; // r5
 
@@ -19392,7 +19392,7 @@ int object_appearWaitState()
 
 
 // 0x80c2e6e
-int sub_80C2E6E()
+int object_phaseDelayThenNextAction()
 {
     int v0; // r5
     char v1; // r0
@@ -46543,7 +46543,7 @@ signed int object_stepGlideToPanel()
 
 
 // 0x80d3bc2
-int sub_80D3BC2()
+int battle_countdownPhaseStep()
 {
     int v0; // r5
     int v1; // r1

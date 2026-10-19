@@ -5573,9 +5573,9 @@ off_8146804:
 // symdb: Searches the wireless peer list for the entry whose 13-byte record matches the record selected from unk_20098B0, returning its slot index or 4 if none matches.
 // symdb: (r0 = record index into unk_20098B0, stride 16) -> r0 = matching slot index, or 4 when no peer
 // symdb: matches; clobbers r4,r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146808.yaml
-	thumb_func_start sub_8146808
-sub_8146808:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_findMatchingPeerSlot.yaml
+	thumb_func_start rfu_findMatchingPeerSlot
+rfu_findMatchingPeerSlot:
 	push {r4,r5,lr}
 	lsl r0, r0, #0x18
 	ldr r5, off_814681C // =unk_20098B0 
@@ -5615,7 +5615,7 @@ loc_814684A:
 	bx r1
 off_8146850:
 	.word byte_2010288
-	thumb_func_end sub_8146808
+	thumb_func_end rfu_findMatchingPeerSlot
 
 // symdb: Zero-fills two parallel 8-entry tables (16-byte and 8-byte entries), likely resetting per-entity state before a battle or scene.
 // symdb: () -> r0 = clobbered; clears unk_20098B0[0..7] (0x10 bytes each) and unk_2009750[0..7] (8 bytes

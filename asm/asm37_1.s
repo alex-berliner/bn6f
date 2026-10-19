@@ -4111,7 +4111,7 @@ sub_8143DEA:
 	mov r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8143E68
+	bl grid_stepPackedTileCoordsInDirection
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 loc_8143E0C:
@@ -4122,12 +4122,12 @@ loc_8143E0C:
 	and r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8143E68
+	bl grid_stepPackedTileCoordsInDirection
 	mov r6, r0
 	mov r0, r4
 	mov r1, r7
 	mov r2, #1
-	bl sub_8143E68
+	bl grid_stepPackedTileCoordsInDirection
 	mov r7, r0
 	bl ReadOWPlayerObjectCoords
 	str r0, [sp]
@@ -4160,9 +4160,9 @@ loc_8143E62:
 // symdb: Steps a packed (x|y<<8) tile coordinate n tiles in a facing direction using a per-direction (dx,dy) table.
 // symdb: (r0 = packed coords (low byte x, high byte y), r1 = direction index 0-7, r2 = step count) -> r0
 // symdb: = packed coords moved (x + dx*n, y + dy*n)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143E68.yaml
-	thumb_func_start sub_8143E68
-sub_8143E68:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/grid_stepPackedTileCoordsInDirection.yaml
+	thumb_func_start grid_stepPackedTileCoordsInDirection
+grid_stepPackedTileCoordsInDirection:
 	push {r4-r7,lr}
 	mov r6, r2
 	ldr r7, off_8143E90 // =byte_8143E94 
@@ -4187,7 +4187,7 @@ off_8143E90:
 	.word byte_8143E94
 byte_8143E94:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
-	thumb_func_end sub_8143E68
+	thumb_func_end grid_stepPackedTileCoordsInDirection
 
 	thumb_func_start sub_8143EA4
 sub_8143EA4:

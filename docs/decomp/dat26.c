@@ -268,7 +268,7 @@ int __fastcall sub_8093074(int a1)
     v4 = v2;
     v5 = sub_8143EA4();
     v6 = sub_809E2B8();
-    *v1 = sub_8143E68(v5, v6, 1);
+    *v1 = grid_stepPackedTileCoordsInDirection(v5, v6, 1);
     v7 = ConvertGroundmanMinigameGridCoordsToMapCoords();
     return sub_809323A(v7, v8, v3, v4);
 }
@@ -317,7 +317,7 @@ LABEL_7:
                 v14 = v12;
                 v15 = sub_8143EA4();
                 v16 = sub_809E2B8();
-                sub_8143E68(v15, v16, 1);
+                grid_stepPackedTileCoordsInDirection(v15, v16, 1);
                 v17 = ConvertGroundmanMinigameGridCoordsToMapCoords();
                 sub_809323A(v17, v18, v13, v14);
                 sub_80931FA(16);

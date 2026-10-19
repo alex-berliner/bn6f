@@ -2519,10 +2519,10 @@ unsigned int __fastcall sub_8143DEA(int a1)
     v1 = sub_8143EA4();
     v2 = sub_809E2B8();
     if ( v2 & 1 )
-        return sub_8143E68(v1, v2, 1);
+        return grid_stepPackedTileCoordsInDirection(v1, v2, 1);
     v4 = (v2 + 1) & 7;
-    v5 = sub_8143E68(v1, (v2 - 1) & 7, 1);
-    v6 = sub_8143E68(v1, v4, 1);
+    v5 = grid_stepPackedTileCoordsInDirection(v1, (v2 - 1) & 7, 1);
+    v6 = grid_stepPackedTileCoordsInDirection(v1, v4, 1);
     v7 = sub_809E1AE();
     v8 = ConvertGroundmanMinigameGridCoordsToMapCoords();
     v10 = calc_hypotFixed12(v8 - v7, v9 - HIDWORD(v7));
@@ -2534,7 +2534,7 @@ unsigned int __fastcall sub_8143DEA(int a1)
 
 
 // 0x8143e68
-unsigned int __fastcall sub_8143E68(unsigned int a1, int a2, int a3)
+unsigned int __fastcall grid_stepPackedTileCoordsInDirection(unsigned int a1, int a2, int a3)
 {
     return (a1 + byte_8143E94[2 * a2] * a3) | (((a1 >> 8) + byte_8143E94[2 * a2 + 1] * a3) << 8);
 }

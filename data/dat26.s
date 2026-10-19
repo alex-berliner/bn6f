@@ -1104,7 +1104,7 @@ sub_8093074::
 	mov r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8143E68
+	bl grid_stepPackedTileCoordsInDirection
 	str r0, [r7]
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
@@ -1160,7 +1160,7 @@ loc_8093100::
 	mov r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8143E68
+	bl grid_stepPackedTileCoordsInDirection
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
 	mov r4, #0x40 

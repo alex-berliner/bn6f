@@ -4463,9 +4463,9 @@ loc_8048D4E:
 // symdb: Increments (saturating at 255) the per-item purchase counter for a given item id in one of the shop-data item lists.
 // symdb: (r0 = list/table index (e.g. 9 = shop), r1 = item id) -> r0 = destroyed; increments count byte
 // symdb: of matching record
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048D60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_incrementPurchaseCount.yaml
 	thumb_local_start
-sub_8048D60:
+shop_incrementPurchaseCount:
 	push {r4-r7,lr}
 	mov r6, r1
 	ldr r7, off_8048F98 // =dword_8046B98
@@ -4500,7 +4500,7 @@ loc_8048D92:
 	blt loc_8048D78
 locret_8048D9A:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8048D60
+	thumb_func_end shop_incrementPurchaseCount
 
 	thumb_local_start
 sub_8048D9C:
@@ -8227,7 +8227,7 @@ loc_804A978:
 	bl TakeChips // (int idx, int searchItem, int off) -> void*
 	mov r0, #9
 	ldrh r1, [r7]
-	bl sub_8048D60
+	bl shop_incrementPurchaseCount
 	add r7, #0x20 
 	add r4, #1
 	cmp r4, r6

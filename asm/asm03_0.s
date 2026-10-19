@@ -14227,9 +14227,9 @@ dword_802CB34:
 // symdb: Records both sides' total damage taken in the battle-result struct at 203EAD0 and stores which side took less damage.
 // symdb: (r0 = total damage taken by side 1, r1 = total damage taken by side 0) -> r0 = 0; writes
 // symdb: dword_203EAD0 struct and byte [r5,#0x10]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CB38.yaml
-	thumb_func_start sub_802CB38
-sub_802CB38:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setDamageTakenComparison.yaml
+	thumb_func_start battle_setDamageTakenComparison
+battle_setDamageTakenComparison:
 	push {r4,r6,r7,lr}
 	ldr r7, off_802CB74 // =dword_203EAD0 
 	strh r0, [r7,#0x8] // (word_203EAD8 - 0x203ead0)
@@ -14264,7 +14264,7 @@ loc_802CB66:
 	.balign 4, 0
 off_802CB74:
 	.word dword_203EAD0
-	thumb_func_end sub_802CB38
+	thumb_func_end battle_setDamageTakenComparison
 
 // symdb: Runs one update tick of the battle sub-state machine at 203EAD0 and returns busy/advance flags that drive the battle-phase script.
 // symdb: () -> r0 = busy flag (nonzero = sub-state machine still running), r1 = advance flag (1 = caller

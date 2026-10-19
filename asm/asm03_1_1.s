@@ -7858,7 +7858,7 @@ sub_803C7E8:
 	beq locret_803C838
 	cmp r0, #0xfe
 	beq loc_803C7FE
-	bl sub_8146808
+	bl rfu_findMatchingPeerSlot
 	cmp r0, #4
 	bne loc_803C81E
 loc_803C7FE:

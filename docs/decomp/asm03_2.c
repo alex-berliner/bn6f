@@ -2193,7 +2193,7 @@ LABEL_16:
 
 
 // 0x8048d60
-int __fastcall sub_8048D60(int a1, int a2)
+int __fastcall shop_incrementPurchaseCount(int a1, int a2)
 {
     int v2; // r10
     int v3; // r6
@@ -4497,7 +4497,7 @@ int sub_804A970()
     do
     {
         TakeChips(*(v1 + 7) << 16 >> 23, *(v1 + 7) & 0x7F, 1);
-        result = sub_8048D60(9, *v1);
+        result = shop_incrementPurchaseCount(9, *v1);
         v1 += 16;
         ++v3;
     }

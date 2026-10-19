@@ -4710,7 +4710,7 @@ off_80BA378:
 	.word off_80BA37C
 off_80BA37C:
 	.word sub_80BA388+1
-	.word sub_80BA3D8+1
+	.word battle_dispatchCurActionHandler+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0xe_80BA364
 
@@ -4750,9 +4750,9 @@ sub_80BA388:
 // symdb: Dispatches to the per-action state handler for the battle object's current action (CurAction index).
 // symdb: (r5 = battle object, no args) -> tail-jumps to handler table[CurAction]; returns whatever the
 // symdb: handler returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BA3D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCurActionHandler.yaml
 	thumb_local_start
-sub_80BA3D8:
+battle_dispatchCurActionHandler:
 	push {lr}
 	ldr r1, off_80BA3E8 // =off_80BA3EC 
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -4774,7 +4774,7 @@ off_80BA3EC:
 	.word sub_80BA5D2+1
 	.word sub_80BA5F6+1
 	.word battle_deathAnimStateHandler+1
-	thumb_func_end sub_80BA3D8
+	thumb_func_end battle_dispatchCurActionHandler
 
 	thumb_local_start
 sub_80BA414:
@@ -6079,7 +6079,7 @@ off_80BACA8:
 off_80BACAC:
 	.word battle_stepProcessCollectedPanels+1
 	.word battle_breakFrontPanelsWaitPhase+1
-	.word sub_80BAD76+1
+	.word battle_objectThreeStepDelayUpdate+1
 	.word sub_80BAD34+1
 	thumb_func_end battle_stepDispatchPanelPhase
 
@@ -6203,9 +6203,9 @@ locret_80BAD74:
 // symdb: Battle-object update that waits 16 frames per step, fires sub_80BAEC0 for steps 0-2, then ends the action with CurAction 0x14.
 // symdb: (r5 = battle object) -> void; sets oBattleObject fields PhaseInitialized, Param3, Timer,
 // symdb: CurAction, CurPhaseAndPhaseInitialized
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BAD76.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectThreeStepDelayUpdate.yaml
 	thumb_local_start
-sub_80BAD76:
+battle_objectThreeStepDelayUpdate:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -6239,7 +6239,7 @@ loc_80BADAA:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80BADB2:
 	pop {pc}
-	thumb_func_end sub_80BAD76
+	thumb_func_end battle_objectThreeStepDelayUpdate
 
 	thumb_local_start
 sub_80BADB4:
@@ -8348,7 +8348,7 @@ off_80BBC18:
 	.word sub_80BBC80+1
 	.word battle_slideToOwnPanelPhase+1
 	.word battle_earthquakeAttackUpdate+1
-	.word sub_80BBDAC+1
+	.word battle_objectTimedSelfDestructUpdate+1
 	thumb_func_end sub_80BBC04
 
 	thumb_local_start
@@ -8565,9 +8565,9 @@ locret_80BBDAA:
 
 // symdb: Battle-object update state that plays an animation for a fixed timer, then plays a sound, disables the object's hitbox, and destroys the object.
 // symdb: (r5 = battle object, implicit) -> void; no arguments, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BBDAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectTimedSelfDestructUpdate.yaml
 	thumb_local_start
-sub_80BBDAC:
+battle_objectTimedSelfDestructUpdate:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	tst r0, r0
@@ -8598,7 +8598,7 @@ loc_80BBDCC:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_80BBDE6:
 	pop {pc}
-	thumb_func_end sub_80BBDAC
+	thumb_func_end battle_objectTimedSelfDestructUpdate
 
 	thumb_func_start sub_80BBDE8
 sub_80BBDE8:
@@ -8897,7 +8897,7 @@ loc_80BBFFA:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	b locret_80BC022
 loc_80BC012:
-	bl sub_80BC100
+	bl battle_collectStandardObjectIds
 	strb r0, [r5,#oBattleObject_Param1]
 	tst r0, r0
 	beq locret_80BC022
@@ -9040,9 +9040,9 @@ locret_80BC0FE:
 // symdb: Scans the battle object list, writes the IDs of all 'standard' battle objects into the caller's object at +0x60 as an array, and returns how many were found.
 // symdb: (); caller's r5 = battle object base (implicit dest pointer) -> r0 = count of standard objects;
 // symdb: IDs stored at [r5 + 0x60 + i*4]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BC100.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectStandardObjectIds.yaml
 	thumb_local_start
-sub_80BC100:
+battle_collectStandardObjectIds:
 	push {r4,r6,r7,lr}
 	mov r0, #oBattleState_BattleObjectList
 	mov r7, r10
@@ -9074,7 +9074,7 @@ loc_80BC134:
 	ble loc_80BC10E
 	mov r0, r6
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80BC100
+	thumb_func_end battle_collectStandardObjectIds
 
 	thumb_local_start
 sub_80BC13E:
@@ -21814,7 +21814,7 @@ off_80C1A24:
 	.word off_80C1A28
 off_80C1A28:
 	.word battle_initEnemy438+1
-	.word sub_80C1A7C+1
+	.word battle_objectRunCurrentAction+1
 	.word object_freeMemory+1
 	thumb_func_end t1_0x33_80C1A10
 
@@ -21856,9 +21856,9 @@ dword_80C1A78:
 // symdb: Battle object dispatcher: jumps to the per-action handler selected by the object's CurAction field.
 // symdb: (r5 = battle object) -> tail-calls action handler for oBattleObject_CurAction; handler address
 // symdb: returned in r0 to caller's bx path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C1A7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectRunCurrentAction.yaml
 	thumb_local_start
-sub_80C1A7C:
+battle_objectRunCurrentAction:
 	push {lr}
 	ldr r1, off_80C1A8C // =off_80C1A90 
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -21880,7 +21880,7 @@ off_80C1A90:
 	.word sub_80C1DA0+1
 	.word sub_80C1DC4+1
 	.word object_stateDespawn+1
-	thumb_func_end sub_80C1A7C
+	thumb_func_end battle_objectRunCurrentAction
 
 // symdb: One-time phase handler for a battle object: plays sound effect 0x94, switches to animation 3, waits 3 frames, then advances the object to CurAction 4.
 // symdb: (r0 = scratch, uses r5 = battle object pointer) -> void; sets PhaseInitialized, CurAnim, object
@@ -24246,7 +24246,7 @@ off_80C2BF8:
 	.word sub_80C2D56+1
 	.word sub_80C2D8C+1
 	.word object_appearWaitState+1
-	.word sub_80C2E6E+1
+	.word object_phaseDelayThenNextAction+1
 	thumb_func_end sub_80C2BE6
 
 	thumb_local_start
@@ -24577,9 +24577,9 @@ locret_80C2E6C:
 // symdb: Battle-object phase handler: one-time setup (anim 0xF, 60-frame timer, queue something one panel ahead via sub_80C2FBC), then counts down and on expiry returns to phase 0 with CurAction=8.
 // symdb: (r5 = battle object ptr; r0/r1 unused on entry) -> void; sets PhaseInitialized=4 on first run,
 // symdb: then Timer countdown, ends with CurPhaseAndPhaseInitialized=0 and CurAction=8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C2E6E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_phaseDelayThenNextAction.yaml
 	thumb_local_start
-sub_80C2E6E:
+object_phaseDelayThenNextAction:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -24615,7 +24615,7 @@ loc_80C2E9E:
 	strb r0, [r5,#oBattleObject_CurAction]
 locret_80C2EAE:
 	pop {r4,pc}
-	thumb_func_end sub_80C2E6E
+	thumb_func_end object_phaseDelayThenNextAction
 
 	thumb_local_start
 sub_80C2EB0:
@@ -61550,7 +61550,7 @@ off_80D3AE4:
 off_80D3AE8:
 	.word battle_objTimedMovePhaseUpdate+1
 	.word object_stepGlideToPanel+1
-	.word sub_80D3BC2+1
+	.word battle_countdownPhaseStep+1
 	.word sub_80D3C44+1
 	.word object_spawnEffect0ThenExpire+1
 off_80D3AFC:
@@ -61673,9 +61673,9 @@ locret_80D3BC0:
 // symdb: Per-frame battle-object phase step: counts down a per-Param1 duration for up to 4 repeat cycles (anim 0x14), with a periodic tick, then leaves the phase
 // symdb: (r0 = unused on entry; r5 = battle object) -> r0 = scratch; updates oBattleObject_Timer, Timer2,
 // symdb: Param4, CurAnim, CurAction, CurPhaseAndPhaseInitialized
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D3BC2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_countdownPhaseStep.yaml
 	thumb_local_start
-sub_80D3BC2:
+battle_countdownPhaseStep:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -61740,7 +61740,7 @@ off_80D3C38:
 	.word byte_80D3C3C
 byte_80D3C3C:
 	.byte 0x50, 0x0, 0x5A, 0x0, 0x64, 0x0, 0x6E, 0x0
-	thumb_func_end sub_80D3BC2
+	thumb_func_end battle_countdownPhaseStep
 
 	thumb_local_start
 sub_80D3C44:

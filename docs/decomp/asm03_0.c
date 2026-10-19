@@ -8996,7 +8996,7 @@ void __fastcall sub_802CAA6(signed int result, int a2, int a3)
 
 
 // 0x802cb38
-int __fastcall sub_802CB38(int a1, int a2)
+int __fastcall battle_setDamageTakenComparison(int a1, int a2)
 {
     int v2; // r5
     int v3; // r10

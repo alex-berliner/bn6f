@@ -10479,7 +10479,7 @@ void __fastcall sub_803C7E8(int a1)
     v2 = rfu_getLinkState();
     if ( v2 != 255 )
     {
-        if ( v2 != 254 && (v3 = sub_8146808(v2), v3 != 4) )
+        if ( v2 != 254 && (v3 = rfu_findMatchingPeerSlot(v2), v3 != 4) )
         {
             if ( !sub_8146888(v3) )
             {
