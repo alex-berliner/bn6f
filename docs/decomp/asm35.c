@@ -339,12 +339,12 @@ void __noreturn sub_812EF20()
     char *v0; // r0
 
     v0 = sub_812ED2C();
-    sub_812EF60((word_2023FA0[2 * (*(v0 + 16) + *(v0 + 18))] - 144) >> 2);
+    renderTextWindowToBg((word_2023FA0[2 * (*(v0 + 16) + *(v0 + 18))] - 144) >> 2);
 }
 
 
 // 0x812ef60
-void __fastcall __noreturn sub_812EF60(int a1)
+void __fastcall __noreturn renderTextWindowToBg(int a1)
 {
     renderTextGfx_8045F8C(&unk_2025070, a1, byte_201B200, 100710400);
     JUMPOUT(loc_812EF76);

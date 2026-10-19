@@ -402,15 +402,15 @@ off_3005E5C:
 
 // symdb: Sets IME = 1 to globally enable interrupts, used during startup.
 // symdb: () -> void; writes 1 to IME (0x04000208) halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E60.yaml
-	thumb_func_start sub_3005E60
-sub_3005E60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_enableInterrupts.yaml
+	thumb_func_start start_enableInterrupts
+start_enableInterrupts:
 	push {r4,lr}
 	ldr r3, off_3005E74 // =InterruptMasterEnableRegister
 	mov r2, #1
 	strh r2, [r3]
 	pop {r4,pc}
-	thumb_func_end sub_3005E60
+	thumb_func_end start_enableInterrupts
 
 	thumb_func_start sub_3005E6A
 sub_3005E6A:

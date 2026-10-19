@@ -2934,7 +2934,7 @@ int Is_eStruct200a6a0_Initialized()
 
 
 // 0x80024cc
-__int64 __fastcall sub_80024CC(int a1, int a2, unsigned int a3, unsigned int a4)
+__int64 __fastcall bg_scrollToProjectedPos(int a1, int a2, unsigned int a3, unsigned int a4)
 {
     int v4; // r10
     u16 *v5; // r9

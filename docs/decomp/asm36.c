@@ -67,7 +67,7 @@ int t4_sceneInit()
 	v7[12] = 0;
 	v7[13] = 0;
 	ZeroFillByEightWords(v2, 128);
-	sub_8130194();
+	t4_queueTextChars();
 	sub_8130108();
 	t4_loadSceneBackground();
 	sub_81301DC();
@@ -100,7 +100,7 @@ void t4_loadSceneBackground()
 
 
 // 0x8130194
-int sub_8130194()
+int t4_queueTextChars()
 {
 	int v0; // r10
 	char *v1; // r5
@@ -1552,7 +1552,7 @@ LABEL_10:
         {
             v4[12] = v7;
             chatbox_runScript_803FD9C_on_eTextScript201BA20(*(&dword_81312D4 + v7));
-            sub_81314E4();
+            init_loadCutsceneTextGlyphs();
         }
         goto LABEL_13;
     }
@@ -1742,7 +1742,7 @@ int __fastcall sub_8131480(int a1, int a2, int a3, int a4)
 
 
 // 0x81314e4
-void __noreturn sub_81314E4()
+void __noreturn init_loadCutsceneTextGlyphs()
 {
     char (*v0)[8]; // ST04_4
 
@@ -10737,7 +10737,7 @@ signed int sub_8138514()
 // 0x8138528
 void __noreturn sub_8138528()
 {
-    sub_8138908();
+    copyBgTileBand();
 }
 
 
@@ -11165,7 +11165,7 @@ void __noreturn sub_81388EE()
 
 
 // 0x8138908
-void __noreturn sub_8138908()
+void __noreturn copyBgTileBand()
 {
     int v0; // r5
     int v1; // ST00_4

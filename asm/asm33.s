@@ -4888,7 +4888,7 @@ loc_812579C:
 	mov r1, #1
 	tst r1, r0
 	beq loc_81257A8
-	bl sub_81266E0
+	bl battle_cycleEntryGroupIndex
 	b locret_8125804
 loc_81257A8:
 	ldrh r0, [r7,#4]
@@ -7073,9 +7073,9 @@ off_81266DC:
 // symdb: Cycles a per-entry counter through the group of entries sharing the current entry's code in the battle-menu list, playing the cursor-move sound when it advances.
 // symdb: (r5 = battle-menu work struct; r5+0x3C and r5+0x40 combine to an entry index) -> r0 = destroyed;
 // symdb: updates byte at dword_201FC20[idx*4+3]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81266E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_cycleEntryGroupIndex.yaml
 	thumb_local_start
-sub_81266E0:
+battle_cycleEntryGroupIndex:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	mov r0, #0x40 
@@ -7133,7 +7133,7 @@ off_8126744:
 	.word byte_8124AA4
 off_8126748:
 	.word 0x100
-	thumb_func_end sub_81266E0
+	thumb_func_end battle_cycleEntryGroupIndex
 
 // symdb: Progressively blits a two-part tile graphic (left 15 tiles, right 16 tiles) into a buffer, revealing more of it as an animation step counter advances.
 // symdb: void sub_812674C(void *state /* r5 */, void *unused /* r10 */) — returns sub_8126570's r3
@@ -13848,14 +13848,14 @@ off_8129C40:
 	.word sub_8129D00+1
 	.word sub_8129D58+1
 	.word sub_8129D78+1
-	.word sub_8129DC4+1
+	.word object_waitEntriesIdleThenFade+1
 	.word npc_showStateDialogue+1
 	.word npc_talkIfFlagSet+1
 	.word sub_8129D78+1
-	.word sub_8129E7C+1
+	.word object_allClearedRunScriptFade+1
 	.word sub_8129ECC+1
 	.word sub_8129D78+1
-	.word sub_8129DC4+1
+	.word object_waitEntriesIdleThenFade+1
 	thumb_func_end sub_8129C28
 
 // symdb: Reconciles a battle object's state byte (+0x20) against a lookup and either dispatches an event via sub_811A610 or triggers sub_812B218 to repair it.
@@ -14060,9 +14060,9 @@ loc_8129DAC:
 // symdb: Waits until every object pointer in the list at unk_20251A0 has its +7 flag cleared, then clears a marker bit on all entries, advances the caller's event state (running a chatbox line when leaving state 0x30), and fades the screen.
 // symdb: (r5 = event/object struct: count at +0x20, state at +3, flags at +0x1b, script offset at +0x13)
 // symdb: -> void; early-returns with screen untouched if any list entry has byte +7 nonzero
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129DC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_waitEntriesIdleThenFade.yaml
 	thumb_local_start
-sub_8129DC4:
+object_waitEntriesIdleThenFade:
 	push {r4-r7,lr}
 	bl sub_812B5AC
 	mov r3, #0x20 
@@ -14115,7 +14115,7 @@ locret_8129E20:
 	.balign 4, 0
 off_8129E24:
 	.word unk_20251A0
-	thumb_func_end sub_8129DC4
+	thumb_func_end object_waitEntriesIdleThenFade
 
 // symdb: Shows one of a handful of text-script dialogue lines chosen by an NPC object's state byte, unless the screen is fading.
 // symdb: (r0/r4? caller context, r5 = NPC/object pointer) -> r0 = script-run result (clobbered); writes
@@ -14173,9 +14173,9 @@ locret_8129E78:
 // symdb: Event trigger: if every object in the unk_20251A0 list is cleared, deactivate them all, run chatbox script 0x28 from the r5 event struct, and fade the screen.
 // symdb: (r0 unused, r5 = event/trigger struct) -> r0 = void; returns early (no script, no fade) if any
 // symdb: listed object has flag [obj+7] != 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_allClearedRunScriptFade.yaml
 	thumb_local_start
-sub_8129E7C:
+object_allClearedRunScriptFade:
 	push {r4-r7,lr}
 	bl sub_812B5AC
 	mov r3, #0x20 
@@ -14216,7 +14216,7 @@ locret_8129EC4:
 	.balign 4, 0
 off_8129EC8:
 	.word unk_20251A0
-	thumb_func_end sub_8129E7C
+	thumb_func_end object_allClearedRunScriptFade
 
 	thumb_local_start
 sub_8129ECC:
@@ -14464,7 +14464,7 @@ sub_812A058:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
 	beq loc_812A088
-	bl sub_8049D98
+	bl chatbox_expandWordTable
 	ldr r0, off_812A0C4 // =unk_201FD20 
 	ldr r1, off_812A0C8 // =unk_201FD40 
 	bl sub_8049DA0
@@ -14793,7 +14793,7 @@ sub_812A2EC:
 	mov r4, r0
 	cmp r0, #2
 	blt locret_812A338
-	bl sub_8049D98
+	bl chatbox_expandWordTable
 	mov r0, #1
 	bl sub_81468C8
 	mov r6, r0

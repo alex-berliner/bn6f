@@ -30,7 +30,7 @@ initRefs_80946D4:
 sub_8094708:
 	push {r4-r7,lr}
 	ldr r0, off_8094774 // =unk_2025404 
-	bl sub_8094738
+	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_8094708
@@ -39,7 +39,7 @@ sub_8094708:
 sub_8094714:
 	push {r4-r7,lr}
 	ldr r0, off_8094778 // =unk_2026404 
-	bl sub_8094738
+	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_8094714
@@ -53,7 +53,7 @@ sub_8094720:
 	lsl r1, r1, #8
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	ldr r0, off_8094778 // =unk_2026404 
-	bl sub_8094738
+	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -61,9 +61,9 @@ sub_8094720:
 
 // symdb: Copies a 34-row x 100-halfword block into the overworld map tilemap buffer at an offset, then redraws the tilemap around the camera.
 // symdb: (r0 = source buffer of 34 rows x 0x64 halfwords) -> r0 = 0; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094738.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_blitTilemapBlockAndRedraw.yaml
 	thumb_local_start
-sub_8094738:
+ow_blitTilemapBlockAndRedraw:
 	push {r4-r7,lr}
 	ldr r5, off_809477C // =eMapTilesState200be70 
 	ldr r7, [r5,#0xc] // (dword_200BE7C - 0x200be70)
@@ -103,6 +103,6 @@ off_8094778:
 off_809477C:
 	// <endpool> <endfile>
 	.word eMapTilesState200be70
-	thumb_func_end sub_8094738
+	thumb_func_end ow_blitTilemapBlockAndRedraw
 
 /*For debugging purposes, connect comment at any range!*/

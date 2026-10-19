@@ -9,7 +9,7 @@ int sub_80946C4()
 // 0x8094708
 int sub_8094708()
 {
-    sub_8094738(&unk_2025404);
+    ow_blitTilemapBlockAndRedraw(&unk_2025404);
     return 0;
 }
 
@@ -17,7 +17,7 @@ int sub_8094708()
 // 0x8094714
 int sub_8094714()
 {
-    sub_8094738(&unk_2026404);
+    ow_blitTilemapBlockAndRedraw(&unk_2026404);
     return 0;
 }
 
@@ -26,13 +26,13 @@ int sub_8094714()
 int __fastcall sub_8094720(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&unk_2026404, 4096);
-    sub_8094738(&unk_2026404);
+    ow_blitTilemapBlockAndRedraw(&unk_2026404);
     return 0;
 }
 
 
 // 0x8094738
-int __fastcall sub_8094738(int a1)
+int __fastcall ow_blitTilemapBlockAndRedraw(int a1)
 {
     int v1; // r6
     int v2; // r7

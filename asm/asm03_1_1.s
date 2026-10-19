@@ -2424,7 +2424,7 @@ loc_8039E26:
 	thumb_local_start
 sub_8039E2C:
 	push {r4-r7,lr}
-	bl sub_803A58C
+	bl t4_dispatchWaitStep
 	beq loc_8039E7A
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -2593,7 +2593,7 @@ off_8039F74:
 	thumb_local_start
 sub_8039F78:
 	push {r4-r7,lr}
-	bl sub_803A58C
+	bl t4_dispatchWaitStep
 	push {r0}
 	mov r0, #0x10
 	bl sub_803CB18
@@ -2706,7 +2706,7 @@ loc_803A066:
 	thumb_local_start
 sub_803A06C:
 	push {r4-r7,lr}
-	bl sub_803A58C
+	bl t4_dispatchWaitStep
 	beq loc_803A080
 	mov r0, #0xc
 	mov r1, #0x10
@@ -2738,7 +2738,7 @@ off_803A0A0:
 	thumb_local_start
 sub_803A0A4:
 	push {r4-r7,lr}
-	bl sub_803A58C
+	bl t4_dispatchWaitStep
 	beq loc_803A0B8
 	mov r0, #0xc
 	mov r1, #0x10
@@ -2767,7 +2767,7 @@ loc_803A0CE:
 	thumb_local_start
 sub_803A0D4:
 	push {r4-r7,lr}
-	bl sub_803A58C
+	bl t4_dispatchWaitStep
 	beq loc_803A0E8
 	mov r0, #0xc
 	mov r1, #0x10
@@ -2856,9 +2856,9 @@ locret_803A184:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A104
 
-// symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to sub_803BBA4, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
+// symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to chatbox_waitStepQueueCursorOam, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
 // symdb: (r5 = record whose byte at +0x0e is an index; r0-r4 scratch) -> void; sets r4 = 1 when flag 0x80
-// symdb: is clear, 0 when set, passes it as r2 to sub_803BBA4
+// symdb: is clear, 0 when set, passes it as r2 to chatbox_waitStepQueueCursorOam
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_waitStepUpdateEntities.yaml
 	thumb_local_start
 chatbox_waitStepUpdateEntities:
@@ -2876,7 +2876,7 @@ loc_803A194:
 	mul r3, r2
 	add r1, r1, r3
 	mov r2, r4
-	bl sub_803BBA4
+	bl chatbox_waitStepQueueCursorOam
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
@@ -3410,9 +3410,9 @@ loc_803A584:
 // symdb: (r5 = caller's task/state struct; r0.. passed through to dispatch) -> r0 = 1 to keep stepping, 0
 // symdb: when step completed; clobbers r4,r5? (r5 preserved as caller's), calls dispatch_803C620, table
 // symdb: handler, sub_8148214
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A58C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_dispatchWaitStep.yaml
 	thumb_local_start
-sub_803A58C:
+t4_dispatchWaitStep:
 	push {r4-r7,lr}
 	bl dispatch_803C620 // () -> (u32?, bool)
 	mov r4, r0
@@ -3447,7 +3447,7 @@ dword_803A5C4:
 	.word sub_813D750+1
 	.word 0x58
 	.word sub_803C34E+1
-	thumb_func_end sub_803A58C
+	thumb_func_end t4_dispatchWaitStep
 
 	thumb_local_start
 sub_803A5DC:
@@ -6049,9 +6049,9 @@ loc_803BBA0:
 // symdb: Queues one OAM entry for the chatbox's blinking wait-cursor, cycling its tile through three animation frames on an 18-frame loop.
 // symdb: (r0 = visibility/done flag, r1 = base id/index, r2 = frame step amount, r3/r5 = cursor state
 // symdb: struct) -> r0 = next frame counter stored at [r5+7]; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BBA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_waitStepQueueCursorOam.yaml
 	thumb_local_start
-sub_803BBA4:
+chatbox_waitStepQueueCursorOam:
 	push {r4-r7,lr}
 	mov r4, r2
 	lsl r0, r0, #0x10
@@ -6088,7 +6088,7 @@ dword_803BC00:
 	// `ldr r2, dword_803BC00` above reads this halfword together with the
 	// first instruction of sub_803BC02, i.e. the constant 0xB5F00800.
 	.hword 0x800
-	thumb_func_end sub_803BBA4
+	thumb_func_end chatbox_waitStepQueueCursorOam
 
 	thumb_local_start
 sub_803BC02:
@@ -7843,7 +7843,7 @@ sub_803C8B4:
 	push {r4,lr}
 	ldr r0, off_803C944 // =byte_200AF80
 	mov r4, r0
-	bl sub_8146D98
+	bl rfu_clearDisconnectedSlots
 	ldrb r0, [r4,#0x1] // (byte_200AF81 - 0x200af80)
 	cmp r0, #1
 	bne loc_803C8E0
@@ -7869,7 +7869,7 @@ sub_803C8E8:
 	push {r4,lr}
 	ldr r4, off_803C944 // =byte_200AF80
 	mov r0, r4
-	bl sub_8146D98
+	bl rfu_clearDisconnectedSlots
 	ldrb r0, [r4,#0x1] // (byte_200AF81 - 0x200af80)
 	cmp r0, #1
 	bne loc_803C906

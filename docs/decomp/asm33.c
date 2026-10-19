@@ -2551,7 +2551,7 @@ int __fastcall battle_input_tick_8125784(int a1, int a2, int a3)
     if ( v6 & 0xA )
         return menu_confirmExitAndFade_812580C(68, 10, a3);
     if ( v6 & 1 )
-        return sub_81266E0();
+        return battle_cycleEntryGroupIndex();
     if ( v5[2] & 0x20 )
     {
         if ( *(v3 + 100) )
@@ -3776,7 +3776,7 @@ _BYTE *battle_updateChipSprite_8126630()
 
 
 // 0x81266e0
-int sub_81266E0()
+int battle_cycleEntryGroupIndex()
 {
     int v0; // r5
     int v1; // r2
@@ -7742,7 +7742,7 @@ int __fastcall sub_8129D78(int a1)
 
 
 // 0x8129dc4
-int sub_8129DC4()
+int object_waitEntriesIdleThenFade()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -7827,7 +7827,7 @@ int npc_talkIfFlagSet()
 
 
 // 0x8129e7c
-int sub_8129E7C()
+int object_allClearedRunScriptFade()
 {
     int v0; // r5
     int v1; // r7
@@ -8025,7 +8025,7 @@ int __fastcall sub_812A058(int a1)
     sub_8146588();
     if ( eStruct200BC30_getJumpOffset00() != 8 )
     {
-        sub_8049D98();
+        chatbox_expandWordTable();
         sub_8049DA0(&unk_201FD20, &unk_201FD40);
         sub_814695C(&unk_201FD20);
         v2 = sub_8049D7C();
@@ -8264,7 +8264,7 @@ int sub_812A2EC()
     result = sub_81468BC();
     if ( result >= 2 )
     {
-        sub_8049D98();
+        chatbox_expandWordTable();
         v2 = sub_81468C8(1u);
         v3 = sub_81468E0(1u);
         v4 = v3;

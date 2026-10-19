@@ -78,7 +78,7 @@ t4_sceneInit:
 	mov r0, r7
 	mov r1, #0x80
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
-	bl sub_8130194
+	bl t4_queueTextChars
 	bl sub_8130108
 	bl t4_loadSceneBackground
 	bl sub_81301DC
@@ -165,9 +165,9 @@ off_8130190:
 // symdb: Builds a queue of halfword text entries at word_2023FA0 from the text buffer unk_20018EC for the t4 overlay cutscene renderer.
 // symdb: () -> void; initializes word_2023FA0 entry queue (4 bytes per entry: halfword char code,
 // symdb: halfword 1) and clears [sub_8130404 result +0xC]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130194.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_queueTextChars.yaml
 	thumb_local_start
-sub_8130194:
+t4_queueTextChars:
 	push {r4-r7,lr}
 	bl t4_getWork
 	mov r5, r0
@@ -204,7 +204,7 @@ off_81301D4:
 	.word unk_20018EC
 dword_81301D8:
 	.word 0x10
-	thumb_func_end sub_8130194
+	thumb_func_end t4_queueTextChars
 
 	thumb_func_start sub_81301DC
 sub_81301DC:
@@ -2415,7 +2415,7 @@ loc_813126C:
 	ldr r1, off_81312D0 // =dword_81312D4
 	ldrb r0, [r1,r0]
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
-	bl sub_81314E4
+	bl init_loadCutsceneTextGlyphs
 	b locret_81312C8
 loc_8131292:
 	mov r0, #JOYPAD_B
@@ -2535,7 +2535,7 @@ loc_8131350:
 	orr r0, r1
 	strb r0, [r7,#0x12]
 	bl init_cutsceneEmotionEntries
-	bl sub_81314E4
+	bl init_loadCutsceneTextGlyphs
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -2743,9 +2743,9 @@ off_81314E0:
 // symdb: During cutscene scene setup, renders one of three sets of four glyphs from the text font into the text-layer VRAM tiles.
 // symdb: (r0 = unused/ignored) -> r0 = destroyed; calls sub_81312EC to get cutscene state, reads
 // symdb: state+0xC to select a glyph set.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81314E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_loadCutsceneTextGlyphs.yaml
 	thumb_local_start
-sub_81314E4:
+init_loadCutsceneTextGlyphs:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	bl sub_81312EC
@@ -2808,7 +2808,7 @@ byte_8131560:
 	.byte 0x94, 0x0, 0x9C, 0x0, 0xC0, 0x0, 0x90, 0x0
 byte_8131568:
 	.byte 0x9C, 0x0, 0xC8, 0x0, 0xB0, 0x0, 0x90, 0x0
-	thumb_func_end sub_81314E4
+	thumb_func_end init_loadCutsceneTextGlyphs
 // symdb: Copies a fixed 8x8 tile block of tile IDs into BG tile block 0 at tile position (0x11, 3), used by the eLink match object's update paths to redraw part of the background.
 // symdb: () -> void; no return value, no flag guarantees
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_copyBgTileBlock11x3.yaml
@@ -17586,7 +17586,7 @@ sub_8138514:
 	thumb_local_start
 sub_8138528:
 	push {lr}
-	bl sub_8138908
+	bl copyBgTileBand
 
 	add r3, #1
 	str r3, [r5,#0x18]
@@ -18129,9 +18129,9 @@ sub_81388EE:
 // symdb: Draws a scrolling 32x8 background-map band plus a fixed 14x6 tile patch from byte_2016A00 into BG tile block 1, positioned by a counter in the caller's struct.
 // symdb: (r5 = struct ptr; uses byte at r5+0xC as wrap-around position counter) -> r0 = void; no flags
 // symdb: used by callers likely
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138908.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyBgTileBand.yaml
 	thumb_local_start
-sub_8138908:
+copyBgTileBand:
 	push {r3-r5,lr}
 	ldrb r1, [r5,#0xc]
 	add r1, #0xa0
@@ -18165,6 +18165,6 @@ dword_813893C:
 dword_8138940:
 	// <endpool> <endfile>
 	.word 0xD000
-	thumb_func_end sub_8138908
+	thumb_func_end copyBgTileBand
 
 /*For debugging purposes, connect comment at any range!*/

@@ -132,7 +132,7 @@ int sub_80A4ACC()
         GetPositiveSignedRNG();
         SpawnOverworldMapObject(
             2,
-            ((*sub_80A4BD4 + (v8 & 0xF) - 7) << 16) + *v4 + *(v0 + 12),
+            ((*ow_freeObject + (v8 & 0xF) - 7) << 16) + *v4 + *(v0 + 12),
             ((loc_80A4BD6 + ((v8 >> 8) & 0xF) - 7) << 16) + v4[1] + *(v0 + 16),
             ((*(&loc_80A4BD6 + 1) + ((v8 >> 16) & 0xF) - 7) << 16) + v4[2] + *(v0 + 20));
         v11 = *(v0 + 40);
@@ -159,7 +159,7 @@ int sub_80A4ACC()
 
 
 // 0x80a4bd4
-int sub_80A4BD4()
+int ow_freeObject()
 {
     return FreeOverworldMapObject();
 }
@@ -1349,7 +1349,7 @@ signed int sub_80A5D80()
     int v8; // r0
 
     sub_80A5DE8();
-    sub_80A5E00();
+    sprite_updateAnimTowardTarget();
     v1 = 0;
     v2 = v0[3];
     v3 = v0[10];
@@ -1421,7 +1421,7 @@ int sub_80A5DE8()
 
 
 // 0x80a5e00
-void sub_80A5E00()
+void sprite_updateAnimTowardTarget()
 {
     int v0; // r5
     int v1; // r0
@@ -3232,7 +3232,7 @@ void __noreturn ow_objectBrightenToWhiteUpdate()
 
 
 // 0x80a79d4
-int sub_80A79D4()
+int ow_freeObjectWrapper()
 {
     return FreeOverworldMapObject();
 }
@@ -3627,7 +3627,7 @@ void __noreturn owMapObject_updateBeastSpEncounter_80A7CEA()
 
 
 // 0x80a7cf6
-int sub_80A7CF6()
+int ow_releaseMapObjectCallback()
 {
     return FreeOverworldMapObject();
 }
@@ -4090,7 +4090,7 @@ void __fastcall __noreturn battleObject_updateSpriteAndMaybeReloadAnim_80A827C(i
 
 
 // 0x80a829c
-int sub_80A829C()
+int deleteOverworldMapObject()
 {
     return FreeOverworldMapObject();
 }
@@ -6120,7 +6120,7 @@ void sub_80A96C8()
         sprite_setAnimation(v0, 7u);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_80A974C();
+        object_fadeWhiteUpdate();
     }
     sprite_update(v0);
 }
@@ -6129,7 +6129,7 @@ void sub_80A96C8()
 // 0x80a96f0
 void __fastcall __noreturn sub_80A96F0(int a1)
 {
-    sub_80A974C();
+    object_fadeWhiteUpdate();
 }
 
 
@@ -6161,7 +6161,7 @@ signed int sub_80A971C()
 
 
 // 0x80a974c
-void __noreturn sub_80A974C()
+void __noreturn object_fadeWhiteUpdate()
 {
     int v0; // r5
     int v1; // r0
@@ -7197,7 +7197,7 @@ void __noreturn sub_80AA322()
 
 
 // 0x80aa36c
-int sub_80AA36C()
+int ow_deleteMapObject()
 {
     return FreeOverworldMapObject();
 }
@@ -7542,7 +7542,7 @@ signed int battle_checkVersionBossSpawn()
                 }
             }
         }
-        if ( v4 >= 4 && sub_802D652(v3) >= *(&word_80AA754 + v4 - 4) )
+        if ( v4 >= 4 && battle_getSpawnSlotByte(v3) >= *(&word_80AA754 + v4 - 4) )
             v1 = 1;
     }
     return v1;

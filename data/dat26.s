@@ -1127,7 +1127,7 @@ sub_80930A4::
 	bl sub_8143BB0
 	bne loc_8093154
 	ldr r0, [r7]
-	bl sub_8143EDC
+	bl groundmanMinigameFindActiveEntry
 	beq loc_80930DC
 	mov r0, r1
 	bl sub_8143B5E
@@ -1146,7 +1146,7 @@ loc_80930DC::
 	bl sub_8093074
 	bl owPlayer_disableWallCollision_809e254
 	ldr r0, [r7]
-	bl sub_8143EDC
+	bl groundmanMinigameFindActiveEntry
 	bne loc_8093168
 	bl owPlayer_enableWallCollision_809e248
 	b loc_8093168

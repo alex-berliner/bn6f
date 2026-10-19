@@ -707,7 +707,7 @@ int battle_getObjectAllianceTeam_800F49E()
 
 
 // 0x800f4a8
-int sub_800F4A8()
+int battle_getAllianceList()
 {
     int v0; // r5
 
@@ -3221,7 +3221,7 @@ int __fastcall dispatchHandlerById_8010D58(int a1)
     v1 = 4 * a1;
     if ( a1 != 255 )
     {
-        if ( sub_800F4A8() < 1 )
+        if ( battle_getAllianceList() < 1 )
             return (*(&off_8010D84 + v1))();
         sub_800F4B2(1);
     }
@@ -4607,7 +4607,7 @@ signed int sub_8011E40()
     *(v0 + 5) = 20;
     *(v0 + 10) = 20;
     *(v0 + 2) = -128;
-    if ( sub_800F4A8() < 1 )
+    if ( battle_getAllianceList() < 1 )
     {
         v1 = 80;
         v2 = 0;
@@ -4637,7 +4637,7 @@ signed int sub_8011E78()
     *(v0 + 5) = 20;
     *(v0 + 10) = 20;
     *(v0 + 2) = 3;
-    if ( sub_800F4A8() < 1 )
+    if ( battle_getAllianceList() < 1 )
     {
         v1 = 40;
         v2 = 1049857;
@@ -5226,7 +5226,7 @@ signed int sub_8012326()
 
 
 // 0x801233c
-int sub_801233C()
+int writeChipParams3()
 {
     return (loc_80126EA)(3);
 }
@@ -5247,7 +5247,7 @@ int sub_8012350()
 
 
 // 0x801235a
-int sub_801235A()
+int start_writeChipParamsA2()
 {
     return (loc_80126EA)(162);
 }
@@ -5345,7 +5345,7 @@ int sub_80123E6()
 
 
 // 0x80123f0
-int sub_80123F0()
+int init_writeChipParams04e()
 {
     return (loc_80126EA)(78);
 }
@@ -5387,7 +5387,7 @@ int sub_8012422()
 
 
 // 0x801242c
-int sub_801242C()
+int init_writeChipParamsA4()
 {
     return (loc_80126EA)(164);
 }
@@ -5456,7 +5456,7 @@ int sub_8012484()
 
 
 // 0x801248e
-int sub_801248E()
+int init_chipParams30()
 {
     return (loc_80126EA)(30);
 }
@@ -5786,7 +5786,7 @@ int __fastcall somethingWriteChipParams_80126E4(int a1)
 
 
 // 0x801273e
-int sub_801273E()
+int battle_scanPanelsForFlagMatch()
 {
     int v0; // r5
     int v1; // ST10_4
@@ -8051,7 +8051,7 @@ char *battle_naviAI_tick_8013DA0()
                 if ( sub_8013774(result, 44) )
                 {
                     battleObject_markUsedAction_80143A6();
-                    result = sub_8014446();
+                    result = ai_clearCounterHitChain();
                 }
                 else
                 {
@@ -8062,7 +8062,7 @@ char *battle_naviAI_tick_8013DA0()
                     {
                         *(v3 + 58) = 0;
                         battleObject_markUsedAction_80143A6();
-                        sub_8014446();
+                        ai_clearCounterHitChain();
                         v4 = *(v3 + 11);
                         v5 = 0;
                         v6 = 0;
@@ -8819,7 +8819,7 @@ signed int ai_clearCounterHitChainFlag()
 
 
 // 0x8014446
-int sub_8014446()
+int ai_clearCounterHitChain()
 {
     int v0; // r5
     int result; // r0
@@ -9131,7 +9131,7 @@ _DWORD *battle_grantSuperArmorInvulnerability()
     if ( !*(v0 + 64) )
         sub_80E1620(0, v1, v2, v3);
     object_setInvulnerableTime(0xFFFF);
-    return sub_802D310();
+    return battle_clearAIDataStateBlock();
 }
 
 
@@ -9151,7 +9151,7 @@ _DWORD *sub_8014674()
     object_updateCollisionData(v2, 16, 2, v3);
     if ( !*(v0 + 64) )
         sub_80E1620(0, v4, v5, v6);
-    return sub_802D310();
+    return battle_clearAIDataStateBlock();
 }
 
 
@@ -9246,7 +9246,7 @@ _DWORD *battle_applySuperArmorInvulnerability()
 {
     object_setFlag1(0x20000);
     object_setInvulnerableTime(0xFFFF);
-    return sub_802D310();
+    return battle_clearAIDataStateBlock();
 }
 
 
@@ -9262,7 +9262,7 @@ _DWORD *sub_80147B2()
     object_updateCollisionData(v1, 16, 2, v2);
     object_setFlag1(0x8000000);
     object_setInvulnerableTime(0xFFFF);
-    return sub_802D310();
+    return battle_clearAIDataStateBlock();
 }
 
 
@@ -11484,7 +11484,7 @@ int __fastcall panelFlagCheck_8015D80(int a1, int a2, int a3, int a4)
 
 
 // 0x8015df0
-int __fastcall sub_8015DF0(int a1, int a2, int a3, int a4)
+int __fastcall object_pickRandomMatchingPanel(int a1, int a2, int a3, int a4)
 {
     unsigned __int8 *v4; // r4
     int v5; // r0
@@ -18712,16 +18712,16 @@ int sub_801C368()
     int v2; // ST00_4
 
     v1 = sub_802D1B4(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
-    sub_801C3A4(v1, 100714880);
+    sprite_drawRightAligned3DigitNumber(v1, 100714880);
     sub_801C3EE(v1, byte_3001670, 0);
     v2 = sub_802D1BE(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
-    sub_801C3A4(v2, 100715072);
+    sprite_drawRightAligned3DigitNumber(v2, 100715072);
     return sub_801C3EE(v2, &word_3001684, 1);
 }
 
 
 // 0x801c3a4
-int __fastcall sub_801C3A4(int a1, int a2)
+int __fastcall sprite_drawRightAligned3DigitNumber(int a1, int a2)
 {
     int v2; // r6
     int v3; // r0
@@ -19283,7 +19283,7 @@ int sub_801CA28()
 
 
 // 0x801ca34
-void sub_801CA34()
+void ow_drawTilePatchByState()
 {
     unsigned __int8 *v0; // r5
     int v1; // r6
@@ -20174,10 +20174,10 @@ char *battle_queueCounterDigitGfx()
     if ( v6 )
     {
         v2 = 1;
-        sub_801D61A(v6);
+        battle_queueDigitTileGfx(v6);
     }
-    sub_801D61A(v5);
-    result = sub_801D61A(v4);
+    battle_queueDigitTileGfx(v5);
+    result = battle_queueDigitTileGfx(v4);
     if ( !v2 )
         result = (loc_8000AC8)(dword_86A5D60, 100759392, 32);
     return result;
@@ -20185,7 +20185,7 @@ char *battle_queueCounterDigitGfx()
 
 
 // 0x801d61a
-int __fastcall sub_801D61A(int a1)
+int __fastcall battle_queueDigitTileGfx(int a1)
 {
     return (loc_8000AC8)(&off_86E968C + 8 * a1);
 }
@@ -21848,7 +21848,7 @@ int sub_801EC84()
 
 
 // 0x801ec90
-int sub_801EC90()
+int e_requestPaletteLoad()
 {
     (loc_8000AC8)(dword_86E9A0C, byte_30016D0, 32);
     return flagSetBits_eStruct2035280_801BEB8(0x400000);

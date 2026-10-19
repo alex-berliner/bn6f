@@ -3222,7 +3222,7 @@ byte_808F788::
 	cs_run_text_script_not_from_mem byte2=0x04
 	cs_wait_chatbox byte1=0x80
 	cs_pause byte1=0xFF byte2=0x0A
-	cs_call_native_with_return_value ptr1=sub_808FBEC+1
+	cs_call_native_with_return_value ptr1=camera_loadMapCameraPos+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_call_native_with_return_value ptr1=sub_808FC7C+1
 	cs_play_sound hword1=0x017D

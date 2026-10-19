@@ -2910,8 +2910,8 @@ dword_814321C:
 	.word 0x1E
 	thumb_func_end sub_8143204
 
-// symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (sub_81432FA).
-// symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (sub_81432FA's
+// symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (ow_cybercrowSetCrowRecordState).
+// symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (ow_cybercrowSetCrowRecordState's
 // symdb: ldrb), r1 = 0x14; r4-r7 preserved (push/pop r4-r7); clobbers r2, r3, lr and the flags. One
 // symdb: primary GetRNG.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143220.yaml
@@ -2929,7 +2929,7 @@ sub_8143220:
 	strh r0, [r5,#2]
 	mov r0, r4
 	mov r1, #1
-	bl sub_81432FA
+	bl ow_cybercrowSetCrowRecordState
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_8143244:
@@ -2965,7 +2965,7 @@ loc_814325A:
 	bge loc_8143282
 	mov r0, r6
 	mov r1, #2
-	bl sub_81432FA
+	bl ow_cybercrowSetCrowRecordState
 	b loc_814328A
 loc_8143282:
 	add r5, #0x14
@@ -3010,7 +3010,7 @@ loc_814329A:
 loc_81432C6:
 	mov r0, r4
 	mov r1, #1
-	bl sub_81432FA
+	bl ow_cybercrowSetCrowRecordState
 loc_81432CE:
 	add r5, #0x14
 	add r4, #1
@@ -3045,9 +3045,9 @@ loc_81432EC:
 // symdb: Writes a new state byte into one of the eight Cybercrow crow records unless it is locked at state 3.
 // symdb: (r0 = crow record index, r1 = new state value) -> r0 = record pointer (side-effect only); no
 // symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81432FA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_cybercrowSetCrowRecordState.yaml
 	thumb_local_start
-sub_81432FA:
+ow_cybercrowSetCrowRecordState:
 	push {r4-r7,lr}
 	mov r4, r1
 	bl ow_cybercrowGetCrowRecord
@@ -3060,7 +3060,7 @@ locret_814330C:
 	pop {r4-r7,pc}
 	.byte 0, 0
 	.word 0x1E
-	thumb_func_end sub_81432FA
+	thumb_func_end ow_cybercrowSetCrowRecordState
 
 // symdb: Spawns a crow into the first free slot of byte_2000D20 (max 6 active): 2 primary GetRNG calls — one raw heading stored at +4, one & 0xF0 (<<1) angle on a fixed radius around the player via math_cosTable / math_sinTable — then SpawnOverworldMapObject(type 0x18).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143314.yaml
@@ -3505,7 +3505,7 @@ sub_8143978:
 	movflag EVENT_1670
 	mov r2, #0x30 
 	bl SetEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
-	bl sub_8143C18
+	bl get_groundmanMinigameMapId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_8143A46
@@ -3597,7 +3597,7 @@ sub_8143A54:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_8143B04
-	bl sub_8143C18
+	bl get_groundmanMinigameMapId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_8143B04
@@ -3623,7 +3623,7 @@ loc_8143A9A:
 	bl sub_80357AE
 	bne loc_8143AC6
 	bl sub_8143DEA
-	bl sub_8143EDC
+	bl groundmanMinigameFindActiveEntry
 	beq loc_8143AC6
 	bl sub_8143EA4
 	bl sub_8143BB0
@@ -3821,9 +3821,9 @@ byte_8143C10:
 // symdb: Returns a map ID (0xD32 or 0xD33) looked up from the current Groundman minigame map index.
 // symdb: () -> r0 = halfword map ID from table dword_8143C2C indexed by GetGroundmanMinigameMapIndex;
 // symdb: flags from ldrh
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_groundmanMinigameMapId.yaml
 	thumb_local_start
-sub_8143C18:
+get_groundmanMinigameMapId:
 	push {r4-r7,lr}
 	bl GetGroundmanMinigameMapIndex
 	ldr r1, off_8143C28 // =dword_8143C2C 
@@ -3835,7 +3835,7 @@ off_8143C28:
 	.word dword_8143C2C
 dword_8143C2C:
 	.word 0xD330D32
-	thumb_func_end sub_8143C18
+	thumb_func_end get_groundmanMinigameMapId
 
 	thumb_local_start
 sub_8143C30:
@@ -4180,9 +4180,9 @@ groundmanMinigameGridDirBetween:
 // symdb: (r0 = value to match against entry halfword, e.g. an id/position in the current minigame map) ->
 // symdb: r0 = 1 if a match found else 0, r1 = matching list index or 0xFF if none; flags clobbered by bl
 // symdb: calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EDC.yaml
-	thumb_func_start sub_8143EDC
-sub_8143EDC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/groundmanMinigameFindActiveEntry.yaml
+	thumb_func_start groundmanMinigameFindActiveEntry
+groundmanMinigameFindActiveEntry:
 	push {r4-r7,lr}
 	mov r6, r0
 	bl GetGroundmanMinigameMapIndex
@@ -4216,7 +4216,7 @@ loc_8143F12:
 	.balign 4, 0
 off_8143F18:
 	.word off_8143804
-	thumb_func_end sub_8143EDC
+	thumb_func_end groundmanMinigameFindActiveEntry
 
 	thumb_local_start
 sub_8143F1C:
@@ -4485,7 +4485,7 @@ get_groundmanMinigameSkipCondition:
 	bl GetGroundmanMinigameMapIndex
 	cmp r0, #0xff
 	beq loc_81440D0
-	bl sub_8143C18
+	bl get_groundmanMinigameMapId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_81440D0

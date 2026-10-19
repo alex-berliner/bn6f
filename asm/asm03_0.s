@@ -1678,7 +1678,7 @@ sub_8027044: // (self: * S20364C0 $r5) -> ()
 off_802705C:
 	.word off_8027060
 off_8027060:
-	.word sub_802707C+1
+	.word battle_queueActiveChipGfx+1
 	.word sub_80270D0+1
 	.word object_timerFadeStateTick+1
 	.word sub_8027118+1
@@ -1690,9 +1690,9 @@ off_8027060:
 // symdb: Queues two GFX transfers (0x80 bytes of chip-indexed graphics to VRAM 0x60172C0 and 0x20 bytes from byte_872CF94 to a RAM buffer) based on active chip slot 11, then sets a state field.
 // symdb: (r0 unused, r5 = object/state struct) -> r0 = destroyed; queues GFX transfers, writes r5+0x40=0,
 // symdb: r5+0x44=chip*0x10+0x18, r5+2=4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802707C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueActiveChipGfx.yaml
 	thumb_local_start
-sub_802707C:
+battle_queueActiveChipGfx:
 	push {r4,lr}
 	mov r0, #0
 	str r0, [r5,#0x40]
@@ -1735,7 +1735,7 @@ off_80270C8:
 	.word byte_30016F0
 off_80270CC:
 	.word byte_8725894
-	thumb_func_end sub_802707C
+	thumb_func_end battle_queueActiveChipGfx
 
 	thumb_local_start
 sub_80270D0:
@@ -10166,7 +10166,7 @@ loc_802AC4E:
 	bne locret_802AC6C
 	mov r1, #0
 	strh r1, [r0,#0x12]
-	bl sub_802AF28
+	bl object_setFlag80000
 	mov r0, #0x28 
 	strb r0, [r5,#1]
 	mov r0, #4
@@ -10246,7 +10246,7 @@ loc_802ACEA:
 	b loc_802AD48
 loc_802ACF2:
 	bl sub_802AF38
-	bl sub_802AF28
+	bl object_setFlag80000
 	mov r0, #SOUND_SELECT_67
 	bl PlaySoundEffect
 	ldrb r0, [r5,#5]
@@ -10369,7 +10369,7 @@ loc_802ADD8:
 	strb r1, [r5,#9]
 	mov r1, #0
 	strh r1, [r0,#0x12]
-	bl sub_802AF28
+	bl object_setFlag80000
 	mov r0, #0x28 
 	strb r0, [r5,#1]
 	mov r0, #8
@@ -10422,7 +10422,7 @@ ow_chatboxWaitStep:
 	strb r1, [r5,#9]
 	mov r1, #0
 	strh r1, [r0,#0x12]
-	bl sub_802AF28
+	bl object_setFlag80000
 	mov r0, #0xc
 	strb r0, [r5,#1]
 	mov r0, #4
@@ -10555,9 +10555,9 @@ sub_802AF0E:
 
 // symdb: Sets bit 0x80000 in a battle object's flags2 word, used by overworld chatbox-wait state machines.
 // symdb: (r0 = object ptr) -> r0 = set bits; no other return/flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setFlag80000.yaml
 	thumb_local_start
-sub_802AF28:
+object_setFlag80000:
 	push {r5,lr}
 	mov r5, r0
 	ldr r0, dword_802AF34 // =0x80000 
@@ -10566,7 +10566,7 @@ sub_802AF28:
 	.balign 4, 0
 dword_802AF34:
 	.word 0x80000
-	thumb_func_end sub_802AF28
+	thumb_func_end object_setFlag80000
 
 	thumb_local_start
 sub_802AF38:
@@ -15428,9 +15428,9 @@ off_802D300:
 // symdb: Zeroes a 16-byte block at offset 0xF0 of the battle object's AIData, resetting part of its AI state.
 // symdb: (r5 = battle object; no args in r0-r3) -> r0 clobbered (holds AIData+0xF0); no flags meaningful,
 // symdb: returns via mov pc, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D310.yaml
-	thumb_func_start sub_802D310
-sub_802D310:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearAIDataStateBlock.yaml
+	thumb_func_start battle_clearAIDataStateBlock
+battle_clearAIDataStateBlock:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	sub r0, #0xf
 	add r0, #0xff
@@ -15440,7 +15440,7 @@ sub_802D310:
 	str r1, [r0,#8]
 	str r1, [r0,#0xc]
 	mov pc, lr
-	thumb_func_end sub_802D310
+	thumb_func_end battle_clearAIDataStateBlock
 
 	thumb_func_start sub_802D322
 sub_802D322:
@@ -15713,7 +15713,7 @@ loc_802D504:
 loc_802D524:
 	mov r0, #0
 	strh r0, [r6,#4]
-	bl sub_802D5A8
+	bl battle_pickRandomEntryByStatTier
 	strh r0, [r7,#oAIAttackVars_ChipID]
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	mov r4, r0
@@ -15787,9 +15787,9 @@ locret_802D5A6:
 
 // symdb: Reads a battle-object stat, buckets it into tier 0-9 (stat/100, clamped), and returns a random halfword from that tier's row of a 10-row lookup table.
 // symdb: (r0 = battle object) -> r0 = random halfword from the tier's table row; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D5A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomEntryByStatTier.yaml
 	thumb_local_start
-sub_802D5A8:
+battle_pickRandomEntryByStatTier:
 	push {r4,r6,lr}
 	mov r1, #0x3e 
 	bl GetBattleNaviStatsHword_AllianceFromBattleObject
@@ -15836,7 +15836,7 @@ off_802D630:
 	.word byte_802D420
 dword_802D634:
 	.word 0x153
-	thumb_func_end sub_802D5A8
+	thumb_func_end battle_pickRandomEntryByStatTier
 
 // symdb: Zero-fills the 32-byte work buffer at byte_2000070 (IWRAM), leaving r2/r3 untouched so it can be called through a function pointer with context.
 // symdb: void memBlock_ClearWorkArea(int passthrough_r2, int passthrough_r3) /* inputs: r2, r3, lr;
@@ -15872,13 +15872,13 @@ locret_802D650:
 // symdb: Returns a per-index byte from a small EWRAM table at 0x2000070, used when the battle checks a version-specific boss spawn.
 // symdb: (r0 = index into table) -> r0 = byte_2000070[index]; flags from LDRB (N/Z from value, C
 // symdb: unchanged)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D652.yaml
-	thumb_func_start sub_802D652
-sub_802D652:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getSpawnSlotByte.yaml
+	thumb_func_start battle_getSpawnSlotByte
+battle_getSpawnSlotByte:
 	ldr r1, off_802D694 // =byte_2000070
 	ldrb r0, [r1,r0]
 	mov pc, lr
-	thumb_func_end sub_802D652
+	thumb_func_end battle_getSpawnSlotByte
 
 	thumb_local_start
 sub_802D658:
@@ -17815,7 +17815,7 @@ loc_802E508:
 	strh r0, [r7,#0x30]
 	ldr r0, dword_802E540 // =0xffff 
 	bl object_setInvulnerableTime
-	bl sub_802D310
+	bl battle_clearAIDataStateBlock
 locret_802E530:
 	pop {r7,pc}
 	.byte 0x0, 0x0
@@ -18785,7 +18785,7 @@ nullsub_34:
 	thumb_func_end nullsub_34
 
 // symdb: Sets up the Navi's charge shot attack: rolls a special charge-shot pick, otherwise initializes default charge-shot state and fires attack 0x11.
-// symdb: (r0 = battle object, r6 = attack state struct) -> r0 = 0; calls sub_802ED68 on the special-pick
+// symdb: (r0 = battle object, r6 = attack state struct) -> r0 = 0; calls battle_startAttack33 on the special-pick
 // symdb: path, else object_setAttack0(0x11)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chargeShotSetup.yaml
 	thumb_local_start
@@ -18794,7 +18794,7 @@ battle_chargeShotSetup:
 	bl sub_8013D5E
 	cmp r0, #0
 	beq loc_802ED0E
-	bl sub_802ED68
+	bl battle_startAttack33
 	pop {pc}
 loc_802ED0E:
 	mov r0, #0
@@ -18835,9 +18835,9 @@ byte_802ED5C:
 
 // symdb: Clears the current battle entity's attack-state fields and queues attack 0x33 on it, used from the charge-shot setup path.
 // symdb: (r6 = battle entity struct pointer, set by caller; no register args) -> r0 = 0, r1 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ED68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startAttack33.yaml
 	thumb_local_start
-sub_802ED68:
+battle_startAttack33:
 	push {lr}
 	mov r0, #0
 	strb r0, [r6,#2]
@@ -18854,7 +18854,7 @@ sub_802ED68:
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_802ED68
+	thumb_func_end battle_startAttack33
 
 	thumb_local_start
 sub_802ED8A:

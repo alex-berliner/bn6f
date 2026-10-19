@@ -730,7 +730,7 @@ BOOL sub_8144D3C()
 
 
 // 0x8144d64
-int sub_8144D64()
+int rfu_softResetLinkState()
 {
     signed int v0; // r4
 
@@ -951,7 +951,7 @@ signed int __fastcall sub_8144EF8(unsigned __int8 a1, __int16 a2, __int16 a3, un
 
 
 // 0x8144fd0
-signed int __fastcall sub_8144FD0(unsigned __int16 a1, __int16 a2)
+signed int __fastcall rfu_childConnRequest(unsigned __int16 a1, __int16 a2)
 {
     int v2; // r6
     __int16 v3; // r8
@@ -1015,7 +1015,7 @@ signed int __fastcall sub_8144FD0(unsigned __int16 a1, __int16 a2)
 
 
 // 0x81450b4
-int __fastcall sub_81450B4(unsigned __int8 a1)
+int __fastcall rfu_endSlotConnections(unsigned __int8 a1)
 {
     unsigned int v1; // r4
     int v2; // r4
@@ -1043,7 +1043,7 @@ int __fastcall sub_81450B4(unsigned __int8 a1)
 
 
 // 0x8145120
-int __fastcall sub_8145120(int a1)
+int __fastcall rfu_updateConnState(int a1)
 {
     int v1; // r2
     int v3; // [sp+8h] [bp-4h]
@@ -1260,7 +1260,7 @@ int __fastcall sub_81453F0(int a1)
                 switch ( byte_200FE04 )
                 {
                     case 1:
-                        if ( sub_8144D64() != 32769 )
+                        if ( rfu_softResetLinkState() != 32769 )
                         {
                             byte_200FE05 = 0;
                             byte_200FE04 = 0;
@@ -1322,7 +1322,7 @@ int __fastcall sub_81453F0(int a1)
                         rfu_REQ_stopMode();
                         break;
                     case 0x17:
-                        v1 = sub_8144D64();
+                        v1 = rfu_softResetLinkState();
                         v2 = 255;
                         if ( v1 == 32769 )
                             v2 = 68;
@@ -1343,7 +1343,7 @@ LABEL_14:
         if ( *dword_2010CC0 != 1 || !(rfu_pollLinkWatchdog(0) << 24) )
         {
             sub_8145DD8();
-            sub_8145FFC();
+            rfu_handleConnTimeout();
             sub_814610C();
             sub_81462D8();
         }
@@ -1990,7 +1990,7 @@ LABEL_14:
 
 
 // 0x8145ffc
-int sub_8145FFC()
+int rfu_handleConnTimeout()
 {
     __int16 v0; // r6
     char *v1; // r1
@@ -2743,7 +2743,7 @@ int __fastcall sub_8146A48(_BYTE *a1, _BYTE *a2, unsigned int a3)
 
 
 // 0x8146a70
-int __fastcall sub_8146A70(_BYTE *a1)
+int __fastcall rfu_clearSlotBuffer(_BYTE *a1)
 {
     _BYTE *v1; // r4
     int v3; // [sp+0h] [bp-Ch]
@@ -2935,7 +2935,7 @@ signed int __fastcall sub_8146D40(int a1)
 
 
 // 0x8146d98
-int __fastcall sub_8146D98(int a1, int a2, int a3, int a4)
+int __fastcall rfu_clearDisconnectedSlots(int a1, int a2, int a3, int a4)
 {
     int v4; // r6
     int v5; // r7
@@ -3040,8 +3040,8 @@ int __fastcall sub_8146E90(int a1, int a2, unsigned int a3)
     SWI_CpuSet(&v8, a1, (a3 >> 1) & 0x1FFFFF | 0x1000000);
     v9 = 0;
     SWI_CpuSet(&v9, v3, 2 * v4 & 0x1FFFFF | 0x1000000);
-    sub_8146A70(&unk_200FFF0);
-    sub_8146A70(&unk_200FE90);
+    rfu_clearSlotBuffer(&unk_200FFF0);
+    rfu_clearSlotBuffer(&unk_200FE90);
     byte_20101B4 = 1;
     byte_2010292 = 2 * *(dword_2010CC0 + 2) | 1;
     v5 = 0;
@@ -3118,7 +3118,7 @@ int __fastcall sub_8146F90(int a1, int a2, int a3)
             case 0x40:
                 v6 = 0;
 LABEL_12:
-                sub_8145120(v6);
+                rfu_updateConnState(v6);
                 v7 = 10;
 LABEL_13:
                 word_200BC58 = v7;
@@ -3528,7 +3528,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
         case 0x40:
             v3 = 0;
 LABEL_26:
-            sub_8145120(v3);
+            rfu_updateConnState(v3);
             v2 = 10;
 LABEL_27:
             word_200BC58 = v2;
@@ -3703,8 +3703,8 @@ int __fastcall rfu_initCommState(int a1, int a2, int a3)
     SWI_CpuSet(&v8, a1, v5);
     v9 = 0;
     SWI_CpuSet(&v9, v3, v5);
-    sub_8146A70(&unk_200FFF0);
-    sub_8146A70(&unk_200FE90);
+    rfu_clearSlotBuffer(&unk_200FFF0);
+    rfu_clearSlotBuffer(&unk_200FE90);
     byte_20101B4 = 1;
     byte_2010274 = byte_2010292;
     v6 = 0;
@@ -3743,7 +3743,7 @@ int __fastcall sub_8147C20(int a1, int a2, int a3)
     switch ( word_200BC58 )
     {
         case 9:
-            sub_8145120(1);
+            rfu_updateConnState(1);
             word_200BC58 = 10;
             break;
         case 0xB:
@@ -3935,7 +3935,7 @@ int __fastcall sub_8147F98(int a1, int a2, int a3, int a4)
     sub_81465FC(&unk_2010350);
     word_2010352 = 0;
     zeroFill_813D960();
-    rfu_initREQ(sub_814801C, sub_8148208);
+    rfu_initREQ(rfu_handleLinkCommand, sub_8148208);
     Timer2Counter_Reload = 0;
     Timer2Control = 131;
     word_200BC58 = 1;
@@ -3950,7 +3950,7 @@ int __fastcall sub_8147F98(int a1, int a2, int a3, int a4)
 
 
 // 0x814801c
-int __fastcall sub_814801C(signed int a1)
+int __fastcall rfu_handleLinkCommand(signed int a1)
 {
     int v2; // [sp+0h] [bp-4h]
 
@@ -4148,7 +4148,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
             }
             return v6;
         case 7:
-            if ( sub_8144FD0(*(dword_2010CC0 + 32 * byte_2010330[byte_20103E4] + 20), 120) << 24 )
+            if ( rfu_childConnRequest(*(dword_2010CC0 + 32 * byte_2010330[byte_20103E4] + 20), 120) << 24 )
             {
                 sub_813D934(8);
                 word_200BC58 = 7;
@@ -4160,7 +4160,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
             }
             return v6;
         case 9:
-            sub_8145120(1);
+            rfu_updateConnState(1);
             word_200BC58 = 10;
             return v6;
         case 0xB:
@@ -4238,8 +4238,8 @@ int sub_8148540()
     SWI_CpuSet(&v3, &byte_20101E0, 16777248);
     v4 = 0;
     SWI_CpuSet(&v4, byte_2010230, 16777248);
-    sub_8146A70(&unk_200FFF0);
-    sub_8146A70(&unk_200FE90);
+    rfu_clearSlotBuffer(&unk_200FFF0);
+    rfu_clearSlotBuffer(&unk_200FE90);
     byte_2010270 = 0;
     byte_2010408 = 0;
     dword_2010418 = 0;
@@ -4442,7 +4442,7 @@ int sub_8148884()
     switch ( word_200BC58 )
     {
         case 9:
-            sub_8145120(1);
+            rfu_updateConnState(1);
             v0 = 10;
             goto LABEL_16;
         case 0xB:
@@ -4454,7 +4454,7 @@ LABEL_16:
         case 0x32:
             word_200BC58 = 0;
             rfu_clearAllSlot();
-            sub_8144D64();
+            rfu_softResetLinkState();
             sub_813D760();
             break;
         case 0x34:
@@ -4637,8 +4637,8 @@ signed int rfu_initWirelessSession()
     SWI_CpuSet(&v3, &byte_2010390, 16777224);
     v4 = 0;
     SWI_CpuSet(&v4, &unk_20103A0, 16777248);
-    sub_8146A70(&unk_200FFF0);
-    sub_8146A70(&unk_200FE90);
+    rfu_clearSlotBuffer(&unk_200FFF0);
+    rfu_clearSlotBuffer(&unk_200FE90);
     v0 = 0;
     do
     {
@@ -4777,7 +4777,7 @@ int sub_8148FC0()
     switch ( word_200BC58 )
     {
         case 9:
-            sub_8145120(1);
+            rfu_updateConnState(1);
             v0 = 10;
             goto LABEL_6;
         case 0xB:
@@ -4788,7 +4788,7 @@ LABEL_6:
             break;
         case 0x32:
             rfu_clearAllSlot();
-            sub_8144D64();
+            rfu_softResetLinkState();
             word_200BC58 = 0;
             sub_813D760();
             break;

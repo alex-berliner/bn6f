@@ -577,7 +577,7 @@ ai_finishAttackByElement:
 	mov r0, #8
 	strb r0, [r6,#oAIState_ScriptId]
 	bl ai_attackResetState
-	bl sub_810E0D4
+	bl ai_freeBattleObjectExtraSlots
 	bl object_exitAttackState_801171C
 	b locret_810DE28
 loc_810DE1E:
@@ -935,9 +935,9 @@ byte_810E0CC:
 
 // symdb: Releases up to four auxiliary objects/buffers attached to a battle object's extra-vars block, zeroing each slot.
 // symdb: (r5 = battle object) -> r0 = 0 preserved per slot; no flags meaningful on return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E0D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_freeBattleObjectExtraSlots.yaml
 	thumb_local_start
-sub_810E0D4:
+ai_freeBattleObjectExtraSlots:
 	push {r4-r7,lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	tst r0, r0
@@ -996,7 +996,7 @@ byte_810E16C:
 	.byte 0x24, 0x24, 0x1E, 0x1E, 0x1E, 0x18, 0x0, 0x0
 byte_810E174:
 	.byte 0x78, 0x78, 0x78, 0x78, 0x78, 0x78
-	thumb_func_end sub_810E0D4
+	thumb_func_end ai_freeBattleObjectExtraSlots
 
 // symdb: Per-frame AI update for a battle object: check a gate condition, refresh the object's current animation, and dispatch the handler for the object's current AI script.
 // symdb: (r5 = battle object, r6 = AI state block) -> r0 = value from the dispatched script handler or
@@ -1017,7 +1017,7 @@ loc_810E18C:
 	cmp r0, #0xff
 	beq loc_810E1A0
 	strb r0, [r5,#oBattleObject_CurAnim]
-	bl sub_810E0D4
+	bl ai_freeBattleObjectExtraSlots
 	mov r0, #8
 	strb r0, [r6,#oAIState_ScriptId]
 	b loc_810E1AA
@@ -1306,7 +1306,7 @@ loc_810E376:
 	thumb_local_start
 sub_810E37A:
 	push {r4-r7,lr}
-	bl sub_810E0D4
+	bl ai_freeBattleObjectExtraSlots
 	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {r4-r7,pc}
 	thumb_func_end sub_810E37A
@@ -4015,9 +4015,9 @@ byte_810FAC4:
 // symdb: (r5 = enemy object, r7 = oAIAttackVars) -> r0 = spawn result from object_spawnCollisionRegion;
 // symdb: passes variant table word in r4, damage word in r6, second table word in r7, InitFlag in r2, r3
 // symdb: = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FACA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_swoopSpawnAttackHitbox.yaml
 	thumb_local_start
-sub_810FACA:
+ai_swoopSpawnAttackHitbox:
 	push {r4-r7,lr}
 	push {r0,r1}
 	mov r0, #0x7e
@@ -4051,7 +4051,7 @@ off_810FB14:
 byte_810FB18:
 	.byte 0x3, 0x0, 0x0, 0x0, 0x1, 0x10, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0
 	.byte 0x3, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0
-	thumb_func_end sub_810FACA
+	thumb_func_end ai_swoopSpawnAttackHitbox
 
 // symdb: Prepares the rush attack's hitbox by loading version-specific collision parameters and a status effect from tables and writing them into the attacker's battle-object collision data.
 // symdb: (r4 = battle object/AI data) -> void; calls object_updateCollisionData and
@@ -4115,7 +4115,7 @@ byte_810FBC0:
 
 // symdb: Moves the flying enemy one step along the X or Y velocity axis, then bails to a handler if the destination panel has the 0x800000 flag set.
 // symdb: (r0 = axis selector, 0 = move along Y, nonzero = move along X; r5 = battle object) -> r0 =
-// symdb: result of sub_810FACA (often 0); moves oBattleObject_X or oBattleObject_Y by the matching
+// symdb: result of ai_swoopSpawnAttackHitbox (often 0); moves oBattleObject_X or oBattleObject_Y by the matching
 // symdb: velocity component.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_swoopMoveCheckPanel.yaml
 	thumb_local_start
@@ -4143,7 +4143,7 @@ loc_810FBF0:
 	tst r0, r1
 	pop {r0,r1}
 	beq locret_810FC0A
-	bl sub_810FACA
+	bl ai_swoopSpawnAttackHitbox
 locret_810FC0A:
 	pop {r4-r7,pc}
 	thumb_func_end ai_swoopMoveCheckPanel
@@ -13911,7 +13911,7 @@ loc_8114B54:
 	tst r0, r0
 	beq locret_8114BA2
 	push {r0,r1}
-	bl sub_8114C04
+	bl ai_pickPanelTwoTilesHorizontal
 	tst r0, r0
 	bne loc_8114B6C
 	pop {r0,r1}
@@ -13996,9 +13996,9 @@ off_8114C00:
 // symdb: AI helper that picks a random panel two tiles to the left or right of the object and checks its flag state.
 // symdb: (r0 = battle object) -> r0 = result from panel picker (panel/flag-check result); flags from
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114C04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickPanelTwoTilesHorizontal.yaml
 	thumb_local_start
-sub_8114C04:
+ai_pickPanelTwoTilesHorizontal:
 	push {r4-r7,lr}
 	ldr r3, off_8114C20 // =byte_8114C80
 	bl GetAllianceDependentPanelParamArgs
@@ -14030,7 +14030,7 @@ byte_8114C70:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xC, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xC
 byte_8114C80:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_8114C04
+	thumb_func_end ai_pickPanelTwoTilesHorizontal
 
 	thumb_local_start
 sub_8114C90:
@@ -15414,7 +15414,7 @@ sub_811581C:
 	ldr r1, dword_8115948 // =0x2000
 	tst r0, r1
 	beq loc_8115844
-	bl sub_811592A
+	bl battle_pickRandomOtherPanel
 	tst r0, r0
 	beq loc_8115844
 	strb r0, [r7,#oAIAttackVars_TargetPanelX]
@@ -15569,9 +15569,9 @@ locret_8115928:
 // symdb: Resolves an alliance-dependent panel-effect parameter entry and uses it to pick a random panel other than the object's current one.
 // symdb: (r0 = battle object, r1 = caller context/args) -> r0 = picked panel (x/y packed per sub_8015C94
 // symdb: convention)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811592A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomOtherPanel.yaml
 	thumb_local_start
-sub_811592A:
+battle_pickRandomOtherPanel:
 	push {r4-r7,lr}
 	ldr r3, off_811594C // =byte_8115938
 	bl GetAllianceDependentPanelParamArgs
@@ -15609,7 +15609,7 @@ byte_81159A4:
 	.byte 0x6, 0x6, 0x6, 0x6, 0x6, 0x6
 byte_81159AA:
 	.byte 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4
-	thumb_func_end sub_811592A
+	thumb_func_end battle_pickRandomOtherPanel
 	thumb_func_start sub_81159B0
 sub_81159B0:
 	push {r4,r6,lr}
@@ -18772,7 +18772,7 @@ off_81172C0:
 	.word off_81172C4
 off_81172C4:
 	.word sub_81172D0+1
-	.word sub_811734C+1
+	.word sprite_updateWrapper+1
 	.word sub_8117354+1
 	thumb_func_end sub_81172B0
 
@@ -18824,7 +18824,7 @@ loc_81172E8:
 loc_8117334:
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811734C
+	bl sprite_updateWrapper
 	pop {pc}
 	.balign 4, 0
 off_8117340:
@@ -18837,13 +18837,13 @@ off_8117348:
 
 // symdb: Trivial wrapper that invokes sprite_update (per-frame sprite/OAM update) and returns its result.
 // symdb: (args passed through to sprite_update) -> r0 = sprite_update result; flags from sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811734C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateWrapper.yaml
 	thumb_local_start
-sub_811734C:
+sprite_updateWrapper:
 	push {lr}
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811734C
+	thumb_func_end sprite_updateWrapper
 
 	thumb_local_start
 sub_8117354:
@@ -19148,7 +19148,7 @@ off_81175E0:
 off_81175E4:
 	.word sub_81175F0+1
 	.word sub_8117680+1
-	.word sub_8117688+1
+	.word sprite_makeUnscalableAndClearScaleCycle+1
 	thumb_func_end sub_81175D0
 
 	thumb_local_start
@@ -19202,13 +19202,13 @@ sub_8117680:
 // symdb: Thin wrapper that zeroes a sprite's scale-cycle counter byte and rebuilds it as unscalable.
 // symdb: (r0 = sprite resource/struct pointer) -> r0 = whatever
 // symdb: sprite_clearScaleCounterAndMakeUnscalable_804668A returns; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117688.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_makeUnscalableAndClearScaleCycle.yaml
 	thumb_local_start
-sub_8117688:
+sprite_makeUnscalableAndClearScaleCycle:
 	push {lr}
 	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
 	pop {pc}
-	thumb_func_end sub_8117688
+	thumb_func_end sprite_makeUnscalableAndClearScaleCycle
 
 // symdb: Dispatches to one of three THUMB handlers based on a battle-context byte at offset 8.
 // symdb: u32 sub_8117690(u32 r5_battleCtx, u32 r10_in, u32 lr); // reads ctx[8]; clobbers
@@ -22685,7 +22685,7 @@ off_8118E94:
 off_8118E98:
 	.word battleObject_initBeastOutSprite_8118EA8+1
 	.word sub_8118F14+1
-	.word sub_8118F1C+1
+	.word sprite_resetScaling+1
 off_8118EA4:
 	.word sSubmenu
 	thumb_func_end sub_8118E84
@@ -22748,13 +22748,13 @@ sub_8118F14:
 
 // symdb: One-line wrapper that clears a sprite's scale counter and rebuilds it as unscalable.
 // symdb: (r0 = sprite object) -> r0 = callee's return; no flag contract of its own
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118F1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_resetScaling.yaml
 	thumb_local_start
-sub_8118F1C:
+sprite_resetScaling:
 	push {lr}
 	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
 	pop {pc}
-	thumb_func_end sub_8118F1C
+	thumb_func_end sprite_resetScaling
 
 // symdb: Sprite update trampoline; dispatches to one of three handlers based on the state byte at [r5+8] via a ROM jump table, preserving LR.
 // symdb: void sub_8118F24(u32* r5) /* reads r5->state @ +8, clobbers nz c v r0 r1 r4 r6 r7 r8 r9 r12 lr,
@@ -27940,8 +27940,8 @@ sub_811B594:
 	b locret_811B5BE
 loc_811B5A2:
 	bl sub_811B6E0
-	bl sub_811B71C
-	bl sub_811B7D4
+	bl battle_loadQueuedTextGlyph
+	bl text_renderListEntry
 	bl battle_setupObjectSpriteFromEntry
 	bl sprite_applyStateSpriteTransform
 	mov r0, #4
@@ -27971,7 +27971,7 @@ off_811B5D8:
 	thumb_func_end sub_811B5C0
 
 jt_811B5DC:
-	.word sub_811B5F4+1
+	.word sprite_applyStateSpriteTransformThunk+1
 	.word sub_811B5FC+1
 	.word sub_811B620+1
 	.word object_scaleGrowStep+1
@@ -27980,13 +27980,13 @@ jt_811B5DC:
 
 // symdb: Thin tail-call wrapper that forwards its arguments to sprite_applyStateSpriteTransform.
 // symdb: (r0..r3 passthrough) -> returns sprite_applyStateSpriteTransform's result; flags set by callee.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B5F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_applyStateSpriteTransformThunk.yaml
 	thumb_local_start
-sub_811B5F4:
+sprite_applyStateSpriteTransformThunk:
 	push {lr}
 	bl sprite_applyStateSpriteTransform
 	pop {pc}
-	thumb_func_end sub_811B5F4
+	thumb_func_end sprite_applyStateSpriteTransformThunk
 
 	thumb_local_start
 sub_811B5FC:
@@ -28024,8 +28024,8 @@ sub_811B620:
 	mov r0, #0
 	strb r0, [r5,#0xa]
 	bl sub_811B6E0
-	bl sub_811B71C
-	bl sub_811B7D4
+	bl battle_loadQueuedTextGlyph
+	bl text_renderListEntry
 	bl battle_setupObjectSpriteFromEntry
 locret_811B646:
 	pop {pc}
@@ -28082,8 +28082,8 @@ loc_811B678:
 	mov r0, #0
 	bl sprite_setUnk0x2c
 	bl sub_811B6E0
-	bl sub_811B71C
-	bl sub_811B7D4
+	bl battle_loadQueuedTextGlyph
+	bl text_renderListEntry
 	bl battle_setupObjectSpriteFromEntry
 locret_811B6B4:
 	pop {pc}
@@ -28096,8 +28096,8 @@ sub_811B6B8:
 	mov r0, #0
 	strb r0, [r5,#0xa]
 	bl sub_811B6E0
-	bl sub_811B71C
-	bl sub_811B7D4
+	bl battle_loadQueuedTextGlyph
+	bl text_renderListEntry
 	bl battle_setupObjectSpriteFromEntry
 	ldr r0, off_811B980 // =unk_2037780
 	mov r1, #0
@@ -28153,9 +28153,9 @@ locret_811B718:
 // symdb: Pops one queued text entry for an object's number/text popup and loads its glyph into the matching text-buffer/VRAM slot via the text renderer.
 // symdb: (r0-r3 clobbered; r5 = object, r10 = toolkit) -> r0 = undefined; stores entry type to [r5,#0xE],
 // symdb: glyph param to toolkit->Unk200a220+8; early-returns if no queued entry in range
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B71C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadQueuedTextGlyph.yaml
 	thumb_local_start
-sub_811B71C:
+battle_loadQueuedTextGlyph:
 	push {r4-r7,lr}
 	ldr r6, off_811B980 // =unk_2037780
 	ldrh r0, [r6,#0x24] // (word_20377A4 - 0x2037780)
@@ -28228,14 +28228,14 @@ byte_811B7B0:
 	.byte 0x6, 0x80, 0x33, 0x1, 0x6, 0x80, 0x2A, 0x1, 0x6, 0x80, 0x21
 	.byte 0x1, 0x6, 0x80, 0x18, 0x1, 0x6, 0x80, 0xF, 0x1, 0x6, 0x80
 	.byte 0x6, 0x1, 0x6
-	thumb_func_end sub_811B71C
+	thumb_func_end battle_loadQueuedTextGlyph
 
 // symdb: Draws one visible row of a text list via the toolkit text renderer, using a per-row entry from word_2023FA0.
 // symdb: (r0 unused, r5 = row struct with u8 rowIndex at +0x4) -> r0 = renderTextGfx result; touches
 // symdb: toolkit->Unk200a220->field8; no flag contract shown
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B7D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/text_renderListEntry.yaml
 	thumb_local_start
-sub_811B7D4:
+text_renderListEntry:
 	push {r4-r7,lr}
 	ldr r6, off_811B980 // =unk_2037780
 	ldrh r0, [r6,#0x24] // (word_20377A4 - 0x2037780)
@@ -28268,7 +28268,7 @@ sub_811B7D4:
 	bl renderTextGfx_8045F8C
 locret_811B812:
 	pop {r4-r7,pc}
-	thumb_func_end sub_811B7D4
+	thumb_func_end text_renderListEntry
 
 // symdb: Looks up a sprite ID from the word_2023FA0 table for the entry selected by the caller and configures the current battle object's sprite (shadow flag, animation, animation data).
 // symdb: (r5 = entry struct; byte [r5+4] = list index) -> void; sets up sprite state for the object
@@ -38417,9 +38417,9 @@ word_8120896:
 
 // symdb: Counts the total copies the player owns of all chips belonging to a given chip-library category.
 // symdb: (r0 = library category index) -> r0 = total owned chip count for that category; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120898.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getOwnedChipCountOfLibraryCategory.yaml
 	thumb_local_start
-sub_8120898:
+getOwnedChipCountOfLibraryCategory:
 	push {r4-r7,lr}
 	mov r5, r0
 	mov r6, #0
@@ -38478,7 +38478,7 @@ loc_81208F0:
 	.balign 4, 0
 dword_81208FC:
 	.word 0x13F
-	thumb_func_end sub_8120898
+	thumb_func_end getOwnedChipCountOfLibraryCategory
 
 // symdb: Builds an 11x2 background tilemap displaying two 4-digit BCD scores separated by a dash (e.g. "1234-5678"), with leading zeros blanked and a priority-set terminator, then blits it via CopyBackgroundTiles.
 // symdb: void sub_8120900(u16* tile_map, u32 val1, u32 val2, u32 base_tile_id, u32 bg_j, u32 bg_i, u32
@@ -38678,10 +38678,10 @@ sub_8120A38:
 	sub sp, sp, #0x10
 	bl removeFolderChipsFromPack
 	mov r0, #0
-	bl sub_8120898
+	bl getOwnedChipCountOfLibraryCategory
 	str r0, [sp]
 	mov r0, #1
-	bl sub_8120898
+	bl getOwnedChipCountOfLibraryCategory
 	str r0, [sp,#4]
 	ldr r0, dword_8120A84 // =0x137
 	bl GetTotalChipCount
@@ -38692,10 +38692,10 @@ sub_8120A38:
 	str r1, [sp,#8]
 loc_8120A60:
 	mov r0, #2
-	bl sub_8120898
+	bl getOwnedChipCountOfLibraryCategory
 	str r0, [sp,#8]
 	mov r0, #5
-	bl sub_8120898
+	bl getOwnedChipCountOfLibraryCategory
 	str r0, [sp,#0xc]
 	bl pack_addAllFolderChipsToPack
 	ldr r0, [sp]

@@ -1032,7 +1032,7 @@ int sub_8027044()
 
 
 // 0x802707c
-signed int sub_802707C()
+signed int battle_queueActiveChipGfx()
 {
     int v0; // r5
     char *v1; // r4
@@ -6620,7 +6620,7 @@ int sub_802AC10()
     if ( *(result + 9) == 1 )
     {
         *(result + 18) = 0;
-        sub_802AF28();
+        object_setFlag80000();
         *(v0 + 1) = 40;
         *(v0 + 2) = 4;
         result = 8;
@@ -6690,7 +6690,7 @@ int __fastcall sub_802AC6E(int a1, int a2, int a3)
         else
         {
             sub_802AF38();
-            sub_802AF28();
+            object_setFlag80000();
             PlaySoundEffect(103, v17, v18);
             v19 = *(v3 + 5) + 1;
             *(v3 + 5) = v19;
@@ -6751,7 +6751,7 @@ _BYTE *sub_802AD84()
             *(v0 + 8) = *(v4 + 18);
             *(v0 + 9) = *(v4 + 19);
             *(v4 + 18) = 0;
-            sub_802AF28();
+            object_setFlag80000();
             *(v0 + 1) = 40;
             result = &dword_8;
             *(v0 + 60) = 8;
@@ -6805,7 +6805,7 @@ int ow_chatboxWaitStep()
             *(v0 + 8) = *(v3 + 18);
             *(v0 + 9) = *(v3 + 19);
             *(v3 + 18) = 0;
-            sub_802AF28();
+            object_setFlag80000();
             *(v0 + 1) = 12;
             *(v0 + 2) = 4;
         }
@@ -6930,7 +6930,7 @@ int sub_802AF0E()
 
 
 // 0x802af28
-int sub_802AF28()
+int object_setFlag80000()
 {
     return object_setFlag2(0x80000);
 }
@@ -9897,7 +9897,7 @@ BattleSettings *battleSettings_802D2B2()
 
 
 // 0x802d310
-_DWORD *sub_802D310()
+_DWORD *battle_clearAIDataStateBlock()
 {
     int v0; // r5
     _DWORD *result; // r0
@@ -10088,7 +10088,7 @@ signed int __fastcall sub_802D4F0(int a1, int a2, int a3)
         ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486(v6, v7, *(v3 + 22));
     }
     *(v4 + 4) = 0;
-    v8 = sub_802D5A8(0);
+    v8 = battle_pickRandomEntryByStatTier(0);
     *(v5 + 20) = v8;
     v9 = getChip8021DA8(v8);
     *(v5 + 3) = v9[12];
@@ -10124,7 +10124,7 @@ signed int __fastcall __noreturn sub_802D588(int a1, int a2, int a3)
 
 
 // 0x802d5a8
-int __fastcall sub_802D5A8(int a1)
+int __fastcall battle_pickRandomEntryByStatTier(int a1)
 {
     int v1; // r0
     int v6; // r1
@@ -10172,7 +10172,7 @@ int __fastcall battleObject_incrementCollisionRegion_802D644(int result)
 
 
 // 0x802d652
-int __fastcall sub_802D652(int a1)
+int __fastcall battle_getSpawnSlotByte(int a1)
 {
     return byte_2000070[a1];
 }
@@ -11542,7 +11542,7 @@ unsigned int battleObject_tickAITimerFlags_802E4E4()
         ai_clearAllianceState();
         *(v1 + 24) = &byte_1E0;
         object_setInvulnerableTime(0xFFFF);
-        result = sub_802D310();
+        result = battle_clearAIDataStateBlock();
     }
     return result;
 }
@@ -12152,7 +12152,7 @@ __int64 __fastcall battle_chargeShotSetup(int a1)
     int v4; // r0
 
     if ( sub_8013D5E(a1) )
-        return sub_802ED68();
+        return battle_startAttack33();
     *(v1 + 2) = 0;
     *(v1 + 3) = 0;
     *(v1 + 4) = 0;
@@ -12170,7 +12170,7 @@ __int64 __fastcall battle_chargeShotSetup(int a1)
 
 
 // 0x802ed68
-__int64 sub_802ED68()
+__int64 battle_startAttack33()
 {
     int v0; // r6
 

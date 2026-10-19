@@ -6872,7 +6872,7 @@ int __fastcall sub_8039E2C(int a1)
     char v2; // zf
     int v3; // r0
 
-    sub_803A58C(a1);
+    t4_dispatchWaitStep(a1);
     if ( !v2 )
     {
         chatbox_mask_eFlags2009F38(8);
@@ -7032,7 +7032,7 @@ int __fastcall sub_8039F78(int a1)
     int v10; // r2
     signed int v12; // [sp-4h] [bp-18h]
 
-    v12 = sub_803A58C(a1);
+    v12 = t4_dispatchWaitStep(a1);
     sub_803CB18();
     if ( v2 )
     {
@@ -7137,7 +7137,7 @@ int __fastcall sub_803A06C(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_803A58C(a1);
+    t4_dispatchWaitStep(a1);
     if ( !v2 )
     {
         engine_setScreeneffect(12, 16);
@@ -7169,7 +7169,7 @@ int __fastcall sub_803A0A4(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_803A58C(a1);
+    t4_dispatchWaitStep(a1);
     if ( !v2 )
     {
         engine_setScreeneffect(12, 16);
@@ -7201,7 +7201,7 @@ int __fastcall sub_803A0D4(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_803A58C(a1);
+    t4_dispatchWaitStep(a1);
     if ( !v2 )
     {
         engine_setScreeneffect(12, 16);
@@ -7251,7 +7251,7 @@ void __noreturn chatbox_waitStepUpdateEntities()
     chatbox_mask_eFlags2009F38(128);
     if ( v2 )
         v1 = 1;
-    sub_803BBA4(4, 32 * *(v0 + 14) + 33, v1);
+    chatbox_waitStepQueueCursorOam(4, 32 * *(v0 + 14) + 33, v1);
 }
 
 
@@ -7602,7 +7602,7 @@ signed int __fastcall sub_803A558(int a1)
 
 
 // 0x803a58c
-signed int __fastcall sub_803A58C(int a1)
+signed int __fastcall t4_dispatchWaitStep(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -9383,7 +9383,7 @@ signed int sub_803BB94()
 
 
 // 0x803bba4
-int __fastcall __noreturn sub_803BBA4(int a1, int a2, int a3)
+int __fastcall __noreturn chatbox_waitStepQueueCursorOam(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r4
@@ -10565,7 +10565,7 @@ signed __int64 sub_803C888()
 // 0x803c8b4
 signed __int64 __fastcall sub_803C8B4(int a1, int a2, int a3, int a4)
 {
-    sub_8146D98(&unk_200AF80, a2, a3, a4);
+    rfu_clearDisconnectedSlots(&unk_200AF80, a2, a3, a4);
     if ( unk_200AF81 == 1 && *unk_200AF8C )
     {
         sub_8146E5C(&unk_200AF80, 1);
@@ -10581,7 +10581,7 @@ int __fastcall sub_803C8E8(int a1, int a2, int a3, int a4)
 {
     int result; // r0
 
-    sub_8146D98(&unk_200AF80, a2, a3, a4);
+    rfu_clearDisconnectedSlots(&unk_200AF80, a2, a3, a4);
     if ( unk_200AF81 == 1 && *unk_200AF8C )
         result = sub_813D978();
     else

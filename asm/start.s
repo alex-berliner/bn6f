@@ -257,7 +257,7 @@ off_8000298:
 	thumb_local_start
 start_800029C:
 	push {lr}
-	ldr r1, off_80002B4 // =sub_3005E60+1 
+	ldr r1, off_80002B4 // =start_enableInterrupts+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
@@ -273,7 +273,7 @@ start_80002A8:
 	pop {r0}
 	bx r0
 off_80002B4:
-	.word sub_3005E60+1
+	.word start_enableInterrupts+1
 off_80002B8:
 	.word sub_3005E6A+1
 	thumb_func_end start_80002A8

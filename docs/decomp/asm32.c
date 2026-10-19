@@ -447,7 +447,7 @@ int ai_finishAttackByElement()
     *(v0 + 16) = v3;
     *v1 = 8;
     ai_attackResetState();
-    v4 = sub_810E0D4();
+    v4 = ai_freeBattleObjectExtraSlots();
     return (loc_801171C)(v4);
 }
 
@@ -658,7 +658,7 @@ int __fastcall sub_810DFD0(unsigned int a1)
 
 
 // 0x810e0d4
-int sub_810E0D4()
+int ai_freeBattleObjectExtraSlots()
 {
     _DWORD *v0; // r5
     int v1; // r0
@@ -914,7 +914,7 @@ int sub_810E37A()
 {
     int v0; // r0
 
-    v0 = sub_810E0D4();
+    v0 = ai_freeBattleObjectExtraSlots();
     return battle_objectUpdateDispatchPhase_80165C2(v0);
 }
 
@@ -2559,7 +2559,7 @@ char *sub_810FAA0()
 
 
 // 0x810faca
-int __fastcall sub_810FACA(char a1, int a2)
+int __fastcall ai_swoopSpawnAttackHitbox(char a1, int a2)
 {
     int v2; // r5
     int v3; // r7
@@ -2630,7 +2630,7 @@ int __fastcall ai_swoopMoveCheckPanel(int a1)
     v8 = (object_getPanelParameters(v10, v7) & 0x800000) == 0;
     result = v10;
     if ( !v8 )
-        result = sub_810FACA(v10, v11);
+        result = ai_swoopSpawnAttackHitbox(v10, v11);
     return result;
 }
 
@@ -8853,7 +8853,7 @@ void __fastcall __noreturn battle_pickRandomPanelByAllianceParam(int a1, int a2,
 
 
 // 0x8114c04
-int __fastcall sub_8114C04(int a1, int a2, int a3)
+int __fastcall ai_pickPanelTwoTilesHorizontal(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -9722,7 +9722,7 @@ int sub_811581C()
         *(v0 + 16) = 1;
         v2 = object_getFlag();
         if ( v2 & 0x2000 )
-            sub_811592A(v2, 0x2000, v3);
+            battle_pickRandomOtherPanel(v2, 0x2000, v3);
         v4 = *(v1 + 44);
         v5 = *(v4 + 18);
         LOBYTE(v4) = *(v4 + 19);
@@ -9844,7 +9844,7 @@ int ai_sweepHighlightTargetPanel()
 
 
 // 0x811592a
-void __fastcall __noreturn sub_811592A(int a1, int a2, int a3)
+void __fastcall __noreturn battle_pickRandomOtherPanel(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -11852,12 +11852,12 @@ void __fastcall __noreturn sub_81172D0(int a1, void *a2)
     if ( *(v2 + 5) & 0x80 )
         sprite_setFlip(v2, 1);
     *(v2 + 8) = 4;
-    sub_811734C();
+    sprite_updateWrapper();
 }
 
 
 // 0x811734c
-void __noreturn sub_811734C()
+void __noreturn sprite_updateWrapper()
 {
     Battle *v0; // r5
 
@@ -12096,7 +12096,7 @@ void __noreturn sub_8117680()
 
 
 // 0x8117688
-int sub_8117688()
+int sprite_makeUnscalableAndClearScaleCycle()
 {
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
@@ -14389,7 +14389,7 @@ void __noreturn sub_8118F14()
 
 
 // 0x8118f1c
-int sub_8118F1C()
+int sprite_resetScaling()
 {
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
@@ -17151,8 +17151,8 @@ signed int sub_811B594()
     if ( *(v0 + 10) )
     {
         sub_811B6E0();
-        sub_811B71C();
-        sub_811B7D4();
+        battle_loadQueuedTextGlyph();
+        text_renderListEntry();
         v2 = battle_setupObjectSpriteFromEntry();
         sprite_applyStateSpriteTransform(v2);
         *(v0 + 9) = 4;
@@ -17198,8 +17198,8 @@ int sub_811B620()
         *(v0 + 20) = *(v0 + 16);
         *(v0 + 10) = 0;
         sub_811B6E0();
-        sub_811B71C();
-        sub_811B7D4();
+        battle_loadQueuedTextGlyph();
+        text_renderListEntry();
         result = battle_setupObjectSpriteFromEntry();
     }
     return result;
@@ -17236,8 +17236,8 @@ char *sub_811B6B8()
 
     *(v0 + 10) = 0;
     sub_811B6E0();
-    sub_811B71C();
-    sub_811B7D4();
+    battle_loadQueuedTextGlyph();
+    text_renderListEntry();
     battle_setupObjectSpriteFromEntry();
     result = &eT4BattleObjects[3872];
     eT4BattleObjects[3884] = 0;
@@ -17281,7 +17281,7 @@ signed int sub_811B6E0()
 
 
 // 0x811b71c
-int sub_811B71C()
+int battle_loadQueuedTextGlyph()
 {
     int v0; // r5
     int v1; // r10
@@ -17320,7 +17320,7 @@ int sub_811B71C()
 
 
 // 0x811b7d4
-int sub_811B7D4()
+int text_renderListEntry()
 {
     int v0; // r5
     int v1; // r10
@@ -23460,7 +23460,7 @@ LABEL_21:
 
 
 // 0x8120898
-int __fastcall sub_8120898(signed int a1)
+int __fastcall getOwnedChipCountOfLibraryCategory(signed int a1)
 {
     signed int v1; // r5
     int v2; // r6
@@ -23618,11 +23618,11 @@ __int64 sub_8120A38()
     __int64 v0; // ST00_8
 
     removeFolderChipsFromPack();
-    LODWORD(v0) = sub_8120898(0);
-    HIDWORD(v0) = sub_8120898(1);
+    LODWORD(v0) = getOwnedChipCountOfLibraryCategory(0);
+    HIDWORD(v0) = getOwnedChipCountOfLibraryCategory(1);
     GetTotalChipCount(311);
-    sub_8120898(2);
-    sub_8120898(5);
+    getOwnedChipCountOfLibraryCategory(2);
+    getOwnedChipCountOfLibraryCategory(5);
     pack_addAllFolderChipsToPack();
     return v0;
 }

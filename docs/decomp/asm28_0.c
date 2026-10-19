@@ -2973,7 +2973,7 @@ signed int sub_809D7A8()
 
 
 // 0x809d7f8
-int sub_809D7F8()
+int ow_despawnPlayerObject()
 {
     return FreeOWPlayerObject();
 }

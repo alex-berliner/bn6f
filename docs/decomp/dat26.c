@@ -328,7 +328,7 @@ LABEL_7:
             {
                 sub_8093074(v11);
                 owPlayer_disableWallCollision_809e254();
-                sub_8143EDC(*v2);
+                groundmanMinigameFindActiveEntry(*v2);
                 if ( v4 )
                     owPlayer_enableWallCollision_809e248();
             }
@@ -346,7 +346,7 @@ LABEL_7:
             v1[8] = 0;
             return 0;
         }
-        sub_8143EDC(*v2);
+        groundmanMinigameFindActiveEntry(*v2);
         if ( !v4 )
         {
             v6 = sub_8143B5E(v5);

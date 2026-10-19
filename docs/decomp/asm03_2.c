@@ -1321,7 +1321,7 @@ void __fastcall __noreturn drawChipListFiveRows_8047594(int a1, int a2)
     {
         v10 = v2[5];
         dimUnownedChipStrip_8047CFA(0, *(v2 + 1), v2[4]);
-        sub_8047708(v11, v12);
+        drawChipListRowGfx(v11, v12);
     }
     drawBlankChipRow_8047760(0);
 }
@@ -1377,7 +1377,7 @@ void __fastcall __noreturn drawCodedChipRow_8047664(int a1, unsigned int a2, int
 
 
 // 0x8047708
-void __fastcall __noreturn sub_8047708(int a1, unsigned int a2)
+void __fastcall __noreturn drawChipListRowGfx(int a1, unsigned int a2)
 {
     int v2; // [sp+0h] [bp-18h]
     int v3; // [sp+4h] [bp-14h]
@@ -2747,7 +2747,7 @@ int sub_80492F4()
 
 
 // 0x804930c
-signed int __fastcall sub_804930C(int a1)
+signed int __fastcall ow_attemptJackIn(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r2
@@ -2863,7 +2863,7 @@ void sub_80493FE()
 
 
 // 0x8049416
-void sub_8049416()
+void rfu_wirelessConnectStep()
 {
     int v0; // r5
     char v1; // zf
@@ -3728,7 +3728,7 @@ void *sub_8049D82()
 
 
 // 0x8049d98
-void sub_8049D98()
+void chatbox_expandWordTable()
 {
     sub_803BEC0();
 }
@@ -4291,7 +4291,7 @@ int sub_804A4D4()
             {
                 *v0 = 4;
                 *(v0 + 3) = 0;
-                sub_804AF20(*(v0 + 30));
+                pet_menuSpinCursorStep(*(v0 + 30));
             }
             else
             {
@@ -4585,7 +4585,7 @@ void pet_menuCancel()
     {
         if ( *&menu->unk_1E )
         {
-            sub_804AF20(*&menu->unk_1E);
+            pet_menuSpinCursorStep(*&menu->unk_1E);
         }
         else
         {
@@ -5078,7 +5078,7 @@ void __fastcall sub_804AF10(int a1)
 
 
 // 0x804af20
-int __fastcall sub_804AF20(signed int a1)
+int __fastcall pet_menuSpinCursorStep(signed int a1)
 {
     int v1; // r5
     signed int v2; // r7

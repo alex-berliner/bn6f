@@ -5380,9 +5380,9 @@ off_80024C8:
 // symdb: (r0 = world x, r1 = world y, r2 = region width in px (rounded up to even), r3 = region height in
 // symdb: px (rounded up to even)) -> r0 = left clamp from CopyBackgroundTiles; writes RenderInfo BG
 // symdb: scroll and Unk200f3a0 extents; clobbered r2-r7, r8-r10
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80024CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_scrollToProjectedPos.yaml
 	thumb_local_start
-sub_80024CC:
+bg_scrollToProjectedPos:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -5541,7 +5541,7 @@ byte_80025CC:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_80024CC
+	thumb_func_end bg_scrollToProjectedPos
 
 /// tags: "#mcu, "
 // symdb: Resets overworld scene state by zeroing OAM and sound RAM, then reinitializing player/NPC/map object structs, sprite variables, and a small RAM buffer.

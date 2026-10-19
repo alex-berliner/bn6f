@@ -336,7 +336,7 @@ int __fastcall camera_snapToIndexedTarget(int a1, int a2)
 
 
 // 0x808fbec
-int __fastcall sub_808FBEC(int a1, int a2)
+int __fastcall camera_loadMapCameraPos(int a1, int a2)
 {
     int v2; // r10
     int v3; // r0

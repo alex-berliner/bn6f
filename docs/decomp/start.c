@@ -107,7 +107,7 @@ int __noreturn start_800029C()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_3005E60();
+    start_enableInterrupts();
     return v1;
 }
 

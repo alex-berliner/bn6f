@@ -1191,15 +1191,15 @@ battle_getObjectAllianceTeam_800F49E:
 
 // symdb: Returns a per-alliance pointer from a global table, selected by the battle object's Alliance field.
 // symdb: (r5 = battle object) -> r0 = dword_203F7E0[Alliance*4]; flags clobbered, r0/r1 scratch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F4A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAllianceList.yaml
 	thumb_local_start
-sub_800F4A8:
+battle_getAllianceList:
 	ldr r1, off_800F4DC // =dword_203F7E0 
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
 	mov pc, lr
-	thumb_func_end sub_800F4A8
+	thumb_func_end battle_getAllianceList
 
 	thumb_local_start
 sub_800F4B2:
@@ -4765,7 +4765,7 @@ dispatchHandlerById_8010D58:
 	lsl r6, r0, #2
 	cmp r0, #0xff
 	beq loc_8010D7C
-	bl sub_800F4A8
+	bl battle_getAllianceList
 	cmp r0, #1
 	blt loc_8010D70
 	mov r0, #1
@@ -6303,10 +6303,10 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x51
 	.word sub_8012326+1 // 0x52
 	.word loc_801232A+1 // 0x53
-	.word sub_801233C+1 // 0x54
+	.word writeChipParams3+1 // 0x54
 	.word sub_8012346+1 // 0x55
 	.word sub_8012350+1 // 0x56
-	.word sub_801235A+1 // 0x57
+	.word start_writeChipParamsA2+1 // 0x57
 	.word sub_8012364+1 // 0x58
 	.word sub_801236E+1 // 0x59
 	.word sub_8012378+1 // 0x5a
@@ -6319,13 +6319,13 @@ off_80117D4:
 	.word sub_80123D2+1 // 0x61
 	.word sub_80123DC+1 // 0x62
 	.word sub_80123E6+1 // 0x63
-	.word sub_80123F0+1 // 0x64
+	.word init_writeChipParams04e+1 // 0x64
 	.word sub_80123FA+1 // 0x65
 	.word sub_8012404+1 // 0x66
 	.word sub_801240E+1 // 0x67
 	.word sub_8012418+1 // 0x68
 	.word sub_8012422+1 // 0x69
-	.word sub_801242C+1 // 0x6a
+	.word init_writeChipParamsA4+1 // 0x6a
 	.word sub_8012436+1 // 0x6b
 	.word sub_8012440+1 // 0x6c
 	.word sub_801244A+1 // 0x6d
@@ -6334,7 +6334,7 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x70
 	.word ai_bossAttemptChipSteal+1 // 0x71
 	.word sub_8012484+1 // 0x72
-	.word sub_801248E+1 // 0x73
+	.word init_chipParams30+1 // 0x73
 	.word sub_8012498+1 // 0x74
 	.word sub_80124B8+1 // 0x75
 	.word sub_80124C2+1 // 0x76
@@ -7015,7 +7015,7 @@ sub_8011E40:
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x80
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	bl sub_800F4A8
+	bl battle_getAllianceList
 	cmp r0, #1
 	blt loc_8011E68
 	mov r0, #1
@@ -7047,7 +7047,7 @@ sub_8011E78:
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #3
 	strb r0, [r7,#oAIAttackVars_InitFlag]
-	bl sub_800F4A8
+	bl battle_getAllianceList
 	cmp r0, #1
 	blt loc_8011EA0
 	mov r0, #1
@@ -7790,14 +7790,14 @@ loc_801232C:
 
 // symdb: Wrapper that invokes the chip-parameter-writing routine with argument 3.
 // symdb: (no args) -> r0 = return value of somethingWriteChipParams_80126E4; no flags relevant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801233C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/writeChipParams3.yaml
 	thumb_local_start
-sub_801233C:
+writeChipParams3:
 	push {lr}
 	mov r0, #3
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_801233C
+	thumb_func_end writeChipParams3
 
 	thumb_local_start
 sub_8012346:
@@ -7818,14 +7818,14 @@ sub_8012350:
 // symdb: Tiny wrapper that invokes the chip-params writer for chip ID 0xA2 (162), likely a hardcoded setup/test for one specific battle chip
 // symdb: () -> r0 = whatever somethingWriteChipParams_80126E4 returns; no flags touched by this stub
 // symdb: itself
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801235A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_writeChipParamsA2.yaml
 	thumb_local_start
-sub_801235A:
+start_writeChipParamsA2:
 	push {lr}
 	mov r0, #0xa2
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_801235A
+	thumb_func_end start_writeChipParamsA2
 
 	thumb_local_start
 sub_8012364:
@@ -7936,14 +7936,14 @@ sub_80123E6:
 
 // symdb: One-line wrapper that (re)writes the parameters of chip index 0x4E via the shared chip-param writer.
 // symdb: (no args) -> r0 = result of somethingWriteChipParams_80126E4; r1 untouched
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80123F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_writeChipParams04e.yaml
 	thumb_local_start
-sub_80123F0:
+init_writeChipParams04e:
 	push {lr}
 	mov r0, #0x4e 
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_80123F0
+	thumb_func_end init_writeChipParams04e
 
 	thumb_local_start
 sub_80123FA:
@@ -7987,14 +7987,14 @@ sub_8012422:
 
 // symdb: Thunk that invokes the chip-parameter writer with chip ID 0xA4 (164).
 // symdb: (no args; callee receives r0 = 0xA4) -> r0 = result of writeChipParams call; flags per callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801242C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_writeChipParamsA4.yaml
 	thumb_local_start
-sub_801242C:
+init_writeChipParamsA4:
 	push {lr}
 	mov r0, #0xa4
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_801242C
+	thumb_func_end init_writeChipParamsA4
 
 	thumb_local_start
 sub_8012436:
@@ -8066,14 +8066,14 @@ sub_8012484:
 
 // symdb: Trivial wrapper that invokes the chip-parameters writer with the fixed chip ID 0x1E (30).
 // symdb: () -> void; r0 = 0x1E passed to the callee, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801248E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_chipParams30.yaml
 	thumb_local_start
-sub_801248E:
+init_chipParams30:
 	push {lr}
 	mov r0, #0x1e
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_801248E
+	thumb_func_end init_chipParams30
 
 	thumb_local_start
 sub_8012498:
@@ -8507,9 +8507,9 @@ loc_801273A:
 // symdb: Scans a line of battlefield panel columns from the entity's side toward the opponent, returning 1 as soon as a panel whose flags match a side-specific mask pair is found (any of rows 3/2/1), else 0.
 // symdb: (no r0 args; r5 = entity, [r5+0x16] = side/alliance id) -> r0 = 1 if a matching panel column
 // symdb: found, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801273E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scanPanelsForFlagMatch.yaml
 	thumb_local_start
-sub_801273E:
+battle_scanPanelsForFlagMatch:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#0x16]
 	push {r0}
@@ -8550,7 +8550,7 @@ byte_8012780:
 	.byte 0x0, 0x0, 0x0
 word_8012790:
 	.hword 0x601
-	thumb_func_end sub_801273E
+	thumb_func_end battle_scanPanelsForFlagMatch
 
 	thumb_func_start sub_8012792
 sub_8012792:
@@ -11864,7 +11864,7 @@ battle_naviAI_tick_8013DA0:
 	cmp r0, #0
 	beq loc_8013DD2
 	bl battleObject_markUsedAction_80143A6
-	bl sub_8014446
+	bl ai_clearCounterHitChain
 	b loc_8013E38
 loc_8013DD2:
 	ldr r4, [r5,#oBattleObject_AIDataPtr]
@@ -11876,7 +11876,7 @@ loc_8013DD2:
 	mov r0, #0
 	strh r0, [r4,#oAIData_ActionRerollFrameCounter]
 	bl battleObject_markUsedAction_80143A6
-	bl sub_8014446
+	bl ai_clearCounterHitChain
 	ldrb r6, [r4,#oAIData_AIScratchByte]
 	ldr r0, off_8013E3C // =byte_8013E44
 	mov r2, #0
@@ -12878,14 +12878,14 @@ ai_clearCounterHitChainFlag:
 // symdb: Clears the AI data's counter-hit chain flag to 0.
 // symdb: (r5 = battle object) -> writes 0 to halfword oAIData_CounterHitChainFlag of [r5 +
 // symdb: oBattleObject_AIDataPtr]; no return value, flags clobbered by mov
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014446.yaml
-	thumb_func_start sub_8014446
-sub_8014446:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearCounterHitChain.yaml
+	thumb_func_start ai_clearCounterHitChain
+ai_clearCounterHitChain:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	mov r0, #0
 	strh r0, [r3,#oAIData_CounterHitChainFlag]
 	mov pc, lr
-	thumb_func_end sub_8014446
+	thumb_func_end ai_clearCounterHitChain
 
 	thumb_local_start
 sub_801444E:
@@ -13247,7 +13247,7 @@ battle_grantSuperArmorInvulnerability:
 loc_8014668:
 	ldr r0, dword_80147D8 // =0xffff 
 	bl object_setInvulnerableTime
-	bl sub_802D310
+	bl battle_clearAIDataStateBlock
 	pop {r7,pc}
 	thumb_func_end battle_grantSuperArmorInvulnerability
 
@@ -13267,7 +13267,7 @@ sub_8014674:
 	bne loc_8014696
 	bl sub_80E1620
 loc_8014696:
-	bl sub_802D310
+	bl battle_clearAIDataStateBlock
 	pop {r7,pc}
 	thumb_func_end sub_8014674
 
@@ -13447,7 +13447,7 @@ battle_applySuperArmorInvulnerability:
 	bl object_setFlag1 // (int a1) -> void
 	ldr r0, dword_80147D8 // =0xffff 
 	bl object_setInvulnerableTime
-	bl sub_802D310
+	bl battle_clearAIDataStateBlock
 	pop {r7,pc}
 	thumb_func_end battle_applySuperArmorInvulnerability
 
@@ -13464,7 +13464,7 @@ sub_80147B2:
 	bl object_setFlag1 // (int a1) -> void
 	ldr r0, dword_80147D8 // =0xffff 
 	bl object_setInvulnerableTime
-	bl sub_802D310
+	bl battle_clearAIDataStateBlock
 	pop {pc}
 	.balign 4, 0
 dword_80147D8:
@@ -16426,9 +16426,9 @@ loc_8015DEC:
 // symdb: Scans a 0x7F-terminated list of (x,y) panel coordinates, keeps the ones whose panel flags match two masks, and returns one of them chosen at random.
 // symdb: (r4 = ptr to byte-pair list {x,y}, 0x7F in x terminates; r2 = required-flags mask, r3 =
 // symdb: forbidden-flags mask) -> r0 = x (bits 0-2), r1 = y (bits 4-7); no flag clobber noted
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015DF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_pickRandomMatchingPanel.yaml
 	thumb_local_start
-sub_8015DF0:
+object_pickRandomMatchingPanel:
 	push {r4,lr}
 	sub sp, sp, #0x38
 	str r2, [sp,#0x24]
@@ -16474,7 +16474,7 @@ loc_8015E2A:
 loc_8015E42:
 	add sp, sp, #0x38
 	pop {r4,pc}
-	thumb_func_end sub_8015DF0
+	thumb_func_end object_pickRandomMatchingPanel
 
 	thumb_func_start GetRandomRelativePanelFiltered
 // input:
@@ -27216,7 +27216,7 @@ off_801BF88:
 	.word sprite_queueOamPair+1
 	.word syncCurrentFieldsAndNotify_801C9A4+1
 	.word nullsub_58+1
-	.word sub_801CA34+1
+	.word ow_drawTilePatchByState+1
 	.word sub_801CA80+1
 	.word palette_QueueObjectPalettePair_801CDEC+1
 	.word state_dispatchHandler_801CF0E+1
@@ -27789,7 +27789,7 @@ sub_801C368:
 	bl sub_802D1B4
 	ldr r1, dword_801C444 // =0x600c980 
 	push {r0}
-	bl sub_801C3A4
+	bl sprite_drawRightAligned3DigitNumber
 	pop {r0}
 	ldr r1, off_801C454 // =byte_3001670 
 	mov r2, #0
@@ -27800,7 +27800,7 @@ sub_801C368:
 	bl sub_802D1BE
 	ldr r1, dword_801C448 // =0x600ca40 
 	push {r0}
-	bl sub_801C3A4
+	bl sprite_drawRightAligned3DigitNumber
 	pop {r0}
 	ldr r1, off_801C458 // =word_3001684 
 	mov r2, #1
@@ -27811,9 +27811,9 @@ sub_801C368:
 // symdb: Renders a value (0–100) as a right-aligned 3-digit number of 8x16 tiles into a graphics buffer, with leading blank tiles.
 // symdb: (r0 = value 0..100, r1 = dest tile buffer ptr) -> void; queues 3 GFX transfers of 0x40 bytes
 // symdb: each
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C3A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawRightAligned3DigitNumber.yaml
 	thumb_local_start
-sub_801C3A4:
+sprite_drawRightAligned3DigitNumber:
 	push {r4,r6,r7,lr}
 	mov r6, r1
 	cmp r0, #0x64 
@@ -27853,7 +27853,7 @@ loc_801C3CC:
 	sub r7, #1
 	bne loc_801C3CC
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801C3A4
+	thumb_func_end sprite_drawRightAligned3DigitNumber
 
 	thumb_local_start
 sub_801C3EE:
@@ -28770,9 +28770,9 @@ sub_801CA28:
 // symdb: Redraws a small 8x2 patch of tiles on the overworld background, selecting the tile row and tile graphic from a state byte in the caller's struct.
 // symdb: (r5 = struct ptr, set by caller: byte [r5] = state, byte [r5+0xB] = variant index) -> r0 =
 // symdb: destroyed; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CA34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_drawTilePatchByState.yaml
 	thumb_local_start
-sub_801CA34:
+ow_drawTilePatchByState:
 	push {r4-r6,lr}
 	ldrb r6, [r5,#0xb]
 	ldr r0, off_801CA78 // =dword_801CA7C 
@@ -28816,7 +28816,7 @@ off_801CA78:
 	.word dword_801CA7C
 dword_801CA7C:
 	.word 0x30200
-	thumb_func_end sub_801CA34
+	thumb_func_end ow_drawTilePatchByState
 
 // symdb: Draw up to 4 two-row strips of 9 tiles with CopyBackgroundTiles, at columns 0x1E - [table at r5 + 0x28] (0xFF ends the table).
 // symdb: (r5 = struct with a halfword column table at +0x28)
@@ -30388,14 +30388,14 @@ loc_801D5CE:
 	cmp r0, #0
 	beq loc_801D5FA
 	add r4, #1
-	bl sub_801D61A
+	bl battle_queueDigitTileGfx
 	add r1, #0x20 
 loc_801D5FA:
 	mov r0, r6
-	bl sub_801D61A
+	bl battle_queueDigitTileGfx
 	add r1, #0x20 
 	mov r0, r7
-	bl sub_801D61A
+	bl battle_queueDigitTileGfx
 	add r1, #0x20 
 	cmp r4, #0
 	bne locret_801D618
@@ -30410,9 +30410,9 @@ locret_801D618:
 // symdb: Queues a single 32-byte (one 8x8 4bpp tile) graphics copy from a ROM tile table into VRAM, used to render one digit of the battle counter UI.
 // symdb: (r0 = tile index into table at 0x86E968C, r1 = VRAM destination pointer) -> queues 0x20-byte GFX
 // symdb: transfer via QueueEightWordAlignedGFXTransfer; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D61A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueDigitTileGfx.yaml
 	thumb_local_start
-sub_801D61A:
+battle_queueDigitTileGfx:
 	push {r1,lr}
 	mov r2, #0x20 
 	mul r0, r2
@@ -30443,7 +30443,7 @@ off_801D650:
 off_801D654:
 	.word dword_86E966C
 	.word off_86E968C
-	thumb_func_end sub_801D61A
+	thumb_func_end battle_queueDigitTileGfx
 
 	thumb_local_start
 sub_801D65C:
@@ -30875,7 +30875,7 @@ off_801DA6C:
 	.word sub_801EBDE+1
 	.word ow_drawBackgroundTilePatch+1
 	.word sub_801EC38+1
-	.word sub_801EC90+1
+	.word e_requestPaletteLoad+1
 	.word e_copyHudTiles+1
 	thumb_func_end dispatch_801DA48
 
@@ -33700,9 +33700,9 @@ sub_801EC84:
 
 // symdb: Queues a 32-byte palette for copy into an IWRAM buffer and sets a flag word bit to trigger the actual upload.
 // symdb: () -> void; sets bit 0x400000 in the flag word at eStruct2035280+0x44
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EC90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_requestPaletteLoad.yaml
 	thumb_local_start
-sub_801EC90:
+e_requestPaletteLoad:
 	push {r4,r5,lr}
 	ldr r0, off_801ECA8 // =dword_86E9A0C 
 	ldr r1, off_801ECAC // =byte_30016D0 
@@ -33718,7 +33718,7 @@ off_801ECA8:
 off_801ECAC:
 	// <endpool>
 	.word byte_30016D0
-	thumb_func_end sub_801EC90
+	thumb_func_end e_requestPaletteLoad
 
 off_801ECB0:
 	.word eStruct2035280

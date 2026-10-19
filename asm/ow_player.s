@@ -141,7 +141,7 @@ off_809D258:
 off_809D25C:
 	.word sub_809D270+1
 	.word owPlayer_update_809D348+1
-	.word sub_809D7F8+1
+	.word ow_despawnPlayerObject+1
 off_809D268:
 	.word eStruct2000aa0
 	.word eStruct200ace0
@@ -899,13 +899,13 @@ locret_809D7F6:
 
 // symdb: Thin wrapper that frees the overworld player object via FreeOWPlayerObject.
 // symdb: (no arguments used) -> r0 = return value of FreeOWPlayerObject; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_despawnPlayerObject.yaml
 	thumb_local_start
-sub_809D7F8:
+ow_despawnPlayerObject:
 	push {lr}
 	bl FreeOWPlayerObject
 	pop {pc}
-	thumb_func_end sub_809D7F8
+	thumb_func_end ow_despawnPlayerObject
 
 // symdb: Per-frame update of the overworld player object: write back next-position into current XYZ, sync eStruct200ace0 mirror, choose animation/jumptable step, clamp into bbox, recompute Z, update layer and sprite priority.
 // symdb: () -> void ; side effects: mutates OWPlayerObject in r5, eStruct200ace0, and calls into

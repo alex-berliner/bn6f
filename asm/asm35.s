@@ -645,7 +645,7 @@ sub_812EF20:
 	lsr r1, r1, #2
 	mov r0, r1
 	mov r2, #0x90
-	bl sub_812EF60
+	bl renderTextWindowToBg
 
 	mov r0, r4
 	mov r1, #9
@@ -662,9 +662,9 @@ sub_812EF20:
 // symdb: Renders a small text window's glyphs into VRAM via the text renderer and blits its tile map onto background block 3.
 // symdb: (r0 = text/source handle, passed through as r1 to renderTextGfx) -> r0 = destroyed; no
 // symdb: meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EF60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/renderTextWindowToBg.yaml
 	thumb_local_start
-sub_812EF60:
+renderTextWindowToBg:
 	push {r4-r7,lr}
 	mov r1, r0
 	ldr r0, off_812EF90 // =unk_2025070 
@@ -697,7 +697,7 @@ off_812EF9C:
 	.word dword_86A5D60
 off_812EFA0:
 	.word unk_2025A70
-	thumb_func_end sub_812EF60
+	thumb_func_end renderTextWindowToBg
 	thumb_local_start
 sub_812EFA4:
 	push {r4-r7,lr}

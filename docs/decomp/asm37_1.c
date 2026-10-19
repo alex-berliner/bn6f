@@ -1815,7 +1815,7 @@ int __fastcall sub_8143220(int a1)
     v2 = ow_cybercrowGetCrowRecord(a1);
     GetRNG();
     *(v2 + 1) = (v3 & 0x3F) + 30;
-    return sub_81432FA(v1, 1);
+    return ow_cybercrowSetCrowRecordState(v1, 1);
 }
 
 
@@ -1850,7 +1850,7 @@ int sub_8143248()
                 if ( ++v3 >= 8 )
                     goto LABEL_8;
             }
-            result = sub_81432FA(v0, 2);
+            result = ow_cybercrowSetCrowRecordState(v0, 2);
         }
 LABEL_8:
         v1 += 20;
@@ -1884,7 +1884,7 @@ int sub_8143294()
             v5 = *v2;
             if ( v4 < 16384000 )
                 v2[1] = 8;
-            result = sub_81432FA(v1, 1);
+            result = ow_cybercrowSetCrowRecordState(v1, 1);
         }
         v2 += 20;
         ++v1;
@@ -1917,7 +1917,7 @@ int sub_81432D8()
 
 
 // 0x81432fa
-int __fastcall sub_81432FA(int a1, char a2)
+int __fastcall ow_cybercrowSetCrowRecordState(int a1, char a2)
 {
     char v2; // r4
     char *v3; // r0
@@ -2157,7 +2157,7 @@ int sub_8143978()
     int v19; // [sp-4h] [bp-18h]
 
     SetEventFlagRangeFromImmediate(22, 112, 48);
-    v1 = sub_8143C18();
+    v1 = get_groundmanMinigameMapId();
     TestEventFlag(v1);
     if ( v2 )
     {
@@ -2228,7 +2228,7 @@ int sub_8143A54()
     check_playerCanAdvanceForward_8034C36();
     if ( v3 )
         goto LABEL_24;
-    v1 = sub_8143C18();
+    v1 = get_groundmanMinigameMapId();
     TestEventFlag(v1);
     if ( !v3 )
         goto LABEL_24;
@@ -2251,7 +2251,7 @@ int sub_8143A54()
             if ( v4 )
             {
                 v6 = sub_8143DEA(v5);
-                sub_8143EDC(v6);
+                groundmanMinigameFindActiveEntry(v6);
                 if ( !v3 )
                 {
                     v7 = sub_8143EA4();
@@ -2372,7 +2372,7 @@ int sub_8143BFC()
 
 
 // 0x8143c18
-int sub_8143C18()
+int get_groundmanMinigameMapId()
 {
     return *(&dword_8143C2C + GetGroundmanMinigameMapIndex());
 }
@@ -2567,7 +2567,7 @@ unsigned int groundmanMinigameGridDirBetween()
 
 
 // 0x8143edc
-signed int __fastcall sub_8143EDC(int a1)
+signed int __fastcall groundmanMinigameFindActiveEntry(int a1)
 {
     int v1; // r6
     unsigned __int8 *v2; // r7
@@ -2788,7 +2788,7 @@ BOOL get_groundmanMinigameSkipCondition()
     {
         if ( GetGroundmanMinigameMapIndex() != 255 )
         {
-            v1 = sub_8143C18();
+            v1 = get_groundmanMinigameMapId();
             TestEventFlag(v1);
             if ( v0 )
                 result = 0;

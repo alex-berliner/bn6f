@@ -190,7 +190,7 @@ int init_installCommIntrHandlers()
 
 
 // 0x3005e60
-void sub_3005E60()
+void start_enableInterrupts()
 {
     *off_3005E74 = 1;
 }

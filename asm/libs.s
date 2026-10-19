@@ -1812,9 +1812,9 @@ loc_8144D5E:
 
 // symdb: Soft-resets the wireless adapter and clears the game's link state struct before tearing down the connection.
 // symdb: () -> r0 = result of rfu_REQBN_softReset_and_checkID (0x8001 = ok); flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_softResetLinkState.yaml
 	thumb_local_start
-sub_8144D64:
+rfu_softResetLinkState:
 	push {r4,lr}
 	bl rfu_REQBN_softReset_and_checkID
 	mov r4, r0
@@ -1853,7 +1853,7 @@ dword_8144DA8:
 	.word 0x8001
 off_8144DAC:
 	.word eStruct200FE00
-	thumb_func_end sub_8144D64
+	thumb_func_end rfu_softResetLinkState
 
 	thumb_local_start
 sub_8144DB0:
@@ -2173,9 +2173,9 @@ loc_8144FC6:
 // symdb: (r0 = target slot/pid from the scan list, r1 = value stored to eStruct200FE00+0x1A) -> r0 = 0 on
 // symdb: success, else failure reason 1/2/3; on failure fires the +0x40 callback with code 0xF3 and
 // symdb: clears eStruct200FE00+0x14/+0x16
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144FD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_childConnRequest.yaml
 	thumb_local_start
-sub_8144FD0:
+rfu_childConnRequest:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -2297,13 +2297,13 @@ loc_81450A8:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8144FD0
+	thumb_func_end rfu_childConnRequest
 
 // symdb: RFU teardown helper: clears per-slot flags for the given player-slot mask, zeroes those slots' state, force-disconnects any of them that are linked, and reports the result via the connection callback with event 0x33.
 // symdb: (r0 = u8 bitfield of player slots) -> r0 = callback result; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81450B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_endSlotConnections.yaml
 	thumb_local_start
-sub_81450B4:
+rfu_endSlotConnections:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x18
 	lsr r1, r0, #0x18
@@ -2360,14 +2360,14 @@ off_8145118:
 	.word eStruct200FE00
 off_814511C:
 	.word dword_2010CC0
-	thumb_func_end sub_81450B4
+	thumb_func_end rfu_endSlotConnections
 
 // symdb: Advances the RFU link-connection state machine in eStruct200FE00, transitioning states and firing the connection callback with the appropriate reason code.
 // symdb: (r0 = bool/flag: nonzero -> abort path) -> void; updates eStruct200FE00 state bytes (+4/+5) and
 // symdb: may invoke the connection callback via rfu_fireConnCallbackAndClearState.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145120.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateConnState.yaml
 	thumb_local_start
-sub_8145120:
+rfu_updateConnState:
 	push {r4,r5,lr}
 	lsl r0, r0, #0x18
 	mov r2, #0
@@ -2486,7 +2486,7 @@ loc_814520A:
 	pop {r4,r5}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_8145120
+	thumb_func_end rfu_updateConnState
 
 // symdb: Periodic wireless-link watchdog: polls the RFU link status, updates the connected-player bitmask and per-player disconnect timers in the connection struct at 200FE00, and runs disconnect processing when a peer drops or times out.
 // symdb: (r0 = 16-bit argument passed to rfu_REQBN_watchLink) -> r0 = nonzero flag if any player
@@ -2825,7 +2825,7 @@ jpt_814543E:
 	.word def_814543E
 	.word loc_81454A4
 loc_81454A4:
-	bl sub_8144D64
+	bl rfu_softResetLinkState
 	ldr r1, dword_81454C0 // =0x8001 
 	mov r2, #0xff
 	cmp r0, r1
@@ -2844,7 +2844,7 @@ dword_81454C0:
 off_81454C4:
 	.word eStruct200FE00
 loc_81454C8:
-	bl sub_8144D64
+	bl rfu_softResetLinkState
 	ldr r1, dword_81454E0 // =0x8001 
 	cmp r0, r1
 	bne loc_81454E8
@@ -2976,7 +2976,7 @@ loc_81455B4:
 	bne loc_81455DA
 loc_81455CA:
 	bl sub_8145DD8
-	bl sub_8145FFC
+	bl rfu_handleConnTimeout
 	bl sub_814610C
 	bl sub_81462D8
 loc_81455DA:
@@ -4327,9 +4327,9 @@ loc_8145FEA:
 // symdb: RFU link-state watchdog: times out a pending-connection slot, then forces a disconnect and fires the connection callback with error 0x25.
 // symdb: (r0 = unused/ignored) -> r0 = undefined; saves/restores IME, mutates eStruct200FE00 state
 // symdb: fields, may call rfu_forceDisconnect and the connection callback
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145FFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleConnTimeout.yaml
 	thumb_local_start
-sub_8145FFC:
+rfu_handleConnTimeout:
 	push {r4-r6,lr}
 	ldr r1, off_81460A0 // =InterruptMasterEnableRegister 
 	ldrh r0, [r1]
@@ -4420,7 +4420,7 @@ off_81460A8:
 	.word dword_2010CB0
 off_81460AC:
 	.word dword_2010CC0
-	thumb_func_end sub_8145FFC
+	thumb_func_end rfu_handleConnTimeout
 
 // symdb: Handles a received disconnect (command 0x26) during wireless connection state 0xF: tears down the link slot and clears connection state.
 // symdb: (void) -> void; only acts when state byte 200FE04 == 0xF and incoming packet ID == 0x26
@@ -5958,9 +5958,9 @@ loc_8146A68:
 // symdb: Zero-fills an RFU link-management structure and marks it active (first byte = 1) during wireless init.
 // symdb: (r0 = pointer to RFU struct to (re)initialize) -> r0 = garbage (popped into pc via pop {r0}); no
 // symdb: meaningful return, flags clobbered by CpuSet.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146A70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearSlotBuffer.yaml
 	thumb_local_start
-sub_8146A70:
+rfu_clearSlotBuffer:
 	push {r4,lr}
 	sub sp, sp, #4
 	mov r4, r0
@@ -5998,7 +5998,7 @@ byte_8146A90:
 	.byte 0x20, 0x41, 0x46, 0x8, 0x80, 0x1, 0x20, 0x1, 0xB0, 0x8, 0xBC
 	.byte 0x98, 0x46, 0xF0, 0xBC, 0x2, 0xBC, 0x8, 0x47, 0x0, 0x0
 	.word InterruptMasterEnableRegister
-	thumb_func_end sub_8146A70
+	thumb_func_end rfu_clearSlotBuffer
 
 	thumb_local_start
 sub_8146B64:
@@ -6349,9 +6349,9 @@ loc_8146D90:
 // symdb: Scans the four wireless link slots for peers whose connection has ended (state 0x46/0x47/0x48), clears those slots, and when every tracked slot is finished resets the player's block in the shared wireless data buffer.
 // symdb: (r0 = work struct ptr: +0x01 status byte out, +0x0C buffer ptr, +0x14 byte size, r1 unused) ->
 // symdb: r0 = ?; destroys r-r7 saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146D98.yaml
-	thumb_func_start sub_8146D98
-sub_8146D98:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearDisconnectedSlots.yaml
+	thumb_func_start rfu_clearDisconnectedSlots
+rfu_clearDisconnectedSlots:
 	push {r4-r7,lr}
 	mov r7, r9
 	mov r6, r8
@@ -6444,7 +6444,7 @@ off_8146E40:
 	.word byte_2010290
 off_8146E44:
 	.word byte_2010328
-	thumb_func_end sub_8146D98
+	thumb_func_end rfu_clearDisconnectedSlots
 
 	thumb_local_start
 sub_8146E48:
@@ -6526,9 +6526,9 @@ sub_8146E90:
 	mov r1, r8
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_8146F68 // =unk_200FFF0 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_8146F6C // =unk_200FE90 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_8146F70 // =byte_20101B4 
 	mov r1, #1
 	strb r1, [r0]
@@ -6780,7 +6780,7 @@ loc_8147118:
 loc_8147122:
 	mov r0, #0
 loc_8147124:
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_8147138 // =eS200BC50 
 	mov r0, #0xa
 loc_814712C:
@@ -7679,7 +7679,7 @@ loc_8147814:
 loc_814781E:
 	mov r0, #0
 loc_8147820:
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_8147830 // =eS200BC50 
 	mov r0, #0xa
 loc_8147828:
@@ -8156,9 +8156,9 @@ rfu_initCommState:
 	mov r2, r4
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_8147BF4 // =unk_200FFF0 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_8147BF8 // =unk_200FE90 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r1, off_8147BFC // =byte_20101B4 
 	mov r0, #1
 	strb r0, [r1]
@@ -8381,7 +8381,7 @@ off_8147DA8:
 	.word dword_2010CC0
 loc_8147DAC:
 	mov r0, #1
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_8147DBC // =eS200BC50 
 	mov r0, #0xa
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -8662,7 +8662,7 @@ sub_8147F98:
 	mov r5, #0
 	strh r5, [r4,#0x2] // (word_2010352 - 0x2010350)
 	bl zeroFill_813D960
-	ldr r0, off_8147FF8 // =sub_814801C+1 
+	ldr r0, off_8147FF8 // =rfu_handleLinkCommand+1 
 	ldr r1, off_8147FFC // =sub_8148208+1 
 	bl rfu_initREQ
 	ldr r0, off_8148000 // =Timer2Counter_Reload 
@@ -8694,7 +8694,7 @@ sub_8147F98:
 off_8147FF4:
 	.word unk_2010350
 off_8147FF8:
-	.word sub_814801C+1
+	.word rfu_handleLinkCommand+1
 off_8147FFC:
 	.word sub_8148208+1
 off_8148000:
@@ -8716,9 +8716,9 @@ dword_8148018:
 // symdb: Dispatches a wireless link command/event byte to the matching RFU state-machine action for the wireless battle/trade session.
 // symdb: (r0 = command/event ID byte) -> r0 clobbered; updates link state word_200BC58 of eS200BC50,
 // symdb: sometimes calls sub_813D934 with a sub-state code; no return value.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814801C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleLinkCommand.yaml
 	thumb_local_start
-sub_814801C:
+rfu_handleLinkCommand:
 	push {lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -8989,7 +8989,7 @@ loc_8148200:
 	bx r0
 off_8148204:
 	.word eS200BC50
-	thumb_func_end sub_814801C
+	thumb_func_end rfu_handleLinkCommand
 
 	thumb_local_start
 sub_8148208:
@@ -9199,7 +9199,7 @@ loc_81483E8:
 	add r1, r1, r0
 	ldrh r0, [r1,#0x14]
 	mov r1, #0x78 
-	bl sub_8144FD0
+	bl rfu_childConnRequest
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	bne loc_8148428
@@ -9332,7 +9332,7 @@ off_8148508:
 	.word dword_2010CC0
 loc_814850C:
 	mov r0, #1
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_814851C // =eS200BC50 
 	mov r0, #0xa
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -9380,9 +9380,9 @@ sub_8148540:
 	mov r2, r5
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_81486BC // =unk_200FFF0 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_81486C0 // =unk_200FE90 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_81486C4 // =byte_2010270 
 	strb r4, [r0]
 	ldr r0, off_81486C8 // =byte_2010408 
@@ -9965,7 +9965,7 @@ loc_8148A40:
 	mov r0, #0
 	strh r0, [r2,#0x8] // (word_200BC58 - 0x200bc50)
 	bl rfu_clearAllSlot
-	bl sub_8144D64
+	bl rfu_softResetLinkState
 	bl sub_813D760
 	b def_8148934
 loc_8148A52:
@@ -9981,7 +9981,7 @@ loc_8148A60:
 	b def_8148934
 loc_8148A6A:
 	mov r0, #1
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_8148A7C // =eS200BC50 
 	mov r0, #0xa
 loc_8148A74:
@@ -10416,9 +10416,9 @@ loc_8148D6A:
 	mov r0, r6
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_8148E38 // =unk_200FFF0 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	ldr r0, off_8148E3C // =unk_200FE90 
-	bl sub_8146A70
+	bl rfu_clearSlotBuffer
 	mov r2, #0
 	ldr r7, off_8148E40 // =byte_2010220 
 	mov r3, #0
@@ -10815,7 +10815,7 @@ off_81490F0:
 	.word eS200BC50
 loc_81490F4:
 	bl rfu_clearAllSlot
-	bl sub_8144D64
+	bl rfu_softResetLinkState
 	ldr r1, off_8149108 // =eS200BC50 
 	mov r0, #0
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -10829,7 +10829,7 @@ loc_814910C:
 	b def_8148FDA
 loc_8149116:
 	mov r0, #1
-	bl sub_8145120
+	bl rfu_updateConnState
 	ldr r1, off_8149128 // =eS200BC50 
 	mov r0, #0xa
 loc_8149120:

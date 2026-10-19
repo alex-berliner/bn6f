@@ -165,7 +165,7 @@ off_80A4AA8:
 off_80A4AAC:
 	.word battle_objectEnterState4LatchTilePos_80A4AB8+1
 	.word sub_80A4ACC+1
-	.word sub_80A4BD4+1
+	.word ow_freeObject+1
 	thumb_func_end battle_dispatchState4Handler_80A4A98
 
 // symdb: Sets a battle object's state to 4, snapshots its current tile coordinates into its position fields, and continues with the follow-up state handler.
@@ -303,13 +303,13 @@ byte_80A4BA4:
 // symdb: Thin wrapper that frees an overworld map object, forwarding its argument to FreeOverworldMapObject.
 // symdb: (r0 = overworld map object slot/index) -> r0 = whatever FreeOverworldMapObject returns; no flag
 // symdb: use of its own
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A4BD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeObject.yaml
 	thumb_local_start
-sub_80A4BD4:
+ow_freeObject:
 	push {lr}
 	bl FreeOverworldMapObject
 	pop {pc}
-	thumb_func_end sub_80A4BD4
+	thumb_func_end ow_freeObject
 
 // symdb: Tail-call dispatcher that runs one of three phase handlers of the menu object in r5, selected by the pre-multiplied phase byte at r5+8.
 // symdb: menu_stateDispatch(void) — no direct args; object pointer is fixed in R5; passes R0 = handler's
@@ -2116,7 +2116,7 @@ locret_80A5D7E:
 sub_80A5D80:
 	push {r4-r7,lr}
 	bl sub_80A5DE8
-	bl sub_80A5E00
+	bl sprite_updateAnimTowardTarget
 	mov r4, #0
 	ldr r2, dword_80A5DE4 // =0x10000 
 	ldr r0, [r5,#0xc]
@@ -2192,14 +2192,14 @@ sub_80A5DE8:
 // symdb: (r5 = object pointer; reads [r5,#0x28] and [r5,#0x2c] as arguments to
 // symdb: sprite_updateAnimByAngleToTarget) -> tail-jumps to sprite_updateAnimByAngleToTarget; no own
 // symdb: return value logic.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateAnimTowardTarget.yaml
 	thumb_local_start
-sub_80A5E00:
+sprite_updateAnimTowardTarget:
 	push {r4,lr}
 	ldr r0, [r5,#0x28]
 	ldr r1, [r5,#0x2c]
 	b loc_80A5E0A
-	thumb_func_end sub_80A5E00
+	thumb_func_end sprite_updateAnimTowardTarget
 
 // symdb: Picks an object's animation from the octant of the angle toward a target position, reapplying sprite state only when the chosen animation changes.
 // symdb: (r0 = target x, r1 = target y; r5 = object pointer) -> r0 = clobbered; updates object sprite
@@ -4998,7 +4998,7 @@ off_80A78D0:
 	.word battle_beastSpInit+1
 	.word battle_beastSpStepper_80A7912+1
 	.word ow_objectBrightenToWhiteUpdate+1
-	.word sub_80A79D4+1
+	.word ow_freeObjectWrapper+1
 	thumb_func_end battle_aiDispatchByAIDataBLeftAbility_80A78B8
 
 // symdb: Initializes a Beast-SP state on an object: sets state 3, loads its Beast sprite and animation, configures sprite flags, then hands off to the Beast-SP stepper.
@@ -5126,13 +5126,13 @@ byte_80A79C4:
 // symdb: Thin wrapper that frees an overworld map object, likely used as a cleanup/destructor callback.
 // symdb: (r0 = overworld map object pointer) -> r0 = FreeOverworldMapObject return value; flags clobbered
 // symdb: by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A79D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeObjectWrapper.yaml
 	thumb_local_start
-sub_80A79D4:
+ow_freeObjectWrapper:
 	push {r4-r7,lr}
 	bl FreeOverworldMapObject
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A79D4
+	thumb_func_end ow_freeObjectWrapper
 
 // symdb: Sets an entity's sprite animation and initializes a linear move of param-scaled ±8 px toward the entity's facing direction over a param-length duration.
 // symdb: (r5 = entity/base struct, r6 = sprite/motion slot, r7 = params: [1]=anim id, [2]=duration
@@ -5552,7 +5552,7 @@ off_80A7C94:
 off_80A7C98:
 	.word sub_80A7CA4+1
 	.word owMapObject_updateBeastSpEncounter_80A7CEA+1
-	.word sub_80A7CF6+1
+	.word ow_releaseMapObjectCallback+1
 	thumb_func_end battleObject_dispatchCurAction_80A7C84
 
 	thumb_local_start
@@ -5601,13 +5601,13 @@ owMapObject_updateBeastSpEncounter_80A7CEA:
 // symdb: Thin wrapper that releases a single overworld map object via FreeOverworldMapObject, likely used as a callback/function pointer.
 // symdb: (r0 = map object slot/pointer, passed through) -> r0 = result of FreeOverworldMapObject; r4-r7
 // symdb: preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CF6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_releaseMapObjectCallback.yaml
 	thumb_local_start
-sub_80A7CF6:
+ow_releaseMapObjectCallback:
 	push {r4-r7,lr}
 	bl FreeOverworldMapObject
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7CF6
+	thumb_func_end ow_releaseMapObjectCallback
 
 // symdb: Overworld interaction trigger: if the player is inside a fixed 0xE0000..0x1C0000 X/Y box and conditions hold (no chatbox 0x80, no cutscene, no busy player, not faded), set event flag 0x1731 and start the BeastSp encounter cutscene (script selected by player id).
 // symdb: (r5 = unknown 0x14-byte param for StartCutscene) -> void ; uses overworld player coords from
@@ -6172,7 +6172,7 @@ byte_80A81F0:
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
+// symdb: `sub_80A822C`, `sub_80A827C`, or `deleteOverworldMapObject` (selected by index byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
@@ -6190,7 +6190,7 @@ off_80A8218:
 off_80A821C:
 	.word sub_80A822C+1
 	.word battleObject_updateSpriteAndMaybeReloadAnim_80A827C+1
-	.word sub_80A829C+1
+	.word deleteOverworldMapObject+1
 off_80A8228:
 	.word unk_2000B40
 	thumb_func_end battle_dispatchCustomJumptableByIndex_80A8208
@@ -6252,13 +6252,13 @@ loc_80A8294:
 // symdb: Wrapper that releases an overworld map object via FreeOverworldMapObject, likely used as a destructor callback.
 // symdb: (r0 = overworld map object slot/pointer) -> r0 = FreeOverworldMapObject result; flags from
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A829C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/deleteOverworldMapObject.yaml
 	thumb_local_start
-sub_80A829C:
+deleteOverworldMapObject:
 	push {lr}
 	bl FreeOverworldMapObject
 	pop {pc}
-	thumb_func_end sub_80A829C
+	thumb_func_end deleteOverworldMapObject
 
 	thumb_local_start
 sub_80A82A4:
@@ -9057,7 +9057,7 @@ sub_80A96C8:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
-	bl sub_80A974C
+	bl object_fadeWhiteUpdate
 loc_80A96EA:
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -9066,7 +9066,7 @@ loc_80A96EA:
 	thumb_local_start
 sub_80A96F0:
 	push {lr}
-	bl sub_80A974C
+	bl object_fadeWhiteUpdate
 	bl sprite_update
 	pop {pc}
 	thumb_func_end sub_80A96F0
@@ -9113,9 +9113,9 @@ loc_80A9746:
 // symdb: Per-frame object state that fades the sprite's color to white via a gray color-shader ramp, then transitions to the next state.
 // symdb: (r5 = object struct) -> void; increments object field 0x24; on completion sets object byte 8 =
 // symdb: 0xC and calls the follow-up handler sub_80A96FC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A974C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_fadeWhiteUpdate.yaml
 	thumb_local_start
-sub_80A974C:
+object_fadeWhiteUpdate:
 	push {lr}
 	ldr r0, [r5,#0x24]
 	lsr r0, r0, #1
@@ -9151,7 +9151,7 @@ off_80A9788:
 byte_80A978C:
 	.byte 0x4, 0x6, 0x8, 0xA, 0xC, 0xE, 0x10, 0x12, 0x14, 0x16, 0x18
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0xFF
-	thumb_func_end sub_80A974C
+	thumb_func_end object_fadeWhiteUpdate
 
 // symdb: Mr. Weather comp orb (map object 0x1D): the ring's oldest orb (index +6 - 25, or 0 while fewer than 25) sets flag 0xBE8 (the ring closed, sound 0xD7) when MegaMan comes within 0x12 px of it, while flag 0xBE4 is set, 0xBE8 clear and there are at least 5 orbs.
 // symdb: r5 = the orb map object, r6 = eWeatherCompState
@@ -10635,7 +10635,7 @@ off_80AA2E8:
 off_80AA2EC:
 	.word object_initSpriteState3_80AA2F8+1
 	.word sub_80AA322+1
-	.word sub_80AA36C+1
+	.word ow_deleteMapObject+1
 	thumb_func_end battle_object_dispatchSpriteState3_80AA2D8
 
 // symdb: Initializes an object's sprite: sets its state fields, loads a sprite sheet (gfx 0x80, palette 0x1C, sprite 0x98), starts animation 0 with no shadow, then runs the follow-up init step.
@@ -10706,13 +10706,13 @@ off_80AA368:
 // symdb: Thin wrapper that frees an overworld map object, forwarding the argument to FreeOverworldMapObject.
 // symdb: (r0 = pointer/handle to overworld map object to delete) -> r0 = whatever FreeOverworldMapObject
 // symdb: returns; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA36C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_deleteMapObject.yaml
 	thumb_local_start
-sub_80AA36C:
+ow_deleteMapObject:
 	push {r4-r7,lr}
 	bl FreeOverworldMapObject
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AA36C
+	thumb_func_end ow_deleteMapObject
 
 	thumb_func_start sub_80AA374
 sub_80AA374:
@@ -11260,7 +11260,7 @@ loc_80AA730:
 	cmp r5, #4
 	blt loc_80AA746
 	mov r0, r4
-	bl sub_802D652
+	bl battle_getSpawnSlotByte
 	ldr r1, off_80AA750 // =word_80AA754
 	sub r5, #4
 	ldrb r1, [r1,r5]
