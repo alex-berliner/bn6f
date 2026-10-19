@@ -1451,7 +1451,7 @@ void __fastcall sub_81246D8(char a1)
 
 
 // 0x812471c
-void __fastcall sub_812471C(char a1)
+void __fastcall npc_conditionalChat(char a1)
 {
     _BYTE *v1; // r5
     int v2; // r7
@@ -3424,7 +3424,7 @@ LABEL_10:
 
 
 // 0x8126334
-void **__fastcall sub_8126334(int a1, int a2, _DWORD *a3)
+void **__fastcall text_renderChipNameEntries(int a1, int a2, _DWORD *a3)
 {
     int v3; // r5
     int v4; // r8
@@ -4770,7 +4770,7 @@ int __fastcall sub_8127760(int result)
 
 
 // 0x8127788
-int sub_8127788()
+int chatbox_processGlyphQueue()
 {
     int v0; // r5
     int v1; // r10
@@ -5552,7 +5552,7 @@ int sub_8128354()
 
 
 // 0x812835c
-signed int sub_812835C()
+signed int get_latestSetFlagFromList()
 {
     unsigned __int16 *v0; // r5
     int v1; // r4
@@ -6242,7 +6242,7 @@ void __noreturn sub_8128CD8()
     *(v0 + 16) = -1;
     if ( *(v0 + 30) )
         battle_renderChipSelectNames(byte_201BDB8, eDecompBuffer2013A00);
-    sub_8128F10();
+    e_renderBgTilemapLayers();
 }
 
 
@@ -6342,7 +6342,7 @@ void sub_8128F04()
 
 
 // 0x8128f10
-void __noreturn sub_8128F10()
+void __noreturn e_renderBgTilemapLayers()
 {
     CopyBackgroundTiles(0, 0, 3, byte_201BB60, 15, dword_14);
     CopyBackgroundTiles(0, 0, 2, byte_201BDF8, 30, dword_14);
@@ -8163,7 +8163,7 @@ int sub_812A1D4()
     }
     else if ( v1 == 2 )
     {
-        sub_813D978();
+        rfu_setStateEnded();
         result = sub_812B590();
     }
     else
@@ -8239,7 +8239,7 @@ void sub_812A2B4()
             if ( !v1 )
             {
                 PlaySoundEffect(131, v2, v3);
-                sub_813D978();
+                rfu_setStateEnded();
                 *(v0 + 12) = 20;
                 engine_setScreeneffect(12, 16);
             }
@@ -8296,7 +8296,7 @@ int __fastcall sub_812A350(int a1)
         chatbox_runScript_803FD9C_on_eTextScript201BA20(v3);
         rfu_orFlags(4);
         *(v1 + 12) = 24;
-        result = sub_813D978();
+        result = rfu_setStateEnded();
     }
     else
     {
@@ -8330,7 +8330,7 @@ void __fastcall sub_812A3C8(int a1)
     test0x200bc50_0x5_813D60C();
     if ( v2 )
     {
-        sub_813D978();
+        rfu_setStateEnded();
         *(v1 + 1) = 60;
         *(v1 + 2) = 4;
         *(v1 + 16) = 5;
@@ -8509,7 +8509,7 @@ void sub_812A574()
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         PlaySoundEffect(131, v3, v4);
         *(v0 + 12) = 12;
     }
@@ -9203,7 +9203,7 @@ signed int sub_812AC1A()
             *(v0 + 3) = 4;
             return result;
         }
-        result = sub_803DE24();
+        result = rfu_isLinkBusy();
         if ( !result )
         {
 LABEL_18:

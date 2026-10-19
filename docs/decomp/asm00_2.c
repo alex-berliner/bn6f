@@ -3939,7 +3939,7 @@ signed int __fastcall object_applyDamage(int a1)
 
 
 // 0x801164c
-int __fastcall sub_801164C(int a1, int a2, int a3)
+int __fastcall object_lerpPos(int a1, int a2, int a3)
 {
     int v3; // r6
 
@@ -6015,7 +6015,7 @@ int __fastcall sub_80128FC(int a1, int a2)
 
 
 // 0x8012956
-signed int __fastcall sub_8012956(int a1, __int16 a2)
+signed int __fastcall battle_checkKeyComboBuffer(int a1, __int16 a2)
 {
     int v2; // r3
     int v3; // r3
@@ -7887,7 +7887,7 @@ int __fastcall init_8013B64(int a1, int a2)
 
 
 // 0x8013bda
-int __fastcall sub_8013BDA(int a1, int a2, int a3, int a4)
+int __fastcall initNaviStatsFromNaviId(int a1, int a2, int a3, int a4)
 {
     int v4; // r7
     int v5; // r4
@@ -14014,7 +14014,7 @@ int battle_aiPlayerUseChipAction_8017AB4()
 
     if ( unpackVerActorTyAndAIIdx_800F29C(*(v0 + 40)) == 2 && sub_802D246() & 8 && sub_800FFFE() & &loc_800 )
     {
-        if ( !sub_800BEDA() )
+        if ( !battle_checkAllianceSlotReady() )
             goto LABEL_13;
         v1 = getCurChipInBattleHand_8010004();
         if ( !((v1 + 1) & 0xFFFF) || !(*(getChip8021DA8(v1) + 9) & 1) )
@@ -14650,7 +14650,7 @@ int sub_8018186()
         else
         {
             v5 = *(v0 + 44);
-            sub_80D99EC(*(v0 + 18), *(v0 + 19), *(v0 + 22), v3);
+            battle_spawnA3SetupObject(*(v0 + 18), *(v0 + 19), *(v0 + 22), v3);
         }
         result = 8;
         *(v0 + 8) = 8;
@@ -18705,7 +18705,7 @@ int chatbox_uploadFrameTileGFX_801C304()
 
 
 // 0x801c368
-int sub_801C368()
+int battle_drawSideCounters()
 {
     int v0; // r10
     int v1; // ST00_4
@@ -20004,7 +20004,7 @@ int __fastcall __noreturn sub_801D344(__int16 a1, int a2, int a3, signed int a4)
     v14 = a4;
     if ( v4 == 511 )
     {
-        sub_801D3F8(511, a2 + 100714816, a2, 10);
+        sprite_queueZeroedGfxBlocks(511, a2 + 100714816, a2, 10);
         v5 = TextScript86F0300;
         v6 = 28;
     }
@@ -20025,7 +20025,7 @@ int __fastcall __noreturn sub_801D344(__int16 a1, int a2, int a3, signed int a4)
 
 
 // 0x801d3f8
-void __fastcall sub_801D3F8(int a1, int a2, int a3, int a4)
+void __fastcall sprite_queueZeroedGfxBlocks(int a1, int a2, int a3, int a4)
 {
     char *v4; // r0
     int v5; // r4

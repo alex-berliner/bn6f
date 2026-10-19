@@ -281,7 +281,7 @@ void sub_812D700()
 
 
 // 0x812d748
-void sub_812D748()
+void submenu_updateCursorAndTiles()
 {
 	int v0; // r10
 	char *v1; // r7

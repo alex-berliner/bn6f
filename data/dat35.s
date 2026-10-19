@@ -1137,7 +1137,7 @@ loc_812F8A4::
 	add r0, #1
 	strh r0, [r5,#0x2e]
 	mov r0, r4
-	bl sub_8130728
+	bl npc_verifyCodePuzzleEntry
 	b loc_812F8EA
 loc_812F8E6::
 	bl npc_startDialogScript

@@ -2157,7 +2157,7 @@ void __noreturn battleObject_initBeastSpEnemy_80A6EBC()
     *(v0 + 56) = 17;
     TestEventFlagFromImmediate(5, 229);
     if ( !v3 )
-        sub_80A7208();
+        battle_loadBeastSpEnemyStats();
     *(v0 + 8) = 4;
     battleObject_updateAnimation_80A6F2C();
 }
@@ -2468,7 +2468,7 @@ int __fastcall object_timerCountdownPlaySfx(int a1, int a2, int a3)
 
 
 // 0x80a7208
-int sub_80A7208()
+int battle_loadBeastSpEnemyStats()
 {
     int v0; // r5
     int v1; // r3
@@ -8215,7 +8215,7 @@ signed int __fastcall sub_80AAC8C(int a1)
     if ( v1 < 8 && !sub_80AAE36() )
         return 0xFFFF;
     pack_sortAndReinitChipAuxData();
-    sub_80AAD70(&v15);
+    get_tallyOwnedChipsByAttr(&v15);
     v3 = rand_pickTable2bit(v14);
     v4 = 2 * v3;
     v5 = 0;
@@ -8312,7 +8312,7 @@ int __fastcall sub_80AAD04(int a1, int a2)
 
 
 // 0x80aad70
-char *__fastcall sub_80AAD70(_DWORD *a1)
+char *__fastcall get_tallyOwnedChipsByAttr(_DWORD *a1)
 {
     _DWORD *v1; // r7
     char **v2; // r6

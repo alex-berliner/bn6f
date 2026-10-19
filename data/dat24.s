@@ -3224,7 +3224,7 @@ byte_808F788::
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_call_native_with_return_value ptr1=camera_loadMapCameraPos+1
 	cs_pause byte1=0xFF byte2=0x0A
-	cs_call_native_with_return_value ptr1=sub_808FC7C+1
+	cs_call_native_with_return_value ptr1=clearScenarioEventFlag+1
 	cs_play_sound hword1=0x017D
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_run_text_script_not_from_mem byte2=0x03
@@ -3241,7 +3241,7 @@ byte_808F788::
 
 cutscenescript_808F7E0:
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_BE5
-	cs_call_native_with_return_value ptr1=sub_808FCB0+1
+	cs_call_native_with_return_value ptr1=ow_setEventFlagForCurrentChapter+1
 	cs_call_native_with_return_value ptr1=sub_808FCE4+1
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_BF0
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_BEF
@@ -3252,7 +3252,7 @@ cutscenescript_808F7E0:
 	cs_end_for_map_reload_maybe_8037c64
 
 byte_808F800::
-	cs_call_native_with_return_value ptr1=sub_808FC7C+1
+	cs_call_native_with_return_value ptr1=clearScenarioEventFlag+1
 	cs_run_eStruct200a6a0_callback
 	cs_load_map_gfx_anims_bg_anim
 	cs_set_chatbox_flags byte2=0x40

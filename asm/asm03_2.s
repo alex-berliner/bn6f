@@ -119,9 +119,9 @@ off_8046034:
 // symdb: Draws a W×H grid of 16x16-px sprite metatiles, one OAM entry per tile, using tile descriptors from a static table.
 // symdb: (r0 = tile descriptor index, r2 = columns, r3 = rows, r4 = start x, r5 = start y — non-ABI use
 // symdb: of r4/r5) -> r0 = destroyed; queues OAM entries
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046038.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueTileGrid.yaml
 	thumb_local_start
-sub_8046038:
+sprite_queueTileGrid:
 	push {r6,r7,lr}
 	mov r1, r8
 	push {r1}
@@ -219,7 +219,7 @@ off_80460F4:
 	.word sub_8046450+1
 	.word 0x0
 	.word 0x0
-	thumb_func_end sub_8046038
+	thumb_func_end sprite_queueTileGrid
 
 // symdb: Dispatches an animation opcode stream against the Toolkit's animation state, decoding commands until a finalizer is run.
 // symdb: void sub_8046154(u32 r0 /* stream ptr */,                  u32 r2 /* src data */,
@@ -5656,7 +5656,7 @@ sub_804964C:
 	bne loc_804966E
 	tst r0, r0
 	beq loc_804966E
-	bl sub_813D978
+	bl rfu_setStateEnded
 	ldr r3, off_8049678 // =dword_804967C
 	ldrb r0, [r3,r4]
 	strb r0, [r5,#1]
@@ -5683,7 +5683,7 @@ sub_8049680:
 	bne loc_80496AC
 	tst r0, r0
 	beq loc_80496AC
-	bl sub_813D978
+	bl rfu_setStateEnded
 	ldr r3, off_80496E8 // =dword_80496EC 
 	lsl r4, r4, #3
 	add r3, r3, r4
@@ -6654,11 +6654,11 @@ sub_8049DC4:
 	push {r2,r3}
 	mov r2, #8
 	mov r3, #0x20 
-	bl sub_803C168
+	bl convertByteStringToCharCodes
 	pop {r0,r1}
 	mov r2, #0xa
 	mov r3, #0x20 
-	bl sub_803C168
+	bl convertByteStringToCharCodes
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049DC4
 
@@ -10455,7 +10455,7 @@ sub_804C348:
 	mov r4, #0x20 
 	mov r5, #0x20 
 	bl call_sub_3005EBA
-	bl sub_804C3C4
+	bl t3_loadTextWindowTiles
 	mov r0, #4
 	strb r0, [r5,#0x10] // (dword_30 - 0x20)
 	bl sub_804C3BC
@@ -10480,16 +10480,16 @@ dword_804C3B8:
 	thumb_local_start
 sub_804C3BC:
 	push {r4-r7,lr}
-	bl sub_804C3C4
+	bl t3_loadTextWindowTiles
 locret_804C3C2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804C3BC
 
 // symdb: Draws a fixed 12x6 tile window (tile data at byte_86A13F0) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
 // symdb: () -> r0 = destroyed; sets bit 0x800 of toolkit->RenderInfo->field0 (halfword)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C3C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_loadTextWindowTiles.yaml
 	thumb_local_start
-sub_804C3C4:
+t3_loadTextWindowTiles:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
@@ -10516,7 +10516,7 @@ byte_804C3F0:
 	.byte 0x0, 0x0, 0x4A, 0xFF, 0x0, 0x0, 0x46, 0xFF, 0x0, 0x0, 0xE0, 0xFF
 	.word byte_86A1940
 	.word 0x106060
-	thumb_func_end sub_804C3C4
+	thumb_func_end t3_loadTextWindowTiles
 
 // symdb: Dispatcher that calls one of two AIData sub-handlers based on an actor slot index and an action selector from a 0x14-byte AIData entry.
 // symdb: (r5 = AIData table base?, r5+0xc = slot index, r5+0x10 = action selector) -> returns whatever
@@ -10835,7 +10835,7 @@ sub_804C668:
 sub_804C66C:
 	push {r4-r7,lr}
 	ldr r0, off_804C678 // =off_804C67C 
-	bl sub_804C6C4
+	bl e_queuePacketEntry
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C678:
@@ -10852,7 +10852,7 @@ byte_804C684:
 sub_804C694:
 	push {r4-r7,lr}
 	ldr r0, off_804C6A8 // =off_804C6AC 
-	bl sub_804C6C4
+	bl e_queuePacketEntry
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
 	bne locret_804C6A6
@@ -10875,9 +10875,9 @@ dword_804C6B4:
 // symdb: Emits one 4-byte packet (0x48,0x37 + two data bytes) into the toolkit scratch struct, stepping through 64 two-byte records of the selected table before resetting and zero-filling.
 // symdb: (r0 = array of pointers to 2-byte record tables; uses r5 struct: +0xC table selector byte, +0x18
 // symdb: record counter, +0xD state byte) -> r0 = void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C6C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_queuePacketEntry.yaml
 	thumb_local_start
-sub_804C6C4:
+e_queuePacketEntry:
 	push {r4-r7,lr}
 	mov r2, r0
 	ldr r0, [r5,#0x18]
@@ -10908,7 +10908,7 @@ sub_804C6C4:
 locret_804C6FC:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804C6C4
+	thumb_func_end e_queuePacketEntry
 
 	thumb_func_start sub_804C700
 sub_804C700:
@@ -11034,7 +11034,7 @@ sub_804C7C4:
 sub_804C7C8:
 	push {r4-r7,lr}
 	ldr r0, off_804C7D4 // =off_804C7D8 
-	bl sub_804C6C4
+	bl e_queuePacketEntry
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C7D4:
@@ -11050,7 +11050,7 @@ byte_804C7DC:
 sub_804C7EC:
 	push {r4-r7,lr}
 	ldr r0, off_804C800 // =off_804C804 
-	bl sub_804C6C4
+	bl e_queuePacketEntry
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
 	bne locret_804C7FE

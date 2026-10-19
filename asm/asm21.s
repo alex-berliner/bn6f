@@ -53,12 +53,12 @@ locret_8080DE8:
 	thumb_func_end battle_initBGScrollAndAnimForPuzzleField_8080DA0
 
 // symdb: Loads the battle background for the current battle-background id: installs BG scroll callbacks, ORs DISPCNT bits, and loads the BG anim data plus the GFX animation script set for that background.
-// symdb: (r0 = none) -> r0 = none; obtains bg id from sub_808137C, r4 = id
+// symdb: (r0 = none) -> r0 = none; obtains bg id from battle_getBackgroundDataByte, r4 = id
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundAssets.yaml
 	thumb_local_start
 battle_setupBackgroundAssets:
 	push {r4-r7,lr}
-	bl sub_808137C
+	bl battle_getBackgroundDataByte
 	mov r4, r0
 	lsl r1, r4, #4
 	ldr r7, off_8080E30 // =off_8080E34 
@@ -546,9 +546,9 @@ word_8081368:
 // symdb: Reads a byte property from a background data table selected by a background id (>=0x80), returning 7 if the id has no table.
 // symdb: (r0 = byte/property index into the selected data array, r1 = background id) -> r0 = data byte,
 // symdb: or 7 if id < 0x80 or the table entry is null; flags clobbered by tst/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808137C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getBackgroundDataByte.yaml
 	thumb_local_start
-sub_808137C:
+battle_getBackgroundDataByte:
 	push {r4-r7,lr}
 	cmp r1, #0x80
 	blt loc_8081392
@@ -591,7 +591,7 @@ pt_808139C:
 	.word dword_8081448
 	.word dword_808144C
 	.word byte_8081450
-	thumb_func_end sub_808137C
+	thumb_func_end battle_getBackgroundDataByte
 byte_80813F8::
 	.byte 0x6
 	.byte 0x6, 0x7, 0x7

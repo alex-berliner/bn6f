@@ -487,7 +487,7 @@ int __fastcall sub_81306F0(int result)
 
 
 // 0x8130728
-void __fastcall sub_8130728(int a1)
+void __fastcall npc_verifyCodePuzzleEntry(int a1)
 {
 	int v1; // r5
 	int v2; // r2
@@ -2379,7 +2379,7 @@ int __fastcall sub_813202C(int a1)
     {
         if ( v1 == 1 )
         {
-            sub_813D978();
+            rfu_setStateEnded();
         }
         else
         {
@@ -2415,7 +2415,7 @@ void sub_8132080()
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         *(v0 + 12) = 12;
     }
 }
@@ -3080,7 +3080,7 @@ void __fastcall __noreturn sub_81326D4(int a1, int a2, int a3, int a4)
     sub_811AE7C(1, 0);
     sub_813281C();
     sub_81328C0();
-    sub_8132980();
+    gui_loadBackgroundSprite();
 }
 
 
@@ -3265,7 +3265,7 @@ void sub_81328D0()
 
 
 // 0x8132980
-void __noreturn sub_8132980()
+void __noreturn gui_loadBackgroundSprite()
 {
     CopyBackgroundTiles(0, 0, 1, eGuiSprite2022AA0, 30, dword_14);
     JUMPOUT(locret_8132992);
@@ -3881,7 +3881,7 @@ void __fastcall beastsp_handleInputAndScripts(int a1)
     submenu_isOpen_81355D8();
     if ( v2 )
         goto LABEL_14;
-    v3 = sub_813561C();
+    v3 = submenu_getUnk02();
     if ( v3 == 36 )
         return;
     if ( v3 != 48 )
@@ -4202,7 +4202,7 @@ int __fastcall sub_8133770(int a1)
     int v1; // r5
     int result; // r0
 
-    result = sub_813561C();
+    result = submenu_getUnk02();
     if ( result != 48 )
     {
         chatbox_runScript_803FD9C_on_eTextScript2028A20(27);
@@ -4480,7 +4480,7 @@ int __fastcall sub_8133A68(int a1)
     int v3; // r0
     int v4; // r0
 
-    if ( sub_813561C() == 48 )
+    if ( submenu_getUnk02() == 48 )
     {
         v1[13] = v1[2];
         v1[2] = 8;
@@ -4545,7 +4545,7 @@ int __fastcall sub_8133B18(int a1)
     char v2; // zf
     int v3; // r0
 
-    if ( sub_813561C() == 48 )
+    if ( submenu_getUnk02() == 48 )
     {
         v1[13] = v1[2];
         v1[2] = 8;
@@ -4582,7 +4582,7 @@ int __fastcall sub_8133B74(int a1)
     int v3; // r1
     int v4; // r0
 
-    if ( sub_813561C() == 24 )
+    if ( submenu_getUnk02() == 24 )
     {
         v2 = 23;
         v3 = *(v1 + 13);
@@ -6116,7 +6116,7 @@ int __fastcall sub_8135080(int a1, int a2, int a3, int a4)
     v6 = getChip8021DA8(a2);
     if ( v6[9] & 0x20 )
     {
-        v7 = sub_81351C0();
+        v7 = getFolderMegaChipCount();
         if ( v18 && *(getChip8021DA8(v18) + 9) & 0x20 )
             --v7;
         if ( v7 >= 3 )
@@ -6186,7 +6186,7 @@ int __fastcall sub_8135184(int a1)
 
 
 // 0x81351c0
-int sub_81351C0()
+int getFolderMegaChipCount()
 {
     int v0; // r5
     int v1; // r3
@@ -6626,7 +6626,7 @@ int registerBattleStartScript_81355EC()
 
 
 // 0x813561c
-int sub_813561C()
+int submenu_getUnk02()
 {
     return sSubmenu.unk_02;
 }
@@ -6780,7 +6780,7 @@ int navicust_handleBoardInput()
         {
             PlaySoundEffect(129, 32, v7);
             *(v0 + 2) = 8;
-            sub_8135FA4();
+            navicust_loadSelectedCellParams();
             sub_8135F5C();
         }
         if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
@@ -7390,7 +7390,7 @@ void __fastcall chatbox_runScript_803FD9C_on_eTextScript201D280(int a1)
 
 
 // 0x8135fa4
-int sub_8135FA4()
+int navicust_loadSelectedCellParams()
 {
     int v0; // r5
     char *v1; // r1
@@ -10083,13 +10083,13 @@ void __fastcall __noreturn sub_8137D20(int a1, int a2, int a3, int a4)
     int v4; // r5
 
     ZeroFillByHalfword(byte_2017A00, 0xE0u, a3, a4);
-    sub_8137D50(*(v4 + 36), byte_201CF00, byte_2017A00);
+    t4_drawNaviChipNameTiles(*(v4 + 36), byte_201CF00, byte_2017A00);
     sub_8137DA4(2, 4, byte_2017A00);
 }
 
 
 // 0x8137d50
-int *__fastcall sub_8137D50(int a1, int a2, _WORD *a3)
+int *__fastcall t4_drawNaviChipNameTiles(int a1, int a2, _WORD *a3)
 {
     _BYTE *v3; // r5
     _WORD *v4; // r3
@@ -10594,7 +10594,7 @@ int game_runModeHandlersAndFrameTick()
 
 
 // 0x813838c
-int sub_813838C()
+int t4_delayedScreenScrollFade()
 {
     int v0; // r5
     int v1; // r10
@@ -10678,13 +10678,13 @@ void __fastcall __noreturn sub_8138478(int a1, int a2, int a3, int a4)
 
     v4 = *(a4 + 1);
     sub_8045FC6();
-    sub_81384AC();
+    sprite_queueSheetGfxUpload();
     sub_8138890(v5, v6, v7, v8);
 }
 
 
 // 0x81384ac
-void sub_81384AC()
+void sprite_queueSheetGfxUpload()
 {
     int v0; // r5
 

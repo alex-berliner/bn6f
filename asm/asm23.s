@@ -514,7 +514,7 @@ loc_80891AE:
 	b loc_80891EC
 loc_80891E6:
 	mov r0, r4
-	bl sub_8089370
+	bl sprite_queueIndexedOamEntry
 loc_80891EC:
 	add sp, sp, #0xc
 loc_80891EE:
@@ -633,9 +633,9 @@ byte_8089344:
 
 // symdb: Queues one hard-coded OAM entry (a fixed screen sprite/overlay) selected by index from a table.
 // symdb: (r0 = entry index) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089370.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueIndexedOamEntry.yaml
 	thumb_local_start
-sub_8089370:
+sprite_queueIndexedOamEntry:
 	push {r4-r7,lr}
 	ldr r1, off_8089388 // =byte_808938C
 	lsl r0, r0, #3
@@ -802,7 +802,7 @@ cutscenescript_808956E:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_8089370
+	thumb_func_end sprite_queueIndexedOamEntry
 
 // symdb: BattleObject dispatch — read the 1-byte state at [r5] and tail-jump to one of 34 state-specific handlers, returning their NZ-flag as boolean in r0.
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> r0 = bool (r0==0 false, non-zero true) ; side effects:

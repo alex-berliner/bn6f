@@ -209,7 +209,7 @@ _DWORD *__fastcall sub_8003390(int a1, int a2, int a3, int a4)
 	v11 = v4;
 	result = SpawnBattleObjectCommon(3, &v7);
 	if ( v5 )
-		result = sub_8003440();
+		result = battle_objectListPushFront();
 	return result;
 }
 
@@ -280,7 +280,7 @@ _DWORD *__fastcall spawnBattleObjectTypeFour(int a1, int a2, int a3, int a4)
 	v11 = v4;
 	result = SpawnBattleObjectCommon(4, &v7);
 	if ( v5 )
-		result = sub_8003440();
+		result = battle_objectListPushFront();
 	return result;
 }
 
@@ -324,7 +324,7 @@ int *UpdateBattleObjectLinkedList()
 
 
 // 0x8003440
-_DWORD *sub_8003440()
+_DWORD *battle_objectListPushFront()
 {
 	int v0; // r5
 	_DWORD *result; // r0
@@ -838,7 +838,7 @@ int sub_80039CC()
 
 
 // 0x80039d4
-signed int __fastcall sub_80039D4(int a1)
+signed int __fastcall e_scenarioEffectStateIdIs(int a1)
 {
 	int v1; // r7
 	signed int v2; // r4
@@ -1766,7 +1766,7 @@ LABEL_10:
 
 
 // 0x8004b28
-int __fastcall sub_8004B28(int result)
+int __fastcall bgmap_drawTilesFromStream(int result)
 {
     char *v1; // r4
     int v2; // r5
@@ -6042,7 +6042,7 @@ signed int battle_stepSubstateToState4_8007C14()
         *(v1 + 3) = 4;
         return result;
     }
-    if ( !sub_803DE24() || (result = *(v0 + 1), result != 2) )
+    if ( !rfu_isLinkBusy() || (result = *(v0 + 1), result != 2) )
     {
         link_resetHardwareAndClearLinkBuffers_81440D8();
         sub_801FE64();
@@ -6405,7 +6405,7 @@ int battle_pauseAndFadeOut()
 
 
 // 0x8007fd2
-int __fastcall sub_8007FD2(int a1)
+int __fastcall battle_requestStateTransition(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -12832,7 +12832,7 @@ char *sub_800B75A()
 
 
 // 0x800b762
-char *__fastcall sub_800B762(int a1, int a2)
+char *__fastcall battle_removeHandCardEntry(int a1, int a2)
 {
     char *result; // r0
     char *v3; // r1

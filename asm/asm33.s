@@ -2831,7 +2831,7 @@ off_812460C:
 	.word npc_runBeastOutDialog+1
 	.word sub_812469C+1
 	.word sub_81246D8+1
-	.word sub_812471C+1
+	.word npc_conditionalChat+1
 	thumb_func_end sub_81245D4
 
 // symdb: Advances the chatbox multi-page text display to the next page, or ends the text (script 6) when the last page is reached
@@ -2986,9 +2986,9 @@ locret_812471A:
 // symdb: Runs one of two chatbox text scripts (7 with an argument, or 8) depending on the result of a check, and updates the caller task's state bytes accordingly.
 // symdb: (r0 = byte argument, saved to [r5,#0x10]) -> none; r5 = task/object with state bytes at +2/+3,
 // symdb: r10 = toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812471C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_conditionalChat.yaml
 	thumb_local_start
-sub_812471C:
+npc_conditionalChat:
 	push {r4,r7,lr}
 	strb r0, [r5,#0x10]
 	bl sub_809F9BE
@@ -3012,7 +3012,7 @@ loc_8124740:
 	bl chatbox_runScript201C100_812474C
 locret_812474A:
 	pop {r4,r7,pc}
-	thumb_func_end sub_812471C
+	thumb_func_end npc_conditionalChat
 
 // symdb: Runs one chatbox text script (index in r0) from the eTextScript201C100 text archive.
 // symdb: void chatbox_runScript201C100(u8 scriptIdx); // r0 = script index; returns whatever
@@ -6485,9 +6485,9 @@ loc_812631A:
 // symdb: (r0:r1 = array of 4-byte entries {halfword char code, halfword param}; r2 = dest tilemap buffer;
 // symdb: r3, r4 = decoder words (r3|0x200<<... and r4<<12|0x200 pushed as stack args); r5 = zero-fill
 // symdb: flag) -> r0 = decode result of last entry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126334.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/text_renderChipNameEntries.yaml
 	thumb_local_start
-sub_8126334:
+text_renderChipNameEntries:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -6569,7 +6569,7 @@ off_81263C4:
 	.word unk_201CC20
 off_81263CC:
 	.word 0x200
-	thumb_func_end sub_8126334
+	thumb_func_end text_renderChipNameEntries
 
 // symdb: Decodes a short run of character codes into pairs of tile-map halfword entries for an 8-wide text/tile strip
 // symdb: void sub_81263D0(u8 *src /*r0*/, u16 *dstLo /*r2*/, u16 *dstHi /*r3*/, u16 baseTile /*r6*/);
@@ -9070,9 +9070,9 @@ off_8127784:
 // symdb: Drains pending glyph entries from the chatbox text queue, rendering each glyph chunk into VRAM and caching special entries' data in the chat context.
 // symdb: (r5 = chatbox text state, queue read ptr at +0x24 / write ptr at +0x26; r10 = chat context) ->
 // symdb: r0 clobbered; consumes up to 4 8-byte entries from queue at byte_201D74C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127788.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_processGlyphQueue.yaml
 	thumb_local_start
-sub_8127788:
+chatbox_processGlyphQueue:
 	push {r4-r7,lr}
 	mov r6, #0
 	ldrh r7, [r5,#0x24]
@@ -9120,7 +9120,7 @@ off_81277D8:
 	.word byte_201D74C
 off_81277DC:
 	.word 0x600
-	thumb_func_end sub_8127788
+	thumb_func_end chatbox_processGlyphQueue
 
 // symdb: Redraws an 8x8-tile area of background tile block 3, copying tile ids from a table indexed by an object's signed byte field at offset 0x0D.
 // symdb: void bg_Draw8x8TileBlock3FromTable(const struct Obj *r5 /* tileIndex at +0x0D */, u32 r4, u32
@@ -10660,9 +10660,9 @@ sub_8128354:
 // symdb: Scans a stored list of event-flag IDs from the end backwards for the highest one that is set, and writes the found index split into two fields of the caller's struct.
 // symdb: (r0 = unused, r5 = result struct: u16 count at +0x1e, results to +0x20/+0x24) -> r0 = clobbered;
 // symdb: ZF from last TestEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812835C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_latestSetFlagFromList.yaml
 	thumb_local_start
-sub_812835C:
+get_latestSetFlagFromList:
 	push {lr}
 	ldrh r4, [r5,#0x1e]
 	sub r4, #1
@@ -10700,7 +10700,7 @@ dword_8128398:
 	.word 0x1D20
 off_812839C:
 	.word byte_2006530
-	thumb_func_end sub_812835C
+	thumb_func_end get_latestSetFlagFromList
 
 // symdb: Builds the per-encounter battle object list by zeroing the 0x1000-byte object buffer and appending one 0x20-byte entry per arena participant whose table flag matches the object's team bit, then hands the populated list to the finalization stage.
 // symdb: void sub_81283A0(u32 r5 /* battle-object struct */); // reads r5+0xD (team bit) and r5+0x1E
@@ -11837,7 +11837,7 @@ loc_8128D4A:
 	ldr r0, off_8128DB0 // =byte_201BDB8
 	bl sub_81290A4
 loc_8128D7C:
-	bl sub_8128F10
+	bl e_renderBgTilemapLayers
 	mov r0, #8
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -12043,9 +12043,9 @@ sub_8128F04:
 
 // symdb: Fills BG tile blocks 3 and 2 with tilemap entries from eReader-scene tilemap buffers to build the scene's background layers.
 // symdb: () -> r0 = destroyed; r1-r5 clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128F10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_renderBgTilemapLayers.yaml
 	thumb_local_start
-sub_8128F10:
+e_renderBgTilemapLayers:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0
@@ -12118,7 +12118,7 @@ off_8128F84:
 	.word unk_30019A0
 	.word 0x20
 	.word NULL
-	thumb_func_end sub_8128F10
+	thumb_func_end e_renderBgTilemapLayers
 
 	thumb_local_start
 sub_8128FF0:
@@ -14688,7 +14688,7 @@ sub_812A1D4:
 	strb r0, [r5,#2]
 	pop {pc}
 loc_812A1F6:
-	bl sub_813D978
+	bl rfu_setStateEnded
 	bl sub_812B590
 	pop {pc}
 loc_812A200:
@@ -14795,7 +14795,7 @@ sub_812A2B4:
 	beq locret_812A2E8
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #0x14
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -14878,7 +14878,7 @@ loc_812A36E:
 	bl rfu_orFlags
 	mov r0, #0x18
 	strb r0, [r5,#0xc]
-	bl sub_813D978
+	bl rfu_setStateEnded
 	b locret_812A3B8
 loc_812A384:
 	mov r0, #0x20 
@@ -14916,7 +14916,7 @@ sub_812A3C8:
 	push {lr}
 	bl test0x200bc50_0x5_813D60C
 	bne loc_812A3E8
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #0x3c 
 	strb r0, [r5,#1]
 	mov r0, #4
@@ -15139,7 +15139,7 @@ sub_812A574:
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
 	beq loc_812A59C
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	mov r0, #0xc
@@ -16051,7 +16051,7 @@ loc_812AC56:
 	strb r0, [r5,#3]
 	b locret_812AC7E
 loc_812AC6E:
-	bl sub_803DE24
+	bl rfu_isLinkBusy
 	tst r0, r0
 	bne locret_812AC7E
 loc_812AC76:

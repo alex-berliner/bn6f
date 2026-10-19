@@ -398,7 +398,7 @@ sub_8003390:
 	bl SpawnBattleObjectCommon // (obj_type: u8, ctx_stack: * ()) -> * BattleObject $r5
 	tst r5, r5
 	beq loc_80033A8
-	bl sub_8003440
+	bl battle_objectListPushFront
 loc_80033A8:
 	add sp, sp, #0x14
 	pop {r7,pc}
@@ -461,7 +461,7 @@ spawnBattleObjectTypeFour:
 	bl SpawnBattleObjectCommon // (obj_type: u8, ctx_stack: * ()) -> * BattleObject $r5
 	tst r5, r5
 	beq loc_80033FC
-	bl sub_8003440
+	bl battle_objectListPushFront
 loc_80033FC:
 	add sp, sp, #0x14
 	pop {r7,pc}
@@ -585,8 +585,8 @@ UpdateBattleObjectLinkedList:
 // symdb: Inserts a battle object at the front of the global battle-objects linked list (right after the list head).
 // symdb: (r5 = address of the object's oBattleObject_LinkedList field) -> r0 = pointer to the start of
 // symdb: that object; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003440.yaml
-sub_8003440:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectListPushFront.yaml
+battle_objectListPushFront:
 	mov r0, #oBattleObject_LinkedList_Size
 	sub r0, r5, r0
 	ldr r1, .eBattleObjectsLinkedListStart_p
@@ -599,7 +599,7 @@ sub_8003440:
 	.balign 4, 0x00
 .eBattleObjectsLinkedListStart_p:
 	.word eBattleObjectsLinkedListStart
-	thumb_func_end sub_8003440
+	thumb_func_end battle_objectListPushFront
 
 // symdb: Releases a battle object's slot — clears its flags, frees its bitmap slot for its type, unlinks it from the active-object list, and resets its sprite scaling.
 // symdb: void object_freeMemory(BattleObject *obj /* r5 */); clobbers r0-r3 and flags via tail work in
@@ -1608,9 +1608,9 @@ Is_eScenarioEffectState2000780_Initialized:
 
 // symdb: Returns 1 if the scenario effect state is initialized and its ID byte equals the requested ID, else 0.
 // symdb: (r0 = scenario effect ID byte) -> r0 = 1 if state initialized && byte_2000781 == r0, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80039D4.yaml
-	thumb_func_start sub_80039D4
-sub_80039D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_scenarioEffectStateIdIs.yaml
+	thumb_func_start e_scenarioEffectStateIdIs
+e_scenarioEffectStateIdIs:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r4, #0
@@ -1643,7 +1643,7 @@ off_80039F8:
 	.word sub_8144048+1
 	.word 0x0, 0x0
 	.word 0x1
-	thumb_func_end sub_80039D4
+	thumb_func_end e_scenarioEffectStateIdIs
 
 // symdb: Zero-fills the 0x48-byte battle work area eStruct2001010 with word-sized stores.
 // symdb: void sub_8003A58(void) // no meaningful inputs or outputs; r0/r1 used internally as
@@ -3689,9 +3689,9 @@ byte_8004B14:
 // symdb: Renders an encoded tile stream (byte_2006848) into the BG map as a run of tile writes, then resets the stream pointer.
 // symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *dword_2006C48, writes
 // symdb: tiles via bgmap_WriteTileIdAtBlock_800187C, resets cursor to buffer start
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004B28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bgmap_drawTilesFromStream.yaml
 	thumb_local_start
-sub_8004B28:
+bgmap_drawTilesFromStream:
 	push {r4-r7,lr}
 	ldr r4, off_8004D2C // =byte_2006848
 	mov r7, #0xf2
@@ -3732,7 +3732,7 @@ loc_8004B6A:
 	ldr r1, off_8004D2C // =byte_2006848
 	str r1, [r4]
 	pop {r4-r7,pc}
-	thumb_func_end sub_8004B28
+	thumb_func_end bgmap_drawTilesFromStream
 
 	thumb_local_start
 sub_8004B72:
@@ -10548,7 +10548,7 @@ battle_stepSubstateToState4_8007C14:
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8007C4C
 loc_8007C2E:
-	bl sub_803DE24
+	bl rfu_isLinkBusy
 	tst r0, r0
 	beq loc_8007C3C
 	ldrb r0, [r4,#1]
@@ -10959,7 +10959,7 @@ off_8007F98:
 	.word off_8007F9C
 off_8007F9C:
 	.word battle_pauseAndFadeOut+1
-	.word sub_8007FD2+1
+	.word battle_requestStateTransition+1
 	thumb_func_end sub_8007F4E
 
 // symdb: Battle state step that pauses the battle, runs two init sub-steps, starts a screen fade, and advances the phase once the fade completes.
@@ -10992,9 +10992,9 @@ locret_8007FD0:
 
 // symdb: Requests the battle engine to switch to battle state 8 (resetting the phase counter), unless a global flag in the 0x200BC50 IWRAM struct is set.
 // symdb: (r5 = *BattleState) -> void; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007FD2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_requestStateTransition.yaml
 	thumb_local_start
-sub_8007FD2:
+battle_requestStateTransition:
 	push {lr}
 	bl test0x200bc50_0x5_813D60C
 	tst r0, r0
@@ -11043,7 +11043,7 @@ off_8008014:
 	.word TextScriptCommError87370C0
 off_8008018:
 	.word eStruct203F7D8
-	thumb_func_end sub_8007FD2
+	thumb_func_end battle_requestStateTransition
 
 // symdb: Per-frame main battle step dispatcher: reads the toolkit's battle step index and indirect-calls the matching handler through a small jumptable stored at 0x08008038.
 // symdb: (uses r10 as toolkit; reads dword_203CA70[0] = CurStep, also [4] later) -> r0 = 0 ; side
@@ -19606,9 +19606,9 @@ sub_800B75A:
 // symdb: Deletes one entry from a battle hand slot by shifting the slot's data left by 2 bytes until the 0xFFFF end marker is reached.
 // symdb: (r0 = battle hand slot index (for getBattleHandAddr), r1 = halfword entry index within the slot)
 // symdb: -> void; no return value, flags clobbered.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B762.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_removeHandCardEntry.yaml
 	thumb_local_start
-sub_800B762:
+battle_removeHandCardEntry:
 	push {r4,r6,lr}
 	lsl r4, r1, #1
 	bl getBattleHandAddr_8010018
@@ -19637,7 +19637,7 @@ loc_800B770:
 	cmp r2, r6
 	bne loc_800B770
 	pop {r4,r6,pc}
-	thumb_func_end sub_800B762
+	thumb_func_end battle_removeHandCardEntry
 
 // symdb: Range-checked dispatcher that jumps to one of five handlers based on a command id in r0 (valid ids 0x11E-0x122), ignoring any other value.
 // symdb: void dispatchScriptCommand_800B79A(int id /* r0 */); tail-calls handler via lr; r2-r5, r8-r12

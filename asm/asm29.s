@@ -3558,7 +3558,7 @@ off_80A6EB8:
 	.word unk_2011A90
 	thumb_func_end battle_ai_dispatchBeastSp_80A6E98
 
-// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run sub_80A7208 when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
+// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run battle_loadBeastSpEnemyStats when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
 // symdb: (r5 = BattleObject*) -> r0 = 0x26 ; side effects: writes many BattleObject fields, may patch
 // symdb: coords from a returned table, may run a one-shot story-gated helper
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastSpEnemy_80A6EBC.yaml
@@ -3602,7 +3602,7 @@ battleObject_initBeastSpEnemy_80A6EBC:
 	movflag EVENT_5E5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A6F20
-	bl sub_80A7208
+	bl battle_loadBeastSpEnemyStats
 loc_80A6F20:
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -4022,9 +4022,9 @@ locret_80A7204:
 // symdb: Copies a per-index Beast Out SP enemy stat entry from table byte_2000EC0 into fields of the battle object pointed to by r5.
 // symdb: (r5 = battle object struct, uses object's index byte at r5+4) -> fills r5+0x05, r5+0x06,
 // symdb: r5+0x0C, r5+0x10, r5+0x34; no return value, clobbered flags/registers only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7208.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBeastSpEnemyStats.yaml
 	thumb_local_start
-sub_80A7208:
+battle_loadBeastSpEnemyStats:
 	push {r4-r7,lr}
 	ldr r7, off_80A7268 // =byte_2000EC0 
 	ldrb r0, [r7,#0x16] // (byte_2000ED6 - 0x2000ec0)
@@ -4049,7 +4049,7 @@ sub_80A7208:
 	str r2, [r5,#0x10]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A7208
+	thumb_func_end battle_loadBeastSpEnemyStats
 
 // symdb: Copies a BattleObject's power-attack / beast-out fields (BPwrAtk, BButton, Anger, AIData ptrs) into a scratch EWRAM table indexed by the object's slot id.
 // symdb: (r5 = BattleObjectPtr) -> side effects only; no return value
@@ -12163,7 +12163,7 @@ sub_80AAC8C:
 loc_80AACAA:
 	bl pack_sortAndReinitChipAuxData
 	add r0, sp, #4
-	bl sub_80AAD70
+	bl get_tallyOwnedChipsByAttr
 	ldr r0, [sp]
 	bl rand_pickTable2bit
 	add r1, r0, r0
@@ -12273,9 +12273,9 @@ loc_80AAD4E:
 // symdb: Counts owned/registered chips by the byte value at chip-data offset 5 into a caller-provided halfword counter array.
 // symdb: (r0 = u16 counter array (>=6 halfwords), r1 unused) -> r0 = array filled with per-value counts;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAD70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_tallyOwnedChipsByAttr.yaml
 	thumb_local_start
-sub_80AAD70:
+get_tallyOwnedChipsByAttr:
 	push {r4,r6,r7,lr}
 	mov r1, #0
 	str r1, [r0]
@@ -12305,7 +12305,7 @@ loc_80AAD9A:
 	cmp r4, r3
 	blt loc_80AAD80
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80AAD70
+	thumb_func_end get_tallyOwnedChipsByAttr
 
 // symdb: Sorts the chip pack by removing and re-adding all chips, then reinitializes the 320-entry per-chip auxiliary array from a template, zeroing excluded/special chips' entries.
 // symdb: (r10 = toolkit) -> r0 = none; destroys r4, r6, r7

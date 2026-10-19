@@ -765,7 +765,7 @@ int sub_810E1F0()
 
 
 // 0x810e262
-int sub_810E262()
+int battle_animEndSelectNextAnim()
 {
     _BYTE *v0; // r5
     _BYTE *v1; // r6
@@ -17774,7 +17774,7 @@ void __noreturn sub_811BC68()
 
 
 // 0x811bcd8
-signed int __noreturn sub_811BCD8()
+signed int __noreturn text_loadWindowGlyphs()
 {
     int v0; // r5
     signed int result; // r0
@@ -18268,14 +18268,14 @@ int __fastcall sub_811C2A8(int a1, int a2)
         slotList_storeHalfwordAndClearField_800306C(0);
         sprite_setSubEntryPaletteBank_800304A(0);
         sprite_setSubRecordFieldA_8003060(3);
-        result = sub_811C440(v6 >> 2);
+        result = sprite_setCoordinatesFromTable(v6 >> 2);
     }
     return result;
 }
 
 
 // 0x811c440
-int __fastcall sub_811C440(int a1)
+int __fastcall sprite_setCoordinatesFromTable(int a1)
 {
     return sprite_setCoordinates(*&byte_811C460[4 * a1] + 176, *&byte_811C460[4 * a1 + 2] + 64);
 }
@@ -18434,7 +18434,7 @@ void sub_811C654()
     }
     if ( *(v0 + 11) == 1 )
     {
-        sub_811C754();
+        sprite_isWithinScreenBounds();
         if ( !v3 )
         {
             if ( *(v0 + 18) )
@@ -18445,7 +18445,7 @@ void sub_811C654()
     }
     else
     {
-        sub_811C754();
+        sprite_isWithinScreenBounds();
         if ( v3 )
         {
             *(v0 + 9) = 0;
@@ -18459,7 +18459,7 @@ void sub_811C654()
 
 
 // 0x811c754
-BOOL sub_811C754()
+BOOL sprite_isWithinScreenBounds()
 {
     int v0; // r0
     signed int v1; // r1
@@ -18840,7 +18840,7 @@ int __fastcall sub_811CDC8(int a1, int a2, int a3)
 
 
 // 0x811cdf4
-int __fastcall sub_811CDF4(int a1, int a2, int a3)
+int __fastcall object_timerSfxTick(int a1, int a2, int a3)
 {
     _BYTE *v3; // r5
     int result; // r0
@@ -18991,7 +18991,7 @@ int sub_811CF44()
 
 
 // 0x811cf64
-int sub_811CF64()
+int sprite_fadeColorStep()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -19086,7 +19086,7 @@ int sub_811CFEC()
 
 
 // 0x811d020
-int sub_811D020()
+int sprite_updateWhiteFlash()
 {
     int v0; // r5
     int result; // r0
@@ -20009,7 +20009,7 @@ int __fastcall sub_811DC88(int a1, int a2)
             slotList_storeHalfwordAndClearField_800306C(byte_80);
             sprite_setSubEntryPaletteBank_800304A(1);
             sprite_setSubRecordFieldA_8003060(byte_811DE36[v6 >> 2]);
-            result = sub_811DE74(v6 >> 2);
+            result = sprite_setCursorPosFromCoordTable(v6 >> 2);
         }
     }
     return result;
@@ -20017,7 +20017,7 @@ int __fastcall sub_811DC88(int a1, int a2)
 
 
 // 0x811de74
-int __fastcall sub_811DE74(int a1)
+int __fastcall sprite_setCursorPosFromCoordTable(int a1)
 {
     return sprite_setCoordinates(*&byte_811DE94[4 * a1] + 176, *&byte_811DE94[4 * a1 + 2] + 64);
 }
@@ -20925,7 +20925,7 @@ void __noreturn sub_811E8C4()
 {
     Battle *v0; // r5
 
-    sub_811E8E0();
+    sound_applyBiasWithSpriteFade();
     sprite_setCoordinates(224, 62);
     sprite_update(v0);
 }
@@ -20939,7 +20939,7 @@ int sub_811E8D8()
 
 
 // 0x811e8e0
-int sub_811E8E0()
+int sound_applyBiasWithSpriteFade()
 {
     unsigned int v0; // r0
 
@@ -21031,7 +21031,7 @@ void __noreturn sub_811EA0C()
 {
     Battle *v0; // r5
 
-    sub_811EA28();
+    sprite_storeDigitBitmask();
     sprite_setCoordinates(206, 12);
     sprite_update(v0);
 }
@@ -21045,12 +21045,12 @@ int sub_811EA20()
 
 
 // 0x811ea28
-int sub_811EA28()
+int sprite_storeDigitBitmask()
 {
     char v0; // r0
     char v5; // r1
 
-    v0 = sub_8143D4C();
+    v0 = countSetEventFlags();
     __asm
     {
         SVC         6

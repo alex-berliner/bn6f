@@ -1706,7 +1706,7 @@ int __fastcall sub_3006E7C(int a1)
 
 
 // 0x3006e98
-char *__fastcall sub_3006E98(int a1)
+char *__fastcall sprite_queueAnimData(int a1)
 {
     char *v1; // r3
     int v2; // r2

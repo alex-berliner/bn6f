@@ -2984,11 +2984,11 @@ byte_813CC18:
 	.word sub_813CD00+1
 	.word sub_813CD00+1
 	.word sub_813CD10+1
-	.word sub_813CD14+1
+	.word pet_resetCurNaviStatsByte19+1
 	.word sub_813CD22+1
 	.word sub_813CD30+1
 	.word sub_813CD58+1
-	.word sub_813CD5C+1
+	.word pet_setCurNaviStatsByte63+1
 	.word sub_813CD66+1
 	.word sub_813CD70+1
 	.word sub_813CD88+1
@@ -3070,15 +3070,15 @@ sub_813CD10:
 
 // symdb: Runs a setup step then clears byte 0x13 of the currently selected navi's NaviStats record.
 // symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by sub_813CD3E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_resetCurNaviStatsByte19.yaml
 	thumb_local_start
-sub_813CD14:
+pet_resetCurNaviStatsByte19:
 	push {lr}
 	bl sub_813CD3E
 	mov r2, #2
 	bl pet_clearCurNaviStatsByte19
 	pop {pc}
-	thumb_func_end sub_813CD14
+	thumb_func_end pet_resetCurNaviStatsByte19
 
 	thumb_local_start
 sub_813CD22:
@@ -3128,14 +3128,14 @@ sub_813CD58:
 
 // symdb: Writes the value 4 into byte 0x63 of the currently selected PET navi's NaviStats record.
 // symdb: () -> void; no return value, no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStatsByte63.yaml
 	thumb_local_start
-sub_813CD5C:
+pet_setCurNaviStatsByte63:
 	push {lr}
 	mov r2, #4
 	bl pet_clearCurNaviStatsByte63
 	pop {pc}
-	thumb_func_end sub_813CD5C
+	thumb_func_end pet_setCurNaviStatsByte63
 
 	thumb_local_start
 sub_813CD66:
@@ -4549,9 +4549,9 @@ off_813D974:
 
 // symdb: RFU helper that records state value 9 in the wireless work struct and invokes the lower RFU state routine with 0.
 // symdb: () -> r0 = return of sub_813D934(0); no other side effects visible
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D978.yaml
-	thumb_func_start sub_813D978
-sub_813D978:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setStateEnded.yaml
+	thumb_func_start rfu_setStateEnded
+rfu_setStateEnded:
 	push {lr}
 	ldr r0, off_813D988 // =eS200BC50 
 	mov r1, #9
@@ -4562,12 +4562,12 @@ sub_813D978:
 	.balign 4, 0
 off_813D988:
 	.word eS200BC50
-	thumb_func_end sub_813D978
+	thumb_func_end rfu_setStateEnded
 
 	thumb_func_start sub_813D98C
 sub_813D98C:
 	push {lr}
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #4
 	ldr r1, off_813D99C // =eStruct200BC30 
 	strb r0, [r1,#0xe] // (byte_200BC3E - 0x200bc30)

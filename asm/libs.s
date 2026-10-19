@@ -852,7 +852,7 @@ sio_linkStateUpdate:
 	bne loc_8144714
 	bl sub_8144920
 	bl sub_8144AFC
-	bl sub_8144BF0
+	bl sio_timer3EnableUpdate
 	b loc_8144714
 	.balign 4, 0
 off_81446D4:
@@ -1587,9 +1587,9 @@ dword_8144BEC:
 // symdb: Part of the SIO link state machine: enables Timer 3 (the multiplayer clock timer) while the comm session requests it, and disables/clears that request once a state counter reaches 8.
 // symdb: () -> void; no arguments, operates on the comm struct eTimerEnable200F460 and Timer3Control; no
 // symdb: return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144BF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sio_timer3EnableUpdate.yaml
 	thumb_local_start
-sub_8144BF0:
+sio_timer3EnableUpdate:
 	push {lr}
 	ldr r1, off_8144C08 // =eTimerEnable200F460 
 	mov r2, r1
@@ -1619,7 +1619,7 @@ loc_8144C1C:
 	bx r0
 off_8144C20:
 	.word Timer3Control
-	thumb_func_end sub_8144BF0
+	thumb_func_end sio_timer3EnableUpdate
 
 	thumb_local_start
 sub_8144C24:
@@ -2775,7 +2775,7 @@ loc_814540C:
 	cmp r0, #0
 	beq loc_814541A
 	mov r0, r3
-	bl sub_81455E8
+	bl e_advanceScrollWrap
 loc_814541A:
 	ldr r4, off_8145440 // =eStruct200FE00 
 	ldrb r0, [r4,#0x4] // (byte_200FE04 - 0x200fe00)
@@ -2996,9 +2996,9 @@ off_81455E4:
 // symdb: Advances a small state machine in the eStruct200FE00 object, computing wrapped halfword counters via mod 140 and moving through states 5/6 → 1 → 2/3 → 4.
 // symdb: (r0 = integer operand for the mod-140 wrap calculation) -> r0 = 0 (clobbered); writes state byte
 // symdb: +0x7, config bytes +0x6/+0x4 and counter halfwords +0x1A/+0x1C of eStruct200FE00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81455E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_advanceScrollWrap.yaml
 	thumb_local_start
-sub_81455E8:
+e_advanceScrollWrap:
 	push {r4,lr}
 	mov r3, r0
 	ldr r0, off_814560C // =eStruct200FE00 
@@ -3061,7 +3061,7 @@ loc_8145652:
 	pop {r4}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_81455E8
+	thumb_func_end e_advanceScrollWrap
 
 // symdb: Wireless-adapter connection state-machine dispatcher: handles one link event against the rfu connection struct at 200FE00, advancing/clearing search-and-connect states.
 // symdb: (r0 = event id (0x10..0x3D dispatch range), r1 = param (0 = action allowed, nonzero = ignored))
@@ -4971,9 +4971,9 @@ off_8146434:
 // symdb: Writes a requested RFU connection-state halfword, or if a connection is active, forces state 6 and fires the connection callback with reason 0xF3.
 // symdb: (r0 = new state halfword) -> r0 = 0 if stored, 6 if connection was active; flags clobbered by
 // symdb: call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146438.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setConnState.yaml
 	thumb_local_start
-sub_8146438:
+rfu_setConnState:
 	push {lr}
 	lsl r0, r0, #0x10
 	lsr r2, r0, #0x10
@@ -5006,7 +5006,7 @@ loc_814646C:
 	bx r1
 off_8146470:
 	.word eStruct200FE00
-	thumb_func_end sub_8146438
+	thumb_func_end rfu_setConnState
 
 	thumb_local_start
 sub_8146474:
@@ -5609,9 +5609,9 @@ off_8146850:
 // symdb: Zero-fills two parallel 8-entry tables (16-byte and 8-byte entries), likely resetting per-entity state before a battle or scene.
 // symdb: () -> r0 = clobbered; clears unk_20098B0[0..7] (0x10 bytes each) and unk_2009750[0..7] (8 bytes
 // symdb: each)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146854.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearDualTables.yaml
 	thumb_local_start
-sub_8146854:
+clearDualTables:
 	push {r4-r6,lr}
 	ldr r6, off_8146880 // =unk_20098B0 
 	ldr r5, off_8146884 // =unk_2009750 
@@ -5642,7 +5642,7 @@ off_8146880:
 	.word unk_20098B0
 off_8146884:
 	.word unk_2009750
-	thumb_func_end sub_8146854
+	thumb_func_end clearDualTables
 
 	thumb_func_start sub_8146888
 sub_8146888:
@@ -6177,7 +6177,7 @@ loc_8146C4C:
 	b loc_8146C5A
 loc_8146C54:
 	mov r0, r4
-	bl sub_8146C9C
+	bl rfu_handleDisconnectMsg
 loc_8146C5A:
 	pop {r4}
 	pop {r0}
@@ -6223,9 +6223,9 @@ loc_8146C92:
 // symdb: Step of the wireless (RFU) state machine: when the peer slot reports a disconnect-related message (0x26/0x27), frees the RFU slot and advances the state.
 // symdb: (r0 = state-machine struct ptr) -> r0 = undefined; writes state byte to [r0] and [r0+2], calls
 // symdb: rfu_clearSlot(4, slotIndex)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146C9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleDisconnectMsg.yaml
 	thumb_local_start
-sub_8146C9C:
+rfu_handleDisconnectMsg:
 	push {r4,lr}
 	mov r4, r0
 	ldr r1, off_8146CC4 // =dword_2010CB0 
@@ -6263,7 +6263,7 @@ loc_8146CDC:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_8146C9C
+	thumb_func_end rfu_handleDisconnectMsg
 
 	thumb_local_start
 sub_8146CE4:
@@ -7502,7 +7502,7 @@ loc_81475FC:
 	bl sub_8144DB0
 loc_8147610:
 	bl sub_8147834
-	bl sub_8147A84
+	bl rfu_pollSlotDisconnect
 	ldr r0, off_8147640 // =eS200BC50 
 	ldrh r0, [r0,#0x8] // (word_200BC58 - 0x200bc50)
 	// switch 64 cases 
@@ -7681,7 +7681,7 @@ loc_81477E4:
 	ldrb r0, [r0,#0x5] // (byte_200AF85 - 0x200af80)
 	cmp r0, #1
 	bne loc_81477F8
-	bl sub_813D978
+	bl rfu_setStateEnded
 	b def_814762C
 	.balign 4, 0x00
 off_81477F4:
@@ -8036,9 +8036,9 @@ dword_8147A80:
 // symdb: Checks one wireless link slot for a disconnect state (0x26/0x27), releases the RFU slot and updates the connection/error flags.
 // symdb: () -> void; reads slot id byte_2010328, global flag byte_201028C (bit1 = link active), link
 // symdb: array dword_2010CB0; writes byte_201028C, error byte_2010340, eS200BC50+8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147A84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_pollSlotDisconnect.yaml
 	thumb_local_start
-sub_8147A84:
+rfu_pollSlotDisconnect:
 	push {r4,r5,lr}
 	mov r4, #0
 	ldr r5, off_8147AD4 // =byte_201028C 
@@ -8121,7 +8121,7 @@ off_8147B1C:
 	.word eS200BC50
 off_8147B20:
 	.word byte_2010340
-	thumb_func_end sub_8147A84
+	thumb_func_end rfu_pollSlotDisconnect
 
 	thumb_func_start sub_8147B24
 sub_8147B24:
@@ -9182,7 +9182,7 @@ loc_8148396:
 	ldr r1, off_81483AC // =eS200BC50 
 	mov r0, #6
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	bl sub_8146854
+	bl clearDualTables
 	b def_814825A
 	.balign 4, 0x00
 off_81483A8:
@@ -23025,9 +23025,9 @@ off_814E94C:
 
 // symdb: Starts playing the given song ID unless it is already playing, in which case it leaves the current playback alone.
 // symdb: (r0 = song ID (u16, low halfword used)) -> r0 = clobbered; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E950.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_startOrContinueSong.yaml
 	thumb_local_start
-sub_814E950:
+sound_startOrContinueSong:
 	push {lr}
 	lsl r0, r0, #0x10
 	ldr r3, off_814E97C // =gMPlayTable 
@@ -23067,13 +23067,13 @@ loc_814E990:
 loc_814E998:
 	pop {r0}
 	bx r0
-	thumb_func_end sub_814E950
+	thumb_func_end sound_startOrContinueSong
 
 // symdb: Plays the BGM with the given music id: restarts it if a different song is loaded, resumes/restarts it if stopped, or runs a special path when its status is negative.
 // symdb: (r0 = music id) -> r0 = void; clobbers r1-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E99C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_playMusicId.yaml
 	thumb_local_start
-sub_814E99C:
+sound_playMusicId:
 	push {lr}
 	lsl r0, r0, #0x10
 	ldr r3, off_814E9C8 // =gMPlayTable 
@@ -23116,7 +23116,7 @@ loc_814E9E2:
 loc_814E9EC:
 	pop {r0}
 	bx r0
-	thumb_func_end sub_814E99C
+	thumb_func_end sound_playMusicId
 
 // symdb: Restart a BGM track on its music player if it is the track currently playing.
 // symdb: void sub_814E9F0(u16 songId);  // preserves r4-r6, r7-r12, lr; clobbers r0, r1, r2, r3, r10,
@@ -23840,9 +23840,9 @@ off_814EEBC:
 
 // symdb: Tears down wireless connection state: marks each child slot for disconnect via the RFU dispatch pointer and clears per-slot status bytes, guarded against re-entry by a magic word.
 // symdb: () -> void; no arguments, no return value (r0 clobbered)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EEC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_disconnectAllSlots.yaml
 	thumb_local_start
-sub_814EEC0:
+rfu_disconnectAllSlots:
 	push {r4-r7,lr}
 	ldr r0, off_814EF0C // =byte_3007FF0 
 	ldr r6, [r0]
@@ -23889,7 +23889,7 @@ off_814EF0C:
 	.word byte_3007FF0
 dword_814EF10:
 	.word 0x68736D53
-	thumb_func_end sub_814EEC0
+	thumb_func_end rfu_disconnectAllSlots
 
 // symdb: m4a's m4aSoundVSyncOff: takes the PCM DMA off — releases the block's ident, stops Timer 0, stops the repeating PCM DMAs, sets both DMA controls to 32-bit and zero-fills the PCM buffer.
 // symdb: static VsyncOffRegisters sound_vsync_off(void) ->     VsyncOffRegisters { u32 r2, r3; } Next

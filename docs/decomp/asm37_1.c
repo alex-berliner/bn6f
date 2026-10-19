@@ -2266,7 +2266,7 @@ int sub_8143A54()
             ClearEventFlagFromImmediate(13, 53);
         }
     }
-    if ( sub_8143D4C() == v2 )
+    if ( countSetEventFlags() == v2 )
     {
         v10 = GetGroundmanMinigameMapIndex();
         StartCutscene(dword_8143B1C[v10], 0, v11, v12);
@@ -2439,7 +2439,7 @@ int sub_8143CC8()
 
 
 // 0x8143d4c
-int sub_8143D4C()
+int countSetEventFlags()
 {
     int v0; // r7
     int v1; // r4

@@ -64,7 +64,7 @@ signed int __fastcall sub_808917C(int a1, int a2, int a3)
         v16 = v11;
         sub_80303FC(&v14);
         if ( !v12 )
-            sub_8089370(v7);
+            sprite_queueIndexedOamEntry(v7);
         SetCameraXYZ(v14, v15, v16);
 LABEL_12:
         sub_8089280();
@@ -112,7 +112,7 @@ int sub_8089280()
 
 
 // 0x8089370
-signed int __fastcall __noreturn sub_8089370(int a1)
+signed int __fastcall __noreturn sprite_queueIndexedOamEntry(int a1)
 {
     return sprite_queueOamEntryThunk_802FE28(*&byte_808938C[8 * a1], *&byte_808938C[8 * a1 + 4], 0, 1);
 }

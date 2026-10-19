@@ -177,7 +177,7 @@ void sub_812ECAC()
     if ( *(v2 + 15) )
     {
         if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 6u, 0, 0) )
-            sub_812EF20();
+            submenu_renderSelectedWindow();
         if ( v2[12] != 12 )
             v2[12] = sub_812EEEC();
         v3 = *(v2 + 16);
@@ -334,7 +334,7 @@ signed int sub_812EEEC()
 
 
 // 0x812ef20
-void __noreturn sub_812EF20()
+void __noreturn submenu_renderSelectedWindow()
 {
     char *v0; // r0
 

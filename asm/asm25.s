@@ -585,9 +585,9 @@ byte_808FC74:
 
 // symdb: Clears a story/event flag whose id is looked up from a table using a byte from the context at r10.
 // symdb: () -> r0 = 0; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FC7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearScenarioEventFlag.yaml
 	thumb_local_start
-sub_808FC7C:
+clearScenarioEventFlag:
 	push {r5, lr}
 	ldr r5, off_808FCE0 // =off_808F5D4
 	ldr r5, [r5, #0]
@@ -609,16 +609,16 @@ loc_808FC92:
 	mov r0, #0
 	pop {r5, pc}
 	.pool
-	thumb_func_end sub_808FC7C
+	thumb_func_end clearScenarioEventFlag
 
 byte_808FCA8:
 	.word 0x0BFE0BFD, 0x0FFE0BFF
 
 // symdb: Sets the story event flag that corresponds to the player's current scenario/chapter.
 // symdb: (no args) -> r0 = 0; flags from SetEventFlag call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FCB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setEventFlagForCurrentChapter.yaml
 	thumb_local_start
-sub_808FCB0:
+ow_setEventFlagForCurrentChapter:
 	push {r4-r7, lr}
 	mov r0, r10
 	ldr r0, [r0, #0x3c]
@@ -638,7 +638,7 @@ loc_808FCC2:
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_808FCB0
+	thumb_func_end ow_setEventFlagForCurrentChapter
 
 
 byte_808FCD8:
@@ -1582,7 +1582,7 @@ loc_8090324:
 sub_809032C:
 	push {lr}
 	mov r0, #1
-	bl sub_80039D4
+	bl e_scenarioEffectStateIdIs
 	beq loc_809033C
 	mov r0, #1
 	bl endScenarioEffectMaybe_8003940

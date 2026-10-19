@@ -913,9 +913,9 @@ locret_800BED8:
 // symdb: Boolean battle check: true only if this object's alliance slot is unused (or owned by it) in state 0/3 while the opposite alliance slot is in state 2 with a zero counter.
 // symdb: (r0 = ? ignored; r5 = battle object, reads oBattleObject_Alliance) -> r0 = 1 if condition met
 // symdb: else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BEDA.yaml
-	thumb_func_start sub_800BEDA
-sub_800BEDA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkAllianceSlotReady.yaml
+	thumb_func_start battle_checkAllianceSlotReady
+battle_checkAllianceSlotReady:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl byte_203CF00_getEntryPtr_800BF5C
@@ -947,7 +947,7 @@ loc_800BEF8:
 loc_800BF12:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800BEDA
+	thumb_func_end battle_checkAllianceSlotReady
 
 // symdb: Records an id into both request slots of the byte_203CF00 array (plus two work slots), then arms slot r0 as an active battle effect/spawn request with a type byte and parameter word.
 // symdb: (r0 = slot index (0/1), also recorded as a byte; r1 = type/kind byte; r2 = param word; r5 read
@@ -3658,9 +3658,9 @@ loc_800D18A:
 // symdb: Scans three successive rows with the filtered panel-row search and returns the smallest (or, in practice, largest) matching row index.
 // symdb: (r0 = object/handle passed to the row scan, r2/r3 = filter params passed through) -> r0 =
 // symdb: extreme matching row (0 if no row matched); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D190.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_findExtremeMatchingRow.yaml
 	thumb_local_start
-sub_800D190:
+object_findExtremeMatchingRow:
 	push {r4,lr}
 	sub sp, sp, #0x14
 	str r0, [sp,#0xc]
@@ -3716,7 +3716,7 @@ loc_800D1EA:
 loc_800D1EC:
 	add sp, sp, #0x14
 	pop {r4,pc}
-	thumb_func_end sub_800D190
+	thumb_func_end object_findExtremeMatchingRow
 
 	thumb_local_start
 sub_800D1F0:
@@ -4355,9 +4355,9 @@ locret_800D634:
 // symdb: Checks that a battlefield panel-group and its two adjacent groups (index-1 and index+1) are all still of the given alliance, returning 0 if intact and 1 if any is not.
 // symdb: (r0 = panel-group index, r1 = alliance value) -> r0 = 0 if all three groups match, 1 otherwise;
 // symdb: flags clobbered by BL
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D636.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelGroupNeighborhoodAlliance.yaml
 	thumb_local_start
-sub_800D636:
+battle_checkPanelGroupNeighborhoodAlliance:
 	push {r4,r5,r7,lr}
 	mov r2, #8
 	mul r2, r0
@@ -4382,7 +4382,7 @@ sub_800D636:
 loc_800D664:
 	mov r0, #1
 	pop {r4,r5,r7,pc}
-	thumb_func_end sub_800D636
+	thumb_func_end battle_checkPanelGroupNeighborhoodAlliance
 
 	thumb_func_start sub_800D668
 sub_800D668:

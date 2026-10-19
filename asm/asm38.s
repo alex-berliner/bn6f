@@ -2821,17 +2821,17 @@ sub_3006E7C:
 off_3006E8C:
 	.word off_3006E90
 off_3006E90:
-	.word sub_3006E98+1
-	.word sub_3006E98+1
+	.word sprite_queueAnimData+1
+	.word sprite_queueAnimData+1
 	thumb_func_end sub_3006E7C
 
 // symdb: Copies a 0x40-byte sprite data block, chosen from one of ten tables by fields of the caller's descriptor, into the next free slot of a queued buffer and records the pointers in the sprite work state.
 // symdb: (r0 = descriptor struct: byte +1 = variant flag, byte +2 = table index, +3 = sub-pointer) -> r0
 // symdb: = pointer to the queued 0x40-byte block in the queue buffer; updates state at byte_200A220
 // symdb: (+0x28, +0x2c, +0x30, +0x34)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006E98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueAnimData.yaml
 	thumb_local_start
-sub_3006E98:
+sprite_queueAnimData:
 	push {r1-r7,lr}
 	ldr r3, off_3006F1C // =byte_200A220
 	ldr r6, [r3,#0x30] // (dword_200A250 - 0x200a220)
@@ -2892,7 +2892,7 @@ off_3006F18:
 	.word CopyBytes+1
 off_3006F1C:
 	.word byte_200A220
-	thumb_func_end sub_3006E98
+	thumb_func_end sprite_queueAnimData
 
 	thumb_func_start sub_3006F20
 sub_3006F20:

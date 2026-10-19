@@ -1663,7 +1663,7 @@ loc_812CF96::
 loc_812CF9E::
 	cmp r0, #0xff
 	bne loc_812CFAC
-	bl sub_812D748
+	bl submenu_updateCursorAndTiles
 	b loc_812CFBC
 loc_812CFA8::
 	bl t4_transitionToTextState1C

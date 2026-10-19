@@ -188,7 +188,7 @@ jt_8026584:
 	.word sub_8026704+1
 	.word sub_802670E+1
 	.word sub_802671C+1
-	.word sub_8026726+1
+	.word battle_checkAnyAdjacentTile+1
 	thumb_func_end battle_beastJumpLockOn_8026554
 
 // symdb: Walks a 0x7F-terminated table of signed tile offsets, mirrors each by the object's facing direction, and returns nonzero as soon as a checker on the resulting relative tile succeeds.
@@ -436,9 +436,9 @@ sub_802671C:
 // symdb: Runs a tile checker on all eight tiles adjacent to a battle object and reports whether any of them passes.
 // symdb: (r0 = battle object pointer, passed through to checker) -> r0 = nonzero if the checker succeeded
 // symdb: on at least one adjacent tile, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026726.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkAnyAdjacentTile.yaml
 	thumb_local_start
-sub_8026726:
+battle_checkAnyAdjacentTile:
 	push {lr}
 	ldr r0, off_802683C // =byte_80267D5 
 	bl battle_checkFacingOffsets
@@ -532,7 +532,7 @@ off_8026838:
 	.word byte_80267CC
 off_802683C:
 	.word byte_80267D5
-	thumb_func_end sub_8026726
+	thumb_func_end battle_checkAnyAdjacentTile
 
 // symdb: One-time-per-run init of the battle custom (chip-select) screen: resets battle state words, loads the chip-select tilemap/OBJ graphics, initialises the eS20364C0 state (NaviIndex, folder chip count, selectable PET-Navi candidates) and advances the battle phase counter.
 // symdb: void battle_initCustomScreen(void) : r10 (toolkit) -> [r2 r3 r4 r5 r6 r8 r9] (callee-saved
@@ -10110,7 +10110,7 @@ off_802ABCC:
 	thumb_local_start
 sub_802ABD0:
 	push {lr}
-	bl sub_802AFD4
+	bl ow_wipeBg2Columns
 	bne locret_802ABEC
 	mov r0, #0xc
 	strb r0, [r5,#1]
@@ -10526,7 +10526,7 @@ loc_802AEC6:
 	thumb_local_start
 sub_802AED8:
 	push {lr}
-	bl sub_802AFD4
+	bl ow_wipeBg2Columns
 	bne locret_802AEE8
 	bl battle_stateGotoPhase14_800AABC
 	mov r0, #8
@@ -10685,9 +10685,9 @@ loc_802AFAE:
 // symdb: Advances a horizontal BG2 wipe transition: blanks background columns one by one while scrolling BG2, until the scroll reaches 120px.
 // symdb: (r0 unused/r5 = effect state struct) -> r0 = new BG2 scroll X; Z set iff scroll == 0x78 (wipe
 // symdb: finished)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AFD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_wipeBg2Columns.yaml
 	thumb_local_start
-sub_802AFD4:
+ow_wipeBg2Columns:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#2]
 	tst r0, r0
@@ -10739,7 +10739,7 @@ byte_802B024:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802AFD4
+	thumb_func_end ow_wipeBg2Columns
 
 	thumb_local_start
 decomp_802B060:
@@ -14512,7 +14512,7 @@ off_802CD5C:
 	.word NULL
 	.word sub_80BD9A2+1
 	.word sub_80BE3E8+1
-	.word sub_80BF160+1
+	.word battle_spawnType23ObjectWithProps+1
 	.word sub_80EA11C+1
 	.word sub_80BFCD0+1
 	.word spawnType1Object_0x24_80BF6AE+1
@@ -18382,9 +18382,9 @@ sub_802E896:
 // symdb: Scans a 0x170-byte weight table within one record and returns the offset of the highest-weight entry, breaking ties randomly via the secondary RNG.
 // symdb: (r0 = index of 0x170-byte record at unk_203A0A0) -> r0 = byte offset (0..0x16F) of winning
 // symdb: entry, or 0xFFFF if all bytes are 0; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E8A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pickHighestWeightRandomTiebreak.yaml
 	thumb_local_start
-sub_802E8A4:
+pickHighestWeightRandomTiebreak:
 	push {r6,r7,lr}
 	ldr r2, off_802E954 // =0x170 
 	mul r2, r0
@@ -18416,7 +18416,7 @@ loc_802E8D2:
 	blt loc_802E8B4
 	mov r0, r6
 	pop {r6,r7,pc}
-	thumb_func_end sub_802E8A4
+	thumb_func_end pickHighestWeightRandomTiebreak
 
 	thumb_local_start
 sub_802E8DE:
@@ -18818,18 +18818,18 @@ off_802EC6C:
 	.word ai_startAttack22+1
 	.word ai_startAttack22+1
 off_802EC9C:
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
-	.word sub_802ED8A+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
+	.word battle_initAttack2bState+1
 off_802ECCC:
 	.word sub_802EDE8+1
 	.word sub_802EDE8+1
@@ -18924,9 +18924,9 @@ battle_startAttack33:
 
 // symdb: Battle-side setup routine that initializes an entity's action state and arms attack 0x2b with a counter bump.
 // symdb: (implicit r6 = battle entity/object work struct) -> r0 = 1, r1 = 0; no flags returned
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ED8A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAttack2bState.yaml
 	thumb_local_start
-sub_802ED8A:
+battle_initAttack2bState:
 	push {lr}
 	mov r0, #0
 	strb r0, [r6,#2]
@@ -18950,7 +18950,7 @@ sub_802ED8A:
 	.balign 4, 0
 off_802EDB8:
 	.word 0x23C
-	thumb_func_end sub_802ED8A
+	thumb_func_end battle_initAttack2bState
 
 // symdb: Initializes an enemy's state-work fields, sets a 40-frame timer, and makes the object begin attack id 0x16 (22).
 // symdb: (r6 = object/enemy work pointer, set by caller) -> r0 = 1, r1 = 0; clobbers lr
@@ -19956,9 +19956,9 @@ loc_802F268:
 // symdb: Removes an event id from the active-event list and clears its event flag pair (id and id+0x80).
 // symdb: (r0 = event flag id (>= 0x1CA0), relative id = r0-0x1CA0) -> r0 = preserved id; no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F270.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_removeQueuedEvent.yaml
 	thumb_local_start
-sub_802F270:
+ow_removeQueuedEvent:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -20005,7 +20005,7 @@ loc_802F2BC:
 	.balign 4, 0
 off_802F2C4:
 	.word 0x1CA0
-	thumb_func_end sub_802F270
+	thumb_func_end ow_removeQueuedEvent
 
 // symdb: Clears the 0x80-byte palette scratch buffer at byte_2006530 (fills with 0x80) and zeros dword_2001140, used to reset palette animation state.
 // symdb: void resetPaletteScratch_802F2C8(void)

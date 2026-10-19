@@ -884,7 +884,7 @@ void sub_812F858()
                         {
                             *(v0 + 64) += 2;
                             ++*(v0 + 46);
-                            sub_8130728(v6);
+                            npc_verifyCodePuzzleEntry(v6);
                         }
                         return;
                     }

@@ -374,7 +374,7 @@ int sub_802671C()
 
 
 // 0x8026726
-int sub_8026726()
+int battle_checkAnyAdjacentTile()
 {
     return battle_checkFacingOffsets(byte_80267D5);
 }
@@ -6572,7 +6572,7 @@ int __noreturn sub_802ABD0()
     int result; // r0
     char v2; // zf
 
-    result = sub_802AFD4();
+    result = ow_wipeBg2Columns();
     if ( v2 )
     {
         v0[1] = 12;
@@ -6886,7 +6886,7 @@ int __noreturn sub_802AED8()
     int result; // r0
     char v2; // zf
 
-    result = sub_802AFD4();
+    result = ow_wipeBg2Columns();
     if ( v2 )
     {
         battle_stateGotoPhase14_800AABC();
@@ -7023,7 +7023,7 @@ int __fastcall ow_scrollBg2LeftWriteTiles(int a1, int a2, int a3)
 
 
 // 0x802afd4
-int sub_802AFD4()
+int ow_wipeBg2Columns()
 {
     int v0; // r5
     int v1; // r10
@@ -11893,7 +11893,7 @@ int sub_802E896()
 
 
 // 0x802e8a4
-signed int __fastcall sub_802E8A4(int a1)
+signed int __fastcall pickHighestWeightRandomTiebreak(int a1)
 {
     unsigned __int8 *v1; // r0
     signed int v2; // r6
@@ -12188,7 +12188,7 @@ __int64 battle_startAttack33()
 
 
 // 0x802ed8a
-signed __int64 sub_802ED8A()
+signed __int64 battle_initAttack2bState()
 {
     int v0; // r6
 
@@ -12787,7 +12787,7 @@ int __fastcall addMail_802f238(unsigned int a1)
 
 
 // 0x802f270
-unsigned int __fastcall sub_802F270(unsigned int a1)
+unsigned int __fastcall ow_removeQueuedEvent(unsigned int a1)
 {
     unsigned int v1; // r7
     signed int v2; // r1

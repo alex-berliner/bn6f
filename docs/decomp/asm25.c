@@ -1042,7 +1042,7 @@ int sub_809032C()
     int v2; // r3
     char v3; // zf
 
-    sub_80039D4(1);
+    e_scenarioEffectStateIdIs(1);
     if ( !v3 )
         endScenarioEffectMaybe_8003940(1, v0, v1, v2);
     return 0;

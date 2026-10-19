@@ -531,7 +531,7 @@ void sub_812DFAC()
                                 {
                                     engine_setScreeneffect(8, 16);
                                     sub_812EE78(0);
-                                    sub_812EF20();
+                                    submenu_renderSelectedWindow();
                                 }
                             }
                         }
@@ -819,7 +819,7 @@ void sub_812E280()
                                         battle_resetEStructRecords_8046664();
                                         sub_812EB88();
                                         sub_812EB78();
-                                        sub_812EF20();
+                                        submenu_renderSelectedWindow();
                                     }
                                 }
                             }

@@ -3660,7 +3660,7 @@ loc_8143AC6:
 	movflag EVENT_D35
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 loc_8143AD6:
-	bl sub_8143D4C
+	bl countSetEventFlags
 	cmp r0, r1
 	bne loc_8143AF0
 	bl GetGroundmanMinigameMapIndex
@@ -3979,9 +3979,9 @@ dword_8143D48:
 
 // symdb: Counts how many event flags in a dynamic list are currently set, returning the set count (r0) and total list size (r1).
 // symdb: () -> r0 = number of set flags, r1 = total number of flags in the list; Z set if count is 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143D4C.yaml
-	thumb_func_start sub_8143D4C
-sub_8143D4C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/countSetEventFlags.yaml
+	thumb_func_start countSetEventFlags
+countSetEventFlags:
 	push {r4-r7,lr}
 	bl sub_8143F60
 	mov r7, r0
@@ -4003,7 +4003,7 @@ loc_8143D68:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143D4C
+	thumb_func_end countSetEventFlags
 
 	thumb_local_start
 sub_8143D7A:

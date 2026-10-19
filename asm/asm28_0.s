@@ -1743,7 +1743,7 @@ loc_809A5B8:
 	strb r0, [r5,#9]
 	mov r0, #SOUND_UNK_8A
 	bl PlaySoundEffect
-	bl sub_809A880
+	bl get_bugfragTraderCost
 	strh r0, [r5,#0x1a]
 	mov r2, #0x88
 	ldr r2, [r5,r2]
@@ -2102,9 +2102,9 @@ sub_809A868:
 // symdb: Returns the Bug Frag cost (10/20/30/50 frags) for the currently selected trade option in the Bug Frag trader menu.
 // symdb: (r0 = ignored, r5 = trader menu context struct) -> r0 = frag cost byte for option [r5+0x88];
 // symdb: clobbers r0-r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A880.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_bugfragTraderCost.yaml
 	thumb_local_start
-sub_809A880:
+get_bugfragTraderCost:
 	push {lr}
 	ldr r0, off_809A88C // =dword_809A890 
 	mov r1, #0x88
@@ -2140,7 +2140,7 @@ byte_809A8A8:
 	cs_call_native_with_return_value ptr1=chatbox_uncompMapTextArchives_803FD54+1
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_809A880
+	thumb_func_end get_bugfragTraderCost
 
 	thumb_local_start
 sub_809A8E4:

@@ -154,7 +154,7 @@ int sub_800BE2C()
 
 
 // 0x800beda
-BOOL sub_800BEDA()
+BOOL battle_checkAllianceSlotReady()
 {
     int v0; // r5
     char *v1; // r0
@@ -2042,7 +2042,7 @@ int __fastcall __noreturn sub_800D15A(int result, int a2, int a3, int a4)
 
 
 // 0x800d190
-signed int __fastcall __noreturn sub_800D190(int a1, int a2, int a3, int a4)
+signed int __fastcall __noreturn object_findExtremeMatchingRow(int a1, int a2, int a3, int a4)
 {
     signed int v4; // r4
     int v5; // r0
@@ -2534,7 +2534,7 @@ char *__fastcall __noreturn object_checkPanelTypeMatchesValue_800D618(int a1, in
 
 
 // 0x800d636
-BOOL __fastcall sub_800D636(int a1, int a2)
+BOOL __fastcall battle_checkPanelGroupNeighborhoodAlliance(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5

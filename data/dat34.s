@@ -711,7 +711,7 @@ loc_812E046::
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #0
 	bl sub_812EE78
-	bl sub_812EF20
+	bl submenu_renderSelectedWindow
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812EB88
 	bl sub_812EB78
@@ -1072,7 +1072,7 @@ loc_812E306::
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812EB88
 	bl sub_812EB78
-	bl sub_812EF20
+	bl submenu_renderSelectedWindow
 	bl CopyBackgroundTiles812EAAC
 	b loc_812E35E
 loc_812E342::
@@ -1955,7 +1955,7 @@ sub_812E9AC::
 	bl CopyBackgroundTiles812EAAC
 	bl sub_812EB88
 	bl sub_812EB78
-	bl sub_812EF20
+	bl submenu_renderSelectedWindow
 	mov r0, #0
 	ldr r1, off_812EA40 // =dword_8129180 
 	bl battleObject_advanceAnimTableBy0xFF_8120CC8

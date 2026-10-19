@@ -2186,7 +2186,7 @@ void sub_813CD10()
 
 
 // 0x813cd14
-int sub_813CD14()
+int pet_resetCurNaviStatsByte19()
 {
     int v0; // r0
     int v1; // r1
@@ -2240,7 +2240,7 @@ void sub_813CD58()
 
 
 // 0x813cd5c
-int __fastcall sub_813CD5C(int a1, int a2)
+int __fastcall pet_setCurNaviStatsByte63(int a1, int a2)
 {
     return pet_clearCurNaviStatsByte63(a1, a2, 4);
 }
@@ -3106,7 +3106,7 @@ void __cdecl zeroFill_813D960()
 
 
 // 0x813d978
-int sub_813D978()
+int rfu_setStateEnded()
 {
     word_200BC58 = 9;
     return rfu_setLinkCommand(0);
@@ -3118,7 +3118,7 @@ signed int sub_813D98C()
 {
     signed int result; // r0
 
-    sub_813D978();
+    rfu_setStateEnded();
     result = 4;
     byte_200BC3E = 4;
     return result;

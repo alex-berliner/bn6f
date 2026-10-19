@@ -383,7 +383,7 @@ int sio_linkStateUpdate()
     {
         sub_8144920();
         sub_8144AFC();
-        sub_8144BF0();
+        sio_timer3EnableUpdate();
     }
     ++byte_200F46D;
     byte_200F450 = 0;
@@ -651,7 +651,7 @@ int libStopAndReloadTimer3If_eTimerEnable200F460()
 
 
 // 0x8144bf0
-int sub_8144BF0()
+int sio_timer3EnableUpdate()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -1250,7 +1250,7 @@ int __fastcall sub_81453F0(int a1)
     if ( dword_200FE40 || !byte_200FE04 )
     {
         if ( byte_200FE07 )
-            sub_81455E8(a1);
+            e_advanceScrollWrap(a1);
         do
         {
             if ( byte_200FE04 )
@@ -1357,7 +1357,7 @@ LABEL_14:
 
 
 // 0x81455e8
-int __fastcall sub_81455E8(int a1)
+int __fastcall e_advanceScrollWrap(int a1)
 {
     char v1; // r0
     int v3; // [sp+4h] [bp-4h]
@@ -2287,7 +2287,7 @@ signed int __fastcall sub_81463F4(char a1, __int16 a2)
 
 
 // 0x8146438
-signed int __fastcall sub_8146438(__int16 a1)
+signed int __fastcall rfu_setConnState(__int16 a1)
 {
     signed int result; // r0
 
@@ -2540,7 +2540,7 @@ unsigned int __fastcall sub_8146808(int a1)
 
 
 // 0x8146854
-int __fastcall sub_8146854(int a1, int a2, int a3, int a4)
+int __fastcall clearDualTables(int a1, int a2, int a3, int a4)
 {
     char *v4; // r6
     char *v5; // r5
@@ -2814,7 +2814,7 @@ int __fastcall sub_8146C20(unsigned __int8 *a1)
     {
         if ( v2 == 2 )
         {
-            sub_8146C9C(v1);
+            rfu_handleDisconnectMsg(v1);
             return v4;
         }
         if ( v2 != 3 )
@@ -2853,7 +2853,7 @@ int __fastcall sub_8146C60(int a1)
 
 
 // 0x8146c9c
-int __fastcall sub_8146C9C(_BYTE *a1)
+int __fastcall rfu_handleDisconnectMsg(_BYTE *a1)
 {
     _BYTE *v1; // r4
     int v2; // r0
@@ -3475,7 +3475,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
         sub_8144DB0(1u);
     }
     sub_8147834();
-    sub_8147A84();
+    rfu_pollSlotDisconnect();
     switch ( word_200BC58 )
     {
         case 1:
@@ -3512,7 +3512,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
                 }
                 else if ( unk_200AF85 == 1 )
                 {
-                    sub_813D978();
+                    rfu_setStateEnded();
                 }
                 else
                 {
@@ -3630,7 +3630,7 @@ int sub_814794C()
 
 
 // 0x8147a84
-int sub_8147A84()
+int rfu_pollSlotDisconnect()
 {
     int v0; // r4
     unsigned __int16 *v1; // r2
@@ -4134,7 +4134,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
             {
                 byte_2010324 = 0;
                 word_200BC58 = 6;
-                sub_8146854(6, &eS200BC50, v2, v3);
+                clearDualTables(6, &eS200BC50, v2, v3);
             }
             return v6;
         case 6:
@@ -10984,7 +10984,7 @@ int __fastcall m4a_SongNumStart(int a1)
 
 
 // 0x814e950
-int __fastcall sub_814E950(int a1)
+int __fastcall sound_startOrContinueSong(int a1)
 {
     unsigned __int8 **v1; // r0
     int v2; // r1
@@ -11006,7 +11006,7 @@ int __fastcall sub_814E950(int a1)
 
 
 // 0x814e99c
-int __fastcall sub_814E99C(int a1)
+int __fastcall sound_playMusicId(int a1)
 {
     unsigned __int8 **v1; // r0
     int v2; // r1
@@ -11377,7 +11377,7 @@ int __fastcall sound_setM4AControl_814EE2C(int a1)
 
 
 // 0x814eec0
-int sub_814EEC0()
+int rfu_disconnectAllSlots()
 {
     int v0; // r6
     signed int v1; // r5

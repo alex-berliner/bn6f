@@ -40,7 +40,7 @@ int __fastcall battle_setupBackgroundAssets(int a1, signed int a2)
     void **v4; // r7
     int v5; // r0
 
-    v2 = sub_808137C(a1, a2);
+    v2 = battle_getBackgroundDataByte(a1, a2);
     v3 = v2;
     v4 = &off_8080E34 + 4 * v2;
     SetBGScrollCallbacks(*v4, v4[1], v4[2]);
@@ -99,7 +99,7 @@ signed int sub_8081308()
 
 
 // 0x808137c
-signed int __fastcall sub_808137C(int a1, signed int a2)
+signed int __fastcall battle_getBackgroundDataByte(int a1, signed int a2)
 {
     char *v2; // r2
     signed int result; // r0

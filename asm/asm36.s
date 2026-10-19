@@ -978,9 +978,9 @@ off_8130724:
 // symdb: Records each pick of a two-part code-entry NPC puzzle and, once the sequence is full, checksums both halves to decide success or a fail dialog.
 // symdb: (r0 = struct with the two picked values at +8/+0x18; r5 = puzzle state, count at +0x3C, limit at
 // symdb: +0x34) -> r0 = destroyed by call; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130728.yaml
-	thumb_func_start sub_8130728
-sub_8130728:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_verifyCodePuzzleEntry.yaml
+	thumb_func_start npc_verifyCodePuzzleEntry
+npc_verifyCodePuzzleEntry:
 	push {r4-r7,lr}
 	ldr r4, off_8130778 // =unk_20270EC 
 	ldr r7, off_813077C // =unk_202714C 
@@ -1029,7 +1029,7 @@ off_8130778:
 	.word unk_20270EC
 off_813077C:
 	.word unk_202714C
-	thumb_func_end sub_8130728
+	thumb_func_end npc_verifyCodePuzzleEntry
 
 	thumb_func_start sub_8130780
 sub_8130780:
@@ -4015,7 +4015,7 @@ loc_8132036:
 loc_8132050:
 	cmp r0, #1
 	bne loc_8132058
-	bl sub_813D978
+	bl rfu_setStateEnded
 loc_8132058:
 	bl sub_8148224
 	ldr r1, off_813206C // =off_8132070 
@@ -4042,7 +4042,7 @@ sub_8132080:
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
 	beq loc_8132094
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 	b locret_81320AA
@@ -5053,7 +5053,7 @@ sub_81326D4:
 	bl sub_811AE7C
 	bl sub_813281C
 	bl sub_81328C0
-	bl sub_8132980
+	bl gui_loadBackgroundSprite
 	mov r1, #0
 	mov r0, #0x48 
 	strb r1, [r5,r0]
@@ -5367,9 +5367,9 @@ off_8132978:
 // symdb: Copies a 30x14-tile GUI image (eGuiSprite2022AA0) into background tile block 1 at tile (0,0).
 // symdb: () -> void; calls CopyBackgroundTiles(0, 0, tileBlock=1, tile_ids=eGuiSprite2022AA0, j=0x1e,
 // symdb: i=0x14)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132980.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gui_loadBackgroundSprite.yaml
 	thumb_local_start
-sub_8132980:
+gui_loadBackgroundSprite:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0
@@ -5408,7 +5408,7 @@ off_81329AC:
 	.balign 4, 0x00
 off_81329C4:
 	.word 0x410
-	thumb_func_end sub_8132980
+	thumb_func_end gui_loadBackgroundSprite
 	thumb_func_start sub_81329C8
 sub_81329C8:
 	push {r4-r7,lr}
@@ -6775,7 +6775,7 @@ beastsp_handleInputAndScripts:
 	push {r4,lr}
 	bl submenu_isOpen_81355D8
 	beq loc_81334E2
-	bl sub_813561C
+	bl submenu_getUnk02
 	cmp r0, #0x24 
 	beq locret_8133534
 	cmp r0, #0x30 
@@ -7142,7 +7142,7 @@ locret_813376E:
 	thumb_local_start
 sub_8133770:
 	push {lr}
-	bl sub_813561C
+	bl submenu_getUnk02
 	cmp r0, #0x30 
 	beq locret_8133784
 	mov r0, #0x1b
@@ -7539,7 +7539,7 @@ off_8133A5C:
 	thumb_local_start
 sub_8133A68:
 	push {lr}
-	bl sub_813561C
+	bl submenu_getUnk02
 	cmp r0, #0x30 
 	bne loc_8133A7C
 	ldrb r0, [r5,#2]
@@ -7617,7 +7617,7 @@ off_8133B14:
 	thumb_local_start
 sub_8133B18:
 	push {lr}
-	bl sub_813561C
+	bl submenu_getUnk02
 	cmp r0, #0x30 
 	bne loc_8133B2C
 	ldrb r0, [r5,#2]
@@ -7656,7 +7656,7 @@ loc_8133B4C:
 	thumb_local_start
 sub_8133B74:
 	push {lr}
-	bl sub_813561C
+	bl submenu_getUnk02
 	cmp r0, #0x18
 	bne loc_8133B8E
 	mov r0, #0x17
@@ -10583,7 +10583,7 @@ sub_8135080:
 	mov r1, #0x20 
 	tst r0, r1
 	beq loc_81350CA
-	bl sub_81351C0
+	bl getFolderMegaChipCount
 	mov r4, r0
 	// idx
 	ldr r0, [sp,#4]
@@ -10739,9 +10739,9 @@ off_81351BC:
 // symdb: (r5 = pointer to folder header whose halfword at +0x1E is the chip count; folder entries at
 // symdb: word_202A020, 0x20 bytes each) -> r0 = number of entries whose chip ID (halfword at entry+0x1C
 // symdb: >> 1) has bit 5 set in ChipData byte 9; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81351C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getFolderMegaChipCount.yaml
 	thumb_local_start
-sub_81351C0:
+getFolderMegaChipCount:
 	push {r4-r7,lr}
 	ldr r4, off_81351F0 // =word_202A020 
 	mov r3, #0
@@ -10770,7 +10770,7 @@ loc_81351E6:
 	.balign 4, 0
 off_81351F0:
 	.word word_202A020
-	thumb_func_end sub_81351C0
+	thumb_func_end getFolderMegaChipCount
 
 	thumb_local_start
 sub_81351F4:
@@ -11407,9 +11407,9 @@ off_8135618:
 // symdb: Tiny getter returning byte 0x02 of the sSubmenu state struct (likely a selection/state index) for the beast-SP text-sequence handlers.
 // symdb: () -> r0 = sSubmenu.unk_02 (byte, zero-extended); no flags set meaningfully (ldrb does not set
 // symdb: flags).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813561C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getUnk02.yaml
 	thumb_local_start
-sub_813561C:
+submenu_getUnk02:
 	ldr r0, off_8135624 // =sSubmenu 
 	ldrb r0, [r0,#0x2] // (sSubmenu.unk_02 - 0x2009a30)
 	mov pc, lr
@@ -11438,7 +11438,7 @@ byte_813565C:
 	.byte 0x21, 0xE9, 0x21, 0xEB, 0x21, 0xED, 0x21, 0xEF, 0x21
 	.byte 0xF1, 0x21, 0xF3, 0x21, 0xF5, 0x21, 0xF7, 0x21, 0xF9
 	.byte 0x21, 0xFB, 0x21
-	thumb_func_end sub_813561C
+	thumb_func_end submenu_getUnk02
 
 // symdb: Indirect dispatcher keyed by r5+0x1: reads a byte and tail-calls one of three handler routines via a thumb-BX table
 // symdb: (r5 = base of a beast-state struct, AIIndex at +0x1 used as the dispatch key) -> r0 = 0 ; tail-
@@ -11670,7 +11670,7 @@ loc_8135896:
 	bl PlaySoundEffect
 	mov r0, #8
 	strb r0, [r5,#2]
-	bl sub_8135FA4
+	bl navicust_loadSelectedCellParams
 	bl sub_8135F5C
 	mov r0, #1
 	bl sub_813660C
@@ -12600,9 +12600,9 @@ off_8135F94:
 // symdb: Loads a two-byte parameter pair for the selected NaviCust board cell from a 3-type x 4-state lookup table into the cell state struct.
 // symdb: (r5 = selected-cell state struct) -> r0 = second byte; writes halfwords [r5+0x28] and [r5+0x2c]
 // symdb: from table entry byte_8135FC4[[r5+0xf]*8 + [r5+0x20]*2]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135FA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_loadSelectedCellParams.yaml
 	thumb_local_start
-sub_8135FA4:
+navicust_loadSelectedCellParams:
 	push {lr}
 	ldr r1, off_8135FC0 // =byte_8135FC4 
 	ldrb r0, [r5,#0xf]
@@ -12622,7 +12622,7 @@ off_8135FC0:
 byte_8135FC4:
 	.byte 0x4, 0x1, 0x4, 0x1, 0x4, 0x1, 0x4, 0x2, 0x5, 0x1, 0x5, 0x1, 0x5, 0x2, 0x5, 0x3, 0x5
 	.byte 0x1, 0x5, 0x1, 0x5, 0x2, 0x5, 0x3
-	thumb_func_end sub_8135FA4
+	thumb_func_end navicust_loadSelectedCellParams
 
 	thumb_local_start
 sub_8135FDC:
@@ -16536,7 +16536,7 @@ sub_8137D20:
 	ldr r2, off_8137D48 // =byte_2017A00 
 	mov r3, #7
 	mov r4, #0
-	bl sub_8137D50
+	bl t4_drawNaviChipNameTiles
 	mov r0, #2
 	mov r1, #4
 	ldr r2, off_8137D48 // =byte_2017A00 
@@ -16552,9 +16552,9 @@ off_8137D4C:
 // symdb: Renders up to 7 navi-chip name strings (via text-script lookup) into two tile-index buffers, 8 tiles per name.
 // symdb: (r0 = base index multiplier, r1 = array base, r2/r3 = u16 tile-out buffers, r3<<12|0x200 on
 // symdb: stack = param for callee) -> void; r0-r5 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137D50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_drawNaviChipNameTiles.yaml
 	thumb_local_start
-sub_8137D50:
+t4_drawNaviChipNameTiles:
 	push {r4-r7,lr}
 	ldr r6, off_8137DA0 // =0x200 
 	lsl r3, r3, #0xc
@@ -16597,7 +16597,7 @@ off_8137D9C:
 	.word eTextScript201BF00
 off_8137DA0:
 	.word 0x200
-	thumb_func_end sub_8137D50
+	thumb_func_end t4_drawNaviChipNameTiles
 
 	thumb_local_start
 sub_8137DA4:
@@ -17417,7 +17417,7 @@ loc_8138368:
 off_8138378:
 	.word off_813837C
 off_813837C:
-	.word sub_813838C+1
+	.word t4_delayedScreenScrollFade+1
 	.word sub_81383C4+1
 	.word sub_81383F4+1
 	.word sub_8138700+1
@@ -17425,9 +17425,9 @@ off_813837C:
 
 // symdb: Counts down a frame timer on some object; when it hits zero, writes fixed screen-scroll values into the toolkit RenderInfo and triggers a screen fade, then moves the object to its next state.
 // symdb: (r5 = object: u16 timer at +4, u8 state at +1) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813838C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_delayedScreenScrollFade.yaml
 	thumb_local_start
-sub_813838C:
+t4_delayedScreenScrollFade:
 	push {lr}
 	ldrh r0, [r5,#4]
 	sub r0, #1
@@ -17457,7 +17457,7 @@ dword_81383BC:
 	.word 0x1D00
 dword_81383C0:
 	.word 0x1E89
-	thumb_func_end sub_813838C
+	thumb_func_end t4_delayedScreenScrollFade
 
 	thumb_local_start
 sub_81383C4:
@@ -17560,7 +17560,7 @@ sub_8138478:
 	ldr r7, off_81384D4 // =unk_2014000 
 	bl sub_8045FC6
 	pop {r0-r7}
-	bl sub_81384AC
+	bl sprite_queueSheetGfxUpload
 	bl sub_8138890
 
 	ldrb r0, [r5,#0xd]
@@ -17576,9 +17576,9 @@ sub_8138478:
 // symdb: Queues a 0x600-byte tile/graphics chunk upload from the decomp buffer into VRAM at a per-object slot's offset.
 // symdb: (r0 = unused by this routine; r5 = caller-set object struct whose byte at +0xD is the VRAM slot
 // symdb: index) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81384AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueSheetGfxUpload.yaml
 	thumb_local_start
-sub_81384AC:
+sprite_queueSheetGfxUpload:
 	push {r3-r7,lr}
 	ldr r2, off_81384C4 // =0x600 
 	ldrb r1, [r5,#0xd]
@@ -17605,7 +17605,7 @@ dword_81384D8:
 	.word 0x6000000
 off_81384DC:
 	.word byte_2017A00
-	thumb_func_end sub_81384AC
+	thumb_func_end sprite_queueSheetGfxUpload
 	thumb_local_start
 sub_81384E0:
 	push {lr}

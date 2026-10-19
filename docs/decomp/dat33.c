@@ -1302,7 +1302,7 @@ LABEL_23:
                         }
                         if ( v11 != 255 )
                             goto LABEL_22;
-                        sub_812D748();
+                        submenu_updateCursorAndTiles();
                         goto LABEL_24;
                     }
                 }

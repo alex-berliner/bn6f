@@ -636,7 +636,7 @@ signed int sub_809A520()
             sub_803F9E4();
             *(v0 + 9) = 1;
             PlaySoundEffect(138, v10, v11);
-            v12 = sub_809A880();
+            v12 = get_bugfragTraderCost();
             *(v0 + 26) = v12;
             *(v0 + 14) = *(&off_809A624 + *(v0 + 136));
             *(v0 + 12) = 10;
@@ -880,7 +880,7 @@ int sub_809A868()
 
 
 // 0x809a880
-int sub_809A880()
+int get_bugfragTraderCost()
 {
     int v0; // r5
 

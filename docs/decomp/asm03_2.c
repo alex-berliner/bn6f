@@ -40,7 +40,7 @@ int __fastcall sprite_runAnimationScript(int a1, unsigned int a2, int a3, int a4
 
 
 // 0x8046038
-signed int __fastcall sub_8046038(int a1, int a2, int a3, int a4)
+signed int __fastcall sprite_queueTileGrid(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -3181,7 +3181,7 @@ signed int sub_804964C()
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         v6 = *(&dword_804967C + v5);
         *(v0 + 1) = v6;
         sub_8147F98(v6, v7, v8, &dword_804967C);
@@ -3210,7 +3210,7 @@ signed int sub_8049680()
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         v4 = 2 * v2;
         *(v0 + 1) = dword_80496EC[v4];
         (dword_80496EC[v4 + 1])();
@@ -3751,8 +3751,8 @@ int __fastcall sub_8049DC4(__int64 a1, __int64 a2)
     __int64 v2; // ST00_8
 
     v2 = a2;
-    sub_803C168(a1, 8, 0x20u);
-    return sub_803C168(v2, 10, 0x20u);
+    convertByteStringToCharCodes(a1, 8, 0x20u);
+    return convertByteStringToCharCodes(v2, 10, 0x20u);
 }
 
 
@@ -5872,7 +5872,7 @@ int sub_804C348()
     v3[3] = 16;
     *(v0 + 19) = 2;
     call_sub_3005EBA(0, 0, 3, 0);
-    sub_804C3C4();
+    t3_loadTextWindowTiles();
     LOBYTE(dword_30[0]) = 4;
     return sub_804C3BC();
 }
@@ -5881,12 +5881,12 @@ int sub_804C348()
 // 0x804c3bc
 void sub_804C3BC()
 {
-    sub_804C3C4();
+    t3_loadTextWindowTiles();
 }
 
 
 // 0x804c3c4
-void sub_804C3C4()
+void t3_loadTextWindowTiles()
 {
     int v0; // r10
 
@@ -6064,7 +6064,7 @@ void sub_804C668()
 // 0x804c66c
 void sub_804C66C()
 {
-    sub_804C6C4(off_804C67C);
+    e_queuePacketEntry(off_804C67C);
 }
 
 
@@ -6076,14 +6076,14 @@ void sub_804C694()
     int v2; // r2
     int v3; // r3
 
-    sub_804C6C4(off_804C6AC);
+    e_queuePacketEntry(off_804C6AC);
     if ( !*(v0 + 13) )
         run_eStruct200a6a0_Callback_8002484(*(v0 + 13), v1, v2, v3);
 }
 
 
 // 0x804c6c4
-void __fastcall sub_804C6C4(int a1)
+void __fastcall e_queuePacketEntry(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -6173,7 +6173,7 @@ void sub_804C7C4()
 // 0x804c7c8
 void sub_804C7C8()
 {
-    sub_804C6C4(&off_804C7D8);
+    e_queuePacketEntry(&off_804C7D8);
 }
 
 
@@ -6185,7 +6185,7 @@ void sub_804C7EC()
     int v2; // r2
     int v3; // r3
 
-    sub_804C6C4(&off_804C804);
+    e_queuePacketEntry(&off_804C804);
     if ( !*(v0 + 13) )
         run_eStruct200a6a0_Callback_8002484(*(v0 + 13), v1, v2, v3);
 }

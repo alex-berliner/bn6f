@@ -1062,7 +1062,7 @@ loc_808C9D6:
 	cmp r0, #0
 	beq loc_808C9F8
 	add r0, r4, #0
-	bl sub_8089370
+	bl sprite_queueIndexedOamEntry
 	add r0, r7, #0
 	mov r1, r8
 	mov r2, #0

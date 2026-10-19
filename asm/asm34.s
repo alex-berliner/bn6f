@@ -534,9 +534,9 @@ locret_812D746:
 
 // symdb: Per-frame handler for an 8-entry menu: moves the cursor up/down with the d-pad (unless some state forbids it) and refreshes a background tile patch each frame.
 // symdb: () -> void; r7 = menu state pointer (callee-returned), cursor index stored at [state+0x34]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D748.yaml
-	thumb_func_start sub_812D748
-sub_812D748:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateCursorAndTiles.yaml
+	thumb_func_start submenu_updateCursorAndTiles
+submenu_updateCursorAndTiles:
 	push {r7,lr}
 	bl sub_812D6F8
 	mov r7, r0
@@ -557,7 +557,7 @@ loc_812D76E:
 	bl sub_812D668
 locret_812D776:
 	pop {r7,pc}
-	thumb_func_end sub_812D748
+	thumb_func_end submenu_updateCursorAndTiles
 
 	thumb_func_start sub_812D778
 sub_812D778:

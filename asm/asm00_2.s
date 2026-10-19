@@ -5958,9 +5958,9 @@ locret_801164A:
 // symdb: 16-bit linear interpolation of an (x,y) point toward a target by fraction r6/r7, used to step objects along curved flight paths
 // symdb: (r0 = x0, r1 = y0, r2 = x1, r3 = y1, r6 = numerator, r7 = denominator) -> r0 = x0 +
 // symdb: (x1-x0)*r6/r7, r1 = y0 + (y1-y0)*r6/r7; flags from the last Div
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801164C.yaml
-	thumb_func_start sub_801164C
-sub_801164C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_lerpPos.yaml
+	thumb_func_start object_lerpPos
+object_lerpPos:
 	push {lr}
 	push {r0,r1}
 	sub r2, r2, r0
@@ -5986,7 +5986,7 @@ sub_801164C:
 	pop {pc}
 	.word 0
 	.byte 0, 0
-	thumb_func_end sub_801164C
+	thumb_func_end object_lerpPos
 
 	thumb_func_start object_setAttack0
 object_setAttack0:
@@ -8842,9 +8842,9 @@ loc_8012952:
 // symdb: Sliding 3-frame key-history buffer that reports when two specific buttons (mask 0x22) have both been pressed within the window, used by the charge-attack step.
 // symdb: (r0 = state struct: +0 done flag, +1 slot idx, +2 frame timer, +4/+6/+8 key history halfwords;
 // symdb: r1 = current key input) -> r0 = 1 if both keys seen within 3 frames, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012956.yaml
-	thumb_func_start sub_8012956
-sub_8012956:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkKeyComboBuffer.yaml
+	thumb_func_start battle_checkKeyComboBuffer
+battle_checkKeyComboBuffer:
 	ldrb r3, [r0]
 	tst r3, r3
 	bne loc_8012998
@@ -8883,7 +8883,7 @@ loc_8012978:
 loc_8012998:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_8012956
+	thumb_func_end battle_checkKeyComboBuffer
 
 	thumb_func_start sub_801299C
 sub_801299C:
@@ -11676,9 +11676,9 @@ loc_8013B6E:
 
 // symdb: Initializes a 0x64-byte Navi stats structure for a given Navi ID, resetting it to defaults and copying that Navi's per-Navi base values from lookup tables.
 // symdb: (r0 = stats struct (0x64 bytes), r1 = navi ID) -> r0 = void (clobbered); no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013BDA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initNaviStatsFromNaviId.yaml
 	thumb_local_start
-sub_8013BDA:
+initNaviStatsFromNaviId:
 	push {r4,r6,r7,lr}
 	mov r7, r0
 	mov r4, r1
@@ -11736,7 +11736,7 @@ sub_8013BDA:
 	mov r1, #0x39 
 	strb r0, [r7,r1]
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8013BDA
+	thumb_func_end initNaviStatsFromNaviId
 
 	thumb_local_start
 sub_8013C4E:
@@ -20200,7 +20200,7 @@ battle_aiPlayerUseChipAction_8017AB4:
 	ldr r1, off_8017C94 // =0x800 
 	tst r0, r1
 	beq loc_8017B64
-	bl sub_800BEDA
+	bl battle_checkAllianceSlotReady
 	tst r0, r0
 	beq loc_8017B5E
 	bl getCurChipInBattleHand_8010004
@@ -21128,7 +21128,7 @@ loc_80181E2:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	bl sub_80D99EC
+	bl battle_spawnA3SetupObject
 loc_80181F0:
 	mov r0, #CUR_STATE_DESTROY
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -27258,7 +27258,7 @@ off_801BF04:
 	.word battle_loadChipPreviewGfxInit_801BFEE+1
 	.word battle_loadChipPreviewGfxDefault_801BFF8+1
 	.word battleObject_updateHPMeters_801C168+1
-	.word sub_801C368+1
+	.word battle_drawSideCounters+1
 	.word battleObject_tickCustomGauge_801C470+1
 	.word battle_rollRareEvent+1
 	.word nullsub_58+1
@@ -27887,9 +27887,9 @@ dword_801C364:
 // symdb: Renders two right-aligned 3-digit counters (one per slot 0/1) for the current battle side into VRAM tile buffers and records them in work-RAM digit buffers.
 // symdb: () -> void; reads oToolkit_BattleStatePtr and battleState+oBattleState_PlayerSide, no return
 // symdb: value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C368.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawSideCounters.yaml
 	thumb_local_start
-sub_801C368:
+battle_drawSideCounters:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -27914,7 +27914,7 @@ sub_801C368:
 	mov r2, #1
 	bl sub_801C3EE
 	pop {pc}
-	thumb_func_end sub_801C368
+	thumb_func_end battle_drawSideCounters
 
 // symdb: Renders a value (0–100) as a right-aligned 3-digit number of 8x16 tiles into a graphics buffer, with leading blank tiles.
 // symdb: (r0 = value 0..100, r1 = dest tile buffer ptr) -> void; queues 3 GFX transfers of 0x40 bytes
@@ -30162,7 +30162,7 @@ sub_801D344:
 	ldr r2, [sp,#4]
 	add r1, r1, r2
 	mov r3, #0xa
-	bl sub_801D3F8
+	bl sprite_queueZeroedGfxBlocks
 	ldr r0, off_801D3F4 // =TextScript86F0300 
 	mov r1, #0x1c
 	b loc_801D3A2
@@ -30238,9 +30238,9 @@ off_801D3F4:
 // symdb: Queues repeated 0x40-byte transfers of zeros from a static buffer, clearing consecutive blocks of palette/GFX memory.
 // symdb: (r0 = unused on entry, r1 = destination address, r3 = block count) -> r0/r1 clobbered; queues
 // symdb: count x 64-byte zero fills, dest advanced 0x40 per block
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D3F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueZeroedGfxBlocks.yaml
 	thumb_local_start
-sub_801D3F8:
+sprite_queueZeroedGfxBlocks:
 	push {r0-r4,lr}
 	ldr r0, off_801D40C // =byte_801D410
 	mov r4, r3
@@ -30259,7 +30259,7 @@ byte_801D410:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_801D3F8
+	thumb_func_end sprite_queueZeroedGfxBlocks
 
 // symdb: Advances a two-digit base-6 frame counter in a battle object, frozen while the battle is paused or time-stopped.
 // symdb: (r5 = object/work struct with counter fields) -> r0 clobbered; no return value, flags not

@@ -416,7 +416,7 @@ off_8038BB0:
 	.word sub_8038BEC+1
 	.word sub_8038C10+1
 	.word sub_8038C78+1
-	.word sub_8038CF4+1
+	.word battle_scrollLayersTick+1
 	.word sub_8038D7C+1
 	.word sub_8038D94+1
 	.word sub_8038DB0+1
@@ -427,7 +427,7 @@ off_8038BB0:
 	.word sub_8038E5C+1
 	.word sub_8038E78+1
 	.word sub_8038EAC+1
-	.word sub_8038EDC+1
+	.word t3_waitForAnyKeyStartFade+1
 	thumb_func_end sub_8038B9C
 
 	thumb_local_start
@@ -547,7 +547,7 @@ loc_8038CA2:
 	mov r0, #SOUND_LOG_IN_77
 	bl PlaySoundEffect
 	ldrb r0, [r5,#6]
-	bl sub_8039084
+	bl battle_initBeastOutEmotionEntries
 	ldr r0, dword_8038CEC // =0x95
 	strh r0, [r5,#4]
 locret_8038CE8:
@@ -562,9 +562,9 @@ off_8038CF0:
 // symdb: Per-frame tick of the battle-exit transition: scrolls all three BG layers until the wipe finishes, then resets the battle scene records and advances the state machine.
 // symdb: (r5 = state struct: +2 state byte, +4 timer halfword, +6 cycle counter byte, +8 scroll offset
 // symdb: word) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038CF4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollLayersTick.yaml
 	thumb_local_start
-sub_8038CF4:
+battle_scrollLayersTick:
 	push {lr}
 	ldr r0, [r5,#8]
 	mov r1, #0
@@ -626,7 +626,7 @@ locret_8038D70:
 	.word 0x95
 off_8038D78:
 	.word 0xC0
-	thumb_func_end sub_8038CF4
+	thumb_func_end battle_scrollLayersTick
 
 	thumb_local_start
 sub_8038D7C:
@@ -842,9 +842,9 @@ off_8038ED8:
 // symdb: Scene-state updater that waits for any button press, then starts a screen fade and moves to the next state.
 // symdb: (r5 = t3 state struct: +0 = state byte, +4 = frame countdown, r10 = toolkit) -> void; no return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038EDC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_waitForAnyKeyStartFade.yaml
 	thumb_local_start
-sub_8038EDC:
+t3_waitForAnyKeyStartFade:
 	push {lr}
 	ldrh r0, [r5,#4]
 	sub r0, #1
@@ -869,7 +869,7 @@ loc_8038EFE:
 	.balign 4, 0
 dword_8038F08:
 	.word 0x3FF
-	thumb_func_end sub_8038EDC
+	thumb_func_end t3_waitForAnyKeyStartFade
 
 	thumb_local_start
 sub_8038F0C:
@@ -1059,9 +1059,9 @@ sub_8039074:
 // symdb: Registers two EmotionData slots (indices 4 and 5, type 0x3A) in the global emotion array, using per-index flag words from two data tables.
 // symdb: (r0 = entry index 0..4) -> r0 = clobbered; writes two entries into the 0x58-byte EWRAM
 // symdb: EmotionData array at 0x02008450
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039084.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastOutEmotionEntries.yaml
 	thumb_local_start
-sub_8039084:
+battle_initBeastOutEmotionEntries:
 	push {r4,lr}
 	mov r4, r0
 	lsl r0, r0, #2
@@ -1089,7 +1089,7 @@ off_80390C0:
 byte_80390C4:
 	.byte 0x3, 0x0, 0x0, 0x0, 0x3, 0x1, 0x0, 0x0, 0x3, 0x2, 0x0, 0x0, 0x3, 0x3, 0x0, 0x0, 0x3
 	.byte 0x4, 0x0, 0x0
-	thumb_func_end sub_8039084
+	thumb_func_end battle_initBeastOutEmotionEntries
 
 // symdb: Initialises two EmotionData slots of type 0x3A (tags 0 and 1) in the battle emotion table at 0x02008450.
 // symdb: (no args) -> void; calls battle_initEmotionTableEntry twice with (type=0x3A, tag=0, flags=0x8)
@@ -1528,7 +1528,7 @@ sub_803970C:
 	mov r0, #8
 	strb r0, [r5,#1]
 loc_803972A:
-	bl sub_803B880
+	bl sprite_drawTwoBcdNumbers3Digit
 	bl sub_803C2F0
 	pop {r4-r7,pc}
 	thumb_func_end sub_803970C
@@ -1602,7 +1602,7 @@ locret_80397BA:
 	thumb_local_start
 sub_80397BC:
 	push {r4-r7,lr}
-	bl sub_803B880
+	bl sprite_drawTwoBcdNumbers3Digit
 	bl sub_803C2F0
 	mov r0, #0x38
 	ldrb r1, [r5,#4]
@@ -2536,7 +2536,7 @@ dword_8039EE4:
 	.word sub_8039F58+1
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.word sub_8039F62+1
-	.word sub_8039F6A+1
+	.word t1_deferToState1c+1
 	thumb_func_end sub_8039ECC
 
 	thumb_local_start
@@ -2600,9 +2600,9 @@ sub_8039F62:
 
 // symdb: Requests main-loop jumptable state 0x1C, deferring the call of sub_8039570 as that state's argument/callback.
 // symdb: (no arguments) -> r0 = status from t1_setMainState1cWithArg; clobbers r4-r7 per ABI
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039F6A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_deferToState1c.yaml
 	thumb_local_start
-sub_8039F6A:
+t1_deferToState1c:
 	push {r4-r7,lr}
 	ldr r0, off_8039F74 // =sub_8039570+1
 	bl t1_setMainState1cWithArg
@@ -2610,7 +2610,7 @@ sub_8039F6A:
 	.balign 4, 0
 off_8039F74:
 	.word sub_8039570+1
-	thumb_func_end sub_8039F6A
+	thumb_func_end t1_deferToState1c
 
 	thumb_local_start
 sub_8039F78:
@@ -3383,7 +3383,7 @@ sub_803A524:
 	bne loc_803A546
 	tst r0, r0
 	beq loc_803A546
-	bl sub_813D978
+	bl rfu_setStateEnded
 	ldr r3, off_803A550 // =dword_803A554
 	ldrb r0, [r3,r4]
 	strb r0, [r5,#1]
@@ -3410,7 +3410,7 @@ sub_803A558:
 	bne loc_803A584
 	tst r0, r0
 	beq loc_803A584
-	bl sub_813D978
+	bl rfu_setStateEnded
 	ldr r3, off_803A5C0 // =dword_803A5C4
 	lsl r4, r4, #3
 	add r3, r3, r4
@@ -5652,9 +5652,9 @@ off_803B87C:
 // symdb: Draws two 3-digit decimal numbers (from sub_803C398's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
 // symdb: () -> void; internally r0/r1 = two values from sub_803C398, each converted to packed BCD; no
 // symdb: meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B880.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawTwoBcdNumbers3Digit.yaml
 	thumb_local_start
-sub_803B880:
+sprite_drawTwoBcdNumbers3Digit:
 	push {r4-r7,lr}
 	mov r6, #0xf
 	mov r7, #0
@@ -5709,7 +5709,7 @@ loc_803B8EA:
 	mov r1, #0x50
 	bl sprite_queueOamEntryHflipPal12
 	pop {r4-r7,pc}
-	thumb_func_end sub_803B880
+	thumb_func_end sprite_drawTwoBcdNumbers3Digit
 
 // symdb: Builds and queues one OAM entry for a hardware-flipped sprite whose tile comes from an index, using palette 12.
 // symdb: (r0 = attr0 value (Y/shape, ≤16 bits), r1 = attr1 X/attribute bits, r2 = tile index) -> void;
@@ -6740,20 +6740,20 @@ sub_803C150:
 	push {r2,r3}
 	ldrh r2, [r5,#0x24]
 	mov r3, #0x20
-	bl sub_803C168
+	bl convertByteStringToCharCodes
 	pop {r0,r1}
 	ldrh r2, [r5,#0x26]
 	mov r3, #0x20
-	bl sub_803C168
+	bl convertByteStringToCharCodes
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C150
 
 // symdb: Expands a 0-terminated byte-index string into halfword character codes via table unk_2026A00, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
 // symdb: (r0 = byte-index string (0-terminated), r1 = dest buffer, r2 = max halfword count, r3 = fill
 // symdb: halfword value) -> r0 = preserved; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C168.yaml
-	thumb_func_start sub_803C168
-sub_803C168:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/convertByteStringToCharCodes.yaml
+	thumb_func_start convertByteStringToCharCodes
+convertByteStringToCharCodes:
 	push {r4-r7,lr}
 	push {r0-r2}
 	mov r0, r1
@@ -6787,7 +6787,7 @@ locret_803C1A0:
 	.balign 4, 0
 off_803C1A4:
 	.word unk_2026A00
-	thumb_func_end sub_803C168
+	thumb_func_end convertByteStringToCharCodes
 
 	thumb_func_start sub_803C1A8
 sub_803C1A8:
@@ -6916,7 +6916,7 @@ clearStructBufferPair:
 sub_803C28A:
 	push {r4-r7,lr}
 	mov r6, r0
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	mov r0, r6
@@ -7311,7 +7311,7 @@ off_803C4D8:
 sub_803C4DC:
 	push {r4-r7,lr}
 	ldr r5, off_803C510 // =eS200A290
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	pop {r4-r7,pc}
@@ -7321,7 +7321,7 @@ sub_803C4DC:
 sub_803C4EC:
 	push {r4-r7,lr}
 	ldr r5, off_803C510 // =eS200A290
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	mov r0, #0x80
@@ -7403,9 +7403,9 @@ sub_803C564:
 
 // symdb: Wrapper that clears bit 1 (mask 0x2) of the status/flag word at 0x200BC5C via clearStatusBits.
 // symdb: () -> r0 = undefined (clobbered); clears mask 0x2 in the status word at 0x200BC5C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C570.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearStatusBit1.yaml
 	thumb_local_start
-sub_803C570:
+clearStatusBit1:
 	push {r4-r7,lr}
 	ldr r5, off_803C57C // =eS200A290
 	mov r0, #2
@@ -7414,7 +7414,7 @@ sub_803C570:
 	.balign 4, 0
 off_803C57C:
 	.word eS200A290
-	thumb_func_end sub_803C570
+	thumb_func_end clearStatusBit1
 
 	thumb_local_start
 sub_803C580:
@@ -7606,7 +7606,7 @@ off_803C6BC:
 	thumb_local_start
 sub_803C6C0: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	mov r0, #0x80
@@ -7623,7 +7623,7 @@ sub_803C6C0: // (self: * S200BC50 $r7) -> (u32?, bool)
 rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl rfu_clearAllSlot
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	mov r0, #0x80
@@ -7756,7 +7756,7 @@ off_803C7AC:
 	thumb_local_start
 sub_803C7B4:
 	push {lr}
-	bl sub_803CB44
+	bl chatbox_pollDismiss
 	beq loc_803C7C0
 	bl sub_81467A0
 loc_803C7C0:
@@ -7800,7 +7800,7 @@ loc_803C7FE:
 	sub r0, #1
 	strh r0, [r7,#0xa]
 	bne locret_803C838
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	mov r0, #0x80
@@ -7870,7 +7870,7 @@ off_803C878:
 	.word off_803C87C
 off_803C87C:
 	.word sub_803C888+1
-	.word sub_803C8B4+1
+	.word rfu_updateLinkManager+1
 	.word sub_803C8E8+1
 	thumb_func_end sub_803C86A
 
@@ -7899,9 +7899,9 @@ loc_803C8AC:
 
 // symdb: Per-frame wireless link manager tick: cleans up disconnected link slots and runs a state step of the 0x200AF80 link-state machine.
 // symdb: () -> r0 = sub_803C90C return; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C8B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateLinkManager.yaml
 	thumb_local_start
-sub_803C8B4:
+rfu_updateLinkManager:
 	push {r4,lr}
 	ldr r0, off_803C944 // =byte_200AF80
 	mov r4, r0
@@ -7924,7 +7924,7 @@ loc_803C8E0:
 	bl sub_803C90C
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803C8B4
+	thumb_func_end rfu_updateLinkManager
 
 	thumb_local_start
 sub_803C8E8:
@@ -7939,7 +7939,7 @@ sub_803C8E8:
 	ldrb r0, [r0]
 	tst r0, r0
 	beq loc_803C906
-	bl sub_813D978
+	bl rfu_setStateEnded
 	b locret_803C90A
 loc_803C906:
 	bl sub_803C90C
@@ -7996,7 +7996,7 @@ sub_803C94C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	mov r1, #0
 	pop {pc}
 loc_803C966:
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #0
 	bl rfu_setLinkCommand
 	mov r0, #1
@@ -8017,7 +8017,7 @@ sub_803C97C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	bl sub_814690C
 	cmp r4, r0
 	blt loc_803C99A
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #2
 	mov r1, #0
 	pop {r4,pc}
@@ -8033,7 +8033,7 @@ off_803C9A0:
 	thumb_local_start
 sub_803C9A4: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #0
 	bl rfu_setLinkCommand
 	mov r0, #1
@@ -8122,7 +8122,7 @@ sub_803CA2C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	ldrb r0, [r0,#0x5] // (byte_200AF85 - 0x200af80)
 	tst r0, r0
 	beq loc_803CA42
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 	b loc_803CA4C
@@ -8181,7 +8181,7 @@ sub_803CA90:
 	ldrb r0, [r4,#0x2] // (byte_200AF82 - 0x200af80)
 	tst r0, r0
 	bne locret_803CAAA
-	bl sub_813D978
+	bl rfu_setStateEnded
 	mov r0, #8
 	bl rfu_orFlags
 locret_803CAAA:
@@ -8295,9 +8295,9 @@ loc_803CB3C:
 // symdb: After the chatbox finishes printing, polls for the dismiss key (R/L); when pressed it re-arms the chatbox status bit and reports the message was acknowledged.
 // symdb: () -> r0 = 1 if the dismiss key was pressed this frame, else 0; clobbers r4, r7, calls
 // symdb: clearStatusBits/sub_803CB00 with mask 0x200 on the status word at 0x200BC5C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_pollDismiss.yaml
 	thumb_local_start
-sub_803CB44:
+chatbox_pollDismiss:
 	push {r4,r7,lr}
 	ldr r0, off_803CB74 // =0x200
 	bl clearStatusBits
@@ -8322,7 +8322,7 @@ loc_803CB6C:
 	.balign 4, 0
 off_803CB74:
 	.word 0x200
-	thumb_func_end sub_803CB44
+	thumb_func_end chatbox_pollDismiss
 
 	thumb_func_start sub_803CB78
 sub_803CB78:
@@ -9977,9 +9977,9 @@ off_803DE20:
 
 // symdb: Returns 1 while a link/RFU communication is still in progress, 0 once it has finished, gating the battle state machine's advance to state 4.
 // symdb: () -> r0 = 1 if link traffic is active (or timed out), 0 if idle; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DE24.yaml
-	thumb_func_start sub_803DE24
-sub_803DE24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_isLinkBusy.yaml
+	thumb_func_start rfu_isLinkBusy
+rfu_isLinkBusy:
 	push {r4,r7,lr}
 	mov r4, #1
 	ldr r7, off_803DE58 // =eLinkState
@@ -10010,7 +10010,7 @@ loc_803DE52:
 	.balign 4, 0
 off_803DE58:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803DE24
+	thumb_func_end rfu_isLinkBusy
 
 // symdb: Sets the boolean flag at EWRAM 0x200A284 to 1 (true), with no other side effects.
 // symdb: void setFlag_200A284(void)
@@ -12903,9 +12903,9 @@ loc_803F0C2:
 // symdb: Enqueues a 24-byte entry (two 12-byte blocks) into an 8-slot 0x40-byte ring buffer at byte_200BC70, overwriting the oldest slot.
 // symdb: (r0 = src of first 12 bytes, r1 = src of second 12 bytes) -> r0 = CopyWords result/entry
 // symdb: pointer; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F0E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/queue_pushRingEntry.yaml
 	thumb_local_start
-sub_803F0E8:
+queue_pushRingEntry:
 	push {r4-r7,lr}
 	mov r7, r1
 	ldr r5, off_803F268 // =byte_200AC20
@@ -12928,7 +12928,7 @@ sub_803F0E8:
 	and r4, r1
 	strb r4, [r5,#0x3] // (byte_200AC23 - 0x200ac20)
 	pop {r4-r7,pc}
-	thumb_func_end sub_803F0E8
+	thumb_func_end queue_pushRingEntry
 
 	thumb_local_start
 sub_803F118:
@@ -13187,7 +13187,7 @@ loc_803F2CA:
 	mov r1, #0xc
 	add r1, r1, r7
 loc_803F2D2:
-	bl sub_803F0E8
+	bl queue_pushRingEntry
 	mov r1, #1
 	add r1, #0
 	ldrb r0, [r7,r1]

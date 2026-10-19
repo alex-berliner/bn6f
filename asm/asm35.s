@@ -319,7 +319,7 @@ sub_812ECAC:
 	tst r0, r0
 	beq loc_812ECE4
 	mov r4, r1
-	bl sub_812EF20
+	bl submenu_renderSelectedWindow
 loc_812ECE4:
 	ldrb r0, [r7,#0xc]
 	cmp r0, #0xc
@@ -631,9 +631,9 @@ loc_812EF1A:
 
 // symdb: Draws the text window for the currently selected entry of an on-screen menu: looks the entry's window id up in a table, blits it to BG, and stores a value back into the menu state.
 // symdb: (args passed through to sub_812ED2C) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EF20.yaml
-	thumb_func_start sub_812EF20
-sub_812EF20:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_renderSelectedWindow.yaml
+	thumb_func_start submenu_renderSelectedWindow
+submenu_renderSelectedWindow:
 	push {r4-r7,lr}
 	bl sub_812ED2C
 	mov r7, r0
@@ -661,7 +661,7 @@ sub_812EF20:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	.word unk_2024F90
-	thumb_func_end sub_812EF20
+	thumb_func_end submenu_renderSelectedWindow
 // symdb: Renders a small text window's glyphs into VRAM via the text renderer and blits its tile map onto background block 3.
 // symdb: (r0 = text/source handle, passed through as r1 to renderTextGfx) -> r0 = destroyed; no
 // symdb: meaningful return

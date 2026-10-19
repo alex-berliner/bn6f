@@ -5522,7 +5522,7 @@ int sub_8038C78()
     {
         *(v0 + 2) = 12;
         PlaySoundEffect(119, v10, v11);
-        sub_8039084(*(v0 + 6));
+        battle_initBeastOutEmotionEntries(*(v0 + 6));
         result = 149;
         *(v0 + 4) = 149;
     }
@@ -5531,7 +5531,7 @@ int sub_8038C78()
 
 
 // 0x8038cf4
-int sub_8038CF4()
+int battle_scrollLayersTick()
 {
     int v0; // r5
     int v1; // r0
@@ -5751,7 +5751,7 @@ int sub_8038EAC()
 
 
 // 0x8038edc
-void sub_8038EDC()
+void t3_waitForAnyKeyStartFade()
 {
     int v0; // r5
     int v1; // r10
@@ -5859,7 +5859,7 @@ char *sub_8039074()
 
 
 // 0x8039084
-char *__fastcall sub_8039084(int a1)
+char *__fastcall battle_initBeastOutEmotionEntries(int a1)
 {
     int v1; // r4
 
@@ -6096,7 +6096,7 @@ void __noreturn sub_803970C()
             *(v0 + 1) = 8;
         }
     }
-    sub_803B880();
+    sprite_drawTwoBcdNumbers3Digit();
 }
 
 
@@ -6155,7 +6155,7 @@ void __noreturn sub_8039734()
 // 0x80397bc
 void __noreturn sub_80397BC()
 {
-    sub_803B880();
+    sprite_drawTwoBcdNumbers3Digit();
 }
 
 
@@ -7011,7 +7011,7 @@ int __fastcall sub_8039F62(int a1, int a2, int a3, int a4)
 
 
 // 0x8039f6a
-int __fastcall sub_8039F6A(int a1, int a2, int a3, int a4)
+int __fastcall t1_deferToState1c(int a1, int a2, int a3, int a4)
 {
     return t1_setMainState1cWithArg(sub_8039570, a2, a3, a4);
 }
@@ -7561,7 +7561,7 @@ signed int __fastcall sub_803A524(int a1)
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         v7 = *(&dword_803A554 + v6);
         *(v1 + 1) = v7;
         sub_8147F98(v7, v8, v9, &dword_803A554);
@@ -7590,7 +7590,7 @@ signed int __fastcall sub_803A558(int a1)
     }
     else
     {
-        sub_813D978();
+        rfu_setStateEnded();
         v5 = 2 * v3;
         *(v1 + 1) = dword_803A5C4[v5];
         (dword_803A5C4[v5 + 1])();
@@ -9103,7 +9103,7 @@ signed int __fastcall sub_803B814(int a1, int a2, int a3, _BYTE *a4)
 
 
 // 0x803b880
-void __noreturn sub_803B880()
+void __noreturn sprite_drawTwoBcdNumbers3Digit()
 {
     int v0; // r0
     unsigned int v1; // r0
@@ -9774,13 +9774,13 @@ int __fastcall sub_803C150(__int64 a1, __int64 a3)
     __int64 v3; // ST00_8
 
     v3 = a3;
-    sub_803C168(a1, *(v2 + 36), 0x20u);
-    return sub_803C168(v3, *(v2 + 38), 0x20u);
+    convertByteStringToCharCodes(a1, *(v2 + 36), 0x20u);
+    return convertByteStringToCharCodes(v3, *(v2 + 38), 0x20u);
 }
 
 
 // 0x803c168
-int __fastcall sub_803C168(__int64 a1, int a2, unsigned int a3)
+int __fastcall convertByteStringToCharCodes(__int64 a1, int a2, unsigned int a3)
 {
     __int64 v3; // ST00_8
     int v4; // ST08_4
@@ -9903,7 +9903,7 @@ int __fastcall sub_803C28A(int a1)
     int v3; // r2
 
     v1 = a1;
-    sub_813D978();
+    rfu_setStateEnded();
     rfu_orFlags(8);
     return PlaySoundEffect(v1, v2, v3);
 }
@@ -10183,7 +10183,7 @@ void *sub_803C4C0()
 // 0x803c4dc
 int sub_803C4DC()
 {
-    sub_813D978();
+    rfu_setStateEnded();
     return rfu_orFlags(8);
 }
 
@@ -10191,7 +10191,7 @@ int sub_803C4DC()
 // 0x803c4ec
 int sub_803C4EC()
 {
-    sub_813D978();
+    rfu_setStateEnded();
     rfu_orFlags(8);
     return rfu_orFlags(128);
 }
@@ -10251,7 +10251,7 @@ int sub_803C564()
 
 
 // 0x803c570
-int sub_803C570()
+int clearStatusBit1()
 {
     return clearStatusBits(2);
 }
@@ -10343,7 +10343,7 @@ signed __int64 sub_803C6A8()
 // 0x803c6c0
 signed __int64 sub_803C6C0()
 {
-    sub_813D978();
+    rfu_setStateEnded();
     rfu_orFlags(8);
     rfu_orFlags(128);
     return 4294967297LL;
@@ -10354,7 +10354,7 @@ signed __int64 sub_803C6C0()
 __int64 rfu_resetSlotsAndReportOffline()
 {
     rfu_clearAllSlot();
-    sub_813D978();
+    rfu_setStateEnded();
     rfu_orFlags(8);
     rfu_orFlags(128);
     return 0LL;
@@ -10447,7 +10447,7 @@ int sub_803C7B4()
     int result; // r0
     char v2; // zf
 
-    result = sub_803CB44();
+    result = chatbox_pollDismiss();
     if ( !v2 )
         result = sub_81467A0();
     if ( byte_2010288 )
@@ -10496,7 +10496,7 @@ void __fastcall sub_803C7E8(int a1)
             *(v1 + 10) = v4;
             if ( !v4 )
             {
-                sub_813D978();
+                rfu_setStateEnded();
                 rfu_orFlags(8);
                 rfu_orFlags(128);
             }
@@ -10563,7 +10563,7 @@ signed __int64 sub_803C888()
 
 
 // 0x803c8b4
-signed __int64 __fastcall sub_803C8B4(int a1, int a2, int a3, int a4)
+signed __int64 __fastcall rfu_updateLinkManager(int a1, int a2, int a3, int a4)
 {
     rfu_clearDisconnectedSlots(&unk_200AF80, a2, a3, a4);
     if ( unk_200AF81 == 1 && *unk_200AF8C )
@@ -10583,7 +10583,7 @@ int __fastcall sub_803C8E8(int a1, int a2, int a3, int a4)
 
     rfu_clearDisconnectedSlots(&unk_200AF80, a2, a3, a4);
     if ( unk_200AF81 == 1 && *unk_200AF8C )
-        result = sub_813D978();
+        result = rfu_setStateEnded();
     else
         result = sub_803C90C();
     return result;
@@ -10617,7 +10617,7 @@ signed __int64 sub_803C94C()
     if ( v0 )
         sub_813D9A0(1);
     else
-        sub_813D978();
+        rfu_setStateEnded();
     rfu_setLinkCommand(0);
     return 1LL;
 }
@@ -10631,7 +10631,7 @@ signed __int64 sub_803C97C()
     v0 = sub_8146918(unk_200AF84);
     if ( v0 < sub_814690C() )
         return 0LL;
-    sub_813D978();
+    rfu_setStateEnded();
     return 2LL;
 }
 
@@ -10639,7 +10639,7 @@ signed __int64 sub_803C97C()
 // 0x803c9a4
 signed __int64 __fastcall sub_803C9A4(int a1)
 {
-    sub_813D978();
+    rfu_setStateEnded();
     rfu_setLinkCommand(0);
     return 1LL;
 }
@@ -10704,7 +10704,7 @@ __int64 sub_803CA2C()
 
     if ( unk_200AF85 )
     {
-        sub_813D978();
+        rfu_setStateEnded();
         rfu_orFlags(8);
     }
     else
@@ -10742,7 +10742,7 @@ int sub_803CA90()
     result = unk_200AF82;
     if ( !unk_200AF82 )
     {
-        sub_813D978();
+        rfu_setStateEnded();
         result = rfu_orFlags(8);
     }
     return result;
@@ -10829,7 +10829,7 @@ signed int sub_803CB24()
 
 
 // 0x803cb44
-signed int sub_803CB44()
+signed int chatbox_pollDismiss()
 {
     int v0; // r10
     signed int v1; // r4
@@ -11896,7 +11896,7 @@ signed int sub_803DDEC()
 
 
 // 0x803de24
-signed int sub_803DE24()
+signed int rfu_isLinkBusy()
 {
     signed int v0; // r4
 
@@ -13947,7 +13947,7 @@ int __fastcall sub_803F0A4(_BYTE *a1, unsigned int a2, int a3, int a4)
 
 
 // 0x803f0e8
-int __fastcall sub_803F0E8(int a1, int a2)
+int __fastcall queue_pushRingEntry(int a1, int a2)
 {
     int v2; // r7
     char v3; // r4
@@ -14132,7 +14132,7 @@ int __fastcall sub_803F26C(int a1)
                     v5 = v3;
                     v6 = v1 + 12;
                 }
-                sub_803F0E8(v5, v6);
+                queue_pushRingEntry(v5, v6);
                 if ( *(v1 + 1) == *(v1 + 13) )
                     sub_803F324();
                 result = (byte_200AC35 + 1) & 7;
