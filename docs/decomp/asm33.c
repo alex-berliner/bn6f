@@ -8308,7 +8308,7 @@ int __fastcall sub_812A350(int a1)
                 rfu_orFlags(4);
                 *(v1 + 12) = 24;
                 chatbox_runScript_803FD9C_on_eTextScript201BA20(42);
-                result = sub_8146E5C(&unk_200AF80, 2);
+                result = rfu_setLinkState(&unk_200AF80, 2);
             }
             else
             {
@@ -8432,7 +8432,7 @@ int __fastcall sub_812A4AC(int a1, int a2, int a3, int a4)
         *(v4 + 40) = 0;
         sub_8132398(0, a2, a3, a4);
         sub_803EA78();
-        if ( sub_803EA50() )
+        if ( rfu_shouldRestartWirelessLink() )
             result = sub_8148540();
         else
             result = sub_8146E60();
@@ -8494,7 +8494,7 @@ void sub_812A574()
     int v4; // r2
 
     IsPaletteFadeActive();
-    if ( v1 || (sub_8048FC4(), v2 != 28) || (JoypadKeyPressed(), v1) )
+    if ( v1 || (rfu_getCommStatusBytes(), v2 != 28) || (JoypadKeyPressed(), v1) )
     {
         rfu_testStatusFlags();
         if ( !v1 )
@@ -8566,7 +8566,7 @@ void sub_812A5F8()
         {
 LABEL_9:
             sub_803EA78();
-            if ( sub_803EA50() )
+            if ( rfu_shouldRestartWirelessLink() )
             {
                 if ( rfu_initWirelessSession() )
                 {
@@ -8673,7 +8673,7 @@ void *sub_812A6F8()
     else
     {
         sub_803EA78();
-        if ( sub_803EA50() )
+        if ( rfu_shouldRestartWirelessLink() )
         {
             if ( rfu_initWirelessSession() )
             {

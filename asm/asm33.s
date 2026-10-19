@@ -14895,7 +14895,7 @@ loc_812A384:
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	ldr r0, off_812A3BC // =byte_200AF80 
 	mov r1, #2
-	bl sub_8146E5C
+	bl rfu_setLinkState
 	b locret_812A3B8
 loc_812A3AE:
 	mov r0, #0xc
@@ -15044,7 +15044,7 @@ sub_812A4AC:
 	strh r0, [r5,#0x28]
 	bl sub_8132398
 	bl sub_803EA78
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A4D6
 	bl sub_8146E60
@@ -15133,7 +15133,7 @@ sub_812A574:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_812A59C
-	bl sub_8048FC4
+	bl rfu_getCommStatusBytes
 	cmp r1, #0x1c
 	bne loc_812A59C
 	mov r0, #JOYPAD_B
@@ -15225,7 +15225,7 @@ loc_812A610:
 	b loc_812A602
 loc_812A628:
 	bl sub_803EA78
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A648
 	bl sub_8147B24
@@ -15337,7 +15337,7 @@ sub_812A6F8:
 	bl rfu_testStatusFlags
 	beq loc_812A74C
 	bl sub_803EA78
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A722
 	bl sub_8147B24

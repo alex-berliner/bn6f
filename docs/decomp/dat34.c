@@ -817,7 +817,7 @@ void sub_812E280()
                                         sub_812EE78(0);
                                         sub_812EE78(1);
                                         battle_resetEStructRecords_8046664();
-                                        sub_812EB88();
+                                        submenu_initEntryTable();
                                         sub_812EB78();
                                         submenu_renderSelectedWindow();
                                     }
@@ -1110,7 +1110,7 @@ int sub_812E61C()
     if ( !v2 )
     {
         v3 = eStruct200BC30_getJumpOffset00();
-        v4 = sub_803EA50();
+        v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
@@ -1153,7 +1153,7 @@ int sub_812E678()
     {
 LABEL_8:
         v3 = eStruct200BC30_getJumpOffset00();
-        v4 = sub_803EA50();
+        v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
@@ -1480,7 +1480,7 @@ void __noreturn sub_812E9AC()
     _WORD *v6; // r0
     _BYTE *v7; // r0
 
-    v1 = sub_812ED2C();
+    v1 = submenu_getStatePtr();
     zeroFillVRAM();
     ZeroFill_byte_3001960(v2, v3, v4, v5);
     ZeroFillGFX30025c0();

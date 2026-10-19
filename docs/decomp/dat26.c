@@ -16,11 +16,11 @@ signed int sub_8092E44()
         v4 = v2 - 150;
         if ( ((v4 < 0) ^ v3) | (v4 == 0) )
         {
-            sub_8143F68(0);
+            e_setFieldC(0);
         }
         else
         {
-            sub_8143F68(v4);
+            e_setFieldC(v4);
             v5 = *(v0 + 11) + 1;
             *(v0 + 11) = v5;
             if ( v5 != 3 )

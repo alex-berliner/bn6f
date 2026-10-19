@@ -35,7 +35,7 @@ int sub_812D3E4()
 {
 	char *v0; // r7
 
-	v0 = sub_812D6F8();
+	v0 = submenu_getWork();
 	sub_8120194(*(v0 + 23), word_2023FA0, &unk_202DFA0);
 	CopyBackgroundTiles(3, 4, 2, &unk_202DFA0, 8, &dword_C + 2);
 	battle_loadFolderChipGfx_8120390(*(v0 + 23), word_2023FA0, &unk_202E080, byte_812C288);
@@ -55,7 +55,7 @@ int sub_812D3E4()
 // 0x812d4fc
 int sub_812D4FC()
 {
-	sub_812D6F8();
+	submenu_getWork();
 	sub_812D600(2, 32, 42, 19);
 	return sub_812D9F0();
 }
@@ -134,7 +134,7 @@ int sub_812D5A0()
 	char *v0; // r5
 	int v1; // r2
 
-	v0 = sub_812D6F8();
+	v0 = submenu_getWork();
 	v1 = *&word_2023FA0[16 * (*(v0 + 21) + *(v0 + 23)) + 14];
 	return setFieldsInThreeTableEntries_811980C((v1 << 16) >> 23, v1 & 0x7F, 0, *(v0 + 21) + *(v0 + 23));
 }
@@ -154,7 +154,7 @@ int __fastcall sub_812D5D0(int a1, int a2, int a3)
 // 0x812d5ec
 int sub_812D5EC()
 {
-	sub_812D6F8();
+	submenu_getWork();
 	return sprite_setPositionForIdRange3_8119854(198, 88, 0);
 }
 
@@ -193,7 +193,7 @@ int __fastcall sub_812D600(int a1, int a2, int a3, int a4)
 // 0x812d668
 int sub_812D668()
 {
-	sub_812D6F8();
+	submenu_getWork();
 	return sub_812D600(164, 32, 52, 21);
 }
 
@@ -209,7 +209,7 @@ void sub_812D690()
 	int v5; // r1
 	int v6; // r0
 
-	if ( *(sub_812D6F8() + 20) )
+	if ( *(submenu_getWork() + 20) )
 	{
 		v2 = *(v0 + 38);
 		if ( v2 == 4 )
@@ -243,7 +243,7 @@ LABEL_17:
 
 
 // 0x812d6f8
-char *sub_812D6F8()
+char *submenu_getWork()
 {
 	return &eT4BattleObjects[3872];
 }
@@ -259,7 +259,7 @@ void sub_812D700()
 	char v4; // zf
 	int v5; // r0
 
-	v1 = sub_812D6F8();
+	v1 = submenu_getWork();
 	JoypadKeyPressed();
 	if ( !v4 || *(v0 + 2) == 32 && (JoypadKeyPressed(), !v4) )
 	{
@@ -287,7 +287,7 @@ void submenu_updateCursorAndTiles()
 	char *v1; // r7
 	char v2; // zf
 
-	v1 = sub_812D6F8();
+	v1 = submenu_getWork();
 	sub_812D700();
 	if ( v2 )
 	{
@@ -333,7 +333,7 @@ signed int sub_812D7A4()
 	int v7; // r3
 	int v8; // r3
 
-	v1 = sub_812D6F8();
+	v1 = submenu_getWork();
 	JoypadKeyPressed();
 	if ( v4 )
 		return 0;
@@ -363,7 +363,7 @@ char *sub_812D814()
 	int v1; // r1
 	int v2; // r1
 
-	result = sub_812D6F8();
+	result = submenu_getWork();
 	v1 = *(result + 27);
 	if ( v1 )
 	{
@@ -385,7 +385,7 @@ char *sub_812D830()
 	char *result; // r0
 	int v1; // r1
 
-	result = sub_812D6F8();
+	result = submenu_getWork();
 	v1 = *(result + 27);
 	return result;
 }
@@ -410,7 +410,7 @@ int sub_812D854()
 	char *v0; // r0
 	unsigned int v1; // r0
 
-	v0 = sub_812D6F8();
+	v0 = submenu_getWork();
 	v1 = word_2023FA0[16 * (*(v0 + 23) + *(v0 + 21)) + 14];
 	return ((v1 & 0x7F) << 9) | (v1 >> 7) | 0x8000;
 }
@@ -508,7 +508,7 @@ void __fastcall sub_812D99C(int a1)
 // 0x812d9f0
 int sub_812D9F0()
 {
-	sub_812D6F8();
+	submenu_getWork();
 	return sub_812DA08(146, 28, 40, 46);
 }
 

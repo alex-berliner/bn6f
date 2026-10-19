@@ -1191,7 +1191,7 @@ int __fastcall sub_80B8E58(int result)
 
 
 // 0x80b8e62
-int __fastcall sub_80B8E62(int a1)
+int __fastcall getSpawnTablePos(int a1)
 {
     char *v1; // r2
     int result; // r0
@@ -10108,7 +10108,7 @@ int __fastcall sub_80BDA7C(int a1)
     if ( a1 == 5 )
     {
         v2 = ((object_getFlip(v1) << 8) + 11) << 8;
-        sub_80B8E62(17);
+        getSpawnTablePos(17);
         spawnIllusionObject_80E33FA(&v1->vx, v1->x, v1->y, v1->z);
     }
     object_getFlip(v1);
@@ -10172,7 +10172,7 @@ void __fastcall sub_80BDB3C(int a1, int a2, int a3, int a4, int a5)
 
 
 // 0x80bdb8c
-int sub_80BDB8C()
+int object_timer2CountTo15SetParam3C()
 {
     int v0; // r5
     int result; // r0
@@ -11537,7 +11537,7 @@ int sub_80BE878()
 
 
 // 0x80be8a0
-signed int sub_80BE8A0()
+signed int battle_setPhase4ResetTimers()
 {
     _WORD *v0; // r5
     signed int result; // r0
@@ -13936,7 +13936,7 @@ int __fastcall sub_80BFF28(int result, char a2)
 
 
 // 0x80bff34
-int __fastcall sub_80BFF34(int result)
+int __fastcall object_markInactive(int result)
 {
     if ( result )
         *(result + 17) = -1;
@@ -34409,7 +34409,7 @@ int sub_80CC400()
 
 
 // 0x80cc428
-signed int sub_80CC428()
+signed int battle_setPhaseCUnlessRelatedActionC()
 {
     int v0; // r5
     signed int result; // r0
@@ -38263,7 +38263,7 @@ int __fastcall sub_80CEAC2(int result, signed int a2, int a3)
 
 
 // 0x80ceaee
-int __fastcall sub_80CEAEE(int result)
+int __fastcall get_nullSafeField70(int result)
 {
     if ( result )
         result = *(result + 112);
@@ -47885,7 +47885,7 @@ int sub_80D4888()
 
 
 // 0x80d48a8
-signed int sub_80D48A8()
+signed int battle_setCurPhase4()
 {
     int v0; // r5
     signed int result; // r0
@@ -66942,7 +66942,7 @@ int __fastcall sub_80E0DC0(int result)
 
 
 // 0x80e0dca
-int __fastcall sub_80E0DCA(int result)
+int __fastcall battle_clearSubordinateObjectField0C(int result)
 {
     *(result + 12) = 0;
     return result;
@@ -67531,7 +67531,7 @@ int __fastcall sub_80E1352(int a1, unsigned int a2)
     {
         v8 = *(v2 + 88);
         if ( *(v8 + 96) )
-            result = sub_80E0DCA(*(v8 + 96));
+            result = battle_clearSubordinateObjectField0C(*(v8 + 96));
     }
     v6 = v7 & 1;
     v9 = v7 >> 1;
@@ -67624,7 +67624,7 @@ int __fastcall sub_80E146C(int a1)
     *a1 &= 0xFDu;
     v2 = *(a1 + 88);
     if ( *(v2 + 96) )
-        sub_80E0DCA(*(v2 + 96));
+        battle_clearSubordinateObjectField0C(*(v2 + 96));
     v3 = *(v1 + 72);
     if ( v3 )
         *v3 &= 0xFDu;
@@ -80332,8 +80332,8 @@ int sub_80E8656()
     int v2; // r1
     int v3; // r2
 
-    result = sub_80CEAEE(v0[24]);
-    if ( result || (result = sub_80CEAEE(v0[25])) != 0 || (result = sub_80CEAEE(v0[26])) != 0 )
+    result = get_nullSafeField70(v0[24]);
+    if ( result || (result = get_nullSafeField70(v0[25])) != 0 || (result = get_nullSafeField70(v0[26])) != 0 )
         result = sub_80E8612(result, v2, v3);
     return result;
 }
@@ -80449,7 +80449,7 @@ int __fastcall sub_80E8770(int a1, int a2, int a3, int a4)
 
 
 // 0x80e8788
-int __fastcall sub_80E8788(int result)
+int __fastcall ai_setAttackParamCooldown(int result)
 {
     if ( result )
         *(result + 8) = 8;
@@ -81341,9 +81341,9 @@ int __fastcall sub_80E8F98(int a1)
     int v1; // r5
 
     v1 = a1;
-    sub_80BFF34(*(a1 + 96));
-    sub_80BFF34(*(v1 + 100));
-    return sub_80BFF34(*(v1 + 104));
+    object_markInactive(*(a1 + 96));
+    object_markInactive(*(v1 + 100));
+    return object_markInactive(*(v1 + 104));
 }
 
 
@@ -84815,7 +84815,7 @@ int battleAi_spawnTempAttackObjectStep_80EB862()
         v12 = object_getFlip(v0) << 8;
         v13 = (v12 + battle_getNaviIdFromActor()) << 8;
         v14 = sub_80EBB34();
-        sub_80B8E62(v14);
+        getSpawnTablePos(v14);
         spawnIllusionObject_80E33FA(&v0->vx, v0->x, v0->y, v0->z);
     }
     if ( *(v1 + 16) == 12 )
@@ -85006,7 +85006,7 @@ int __fastcall battleAi_chargeThenFireAttackStep_80EBC28(int a1, int a2, int a3)
         if ( *(v4 + 16) == 8 && *(v4 + 3) >= 4 )
         {
             object_getFlip(v3);
-            sub_80B8E62(byte_80EBD2C[*(v4 + 3)]);
+            getSpawnTablePos(byte_80EBD2C[*(v4 + 3)]);
             v8 = getBattleArmPositionMaybe_8018810(v3->nameID, 7, v3->Alliance, v3->directionFlip);
             spawnIllusionObject_80E33FA(&v3->vx, v3->x + (v8 << 16), v3->y, v3->z + (v9 << 16));
             v10 = object_getFlip(v3) << 8;
@@ -95882,7 +95882,7 @@ int sub_80F204E()
             object_exitAttackState(v0);
             result = *(v1 + 52);
             if ( result )
-                result = sub_80E8788(result);
+                result = ai_setAttackParamCooldown(result);
         }
     }
     else
@@ -101989,7 +101989,7 @@ int sub_80F6560()
 
 
 // 0x80f6592
-int sub_80F6592()
+int battle_getAiAttackDuration()
 {
     return sub_800FE28(&dword_80F65A0);
 }
@@ -102032,7 +102032,7 @@ void sub_80F65EE()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
     battle_loadAiAttackParams(0);
-    *(v1 + 24) = sub_80F6592();
+    *(v1 + 24) = battle_getAiAttackDuration();
     *(v1 + 40) = ai_pickPanelMatchingFlagsNearObject;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -105036,7 +105036,7 @@ int sub_80F8914()
 
 
 // 0x80f8962
-signed int sub_80F8962()
+signed int ai_setHitElementIfScratchClear()
 {
     int v0; // r7
     signed int result; // r0
@@ -109111,7 +109111,7 @@ int ai_attackHoldState()
             object_exitAttackState(v0);
             result = *(v1 + 60);
             if ( result )
-                result = sub_80E8788(result);
+                result = ai_setAttackParamCooldown(result);
         }
     }
     else

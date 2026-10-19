@@ -1342,9 +1342,9 @@ loc_8046910:
 // symdb: Returns the first byte (a state/active flag) of the 0x58-byte entry indexed by r0 in the array at byte_2011860, as a Z-flag boolean test
 // symdb: (r0 = index into byte_2011860 array) -> r0 = byte value; Z set if byte == 0 (mov pc, lr
 // symdb: preserves flags)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804691A.yaml
-	thumb_func_start sub_804691A
-sub_804691A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_testEntityStateFlag.yaml
+	thumb_func_start battle_testEntityStateFlag
+battle_testEntityStateFlag:
 	ldr r1, off_8046928 // =byte_2011860 
 	mov r2, #0x58 
 	mul r2, r0
@@ -1354,7 +1354,7 @@ sub_804691A:
 	mov pc, lr
 off_8046928:
 	.word byte_2011860
-	thumb_func_end sub_804691A
+	thumb_func_end battle_testEntityStateFlag
 
 // symdb: Tests each hitbox slot in the AIData's collision hitbox table against the panel grid and updates a per-direction-overlap bitfield plus a "hitbox touches any enemy/ally panel" object flag.
 // symdb: (r5 = AIData pointer) -> r3 written back to AIData+0x03 (battle-object Flags bits 1/3), r7
@@ -4829,9 +4829,9 @@ off_8048FC0:
 
 // symdb: reads two status bytes from the wireless-comm buffer at 0x200A290, used by a submenu handler to detect a state (0x1C) that ends the wireless session
 // symdb: (void) -> r0 = byte at 0x200A290, r1 = byte at 0x200A291; no flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048FC4.yaml
-	thumb_func_start sub_8048FC4
-sub_8048FC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getCommStatusBytes.yaml
+	thumb_func_start rfu_getCommStatusBytes
+rfu_getCommStatusBytes:
 	push {r4-r7,lr}
 	ldr r5, off_8049008 // =eS200A290 
 	ldrb r0, [r5]
@@ -4839,7 +4839,7 @@ sub_8048FC4:
 	pop {r4-r7,pc}
 	.byte 0, 0
 	.word 0x1B0
-	thumb_func_end sub_8048FC4
+	thumb_func_end rfu_getCommStatusBytes
 
 // symdb: Subsystem tick callback dispatched by the state byte at eS200A290, firing completion event 0xDA arg 2 when the subsystem reports no longer in use.
 // symdb: void subsystemTick_cb_8048FD4(void); // clobbers NZCV and r0–r3, r5 (restored), r12, lr //
@@ -5125,7 +5125,7 @@ sub_804921E:
 	mov r1, #2
 	tst r0, r1
 	beq loc_8049244
-	bl sub_803CAF8
+	bl get_globalState
 	mov r1, #8
 	tst r0, r1
 	bne loc_804926C
@@ -5136,9 +5136,9 @@ loc_8049244:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_804926C
-	bl sub_803BB94
+	bl t3_timerElapsed
 	beq loc_804926C
-	bl sub_803C558
+	bl chatbox_clearTextBuffers
 	mov r0, #0x1e
 	bl sub_803BB90
 	bl ow_checkJackInFlag
@@ -6372,7 +6372,7 @@ sub_8049BC0:
 loc_8049BC4:
 	mov r0, #1
 	lsl r0, r4
-	bl sub_803C316
+	bl t1_testFlagBit
 	beq loc_8049C42
 	bl ow_checkJackInFlag
 	cmp r4, r0

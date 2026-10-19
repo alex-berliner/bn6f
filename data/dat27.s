@@ -909,7 +909,7 @@ cutscenescript_809515C:
 	cs_wait_var_equal byte1=0x08 byte2=0x02
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_play_sound hword1=0x01B8
-	cs_call_native_with_return_value ptr1=sub_8095220+1
+	cs_call_native_with_return_value ptr1=copy_setHeaderTemplateRow1+1
 	cs_pause byte1=0xFF byte2=0x78
 	cs_run_cutscene_camera_script ptr1=ccs_8095154
 	cs_wait_camera_script
@@ -923,7 +923,7 @@ cutscenescript_80951CE:
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
 	cs_load_gfx_anim ptr1=byte_8062908
-	cs_call_native_with_return_value ptr1=sub_8095220+1
+	cs_call_native_with_return_value ptr1=copy_setHeaderTemplateRow1+1
 	cs_spawn_ow_npc_objects_from_map
 	cs_free_all_objects_of_types byte2=0x20
 	cs_spawn_ow_map_objects_from_map
@@ -953,15 +953,15 @@ end_cutscenescript_809521E:
 
 // symdb: Writes the second 16-byte template row from the callee's inline table into the header buffer at 0x2001130, then returns 0.
 // symdb: () -> r0 = 0; no flags meaningful (r0 reloaded before return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8095220.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_setHeaderTemplateRow1.yaml
 	thumb_local_start
-sub_8095220:
+copy_setHeaderTemplateRow1:
 	push {lr}
 	mov r0, #1
 	bl copyOamEntry_80AA004
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8095220
+	thumb_func_end copy_setHeaderTemplateRow1
 
 byte_809522C::
 	ccs_set_camera_pos hword1=0xFB40 hword3=0x0AC0 hword5=0x0200

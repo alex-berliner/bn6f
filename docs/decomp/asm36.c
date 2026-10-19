@@ -1249,7 +1249,7 @@ int sub_8130F1C()
     else if ( *(v0 + 27) & 2 || (chatbox_mask_eFlags2009F38(128), v2) || (result = chatbox_check_eFlags2009F38(8), !v2) )
     {
         v3 = eStruct200BC30_getJumpOffset00();
-        v4 = sub_803EA50();
+        v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
@@ -2438,14 +2438,14 @@ int __fastcall sub_81320AC(int a1)
         *(v1 + 12) = 0;
         return result;
     }
-    if ( sub_803CAF8() == 4 )
+    if ( get_globalState() == 4 )
     {
         result = 8;
         *(v1 + 12) = 8;
     }
     else
     {
-        if ( sub_803CAF8() == 8 )
+        if ( get_globalState() == 8 )
         {
             result = 12;
             *(v1 + 12) = 12;
@@ -2493,7 +2493,7 @@ LABEL_2:
         v2 = sub_803EA78();
         sub_8132398(v2, v3, v4, v5);
         *(v0 + 3) = 12;
-        if ( sub_803EA50() )
+        if ( rfu_shouldRestartWirelessLink() )
             rfu_initWirelessSession();
         else
             sub_8147B24();
@@ -3039,7 +3039,7 @@ int __fastcall sub_8132664(int a1)
     int v1; // r0
 
     v1 = e_packScreenNaviId();
-    return sub_81469DC(v1);
+    return e_setPackScreenNaviId(v1);
 }
 
 

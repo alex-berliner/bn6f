@@ -713,7 +713,7 @@ loc_812E046::
 	bl sub_812EE78
 	bl submenu_renderSelectedWindow
 	bl battle_resetEStructRecords_8046664 // () -> void
-	bl sub_812EB88
+	bl submenu_initEntryTable
 	bl sub_812EB78
 	bl CopyBackgroundTiles812EAAC
 	mov r0, #4
@@ -1070,7 +1070,7 @@ loc_812E306::
 	mov r0, #1
 	bl sub_812EE78
 	bl battle_resetEStructRecords_8046664 // () -> void
-	bl sub_812EB88
+	bl submenu_initEntryTable
 	bl sub_812EB78
 	bl submenu_renderSelectedWindow
 	bl CopyBackgroundTiles812EAAC
@@ -1459,7 +1459,7 @@ sub_812E61C::
 	beq locret_812E64E
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -1516,7 +1516,7 @@ sub_812E678::
 loc_812E6A2::
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -1913,7 +1913,7 @@ dword_812E9A8::
 	thumb_local_start
 sub_812E9AC::
 	push {r7,lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r7, r0
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -1953,7 +1953,7 @@ sub_812E9AC::
 	bl sub_812EAC4
 	bl sub_812EA44
 	bl CopyBackgroundTiles812EAAC
-	bl sub_812EB88
+	bl submenu_initEntryTable
 	bl sub_812EB78
 	bl submenu_renderSelectedWindow
 	mov r0, #0

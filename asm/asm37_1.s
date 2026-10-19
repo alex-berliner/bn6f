@@ -2850,7 +2850,7 @@ dword_8143194:
 	thumb_func_start sub_8143198
 sub_8143198:
 	push {r4-r7,lr}
-	bl sub_81433CA
+	bl e_getFlagTotal
 	mov r6, r0
 	mov r0, #0
 	bl sub_81430B6
@@ -2865,7 +2865,7 @@ loc_81431B4:
 	add r7, #1
 	sub r6, #1
 	bgt loc_81431AA
-	bl sub_81433CA
+	bl e_getFlagTotal
 	mov r1, r0
 	mov r0, r4
 	cmp r0, r1
@@ -3180,14 +3180,14 @@ sub_81433C2:
 
 // symdb: returns the stored total flag count (byte at +8 of eStruct2001010) that callers compare against a counted number of set flags
 // symdb: () -> r0 = u8 total count stored at eStruct2001010+8; preserves r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433CA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_getFlagTotal.yaml
 	thumb_local_start
-sub_81433CA:
+e_getFlagTotal:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	ldrb r0, [r5,#0x8] // (byte_2001018 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81433CA
+	thumb_func_end e_getFlagTotal
 
 	thumb_local_start
 sub_81433D2:
@@ -3606,7 +3606,7 @@ loc_8143A02:
 	ldr r0, off_8143A50 // =byte_8093358 // CutsceneScript
 	mov r1, #0
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
-	bl sub_8143F38
+	bl e_setCutsceneActive
 	movflag EVENT_D36
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 loc_8143A2E:
@@ -3887,7 +3887,7 @@ sub_8143C30:
 	mov r2, #0xa
 	bl ClearEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
 	bl sub_8143BFC
-	bl sub_8143F68
+	bl e_setFieldC
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143C30
 
@@ -4283,9 +4283,9 @@ e_resetEffectStruct:
 // symdb: sets the cutscene/event-active flag byte in the global event state struct (entry point sets 1; the call_8143F3C entry sets 0)
 // symdb: (no args) -> r0 = 0; writes byte_2001019 (eStruct2001010+9) = 1, or 0 when entered at
 // symdb: call_8143F3C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setCutsceneActive.yaml
 	thumb_local_start
-sub_8143F38:
+e_setCutsceneActive:
 	mov r0, #1
 	b loc_8143F3E
 call_8143F3C::
@@ -4296,7 +4296,7 @@ loc_8143F3E:
 	strb r0, [r5,#0x9] // (byte_2001019 - 0x2001010)
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143F38
+	thumb_func_end e_setCutsceneActive
 
 	thumb_local_start
 sub_8143F48:
@@ -4328,15 +4328,15 @@ sub_8143F60:
 
 // symdb: Stores a 0/1 enable-disable word into field 0xC of the global struct at 0x2001010.
 // symdb: (r0 = value (observed 0 or 1)) -> r0 = value; Z flag set per tst r0,r0 (unused by callers)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F68.yaml
-	thumb_func_start sub_8143F68
-sub_8143F68:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setFieldC.yaml
+	thumb_func_start e_setFieldC
+e_setFieldC:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
 	str r0, [r5,#0xc] // (dword_200101C - 0x2001010)
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143F68
+	thumb_func_end e_setFieldC
 
 	thumb_func_start sub_8143F72
 sub_8143F72:
@@ -4498,7 +4498,7 @@ loc_814407E:
 	bl battle_callAIDispatch_8046818
 	bl battleObject_updateSpriteGfxForAll_8046854
 	mov r0, #3
-	bl sub_804691A
+	bl battle_testEntityStateFlag
 	beq loc_8144092
 	bl sub_811E744
 loc_8144092:

@@ -469,7 +469,7 @@ cutscenescript_8092940:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
 	cs_call_native_with_return_value ptr1=sub_8143978+1
-	cs_call_native_with_return_value ptr1=sub_8143F38+1
+	cs_call_native_with_return_value ptr1=e_setCutsceneActive+1
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
 	cs_ow_player_coord_special byte1=0x00 byte2=0xFF byte3=0x01 signedhword4=-0x03A0 signedhword6=-0x1460 signedhword8=0x0000
@@ -622,7 +622,7 @@ cutscenescript_8092B24:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
 	cs_call_native_with_return_value ptr1=sub_8143978+1
-	cs_call_native_with_return_value ptr1=sub_8143F38+1
+	cs_call_native_with_return_value ptr1=e_setCutsceneActive+1
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
 	cs_ow_player_coord_special byte1=0x00 byte2=0xFF byte3=0x01 signedhword4=0x1440 signedhword6=-0x0640 signedhword8=0x0000
@@ -801,7 +801,7 @@ cutscenescript_8092E02:
 	cs_play_sound hword1=0x00BC
 	cs_set_screen_fade byte1=0xFF byte2=0x24 byte3=0xFF
 	cs_wait_screen_fade
-	cs_call_native_with_return_value ptr1=sub_8143F38+1
+	cs_call_native_with_return_value ptr1=e_setCutsceneActive+1
 	cs_set_var byte1=0x0B byte2=0x00
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_run_text_script_not_from_mem byte2=0x0A
@@ -831,7 +831,7 @@ sub_8092E44::
 	bl sub_8143F72
 	sub r0, #0x96
 	ble loc_8092E66
-	bl sub_8143F68
+	bl e_setFieldC
 	ldrb r0, [r5,#0xb]
 	add r0, #1
 	strb r0, [r5,#0xb]
@@ -840,7 +840,7 @@ sub_8092E44::
 	b loc_8092E72
 loc_8092E66::
 	mov r0, #0
-	bl sub_8143F68
+	bl e_setFieldC
 loc_8092E6C::
 	mov r4, #0
 	mov r0, #0x81

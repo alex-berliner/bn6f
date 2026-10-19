@@ -808,7 +808,7 @@ int sub_8046900()
 
 
 // 0x804691a
-int __fastcall sub_804691A(int a1)
+int __fastcall battle_testEntityStateFlag(int a1)
 {
     return byte_2011860[88 * a1];
 }
@@ -2421,7 +2421,7 @@ signed int __fastcall initSaveStateBlock_8048F9C(__int16 a1, int a2, int a3, int
 
 
 // 0x8048fc4
-int sub_8048FC4()
+int rfu_getCommStatusBytes()
 {
     return eS200A290;
 }
@@ -2651,7 +2651,7 @@ int sub_804921E()
     {
         if ( *(*(v1 + oToolkit_JoypadPtr) + 2) & 2 )
         {
-            if ( !(sub_803CAF8() & 8) )
+            if ( !(get_globalState() & 8) )
                 sub_803C28A(131);
         }
         else
@@ -2659,10 +2659,10 @@ int sub_804921E()
             chatbox_mask_eFlags2009F38(8);
             if ( !v2 )
             {
-                sub_803BB94();
+                t3_timerElapsed();
                 if ( !v2 )
                 {
-                    sub_803C558();
+                    chatbox_clearTextBuffers();
                     sub_803BB90(30);
                     ow_checkJackInFlag();
                     if ( !v2 )
@@ -3628,7 +3628,7 @@ void sub_8049BC0()
     v0 = 0;
     do
     {
-        sub_803C316();
+        t1_testFlagBit();
         if ( !v1 && v0 < ow_checkJackInFlag() )
         {
             sub_803C440(v0);

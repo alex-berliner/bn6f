@@ -1994,7 +1994,7 @@ loc_8130F36:
 loc_8130F4E:
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -4080,7 +4080,7 @@ sub_81320AC:
 	strb r0, [r5,#0xc]
 	b locret_8132100
 loc_81320BE:
-	bl sub_803CAF8
+	bl get_globalState
 	mov r1, #4
 	cmp r0, r1
 	bne loc_81320CE
@@ -4088,7 +4088,7 @@ loc_81320BE:
 	strb r0, [r5,#0xc]
 	b loc_81320F8
 loc_81320CE:
-	bl sub_803CAF8
+	bl get_globalState
 	mov r1, #8
 	cmp r0, r1
 	bne loc_81320DE
@@ -4144,7 +4144,7 @@ loc_8132126:
 	bl sub_8132398
 	mov r0, #0xc
 	strb r0, [r5,#3]
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_8132148
 	bl sub_8147B24
@@ -5000,7 +5000,7 @@ off_8132660:
 sub_8132664:
 	push {r4-r7,lr}
 	bl e_packScreenNaviId
-	bl sub_81469DC
+	bl e_setPackScreenNaviId
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132664
 

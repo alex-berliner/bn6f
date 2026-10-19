@@ -2170,9 +2170,9 @@ loc_8039BE6:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8039C0E
-	bl sub_803BB94
+	bl t3_timerElapsed
 	beq loc_8039C0E
-	bl sub_803C558
+	bl chatbox_clearTextBuffers
 	mov r0, #0x1e
 	bl sub_803BB90
 	bl ow_checkJackInFlag
@@ -6084,9 +6084,9 @@ sub_803BB90:
 
 // symdb: Ticks down a frame-count timer in the state struct at [r5,#0x2c] and returns 1 once it has expired.
 // symdb: () -> r0 = 1 when countdown [r5+0x2c] reached below 0 after decrement, 0 otherwise; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BB94.yaml
-	thumb_func_start sub_803BB94
-sub_803BB94:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_timerElapsed.yaml
+	thumb_func_start t3_timerElapsed
+t3_timerElapsed:
 	ldr r0, [r5,#0x2c]
 	sub r0, #1
 	blt loc_803BBA0
@@ -6096,7 +6096,7 @@ sub_803BB94:
 loc_803BBA0:
 	mov r0, #1
 	mov pc, lr
-	thumb_func_end sub_803BB94
+	thumb_func_end t3_timerElapsed
 
 // symdb: Queues one OAM entry for the chatbox's blinking wait-cursor, cycling its tile through three animation frames on an 18-frame loop.
 // symdb: (r0 = visibility/done flag, r1 = base id/index, r2 = frame step amount, r3/r5 = cursor state
@@ -7015,15 +7015,15 @@ sub_803C30C:
 
 // symdb: Tests bit (1<<index) of the 16-bit flag word word_200A2B0 and returns the result in the Z flag.
 // symdb: (r0 = bitmask, typically 1<<slot) -> r0 unchanged; Z flag set if bit is clear, clear if set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C316.yaml
-	thumb_func_start sub_803C316
-sub_803C316:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_testFlagBit.yaml
+	thumb_func_start t1_testFlagBit
+t1_testFlagBit:
 	push {lr}
 	ldr r2, off_803C32C // =eS200A290
 	ldrh r1, [r2,#0x20] // (word_200A2B0 - 0x200a290)
 	tst r1, r0
 	pop {pc}
-	thumb_func_end sub_803C316
+	thumb_func_end t1_testFlagBit
 
 	thumb_func_start sub_803C320
 sub_803C320:
@@ -7220,16 +7220,16 @@ off_803C430:
 // symdb: Writes two parallel 32-bit arrays (0x200A3C0 and 0x200A3E0) at a caller-supplied index, building paired per-slot tables from two getter calls
 // symdb: (r0 = index, r1 = first value, r2 = second value) -> void; writes unk_200A3C0[index] = r1 and
 // symdb: unk_200A3E0[index] = r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C434.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/storeIndexedPair.yaml
 	thumb_local_start
-sub_803C434:
+storeIndexedPair:
 	lsl r0, r0, #2
 	ldr r3, off_803C460 // =unk_200A3C0
 	str r1, [r3,r0]
 	ldr r3, off_803C464 // =unk_200A3E0
 	str r2, [r3,r0]
 	mov pc, lr
-	thumb_func_end sub_803C434
+	thumb_func_end storeIndexedPair
 
 	thumb_func_start sub_803C440
 sub_803C440:
@@ -7411,14 +7411,14 @@ off_803C554:
 // symdb: Clears the two 16-byte text-related buffers of the current chatbox/dialog struct and calls a companion chatbox routine, used when a dialog is dismissed before starting a jack-in sequence.
 // symdb: () -> void; no args passed — relies on the caller's r5 (dialog/struct pointer) which flows
 // symdb: through untouched to clearStructBufferPair; r4-r7 preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C558.yaml
-	thumb_func_start sub_803C558
-sub_803C558:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_clearTextBuffers.yaml
+	thumb_func_start chatbox_clearTextBuffers
+chatbox_clearTextBuffers:
 	push {r4-r7,lr}
 	bl clearStructBufferPair
 	bl sub_81467A0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C558
+	thumb_func_end chatbox_clearTextBuffers
 
 // symdb: Sets bit 1 (value 2) in the flags word of the RFU/wireless shared state structure, presumably signaling wireless state 2.
 // symdb: () -> void; no meaningful return; calls rfu_orFlags with r0 = 2
@@ -7449,15 +7449,15 @@ off_803C57C:
 
 // symdb: Sets bit 0x40 in the RFU shared-state flags word (0x200BC50+0xC), likely signalling some wireless condition.
 // symdb: () -> void; r0 clobbered by call to rfu_orFlags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C580.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setFlag40.yaml
 	thumb_local_start
-sub_803C580:
+rfu_setFlag40:
 	push {r4-r7,lr}
 	ldr r5, off_803C598 // =eS200A290
 	mov r0, #0x40
 	bl rfu_orFlags
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C580
+	thumb_func_end rfu_setFlag40
 
 	thumb_local_start
 sub_803C58C:
@@ -7629,7 +7629,7 @@ dword_803C650:
 rfu_disconnectLink: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	ldr r0, off_803C6BC // =0x34
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #0
 	bl rfu_setLinkCommand
 	mov r0, #1
@@ -7677,7 +7677,7 @@ rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 sub_803C6F4: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	ldr r0, byte_803CAB4 // =0x33
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
@@ -7721,7 +7721,7 @@ sub_803C730:
 	strh r0, [r7,#0xa]
 	bne loc_803C74A
 	ldr r0, dword_803C750 // =0x9
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #0
 	strb r0, [r7]
 	mov r0, #1
@@ -7740,7 +7740,7 @@ dword_803C750:
 sub_803C754: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	ldr r0, dword_803C768 // =0x32
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 
 	// trigger stop via dispatch_803C620
 	mov r0, #0
@@ -7881,7 +7881,7 @@ sub_803C84A: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl sub_81468F4
 	mov r4, r0
-	bl sub_814690C
+	bl rfu_getConnectedPlayerCount
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
@@ -7958,9 +7958,9 @@ rfu_updateLinkManager:
 	beq loc_803C8E0
 	mov r0, r4
 	mov r1, #1
-	bl sub_8146E5C
+	bl rfu_setLinkState
 	mov r0, #0x22
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #0
 	bl rfu_setLinkCommand
 loc_803C8E0:
@@ -8010,7 +8010,7 @@ loc_803C926:
 	bl rfu_testStatusFlags
 	beq loc_803C938
 	mov r0, #0x22
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #8
 	strb r0, [r7,#3]
 loc_803C938:
@@ -8032,7 +8032,7 @@ sub_803C94C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	bl IsCurSubsystemInUse // () -> (bool, !zf)
 	bne loc_803C966
 	ldr r0, dword_803C978 // =0x1
-	bl sub_813D9A0
+	bl rfu_setLinkPhase
 	mov r0, #0
 	bl rfu_setLinkCommand
 	mov r0, #1
@@ -8057,7 +8057,7 @@ sub_803C97C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	ldrb r0, [r0,#0x4] // (byte_200AF84 - 0x200af80)
 	bl sub_8146918
 	mov r4, r0
-	bl sub_814690C
+	bl rfu_getConnectedPlayerCount
 	cmp r4, r0
 	blt loc_803C99A
 	bl rfu_setStateEnded
@@ -8188,7 +8188,7 @@ off_803CA54:
 	.word off_803CA58
 off_803CA58:
 	.word sub_803CA64+1
-	.word sub_803CA90+1
+	.word rfu_endLinkConnection+1
 off_803CA60:
 	.word byte_200AF80
 	thumb_func_end rfu_stateStep
@@ -8211,7 +8211,7 @@ sub_803CA64:
 	bl sub_8146D20
 	tst r0, r0
 	beq loc_803CA88
-	bl sub_803CA90
+	bl rfu_endLinkConnection
 loc_803CA88:
 	mov r0, #4
 	strb r0, [r7,#3]
@@ -8222,9 +8222,9 @@ loc_803CA88:
 // symdb: Tears down the wireless link: resets the connection work struct at 0x200AF80 and, unless a status byte says otherwise, marks the RFU session as ended and sets RFU flag 8.
 // symdb: (r0 = none, uses connection struct pointer byte_200AF80) -> r0 = clobbered; updates RFU shared
 // symdb: state at 0x200BC50
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CA90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_endLinkConnection.yaml
 	thumb_local_start
-sub_803CA90:
+rfu_endLinkConnection:
 	push {r4,lr}
 	ldr r4, off_803CAB0 // =byte_200AF80
 	mov r0, r4
@@ -8245,7 +8245,7 @@ off_803CAB0:
 byte_803CAB4:
 	.byte 0x33, 0x0, 0x0, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0xB5, 0x1, 0x20, 0x0, 0x21
 	.byte 0x0, 0xBD
-	thumb_func_end sub_803CA90
+	thumb_func_end rfu_endLinkConnection
 
 	thumb_local_start
 sub_803CAC4:
@@ -8265,7 +8265,7 @@ loc_803CAD2:
 	push {r0-r3}
 	mov r2, r0
 	mov r0, r4
-	bl sub_803C434
+	bl storeIndexedPair
 	pop {r0-r3}
 	add r4, #1
 	sub r6, #1
@@ -8277,14 +8277,14 @@ locret_803CAF4:
 
 // symdb: returns the current global state value stored at eS200BC5C
 // symdb: () -> r0 = dword at eS200BC5C (current global state/mode); flags from load (irrelevant)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CAF8.yaml
-	thumb_func_start sub_803CAF8
-sub_803CAF8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_globalState.yaml
+	thumb_func_start get_globalState
+get_globalState:
 	ldr r3, off_803CB20 // =eS200BC50
 	ldr r0, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	mov pc, lr
 	.byte 0x0, 0x0
-	thumb_func_end sub_803CAF8
+	thumb_func_end get_globalState
 
 // symdb: ORs the caller's bits into the flags word (offset 0xC) of the RFU/wireless shared state structure at 0x200BC50.
 // symdb: (r0 = flag bits to set) -> r0 = clobbered; no condition flags meaningful, returns via mov pc, lr
@@ -10665,7 +10665,7 @@ sub_803E288:
 	str r4, [sp,#4]
 	str r5, [sp,#8]
 	str r6, [sp,#0xc]
-	bl sub_803E88C
+	bl link_compareStateBytes
 	bgt loc_803E330
 	mov r4, r5
 	mov r2, r7
@@ -11551,23 +11551,23 @@ off_803E87C:
 // symdb: Initializes eLinkState: writes command/state byte 8 to offset 0 and value 0x10 to the halfword at offset 0xC
 // symdb: (r0 = eLinkState struct pointer) -> r0 = [r0]+0 = 8, [r0]+0xC halfword = 0x10; flags from stores
 // symdb: (irrelevant)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E880.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_initState.yaml
 	thumb_local_start
-sub_803E880:
+link_initState:
 	push {lr}
 	mov r1, #8
 	strb r1, [r0]
 	mov r1, #0x10
 	strh r1, [r0,#0xc]
 	pop {pc}
-	thumb_func_end sub_803E880
+	thumb_func_end link_initState
 
 // symdb: compares two bytes of eLinkState (+3 vs +4) and returns the comparison in the flags
 // symdb: () -> flags set by cmp eLinkState+4, eLinkState+3 (r0/r1 clobbered); caller uses bgt on the
 // symdb: result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E88C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_compareStateBytes.yaml
 	thumb_local_start
-sub_803E88C:
+link_compareStateBytes:
 	push {lr}
 	ldr r2, off_803E898 // =eLinkState
 	ldrb r0, [r2,#0x4] // (eCamera.pad_54 - 0x20099d0)
@@ -11576,7 +11576,7 @@ sub_803E88C:
 	pop {pc}
 off_803E898:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803E88C
+	thumb_func_end link_compareStateBytes
 
 	thumb_local_start
 sub_803E89C:
@@ -11587,7 +11587,7 @@ sub_803E89C:
 	mov r0, #8
 	strb r0, [r6,#0x1] // (eCamera.unk_51 - 0x20099d0)
 	mov r0, r6
-	bl sub_803E880
+	bl link_initState
 	pop {pc}
 	.balign 4, 0
 off_803E8B0:
@@ -11622,14 +11622,14 @@ loc_803E8D8:
 
 // symdb: Returns the word at offset 0x24 of eLinkState (the same cell the project annotates as eCamera.unk_74).
 // symdb: () -> r0 = eLinkState->unk24 (aliased with eCamera.unk_74); no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E8DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eLinkStateUnk24.yaml
 	thumb_local_start
-sub_803E8DC:
+get_eLinkStateUnk24:
 	ldr r0, off_803E8EC // =eLinkState
 	ldr r0, [r0,#0x24] // (eCamera.unk_74 - 0x20099d0)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803E8DC
+	thumb_func_end get_eLinkStateUnk24
 
 // symdb: Returns the current value of the eLinkState byte (link/connection state).
 // symdb: () -> r0 = eLinkState (byte); no flags modified meaningfully
@@ -11914,14 +11914,14 @@ sub_803EA48:
 
 // symdb: returns the wireless-link flag from eStruct200BC30 that callers use to decide whether to re-init the RFU session or run error/cleanup handling
 // symdb: () -> r0 = flag byte at eStruct200BC30+1 (0/1); no flags touched
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EA50.yaml
-	thumb_func_start sub_803EA50
-sub_803EA50:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_shouldRestartWirelessLink.yaml
+	thumb_func_start rfu_shouldRestartWirelessLink
+rfu_shouldRestartWirelessLink:
 	ldr r1, off_803EBF8 // =eStruct200BC30
 	ldrb r0, [r1,#0x1] // (byte_200BC31 - 0x200bc30)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803EA50
+	thumb_func_end rfu_shouldRestartWirelessLink
 
 	thumb_func_start sub_803EA58
 sub_803EA58:
@@ -12216,14 +12216,14 @@ e_setJumpOffset:
 
 // symdb: Getter returning the byte at offset 5 of eStruct200BC30 (the field the project labels JumpOffset05).
 // symdb: () -> r0 = eStruct200BC30 byte at offset 0x5; flags unaffected (uses mov pc, lr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EBEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_getJumpOffset05.yaml
 	thumb_local_start
-sub_803EBEC:
+e_getJumpOffset05:
 	ldr r1, off_803EBF8 // =eStruct200BC30
 	ldrb r0, [r1,#0x5] // (eStruct200BC30_JumpOffset05 - 0x200bc30)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803EBEC
+	thumb_func_end e_getJumpOffset05
 
 	thumb_func_start eStruct200BC30_getRef
 eStruct200BC30_getRef:
@@ -12295,7 +12295,7 @@ sub_803EC54:
 	b loc_803EC68
 loc_803EC68:
 	mov r7, #2
-	bl sub_803E8DC
+	bl get_eLinkStateUnk24
 	mov r1, r0
 	bl get_eLinkStateUnk38
 	bl sub_803F118
@@ -12902,9 +12902,9 @@ loc_803F058:
 
 // symdb: Advances a 3-bit (mod-8) counter in the wireless-lib state block, used as a rotating tick/index by rfu callers.
 // symdb: () -> r0 = (old value + 1) & 7 stored to byte_200AC22; no other effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F05C.yaml
-	thumb_func_start sub_803F05C
-sub_803F05C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_advanceTickCounter.yaml
+	thumb_func_start rfu_advanceTickCounter
+rfu_advanceTickCounter:
 	push {r5,lr}
 	ldr r5, off_803F268 // =byte_200AC20
 	ldrb r0, [r5,#0x2] // (byte_200AC22 - 0x200ac20)
@@ -12913,7 +12913,7 @@ sub_803F05C:
 	and r0, r1
 	strb r0, [r5,#0x2] // (byte_200AC22 - 0x200ac20)
 	pop {r5,pc}
-	thumb_func_end sub_803F05C
+	thumb_func_end rfu_advanceTickCounter
 
 	thumb_local_start
 sub_803F06C:

@@ -3030,7 +3030,7 @@ u8 *link_RequestDisconnect_813D8C4()
 
 
 // 0x813d8d0
-int sub_813D8D0()
+int rfu_setFlag10h()
 {
     return rfu_orFlags(16);
 }
@@ -3126,7 +3126,7 @@ signed int sub_813D98C()
 
 
 // 0x813d9a0
-int __fastcall sub_813D9A0(int result)
+int __fastcall rfu_setLinkPhase(int result)
 {
     word_200BC58 = result;
     return result;

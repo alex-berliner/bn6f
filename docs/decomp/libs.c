@@ -2603,7 +2603,7 @@ int sub_81468F4()
 
 
 // 0x814690c
-int sub_814690C()
+int rfu_getConnectedPlayerCount()
 {
     return word_200FE26;
 }
@@ -2675,7 +2675,7 @@ int __fastcall sub_81469BC(int a1, int a2)
 
 
 // 0x81469dc
-int __fastcall sub_81469DC(int result)
+int __fastcall e_setPackScreenNaviId(int result)
 {
     byte_201015A = result;
     return result;
@@ -2996,7 +2996,7 @@ int __fastcall sub_8146E48(int a1, int a2)
 
 
 // 0x8146e5c
-int __fastcall sub_8146E5C(int result, char a2)
+int __fastcall rfu_setLinkState(int result, char a2)
 {
     *(result + 5) = a2;
     return result;
@@ -3516,7 +3516,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
                 }
                 else
                 {
-                    sub_813D8D0();
+                    rfu_setFlag10h();
                     rfu_setLinkCommand(0);
                 }
             }
@@ -4183,7 +4183,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
                 {
                     if ( !byte_2010290 )
                     {
-                        sub_813D8D0();
+                        rfu_setFlag10h();
                         rfu_setLinkCommand(0);
                         return v6;
                     }
@@ -4499,7 +4499,7 @@ int sub_8148A80()
             {
                 byte_20103F0 = 1;
                 byte_201021C = v0 + 1;
-                sub_803F05C();
+                rfu_advanceTickCounter();
             }
             byte_20101D0 = 1;
             byte_20101B0 = 1;
@@ -4839,7 +4839,7 @@ signed int sub_8149150()
             else
             {
                 ++byte_201039C;
-                sub_803F05C();
+                rfu_advanceTickCounter();
             }
             byte_2010220[0] = byte_20103DC;
             word_2010420[0] = 0;

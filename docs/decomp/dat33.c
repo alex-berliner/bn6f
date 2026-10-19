@@ -1116,7 +1116,7 @@ int sub_812CDF4()
     if ( !v2 )
     {
         v3 = eStruct200BC30_getJumpOffset00();
-        v4 = sub_803EA50();
+        v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
@@ -1159,7 +1159,7 @@ int sub_812CE50()
     {
 LABEL_8:
         v3 = eStruct200BC30_getJumpOffset00();
-        v4 = sub_803EA50();
+        v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
         sub_803EA58(v4);
@@ -1611,7 +1611,7 @@ void __noreturn sub_812D298()
     int v9; // r2
     int v10; // r3
 
-    v1 = sub_812D6F8();
+    v1 = submenu_getWork();
     zeroFillVRAM();
     ZeroFill_byte_3001960(v2, v3, v4, v5);
     ZeroFillGFX30025c0();

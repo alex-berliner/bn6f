@@ -19,7 +19,7 @@ int sub_812EAC4()
     __int16 *v8; // [sp+0h] [bp-18h]
 
     v8 = &word_2023FA4;
-    v0 = sub_812ED2C();
+    v0 = submenu_getStatePtr();
     ZeroFillByEightWords(word_2023FA0, 4 * &loc_BC);
     word_2023FA0[0] = 144;
     word_2023FA2 = 1;
@@ -81,7 +81,7 @@ void sub_812EB78()
 
 
 // 0x812eb88
-void sub_812EB88()
+void submenu_initEntryTable()
 {
     JUMPOUT(&loc_812EB9A);
 }
@@ -143,7 +143,7 @@ int sub_812EC04()
 {
     char *v0; // r0
 
-    v0 = sub_812ED2C();
+    v0 = submenu_getStatePtr();
     return sub_811BC00(word_2023FA0[2 * (*(v0 + 16) + *(v0 + 18))], 0, 9, *(v0 + 16) + *(v0 + 18));
 }
 
@@ -171,7 +171,7 @@ void sub_812ECAC()
     int v6; // r1
     int v7; // r0
 
-    v2 = sub_812ED2C();
+    v2 = submenu_getStatePtr();
     *(v2 + 17) = *(v2 + 16);
     *(v2 + 19) = *(v2 + 18);
     if ( *(v2 + 15) )
@@ -206,7 +206,7 @@ LABEL_17:
 
 
 // 0x812ed2c
-char *sub_812ED2C()
+char *submenu_getStatePtr()
 {
     return &eT4BattleObjects[3872];
 }
@@ -217,7 +217,7 @@ int sub_812ED34()
 {
     char *v0; // r0
 
-    v0 = sub_812ED2C();
+    v0 = submenu_getStatePtr();
     return word_2023FA0[2 * (*(v0 + 18) + *(v0 + 16))] | 0x8000;
 }
 
@@ -311,7 +311,7 @@ signed int sub_812EEEC()
     int v5; // r1
     int v6; // r2
 
-    v0 = sub_812ED2C();
+    v0 = submenu_getStatePtr();
     v1 = v0;
     if ( v2 )
         return 12;
@@ -338,7 +338,7 @@ void __noreturn submenu_renderSelectedWindow()
 {
     char *v0; // r0
 
-    v0 = sub_812ED2C();
+    v0 = submenu_getStatePtr();
     renderTextWindowToBg((word_2023FA0[2 * (*(v0 + 16) + *(v0 + 18))] - 144) >> 2);
 }
 

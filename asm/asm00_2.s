@@ -6292,7 +6292,7 @@ off_80117D4:
 	.word sub_8011F44+1 // 0x27
 	.word sub_8011F64+1 // 0x28
 	.word nullsub_44+1 // 0x29
-	.word sub_8011F84+1 // 0x2a
+	.word ai_setChipUseDelay+1 // 0x2a
 	.word sub_8011F8C+1 // 0x2b
 	.word sub_8011FCE+1 // 0x2c
 	.word nullsub_44+1 // 0x2d
@@ -6384,7 +6384,7 @@ off_80117D4:
 	.word sub_8012526+1 // 0x83
 	.word sub_8012536+1 // 0x84
 	.word init_chipParams051+1 // 0x85
-	.word sub_801254A+1 // 0x86
+	.word ai_setDifficultyTier20+1 // 0x86
 	.word sub_8012552+1 // 0x87
 	.word ai_scheduleChipAttack+1 // 0x88
 	.word sub_8012572+1 // 0x89
@@ -7245,14 +7245,14 @@ sub_8011F64:
 // symdb: Sets the AI attack-state chip-use delay counter to 40 and returns 0x58 to the caller
 // symdb: (r7 = pointer to AI attack vars struct, no other args) -> r0 = 0x58; flags from the mov (no
 // symdb: meaningful compare)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011F84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setChipUseDelay.yaml
 	thumb_local_start
-sub_8011F84:
+ai_setChipUseDelay:
 	mov r0, #0x28 
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x58 
 	mov pc, lr
-	thumb_func_end sub_8011F84
+	thumb_func_end ai_setChipUseDelay
 
 	thumb_local_start
 sub_8011F8C:
@@ -8276,14 +8276,14 @@ init_chipParams051:
 
 // symdb: Forces the AI attack variables' difficulty tier to 0x14 (20)
 // symdb: (r7 = AI attack vars struct) -> r0 = 0x1c; no flags set meaningfully
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801254A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setDifficultyTier20.yaml
 	thumb_local_start
-sub_801254A:
+ai_setDifficultyTier20:
 	mov r0, #0x14
 	strb r0, [r7,#oAIAttackVars_AiDifficultyTier]
 	mov r0, #0x1c
 	mov pc, lr
-	thumb_func_end sub_801254A
+	thumb_func_end ai_setDifficultyTier20
 
 	thumb_local_start
 sub_8012552:
@@ -30109,7 +30109,7 @@ sub_801D2A4:
 	str r0, [sp]
 	ldr r0, [r5,#0x48]
 	ldrb r0, [r0,#0x16]
-	bl sub_802E440
+	bl bg_getParam0
 	mov r1, #0
 	mov r2, #0
 	ldr r3, [sp]

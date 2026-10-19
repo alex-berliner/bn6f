@@ -4424,15 +4424,15 @@ off_813D8CC:
 
 // symdb: Sets bit 0x10 in the RFU wireless shared-state flags word before the caller sends link command 0.
 // symdb: () -> r0 = 1 (from rfu_orFlags); clobbers lr; no arguments
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D8D0.yaml
-	thumb_func_start sub_813D8D0
-sub_813D8D0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setFlag10h.yaml
+	thumb_func_start rfu_setFlag10h
+rfu_setFlag10h:
 	push {lr}
 	mov r0, #0x10
 	bl rfu_orFlags
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813D8D0
+	thumb_func_end rfu_setFlag10h
 
 	push {lr}
 	bl GetRNG // () -> u32?
@@ -4583,16 +4583,16 @@ off_813D99C:
 // symdb: Writes the wireless-link phase/state ID into offset 0x8 of the RFU link work struct at 0x200BC50.
 // symdb: (r0 = link phase ID (halfword, e.g. 0x22/0x33/0x34)) -> r0 clobbered; writes halfword at
 // symdb: [0x200BC58]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D9A0.yaml
-	thumb_func_start sub_813D9A0
-sub_813D9A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setLinkPhase.yaml
+	thumb_func_start rfu_setLinkPhase
+rfu_setLinkPhase:
 	push {lr}
 	ldr r1, off_813D9A8 // =eS200BC50 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	pop {pc}
 off_813D9A8:
 	.word eS200BC50
-	thumb_func_end sub_813D9A0
+	thumb_func_end rfu_setLinkPhase
 
 	thumb_local_start
 sub_813D9AC:

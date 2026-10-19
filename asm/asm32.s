@@ -18744,7 +18744,7 @@ sub_811727C:
 	mov r0, #1
 	ldrb r1, [r5,#4]
 	lsl r0, r1
-	bl sub_803C316
+	bl t1_testFlagBit
 	beq loc_811729E
 	mov r4, #0x23
 	mov r0, #0x19
@@ -19041,7 +19041,7 @@ loc_8117508:
 	strb r0, [r5,#9]
 	str r0, [r5,#0x10]
 	mov r0, #8
-	bl sub_81175BC
+	bl object_advanceSequencerOffset
 	mov r0, #1
 	pop {pc}
 loc_8117538:
@@ -19069,7 +19069,7 @@ loc_8117550:
 	strb r0, [r5,#9]
 	str r0, [r5,#0x10]
 	mov r0, #4
-	bl sub_81175BC
+	bl object_advanceSequencerOffset
 	mov r0, #1
 	pop {pc}
 loc_8117568:
@@ -19087,7 +19087,7 @@ sub_811756C:
 	ldrsh r0, [r0,r2]
 	bl sprite_setCoordinates
 	mov r0, #6
-	bl sub_81175BC
+	bl object_advanceSequencerOffset
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_811756C
@@ -19108,7 +19108,7 @@ sub_8117592:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	mov r0, #4
-	bl sub_81175BC
+	bl object_advanceSequencerOffset
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_8117592
@@ -19131,14 +19131,14 @@ off_81175B8:
 
 // symdb: Advances the actor-sequencer data offset at [r5+0xC] by r0, moving to the next entry of a coordinate/duration table once a step's countdown finishes.
 // symdb: (r0 = stride/step size to add) -> [r5+0xC] += r0; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81175BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_advanceSequencerOffset.yaml
 	thumb_local_start
-sub_81175BC:
+object_advanceSequencerOffset:
 	ldr r1, [r5,#0xc]
 	add r0, r0, r1
 	str r0, [r5,#0xc]
 	mov pc, lr
-	thumb_func_end sub_81175BC
+	thumb_func_end object_advanceSequencerOffset
 
 	thumb_local_start
 sub_81175C4:

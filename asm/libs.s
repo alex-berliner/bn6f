@@ -5736,16 +5736,16 @@ off_8146908:
 
 // symdb: returns a halfword status/count field of the wireless (RFU) shared struct at 200FE00+0x26, used to decide whether a wireless session has enough participants before ending it
 // symdb: () -> r0 = halfword at [eStruct200FE00+0x26]; no flags set intentionally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814690C.yaml
-	thumb_func_start sub_814690C
-sub_814690C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getConnectedPlayerCount.yaml
+	thumb_func_start rfu_getConnectedPlayerCount
+rfu_getConnectedPlayerCount:
 	ldr r0, off_8146914 // =eStruct200FE00 
 	ldrh r0, [r0,#0x26] // (word_200FE26 - 0x200fe00)
 	bx lr
 	.balign 4, 0x00
 off_8146914:
 	.word eStruct200FE00
-	thumb_func_end sub_814690C
+	thumb_func_end rfu_getConnectedPlayerCount
 
 	thumb_func_start sub_8146918
 sub_8146918:
@@ -5881,16 +5881,16 @@ off_81469D8:
 
 // symdb: Stores the navi id produced by e_packScreenNaviId into the global byte_201015A (current pack-screen navi).
 // symdb: (r0 = navi id byte) -> r0 = destroyed; no flags meaningful (bx lr after strb)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81469DC.yaml
-	thumb_func_start sub_81469DC
-sub_81469DC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setPackScreenNaviId.yaml
+	thumb_func_start e_setPackScreenNaviId
+e_setPackScreenNaviId:
 	ldr r1, off_81469E4 // =byte_201015A 
 	strb r0, [r1]
 	bx lr
 	.balign 4, 0x00
 off_81469E4:
 	.word byte_201015A
-	thumb_func_end sub_81469DC
+	thumb_func_end e_setPackScreenNaviId
 
 	thumb_func_start sub_81469E8
 sub_81469E8:
@@ -6495,12 +6495,12 @@ sub_8146E48:
 // symdb: Writes a state/phase byte into the 0x200AF80 wireless link-state structure.
 // symdb: (r0 = pointer to link-state struct at 0x200AF80, r1 = state byte) -> r0 clobbered; flags not
 // symdb: meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E5C.yaml
-	thumb_func_start sub_8146E5C
-sub_8146E5C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setLinkState.yaml
+	thumb_func_start rfu_setLinkState
+rfu_setLinkState:
 	strb r1, [r0,#5]
 	bx lr
-	thumb_func_end sub_8146E5C
+	thumb_func_end rfu_setLinkState
 
 	thumb_func_start sub_8146E60
 sub_8146E60:
@@ -7697,7 +7697,7 @@ loc_81477E4:
 off_81477F4:
 	.word byte_200AF80
 loc_81477F8:
-	bl sub_813D8D0
+	bl rfu_setFlag10h
 	mov r0, #0
 	bl rfu_setLinkCommand
 	b def_814762C
@@ -9289,7 +9289,7 @@ loc_814843C:
 	ldrb r0, [r1]
 	cmp r0, #0
 	bne loc_8148482
-	bl sub_813D8D0
+	bl rfu_setFlag10h
 	mov r0, #0
 	bl rfu_setLinkCommand
 	b def_814825A
@@ -10126,7 +10126,7 @@ loc_8148B08:
 	mov r0, r5
 	add r0, #0x3c 
 	strb r1, [r0]
-	bl sub_803F05C
+	bl rfu_advanceTickCounter
 loc_8148B38:
 	ldr r0, off_8148B5C // =byte_20101D0 
 	strb r4, [r0]
@@ -10975,7 +10975,7 @@ loc_81491C8:
 	ldrb r0, [r4,#0xc] // (byte_201039C - 0x2010390)
 	add r0, #1
 	strb r0, [r4,#0xc] // (byte_201039C - 0x2010390)
-	bl sub_803F05C
+	bl rfu_advanceTickCounter
 loc_81491D2:
 	ldr r2, off_81491E4 // =byte_2010220 
 	ldr r0, off_81491E8 // =unk_20103A0 

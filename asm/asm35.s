@@ -26,7 +26,7 @@ sub_812EAC4:
 	ldr r0, off_812EB68 // =word_2023FA0 
 	add r0, #4
 	str r0, [sp]
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r5, r0
 	ldr r0, off_812EB68 // =word_2023FA0 
 	ldr r1, off_812EB74 // =0xbc 
@@ -129,15 +129,15 @@ off_812EB84:
 // symdb: Initializes the 9-entry, 0x44-byte-per-entry submenu state table (byte_812DABC) via a shared loop, as part of setting up a submenu before rendering.
 // symdb: () -> void (arguments hardcoded inside: r1 = 9 entries, r2 = 0x44 bytes/entry, r4 =
 // symdb: byte_812DABC; caller r0's role in the shared loop is unknown)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EB88.yaml
-	thumb_func_start sub_812EB88
-sub_812EB88:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_initEntryTable.yaml
+	thumb_func_start submenu_initEntryTable
+submenu_initEntryTable:
 	push {r4-r7,lr}
 	mov r2, #0x44 
 	mov r1, #9
 	ldr r4, off_812EBB0 // =byte_812DABC 
 	b loc_812EB9A
-	thumb_func_end sub_812EB88
+	thumb_func_end submenu_initEntryTable
 
 	thumb_local_start
 sub_812EB92:
@@ -210,7 +210,7 @@ loc_812EBFE:
 	thumb_func_start sub_812EC04
 sub_812EC04:
 	push {r4-r7,lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r5, r0
 	ldr r0, off_812EC28 // =word_2023FA0 
 	ldrh r4, [r5,#0x20]
@@ -300,7 +300,7 @@ off_812ECA8:
 	thumb_func_start sub_812ECAC
 sub_812ECAC:
 	push {r4-r7,lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r7, r0
 	ldrh r0, [r7,#0x20]
 	strh r0, [r7,#0x22]
@@ -368,19 +368,19 @@ locret_812ED2A:
 // symdb: Returns the pointer to the current submenu state structure kept in the global at 0x2037780.
 // symdb: () -> r0 = pointer to the active submenu state struct; no flags set intentionally (movs not
 // symdb: used)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ED2C.yaml
-	thumb_func_start sub_812ED2C
-sub_812ED2C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getStatePtr.yaml
+	thumb_func_start submenu_getStatePtr
+submenu_getStatePtr:
 	ldr r0, off_812ED30 // =unk_2037780 
 	mov pc, lr
 off_812ED30:
 	.word unk_2037780
-	thumb_func_end sub_812ED2C
+	thumb_func_end submenu_getStatePtr
 
 	thumb_func_start sub_812ED34
 sub_812ED34:
 	push {lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r1, r0
 	ldrh r0, [r1,#0x24]
 	ldrh r2, [r1,#0x20]
@@ -607,7 +607,7 @@ byte_812EEE1:
 	thumb_local_start
 sub_812EEEC:
 	push {r4-r7,lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r7, r0
 	tst r1, r1
 	bne loc_812EF0A
@@ -638,12 +638,12 @@ loc_812EF1A:
 	thumb_func_end sub_812EEEC
 
 // symdb: Draws the text window for the currently selected entry of an on-screen menu: looks the entry's window id up in a table, blits it to BG, and stores a value back into the menu state.
-// symdb: (args passed through to sub_812ED2C) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7
+// symdb: (args passed through to submenu_getStatePtr) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_renderSelectedWindow.yaml
 	thumb_func_start submenu_renderSelectedWindow
 submenu_renderSelectedWindow:
 	push {r4-r7,lr}
-	bl sub_812ED2C
+	bl submenu_getStatePtr
 	mov r7, r0
 	ldrh r0, [r7,#0x20]
 	ldrh r1, [r7,#0x24]

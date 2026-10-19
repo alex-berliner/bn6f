@@ -1460,7 +1460,7 @@ sub_812CDF4::
 	beq locret_812CE26
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -1517,7 +1517,7 @@ sub_812CE50::
 loc_812CE7A::
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -2047,7 +2047,7 @@ dword_812D294::
 	thumb_local_start
 sub_812D298::
 	push {r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960

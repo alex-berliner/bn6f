@@ -10345,7 +10345,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     }
     v8 = v1->ai;
     v9 = GetBattleNaviStats2034A60Byte(v1->Alliance, 41);
-    v10 = sub_802DCCC(v1->Alliance);
+    v10 = battle_getLoadedNaviId(v1->Alliance);
     if ( v10 == v9 )
     {
         v11 = sub_8013682(v1->Alliance);
@@ -10793,7 +10793,7 @@ void battle_attackEndTimerStep()
 
 
 // 0x802dccc
-int __fastcall sub_802DCCC(int a1)
+int __fastcall battle_getLoadedNaviId(int a1)
 {
     return byte_203A980[16 * a1 + 4];
 }
@@ -11450,7 +11450,7 @@ LABEL_28:
 
 
 // 0x802e440
-int __fastcall sub_802E440(int a1)
+int __fastcall bg_getParam0(int a1)
 {
     return *sub_802E490(a1);
 }
@@ -11881,7 +11881,7 @@ BOOL __fastcall sub_802E86C(int a1)
     int v1; // r4
 
     v1 = a1;
-    return sub_802E440(a1) != 0xFFFF || sub_802E44A(v1) != 0xFFFF || sub_802E454(v1) != 0xFFFF;
+    return bg_getParam0(a1) != 0xFFFF || sub_802E44A(v1) != 0xFFFF || sub_802E454(v1) != 0xFFFF;
 }
 
 

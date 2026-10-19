@@ -4751,7 +4751,7 @@ signed int sub_8011F64()
 
 
 // 0x8011f84
-signed int sub_8011F84()
+signed int ai_setChipUseDelay()
 {
     int v0; // r7
 
@@ -5573,7 +5573,7 @@ int init_chipParams051()
 
 
 // 0x801254a
-signed int sub_801254A()
+signed int ai_setDifficultyTier20()
 {
     int v0; // r7
 
@@ -19978,7 +19978,7 @@ void __noreturn sub_801D2A4()
 
     CopyBackgroundTiles(1, 18, 0, word_801D9B4, 28, &byte_0[2]);
     v2 = sub_802E066(*(*(v1 + 72) + 22));
-    v0 = sub_802E440(*(*(v1 + 72) + 22));
+    v0 = bg_getParam0(*(*(v1 + 72) + 22));
     sub_801D344(v0, 0, 0, v2);
 }
 

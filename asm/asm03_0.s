@@ -16155,7 +16155,7 @@ loc_802D7E8:
 	bl GetBattleNaviStats2034A60Byte
 	push {r0}
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802DCCC
+	bl battle_getLoadedNaviId
 	pop {r1}
 	cmp r0, r1
 	bne loc_802D81A
@@ -16700,16 +16700,16 @@ dword_802DCC8:
 
 // symdb: Returns a byte (likely the currently loaded/active navi id) from the alliance's 16-byte record in the table at unk_203A980.
 // symdb: (r0 = alliance/entry index) -> r0 = byte at [unk_203A980 + r0*0x10 + 4]; flags not meaningful.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DCCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getLoadedNaviId.yaml
 	thumb_local_start
-sub_802DCCC:
+battle_getLoadedNaviId:
 	mov r1, #0x10
 	mul r0, r1
 	ldr r1, off_802DE40 // =unk_203A980 
 	add r1, r1, r0
 	ldrb r0, [r1,#4]
 	mov pc, lr
-	thumb_func_end sub_802DCCC
+	thumb_func_end battle_getLoadedNaviId
 
 	thumb_local_start
 sub_802DCD8:
@@ -17731,14 +17731,14 @@ byte_802E43A:
 // symdb: Returns the first halfword parameter of a background-table entry looked up from the given id, used when laying out background tiles.
 // symdb: (r0 = background/table id, passed through to sub_802E490) -> r0 = halfword at [entry+0]; no
 // symdb: flags relied on
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E440.yaml
-	thumb_func_start sub_802E440
-sub_802E440:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_getParam0.yaml
+	thumb_func_start bg_getParam0
+bg_getParam0:
 	push {lr}
 	bl sub_802E490
 	ldrh r0, [r0]
 	pop {pc}
-	thumb_func_end sub_802E440
+	thumb_func_end bg_getParam0
 
 	thumb_func_start sub_802E44A
 sub_802E44A:
@@ -18366,7 +18366,7 @@ sub_802E86C:
 	push {r4,r5,lr}
 	ldr r5, dword_802E948 // =0xffff 
 	mov r4, r0
-	bl sub_802E440
+	bl bg_getParam0
 	cmp r0, r5
 	bne loc_802E892
 	mov r0, r4

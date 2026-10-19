@@ -69,7 +69,7 @@ off_812D3E0:
 	thumb_func_start sub_812D3E4
 sub_812D3E4:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	ldrh r0, [r7,#0x2e]
 	ldr r1, off_812D4C4 // =word_2023FA0 
@@ -199,7 +199,7 @@ dword_812D4F8:
 	thumb_func_start sub_812D4FC
 sub_812D4FC:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r5, r0
 	mov r0, #2
 	mov r1, #0x20 
@@ -299,7 +299,7 @@ loc_812D594:
 	thumb_func_start sub_812D5A0
 sub_812D5A0:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r5, r0
 	ldr r0, off_812D5CC // =word_2023FA0 
 	ldrh r4, [r5,#0x2a]
@@ -342,7 +342,7 @@ sub_812D5D0:
 	thumb_local_start
 sub_812D5EC:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	mov r0, #0xc6
 	mov r1, #0x58 
@@ -410,7 +410,7 @@ off_812D664:
 	thumb_local_start
 sub_812D668:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r5, r0
 	mov r0, #0xa4
 	mov r1, #0x20 
@@ -433,7 +433,7 @@ dword_812D68C:
 	thumb_func_start sub_812D690
 sub_812D690:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	ldrh r0, [r7,#0x28]
 	tst r0, r0
@@ -487,19 +487,19 @@ locret_812D6F4:
 
 // symdb: Returns the pointer to the shared work/state struct for the submenu screen cluster at 0x02037780.
 // symdb: () -> r0 = pointer to menu work struct (0x02037780); flags unaffected (returns via mov pc, lr)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D6F8.yaml
-	thumb_func_start sub_812D6F8
-sub_812D6F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getWork.yaml
+	thumb_func_start submenu_getWork
+submenu_getWork:
 	ldr r0, off_812D6FC // =unk_2037780 
 	mov pc, lr
 off_812D6FC:
 	.word unk_2037780
-	thumb_func_end sub_812D6F8
+	thumb_func_end submenu_getWork
 
 	thumb_local_start
 sub_812D700:
 	push {r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	mov r0, #JOYPAD_START
 	bl IsButtonPressed
@@ -541,7 +541,7 @@ locret_812D746:
 	thumb_func_start submenu_updateCursorAndTiles
 submenu_updateCursorAndTiles:
 	push {r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r7, r0
 	bl sub_812D700
 	bne locret_812D776
@@ -602,7 +602,7 @@ sub_812D7A4:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r5, [sp]
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r5, r0
 	mov r0, #JOYPAD_A
 	bl IsButtonPressed
@@ -661,7 +661,7 @@ off_812D80C:
 	thumb_local_start
 sub_812D814:
 	push {lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	ldr r1, [r0,#0x6c]
 	tst r1, r1
 	beq locret_812D82E
@@ -678,7 +678,7 @@ locret_812D82E:
 	thumb_local_start
 sub_812D830:
 	push {lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	ldr r1, [r0,#0x6c]
 	tst r1, r1
 	pop {pc}
@@ -707,7 +707,7 @@ off_812D850:
 	thumb_func_start sub_812D854
 sub_812D854:
 	push {lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r1, r0
 	ldrh r0, [r1,#0x2e]
 	ldrh r2, [r1,#0x2a]
@@ -932,7 +932,7 @@ byte_812D9E0:
 	thumb_local_start
 sub_812D9F0:
 	push {r4-r7,lr}
-	bl sub_812D6F8
+	bl submenu_getWork
 	mov r5, r0
 	ldr r0, dword_812DA30 // =0x92 
 	mov r1, #0x1c

@@ -11797,7 +11797,7 @@ void __noreturn sub_811727C()
 
     v1 = 33;
     v2 = *(v0 + 4);
-    sub_803C316();
+    t1_testFlagBit();
     if ( !v3 )
     {
         v1 = 35;
@@ -11962,7 +11962,7 @@ signed int sub_81174C0()
         return 0;
     *(v0 + 9) = 0;
     *(v0 + 16) = 0;
-    sub_81175BC(8);
+    object_advanceSequencerOffset(8);
     return 1;
 }
 
@@ -11986,7 +11986,7 @@ signed int sub_811753C()
         return 0;
     *(v0 + 9) = 0;
     *(v0 + 16) = 0;
-    sub_81175BC(4);
+    object_advanceSequencerOffset(4);
     return 1;
 }
 
@@ -11998,7 +11998,7 @@ signed int sub_811756C()
 
     v0 = sub_81175C4();
     sprite_setCoordinates(*(v0 + 2), *(v0 + 4));
-    sub_81175BC(6);
+    object_advanceSequencerOffset(6);
     return 1;
 }
 
@@ -12020,7 +12020,7 @@ signed int __noreturn sub_8117592()
     v1 = sub_81175C4();
     sprite_setAnimation(v0, *(v1 + 2));
     sprite_loadAnimationData(v0);
-    sub_81175BC(4);
+    object_advanceSequencerOffset(4);
     return 1;
 }
 
@@ -12038,7 +12038,7 @@ char (*sprite_loadVariantSpritePtr())[24]
 
 
 // 0x81175bc
-int __fastcall sub_81175BC(int a1)
+int __fastcall object_advanceSequencerOffset(int a1)
 {
     int v1; // r5
     int result; // r0

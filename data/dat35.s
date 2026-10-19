@@ -1691,7 +1691,7 @@ sub_812FD10::
 	beq locret_812FD42
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4
@@ -1748,7 +1748,7 @@ sub_812FD6C::
 loc_812FD96::
 	bl eStruct200BC30_getJumpOffset00
 	mov r4, r0
-	bl sub_803EA50
+	bl rfu_shouldRestartWirelessLink
 	mov r6, r0
 	bl clearStruct200BC30_803EBAC
 	mov r0, r4

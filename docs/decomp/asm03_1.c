@@ -6601,10 +6601,10 @@ int __fastcall sub_8039BC0(int a1)
                 chatbox_mask_eFlags2009F38(8);
                 if ( !v3 )
                 {
-                    sub_803BB94();
+                    t3_timerElapsed();
                     if ( !v3 )
                     {
-                        sub_803C558();
+                        chatbox_clearTextBuffers();
                         sub_803BB90(30);
                         ow_checkJackInFlag();
                         if ( !v3 )
@@ -9365,7 +9365,7 @@ int __fastcall sub_803BB90(int result)
 
 
 // 0x803bb94
-signed int sub_803BB94()
+signed int t3_timerElapsed()
 {
     int v0; // r5
     int v1; // r0
@@ -9978,7 +9978,7 @@ int __fastcall sub_803C30C(int result)
 
 
 // 0x803c316
-void sub_803C316()
+void t1_testFlagBit()
 {
     ;
 }
@@ -10113,7 +10113,7 @@ int sub_803C418()
 
 
 // 0x803c434
-int __fastcall sub_803C434(int a1, int a2, int a3)
+int __fastcall storeIndexedPair(int a1, int a2, int a3)
 {
     int result; // r0
 
@@ -10236,7 +10236,7 @@ signed int sub_803C530()
 
 
 // 0x803c558
-int sub_803C558()
+int chatbox_clearTextBuffers()
 {
     clearStructBufferPair();
     return sub_81467A0();
@@ -10258,7 +10258,7 @@ int clearStatusBit1()
 
 
 // 0x803c580
-int sub_803C580()
+int rfu_setFlag40()
 {
     return rfu_orFlags(64);
 }
@@ -10334,7 +10334,7 @@ int dispatch_803C620()
 // 0x803c6a8
 signed __int64 rfu_disconnectLink()
 {
-    sub_813D9A0(&dword_34);
+    rfu_setLinkPhase(&dword_34);
     rfu_setLinkCommand(0);
     return 1LL;
 }
@@ -10364,7 +10364,7 @@ __int64 rfu_resetSlotsAndReportOffline()
 // 0x803c6f4
 signed __int64 sub_803C6F4()
 {
-    sub_813D9A0(51);
+    rfu_setLinkPhase(51);
     return 1LL;
 }
 
@@ -10399,7 +10399,7 @@ signed __int64 sub_803C730()
     *(v0 + 10) = v1;
     if ( v1 )
         return 0LL;
-    sub_813D9A0(9);
+    rfu_setLinkPhase(9);
     *v0 = 0;
     return 1LL;
 }
@@ -10410,7 +10410,7 @@ signed __int64 sub_803C754()
 {
     _BYTE *v0; // r7
 
-    sub_813D9A0(50);
+    rfu_setLinkPhase(50);
     *v0 = 0;
     return 1LL;
 }
@@ -10523,7 +10523,7 @@ __int64 sub_803C842()
 __int64 sub_803C84A()
 {
     sub_81468F4();
-    sub_814690C();
+    rfu_getConnectedPlayerCount();
     return 0LL;
 }
 
@@ -10568,8 +10568,8 @@ signed __int64 __fastcall rfu_updateLinkManager(int a1, int a2, int a3, int a4)
     rfu_clearDisconnectedSlots(&unk_200AF80, a2, a3, a4);
     if ( unk_200AF81 == 1 && *unk_200AF8C )
     {
-        sub_8146E5C(&unk_200AF80, 1);
-        sub_813D9A0(34);
+        rfu_setLinkState(&unk_200AF80, 1);
+        rfu_setLinkPhase(34);
         rfu_setLinkCommand(0);
     }
     return sub_803C90C();
@@ -10601,7 +10601,7 @@ signed __int64 sub_803C90C()
     rfu_testStatusFlags();
     if ( !v2 )
     {
-        sub_813D9A0(34);
+        rfu_setLinkPhase(34);
         *(v0 + 3) = 8;
     }
     return 0LL;
@@ -10615,7 +10615,7 @@ signed __int64 sub_803C94C()
 
     IsCurSubsystemInUse();
     if ( v0 )
-        sub_813D9A0(1);
+        rfu_setLinkPhase(1);
     else
         rfu_setStateEnded();
     rfu_setLinkCommand(0);
@@ -10629,7 +10629,7 @@ signed __int64 sub_803C97C()
     int v0; // r4
 
     v0 = sub_8146918(unk_200AF84);
-    if ( v0 < sub_814690C() )
+    if ( v0 < rfu_getConnectedPlayerCount() )
         return 0LL;
     rfu_setStateEnded();
     return 2LL;
@@ -10726,7 +10726,7 @@ signed int __fastcall sub_803CA64(int a1, int a2, int a3, int a4)
     unk_200AF90 = 4;
     unk_200AF88 = &byte_2010144;
     if ( sub_8146D20() )
-        sub_803CA90();
+        rfu_endLinkConnection();
     result = 4;
     *(v4 + 3) = 4;
     return result;
@@ -10734,7 +10734,7 @@ signed int __fastcall sub_803CA64(int a1, int a2, int a3, int a4)
 
 
 // 0x803ca90
-int sub_803CA90()
+int rfu_endLinkConnection()
 {
     int result; // r0
 
@@ -10767,7 +10767,7 @@ char *__fastcall sub_803CAC4(int a1)
         {
             v4 = sub_81466E4(v3);
             v5 = sub_8146714(v3);
-            sub_803C434(v3, v4, v5);
+            storeIndexedPair(v3, v4, v5);
             result = v5;
             ++v3;
             --v2;
@@ -10779,7 +10779,7 @@ char *__fastcall sub_803CAC4(int a1)
 
 
 // 0x803caf8
-int sub_803CAF8()
+int get_globalState()
 {
     return dword_200BC5C;
 }
@@ -12289,7 +12289,7 @@ signed int sub_803E288()
 
     v21 = v0;
     v22 = v2;
-    sub_803E88C();
+    link_compareStateBytes();
     if ( (v6 ^ v7) | v5 )
     {
         v8 = v1;
@@ -12955,7 +12955,7 @@ void __fastcall sub_803E850(int a1, int a2, signed int a3)
 
 
 // 0x803e880
-int __fastcall sub_803E880(int result)
+int __fastcall link_initState(int result)
 {
     *result = 8;
     *(result + 12) = 16;
@@ -12964,7 +12964,7 @@ int __fastcall sub_803E880(int result)
 
 
 // 0x803e88c
-int sub_803E88C()
+int link_compareStateBytes()
 {
     return sCamera.pad_54[0];
 }
@@ -12975,7 +12975,7 @@ int sub_803E89C()
 {
     *sCamera.pad_5E = 0;
     sCamera.unk_51 = 8;
-    return sub_803E880(&sCamera.unk_50);
+    return link_initState(&sCamera.unk_50);
 }
 
 
@@ -13003,7 +13003,7 @@ int __fastcall sub_803E8B4(int a1)
 
 
 // 0x803e8dc
-u32 sub_803E8DC()
+u32 get_eLinkStateUnk24()
 {
     return sCamera.unk_74;
 }
@@ -13221,7 +13221,7 @@ int __fastcall sub_803EA48(int result)
 
 
 // 0x803ea50
-int sub_803EA50()
+int rfu_shouldRestartWirelessLink()
 {
     return byte_200BC31;
 }
@@ -13444,7 +13444,7 @@ int __fastcall e_setJumpOffset(int result)
 
 
 // 0x803ebec
-int sub_803EBEC()
+int e_getJumpOffset05()
 {
     return eStruct200BC30_JumpOffset05;
 }
@@ -13510,7 +13510,7 @@ signed int sub_803EC54()
     if ( !v3 || v3 != 2 )
     {
         v2 = 2;
-        sub_803E8DC();
+        get_eLinkStateUnk24();
         v4 = get_eLinkStateUnk38();
         sub_803F118(v4, v5);
         sub_803EFFC();
@@ -13887,7 +13887,7 @@ signed int __fastcall rfu_queuePushEntry(int a1, unsigned int a2)
 
 
 // 0x803f05c
-int sub_803F05C()
+int rfu_advanceTickCounter()
 {
     int result; // r0
 

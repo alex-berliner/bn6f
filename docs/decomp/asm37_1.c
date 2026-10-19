@@ -1749,7 +1749,7 @@ int sub_8143198()
     char v3; // zf
     unsigned __int8 v4; // vf
 
-    v0 = sub_81433CA();
+    v0 = e_getFlagTotal();
     v1 = sub_81430B6(0);
     v2 = 0;
     do
@@ -1761,7 +1761,7 @@ int sub_8143198()
         v4 = __OFSUB__(v0--, 1);
     }
     while ( !(((v0 < 0) ^ v4) | (v0 == 0)) );
-    sub_81433CA();
+    e_getFlagTotal();
     return v2;
 }
 
@@ -2004,7 +2004,7 @@ int __fastcall sub_81433C2(int result)
 
 
 // 0x81433ca
-int sub_81433CA()
+int e_getFlagTotal()
 {
     return byte_2001018;
 }
@@ -2193,7 +2193,7 @@ int sub_8143978()
         if ( !v2 )
         {
             StartCutscene(byte_8093358, 0, v13, v14);
-            sub_8143F38();
+            e_setCutsceneActive();
             ClearEventFlagFromImmediate(13, 54);
         }
         ClearEventFlagFromImmediate(13, 48);
@@ -2391,7 +2391,7 @@ int __fastcall sub_8143C30(int a1, int a2, int a3, int a4)
     ClearEventFlagRangeFromImmediate(13, 152, 10);
     ClearEventFlagRangeFromImmediate(13, 162, 10);
     v6 = sub_8143BFC();
-    return sub_8143F68(v6);
+    return e_setFieldC(v6);
 }
 
 
@@ -2608,7 +2608,7 @@ int __fastcall e_resetEffectStruct(int a1, int a2, int a3, int a4)
 
 
 // 0x8143f38
-int sub_8143F38()
+int e_setCutsceneActive()
 {
     byte_2001019 = 1;
     return 0;
@@ -2631,7 +2631,7 @@ int sub_8143F60()
 
 
 // 0x8143f68
-int __fastcall sub_8143F68(int result)
+int __fastcall e_setFieldC(int result)
 {
     dword_200101C = result;
     return result;
@@ -2763,7 +2763,7 @@ int sub_8144048()
         }
         battle_callAIDispatch_8046818();
         battleObject_updateSpriteGfxForAll_8046854();
-        v2 = sub_804691A(3);
+        v2 = battle_testEntityStateFlag(3);
         if ( !v1 )
             sub_811E744(v2, v3, v4, v5);
         IsPaletteFadeActive();
