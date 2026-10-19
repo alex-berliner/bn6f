@@ -103,6 +103,10 @@ loc_800EE22:
 	pop {r5-r7,pc}
 	thumb_func_end getBattleObjectStateInfo_800EDD0
 
+// symdb: Builds the attack parameters (chip ID, effect result, total power, element/count) for an enemy's chip attack, with a special path for a particular version/actor enemy type that draws its chip and power from a per-alliance AI record.
+// symdb: (r0 = battle object) -> r0 = chip ID, r1 = chip-effect dispatcher result, r2 = summed attack
+// symdb: power, r3 = element ID (special path) or ChipsHeld count (normal path)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EE26.yaml
 	thumb_local_start
 sub_800EE26:
 	push {r5-r7,lr}
@@ -2114,7 +2118,7 @@ byte_800FB4C:
 // symdb: Player AI: if A-pressed/held, try to fire the queued attack chip for the controlled battle object, clearing the pending-input flag and returning the chosen chip id, damage and attack boost.
 // symdb: (r5 = *BattleObject, r10 = *Toolkit) -> r0 = chip id (u16), r1 = damage (u16), r2 = attack boost
 // symdb: (u16); side effects mutate AIData+0x44 flags, AIData+0xA0 AttackVars and call object_setAttack2
-// symdb: / useChipRelated_80127C0 / battle_dispatchBPwrAtkHandler / sub_8012CB2.
+// symdb: / useChipRelated_80127C0 / sub_80117BA / sub_8012CB2.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/playerAI_tryExecuteAttackChip_800FB54.yaml
 	thumb_func_start playerAI_tryExecuteAttackChip_800FB54
 playerAI_tryExecuteAttackChip_800FB54:
@@ -3678,6 +3682,10 @@ sub_801055E:
 	pop {pc}
 	thumb_func_end sub_801055E
 
+// symdb: Sets up the player-AI's chip attack: loads the chip's stats into the AI attack vars and dispatches one of three attack behaviors.
+// symdb: (r0 = behavior flags, r1 = chip-use delay, r2 = AI difficulty tier) -> r0 = 0; side effects on
+// symdb: battle object AIData
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801056A.yaml
 	thumb_func_start sub_801056A
 sub_801056A:
 	push {r7,lr}
@@ -14581,6 +14589,9 @@ dword_8015124:
 	.word 0x30E00
 	thumb_func_end sub_8015040
 
+// symdb: Enemy AI attack step that waits ~20 frames, then fires a table-based effect and cleans up flags before leaving the attack state
+// symdb: (r7 = attack-state vars, r5 = battle object; no args read) -> void; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015128.yaml
 	thumb_local_start
 sub_8015128:
 	push {r4,lr}
@@ -14907,6 +14918,10 @@ dword_80153E8:
 	.word 0x80000
 	thumb_func_end sub_80153B0
 
+// symdb: Completes an AI-controlled object's emergence onto its reserved target panel: commits panel coords, updates collision/sprite, clears invulnerability, and advances the AI attack state.
+// symdb: (r5 = battle object, r7 = oAIAttackVars of the AI attack state) -> void; r0 = 4 (HitElement) on
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80153EC.yaml
 	thumb_local_start
 sub_80153EC:
 	push {r4,lr}
@@ -15123,6 +15138,10 @@ locret_80155C4:
 	.word 0x31400
 	thumb_func_end sub_80154C8
 
+// symdb: Per-frame step of an enemy AI attack: waits 20 frames (state 4), then marks a table byte, clears AI/battle flags and exits the attack state.
+// symdb: (r5 = battle object, r7 = object's AI attack vars) -> r0 = 0 or clobbered; called per frame
+// symdb: while the attack is active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80155CC.yaml
 	thumb_local_start
 sub_80155CC:
 	push {r4,lr}
@@ -18425,6 +18444,9 @@ JumpTable8016ED8:
 	.word sub_8016F1A+1
 	thumb_func_end sub_8016EC4
 
+// symdb: Fully resets the current battle object as defeated: clears all collision/AI state, releases its slot, updates alliance counts, dispatches destroy events, and sets HP to 0 with phase 4 (dead).
+// symdb: (r5 = battle object pointer, no args) -> r0 = 4 (phase value written); no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016EE0.yaml
 	thumb_local_start
 sub_8016EE0:
 	push {lr}
@@ -20223,6 +20245,10 @@ off_8017CD4:
 	.word sub_8017E0A+1
 	thumb_func_end sub_8017CC0
 
+// symdb: Continues a battle object's multi-panel move: snaps the object onto its reached panel, then either launches the next step (velocity toward the following panel, panel reserved, MoveSubState=4) or ends the move (CurPhase=0x18, MoveSubState=8).
+// symdb: (r5 = battle object, no register args) -> r0 = 0/1-like status unused by callers visible;
+// symdb: touches ObjectFlags1, PanelXY, velocities, MoveSubState, CurPhase
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017CE0.yaml
 	thumb_local_start
 sub_8017CE0:
 	push {r6,r7,lr}
@@ -20402,6 +20428,9 @@ off_8017E38:
 	.word sub_8017FE6+1
 	thumb_func_end sub_8017E26
 
+// symdb: Battle-object AI step: snaps the object onto its queued next panel, picks an adjacent-panel slide direction, and starts a velocity-driven move onto it (or falls back to phase 0x18 if blocked).
+// symdb: (r5 = current battle object, no args) -> void; sets XVelocity/YVelocity, MoveSubState, CurPhase
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017E44.yaml
 	thumb_local_start
 sub_8017E44:
 	push {r4,r6,r7,lr}
@@ -20811,6 +20840,9 @@ off_801814C:
 	.word sub_8018186+1
 	thumb_func_end sub_801813A
 
+// symdb: Begins a battle object's removal: flags it as erased, disables its collision, frees its reserved panel, and starts a 60-frame vanish timer with PreventAnim 4.
+// symdb: (r0 = battle object pointer, also in r5) -> void; flags preserved/irrelevant
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018154.yaml
 	thumb_local_start
 sub_8018154:
 	push {lr}
@@ -26829,6 +26861,10 @@ nullsub_10:
 	mov pc, lr
 	thumb_func_end nullsub_10
 
+// symdb: Loads a sprite and its animation data onto the battle object in r5 from a packed word argument, then applies the shadow flag and current facing flip.
+// symdb: (r0 = packed: byte0 = sprite id, byte1 = anim id for oBattleObject_CurAnim, byte2 = sprite_load
+// symdb: arg, byte3 = shadow flag) -> r0 = 1; object passed in r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BE2A.yaml
 	thumb_func_start sub_801BE2A
 sub_801BE2A:
 	push {r6,r7,lr}
@@ -31420,6 +31456,9 @@ sub_801DF0C:
 	pop {pc}
 	thumb_func_end sub_801DF0C
 
+// symdb: Resets the in-battle custom gauge and loads its tile graphics and 16-color palette, then flags the palette for upload.
+// symdb: () -> r0 = 0 (clobbered by calls); queues VRAM/palette transfers and sets request bit 0x20000
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DF32.yaml
 	thumb_local_start
 sub_801DF32:
 	push {lr}

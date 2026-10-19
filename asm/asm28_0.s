@@ -1060,6 +1060,10 @@ off_809A074:
 	.word TextScriptChipTrader86C580C
 	thumb_func_end sub_809A05C
 
+// symdb: BugFrag trader interaction: waits for the chatbox to be free, then takes 10 bugfrags, grants one random chip, and opens the ChipTrader text script.
+// symdb: (r5/r10 = object/work pointers set up by caller, r0/r1 unused on entry) -> r0 = 0 when
+// symdb: idle/done, 1 while the trader state (loc_809A0E8) runs; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A078.yaml
 	thumb_local_start
 sub_809A078:
 	push {r4-r7,lr}
@@ -1297,6 +1301,9 @@ dword_809A25C:
 	.word 0xFFFFFFD0
 	thumb_func_end sub_809A1FC
 
+// symdb: Event-script routine that plays PET effect 1, reloads the map's graphics into VRAM, and clears the scenario/event flags to finish a scene
+// symdb: () -> r0 = 0; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A260.yaml
 	thumb_local_start
 sub_809A260:
 	push {r4-r7,lr}

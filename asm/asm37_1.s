@@ -2170,6 +2170,10 @@ loc_8142C38:
 	pop {r4-r7,pc}
 	thumb_func_end battle_countAliveActorsOnTeam_8142C20
 
+// symdb: Subtracts the given damage from the currently selected navi's HP and plays hit feedback (effect at player coords, camera shake, hit SFX).
+// symdb: (r0 = damage amount) -> r0 = sound-effect id from last PlaySoundEffect call; writes new HP via
+// symdb: sub_80010EC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C46.yaml
 	thumb_func_start sub_8142C46
 sub_8142C46:
 	push {r4-r7,lr}
@@ -2597,6 +2601,10 @@ off_8142FC4:
 	.word off_8142E1C
 	thumb_func_end sub_8142ECC
 
+// symdb: Per-frame overworld handler for the Cybercrow lesson spot: a denied forward/jack-in press begins a flag-staged cutscene sequence with the crows.
+// symdb: () -> r0 = 0 always; runs each frame while the player stands at the spot, setting/clearing
+// symdb: EVENT_962/EVENT_963 and starting cutscenes as side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142FC8.yaml
 	thumb_local_start
 sub_8142FC8:
 	push {r4-r7,lr}

@@ -6119,6 +6119,9 @@ battle_initFullSetup_8005DBE:
 	pop {r4-r7,pc}
 	thumb_func_end battle_initFullSetup_8005DBE
 
+// symdb: Full reset of game state, objects, graphics and global work structs when transitioning into a new scene/area, ending with reloading the PET navi's HP.
+// symdb: () -> r0 = ...; no meaningful return, clobbers r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005DF0.yaml
 	thumb_local_start
 sub_8005DF0:
 	push {r4-r7,lr}
@@ -9615,6 +9618,10 @@ dead_8007696:
 	b loc_80076A8
 	thumb_func_end dead_8007696
 
+// symdb: Spawns a battle enemy object at a panel position, initializes its AI data, stats and alliance, and returns the object pointer.
+// symdb: (r0 = enemy_index: u16, r1 = panel_x, r2 = panel_y, r3 = alliance, stack+0x14 = unk param stored
+// symdb: to AIData+0x14/BattleObject_Param2) -> r0 = *BattleObject or NULL on allocation failure
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80076A0.yaml
 	thumb_func_start sub_80076A0
 sub_80076A0:
 	push {r4-r7,lr}
@@ -10801,6 +10808,9 @@ off_8007EAC:
 	.word sub_8007F2C+1
 	thumb_func_end battle_runFrame
 
+// symdb: Aborts an ongoing battle as a link/communication error: pauses the battle, resets the link hardware, shows the appropriate comm-error message, and switches the battle state to 4.
+// symdb: () -> void; writes battle state byte (oBattleState_Index_01 = 4); clobbers r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007EB8.yaml
 	thumb_local_start
 sub_8007EB8:
 	push {r4,lr}
@@ -16141,6 +16151,10 @@ battle_initTypeAndFieldFromSettings_800A2F8: // () -> ()
 	pop {r4,pc}
 	thumb_func_end battle_initTypeAndFieldFromSettings_800A2F8
 
+// symdb: Builds the battle's shuffled folder: picks a source folder (preset, battle-mode table, or the player's folder keyed by current navi), copies 30 packed chips into eBattleFolder, decrypts/inserts navi-chip swaps when special battle effects are active, then shuffles.
+// symdb: (no args; uses r10 toolkit) -> void; writes eBattleFolder (60 halfwords), BattleState+0x17 and
+// symdb: +0x44 flags; r4-r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A318.yaml
 	thumb_local_start
 sub_800A318:
 	push {r4-r7,lr}

@@ -1384,6 +1384,9 @@ off_803962C:
 	.word 0x40
 	thumb_func_end init_textScene
 
+// symdb: When no screen fade is running, resets the whole video pipeline: clears VRAM and the BG tile buffer, reloads base graphics, re-inits chatbox/start-screen renderers, and blanks DISPCNT.
+// symdb: () -> void; returns early via IsScreenFadeActive flags when a fade is active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039630.yaml
 	thumb_local_start
 sub_8039630:
 	push {r4-r7,lr}

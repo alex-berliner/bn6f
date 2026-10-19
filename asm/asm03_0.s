@@ -17841,6 +17841,9 @@ locret_802E628:
 	pop {r4-r6,pc}
 	thumb_func_end sub_802E5FC
 
+// symdb: Writes a halfword into a 0x1D0-byte battle record, conditionally sets event flag EVENT_2020+value with a save re-encryption, and raises flag 0x10000 in the player's AI data word 0x44.
+// symdb: (r0 = record index, r1 = halfword value, r2 = suppress-flag) -> r0 = 1; r1..r3, r4-r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E62A.yaml
 	thumb_local_start
 sub_802E62A:
 	push {r4-r7,lr}

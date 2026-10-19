@@ -49,6 +49,9 @@ sub_813005C:
 	.balign 4, 0x00
 	thumb_func_end sub_813005C
 
+// symdb: Full initialization routine for an overlay cutscene/scene: resets video, scene records, chatbox, and the scene object's animation state, then fades in.
+// symdb: () -> void; r5 = scene/object state ptr, r10 = toolkit must be set by caller; clobbers r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130084.yaml
 	thumb_func_start sub_8130084
 sub_8130084:
 	push {r7,lr}
@@ -1266,6 +1269,10 @@ locret_8130A00:
 	.balign 4, 0x00
 	thumb_func_end sub_813096C
 
+// symdb: Per-frame state-machine update for an interactive object that matches a looked-up record against the eLinkState global and runs text scripts 0x40/0x41 from eTextScript201BA20.
+// symdb: (r0 = ? (unused), r5 = object work struct, preloaded) -> r0 = ?; sets state bytes
+// symdb: [r5+0x10]/[r5+2]/[r5+0x1f], counters [r5+0x26]/[r5+0x28]/[r5+0x2a]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130A04.yaml
 	thumb_local_start
 sub_8130A04:
 	push {r4-r7,lr}
@@ -3771,6 +3778,9 @@ off_8131F34:
 	.word sub_8131F80+1
 	thumb_func_end sub_8131F20
 
+// symdb: Waits for the screen fade, then initializes link state, camera layout and object state and starts a fade as the first step of transitioning into a link scene.
+// symdb: (r5 = task/state struct, no register args) -> r0 = undefined; writes state id 4 to [r5+0x24]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131F3C.yaml
 	thumb_local_start
 sub_8131F3C:
 	push {lr}
@@ -4080,6 +4090,10 @@ locret_8132192:
 	pop {pc}
 	thumb_func_end sub_8132168
 
+// symdb: Link-menu state routine: compares link-peer data in eLinkState against a small known-entry table, then sets sSubmenu state fields and fires a network text script (0x1E/0x1F) based on the outcome.
+// symdb: () -> r0 = 0 or 4 (result code); writes sSubmenu.jo_01/unk_02/unk_03/unk_10/unk_11/unk_26/unk_2A
+// symdb: and eLinkState fields; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132194.yaml
 	thumb_local_start
 sub_8132194:
 	push {r4-r7,lr}
@@ -15926,6 +15940,11 @@ off_81378C8:
 	.word sub_8137A7C+1
 	thumb_func_end sub_81378B4
 
+// symdb: Initializes a battle-overlay scene/round state: wipes video buffers, resets scene records, clears a run of event flags, and sets up the first object's animation with a screen fade.
+// symdb: (r0-r3 unused; r5 = scene state struct base, r10[8] = render-state struct) -> r0 = 0; writes
+// symdb: state fields at r5+0x1,0x2,0xc,0xd,0xe,0x1e and render fields at r10[8]+0x0,0x10..0x1a; invokes
+// symdb: screen fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81378D4.yaml
 	thumb_local_start
 sub_81378D4:
 	push {r4-r7,lr}

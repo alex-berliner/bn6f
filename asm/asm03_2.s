@@ -9396,6 +9396,10 @@ byte_804BB92:
 	.byte 0xFF, 0xFF, 0xFF
 	thumb_func_end sub_804AFE4
 
+// symdb: Picks the chip the chip trader will award: chooses a reward-list entry and a rarity tier, then resolves or redraws the final chip.
+// symdb: () -> r0 = ? (result of last callee); writes trader state at eS200AC80 (+0x4c list ptr, +0x50
+// symdb: count, +0x34 pick state)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BD00.yaml
 	thumb_func_start sub_804BD00
 sub_804BD00: // EXE6F: 0x804d770
 	push {r4-r7,lr}
@@ -11337,7 +11341,7 @@ sub_804CC7E:
 
 // symdb: Jump-table dispatcher that selects one of two beast-spawn routines based on the AIData Unk_0c byte read from r5.
 // symdb: (r0 = junk loaded from table, r1 = dispatch index<<2, r5 = AIData ptr) -> (tail call into
-// symdb: sub_804CCBC or t4_setCycleFrameIndex); preserves r5 via the 'push/pop {r4-r7,lr}'
+// symdb: sub_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_spawnIndexDispatcher_804CC8E.yaml
 	thumb_local_start
 beastSp_spawnIndexDispatcher_804CC8E:

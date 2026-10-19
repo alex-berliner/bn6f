@@ -26013,6 +26013,9 @@ off_811A7A0:
 	.word sub_811A830+1
 	thumb_func_end sub_811A78C
 
+// symdb: Initializes a GUI sprite object (resource 0x2A) with fixed anim/palette/priority and places it at one of three preset positions chosen by a variant byte.
+// symdb: (r5 = object struct; variant in [r5+4]) -> void; sets [r5]=0x23, [r5+8]=4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A7AC.yaml
 	thumb_local_start
 sub_811A7AC:
 	push {lr}
@@ -26498,6 +26501,10 @@ off_811AB70:
 	.word sub_811ACFC+1
 	thumb_func_end sub_811AB5C
 
+// symdb: Initializes an object's sprite setup: assigns sprite resource 8 from table unk_2024E8C, sets animation 0, no shadow, palette 0, priority 2, and writes object state bytes.
+// symdb: (r5 = object pointer, r0/r1 caller args unused) -> r0 = clobbered; sets object state byte [r5] =
+// symdb: 0x23, [r5,#8] = 4, sprite fields via setters
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811AB7C.yaml
 	thumb_local_start
 sub_811AB7C:
 	push {lr}
@@ -26742,6 +26749,9 @@ off_811AD4C:
 	.word sub_811AE54+1
 	thumb_func_end sub_811AD38
 
+// symdb: Initializes a GUI sprite object (sprite 0x68): configures animation/palette/priority and places it at a table-chosen x,y position based on the object's selector byte.
+// symdb: (r5 = object struct) -> void; sets object state [r5]=0x23, [r5,#8]=4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811AD58.yaml
 	thumb_local_start
 sub_811AD58:
 	push {r4,lr}
@@ -33282,6 +33292,10 @@ off_811E42C:
 	.word sub_811E510+1
 	thumb_func_end sub_811E418
 
+// symdb: Initializer for a sprite-based object: assigns sprite 0xA1, animation 1, no shadow, palette 0, priority 2, position halfword 0x280, and sets the object's kind/state bytes.
+// symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = sub_811E490's return; no
+// symdb: meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E438.yaml
 	thumb_local_start
 sub_811E438:
 	push {lr}

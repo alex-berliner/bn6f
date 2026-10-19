@@ -3029,6 +3029,10 @@ loc_8145652:
 	bx r0
 	thumb_func_end sub_81455E8
 
+// symdb: Wireless-adapter connection state-machine dispatcher: handles one link event against the rfu connection struct at 200FE00, advancing/clearing search-and-connect states.
+// symdb: (r0 = event id (0x10..0x3D dispatch range), r1 = param (0 = action allowed, nonzero = ignored))
+// symdb: -> r0 = result/status of the branch taken; clobbers r4-r7, uses eStruct200FE00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145658.yaml
 	thumb_local_start
 sub_8145658:
 	push {r4-r7,lr}

@@ -6053,6 +6053,9 @@ locret_812602C:
 	.balign 4, 0x00
 	thumb_func_end sub_8125F5C
 
+// symdb: Redraws the battle chip-selection screen (slot frame, chip icons, packed slot data) in one of two layouts depending on a mode field.
+// symdb: (r5 = screen/work struct ptr) -> void; r7 = r5 internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126030.yaml
 	thumb_local_start
 sub_8126030:
 	push {r4-r7,lr}
@@ -12750,6 +12753,9 @@ locret_812956A:
 	pop {pc}
 	thumb_func_end sub_812954C
 
+// symdb: Per-frame battle-side update that runs all entity and sprite updates, then once the screen fade has finished marks its task state done and shuts the wireless adapter down.
+// symdb: (r5 = task/state struct: +2 state byte, +0xD done flag; r0 = scratch) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812956C.yaml
 	thumb_local_start
 sub_812956C:
 	push {lr}
@@ -18622,6 +18628,10 @@ off_812C090:
 	.word sub_812C094+1
 	thumb_func_end sub_812C07C
 
+// symdb: One-time setup for a screens3 menu state: waits for the fade, initializes the battle scene, loads entity/background graphics, spawns eStruct records, and resets state fields.
+// symdb: (r5 = menu/state record) -> r0 = 0 (clobbered); writes r5+3 = 0x10, r5+0x1E = 0, zeroes 16 bytes
+// symdb: at unk_20251A0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C094.yaml
 	thumb_local_start
 sub_812C094:
 	push {lr}
