@@ -512,6 +512,10 @@ off_809D55C:
 	.word off_809D554
 	thumb_func_end owPlayer_tickPerFrame_809D4DC
 
+// symdb: Sets the overworld player object's animation and action state for its current facing direction, choosing the source table from context (normal, internet navi, event flag, or active script routine).
+// symdb: (r5 = OW player object) -> writes oOWPlayerObject_AnimationSelect,
+// symdb: oOWPlayerObject_ActionSubState=4, oOWPlayerObject_Unk_38/3C; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D560.yaml
 	thumb_local_start
 sub_809D560:
 	push {lr}
@@ -2334,6 +2338,10 @@ ReadOWPlayerObjectCoords:
 	mov pc, lr
 	thumb_func_end ReadOWPlayerObjectCoords
 
+// symdb: Returns the overworld player object's three position coordinates (fields 0x1C, 0x20, 0x24) in r1-r3.
+// symdb: (no inputs; r0 ignored) -> r1 = player obj +0x1C (X), r2 = player obj +0x20 (Y), r3 = player obj
+// symdb: +0x24 (Z/height); clobbers r1-r3, preserves r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E1BC.yaml
 	thumb_func_start sub_809E1BC
 sub_809E1BC:
 	mov r3, r10
@@ -2790,6 +2798,10 @@ resetStruct2000aa0State_809E3B2:
 	pop {r4-r7,pc}
 	thumb_func_end resetStruct2000aa0State_809E3B2
 
+// symdb: Stores four pending parameters into the eStruct2000aa0 request block and raises its active/valid flag byte.
+// symdb: (r0 = param1, r1 = param2, r2 = param3, r3 = param4) -> r0 = 1 (clobbered); no flags meaningful
+// symdb: (returns via pop {pc})
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E3C4.yaml
 	thumb_func_start sub_809E3C4
 sub_809E3C4:
 	push {r4-r7,lr}

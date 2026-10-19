@@ -689,6 +689,9 @@ battle_getAIDataPtr_8142068:
 	mov pc, lr
 	thumb_func_end battle_getAIDataPtr_8142068
 
+// symdb: Resets the Cybeast spread-attack spawn coordinates in eStruct2001010 to a default/off-screen pair (0, 15).
+// symdb: (no args used) -> r0 = 0; flags clobbered by bl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142072.yaml
 	thumb_local_start
 sub_8142072:
 	push {r4-r7,lr}
@@ -879,6 +882,9 @@ sub_8142178:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142178
 
+// symdb: Decrements by one the counter byte at offset 0x0E of the scenario-effect state structure when an overworld event finishes.
+// symdb: (no args used) -> r0 = decremented value; no flags returned (popped with pc)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142184.yaml
 	thumb_func_start sub_8142184
 sub_8142184:
 	push {r4-r7,lr}
@@ -903,6 +909,9 @@ battle_checkScenarioEffectActive_8142190:
 	pop {r4-r7,pc}
 	thumb_func_end battle_checkScenarioEffectActive_8142190
 
+// symdb: Returns nonzero (Z flag cleared) if any of the four state bytes at eScenarioEffectState+0x10..0x13 is set, else zero.
+// symdb: () -> r0 = sum of bytes [0x10..0x13] of eScenarioEffectState2000780; Z set iff all four are 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814219C.yaml
 	thumb_func_start sub_814219C
 sub_814219C:
 	push {r4-r7,lr}
@@ -934,6 +943,9 @@ loc_81421C4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81421B2
 
+// symdb: Setter that stores a one-byte value into field 0xB of the scenario effect state struct at 0x2000780.
+// symdb: (r0 = byte value) -> r0 = unchanged (caller-saved only); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81421C8.yaml
 	thumb_func_start sub_81421C8
 sub_81421C8:
 	push {r4-r7,lr}
@@ -1087,6 +1099,9 @@ byte_8142294:
 	.byte 0x3, 0x3, 0x3, 0x3, 0x5, 0x4, 0x3, 0x4, 0x6, 0x4, 0x6, 0x3, 0x4, 0x5, 0x3
 	thumb_func_end sub_814227A
 
+// symdb: Zeroes the dword at offset 0x10 of the scenario-effect state struct, resetting one scenario effect value.
+// symdb: () -> r0 = 0; writes 0 to eScenarioEffectState2000780+0x10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81422B4.yaml
 	thumb_func_start sub_81422B4
 sub_81422B4:
 	push {r4-r7,lr}

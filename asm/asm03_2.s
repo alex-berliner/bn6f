@@ -48,6 +48,11 @@ sub_8045FC6:
 	b loc_8045FEE
 	thumb_func_end sub_8045FC6
 
+// symdb: Selects an animation entry from a loaded animation file and immediately runs its opcode stream through the Toolkit's animation interpreter, returning the interpreter's result.
+// symdb: (r0 = ptr to resource whose halfwords at 2*index are offsets to opcode streams, r1 = packed
+// symdb: (animFilePtrTableByteOffset<<16 | scriptIndex); r10 = toolkit) -> r0 = dword at 200A25C;
+// symdb: r8/r9/r12 preserved, r1 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8045FD0.yaml
 	thumb_func_start sub_8045FD0
 sub_8045FD0:
 	push {lr}
@@ -872,7 +877,7 @@ loc_8046652:
 	thumb_func_end battle_updateEStructSprites_80465F8
 
 // () -> void
-// symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after e_clearAllEntitySpriteScales, so scene ticks returning from a battle overlay start from clean records.
+// symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after sub_80466AA, so scene ticks returning from a battle overlay start from clean records.
 // symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetEStructRecords_8046664.yaml
 	thumb_func_start battle_resetEStructRecords_8046664
@@ -4342,6 +4347,10 @@ dword_8048CC8:
 	.word 0xE80
 	thumb_func_end shop_copyItemTableToShopData_8048C98
 
+// symdb: Merges an 8-byte item/stock record into an indexed inventory-style list, stacking quantities up to 0xFF or filling the first empty slot.
+// symdb: (r0 = list index, r1 = pointer to 8-byte entry {id, count, halfword, byte, pad}) -> void; flags
+// symdb: not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048CCC.yaml
 	thumb_local_start
 sub_8048CCC:
 	push {r4-r7,lr}
@@ -10150,6 +10159,10 @@ locret_804C240:
 	.balign 4, 0x00
 	thumb_func_end tickActionTimer_804C214
 
+// symdb: Initializes and steps the frame counter for the battle screen-flash/background-fill effect driven by its caller.
+// symdb: (r5 = effect state object, r10 = toolkit; uses toolkit->oToolkit_Unk2009740_Ptr) -> r0 = void;
+// symdb: sets state fields 0x11/0x18 and struct bytes 0-3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C244.yaml
 	thumb_local_start
 sub_804C244:
 	push {r4-r7,lr}

@@ -23189,6 +23189,9 @@ dword_814EB18:
 	.word 0x7FFFFFFF
 	thumb_func_end sub_814EAF0
 
+// symdb: m4a music-player stop: kills every active track's sounding channel and resets the track state for one MusicPlayerInfo.
+// symdb: (r0 = MusicPlayerInfo* song) -> r0 = undefined; no flags used by callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EB1C.yaml
 	thumb_func_start sub_814EB1C
 sub_814EB1C:
 	push {r4-r7,lr}
@@ -25693,6 +25696,10 @@ dword_814FBF8:
 	.word 0x68736D53
 	thumb_func_end sub_814FB88
 
+// symdb: Executes one instruction of a small conditional byte-code script: arithmetic on byte variables, or a comparison that on success dispatches a registered callback, on failure skips the embedded 4-byte target.
+// symdb: (r0 = vm context (var array ptr at +0x18), r1 = script state (PC at +0x40)) -> r0 =
+// symdb: callback/void result; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814FBFC.yaml
 	thumb_local_start
 sub_814FBFC:
 	push {r4-r6,lr}

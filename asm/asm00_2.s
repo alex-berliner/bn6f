@@ -3519,6 +3519,10 @@ loc_8010454:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_findClosestEnemyBattleObject_80103F8
 
+// symdb: Returns the squared distance from a point (r0,r1) to a point stored in a struct passed in r3.
+// symdb: (r0 = x, r1 = y, r3 = pointer to struct {x, y} at +0/+4) -> r0 = (ref.x - x)^2 + (ref.y - y)^2;
+// symdb: flags from final add
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010460.yaml
 	thumb_local_start
 sub_8010460:
 	ldr r2, [r3]
@@ -5300,6 +5304,10 @@ locret_8011234:
 	pop {pc}
 	thumb_func_end sub_8011224
 
+// symdb: Battle-object cleanup helper: deletes and nulls the object's RelatedObject2 pointer and its ExtraVars allocation.
+// symdb: (r5 = battle object) -> r0 = 0; clears oBattleObject_RelatedObject2Ptr and
+// symdb: oBattleObject_ExtraVars fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011236.yaml
 	thumb_local_start
 sub_8011236:
 	push {lr}
@@ -7591,6 +7599,10 @@ tomahawkmanBPwrAtk_init_8012258:
 	pop {pc}
 	thumb_func_end tomahawkmanBPwrAtk_init_8012258
 
+// symdb: Initializes the AI attack-vars block for an attack (damage 10, extra damage 138, boost 6, timer 6) and returns state 9.
+// symdb: (r7 = entity AI attack-vars struct) -> r0 = 9 (state/phase code); fields Damage=10,
+// symdb: ExtraDamage=138, InitFlag=4, AttackBoost2=6, TimerOrCycles=6 written
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012278.yaml
 	thumb_local_start
 sub_8012278:
 	push {lr}
@@ -31659,6 +31671,9 @@ battle_eStruct2035280_postEvent_801E0A0:
 	pop {pc}
 	thumb_func_end battle_eStruct2035280_postEvent_801E0A0
 
+// symdb: Copies MegaMan's current HP into the battle HUD's displayed-HP field so the HP box shows the live value.
+// symdb: (no args) -> r0 = new shown HP; no flags set intentionally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E0BC.yaml
 	thumb_local_start
 sub_801E0BC:
 	push {lr}

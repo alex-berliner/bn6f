@@ -1725,6 +1725,9 @@ sub_8003ACA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8003ACA
 
+// symdb: Sets bit 0x80 on the status byte at eStruct2001010, but only if that byte is currently nonzero
+// symdb: (no args) -> r0 = flag byte value; flags from tst/loret, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003AD4.yaml
 	thumb_func_start sub_8003AD4
 sub_8003AD4:
 	push {r4-r7,lr}
@@ -15230,6 +15233,10 @@ locret_8009E0E:
 	pop {pc}
 	thumb_func_end sub_8009DEC
 
+// symdb: State-machine step: reads the current phase byte from a battle-state struct and calls the matching handler function from a table.
+// symdb: (r5 = state struct with phase byte at oBattleState_StatePhase) -> calls handler table entry for
+// symdb: the phase; returns to caller when handler returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E10.yaml
 	thumb_local_start
 sub_8009E10:
 	push {lr}
@@ -15631,6 +15638,9 @@ off_800A078:
 	.word dword_2036820
 	thumb_func_end battle_checkFlowAdvanceFlags_800A046
 
+// symdb: Returns 1 if bit 3 of the flag halfword is set in record r0 of the 8-byte-record table at 0x2036820, else 0.
+// symdb: (r0 = record index into dword_2036820) -> r0 = 1 if bit 3 of halfword at record+4 is set, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A07C.yaml
 	thumb_local_start
 sub_800A07C:
 	mov r2, #8
@@ -16969,6 +16979,9 @@ setTwoStructs_800A840:
 	pop {pc}
 	thumb_func_end setTwoStructs_800A840
 
+// symdb: Returns the current battle phase byte from the active battle state.
+// symdb: () -> r0 = oBattleState_BattlePhase of the current battle; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A84E.yaml
 	thumb_local_start
 sub_800A84E:
 	mov r0, r10
@@ -17551,6 +17564,10 @@ clearWorkArea_2000FA0_800AB22:
 	pop {pc}
 	thumb_func_end clearWorkArea_2000FA0_800AB22
 
+// symdb: Writes one byte into a fixed table at byte_203EAE0 whose entries are 16 bytes each.
+// symdb: (r0 = entry index, r1 = byte offset within entry, r2 = value to store) -> void; no flags
+// symdb: meaningful (strb sets none)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AB2E.yaml
 	thumb_func_start sub_800AB2E
 sub_800AB2E:
 	mov r3, #0x10

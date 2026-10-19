@@ -163,6 +163,9 @@ loc_813B836:
 	.balign 4, 0x00
 	thumb_func_end sub_813B830
 
+// symdb: Measures the empty margins (left/right/top/bottom) of the current AI entity's 7x7 byte grid mask and returns them as four values.
+// symdb: () -> r0 = left margin, r1 = right margin, r2 = top margin, r3 = bottom margin; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B84C.yaml
 	thumb_func_start sub_813B84C
 sub_813B84C:
 	push {r4-r7,lr}
@@ -335,6 +338,10 @@ off_813B94C:
 	.word 0x188
 	thumb_func_end zeroFill_813B934
 
+// symdb: Stamps a 7x7 AI-selected area pattern centered on a battle-grid tile, writing value+1 into grid cells where the pattern is nonzero.
+// symdb: (r0 = marker value, r1 = AI dispatch argument, r2 = center x, r3 = center y) -> r0 = dispatched
+// symdb: pattern pointer; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B950.yaml
 	thumb_func_start sub_813B950
 sub_813B950:
 	push {r4-r7,lr}
@@ -1290,6 +1297,10 @@ loc_813BF38:
 	strb r2, [r1,r0]
 	mov pc, lr
 	.byte 0, 0
+// symdb: Scans the 7x7 Navi Customizer grid and returns whether any occupied cell lies on the middle row within ±3 columns of the given column.
+// symdb: (r0 = unused/dispatch seed, r1 = column, r2 = row) -> r0 = 1 if a nonzero grid byte is found in
+// symdb: row 3 with column in [r1-3, r1+3], else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BF60.yaml
 	thumb_func_start sub_813BF60
 sub_813BF60:
 	push {r4-r7,lr}
@@ -1341,6 +1352,10 @@ loc_813BFA6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813BF60
 
+// symdb: NaviCust helper: checks whether the held part's occupied cells all land inside the valid 4x4 board area, returning 1 if any cell falls outside.
+// symdb: (r0 = ignored/part id already in global, r1 = placement x, r2 = placement y) -> r0 = 1 if any
+// symdb: occupied shape cell is outside the valid region, 0 if it fits; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BFB8.yaml
 	thumb_func_start sub_813BFB8
 sub_813BFB8:
 	push {r4-r7,lr}

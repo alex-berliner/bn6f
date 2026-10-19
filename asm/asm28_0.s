@@ -829,6 +829,9 @@ off_8099DA8:
 	.word byte_809929C
 	thumb_func_end ow_applySpawnEntry
 
+// symdb: Cutscene-called native that points the camera's tracking struct at the overworld player object (value 1), presumably re-locking the camera onto the player.
+// symdb: (r0 unused on entry) -> r0 = 0; reads r10 toolkit, no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099DAC.yaml
 	thumb_local_start
 sub_8099DAC:
 	push {r4-r7,lr}

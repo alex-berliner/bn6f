@@ -2419,6 +2419,10 @@ byte_80A5FB4:
 	.byte 0xC3, 0xF, 0xC4, 0xF, 0x0, 0x0
 	thumb_func_end battle_beastOutCheckUnlockFlag
 
+// symdb: Loads one Beast Out form's byte parameters from the IWRAM table byte_2000EC0 into the transformation struct and copies three table words into the battle object during Beast Out initialization.
+// symdb: (r5 = beast-out struct (index at +4), r6 = battle object) -> r0 = undefined; fills r5+0x24,
+// symdb: r5+6, r5+7, r6+0x88/0x8C/0x90
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5FD0.yaml
 	thumb_local_start
 sub_80A5FD0:
 	push {r4-r7,lr}
@@ -3454,6 +3458,10 @@ battle_emptyReturnZero_80A6E4A:
 	pop {pc}
 	thumb_func_end battle_emptyReturnZero_80A6E4A
 
+// symdb: Interpreter opcode handler (0x24/0x25) that resolves an id byte through a pointer table and stores the resulting pointer into the sprite work struct.
+// symdb: (r0 = id byte from struct, r1 = pointer table) -> r0 = pointer stored at [r5,r6]; flags
+// symdb: clobbered by cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E50.yaml
 	thumb_local_start
 sub_80A6E50:
 	cmp r6, #0x24 
@@ -5328,6 +5336,10 @@ loc_80A7B76:
 	pop {r4-r7,pc}
 	thumb_func_end battle_checkEnemyInAttackRangeAndTrigger_80A7B32
 
+// symdb: Reads a 32-bit little-endian value from a possibly unaligned address, byte by byte, returning it in r1.
+// symdb: (r0 = source address, need not be word-aligned) -> r1 = 32-bit value assembled from bytes
+// symdb: [r0..r0+3]; r0 preserved; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B7A.yaml
 	thumb_local_start
 sub_80A7B7A:
 	ldrb r1, [r0]
@@ -6042,6 +6054,10 @@ off_80A8034:
 	.word unk_2010000
 	thumb_func_end sub_80A8020
 
+// symdb: Translates an overworld animation variant selector into an animation id via an 8-entry lookup table, returning 0xFF for invalid/none.
+// symdb: (r0 = variant selector index) -> r0 = animation id (0xFF if the selector is an even/half-invalid
+// symdb: entry); flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8038.yaml
 	thumb_local_start
 sub_80A8038:
 	push {r4-r7,lr}
@@ -9655,6 +9671,11 @@ sub_80A9CA6:
 	pop {pc}
 	thumb_func_end sub_80A9CA6
 
+// symdb: Returns 1 if the player is inside a small X/Y window around an event NPC's position at the same Z level, else 0.
+// symdb: (r5 = NPC/object struct: X +0xC, Y +0x10, Z +0x14) -> r0 = 1 if player within 16.0 units in X
+// symdb: and Y of object position (X offset -64.0, Y offset +64.0) and player Z == object Z + 64.0; else
+// symdb: r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9CAE.yaml
 	thumb_local_start
 sub_80A9CAE:
 	push {r4-r7,lr}
@@ -9969,6 +9990,10 @@ off_80A9EC8:
 	.word eCutsceneState
 	thumb_func_end sub_80A9EB6
 
+// symdb: Dispatches the logout sequence's current state (0=start effect, 1=middle step, 2=release map object) by tail-calling its handler.
+// symdb: (r5 = logout state-machine object; state byte at [r5,#8] selects handler) -> tail-jump to
+// symdb: handler; returns to this function's caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9ECC.yaml
 	thumb_func_start sub_80A9ECC
 sub_80A9ECC:
 	push {r4-r7,lr}
@@ -10050,6 +10075,9 @@ ow_releaseMapObject:
 	.balign 4, 0x00
 	thumb_func_end ow_releaseMapObject
 
+// symdb: Calls the overworld object's state handler selected by the object's state field.
+// symdb: (r5 = object struct) -> dispatches to handler via table lookup; r0 passes through as handler arg
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F58.yaml
 	thumb_func_start sub_80A9F58
 sub_80A9F58:
 	push {lr}

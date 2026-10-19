@@ -176,6 +176,10 @@ off_3005D20:
 	.word eStruct200BC30_getJumpOffset00_pushpop+1
 	thumb_func_end sub_3005CF0
 
+// symdb: IWRAM vblank-style service routine that applies a queued DMA0/copy request from a work struct at 0x20081B0, or just disables DMA0 when the request tag is 0x80.
+// symdb: (void) -> void; reads request struct at byte_20081B0, programs DMA0 registers (SAD/DAD/CNT) and
+// symdb: performs a CpuSet word copy; no meaningful return value, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005D24.yaml
 	thumb_local_start
 sub_3005D24:
 	push {lr}
@@ -2115,6 +2119,10 @@ byte_30069A0::
 	.byte 0x4, 0x4, 0x4, 0x0, 0x4, 0x0, 0x4, 0x4
 	thumb_func_end sprite_queueOamEntries
 
+// symdb: In-place ascending shellsort of an array of 32-byte records, keyed by one signed 32-bit word chosen by index.
+// symdb: (r0 = array base, r1 = element count, r2 = key word index within each 32-byte element) -> r0 =
+// symdb: 0; array sorted ascending in place, no flags meaningful.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30069A8.yaml
 	thumb_local_start
 sub_30069A8:
 	push {r4-r7,lr}
@@ -2423,6 +2431,10 @@ off_3006C14:
 	.word dword_3006B84
 	thumb_func_end sub_3006B94
 
+// symdb: Adds a value fetched from a global chatbox table to all 16 words of one 0x40-byte row and advances the caller's output pointer/loop counters.
+// symdb: (r6 = base table ptr, r1 = row index, r2 = dest row ptr; r4/r5 = loop counters) -> writes
+// symdb: r6+r1*64[i]+globalVal to r2[i] for i=0x3C..0; r2 += 0x40, r4++, r5++; r0/r6 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006C18.yaml
 	thumb_local_start
 sub_3006C18:
 	push {r0,r6,lr}
@@ -2896,6 +2908,10 @@ sub_3006F42:
 	.balign 4, 0x00
 	thumb_func_end sub_3006F42
 
+// symdb: Returns the input pointer advanced by a per-variant offset looked up from a small table, using a type byte in the structure as the index.
+// symdb: (r0 = pointer to struct whose byte at +0x01 selects a layout variant) -> r0 = r0 +
+// symdb: byte_3006F58[type]; r1 and r7 clobbered, flags set by the add
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006F48.yaml
 	thumb_func_start sub_3006F48
 sub_3006F48:
 	ldrb r7, [r0,#1]
@@ -3898,6 +3914,10 @@ off_300764C:
 	.word unk_2034F60
 	thumb_func_end object_linkCollisionData
 
+// symdb: For a pair of battle objects, checks that one's target collision flags match the other's self collision flags and, if so, records the collision link between them.
+// symdb: (r0 = object A collision/entity record, r1 = object B record) -> r0 = preserved via callee flow;
+// symdb: no meaningful return, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007650.yaml
 	thumb_local_start
 sub_3007650:
 	push {r6,r7,lr}
@@ -4073,7 +4093,7 @@ dword_3007778:
 
 // symdb: Walks a battle object's collision footprint and updates the panel(s) it occupies each frame, with a second mode that scans the whole 6x3 grid.
 // symdb: (r0 = CollisionData*) -> void ; side effects: panel data and per-panel collision state mutated
-// symdb: via object_setPanelCollisionBit and _object_updatePanelParameters
+// symdb: via sub_3007868 and _object_updatePanelParameters
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateCollisionPanels_300777C.yaml
 	thumb_func_start object_updateCollisionPanels_300777C
 object_updateCollisionPanels_300777C:
@@ -4226,6 +4246,10 @@ off_300787C:
 	.word unk_2034F60
 	thumb_func_end object_setPanelCollisionBit
 
+// symdb: Test-and-clears an object's collision-occupancy bit in the battle collision index table, returning the old word and setting flags on whether the bit was set.
+// symdb: (r0 = word index in collision index table, r1 = group index (<<3), r2 = pointer to CollisionData
+// symdb: struct) -> r0 = old table word; Z flag set iff the object's CollisionIndexBit was already clear
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007880.yaml
 	thumb_local_start
 sub_3007880:
 	ldr r3, off_3007898 // =unk_2034F60

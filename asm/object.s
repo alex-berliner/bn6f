@@ -4044,6 +4044,10 @@ off_800D458:
 	.word PanelOffsetListsPointerTable
 	thumb_func_end object_getPanelRegion
 
+// symdb: Scans the 3x3 panels around a battle object and collects coordinates of panels whose status flags match a required/forbidden mask pair into a list, returning the count.
+// symdb: (r5 = battle object, r7 = output byte array, r2 = required panel-flag mask, r3 = forbidden
+// symdb: panel-flag mask) -> r0 = number of entries written to [r7]; each entry is (panelY<<4)|panelX
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D45C.yaml
 	thumb_func_start sub_800D45C
 sub_800D45C:
 	push {r4,r6,lr}
@@ -5593,8 +5597,8 @@ loc_800E72C:
 // symdb: Per-frame update for a battle object's status-effect timers (paralysis, blind, confuse, freeze, superarmor, immobilize, anger, invuln) and the corresponding action resets in BattleObject + CollisionData.
 // symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several
 // symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
-// symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls battle_spawnParentLinkedObj6 /
-// symdb: battle_spawnLinkedObj3C / sub_80E9BDC.
+// symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
+// symdb: sub_80E4B34 / sub_80E9BDC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickStatusEffectTimers_800E730.yaml
 	thumb_func_start object_tickStatusEffectTimers_800E730
 object_tickStatusEffectTimers_800E730:

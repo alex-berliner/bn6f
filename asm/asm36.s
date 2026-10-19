@@ -11620,6 +11620,9 @@ loc_8135944:
 	.balign 4, 0x00
 	thumb_func_end sub_8135938
 
+// symdb: Saves an overworld object's current position into its previous-position fields, conditionally runs a follow-up step, and clears a counter byte.
+// symdb: (r0-r4 unused; r5 = object struct pointer, set by caller) -> r0 clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813594C.yaml
 	thumb_local_start
 sub_813594C:
 	push {lr}
@@ -12646,6 +12649,10 @@ off_8136128:
 	.word byte_8135654
 	thumb_func_end sub_8136100
 
+// symdb: Navi Customizer part-placement screen: per-frame input handler that confirms/cancels, rotates the held part, and moves the board cursor.
+// symdb: (r0 = toolkit?, r5 = naviCust screen state struct) -> r0 = destroyed; updates cursor/rotation
+// symdb: fields and plays menu sounds
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813612C.yaml
 	thumb_local_start
 sub_813612C:
 	push {r4-r7,lr}
@@ -12827,6 +12834,9 @@ sub_813627C:
 	pop {pc}
 	thumb_func_end sub_813627C
 
+// symdb: Returns the address of an entry (index*4) in the BeastSP secret-code table at word_201DA80.
+// symdb: (r0 = entry index) -> r0 = pointer to code entry (word_201DA80 + index*4); flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136290.yaml
 	thumb_local_start
 sub_8136290:
 	lsl r0, r0, #2
@@ -13118,6 +13128,10 @@ locret_81364BA:
 	pop {pc}
 	thumb_func_end navicust_confirmPartPlacement
 
+// symdb: On the Navi Customizer board, looks up the part under the cursor/grid cell and validates it (via sub_813BAEC) as part of confirming the placement.
+// symdb: (r5 = naviCust screen state; r0/r1 unused) -> r0 = part id (cell id - 0x90, only if occupied),
+// symdb: flags Z/N set from validator result in r1 (NZ = invalid)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81364BC.yaml
 	thumb_local_start
 sub_81364BC:
 	push {r7,lr}
@@ -13143,6 +13157,10 @@ locret_81364E4:
 	.balign 4, 0x00
 	thumb_func_end sub_81364BC
 
+// symdb: Navi Customizer: commits the currently selected program placement onto the customization board and refreshes the affected UI state.
+// symdb: (r0 = program/flag id used with flag base 0x2660; r5 = NaviCust screen-state struct) -> r0 =
+// symdb: undefined; sets [r5+0xc]=0x10, [r5+2]=8, saves cursor [r5+0x24]->[r5+0x3a], [r5+0x20]->[r5+0x38]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81364E8.yaml
 	thumb_local_start
 sub_81364E8:
 	push {r4,r7,lr}
@@ -13823,6 +13841,10 @@ off_8136A08:
 	.word byte_813683C
 	thumb_func_end pet_naviHealCutsceneStep
 
+// symdb: Counts down the Beast Out timer each tick and, when it expires, tears down the beast-out state (scales, e-struct effects, screen registers) back to normal form.
+// symdb: (r0 = unused/ignored; r5 = beast-out state object: +0x12 countdown, +0x13 flag, +0x3 next state;
+// symdb: r10 = toolkit) -> r0 = 0 written to r5+0x13; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136A0C.yaml
 	thumb_local_start
 sub_8136A0C:
 	push {lr}
@@ -13996,6 +14018,10 @@ loc_8136B34:
 	.balign 4, 0x00
 	thumb_func_end sub_8136B10
 
+// symdb: Subtracts r0 from the scroll/offset halfword at +0x18 of the toolkit's RenderInfo, adjusting the render scroll by a delta.
+// symdb: (r0 = amount to subtract) -> r0 = new offset value; flags set by the final strh? no — flags from
+// symdb: sub remain
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136B48.yaml
 	thumb_local_start
 sub_8136B48:
 	push {r4-r7,lr}
@@ -14533,6 +14559,11 @@ locret_8136FB6:
 	pop {pc}
 	thumb_func_end sub_8136FA4
 
+// symdb: Per-frame dialog handler for a NaviCust-related overworld object: waits for a trigger, then runs NaviCust text script 0xA/0xB depending on an object field and updates the object state.
+// symdb: (r0 = unused/0 context, r7 = object struct, r5 = object state byte pointer via caller setup) ->
+// symdb: r0 = clobbered; sets [r5] = 0x1C when a dialog script is launched, 0x20 in the fallback path;
+// symdb: flags from sub_8137648 (beq on zero return = keep waiting)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136FB8.yaml
 	thumb_local_start
 sub_8136FB8:
 	push {lr}
@@ -15483,6 +15514,10 @@ loc_813763E:
 	.balign 4, 0x00
 	thumb_func_end navicust_countBeastOutUses
 
+// symdb: Tests one bit of a NaviCust state struct's flag halfword, returning the result in the Z flag.
+// symdb: (r0 = flag index into byte_813765C mask table, r1 = offset added to caller's r5 struct base) ->
+// symdb: Z flag set if bit clear (tst result); r0 = mask, r1 = loaded halfword
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137648.yaml
 	thumb_local_start
 sub_8137648:
 	push {lr}
@@ -15518,6 +15553,9 @@ sub_8137670:
 	.balign 4, 0x00
 	thumb_func_end sub_8137670
 
+// symdb: ORs a key bitmask into all three fields (held, just-pressed, repeat) of the toolkit's joypad state, injecting fake held buttons.
+// symdb: (r0 = key bitmask to force) -> r0 = clobbered; modifies toolkit joypad held/new/repeat halves
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813768C.yaml
 	thumb_local_start
 sub_813768C:
 	push {lr}

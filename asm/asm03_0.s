@@ -9768,6 +9768,10 @@ off_802A988:
 	.word sub_802ADFC+1
 	thumb_func_end sub_802A974
 
+// symdb: Runs the BG2 left-scroll animation once per frame and, when it finishes, advances a state machine to phase 4 and latches a flag byte.
+// symdb: (r0 = unused/scratch, r4/r5 = state struct ptr) -> r0 = callee return; writes state->+1 = 4,
+// symdb: state->+2 = (state->+0x10 != 0xFF); flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A9B4.yaml
 	thumb_local_start
 sub_802A9B4:
 	push {lr}
@@ -10908,6 +10912,9 @@ dword_802B294:
 	.word 0xB370
 	thumb_func_end object_queueOamEntryFromBase
 
+// symdb: Returns the pointer to the battle state struct S20364C0 (custom screen / hand / run-away outcome).
+// symdb: () -> r0 = &S20364C0; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B298.yaml
 	thumb_local_start
 sub_802B298:
 	ldr r0, off_802B29C // =eS20364C0 
@@ -10971,6 +10978,11 @@ dword_802B354:
 	.word 0x197
 	thumb_func_end getEventFlagList
 
+// symdb: Draws the names of up to five chips for the in-battle chip-selection screen, marking the regular/tag chip slots differently.
+// symdb: (r0 = halfword chip-ID list, 0xFFFF = empty slot; r1 = base of a 5-entry destination block; r5 =
+// symdb: battle-state struct preloaded by caller) -> renders via renderTextGfx_8045F8C into VRAM
+// symdb: 0x6008E00 + i*0x280; no return value used.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B358.yaml
 	thumb_func_start sub_802B358
 sub_802B358:
 	push {r4-r7,lr}
@@ -11234,6 +11246,9 @@ off_802B55C:
 	.word 0x1A4
 	thumb_func_end sub_802B51C
 
+// symdb: On B press, cancels/closes the currently open submenu entry (window slot), restoring the underlying screen and playing the exit sound.
+// symdb: (r5 = submenu work struct; r10 = toolkit) -> r0 = PlaySoundEffect return; reads joypad held
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B560.yaml
 	thumb_local_start
 sub_802B560:
 	push {lr}
@@ -11277,6 +11292,10 @@ off_802B5AC:
 	.word unk_2030E60
 	thumb_func_end sub_802B560
 
+// symdb: Looks up a value from a double-indexed table and subtracts it from a byte field at r5+0x12 of a struct.
+// symdb: (r0 = index into unk_2031000, r5 = struct pointer) -> r5+0x12 decremented by table byte; flags
+// symdb: from strb
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B5B0.yaml
 	thumb_local_start
 sub_802B5B0:
 	lsl r0, r0, #1
@@ -12124,6 +12143,10 @@ off_802BDDC:
 	.word battle_advanceFade_802C328+1
 	thumb_func_end battle_chipSelectStep_802BDC0
 
+// symdb: Thunk that calls an object's per-step handler chosen by the step index stored at [r5+2].
+// symdb: (r5 = object ptr; step = byte [r5,#2]) -> jumps to table[step] with r0 = step, r1 = &jump table
+// symdb: base; returns handler's r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BDF0.yaml
 	thumb_local_start
 sub_802BDF0:
 	push {lr}

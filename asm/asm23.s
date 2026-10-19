@@ -1431,7 +1431,7 @@ off_8089A40:
 
 // symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
-// symdb: via sprite_loadBeastSpAnims / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
+// symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
 // symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipLockoutTransition_8089A60.yaml
 	thumb_local_start
@@ -1881,6 +1881,9 @@ battle_initBeastSpAIChipQueues:
 	pop {r4-r7,pc}
 	thumb_func_end battle_initBeastSpAIChipQueues
 
+// symdb: Resets/initializes the AI chip-queue slot for battle actor slot 3 (called during beast-out battle setup).
+// symdb: () -> r0 = 0; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D44.yaml
 	thumb_local_start
 sub_8089D44:
 	push {r4-r7,lr}

@@ -2747,6 +2747,10 @@ byte_80014BC:
 	.word 0x40202010
 	thumb_func_end sub_80013AA
 
+// symdb: computes sqrt(x²+y²) of a 2D vector in 20.12 fixed point via the BIOS Sqrt SWI
+// symdb: (r0 = x in 20.12 fixed, r1 = y in 20.12 fixed) -> r0 = sqrt(x²+y²) in 20.12 fixed; flags from
+// symdb: final lsl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80014D4.yaml
 	thumb_func_start sub_80014D4
 sub_80014D4:
 	push {lr}

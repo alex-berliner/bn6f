@@ -40,6 +40,10 @@ dword_8086F58:
 	.word 0x2030101
 	thumb_func_end sub_8086F18
 
+// symdb: Spawns a map-dependent number of copies of overworld object #0xA at (0,0), recording the count in a work struct.
+// symdb: () -> r0 = 0 always; spawns 0xA-objects via SpawnOverworldMapObject, count stored at
+// symdb: [off_8086D18]+0xB
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8086F5C.yaml
 	thumb_func_start sub_8086F5C
 sub_8086F5C:
 	push {r4-r7,lr}
