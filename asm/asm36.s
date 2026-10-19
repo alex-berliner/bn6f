@@ -3102,6 +3102,9 @@ off_8131750:
 	.word 0x4B0
 	thumb_func_end pet_setCurNaviHp
 
+// symdb: Sets the submenu state field (sSubmenu + 0x26) to 8 before returning.
+// symdb: () -> void; clobbers r0, r1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131754.yaml
 	thumb_local_start
 sub_8131754:
 	ldr r0, off_8131764 // =sSubmenu 
@@ -3112,6 +3115,9 @@ sub_8131754:
 	mov pc, lr
 	thumb_func_end sub_8131754
 
+// symdb: Setter that stores a halfword argument into the submenu state struct field at offset 0x26.
+// symdb: (r0 = value to store) -> void; writes halfword to sSubmenu+0x26
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813175C.yaml
 	thumb_local_start
 sub_813175C:
 	ldr r1, off_8131764 // =sSubmenu 
@@ -3811,6 +3817,9 @@ off_8131EE0:
 	.word unk_20251A0
 	thumb_func_end sub_8131EB0
 
+// symdb: Rewrites a 30-entry halfword ID array in RAM, replacing each ID with its counterpart from a small 4-entry old→new lookup table, before the caller fades the screen and switches game state.
+// symdb: () -> void; no args, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131EE4.yaml
 	thumb_local_start
 sub_8131EE4:
 	push {r4-r7,lr}
@@ -17923,6 +17932,9 @@ sub_81386EC:
 	pop {pc}
 	thumb_func_end sub_81386EC
 
+// symdb: Counts down a frame timer on an object's work area and clears a state/active byte flag when it reaches zero.
+// symdb: (r5 = object work struct) -> void; sets flags via the countdown compare
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81386F0.yaml
 	thumb_local_start
 sub_81386F0:
 	push {lr}

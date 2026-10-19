@@ -479,6 +479,10 @@ locret_8021D28:
 	pop {pc}
 	thumb_func_end incrementRecordCounterByte_8021D14
 
+// symdb: Returns one byte from field r1 of record r0 in a table of 0x170-byte entries at 0x203A0A0.
+// symdb: (r0 = record index, r1 = byte offset within record) -> r0 = byte value; flags clobbered by
+// symdb: mul/add
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8021D2A.yaml
 	thumb_local_start
 sub_8021D2A:
 	ldr r2, off_8021D9C // =0x170

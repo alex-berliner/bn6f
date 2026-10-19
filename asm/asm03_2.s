@@ -5307,6 +5307,10 @@ loc_80493B2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049360
 
+// symdb: Advance one step of a wireless-link (RFU) menu/connection state machine, updating a state byte and RFU status flags.
+// symdb: (r5 = pointer to state struct, pre-set by caller; [r5+1] = state/next-state byte) -> r0 = last
+// symdb: call result; modifies RFU flags and [r5+1]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80493BC.yaml
 	thumb_local_start
 sub_80493BC:
 	push {r4-r7,lr}

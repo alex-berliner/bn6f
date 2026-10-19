@@ -2360,6 +2360,9 @@ ow_getPlayerPosition:
 	mov pc, lr
 	thumb_func_end ow_getPlayerPosition
 
+// symdb: Returns three position fields (likely x/y/z) of the overworld player object.
+// symdb: () -> r0 = playerObj+0x20, r1 = playerObj+0x1c, r2 = playerObj+0x24; flags clobbered by loads
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E1CA.yaml
 	thumb_local_start
 sub_809E1CA:
 	mov r3, r10
@@ -2607,6 +2610,10 @@ owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
 	thumb_func_end owPlayer_setS2000aa0_param0x0to0x2_809e2c8
 	thumb_func_end owPlayer_setS2000aa0_param0x0to0x2_with0x40_0x40_0x0_respectively_809e2c2
 
+// symdb: Getter returning the overworld player navi's horizontal/vertical compress values and rotation.
+// symdb: () -> r0 = oS2000aa0_OWPlayerNaviHorizontalCompress, r1 = vertical compress, r2 = rotation;
+// symdb: flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E2D2.yaml
 	thumb_local_start
 sub_809E2D2:
 	ldr r3, off_809E430 // =eStruct2000aa0

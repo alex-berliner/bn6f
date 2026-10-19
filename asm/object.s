@@ -4476,6 +4476,10 @@ loc_800D6FC:
 	pop {r4-r6,pc}
 	thumb_func_end battle_checkPanelGroupAlliance
 
+// symdb: Counts how many of the three indexed entries (indices 1-3) in a structure rooted at r0 have the byte at offset 3 equal to r1, returning the count.
+// symdb: (r0 = base pointer passed to object_getPanelDataOffset, r1 = value to match) -> r0 = count of
+// symdb: matching entries; flags clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D700.yaml
 	thumb_local_start
 sub_800D700:
 	push {r4-r7,lr}

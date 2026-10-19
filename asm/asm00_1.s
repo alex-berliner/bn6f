@@ -15955,6 +15955,9 @@ loc_800A138:
 	mov pc, lr
 	thumb_func_end relatedToIsBattleOver_800A11C
 
+// symdb: Decrements a per-entity byte counter stored in the battle state, indexed by a field of the entity.
+// symdb: (r5 = entity/object pointer) -> r0 = decremented value; r1, r2 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A142.yaml
 	thumb_local_start
 sub_800A142:
 	ldrb r0, [r5,#0x16]
@@ -16203,6 +16206,9 @@ off_800A2CC:
 	.word 0x300
 	thumb_func_end sub_800A29A
 
+// symdb: Sets the 16-bit battle state flags word to the given value.
+// symdb: (r0 = new flags value) -> void; writes oBattleState_BattleStateFlags (halfword)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A2D0.yaml
 	thumb_local_start
 sub_800A2D0:
 	mov r1, r10
@@ -19122,6 +19128,9 @@ sub_800B484:
 	pop {r4,pc}
 	thumb_func_end sub_800B484
 
+// symdb: (Re)builds the two loopback battle link packets the game exchanges with itself in solo battles.
+// symdb: () -> void; r0/r1 clobbered via callee calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B49E.yaml
 	thumb_local_start
 sub_800B49E:
 	push {r6,r7,lr}

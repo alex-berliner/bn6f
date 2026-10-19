@@ -242,6 +242,10 @@ locret_802661A:
 	pop {r6,r7,pc}
 	thumb_func_end sub_80265FE
 
+// symdb: Returns a battle object's panel coordinates (x in r0, y in r1) from its oBattleObject struct.
+// symdb: (r5 = battle object pointer) -> r0 = oBattleObject_PanelX, r1 = oBattleObject_PanelY; flags
+// symdb: untouched
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802661C.yaml
 	thumb_local_start
 sub_802661C:
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -15137,6 +15141,10 @@ sub_802D15E:
 	mov pc, lr
 	thumb_func_end sub_802D15E
 
+// symdb: Adds an amount to a stored counter (likely zenny), clamping it at 999999.
+// symdb: (r0 = amount to add) -> r0 = unused (value not returned); flags set by final str/cmp sequence
+// symdb: are not meaningful, returns via bx lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D164.yaml
 	thumb_local_start
 sub_802D164:
 	ldr r1, off_802D228 // =dword_2006740
@@ -22370,6 +22378,9 @@ mapTiles_ResetDimensionsToDefault_80303E8:
 	mov pc, lr
 	thumb_func_end mapTiles_ResetDimensionsToDefault_80303E8
 
+// symdb: Resets the map-tiles grid dimensions to 64x64 in the eMapTilesState buffer
+// symdb: () -> void; writes eMapTilesState200be70.MapWidth and .MapHeight = 0x40
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80303F2.yaml
 	thumb_func_start sub_80303F2
 sub_80303F2:
 	ldr r1, off_80305E0 // =eMapTilesState200be70

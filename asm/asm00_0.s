@@ -2060,6 +2060,9 @@ sub_8001092:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8001092
 
+// symdb: Stashes the player's internet-area position, facing direction and map ID into the GameState for later restoration.
+// symdb: (r0 = x, r1 = y, r2 = z, r3 = facingDirection, r4 = mapId) -> void; no flags, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80010A4.yaml
 	thumb_local_start
 sub_80010A4:
 	push {r4-r7,lr}
@@ -2568,6 +2571,9 @@ battle_orStateFlags5c_8001382:
 	mov pc, lr
 	thumb_func_end battle_orStateFlags5c_8001382
 
+// symdb: Clears the given bits in the current battle state's AlliancePermissionFlags field.
+// symdb: (r0 = bitmask of alliance permission flags to clear) -> r0 = undefined; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800138E.yaml
 	thumb_local_start
 sub_800138E:
 	mov r1, r10
@@ -5188,6 +5194,9 @@ off_80023B4:
 	.word 0xd8
 	thumb_func_end palette_clearEPalette20097a0_80023A8
 
+// symdb: Returns whether the given palette slot in the ePalette20097a0 array is flagged active.
+// symdb: (r0 = palette index) -> r0 = ActiveFlag byte of that palette entry, Z flag set from it
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80023B8.yaml
 	thumb_local_start
 sub_80023B8:
 	ldr r2, off_8002464 // =ePalette20097a0

@@ -156,6 +156,9 @@ byte_8141958:
 	.word 0x00FF0000, 0x00FF0000, 0x00180000, 0x00000000, 0x00FF0000, 0x00FF0000, 0x00000000, 0x00180000
 	.word 0x00FF0000, 0x00FF0000, 0xFFE80000, 0x00000000, 0x00FF0000, 0x00FF0000, 0x00000000, 0xFFE80000
 
+// symdb: Getter returning the address of the field at offset 0x18 of the struct at 0x02001010 (eStruct2001010).
+// symdb: () -> r0 = &eStruct2001010 + 0x18; no flags set meaningfully (does not affect caller logic).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141998.yaml
 	thumb_local_start
 sub_8141998:
 	push {r4-r7, lr}
@@ -835,6 +838,9 @@ clearScenarioEffectState:
 	pop {r4-r7,pc}
 	thumb_func_end clearScenarioEffectState
 
+// symdb: Clears the active/enable byte (offset 0xD) of the scenario effect state at 0x2000780 and returns 0.
+// symdb: () -> r0 = 0; no flags meaningful (values pushed/popped, clobbered by strb use of r0 only)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814214E.yaml
 	thumb_local_start
 sub_814214E:
 	push {r4-r7,lr}
@@ -1050,6 +1056,10 @@ loc_8142238:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142224
 
+// symdb: Clears a flag/counter field (offset 0x28) of the scenario effect state struct at 0x2000780.
+// symdb: () -> r0 = 0 (clobbered); writes 0 to byte_20007A8 (eScenarioEffectState2000780 + 0x28); no
+// symdb: flags of use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814223E.yaml
 	thumb_func_start sub_814223E
 sub_814223E:
 	push {r4-r7,lr}
@@ -3196,6 +3206,9 @@ ow_crowLessonFlagCheck:
 	pop {r4-r7,pc}
 	thumb_func_end ow_crowLessonFlagCheck
 
+// symdb: Adds r0 to a byte in the eStruct2001010 struct and saturates the result at 5.
+// symdb: (r0 = amount to add) -> byte at eStruct2001010+9 clamped-increased; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433E4.yaml
 	thumb_func_start sub_81433E4
 sub_81433E4:
 	push {r4-r7,lr}

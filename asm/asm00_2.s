@@ -2375,6 +2375,10 @@ battle_getChipClassFromBattleObject:
 	pop {pc}
 	thumb_func_end battle_getChipClassFromBattleObject
 
+// symdb: Returns tableA[r0] multiplied by tableB[battle object's Param1], a lookup-and-scale helper.
+// symdb: (r0 = index into byte_80212BB; r5 = battle object whose Param1 indexes byte_800FD5C) -> r0 =
+// symdb: byte_80212BB[r0] * byte_800FD5C[obj->Param1]; flags from mul
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FCFC.yaml
 	thumb_func_start sub_800FCFC
 sub_800FCFC:
 	ldr r1, off_800FEDC // =byte_80212BB 
@@ -3320,6 +3324,10 @@ byte_80102F8:
 	.byte 0x0, 0x28, 0x1E, 0x14, 0xA, 0x5, 0x3, 0x2
 	thumb_func_end handleCustHPBug_80102AC
 
+// symdb: ANDs a mask with the AI flags of the battle actor at the given index of the alive-actors list, returning the masked flags.
+// symdb: (r0 = flag mask, r1 = index into alive-battle-actors list) -> r0 = actorAIData.flags & mask;
+// symdb: flags preserved from caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010300.yaml
 	thumb_func_start sub_8010300
 sub_8010300:
 	mov r2, r10
@@ -5333,6 +5341,9 @@ locret_8011210:
 	pop {pc}
 	thumb_func_end sub_8011200
 
+// symdb: If this battle object has a RelatedObject2, deletes/frees it and clears the pointer.
+// symdb: (r5 = battle object) -> void; destroys r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011212.yaml
 	thumb_local_start
 sub_8011212:
 	push {lr}
@@ -8056,6 +8067,9 @@ sub_8012440:
 	pop {pc}
 	thumb_func_end sub_8012440
 
+// symdb: Initializes an AI attack's parameter block (damage 20, extra damage 138, packed attack property 0x33C00) and returns 0x5E.
+// symdb: (r7 = pointer to oAIAttackVars struct) -> r0 = 0x5E; writes Damage, ExtraDamage, AttackBoost2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801244A.yaml
 	thumb_local_start
 sub_801244A:
 	mov r0, #0x14
@@ -32873,6 +32887,9 @@ dword_801E654:
 	.word 0x200000
 	thumb_func_end battle_initSceneStart_801E5F8
 
+// symdb: Zeroes a single status byte in the battle-screen HUD state struct (eStruct2035280+0x1E).
+// symdb: () -> void; writes 0 to byte at eStruct2035280+0x1E, no return value, flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E658.yaml
 	thumb_func_start sub_801E658
 sub_801E658:
 	mov r0, #0

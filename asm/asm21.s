@@ -53,7 +53,7 @@ locret_8080DE8:
 	thumb_func_end battle_initBGScrollAndAnimForPuzzleField_8080DA0
 
 // symdb: Loads the battle background for the current battle-background id: installs BG scroll callbacks, ORs DISPCNT bits, and loads the BG anim data plus the GFX animation script set for that background.
-// symdb: (r0 = none) -> r0 = none; obtains bg id from battle_getBackgroundDataByte, r4 = id
+// symdb: (r0 = none) -> r0 = none; obtains bg id from sub_808137C, r4 = id
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundAssets.yaml
 	thumb_local_start
 battle_setupBackgroundAssets:

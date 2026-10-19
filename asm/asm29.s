@@ -3558,7 +3558,7 @@ off_80A6EB8:
 	.word unk_2011A90
 	thumb_func_end battle_ai_dispatchBeastSp_80A6E98
 
-// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run battle_loadBeastSpEnemyStats when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
+// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run sub_80A7208 when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
 // symdb: (r5 = BattleObject*) -> r0 = 0x26 ; side effects: writes many BattleObject fields, may patch
 // symdb: coords from a returned table, may run a one-shot story-gated helper
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastSpEnemy_80A6EBC.yaml

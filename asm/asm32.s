@@ -34343,7 +34343,7 @@ sub_811EA20:
 	thumb_func_end sub_811EA20
 
 // symdb: Computes a bitmask from the decimal digits of two values and writes it into a sprite struct's field 0x2c.
-// symdb: (uses r0/r1 returned by countSetEventFlags, no own args seen) -> r0 = mask passed to sprite_setUnk0x2c;
+// symdb: (uses r0/r1 returned by sub_8143D4C, no own args seen) -> r0 = mask passed to sprite_setUnk0x2c;
 // symdb: clobbers r0-r3, r7
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_storeDigitBitmask.yaml
 	thumb_local_start
