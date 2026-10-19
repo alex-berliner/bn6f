@@ -748,6 +748,10 @@ dword_8033D84:
 	.word 0xA017400D
 	thumb_func_end sub_8033CF0
 
+// symdb: Decrements a repeating timer in the Internet-overworld UI state and plays SFX 0x9A (then reloads the timer) each time it reaches zero.
+// symdb: (r5 = UI/state struct, r0 unused on entry) -> r0 = scratch/return of PlaySoundEffect; no
+// symdb: meaningful flags; field [r5,#7] is the countdown byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033D88.yaml
 	thumb_local_start
 sub_8033D88:
 	push {lr}

@@ -923,6 +923,10 @@ loc_80896D0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80896C4
 
+// symdb: State-machine step for the scenario effect screen: polls the chip-select input handler and either starts the camera script or advances the state byte to 0x10/0x18 depending on which button was pressed.
+// symdb: (no args; r5 = caller-set pointer to a state/state-machine byte) -> r0 = 1 always; no flags used
+// symdb: by caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80896D4.yaml
 	thumb_local_start
 sub_80896D4:
 	push {r4-r7,lr}

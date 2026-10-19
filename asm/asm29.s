@@ -2249,6 +2249,9 @@ byte_80A5E84:
 	.byte 0x3, 0x3, 0x1, 0x7, 0x5, 0x0, 0x0, 0x0
 	thumb_func_end sub_80A5E44
 
+// symdb: Sets a story/event flag whose ID is looked up from a word table using an index stored in the caller's struct.
+// symdb: (r5 = struct with u8 index at +4; r0 unused) -> r0 = SetEventFlag result; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E8C.yaml
 	thumb_local_start
 sub_80A5E8C:
 	push {r4,lr}
@@ -2376,6 +2379,10 @@ sub_80A5F68:
 	.balign 4, 0x00
 	thumb_func_end sub_80A5F68
 
+// symdb: Checks a story flag selected by a form index to gate whether a Beast Out transformation may activate.
+// symdb: (r5 = state struct ptr; field [r5,#6] = form/variant index) -> r0 = 1 if transformation not
+// symdb: allowed (flag clear), 0 if allowed; on allow sets [r5]=1, calls sub_80A5E8C, clears [r5,#7]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F84.yaml
 	thumb_local_start
 sub_80A5F84:
 	push {r4,lr}
@@ -4412,6 +4419,9 @@ sub_80A7514:
 	pop {r4,pc}
 	thumb_func_end sub_80A7514
 
+// symdb: Returns a pointer into the current map's per-direction animation table for an overworld object, used by the face-player/set-anim helpers.
+// symdb: (implicit r5 = overworld object) -> r0 = pointer to tableBase + [r5+0x30]*8; clobbers r1-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7528.yaml
 	thumb_local_start
 sub_80A7528:
 	push {r4,lr}
@@ -4823,6 +4833,10 @@ loc_80A780C:
 	pop {pc}
 	thumb_func_end sub_80A77FC
 
+// symdb: Trivial wrapper that frees an overworld map object via FreeOverworldMapObject, likely used as a callback/destructor hook.
+// symdb: (r0 = overworld map object slot/index) -> r0 = result of FreeOverworldMapObject; flags from
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7812.yaml
 	thumb_local_start
 sub_80A7812:
 	push {lr}
@@ -5077,6 +5091,10 @@ sub_80A79D4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A79D4
 
+// symdb: Sets an entity's sprite animation and initializes a linear move of param-scaled ±8 px toward the entity's facing direction over a param-length duration.
+// symdb: (r5 = entity/base struct, r6 = sprite/motion slot, r7 = params: [1]=anim id, [2]=duration
+// symdb: divisor, [3]=distance scalar) -> r0 = 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A79DC.yaml
 	thumb_local_start
 sub_80A79DC:
 	push {r4-r7,lr}
@@ -5863,6 +5881,10 @@ locret_80A7F24:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A7F14
 
+// symdb: Ends an overworld map object's event: clears state fields, sets the object's event flag plus a related flag at 0x1650+id, then releases the object's slot.
+// symdb: (r5 = map object struct with event id at +4; r7 = owner struct) -> r0 = freed; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7F26.yaml
 	thumb_local_start
 sub_80A7F26:
 	push {r4-r7,lr}
@@ -6658,6 +6680,10 @@ locret_80A8640:
 	.balign 4, 0x00
 	thumb_func_end npc_playerProximityEventTrigger
 
+// symdb: Converts two 26.8 fixed-point source positions (likely the camera) into integer halfwords stored into the NPC actor's screen-offset fields, anchoring the actor to the viewport.
+// symdb: (r5 = source struct with fixed-point fields at +0xC and +0x10, r6 = destination actor struct) ->
+// symdb: stores halfwords at r6+0x16 and r6+0x18; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8644.yaml
 	thumb_local_start
 sub_80A8644:
 	push {r4,lr}
@@ -6886,6 +6912,10 @@ loc_80A87E2:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_applyFrameAttrMode8
 
+// symdb: Thin wrapper that frees an overworld map object, preserving r4-r7 for its caller.
+// symdb: (r0 = map object slot/pointer, as taken by FreeOverworldMapObject) -> r0 =
+// symdb: FreeOverworldMapObject's return; r4-r7 preserved.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A87E8.yaml
 	thumb_local_start
 sub_80A87E8:
 	push {r4-r7,lr}
@@ -9731,6 +9761,10 @@ ow_initSpriteObject:
 	pop {r4-r7,pc}
 	thumb_func_end ow_initSpriteObject
 
+// symdb: Per-frame update for an overworld sprite object: dispatches to its type's handler via jump table, then runs sprite_update.
+// symdb: (r5 = overworld object struct, byte at +9 = type id) -> jumps to handler from off_80A9DA4, then
+// symdb: bl sprite_update; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9D86.yaml
 	thumb_local_start
 sub_80A9D86:
 	push {r4-r7,lr}
@@ -9991,6 +10025,10 @@ loc_80A9F44:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9F30
 
+// symdb: Thin wrapper that frees an overworld map object, likely used as a cleanup/destructor callback.
+// symdb: (r0 = overworld map object to free) -> r0 = FreeOverworldMapObject result; flags from
+// symdb: FreeOverworldMapObject
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F4E.yaml
 	thumb_local_start
 sub_80A9F4E:
 	push {r4-r7,lr}
@@ -10120,6 +10158,10 @@ byte_80AA01C:
 	.byte 0x50, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	thumb_func_end copyOamEntry_80AA004
 
+// symdb: Looks up an overworld object's approach target from a byte table and returns it as a 16.16 fixed-point value.
+// symdb: (r0 = index into byte_2001130 table) -> r0 = signed byte value << 16 (16.16); flags clobbered by
+// symdb: lsl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA04C.yaml
 	thumb_local_start
 sub_80AA04C:
 	ldr r1, off_80AA054 // =byte_2001130 
@@ -11061,6 +11103,10 @@ alwaysTrue_80AA6E8:
 	mov pc, lr
 	thumb_func_end alwaysTrue_80AA6E8
 
+// symdb: Scans the current battle's enemy spawn list for a version-specific boss-type enemy and returns 1 if a per-version threshold on it is met.
+// symdb: (r7 = some context struct whose +0xC holds a pointer to a 4-byte-per-entry enemy list) -> r0 = 1
+// symdb: if condition met, else 0; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA6EC.yaml
 	thumb_local_start
 sub_80AA6EC:
 	push {r4-r7,lr}
@@ -11184,6 +11230,10 @@ loc_80AA7A8:
 	pop {r4,pc}
 	thumb_func_end tryEvent214LuckyRoll_80AA78C
 
+// symdb: Returns 1 if story/event flag 215 is set, else 0.
+// symdb: () -> r0 = 1 if EVENT_215 set else 0; Z flag from TestEventFlagFromImmediate is clobbered,
+// symdb: returns via pop {r4,pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7AC.yaml
 	thumb_local_start
 sub_80AA7AC:
 	push {r4,lr}
@@ -11197,6 +11247,9 @@ loc_80AA7BC:
 	pop {r4,pc}
 	thumb_func_end sub_80AA7AC
 
+// symdb: Returns 1 if story/event flag EVENT_216 is set, else 0.
+// symdb: () -> r0 = 0 or 1 (EVENT_216 flag state as int)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7C0.yaml
 	thumb_local_start
 sub_80AA7C0:
 	push {r4,lr}

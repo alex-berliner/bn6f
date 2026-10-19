@@ -4218,6 +4218,10 @@ off_813228C:
 	.word eTextScript201BA20
 	thumb_func_end chatbox_runScript_803FD9C_on_eTextScript201BA20
 
+// symdb: Menu state dispatcher: reads the menu record's current state and tail-trampolines into that state's handler, handing it the eLinkState pointer.
+// symdb: (r5 = menu record, r0/r1 = passthrough args) -> jumps to handler jt[r5.state]; r2 = eLinkState
+// symdb: ptr; returns to caller after handler via lr=pc trampoline
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132290.yaml
 	thumb_func_start sub_8132290
 sub_8132290:
 	push {lr}
@@ -6759,6 +6763,10 @@ locret_81335B6:
 	pop {r4,pc}
 	thumb_func_end submenu_handleConfirmOrExitInput
 
+// symdb: Trivial wrapper that immediately tail-calls the spawn-panel confirmation routine.
+// symdb: (r0 = spawn context/panel pick, r1 = secondary arg) -> r0 = passthrough result of
+// symdb: battle_confirmSpawnPanel; flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81335B8.yaml
 	thumb_local_start
 sub_81335B8:
 	push {lr}
@@ -12127,6 +12135,10 @@ off_8135D98:
 	.word 0x14C
 	thumb_func_end navicust_giveKeyItem14C
 
+// symdb: Rebuilds the key-item/chip list buffer for a list menu (Navi Customizer screen context), then re-clamps the menu's cursor and scroll offsets to the new entry count.
+// symdb: (r5 = list-state struct, set by caller) -> r0 = entry count; list buffer word_201DA80 rewritten,
+// symdb: struct fields +0x1e/+0x20/+0x24/+0x38/+0x3a updated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135D9C.yaml
 	thumb_local_start
 sub_8135D9C:
 	push {r4-r7,lr}
@@ -13047,6 +13059,10 @@ locret_813644C:
 	.byte 0, 0
 	thumb_func_end sub_813640C
 
+// symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
+// symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
+// symdb: state struct) -> r0 = 0; flags from sub_81364BC choose valid vs invalid path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136450.yaml
 	thumb_local_start
 sub_8136450:
 	push {lr}
@@ -13492,6 +13508,10 @@ off_8136798:
 	.word unk_2022B70
 off_813679C:
 	.word unk_2000090
+// symdb: Board-screen cursor action: moves the Navi Customizer cursor/list up (with wrap/clamp), stores the new position fields, sets a state byte, and plays the menu-select sound.
+// symdb: (r5 = board-screen state object) -> r0 = sound-effect id passed on; writes halfwords [r5+0x24]
+// symdb: and [r5+0x20], byte [r5+0xc]; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81367A0.yaml
 	thumb_local_start
 sub_81367A0:
 	push {lr}
@@ -13550,6 +13570,9 @@ locret_8136802:
 	pop {pc}
 	thumb_func_end sub_81367C0
 
+// symdb: On A/B/L/R presses during the Navi Customizer board, converts the selected cell's content into a code input and feeds it to the BeastSP secret-code checker.
+// symdb: (r0 = new key bitmask, r5 = board state) -> void; [r5+0x17] code-progress index updated in place
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136804.yaml
 	thumb_local_start
 sub_8136804:
 	push {lr}
@@ -14654,6 +14677,10 @@ locret_81370D2:
 	pop {pc}
 	thumb_func_end sub_81370C4
 
+// symdb: NaviCust menu handler that validates the player's part setup, pops the matching warning dialog (script 0x10/0x11/0x12/0x14) and writes the next menu state (0x34/0x38) to [r5].
+// symdb: (r5 = state-out byte ptr, r7 = naviCust menu context) -> r0 = last dialog/param result; [r5] =
+// symdb: next state 0x34 or 0x38; no branch flags of use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81370D4.yaml
 	thumb_local_start
 sub_81370D4:
 	push {lr}
@@ -15008,6 +15035,11 @@ locret_8137376:
 	pop {pc}
 	thumb_func_end sub_8137368
 
+// symdb: Navi Customizer screen: validates placing the held part at the cursor's grid cell, showing the appropriate dialog on each failure type, and advances the state machine on success.
+// symdb: (r5 = screen state struct, r7 = cursor/held-part struct; r0 momentarily 0x3f8 to sub_8137670) ->
+// symdb: r0 = status from last call; writes next-state byte [r5] (0x68 = stay, 0x6c = proceed) and
+// symdb: halfword [r5+0xe] = 0 on success
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137378.yaml
 	thumb_local_start
 sub_8137378:
 	push {lr}
@@ -15189,6 +15221,10 @@ locret_81374D2:
 	pop {pc}
 	thumb_func_end sub_81374C4
 
+// symdb: Per-frame NaviCust dialog handler: waits for the dialog to be ready, then on state 4 or 8 triggers the next NaviCust text script (checking a toolkit part flag for state 8).
+// symdb: (r7 = dialog state object, r5 = out byte ptr; r0/r1 unused) -> r0 = script/text id side effect;
+// symdb: writes 0x7C or 0x78 to [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81374D4.yaml
 	thumb_local_start
 sub_81374D4:
 	push {lr}
@@ -15380,6 +15416,10 @@ byte_813760C:
 dword_8137614:
 	.word 0x2E40
 	thumb_func_end sub_81375F4
+// symdb: Counts Beast Out uses in a NaviCust state struct and sets story flag EVENT_EF (returning 1) once the count passes a threshold while a condition holds.
+// symdb: (r0 = task state struct in r5, no args used) -> r0 = 1 if flag EVENT_EF was set this call, else
+// symdb: 0; counter byte at [r5+3] incremented and clamped to 0x4F
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137618.yaml
 	thumb_local_start
 sub_8137618:
 	push {r4-r7,lr}

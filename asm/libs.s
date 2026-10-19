@@ -23978,6 +23978,10 @@ off_814F088:
 	.word DMA2Control
 	thumb_func_end m4aSoundVSync
 
+// symdb: m4a sound-engine helper that initialises a MusicPlayerInfo with its track array, resets each track, and links the player into the engine's MPlayMain dispatch chain.
+// symdb: (r0 = MusicPlayerInfo*, r1 = Track array pointer, r2 = u8 track count, clamped to <=0x10) -> r0
+// symdb: = clobbered; sets player status/ident, track count, and engine link fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F08C.yaml
 	thumb_local_start
 sub_814F08C:
 	push {r4-r7,lr}

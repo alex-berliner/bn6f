@@ -3366,6 +3366,9 @@ byte_809B7D4:
 	.byte 0x7, 0xFF
 	thumb_func_end sub_809B7A4
 
+// symdb: Reads the player's overworld facing direction, remaps it from 0-3 to 4-7, and stores it in a byte field of the object at r5.
+// symdb: (r5 = object struct, not passed in r0-r3) -> r0 = 0; writes byte at [r5,#5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B7EC.yaml
 	thumb_local_start
 sub_809B7EC:
 	push {r4-r7,lr}
@@ -4571,6 +4574,10 @@ byte_809C884:
 	.byte 0x1, 0x1, 0x1, 0x3, 0x3, 0x3, 0x5, 0x5, 0x5, 0x7, 0x7, 0x7
 	thumb_func_end sub_809C870
 
+// symdb: Adds a cutscene-direction-dependent positional offset (32/64/96 pixels along one axis) to three coordinate values when initializing an overworld object.
+// symdb: (r0 = scratch, r1/r2/r3 = base coords (high halves), r5 = object struct) -> r0 = 0, r1/r2/r3 =
+// symdb: coords + offset; clobbers r4-r6
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C890.yaml
 	thumb_func_start sub_809C890
 sub_809C890:
 	push {r4-r7,lr}
@@ -4638,6 +4645,9 @@ off_809C950:
 	.word eCutsceneState
 	thumb_func_end sub_809C940
 
+// symdb: Sets one story/event flag whose ID is read from a field of a context structure.
+// symdb: (r5 = context struct pointer; no args in r0-r3) -> r0 = 0; clobbers r0-r1, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C954.yaml
 	thumb_local_start
 sub_809C954:
 	push {r4-r7,lr}

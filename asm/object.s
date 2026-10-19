@@ -181,6 +181,10 @@ locret_800B97C:
 	pop {pc}
 	thumb_func_end object_dimScreen
 
+// symdb: Battle-object phase step that starts a screen fade and blocks the object's action until the fade finishes.
+// symdb: (r5 = battle object, no args) -> void; advances oBattleObject_CurAction by 4 and clears phase
+// symdb: state when the fade completes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B97E.yaml
 	thumb_func_start sub_800B97E
 sub_800B97E:
 	push {lr}
@@ -1858,6 +1862,9 @@ loc_800C672:
 	pop {r4-r7,pc}
 	thumb_func_end updateBattlePanels_800C5E0
 
+// symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to byte_203F6B0.
+// symdb: () -> void; writes run records to byte_203F6B0 (4 bytes each, first byte 0xFF terminates)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C67C.yaml
 	thumb_local_start
 sub_800C67C:
 	push {r4-r7,lr}
@@ -5978,6 +5985,10 @@ sub_800EA0E:
 	pop {pc}
 	thumb_func_end sub_800EA0E
 
+// symdb: Cancels an enemy's pending collision/hit entries and clears a set of ObjectFlags2 bits for the active battle object.
+// symdb: (r0 = none on entry path; uses caller's r5 = battle object) -> r0 = 0 clobbered; no meaningful
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA22.yaml
 	thumb_func_start sub_800EA22
 sub_800EA22:
 	push {lr}

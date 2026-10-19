@@ -5463,6 +5463,10 @@ ow_startJackOutMapEnterCutscene: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end ow_startJackOutMapEnterCutscene
 
+// symdb: Launches one fixed cutscene (the script at 0x809b5ad) with parameter 0 on the current game state.
+// symdb: (nothing; caller's GameState in r5 is unused) -> r0 = result of StartCutscene; flags preserved
+// symdb: from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A00.yaml
 	thumb_local_start
 sub_8005A00: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -7366,6 +7370,10 @@ byte_80066E0:
 	.byte 0x6, 0x0
 	thumb_func_end sub_8006580
 
+// symdb: Thin forwarding wrapper around the BIOS CpuSet word-copy helper (CopyWords), passing src/dest/size straight through.
+// symdb: (r0 = src *const u32, r1 = dest *mut u32, r2 = size in bytes) -> r0 = ? (CpuSet clobbers); no
+// symdb: meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80068E0.yaml
 	thumb_func_start sub_80068E0
 sub_80068E0:
 	push {lr}
@@ -16682,6 +16690,9 @@ battle_getStateUnk40_800A704:
 	mov pc, lr
 	thumb_func_end battle_getStateUnk40_800A704
 
+// symdb: Getter returning the halfword the rare-event roll stored in battle state field 0x38.
+// symdb: () -> r0 = halfword at oBattleState_Unk_38; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A70C.yaml
 	thumb_func_start sub_800A70C
 sub_800A70C:
 	mov r0, r10

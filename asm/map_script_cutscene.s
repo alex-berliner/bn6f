@@ -2551,6 +2551,9 @@ PlayMapMusic: // () -> ()
 	pop {r4-r7,pc}
 	thumb_func_end PlayMapMusic
 
+// symdb: Sets the current map/overworld music track id in the S2001c04 state struct.
+// symdb: (r0 = music track id byte) -> void; flags clobbered by pop context only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8036E86.yaml
 	thumb_func_start sub_8036E86
 sub_8036E86:
 	push {r4-r7,lr}

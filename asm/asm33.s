@@ -359,6 +359,9 @@ byte_8123400:
 	thumb_func_end sub_8123360
 
 /// tags: "#copy, "
+// symdb: Reloads a saved copy of the submenu state from IWRAM into sSubmenu and resumes the submenu scene (main jumptable 0x28).
+// symdb: () -> void; sets the toolkit main-jumptable index to 0x28, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123408.yaml
 	thumb_func_start sub_8123408
 sub_8123408:
 	push {r4,lr}
@@ -10841,6 +10844,11 @@ off_81284FC:
 	.word byte_812851C
 	thumb_func_end battle_countFlaggedActions_81284B4
 
+// symdb: Thin battle-handler wrapper that feeds the two-byte config at 2000FE0 and the caller object's halfword param into the field-lock dispatch over all battle objects.
+// symdb: (r5 = battle object/scene struct; args built internally: r0 = dword_2027590 context/table, r1 =
+// symdb: halfword [r5+0x1E], r2 = byte 2000FE0, r3 = byte 2000FE1) -> r0 =
+// symdb: battle_fieldLockDispatch_8120018 result; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128500.yaml
 	thumb_local_start
 sub_8128500:
 	push {lr}
@@ -14340,6 +14348,10 @@ menu_subMenu_dispatchByIndex_812A008:
 locret_812A026:
 	pop {pc}
 	thumb_func_end menu_subMenu_dispatchByIndex_812A008
+// symdb: Per-frame object update: draws the object's sprite if flagged, counts down a timer, and on expiry switches state and runs text script 0x5E; also checks sub_813D648 each frame to branch into an alternate state.
+// symdb: (r5 = object state struct) -> void; sets [r5+1]/[r5+2] state bytes and [r5+0x10] substate when
+// symdb: timer expires, r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A028.yaml
 	thumb_local_start
 sub_812A028:
 	push {lr}

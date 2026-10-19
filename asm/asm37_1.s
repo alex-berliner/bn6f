@@ -65,6 +65,9 @@ sub_81418CE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81418CE
 
+// symdb: Writes a pair of bytes (likely x/y coordinates) into the beast-spread struct eStruct2001010 at offsets 0x14/0x15.
+// symdb: (r0 = first byte, r1 = second byte) -> r0 = ?; no flags set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81418DA.yaml
 	thumb_local_start
 sub_81418DA:
 	push {r4-r7,lr}
@@ -842,6 +845,9 @@ sub_814215A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_814215A
 
+// symdb: Writes a one-byte value (likely a cutscene/scenario effect parameter) into the global scenario effect state, as part of Beast Out / Soul Unleash application.
+// symdb: (r0 = byte value to store) -> r0 = destroyed; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142166.yaml
 	thumb_local_start
 sub_8142166:
 	push {r4-r7,lr}
@@ -1625,6 +1631,10 @@ GetSoulWeaponCursorCameraCoords:
 	pop {r4-r7,pc}
 	thumb_func_end GetSoulWeaponCursorCameraCoords
 
+// symdb: Returns one of 8 directions pointing from one soul-weapon cursor to another, from their camera-space coordinates.
+// symdb: (r0 = first cursor selector, r1 = second cursor selector) -> r0 = 8-way direction index 0..7
+// symdb: from first cursor to second; clobbers r1-r3, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142896.yaml
 	thumb_func_start sub_8142896
 sub_8142896:
 	push {r4-r7,lr}

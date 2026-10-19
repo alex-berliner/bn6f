@@ -10816,6 +10816,10 @@ sub_804C71C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804C71C
 
+// symdb: Loads battle background tile data into VRAM and stage-related palette data into an EWRAM buffer as one step of the battle scene's graphics init sequence.
+// symdb: (r0-r3 unused, relies on r5 = battle object, r10 = toolkit) -> r0 clobbered; r5+0x10 set to 4 as
+// symdb: a state/step marker
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C72C.yaml
 	thumb_local_start
 sub_804C72C:
 	push {r4-r7,lr}
@@ -11479,6 +11483,9 @@ byte_804CDC4:
 	.byte 0x9, 0x1F, 0x0, 0x0, 0xB, 0x1F, 0x0, 0x0
 	thumb_func_end battle_initBeastspBackground
 
+// symdb: Thin wrapper that renders the battle background's BG layer-3 tile map and handles its story-flag event during beastsp background init.
+// symdb: () -> r0 = return value of battle_renderBgLayer3TilesAndHandleEvent_804CDD4; preserves r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CDCC.yaml
 	thumb_local_start
 sub_804CDCC:
 	push {r4-r7,lr}

@@ -4934,6 +4934,10 @@ nullsub_42:
 	mov pc, lr
 	thumb_func_end nullsub_42
 
+// symdb: Wrapper that spawns a battle object of type 0x56 linked to a owner with a modified third argument and stores the result in the owner's RelatedObject2Ptr field.
+// symdb: (r0 = owner object?, r1 = ?, r2 = 32-bit value) -> r0 = spawned object; result stored to [r5 +
+// symdb: oBattleObject_RelatedObject2Ptr]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010F6A.yaml
 	thumb_local_start
 sub_8010F6A:
 	push {r4,lr}
@@ -4954,6 +4958,10 @@ sub_8010F7A:
 	pop {r4,pc}
 	thumb_func_end sub_8010F7A
 
+// symdb: Spawns a battle object of type 0x56 linked to a battle object, passing a combined 32-bit parameter (delay << 16 | 0xB) and storing the new object in the owner's RelatedObject2Ptr field.
+// symdb: (r0 = owner battle object, r2 = 16-bit count/delay in low half) -> r0 = spawned object; also
+// symdb: stores it at [r5 + oBattleObject_RelatedObject2Ptr]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010F86.yaml
 	thumb_local_start
 sub_8010F86:
 	push {r4,lr}
@@ -12985,6 +12993,10 @@ nullsub_56:
 	mov pc, lr
 	thumb_func_end nullsub_56
 
+// symdb: Battle hook that clears an object's status/affliction flags and collision timers unless the battle is in phase 1 (likely the custom screen, where status timers should be frozen).
+// symdb: (r0 = battle object or state passed through implicitly via r10; no explicit args used) -> r0 =
+// symdb: result of battle_clearObjectStatusFlagsAndTimers; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80145C2.yaml
 	thumb_local_start
 sub_80145C2:
 	push {lr}
@@ -22602,6 +22614,9 @@ object_setCollisionHitEffect:
 	mov pc, lr
 	thumb_func_end object_setCollisionHitEffect
 
+// symdb: Copies the low nibble of a battle object's element field into its collision data's hit-effect byte.
+// symdb: (r5 = battle object) -> r0 = element&0xF stored to collisionData.hitEffect; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A146.yaml
 	thumb_func_start sub_801A146
 sub_801A146:
 	ldrb r0, [r5,#oBattleObject_Element]

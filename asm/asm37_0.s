@@ -33,6 +33,10 @@ off_813B78C:
 	.word StructArr_813944C
 	thumb_func_end battleObject_getByIndex_813B780
 
+// symdb: Thin AI-dispatch wrapper: reads a global byte at 20096D8 and passes it as the dispatch argument to the battle AI dispatcher, leaving r0 untouched.
+// symdb: (r0 = battle object/actor pointer, preserved) -> r0 = dispatcher's return; tail-calls
+// symdb: battleObject_runAIDispatchTable_813B7A0 with r1 = byte_20096D8 value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B790.yaml
 	thumb_local_start
 sub_813B790:
 	push {lr}
@@ -3625,6 +3629,10 @@ byte_813D410:
 	.byte 0xE9, 0x0, 0x0
 	thumb_func_end sub_813CF8C
 
+// symdb: Verifies an 8-byte player-entered code against a lookup table and, on first match, sets the corresponding story event flag.
+// symdb: (r0 = u8 code[8]) -> r0 = 1 (new match, r1 = entry id, r2 = entry halfword, r3 = entry byte1), 2
+// symdb: (match already claimed), 0 (no match); r4 = 0xFF on no-match/already-claimed paths
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D41C.yaml
 	thumb_func_start sub_813D41C
 sub_813D41C:
 	push {r5-r7,lr}
@@ -3979,6 +3987,9 @@ off_813D644:
 	.word byte_2009470
 	thumb_func_end sub_813D638
 
+// symdb: Wrapper that runs the RFU soft-reset/game-ID check and returns TRUE when the IDs match.
+// symdb: () -> r0 = 1 if rfu_REQBN_softReset_and_checkID returned 1 (ID check passed), else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D648.yaml
 	thumb_func_start sub_813D648
 sub_813D648:
 	push {lr}

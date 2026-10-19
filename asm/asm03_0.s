@@ -2019,6 +2019,10 @@ off_80272CC:
 	.word off_8027BEC
 	thumb_func_end battle_loadObjTableEntryAndSetState4_80272B8
 
+// symdb: Executes one two-byte step of the first-battle tutorial script: run a tutorial chatbox script, wait a fixed timer, or write a byte into the player's NaviStats.
+// symdb: (r4 = ptr to current tutorial opcode {u8 cmd, u8 arg}, r5 = tutorial controller struct) ->
+// symdb: updates r5+0x40 instruction pointer / r5+0x2 next-state; r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80272D0.yaml
 	thumb_local_start
 sub_80272D0:
 	push {lr}
@@ -4305,6 +4309,11 @@ nullsub_14:
 	mov pc, lr
 	thumb_func_end nullsub_14
 
+// symdb: Queues a 0x100-byte VRAM graphics transfer, picking one of two 256-byte tile blocks in ROM based on a flag byte in the caller's work struct.
+// symdb: (r1 = dest VRAM address set by caller; r4 = work struct, byte [r4,#7] selects variant) -> queues
+// symdb: GFX transfer of byte_86E79CC (flag==0) or byte_86E79CC+0x100 (flag!=0), 0x100 bytes; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80282AE.yaml
 	thumb_local_start
 sub_80282AE:
 	push {lr}
@@ -10513,6 +10522,11 @@ sub_802AF42:
 	pop {r5,pc}
 	thumb_func_end sub_802AF42
 
+// symdb: Animates a horizontal BG2 screen slide (scroll X 120->0 in 12px steps) while writing tile columns from unk_2035000 into BG block 3, playing a sound on the first frame.
+// symdb: (r5 = state object, preloaded by caller; fields: +2 started flag byte, +38 scroll X word, +3c
+// symdb: step counter word) -> r0 = remaining scroll X (0 when finished); writes BG2ScrollX in toolkit
+// symdb: RenderInfo, plays sound, updates BG block 3 tiles
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF6C.yaml
 	thumb_local_start
 sub_802AF6C:
 	push {r4-r7,lr}
@@ -10880,6 +10894,9 @@ off_802B29C:
 	.word eS20364C0
 	thumb_func_end sub_802B298
 
+// symdb: Builds a halfword list (0xFF-filled) of which of 27 event flags (0x197..0x1B4 range) are set, storing flag-base+1 IDs and returning the count.
+// symdb: (r0 = u16 out buffer[27]) -> r0 = number of set flags written; flags from cmp/blt loop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B2A0.yaml
 	thumb_func_start sub_802B2A0
 sub_802B2A0:
 	push {r4-r7,lr}
