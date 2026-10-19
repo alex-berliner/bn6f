@@ -1344,7 +1344,7 @@ LABEL_14:
         {
             sub_8145DD8();
             rfu_handleConnTimeout();
-            sub_814610C();
+            rfu_advanceConnState();
             sub_81462D8();
         }
     }
@@ -2052,7 +2052,7 @@ int rfu_handleDisconnectPacket()
 
 
 // 0x814610c
-int sub_814610C()
+int rfu_advanceConnState()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -2532,7 +2532,7 @@ unsigned int __fastcall sub_8146808(int a1)
     for ( i = 0; i < byte_2010288; i = (i + 1) & 0xFF )
     {
         v3 = sub_81466F4(i);
-        if ( !(sub_8146A18(v1, v3, 0xDu) << 24) )
+        if ( !(t3_compareBytes(v1, v3, 0xDu) << 24) )
             return i;
     }
     return 4;
@@ -2627,7 +2627,7 @@ int sub_814692C()
 
 
 // 0x8146938
-BOOL sub_8146938()
+BOOL rfu_checkStateChanged()
 {
     return byte_2010280 != *(dword_2010CC0 + 2);
 }
@@ -2705,7 +2705,7 @@ int __fastcall sub_81469F0(_BYTE *a1, _BYTE *a2, unsigned int a3)
 
 
 // 0x8146a18
-signed int __fastcall sub_8146A18(unsigned __int8 *a1, unsigned __int8 *a2, unsigned int a3)
+signed int __fastcall t3_compareBytes(unsigned __int8 *a1, unsigned __int8 *a2, unsigned int a3)
 {
     unsigned __int8 *v3; // r4
     unsigned int v4; // r3
@@ -3113,7 +3113,7 @@ int __fastcall sub_8146F90(int a1, int a2, int a3)
                 goto LABEL_13;
             case 0x34:
                 rfu_clearAllSlot();
-                sub_813D760();
+                rfu_clearConnFlag();
                 break;
             case 0x40:
                 v6 = 0;
@@ -3233,7 +3233,7 @@ LABEL_6:
     *v2 = 3;
     v7 = *(v3 + 1);
     v8 = getTableEntryPtr32_802D064(0);
-    sub_813D78C(v7, v8);
+    rfu_setEntryFlagBit(v7, v8);
     return v10;
 }
 
@@ -3523,7 +3523,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
             break;
         case 0x34:
             rfu_clearAllSlot();
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         case 0x40:
             v3 = 0;
@@ -3770,7 +3770,7 @@ int __fastcall sub_8147C20(int a1, int a2, int a3)
             break;
         case 0x34:
             rfu_clearAllSlot();
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         default:
             return v7;
@@ -3853,7 +3853,7 @@ int __fastcall sub_8147E98(_BYTE *a1, int a2)
         v2[2] = 0;
         v5 = *(v3 + 1);
         v6 = getTableEntryPtr32_802D064(0);
-        sub_813D78C(v5, v6);
+        rfu_setEntryFlagBit(v5, v6);
     }
     else if ( v4 == 39 )
     {
@@ -4217,7 +4217,7 @@ LABEL_19:
             return v6;
         case 0x34:
             rfu_clearAllSlot();
-            sub_813D760();
+            rfu_clearConnFlag();
             return v6;
         default:
             return v6;
@@ -4455,11 +4455,11 @@ LABEL_16:
             word_200BC58 = 0;
             rfu_clearAllSlot();
             rfu_softResetLinkState();
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         case 0x34:
             rfu_clearAllSlot();
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         default:
             return v2;
@@ -4790,11 +4790,11 @@ LABEL_6:
             rfu_clearAllSlot();
             rfu_softResetLinkState();
             word_200BC58 = 0;
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         case 0x34:
             rfu_clearAllSlot();
-            sub_813D760();
+            rfu_clearConnFlag();
             break;
         default:
             return v2;
@@ -11095,7 +11095,7 @@ int __fastcall sub_814EA84(int a1)
 
 
 // 0x814ea90
-int sub_814EA90()
+int sound_stopAllMusicPlayers()
 {
     int *v0; // r5
     signed int v1; // r4

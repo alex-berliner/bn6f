@@ -993,7 +993,7 @@ signed int battle_throwObjectAway()
 
 
 // 0x810e54e
-int sub_810E54E()
+int battle_stepArcMotion()
 {
     int v0; // r5
     int v1; // r7
@@ -14247,7 +14247,7 @@ unsigned int sub_8118D54()
 
 
 // 0x8118d60
-int sub_8118D60()
+int submenu_stepGuiSprite()
 {
     int v0; // r5
 
@@ -20763,7 +20763,7 @@ int sub_811E6A0()
 
 
 // 0x811e6c0
-int sub_811E6C0()
+int e_dispatchByState()
 {
     int v0; // r5
 
@@ -20846,7 +20846,7 @@ int __fastcall sub_811E744(int a1, int a2, int a3, int a4)
 
 
 // 0x811e7d4
-int sub_811E7D4()
+int sprite_dispatchUpdate()
 {
     int v0; // r5
 

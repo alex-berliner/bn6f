@@ -329,7 +329,7 @@ loc_812ECE4:
 	cmp r0, #0xc
 	beq loc_812ECF2
 	mov r1, r4
-	bl sub_812EEEC
+	bl submenu_getScrollStep
 	strb r0, [r7,#0xc]
 loc_812ECF2:
 	ldrh r0, [r7,#0x24]
@@ -380,9 +380,9 @@ off_812ED30:
 // symdb: Returns the display tile word for the submenu's currently selected list entry, fetched from the table at word_2023FA0 with the 0x8000 bit (palette 8) set.
 // symdb: () -> r0 = halfword word_2023FA0[submenuState.0x20 + submenuState.0x24] | 0x8000; no flags of
 // symdb: interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ED34.yaml
-	thumb_func_start sub_812ED34
-sub_812ED34:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getSelectedTile.yaml
+	thumb_func_start submenu_getSelectedTile
+submenu_getSelectedTile:
 	push {lr}
 	bl submenu_getStatePtr
 	mov r1, r0
@@ -401,7 +401,7 @@ sub_812ED34:
 	.balign 4, 0
 off_812ED54:
 	.word word_2023FA0
-	thumb_func_end sub_812ED34
+	thumb_func_end submenu_getSelectedTile
 
 	thumb_func_start sub_812ED58
 sub_812ED58:
@@ -611,9 +611,9 @@ byte_812EEE1:
 // symdb: Returns the per-frame pixel scroll step (0/4/8, or 12 for snap/wrap) for animating the submenu list toward the current cursor position.
 // symdb: (r0,r1 ignored by body; r1 = value from menu_adjustCursorOrValue_811F7F8) -> r0 = scroll step: 0
 // symdb: none, 4 up, 8 down, 12 snap/wrap; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EEEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_getScrollStep.yaml
 	thumb_local_start
-sub_812EEEC:
+submenu_getScrollStep:
 	push {r4-r7,lr}
 	bl submenu_getStatePtr
 	mov r7, r0
@@ -643,7 +643,7 @@ loc_812EF1A:
 	mov r0, r4
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_812EEEC
+	thumb_func_end submenu_getScrollStep
 
 // symdb: Draws the text window for the currently selected entry of an on-screen menu: looks the entry's window id up in a table, blits it to BG, and stores a value back into the menu state.
 // symdb: (args passed through to sub_812ED2C) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7

@@ -1735,9 +1735,9 @@ locret_8000EB4:
 // symdb: Compacts a fixed-length array of halfwords in place, dropping entries equal to 0xFFFF and refilling the tail with 0xFFFF so the array keeps its original length.
 // symdb: (r0 = halfword array, r1 = entry count) -> r0 unchanged; entries != 0xFFFF shifted to the front,
 // symdb: tail filled with 0xFFFF; r0-r7,lr clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000EB6.yaml
-	thumb_func_start sub_8000EB6
-sub_8000EB6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/compactHalfwordArraySkipFFFF.yaml
+	thumb_func_start compactHalfwordArraySkipFFFF
+compactHalfwordArraySkipFFFF:
 	push {r5-r7,lr}
 	add r2, r1, r1
 	add r5, r0, r2
@@ -1765,7 +1765,7 @@ locret_8000EDC:
 	.balign 4, 0
 dword_8000EE0:
 	.word 0xFFFF
-	thumb_func_end sub_8000EB6
+	thumb_func_end compactHalfwordArraySkipFFFF
 
 // symdb: Counts how many of 9 title-screen reward icons the player has earned and returns the count plus a bitmask of which ones
 // symdb: void GetTitleScreenIconCount(void) -> (u32 count r0, u16 bitmask r1); clobbers r2-r7, nzcv

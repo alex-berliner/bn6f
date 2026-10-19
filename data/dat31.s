@@ -1983,7 +1983,7 @@ off_810D554::
 	.word sub_80166AE+1
 	.word sub_810D5A6+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_810D5CE+1
+	.word battle_objThinkCustom+1
 	.word sub_810D5F6+1
 	.word sub_810D61E+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -2034,9 +2034,9 @@ locret_810D5CC::
 
 // symdb: Per-frame think/update for a battle object: one-time init via ExtraVars, a common object tick, then a per-action handler skipped when CurAction is 6.
 // symdb: (r5 = battle object pointer, no args in r0-r3) -> r0 clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D5CE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objThinkCustom.yaml
 	thumb_local_start
-sub_810D5CE::
+battle_objThinkCustom::
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	cmp r0, #0
@@ -2056,7 +2056,7 @@ loc_810D5E0::
 	bl sub_810D4BA
 locret_810D5F4::
 	pop {pc}
-	thumb_func_end sub_810D5CE
+	thumb_func_end battle_objThinkCustom
 
 	thumb_local_start
 sub_810D5F6::

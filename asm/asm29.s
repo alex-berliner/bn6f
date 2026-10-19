@@ -7231,7 +7231,7 @@ sub_80A8988:
 	mov r0, #SOUND_UNK_73
 	bl PlaySoundEffect
 	ldrb r0, [r5,#4]
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r0, r0
 	bl SetEventFlag
 	b locret_80A89D6
@@ -7243,7 +7243,7 @@ loc_80A89B4:
 	add r0, #0xff
 	bl PlaySoundEffect
 	ldrb r0, [r5,#4]
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	// bitfield
 	mov r0, r1
 	bl SetEventFlag

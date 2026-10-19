@@ -2386,7 +2386,7 @@ loc_80274E4:
 	b locret_8027500
 loc_80274F0:
 	bl battle_compactFolderChipList_802945A
-	bl sub_80294E0
+	bl battle_refillFolderFromDiscardPile
 	bl sub_802A61A
 	mov r0, #8
 	strh r0, [r5,#2]
@@ -6968,9 +6968,9 @@ locret_80294DE:
 // symdb: Puts the chips used this turn (discard stack) back into the empty 0xFFFF slots of eBattleFolder.
 // symdb: (implicit r5 = battle work struct: byte +0x5F = count, u16 array +0x60 = discarded chips) ->
 // symdb: void; no register args, no return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80294E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_refillFolderFromDiscardPile.yaml
 	thumb_local_start
-sub_80294E0:
+battle_refillFolderFromDiscardPile:
 	push {r4,r6,r7,lr}
 	mov r0, #0x5f 
 	ldrb r6, [r5,r0]
@@ -7002,7 +7002,7 @@ loc_8029508:
 	.balign 4, 0
 off_8029510:
 	.word eBattleFolder
-	thumb_func_end sub_80294E0
+	thumb_func_end battle_refillFolderFromDiscardPile
 
 	thumb_local_start
 sub_8029514:
@@ -14265,9 +14265,9 @@ off_802CB74:
 // symdb: Runs one update tick of the battle sub-state machine at 203EAD0 and returns busy/advance flags that drive the battle-phase script.
 // symdb: () -> r0 = busy flag (nonzero = sub-state machine still running), r1 = advance flag (1 = caller
 // symdb: advances BattleState.PhaseStepIndex); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CB78.yaml
-	thumb_func_start sub_802CB78
-sub_802CB78:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updatePhaseState.yaml
+	thumb_func_start battle_updatePhaseState
+battle_updatePhaseState:
 	push {r5,lr}
 	ldr r5, off_802CBA0 // =dword_203EAD0 
 	mov r0, #1
@@ -14289,7 +14289,7 @@ off_802CB94:
 	.word sub_802CCAE+1
 off_802CBA0:
 	.word dword_203EAD0
-	thumb_func_end sub_802CB78
+	thumb_func_end battle_updatePhaseState
 
 	thumb_local_start
 sub_802CBA4:
@@ -18114,7 +18114,7 @@ sub_802E674:
 	strh r2, [r0,#6]
 	add r0, #6
 	mov r1, #0x1e
-	bl sub_8000EB6
+	bl compactHalfwordArraySkipFFFF
 locret_802E696:
 	pop {r7,pc}
 	.balign 4, 0

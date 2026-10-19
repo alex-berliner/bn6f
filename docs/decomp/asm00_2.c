@@ -14429,7 +14429,7 @@ int object_decrementPhaseCountdown()
 
 
 // 0x8018002
-int sub_8018002()
+int battle_runAnimHandler()
 {
     int v0; // r5
 
@@ -17171,10 +17171,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_C00 )
         {
             *(v1 + 24) = 0;
-            return sub_8018002();
+            return battle_runAnimHandler();
         }
         if ( object_getFlag() & &LCDControl )
-            return sub_8018002();
+            return battle_runAnimHandler();
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
@@ -17253,10 +17253,10 @@ int __fastcall sub_801B4D4(int a1)
     if ( object_getFlag2() & &loc_C00 )
     {
         *(v1 + 24) = 0;
-        return sub_8018002();
+        return battle_runAnimHandler();
     }
     if ( object_getFlag() & &LCDControl )
-        return sub_8018002();
+        return battle_runAnimHandler();
     if ( object_getFlag2() & &loc_3000 )
     {
         *(v1 + 24) = 0;
@@ -17345,10 +17345,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_C00 )
         {
             *(v1 + 24) = 0;
-            return sub_8018002();
+            return battle_runAnimHandler();
         }
         if ( object_getFlag() & &LCDControl )
-            return sub_8018002();
+            return battle_runAnimHandler();
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
@@ -17438,10 +17438,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_C00 )
         {
             *(v1 + 24) = 0;
-            return sub_8018002();
+            return battle_runAnimHandler();
         }
         if ( object_getFlag() & &LCDControl )
-            return sub_8018002();
+            return battle_runAnimHandler();
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
@@ -17526,10 +17526,10 @@ LABEL_9:
         if ( object_getFlag2() & &loc_C00 )
         {
             *(v1 + 24) = 0;
-            return sub_8018002();
+            return battle_runAnimHandler();
         }
         if ( object_getFlag() & &LCDControl )
-            return sub_8018002();
+            return battle_runAnimHandler();
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;

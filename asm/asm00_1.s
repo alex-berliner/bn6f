@@ -3498,9 +3498,9 @@ battleObject_finishQueuedSpriteGroup_80049B0:
 
 // symdb: Clears the word at offset 0x64 of all 56 overworld map objects (likely a per-object counter/timer reset).
 // symdb: () -> void; no return value, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80049BA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_clearMapObjectsField64.yaml
 	thumb_local_start
-sub_80049BA:
+ow_clearMapObjectsField64:
 	mov r0, #0
 	ldr r3, off_80049D4 // =eOverworldMapObjects
 loc_80049BE:
@@ -3522,7 +3522,7 @@ off_80049D8:
 	.word dword_2013920
 off_80049DC:
 	.word eOverworldMapObject55
-	thumb_func_end sub_80049BA
+	thumb_func_end ow_clearMapObjectsField64
 
 // END OF OBJECT CODE
 
@@ -11529,7 +11529,7 @@ sub_800838A:
 	strb r0, [r5,#3]
 	b locret_80083E2
 loc_80083AE:
-	bl sub_802CB78
+	bl battle_updatePhaseState
 	tst r0, r0
 	bne locret_80083E2
 	cmp r1, #1
@@ -11732,10 +11732,10 @@ off_8008504:
 off_8008508:
 	.word sub_8008528+1
 	.word battle_dispatchNextPhase+1
-	.word sub_8008664+1
+	.word e_dispatchUpdateByState+1
 	.word sub_8008764+1
 	.word sub_80087D8+1
-	.word sub_8008840+1
+	.word battle_introStepDispatch+1
 	.word npc_checkRecordFlagFinish+1
 off_8008524:
 	.word dword_203CA70
@@ -11917,9 +11917,9 @@ locret_8008662:
 // symdb: Dispatches an entity's per-frame update to one of four handlers selected by its state byte.
 // symdb: (r0 = arg? actually clobbered, r5 = entity struct pointer) -> tail-calls handler table[byte at
 // symdb: r5+2] with r0 = state index; returns to caller via saved lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008664.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_dispatchUpdateByState.yaml
 	thumb_local_start
-sub_8008664:
+e_dispatchUpdateByState:
 	push {lr}
 	ldr r1, off_8008674 // =off_8008678
 	ldrb r0, [r5,#2]
@@ -11935,7 +11935,7 @@ off_8008678:
 	.word sub_80086F8+1
 	.word sub_8008716+1
 	.word e_battleEndWaitCountdown+1
-	thumb_func_end sub_8008664
+	thumb_func_end e_dispatchUpdateByState
 
 	thumb_local_start
 sub_8008688:
@@ -12181,9 +12181,9 @@ locret_800883E:
 // symdb: Runs the next step of the battle intro/end state machine by dispatching the handler selected from a step table.
 // symdb: (r0 = state struct in r5, step id at [r5,#2]) -> jumps to handler table entry
 // symdb: (off_8008854[step]) which returns to this function's caller; r0 = step id on entry to handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008840.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_introStepDispatch.yaml
 	thumb_local_start
-sub_8008840:
+battle_introStepDispatch:
 	push {lr}
 	ldr r1, off_8008850 // =off_8008854
 	ldrb r0, [r5,#2]
@@ -12199,7 +12199,7 @@ off_8008854:
 	.word sub_8008894+1
 	.word battle_introWaitCrossNetReady+1
 	.word battle_battleEndCountdownTick+1
-	thumb_func_end sub_8008840
+	thumb_func_end battle_introStepDispatch
 
 // symdb: Battle-side update step that fires the cross-net battle intro once (effect kind 0x54) and then waits until the linked partner reports battle-ready.
 // symdb: (r5 = battle sub-state struct ptr, no r0 args) -> r0 clobbered; writes [r5+2] (halfword), [r5+3]
@@ -12955,7 +12955,7 @@ off_8008D78:
 off_8008D7C:
 	.word battle_startIntro+1
 	.word sub_8008DDC+1
-	.word sub_8008E7C+1
+	.word battle_dispatchStateUpdate+1
 	.word battle_stepLoseSequence+1
 	.word battle_stepEndFadeWait+1
 	.word sub_8009058+1
@@ -13076,9 +13076,9 @@ byte_8008E74:
 // symdb: Dispatches an update handler selected by the state byte at [r5+2] of a battle-scene context
 // symdb: (r5 = context struct, state id at +2) -> tail-calls handler table entry; returns whatever the
 // symdb: handler returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008E7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStateUpdate.yaml
 	thumb_local_start
-sub_8008E7C:
+battle_dispatchStateUpdate:
 	push {lr}
 	ldr r1, off_8008E8C // =off_8008E90
 	ldrb r0, [r5,#2]
@@ -13094,7 +13094,7 @@ off_8008E90:
 	.word sub_8008F10+1
 	.word battle_linkBattleIntroWaitUpdate+1
 	.word sub_8008F52+1
-	thumb_func_end sub_8008E7C
+	thumb_func_end battle_dispatchStateUpdate
 
 	thumb_local_start
 sub_8008EA0:
@@ -14887,7 +14887,7 @@ off_8009A98:
 off_8009A9C:
 	.word sub_8009AA8+1
 	.word battle_stateCrossNetBattleIntroStep+1
-	.word sub_8009AFC+1
+	.word battle_stateWait10FramesThenGotoPhaseC+1
 	thumb_func_end sub_8009A88
 
 	thumb_local_start
@@ -14950,9 +14950,9 @@ locret_8009AFA:
 // symdb: battle sub-phase handler that waits 10 frames on entry, then advances the battle state to sub-phase 0xC
 // symdb: (r5 = battle state struct) -> r0 = leftover value (0 when phase advances); flags from the timer
 // symdb: decrement
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009AFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateWait10FramesThenGotoPhaseC.yaml
 	thumb_local_start
-sub_8009AFC:
+battle_stateWait10FramesThenGotoPhaseC:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14973,7 +14973,7 @@ loc_8009B0E:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009B1E:
 	pop {pc}
-	thumb_func_end sub_8009AFC
+	thumb_func_end battle_stateWait10FramesThenGotoPhaseC
 
 // symdb: Per-frame battle main loop step: dispatches sub-move handling, validates the chip hand, and resolves battle-result/turn-completion based on the player's outcome.
 // symdb: (r5 = &eBattleState, r10 = &eToolkit) -> r0 = 0 ; side effects: mutates oBattleState_Unk_03,

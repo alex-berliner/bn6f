@@ -1332,7 +1332,7 @@ int sub_810D5A6()
 
 
 // 0x810d5ce
-int sub_810D5CE()
+int battle_objThinkCustom()
 {
     int v0; // r5
     int result; // r0

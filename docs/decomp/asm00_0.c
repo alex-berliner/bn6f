@@ -1062,7 +1062,7 @@ unsigned __int8 *__fastcall unused_8000E90(unsigned __int8 *result, int a2)
 
 
 // 0x8000eb6
-unsigned __int16 *__fastcall sub_8000EB6(unsigned __int16 *result, int a2)
+unsigned __int16 *__fastcall compactHalfwordArraySkipFFFF(unsigned __int16 *result, int a2)
 {
     unsigned __int16 *v2; // r5
     unsigned __int16 *v3; // r6

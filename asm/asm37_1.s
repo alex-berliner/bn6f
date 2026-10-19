@@ -2538,7 +2538,7 @@ loc_8142F14:
 	cmp r0, #0xff
 	beq loc_8142F44
 	mov r0, r4
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_8142F3E
@@ -2569,7 +2569,7 @@ loc_8142F56:
 	cmp r0, #0xff
 	beq loc_8142F8C
 	mov r0, r4
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r0, r1
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_8142F86
@@ -2737,9 +2737,9 @@ byte_81430B0:
 // symdb: Computes overworld event flag ID(s) for an index, using a per-area base table.
 // symdb: (r0 = flag index u8) -> r0 = flagId = areaBase[index] + flagIndex (and r1 = second flagId from
 // symdb: paired table entry); no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430B6.yaml
-	thumb_func_start sub_81430B6
-sub_81430B6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getEventFlagIds.yaml
+	thumb_func_start ow_getEventFlagIds
+ow_getEventFlagIds:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl sub_8143088
@@ -2756,7 +2756,7 @@ off_81430D0:
 	.word byte_81430D4
 byte_81430D4:
 	.byte 0x70, 0x9, 0x78, 0x9, 0x80, 0x9, 0x88, 0x9
-	thumb_func_end sub_81430B6
+	thumb_func_end ow_getEventFlagIds
 
 // symdb: Returns one of two text/message IDs (0x96E/0x96F) for the Cybercrow lesson spot, chosen by a state value from a helper.
 // symdb: () -> r0 = message/text ID (halfword 0x96E or 0x96F from table dword_81430F0); no flag
@@ -2860,7 +2860,7 @@ sub_8143198:
 	bl e_getFlagTotal
 	mov r6, r0
 	mov r0, #0
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r7, r0
 	mov r4, #0
 loc_81431AA:
@@ -2888,12 +2888,12 @@ sub_81431C6:
 	ldr r1, off_81431F4 // =0xa0 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r0, r0
 	mov r2, #8
 	bl ClearEventFlagRange // (u16 entryFlagBitfield) -> void
 	mov r0, #0
-	bl sub_81430B6
+	bl ow_getEventFlagIds
 	mov r0, r1
 	mov r2, #8
 	bl ClearEventFlagRange // (u16 entryFlagBitfield) -> void

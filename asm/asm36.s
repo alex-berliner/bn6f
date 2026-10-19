@@ -6772,7 +6772,7 @@ off_81334B4:
 off_81334B8:
 	.word beastsp_handleInputAndScripts+1
 	.word sub_8133540+1
-	.word sub_81335EC+1
+	.word object_dispatchState+1
 	.word sub_8133770+1
 	thumb_func_end battleObject_submenuDispatchByBeastSpIndex_8133484
 // symdb: Input/state step handler for a beast-SP-related text sequence: reacts to B+Select and chatbox progress, playing sounds and advancing scripts 0xb/0x10/0x11 while updating a context's state bytes.
@@ -6941,9 +6941,9 @@ locret_81335EA:
 // symdb: Dispatches to one of six handler routines selected by the object's state field at [r5,#0x68].
 // symdb: (r5 = object struct, uses [r5,#0x68] as index) -> calls table handler, returns its result;
 // symdb: clobbers lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81335EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchState.yaml
 	thumb_local_start
-sub_81335EC:
+object_dispatchState:
 	push {lr}
 	ldr r0, off_81335FC // =off_8133600 
 	ldr r1, [r5,#0x68]
@@ -6961,7 +6961,7 @@ off_8133600:
 	.word sub_81336C4+1
 	.word sub_8133740+1
 	.word sub_813375C+1
-	thumb_func_end sub_81335EC
+	thumb_func_end object_dispatchState
 
 	thumb_local_start
 sub_8133618:

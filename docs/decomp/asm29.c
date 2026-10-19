@@ -4794,7 +4794,7 @@ unsigned int sub_80A8988()
             sprite_removeShadow();
             *(v0 + 8) = 8;
             PlaySoundEffect(420, v5, v6);
-            sub_81430B6(*(v0 + 4));
+            ow_getEventFlagIds(*(v0 + 4));
             SetEventFlag(v7);
             result = e_addByteSaturatingAt5(1);
         }
@@ -4803,7 +4803,7 @@ unsigned int sub_80A8988()
             sprite_removeShadow();
             *(v0 + 8) = 8;
             PlaySoundEffect(115, v2, v3);
-            v4 = sub_81430B6(*(v0 + 4));
+            v4 = ow_getEventFlagIds(*(v0 + 4));
             result = SetEventFlag(v4);
         }
     }

@@ -179,7 +179,7 @@ void sub_812ECAC()
         if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 6u, 0, 0) )
             submenu_renderSelectedWindow();
         if ( v2[12] != 12 )
-            v2[12] = sub_812EEEC();
+            v2[12] = submenu_getScrollStep();
         v3 = *(v2 + 16);
         *(v2 + 31) = *(v2 + 18);
         *(v2 + 30) = v3;
@@ -213,7 +213,7 @@ char *submenu_getStatePtr()
 
 
 // 0x812ed34
-int sub_812ED34()
+int submenu_getSelectedTile()
 {
     char *v0; // r0
 
@@ -301,7 +301,7 @@ void __fastcall sub_812EE78(int a1)
 
 
 // 0x812eeec
-signed int sub_812EEEC()
+signed int submenu_getScrollStep()
 {
     char *v0; // r0
     char *v1; // r7

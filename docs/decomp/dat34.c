@@ -105,7 +105,7 @@ void sub_812DBE0()
     char v15; // zf
 
     *(v0 + 16) = 12;
-    *(v0 + 42) = sub_812ED34();
+    *(v0 + 42) = submenu_getSelectedTile();
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {

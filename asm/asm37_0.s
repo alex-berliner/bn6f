@@ -4211,9 +4211,9 @@ off_813D75C:
 
 // symdb: Clears the flag byte at offset 0x5 of the RFU link-state struct eS200BC50, resetting it after the wireless slots are torn down.
 // symdb: () -> void; writes byte_200BC55 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D760.yaml
-	thumb_func_start sub_813D760
-sub_813D760:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearConnFlag.yaml
+	thumb_func_start rfu_clearConnFlag
+rfu_clearConnFlag:
 	push {lr}
 	ldr r0, off_813D76C // =eS200BC50 
 	mov r1, #0
@@ -4222,7 +4222,7 @@ sub_813D760:
 	.balign 4, 0x00
 off_813D76C:
 	.word eS200BC50
-	thumb_func_end sub_813D760
+	thumb_func_end rfu_clearConnFlag
 
 	push {r4,lr}
 	mov r0, #1
@@ -4242,9 +4242,9 @@ off_813D788:
 // symdb: ORs the per-index bit mask from a lookup table into the flags word (+0x1C) of a wireless lobby entry
 // symdb: (r0 = index into byte_813D7A0 bitmask table, r1 = entry struct ptr) -> r0 = destroyed;
 // symdb: entry->0x1C |= table[index]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D78C.yaml
-	thumb_func_start sub_813D78C
-sub_813D78C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setEntryFlagBit.yaml
+	thumb_func_start rfu_setEntryFlagBit
+rfu_setEntryFlagBit:
 	push {lr}
 	ldr r2, off_813D79C // =byte_813D7A0 
 	lsl r0, r0, #2
@@ -4258,7 +4258,7 @@ off_813D79C:
 byte_813D7A0:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
 	.byte 0x40, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0
-	thumb_func_end sub_813D78C
+	thumb_func_end rfu_setEntryFlagBit
 
 	thumb_func_start sub_813D7B8
 sub_813D7B8:

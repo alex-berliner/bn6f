@@ -1629,7 +1629,7 @@ int battleObject_finishQueuedSpriteGroup_80049B0()
 
 
 // 0x80049ba
-signed int sub_80049BA()
+signed int ow_clearMapObjectsField64()
 {
 	signed int result; // r0
 	void **v1; // r3
@@ -6782,7 +6782,7 @@ int sub_800838A()
 
     if ( *(v0 + 3) )
     {
-        result = sub_802CB78();
+        result = battle_updatePhaseState();
         if ( !result )
         {
             if ( v5 == 1 )
@@ -7096,7 +7096,7 @@ LABEL_9:
 
 
 // 0x8008664
-int sub_8008664()
+int e_dispatchUpdateByState()
 {
     int v0; // r5
 
@@ -7317,7 +7317,7 @@ int sub_80087D8()
 
 
 // 0x8008840
-int sub_8008840()
+int battle_introStepDispatch()
 {
     int v0; // r5
 
@@ -8011,7 +8011,7 @@ int sub_8008DDC()
 
 
 // 0x8008e7c
-int sub_8008E7C()
+int battle_dispatchStateUpdate()
 {
     int v0; // r5
 
@@ -9566,7 +9566,7 @@ int battle_stateCrossNetBattleIntroStep()
 
 
 // 0x8009afc
-int sub_8009AFC()
+int battle_stateWait10FramesThenGotoPhaseC()
 {
     int v0; // r5
     int result; // r0

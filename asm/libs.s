@@ -2981,7 +2981,7 @@ loc_81455B4:
 loc_81455CA:
 	bl sub_8145DD8
 	bl rfu_handleConnTimeout
-	bl sub_814610C
+	bl rfu_advanceConnState
 	bl sub_81462D8
 loc_81455DA:
 	pop {r4}
@@ -4484,9 +4484,9 @@ off_8146108:
 
 // symdb: Advances the wireless-link state machine at eStruct200FE00 from state 1 to 2, saving the old timer/counter bytes and loading new values (0x10/0x11).
 // symdb: () -> void; no return value, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814610C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_advanceConnState.yaml
 	thumb_local_start
-sub_814610C:
+rfu_advanceConnState:
 	push {lr}
 	ldr r1, off_8146134 // =eStruct200FE00 
 	ldrb r0, [r1,#0x6] // (byte_200FE06 - 0x200fe00)
@@ -4511,7 +4511,7 @@ loc_8146130:
 	.balign 4, 0
 off_8146134:
 	.word eStruct200FE00
-	thumb_func_end sub_814610C
+	thumb_func_end rfu_advanceConnState
 
 // symdb: Scans the wireless connection table and returns a bitmask of entries whose id appears in the 0xFFFF-terminated id list in the rfu struct at 200FE20.
 // symdb: () -> r0 = u8 bitmask, bit i set when entry i's id (u16 at table+0x18, entries 0x20 bytes)
@@ -5589,7 +5589,7 @@ loc_8146820:
 	mov r1, r0
 	mov r0, r5
 	mov r2, #0xd
-	bl sub_8146A18
+	bl t3_compareBytes
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	bne loc_814683A
@@ -5791,9 +5791,9 @@ sub_814692C:
 // symdb: returns 1 when the current value in byte_2010280 no longer matches the state byte at offset +2 of the struct at dword_2010CC0, letting callers abort a wireless flow
 // symdb: () -> r0 = 1 if byte_2010280 != [dword_2010CC0]+2 (state changed/mismatch), 0 if equal; clobbers
 // symdb: r0-r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146938.yaml
-	thumb_func_start sub_8146938
-sub_8146938:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_checkStateChanged.yaml
+	thumb_func_start rfu_checkStateChanged
+rfu_checkStateChanged:
 	push {lr}
 	ldr r2, off_814694C // =byte_2010280 
 	ldr r0, off_8146950 // =dword_2010CC0 
@@ -5815,7 +5815,7 @@ loc_8146956:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8146938
+	thumb_func_end rfu_checkStateChanged
 
 	thumb_func_start sub_814695C
 sub_814695C:
@@ -5947,9 +5947,9 @@ loc_8146A10:
 // symdb: Compares two buffers byte-by-byte for up to a given length (max 255) and returns 0 if they are identical, 1 at the first mismatch.
 // symdb: (r0 = buffer A, r1 = buffer B, r2 = byte count) -> r0 = 0 if all bytes equal, 1 on mismatch;
 // symdb: flags set by result mov
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146A18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_compareBytes.yaml
 	thumb_local_start
-sub_8146A18:
+t3_compareBytes:
 	push {r4,r5,lr}
 	mov r4, r0
 	lsl r2, r2, #0x18
@@ -5978,7 +5978,7 @@ loc_8146A42:
 	pop {r4,r5}
 	pop {r1}
 	bx r1
-	thumb_func_end sub_8146A18
+	thumb_func_end t3_compareBytes
 
 	thumb_local_start
 sub_8146A48:
@@ -6834,7 +6834,7 @@ off_8147114:
 	.word eS200BC50
 loc_8147118:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_814700A
 loc_8147122:
 	mov r0, #0
@@ -7015,7 +7015,7 @@ sub_8147228:
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, r0
 	mov r0, r4
-	bl sub_813D78C
+	bl rfu_setEntryFlagBit
 	b loc_8147284
 	.balign 4, 0
 off_814726C:
@@ -7733,7 +7733,7 @@ off_8147810:
 	.word eS200BC50
 loc_8147814:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_814762C
 loc_814781E:
 	mov r0, #0
@@ -8462,7 +8462,7 @@ off_8147DCC:
 	.word eS200BC50
 loc_8147DD0:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 def_8147C6A:
 	pop {r4-r7}
 	pop {r0}
@@ -8599,7 +8599,7 @@ sub_8147E98:
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, r0
 	mov r0, r4
-	bl sub_813D78C
+	bl rfu_setEntryFlagBit
 	b loc_8147EF4
 	.balign 4, 0
 off_8147ED4:
@@ -9413,7 +9413,7 @@ off_814852C:
 	.word eS200BC50
 loc_8148530:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 def_814825A:
 	pop {r4}
 	pop {r0}
@@ -10029,7 +10029,7 @@ loc_8148A40:
 	strh r0, [r2,#0x8] // (word_200BC58 - 0x200bc50)
 	bl rfu_clearAllSlot
 	bl rfu_softResetLinkState
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_8148934
 loc_8148A52:
 	bl eStruct200FE00_setUnk04To15h
@@ -10040,7 +10040,7 @@ off_8148A5C:
 	.word eS200BC50
 loc_8148A60:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_8148934
 loc_8148A6A:
 	mov r0, #1
@@ -10886,13 +10886,13 @@ loc_81490F4:
 	ldr r1, off_8149108 // =eS200BC50 
 	mov r0, #0
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_8148FDA
 off_8149108:
 	.word eS200BC50
 loc_814910C:
 	bl rfu_clearAllSlot
-	bl sub_813D760
+	bl rfu_clearConnFlag
 	b def_8148FDA
 loc_8149116:
 	mov r0, #1
@@ -23260,9 +23260,9 @@ sub_814EA84:
 
 // symdb: m4a StopAll: calls the stop routine on every one of the 0x20 music players in gMPlayTable
 // symdb: () -> r0 = destroyed; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EA90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_stopAllMusicPlayers.yaml
 	thumb_local_start
-sub_814EA90:
+sound_stopAllMusicPlayers:
 	push {r4,r5,lr}
 	ldr r0, dword_814EAB4 // =0x20 
 	lsl r0, r0, #0x10
@@ -23287,7 +23287,7 @@ dword_814EAB4:
 	.word 0x20
 off_814EAB8:
 	.word gMPlayTable
-	thumb_func_end sub_814EA90
+	thumb_func_end sound_stopAllMusicPlayers
 
 	thumb_local_start
 sub_814EABC:

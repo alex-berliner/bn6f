@@ -4567,7 +4567,7 @@ signed int sub_8029488()
 
 
 // 0x80294e0
-signed int sub_80294E0()
+signed int battle_refillFolderFromDiscardPile()
 {
     int v0; // r5
     signed int result; // r0
@@ -9031,7 +9031,7 @@ int __fastcall sub_802CB38(int a1, int a2)
 
 
 // 0x802cb78
-int sub_802CB78()
+int battle_updatePhaseState()
 {
     eT3BattleObjects[6916] = 1;
     (*(&off_802CB94 + eT3BattleObjects[6912]))();
@@ -11667,7 +11667,7 @@ unsigned __int16 *__fastcall sub_802E674(unsigned __int16 *result, int a2)
         v3 = sub_802E490(result);
         *&v3[2 * (v2 - 1)] = *(v3 + 3);
         *(v3 + 3) = -1;
-        result = sub_8000EB6(v3 + 3, 30);
+        result = compactHalfwordArraySkipFFFF(v3 + 3, 30);
     }
     return result;
 }

@@ -1408,7 +1408,7 @@ off_810E4E4:
 	.word off_810E4E8
 off_810E4E8:
 	.word battle_throwObjectAway+1
-	.word sub_810E54E+1
+	.word battle_stepArcMotion+1
 	thumb_func_end sub_810E4D4
 
 // symdb: Fully cleans a battle object out of the fight (collision, AI, actor list, held chip) and then launches it off as a thrown projectile.
@@ -1458,9 +1458,9 @@ battle_throwObjectAway:
 // symdb: Per-frame physics step for an AI-launched battle object that flies in an arc: moves X/Z by their velocities, applies gravity to Z velocity, and destroys the object when its step timer expires.
 // symdb: (r5 = battle object, r7 = oAIAttackVars) -> r0 = 0 (CUR_STATE_DESTROY) when timer ends; flags
 // symdb: updated on object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E54E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepArcMotion.yaml
 	thumb_local_start
-sub_810E54E:
+battle_stepArcMotion:
 	push {r4,lr}
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -1485,7 +1485,7 @@ sub_810E54E:
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
 locret_810E57A:
 	pop {r4,pc}
-	thumb_func_end sub_810E54E
+	thumb_func_end battle_stepArcMotion
 
 	thumb_local_start
 sub_810E57C:
@@ -22537,9 +22537,9 @@ sub_8118D54:
 // symdb: Dispatches the sSubmenu GUI-sprite state machine: calls the init, update, or third handler selected by the entry's state byte.
 // symdb: (r5 = sSubmenu entry, [r5,#8] = state index 0-2) -> calls handler in r6 context; no direct
 // symdb: return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118D60.yaml
-	thumb_func_start sub_8118D60
-sub_8118D60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_stepGuiSprite.yaml
+	thumb_func_start submenu_stepGuiSprite
+submenu_stepGuiSprite:
 	push {lr}
 
 	ldr r6, off_8118D80 // =sSubmenu
@@ -22562,7 +22562,7 @@ off_8118D74:
 	.word sub_8118E1C+1
 off_8118D80:
 	.word sSubmenu
-	thumb_func_end sub_8118D60
+	thumb_func_end submenu_stepGuiSprite
 
 // symdb: Initializes a type-0x23 sprite object from the GUI resource at unk_20222F0, configuring animation, priority, palette and a list-row position before a follow-up setup call.
 // symdb: (r5 = object struct ptr, r6 = context whose +0x20 halfword is a row/list index) -> r0 = 0 via
@@ -33939,9 +33939,9 @@ byte_811E6B8:
 // symdb: Dispatches one of three update handlers for eStruct2001010 based on the state byte at [r5,#8].
 // symdb: (r5 = object/work struct; r1 = state = [r5,#8]) -> tail-call via 'mov lr, pc; bx r0' into
 // symdb: off_811E6D4[r1]; sets r6 = eStruct2001010 for the handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E6C0.yaml
-	thumb_func_start sub_811E6C0
-sub_811E6C0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_dispatchByState.yaml
+	thumb_func_start e_dispatchByState
+e_dispatchByState:
 	push {lr}
 	ldr r6, off_811E6E0 // =eStruct2001010
 	ldr r0, off_811E6D0 // =off_811E6D4
@@ -33959,7 +33959,7 @@ off_811E6D4:
 	.word sub_811E73C+1
 off_811E6E0:
 	.word eStruct2001010
-	thumb_func_end sub_811E6C0
+	thumb_func_end e_dispatchByState
 
 	thumb_local_start
 sub_811E6E4:
@@ -34073,9 +34073,9 @@ byte_811E7A0:
 // symdb: Dispatches an entity's per-mode update routine, picking one of three handlers from a jump table using the entity's mode byte.
 // symdb: (r5 = entity struct, handler table indexed by [r5,#8]; r6 set = &eStruct2001010) -> tail-jumps
 // symdb: to handler; r5, r6 passed through
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E7D4.yaml
-	thumb_func_start sub_811E7D4
-sub_811E7D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchUpdate.yaml
+	thumb_func_start sprite_dispatchUpdate
+sprite_dispatchUpdate:
 	push {lr}
 	ldr r6, off_811E7F4 // =eStruct2001010
 	ldr r0, off_811E7E4 // =off_811E7E8
@@ -34093,7 +34093,7 @@ off_811E7E8:
 	.word sub_811E850+1
 off_811E7F4:
 	.word eStruct2001010
-	thumb_func_end sub_811E7D4
+	thumb_func_end sprite_dispatchUpdate
 
 	thumb_local_start
 sub_811E7F8:

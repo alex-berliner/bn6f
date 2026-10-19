@@ -9537,7 +9537,7 @@ int __fastcall sub_803BFA0(int a1, int a2, int a3)
 LABEL_6:
         v11 = v6;
         v12 = *v6;
-        sub_803BFE8(v6, off_803BFE0[v4]);
+        dispatchTableOp(v6, off_803BFE0[v4]);
         return *v11;
     }
     return 0;
@@ -9545,7 +9545,7 @@ LABEL_6:
 
 
 // 0x803bfe8
-int __fastcall sub_803BFE8(unsigned __int16 *a1, unsigned __int8 *a2)
+int __fastcall dispatchTableOp(unsigned __int16 *a1, unsigned __int8 *a2)
 {
     unsigned __int16 *v2; // r6
     unsigned __int8 *i; // r7
@@ -10390,7 +10390,7 @@ __int64 sub_803C720()
 
 
 // 0x803c730
-signed __int64 sub_803C730()
+signed __int64 rfu_countdownToLinkPhase9()
 {
     int v0; // r7
     int v1; // r0
@@ -10596,7 +10596,7 @@ signed __int64 sub_803C90C()
     int v0; // r7
     char v2; // zf
 
-    if ( !byte_2010280 || sub_8146938() )
+    if ( !byte_2010280 || rfu_checkStateChanged() )
         return 2LL;
     rfu_testStatusFlags();
     if ( !v2 )
@@ -12094,7 +12094,7 @@ signed int __fastcall sub_803E018(int a1)
     v3 = 2;
     v4 = sub_803E7A4(4);
     if ( !HIDWORD(v4) )
-        sub_803E7D8(v4);
+        t3_debounceInputValue(v4);
     return v3;
 }
 
@@ -12863,7 +12863,7 @@ signed __int64 __fastcall sub_803E7A4(int a1)
 
 
 // 0x803e7d8
-int __fastcall sub_803E7D8(int result)
+int __fastcall t3_debounceInputValue(int result)
 {
     _WORD *v1; // r7
     int v2; // r1
@@ -12913,7 +12913,7 @@ void sub_803E80C()
 
 
 // 0x803e828
-void __fastcall sub_803E828(int a1, int a2, signed int a3)
+void __fastcall link_setStateFromObjectCoords(int a1, int a2, signed int a3)
 {
     int v3; // r5
     signed int v4; // r1
@@ -13358,7 +13358,7 @@ signed int sub_803EB14()
         sub_8146E78();
     }
     v5 = sub_803EBFC();
-    sub_803EFA0();
+    checkAnyCounterReached360();
     result = v5;
     if ( !v6 )
     {
@@ -13399,7 +13399,7 @@ signed int sub_803EB60()
         sub_8147B3C();
     }
     v5 = sub_803EBFC();
-    sub_803EFA0();
+    checkAnyCounterReached360();
     result = v5;
     if ( !v6 )
     {
@@ -13475,9 +13475,9 @@ signed int sub_803EC1C()
     rfu_testStatusFlags();
     if ( !v1 )
     {
-        if ( !sub_803F3A8() )
+        if ( !rfu_checkEntryPairEmpty() )
             *(v0 + 5) = 4;
-        sub_803F06C();
+        rfu_getRecvQueueFillState();
         *sub_803EF7C() = 254;
         v2 = sub_803EF7C();
         sub_803F00C(v2, 0x10u);
@@ -13536,7 +13536,7 @@ LABEL_20:
             goto LABEL_20;
         }
     }
-    sub_803F06C();
+    rfu_getRecvQueueFillState();
     if ( !v9 )
     {
         if ( v0[9] == 1 )
@@ -13747,7 +13747,7 @@ int sub_803EE98()
     }
     while ( !(((v7 < 0) ^ v9) | (v7 == 0)) );
     if ( (*sCamera.unk_88 & 0xFC) == 252 )
-        sub_803E828(252, 252, v8);
+        link_setStateFromObjectCoords(252, 252, v8);
     if ( (*sCamera.unk_8C & 0xFC) == 252 )
         sub_803E850(252, 252, v8);
     v10 = sub_803EF7C();
@@ -13818,7 +13818,7 @@ void __fastcall sub_803EF90(int a1, int a2, int a3, int a4)
 
 
 // 0x803efa0
-signed int sub_803EFA0()
+signed int checkAnyCounterReached360()
 {
     signed int v0; // r4
     int v1; // r7
@@ -13898,7 +13898,7 @@ int rfu_advanceTickCounter()
 
 
 // 0x803f06c
-int sub_803F06C()
+int rfu_getRecvQueueFillState()
 {
     int result; // r0
 
@@ -14201,7 +14201,7 @@ int __fastcall sub_803F334(int a1, unsigned int a2)
 
 
 // 0x803f3a8
-signed int sub_803F3A8()
+signed int rfu_checkEntryPairEmpty()
 {
     int v0; // r7
     signed int v1; // r4

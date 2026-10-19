@@ -4013,7 +4013,7 @@ int sub_81335D8()
 
 
 // 0x81335ec
-int sub_81335EC()
+int object_dispatchState()
 {
     int v0; // r5
 

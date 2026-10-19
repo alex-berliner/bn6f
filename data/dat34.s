@@ -136,7 +136,7 @@ sub_812DBE0::
 	push {r4-r7,lr}
 	mov r0, #0xc
 	strb r0, [r5,#0x10]
-	bl sub_812ED34
+	bl submenu_getSelectedTile
 	strh r0, [r5,#0x2a]
 	bl sub_803EAE4
 	cmp r0, #4

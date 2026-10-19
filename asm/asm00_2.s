@@ -20900,9 +20900,9 @@ locret_8018000:
 // symdb: Dispatches a battle object's animation/state handler selected by its PreventAnim index, via a 6-entry jump table.
 // symdb: (r0 = unused; r5 = battle object) -> r0 = whatever the selected handler returns; calls through
 // symdb: lr=pc into thumb handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018002.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runAnimHandler.yaml
 	thumb_local_start
-sub_8018002:
+battle_runAnimHandler:
 	push {lr}
 	ldr r1, off_8018010 // =off_8018014 
 	ldrb r0, [r5,#oBattleObject_PreventAnim]
@@ -20919,7 +20919,7 @@ off_8018014:
 	.word sub_80180A8+1
 	.word sub_80180EC+1
 	.word nullsub_57+1
-	thumb_func_end sub_8018002
+	thumb_func_end battle_runAnimHandler
 
 	thumb_local_start
 sub_801802C:
@@ -25651,7 +25651,7 @@ loc_801B41E:
 	tst r0, r1
 	beq loc_801B42E
 loc_801B428:
-	bl sub_8018002
+	bl battle_runAnimHandler
 	b loc_801B4B6
 loc_801B42E:
 	bl object_getFlag2
@@ -25808,7 +25808,7 @@ loc_801B55A:
 	tst r0, r1
 	beq loc_801B56A
 loc_801B564:
-	bl sub_8018002
+	bl battle_runAnimHandler
 	b loc_801B5F2
 loc_801B56A:
 	bl object_getFlag2
@@ -25967,7 +25967,7 @@ loc_801B69A:
 	tst r0, r1
 	beq loc_801B6AA
 loc_801B6A4:
-	bl sub_8018002
+	bl battle_runAnimHandler
 	b loc_801B732
 loc_801B6AA:
 	bl object_getFlag2
@@ -26126,7 +26126,7 @@ loc_801B7DA:
 	tst r0, r1
 	beq loc_801B7EA
 loc_801B7E4:
-	bl sub_8018002
+	bl battle_runAnimHandler
 	b loc_801B86C
 loc_801B7EA:
 	bl object_getFlag2
@@ -26283,7 +26283,7 @@ loc_801B908:
 	tst r0, r1
 	beq loc_801B918
 loc_801B912:
-	bl sub_8018002
+	bl battle_runAnimHandler
 	b loc_801B9A0
 loc_801B918:
 	bl object_getFlag2

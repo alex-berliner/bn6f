@@ -6490,7 +6490,7 @@ loc_803BFC4:
 	ldrh r4, [r7]
 	ldr r1, off_803BFDC // =off_803BFE0
 	ldr r1, [r1,r6]
-	bl sub_803BFE8
+	bl dispatchTableOp
 	ldrh r0, [r7]
 	cmp r0, r4
 	pop {r4-r7,pc}
@@ -6509,9 +6509,9 @@ off_803BFE0:
 // symdb: (r0 = pointer to a halfword value, r1 = pointer to byte-pair list {matchIdx, handlerIdx}, 0xFF-
 // symdb: terminated) -> void; may modify the halfword in place via the matched handler; caller detects
 // symdb: change by comparing before/after
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BFE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dispatchTableOp.yaml
 	thumb_local_start
-sub_803BFE8:
+dispatchTableOp:
 	push {r4-r7,lr}
 	ldr r4, off_803C014 // =off_803C208
 	mov r6, r0
@@ -6538,7 +6538,7 @@ locret_803C012:
 	.balign 4, 0
 off_803C014:
 	.word off_803C208
-	thumb_func_end sub_803BFE8
+	thumb_func_end dispatchTableOp
 
 // symdb: Searches a table of 8-byte records for the record whose halfword field at +2 equals the given key and returns its index (0xFF if the 0xE6-terminated list ends without a match).
 // symdb: (r0 = pointer to first 8-byte record, r1 = 16-bit key) -> r0 = matching record index, or 0xFF if
@@ -7722,7 +7722,7 @@ off_803C714:
 	.word off_803C718
 off_803C718:
 	.word sub_803C720+1
-	.word sub_803C730+1
+	.word rfu_countdownToLinkPhase9+1
 	thumb_func_end dispatch_803C702
 
 	thumb_local_start
@@ -7740,9 +7740,9 @@ sub_803C720:
 // symdb: Wireless-link countdown: ticks a timer and, when it expires, switches the RFU link to phase 9 and reports completion.
 // symdb: (no args; r7 = RFU-related work struct) -> r0 = 1 when countdown finished and phase 9 set, 0
 // symdb: while still counting; r1 = 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C730.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_countdownToLinkPhase9.yaml
 	thumb_local_start
-sub_803C730:
+rfu_countdownToLinkPhase9:
 	push {lr}
 	ldrh r0, [r7,#0xa]
 	sub r0, #1
@@ -7762,7 +7762,7 @@ loc_803C74A:
 	.balign 4, 0
 dword_803C750:
 	.word 0x9
-	thumb_func_end sub_803C730
+	thumb_func_end rfu_countdownToLinkPhase9
 
 	thumb_func_start sub_803C754
 sub_803C754: // (self: * S200BC50 $r7) -> (u32?, bool)
@@ -8025,7 +8025,7 @@ sub_803C90C:
 	ldrb r0, [r0]
 	tst r0, r0
 	beq loc_803C91E
-	bl sub_8146938
+	bl rfu_checkStateChanged
 	tst r0, r0
 	beq loc_803C926
 loc_803C91E:
@@ -10407,7 +10407,7 @@ loc_803E03A:
 	bl sub_803E7A4
 	tst r1, r1
 	bne loc_803E04A
-	bl sub_803E7D8
+	bl t3_debounceInputValue
 loc_803E04A:
 	mov r0, r6
 	pop {r4-r7,pc}
@@ -11471,9 +11471,9 @@ dword_803E7D4:
 // symdb: Debounce state machine: only commits a value into a two-slot history after it has been passed unchanged for 8 consecutive calls (frames).
 // symdb: (r0 = value/key bit to track, r7 = state struct base) -> r0 clobbered; updates
 // symdb: r7+0x10/0x12/0x14/0x16/0x18
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E7D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_debounceInputValue.yaml
 	thumb_local_start
-sub_803E7D8:
+t3_debounceInputValue:
 	push {r7,lr}
 	ldrh r1, [r7,#0x14]
 	cmp r0, r1
@@ -11504,7 +11504,7 @@ loc_803E800:
 	strh r0, [r7,#0x16]
 locret_803E80A:
 	pop {r7,pc}
-	thumb_func_end sub_803E7D8
+	thumb_func_end t3_debounceInputValue
 
 	thumb_local_start
 sub_803E80C:
@@ -11528,9 +11528,9 @@ locret_803E826:
 // symdb: (r0 = object/struct pointer, copied to r5) -> r0 = 0xC on change (otherwise garbage from r1);
 // symdb: writes eLinkState+0x54 = max(unk_e, unk_f)+8 and eLinkState byte0 = 0xC when either field > 5;
 // symdb: clobbers r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E828.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_setStateFromObjectCoords.yaml
 	thumb_local_start
-sub_803E828:
+link_setStateFromObjectCoords:
 	push {r0-r2,r7,lr}
 	ldrb r1, [r5,#0xe]
 	cmp r1, #5
@@ -11556,7 +11556,7 @@ locret_803E84A:
 	.balign 4, 0
 off_803E84C:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803E828
+	thumb_func_end link_setStateFromObjectCoords
 
 	thumb_local_start
 sub_803E850:
@@ -12144,7 +12144,7 @@ loc_803EB3A:
 loc_803EB46:
 	bl sub_803EBFC
 	push {r0}
-	bl sub_803EFA0
+	bl checkAnyCounterReached360
 	pop {r0}
 	beq locret_803EB5E
 	bl eStruct200BC30_getRef
@@ -12185,7 +12185,7 @@ loc_803EB86:
 loc_803EB92:
 	bl sub_803EBFC
 	push {r0}
-	bl sub_803EFA0
+	bl checkAnyCounterReached360
 	pop {r0}
 	beq locret_803EBAA
 	bl eStruct200BC30_getRef
@@ -12304,13 +12304,13 @@ sub_803EC1C:
 	mov r0, #0x10
 	bl rfu_testStatusFlags
 	beq loc_803EC50
-	bl sub_803F3A8
+	bl rfu_checkEntryPairEmpty
 	tst r0, r0
 	bne loc_803EC34
 	mov r0, #4
 	strb r0, [r5,#5]
 loc_803EC34:
-	bl sub_803F06C
+	bl rfu_getRecvQueueFillState
 	tst r1, r1
 	beq loc_803EC3C
 loc_803EC3C:
@@ -12366,7 +12366,7 @@ loc_803EC9C:
 	orr r7, r0
 	b loc_803ECEE
 loc_803ECA6:
-	bl sub_803F06C
+	bl rfu_getRecvQueueFillState
 	tst r1, r1
 	beq loc_803ECBA
 	cmp r1, #2
@@ -12691,7 +12691,7 @@ loc_803EED8:
 	cmp r0, #0xfc
 	bne loc_803EF00
 	ldr r5, [r6,#0x38] // (eCamera.unk_88 - 0x20099d0)
-	bl sub_803E828
+	bl link_setStateFromObjectCoords
 loc_803EF00:
 	ldr r0, [r6,#0x3c] // (eCamera.unk_8C - 0x20099d0)
 	ldrb r0, [r0]
@@ -12816,9 +12816,9 @@ off_803EF9C:
 
 // symdb: Returns true if any of four halfword counters at word_2010420 has reached 0x168 (360); callers use it to trigger a state change (set byte 0xE=8 in eStruct200BC30 and return 4).
 // symdb: () -> r0 = 1 if any of word_2010420[0..3] >= 0x168 else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EFA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/checkAnyCounterReached360.yaml
 	thumb_local_start
-sub_803EFA0:
+checkAnyCounterReached360:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r7, #0
@@ -12843,7 +12843,7 @@ off_803EFC4:
 	.word word_2010420
 off_803EFC8:
 	.word 0x168
-	thumb_func_end sub_803EFA0
+	thumb_func_end checkAnyCounterReached360
 
 // symdb: Zeros four battle scratch/working buffers (0x20, 0x40, and two 0x200-byte blocks) via ZeroFillByWord.
 // symdb: void battle_clearScratchBuffers_803EFCC(void) /* no inputs; preserves r2, r3, C, V; clobbers r0,
@@ -12965,9 +12965,9 @@ rfu_advanceTickCounter:
 // symdb: Reports the fill state of the wireless receive ring buffer at byte_200AC20: 2 = empty, 1 = two or more entries queued, 0 = one entry queued.
 // symdb: (void) -> r0 = r1 = fill state (0 = 1 entry, 1 = >=2 entries, 2 = empty); clobbers r0, r1, r3,
 // symdb: r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F06C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getRecvQueueFillState.yaml
 	thumb_local_start
-sub_803F06C:
+rfu_getRecvQueueFillState:
 	push {r5,lr}
 	mov r3, #0
 	ldr r5, off_803F268 // =byte_200AC20
@@ -12989,7 +12989,7 @@ loc_803F08A:
 	mov r1, r3
 	pop {r5,pc}
 	.byte 0, 0
-	thumb_func_end sub_803F06C
+	thumb_func_end rfu_getRecvQueueFillState
 
 	thumb_local_start
 sub_803F090:
@@ -13449,9 +13449,9 @@ locret_803F3A6:
 
 // symdb: Returns 0 if the first two 12-byte entries of the selected 0x40-byte block in word_200A010 both hold the 0xFE empty marker, else 1.
 // symdb: () -> r0 = 0 if both entries are 0xFE (empty), else 1; r2-r4 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F3A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_checkEntryPairEmpty.yaml
 	thumb_local_start
-sub_803F3A8:
+rfu_checkEntryPairEmpty:
 	push {r4-r7,lr}
 	ldr r0, off_803F4B4 // =word_200A010
 	ldr r5, off_803F4B8 // =unk_200AC30
@@ -13479,7 +13479,7 @@ loc_803F3D0:
 	.balign 4, 0
 dword_803F3D4:
 	.word 0xFE
-	thumb_func_end sub_803F3A8
+	thumb_func_end rfu_checkEntryPairEmpty
 
 	thumb_local_start
 sub_803F3D8:

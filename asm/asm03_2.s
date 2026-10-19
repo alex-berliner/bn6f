@@ -687,7 +687,7 @@ off_804646C:
 	.word submenu_dispatchByIndex_8118344+1
 	.word submenu_dispatchByIndex_81187E8+1
 	.word battleObject_updateDispatcher_8118BA4+1
-	.word sub_8118D60+1
+	.word submenu_stepGuiSprite+1
 	.word sub_8118E84+1
 	.word sub_8118F24+1
 	.word npc_StateModeDispatcher_8119364+1
@@ -1113,8 +1113,8 @@ off_804679C:
 	.word 0x0
 	.word sub_811E57C+1
 	.word sub_811E61C+1
-	.word sub_811E6C0+1
-	.word sub_811E7D4+1
+	.word e_dispatchByState+1
+	.word sprite_dispatchUpdate+1
 	.word sub_811E858+1
 	.word sub_811E914+1
 	.word sub_811E9A0+1

@@ -1568,7 +1568,7 @@ int sub_8142ECC()
         v5 = 0;
         while ( *v4 != 255 )
         {
-            v6 = sub_81430B6(v5);
+            v6 = ow_getEventFlagIds(v5);
             TestEventFlag(v6);
             if ( v2 )
                 SpawnOverworldMapObject(22, *&(*v4)[2] << 16, *&(*v4)[4] << 16, *&(*v4)[6] << 16);
@@ -1580,7 +1580,7 @@ int sub_8142ECC()
         v8 = 0;
         while ( *v7 != 255 )
         {
-            sub_81430B6(v8);
+            ow_getEventFlagIds(v8);
             TestEventFlag(v9);
             if ( v2 )
                 SpawnOverworldMapObject(22, v7[1] << 16, v7[2] << 16, v7[3] << 16);
@@ -1688,7 +1688,7 @@ unsigned int sub_8143088()
 
 
 // 0x81430b6
-int __fastcall sub_81430B6(int a1)
+int __fastcall ow_getEventFlagIds(int a1)
 {
     int v1; // r4
     char *v2; // r1
@@ -1750,7 +1750,7 @@ int sub_8143198()
     unsigned __int8 v4; // vf
 
     v0 = e_getFlagTotal();
-    v1 = sub_81430B6(0);
+    v1 = ow_getEventFlagIds(0);
     v2 = 0;
     do
     {
@@ -1775,9 +1775,9 @@ unsigned int __fastcall sub_81431C6(int a1, int a2, int a3, int a4)
 
     sub_814339C(a1, a2, a3, a4);
     ZeroFillByWord(byte_2000D20, &loc_A0);
-    v4 = sub_81430B6(0);
+    v4 = ow_getEventFlagIds(0);
     ClearEventFlagRange(v4, v5, 8);
-    sub_81430B6(0);
+    ow_getEventFlagIds(0);
     return ClearEventFlagRange(v6, v6, 8);
 }
 

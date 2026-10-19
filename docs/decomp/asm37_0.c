@@ -2873,7 +2873,7 @@ char *sub_813D750()
 
 
 // 0x813d760
-char *sub_813D760()
+char *rfu_clearConnFlag()
 {
     char *result; // r0
 
@@ -2884,7 +2884,7 @@ char *sub_813D760()
 
 
 // 0x813d78c
-int __fastcall sub_813D78C(int a1, int a2)
+int __fastcall rfu_setEntryFlagBit(int a1, int a2)
 {
     int result; // r0
 
