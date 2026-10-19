@@ -2826,9 +2826,9 @@ off_8124604:
 off_8124608:
 	.word off_812460C
 off_812460C:
-	.word sub_8124624+1
-	.word sub_8124624+1
-	.word sub_8124660+1
+	.word chatbox_textShowNextPage+1
+	.word chatbox_textShowNextPage+1
+	.word npc_runBeastOutDialog+1
 	.word sub_812469C+1
 	.word sub_81246D8+1
 	.word sub_812471C+1
@@ -2837,9 +2837,9 @@ off_812460C:
 // symdb: Advances the chatbox multi-page text display to the next page, or ends the text (script 6) when the last page is reached
 // symdb: (r0 = byte flag, 0x80 means use fixed page 0x32; r5 = text display object) -> r0 =
 // symdb: chatbox_runScript201C100 result; r5+0x02 state updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124624.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_textShowNextPage.yaml
 	thumb_local_start
-sub_8124624:
+chatbox_textShowNextPage:
 	push {r4,r7,lr}
 	strb r0, [r5,#0x10]
 	ldrh r0, [r5,#0x18]
@@ -2871,14 +2871,14 @@ loc_8124652:
 locret_812465C:
 	pop {r4,r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8124624
+	thumb_func_end chatbox_textShowNextPage
 
 // symdb: Displays one of two chatbox texts (script 7 or 11) depending on a Beast-out scenario flag, storing the chosen text id in a state object and the chatbox.
 // symdb: (r0 = text/dialog id byte, r5 = dialog state object) -> r0 = chatbox_runScript result; sets
 // symdb: [r5+0x10]=id, [r5+2]/[r5+3] state bytes, chatbox+0x4C=id
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124660.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_runBeastOutDialog.yaml
 	thumb_local_start
-sub_8124660:
+npc_runBeastOutDialog:
 	push {r4,lr}
 	strb r0, [r5,#0x10]
 	mov r4, r10
@@ -2909,7 +2909,7 @@ loc_8124686:
 locret_8124698:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8124660
+	thumb_func_end npc_runBeastOutDialog
 
 	thumb_local_start
 sub_812469C:
@@ -12308,7 +12308,7 @@ CommMenuJumpTable81291FC:
   // 0x04
 	.word dispatchBattleState_81292A8+1
   // 0x08
-	.word sub_8129598+1
+	.word menu_screens3Dispatch+1
   // 0x0C
 	.word sub_8129F04+1
   // 0x10
@@ -12708,7 +12708,7 @@ loc_8129514:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	mov r0, #0xd
-	bl sub_812B288
+	bl submenu_positionOptionSpriteByIndex
 	pop {pc}
 	.balign 4, 0
 off_8129524:
@@ -12774,9 +12774,9 @@ locret_8129594:
 // symdb: Dispatches the menus3 screen state machine: calls the conditional sprite draw for nonzero states, then jumps to the step handler selected by the state byte.
 // symdb: (no args; context in r5, state byte at [r5+2]) -> tail-calls handler for state; never returns to
 // symdb: caller normally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129598.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_screens3Dispatch.yaml
 	thumb_local_start
-sub_8129598:
+menu_screens3Dispatch:
 	push {lr}
 	ldrb r0, [r5,#2]
 	tst r0, r0
@@ -12802,7 +12802,7 @@ off_81295B4:
 	.word sub_8129C28+1
 	.word sub_8129C28+1
 	.word sub_8129EE4+1
-	thumb_func_end sub_8129598
+	thumb_func_end menu_screens3Dispatch
 
 // symdb: Per-frame tick of the "screens3" sub-menu: advances the entity update/sprite pipelines, then either toggles an in/out transition step on the active entity record or triggers a fade-in chatbox prompt.
 // symdb: () -> r0 = 0x1 ; side effects: mutates entity record at [r5+0x1b..0x3], eFlags2009F38 |= 0x40,
@@ -16739,9 +16739,9 @@ loc_812B27E:
 // symdb: Moves the sub-menu's option sprite (ID 0x78) to the slot of an option index looked up from the submenu work area, unless the disable flag is set.
 // symdb: (r0 = index into submenu work struct r5) -> r0 = result of submenu_positionOptionSprite; r5 =
 // symdb: submenu struct (not saved by callee), flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B288.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_positionOptionSpriteByIndex.yaml
 	thumb_local_start
-sub_812B288:
+submenu_positionOptionSpriteByIndex:
 	push {r4,r6,lr}
 	mov r6, r0
 	ldrb r0, [r5,#0x1b]
@@ -16752,7 +16752,7 @@ sub_812B288:
 	ldrb r1, [r5,r6]
 	lsr r1, r1, #1
 	b loc_812B2AC
-	thumb_func_end sub_812B288
+	thumb_func_end submenu_positionOptionSpriteByIndex
 
 // symdb: Repositions the sub-menu's option sprite (ID 0x78) to the x-slot matching the given option index, unless a flag disables it.
 // symdb: (r0 = option index into context struct at r5) -> void; r0-r3 clobbered, no return value

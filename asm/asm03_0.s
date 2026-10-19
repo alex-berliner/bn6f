@@ -194,9 +194,9 @@ jt_8026584:
 // symdb: Walks a 0x7F-terminated table of signed tile offsets, mirrors each by the object's facing direction, and returns nonzero as soon as a checker on the resulting relative tile succeeds.
 // symdb: (r0 = arg pushed to stack; r6 = base object/pointer, r7 = checker arg, custom ABI) -> r0 = first
 // symdb: nonzero checker result, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80265D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsets.yaml
 	thumb_local_start
-sub_80265D0:
+battle_checkFacingOffsets:
 	push {r4,lr}
 	push {r0}
 	mov r0, r6
@@ -221,7 +221,7 @@ loc_80265F8:
 loc_80265FA:
 	add sp, sp, #4
 	pop {r4,pc}
-	thumb_func_end sub_80265D0
+	thumb_func_end battle_checkFacingOffsets
 
 	thumb_local_start
 sub_80265FE:
@@ -282,7 +282,7 @@ locret_802664E:
 sub_8026650:
 	push {lr}
 	ldr r0, off_80267FC // =byte_8026753 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_8026650
 
@@ -290,7 +290,7 @@ sub_8026650:
 sub_802665A:
 	push {lr}
 	ldr r0, off_8026800 // =byte_802675A 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	bl sub_80265FE
 	pop {pc}
 	thumb_func_end sub_802665A
@@ -299,7 +299,7 @@ sub_802665A:
 sub_8026668:
 	push {lr}
 	ldr r0, off_8026804 // =byte_8026761 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_8026668
 
@@ -307,7 +307,7 @@ sub_8026668:
 sub_8026672:
 	push {lr}
 	ldr r0, off_8026808 // =byte_802676E 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_8026672
 
@@ -315,7 +315,7 @@ sub_8026672:
 sub_802667C:
 	push {lr}
 	ldr r0, off_802680C // =byte_8026781 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	bl sub_80265FE
 	pop {pc}
 	thumb_func_end sub_802667C
@@ -324,7 +324,7 @@ sub_802667C:
 sub_802668A:
 	push {lr}
 	ldr r0, off_8026810 // =byte_802678E 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_802668A
 
@@ -332,7 +332,7 @@ sub_802668A:
 sub_8026694:
 	push {lr}
 	ldr r0, off_8026814 // =byte_8026791 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_8026694
 
@@ -340,7 +340,7 @@ sub_8026694:
 sub_802669E:
 	push {lr}
 	ldr r0, off_8026818 // =byte_8026794 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	bl sub_80265FE
 	pop {pc}
 	thumb_func_end sub_802669E
@@ -373,7 +373,7 @@ sub_80266BA:
 loc_80266D4:
 	ldr r0, off_8026820 // =byte_80267A6 
 	add r0, r0, r2
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_80266BA
 
@@ -381,7 +381,7 @@ loc_80266D4:
 sub_80266DE:
 	push {lr}
 	ldr r0, off_8026824 // =byte_80267AB 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_80266DE
 
@@ -389,7 +389,7 @@ sub_80266DE:
 sub_80266E8:
 	push {lr}
 	ldr r0, off_8026828 // =byte_80267AE 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_80266E8
 
@@ -408,7 +408,7 @@ sub_80266F2:
 sub_8026704:
 	push {lr}
 	ldr r0, off_8026830 // =byte_80267B9 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_8026704
 
@@ -416,7 +416,7 @@ sub_8026704:
 sub_802670E:
 	push {lr}
 	ldr r0, off_8026834 // =byte_8026791 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	bl sub_80265FE
 	pop {pc}
 	thumb_func_end sub_802670E
@@ -425,7 +425,7 @@ sub_802670E:
 sub_802671C:
 	push {lr}
 	ldr r0, off_8026838 // =byte_80267CC 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	thumb_func_end sub_802671C
 
@@ -433,7 +433,7 @@ sub_802671C:
 sub_8026726:
 	push {lr}
 	ldr r0, off_802683C // =byte_80267D5 
-	bl sub_80265D0
+	bl battle_checkFacingOffsets
 	pop {pc}
 	.balign 4, 0
 byte_8026730:
@@ -2995,7 +2995,7 @@ loc_802797E:
 	add r1, r1, r4
 	ldrb r0, [r5,r1]
 	add r0, r0, r2
-	bl sub_8029EAC
+	bl sprite_queueTileGfx
 loc_802798A:
 	add r4, #1
 	ldrb r2, [r5,#0x18]
@@ -3128,7 +3128,7 @@ off_8027A70:
 	.word off_8027A74
 off_8027A74:
 	.word sub_8027A84+1
-	.word sub_8027A90+1
+	.word screenFadeWaitStep+1
 	.word sub_8027AAE+1
 	.word sub_8027ADE+1
 	thumb_func_end sub_8027A58
@@ -3145,9 +3145,9 @@ sub_8027A84:
 
 // symdb: Per-frame tick that counts 16 frames, then starts a screen fade and advances a cutscene state.
 // symdb: () -> void; reads/writes state at [r5+0x40] (frame counter) and [r5+2] (next state)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027A90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/screenFadeWaitStep.yaml
 	thumb_local_start
-sub_8027A90:
+screenFadeWaitStep:
 	push {lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -3163,7 +3163,7 @@ sub_8027A90:
 	strh r0, [r5,#2]
 locret_8027AAC:
 	pop {pc}
-	thumb_func_end sub_8027A90
+	thumb_func_end screenFadeWaitStep
 
 	thumb_local_start
 sub_8027AAE:
@@ -3579,7 +3579,7 @@ loc_8027E70:
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 loc_8027E74:
 	mov r7, r1
-	bl sub_8027F10
+	bl battle_initBeastOutChipEntry
 	bl battle_spawnMirrorFacingHelper_80280E0
 	bl selectChipTableEntryIntoActiveSlot9_80280A2
 	bl battle_initActiveChipEntries
@@ -3678,9 +3678,9 @@ off_8027F0C:
 // symdb: Initializes the beast-out pseudo-chip entry of the chip-select turn state, skipping entirely when beast-out is unavailable.
 // symdb: (r4 = base of a chip-select record block, r5 = chip-select turn state struct, r7 = beast-out
 // symdb: chip id (0xA or 0x16)) -> r0 = clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027F10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastOutChipEntry.yaml
 	thumb_local_start
-sub_8027F10:
+battle_initBeastOutChipEntry:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#0x10]
 	cmp r0, #0
@@ -3709,7 +3709,7 @@ loc_8027F38:
 	strb r0, [r1,#0xe]
 locret_8027F40:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8027F10
+	thumb_func_end battle_initBeastOutChipEntry
 
 // symdb: During chip-select turn initialization, walks the 12 active-chip records and refreshes each non-Mega/Giga entry's selection index, slot chip id, and selected-chip pointer.
 // symdb: (void) -> void; only calls out, r6/r7 clobbered internally (saved)
@@ -7587,7 +7587,7 @@ loc_802993C:
 	mov r1, r0
 	b loc_8029952
 loc_8029948:
-	bl sub_8029A36
+	bl t1_checkCustomChipMsg
 	cmp r0, #0
 	beq locret_802996C
 	mov r1, r0
@@ -7752,9 +7752,9 @@ locret_8029A34:
 // symdb: Tutorial-state check for the first battle tutorial custMenu: decides whether to fire a hint message (returns message id 4) based on battle state and the tutorial's tracked selection.
 // symdb: (r5 = tutorial state struct, r10 = toolkit) -> r0 = message id (4 = show message, 0 = none);
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029A36.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_checkCustomChipMsg.yaml
 	thumb_local_start
-sub_8029A36:
+t1_checkCustomChipMsg:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -7773,7 +7773,7 @@ loc_8029A52:
 	mov r0, #0
 locret_8029A54:
 	pop {pc}
-	thumb_func_end sub_8029A36
+	thumb_func_end t1_checkCustomChipMsg
 
 // symdb: Advances the first-battle tutorial chatbox driver one tick, running a tutorial text script when its state predicate succeeds.
 // symdb: void firstBattleTutorial_step_8029A56(struct FirstBattleTutorialObj* obj /* r5 */);
@@ -8363,9 +8363,9 @@ byte_8029E88:
 
 // symdb: Queues a 32-byte GFX transfer copying one tile (index r0) from a ROM sprite-sheet table into the fixed buffer unk_3001AA0.
 // symdb: (r0 = tile/frame index) -> r0 = preserved?; queues transfer via QueueEightWordAlignedGFXTransfer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029EAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueTileGfx.yaml
 	thumb_local_start
-sub_8029EAC:
+sprite_queueTileGfx:
 	push {lr}
 	mov r1, #0x20 
 	mul r0, r1
@@ -8380,7 +8380,7 @@ off_8029EC0:
 	.word dword_86E944C
 off_8029EC4:
 	.word unk_3001AA0
-	thumb_func_end sub_8029EAC
+	thumb_func_end sprite_queueTileGfx
 
 // symdb: Returns the count of 5 listed event flags that are currently set in the save data and not yet masked off in the "0x20349A0" state word (bits 5..9).
 // symdb: u32 countUnmaskedEventFlags_8029EC8(void); // r10/lr in; r0 = count out; NZCV clobbered; r4,r6
@@ -10022,7 +10022,7 @@ loc_802AB98:
 	bne loc_802ABAE
 	bl sub_802B1E4
 loc_802ABAE:
-	bl sub_802B270
+	bl object_queueOamEntryFromBase
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_802ABB4:
@@ -10402,7 +10402,7 @@ loc_802AE70:
 	bl sub_802B15C
 	mov r0, #0x11
 	bl sub_802B15C
-	bl sub_802B270
+	bl object_queueOamEntryFromBase
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_802AE5C
@@ -10429,7 +10429,7 @@ loc_802AEA6:
 	bl sub_802B15C
 	mov r0, #0x11
 	bl sub_802B15C
-	bl sub_802B270
+	bl object_queueOamEntryFromBase
 	pop {pc}
 	thumb_func_end sub_802AE84
 
@@ -10446,7 +10446,7 @@ loc_802AEC6:
 	bl sub_802B15C
 	mov r0, #0x11
 	bl sub_802B15C
-	bl sub_802B270
+	bl object_queueOamEntryFromBase
 	pop {pc}
 	thumb_func_end sub_802AEB8
 
@@ -10883,9 +10883,9 @@ off_802B26C:
 // symdb: Thin wrapper that queues one OAM entry for the object in r5 using a fixed tile base (0xB370) and fixed attribute constants, with the sub-index/position read from the object's fields.
 // symdb: (implicit r5 = object ptr; r2 = [r5+0x1E], r3 = [r5+0x24]) -> queues one OAM entry via
 // symdb: object_computeAndQueueOamEntry_811FA98; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B270.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_queueOamEntryFromBase.yaml
 	thumb_local_start
-sub_802B270:
+object_queueOamEntryFromBase:
 	push {r4-r7,lr}
 	ldr r0, dword_802B28C // =0x62 
 	mov r1, #0xc
@@ -10906,7 +10906,7 @@ dword_802B290:
 	.word 0x10002
 dword_802B294:
 	.word 0xB370
-	thumb_func_end sub_802B270
+	thumb_func_end object_queueOamEntryFromBase
 
 	thumb_local_start
 sub_802B298:
@@ -14322,7 +14322,7 @@ off_802CCB4:
 	.word sub_80E2B5A+1 // 0x5
 	.word sub_80E46B6+1 // 0x6
 	.word sub_80E7464+1 // 0x7
-	.word sub_80E3128+1 // 0x8
+	.word battle_spawnChipObject+1 // 0x8
 	.word sub_80E5EA8+1 // 0x9
 	.word sub_80E3242+1 // 0xa
 	.word sub_80E349E+1 // 0xb
@@ -21406,7 +21406,7 @@ loc_802FFCA:
 	strb r0, [r5,#oCamera_Mode]
 	bl camera_doShakeEffect_80301e8
 	bl camera_dispatchUpdate_8030054
-	bl sub_80302D0
+	bl camera_callModeHandler
 	bl camera_SavePosition_803011A
 	pop {r5-r7}
 	mov r8, r5
@@ -21893,9 +21893,9 @@ locret_80302CE:
 // symdb: Dispatches the camera's per-mode update routine based on the camera struct's mode field.
 // symdb: (r5 = camera struct, mode at oCamera_Mode selects handler) -> calls handler with r5 intact;
 // symdb: r0/r1 clobbered by the dispatch; returns handler's result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_callModeHandler.yaml
 	thumb_local_start
-sub_80302D0:
+camera_callModeHandler:
 	push {lr}
 	ldr r0, off_80302E0 // =off_80302E4
 	ldrb r1, [r5,#oCamera_Mode]
@@ -21912,7 +21912,7 @@ off_80302E4:
 	.word render_ClearScrollOffsets_8030336+1
 	.word sub_803035E+1
 	.word nullsub_60+1
-	thumb_func_end sub_80302D0
+	thumb_func_end camera_callModeHandler
 
 // symdb: Copies the camera's current X/Y position (masked to 8 bits) into the scroll fields of all three render layers each frame.
 // symdb: void sub_80302F8(void /* r10 = toolkit */) // sets r1 = camX, r2 = camY, r3 = renderInfo, r4 =
@@ -22756,9 +22756,9 @@ locret_80307D4:
 // symdb: Redraws both tilemap layers of the whole map window centered on the camera's current tile position.
 // symdb: (r10 = toolkit) -> void; calls redrawBGTileMapWholeWindow_803086C(eMapTilesState200be70,
 // symdb: camX>>3, camY>>3)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80307D8.yaml
-	thumb_func_start sub_80307D8
-sub_80307D8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_redrawTilemapAtCamera.yaml
+	thumb_func_start ow_redrawTilemapAtCamera
+ow_redrawTilemapAtCamera:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -22782,7 +22782,7 @@ sub_80307D8:
 	.balign 4, 0
 off_8030804:
 	.word eMapTilesState200be70
-	thumb_func_end sub_80307D8
+	thumb_func_end ow_redrawTilemapAtCamera
 
 // symdb: Move the 32x32 BG tile-id window to the camera's tile and redraw every cell through the map's tile-id callbacks.
 // symdb: static WindowCell redraw_window(u32 camera, u32 tiles) -> the loop's final carried state (tiles,

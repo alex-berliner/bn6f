@@ -7661,7 +7661,7 @@ int sub_8008B2E()
 
 
 // 0x8008b52
-int sub_8008B52()
+int battle_battleEndDelayStep()
 {
     int v0; // r5
     int v1; // r10
@@ -7910,7 +7910,7 @@ void __fastcall sub_8008D40(int a1, int a2, int a3, int a4)
 
 
 // 0x8008d60
-int sub_8008D60()
+int battle_stepMainState()
 {
     int v0; // r0
 
@@ -10035,7 +10035,7 @@ void __fastcall sub_8009E56(int a1, int a2, int a3, int a4)
         sub_8009140(*(v4 + 3), a2, a3, a4);
         *(v4 + 3) = 4;
     }
-    sub_8008D60();
+    battle_stepMainState();
     someChipHandValidationHappensHere_800B090();
     if ( v5 )
     {

@@ -1050,7 +1050,7 @@ locret_809D91A:
 	.balign 4, 0
 off_809D91C:
 	.word sub_809D92C+1
-	.word sub_809D964+1
+	.word ow_playerForcedWalkStep+1
 	.word sub_809D9A0+1
 off_809D928:
 	.word off_809D91C
@@ -1092,9 +1092,9 @@ loc_809D938:
 // symdb: Per-frame step of a scripted forced player walk: moves the overworld player by a velocity, plays a footstep sound every 6 frames, and ends the action when the target coordinate is reached.
 // symdb: (r5 = oOWPlayerObject) -> r0 = undefined; updates player X/Y, byte 0x5C counter, byte
 // symdb: ActionSubState
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D964.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_playerForcedWalkStep.yaml
 	thumb_local_start
-sub_809D964:
+ow_playerForcedWalkStep:
 	push {lr}
 	mov r0, #1
 	mov r1, #0x5c 
@@ -1126,7 +1126,7 @@ loc_809D98E:
 	add r1, r1, r0
 	str r1, [r5,#oOWPlayerObject_Y]
 	pop {pc}
-	thumb_func_end sub_809D964
+	thumb_func_end ow_playerForcedWalkStep
 
 	thumb_local_start
 sub_809D9A0:

@@ -12399,7 +12399,7 @@ off_8008A90:
 	.word battle_tickPreBattleInit_8008AA0+1
 	.word sub_8008B10+1
 	.word sub_8008B2E+1
-	.word sub_8008B52+1
+	.word battle_battleEndDelayStep+1
 	thumb_func_end sub_8008A7C
 
 // symdb: Battle-mode pre-fight tick that dispatches the pre-battle init phase once, picks and plays a battle/pre-battle song, decrements a per-tick counter, and hands off to the next state when the linked-partner sync is ready.
@@ -12507,9 +12507,9 @@ locret_8008B50:
 // symdb: Per-frame countdown (30 frames) that, on expiry, advances the battle-end substate and clears a flag in the overworld player struct.
 // symdb: (r5 = battle-side struct with state at +3, timer at +8 halfword, result flag at +4; r10 =
 // symdb: toolkit) -> r0 = overworld struct base from callee; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008B52.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_battleEndDelayStep.yaml
 	thumb_local_start
-sub_8008B52:
+battle_battleEndDelayStep:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12532,7 +12532,7 @@ loc_8008B62:
 	bl eStruct200A008_setUnk02
 locret_8008B7A:
 	pop {pc}
-	thumb_func_end sub_8008B52
+	thumb_func_end battle_battleEndDelayStep
 
 // symdb: Per-frame handler for the player-defeat battle phase: plays the lose music, dispatches the lose effect, waits out a timer, then hands off to the battle-end game state.
 // symdb: (r0..r4 scratch; r5 = battle-step struct, r10 = toolkit) -> void; sets [r5,#3] phase and
@@ -12810,9 +12810,9 @@ off_8008D58:
 // symdb: Runs one step of the battle's main state machine: dispatches the current phase handler, then advances AI script steps.
 // symdb: () -> r0 = byte at dword_203CA74 (updated battle state/next-phase byte); flags from
 // symdb: battleObject_runAIScript_802DE5C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008D60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepMainState.yaml
 	thumb_local_start
-sub_8008D60:
+battle_stepMainState:
 	push {r5,lr}
 	ldr r5, off_8008D98 // =dword_203CA70
 	ldr r1, off_8008D78 // =off_8008D7C
@@ -12836,7 +12836,7 @@ off_8008D7C:
 	.word sub_8009118+1
 off_8008D98:
 	.word dword_203CA70
-	thumb_func_end sub_8008D60
+	thumb_func_end battle_stepMainState
 
 // symdb: Per-frame battle-start state handler: polls both players' virtual joypads, on first entry zeroes the custom gauge and kicks off the battle-intro effect, then holds the state until the link partner is ready.
 // symdb: (r5 = battle state struct: +0 word state, +3 byte substate, +4 byte flag, +8 halfword timer) ->
@@ -15285,7 +15285,7 @@ sub_8009E56:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009E66:
-	bl sub_8008D60
+	bl battle_stepMainState
 	bl someChipHandValidationHappensHere_800B090
 	cmp r0, #0
 	beq locret_8009EE0

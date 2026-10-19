@@ -304,9 +304,9 @@ battle_aiGetCurActionPanelY_8087140:
 // symdb: Initializes a 10-entry overworld player position trail, stamping the player's current X/Y/Z into every 12-byte record.
 // symdb: (r5 = base of struct, from caller) -> writes player X at r5+0x10+0xC*i, Y at +0x14+0xC*i, Z at
 // symdb: +0x18+0xC*i for i in 0..9; r0-r3, r6 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087150.yaml
-	thumb_func_start sub_8087150
-sub_8087150:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_playerTrailCoords.yaml
+	thumb_func_start init_playerTrailCoords
+init_playerTrailCoords:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
 	mov r4, #0xa
@@ -335,7 +335,7 @@ loc_8087178:
 	cmp r6, r4
 	blt loc_8087178
 	pop {r4-r7,pc}
-	thumb_func_end sub_8087150
+	thumb_func_end init_playerTrailCoords
 
 // symdb: Refreshes the Beast/SP (Beast-form Navi) AI's per-state attack vars from a copy of the actor's BattleObject position/velocity fields.
 // symdb: (r5 = AIData*, r10 = toolkit via r5) -> side effects only ; copies [r5+0x70..0x7c] ->

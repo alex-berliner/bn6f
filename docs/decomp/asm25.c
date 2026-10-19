@@ -456,10 +456,10 @@ int weatherComp_init_808FDC0()
         v0 = SetEventFlagFromImmediate(11, 224);
     }
     sub_808FE64(v0, v1, v2, v3);
-    sub_808FED8();
+    spawnOverworldMapObjects1aLoop();
     ow_spawnMapObject1b();
     sub_808FF30();
-    sub_808FF70();
+    spawnSevenOverworldMapObjects();
     initScenarioEffect_8003914(1u, v9, v10, v11);
     sub_809003C();
     return 0;
@@ -542,7 +542,7 @@ int battle_runBattleFrameForCyberWorld_808FEA4()
 
 
 // 0x808fed8
-int sub_808FED8()
+int spawnOverworldMapObjects1aLoop()
 {
     int v0; // r7
     int v1; // r6
@@ -621,7 +621,7 @@ signed int battleObject_togglePlayerAllyLockout_808FF44()
 
 
 // 0x808ff70
-int sub_808FF70()
+int spawnSevenOverworldMapObjects()
 {
     signed int v0; // r4
     int result; // r0

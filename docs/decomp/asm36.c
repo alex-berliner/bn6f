@@ -5855,8 +5855,8 @@ LABEL_12:
         if ( word_202A020 == v1 )
         {
             sub_8135038(word_202A020, 74, v3, v4);
-            sub_8135054(0, v35, v36, v37);
-            sub_8135054(4, v38, v39, v40);
+            folder_swapCursorIndex(0, v35, v36, v37);
+            folder_swapCursorIndex(4, v38, v39, v40);
         }
         CopyByEightWords(v33, &unk_2035C6C, 0x20u);
         CopyByEightWords(v34, v33, 0x20u);
@@ -6067,7 +6067,7 @@ void __fastcall sub_8135038(int a1, int a2, int a3, int a4)
 
 
 // 0x8135054
-int __fastcall sub_8135054(int result, int a2, int a3, int a4)
+int __fastcall folder_swapCursorIndex(int result, int a2, int a3, int a4)
 {
     int v4; // r5
     signed int v5; // r4
@@ -6721,7 +6721,7 @@ int sub_813581C()
 
     result = IsPaletteFadeActive();
     if ( !v1 )
-        sub_8135F18();
+        navicust_getCellProgramId();
     return result;
 }
 
@@ -6755,7 +6755,7 @@ int navicust_handleBoardInput()
         if ( !v2 )
         {
             navicust_boardCursorUp(v3, v4, v5);
-            sub_8135F18();
+            navicust_getCellProgramId();
         }
         v6 = *(v1 + oToolkit_JoypadPtr);
         if ( *v6 & 0x10 )
@@ -6784,7 +6784,7 @@ int navicust_handleBoardInput()
             sub_8135F5C();
         }
         if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 4u, 0, 0) )
-            sub_8135F18();
+            navicust_getCellProgramId();
     }
     v8 = *(v0 + 12);
     if ( v8 != 12 )
@@ -7358,7 +7358,7 @@ signed int __fastcall sub_8135EEC(int a1, int a2)
 
 
 // 0x8135f18
-void __noreturn sub_8135F18()
+void __noreturn navicust_getCellProgramId()
 {
     int v0; // r5
 
@@ -7495,7 +7495,7 @@ void __noreturn sub_81360B4()
     *(v0 + 2) = 12;
     sub_81362B8();
     sub_81362F8();
-    sub_8135F18();
+    navicust_getCellProgramId();
 }
 
 
@@ -7506,7 +7506,7 @@ void __noreturn sub_81360DC()
 
     *(v0 + 2) = 12;
     sub_81362F8();
-    sub_8135F18();
+    navicust_getCellProgramId();
 }
 
 
@@ -7864,7 +7864,7 @@ int navicust_confirmPartPlacement()
         *(v0 + 20) = 0;
         sub_813B920(0);
         sub_81362F8();
-        sub_8135F18();
+        navicust_getCellProgramId();
     }
     *(v0 + 16) = 0;
     sub_813660C(1);
@@ -8073,7 +8073,7 @@ int __fastcall sub_8136644(int a1)
 
 
 // 0x81366d0
-int sub_81366D0()
+int battle_trackObjectIdInList()
 {
     int v0; // r5
     int v1; // r4
@@ -8324,7 +8324,7 @@ int sub_813691C()
 
 
 // 0x81369b8
-int sub_81369B8()
+int battle_beginInit()
 {
     int v0; // r5
 
@@ -8543,7 +8543,7 @@ void __noreturn sub_8136BDC()
     int v0; // r5
 
     *(v0 + 2) = 4;
-    sub_8135F18();
+    navicust_getCellProgramId();
 }
 
 
@@ -8701,7 +8701,7 @@ signed int sub_8136EF8()
     _BYTE *v0; // r5
     signed int result; // r0
 
-    sub_81375D8();
+    clearBeastSpState();
     RunTextScriptNaviCustDialog(0);
     result = 8;
     *v0 = 8;
@@ -8892,7 +8892,7 @@ int sub_813709C()
 
 
 // 0x81370ac
-int sub_81370AC()
+int beastOutDialogDelayStep()
 {
     int v0; // r5
     int result; // r0
@@ -8963,7 +8963,7 @@ int navicust_checkEquipDialogs()
                 {
                     sub_8137670(1);
                     RunTextScriptNaviCustDialog(20);
-                    sub_81375D8();
+                    clearBeastSpState();
                     result = 56;
                     *v0 = 56;
                 }
@@ -9102,7 +9102,7 @@ int sub_8137234()
 
 
 // 0x8137244
-int sub_8137244()
+int navicust_delayedDialogTimer()
 {
     int v0; // r5
     int result; // r0
@@ -9164,7 +9164,7 @@ int sub_813726C()
                 {
                     sub_8137670(1);
                     RunTextScriptNaviCustDialog(28);
-                    sub_81375D8();
+                    clearBeastSpState();
                     result = 88;
                     *v0 = 88;
                 }
@@ -9336,7 +9336,7 @@ int sub_813749C()
 
 
 // 0x81374ac
-int sub_81374AC()
+int navicust_counterThenShowDialog()
 {
     int v0; // r5
     int result; // r0
@@ -9451,7 +9451,7 @@ signed int sub_8137538()
 
 
 // 0x8137550
-int sub_8137550()
+int navicust_dialogDelayTick()
 {
     int v0; // r5
     int result; // r0
@@ -9460,7 +9460,7 @@ int sub_8137550()
     *(v0 + 14) = result;
     if ( result >= 60 )
     {
-        sub_81375D8();
+        clearBeastSpState();
         RunTextScriptNaviCustDialog(37);
         result = 132;
         *v0 = -124;
@@ -9534,7 +9534,7 @@ int sub_81375CC()
 
 
 // 0x81375d8
-unsigned int sub_81375D8()
+unsigned int clearBeastSpState()
 {
     int v0; // r5
 

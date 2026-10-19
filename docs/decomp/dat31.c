@@ -59,7 +59,7 @@ signed int sub_810C4B4()
     v4 = ((v0->Alliance ^ v0->directionFlip) << 8) + 97;
     spawn_t1_0x0_EffectObject(v0, v3, v3, v5, 0);
     v6 = *(v1 + 8);
-    sub_80CB8DE(v0->panelX, v0->panelY, 0, 0x100000);
+    battle_spawnObject3COnPanel(v0->panelX, v0->panelY, 0, 0x100000);
     result = 8;
     *v1 = 8;
     return result;

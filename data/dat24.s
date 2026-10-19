@@ -937,7 +937,7 @@ byte_808DD60::
 	cs_make_ow_player_invisible
 	cs_disable_ow_player_wall_collision_809e254
 	cs_run_eStruct200a6a0_callback
-	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000005
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000005
 	cs_do_pet_effect byte1=0xFF byte2=0x00
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
 	cs_wait_screen_fade

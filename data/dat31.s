@@ -108,7 +108,7 @@ sub_810C4B4::
 	lsl r3, r3, #0x10
 	ldr r4, dword_810C6E4 // =0x10000 
 	ldr r6, [r7,#oAIAttackVars_Damage]
-	bl sub_80CB8DE
+	bl battle_spawnObject3COnPanel
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,r6,pc}

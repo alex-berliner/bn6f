@@ -140,7 +140,7 @@ int __fastcall battle_beastJumpLockOn_8026554(signed int a1, signed int a2, int 
 
 
 // 0x80265d0
-int __fastcall sub_80265D0(char *a1)
+int __fastcall battle_checkFacingOffsets(char *a1)
 {
     Battle *v1; // r5
     int v2; // r6
@@ -237,7 +237,7 @@ int sub_8026622()
 // 0x8026650
 int sub_8026650()
 {
-    return sub_80265D0(byte_8026753);
+    return battle_checkFacingOffsets(byte_8026753);
 }
 
 
@@ -246,7 +246,7 @@ unsigned __int64 sub_802665A()
 {
     unsigned __int64 v0; // r0
 
-    LODWORD(v0) = sub_80265D0(byte_802675A);
+    LODWORD(v0) = battle_checkFacingOffsets(byte_802675A);
     return sub_80265FE(v0);
 }
 
@@ -254,14 +254,14 @@ unsigned __int64 sub_802665A()
 // 0x8026668
 int sub_8026668()
 {
-    return sub_80265D0(&byte_802675A[7]);
+    return battle_checkFacingOffsets(&byte_802675A[7]);
 }
 
 
 // 0x8026672
 int sub_8026672()
 {
-    return sub_80265D0(byte_802676E);
+    return battle_checkFacingOffsets(byte_802676E);
 }
 
 
@@ -270,7 +270,7 @@ unsigned __int64 sub_802667C()
 {
     unsigned __int64 v0; // r0
 
-    LODWORD(v0) = sub_80265D0(byte_8026781);
+    LODWORD(v0) = battle_checkFacingOffsets(byte_8026781);
     return sub_80265FE(v0);
 }
 
@@ -278,14 +278,14 @@ unsigned __int64 sub_802667C()
 // 0x802668a
 int sub_802668A()
 {
-    return sub_80265D0(byte_802678E);
+    return battle_checkFacingOffsets(byte_802678E);
 }
 
 
 // 0x8026694
 int sub_8026694()
 {
-    return sub_80265D0(byte_8026791);
+    return battle_checkFacingOffsets(byte_8026791);
 }
 
 
@@ -294,7 +294,7 @@ unsigned __int64 sub_802669E()
 {
     unsigned __int64 v0; // r0
 
-    LODWORD(v0) = sub_80265D0(byte_8026794);
+    LODWORD(v0) = battle_checkFacingOffsets(byte_8026794);
     return sub_80265FE(v0);
 }
 
@@ -319,21 +319,21 @@ int sub_80266BA()
     v2 = 0;
     if ( 5 * (*(v0 + 22) ^ *(v0 + 23) ^ 1) + 1 == v1 )
         v2 = 2;
-    return sub_80265D0(&byte_80267A6[v2]);
+    return battle_checkFacingOffsets(&byte_80267A6[v2]);
 }
 
 
 // 0x80266de
 int sub_80266DE()
 {
-    return sub_80265D0(byte_80267AB);
+    return battle_checkFacingOffsets(byte_80267AB);
 }
 
 
 // 0x80266e8
 int sub_80266E8()
 {
-    return sub_80265D0(byte_80267AE);
+    return battle_checkFacingOffsets(byte_80267AE);
 }
 
 
@@ -352,7 +352,7 @@ unsigned __int64 sub_80266F2()
 // 0x8026704
 int sub_8026704()
 {
-    return sub_80265D0(byte_80267B9);
+    return battle_checkFacingOffsets(byte_80267B9);
 }
 
 
@@ -361,7 +361,7 @@ unsigned __int64 sub_802670E()
 {
     unsigned __int64 v0; // r0
 
-    LODWORD(v0) = sub_80265D0(byte_8026791);
+    LODWORD(v0) = battle_checkFacingOffsets(byte_8026791);
     return sub_80265FE(v0);
 }
 
@@ -369,14 +369,14 @@ unsigned __int64 sub_802670E()
 // 0x802671c
 int sub_802671C()
 {
-    return sub_80265D0(byte_80267CC);
+    return battle_checkFacingOffsets(byte_80267CC);
 }
 
 
 // 0x8026726
 int sub_8026726()
 {
-    return sub_80265D0(byte_80267D5);
+    return battle_checkFacingOffsets(byte_80267D5);
 }
 
 
@@ -1996,7 +1996,7 @@ int __fastcall sub_802794A(int a1, int a2, int a3)
             v9 = 0;
             if ( *(v3 + v8 + 85) )
                 v9 = 5;
-            sub_8029EAC(*(&word_50 + v8 + v3) + v9);
+            sprite_queueTileGfx(*(&word_50 + v8 + v3) + v9);
         }
         ++v8;
     }
@@ -2091,7 +2091,7 @@ signed int sub_8027A84()
 
 
 // 0x8027a90
-int sub_8027A90()
+int screenFadeWaitStep()
 {
     int v0; // r5
     int result; // r0
@@ -2347,7 +2347,7 @@ int battle_initChipSelectTurn_8027E2C()
         v7 = callPossiblyGetBattleEmotion_8015B54(v6);
     else
         v7 = sub_8015B5C(v6);
-    sub_8027F10(v7, v8);
+    battle_initBeastOutChipEntry(v7, v8);
     battle_spawnMirrorFacingHelper_80280E0();
     selectChipTableEntryIntoActiveSlot9_80280A2();
     battle_initActiveChipEntries();
@@ -2436,7 +2436,7 @@ void battle_BuildFolderEntryRecords_8027EE8()
 
 
 // 0x8027f10
-signed int __fastcall sub_8027F10(int a1, _BYTE *a2)
+signed int __fastcall battle_initBeastOutChipEntry(int a1, _BYTE *a2)
 {
     int v2; // r4
     int v3; // r5
@@ -5123,7 +5123,7 @@ int custMenu_80298F4()
     }
     if ( v1 != 6 )
         return 0;
-    result = sub_8029A36();
+    result = t1_checkCustomChipMsg();
     if ( result )
     {
         v3 = result;
@@ -5237,7 +5237,7 @@ signed int battle_tutorialCheckEmotionMsg()
 
 
 // 0x8029a36
-signed int sub_8029A36()
+signed int t1_checkCustomChipMsg()
 {
     int v0; // r5
     int v1; // r10
@@ -5615,7 +5615,7 @@ void __fastcall sub_8029D94(int a1, int a2, signed int a3)
 
 
 // 0x8029eac
-int __fastcall sub_8029EAC(int a1)
+int __fastcall sprite_queueTileGfx(int a1)
 {
     return (loc_8000AC8)(&dword_86E944C[8 * a1], &unk_3001AA0, 32);
 }
@@ -6561,7 +6561,7 @@ LABEL_40:
     sub_802B15C(17);
     if ( !*(v3 + 2) )
         sub_802B1E4();
-    return sub_802B270();
+    return object_queueOamEntryFromBase();
 }
 
 
@@ -6835,7 +6835,7 @@ int sub_802AE5C()
     }
     sub_802B15C(16);
     sub_802B15C(17);
-    return sub_802B270();
+    return object_queueOamEntryFromBase();
 }
 
 
@@ -6860,7 +6860,7 @@ int sub_802AE84()
     }
     sub_802B15C(16);
     sub_802B15C(17);
-    return sub_802B270();
+    return object_queueOamEntryFromBase();
 }
 
 
@@ -6875,7 +6875,7 @@ int sub_802AEB8()
         *(v0 + 1) = 36;
     sub_802B15C(16);
     sub_802B15C(17);
-    return sub_802B270();
+    return object_queueOamEntryFromBase();
 }
 
 
@@ -7168,7 +7168,7 @@ int __fastcall sub_802B20C(int a1, int a2, int a3, int a4)
 
 
 // 0x802b270
-int sub_802B270()
+int object_queueOamEntryFromBase()
 {
     int v0; // r5
 
@@ -13686,7 +13686,7 @@ void __fastcall camera_init_802FF4C(int x, int y, int a3, int mapGroup)
     pCamera->pad_02[0] = v15;
     camera_doShakeEffect_80301e8();
     camera_dispatchUpdate_8030054();
-    sub_80302D0();
+    camera_callModeHandler();
     camera_SavePosition_803011A();
 }
 
@@ -14025,7 +14025,7 @@ signed int __fastcall sub_80302C0(signed int result, __int16 a2)
 
 
 // 0x80302d0
-int sub_80302D0()
+int camera_callModeHandler()
 {
     int v0; // r5
 
@@ -14558,7 +14558,7 @@ int __fastcall drawBGTileMapBottomRows_803077C(int result, int a2, int a3)
 
 
 // 0x80307d8
-void sub_80307D8()
+void ow_redrawTilemapAtCamera()
 {
     int v0; // r10
     int v1; // r3

@@ -49,7 +49,7 @@ int __fastcall sub_8094738(int a1)
         ++v4;
     }
     while ( v4 < 34 );
-    sub_80307D8();
+    ow_redrawTilemapAtCamera();
     return 0;
 }
 

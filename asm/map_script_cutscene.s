@@ -6227,7 +6227,7 @@ MapScriptCutsceneCmd_add_mail_range:
 
 	thumb_local_start
 // 0x43/0x6c word1 word5
-// call sub_80356F8 with r0=word1 and r1=word5
+// call req_enqueue with r0=word1 and r1=word5
 MapScriptCutsceneCmd_cmd_8038346:
 	push {lr}
 	mov r6, #1
@@ -6236,7 +6236,7 @@ MapScriptCutsceneCmd_cmd_8038346:
 	mov r6, #5
 	bl ReadMapScriptWord
 	mov r1, r4
-	bl sub_80356F8
+	bl req_enqueue
 	add r7, #9
 	mov r0, #1
 	pop {pc}

@@ -800,7 +800,7 @@ char *__fastcall object_getPanelDataOffset(int a1, int a2)
 // 0x800c918
 char *__noreturn sub_800C918()
 {
-    return sub_30078C8();
+    return object_updateAllPanelParameters();
 }
 
 
@@ -2545,7 +2545,7 @@ BOOL __fastcall sub_800D636(int a1, int a2)
     {
         v2 = a1;
         v3 = a2;
-        if ( !sub_800D6CC(a1 - 1, a2) && !sub_800D6CC(v2 + 1, v3) )
+        if ( !battle_checkPanelGroupAlliance(a1 - 1, a2) && !battle_checkPanelGroupAlliance(v2 + 1, v3) )
             result = 0;
     }
     return result;
@@ -2582,7 +2582,7 @@ signed int __fastcall sub_800D668(int a1, int a2, int a3)
 
 
 // 0x800d6cc
-signed int __fastcall sub_800D6CC(int a1, int a2)
+signed int __fastcall battle_checkPanelGroupAlliance(int a1, int a2)
 {
     int v2; // r6
     int v3; // r4
@@ -3238,7 +3238,7 @@ LABEL_29:
         *(v0 + 10) = 0;
         if ( *(v1 + 96) )
             goto LABEL_41;
-        sub_80E4B34(0, v11, v12, v13);
+        battle_spawnLinkedObj3C(0, v11, v12, v13);
     }
 LABEL_38:
     v14 = *(v1 + 30);
@@ -3257,7 +3257,7 @@ LABEL_41:
         object_setFlag1(0x8000);
         object_clearFlag(-2147416064);
         if ( !*(v1 + 72) )
-            sub_80E09EE(0, v15, v16, v17);
+            battle_spawnParentLinkedObj6(0, v15, v16, v17);
         goto LABEL_45;
     }
     object_clearFlag(0x8000);
@@ -3292,7 +3292,7 @@ LABEL_45:
         object_clearFlag2(32);
         object_setFlag1(&loc_2000);
         if ( !*(v1 + 76) )
-            sub_80E09EE(0, v20, v21, v22);
+            battle_spawnParentLinkedObj6(0, v20, v21, v22);
     }
     v23 = *(v1 + 40);
     v5 = __OFSUB__(v23--, 1);
@@ -3454,7 +3454,7 @@ int sub_800EA4E()
 
 
 // 0x800ea90
-signed int sub_800EA90()
+signed int battle_slowTickTimers()
 {
     int v0; // r5
     int v1; // r2

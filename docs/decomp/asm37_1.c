@@ -943,7 +943,7 @@ int sub_81427F2()
 
 
 // 0x8142816
-int __fastcall sub_8142816(int a1, int a2)
+int __fastcall ow_getCursorMapTileIndex(int a1, int a2)
 {
     int v2; // ST00_4
     int v3; // ST04_4
@@ -1047,7 +1047,7 @@ int sub_8142990()
     __int64 v0; // r0
 
     v0 = sub_809E1AE();
-    return sub_8142816(v0, SHIDWORD(v0));
+    return ow_getCursorMapTileIndex(v0, SHIDWORD(v0));
 }
 
 
@@ -1478,7 +1478,7 @@ int __fastcall sub_8142CC8(int a1, int a2)
 // 0x8142d4c
 void sub_8142D4C()
 {
-    sub_80307D8();
+    ow_redrawTilemapAtCamera();
 }
 
 

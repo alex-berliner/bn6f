@@ -1764,7 +1764,7 @@ battle_beastOutInit_80A5AF8:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
-	bl sub_80A5D0C
+	bl battle_beastOutGetMapEntry
 	cmp r0, #0
 	beq locret_80A5B6C
 	mov r4, r0
@@ -2037,9 +2037,9 @@ locret_80A5D0A:
 // symdb: Picks a per-map 8-byte Beast Out data entry for the object in r5, using the current map (group 0x81 uses its map number, everything else table slot 3).
 // symdb: (implicit r5 = BattleObject/transform record, implicit r10 = toolkit) -> r0 = pointer to an
 // symdb: 8-byte entry in a map-selected table; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5D0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutGetMapEntry.yaml
 	thumb_local_start
-sub_80A5D0C:
+battle_beastOutGetMapEntry:
 	push {r4,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
@@ -2070,7 +2070,7 @@ off_80A5D38:
 	.word byte_80A5A84
 	.word byte_80A5A9C
 	.word byte_80A5ABC
-	thumb_func_end sub_80A5D0C
+	thumb_func_end battle_beastOutGetMapEntry
 
 	thumb_local_start
 sub_80A5D48:
@@ -2334,7 +2334,7 @@ loc_80A5F12:
 	strb r0, [r5,#7]
 	bl sub_80A5EA0
 loc_80A5F3C:
-	bl sub_80A5D0C
+	bl battle_beastOutGetMapEntry
 	mov r4, r0
 	ldrb r0, [r4,#7]
 	strb r0, [r5,#6]
@@ -5033,7 +5033,7 @@ off_80A794C:
 off_80A7950:
 	.word object_startFacingStep+1
 	.word sub_80A7A40+1
-	.word sub_80A7AA4+1
+	.word battle_beastspDelayCountdown+1
 	.word sub_80A7AD4+1
 	.word sub_80A7AE0+1
 	.word sub_80A7AFA+1
@@ -5207,9 +5207,9 @@ off_80A7AA0:
 // symdb: (r6 = state struct: +3 active flag byte, +4 remaining-ticks halfword; r7 = config struct: +1
 // symdb: delay halfword) -> r0 = 1 when the countdown expired and the action fired this call, else 0; no
 // symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7AA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastspDelayCountdown.yaml
 	thumb_local_start
-sub_80A7AA4:
+battle_beastspDelayCountdown:
 	push {r4-r7,lr}
 	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7AD0
@@ -5234,7 +5234,7 @@ loc_80A7ABA:
 loc_80A7AD0:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A7AA4
+	thumb_func_end battle_beastspDelayCountdown
 
 	thumb_local_start
 sub_80A7AD4:
@@ -5946,7 +5946,7 @@ sub_80A7F78:
 	mov r4, r0
 	ldr r0, [r5,#0xc]
 	ldr r1, [r5,#0x10]
-	bl sub_8142816
+	bl ow_getCursorMapTileIndex
 	mov r1, r4
 	bl getSoulWeaponCursorDir8
 	bl sub_80A8038
@@ -6472,7 +6472,7 @@ off_80A84C0:
 	thumb_local_start
 sub_80A84C4:
 	push {r4-r7,lr}
-	bl sub_80A84FC
+	bl getRandomFadeLevel
 	lsl r0, r0, #1
 	ldr r1, off_80A84F4 // =math_cosTable 
 	ldrsh r4, [r1,r0]
@@ -6502,9 +6502,9 @@ off_80A84F8:
 // symdb: Returns a random fade/brightness amount chosen from an 8-entry ramp table, for a screen or sprite fade effect.
 // symdb: () -> r0 = byte from byte_80A8510[0..7] (one of 0x00,0x1F,0x3F,0x7F,0x9F,0xBF,0xDF,0xFF); flags
 // symdb: not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A84FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRandomFadeLevel.yaml
 	thumb_local_start
-sub_80A84FC:
+getRandomFadeLevel:
 	push {lr}
 	mov r0, #8
 	bl reqBBS_81409D0 // (int a1) -> int
@@ -6517,7 +6517,7 @@ off_80A850C:
 	.word byte_80A8510
 byte_80A8510:
 	.byte 0x0, 0x1F, 0x3F, 0x7F, 0x9F, 0xBF, 0xDF, 0xFF
-	thumb_func_end sub_80A84FC
+	thumb_func_end getRandomFadeLevel
 
 	thumb_local_start
 sub_80A8518:

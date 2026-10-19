@@ -784,7 +784,7 @@ int __fastcall map_8034B4C(int mapGroup, int mapNumber)
     vMapNumber = mapNumber;
     ZeroFillByWord(dword_2011EA0, 64);
     sub_8036E44();
-    v2 = sub_8035028();
+    v2 = map_dispatchInternetGroupHook();
     owPlayer_80350a8(v2, v3, v4, v5);
     npc_getMapSpriteScriptOffsets();
     sub_803537C();
@@ -1269,7 +1269,7 @@ unsigned int cutscene_TryStartOnMapEnterAfterJackIn_8034FB8()
 
 
 // 0x8035028
-unsigned int sub_8035028()
+unsigned int map_dispatchInternetGroupHook()
 {
     int v0; // r10
     int v1; // r5
@@ -1654,7 +1654,7 @@ int ow_loadEventGfxAnims()
 
 
 // 0x8035408
-int sub_8035408()
+int sprite_loadBeastSpAnims()
 {
     LoadGFXAnims(&off_8035418);
     return 0;
@@ -1789,7 +1789,7 @@ void __fastcall clearWorkBuffer_2000DC0_80356EC()
 
 
 // 0x80356f8
-int __fastcall sub_80356F8(int result, int a2)
+int __fastcall req_enqueue(int result, int a2)
 {
     int *v2; // r5
     int v3; // r4
@@ -4904,7 +4904,7 @@ signed int MapScriptCutsceneCmd_cmd_8038346()
 
     ReadMapScriptWord(1, v0);
     v1 = ReadMapScriptWord(5, v0);
-    sub_80356F8(v2, v1);
+    req_enqueue(v2, v1);
     return 1;
 }
 

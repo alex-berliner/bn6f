@@ -89,7 +89,7 @@ loc_8094752:
 	add r4, #1
 	cmp r4, #0x22 
 	blt loc_8094752
-	bl sub_80307D8
+	bl ow_redrawTilemapAtCamera
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0

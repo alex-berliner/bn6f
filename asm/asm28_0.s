@@ -2314,7 +2314,7 @@ byte_809AA5F:
 
 byte_809AA87:
 	cs_wait_chatbox byte1=0x88
-	cs_call_native_with_return_value ptr1=sub_809AC88+1
+	cs_call_native_with_return_value ptr1=npc_lotteryTalkStep+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x00 destination3=cutscenescript_809AA50
 	cs_call_native_with_return_value ptr1=sub_809ACA4+1
 	cs_call_native_with_return_value ptr1=chatbox_animateWindowOpen+1
@@ -2579,9 +2579,9 @@ sub_809AC70:
 // symdb: Runs the lottery NPC's current dialogue script and resets (or, for script 15, sets to 28) the byte at r5+8, likely a re-talk cooldown/state field.
 // symdb: (r0 = TextScriptArchive (TextScriptLottery86C67E4), r1 = script_idx from [r5+0x74]) -> r0 = 0;
 // symdb: [r5+8] = 0 (or 0x1C if idx == 15)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AC88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_lotteryTalkStep.yaml
 	thumb_local_start
-sub_809AC88:
+npc_lotteryTalkStep:
 	push {r4-r7,lr}
 	ldr r0, off_809AD7C // =TextScriptLottery86C67E4
 	ldr r1, [r5,#0x74]
@@ -2596,7 +2596,7 @@ loc_809AC9C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809AC88
+	thumb_func_end npc_lotteryTalkStep
 
 	thumb_local_start
 sub_809ACA4:

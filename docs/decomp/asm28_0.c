@@ -1193,7 +1193,7 @@ int sub_809AC70()
 
 
 // 0x809ac88
-int sub_809AC88()
+int npc_lotteryTalkStep()
 {
     int v0; // r5
     char v1; // r1
@@ -3106,7 +3106,7 @@ signed int sub_809D92C()
 
 
 // 0x809d964
-int __fastcall sub_809D964(int a1, int a2, int a3)
+int __fastcall ow_playerForcedWalkStep(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0

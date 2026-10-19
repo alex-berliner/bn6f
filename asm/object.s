@@ -2292,13 +2292,13 @@ off_800C914:
 	thumb_local_start
 sub_800C918:
 	push {lr}
-	ldr r0, off_800C924 // =sub_30078C8+1
+	ldr r0, off_800C924 // =object_updateAllPanelParameters+1
 	mov lr, pc
 	bx r0
 	pop {pc}
 	.balign 4, 0x00
 off_800C924:
-	.word sub_30078C8+1
+	.word object_updateAllPanelParameters+1
 	thumb_func_end sub_800C918
 
 // symdb: Trampoline that long-calls the real panel-parameter update routine for an object, passing all context registers straight through.
@@ -4343,12 +4343,12 @@ sub_800D636:
 	mov r4, r0
 	mov r5, r1
 	sub r0, #1
-	bl sub_800D6CC
+	bl battle_checkPanelGroupAlliance
 	tst r0, r0
 	bne loc_800D664
 	add r0, r4, #1
 	mov r1, r5
-	bl sub_800D6CC
+	bl battle_checkPanelGroupAlliance
 	tst r0, r0
 	bne loc_800D664
 	mov r0, #0
@@ -4393,7 +4393,7 @@ loc_800D68A:
 	bne loc_800D6B4
 	mov r0, r4
 	mov r1, r6
-	bl sub_800D6CC
+	bl battle_checkPanelGroupAlliance
 	tst r0, r0
 	bne loc_800D6C6
 	b loc_800D68A
@@ -4418,9 +4418,9 @@ loc_800D6C8:
 // symdb: Verifies that all three panels of a battlefield panel-group still carry the alliance value recorded in the unk_2034010 entry for that group, returning 1 if they all match.
 // symdb: (r0 = group/panel-area index into unk_2034010 (8-byte records), r1 = alliance value to confirm)
 // symdb: -> r0 = 1 if group state byte equals r1 and all 3 panels' alliance byte equals it, else r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D6CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelGroupAlliance.yaml
 	thumb_local_start
-sub_800D6CC:
+battle_checkPanelGroupAlliance:
 	push {r4-r6,lr}
 	mov r2, #8
 	mul r2, r0
@@ -4448,7 +4448,7 @@ loc_800D6E0:
 loc_800D6FC:
 	mov r0, #0
 	pop {r4-r6,pc}
-	thumb_func_end sub_800D6CC
+	thumb_func_end battle_checkPanelGroupAlliance
 
 	thumb_local_start
 sub_800D700:
@@ -5231,7 +5231,7 @@ off_800E4AC:
 off_800E4B0:
 	.word sub_800E4C0+1
 	.word battle_getHitModifierOffsets_800E548+1
-	.word sub_800E4C8+1
+	.word object_getDirDelta+1
 	.word sub_800E500+1
 	thumb_func_end battle_dispatchObjectContactHandler_800E498
 
@@ -5245,9 +5245,9 @@ sub_800E4C0:
 
 // symdb: Returns a battle object's per-facing movement/delta triple looked up from a 2-entry table indexed by its alliance-based direction.
 // symdb: (r0 = battle object ptr) -> r0 = dir * table[0], r1 = table[1], r2 = table[2]; r3 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E4C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_getDirDelta.yaml
 	thumb_local_start
-sub_800E4C8:
+object_getDirDelta:
 	push {r4,lr}
 	mov r4, r0
 	bl object_getEnemyDirection
@@ -5261,7 +5261,7 @@ sub_800E4C8:
 	ldrsb r1, [r3,r1]
 	ldrb r2, [r3,#2]
 	pop {r4,pc}
-	thumb_func_end sub_800E4C8
+	thumb_func_end object_getDirDelta
 off_800E4E4:
 	.word byte_800E4E8
 byte_800E4E8:
@@ -5593,8 +5593,8 @@ loc_800E72C:
 // symdb: Per-frame update for a battle object's status-effect timers (paralysis, blind, confuse, freeze, superarmor, immobilize, anger, invuln) and the corresponding action resets in BattleObject + CollisionData.
 // symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several
 // symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
-// symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
-// symdb: sub_80E4B34 / sub_80E9BDC.
+// symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls battle_spawnParentLinkedObj6 /
+// symdb: battle_spawnLinkedObj3C / sub_80E9BDC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickStatusEffectTimers_800E730.yaml
 	thumb_func_start object_tickStatusEffectTimers_800E730
 object_tickStatusEffectTimers_800E730:
@@ -5770,7 +5770,7 @@ loc_800E87E:
 	ldr r0, [r7]
 	tst r0, r0
 	bne loc_800E8B0
-	bl sub_80E4B34
+	bl battle_spawnLinkedObj3C
 loc_800E894:
 	ldrh r0, [r6,#oCollisionData_StatusEffectTimer]
 	sub r0, #1
@@ -5806,7 +5806,7 @@ loc_800E8C6:
 	tst r0, r0
 	bne loc_800E8E2
 	mov r4, #0
-	bl sub_80E09EE
+	bl battle_spawnParentLinkedObj6
 loc_800E8E2:
 	ldrh r0, [r6,#oCollisionData_StatusEffectTimer8]
 	sub r0, #1
@@ -5851,7 +5851,7 @@ loc_800E920:
 	tst r0, r0
 	bne loc_800E942
 	mov r4, #1
-	bl sub_80E09EE
+	bl battle_spawnParentLinkedObj6
 loc_800E942:
 	ldrh r0, [r6,#oCollisionData_InvulnerabilityTimer]
 	sub r0, #1
@@ -6064,9 +6064,9 @@ locret_800EA8E:
 // symdb: Halves five halfword timers in the object's AI/collision work area and decrements a master counter at +0x80 by their sum, returning whether the master did not change.
 // symdb: (r0 = unused/scratch, r5 = battle object) -> r0 = 1 if master timer at [collisionData+0x80] was
 // symdb: unchanged (all timers empty), else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA90.yaml
-	thumb_func_start sub_800EA90
-sub_800EA90:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_slowTickTimers.yaml
+	thumb_func_start battle_slowTickTimers
+battle_slowTickTimers:
 	push {r4,lr}
 	ldr r2, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0x80
@@ -6090,7 +6090,7 @@ loc_800EA9C:
 	mov r0, #1
 locret_800EAB8:
 	pop {r4,pc}
-	thumb_func_end sub_800EA90
+	thumb_func_end battle_slowTickTimers
 
 	thumb_func_start sub_800EABA
 sub_800EABA:

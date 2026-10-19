@@ -750,7 +750,7 @@ loc_3006070:
 	ldr r4, [r4]
 	lsr r4, r4, #5
 	mov r0, r8
-	bl sub_3006404
+	bl sprite_checkTileIndexInRange
 	beq loc_300608C
 	ldrb r1, [r5,#3]
 	mov r2, #0x10
@@ -760,7 +760,7 @@ loc_3006070:
 	str r2, [r5,#0x24]
 	b locret_30060E2
 loc_300608C:
-	bl sub_30061C8
+	bl sprite_pushGfxRequest
 	strh r1, [r5,#8]
 	add r4, r4, r1
 	strh r4, [r0]
@@ -939,9 +939,9 @@ loc_30061C2:
 // symdb: Appends an 8-byte sprite resource request record {r7, r6} to a work queue, bumping the queue count.
 // symdb: (r7 = request field A, r6 = request field B) -> r0 = none; appends to dword_200A890[count],
 // symdb: increments dword_20093A8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30061C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_pushGfxRequest.yaml
 	thumb_local_start
-sub_30061C8:
+sprite_pushGfxRequest:
 	ldr r2, off_30061E0 // =dword_20093A8
 	ldr r3, [r2]
 	add r3, #1
@@ -958,7 +958,7 @@ off_30061E0:
 	.word dword_20093A8
 off_30061E4:
 	.word dword_200A890
-	thumb_func_end sub_30061C8
+	thumb_func_end sprite_pushGfxRequest
 
 // symdb: Project an object's world position to the screen (through the camera mode) and mark which pieces of its frame are on screen.
 // symdb: (r0 = position, r5 = object; r10 = toolkit) -> sprite struct fields: screen X/Y, visibility
@@ -1269,9 +1269,9 @@ locret_3006402:
 // symdb: Boolean range check used by sprite_ensureGfxResident: tests whether a tile/gfx index taken from a struct is below a limit kept in the sprite settings block.
 // symdb: (r0 = pointer to struct with a halfword index/offset field) -> r0 = 1 if (halfword - 0x30 + r4)
 // symdb: >= limit, else 0; destroys r2-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006404.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_checkTileIndexInRange.yaml
 	thumb_local_start
-sub_3006404:
+sprite_checkTileIndexInRange:
 	push {lr}
 	ldrh r3, [r0]
 	ldr r2, dword_3006420 // =0x30
@@ -1291,7 +1291,7 @@ dword_3006420:
 	.word 0x30
 off_3006424:
 	.word byte_20098A8
-	thumb_func_end sub_3006404
+	thumb_func_end sprite_checkTileIndexInRange
 
 	thumb_local_start
 sub_3006428:
@@ -4073,7 +4073,7 @@ dword_3007778:
 
 // symdb: Walks a battle object's collision footprint and updates the panel(s) it occupies each frame, with a second mode that scans the whole 6x3 grid.
 // symdb: (r0 = CollisionData*) -> void ; side effects: panel data and per-panel collision state mutated
-// symdb: via sub_3007868 and _object_updatePanelParameters
+// symdb: via object_setPanelCollisionBit and _object_updatePanelParameters
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateCollisionPanels_300777C.yaml
 	thumb_func_start object_updateCollisionPanels_300777C
 object_updateCollisionPanels_300777C:
@@ -4115,7 +4115,7 @@ loc_300779E:
 	mov r0, r7
 	mov r1, r8
 	mov r2, r5
-	bl sub_3007868
+	bl object_setPanelCollisionBit
 	mov r0, r7
 	mov r1, r8
 	bl _object_updatePanelParameters
@@ -4146,7 +4146,7 @@ loc_30077E6:
 	mov r2, r5
 	mov r0, r6
 	mov r1, r7
-	bl sub_3007868
+	bl object_setPanelCollisionBit
 	mov r0, r7
 	mov r1, r8
 	bl _object_updatePanelParameters
@@ -4209,9 +4209,9 @@ off_3007864:
 // symdb: Sets one panel's collision-index bit in the battle panel-collision bitmap (unk_2034F60).
 // symdb: (r0 = word column index in bitmap, r1 = row index, r2 = ptr to collision data whose
 // symdb: CollisionIndexBit is the mask) -> r0/r1/r2 clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007868.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setPanelCollisionBit.yaml
 	thumb_local_start
-sub_3007868:
+object_setPanelCollisionBit:
 	ldr r3, off_300787C // =unk_2034F60
 	lsl r1, r1, #3
 	add r0, r0, r1
@@ -4224,7 +4224,7 @@ sub_3007868:
 	.balign 4, 0x00
 off_300787C:
 	.word unk_2034F60
-	thumb_func_end sub_3007868
+	thumb_func_end object_setPanelCollisionBit
 
 	thumb_local_start
 sub_3007880:
@@ -4268,9 +4268,9 @@ off_30078C4:
 
 // symdb: Recomputes battle board panel parameters for every panel coordinate on the field grid.
 // symdb: () -> r0 = undefined; clobbers r4, r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30078C8.yaml
-	thumb_func_start sub_30078C8
-sub_30078C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateAllPanelParameters.yaml
+	thumb_func_start object_updateAllPanelParameters
+object_updateAllPanelParameters:
 	push {r4,r5,lr}
 	mov r5, #4
 loc_30078CC:
@@ -4284,7 +4284,7 @@ loc_30078CE:
 	sub r5, #1
 	bgt loc_30078CC
 	pop {r4,r5,pc}
-	thumb_func_end sub_30078C8
+	thumb_func_end object_updateAllPanelParameters
 
 	thumb_func_start _object_updatePanelParameters
 _object_updatePanelParameters:

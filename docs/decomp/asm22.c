@@ -220,7 +220,7 @@ int battle_aiGetCurActionPanelY_8087140()
 
 
 // 0x8087150
-__int64 sub_8087150()
+__int64 init_playerTrailCoords()
 {
     int v0; // r5
     __int64 result; // r0

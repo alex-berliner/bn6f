@@ -8163,7 +8163,7 @@ sub_8086DF8::
 	strb r0, [r5,#0xd] // (byte_2011A9D - 0x2011a90)
 	mov r0, #1
 	strb r0, [r5,#0x3] // (byte_2011A93 - 0x2011a90)
-	bl sub_8087150
+	bl init_playerTrailCoords
 	bl sub_8086ED8
 	bl sub_8086EEC
 	movflag EVENT_5F2

@@ -154,7 +154,7 @@ signed int sub_808964C()
         sub_809E2AE(v4);
         v5 = sub_809E2B8();
         sub_809E13C(byte_80896A8[v5]);
-        sub_8089D26();
+        battle_initBeastSpAIChipQueues();
         sub_81421C8(0);
         cutscene_startCameraScript();
         *v0 = 4;
@@ -208,7 +208,7 @@ signed int __fastcall battle_scenarioEffectInputStep(int a1, int a2, int a3)
         }
         else
         {
-            sub_8089CDC();
+            camera_startCutsceneScript();
             sub_80468EC(1);
             *v3 = 24;
         }
@@ -315,12 +315,12 @@ signed int battleObject_beastOut_checkOrInit_80897A6()
         {
             if ( chatbox_GetState_8045F4C() )
             {
-                sub_8089D26();
+                battle_initBeastSpAIChipQueues();
                 *v0 = 12;
             }
             else
             {
-                sub_8089D0E();
+                ow_freeMapObjectTrio();
                 v2 = battle_getScenarioEffectStateField_81421D0();
                 sub_81421B2(v2);
                 sub_80468EC(1);
@@ -424,7 +424,7 @@ signed int battle_tickBeastSp_808985A()
                 sub_8142ADA();
                 if ( v3 )
                 {
-                    sub_8089CDC();
+                    camera_startCutsceneScript();
                     *v0 = 24;
                 }
                 else
@@ -478,7 +478,7 @@ signed int battleObject_beastModeAiPhaseInit_80898B2()
             sub_8142ADA();
             if ( v1 )
             {
-                sub_8089CDC();
+                camera_startCutsceneScript();
                 *v0 = 24;
             }
             else
@@ -540,7 +540,7 @@ signed int sub_808991C()
             sub_809E2AE(v2);
             v3 = sub_809E2B8();
             sub_809E13C(byte_8089958[v3]);
-            sub_8089CDC();
+            camera_startCutsceneScript();
             ai_setAIDataUnk18_8089CB0(30);
             *v0 = 72;
         }
@@ -641,7 +641,7 @@ signed int sub_80899F2()
     v1 = battle_countAliveActorsOnTeam_8142C20(0);
     if ( battleScenarioEffect_isActive_814216E() == v1 )
     {
-        sub_8089CDC();
+        camera_startCutsceneScript();
         *v0 = 24;
     }
     return 1;
@@ -696,7 +696,7 @@ signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
         TestEventFlagFromImmediate(0, 40);
         if ( v4 && GetSoulWeaponsMapIndex() < 6 )
         {
-            sub_8035408();
+            sprite_loadBeastSpAnims();
             PlaySoundEffect(356, v6, v7);
             v8 = sub_8036E44();
             sub_8036E78(v8, v9, v10);
@@ -1010,14 +1010,14 @@ signed int cutscene_startCameraScript()
 
 
 // 0x8089cdc
-char *sub_8089CDC()
+char *camera_startCutsceneScript()
 {
     int v0; // r5
 
     *(v0 + 60) = byte_808948A;
     sub_8036F98(byte_808948A);
     *(v0 + 19) = 1;
-    sub_8089D0E();
+    ow_freeMapObjectTrio();
     return sub_8089D44();
 }
 
@@ -1044,7 +1044,7 @@ int __fastcall sub_8089CF8(int a1, int a2, int a3, int a4)
 
 
 // 0x8089d0e
-int sub_8089D0E()
+int ow_freeMapObjectTrio()
 {
     _DWORD *v0; // r7
     signed int v1; // r4
@@ -1064,7 +1064,7 @@ int sub_8089D0E()
 
 
 // 0x8089d26
-char *sub_8089D26()
+char *battle_initBeastSpAIChipQueues()
 {
     battleObject_initAIChipQueueSlot_80468C6(4, 1, 0);
     sub_80468EC(0);

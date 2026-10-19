@@ -386,14 +386,14 @@ void __fastcall sprite_ensureGfxResident(int result)
         if ( *v6 != *(v2 + 8) )
             *(v2 + 36) = 0;
         v11 = *v9 >> 5;
-        sub_3006404();
+        sprite_checkTileIndexInRange();
         if ( !v10 )
         {
             *(v2 + 3) |= 0x10u;
             *(v2 + 36) = 0;
             return;
         }
-        sub_30061C8();
+        sprite_pushGfxRequest();
         *(v2 + 8) = v13;
         *v14 = v11 + v13;
         if ( v12 != *(v2 + 36) )
@@ -503,7 +503,7 @@ signed int sub_30061A8()
 
 
 // 0x30061c8
-void sub_30061C8()
+void sprite_pushGfxRequest()
 {
     int v0; // r6
     int v1; // r7
@@ -709,7 +709,7 @@ signed __int16 *__fastcall sub_300638C(signed __int16 *result)
 
 
 // 0x3006404
-void sub_3006404()
+void sprite_checkTileIndexInRange()
 {
     ;
 }
@@ -2418,7 +2418,7 @@ void __fastcall object_updateCollisionPanels_300777C(unsigned __int8 *a1)
                 v16 = v12;
                 if ( off_30078C0(v14, v13) )
                 {
-                    sub_3007868(v14, v13, v2);
+                    object_setPanelCollisionBit(v14, v13, v2);
                     _object_updatePanelParameters(v13, v1);
                 }
                 v11 = v15;
@@ -2444,7 +2444,7 @@ void __fastcall object_updateCollisionPanels_300777C(unsigned __int8 *a1)
             off_30078BC();
             if ( !v9 )
             {
-                sub_3007868(v7, v8, v2);
+                object_setPanelCollisionBit(v7, v8, v2);
                 _object_updatePanelParameters(v7, v8);
             }
             v4 += 2;
@@ -2477,7 +2477,7 @@ int __fastcall sub_3007828(unsigned __int8 *a1)
 
 
 // 0x3007868
-int __fastcall sub_3007868(int a1, int a2, int a3)
+int __fastcall object_setPanelCollisionBit(int a1, int a2, int a3)
 {
     int result; // r0
 
@@ -2501,7 +2501,7 @@ int __fastcall sub_3007880(int a1, int a2, int a3)
 
 
 // 0x30078c8
-char *sub_30078C8()
+char *object_updateAllPanelParameters()
 {
     int v0; // r5
     int v1; // r4

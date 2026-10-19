@@ -10086,9 +10086,9 @@ loc_8134E36:
 	bne loc_8134E58
 	bl sub_8135038
 	mov r0, #0
-	bl sub_8135054
+	bl folder_swapCursorIndex
 	mov r0, #4
-	bl sub_8135054
+	bl folder_swapCursorIndex
 loc_8134E58:
 	ldr r1, off_8134EA4 // =unk_2035C6C 
 	mov r0, r4
@@ -10400,9 +10400,9 @@ locret_8135052:
 // symdb: Swaps a list-cursor/selected-index between old and new values after a chip entry is moved in the folder editor.
 // symdb: (r0 = list selector 0/1 picking field 0x5C/0x60, r2 = old index, r3 = new index, r5 = UI state
 // symdb: struct base) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135054.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folder_swapCursorIndex.yaml
 	thumb_local_start
-sub_8135054:
+folder_swapCursorIndex:
 	push {r4,r6,lr}
 	mov r4, #0
 	ldr r6, off_8135074 // =off_8135078 
@@ -10428,7 +10428,7 @@ off_8135074:
 off_8135078:
 	.word 0x5C
 	.word 0x60
-	thumb_func_end sub_8135054
+	thumb_func_end folder_swapCursorIndex
 
 	thumb_local_start
 sub_8135080:
@@ -11458,7 +11458,7 @@ sub_813581C:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_813582C
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 	mov r0, #4
 	strb r0, [r5,#2]
 locret_813582C:
@@ -11491,7 +11491,7 @@ loc_8135850:
 	bl IsButtonPressed
 	beq loc_8135862
 	bl navicust_boardCursorUp
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 	b loc_81358EE
 loc_8135862:
 	mov r2, r10
@@ -11546,7 +11546,7 @@ loc_81358C2:
 	tst r0, r0
 	beq loc_81358E0
 	mov r4, r1
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 	mov r0, #0x7f
 	strb r0, [r5,#0xd]
 loc_81358E0:
@@ -12368,9 +12368,9 @@ loc_8135F14:
 // symdb: Reads the Navi Cust board cell under the cursor/work position, converts its table value to a program/index ID, and dispatches it to a handler.
 // symdb: (r5 = navicust work struct; r0/r1 clobbered) -> r0 = id passed to sub_8135F34; returns that
 // symdb: callee's result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135F18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_getCellProgramId.yaml
 	thumb_local_start
-sub_8135F18:
+navicust_getCellProgramId:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x20]
 	ldrh r1, [r5,#0x24]
@@ -12385,7 +12385,7 @@ sub_8135F18:
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8135F18
+	thumb_func_end navicust_getCellProgramId
 	thumb_local_start
 sub_8135F34:
 	push {r4-r7,lr}
@@ -12593,7 +12593,7 @@ sub_81360B4:
 	strb r0, [r5,#2]
 	bl sub_81362B8
 	bl sub_81362F8
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 
 	mov r0, #0
 	bl sub_813660C
@@ -12610,7 +12610,7 @@ sub_81360DC:
 	mov r0, #0xc
 	strb r0, [r5,#2]
 	bl sub_81362F8
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 
 	mov r0, #0
 	bl sub_813660C
@@ -13088,8 +13088,8 @@ navicust_confirmPartPlacement:
 	strb r0, [r5,#0x14]
 	bl sub_813B920
 	bl sub_81362F8
-	bl sub_8135F18
-	bl sub_81366D0
+	bl navicust_getCellProgramId
+	bl battle_trackObjectIdInList
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
@@ -13393,9 +13393,9 @@ byte_81366C8:
 // symdb: Registers a battle object's ID into a 6-slot unique-ID list at unk_2022B70 if not already present.
 // symdb: (r5 = current object ptr, reads [r5+0x18] as object index) -> r0 = descriptor byte 3 (leftover,
 // symdb: not a real return); no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81366D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_trackObjectIdInList.yaml
 	thumb_local_start
-sub_81366D0:
+battle_trackObjectIdInList:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x18]
 	bl battleObject_getByIndex_813B780
@@ -13416,7 +13416,7 @@ loc_81366EC:
 	blt loc_81366DE
 locret_81366F2:
 	pop {r4-r7,pc}
-	thumb_func_end sub_81366D0
+	thumb_func_end battle_trackObjectIdInList
 
 	thumb_local_start
 sub_81366F4:
@@ -13691,7 +13691,7 @@ off_81368E8:
 	.word sub_813691C+1
 	.word sub_813691C+1
 	.word sub_813691C+1
-	.word sub_81369B8+1
+	.word battle_beginInit+1
 	.word pet_naviHealCutsceneStep+1
 	.word sub_8136A0C+1
 	.word sub_8136A74+1
@@ -13773,9 +13773,9 @@ byte_81369B5:
 
 // symdb: Prepares the battle state for a new battle: sets a mode/phase byte, clears a counter, initializes the battle state, and starts the next step with flag 1.
 // symdb: (r0 = unused/ignored) -> r0 = return of sub_8136B10; writes [r5+3] = 0x20, [r5+0x12] = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81369B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beginInit.yaml
 	thumb_local_start
-sub_81369B8:
+battle_beginInit:
 	push {lr}
 	mov r0, #0x20 
 	strb r0, [r5,#3]
@@ -13786,7 +13786,7 @@ sub_81369B8:
 	bl sub_8136B10
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_81369B8
+	thumb_func_end battle_beginInit
 
 // symdb: Per-frame step of a scripted scene that, after a 80-frame delay, fully heals the current PET navi and plays a sound/effect flourish before advancing the scene state.
 // symdb: (r5 = scene/PET-event object, fields at +0x03/+0x12/+0x15/+0x1c) -> r0 = sub_8136B10 return
@@ -14090,7 +14090,7 @@ sub_8136BDC:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#2]
-	bl sub_8135F18
+	bl navicust_getCellProgramId
 
 	pop {pc}
 	thumb_func_end sub_8136BDC
@@ -14376,7 +14376,7 @@ off_8136E2C:
 	.word sub_8137018+1
 	.word sub_8137028+1
 	.word sub_813709C+1
-	.word sub_81370AC+1
+	.word beastOutDialogDelayStep+1
 	.word sub_81370C4+1
 	.word navicust_checkEquipDialogs+1
 	.word sub_8137160+1
@@ -14384,7 +14384,7 @@ off_8136E2C:
 	.word sub_81371A0+1
 	.word sub_81371B0+1
 	.word sub_8137234+1
-	.word sub_8137244+1
+	.word navicust_delayedDialogTimer+1
 	.word sub_813725C+1
 	.word sub_813726C+1
 	.word sub_81372E4+1
@@ -14393,12 +14393,12 @@ off_8136E2C:
 	.word sub_8137368+1
 	.word navicust_checkPiecePlacement+1
 	.word sub_813749C+1
-	.word sub_81374AC+1
+	.word navicust_counterThenShowDialog+1
 	.word sub_81374C4+1
 	.word navicust_dialogStateHandler+1
 	.word sub_8137528+1
 	.word sub_8137538+1
-	.word sub_8137550+1
+	.word navicust_dialogDelayTick+1
 	.word navicust_queueBeastOutDialog+1
 	.word sub_813759C+1
 	.word sub_81375AC+1
@@ -14435,7 +14435,7 @@ locret_8136EF4:
 	thumb_local_start
 sub_8136EF8:
 	push {lr}
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0
 	bl RunTextScriptNaviCustDialog
 	mov r0, #8
@@ -14458,7 +14458,7 @@ sub_8136F0C:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8136F3C
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #1
 	bl RunTextScriptNaviCustDialog
 	mov r0, #0xc
@@ -14482,7 +14482,7 @@ sub_8136F40:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8136F70
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #2
 	bl RunTextScriptNaviCustDialog
 	mov r0, #0x10
@@ -14667,9 +14667,9 @@ locret_81370AA:
 // symdb: Waits ~20 frames, then shows NaviCust dialog script 0xF and advances the Beast-related state machine to state 0x2C.
 // symdb: (r5 = task/object state struct, frame counter at +0xe, state byte at +0x0) -> r0 = 0; flags from
 // symdb: cmp/blt
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81370AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastOutDialogDelayStep.yaml
 	thumb_local_start
-sub_81370AC:
+beastOutDialogDelayStep:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	add r0, #1
@@ -14682,7 +14682,7 @@ sub_81370AC:
 	strb r0, [r5]
 locret_81370C2:
 	pop {pc}
-	thumb_func_end sub_81370AC
+	thumb_func_end beastOutDialogDelayStep
 
 	thumb_local_start
 sub_81370C4:
@@ -14724,7 +14724,7 @@ navicust_checkEquipDialogs:
 	bl sub_8137670
 	mov r0, #0x14
 	bl RunTextScriptNaviCustDialog
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0x38 
 	strb r0, [r5]
 	b locret_8137156
@@ -14894,9 +14894,9 @@ locret_8137242:
 // symdb: Counts 20 frames, then runs NaviCust dialog script 0x19 and advances the state machine to 0x4c.
 // symdb: (r5 = state object; counter halfword at +0xe, state byte at +0x0) -> none; after 20 ticks runs
 // symdb: dialog script 0x19 and sets [r5+0x0] = 0x4c
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137244.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_delayedDialogTimer.yaml
 	thumb_local_start
-sub_8137244:
+navicust_delayedDialogTimer:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	add r0, #1
@@ -14909,7 +14909,7 @@ sub_8137244:
 	strb r0, [r5]
 locret_813725A:
 	pop {pc}
-	thumb_func_end sub_8137244
+	thumb_func_end navicust_delayedDialogTimer
 
 	thumb_local_start
 sub_813725C:
@@ -14945,7 +14945,7 @@ sub_813726C:
 	bl sub_8137670
 	mov r0, #0x1c
 	bl RunTextScriptNaviCustDialog
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0x58 
 	strb r0, [r5]
 	b locret_81372D8
@@ -15013,7 +15013,7 @@ sub_81372F4:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne locret_8137332
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0x1d
 	bl RunTextScriptNaviCustDialog
 	mov r0, #0x5c 
@@ -15037,7 +15037,7 @@ sub_8137334:
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	bne locret_8137366
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0x1e
 	bl RunTextScriptNaviCustDialog
 	mov r0, #0x60 
@@ -15219,9 +15219,9 @@ locret_81374AA:
 // symdb: Counts 20 frames on an object, then once fires NaviCust dialog text 0x23 and switches the object's state byte to 0x70.
 // symdb: (r5 = state object, no args) -> r0 = text script id to callee; writes halfword [r5+0xE] counter
 // symdb: and byte [r5] = 0x70 on completion
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81374AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_counterThenShowDialog.yaml
 	thumb_local_start
-sub_81374AC:
+navicust_counterThenShowDialog:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	add r0, #1
@@ -15234,7 +15234,7 @@ sub_81374AC:
 	strb r0, [r5]
 locret_81374C2:
 	pop {pc}
-	thumb_func_end sub_81374AC
+	thumb_func_end navicust_counterThenShowDialog
 
 	thumb_local_start
 sub_81374C4:
@@ -15327,23 +15327,23 @@ locret_813754E:
 // symdb: Counts frames on an object and, after 60 frames, fires a navi-cust dialog script and advances the object's state.
 // symdb: (r5 = object ptr, no args) -> r0 = 0x25/0x84 side effects only; increments halfword [r5+0xE],
 // symdb: sets byte [r5+0x0]=0x84 when done
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137550.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_dialogDelayTick.yaml
 	thumb_local_start
-sub_8137550:
+navicust_dialogDelayTick:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	add r0, #1
 	strh r0, [r5,#0xe]
 	cmp r0, #0x3c 
 	blt locret_813756A
-	bl sub_81375D8
+	bl clearBeastSpState
 	mov r0, #0x25 
 	bl RunTextScriptNaviCustDialog
 	mov r0, #0x84
 	strb r0, [r5]
 locret_813756A:
 	pop {pc}
-	thumb_func_end sub_8137550
+	thumb_func_end navicust_dialogDelayTick
 
 // symdb: Conditionally triggers MegaMan's NaviCust-context dialog about Beast Out and advances the owning task's state.
 // symdb: (r0 unused/none, r4-r5 = task/controller context) -> r0 clobbered; writes byte 0x88 to [r5];
@@ -15417,9 +15417,9 @@ sub_81375CC:
 // symdb: Resets a small beastsp state record (zeroes two bytes) and clears the two event flags EVENT_EE/EVENT_EF.
 // symdb: (r5 = pointer to state struct, set by caller) -> r0 = 0 (from last mov, clobbered by calls);
 // symdb: flags from ClearEventFlagFromImmediate
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81375D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearBeastSpState.yaml
 	thumb_local_start
-sub_81375D8:
+clearBeastSpState:
 	push {lr}
 	mov r0, #0
 	strb r0, [r5,#2]
@@ -15430,7 +15430,7 @@ sub_81375D8:
 	movflag EVENT_EF
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	pop {pc}
-	thumb_func_end sub_81375D8
+	thumb_func_end clearBeastSpState
 
 	thumb_local_start
 sub_81375F4:

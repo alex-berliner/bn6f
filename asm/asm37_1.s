@@ -1562,9 +1562,9 @@ byte_8142804:
 // symdb: Computes an index into the 256x256 map tile array (byte_2006670) for the tile under the cursor (camera position plus a caller-supplied 16.16 offset).
 // symdb: (r0 = 16.16 x-offset added to camera cursor x, r1 = 16.16 y-offset) -> r0 = tile index (x +
 // symdb: y*256) into byte_2006670; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142816.yaml
-	thumb_func_start sub_8142816
-sub_8142816:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getCursorMapTileIndex.yaml
+	thumb_func_start ow_getCursorMapTileIndex
+ow_getCursorMapTileIndex:
 	push {r4-r7,lr}
 	ldr r5, off_81428D0 // =byte_2006670 
 	push {r0,r1}
@@ -1583,7 +1583,7 @@ sub_8142816:
 	mul r1, r5
 	add r0, r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142816
+	thumb_func_end ow_getCursorMapTileIndex
 
 	thumb_local_start
 // probably needed since the "grid" where
@@ -1770,7 +1770,7 @@ byte_8142980:
 sub_8142990:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
-	bl sub_8142816
+	bl ow_getCursorMapTileIndex
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142990
 
@@ -2300,7 +2300,7 @@ off_8142D44:
 	thumb_func_start sub_8142D4C
 sub_8142D4C:
 	push {r4-r7,lr}
-	bl sub_80307D8
+	bl ow_redrawTilemapAtCamera
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8142D54:

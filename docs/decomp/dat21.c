@@ -52,7 +52,7 @@ int __fastcall sub_8086DF8(int a1, int a2, int a3, int a4)
     byte_2011A94 = 10;
     byte_2011A9D[0] = 15;
     byte_2011A93 = 1;
-    sub_8087150();
+    init_playerTrailCoords();
     sub_8086ED8();
     sub_8086EEC();
     result = TestEventFlagFromImmediate(5, 242);

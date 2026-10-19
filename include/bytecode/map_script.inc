@@ -874,7 +874,7 @@
 // shared command
 	enum ms_cmd_8038346_cmd // 0x43
 // 0x43/0x6c word1 word5
-// call sub_80356F8 with r0=word1 and r1=word5
+// call req_enqueue with r0=word1 and r1=word5
 	.macro ms_cmd_8038346 word1:req word5:req
 	.byte ms_cmd_8038346_cmd
 	.word \word1

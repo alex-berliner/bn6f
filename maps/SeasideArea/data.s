@@ -276,7 +276,7 @@ mapscript_8075925:
 dword_8075938::
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_680 destination4=byte_80759E6
 	ms_call_native_function ptr1=beast_spawnObjectsAndSetup_8141F7C+1 word5=0x00000000
-	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000000
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_703 destination4=byte_80759E6
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_703
 	ms_set_enter_map_screen_fade byte1=0x0C byte2=0xFF
@@ -415,7 +415,7 @@ mapscript_8075B45:
 dword_8075B58::
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_680 destination4=byte_8075BAF
 	ms_call_native_function ptr1=beast_spawnObjectsAndSetup_8141F7C+1 word5=0x00000000
-	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000001
+	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000001
 	ms_jump destination1=byte_8075BAF
 
 mapscript_8075B7B:
@@ -508,7 +508,7 @@ mapscript_8075CB7:
 mapscript_8075CD1:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_680 destination4=byte_8075D6D
 	ms_call_native_function ptr1=beast_spawnObjectsAndSetup_8141F7C+1 word5=0x00000000
-	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000002
+	ms_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000002
 	ms_jump destination1=byte_8075D6D
 
 mapscript_8075CF4:

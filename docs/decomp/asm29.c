@@ -1079,7 +1079,7 @@ char *battle_beastOutInit_80A5AF8()
     char v5; // zf
 
     *v0 = 3;
-    result = sub_80A5D0C();
+    result = battle_beastOutGetMapEntry();
     if ( result )
     {
         v2 = result;
@@ -1287,7 +1287,7 @@ int sub_80A5CF0()
 
 
 // 0x80a5d0c
-char *sub_80A5D0C()
+char *battle_beastOutGetMapEntry()
 {
     int v0; // r5
     int v1; // r10
@@ -1518,7 +1518,7 @@ int sub_80A5EC8()
     if ( *(v0 + 7) )
     {
 LABEL_11:
-        result = sub_80A5D0C()[7];
+        result = battle_beastOutGetMapEntry()[7];
         *(v0 + 6) = result;
         return result;
     }
@@ -3314,7 +3314,7 @@ signed int sub_80A7A40()
 
 
 // 0x80a7aa4
-signed int sub_80A7AA4()
+signed int battle_beastspDelayCountdown()
 {
     int v0; // r6
     int v1; // r7
@@ -3928,7 +3928,7 @@ signed int __noreturn sub_80A7F78()
 
     sub_8142204(*(v1 + 2));
     sub_8142990();
-    sub_8142816(*(v0 + 12), *(v0 + 16));
+    ow_getCursorMapTileIndex(*(v0 + 12), *(v0 + 16));
     v2 = getSoulWeaponCursorDir8();
     v3 = sub_80A8038(v2);
     *(v0 + 7) = v3;
@@ -4307,7 +4307,7 @@ int sub_80A84C4()
     int result; // r0
     int v6; // r2
 
-    v1 = 2 * sub_80A84FC();
+    v1 = 2 * getRandomFadeLevel();
     v2 = 24576 * *&math_cosTable[v1];
     v3 = 24576 * *&math_sinTable[v1];
     v4 = sub_809E1AE();
@@ -4320,7 +4320,7 @@ int sub_80A84C4()
 
 
 // 0x80a84fc
-int sub_80A84FC()
+int getRandomFadeLevel()
 {
     return byte_80A8510[reqBBS_81409D0(8)];
 }

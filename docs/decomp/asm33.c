@@ -1338,7 +1338,7 @@ void sub_81245D4()
 
 
 // 0x8124624
-void __fastcall sub_8124624(char a1)
+void __fastcall chatbox_textShowNextPage(char a1)
 {
     int v1; // r5
     int v2; // r10
@@ -1371,7 +1371,7 @@ void __fastcall sub_8124624(char a1)
 
 
 // 0x8124660
-void __fastcall sub_8124660(char a1)
+void __fastcall npc_runBeastOutDialog(char a1)
 {
     _BYTE *v1; // r5
     int v2; // r10
@@ -6715,7 +6715,7 @@ void sub_8129454()
     }
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_812B288(13);
+    submenu_positionOptionSpriteByIndex(13);
 }
 
 
@@ -6787,7 +6787,7 @@ int sub_812956C()
 
 
 // 0x8129598
-int sub_8129598()
+int menu_screens3Dispatch()
 {
     int v0; // r5
 
@@ -9660,7 +9660,7 @@ int battle_stepWaitForStateRunUpdate()
 
 
 // 0x812b288
-void __fastcall sub_812B288(int a1)
+void __fastcall submenu_positionOptionSpriteByIndex(int a1)
 {
     int v1; // r5
     int v2; // r1

@@ -1974,7 +1974,7 @@ map_8034B4C: // (map_group: u8, map_number: u8) -> ()
 
 	bl playCertainMapMusicBasedOnEventByte_8036e44
 
-	bl sub_8035028
+	bl map_dispatchInternetGroupHook
 
 	bl owPlayer_80350a8
 
@@ -2638,9 +2638,9 @@ off_8035024:
 // symdb: At map load, dispatches to a per-internet-map-group hook routine, passing the saved real-world map id's two bytes as arguments.
 // symdb: () -> tail-calls jumptable handler with r0 = savedRealWorldMapId & 0xFF, r1 =
 // symdb: savedRealWorldMapId >> 8; no return value of its own
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035028.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/map_dispatchInternetGroupHook.yaml
 	thumb_local_start
-sub_8035028: // JP 0x8035fd8
+map_dispatchInternetGroupHook: // JP 0x8035fd8
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -2664,7 +2664,7 @@ locret_803504C:
 	.balign 4, 0
 off_8035050:
 	.word UnkInternetMapGroupJumptable_8034784
-	thumb_func_end sub_8035028
+	thumb_func_end map_dispatchInternetGroupHook
 
 // symdb: Checks that the player has normal control and no cutscene is active, then starts the "notification" cutscene (the comm-error text) if event flag 0x171A requests it; returns 0 if it started, 1 otherwise.
 // symdb: int tryStartNotificationCutscene(void); // returns 0 = cutscene started, 1 = blocked; preserves
@@ -3194,9 +3194,9 @@ off_80353FC:
 
 // symdb: Registers the two GFX animation scripts used for the Beast-SP scenario sprites into the animation engine.
 // symdb: () -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035408.yaml
-	thumb_func_start sub_8035408
-sub_8035408:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadBeastSpAnims.yaml
+	thumb_func_start sprite_loadBeastSpAnims
+sprite_loadBeastSpAnims:
 	push {r4-r7,lr}
 	ldr r0, off_8035414 // =off_8035418
 	bl LoadGFXAnims // (gfx_anim_data_arr: * FFStop32<[GFXAnimScript]>) -> ()
@@ -3209,7 +3209,7 @@ off_8035418:
 	.word byte_8034A6C
 	.word byte_8034ABC
 	.word 0xFFFFFFFF
-	thumb_func_end sub_8035408
+	thumb_func_end sprite_loadBeastSpAnims
 
 // symdb: Loads the alternate-death GFX/animation scripts (the "Death" GFXAnim script set referenced via `byte_8034AFC`) at battle setup when story flag EVENT_28 is set and the battle-effects bitmask's bit 3 (mask `0x8`) is clear.
 // symdb: void sub_8035424(void);  // uses r10 lr in; clobbers r0-r3, r8-r12, lr; preserves r4-r7
@@ -3503,9 +3503,9 @@ clearWorkBuffer_2000DC0_80356EC:
 // symdb: Appends a (r1, r0) entry to the first free slot of a 32-entry queue at dword_2000DC0, used by a cutscene script command.
 // symdb: (r0 = entry word stored at +4, r1 = entry word stored at +0) -> r0 = clobbered; no flags
 // symdb: meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80356F8.yaml
-	thumb_func_start sub_80356F8
-sub_80356F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_enqueue.yaml
+	thumb_func_start req_enqueue
+req_enqueue:
 	push {r4-r7,lr}
 	ldr r5, off_8035784 // =dword_2000DC0
 	mov r4, #0
@@ -3523,7 +3523,7 @@ loc_803570A:
 	blt loc_80356FE
 locret_8035712:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80356F8
+	thumb_func_end req_enqueue
 
 	thumb_local_start
 sub_8035714:

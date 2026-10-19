@@ -146,7 +146,7 @@ cutscenescript_8088DC8:
 	cs_wait_screen_fade
 	cs_kill_cutscene_process byte1=0x20
 	cs_do_camera_shake byte1=0x00 byte2=0x00 byte3=0x00
-	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000003
 	cs_set_var byte1=0x08 byte2=0x01
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_set_screen_fade byte1=0xFF byte2=0x00 byte3=0x02
@@ -181,7 +181,7 @@ cutscenescript_8088E72:
 	cs_do_camera_shake byte1=0x00 byte2=0x00 byte3=0x00
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_680
 	cs_run_eStruct200a6a0_callback
-	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=sub_804CBC0+1 word9=0x00000003
+	cs_init_eStruct200a6a0 ptr1=battleObject_dispatchBeastOutAction_804CBA4+1 ptr5=clear_renderBlendEffect+1 word9=0x00000003
 	cs_spawn_ow_npc_objects_from_map
 	cs_stop_cutscene_camera_script
 	cs_chatbox_cmd_8037a70
@@ -880,7 +880,7 @@ loc_808966E:
 	ldr r1, off_80896A4 // =byte_80896A8 
 	ldrb r0, [r1,r0]
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-	bl sub_8089D26
+	bl battle_initBeastSpAIChipQueues
 	mov r0, #0
 	bl sub_81421C8
 	bl cutscene_startCameraScript
@@ -936,7 +936,7 @@ battle_scenarioEffectInputStep:
 	beq loc_80896FA
 	cmp r0, #2
 	beq loc_80896F4
-	bl sub_8089CDC
+	bl camera_startCutsceneScript
 	mov r0, #1
 	bl sub_80468EC
 	mov r0, #0x18
@@ -1059,12 +1059,12 @@ battleObject_beastOut_checkOrInit_80897A6:
 	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	beq loc_80897C8
-	bl sub_8089D26
+	bl battle_initBeastSpAIChipQueues
 	mov r0, #0xc
 	strb r0, [r5]
 	b loc_80897E4
 loc_80897C8:
-	bl sub_8089D0E
+	bl ow_freeMapObjectTrio
 	bl battle_getScenarioEffectStateField_81421D0
 	bl sub_81421B2
 	mov r0, #1
@@ -1176,7 +1176,7 @@ battle_tickBeastSp_808985A:
 loc_8089882:
 	bl sub_8142ADA
 	bne loc_8089892
-	bl sub_8089CDC
+	bl camera_startCutsceneScript
 	mov r0, #0x18
 	strb r0, [r5]
 	b loc_8089898
@@ -1222,7 +1222,7 @@ battleObject_beastModeAiPhaseInit_80898B2:
 loc_80898CE:
 	bl sub_8142ADA
 	bne loc_80898DE
-	bl sub_8089CDC
+	bl camera_startCutsceneScript
 	mov r0, #0x18
 	strb r0, [r5]
 	b loc_80898E4
@@ -1280,7 +1280,7 @@ sub_808991C:
 	ldr r1, off_8089954 // =byte_8089958 
 	ldrb r0, [r1,r0]
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-	bl sub_8089CDC
+	bl camera_startCutsceneScript
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x48 
@@ -1383,7 +1383,7 @@ sub_80899F2:
 	bl battleScenarioEffect_isActive_814216E
 	cmp r0, r4
 	bne loc_8089A0C
-	bl sub_8089CDC
+	bl camera_startCutsceneScript
 	mov r0, #0x18
 	strb r0, [r5]
 loc_8089A0C:
@@ -1431,7 +1431,7 @@ off_8089A40:
 
 // symdb: Drives the chip-lockout state transition in battle: clears/updates event flags, plays the appropriate map music (Forte/SoulWeapons-gated), then resets the chip-lockout timer/state to 0x64 and returns 1.
 // symdb: () -> r0 = 1 ; side effects: clears/sets event flags, mutates GameState->Unk_15, plays map music
-// symdb: via sub_8035408 / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
+// symdb: via sprite_loadBeastSpAnims / PlaySoundEffect(0x164) / playCertainMapMusicBasedOnEventByte_8036e44 +
 // symdb: PlayMapMusic, calls sub_8089CB0(0x1e), writes 0x64 to a battle-object byte at [r5]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleChipLockoutTransition_8089A60.yaml
 	thumb_local_start
@@ -1459,7 +1459,7 @@ battle_handleChipLockoutTransition_8089A60:
 	bl GetSoulWeaponsMapIndex
 	cmp r0, #6
 	bge loc_8089ABA
-	bl sub_8035408
+	bl sprite_loadBeastSpAnims
 	mov r0, #0x65 
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -1809,22 +1809,22 @@ off_8089CD8:
 // symdb: Cutscene-object step that launches a fixed camera script and flags the object as camera-active.
 // symdb: (r5 = cutscene/state object, r0 = ignored on entry) -> r0 = 0 from callees; stores camera script
 // symdb: pointer at [r5+0x3C], sets byte [r5+0x13] = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CDC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_startCutsceneScript.yaml
 	thumb_local_start
-sub_8089CDC:
+camera_startCutsceneScript:
 	push {r4-r7,lr}
 	ldr r0, off_8089CF4 // =byte_808948A
 	str r0, [r5,#0x3c]
 	bl SetCutsceneCameraScript
 	mov r0, #1
 	strb r0, [r5,#0x13]
-	bl sub_8089D0E
+	bl ow_freeMapObjectTrio
 	bl sub_8089D44
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8089CF4:
 	.word byte_808948A
-	thumb_func_end sub_8089CDC
+	thumb_func_end camera_startCutsceneScript
 
 	thumb_local_start
 sub_8089CF8:
@@ -1844,9 +1844,9 @@ loc_8089CFC:
 // symdb: Frees up to three overworld map objects whose pointers are stored consecutively in a caller-provided array.
 // symdb: (r7 = base of array of 3 object pointers) -> r0 = last FreeOverworldMapObject result; frees each
 // symdb: non-null entry, leaving the array contents unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D0E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeMapObjectTrio.yaml
 	thumb_local_start
-sub_8089D0E:
+ow_freeMapObjectTrio:
 	push {r4-r7,lr}
 	mov r4, #0
 loc_8089D12:
@@ -1860,13 +1860,13 @@ loc_8089D1C:
 	cmp r4, #3
 	blt loc_8089D12
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089D0E
+	thumb_func_end ow_freeMapObjectTrio
 
 // symdb: Initializes AI chip-queue slots for two specific battle actors (slots 4 and 3), as part of the Beast SP setup.
 // symdb: () -> void; no return value, flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D26.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastSpAIChipQueues.yaml
 	thumb_local_start
-sub_8089D26:
+battle_initBeastSpAIChipQueues:
 	push {r4-r7,lr}
 	mov r0, #4
 	mov r1, #1
@@ -1879,7 +1879,7 @@ sub_8089D26:
 	mov r2, #1
 	bl battleObject_initAIChipQueueSlot_80468C6
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089D26
+	thumb_func_end battle_initBeastSpAIChipQueues
 
 	thumb_local_start
 sub_8089D44:

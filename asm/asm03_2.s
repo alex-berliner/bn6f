@@ -872,13 +872,13 @@ loc_8046652:
 	thumb_func_end battle_updateEStructSprites_80465F8
 
 // () -> void
-// symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after sub_80466AA, so scene ticks returning from a battle overlay start from clean records.
+// symdb: Reset step of the battle-overlay scene record array (eStructArr2008450): re-runs the record-array init (battle_initEStructArr_804657C) after e_clearAllEntitySpriteScales, so scene ticks returning from a battle overlay start from clean records.
 // symdb: void sub_8046664(r2, r3, r4, r5, r6, r7, lr) -> returns c, v, r1, r2, r3, r4, r5, r6, r7, lr
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetEStructRecords_8046664.yaml
 	thumb_func_start battle_resetEStructRecords_8046664
 battle_resetEStructRecords_8046664:
 	push {r4-r7,lr}
-	bl sub_80466AA // () -> void
+	bl e_clearAllEntitySpriteScales // () -> void
 	bl battle_initEStructArr_804657C // () -> void
 	pop {r4-r7,pc}
 	thumb_func_end battle_resetEStructRecords_8046664
@@ -936,9 +936,9 @@ sub_8046696:
 // () -> void
 // symdb: Sweeps all 15 entity slots and, for each active one, clears its sprite scale counter and marks the sprite unscalable.
 // symdb: () -> r0 = clobbered; touches every entity struct in eStructArr2008450 (0x58-byte stride)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80466AA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_clearAllEntitySpriteScales.yaml
 	thumb_local_start
-sub_80466AA:
+e_clearAllEntitySpriteScales:
 	push {r4-r7,lr}
 	ldr r5, off_80466D4 // =eStructArr2008450 
 	mov r7, #0
@@ -953,7 +953,7 @@ loc_80466BA:
 	cmp r7, #0xf
 	blt loc_80466B0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80466AA
+	thumb_func_end e_clearAllEntitySpriteScales
 
 // symdb: Returns the first byte (an in-use/status flag) of entry `index` of the fixed 0x58-byte struct array at eStructArr2008450, with NZ flags set from that byte.
 // symdb: u8 getStructFrom2008450(u32 index); /* r0 in: entry index; r0 out: flag byte, NZ set from it; r1
@@ -11209,9 +11209,9 @@ off_804CBB8:
 
 // symdb: Tears down an active render/blend effect: clears the render-info flag and resets its state fields, then zeroes the effect scratch struct.
 // symdb: () -> r0 = zeroFill return; flags from zeroFill_e2009740
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CBC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clear_renderBlendEffect.yaml
 	thumb_local_start
-sub_804CBC0:
+clear_renderBlendEffect:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -11226,7 +11226,7 @@ sub_804CBC0:
 	.balign 4, 0
 dword_804CBD8:
 	.word 0x3F0B
-	thumb_func_end sub_804CBC0
+	thumb_func_end clear_renderBlendEffect
 
 	thumb_local_start
 sub_804CBDC:
@@ -11255,7 +11255,7 @@ sub_804CBDC:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_804CCF0
+	bl t4_loadScreenBackgroundTiles
 	mov r0, #4
 	strb r0, [r5,#0x10]
 	bl beastSp_spawnIndexDispatcher_804CC8E
@@ -11382,9 +11382,9 @@ byte_804CCE0:
 // symdb: Clears BG scroll and loads a full 30x20-screen tile block (block 3) from a ROM tile-id table, then flags the background for redraw.
 // symdb: () -> void; sets bit 0x800 of toolkit RenderInfo word at [r10+oToolkit_RenderInfoPtr], zeroes
 // symdb: its +0x18/+0x1a scroll fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_loadScreenBackgroundTiles.yaml
 	thumb_local_start
-sub_804CCF0:
+t4_loadScreenBackgroundTiles:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -11408,7 +11408,7 @@ off_804CD18:
 	.word byte_86A39D0
 dword_804CD1C:
 	.word 0x800
-	thumb_func_end sub_804CCF0
+	thumb_func_end t4_loadScreenBackgroundTiles
 
 // symdb: Dispatches through a CurAnim-keyed jump table to one of two BattleObject CurAnim handlers, returning the callee's r0.
 // symdb: (r5 = BattleObjectPtr) -> r0 = whatever the dispatched handler returns ; tail-call via saved lr

@@ -790,10 +790,10 @@ weatherComp_init_808FDC0:
 	bl SetEventFlagFromImmediate
 loc_808FE10:
 	bl sub_808FE64
-	bl sub_808FED8
+	bl spawnOverworldMapObjects1aLoop
 	bl ow_spawnMapObject1b
 	bl sub_808FF30
-	bl sub_808FF70
+	bl spawnSevenOverworldMapObjects
 	mov r0, #1
 	bl initScenarioEffect_8003914
 	bl sub_809003C
@@ -901,9 +901,9 @@ off_808FED4:
 // symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from sub_808FF00's return value.
 // symdb: (no args) -> r0 = 0 always; r4-r7 clobbered/restored, SpawnOverworldMapObject called N times
 // symdb: with r0=0x1A, r1=0, r2=0, r3=0x400000, r4=loop index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FED8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnOverworldMapObjects1aLoop.yaml
 	thumb_local_start
-sub_808FED8:
+spawnOverworldMapObjects1aLoop:
 	push {r4-r7,lr}
 	bl sub_808FF00
 	mov r7, r0
@@ -923,7 +923,7 @@ loc_808FEE2:
 	blt loc_808FEE2
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_808FED8
+	thumb_func_end spawnOverworldMapObjects1aLoop
 
 	thumb_local_start
 sub_808FF00:
@@ -998,9 +998,9 @@ locret_808FF6C:
 
 // symdb: Spawns seven overworld-map objects of type 0x1C with all-zero position/params, in a counted loop.
 // symdb: (no args) -> r0 = last SpawnOverworldMapObject result; clobbers r4 (loop counter)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnSevenOverworldMapObjects.yaml
 	thumb_local_start
-sub_808FF70:
+spawnSevenOverworldMapObjects:
 	push {r4,lr}
 	mov r4, #0
 loc_808FF74:
@@ -1015,7 +1015,7 @@ loc_808FF74:
 	cmp r4, #7
 	blt loc_808FF74
 	pop {r4,pc}
-	thumb_func_end sub_808FF70
+	thumb_func_end spawnSevenOverworldMapObjects
 
 // symdb: Mr. Weather comp predicate: returns 1 iff the word at eWeatherCompState + 0x20 is 0 (0 otherwise).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF8C.yaml

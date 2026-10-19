@@ -493,7 +493,7 @@ int battle_updateEStructSprites_80465F8()
 // () -> void
 void __cdecl battle_resetEStructRecords_8046664()
 {
-    sub_80466AA();
+    e_clearAllEntitySpriteScales();
     battle_initEStructArr_804657C();
 }
 
@@ -534,7 +534,7 @@ int __fastcall sub_8046696(int a1)
 
 // 0x80466aa
 // () -> void
-int sub_80466AA()
+int e_clearAllEntitySpriteScales()
 {
     char *v0; // r5
     signed int v1; // r7
@@ -6326,7 +6326,7 @@ int battleObject_dispatchBeastOutAction_804CBA4()
 
 
 // 0x804cbc0
-void __fastcall sub_804CBC0(int a1, int a2, int a3, int a4)
+void __fastcall clear_renderBlendEffect(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     _WORD *v5; // r1
@@ -6353,7 +6353,7 @@ int sub_804CBDC()
     v2[1] = 55;
     SetDummyBGScrollCallbacks();
     (*(&off_804CC40 + *(v0 + 12)))();
-    sub_804CCF0();
+    t4_loadScreenBackgroundTiles();
     *(v0 + 16) = 4;
     return beastSp_spawnIndexDispatcher_804CC8E();
 }
@@ -6437,7 +6437,7 @@ signed int sub_804CCC0()
 
 
 // 0x804ccf0
-void sub_804CCF0()
+void t4_loadScreenBackgroundTiles()
 {
     int v0; // r10
     _WORD *v1; // r1
