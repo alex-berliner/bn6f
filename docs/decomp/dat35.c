@@ -745,7 +745,7 @@ LABEL_31:
 						*(v24 + 8) = 4;
 						*(v0 + 38) = 4;
 						*(v24 + 10) = *(v0 + 42);
-						sub_81302F4(128, 1);
+						e_setEntryValue0CWrap(128, 1);
 						e_spawnStructsFromTable();
 						return;
 					}
@@ -1624,7 +1624,7 @@ u32 sub_812FFA0()
     result = *(v1 + 42);
     if ( result == *(v1 + 44) && !*(v1 + 42) )
     {
-        sub_81302F4(*(v1 + 44), 1);
+        e_setEntryValue0CWrap(*(v1 + 44), 1);
         *(v1 + 2) = 40;
         *(v1 + 3) = 0;
         chatbox_runScript_803FD9C_on_eTextScript201BA20(60);

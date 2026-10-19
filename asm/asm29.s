@@ -3010,7 +3010,7 @@ loc_80A6A94:
 off_80A6AB8:
 	.word JumpTable_80A6ABC
 JumpTable_80A6ABC:
-	.word sub_80A6B10+1
+	.word battleObject_sineEaseMoveStep+1
 	.word sub_80A6CA4+1
 	.word battleObject_copyPositionToStruct+1
 	.word sub_80A6CFC+1
@@ -3041,9 +3041,9 @@ sub_80A6B08:
 // symdb: Runs one step of a sine-eased movement of a battle object from its current position toward a target position over a fixed number of frames, returning 1 when finished.
 // symdb: (r5 = movement-work struct, r4 = state byte offset, r7 = progress counter halfword offset) -> r0
 // symdb: = 0 while moving, 1 when move completed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6B10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_sineEaseMoveStep.yaml
 	thumb_local_start
-sub_80A6B10:
+battleObject_sineEaseMoveStep:
 	push {lr}
 	ldrb r2, [r5,r4]
 	cmp r2, #0
@@ -3145,7 +3145,7 @@ loc_80A6BB6:
 	.balign 4, 0
 off_80A6BD4:
 	.word math_sinTable
-	thumb_func_end sub_80A6B10
+	thumb_func_end battleObject_sineEaseMoveStep
 
 	thumb_local_start
 sub_80A6BD8:

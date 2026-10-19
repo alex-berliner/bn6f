@@ -16,7 +16,7 @@ sub_8130020:
 	bl chatbox_8040818
 	ldrh r0, [r5,#0x2c]
 	mov r1, #1
-	bl sub_81302F4
+	bl e_setEntryValue0CWrap
 	bl loc_81304AA
 	mov r0, #0
 	mov r1, #6
@@ -383,9 +383,9 @@ loc_81302EE:
 
 // symdb: Thin wrapper around e_setEntryValue0C: masks the value to 17 bits, writes it to entry field 0xC, and returns the masked value.
 // symdb: (r0 = value, r1 = entry index/handle) -> r0 = r0 & 0x1FFFF; flags clobbered by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302F4.yaml
-	thumb_func_start sub_81302F4
-sub_81302F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setEntryValue0CWrap.yaml
+	thumb_func_start e_setEntryValue0CWrap
+e_setEntryValue0CWrap:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x11
 	lsr r0, r0, #0x11
@@ -395,7 +395,7 @@ sub_81302F4:
 	mov r0, r4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81302F4
+	thumb_func_end e_setEntryValue0CWrap
 
 	push {r4-r7,lr}
 	sub sp, sp, #0x1c
@@ -606,11 +606,11 @@ sub_8130464:
 	bl battle_spawnEStructIfSlotEmpty
 	ldrh r0, [r5,#0x2a]
 	mov r1, #0
-	bl sub_81302F4
+	bl e_setEntryValue0CWrap
 	bl battle_spawnEStruct1IfEmpty
 	mov r0, #0x80
 	mov r1, #1
-	bl sub_81302F4
+	bl e_setEntryValue0CWrap
 	bl e_spawnStructsFromTable
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1892,20 +1892,20 @@ loc_8130E70:
 	strh r0, [r5,#0x2a]
 loc_8130E84:
 	mov r0, #0
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	b locret_8130EB8
 loc_8130E8C:
 	mov r0, #0
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	bl npc_eventShowDialogState24
 	b locret_8130EB8
 loc_8130E98:
 	mov r0, #1
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	b locret_8130EB8
 loc_8130EA0:
 	mov r0, #1
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	mov r0, #0x30 
 	strb r0, [r5,#2]
 	mov r0, #0x18
@@ -1956,7 +1956,7 @@ sub_8130EDC:
 	tst r0, r1
 	beq loc_8130EFE
 	mov r0, #0
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	b locret_8130F06
 loc_8130EFE:
 	bl e_copyBgTileBlock11x3
@@ -2310,7 +2310,7 @@ loc_813119C:
 	cmp r0, #4
 	beq loc_81311AA
 	mov r0, #1
-	bl sub_813188C
+	bl battleObject_setFlag40AndDispatchUpdate
 	b locret_81311B2
 loc_81311AA:
 	bl e_copyBgTileBlock11x3
@@ -3322,9 +3322,9 @@ off_8131888:
 // symdb: Sets or clears bit 0x40 in a battle object's flags byte at +0x1b, then runs the state-update dispatcher on the battle object at unk_2037700.
 // symdb: (r0 = bool: set flag if nonzero, clear if zero; r5 = battle object whose +0x1b flag byte is
 // symdb: modified) -> r0 = result of battleObject_dispatchUpdateByState; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813188C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setFlag40AndDispatchUpdate.yaml
 	thumb_local_start
-sub_813188C:
+battleObject_setFlag40AndDispatchUpdate:
 	push {r4-r7,lr}
 	tst r0, r0
 	beq loc_813189A
@@ -3344,7 +3344,7 @@ loc_81318A0:
 	.balign 4, 0
 off_81318AC:
 	.word unk_2037700
-	thumb_func_end sub_813188C
+	thumb_func_end battleObject_setFlag40AndDispatchUpdate
 
 	thumb_local_start
 sub_81318B0:
@@ -3883,7 +3883,7 @@ off_8131F30:
 	.word off_8131F34
 off_8131F34:
 	.word startLinkSceneSetup+1
-	.word sub_8131F80+1
+	.word eStruct200BC30_dispatchByFirstByte+1
 	thumb_func_end sub_8131F20
 
 // symdb: Waits for the screen fade, then initializes link state, camera layout and object state and starts a fade as the first step of transitioning into a link scene.
@@ -3924,9 +3924,9 @@ dword_8131F7C:
 // symdb: Dispatcher that indexes a handler table with the first byte of the EWRAM 0x200BC30 record and jumps to the selected handler.
 // symdb: (no args) -> r0 = value from eStruct200BC30_getJumpOffset00; returns to this function's caller
 // symdb: via handler's lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131F80.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eStruct200BC30_dispatchByFirstByte.yaml
 	thumb_local_start
-sub_8131F80:
+eStruct200BC30_dispatchByFirstByte:
 	push {lr}
 	bl eStruct200BC30_getJumpOffset00
 	ldr r1, off_8131F90 // =byte_8131F94
@@ -3940,7 +3940,7 @@ off_8131F90:
 byte_8131F94:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.word sub_8131FA0+1
-	thumb_func_end sub_8131F80
+	thumb_func_end eStruct200BC30_dispatchByFirstByte
 
 	thumb_local_start
 sub_8131FA0:
@@ -13462,7 +13462,7 @@ sub_813658C:
 	mov r4, r0
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
 	mov r7, r0
-	bl sub_813BA64
+	bl textScript_resetBuffers
 	ldrh r6, [r7]
 	ldrb r0, [r7,#3]
 	strh r0, [r5,#0x28]
@@ -16099,9 +16099,9 @@ off_813788C:
 // symdb: Returns the address of the 0x3C-byte chip entry at index r0 in the toolkit's S_Chip array.
 // symdb: (r0 = chip entry index) -> r0 = pointer to that 60-byte chip entry in
 // symdb: (*toolkit->oToolkit_S_Chip_2002178_Ptr); no flags matter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137890.yaml
-	thumb_func_start sub_8137890
-sub_8137890:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_sChipEntryAt.yaml
+	thumb_func_start get_sChipEntryAt
+get_sChipEntryAt:
 	push {lr}
 	mov r2, #0x3c 
 	mul r0, r2
@@ -16116,7 +16116,7 @@ byte_81378A4:
 	.byte 0x48, 0xC2, 0x44, 0xC2, 0x40, 0xC2, 0xFF, 0xFF
 byte_81378AC:
 	.byte 0x50, 0xC2, 0x4F, 0xC2, 0x4E, 0xC2, 0xFF, 0xFF
-	thumb_func_end sub_8137890
+	thumb_func_end get_sChipEntryAt
 
 	thumb_func_start sub_81378B4
 sub_81378B4:

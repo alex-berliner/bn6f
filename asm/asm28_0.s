@@ -314,7 +314,7 @@ cutscenescript_809911F:
 	cs_pause byte1=0xFF byte2=0x14
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
-	cs_call_native_with_return_value ptr1=sub_80991E0+1
+	cs_call_native_with_return_value ptr1=camera_setUnk0314+1
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_EVENT_CUR_DIR_LOCKED
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
@@ -409,9 +409,9 @@ loc_80991D2:
 
 // symdb: Writes 1 into a byte field and clears a word field of the camera struct reached from the r10 globals, then returns 0.
 // symdb: () -> r0 = 0; writes via camera_writeUnk03_14 into camera struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80991E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_setUnk0314.yaml
 	thumb_local_start
-sub_80991E0:
+camera_setUnk0314:
 	push {r4-r7, lr}
 	mov r0, #1
 	mov r1, r10
@@ -421,7 +421,7 @@ sub_80991E0:
 	bl camera_writeUnk03_14_80301b2
 	mov r0, #0
 	pop {r4-r7, pc}
-	thumb_func_end sub_80991E0
+	thumb_func_end camera_setUnk0314
 
 CutsceneScriptLMessage_80991F4:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
@@ -886,7 +886,7 @@ byte_8099E04:
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x0C
 	cs_wait_screen_fade
 	cs_decomp_text_archive ptr1=TextScript873D108
-	cs_call_native_with_return_value ptr1=sub_8099E3C+1
+	cs_call_native_with_return_value ptr1=mysteryData_gatherForNavi+1
 	cs_run_text_script_from_mem byte1=0x04
 	cs_wait_chatbox byte1=0x80
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_1708
@@ -910,9 +910,9 @@ byte_8099E2C:
 // symdb: Runs a prerequisite step, then looks up the current Navi's mystery-data entry and stores it plus a status byte into a work structure, returning 0.
 // symdb: (no meaningful args; uses r5/r7/r10 as context pointers) -> r0 = 0; r2 from callee stored to
 // symdb: [r5,#4]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099E3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mysteryData_gatherForNavi.yaml
 	thumb_local_start
-sub_8099E3C:
+mysteryData_gatherForNavi:
 	push {r4-r7, lr}
 	bl sub_809F9BE
 	mov r2, #0x90
@@ -927,7 +927,7 @@ sub_8099E3C:
 	mov r0, #0
 	pop {r4-r7, pc}
 	.balign 4, 0
-	thumb_func_end sub_8099E3C
+	thumb_func_end mysteryData_gatherForNavi
 
 
 byte_8099E5C: 
@@ -3314,7 +3314,7 @@ byte_809B6E5:
 	cs_run_text_script_not_from_mem byte2=0x01
 	cs_wait_chatbox byte1=0x80
 	cs_pause byte1=0xFF byte2=0x1E
-	cs_call_native_with_return_value ptr1=sub_809B868+1
+	cs_call_native_with_return_value ptr1=object_setEventFlagsLoadRecord+1
 	cs_jump destination1=cutscenescript_809B72B
 
 byte_809B70A:
@@ -3479,9 +3479,9 @@ loc_809B864:
 // symdb: Stores a pointer to a 0x34-byte record table entry (selected by the struct's field +8) into the struct and sets story event flags 38 and 39.
 // symdb: (r0 = unused, r5 = object/work struct: +8 = record index, +0x34 = record pointer out) -> r0 = 0;
 // symdb: flags set via EVENT_38, EVENT_39
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B868.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setEventFlagsLoadRecord.yaml
 	thumb_local_start
-sub_809B868:
+object_setEventFlagsLoadRecord:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#8]
 	ldr r7, off_809B88C // =byte_809B174
@@ -3498,7 +3498,7 @@ sub_809B868:
 	.balign 4, 0
 off_809B88C:
 	.word byte_809B174
-	thumb_func_end sub_809B868
+	thumb_func_end object_setEventFlagsLoadRecord
 
 	thumb_local_start
 sub_809B890:

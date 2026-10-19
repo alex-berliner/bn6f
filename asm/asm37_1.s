@@ -4013,7 +4013,7 @@ dword_8143D48:
 	thumb_func_start countSetEventFlags
 countSetEventFlags:
 	push {r4-r7,lr}
-	bl sub_8143F60
+	bl get_eStruct2001010Field10
 	mov r7, r0
 	mov r4, #0
 	mov r6, #0
@@ -4028,7 +4028,7 @@ loc_8143D68:
 	add r4, #1
 	cmp r4, r7
 	blt loc_8143D58
-	bl sub_8143F60
+	bl get_eStruct2001010Field10
 	mov r1, r0
 	mov r0, r6
 	tst r0, r0
@@ -4338,14 +4338,14 @@ sub_8143F58:
 
 // symdb: Trivial getter returning the dword at offset 0x10 of the eStruct2001010 structure.
 // symdb: () -> r0 = *(u32*)(eStruct2001010+0x10)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eStruct2001010Field10.yaml
 	thumb_local_start
-sub_8143F60:
+get_eStruct2001010Field10:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
 	ldr r0, [r5,#0x10] // (dword_2001020 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143F60
+	thumb_func_end get_eStruct2001010Field10
 
 // symdb: Stores a 0/1 enable-disable word into field 0xC of the global struct at 0x2001010.
 // symdb: (r0 = value (observed 0 or 1)) -> r0 = value; Z flag set per tst r0,r0 (unused by callers)

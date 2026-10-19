@@ -9918,7 +9918,7 @@ sub_802A9D0:
 	ldrb r0, [r5,#2]
 	tst r0, r0
 	beq loc_802AA7C
-	bl sub_802B0EC
+	bl battleObject_queueFourOamFromFixedTable
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
 	ldrh r0, [r0,#oJoypad_LowSensitivityHeld]
@@ -10862,9 +10862,9 @@ off_802B08C:
 // symdb: Queues a fixed set of four OAM sprite entries for an object, advancing its animation frame counter at object+0xF.
 // symdb: (r0-r3 = don't care, r5 = object struct; frame index at [r5,#0xF]) -> r0 = next frame index
 // symdb: stored to [r5,#0xF]; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B0EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueFourOamFromFixedTable.yaml
 	thumb_local_start
-sub_802B0EC:
+battleObject_queueFourOamFromFixedTable:
 	push {r4-r7,lr}
 	mov r7, #4
 	ldr r6, off_802B118 // =dword_802B11C 
@@ -10899,7 +10899,7 @@ byte_802B124:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0, 0x0, 0x56, 0x0, 0x0, 0x0, 0x8A, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x6A, 0x0, 0x0, 0x0, 0x8A
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x30, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_802B0EC
+	thumb_func_end battleObject_queueFourOamFromFixedTable
 
 	thumb_local_start
 sub_802B15C:
@@ -14539,7 +14539,7 @@ off_802CCB4:
 	.word sub_80E46B6+1 // 0x6
 	.word sub_80E7464+1 // 0x7
 	.word battle_spawnChipObject+1 // 0x8
-	.word sub_80E5EA8+1 // 0x9
+	.word battle_spawnObj74InitFromRelated+1 // 0x9
 	.word sub_80E3242+1 // 0xa
 	.word sub_80E349E+1 // 0xb
 	.word sub_80E59C6+1 // 0xc

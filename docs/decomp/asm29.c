@@ -1716,7 +1716,7 @@ int sub_80A6B08()
 
 
 // 0x80a6b10
-signed int __fastcall sub_80A6B10(int a1, int a2)
+signed int __fastcall battleObject_sineEaseMoveStep(int a1, int a2)
 {
     int v2; // r4
     _DWORD *v3; // r5

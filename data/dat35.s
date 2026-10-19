@@ -915,7 +915,7 @@ loc_812F6E2::
 	strh r1, [r0,#0xa]
 	mov r0, #0x80
 	mov r1, #1
-	bl sub_81302F4
+	bl e_setEntryValue0CWrap
 	bl e_spawnStructsFromTable
 	b loc_812F7B6
 loc_812F73E::
@@ -2044,7 +2044,7 @@ loc_812FFBC::
 	bne locret_8130014
 	ldrh r0, [r5,#0x2c]
 	mov r1, #1
-	bl sub_81302F4
+	bl e_setEntryValue0CWrap
 	mov r0, #0x28 
 	strb r0, [r5,#2]
 	mov r0, #0

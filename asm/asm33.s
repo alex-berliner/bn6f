@@ -9246,9 +9246,9 @@ sub_81278D8:
 // symdb: (r5 = battle object ptr, reads signed byte at r5+0xD as variant index; r0 = ((variant*8 +
 // symdb: 0x200)<<16)|0x70 and +0x220 variant, r1 = 0x70, r2 = 0, r3 = table, r4 = 0x80004000) -> r0 =
 // symdb: callee result (next row index); queues 2 OAM entries, then calls sub_8127944
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81278E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queuePairedSprites.yaml
 	thumb_local_start
-sub_81278E8:
+battleObject_queuePairedSprites:
 	push {r4-r7,lr}
 	mov r1, #0xd
 	ldrsb r0, [r5,r1]
@@ -9293,7 +9293,7 @@ off_812793C:
 	.word dword_8126908
 dword_8127940:
 	.word 0x80004000
-	thumb_func_end sub_81278E8
+	thumb_func_end battleObject_queuePairedSprites
 
 	thumb_local_start
 sub_8127944:
@@ -14709,7 +14709,7 @@ sub_812A1D4:
 	pop {pc}
 loc_812A1F6:
 	bl rfu_setStateEnded
-	bl sub_812B590
+	bl t3_runScript2fSetState
 	pop {pc}
 loc_812A200:
 	bl eStruct200BC30_getJumpOffset00
@@ -17356,9 +17356,9 @@ off_812B58C:
 // symdb: Plays text script 0x2f from archive eTextScript201BA20 in the chatbox, then advances the caller's state struct.
 // symdb: (r0 = unused entry value, r5 = state struct pointer from caller) -> r0 = script-run result;
 // symdb: writes [r5+1]=0x3C, [r5+2]=4, [r5+0x10]=5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B590.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_runScript2fSetState.yaml
 	thumb_local_start
-sub_812B590:
+t3_runScript2fSetState:
 	push {r4,lr}
 	bl sub_812B574
 	mov r0, #0x2f 
@@ -17371,7 +17371,7 @@ sub_812B590:
 	strb r0, [r5,#0x10]
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812B590
+	thumb_func_end t3_runScript2fSetState
 
 // symdb: Battle-object update callback that picks a sprite animation (4, 5, or 7) from the entity's current pose/state byte and applies it.
 // symdb: (r5 = entity pointer; reads state byte at [r5,#2]) -> r0 = result of sprite_setEntityAnimation

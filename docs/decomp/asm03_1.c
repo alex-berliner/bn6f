@@ -9941,7 +9941,7 @@ void sub_803C2EC()
 
 
 // 0x803c2f0
-int sub_803C2F0()
+int renderInfo_advanceField14By10()
 {
     int v0; // r10
     int v1; // r3
@@ -11590,13 +11590,13 @@ int __fastcall sub_803D170(int a1)
 {
     int v1; // r0
 
-    v1 = sub_803D180(a1);
+    v1 = battleObject_findActiveQuadSlot(a1);
     return CheckKeyItem(v1);
 }
 
 
 // 0x803d180
-int __fastcall sub_803D180(int a1)
+int __fastcall battleObject_findActiveQuadSlot(int a1)
 {
     int v1; // r6
     int v2; // r4
@@ -12932,7 +12932,7 @@ void __fastcall link_setStateFromObjectCoords(int a1, int a2, signed int a3)
 
 
 // 0x803e850
-void __fastcall sub_803E850(int a1, int a2, signed int a3)
+void __fastcall eLinkState_setWaitTimeout(int a1, int a2, signed int a3)
 {
     int v3; // r5
     signed int v4; // r1
@@ -13357,7 +13357,7 @@ signed int sub_803EB14()
     {
         sub_8146E78();
     }
-    v5 = sub_803EBFC();
+    v5 = eStruct200BC30_runStep();
     checkAnyCounterReached360();
     result = v5;
     if ( !v6 )
@@ -13398,7 +13398,7 @@ signed int sub_803EB60()
     {
         sub_8147B3C();
     }
-    v5 = sub_803EBFC();
+    v5 = eStruct200BC30_runStep();
     checkAnyCounterReached360();
     result = v5;
     if ( !v6 )
@@ -13459,7 +13459,7 @@ char *eStruct200BC30_getRef()
 
 
 // 0x803ebfc
-int sub_803EBFC()
+int eStruct200BC30_runStep()
 {
     return (*(&JumpTable803EC10 + eStruct200BC30_JumpOffset05))();
 }
@@ -13749,7 +13749,7 @@ int sub_803EE98()
     if ( (*sCamera.unk_88 & 0xFC) == 252 )
         link_setStateFromObjectCoords(252, 252, v8);
     if ( (*sCamera.unk_8C & 0xFC) == 252 )
-        sub_803E850(252, 252, v8);
+        eLinkState_setWaitTimeout(252, 252, v8);
     v10 = sub_803EF7C();
     v10[14] = sub_8144D18();
     v10[15] = sub_8144D24();

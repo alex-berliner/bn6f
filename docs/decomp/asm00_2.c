@@ -4287,7 +4287,7 @@ signed int __fastcall sub_8011B4A(int a1)
 
 
 // 0x8011ba2
-signed int sub_8011BA2()
+signed int battle_beastPwrAtkInitVars()
 {
     int v0; // r7
 
@@ -4340,7 +4340,7 @@ signed int ai_initBeastPwrAtkAttack()
 
 
 // 0x8011c18
-signed int sub_8011C18()
+signed int battle_beastPwrAtkInitAttackVars()
 {
     int v0; // r7
 
@@ -4550,7 +4550,7 @@ signed int sub_8011DBC()
 
 
 // 0x8011ddc
-signed int sub_8011DDC()
+signed int battle_aiAtkInitBeastOutVars()
 {
     int v0; // r7
 
@@ -4761,7 +4761,7 @@ signed int ai_setChipUseDelay()
 
 
 // 0x8011f8c
-int sub_8011F8C()
+int ai_megamanChargeShotBPrepAttack()
 {
     int v0; // r6
     int v1; // r7
@@ -4937,7 +4937,7 @@ signed int sub_80120FE()
 
 
 // 0x8012124
-signed int __fastcall sub_8012124(int a1)
+signed int __fastcall ai_initAttackVars93(int a1)
 {
     int v1; // r7
 
@@ -5019,7 +5019,7 @@ signed int sub_80121BC()
 
 
 // 0x80121dc
-signed int sub_80121DC()
+signed int battle_aiAtkInitBeastPwrDamageVars()
 {
     int v0; // r5
     int v1; // r7
@@ -5126,7 +5126,7 @@ signed int ai_setupAttackVars()
 
 
 // 0x8012292
-signed int sub_8012292()
+signed int ai_beastPwrAtkSetVars()
 {
     int v0; // r5
     int v1; // r7
@@ -5171,7 +5171,7 @@ signed int sub_80122C2()
 
 
 // 0x80122da
-signed int sub_80122DA()
+signed int battle_aiAttackSetBeastPwrDamage()
 {
     int v0; // r5
     int v1; // r7
@@ -5526,7 +5526,7 @@ int sub_80124F4()
 
 
 // 0x80124fe
-signed int sub_80124FE()
+signed int ai_initAttackVarsId37()
 {
     int v0; // r7
 
@@ -5547,7 +5547,7 @@ int sub_801251C()
 
 
 // 0x8012526
-signed int sub_8012526()
+signed int ai_attackResetVars()
 {
     int v0; // r7
 
@@ -5713,7 +5713,7 @@ int sub_8012628()
 // 0x8012632
 signed int __fastcall sub_8012632(int a1)
 {
-    return sub_8012124(a1);
+    return ai_initAttackVars93(a1);
 }
 
 

@@ -533,9 +533,9 @@ sub_813BA48:
 
 // symdb: Resets the toolkit's text-script working buffers by copying default script data (0x40 bytes) and default state/data (0x188 bytes) into the buffers pointed to by toolkit fields 0x14c and 0x190.
 // symdb: () -> void; no return value, clobbers r0-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BA64.yaml
-	thumb_func_start sub_813BA64
-sub_813BA64:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/textScript_resetBuffers.yaml
+	thumb_func_start textScript_resetBuffers
+textScript_resetBuffers:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk200414c_Ptr]
@@ -548,7 +548,7 @@ sub_813BA64:
 	ldr r2, off_813BAA4 // =0x188 
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {pc}
-	thumb_func_end sub_813BA64
+	thumb_func_end textScript_resetBuffers
 
 	thumb_func_start sub_813BA80
 sub_813BA80:

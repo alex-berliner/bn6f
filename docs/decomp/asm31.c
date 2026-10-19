@@ -2876,7 +2876,7 @@ int sub_80B9B30()
 
 
 // 0x80b9b58
-signed int sub_80B9B58()
+signed int battle_objectStartDestroy()
 {
     int v0; // r5
     signed int result; // r0
@@ -5030,7 +5030,7 @@ int sub_80BADB4()
 
 
 // 0x80bade4
-int sub_80BADE4()
+int battle_objStateBriefAnimThenDestroy()
 {
     int v0; // r5
     int result; // r0
@@ -11848,7 +11848,7 @@ int battle_objectPhaseWaitThenNextAction()
 
 
 // 0x80bebbc
-int sub_80BEBBC()
+int battle_objectDispatchPhase()
 {
     int v0; // r5
 
@@ -12826,7 +12826,7 @@ int battle_phaseIntroDelay()
 
 
 // 0x80bf4d0
-int sub_80BF4D0()
+int battle_objectRunPhaseHandler()
 {
     int v0; // r5
 
@@ -18757,7 +18757,7 @@ LABEL_11:
 
 
 // 0x80c290c
-int sub_80C290C()
+int object_phaseHandlerWait3FramesToPhase8()
 {
     int v0; // r5
     int result; // r0
@@ -19895,7 +19895,7 @@ void __noreturn object_collisionActionStep()
 
 
 // 0x80c32d8
-int sub_80C32D8()
+int battle_objectDispatchPhaseHandler()
 {
     int v0; // r5
 
@@ -24765,7 +24765,7 @@ _BYTE *sub_80C62F8()
 
 
 // 0x80c6330
-int __fastcall sub_80C6330(char a1, int a2, int a3, int a4)
+int __fastcall object_spawnTypeEFromSourceObject(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -46648,7 +46648,7 @@ int battle_phaseSpawnFrontEffectAndWait()
 
 
 // 0x80d3cb0
-int sub_80D3CB0()
+int battle_objectPhasePlayTimedTwoAnim()
 {
     int v0; // r5
     int result; // r0
@@ -59550,7 +59550,7 @@ int __fastcall sub_80DBE82(char a1, int a2, int a3, int a4)
 
 
 // 0x80dbea2
-_BYTE *__fastcall sub_80DBEA2(char a1, int a2, int a3, int a4)
+_BYTE *__fastcall battle_setObjectFlag10Param24(char a1, int a2, int a3, int a4)
 {
     _BYTE *result; // r0
 
@@ -70419,7 +70419,7 @@ int sub_80E2D30()
 
 
 // 0x80e2d54
-int sub_80E2D54()
+int battle_objectPhaseWait60Frames()
 {
     int v0; // r5
     int v1; // r0
@@ -75996,7 +75996,7 @@ int ai_waitAndCheckFrontPanelPhase()
 
 
 // 0x80e5ea8
-int __fastcall sub_80E5EA8(char a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObj74InitFromRelated(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -76207,7 +76207,7 @@ int sub_80E60A8()
 
 
 // 0x80e60cc
-int sub_80E60CC()
+int battle_panelMarkerEffectDispatchPhase()
 {
     int v0; // r5
 
@@ -76418,7 +76418,7 @@ int sub_80E6298()
 
 
 // 0x80e62b4
-int sub_80E62B4()
+int battle_objectRunPhase()
 {
     int v0; // r5
     int result; // r0
@@ -79476,7 +79476,7 @@ int t4_0x69_80E7F38()
 
 
 // 0x80e7f58
-int sub_80E7F58()
+int battleObject_snakeArmStepAction()
 {
     int v0; // r5
 
@@ -80994,7 +80994,7 @@ _BYTE *__fastcall sub_80E8BE2(char a1, int a2)
     int v3; // r6
 
     v3 = *(v2 + 44) + *(v2 + 50);
-    return sub_80DBEA2(a1, a2, *(v2 + 14), 7864320);
+    return battle_setObjectFlag10Param24(a1, a2, *(v2 + 14), 7864320);
 }
 
 
@@ -86600,7 +86600,7 @@ int sub_80ECC86()
 
 
 // 0x80eccb0
-int sub_80ECCB0()
+int aiAttack_dispatchElementHandler()
 {
     unsigned __int8 *v0; // r7
 
@@ -87074,7 +87074,7 @@ int ai_stepDelayedAttackStrike()
 
 
 // 0x80ed118
-void sub_80ED118()
+void battle_aiAttackTimedElementSwitch()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -92229,7 +92229,7 @@ void ai_attackStepWaitForObject()
 
 
 // 0x80f0094
-int sub_80F0094()
+int aiAttack_dispatchOnHitElement()
 {
     unsigned __int8 *v0; // r7
 
@@ -92416,7 +92416,7 @@ signed int sub_80F0228()
     *(v1 + 18) = 16;
     v2 = *(v1 + 12);
     v3 = *(v1 + 8);
-    sub_80C6330(3 * (v0->Alliance ^ 1) + 2, 2, 0, v4);
+    object_spawnTypeEFromSourceObject(3 * (v0->Alliance ^ 1) + 2, 2, 0, v4);
     result = 4;
     *v1 = 4;
     return result;
@@ -101307,7 +101307,7 @@ int sub_80F5E9C()
 
 
 // 0x80f5ebe
-int sub_80F5EBE()
+int aiAttack_woodElementStep()
 {
     int v0; // r7
     int result; // r0
@@ -126629,7 +126629,7 @@ int sub_8106238()
 
 
 // 0x8106274
-int sub_8106274()
+int ai_attackStepVanishAndStrike()
 {
     int v0; // r5
     int v1; // r7
@@ -127470,7 +127470,7 @@ int sub_8106B7C()
 
 
 // 0x8106b90
-int sub_8106B90()
+int aiAttack_rollAttackBoost2()
 {
     return sub_800FE28(&dword_8106BA0);
 }
@@ -127577,7 +127577,7 @@ void sub_8106CAC()
     sub_8106CEA(5);
     *(v1 + 40) = sub_8107994;
     *(v1 + 24) = sub_8106B7C();
-    *(v1 + 12) = sub_8106B90();
+    *(v1 + 12) = aiAttack_rollAttackBoost2();
     *(v1 + 13) = sub_8106BA4();
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();

@@ -6456,7 +6456,7 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
     *(v3 + 34) = *(v3 + 32);
     if ( *(v3 + 2) )
     {
-        sub_802B0EC();
+        battleObject_queueFourOamFromFixedTable();
         if ( *(*(v4 + oToolkit_JoypadPtr) + 4) & 1 )
         {
             if ( *(v3 + 16) == 255 )
@@ -7065,7 +7065,7 @@ void decomp_802B060()
 
 
 // 0x802b0ec
-unsigned int sub_802B0EC()
+unsigned int battleObject_queueFourOamFromFixedTable()
 {
     int v0; // r5
     signed int v1; // r7

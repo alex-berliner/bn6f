@@ -8050,7 +8050,7 @@ int sub_8113FC0()
     {
         sub_81096FA(v0[18], v0[19], v2, byte_8114160);
         v3 = v0[22];
-        result = sub_8114074(v4, v5, v6, v7);
+        result = battleObject_startPanelOffsetList(v4, v5, v6, v7);
     }
     return result;
 }
@@ -8134,7 +8134,7 @@ int __fastcall battle_pickAllianceParamPanel(int a1, int a2, int a3)
 
 
 // 0x8114074
-int __fastcall sub_8114074(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_startPanelOffsetList(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r4
@@ -23890,7 +23890,7 @@ int __fastcall petNaviTryGiveElementFolder_8120D10(int a1)
         else
         {
             v5 = isFolderSlotInUse_81377EC(0x22u);
-            if ( v5 >= 3 || !v9 && (v6 = v5, v7 = sub_8137890(v5), petNaviCheckElementChipLimits(v7), LOBYTE(v5) = v6, !v8) )
+            if ( v5 >= 3 || !v9 && (v6 = v5, v7 = get_sChipEntryAt(v5), petNaviCheckElementChipLimits(v7), LOBYTE(v5) = v6, !v8) )
             {
                 GiveFolder(34);
                 LOBYTE(v5) = *(*(v1 + oToolkit_Unk2001c04_Ptr) + 5) - 1;

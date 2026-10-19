@@ -12589,7 +12589,7 @@ sub_8113FC0:
 	mov r4, #0x2c
 	ldrb r6, [r5,#0x16]
 	pop {r5}
-	bl sub_8114074
+	bl battleObject_startPanelOffsetList
 locret_8113FE6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8113FC0
@@ -12677,9 +12677,9 @@ battle_pickAllianceParamPanel:
 // symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to sub_8114088 to run.
 // symdb: (r4 = index into PanelOffsetListsPointerTable, r6 = parameter passed through) -> tail-calls
 // symdb: sub_8114088(r4 = list pointer, r6); no direct return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114074.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_startPanelOffsetList.yaml
 	thumb_local_start
-sub_8114074:
+battleObject_startPanelOffsetList:
 	push {r4-r7,lr}
 	ldr r7, off_8114084 // =PanelOffsetListsPointerTable
 	lsl r4, r4, #2
@@ -12689,7 +12689,7 @@ sub_8114074:
 	.balign 4, 0x00
 off_8114084:
 	.word PanelOffsetListsPointerTable
-	thumb_func_end sub_8114074
+	thumb_func_end battleObject_startPanelOffsetList
 
 	thumb_local_start
 sub_8114088:
@@ -39308,7 +39308,7 @@ loc_8120D64:
 	bne loc_8120D9A
 	push {r2}
 	mov r0, r2
-	bl sub_8137890
+	bl get_sChipEntryAt
 	bl petNaviCheckElementChipLimits
 	pop {r2}
 	beq loc_8120D9A

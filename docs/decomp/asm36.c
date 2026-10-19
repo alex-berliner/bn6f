@@ -13,7 +13,7 @@ int sub_8130020()
 	*(v0 + 21) = 0;
 	*(v0 + 3) = 0;
 	chatbox_8040818();
-	v2 = sub_81302F4(*(v0 + 44), 1);
+	v2 = e_setEntryValue0CWrap(*(v0 + 44), 1);
 	(loc_81304AA)(v2);
 	return sub_811A914(0, 6);
 }
@@ -228,7 +228,7 @@ int __fastcall battle_spawnEStructRecordsAtPosition(void *a1, int a2, int a3)
 
 
 // 0x81302f4
-int __fastcall sub_81302F4(__int16 a1, int a2)
+int __fastcall e_setEntryValue0CWrap(__int16 a1, int a2)
 {
 	int v2; // r4
 
@@ -313,9 +313,9 @@ void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
 	battle_resetEStructRecords_8046664();
 	CopyBackgroundTiles(0, 0, 1, &unk_201F320, 30, dword_14);
 	battle_spawnEStructIfSlotEmpty();
-	sub_81302F4(*(v4 + 42), 0);
+	e_setEntryValue0CWrap(*(v4 + 42), 0);
 	battle_spawnEStruct1IfEmpty();
-	sub_81302F4(128, 1);
+	e_setEntryValue0CWrap(128, 1);
 	e_spawnStructsFromTable();
 }
 
@@ -1124,7 +1124,7 @@ void sub_8130DD0()
 	v1 = sub_803EAE4();
 	if ( v1 == 4 )
 	{
-		sub_813188C(0);
+		battleObject_setFlag40AndDispatchUpdate(0);
 		npc_eventShowDialogState24();
 		return;
 	}
@@ -1181,7 +1181,7 @@ void sub_8130DD0()
                             *(v0 + 38) = 0;
                             engine_setScreeneffect(12, 16);
                         }
-                        sub_813188C(0);
+                        battleObject_setFlag40AndDispatchUpdate(0);
                         return;
                     }
                 }
@@ -1191,12 +1191,12 @@ void sub_8130DD0()
         if ( eStruct200BC30_getJumpOffset00() )
         {
 LABEL_21:
-            sub_813188C(1);
+            battleObject_setFlag40AndDispatchUpdate(1);
             return;
         }
     }
 LABEL_22:
-    sub_813188C(1);
+    battleObject_setFlag40AndDispatchUpdate(1);
     *(v0 + 2) = 48;
     *(v0 + 31) = 24;
     chatbox_runScript_803FD9C_on_eTextScript201BA20(65);
@@ -1495,7 +1495,7 @@ int sub_8131150()
     }
     if ( *(v0 + 31) == 4 )
         e_copyBgTileBlock11x3();
-    return sub_813188C(1);
+    return battleObject_setFlag40AndDispatchUpdate(1);
 }
 
 
@@ -2045,7 +2045,7 @@ int __fastcall sub_8131864(int a1, int a2, int a3, int a4)
 
 
 // 0x813188c
-int __fastcall sub_813188C(int a1)
+int __fastcall battleObject_setFlag40AndDispatchUpdate(int a1)
 {
     int v1; // r5
     char v2; // r0
@@ -2304,7 +2304,7 @@ int startLinkSceneSetup()
 
 
 // 0x8131f80
-int sub_8131F80()
+int eStruct200BC30_dispatchByFirstByte()
 {
     int v0; // r0
 
@@ -7993,7 +7993,7 @@ signed int sub_813658C()
 
     v1 = battle_checkItemFlagFor_813B9B4(*(v0 + 40), *(v0 + 44)) - 1;
     v2 = toolkit_getUnk2004190EntryPtr_813B9FC(v1);
-    sub_813BA64();
+    textScript_resetBuffers();
     v3 = *v2;
     v4 = v2[3];
     *(v0 + 40) = v4;
@@ -9828,7 +9828,7 @@ int __fastcall battle_getPlayerCurState_8137884(int a1)
 
 
 // 0x8137890
-int __fastcall sub_8137890(int a1)
+int __fastcall get_sChipEntryAt(int a1)
 {
     int v1; // r10
 

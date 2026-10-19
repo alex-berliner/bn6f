@@ -4843,7 +4843,7 @@ int sub_81278D8()
 
 
 // 0x81278e8
-int sub_81278E8()
+int battleObject_queuePairedSprites()
 {
     int v0; // r5
 
@@ -8164,7 +8164,7 @@ int sub_812A1D4()
     else if ( v1 == 2 )
     {
         rfu_setStateEnded();
-        result = sub_812B590();
+        result = t3_runScript2fSetState();
     }
     else
     {
@@ -9889,7 +9889,7 @@ int sub_812B574()
 
 
 // 0x812b590
-signed int sub_812B590()
+signed int t3_runScript2fSetState()
 {
     _BYTE *v0; // r5
     signed int result; // r0

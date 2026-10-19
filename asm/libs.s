@@ -21964,9 +21964,9 @@ chatbox_PrintBuffer_WriteNextGlyph_814E234:
 
 // symdb: Battle script opcode handler that writes a byte from the object's update script to a raw PSG/sound hardware register.
 // symdb: (r0 = unused on entry, r1 = battle object) -> writes script value to sound register; flags n/a
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E248.yaml
-	thumb_func_start sub_814E248
-sub_814E248:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_writeSoundRegisterFromScript.yaml
+	thumb_func_start battleObject_writeSoundRegisterFromScript
+battleObject_writeSoundRegisterFromScript:
 	mov r12, lr
 	ldr r2, [r1,#0x40]
 	ldrb r3, [r2]
@@ -21979,7 +21979,7 @@ sub_814E248:
 	.balign 4, 0
 off_814E25C:
 	.word Channel1Sweepregister_NR10_
-	thumb_func_end sub_814E248
+	thumb_func_end battleObject_writeSoundRegisterFromScript
 
 // symdb: MPlayMain: the m4a music player sequencer, run once per frame for the player chain.
 // symdb: (r0 = MusicPlayerInfo) -> locks itself, runs the next chained player, advances its song (tempo

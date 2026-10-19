@@ -2447,7 +2447,7 @@ int countSetEventFlags()
     int v3; // r0
     char v4; // zf
 
-    v0 = sub_8143F60();
+    v0 = get_eStruct2001010Field10();
     v1 = 0;
     v2 = 0;
     do
@@ -2459,7 +2459,7 @@ int countSetEventFlags()
         ++v1;
     }
     while ( v1 < v0 );
-    sub_8143F60();
+    get_eStruct2001010Field10();
     return v2;
 }
 
@@ -2624,7 +2624,7 @@ int __fastcall sub_8143F58(int result)
 
 
 // 0x8143f60
-int sub_8143F60()
+int get_eStruct2001010Field10()
 {
     return dword_2001020;
 }

@@ -452,7 +452,7 @@ int __fastcall sub_813BA48(int a1)
 
 
 // 0x813ba64
-void sub_813BA64()
+void textScript_resetBuffers()
 {
     int v0; // r10
 

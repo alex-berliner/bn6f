@@ -1536,7 +1536,7 @@ sub_803970C:
 	strb r0, [r5,#1]
 loc_803972A:
 	bl sprite_drawTwoBcdNumbers3Digit
-	bl sub_803C2F0
+	bl renderInfo_advanceField14By10
 	pop {r4-r7,pc}
 	thumb_func_end sub_803970C
 
@@ -1614,7 +1614,7 @@ locret_80397BA:
 submenu_drawNumbersAndCursor:
 	push {r4-r7,lr}
 	bl sprite_drawTwoBcdNumbers3Digit
-	bl sub_803C2F0
+	bl renderInfo_advanceField14By10
 	mov r0, #0x38
 	ldrb r1, [r5,#4]
 	mov r2, #0x10
@@ -7000,9 +7000,9 @@ sub_803C2EC:
 
 // symdb: Adds 10 to a halfword counter/offset at +0x14 in the toolkit's render info struct, then returns.
 // symdb: (no args read) -> r0 = new value of field +0x14; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C2F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/renderInfo_advanceField14By10.yaml
 	thumb_local_start
-sub_803C2F0:
+renderInfo_advanceField14By10:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
@@ -7010,7 +7010,7 @@ sub_803C2F0:
 	add r0, #0xa
 	strh r0, [r3,#0x14]
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C2F0
+	thumb_func_end renderInfo_advanceField14By10
 
 	thumb_local_start
 sub_803C2FE:
@@ -9357,7 +9357,7 @@ locret_803D16E:
 sub_803D170:
 	push {r4,lr}
 	mov r4, r2
-	bl sub_803D180
+	bl battleObject_findActiveQuadSlot
 	bl CheckKeyItem
 	pop {r4,pc}
 	.byte 0, 0
@@ -9366,9 +9366,9 @@ sub_803D170:
 // symdb: Scans four consecutive battle-object descriptor slots (starting 0x90 index-units before r0) and returns the relative index of the first one whose byte at +3 is nonzero, or 0 if all four are clear.
 // symdb: (r0 = base battle-object descriptor index) -> r0 = base + offset (0..3) of first slot with
 // symdb: byte[+3] != 0, or 0 if none; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D180.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_findActiveQuadSlot.yaml
 	thumb_local_start
-sub_803D180:
+battleObject_findActiveQuadSlot:
 	push {r4-r7,lr}
 	sub r0, #0x90
 	mov r6, #0
@@ -9391,7 +9391,7 @@ loc_803D1A2:
 	add r0, #0x90
 locret_803D1A6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803D180
+	thumb_func_end battleObject_findActiveQuadSlot
 
 /// triggers cascade towards start screen initialization and rendering
 	thumb_func_start logoScreen_init_803D1A8
@@ -11572,9 +11572,9 @@ off_803E84C:
 // symdb: Raises the link-state timeout counter (eLinkState+0x54) to at least max(obj+0xE, obj+0xF)+8 and switches the link state byte to 0xC, unless both bytes are <=5.
 // symdb: (r5 = struct with progress bytes at +0xE/+0xF) -> r0 = new counter value; writes eLinkState+0x54
 // symdb: (word) and eLinkState+0x00 (byte = 0xC)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E850.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eLinkState_setWaitTimeout.yaml
 	thumb_local_start
-sub_803E850:
+eLinkState_setWaitTimeout:
 	push {r0-r2,r7,lr}
 	ldrb r1, [r5,#0xe]
 	cmp r1, #5
@@ -11605,7 +11605,7 @@ locret_803E87A:
 	.balign 4, 0
 off_803E87C:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803E850
+	thumb_func_end eLinkState_setWaitTimeout
 
 // symdb: Initializes eLinkState: writes command/state byte 8 to offset 0 and value 0x10 to the halfword at offset 0xC
 // symdb: (r0 = eLinkState struct pointer) -> r0 = [r0]+0 = 8, [r0]+0xC halfword = 0x10; flags from stores
@@ -12157,7 +12157,7 @@ loc_803EB3A:
 	mov r0, r4
 	b locret_803EB5E
 loc_803EB46:
-	bl sub_803EBFC
+	bl eStruct200BC30_runStep
 	push {r0}
 	bl checkAnyCounterReached360
 	pop {r0}
@@ -12198,7 +12198,7 @@ loc_803EB86:
 	mov r0, r4
 	b locret_803EBAA
 loc_803EB92:
-	bl sub_803EBFC
+	bl eStruct200BC30_runStep
 	push {r0}
 	bl checkAnyCounterReached360
 	pop {r0}
@@ -12295,9 +12295,9 @@ off_803EBF8:
 // symdb: Dispatches the current step of the eStruct200BC30 sequence through its handler table and returns the handler's completion result; callers treat nonzero as 'step finished' and advance the state.
 // symdb: (r0 = passthrough/unused by dispatcher) -> r0 = result of the selected step handler (nonzero
 // symdb: when the step is done); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EBFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eStruct200BC30_runStep.yaml
 	thumb_local_start
-sub_803EBFC:
+eStruct200BC30_runStep:
 	push {r4-r7,lr}
 	ldr r5, off_803EC18 // =eStruct200BC30
 	ldr r0, off_803EC0C // =off_803EC10
@@ -12314,7 +12314,7 @@ off_803EC10:
 	.word sub_803EC54+1
 off_803EC18:
 	.word eStruct200BC30
-	thumb_func_end sub_803EBFC
+	thumb_func_end eStruct200BC30_runStep
 
 	thumb_local_start
 sub_803EC1C:
@@ -12719,7 +12719,7 @@ loc_803EF00:
 	cmp r0, #0xfc
 	bne loc_803EF12
 	ldr r5, [r6,#0x3c] // (eCamera.unk_8C - 0x20099d0)
-	bl sub_803E850
+	bl eLinkState_setWaitTimeout
 loc_803EF12:
 	bl sub_803EF7C
 	mov r4, r0

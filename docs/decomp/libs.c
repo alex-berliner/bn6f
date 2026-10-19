@@ -10238,7 +10238,7 @@ int __fastcall chatbox_PrintBuffer_WriteNextGlyph_814E234(int a1, int a2)
 
 
 // 0x814e248
-void __fastcall sub_814E248(int a1, int a2)
+void __fastcall battleObject_writeSoundRegisterFromScript(int a1, int a2)
 {
     int v2; // r3
 

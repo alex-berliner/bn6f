@@ -46129,7 +46129,7 @@ off_81C0418::
 	.word ply_fine+1
 	.word ply_fine+1
 	.word ply_fine+1
-	.word sub_814E248+1
+	.word battleObject_writeSoundRegisterFromScript+1
 	.word ply_fine+1
 	.word sub_814E758+1
 	.word SampleFreqSet_814EDC0+1

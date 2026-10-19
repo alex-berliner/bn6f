@@ -1577,7 +1577,7 @@ int sub_809B800()
 
 
 // 0x809b868
-int sub_809B868()
+int object_setEventFlagsLoadRecord()
 {
     int v0; // r5
 
