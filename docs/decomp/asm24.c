@@ -62,7 +62,7 @@ int sub_808C378()
 
 
 // 0x808c644
-int sub_808C644()
+int ow_teleportPlayerToMapEntrySpot()
 {
     int v0; // r10
     int v1; // r4

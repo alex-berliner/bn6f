@@ -467,7 +467,7 @@ int weatherComp_init_808FDC0()
 
 
 // 0x808fe34
-int sub_808FE34()
+int ow_initBus()
 {
     char v0; // zf
 

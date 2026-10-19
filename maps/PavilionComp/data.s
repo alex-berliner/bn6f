@@ -259,7 +259,7 @@ mapscript_806B067:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806B06B:
-	ms_call_native_function ptr1=sub_808FE34+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_initBus+1 word5=0x00000000
 
 byte_806B074:
 	ms_jump_if_progress_in_range byte1=0x60 byte2=0x6F destination3=mapscript_806B080

@@ -807,9 +807,9 @@ loc_808FE10:
 
 // symdb: Initializes the bus map object and its 0x60-byte work buffer when entering the area, preserving the buffer once EVENT_BFB is set.
 // symdb: () -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FE34.yaml
-	thumb_func_start sub_808FE34
-sub_808FE34:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_initBus.yaml
+	thumb_func_start ow_initBus
+ow_initBus:
 	push {r5,lr}
 	ldr r5, off_808FEA0 // =off_808FDB8 
 	ldr r5, [r5]
@@ -829,7 +829,7 @@ loc_808FE4E:
 	mov r0, #0
 	pop {r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808FE34
+	thumb_func_end ow_initBus
 
 	thumb_local_start
 sub_808FE64:

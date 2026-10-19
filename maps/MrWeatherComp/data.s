@@ -104,7 +104,7 @@ mapscript_806A34C:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 off_806A350:
-	ms_call_native_function ptr1=sub_808FE34+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_initBus+1 word5=0x00000000
 
 byte_806A359:
 	ms_end
@@ -179,7 +179,7 @@ mapscript_806A43B:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806A43F:
-	ms_call_native_function ptr1=sub_808FE34+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_initBus+1 word5=0x00000000
 
 byte_806A448:
 	ms_end
@@ -233,7 +233,7 @@ mapscript_806A4D7:
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_BFB
 
 mapscript_806A4DB:
-	ms_call_native_function ptr1=sub_808FE34+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_initBus+1 word5=0x00000000
 
 byte_806A4E4:
 	ms_jump_if_progress_in_range byte1=0x40 byte2=0x4F destination3=mapscript_806A4F0

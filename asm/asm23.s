@@ -450,7 +450,7 @@ sub_8089160:
 	mov r0, #0
 	bl doPETEffect_8033fc0
 	mov r0, #0
-	bl sub_8089244
+	bl submenu_loadSelectedEntryGfx
 	mov r0, #4
 	strb r0, [r5]
 	mov r0, #1
@@ -555,9 +555,9 @@ sub_8089234:
 // symdb: Menu cursor-move handler: copies the selected entry's 0x80-byte record into a work buffer, decompresses its display graphics into VRAM, and plays the cursor-move sound effect.
 // symdb: (r0 = selected entry index into table byte_87DE44C, stride 0x80) -> r0 destroyed; loads 0x20
 // symdb: words to byte_30016F0, LZ77 asset to VRAM 0x6014800, plays SOUND_MENU_CUR_MOVE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089244.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_loadSelectedEntryGfx.yaml
 	thumb_local_start
-sub_8089244:
+submenu_loadSelectedEntryGfx:
 	push {r4-r7,lr}
 	ldr r1, off_8089278 // =byte_87DE44C
 	lsl r0, r0, #5
@@ -583,7 +583,7 @@ off_8089278:
 	.word byte_87DE44C
 off_808927C:
 	.word byte_30016F0
-	thumb_func_end sub_8089244
+	thumb_func_end submenu_loadSelectedEntryGfx
 
 	thumb_local_start
 sub_8089280:

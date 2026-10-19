@@ -98,7 +98,7 @@ void sub_812F0F8()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			v7 = v6;
 			if ( v6 != -1 )
@@ -173,7 +173,7 @@ void __noreturn sub_812F190()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			v7 = v6;
 			if ( v6 != -1 )
@@ -295,7 +295,7 @@ LABEL_21:
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			if ( v6 != -1 )
 			{
@@ -377,7 +377,7 @@ void sub_812F390()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			v7 = v6;
 			if ( v6 != -1 )
@@ -478,7 +478,7 @@ void sub_812F494()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			if ( v6 != -1 )
 			{
@@ -546,7 +546,7 @@ void sub_812F530()
 		if ( !(v5 & 8) )
 		{
 			v7 = sub_803E8F8();
-			v8 = sub_803EF74();
+			v8 = get_eLinkStateUnk38();
 			v9 = sub_81323B0(v8);
 			v10 = v9;
 			if ( v9 != -1 )
@@ -700,7 +700,7 @@ LABEL_14:
 		if ( !(v14 & 8) )
 		{
 			v16 = sub_803E8F8();
-			v17 = sub_803EF74();
+			v17 = get_eLinkStateUnk38();
 			v18 = sub_81323B0(v17);
 			v19 = v18;
 			if ( v18 != -1 )
@@ -805,7 +805,7 @@ void sub_812F7C8()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			if ( v6 != -1 )
 			{
@@ -864,7 +864,7 @@ void sub_812F858()
 		{
 			sub_81306F0(v1);
 			v3 = sub_803E8F8();
-			v4 = sub_803EF74();
+			v4 = get_eLinkStateUnk38();
 			v5 = sub_81323B0(v4);
 			v6 = v5;
 			if ( v5 != -1 )
@@ -939,7 +939,7 @@ void sub_812F920()
         if ( !(v2 & 8) )
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -982,7 +982,7 @@ void sub_812F920()
                                         sub_81301DC();
                                         sub_8130208();
                                         sub_8130250();
-                                        sub_81304BC();
+                                        t4_refreshChipPackBuffer();
                                         sub_81304EC();
                                         sub_813017C();
                                     }
@@ -1036,7 +1036,7 @@ void __fastcall __noreturn sub_812FA0C(int a1)
         if ( !(v3 & 8) )
         {
             v5 = sub_803E8F8();
-            v6 = sub_803EF74();
+            v6 = get_eLinkStateUnk38();
             v7 = sub_81323B0(v6);
             v8 = v7;
             if ( v7 != -1 )
@@ -1137,7 +1137,7 @@ void sub_812FAE4()
             v5 = *(v0 + 40) - 1;
             if ( *(v0 + 40) == 1 )
             {
-                if ( sub_8130780(0) || sub_8120DAC(v9) )
+                if ( sub_8130780(0) || petNaviCheckElementChipLimits(v9) )
                     v10 = 8;
                 else
                     v10 = 32;
@@ -1150,7 +1150,7 @@ void sub_812FAE4()
                 *(v0 + 40) = v5;
                 if ( v5 == 50 )
                 {
-                    sub_811A968(6);
+                    sprite_makeUnscalableByIndex(6);
                     *(v0 + 46) = 0;
                 }
                 else if ( v5 < 50 )
@@ -1172,7 +1172,7 @@ void sub_812FAE4()
             }
         }
         v11 = sub_803E8F8();
-        v12 = sub_803EF74();
+        v12 = get_eLinkStateUnk38();
         v13 = sub_81323B0(v12);
         v14 = v13;
         if ( v13 != -1 )
@@ -1455,7 +1455,7 @@ void __fastcall sub_812FE10(int a1)
         if ( !(v3 & 8) )
         {
             v5 = sub_803E8F8();
-            v6 = sub_803EF74();
+            v6 = get_eLinkStateUnk38();
             v7 = sub_81323B0(v6);
             v8 = v7;
             if ( v7 != -1 )
@@ -1550,7 +1550,7 @@ void sub_812FEF0()
         if ( !(v2 & 8) )
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             if ( v6 != -1 )
             {

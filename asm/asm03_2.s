@@ -1642,7 +1642,7 @@ off_8046D1C:
 	.word sub_8046E84+1
 	.word chatbox_confirmShopPurchase_8046ED2+1
 	.word chatbox_stepContextScript_8047028+1
-	.word sub_8047050+1
+	.word shop_stateStepWaitText+1
 	.word sub_8047066+1
 	.word sub_804709C+1
 off_8046D48:
@@ -2056,9 +2056,9 @@ loc_804704C:
 // symdb: Per-frame step for a shop-scene state: runs the buy-menu frame update and, once the chatbox finishes its text (flag 8), stores 12 into the state byte to advance to the next state.
 // symdb: (r5 = state struct with state byte at offset 0) -> r0 = 0; flags from chatbox flag test used
 // symdb: internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047050.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_stateStepWaitText.yaml
 	thumb_local_start
-sub_8047050:
+shop_stateStepWaitText:
 	push {lr}
 	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
@@ -2069,7 +2069,7 @@ sub_8047050:
 loc_8047062:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8047050
+	thumb_func_end shop_stateStepWaitText
 
 	thumb_local_start
 sub_8047066:
@@ -7466,7 +7466,7 @@ sub_804A3FC:
 	beq loc_804A436
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_804AAA4
+	bl pet_menuCancel
 	bne loc_804A44C
 	bl sub_804AAD0
 	bne loc_804A44C
@@ -8320,9 +8320,9 @@ dword_804AAA0:
 // symdb: Handles the B (cancel) button in a menu, backing out to the previous screen with a sound and fade.
 // symdb: (r0 = scratch, r5 = menu state struct) -> r0 = clobbered; may set state byte 8 and trigger
 // symdb: screen fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AAA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_menuCancel.yaml
 	thumb_local_start
-sub_804AAA4:
+pet_menuCancel:
 	push {lr}
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
@@ -8343,7 +8343,7 @@ loc_804AABA:
 locret_804AACC:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_804AAA4
+	thumb_func_end pet_menuCancel
 
 	thumb_local_start
 sub_804AAD0:
@@ -9455,7 +9455,7 @@ loc_804BD26:
 	ldr r0, [r5,#0x4c] // (dword_200ACCC - 0x200ac80)
 	mov r1, r5
 	add r1, #0x34 
-	bl sub_804BE1C
+	bl chipTraderGatherUnownedChips
 	tst r0, r0
 	beq loc_804BD18
 loc_804BD34:
@@ -9592,9 +9592,9 @@ loc_804BE0C:
 // symdb: (r0 = *entries (6-byte records, u16 chipId at +0, stops at id==0), r1 = *out struct, r3 =
 // symdb: starting entry index (quirk), r5 = *caller struct) -> r0 = word count of built list, also stored
 // symdb: to [r5+0x48]; out struct bytes indexed by element incremented; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BE1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderGatherUnownedChips.yaml
 	thumb_local_start
-sub_804BE1C:
+chipTraderGatherUnownedChips:
 	push {r5,lr}
 	mov r2, r8
 	mov r7, r9
@@ -9650,7 +9650,7 @@ loc_804BE72:
 	.balign 4, 0
 dword_804BE84:
 	.word 0x1E20
-	thumb_func_end sub_804BE1C
+	thumb_func_end chipTraderGatherUnownedChips
 
 	thumb_local_start
 // r1 = rarity histogram

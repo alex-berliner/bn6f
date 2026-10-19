@@ -900,7 +900,7 @@ loc_800BEA2:
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 loc_800BEC8:
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	add r0, #4
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -4140,7 +4140,7 @@ sub_800D4D0:
 	ldr r0, [sp,#0xc]
 	ldr r1, [sp]
 	ldr r2, [sp,#4]
-	bl sub_800D53C
+	bl battle_findAllianceEdgeColumn
 	tst r0, r0
 	beq loc_800D524
 	ldr r2, [sp]
@@ -4181,9 +4181,9 @@ byte_800D52C:
 // symdb: (r0 = row, r1 = alliance id, r2 = direction/flip flag) -> r0 = column of first panel with
 // symdb: alliance != r1 along that row (0 if the scan leaves the grid or the row is invalid); flags
 // symdb: clobbered.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D53C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findAllianceEdgeColumn.yaml
 	thumb_local_start
-sub_800D53C:
+battle_findAllianceEdgeColumn:
 	push {lr}
 	sub sp, sp, #0x14
 	str r0, [sp,#4]
@@ -4224,7 +4224,7 @@ loc_800D586:
 	ldr r0, [sp]
 	add sp, sp, #0x14
 	pop {pc}
-	thumb_func_end sub_800D53C
+	thumb_func_end battle_findAllianceEdgeColumn
 
 // symdb: Walks the panels one by one in the direction a battle object is facing, stopping at the first panel that holds something relevant to the object's alliance, or at the first panel past the edge of the field.
 // symdb: Next sub_800D58C(void); takes the battle object pointer in r5 (inputs per contract also list r4,
@@ -4965,7 +4965,7 @@ loc_800E2F8:
 // symdb: (r0 = HP delta, r1 = flag meaning "skip the 0xBD special"; r5 = battle object pointer) -> r0 = 0
 // symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
 // symdb: type-4 effect object, plays sound 0x8A, calls several
-// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
+// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/battle_clearImpactSlot with attacker panel coords + alliance
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHPAndHandleSpecial_800E2FC.yaml
 	thumb_func_start battleObject_applyHPAndHandleSpecial_800E2FC
 battleObject_applyHPAndHandleSpecial_800E2FC:
@@ -5010,7 +5010,7 @@ loc_800E330:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 	mov r0, #1
 locret_800E35E:
 	pop {r4,r6,r7,pc}
@@ -5057,7 +5057,7 @@ loc_800E38E:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 	mov r0, #1
 locret_800E3BC:
 	pop {r4,r6,r7,pc}
@@ -5996,9 +5996,9 @@ sub_800E9FA:
 
 // symdb: Resets a battle object's collision state: clears all collision ObjectFlags2 bits and zeroes its collision-hit record area.
 // symdb: (r5 = battle object) -> void; r0-r3, lr clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA0E.yaml
-	thumb_func_start sub_800EA0E
-sub_800EA0E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearCollisionData.yaml
+	thumb_func_start battle_clearCollisionData
+battle_clearCollisionData:
 	push {lr}
 	ldr r0, dword_800ECD8 // =0x301fe 
 	bl object_clearFlag2
@@ -6007,7 +6007,7 @@ sub_800EA0E:
 	mov r1, #0xe
 	bl ZeroFillByHalfword
 	pop {pc}
-	thumb_func_end sub_800EA0E
+	thumb_func_end battle_clearCollisionData
 
 // symdb: Cancels an enemy's pending collision/hit entries and clears a set of ObjectFlags2 bits for the active battle object.
 // symdb: (r0 = none on entry path; uses caller's r5 = battle object) -> r0 = 0 clobbered; no meaningful

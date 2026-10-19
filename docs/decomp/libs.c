@@ -747,7 +747,7 @@ int sub_8144D64()
     byte_200FE01 = 0;
     eStruct200FE00 = 0;
     byte_200FE06 = -1;
-    sub_81464B4();
+    rfu_reqEndConnection();
     return v0;
 }
 
@@ -775,7 +775,7 @@ int __fastcall sub_8144DB0(unsigned __int8 a1)
 
 
 // 0x8144df0
-signed int __fastcall sub_8144DF0(int a1, int a2)
+signed int __fastcall rfu_initREQ(int a1, int a2)
 {
     int v2; // r5
     int v3; // r6
@@ -797,7 +797,7 @@ signed int __fastcall sub_8144DF0(int a1, int a2)
 
 
 // 0x8144e44
-int sub_8144E44()
+int rfu_clearConnectionInfo()
 {
     __int16 v1; // [sp+0h] [bp-Ch]
     int v2; // [sp+8h] [bp-4h]
@@ -886,7 +886,7 @@ signed int __fastcall sub_8144EF8(unsigned __int8 a1, __int16 a2, __int16 a3, un
     if ( byte_200FE04 && (byte_200FE04 != 8 || a1 != 1) )
     {
         word_200FE14 = 1;
-        sub_81461B0(243, 1);
+        rfu_fireConnCallbackAndClearState(243, 1);
         result = 1;
     }
     else if ( rfu_getMasterSlave() << 24 )
@@ -908,7 +908,7 @@ signed int __fastcall sub_8144EF8(unsigned __int8 a1, __int16 a2, __int16 a3, un
         if ( v9 == 16 )
         {
             word_200FE14 = 4;
-            sub_81461B0(243, 1);
+            rfu_fireConnCallbackAndClearState(243, 1);
             result = 4;
         }
         else
@@ -943,7 +943,7 @@ signed int __fastcall sub_8144EF8(unsigned __int8 a1, __int16 a2, __int16 a3, un
     else
     {
         word_200FE14 = 2;
-        sub_81461B0(243, 1);
+        rfu_fireConnCallbackAndClearState(243, 1);
         result = 2;
     }
     return result;
@@ -965,7 +965,7 @@ signed int __fastcall sub_8144FD0(unsigned __int16 a1, __int16 a2)
     if ( byte_200FE04 && ((byte_200FE04 - 9) & 0xFFu) > 2 )
     {
         word_200FE14 = 1;
-        sub_81461B0(243, 1);
+        rfu_fireConnCallbackAndClearState(243, 1);
         result = 1;
     }
     else if ( rfu_getMasterSlave() << 24 )
@@ -1000,14 +1000,14 @@ signed int __fastcall sub_8144FD0(unsigned __int16 a1, __int16 a2)
         else
         {
             word_200FE14 = 3;
-            sub_81461B0(243, 1);
+            rfu_fireConnCallbackAndClearState(243, 1);
             result = 3;
         }
     }
     else
     {
         word_200FE14 = 2;
-        sub_81461B0(243, 1);
+        rfu_fireConnCallbackAndClearState(243, 1);
         result = 2;
     }
     return result;
@@ -1034,9 +1034,9 @@ int __fastcall sub_81450B4(unsigned __int8 a1)
         while ( v1 <= 3 );
         v2 = (*(dword_2010CC0 + 3) & a1);
         if ( *(dword_2010CC0 + 3) & a1 )
-            sub_81461D8(*(dword_2010CC0 + 3) & a1);
+            rfu_forceDisconnect(*(dword_2010CC0 + 3) & a1);
         word_200FE14 = v2;
-        sub_81461B0(51, v2);
+        rfu_fireConnCallbackAndClearState(51, v2);
     }
     return v4;
 }
@@ -1094,9 +1094,9 @@ int __fastcall sub_8145120(int a1)
             case 0x10:
                 byte_200FE04 = byte_200FE11;
                 byte_200FE05 = byte_200FE12;
-                sub_81461D8(*(dword_2010CC0 + 3));
+                rfu_forceDisconnect(*(dword_2010CC0 + 3));
                 word_200FE14 = *(dword_2010CC0 + 3);
-                sub_81461B0(51, 1);
+                rfu_fireConnCallbackAndClearState(51, 1);
                 return v3;
             case 0x11:
             case 0x12:
@@ -1109,14 +1109,14 @@ int __fastcall sub_8145120(int a1)
                 break;
         }
         if ( !byte_200FE04 )
-            sub_81461B0(v1, 0);
+            rfu_fireConnCallbackAndClearState(v1, 0);
     }
     return v3;
 }
 
 
 // 0x8145210
-signed int __fastcall sub_8145210(unsigned __int16 a1)
+signed int __fastcall rfu_pollLinkWatchdog(unsigned __int16 a1)
 {
     signed int v1; // r8
     unsigned int v2; // r2
@@ -1157,19 +1157,19 @@ signed int __fastcall sub_8145210(unsigned __int16 a1)
             else
             {
                 byte_200FE0A = 0;
-                sub_81461D8(v10);
+                rfu_forceDisconnect(v10);
                 v1 = 1;
                 v3 = 51;
             }
-            sub_81461B0(v3, 1);
+            rfu_fireConnCallbackAndClearState(v3, 1);
         }
         else
         {
-            sub_81461D8(v10);
+            rfu_forceDisconnect(v10);
             v1 = 1;
-            sub_81461B0(48, 2);
+            rfu_fireConnCallbackAndClearState(48, 2);
         }
-        sub_81464B4();
+        rfu_reqEndConnection();
     }
     if ( *dword_2010CC0 == 1 )
     {
@@ -1185,7 +1185,7 @@ signed int __fastcall sub_8145210(unsigned __int16 a1)
             while ( v4 <= 3 );
             byte_200FE30 &= ~BYTE2(v10);
             word_200FE14 = BYTE2(v10);
-            sub_81461B0(50, 1);
+            rfu_fireConnCallbackAndClearState(50, 1);
         }
         if ( !byte_200FE30 )
             goto LABEL_38;
@@ -1212,10 +1212,10 @@ signed int __fastcall sub_8145210(unsigned __int16 a1)
         while ( v6 <= 3 );
         if ( v5 )
         {
-            sub_81461D8(v5);
+            rfu_forceDisconnect(v5);
             v1 = 1;
             word_200FE14 = v5;
-            sub_81461B0(51, 1);
+            rfu_fireConnCallbackAndClearState(51, 1);
         }
         if ( !byte_200FE30 )
 LABEL_38:
@@ -1232,8 +1232,8 @@ int rfu_handleVBlank_81453D4()
 
     if ( rfu_syncVBlank() << 16 )
     {
-        sub_81461B0(241, 0);
-        sub_81464B4();
+        rfu_fireConnCallbackAndClearState(241, 0);
+        rfu_reqEndConnection();
     }
     return v1;
 }
@@ -1330,7 +1330,7 @@ int __fastcall sub_81453F0(int a1)
                         byte_200FE04 = 0;
                         v3 = v2;
 LABEL_14:
-                        sub_81461B0(v3, 0);
+                        rfu_fireConnCallbackAndClearState(v3, 0);
                         break;
                     default:
                         break;
@@ -1340,7 +1340,7 @@ LABEL_14:
             }
         }
         while ( ((byte_200FE04 - 18) & 0xFFu) <= 1 );
-        if ( *dword_2010CC0 != 1 || !(sub_8145210(0) << 24) )
+        if ( *dword_2010CC0 != 1 || !(rfu_pollLinkWatchdog(0) << 24) )
         {
             sub_8145DD8();
             sub_8145FFC();
@@ -1488,11 +1488,11 @@ int __fastcall rfu_handleConnectionEvent(unsigned __int16 a1, unsigned __int16 a
             case 0x1Du:
                 if ( !a2 )
                 {
-                    v7 = sub_8146138();
+                    v7 = rfu_buildConnectedIdBitmap();
                     v18 = v7;
                     word_200FE14 = v7;
                     if ( v7 )
-                        sub_81461B0(32, 1);
+                        rfu_fireConnCallbackAndClearState(32, 1);
                     if ( byte_200FE0B && word_200FE1A != 1 && *(dword_2010CC0 + 8) == 4 )
                     {
                         rfu_REQ_endSearchParent();
@@ -1571,7 +1571,7 @@ LABEL_40:
                         word_200FE1E = 34;
                         word_200FE14 = byte_200FE10;
                     }
-                    sub_81461B0(word_200FE1E, 1);
+                    rfu_fireConnCallbackAndClearState(word_200FE1E, 1);
                     word_200FE1E = 0;
                 }
                 break;
@@ -1585,13 +1585,13 @@ LABEL_40:
                         byte_200FE02 = 1;
                         v4 = 65;
 LABEL_76:
-                        sub_81461B0(v4, 0);
+                        rfu_fireConnCallbackAndClearState(v4, 0);
                     }
                     else if ( byte_200FE05 == 15 )
                     {
                         byte_200FE04 = byte_200FE05;
                         byte_200FE02 = 1;
-                        sub_81461B0(65, 0);
+                        rfu_fireConnCallbackAndClearState(65, 0);
                         byte_200FE24 |= 1 << byte_200FE10;
                         *&algn_200FE28[2 * byte_200FE10] = word_200FE26;
                         rfu_clearSlot(4, byte_200FE10);
@@ -1601,10 +1601,10 @@ LABEL_76:
                         {
                             byte_200FE05 = 0;
                             byte_200FE04 = 0;
-                            sub_81464B4();
-                            sub_81461D8(*(dword_2010CC0 + 3) | *(dword_2010CC0 + 2));
+                            rfu_reqEndConnection();
+                            rfu_forceDisconnect(*(dword_2010CC0 + 3) | *(dword_2010CC0 + 2));
                             word_200FE14 = v18;
-                            sub_81461B0(37, 1);
+                            rfu_fireConnCallbackAndClearState(37, 1);
                         }
                     }
                 }
@@ -1643,7 +1643,7 @@ LABEL_76:
                     {
                         byte_200FE05 = 0;
                         byte_200FE04 = 0;
-                        sub_81461D8(*(dword_2010CC0 + 3));
+                        rfu_forceDisconnect(*(dword_2010CC0 + 3));
                         word_200FE1E = 51;
                     }
                     else
@@ -1655,7 +1655,7 @@ LABEL_76:
                     algn_200FE34[byte_200FE10] = 0;
                     byte_200FE30 = 0;
                     byte_200FE0A = 0;
-                    sub_81461B0(word_200FE1E, 1);
+                    rfu_fireConnCallbackAndClearState(word_200FE1E, 1);
                     word_200FE1E = 0;
                 }
                 break;
@@ -1664,7 +1664,7 @@ LABEL_76:
                 {
                     byte_200FE05 = 0;
                     byte_200FE04 = 0;
-                    sub_81461B0(66, 0);
+                    rfu_fireConnCallbackAndClearState(66, 0);
                 }
                 break;
             default:
@@ -1682,15 +1682,15 @@ LABEL_76:
             v13 = rfu_getSTWIRecvBuffer();
             *(v13 + 4) = *(dword_2010CC0 + 2);
             *(v13 + 5) = 1;
-            sub_8145210(0x29u);
+            rfu_pollLinkWatchdog(0x29u);
             v3 = 0;
         }
     }
     if ( v2 == 38 )
     {
-        sub_81460B0();
+        rfu_handleDisconnectPacket();
         if ( *dword_2010CC0 != 255 )
-            sub_81461B0(80, 0);
+            rfu_fireConnCallbackAndClearState(80, 0);
         goto LABEL_129;
     }
     if ( v2 <= 38 )
@@ -1704,7 +1704,7 @@ LABEL_76:
         if ( v3 )
             goto LABEL_130;
         word_200FE14 = *(rfu_getSTWIRecvBuffer() + 8);
-        sub_81461FC(word_200FE14);
+        rfu_disconnectSlots(word_200FE14);
         if ( byte_200FE30 )
         {
             byte_200FE30 &= ~word_200FE14;
@@ -1738,7 +1738,7 @@ LABEL_76:
         {
 LABEL_122:
             if ( !byte_200FE0E )
-                sub_81461B0(64, 1);
+                rfu_fireConnCallbackAndClearState(64, 1);
 LABEL_129:
             if ( !v3 )
                 goto LABEL_137;
@@ -1774,9 +1774,9 @@ LABEL_126:
         byte_200FE01 = 0;
         eStruct200FE00 = 0;
         byte_200FE06 = -1;
-        sub_81464B4();
+        rfu_reqEndConnection();
         if ( v2 == 61 )
-            sub_8144E44();
+            rfu_clearConnectionInfo();
         goto LABEL_129;
     }
 LABEL_130:
@@ -1784,7 +1784,7 @@ LABEL_130:
     {
         *dword_2010CC0 = 1;
         *(dword_2010CC0 + 2) = 15;
-        sub_81461D8(0xFu);
+        rfu_forceDisconnect(0xFu);
         rfu_waitREQComplete();
         return v19;
     }
@@ -1795,13 +1795,13 @@ LABEL_130:
         byte_200FE05 = 0;
         byte_200FE04 = 0;
     }
-    sub_81461B0(240, 2);
-    sub_81464B4();
+    rfu_fireConnCallbackAndClearState(240, 2);
+    rfu_reqEndConnection();
 LABEL_137:
     if ( v2 == 255 )
     {
-        sub_81461B0(242, 0);
-        sub_81464B4();
+        rfu_fireConnCallbackAndClearState(242, 0);
+        rfu_reqEndConnection();
     }
     return v19;
 }
@@ -1826,10 +1826,10 @@ int __fastcall sub_8145D54(unsigned __int16 a1)
     }
     else
     {
-        sub_8145210(a1);
+        rfu_pollLinkWatchdog(a1);
         if ( byte_200FE02 != 1 )
         {
-            sub_81464B4();
+            rfu_reqEndConnection();
             byte_200FE0F = 0;
             byte_200FE0E = v2;
             return v5;
@@ -1870,7 +1870,7 @@ int sub_8145DD8()
         if ( v0 )
         {
             word_200FE14 = v0;
-            sub_81461B0(16, 1);
+            rfu_fireConnCallbackAndClearState(16, 1);
         }
         v14 = 0;
         v2 = 0;
@@ -1940,7 +1940,7 @@ LABEL_14:
         if ( v14 )
         {
             word_200FE14 = v14;
-            sub_81461B0(17, 1);
+            rfu_fireConnCallbackAndClearState(17, 1);
         }
         if ( byte_200FE0D )
         {
@@ -1949,10 +1949,10 @@ LABEL_14:
                 v11 = 0;
             if ( v11 )
             {
-                sub_81461D8(byte_200FE0D);
+                rfu_forceDisconnect(byte_200FE0D);
                 word_200FE14 = byte_200FE0D;
                 byte_200FE0D = 0;
-                sub_81461B0(18, 1);
+                rfu_fireConnCallbackAndClearState(18, 1);
             }
         }
         if ( !byte_200FE24 && byte_200FE04 == 8 )
@@ -1981,7 +1981,7 @@ LABEL_14:
             {
                 byte_200FE05 = byte_200FE07;
                 byte_200FE04 = byte_200FE07;
-                sub_81461B0(20, 0);
+                rfu_fireConnCallbackAndClearState(20, 0);
             }
         }
     }
@@ -2024,9 +2024,9 @@ int sub_8145FFC()
         {
             byte_200FE05 = byte_200FE02;
             byte_200FE04 = byte_200FE02;
-            sub_81461D8(*(dword_2010CC0 + 3) | *(dword_2010CC0 + 2));
+            rfu_forceDisconnect(*(dword_2010CC0 + 3) | *(dword_2010CC0 + 2));
             word_200FE14 = v3;
-            sub_81461B0(37, 1);
+            rfu_fireConnCallbackAndClearState(37, 1);
         }
     }
     return v5;
@@ -2034,7 +2034,7 @@ int sub_8145FFC()
 
 
 // 0x81460b0
-int sub_81460B0()
+int rfu_handleDisconnectPacket()
 {
     int v1; // [sp+8h] [bp-4h]
 
@@ -2045,7 +2045,7 @@ int sub_81460B0()
         rfu_clearSlot(4, byte_200FE10);
         byte_200FE24 &= ~(1 << byte_200FE10);
         *&algn_200FE28[2 * byte_200FE10] = 0;
-        sub_81461B0(36, 0);
+        rfu_fireConnCallbackAndClearState(36, 0);
     }
     return v1;
 }
@@ -2069,7 +2069,7 @@ int sub_814610C()
 
 
 // 0x8146138
-int sub_8146138()
+int rfu_buildConnectedIdBitmap()
 {
     int v0; // r6
     int v1; // r5
@@ -2100,7 +2100,7 @@ int sub_8146138()
 
 
 // 0x81461b0
-int __fastcall sub_81461B0(int a1, int a2)
+int __fastcall rfu_fireConnCallbackAndClearState(int a1, int a2)
 {
     int v3; // [sp+4h] [bp-4h]
 
@@ -2115,7 +2115,7 @@ int __fastcall sub_81461B0(int a1, int a2)
 
 
 // 0x81461d8
-int __fastcall sub_81461D8(unsigned __int8 a1)
+int __fastcall rfu_forceDisconnect(unsigned __int8 a1)
 {
     char v1; // r5
     int v3; // [sp+8h] [bp-4h]
@@ -2130,7 +2130,7 @@ int __fastcall sub_81461D8(unsigned __int8 a1)
 
 
 // 0x81461fc
-int __fastcall sub_81461FC(unsigned __int8 a1)
+int __fastcall rfu_disconnectSlots(unsigned __int8 a1)
 {
     int v1; // r5
     unsigned int v2; // r4
@@ -2294,7 +2294,7 @@ signed int __fastcall sub_8146438(__int16 a1)
     if ( *(dword_2010CC0 + 5) | *(dword_2010CC0 + 4) )
     {
         word_200FE14 = 6;
-        sub_81461B0(243, 1);
+        rfu_fireConnCallbackAndClearState(243, 1);
         result = 6;
     }
     else
@@ -2307,14 +2307,14 @@ signed int __fastcall sub_8146438(__int16 a1)
 
 
 // 0x81464b4
-int sub_81464B4()
+int rfu_reqEndConnection()
 {
     int v1; // [sp+0h] [bp-4h]
 
     if ( byte_200FE02 )
     {
         byte_200FE02 = 0;
-        sub_81461B0(69, 0);
+        rfu_fireConnCallbackAndClearState(69, 0);
     }
     return v1;
 }
@@ -2332,7 +2332,7 @@ int sub_81464D4()
     }
     else
     {
-        sub_81461B0(69, 0);
+        rfu_fireConnCallbackAndClearState(69, 0);
     }
     return v1;
 }
@@ -3314,7 +3314,7 @@ int __fastcall sub_8147350(int a1, int a2, int a3, int a4)
     v5 = 0;
     SWI_CpuSet(&v5, &byte_2010290, 16777248);
     sub_81465FC(&unk_2010350);
-    sub_8144DF0(sub_81473EC, sub_81475B8);
+    rfu_initREQ(sub_81473EC, sub_81475B8);
     Timer2Counter_Reload = 0;
     Timer2Control = 131;
     word_200BC58 = 1;
@@ -3670,7 +3670,7 @@ int sub_8147B24()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_8147B54(&byte_2010390, &unk_20103A0, 12);
+    rfu_initCommState(&byte_2010390, &unk_20103A0, 12);
     return v1;
 }
 
@@ -3686,7 +3686,7 @@ int sub_8147B3C()
 
 
 // 0x8147b54
-int __fastcall sub_8147B54(int a1, int a2, int a3)
+int __fastcall rfu_initCommState(int a1, int a2, int a3)
 {
     void *v3; // r7
     int v4; // r8
@@ -3935,7 +3935,7 @@ int __fastcall sub_8147F98(int a1, int a2, int a3, int a4)
     sub_81465FC(&unk_2010350);
     word_2010352 = 0;
     zeroFill_813D960();
-    sub_8144DF0(sub_814801C, sub_8148208);
+    rfu_initREQ(sub_814801C, sub_8148208);
     Timer2Counter_Reload = 0;
     Timer2Control = 131;
     word_200BC58 = 1;

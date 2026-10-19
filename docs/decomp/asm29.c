@@ -1139,7 +1139,7 @@ void __noreturn battle_beastOutTick_80A5B70()
             *(v1 + 5) = 0;
             *(v0 + 36) = 0;
         }
-        else if ( v2 == 2 && sub_80A5D48() != 1 )
+        else if ( v2 == 2 && sprite_initFromObject() != 1 )
         {
             *(v0 + 36) = 0;
             *(v1 + 5) = 0;
@@ -1304,7 +1304,7 @@ char *battle_beastOutGetMapEntry()
 
 
 // 0x80a5d48
-signed int sub_80A5D48()
+signed int sprite_initFromObject()
 {
     int v0; // r5
     int v1; // r6
@@ -4007,7 +4007,7 @@ void sub_80A8006()
 
 
 // 0x80a800a
-int __noreturn sub_80A800A()
+int __noreturn sprite_restartAnimation()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -4692,7 +4692,7 @@ void __noreturn sub_80A8848()
 
 
 // 0x80a8860
-int sub_80A8860()
+int ow_clearEventFlagAndFreeObject()
 {
     ClearEventFlagFromImmediate(5, 224);
     return FreeOverworldMapObject();
@@ -4902,7 +4902,7 @@ int sub_80A8AB4()
     int v6; // r1
     int v7; // r2
 
-    v1 = sub_81431F8(*(v0 + 4));
+    v1 = ow_cybercrowGetCrowRecord(*(v0 + 4));
     v2 = v1;
     v3 = *(v1 + 3);
     v4 = *(v1 + 4);
@@ -4979,7 +4979,7 @@ void __noreturn sub_80A8B4C()
         *(v0 + 20) = v4 + 1310720;
         ow_refreshObjectSpritePriority();
         v5 = sub_80A8C7C();
-        sub_80A8CB8(v5);
+        sprite_changeAnimation(v5);
         sub_80A8D7C();
     }
     sprite_update(v0);
@@ -5012,7 +5012,7 @@ void __noreturn sub_80A8BBC()
         }
         ow_refreshObjectSpritePriority();
         v5 = sub_80A8C7C();
-        sub_80A8CB8(v5);
+        sprite_changeAnimation(v5);
         sub_80A8D7C();
     }
     sprite_update(v0);
@@ -5079,7 +5079,7 @@ int ow_refreshObjectSpritePriority()
 
 
 // 0x80a8cb8
-int __fastcall sub_80A8CB8(int result)
+int __fastcall sprite_changeAnimation(int result)
 {
     int v1; // r5
 
@@ -7110,7 +7110,7 @@ void __noreturn sub_80AA282()
 
 
 // 0x80aa2a8
-void __noreturn sub_80AA2A8()
+void __noreturn object_waitTimerUpdate()
 {
     int v0; // r5
     int v1; // r0

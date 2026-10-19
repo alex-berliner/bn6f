@@ -2837,7 +2837,7 @@ loc_803A17A:
 	add r6, #1
 	cmp r6, #4
 	blt loc_803A118
-	bl sub_803A186
+	bl chatbox_waitStepUpdateEntities
 locret_803A184:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A104
@@ -2845,9 +2845,9 @@ locret_803A184:
 // symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to sub_803BBA4, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
 // symdb: (r5 = record whose byte at +0x0e is an index; r0-r4 scratch) -> void; sets r4 = 1 when flag 0x80
 // symdb: is clear, 0 when set, passes it as r2 to sub_803BBA4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A186.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_waitStepUpdateEntities.yaml
 	thumb_local_start
-sub_803A186:
+chatbox_waitStepUpdateEntities:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r0, #0x80
@@ -2866,7 +2866,7 @@ loc_803A194:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	pop {r4-r7,pc}
-	thumb_func_end sub_803A186
+	thumb_func_end chatbox_waitStepUpdateEntities
 
 	thumb_func_start sub_803A1B0
 sub_803A1B0:
@@ -3059,7 +3059,7 @@ sub_803A2CC:
 	mov r0, #4
 	strb r0, [r5,#2]
 loc_803A31C:
-	bl sub_803A186
+	bl chatbox_waitStepUpdateEntities
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -3120,7 +3120,7 @@ sub_803A334:
 	strb r0, [r5,#2]
 	b loc_803A398
 loc_803A394:
-	bl sub_803A186
+	bl chatbox_waitStepUpdateEntities
 loc_803A398:
 	mov r0, #0
 	pop {r4-r7,pc}
@@ -3548,14 +3548,14 @@ off_803A6A4:
 	.word sub_803A6E4+1
 	.word sub_803A79A+1
 	.word sub_803A9CC+1
-	.word sub_803A9E6+1
+	.word submenu_chipSelectFrameUpdate+1
 	.word battle_startTransitionStep+1
 	.word sub_803AC2C+1
 	.word battle_startInit+1
 	.word sub_803AC78+1
 	.word sub_803ACA2+1
 	.word sub_803ACB2+1
-	.word sub_803ACC6+1
+	.word submenu_guestLibraryFrameUpdate+1
 	.word battle_startFadeIn+1
 	.word sub_803AF1C+1
 	.word sub_803AF46+1
@@ -3986,9 +3986,9 @@ loc_803A9E0:
 // symdb: Per-frame update for the in-battle chip-select menu: poll the folder cursor and dispatch any button press to a handler, then advance the battle scene and draw the overlay frame.
 // symdb: (r0 = 0) -> r0 = clobbered; returns to caller after running the selected handler and the
 // symdb: scene/draw updates
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A9E6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_chipSelectFrameUpdate.yaml
 	thumb_local_start
-sub_803A9E6:
+submenu_chipSelectFrameUpdate:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl submenu_chipSelectCursorMove
@@ -4013,7 +4013,7 @@ dword_803AA0C:
 	.word sub_803ABF4+1
 	.word sub_803AB6C+1
 	.word sub_803AB94+1
-	thumb_func_end sub_803A9E6
+	thumb_func_end submenu_chipSelectFrameUpdate
 
 // symdb: Handles closing/exiting a submenu: confirms the close, clears a state byte, plays the exit-submenu sound, and runs sub_803A84E.
 // symdb: void handleExitSubmenu_803AA24(void); // inputs:  r2, r5, lr // outputs: r5, r10 // clobbers:
@@ -4077,7 +4077,7 @@ off_803AA7C:
 off_803AA80:
 	.word jackInPetMenuSelectState_803AAA0+1
 	.word sub_803AAD8+1
-	.word sub_803AAF6+1
+	.word submenu_toggleMode+1
 	.word sub_803AB20+1
 	.word sub_803AB46+1
 	.word sub_803AB6C+1
@@ -4136,9 +4136,9 @@ loc_803AAEA:
 // symdb: Plays the cursor-move sound, flips a mode flag in a menu state struct, and reconfigures one of two groups of menu slots depending on the new state.
 // symdb: (r5 = menu/UI state struct; r0 unused on entry) -> r0 = new state (0/1) after toggle via
 // symdb: PlaySoundEffect call; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AAF6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_toggleMode.yaml
 	thumb_local_start
-sub_803AAF6:
+submenu_toggleMode:
 	push {r4-r7,lr}
 	mov r0, #SOUND_CUR_MOVE_80
 	bl PlaySoundEffect
@@ -4158,7 +4158,7 @@ loc_803AB16:
 	bl sub_803A788
 locret_803AB1E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AAF6
+	thumb_func_end submenu_toggleMode
 
 	thumb_local_start
 sub_803AB20:
@@ -4422,9 +4422,9 @@ loc_803ACC0:
 // symdb: Per-frame update for the guest-library chip-select screen: polls the folder cursor for button input, dispatches to a button handler via jump table, and otherwise runs the screen's init and overlay-tile draw steps.
 // symdb: (r0 = 0 passed to cursor-move poll) -> r0 = handler/button result discarded; no meaningful
 // symdb: return; calls into state handlers via blx
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803ACC6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_guestLibraryFrameUpdate.yaml
 	thumb_local_start
-sub_803ACC6:
+submenu_guestLibraryFrameUpdate:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl submenu_chipSelectCursorMove
@@ -4449,7 +4449,7 @@ dword_803ACEC:
 	.word sub_803AED8+1
 	.word sub_803AE50+1
 	.word sub_803AE78+1
-	thumb_func_end sub_803ACC6
+	thumb_func_end submenu_guestLibraryFrameUpdate
 
 	thumb_func_start sub_803AD04
 sub_803AD04:
@@ -8745,9 +8745,9 @@ sub_803CEF8:
 
 // symdb: Recomputes the selected PET navi's 16-bit stat 0x42 as stat 0x3E plus a global modifier, clamped to at least 1.
 // symdb: () -> void; no return value, no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CF10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_recalcCurrentNaviHp.yaml
 	thumb_local_start
-sub_803CF10:
+pet_recalcCurrentNaviHp:
 	push {r4,r6,r7,lr}
 	bl GetCurPETNavi // () -> u8
 	mov r4, r0
@@ -8768,7 +8768,7 @@ loc_803CF30:
 	mov r2, r7
 	bl SetCurPETNaviStatsHword
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_803CF10
+	thumb_func_end pet_recalcCurrentNaviHp
 
 // symdb: Adds a per-navi-slot offset to PET navi stat 0x3E, caps it at 1000, writes it back, and propagates the new value through sub_803CF74.
 // symdb: void pet_addCurNaviStat0x3ECapped_803CF3C(u8 navi_slot /* r1 */, u32 mustBe0x70 /* r4 */); r4
@@ -12082,7 +12082,7 @@ loc_803EC68:
 	mov r7, #2
 	bl sub_803E8DC
 	mov r1, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_803F118
 	bl sub_803EFFC
 loc_803EC7C:
@@ -12507,14 +12507,14 @@ off_803EF70:
 
 // symdb: Trivial getter that returns the word at eLinkState+0x38 to link-related menu/object routines.
 // symdb: () -> r0 = eLinkState[0x38]; flags not meaningful (mov pc, lr preserves none intentionally)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EF74.yaml
-	thumb_func_start sub_803EF74
-sub_803EF74:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eLinkStateUnk38.yaml
+	thumb_func_start get_eLinkStateUnk38
+get_eLinkStateUnk38:
 	ldr r0, off_803EF8C // =eLinkState
 	ldr r0, [r0,#0x38] // (eCamera.unk_88 - 0x20099d0)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803EF74
+	thumb_func_end get_eLinkStateUnk38
 
 // symdb: Returns a single 32-bit field at offset 0x34 into the eCamera area (labeled eCamera.unk_84), apparently the camera's "end" value.
 // symdb: uint32 sub_803EF7C(void)

@@ -329,7 +329,7 @@ JumpTable8033A1C:
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033AB0+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_resetState_8033AC4+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033ADC+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_stepBattleStartOverlay+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_queueBattleIntroOam+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
@@ -427,9 +427,9 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 // symdb: Per-frame update for the battle-start overlay: queues its OAM sprite entry, draws/refreshes the overlay tilemap, and runs an associated follow-up routine.
 // symdb: (r0 = self: * S2011E30, passed via r5 as an object/sprite task) -> r0 = clobbered; no meaningful
 // symdb: return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033ADC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepBattleStartOverlay.yaml
 	thumb_local_start
-sub_8033ADC: // (self: * S2011E30 $r5) -> ()
+battle_stepBattleStartOverlay: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #1
 	bl sprite_queueOamByFrameIndex_8033B80
@@ -437,7 +437,7 @@ sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 	bl battle_drawBattleStartOverlay_8033F80
 	bl sub_8033CF0
 	pop {pc}
-	thumb_func_end sub_8033ADC
+	thumb_func_end battle_stepBattleStartOverlay
 
 // symdb: One step of the battle-intro (jack-in) animation: queues the navi frame, the battle-start overlay, an extra step handler, and the real-world navi icon OAM.
 // symdb: (self in r5: * S2011E30) -> r0 = last callee's return; no flags relied on by caller

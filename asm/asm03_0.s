@@ -8950,9 +8950,9 @@ off_802A2D4:
 	.word off_802A2D8
 off_802A2D8:
 	.word fadeScreenAndAdvanceState_802A2E8+1 // (self: * S20364C0 $r5) -> ()
-	.word sub_802A30C+1 // (self: * S20364C0 $r5) -> ()
+	.word sound_stepFadeSequence+1 // (self: * S20364C0 $r5) -> ()
 	.word sub_802A33E+1 // (self: * S20364C0 $r5) -> ()
-	.word sub_802A362+1 // (self: * S20364C0 $r5) -> ()
+	.word sound_playFadeSoundStep+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenu_dispatchState_802A2B0
 
 // symdb: If a condition (sub_802A394) is met, starts a screen fade (0x54 and 0x5C with length 0xA) and advances this object's state machine to step 4.
@@ -8983,9 +8983,9 @@ locret_802A30A:
 
 // symdb: Per-step sound ticker for the screen fade: plays the two fade-sequence sound effects for the current step, advances the step counter, and latches the next fade state once the fade ends.
 // symdb: (r5 = fade controller *S20364C0) -> r0 = clobbered; sound requests queued
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A30C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_stepFadeSequence.yaml
 	thumb_local_start
-sub_802A30C: // (self: * S20364C0 $r5) -> ()
+sound_stepFadeSequence: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	ldrb r4, [r5,#oS20364C0_FadeSeqIndex]
 	ldr r2, off_802A3E8 // =byte_802A3F4 
@@ -9010,7 +9010,7 @@ sub_802A30C: // (self: * S20364C0 $r5) -> ()
 
 locret_802A33C:
 	pop {r4,pc}
-	thumb_func_end sub_802A30C
+	thumb_func_end sound_stepFadeSequence
 
 	thumb_local_start
 sub_802A33E: // (self: * S20364C0 $r5) -> ()
@@ -9037,9 +9037,9 @@ locret_802A360:
 // symdb: Plays the next pair of sounds in a screen-fade sound sequence, advancing the sequence and clearing a state byte once the fade is over.
 // symdb: (r5 = fade state struct S20364C0) -> void; advances FadeSeqIndex by 2, zeroes field JumpOffset12
 // symdb: when no fade is active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A362.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_playFadeSoundStep.yaml
 	thumb_local_start
-sub_802A362: // (self: * S20364C0 $r5) -> ()
+sound_playFadeSoundStep: // (self: * S20364C0 $r5) -> ()
 	push {r4,lr}
 	ldrb r4, [r5,#oS20364C0_FadeSeqIndex]
 	ldr r2, off_802A3EC // =byte_802A400 
@@ -9064,7 +9064,7 @@ sub_802A362: // (self: * S20364C0 $r5) -> ()
 
 locret_802A392:
 	pop {r4,pc}
-	thumb_func_end sub_802A362
+	thumb_func_end sound_playFadeSoundStep
 
 // symdb: On the chip-select screen, checks whether the chip pending in the currently selected regular/custom slot has ChipData attribute bit 0x20 set, returning 1 if so.
 // symdb: bool sub_802A394(ChipSelectState* state /* r5 */); also reads (but per contract ignores/passes
@@ -9785,7 +9785,7 @@ off_802A988:
 	.word sub_802ABD0+1
 	.word sub_802ABF4+1
 	.word sub_802AD84+1
-	.word sub_802AE14+1
+	.word ow_chatboxWaitStep+1
 	.word sub_802AE5C+1
 	.word sub_802AE84+1
 	.word sub_802AEB8+1
@@ -10131,7 +10131,7 @@ loc_802AC2C:
 	mov r1, #6
 	mul r0, r1
 	add r0, #1
-	bl sub_802AEEA
+	bl battle_spawnEnemyDecompressSprite
 	ldrb r2, [r5,#5]
 	lsl r2, r2, #2
 	add r2, #0x30 
@@ -10381,9 +10381,9 @@ locret_802AE12:
 // symdb: State-machine step for some overworld-side object that waits on the chatbox and transitions its state/timer when a dialog is (or stops being) active.
 // symdb: (r5 = object/state struct pointer, r0 = flag mask) -> mutates [r5+0..9]; calls chatbox_8040818;
 // symdb: no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AE14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_chatboxWaitStep.yaml
 	thumb_local_start
-sub_802AE14:
+ow_chatboxWaitStep:
 	push {lr}
 	mov r0, #0x20 
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -10418,7 +10418,7 @@ loc_802AE56:
 	bl chatbox_8040818
 locret_802AE5A:
 	pop {pc}
-	thumb_func_end sub_802AE14
+	thumb_func_end ow_chatboxWaitStep
 
 	thumb_local_start
 sub_802AE5C:
@@ -10498,9 +10498,9 @@ locret_802AEE8:
 // symdb: Given an enemy index, decompresses that enemy's sprite data and spawns its battle object at panel (2,2) with alliance 0, returning the decompressed sprite pointer.
 // symdb: (r0 = enemy index) -> r0 = pointer to decompressed sprite data; enemy struct fields 0/1 used as
 // symdb: sprite_decompress args
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AEEA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEnemyDecompressSprite.yaml
 	thumb_local_start
-sub_802AEEA:
+battle_spawnEnemyDecompressSprite:
 	push {r5-r7,lr}
 	mov r6, r0
 	bl enemy_getStruct1
@@ -10516,7 +10516,7 @@ sub_802AEEA:
 	bl battle_spawnEnemyObject
 	mov r1, r7
 	pop {r5-r7,pc}
-	thumb_func_end sub_802AEEA
+	thumb_func_end battle_spawnEnemyDecompressSprite
 
 	thumb_local_start
 sub_802AF0E:
@@ -11503,9 +11503,9 @@ off_802B780:
 off_802B784:
 	.word sub_802B7A0+1
 	.word sub_802B7E0+1
-	.word sub_802B80C+1
+	.word chipAnimFolderCycle+1
 	.word sub_802B8E0+1
-	.word sub_802B920+1
+	.word chip_previewShowSelectedChip+1
 	.word sub_802B9B8+1
 	.word sub_802B9D4+1
 	thumb_func_end sub_802B76C
@@ -11575,9 +11575,9 @@ locret_802B80A:
 
 // symdb: Per-frame step of the chip-folder cycling animation: every 8 frames it renders the next row's chip name into the name-glyph buffers, updates the BG tilemap row, plays a scroll blip, and ends the animation when all rows are shown.
 // symdb: (r5 = animation state struct) -> r0 = clobbered; state struct updated, SFX may play
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B80C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipAnimFolderCycle.yaml
 	thumb_local_start
-sub_802B80C:
+chipAnimFolderCycle:
 	push {lr}
 	bl sub_802B9E4
 	ldr r0, [r5,#0x10]
@@ -11658,7 +11658,7 @@ loc_802B88A:
 	str r0, [r5,#0x10]
 locret_802B8AE:
 	pop {pc}
-	thumb_func_end sub_802B80C
+	thumb_func_end chipAnimFolderCycle
 
 	thumb_local_start
 sub_802B8B0:
@@ -11724,9 +11724,9 @@ locret_802B91E:
 // symdb: Per-frame update of a chip-preview UI task: after a 16-frame delay it draws the selected chip's art, name and sound, and after ~96 frames moves the task to its next state.
 // symdb: (r0 = task object in r5 on entry, fields: +4 chip id, +6 slot/offset index, +0x10 frame counter)
 // symdb: -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B920.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chip_previewShowSelectedChip.yaml
 	thumb_local_start
-sub_802B920:
+chip_previewShowSelectedChip:
 	push {lr}
 	bl sub_802B9E4
 	ldr r0, [r5,#0x10]
@@ -11797,7 +11797,7 @@ off_802B9B0:
 	.word byte_203C6E0
 dword_802B9B4:
 	.word 0x6009760
-	thumb_func_end sub_802B920
+	thumb_func_end chip_previewShowSelectedChip
 
 	thumb_local_start
 sub_802B9B8:
@@ -14635,9 +14635,9 @@ sub_802CE8A:
 
 // symdb: Resets one 16-byte slot in the impact-effect table at 0x2036720, marking any object linked to it for destruction.
 // symdb: (r0 = slot index) -> r0 = undefined; clears fields of slot r0*0x10 in table 0x2036720
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CEA6.yaml
-	thumb_func_start sub_802CEA6
-sub_802CEA6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearImpactSlot.yaml
+	thumb_func_start battle_clearImpactSlot
+battle_clearImpactSlot:
 	mov r1, #0x10
 	mul r1, r0
 	ldr r0, off_802D030 // =unk_2036720 
@@ -14656,9 +14656,9 @@ sub_802CEA6:
 	str r1, [r0,#0xc]
 locret_802CEC6:
 	mov pc, lr
-	thumb_func_end sub_802CEA6
+	thumb_func_end battle_clearImpactSlot
 
-// symdb: Walks a fixed two-slot table at 0x2036720 and, for each slot whose entry pointer is set and whose "busy" halfword flag at +0x24 is clear, invokes a shared handler (sub_802CEA6) with that entry's byte at +0x16.
+// symdb: Walks a fixed two-slot table at 0x2036720 and, for each slot whose entry pointer is set and whose "busy" halfword flag at +0x24 is clear, invokes a shared handler (battle_clearImpactSlot) with that entry's byte at +0x16.
 // symdb: void sub_802CEC8(void); /* out: r4 = &unk_2036720[1] (base + 0x10) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/runPendingHandlerForEntryPair_802CEC8.yaml
 	thumb_func_start runPendingHandlerForEntryPair_802CEC8
@@ -14672,7 +14672,7 @@ runPendingHandlerForEntryPair_802CEC8:
 	tst r1, r1
 	bne loc_802CEDE
 	ldrb r0, [r0,#0x16]
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 loc_802CEDE:
 	add r4, #0x10
 	ldr r0, [r4,#0x8] // (dword_2036738 - 0x2036730)
@@ -14682,7 +14682,7 @@ loc_802CEDE:
 	tst r1, r1
 	bne locret_802CEF2
 	ldrb r0, [r0,#0x16]
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 locret_802CEF2:
 	pop {pc}
 	thumb_func_end runPendingHandlerForEntryPair_802CEC8
@@ -14841,7 +14841,7 @@ battleObject_handleImpact_802CFF8:
 	cmp r0, #0
 	beq locret_802D01C
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_802CEA6
+	bl battle_clearImpactSlot
 	mov r0, #0x8e
 	bl PlaySoundEffect
 locret_802D01C:
@@ -16138,7 +16138,7 @@ loc_802D8C0:
 	mov r0, #1
 	bl sub_801E0D0
 	bl battleRefreshTrackedObjectArmPos_801DBD4
-	bl sub_800EA0E
+	bl battle_clearCollisionData
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
 	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
@@ -16310,7 +16310,7 @@ sub_802D9B0:
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl sub_80108FC
-	bl sub_800EA0E
+	bl battle_clearCollisionData
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
 	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
@@ -16516,7 +16516,7 @@ sub_802DB80:
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 	ldrb r0, [r5,#0x16]
 	bl sub_80108FC
-	bl sub_800EA0E
+	bl battle_clearCollisionData
 	bl sub_801A66C
 	ldrb r0, [r5,#0x14]
 	ldrb r1, [r5,#0x15]
@@ -17311,9 +17311,9 @@ locret_802E1EA:
 // symdb: Resets one alliance's AI state record: zeroes two state bytes in its 0x1D0-byte entry and clears the state-flag bits in the battle object's AIData Unk_44.
 // symdb: (r0 = unused/mask source is internal; r5 = battle object) -> r0 = 0 from flag clear; no flag
 // symdb: returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E1EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearAllianceState.yaml
 	thumb_local_start
-sub_802E1EC:
+ai_clearAllianceState:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
@@ -17354,7 +17354,7 @@ off_802E238:
 	.word 0x168
 dword_802E23C:
 	.word 0x1F00000
-	thumb_func_end sub_802E1EC
+	thumb_func_end ai_clearAllianceState
 
 // symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at unk_2008170.
 // symdb: void loadIndexedPaletteToBuffer(int index /*r0*/); // preserves r3; clobbers r0-r2, flags
@@ -17672,9 +17672,9 @@ off_802E49C:
 
 // symdb: Resets a battle object's AI attack-related state: clears a sub-state byte, wipes the charged-attack (PwrAtk) state, and clears AI flag 0x40000.
 // symdb: (r5 = battle object, set by caller) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E4A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetAIAttackState.yaml
 	thumb_local_start
-sub_802E4A0:
+battle_resetAIAttackState:
 	push {r6,lr}
 	ldr r1, [r5,#0x58]
 	mov r0, #0
@@ -17686,7 +17686,7 @@ sub_802E4A0:
 	.balign 4, 0
 dword_802E4B4:
 	.word 0x40000
-	thumb_func_end sub_802E4A0
+	thumb_func_end battle_resetAIAttackState
 
 // symdb: Looks up the battle object's alliance entry and returns a status code depending on which flag bytes are set in it.
 // symdb: // in: r5 = battle object ptr (oBattleObject_Alliance read) // out: r0 = status code (9, 0xD, or
@@ -17738,7 +17738,7 @@ battleObject_tickAITimerFlags_802E4E4:
 	mov r0, #1
 	mov r1, #0x50 
 	strb r0, [r7,r1]
-	bl sub_802E1EC
+	bl ai_clearAllianceState
 loc_802E508:
 	bl GetAIData_Unk_44_Flag
 	ldr r1, dword_802E538 // =0x20000000 
@@ -17749,7 +17749,7 @@ loc_802E508:
 	mov r0, #1
 	mov r1, #0x54 
 	strb r0, [r7,r1]
-	bl sub_802E1EC
+	bl ai_clearAllianceState
 	ldr r0, off_802E53C // =0x1e0 
 	strh r0, [r7,#0x30]
 	ldr r0, dword_802E540 // =0xffff 
@@ -18139,7 +18139,7 @@ loc_802E7C8:
 	bl battle_networkInvert
 	tst r0, r0
 	bne loc_802E7D6
-	bl sub_801E408
+	bl battle_hudDrawTextScript
 loc_802E7D6:
 	mov r0, #0x32 
 	mov r1, #0x4e 
@@ -18612,7 +18612,7 @@ sub_802EBD0:
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r6, [r5,#0x58]
 	add r6, #0xa0
-	bl sub_802ECFE
+	bl battle_chargeShotSetup
 	pop {r6,pc}
 	thumb_func_end sub_802EBD0
 
@@ -18627,7 +18627,7 @@ sub_802EBE4:
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r6, [r5,#0x58]
 	add r6, #0xa0
-	bl sub_802ECFE
+	bl battle_chargeShotSetup
 	pop {r6,pc}
 	thumb_func_end sub_802EBE4
 
@@ -18660,18 +18660,18 @@ off_802EC2C:
 	.word off_802EC9C
 	.word off_802ECCC
 off_802EC3C:
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
-	.word sub_802ECFE+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
+	.word battle_chargeShotSetup+1
 off_802EC6C:
 	.word sub_802EDBC+1
 	.word sub_802EDBC+1
@@ -18721,9 +18721,9 @@ nullsub_34:
 // symdb: Sets up the Navi's charge shot attack: rolls a special charge-shot pick, otherwise initializes default charge-shot state and fires attack 0x11.
 // symdb: (r0 = battle object, r6 = attack state struct) -> r0 = 0; calls sub_802ED68 on the special-pick
 // symdb: path, else object_setAttack0(0x11)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ECFE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chargeShotSetup.yaml
 	thumb_local_start
-sub_802ECFE:
+battle_chargeShotSetup:
 	push {lr}
 	bl sub_8013D5E
 	cmp r0, #0
@@ -18765,7 +18765,7 @@ byte_802ED50:
 	.byte 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2
 byte_802ED5C:
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3
-	thumb_func_end sub_802ECFE
+	thumb_func_end battle_chargeShotSetup
 
 	thumb_local_start
 sub_802ED68:

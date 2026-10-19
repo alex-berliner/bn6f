@@ -1038,7 +1038,7 @@ void __fastcall __noreturn chatbox_stepContextScript_8047028(int a1)
 
 
 // 0x8047050
-void __fastcall __noreturn sub_8047050(int a1)
+void __fastcall __noreturn shop_stateStepWaitText(int a1)
 {
     shopBuyMenu_updateFrame_8047134();
 }
@@ -4247,7 +4247,7 @@ void __noreturn sub_804A3FC()
     if ( !zf )
     {
         menu->unk_03 = 0;
-        sub_804AAA4();
+        pet_menuCancel();
         if ( !zf || (sub_804AAD0(), !zf) )
 LABEL_11:
             sub_804A8F4();
@@ -4573,7 +4573,7 @@ int __fastcall sub_804AA74(int a1, int a2, int a3, int a4)
 
 
 // 0x804aaa4
-void sub_804AAA4()
+void pet_menuCancel()
 {
     MenuControl *menu; // r5
     int v1; // r1
@@ -5185,7 +5185,7 @@ void chipTraderRollReward()
     while ( !sub_804BDB4(dword_200ACCC, algn_200ACB4) )
     {
 LABEL_3:
-        if ( sub_804BE1C(dword_200ACCC, algn_200ACB4, v1, v2) )
+        if ( chipTraderGatherUnownedChips(dword_200ACCC, algn_200ACB4, v1, v2) )
             break;
     }
     v3 = chipTraderWeightedRandomMaybe_804BD7C(dword_200ACD0, 5);
@@ -5286,7 +5286,7 @@ unsigned int __fastcall sub_804BDB4(_WORD *a1, _DWORD *a2)
 
 
 // 0x804be1c
-unsigned int __fastcall sub_804BE1C(_WORD *a1, _DWORD *a2, int a3, int a4)
+unsigned int __fastcall chipTraderGatherUnownedChips(_WORD *a1, _DWORD *a2, int a3, int a4)
 {
     int v4; // r5
     _DWORD *v5; // r8

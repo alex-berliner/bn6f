@@ -85,7 +85,7 @@ loc_812C34E::
 	bne locret_812C3B8
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812C4D8 // =0xffffffff 
@@ -170,7 +170,7 @@ loc_812C3EC::
 loc_812C3FC::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812C4D8 // =0xffffffff 
@@ -333,7 +333,7 @@ loc_812C536::
 loc_812C546::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812C7A0 // =0xffffffff 
@@ -438,7 +438,7 @@ loc_812C600::
 loc_812C610::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812C7A0 // =0xffffffff 
@@ -595,7 +595,7 @@ loc_812C738::
 loc_812C748::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812C7A0 // =0xffffffff 
@@ -689,7 +689,7 @@ loc_812C7F6::
 	bne locret_812C882
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812CA5C // =0xffffffff 
@@ -839,7 +839,7 @@ loc_812C92A::
 loc_812C92C::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812CA5C // =0xffffffff 
@@ -1035,7 +1035,7 @@ loc_812CAAC::
 	bne locret_812CB64
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812CB68 // =0xffffffff 
@@ -1151,7 +1151,7 @@ loc_812CB9C::
 	bne locret_812CC40
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812CD7C // =0xffffffff 
@@ -1270,7 +1270,7 @@ loc_812CC7C::
 	cmp r0, #0x32 
 	bne loc_812CC96
 	mov r0, #6
-	bl sub_811A968
+	bl sprite_makeUnscalableByIndex
 	mov r0, #0
 	strh r0, [r5,#0x2e]
 	b loc_812CCF2
@@ -1333,7 +1333,7 @@ loc_812CCFE::
 loc_812CD08::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812CD7C // =0xffffffff 
@@ -1607,7 +1607,7 @@ loc_812CF1A::
 loc_812CF2A::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_812CFC8 // =0xff 
@@ -1711,7 +1711,7 @@ loc_812CFFA::
 	bne loc_812D0AC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812D1F8 // =0xffffffff 
@@ -1833,7 +1833,7 @@ loc_812D0EA::
 	bne locret_812D162
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812D1F8 // =0xffffffff 
@@ -2070,7 +2070,7 @@ sub_812D298::
 	mov r0, r7
 	mov r1, #0x80
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
-	bl sub_812D3A8
+	bl battle_initChipSearchList
 	bl sub_812D310
 	bl sub_812D378
 	bl sub_812D3E4

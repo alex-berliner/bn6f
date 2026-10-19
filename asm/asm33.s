@@ -3854,7 +3854,7 @@ sub_8124F8C:
 	ldrh r0, [r5,#0x36]
 	strh r0, [r5,#0x38]
 	mov r0, #0x1e
-	bl sub_8125704
+	bl submenu_handleEntryScreenInput
 	bl sub_81268D8
 	bl battle_runTransition_8125444
 	bl sub_8125F5C
@@ -4797,9 +4797,9 @@ off_8125700:
 
 // symdb: Per-frame input handler for a submenu screen: B/START exit with fade, Left/Right switch a mode byte, Up/Down move a 7-row list cursor.
 // symdb: (r0 = state ptr in r8, r5 = state ptr) -> void; writes state fields, plays SFX, may start fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125704.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_handleEntryScreenInput.yaml
 	thumb_local_start
-sub_8125704:
+submenu_handleEntryScreenInput:
 	push {r4-r7,lr}
 	mov r8, r0
 	mov r7, r10
@@ -4865,7 +4865,7 @@ locret_812577C:
 	.balign 4, 0
 off_8125780:
 	.word 0x300
-	thumb_func_end sub_8125704
+	thumb_func_end submenu_handleEntryScreenInput
 
 // symdb: Per-frame battle-menu input dispatcher: Start+B exits, bit-0 hands off, Select switches state with cue 7A, otherwise routes cursor navigation to sub_8125820.
 // symdb: void battle_input_tick_8125784(u32 r0=u8 held, u32 r2=code_param, u32 r5=obj, u32 r10=toolkit);
@@ -7915,7 +7915,7 @@ loc_8126EF2:
 	mov r1, #0
 loc_8126F04:
 	mov r0, r1
-	bl sub_81278C8
+	bl submenu_runTextScript
 loc_8126F0A:
 	mov r0, #4
 	strb r0, [r5,#2]
@@ -8034,7 +8034,7 @@ loc_8126FC4:
 	mov r6, #0x39 
 loc_8126FE6:
 	mov r0, r6
-	bl sub_81278C8
+	bl submenu_runTextScript
 locret_8126FEC:
 	pop {pc}
 	.byte 0, 0
@@ -9169,9 +9169,9 @@ off_812787C:
 
 // symdb: Runs one script from the submenu's text archive at the given index via the chatbox runner.
 // symdb: (r0 = u8 script index into eTextScript201BF20) -> r0 = undefined; runs chatbox script from top
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81278C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_runTextScript.yaml
 	thumb_local_start
-sub_81278C8:
+submenu_runTextScript:
 	push {lr}
 	mov r1, r0
 	ldr r0, off_81278D4 // =eTextScript201BF20
@@ -9180,7 +9180,7 @@ sub_81278C8:
 	.balign 4, 0
 off_81278D4:
 	.word eTextScript201BF20
-	thumb_func_end sub_81278C8
+	thumb_func_end submenu_runTextScript
 
 // symdb: Returns the address of the entry selected by the signed byte index at struct+0xD within the 8-byte-element array whose base pointer is stored at struct+0x40.
 // symdb: Next sub_81278D8(void *structR5); /* in: r5 = struct pointer; out: r0 = &struct->field40[index]
@@ -14582,7 +14582,7 @@ sub_812A168:
 	bl sub_803DCD8
 	bl sub_81322E8
 	bl sub_8132664
-	bl sub_8132670
+	bl e_packScreenNaviId
 	ldr r1, off_812A1C0 // =byte_2023BC0 
 	strb r0, [r1]
 	bl sub_803EF60
@@ -15372,7 +15372,7 @@ loc_812A7B8:
 	bne loc_812A878
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	ldr r1, dword_812A898 // =0xffffffff 
 	cmp r0, r1
@@ -15608,7 +15608,7 @@ loc_812A978:
 loc_812A980:
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812ABE8 // =0xffffffff 
@@ -15823,7 +15823,7 @@ loc_812AB26:
 	bne loc_812ABE2
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812ABE8 // =0xffffffff 
@@ -16090,7 +16090,7 @@ loc_812AD26:
 	bne loc_812ADDE
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, off_812AE2C // =off_812AE30 
@@ -17714,7 +17714,7 @@ loc_812B8FC:
 	bne locret_812B978
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812BAF0 // =0xffffffff 
@@ -17796,7 +17796,7 @@ loc_812B99C:
 	mov r1, #8
 	tst r4, r1
 	bne locret_812B9F6
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812BAF0 // =0xffffffff 
@@ -17913,7 +17913,7 @@ loc_812BA70:
 	bne locret_812BAEC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812BAF0 // =0xffffffff 
@@ -18012,7 +18012,7 @@ loc_812BB2A:
 	bne locret_812BC0C
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812BC10 // =0xffffffff 

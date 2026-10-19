@@ -7,7 +7,7 @@ void __noreturn sub_812D378()
 
 
 // 0x812d3a8
-signed int __fastcall sub_812D3A8(int a1, int a2, int a3, int a4)
+signed int __fastcall battle_initChipSearchList(int a1, int a2, int a3, int a4)
 {
 	int v4; // r7
 	int v5; // r10

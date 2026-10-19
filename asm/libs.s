@@ -1840,7 +1840,7 @@ loc_8144D8C:
 	strb r0, [r1]
 	mov r0, #0xff
 	strb r0, [r1,#0x6] // (byte_200FE06 - 0x200fe00)
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 	mov r0, r4
 	pop {r4}
 	pop {r1}
@@ -1892,9 +1892,9 @@ off_8144DEC:
 // symdb: Initializes the wireless adapter's REQ request-management state, filling its work struct and installing the MSC/REQ callbacks.
 // symdb: (r0 = nonzero param, likely retry/count; r1 = second param) -> r0 = 0 on success, 4 if r0 == 0;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144DF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initREQ.yaml
 	thumb_local_start
-sub_8144DF0:
+rfu_initREQ:
 	push {r4-r6,lr}
 	sub sp, sp, #4
 	mov r5, r0
@@ -1936,13 +1936,13 @@ loc_8144E3A:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8144DF0
+	thumb_func_end rfu_initREQ
 
 // symdb: Zero-fills the 128-byte wireless connection struct at 200FE00 and marks its state byte (+6) as 0xFF (no connection).
 // symdb: () -> void; touches eStruct200FE00 only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144E44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearConnectionInfo.yaml
 	thumb_local_start
-sub_8144E44:
+rfu_clearConnectionInfo:
 	push {r4,lr}
 	sub sp, sp, #4
 	mov r1, sp
@@ -1964,7 +1964,7 @@ off_8144E68:
 	.word eStruct200FE00
 dword_8144E6C:
 	.word 0x1000020
-	thumb_func_end sub_8144E44
+	thumb_func_end rfu_clearConnectionInfo
 
 	thumb_local_start
 sub_8144E70:
@@ -2073,7 +2073,7 @@ loc_8144F1E:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #1
 	b loc_8144FC6
 	.balign 4, 0
@@ -2089,7 +2089,7 @@ loc_8144F34:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #2
 	b loc_8144FC6
 off_8144F50:
@@ -2119,7 +2119,7 @@ loc_8144F74:
 	strh r0, [r3,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #4
 	b loc_8144FC6
 dword_8144F88:
@@ -2189,7 +2189,7 @@ sub_8144FD0:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #1
 	b loc_81450A8
 	.balign 4, 0
@@ -2205,7 +2205,7 @@ loc_8145008:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #2
 	b loc_81450A8
 off_8145024:
@@ -2247,7 +2247,7 @@ loc_8145062:
 	strh r0, [r5,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #3
 	b loc_81450A8
 	.balign 4, 0x00
@@ -2333,13 +2333,13 @@ loc_81450EA:
 	cmp r4, #0
 	beq loc_8145104
 	mov r0, r4
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 loc_8145104:
 	ldr r0, off_8145118 // =eStruct200FE00 
 	strh r4, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x33 
 	mov r1, r4
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_8145110:
 	pop {r4-r7}
 	pop {r0}
@@ -2442,13 +2442,13 @@ loc_81451CA:
 	ldr r4, off_81451EC // =dword_2010CC0 
 	ldr r0, [r4]
 	ldrb r0, [r0,#3]
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	ldr r0, [r4]
 	ldrb r0, [r0,#3]
 	strh r0, [r5,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x33 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_814520A
 off_81451EC:
 	.word dword_2010CC0
@@ -2466,7 +2466,7 @@ loc_81451FC:
 	bne loc_814520A
 	mov r0, r2
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_814520A:
 	pop {r4,r5}
 	pop {r0}
@@ -2476,9 +2476,9 @@ loc_814520A:
 // symdb: Periodic wireless-link watchdog: polls the RFU link status, updates the connected-player bitmask and per-player disconnect timers in the connection struct at 200FE00, and runs disconnect processing when a peer drops or times out.
 // symdb: (r0 = 16-bit argument passed to rfu_REQBN_watchLink) -> r0 = nonzero flag if any player
 // symdb: disconnect was processed this call; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145210.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_pollLinkWatchdog.yaml
 	thumb_local_start
-sub_8145210:
+rfu_pollLinkWatchdog:
 	push {r4-r7,lr}
 	mov r7, r9
 	mov r6, r8
@@ -2566,25 +2566,25 @@ loc_81452B0:
 	strb r0, [r6,#0xa] // (byte_200FE0A - 0x200fe00)
 	mov r0, sp
 	ldrb r0, [r0]
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	mov r0, #1
 	mov r8, r0
 	mov r0, #0x33 
 loc_81452C2:
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_81452DE
 loc_81452CA:
 	mov r0, sp
 	ldrb r0, [r0]
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	mov r1, #1
 	mov r8, r1
 	mov r0, #0x30 
 	mov r1, #2
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_81452DE:
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 loc_81452E2:
 	ldr r0, off_81453CC // =dword_2010CC0 
 	ldr r0, [r0]
@@ -2633,7 +2633,7 @@ loc_814531C:
 	strh r0, [r3,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x32 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_8145340:
 	ldr r0, off_81453D0 // =eStruct200FE00 
 	mov r3, r0
@@ -2680,14 +2680,14 @@ loc_8145386:
 	cmp r4, #0
 	beq loc_81453AA
 	mov r0, r4
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	mov r6, #1
 	mov r8, r6
 	ldr r0, off_81453D0 // =eStruct200FE00 
 	strh r4, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x33 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_81453AA:
 	ldr r0, off_81453D0 // =eStruct200FE00 
 	mov r1, r0
@@ -2712,7 +2712,7 @@ off_81453CC:
 	.word dword_2010CC0
 off_81453D0:
 	.word eStruct200FE00
-	thumb_func_end sub_8145210
+	thumb_func_end rfu_pollLinkWatchdog
 
 // symdb: Handles an RFU (wireless) VBlank tick: syncs RFU state, and if the sync returned a non-zero status, sends command 0xF1 and then processes the RFU response queue.
 // symdb: void sub_81453D4(void); /* lr in, r4..r12 out; r0..r3/r12/lr clobbered via guests; flags nz/c/v
@@ -2727,8 +2727,8 @@ rfu_handleVBlank_81453D4:
 	beq loc_81453EC
 	mov r0, #0xf1
 	mov r1, #0
-	bl sub_81461B0
-	bl sub_81464B4
+	bl rfu_fireConnCallbackAndClearState
+	bl rfu_reqEndConnection
 loc_81453EC:
 	pop {r0}
 	bx r0
@@ -2852,7 +2852,7 @@ loc_81454E8:
 	mov r0, #0xff
 loc_81454F2:
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b def_814543E
 	.balign 4, 0x00
 off_81454FC:
@@ -2955,7 +2955,7 @@ loc_81455B4:
 	cmp r0, #1
 	bne loc_81455CA
 	mov r0, #0
-	bl sub_8145210
+	bl rfu_pollLinkWatchdog
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	bne loc_81455DA
@@ -3240,7 +3240,7 @@ off_8145800:
 loc_8145804:
 	cmp r6, #0
 	bne loc_814584A
-	bl sub_8146138
+	bl rfu_buildConnectedIdBitmap
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
 	mov r1, sp
@@ -3251,7 +3251,7 @@ loc_8145804:
 	beq loc_8145824
 	mov r0, #0x20 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_8145824:
 	ldrb r0, [r4,#0xb] // (byte_200FE0B - 0x200fe00)
 	cmp r0, #0
@@ -3430,7 +3430,7 @@ loc_8145960:
 	ldr r4, off_8145970 // =eStruct200FE00 
 	ldrb r0, [r4,#0x1e] // (word_200FE1E - 0x200fe00)
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #0
 	strh r0, [r4,#0x1e] // (word_200FE1E - 0x200fe00)
 	b def_814568C
@@ -3551,7 +3551,7 @@ loc_8145A38:
 	ldr r0, off_8145A78 // =dword_2010CC0 
 	ldr r0, [r0]
 	ldrb r0, [r0,#3]
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	mov r0, #0x33 
 	strh r0, [r4,#0x1e] // (word_200FE1E - 0x200fe00)
 loc_8145A4C:
@@ -3570,7 +3570,7 @@ loc_8145A4C:
 	strb r1, [r5,#0xa] // (byte_200FE0A - 0x200fe00)
 	ldrb r0, [r5,#0x1e] // (word_200FE1E - 0x200fe00)
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	strh r4, [r5,#0x1e] // (word_200FE1E - 0x200fe00)
 	b def_814568C
 	.balign 4, 0x00
@@ -3596,7 +3596,7 @@ loc_8145A7C:
 	mov r0, #0x41 
 loc_8145A9A:
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b def_814568C
 	.balign 4, 0x00
 off_8145AA4:
@@ -3610,7 +3610,7 @@ loc_8145AA8:
 	strb r4, [r5,#0x2] // (byte_200FE02 - 0x200fe00)
 	mov r0, #0x41 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r1, r5
 	add r1, #0x24 
 	ldrb r0, [r5,#0x10] // (byte_200FE10 - 0x200fe00)
@@ -3638,19 +3638,19 @@ loc_8145AA8:
 	beq def_814568C
 	strb r7, [r5,#0x5] // (byte_200FE05 - 0x200fe00)
 	strb r7, [r5,#0x4] // (byte_200FE04 - 0x200fe00)
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 	ldr r0, off_8145B18 // =dword_2010CC0 
 	ldr r0, [r0]
 	ldrb r1, [r0,#2]
 	ldrb r0, [r0,#3]
 	orr r0, r1
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	mov r0, sp
 	ldrb r0, [r0]
 	strh r0, [r5,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x25 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b def_814568C
 off_8145B18:
 	.word dword_2010CC0
@@ -3662,7 +3662,7 @@ loc_8145B1C:
 	strb r6, [r0,#0x4] // (byte_200FE04 - 0x200fe00)
 	mov r0, #0x42 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 def_814568C:
 	ldr r1, off_8145B38 // =eStruct200FE00 
 	mov r0, #1
@@ -3705,7 +3705,7 @@ loc_8145B54:
 	mov r1, #1
 	strb r1, [r0,#5]
 	mov r0, #0x29 
-	bl sub_8145210
+	bl rfu_pollLinkWatchdog
 	mov r6, #0
 loc_8145B8A:
 	mov r4, r8
@@ -3741,7 +3741,7 @@ loc_8145BB8:
 	ldr r4, off_8145C68 // =eStruct200FE00 
 	ldrb r0, [r0,#8]
 	strh r0, [r4,#0x14] // (word_200FE14 - 0x200fe00)
-	bl sub_81461FC
+	bl rfu_disconnectSlots
 	mov r2, r4
 	add r2, #0x30 
 	ldrb r1, [r2]
@@ -3860,10 +3860,10 @@ loc_8145C96:
 	bne loc_8145CE2
 	mov r0, #0x40 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_8145CE2
 loc_8145CA6:
-	bl sub_81460B0
+	bl rfu_handleDisconnectPacket
 	ldr r0, off_8145CC0 // =dword_2010CC0 
 	ldr r0, [r0]
 	ldrb r0, [r0]
@@ -3871,7 +3871,7 @@ loc_8145CA6:
 	beq loc_8145CE2
 	mov r0, #0x50 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_8145CE2
 	.byte 0, 0
 off_8145CC0:
@@ -3885,11 +3885,11 @@ loc_8145CC4:
 	strb r6, [r0]
 	mov r1, #0xff
 	strb r1, [r0,#0x6] // (byte_200FE06 - 0x200fe00)
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 	mov r4, r8
 	cmp r4, #0x3d 
 	bne loc_8145CE2
-	bl sub_8144E44
+	bl rfu_clearConnectionInfo
 loc_8145CE2:
 	cmp r6, #0
 	beq loc_8145D36
@@ -3910,7 +3910,7 @@ loc_8145CE6:
 	ldr r1, [r2]
 	mov r0, #0xf
 	strb r0, [r1,#2]
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	bl rfu_waitREQComplete
 	b loc_8145D48
 off_8145D10:
@@ -3930,16 +3930,16 @@ loc_8145D18:
 loc_8145D2A:
 	mov r0, #0xf0
 	mov r1, #2
-	bl sub_81461B0
-	bl sub_81464B4
+	bl rfu_fireConnCallbackAndClearState
+	bl rfu_reqEndConnection
 loc_8145D36:
 	mov r4, r8
 	cmp r4, #0xff
 	bne loc_8145D48
 	mov r0, #0xf2
 	mov r1, #0
-	bl sub_81461B0
-	bl sub_81464B4
+	bl rfu_fireConnCallbackAndClearState
+	bl rfu_reqEndConnection
 loc_8145D48:
 	add sp, sp, #4
 	pop {r3}
@@ -3967,11 +3967,11 @@ sub_8145D54:
 	cmp r5, #0
 	bne loc_8145D90
 	mov r0, r6
-	bl sub_8145210
+	bl rfu_pollLinkWatchdog
 	ldrb r0, [r4,#0x2] // (byte_200FE02 - 0x200fe00)
 	cmp r0, #1
 	beq loc_8145DA8
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 	strb r5, [r4,#0xf] // (byte_200FE0F - 0x200fe00)
 	strb r7, [r4,#0xe] // (byte_200FE0E - 0x200fe00)
 	b loc_8145DCC
@@ -4003,7 +4003,7 @@ loc_8145DA8:
 	ldrb r0, [r4,#0x2] // (byte_200FE02 - 0x200fe00)
 	cmp r0, #2
 	bne loc_8145DC4
-	bl sub_81464B4
+	bl rfu_reqEndConnection
 loc_8145DC4:
 	ldr r1, off_8145DD4 // =eStruct200FE00 
 	mov r0, #0
@@ -4053,7 +4053,7 @@ loc_8145DF6:
 	mov r0, #0x10
 	mov r1, #1
 	str r3, [sp,#4]
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	ldr r3, [sp,#4]
 loc_8145E1E:
 	mov r0, #0
@@ -4217,7 +4217,7 @@ loc_8145F40:
 	strh r4, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x11
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_8145F52:
 	ldr r1, off_8145FBC // =eStruct200FE00 
 	ldrb r0, [r1,#0xd] // (byte_200FE0D - 0x200fe00)
@@ -4240,14 +4240,14 @@ loc_8145F72:
 	beq loc_8145F8E
 	ldr r4, off_8145FBC // =eStruct200FE00 
 	ldrb r0, [r4,#0xd] // (byte_200FE0D - 0x200fe00)
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	ldrb r0, [r4,#0xd] // (byte_200FE0D - 0x200fe00)
 	mov r1, #0
 	strh r0, [r4,#0x14] // (word_200FE14 - 0x200fe00)
 	strb r1, [r4,#0xd] // (byte_200FE0D - 0x200fe00)
 	mov r0, #0x12
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_8145F8E:
 	ldr r0, off_8145FBC // =eStruct200FE00 
 	mov r1, r0
@@ -4266,7 +4266,7 @@ loc_8145F8E:
 	strb r0, [r3,#0x4] // (byte_200FE04 - 0x200fe00)
 	mov r0, #0x14
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_8145FEA
 	.balign 4, 0x00
 dword_8145FB8:
@@ -4383,11 +4383,11 @@ loc_8146076:
 	ldrb r1, [r0,#2]
 	ldrb r0, [r0,#3]
 	orr r0, r1
-	bl sub_81461D8
+	bl rfu_forceDisconnect
 	strh r4, [r5,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0x25 
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_814609A:
 	pop {r4-r6}
 	pop {r0}
@@ -4405,9 +4405,9 @@ off_81460AC:
 
 // symdb: Handles a received disconnect (command 0x26) during wireless connection state 0xF: tears down the link slot and clears connection state.
 // symdb: (void) -> void; only acts when state byte 200FE04 == 0xF and incoming packet ID == 0x26
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81460B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleDisconnectPacket.yaml
 	thumb_local_start
-sub_81460B0:
+rfu_handleDisconnectPacket:
 	push {r4,r5,lr}
 	ldr r5, off_8146104 // =eStruct200FE00 
 	ldrb r0, [r5,#0x4] // (byte_200FE04 - 0x200fe00)
@@ -4443,7 +4443,7 @@ sub_81460B0:
 	strh r4, [r0]
 	mov r0, #0x24 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_81460FC:
 	pop {r4,r5}
 	pop {r0}
@@ -4453,7 +4453,7 @@ off_8146104:
 	.word eStruct200FE00
 off_8146108:
 	.word dword_2010CB0
-	thumb_func_end sub_81460B0
+	thumb_func_end rfu_handleDisconnectPacket
 
 	thumb_local_start
 sub_814610C:
@@ -4486,9 +4486,9 @@ off_8146134:
 // symdb: Scans the wireless connection table and returns a bitmask of entries whose id appears in the 0xFFFF-terminated id list in the rfu struct at 200FE20.
 // symdb: () -> r0 = u8 bitmask, bit i set when entry i's id (u16 at table+0x18, entries 0x20 bytes)
 // symdb: matches one of the ids in the list at [200FE00+0x20] terminated by 0xFFFF; no flags relied on
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146138.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_buildConnectedIdBitmap.yaml
 	thumb_local_start
-sub_8146138:
+rfu_buildConnectedIdBitmap:
 	push {r4-r7,lr}
 	mov r7, r10
 	mov r6, r9
@@ -4555,14 +4555,14 @@ off_81461A8:
 	.word eStruct200FE00
 dword_81461AC:
 	.word 0xFFFF
-	thumb_func_end sub_8146138
+	thumb_func_end rfu_buildConnectedIdBitmap
 
 // symdb: Invokes the RFU connection callback registered in eStruct200FE00+0x40 (if any) with the two byte arguments, then zeroes the connection-state halfwords at +0x14 and +0x16.
 // symdb: (r0 = byte arg A, r1 = byte arg B) -> r0 = 0; calls [eStruct200FE00+0x40](argA, argB) if non-
 // symdb: NULL; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81461B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_fireConnCallbackAndClearState.yaml
 	thumb_local_start
-sub_81461B0:
+rfu_fireConnCallbackAndClearState:
 	push {r4,lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -4583,14 +4583,14 @@ loc_81461C6:
 	.balign 4, 0
 off_81461D4:
 	.word eStruct200FE00
-	thumb_func_end sub_81461B0
+	thumb_func_end rfu_fireConnCallbackAndClearState
 
 // symdb: Forces an rfu disconnect request while temporarily flagging the link struct busy, used by the connection state machine to tear down a link.
 // symdb: (r0 = connection id/cid, passed through to rfu_REQ_disconnect) -> r0 = rfu_waitREQComplete
 // symdb: result; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81461D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_forceDisconnect.yaml
 	thumb_local_start
-sub_81461D8:
+rfu_forceDisconnect:
 	push {r4,r5,lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -4607,14 +4607,14 @@ sub_81461D8:
 	.balign 4, 0
 off_81461F8:
 	.word eStruct200FE00
-	thumb_func_end sub_81461D8
+	thumb_func_end rfu_forceDisconnect
 
 // symdb: Tears down one or more wireless link slots: removes them as send targets, stops NI receive, and clears their entries in the link tables.
 // symdb: (r0 = bitmask of link slots (0-3) to disconnect) -> r0 = clobbered (never meaningful to
 // symdb: callers); calls rfu_changeSendTarget(0x20, slot) and rfu_NI_stopReceivingData(slot)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81461FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_disconnectSlots.yaml
 	thumb_local_start
-sub_81461FC:
+rfu_disconnectSlots:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x18
 	lsr r5, r0, #0x18
@@ -4732,7 +4732,7 @@ off_81462D0:
 	.word off_2010CA0
 dword_81462D4:
 	.word 0x8024
-	thumb_func_end sub_81461FC
+	thumb_func_end rfu_disconnectSlots
 
 	thumb_local_start
 sub_81462D8:
@@ -4964,7 +4964,7 @@ loc_814645C:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #6
 loc_814646C:
 	pop {r1}
@@ -4990,7 +4990,7 @@ sub_8146474:
 	strh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	mov r0, #0xf3
 	mov r1, #1
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	mov r0, #7
 	b loc_81464AE
 	.balign 4, 0
@@ -5014,10 +5014,10 @@ loc_81464AE:
 
 // symdb: Clears the link event flag in the rfu connection struct and queues rfu request 0x45 with argument 0, presumably to tear down the wireless link state.
 // symdb: (r0 = unused, clobbered) -> r0 = undefined; clears byte at eStruct200FE00+0x2 and side-effects
-// symdb: the rfu request queue via sub_81461B0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81464B4.yaml
+// symdb: the rfu request queue via rfu_fireConnCallbackAndClearState
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_reqEndConnection.yaml
 	thumb_local_start
-sub_81464B4:
+rfu_reqEndConnection:
 	push {lr}
 	ldr r1, off_81464D0 // =eStruct200FE00 
 	ldrb r0, [r1,#0x2] // (byte_200FE02 - 0x200fe00)
@@ -5028,14 +5028,14 @@ sub_81464B4:
 	strb r0, [r1,#0x2] // (byte_200FE02 - 0x200fe00)
 	mov r0, #0x45 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 loc_81464CC:
 	pop {r0}
 	bx r0
 	.balign 4, 0
 off_81464D0:
 	.word eStruct200FE00
-	thumb_func_end sub_81464B4
+	thumb_func_end rfu_reqEndConnection
 
 	thumb_local_start
 sub_81464D4:
@@ -5046,7 +5046,7 @@ sub_81464D4:
 	bne loc_81464EC
 	mov r0, #0x45 
 	mov r1, #0
-	bl sub_81461B0
+	bl rfu_fireConnCallbackAndClearState
 	b loc_81464F8
 	.balign 4, 0
 off_81464E8:
@@ -7088,7 +7088,7 @@ sub_8147350:
 	bl sub_81465FC
 	ldr r0, off_81473D8 // =sub_81473EC+1 
 	ldr r1, off_81473DC // =sub_81475B8+1 
-	bl sub_8144DF0
+	bl rfu_initREQ
 	ldr r0, off_81473E0 // =Timer2Counter_Reload 
 	strh r4, [r0]
 	ldr r1, off_81473E4 // =Timer2Control 
@@ -8067,7 +8067,7 @@ sub_8147B24:
 	ldr r0, off_8147B34 // =byte_2010390 
 	ldr r1, off_8147B38 // =unk_20103A0 
 	mov r2, #0xc
-	bl sub_8147B54
+	bl rfu_initCommState
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -8096,9 +8096,9 @@ off_8147B50:
 // symdb: Resets the wireless-adapter link state: zeroes two buffers, clears per-player connection tables, binds the RFU receive buffer, and sets the comm state to 0x31.
 // symdb: (r0 = buffer A to zero, r1 = buffer B (later used as RFU recv buffer), r2 = size in bytes) -> r0
 // symdb: destroyed; global comm state initialized, word_200BC58 = 0x31
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147B54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initCommState.yaml
 	thumb_local_start
-sub_8147B54:
+rfu_initCommState:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -8197,7 +8197,7 @@ off_8147C18:
 	.word byte_20103E0
 off_8147C1C:
 	.word eS200BC50
-	thumb_func_end sub_8147B54
+	thumb_func_end rfu_initCommState
 
 	thumb_local_start
 sub_8147C20:
@@ -8633,7 +8633,7 @@ sub_8147F98:
 	bl zeroFill_813D960
 	ldr r0, off_8147FF8 // =sub_814801C+1 
 	ldr r1, off_8147FFC // =sub_8148208+1 
-	bl sub_8144DF0
+	bl rfu_initREQ
 	ldr r0, off_8148000 // =Timer2Counter_Reload 
 	strh r5, [r0]
 	ldr r1, off_8148004 // =Timer2Control 

@@ -15,7 +15,7 @@ signed int __fastcall sub_8089160(int a1, int a2)
 
     sub_80301B2(0, a2);
     doPETEffect_8033fc0(0, v3, v4);
-    sub_8089244(0);
+    submenu_loadSelectedEntryGfx(0);
     *v2 = 4;
     return 1;
 }
@@ -86,7 +86,7 @@ int sub_8089234()
 
 
 // 0x8089244
-int __fastcall sub_8089244(int a1)
+int __fastcall submenu_loadSelectedEntryGfx(int a1)
 {
     int v1; // r1
     int v2; // r2

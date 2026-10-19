@@ -1117,7 +1117,7 @@ LABEL_13:
 
 
 // 0x813c020
-int sub_813C020()
+int pet_zeroStatSlotBuffer()
 {
     int v0; // r10
 
@@ -2128,7 +2128,7 @@ int sub_813CBCC()
 
     ClearEventFlagFromImmediate(23, 32);
     if ( checkCurPETNaviStats1FIsOne_813C490() == 1 )
-        return sub_813C020();
+        return pet_zeroStatSlotBuffer();
     v1 = 1;
     do
     {

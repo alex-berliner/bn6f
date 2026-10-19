@@ -82,7 +82,7 @@ loc_812DB72::
 	bne locret_812DBDC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812DCF8 // =0xffffffff 
@@ -167,7 +167,7 @@ loc_812DC10::
 loc_812DC20::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812DCF8 // =0xffffffff 
@@ -329,7 +329,7 @@ loc_812DD56::
 loc_812DD66::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812DF98 // =0xffffffff 
@@ -430,7 +430,7 @@ loc_812DE18::
 loc_812DE28::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812DF98 // =0xffffffff 
@@ -572,7 +572,7 @@ loc_812DF30::
 loc_812DF40::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812DF98 // =0xffffffff 
@@ -668,7 +668,7 @@ loc_812DFEC::
 loc_812DFFC::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E258 // =0xffffffff 
@@ -822,7 +822,7 @@ loc_812E132::
 loc_812E134::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E258 // =0xffffffff 
@@ -1013,7 +1013,7 @@ loc_812E2A8::
 	bne locret_812E360
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E364 // =0xffffffff 
@@ -1129,7 +1129,7 @@ loc_812E398::
 	bne locret_812E43C
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E578 // =0xffffffff 
@@ -1248,7 +1248,7 @@ loc_812E478::
 	cmp r0, #0x32 
 	bne loc_812E492
 	mov r0, #6
-	bl sub_811A968
+	bl sprite_makeUnscalableByIndex
 	mov r0, #0
 	strh r0, [r5,#0x2e]
 	b loc_812E4EE
@@ -1311,7 +1311,7 @@ loc_812E4FA::
 loc_812E504::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E578 // =0xffffffff 
@@ -1599,7 +1599,7 @@ loc_812E73E::
 	bne locret_812E7F0
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E904 // =0xffffffff 
@@ -1714,7 +1714,7 @@ loc_812E81E::
 	bne locret_812E896
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812E904 // =0xffffffff 

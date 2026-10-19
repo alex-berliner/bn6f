@@ -1896,7 +1896,7 @@ int sub_8124F8C()
     *(v0 + 13) = 3;
     *(v0 + 52) = *(v0 + 50);
     *(v0 + 56) = *(v0 + 54);
-    sub_8125704(30, v1, v2);
+    submenu_handleEntryScreenInput(30, v1, v2);
     sub_81268D8();
     battle_runTransition_8125444();
     sub_8125F5C();
@@ -2484,7 +2484,7 @@ int __fastcall sub_8125678(int a1, int a2, int a3)
 
 
 // 0x8125704
-int __fastcall sub_8125704(int a1, int a2, int a3)
+int __fastcall submenu_handleEntryScreenInput(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -4254,7 +4254,7 @@ void __noreturn submenu_stepSlideToSelection()
                 petNaviTryGiveElementFolder_8120D10(0);
                 if ( v4 )
                     v5 = 0;
-                sub_81278C8(v5);
+                submenu_runTextScript(v5);
             }
         }
         v0[2] = 4;
@@ -4827,7 +4827,7 @@ int sub_8127800()
 
 
 // 0x81278c8
-void __fastcall sub_81278C8(int a1)
+void __fastcall submenu_runTextScript(int a1)
 {
     chatbox_runScript_803FD9C(eTextScript201BF20, a1);
 }
@@ -8129,7 +8129,7 @@ int __fastcall sub_812A168(int a1)
         sub_803DCD8(1112683845, 0x2000, 0);
         v3 = sub_81322E8();
         sub_8132664(v3);
-        v4 = sub_8132670();
+        v4 = e_packScreenNaviId();
         byte_2023BC0 = v4;
         sub_803EF60(v4);
         sub_81326D4(0, v5, v6, v7);
@@ -8772,7 +8772,7 @@ LABEL_29:
     if ( !(v2 & 8) )
     {
         v5 = sub_803E8F8();
-        v6 = sub_803EF74();
+        v6 = get_eLinkStateUnk38();
         v7 = sub_81323B0(v6);
         if ( v7 != -1 )
         {
@@ -8928,7 +8928,7 @@ LABEL_15:
         *(v6 + 2) = *(v0 + 42);
         *(v6 + 8) = *(v0 + 38);
         sub_803E8F8();
-        v7 = sub_803EF74();
+        v7 = get_eLinkStateUnk38();
         v8 = sub_81323B0(v7);
         v9 = v8;
         if ( v8 != -1 )
@@ -9083,7 +9083,7 @@ LABEL_31:
         *(v0 + 16) = 1;
         *(camera_copyLinkStateToEnd() + 8) = *(v0 + 38);
         v4 = sub_803E8F8();
-        v5 = sub_803EF74();
+        v5 = get_eLinkStateUnk38();
         v6 = sub_81323B0(v5);
         v7 = v6;
         if ( v6 != -1 )
@@ -9312,7 +9312,7 @@ int sub_812AD04()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             v5 = sub_81323B0(v4);
             v6 = v5;
             if ( v5 != &off_812AE30 )
@@ -10213,7 +10213,7 @@ void sub_812B8DC()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             v5 = sub_81323B0(v4);
             v6 = v5;
             if ( v5 != -1 )
@@ -10270,7 +10270,7 @@ int sub_812B97C()
     {
         *(v0 + 16) = 6;
         sub_812C0CC();
-        v2 = sub_803EF74();
+        v2 = get_eLinkStateUnk38();
         result = sub_81323B0(v2);
         v3 = result;
         if ( result != -1 )
@@ -10328,7 +10328,7 @@ int sub_812B9F8()
         *(v0 + 16) = 6;
         *(camera_copyLinkStateToEnd() + 8) = *(v0 + 38);
         v5 = sub_803E8F8();
-        v6 = sub_803EF74();
+        v6 = get_eLinkStateUnk38();
         result = sub_81323B0(v6);
         v7 = result;
         if ( result != -1 )
@@ -10409,7 +10409,7 @@ int sub_812BB08()
     if ( v2 & 8 )
         return result;
     v3 = sub_803E8F8();
-    v4 = sub_803EF74();
+    v4 = get_eLinkStateUnk38();
     result = sub_81323B0(v4);
     v5 = result;
     if ( result == -1 )

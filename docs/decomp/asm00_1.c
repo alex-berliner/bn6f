@@ -6509,7 +6509,7 @@ int battle_updateMainFlow_80080D2()
             v4 = *(v1 + oToolkit_S2034880_Ptr);
             if ( *(v4 + 58) )
             {
-                result = sub_800AAD6();
+                result = battle_endBattleEscaped();
             }
             else
             {
@@ -8930,7 +8930,7 @@ int sub_8009594()
 
 
 // 0x80095c8
-int sub_80095C8()
+int battle_stateNaviCommErrorMsg()
 {
     int v0; // r5
     int v1; // r0
@@ -9763,7 +9763,7 @@ signed int battle_subphaseFadeOut()
 
 
 // 0x8009c56
-int sub_8009C56()
+int rfu_stepShowNaviCommError()
 {
     int v0; // r5
     int v1; // r0
@@ -11646,7 +11646,7 @@ int battle_stateGotoPhase14_800AABC()
 
 
 // 0x800aad6
-int sub_800AAD6()
+int battle_endBattleEscaped()
 {
     int v0; // r10
     int v1; // r5
@@ -12882,7 +12882,7 @@ char *__fastcall sub_800B7D0(int a1)
 
 
 // 0x800b7e8
-char *__fastcall sub_800B7E8(int a1)
+char *__fastcall battle_incrementNaviStatsByte18Saturating(int a1)
 {
     int v1; // r0
     char v2; // r2

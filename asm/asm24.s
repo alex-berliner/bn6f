@@ -681,9 +681,9 @@ unk_808C634:
 // symdb: Teleports the overworld player to a fixed per-map position, facing direction, and animation from a lookup table.
 // symdb: () -> r0 = 0; repositions player object and shared overworld-player state, sets animation id in
 // symdb: eStruct200ace0 and EVENT_1719
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C644.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_teleportPlayerToMapEntrySpot.yaml
 	thumb_local_start
-sub_808C644:
+ow_teleportPlayerToMapEntrySpot:
 	push {r4,r5,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_GameStatePtr]
@@ -990,7 +990,7 @@ sub_808C948:
 	mov r0, #0
 	bl camera_writeUnk03_14_80301b2
 	mov r0, #1
-	bl sub_8089244
+	bl submenu_loadSelectedEntryGfx
 	add r4, #1
 	strb r4, [r5, #1]
 loc_808C966:
@@ -1107,7 +1107,7 @@ byte_808CA48:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_808C644
+	thumb_func_end ow_teleportPlayerToMapEntrySpot
 
 // symdb: Initializer for the Beast+ special-scenario mode: wipes its work buffer, clears related story flags, restores player control, and starts the scene's sound.
 // symdb: () -> r0 = 0; flags clobbered; zeroes 0x98 bytes at [dword_808CA44], sets state byte 0x3 = 0x20,

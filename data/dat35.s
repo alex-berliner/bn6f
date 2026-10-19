@@ -145,7 +145,7 @@ loc_812F126::
 	bne locret_812F18C
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F29C // =0xffffffff 
@@ -224,7 +224,7 @@ loc_812F1C0::
 	bne loc_812F290
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F29C // =0xffffffff 
@@ -379,7 +379,7 @@ loc_812F2FA::
 	bne locret_812F38C
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F51C // =0xffffffff 
@@ -480,7 +480,7 @@ loc_812F3C0::
 	bne locret_812F490
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F51C // =0xffffffff 
@@ -614,7 +614,7 @@ loc_812F4C4::
 	bne locret_812F518
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F51C // =0xffffffff 
@@ -703,7 +703,7 @@ loc_812F572::
 	bne locret_812F624
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F7BC // =0xffffffff 
@@ -866,7 +866,7 @@ loc_812F6BE::
 loc_812F6C6::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812F7BC // =0xffffffff 
@@ -1023,7 +1023,7 @@ loc_812F7F4::
 loc_812F7FC::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_812F8F0 // =0xff 
@@ -1097,7 +1097,7 @@ loc_812F884::
 	bl sub_81306F0
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_812F8F0 // =0xff 
@@ -1199,7 +1199,7 @@ loc_812F948::
 	bne locret_812F9FC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812FA00 // =0xffffffff 
@@ -1255,7 +1255,7 @@ loc_812F9A6::
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_8130250
-	bl sub_81304BC
+	bl t4_refreshChipPackBuffer
 	bl sub_81304EC
 	bl sub_813017C
 	b loc_812F9FA
@@ -1315,7 +1315,7 @@ loc_812FA3C::
 	bne locret_812FAE0
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812FC20 // =0xffffffff 
@@ -1429,7 +1429,7 @@ loc_812FB10::
 	cmp r0, #0x32 
 	bne loc_812FB2A
 	mov r0, #6
-	bl sub_811A968
+	bl sprite_makeUnscalableByIndex
 	mov r0, #0
 	strh r0, [r5,#0x2e]
 	b loc_812FB5A
@@ -1474,7 +1474,7 @@ loc_812FB6E::
 	b loc_812FB7E
 loc_812FB72::
 	mov r0, r1
-	bl sub_8120DAC
+	bl petNaviCheckElementChipLimits
 	tst r0, r0
 	bne loc_812FB6E
 	mov r1, #0x20 
@@ -1486,7 +1486,7 @@ loc_812FB7E::
 loc_812FB86::
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812FC20 // =0xffffffff 
@@ -1833,7 +1833,7 @@ loc_812FE3A::
 	bne locret_812FEEC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812FF94 // =0xffffffff 
@@ -1948,7 +1948,7 @@ loc_812FF1A::
 	bne locret_812FF92
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_812FF94 // =0xffffffff 

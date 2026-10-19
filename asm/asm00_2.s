@@ -1105,9 +1105,9 @@ indexByActorTypeAndAIIdxThenDispatch_800F420:
 // symdb: Ray-casts along the battle object's facing direction until a panel whose status flags match a mask is found, or it walks off the field.
 // symdb: (r0 = starting column, r1 = row, r2 = panel-status mask) -> r0 = 1 if a matching panel was hit,
 // symdb: 0 if the scan left the 6x3 grid; sets flags via tst/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F436.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scanPanelsTowardFront.yaml
 	thumb_local_start
-sub_800F436:
+battle_scanPanelsTowardFront:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #4
 	str r2, [sp]
@@ -1136,7 +1136,7 @@ loc_800F466:
 loc_800F468:
 	add sp, sp, #4
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800F436
+	thumb_func_end battle_scanPanelsTowardFront
 
 // symdb: Returns a battle object's DirectionFlip for its panel-landing/emerge animation, forced to 0 when the battle's panel column pattern is one of three special layouts.
 // symdb: (implicit r5 = battle object ptr) -> r0 = DirectionFlip byte, or 0 if panel pattern is
@@ -1276,9 +1276,9 @@ dword_800F530:
 // symdb: Validates battle-grid coordinates, then reports whether that panel carries flag 0x10 while lacking flags 0x3800000 — used by battle-object AI before stepping onto a panel.
 // symdb: (r0 = column (1-based), r1 = row (1-based)) -> r0 = 1 if panel is valid and passes the flag
 // symdb: test, else 0; flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F534.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_isPanelStandable.yaml
 	thumb_local_start
-sub_800F534:
+object_isPanelStandable:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -1298,14 +1298,14 @@ dword_800F554:
 	.word 0x10
 dword_800F558:
 	.word 0x3800000
-	thumb_func_end sub_800F534
+	thumb_func_end object_isPanelStandable
 
 // symdb: Tests whether the panel at (col,row) satisfies the panel-flag requirements tied to the current battle object's facing direction, returning 1 if OK.
 // symdb: (r0 = column, r1 = row) -> r0 = 1 if the panel passes the direction's required/forbidden flag
 // symdb: masks, 0 if coords invalid; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F55C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_checkPanelForDirection.yaml
 	thumb_local_start
-sub_800F55C:
+ai_checkPanelForDirection:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -1331,7 +1331,7 @@ off_800F584:
 byte_800F588:
 	.byte 0x30, 0x0, 0x0, 0x0, 0x0, 0x0, 0x80, 0x3, 0x10, 0x0, 0x0, 0x0, 0x20
 	.byte 0x0, 0x80, 0x3
-	thumb_func_end sub_800F55C
+	thumb_func_end ai_checkPanelForDirection
 
 	thumb_local_start
 sub_800F598:
@@ -1596,9 +1596,9 @@ byte_800F758:
 // symdb: (r0 = target panel column, r1 = target panel row; object in r5) -> r0 = written ZVelocity value
 // symdb: (8 if target is closer than ~8px); sets
 // symdb: oBattleObject_DirectionAngle/XVelocity/YVelocity/ZVelocity
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F768.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_launchObjectAtPanel.yaml
 	thumb_local_start
-sub_800F768:
+battle_launchObjectAtPanel:
 	push {lr}
 	bl object_getCoordinatesForPanels // (int a1, int a2) -> (int n1, int n2)
 	ldrh r2, [r5,#oBattleObject_X16]
@@ -1651,7 +1651,7 @@ loc_800F7C4:
 	str r0, [r5,#oBattleObject_YVelocity]
 	mov r0, #8
 	pop {pc}
-	thumb_func_end sub_800F768
+	thumb_func_end battle_launchObjectAtPanel
 
 	thumb_local_start
 sub_800F7D4:
@@ -2354,9 +2354,9 @@ byte_800FCD5:
 // symdb: Reads two stats bytes from a battle object and returns the chip's class via the two-table chip class lookup.
 // symdb: (r0 = battle object / battle entity) -> r0 = chip class byte (from chip_class_lookup_800FC9E),
 // symdb: r1 = flag saying which class table was used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FCE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getChipClassFromBattleObject.yaml
 	thumb_local_start
-sub_800FCE4:
+battle_getChipClassFromBattleObject:
 	push {lr}
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -2366,7 +2366,7 @@ sub_800FCE4:
 	pop {r1}
 	bl chip_class_lookup_800FC9E
 	pop {pc}
-	thumb_func_end sub_800FCE4
+	thumb_func_end battle_getChipClassFromBattleObject
 
 	thumb_func_start sub_800FCFC
 sub_800FCFC:
@@ -3564,9 +3564,9 @@ get_sqDistToPoint:
 
 // symdb: Turns a battle object invisible: sets its flashing/invisibility countdown, raises the invisibility flag, and plays sound effect 0x93.
 // symdb: (r5 = battle object, r4 = invisibility/flashing timer) -> r0 = 0; flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010474.yaml
-	thumb_func_start sub_8010474
-sub_8010474:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startObjectInvisible.yaml
+	thumb_func_start battle_startObjectInvisible
+battle_startObjectInvisible:
 	push {lr}
 	ldr r2, [r5,#oBattleObject_CollisionDataPtr]
 	strh r4, [r2,#oCollisionData_FlashingInvisTimer]
@@ -3575,7 +3575,7 @@ sub_8010474:
 	mov r0, #0x93
 	bl PlaySoundEffect
 	pop {pc}
-	thumb_func_end sub_8010474
+	thumb_func_end battle_startObjectInvisible
 
 	thumb_func_start sub_8010488
 sub_8010488:
@@ -9130,9 +9130,9 @@ loc_8012BE4:
 // symdb: Returns 1 if the given chip qualifies for a form-based (CrossBeast-range, element-0xa) chip boost/permission during battle, else 0.
 // symdb: (r0 = chip ID, r1 = skip-state-check flag; r5 = battle context) -> r0 = 1 if chip qualifies,
 // symdb: else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012BE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_isChipEligibleForCrossBoost.yaml
 	thumb_local_start
-sub_8012BE8:
+battle_isChipEligibleForCrossBoost:
 	push {r6,r7,lr}
 	mov r7, #0
 	mov r6, r0
@@ -9170,7 +9170,7 @@ loc_8012C2E:
 loc_8012C30:
 	mov r0, r7
 	pop {r6,r7,pc}
-	thumb_func_end sub_8012BE8
+	thumb_func_end battle_isChipEligibleForCrossBoost
 
 // symdb: Merge two flag bits (0x4000 and 0x2000) into a value, selected by bits 2 and 4 of a mask argument
 // symdb: u32 sub_8012C34(u32 value /*r0*/, u32 selectorBits /*r1*/); returns value | 0x4000 (if
@@ -11953,7 +11953,7 @@ nullsub_45:
 sub_8013EC2:
 	push {r4,lr}
 	ldr r4, off_80141BC // =0x12c 
-	bl sub_8010474
+	bl battle_startObjectInvisible
 	pop {r4,pc}
 	thumb_func_end sub_8013EC2
 
@@ -11989,7 +11989,7 @@ sub_8013EE6:
 sub_8013EF0:
 	push {r4,lr}
 	ldr r4, off_80141C0 // =0x258 
-	bl sub_8010474
+	bl battle_startObjectInvisible
 	pop {r4,pc}
 	thumb_func_end sub_8013EF0
 
@@ -12074,7 +12074,7 @@ off_8013F70:
 	.word nullsub_46+1
 	.word sub_8013F82+1
 	.word sub_8013F8C+1
-	.word sub_8013F96+1
+	.word battle_incrementNaviStatsCounter+1
 	thumb_func_end handlePanelDamage_8013F1E
 
 // symdb: Empty do-nothing stub that returns immediately to the caller.
@@ -12104,9 +12104,9 @@ sub_8013F8C:
 // symdb: Increments a counter byte (offset 0x18) in the NaviStats record of the navi a battle object represents, saturating at 7.
 // symdb: (r0 = battle object pointer) -> r0 = new counter value (unchanged if already >7); flags set by
 // symdb: cmp r0,#7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013F96.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_incrementNaviStatsCounter.yaml
 	thumb_local_start
-sub_8013F96:
+battle_incrementNaviStatsCounter:
 	push {lr}
 	mov r1, #0x18
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -12118,7 +12118,7 @@ sub_8013F96:
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 locret_8013FAC:
 	pop {pc}
-	thumb_func_end sub_8013F96
+	thumb_func_end battle_incrementNaviStatsCounter
 
 // symdb: Rolls a d8 against a battle object's navi stat byte 0x11, returning 1 (success) if the roll is within the stat value.
 // symdb: int battle_RollNaviStatChance(void *battleObj /* r4 */); -> r0 = 1 on success, 0 on fail; sets
@@ -13263,7 +13263,7 @@ off_80146B8:
 	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_801478C+1
 	.word battle_setupNoCustomPlusObjectCollision+1
-	.word sub_801479C+1
+	.word battle_applySuperArmorInvulnerability+1
 	.word sub_80147B2+1
 	thumb_func_end sub_801469C
 
@@ -13387,9 +13387,9 @@ sub_801478C:
 
 // symdb: Grants the current battle object SuperArmor (no flinch) and effectively permanent invulnerability.
 // symdb: (object in implicit current-object slot / r0 unused) -> void; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801479C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applySuperArmorInvulnerability.yaml
 	thumb_local_start
-sub_801479C:
+battle_applySuperArmorInvulnerability:
 	push {r7,lr}
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
@@ -13398,7 +13398,7 @@ sub_801479C:
 	bl object_setInvulnerableTime
 	bl sub_802D310
 	pop {r7,pc}
-	thumb_func_end sub_801479C
+	thumb_func_end battle_applySuperArmorInvulnerability
 
 	thumb_local_start
 sub_80147B2:
@@ -16790,9 +16790,9 @@ byte_80161B4:
 // symdb: Walks column-by-column forward from a battle object, probing rows in a per-row priority order, and returns the coordinates of the first panel whose status flags contain the object's alliance-specific mask.
 // symdb: (r0..? = battle object in r5) -> r0 = x of first matching panel (0 if none/off-field), r1 = y
 // symdb: from priority table, r2 = side sign ((PanelX-x)>=0 ^ Alliance); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016218.yaml
-	thumb_func_start sub_8016218
-sub_8016218:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scanForwardForFlaggedPanel.yaml
+	thumb_func_start battle_scanForwardForFlaggedPanel
+battle_scanForwardForFlaggedPanel:
 	push {r4,lr}
 	sub sp, sp, #0x10
 	bl object_getFrontDirection // () -> int
@@ -16873,7 +16873,7 @@ byte_8016298:
 	.word 0x10000
 byte_8016324:
 	.byte 0x0, 0x0, 0x80, 0x1, 0x0, 0x0, 0x80, 0x2
-	thumb_func_end sub_8016218
+	thumb_func_end battle_scanForwardForFlaggedPanel
 
 	thumb_func_start sub_801632C
 sub_801632C:
@@ -20551,7 +20551,7 @@ loc_8017EA2:
 	add r1, r1, r3
 	mov r6, r0
 	mov r7, r1
-	bl sub_800F55C
+	bl ai_checkPanelForDirection
 	beq loc_8017F08
 	b loc_8017EE6
 loc_8017EC8:
@@ -20567,7 +20567,7 @@ loc_8017EC8:
 	add r1, r1, r3
 	mov r6, r0
 	mov r7, r1
-	bl sub_800F534
+	bl object_isPanelStandable
 	beq loc_8017F08
 loc_8017EE6:
 	mov r1, #0x1c
@@ -20666,10 +20666,10 @@ loc_8017F8E:
 	ldrb r2, [r5,#oBattleObject_DirectionAngle]
 	cmp r2, #0
 	bne loc_8017FB6
-	bl sub_800F534
+	bl object_isPanelStandable
 	b loc_8017FBA
 loc_8017FB6:
-	bl sub_800F55C
+	bl ai_checkPanelForDirection
 loc_8017FBA:
 	beq loc_8017FC6
 	mov r0, r6
@@ -20826,7 +20826,7 @@ sub_80180A8:
 	ldrb r1, [r5,#oBattleObject_ContactOffsetY]
 	strb r0, [r5,#oBattleObject_FuturePanelX]
 	strb r1, [r5,#oBattleObject_FuturePanelY]
-	bl sub_800F768
+	bl battle_launchObjectAtPanel
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
 	mov r0, #0xd
 	add r0, #0xff
@@ -23792,7 +23792,7 @@ locret_801A71E:
 // symdb: When a battle object receives collision event 0xF6, raises two of its navi battle stats (offsets 0x18 and 0x19) by 2 each, capped at 7, then runs a follow-up handler.
 // symdb: void sub_801A720(BattleObject* obj /* r5 */); preserves r4/r6/r7, clobbers r0-r3 and lr, and
 // symdb: leaves C/V set from the final comparison (the event-type cmp on the early-exit path, the cap
-// symdb: check or sub_801A77A otherwise)
+// symdb: check or battle_applyPanelEventF6Status otherwise)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buffTwoStatsPlus2OnEventF6_801A720.yaml
 	thumb_local_start
 battle_buffTwoStatsPlus2OnEventF6_801A720:
@@ -23820,7 +23820,7 @@ loc_801A73A:
 loc_801A74E:
 	mov r1, #0x19
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_801A77A
+	bl battle_applyPanelEventF6Status
 locret_801A758:
 	pop {r4,pc}
 	thumb_func_end battle_buffTwoStatsPlus2OnEventF6_801A720
@@ -23845,7 +23845,7 @@ battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A:
 	mov r0, #7
 loc_801A772:
 	strb r0, [r3,#oAIData_CounterHitChain]
-	bl sub_801A77A
+	bl battle_applyPanelEventF6Status
 locret_801A778:
 	pop {r4,pc}
 	thumb_func_end battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A
@@ -23853,9 +23853,9 @@ locret_801A778:
 // symdb: Per-frame panel-event handler: when a battle object stands on the 0xF6 panel type, starts a 150-frame status via flag 0x8, blinds it (flag 0x20, 1200-frame blind timer) unless its object ID is in a specific 12-entry range, then consumes the event.
 // symdb: (r0 = battle object, r5 assumed = same object base) -> r0 = 0 from object_setFlag2 / event
 // symdb: consumed; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A77A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyPanelEventF6Status.yaml
 	thumb_local_start
-sub_801A77A:
+battle_applyPanelEventF6Status:
 	push {r4,lr}
 	ldr r4, [r5,#oBattleObject_CollisionDataPtr]
 	mov r1, #0xa4
@@ -23898,7 +23898,7 @@ dword_801A7C4:
 	.word 0x173
 off_801A7C8:
 	.word 0x4B0
-	thumb_func_end sub_801A77A
+	thumb_func_end battle_applyPanelEventF6Status
 
 	thumb_func_start sub_801A7CC
 sub_801A7CC:
@@ -27112,7 +27112,7 @@ off_801BF04:
 	.word sub_801D450+1
 	.word sub_801D514+1
 	.word sub_801D548+1
-	.word sub_801D590+1
+	.word battle_queueCounterDigitGfx+1
 	.word sub_801D71A+1
 	thumb_func_end battle_dispatchFlaggedUpdates_801BEE0
 
@@ -27162,7 +27162,7 @@ off_801BF88:
 	.word sub_801D1F6+1
 	.word battle_drawOrderBGSelectionArrows_801C640+1
 	.word sub_801D2A4+1
-	.word sub_801D47A+1
+	.word battle_drawPlayerSideSpriteSet+1
 	.word nullsub_58+1
 	.word sub_801D564+1
 	.word sub_801D65C+1
@@ -30105,9 +30105,9 @@ locret_801D478:
 // symdb: Uploads a two-frame 2-tile graphic to OBJ VRAM and queues three OAM sprites (one 16x16, two 32x32 with one h-flipped) anchored horizontally to the player-side battle entity.
 // symdb: (r5 = battle object ptr, field +0x36 halfword = state; r10 = toolkit) -> void; queues GFX + OAM,
 // symdb: no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D47A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawPlayerSideSpriteSet.yaml
 	thumb_local_start
-sub_801D47A:
+battle_drawPlayerSideSpriteSet:
 	push {r4-r6,lr}
 	ldrh r0, [r5,#0x36]
 	mov r1, #1
@@ -30181,7 +30181,7 @@ off_801D50C:
 	.word dword_801D510
 dword_801D510:
 	.word 0x10300
-	thumb_func_end sub_801D47A
+	thumb_func_end battle_drawPlayerSideSpriteSet
 
 	thumb_local_start
 sub_801D514:
@@ -30257,9 +30257,9 @@ dword_801D58C:
 
 // symdb: Queues VRAM tile graphics rendering a 3-digit BCD counter from the player's battle entity into the battle UI tile area.
 // symdb: (r10 = battle toolkit) -> r0 = clobbered; queues GFX transfers to VRAM 0x6017680-0x6017780
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D590.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueCounterDigitGfx.yaml
 	thumb_local_start
-sub_801D590:
+battle_queueCounterDigitGfx:
 	push {r4,r6,r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -30324,7 +30324,7 @@ loc_801D5FA:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 locret_801D618:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_801D590
+	thumb_func_end battle_queueCounterDigitGfx
 
 	thumb_local_start
 sub_801D61A:
@@ -31288,9 +31288,9 @@ sub_801DD7C:
 
 // symdb: Queues a fixed batch of four graphics transfer requests (two VRAM tiles blocks, one palette/buffer block, one small block), sets request bit 8 in the eStruct2035280 request dword, and dispatches pending transfers.
 // symdb: () -> void; r0 clobbered as scratch for the bit mask and dispatch id
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DD88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueGfxBatchAndDispatch.yaml
 	thumb_local_start
-sub_801DD88:
+sprite_queueGfxBatchAndDispatch:
 	push {lr}
 	ldr r0, off_801DDA0 // =off_801DDA4 
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void
@@ -31316,7 +31316,7 @@ off_801DDA4:
 	.word 0x6016D80
 	.word 0x80
 	.word 0x0
-	thumb_func_end sub_801DD88
+	thumb_func_end sprite_queueGfxBatchAndDispatch
 
 // symdb: Small wrapper that issues one fixed chatbox/window setup call with hardcoded dimensions (6, 0, 3, 0, 18, 2) and then a follow-up animate/wait call (0x10, 4).
 // symdb: void sub_801DDD8(void); // caller's r4/r5 are used as scratch and restored; returns whatever
@@ -32310,9 +32310,9 @@ off_801E404:
 
 // symdb: Draws a fixed text script (TextScript86F0374) into the battle HUD's text tile area via the text renderer, then flags the HUD for redraw and dispatches that request.
 // symdb: () -> void; sets HUD request bit 0x100000 in eStruct2035280+0x40 and dispatches it
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E408.yaml
-	thumb_func_start sub_801E408
-sub_801E408:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_hudDrawTextScript.yaml
+	thumb_func_start battle_hudDrawTextScript
+battle_hudDrawTextScript:
 	push {r4-r7,lr}
 	ldr r1, off_801E4AC // =eStruct2035280
 	mov r0, #0x32 
@@ -32344,7 +32344,7 @@ off_801E444:
 	.word dword_86B7AE0
 dword_801E448:
 	.word 0x60098E0
-	thumb_func_end sub_801E408
+	thumb_func_end battle_hudDrawTextScript
 
 	thumb_local_start
 sub_801E44C:

@@ -1418,9 +1418,9 @@ loc_813C00C:
 
 // symdb: PET navigator stat handler that zeroes a 16-byte field of the game's per-slot work structure (ptr at toolkit+0x200431c).
 // symdb: () -> (); r0,r1 clobbered by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C020.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_zeroStatSlotBuffer.yaml
 	thumb_local_start
-sub_813C020:
+pet_zeroStatSlotBuffer:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk200431c_Ptr]
@@ -1428,7 +1428,7 @@ sub_813C020:
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_813C020
+	thumb_func_end pet_zeroStatSlotBuffer
 
 // () -> void
 	thumb_func_start sub_813C030
@@ -2939,7 +2939,7 @@ sub_813CBCC:
 	bl checkCurPETNaviStats1FIsOne_813C490
 	cmp r0, #1
 	bne loc_813CBE4
-	bl sub_813C020
+	bl pet_zeroStatSlotBuffer
 	b locret_813CC12
 loc_813CBE4:
 	mov r6, #1

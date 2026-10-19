@@ -182,7 +182,7 @@ int sub_810DAAA()
     if ( !sub_8109708(v2 + *(v0 + 18), *(v0 + 19), *(v0 + 100)) )
     {
         v3 = object_getFlag();
-        v5 = v3 & 0xA000 ? sub_810DB72(v3, 40960, v4) : sub_810DB20(v3, 40960, v4);
+        v5 = v3 & 0xA000 ? battle_pickRandomRelPanelByAlliance(v3, 40960, v4) : sub_810DB20(v3, 40960, v4);
         if ( v5 )
             return sub_810DC00(v5, v6, v7);
     }
@@ -290,7 +290,7 @@ int __fastcall sub_810DB20(int a1, int a2, int a3)
 
 
 // 0x810db72
-int __fastcall sub_810DB72(int a1, int a2, int a3)
+int __fastcall battle_pickRandomRelPanelByAlliance(int a1, int a2, int a3)
 {
     unsigned __int8 *v3; // r5
     int v4; // r6
@@ -6433,7 +6433,7 @@ int sub_8112CA4()
 
 
 // 0x8112cf4
-int sub_8112CF4()
+int battle_spawnObject54OnCountdownEnd()
 {
     int v0; // r5
     int v1; // r7
@@ -8806,7 +8806,7 @@ unsigned __int8 *sub_8114AF0()
     v2 = snakearmAI_panelTest_8114BB4(result[18], result[19], result[22]);
     if ( !v2 )
 LABEL_8:
-        sub_8114BF0(v2, v4, v3);
+        battle_pickRandomPanelByAllianceParam(v2, v4, v3);
     v6 = v2;
     v7 = v4;
     object_reservePanel(v0->panelX, v0->panelY);
@@ -8840,7 +8840,7 @@ int __fastcall snakearmAI_panelTest_8114BB4(int a1, int a2, int a3)
 
 
 // 0x8114bf0
-void __fastcall __noreturn sub_8114BF0(int a1, int a2, int a3)
+void __fastcall __noreturn battle_pickRandomPanelByAllianceParam(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -9582,7 +9582,7 @@ signed int ai_selectAttack()
             v8 = 4;
             *v2 = 4;
         }
-        v11 = sub_81156AC(v8, v10, v9);
+        v11 = ai_selectAdjacentPanel(v8, v10, v9);
         if ( v11 )
         {
             *(v3 + 22) = v11;
@@ -9681,7 +9681,7 @@ int __fastcall __noreturn sub_811567E(int a1, int a2, int a3)
 
 
 // 0x81156ac
-int __fastcall sub_81156AC(int a1, int a2, int a3)
+int __fastcall ai_selectAdjacentPanel(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -10625,7 +10625,7 @@ unsigned int battle_objectClearFlagAndRestartAction()
 
 
 // 0x811648c
-signed int sub_811648C()
+signed int battle_destroyActor()
 {
     int v0; // r5
     signed int result; // r0
@@ -13398,7 +13398,7 @@ int sub_81184EC()
 
 
 // 0x8118510
-int sub_8118510()
+int battle_beastOutTransformUpdate()
 {
     char *v0; // r5
     int v1; // r6
@@ -16061,7 +16061,7 @@ int (*sub_811A640())(void)
     int v2; // r1
 
     if ( sSubmenu.jo_01 == 28 )
-        sub_811A704(28, *(v0 + 6));
+        submenu_showChapterBlurbEntry(28, *(v0 + 6));
     result = *(&dword_811A66C + sSubmenu.unk_02);
     if ( result )
     {
@@ -16115,7 +16115,7 @@ void __fastcall __noreturn sub_811A6DC(int a1, int a2)
 
 
 // 0x811a704
-void __fastcall __noreturn sub_811A704(int a1, int a2)
+void __fastcall __noreturn submenu_showChapterBlurbEntry(int a1, int a2)
 {
     sub_811A718(*(&dword_811A714 + a2), a2);
 }
@@ -16315,7 +16315,7 @@ int __fastcall __noreturn sub_811A940(int a1, int a2)
 
 
 // 0x811a968
-int __fastcall sub_811A968(int a1)
+int __fastcall sprite_makeUnscalableByIndex(int a1)
 {
     getStructFrom2008450(a1);
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
@@ -16607,7 +16607,7 @@ void __noreturn gui_initSpriteWithPosition()
     sprite_setSubEntryPaletteBank_800304A(2);
     sprite_setSubRecordFieldA_8003060(3);
     v0->currState = 4;
-    sub_811AE5C(*&byte_811ADB8[4 * v0->objMemIndex], *&byte_811ADB8[4 * v0->objMemIndex + 2], v0->objMemIndex);
+    sprite_setCoordinatesIfActive(*&byte_811ADB8[4 * v0->objMemIndex], *&byte_811ADB8[4 * v0->objMemIndex + 2], v0->objMemIndex);
     sub_811ADC0();
 }
 
@@ -16684,7 +16684,7 @@ int sub_811AE54()
 
 
 // 0x811ae5c
-int __fastcall sub_811AE5C(int a1, __int16 a2, int a3)
+int __fastcall sprite_setCoordinatesIfActive(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -17154,7 +17154,7 @@ signed int sub_811B594()
         sub_811B71C();
         sub_811B7D4();
         v2 = battle_setupObjectSpriteFromEntry();
-        sub_811B914(v2);
+        sprite_applyStateSpriteTransform(v2);
         *(v0 + 9) = 4;
         result = 0;
         *(v0 + 10) = 0;
@@ -17207,7 +17207,7 @@ int sub_811B620()
 
 
 // 0x811b648
-signed int sub_811B648()
+signed int object_scaleGrowStep()
 {
     int v0; // r5
     int v1; // r2
@@ -17395,7 +17395,7 @@ int sub_811B8C8()
 
 
 // 0x811b914
-int __fastcall sub_811B914(int a1)
+int __fastcall sprite_applyStateSpriteTransform(int a1)
 {
     int v1; // r5
     unsigned int v2; // r3
@@ -17509,12 +17509,12 @@ void __noreturn sub_811B9D8()
         v3 = 0;
     *(v0 + 9) = v3;
     *(v0 + 12) = 6;
-    sub_811BA58();
+    object_updateStateAndSprite();
 }
 
 
 // 0x811ba58
-void sub_811BA58()
+void object_updateStateAndSprite()
 {
     int v0; // r5
 
@@ -18915,7 +18915,7 @@ int sub_811CE64()
 
 
 // 0x811ce88
-int sub_811CE88()
+int object_cycleAnimationTimer()
 {
     int v0; // r5
     int result; // r0
@@ -19116,7 +19116,7 @@ int sub_811D020()
 
 
 // 0x811d058
-int sub_811D058()
+int object_animCycleTimerStep()
 {
     int v0; // r5
     int result; // r0
@@ -19415,7 +19415,7 @@ int sub_811D2E0()
 
 
 // 0x811d2e8
-int __fastcall sub_811D2E8(int a1)
+int __fastcall sprite_unscaleActiveEntry(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -20535,8 +20535,8 @@ void __fastcall __noreturn object_initSpriteObjA1(int a1, int a2)
     sprite_setPallete(0);
     sprite_setSubRecordFieldA_8003060(0);
     sprite_setPriority_8002E14(2);
-    sub_811E51C();
-    sub_811E548();
+    object_randomizeLaneSpawnPos();
+    object_setRandomStateByte();
     v2->currState = 4;
     v2->currAction = 1;
     sub_811E490();
@@ -20580,8 +20580,8 @@ LABEL_12:
     }
     if ( *(v0 + 9) != 2 )
     {
-        sub_811E51C();
-        sub_811E548();
+        object_randomizeLaneSpawnPos();
+        object_setRandomStateByte();
         ++*(v0 + 9);
         goto LABEL_12;
     }
@@ -20602,7 +20602,7 @@ void __noreturn sub_811E510()
 
 
 // 0x811e51c
-signed int sub_811E51C()
+signed int object_randomizeLaneSpawnPos()
 {
     int v0; // r5
     char v1; // r0
@@ -20621,7 +20621,7 @@ signed int sub_811E51C()
 
 
 // 0x811e548
-int sub_811E548()
+int object_setRandomStateByte()
 {
     int v0; // r5
     char v1; // r0
@@ -20787,12 +20787,12 @@ void __noreturn sub_811E6E4()
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
-    sub_811E72C();
+    sprite_resetToCenter();
 }
 
 
 // 0x811e72c
-void __noreturn sub_811E72C()
+void __noreturn sprite_resetToCenter()
 {
     Battle *v0; // r5
 
@@ -20870,12 +20870,12 @@ void __noreturn sub_811E7F8()
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
-    sub_811E840();
+    sprite_updateAtCenter();
 }
 
 
 // 0x811e840
-void __noreturn sub_811E840()
+void __noreturn sprite_updateAtCenter()
 {
     Battle *v0; // r5
 
@@ -22260,7 +22260,7 @@ char (*__fastcall getKeyedTableEntry_811FB84(char (*a1)[32], int a2))[32]
 
 
 // 0x811fca4
-void sub_811FCA4()
+void battle_buildChipPackFromFolderEntriesAltEntry()
 {
     JUMPOUT(&loc_811FCD0);
 }
@@ -23890,7 +23890,7 @@ int __fastcall petNaviTryGiveElementFolder_8120D10(int a1)
         else
         {
             v5 = isFolderSlotInUse_81377EC(0x22u);
-            if ( v5 >= 3 || !v9 && (v6 = v5, v7 = sub_8137890(v5), sub_8120DAC(v7), LOBYTE(v5) = v6, !v8) )
+            if ( v5 >= 3 || !v9 && (v6 = v5, v7 = sub_8137890(v5), petNaviCheckElementChipLimits(v7), LOBYTE(v5) = v6, !v8) )
             {
                 GiveFolder(34);
                 LOBYTE(v5) = *(*(v1 + oToolkit_Unk2001c04_Ptr) + 5) - 1;
@@ -23903,7 +23903,7 @@ int __fastcall petNaviTryGiveElementFolder_8120D10(int a1)
 
 
 // 0x8120dac
-signed int __fastcall sub_8120DAC(int a1)
+signed int __fastcall petNaviCheckElementChipLimits(int a1)
 {
     int v1; // r4
     signed int v2; // r7

@@ -45,7 +45,7 @@ int sub_812C320()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             result = sub_81323B0(v4);
             v5 = result;
             if ( result != -1 )
@@ -125,7 +125,7 @@ int sub_812C3BC()
         else
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -247,7 +247,7 @@ int sub_812C50C()
         return result;
     }
     v4 = sub_803E8F8();
-    v5 = sub_803EF74();
+    v5 = get_eLinkStateUnk38();
     v6 = sub_81323B0(v5);
     if ( v6 != -1 )
     {
@@ -334,7 +334,7 @@ void sub_812C5D0()
         else
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -440,7 +440,7 @@ int sub_812C708()
         if ( !(v2 & 8) || eStruct200BC30_getJumpOffset00() )
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             result = sub_81323B0(v5);
             if ( result != -1 )
             {
@@ -512,7 +512,7 @@ int sub_812C7B4()
         if ( !(v5 & 8) )
         {
             v6 = sub_803E8F8();
-            v7 = sub_803EF74();
+            v7 = get_eLinkStateUnk38();
             result = sub_81323B0(v7);
             v8 = result;
             if ( result != -1 )
@@ -653,7 +653,7 @@ LABEL_14:
         else
         {
             v16 = sub_803E8F8();
-            v17 = sub_803EF74();
+            v17 = get_eLinkStateUnk38();
             v18 = sub_81323B0(v17);
             v19 = v18;
             if ( v18 != -1 )
@@ -783,7 +783,7 @@ int sub_812CA84()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             result = sub_81323B0(v4);
             v5 = result;
             if ( result != -1 )
@@ -875,7 +875,7 @@ int sub_812CB74()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             result = sub_81323B0(v4);
             v5 = result;
             if ( result != -1 )
@@ -989,7 +989,7 @@ int sub_812CC44()
                 *(v0 + 40) = v6;
                 if ( v6 == 50 )
                 {
-                    sub_811A968(6);
+                    sprite_makeUnscalableByIndex(6);
                     *(v0 + 46) = 0;
                 }
                 else if ( v6 < 50 )
@@ -1018,7 +1018,7 @@ int sub_812CC44()
             }
         }
         v11 = sub_803E8F8();
-        v12 = sub_803EF74();
+        v12 = get_eLinkStateUnk38();
         result = sub_81323B0(v12);
         v13 = result;
         if ( result != -1 )
@@ -1264,7 +1264,7 @@ LABEL_23:
         else
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -1355,7 +1355,7 @@ int sub_812CFD4()
         if ( !(v2 & 8) )
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -1453,7 +1453,7 @@ int sub_812D0C0()
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             result = sub_81323B0(v4);
             if ( result != -1 )
             {
@@ -1627,7 +1627,7 @@ void __noreturn sub_812D298()
     v6[12] = 0;
     v6[13] = 0;
     v7 = ZeroFillByEightWords(v1, 128);
-    sub_812D3A8(v7, v8, v9, v10);
+    battle_initChipSearchList(v7, v8, v9, v10);
     sub_812D310();
     sub_812D378();
 }

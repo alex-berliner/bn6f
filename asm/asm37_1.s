@@ -2876,21 +2876,21 @@ off_81431F4:
 // symdb: Returns a pointer to one of the eight Cybercrow crow records (index * 0x14 into byte_2000D20).
 // symdb: (r0 = record index) -> r0 = &byte_2000D20[index * 0x14] (0x14-byte crow record); flags not
 // symdb: meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81431F8.yaml
-	thumb_func_start sub_81431F8
-sub_81431F8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_cybercrowGetCrowRecord.yaml
+	thumb_func_start ow_cybercrowGetCrowRecord
+ow_cybercrowGetCrowRecord:
 	push {r4-r7,lr}
 	ldr r5, off_8143398 // =byte_2000D20 
 	mov r1, #0x14
 	mul r0, r1
 	add r0, r0, r5
 	pop {r4-r7,pc}
-	thumb_func_end sub_81431F8
+	thumb_func_end ow_cybercrowGetCrowRecord
 
 	thumb_func_start sub_8143204
 sub_8143204:
 	push {r4-r7,lr}
-	bl sub_81431F8
+	bl ow_cybercrowGetCrowRecord
 	mov r5, r0
 	bl GetRNG // () -> u32?
 	mov r1, #0x3f 
@@ -2913,7 +2913,7 @@ dword_814321C:
 sub_8143220:
 	push {r4-r7,lr}
 	mov r4, r0
-	bl sub_81431F8
+	bl ow_cybercrowGetCrowRecord
 	mov r5, r0
 	bl GetRNG // () -> u32?
 	mov r1, #0x3f 
@@ -3040,7 +3040,7 @@ loc_81432EC:
 sub_81432FA:
 	push {r4-r7,lr}
 	mov r4, r1
-	bl sub_81431F8
+	bl ow_cybercrowGetCrowRecord
 	mov r5, r0
 	ldrb r0, [r5]
 	cmp r0, #3
@@ -4404,7 +4404,7 @@ byte_8144040:
 sub_8144048:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
-	bl sub_81440AE
+	bl get_groundmanMinigameSkipCondition
 	bne loc_81440A6
 	ldrb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	tst r0, r0
@@ -4449,9 +4449,9 @@ loc_81440A6:
 // symdb: Boolean gate for the Groundman minigame: returns 1 (skip/do nothing) once a PET-menu flag or event flag is set or the player isn't on a minigame map, else 0.
 // symdb: () -> r0 = 1 if any completion/skip condition holds (PET menu flag set, map index 0xFF, event
 // symdb: flag set), else r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81440AE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_groundmanMinigameSkipCondition.yaml
 	thumb_local_start
-sub_81440AE:
+get_groundmanMinigameSkipCondition:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -4471,6 +4471,6 @@ loc_81440D0:
 	.balign 4, 0
 off_81440D4:
 	.word eStruct2001010
-	thumb_func_end sub_81440AE
+	thumb_func_end get_groundmanMinigameSkipCondition
 
 /*For debugging purposes, connect comment at any range!*/

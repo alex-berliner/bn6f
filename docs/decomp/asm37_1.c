@@ -1783,7 +1783,7 @@ unsigned int __fastcall sub_81431C6(int a1, int a2, int a3, int a4)
 
 
 // 0x81431f8
-char *__fastcall sub_81431F8(int a1)
+char *__fastcall ow_cybercrowGetCrowRecord(int a1)
 {
     return &byte_2000D20[20 * a1];
 }
@@ -1796,7 +1796,7 @@ int __fastcall sub_8143204(int a1)
     char v2; // r0
     int result; // r0
 
-    v1 = sub_81431F8(a1);
+    v1 = ow_cybercrowGetCrowRecord(a1);
     GetRNG();
     result = (v2 & 0x3F) + 30;
     *(v1 + 3) = result;
@@ -1812,7 +1812,7 @@ int __fastcall sub_8143220(int a1)
     char v3; // r0
 
     v1 = a1;
-    v2 = sub_81431F8(a1);
+    v2 = ow_cybercrowGetCrowRecord(a1);
     GetRNG();
     *(v2 + 1) = (v3 & 0x3F) + 30;
     return sub_81432FA(v1, 1);
@@ -1925,7 +1925,7 @@ int __fastcall sub_81432FA(int a1, char a2)
     int result; // r0
 
     v2 = a2;
-    v3 = sub_81431F8(a1);
+    v3 = ow_cybercrowGetCrowRecord(a1);
     v4 = v3;
     result = *v3;
     if ( result != 3 )
@@ -2750,7 +2750,7 @@ int sub_8144048()
     int v4; // r2
     int v5; // r3
 
-    sub_81440AE();
+    get_groundmanMinigameSkipCondition();
     if ( v1 )
     {
         if ( byte_2001013 )
@@ -2776,7 +2776,7 @@ int sub_8144048()
 
 
 // 0x81440ae
-BOOL sub_81440AE()
+BOOL get_groundmanMinigameSkipCondition()
 {
     char v0; // zf
     int v1; // r0

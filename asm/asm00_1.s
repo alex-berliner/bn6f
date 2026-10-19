@@ -11135,7 +11135,7 @@ loc_80080FE:
 	ldrh r0, [r1,#oBattleState_PendingBattleEndAction]
 	cmp r0, #0
 	beq loc_8008116
-	bl sub_800AAD6
+	bl battle_endBattleEscaped
 	b locret_80081A2
 loc_8008116:
 	ldrb r0, [r1,#oBattleState_PhaseStepIndex]
@@ -13492,7 +13492,7 @@ off_80091BC:
 	// 0x20
 	.word sub_8009594+1
 	// 0x24
-	.word sub_80095C8+1
+	.word battle_stateNaviCommErrorMsg+1
 dword_80091E4:
 	.word 0xFFFF
 off_80091E8:
@@ -14123,9 +14123,9 @@ locret_80095C6:
 // symdb: Battle state handler that displays a communication-error chatbox script naming the current navi, then advances the battle state once the message finishes.
 // symdb: (r5 = *BattleState) -> r0 = void; sets NZ from tst/tst of init flag / eFlags2009F38 bit 0x80 for
 // symdb: internal branches
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80095C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateNaviCommErrorMsg.yaml
 	thumb_local_start
-sub_80095C8:
+battle_stateNaviCommErrorMsg:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14150,7 +14150,7 @@ locret_80095F4:
 	pop {pc}
 	.balign 4, 0x00
 	.pool
-	thumb_func_end sub_80095C8
+	thumb_func_end battle_stateNaviCommErrorMsg
 
 	thumb_local_start
 sub_800961C:
@@ -14682,7 +14682,7 @@ off_80099B8:
 	.word NULL
 	.word NULL
 	.word NULL
-	.word sub_8009C56+1
+	.word rfu_stepShowNaviCommError+1
 	thumb_func_end battle_dispatchByIndex_80099A4
 
 // symdb: Battle state step that, after a battle is paused mid-introduction, finishes the intro by spawning the type-4 enemy object and enemy objects, plays battle music, then advances BattleState Index_00 from pause intro (4) to either the next state or returns to the chip-select dispatch.
@@ -15054,9 +15054,9 @@ locret_8009C54:
 // symdb: State-machine step that shows the per-navi 'communication error' chatbox message, then waits for the chatbox to close before advancing the enclosing state.
 // symdb: (r5 = task/state struct ptr, implicit) -> r0 = 0; updates state: [r5+3]=4 after queuing the
 // symdb: message, later [r5+1]=4 and [r5+2]=0 once the chatbox flag clears
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009C56.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_stepShowNaviCommError.yaml
 	thumb_local_start
-sub_8009C56:
+rfu_stepShowNaviCommError:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -15088,7 +15088,7 @@ off_8009C8C:
 	.word unk_2035260
 off_8009C90:
 	.word TextScriptCommError87370C0
-	thumb_func_end sub_8009C56
+	thumb_func_end rfu_stepShowNaviCommError
 
 	thumb_local_start
 sub_8009C94:
@@ -17577,9 +17577,9 @@ battle_stateGotoPhase14_800AABC:
 
 // symdb: Ends the battle by jumping the state machine to phase 0x14 and recording result code 2 (escape/draw) in the battle state.
 // symdb: () -> r0 = clobbered; no return value; sets up battle end phase and result byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AAD6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_endBattleEscaped.yaml
 	thumb_local_start
-sub_800AAD6:
+battle_endBattleEscaped:
 	push {r5,lr}
 	bl battle_stateGotoPhase14_800AABC
 	mov r5, r10
@@ -17587,7 +17587,7 @@ sub_800AAD6:
 	mov r0, #2
 	bl setTwoStructs_800A840
 	pop {r5,pc}
-	thumb_func_end sub_800AAD6
+	thumb_func_end battle_endBattleEscaped
 
 	thumb_func_start sub_800AAE8
 sub_800AAE8:
@@ -19555,7 +19555,7 @@ off_800B7B8:
 	.word off_800B7BC
 off_800B7BC:
 	.word sub_800B7D0+1
-	.word sub_800B7E8+1
+	.word battle_incrementNaviStatsByte18Saturating+1
 	.word sub_800B800+1
 	.word nullsub_2+1
 	.word sub_800B80E+1
@@ -19578,9 +19578,9 @@ loc_800B7E0:
 
 // symdb: Increments the battle navi's NaviStats byte 0x18 by one, clamped to a maximum of 7.
 // symdb: (r0 = battle object pointer) -> r0 = new byte value; flags from the cmp/set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B7E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_incrementNaviStatsByte18Saturating.yaml
 	thumb_local_start
-sub_800B7E8:
+battle_incrementNaviStatsByte18Saturating:
 	push {lr}
 	mov r1, #0x18
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -19592,7 +19592,7 @@ loc_800B7F8:
 	mov r1, #0x18
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	pop {pc}
-	thumb_func_end sub_800B7E8
+	thumb_func_end battle_incrementNaviStatsByte18Saturating
 
 	thumb_local_start
 sub_800B800:

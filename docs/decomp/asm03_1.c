@@ -101,7 +101,7 @@ void __noreturn battle_resetState_8033AC4()
 
 
 // 0x8033adc
-void __noreturn sub_8033ADC()
+void __noreturn battle_stepBattleStartOverlay()
 {
     sprite_queueOamByFrameIndex_8033B80(1);
 }
@@ -7241,7 +7241,7 @@ int sub_803A104()
 
 
 // 0x803a186
-void __noreturn sub_803A186()
+void __noreturn chatbox_waitStepUpdateEntities()
 {
     int v0; // r5
     int v1; // r4
@@ -7386,7 +7386,7 @@ void __noreturn sub_803A2CC()
         *palette_3001960 = 10374;
         *(v0 + 2) = 4;
     }
-    sub_803A186();
+    chatbox_waitStepUpdateEntities();
 }
 
 
@@ -7405,7 +7405,7 @@ int __noreturn sub_803A334()
     v3 = v2[6] - 48;
     v2[6] = v3;
     if ( v3 != 113 )
-        sub_803A186();
+        chatbox_waitStepUpdateEntities();
     sub_803B91C(6);
     call_sub_3005EBA(0, 0, 2, 0);
     call_sub_3005EBA(0, 0, 3, 0);
@@ -8036,7 +8036,7 @@ void __noreturn sub_803A9CC()
 
 
 // 0x803a9e6
-void __fastcall sub_803A9E6(int a1, int a2, int a3)
+void __fastcall submenu_chipSelectFrameUpdate(int a1, int a2, int a3)
 {
     signed int v3; // r0
     char v4; // zf
@@ -8157,7 +8157,7 @@ signed int __fastcall sub_803AAD8(int a1, int a2, int a3)
 
 
 // 0x803aaf6
-void __fastcall __noreturn sub_803AAF6(int a1, int a2, int a3)
+void __fastcall __noreturn submenu_toggleMode(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -8404,7 +8404,7 @@ void __noreturn sub_803ACB2()
 
 
 // 0x803acc6
-void __fastcall sub_803ACC6(int a1, int a2, int a3)
+void __fastcall submenu_guestLibraryFrameUpdate(int a1, int a2, int a3)
 {
     signed int v3; // r0
     char v4; // zf
@@ -11273,7 +11273,7 @@ int __fastcall sub_803CEF8(int a1)
 
 
 // 0x803cf10
-int sub_803CF10()
+int pet_recalcCurrentNaviHp()
 {
     int v0; // r10
     int v1; // r4
@@ -13511,7 +13511,7 @@ signed int sub_803EC54()
     {
         v2 = 2;
         sub_803E8DC();
-        v4 = sub_803EF74();
+        v4 = get_eLinkStateUnk38();
         sub_803F118(v4, v5);
         sub_803EFFC();
     }
@@ -13789,7 +13789,7 @@ void __fastcall sub_803EF60(int a1)
 
 
 // 0x803ef74
-u32 sub_803EF74()
+u32 get_eLinkStateUnk38()
 {
     return sCamera.unk_88;
 }

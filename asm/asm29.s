@@ -1914,7 +1914,7 @@ loc_80A5C22:
 loc_80A5C48:
 	cmp r4, #2
 	bne loc_80A5C62
-	bl sub_80A5D48
+	bl sprite_initFromObject
 	cmp r0, #1
 	beq loc_80A5C62
 	mov r0, #0
@@ -2078,9 +2078,9 @@ off_80A5D38:
 // symdb: Initializes a sprite work struct from an object's sprite fields and starts its animation (no shadow), returning 1 if a precondition check fails.
 // symdb: (r5 = sprite work struct, r6 = source object, r0 = arg to sub_80A5D80) -> r0 = 0 on success, 1
 // symdb: if sub_80A5D80 returned nonzero; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5D48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initFromObject.yaml
 	thumb_local_start
-sub_80A5D48:
+sprite_initFromObject:
 	push {r4-r7,lr}
 	bl sub_80A5D80
 	mov r1, r0
@@ -2106,7 +2106,7 @@ sub_80A5D48:
 	mov r0, #0
 locret_80A5D7E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5D48
+	thumb_func_end sprite_initFromObject
 
 	thumb_local_start
 sub_80A5D80:
@@ -5757,7 +5757,7 @@ off_80A7E2C:
 	.word battleObject_aiBeastOutStage_80A7EDA+1
 	.word sub_80A7F58+1
 	.word sub_80A8006+1
-	.word sub_80A800A+1
+	.word sprite_restartAnimation+1
 	thumb_func_end battleObject_beastSP_battlerUpdate_80A7E14
 
 // symdb: Stub that zeros a battle object's CurAction byte (offset 0x9).
@@ -6043,9 +6043,9 @@ sub_80A8006:
 // symdb: Restarts an object's sprite animation: re-selects the animation index stored in the object, reloads its animation frame data, and clears the animation state counters.
 // symdb: (r7 = ptr to object/sprite state struct, r5 = ptr to related object struct) -> r0 = 0 discarded;
 // symdb: no flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A800A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_restartAnimation.yaml
 	thumb_local_start
-sub_80A800A:
+sprite_restartAnimation:
 	push {r4-r7,lr}
 	ldrb r0, [r7,#3]
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -6055,7 +6055,7 @@ sub_80A800A:
 	mov r0, #0
 	strb r0, [r5,#9]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A800A
+	thumb_func_end sprite_restartAnimation
 
 	thumb_local_start
 sub_80A8020:
@@ -6986,7 +6986,7 @@ off_80A8800:
 off_80A8804:
 	.word sub_80A8814+1
 	.word sub_80A8848+1
-	.word sub_80A8860+1
+	.word ow_clearEventFlagAndFreeObject+1
 off_80A8810:
 	.word unk_2011A90
 	thumb_func_end sub_80A87F0
@@ -7032,15 +7032,15 @@ loc_80A8858:
 // symdb: Termination routine for an overworld map object: clears story flag EVENT_5E0, then releases the object's slot.
 // symdb: (r0 = overworld map object pointer, passed through to FreeOverworldMapObject) -> r0 = unchanged
 // symdb: (FreeOverworldMapObject result); no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8860.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_clearEventFlagAndFreeObject.yaml
 	thumb_local_start
-sub_80A8860:
+ow_clearEventFlagAndFreeObject:
 	push {lr}
 	movflag EVENT_5E0
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	bl FreeOverworldMapObject
 	pop {pc}
-	thumb_func_end sub_80A8860
+	thumb_func_end ow_clearEventFlagAndFreeObject
 
 	thumb_func_start sub_80A8870
 sub_80A8870:
@@ -7334,7 +7334,7 @@ off_80A8AB0:
 sub_80A8AB4:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
-	bl sub_81431F8
+	bl ow_cybercrowGetCrowRecord
 	mov r7, r0
 	ldr r0, [r7,#8]
 	ldr r1, [r7,#0xc]
@@ -7446,7 +7446,7 @@ sub_80A8B4C:
 	str r0, [r5,#0x14]
 	bl ow_refreshObjectSpritePriority
 	bl sub_80A8C7C
-	bl sub_80A8CB8
+	bl sprite_changeAnimation
 	bl sub_80A8D7C
 loc_80A8BA8:
 	bl sprite_update
@@ -7485,7 +7485,7 @@ loc_80A8BD8:
 loc_80A8BEC:
 	bl ow_refreshObjectSpritePriority
 	bl sub_80A8C7C
-	bl sub_80A8CB8
+	bl sprite_changeAnimation
 	bl sub_80A8D7C
 loc_80A8BFC:
 	bl sprite_update
@@ -7593,9 +7593,9 @@ ow_refreshObjectSpritePriority:
 
 // symdb: Changes an object's sprite animation to a new index, reloading animation data only when the index actually differs from the current one.
 // symdb: (r0 = new animation index; r5 = sprite slot pointer) -> r0 = undefined; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8CB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_changeAnimation.yaml
 	thumb_local_start
-sub_80A8CB8:
+sprite_changeAnimation:
 	push {r4-r7,lr}
 	ldrb r1, [r5,#7]
 	cmp r0, r1
@@ -7605,7 +7605,7 @@ sub_80A8CB8:
 	bl sprite_loadAnimationData // () -> void
 locret_80A8CCA:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A8CB8
+	thumb_func_end sprite_changeAnimation
 
 // symdb: Cybercrow map object wobble: when the record's countdown at +0x02 expires, one GetRNG % 0x60 << 8 and one GetRNG & 7 (sign: < 4 negates) pick a heading change added to the record's +0x04; then sub_8143220.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8CCC.yaml
@@ -10469,7 +10469,7 @@ off_80AA1F4:
 	.word sub_80AA204+1
 	.word sub_80AA248+1
 	.word sub_80AA282+1
-	.word sub_80AA2A8+1
+	.word object_waitTimerUpdate+1
 	thumb_func_end sub_80AA1E0
 
 	thumb_local_start
@@ -10557,9 +10557,9 @@ loc_80AA2A2:
 // symdb: Per-frame object update that counts down a delay timer, then on expiry resets the object's state, restarts its animation, and restores saved values before updating the sprite.
 // symdb: (object in r5, no register args) -> void; decrements word at +0x24, on zero writes state byte
 // symdb: [r5]=3, anim slot byte +8=4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA2A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_waitTimerUpdate.yaml
 	thumb_local_start
-sub_80AA2A8:
+object_waitTimerUpdate:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x24]
 	sub r0, #1
@@ -10582,7 +10582,7 @@ loc_80AA2D0:
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80AA2A8
+	thumb_func_end object_waitTimerUpdate
 
 // symdb: Battle-object sprite-state-3 dispatcher: jumps to the init/update/done handler picked by the selector byte at [obj+8].
 // symdb: void sub_80AA2D8(void /* r5 = battle object */);

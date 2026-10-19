@@ -74,7 +74,7 @@ int t4_sceneInit()
 	sub_8130208();
 	sub_813064C();
 	sub_8130810();
-	sub_81304BC();
+	t4_refreshChipPackBuffer();
 	sub_81304EC();
 	*(v0 + 23) = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
 	*(v0 + 24) = v8;
@@ -261,7 +261,7 @@ void __noreturn sub_8130370()
 		if ( v5 != v1[12] )
 		{
 			v1[12] = v5;
-			sub_81304BC();
+			t4_refreshChipPackBuffer();
 		}
 	}
 	sub_81304EC();
@@ -328,7 +328,7 @@ void sub_81304A4()
 
 
 // 0x81304bc
-void sub_81304BC()
+void t4_refreshChipPackBuffer()
 {
 	int v0; // r0
 	int v1; // r1
@@ -571,7 +571,7 @@ signed int __fastcall sub_81307BC(int a1)
 	}
 	else
 	{
-		result = sub_8120DAC(v2);
+		result = petNaviCheckElementChipLimits(v2);
 		if ( !result )
 			return result;
 		chatbox_runScript_803FD9C_on_eTextScript201BA20(63);
@@ -670,7 +670,7 @@ void sub_813096C()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			v7 = v6;
 			if ( v6 != -1 )
@@ -750,7 +750,7 @@ void __noreturn e_linkMatchObjectUpdate()
 	else
 	{
 		v4 = sub_803E8F8();
-		v5 = sub_803EF74();
+		v5 = get_eLinkStateUnk38();
 		v6 = sub_81323B0(v5);
 		v7 = v6;
 		if ( v6 != -1 )
@@ -802,7 +802,7 @@ LABEL_27:
 					{
 						JoypadKeyPressed();
 						if ( !v17 )
-							sub_8131768(v14, v15, v16);
+							e_linkMatchObjectStateExit(v14, v15, v16);
 					}
 				}
 				else
@@ -862,7 +862,7 @@ void __noreturn sub_8130B30()
 LABEL_19:
 			sub_8131570();
 		v4 = sub_803E8F8();
-		v5 = sub_803EF74();
+		v5 = get_eLinkStateUnk38();
 		v6 = sub_81323B0(v5);
 		if ( v6 != -1 )
 		{
@@ -932,7 +932,7 @@ int sub_8130BC8()
 		if ( v3 & 8 )
 			sub_8131570();
 		v5 = sub_803E8F8();
-		v6 = sub_803EF74();
+		v6 = get_eLinkStateUnk38();
 		v7 = sub_81323B0(v6);
 		v8 = v7;
 		if ( v7 != -1 )
@@ -1001,7 +1001,7 @@ int sub_8130C98()
 			sub_8131570();
 		sub_81317F0(result);
 		v3 = sub_803E8F8();
-		v4 = sub_803EF74();
+		v4 = get_eLinkStateUnk38();
 		v5 = sub_81323B0(v4);
 		v6 = v5;
 		if ( v5 != -1 )
@@ -1070,7 +1070,7 @@ void __noreturn sub_8130D40()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			if ( v6 != -1 )
 			{
@@ -1140,7 +1140,7 @@ void sub_8130DD0()
 		if ( !(v2 & 8) )
 		{
 			v4 = sub_803E8F8();
-			v5 = sub_803EF74();
+			v5 = get_eLinkStateUnk38();
 			v6 = sub_81323B0(v5);
 			v7 = v6;
 			if ( v6 != -1 )
@@ -1334,7 +1334,7 @@ LABEL_13:
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
-            v4 = sub_803EF74();
+            v4 = get_eLinkStateUnk38();
             result = sub_81323B0(v4);
             if ( result != -1 )
             {
@@ -1401,7 +1401,7 @@ void __noreturn sub_8131068()
         if ( !(v2 & 8) )
         {
             v4 = sub_803E8F8();
-            v5 = sub_803EF74();
+            v5 = get_eLinkStateUnk38();
             v6 = sub_81323B0(v5);
             v7 = v6;
             if ( v6 != -1 )
@@ -1799,7 +1799,7 @@ int sub_8131588()
 
 
 // 0x8131664
-char *sub_8131664()
+char *pet_setCurNaviFlag23()
 {
     int v0; // r0
 
@@ -1819,7 +1819,7 @@ char *sub_8131674()
 
 
 // 0x8131684
-char *sub_8131684()
+char *pet_setCurNaviStatAto7()
 {
     int v0; // r0
 
@@ -1839,7 +1839,7 @@ char *sub_8131694()
 
 
 // 0x81316a4
-char *sub_81316A4()
+char *pet_setCurNaviStat1c()
 {
     int v0; // r0
 
@@ -1849,7 +1849,7 @@ char *sub_81316A4()
 
 
 // 0x81316b4
-char *sub_81316B4()
+char *pet_setCurNaviStatsByte1D()
 {
     int v0; // r0
 
@@ -1922,7 +1922,7 @@ int __fastcall sub_813175C(int result)
 
 
 // 0x8131768
-signed int __fastcall sub_8131768(int a1, int a2, int a3)
+signed int __fastcall e_linkMatchObjectStateExit(int a1, int a2, int a3)
 {
     int v3; // r5
     signed int result; // r0
@@ -2560,7 +2560,7 @@ void submenu_linkResultHandler()
         sSubmenu.unk_26 = 0;
         *(v1 + 8) = 0;
         v2 = sub_803E8F8();
-        v3 = sub_803EF74();
+        v3 = get_eLinkStateUnk38();
         v4 = sub_81323B0(v3);
         if ( v4 != -1 )
         {
@@ -3038,13 +3038,13 @@ int __fastcall sub_8132664(int a1)
 {
     int v1; // r0
 
-    v1 = sub_8132670();
+    v1 = e_packScreenNaviId();
     return sub_81469DC(v1);
 }
 
 
 // 0x8132670
-int sub_8132670()
+int e_packScreenNaviId()
 {
     int v0; // r0
     signed int v1; // r4
@@ -3135,7 +3135,7 @@ int sub_81327B0()
         sub_81328D0();
         sub_811AE7C(1, 1);
         *(v0 + 46) = byte_100;
-        sub_811AE5C(byte_100, 72, 1);
+        sprite_setCoordinatesIfActive(byte_100, 72, 1);
         *(v0 + 72) = 12;
         result = battleObject_setupCustomChipCursorState_803C59C(218, 2);
     }
@@ -3157,7 +3157,7 @@ int sub_81327E8()
         v1 = 126;
         *(v0 + 46) = 126;
     }
-    sub_811AE5C(v1, 72, 1);
+    sprite_setCoordinatesIfActive(v1, 72, 1);
     return battleObject_setupCustomChipCursorState_803C59C(218, 2);
 }
 
@@ -3772,7 +3772,7 @@ void __fastcall __noreturn battle_initChipSelectFromOverlay_8133228(int a1, int 
     else
     {
         CopyBytes(dword_20251A0, &eT4BattleObjects[3660], 60);
-        sub_811FCA4();
+        battle_buildChipPackFromFolderEntriesAltEntry();
         if ( !v10 )
 LABEL_5:
             sub_8133EC0();
@@ -7439,7 +7439,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
         if ( v5 & 2 )
         {
             PlaySoundEffect(131, 2, a3);
-            sub_81360B4();
+            navicust_exitScreen();
         }
         if ( !(v5 & 1) )
         {
@@ -7470,7 +7470,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
                 }
                 else if ( v14 >= *v6 )
                 {
-                    sub_81360B4();
+                    navicust_exitScreen();
                 }
                 *(v3 + 40) = v14;
             }
@@ -7488,7 +7488,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
 
 
 // 0x81360b4
-void __noreturn sub_81360B4()
+void __noreturn navicust_exitScreen()
 {
     int v0; // r5
 
@@ -7556,7 +7556,7 @@ int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
     if ( v5 & 1 )
         return navicust_confirmPartPlacement();
     if ( v5 & 2 )
-        return sub_813640C(a1, 2, a3);
+        return navicust_handlePlacementCancelInput(a1, 2, a3);
     v7 = &byte_8136210[2 * *(v3 + 15)];
     result = sub_8136364();
     if ( !v8 )
@@ -7810,7 +7810,7 @@ int sub_8136384()
 
 
 // 0x813640c
-int __fastcall sub_813640C(int a1, int a2, int a3)
+int __fastcall navicust_handlePlacementCancelInput(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r1
@@ -10567,7 +10567,7 @@ void __fastcall __noreturn playCreditsScene_81382D0(int a1, int a2, int a3, int 
 
 
 // 0x8138348
-int sub_8138348()
+int game_runModeHandlersAndFrameTick()
 {
     _BYTE *v0; // r5
     signed int v1; // r7

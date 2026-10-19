@@ -133,7 +133,7 @@ int sub_800BE2C()
                 *(v0 + 18) = *(v7 + 18);
                 *(v0 + 76) = v7;
             }
-            sub_802CEA6(*(v0 + 22));
+            battle_clearImpactSlot(*(v0 + 22));
             *(v0 + 9) += 4;
             result = 0;
             *(v0 + 10) = 0;
@@ -2425,7 +2425,7 @@ int __fastcall sub_800D4D0(int a1, int a2, int a3)
     v3 = a2;
     v6 = a3;
     object_getFlipDirection(a1, a2);
-    result = sub_800D53C(v6, v5, v3);
+    result = battle_findAllianceEdgeColumn(v6, v5, v3);
     if ( result )
         object_getFirstPanelInDirectionFiltered(result, v6, *&byte_800D52C[8 * v5], *&byte_800D52C[8 * v5 + 4]);
     return result;
@@ -2433,7 +2433,7 @@ int __fastcall sub_800D4D0(int a1, int a2, int a3)
 
 
 // 0x800d53c
-int __fastcall sub_800D53C(int a1, int a2, int a3)
+int __fastcall battle_findAllianceEdgeColumn(int a1, int a2, int a3)
 {
     char v3; // zf
     int v5; // [sp+0h] [bp-18h]
@@ -2773,7 +2773,7 @@ signed int __usercall battleObject_applyHPAndHandleSpecial_800E2FC@<R0>(Battle *
         v8 = sub_80E37D2(obj->panelX, obj->panelY, 0, v4);
         battle_queueEffectRequest(obj->Alliance, 1, v8);
         sub_800ABC6(obj->panelX, obj->panelY);
-        sub_802CEA6(obj->Alliance ^ 1);
+        battle_clearImpactSlot(obj->Alliance ^ 1);
         result = 1;
     }
     else
@@ -2802,7 +2802,7 @@ signed int __fastcall sub_800E360(int a1, int a2)
         v6 = sub_80E37D2(v2->panelX, v2->panelY, 0, v4);
         battle_queueEffectRequest(v2->Alliance, 1, v6);
         sub_800ABC6(v2->panelX, v2->panelY);
-        sub_802CEA6(v2->Alliance ^ 1);
+        battle_clearImpactSlot(v2->Alliance ^ 1);
         result = 1;
     }
     else
@@ -3377,7 +3377,7 @@ void sub_800E9FA()
 
 
 // 0x800ea0e
-void sub_800EA0E()
+void battle_clearCollisionData()
 {
     int v0; // r5
     int v1; // r2

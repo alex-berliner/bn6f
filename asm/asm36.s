@@ -85,7 +85,7 @@ t4_sceneInit:
 	bl sub_8130208
 	bl sub_813064C
 	bl sub_8130810
-	bl sub_81304BC
+	bl t4_refreshChipPackBuffer
 	bl sub_81304EC
 	mov r0, #0
 	ldr r1, off_8130104 // =dword_8129180
@@ -468,7 +468,7 @@ loc_81303A2:
 	cmp r0, r1
 	beq loc_81303C4
 	strb r0, [r5,#0xc]
-	bl sub_81304BC
+	bl t4_refreshChipPackBuffer
 loc_81303C4:
 	bl sub_81304EC
 
@@ -616,9 +616,9 @@ off_81304B8:
 // symdb: Rebuilds (or clears) the 30-slot battle chip-pack buffer used by the t4 overlay scene, driven by a flag byte in the scene state.
 // symdb: (r0 = passed through to sub_8130404) -> r0 = state pointer from sub_8130404; returns after
 // symdb: clearing or refilling unk_2023FB0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304BC.yaml
-	thumb_func_start sub_81304BC
-sub_81304BC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_refreshChipPackBuffer.yaml
+	thumb_func_start t4_refreshChipPackBuffer
+t4_refreshChipPackBuffer:
 	push {r4-r7,lr}
 	bl sub_8130404
 	mov r7, r0
@@ -642,7 +642,7 @@ off_81304E4:
 	.word unk_2023FB0
 off_81304E8:
 	.word unk_2024370
-	thumb_func_end sub_81304BC
+	thumb_func_end t4_refreshChipPackBuffer
 
 	thumb_func_start sub_81304EC
 sub_81304EC:
@@ -1044,7 +1044,7 @@ sub_81307BC:
 	tst r0, r0
 	bne loc_81307D8
 	mov r0, r1
-	bl sub_8120DAC
+	bl petNaviCheckElementChipLimits
 	tst r0, r0
 	beq locret_81307F0
 	mov r0, #0x3f 
@@ -1235,7 +1235,7 @@ loc_8130996:
 	bne locret_8130A00
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_8130C84 // =0xffffffff 
@@ -1327,7 +1327,7 @@ loc_8130A36:
 loc_8130A46:
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_8130C84 // =0xffffffff 
@@ -1383,7 +1383,7 @@ loc_8130AB2:
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
 	beq loc_8130B08
-	bl sub_8131768
+	bl e_linkMatchObjectStateExit
 	b loc_8130B08
 loc_8130AC8:
 	mov r0, r4
@@ -1461,7 +1461,7 @@ loc_8130B58:
 	bne loc_8130BBC
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_8130C84 // =0xffffffff 
@@ -1545,7 +1545,7 @@ loc_8130C00:
 	bne loc_8130C7A
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_8130C84 // =0xffffffff 
@@ -1641,7 +1641,7 @@ loc_8130CC4:
 	bl sub_81317F0
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_8130EBC // =0xff
@@ -1724,7 +1724,7 @@ loc_8130D68:
 	bne loc_8130DC6
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_8130EBC // =0xff
@@ -1801,7 +1801,7 @@ loc_8130DF8:
 loc_8130E08:
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, byte_8130EBC // =0xff
@@ -2059,7 +2059,7 @@ loc_8130FF8:
 	bne locret_8131064
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_81311B4 // =0xffffffff 
@@ -2138,7 +2138,7 @@ loc_813108E:
 	bne loc_8131146
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	mov r4, r0
 	ldr r1, dword_81311B4 // =0xffffffff 
@@ -2862,23 +2862,23 @@ off_8131600:
 	.word off_8131628
 	.word off_8131644
 off_813160C:
-	.word sub_8131664+1
-	.word sub_81316B4+1
+	.word pet_setCurNaviFlag23+1
+	.word pet_setCurNaviStatsByte1D+1
 	.word sub_8131674+1
 	.word sub_81316D4+1
 	.word sub_81316EC+1
 	.word sub_8131704+1
 	.word sub_813171C+1
 off_8131628:
-	.word sub_8131664+1
-	.word sub_8131684+1
-	.word sub_81316A4+1
+	.word pet_setCurNaviFlag23+1
+	.word pet_setCurNaviStatAto7+1
+	.word pet_setCurNaviStat1c+1
 	.word loc_81316DA+1
 	.word loc_81316F2+1
 	.word loc_813170A+1
 	.word loc_8131722+1
 off_8131644:
-	.word sub_8131684+1
+	.word pet_setCurNaviStatAto7+1
 	.word sub_81316C4+1
 	.word sub_8131694+1
 	.word loc_81316DA+1
@@ -2890,16 +2890,16 @@ off_8131644:
 
 // symdb: Sets byte 0x23 of the currently selected PET navi's stats block to 1.
 // symdb: () -> void; no args used, r0-r3 clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131664.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviFlag23.yaml
 	thumb_local_start
-sub_8131664:
+pet_setCurNaviFlag23:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x23 
 	mov r2, #1
 	bl SetNaviStats203CCE0Byte
 	pop {pc}
-	thumb_func_end sub_8131664
+	thumb_func_end pet_setCurNaviFlag23
 
 	thumb_local_start
 sub_8131674:
@@ -2913,16 +2913,16 @@ sub_8131674:
 
 // symdb: Writes 7 into stat byte 0xA of the currently selected PET navi's record at 0x203CCE0
 // symdb: () -> void; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131684.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStatAto7.yaml
 	thumb_local_start
-sub_8131684:
+pet_setCurNaviStatAto7:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0xa
 	mov r2, #7
 	bl SetNaviStats203CCE0Byte
 	pop {pc}
-	thumb_func_end sub_8131684
+	thumb_func_end pet_setCurNaviStatAto7
 
 	thumb_local_start
 sub_8131694:
@@ -2936,29 +2936,29 @@ sub_8131694:
 
 // symdb: Sets byte 0x1C of the currently selected PET navi's stats block (203CCE0) to 1.
 // symdb: () -> void; calls GetCurPETNavi then SetNaviStats203CCE0Byte(curNavi, 0x1C, 1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81316A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStat1c.yaml
 	thumb_local_start
-sub_81316A4:
+pet_setCurNaviStat1c:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x1c
 	mov r2, #1
 	bl SetNaviStats203CCE0Byte
 	pop {pc}
-	thumb_func_end sub_81316A4
+	thumb_func_end pet_setCurNaviStat1c
 
 // symdb: Sets byte 0x1D of the current PET navi's stats struct (0x203CCE0) to 1.
 // symdb: () -> void; no return value, r0 clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81316B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStatsByte1D.yaml
 	thumb_local_start
-sub_81316B4:
+pet_setCurNaviStatsByte1D:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	mov r1, #0x1d
 	mov r2, #1
 	bl SetNaviStats203CCE0Byte
 	pop {pc}
-	thumb_func_end sub_81316B4
+	thumb_func_end pet_setCurNaviStatsByte1D
 
 	thumb_local_start
 sub_81316C4:
@@ -3074,9 +3074,9 @@ off_8131764:
 
 // symdb: State handler for the link-match NPC object that ends the interaction: plays the exit-submenu sound, runs text script 0x68, and sets the object's state flag.
 // symdb: (r0 = object? clobbers r5-relative fields; r5 = object struct) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131768.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_linkMatchObjectStateExit.yaml
 	thumb_local_start
-sub_8131768:
+e_linkMatchObjectStateExit:
 	push {lr}
 	mov r1, #0
 	strh r1, [r5,#0x26]
@@ -3094,7 +3094,7 @@ sub_8131768:
 	.balign 4, 0
 dword_8131788:
 	.word 0xFEDC
-	thumb_func_end sub_8131768
+	thumb_func_end e_linkMatchObjectStateExit
 
 	thumb_local_start
 sub_813178C:
@@ -4165,7 +4165,7 @@ loc_81321C0:
 	bne locret_8132272
 	bl sub_803E8F8
 	mov r6, r0
-	bl sub_803EF74
+	bl get_eLinkStateUnk38
 	bl sub_81323B0
 	ldr r1, dword_8132278 // =0xffffffff 
 	cmp r0, r1
@@ -4930,16 +4930,16 @@ off_8132660:
 	thumb_func_start sub_8132664
 sub_8132664:
 	push {r4-r7,lr}
-	bl sub_8132670
+	bl e_packScreenNaviId
 	bl sub_81469DC
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132664
 
 // symdb: Looks up the current eLink/communication screen in a small table and packs its index together with the PET's selected navi (gated by an event flag) into one returned ID.
 // symdb: () -> r0 = (screenIndex << 4) | (EVENT_163 ? currentPETNavi : 0); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132670.yaml
-	thumb_func_start sub_8132670
-sub_8132670:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_packScreenNaviId.yaml
+	thumb_func_start e_packScreenNaviId
+e_packScreenNaviId:
 	push {r4-r7,lr}
 	bl sub_803E8F8
 	mov r2, r0
@@ -4975,7 +4975,7 @@ byte_81326B0:
 	.byte 0x1, 0x10, 0x1, 0x0, 0x2, 0x10, 0x2, 0x20, 0x2, 0x0, 0x0
 byte_81326C8:
 	.byte 0x21, 0x0, 0x0, 0x0, 0x21, 0x1, 0x0, 0x0, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_8132670
+	thumb_func_end e_packScreenNaviId
 
 	thumb_func_start sub_81326D4
 sub_81326D4:
@@ -5088,7 +5088,7 @@ sub_81327B0:
 	strh r0, [r5,#0x2e]
 	mov r1, #0x48 
 	mov r2, #1
-	bl sub_811AE5C
+	bl sprite_setCoordinatesIfActive
 	mov r1, #0xc
 	mov r0, #0x48 
 	strb r1, [r5,r0]
@@ -5118,7 +5118,7 @@ sub_81327E8:
 loc_81327FE:
 	mov r1, #0x48 
 	mov r2, #1
-	bl sub_811AE5C
+	bl sprite_setCoordinatesIfActive
 	mov r0, #0xda
 	mov r1, #2
 	bl battleObject_setupCustomChipCursorState_803C59C
@@ -6450,7 +6450,7 @@ battle_initChipSelectFromOverlay_8133228:
 	ldr r1, off_813338C // =word_202A020 
 	mov r2, #1
 	ldr r3, off_8133390 // =unk_20343E0 
-	bl sub_811FCA4
+	bl battle_buildChipPackFromFolderEntriesAltEntry
 	beq loc_81332F2
 	b loc_81332D6
 loc_81332C8:
@@ -12568,7 +12568,7 @@ loc_8136008:
 	beq loc_813601A
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
-	bl sub_81360B4
+	bl navicust_exitScreen
 	b locret_81360A6
 loc_813601A:
 	mov r1, #1
@@ -12615,7 +12615,7 @@ loc_813605E:
 	blt loc_813606E
 	cmp r1, r2
 	blt loc_8136070
-	bl sub_81360B4
+	bl navicust_exitScreen
 	b locret_81360A6
 loc_813606E:
 	ldrh r1, [r5,#0x2a]
@@ -12657,9 +12657,9 @@ byte_81360AC:
 
 // symdb: Handler that closes the Navi Customizer screen, restoring the board display and returning to the submenu with the exit sound.
 // symdb: () -> void; uses r5 = navi-cust screen state struct (global)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81360B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_exitScreen.yaml
 	thumb_local_start
-sub_81360B4:
+navicust_exitScreen:
 	push {lr}
 	mov r0, #0xc
 	strb r0, [r5,#2]
@@ -12675,7 +12675,7 @@ sub_81360B4:
 	bl PlaySoundEffect
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81360B4
+	thumb_func_end navicust_exitScreen
 // symdb: Exit routine for the Navi Customizer board screen: resets state, unhighlights the cursor cell, redraws the board, and plays the exit sound.
 // symdb: () -> void; r0 and r5 clobbered via calls
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_exitBoardScreen.yaml
@@ -12740,7 +12740,7 @@ loc_8136140:
 	mov r1, #2
 	tst r4, r1
 	beq loc_813614C
-	bl sub_813640C
+	bl navicust_handlePlacementCancelInput
 	b locret_8136200
 loc_813614C:
 	ldrb r7, [r5,#0xf]
@@ -13121,9 +13121,9 @@ byte_8136404:
 // symdb: B-button handler for the Navi Cust part-placement screen: if a part is being held it puts it back, otherwise it cancels/exits the placement screen.
 // symdb: (r0 = scratch; r5 = placement-screen state struct) -> r0 = sound ID passed to PlaySoundEffect;
 // symdb: updates state byte at +0x02 and position fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813640C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handlePlacementCancelInput.yaml
 	thumb_local_start
-sub_813640C:
+navicust_handlePlacementCancelInput:
 	push {lr}
 	ldrb r0, [r5,#0x10]
 	tst r0, r0
@@ -13154,7 +13154,7 @@ loc_8136428:
 locret_813644C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_813640C
+	thumb_func_end navicust_handlePlacementCancelInput
 
 // symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
 // symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
@@ -17188,7 +17188,7 @@ off_81382C0:
 	.word JumpTable81382C4
 JumpTable81382C4:
 	.word playCreditsScene_81382D0+1
-	.word sub_8138348+1
+	.word game_runModeHandlersAndFrameTick+1
 	.word sub_8138730+1
 	thumb_func_end cb_81382AC
 
@@ -17269,9 +17269,9 @@ dword_8138344:
 // symdb: up to r7 iterations (1 normally, 0x10 if byte[r5+9]!=0, aborting if byte[r5]==4), then calls
 // symdb: entity_runAllUpdateHandlers, battle_updateEStructSprites, ow_perFrameUpdateAndRender; returns
 // symdb: void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138348.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/game_runModeHandlersAndFrameTick.yaml
 	thumb_local_start
-sub_8138348:
+game_runModeHandlersAndFrameTick:
 	push {r7,lr}
 	mov r7, #1
 	ldrb r0, [r5,#9]
@@ -17302,7 +17302,7 @@ off_813837C:
 	.word sub_81383C4+1
 	.word sub_81383F4+1
 	.word sub_8138700+1
-	thumb_func_end sub_8138348
+	thumb_func_end game_runModeHandlersAndFrameTick
 
 	thumb_local_start
 sub_813838C:
