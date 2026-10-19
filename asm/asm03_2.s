@@ -1339,6 +1339,10 @@ loc_8046910:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8046900
 
+// symdb: Returns the first byte (a state/active flag) of the 0x58-byte entry indexed by r0 in the array at byte_2011860, as a Z-flag boolean test
+// symdb: (r0 = index into byte_2011860 array) -> r0 = byte value; Z set if byte == 0 (mov pc, lr
+// symdb: preserves flags)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804691A.yaml
 	thumb_func_start sub_804691A
 sub_804691A:
 	ldr r1, off_8046928 // =byte_2011860 
@@ -4823,6 +4827,9 @@ off_8048FC0:
 	.word 0x1B0
 	thumb_func_end initSaveStateBlock_8048F9C
 
+// symdb: reads two status bytes from the wireless-comm buffer at 0x200A290, used by a submenu handler to detect a state (0x1C) that ends the wireless session
+// symdb: (void) -> r0 = byte at 0x200A290, r1 = byte at 0x200A291; no flags guaranteed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048FC4.yaml
 	thumb_func_start sub_8048FC4
 sub_8048FC4:
 	push {r4-r7,lr}

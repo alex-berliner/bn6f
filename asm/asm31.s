@@ -1628,6 +1628,10 @@ locret_80B8E60:
 	mov pc, lr
 	thumb_func_end sub_80B8E58
 
+// symdb: reads a two-byte (x,y)-style entry from the table at byte_80B8BD4 (5-byte stride) for the given index, used to position an illusion spawn.
+// symdb: (r0 = entry index) -> r0 = first byte (low/pos component), r1 = second byte (high component); no
+// symdb: flags set (returns via mov pc, lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B8E62.yaml
 	thumb_local_start
 sub_80B8E62:
 	ldr r2, off_80B8E9C // =byte_80B8BD4
@@ -10400,7 +10404,7 @@ loc_80BCBA8:
 
 // symdb: Dispatches the navi battle sprite object to one of three per-phase handlers based on its current phase field.
 // symdb: (r0 = navi battle object in r5, r0 unused on entry) -> tail-calls handler
-// symdb: sub_80BCC2C/object_phaseWaitParam4Zero/sub_80BCC96 chosen by oBattleObject_CurPhase; no return value of its own
+// symdb: sub_80BCC2C/sub_80BCC88/sub_80BCC96 chosen by oBattleObject_CurPhase; no return value of its own
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_naviSpritePhaseUpdate.yaml
 	thumb_local_start
 battle_naviSpritePhaseUpdate:
@@ -12562,6 +12566,9 @@ locret_80BDB8A:
 	pop {r4,pc}
 	thumb_func_end sub_80BDB3C
 
+// symdb: Per-frame tick for a battle object: counts Timer2 up, and once 15 frames have passed writes state value 0xC to Param3.
+// symdb: (r0 unused/r5 = battle object pointer) -> r0 = new Timer2 value; flags from cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BDB8C.yaml
 	thumb_local_start
 sub_80BDB8C:
 	push {lr}
@@ -14358,6 +14365,9 @@ off_80BE88C:
 	.word sub_80BEA10+1
 	thumb_func_end sub_80BE878
 
+// symdb: resets a battle object's two timers and advances it to phase 4
+// symdb: (r5 = battle object, set by caller) -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BE8A0.yaml
 	thumb_local_start
 sub_80BE8A0:
 	push {lr}
@@ -17554,6 +17564,10 @@ locret_80BFF32:
 	mov pc, lr
 	thumb_func_end sub_80BFF28
 
+// symdb: Null-safely writes 0xFF to an object/task's byte at +0x11, used by a caller to deactivate three object pointers held in a struct
+// symdb: (r0 = object/task pointer or NULL) -> r0 = untouched (returns via mov pc, lr); no flag use by
+// symdb: caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BFF34.yaml
 	thumb_local_start
 sub_80BFF34:
 	tst r0, r0
@@ -44897,6 +44911,9 @@ locret_80CC426:
 	pop {pc}
 	thumb_func_end sub_80CC400
 
+// symdb: Battle-object phase handler: advances this object to phase 0xC unless its related object is currently in action 0xC.
+// symdb: (r5 = battle object) -> r0 = 0xC on the phase-write path; no return value used, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CC428.yaml
 	thumb_local_start
 sub_80CC428:
 	push {lr}
@@ -50212,6 +50229,10 @@ loc_80CEAEA:
 	pop {r2,r4-r7,pc}
 	thumb_func_end sub_80CEAC2
 
+// symdb: Null-safe getter: returns the word at offset 0x70 of the struct pointed to by r0, or 0 if the pointer is null.
+// symdb: (r0 = struct pointer or NULL) -> r0 = *(r0+0x70), or 0 if r0 was NULL; flags set by the caller's
+// symdb: tst on the result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CEAEE.yaml
 	thumb_local_start
 sub_80CEAEE:
 	tst r0, r0
@@ -63122,6 +63143,9 @@ JumpTable80D489C:
 	.word battle_destroyBattleObject+1
 	thumb_func_end sub_80D4888
 
+// symdb: sets the battle object pointed to by r5 to phase 4 (marks the phase as initialized/advanced)
+// symdb: (r5 = battle object pointer, no args in registers) -> r0 = 4 clobbered; flags clobbered by mov
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D48A8.yaml
 	thumb_local_start
 sub_80D48A8:
 	mov r0, #4
@@ -89728,6 +89752,9 @@ locret_80E0DC8:
 	mov pc, lr
 	thumb_func_end sub_80E0DC0
 
+// symdb: Zeroes byte 0xC of a battle object; callers apply it to the AI subordinate object while resetting hit state.
+// symdb: (r0 = battle object ptr) -> r0 = passed-in ptr; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E0DCA.yaml
 	thumb_local_start
 sub_80E0DCA:
 	mov r1, #0
@@ -107264,6 +107291,9 @@ locret_80E8786:
 	pop {pc}
 	thumb_func_end sub_80E8770
 
+// symdb: After an AI attack finishes, stores 8 into field 0x8 of the attack's parameter/scratch structure, rearming some delay timer.
+// symdb: (r0 = pointer to AI attack param/scratch struct, may be NULL) -> r0 clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E8788.yaml
 	thumb_local_start
 sub_80E8788:
 	push {lr}
@@ -136422,6 +136452,10 @@ sub_80F6560:
 	pop {pc}
 	thumb_func_end sub_80F6560
 
+// symdb: Returns the frame duration for an AI attack, used to initialize the AI attack-vars block
+// symdb: (r0 = pointer to duration data, here dword_80F65A0) -> r0 = duration value stored into
+// symdb: oAIAttackVars_AttackDuration
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F6592.yaml
 	thumb_local_start
 sub_80F6592:
 	push {lr}
@@ -141059,6 +141093,9 @@ locret_80F8960:
 	pop {r4,r6,pc}
 	thumb_func_end sub_80F8914
 
+// symdb: AI attack setup: sets the attack's hit element to 0x18 only when a scratch variable still holds 0
+// symdb: (no args; r7 = AI attack vars struct) -> no return; r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8962.yaml
 	thumb_local_start
 sub_80F8962:
 	push {lr}

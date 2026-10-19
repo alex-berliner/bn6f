@@ -4422,6 +4422,9 @@ off_813D8CC:
 	.word eLinkState // eLinkState
 	thumb_func_end link_RequestDisconnect_813D8C4
 
+// symdb: Sets bit 0x10 in the RFU wireless shared-state flags word before the caller sends link command 0.
+// symdb: () -> r0 = 1 (from rfu_orFlags); clobbers lr; no arguments
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D8D0.yaml
 	thumb_func_start sub_813D8D0
 sub_813D8D0:
 	push {lr}
@@ -4577,6 +4580,10 @@ off_813D99C:
 	.word eStruct200BC30
 	thumb_func_end sub_813D98C
 
+// symdb: Writes the wireless-link phase/state ID into offset 0x8 of the RFU link work struct at 0x200BC50.
+// symdb: (r0 = link phase ID (halfword, e.g. 0x22/0x33/0x34)) -> r0 clobbered; writes halfword at
+// symdb: [0x200BC58]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D9A0.yaml
 	thumb_func_start sub_813D9A0
 sub_813D9A0:
 	push {lr}

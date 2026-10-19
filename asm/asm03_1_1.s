@@ -6082,6 +6082,9 @@ sub_803BB90:
 	mov pc, lr
 	thumb_func_end sub_803BB90
 
+// symdb: Ticks down a frame-count timer in the state struct at [r5,#0x2c] and returns 1 once it has expired.
+// symdb: () -> r0 = 1 when countdown [r5+0x2c] reached below 0 after decrement, 0 otherwise; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BB94.yaml
 	thumb_func_start sub_803BB94
 sub_803BB94:
 	ldr r0, [r5,#0x2c]
@@ -7010,6 +7013,9 @@ sub_803C30C:
 	mov pc, lr
 	thumb_func_end sub_803C30C
 
+// symdb: Tests bit (1<<index) of the 16-bit flag word word_200A2B0 and returns the result in the Z flag.
+// symdb: (r0 = bitmask, typically 1<<slot) -> r0 unchanged; Z flag set if bit is clear, clear if set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C316.yaml
 	thumb_func_start sub_803C316
 sub_803C316:
 	push {lr}
@@ -7211,6 +7217,10 @@ off_803C430:
 	.word word_2006770
 	thumb_func_end sub_803C418
 
+// symdb: Writes two parallel 32-bit arrays (0x200A3C0 and 0x200A3E0) at a caller-supplied index, building paired per-slot tables from two getter calls
+// symdb: (r0 = index, r1 = first value, r2 = second value) -> void; writes unk_200A3C0[index] = r1 and
+// symdb: unk_200A3E0[index] = r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C434.yaml
 	thumb_local_start
 sub_803C434:
 	lsl r0, r0, #2
@@ -7398,6 +7408,10 @@ off_803C554:
 	.word 0x200
 	thumb_func_end sub_803C530
 
+// symdb: Clears the two 16-byte text-related buffers of the current chatbox/dialog struct and calls a companion chatbox routine, used when a dialog is dismissed before starting a jack-in sequence.
+// symdb: () -> void; no args passed — relies on the caller's r5 (dialog/struct pointer) which flows
+// symdb: through untouched to clearStructBufferPair; r4-r7 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C558.yaml
 	thumb_func_start sub_803C558
 sub_803C558:
 	push {r4-r7,lr}
@@ -7433,6 +7447,9 @@ off_803C57C:
 	.word eS200A290
 	thumb_func_end clearStatusBit1
 
+// symdb: Sets bit 0x40 in the RFU shared-state flags word (0x200BC50+0xC), likely signalling some wireless condition.
+// symdb: () -> void; r0 clobbered by call to rfu_orFlags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C580.yaml
 	thumb_local_start
 sub_803C580:
 	push {r4-r7,lr}
@@ -8202,6 +8219,10 @@ loc_803CA88:
 	.byte 0, 0
 	thumb_func_end sub_803CA64
 
+// symdb: Tears down the wireless link: resets the connection work struct at 0x200AF80 and, unless a status byte says otherwise, marks the RFU session as ended and sets RFU flag 8.
+// symdb: (r0 = none, uses connection struct pointer byte_200AF80) -> r0 = clobbered; updates RFU shared
+// symdb: state at 0x200BC50
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CA90.yaml
 	thumb_local_start
 sub_803CA90:
 	push {r4,lr}
@@ -8254,6 +8275,9 @@ locret_803CAF4:
 	.byte 0x0, 0x0
 	thumb_func_end sub_803CAC4
 
+// symdb: returns the current global state value stored at eS200BC5C
+// symdb: () -> r0 = dword at eS200BC5C (current global state/mode); flags from load (irrelevant)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CAF8.yaml
 	thumb_func_start sub_803CAF8
 sub_803CAF8:
 	ldr r3, off_803CB20 // =eS200BC50
@@ -11524,6 +11548,10 @@ off_803E87C:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803E850
 
+// symdb: Initializes eLinkState: writes command/state byte 8 to offset 0 and value 0x10 to the halfword at offset 0xC
+// symdb: (r0 = eLinkState struct pointer) -> r0 = [r0]+0 = 8, [r0]+0xC halfword = 0x10; flags from stores
+// symdb: (irrelevant)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E880.yaml
 	thumb_local_start
 sub_803E880:
 	push {lr}
@@ -11534,6 +11562,10 @@ sub_803E880:
 	pop {pc}
 	thumb_func_end sub_803E880
 
+// symdb: compares two bytes of eLinkState (+3 vs +4) and returns the comparison in the flags
+// symdb: () -> flags set by cmp eLinkState+4, eLinkState+3 (r0/r1 clobbered); caller uses bgt on the
+// symdb: result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E88C.yaml
 	thumb_local_start
 sub_803E88C:
 	push {lr}
@@ -11588,6 +11620,9 @@ loc_803E8D8:
 	pop {r1-r7,pc}
 	thumb_func_end sub_803E8B4
 
+// symdb: Returns the word at offset 0x24 of eLinkState (the same cell the project annotates as eCamera.unk_74).
+// symdb: () -> r0 = eLinkState->unk24 (aliased with eCamera.unk_74); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E8DC.yaml
 	thumb_local_start
 sub_803E8DC:
 	ldr r0, off_803E8EC // =eLinkState
@@ -11877,6 +11912,9 @@ sub_803EA48:
 	.byte 0, 0
 	thumb_func_end sub_803EA48
 
+// symdb: returns the wireless-link flag from eStruct200BC30 that callers use to decide whether to re-init the RFU session or run error/cleanup handling
+// symdb: () -> r0 = flag byte at eStruct200BC30+1 (0/1); no flags touched
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EA50.yaml
 	thumb_func_start sub_803EA50
 sub_803EA50:
 	ldr r1, off_803EBF8 // =eStruct200BC30
@@ -12176,6 +12214,9 @@ e_setJumpOffset:
 	.balign 4, 0x00
 	thumb_func_end e_setJumpOffset
 
+// symdb: Getter returning the byte at offset 5 of eStruct200BC30 (the field the project labels JumpOffset05).
+// symdb: () -> r0 = eStruct200BC30 byte at offset 0x5; flags unaffected (uses mov pc, lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EBEC.yaml
 	thumb_local_start
 sub_803EBEC:
 	ldr r1, off_803EBF8 // =eStruct200BC30
@@ -12859,6 +12900,9 @@ loc_803F058:
 	pop {r4-r7,pc}
 	thumb_func_end rfu_queuePushEntry
 
+// symdb: Advances a 3-bit (mod-8) counter in the wireless-lib state block, used as a rotating tick/index by rfu callers.
+// symdb: () -> r0 = (old value + 1) & 7 stored to byte_200AC22; no other effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F05C.yaml
 	thumb_func_start sub_803F05C
 sub_803F05C:
 	push {r5,lr}

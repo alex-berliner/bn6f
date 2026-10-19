@@ -485,6 +485,9 @@ locret_812D6F4:
 	.balign 4, 0x00
 	thumb_func_end sub_812D690
 
+// symdb: Returns the pointer to the shared work/state struct for the submenu screen cluster at 0x02037780.
+// symdb: () -> r0 = pointer to menu work struct (0x02037780); flags unaffected (returns via mov pc, lr)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D6F8.yaml
 	thumb_func_start sub_812D6F8
 sub_812D6F8:
 	ldr r0, off_812D6FC // =unk_2037780 

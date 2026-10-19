@@ -16698,6 +16698,9 @@ dword_802DCC8:
 	.word 0xC008600
 	thumb_func_end battle_attackEndTimerStep
 
+// symdb: Returns a byte (likely the currently loaded/active navi id) from the alliance's 16-byte record in the table at unk_203A980.
+// symdb: (r0 = alliance/entry index) -> r0 = byte at [unk_203A980 + r0*0x10 + 4]; flags not meaningful.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DCCC.yaml
 	thumb_local_start
 sub_802DCCC:
 	mov r1, #0x10
@@ -17725,6 +17728,10 @@ byte_802E43A:
 	.byte 0x1, 0x1, 0x1, 0x0, 0x0, 0x0
 	thumb_func_end sub_802E2C4
 
+// symdb: Returns the first halfword parameter of a background-table entry looked up from the given id, used when laying out background tiles.
+// symdb: (r0 = background/table id, passed through to sub_802E490) -> r0 = halfword at [entry+0]; no
+// symdb: flags relied on
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E440.yaml
 	thumb_func_start sub_802E440
 sub_802E440:
 	push {lr}

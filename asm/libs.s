@@ -5734,6 +5734,9 @@ off_8146908:
 	.word byte_20103E0
 	thumb_func_end sub_81468F4
 
+// symdb: returns a halfword status/count field of the wireless (RFU) shared struct at 200FE00+0x26, used to decide whether a wireless session has enough participants before ending it
+// symdb: () -> r0 = halfword at [eStruct200FE00+0x26]; no flags set intentionally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814690C.yaml
 	thumb_func_start sub_814690C
 sub_814690C:
 	ldr r0, off_8146914 // =eStruct200FE00 
@@ -5876,6 +5879,9 @@ off_81469D8:
 	.word unk_2010150
 	thumb_func_end sub_81469BC
 
+// symdb: Stores the navi id produced by e_packScreenNaviId into the global byte_201015A (current pack-screen navi).
+// symdb: (r0 = navi id byte) -> r0 = destroyed; no flags meaningful (bx lr after strb)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81469DC.yaml
 	thumb_func_start sub_81469DC
 sub_81469DC:
 	ldr r1, off_81469E4 // =byte_201015A 
@@ -6486,6 +6492,10 @@ sub_8146E48:
 	.balign 4, 0x00
 	thumb_func_end sub_8146E48
 
+// symdb: Writes a state/phase byte into the 0x200AF80 wireless link-state structure.
+// symdb: (r0 = pointer to link-state struct at 0x200AF80, r1 = state byte) -> r0 clobbered; flags not
+// symdb: meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E5C.yaml
 	thumb_func_start sub_8146E5C
 sub_8146E5C:
 	strb r1, [r0,#5]

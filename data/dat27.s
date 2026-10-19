@@ -951,6 +951,9 @@ cutscenescript_8095215:
 end_cutscenescript_809521E:
 	.balign 4, 0
 
+// symdb: Writes the second 16-byte template row from the callee's inline table into the header buffer at 0x2001130, then returns 0.
+// symdb: () -> r0 = 0; no flags meaningful (r0 reloaded before return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8095220.yaml
 	thumb_local_start
 sub_8095220:
 	push {lr}

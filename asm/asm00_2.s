@@ -7242,6 +7242,10 @@ sub_8011F64:
 	pop {pc}
 	thumb_func_end sub_8011F64
 
+// symdb: Sets the AI attack-state chip-use delay counter to 40 and returns 0x58 to the caller
+// symdb: (r7 = pointer to AI attack vars struct, no other args) -> r0 = 0x58; flags from the mov (no
+// symdb: meaningful compare)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011F84.yaml
 	thumb_local_start
 sub_8011F84:
 	mov r0, #0x28 
@@ -8270,6 +8274,9 @@ init_chipParams051:
 	pop {pc}
 	thumb_func_end init_chipParams051
 
+// symdb: Forces the AI attack variables' difficulty tier to 0x14 (20)
+// symdb: (r7 = AI attack vars struct) -> r0 = 0x1c; no flags set meaningfully
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801254A.yaml
 	thumb_local_start
 sub_801254A:
 	mov r0, #0x14

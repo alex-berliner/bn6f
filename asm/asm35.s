@@ -126,6 +126,10 @@ off_812EB84:
 	.word byte_812DA94
 	thumb_func_end sub_812EB78
 
+// symdb: Initializes the 9-entry, 0x44-byte-per-entry submenu state table (byte_812DABC) via a shared loop, as part of setting up a submenu before rendering.
+// symdb: () -> void (arguments hardcoded inside: r1 = 9 entries, r2 = 0x44 bytes/entry, r4 =
+// symdb: byte_812DABC; caller r0's role in the shared loop is unknown)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EB88.yaml
 	thumb_func_start sub_812EB88
 sub_812EB88:
 	push {r4-r7,lr}
@@ -361,6 +365,10 @@ locret_812ED2A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_812ECAC
 
+// symdb: Returns the pointer to the current submenu state structure kept in the global at 0x2037780.
+// symdb: () -> r0 = pointer to the active submenu state struct; no flags set intentionally (movs not
+// symdb: used)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ED2C.yaml
 	thumb_func_start sub_812ED2C
 sub_812ED2C:
 	ldr r0, off_812ED30 // =unk_2037780 

@@ -3178,6 +3178,9 @@ sub_81433C2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81433C2
 
+// symdb: returns the stored total flag count (byte at +8 of eStruct2001010) that callers compare against a counted number of set flags
+// symdb: () -> r0 = u8 total count stored at eStruct2001010+8; preserves r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433CA.yaml
 	thumb_local_start
 sub_81433CA:
 	push {r4-r7,lr}
@@ -4277,6 +4280,10 @@ e_resetEffectStruct:
 	pop {r4-r7,pc}
 	thumb_func_end e_resetEffectStruct
 
+// symdb: sets the cutscene/event-active flag byte in the global event state struct (entry point sets 1; the call_8143F3C entry sets 0)
+// symdb: (no args) -> r0 = 0; writes byte_2001019 (eStruct2001010+9) = 1, or 0 when entered at
+// symdb: call_8143F3C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F38.yaml
 	thumb_local_start
 sub_8143F38:
 	mov r0, #1
@@ -4319,6 +4326,9 @@ sub_8143F60:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143F60
 
+// symdb: Stores a 0/1 enable-disable word into field 0xC of the global struct at 0x2001010.
+// symdb: (r0 = value (observed 0 or 1)) -> r0 = value; Z flag set per tst r0,r0 (unused by callers)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F68.yaml
 	thumb_func_start sub_8143F68
 sub_8143F68:
 	push {r4-r7,lr}

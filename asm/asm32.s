@@ -19129,6 +19129,9 @@ off_81175B8:
 	.word off_811735C
 	thumb_func_end sprite_loadVariantSpritePtr
 
+// symdb: Advances the actor-sequencer data offset at [r5+0xC] by r0, moving to the next entry of a coordinate/duration table once a step's countdown finishes.
+// symdb: (r0 = stride/step size to add) -> [r5+0xC] += r0; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81175BC.yaml
 	thumb_local_start
 sub_81175BC:
 	ldr r1, [r5,#0xc]
