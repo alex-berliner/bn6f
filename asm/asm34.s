@@ -32,6 +32,9 @@ off_812D3A4:
 	.word unk_201DB20
 	thumb_func_end sub_812D378
 
+// symdb: Builds an in-battle chip search table and dispatches it to battle objects, then sets a 5x4 list/menu size on the battle UI state.
+// symdb: () -> void; r7 points to a context whose +0x28 halfword receives the table entry count + 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D3A8.yaml
 	thumb_func_start sub_812D3A8
 sub_812D3A8:
 	push {lr}

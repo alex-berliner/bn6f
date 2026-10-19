@@ -2075,6 +2075,10 @@ off_80A5D38:
 	.word byte_80A5ABC
 	thumb_func_end battle_beastOutGetMapEntry
 
+// symdb: Initializes a sprite work struct from an object's sprite fields and starts its animation (no shadow), returning 1 if a precondition check fails.
+// symdb: (r5 = sprite work struct, r6 = source object, r0 = arg to sub_80A5D80) -> r0 = 0 on success, 1
+// symdb: if sub_80A5D80 returned nonzero; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5D48.yaml
 	thumb_local_start
 sub_80A5D48:
 	push {r4-r7,lr}
@@ -6036,6 +6040,10 @@ sub_80A8006:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8006
 
+// symdb: Restarts an object's sprite animation: re-selects the animation index stored in the object, reloads its animation frame data, and clears the animation state counters.
+// symdb: (r7 = ptr to object/sprite state struct, r5 = ptr to related object struct) -> r0 = 0 discarded;
+// symdb: no flags guaranteed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A800A.yaml
 	thumb_local_start
 sub_80A800A:
 	push {r4-r7,lr}
@@ -7021,6 +7029,10 @@ loc_80A8858:
 	.byte 0, 0
 	thumb_func_end sub_80A8848
 
+// symdb: Termination routine for an overworld map object: clears story flag EVENT_5E0, then releases the object's slot.
+// symdb: (r0 = overworld map object pointer, passed through to FreeOverworldMapObject) -> r0 = unchanged
+// symdb: (FreeOverworldMapObject result); no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8860.yaml
 	thumb_local_start
 sub_80A8860:
 	push {lr}
@@ -7579,6 +7591,9 @@ ow_refreshObjectSpritePriority:
 	pop {r4-r7,pc}
 	thumb_func_end ow_refreshObjectSpritePriority
 
+// symdb: Changes an object's sprite animation to a new index, reloading animation data only when the index actually differs from the current one.
+// symdb: (r0 = new animation index; r5 = sprite slot pointer) -> r0 = undefined; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8CB8.yaml
 	thumb_local_start
 sub_80A8CB8:
 	push {r4-r7,lr}
@@ -10539,6 +10554,10 @@ loc_80AA2A2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA282
 
+// symdb: Per-frame object update that counts down a delay timer, then on expiry resets the object's state, restarts its animation, and restores saved values before updating the sprite.
+// symdb: (object in r5, no register args) -> void; decrements word at +0x24, on zero writes state byte
+// symdb: [r5]=3, anim slot byte +8=4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA2A8.yaml
 	thumb_local_start
 sub_80AA2A8:
 	push {r4-r7,lr}

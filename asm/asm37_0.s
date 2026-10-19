@@ -1416,6 +1416,9 @@ loc_813C00C:
 	.byte 0, 0
 	thumb_func_end navicust_checkPieceFitsInBoard
 
+// symdb: PET navigator stat handler that zeroes a 16-byte field of the game's per-slot work structure (ptr at toolkit+0x200431c).
+// symdb: () -> (); r0,r1 clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C020.yaml
 	thumb_local_start
 sub_813C020:
 	push {lr}

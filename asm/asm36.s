@@ -613,6 +613,10 @@ off_81304B8:
 	.word byte_812F064
 	thumb_func_end sub_81304A4
 
+// symdb: Rebuilds (or clears) the 30-slot battle chip-pack buffer used by the t4 overlay scene, driven by a flag byte in the scene state.
+// symdb: (r0 = passed through to sub_8130404) -> r0 = state pointer from sub_8130404; returns after
+// symdb: clearing or refilling unk_2023FB0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304BC.yaml
 	thumb_func_start sub_81304BC
 sub_81304BC:
 	push {r4-r7,lr}
@@ -2884,6 +2888,9 @@ off_8131644:
 	.word 0xFFFF
 	thumb_func_end sub_8131588
 
+// symdb: Sets byte 0x23 of the currently selected PET navi's stats block to 1.
+// symdb: () -> void; no args used, r0-r3 clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131664.yaml
 	thumb_local_start
 sub_8131664:
 	push {lr}
@@ -2904,6 +2911,9 @@ sub_8131674:
 	pop {pc}
 	thumb_func_end sub_8131674
 
+// symdb: Writes 7 into stat byte 0xA of the currently selected PET navi's record at 0x203CCE0
+// symdb: () -> void; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131684.yaml
 	thumb_local_start
 sub_8131684:
 	push {lr}
@@ -2924,6 +2934,9 @@ sub_8131694:
 	pop {pc}
 	thumb_func_end sub_8131694
 
+// symdb: Sets byte 0x1C of the currently selected PET navi's stats block (203CCE0) to 1.
+// symdb: () -> void; calls GetCurPETNavi then SetNaviStats203CCE0Byte(curNavi, 0x1C, 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81316A4.yaml
 	thumb_local_start
 sub_81316A4:
 	push {lr}
@@ -2934,6 +2947,9 @@ sub_81316A4:
 	pop {pc}
 	thumb_func_end sub_81316A4
 
+// symdb: Sets byte 0x1D of the current PET navi's stats struct (0x203CCE0) to 1.
+// symdb: () -> void; no return value, r0 clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81316B4.yaml
 	thumb_local_start
 sub_81316B4:
 	push {lr}
@@ -3056,6 +3072,9 @@ off_8131764:
 	.word sSubmenu
 	thumb_func_end sub_813175C
 
+// symdb: State handler for the link-match NPC object that ends the interaction: plays the exit-submenu sound, runs text script 0x68, and sets the object's state flag.
+// symdb: (r0 = object? clobbers r5-relative fields; r5 = object struct) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131768.yaml
 	thumb_local_start
 sub_8131768:
 	push {lr}
@@ -4916,6 +4935,9 @@ sub_8132664:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132664
 
+// symdb: Looks up the current eLink/communication screen in a small table and packs its index together with the PET's selected navi (gated by an event flag) into one returned ID.
+// symdb: () -> r0 = (screenIndex << 4) | (EVENT_163 ? currentPETNavi : 0); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132670.yaml
 	thumb_func_start sub_8132670
 sub_8132670:
 	push {r4-r7,lr}
@@ -12633,6 +12655,9 @@ byte_81360AC:
 	.byte 0x6, 0x6, 0x7, 0x6, 0x7, 0x7, 0x0, 0x0
 	thumb_func_end sub_8135FDC
 
+// symdb: Handler that closes the Navi Customizer screen, restoring the board display and returning to the submenu with the exit sound.
+// symdb: () -> void; uses r5 = navi-cust screen state struct (global)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81360B4.yaml
 	thumb_local_start
 sub_81360B4:
 	push {lr}
@@ -13093,6 +13118,10 @@ byte_8136404:
 	.byte 0x6, 0x6, 0x7, 0x6, 0x7, 0x7, 0x0, 0x0
 	thumb_func_end sub_8136384
 
+// symdb: B-button handler for the Navi Cust part-placement screen: if a part is being held it puts it back, otherwise it cancels/exits the placement screen.
+// symdb: (r0 = scratch; r5 = placement-screen state struct) -> r0 = sound ID passed to PlaySoundEffect;
+// symdb: updates state byte at +0x02 and position fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813640C.yaml
 	thumb_local_start
 sub_813640C:
 	push {lr}
@@ -17235,6 +17264,12 @@ dword_8138344:
 	.word 0xE10
 	thumb_func_end playCreditsScene_81382D0
 
+// symdb: Top-level frame driver: runs the current game-mode handler selected by a state byte (once, or 16 times when a flag byte is set), early-exits on a state value of 4, then ticks entities, battle sprites and the overworld pipeline once.
+// symdb: (r5 = game-state struct base, read-only here) -> r0 clobbered; runs mode handler table[[r5+1]]
+// symdb: up to r7 iterations (1 normally, 0x10 if byte[r5+9]!=0, aborting if byte[r5]==4), then calls
+// symdb: entity_runAllUpdateHandlers, battle_updateEStructSprites, ow_perFrameUpdateAndRender; returns
+// symdb: void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138348.yaml
 	thumb_local_start
 sub_8138348:
 	push {r7,lr}

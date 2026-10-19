@@ -424,6 +424,10 @@ battle_resetState_8033AC4: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end battle_resetState_8033AC4
 
+// symdb: Per-frame update for the battle-start overlay: queues its OAM sprite entry, draws/refreshes the overlay tilemap, and runs an associated follow-up routine.
+// symdb: (r0 = self: * S2011E30, passed via r5 as an object/sprite task) -> r0 = clobbered; no meaningful
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033ADC.yaml
 	thumb_local_start
 sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 	push {lr}

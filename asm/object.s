@@ -4177,6 +4177,11 @@ byte_800D52C:
 	.byte 0x0
 	thumb_func_end sub_800D4D0
 
+// symdb: Scans one row of the battle grid from an edge and returns the column of the first panel whose alliance differs from the given one (the alliance boundary / front line column).
+// symdb: (r0 = row, r1 = alliance id, r2 = direction/flip flag) -> r0 = column of first panel with
+// symdb: alliance != r1 along that row (0 if the scan leaves the grid or the row is invalid); flags
+// symdb: clobbered.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D53C.yaml
 	thumb_local_start
 sub_800D53C:
 	push {lr}
@@ -5989,6 +5994,9 @@ sub_800E9FA:
 	pop {pc}
 	thumb_func_end sub_800E9FA
 
+// symdb: Resets a battle object's collision state: clears all collision ObjectFlags2 bits and zeroes its collision-hit record area.
+// symdb: (r5 = battle object) -> void; r0-r3, lr clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA0E.yaml
 	thumb_func_start sub_800EA0E
 sub_800EA0E:
 	push {lr}

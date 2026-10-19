@@ -805,6 +805,9 @@ loc_808FE10:
 	.balign 4, 0x00
 	thumb_func_end weatherComp_init_808FDC0
 
+// symdb: Initializes the bus map object and its 0x60-byte work buffer when entering the area, preserving the buffer once EVENT_BFB is set.
+// symdb: () -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FE34.yaml
 	thumb_func_start sub_808FE34
 sub_808FE34:
 	push {r5,lr}

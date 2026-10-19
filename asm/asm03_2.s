@@ -2053,6 +2053,10 @@ loc_804704C:
 	pop {pc}
 	thumb_func_end chatbox_stepContextScript_8047028
 
+// symdb: Per-frame step for a shop-scene state: runs the buy-menu frame update and, once the chatbox finishes its text (flag 8), stores 12 into the state byte to advance to the next state.
+// symdb: (r5 = state struct with state byte at offset 0) -> r0 = 0; flags from chatbox flag test used
+// symdb: internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047050.yaml
 	thumb_local_start
 sub_8047050:
 	push {lr}
@@ -8313,6 +8317,10 @@ dword_804AAA0:
 	.word 0xC24C
 	thumb_func_end sub_804AA74
 
+// symdb: Handles the B (cancel) button in a menu, backing out to the previous screen with a sound and fade.
+// symdb: (r0 = scratch, r5 = menu state struct) -> r0 = clobbered; may set state byte 8 and trigger
+// symdb: screen fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AAA4.yaml
 	thumb_local_start
 sub_804AAA4:
 	push {lr}
@@ -9580,6 +9588,11 @@ loc_804BE0C:
 	pop {r5,pc}
 	thumb_func_end sub_804BDB4
 
+// symdb: Filters a candidate chip list down to chips the player has not yet obtained, writing each unowned chip plus its element into a scratch buffer and tallying counts per element.
+// symdb: (r0 = *entries (6-byte records, u16 chipId at +0, stops at id==0), r1 = *out struct, r3 =
+// symdb: starting entry index (quirk), r5 = *caller struct) -> r0 = word count of built list, also stored
+// symdb: to [r5+0x48]; out struct bytes indexed by element incremented; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BE1C.yaml
 	thumb_local_start
 sub_804BE1C:
 	push {r5,lr}

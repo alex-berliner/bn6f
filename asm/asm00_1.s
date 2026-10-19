@@ -14120,6 +14120,10 @@ locret_80095C6:
 	pop {pc}
 	thumb_func_end sub_8009594
 
+// symdb: Battle state handler that displays a communication-error chatbox script naming the current navi, then advances the battle state once the message finishes.
+// symdb: (r5 = *BattleState) -> r0 = void; sets NZ from tst/tst of init flag / eFlags2009F38 bit 0x80 for
+// symdb: internal branches
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80095C8.yaml
 	thumb_local_start
 sub_80095C8:
 	push {lr}
@@ -15047,6 +15051,10 @@ locret_8009C54:
 	pop {pc}
 	thumb_func_end battle_subphaseFadeOut
 
+// symdb: State-machine step that shows the per-navi 'communication error' chatbox message, then waits for the chatbox to close before advancing the enclosing state.
+// symdb: (r5 = task/state struct ptr, implicit) -> r0 = 0; updates state: [r5+3]=4 after queuing the
+// symdb: message, later [r5+1]=4 and [r5+2]=0 once the chatbox flag clears
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009C56.yaml
 	thumb_local_start
 sub_8009C56:
 	push {lr}
@@ -17567,6 +17575,9 @@ battle_stateGotoPhase14_800AABC:
 	pop {r5,pc}
 	thumb_func_end battle_stateGotoPhase14_800AABC
 
+// symdb: Ends the battle by jumping the state machine to phase 0x14 and recording result code 2 (escape/draw) in the battle state.
+// symdb: () -> r0 = clobbered; no return value; sets up battle end phase and result byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AAD6.yaml
 	thumb_local_start
 sub_800AAD6:
 	push {r5,lr}
@@ -19565,6 +19576,9 @@ loc_800B7E0:
 	pop {pc}
 	thumb_func_end sub_800B7D0
 
+// symdb: Increments the battle navi's NaviStats byte 0x18 by one, clamped to a maximum of 7.
+// symdb: (r0 = battle object pointer) -> r0 = new byte value; flags from the cmp/set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B7E8.yaml
 	thumb_local_start
 sub_800B7E8:
 	push {lr}

@@ -1102,6 +1102,10 @@ indexByActorTypeAndAIIdxThenDispatch_800F420:
 	pop {pc}
 	thumb_func_end indexByActorTypeAndAIIdxThenDispatch_800F420
 
+// symdb: Ray-casts along the battle object's facing direction until a panel whose status flags match a mask is found, or it walks off the field.
+// symdb: (r0 = starting column, r1 = row, r2 = panel-status mask) -> r0 = 1 if a matching panel was hit,
+// symdb: 0 if the scan left the 6x3 grid; sets flags via tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F436.yaml
 	thumb_local_start
 sub_800F436:
 	push {r4,r6,r7,lr}
@@ -1269,6 +1273,10 @@ dword_800F530:
 	.word 0xF880080
 	thumb_func_end sub_800F50C
 
+// symdb: Validates battle-grid coordinates, then reports whether that panel carries flag 0x10 while lacking flags 0x3800000 — used by battle-object AI before stepping onto a panel.
+// symdb: (r0 = column (1-based), r1 = row (1-based)) -> r0 = 1 if panel is valid and passes the flag
+// symdb: test, else 0; flags clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F534.yaml
 	thumb_local_start
 sub_800F534:
 	push {r6,r7,lr}
@@ -1292,6 +1300,10 @@ dword_800F558:
 	.word 0x3800000
 	thumb_func_end sub_800F534
 
+// symdb: Tests whether the panel at (col,row) satisfies the panel-flag requirements tied to the current battle object's facing direction, returning 1 if OK.
+// symdb: (r0 = column, r1 = row) -> r0 = 1 if the panel passes the direction's required/forbidden flag
+// symdb: masks, 0 if coords invalid; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F55C.yaml
 	thumb_local_start
 sub_800F55C:
 	push {r6,r7,lr}
@@ -1580,6 +1592,11 @@ byte_800F758:
 	.byte 0x0
 	thumb_func_end sub_800F6C6
 
+// symdb: Aims a battle object at a target panel and gives it lob-style velocities: horizontal speed 8 toward the panel plus an inverse-distance Z velocity for the arc.
+// symdb: (r0 = target panel column, r1 = target panel row; object in r5) -> r0 = written ZVelocity value
+// symdb: (8 if target is closer than ~8px); sets
+// symdb: oBattleObject_DirectionAngle/XVelocity/YVelocity/ZVelocity
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F768.yaml
 	thumb_local_start
 sub_800F768:
 	push {lr}
@@ -2334,6 +2351,10 @@ byte_800FCD5:
 	.byte 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0x0, 0x0, 0x0
 	thumb_func_end chip_class_lookup_800FC9E
 
+// symdb: Reads two stats bytes from a battle object and returns the chip's class via the two-table chip class lookup.
+// symdb: (r0 = battle object / battle entity) -> r0 = chip class byte (from chip_class_lookup_800FC9E),
+// symdb: r1 = flag saying which class table was used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FCE4.yaml
 	thumb_local_start
 sub_800FCE4:
 	push {lr}
@@ -3541,6 +3562,9 @@ get_sqDistToPoint:
 	mov pc, lr
 	thumb_func_end get_sqDistToPoint
 
+// symdb: Turns a battle object invisible: sets its flashing/invisibility countdown, raises the invisibility flag, and plays sound effect 0x93.
+// symdb: (r5 = battle object, r4 = invisibility/flashing timer) -> r0 = 0; flags clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010474.yaml
 	thumb_func_start sub_8010474
 sub_8010474:
 	push {lr}
@@ -9103,6 +9127,10 @@ loc_8012BE4:
 	pop {r6,r7,pc}
 	thumb_func_end ai_decidePowerAttack_8012BA2
 
+// symdb: Returns 1 if the given chip qualifies for a form-based (CrossBeast-range, element-0xa) chip boost/permission during battle, else 0.
+// symdb: (r0 = chip ID, r1 = skip-state-check flag; r5 = battle context) -> r0 = 1 if chip qualifies,
+// symdb: else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012BE8.yaml
 	thumb_local_start
 sub_8012BE8:
 	push {r6,r7,lr}
@@ -12073,6 +12101,10 @@ sub_8013F8C:
 	pop {pc}
 	thumb_func_end sub_8013F8C
 
+// symdb: Increments a counter byte (offset 0x18) in the NaviStats record of the navi a battle object represents, saturating at 7.
+// symdb: (r0 = battle object pointer) -> r0 = new counter value (unchanged if already >7); flags set by
+// symdb: cmp r0,#7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013F96.yaml
 	thumb_local_start
 sub_8013F96:
 	push {lr}
@@ -13353,6 +13385,9 @@ sub_801478C:
 	pop {pc}
 	thumb_func_end sub_801478C
 
+// symdb: Grants the current battle object SuperArmor (no flinch) and effectively permanent invulnerability.
+// symdb: (object in implicit current-object slot / r0 unused) -> void; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801479C.yaml
 	thumb_local_start
 sub_801479C:
 	push {r7,lr}
@@ -16752,6 +16787,10 @@ byte_80161B4:
 	.byte 0x5, 0xF0, 0x9A, 0xFC, 0x3, 0xBC, 0x8, 0xB0, 0x80, 0xBD
 	thumb_func_end sub_8016004
 
+// symdb: Walks column-by-column forward from a battle object, probing rows in a per-row priority order, and returns the coordinates of the first panel whose status flags contain the object's alliance-specific mask.
+// symdb: (r0..? = battle object in r5) -> r0 = x of first matching panel (0 if none/off-field), r1 = y
+// symdb: from priority table, r2 = side sign ((PanelX-x)>=0 ^ Alliance); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016218.yaml
 	thumb_func_start sub_8016218
 sub_8016218:
 	push {r4,lr}
@@ -23811,6 +23850,10 @@ locret_801A778:
 	pop {r4,pc}
 	thumb_func_end battle_aiAimTwoColumnsAheadOnSpecialPanel_801A75A
 
+// symdb: Per-frame panel-event handler: when a battle object stands on the 0xF6 panel type, starts a 150-frame status via flag 0x8, blinds it (flag 0x20, 1200-frame blind timer) unless its object ID is in a specific 12-entry range, then consumes the event.
+// symdb: (r0 = battle object, r5 assumed = same object base) -> r0 = 0 from object_setFlag2 / event
+// symdb: consumed; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A77A.yaml
 	thumb_local_start
 sub_801A77A:
 	push {r4,lr}
@@ -30059,6 +30102,10 @@ locret_801D478:
 	pop {pc}
 	thumb_func_end sub_801D450
 
+// symdb: Uploads a two-frame 2-tile graphic to OBJ VRAM and queues three OAM sprites (one 16x16, two 32x32 with one h-flipped) anchored horizontally to the player-side battle entity.
+// symdb: (r5 = battle object ptr, field +0x36 halfword = state; r10 = toolkit) -> void; queues GFX + OAM,
+// symdb: no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D47A.yaml
 	thumb_local_start
 sub_801D47A:
 	push {r4-r6,lr}
@@ -30208,6 +30255,9 @@ dword_801D58C:
 	.word 0xD36C
 	thumb_func_end sub_801D564
 
+// symdb: Queues VRAM tile graphics rendering a 3-digit BCD counter from the player's battle entity into the battle UI tile area.
+// symdb: (r10 = battle toolkit) -> r0 = clobbered; queues GFX transfers to VRAM 0x6017680-0x6017780
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D590.yaml
 	thumb_local_start
 sub_801D590:
 	push {r4,r6,r7,lr}
@@ -31236,6 +31286,9 @@ sub_801DD7C:
 	pop {pc}
 	thumb_func_end sub_801DD7C
 
+// symdb: Queues a fixed batch of four graphics transfer requests (two VRAM tiles blocks, one palette/buffer block, one small block), sets request bit 8 in the eStruct2035280 request dword, and dispatches pending transfers.
+// symdb: () -> void; r0 clobbered as scratch for the bit mask and dispatch id
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DD88.yaml
 	thumb_local_start
 sub_801DD88:
 	push {lr}
@@ -32255,6 +32308,9 @@ off_801E404:
 	.word byte_801EF10
 	thumb_func_end sub_801E3E4
 
+// symdb: Draws a fixed text script (TextScript86F0374) into the battle HUD's text tile area via the text renderer, then flags the HUD for redraw and dispatches that request.
+// symdb: () -> void; sets HUD request bit 0x100000 in eStruct2035280+0x40 and dispatches it
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E408.yaml
 	thumb_func_start sub_801E408
 sub_801E408:
 	push {r4-r7,lr}

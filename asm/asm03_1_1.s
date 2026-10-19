@@ -2842,6 +2842,10 @@ locret_803A184:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A104
 
+// symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to sub_803BBA4, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
+// symdb: (r5 = record whose byte at +0x0e is an index; r0-r4 scratch) -> void; sets r4 = 1 when flag 0x80
+// symdb: is clear, 0 when set, passes it as r2 to sub_803BBA4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A186.yaml
 	thumb_local_start
 sub_803A186:
 	push {r4-r7,lr}
@@ -3979,6 +3983,10 @@ loc_803A9E0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A9CC
 
+// symdb: Per-frame update for the in-battle chip-select menu: poll the folder cursor and dispatch any button press to a handler, then advance the battle scene and draw the overlay frame.
+// symdb: (r0 = 0) -> r0 = clobbered; returns to caller after running the selected handler and the
+// symdb: scene/draw updates
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A9E6.yaml
 	thumb_local_start
 sub_803A9E6:
 	push {r4-r7,lr}
@@ -4125,6 +4133,10 @@ loc_803AAEA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AAD8
 
+// symdb: Plays the cursor-move sound, flips a mode flag in a menu state struct, and reconfigures one of two groups of menu slots depending on the new state.
+// symdb: (r5 = menu/UI state struct; r0 unused on entry) -> r0 = new state (0/1) after toggle via
+// symdb: PlaySoundEffect call; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AAF6.yaml
 	thumb_local_start
 sub_803AAF6:
 	push {r4-r7,lr}
@@ -4407,6 +4419,10 @@ loc_803ACC0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803ACB2
 
+// symdb: Per-frame update for the guest-library chip-select screen: polls the folder cursor for button input, dispatches to a button handler via jump table, and otherwise runs the screen's init and overlay-tile draw steps.
+// symdb: (r0 = 0 passed to cursor-move poll) -> r0 = handler/button result discarded; no meaningful
+// symdb: return; calls into state handlers via blx
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803ACC6.yaml
 	thumb_local_start
 sub_803ACC6:
 	push {r4-r7,lr}
@@ -8727,6 +8743,9 @@ sub_803CEF8:
 	.byte 0, 0
 	thumb_func_end sub_803CEF8
 
+// symdb: Recomputes the selected PET navi's 16-bit stat 0x42 as stat 0x3E plus a global modifier, clamped to at least 1.
+// symdb: () -> void; no return value, no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CF10.yaml
 	thumb_local_start
 sub_803CF10:
 	push {r4,r6,r7,lr}
@@ -12486,6 +12505,9 @@ off_803EF70:
 	.word 0x100
 	thumb_func_end sub_803EF60
 
+// symdb: Trivial getter that returns the word at eLinkState+0x38 to link-related menu/object routines.
+// symdb: () -> r0 = eLinkState[0x38]; flags not meaningful (mov pc, lr preserves none intentionally)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EF74.yaml
 	thumb_func_start sub_803EF74
 sub_803EF74:
 	ldr r0, off_803EF8C // =eLinkState

@@ -552,6 +552,10 @@ sub_8089234:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089234
 
+// symdb: Menu cursor-move handler: copies the selected entry's 0x80-byte record into a work buffer, decompresses its display graphics into VRAM, and plays the cursor-move sound effect.
+// symdb: (r0 = selected entry index into table byte_87DE44C, stride 0x80) -> r0 destroyed; loads 0x20
+// symdb: words to byte_30016F0, LZ77 asset to VRAM 0x6014800, plays SOUND_MENU_CUR_MOVE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089244.yaml
 	thumb_local_start
 sub_8089244:
 	push {r4-r7,lr}

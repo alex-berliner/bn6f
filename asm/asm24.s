@@ -678,6 +678,10 @@ unk_808C634:
 	.word 0x01000185, 0xFF5A0000, 0x01F60000, 0x00000000
 	thumb_func_end sub_808C378
 
+// symdb: Teleports the overworld player to a fixed per-map position, facing direction, and animation from a lookup table.
+// symdb: () -> r0 = 0; repositions player object and shared overworld-player state, sets animation id in
+// symdb: eStruct200ace0 and EVENT_1719
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C644.yaml
 	thumb_local_start
 sub_808C644:
 	push {r4,r5,lr}

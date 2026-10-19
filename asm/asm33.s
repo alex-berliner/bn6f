@@ -4795,6 +4795,9 @@ off_8125700:
 	.word 0x300
 	thumb_func_end sub_8125678
 
+// symdb: Per-frame input handler for a submenu screen: B/START exit with fade, Left/Right switch a mode byte, Up/Down move a 7-row list cursor.
+// symdb: (r0 = state ptr in r8, r5 = state ptr) -> void; writes state fields, plays SFX, may start fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125704.yaml
 	thumb_local_start
 sub_8125704:
 	push {r4-r7,lr}
@@ -9164,6 +9167,9 @@ off_812787C:
 	.byte 0x0, 0x0, 0x0, 0xBE, 0x0, 0x0, 0x0
 	thumb_func_end sub_8127800
 
+// symdb: Runs one script from the submenu's text archive at the given index via the chatbox runner.
+// symdb: (r0 = u8 script index into eTextScript201BF20) -> r0 = undefined; runs chatbox script from top
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81278C8.yaml
 	thumb_local_start
 sub_81278C8:
 	push {lr}
