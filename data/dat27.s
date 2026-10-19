@@ -3999,7 +3999,7 @@ byte_8097577::
 	thumb_local_start
 sub_8097580:
 	push {lr}
-	bl sub_8005DF0
+	bl clear_gameStateForNewScene
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0

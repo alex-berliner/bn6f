@@ -7506,7 +7506,7 @@ sub_804A460:
 	b loc_804A4CC
 loc_804A4AA:
 	bl sub_804A970
-	bl sub_804BD00
+	bl chipTraderRollReward
 	strh r0, [r7,#0x4] // (word_200AC84 - 0x200ac80)
 	strh r1, [r7,#0x6] // (word_200AC86 - 0x200ac80)
 	mov r2, #1
@@ -9399,9 +9399,9 @@ byte_804BB92:
 // symdb: Picks the chip the chip trader will award: chooses a reward-list entry and a rarity tier, then resolves or redraws the final chip.
 // symdb: () -> r0 = ? (result of last callee); writes trader state at eS200AC80 (+0x4c list ptr, +0x50
 // symdb: count, +0x34 pick state)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BD00.yaml
-	thumb_func_start sub_804BD00
-sub_804BD00: // EXE6F: 0x804d770
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderRollReward.yaml
+	thumb_func_start chipTraderRollReward
+chipTraderRollReward: // EXE6F: 0x804d770
 	push {r4-r7,lr}
 	ldr r5, off_804BD70 // =eS200AC80 
 	bl selectChipTraderRewardList_804BFF0
@@ -9461,7 +9461,7 @@ off_804BD74:
 	.word dword_804B008
 off_804BD78:
 	.word off_804B018
-	thumb_func_end sub_804BD00
+	thumb_func_end chipTraderRollReward
 
 // symdb: Chip trader weighted pick: GetRNG masked to the low 10 bits (r & 0x3FF), the table's weights summed, svc 6 = r % sum, then a walk of the cumulative weights picks the slot.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderWeightedRandomMaybe_804BD7C.yaml

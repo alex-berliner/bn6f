@@ -182,7 +182,7 @@ loc_812F148::
 	strb r0, [r5,#0x14]
 	ldr r0, byte_812F2A0 // =0xdc 
 	strh r0, [r5,#0x2a]
-	bl sub_8130084
+	bl t4_sceneInit
 	b loc_812F18A
 loc_812F186::
 	bl sub_8130424

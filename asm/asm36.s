@@ -51,9 +51,9 @@ sub_813005C:
 
 // symdb: Full initialization routine for an overlay cutscene/scene: resets video, scene records, chatbox, and the scene object's animation state, then fades in.
 // symdb: () -> void; r5 = scene/object state ptr, r10 = toolkit must be set by caller; clobbers r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130084.yaml
-	thumb_func_start sub_8130084
-sub_8130084:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_sceneInit.yaml
+	thumb_func_start t4_sceneInit
+t4_sceneInit:
 	push {r7,lr}
 	bl sub_8130404
 	mov r7, r0
@@ -102,7 +102,7 @@ dword_8130100:
 	.word 0x1F40
 off_8130104:
 	.word dword_8129180
-	thumb_func_end sub_8130084
+	thumb_func_end t4_sceneInit
 
 	thumb_local_start
 sub_8130108:
@@ -1177,7 +1177,7 @@ off_8130934:
 	.word off_8130938
 off_8130938:
 	.word sub_813096C+1
-	.word sub_8130A04+1
+	.word e_linkMatchObjectUpdate+1
 	.word sub_8130B30+1
 	.word sub_8130BC8+1
 	.word sub_8130C98+1
@@ -1272,9 +1272,9 @@ locret_8130A00:
 // symdb: Per-frame state-machine update for an interactive object that matches a looked-up record against the eLinkState global and runs text scripts 0x40/0x41 from eTextScript201BA20.
 // symdb: (r0 = ? (unused), r5 = object work struct, preloaded) -> r0 = ?; sets state bytes
 // symdb: [r5+0x10]/[r5+2]/[r5+0x1f], counters [r5+0x26]/[r5+0x28]/[r5+0x2a]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130A04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_linkMatchObjectUpdate.yaml
 	thumb_local_start
-sub_8130A04:
+e_linkMatchObjectUpdate:
 	push {r4-r7,lr}
 	mov r0, #0x20 
 	strb r0, [r5,#0x10]
@@ -1417,7 +1417,7 @@ loc_8130B12:
 locret_8130B2C:
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8130A04
+	thumb_func_end e_linkMatchObjectUpdate
 	thumb_local_start
 sub_8130B30:
 	push {r4-r7,lr}
@@ -3774,15 +3774,15 @@ sub_8131F20:
 off_8131F30:
 	.word off_8131F34
 off_8131F34:
-	.word sub_8131F3C+1
+	.word startLinkSceneSetup+1
 	.word sub_8131F80+1
 	thumb_func_end sub_8131F20
 
 // symdb: Waits for the screen fade, then initializes link state, camera layout and object state and starts a fade as the first step of transitioning into a link scene.
 // symdb: (r5 = task/state struct, no register args) -> r0 = undefined; writes state id 4 to [r5+0x24]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131F3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startLinkSceneSetup.yaml
 	thumb_local_start
-sub_8131F3C:
+startLinkSceneSetup:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8131F74
@@ -3811,7 +3811,7 @@ dword_8131F78:
 	.word 0x42523545
 dword_8131F7C:
 	.word 0x2000
-	thumb_func_end sub_8131F3C
+	thumb_func_end startLinkSceneSetup
 
 	thumb_local_start
 sub_8131F80:
@@ -3846,7 +3846,7 @@ off_8131FB4:
 	.word sub_8131FC4+1
 	.word sub_813201C+1
 	.word sub_813202C+1
-	.word sub_8132194+1
+	.word submenu_linkResultHandler+1
 	thumb_func_end sub_8131FA0
 
 	thumb_local_start
@@ -4093,9 +4093,9 @@ locret_8132192:
 // symdb: Link-menu state routine: compares link-peer data in eLinkState against a small known-entry table, then sets sSubmenu state fields and fires a network text script (0x1E/0x1F) based on the outcome.
 // symdb: () -> r0 = 0 or 4 (result code); writes sSubmenu.jo_01/unk_02/unk_03/unk_10/unk_11/unk_26/unk_2A
 // symdb: and eLinkState fields; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132194.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_linkResultHandler.yaml
 	thumb_local_start
-sub_8132194:
+submenu_linkResultHandler:
 	push {r4-r7,lr}
 
 	ldr r5, off_8132274 // =sSubmenu 
@@ -4223,7 +4223,7 @@ dword_8132278:
 	.word 0xFFFFFFFF
 dword_813227C:
 	.word 0x2000
-	thumb_func_end sub_8132194
+	thumb_func_end submenu_linkResultHandler
 
 // symdb: Chatbox wrapper that runs text script archive eTextScript201BA20 starting at a caller-supplied script index.
 // symdb: void chatbox_runScript_eTextScript201BA20(u32 scriptIdx /* r0 */)
@@ -15935,7 +15935,7 @@ sub_81378B4:
 off_81378C4:
 	.word off_81378C8
 off_81378C8:
-	.word sub_81378D4+1
+	.word battle_initRoundState+1
 	.word sub_8137964+1
 	.word sub_8137A7C+1
 	thumb_func_end sub_81378B4
@@ -15944,9 +15944,9 @@ off_81378C8:
 // symdb: (r0-r3 unused; r5 = scene state struct base, r10[8] = render-state struct) -> r0 = 0; writes
 // symdb: state fields at r5+0x1,0x2,0xc,0xd,0xe,0x1e and render fields at r10[8]+0x0,0x10..0x1a; invokes
 // symdb: screen fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81378D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initRoundState.yaml
 	thumb_local_start
-sub_81378D4:
+battle_initRoundState:
 	push {r4-r7,lr}
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -16006,7 +16006,7 @@ off_813795C:
 	.word dword_81378A0
 off_8137960:
 	.word sSubmenu
-	thumb_func_end sub_81378D4
+	thumb_func_end battle_initRoundState
 	thumb_local_start
 sub_8137964:
 	push {lr}

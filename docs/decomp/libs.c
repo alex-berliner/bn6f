@@ -791,7 +791,7 @@ signed int __fastcall sub_8144DF0(int a1, int a2)
     dword_200FE40 = v2;
     dword_200FE44 = v3;
     rfu_setMSCCallback(sub_8145D54);
-    rfu_setREQCallback(sub_8145658);
+    rfu_setREQCallback(rfu_handleConnectionEvent);
     return 0;
 }
 
@@ -1396,7 +1396,7 @@ int __fastcall sub_81455E8(int a1)
 
 
 // 0x8145658
-int __fastcall sub_8145658(unsigned __int16 a1, unsigned __int16 a2)
+int __fastcall rfu_handleConnectionEvent(unsigned __int16 a1, unsigned __int16 a2)
 {
     signed int v2; // r8
     int v3; // r6

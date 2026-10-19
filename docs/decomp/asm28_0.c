@@ -169,7 +169,7 @@ int sub_809A05C()
 
 
 // 0x809a078
-signed int sub_809A078()
+signed int ow_bugfragTraderExchange()
 {
     int v0; // r5
     int v1; // r10
@@ -195,7 +195,7 @@ signed int sub_809A078()
         if ( !chatbox_GetState_8045F4C() )
         {
             sub_804A2E8(0, v3, v4, v5);
-            sub_804BD00();
+            chipTraderRollReward();
             word_200AC84 = v6;
             word_200AC86 = v7;
             GiveChips(v6, v7, 1);
@@ -360,7 +360,7 @@ signed int sub_809A1FC()
 
 
 // 0x809a260
-int __fastcall sub_809A260(int a1, int a2, int a3)
+int __fastcall event_playPetEffectAndReloadGfx(int a1, int a2, int a3)
 {
     doPETEffect_8033fc0(1, a2, a3);
     copyMemory_8001850();

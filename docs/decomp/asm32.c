@@ -16156,7 +16156,7 @@ int sub_811A78C()
 
 
 // 0x811a7ac
-void __noreturn sub_811A7AC()
+void __noreturn initGuiSpriteObject()
 {
     int v0; // r5
 
@@ -16441,7 +16441,7 @@ int sub_811AB5C()
 
 
 // 0x811ab7c
-void __noreturn sub_811AB7C()
+void __noreturn object_initSpriteResource8()
 {
     Battle *v0; // r5
 
@@ -16592,7 +16592,7 @@ int sub_811AD38()
 
 
 // 0x811ad58
-void __noreturn sub_811AD58()
+void __noreturn gui_initSpriteWithPosition()
 {
     Battle *v0; // r5
 
@@ -20521,7 +20521,7 @@ int sub_811E418()
 
 
 // 0x811e438
-void __fastcall __noreturn sub_811E438(int a1, int a2)
+void __fastcall __noreturn object_initSpriteObjA1(int a1, int a2)
 {
     Battle *v2; // r5
 

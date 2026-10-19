@@ -331,7 +331,7 @@ mapscript_8078293:
 
 mapscript_80782B8:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_961 destination4=byte_80782CE
-	ms_call_native_function ptr1=sub_8142FC8+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_crowLessonInteraction+1 word5=0x00000000
 	ms_jump destination1=byte_80782CE
 
 byte_80782CE::
@@ -451,7 +451,7 @@ mapscript_8078477:
 
 mapscript_807849C:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_961 destination4=byte_8078501
-	ms_call_native_function ptr1=sub_8142FC8+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_crowLessonInteraction+1 word5=0x00000000
 	ms_jump destination1=byte_8078501
 
 mapscript_80784B2:

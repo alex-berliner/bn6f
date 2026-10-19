@@ -6055,9 +6055,9 @@ locret_812602C:
 
 // symdb: Redraws the battle chip-selection screen (slot frame, chip icons, packed slot data) in one of two layouts depending on a mode field.
 // symdb: (r5 = screen/work struct ptr) -> void; r7 = r5 internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126030.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipSelectScreen.yaml
 	thumb_local_start
-sub_8126030:
+battle_drawChipSelectScreen:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, [r7,#0x64]
@@ -6160,7 +6160,7 @@ dword_812610C:
 	.word 0x6007800
 off_8126110:
 	.word byte_8124A4C
-	thumb_func_end sub_8126030
+	thumb_func_end battle_drawChipSelectScreen
 
 	thumb_local_start
 sub_8126114:
@@ -12419,7 +12419,7 @@ off_81292BC:
 	.word sub_8129454+1
 	.word sub_812952C+1
 	.word sub_812954C+1
-	.word sub_812956C+1
+	.word battle_frameUpdateAndStopRfuAfterFade+1
 	thumb_func_end dispatchBattleState_81292A8
 
 // symdb: Sets up a full-screen battle cutscene: loads background tiles, initializes the chatbox, starts a screen fade, then selects and runs the appropriate e-text script based on progress flags.
@@ -12755,9 +12755,9 @@ locret_812956A:
 
 // symdb: Per-frame battle-side update that runs all entity and sprite updates, then once the screen fade has finished marks its task state done and shuts the wireless adapter down.
 // symdb: (r5 = task/state struct: +2 state byte, +0xD done flag; r0 = scratch) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812956C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_frameUpdateAndStopRfuAfterFade.yaml
 	thumb_local_start
-sub_812956C:
+battle_frameUpdateAndStopRfuAfterFade:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -12775,7 +12775,7 @@ sub_812956C:
 locret_8129594:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812956C
+	thumb_func_end battle_frameUpdateAndStopRfuAfterFade
 
 // symdb: Dispatches the menus3 screen state machine: calls the conditional sprite draw for nonzero states, then jumps to the step handler selected by the state byte.
 // symdb: (no args; context in r5, state byte at [r5+2]) -> tail-calls handler for state; never returns to
@@ -18625,15 +18625,15 @@ sub_812C07C:
 off_812C08C:
 	.word off_812C090
 off_812C090:
-	.word sub_812C094+1
+	.word screens3_initSceneState+1
 	thumb_func_end sub_812C07C
 
 // symdb: One-time setup for a screens3 menu state: waits for the fade, initializes the battle scene, loads entity/background graphics, spawns eStruct records, and resets state fields.
 // symdb: (r5 = menu/state record) -> r0 = 0 (clobbered); writes r5+3 = 0x10, r5+0x1E = 0, zeroes 16 bytes
 // symdb: at unk_20251A0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C094.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/screens3_initSceneState.yaml
 	thumb_local_start
-sub_812C094:
+screens3_initSceneState:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812C0C2
@@ -18660,7 +18660,7 @@ off_812C0C4:
 	.word unk_20251A0
 off_812C0C8:
 	.word byte_8129150
-	thumb_func_end sub_812C094
+	thumb_func_end screens3_initSceneState
 
 	thumb_local_start
 sub_812C0CC:

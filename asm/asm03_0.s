@@ -10480,7 +10480,7 @@ sub_802AEEA:
 	mov r2, #2
 	mov r3, #0
 	mov r5, #0
-	bl sub_80076A0
+	bl battle_spawnEnemyObject
 	mov r1, r7
 	pop {r5-r7,pc}
 	thumb_func_end sub_802AEEA
@@ -17449,7 +17449,7 @@ loc_802E366:
 	ldrh r1, [r7,#0x24]
 	mov r0, r6
 	ldr r2, [sp]
-	bl sub_802E62A
+	bl battle_setEntryFieldAndAIDataFlag
 	tst r0, r0
 	beq loc_802E37A
 	b loc_802E406
@@ -17512,7 +17512,7 @@ loc_802E3C2:
 	mov r0, r6
 	ldrh r1, [r7,#0x2a]
 	ldr r2, [sp]
-	bl sub_802E62A
+	bl battle_setEntryFieldAndAIDataFlag
 	mov r0, r6
 	bl sub_802E07C
 	mov r0, #0
@@ -17843,9 +17843,9 @@ locret_802E628:
 
 // symdb: Writes a halfword into a 0x1D0-byte battle record, conditionally sets event flag EVENT_2020+value with a save re-encryption, and raises flag 0x10000 in the player's AI data word 0x44.
 // symdb: (r0 = record index, r1 = halfword value, r2 = suppress-flag) -> r0 = 1; r1..r3, r4-r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E62A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setEntryFieldAndAIDataFlag.yaml
 	thumb_local_start
-sub_802E62A:
+battle_setEntryFieldAndAIDataFlag:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -17879,7 +17879,7 @@ loc_802E65A:
 	.balign 4, 0
 off_802E670:
 	.word EVENT_2020
-	thumb_func_end sub_802E62A
+	thumb_func_end battle_setEntryFieldAndAIDataFlag
 
 	thumb_local_start
 sub_802E674:

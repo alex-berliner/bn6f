@@ -3208,7 +3208,7 @@ int sub_8125F5C()
 
 
 // 0x8126030
-int sub_8126030()
+int battle_drawChipSelectScreen()
 {
     int v0; // r5
     int result; // r0
@@ -6762,7 +6762,7 @@ int sub_812954C()
 
 
 // 0x812956c
-int sub_812956C()
+int battle_frameUpdateAndStopRfuAfterFade()
 {
     int v0; // r5
     int result; // r0
@@ -10882,7 +10882,7 @@ int sub_812C07C()
 
 
 // 0x812c094
-int sub_812C094()
+int screens3_initSceneState()
 {
     int v0; // r5
     int result; // r0

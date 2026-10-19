@@ -5163,7 +5163,7 @@ int sub_804AFE4()
 
 
 // 0x804bd00
-void sub_804BD00()
+void chipTraderRollReward()
 {
     int v0; // r1
     int v1; // r2

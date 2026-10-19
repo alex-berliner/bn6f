@@ -1335,7 +1335,7 @@ off_80395C8:
   // 0x00
   .word init_textScene+1
   // 0x04
-	.word sub_8039630+1
+	.word init_videoSystemsReset+1
   // 0x08
 	.word sub_8039658+1
   // 0x0C
@@ -1386,9 +1386,9 @@ off_803962C:
 
 // symdb: When no screen fade is running, resets the whole video pipeline: clears VRAM and the BG tile buffer, reloads base graphics, re-inits chatbox/start-screen renderers, and blanks DISPCNT.
 // symdb: () -> void; returns early via IsScreenFadeActive flags when a fade is active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039630.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_videoSystemsReset.yaml
 	thumb_local_start
-sub_8039630:
+init_videoSystemsReset:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8039652
@@ -1404,7 +1404,7 @@ locret_8039652:
 	.balign 4, 0
 off_8039654:
 	.word 0x40
-	thumb_func_end sub_8039630
+	thumb_func_end init_videoSystemsReset
 
 	thumb_local_start
 sub_8039658:

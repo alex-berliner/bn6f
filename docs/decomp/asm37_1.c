@@ -1378,7 +1378,7 @@ int __fastcall battle_countAliveActorsOnTeam_8142C20(int a1)
 
 
 // 0x8142c46
-int __fastcall sub_8142C46(int a1)
+int __fastcall ow_dealDamageToCurrentNavi(int a1)
 {
     int v1; // r4
     int v2; // r0
@@ -1605,7 +1605,7 @@ int sub_8142ECC()
 
 
 // 0x8142fc8
-int sub_8142FC8()
+int ow_crowLessonInteraction()
 {
     int v0; // r10
     int v1; // r0

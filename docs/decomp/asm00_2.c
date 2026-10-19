@@ -75,7 +75,7 @@ int __fastcall getBattleObjectStateInfo_800EDD0(int a1, int a2)
 
 
 // 0x800ee26
-int __fastcall sub_800EE26(int a1)
+int __fastcall battle_getEnemyChipAttackParams(int a1)
 {
     int v1; // r7
     int v2; // r5
@@ -2591,7 +2591,7 @@ int __fastcall sub_801055E(int a1)
 
 
 // 0x801056a
-int __fastcall sub_801056A(int a1, char a2, char a3)
+int __fastcall ai_useChipAttack(int a1, char a2, char a3)
 {
     int v3; // r5
     char v4; // ST04_1
@@ -5904,7 +5904,7 @@ int __usercall useChipRelated_80127C0@<R0>(Battle *obj@<R5>, int a1@<R0>)
     if ( v2 & 0x10000 )
     {
         *(v3 + 27) = 1;
-        v4 = sub_800EE26(obj);
+        v4 = battle_getEnemyChipAttackParams(obj);
     }
     else
     {
@@ -10160,7 +10160,7 @@ int sub_8015040()
 
 
 // 0x8015128
-void sub_8015128()
+void ai_attackDelayedTrigger()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10415,7 +10415,7 @@ void sub_80153B0()
 
 
 // 0x80153ec
-signed int __noreturn sub_80153EC()
+signed int __noreturn ai_finishPanelEmerge()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -10592,7 +10592,7 @@ int sub_80154C8()
 
 
 // 0x80155cc
-void sub_80155CC()
+void ai_attackTimerFinishStep()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -12933,7 +12933,7 @@ int sub_8016EC4()
 
 
 // 0x8016ee0
-signed int __fastcall sub_8016EE0(int a1)
+signed int __fastcall battle_defeatObject(int a1)
 {
     int v1; // r5
     signed int v2; // r0
@@ -14132,7 +14132,7 @@ int sub_8017CC0()
 
 
 // 0x8017ce0
-signed int __noreturn sub_8017CE0()
+signed int __noreturn object_continuePanelMoveStep()
 {
     int v0; // r5
     int v1; // r0
@@ -14266,7 +14266,7 @@ int sub_8017E26()
 
 
 // 0x8017e44
-signed int __noreturn sub_8017E44()
+signed int __noreturn ai_beginPanelSlideMove()
 {
     int v0; // r5
     char v1; // r1
@@ -14597,7 +14597,7 @@ int sub_801813A()
 
 
 // 0x8018154
-signed int __noreturn sub_8018154()
+signed int __noreturn object_startErase()
 {
     unsigned __int8 *v0; // r5
     int v1; // r0
@@ -18181,7 +18181,7 @@ void nullsub_10()
 
 
 // 0x801be2a
-signed int __fastcall __noreturn sub_801BE2A(unsigned int a1)
+signed int __fastcall __noreturn battle_setupObjectSpriteAnim(unsigned int a1)
 {
     Battle *v1; // r5
     unsigned int v2; // r6
@@ -20807,7 +20807,7 @@ int sub_801DF0C()
 
 
 // 0x801df32
-int sub_801DF32()
+int battle_loadCustGaugeGfx()
 {
     ClearCustGauge();
     decomp_initGfx_8000B8E(&off_801DF60);

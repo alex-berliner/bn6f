@@ -597,7 +597,7 @@ signed int __fastcall sub_808999C(int a1)
     if ( !v2 )
     {
         v3 = sub_8142224();
-        if ( v3 && (sub_8142C46(v3), v4 = getPETNaviSelect(), GetMaxAndCurHPForCurPETNavi_80010D4(v4)) )
+        if ( v3 && (ow_dealDamageToCurrentNavi(v3), v4 = getPETNaviSelect(), GetMaxAndCurHPForCurPETNavi_80010D4(v4)) )
         {
             ai_setAIDataUnk18_8089CB0(30);
         }

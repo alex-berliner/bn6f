@@ -1911,7 +1911,7 @@ sub_8144DF0:
 	str r6, [r4,#0x44] // (dword_200FE44 - 0x200fe00)
 	ldr r0, off_8144E30 // =sub_8145D54+1 
 	bl rfu_setMSCCallback
-	ldr r0, off_8144E34 // =sub_8145658+1 
+	ldr r0, off_8144E34 // =rfu_handleConnectionEvent+1 
 	bl rfu_setREQCallback
 	mov r0, #0
 	b loc_8144E3A
@@ -1923,7 +1923,7 @@ dword_8144E2C:
 off_8144E30:
 	.word sub_8145D54+1
 off_8144E34:
-	.word sub_8145658+1
+	.word rfu_handleConnectionEvent+1
 loc_8144E38:
 	mov r0, #4
 loc_8144E3A:
@@ -3032,9 +3032,9 @@ loc_8145652:
 // symdb: Wireless-adapter connection state-machine dispatcher: handles one link event against the rfu connection struct at 200FE00, advancing/clearing search-and-connect states.
 // symdb: (r0 = event id (0x10..0x3D dispatch range), r1 = param (0 = action allowed, nonzero = ignored))
 // symdb: -> r0 = result/status of the branch taken; clobbers r4-r7, uses eStruct200FE00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145658.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleConnectionEvent.yaml
 	thumb_local_start
-sub_8145658:
+rfu_handleConnectionEvent:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -3936,7 +3936,7 @@ loc_8145D48:
 	pop {r4-r7}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_8145658
+	thumb_func_end rfu_handleConnectionEvent
 
 	thumb_local_start
 sub_8145D54:

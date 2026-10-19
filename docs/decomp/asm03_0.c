@@ -6906,7 +6906,7 @@ int *__fastcall sub_802AEEA(int a1)
     v1 = a1;
     v2 = enemy_getStruct1(a1);
     sprite_decompress(*v2, (*v2)[1]);
-    return sub_80076A0(v1, 2, 2, 0);
+    return battle_spawnEnemyObject(v1, 2, 2, 0);
 }
 
 
@@ -11398,7 +11398,7 @@ int __fastcall sub_802E2C4(int a1)
             {
                 if ( v20 || (v12 = *(v3 + 18), sub_802E82A(), v13 != 255) )
                 {
-                    if ( sub_802E62A(v2, *(v3 + 18), v20) )
+                    if ( battle_setEntryFieldAndAIDataFlag(v2, *(v3 + 18), v20) )
                         goto LABEL_28;
                 }
             }
@@ -11435,7 +11435,7 @@ LABEL_28:
         v3[5] = v17;
         if ( v15 )
         {
-            sub_802E62A(v2, *(v3 + 21), v20);
+            battle_setEntryFieldAndAIDataFlag(v2, *(v3 + 21), v20);
             sub_802E07C(v2);
             *(v3 + 20) = 0;
         }
@@ -11634,7 +11634,7 @@ signed int __fastcall sub_802E5FC(int a1, __int16 a2, int a3)
 
 
 // 0x802e62a
-signed int __fastcall sub_802E62A(int a1, int a2, int a3)
+signed int __fastcall battle_setEntryFieldAndAIDataFlag(int a1, int a2, int a3)
 {
     int v4; // [sp+0h] [bp-20h]
     int v5; // [sp+4h] [bp-1Ch]

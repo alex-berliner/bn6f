@@ -947,7 +947,7 @@ byte_8099EA0:
 	cs_jump_if_byte_equals ptr2=eCutsceneState_CutsceneScriptVars destination6=cutscenescript_8099F44 byte10=0x32
 	cs_run_text_script_from_mem byte1=0x04
 	cs_wait_chatbox byte1=0x80
-	cs_call_native_with_return_value ptr1=sub_809A260+1
+	cs_call_native_with_return_value ptr1=event_playPetEffectAndReloadGfx+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_call_native_with_return_value ptr1=chatbox_uncompMapTextArchives_803FD54+1
 	cs_end_for_map_reload_maybe_8037c64
@@ -1063,9 +1063,9 @@ off_809A074:
 // symdb: BugFrag trader interaction: waits for the chatbox to be free, then takes 10 bugfrags, grants one random chip, and opens the ChipTrader text script.
 // symdb: (r5/r10 = object/work pointers set up by caller, r0/r1 unused on entry) -> r0 = 0 when
 // symdb: idle/done, 1 while the trader state (loc_809A0E8) runs; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A078.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_bugfragTraderExchange.yaml
 	thumb_local_start
-sub_809A078:
+ow_bugfragTraderExchange:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1078,7 +1078,7 @@ sub_809A078:
 	bne loc_809A0F2
 	bl sub_804A2E8
 	ldr r7, off_809A0FC // =eS200AC80
-	bl sub_804BD00
+	bl chipTraderRollReward
 	strh r0, [r7,#0x4] // (word_200AC84 - 0x200ac80)
 	strh r1, [r7,#0x6] // (word_200AC86 - 0x200ac80)
 	mov r2, #1
@@ -1128,7 +1128,7 @@ off_809A0FC:
 	.word eS200AC80
 off_809A100:
 	.word TextScriptChipTrader86C580C
-	thumb_func_end sub_809A078
+	thumb_func_end ow_bugfragTraderExchange
 
 	thumb_local_start
 sub_809A104:
@@ -1303,9 +1303,9 @@ dword_809A25C:
 
 // symdb: Event-script routine that plays PET effect 1, reloads the map's graphics into VRAM, and clears the scenario/event flags to finish a scene
 // symdb: () -> r0 = 0; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A260.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/event_playPetEffectAndReloadGfx.yaml
 	thumb_local_start
-sub_809A260:
+event_playPetEffectAndReloadGfx:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl doPETEffect_8033fc0
@@ -1346,7 +1346,7 @@ byte_809A2AC:
 	.byte 0x4, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x5, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x0, 0x91
 	.byte 0x0, 0x0, 0x32, 0x0, 0x0, 0x0, 0x1, 0x93, 0x0, 0x0, 0xC, 0x0, 0x0, 0x0
-	thumb_func_end sub_809A260
+	thumb_func_end event_playPetEffectAndReloadGfx
 
 	thumb_local_start
 sub_809A2DC:

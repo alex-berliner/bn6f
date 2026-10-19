@@ -54,9 +54,9 @@ locret_8080DE8:
 
 // symdb: Loads the battle background for the current battle-background id: installs BG scroll callbacks, ORs DISPCNT bits, and loads the BG anim data plus the GFX animation script set for that background.
 // symdb: (r0 = none) -> r0 = none; obtains bg id from sub_808137C, r4 = id
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8080DEA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundAssets.yaml
 	thumb_local_start
-sub_8080DEA:
+battle_setupBackgroundAssets:
 	push {r4-r7,lr}
 	bl sub_808137C
 	mov r4, r0
@@ -474,7 +474,7 @@ off_80812FC:
 	.word off_80808D8
 	.word off_8069C80
 	.word 0xFFFFFFFF
-	thumb_func_end sub_8080DEA
+	thumb_func_end battle_setupBackgroundAssets
 
 // symdb: Computes the Weather Computron puzzle status byte for the current map, returning 7 (non-qualifying map), the raw battle-settings byte, 0x15 (puzzle available but unflagged), or 0x10 (puzzle already solved / no rule applies).
 // symdb: u32 getWeatherCompStatus_8081308(void);   inputs:  r10 = current toolkit pointer (GameStatePtr,

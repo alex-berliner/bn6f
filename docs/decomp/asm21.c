@@ -33,7 +33,7 @@ int battle_initBGScrollAndAnimForPuzzleField_8080DA0()
 
 
 // 0x8080dea
-int __fastcall sub_8080DEA(int a1, signed int a2)
+int __fastcall battle_setupBackgroundAssets(int a1, signed int a2)
 {
     signed int v2; // r0
     signed int v3; // r4

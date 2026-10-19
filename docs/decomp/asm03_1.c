@@ -5998,7 +5998,7 @@ int __noreturn init_textScene()
 
 
 // 0x8039630
-int sub_8039630()
+int init_videoSystemsReset()
 {
     int result; // r0
     char v1; // zf

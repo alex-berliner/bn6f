@@ -6121,9 +6121,9 @@ battle_initFullSetup_8005DBE:
 
 // symdb: Full reset of game state, objects, graphics and global work structs when transitioning into a new scene/area, ending with reloading the PET navi's HP.
 // symdb: () -> r0 = ...; no meaningful return, clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005DF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clear_gameStateForNewScene.yaml
 	thumb_local_start
-sub_8005DF0:
+clear_gameStateForNewScene:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -6140,7 +6140,7 @@ sub_8005DF0:
 	bl sub_8138294
 	bl reloadCurNaviStatBoosts_813c3ac
 	pop {r4-r7,pc}
-	thumb_func_end sub_8005DF0
+	thumb_func_end clear_gameStateForNewScene
 
 	thumb_local_start
 sub_8005E22:
@@ -9621,9 +9621,9 @@ dead_8007696:
 // symdb: Spawns a battle enemy object at a panel position, initializes its AI data, stats and alliance, and returns the object pointer.
 // symdb: (r0 = enemy_index: u16, r1 = panel_x, r2 = panel_y, r3 = alliance, stack+0x14 = unk param stored
 // symdb: to AIData+0x14/BattleObject_Param2) -> r0 = *BattleObject or NULL on allocation failure
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80076A0.yaml
-	thumb_func_start sub_80076A0
-sub_80076A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEnemyObject.yaml
+	thumb_func_start battle_spawnEnemyObject
+battle_spawnEnemyObject:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	mov r4, #0
@@ -9766,7 +9766,7 @@ loc_8007772: // endif
 locret_8007774:
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
-	thumb_func_end sub_80076A0
+	thumb_func_end battle_spawnEnemyObject
 
 // symdb: Registers a battle object in its alliance's "alive battle actors" list in the battle state, taking the first free slot of four and bumping the alliance's alive-actor count.
 // symdb: bool battle_claimAliveActorSlot(void *battleObject /* r5 */, void *toolkit /* r10 */); returns 1
@@ -10803,16 +10803,16 @@ battle_runFrame: // (self: * BattleState $r5) -> ()
 off_8007EA8:
 	.word off_8007EAC
 off_8007EAC:
-	.word sub_8007EB8+1
+	.word battle_showCommError+1
 	.word sub_8007F14+1
 	.word sub_8007F2C+1
 	thumb_func_end battle_runFrame
 
 // symdb: Aborts an ongoing battle as a link/communication error: pauses the battle, resets the link hardware, shows the appropriate comm-error message, and switches the battle state to 4.
 // symdb: () -> void; writes battle state byte (oBattleState_Index_01 = 4); clobbers r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007EB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_showCommError.yaml
 	thumb_local_start
-sub_8007EB8:
+battle_showCommError:
 	push {r4,lr}
 	bl PauseBattle
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
@@ -10853,7 +10853,7 @@ loc_8007F08:
 	mov r0, #4
 	strb r0, [r5,#oBattleState_Index_01]
 	pop {r4,pc}
-	thumb_func_end sub_8007EB8
+	thumb_func_end battle_showCommError
 
 	thumb_local_start
 sub_8007F14:
@@ -16154,9 +16154,9 @@ battle_initTypeAndFieldFromSettings_800A2F8: // () -> ()
 // symdb: Builds the battle's shuffled folder: picks a source folder (preset, battle-mode table, or the player's folder keyed by current navi), copies 30 packed chips into eBattleFolder, decrypts/inserts navi-chip swaps when special battle effects are active, then shuffles.
 // symdb: (no args; uses r10 toolkit) -> void; writes eBattleFolder (60 halfwords), BattleState+0x17 and
 // symdb: +0x44 flags; r4-r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A318.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBattleFolder.yaml
 	thumb_local_start
-sub_800A318:
+battle_setupBattleFolder:
 	push {r4-r7,lr}
 	mov r7, #0
 	bl GetBattleEffects // () -> int
@@ -16263,7 +16263,7 @@ off_800A3DC:
 	.word dword_802137C
 off_800A3E0:
 	.word eBattleFolder
-	thumb_func_end sub_800A318
+	thumb_func_end battle_setupBattleFolder
 
 // symdb: Builds the 30-chip battle folder (eBattleFolder) from a navi stat block, applying Beast-Out/dark-chip overrides from battle state and optionally shuffling it
 // symdb: (r0..r3 ignored on entry) -> no return value ; side effects: writes eBattleFolder (30

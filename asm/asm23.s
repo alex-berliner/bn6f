@@ -1338,7 +1338,7 @@ sub_808999C:
 	bl sub_8142224
 	tst r0, r0
 	beq loc_80899B2
-	bl sub_8142C46
+	bl ow_dealDamageToCurrentNavi
 	b loc_80899C2
 loc_80899B2:
 	bl sub_814223E

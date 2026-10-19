@@ -2173,9 +2173,9 @@ loc_8142C38:
 // symdb: Subtracts the given damage from the currently selected navi's HP and plays hit feedback (effect at player coords, camera shake, hit SFX).
 // symdb: (r0 = damage amount) -> r0 = sound-effect id from last PlaySoundEffect call; writes new HP via
 // symdb: sub_80010EC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142C46.yaml
-	thumb_func_start sub_8142C46
-sub_8142C46:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_dealDamageToCurrentNavi.yaml
+	thumb_func_start ow_dealDamageToCurrentNavi
+ow_dealDamageToCurrentNavi:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl GetCurPETNavi // () -> u8
@@ -2206,7 +2206,7 @@ loc_8142C58:
 	.balign 4, 0
 off_8142C8C:
 	.word byte_2006670
-	thumb_func_end sub_8142C46
+	thumb_func_end ow_dealDamageToCurrentNavi
 
 // symdb: empty stub function that immediately returns to its caller
 // symdb: (lr) -> ; no side effects
@@ -2604,9 +2604,9 @@ off_8142FC4:
 // symdb: Per-frame overworld handler for the Cybercrow lesson spot: a denied forward/jack-in press begins a flag-staged cutscene sequence with the crows.
 // symdb: () -> r0 = 0 always; runs each frame while the player stands at the spot, setting/clearing
 // symdb: EVENT_962/EVENT_963 and starting cutscenes as side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142FC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_crowLessonInteraction.yaml
 	thumb_local_start
-sub_8142FC8:
+ow_crowLessonInteraction:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814305E
@@ -2680,7 +2680,7 @@ off_8143080:
 	.word byte_808C2F0 // CutsceneScript
 off_8143084:
 	.word byte_2000D20
-	thumb_func_end sub_8142FC8
+	thumb_func_end ow_crowLessonInteraction
 
 	thumb_func_start sub_8143088
 sub_8143088:

@@ -39,7 +39,7 @@ u32 sub_813005C()
 
 
 // 0x8130084
-int sub_8130084()
+int t4_sceneInit()
 {
 	int v0; // r5
 	int v1; // r10
@@ -704,7 +704,7 @@ void sub_813096C()
 
 
 // 0x8130a04
-void __noreturn sub_8130A04()
+void __noreturn e_linkMatchObjectUpdate()
 {
 	int v0; // r5
 	int v1; // r0
@@ -2280,7 +2280,7 @@ int sub_8131F20()
 
 
 // 0x8131f3c
-int sub_8131F3C()
+int startLinkSceneSetup()
 {
     int v0; // r5
     int result; // r0
@@ -2531,7 +2531,7 @@ int __fastcall sub_8132168(int a1)
 
 
 // 0x8132194
-void sub_8132194()
+void submenu_linkResultHandler()
 {
     int v0; // r0
     u32 v1; // r0
@@ -9846,7 +9846,7 @@ int sub_81378B4()
 
 
 // 0x81378d4
-void __fastcall __noreturn sub_81378D4(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_initRoundState(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     int v5; // r1

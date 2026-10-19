@@ -3585,7 +3585,7 @@ int __noreturn battle_initFullSetup_8005DBE()
 
 
 // 0x8005df0
-int __noreturn sub_8005DF0()
+int __noreturn clear_gameStateForNewScene()
 {
     int v0; // r10
     int v1; // r0
@@ -5487,7 +5487,7 @@ void dead_8007696()
 
 
 // 0x80076a0
-int *__fastcall sub_80076A0(int a1, int a2, int a3, char a4)
+int *__fastcall battle_spawnEnemyObject(int a1, int a2, int a3, char a4)
 {
     int v4; // r5
     int v5; // r10
@@ -6276,7 +6276,7 @@ signed int battle_runFrame()
 
 
 // 0x8007eb8
-signed int sub_8007EB8()
+signed int battle_showCommError()
 {
     int v0; // r5
     int v1; // r4
@@ -10645,7 +10645,7 @@ int battle_initTypeAndFieldFromSettings_800A2F8()
 
 
 // 0x800a318
-void __fastcall sub_800A318(int a1)
+void __fastcall battle_setupBattleFolder(int a1)
 {
     int v1; // r10
     signed int v2; // r7
