@@ -4565,7 +4565,7 @@ dword_8125590:
 	.word 0x600A000
 	thumb_func_end sub_81254FC
 
-// symdb: Joypad handler for a menu/state screen: Start/B triggers a confirm-exit/fade prompt, held-Up sets a flag and plays a sound, and held/pressed side d-pad directions (when state+0x12 is non-zero) feed into submenu_moveListCursor while caching the joypad pointer in the state object.
+// symdb: Joypad handler for a menu/state screen: Start/B triggers a confirm-exit/fade prompt, held-Up sets a flag and plays a sound, and held/pressed side d-pad directions (when state+0x12 is non-zero) feed into sub_8125820 while caching the joypad pointer in the state object.
 // symdb: /* caller-supplied: R0 saved into R8 (unused), R5 = state object, R10 = toolkit */ void
 // symdb: menu_handleStartAndDpad_8125594(u32 r0_scratch, u8 *state_obj /* r5*/, void *toolkit /* r10*/);
 // symdb: /* clobbers nzcv + r0-r3, r5, r8, r9, r10, r12, lr; preserves r4, r5, r6, r7, r10 */
@@ -4840,7 +4840,7 @@ off_8125780:
 	.word 0x300
 	thumb_func_end sub_8125704
 
-// symdb: Per-frame battle-menu input dispatcher: Start+B exits, bit-0 hands off, Select switches state with cue 7A, otherwise routes cursor navigation to submenu_moveListCursor.
+// symdb: Per-frame battle-menu input dispatcher: Start+B exits, bit-0 hands off, Select switches state with cue 7A, otherwise routes cursor navigation to sub_8125820.
 // symdb: void battle_input_tick_8125784(u32 r0=u8 held, u32 r2=code_param, u32 r5=obj, u32 r10=toolkit);
 // symdb: clobbers nzcv r0 r1 r2 r3 lr; preserves r4 r5 r6 r7 r10
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_input_tick_8125784.yaml
@@ -16249,7 +16249,7 @@ locret_812AEDC:
 // symdb: void battle_object_updateDispatcher_(void); // inputs: r5 = battle object ptr; r6, r10 = caller-
 // symdb: set context (passed through unchanged) // indirect call: r0 = dispatch table entry for the
 // symdb: selected handler, r1 = r5->byte 2 (selector) // outputs: r5, r8, r9, r10, r11, r12 = post-update
-// symdb: routine (battle_stepWaitForStateRunUpdate) results // clobbers: nz c v r0 r1 r2 r3 r4 r6 r7 lr; preserved: -
+// symdb: routine (sub_812B26C) results // clobbers: nz c v r0 r1 r2 r3 r4 r6 r7 lr; preserved: -
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_812AEE0.yaml
 	thumb_local_start
 sub_812AEE0:

@@ -10250,7 +10250,7 @@ locret_8112FB8:
 // symdb: sub_8112FBA(void); // reads: r5 attacker, r7 aiVars // writes: r0 phase value (8, 0xC, or the
 // symdb: RelatedObject1Ptr value), r1 scratch, r5 preserved-as-in // clobbers NZCV (sets flags via final
 // symdb: phase compare); r0,r2-r4,lr scratch; r5-r7 preserved // side effects: ST8 anim, ST32/ST16 AI
-// symdb: vars fields, calls battle_spawnOwnedObject54, battle_SetObjectExtraFlag14_80C4086, object_getFrontDirection,
+// symdb: vars fields, calls sub_80C4038, battle_SetObjectExtraFlag14_80C4086, object_getFrontDirection,
 // symdb: object_setCounterTime
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackState_SetupSpecial_8112FBA.yaml
 	thumb_local_start
@@ -28766,7 +28766,7 @@ off_811C0A0:
 	thumb_func_end sub_811C08C
 
 // symdb: Initializes a battle object: stores its type/state byte, sets up sprite resource 0x3D with animation 4, no shadow, and positions it at x=0x78.
-// symdb: (r5 = object struct pointer) -> void; r0-r3 clobbered; ends by tail-calling object_updateSpriteTimerState8
+// symdb: (r5 = object struct pointer) -> void; r0-r3 clobbered; ends by tail-calling sub_811C0F8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initCenteredSprite.yaml
 	thumb_local_start
 object_initCenteredSprite:

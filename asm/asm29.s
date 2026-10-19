@@ -5721,7 +5721,7 @@ battleObject_clearActionPhaseUnk09_80A7E44:
 // symdb: Indirect tail-call dispatch on battle object AIData by current action byte (r5->+9), invoking one of three action handlers.
 // symdb: (r0 = AIData base via r5, r1 = log2 of step?, r2 = ?, r3 = saved ptr) -> r0 = new r0 written by
 // symdb: callee (varies: 0x4, 0x1d, 0x14, 0x13, 0x12, 0x11, ...); side effects: jumps via tail-call into
-// symdb: one of ow_animWaitStep / object_waitThenSetAnim / sub_80A7EBE; no other stack use
+// symdb: one of sub_80A7E6C / sub_80A7EA4 / sub_80A7EBE; no other stack use
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIActionByAction_80A7E4C.yaml
 	thumb_local_start
 battle_dispatchAIActionByAction_80A7E4C:
@@ -10018,7 +10018,7 @@ off_80A9F6C:
 	thumb_func_end sub_80A9F58
 
 // symdb: Initializes an overworld object's sprite from fields in its struct: loads the sprite resource, sets animation, priority and palette, then advances the object's state.
-// symdb: () -> void; operates on the current object in r5, tail-calls ow_updateApproachObject
+// symdb: () -> void; operates on the current object in r5, tail-calls sub_80A9FB8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_initObjectSprite.yaml
 	thumb_local_start
 ow_initObjectSprite:

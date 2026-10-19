@@ -68084,7 +68084,7 @@ off_80D794C:
 	thumb_func_end sub_80D7928
 
 // symdb: Makes a battle object vanish: unregisters it from the field, plays a sound, keeps its future panel reserved, and moves it to phase 4 (hidden/gone).
-// symdb: (r0..r3 = scratch, object in r5) -> r0 = handle/ptr from battle_spawnOwnedObject54 stored to
+// symdb: (r0..r3 = scratch, object in r5) -> r0 = handle/ptr from sub_80C4038 stored to
 // symdb: oBattleObject_ExtraVars+8; sets oBattleObject_CurPhaseAndPhaseInitialized = 4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectVanishFromField.yaml
 	thumb_local_start
@@ -88411,9 +88411,9 @@ loc_80E132C:
 	pop {r4,pc}
 	thumb_func_end sub_80E12BA
 
-// symdb: Tail-call wrapper that forwards its arguments to battle_spawnLinkedObjType2d and returns whatever battle_spawnLinkedObjType2d returns.
+// symdb: Tail-call wrapper that forwards its arguments to sub_80C0F52 and returns whatever sub_80C0F52 returns.
 // symdb: void sub_80E1332(u32 r0, u32 r1, u32 r2, u32 r3, u32 r4); // returns: flags c/v set by
-// symdb: battle_spawnLinkedObjType2d, all callee-saved regs preserved; r0 clobbered, r1-r4 forwarded as outputs
+// symdb: sub_80C0F52, all callee-saved regs preserved; r0 clobbered, r1-r4 forwarded as outputs
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80E1332.yaml
 	thumb_local_start
 sub_80E1332:
@@ -89478,7 +89478,7 @@ dword_80E19F0:
 	.word 0x205A20
 	thumb_func_end battle_objectSetTimerFromParam1Table_80E19DC
 
-// symdb: Dispatches BattleObject CurAction to a per-action handler via a one-entry vtable (default tail calls battle_periodicEffectEmitterState)
+// symdb: Dispatches BattleObject CurAction to a per-action handler via a one-entry vtable (default tail calls sub_80E1A0C)
 // symdb: (r5 = BattleObjectPtr) -> r0 = handler's r0 ; side effects: clobbers r1-r3,r10,lr; jumps to
 // symdb: function pointer chosen from a small table; tail-popped so the handler returns to the caller
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runActionDispatcher_80E19F4.yaml
@@ -112705,8 +112705,8 @@ dword_80EC70C:
 	thumb_func_end battle_aiAttackVarsTryResetAndProcessAction_80EC67E
 
 // symdb: AI attack helper that places up to three positioned strike/effect placements around the acting battle object's front panel, used by the Beast-SP attack sequence.
-// symdb: (r0 = battle object, r1 = unused?, r3 = z/height param passed on to object_spawnLinkedType3) -> r0 = result
-// symdb: of last object_spawnLinkedType3 call; r5 must already point to a battle object (PanelX/PanelY and
+// symdb: (r0 = battle object, r1 = unused?, r3 = z/height param passed on to sub_80C6248) -> r0 = result
+// symdb: of last sub_80C6248 call; r5 must already point to a battle object (PanelX/PanelY and
 // symdb: oAIAttackVars_SubStepIndex are read through it).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_placeBeastStrikeEffects.yaml
 	thumb_local_start
@@ -113841,7 +113841,7 @@ locret_80ECEFE:
 
 // symdb: Computes a target panel's screen position, offsets it by the attacker's arm attachment (slot 0x17), and spawns the AI attack's damage entity/hitbox with the attack's damage value.
 // symdb: (r0 = panel column, r1 = panel row, r2 = packed arg (r4 = (r2<<8)|2), r5 = attacker battle
-// symdb: object, r7 = AI attack vars) -> r0 = result of object_spawnLinkedType3 (spawned entity?); no flag use seen
+// symdb: object, r7 = AI attack vars) -> r0 = result of sub_80C6248 (spawned entity?); no flag use seen
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_spawnAttackHitboxAtPanel.yaml
 	thumb_local_start
 ai_spawnAttackHitboxAtPanel:
@@ -149555,7 +149555,7 @@ locret_80FE450:
 
 // symdb: Dispatches an AI attack-state handler call through a two-entry jump table indexed by the state byte at offset 0 of the r7 attack-state block.
 // symdb: void aiAttackDispatchHandler(void /* r7 = AI attack state block, flags passed through */); —
-// symdb: reads r7[oAIAttackVars_Unk_00] (u8 selector), tail-invokes ai_stageWoodAttackHit (selector 0) or
+// symdb: reads r7[oAIAttackVars_Unk_00] (u8 selector), tail-invokes sub_80FE46C (selector 0) or
 // symdb: sub_80FE4AC (anything else); returns to this wrapper's caller with r7 preserved, all other
 // symdb: registers and NZCV flags whatever the handler left.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttackDispatchHandler_80FE452.yaml
@@ -150411,7 +150411,7 @@ sub_80FEAFC:
 	pop {pc}
 	thumb_func_end sub_80FEAFC
 // symdb: Initializes the CircusMan AI's per-attack state: difficulty tier, timers, panel-choose callback, and target object, then enters attack state 0xA.
-// symdb: (r0 = attack-related arg passed to ai_circusManLoadAttackParams, r5 = owning BattleObject, r7 = oAIAttackVars
+// symdb: (r0 = attack-related arg passed to sub_80FEBE4, r5 = owning BattleObject, r7 = oAIAttackVars
 // symdb: state block) -> r0 = 0xA (attack state set via object_setAttack0)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_circusManAttackInit.yaml
 	thumb_local_start

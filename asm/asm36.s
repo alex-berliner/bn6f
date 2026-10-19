@@ -11314,7 +11314,7 @@ off_81356E8:
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
 // symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
-// symdb: navicust_giveKeyItem14C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
+// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
