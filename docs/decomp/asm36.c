@@ -3189,7 +3189,7 @@ void sub_813281C()
     int v14; // [sp+Ch] [bp-18h]
 
     v14 = 0;
-    v11 = sub_8049D82();
+    v11 = getWorkBufTriplePtrs();
     v12 = v0;
     v13 = v1;
     do
@@ -10668,7 +10668,7 @@ int sub_813842C()
 
 
 // 0x8138478
-void __fastcall __noreturn sub_8138478(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn sprite_advanceAnimFrame(int a1, int a2, int a3, int a4)
 {
     int v4; // r1
     int v5; // r0
@@ -10753,7 +10753,7 @@ void __fastcall __noreturn sub_813853C(int a1, int a2, int a3, int a4)
     *(v6 + 8) = *(v4 + 10);
     v7 = *(v4 + 11);
     *(v6 + 12) = v7;
-    sub_8138478(v7, a2, v6, a4);
+    sprite_advanceAnimFrame(v7, a2, v6, a4);
 }
 
 
@@ -10768,7 +10768,7 @@ void __fastcall __noreturn sub_8138550(int a1, int a2, int a3, int a4)
     v6 = *(v5 + oToolkit_Unk200a220_Ptr);
     v7 = *(v4 + 14);
     *(v6 + 8) = v7;
-    sub_8138478(v7, a2, v6, a4);
+    sprite_advanceAnimFrame(v7, a2, v6, a4);
 }
 
 
@@ -10783,7 +10783,7 @@ void __fastcall __noreturn sub_8138560(int a1, int a2, int a3, int a4)
     v6 = *(v5 + oToolkit_Unk200a220_Ptr);
     v7 = *(v4 + 16);
     *(v6 + 8) = v7;
-    sub_8138478(v7, a2, v6, a4);
+    sprite_advanceAnimFrame(v7, a2, v6, a4);
 }
 
 
@@ -10798,7 +10798,7 @@ void __fastcall __noreturn sub_8138570(int a1, int a2, int a3, int a4)
     v6 = *(v5 + oToolkit_Unk200a220_Ptr);
     v7 = *(v4 + 18);
     *(v6 + 8) = v7;
-    sub_8138478(v7, a2, v6, a4);
+    sprite_advanceAnimFrame(v7, a2, v6, a4);
 }
 
 

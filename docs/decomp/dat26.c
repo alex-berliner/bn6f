@@ -108,7 +108,7 @@ signed int sub_8092F64()
 {
     _BYTE *v0; // r5
 
-    sub_8143FAA();
+    e_resetStateFields();
     sub_8093212();
     *v0 = 12;
     return 1;

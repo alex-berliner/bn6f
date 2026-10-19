@@ -15150,7 +15150,7 @@ off_811558C:
 	.word off_8115590
 off_8115590:
 	.word ai_selectAttack+1
-	.word sub_8115654+1
+	.word ai_scriptResetTimerTick+1
 	thumb_func_end ai_dispatchScriptState
 
 // symdb: AI decision step for a boss-type battle enemy: either launches a row-targeted attack (id 0xB) on a random object in the player's row, or sets up a panel-targeted attack (id 0xA) after choosing a target panel.
@@ -15255,9 +15255,9 @@ locret_8115652:
 // symdb: Counts up a frame counter and, after 60 frames, resets an AI state's script ID to 0.
 // symdb: (r5 = object/struct holding u16 timer at +0x6C, r6 = AI state struct) -> void; flags from cmp
 // symdb: r1,#0x3C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115654.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_scriptResetTimerTick.yaml
 	thumb_local_start
-sub_8115654:
+ai_scriptResetTimerTick:
 	push {lr}
 	mov r0, #0x6c
 	ldrh r1, [r5,r0]
@@ -15269,7 +15269,7 @@ sub_8115654:
 	strb r0, [r6,#oAIState_ScriptId]
 locret_8115666:
 	pop {pc}
-	thumb_func_end sub_8115654
+	thumb_func_end ai_scriptResetTimerTick
 
 // symdb: Boss AI helper that, on a failed check, flips the sign of the battle object's ExtraVars field (e.g. toggling a direction/offset for the next attack).
 // symdb: (r0 = battle object, r5 = battle object) -> r0 clobbered by calls; no meaningful return
@@ -18774,9 +18774,9 @@ sub_81172A6:
 
 // symdb: Calls one of three sprite handlers selected by a state/type byte in the object struct at r5+8.
 // symdb: (r5 = sprite/object struct) -> calls table[r5+8] handler; no direct return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81172B0.yaml
-	thumb_func_start sub_81172B0
-sub_81172B0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchStateHandler.yaml
+	thumb_func_start sprite_dispatchStateHandler
+sprite_dispatchStateHandler:
 	push {lr}
 	ldr r0, off_81172C0 // =off_81172C4
 	ldrb r1, [r5,#8]
@@ -18791,7 +18791,7 @@ off_81172C4:
 	.word sub_81172D0+1
 	.word sprite_updateWrapper+1
 	.word sub_8117354+1
-	thumb_func_end sub_81172B0
+	thumb_func_end sprite_dispatchStateHandler
 
 	thumb_local_start
 sub_81172D0:
@@ -18898,9 +18898,9 @@ byte_81173EC:
 // symdb: Runs a variant-object's per-state handler, dispatching on the object's state byte to its init, update, or teardown routine.
 // symdb: (r5 = object struct, r1 = [r5,#8] state index used internally) -> r0 = handler's return; calls
 // symdb: handler as Thumb via mov lr,pc / bx
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117404.yaml
-	thumb_func_start sub_8117404
-sub_8117404:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchVariantObjectState.yaml
+	thumb_func_start sprite_dispatchVariantObjectState
+sprite_dispatchVariantObjectState:
 	push {lr}
 	ldr r0, off_8117414 // =off_8117418
 	ldrb r1, [r5,#8]
@@ -18915,7 +18915,7 @@ off_8117418:
 	.word sprite_initVariantObject+1
 	.word sprite_updateVariantObject+1
 	.word sub_81174B8+1
-	thumb_func_end sub_8117404
+	thumb_func_end sprite_dispatchVariantObjectState
 
 // symdb: Initializes an entity's sprite display for one of several variants, using byte [r5+5] to pick both a palette bank and a tile-slot offset.
 // symdb: () -> void; uses r5 as the entity/object work pointer, no args or return value
@@ -31902,7 +31902,7 @@ sub_811D634:
 	bl getStructFrom2008450
 	beq loc_811D64E
 	mov r5, r1
-	bl sub_811D6CC
+	bl object_moveByVelocity
 	bl object_syncSpritePosition
 loc_811D64E:
 	add sp, sp, #8
@@ -31974,9 +31974,9 @@ dword_811D6C8:
 
 // symdb: adds an object's velocity (8.8 fixed point) to its x/y position fields
 // symdb: (r5 = object struct from getStructFrom2008450) -> void; r0-r2 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D6CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_moveByVelocity.yaml
 	thumb_local_start
-sub_811D6CC:
+object_moveByVelocity:
 	ldr r0, [r5,#0x18]
 	mov r2, #0x14
 	ldrsh r1, [r5,r2]
@@ -31991,7 +31991,7 @@ sub_811D6CC:
 	str r0, [r5,#0x1c]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_811D6CC
+	thumb_func_end object_moveByVelocity
 
 // symdb: Copies the object's stored x/y fields into its sprite's coordinates.
 // symdb: (r5 = object struct, no register args) -> r0 clobbered by callee; calls sprite_setCoordinates
@@ -33552,9 +33552,9 @@ sub_811E40C:
 // symdb: Calls one of three handler routines selected by the mode byte at [r5,#8], passing that mode as r1.
 // symdb: (r5 = object whose +8 byte selects handler) -> tail-call to handler(r1 = mode, r5 preserved); r0
 // symdb: = whatever the handler returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E418.yaml
-	thumb_func_start sub_811E418
-sub_811E418:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchModeHandler.yaml
+	thumb_func_start object_dispatchModeHandler
+object_dispatchModeHandler:
 	push {lr}
 	ldr r0, off_811E428 // =off_811E42C
 	ldrb r1, [r5,#8]
@@ -33569,7 +33569,7 @@ off_811E42C:
 	.word object_initSpriteObjA1+1
 	.word sub_811E490+1
 	.word sub_811E510+1
-	thumb_func_end sub_811E418
+	thumb_func_end object_dispatchModeHandler
 
 // symdb: Initializer for a sprite-based object: assigns sprite 0xA1, animation 1, no shadow, palette 0, priority 2, position halfword 0x280, and sets the object's kind/state bytes.
 // symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = sub_811E490's return; no

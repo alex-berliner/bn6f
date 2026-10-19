@@ -14819,7 +14819,7 @@ sub_812A2EC:
 	blt locret_812A338
 	bl chatbox_expandWordTable
 	mov r0, #1
-	bl sub_81468C8
+	bl chatbox_getTextStateEntryPtr
 	mov r6, r0
 	mov r0, #1
 	bl sub_81468E0
@@ -14828,7 +14828,7 @@ sub_812A2EC:
 	ldr r1, off_812A340 // =unk_201FD60 
 	mov r2, r7
 	ldr r3, off_812A344 // =unk_201FD80 
-	bl sub_8049DC4
+	bl chatbox_convertTwoByteStringsToCharCodes
 	mov r0, r7
 	bl sub_8146724
 	ldrh r0, [r0]

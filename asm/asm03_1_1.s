@@ -417,7 +417,7 @@ off_8038BB0:
 	.word sub_8038C10+1
 	.word sub_8038C78+1
 	.word battle_scrollLayersTick+1
-	.word sub_8038D7C+1
+	.word object_stateTimerExpire+1
 	.word sub_8038D94+1
 	.word sub_8038DB0+1
 	.word loc_8038DC8+1
@@ -631,9 +631,9 @@ off_8038D78:
 // symdb: Per-frame countdown for an object: when its timer hits zero it switches the object to state 0x14, reloads the timer with 0x2E, and calls a follow-up routine.
 // symdb: (r5 = object/state struct) -> r0 = result of sub_8039024; flags from that call only on timer
 // symdb: expiry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038D7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stateTimerExpire.yaml
 	thumb_local_start
-sub_8038D7C:
+object_stateTimerExpire:
 	push {lr}
 	ldrh r0, [r5,#4]
 	sub r0, #1
@@ -646,7 +646,7 @@ sub_8038D7C:
 	bl sub_8039024
 locret_8038D92:
 	pop {pc}
-	thumb_func_end sub_8038D7C
+	thumb_func_end object_stateTimerExpire
 
 	thumb_local_start
 sub_8038D94:
@@ -834,7 +834,7 @@ sub_8038EAC:
 	mov r0, #6
 	strh r0, [r5,#4]
 loc_8038ECE:
-	bl sub_8039198
+	bl t3_decrementRenderInfo14
 	pop {pc}
 	.balign 4, 0
 off_8038ED4:
@@ -868,7 +868,7 @@ loc_8038EE6:
 	strb r0, [r5]
 loc_8038EFE:
 	bl t3_loadBackgroundTiles
-	bl sub_8039198
+	bl t3_decrementRenderInfo14
 	pop {pc}
 	.balign 4, 0
 dword_8038F08:
@@ -878,7 +878,7 @@ dword_8038F08:
 	thumb_local_start
 sub_8038F0C:
 	push {lr}
-	bl sub_8039198
+	bl t3_decrementRenderInfo14
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8038F2A
 	bl call_803D1AC // () -> void
@@ -1200,9 +1200,9 @@ off_8039194:
 
 // symdb: Per-frame tick for the t3 scene: subtracts 9 from the u16 at RenderInfo+0x14 each frame it runs.
 // symdb: () -> void; no args, no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039198.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_decrementRenderInfo14.yaml
 	thumb_local_start
-sub_8039198:
+t3_decrementRenderInfo14:
 	push {lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
@@ -1308,7 +1308,7 @@ byte_80394D8:
 	.byte 0x1D, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x8, 0x0
 	.byte 0x0, 0x0, 0x1D, 0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0
 	.byte 0x9, 0x0, 0x0, 0x0, 0x1D, 0x5, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0
-	thumb_func_end sub_8039198
+	thumb_func_end t3_decrementRenderInfo14
 
 	thumb_func_start sub_8039570
 sub_8039570:
@@ -1595,7 +1595,7 @@ loc_8039794:
 	strb r0, [r5,#1]
 	b loc_80397A8
 loc_80397A8:
-	bl sub_80397BC
+	bl submenu_drawNumbersAndCursor
 	ldrb r0, [r5,#4]
 	ldrb r1, [r5,#6]
 	cmp r0, r1
@@ -1609,9 +1609,9 @@ locret_80397BA:
 // symdb: Per-frame draw routine for a small menu: renders two 3-digit numbers and a cursor/icon positioned by the selection index in the work struct.
 // symdb: (r5 = pointer to menu state struct, implicit) -> void; reads struct fields at +4 (selection
 // symdb: index) and +6 (last drawn index)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80397BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_drawNumbersAndCursor.yaml
 	thumb_local_start
-sub_80397BC:
+submenu_drawNumbersAndCursor:
 	push {r4-r7,lr}
 	bl sprite_drawTwoBcdNumbers3Digit
 	bl sub_803C2F0
@@ -1625,7 +1625,7 @@ sub_80397BC:
 	mov r4, #0
 	bl sub_803BC02
 	pop {r4-r7,pc}
-	thumb_func_end sub_80397BC
+	thumb_func_end submenu_drawNumbersAndCursor
 
 	thumb_local_start
 sub_80397DC:
@@ -1638,7 +1638,7 @@ sub_80397DC:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_80397F0:
-	bl sub_80397BC
+	bl submenu_drawNumbersAndCursor
 	pop {r4-r7,pc}
 	thumb_func_end sub_80397DC
 
@@ -1656,7 +1656,7 @@ sub_80397F6:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_8039810:
-	bl sub_80397BC
+	bl submenu_drawNumbersAndCursor
 	pop {r4-r7,pc}
 	thumb_func_end sub_80397F6
 
@@ -1671,7 +1671,7 @@ sub_8039816:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_803982A:
-	bl sub_80397BC
+	bl submenu_drawNumbersAndCursor
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039816
 
@@ -1684,7 +1684,7 @@ sub_8039830:
 	mov r0, #4
 	strb r0, [r5]
 loc_8039840:
-	bl sub_80397BC
+	bl submenu_drawNumbersAndCursor
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039830
 
@@ -5664,8 +5664,8 @@ off_803B87C:
 	.word byte_2027200
 	thumb_func_end sub_803B814
 
-// symdb: Draws two 3-digit decimal numbers (from sub_803C398's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
-// symdb: () -> void; internally r0/r1 = two values from sub_803C398, each converted to packed BCD; no
+// symdb: Draws two 3-digit decimal numbers (from get_clampedCounterPair999's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
+// symdb: () -> void; internally r0/r1 = two values from get_clampedCounterPair999, each converted to packed BCD; no
 // symdb: meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawTwoBcdNumbers3Digit.yaml
 	thumb_local_start
@@ -5673,7 +5673,7 @@ sprite_drawTwoBcdNumbers3Digit:
 	push {r4-r7,lr}
 	mov r6, #0xf
 	mov r7, #0
-	bl sub_803C398
+	bl get_clampedCounterPair999
 	bl memory_bcdConvert
 	mov r4, r0
 	lsr r2, r4, #8
@@ -5698,7 +5698,7 @@ loc_803B8B0:
 	mov r1, #0x50
 	bl sprite_queueOamEntryHflipPal12
 	mov r7, #0
-	bl sub_803C398
+	bl get_clampedCounterPair999
 	mov r0, r1
 	bl memory_bcdConvert
 	mov r4, r0
@@ -6517,7 +6517,7 @@ loc_803BFF0:
 	beq locret_803C012
 	ldr r0, [r4,r0]
 	ldrh r1, [r6]
-	bl sub_803C018
+	bl get_tableEntryIndexByKey
 	cmp r0, #0xff
 	beq loc_803C00E
 	ldrb r1, [r7,#1]
@@ -6538,9 +6538,9 @@ off_803C014:
 // symdb: Searches a table of 8-byte records for the record whose halfword field at +2 equals the given key and returns its index (0xFF if the 0xE6-terminated list ends without a match).
 // symdb: (r0 = pointer to first 8-byte record, r1 = 16-bit key) -> r0 = matching record index, or 0xFF if
 // symdb: none; no flag use visible
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C018.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_tableEntryIndexByKey.yaml
 	thumb_local_start
-sub_803C018:
+get_tableEntryIndexByKey:
 	mov r3, #0
 loc_803C01A:
 	ldrb r2, [r0,#2]
@@ -6558,7 +6558,7 @@ loc_803C02C:
 loc_803C030:
 	mov r0, #0xff
 	mov pc, lr
-	thumb_func_end sub_803C018
+	thumb_func_end get_tableEntryIndexByKey
 
 	thumb_local_start
 sub_803C034:
@@ -7120,9 +7120,9 @@ initStateBlock_803C352:
 // symdb: Reads two halfword counters at word_2006770+4/+6, clamps each to at most 999, and returns them for 3-digit sprite display
 // symdb: () -> r0 = counter A (word_2006774, clamped <=999), r1 = counter B (word_2006776, clamped
 // symdb: <=999); no flags relevant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C398.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_clampedCounterPair999.yaml
 	thumb_local_start
-sub_803C398:
+get_clampedCounterPair999:
 	ldr r3, off_803C430 // =word_2006770
 	ldr r1, dword_803C3D4 // =0x3e7
 	ldrh r2, [r3,#0x4] // (word_2006774 - 0x2006770)
@@ -7140,7 +7140,7 @@ loc_803C3AE:
 	ldrh r0, [r3,#0x4] // (word_2006774 - 0x2006770)
 	ldrh r1, [r3,#0x6] // (word_2006776 - 0x2006770)
 	mov pc, lr
-	thumb_func_end sub_803C398
+	thumb_func_end get_clampedCounterPair999
 
 	thumb_local_start
 sub_803C3B6:
@@ -8074,7 +8074,7 @@ sub_803C97C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {r4,lr}
 	ldr r0, off_803C9A0 // =byte_200AF80
 	ldrb r0, [r0,#0x4] // (byte_200AF84 - 0x200af80)
-	bl sub_8146918
+	bl rfu_getSlotPlayerCount
 	mov r4, r0
 	bl rfu_getConnectedPlayerCount
 	cmp r4, r0
@@ -9955,9 +9955,9 @@ off_803DD88:
 
 // symdb: Resets the eLinkState struct to fixed starting values for the link/communication state machine
 // symdb: () -> void; writes eLinkState bytes 0 and 1 = 8, halfword 0xC = 0x10, byte 8 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DD8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_linkState.yaml
 	thumb_local_start
-sub_803DD8C:
+init_linkState:
 	push {r7,lr}
 	ldr r7, off_803DDA0 // =eLinkState
 	mov r0, #8
@@ -9970,7 +9970,7 @@ sub_803DD8C:
 	pop {r7,pc}
 off_803DDA0:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803DD8C
+	thumb_func_end init_linkState
 
 	thumb_func_start sub_803DDA4
 sub_803DDA4:
@@ -10033,7 +10033,7 @@ sub_803DDEC:
 	cmp r0, #8
 	bne loc_803DE1A
 	ldr r0, [r7,#0x48] // (dword_2009A18 - 0x20099d0)
-	bl sub_803DFAC
+	bl rfu_getLinkSlotMask
 	mov r1, #0x7f
 	and r1, r0
 	beq loc_803DE12
@@ -10070,7 +10070,7 @@ rfu_isLinkBusy:
 	cmp r0, #0x10
 	bne loc_803DE52
 	ldr r0, [r7,#0x48] // (dword_2009A18 - 0x20099d0)
-	bl sub_803DFAC
+	bl rfu_getLinkSlotMask
 	mov r1, #0x7f
 	and r1, r0
 	beq loc_803DE4A
@@ -10307,9 +10307,9 @@ off_803DFA4:
 // symdb: Condenses the connection-bitmap bits of the RFU link status word at eLinkState+0x48 into an 8-bit mask of connected link slots
 // symdb: (r0 = 32-bit RFU status word, e.g. [eLinkState+0x48]) -> r0 = bitmask: bits 24..30 of input ->
 // symdb: bits 0..6, input bit 8 -> bit 7; flags preserved-ish, r4-r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DFAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getLinkSlotMask.yaml
 	thumb_local_start
-sub_803DFAC:
+rfu_getLinkSlotMask:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r6, #0
@@ -10372,7 +10372,7 @@ loc_803E012:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803DFAC
+	thumb_func_end rfu_getLinkSlotMask
 
 	thumb_local_start
 sub_803E018:
@@ -10380,7 +10380,7 @@ sub_803E018:
 	push {r0}
 	bl ho_803E114
 	pop {r0}
-	bl sub_803DFAC
+	bl rfu_getLinkSlotMask
 	mov r1, #0x7f
 	and r1, r0
 	bne loc_803E036
@@ -13826,9 +13826,9 @@ byte_803F5FC:
 // symdb: Writes one halfword into an 8-byte (4-halfword) record of a table, letting callers fill one record a halfword at a time.
 // symdb: (r0 = halfword value, r1 = halfword index 0..3 within record, r2 = record index) -> r0 = value
 // symdb: stored at tableBase[r2*8 + r1*2]; no return value, flags clobbered by pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F618.yaml
-	thumb_func_start sub_803F618
-sub_803F618:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_storeHalfwordRecord.yaml
+	thumb_func_start copy_storeHalfwordRecord
+copy_storeHalfwordRecord:
 	push {r0-r7,lr}
 	ldr r4, byte_803F774+4 // =0x40
 	mov r3, #4
@@ -13839,7 +13839,7 @@ sub_803F618:
 	strh r0, [r4,r1]
 	pop {r0-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803F618
+	thumb_func_end copy_storeHalfwordRecord
 
 	thumb_local_start
 sub_803F62C:

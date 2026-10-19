@@ -5209,7 +5209,7 @@ sub_813281C:
 	sub sp, sp, #0x10
 	mov r0, #0
 	str r0, [sp,#0xc]
-	bl sub_8049D82
+	bl getWorkBufTriplePtrs
 	str r0, [sp]
 	str r1, [sp,#4]
 	str r2, [sp,#8]
@@ -17540,7 +17540,7 @@ loc_813842E:
 off_8138440:
 	.word off_8138444
 off_8138444:
-	.word sub_8138478+1
+	.word sprite_advanceAnimFrame+1
 	.word sub_81384E0+1
 	.word sub_81384FC+1
 	.word sub_8138514+1
@@ -17558,9 +17558,9 @@ off_8138444:
 // symdb: Processes the next animation frame of an object: copies the frame's parameters into the object's 0x200a220 struct, queues its tile/sheet upload to VRAM, and advances the animation pointer and frame counter.
 // symdb: (r3 = ptr to current animation frame entry, r5 = object struct) -> r0 = 0; r5+0xd = (frame
 // symdb: counter + 1) & 0xF, r5+0x18 = frame ptr + 4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138478.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_advanceAnimFrame.yaml
 	thumb_local_start
-sub_8138478:
+sprite_advanceAnimFrame:
 	push {lr}
 	push {r0-r7}
 	ldr r0, off_81384DC // =byte_2017A00 
@@ -17585,7 +17585,7 @@ sub_8138478:
 	str r3, [r5,#0x18]
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8138478
+	thumb_func_end sprite_advanceAnimFrame
 // symdb: Queues a 0x600-byte tile/graphics chunk upload from the decomp buffer into VRAM at a per-object slot's offset.
 // symdb: (r0 = unused by this routine; r5 = caller-set object struct whose byte at +0xD is the VRAM slot
 // symdb: index) -> r0 = clobbered; no meaningful return
@@ -17686,7 +17686,7 @@ sub_813853C:
 	str r0, [r2,#8]
 	ldrb r0, [r5,#0xb]
 	str r0, [r2,#0xc]
-	bl sub_8138478
+	bl sprite_advanceAnimFrame
 
 	pop {pc}
 	thumb_func_end sub_813853C
@@ -17697,7 +17697,7 @@ sub_8138550:
 	ldr r2, [r2,#oToolkit_Unk200a220_Ptr]
 	ldrh r0, [r5,#0xe]
 	str r0, [r2,#8]
-	bl sub_8138478
+	bl sprite_advanceAnimFrame
 
 	pop {pc}
 	thumb_func_end sub_8138550
@@ -17708,7 +17708,7 @@ sub_8138560:
 	ldr r2, [r2,#oToolkit_Unk200a220_Ptr]
 	ldrh r0, [r5,#0x10]
 	str r0, [r2,#8]
-	bl sub_8138478
+	bl sprite_advanceAnimFrame
 
 	pop {pc}
 	thumb_func_end sub_8138560
@@ -17719,7 +17719,7 @@ sub_8138570:
 	ldr r2, [r2,#oToolkit_Unk200a220_Ptr]
 	ldrh r0, [r5,#0x12]
 	str r0, [r2,#8]
-	bl sub_8138478
+	bl sprite_advanceAnimFrame
 
 	pop {pc}
 	thumb_func_end sub_8138570

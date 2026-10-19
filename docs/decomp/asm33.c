@@ -8265,10 +8265,10 @@ int sub_812A2EC()
     if ( result >= 2 )
     {
         chatbox_expandWordTable();
-        v2 = sub_81468C8(1u);
+        v2 = chatbox_getTextStateEntryPtr(1u);
         v3 = sub_81468E0(1u);
         v4 = v3;
-        sub_8049DC4(__PAIR__(&unk_201FD60, v2), __PAIR__(&unk_201FD80, v3));
+        chatbox_convertTwoByteStringsToCharCodes(__PAIR__(&unk_201FD60, v2), __PAIR__(&unk_201FD80, v3));
         word_2023BB0 = *sub_8146724(v4);
         byte_2023BC8 = sub_8146738(v4);
         chatbox_runScript_803FD9C_on_eTextScript201BA20(46);

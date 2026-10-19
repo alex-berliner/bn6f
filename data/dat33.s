@@ -269,7 +269,7 @@ loc_812C4C4::
 loc_812C4CA::
 	bl sub_812D5A0
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_812C4D8::
@@ -373,7 +373,7 @@ loc_812C596::
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_812C5A0
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 loc_812C5A0::
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812C5CE
@@ -734,7 +734,7 @@ loc_812C846::
 	bl sub_812D528
 	bl sub_812D378
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	mov r0, #0
 	bl sub_812D99C
 	mov r0, #4
@@ -1095,7 +1095,7 @@ loc_812CB0A::
 	bl sub_812D528
 	bl sub_812D378
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	b loc_812CB62
 loc_812CB46::
 	mov r0, r4
@@ -1676,7 +1676,7 @@ loc_812CFB2::
 	bl npc_runDialog41
 loc_812CFBC::
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	pop {r4-r7,pc}
 	.balign 4, 0
 byte_812CFC8::
@@ -1799,7 +1799,7 @@ loc_812D0AC::
 	tst r1, r0
 	beq locret_812D0BE
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	b locret_812D0BE
 locret_812D0BE::
 	pop {pc}
@@ -1944,7 +1944,7 @@ loc_812D1C0::
 	bne loc_812D1D4
 	bl copyBgTilesToBlock0
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	b locret_812D1F4
 loc_812D1D4::
 	cmp r0, #8
@@ -1959,7 +1959,7 @@ loc_812D1E4::
 	beq locret_812D1F4
 	bl sub_812D5A0
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 locret_812D1F4::
 	pop {pc}
 	.byte 0x0, 0x0
@@ -2074,7 +2074,7 @@ sub_812D298::
 	bl sub_812D310
 	bl sub_812D378
 	bl sub_812D3E4
-	bl sub_812D4FC
+	bl submenu_drawScreenElement
 	bl sub_812D528
 	mov r0, #0
 	ldr r1, off_812D30C // =dword_8129180 

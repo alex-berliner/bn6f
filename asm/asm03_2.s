@@ -675,8 +675,8 @@ off_804646C:
 	.word stateDispatcher_3states_8116E10+1
 	.word battleObject_dispatchBeastOutAction_8117110+1
 	.word sub_8117218+1
-	.word sub_81172B0+1
-	.word sub_8117404+1
+	.word sprite_dispatchStateHandler+1
+	.word sprite_dispatchVariantObjectState+1
 	.word sub_81175D0+1
 	.word sub_8117690+1
 	.word sub_8117780+1
@@ -1109,7 +1109,7 @@ off_804679C:
 	.word battle_dispatchScenarioEffect_811E248+1
 	.word battleObject_dispatchCurStateAction_811E360+1
 	.word 0x0
-	.word sub_811E418+1
+	.word object_dispatchModeHandler+1
 	.word 0x0
 	.word sub_811E57C+1
 	.word sub_811E61C+1
@@ -3561,7 +3561,7 @@ loc_8047B1C:
 	mov r0, #0x1b
 	strb r0, [r5,#6]
 	mov r0, r4
-	bl sub_8048F68
+	bl isIdInList
 	beq loc_8047B3C
 	mov r7, #0x1a
 	mov r0, #0x1b
@@ -3579,7 +3579,7 @@ loc_8047B3C:
 	mov r0, #0x1c
 	strb r0, [r5,#1]
 	mov r0, r4
-	bl sub_8048F68
+	bl isIdInList
 	beq loc_8047B68
 	mov r7, #0x1a
 	mov r0, #0x1d
@@ -4765,9 +4765,9 @@ off_8048F64:
 // symdb: Scans a null-terminated halfword list at word_8048BE0 for a given ID and returns nonzero if it is present, which the caller uses to pick an alternate chatbox script.
 // symdb: (r0 = id to search for) -> r0 = 1 if found in list, 0 if not; flags set by tst/cmp (result uses
 // symdb: eq only)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048F68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/isIdInList.yaml
 	thumb_local_start
-sub_8048F68:
+isIdInList:
 	push {r0-r2,lr}
 	ldr r1, off_8048F84 // =word_8048BE0 
 loc_8048F6C:
@@ -4787,7 +4787,7 @@ loc_8048F7E:
 	.balign 4, 0
 off_8048F84:
 	.word word_8048BE0
-	thumb_func_end sub_8048F68
+	thumb_func_end isIdInList
 
 	thumb_func_start sub_8048F88
 sub_8048F88:
@@ -6620,9 +6620,9 @@ sub_8049D7C:
 // symdb: Returns three pointers into the IWRAM work buffer at 0x2001800 (base+0, base+8, base+0x28) for the caller to use as a parallel set of state/counter slots.
 // symdb: () -> r0 = word_2001800+0x8, r1 = word_2001800+0x28, r2 = word_2001800+0; no flags meaningfully
 // symdb: set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049D82.yaml
-	thumb_func_start sub_8049D82
-sub_8049D82:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getWorkBufTriplePtrs.yaml
+	thumb_func_start getWorkBufTriplePtrs
+getWorkBufTriplePtrs:
 	push {r4-r7,lr}
 	ldr r3, off_8049D94 // =word_2001800 
 	mov r0, #8
@@ -6634,7 +6634,7 @@ sub_8049D82:
 	pop {r4-r7,pc}
 off_8049D94:
 	.word word_2001800
-	thumb_func_end sub_8049D82
+	thumb_func_end getWorkBufTriplePtrs
 
 // symdb: Thin wrapper that expands a text-script word-index table into per-byte 8-byte command records via sub_803BEC0.
 // symdb: (args passed through to sub_803BEC0: r0 = word-index table pointer, r1..r3 = as callee requires)
@@ -6670,9 +6670,9 @@ off_8049DC0:
 // symdb: Converts two 0-terminated byte-index strings into character-code text buffers for chatbox display.
 // symdb: (r0 = src string 1, r1 = dest buffer 1, r2 = src string 2, r3 = dest buffer 2) -> void; clobbers
 // symdb: r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049DC4.yaml
-	thumb_func_start sub_8049DC4
-sub_8049DC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_convertTwoByteStringsToCharCodes.yaml
+	thumb_func_start chatbox_convertTwoByteStringsToCharCodes
+chatbox_convertTwoByteStringsToCharCodes:
 	push {r4-r7,lr}
 	push {r2,r3}
 	mov r2, #8
@@ -6683,7 +6683,7 @@ sub_8049DC4:
 	mov r3, #0x20 
 	bl convertByteStringToCharCodes
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049DC4
+	thumb_func_end chatbox_convertTwoByteStringsToCharCodes
 
 // symdb: Zeroes the 0x1B0-byte work block at eS200A290, advances the toolkit's main jumptable to state 0x4C, and seeds the block's +0x22/+0x24/+0x26 fields.
 // symdb: void sub_8049DDC(u16 fieldValue /* r0 */, struct Toolkit *toolkit /* r10 */); preserves r2-r7;
@@ -8622,7 +8622,7 @@ loc_804AC1E:
 	sub r2, r2, r3
 	tst r2, r2
 	bne loc_804AC52
-	bl sub_804AD98
+	bl stepTwoPhaseCountdown
 loc_804AC52:
 	bl sub_804ADE0
 	bl sub_804ADB0
@@ -8809,9 +8809,9 @@ off_804AD94:
 // symdb: Ticks a two-stage frame countdown in a struct: decrements field +0x2A, rolling over to field +0x2E once it is exhausted
 // symdb: (r5 = struct pointer, set by caller) -> r0 destroyed; decrements [r5+0x2A] then [r5+0x2E], each
 // symdb: only while positive; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AD98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/stepTwoPhaseCountdown.yaml
 	thumb_local_start
-sub_804AD98:
+stepTwoPhaseCountdown:
 	push {r0-r2,lr}
 	ldrh r0, [r5,#0x2a]
 	sub r0, #1
@@ -8826,7 +8826,7 @@ loc_804ADA4:
 locret_804ADAC:
 	pop {r0-r2,pc}
 	.byte 0, 0
-	thumb_func_end sub_804AD98
+	thumb_func_end stepTwoPhaseCountdown
 
 	thumb_local_start
 sub_804ADB0:

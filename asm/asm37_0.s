@@ -83,7 +83,7 @@ off_813B7D0:
 off_813B7D4:
 	.word battleObject_copyBeastSpChipData_813B7EC+1
 	.word sub_813B7FC+1
-	.word sub_813B818+1
+	.word copy_reverse7x7Grid+1
 	.word sub_813B830+1
 off_813B7E4:
 	.word unk_2009F00
@@ -128,9 +128,9 @@ loc_813B802:
 // symdb: Copies a 49-byte 7x7 grid from [r7] to [r4] in reversed order (180-degree flip).
 // symdb: (r4 = dest buffer (49 bytes), r7 = source cursor) -> writes 49 bytes to r4; r7 advanced past
 // symdb: source; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B818.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_reverse7x7Grid.yaml
 	thumb_local_start
-sub_813B818:
+copy_reverse7x7Grid:
 	push {r5,r6,lr}
 	mov r5, #0x2a 
 loc_813B81C:
@@ -145,7 +145,7 @@ loc_813B81E:
 	sub r5, #7
 	bge loc_813B81C
 	pop {r5,r6,pc}
-	thumb_func_end sub_813B818
+	thumb_func_end copy_reverse7x7Grid
 
 	thumb_local_start
 sub_813B830:
@@ -4518,9 +4518,9 @@ locret_813D94A:
 
 // symdb: Returns 1 if the stored current link command (eS200BC50) differs from r0, so callers only resend via rfu_setLinkCommand when it changed.
 // symdb: (r0 = link command value) -> r0 = 1 if stored command != r0, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D94C.yaml
-	thumb_func_start sub_813D94C
-sub_813D94C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_linkCommandDiffers.yaml
+	thumb_func_start rfu_linkCommandDiffers
+rfu_linkCommandDiffers:
 	push {lr}
 	mov r2, #0
 	ldr r1, off_813D974 // =eS200BC50 
@@ -4532,7 +4532,7 @@ loc_813D95A:
 	mov r0, r2
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_813D94C
+	thumb_func_end rfu_linkCommandDiffers
 
 // symdb: Wipes the 16-byte work area at eS200BC50 but saves and restores the single byte at offset 7 so it survives the clear.
 // symdb: void clearWorkArea_eS200BC50_keepByte7(void); // r2, r3, r4 preserved; r0/r1 scratch; C/V flags
@@ -4576,9 +4576,9 @@ off_813D988:
 
 // symdb: Ends the current RFU wireless session and marks the wireless work struct with a post-end state.
 // symdb: () -> r0 = 4 (clobbered); touches eStruct200BC30 field 0xE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D98C.yaml
-	thumb_func_start sub_813D98C
-sub_813D98C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_endConnection.yaml
+	thumb_func_start rfu_endConnection
+rfu_endConnection:
 	push {lr}
 	bl rfu_setStateEnded
 	mov r0, #4
@@ -4588,7 +4588,7 @@ sub_813D98C:
 	.balign 4, 0
 off_813D99C:
 	.word eStruct200BC30
-	thumb_func_end sub_813D98C
+	thumb_func_end rfu_endConnection
 
 // symdb: Writes the wireless-link phase/state ID into offset 0x8 of the RFU link work struct at 0x200BC50.
 // symdb: (r0 = link phase ID (halfword, e.g. 0x22/0x33/0x34)) -> r0 clobbered; writes halfword at

@@ -1040,9 +1040,9 @@ dword_8142220:
 
 // symdb: Pops the most recent entry off the scenario-effect state's LIFO stack (0-based count at +0x28, entries at +0x2C), returning it, or 0 if the stack is empty.
 // symdb: () -> r0 = popped entry (0 if empty); flags from tst on r0 (Z set when empty)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142224.yaml
-	thumb_func_start sub_8142224
-sub_8142224:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_popScenarioEffectEntry.yaml
+	thumb_func_start e_popScenarioEffectEntry
+e_popScenarioEffectEntry:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r6, #0
@@ -1057,7 +1057,7 @@ loc_8142238:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142224
+	thumb_func_end e_popScenarioEffectEntry
 
 // symdb: Clears a flag/counter field (offset 0x28) of the scenario effect state struct at 0x2000780.
 // symdb: () -> r0 = 0 (clobbered); writes 0 to byte_20007A8 (eScenarioEffectState2000780 + 0x28); no
@@ -4352,9 +4352,9 @@ sub_8143F72:
 
 // symdb: Ticks down a countdown counter in eStruct2001010 while a fade is active in a specific subsystem, unless a flag byte blocks it.
 // symdb: () -> r0 = undefined; no flags relied on; reads caller's r5 as a structure pointer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_decrementCountdown.yaml
 	thumb_local_start
-sub_8143F7C:
+e_decrementCountdown:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#9]
 	tst r0, r0
@@ -4366,7 +4366,7 @@ sub_8143F7C:
 	str r0, [r5,#0xc] // (dword_200101C - 0x2001010)
 locret_8143F8E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143F7C
+	thumb_func_end e_decrementCountdown
 
 	thumb_func_start sub_8143F90
 sub_8143F90:
@@ -4386,9 +4386,9 @@ sub_8143F90:
 // symdb: Initializes fields at +0x14/+0x18/+0x1C of the state struct eStruct2001010 before the caller enters state 0xC.
 // symdb: () -> r0 = 0; writes dword_2001024 = 0, dword_2001028 = 0, dword_200102C = 0x2000; clobbers
 // symdb: r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143FAA.yaml
-	thumb_func_start sub_8143FAA
-sub_8143FAA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_resetStateFields.yaml
+	thumb_func_start e_resetStateFields
+e_resetStateFields:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
 	mov r0, #0
@@ -4402,7 +4402,7 @@ dword_8143FBC:
 	.word 0x0
 dword_8143FC0:
 	.word 0x2000
-	thumb_func_end sub_8143FAA
+	thumb_func_end e_resetStateFields
 
 	thumb_func_start sub_8143FC4
 sub_8143FC4:
@@ -4519,7 +4519,7 @@ loc_8144092:
 	ldrb r0, [r0,#oGameState_SubsystemIndex]
 	cmp r0, #4
 	bne loc_81440A6
-	bl sub_8143F7C
+	bl e_decrementCountdown
 loc_81440A6:
 	bl sub_8143F1C
 	mov r0, #0

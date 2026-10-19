@@ -5591,7 +5591,7 @@ int battle_scrollLayersTick()
 
 
 // 0x8038d7c
-void sub_8038D7C()
+void object_stateTimerExpire()
 {
     int v0; // r5
     int v1; // r0
@@ -5746,7 +5746,7 @@ int sub_8038EAC()
     *(v0 + 4) = v1;
     if ( !v1 )
         battle_renderCommErrorTextGfx();
-    return sub_8039198();
+    return t3_decrementRenderInfo14();
 }
 
 
@@ -5779,7 +5779,7 @@ int sub_8038F0C()
     int result; // r0
     char v1; // zf
 
-    sub_8039198();
+    t3_decrementRenderInfo14();
     result = IsPaletteFadeActive();
     if ( !v1 )
     {
@@ -5913,7 +5913,7 @@ void __noreturn sub_8039180()
 
 
 // 0x8039198
-int sub_8039198()
+int t3_decrementRenderInfo14()
 {
     int v0; // r10
     int v1; // r3
@@ -6148,12 +6148,12 @@ void __noreturn sub_8039734()
             }
         }
     }
-    sub_80397BC();
+    submenu_drawNumbersAndCursor();
 }
 
 
 // 0x80397bc
-void __noreturn sub_80397BC()
+void __noreturn submenu_drawNumbersAndCursor()
 {
     sprite_drawTwoBcdNumbers3Digit();
 }
@@ -6172,7 +6172,7 @@ void __noreturn sub_80397DC()
         *v0 = 12;
         v0[1] = 0;
     }
-    sub_80397BC();
+    submenu_drawNumbersAndCursor();
 }
 
 
@@ -6191,7 +6191,7 @@ void __noreturn sub_80397F6()
         *v0 = 16;
         v0[1] = 0;
     }
-    sub_80397BC();
+    submenu_drawNumbersAndCursor();
 }
 
 
@@ -6208,7 +6208,7 @@ void __noreturn sub_8039816()
         *v0 = 20;
         v0[1] = 0;
     }
-    sub_80397BC();
+    submenu_drawNumbersAndCursor();
 }
 
 
@@ -6224,7 +6224,7 @@ void __noreturn sub_8039830()
         cleareMemory_802FF2C();
         *v0 = 4;
     }
-    sub_80397BC();
+    submenu_drawNumbersAndCursor();
 }
 
 
@@ -9109,7 +9109,7 @@ void __noreturn sprite_drawTwoBcdNumbers3Digit()
     unsigned int v1; // r0
     int v2; // r2
 
-    v0 = sub_803C398();
+    v0 = get_clampedCounterPair999();
     v1 = memory_bcdConvert(v0);
     v2 = (v1 >> 8) & 0xF;
     if ( v2 )
@@ -9558,7 +9558,7 @@ int __fastcall sub_803BFE8(unsigned __int16 *a1, unsigned __int8 *a2)
         result = *i;
         if ( result == 255 )
             break;
-        v5 = sub_803C018(*(&off_803C208 + result), *v2);
+        v5 = get_tableEntryIndexByKey(*(&off_803C208 + result), *v2);
         if ( v5 != 255 )
             return sub_803C034(v5, *(&off_803C208 + i[1]), v2);
     }
@@ -9567,7 +9567,7 @@ int __fastcall sub_803BFE8(unsigned __int16 *a1, unsigned __int8 *a2)
 
 
 // 0x803c018
-signed int __fastcall sub_803C018(int a1, int a2)
+signed int __fastcall get_tableEntryIndexByKey(int a1, int a2)
 {
     int v2; // r3
 
@@ -10027,7 +10027,7 @@ int __fastcall initStateBlock_803C352(int a1, int a2, int a3, int a4)
 
 
 // 0x803c398
-int sub_803C398()
+int get_clampedCounterPair999()
 {
     signed __int16 v0; // r2
     signed __int16 v1; // r2
@@ -10628,7 +10628,7 @@ signed __int64 sub_803C97C()
 {
     int v0; // r4
 
-    v0 = sub_8146918(unk_200AF84);
+    v0 = rfu_getSlotPlayerCount(unk_200AF84);
     if ( v0 < rfu_getConnectedPlayerCount() )
         return 0LL;
     rfu_setStateEnded();
@@ -11823,7 +11823,7 @@ int __fastcall sub_803DD60(int a1)
 
 
 // 0x803dd8c
-int sub_803DD8C()
+int init_linkState()
 {
     int result; // r0
 
@@ -11882,7 +11882,7 @@ signed int sub_803DDEC()
     v0 = 1;
     if ( sCamera.unk_51 == 8 && sCamera.unk_50 == 8 )
     {
-        if ( sub_803DFAC(dword_2009A18) & 0x7F )
+        if ( rfu_getLinkSlotMask(dword_2009A18) & 0x7F )
         {
             if ( sCamera.unk_5C >= 8 )
                 return v0;
@@ -11903,7 +11903,7 @@ signed int rfu_isLinkBusy()
     v0 = 1;
     if ( sCamera.unk_51 == 12 && sCamera.unk_50 == 16 )
     {
-        if ( sub_803DFAC(dword_2009A18) & 0x7F )
+        if ( rfu_getLinkSlotMask(dword_2009A18) & 0x7F )
         {
             if ( sCamera.unk_5C >= 8 )
                 return v0;
@@ -12051,7 +12051,7 @@ LABEL_26:
 
 
 // 0x803dfac
-signed int __fastcall sub_803DFAC(int a1)
+signed int __fastcall rfu_getLinkSlotMask(int a1)
 {
     signed int v1; // r6
 
@@ -12086,7 +12086,7 @@ signed int __fastcall sub_803E018(int a1)
 
     v1 = a1;
     ho_803E114();
-    v2 = sub_803DFAC(v1);
+    v2 = rfu_getLinkSlotMask(v1);
     if ( v2 & 0x7F )
         return 4;
     if ( v2 & 0x80 )
@@ -14425,7 +14425,7 @@ void sub_803F5B0()
 
 
 // 0x803f618
-int __fastcall sub_803F618(int result, int a2, int a3)
+int __fastcall copy_storeHalfwordRecord(int result, int a2, int a3)
 {
     *&byte_2009940[8 * a3 + 2 * a2] = result;
     return result;

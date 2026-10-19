@@ -620,7 +620,7 @@ int __fastcall sub_8142204(int a1)
 
 
 // 0x8142224
-int sub_8142224()
+int e_popScenarioEffectEntry()
 {
     int v0; // r6
     int v1; // r4
@@ -2646,7 +2646,7 @@ int sub_8143F72()
 
 
 // 0x8143f7c
-int sub_8143F7C()
+int e_decrementCountdown()
 {
     int v0; // r5
     int result; // r0
@@ -2675,7 +2675,7 @@ int sub_8143F90()
 
 
 // 0x8143faa
-signed int sub_8143FAA()
+signed int e_resetStateFields()
 {
     signed int result; // r0
 
@@ -2768,7 +2768,7 @@ int sub_8144048()
             sub_811E744(v2, v3, v4, v5);
         IsPaletteFadeActive();
         if ( !v1 && **(v0 + oToolkit_GameStatePtr) == 4 )
-            sub_8143F7C();
+            e_decrementCountdown();
     }
     sub_8143F1C();
     return 0;

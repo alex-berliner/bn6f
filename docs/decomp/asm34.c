@@ -53,7 +53,7 @@ int sub_812D3E4()
 
 
 // 0x812d4fc
-int sub_812D4FC()
+int submenu_drawScreenElement()
 {
 	submenu_getWork();
 	sub_812D600(2, 32, 42, 19);
@@ -530,7 +530,7 @@ int sub_812DA3C()
 
 	result = getStructFrom2008450(6);
 	if ( v1 )
-		result = sub_812D4FC();
+		result = submenu_drawScreenElement();
 	return result;
 }
 

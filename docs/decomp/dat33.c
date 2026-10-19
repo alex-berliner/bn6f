@@ -191,7 +191,7 @@ LABEL_34:
     }
     sub_812D5A0();
     sub_812D3E4();
-    return sub_812D4FC();
+    return submenu_drawScreenElement();
 }
 
 
@@ -270,7 +270,7 @@ int sub_812C50C()
         while ( v6 <= v7 );
     }
     if ( !*(v0 + 3) )
-        sub_812D4FC();
+        submenu_drawScreenElement();
     result = IsPaletteFadeActive();
     if ( !v14 )
     {
@@ -1312,7 +1312,7 @@ LABEL_23:
     }
 LABEL_24:
     sub_812D3E4();
-    return sub_812D4FC();
+    return submenu_drawScreenElement();
 }
 
 
@@ -1418,7 +1418,7 @@ LABEL_32:
     if ( *(v0 + 27) & 0x10 )
     {
         sub_812D3E4();
-        result = sub_812D4FC();
+        result = submenu_drawScreenElement();
     }
     return result;
 }
@@ -1552,7 +1552,7 @@ int sub_812D164()
     {
         sub_812D5A0();
         sub_812D3E4();
-        result = sub_812D4FC();
+        result = submenu_drawScreenElement();
     }
     return result;
 }

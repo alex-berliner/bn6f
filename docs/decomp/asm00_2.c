@@ -691,7 +691,7 @@ int battle_checkEmergeDirectionFlip()
 
 
 // 0x800f486
-BOOL __fastcall sub_800F486(int a1)
+BOOL __fastcall battle_idIsStandard(int a1)
 {
     return a1 != 211 && a1 != 218 && a1 != 233 && a1 != 234;
 }
@@ -4688,7 +4688,7 @@ signed int sub_8011ED0()
 
 
 // 0x8011ef0
-signed int sub_8011EF0()
+signed int battle_resetAIAttackVars()
 {
     int v0; // r7
 
@@ -6405,7 +6405,7 @@ unsigned int __fastcall sub_8012D24(_DWORD *a1)
             v5[2] = v6;
         }
     }
-    return sub_8012D70();
+    return sortThreeEntries();
 }
 
 
@@ -6417,7 +6417,7 @@ unsigned int sub_8012D64()
 
 
 // 0x8012d70
-unsigned int sub_8012D70()
+unsigned int sortThreeEntries()
 {
     sub_8012D8C(0, 1);
     sub_8012D8C(0, 2);
@@ -14257,7 +14257,7 @@ int sub_8017E0A()
 
 
 // 0x8017e26
-int sub_8017E26()
+int ai_dispatchMoveSubState()
 {
     int v0; // r5
 
@@ -20857,7 +20857,7 @@ int __fastcall sub_801DFB8(int a1)
 
 
 // 0x801dfd0
-signed int __fastcall sub_801DFD0(signed int result)
+signed int __fastcall battle_hudSubtractValueAt20(signed int result)
 {
     __int16 v1; // r1
 

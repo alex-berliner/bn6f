@@ -2367,7 +2367,7 @@ off_3006B18:
 	.word 0x0
 	.word 0x0
 	.word 0x0
-	.word sub_3006E7C+1
+	.word sprite_dispatchAnimHandler+1
 dword_3006B84::
 	.word 0x0, 0x44444444, 0x88888888, 0xCCCCCCCC
 	thumb_func_end sub_3006A5E
@@ -2811,9 +2811,9 @@ off_3006E78:
 // symdb: Dispatches an animation-related handler selected by a byte in the argument struct, currently routing both cases to sprite_queueAnimData.
 // symdb: (r0 = pointer to struct whose byte at +1 is the selector) -> calls table handler with r0
 // symdb: unchanged; r0 result is that of the callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006E7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchAnimHandler.yaml
 	thumb_local_start
-sub_3006E7C:
+sprite_dispatchAnimHandler:
 	push {r3,r7,lr}
 	ldr r1, off_3006E8C // =off_3006E90
 	ldrb r3, [r0,#1]
@@ -2827,7 +2827,7 @@ off_3006E8C:
 off_3006E90:
 	.word sprite_queueAnimData+1
 	.word sprite_queueAnimData+1
-	thumb_func_end sub_3006E7C
+	thumb_func_end sprite_dispatchAnimHandler
 
 // symdb: Copies a 0x40-byte sprite data block, chosen from one of ten tables by fields of the caller's descriptor, into the next free slot of a queued buffer and records the pointers in the sprite work state.
 // symdb: (r0 = descriptor struct: byte +1 = variant flag, byte +2 = table index, +3 = sub-pointer) -> r0

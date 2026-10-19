@@ -1162,9 +1162,9 @@ loc_800F482:
 // symdb: Returns 1 unless the given battle object ID is one of four special IDs (0xD3, 0xDA, 0xE9, 0xEA), which callers treat as excluded.
 // symdb: (r0 = object ID, likely the battle object field at +0x28) -> r0 = 1 if ID not in {0xD3, 0xDA,
 // symdb: 0xE9, 0xEA}, else 0; no flags used by callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F486.yaml
-	thumb_func_start sub_800F486
-sub_800F486:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_idIsStandard.yaml
+	thumb_func_start battle_idIsStandard
+battle_idIsStandard:
 	cmp r0, #0xd3
 	beq loc_800F49A
 	cmp r0, #0xda
@@ -1178,7 +1178,7 @@ sub_800F486:
 loc_800F49A:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_800F486
+	thumb_func_end battle_idIsStandard
 
 // symdb: Returns the alliance-team entry for a battle object's Alliance field from the allianceTeams table.
 // symdb: u32 battle_getObjectAllianceTeam(struct BattleObject* obj /* r5 */; returns r0 =
@@ -6291,7 +6291,7 @@ off_80117D4:
 	.word sub_8011E78+1 // 0x22
 	.word sub_8011EAC+1 // 0x23
 	.word sub_8011ED0+1 // 0x24
-	.word sub_8011EF0+1 // 0x25
+	.word battle_resetAIAttackVars+1 // 0x25
 	.word sub_8011F10+1 // 0x26
 	.word sub_8011F44+1 // 0x27
 	.word sub_8011F64+1 // 0x28
@@ -7160,9 +7160,9 @@ sub_8011ED0:
 
 // symdb: resets an AI attack-variables block (r7) to default values and returns a fixed status code
 // symdb: (r7 = pointer to oAIAttackVars struct) -> r0 = 0x42; r7 fields overwritten with defaults
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011EF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetAIAttackVars.yaml
 	thumb_local_start
-sub_8011EF0:
+battle_resetAIAttackVars:
 	push {lr}
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
@@ -7179,7 +7179,7 @@ sub_8011EF0:
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x42 
 	pop {pc}
-	thumb_func_end sub_8011EF0
+	thumb_func_end battle_resetAIAttackVars
 
 	thumb_local_start
 sub_8011F10:
@@ -9483,7 +9483,7 @@ loc_8012D54:
 loc_8012D5C:
 	sub r7, #3
 loc_8012D5E:
-	bl sub_8012D70
+	bl sortThreeEntries
 	pop {r4-r7,pc}
 	thumb_func_end sub_8012D24
 
@@ -9498,9 +9498,9 @@ sub_8012D64:
 
 // symdb: runs three compare/swap passes over entries 0-2 of a small list, likely to (re)sort it after the caller shifts bytes
 // symdb: () -> r0 = undefined; calls sub_8012D8C(idx, idx) with (0,1),(0,2),(1,2)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sortThreeEntries.yaml
 	thumb_local_start
-sub_8012D70:
+sortThreeEntries:
 	push {lr}
 	mov r0, #0
 	mov r1, #1
@@ -9512,7 +9512,7 @@ sub_8012D70:
 	mov r1, #2
 	bl sub_8012D8C
 	pop {pc}
-	thumb_func_end sub_8012D70
+	thumb_func_end sortThreeEntries
 
 	thumb_local_start
 sub_8012D8C:
@@ -20650,11 +20650,11 @@ locret_8017E24:
 	thumb_func_end sub_8017E0A
 
 // symdb: Dispatches a battle object's move-sub-state handler by jumping through a table indexed by oBattleObject_MoveSubState
-// symdb: (r5 = battle object) -> tail-calls handler from off_8017E38[substate]; returns to sub_8017E26's
+// symdb: (r5 = battle object) -> tail-calls handler from off_8017E38[substate]; returns to ai_dispatchMoveSubState's
 // symdb: caller via handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017E26.yaml
-	thumb_func_start sub_8017E26
-sub_8017E26:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_dispatchMoveSubState.yaml
+	thumb_func_start ai_dispatchMoveSubState
+ai_dispatchMoveSubState:
 	push {lr}
 	ldr r1, off_8017E34 // =off_8017E38 
 	ldrb r0, [r5,#oBattleObject_MoveSubState]
@@ -20668,7 +20668,7 @@ off_8017E38:
 	.word ai_beginPanelSlideMove+1
 	.word sub_8017F38+1
 	.word object_decrementPhaseCountdown+1
-	thumb_func_end sub_8017E26
+	thumb_func_end ai_dispatchMoveSubState
 
 // symdb: Battle-object AI step: snaps the object onto its queued next panel, picks an adjacent-panel slide direction, and starts a velocity-driven move onto it (or falls back to phase 0x18 if blocked).
 // symdb: (r5 = current battle object, no args) -> void; sets XVelocity/YVelocity, MoveSubState, CurPhase
@@ -31871,9 +31871,9 @@ dword_801DFCC:
 
 // symdb: Subtracts r0 from the halfword at +0x20 of the battle HUD struct, clamping at zero (probable shown-HP damage display).
 // symdb: (r0 = amount to subtract) -> r0 = destroyed; writes halfword at eStruct2035280+0x20
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DFD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_hudSubtractValueAt20.yaml
 	thumb_local_start
-sub_801DFD0:
+battle_hudSubtractValueAt20:
 	push {lr}
 	ldr r2, off_801E0D8 // =eStruct2035280
 	ldrh r1, [r2,#0x20] // (word_20352A0 - 0x2035280)
@@ -31884,7 +31884,7 @@ loc_801DFDC:
 	strh r1, [r2,#0x20] // (word_20352A0 - 0x2035280)
 	pop {pc}
 	.word 0x4000
-	thumb_func_end sub_801DFD0
+	thumb_func_end battle_hudSubtractValueAt20
 
 // symdb: Returns the cumulative damage-taken counter (TotalDamageTaken) for the actor's AIData.
 // symdb: () -> r0 = u16 TotalDamageTaken for the currently-bound AIData record

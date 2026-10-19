@@ -3174,7 +3174,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A9658+1
 	.word sub_80A9824+1
 	.word sub_80A98D4+1
-	.word sub_80A9A0C+1
+	.word sprite_dispatchAnimStateHandler+1
 	.word 0x0
 	.word 0x0
 	.word 0x0
@@ -3664,16 +3664,16 @@ off_8004AC0:
 	.word sub_8004C62+1
 	.word sub_8004C62+1
 	.word sub_8004CAE+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
-	.word sub_8004C90+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
+	.word text_accumDigit+1
 	.word sub_8004CBE+1
 	.word sub_8004CBE+1
 off_8004B0C:
@@ -3881,9 +3881,9 @@ loc_8004C8C:
 // symdb: Accumulates one ASCII digit from a string into a running decimal number kept in r8 (r8 = r8*10 + digit).
 // symdb: (r0 = pointer to current ASCII digit char) -> r0 = same pointer; r8 = r8*10 + (*r0 - '0'); r3/r4
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004C90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/text_accumDigit.yaml
 	thumb_local_start
-sub_8004C90:
+text_accumDigit:
 	ldr r2, [sp,#0x1c]
 	sub r2, #4
 	str r2, [sp,#0x1c]
@@ -3900,7 +3900,7 @@ loc_8004C9A:
 	mov r8, r3
 	mov r4, #0
 	mov pc, lr
-	thumb_func_end sub_8004C90
+	thumb_func_end text_accumDigit
 
 	thumb_local_start
 sub_8004CAE:
@@ -17173,9 +17173,9 @@ battle_getPhase:
 // symdb: Builds a 2-bit mask from battle-state bytes 0x12/0x13 (bit set when the byte is 0), which the caller remaps into a battle-result code stored in a table entry.
 // symdb: () -> r0 = 2-bit mask: bit0 = (battleState[0x12]==0), bit1 = (battleState[0x13]==0); no flags
 // symdb: set meaningfully
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A856.yaml
-	thumb_func_start sub_800A856
-sub_800A856:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getSideFlagBits.yaml
+	thumb_func_start battle_getSideFlagBits
+battle_getSideFlagBits:
 	mov r0, #0
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_BattleStatePtr]
@@ -17190,7 +17190,7 @@ loc_800A864:
 	add r0, #2
 locret_800A86C:
 	mov pc, lr
-	thumb_func_end sub_800A856
+	thumb_func_end battle_getSideFlagBits
 
 // symdb: Iterates the battle state's 8 "alive battle actor" slots, reading each occupied actor's AI-data unk_0e byte and HP, but writes nothing back — an apparent leftover/stub whose only visible effect is the last slot's values left in registers.
 // symdb: in: r10 = toolkit (battle state read via oToolkit_BattleStatePtr), r2 = fallback AI-data pointer

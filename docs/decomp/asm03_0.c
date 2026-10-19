@@ -6566,7 +6566,7 @@ LABEL_40:
 
 
 // 0x802abd0
-int __noreturn sub_802ABD0()
+int __noreturn ow_bg2WipeTransitionStep()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -6768,7 +6768,7 @@ _BYTE *sub_802AD84()
 
 
 // 0x802adfc
-int sub_802ADFC()
+int object_waitCountdownStep()
 {
     int v0; // r5
     int result; // r0
@@ -9171,7 +9171,7 @@ signed int sub_802CC50()
 
 
 // 0x802cc8c
-int sub_802CC8C()
+int object_stateDelayTick()
 {
     int v0; // r5
     int result; // r0
@@ -9588,7 +9588,7 @@ int __fastcall sub_802D118(int a1)
     int result; // r0
 
     v1 = getTableEntryPtr32_802D064(a1);
-    v2 = sub_800A856();
+    v2 = battle_getSideFlagBits();
     v3 = 0;
     if ( v2 )
     {
@@ -13865,7 +13865,7 @@ signed int camera_applyScrollToBgLayers_8030158()
 
 
 // 0x8030194
-int sub_8030194()
+int camera_applyScrollDeltaToBgScroll()
 {
     _WORD *v0; // r5
     int v1; // r10
@@ -13894,7 +13894,7 @@ int __fastcall sub_80301B2(int result, int a2)
 
 
 // 0x80301bc
-signed int sub_80301BC()
+signed int camera_targetPlayer()
 {
     int v0; // r10
     int v1; // r2
@@ -14104,7 +14104,7 @@ void render_ClearScrollOffsets_8030336()
 
 
 // 0x803035e
-void sub_803035E()
+void camera_syncBgScroll()
 {
     int v0; // r10
     int v1; // r5
@@ -14387,7 +14387,7 @@ __int64 __fastcall sub_8030646(__int64 result, int a2, int a3)
 
 
 // 0x803065a
-__int64 __fastcall sub_803065A(__int64 result, int a2, int a3)
+__int64 __fastcall chatbox_setBgTile(__int64 result, int a2, int a3)
 {
     int v3; // r4
     int v4; // r10

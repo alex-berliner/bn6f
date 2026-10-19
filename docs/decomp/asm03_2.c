@@ -1721,7 +1721,7 @@ void sub_8047A96()
         {
             v12 = 24;
             *(v0 + 6) = 27;
-            sub_8048F68(v2);
+            isIdInList(v2);
             if ( !v9 )
             {
                 v12 = 26;
@@ -1734,7 +1734,7 @@ void sub_8047A96()
                 v12 = 25;
                 *(v0 + 6) = 28;
                 *(v0 + 1) = 28;
-                sub_8048F68(v2);
+                isIdInList(v2);
                 if ( !v9 )
                 {
                     v12 = 26;
@@ -2385,7 +2385,7 @@ LABEL_21:
 
 
 // 0x8048f68
-int __fastcall sub_8048F68(int result)
+int __fastcall isIdInList(int result)
 {
     __int16 *i; // r1
 
@@ -3721,7 +3721,7 @@ int sub_8049D7C()
 
 
 // 0x8049d82
-void *sub_8049D82()
+void *getWorkBufTriplePtrs()
 {
     return &unk_2001808;
 }
@@ -3746,7 +3746,7 @@ _DWORD *__fastcall sub_8049DA0(_DWORD *a1, _DWORD *a2)
 
 
 // 0x8049dc4
-int __fastcall sub_8049DC4(__int64 a1, __int64 a2)
+int __fastcall chatbox_convertTwoByteStringsToCharCodes(__int64 a1, __int64 a2)
 {
     __int64 v2; // ST00_8
 
@@ -4767,7 +4767,7 @@ int sub_804AB6C()
                 *(v0 + 40) = v21;
                 v22 = v21 - v20;
                 if ( !v22 )
-                    sub_804AD98();
+                    stepTwoPhaseCountdown();
                 sub_804ADE0(v18, v19, v22, v20);
                 sub_804ADB0();
                 sub_804ADD0();
@@ -4885,7 +4885,7 @@ signed int __fastcall sub_804AD60(int a1)
 
 
 // 0x804ad98
-void sub_804AD98()
+void stepTwoPhaseCountdown()
 {
     int v0; // r5
     int v1; // r0

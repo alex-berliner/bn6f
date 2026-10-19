@@ -1205,7 +1205,7 @@ loc_8144938:
 	ldrh r0, [r0]
 	ldrb r2, [r5]
 	mov r1, r4
-	bl sub_803F618
+	bl copy_storeHalfwordRecord
 	add r0, r4, #1
 	lsl r0, r0, #0x18
 	lsr r4, r0, #0x18
@@ -5371,9 +5371,9 @@ off_81466C0:
 // symdb: Returns the address of the 8-byte field (offset 0x15) of the 0x20-byte list record selected via the unk_2010330 index table, used as a copy destination by list-building callers.
 // symdb: (r0 = record index (byte)) -> r0 = dword_2010CC0 + 0x14 + unk_2010330[index]*0x20 + 0x15; no
 // symdb: flags set meaningfully
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81466C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_lookupEntryField15Ptr.yaml
 	thumb_local_start
-sub_81466C4:
+get_lookupEntryField15Ptr:
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
 	ldr r2, off_81466DC // =dword_2010CC0 
@@ -5391,7 +5391,7 @@ off_81466DC:
 	.word dword_2010CC0
 off_81466E0:
 	.word unk_2010330
-	thumb_func_end sub_81466C4
+	thumb_func_end get_lookupEntryField15Ptr
 
 	thumb_func_start sub_81466E4
 sub_81466E4:
@@ -5483,7 +5483,7 @@ loc_8146754:
 	mov r2, #0xd
 	bl sub_81469F0
 	mov r0, r4
-	bl sub_81466C4
+	bl get_lookupEntryField15Ptr
 	mov r1, r6
 	mov r2, #8
 	bl sub_81469F0
@@ -5536,7 +5536,7 @@ loc_81467BC:
 	mov r2, #0xd
 	bl sub_81469F0
 	mov r0, r4
-	bl sub_81466C4
+	bl get_lookupEntryField15Ptr
 	mov r1, r6
 	mov r2, #8
 	bl sub_81469F0
@@ -5693,9 +5693,9 @@ off_81468C4:
 
 // symdb: Returns a pointer to the 10-byte text-state record for a given text slot in the chatbox work table at 2010294.
 // symdb: (r0 = text slot id (byte)) -> r0 = &unk_2010294[id*10]; flags clobbered by the shifts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81468C8.yaml
-	thumb_func_start sub_81468C8
-sub_81468C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_getTextStateEntryPtr.yaml
+	thumb_func_start chatbox_getTextStateEntryPtr
+chatbox_getTextStateEntryPtr:
 	mov r1, r0
 	lsl r1, r1, #0x18
 	lsr r1, r1, #0x18
@@ -5708,7 +5708,7 @@ sub_81468C8:
 	.balign 4, 0x00
 off_81468DC:
 	.word unk_2010294
-	thumb_func_end sub_81468C8
+	thumb_func_end chatbox_getTextStateEntryPtr
 
 	thumb_func_start sub_81468E0
 sub_81468E0:
@@ -5757,9 +5757,9 @@ off_8146914:
 // symdb: Returns a u16 per-slot count (likely connected-player count) from the RFU work struct, used by the caller to decide whether the wireless connection is complete.
 // symdb: (r0 = slot index (byte)) -> r0 = halfword at eStruct200FE00 + 0x34 + index*2; flags clobbered by
 // symdb: shift/compare not preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146918.yaml
-	thumb_func_start sub_8146918
-sub_8146918:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getSlotPlayerCount.yaml
+	thumb_func_start rfu_getSlotPlayerCount
+rfu_getSlotPlayerCount:
 	lsl r0, r0, #0x18
 	ldr r1, off_8146928 // =eStruct200FE00 
 	lsr r0, r0, #0x17
@@ -5770,7 +5770,7 @@ sub_8146918:
 	.balign 4, 0x00
 off_8146928:
 	.word eStruct200FE00
-	thumb_func_end sub_8146918
+	thumb_func_end rfu_getSlotPlayerCount
 
 // symdb: Tail-call trampoline that runs the RFU (wireless) VBlank handler and returns its preserved registers to the caller.
 // symdb: void rfu_vblankTrampoline_814692C(void); /* uses lr as the return address; returns r4-r12 from
@@ -7420,7 +7420,7 @@ off_814754C:
 	.word eS200BC50
 loc_8147550:
 	mov r0, #0x15
-	bl sub_813D94C
+	bl rfu_linkCommandDiffers
 	cmp r0, #0
 	beq loc_8147560
 	mov r0, #0x15
@@ -7688,7 +7688,7 @@ loc_81477B4:
 	ldrb r0, [r0,#0x5] // (byte_200AF85 - 0x200af80)
 	cmp r0, #1
 	bne def_814762C
-	bl sub_813D98C
+	bl rfu_endConnection
 	b def_814762C
 	.balign 4, 0x00
 off_81477D8:
@@ -22893,10 +22893,10 @@ off_814E854:
 	bx lr
 // symdb: Resumes a stopped music player by clearing its stop flag (bit 31 of the MPlayInfo status word).
 // symdb: (r0 = *MPlayInfo) -> r0 = new status (callers ignore it); flags clobbered by the cmp.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E85C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_m4aMPlayContinue.yaml
 	.balign 4, 0x00
 	thumb_local_start
-sub_814E85C:
+sound_m4aMPlayContinue:
 	push {lr}
 	mov r2, r0
 	ldr r3, [r2,#0x34]
@@ -22914,7 +22914,7 @@ dword_814E874:
 	.word 0x68736D53
 dword_814E878:
 	.word 0x7FFFFFFF
-	thumb_func_end sub_814E85C
+	thumb_func_end sound_m4aMPlayContinue
 
 // symdb: Guarded setter for an object whose type word is 'Smsh' — writes a 16-bit value into two fields and a fixed 0x100 into a third.
 // symdb: void sub_814E87C(SmshObj* obj, u16 value) // also returns return address in r0 and clobbers
@@ -23136,7 +23136,7 @@ loc_814E9E2:
 	cmp r2, #0
 	bge loc_814E9EC
 	mov r0, r1
-	bl sub_814E85C
+	bl sound_m4aMPlayContinue
 loc_814E9EC:
 	pop {r0}
 	bx r0
@@ -23195,7 +23195,7 @@ sub_814EA24:
 	cmp r1, r0
 	bne loc_814EA4A
 	mov r0, r2
-	bl sub_814E85C
+	bl sound_m4aMPlayContinue
 loc_814EA4A:
 	pop {r0}
 	bx r0
@@ -23241,7 +23241,7 @@ off_814EA80:
 	thumb_local_start
 sub_814EA84:
 	push {lr}
-	bl sub_814E85C
+	bl sound_m4aMPlayContinue
 	pop {r0}
 	bx r0
 	.byte 0, 0
@@ -23259,7 +23259,7 @@ sub_814EA90:
 	mov r4, r0
 loc_814EAA0:
 	ldr r0, [r5]
-	bl sub_814E85C
+	bl sound_m4aMPlayContinue
 	add r5, #0xc
 	sub r4, #1
 	cmp r4, #0

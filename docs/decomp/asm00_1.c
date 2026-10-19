@@ -1917,7 +1917,7 @@ void __fastcall sub_8004C62(int a1, _WORD *a2, _BYTE *a3)
 
 
 // 0x8004c90
-unsigned __int8 *__fastcall sub_8004C90(unsigned __int8 *result)
+unsigned __int8 *__fastcall text_accumDigit(unsigned __int8 *result)
 {
     int v1; // r8
     int v2; // r3
@@ -11292,7 +11292,7 @@ int battle_getPhase()
 
 
 // 0x800a856
-signed int sub_800A856()
+signed int battle_getSideFlagBits()
 {
     int v0; // r10
     signed int result; // r0

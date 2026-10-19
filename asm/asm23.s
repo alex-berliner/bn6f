@@ -545,7 +545,7 @@ off_8089214:
 	thumb_local_start
 sub_8089234:
 	push {r4-r7,lr}
-	bl sub_80301BC
+	bl camera_targetPlayer
 	mov r0, #1
 	bl doPETEffect_8033fc0
 	mov r0, #0
@@ -1345,7 +1345,7 @@ sub_808999C:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_80899D4
-	bl sub_8142224
+	bl e_popScenarioEffectEntry
 	tst r0, r0
 	beq loc_80899B2
 	bl ow_dealDamageToCurrentNavi

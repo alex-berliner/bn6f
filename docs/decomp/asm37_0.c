@@ -84,7 +84,7 @@ int sub_813B7FC()
 
 
 // 0x813b818
-int sub_813B818()
+int copy_reverse7x7Grid()
 {
     int v0; // r4
     unsigned __int8 *v1; // r7
@@ -3083,7 +3083,7 @@ int __fastcall rfu_setLinkCommand(int result)
 
 
 // 0x813d94c
-signed int __fastcall sub_813D94C(int a1)
+signed int __fastcall rfu_linkCommandDiffers(int a1)
 {
     signed int v1; // r2
 
@@ -3114,7 +3114,7 @@ int rfu_setStateEnded()
 
 
 // 0x813d98c
-signed int sub_813D98C()
+signed int rfu_endConnection()
 {
     signed int result; // r0
 

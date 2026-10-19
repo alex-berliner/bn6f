@@ -2824,7 +2824,7 @@ int __fastcall sprite_isPaletteActive(int a1)
 
 
 // 0x80023c6
-int sub_80023C6()
+int e_anyPaletteFlagSet()
 {
     char *v0; // r2
     int result; // r0

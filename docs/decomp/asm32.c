@@ -9621,7 +9621,7 @@ signed int ai_selectAttack()
 
 
 // 0x8115654
-signed int sub_8115654()
+signed int ai_scriptResetTimerTick()
 {
     int v0; // r5
     _BYTE *v1; // r6
@@ -11816,7 +11816,7 @@ int sub_81172A6()
 
 
 // 0x81172b0
-int sub_81172B0()
+int sprite_dispatchStateHandler()
 {
     int v0; // r5
 
@@ -11873,7 +11873,7 @@ int sub_8117354()
 
 
 // 0x8117404
-int sub_8117404()
+int sprite_dispatchVariantObjectState()
 {
     int v0; // r5
 
@@ -19584,7 +19584,7 @@ int __fastcall sub_811D634(int a1, int a2, int a3)
     result = getStructFrom2008450(a3);
     if ( !v4 )
     {
-        sub_811D6CC();
+        object_moveByVelocity();
         result = object_syncSpritePosition();
     }
     return result;
@@ -19638,7 +19638,7 @@ int __fastcall sub_811D69C(int a1, int a2)
 
 
 // 0x811d6cc
-int sub_811D6CC()
+int object_moveByVelocity()
 {
     int v0; // r5
     int result; // r0
@@ -20512,7 +20512,7 @@ int sub_811E40C()
 
 
 // 0x811e418
-int sub_811E418()
+int object_dispatchModeHandler()
 {
     int v0; // r5
 

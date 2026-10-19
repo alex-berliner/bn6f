@@ -1699,7 +1699,7 @@ int __fastcall sub_3006E1C(int a1)
 
 
 // 0x3006e7c
-int __fastcall sub_3006E7C(int a1)
+int __fastcall sprite_dispatchAnimHandler(int a1)
 {
     return (off_3006E8C[*(a1 + 1)])();
 }

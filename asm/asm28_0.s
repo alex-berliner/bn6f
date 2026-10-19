@@ -1593,7 +1593,7 @@ loc_809A488:
 	ldr r0, [r0,#0x4c]
 	mov r1, #0x88
 	str r0, [r5,r1]
-	bl sub_809A868
+	bl chatbox_setVar4CFromTable
 	ldr r0, off_809A894 // =TextScriptChipTrader86C580C
 	mov r1, #0x35 
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -2086,9 +2086,9 @@ off_809A864:
 // symdb: Maps the chatbox variable at +0x4C through a byte lookup table and clears +0x50, as setup before running the chip-trader result text script.
 // symdb: (none; reads r5 (task obj) and r10 (toolkit)) -> writes chatbox->0x4C = table[old value saved at
 // symdb: [r5,#0x88]], chatbox->0x50 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A868.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_setVar4CFromTable.yaml
 	thumb_local_start
-sub_809A868:
+chatbox_setVar4CFromTable:
 	push {r4,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_ChatboxPtr]
@@ -2101,7 +2101,7 @@ sub_809A868:
 	str r0, [r4,#0x50]
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809A868
+	thumb_func_end chatbox_setVar4CFromTable
 
 // symdb: Returns the Bug Frag cost (10/20/30/50 frags) for the currently selected trade option in the Bug Frag trader menu.
 // symdb: (r0 = ignored, r5 = trader menu context struct) -> r0 = frag cost byte for option [r5+0x88];

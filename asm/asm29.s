@@ -2115,7 +2115,7 @@ locret_80A5D7E:
 	thumb_local_start
 sub_80A5D80:
 	push {r4-r7,lr}
-	bl sub_80A5DE8
+	bl sprite_setAnimTargetFromObject
 	bl sprite_updateAnimTowardTarget
 	mov r4, #0
 	ldr r2, dword_80A5DE4 // =0x10000 
@@ -2175,9 +2175,9 @@ dword_80A5DE4:
 // symdb: Copies a 3-word target triple from the object struct (r6+0x7C..0x84) into the sprite animator's target fields (r5+0x28..0x30) before interpolation toward it.
 // symdb: (r5 = sprite/animator struct, r6 = object struct) -> stores [r6+0x7C,0x80,0x84] into
 // symdb: [r5+0x28,0x2C,0x30]; no return value, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5DE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setAnimTargetFromObject.yaml
 	thumb_local_start
-sub_80A5DE8:
+sprite_setAnimTargetFromObject:
 	push {lr}
 	mov r3, #0x7c 
 	ldr r0, [r6,r3]
@@ -2190,7 +2190,7 @@ sub_80A5DE8:
 	str r2, [r5,#0x30]
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_80A5DE8
+	thumb_func_end sprite_setAnimTargetFromObject
 
 // symdb: Thin wrapper that updates an object's animation to face its target using two position pointers stored in the object struct.
 // symdb: (r5 = object pointer; reads [r5,#0x28] and [r5,#0x2c] as arguments to
@@ -7413,7 +7413,7 @@ sub_80A8AF4:
 	mov r1, #0x1c
 	mov r2, #0x66 
 	bl sprite_load // (int a1, int a2, int a3) ->
-	bl sub_80A8C7C
+	bl sprite_dirToAnimIndex
 	strb r0, [r5,#7]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -7486,7 +7486,7 @@ sub_80A8B4C:
 	add r0, r0, r2
 	str r0, [r5,#0x14]
 	bl ow_refreshObjectSpritePriority
-	bl sub_80A8C7C
+	bl sprite_dirToAnimIndex
 	bl sprite_changeAnimation
 	bl sub_80A8D7C
 loc_80A8BA8:
@@ -7525,7 +7525,7 @@ loc_80A8BD8:
 	bl sub_8143220
 loc_80A8BEC:
 	bl ow_refreshObjectSpritePriority
-	bl sub_80A8C7C
+	bl sprite_dirToAnimIndex
 	bl sprite_changeAnimation
 	bl sub_80A8D7C
 loc_80A8BFC:
@@ -7596,9 +7596,9 @@ off_80A8C78:
 // symdb: Converts an overworld object's facing-direction field into a sprite animation index (0-3) used with sprite_setAnimation/sprite_changeAnimation.
 // symdb: (r7 = object struct ptr; reads halfword [r7,#4]) -> r0 = animation index 0-3 from table
 // symdb: {2,3,0,1}; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8C7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dirToAnimIndex.yaml
 	thumb_local_start
-sub_80A8C7C:
+sprite_dirToAnimIndex:
 	push {r4-r7,lr}
 	ldrh r0, [r7,#4]
 	lsr r0, r0, #8
@@ -7613,7 +7613,7 @@ off_80A8C90:
 	.word dword_80A8C94
 dword_80A8C94:
 	.word 0x1000302
-	thumb_func_end sub_80A8C7C
+	thumb_func_end sprite_dirToAnimIndex
 
 // symdb: Recomputes an overworld object's sprite OAM priority from its z-coordinate modifiers and the current map's layer effect table.
 // symdb: (r5 = overworld object pointer, fields 0x0C z and 0x14 z-value used) -> r0 =
@@ -9495,9 +9495,9 @@ sub_80A9A04:
 // symdb: Dispatches a sprite/animation object's state-machine step, calling the handler selected by the object's state field and returning its result.
 // symdb: (r5 = sprite/animation object; r0, r1 passed through) -> r0 = handler's return value; flags from
 // symdb: handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A0C.yaml
-	thumb_func_start sub_80A9A0C
-sub_80A9A0C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_dispatchAnimStateHandler.yaml
+	thumb_func_start sprite_dispatchAnimStateHandler
+sprite_dispatchAnimStateHandler:
 	push {lr}
 	ldr r0, off_80A9A1C // =off_80A9A20 
 	ldrb r1, [r5,#8]
@@ -9512,7 +9512,7 @@ off_80A9A20:
 	.word sub_80A9A2C+1
 	.word sprite_animateCheckAttributeFlag+1
 	.word sub_80A9A96+1
-	thumb_func_end sub_80A9A0C
+	thumb_func_end sprite_dispatchAnimStateHandler
 
 	thumb_local_start
 sub_80A9A2C:

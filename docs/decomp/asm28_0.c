@@ -510,7 +510,7 @@ signed int sub_809A44C()
     if ( !v3 )
     {
         *(v0 + 136) = *(*(v1 + oToolkit_ChatboxPtr) + 76);
-        sub_809A868();
+        chatbox_setVar4CFromTable();
         chatbox_runScript(TextScriptChipTrader86C580C, 53);
         *(v0 + 9) = 0;
         return 0;
@@ -864,7 +864,7 @@ int __fastcall sub_809A80C(int a1)
 
 
 // 0x809a868
-int sub_809A868()
+int chatbox_setVar4CFromTable()
 {
     int v0; // r5
     int v1; // r10

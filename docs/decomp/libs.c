@@ -522,7 +522,7 @@ int sub_8144920()
     v0 = 0;
     do
     {
-        sub_803F618(*(&v11 + v0), v0, byte_200F489);
+        copy_storeHalfwordRecord(*(&v11 + v0), v0, byte_200F489);
         v0 = (v0 + 1) & 0xFF;
     }
     while ( v0 <= 3 );
@@ -2417,7 +2417,7 @@ int sub_814665C()
 
 
 // 0x81466c4
-int __fastcall sub_81466C4(unsigned __int8 a1)
+int __fastcall get_lookupEntryField15Ptr(unsigned __int8 a1)
 {
     return dword_2010CC0 + 32 * byte_2010330[a1] + 20 + 21;
 }
@@ -2482,7 +2482,7 @@ int sub_814673C()
     {
         v3 = sub_81466F4(i);
         sub_81469F0(v3, v0, 0xDu);
-        v4 = sub_81466C4(i);
+        v4 = get_lookupEntryField15Ptr(i);
         sub_81469F0(v4, v1, 8u);
         v0 += 16;
         v1 += 8;
@@ -2510,7 +2510,7 @@ int sub_81467A0()
     {
         v3 = sub_81466F4(i);
         sub_81469F0(v3, v0, 0xDu);
-        v4 = sub_81466C4(i);
+        v4 = get_lookupEntryField15Ptr(i);
         sub_81469F0(v4, v1, 8u);
         v0 += 16;
         v1 += 8;
@@ -2582,7 +2582,7 @@ int sub_81468BC()
 
 
 // 0x81468c8
-char *__fastcall sub_81468C8(unsigned __int8 a1)
+char *__fastcall chatbox_getTextStateEntryPtr(unsigned __int8 a1)
 {
     return &unk_2010294 + 10 * a1;
 }
@@ -2610,7 +2610,7 @@ int rfu_getConnectedPlayerCount()
 
 
 // 0x8146918
-int __fastcall sub_8146918(int a1)
+int __fastcall rfu_getSlotPlayerCount(int a1)
 {
     return *(algn_200FE34 + (2 * a1 & 0x1FF));
 }
@@ -3344,7 +3344,7 @@ int __fastcall sub_81473EC(signed int a1)
         {
             if ( a1 == 240 )
             {
-                if ( sub_813D94C(21) )
+                if ( rfu_linkCommandDiffers(21) )
                     rfu_setLinkCommand(21);
                 word_20102D0 = word_200FE14;
                 byte_2010368 = 0;
@@ -3508,7 +3508,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
                 if ( byte_2010290 )
                 {
                     if ( unk_200AF85 == 1 )
-                        sub_813D98C();
+                        rfu_endConnection();
                 }
                 else if ( unk_200AF85 == 1 )
                 {
@@ -10908,7 +10908,7 @@ int __fastcall sub_814E7F4(int a1, unsigned __int8 a2, int a3)
 
 
 // 0x814e85c
-int __fastcall sub_814E85C(int a1)
+int __fastcall sound_m4aMPlayContinue(int a1)
 {
     int v2; // [sp+0h] [bp-4h]
 
@@ -11019,7 +11019,7 @@ int __fastcall sound_playMusicId(int a1)
         if ( *(v2 + 4) )
         {
             if ( *(v2 + 4) < 0 )
-                sub_814E85C(v2);
+                sound_m4aMPlayContinue(v2);
         }
         else
         {
@@ -11059,7 +11059,7 @@ int __fastcall sub_814EA24(int a1)
     v1 = sound_MusicTable + (8 * a1 & 0x7FFFF);
     v2 = *(&gMPlayTable + 3 * *(v1 + 2));
     if ( *v2 == *v1 )
-        sub_814E85C(v2);
+        sound_m4aMPlayContinue(v2);
     return v4;
 }
 
@@ -11089,7 +11089,7 @@ int __fastcall sub_814EA84(int a1)
 {
     int v2; // [sp+0h] [bp-4h]
 
-    sub_814E85C(a1);
+    sound_m4aMPlayContinue(a1);
     return v2;
 }
 
@@ -11105,7 +11105,7 @@ int sub_814EA90()
     v1 = 32;
     do
     {
-        sub_814E85C(*v0);
+        sound_m4aMPlayContinue(*v0);
         v0 += 3;
         --v1;
     }

@@ -951,7 +951,7 @@ byte_8092F5C::
 	thumb_local_start
 sub_8092F64::
 	push {r4-r7,lr}
-	bl sub_8143FAA
+	bl e_resetStateFields
 	bl sub_8093212
 	mov r0, #0xc
 	strb r0, [r5]

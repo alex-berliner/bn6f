@@ -1348,7 +1348,7 @@ signed int sub_80A5D80()
     int v7; // r0
     int v8; // r0
 
-    sub_80A5DE8();
+    sprite_setAnimTargetFromObject();
     sprite_updateAnimTowardTarget();
     v1 = 0;
     v2 = v0[3];
@@ -1402,7 +1402,7 @@ LABEL_14:
 
 
 // 0x80a5de8
-int sub_80A5DE8()
+int sprite_setAnimTargetFromObject()
 {
     _DWORD *v0; // r5
     _DWORD *v1; // r6
@@ -4928,7 +4928,7 @@ int __noreturn sub_80A8AF4()
 
     *v0 = 3;
     sprite_load(v0, 128, 28, 102);
-    v1 = sub_80A8C7C();
+    v1 = sprite_dirToAnimIndex();
     *(v0 + 7) = v1;
     sprite_setAnimation(v0, v1);
     sprite_loadAnimationData(v0);
@@ -4978,7 +4978,7 @@ void __noreturn sub_80A8B4C()
         sub_809E1AE();
         *(v0 + 20) = v4 + 1310720;
         ow_refreshObjectSpritePriority();
-        v5 = sub_80A8C7C();
+        v5 = sprite_dirToAnimIndex();
         sprite_changeAnimation(v5);
         sub_80A8D7C();
     }
@@ -5011,7 +5011,7 @@ void __noreturn sub_80A8BBC()
             sub_8143220(*(v0 + 4));
         }
         ow_refreshObjectSpritePriority();
-        v5 = sub_80A8C7C();
+        v5 = sprite_dirToAnimIndex();
         sprite_changeAnimation(v5);
         sub_80A8D7C();
     }
@@ -5055,7 +5055,7 @@ void __noreturn sub_80A8C08()
 
 
 // 0x80a8c7c
-int sub_80A8C7C()
+int sprite_dirToAnimIndex()
 {
     int v0; // r7
 
@@ -6387,7 +6387,7 @@ int sub_80A9A04()
 
 
 // 0x80a9a0c
-int sub_80A9A0C()
+int sprite_dispatchAnimStateHandler()
 {
     int v0; // r5
 

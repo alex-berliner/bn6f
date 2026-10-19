@@ -5210,9 +5210,9 @@ sprite_isPaletteActive:
 
 // symdb: Scans the palette buffer at 020097A0 and returns the first nonzero flag byte found, or 0 if every entry's flag is clear.
 // symdb: () -> r0 = flag byte of first palette entry with a nonzero first byte, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80023C6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_anyPaletteFlagSet.yaml
 	thumb_local_start
-sub_80023C6:
+e_anyPaletteFlagSet:
 	ldr r2, off_8002464 // =ePalette20097a0
 	ldr r3, off_80023DC // =0x108
 loc_80023CA:
@@ -5228,7 +5228,7 @@ locret_80023D8:
 	.balign 4, 0
 off_80023DC:
 	.word 0x108
-	thumb_func_end sub_80023C6
+	thumb_func_end e_anyPaletteFlagSet
 
 	thumb_func_start getPalleteAndTransition_80023E0
 getPalleteAndTransition_80023E0:
