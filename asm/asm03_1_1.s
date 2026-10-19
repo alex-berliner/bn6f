@@ -732,7 +732,7 @@ sub_8038E14:
 	ldr r0, off_8038E40 // =byte_803888C
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
 	bl battle_resetEStructRecords_8046664 // () -> void
-	bl sub_80390D8
+	bl battle_initEmotionEntriesType3A
 	mov r0, #0x28
 	strb r0, [r5,#2]
 	ldr r0, dword_8038E44 // =0xd6
@@ -1082,9 +1082,9 @@ byte_80390C4:
 // symdb: Initialises two EmotionData slots of type 0x3A (tags 0 and 1) in the battle emotion table at 0x02008450.
 // symdb: (no args) -> void; calls battle_initEmotionTableEntry twice with (type=0x3A, tag=0, flags=0x8)
 // symdb: and (type=0x3A, tag=1, flags=0x108)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80390D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initEmotionEntriesType3A.yaml
 	thumb_local_start
-sub_80390D8:
+battle_initEmotionEntriesType3A:
 	push {lr}
 	ldr r2, dword_80390F0 // =0x8
 	mov r0, #0x3a
@@ -1100,7 +1100,7 @@ dword_80390F0:
 	.word 0x8
 off_80390F4:
 	.word 0x108
-	thumb_func_end sub_80390D8
+	thumb_func_end battle_initEmotionEntriesType3A
 
 	thumb_local_start
 sub_80390F8:
@@ -1992,7 +1992,7 @@ sub_8039A58:
 	add r3, r3, r5
 	bl sub_803C1A8
 	bl sub_803C320
-	bl sub_803C26A
+	bl clearStructBufferPair
 	mov r0, #4
 	strb r0, [r5,#1]
 	pop {r4-r7,pc}
@@ -2163,7 +2163,7 @@ loc_8039BE6:
 	bl sub_803C558
 	mov r0, #0x1e
 	bl sub_803BB90
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	beq loc_8039C0E
 	mov r0, #0xb
 	bl sub_803BB2C
@@ -2196,13 +2196,13 @@ loc_8039C2C:
 sub_8039C32:
 	push {r4-r7,lr}
 	mov r0, #1
-	bl sub_803CB00
+	bl rfu_orFlags
 	bl sub_803A558
 	bne loc_8039C7C
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039C7C
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	bne loc_8039C6A
 	bl sub_803C320
 	mov r0, #0x1c
@@ -2242,7 +2242,7 @@ dword_8039C8C:
 sub_8039C9C:
 	push {r4-r7,lr}
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039CB0
 	mov r0, #0x68
 	bl sub_803C28A
@@ -2256,7 +2256,7 @@ loc_8039CB0:
 	thumb_local_start
 sub_8039CB4:
 	push {r4-r7,lr}
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r2, r0
 	ldrb r0, [r5,#0xe]
 	ldrb r1, [r5,#0xb]
@@ -2304,7 +2304,7 @@ sub_8039D08:
 	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_8039D54
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r2, r0
 	ldrb r0, [r5,#0xe]
 	ldrb r1, [r5,#0xb]
@@ -2316,10 +2316,10 @@ sub_8039D08:
 	pop {r0}
 	strb r0, [r5,#0x16]
 	mov r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0xd
 	bl sub_803BB2C
 	mov r0, #0x2c
@@ -2342,10 +2342,10 @@ sub_8039D66:
 	bl sub_803A558
 	bne loc_8039D94
 	mov r0, #0x40
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039D94
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039D8E
 	bl sub_803A252
 	mov r0, #0xb
@@ -2382,7 +2382,7 @@ sub_8039DB4:
 	push {r4-r7,lr}
 	bl sub_803A558
 	beq loc_8039DD4
-	bl sub_814656C
+	bl rfu_isNotConnected
 	tst r0, r0
 	bne loc_8039E26
 	bl sub_803A25C
@@ -2393,20 +2393,20 @@ sub_8039DB4:
 	b loc_8039E26
 loc_8039DD4:
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039DEC
 	bl sub_803C330
 	beq loc_8039DF2
 	bl sub_803C2A0
 	mov r0, #0x20
-	bl sub_803CB00
+	bl rfu_orFlags
 loc_8039DEC:
 	mov r0, #0x48
 	strb r0, [r5,#1]
 	b loc_8039E26
 loc_8039DF2:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_8039E26
 	mov r0, #0x10
 	lsl r0, r0, #4
@@ -2603,7 +2603,7 @@ sub_8039F78:
 	bl t4_dispatchWaitStep
 	push {r0}
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	pop {r0}
 	bne loc_8039FBA
 	tst r0, r0
@@ -2613,11 +2613,11 @@ sub_8039F78:
 	bl PlaySoundEffect
 	mov r4, #0xf
 	mov r0, #0x80
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039FAE
 	mov r4, #0x10
 	mov r0, #0x20
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8039FAE
 	mov r4, #0x11
 loc_8039FAE:
@@ -2812,7 +2812,7 @@ loc_803A112:
 	bl sub_803A214
 	mov r6, #0
 loc_803A118:
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	cmp r6, r0
 	bge loc_803A176
 	ldrb r0, [r5,#0xb]
@@ -3333,7 +3333,7 @@ sub_803A4D0:
 	mov r0, #0x58
 	mov r1, #0x18
 	mov r2, #4
-	bl sub_803BA00
+	bl sprite_queueOamEntryAt
 	ldr r7, off_803A51C // =0x110
 	add r7, r7, r5
 	mov r0, #0xa8
@@ -3350,7 +3350,7 @@ sub_803A4D0:
 	mov r0, #0x80
 	mov r1, #0x88
 	mov r2, #4
-	bl sub_803BA00
+	bl sprite_queueOamEntryAt
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803A51C:
@@ -5648,7 +5648,7 @@ sub_803B880:
 	beq loc_803B8A0
 	mov r0, #0x68
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 loc_803B8A0:
 	lsr r2, r4, #4
 	and r2, r6
@@ -5656,13 +5656,13 @@ loc_803B8A0:
 	beq loc_803B8B0
 	mov r0, #0x70
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 loc_803B8B0:
 	lsl r2, r4, #0
 	and r2, r6
 	mov r0, #0x78
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 	mov r7, #0
 	bl sub_803C398
 	mov r0, r1
@@ -5674,7 +5674,7 @@ loc_803B8B0:
 	beq loc_803B8DA
 	mov r0, #0x94
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 loc_803B8DA:
 	lsr r2, r4, #4
 	and r2, r6
@@ -5682,22 +5682,22 @@ loc_803B8DA:
 	beq loc_803B8EA
 	mov r0, #0x9c
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 loc_803B8EA:
 	lsl r2, r4, #0
 	and r2, r6
 	mov r0, #0xa4
 	mov r1, #0x50
-	bl sub_803B8F8
+	bl sprite_queueOamEntryHflipPal12
 	pop {r4-r7,pc}
 	thumb_func_end sub_803B880
 
 // symdb: Builds and queues one OAM entry for a hardware-flipped sprite whose tile comes from an index, using palette 12.
 // symdb: (r0 = attr0 value (Y/shape, ≤16 bits), r1 = attr1 X/attribute bits, r2 = tile index) -> void;
 // symdb: flags not meaningful.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B8F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntryHflipPal12.yaml
 	thumb_local_start
-sub_803B8F8:
+sprite_queueOamEntryHflipPal12:
 	push {r4-r7,lr}
 	lsl r4, r2, #1
 	lsl r0, r0, #0x10
@@ -5715,7 +5715,7 @@ dword_803B914:
 	.word 0x9000
 dword_803B918:
 	.word 0xC080
-	thumb_func_end sub_803B8F8
+	thumb_func_end sprite_queueOamEntryHflipPal12
 
 // symdb: Copies one of a small palette/toolkit BG-tile-id entry (loaded from a 12-byte table) into the toolkit's iBGTileIdBlocks blit buffer via sub_8001890.
 // symdb: (r0 = table index) -> r0 = 0 ; side effects: writes to one of the toolkit's BG tile-id block
@@ -5794,9 +5794,9 @@ off_803B9FC:
 // symdb: Queues a single OAM entry with a fixed tile (0x41E) and fixed attribute bits (0x5000) at a position computed by sub_803B9C0, offset 12 px in X.
 // symdb: () -> void; r0/r1 from sub_803B9C0 are consumed: a1 = ((x - 12) << 16) | (y | 0x5000), a2 =
 // symdb: 0x41E, a4 = 7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BA00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntryAt.yaml
 	thumb_local_start
-sub_803BA00:
+sprite_queueOamEntryAt:
 	push {r4-r7,lr}
 	push {r0,r1}
 	bl sub_803B9C0
@@ -5816,7 +5816,7 @@ dword_803BA20:
 	.word 0x5000
 dword_803BA24:
 	.word 0x41E
-	thumb_func_end sub_803BA00
+	thumb_func_end sprite_queueOamEntryAt
 
 	thumb_local_start
 sub_803BA28:
@@ -6870,9 +6870,9 @@ loc_803C264:
 // symdb: Zeros two 16-byte fields (at struct+0x130 and struct+0x150) of the structure whose pointer the caller left in r5.
 // symdb: (r5 = base pointer of an as-yet-unnamed struct) -> r0/r1 clobbered; both 16-byte fields zero-
 // symdb: filled
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C26A.yaml
-	thumb_func_start sub_803C26A
-sub_803C26A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearStructBufferPair.yaml
+	thumb_func_start clearStructBufferPair
+clearStructBufferPair:
 	push {r4-r7,lr}
 	mov r0, #0x4c
 	lsl r0, r0, #2
@@ -6887,7 +6887,7 @@ sub_803C26A:
 	lsl r1, r1, #2
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C26A
+	thumb_func_end clearStructBufferPair
 
 	thumb_func_start sub_803C28A
 sub_803C28A:
@@ -6895,7 +6895,7 @@ sub_803C28A:
 	mov r6, r0
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, r6
 	bl PlaySoundEffect
 	pop {r4-r7,pc}
@@ -6905,7 +6905,7 @@ sub_803C28A:
 sub_803C2A0:
 	push {r4-r7,lr}
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2A0
 
@@ -7008,7 +7008,7 @@ off_803C32C:
 sub_803C330:
 	push {r4-r7,lr}
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_803C34A
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -7238,11 +7238,11 @@ sub_803C48C:
 	ldr r5, off_803C4AC // =eS200A290
 	mov r4, #0xfe
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_803C4A6
 	mov r4, #0xff
 	mov r0, #4
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803C4A6
 	ldrb r4, [r5,#0x16] // (byte_200A2A6 - 0x200a290)
 loc_803C4A6:
@@ -7259,7 +7259,7 @@ sub_803C4B0:
 	push {r4-r7,lr}
 	ldr r5, off_803C4BC // =eS200A290
 	mov r0, #0x10
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C4BC:
@@ -7290,7 +7290,7 @@ sub_803C4DC:
 	ldr r5, off_803C510 // =eS200A290
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C4DC
 
@@ -7300,9 +7300,9 @@ sub_803C4EC:
 	ldr r5, off_803C510 // =eS200A290
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x80
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C4EC
 
@@ -7311,7 +7311,7 @@ sub_803C502:
 	push {r4-r7,lr}
 	ldr r5, off_803C510 // =eS200A290
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C510:
@@ -7325,7 +7325,7 @@ sub_803C514:
 	mov r4, #0
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803C526
 	mov r4, #1
 loc_803C526:
@@ -7343,7 +7343,7 @@ sub_803C530:
 	ldr r5, off_803C54C // =eS200A290
 	mov r4, #0
 	ldr r0, off_803C554 // =0x200
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803C546
 	ldr r0, off_803C550 // =off_8039370
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
@@ -7364,7 +7364,7 @@ off_803C554:
 	thumb_func_start sub_803C558
 sub_803C558:
 	push {r4-r7,lr}
-	bl sub_803C26A
+	bl clearStructBufferPair
 	bl sub_81467A0
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C558
@@ -7374,7 +7374,7 @@ sub_803C564:
 	push {r4-r7,lr}
 	ldr r5, off_803C57C // =eS200A290
 	mov r0, #2
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C564
 
@@ -7395,7 +7395,7 @@ sub_803C580:
 	push {r4-r7,lr}
 	ldr r5, off_803C598 // =eS200A290
 	mov r0, #0x40
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C580
 
@@ -7568,7 +7568,7 @@ sub_803C6A8: // (self: * S200BC50 $r7) -> (u32?, bool)
 	ldr r0, off_803C6BC // =0x34
 	bl sub_813D9A0
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
@@ -7582,9 +7582,9 @@ sub_803C6C0: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x80
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #1
 	mov r1, #1
 	pop {pc}
@@ -7599,9 +7599,9 @@ rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 	bl rfu_clearAllSlot
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x80
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
@@ -7692,7 +7692,7 @@ dword_803C768:
 sub_803C76C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	mov r0, #2
-	bl sub_803CB00
+	bl rfu_orFlags
 	bl sub_814665C
 	bl sub_814673C
 	mov r0, #0
@@ -7746,7 +7746,7 @@ loc_803C7C0:
 	ldr r0, off_803C7E4 // =0xb4
 	strh r0, [r7,#0xa]
 	mov r0, #0x40
-	bl sub_803CB00
+	bl rfu_orFlags
 locret_803C7DE:
 	pop {pc}
 	.balign 4, 0
@@ -7769,23 +7769,23 @@ sub_803C7E8:
 	bne loc_803C81E
 loc_803C7FE:
 	mov r0, #0x40
-	bl sub_803CB00
+	bl rfu_orFlags
 	ldrh r0, [r7,#0xa]
 	sub r0, #1
 	strh r0, [r7,#0xa]
 	bne locret_803C838
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x80
-	bl sub_803CB00
+	bl rfu_orFlags
 	b locret_803C838
 loc_803C81E:
 	bl sub_8146888
 	tst r0, r0
 	bne locret_803C838
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	mov r0, #0
 	strb r0, [r7,#3]
 	bl sub_8146CFC
@@ -7825,7 +7825,7 @@ sub_803C84A: // (self: * S200BC50 $r7) -> (u32?, bool)
 sub_803C85C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	mov r0, #2
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
@@ -7860,7 +7860,7 @@ sub_803C888:
 	tst r0, r0
 	bne loc_803C8AC
 	mov r0, #0x40
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #2
 	bl clearStatusBits
 	mov r0, #4
@@ -7890,7 +7890,7 @@ sub_803C8B4:
 	mov r0, #0x22
 	bl sub_813D9A0
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_803C8E0:
 	bl sub_803C90C
 	pop {r4,pc}
@@ -7935,7 +7935,7 @@ loc_803C91E:
 	b loc_803C938
 loc_803C926:
 	mov r0, #4
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803C938
 	mov r0, #0x22
 	bl sub_813D9A0
@@ -7962,14 +7962,14 @@ sub_803C94C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	ldr r0, dword_803C978 // =0x1
 	bl sub_813D9A0
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
 loc_803C966:
 	bl sub_813D978
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
@@ -8006,7 +8006,7 @@ sub_803C9A4: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl sub_813D978
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
@@ -8042,7 +8042,7 @@ off_803C9D4:
 sub_803C9DC:
 	push {lr}
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_803CA04
 	ldr r4, off_803CA08 // =byte_2010144
 	// memBlock
@@ -8095,7 +8095,7 @@ sub_803CA2C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	beq loc_803CA42
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 	b loc_803CA4C
 loc_803CA42:
 	ldr r1, off_803CA54 // =off_803CA58
@@ -8154,7 +8154,7 @@ sub_803CA90:
 	bne locret_803CAAA
 	bl sub_813D978
 	mov r0, #8
-	bl sub_803CB00
+	bl rfu_orFlags
 locret_803CAAA:
 	pop {r4,pc}
 	.balign 4, 0
@@ -8170,7 +8170,7 @@ byte_803CAB4:
 	thumb_local_start
 sub_803CAC4:
 	push {r4-r7,lr}
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r6, r0
 	tst r6, r6
 	beq locret_803CAF4
@@ -8205,16 +8205,16 @@ sub_803CAF8:
 
 // symdb: ORs the caller's bits into the flags word (offset 0xC) of the RFU/wireless shared state structure at 0x200BC50.
 // symdb: (r0 = flag bits to set) -> r0 = clobbered; no condition flags meaningful, returns via mov pc, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB00.yaml
-	thumb_func_start sub_803CB00
-sub_803CB00:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_orFlags.yaml
+	thumb_func_start rfu_orFlags
+rfu_orFlags:
 	ldr r3, off_803CB20 // =eS200BC50
 	ldr r1, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	orr r1, r0
 	str r1, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803CB00
+	thumb_func_end rfu_orFlags
 
 // symdb: clears the caller-supplied bit mask in the status/flag word at 0x200BC5C
 // symdb: (r0 = bit mask of flags to clear) -> r0 = clobbered? (not preserved, but not returned); no
@@ -8233,27 +8233,27 @@ clearStatusBits:
 // symdb: Tests a caller-supplied bitmask against a global status flags word and returns the result in the Z flag.
 // symdb: (r0 = bitmask of flags to test) -> r0 unchanged; Z set if none of the masked bits are set, Z
 // symdb: clear if any bit matches dword_200BC5C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB18.yaml
-	thumb_func_start sub_803CB18
-sub_803CB18:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_testStatusFlags.yaml
+	thumb_func_start rfu_testStatusFlags
+rfu_testStatusFlags:
 	ldr r3, off_803CB20 // =eS200BC50
 	ldr r1, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	tst r1, r0
 	mov pc, lr
 off_803CB20:
 	.word eS200BC50
-	thumb_func_end sub_803CB18
+	thumb_func_end rfu_testStatusFlags
 
 	thumb_local_start
 sub_803CB24:
 	push {r4,lr}
 	mov r4, #0xfe
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_803CB3C
 	mov r4, #0xff
 	mov r0, #4
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803CB3C
 	ldrb r4, [r7,#6]
 loc_803CB3C:
@@ -8270,7 +8270,7 @@ sub_803CB44:
 	bl clearStatusBits
 	mov r4, #0
 	mov r0, #1
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803CB6C
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_JoypadPtr]
@@ -8280,7 +8280,7 @@ sub_803CB44:
 	tst r0, r1
 	beq loc_803CB6C
 	ldr r0, off_803CB74 // =0x200
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r4, #1
 loc_803CB6C:
 	mov r0, r4
@@ -12137,7 +12137,7 @@ sub_803EC1C:
 	push {r4-r7,lr}
 	mov r7, #1
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_803EC50
 	bl sub_803F3A8
 	tst r0, r0

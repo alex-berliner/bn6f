@@ -4990,7 +4990,7 @@ sub_8049104:
 	add r3, r3, r5
 	bl sub_803C1A8
 	bl sub_803C320
-	bl sub_803C26A
+	bl clearStructBufferPair
 	mov r0, #4
 	strb r0, [r5,#1]
 	pop {r4-r7,pc}
@@ -5130,7 +5130,7 @@ loc_8049244:
 	bl sub_803C558
 	mov r0, #0x1e
 	bl sub_803BB90
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	beq loc_804926C
 	mov r0, #0xb
 	bl sub_803BB2C
@@ -5163,11 +5163,11 @@ loc_804928A:
 sub_8049290:
 	push {r4-r7,lr}
 	mov r0, #1
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_80492D4
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	bne loc_80492C2
 	bl sub_803C320
 	mov r0, #0x1c
@@ -5206,7 +5206,7 @@ dword_80492E4:
 sub_80492F4:
 	push {r4-r7,lr}
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8049308
 	mov r0, #0x83
 	bl sub_803C28A
@@ -5224,7 +5224,7 @@ loc_8049308:
 	thumb_local_start
 ow_attemptJackIn:
 	push {r4-r7,lr}
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r2, r0
 	ldrb r0, [r5,#0xe]
 	ldrb r1, [r5,#0xb]
@@ -5270,7 +5270,7 @@ sub_8049360:
 	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_80493A6
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r2, r0
 	ldrb r0, [r5,#0xe]
 	ldrb r1, [r5,#0xb]
@@ -5282,10 +5282,10 @@ sub_8049360:
 	pop {r0}
 	strb r0, [r5,#0x16]
 	mov r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0xd
 	bl sub_803BB2C
 	mov r0, #0x2c 
@@ -5307,20 +5307,20 @@ loc_80493B2:
 sub_80493BC:
 	push {r4-r7,lr}
 	mov r0, #0x40 
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_80493F4
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_80493EE
 	bl sub_803C330
 	beq loc_80493E0
 	bl sub_803C2A0
 	mov r0, #0x20 
-	bl sub_803CB00
+	bl rfu_orFlags
 	b loc_80493EE
 loc_80493E0:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_80493F4
 	mov r0, #0x44 
 	strb r0, [r5,#1]
@@ -5358,7 +5358,7 @@ rfu_wirelessConnectStep:
 	push {r4-r7,lr}
 	bl sub_8049680
 	beq loc_8049432
-	bl sub_814656C
+	bl rfu_isNotConnected
 	tst r0, r0
 	bne loc_8049464
 	mov r0, #0xf
@@ -5368,20 +5368,20 @@ rfu_wirelessConnectStep:
 	b loc_8049464
 loc_8049432:
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_804944A
 	bl sub_803C330
 	beq loc_8049450
 	bl sub_803C2A0
 	mov r0, #0x20 
-	bl sub_803CB00
+	bl rfu_orFlags
 loc_804944A:
 	mov r0, #0x3c 
 	strb r0, [r5,#1]
 	b loc_8049464
 loc_8049450:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_8049464
 	bl submenu_resetCursor
 	bl rfu_initWirelessSession
@@ -5451,7 +5451,7 @@ sub_80494D6:
 sub_80494DE:
 	push {r4-r7,lr}
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_8049516
 	bl test0x200bc50_0x5_813D60C
 	bne loc_8049522
@@ -5459,11 +5459,11 @@ sub_80494DE:
 	bl PlaySoundEffect
 	mov r4, #0xf
 	mov r0, #0x80
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_804950A
 	mov r4, #0x10
 	mov r0, #0x20 
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_804950A
 	mov r4, #0x11
 loc_804950A:
@@ -6359,7 +6359,7 @@ loc_8049BC4:
 	lsl r0, r4
 	bl sub_803C316
 	beq loc_8049C42
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	cmp r4, r0
 	bge loc_8049C42
 	mov r0, r4
@@ -7658,7 +7658,7 @@ off_804A560:
 	.word off_804A564
 off_804A564:
 	.word sub_804A574+1
-	.word sub_804A5B4+1
+	.word sprite_advanceGroupStepClamped+1
 	.word sub_804A5D4+1
 	.word object_riseOffscreenAndClear+1
 	thumb_func_end sub_804A54C
@@ -7700,9 +7700,9 @@ dword_804A5B0:
 // symdb: Advances an object's sprite-id step by 0x10 up to 0x28, flags state 8 when capped, and moves the 3-sprite group to (0x58, 0).
 // symdb: (r0 = unused on entry, r5 = object struct) -> r0 = final step id passed to callee; stores step
 // symdb: to [r5+0x18], state 8 to [r5+1] when clamped
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A5B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_advanceGroupStepClamped.yaml
 	thumb_local_start
-sub_804A5B4:
+sprite_advanceGroupStepClamped:
 	push {lr}
 	mov r1, #0x18
 	ldrsh r0, [r5,r1]
@@ -7719,7 +7719,7 @@ loc_804A5C6:
 	bl sprite_setPositionForIdRange3_8119854
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804A5B4
+	thumb_func_end sprite_advanceGroupStepClamped
 
 	thumb_local_start
 sub_804A5D4:

@@ -5611,7 +5611,7 @@ loc_800E72C:
 // symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several
 // symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
 // symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
-// symdb: sub_80E4B34 / sub_80E9BDC.
+// symdb: sub_80E4B34 / battle_spawnLinkedType4.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickStatusEffectTimers_800E730.yaml
 	thumb_func_start object_tickStatusEffectTimers_800E730
 object_tickStatusEffectTimers_800E730:
@@ -5730,7 +5730,7 @@ loc_800E80A:
 	ldr r0, [r7]
 	tst r0, r0
 	bne loc_800E836
-	bl sub_80E9BDC
+	bl battle_spawnLinkedType4
 loc_800E820:
 	ldrh r0, [r6,#oCollisionData_HitStunTimer]
 	sub r0, #1

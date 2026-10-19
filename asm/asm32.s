@@ -942,28 +942,28 @@ ai_freeBattleObjectExtraSlots:
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	tst r0, r0
 	beq loc_810E0E4
-	bl sub_80D842E
+	bl ai_freeExtraSlot
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 loc_810E0E4:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0xc]
 	tst r0, r0
 	beq loc_810E0F2
-	bl sub_80D842E
+	bl ai_freeExtraSlot
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0xc]
 loc_810E0F2:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0x10]
 	tst r0, r0
 	beq loc_810E100
-	bl sub_80D842E
+	bl ai_freeExtraSlot
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0x10]
 loc_810E100:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0x14]
 	tst r0, r0
 	beq locret_810E10E
-	bl sub_80D842E
+	bl ai_freeExtraSlot
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+0x14]
 locret_810E10E:
@@ -4284,7 +4284,7 @@ off_810FCE0:
 	.word sub_810FD70+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_810FD90+1
-	.word sub_810FDB0+1
+	.word object_clearRegionIfCollided+1
 	.word sub_810FDD0+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_810F5D0+1
@@ -4351,9 +4351,9 @@ dword_810FDAC:
 
 // symdb: Clears a battle object's collision region when its collision flags indicate a hit, then performs an unknown follow-up call.
 // symdb: (r5 = battle object) -> r0 = return of sub_8016B72; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FDB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_clearRegionIfCollided.yaml
 	thumb_local_start
-sub_810FDB0:
+object_clearRegionIfCollided:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	ldr r0, [r0,#oCollisionData_FlagsFromCollision]
@@ -4369,7 +4369,7 @@ loc_810FDC4:
 	.balign 4, 0
 dword_810FDCC:
 	.word 0xC000000
-	thumb_func_end sub_810FDB0
+	thumb_func_end object_clearRegionIfCollided
 
 	thumb_local_start
 sub_810FDD0:
@@ -19470,7 +19470,7 @@ sub_8117818:
 	thumb_local_start
 sub_8117820:
 	push {r4-r7,lr}
-	bl sub_81178AC
+	bl sprite_playAnimationFrameSfx
 	tst r0, r0
 	beq loc_8117868
 	sub r0, #0x90
@@ -19518,7 +19518,7 @@ loc_8117868:
 	thumb_local_start
 sprite_updatePalette:
 	push {r4-r7,lr}
-	bl sub_81178AC
+	bl sprite_playAnimationFrameSfx
 	tst r0, r0
 	beq loc_8117886
 	sub r0, #0x90
@@ -19533,7 +19533,7 @@ loc_8117886:
 	thumb_local_start
 sub_811788C:
 	push {r4-r7,lr}
-	bl sub_81178AC
+	bl sprite_playAnimationFrameSfx
 	mov r2, #0
 	tst r0, r0
 	beq loc_81178A8
@@ -19552,9 +19552,9 @@ loc_81178A8:
 // symdb: Looks up the current animation frame in an 8-byte-per-entry event table and, if the entry is type 3, plays the sound effect recorded in that entry.
 // symdb: (r6 = sprite/anim struct; reads [r6+0x14] anim id and [r6+0x18] frame index) -> r0 = 0, or
 // symdb: result of sub_803D148(r0 = sfx id, r1 = entry halfword at +4)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81178AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_playAnimationFrameSfx.yaml
 	thumb_local_start
-sub_81178AC:
+sprite_playAnimationFrameSfx:
 	push {r4-r7,lr}
 	ldr r7, off_81178D4 // =byte_2019A00
 	ldrh r0, [r6,#0x14]
@@ -19577,7 +19577,7 @@ loc_81178CE:
 	.balign 4, 0
 off_81178D4:
 	.word byte_2019A00
-	thumb_func_end sub_81178AC
+	thumb_func_end sprite_playAnimationFrameSfx
 
 // symdb: Trampoline-style mode dispatcher that tail-invokes one of three mode handlers for the object pointed to by R5, based on the mode byte at [R5+8].
 // symdb: void object_dispatchModeHandler_81178D8(void); /* in: r5 = object pointer (mode byte at +8),
@@ -20606,7 +20606,7 @@ off_8117FDC:
 off_8117FE0:
 	.word battleObject_clearBeastOutSubmenuFlag_8117FF8+1
 	.word sub_811800C+1
-	.word sub_8118030+1
+	.word submenu_entryDelayTick+1
 	.word sub_811805C+1
 	.word loc_8118098+1
 	.word submenu_reset+1
@@ -20660,9 +20660,9 @@ locret_811802C:
 // symdb: Counts down a per-entry delay; when it expires, commits a pending value into the entry, halves a submenu counter, and re-renders the entry text.
 // symdb: (r5 = pointer to submenu entry struct, no r0 use) -> r0 = clobbered; sets r5+0x14 from r5+0x10,
 // symdb: clears r5+0x0A, halves sSubmenu+0x0D
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118030.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_entryDelayTick.yaml
 	thumb_local_start
-sub_8118030:
+submenu_entryDelayTick:
 	push {lr}
 	ldrh r0, [r5,#0x12]
 	sub r0, #1
@@ -20683,7 +20683,7 @@ sub_8118030:
 	bl sub_81181DC
 locret_811805A:
 	pop {pc}
-	thumb_func_end sub_8118030
+	thumb_func_end submenu_entryDelayTick
 
 	thumb_local_start
 sub_811805C:
@@ -27872,7 +27872,7 @@ off_811B4BC:
 
 jt_811B4C0:
 	.word sub_811B4CC+1
-	.word sub_811B570+1
+	.word sprite_updateStateDispatch+1
 	.word sub_811B6D8+1
 
 	thumb_local_start
@@ -27913,7 +27913,7 @@ sub_811B4CC:
 	ldrh r1, [r3,r2]
 	strh r1, [r5,#0x14]
 	bl sprite_setCoordinates
-	bl sub_811B570
+	bl sprite_updateStateDispatch
 	pop {pc}
 off_811B52C:
 	.word off_811B530
@@ -27939,9 +27939,9 @@ byte_811B55C:
 // symdb: Per-frame update for a sprite object: dispatches to one of two state handlers selected by the object's state byte, then runs shared post-update logic and sprite_update.
 // symdb: (r5 = object/sprite struct; state = [r5+9]) -> r0 destroyed; updates object state via handler,
 // symdb: refreshes sprite
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B570.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateStateDispatch.yaml
 	thumb_local_start
-sub_811B570:
+sprite_updateStateDispatch:
 	push {lr}
 	ldr r0, off_811B588 // =jt_811B58C
 	ldrb r1, [r5,#9]
@@ -27957,7 +27957,7 @@ off_811B588:
 jt_811B58C:
 	.word sub_811B594+1
 	.word sub_811B5C0+1
-	thumb_func_end sub_811B570
+	thumb_func_end sprite_updateStateDispatch
 
 	thumb_local_start
 sub_811B594:
@@ -28003,7 +28003,7 @@ off_811B5D8:
 jt_811B5DC:
 	.word sprite_applyStateSpriteTransformThunk+1
 	.word sub_811B5FC+1
-	.word sub_811B620+1
+	.word battle_updatePopupDelay+1
 	.word object_scaleGrowStep+1
 	.word loc_811B66C+1
 	.word sub_811B6B8+1
@@ -28042,9 +28042,9 @@ locret_811B61C:
 
 // symdb: Per-frame update for a battle object's number/text popup: counts down a delay, and when it expires copies the base delay and runs the queued glyph load, text-row render, and sprite setup.
 // symdb: (r5 = battle object/popup state struct) -> void; flags from the timer decrement (bgt)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B620.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updatePopupDelay.yaml
 	thumb_local_start
-sub_811B620:
+battle_updatePopupDelay:
 	push {lr}
 	ldrh r0, [r5,#0x12]
 	sub r0, #1
@@ -28062,7 +28062,7 @@ sub_811B620:
 	bl battle_setupObjectSpriteFromEntry
 locret_811B646:
 	pop {pc}
-	thumb_func_end sub_811B620
+	thumb_func_end battle_updatePopupDelay
 
 // symdb: Grow phase of an object's scale animation: ticks a timer toward 0xFF each frame and switches the state byte to 0x10 when fully grown.
 // symdb: (r0 = object (r5 used after entry), r1 = ?) -> void; writes obj+0x12 timer, obj+0xA state
@@ -28891,7 +28891,7 @@ off_811BC58:
 	.word sub_811BC68+1
 	.word sub_811BCD8+1
 	.word sub_811BD34+1
-	.word sub_811BD3C+1
+	.word sprite_makeUnscalableWrapper+1
 	thumb_func_end sub_811BC44
 
 	thumb_local_start
@@ -28994,13 +28994,13 @@ sub_811BD34:
 // symdb: Thin wrapper that calls sprite_clearScaleCounterAndMakeUnscalable on the sprite passed in r0, likely an alternate entry point (e.g. for a callback table).
 // symdb: (r0 = sprite object/works pointer) -> r0 preserved; calls
 // symdb: sprite_clearScaleCounterAndMakeUnscalable_804668A(r0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BD3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_makeUnscalableWrapper.yaml
 	thumb_local_start
-sub_811BD3C:
+sprite_makeUnscalableWrapper:
 	push {lr}
 	bl sprite_clearScaleCounterAndMakeUnscalable_804668A
 	pop {pc}
-	thumb_func_end sub_811BD3C
+	thumb_func_end sprite_makeUnscalableWrapper
 
 	push {r4-r7,lr}
 	sub sp, sp, #8
@@ -30853,7 +30853,7 @@ sub_811CE34:
 loc_811CE52:
 	mov r0, #0x1c
 	strb r0, [r5,#9]
-	bl sub_811DBD0
+	bl battle_recordEmotionChange
 	mov r0, #0x10
 	strb r0, [r5,#0xc]
 	mov r0, #0
@@ -32487,9 +32487,9 @@ off_811DBCC:
 // symdb: Appends a new EmotionData entry (type 0x3A, flags 6, byte 9 = 0xC) to the 0x02008450 emotion table and updates counters in the caller's state struct.
 // symdb: (no args; r5 = pointer to caller's state struct) -> r0 = pointer to the newly initialised
 // symdb: EmotionData entry; no flags set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DBD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_recordEmotionChange.yaml
 	thumb_local_start
-sub_811DBD0:
+battle_recordEmotionChange:
 	push {lr}
 	ldrb r0, [r5,#5]
 	add r0, #5
@@ -32505,7 +32505,7 @@ sub_811DBD0:
 	mov r1, #0xc
 	strb r1, [r0,#9]
 	pop {pc}
-	thumb_func_end sub_811DBD0
+	thumb_func_end battle_recordEmotionChange
 
 	thumb_func_start sub_811DBF0
 sub_811DBF0:
@@ -33573,7 +33573,7 @@ sub_811E490:
 	mov r0, #0
 	strh r0, [r5,#0x1c]
 loc_811E4A8:
-	bl sub_811E558
+	bl object_stepColorFadeIn
 loc_811E4AC:
 	ldrb r0, [r5,#9]
 	cmp r0, #1
@@ -33628,7 +33628,7 @@ off_811E50C:
 	thumb_local_start
 sub_811E510:
 	push {lr}
-	bl sub_811E558
+	bl object_stepColorFadeIn
 	bl sprite_update
 	pop {pc}
 	thumb_func_end sub_811E510
@@ -33680,9 +33680,9 @@ object_setRandomStateByte:
 // symdb: Per-frame step of a color tint effect: applies an increasingly bright uniform color shader to the object's sprite and advances a saturating frame counter.
 // symdb: (r0 = unused, r5 = object struct; field 0x1C = effect counter) -> r0 = packed color passed to
 // symdb: sprite_setColorShader; counter [r5,#0x1C] incremented, saturating at 0x1F
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E558.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepColorFadeIn.yaml
 	thumb_local_start
-sub_811E558:
+object_stepColorFadeIn:
 	push {lr}
 	ldrh r0, [r5,#0x1c]
 	lsl r1, r0, #5
@@ -33702,7 +33702,7 @@ locret_811E576:
 	.balign 4, 0
 dword_811E578:
 	.word 0x8000
-	thumb_func_end sub_811E558
+	thumb_func_end object_stepColorFadeIn
 
 	thumb_func_start sub_811E57C
 sub_811E57C:

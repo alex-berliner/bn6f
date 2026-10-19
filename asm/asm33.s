@@ -12376,7 +12376,7 @@ CommMenuJumpTable81291FC:
   // 0x30
 	.word sub_812F094+1
   // 0x34
-	.word sub_812ABEC+1
+	.word battle_stepDispatchByEntityArg2+1
   // 0x38
 	.word sub_812AD04+1
   // 0x3C
@@ -14766,7 +14766,7 @@ off_812A294:
 sub_812A2B4:
 	push {lr}
 	mov r0, #0x40 
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_812A2E4
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812A2E8
@@ -14855,7 +14855,7 @@ loc_812A36E:
 	mov r0, r4
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x18
 	strb r0, [r5,#0xc]
 	bl sub_813D978
@@ -14868,7 +14868,7 @@ loc_812A384:
 	tst r0, r0
 	beq loc_812A3AE
 	mov r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0x18
 	strb r0, [r5,#0xc]
 	mov r0, #0x2a 
@@ -14881,7 +14881,7 @@ loc_812A3AE:
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 	mov r0, #4
-	bl sub_803CB00
+	bl rfu_orFlags
 locret_812A3B8:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -14908,7 +14908,7 @@ sub_812A3C8:
 	b locret_812A3F8
 loc_812A3E8:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_812A3F8
 	mov r0, #0x1c
 	strb r0, [r5,#0xc]
@@ -15076,7 +15076,7 @@ sub_812A4FC:
 	mov r0, #0
 	strb r0, [r5,#0xc]
 	mov r0, #1
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {pc}
 	.balign 4, 0
 dword_812A538:
@@ -15127,9 +15127,9 @@ sub_812A574:
 	b locret_812A5B2
 loc_812A59C:
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_812A5B2
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	beq locret_812A5B2
 	mov r0, #4
 	strb r0, [r5,#0xc]
@@ -15142,7 +15142,7 @@ locret_812A5B2:
 	thumb_local_start
 sub_812A5B4:
 	push {r4-r7,lr}
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r4, r0
 	tst r4, r4
 	bne loc_812A5C6
@@ -15151,7 +15151,7 @@ sub_812A5B4:
 	b locret_812A5F4
 loc_812A5C6:
 	mov r0, #4
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_812A5D8
 	mov r0, #8
 	strb r0, [r5,#0xc]
@@ -15160,10 +15160,10 @@ loc_812A5C6:
 	b locret_812A5F4
 loc_812A5D8:
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_812A5EE
 	mov r0, #0x20 
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_812A5F4
 	mov r0, #0x83
 	bl sub_803C28A
@@ -15180,21 +15180,21 @@ locret_812A5F4:
 sub_812A5F8:
 	push {r4-r7,lr}
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_812A610
 loc_812A602:
 	mov r0, #0x14
 	strb r0, [r5,#0xc]
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_812A628
 	b loc_812A666
 loc_812A610:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	bne loc_812A628
 	mov r0, #0x20 
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_812A676
 	mov r0, #8
 	bl clearStatusBits
@@ -15310,7 +15310,7 @@ off_812A6F4:
 sub_812A6F8:
 	push {lr}
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_812A74C
 	bl sub_803EA78
 	bl sub_803EA50
@@ -15961,9 +15961,9 @@ dword_812ABE8:
 // symdb: Battle entity step routine that calls one of four per-entity handlers selected by a byte at [r5,#2], then runs the standard wait-for-state battle update.
 // symdb: (r5 = entity/work struct) -> r0 = result of battle_stepWaitForStateRunUpdate; no flags
 // symdb: meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ABEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepDispatchByEntityArg2.yaml
 	thumb_local_start
-sub_812ABEC:
+battle_stepDispatchByEntityArg2:
 	push {lr}
 	ldr r0, off_812AC00 // =off_812AC04 
 	ldrb r1, [r5,#2]
@@ -15980,7 +15980,7 @@ off_812AC04:
 	.word sub_812AC80+1
 	.word sub_812AC80+1
 	.word sub_812ACF0+1
-	thumb_func_end sub_812ABEC
+	thumb_func_end battle_stepDispatchByEntityArg2
 
 	thumb_func_start sub_812AC14
 sub_812AC14:
@@ -18766,7 +18766,7 @@ off_812C0DC:
 	.word off_812C0E0
 off_812C0E0:
 	.word sub_812C0EC+1
-	.word sub_812C11C+1
+	.word camera_initEndFromLinkState+1
 	.word sub_812C140+1
 	thumb_func_end sub_812C0CC
 
@@ -18800,9 +18800,9 @@ loc_812C10C:
 // symdb: Refreshes the camera's end-state from eLinkState and writes a fixed end-camera pair (0x30 or 0x48, then 0x4321) plus clears two fields of the caller's struct.
 // symdb: (no args read; r5 = caller-provided struct with flag byte at +0x12, word at +0x40, halfword at
 // symdb: +0x2E) -> r0 = eCamera end-struct base (from callee), clobbered; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C11C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_initEndFromLinkState.yaml
 	thumb_local_start
-sub_812C11C:
+camera_initEndFromLinkState:
 	push {r7,lr}
 	bl camera_copyLinkStateToEnd
 	mov r7, r0
@@ -18822,7 +18822,7 @@ loc_812C130:
 	strh r0, [r5,#0x2e]
 	pop {r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_812C11C
+	thumb_func_end camera_initEndFromLinkState
 
 	thumb_local_start
 sub_812C140:

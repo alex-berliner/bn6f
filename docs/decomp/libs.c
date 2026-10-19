@@ -2007,7 +2007,7 @@ int rfu_handleConnTimeout()
         *v1 = v2;
         if ( !(v2 << 16) || *dword_2010CB0[byte_200FE10] == 39 )
         {
-            sub_81464D4();
+            rfu_pollLinkLossState();
             byte_200FE04 = 24;
             rfu_clearSlot(4, byte_200FE10);
             byte_200FE24 &= ~(1 << byte_200FE10);
@@ -2018,7 +2018,7 @@ int rfu_handleConnTimeout()
     if ( byte_200FE04 == 24 )
     {
         if ( byte_200FE02 == 1 )
-            sub_81464D4();
+            rfu_pollLinkLossState();
         v3 = byte_200FE02;
         if ( !byte_200FE02 )
         {
@@ -2321,7 +2321,7 @@ int rfu_reqEndConnection()
 
 
 // 0x81464d4
-int sub_81464D4()
+int rfu_pollLinkLossState()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -2339,7 +2339,7 @@ int sub_81464D4()
 
 
 // 0x814656c
-BOOL sub_814656C()
+BOOL rfu_isNotConnected()
 {
     return word_20102D0 != 3;
 }
@@ -3345,7 +3345,7 @@ int __fastcall sub_81473EC(signed int a1)
             if ( a1 == 240 )
             {
                 if ( sub_813D94C(21) )
-                    sub_813D934(21);
+                    rfu_setLinkCommand(21);
                 word_20102D0 = word_200FE14;
                 byte_2010368 = 0;
                 word_200BC58 = 63;
@@ -3364,7 +3364,7 @@ int __fastcall sub_81473EC(signed int a1)
                     word_200BC58 = 63;
                     v2 = 1;
                 }
-                sub_813D934(v2);
+                rfu_setLinkCommand(v2);
                 byte_2010368 = 0;
             }
             else if ( a1 == 80 )
@@ -3381,7 +3381,7 @@ int __fastcall sub_81473EC(signed int a1)
         if ( a1 > 66 )
         {
             word_200BC58 = 3;
-            sub_813D934(20);
+            rfu_setLinkCommand(20);
             return v4;
         }
         if ( a1 != 51 )
@@ -3416,7 +3416,7 @@ int __fastcall sub_81473EC(signed int a1)
         if ( a1 != 48 )
         {
             if ( a1 == 49 )
-                sub_813D934(14);
+                rfu_setLinkCommand(14);
             return v4;
         }
 LABEL_42:
@@ -3491,9 +3491,9 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
             return v5;
         case 4:
             if ( byte_2010280 && byte_2010280 == *(dword_2010CC0 + 2) )
-                sub_813D934(12);
+                rfu_setLinkCommand(12);
             else
-                sub_813D934(11);
+                rfu_setLinkCommand(11);
             return v5;
         case 9:
             v3 = 1;
@@ -3517,7 +3517,7 @@ int __fastcall sub_81475D4(unsigned __int16 *a1)
                 else
                 {
                     sub_813D8D0();
-                    sub_813D934(0);
+                    rfu_setLinkCommand(0);
                 }
             }
             break;
@@ -3736,7 +3736,7 @@ int __fastcall sub_8147C20(int a1, int a2, int a3)
     v4 = a2;
     v5 = a3;
     if ( unk_200AF81 == 2 || unk_200AF80 == 4 )
-        sub_813D934(15);
+        rfu_setLinkCommand(15);
     sub_81453F0(Timer2Counter_Reload);
     sub_8147F50(&unk_200AF80, v3, v5);
     sub_8147DE0(&unk_200AF80, v4);
@@ -3761,7 +3761,7 @@ int __fastcall sub_8147C20(int a1, int a2, int a3)
             if ( *(dword_2010CC0 + 3) | *(dword_2010CC0 + 2) )
             {
                 word_200BC58 = 16;
-                sub_81464D4();
+                rfu_pollLinkLossState();
             }
             else
             {
@@ -3966,7 +3966,7 @@ int __fastcall rfu_handleLinkCommand(signed int a1)
         {
             word_20102D0 = 3;
             word_200BC58 = 63;
-            sub_813D934(2);
+            rfu_setLinkCommand(2);
             return v2;
         }
         if ( a1 <= 35 )
@@ -3990,7 +3990,7 @@ int __fastcall rfu_handleLinkCommand(signed int a1)
                     unk_200AF84 = word_200FE14;
                     rfu_setRecvBuffer(32, word_200FE14, &byte_2010290, 64);
                     word_200BC58 = 13;
-                    sub_813D934(10);
+                    rfu_setLinkCommand(10);
                 }
                 return v2;
             }
@@ -4001,27 +4001,27 @@ LABEL_49:
         if ( a1 == 37 )
         {
             word_200BC58 = 63;
-            sub_813D934(3);
+            rfu_setLinkCommand(3);
             return v2;
         }
         if ( a1 < 37 )
         {
             word_200BC58 = 37;
-            sub_813D934(16);
+            rfu_setLinkCommand(16);
             return v2;
         }
         if ( a1 != 48 )
         {
             if ( a1 == 49 )
             {
-                sub_813D934(14);
+                rfu_setLinkCommand(14);
                 word_2010338 = word_200BC58;
                 word_200BC58 = 14;
             }
             return v2;
         }
 LABEL_48:
-        sub_813D934(15);
+        rfu_setLinkCommand(15);
         return v2;
     }
     if ( a1 == 80 )
@@ -4034,26 +4034,26 @@ LABEL_48:
         if ( a1 == 241 )
         {
             word_200BC58 = 1;
-            sub_813D934(13);
+            rfu_setLinkCommand(13);
         }
         else if ( a1 > 241 )
         {
             if ( a1 == 242 )
             {
                 word_200BC58 = 1;
-                sub_813D934(19);
+                rfu_setLinkCommand(19);
             }
             else if ( a1 == 255 )
             {
                 word_200BC58 = 63;
-                sub_813D934(1);
+                rfu_setLinkCommand(1);
             }
         }
         else if ( a1 == 240 )
         {
             word_200BC58 = 63;
             word_20102D0 = word_200FE14;
-            sub_813D934(5);
+            rfu_setLinkCommand(5);
         }
     }
     else
@@ -4140,22 +4140,22 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
         case 6:
             if ( byte_2010288 && byte_200FE04 > 8u && byte_200FE04 <= 0xBu )
             {
-                sub_813D934(7);
+                rfu_setLinkCommand(7);
             }
             else if ( !sub_803C514() )
             {
-                sub_813D934(6);
+                rfu_setLinkCommand(6);
             }
             return v6;
         case 7:
             if ( rfu_childConnRequest(*(dword_2010CC0 + 32 * byte_2010330[byte_20103E4] + 20), 120) << 24 )
             {
-                sub_813D934(8);
+                rfu_setLinkCommand(8);
                 word_200BC58 = 7;
             }
             else
             {
-                sub_813D934(9);
+                rfu_setLinkCommand(9);
                 word_200BC58 = 8;
             }
             return v6;
@@ -4184,7 +4184,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
                     if ( !byte_2010290 )
                     {
                         sub_813D8D0();
-                        sub_813D934(0);
+                        rfu_setLinkCommand(0);
                         return v6;
                     }
                     goto LABEL_19;
@@ -4192,23 +4192,23 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
                 if ( byte_2010290 )
                 {
 LABEL_19:
-                    sub_813D934(18);
+                    rfu_setLinkCommand(18);
                     return v6;
                 }
-                sub_813D934(17);
+                rfu_setLinkCommand(17);
             }
             else if ( ((v4 - 71) & 0xFFFFu) <= 1 )
             {
                 rfu_clearSlot(8, byte_20103E0);
                 word_200BC58 = 63;
-                sub_813D934(4);
+                rfu_setLinkCommand(4);
             }
             return v6;
         case 0x33:
             if ( *(dword_2010CC0 + 3) | *(dword_2010CC0 + 2) )
             {
                 word_200BC58 = 16;
-                sub_81464D4();
+                rfu_pollLinkLossState();
             }
             else
             {
@@ -4321,7 +4321,7 @@ int __fastcall sub_8148738(signed int a1)
                 {
                     word_200BC58 = 50;
                     byte_2010368 = 0;
-                    sub_813D934(21);
+                    rfu_setLinkCommand(21);
                 }
             }
             else
@@ -4343,7 +4343,7 @@ int __fastcall sub_8148738(signed int a1)
                 if ( a1 == 242 )
                 {
                     byte_2010368 = 0;
-                    sub_813D934(19);
+                    rfu_setLinkCommand(19);
                 }
                 else
                 {
@@ -4359,7 +4359,7 @@ int __fastcall sub_8148738(signed int a1)
                         word_200BC58 = 63;
                         v1 = 1;
                     }
-                    sub_813D934(v1);
+                    rfu_setLinkCommand(v1);
                     byte_2010368 = 0;
                 }
             }
@@ -4373,13 +4373,13 @@ int __fastcall sub_8148738(signed int a1)
                     if ( a1 != 49 )
                         return v3;
 LABEL_24:
-                    sub_813D934(14);
+                    rfu_setLinkCommand(14);
                     return v3;
                 }
 LABEL_25:
                 byte_2010408 = 1;
                 byte_2010368 = 0;
-                sub_813D934(15);
+                rfu_setLinkCommand(15);
                 return v3;
             }
             if ( a1 != 64 )
@@ -4675,26 +4675,26 @@ int __fastcall sub_8148E74(signed int a1)
     {
         if ( a1 == 80 )
         {
-            sub_814912C();
+            rfu_readyUniSendIfFlagged();
         }
         else if ( a1 > 80 )
         {
             if ( a1 == 241 )
             {
                 word_200BC58 = 50;
-                sub_813D934(13);
+                rfu_setLinkCommand(13);
             }
             else if ( a1 > 241 )
             {
                 if ( a1 == 242 )
                 {
                     word_200BC58 = 50;
-                    sub_813D934(19);
+                    rfu_setLinkCommand(19);
                 }
                 else if ( a1 == 255 )
                 {
                     word_200BC58 = 63;
-                    sub_813D934(1);
+                    rfu_setLinkCommand(1);
                 }
             }
             else if ( a1 == 240 )
@@ -4703,12 +4703,12 @@ int __fastcall sub_8148E74(signed int a1)
                 {
                     word_200FE16 = 0;
                     word_200BC58 = 50;
-                    sub_813D934(21);
+                    rfu_setLinkCommand(21);
                 }
                 if ( word_200FE16 )
                 {
                     word_200BC58 = 50;
-                    sub_813D934(21);
+                    rfu_setLinkCommand(21);
                 }
             }
         }
@@ -4730,7 +4730,7 @@ int __fastcall sub_8148E74(signed int a1)
         {
 LABEL_25:
             word_200BC58 = 50;
-            sub_813D934(15);
+            rfu_setLinkCommand(15);
             return v2;
         }
         if ( a1 > 48 )
@@ -4747,7 +4747,7 @@ LABEL_25:
                         return v2;
                     goto LABEL_25;
                 }
-                sub_813D934(14);
+                rfu_setLinkCommand(14);
                 word_2010338 = word_200BC58;
                 word_200BC58 = 14;
             }
@@ -4804,7 +4804,7 @@ LABEL_6:
 
 
 // 0x814912c
-int sub_814912C()
+int rfu_readyUniSendIfFlagged()
 {
     int v1; // [sp+0h] [bp-4h]
 

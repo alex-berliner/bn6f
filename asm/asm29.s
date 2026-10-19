@@ -11972,9 +11972,9 @@ loc_80AAB64:
 
 // symdb: Picks a random 2-bit result (0-3) for a given id from a 16x16 lookup table, using the global RNG.
 // symdb: (r0 = table group id (0-15)) -> r0 = random 2-bit value (0-3); flags destroyed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAB68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rand_pickTable2bit.yaml
 	thumb_local_start
-sub_80AAB68:
+rand_pickTable2bit:
 	push {r4,lr}
 	mov r4, r0
 	bl GetRNG // () -> u32?
@@ -11990,7 +11990,7 @@ sub_80AAB68:
 	.balign 4, 0
 off_80AAB84:
 	.word byte_8020B9C
-	thumb_func_end sub_80AAB68
+	thumb_func_end rand_pickTable2bit
 
 // symdb: Computes a bitwise NAND of two 40-byte buffers into a third (dst[i] = ~(srcA[i] | srcB[i]))
 // symdb: void util_nandByteArray40(const u8* srcA /*r0*/, const u8* srcB /*r1*/, u8* dst /*r2*/)
@@ -12018,7 +12018,7 @@ loc_80AAB92:
 sub_80AABA4:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
-	bl sub_80AAB68
+	bl rand_pickTable2bit
 	str r0, [sp]
 	mov r4, #0
 	str r4, [sp,#4]
@@ -12161,7 +12161,7 @@ loc_80AACAA:
 	add r0, sp, #4
 	bl sub_80AAD70
 	ldr r0, [sp]
-	bl sub_80AAB68
+	bl rand_pickTable2bit
 	add r1, r0, r0
 	add r4, sp, #4
 	mov r2, #0

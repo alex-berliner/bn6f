@@ -1129,7 +1129,7 @@ int sub_8142A84()
 
 
 // 0x8142ab0
-signed int sub_8142AB0()
+signed int e_scenarioIsActive()
 {
     char *v0; // r5
     int v1; // r7

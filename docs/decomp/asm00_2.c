@@ -2631,7 +2631,7 @@ int __fastcall ai_useChipAttack(int a1, char a2, char a3)
     else if ( v12 & &byte_400 )
     {
         object_setAttack0();
-        result = sub_80EEA3C();
+        result = ai_dispatchChipAttackByElement();
     }
     else
     {
@@ -3056,7 +3056,7 @@ int __fastcall sub_8010B78(int a1, int a2)
 
 
 // 0x8010bd0
-char *__fastcall sub_8010BD0(int a1, int a2)
+char *__fastcall battle_getMissingHpCapped(int a1, int a2)
 {
     char *result; // r0
 
@@ -4407,7 +4407,7 @@ signed int sub_8011CA8()
 
 
 // 0x8011cb4
-int sub_8011CB4()
+int ai_attackProcUseChipResult()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -4565,7 +4565,7 @@ signed int sub_8011DDC()
 
 
 // 0x8011dfc
-signed int sub_8011DFC()
+signed int battle_initBeastPwrAtkVars()
 {
     int v0; // r7
 
@@ -4950,7 +4950,7 @@ signed int __fastcall sub_8012124(int a1)
 
 
 // 0x8012144
-signed int __fastcall sub_8012144(int a1)
+signed int __fastcall battle_setupAiAttackVars(int a1)
 {
     int v1; // r7
 
@@ -5720,7 +5720,7 @@ signed int __fastcall sub_8012632(int a1)
 // 0x801263a
 signed int __fastcall sub_801263A(int a1)
 {
-    return sub_8012144(a1);
+    return battle_setupAiAttackVars(a1);
 }
 
 
@@ -10284,7 +10284,7 @@ int __fastcall sub_80151D4(int a1, int a2, int a3)
             }
         }
         *(v4 + 16) = 54;
-        sub_80EA438(54, v10, v11, v12);
+        battle_spawnLinkedType4Object(54, v10, v11, v12);
         *(v4 + 1) = 4;
     }
     v19 = *(v4 + 16);
@@ -14085,7 +14085,7 @@ void battle_ai_dispatchQueuedAttacks_8017BC0()
     }
     else if ( GetAIDataUnk0x48Flag() & &loc_1000 )
     {
-        sub_802D714();
+        battle_applyHitElementEffect();
     }
     else if ( GetAIDataUnk0x48Flag() & &loc_2000 )
     {
@@ -20131,7 +20131,7 @@ int object_countdownDispatch()
 
 
 // 0x801d564
-int __noreturn sub_801D564()
+int __noreturn sprite_queueFixedOamPair()
 {
     sprite_queueOamEntryThunk_802FE28(1080819712, 54120, 0, 0);
     return sprite_queueOamEntryThunk_802FE28(8159232, 54124, 0, 0);

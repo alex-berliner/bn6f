@@ -2796,7 +2796,7 @@ int __fastcall sub_813D62C(int result)
 
 
 // 0x813d638
-int sub_813D638()
+int ow_checkJackInFlag()
 {
     return byte_2009470;
 }
@@ -2829,7 +2829,7 @@ char *sub_813D6DC()
 
 
 // 0x813d6f4
-char *sub_813D6F4()
+char *get_tableEntryNibbleWord()
 {
     char *result; // r0
     signed int v1; // r2
@@ -3032,7 +3032,7 @@ u8 *link_RequestDisconnect_813D8C4()
 // 0x813d8d0
 int sub_813D8D0()
 {
-    return sub_803CB00(16);
+    return rfu_orFlags(16);
 }
 
 
@@ -3064,7 +3064,7 @@ int *sub_813D924()
 
 
 // 0x813d934
-int __fastcall sub_813D934(int result)
+int __fastcall rfu_setLinkCommand(int result)
 {
     int v1; // r2
 
@@ -3109,7 +3109,7 @@ void __cdecl zeroFill_813D960()
 int sub_813D978()
 {
     word_200BC58 = 9;
-    return sub_813D934(0);
+    return rfu_setLinkCommand(0);
 }
 
 

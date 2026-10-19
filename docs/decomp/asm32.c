@@ -669,25 +669,25 @@ int ai_freeBattleObjectExtraSlots()
     v1 = v0[26];
     if ( v1 )
     {
-        sub_80D842E(v1);
+        ai_freeExtraSlot(v1);
         v0[26] = 0;
     }
     v2 = v0[27];
     if ( v2 )
     {
-        sub_80D842E(v2);
+        ai_freeExtraSlot(v2);
         v0[27] = 0;
     }
     v3 = v0[28];
     if ( v3 )
     {
-        sub_80D842E(v3);
+        ai_freeExtraSlot(v3);
         v0[28] = 0;
     }
     result = v0[29];
     if ( result )
     {
-        sub_80D842E(result);
+        ai_freeExtraSlot(result);
         result = 0;
         v0[29] = 0;
     }
@@ -2736,7 +2736,7 @@ int sub_810FD90()
 
 
 // 0x810fdb0
-int sub_810FDB0()
+int object_clearRegionIfCollided()
 {
     int v0; // r5
     int v1; // r0
@@ -12253,7 +12253,7 @@ int sub_8117820()
     unsigned int v4; // r2
     int v5; // r6
 
-    v0 = sub_81178AC();
+    v0 = sprite_playAnimationFrameSfx();
     if ( !v0 )
         return sprite_setUnk0x2c(-1);
     v1 = battleObject_runAIDispatchTable_813B7A0(v0 - 144, 0) + 8;
@@ -12284,7 +12284,7 @@ void sprite_updatePalette()
 {
     int v0; // r0
 
-    v0 = sub_81178AC();
+    v0 = sprite_playAnimationFrameSfx();
     if ( v0 )
         v0 = *(battleObject_getByIndex_813B780(v0 - 144) + 3) - 1;
     sprite_setPallete(v0);
@@ -12298,7 +12298,7 @@ signed int sub_811788C()
     signed int v1; // r2
     int *v2; // r0
 
-    v0 = sub_81178AC();
+    v0 = sprite_playAnimationFrameSfx();
     v1 = 0;
     if ( v0 )
     {
@@ -12312,7 +12312,7 @@ signed int sub_811788C()
 
 
 // 0x81178ac
-int sub_81178AC()
+int sprite_playAnimationFrameSfx()
 {
     int v0; // r6
     char *v1; // r7
@@ -12955,7 +12955,7 @@ signed int sub_811800C()
 
 
 // 0x8118030
-int sub_8118030()
+int submenu_entryDelayTick()
 {
     int v0; // r5
     int v1; // r0
@@ -17131,7 +17131,7 @@ int sub_811B4AC()
 
 
 // 0x811b570
-void sub_811B570()
+void sprite_updateStateDispatch()
 {
     Battle *v0; // r5
 
@@ -17182,7 +17182,7 @@ unsigned int sub_811B5C0()
 
 
 // 0x811b620
-int sub_811B620()
+int battle_updatePopupDelay()
 {
     int v0; // r5
     int v1; // r0
@@ -17801,7 +17801,7 @@ void __noreturn sub_811BD34()
 
 
 // 0x811bd3c
-int sub_811BD3C()
+int sprite_makeUnscalableWrapper()
 {
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
@@ -18878,7 +18878,7 @@ int sub_811CE34()
         if ( v0[4] == 1 )
         {
             v0[9] = 28;
-            sub_811DBD0();
+            battle_recordEmotionChange();
             v0[12] = 16;
             result = 0;
             v0[14] = 0;
@@ -19890,7 +19890,7 @@ int __fastcall __noreturn sub_811DB7C(int a1, int a2)
 
 
 // 0x811dbd0
-char *sub_811DBD0()
+char *battle_recordEmotionChange()
 {
     int v0; // r5
     char *result; // r0
@@ -20558,7 +20558,7 @@ void __noreturn sub_811E490()
             *(v0 + 9) = 2;
             *(v0 + 28) = 0;
         }
-        sub_811E558();
+        object_stepColorFadeIn();
     }
     if ( *(v0 + 9) == 1 )
     {
@@ -20596,7 +20596,7 @@ void __noreturn sub_811E510()
 {
     Battle *v0; // r5
 
-    sub_811E558();
+    object_stepColorFadeIn();
     sprite_update(v0);
 }
 
@@ -20635,7 +20635,7 @@ int object_setRandomStateByte()
 
 
 // 0x811e558
-int sub_811E558()
+int object_stepColorFadeIn()
 {
     int v0; // r5
     int result; // r0

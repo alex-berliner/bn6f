@@ -7,7 +7,7 @@ int sub_80946C4()
 
 
 // 0x8094708
-int sub_8094708()
+int ow_restoreTilemapFromSnapshot()
 {
     ow_blitTilemapBlockAndRedraw(&unk_2025404);
     return 0;
@@ -15,7 +15,7 @@ int sub_8094708()
 
 
 // 0x8094714
-int sub_8094714()
+int ow_refreshMapTilemap()
 {
     ow_blitTilemapBlockAndRedraw(&unk_2026404);
     return 0;

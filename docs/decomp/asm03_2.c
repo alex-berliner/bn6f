@@ -2528,7 +2528,7 @@ signed int sub_8049104()
     sub_8049D70();
     sub_803C1A8(v0 + 240, v0 + 48, v0 + 256, v0 + 144);
     sub_803C320();
-    sub_803C26A();
+    clearStructBufferPair();
     result = 4;
     *(v0 + 1) = 4;
     return result;
@@ -2664,7 +2664,7 @@ int sub_804921E()
                 {
                     sub_803C558();
                     sub_803BB90(30);
-                    sub_813D638();
+                    ow_checkJackInFlag();
                     if ( !v2 )
                     {
                         sub_803BB2C(11);
@@ -2705,11 +2705,11 @@ void sub_8049290()
     char v3; // zf
     signed int v4; // r0
 
-    sub_803CB00(1);
-    sub_803CB18();
+    rfu_orFlags(1);
+    rfu_testStatusFlags();
     if ( v3 )
     {
-        sub_813D638();
+        ow_checkJackInFlag();
         if ( v3 )
         {
             sub_803C320();
@@ -2736,7 +2736,7 @@ int sub_80492F4()
     int v0; // r5
     char v1; // zf
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         sub_803C28A(131);
@@ -2759,7 +2759,7 @@ signed int __fastcall ow_attemptJackIn(int a1)
     int v8; // r2
     signed int result; // r0
 
-    v2 = sub_813D638();
+    v2 = ow_checkJackInFlag();
     v3 = v1[11];
     v4 = v1[14] + v3;
     if ( v4 >= v2 )
@@ -2795,7 +2795,7 @@ void sub_8049360()
     chatbox_mask_eFlags2009F38(8);
     if ( !v1 )
     {
-        if ( chatbox_GetState_8045F4C() || (v2 = sub_813D638(), v3 = v0[11], v4 = v0[14] + v3, v4 >= v2) )
+        if ( chatbox_GetState_8045F4C() || (v2 = ow_checkJackInFlag(), v3 = v0[11], v4 = v0[14] + v3, v4 >= v2) )
         {
             sub_803BB2C(11);
             v0[1] = 48;
@@ -2805,8 +2805,8 @@ void sub_8049360()
             v5 = v0[14] + v3;
             sub_813D5C8(v4);
             v0[22] = v5;
-            sub_803CB00(4);
-            sub_803CB00(256);
+            rfu_orFlags(4);
+            rfu_orFlags(256);
             sub_803BB2C(13);
             v0[1] = 44;
         }
@@ -2822,10 +2822,10 @@ void sub_80493BC()
     int v0; // r5
     char v1; // zf
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
         goto LABEL_10;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
 LABEL_9:
@@ -2836,10 +2836,10 @@ LABEL_9:
     if ( !v1 )
     {
         sub_803C2A0();
-        sub_803CB00(32);
+        rfu_orFlags(32);
         goto LABEL_9;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
         *(v0 + 1) = 68;
 LABEL_10:
@@ -2871,14 +2871,14 @@ void rfu_wirelessConnectStep()
     sub_8049680();
     if ( !v1 )
     {
-        if ( !sub_814656C() )
+        if ( !rfu_isNotConnected() )
         {
             sub_803BB2C(15);
             *(v0 + 1) = 56;
         }
         goto LABEL_11;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
 LABEL_8:
@@ -2889,10 +2889,10 @@ LABEL_8:
     if ( !v1 )
     {
         sub_803C2A0();
-        sub_803CB00(32);
+        rfu_orFlags(32);
         goto LABEL_8;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
         submenu_resetCursor();
@@ -2966,7 +2966,7 @@ void sub_80494DE()
     int v3; // r2
     int v4; // r4
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         test0x200bc50_0x5_813D60C();
@@ -2974,11 +2974,11 @@ void sub_80494DE()
         {
             PlaySoundEffect(131, v2, v3);
             v4 = 15;
-            sub_803CB18();
+            rfu_testStatusFlags();
             if ( v1 )
             {
                 v4 = 16;
-                sub_803CB18();
+                rfu_testStatusFlags();
                 if ( v1 )
                     v4 = 17;
             }
@@ -3629,7 +3629,7 @@ void sub_8049BC0()
     do
     {
         sub_803C316();
-        if ( !v1 && v0 < sub_813D638() )
+        if ( !v1 && v0 < ow_checkJackInFlag() )
         {
             sub_803C440(v0);
             v3 = sub_8146738(v2);
@@ -4353,7 +4353,7 @@ int sub_804A574()
 
 
 // 0x804a5b4
-int sub_804A5B4()
+int sprite_advanceGroupStepClamped()
 {
     int v0; // r5
     int v1; // r0

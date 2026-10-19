@@ -3200,7 +3200,7 @@ byte_808F748::
 	cs_run_text_script_not_from_mem byte2=0x02
 	cs_wait_chatbox byte1=0x80
 	cs_pause byte1=0xFF byte2=0x0A
-	cs_call_native_with_return_value ptr1=sub_808FC58+1
+	cs_call_native_with_return_value ptr1=clearActiveEventFlag+1
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_BEF
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_PET_DISABLED
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_1739

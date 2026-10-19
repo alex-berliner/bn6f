@@ -2345,9 +2345,9 @@ off_81311EC::
 // symdb: Switches a state/context variable to 0x14 (20) and starts a screen fade with parameters (12, 16).
 // symdb: (r0 = unused by body, caller context) with r5 = global state/context struct pointer -> r0 =
 // symdb: SetScreenFade return (void); no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81311F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_setStateAndFadeScreen.yaml
 	thumb_local_start
-sub_81311F0:
+t3_setStateAndFadeScreen:
 	push {lr}
 	mov r0, #0x14
 	strb r0, [r5,#2]
@@ -2363,7 +2363,7 @@ sub_81311F0:
 	.balign 4, 0
 dword_813120C:
 	.word 0xFEDB
-	thumb_func_end sub_81311F0
+	thumb_func_end t3_setStateAndFadeScreen
 
 	thumb_local_start
 sub_8131210:
@@ -3267,7 +3267,7 @@ loc_813183E:
 	bl sub_81313C0
 	b locret_8131858
 loc_8131854:
-	bl sub_81311F0
+	bl t3_setStateAndFadeScreen
 locret_8131858:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -3957,7 +3957,7 @@ sub_8131FC4:
 	mov r0, #0
 	strb r0, [r5,#0xc]
 	mov r0, #1
-	bl sub_803CB00
+	bl rfu_orFlags
 	mov r0, #0
 	bl initSaveStateBlock_8048F9C
 	mov r1, r10
@@ -4044,9 +4044,9 @@ sub_8132080:
 	b locret_81320AA
 loc_8132094:
 	mov r0, #2
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq locret_81320AA
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	beq locret_81320AA
 	mov r0, #4
 	strb r0, [r5,#0xc]
@@ -4059,7 +4059,7 @@ locret_81320AA:
 	thumb_local_start
 sub_81320AC:
 	push {r4-r7,lr}
-	bl sub_813D638
+	bl ow_checkJackInFlag
 	mov r4, r0
 	tst r4, r4
 	bne loc_81320BE
@@ -4110,7 +4110,7 @@ locret_8132100:
 sub_8132104:
 	push {r4-r7,lr}
 	mov r0, #8
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_8132114
 loc_813210E:
 	mov r0, #0xc
@@ -4121,11 +4121,11 @@ loc_8132114:
 	beq loc_8132126
 	bl sub_803C2A0
 	mov r0, #0x20 
-	bl sub_803CB00
+	bl rfu_orFlags
 	b loc_813210E
 loc_8132126:
 	mov r0, #0x10
-	bl sub_803CB18
+	bl rfu_testStatusFlags
 	beq loc_813214C
 	bl sub_803EA78
 	bl sub_8132398
@@ -6427,7 +6427,7 @@ off_8133214:
 	.word battle_dispatchObjectUpdateOrEffect_81333A0+1
 	.word sub_813399C+1
 	.word battle_initChipSelectFromOverlay_8133228+1
-	.word sub_8133A44+1
+	.word submenu_dispatchStateDraw+1
 	thumb_func_end battleObject_dispatchUpdateByState_8133200
 
 // symdb: Initializes the chip-select screen state from the overlay's "submenu open" branch, building the chip pack, decompressing screen assets, and switching state to view 4.
@@ -7508,9 +7508,9 @@ off_8133A40:
 // symdb: Dispatches a submenu widget's per-state handler (r5+2 = state, 3 states) via jump table, then draws the submenu box.
 // symdb: (r5 = submenu widget struct; r5+2 = state byte 0-2) -> r0 = result of state handler; calls
 // symdb: menu_drawSubmenuBox_8134490 afterwards
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133A44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchStateDraw.yaml
 	thumb_local_start
-sub_8133A44:
+submenu_dispatchStateDraw:
 	push {lr}
 	ldr r0, off_8133A58 // =off_8133A5C 
 	ldrb r1, [r5,#2]
@@ -7526,7 +7526,7 @@ off_8133A5C:
 	.word sub_8133A68+1
 	.word sub_8133B18+1
 	.word sub_8133B74+1
-	thumb_func_end sub_8133A44
+	thumb_func_end submenu_dispatchStateDraw
 
 	thumb_local_start
 sub_8133A68:

@@ -1927,9 +1927,9 @@ off_8142AAC:
 
 // symdb: Returns whether the current scenario id (field 0x18 of the scenario effect state) appears in the 20-entry table at byte_2006670.
 // symdb: () -> r0 = 1 if found, 0 if not; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142AB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_scenarioIsActive.yaml
 	thumb_local_start
-sub_8142AB0:
+e_scenarioIsActive:
 	push {r4-r7,lr}
 	ldr r5, off_8142C8C // =byte_2006670 
 	bl getField0x18OfScenarioEffectState2000780_81421e0
@@ -1953,7 +1953,7 @@ loc_8142AD4:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142AB0
+	thumb_func_end e_scenarioIsActive
 
 	thumb_func_start sub_8142ADA
 sub_8142ADA:

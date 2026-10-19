@@ -181,7 +181,7 @@ jt_8026584:
 	.word sub_8026694+1
 	.word sub_802669E+1
 	.word sub_80266AC+1
-	.word sub_80266BA+1
+	.word battle_checkFacingTileMatch+1
 	.word sub_80266DE+1
 	.word sub_80266E8+1
 	.word sub_80266F2+1
@@ -358,9 +358,9 @@ sub_80266AC:
 // symdb: Runs the facing-offset tile checker on an object using one of two special-case offset tables, chosen by comparing a computed alliance/facing value against r6.
 // symdb: (r4 = battle object, r6 = value to match) -> r0 = nonzero if the checker hit on a listed
 // symdb: relative tile; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80266BA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingTileMatch.yaml
 	thumb_local_start
-sub_80266BA:
+battle_checkFacingTileMatch:
 	push {lr}
 	mov r2, #0
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -379,7 +379,7 @@ loc_80266D4:
 	add r0, r0, r2
 	bl battle_checkFacingOffsets
 	pop {pc}
-	thumb_func_end sub_80266BA
+	thumb_func_end battle_checkFacingTileMatch
 
 	thumb_local_start
 sub_80266DE:
@@ -1866,7 +1866,7 @@ loc_802719E:
 	ldrb r0, [r0,#5]
 loc_80271A0:
 	mov r1, #0
-	bl sub_80281E4
+	bl sprite_queueIndexedTileBlock
 	bl customScreen_ExitSequence_8028E32
 	mov r0, #0
 	mov r1, #0x20 
@@ -4200,9 +4200,9 @@ sprite_CopyObjTilesToVramSlot_80281D4:
 // symdb: Copies the 128-byte (8-tile) graphics block at index r0 from the ROM array byte_8725894 into VRAM slot r1 at 0x0600A4A0 via a queued transfer.
 // symdb: (r0 = source block index into byte_8725894, r1 = destination slot index in 0x0600A4A0 VRAM
 // symdb: tiles) -> r0 = trashed (callees), no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80281E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueIndexedTileBlock.yaml
 	thumb_local_start
-sub_80281E4:
+sprite_queueIndexedTileBlock:
 	push {r1-r3,lr}
 	mov r2, #0x80
 	mul r1, r2
@@ -4218,7 +4218,7 @@ dword_80281FC:
 	.word 0x600A4A0
 off_8028200:
 	.word byte_8725894
-	thumb_func_end sub_80281E4
+	thumb_func_end sprite_queueIndexedTileBlock
 
 // symdb: Queues a single 0x40-byte chunk of a graphics transfer to the destination pointer in r1, then advances r1 past the chunk.
 // symdb: gfx_QueueNext64ByteChunk(dest /* r1 in/out, advanced by 0x40 */) -> void; clobbers r0 (source
@@ -5707,8 +5707,8 @@ off_8028C9C:
 	.word sub_8028DD6+1
 	.word nullsub_59+1
 	.word nullsub_59+1
-	.word sub_8028E04+1
-	.word sub_8028E04+1
+	.word ow_tryJackIn+1
+	.word ow_tryJackIn+1
 off_8028CC4:
 	.word 0x100
 off_8028CC8:
@@ -5915,9 +5915,9 @@ locret_8028E02:
 // symdb: Attempts to jack into a linked overworld object, playing a select sound and starting the jack-in state on success or a buzz and returning 1 on failure.
 // symdb: (r4 = pointer to object/trigger struct, r5 = task context struct) -> r0 = 0 if accepted, 1 if
 // symdb: refused; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028E04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_tryJackIn.yaml
 	thumb_local_start
-sub_8028E04:
+ow_tryJackIn:
 	push {r6,r7,lr}
 	ldrb r1, [r4]
 	cmp r1, #9
@@ -5941,7 +5941,7 @@ loc_8028E26:
 	mov r0, #1
 locret_8028E2E:
 	pop {r6,r7,pc}
-	thumb_func_end sub_8028E04
+	thumb_func_end ow_tryJackIn
 
 	thumb_local_start
 nullsub_59:
@@ -13795,9 +13795,9 @@ byte_802C8A0:
 // symdb: Picks a random index from a byte-weight table, weighted by each entry's value.
 // symdb: (r0 = pointer to byte weight table, r1 = total sum of weights) -> r0 = selected index; destroys
 // symdb: r1-r3, r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C8B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_weightedRandomIndex.yaml
 	thumb_local_start
-sub_802C8B0:
+get_weightedRandomIndex:
 	push {lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -13817,7 +13817,7 @@ loc_802C8C6:
 loc_802C8D0:
 	add sp, sp, #0xc
 	pop {pc}
-	thumb_func_end sub_802C8B0
+	thumb_func_end get_weightedRandomIndex
 
 // symdb: Pops the next halfword entry from an in-struct FIFO queue, returning 0 when it is empty.
 // symdb: u16 queue_popHalfword(void *state /* r5 */); // in: r5 = queue state, lr = return; out: r0 =
@@ -14284,7 +14284,7 @@ sub_802CBAC:
 off_802CBBC:
 	.word off_802CBC0
 off_802CBC0:
-	.word sub_802CBCC+1
+	.word battle_spawnKindEffect40AtObjectPos+1
 	.word sub_802CBF2+1
 	.word sub_802CC8C+1
 	thumb_func_end sub_802CBAC
@@ -14292,9 +14292,9 @@ off_802CBC0:
 // symdb: State step of a battle object: spawns battle sub-effect kind 0x28 at the object's (possibly mirrored) position, then advances the object to state 4 with a zeroed counter.
 // symdb: (r0 unused, r5 = battle object struct: +8/+0xA = coords, +1 = state, +2 = counter) -> r0 =
 // symdb: dispatch result; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CBCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnKindEffect40AtObjectPos.yaml
 	thumb_local_start
-sub_802CBCC:
+battle_spawnKindEffect40AtObjectPos:
 	push {lr}
 	ldrh r1, [r5,#8]
 	ldrh r2, [r5,#0xa]
@@ -14314,7 +14314,7 @@ loc_802CBE2:
 	mov r0, #0
 	strh r0, [r5,#2]
 	pop {pc}
-	thumb_func_end sub_802CBCC
+	thumb_func_end battle_spawnKindEffect40AtObjectPos
 
 	thumb_local_start
 sub_802CBF2:
@@ -14454,7 +14454,7 @@ off_802CCB4:
 	.word sub_80E59C6+1 // 0xc
 	.word sub_80E5F78+1 // 0xd
 	.word sub_80E67E6+1 // 0xe
-	.word sub_80E2D76+1 // 0xf
+	.word object_spawnChipObject+1 // 0xf
 	.word sub_80E4288+1 // 0x10
 	.word sub_80E4164+1 // 0x11
 	.word sub_80E76D4+1 // 0x12
@@ -14463,7 +14463,7 @@ off_802CCB4:
 	.word sub_80E7008+1 // 0x15
 	.word sub_80E7FBA+1 // 0x16
 	.word sub_80E70A6+1 // 0x17
-	.word sub_80E723E+1 // 0x18
+	.word battle_spawnObj5bWithChipFields+1 // 0x18
 	.word sub_80E24B8+1 // 0x19
 	.word sub_80E49A2+1 // 0x1a
 	.word sub_80E64E8+1 // 0x1b
@@ -14471,7 +14471,7 @@ off_802CCB4:
 	.word sub_80E7F16+1 // 0x1d
 	.word spawnDblHeroSetupObject_80E8058+1 // 0x1e
 	.word sub_80E81B4+1 // 0x1f
-	.word sub_80E8BC0+1 // 0x20
+	.word object_spawnType76WithFields+1 // 0x20
 	.word spawnSunMoonObject_80E8ADC+1 // 0x21
 	.word 0x0 // 0x22
 	.word 0x0 // 0x23
@@ -14490,11 +14490,11 @@ off_802CD5C:
 	.word sub_80BB7F6+1
 	.word sub_80BBAC6+1
 	.word sub_80B9750+1
-	.word sub_80B999A+1
+	.word object_spawnType10Linked+1
 	.word sub_80B9F0E+1
 	.word sub_80BBDE8+1
 	.word sub_80BC0DA+1
-	.word sub_80B9014+1
+	.word battle_spawnType6Object+1
 	.word sub_80B9B6E+1
 	.word sub_80BA660+1
 	.word sub_80BA920+1
@@ -16033,9 +16033,9 @@ off_802D710:
 // symdb: Dispatches on the object's HitElement to one of three per-element effect handlers, then refreshes the sprite animation.
 // symdb: (r7 = object whose oAIAttackVars_HitElement is set, r0/r1 scratch) -> r0 = handler return value;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D714.yaml
-	thumb_func_start sub_802D714
-sub_802D714:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyHitElementEffect.yaml
+	thumb_func_start battle_applyHitElementEffect
+battle_applyHitElementEffect:
 	push {lr}
 	ldr r1, off_802D728 // =off_802D72C 
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -16051,7 +16051,7 @@ off_802D72C:
 	.word sub_802D738+1
 	.word sub_802D7A0+1
 	.word sub_802D8F0+1
-	thumb_func_end sub_802D714
+	thumb_func_end battle_applyHitElementEffect
 
 	thumb_local_start
 sub_802D738:
@@ -17657,7 +17657,7 @@ loc_802E3C2:
 	ldrh r1, [r7,#0x24]
 	mov r0, r6
 	ldr r2, [sp]
-	bl sub_802E5FC
+	bl queueRecordHalfwordEntry
 	push {r4}
 	mov r0, r6
 	bl battle_networkInvert
@@ -17987,9 +17987,9 @@ off_802E5F8:
 // symdb: Appends a halfword value to one of up to 5 slots in a 0x1D0-byte record from the array at 0x2036120, failing when the record's list is full.
 // symdb: (r0 = record index, r1 = halfword value, r2 = extra arg passed on to sub_802E674) -> r0 = 1 if
 // symdb: appended, 0 if the record already holds 5 entries; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E5FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/queueRecordHalfwordEntry.yaml
 	thumb_local_start
-sub_802E5FC:
+queueRecordHalfwordEntry:
 	push {r4-r6,lr}
 	mov r4, r0
 	mov r5, r1
@@ -18013,7 +18013,7 @@ loc_802E626:
 	mov r0, #0
 locret_802E628:
 	pop {r4-r6,pc}
-	thumb_func_end sub_802E5FC
+	thumb_func_end queueRecordHalfwordEntry
 
 // symdb: Writes a halfword into a 0x1D0-byte battle record, conditionally sets event flag EVENT_2020+value with a save re-encryption, and raises flag 0x10000 in the player's AI data word 0x44.
 // symdb: (r0 = record index, r1 = halfword value, r2 = suppress-flag) -> r0 = 1; r1..r3, r4-r7 clobbered
@@ -18601,26 +18601,26 @@ off_802EA7C:
 	.word sub_802EB60+1
 	.word sub_802EB60+1
 	.word sub_802EB60+1
-	.word sub_802EBA8+1
+	.word battle_initAttack2B+1
 	.word sub_802EB60+1
 	.word sub_802EB60+1
 	.word sub_802EB60+1
 	.word sub_802EB60+1
 	.word sub_802EB60+1
 off_802EAB0:
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
-	.word sub_802EB80+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
+	.word object_initAttackState+1
 byte_802EAE4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
@@ -18666,9 +18666,9 @@ sub_802EB60:
 
 // symdb: Initializes a battle object's attack/state struct (state 0, counter 3, timer 0x23C) and queues attack 0x2B via object_setAttack0.
 // symdb: (r6 = object struct pointer, passed implicitly via register) -> r0 = 1 (success); no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EB80.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initAttackState.yaml
 	thumb_local_start
-sub_802EB80:
+object_initAttackState:
 	push {lr}
 	mov r0, #0
 	strb r0, [r6,#2]
@@ -18689,14 +18689,14 @@ sub_802EB80:
 	.balign 4, 0
 off_802EBA4:
 	.word 0x23C
-	thumb_func_end sub_802EB80
+	thumb_func_end object_initAttackState
 
 // symdb: Resets an entity's attack-state fields and queues attack 0x2B via object_setAttack0.
 // symdb: (r0 = unused, r6 = battle entity/attack struct) -> r0 = 1; sets struct fields at r6+2..+0xC and
 // symdb: attack id 0x2B
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EBA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAttack2B.yaml
 	thumb_local_start
-sub_802EBA8:
+battle_initAttack2B:
 	push {lr}
 	mov r0, #0
 	strb r0, [r6,#2]
@@ -18717,7 +18717,7 @@ sub_802EBA8:
 	.balign 4, 0
 off_802EBCC:
 	.word 0x13C
-	thumb_func_end sub_802EBA8
+	thumb_func_end battle_initAttack2B
 
 	thumb_local_start
 sub_802EBD0:
@@ -18793,18 +18793,18 @@ off_802EC3C:
 	.word battle_chargeShotSetup+1
 	.word battle_chargeShotSetup+1
 off_802EC6C:
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
-	.word sub_802EDBC+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
+	.word ai_startAttack22+1
 off_802EC9C:
 	.word sub_802ED8A+1
 	.word sub_802ED8A+1
@@ -18939,9 +18939,9 @@ off_802EDB8:
 
 // symdb: Initializes an enemy's state-work fields, sets a 40-frame timer, and makes the object begin attack id 0x16 (22).
 // symdb: (r6 = object/enemy work pointer, set by caller) -> r0 = 1, r1 = 0; clobbers lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EDBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_startAttack22.yaml
 	thumb_local_start
-sub_802EDBC:
+ai_startAttack22:
 	push {lr}
 	mov r0, #0
 	strb r0, [r6,#2]
@@ -18962,7 +18962,7 @@ sub_802EDBC:
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_802EDBC
+	thumb_func_end ai_startAttack22
 
 	thumb_local_start
 sub_802EDE8:

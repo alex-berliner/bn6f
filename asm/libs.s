@@ -4360,7 +4360,7 @@ rfu_handleConnTimeout:
 	cmp r0, #0x27 
 	bne loc_8146060
 loc_8146036:
-	bl sub_81464D4
+	bl rfu_pollLinkLossState
 	mov r0, #0x18
 	strb r0, [r4,#0x4] // (byte_200FE04 - 0x200fe00)
 	ldrb r1, [r4,#0x10] // (byte_200FE10 - 0x200fe00)
@@ -4389,7 +4389,7 @@ loc_8146060:
 	ldrb r0, [r5,#0x2] // (byte_200FE02 - 0x200fe00)
 	cmp r0, #1
 	bne loc_8146076
-	bl sub_81464D4
+	bl rfu_pollLinkLossState
 loc_8146076:
 	ldrb r0, [r5,#0x2] // (byte_200FE02 - 0x200fe00)
 	mov r4, r0
@@ -5063,9 +5063,9 @@ off_81464D0:
 // symdb: Advances the wireless-adapter link-loss state machine at eStruct200FE00+0x2, firing the connection callback with code 0x45 once the disconnect is fully processed.
 // symdb: () -> r0 = undefined (tail of callback path returns from callee); writes state byte
 // symdb: eStruct200FE00+0x2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81464D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_pollLinkLossState.yaml
 	thumb_local_start
-sub_81464D4:
+rfu_pollLinkLossState:
 	push {lr}
 	ldr r1, off_81464E8 // =eStruct200FE00 
 	ldrb r0, [r1,#0x2] // (byte_200FE02 - 0x200fe00)
@@ -5088,7 +5088,7 @@ loc_81464EC:
 loc_81464F8:
 	pop {r0}
 	bx r0
-	thumb_func_end sub_81464D4
+	thumb_func_end rfu_pollLinkLossState
 
 	thumb_local_start
 sub_81464FC:
@@ -5156,9 +5156,9 @@ def_8146518:
 
 // symdb: Returns 1 while the RFU connection state halfword (word_20102D0) is not 3, and 0 once it reaches 3.
 // symdb: () -> r0 = 0 if word_20102D0 == 3 (connected), else 1; flags set by the cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814656C.yaml
-	thumb_func_start sub_814656C
-sub_814656C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_isNotConnected.yaml
+	thumb_func_start rfu_isNotConnected
+rfu_isNotConnected:
 	push {lr}
 	ldr r0, off_814657C // =word_20102D0 
 	ldrh r0, [r0]
@@ -5175,7 +5175,7 @@ loc_8146582:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_814656C
+	thumb_func_end rfu_isNotConnected
 
 	thumb_func_start sub_8146588
 sub_8146588:
@@ -7323,7 +7323,7 @@ off_81474E4:
 	.word eS200BC50
 loc_81474E8:
 	mov r0, #0xe
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_81475AA
 loc_81474F0:
 	ldr r2, off_8147514 // =byte_2010280 
@@ -7358,7 +7358,7 @@ loc_8147524:
 	mov r0, #3
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x14
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_81475AA
 	.balign 4, 0x00
 off_8147534:
@@ -7383,7 +7383,7 @@ loc_8147550:
 	cmp r0, #0
 	beq loc_8147560
 	mov r0, #0x15
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_8147560:
 	ldr r1, off_8147578 // =word_20102D0 
 	ldr r0, off_814757C // =eStruct200FE00 
@@ -7421,7 +7421,7 @@ loc_8147598:
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0xd
 loc_81475A2:
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r0, off_81475B4 // =byte_2010368 
 	strb r4, [r0]
 loc_81475AA:
@@ -7618,7 +7618,7 @@ loc_8147784:
 	beq loc_81477A8
 loc_8147796:
 	mov r0, #0xb
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814762C
 	.byte 0, 0
 off_81477A0:
@@ -7627,7 +7627,7 @@ off_81477A4:
 	.word dword_2010CC0
 loc_81477A8:
 	mov r0, #0xc
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814762C
 loc_81477B0:
 	mov r0, #1
@@ -7669,7 +7669,7 @@ off_81477F4:
 loc_81477F8:
 	bl sub_813D8D0
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814762C
 loc_8147804:
 	bl eStruct200FE00_setUnk04To15h
@@ -8252,7 +8252,7 @@ sub_8147C20:
 	bne loc_8147C3C
 loc_8147C36:
 	mov r0, #0xf
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_8147C3C:
 	ldr r0, off_8147C70 // =Timer2Counter_Reload 
 	ldrh r0, [r0]
@@ -8355,7 +8355,7 @@ loc_8147D58:
 	ldr r1, off_8147D78 // =eS200BC50 
 	mov r0, #0x10
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	bl sub_81464D4
+	bl rfu_pollLinkLossState
 	b def_8147C6A
 	.balign 4, 0x00
 off_8147D74:
@@ -8722,7 +8722,7 @@ dword_8148018:
 
 // symdb: Dispatches a wireless link command/event byte to the matching RFU state-machine action for the wireless battle/trade session.
 // symdb: (r0 = command/event ID byte) -> r0 clobbered; updates link state word_200BC58 of eS200BC50,
-// symdb: sometimes calls sub_813D934 with a sub-state code; no return value.
+// symdb: sometimes calls rfu_setLinkCommand with a sub-state code; no return value.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleLinkCommand.yaml
 	thumb_local_start
 rfu_handleLinkCommand:
@@ -8851,7 +8851,7 @@ loc_81480D0:
 	mov r0, #0xd
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0xa
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 off_81480F4:
 	.word byte_20103E0
@@ -8869,7 +8869,7 @@ loc_8148104:
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #2
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 off_8148118:
 	.word word_20102D0
@@ -8880,7 +8880,7 @@ loc_8148120:
 	mov r0, #0x25 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x10
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 	.byte 0, 0
 off_8148130:
@@ -8890,14 +8890,14 @@ loc_8148134:
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #3
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 	.balign 4, 0x00
 off_8148144:
 	.word eS200BC50
 loc_8148148:
 	mov r0, #0xe
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r2, off_814815C // =word_2010338 
 	ldr r1, off_8148160 // =eS200BC50 
 	ldrh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -8922,7 +8922,7 @@ off_8148174:
 	.word word_2010338
 loc_8148178:
 	mov r0, #0xf
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 loc_8148180:
 	bl rfu_clearAllSlot
@@ -8956,7 +8956,7 @@ loc_81481A8:
 	ldrh r0, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	strh r0, [r1]
 	mov r0, #5
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 	.byte 0, 0
 off_81481C0:
@@ -8970,7 +8970,7 @@ loc_81481CC:
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #1
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 	.balign 4, 0x00
 off_81481DC:
@@ -8980,7 +8980,7 @@ loc_81481E0:
 	mov r0, #1
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0xd
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148200
 	.byte 0, 0
 off_81481F0:
@@ -8990,7 +8990,7 @@ loc_81481F4:
 	mov r0, #1
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x13
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_8148200:
 	pop {r0}
 	bx r0
@@ -9183,7 +9183,7 @@ loc_81483C4:
 	b def_814825A
 loc_81483CE:
 	mov r0, #6
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 	.balign 4, 0x00
 off_81483D8:
@@ -9192,7 +9192,7 @@ off_81483DC:
 	.word eStruct200FE00
 loc_81483E0:
 	mov r0, #7
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 loc_81483E8:
 	ldr r0, off_8148418 // =dword_2010CC0 
@@ -9211,7 +9211,7 @@ loc_81483E8:
 	cmp r0, #0
 	bne loc_8148428
 	mov r0, #9
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r1, off_8148424 // =eS200BC50 
 	mov r0, #8
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -9227,7 +9227,7 @@ off_8148424:
 	.word eS200BC50
 loc_8148428:
 	mov r0, #8
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r1, off_8148438 // =eS200BC50 
 	mov r0, #7
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -9257,7 +9257,7 @@ loc_814843C:
 	bne loc_8148482
 	bl sub_813D8D0
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 off_8148470:
 	.word dword_2010CB0
@@ -9271,11 +9271,11 @@ loc_814847C:
 	beq loc_814848A
 loc_8148482:
 	mov r0, #0x12
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 loc_814848A:
 	mov r0, #0x11
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 loc_8148492:
 	sub r0, #0x47 
@@ -9290,7 +9290,7 @@ loc_8148492:
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #4
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b def_814825A
 	.balign 4, 0x00
 off_81484B4:
@@ -9306,7 +9306,7 @@ loc_81484B8:
 	ldr r1, off_81484D8 // =eS200BC50 
 	mov r0, #0x10
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	bl sub_81464D4
+	bl rfu_pollLinkLossState
 	b def_814825A
 	.balign 4, 0x00
 off_81484D4:
@@ -9680,7 +9680,7 @@ loc_8148794:
 	strb r0, [r1]
 loc_81487A2:
 	mov r0, #0xe
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_814886C
 	.balign 4, 0
 off_81487AC:
@@ -9693,7 +9693,7 @@ loc_81487B0:
 	mov r0, #0
 	strb r0, [r1]
 	mov r0, #0xf
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_814886C
 off_81487C4:
 	.word byte_2010408
@@ -9748,7 +9748,7 @@ loc_8148810:
 	ldr r0, off_8148830 // =byte_2010368 
 	strb r2, [r0]
 	mov r0, #0x15
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_814886C
 	.balign 4, 0x00
 off_814882C:
@@ -9771,7 +9771,7 @@ loc_8148844:
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #1
 loc_814884E:
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r0, off_814885C // =byte_2010368 
 	strb r4, [r0]
 	b loc_814886C
@@ -9784,7 +9784,7 @@ loc_8148860:
 	mov r0, #0
 	strb r0, [r1]
 	mov r0, #0x13
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_814886C:
 	pop {r4}
 	pop {r0}
@@ -10593,11 +10593,11 @@ loc_8148EC4:
 	beq loc_8148F8C
 	b loc_8148FAC
 loc_8148ECE:
-	bl sub_814912C
+	bl rfu_readyUniSendIfFlagged
 	b loc_8148FAC
 loc_8148ED4:
 	mov r0, #0xe
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	ldr r2, off_8148EE8 // =word_2010338 
 	ldr r1, off_8148EEC // =eS200BC50 
 	ldrh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
@@ -10626,7 +10626,7 @@ loc_8148F04:
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0xf
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148FAC
 	.balign 4, 0x00
 off_8148F14:
@@ -10663,7 +10663,7 @@ loc_8148F30:
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x15
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_8148F56:
 	ldr r0, off_8148F6C // =eStruct200FE00 
 	ldrh r0, [r0,#0x16] // (word_200FE16 - 0x200fe00)
@@ -10673,7 +10673,7 @@ loc_8148F56:
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x15
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148FAC
 off_8148F6C:
 	.word eStruct200FE00
@@ -10686,7 +10686,7 @@ loc_8148F78:
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0xd
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148FAC
 	.balign 4, 0x00
 off_8148F88:
@@ -10696,7 +10696,7 @@ loc_8148F8C:
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #1
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	b loc_8148FAC
 	.balign 4, 0x00
 off_8148F9C:
@@ -10706,7 +10706,7 @@ loc_8148FA0:
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0x13
-	bl sub_813D934
+	bl rfu_setLinkCommand
 loc_8148FAC:
 	pop {r0}
 	bx r0
@@ -10855,9 +10855,9 @@ off_8149128:
 
 // symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via sub_8144DB0(1).
 // symdb: () -> r0 = result of sub_8144DB0(1); no meaningful input
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814912C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_readyUniSendIfFlagged.yaml
 	thumb_local_start
-sub_814912C:
+rfu_readyUniSendIfFlagged:
 	push {lr}
 	bl sub_8149150
 	lsl r0, r0, #0x18
@@ -10874,7 +10874,7 @@ loc_8149140:
 	.balign 4, 0
 off_814914C:
 	.word byte_20103E0
-	thumb_func_end sub_814912C
+	thumb_func_end rfu_readyUniSendIfFlagged
 
 	thumb_local_start
 sub_8149150:

@@ -5676,7 +5676,7 @@ int sub_8038E14()
         LoadGFXAnim(byte_80387FC);
         LoadGFXAnim(byte_803888C);
         battle_resetEStructRecords_8046664();
-        sub_80390D8();
+        battle_initEmotionEntriesType3A();
         *(v0 + 2) = 40;
         result = 214;
         *(v0 + 4) = 214;
@@ -5870,7 +5870,7 @@ char *__fastcall sub_8039084(int a1)
 
 
 // 0x80390d8
-char *sub_80390D8()
+char *battle_initEmotionEntriesType3A()
 {
     battle_initEmotionTableEntry_8046670(58, 0, 8);
     return battle_initEmotionTableEntry_8046670(58, 1, &byte_108);
@@ -6444,7 +6444,7 @@ signed int sub_8039A58()
     sub_803C40C();
     sub_803C1A8(v0 + 240, v0 + 48, v0 + 256, v0 + 144);
     sub_803C320();
-    sub_803C26A();
+    clearStructBufferPair();
     result = 4;
     *(v0 + 1) = 4;
     return result;
@@ -6606,7 +6606,7 @@ int __fastcall sub_8039BC0(int a1)
                     {
                         sub_803C558();
                         sub_803BB90(30);
-                        sub_813D638();
+                        ow_checkJackInFlag();
                         if ( !v3 )
                         {
                             sub_803BB2C(11);
@@ -6649,14 +6649,14 @@ int sub_8039C32()
     char v4; // zf
     signed int v5; // r0
 
-    v1 = sub_803CB00(1);
+    v1 = rfu_orFlags(1);
     sub_803A558(v1);
     if ( v4 )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( v4 )
         {
-            sub_813D638();
+            ow_checkJackInFlag();
             if ( v4 )
             {
                 sub_803C320();
@@ -6684,7 +6684,7 @@ int sub_8039C9C()
     int v0; // r5
     char v1; // zf
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         sub_803C28A(104);
@@ -6707,7 +6707,7 @@ signed int __fastcall sub_8039CB4(int a1)
     int v8; // r2
     signed int result; // r0
 
-    v2 = sub_813D638();
+    v2 = ow_checkJackInFlag();
     v3 = v1[11];
     v4 = v1[14] + v3;
     if ( v4 >= v2 )
@@ -6746,7 +6746,7 @@ int __fastcall sub_8039D08(int a1)
         chatbox_mask_eFlags2009F38(8);
         if ( !v2 )
         {
-            if ( chatbox_GetState_8045F4C() || (v3 = sub_813D638(), v4 = v1[11], v5 = v1[14] + v4, v5 >= v3) )
+            if ( chatbox_GetState_8045F4C() || (v3 = ow_checkJackInFlag(), v4 = v1[11], v5 = v1[14] + v4, v5 >= v3) )
             {
                 sub_803BB2C(11);
                 v1[1] = 48;
@@ -6756,8 +6756,8 @@ int __fastcall sub_8039D08(int a1)
                 v6 = v1[14] + v4;
                 sub_813D5C8(v5);
                 v1[22] = v6;
-                sub_803CB00(4);
-                sub_803CB00(256);
+                rfu_orFlags(4);
+                rfu_orFlags(256);
                 sub_803BB2C(13);
                 v1[1] = 44;
             }
@@ -6776,10 +6776,10 @@ int __fastcall sub_8039D66(int a1)
     sub_803A558(a1);
     if ( v2 )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( v2 )
         {
-            sub_803CB18();
+            rfu_testStatusFlags();
             if ( v2 )
             {
                 sub_803A252();
@@ -6827,7 +6827,7 @@ int __fastcall sub_8039DB4(int a1)
     sub_803A558(a1);
     if ( !v2 )
     {
-        if ( !sub_814656C() )
+        if ( !rfu_isNotConnected() )
         {
             sub_803A25C();
             sub_803BB2C(15);
@@ -6835,7 +6835,7 @@ int __fastcall sub_8039DB4(int a1)
         }
         return sub_803A104();
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v2 )
     {
 LABEL_8:
@@ -6846,10 +6846,10 @@ LABEL_8:
     if ( !v2 )
     {
         sub_803C2A0();
-        sub_803CB00(32);
+        rfu_orFlags(32);
         goto LABEL_8;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v2 )
     {
         clearStatusBits(256);
@@ -7033,7 +7033,7 @@ int __fastcall sub_8039F78(int a1)
     signed int v12; // [sp-4h] [bp-18h]
 
     v12 = t4_dispatchWaitStep(a1);
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v2 )
     {
         if ( v12 )
@@ -7041,11 +7041,11 @@ int __fastcall sub_8039F78(int a1)
             sub_803A25C();
             PlaySoundEffect(104, v3, v4);
             v5 = 15;
-            sub_803CB18();
+            rfu_testStatusFlags();
             if ( v2 )
             {
                 v5 = 16;
-                sub_803CB18();
+                rfu_testStatusFlags();
                 if ( v2 )
                     v5 = 17;
             }
@@ -7534,7 +7534,7 @@ void __noreturn sub_803A4D0()
     v1 = *(v0 + 36);
     sub_803B814(8, 19, 6, (v0 + 240));
     v2 = sub_803C418();
-    sub_803BA00(88, 24, 4, v2);
+    sprite_queueOamEntryAt(88, 24, 4, v2);
 }
 
 
@@ -9113,15 +9113,15 @@ void __noreturn sub_803B880()
     v1 = memory_bcdConvert(v0);
     v2 = (v1 >> 8) & 0xF;
     if ( v2 )
-        sub_803B8F8(104, 80, v2);
+        sprite_queueOamEntryHflipPal12(104, 80, v2);
     if ( v1 >> 4 )
-        sub_803B8F8(112, 80, v1 >> 4);
-    sub_803B8F8(120, 80, v1 & 0xF);
+        sprite_queueOamEntryHflipPal12(112, 80, v1 >> 4);
+    sprite_queueOamEntryHflipPal12(120, 80, v1 & 0xF);
 }
 
 
 // 0x803b8f8
-signed int __fastcall __noreturn sub_803B8F8(int a1, int a2, __int16 a3)
+signed int __fastcall __noreturn sprite_queueOamEntryHflipPal12(int a1, int a2, __int16 a3)
 {
     return sprite_queueOamEntryThunk_802FE28((a1 << 16) | a2 | 0x9000, 2 * a3 - 16256, 0, 0);
 }
@@ -9168,7 +9168,7 @@ signed int __fastcall __noreturn sub_803B9C0(int a1, int a2, int a3, int a4)
 
 
 // 0x803ba00
-void __fastcall __noreturn sub_803BA00(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn sprite_queueOamEntryAt(int a1, int a2, int a3, int a4)
 {
     sub_803B9C0(a1, a2, a3, a4);
 }
@@ -9886,7 +9886,7 @@ signed int __fastcall sub_803C248(int a1)
 
 
 // 0x803c26a
-int sub_803C26A()
+int clearStructBufferPair()
 {
     int v0; // r5
 
@@ -9904,7 +9904,7 @@ int __fastcall sub_803C28A(int a1)
 
     v1 = a1;
     sub_813D978();
-    sub_803CB00(8);
+    rfu_orFlags(8);
     return PlaySoundEffect(v1, v2, v3);
 }
 
@@ -9912,7 +9912,7 @@ int __fastcall sub_803C28A(int a1)
 // 0x803c2a0
 int sub_803C2A0()
 {
-    return sub_803CB00(8);
+    return rfu_orFlags(8);
 }
 
 
@@ -10002,7 +10002,7 @@ BOOL sub_803C330()
     int v0; // r10
     char v1; // zf
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     return v1 && *(*(v0 + oToolkit_JoypadPtr) + 2) & 2;
 }
 
@@ -10154,11 +10154,11 @@ signed int sub_803C48C()
     char v1; // zf
 
     v0 = 254;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         v0 = 255;
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v1 )
             v0 = byte_200A2A6;
     }
@@ -10169,7 +10169,7 @@ signed int sub_803C48C()
 // 0x803c4b0
 int sub_803C4B0()
 {
-    return sub_803CB00(16);
+    return rfu_orFlags(16);
 }
 
 
@@ -10184,7 +10184,7 @@ void *sub_803C4C0()
 int sub_803C4DC()
 {
     sub_813D978();
-    return sub_803CB00(8);
+    return rfu_orFlags(8);
 }
 
 
@@ -10192,15 +10192,15 @@ int sub_803C4DC()
 int sub_803C4EC()
 {
     sub_813D978();
-    sub_803CB00(8);
-    return sub_803CB00(128);
+    rfu_orFlags(8);
+    return rfu_orFlags(128);
 }
 
 
 // 0x803c502
 void sub_803C502()
 {
-    sub_803CB18();
+    rfu_testStatusFlags();
 }
 
 
@@ -10211,7 +10211,7 @@ signed int sub_803C514()
     char v1; // zf
 
     v0 = 0;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
         v0 = 1;
     return v0;
@@ -10225,7 +10225,7 @@ signed int sub_803C530()
     char v1; // zf
 
     v0 = 0;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
         LoadGFXAnim(&off_8039370);
@@ -10238,7 +10238,7 @@ signed int sub_803C530()
 // 0x803c558
 int sub_803C558()
 {
-    sub_803C26A();
+    clearStructBufferPair();
     return sub_81467A0();
 }
 
@@ -10246,7 +10246,7 @@ int sub_803C558()
 // 0x803c564
 int sub_803C564()
 {
-    return sub_803CB00(2);
+    return rfu_orFlags(2);
 }
 
 
@@ -10260,7 +10260,7 @@ int sub_803C570()
 // 0x803c580
 int sub_803C580()
 {
-    return sub_803CB00(64);
+    return rfu_orFlags(64);
 }
 
 
@@ -10335,7 +10335,7 @@ int dispatch_803C620()
 signed __int64 sub_803C6A8()
 {
     sub_813D9A0(&dword_34);
-    sub_813D934(0);
+    rfu_setLinkCommand(0);
     return 1LL;
 }
 
@@ -10344,8 +10344,8 @@ signed __int64 sub_803C6A8()
 signed __int64 sub_803C6C0()
 {
     sub_813D978();
-    sub_803CB00(8);
-    sub_803CB00(128);
+    rfu_orFlags(8);
+    rfu_orFlags(128);
     return 4294967297LL;
 }
 
@@ -10355,8 +10355,8 @@ __int64 rfu_resetSlotsAndReportOffline()
 {
     rfu_clearAllSlot();
     sub_813D978();
-    sub_803CB00(8);
-    sub_803CB00(128);
+    rfu_orFlags(8);
+    rfu_orFlags(128);
     return 0LL;
 }
 
@@ -10421,7 +10421,7 @@ __int64 sub_803C76C()
 {
     int v0; // r7
 
-    sub_803CB00(2);
+    rfu_orFlags(2);
     sub_814665C();
     sub_814673C();
     *(v0 + 3) = 0;
@@ -10457,7 +10457,7 @@ int sub_803C7B4()
         {
             *(v0 + 3) = 4;
             *(v0 + 10) = &loc_B4;
-            result = sub_803CB00(64);
+            result = rfu_orFlags(64);
         }
     }
     return result;
@@ -10483,7 +10483,7 @@ void __fastcall sub_803C7E8(int a1)
         {
             if ( !sub_8146888(v3) )
             {
-                sub_813D934(0);
+                rfu_setLinkCommand(0);
                 *(v1 + 3) = 0;
                 v5 = sub_8146CFC();
                 sub_813DA84(v5, v6, v7, v8);
@@ -10491,14 +10491,14 @@ void __fastcall sub_803C7E8(int a1)
         }
         else
         {
-            sub_803CB00(64);
+            rfu_orFlags(64);
             v4 = *(v1 + 10) - 1;
             *(v1 + 10) = v4;
             if ( !v4 )
             {
                 sub_813D978();
-                sub_803CB00(8);
-                sub_803CB00(128);
+                rfu_orFlags(8);
+                rfu_orFlags(128);
             }
         }
     }
@@ -10531,7 +10531,7 @@ __int64 sub_803C84A()
 // 0x803c85c
 __int64 sub_803C85C()
 {
-    sub_803CB00(2);
+    rfu_orFlags(2);
     return 0LL;
 }
 
@@ -10554,7 +10554,7 @@ signed __int64 sub_803C888()
     unk_200AF8C = &unk_200FE70;
     if ( !sub_8146D40(&unk_200AF80) )
     {
-        sub_803CB00(64);
+        rfu_orFlags(64);
         clearStatusBits(2);
         *(v0 + 3) = 4;
     }
@@ -10570,7 +10570,7 @@ signed __int64 __fastcall sub_803C8B4(int a1, int a2, int a3, int a4)
     {
         sub_8146E5C(&unk_200AF80, 1);
         sub_813D9A0(34);
-        sub_813D934(0);
+        rfu_setLinkCommand(0);
     }
     return sub_803C90C();
 }
@@ -10598,7 +10598,7 @@ signed __int64 sub_803C90C()
 
     if ( !byte_2010280 || sub_8146938() )
         return 2LL;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v2 )
     {
         sub_813D9A0(34);
@@ -10618,7 +10618,7 @@ signed __int64 sub_803C94C()
         sub_813D9A0(1);
     else
         sub_813D978();
-    sub_813D934(0);
+    rfu_setLinkCommand(0);
     return 1LL;
 }
 
@@ -10640,7 +10640,7 @@ signed __int64 sub_803C97C()
 signed __int64 __fastcall sub_803C9A4(int a1)
 {
     sub_813D978();
-    sub_813D934(0);
+    rfu_setLinkCommand(0);
     return 1LL;
 }
 
@@ -10668,7 +10668,7 @@ void sub_803C9DC()
     int v0; // r7
     char v1; // zf
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
         ZeroFillByWord(&byte_2010144, 16);
@@ -10705,7 +10705,7 @@ __int64 sub_803CA2C()
     if ( unk_200AF85 )
     {
         sub_813D978();
-        sub_803CB00(8);
+        rfu_orFlags(8);
     }
     else
     {
@@ -10743,7 +10743,7 @@ int sub_803CA90()
     if ( !unk_200AF82 )
     {
         sub_813D978();
-        result = sub_803CB00(8);
+        result = rfu_orFlags(8);
     }
     return result;
 }
@@ -10758,7 +10758,7 @@ char *__fastcall sub_803CAC4(int a1)
     char *v4; // ST0C_4
     char *v5; // ST00_4
 
-    result = sub_813D638();
+    result = ow_checkJackInFlag();
     v2 = result;
     if ( result )
     {
@@ -10786,7 +10786,7 @@ int sub_803CAF8()
 
 
 // 0x803cb00
-int __fastcall sub_803CB00(int result)
+int __fastcall rfu_orFlags(int result)
 {
     dword_200BC5C |= result;
     return result;
@@ -10802,7 +10802,7 @@ int __fastcall clearStatusBits(int result)
 
 
 // 0x803cb18
-void sub_803CB18()
+void rfu_testStatusFlags()
 {
     ;
 }
@@ -10816,11 +10816,11 @@ signed int sub_803CB24()
     char v2; // zf
 
     v1 = 254;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v2 )
     {
         v1 = 255;
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v2 )
             v1 = *(v0 + 6);
     }
@@ -10837,10 +10837,10 @@ signed int sub_803CB44()
 
     clearStatusBits(byte_200);
     v1 = 0;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v2 && *(*(v0 + oToolkit_JoypadPtr) + 2) & 0x300 )
     {
-        sub_803CB00(byte_200);
+        rfu_orFlags(byte_200);
         v1 = 1;
     }
     return v1;
@@ -13472,7 +13472,7 @@ signed int sub_803EC1C()
     char v1; // zf
     int v2; // r0
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
         if ( !sub_803F3A8() )

@@ -3203,7 +3203,7 @@ int object_tickStatusEffectTimers_800E730()
             *(v0 + 10) = 0;
             if ( *(v1 + 88) )
                 goto LABEL_29;
-            sub_80E9BDC(0, v7, v8, v9);
+            battle_spawnLinkedType4(0, v7, v8, v9);
         }
     }
     v10 = *(v1 + 44);

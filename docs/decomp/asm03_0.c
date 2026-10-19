@@ -310,7 +310,7 @@ int sub_80266AC()
 
 
 // 0x80266ba
-int sub_80266BA()
+int battle_checkFacingTileMatch()
 {
     int v0; // r5
     int v1; // r6
@@ -1162,7 +1162,7 @@ int sub_8027150()
             v9 = 13;
         else
             v9 = v8[5];
-        sub_80281E4(v9, 0);
+        sprite_queueIndexedTileBlock(v9, 0);
         customScreen_ExitSequence_8028E32();
         engine_setScreeneffect(0, 32);
         PlaySoundEffect(146, v10, v11);
@@ -2759,7 +2759,7 @@ int __fastcall sprite_CopyObjTilesToVramSlot_80281D4(__int16 a1)
 
 
 // 0x80281e4
-int __fastcall sub_80281E4(int a1, int a2)
+int __fastcall sprite_queueIndexedTileBlock(int a1, int a2)
 {
     return (loc_8000AC8)(&byte_8725894[128 * a1], (a2 << 7) + 100705440);
 }
@@ -3761,7 +3761,7 @@ signed int __fastcall sub_8028DD6(int a1, int a2, int a3)
 
 
 // 0x8028e04
-signed int __fastcall sub_8028E04(int a1, int a2, int a3)
+signed int __fastcall ow_tryJackIn(int a1, int a2, int a3)
 {
     unsigned __int8 *v3; // r4
     int v4; // r5
@@ -8706,7 +8706,7 @@ int battle_chipSelectDrawMeterBlocks_802C85C()
 
 
 // 0x802c8b0
-int __fastcall sub_802C8B0(int a1, int a2)
+int __fastcall get_weightedRandomIndex(int a1, int a2)
 {
     int v2; // ST08_4
     int v3; // r1
@@ -9061,7 +9061,7 @@ int sub_802CBAC()
 
 
 // 0x802cbcc
-int sub_802CBCC()
+int battle_spawnKindEffect40AtObjectPos()
 {
     int v0; // r5
     int v1; // r10
@@ -10243,7 +10243,7 @@ int sub_802D6C4()
 
 
 // 0x802d714
-void sub_802D714()
+void battle_applyHitElementEffect()
 {
     unsigned __int8 *v0; // r7
 
@@ -11427,7 +11427,7 @@ LABEL_28:
             if ( !battle_networkInvert(v2) )
                 sub_801E2BA(v19);
         }
-        sub_802E5FC(v2, *(v3 + 18), v20);
+        queueRecordHalfwordEntry(v2, *(v3 + 18), v20);
         battle_networkInvert(v2);
         sub_8029514();
         *(v3 + 21) = v15;
@@ -11611,7 +11611,7 @@ signed int __fastcall battle_handAddChip(int a1, int a2, int a3)
 
 
 // 0x802e5fc
-signed int __fastcall sub_802E5FC(int a1, __int16 a2, int a3)
+signed int __fastcall queueRecordHalfwordEntry(int a1, __int16 a2, int a3)
 {
     unsigned __int16 *v3; // r4
     __int16 v4; // r5
@@ -12058,7 +12058,7 @@ signed int sub_802EB60()
 
 
 // 0x802eb80
-signed int sub_802EB80()
+signed int object_initAttackState()
 {
     int v0; // r6
 
@@ -12076,7 +12076,7 @@ signed int sub_802EB80()
 
 
 // 0x802eba8
-signed int sub_802EBA8()
+signed int battle_initAttack2B()
 {
     int v0; // r6
 
@@ -12207,7 +12207,7 @@ signed __int64 sub_802ED8A()
 
 
 // 0x802edbc
-signed __int64 sub_802EDBC()
+signed __int64 ai_startAttack22()
 {
     int v0; // r6
 

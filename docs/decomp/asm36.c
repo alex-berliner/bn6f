@@ -1500,7 +1500,7 @@ int sub_8131150()
 
 
 // 0x81311f0
-int sub_81311F0()
+int t3_setStateAndFadeScreen()
 {
     int v0; // r5
 
@@ -2024,7 +2024,7 @@ void __fastcall sub_8131824(int a1)
         }
         while ( v3 < 60 );
         if ( *&byte_202527C[v3] == v4 )
-            sub_81311F0();
+            t3_setStateAndFadeScreen();
         else
             sub_81313C0();
     }
@@ -2349,7 +2349,7 @@ int sub_8131FC4()
         sub_803EF60(v8);
         *(v0 + 3) = 4;
         *(v0 + 12) = 0;
-        sub_803CB00(1);
+        rfu_orFlags(1);
         initSaveStateBlock_8048F9C(0, v9, v10, v11);
         result = 40;
         **v1 = 40;
@@ -2402,10 +2402,10 @@ void sub_8132080()
     JoypadKeyPressed();
     if ( v1 )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v1 )
         {
-            sub_813D638();
+            ow_checkJackInFlag();
             if ( !v1 )
             {
                 *(v0 + 12) = 4;
@@ -2431,7 +2431,7 @@ int __fastcall sub_81320AC(int a1)
     int v5; // ST00_4
     int v6; // r6
 
-    v3 = sub_813D638();
+    v3 = ow_checkJackInFlag();
     if ( !v3 )
     {
         result = 0;
@@ -2475,19 +2475,19 @@ void *sub_8132104()
     int v5; // r3
     int v6; // r6
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
         goto LABEL_2;
     sub_803C330();
     if ( !v1 )
     {
         sub_803C2A0();
-        sub_803CB00(32);
+        rfu_orFlags(32);
 LABEL_2:
         *(v0 + 12) = 12;
         goto LABEL_9;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
     {
         v2 = sub_803EA78();
@@ -4462,7 +4462,7 @@ int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
 
 
 // 0x8133a44
-void __noreturn sub_8133A44()
+void __noreturn submenu_dispatchStateDraw()
 {
     int v0; // r5
     int v1; // r0

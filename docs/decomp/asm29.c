@@ -8066,7 +8066,7 @@ int __fastcall sub_80AAB04(int a1, int a2, unsigned int a3)
 
 
 // 0x80aab68
-unsigned int __fastcall sub_80AAB68(int a1)
+unsigned int __fastcall rand_pickTable2bit(int a1)
 {
     int v1; // r4
     char v2; // r0
@@ -8119,7 +8119,7 @@ char *__fastcall sub_80AABA4(int a1)
     __int64 v23; // [sp+4h] [bp-20h]
     int v24; // [sp+Ch] [bp-18h]
 
-    v22 = sub_80AAB68(a1);
+    v22 = rand_pickTable2bit(a1);
     v1 = 0;
     v23 = 0LL;
     do
@@ -8216,7 +8216,7 @@ signed int __fastcall sub_80AAC8C(int a1)
         return 0xFFFF;
     pack_sortAndReinitChipAuxData();
     sub_80AAD70(&v15);
-    v3 = sub_80AAB68(v14);
+    v3 = rand_pickTable2bit(v14);
     v4 = 2 * v3;
     v5 = 0;
     while ( !*(&v15 + v4) )

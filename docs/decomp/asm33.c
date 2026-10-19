@@ -8229,7 +8229,7 @@ void sub_812A2B4()
     int v2; // r1
     int v3; // r2
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         IsPaletteFadeActive();
@@ -8294,7 +8294,7 @@ int __fastcall sub_812A350(int a1)
         if ( eStruct200BC30_getRef()[14] != 4 )
             v3 = 47;
         chatbox_runScript_803FD9C_on_eTextScript201BA20(v3);
-        sub_803CB00(4);
+        rfu_orFlags(4);
         *(v1 + 12) = 24;
         result = sub_813D978();
     }
@@ -8305,7 +8305,7 @@ int __fastcall sub_812A350(int a1)
         {
             if ( chatbox_GetState_8045F4C() )
             {
-                sub_803CB00(4);
+                rfu_orFlags(4);
                 *(v1 + 12) = 24;
                 chatbox_runScript_803FD9C_on_eTextScript201BA20(42);
                 result = sub_8146E5C(&unk_200AF80, 2);
@@ -8313,7 +8313,7 @@ int __fastcall sub_812A350(int a1)
             else
             {
                 *(v1 + 12) = 12;
-                result = sub_803CB00(4);
+                result = rfu_orFlags(4);
             }
         }
     }
@@ -8338,7 +8338,7 @@ void __fastcall sub_812A3C8(int a1)
     }
     else
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v2 )
         {
             *(v1 + 12) = 28;
@@ -8469,7 +8469,7 @@ int sub_812A4FC()
     sub_803EF60(v5);
     *(v0 + 3) = 4;
     *(v0 + 12) = 0;
-    return sub_803CB00(1);
+    return rfu_orFlags(1);
 }
 
 
@@ -8496,10 +8496,10 @@ void sub_812A574()
     IsPaletteFadeActive();
     if ( v1 || (sub_8048FC4(), v2 != 28) || (JoypadKeyPressed(), v1) )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v1 )
         {
-            sub_813D638();
+            ow_checkJackInFlag();
             if ( !v1 )
             {
                 *(v0 + 12) = 4;
@@ -8522,22 +8522,22 @@ void __fastcall sub_812A5B4(int a1)
     int v1; // r5
     char v2; // zf
 
-    if ( !sub_813D638() )
+    if ( !ow_checkJackInFlag() )
     {
         *(v1 + 12) = 0;
         return;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v2 )
     {
         *(v1 + 12) = 8;
         *(v1 + 40) = 0;
         return;
     }
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v2 )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( v2 )
             return;
         sub_803C28A(131);
@@ -8558,10 +8558,10 @@ void sub_812A5F8()
     int v6; // r2
     int v7; // r3
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( !v1 )
         {
 LABEL_9:
@@ -8590,13 +8590,13 @@ LABEL_9:
             }
             goto LABEL_14;
         }
-        sub_803CB18();
+        rfu_testStatusFlags();
         if ( v1 )
             return;
         clearStatusBits(8);
     }
     *(v0 + 12) = 20;
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( !v1 )
         goto LABEL_9;
 LABEL_14:
@@ -8660,7 +8660,7 @@ void *sub_812A6F8()
     int v7; // r3
     void *result; // r0
 
-    sub_803CB18();
+    rfu_testStatusFlags();
     if ( v1 )
     {
         result = test0x200bc50_0x5_813D60C();
@@ -9151,7 +9151,7 @@ LABEL_31:
 
 
 // 0x812abec
-int sub_812ABEC()
+int battle_stepDispatchByEntityArg2()
 {
     int v0; // r5
 
@@ -10944,7 +10944,7 @@ int sub_812C0EC()
 
 
 // 0x812c11c
-int sub_812C11C()
+int camera_initEndFromLinkState()
 {
     int v0; // r5
     u32 v1; // r0

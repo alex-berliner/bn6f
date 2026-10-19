@@ -28,28 +28,28 @@ initRefs_80946D4:
 
 // symdb: Re-blits the stored overworld tilemap snapshot at unk_2025404 into the map tilemap buffer and redraws the tilemap around the camera.
 // symdb: () -> r0 = 0; no flags set meaningfully (values from callee are discarded)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094708.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_restoreTilemapFromSnapshot.yaml
 	thumb_local_start
-sub_8094708:
+ow_restoreTilemapFromSnapshot:
 	push {r4-r7,lr}
 	ldr r0, off_8094774 // =unk_2025404 
 	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8094708
+	thumb_func_end ow_restoreTilemapFromSnapshot
 
 // symdb: Re-blits the overworld map tilemap block using parameters stored at unk_2026404 and redraws the area around the camera.
 // symdb: () -> r0 = 0; r1-r3/r4-r7 unspecified on entry, so remaining arguments come from the struct at
 // symdb: unk_2026404 or the caller's state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094714.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_refreshMapTilemap.yaml
 	thumb_local_start
-sub_8094714:
+ow_refreshMapTilemap:
 	push {r4-r7,lr}
 	ldr r0, off_8094778 // =unk_2026404 
 	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8094714
+	thumb_func_end ow_refreshMapTilemap
 
 	thumb_local_start
 sub_8094720:

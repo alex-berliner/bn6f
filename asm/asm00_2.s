@@ -3774,7 +3774,7 @@ loc_80105D2:
 	beq loc_80105E4
 	mov r0, #0x48 
 	bl object_setAttack0
-	bl sub_80EEA3C
+	bl ai_dispatchChipAttackByElement
 	b loc_80105EE
 loc_80105E4:
 	mov r0, #0x4b 
@@ -4354,7 +4354,7 @@ off_80109DC:
 	.word sub_8010AE4+1
 	.word sub_8010AE4+1
 	.word sub_8010B78+1
-	.word sub_8010BD0+1
+	.word battle_getMissingHpCapped+1
 	.word battle_getPlayerHpMod100+1
 	.word sub_8010C06+1
 	.word battle_chargePwrAtk_8010C50+1
@@ -4532,9 +4532,9 @@ locret_8010BCE:
 // symdb: Returns how much HP the player has lost (MaxHP - HP), capped at 500.
 // symdb: (r0 = unused/ignored, r1 = alliance flag for battle_findPlayer) -> r0 = min(MaxHP - HP, 500);
 // symdb: flags clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010BD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getMissingHpCapped.yaml
 	thumb_local_start
-sub_8010BD0:
+battle_getMissingHpCapped:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -4551,7 +4551,7 @@ sub_8010BD0:
 	mov r0, r1
 locret_8010BEE:
 	pop {r6,r7,pc}
-	thumb_func_end sub_8010BD0
+	thumb_func_end battle_getMissingHpCapped
 
 // symdb: Returns the current player's HP modulo 100 (low two digits).
 // symdb: (r0 = ?, r1 = alliance flag passed to battle_findPlayer) -> r0 = playerHP % 100; r1 = remainder
@@ -6252,7 +6252,7 @@ off_80117D4:
 	.word nullsub_44+1 // 0xe
 	.word sub_8011C88+1 // 0xf
 	.word sub_8011CA8+1 // 0x10
-	.word sub_8011CB4+1 // 0x11
+	.word ai_attackProcUseChipResult+1 // 0x11
 	.word slashcrossBPwrAtk_init_8011CD6+1 // 0x12
 	.word nullsub_44+1 // 0x13
 	.word battle_aiInitBeastPwrAttackVars+1 // 0x14
@@ -6264,7 +6264,7 @@ off_80117D4:
 	.word sub_8011D9C+1 // 0x1a
 	.word sub_8011DBC+1 // 0x1b
 	.word sub_8011DDC+1 // 0x1c
-	.word sub_8011DFC+1 // 0x1d
+	.word battle_initBeastPwrAtkVars+1 // 0x1d
 	.word sub_8011E1C+1 // 0x1e
 	.word nullsub_44+1 // 0x1f
 	.word nullsub_44+1 // 0x20
@@ -6293,7 +6293,7 @@ off_80117D4:
 	.word sub_80120FE+1 // 0x37
 	.word nullsub_44+1 // 0x38
 	.word sub_8012124+1 // 0x39
-	.word sub_8012144+1 // 0x3a
+	.word battle_setupAiAttackVars+1 // 0x3a
 	.word sub_801216E+1 // 0x3b
 	.word sub_8012194+1 // 0x3c
 	.word sub_80121BC+1 // 0x3d
@@ -6784,9 +6784,9 @@ sub_8011CA8:
 // symdb: AI attack-state handler: queries the use-chip state machine and sets charge-ready or difficulty-tier flags based on its result code.
 // symdb: (r0 unused, forced to 0; r7 = AI attack-vars struct pointer) -> r0 = status code: unchanged
 // symdb: (0x53/0x54) when charge flag set, otherwise 0x41
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011CB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackProcUseChipResult.yaml
 	thumb_local_start
-sub_8011CB4:
+ai_attackProcUseChipResult:
 	push {r4,lr}
 	mov r0, #0
 	bl useChipRelated_80127C0
@@ -6807,7 +6807,7 @@ loc_8011CD2:
 	mov r0, #0x41 
 locret_8011CD4:
 	pop {r4,pc}
-	thumb_func_end sub_8011CB4
+	thumb_func_end ai_attackProcUseChipResult
 
 	thumb_local_start
 slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
@@ -6994,9 +6994,9 @@ sub_8011DDC:
 // symdb: Initializes an AI attack-vars record for a Beast Out power attack, computing its damage via the scaled-base helper.
 // symdb: (r7 = pointer to AI attack vars struct; no args in r0-r3) -> r0 = 0x50 (the base damage); flags
 // symdb: unused
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011DFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastPwrAtkVars.yaml
 	thumb_local_start
-sub_8011DFC:
+battle_initBeastPwrAtkVars:
 	push {lr}
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
@@ -7012,7 +7012,7 @@ sub_8011DFC:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x50 
 	pop {pc}
-	thumb_func_end sub_8011DFC
+	thumb_func_end battle_initBeastPwrAtkVars
 
 	thumb_local_start
 sub_8011E1C:
@@ -7501,9 +7501,9 @@ sub_8012124:
 // symdb: Initializes the battle AI attack variables for a Navi-controlled attack, scaling base damage from the battle object's NaviStats byte and setting fixed per-tier constants.
 // symdb: (r0 = battle object ptr; r7 = oAIAttackVars struct base) -> r0 = 0x38 (state/attack id); no
 // symdb: flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012144.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupAiAttackVars.yaml
 	thumb_local_start
-sub_8012144:
+battle_setupAiAttackVars:
 	push {lr}
 	mov r1, #1
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -7524,7 +7524,7 @@ sub_8012144:
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x38 
 	pop {pc}
-	thumb_func_end sub_8012144
+	thumb_func_end battle_setupAiAttackVars
 
 	thumb_local_start
 sub_801216E:
@@ -8420,7 +8420,7 @@ sub_8012632:
 	thumb_local_start
 sub_801263A:
 	push {lr}
-	bl sub_8012144
+	bl battle_setupAiAttackVars
 	pop {pc}
 	thumb_func_end sub_801263A
 
@@ -14925,7 +14925,7 @@ loc_801526E:
 loc_801527C:
 	mov r0, #0x36 
 	strh r0, [r7,#oAIAttackVars_StepTimer]
-	bl sub_80EA438
+	bl battle_spawnLinkedType4Object
 	mov r0, #4
 	strb r0, [r7,#oAIAttackVars_AttackElement]
 loc_8015288:
@@ -20308,7 +20308,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / battle_applyHitElementEffect /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -20335,7 +20335,7 @@ loc_8017BE8:
 	ldr r1, off_8017CA0 // =0x1000 
 	tst r0, r1
 	beq loc_8017BF8
-	bl sub_802D714
+	bl battle_applyHitElementEffect
 	pop {r4,r6,r7,pc}
 loc_8017BF8:
 	bl GetAIDataUnk0x48Flag
@@ -27318,7 +27318,7 @@ off_801BF88:
 	.word sub_801D2A4+1
 	.word battle_drawPlayerSideSpriteSet+1
 	.word nullsub_58+1
-	.word sub_801D564+1
+	.word sprite_queueFixedOamPair+1
 	.word sub_801D65C+1
 	.word sub_801D792+1
 off_801BFE8:
@@ -30407,9 +30407,9 @@ locret_801D562:
 // symdb: Parameterless helper that enqueues two hard-coded OAM entries (offsets 0xD368 and 0xD36C) through the OAM queue.
 // symdb: () -> r0 = undefined (clobbered by calls); queues two sprite_queueOamEntry calls with r2 = r3 =
 // symdb: 0 and returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D564.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueFixedOamPair.yaml
 	thumb_local_start
-sub_801D564:
+sprite_queueFixedOamPair:
 	push {r4-r7,lr}
 	ldr r0, dword_801D580 // =0x406c0000 
 	ldr r1, dword_801D584 // =0xd368 
@@ -30431,7 +30431,7 @@ dword_801D588:
 	.word 0x7C8000
 dword_801D58C:
 	.word 0xD36C
-	thumb_func_end sub_801D564
+	thumb_func_end sprite_queueFixedOamPair
 
 // symdb: Queues VRAM tile graphics rendering a 3-digit BCD counter from the player's battle entity into the battle UI tile area.
 // symdb: (r10 = battle toolkit) -> r0 = clobbered; queues GFX transfers to VRAM 0x6017680-0x6017780

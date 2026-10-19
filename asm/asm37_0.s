@@ -4020,9 +4020,9 @@ off_813D634:
 
 // symdb: Returns the boolean state of the jack-in-related flag byte at byte_2009470 via the Z flag.
 // symdb: () -> flags Z/C set from (byte_2009470 != 0); r0 clobbered with the flag byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D638.yaml
-	thumb_func_start sub_813D638
-sub_813D638:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_checkJackInFlag.yaml
+	thumb_func_start ow_checkJackInFlag
+ow_checkJackInFlag:
 	push {lr}
 	ldr r0, off_813D644 // =byte_2009470 
 	ldrb r0, [r0]
@@ -4031,7 +4031,7 @@ sub_813D638:
 	.balign 4, 0x00
 off_813D644:
 	.word byte_2009470
-	thumb_func_end sub_813D638
+	thumb_func_end ow_checkJackInFlag
 
 // symdb: Wrapper that runs the RFU soft-reset/game-ID check and returns TRUE when the IDs match.
 // symdb: () -> r0 = 1 if rfu_REQBN_softReset_and_checkID returned 1 (ID check passed), else 0
@@ -4113,7 +4113,7 @@ off_813D6C0:
 off_813D6C4:
 	.word sub_813D6DC+1
 	.word 0x0
-	.word sub_813D6F4+1
+	.word get_tableEntryNibbleWord+1
 	.word 0x0
 	.word sub_813D714+1
 	.word 0x0
@@ -4135,9 +4135,9 @@ sub_813D6DC:
 // symdb: Reads four bytes of a 0x20-byte IWRAM table entry and packs them nibble-by-nibble into a 16-bit value.
 // symdb: (r0 = entry selector bool for getTableEntryPtr32_802D064) -> r0 = entry ptr (clobbered),
 // symdb: r1/r2/r3 clobbered; returns packed value in r1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D6F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_tableEntryNibbleWord.yaml
 	thumb_local_start
-sub_813D6F4:
+get_tableEntryNibbleWord:
 	push {lr}
 	mov r0, #0
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
@@ -4154,7 +4154,7 @@ loc_813D700:
 	orr r1, r3
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813D6F4
+	thumb_func_end get_tableEntryNibbleWord
 
 	thumb_local_start
 sub_813D714:
@@ -4420,7 +4420,7 @@ off_813D8CC:
 sub_813D8D0:
 	push {lr}
 	mov r0, #0x10
-	bl sub_803CB00
+	bl rfu_orFlags
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_813D8D0
@@ -4485,9 +4485,9 @@ locret_813D930:
 
 // symdb: Stores a wireless link command/state byte into the RFU session struct and, when it changes, clears the associated progress/timer fields.
 // symdb: (r0 = link command byte) -> r0 clobbered; no return value; memory at 0x200BC50 updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D934.yaml
-	thumb_func_start sub_813D934
-sub_813D934:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setLinkCommand.yaml
+	thumb_func_start rfu_setLinkCommand
+rfu_setLinkCommand:
 	push {lr}
 	ldr r1, off_813D974 // =eS200BC50 
 	ldrb r2, [r1]
@@ -4501,7 +4501,7 @@ sub_813D934:
 	strh r0, [r1,#0xa] // (word_200BC5A - 0x200bc50)
 locret_813D94A:
 	pop {pc}
-	thumb_func_end sub_813D934
+	thumb_func_end rfu_setLinkCommand
 
 	thumb_func_start sub_813D94C
 sub_813D94C:
@@ -4548,7 +4548,7 @@ sub_813D978:
 	mov r1, #9
 	strh r1, [r0,#0x8] // (word_200BC58 - 0x200bc50)
 	mov r0, #0
-	bl sub_813D934
+	bl rfu_setLinkCommand
 	pop {pc}
 	.balign 4, 0
 off_813D988:

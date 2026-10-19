@@ -1187,7 +1187,7 @@ loc_809A15C:
 	beq loc_809A1A4
 	mov r0, #0x20
 	strb r0, [r5,#4]
-	bl sub_809A308
+	bl loadTwoCompressedAssets
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A1B0 // =byte_8099E90
@@ -1375,9 +1375,9 @@ byte_809A2EC:
 
 // symdb: Decompresses two LZ77-compressed ROM assets into fixed RAM buffers via the table-driven loader.
 // symdb: () -> void; no return value, no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A308.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/loadTwoCompressedAssets.yaml
 	thumb_local_start
-sub_809A308:
+loadTwoCompressedAssets:
 	push {lr}
 	// initRefs
 	ldr r0, off_809A314 // =initRefs_809A318 
@@ -1396,7 +1396,7 @@ initRefs_809A318:
 	.word unk_2033700
 
 	.word NULL
-	thumb_func_end sub_809A308
+	thumb_func_end loadTwoCompressedAssets
 
 	thumb_local_start
 sub_809A334:
@@ -1813,7 +1813,7 @@ loc_809A64E:
 	beq loc_809A694
 	mov r0, #0x20 
 	strb r0, [r5,#4]
-	bl sub_809A308
+	bl loadTwoCompressedAssets
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// a1
 	ldr r0, off_809A6A0 // =byte_8099E90

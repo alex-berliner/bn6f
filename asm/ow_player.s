@@ -2275,9 +2275,9 @@ loc_809E164:
 // symdb: Setter that records a state byte in the eStruct and the player object, then sets story event flag 1719.
 // symdb: (r0 = state value) -> stores r0 at eStruct200ACE2 and ~r0 at player object+0x15; sets
 // symdb: EVENT_1719; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E168.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setState1719.yaml
 	thumb_local_start
-sub_809E168:
+e_setState1719:
 	push {lr}
 	ldr r3, off_809E184 // =eStruct200ace0 
 	strb r0, [r3,#0x2] // (byte_200ACE2 - 0x200ace0)
@@ -2292,7 +2292,7 @@ sub_809E168:
 	.balign 4, 0
 off_809E184:
 	.word eStruct200ace0
-	thumb_func_end sub_809E168
+	thumb_func_end e_setState1719
 
 // symdb: Relocates the overworld player object to the given (X, Y, Z), backing the old position up into the object's "Next" fields and mirroring the new position into the shared overworld-player state.
 // symdb: void owPlayer_movePlayerToCoordsCopyCurrentToNextMaybe_809e188(u32 x /* r0 */, u32 y /* r1 */,

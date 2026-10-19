@@ -268,7 +268,7 @@ signed int sub_809A138()
             if ( !_ZF )
             {
                 *(v0 + 4) = 32;
-                sub_809A308();
+                loadTwoCompressedAssets();
                 battle_resetEStructRecords_8046664();
                 battle_spawnEStructRecordsFromTable_80465A0(byte_8099E90);
                 setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
@@ -381,7 +381,7 @@ void sub_809A2DC()
 
 
 // 0x809a308
-void sub_809A308()
+void loadTwoCompressedAssets()
 {
     decompAndCopyData(&initRefs_809A318);
 }
@@ -675,7 +675,7 @@ signed int sub_809A630()
             if ( !v1 )
             {
                 *(v0 + 4) = 32;
-                sub_809A308();
+                loadTwoCompressedAssets();
                 battle_resetEStructRecords_8046664();
                 battle_spawnEStructRecordsFromTable_80465A0(byte_8099E90);
                 setFieldsInThreeTableEntries_811980C(*(v0 + 124), *(v0 + 128), 0, 0);
@@ -3769,7 +3769,7 @@ int __fastcall owPlayer_RequestFixedAnimation_809E14C(int a1)
 
 
 // 0x809e168
-unsigned int __fastcall sub_809E168(char a1)
+unsigned int __fastcall e_setState1719(char a1)
 {
     int v1; // r10
 

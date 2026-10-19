@@ -2885,7 +2885,7 @@ cutscenescript_80943B8:
 	cs_make_ow_player_invisible
 	cs_disable_ow_player_wall_collision_809e254
 	cs_call_native_with_return_value ptr1=sub_80946C4+1
-	cs_call_native_with_return_value ptr1=sub_8094708+1
+	cs_call_native_with_return_value ptr1=ow_restoreTilemapFromSnapshot+1
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
 	cs_wait_screen_fade
 	cs_set_cutscene_skip_script ptr1=cutscenescript_8094624
@@ -2960,7 +2960,7 @@ cutscenescript_80943B8:
 	cs_kill_cutscene_process byte1=0x20
 	cs_pause byte1=0xFF byte2=0x14
 	cs_play_sound hword1=0x0143
-	cs_call_native_with_return_value ptr1=sub_8094714+1
+	cs_call_native_with_return_value ptr1=ow_refreshMapTilemap+1
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_play_music hword1=0x000C
 	cs_pause byte1=0xFF byte2=0x1E
@@ -3098,26 +3098,26 @@ cutscenescript_809464B:
 	cs_jump destination1=byte_80945EF
 
 cutscenescript_809466A:
-	cs_call_native_with_return_value ptr1=sub_8094708+1
+	cs_call_native_with_return_value ptr1=ow_restoreTilemapFromSnapshot+1
 	cs_pause byte1=0xFF byte2=0x14
 	cs_play_sound hword1=0x01CE
-	cs_call_native_with_return_value ptr1=sub_8094714+1
+	cs_call_native_with_return_value ptr1=ow_refreshMapTilemap+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_jump destination1=cutscenescript_809466A
 
 cutscenescript_8094682:
-	cs_call_native_with_return_value ptr1=sub_8094708+1
+	cs_call_native_with_return_value ptr1=ow_restoreTilemapFromSnapshot+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_play_sound hword1=0x01CE
-	cs_call_native_with_return_value ptr1=sub_8094714+1
+	cs_call_native_with_return_value ptr1=ow_refreshMapTilemap+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_jump destination1=cutscenescript_8094682
 
 cutscenescript_809469A:
-	cs_call_native_with_return_value ptr1=sub_8094708+1
+	cs_call_native_with_return_value ptr1=ow_restoreTilemapFromSnapshot+1
 	cs_pause byte1=0xFF byte2=0x05
 	cs_play_sound hword1=0x01CE
-	cs_call_native_with_return_value ptr1=sub_8094714+1
+	cs_call_native_with_return_value ptr1=ow_refreshMapTilemap+1
 	cs_pause byte1=0xFF byte2=0x05
 	cs_jump destination1=cutscenescript_809469A
 	cs_end_for_map_reload_maybe_8037c64

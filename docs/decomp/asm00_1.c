@@ -961,7 +961,7 @@ int sub_8003B1C()
 
 
 // 0x8003b24
-signed int __fastcall sub_8003B24(int a1)
+signed int __fastcall e_isIdMatch(int a1)
 {
 	int v1; // r7
 	signed int v2; // r4
@@ -6748,7 +6748,7 @@ int sub_800834A()
 
 
 // 0x8008364
-int sub_8008364()
+int object_wait60FramesThenDispatchEvent()
 {
     int v0; // r5
     int result; // r0
@@ -6989,7 +6989,7 @@ int battle_dispatchNextPhase()
     signed int v5; // r0
     char v6; // zf
 
-    sub_80085FE();
+    battle_forEachAliveActor();
     battle_updateNaviAIJoypad_8012DFC(0);
     battle_updateNaviAIJoypad_8012DFC(1);
     sub_800A032();
@@ -7047,7 +7047,7 @@ int battle_dispatchNextPhase()
 
 
 // 0x80085fe
-int sub_80085FE()
+int battle_forEachAliveActor()
 {
     int v0; // r10
     int v1; // r5
@@ -7203,7 +7203,7 @@ int sub_8008716()
 
 
 // 0x800873a
-int sub_800873A()
+int e_battleEndWaitCountdown()
 {
     int v0; // r5
     int v1; // r10
@@ -7398,7 +7398,7 @@ int battle_introWaitCrossNetReady()
 
 
 // 0x80088d6
-int sub_80088D6()
+int battle_battleEndCountdownTick()
 {
     int v0; // r5
     int v1; // r10
@@ -8313,7 +8313,7 @@ int battle_stepKindEffectWaitCrossNetReady()
 
 
 // 0x80090ee
-int sub_80090EE()
+int battle_timerToEndBattle()
 {
     int v0; // r5
     int v1; // r10
