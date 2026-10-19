@@ -7997,6 +7997,10 @@ dword_8126F90:
 	.word 0x1010
 	thumb_func_end sub_8126F40
 
+// symdb: Zeroes three bytes of a struct at r5 while a screen fade is in progress, otherwise does nothing.
+// symdb: (r5 = struct pointer, set by caller; no args in r0-r3) -> r0 clobbered; ZF from
+// symdb: IsScreenFadeActive leaks through on the early-return path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126F94.yaml
 	thumb_local_start
 sub_8126F94:
 	push {lr}
@@ -17313,6 +17317,10 @@ sub_812B590:
 	.balign 4, 0x00
 	thumb_func_end sub_812B590
 
+// symdb: Battle-object update callback that picks a sprite animation (4, 5, or 7) from the entity's current pose/state byte and applies it.
+// symdb: (r5 = entity pointer; reads state byte at [r5,#2]) -> r0 = result of sprite_setEntityAnimation
+// symdb: (r1 = 0 always); no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B5AC.yaml
 	thumb_local_start
 sub_812B5AC:
 	push {lr}
@@ -18958,6 +18966,9 @@ off_812C248:
 	.word unk_20018C0
 	thumb_func_end sub_812C21C
 
+// symdb: Writes a fixed value 0x34 into byte +1 and clears bytes +2/+3 of an r5 struct used by link-communication state handlers.
+// symdb: (r0 = unused, r5 = pointer to link state struct) -> r0 = 0 on return; no flags set meaningfully
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C24C.yaml
 	thumb_local_start
 sub_812C24C:
 	mov r0, #0x34 

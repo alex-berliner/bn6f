@@ -940,6 +940,9 @@ off_8038F98:
 	.word dword_86B7AE0
 	thumb_func_end battle_renderCommErrorTextGfx
 
+// symdb: Loads a strip of background tiles into BG tile block 3, likely a scene/background tile setup helper
+// symdb: () -> void; calls CopyBackgroundTiles(3, 8, 3, tile_ids, 0x17, 2)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038F9C.yaml
 	thumb_local_start
 sub_8038F9C:
 	push {r4-r7,lr}
@@ -2856,9 +2859,9 @@ locret_803A184:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A104
 
-// symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to chatbox_waitStepQueueCursorOam, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
+// symdb: One frame of a cutscene wait step: test chatbox event flag 0x80, feed a done/not-done flag plus an indexed id to sub_803BBA4, then tick all entity updates and sprite rendering so the world keeps animating while waiting.
 // symdb: (r5 = record whose byte at +0x0e is an index; r0-r4 scratch) -> void; sets r4 = 1 when flag 0x80
-// symdb: is clear, 0 when set, passes it as r2 to chatbox_waitStepQueueCursorOam
+// symdb: is clear, 0 when set, passes it as r2 to sub_803BBA4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_waitStepUpdateEntities.yaml
 	thumb_local_start
 chatbox_waitStepUpdateEntities:
@@ -4478,6 +4481,10 @@ dword_803ACEC:
 	.word submenu_moveCursorBack+1
 	thumb_func_end submenu_guestLibraryFrameUpdate
 
+// symdb: If the exit check passes, clears a menu-state flag, plays the exit-submenu sound, and tears down the submenu.
+// symdb: (r4/r5 = menu/UI state struct, preserved) -> r0 = clobbered; sets byte [r5,#0x13]=0 when exit
+// symdb: condition holds
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AD04.yaml
 	thumb_func_start sub_803AD04
 sub_803AD04:
 	push {r4-r7,lr}
@@ -4661,6 +4668,10 @@ loc_803AE48:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AE2A
 
+// symdb: Advances the element-selection menu cursor to the next element, or clears the selection if it wraps past the last element.
+// symdb: (r5 = element-selection menu state struct) -> r0 = clobbered; no return value; plays cursor SFX
+// symdb: on success
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AE50.yaml
 	thumb_func_start sub_803AE50
 sub_803AE50:
 	push {r4-r7,lr}
@@ -5387,6 +5398,9 @@ initRefs_803B490:
 	.word NULL
 	thumb_func_end copyData_803B45C
 
+// symdb: Loads toolkit BG tile table entry 10 into the toolkit iBGTileIdBlocks blit buffer.
+// symdb: () -> r0 = result of sub_803B91C; no flag use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B518.yaml
 	thumb_local_start
 sub_803B518:
 	push {r4-r7,lr}
@@ -7560,6 +7574,9 @@ sub_803C6C0: // (self: * S200BC50 $r7) -> (u32?, bool)
 	pop {pc}
 	thumb_func_end sub_803C6C0
 
+// symdb: Clears all wireless RFU slot buffers and link state, performs two reset writes, and always returns false/zero (offline).
+// symdb: () -> r0 = 0, r1 = 0 (false); no input registers are read
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C6D8.yaml
 	thumb_local_start
 sub_803C6D8: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
@@ -8180,6 +8197,10 @@ sub_803CB00:
 	.balign 4, 0x00
 	thumb_func_end sub_803CB00
 
+// symdb: clears the caller-supplied bit mask in the status/flag word at 0x200BC5C
+// symdb: (r0 = bit mask of flags to clear) -> r0 = clobbered? (not preserved, but not returned); no
+// symdb: flags; writes [0x200BC5C] &= ~r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB0C.yaml
 	thumb_func_start sub_803CB0C
 sub_803CB0C:
 	ldr r3, off_803CB20 // =eS200BC50
@@ -8262,6 +8283,10 @@ off_803CB88:
 	.word eS200BC50
 	thumb_func_end sub_803CB78
 
+// symdb: Requests main-loop jumptable state 0x1C, zeroing its 8-byte state block and storing the caller's pointer (likely a deferred callback/data) as its argument.
+// symdb: (r0 = arg pointer for state 0x1C handler, passed through) -> r0 unchanged; writes
+// symdb: byte_2008978..980 = 0, [0x200897C] = r0, toolkit MainJumptableIndex = 0x1C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB8C.yaml
 	thumb_func_start sub_803CB8C
 sub_803CB8C:
 	push {r4-r7,lr}

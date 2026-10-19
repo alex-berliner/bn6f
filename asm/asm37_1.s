@@ -2738,6 +2738,10 @@ byte_81430D4:
 	.byte 0x70, 0x9, 0x78, 0x9, 0x80, 0x9, 0x88, 0x9
 	thumb_func_end sub_81430B6
 
+// symdb: Returns one of two text/message IDs (0x96E/0x96F) for the Cybercrow lesson spot, chosen by a state value from a helper.
+// symdb: () -> r0 = message/text ID (halfword 0x96E or 0x96F from table dword_81430F0); no flag
+// symdb: guarantees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430DC.yaml
 	thumb_local_start
 sub_81430DC:
 	push {r4-r7,lr}
@@ -2910,8 +2914,8 @@ dword_814321C:
 	.word 0x1E
 	thumb_func_end sub_8143204
 
-// symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (ow_cybercrowSetCrowRecordState).
-// symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (ow_cybercrowSetCrowRecordState's
+// symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (sub_81432FA).
+// symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (sub_81432FA's
 // symdb: ldrb), r1 = 0x14; r4-r7 preserved (push/pop r4-r7); clobbers r2, r3, lr and the flags. One
 // symdb: primary GetRNG.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143220.yaml
@@ -3177,6 +3181,9 @@ sub_81433D2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81433D2
 
+// symdb: Returns nonzero when the crow-lesson event flag at eStruct2001010+0x9 is set
+// symdb: (void) -> r0 = flag byte from eStruct2001010+0x9 (0 or nonzero); flags set by tst
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433DA.yaml
 	thumb_func_start sub_81433DA
 sub_81433DA:
 	push {r4-r7,lr}
@@ -3200,6 +3207,10 @@ loc_81433F2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81433E4
 
+// symdb: Subtracts r0 from the crow-lesson counter at eStruct2001010+0x9, clamping the result at zero.
+// symdb: (r0 = amount to subtract) -> r0 preserved; counter at byte_2001019 becomes max(counter - r0, 0);
+// symdb: flags set by the SUB
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433F6.yaml
 	thumb_local_start
 sub_81433F6:
 	push {r4-r7,lr}
@@ -3272,6 +3283,10 @@ byte_8143464:
 	.byte 0x5, 0x0, 0x0, 0x0, 0x5, 0x0, 0x0, 0x0, 0x5, 0x0, 0x0, 0x0
 	thumb_func_end sub_814343A
 
+// symdb: Decrements a saturating counter in the crow/bird system struct (eStruct2001010+0xC), clamping at zero and returning the new value.
+// symdb: () -> r0 = new counter value (old value - 1, min 0); flags set from final value (Z if zero, N if
+// symdb: negative before clamp)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143470.yaml
 	thumb_local_start
 sub_8143470:
 	push {r4-r7,lr}

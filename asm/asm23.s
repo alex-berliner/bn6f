@@ -1619,6 +1619,9 @@ loc_8089BA6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089B94
 
+// symdb: Battle-side handler that idles while the chip lockout timer runs, then once it expires fires an action (0xD) and sets an 0x80 flag.
+// symdb: (r5 = state object whose byte field receives 0x80) -> r0 = 1 always; no flags guaranteed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BAA.yaml
 	thumb_local_start
 sub_8089BAA:
 	push {r4-r7,lr}
@@ -1655,6 +1658,10 @@ loc_8089BE0:
 	pop {r4-r7,pc}
 	thumb_func_end ai_event745OnceInit
 
+// symdb: AI routine that waits until the chip lockout timer expires, then issues action 0xE and stores state 0x88 before returning 1.
+// symdb: (implicit r5 = byte state field pointer) -> r0 = 1 always; flags from battle_tickChipLockout
+// symdb: result inside
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BE4.yaml
 	thumb_local_start
 sub_8089BE4:
 	push {r4-r7,lr}

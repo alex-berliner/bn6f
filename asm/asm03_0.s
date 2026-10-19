@@ -2504,6 +2504,10 @@ off_80275D4:
 	.word dword_20349A0
 	thumb_func_end sub_802759E
 
+// symdb: Waits while a screen fade is running, then sets a state field to 4 and clears a counter, advancing some state machine once the fade ends.
+// symdb: (r5 = pointer to state struct; byte at +1 = state, halfword at +2 = counter/timer) -> r0 = 0 on
+// symdb: the advance path; no other return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80275D8.yaml
 	thumb_local_start
 sub_80275D8:
 	push {lr}
@@ -11372,6 +11376,9 @@ off_802B5CC:
 	.word byte_802B5FC
 	thumb_func_end battle_subtractLookupValue
 
+// symdb: One-line wrapper that plays sound effect ID 0x66 via the M4A engine.
+// symdb: () -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B5D0.yaml
 	thumb_local_start
 sub_802B5D0:
 	push {lr}
@@ -11890,6 +11897,9 @@ off_802BA14:
 	.word unk_3001AA0
 	thumb_func_end sub_802B9FE
 
+// symdb: Small getter returning the chip-preview background's BG2 X scroll converted to tile units plus one.
+// symdb: () -> r0 = (RenderInfo->BG2ScrollX >> 3) + 1; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA18.yaml
 	thumb_local_start
 sub_802BA18:
 	mov r0, r10
@@ -11900,6 +11910,11 @@ sub_802BA18:
 	mov pc, lr
 	thumb_func_end sub_802BA18
 
+// symdb: Conditionally performs a pending background tile copy: if the flag byte at 0x2036667 is set, falls through to CopyBackgroundTiles, otherwise does nothing.
+// symdb: (r0-r3 = pass-through args for CopyBackgroundTiles: i, j, which_tile_block_32x32, tile_ids*,
+// symdb: plus stack args j_size, i_size) -> r0 = undefined; calls CopyBackgroundTiles only when
+// symdb: byte_2036667 != 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA24.yaml
 	thumb_local_start
 sub_802BA24:
 	push {r6,lr}
@@ -14977,6 +14992,10 @@ sub_802D09E:
 	pop {r4,r6,pc}
 	thumb_func_end sub_802D09E
 
+// symdb: Fetches one entry from the IWRAM table at byte_203C4A0 and zeroes its first two words.
+// symdb: () -> r0 = pointer to the entry's first word (return value of getTableEntryPtr32); flags
+// symdb: clobbered by bl
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D0BA.yaml
 	thumb_local_start
 sub_802D0BA:
 	push {lr}
@@ -18785,7 +18804,7 @@ nullsub_34:
 	thumb_func_end nullsub_34
 
 // symdb: Sets up the Navi's charge shot attack: rolls a special charge-shot pick, otherwise initializes default charge-shot state and fires attack 0x11.
-// symdb: (r0 = battle object, r6 = attack state struct) -> r0 = 0; calls battle_startAttack33 on the special-pick
+// symdb: (r0 = battle object, r6 = attack state struct) -> r0 = 0; calls sub_802ED68 on the special-pick
 // symdb: path, else object_setAttack0(0x11)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chargeShotSetup.yaml
 	thumb_local_start
@@ -18989,6 +19008,10 @@ byte_802EE64:
 	.byte 0x9, 0x42, 0x0, 0xD1, 0x8, 0x22, 0x10, 0x1C, 0x0, 0xBD
 	thumb_func_end sub_802EE40
 
+// symdb: Adds an encoded amount (256 per unit) to a battle entity's counter at field 0x28, choosing a capped or alternate add path based on bit 7 of the argument.
+// symdb: (r0 = encoded amount, bit7 = variant flag, bits0-6 = unit count; r5 = battle entity pointer) ->
+// symdb: r0 = result of the add callee; calls battle_addCappedCounter or sub_802E04E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EEA2.yaml
 	thumb_local_start
 sub_802EEA2:
 	push {lr}
@@ -19158,6 +19181,9 @@ loc_802EFD4:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_802EF74
 
+// symdb: Returns 1 if the panel at the given (x,y) has the same type byte as the calling object's field 0x16, else 0.
+// symdb: (r0 = panel X, r1 = panel Y; r5 = object) -> r0 = 1 if panel type equals [r5+0x16], else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EFD8.yaml
 	thumb_local_start
 sub_802EFD8:
 	push {lr}
@@ -21288,6 +21314,10 @@ off_802FE34:
 	.word sprite_queueOamEntry+1
 	thumb_func_end sprite_queueOamEntryThunk_802FE28
 
+// symdb: Pass-through veneer that long-calls sprite_queueOamEntries with all arguments untouched.
+// symdb: (r0-r3 = forwarded to sprite_queueOamEntries) -> r0 = sprite_queueOamEntries result; preserves
+// symdb: r4, LR clobbered by veneer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE38.yaml
 	thumb_local_start
 sub_802FE38:
 	push {r4,lr}

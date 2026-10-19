@@ -3031,6 +3031,9 @@ sub_813CCE8:
 	pop {pc}
 	thumb_func_end sub_813CCE8
 
+// symdb: Sets byte 0x31 of the currently selected PET navi's NaviStats record to 1, marking some per-navi flag/progress value.
+// symdb: () -> void; calls SetCurPETNaviStatsByte(0, 0x31, 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CCEC.yaml
 	thumb_local_start
 sub_813CCEC:
 	push {lr}
@@ -3102,6 +3105,9 @@ sub_813CD3E:
 	pop {pc}
 	thumb_func_end sub_813CD3E
 
+// symdb: Writes 0 to byte 0x13 (offset 19) of the NaviStats record of the navi currently selected in the PET.
+// symdb: () -> void; calls SetCurPETNaviStatsByte(0, 0x13), no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD4C.yaml
 	thumb_local_start
 sub_813CD4C:
 	push {lr}
@@ -3141,6 +3147,9 @@ sub_813CD70:
 	pop {pc}
 	thumb_func_end sub_813CD70
 
+// symdb: Zeroes the byte at offset 0x63 of the currently selected PET navi's NaviStats record.
+// symdb: (no args) -> void; writes 0 via SetCurPETNaviStatsByte(0, 0x63, 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD7A.yaml
 	thumb_local_start
 sub_813CD7A:
 	push {lr}
@@ -3445,6 +3454,9 @@ sub_813CF10:
 	pop {r4,r6,pc}
 	thumb_func_end sub_813CF10
 
+// symdb: Writes an 8-bit value at offset 0x16 of the PET's currently selected Navi's stats record.
+// symdb: (r0 = byte value to store) -> void; flags clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF1C.yaml
 	thumb_local_start
 sub_813CF1C:
 	push {lr}

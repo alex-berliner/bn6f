@@ -27,6 +27,9 @@ byte_8130054:
 	.byte 0xDB, 0xFE, 0x0, 0x0, 0xDC, 0xFE, 0x0, 0x0
 	thumb_func_end sub_8130020
 
+// symdb: Starts a camera state-8 pan: picks a target id from overlay work, marks it 0x8000, snapshots the link state into the camera end position, and sets speed 2.
+// symdb: () -> void; reads target camera struct from caller-set r5, no args or return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813005C.yaml
 	thumb_func_start sub_813005C
 sub_813005C:
 	push {r4,lr}
@@ -612,6 +615,10 @@ off_81304A0:
 	.word unk_201F320
 	thumb_func_end sub_8130464
 
+// symdb: Wrapper that feeds a fixed (id, slot, param) table into the eStruct table-spawner to create type-9 records in eStructArr2008450.
+// symdb: () -> void; r0 clobbered with table pointer, calls
+// symdb: battle_spawnEStructRecordsFromTable_80465A0(r0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304A4.yaml
 	thumb_func_start sub_81304A4
 sub_81304A4:
 	push {lr}
@@ -3962,6 +3969,9 @@ dword_8132018:
 	.word 0x2000
 	thumb_func_end sub_8131FC4
 
+// symdb: Update-callback wrapper that ticks the subsystem state at eS200A290, which fires event 0xDA(2) once the subsystem is no longer in use.
+// symdb: () -> none; calls cb_8048FD4 with r0 = eS200A290; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813201C.yaml
 	thumb_local_start
 sub_813201C:
 	push {r5,lr}
@@ -4944,6 +4954,9 @@ loc_8132640:
 	pop {pc}
 	thumb_func_end sub_8132614
 
+// symdb: After dispatching the current engine-mode handler, resets the submenu's index/state bytes (0x10, 0) and refreshes it via a helper.
+// symdb: () -> void; no meaningful args or return; clobbers r5 via callee-saved push
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132648.yaml
 	thumb_func_start sub_8132648
 sub_8132648:
 	push {r5,lr}
@@ -16643,6 +16656,9 @@ off_8137E38:
 	.word 0x200
 	thumb_func_end sub_8137DE4
 
+// symdb: Copies a 7×14 block of tile-ids (the text-window background for a message) into background tile block 2 at the given tile coordinates.
+// symdb: (r0 = dest tile j, r1 = dest tile i, r2 = tile_ids *const u16) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137E3C.yaml
 	thumb_local_start
 sub_8137E3C:
 	push {r4-r7,lr}
@@ -16735,6 +16751,10 @@ off_8137EDC:
 	.word 0x200
 	thumb_func_end sub_8137E7C
 
+// symdb: Thin wrapper that blits a caller-supplied tile array as a 7x14-tile rectangle into background tile block 2.
+// symdb: (r0 = dst i, r1 = dst j, r2 = tile_ids *const u16) -> void; corrupts r2-r5, calls
+// symdb: CopyBackgroundTiles(i, j, 2, tile_ids, j_size=7, i_size=14)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137EE0.yaml
 	thumb_local_start
 sub_8137EE0:
 	push {r4-r7,lr}
@@ -16748,6 +16768,10 @@ sub_8137EE0:
 
 	pop {r4-r7,pc}
 	thumb_func_end sub_8137EE0
+// symdb: Picks a halfword counter from a table using a selector byte stored at unk_201CF00+r0+1 and returns it converted to packed-BCD time.
+// symdb: (r0 = record index into unk_201CF00 (selector byte at +1), r1 = pointer to halfword table) -> r0
+// symdb: = packed-BCD HH:MM:SS.cc of selected halfword
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137EF0.yaml
 	thumb_local_start
 sub_8137EF0:
 	push {r4-r7,lr}
@@ -16955,6 +16979,10 @@ byte_8138040:
 	.byte 0x1, 0x0, 0x0, 0x12, 0x1, 0x0, 0x0, 0x2D, 0x1, 0x0, 0x0
 	thumb_func_end sub_813802C
 
+// symdb: Blits a fixed 3x14 block of tiles from a tile-id list into BG tile block 2, as the draw step of glyph rendering.
+// symdb: (r0 = dest tile j, r1 = dest tile i, r2 = *tile_ids u16) -> void; r3-r5 repurposed as
+// symdb: CopyBackgroundTiles args (tile block 2, size 3, size 14)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813808C.yaml
 	thumb_local_start
 sub_813808C:
 	push {r4-r7,lr}
@@ -17648,6 +17676,9 @@ sub_8138580:
 	pop {pc}
 	thumb_func_end sub_8138580
 
+// symdb: Script opcode handler: starts a screen fade (kind 0xC) to the level given by the next script byte.
+// symdb: (r3 = script pointer, r5 = interpreter state) -> r0 = 0 (continue); [r5+0x18] = r3+2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138584.yaml
 	thumb_local_start
 sub_8138584:
 	push {lr}
@@ -18051,6 +18082,9 @@ ow_perFrameUpdateAndRender:
 	pop {pc}
 	thumb_func_end ow_perFrameUpdateAndRender
 
+// symdb: Frees every active battle object of type 0x25 in one call.
+// symdb: () -> r0 = 0; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138884.yaml
 	thumb_local_start
 sub_8138884:
 	push {lr}

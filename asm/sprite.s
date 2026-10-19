@@ -194,6 +194,10 @@ off_8002798:
 	.word guiSpritePtrs
 	thumb_func_end initGuiSprite_8002770
 
+// symdb: Resets one of the mugshot sprites by table index and sets a flag/counter of 0x80 in the caller's object struct.
+// symdb: (r0 = mugshot sprite index into mugshotSpritePtrs, r5 = object struct ptr, untouched) -> r0
+// symdb: clobbered by callee; stores halfword 0x80 at [r5+0x20+0x16]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800279C.yaml
 	thumb_local_start
 sub_800279C:
 	push {r5,lr}

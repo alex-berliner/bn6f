@@ -3996,6 +3996,10 @@ locret_80A71E8:
 	.balign 4, 0x00
 	thumb_func_end sub_80A7160
 
+// symdb: Decrements an object's countdown timer at +0x38 and plays SFX 0xE2 on its final tick
+// symdb: (r5 = object struct with u32 timer at +0x38; no args) -> r0 = destroyed (void); no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A71EC.yaml
 	thumb_local_start
 sub_80A71EC:
 	push {r4-r7,lr}
@@ -4690,6 +4694,10 @@ locret_80A76C8:
 	.balign 4, 0x00
 	thumb_func_end sub_80A7640
 
+// symdb: Counts down an object's delay timer at +0x34 and plays sound effect 0xE2 once when the timer reaches 1.
+// symdb: (r0 = unused by the callee body; r5 = object work struct, caller-set) -> r0 = sound ID passed to
+// symdb: PlaySoundEffect when timer hits 1; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A76CC.yaml
 	thumb_local_start
 sub_80A76CC:
 	push {r4-r7,lr}
@@ -6172,7 +6180,7 @@ byte_80A81F0:
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `sub_80A822C`, `sub_80A827C`, or `deleteOverworldMapObject` (selected by index byte)
+// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
@@ -9248,6 +9256,9 @@ off_80A9838:
 	.word sub_80A98CC+1
 	thumb_func_end sub_80A9824
 
+// symdb: Map-object handler that switches the story-explosion object to state 4, latches two byte fields into word fields, and runs its update.
+// symdb: (r5 = map object struct, no register args) -> void; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9844.yaml
 	thumb_local_start
 sub_80A9844:
 	push {lr}
@@ -9351,6 +9362,9 @@ off_80A98E8:
 	.word sub_80A9A04+1
 	thumb_func_end sub_80A98D4
 
+// symdb: Initializes a story-explosion map object: sets its state byte and copies two params into counters, then runs one update step.
+// symdb: (r0 unused, r5 = map object struct) -> r0 from callee; writes obj+8, obj+0x24, obj+0x28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A98F4.yaml
 	thumb_local_start
 sub_80A98F4:
 	push {lr}
@@ -11377,6 +11391,9 @@ loc_80AA7D0:
 	pop {r4,pc}
 	thumb_func_end isEventFlag216Set
 
+// symdb: Returns 1 if story/event flag 217 is set, else 0.
+// symdb: () -> r0 = 1 if EVENT_217 set, else 0; ZF from TestEventFlagFromImmediate consumed internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7D4.yaml
 	thumb_local_start
 sub_80AA7D4:
 	push {r4,lr}
@@ -11390,6 +11407,10 @@ loc_80AA7E4:
 	pop {r4,pc}
 	thumb_func_end sub_80AA7D4
 
+// symdb: Returns 1 if story/event flag EVENT_218 is set, else 0 — a simple boolean getter for that event flag.
+// symdb: () -> r0 = bool (1 if EVENT_218 set, else 0); Z flag from TestEventFlagFromImmediate is consumed
+// symdb: internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7E8.yaml
 	thumb_local_start
 sub_80AA7E8:
 	push {r4,lr}
@@ -11403,6 +11424,9 @@ loc_80AA7F8:
 	pop {r4,pc}
 	thumb_func_end sub_80AA7E8
 
+// symdb: Returns 1 if event flag EVENT_219 is set, else 0 — a boolean wrapper over one story-progress flag.
+// symdb: () -> r0 = 1 if EVENT_219 set else 0; ZF from final mov/pop is meaningless
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7FC.yaml
 	thumb_local_start
 sub_80AA7FC:
 	push {r4,lr}
@@ -11416,6 +11440,9 @@ loc_80AA80C:
 	pop {r4,pc}
 	thumb_func_end sub_80AA7FC
 
+// symdb: Returns 1 if story/event flag 222 is set, otherwise 0.
+// symdb: () -> r0 = 1 if EVENT_222 set else 0; flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA810.yaml
 	thumb_local_start
 sub_80AA810:
 	push {r4,lr}

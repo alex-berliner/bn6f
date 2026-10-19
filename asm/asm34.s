@@ -569,6 +569,9 @@ locret_812D788:
 	.balign 4, 0x00
 	thumb_func_end sub_812D778
 
+// symdb: Blits a fixed 8x17 tile patch from the RAM buffer unk_20227A0 into background tile block 0 at position (j=0x15, i=2).
+// symdb: () -> void; no flags (r0-r5 set internally, calls CopyBackgroundTiles)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D78C.yaml
 	thumb_func_start sub_812D78C
 sub_812D78C:
 	push {r4-r7,lr}
@@ -675,6 +678,9 @@ sub_812D830:
 	pop {pc}
 	thumb_func_end sub_812D830
 
+// symdb: Runs text script 0x41 from eTextScript201BA20 once, guarding repeats with a 100-frame cooldown stored in the object's work area.
+// symdb: (r5 = object/npc work struct) -> r0 = chatbox script-runner result; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D83C.yaml
 	thumb_local_start
 sub_812D83C:
 	push {lr}
@@ -795,6 +801,10 @@ off_812D914:
 	.word dword_201E420
 	.word byte_812C278
 	thumb_func_end sub_812D8C8
+// symdb: Wrapper that spawns a batch of eStruct records from one of two hardcoded 0xFF-terminated (id, slot, param) tables.
+// symdb: (r0 = unused/ignored) -> r0 = result of battle_spawnEStructRecordsFromTable; secondary entry at
+// symdb: sub_812D922 selects the second table
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D91C.yaml
 	thumb_func_start sub_812D91C
 sub_812D91C:
 	push {lr}
@@ -968,6 +978,10 @@ locret_812DA4A:
 	pop {pc}
 	thumb_func_end sub_812DA3C
 
+// symdb: Stores a caller-supplied byte into an NPC state struct, sets its state to 0x30, then makes the chatbox play text script 0x41 from archive eTextScript201BA20 and loads a 0xF0 timer.
+// symdb: (r0 = byte parameter stored at [r5,#0x1f], r5 = NPC/object work struct) -> r0 =
+// symdb: chatbox_runScript return value; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA4C.yaml
 	thumb_func_start sub_812DA4C
 sub_812DA4C:
 	push {lr}

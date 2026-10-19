@@ -1043,6 +1043,9 @@ loc_809A054:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A03C
 
+// symdb: Chip-trader menu handler that runs the result dialog script for the traded chip index, then performs a follow-up step and clears the menu's script-active flag.
+// symdb: (r5 = chipTrader menu state object) -> r0 = 0; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A05C.yaml
 	thumb_local_start
 sub_809A05C:
 	push {r4-r7,lr}
@@ -5129,6 +5132,9 @@ byte_809CD18:
 	.byte 0x0, 0x0, 0x0, 0xA, 0x0, 0x0, 0x0, 0xB, 0x0, 0x0, 0x0
 	thumb_func_end sub_809CC60
 
+// symdb: Runs chatbox script 0x21 from an archive whose pointer is held in a global, then returns 0
+// symdb: () -> r0 = 0; no flags meaningful (tail is a plain return)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CD34.yaml
 	thumb_local_start
 sub_809CD34:
 	push {r4-r7,lr}

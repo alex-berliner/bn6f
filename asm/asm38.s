@@ -328,6 +328,10 @@ sub_3005DEC:
 	pop {r4,pc}
 	thumb_func_end sub_3005DEC
 
+// symdb: C hardware helper that clears selected interrupt sources in the IE register without ever leaving interrupts globally disabled
+// symdb: (r0 = bitmask of IE bits to clear) -> r0 = 0 (side effect on IE); flags from mov/bic, no
+// symdb: meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E02.yaml
 	thumb_func_start sub_3005E02
 sub_3005E02:
 	push {r4,lr}
@@ -412,6 +416,9 @@ start_enableInterrupts:
 	pop {r4,pc}
 	thumb_func_end start_enableInterrupts
 
+// symdb: Clears REG_IME, globally disabling interrupts.
+// symdb: () -> r0 = clobbered (not meaningful); REG_IME = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E6A.yaml
 	thumb_func_start sub_3005E6A
 sub_3005E6A:
 	push {r4,lr}

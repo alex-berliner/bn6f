@@ -10707,6 +10707,10 @@ off_8148FB0:
 	.word eS200BC50
 	thumb_func_end sub_8148E74
 
+// symdb: Tail-call wrapper that invokes rfu_REQ_recvData unchanged.
+// symdb: (r0-r3 = arguments passed straight through to rfu_REQ_recvData) -> returns rfu_REQ_recvData's
+// symdb: result; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148FB4.yaml
 	thumb_local_start
 sub_8148FB4:
 	push {lr}

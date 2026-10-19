@@ -6120,6 +6120,10 @@ sub_800EABA:
 	pop {pc}
 	thumb_func_end sub_800EABA
 
+// symdb: Transfers a pending value stored at collision-data +0x84 into the counter at +0x80 and clears the pending slot.
+// symdb: (r0 = battle object, r5 also points to it) -> r0 = clobbered; flags from the final strh/pop path
+// symdb: (not meaningful)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EAC4.yaml
 	thumb_func_start sub_800EAC4
 sub_800EAC4:
 	push {lr}

@@ -30,6 +30,10 @@ off_8045FB8:
 	.word sub_3006B94+1
 	thumb_func_end renderTextGfx_8045F8C
 
+// symdb: Wrapper that tail-calls the animation script runner with entry index 0 and r3 = 0.
+// symdb: (r0-r3 = original args, saved to stack) -> r0 = 0, r3 = 0, then b sprite_runAnimationScript;
+// symdb: returns its result.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8045FBC.yaml
 	thumb_func_start sub_8045FBC
 sub_8045FBC:
 	push {lr}
@@ -8886,6 +8890,10 @@ off_804AE4C:
 	.word unk_202A3E0
 	thumb_func_end sub_804AE04
 
+// symdb: Blits a fixed 8x17-tile image stored in RAM (unk_203486C) onto background tile block 0 at column 0x15, row 2.
+// symdb: () -> r0 = void; calls CopyBackgroundTiles(0x15, 2, 0, unk_203486C, 8, 0x11); no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AE50.yaml
 	thumb_local_start
 sub_804AE50:
 	push {r4-r7,lr}

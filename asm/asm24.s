@@ -1402,6 +1402,10 @@ ow_storePlayerPosDup:
 	pop {pc}
 	thumb_func_end ow_storePlayerPosDup
 
+// symdb: Copies the overworld player's X/Y position into two position field pairs of the object in r5.
+// symdb: (r0 = unused by callee output, r5 = object pointer) -> r0/r1 = player X/Y (as side effect of
+// symdb: callee); no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CC98.yaml
 	thumb_local_start
 sub_808CC98:
 	push {lr}

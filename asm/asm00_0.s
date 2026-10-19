@@ -2293,6 +2293,10 @@ off_80011BC:
 	.word byte_80066E0
 	thumb_func_end math_getPolarVector
 
+// symdb: Converts a direction index (1–8) plus a magnitude into a (dx, dy) vector, returning (0,0) for direction 0.
+// symdb: (r0 = direction index (0 = none, 1–8 = one of 8 directions), r1 = magnitude) -> r0 = dx, r1 =
+// symdb: dy; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011C0.yaml
 	thumb_local_start
 sub_80011C0:
 	push {lr}
