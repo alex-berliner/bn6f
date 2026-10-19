@@ -1958,6 +1958,10 @@ locret_8130F76:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8130F1C
 
+// symdb: Initializes one specific battle scene variant: leaves RFU mode if active, runs the full battle-scene init, loads entity GFX and a menu-style background, and spawns eStruct records from a fixed table.
+// symdb: () -> void; early-returns (via ZF from IsScreenFadeActive) while a screen fade is active; writes
+// symdb: r5+3 = 0x20 and r5+0x1E = 0; no other args/returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130F78.yaml
 	thumb_local_start
 sub_8130F78:
 	push {lr}
@@ -2439,6 +2443,10 @@ off_81312F8:
 	.word unk_2037700
 	thumb_func_end sub_81312F4
 
+// symdb: Scene-state init: wipes VRAM/palette/tile buffers, resets battle scene records, starts a fade and chatbox script 0x68, and marks the event state advanced.
+// symdb: (r5 = event/scene state struct pointer; r10 = toolkit) -> void; sets bit 0x20 of byte at
+// symdb: [r5+0x1B]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81312FC.yaml
 	thumb_local_start
 sub_81312FC:
 	push {r4,r7,lr}
@@ -13079,7 +13087,7 @@ locret_813644C:
 
 // symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
 // symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
-// symdb: state struct) -> r0 = 0; flags from navicust_checkPartPlacement choose valid vs invalid path
+// symdb: state struct) -> r0 = 0; flags from sub_81364BC choose valid vs invalid path
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_confirmPartPlacement.yaml
 	thumb_local_start
 navicust_confirmPartPlacement:
@@ -14562,7 +14570,7 @@ locret_8136FB6:
 // symdb: Per-frame dialog handler for a NaviCust-related overworld object: waits for a trigger, then runs NaviCust text script 0xA/0xB depending on an object field and updates the object state.
 // symdb: (r0 = unused/0 context, r7 = object struct, r5 = object state byte pointer via caller setup) ->
 // symdb: r0 = clobbered; sets [r5] = 0x1C when a dialog script is launched, 0x20 in the fallback path;
-// symdb: flags from navicust_testFlag (beq on zero return = keep waiting)
+// symdb: flags from sub_8137648 (beq on zero return = keep waiting)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_runObjectDialogScript.yaml
 	thumb_local_start
 navicust_runObjectDialogScript:
@@ -17873,6 +17881,9 @@ sub_81387D8:
 	pop {pc}
 	thumb_func_end sub_81387D8
 
+// symdb: Runs the overworld frame: updates player/NPC/map objects, resolves interactions, then queues and flushes all overworld sprites.
+// symdb: () -> (); no arguments or return value, r0-r3 clobbered by the calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138848.yaml
 	thumb_local_start
 sub_8138848:
 	push {lr}

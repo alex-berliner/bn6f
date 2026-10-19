@@ -2539,6 +2539,10 @@ dword_809AC2C:
 	.word NULL
 	thumb_func_end battle_lotteryStep_809AB20
 
+// symdb: Looks up r0 in a 0xFF-terminated (id,value) byte-pair table and returns the paired value, or 0x1A if not found.
+// symdb: (r0 = lookup id byte) -> r0 = matched value byte, or 0x1A (26) on miss; flags clobbered by pops
+// symdb: only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AC48.yaml
 	thumb_local_start
 sub_809AC48:
 	push {r1-r7,lr}
@@ -4013,6 +4017,10 @@ cutscenescript_809BFE3:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Selects a 0x1C-byte map-entry record from the table at byte_809BF24 by the index stored in the caller's struct and copies its transition settings, including fade parameters for entering a map.
+// symdb: (r0-r4 unused; r5 = object/state struct with index at +0x4) -> r0 = 0; stores record pointer at
+// symdb: [r5+0x34], bytes at [r5+5..7], and GameState fade params
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BFE8.yaml
 	thumb_local_start
 sub_809BFE8:
 	push {r4-r7,lr}

@@ -11370,6 +11370,10 @@ battle_dispatchBeastOutUpdateOrAnim_804CCBC:
 	pop {r4-r7,pc}
 	thumb_func_end battle_dispatchBeastOutUpdateOrAnim_804CCBC
 
+// symdb: Every-16-frame ticker that alternates a byte (8 then 9) plus constant 0x10 into a toolkit-referenced buffer, likely a frame/animation selector.
+// symdb: () -> r0,r1 clobbered; writes [Unk2009740+2] = table[(frame & 0xF)], [Unk2009740+3] = 0x10; no
+// symdb: return value, flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCC0.yaml
 	thumb_local_start
 sub_804CCC0:
 	push {r4-r7,lr}

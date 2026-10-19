@@ -832,6 +832,10 @@ libSIO814469C:
 	.balign 4, 0x00
 	thumb_func_end libSIO814469C
 
+// symdb: Per-frame SIO/link state machine: samples the SIO control register, advances a comm state, and periodically copies a status byte out of the comm struct.
+// symdb: () -> r0 undefined; updates struct eTimerEnable200F460 (state at +1, mode at +2, counter at
+// symdb: +0xD, 4-byte field at +0x2A), writes byte_200F448 and byte_200F450
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81446AC.yaml
 	thumb_func_start sub_81446AC
 sub_81446AC:
 	push {r4,lr}
@@ -25329,6 +25333,10 @@ loc_814F978:
 	bx r0
 	thumb_func_end CgbSound
 
+// symdb: Sets a strength value on an object tagged with the 'Smsh' magic and recomputes its scaled product field.
+// symdb: (r0 = object ptr with magic 'Smsh' (0x68736D53) at +0x34, r1 = 8-bit factor) -> r0 clobbered
+// symdb: (popped into pc path); stores factor at +0x1E and factor*base>>8 at +0x20; flags from cmp/mul
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F988.yaml
 	thumb_func_start sub_814F988
 sub_814F988:
 	push {lr}

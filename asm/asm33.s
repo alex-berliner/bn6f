@@ -17318,6 +17318,10 @@ locret_812B63E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_812B608
 
+// symdb: One-shot post-battle overworld reset: waits for the screen fade to finish, then clears all transient overworld/battle state and reinitializes battle structures.
+// symdb: (r5 = game-state/task struct) -> r0 = clobbered; sets r5+2 = 8 and r5+0x1B |= 2 when the reset
+// symdb: runs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B640.yaml
 	thumb_local_start
 sub_812B640:
 	push {lr}
@@ -17353,6 +17357,10 @@ locret_812B696:
 	pop {pc}
 	thumb_func_end sub_812B640
 
+// symdb: Cutscene/scenario state handler that waits for the battle-style sequence tick to finish, then resets graphics and game state, restores the PET navi, plays map music, and clears the Beast Link Gate event flag.
+// symdb: (r5 = scenario/event state struct, not passed via r0) -> r0 = clobbered; on battle tick nonzero
+// symdb: returns without doing anything
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B698.yaml
 	thumb_local_start
 sub_812B698:
 	push {lr}

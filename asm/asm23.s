@@ -956,7 +956,7 @@ loc_8089700:
 
 // symdb: Battle custom-screen handler that maps joypad (A/B/L/R) inputs over the active scenario-effect slot in the chip-select state, playing the appropriate cue and returning a non-zero code on a successful change.
 // symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;
-// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via e_setScenarioEffectStateB, and
+// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via sub_81421C8, and
 // symdb: reads scenario-effect active flag and sub_8142A84.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInputHandler_8089704.yaml
 	thumb_local_start

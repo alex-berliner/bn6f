@@ -646,6 +646,10 @@ dword_3005FB0:
 	.word sub_3005FC0+1
 	.word sub_3005FFA+1
 
+// symdb: Blends a packed BGR555 color toward white by per-channel fixed-point fractions, adding the scaled gap to the base color.
+// symdb: (r0 = packed color in r5-style arg, r1 = red fraction, r2 = green fraction, r3 = blue fraction,
+// symdb: 16.16 fixed point) -> r0 = blended BGR555 color; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005FC0.yaml
 	thumb_local_start
 sub_3005FC0:
 	mov r8, r5
@@ -2555,7 +2559,7 @@ loc_3006CB6:
 
 // symdb: Text-engine formatter that prints a 16-bit game value as a decimal number with width, alignment and zero/space padding.
 // symdb: (r0 = text-state struct: +1 = source selector, +2 = format flags) -> r0 = small code (pad-flag +
-// symdb: 3); digits emitted via chatbox_addOffsetToRow
+// symdb: 3); digits emitted via sub_3006C18
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_printNumber.yaml
 	thumb_local_start
 chatbox_printNumber:

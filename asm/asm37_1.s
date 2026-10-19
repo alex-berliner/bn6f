@@ -110,6 +110,10 @@ sub_81418F0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81418F0
 
+// symdb: Records a map-anchored trigger point (position offset by a per-index pair, size 12x8) into the eStruct2001010 slot, tagging it with the current map group/number.
+// symdb: (r0 = base x, r1 = base y, r2 = param stored at +0x24, r3 = index into byte_8141958 offset
+// symdb: table) -> r0 = 0 (clobbered); writes eStruct2001010+0x18..0x3B
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141914.yaml
 	thumb_local_start
 sub_8141914:
 	push {r4-r7,lr}
@@ -1752,6 +1756,10 @@ loc_814294C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81428D4
 
+// symdb: Offsets a packed (x | y<<8) coordinate pair by a cardinal-direction step taken from a table, scaled by r2, and returns the repacked halfword.
+// symdb: (r0 = packed coords, x in low byte / y in high byte; r1 = direction entry index; r2 = step
+// symdb: multiplier) -> r0 = new packed coords (x&0xFF | y<<8); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142952.yaml
 	thumb_local_start
 sub_8142952:
 	push {r4-r7,lr}
@@ -2239,6 +2247,10 @@ sub_8142CB0:
 	.balign 4, 0x00
 	thumb_func_end sub_8142CB0
 
+// symdb: Stamps one tile-block pattern, selected by index, from a template table into the overworld map-tile grid.
+// symdb: (r0 = destination tile-grid buffer (eMapTilesState-style struct), r1 = template index) -> r0 =
+// symdb: none; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142CC8.yaml
 	thumb_func_start sub_8142CC8
 sub_8142CC8:
 	push {r4-r7,lr}
@@ -2403,6 +2415,9 @@ locret_8142DE4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142DA0
 
+// symdb: Returns a per-area halfword constant (from a 4-entry table) selected by the current overworld map area, with map group 0x85 forced to entry 3.
+// symdb: () -> r0 = halfword from byte_8142E0C[2*areaIndex]; no flags meaningfully used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142DE6.yaml
 	thumb_local_start
 sub_8142DE6:
 	push {lr}

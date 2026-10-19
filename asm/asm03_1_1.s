@@ -326,6 +326,10 @@ off_8038B00:
 	.word byte_2011E40
 	thumb_func_end cb_8038AD0
 
+// symdb: Full graphics/hardware reset that reinitializes the scene after (or as) a battle-linked scene (re)starts: clears VRAM/palette/tilemap, resets render info, resets e-struct records, inits chatbox and fade, then stores state 4.
+// symdb: (r0 = unused entry state, r5 = pointer to scene state byte, written) -> r0 = 4 stored to [r5];
+// symdb: sets up screen for scene rendering
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038B04.yaml
 	thumb_local_start
 sub_8038B04:
 	push {lr}
@@ -1344,6 +1348,10 @@ off_80395E0:
 	.word eS200A290
 	thumb_func_end cb_80395A4
 
+// symdb: Initializes a dialog/text-driven scene: resets graphics and render info, loads palette slot 0x11, starts music 0x22, sets up the chatbox and text-script buffer, and writes an initial scene-state byte (8 or 0x10).
+// symdb: () -> (); stores state byte and 0 via a pointer returned in r5 by a callee; no return value in
+// symdb: r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80395E4.yaml
 	thumb_local_start
 sub_80395E4:
 	push {r4-r7,lr}

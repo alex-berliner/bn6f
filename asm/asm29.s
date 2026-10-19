@@ -4464,6 +4464,10 @@ off_80A754C:
 	.word byte_814122C
 	thumb_func_end ow_getMapDirAnimTableEntry
 
+// symdb: Selects one of four lookup tables based on the current map group (with a sub-index when in map group 0x81) and returns a pointer to the entry indexed by the caller's counter at +0x30.
+// symdb: (r5 = context object, field +0x30 = u32 entry index; reads GameState via r10) -> r0 = pointer
+// symdb: (table_base + 4*index); r4 clobbered, flags meaningless
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A755C.yaml
 	thumb_local_start
 sub_80A755C:
 	push {r4,lr}

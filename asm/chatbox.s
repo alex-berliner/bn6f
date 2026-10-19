@@ -6381,6 +6381,10 @@ off_8042844:
 	.word sub_80429D8
 	thumb_func_end chatbox_F7_move
 
+// symdb: Chatbox script command that loads a choice-cursor size/type and writes cursor box geometry into the chatbox work struct.
+// symdb: (r0 = word-size table base off_80428A0, r4 = script ptr {?, sizeType@+4, x@+2, y@+3}, r5 =
+// symdb: chatbox struct) -> r0 = 1; r4 += 5 (script advance)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804286C.yaml
 	thumb_local_start
 sub_804286C: // 0x804286C
 	ldr r0, off_804289C // =off_80428A0

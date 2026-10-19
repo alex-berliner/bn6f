@@ -5151,6 +5151,9 @@ locret_800579E:
 	pop {pc}
 	thumb_func_end sub_800572C
 
+// symdb: Per-frame tick of the PET/menu scene state; once a screen fade is active it tears the scene down and hands control to the reload/main-jumptable mode 0x40.
+// symdb: (self: * GameState $r5) -> (); sets eMainJumptableIndex byte to 0x40 when tearing down
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80057A0.yaml
 	thumb_local_start
 sub_80057A0: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5217,6 +5220,10 @@ locret_8005858:
 	pop {pc}
 	thumb_func_end mainState_runFrame_8005814
 
+// symdb: Per-frame PET/main tick: runs the scene dispatcher, scenario effects, object dispatch and the full sprite/OW render pipeline, and when a screen fade is active performs a full teardown-and-reinit then jumps the main jumptable to state 0x50.
+// symdb: () -> (); sets the byte at *oToolkit_MainJumptableIndexPtr to 0x50 and tears down/reinits global
+// symdb: state when a fade is in progress; tail clobbers r0/r1/r5/r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800585A.yaml
 	thumb_local_start
 sub_800585A: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -7390,6 +7397,11 @@ sub_80068E8:
 	b loc_80068F2
 	thumb_func_end sub_80068E8
 
+// symdb: Producer for a polled background-request queue: fills the fixed control block at byte_20081B0 with a command id, parameters and a work-buffer pointer, then raises its active flag.
+// symdb: (r0 = word param stored at +0x4, r1 = word param stored at +0x8, r2 = byte command stored at
+// symdb: +0x1, r3 = packed value whose upper halfword is stored at +0x2) -> r0 = 1; clobbered: r4-r7 not
+// symdb: visible to caller, flags destroyed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80068EC.yaml
 	thumb_func_start sub_80068EC
 sub_80068EC:
 	push {r4-r7,lr}
@@ -10753,6 +10765,9 @@ locret_8007E60:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_state_tick_8007CA0
 
+// symdb: Per-frame battle main routine: dispatches the current battle state's handler, then runs the common sprite/panel/OAM render pipeline.
+// symdb: (r5 = * BattleState) -> r0 = clobbered; sets byte at eStruct203F7D8+1 to 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007E62.yaml
 	thumb_local_start
 sub_8007E62: // (self: * BattleState $r5) -> ()
 	push {lr}
@@ -11692,6 +11707,11 @@ locret_800855C:
 	pop {pc}
 	thumb_func_end sub_8008528
 
+// symdb: Per-frame battle turn-state machine step that unpauses the battle, updates AI input, and routes to the next phase state (cust gauge, phase advance, BeastOut intro, or death anim) based on the current phase mode.
+// symdb: (r5 = pointer to battle flow state struct with u32 state id at +0 and u8 flag at +5; r10 =
+// symdb: toolkit with battle state ptr) -> r0 = varies from callees; sets [r5+0] to the next state id (8,
+// symdb: 0xc, 0x14 or 0x18)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800855E.yaml
 	thumb_local_start
 sub_800855E:
 	push {lr}
@@ -14257,6 +14277,10 @@ off_8009748:
 	.word sub_80097A8+1
 	thumb_func_end sub_8009734
 
+// symdb: Battle state-4 tick handler: waits 10 frames if state-4 events are pending then advances to phase 4, otherwise jumps straight to battle state 8.
+// symdb: () -> void; r5 = battle state struct, writes SubPhaseInitFlag/CountdownTimer/State4EventCount
+// symdb: read, StatePhaseAndInitFlag, Index_01
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009754.yaml
 	thumb_local_start
 sub_8009754:
 	push {lr}

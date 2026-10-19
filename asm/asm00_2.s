@@ -5500,7 +5500,7 @@ sub_8011362:
 	mov r3, #0xa
 	b loc_8011368
 
-// symdb: Spawns a t1 battle object (kind 0x47) packed with constant 0x0A0C and a caller halfword, links it to the calling battle object as RelatedObject2Ptr; the variant-0 entry additionally calls object_setFlag.
+// symdb: Spawns a t1 battle object (kind 0x47) packed with constant 0x0A0C and a caller halfword, links it to the calling battle object as RelatedObject2Ptr; the variant-0 entry additionally calls sub_80C46C0.
 // symdb: (r0, r1 = spawner args, r2 = halfword param, r3 = variant 0-5 set by entry point, r5 = battle
 // symdb: object) -> r0 = spawned object stored to [r5+oBattleObject_RelatedObject2Ptr]; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnRelatedObject2.yaml
@@ -6155,6 +6155,11 @@ battle_dispatchBusterAtkHandler:
 	pop {r6,r7,pc}
 	thumb_func_end battle_dispatchBusterAtkHandler
 
+// symdb: Dispatches the per-chip Beast Out attack-power handler selected by the index in r0, with r7 preloaded with the object's AI attack vars.
+// symdb: (r0 = attack/chip handler index, r5 = battle object) -> tail-calls table handler
+// symdb: (off_80117D4[r0]); r6 = oBattleObject_AIDataPtr, r7 = aiData + oAIData_AttackVars on entry to
+// symdb: handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80117BA.yaml
 	thumb_local_start
 sub_80117BA:
 	push {r6,r7,lr}
@@ -12380,9 +12385,9 @@ off_80141C4:
 	.word 0x104
 	thumb_func_end SetBeastOutCounterTo3
 
-// symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers battle_syncHudShownHp for the enemy-side network invert.
+// symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers sub_801E0BC for the enemy-side network invert.
 // symdb: (r5 = *BattleObject) -> (flags Z) ; side effects: writes [r5+0x24..0x27] (HP/MaxHP) and may call
-// symdb: battle_syncHudShownHp
+// symdb: sub_801E0BC
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPlayerMaxHPFromStats_80141C8.yaml
 	thumb_local_start
 battleObject_initPlayerMaxHPFromStats_80141C8:
@@ -14043,7 +14048,7 @@ locret_8014CBE:
 
 // symdb: Per-tick AI attack update that cancels the Beast Out spam (atkvars Unk_10) once elapsed and tears down its state.
 // symdb: (r5 = ActorBattleObjectPtr, r6 = ?, r7 = ActorAIDataPtr, r10 = ToolkitPtr, lr = caller) -> r0 =
-// symdb: new Alliance value passed to setIndexedTableByte ; side effects: edits ActorAIData->AttackVars offsets
+// symdb: new Alliance value passed to sub_800AB2E ; side effects: edits ActorAIData->AttackVars offsets
 // symdb: 0x01 and 0x10, clears AIData bits 0x80 / 0x80000, AIData->Unk_44 bits 0x80008600, battle-state
 // symdb: flags 0x20, then calls object_exitAttackState
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackTickBeastSp_8014CC0.yaml
@@ -15171,6 +15176,10 @@ off_8015628:
 	.word sub_801562C+1
 	thumb_func_end sub_8015614
 
+// symdb: Enemy AI attack step that makes the object emerge/warp onto its reserved target panel (white-flash, sound, effect), then waits ~30 frames before releasing AI flags and leaving the attack state.
+// symdb: (r5 = battle object, r7 = AI attack vars context) -> void; sets r0 result of
+// symdb: battle_checkEmergeDirectionFlip into oBattleObject_DirectionFlip
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801562C.yaml
 	thumb_local_start
 sub_801562C:
 	push {r4,lr}
@@ -15305,6 +15314,10 @@ locret_8015764:
 	pop {r4,pc}
 	thumb_func_end sub_801562C
 
+// symdb: Enemy-AI navi melee/step-forward attack routine: initiates the attack (move to front panel, spawn effect, sound, chip-class setup), then busy-waits ~30 frames before returning done.
+// symdb: (r5 = battle object ptr) -> r0 = 1 while attack state active, 0 when finished; uses AIData+0xA0
+// symdb: vars
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015766.yaml
 	thumb_local_start
 sub_8015766:
 	push {r4,r6,r7,lr}
@@ -18848,6 +18861,9 @@ sub_80171CC:
 	pop {pc}
 	thumb_func_end sub_80171CC
 
+// symdb: Battle-object phase handler that kills an object with a white-flash fade: flashes its palette for ~90 frames, then detaches it from the battle (alliance, panel reserve, alive list) with a screen fade and hands off to the destroy phase.
+// symdb: (r5 = battle object) -> void; sets object phase 4 on setup, phase 8 on finish
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80171D8.yaml
 	thumb_local_start
 sub_80171D8:
 	push {r4,r7,lr}
@@ -19419,6 +19435,11 @@ dword_8017684:
 	.word 0x20005F
 	thumb_func_end battleObject_actionParalyze_80175B8
 
+// symdb: Battle-object phase handler that resets a stunned/pulled object and snaps it onto its reserved panel, then waits until it is freed before returning to its normal action.
+// symdb: (r5 = battle object pointer, no register args) -> r0 = scratch; writes
+// symdb: oBattleObject_PhaseInitialized, PanelX/Y, Z, CurAnim, CurAction, CurPhaseAndPhaseInitialized and
+// symdb: many object/AI flag bits
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017688.yaml
 	thumb_func_start sub_8017688
 sub_8017688:
 	push {lr}
@@ -23284,6 +23305,10 @@ sub_801A4D0:
 	mov pc, lr
 	thumb_func_end sub_801A4D0
 
+// symdb: Collects the parent object pointers of all collision entries whose flag bit is set in the accumulated collision flags, up to a capacity.
+// symdb: (r0 = u32* out array, r1 = capacity in bytes) -> r0 = number of pointers written; flags
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A4DC.yaml
 	thumb_func_start sub_801A4DC
 sub_801A4DC:
 	push {r4,r5,lr}
