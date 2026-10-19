@@ -339,6 +339,10 @@ off_81302CC:
 	.word byte_812F054
 	thumb_func_end sub_81302B0
 
+// symdb: Spawns eStruct records from a caller-supplied table into a given slot and, if one was created, positions it on the battle field.
+// symdb: (r0 = eStruct spawn table ptr, r1 = eStructArr2008450 slot index, r2 = coordinate/position
+// symdb: value) -> r0 = undefined; flags from getStructFrom2008450's in-use byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302D0.yaml
 	thumb_local_start
 sub_81302D0:
 	push {r4-r7,lr}
@@ -522,6 +526,10 @@ sub_813040C:
 	.word word_2023FA0
 	thumb_func_end sub_813040C
 
+// symdb: Puts an NPC into its talking state (backing up its previous state) and starts a dialog from the shared text-script archive, unless a flag suppresses it.
+// symdb: (r0 unused?, r5 = NPC object struct pointer) -> void; starts chatbox script eTextScript201BA20
+// symdb: at index from eStruct200BC30[0xE]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130424.yaml
 	thumb_func_start sub_8130424
 sub_8130424:
 	push {lr}
@@ -847,6 +855,10 @@ dword_8130688:
 	.word 0x382E24
 	thumb_func_end sub_813064C
 
+// symdb: Builds (or clears) a 0x60-byte record at unk_202708C: 0x20 bytes of text from the chatbox script pool followed by a 0x3C-byte selected-chip entry plus a halfword checksum.
+// symdb: () -> r0 = undefined; writes unk_202708C[0..0x60) and fields of the struct returned by
+// symdb: sub_8130404; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813068C.yaml
 	thumb_func_start sub_813068C
 sub_813068C:
 	push {r4-r7,lr}
@@ -2575,6 +2587,9 @@ locret_81313FC:
 	.byte 0, 0
 	thumb_func_end sub_81313C0
 
+// symdb: Loads the three graphics asset archives (LZ77-compressed) used by the cutscene/battle-scene UI into their RAM buffers.
+// symdb: () -> void; no meaningful return flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131400.yaml
 	thumb_local_start
 sub_8131400:
 	push {lr}
@@ -4783,6 +4798,9 @@ sub_81325C0:
 	.balign 4, 0x00
 	thumb_func_end sub_81325C0
 
+// symdb: Copies two fields of the eLinkState global (offsets 0x1C and 0x0A) into the eCamera end struct at eCamera.unk_84+4 and +2.
+// symdb: () -> void; writes eCamera.unk_84+2 (halfword) and +4 (word), clobbers r0-r1, r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81325CC.yaml
 	thumb_func_start sub_81325CC
 sub_81325CC:
 	push {r4,lr}
@@ -11864,6 +11882,10 @@ locret_8135AF2:
 	.word 0x120
 	thumb_func_end sub_8135A44
 
+// symdb: Cutscene-style step that waits for the chatbox to become inactive, then sets a scene state, triggers a screen fade, and advances before pumping the chatbox handler.
+// symdb: (r0 = unused, r5 = per-scene state struct pointer) -> r0 = clobbered; sets [r5+1] = 8, [r5+2] =
+// symdb: 0 or 4; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135AF8.yaml
 	thumb_local_start
 sub_8135AF8:
 	push {lr}
@@ -12629,6 +12651,9 @@ sub_81360B4:
 	pop {pc}
 	.balign 4, 0x00
 	thumb_func_end sub_81360B4
+// symdb: Exit routine for the Navi Customizer board screen: resets state, unhighlights the cursor cell, redraws the board, and plays the exit sound.
+// symdb: () -> void; r0 and r5 clobbered via calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81360DC.yaml
 	thumb_local_start
 sub_81360DC:
 	push {lr}
@@ -12844,6 +12869,9 @@ off_8136278:
 	.word 0x14C
 	thumb_func_end sub_8136218
 
+// symdb: Cancel/exit action for the Navi Customizer board screen: clears the text box, plays the unselect sound, and sets the screen state to 0x34.
+// symdb: (r0-r3 unused) -> void; r5 = board context struct, byte [r5,#2] = new screen/state code
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813627C.yaml
 	thumb_local_start
 sub_813627C:
 	push {lr}
@@ -16040,6 +16068,10 @@ locret_813799C:
 	.byte 0, 0
 	thumb_func_end sub_8137990
 
+// symdb: Per-frame input handler for a submenu: A confirms a highlighted entry (buzzer if invalid), B exits the submenu with a screen fade, and D-pad/shoulder moves the cursor, refreshing the display on change.
+// symdb: (r5 = menu state struct) -> void; writes state bytes [r5+1], [r5+2], advances cursor at
+// symdb: [r5+0x1e]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81379A0.yaml
 	thumb_local_start
 sub_81379A0:
 	push {lr}
@@ -16178,6 +16210,9 @@ locret_8137ACA:
 	pop {pc}
 	thumb_func_end sub_8137A7C
 
+// symdb: Loads a per-navi background scene: resolves an asset list by key (likely navi ID), decompresses tiles/palettes into VRAM, loads the navi tile grid, and draws a full 30x20 tile block to background block 1.
+// symdb: () -> void; no arguments, no meaningful return, clobbers r0-r5 and flags via callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137ACC.yaml
 	thumb_local_start
 sub_8137ACC:
 	push {r4-r7,lr}

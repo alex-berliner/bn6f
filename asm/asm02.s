@@ -162,6 +162,10 @@ off_8021B74:
 // (int idx, int searchItem, int off) -> void*
 // [break (E7FE)]
 //   When getting an item; like from mayl, or when loading shops
+// symdb: Sets the stocked quantity byte for a given chip (id + code) in the pack, re-encrypting the pack byte first when the new value is nonzero.
+// symdb: (r0 = chip id, r1 = code/search key, r2 = new quantity) -> r0 = address of the quantity byte
+// symdb: that was written; r2 preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8021B78.yaml
 	thumb_func_start sub_8021B78
 sub_8021B78:
 	push {lr}

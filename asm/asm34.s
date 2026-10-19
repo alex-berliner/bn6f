@@ -715,6 +715,9 @@ off_812D87C:
 	.word word_2023FA0
 	thumb_func_end sub_812D854
 
+// symdb: State-machine handler that saves the current state, switches the task to state 0x1C, and opens a text script (0x30 or 0x40) in the chatbox, also fixing up an in-progress screen fade.
+// symdb: (r0 = unused, r1 = unused, r5 = task struct) -> void; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D880.yaml
 	thumb_func_start sub_812D880
 sub_812D880:
 	push {lr}

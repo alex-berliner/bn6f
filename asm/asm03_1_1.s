@@ -4287,6 +4287,10 @@ sub_803ABF4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803ABF4
 
+// symdb: Battle-start transition step: fades the screen (or skips if a cutscene state is active), records the next state, then initializes the battle module.
+// symdb: (r0 = flag mask 0x80 passed to chatbox flag check; r5 = global state-machine context pointer) ->
+// symdb: r0 = battle_moduleInit result; [r5+1] set to next state byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AC02.yaml
 	thumb_local_start
 sub_803AC02:
 	push {r4-r7,lr}
@@ -4333,6 +4337,10 @@ loc_803AC50:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AC2C
 
+// symdb: Records a launch-context byte (chatbox/cutscene vs normal) into the battle struct and then initializes the battle module.
+// symdb: (r0 = unused flag arg consumed by helper; r5 = battle work struct pointer set up by caller) ->
+// symdb: r0 = result of battle_moduleInit_803A820; writes mode byte to [r5+1]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AC56.yaml
 	thumb_local_start
 sub_803AC56:
 	push {r4-r7,lr}
@@ -4701,6 +4709,11 @@ sub_803AED8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AED8
 
+// symdb: Waits for any chatbox/cutscene to finish, then triggers the fade-in into battle and sets a frame delay, running the battle module step afterwards.
+// symdb: (r5 = battle-context struct pointer, preserved from caller; r0/r1 scratch) -> writes frame-delay
+// symdb: counter to [r5+1]; calls SetScreenFade and battle_moduleInit_803A820; branches on chatbox flag
+// symdb: Z/NZ
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AEE6.yaml
 	thumb_local_start
 sub_803AEE6:
 	push {r4-r7,lr}
@@ -4777,6 +4790,10 @@ loc_803AF6A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AF46
 
+// symdb: Conditionally resets some battle-state bytes/compacts a list when flag 0x80 of eFlags2009F38 is clear, then initializes the battle module.
+// symdb: (r0 = scratch for flag test; r5 = state struct pointer, set by caller) -> r0 = clobbered by
+// symdb: calls; flags set by the flag test only before the unconditional init call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AF70.yaml
 	thumb_local_start
 sub_803AF70:
 	push {r4-r7,lr}
@@ -8281,6 +8298,11 @@ locret_803CC3E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803CC28
 
+// symdb: While a screen fade is active, blanks the BG layers (LCD control 0x40), runs a chatbox update, then tail-jumps to a handler pointer stored in a struct at [r5+4].
+// symdb: (r0 = unused on entry; r5 = pointer to a struct whose +4 field is a function pointer) -> does
+// symdb: not return to caller normally; control passes to the [r5+4] handler, whose return reaches this
+// symdb: function's caller; flags clobbered by calls.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CC40.yaml
 	thumb_local_start
 sub_803CC40:
 	push {r4-r7,lr}
@@ -8969,6 +8991,10 @@ dword_803D0B0:
 	.word 0x270F
 	thumb_func_end GiveBugfrags
 
+// symdb: Refreshes the anti-tamper protected BugFrag counter in the game state and recomputes its obfuscated checksum copies
+// symdb: () -> void; no arguments; r0 is scratch holding the count written to the state, flags consumed
+// symdb: from the integrity-check callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D0B4.yaml
 	thumb_func_start sub_803D0B4
 sub_803D0B4:
 	push {lr}
@@ -13978,6 +14004,10 @@ off_803F914:
 	.word EXE6_InfoText_timestamp
 	thumb_func_end infoText_IsTimestampUnchanged_803F8F4
 
+// symdb: Builds a 0x28-byte save block holding the info-text timestamp plus a checksum and writes it to SRAM at 0x0E007E00, retrying up to 3 times and setting/clearing event flag EVENT_172E to report success.
+// symdb: () -> r0 = 0 if the SRAM write verified, 1 after 3 failed attempts; sets/clears EVENT_172E
+// symdb: accordingly
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F918.yaml
 	thumb_local_start
 sub_803F918:
 	push {r1-r7,lr}

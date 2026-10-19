@@ -3750,6 +3750,10 @@ loc_80105EE:
 	pop {r7,pc}
 	thumb_func_end ai_useChipAttack
 
+// symdb: Initializes an enemy AI's attack/chip-use parameters and kicks the battle object into one of two attack states.
+// symdb: (r0 = flags (bit 0x200 selects state 0x48 vs 0x47), r1 = chipUseDelay, r2 = aiDifficultyTier, r3
+// symdb: = damage) -> void; relies on caller-set r5 (battle object), clobbers r0-r3,r7,LR
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80105F2.yaml
 	thumb_func_start sub_80105F2
 sub_80105F2:
 	push {r7,lr}
@@ -12691,6 +12695,9 @@ loc_80143B6:
 	thumb_func_end battleObject_markUsedAction_80143A6
 	thumb_func_end sub_80143B4
 
+// symdb: Conditionally sets flags-2 bit 0x200 on the battle object's AI data when two AI-state gate fields are clear
+// symdb: (r0 = BattleObject ptr via callee convention) -> r0 = clobbered; flags from callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80143CE.yaml
 	thumb_local_start
 sub_80143CE:
 	push {lr}
@@ -13307,6 +13314,9 @@ sub_8014754:
 	pop {r7,pc}
 	thumb_func_end sub_8014754
 
+// symdb: Flags the current battle object with 0x30 in ObjectFlags1 and refreshes its collision with a hit modifier of 3 when the NoCustomPlus battle effect is active, else 0.
+// symdb: () -> void; operates on the current battle object tracked outside this function
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014760.yaml
 	thumb_local_start
 sub_8014760:
 	push {lr}
@@ -14887,6 +14897,10 @@ dword_80153AC:
 	.word 0x30E00
 	thumb_func_end sub_80152C8
 
+// symdb: Runs a per-frame countdown on a battle object; once the timer expires, clears AI-state flags and exits the attack state.
+// symdb: (r7 = battle object with AI attack vars) -> r0 = scratch; sets/clears object AI flag bits and
+// symdb: battle flag 0x20
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80153B0.yaml
 	thumb_local_start
 sub_80153B0:
 	push {r4,lr}
@@ -16150,6 +16164,13 @@ loc_8015CBC:
 	pop {r7,pc}
 	thumb_func_end sub_8015C94
 
+// symdb: Walks along a battle object's row in the direction opposite its alliance, collects panels matching an alliance-specific area flag once a per-call limit is reached, and returns one of them chosen at random plus the farthest matching panel.
+// symdb: (r0 = start column, r1 = start row, r2 = required panel-flag mask, r3 = forbidden panel-flag
+// symdb: mask, stack arg = panel count limit; r5 = battle object providing
+// symdb: oBattleObject_Alliance/oBattleObject_DirectionFlip) -> r0 = chosen column (low nibble), r1 =
+// symdb: chosen row (high nibble), r2/r3 = column/row of last panel matching the alliance mask; flags
+// symdb: clobbered.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015CC0.yaml
 	thumb_func_start sub_8015CC0
 sub_8015CC0:
 	push {lr}
@@ -33482,6 +33503,10 @@ sub_801EC38:
 	pop {pc}
 	thumb_func_end sub_801EC38
 
+// symdb: Loads two blocks of graphics (to VRAM and an IWRAM buffer) and kicks off a HUD request with a 60-frame timer in the battle HUD state.
+// symdb: () -> (); queues two GFX transfers, sets request bit 0x00200000 via
+// symdb: eStruct2035280_SetRequestBits, dispatches it, and writes 0x3C to eStruct2035280+0x1B
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EC44.yaml
 	thumb_func_start sub_801EC44
 sub_801EC44:
 	push {r4,r6,r7,lr}

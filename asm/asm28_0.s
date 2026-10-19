@@ -2214,6 +2214,10 @@ off_809A988:
 	.word byte_809A898
 	thumb_func_end sub_809A950
 
+// symdb: Script/battle-cutscene step: advances a counter, slides a group of three sprite-table entries to (0,0x58), pumps the per-frame entity and eStruct sprite updates, and returns 1 only once event flag EVENT_F5 is set.
+// symdb: (r5 = script/state struct, r10 = toolkit) -> r0 = 0 while step still running, 1 when EVENT_F5 is
+// symdb: set; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A98C.yaml
 	thumb_local_start
 sub_809A98C:
 	push {r4-r7,lr}

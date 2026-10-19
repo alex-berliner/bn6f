@@ -456,6 +456,9 @@ dword_808FB9C:
 	.word 0x1AE
 	thumb_func_end sub_808FB68
 
+// symdb: Spawns overworld map object type 0x1B at the player's current position, passing the player's facing direction.
+// symdb: (no args) -> r0 = spawned object or its handle from SpawnOverworldMapObject; clobbers r0-r4, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FBA0.yaml
 	thumb_local_start
 sub_808FBA0:
 	push {lr}

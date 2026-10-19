@@ -3737,6 +3737,11 @@ loc_8124EC4:
 	pop {pc}
 	thumb_func_end sprite_stage2InitBattleState_8124E7C
 
+// symdb: Per-frame battle-scene update: re-inits the chip-sprite slot buffer, scrolls a counter down, forces the transition pump to reload tilemaps, redraws the arena floor, and repositions two groups of pooled sprite structs.
+// symdb: (r0 = unused/0, r5 = battle-scene state struct) -> r0 = last sprite_setStructHalfwordPairOnThree
+// symdb: result; updates [r5+0x74] counter, [r5+0x70] flag, [r5+0x2] byte, and sprite-struct +0xC/+0xE
+// symdb: pairs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124ED4.yaml
 	thumb_local_start
 sub_8124ED4:
 	push {lr}
@@ -3785,6 +3790,10 @@ loc_8124F28:
 	pop {pc}
 	thumb_func_end sub_8124ED4
 
+// symdb: Per-frame handler of a timed pre-battle/intro state: ticks a 2-step frame counter, pumps the battle transition and arena tiles, and conditionally writes halfword pairs into pool structs.
+// symdb: (r5 = battle-state struct, no register args) -> void; writes r5+0x70=0xff each frame, advances
+// symdb: r5+0x74 by 2 (clamped to 0x7c), and stores next state id 0x18 into r5+0x2 when the cap is hit
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124F30.yaml
 	thumb_local_start
 sub_8124F30:
 	push {lr}
@@ -4059,6 +4068,10 @@ locret_8125148:
 	.balign 4, 0x00
 	thumb_func_end sub_8125128
 
+// symdb: Per-frame update of the battle transition/intro animation: blits the progressive graphic, queues its OAM sprite, pumps the transition, and once the screen fade finishes advances the state to 8.
+// symdb: () -> r0 = result of last callee (unused); writes state byte [r5+1] = 8 when no screen fade is
+// symdb: active; uses global r5 context struct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812514C.yaml
 	thumb_local_start
 sub_812514C:
 	push {lr}
@@ -7983,6 +7996,10 @@ locret_8126FA4:
 	.balign 4, 0x00
 	thumb_func_end sub_8126F94
 
+// symdb: PET-menu task that, once the screen fade ends, raises the save prompt (dialog 0x35, or 0x39 when saving is disabled) and clears its request flags.
+// symdb: (r0 = context object, r5 = related struct with byte fields at +1/+2/+3) -> void; sets
+// symdb: r5[2]=0x14, zeroes r5[1..3] during fades, branches on ZF from fade/flag tests
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126FA8.yaml
 	thumb_local_start
 sub_8126FA8:
 	push {lr}
@@ -12720,6 +12737,10 @@ dword_8129528:
 	.word 0x5C5D5D
 	thumb_func_end sub_8129454
 
+// symdb: Battle-frame tick: updates all entities and sprites, then when no screen fade is running kicks off a fade-out and marks the battle state 0xC.
+// symdb: (no args; r5 = battle state struct) -> r0 = SetScreenFade result/void; flags from
+// symdb: IsScreenFadeActive branch used internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812952C.yaml
 	thumb_local_start
 sub_812952C:
 	push {lr}
@@ -14642,6 +14663,10 @@ off_812A238:
 	.word sub_812A27C+1
 	thumb_func_end sub_812A224
 
+// symdb: One-shot initializer that sets up a scene/object: configures the camera with layout (12,3,2,0), writes a fixed tag (0x42523545) into the global eLinkState, dispatches an object state, clears a 0x100-byte work buffer, and puts the caller context (r5) into state 4.
+// symdb: (no meaningful args; uses global r5 context pointer) -> sets [r5+3] = 4 (state/mode byte) and
+// symdb: [r5+0xC] = 0; clobbers r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A240.yaml
 	thumb_local_start
 sub_812A240:
 	push {lr}
@@ -15454,6 +15479,10 @@ off_812A8A0:
 	.word 0x168
 	thumb_func_end sub_812A76C
 
+// symdb: Per-frame update for a chip-cursor/custom-screen sprite object: runs its state handler, keeps uploading cursor tiles while the subsystem is active, and either fires the 0xDA completion event or draws the sprite once finished.
+// symdb: (r0/r1 unused on entry; uses global object eS200A290 and state byte at 0x200BC30) -> no return
+// symdb: value; r0/r1 consumed by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A8A4.yaml
 	thumb_local_start
 sub_812A8A4:
 	push {lr}
@@ -17261,6 +17290,10 @@ loc_812B5C0:
 	pop {pc}
 	thumb_func_end sub_812B5AC
 
+// symdb: Per-frame driver of the Beast Link gate sequence: refreshes a mode byte, dispatches the current step handler from a 5-entry jump table, and runs the standard entity/sprite update once the sequence reports completion (0x1C).
+// symdb: () -> void; uses r5 as pointer to the sequence state whose byte at +2 is the step index; writes
+// symdb: sub_803EAE4's return to eStruct203F7D8+1; r0 = menu_dispatchStateHandler's return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B5C8.yaml
 	thumb_local_start
 sub_812B5C8:
 	push {r4,lr}

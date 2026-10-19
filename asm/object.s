@@ -3854,6 +3854,11 @@ loc_800D2EC:
 	pop {r6,pc}
 	thumb_func_end sub_800D270
 
+// symdb: Scans each battle-field row from an entity's column outward and records the coordinate of the first panel whose status high byte matches a given value, one per row.
+// symdb: (r0 = panel status high-byte value to match, r1 = unused?, r2 = required-flag mask, r3 =
+// symdb: forbidden-flag mask; r5 = entity, r7 = output byte buffer) -> r0 = number of panels found (0-3);
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D300.yaml
 	thumb_local_start
 sub_800D300:
 	push {r6,lr}

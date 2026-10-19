@@ -1626,6 +1626,9 @@ loc_8089BBC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089BAA
 
+// symdb: One-time AI trigger: if chatbox flag bit 0x80 is clear, sets event 745 and resets the entity's AI state, then returns 1.
+// symdb: (r5 = AI/entity control struct) -> r0 = 1 always; sets EVENT_745 when flag bit 0x80 was clear
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BC0.yaml
 	thumb_local_start
 sub_8089BC0:
 	push {r4-r7,lr}

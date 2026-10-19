@@ -2018,6 +2018,9 @@ sprite_updateAnimFacingPlayer:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_updateAnimFacingPlayer
 
+// symdb: Applies an object's pending animation change: if the current animation index differs from the last applied one, sets it, reloads animation data, and drops the shadow.
+// symdb: (r5 = object pointer, no args) -> void; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5CF0.yaml
 	thumb_local_start
 sub_80A5CF0:
 	push {r4,lr}
@@ -3308,6 +3311,9 @@ sub_80A6D42:
 	pop {pc}
 	thumb_func_end sub_80A6D42
 
+// symdb: Makes a battle object's sprite scalable, applies scale values taken from a battle-object list node, and sets a follow-up sprite state.
+// symdb: (r0 = battle object) -> r0 = 1 (success); flags destroyed by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6D5C.yaml
 	thumb_local_start
 sub_80A6D5C:
 	push {lr}
@@ -7552,6 +7558,10 @@ dword_80A8C94:
 	.word 0x1000302
 	thumb_func_end sub_80A8C7C
 
+// symdb: Recomputes an overworld object's sprite OAM priority from its z-coordinate modifiers and the current map's layer effect table.
+// symdb: (r5 = overworld object pointer, fields 0x0C z and 0x14 z-value used) -> r0 =
+// symdb: sprite_setPriority_8002E14 result; sets sprite priority bits 2-3 of sprite byte 0x15.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8C98.yaml
 	thumb_local_start
 sub_80A8C98:
 	push {r4-r7,lr}
@@ -10411,6 +10421,9 @@ loc_80AA1C2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA194
 
+// symdb: Sprite-update routine for an overworld map object that frees the object when the current animation frame's attribute byte has bit 0x80 set, then updates the sprite.
+// symdb: (r0 = object pointer) -> void; flags set by tst/bit test only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA1C8.yaml
 	thumb_local_start
 sub_80AA1C8:
 	push {r4-r7,lr}
@@ -12196,6 +12209,9 @@ loc_80AAD9A:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80AAD70
 
+// symdb: Sorts the chip pack by removing and re-adding all chips, then reinitializes the 320-entry per-chip auxiliary array from a template, zeroing excluded/special chips' entries.
+// symdb: (r10 = toolkit) -> r0 = none; destroys r4, r6, r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AADA6.yaml
 	thumb_local_start
 sub_80AADA6:
 	push {r4,r6,r7,lr}

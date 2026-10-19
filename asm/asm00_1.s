@@ -5393,6 +5393,9 @@ gameState_beginEndingSequence_800596C: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end gameState_beginEndingSequence_800596C
 
+// symdb: A GameState handler that sets two story flags, starts a screen fade, ticks the countdown-timer table, and advances to overworld subsystem 0x10.
+// symdb: (r0 = GameState* in r5, self) -> r0 = 0x10 stored to oGameState_SubsystemIndex; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005990.yaml
 	thumb_local_start
 sub_8005990: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5488,6 +5491,10 @@ startBeastSpCutscene: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end startBeastSpCutscene
 
+// symdb: Story trigger: clears event flag 1703, sets event flag 1738, and launches cutscene script CutsceneScript_8098B1C with param 0
+// symdb: (r0 = * GameState (unused by the body)) -> r0 = undefined; calls ClearEventFlagFromImmediate,
+// symdb: SetEventFlagFromImmediate, StartCutscene
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A0C.yaml
 	thumb_local_start
 sub_8005A0C: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -10927,6 +10934,10 @@ off_8007F9C:
 	.word sub_8007FD2+1
 	thumb_func_end sub_8007F4E
 
+// symdb: Battle state step that pauses the battle, runs two init sub-steps, starts a screen fade, and advances the phase once the fade completes.
+// symdb: (r0 = battle state pointer (also in r5), no args) -> r0 = 4 when fade done, r0 = 0xC/0x10
+// symdb: clobbered; sets phase 4 via strh to oBattleState_StatePhaseAndInitFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007FA4.yaml
 	thumb_local_start
 sub_8007FA4:
 	push {lr}
@@ -12132,6 +12143,10 @@ off_8008854:
 	.word sub_80088D6+1
 	thumb_func_end sub_8008840
 
+// symdb: Battle-side update step that fires the cross-net battle intro once (effect kind 0x54) and then waits until the linked partner reports battle-ready.
+// symdb: (r5 = battle sub-state struct ptr, no r0 args) -> r0 clobbered; writes [r5+2] (halfword), [r5+3]
+// symdb: (byte), [r5+8] (halfword)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008864.yaml
 	thumb_local_start
 sub_8008864:
 	push {lr}
@@ -12227,6 +12242,10 @@ locret_80088FE:
 	pop {pc}
 	thumb_func_end sub_80088D6
 
+// symdb: If bit 3 of a record flag in the 0x2036820 table is set, plays sound 0x9F, advances the r5 object's state field to 4, and dispatches event 0x200.
+// symdb: (r0/r5 = object struct, [r5+5] = record index into table 0x2036820) -> r0 = clobbered; [r5+0] =
+// symdb: 4 when flag set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008900.yaml
 	thumb_local_start
 sub_8008900:
 	push {lr}
@@ -13186,6 +13205,10 @@ locret_8008FEE:
 	pop {r4,pc}
 	thumb_func_end battle_stepLoseSequence
 
+// symdb: Battle-loop state step that triggers the battle-end effect (kind 0x1C), waits out a 102-frame timer (and linked-battle partner readiness), then advances the battle-end sequence.
+// symdb: (r5 = battle scene state struct, no register args) -> updates [r5]+3 phase byte, +8 timer, +4
+// symdb: and [r5] next-state; writes oGameState_BattleEndSubState; r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008FF0.yaml
 	thumb_local_start
 sub_8008FF0:
 	push {lr}
@@ -14505,6 +14528,10 @@ off_80098D0:
 	.word sub_8009916+1
 	thumb_func_end sub_80098BC
 
+// symdb: Link-battle state handler: initializes the result transition, waits until both players' tracked id equals 0x1f2f3f4f (or a 180-frame timeout), then restores result records and advances the battle state.
+// symdb: (r0-r4 = state work area in r5, no args) -> r0 = clobbered; sets
+// symdb: oBattleState_StatePhaseAndInitFlag = 4 on sync or oBattleState_Index_00 = 0xc on timeout
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80098D8.yaml
 	thumb_local_start
 sub_80098D8:
 	push {lr}
@@ -15398,6 +15425,9 @@ off_8009EF4:
 	.word sub_8009F3A+1
 	thumb_func_end sub_8009EE2
 
+// symdb: Battle-state handler that waits for link sync of post-battle results, then restores result records and advances to phase 4 (with a 180-frame timeout fallback).
+// symdb: (r5 = battle state struct) -> r0 = 0/unused; flags from tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009EFC.yaml
 	thumb_local_start
 sub_8009EFC:
 	push {lr}
@@ -15908,6 +15938,10 @@ locret_800A1A8:
 	mov pc, lr
 	thumb_func_end battle_isBattleOver
 
+// symdb: Returns whether this frame's rare-event roll in battle state hit, gated on no time-stop and the battle still running.
+// symdb: () -> r0 = 1 if battle state field 0x38 (rare-event roll) >= 0x2D0 and battle is active and not
+// symdb: time-stopped, else 0; flags clobbered by BLs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A1AA.yaml
 	thumb_local_start
 sub_800A1AA:
 	push {lr}

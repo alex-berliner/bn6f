@@ -435,6 +435,9 @@ sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8033ADC
 
+// symdb: One step of the battle-intro (jack-in) animation: queues the navi frame, the battle-start overlay, an extra step handler, and the real-world navi icon OAM.
+// symdb: (self in r5: * S2011E30) -> r0 = last callee's return; no flags relied on by caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033AF0.yaml
 	thumb_local_start
 sub_8033AF0: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -453,6 +456,9 @@ noop_8033B08: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end noop_8033B08
 
+// symdb: Redraws the Internet overworld HUD: PET HP digits, battle-start overlay, and map name.
+// symdb: (r0 = self: *S2011E30) -> r0 = destroyed; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B0C.yaml
 	thumb_local_start
 sub_8033B0C: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -477,6 +483,10 @@ onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end onUpdateInInternet_8033B1E
 
+// symdb: Per-frame update/draw of the Internet-overworld HUD: HP digits, battle-start overlay, alert beep, and map name.
+// symdb: () -> (); preserves registers, no return value; r5 already points at the S2011E30 Internet-UI
+// symdb: state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B30.yaml
 	thumb_local_start
 sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -503,6 +513,9 @@ internet_redrawOverworldUi: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end internet_redrawOverworldUi
 
+// symdb: Per-frame HUD refresh: draws PET HP digits, the battle-start overlay if active, and the current map name.
+// symdb: (r0/r5 = overworld state struct S2011E30) -> r0 = clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B5C.yaml
 	thumb_local_start
 sub_8033B5C: // (self: * S2011E30 $r5) -> ()
 	push {lr}

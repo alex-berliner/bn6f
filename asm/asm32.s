@@ -3913,6 +3913,10 @@ locret_810FA2A:
 	pop {r4-r7,pc}
 	thumb_func_end ai_rushGetApproachColumn
 
+// symdb: Picks a random battle panel (via the alliance-dependent panel filter) for the Rush attack to charge at.
+// symdb: (r0 = attacker battle object) -> r0 = chosen panel (x = low bits, y = high nibble), or current
+// symdb: panel if list empty; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FA2C.yaml
 	thumb_local_start
 sub_810FA2C:
 	push {r4-r7,lr}
@@ -6718,6 +6722,9 @@ loc_811108E:
 	pop {pc}
 	thumb_func_end sub_8111030
 
+// symdb: Spawns a battle effect object at a given panel's screen position, oriented by the acting object's team/facing.
+// symdb: (r0 = panel column, r1 = panel row; r5 = battle object) -> r0 = spawned effect object pointer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811109C.yaml
 	thumb_local_start
 sub_811109C:
 	push {r4-r7,lr}
@@ -8278,6 +8285,10 @@ sub_8111D06:
 	pop {r7,pc}
 	thumb_func_end sub_8111D06
 
+// symdb: AI attack-variant helper that fetches the team-dependent panel-effect parameter and uses it to obtain a panel region for the attack.
+// symdb: (r5 = battle object) -> r0 = region handle/result from object_getPanelRegion; r4/r6 clobbered by
+// symdb: convention
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111D28.yaml
 	thumb_local_start
 sub_8111D28:
 	push {r7,lr}
@@ -13761,6 +13772,10 @@ off_8114A60:
 	.word byte_8114C30
 	thumb_func_end snakearm_getPanelParamAndNext
 
+// symdb: Fetches the alliance-dependent panel parameter for SnakeArm and uses it to pick a random panel, returning that panel's coords.
+// symdb: (r0 = battle object ptr) -> r0 = panel word (x in low 3 bits / y in high bits, or current panel
+// symdb: on failure); clobbers r4-r7, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114A64.yaml
 	thumb_local_start
 sub_8114A64:
 	push {r4-r7,lr}
@@ -19356,6 +19371,9 @@ off_81177E8:
 	.word 0x40
 	thumb_func_end sub_81177A4
 
+// symdb: Per-frame update for a fixed-position sprite object: recomputes an animation index each frame, applies it only when it changed, then runs the sprite update.
+// symdb: () -> void; uses r5 as object struct (field 0xC = cached animation index), no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81177EC.yaml
 	thumb_local_start
 sub_81177EC:
 	push {lr}
@@ -28139,6 +28157,10 @@ locret_811B812:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811B7D4
 
+// symdb: Looks up a sprite ID from the word_2023FA0 table for the entry selected by the caller and configures the current battle object's sprite (shadow flag, animation, animation data).
+// symdb: (r5 = entry struct; byte [r5+4] = list index) -> void; sets up sprite state for the object
+// symdb: resolved via battleObject_getByIndex
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B814.yaml
 	thumb_local_start
 sub_811B814:
 	push {r4-r7,lr}

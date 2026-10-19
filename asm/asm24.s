@@ -716,6 +716,10 @@ byte_808C684:
 	.byte 0x0, 0x1, 0x0, 0x1, 0x0, 0x2A, 0xFE, 0x8, 0x1, 0x7, 0x0
 	.byte 0x7, 0x0, 0x5A, 0xFF, 0xF6, 0x1, 0x1, 0x0, 0x1, 0x0
 
+// symdb: One-shot routine that, the first time it runs, plays a jingle and grants the equipped PET navi stat 0x40 a value derived from its max HP (surplus over a threshold read from unk_2000B40+6), clamped to the stat's cap, then latches event flag 0x9D5 so it never runs again.
+// symdb: (r0 = unused/must be 0) -> r0 = 0; sets event flag EVENT_9D5 and PET navi stat 0x40 on first
+// symdb: call; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C6A4.yaml
 	thumb_local_start
 sub_808C6A4:
 	push {r5, lr}
