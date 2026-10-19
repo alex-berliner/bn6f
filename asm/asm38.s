@@ -123,7 +123,7 @@ off_3005CA0:
 	.word nullsub_38+1
 	.word nullsub_38+1
 	.word libSIO814469C+1
-	.word sub_81446AC+1
+	.word sio_linkStateUpdate+1
 	.word nullsub_38+1
 	.word nullsub_38+1
 	.word nullsub_38+1
@@ -384,7 +384,7 @@ init_installCommIntrHandlers:
 	ldr r1, off_3005E78 // =libSIO814469C+1
 	bl _SetInterruptCallback // (interrupt_idx: u8, callback: *const ()) -> ()
 	mov r0, #0x1c
-	ldr r1, off_3005E7C // =sub_81446AC+1
+	ldr r1, off_3005E7C // =sio_linkStateUpdate+1
 	bl _SetInterruptCallback // (interrupt_idx: u8, callback: *const ()) -> ()
 	pop {r3}
 	
@@ -421,7 +421,7 @@ off_3005E74:
 off_3005E78:
 	.word libSIO814469C+1
 off_3005E7C:
-	.word sub_81446AC+1
+	.word sio_linkStateUpdate+1
 	thumb_func_end sub_3005E6A
 
 	thumb_func_start iCopyBackgroundTiles
@@ -643,15 +643,15 @@ off_3005FAC:
 dword_3005FB0:
 	.word NULL
 	.word NULL
-	.word sub_3005FC0+1
+	.word color_lerpTowardWhite+1
 	.word sub_3005FFA+1
 
 // symdb: Blends a packed BGR555 color toward white by per-channel fixed-point fractions, adding the scaled gap to the base color.
 // symdb: (r0 = packed color in r5-style arg, r1 = red fraction, r2 = green fraction, r3 = blue fraction,
 // symdb: 16.16 fixed point) -> r0 = blended BGR555 color; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005FC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/color_lerpTowardWhite.yaml
 	thumb_local_start
-sub_3005FC0:
+color_lerpTowardWhite:
 	mov r8, r5
 	lsl r0, r5, #0x1b
 	lsr r0, r0, #0x1b
@@ -681,7 +681,7 @@ sub_3005FC0:
 	mov r5, r8
 	add r0, r5, r0
 	mov pc, lr
-	thumb_func_end sub_3005FC0
+	thumb_func_end color_lerpTowardWhite
 
 	thumb_local_start
 sub_3005FFA:

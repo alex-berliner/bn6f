@@ -1105,7 +1105,7 @@ signed int battle_lotteryStep_809AB20()
             {
                 v16 = v9;
                 GiveItem(v9, 1);
-                v12 = sub_809AC48(v16);
+                v12 = get_valueFromIdPairTable(v16);
                 v13 = 3;
             }
             else if ( v8 == 2 )
@@ -1160,7 +1160,7 @@ signed int battle_lotteryStep_809AB20()
 
 
 // 0x809ac48
-signed int __fastcall sub_809AC48(int a1)
+signed int __fastcall get_valueFromIdPairTable(int a1)
 {
     char *v1; // r1
     int v2; // r2
@@ -1841,7 +1841,7 @@ signed int __fastcall sub_809BEC0(int a1, int a2, int a3)
 
 
 // 0x809bfe8
-int sub_809BFE8()
+int ow_loadEnterMapEntry()
 {
     int v0; // r5
     int v1; // r10

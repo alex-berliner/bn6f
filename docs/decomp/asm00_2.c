@@ -1439,7 +1439,7 @@ LABEL_22:
             goto LABEL_22;
     }
     v2[4] = 0;
-    v14 = sub_80117BA(v9);
+    v14 = battle_dispatchBPwrAtkHandler(v9);
     object_setAttack2(v14);
     if ( v14 == 82 || v14 == 65 && sub_8013774(65, 44) == 15 )
         v2[29] = 1;
@@ -3467,7 +3467,7 @@ int sub_80111DC()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C4204(result);
+        battle_setActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -4095,7 +4095,7 @@ int battle_dispatchBusterAtkHandler()
 
 
 // 0x80117ba
-int __fastcall sub_80117BA(int a1)
+int __fastcall battle_dispatchBPwrAtkHandler(int a1)
 {
     int v1; // r5
     int v2; // r6
@@ -10629,7 +10629,7 @@ int sub_8015614()
 
 
 // 0x801562c
-void sub_801562C()
+void ai_attackEmergeAtTargetPanel()
 {
     int v0; // r5
     int v1; // r7
@@ -10734,7 +10734,7 @@ void sub_801562C()
 
 
 // 0x8015766
-signed int sub_8015766()
+signed int ai_attackRushForward()
 {
     Battle *v0; // r5
     signed int v1; // r6
@@ -13199,7 +13199,7 @@ signed int __fastcall sub_80171CC(int a1)
 
 
 // 0x80171d8
-int sub_80171D8()
+int battle_whiteFlashVanishHandler()
 {
     int v0; // r5
     int result; // r0
@@ -13660,7 +13660,7 @@ int __usercall battleObject_actionParalyze_80175B8@<R0>(Battle *obj@<R5>)
 
 
 // 0x8017688
-int sub_8017688()
+int battle_recoverToPanelPhase()
 {
     int v0; // r5
     int v1; // r1
@@ -14641,7 +14641,7 @@ int sub_8018186()
     {
         v2 = (sub_800F806() + 256) << 8;
         clearEntryOfBattleStateBattleObjectList_800F656();
-        sub_80E544C(v0);
+        battle_clearDropEntryById(v0);
         if ( object_getFlag() & 0x10000000 )
         {
             v4 = *(v0 + 44);
@@ -15688,7 +15688,7 @@ signed int __fastcall sub_801A4D0(int a1, int a2)
 
 
 // 0x801a4dc
-int __fastcall sub_801A4DC(_DWORD *a1, signed int a2)
+int __fastcall battle_getCollidingObjects(_DWORD *a1, signed int a2)
 {
     int v2; // r5
     int v3; // r2
@@ -16895,7 +16895,7 @@ LABEL_48:
         RunAIAttack(v16);
         return;
     }
-    if ( !(GetAIDataUnk0x48Flag() & 0x40000) || !sub_8015766() )
+    if ( !(GetAIDataUnk0x48Flag() & 0x40000) || !ai_attackRushForward() )
     {
         battle_isTimeStop();
         if ( !v5 )
@@ -16919,7 +16919,7 @@ LABEL_48:
                     {
                         SetAIDataUnk0x48Flag(0x40000);
                         object_exitAttackState(v1);
-                        sub_8015766();
+                        ai_attackRushForward();
                         return;
                     }
                 }

@@ -224,7 +224,7 @@ sub_8089F5E:
 	ldr r1, [r7, #0x10]
 	ldr r2, [r7, #0x14]
 	ldr r3, [r7, #4]
-	bl sub_8141914
+	bl ow_setWarpTrigger
 	mov r0, #0
 	pop {r4-r7, pc}
 	thumb_func_end sub_8089F5E

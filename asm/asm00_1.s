@@ -4452,13 +4452,13 @@ GameStateJumptable:
 	// 0x28
 	.word sub_800572C+1 // (self: * GameState $r5) -> ()
 	// 0x2C
-	.word sub_80057A0+1 // (self: * GameState $r5) -> ()
+	.word pet_tickSceneAndReloadOnFade+1 // (self: * GameState $r5) -> ()
 	// 0x30
 	.word gamestate_runOverworldSceneStep_80055CE+1 // (self: * GameState $r5) -> ()
 	// 0x34
 	.word mainState_runFrame_8005814+1 // (self: * GameState $r5) -> ()
 	// 0x38
-	.word sub_800585A+1 // (self: * GameState $r5) -> ()
+	.word pet_perFrameTickWithFadeReset+1 // (self: * GameState $r5) -> ()
 	thumb_func_end cbGameState_80050EC
 
 // symdb: map-entry gamestate routine that prepares the overworld (resets graphics/object/cutscene/scenario state, clears mode event flags, loads the destination map's graphics/tables, starts the fade-in, and hands control to the on-map update subsystem); returns immediately if a screen fade is still active.
@@ -5153,9 +5153,9 @@ locret_800579E:
 
 // symdb: Per-frame tick of the PET/menu scene state; once a screen fade is active it tears the scene down and hands control to the reload/main-jumptable mode 0x40.
 // symdb: (self: * GameState $r5) -> (); sets eMainJumptableIndex byte to 0x40 when tearing down
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80057A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_tickSceneAndReloadOnFade.yaml
 	thumb_local_start
-sub_80057A0: // (self: * GameState $r5) -> ()
+pet_tickSceneAndReloadOnFade: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl scenario_runEffectStateJumptable_80039AA
@@ -5191,7 +5191,7 @@ sub_80057A0: // (self: * GameState $r5) -> ()
 	strb r1, [r0]
 locret_8005812:
 	pop {pc}
-	thumb_func_end sub_80057A0
+	thumb_func_end pet_tickSceneAndReloadOnFade
 
 // symdb: Per-frame main loop dispatcher for the current game state: runs all state handlers, then if no screen fade is active also drives chatbox/overlay updates and the reset-and-jump-to-state-28 path.
 // symdb: void sub_8005814(void);  // no usable inputs/outputs; trashes r0-r3, r7, lr; preserves r4-r6
@@ -5223,9 +5223,9 @@ locret_8005858:
 // symdb: Per-frame PET/main tick: runs the scene dispatcher, scenario effects, object dispatch and the full sprite/OW render pipeline, and when a screen fade is active performs a full teardown-and-reinit then jumps the main jumptable to state 0x50.
 // symdb: () -> (); sets the byte at *oToolkit_MainJumptableIndexPtr to 0x50 and tears down/reinits global
 // symdb: state when a fade is in progress; tail clobbers r0/r1/r5/r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800585A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_perFrameTickWithFadeReset.yaml
 	thumb_local_start
-sub_800585A: // (self: * GameState $r5) -> ()
+pet_perFrameTickWithFadeReset: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl scenario_runEffectStateJumptable_80039AA
@@ -5262,7 +5262,7 @@ sub_800585A: // (self: * GameState $r5) -> ()
 locret_80058CC:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_800585A
+	thumb_func_end pet_perFrameTickWithFadeReset
 
 // symdb: Per-frame overworld check that consumes a coordinate trigger and dispatches to one of nine warp cutscene routines based on the warp type.
 // symdb: () -> void ; triggers a warp via Toolkit's Warp2011bb0 state. No register contract for callers
@@ -6216,7 +6216,7 @@ sub_8005EA2:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-  // trigger sub_80057A0 via cbGameState_80050EC
+  // trigger pet_tickSceneAndReloadOnFade via cbGameState_80050EC
 	mov r1, #0x2c 
 	strb r1, [r5,#oGameState_SubsystemIndex]
 
@@ -7401,9 +7401,9 @@ sub_80068E8:
 // symdb: (r0 = word param stored at +0x4, r1 = word param stored at +0x8, r2 = byte command stored at
 // symdb: +0x1, r3 = packed value whose upper halfword is stored at +0x2) -> r0 = 1; clobbered: r4-r7 not
 // symdb: visible to caller, flags destroyed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80068EC.yaml
-	thumb_func_start sub_80068EC
-sub_80068EC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_enqueueTask.yaml
+	thumb_func_start req_enqueueTask
+req_enqueueTask:
 	push {r4-r7,lr}
 	ldr r4, off_8006908 // =unk_2008E80
 	ldr r5, off_800690C // =0x500
@@ -7424,7 +7424,7 @@ off_8006908:
 	.word unk_2008E80
 off_800690C:
 	.word 0x500
-	thumb_func_end sub_80068EC
+	thumb_func_end req_enqueueTask
 
 // symdb: Sets the single-byte flag at 20081B0 to 0x80, marking some subsystem (likely input/menu state) as busy or locked.
 // symdb: void sub_8006910(void); // effectively; callers observe r0=0x80, r1=&byte_20081B0, and NZ flags
@@ -7486,7 +7486,7 @@ sub_8006920:
 	ldr r1, off_8006980 // =Window0HorizontalDimensions
 	mov r2, #4
 	ldr r3, dword_8006984 // =0xa2600000
-	ldr r4, off_800698C // =sub_80068EC+1
+	ldr r4, off_800698C // =req_enqueueTask+1
 	mov lr, pc
 	bx r4
 	pop {r4-r7,pc}
@@ -7498,7 +7498,7 @@ dword_8006984:
 off_8006988:
 	.word ZeroFillByWord+1 // (mut_mem: *mut (), num_bytes: usize) -> ()
 off_800698C:
-	.word sub_80068EC+1
+	.word req_enqueueTask+1
 	thumb_func_end sub_8006920
 
 	thumb_func_start sub_8006990
@@ -9906,7 +9906,7 @@ JumpTable8007838:
   // 0x08
 	.word sub_8007B80+1 // (self: * BattleState $r5) -> ()
   // 0x0C
-	.word sub_8007E62+1 // (self: * BattleState $r5) -> ()
+	.word battle_runFrame+1 // (self: * BattleState $r5) -> ()
   // 0x10
 	.word sub_8007F4E+1 // (self: * BattleState $r5) -> ()
   // 0x14
@@ -10272,7 +10272,7 @@ loc_8007A62:
 	b loc_8007A8E
 loc_8007A66:
 
-	// trigger sub_8007E62 via battle_main_8007800
+	// trigger battle_runFrame via battle_main_8007800
 	mov r0, #0xc
 	str r0, [r5,#oBattleState_Index_00]
 
@@ -10767,9 +10767,9 @@ locret_8007E60:
 
 // symdb: Per-frame battle main routine: dispatches the current battle state's handler, then runs the common sprite/panel/OAM render pipeline.
 // symdb: (r5 = * BattleState) -> r0 = clobbered; sets byte at eStruct203F7D8+1 to 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007E62.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runFrame.yaml
 	thumb_local_start
-sub_8007E62: // (self: * BattleState $r5) -> ()
+battle_runFrame: // (self: * BattleState $r5) -> ()
 	push {lr}
 	ldr r1, off_8007EA8 // =off_8007EAC
 	ldrb r0, [r5,#oBattleState_Index_01]
@@ -10799,7 +10799,7 @@ off_8007EAC:
 	.word sub_8007EB8+1
 	.word sub_8007F14+1
 	.word sub_8007F2C+1
-	thumb_func_end sub_8007E62
+	thumb_func_end battle_runFrame
 
 	thumb_local_start
 sub_8007EB8:
@@ -11668,7 +11668,7 @@ off_8008504:
 	.word off_8008508
 off_8008508:
 	.word sub_8008528+1
-	.word sub_800855E+1
+	.word battle_dispatchNextPhase+1
 	.word sub_8008664+1
 	.word sub_8008764+1
 	.word sub_80087D8+1
@@ -11711,9 +11711,9 @@ locret_800855C:
 // symdb: (r5 = pointer to battle flow state struct with u32 state id at +0 and u8 flag at +5; r10 =
 // symdb: toolkit with battle state ptr) -> r0 = varies from callees; sets [r5+0] to the next state id (8,
 // symdb: 0xc, 0x14 or 0x18)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800855E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchNextPhase.yaml
 	thumb_local_start
-sub_800855E:
+battle_dispatchNextPhase:
 	push {lr}
 	bl sub_80085FE
 	mov r0, #0
@@ -11784,7 +11784,7 @@ loc_80085E8:
 	str r0, [r5]
 locret_80085FC:
 	pop {pc}
-	thumb_func_end sub_800855E
+	thumb_func_end battle_dispatchNextPhase
 
 	thumb_local_start
 sub_80085FE:
@@ -13906,7 +13906,7 @@ loc_80094A6:
 	cmp r0, #0xb4
 	ble locret_80094B4
 
-	// trigger sub_8007E62 via battle_main_8007800
+	// trigger battle_runFrame via battle_main_8007800
 	mov r0, #0xc
 	str r0, [r5,#oBattleState_Index_00]
 
@@ -14272,7 +14272,7 @@ sub_8009734:
 off_8009744:
 	.word off_8009748
 off_8009748:
-	.word sub_8009754+1
+	.word battle_state4EventWaitHandler+1
 	.word battle_state4WaitLinkReady+1
 	.word sub_80097A8+1
 	thumb_func_end sub_8009734
@@ -14280,9 +14280,9 @@ off_8009748:
 // symdb: Battle state-4 tick handler: waits 10 frames if state-4 events are pending then advances to phase 4, otherwise jumps straight to battle state 8.
 // symdb: () -> void; r5 = battle state struct, writes SubPhaseInitFlag/CountdownTimer/State4EventCount
 // symdb: read, StatePhaseAndInitFlag, Index_01
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009754.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_state4EventWaitHandler.yaml
 	thumb_local_start
-sub_8009754:
+battle_state4EventWaitHandler:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14310,7 +14310,7 @@ loc_800977A:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009782:
 	pop {pc}
-	thumb_func_end sub_8009754
+	thumb_func_end battle_state4EventWaitHandler
 
 // symdb: Battle main-state phase handler: kicks off the battle intro effect once, then waits for the linked/cross-net battle to be ready before advancing the phase to 8.
 // symdb: (r5 = battle state struct) -> void; advances oBattleState_StatePhaseAndInitFlag to 8 when link
@@ -14524,7 +14524,7 @@ loc_8009906:
 	cmp r0, #0xb4
 	ble locret_8009914
 
-	// trigger sub_8007E62 via battle_main_8007800
+	// trigger battle_runFrame via battle_main_8007800
 	mov r0, #0xc
 	str r0, [r5,#oBattleState_Index_00]
 
@@ -14950,7 +14950,7 @@ loc_8009BF6:
 	cmp r0, #0xb4
 	ble locret_8009C04
 
-	// trigger sub_8007E62 via battle_main_8007800
+	// trigger battle_runFrame via battle_main_8007800
 	mov r0, #0xc
 	str r0, [r5,#oBattleState_Index_00]
 
@@ -15417,7 +15417,7 @@ loc_8009F2A:
 	cmp r0, #0xb4
 	ble locret_8009F38
 
-	// trigger sub_8007E62 via battle_main_8007800
+	// trigger battle_runFrame via battle_main_8007800
 	mov r0, #0xc
 	str r0, [r5,#oBattleState_Index_00]
 

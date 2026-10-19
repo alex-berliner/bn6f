@@ -16309,7 +16309,7 @@ sub_802DAA8:
 off_802DAB8:
 	.word off_802DABC
 off_802DABC:
-	.word sub_802DACC+1
+	.word battle_objectPanelEmergeStep+1
 	.word sub_802DB58+1
 	.word sub_802DB80+1
 	.word sub_802DC66+1
@@ -16318,9 +16318,9 @@ off_802DABC:
 // symdb: Per-frame state step that plays an object's one-shot emerge-from-panel setup (white flash, panel reserve, flip, effects, sound) and then counts down a 10-frame timer before advancing the state machine.
 // symdb: (r5 = battle object, r7 = state/work struct; r0-r3 clobbered) -> r0 clobbered; sets [r7,#0]=4
 // symdb: when the 10-frame timer [r7,#0x10] expires
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DACC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectPanelEmergeStep.yaml
 	thumb_local_start
-sub_802DACC:
+battle_objectPanelEmergeStep:
 	push {lr}
 	bl sprite_forceWhitePalette
 	ldrb r0, [r7,#1]
@@ -16378,7 +16378,7 @@ loc_802DB4A:
 	strh r0, [r7]
 locret_802DB56:
 	pop {pc}
-	thumb_func_end sub_802DACC
+	thumb_func_end battle_objectPanelEmergeStep
 
 	thumb_local_start
 sub_802DB58:

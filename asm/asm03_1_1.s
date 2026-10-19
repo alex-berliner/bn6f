@@ -319,7 +319,7 @@ cb_8038AD0:
 off_8038AF0:
 	.word off_8038AF4
 off_8038AF4:
-	.word sub_8038B04+1
+	.word battle_initReturnSceneGfx+1
 	.word sub_8038B64+1
 	.word sub_8038F0C+1
 off_8038B00:
@@ -329,9 +329,9 @@ off_8038B00:
 // symdb: Full graphics/hardware reset that reinitializes the scene after (or as) a battle-linked scene (re)starts: clears VRAM/palette/tilemap, resets render info, resets e-struct records, inits chatbox and fade, then stores state 4.
 // symdb: (r0 = unused entry state, r5 = pointer to scene state byte, written) -> r0 = 4 stored to [r5];
 // symdb: sets up screen for scene rendering
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038B04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initReturnSceneGfx.yaml
 	thumb_local_start
-sub_8038B04:
+battle_initReturnSceneGfx:
 	push {lr}
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -363,7 +363,7 @@ dword_8038B5C:
 	.word 0x1F40
 off_8038B60:
 	.word byte_80386E8
-	thumb_func_end sub_8038B04
+	thumb_func_end battle_initReturnSceneGfx
 
 	thumb_local_start
 sub_8038B64:
@@ -1333,7 +1333,7 @@ off_80395C4:
 	.word off_80395C8
 off_80395C8:
   // 0x00
-  .word sub_80395E4+1
+  .word init_textScene+1
   // 0x04
 	.word sub_8039630+1
   // 0x08
@@ -1351,9 +1351,9 @@ off_80395E0:
 // symdb: Initializes a dialog/text-driven scene: resets graphics and render info, loads palette slot 0x11, starts music 0x22, sets up the chatbox and text-script buffer, and writes an initial scene-state byte (8 or 0x10).
 // symdb: () -> (); stores state byte and 0 via a pointer returned in r5 by a callee; no return value in
 // symdb: r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80395E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_textScene.yaml
 	thumb_local_start
-sub_80395E4:
+init_textScene:
 	push {r4-r7,lr}
 	bl sub_803FA42
 	bl chatbox_8040818
@@ -1382,7 +1382,7 @@ loc_8039626:
 	.balign 4, 0
 off_803962C:
 	.word 0x40
-	thumb_func_end sub_80395E4
+	thumb_func_end init_textScene
 
 	thumb_local_start
 sub_8039630:
@@ -14431,7 +14431,7 @@ sub_803FBE8:
 	ldr r1, off_803FC0C // =BG1X_Offset
 	mov r2, #1
 	ldr r3, dword_803FC10 // =0xa2400000
-	bl sub_80068EC
+	bl req_enqueueTask
 	ldr r3, off_803FCE0 // =eDecompBuffer2013A00
 	mov r2, #0
 	mov r1, #0xa0

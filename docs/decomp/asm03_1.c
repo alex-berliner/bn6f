@@ -5349,7 +5349,7 @@ int cb_8038AD0()
 
 
 // 0x8038b04
-void __fastcall __noreturn sub_8038B04(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_initReturnSceneGfx(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     int v5; // r1
@@ -5959,7 +5959,7 @@ signed int cb_80395A4()
 
 
 // 0x80395e4
-int __noreturn sub_80395E4()
+int __noreturn init_textScene()
 {
     char *v0; // r5
     int v1; // r0
@@ -14995,7 +14995,7 @@ signed __int64 sub_803FBE8()
     signed int v0; // r2
     signed __int64 result; // r0
 
-    sub_80068EC(eDecompBuffer2013A00, &BG1X_Offset, 1, -1572864000);
+    req_enqueueTask(eDecompBuffer2013A00, &BG1X_Offset, 1, -1572864000);
     v0 = 0;
     result = 1374389534720LL;
     do

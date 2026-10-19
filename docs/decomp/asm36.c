@@ -691,7 +691,7 @@ void sub_813096C()
 							if ( !v10 )
 							{
 								*(v0 + 50) = *(v0 + 42);
-								sub_81312FC();
+								init_cutsceneSceneState();
 							}
 						}
 						return;
@@ -1261,7 +1261,7 @@ int sub_8130F1C()
 
 
 // 0x8130f78
-int sub_8130F78()
+int battle_initScenarioScene()
 {
     int v0; // r5
     int result; // r0
@@ -1320,7 +1320,7 @@ int sub_8130FC8()
 LABEL_13:
         result = IsPaletteFadeActive();
         if ( !v8 )
-            sub_81312FC();
+            init_cutsceneSceneState();
     }
     else if ( result != 1 )
     {
@@ -1605,7 +1605,7 @@ char *sub_81312F4()
 
 
 // 0x81312fc
-void __noreturn sub_81312FC()
+void __noreturn init_cutsceneSceneState()
 {
     int v0; // r5
     int v1; // r10
@@ -10589,7 +10589,7 @@ int sub_8138348()
     while ( v1 );
     entity_runAllUpdateHandlers_80465BC();
     v2 = battle_updateEStructSprites_80465F8();
-    return sub_8138848(v2, v3, v4, v5);
+    return ow_perFrameUpdateAndRender(v2, v3, v4, v5);
 }
 
 
@@ -11095,7 +11095,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
 
 
 // 0x8138848
-int __fastcall sub_8138848(int a1, int a2, int a3, int a4)
+int __fastcall ow_perFrameUpdateAndRender(int a1, int a2, int a3, int a4)
 {
     ZeroFillObjectInteractionAreas_800378C(a1, a2, a3, a4);
     TryUpdateEachOWPlayerObject_8003BA2();

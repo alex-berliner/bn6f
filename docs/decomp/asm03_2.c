@@ -6422,7 +6422,7 @@ void battle_dispatchBeastOutUpdateOrAnim_804CCBC()
 
 
 // 0x804ccc0
-signed int sub_804CCC0()
+signed int t4_setCycleFrameIndex()
 {
     int v0; // r10
     int v1; // r1

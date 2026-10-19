@@ -1994,7 +1994,7 @@ sub_808D108:
 	push {r4-r6,lr}
 	bl sub_8142CB0
 	mov r1, #0
-	bl sub_8142CC8
+	bl ow_stampMapTileTemplate
 	bl sub_8142D4C
 	pop {r4-r6,pc}
 	.balign 4, 0x00
@@ -2025,7 +2025,7 @@ loc_808D126:
 	strb r0, [r5,#0x9] // (byte_2000B49 - 0x2000b40)
 	bl sub_8142CB0
 	mov r1, #0
-	bl sub_8142CC8
+	bl ow_stampMapTileTemplate
 	bl sub_8142D4C
 loc_808D152:
 	add r7, #1

@@ -9967,7 +9967,7 @@ signed int sub_812B608()
 
 
 // 0x812b640
-int sub_812B640()
+int ow_postBattleResetState()
 {
     int v0; // r5
     int result; // r0
@@ -10001,7 +10001,7 @@ int sub_812B640()
 
 
 // 0x812b698
-void sub_812B698()
+void e_endBeastLinkGateSequence()
 {
     int v0; // r5
     int v1; // r0

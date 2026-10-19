@@ -441,7 +441,7 @@ int ai_finishAttackByElement()
     signed int v3; // r0
     int v4; // r0
 
-    v3 = sub_810E2EC();
+    v3 = ai_tryEnterAttackFinishState();
     if ( v3 == 255 )
         return (*(&off_810DE30 + *v2))();
     *(v0 + 16) = v3;
@@ -837,7 +837,7 @@ int sub_810E2A6()
 
 
 // 0x810e2ec
-signed int sub_810E2EC()
+signed int ai_tryEnterAttackFinishState()
 {
     int v0; // r5
 
@@ -958,7 +958,7 @@ int sub_810E4D4()
 
 
 // 0x810e4f0
-signed int sub_810E4F0()
+signed int battle_throwObjectAway()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -1493,7 +1493,7 @@ int sub_810EA3E()
 
 
 // 0x810ea4e
-int sub_810EA4E()
+int ai_dispatchSweepState()
 {
     unsigned __int8 *v0; // r6
 
@@ -2061,7 +2061,7 @@ int sub_810F33C()
 
 
 // 0x810f376
-int sub_810F376()
+int ai_beastAttackStepTick()
 {
     int v0; // r5
     int v1; // r7
@@ -2368,7 +2368,7 @@ int sub_810F7EC()
     {
         v0->currAnimation = sub_810FA4C(v2) * *&byte_810F890[4 * v0->extraVars[20]] + *(&dword_810F888 + v0->extraVars[20]);
         v0->x += v0->vx;
-        sub_810FA64();
+        battle_floatObjectYSine();
         object_setPanelsFromCoordinates(v0);
         ai_swoopMoveCheckPanel(1);
         ai_syncPanelHighlight();
@@ -2518,7 +2518,7 @@ signed int __fastcall sub_810FA4C(signed int result)
 
 
 // 0x810fa64
-int sub_810FA64()
+int battle_floatObjectYSine()
 {
     int v0; // r5
     int v1; // r3
@@ -3048,7 +3048,7 @@ int __fastcall battle_pickRandomPanelFromOffsetList(int a1, int a2, int a3, int 
 
 
 // 0x81100b0
-int __fastcall sub_81100B0(int a1, int a2, int a3, int a4)
+int __fastcall battle_initCloneChild(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     char v5; // r1
@@ -3141,7 +3141,7 @@ void __fastcall sub_8110222(int a1)
 
 
 // 0x8110254
-int sub_8110254()
+int battle_setStaminaDamageCounterDisabler()
 {
     int v0; // r5
     int result; // r0
@@ -3153,7 +3153,7 @@ int sub_8110254()
 
 
 // 0x811037c
-int sub_811037C()
+int ai_dispatchAttackState()
 {
     unsigned __int8 *v0; // r7
 
@@ -4235,7 +4235,7 @@ void __fastcall sub_81110C8(char a1)
 
 
 // 0x811121c
-int sub_811121C()
+int ai_sweepAttackDispatch()
 {
     unsigned __int8 *v0; // r7
 
@@ -6110,7 +6110,7 @@ int sub_81128B2()
 
 
 // 0x81128da
-int __fastcall sub_81128DA(int a1)
+int __fastcall ai_attackStepTick(int a1)
 {
     int v1; // r5
     int v2; // r7
@@ -6224,7 +6224,7 @@ int sub_8112968()
 
 
 // 0x81129ee
-signed int sub_81129EE()
+signed int battle_checkAnyHitFlag()
 {
     int v0; // r5
     signed int result; // r0
@@ -7333,7 +7333,7 @@ int sub_8113840()
 
 
 // 0x811387c
-int sub_811387C()
+int ai_setHitElementFromBoostTable()
 {
     _BYTE *v0; // r7
     int result; // r0
@@ -8196,7 +8196,7 @@ int __fastcall sub_8114088(int a1, int a2, int a3, int a4)
 
 
 // 0x8114170
-int __fastcall sub_8114170(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnLinkedObj27AtOwnPanel(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     char v5; // r1
@@ -8395,8 +8395,8 @@ int __fastcall sub_8114316(int a1)
                     {
                         if ( !(v8 & 0x200) )
                         {
-                            v10 = sub_811438E(*(v6 + 18), *(v6 + 19), v9, &v13);
-                            if ( !v5 || sub_811438E(*(v5 + 18), *(v5 + 19), v11, &v13) > v10 )
+                            v10 = calcDistSqToPoint(*(v6 + 18), *(v6 + 19), v9, &v13);
+                            if ( !v5 || calcDistSqToPoint(*(v5 + 18), *(v5 + 19), v11, &v13) > v10 )
                                 v5 = v6;
                         }
                     }
@@ -8412,7 +8412,7 @@ int __fastcall sub_8114316(int a1)
 
 
 // 0x811438e
-int __fastcall sub_811438E(int a1, int a2, int a3, _DWORD *a4)
+int __fastcall calcDistSqToPoint(int a1, int a2, int a3, _DWORD *a4)
 {
     return (*a4 - a1) * (*a4 - a1) + (a4[1] - a2) * (a4[1] - a2);
 }
@@ -11882,7 +11882,7 @@ int sub_8117404()
 
 
 // 0x8117424
-void __noreturn sub_8117424()
+void __noreturn sprite_initVariantObject()
 {
     int v0; // r5
 
@@ -14256,7 +14256,7 @@ int sub_8118D60()
 
 
 // 0x8118d84
-void __noreturn sub_8118D84()
+void __noreturn spawn_initGuiSpriteEntry()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -15051,7 +15051,7 @@ int sprite_setUnk0x2cFromLoader_81198E8()
 
 
 // 0x811997c
-int sub_811997C()
+int submenu_dispatchState()
 {
     int v0; // r5
 
@@ -18030,7 +18030,7 @@ int sub_811C084()
 
 
 // 0x811c08c
-int sub_811C08C()
+int object_dispatchStateHandler()
 {
     int v0; // r5
 
@@ -19695,7 +19695,7 @@ signed int sub_811D6F4()
 
 
 // 0x811d7d0
-signed int sub_811D7D0()
+signed int object_setupVariantSprite()
 {
     int v0; // r5
     int v1; // r6
@@ -19738,7 +19738,7 @@ signed int sub_811D7D0()
 
 
 // 0x811d894
-signed int sub_811D894()
+signed int gui_initIndexedSprite()
 {
     int v0; // r5
     signed int result; // r0
@@ -20658,7 +20658,7 @@ int sub_811E57C()
 
 
 // 0x811e59c
-void __fastcall __noreturn sub_811E59C(int a1, int a2)
+void __fastcall __noreturn initGuiTopRightSprite(int a1, int a2)
 {
     Battle *v2; // r5
 
@@ -20715,7 +20715,7 @@ int sub_811E61C()
 
 
 // 0x811e63c
-void __fastcall __noreturn sub_811E63C(int a1, int a2)
+void __fastcall __noreturn object_initSpriteType23(int a1, int a2)
 {
     Battle *v2; // r5
 

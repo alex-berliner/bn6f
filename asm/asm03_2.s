@@ -683,7 +683,7 @@ off_804646C:
 	.word sub_8118E84+1
 	.word sub_8118F24+1
 	.word npc_StateModeDispatcher_8119364+1
-	.word sub_811997C+1
+	.word submenu_dispatchState+1
 	.word sub_8119ACC+1
 	.word sub_8119D54+1
 	.word entity_RunStateHandler_8119E40+1
@@ -706,7 +706,7 @@ off_804646C:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
-	.word sub_811C08C+1
+	.word object_dispatchStateHandler+1
 	.word sub_811C11C+1
 	.word battle_dispatchByClass_811C1AC+1
 	.word sub_811C25C+1
@@ -11337,7 +11337,7 @@ sub_804CC7E:
 
 // symdb: Jump-table dispatcher that selects one of two beast-spawn routines based on the AIData Unk_0c byte read from r5.
 // symdb: (r0 = junk loaded from table, r1 = dispatch index<<2, r5 = AIData ptr) -> (tail call into
-// symdb: sub_804CCBC or sub_804CCC0); preserves r5 via the 'push/pop {r4-r7,lr}'
+// symdb: sub_804CCBC or t4_setCycleFrameIndex); preserves r5 via the 'push/pop {r4-r7,lr}'
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_spawnIndexDispatcher_804CC8E.yaml
 	thumb_local_start
 beastSp_spawnIndexDispatcher_804CC8E:
@@ -11357,8 +11357,8 @@ off_804CCA4:
 	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
 	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
 	.word battle_dispatchBeastOutUpdateOrAnim_804CCBC+1
-	.word sub_804CCC0+1
-	.word sub_804CCC0+1
+	.word t4_setCycleFrameIndex+1
+	.word t4_setCycleFrameIndex+1
 	thumb_func_end beastSp_spawnIndexDispatcher_804CC8E
 
 // symdb: Empty stub: push/pop with no body and no callees; behaves as an instantaneous no-op tail-return
@@ -11373,9 +11373,9 @@ battle_dispatchBeastOutUpdateOrAnim_804CCBC:
 // symdb: Every-16-frame ticker that alternates a byte (8 then 9) plus constant 0x10 into a toolkit-referenced buffer, likely a frame/animation selector.
 // symdb: () -> r0,r1 clobbered; writes [Unk2009740+2] = table[(frame & 0xF)], [Unk2009740+3] = 0x10; no
 // symdb: return value, flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CCC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_setCycleFrameIndex.yaml
 	thumb_local_start
-sub_804CCC0:
+t4_setCycleFrameIndex:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_CurFramePtr]
@@ -11394,7 +11394,7 @@ off_804CCDC:
 	.word byte_804CCE0
 byte_804CCE0:
 	.byte 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x8, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9, 0x9
-	thumb_func_end sub_804CCC0
+	thumb_func_end t4_setCycleFrameIndex
 
 // symdb: Clears BG scroll and loads a full 30x20-screen tile block (block 3) from a ROM tile-id table, then flags the background for redraw.
 // symdb: () -> void; sets bit 0x800 of toolkit RenderInfo word at [r10+oToolkit_RenderInfoPtr], zeroes

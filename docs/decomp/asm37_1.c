@@ -81,7 +81,7 @@ int sub_81418F0()
 
 
 // 0x8141914
-signed int __fastcall sub_8141914(int a1, int a2, int a3, int a4)
+signed int __fastcall ow_setWarpTrigger(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     char *v5; // r4
@@ -1020,10 +1020,10 @@ unsigned int __fastcall sub_81428D4(int a1)
     v1 = sub_8142990();
     v2 = sub_809E2B8();
     if ( v2 & 1 )
-        return sub_8142952(v1, v2, 1);
+        return movePackedCoordsByDir(v1, v2, 1);
     v4 = (v2 + 1) & 7;
-    v5 = sub_8142952(v1, (v2 - 1) & 7, 1);
-    v6 = sub_8142952(v1, v4, 1);
+    v5 = movePackedCoordsByDir(v1, (v2 - 1) & 7, 1);
+    v6 = movePackedCoordsByDir(v1, v4, 1);
     v7 = sub_809E1AE();
     v8 = GetSoulWeaponCursorCameraCoords();
     v10 = calc_hypotFixed12(v8 - v7, v9 - HIDWORD(v7));
@@ -1035,7 +1035,7 @@ unsigned int __fastcall sub_81428D4(int a1)
 
 
 // 0x8142952
-unsigned int __fastcall sub_8142952(unsigned int a1, int a2, int a3)
+unsigned int __fastcall movePackedCoordsByDir(unsigned int a1, int a2, int a3)
 {
     return (a1 + byte_8142980[2 * a2] * a3) | (((a1 >> 8) + byte_8142980[2 * a2 + 1] * a3) << 8);
 }
@@ -1435,7 +1435,7 @@ int sub_8142CB0()
 
 
 // 0x8142cc8
-int __fastcall sub_8142CC8(int a1, int a2)
+int __fastcall ow_stampMapTileTemplate(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5
@@ -1492,12 +1492,12 @@ int sub_8142D58()
     if ( byte_2000B48 < 128 )
     {
         v2 = 2 * (2 * (128 - byte_2000B48) * eMapTilesState200be70 - 4 * (128 - byte_2000B48));
-        result = sub_8142DE6() + v2;
+        result = ow_getAreaMapTilesOffset() + v2;
     }
     else
     {
         v0 = 2 * (2 * (byte_2000B48 - 128) * eMapTilesState200be70 - 4 * (byte_2000B48 - 128));
-        result = sub_8142DE6() - v0;
+        result = ow_getAreaMapTilesOffset() - v0;
     }
     return result;
 }
@@ -1517,7 +1517,7 @@ int __fastcall sub_8142DA0(int a1)
 
 
 // 0x8142de6
-int sub_8142DE6()
+int ow_getAreaMapTilesOffset()
 {
     int v0; // r10
     int v1; // r1

@@ -2855,7 +2855,7 @@ _BYTE *__fastcall sub_800572C(int a1)
 
 
 // 0x80057a0
-_BYTE *__fastcall sub_80057A0(int a1)
+_BYTE *__fastcall pet_tickSceneAndReloadOnFade(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -2934,7 +2934,7 @@ _BYTE *__fastcall mainState_runFrame_8005814(int a1)
 
 
 // 0x800585a
-_BYTE *__fastcall sub_800585A(int a1)
+_BYTE *__fastcall pet_perFrameTickWithFadeReset(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -4168,7 +4168,7 @@ void sub_80068E8()
 
 
 // 0x80068ec
-signed int __fastcall sub_80068EC(int a1, int a2, char a3, int a4)
+signed int __fastcall req_enqueueTask(int a1, int a2, char a3, int a4)
 {
     signed int result; // r0
 
@@ -4215,7 +4215,7 @@ signed int __fastcall sub_8006920(int *a1, int a2, int a3, int a4)
     dword_20096CC = v4[8];
     *byte_20096A3 = v4[9];
     sub_8006B94(&unk_2008980, 1280, 160);
-    return sub_80068EC(&unk_2008980, &Window0HorizontalDimensions, 4, -1570766848);
+    return req_enqueueTask(&unk_2008980, &Window0HorizontalDimensions, 4, -1570766848);
 }
 
 
@@ -6251,7 +6251,7 @@ void __fastcall battle_state_tick_8007CA0(int a1, int a2, int a3)
 
 
 // 0x8007e62
-signed int sub_8007E62()
+signed int battle_runFrame()
 {
     int v0; // r5
     signed int result; // r0
@@ -6979,7 +6979,7 @@ int sub_8008528()
 
 
 // 0x800855e
-int sub_800855E()
+int battle_dispatchNextPhase()
 {
     int v0; // r5
     int v1; // r10
@@ -9080,7 +9080,7 @@ int sub_8009734()
 
 
 // 0x8009754
-int sub_8009754()
+int battle_state4EventWaitHandler()
 {
     int v0; // r5
     int result; // r0

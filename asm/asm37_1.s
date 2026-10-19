@@ -113,9 +113,9 @@ sub_81418F0:
 // symdb: Records a map-anchored trigger point (position offset by a per-index pair, size 12x8) into the eStruct2001010 slot, tagging it with the current map group/number.
 // symdb: (r0 = base x, r1 = base y, r2 = param stored at +0x24, r3 = index into byte_8141958 offset
 // symdb: table) -> r0 = 0 (clobbered); writes eStruct2001010+0x18..0x3B
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141914.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setWarpTrigger.yaml
 	thumb_local_start
-sub_8141914:
+ow_setWarpTrigger:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
 	ldr r4, off_8141954 // =byte_8141958 
@@ -150,7 +150,7 @@ sub_8141914:
 	.balign 4, 0
 off_8141954:
 	.word byte_8141958
-	thumb_func_end sub_8141914
+	thumb_func_end ow_setWarpTrigger
 
 byte_8141958:
 	.word 0x00FF0000, 0x00FF0000, 0x00180000, 0x00000000, 0x00FF0000, 0x00FF0000, 0x00000000, 0x00180000
@@ -1710,7 +1710,7 @@ sub_81428D4:
 	mov r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8142952
+	bl movePackedCoordsByDir
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 loc_81428F6:
@@ -1721,12 +1721,12 @@ loc_81428F6:
 	and r1, r0
 	mov r0, r4
 	mov r2, #1
-	bl sub_8142952
+	bl movePackedCoordsByDir
 	mov r6, r0
 	mov r0, r4
 	mov r1, r7
 	mov r2, #1
-	bl sub_8142952
+	bl movePackedCoordsByDir
 	mov r7, r0
 	bl ReadOWPlayerObjectCoords
 	str r0, [sp]
@@ -1759,9 +1759,9 @@ loc_814294C:
 // symdb: Offsets a packed (x | y<<8) coordinate pair by a cardinal-direction step taken from a table, scaled by r2, and returns the repacked halfword.
 // symdb: (r0 = packed coords, x in low byte / y in high byte; r1 = direction entry index; r2 = step
 // symdb: multiplier) -> r0 = new packed coords (x&0xFF | y<<8); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142952.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/movePackedCoordsByDir.yaml
 	thumb_local_start
-sub_8142952:
+movePackedCoordsByDir:
 	push {r4-r7,lr}
 	mov r6, r2
 	ldr r7, off_814297C // =byte_8142980 
@@ -1787,7 +1787,7 @@ off_814297C:
 	.word byte_8142980
 byte_8142980:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
-	thumb_func_end sub_8142952
+	thumb_func_end movePackedCoordsByDir
 
 	thumb_func_start sub_8142990
 sub_8142990:
@@ -2250,9 +2250,9 @@ sub_8142CB0:
 // symdb: Stamps one tile-block pattern, selected by index, from a template table into the overworld map-tile grid.
 // symdb: (r0 = destination tile-grid buffer (eMapTilesState-style struct), r1 = template index) -> r0 =
 // symdb: none; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142CC8.yaml
-	thumb_func_start sub_8142CC8
-sub_8142CC8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_stampMapTileTemplate.yaml
+	thumb_func_start ow_stampMapTileTemplate
+ow_stampMapTileTemplate:
 	push {r4-r7,lr}
 	ldr r5, off_8142D54 // =eMapTilesState200be70 
 	ldrb r4, [r5]
@@ -2322,7 +2322,7 @@ off_8142D40:
 off_8142D44:
 	.word dword_8619B50
 	.word byte_8619B90
-	thumb_func_end sub_8142CC8
+	thumb_func_end ow_stampMapTileTemplate
 
 	thumb_func_start sub_8142D4C
 sub_8142D4C:
@@ -2354,7 +2354,7 @@ sub_8142D58:
 	sub r0, r0, r1
 	lsl r0, r0, #1
 	mov r4, r0
-	bl sub_8142DE6
+	bl ow_getAreaMapTilesOffset
 	sub r0, r0, r4
 	b locret_8142D9E
 loc_8142D84:
@@ -2368,7 +2368,7 @@ loc_8142D84:
 	sub r0, r0, r1
 	lsl r0, r0, #1
 	mov r4, r0
-	bl sub_8142DE6
+	bl ow_getAreaMapTilesOffset
 	add r0, r0, r4
 locret_8142D9E:
 	pop {r4-r7,pc}
@@ -2417,9 +2417,9 @@ locret_8142DE4:
 
 // symdb: Returns a per-area halfword constant (from a 4-entry table) selected by the current overworld map area, with map group 0x85 forced to entry 3.
 // symdb: () -> r0 = halfword from byte_8142E0C[2*areaIndex]; no flags meaningfully used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142DE6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getAreaMapTilesOffset.yaml
 	thumb_local_start
-sub_8142DE6:
+ow_getAreaMapTilesOffset:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_GameStatePtr]
@@ -2471,7 +2471,7 @@ byte_8142EA0:
 	.byte 0x1, 0x32, 0x0, 0x20, 0x0, 0x2, 0xFF, 0xA6, 0x0, 0xB8, 0x0
 	.byte 0x0, 0x0, 0x3, 0xFF, 0xA4, 0xFF, 0xBA, 0x1, 0x0, 0x0, 0x4
 	.byte 0xFF, 0x28, 0x0, 0xFC, 0x1, 0x0, 0x0, 0xFF, 0x5, 0x0, 0x0
-	thumb_func_end sub_8142DE6
+	thumb_func_end ow_getAreaMapTilesOffset
 
 	thumb_local_start
 sub_8142ECC:

@@ -17280,9 +17280,9 @@ JumpTable812B5F4:
   // 0x00
   .word sub_812B608+1
   // 0x04
-	.word sub_812B640+1
+	.word ow_postBattleResetState+1
   // 0x08
-	.word sub_812B698+1
+	.word e_endBeastLinkGateSequence+1
   // 0x0C
 	.word sub_812B708+1
   // 0x10
@@ -17321,9 +17321,9 @@ locret_812B63E:
 // symdb: One-shot post-battle overworld reset: waits for the screen fade to finish, then clears all transient overworld/battle state and reinitializes battle structures.
 // symdb: (r5 = game-state/task struct) -> r0 = clobbered; sets r5+2 = 8 and r5+0x1B |= 2 when the reset
 // symdb: runs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B640.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_postBattleResetState.yaml
 	thumb_local_start
-sub_812B640:
+ow_postBattleResetState:
 	push {lr}
 	ldr r1, off_812B804 // =eStruct203F7D8 
 	ldrb r0, [r1,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
@@ -17355,14 +17355,14 @@ loc_812B652:
 	bl initBattleStructsAndVram_80071D4
 locret_812B696:
 	pop {pc}
-	thumb_func_end sub_812B640
+	thumb_func_end ow_postBattleResetState
 
 // symdb: Cutscene/scenario state handler that waits for the battle-style sequence tick to finish, then resets graphics and game state, restores the PET navi, plays map music, and clears the Beast Link Gate event flag.
 // symdb: (r5 = scenario/event state struct, not passed via r0) -> r0 = clobbered; on battle tick nonzero
 // symdb: returns without doing anything
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B698.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_endBeastLinkGateSequence.yaml
 	thumb_local_start
-sub_812B698:
+e_endBeastLinkGateSequence:
 	push {lr}
 	mov r0, #2
 	ldrb r1, [r5,#0x1b]
@@ -17410,7 +17410,7 @@ loc_812B6D8:
 	bl sub_803F798
 locret_812B706:
 	pop {pc}
-	thumb_func_end sub_812B698
+	thumb_func_end e_endBeastLinkGateSequence
 
 	thumb_local_start
 sub_812B708:

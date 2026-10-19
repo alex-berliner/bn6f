@@ -2480,7 +2480,7 @@ loc_809ABC8:
 	mov r1, #1
 	bl GiveItem
 	pop {r0}
-	bl sub_809AC48
+	bl get_valueFromIdPairTable
 	mov r1, #3
 	b loc_809AC06
 loc_809ABDC:
@@ -2542,9 +2542,9 @@ dword_809AC2C:
 // symdb: Looks up r0 in a 0xFF-terminated (id,value) byte-pair table and returns the paired value, or 0x1A if not found.
 // symdb: (r0 = lookup id byte) -> r0 = matched value byte, or 0x1A (26) on miss; flags clobbered by pops
 // symdb: only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AC48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_valueFromIdPairTable.yaml
 	thumb_local_start
-sub_809AC48:
+get_valueFromIdPairTable:
 	push {r1-r7,lr}
 	ldr r1, off_809AC64 // =byte_809AC68 
 loc_809AC4C:
@@ -2567,7 +2567,7 @@ byte_809AC68:
 	.byte 0x53
 byte_809AC69:
 	.byte 0x15, 0x51, 0x16, 0x55, 0x17, 0xFF, 0xFF
-	thumb_func_end sub_809AC48
+	thumb_func_end get_valueFromIdPairTable
 
 	thumb_local_start
 sub_809AC70:
@@ -3997,7 +3997,7 @@ byte_809BFB0:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
-	cs_call_native_with_return_value ptr1=sub_809BFE8+1
+	cs_call_native_with_return_value ptr1=ow_loadEnterMapEntry+1
 	cs_jump_if_var_equal byte1=0x05 byte2=0xFF destination3=cutscenescript_809BFCA
 	cs_run_text_script_from_mem byte1=0x05
 	cs_wait_chatbox byte1=0x80
@@ -4020,9 +4020,9 @@ cutscenescript_809BFE3:
 // symdb: Selects a 0x1C-byte map-entry record from the table at byte_809BF24 by the index stored in the caller's struct and copies its transition settings, including fade parameters for entering a map.
 // symdb: (r0-r4 unused; r5 = object/state struct with index at +0x4) -> r0 = 0; stores record pointer at
 // symdb: [r5+0x34], bytes at [r5+5..7], and GameState fade params
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BFE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_loadEnterMapEntry.yaml
 	thumb_local_start
-sub_809BFE8:
+ow_loadEnterMapEntry:
 	push {r4-r7,lr}
 	ldrb r1, [r5,#4]
 	ldr r0, off_809C018 // =byte_809BF24
@@ -4050,7 +4050,7 @@ loc_809C012:
 	.balign 4, 0
 off_809C018:
 	.word byte_809BF24
-	thumb_func_end sub_809BFE8
+	thumb_func_end ow_loadEnterMapEntry
 
 // symdb: Resets game-progress story flags and reinitializes the selected PET navi, as if preparing a fresh scenario/playthrough state.
 // symdb: (r5 = toolkit or scenario struct; [r5,#0x34] = config struct) -> r0 = 0; no flags

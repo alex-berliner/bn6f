@@ -835,9 +835,9 @@ libSIO814469C:
 // symdb: Per-frame SIO/link state machine: samples the SIO control register, advances a comm state, and periodically copies a status byte out of the comm struct.
 // symdb: () -> r0 undefined; updates struct eTimerEnable200F460 (state at +1, mode at +2, counter at
 // symdb: +0xD, 4-byte field at +0x2A), writes byte_200F448 and byte_200F450
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81446AC.yaml
-	thumb_func_start sub_81446AC
-sub_81446AC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sio_linkStateUpdate.yaml
+	thumb_func_start sio_linkStateUpdate
+sio_linkStateUpdate:
 	push {r4,lr}
 	ldr r0, off_81446D4 // =SIOControlRegister 
 	ldr r0, [r0]
@@ -920,7 +920,7 @@ off_8144744:
 	.word byte_200F448
 dword_8144748:
 	.word 0x995
-	thumb_func_end sub_81446AC
+	thumb_func_end sio_linkStateUpdate
 
 	thumb_local_start
 libSIOControlStart:
@@ -25336,9 +25336,9 @@ loc_814F978:
 // symdb: Sets a strength value on an object tagged with the 'Smsh' magic and recomputes its scaled product field.
 // symdb: (r0 = object ptr with magic 'Smsh' (0x68736D53) at +0x34, r1 = 8-bit factor) -> r0 clobbered
 // symdb: (popped into pc path); stores factor at +0x1E and factor*base>>8 at +0x20; flags from cmp/mul
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F988.yaml
-	thumb_func_start sub_814F988
-sub_814F988:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setSmashFactor.yaml
+	thumb_func_start object_setSmashFactor
+object_setSmashFactor:
 	push {lr}
 	mov r2, r0
 	lsl r1, r1, #0x10
@@ -25359,7 +25359,7 @@ loc_814F9A4:
 	.balign 4, 0
 dword_814F9A8:
 	.word 0x68736D53
-	thumb_func_end sub_814F988
+	thumb_func_end object_setSmashFactor
 
 	thumb_func_start sub_814F9AC
 sub_814F9AC:

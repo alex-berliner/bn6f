@@ -1249,7 +1249,7 @@ loc_81309B8:
 	beq loc_81309FE
 	ldrh r0, [r5,#0x2a]
 	strh r0, [r5,#0x32]
-	bl sub_81312FC
+	bl init_cutsceneSceneState
 	mov r0, #4
 	strb r0, [r5,#2]
 	mov r0, #0
@@ -1913,7 +1913,7 @@ off_8130F08:
 off_8130F0C:
 	.word sub_812AC14+1
 	.word sub_8130F1C+1
-	.word sub_8130F78+1
+	.word battle_initScenarioScene+1
 	.word sub_8130FC4+1
 	thumb_func_end sub_8130EDC
 	thumb_local_start
@@ -1961,9 +1961,9 @@ locret_8130F76:
 // symdb: Initializes one specific battle scene variant: leaves RFU mode if active, runs the full battle-scene init, loads entity GFX and a menu-style background, and spawns eStruct records from a fixed table.
 // symdb: () -> void; early-returns (via ZF from IsScreenFadeActive) while a screen fade is active; writes
 // symdb: r5+3 = 0x20 and r5+0x1E = 0; no other args/returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130F78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initScenarioScene.yaml
 	thumb_local_start
-sub_8130F78:
+battle_initScenarioScene:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8130FBA
@@ -1997,7 +1997,7 @@ off_8130FBC:
 	.word unk_20251A0
 off_8130FC0:
 	.word byte_8129150
-	thumb_func_end sub_8130F78
+	thumb_func_end battle_initScenarioScene
 
 	thumb_local_start
 sub_8130FC4:
@@ -2068,7 +2068,7 @@ loc_813101A:
 loc_8131040:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8131062
-	bl sub_81312FC
+	bl init_cutsceneSceneState
 	mov r0, #0
 	strb r0, [r5,#0x1b]
 	mov r0, #4
@@ -2446,9 +2446,9 @@ off_81312F8:
 // symdb: Scene-state init: wipes VRAM/palette/tile buffers, resets battle scene records, starts a fade and chatbox script 0x68, and marks the event state advanced.
 // symdb: (r5 = event/scene state struct pointer; r10 = toolkit) -> void; sets bit 0x20 of byte at
 // symdb: [r5+0x1B]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81312FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_cutsceneSceneState.yaml
 	thumb_local_start
-sub_81312FC:
+init_cutsceneSceneState:
 	push {r4,r7,lr}
 	bl sub_81312EC
 	mov r7, r0
@@ -2510,7 +2510,7 @@ dword_8131388:
 	.word 0x1F40
 off_813138C:
 	.word dword_8129180
-	thumb_func_end sub_81312FC
+	thumb_func_end init_cutsceneSceneState
 	thumb_local_start
 sub_8131390:
 	push {r4,lr}
@@ -17203,7 +17203,7 @@ loc_8138354:
 loc_8138368:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
-	bl sub_8138848
+	bl ow_perFrameUpdateAndRender
 	pop {r7,pc}
 	.balign 4, 0
 off_8138378:
@@ -17883,9 +17883,9 @@ sub_81387D8:
 
 // symdb: Runs the overworld frame: updates player/NPC/map objects, resolves interactions, then queues and flushes all overworld sprites.
 // symdb: () -> (); no arguments or return value, r0-r3 clobbered by the calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138848.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_perFrameUpdateAndRender.yaml
 	thumb_local_start
-sub_8138848:
+ow_perFrameUpdateAndRender:
 	push {lr}
 	bl ZeroFillObjectInteractionAreas_800378C // () -> ()
 	bl TryUpdateEachOWPlayerObject_8003BA2 // () -> ()
@@ -17902,7 +17902,7 @@ sub_8138848:
 	bl sprite_finishGroup_8004590
 	bl owMapObject_queueSprites_8004934
 	pop {pc}
-	thumb_func_end sub_8138848
+	thumb_func_end ow_perFrameUpdateAndRender
 
 	thumb_local_start
 sub_8138884:

@@ -175,7 +175,7 @@ sound_8000672:
 	ldr r0, [r7,r0]
 	mov r3, r10
 	push {r3}
-	ldr r3, off_800087C // =sub_814F988+1
+	ldr r3, off_800087C // =object_setSmashFactor+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r3}
 	mov r10, r3
@@ -523,7 +523,7 @@ off_8000874:
 off_8000878:
 	.word sub_814FA14+1
 off_800087C:
-	.word sub_814F988+1
+	.word object_setSmashFactor+1
 off_8000880:
 	.word battle_smashFx_SetParams_814E87C+1
 off_8000884:

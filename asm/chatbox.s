@@ -6369,7 +6369,7 @@ chatbox_F7_move:
 off_8042840:
 	.word off_8042844
 off_8042844:
-	.word sub_804286C
+	.word chatbox_setChoiceCursorGeometry
 	.word sub_80428B8
 	.word chatbox_initFromScriptEntry_80428C0
 	.word sub_80428E4
@@ -6384,9 +6384,9 @@ off_8042844:
 // symdb: Chatbox script command that loads a choice-cursor size/type and writes cursor box geometry into the chatbox work struct.
 // symdb: (r0 = word-size table base off_80428A0, r4 = script ptr {?, sizeType@+4, x@+2, y@+3}, r5 =
 // symdb: chatbox struct) -> r0 = 1; r4 += 5 (script advance)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804286C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_setChoiceCursorGeometry.yaml
 	thumb_local_start
-sub_804286C: // 0x804286C
+chatbox_setChoiceCursorGeometry: // 0x804286C
 	ldr r0, off_804289C // =off_80428A0
 	ldrb r3, [r4,#4]
 	strb r3, [r5,#oChatbox_ChoiceCursorSource]
@@ -6417,7 +6417,7 @@ off_804289C:
 off_80428A0:
 	.byte 0x1E, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00
 	.byte 0x1E, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00
-	thumb_func_end sub_804286C
+	thumb_func_end chatbox_setChoiceCursorGeometry
 
 	thumb_local_start
 sub_80428B8: // 0x80428B8

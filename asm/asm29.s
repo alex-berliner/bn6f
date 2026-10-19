@@ -4421,7 +4421,7 @@ locret_80A7512:
 	thumb_local_start
 sub_80A7514:
 	push {r4,lr}
-	bl sub_80A755C
+	bl get_mapGroupTableEntry
 	ldrh r1, [r0]
 	ldrh r2, [r0,#2]
 	lsl r1, r1, #0x10
@@ -4467,9 +4467,9 @@ off_80A754C:
 // symdb: Selects one of four lookup tables based on the current map group (with a sub-index when in map group 0x81) and returns a pointer to the entry indexed by the caller's counter at +0x30.
 // symdb: (r5 = context object, field +0x30 = u32 entry index; reads GameState via r10) -> r0 = pointer
 // symdb: (table_base + 4*index); r4 clobbered, flags meaningless
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A755C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_mapGroupTableEntry.yaml
 	thumb_local_start
-sub_80A755C:
+get_mapGroupTableEntry:
 	push {r4,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
@@ -4496,7 +4496,7 @@ off_80A7580:
 	.word byte_814154C
 	.word byte_81415F4
 	.word byte_814172C
-	thumb_func_end sub_80A755C
+	thumb_func_end get_mapGroupTableEntry
 
 // symdb: Loads a 4-byte AI routine pointer from a packed u16-indexed table and stores it into the battle object's AIData+0x28 slot.
 // symdb: (r5 = BattleObject*) -> r0 = ptr read from table; side effect: writes that ptr into

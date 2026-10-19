@@ -347,7 +347,7 @@ int libSIO814469C()
 
 
 // 0x81446ac
-int sub_81446AC()
+int sio_linkStateUpdate()
 {
     unsigned int v0; // r2
     int v2; // [sp+4h] [bp-4h]
@@ -12203,7 +12203,7 @@ LABEL_92:
 
 
 // 0x814f988
-int __fastcall sub_814F988(int a1, __int16 a2)
+int __fastcall object_setSmashFactor(int a1, __int16 a2)
 {
     int v3; // [sp+0h] [bp-4h]
 

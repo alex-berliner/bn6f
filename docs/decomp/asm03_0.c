@@ -10603,7 +10603,7 @@ int sub_802DAA8()
 
 
 // 0x802dacc
-int sub_802DACC()
+int battle_objectPanelEmergeStep()
 {
     Battle *v0; // r5
     int v1; // r7

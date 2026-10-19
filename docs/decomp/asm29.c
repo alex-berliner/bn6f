@@ -2801,7 +2801,7 @@ char *sub_80A7514()
     char *result; // r0
     int v2; // r2
 
-    result = sub_80A755C();
+    result = get_mapGroupTableEntry();
     v2 = *(result + 1) << 16;
     *(v0 + 24) = *result << 16;
     *(v0 + 28) = v2;
@@ -2827,7 +2827,7 @@ char *ow_getMapDirAnimTableEntry()
 
 
 // 0x80a755c
-char *sub_80A755C()
+char *get_mapGroupTableEntry()
 {
     int v0; // r5
     int v1; // r10
