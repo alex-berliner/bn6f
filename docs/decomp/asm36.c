@@ -655,7 +655,7 @@ void sub_813096C()
 	v1 = sub_803EAE4();
 	if ( v1 == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 	}
 	else if ( v1 != 1 )
 	{
@@ -730,7 +730,7 @@ void __noreturn e_linkMatchObjectUpdate()
 	v1 = sub_803EAE4();
 	if ( v1 == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 		goto LABEL_27;
 	}
 	if ( v1 == 1 )
@@ -845,7 +845,7 @@ void __noreturn sub_8130B30()
 	v1 = sub_803EAE4();
 	if ( v1 == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 	}
 	else
 	{
@@ -917,7 +917,7 @@ int sub_8130BC8()
 	result = sub_803EAE4();
 	if ( result == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 		goto LABEL_20;
 	}
 	if ( result != 1 )
@@ -989,7 +989,7 @@ int sub_8130C98()
 	result = sub_803EAE4();
 	if ( result == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 		goto LABEL_15;
 	}
 	if ( result != 1 )
@@ -1056,7 +1056,7 @@ void __noreturn sub_8130D40()
 	v1 = sub_803EAE4();
 	if ( v1 == 4 )
 	{
-		sub_81313C0();
+		npc_eventShowDialogState24();
 	}
 	else if ( v1 != 1 )
 	{
@@ -1125,7 +1125,7 @@ void sub_8130DD0()
 	if ( v1 == 4 )
 	{
 		sub_813188C(0);
-		sub_81313C0();
+		npc_eventShowDialogState24();
 		return;
 	}
 	if ( v1 != 1 )
@@ -1475,7 +1475,7 @@ int sub_8131150()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_81313C0();
+        npc_eventShowDialogState24();
     }
     else if ( v1 != 1 && !(v1 & 8) )
     {
@@ -1665,7 +1665,7 @@ char *init_cutsceneEmotionEntries()
 
 
 // 0x81313c0
-void sub_81313C0()
+void npc_eventShowDialogState24()
 {
     _BYTE *v0; // r5
     int v1; // r1
@@ -2026,7 +2026,7 @@ void __fastcall sub_8131824(int a1)
         if ( *&byte_202527C[v3] == v4 )
             t3_setStateAndFadeScreen();
         else
-            sub_81313C0();
+            npc_eventShowDialogState24();
     }
 }
 
@@ -4094,7 +4094,7 @@ int __fastcall chatbox_showCantJackInMsg(int a1)
 
 
 // 0x81336a0
-int sub_81336A0()
+int chatbox_stateRunScript12Once()
 {
     int v0; // r5
     int result; // r0
@@ -4163,7 +4163,7 @@ void sub_81336C4()
 
 
 // 0x8133740
-void sub_8133740()
+void chatbox_stepRunScript12IfFlag80Clear()
 {
     int v0; // r5
     char v1; // zf
@@ -6748,7 +6748,7 @@ int navicust_handleBoardInput()
         JoypadKeyPressed();
         if ( !v2 )
         {
-            sub_81367C0();
+            object_setState30IfAnyUnk2004190EntryActive();
             goto LABEL_20;
         }
         JoypadKeyPressed();
@@ -7432,7 +7432,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
     }
     if ( v5 & 4 )
     {
-        sub_81367C0();
+        object_setState30IfAnyUnk2004190EntryActive();
     }
     else
     {
@@ -7558,7 +7558,7 @@ int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
     if ( v5 & 2 )
         return navicust_handlePlacementCancelInput(a1, 2, a3);
     v7 = &byte_8136210[2 * *(v3 + 15)];
-    result = sub_8136364();
+    result = battleObject_hasKeyItem();
     if ( !v8 )
     {
         if ( v5 & byte_200 )
@@ -7749,7 +7749,7 @@ int sub_813633C()
 
 
 // 0x8136364
-int sub_8136364()
+int battleObject_hasKeyItem()
 {
     int v0; // r5
     __int16 *v1; // r0
@@ -8207,7 +8207,7 @@ int __fastcall navicust_boardCursorUp(int a1, int a2, int a3)
 
 
 // 0x81367c0
-void sub_81367C0()
+void object_setState30IfAnyUnk2004190EntryActive()
 {
     int v0; // r5
     int v1; // r4
@@ -8401,7 +8401,7 @@ int battle_beastOutTimerTick()
 
 
 // 0x8136a74
-int sub_8136A74()
+int navicust_stateWaitFramesThenAdvance()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -10891,7 +10891,7 @@ int sub_8138600()
 
 
 // 0x8138624
-int __fastcall sub_8138624(int a1, int a2, int a3, int a4)
+int __fastcall ow_scriptOpSpawnNpcGroup(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r4

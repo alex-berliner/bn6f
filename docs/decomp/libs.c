@@ -4808,7 +4808,7 @@ int rfu_readyUniSendIfFlagged()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    if ( sub_8149150() << 24 )
+    if ( rfu_uniProcessRecvChunk() << 24 )
         rfu_UNI_readySendData(byte_20103E0);
     sub_8144DB0(1u);
     return v1;
@@ -4816,7 +4816,7 @@ int rfu_readyUniSendIfFlagged()
 
 
 // 0x8149150
-signed int sub_8149150()
+signed int rfu_uniProcessRecvChunk()
 {
     signed int v0; // r6
     __int16 *v2; // r1

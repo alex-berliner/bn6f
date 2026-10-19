@@ -1420,7 +1420,7 @@ signed int __usercall playerAI_tryExecuteAttackChip_800FB54@<R0>(Battle *obj@<R5
     switch ( v9 )
     {
         case 24:
-            v6 = sub_8012CB2();
+            v6 = battle_beastPwrAtkHitEnemies();
             goto LABEL_22;
         case 255:
 LABEL_22:
@@ -3433,7 +3433,7 @@ int battle_object_detachRelatedObject2_80111B8()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3450,7 +3450,7 @@ int sub_80111CA()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3484,7 +3484,7 @@ int sub_80111EE()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3501,7 +3501,7 @@ int sub_8011200()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3518,7 +3518,7 @@ int battle_deleteRelatedObject2()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3535,7 +3535,7 @@ int sub_8011224()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3553,13 +3553,13 @@ int object_freeRelatedObjectAndExtraVars()
     v1 = *(v0 + 80);
     if ( v1 )
     {
-        sub_80C44C8(v1);
+        battle_objectSetStateActionPhase8(v1);
         *(v0 + 80) = 0;
     }
     result = *(v0 + 96);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 96) = 0;
     }
@@ -3576,7 +3576,7 @@ int sub_8011256()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3594,75 +3594,75 @@ int __fastcall sub_8011268(int a1)
 // 0x80112e0
 int __fastcall sub_80112E0(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(&byte_104, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(&byte_104, a2, a3, a4);
 }
 
 
 // 0x80112ea
 int __fastcall sub_80112EA(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(&byte_108, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(&byte_108, a2, a3, a4);
 }
 
 
 // 0x80112f4
 int __fastcall sub_80112F4(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(266, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(266, a2, a3, a4);
 }
 
 
 // 0x80112fe
 int __fastcall sub_80112FE(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(&dword_10A + 2, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(&dword_10A + 2, a2, a3, a4);
 }
 
 
 // 0x8011308
 int __fastcall sub_8011308(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(byte_111, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(byte_111, a2, a3, a4);
 }
 
 
 // 0x8011312
 int __fastcall sub_8011312(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(byte_105, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(byte_105, a2, a3, a4);
 }
 
 
 // 0x801131c
 int __fastcall sub_801131C(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(&byte_109, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(&byte_109, a2, a3, a4);
 }
 
 
 // 0x8011326
 int __fastcall sub_8011326(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(&dword_10A + 3, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(&dword_10A + 3, a2, a3, a4);
 }
 
 
 // 0x8011330
 int __fastcall sub_8011330(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(270, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(270, a2, a3, a4);
 }
 
 
 // 0x801133a
 int __fastcall sub_801133A(int a1, int a2, int a3, int a4)
 {
-    return sub_8011344(274, a2, a3, a4);
+    return battle_spawnObj56StoreRelatedObject2(274, a2, a3, a4);
 }
 
 
 // 0x8011344
-int __fastcall sub_8011344(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObj56StoreRelatedObject2(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -3701,7 +3701,7 @@ int sub_80113FC()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C44C8(result);
+        battle_objectSetStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -3998,7 +3998,7 @@ int __fastcall aiAttack_initVarsAndStart_80116AE(char a1, __int16 a2, char a3)
 
 
 // 0x80116d8
-int __fastcall sub_80116D8(char a1, __int16 a2)
+int __fastcall aiAttack_startBoostedAttack(char a1, __int16 a2)
 {
     int v2; // r5
     int v3; // r7
@@ -4014,7 +4014,7 @@ int __fastcall sub_80116D8(char a1, __int16 a2)
 
 
 // 0x80116f6
-int __fastcall sub_80116F6(char a1, char a2, char a3, int a4)
+int __fastcall aiAttack_startAttack(char a1, char a2, char a3, int a4)
 {
     int v4; // r5
     int v5; // r7
@@ -4580,7 +4580,7 @@ signed int battle_initBeastPwrAtkVars()
 
 
 // 0x8011e1c
-signed int sub_8011E1C()
+signed int ai_beastSpAtkInit()
 {
     int v0; // r7
 
@@ -5050,7 +5050,7 @@ signed int battle_setupBeastPwrAttackVars()
 
 
 // 0x8012210
-signed int sub_8012210()
+signed int battle_aiAtkESetupDamageVars()
 {
     int v0; // r5
     int v1; // r7
@@ -5352,7 +5352,7 @@ int init_writeChipParams04e()
 
 
 // 0x80123fa
-int sub_80123FA()
+int battle_writeChipParams202()
 {
     return (loc_80126EA)(202);
 }
@@ -5373,7 +5373,7 @@ int sub_801240E()
 
 
 // 0x8012418
-int sub_8012418()
+int init_chipParams4f()
 {
     return (loc_80126EA)(79);
 }
@@ -5685,7 +5685,7 @@ int sub_8012608()
 
 
 // 0x8012612
-int __fastcall sub_8012612(int a1)
+int __fastcall ai_chargeShotInitTier1(int a1)
 {
     int v1; // r7
     int result; // r0
@@ -6329,7 +6329,7 @@ signed int __fastcall battle_getNaviTypeFamilyConstant_8012C7C(int a1)
 
 
 // 0x8012cb2
-int sub_8012CB2()
+int battle_beastPwrAtkHitEnemies()
 {
     int v0; // r5
     int v1; // r0
@@ -9979,7 +9979,7 @@ void object_aiAttackVarsExitState_8014F04()
 
 
 // 0x8014f40
-signed int __noreturn sub_8014F40()
+signed int __noreturn ai_attackStepLandAtTargetPanel()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -10019,7 +10019,7 @@ signed int __noreturn sub_8014F40()
 
 
 // 0x8014fa8
-int sub_8014FA8()
+int ai_attackStepRiseUp()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10452,7 +10452,7 @@ signed int __noreturn ai_finishPanelEmerge()
 
 
 // 0x801544c
-int sub_801544C()
+int battle_aiAttackWhiteFlashUpdate()
 {
     int v0; // r5
     int v1; // r7
@@ -12557,7 +12557,7 @@ int battleObject_initAndRunAI_8016B02()
 
 
 // 0x8016b36
-int sub_8016B36()
+int battle_objectStatePendingCommit()
 {
     int v0; // r5
     int v1; // r1
@@ -19444,7 +19444,7 @@ int __fastcall battle_updateObjectAnim_801CB38(int a1, int a2, int a3, int a4, i
         else
         {
             if ( !v9[23] || v9[22] )
-                sub_801E69C();
+                battleObject_resolveEmotionPaletteAltEntry();
             else
                 v10 = battleObject_resolveEmotionPalette_801E6A8();
             if ( v9[20] )
@@ -20892,7 +20892,7 @@ int battle_setUnkFlags44_0x40_801E006()
 
 
 // 0x801e012
-int sub_801E012()
+int eStruct2035280_requestBit40AndDispatch()
 {
     eStruct2035280_SetRequestBits_801BECC(64);
     return dispatch_801DA48(64);
@@ -21135,7 +21135,7 @@ int __noreturn sub_801E35A()
 
 
 // 0x801e376
-int __noreturn sub_801E376()
+int __noreturn ow_drawBgTilesSetDrawnFlag()
 {
     CopyBackgroundTiles(11, 0, 3, byte_801EE78, 8, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(2048);
@@ -21420,7 +21420,7 @@ int __fastcall sub_801E660(signed int a1)
 
 
 // 0x801e69c
-void sub_801E69C()
+void battleObject_resolveEmotionPaletteAltEntry()
 {
     int v0; // r5
 

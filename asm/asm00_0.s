@@ -1938,9 +1938,9 @@ loc_8000FDC:
 // symdb: For a consecutive range of event-flag IDs, posts a BBS message for each flag that is not yet set, unlocking any board posts the player hasn't received.
 // symdb: (r0 = first event flag id, r1 = number of flags) -> r0 = clobbered; loops from flag r0 while
 // symdb: count r1 > 0, decrementing after each
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000FE6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_addMissingMessagesForFlagRange.yaml
 	thumb_local_start
-sub_8000FE6:
+reqBBS_addMissingMessagesForFlagRange:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r4, r1
@@ -1955,14 +1955,14 @@ loc_8000FFA:
 	sub r4, #1
 	bgt loc_8000FEC
 	pop {r4-r7,pc}
-	thumb_func_end sub_8000FE6
+	thumb_func_end reqBBS_addMissingMessagesForFlagRange
 
 	thumb_local_start
 sub_8001002:
 	push {r4-r7,lr}
 	ldr r0, off_8001010 // =0x17a0
 	mov r1, #0xa
-	bl sub_8000FE6
+	bl reqBBS_addMissingMessagesForFlagRange
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8001010:

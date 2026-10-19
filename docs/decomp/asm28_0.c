@@ -1947,7 +1947,7 @@ int sub_809C7FC()
 
 
 // 0x809c814
-int sub_809C814()
+int owPlayer_setFixedAnimationFromLookup()
 {
     int v0; // r5
 
@@ -2941,7 +2941,7 @@ int ow_player_processAction_809D75E()
 
 
 // 0x809d7a8
-signed int sub_809D7A8()
+signed int owPlayer_triggerNpcChat()
 {
     int v0; // r5
     int v1; // r10

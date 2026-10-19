@@ -642,7 +642,7 @@ int __fastcall sub_8002CF6(int a1)
 
 
 // 0x8002d06
-int __noreturn sub_8002D06()
+int __noreturn sprite_projectAndCullLongcall()
 {
     return sprite_projectAndCull();
 }

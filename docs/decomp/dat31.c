@@ -1339,7 +1339,7 @@ int battle_objThinkCustom()
 
     if ( !*(v0 + 11) && *(v0 + 96) )
         sub_810D4E8();
-    sub_8016B36();
+    battle_objectStatePendingCommit();
     result = *(v0 + 9);
     if ( result != 6 )
     {

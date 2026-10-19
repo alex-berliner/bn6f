@@ -760,7 +760,7 @@ int soulWeapons_apply_8142510()
                 v6[2] = *(v5 + 3);
                 v6[3] = *(v5 + 2);
             }
-            v8 = sub_81427A4(v7);
+            v8 = soulWeapons_getFormDataOffset(v7);
             TestEventFlag(v8);
             if ( v3 )
             {
@@ -922,7 +922,7 @@ int sub_814278C()
 
 
 // 0x81427a4
-int __fastcall sub_81427A4(int a1)
+int __fastcall soulWeapons_getFormDataOffset(int a1)
 {
     return *&byte_81427BC[2 * GetSoulWeaponsMapIndex()] + a1;
 }
@@ -1597,7 +1597,7 @@ int sub_8142ECC()
             ++v11;
         }
         while ( v11 < 8 );
-        sub_81430F4();
+        reqBBS_processCompletedRewards();
         ClearEventFlagFromImmediate(9, 96);
     }
     return 0;
@@ -1711,7 +1711,7 @@ int ow_crowLessonGetTextId()
 
 
 // 0x81430f4
-int sub_81430F4()
+int reqBBS_processCompletedRewards()
 {
     unsigned __int8 *i; // r4
 

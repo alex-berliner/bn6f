@@ -1021,7 +1021,7 @@ void __fastcall battle_runTutorialDialog_8026FC0(int a1)
 
 
 // 0x8027044
-int sub_8027044()
+int battleObject_chipSelectStateTick()
 {
     int v0; // r5
 
@@ -1225,7 +1225,7 @@ signed int sub_802721C()
 
 
 // 0x802723a
-unsigned int __fastcall sub_802723A(int a1, int a2, int a3)
+unsigned int __fastcall customScreen_shuffleAnimationTick(int a1, int a2, int a3)
 {
     int v3; // r5
     unsigned int result; // r0
@@ -1534,7 +1534,7 @@ int sub_802753E()
 
 
 // 0x8027548
-int sub_8027548()
+int battleObject_chipSelectUpdate()
 {
     int v0; // r5
 
@@ -3683,7 +3683,7 @@ int __fastcall custMenuPressOK_8028D3A(int a1, int a2, int a3, int a4)
 
 
 // 0x8028d6c
-signed int __fastcall sub_8028D6C(int a1, int a2, int a3)
+signed int __fastcall customScreen_confirmChipSelect(int a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r5
@@ -4199,7 +4199,7 @@ int __fastcall custMenu_confirmAndProcessSelectedChips_8029110(int a1, int a2, i
             --v10;
         }
         while ( v10 );
-        sub_8029520(byte_20366F2, 0);
+        custMenu_matchChipComboPattern(byte_20366F2, 0);
         if ( v18 )
         {
             v27 = v18;
@@ -4603,7 +4603,7 @@ void sub_8029514()
 
 
 // 0x8029520
-void __fastcall sub_8029520(int a1, int a2)
+void __fastcall custMenu_matchChipComboPattern(int a1, int a2)
 {
     unsigned int v2; // r5
     signed int v3; // r6
@@ -5394,7 +5394,7 @@ int battleTutorial_first_checkTextStep_8029B1C()
     }
     if ( v1 == 1 )
     {
-        result = sub_8029BAC();
+        result = battleTutorial_firstCheckStepFlag();
         if ( !result )
             return result;
         v3 = result;
@@ -5402,7 +5402,7 @@ int battleTutorial_first_checkTextStep_8029B1C()
     }
     if ( v1 == 3 || v1 == 4 )
     {
-        result = sub_8029BD6();
+        result = battleTutorial_firstGetStepScriptId();
         if ( !result )
             return result;
         v3 = result;
@@ -5410,7 +5410,7 @@ int battleTutorial_first_checkTextStep_8029B1C()
     }
     if ( v1 != 6 )
         return 0;
-    result = sub_8029BE6();
+    result = battleTutorial_firstCheckTextTrigger();
     if ( result )
     {
         v3 = result;
@@ -5442,7 +5442,7 @@ int sub_8029B86()
 
 
 // 0x8029bac
-signed int sub_8029BAC()
+signed int battleTutorial_firstCheckStepFlag()
 {
     int v0; // r5
     signed int v1; // r0
@@ -5465,7 +5465,7 @@ signed int sub_8029BAC()
 
 
 // 0x8029bd6
-signed int sub_8029BD6()
+signed int battleTutorial_firstGetStepScriptId()
 {
     int v0; // r5
     signed int result; // r0
@@ -5479,7 +5479,7 @@ signed int sub_8029BD6()
 
 
 // 0x8029be6
-signed int sub_8029BE6()
+signed int battleTutorial_firstCheckTextTrigger()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -7527,7 +7527,7 @@ int sub_802B76C()
 
 
 // 0x802b7a0
-int sub_802B7A0()
+int battle_subEffectFadeOutDispatch()
 {
     int v0; // r5
     int result; // r0
@@ -9929,7 +9929,7 @@ int __usercall sub_802D322@<R0>(Battle *obj@<R5>)
 
 
 // 0x802d358
-signed int __usercall sub_802D358@<R0>(Battle *obj@<R5>)
+signed int __usercall playerAI_stepTryAttackChipOnTarget@<R0>(Battle *obj@<R5>)
 {
     _WORD *v1; // r6
     int v2; // r0
@@ -11205,7 +11205,7 @@ int sub_802E0A6()
 
 
 // 0x802e0d4
-int __fastcall sub_802E0D4(int a1, char a2, __int16 a3)
+int __fastcall aiAttack_startStatsAttack(int a1, char a2, __int16 a3)
 {
     int v3; // r5
     int v4; // r7

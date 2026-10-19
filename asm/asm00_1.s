@@ -4480,7 +4480,7 @@ GameStateJumptable:
 	// 0x20
 	.word scenario_finalizeFrameOrRestart_8005642+1 // (self: * GameState $r5) -> ()
 	// 0x24
-	.word sub_80056B8+1 // (self: * GameState $r5) -> ()
+	.word gameState_tickFrameAndHandleFadeTransition+1 // (self: * GameState $r5) -> ()
 	// 0x28
 	.word sub_800572C+1 // (self: * GameState $r5) -> ()
 	// 0x2C
@@ -5107,9 +5107,9 @@ locret_80056B4:
 
 // symdb: Per-frame tick of the main game-state loop: runs scene dispatch, renders all sprites, and when a screen fade is active, tears everything down and jumps the main jumptable to scene 0x34.
 // symdb: (void) -> void; sets *(oToolkit_MainJumptableIndexPtr) = 0x34 when IsScreenFadeActive is true
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80056B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameState_tickFrameAndHandleFadeTransition.yaml
 	thumb_local_start
-sub_80056B8: // (self: * GameState $r5) -> ()
+gameState_tickFrameAndHandleFadeTransition: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl scenario_runEffectStateJumptable_80039AA
@@ -5145,7 +5145,7 @@ sub_80056B8: // (self: * GameState $r5) -> ()
 	strb r1, [r0]
 locret_800572A:
 	pop {pc}
-	thumb_func_end sub_80056B8
+	thumb_func_end gameState_tickFrameAndHandleFadeTransition
 
 	thumb_local_start
 sub_800572C: // (self: * GameState $r5) -> ()
@@ -5398,7 +5398,7 @@ JumpTable8005948:
   // todo check this one with sound. like 0x0, but has a delay + plays a hardcoded sound
 	.word sub_8005A28+1 // (self: * GameState $r5) -> ()
   // same as above, but with a different delay
-	.word sub_8005A50+1 // (self: * GameState $r5) -> ()
+	.word gameState_fadeToOverworldAfterEvent+1 // (self: * GameState $r5) -> ()
 	thumb_func_end owMap_checkWarpTrigger_80058D0
 
 // symdb: Kicks off the ending sequence — sets the finale story event flags, starts a screen fade, ticks the countdown timers, and switches the game state machine to the ending subsystem.
@@ -5574,9 +5574,9 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 // symdb: One-shot game state handler: sets two story event flags, starts a screen fade, delays 160 frames, then hands control to the overworld subsystem.
 // symdb: (r5 = * GameState, self) -> void; no return value, writes SubsystemIndex = 0x10 to schedule
 // symdb: overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameState_fadeToOverworldAfterEvent.yaml
 	thumb_local_start
-sub_8005A50: // (self: * GameState $r5) -> ()
+gameState_fadeToOverworldAfterEvent: // (self: * GameState $r5) -> ()
 	push {lr}
 
 	movflag EVENT_1703
@@ -5610,7 +5610,7 @@ off_8005A84:
 	.word CutsceneScript_809b5ad // CutsceneScript
 off_8005A88:
 	.word CutsceneScript_8098b1c // CutsceneScript
-	thumb_func_end sub_8005A50
+	thumb_func_end gameState_fadeToOverworldAfterEvent
 
 // symdb: While in the field subsystem, checks a set of "is it safe to fight now" guards and, if all pass, launches the queued battle with a fade-out.
 // symdb: void checkThenStartBattle(void); // r10 = toolkit; no meaningful outputs; clobbers r0-r3 and
@@ -5749,9 +5749,9 @@ nullsub_8005B6A:
 
 // symdb: Per-frame overworld gate that runs the Select-button handler only when no cutscene, fade, busy state, or blocking flag is active.
 // symdb: () -> r0 = undefined; flags from last test; falls through to pop when any guard fails
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005B6E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_selectHandlerGuarded.yaml
 	thumb_local_start
-sub_8005B6E:
+ow_selectHandlerGuarded:
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
 	ldrb r0, [r5,#oGameState_SubsystemIndex]
@@ -5787,7 +5787,7 @@ sub_8005B6E:
 	bl ow_startWarpTransition
 locret_8005BC6:
 	pop {r5,pc}
-	thumb_func_end sub_8005B6E
+	thumb_func_end ow_selectHandlerGuarded
 
 // (BattleSettings *r0Bt, bool r1) -> void
 // symdb: Starts a battle from the overworld: stores the battle data pointer, snapshots the current map group, switches the game state machine to the battle subsystem (index 8) and plays the battle-start jingle.
@@ -6111,7 +6111,7 @@ loc_8005D5C:
 	ldrb r0, [r1,#0x10]
 	str r0, [r5,#oGameState_FacingDirectionAfterWarp]
 
-  // trigger sub_80056B8 via cbGameState_80050EC
+  // trigger gameState_tickFrameAndHandleFadeTransition via cbGameState_80050EC
 	mov r1, #0x24
 	strb r1, [r5,#oGameState_SubsystemIndex]
 
@@ -14413,7 +14413,7 @@ off_8009744:
 off_8009748:
 	.word battle_state4EventWaitHandler+1
 	.word battle_state4WaitLinkReady+1
-	.word sub_80097A8+1
+	.word battle_phaseWait10framesThenSetPhase8+1
 	thumb_func_end sub_8009734
 
 // symdb: Battle state-4 tick handler: waits 10 frames if state-4 events are pending then advances to phase 4, otherwise jumps straight to battle state 8.
@@ -14480,9 +14480,9 @@ locret_80097A6:
 // symdb: Battle-state step handler: on first entry sets a 10-frame countdown, then when it expires switches the battle phase to 8.
 // symdb: (r0 = battle state ptr unused here; r5 = battle state object) -> r0 = clobbered status value;
 // symdb: flags from tst/sub
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80097A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_phaseWait10framesThenSetPhase8.yaml
 	thumb_local_start
-sub_80097A8:
+battle_phaseWait10framesThenSetPhase8:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14503,7 +14503,7 @@ loc_80097BA:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80097CA:
 	pop {pc}
-	thumb_func_end sub_80097A8
+	thumb_func_end battle_phaseWait10framesThenSetPhase8
 
 // symdb: Battle-state subphase handler: on first entry arms a check (sets Unk11 bit 4, battle flag 1), then polls sub_802A87C until it reports done, branching to phase 0x14 or to state step 0xC.
 // symdb: no args (r5 = battle state struct, set by caller) -> void; uses/clears battle-state flags
@@ -19159,9 +19159,9 @@ locret_800B482:
 
 // symdb: Queues an outgoing battle link packet tagged 0xF1F1F1F1 carrying 60 bytes from byte_203F6D0, then requests battle mode 0x10.
 // symdb: () -> r0 = 1 (from battle_requestSetBattleMode); no flags used by caller visible
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B484.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_sendLinkPacketF1RequestMode10.yaml
 	thumb_local_start
-sub_800B484:
+battle_sendLinkPacketF1RequestMode10:
 	push {r4,lr}
 	ldr r0, dword_800B668 // =0xf1f1f1f1
 	ldr r1, off_800B66C // =dword_203CBE0
@@ -19173,7 +19173,7 @@ sub_800B484:
 	mov r0, #0x10
 	bl battle_requestSetBattleMode_80200A4
 	pop {r4,pc}
-	thumb_func_end sub_800B484
+	thumb_func_end battle_sendLinkPacketF1RequestMode10
 
 // symdb: (Re)builds the two loopback battle link packets the game exchanges with itself in solo battles.
 // symdb: () -> void; r0/r1 clobbered via callee calls

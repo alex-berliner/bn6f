@@ -4278,7 +4278,7 @@ cutscenescript_809C37E:
 	cs_free_all_ow_npc_objects_if_different_map
 	cs_call_native_with_return_value ptr1=sub_809C7A0+1
 	cs_call_native_with_return_value ptr1=sub_809C7FC+1
-	cs_call_native_with_return_value ptr1=sub_809C814+1
+	cs_call_native_with_return_value ptr1=owPlayer_setFixedAnimationFromLookup+1
 	cs_call_native_with_return_value ptr1=sub_809C830+1
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
@@ -4554,9 +4554,9 @@ sub_809C7FC:
 // symdb: Reads an index from an object field and sets the overworld player's fixed animation to a table-mapped animation id.
 // symdb: (r5 = context object, no args) -> r0 = 0; calls owPlayer_setS200ace0_fixedAnimationSelect with
 // symdb: mapped animation id
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C814.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_setFixedAnimationFromLookup.yaml
 	thumb_local_start
-sub_809C814:
+owPlayer_setFixedAnimationFromLookup:
 	push {r4-r7,lr}
 	ldr r3, [r5,#0x70]
 	mov r0, #0xc
@@ -4571,7 +4571,7 @@ off_809C828:
 	.word dword_809C82C
 dword_809C82C:
 	.word 0x7050301
-	thumb_func_end sub_809C814
+	thumb_func_end owPlayer_setFixedAnimationFromLookup
 
 	thumb_local_start
 sub_809C830:

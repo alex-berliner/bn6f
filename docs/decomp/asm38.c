@@ -2022,7 +2022,7 @@ signed int __fastcall sub_3007218(int a1, int a2)
                     v14 = getPrimaryElementWeaknessMultipler_3007432(*(v2 + 2), *(v3 + 2)) + 1;
                     v15 = v14 + getSecondaryElementWeaknessMultipler_30074e2(*(v2 + 24), *(v3 + 25));
                     *(v2 + 117) = v15 - 1;
-                    v16 = v15 + sub_30074BA();
+                    v16 = v15 + battleObject_endHitStateAndClearParent();
                     v17 = v16 + applyElecOnBubbleMultipler_30074a2();
                     *(v2 + 116) = v17 - 1;
                     v18 = *(v3 + 46);
@@ -2114,7 +2114,7 @@ signed int applyElecOnBubbleMultipler_30074a2()
 
 
 // 0x30074ba
-signed int sub_30074BA()
+signed int battleObject_endHitStateAndClearParent()
 {
     _DWORD *v0; // r6
     int v1; // r7

@@ -1104,9 +1104,9 @@ sub_8002CF6:
 // symdb: Long-call trampoline that forwards to sprite_projectAndCull unchanged.
 // symdb: (r0-r3 = args passed through to sprite_projectAndCull) -> r0 = whatever sprite_projectAndCull
 // symdb: returns; flags preserved from callee (pop does not clobber)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002D06.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_projectAndCullLongcall.yaml
 	thumb_local_start
-sub_8002D06:
+sprite_projectAndCullLongcall:
 	push {r5,lr}
 	ldr r3, off_8002D10 // =sprite_projectAndCull+1
 	mov lr, pc
@@ -1114,7 +1114,7 @@ sub_8002D06:
 	pop {r5,pc}
 off_8002D10:
 	.word sprite_projectAndCull+1
-	thumb_func_end sub_8002D06
+	thumb_func_end sprite_projectAndCullLongcall
 
 // symdb: Adjusts an object's sprite pointer to the nearest 16-byte-aligned scalable sprite data offset, then tail-jumps to a continuation routine that uses the scaled pointer.
 // symdb: void sprite_makeScalable(void); // in: r5 = object ptr; out/clobbers: r5, r7, r0-r3, lr;

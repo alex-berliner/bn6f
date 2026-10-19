@@ -1045,14 +1045,14 @@ void __fastcall __noreturn shop_stateStepWaitText(int a1)
 
 
 // 0x8047066
-void __fastcall __noreturn sub_8047066(int a1)
+void __fastcall __noreturn shopBuyMenu_handleDialogChoice(int a1)
 {
     shopBuyMenu_updateFrame_8047134();
 }
 
 
 // 0x804709c
-void __fastcall __noreturn sub_804709C(int a1)
+void __fastcall __noreturn shopBuyMenu_confirmPurchase(int a1)
 {
     shopBuyMenu_updateFrame_8047134();
 }
@@ -5003,7 +5003,7 @@ void __noreturn ow_copyTiles8x17ToBg()
 
 
 // 0x804ae68
-int sub_804AE68()
+int battleObject_queueAnimFrame()
 {
     int v0; // r5
     unsigned int v1; // ST00_4

@@ -2763,7 +2763,7 @@ _BYTE *__fastcall scenario_finalizeFrameOrRestart_8005642(int a1)
 
 
 // 0x80056b8
-_BYTE *__fastcall sub_80056B8(int a1)
+_BYTE *__fastcall gameState_tickFrameAndHandleFadeTransition(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -3134,7 +3134,7 @@ signed int sub_8005A28()
 
 
 // 0x8005a50
-signed int sub_8005A50()
+signed int gameState_fadeToOverworldAfterEvent()
 {
     int v0; // r5
     signed int result; // r0
@@ -3275,7 +3275,7 @@ void nullsub_8005B6A()
 
 
 // 0x8005b6e
-int __fastcall sub_8005B6E(int a1, int a2, int a3, int a4, int a5, int (__fastcall *a6)(int, int))
+int __fastcall ow_selectHandlerGuarded(int a1, int a2, int a3, int a4, int a5, int (__fastcall *a6)(int, int))
 {
     int v6; // r10
     int v7; // r0
@@ -9141,7 +9141,7 @@ int battle_state4WaitLinkReady()
 
 
 // 0x80097a8
-int sub_80097A8()
+int battle_phaseWait10framesThenSetPhase8()
 {
     int v0; // r5
     int result; // r0
@@ -12528,7 +12528,7 @@ signed int __fastcall battle_doBothTrackedIdsMatch_800B46C(int a1)
 
 
 // 0x800b484
-int sub_800B484()
+int battle_sendLinkPacketF1RequestMode10()
 {
     dword_203CBE0[0] = -235802127;
     CopyWords(byte_203F6D0, &dword_203CBE4, 0x3Cu);
@@ -13356,7 +13356,7 @@ LABEL_6:
 
 
 // 0x800bcc0
-int sub_800BCC0()
+int battleObject_fadeScreenWaitDestroy()
 {
     int v0; // r5
     int v1; // r0

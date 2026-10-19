@@ -980,7 +980,7 @@ off_810E120:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_updateBehavior+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
@@ -1802,7 +1802,7 @@ off_810E7B0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_dispatchSweepState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -2792,7 +2792,7 @@ off_810F010:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_810F0C0+1
 	.word sub_81097D6+1
@@ -3188,7 +3188,7 @@ off_810F39C:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_dispatchStateScript+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -4350,7 +4350,7 @@ sub_810FD90:
 	beq loc_810FDA4
 	bl object_clearCollisionRegion // () -> void
 loc_810FDA4:
-	bl sub_8016B36
+	bl battle_objectStatePendingCommit
 	pop {pc}
 	.balign 4, 0
 dword_810FDAC:
@@ -5269,7 +5269,7 @@ off_81104D4:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_811055C+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -6416,7 +6416,7 @@ off_8110DC0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_scriptDispatch+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -7023,7 +7023,7 @@ off_8111330:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_battlesweepUpdate+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
@@ -8385,7 +8385,7 @@ off_8111DC0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_8111DFC+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -8866,7 +8866,7 @@ off_81121F0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_runStateDispatch+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
@@ -9801,7 +9801,7 @@ off_81129A0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word snakearm_dispatchScriptStep+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -10749,7 +10749,7 @@ sub_81130F0:
 sub_81130FC:
 	push {lr}
 	bl sub_8113114
-	bl sub_8016B36
+	bl battle_objectStatePendingCommit
 	pop {pc}
 	thumb_func_end sub_81130FC
 
@@ -11340,7 +11340,7 @@ off_81135CC:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_811365A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -12264,7 +12264,7 @@ off_8113D50:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_8113DD8+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
@@ -13465,7 +13465,7 @@ snakearmAttackTable_8114710:
 	.word sub_80166AE+1 // 0x3
 	.word battleObject_initAndRunAI_8016B02+1 // 0x4
 	.word battleObjectStateDispatcher_8016CE8+1 // 0x5
-	.word sub_8016B36+1 // 0x6
+	.word battle_objectStatePendingCommit+1 // 0x6
 	.word sub_8016B72+1 // 0x7
 	.word snakearmAI_main_update_81147F4+1 // 0x8
 	.word snakearmAI_attack0x9_8114EFC+1 // 0x9
@@ -13785,7 +13785,7 @@ loc_8114A02:
 	mov r2, #0x63
 	strb r1, [r5,r2]
 	push {r0,r1}
-	bl sub_8114D74
+	bl snakearmAI_updateDirectionFlip
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	mov r2, r5
@@ -14181,9 +14181,9 @@ byte_8114D64:
 
 // symdb: Flips the snakearm battle object's sprite direction so it faces the panel X stored at offset 0x62.
 // symdb: (r0 = battle object ptr) -> r0 = undefined; writes oBattleObject_DirectionFlip (0 or 1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114D74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/snakearmAI_updateDirectionFlip.yaml
 	thumb_local_start
-sub_8114D74:
+snakearmAI_updateDirectionFlip:
 	push {r4-r7,lr}
 	bl object_getFrontDirection // () -> int
 	mov r3, #0
@@ -14197,7 +14197,7 @@ sub_8114D74:
 loc_8114D8A:
 	strb r3, [r5,#oBattleObject_DirectionFlip]
 	pop {r4-r7,pc}
-	thumb_func_end sub_8114D74
+	thumb_func_end snakearmAI_updateDirectionFlip
 
 	thumb_local_start
 snakearmAI_getPanelXYBasedOnEnemyActorPanelX_8114D8E:
@@ -14746,7 +14746,7 @@ off_8115234:
 	thumb_local_start
 sub_811523C:
 	push {lr}
-	bl sub_8115432
+	bl ai_attackVarsTimerTick16
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_StepTimer]
@@ -14824,7 +14824,7 @@ loc_81152CA:
 	bl sub_8115466
 loc_81152D4:
 	bl sub_81154B8
-	bl sub_8115432
+	bl ai_attackVarsTimerTick16
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
 	add r0, r0, r1
@@ -14884,7 +14884,7 @@ ai_throwObjectStep:
 	bl object_clearCollisionRegion // () -> void
 loc_8115350:
 	bl sub_81154B8
-	bl sub_8115432
+	bl ai_attackVarsTimerTick16
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
 	strh r0, [r7,#oAIAttackVars_StepTimer]
@@ -14997,9 +14997,9 @@ locret_8115430:
 
 // symdb: 16-frame periodic tick for an AI attack state: counts down a timer and calls a helper each time it elapses.
 // symdb: (r7 = AI attack-state struct) -> void; timer field [r7+TimerOrCycles] decremented and reloaded
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115432.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackVarsTimerTick16.yaml
 	thumb_local_start
-sub_8115432:
+ai_attackVarsTimerTick16:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	sub r0, #1
@@ -15010,7 +15010,7 @@ sub_8115432:
 	bl ai_spawnHopRearEffect
 locret_8115444:
 	pop {pc}
-	thumb_func_end sub_8115432
+	thumb_func_end ai_attackVarsTimerTick16
 
 // symdb: Spawns an effect-object (effect type 0) 14 px behind the AI battle object's facing direction, likely the dust/puff of a hop.
 // symdb: (r5 = battle object ptr) -> r0 = spawned effect object ptr; flags clobbered
@@ -15121,7 +15121,7 @@ off_81154F0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_dispatchScriptState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -15631,7 +15631,7 @@ off_8115950:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word ai_dispatchBeastSpHandler+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -16161,7 +16161,7 @@ off_8115DE0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_8115E4C+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
@@ -16219,7 +16219,7 @@ off_8115E84:
 	.word sub_8115E94+1
 	.word sub_8115EBC+1
 	.word sub_8115EDC+1
-	.word sub_8115EF4+1
+	.word ai_battlesweepCycleScriptSelect+1
 	thumb_func_end sub_8115E6C
 
 	thumb_local_start
@@ -16283,9 +16283,9 @@ locret_8115EF2:
 // symdb: Battlesweep AI tick: every table-specified frames it hands control to AI script 4 for one tick, otherwise runs script 8, and while object flag 0xA000 is set it never switches and resets the timer.
 // symdb: (r4 = battle object, r5 = byte counter field at +0x6B, r6 = AI state block) -> r0 preserved-ish;
 // symdb: writes [r5+0x6B] counter and [r6+oAIState_ScriptId] = 4 or 8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115EF4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_battlesweepCycleScriptSelect.yaml
 	thumb_local_start
-sub_8115EF4:
+ai_battlesweepCycleScriptSelect:
 	push {r4-r7,lr}
 	bl object_getFlag // () -> int
 	ldr r1, dword_81162C0 // =0xa000
@@ -16316,7 +16316,7 @@ loc_8115F24:
 loc_8115F28:
 	bl battleObject_refreshSpriteAndArm_800F2C6
 	pop {r4-r7,pc}
-	thumb_func_end sub_8115EF4
+	thumb_func_end ai_battlesweepCycleScriptSelect
 
 // symdb: Enemy AI attack handler: starts a charge attack (object_setAttack0 type 0xA) with version-specific stats unless some actor has the three checked parameters set.
 // symdb: (r4 = AIData actor, r5 = battle object, r6 = AI state, r7 = AIAttackVars) -> r0 = 0; clears
@@ -16817,7 +16817,7 @@ off_81163F0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_811649E+1
 	thumb_func_end battle_despawnObject
@@ -17028,9 +17028,9 @@ byte_8116594:
 // symdb: Zeroes a battle object's HP (deleting it) once its halfword field at +0x62 has counted down to or below the value in the field at +0x60.
 // symdb: (r5 = battle object pointer, preserved across call) -> writes 0 to oBattleObject_HP when
 // symdb: [r5+0x62] <= [r5+0x60]; flags from the cmp are clobbered, r0/r1 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81165A4.yaml
-	thumb_func_start sub_81165A4
-sub_81165A4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectKillWhenCounterElapsed.yaml
+	thumb_func_start battle_objectKillWhenCounterElapsed
+battle_objectKillWhenCounterElapsed:
 	mov r0, #0x60
 	ldrh r0, [r5,r0]
 	mov r1, #0x62
@@ -17041,7 +17041,7 @@ sub_81165A4:
 	strh r0, [r5,#oBattleObject_HP]
 locret_81165B4:
 	mov pc, lr
-	thumb_func_end sub_81165A4
+	thumb_func_end battle_objectKillWhenCounterElapsed
 
 	.balign 4, 0x00
 dword_81165B8:
@@ -17077,7 +17077,7 @@ off_81166B0:
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word battle_updateCustGauge_8116720+1
 // symdb: Hides the battle object off-field at panel X=7 and stores a 0x4000/MaxHP fixed-point reciprocal at object+0x80.
@@ -22742,9 +22742,9 @@ sub_8118E78:
 // symdb: State-machine dispatcher for a battle object's beast-out handling, tail-calling one of three handlers chosen by the object's state byte and handing them the sSubmenu work area.
 // symdb: (r5 = battle object struct, dispatch index at [r5,#8]) -> tail-calls handler off_8118E98[index]
 // symdb: with r6 = &sSubmenu; no direct return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118E84.yaml
-	thumb_func_start sub_8118E84
-sub_8118E84:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_beastOutDispatch.yaml
+	thumb_func_start battleObject_beastOutDispatch
+battleObject_beastOutDispatch:
 	push {lr}
 
 	ldr r6, off_8118EA4 // =sSubmenu
@@ -22765,7 +22765,7 @@ off_8118E98:
 	.word sprite_resetScaling+1
 off_8118EA4:
 	.word sSubmenu
-	thumb_func_end sub_8118E84
+	thumb_func_end battleObject_beastOutDispatch
 
 // symdb: Initialises a battle object's sprite for a BeastOut-state visual: GUI sprite init, animation, palette, priority, and a per-actor coordinate table lookup.
 // symdb: (r5 = battle object, r6 = secondary context) -> void ; side effects: writes object/sprite
@@ -34201,7 +34201,7 @@ off_811E868:
 	.word off_811E86C
 off_811E86C:
 	.word sub_811E87C+1
-	.word sub_811E8C4+1
+	.word sprite_stepSetPos22462+1
 	.word sub_811E8D8+1
 off_811E878:
 	.word eStruct2001010
@@ -34230,7 +34230,7 @@ sub_811E87C:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811E8C4
+	bl sprite_stepSetPos22462
 	pop {pc}
 	.balign 4, 0
 off_811E8C0:
@@ -34239,9 +34239,9 @@ off_811E8C0:
 
 // symdb: Sprite-object step that runs an unknown action, snaps the object's sprite to the fixed position (224, 62) and refreshes it.
 // symdb: (no args, operates on current sprite object) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E8C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_stepSetPos22462.yaml
 	thumb_local_start
-sub_811E8C4:
+sprite_stepSetPos22462:
 	push {lr}
 	bl sound_applyBiasWithSpriteFade
 	mov r0, #0xe0
@@ -34249,7 +34249,7 @@ sub_811E8C4:
 	bl sprite_setCoordinates
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811E8C4
+	thumb_func_end sprite_stepSetPos22462
 
 	thumb_local_start
 sub_811E8D8:

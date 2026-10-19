@@ -416,12 +416,12 @@ off_8123448:
 	.word battleObject_runUpdateHandlerByType_8123514+1
 	.word pet_menu_runFrame_81237BC+1
 	.word chipFolder_init_812349C+1
-	.word sub_81234DC+1
+	.word chipFolder_onEnter+1
 	thumb_func_end HandleChipFolderMenu8123434
 
 // symdb: One-time initialization of the chip folder screen: sets screen state, loads folder graphics and font/text tables, registers two on-screen windows, and runs the screen's setup routine.
 // symdb: void sub_812345C(void); // no meaningful inputs; r0-r7, lr and nz/c/v on return are whatever the
-// symdb: final callee (sub_8123D24) leaves
+// symdb: final callee (chipFolder_initEntryList) leaves
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipFolder_screenInit_812345C.yaml
 	thumb_local_start
 chipFolder_screenInit_812345C:
@@ -447,7 +447,7 @@ chipFolder_screenInit_812345C:
 	mov r3, #0x48 
 	ldr r4, off_8123504 // =byte_8123508
 	bl battle_setupPETNavis_8135314
-	bl sub_8123D24
+	bl chipFolder_initEntryList
 	pop {pc}
 	thumb_func_end chipFolder_screenInit_812345C
 
@@ -478,16 +478,16 @@ chipFolder_init_812349C:
 	mov r3, #0x48 
 	ldr r4, off_8123504 // =byte_8123508
 	bl battle_setupPETNavis_8135314
-	bl sub_8123D24
+	bl chipFolder_initEntryList
 	pop {pc}
 	thumb_func_end chipFolder_init_812349C
 
 // symdb: Entry-state handler for the chip folder screen: initializes its graphics/windows, prints the initial label set, then advances the screen state to 0x18.
 // symdb: (r0-r3 = state-dispatch args, r5 = screen work struct) -> r0 = 0x18 stored to r5+2; no return
 // symdb: value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81234DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipFolder_onEnter.yaml
 	thumb_local_start
-sub_81234DC:
+chipFolder_onEnter:
 	push {lr}
 	bl chipFolder_init_812349C
 	mov r0, #0
@@ -511,7 +511,7 @@ byte_8123508:
 	.byte 0x5, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0
 off_8123510:
 	.word byte_8123400
-	thumb_func_end sub_81234DC
+	thumb_func_end chipFolder_onEnter
 
 // symdb: Dispatches one battle object's per-frame update through a type-indexed jump table, then runs chip SFX, the PET menu stat block, and the standard entity/BattleObject update passes.
 // symdb: (r2 = ?, r4..r7, r10 = toolkit, r5 = current battle object) -> r5, r8..r10, r12 ; side effects:
@@ -1567,9 +1567,9 @@ sub_8123D10:
 // symdb: Fills the entry list for the chip folder screen, creating one list entry per count byte in the screen state and flagging the currently selected one.
 // symdb: (r5 = state struct whose +0xC holds the selected/current entry index; count read from
 // symdb: [S2001c04+5]) -> fills entries in the 0x58-byte array at 0x02008450; r0 result not used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123D24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipFolder_initEntryList.yaml
 	thumb_local_start
-sub_8123D24:
+chipFolder_initEntryList:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_S2001c04_Ptr]
@@ -1595,7 +1595,7 @@ loc_8123D3A:
 	blt loc_8123D2E
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8123D24
+	thumb_func_end chipFolder_initEntryList
 
 // symdb: Picks one of two fixed text/label tables based on r0 and passes it to the printer routine sub_80465A0.
 // symdb: void sub_8123D54(u32 selection /* r0 */)
@@ -3447,7 +3447,7 @@ off_8124C44:
 	.word sub_812503C+1
 	.word battle_runIntro_812508C_812509C+1
 	.word battle_runUpdatesAndCheckFade_81250E0+1
-	.word sub_8125104+1
+	.word battle_transitionStepWaitForFade+1
 	.word sub_8125128+1
 	.word battle_transitionAnimUpdate+1
 	.word battle_transitionTick_8125170+1
@@ -4048,9 +4048,9 @@ locret_8125100:
 
 // symdb: Per-frame step of the battle-start transition: pumps all transition/animation workers each call and advances the phase state to 8 once the screen fade finishes.
 // symdb: () -> void; writes phase byte r5+0x1 = 8 when IsScreenFadeActive signals done; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_transitionStepWaitForFade.yaml
 	thumb_local_start
-sub_8125104:
+battle_transitionStepWaitForFade:
 	push {lr}
 	bl sub_812674C
 	bl sprite_queueBattleOamEntry
@@ -4064,7 +4064,7 @@ sub_8125104:
 locret_8125124:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8125104
+	thumb_func_end battle_transitionStepWaitForFade
 
 	thumb_local_start
 sub_8125128:
@@ -9702,7 +9702,7 @@ loc_8127C34:
 	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x2a]
 loc_8127C46:
-	bl sub_8127F90
+	bl battleObject_animateAndQueueOam
 	bl sub_812848C
 	pop {pc}
 	.balign 4, 0
@@ -10097,9 +10097,9 @@ locret_8127F8E:
 // symdb: Renders the current animation frame of a battle object (queues one OAM entry) and advances to the next animation-table entry when the frame timer expires.
 // symdb: (r0 = object ptr in r5, no args in r0-r3) -> queues one OAM entry; updates obj->0x0F (frame
 // symdb: row), obj->0x10 (frame timer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127F90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_animateAndQueueOam.yaml
 	thumb_local_start
-sub_8127F90:
+battleObject_animateAndQueueOam:
 	push {r4,lr}
 	ldr r0, dword_8127FD8 // =0x420000 
 	ldrh r1, [r5,#0x2a]
@@ -10142,7 +10142,7 @@ dword_8127FDC:
 	.word 0x18
 dword_8127FE0:
 	.word 0x3
-	thumb_func_end sub_8127F90
+	thumb_func_end battleObject_animateAndQueueOam
 
 // symdb: Thin wrapper that sets up registers (object pointer fields, table base, count) and forwards an object's initialization/dispatch to the large sub_811FA98 helper.
 // symdb: void sub_8127FE4(struct Object *obj /* r5 */); // inputs:  r5 = object pointer, r4/r6/r7 carried

@@ -381,7 +381,7 @@ off_810C6F0::
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_810C72E+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -1139,7 +1139,7 @@ off_810CD60::
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word battleObject_aiActionStep_810CE1A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
@@ -1473,7 +1473,7 @@ off_810D0F4::
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_810D130+1
 
@@ -2046,7 +2046,7 @@ battle_objThinkCustom::
 	beq loc_810D5E0
 	bl sub_810D4E8
 loc_810D5E0::
-	bl sub_8016B36
+	bl battle_objectStatePendingCommit
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	cmp r0, #6
 	beq locret_810D5F4
@@ -2393,7 +2393,7 @@ off_810D910::
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
-	.word sub_8016B36+1
+	.word battle_objectStatePendingCommit+1
 	.word sub_8016B72+1
 	.word sub_810D998+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1

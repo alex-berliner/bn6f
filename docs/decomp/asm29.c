@@ -854,7 +854,7 @@ int sub_80A58AC()
 void sub_80A58E0()
 {
     sub_80A5954();
-    sub_80A596C();
+    owPlayer_setDirectionAnimThunk();
     sub_80A59B8();
     JUMPOUT(&loc_80A58FA);
 }
@@ -947,7 +947,7 @@ int sub_80A5954()
 
 
 // 0x80a596c
-void sub_80A596C()
+void owPlayer_setDirectionAnimThunk()
 {
     int v0; // r5
     int v1; // r0
@@ -1881,7 +1881,7 @@ signed int __fastcall sub_80A6CA4(int a1, int a2)
 
 
 // 0x80a6cd4
-signed int __fastcall sub_80A6CD4(int a1)
+signed int __fastcall battleObject_copyPositionToStruct(int a1)
 {
     _DWORD *v1; // r5
     signed __int16 *v2; // r0
@@ -2031,7 +2031,7 @@ signed int __fastcall sub_80A6DFC(int a1, int a2)
 
 
 // 0x80a6e0c
-signed int __fastcall sub_80A6E0C(int a1)
+signed int __fastcall battleObject_playSoundEffect(int a1)
 {
     int v1; // r0
     int v2; // r1
@@ -3900,7 +3900,7 @@ int ow_objectFinishEventAndFree()
 
     *(v1 + 4) = 0;
     *(v1 + 6) = 0;
-    v2 = sub_81427A4(*(v0 + 4));
+    v2 = soulWeapons_getFormDataOffset(*(v0 + 4));
     SetEventFlag(v2);
     e_scenarioEffectDecrementCounter();
     SetEventFlag(*(v0 + 4) + 5712);
@@ -5930,7 +5930,7 @@ int __noreturn owMapObject_mrWeatherInit_80A9458()
         object_mrWeatherStep_80A94DC();
     }
     *(v0 + 8) = 12;
-    return sub_80A9568();
+    return owMapObject_freeThunk();
 }
 
 
@@ -5959,7 +5959,7 @@ void __noreturn sub_80A94F8()
     if ( v1 == 255 )
     {
         ClearEventFlagFromImmediate(11, 252);
-        sub_80A9568();
+        owMapObject_freeThunk();
     }
     else
     {
@@ -5973,7 +5973,7 @@ void __noreturn sub_80A94F8()
 
 
 // 0x80a9568
-int sub_80A9568()
+int owMapObject_freeThunk()
 {
     return FreeOverworldMapObject();
 }

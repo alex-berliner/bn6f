@@ -284,7 +284,7 @@ signed int sub_808FB4C()
 
 
 // 0x808fb68
-signed int __fastcall sub_808FB68(int a1)
+signed int __fastcall owPlayer_tryFallDown4Tiles(int a1)
 {
     __int64 v1; // r0
     int v2; // r2

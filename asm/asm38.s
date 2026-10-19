@@ -3589,7 +3589,7 @@ loc_30073CC:
 	mov r0, #oCollisionData_DamageMultiplier
 	sub r1, r4, #1
 	strb r1, [r6,r0]
-	bl sub_30074BA
+	bl battleObject_endHitStateAndClearParent
 	add r4, r4, r0
 	bl applyElecOnBubbleMultipler_30074a2
 	add r4, r4, r0
@@ -3708,9 +3708,9 @@ loc_30074B6:
 // symdb: Checks whether an object's hit state should end; if so, clears the parent object's hit/flinch flags and returns true.
 // symdb: (r6 = object's collision-data struct, r7 = related object/struct) -> r0 = 1 if hit state ended
 // symdb: (and parent's hit flags cleared), else 0; flags clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30074BA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_endHitStateAndClearParent.yaml
 	thumb_local_start
-sub_30074BA:
+battleObject_endHitStateAndClearParent:
 	push {r4,r5,lr}
 	mov r4, #0
 	ldr r0, [r6,#oCollisionData_ObjectFlags1]
@@ -3733,7 +3733,7 @@ loc_30074D4:
 loc_30074DE:
 	mov r0, r4
 	pop {r4,r5,pc}
-	thumb_func_end sub_30074BA
+	thumb_func_end battleObject_endHitStateAndClearParent
 
 	thumb_local_start
 // r0 - weakness bitfield

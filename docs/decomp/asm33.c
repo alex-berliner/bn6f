@@ -152,7 +152,7 @@ void __fastcall __noreturn chipFolder_init_812349C(int a1, int a2)
 
 
 // 0x81234dc
-void __fastcall __noreturn sub_81234DC(int a1, int a2)
+void __fastcall __noreturn chipFolder_onEnter(int a1, int a2)
 {
     chipFolder_init_812349C(a1, a2);
 }
@@ -694,7 +694,7 @@ int __fastcall sub_8123D10(int a1, int a2)
 
 
 // 0x8123d24
-char *sub_8123D24()
+char *chipFolder_initEntryList()
 {
     int v0; // r5
     int v1; // r10
@@ -2035,7 +2035,7 @@ void __fastcall __noreturn battle_runUpdatesAndCheckFade_81250E0(int a1)
 
 
 // 0x8125104
-int __fastcall sub_8125104(int a1)
+int __fastcall battle_transitionStepWaitForFade(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -5101,7 +5101,7 @@ void __noreturn sub_8127BE4()
         *(v0 + 2) = 4;
         PlaySoundEffect(131, v2, v3);
     }
-    sub_8127F90();
+    battleObject_animateAndQueueOam();
     sub_812848C();
 }
 
@@ -5302,7 +5302,7 @@ void fieldEntityTileAnimTick_8127F54()
 
 
 // 0x8127f90
-int sub_8127F90()
+int battleObject_animateAndQueueOam()
 {
     int v0; // r5
     int result; // r0

@@ -431,9 +431,9 @@ loc_808FB64:
 
 // symdb: Attempts to move the overworld player down 4 tiles (into a pit/hole); if that would leave the area it instead plays a fall sound, locks input and resets related state, returning 0, otherwise returns 1 after the move.
 // symdb: () -> r0 = 1 if the player was moved down by 4, 0 if the fall-out sequence ran; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_tryFallDown4Tiles.yaml
 	thumb_local_start
-sub_808FB68:
+owPlayer_tryFallDown4Tiles:
 	push {lr}
 	bl ReadOWPlayerObjectCoords
 	mov r3, #4
@@ -457,7 +457,7 @@ loc_808FB94:
 	.balign 4, 0
 dword_808FB9C:
 	.word 0x1AE
-	thumb_func_end sub_808FB68
+	thumb_func_end owPlayer_tryFallDown4Tiles
 
 // symdb: Spawns overworld map object type 0x1B at the player's current position, passing the player's facing direction.
 // symdb: (no args) -> r0 = spawned object or its handle from SpawnOverworldMapObject; clobbers r0-r4, lr

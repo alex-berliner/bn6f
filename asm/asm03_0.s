@@ -888,7 +888,7 @@ off_8026AA4:
 	// 0x20
 	.word battle_runTutorialDialog_8026FC0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x24
-	.word sub_8027044+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObject_chipSelectStateTick+1 // (self: * S20364C0 $r5) -> ()
 	// 0x28
 	.word sub_80271F8+1 // (self: * S20364C0 $r5) -> ()
 	// 0x2C
@@ -902,7 +902,7 @@ off_8026AA4:
 	// 0x3C
 	.word sub_802753E+1 // (self: * S20364C0 $r5) -> ()
 	// 0x40
-	.word sub_8027548+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObject_chipSelectUpdate+1 // (self: * S20364C0 $r5) -> ()
 	// 0x44
 	.word sub_80275EC+1 // (self: * S20364C0 $r5) -> ()
 	// 0x48
@@ -1194,7 +1194,7 @@ custMenuUpdateWaitSelectionState_8026CCC: // (self: * S20364C0 $r5) -> ()
 
 	strh r0, [r5,#oS20364C0_PuppeteerSwitchElement]
 
-	// 0x04: trigger sub_8027548 via custMenuMainMaybe_8026A88
+	// 0x04: trigger battleObject_chipSelectUpdate via custMenuMainMaybe_8026A88
 	mov r0, #0x40 
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -1677,9 +1677,9 @@ dword_8027040:
 
 // symdb: Per-frame update for the battle chip-select object: dispatches a state handler selected by the state byte at +2, then runs the chip-slot pulse animation and graphics-queue steps.
 // symdb: (r0 = self: * S20364C0) -> r0 = ?; flags from dispatched handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027044.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectStateTick.yaml
 	thumb_local_start
-sub_8027044: // (self: * S20364C0 $r5) -> ()
+battleObject_chipSelectStateTick: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_802705C // =off_8027060 
 	ldrb r0, [r5,#2]
@@ -1700,7 +1700,7 @@ off_8027060:
 	.word triggerScreenFadeOut+1
 	.word sub_8027150+1
 	.word sub_80271C2+1
-	thumb_func_end sub_8027044
+	thumb_func_end battleObject_chipSelectStateTick
 
 // symdb: Queues two GFX transfers (0x80 bytes of chip-indexed graphics to VRAM 0x60172C0 and 0x20 bytes from byte_872CF94 to a RAM buffer) based on active chip slot 11, then sets a state field.
 // symdb: (r0 unused, r5 = object/state struct) -> r0 = destroyed; queues GFX transfers, writes r5+0x40=0,
@@ -1922,7 +1922,7 @@ off_80271F4:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80271C2
 
-// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
+// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or customScreen_shuffleAnimationTick (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80271F8.yaml
 	thumb_local_start
 sub_80271F8: // (self: * S20364C0 $r5) -> ()
@@ -1940,7 +1940,7 @@ off_8027210:
 	.word off_8027214
 off_8027214:
 	.word sub_802721C+1
-	.word sub_802723A+1
+	.word customScreen_shuffleAnimationTick+1
 	thumb_func_end sub_80271F8
 
 	thumb_local_start
@@ -1961,9 +1961,9 @@ sub_802721C:
 
 // symdb: Per-frame tick for the battle Custom screen's shuffle animation: every 4th frame performs one shuffle step (or finishes the shuffle and flags the selected chip), advances the exit animation, and plays a tick sound.
 // symdb: () -> void; uses r5 = battle/custom-screen state struct; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802723A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_shuffleAnimationTick.yaml
 	thumb_local_start
-sub_802723A:
+customScreen_shuffleAnimationTick:
 	push {lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2003,7 +2003,7 @@ loc_802727E:
 	bl PlaySoundEffect
 locret_802728A:
 	pop {pc}
-	thumb_func_end sub_802723A
+	thumb_func_end customScreen_shuffleAnimationTick
 
 // symdb: Battle chat window dispatcher: runs one of five state handlers picked by the chat object's state byte, then calls the common follow-up update.
 // symdb: void sub_802728C(void); // r5 = chat window object pointer (in) // r4 = caller-saved word,
@@ -2444,9 +2444,9 @@ sub_802753E: // (self: * S20364C0 $r5) -> ()
 // symdb: Per-frame state-machine update for the battle chip-select object: dispatches a state handler, then runs the chip-slot pulse animation and queues its graphics block to VRAM/FIFO.
 // symdb: (self = r5 = *S20364C0, chip-select object) -> r0 = destroyedsucc; no meaningful return; called
 // symdb: for its side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027548.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectUpdate.yaml
 	thumb_local_start
-sub_8027548: // (self: * S20364C0 $r5) -> ()
+battleObject_chipSelectUpdate: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027560 // =off_8027564 
 	ldrb r0, [r5,#2]
@@ -2464,7 +2464,7 @@ off_8027564:
 	.word sub_8027580+1
 	.word sub_802759E+1
 	.word state_waitFadeEndThenAdvance+1
-	thumb_func_end sub_8027548
+	thumb_func_end battleObject_chipSelectUpdate
 
 	thumb_local_start
 sub_8027574:
@@ -5730,7 +5730,7 @@ off_8028C98:
 off_8028C9C:
 	.word customScreen_confirmPlaceChip+1
 	.word custMenuPressOK_8028D3A+1
-	.word sub_8028D6C+1
+	.word customScreen_confirmChipSelect+1
 	.word custMenuConfirmMarkedEntry+1
 	.word sub_8028DD6+1
 	.word sub_8028DD6+1
@@ -5844,9 +5844,9 @@ loc_8028D5A: // endif
 // symdb: Custom screen chip-selection handler: commits the chip under the cursor as the next of up to 5 selected chips, redraws its slot, and plays the select sound; bounces with an error sound if 5 chips are already selected.
 // symdb: (r4 = custom-screen state ptr, r5 = oS20364C0 cust-menu object) -> r0 = 0 if chip accepted, 1 if
 // symdb: selection full; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028D6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_confirmChipSelect.yaml
 	thumb_local_start
-sub_8028D6C:
+customScreen_confirmChipSelect:
 	push {lr}
 	ldrb r0, [r4,#7]
 	cmp r0, #0
@@ -5891,7 +5891,7 @@ loc_8028DB2:
 	mov r0, #1
 locret_8028DBA:
 	pop {pc}
-	thumb_func_end sub_8028D6C
+	thumb_func_end customScreen_confirmChipSelect
 
 // symdb: Custom Screen action handler: flags the currently indexed 0x20-byte entry as chosen (byte+8 = 1), sets a global confirm flag, then runs the OK-confirm path.
 // symdb: () -> r0 = 0; no meaningful flags; sets entry[+8] = 1 and byte_20349A4 = 1 as side effects
@@ -6520,7 +6520,7 @@ loc_80291AC:
 	ldr r0, off_80293CC // =byte_20366C0 
 	add r0, #0x32 
 	mov r1, #0
-	bl sub_8029520
+	bl custMenu_matchChipComboPattern
 	cmp r0, #0
 	beq loc_80291E2
 	push {r0-r2}
@@ -7048,9 +7048,9 @@ sub_8029514:
 // symdb: (r0 = 0xFFFF-terminated array of up to 5 packed halfword chip-command words, r1 = context passed
 // symdb: to sub_8029652) -> r0 = result of sub_802963C (nonzero) if a pattern matched/started, else 0;
 // symdb: clobbered r4-r7, sp buffer.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029520.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/custMenu_matchChipComboPattern.yaml
 	thumb_local_start
-sub_8029520:
+custMenu_matchChipComboPattern:
 	push {r4-r7,lr}
 	sub sp, sp, #0x20
 	mov r7, sp
@@ -7142,7 +7142,7 @@ off_80295BC:
 off_80295C0:
 	.word battle_scanChipSeq_80295C8+1
 	.word matchHalfwordPatternEntry_802961A+1
-	thumb_func_end sub_8029520
+	thumb_func_end custMenu_matchChipComboPattern
 
 // symdb: Validates a run of consecutive chip codes in the battle buffer against a target and a trailing descending sub-sequence pattern, returning the owning chip's data field on success.
 // symdb: battle_scanChipSeq_80295C8(r2=count, r3=data_ptr, r6=buffer_offset, r7=buffer_base) -> (r0, r1,
@@ -7275,7 +7275,7 @@ off_8029684:
 	.word dword_203CA48
 	thumb_func_end sub_8029652
 
-// symdb: Shuffle-once, per-tick step: copies the hand's eligible chips into dword_2033000, shuffles them with ShuffleHwordList_SecondaryRNG and writes them back into eBattleFolder — one secondary-RNG shuffle per tick (8 ticks, from sub_802723A).
+// symdb: Shuffle-once, per-tick step: copies the hand's eligible chips into dword_2033000, shuffles them with ShuffleHwordList_SecondaryRNG and writes them back into eBattleFolder — one secondary-RNG shuffle per tick (8 ticks, from customScreen_shuffleAnimationTick).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029688.yaml
 	thumb_local_start
 sub_8029688:
@@ -8038,19 +8038,19 @@ loc_8029B3C:
 	mov r1, r0
 	b loc_8029B6A
 loc_8029B48:
-	bl sub_8029BAC
+	bl battleTutorial_firstCheckStepFlag
 	cmp r0, #0
 	beq locret_8029B84
 	mov r1, r0
 	b loc_8029B6A
 loc_8029B54:
-	bl sub_8029BD6
+	bl battleTutorial_firstGetStepScriptId
 	cmp r0, #0
 	beq locret_8029B84
 	mov r1, r0
 	b loc_8029B6A
 loc_8029B60:
-	bl sub_8029BE6
+	bl battleTutorial_firstCheckTextTrigger
 	cmp r0, #0
 	beq locret_8029B84
 	mov r1, r0
@@ -8100,9 +8100,9 @@ locret_8029BAA:
 // symdb: Checks the first-battle tutorial's per-step flag and returns a nonzero code (0xB/0xC) when the current step is in its expected state, else 0.
 // symdb: (r5 = first-battle tutorial task state; no args used) -> r0 = 0xB if step 1 flag==0, 0xC if step
 // symdb: 0/2 flag==1, else 0; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorial_firstCheckStepFlag.yaml
 	thumb_local_start
-sub_8029BAC:
+battleTutorial_firstCheckStepFlag:
 	push {lr}
 	ldrb r0, [r5,#8]
 	cmp r0, #0
@@ -8127,14 +8127,14 @@ loc_8029BD2:
 	mov r0, #0
 locret_8029BD4:
 	pop {pc}
-	thumb_func_end sub_8029BAC
+	thumb_func_end battleTutorial_firstCheckStepFlag
 
 // symdb: Returns the chatbox script ID for the current first-battle tutorial step: 0x27 when the state byte at [r5,#8] is 1, otherwise 0 (no text).
 // symdb: (r5 = tutorial state struct, no args) -> r0 = chatbox script id (0x27 if state==1, else 0);
 // symdb: flags clobbered by cmp/movs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BD6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorial_firstGetStepScriptId.yaml
 	thumb_local_start
-sub_8029BD6:
+battleTutorial_firstGetStepScriptId:
 	push {lr}
 	ldrb r0, [r5,#8]
 	cmp r0, #1
@@ -8145,14 +8145,14 @@ loc_8029BE2:
 	mov r0, #0
 locret_8029BE4:
 	pop {pc}
-	thumb_func_end sub_8029BD6
+	thumb_func_end battleTutorial_firstGetStepScriptId
 
 // symdb: Per-step checker for the first-battle tutorial that decides whether a tutorial text script should fire, returning 5 (run tutorial text entry) or 0 (don't).
 // symdb: (r0 = unused, r5 = battle-tutorial task struct) -> r0 = 0 if no text should play, 5 =
 // symdb: trigger/entry for TextScriptFirstBattleTutorials; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BE6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorial_firstCheckTextTrigger.yaml
 	thumb_local_start
-sub_8029BE6:
+battleTutorial_firstCheckTextTrigger:
 	push {lr}
 	ldrb r0, [r5,#8]
 	cmp r0, #0
@@ -8172,7 +8172,7 @@ locret_8029C00:
 	.balign 4, 0
 off_8029C04:
 	.word TextScriptFirstBattleTutorials
-	thumb_func_end sub_8029BE6
+	thumb_func_end battleTutorial_firstCheckTextTrigger
 
 // symdb: Per-frame chip-slot pulse animation step: pushes an OAM affine-transform record to the render FIFO and walks the pulse phase byte of the chip-select object.
 // symdb: (r5 = *S20364C0, r10 = *Toolkit) -> void ; side effect: writes one 16-byte FIFO record (command
@@ -11614,7 +11614,7 @@ sub_802B76C:
 off_802B780:
 	.word off_802B784
 off_802B784:
-	.word sub_802B7A0+1
+	.word battle_subEffectFadeOutDispatch+1
 	.word sub_802B7E0+1
 	.word chipAnimFolderCycle+1
 	.word sub_802B8E0+1
@@ -11626,9 +11626,9 @@ off_802B784:
 // symdb: Battle sub-effect step that fades the screen out (SetScreenFade 0x14,8), waits for the fade to finish, then dispatches a follow-up effect kind (0x24, or 0x34 if a flag byte is set) and advances its state machine.
 // symdb: (r5 = effect work struct: +1 state byte, +2 init byte/halfword counter, +7 variant byte, +0x10
 // symdb: word) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B7A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_subEffectFadeOutDispatch.yaml
 	thumb_local_start
-sub_802B7A0:
+battle_subEffectFadeOutDispatch:
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -11660,7 +11660,7 @@ loc_802B7CE:
 	str r0, [r5,#0x10]
 locret_802B7DE:
 	pop {pc}
-	thumb_func_end sub_802B7A0
+	thumb_func_end battle_subEffectFadeOutDispatch
 
 	thumb_local_start
 sub_802B7E0:
@@ -15598,7 +15598,7 @@ loc_802D33C:
 off_802D348:
 	.word off_802D34C
 off_802D34C:
-	.word sub_802D358+1
+	.word playerAI_stepTryAttackChipOnTarget+1
 	.word sub_802D3A8+1
 	.word sub_802D3CA+1
 	thumb_func_end sub_802D322
@@ -15606,9 +15606,9 @@ off_802D34C:
 // symdb: Player-AI state step: if the target panel is clear of protected actors, fire the attack chip currently in hand and advance the AI state on success.
 // symdb: (r0-r6 context: r5 = own battle object, r6 = AI/state struct with u16 state at +0 and +4) -> r0
 // symdb: = 1 if an attack was executed, else 0; state fields updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D358.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/playerAI_stepTryAttackChipOnTarget.yaml
 	thumb_local_start
-sub_802D358:
+playerAI_stepTryAttackChipOnTarget:
 	push {r4,lr}
 	ldrh r0, [r6,#4]
 	cmp r0, #3
@@ -15647,7 +15647,7 @@ loc_802D3A0:
 	mov r0, #0
 locret_802D3A6:
 	pop {r4,pc}
-	thumb_func_end sub_802D358
+	thumb_func_end playerAI_stepTryAttackChipOnTarget
 
 	thumb_local_start
 sub_802D3A8:
@@ -17365,9 +17365,9 @@ byte_802E0C4:
 // symdb: (r0,r1,r2 = three attack parameter bytes/values, r5 = battle object) -> void; r0-r2 preserved
 // symdb: across the stats call and stored at [obj+0xF8+0x16/0x17/0x18], AI state byte at +0xF8+0x3 set to
 // symdb: 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E0D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/aiAttack_startStatsAttack.yaml
 	thumb_local_start
-sub_802E0D4:
+aiAttack_startStatsAttack:
 	push {r7,lr}
 	ldr r7, [r5,#0x58]
 	add r7, #0xa0
@@ -17394,7 +17394,7 @@ sub_802E0D4:
 	bl object_setAttack4
 	bl sub_80EB234
 	pop {r7,pc}
-	thumb_func_end sub_802E0D4
+	thumb_func_end aiAttack_startStatsAttack
 
 // symdb: In real (non-minigame, non-crossover) link battles, sets the 0x40 battle flag (a "Beast Link"/link-battle related state bit) so the battle can take the link-battle code path.
 // symdb: () -> void ; side effects: may OR 0x40 into BattleState.flags via battle_setFlags

@@ -11668,7 +11668,7 @@ void __noreturn logoScreen_init_803D1FC()
 
 
 // 0x803d24c
-signed int sub_803D24C()
+signed int logoScreen_setupFadeWait()
 {
     _BYTE *v0; // r5
     int v1; // r0

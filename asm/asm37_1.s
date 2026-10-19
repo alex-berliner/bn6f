@@ -1278,7 +1278,7 @@ loc_8142552:
 	strb r0, [r5,#3]
 loc_8142566:
 	mov r0, r4
-	bl sub_81427A4
+	bl soulWeapons_getFormDataOffset
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_814258C
@@ -1547,9 +1547,9 @@ byte_814279C:
 // symdb: Computes an offset into a per-Beast-Out/Soul form data table: looks up the form's base offset and adds the given index to it.
 // symdb: (r0 = form/entry id, also passed to GetSoulWeaponsMapIndex) -> r0 =
 // symdb: baseOffset[GetSoulWeaponsMapIndex(id)] + id; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427A4.yaml
-	thumb_func_start sub_81427A4
-sub_81427A4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/soulWeapons_getFormDataOffset.yaml
+	thumb_func_start soulWeapons_getFormDataOffset
+soulWeapons_getFormDataOffset:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl GetSoulWeaponsMapIndex
@@ -1564,7 +1564,7 @@ off_81427B8:
 byte_81427BC:
 	.byte 0x50, 0x7, 0x64, 0x7, 0x78, 0x7, 0x8C, 0x7, 0xA0, 0x7, 0xB4
 	.byte 0x7, 0xC8, 0x7, 0xDC, 0x7, 0x0, 0x0
-	thumb_func_end sub_81427A4
+	thumb_func_end soulWeapons_getFormDataOffset
 
 // symdb: Returns a SoulWeapons per-row base value (0x7F0..0x7F7) indexed by the current SoulWeapons map index.
 // symdb: () -> r0 = u16 base value (0x7F0..0x7F7)
@@ -2613,7 +2613,7 @@ loc_8142FA6:
 	add r4, #1
 	cmp r4, #8
 	blt loc_8142F90
-	bl sub_81430F4
+	bl reqBBS_processCompletedRewards
 	movflag EVENT_960
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 loc_8142FBA:
@@ -2783,9 +2783,9 @@ dword_81430F0:
 
 // symdb: Processes a table of BBS request completions: stores each entry's word into the per-request status array and sets the request's completion event flag.
 // symdb: (no args used) -> r0 = 0; calls SetEventFlag and reqBBS_setFlag; clobbers r0-r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_processCompletedRewards.yaml
 	thumb_local_start
-sub_81430F4:
+reqBBS_processCompletedRewards:
 	push {r4-r7,lr}
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	bl sub_8143088
@@ -2813,7 +2813,7 @@ loc_8143104:
 loc_8143128:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_81430F4
+	thumb_func_end reqBBS_processCompletedRewards
 
 	thumb_local_start
 sub_814312C:

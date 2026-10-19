@@ -688,7 +688,7 @@ off_804646C:
 	.word submenu_dispatchByIndex_81187E8+1
 	.word battleObject_updateDispatcher_8118BA4+1
 	.word submenu_stepGuiSprite+1
-	.word sub_8118E84+1
+	.word battleObject_beastOutDispatch+1
 	.word sub_8118F24+1
 	.word npc_StateModeDispatcher_8119364+1
 	.word submenu_dispatchState+1
@@ -1659,8 +1659,8 @@ off_8046D1C:
 	.word chatbox_confirmShopPurchase_8046ED2+1
 	.word chatbox_stepContextScript_8047028+1
 	.word shop_stateStepWaitText+1
-	.word sub_8047066+1
-	.word sub_804709C+1
+	.word shopBuyMenu_handleDialogChoice+1
+	.word shopBuyMenu_confirmPurchase+1
 off_8046D48:
 	.word byte_2011C10
 	thumb_func_end ShopControl
@@ -2090,9 +2090,9 @@ loc_8047062:
 // symdb: Shop buy-menu per-frame step: after the buy menu updates, if the active chatbox dialog finished, records the player's choice into a 0x2420-base event flag and chains the next script.
 // symdb: (r0 = unused, r5 = shop menu state struct from caller) -> r0 = 0; sets event flag 0x2420 +
 // symdb: dialog result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047066.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shopBuyMenu_handleDialogChoice.yaml
 	thumb_local_start
-sub_8047066:
+shopBuyMenu_handleDialogChoice:
 	push {lr}
 	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
@@ -2118,14 +2118,14 @@ loc_8047094:
 	.balign 4, 0
 dword_8047098:
 	.word 0x2420
-	thumb_func_end sub_8047066
+	thumb_func_end shopBuyMenu_handleDialogChoice
 
 // symdb: Performs the actual purchase in the chip shop: grants the selected chip to the pack (or reports failure), records it, shrinks the shop list, and plays the result message/sound.
 // symdb: (r5 = shop buy menu state, plus r0=8 flag test and scrambled-counter check) -> r0 = 0; touches
 // symdb: state at r5+0x00/0x04/0x0D/0x12/0x1C/0x20/0x24/0x28/0x2C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804709C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shopBuyMenu_confirmPurchase.yaml
 	thumb_local_start
-sub_804709C:
+shopBuyMenu_confirmPurchase:
 	push {lr}
 	bl shopBuyMenu_updateFrame_8047134
 	mov r0, #8
@@ -2190,7 +2190,7 @@ loc_8047118:
 loc_8047130:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_804709C
+	thumb_func_end shopBuyMenu_confirmPurchase
 
 // symdb: Per-frame update/render of the shop buy menu: runs the entity/state updates, rebuilds and draws the 5-row purchasable-item list, draws the cursor and scroll arrows, and refreshes the background.
 // symdb: void shopBuyMenu_updateFrame(u32 r5 /* menu state */) : r5 -> [r1-r10 r12] (callee-saved
@@ -7673,7 +7673,7 @@ sub_804A514:
 	strh r0, [r5,#0x34]
 loc_804A534:
 	bl ow_copyTiles8x17ToBg
-	bl sub_804AE68
+	bl battleObject_queueAnimFrame
 loc_804A53C:
 	bl sub_804AA58
 	bl sub_804A8F4
@@ -8964,9 +8964,9 @@ off_804AE64:
 // symdb: Queues one OAM sprite for a battle object's current animation frame and advances the object's animation timer/frame every ~16 ticks.
 // symdb: (r5 = battle object: [r5+0x34] = sprite variant id, [r5+0x15] = anim state byte (low nibble =
 // symdb: frame row, high nibble = frame delay timer)) -> r0 = new anim state byte; clobbers r1-r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AE68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueAnimFrame.yaml
 	thumb_local_start
-sub_804AE68:
+battleObject_queueAnimFrame:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	ldr r0, dword_804AEB0 // =0xa40000 
@@ -9013,7 +9013,7 @@ dword_804AEBC:
 	.word 0x40000000
 off_804AEC0:
 	.word dword_804A2AC
-	thumb_func_end sub_804AE68
+	thumb_func_end battleObject_queueAnimFrame
 
 	thumb_local_start
 sub_804AEC4:

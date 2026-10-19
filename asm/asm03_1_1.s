@@ -9448,7 +9448,7 @@ off_803D1E4:
   // 0x00
   .word logoScreen_init_803D1FC+1 // (self: *mut LogoScreenState $r5) -> ()
   // 0x04
-	.word sub_803D24C+1 // (self: *mut LogoScreenState $r5) -> ()
+	.word logoScreen_setupFadeWait+1 // (self: *mut LogoScreenState $r5) -> ()
   // 0x08
 	.word tickLogoScreenFade_803D274+1 // (self: *mut LogoScreenState $r5) -> ()
   // 0x0C
@@ -9502,7 +9502,7 @@ loc_803D212:
 	mov r0, #0x63
 	bl music_80005F2 // (bg_music_indicator: u8) -> ()
 
-  // trigger sub_803D24C via logoScreen_dispatch_803D1CA
+  // trigger logoScreen_setupFadeWait via logoScreen_dispatch_803D1CA
 	mov r0, #4
 	strb r0, [r5, #oLogoScreenState_Index_00]
 
@@ -9517,9 +9517,9 @@ off_803D248:
 // symdb: Logo-screen state handler: enables the display, starts the screen fade (skipping it if a skip flag is set), and arms a 180-frame wait before the next logo-screen state.
 // symdb: (r0 = *mut LogoScreenState in r5, caller-set) -> r0 = clobbered; writes LCD control, sets fade
 // symdb: (mode 8 or 0), stores timer 0xB4 at +4 and state 8 at +0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D24C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/logoScreen_setupFadeWait.yaml
 	thumb_local_start
-sub_803D24C: // (self: *mut LogoScreenState $r5) -> ()
+logoScreen_setupFadeWait: // (self: *mut LogoScreenState $r5) -> ()
 	push {lr}
 	ldr r0, dword_803D270 // =0x1f40
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
@@ -9542,7 +9542,7 @@ loc_803D25E:
 	.balign 4, 0
 dword_803D270:
 	.word 0x1F40
-	thumb_func_end sub_803D24C
+	thumb_func_end logoScreen_setupFadeWait
 
 // symdb: Per-frame logo screen tick: only advances state when the screen fade finishes.
 // symdb: void sub_803D274(LogoScreenState *state /* r5 */)

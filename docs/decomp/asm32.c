@@ -2731,7 +2731,7 @@ int sub_810FD90()
     v1 = *(*(v0 + 84) + 112);
     if ( v1 && v1 & 0xC000000 )
         object_clearCollisionRegion();
-    return sub_8016B36();
+    return battle_objectStatePendingCommit();
 }
 
 
@@ -6873,7 +6873,7 @@ int sub_81130F0()
 int sub_81130FC()
 {
     sub_8113114();
-    return sub_8016B36();
+    return battle_objectStatePendingCommit();
 }
 
 
@@ -8961,7 +8961,7 @@ int sub_8114D44()
 
 
 // 0x8114d74
-int sub_8114D74()
+int snakearmAI_updateDirectionFlip()
 {
     Battle *v0; // r5
     int result; // r0
@@ -9272,7 +9272,7 @@ void ai_chargeAttackInitAndStep()
         if ( *(v1 + 12) == 1 )
             sub_8115466();
         sub_81154B8();
-        sub_8115432();
+        ai_attackVarsTimerTick16();
         v0->x += v0->vx;
         if ( *(v1 + 16) == *(v1 + 18) )
         {
@@ -9345,7 +9345,7 @@ int ai_throwObjectStep()
     if ( *(*(v0 + 84) + 112) & 0xC000000 )
         object_clearCollisionRegion();
     sub_81154B8();
-    sub_8115432();
+    ai_attackVarsTimerTick16();
     v2 = v1[8];
     v3 = __OFSUB__(v2, 1);
     result = v2 - 1;
@@ -9437,7 +9437,7 @@ void sub_8115404()
 
 
 // 0x8115432
-void sub_8115432()
+void ai_attackVarsTimerTick16()
 {
     int v0; // r7
     int v1; // r0
@@ -10290,7 +10290,7 @@ signed int sub_8115EDC()
 
 
 // 0x8115ef4
-AI *sub_8115EF4()
+AI *ai_battlesweepCycleScriptSelect()
 {
     int v0; // r4
     int v1; // r5
@@ -14348,7 +14348,7 @@ unsigned int sub_8118E78()
 
 
 // 0x8118e84
-int sub_8118E84()
+int battleObject_beastOutDispatch()
 {
     int v0; // r5
 
@@ -20916,12 +20916,12 @@ void __noreturn sub_811E87C()
     sprite_setPriority_8002E14(0);
     sprite_setPallete(0);
     v0->currState = 4;
-    sub_811E8C4();
+    sprite_stepSetPos22462();
 }
 
 
 // 0x811e8c4
-void __noreturn sub_811E8C4()
+void __noreturn sprite_stepSetPos22462()
 {
     Battle *v0; // r5
 

@@ -3133,7 +3133,7 @@ byte_808F690::
 	cs_pause byte1=0xFF byte2=0x02
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
 	cs_play_sound hword1=0x0105
-	cs_call_native_with_return_value ptr1=sub_808FB68+1
+	cs_call_native_with_return_value ptr1=owPlayer_tryFallDown4Tiles+1
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x44
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_run_text_script_not_from_mem byte2=0x01

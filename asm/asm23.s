@@ -662,7 +662,7 @@ byte_80893CC:
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
-	cs_call_native_with_return_value ptr1=sub_80893F4+1
+	cs_call_native_with_return_value ptr1=t4_mapEnterSetupObjectsAndFlags+1
 
 byte_80893DC:
 	cs_pause byte1=0xFF byte2=0x3C
@@ -679,9 +679,9 @@ cutscenescript_80893E4:
 
 // symdb: Per-map entry routine: clears and respawns map objects, picks one of two setup variants via story flags, then sets story flag 7/0x40 and applies the SoulWeapons overworld state.
 // symdb: (void) -> r0 = 0; no flags meaningfully returned
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80893F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_mapEnterSetupObjectsAndFlags.yaml
 	thumb_local_start
-sub_80893F4:
+t4_mapEnterSetupObjectsAndFlags:
 	push {r4-r7, lr}
 	mov r0, #0x20
 	bl FreeAllObjectsOfSpecifiedTypes
@@ -717,7 +717,7 @@ loc_8089434:
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_80893F4
+	thumb_func_end t4_mapEnterSetupObjectsAndFlags
 
 byte_8089448:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
@@ -838,14 +838,14 @@ jt_80895C0:
 	.word sub_8089C78+1
 	.word battle_tickChipLockoutAndFade_80897E8+1
 	.word sub_8089808+1
-	.word sub_8089826+1
+	.word battle_chipLockoutExpiredSetState+1
 	.word battle_initBeastOutAiTurn_808983A+1
 	.word battle_tickBeastSp_808985A+1
 	.word sub_808989C+1
 	.word battleObject_beastModeAiPhaseInit_80898B2+1
 	.word sub_80898E8+1
 	.word ai_setStateIfTeamAlive+1
-	.word sub_808991C+1
+	.word owPlayer_cutsceneTurnAnimStep+1
 	.word sub_8089960+1
 	.word sub_808997E+1
 	.word sub_808999C+1
@@ -1130,9 +1130,9 @@ loc_8089822:
 // symdb: Per-frame battle tick: when the chip-use lockout timer runs out, calls an unknown handler and writes state 0x2C to the battle work byte at r5.
 // symdb: () -> r0 = 1 always; r5 must already point to the battle-state struct; reads/writes
 // symdb: ChipLockoutTimer (AIData+0x18) via callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089826.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipLockoutExpiredSetState.yaml
 	thumb_local_start
-sub_8089826:
+battle_chipLockoutExpiredSetState:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089836
@@ -1142,7 +1142,7 @@ sub_8089826:
 loc_8089836:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089826
+	thumb_func_end battle_chipLockoutExpiredSetState
 
 // symdb: Initializes AI state for a BeastOut attack turn during the first non-faded frame after a scene fade ends.
 // symdb: (r5 = AIData*, r7 = ?BattleObject*, lr) -> r0 = 1 ; no other side effects observable from
@@ -1285,9 +1285,9 @@ loc_8089918:
 
 // symdb: Cutscene/object step that, after a short delay, makes the overworld player turn toward a fixed direction and play a fixed animation while a cutscene camera script runs.
 // symdb: (r5 = object/AIData struct) -> r0 = 1 (step continues/finished); no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808991C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_cutsceneTurnAnimStep.yaml
 	thumb_local_start
-sub_808991C:
+owPlayer_cutsceneTurnAnimStep:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1313,7 +1313,7 @@ off_8089954:
 	.word byte_8089958
 byte_8089958:
 	.byte 0xFF, 0x2E, 0xFF, 0x2F, 0xFF, 0x30, 0xFF, 0x31
-	thumb_func_end sub_808991C
+	thumb_func_end owPlayer_cutsceneTurnAnimStep
 
 	thumb_local_start
 sub_8089960:

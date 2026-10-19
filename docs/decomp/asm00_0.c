@@ -1172,7 +1172,7 @@ unsigned int battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC()
 
 
 // 0x8000fe6
-int __fastcall sub_8000FE6(int a1, int a2)
+int __fastcall reqBBS_addMissingMessagesForFlagRange(int a1, int a2)
 {
     int v2; // r6
     int v3; // r4
@@ -1198,7 +1198,7 @@ int __fastcall sub_8000FE6(int a1, int a2)
 // 0x8001002
 int sub_8001002()
 {
-    return sub_8000FE6(&loc_17A0, 10);
+    return reqBBS_addMissingMessagesForFlagRange(&loc_17A0, 10);
 }
 
 

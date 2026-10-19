@@ -10919,7 +10919,7 @@ off_8149128:
 	thumb_local_start
 rfu_readyUniSendIfFlagged:
 	push {lr}
-	bl sub_8149150
+	bl rfu_uniProcessRecvChunk
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	beq loc_8149140
@@ -10939,9 +10939,9 @@ off_814914C:
 // symdb: Per-wireless-packet receive bookkeeping: counts an incoming UNI data chunk and, once the expected chunk count is reached, flushes the assembled buffer and queues a 12-byte completion packet for sending.
 // symdb: (r0 = ? ignored) -> r0 = 1 if a chunk was processed / transfer completed, 0 if state is 0x8F or
 // symdb: nothing to do; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8149150.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniProcessRecvChunk.yaml
 	thumb_local_start
-sub_8149150:
+rfu_uniProcessRecvChunk:
 	push {r4-r6,lr}
 	mov r6, #0
 	ldr r5, off_8149160 // =byte_20101B4 
@@ -11051,7 +11051,7 @@ loc_8149216:
 	bx r1
 off_814921C:
 	.word word_2010428
-	thumb_func_end sub_8149150
+	thumb_func_end rfu_uniProcessRecvChunk
 
 	thumb_local_start
 rfu_initializeAPI:

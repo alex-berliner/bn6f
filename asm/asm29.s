@@ -1491,7 +1491,7 @@ sub_80A58E0:
 	push {r4-r7,lr}
 	mov r4, #0
 	bl sub_80A5954
-	bl sub_80A596C
+	bl owPlayer_setDirectionAnimThunk
 	bl sub_80A59B8
 	mov r2, r0
 	b loc_80A58FA
@@ -1574,14 +1574,14 @@ sub_80A5954:
 // symdb: Wrapper that loads two fields off an r5-based struct and tail-calls the OW player facing-animation setter.
 // symdb: (r5 = struct base, args unused) -> r0 = [r5+0x24], r1 = [r5+0x28] passed to
 // symdb: owPlayer_setDirectionAnimFromOffset; returns its result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A596C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_setDirectionAnimThunk.yaml
 	thumb_local_start
-sub_80A596C:
+owPlayer_setDirectionAnimThunk:
 	push {r4,lr}
 	ldr r0, [r5,#0x24]
 	ldr r1, [r5,#0x28]
 	b loc_80A597A
-	thumb_func_end sub_80A596C
+	thumb_func_end owPlayer_setDirectionAnimThunk
 
 // symdb: Facing-aware animation swap for an OW player's navi sprite based on the vector to the overworld player
 // symdb: (r5 = OWPlayerObject*) -> void ; side effects: triggers sprite_setAnimation /
@@ -3012,7 +3012,7 @@ off_80A6AB8:
 JumpTable_80A6ABC:
 	.word sub_80A6B10+1
 	.word sub_80A6CA4+1
-	.word sub_80A6CD4+1
+	.word battleObject_copyPositionToStruct+1
 	.word sub_80A6CFC+1
 	.word sub_80A6D38+1
 	.word sub_80A6D42+1
@@ -3025,7 +3025,7 @@ JumpTable_80A6ABC:
 	.word sub_80A6DDC+1
 	.word sub_80A6DEC+1
 	.word sub_80A6DFC+1
-	.word sub_80A6E0C+1
+	.word battleObject_playSoundEffect+1
 	.word sub_80A6E22+1
 	.word sub_80A6E3A+1
 	.word battle_emptyReturnZero_80A6E4A+1
@@ -3279,9 +3279,9 @@ loc_80A6CD0:
 // symdb: Reads a battle object from a linked list and copies its x/y(/z) halfword fields into a struct as 16.16 fixed-point values.
 // symdb: (r5 = destination struct + list base, r6 = list offset) -> r0 = 1; stores sign-extended
 // symdb: (field<<16) to [r5+0xC], [r5+0x10], [r5+0x14]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6CD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_copyPositionToStruct.yaml
 	thumb_local_start
-sub_80A6CD4:
+battleObject_copyPositionToStruct:
 	push {lr}
 	bl battleObject_getFromListPair_80A6E78
 	mov r2, #2
@@ -3300,7 +3300,7 @@ sub_80A6CD4:
 	bl sub_80A6E70
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_80A6CD4
+	thumb_func_end battleObject_copyPositionToStruct
 
 	thumb_local_start
 sub_80A6CFC:
@@ -3462,9 +3462,9 @@ sub_80A6DFC:
 // symdb: Fetches a battle object from the current list node, plays the sound effect whose ID is stored in its +2 halfword, then invokes sub_80A6E70 with 4.
 // symdb: (none read; list node context via r5/r6 from caller) -> r0 = 1; calls
 // symdb: PlaySoundEffect(object->seId) and sub_80A6E70(4)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_playSoundEffect.yaml
 	thumb_local_start
-sub_80A6E0C:
+battleObject_playSoundEffect:
 	push {lr}
 	bl battleObject_getFromListPair_80A6E78
 	ldrh r0, [r0,#2]
@@ -3473,7 +3473,7 @@ sub_80A6E0C:
 	bl sub_80A6E70
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_80A6E0C
+	thumb_func_end battleObject_playSoundEffect
 
 	thumb_local_start
 sub_80A6E22:
@@ -5989,7 +5989,7 @@ ow_objectFinishEventAndFree:
 	strb r0, [r7,#6]
 	mov r0, #0
 	ldrb r0, [r5,#4]
-	bl sub_81427A4
+	bl soulWeapons_getFormDataOffset
 	mov r0, r0
 	bl SetEventFlag
 	bl e_scenarioEffectDecrementCounter
@@ -8762,7 +8762,7 @@ off_80A9444:
 	.word owMapObject_mrWeatherInit_80A9458+1
 	.word object_mrWeatherStep_80A94DC+1
 	.word sub_80A94F8+1
-	.word sub_80A9568+1
+	.word owMapObject_freeThunk+1
 off_80A9454:
 	.word eWeatherCompState
 	thumb_func_end sub_80A9430
@@ -8817,7 +8817,7 @@ loc_80A94AC:
 	beq loc_80A94D2
 	mov r0, #0xc
 	strb r0, [r5,#8]
-	bl sub_80A9568
+	bl owMapObject_freeThunk
 	pop {r4-r7,pc}
 loc_80A94D2:
 	mov r0, #4
@@ -8872,7 +8872,7 @@ sub_80A94F8:
 loc_80A9528:
 	movflag EVENT_BFC
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_80A9568
+	bl owMapObject_freeThunk
 loc_80A9534:
 	ldr r0, [r5,#0x24]
 	add r0, #1
@@ -8894,13 +8894,13 @@ byte_80A9558:
 // symdb: Thin wrapper that frees the overworld map object passed in r0, likely used as a shared despawn/destructor step handler.
 // symdb: (r0 = overworld map object) -> r0 = FreeOverworldMapObject result; flags from
 // symdb: FreeOverworldMapObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9568.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_freeThunk.yaml
 	thumb_local_start
-sub_80A9568:
+owMapObject_freeThunk:
 	push {lr}
 	bl FreeOverworldMapObject
 	pop {pc}
-	thumb_func_end sub_80A9568
+	thumb_func_end owMapObject_freeThunk
 
 	thumb_local_start
 sub_80A9570:

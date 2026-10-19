@@ -832,7 +832,7 @@ locret_809D796:
 	pop {pc}
 	.balign 4, 0
 off_809D798:
-	.word sub_809D7A8+1
+	.word owPlayer_triggerNpcChat+1
 	.word ow_player_setCounterTalkStateAfterNpcInteract_809D7C8+1
 	.word owPlayerObject_clearStateUnk10_809D7D8+1
 off_809D7A4:
@@ -844,8 +844,8 @@ off_809D7A4:
 // symdb: Overworld player chat/inspect action: if no cutscene is running, face the NPC's direction and mark the interacted NPC as chat-triggered, entering chat substate 4.
 // symdb: (r5 = OW player object) -> r0 = undefined; sets NPC ChatTriggered and player ActionSubState, or
 // symdb: falls into clear-state path when a cutscene script is active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7A8.yaml
-sub_809D7A8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_triggerNpcChat.yaml
+owPlayer_triggerNpcChat:
 	push {lr}
 	bl IsCutsceneScriptNonNull // () -> !zf
 	tst r0, r0
@@ -862,7 +862,7 @@ sub_809D7A8:
 	strb r0, [r5,#oOWPlayerObject_ActionSubState]
 locret_809D7C6:
 	pop {pc}
-	thumb_func_end sub_809D7A8
+	thumb_func_end owPlayer_triggerNpcChat
 
 // symdb: After the player finishes interacting with an overworld NPC, checks the NPC's movement flag and, if it is 4, marks the player object with state 8 ("talking to counter NPC").
 // symdb: void sub_809D7C8(OWPlayerObject *r5) // r0 out: NPC movement flag, or 8 when the store happens;

@@ -371,7 +371,7 @@ signed int sub_8089808()
 
 
 // 0x8089826
-signed int __fastcall sub_8089826(int a1)
+signed int __fastcall battle_chipLockoutExpiredSetState(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -523,7 +523,7 @@ signed int ai_setStateIfTeamAlive()
 
 
 // 0x808991c
-signed int sub_808991C()
+signed int owPlayer_cutsceneTurnAnimStep()
 {
     _BYTE *v0; // r5
     char v1; // zf
