@@ -80,7 +80,7 @@ void event_80A4A08()
 
 
 // 0x80a4a90
-int sub_80A4A90()
+int ow_freeMapObjectTailcall()
 {
     return FreeOverworldMapObject();
 }

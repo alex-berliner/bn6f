@@ -14531,11 +14531,11 @@ sub_802CCAE:
 	mov pc, lr
 off_802CCB4:
 	.word sub_80E07E0+1 // 0x0
-	.word sub_80E7546+1 // 0x1
+	.word battle_spawnChipAttackObjectKind5D+1 // 0x1
 	.word sub_80E2F24+1 // 0x2
 	.word sub_80E2566+1 // 0x3
 	.word sub_80E3B50+1 // 0x4
-	.word sub_80E2B5A+1 // 0x5
+	.word battle_spawnChipAttackObjectKind20+1 // 0x5
 	.word sub_80E46B6+1 // 0x6
 	.word sub_80E7464+1 // 0x7
 	.word battle_spawnChipObject+1 // 0x8

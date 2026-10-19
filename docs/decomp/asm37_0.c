@@ -2356,14 +2356,14 @@ void sub_813CE04()
 
 
 // 0x813ce08
-int sub_813CE08()
+int pet_incrementNaviStatsByte18By1()
 {
     return pet_addNaviStatsByte18AndMarkField16();
 }
 
 
 // 0x813ce12
-int sub_813CE12()
+int pet_incrementNaviStatsByte18By2()
 {
     return pet_addNaviStatsByte18AndMarkField16();
 }

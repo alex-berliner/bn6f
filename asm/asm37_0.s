@@ -3015,8 +3015,8 @@ byte_813CC18:
 	.word sub_813CDF4+1
 	.word sub_813CDF4+1
 	.word sub_813CE04+1
-	.word sub_813CE08+1
-	.word sub_813CE12+1
+	.word pet_incrementNaviStatsByte18By1+1
+	.word pet_incrementNaviStatsByte18By2+1
 	.word sub_813CE1C+1
 	.word sub_813CE48+1
 	.word sub_813CE4C+1
@@ -3280,25 +3280,25 @@ sub_813CE04:
 // symdb: Thin wrapper that adds 1 to the selected PET navi's NaviStats byte 0x18 and flags the record by setting byte 0x16 to 3.
 // symdb: (r0 = PET/navi selection passed through to callee) -> r0 = callee return; r4 clobbered (set to 1
 // symdb: as the addend)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_incrementNaviStatsByte18By1.yaml
 	thumb_local_start
-sub_813CE08:
+pet_incrementNaviStatsByte18By1:
 	push {r4-r7,lr}
 	mov r4, #1
 	bl pet_addNaviStatsByte18AndMarkField16
 	pop {r4-r7,pc}
-	thumb_func_end sub_813CE08
+	thumb_func_end pet_incrementNaviStatsByte18By1
 
 // symdb: Thin wrapper that adds 2 to byte 0x18 of the selected PET navi's NaviStats record and marks field 0x16 with the value 3.
 // symdb: (no args) -> r4 = 2 passed to callee; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE12.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_incrementNaviStatsByte18By2.yaml
 	thumb_local_start
-sub_813CE12:
+pet_incrementNaviStatsByte18By2:
 	push {r4-r7,lr}
 	mov r4, #2
 	bl pet_addNaviStatsByte18AndMarkField16
 	pop {r4-r7,pc}
-	thumb_func_end sub_813CE12
+	thumb_func_end pet_incrementNaviStatsByte18By2
 
 	thumb_local_start
 sub_813CE1C:

@@ -4293,7 +4293,7 @@ off_810FCE0:
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word sub_810FD90+1
 	.word object_clearRegionIfCollided+1
-	.word sub_810FDD0+1
+	.word ai_actorStateDispatch+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_810F5D0+1
 	.word genericAI_movementRelated_8109952+1
@@ -4382,9 +4382,9 @@ dword_810FDCC:
 // symdb: AI-state dispatcher for an enemy actor: indexes a 3-entry handler table by the actor's script/state id and calls that handler.
 // symdb: (r6 = actor object, field oAIState_ScriptId = state index) -> r0 = whatever the dispatched
 // symdb: handler returns; returns to this function's caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FDD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_actorStateDispatch.yaml
 	thumb_local_start
-sub_810FDD0:
+ai_actorStateDispatch:
 	push {r4,r6,lr}
 	ldr r1, off_810FDE0 // =off_810FDE4
 	ldrb r0, [r6,#oAIState_ScriptId]
@@ -4399,7 +4399,7 @@ off_810FDE4:
 	.word ai_checkActorNearbyOrTimeoutScript+1
 	.word ai_dashAttackInit+1
 	.word sub_810FF1C+1
-	thumb_func_end sub_810FDD0
+	thumb_func_end ai_actorStateDispatch
 
 // symdb: Battle object per-frame update wrapper: on phase 0, if collision flag bit 0x40000000 is set, runs a one-shot helper on the object's ExtraVars+8 pointer and clears it, then dispatches the normal phase update.
 // symdb: (r5 = battle object) -> r0 = result of phase dispatch; clobbered lr/r0-r3
@@ -15429,9 +15429,9 @@ byte_8115730:
 // symdb: AI attack trampoline: reads the AI attack var 'HitElement' from the current object and calls one of six per-element attack handlers from a jump table.
 // symdb: (r7 = AI attack vars struct base, r0 unused on entry) -> tail-calls handler chosen by
 // symdb: oAIAttackVars_HitElement; r0/r1 clobbered, flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81157F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackDispatchByHitElement6.yaml
 	thumb_local_start
-sub_81157F0:
+ai_attackDispatchByHitElement6:
 	push {lr}
 	ldr r1, off_8115800 // =off_8115804
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -15449,7 +15449,7 @@ off_8115804:
 	.word ai_attackWaitActionFrame+1
 	.word sub_81158DC+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_81157F0
+	thumb_func_end ai_attackDispatchByHitElement6
 
 	thumb_local_start
 sub_811581C:
@@ -15647,7 +15647,7 @@ off_8115950:
 	.word sub_8016B72+1
 	.word ai_dispatchBeastSpHandler+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_81157F0+1
+	.word ai_attackDispatchByHitElement6+1
 	.word genericAI_movementRelated_8109952+1
 byte_8115980:
 	.byte 0x32, 0x0, 0xA, 0x0, 0x78, 0x0, 0xA, 0x0, 0xC8, 0x0, 0xA, 0x0

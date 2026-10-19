@@ -22,7 +22,7 @@ off_80A499C:
 jt_80A49A0:
 	.word battleObject_initFromParams_80A49B0+1
 	.word event_80A4A08+1
-	.word sub_80A4A90+1
+	.word ow_freeMapObjectTailcall+1
 off_80A49AC:
 	.word OverworldMapObjects
 	thumb_func_end ho_80A4984
@@ -142,13 +142,13 @@ loc_80A4A8A:
 // symdb: Trivial wrapper that immediately calls FreeOverworldMapObject, forwarding its argument unchanged.
 // symdb: (r0 = overworld map object pointer/index) -> r0 = result of FreeOverworldMapObject; flags from
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A4A90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeMapObjectTailcall.yaml
 	thumb_local_start
-sub_80A4A90:
+ow_freeMapObjectTailcall:
 	push {lr}
 	bl FreeOverworldMapObject
 	pop {pc}
-	thumb_func_end sub_80A4A90
+	thumb_func_end ow_freeMapObjectTailcall
 
 // symdb: Dispatches a battle object's per-frame state handler for state 4, selected by the byte at `obj+8`.
 // symdb: void sub_80A4A98(void);  // in: r5=battle object ptr; out: passthrough; clobbers: nz c v

@@ -2749,7 +2749,7 @@ int object_clearRegionIfCollided()
 
 
 // 0x810fdd0
-int sub_810FDD0()
+int ai_actorStateDispatch()
 {
     unsigned __int8 *v0; // r6
 
@@ -9695,7 +9695,7 @@ int __fastcall ai_selectAdjacentPanel(int a1, int a2, int a3)
 
 
 // 0x81157f0
-int sub_81157F0()
+int ai_attackDispatchByHitElement6()
 {
     unsigned __int8 *v0; // r7
 
