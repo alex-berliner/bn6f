@@ -6328,7 +6328,7 @@ void battle_aiSnakeArmTickStep_8112A78()
     }
     else
     {
-        *(v3 + 40) = sub_8112B06;
+        *(v3 + 40) = ai_pickRandomPanelExcludingSelf;
         object_setAttack0();
         *v2 = 0;
     }
@@ -6336,7 +6336,7 @@ void battle_aiSnakeArmTickStep_8112A78()
 
 
 // 0x8112b06
-__int64 __noreturn sub_8112B06()
+__int64 __noreturn ai_pickRandomPanelExcludingSelf()
 {
     int v0; // r4
     int v1; // r5
@@ -9257,7 +9257,7 @@ int sub_81151A0()
 
 
 // 0x81151cc
-void sub_81151CC()
+void ai_chargeAttackInitAndStep()
 {
     Battle *v0; // r5
     int v1; // r7

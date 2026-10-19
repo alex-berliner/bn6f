@@ -1929,7 +1929,7 @@ int __fastcall sub_8027834(int a1, int a2, int a3)
 
 
 // 0x802790c
-int __fastcall sub_802790C(int a1, int a2, int a3)
+int __fastcall battle_customScreenChipUseAnimStep(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -2110,7 +2110,7 @@ int screenFadeWaitStep()
 
 
 // 0x8027aae
-int sub_8027AAE()
+int battle_customScreenConfirmSelectedChip()
 {
     int v0; // r5
     int result; // r0
@@ -2277,11 +2277,11 @@ int battle_customGauge_EndTurn_8027D78()
         {
             if ( battle_testFlag0x40_800A8F8(1) )
             {
-                result = sub_801DF0C();
+                result = battle_customGaugeResetForNewTurn();
             }
             else if ( sub_802D234() == 1 )
             {
-                result = sub_801DEEE();
+                result = battle_customGaugeResetGfxAndRequest();
             }
             else
             {
@@ -3615,7 +3615,7 @@ LABEL_16:
 
 
 // 0x8028ccc
-int __fastcall sub_8028CCC(int a1, int a2, int a3)
+int __fastcall customScreen_confirmPlaceChip(int a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r5

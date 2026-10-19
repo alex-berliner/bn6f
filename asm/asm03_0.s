@@ -910,7 +910,7 @@ off_8026AA4:
 	// 0x4C
 	.word sub_8027834+1 // (self: * S20364C0 $r5) -> ()
 	// 0x50
-	.word sub_802790C+1 // (self: * S20364C0 $r5) -> ()
+	.word battle_customScreenChipUseAnimStep+1 // (self: * S20364C0 $r5) -> ()
 	// 0x54
 	.word sub_802794A+1 // (self: * S20364C0 $r5) -> ()
 	// 0x58
@@ -2970,9 +2970,9 @@ dword_8027908:
 // symdb: Per-frame step for the custom screen 'chip selected' animation: plays the select sound, waits 5 frames while pulsing the slot, then clears selection and runs the chosen chip's effect.
 // symdb: (r0 = self pointer to custom-screen state struct, also in r5) -> r0 = clobbered; updates state
 // symdb: byte [+1]=4, phase byte [+2], counter [+0x40]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802790C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customScreenChipUseAnimStep.yaml
 	thumb_local_start
-sub_802790C: // (self: * S20364C0 $r5) -> ()
+battle_customScreenChipUseAnimStep: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -3000,7 +3000,7 @@ loc_8027940:
 	bl battleObject_chipSelectAnimTick_8029C08 // (self: * S20364C0 $r5) -> ()
 	bl sub_802899C
 	pop {pc}
-	thumb_func_end sub_802790C
+	thumb_func_end battle_customScreenChipUseAnimStep
 
 	thumb_local_start
 sub_802794A: // (self: * S20364C0 $r5) -> ()
@@ -3170,7 +3170,7 @@ off_8027A70:
 off_8027A74:
 	.word sub_8027A84+1
 	.word screenFadeWaitStep+1
-	.word sub_8027AAE+1
+	.word battle_customScreenConfirmSelectedChip+1
 	.word sub_8027ADE+1
 	thumb_func_end sub_8027A58
 
@@ -3208,9 +3208,9 @@ locret_8027AAC:
 
 // symdb: Custom-screen handler for confirming the highlighted chip: starts a screen fade, fires the chip's picker effect and sound, then advances the custom-screen state machine.
 // symdb: (r5 = custom-screen/battle state struct, read-only) -> void; writes state 0xC to [r5+2]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027AAE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customScreenConfirmSelectedChip.yaml
 	thumb_local_start
-sub_8027AAE:
+battle_customScreenConfirmSelectedChip:
 	push {r4,r6,lr}
 	bl IsScreenFadeActive // () -> zf
 	cmp r0, #0
@@ -3229,7 +3229,7 @@ sub_8027AAE:
 	strh r0, [r5,#2]
 locret_8027ADC:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8027AAE
+	thumb_func_end battle_customScreenConfirmSelectedChip
 
 	thumb_local_start
 sub_8027ADE:
@@ -3523,13 +3523,13 @@ battle_customGauge_EndTurn_8027D78:
 	bl battle_testFlag0x40_800A8F8
 	cmp r0, #0
 	beq loc_8027DC0
-	bl sub_801DF0C
+	bl battle_customGaugeResetForNewTurn
 	b locret_8027E10
 loc_8027DC0:
 	bl GetBattleMode
 	cmp r0, #1
 	bne loc_8027DCE
-	bl sub_801DEEE
+	bl battle_customGaugeResetGfxAndRequest
 	b locret_8027E10
 loc_8027DCE:
 	bl custGauge_Init_801DED0
@@ -5718,7 +5718,7 @@ locret_8028C96:
 off_8028C98:
 	.word off_8028C9C
 off_8028C9C:
-	.word sub_8028CCC+1
+	.word customScreen_confirmPlaceChip+1
 	.word custMenuPressOK_8028D3A+1
 	.word sub_8028D6C+1
 	.word custMenuConfirmMarkedEntry+1
@@ -5738,9 +5738,9 @@ off_8028CC8:
 // symdb: (r4 = screen-state (byte +7 = phase, word +8 = ptr to selected chip entry halfword), r5 = screen
 // symdb: ctx (+8 = placed count, +0x48+count = slot list, +0xF = flag)) -> r0 = 1 on reject, else chip
 // symdb: ID; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028CCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_confirmPlaceChip.yaml
 	thumb_local_start
-sub_8028CCC:
+customScreen_confirmPlaceChip:
 	push {lr}
 	ldrb r0, [r4,#7]
 	cmp r0, #0
@@ -5790,7 +5790,7 @@ loc_8028D30:
 	mov r0, #1
 locret_8028D38:
 	pop {pc}
-	thumb_func_end sub_8028CCC
+	thumb_func_end customScreen_confirmPlaceChip
 
 // symdb: Handles confirming with OK in the Custom Screen menu, running the chosen action handler, switching state, and playing the select sound.
 // symdb: Next custMenuPressOK_8028D3A(void); r5 in = menu state struct (oS20364C0_*), r0 out = 0, Z set

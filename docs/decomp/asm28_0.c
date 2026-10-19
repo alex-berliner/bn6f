@@ -2504,7 +2504,7 @@ LABEL_17:
 
 
 // 0x809d270
-unsigned int sub_809D270()
+unsigned int owPlayer_spawnInit()
 {
     int v0; // r5
     int v1; // r10

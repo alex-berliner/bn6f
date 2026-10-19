@@ -1660,7 +1660,7 @@ int battleObject_dispatchRunActionByState_80A6A16()
 
 
 // 0x80a6a34
-void sub_80A6A34()
+void battleObject_subactionLoadSprite()
 {
     int v0; // r5
 

@@ -169,7 +169,7 @@ mapscript_806AF39:
 
 byte_806AF3C:
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_806AF50
-	ms_call_native_function ptr1=sub_808CAD4+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_storyTriggerSpawnJackoutLockScene+1 word5=0x00000000
 	ms_jump destination1=byte_806AF59
 
 mapscript_806AF50:

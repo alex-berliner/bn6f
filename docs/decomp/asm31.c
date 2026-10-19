@@ -415,7 +415,7 @@ int t1_0x2_80B85E0()
 
 
 // 0x80b8600
-void __noreturn sub_80B8600()
+void __noreturn battleObject_initVisualsFromRelatedObject()
 {
     int v0; // r5
     int v1; // r0
@@ -33153,14 +33153,14 @@ int object_initSpawnOnPanel()
         object_presentCollisionData(v4, v5);
         *(v0 + 34) = 1;
         *(v0 + 8) = 4;
-        sub_80CB762();
+        battle_objectUpdateDestroyOnCollision();
     }
     return object_freeMemory();
 }
 
 
 // 0x80cb762
-void __noreturn sub_80CB762()
+void __noreturn battle_objectUpdateDestroyOnCollision()
 {
     int v0; // r5
     int v1; // r1
@@ -56606,14 +56606,14 @@ void __noreturn battleObject_hpLanternInit_80DA07C()
         v4 = object_setupCollisionData(v3, 19, 20, 3);
         object_presentCollisionData(v4, v5);
         *(v0 + 8) = 4;
-        sub_80DA108();
+        battleObject_hpLanternFrameUpdate();
     }
     object_freeMemory();
 }
 
 
 // 0x80da108
-void __noreturn sub_80DA108()
+void __noreturn battleObject_hpLanternFrameUpdate()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -90956,7 +90956,7 @@ int object_spawnSelfPanelCollisionRegion()
 
 
 // 0x80ef328
-int sub_80EF328()
+int ai_dispatchHitElementStep()
 {
     unsigned __int8 *v0; // r7
 
@@ -94295,7 +94295,7 @@ int ai_chargeAttackState()
 
 
 // 0x80f1390
-void sub_80F1390()
+void ai_attackStepElement4Windup()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -107903,7 +107903,7 @@ void ai_attackWaitTick()
 
 
 // 0x80fa6d4
-int sub_80FA6D4()
+int ai_attackCallElementHandler()
 {
     unsigned __int8 *v0; // r7
 
@@ -110333,7 +110333,7 @@ int ai_chargeFrontPanelAttack()
 
 
 // 0x80fc26a
-void sub_80FC26A()
+void ai_attackStepMeleeWindup()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -116304,7 +116304,7 @@ void ai_chipAttackTick()
 
 
 // 0x80ffe26
-int sub_80FFE26()
+int ai_attackHitElementBranchTable()
 {
     unsigned __int8 *v0; // r7
 
@@ -126464,7 +126464,7 @@ int __fastcall ai_attackCycleRepeatStep(int a1, int a2, int a3, int a4)
 
 
 // 0x8106162
-int sub_8106162()
+int aiAttackStepLunge()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -128585,7 +128585,7 @@ int __fastcall sub_8107518(int a1, int a2, int a3)
         *(v4 + 16) = result;
         if ( result == 17 )
         {
-            sub_8107A64();
+            ai_spawnFrontPanelCollisionRegion();
             result = ai_isTargetWithinTwoPanelsAhead();
             *(v4 + 14) = result;
         }
@@ -129273,7 +129273,7 @@ void __fastcall object_spawnFrontPanelEffect(int a1)
 
 
 // 0x8107a64
-int sub_8107A64()
+int ai_spawnFrontPanelCollisionRegion()
 {
     Battle *v0; // r5
     int v1; // r7

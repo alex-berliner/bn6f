@@ -115,7 +115,7 @@ int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
 
 
 // 0x808cad4
-int __fastcall sub_808CAD4(int a1)
+int __fastcall ow_storyTriggerSpawnJackoutLockScene(int a1)
 {
     char v1; // zf
 

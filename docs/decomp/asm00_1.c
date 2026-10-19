@@ -7475,7 +7475,7 @@ int battle_startCrossNet_800898C()
         *(v0 + 4) = 0;
         *(v0 + 8) = 30;
         *(v0 + 3) = 4;
-        sub_801DF0C();
+        battle_customGaugeResetForNewTurn();
         SetCustGauge(0);
         (battle_dispatchKindEffect_801E792)(0, 0);
     }
@@ -7933,7 +7933,7 @@ int battle_startIntro()
         *(v0 + 4) = 0;
         *(v0 + 8) = 30;
         *(v0 + 3) = 4;
-        sub_801DF0C();
+        battle_customGaugeResetForNewTurn();
         SetCustGauge(0);
         (battle_dispatchKindEffect_801E792)(0, 0);
     }
@@ -9037,7 +9037,7 @@ int battle_stateBattleStart()
     eStruct2035280_SetRequestBits_801BECC(dword_404);
     dispatch_801DA48(dword_404);
     battle_sceneFrameSetup_801DA24();
-    sub_801DF0C();
+    battle_customGaugeResetForNewTurn();
     return SetCustGauge(0);
 }
 

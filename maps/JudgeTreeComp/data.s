@@ -107,7 +107,7 @@ dword_8069358:
 	.word 0x121212
 byte_806935C:
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_8069370
-	ms_call_native_function ptr1=sub_808CAD4+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_storyTriggerSpawnJackoutLockScene+1 word5=0x00000000
 	ms_jump destination1=byte_8069379
 
 mapscript_8069370:
@@ -142,7 +142,7 @@ byte_80693C5:
 
 byte_80693C8:
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_80693DC
-	ms_call_native_function ptr1=sub_808CAD4+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_storyTriggerSpawnJackoutLockScene+1 word5=0x00000000
 	ms_jump destination1=byte_80693E5
 
 mapscript_80693DC:
@@ -164,7 +164,7 @@ mapscript_8069403:
 
 byte_8069404:
 	ms_jump_if_map_group_not_equal_last_map_group destination2=mapscript_8069418
-	ms_call_native_function ptr1=sub_808CAD4+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_storyTriggerSpawnJackoutLockScene+1 word5=0x00000000
 	ms_jump destination1=byte_8069421
 
 mapscript_8069418:

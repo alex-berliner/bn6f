@@ -1158,9 +1158,9 @@ dword_808CAD0:
 // symdb: Overworld story-progress trigger: marks one event flag, then if a guard flag is already set, sets another flag and launches a map cutscene object with a jack-out lock.
 // symdb: () -> r0 = 0; sets EVENT_9D6 (always) and, if EVENT_9D8 set, EVENT_9D7, EVENT_1700, BBS flag
 // symdb: e17b0f7, GameState.Unk_09 = 3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CAD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_storyTriggerSpawnJackoutLockScene.yaml
 	thumb_local_start
-sub_808CAD4:
+ow_storyTriggerSpawnJackoutLockScene:
 	push {r5,lr}
 	bl init_queueBeastSpGfx
 	movflag EVENT_9D6
@@ -1179,7 +1179,7 @@ loc_808CB06:
 	mov r0, #0
 	pop {r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CAD4
+	thumb_func_end ow_storyTriggerSpawnJackoutLockScene
 
 // symdb: Overworld per-frame step that drives the random-encounter progress (PET-Navi footsteps / "LocEnemy" state) and may start the encounter cutscene.
 // symdb: (no input args, r10 = Toolkit) -> side effects: may set state in 0x2000B40 area, play SE 0x13B,

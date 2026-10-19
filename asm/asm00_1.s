@@ -12409,7 +12409,7 @@ battle_startCrossNet_800898C:
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
-	bl sub_801DF0C
+	bl battle_customGaugeResetForNewTurn
 	mov r0, #0
 	bl SetCustGauge
 	mov r0, #0
@@ -12987,7 +12987,7 @@ battle_startIntro:
 	strh r0, [r5,#8]
 	mov r0, #4
 	strb r0, [r5,#3]
-	bl sub_801DF0C
+	bl battle_customGaugeResetForNewTurn
 	mov r0, #0
 	bl SetCustGauge
 	mov r0, #0
@@ -14348,7 +14348,7 @@ battle_stateBattleStart:
 	ldr r0, off_8009700 // =0x404
 	bl dispatch_801DA48
 	bl battle_sceneFrameSetup_801DA24
-	bl sub_801DF0C
+	bl battle_customGaugeResetForNewTurn
 	mov r0, #0
 	bl SetCustGauge
 	pop {pc}

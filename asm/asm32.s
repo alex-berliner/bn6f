@@ -9928,7 +9928,7 @@ battle_aiSnakeArmTickStep_8112A78:
 	sub r0, #1
 	strh r0, [r6,#oAIState_Timer]
 	bne loc_8112A9A
-	ldr r0, off_8112B74 // =sub_8112B06+1
+	ldr r0, off_8112B74 // =ai_pickRandomPanelExcludingSelf+1
 	str r0, [r7,#oAIAttackVars_PanelChooseCallback]
 	mov r0, #0xa
 	bl object_setAttack0
@@ -9992,9 +9992,9 @@ locret_8112B04:
 // symdb: AI helper that returns a random battle panel (x,y) for the acting enemy to target, temporarily reserving the object's own panel while searching.
 // symdb: (r4 = AI data of acting object, r5 = its battle object) -> r0 = chosen panel X (low 3 bits), r1
 // symdb: = chosen panel Y (high nibble); both 0 if no candidate panel was found.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112B06.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickRandomPanelExcludingSelf.yaml
 	thumb_local_start
-sub_8112B06:
+ai_pickRandomPanelExcludingSelf:
 	push {r4,r7,lr}
 	sub sp, sp, #0x18
 	ldrb r0, [r5,#oBattleObject_PanelX]
@@ -10040,7 +10040,7 @@ byte_8112B60:
 off_8112B70:
 	.word byte_81129D6
 off_8112B74:
-	.word sub_8112B06+1
+	.word ai_pickRandomPanelExcludingSelf+1
 dword_8112B78:
 	.word 0x8000
 off_8112B7C:
@@ -10091,7 +10091,7 @@ byte_8112BC0:
 	.byte 0x34, 0x9E, 0x34, 0x9E, 0x34, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_8112B06
+	thumb_func_end ai_pickRandomPanelExcludingSelf
 
 	thumb_local_start
 sub_8112C80:
@@ -14676,7 +14676,7 @@ sub_81151A0:
 off_81151B0:
 	.word off_81151B4
 off_81151B4:
-	.word sub_81151CC+1
+	.word ai_chargeAttackInitAndStep+1
 	.word sub_811523C+1
 	.word ai_attackVars_runMoveStep_8115272+1
 	.word ai_throwObjectStep+1
@@ -14687,9 +14687,9 @@ off_81151B4:
 // symdb: Runs an AI battle object's charging/ramming attack across the panels: initializes it on the first call, then advances its scripted move each frame.
 // symdb: (r7 = AI attack vars, r5 = battle object) -> void; branch into runMoveStep once AttackElement is
 // symdb: set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81151CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_chargeAttackInitAndStep.yaml
 	thumb_local_start
-sub_81151CC:
+ai_chargeAttackInitAndStep:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	cmp r0, #0
@@ -14738,7 +14738,7 @@ off_8115230:
 	.word off_8115234
 off_8115234:
 	.byte 0x1, 0x1, 0x2, 0x6, 0x7, 0x20, 0x8, 0x8
-	thumb_func_end sub_81151CC
+	thumb_func_end ai_chargeAttackInitAndStep
 
 	thumb_local_start
 sub_811523C:

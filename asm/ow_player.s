@@ -139,7 +139,7 @@ locret_809D256:
 off_809D258:
 	.word off_809D25C
 off_809D25C:
-	.word sub_809D270+1
+	.word owPlayer_spawnInit+1
 	.word owPlayer_update_809D348+1
 	.word ow_despawnPlayerObject+1
 off_809D268:
@@ -150,9 +150,9 @@ off_809D268:
 // symdb: Initializes the overworld player object: picks and loads the player's sprite (current navi, with internet/Cybeast-override), resets player state, and runs one update frame.
 // symdb: (r5 = player object header/OWPlayer) -> sets oGameState_OverworldPlayerObjectPtr; no return
 // symdb: value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D270.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_spawnInit.yaml
 	thumb_local_start
-sub_809D270:
+owPlayer_spawnInit:
 	push {r4,lr}
 	mov r0, #OBJECT_FLAG_ACTIVE | OBJECT_FLAG_VISIBLE
 	strb r0, [r5,#oObjectHeader_Flags]
@@ -254,7 +254,7 @@ off_809D340:
 	.word eStruct2000aa0
 dword_809D344:
 	.word 0xA108
-	thumb_func_end sub_809D270
+	thumb_func_end owPlayer_spawnInit
 
 // symdb: Per-frame update of the overworld player: resets the movement-step state, runs the movement-state jumptable handler, resolves collisions/slip-run, updates layer and sprite priority, and feeds the walk/encounter counters.
 // symdb: void owPlayer_update(u32 r5 /* OWPlayerObject */) : r5 -> [r4 r5 r8 r9 r10 r11 r12] (captured

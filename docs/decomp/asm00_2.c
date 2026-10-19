@@ -20781,7 +20781,7 @@ int custGauge_Init_801DED0()
 
 
 // 0x801deee
-int sub_801DEEE()
+int battle_customGaugeResetGfxAndRequest()
 {
     ClearCustGauge();
     (loc_8000AC8)(dword_86E489C, 100713536, &dword_380);
@@ -20791,7 +20791,7 @@ int sub_801DEEE()
 
 
 // 0x801df0c
-int sub_801DF0C()
+int battle_customGaugeResetForNewTurn()
 {
     int result; // r0
 

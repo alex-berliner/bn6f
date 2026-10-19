@@ -2927,7 +2927,7 @@ battleObject_dispatchRunActionByState_80A6A16:
 off_80A6A24:
 	.word off_80A6A28
 off_80A6A28:
-	.word sub_80A6A34+1
+	.word battleObject_subactionLoadSprite+1
 	.word battleObject_runActionSubroutineDispatch_80A6A62+1
 	.word sub_80A6B08+1
 	thumb_func_end battleObject_dispatchRunActionByState_80A6A16
@@ -2935,9 +2935,9 @@ off_80A6A28:
 // symdb: Battle-object action sub-step that loads the object's sprite, sets its initial animation, disables the shadow, and advances the action state machine.
 // symdb: (r5 = battle object work area) -> r0 = result of
 // symdb: battleObject_runActionSubroutineDispatch_80A6A62; flags from that call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_subactionLoadSprite.yaml
 	thumb_local_start
-sub_80A6A34:
+battleObject_subactionLoadSprite:
 	push {lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -2955,7 +2955,7 @@ sub_80A6A34:
 	bl sprite_setAnimPtrFromId
 	bl battleObject_runActionSubroutineDispatch_80A6A62
 	pop {pc}
-	thumb_func_end sub_80A6A34
+	thumb_func_end battleObject_subactionLoadSprite
 
 // symdb: Per-frame action dispatcher for a battle object's update state (r5), jumping into one of 19 sub-action handlers via a jumptable indexed on word returned from sub_80A6E78; then recomputes Z priority, layer, sprite priority and runs sprite_update.
 // symdb: (r5 = battle object, plus inherited r2/r3/r8/r9/r10/r11/r12/lr) -> no out value, void-like ;

@@ -31742,9 +31742,9 @@ custGauge_Init_801DED0:
 // symdb: End-of-turn handler that empties the custom gauge, reloads its gauge tile graphics into VRAM, and posts request 0x20 to refresh the gauge display.
 // symdb: () -> r0 = request id passed to dispatcher; calls ClearCustGauge, queues GFX transfer, ORs bit
 // symdb: 0x20 into eStruct2035280 request dword.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DEEE.yaml
-	thumb_func_start sub_801DEEE
-sub_801DEEE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customGaugeResetGfxAndRequest.yaml
+	thumb_func_start battle_customGaugeResetGfxAndRequest
+battle_customGaugeResetGfxAndRequest:
 	push {lr}
 	bl ClearCustGauge
 	ldr r0, off_801DF6C // =dword_86E489C 
@@ -31756,13 +31756,13 @@ sub_801DEEE:
 	mov r0, #0x20 
 	bl dispatch_801DA48
 	pop {pc}
-	thumb_func_end sub_801DEEE
+	thumb_func_end battle_customGaugeResetGfxAndRequest
 
 // symdb: Resets the in-battle custom gauge for the next turn: clears gauge state, reloads its tile graphics, and flags the HUD for redraw.
 // symdb: () -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DF0C.yaml
-	thumb_func_start sub_801DF0C
-sub_801DF0C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customGaugeResetForNewTurn.yaml
+	thumb_func_start battle_customGaugeResetForNewTurn
+battle_customGaugeResetForNewTurn:
 	push {lr}
 	bl ClearCustGauge
 	// dataList
@@ -31779,7 +31779,7 @@ sub_801DF0C:
 	strb r0, [r1,#0x18] // (byte_2035298 - 0x2035280)
 	strb r0, [r1,#0x19] // (byte_2035299 - 0x2035280)
 	pop {pc}
-	thumb_func_end sub_801DF0C
+	thumb_func_end battle_customGaugeResetForNewTurn
 
 // symdb: Resets the in-battle custom gauge and loads its tile graphics and 16-color palette, then flags the palette for upload.
 // symdb: () -> r0 = 0 (clobbered by calls); queues VRAM/palette transfers and sets request bit 0x20000
