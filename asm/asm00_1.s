@@ -15957,9 +15957,9 @@ loc_800A138:
 
 // symdb: Decrements a per-entity byte counter stored in the battle state, indexed by a field of the entity.
 // symdb: (r5 = entity/object pointer) -> r0 = decremented value; r1, r2 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A142.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_decEntityTimer.yaml
 	thumb_local_start
-sub_800A142:
+battle_decEntityTimer:
 	ldrb r0, [r5,#0x16]
 	add r0, #0x12
 	mov r1, r10
@@ -15968,7 +15968,7 @@ sub_800A142:
 	sub r2, #1
 	strb r2, [r1,r0]
 	mov pc, lr
-	thumb_func_end sub_800A142
+	thumb_func_end battle_decEntityTimer
 
 // symdb: Returns a small battle-phase/mode id (0/1/2/7) derived from the current battle state's phase flags, returning 0 while time is stopped.
 // symdb: int sub_800A152(void *r10_toolkit /* lr must be a valid return address */); out r0 = mode id, r1
@@ -16208,14 +16208,14 @@ off_800A2CC:
 
 // symdb: Sets the 16-bit battle state flags word to the given value.
 // symdb: (r0 = new flags value) -> void; writes oBattleState_BattleStateFlags (halfword)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A2D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setStateFlags.yaml
 	thumb_local_start
-sub_800A2D0:
+battle_setStateFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	strh r0, [r1,#oBattleState_BattleStateFlags]
 	mov pc, lr
-	thumb_func_end sub_800A2D0
+	thumb_func_end battle_setStateFlags
 
 // symdb: ORs the given flag bits into the current battle state's flags halfword.
 // symdb: void battle_stateSetFlags(u32 flags /* r0 */) using r10 (toolkit); leaves r1 = BattleState*, r2
@@ -19130,9 +19130,9 @@ sub_800B484:
 
 // symdb: (Re)builds the two loopback battle link packets the game exchanges with itself in solo battles.
 // symdb: () -> void; r0/r1 clobbered via callee calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B49E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initLoopbackLinkPackets.yaml
 	thumb_local_start
-sub_800B49E:
+battle_initLoopbackLinkPackets:
 	push {r6,r7,lr}
 	mov r0, #0
 	ldr r1, off_800B678 // =byte_203F4A4
@@ -19141,7 +19141,7 @@ sub_800B49E:
 	ldr r1, off_800B67C // =byte_203F5A4
 	bl sub_802E45E
 	pop {r6,r7,pc}
-	thumb_func_end sub_800B49E
+	thumb_func_end battle_initLoopbackLinkPackets
 
 // symdb: Writes a 0xA9B8C7D6-tagged two-word packet into the outgoing battle link buffer and requests battle mode 3.
 // symdb: (r0 = passed to sub_800B4CE, r1 = second payload word) -> r0 = 1 from

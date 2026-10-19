@@ -4796,7 +4796,7 @@ unsigned int sub_80A8988()
             PlaySoundEffect(420, v5, v6);
             sub_81430B6(*(v0 + 4));
             SetEventFlag(v7);
-            result = sub_81433E4(1);
+            result = e_addByteSaturatingAt5(1);
         }
         else
         {

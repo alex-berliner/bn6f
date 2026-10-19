@@ -9201,7 +9201,7 @@ loc_81483B0:
 	cmp r0, #0xb
 	bls loc_81483E0
 loc_81483C4:
-	bl sub_803C514
+	bl rfu_isStatus100Set
 	cmp r0, #0
 	beq loc_81483CE
 	b def_814825A

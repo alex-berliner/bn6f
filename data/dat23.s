@@ -475,7 +475,7 @@ end_cutscenescript_808A172:
 	thumb_local_start
 sub_808A174:
 	push {r4-r7, lr}
-	bl sub_8141998
+	bl e_getField18Ptr
 	str r0, [r5, #0x34]
 	ldrb r1, [r0, #0x10]
 	strb r1, [r5, #6]

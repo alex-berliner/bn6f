@@ -7244,7 +7244,7 @@ loc_80A89B4:
 	mov r0, r1
 	bl SetEventFlag
 	mov r0, #1
-	bl sub_81433E4
+	bl e_addByteSaturatingAt5
 locret_80A89D6:
 	pop {r4-r7,pc}
 	.balign 4, 0

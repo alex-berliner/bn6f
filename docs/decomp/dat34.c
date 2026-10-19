@@ -1412,7 +1412,7 @@ void sub_812E898()
             {
                 --*(v0 + 40);
             }
-            else if ( sub_803E8E4() != 12 )
+            else if ( getLinkState() != 12 )
             {
                 v4 = *(v0 + 31);
                 if ( v4 == 16 )

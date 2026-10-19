@@ -2359,7 +2359,7 @@ t3_setStateAndFadeScreen:
 	strh r1, [r5,#0x26]
 	ldr r1, dword_813120C // =0xfedb 
 	strh r1, [r5,#0x2a]
-	bl sub_8131EE4
+	bl t3_remapIdsViaLookupTable
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -3104,29 +3104,29 @@ off_8131750:
 
 // symdb: Sets the submenu state field (sSubmenu + 0x26) to 8 before returning.
 // symdb: () -> void; clobbers r0, r1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131754.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_setStateTo8.yaml
 	thumb_local_start
-sub_8131754:
+submenu_setStateTo8:
 	ldr r0, off_8131764 // =sSubmenu 
 
 	mov r1, #8
 	strh r1, [r0,#0x26] // (sSubmenu.unk_26 - 0x2009a30)
 
 	mov pc, lr
-	thumb_func_end sub_8131754
+	thumb_func_end submenu_setStateTo8
 
 // symdb: Setter that stores a halfword argument into the submenu state struct field at offset 0x26.
 // symdb: (r0 = value to store) -> void; writes halfword to sSubmenu+0x26
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813175C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_setUnk26.yaml
 	thumb_local_start
-sub_813175C:
+submenu_setUnk26:
 	ldr r1, off_8131764 // =sSubmenu 
 	strh r0, [r1,#0x26] // (sSubmenu.unk_26 - 0x2009a30)
 	mov pc, lr
 	.balign 4, 0x00
 off_8131764:
 	.word sSubmenu
-	thumb_func_end sub_813175C
+	thumb_func_end submenu_setUnk26
 
 // symdb: State handler for the link-match NPC object that ends the interaction: plays the exit-submenu sound, runs text script 0x68, and sets the object's state flag.
 // symdb: (r0 = object? clobbers r5-relative fields; r5 = object struct) -> void
@@ -3819,9 +3819,9 @@ off_8131EE0:
 
 // symdb: Rewrites a 30-entry halfword ID array in RAM, replacing each ID with its counterpart from a small 4-entry old→new lookup table, before the caller fades the screen and switches game state.
 // symdb: () -> void; no args, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131EE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_remapIdsViaLookupTable.yaml
 	thumb_local_start
-sub_8131EE4:
+t3_remapIdsViaLookupTable:
 	push {r4-r7,lr}
 	mov r4, #0
 	ldr r6, off_8131F10 // =unk_202527C 
@@ -3856,7 +3856,7 @@ off_8131F18:
 	.word byte_8131BF4
 off_8131F1C:
 	.word byte_8131BFC
-	thumb_func_end sub_8131EE4
+	thumb_func_end t3_remapIdsViaLookupTable
 
 	thumb_local_start
 sub_8131F20:
@@ -7578,7 +7578,7 @@ loc_8133AA0:
 	beq loc_8133AC6
 	cmp r0, #2
 	beq loc_8133AB2
-	bl sub_8131754
+	bl submenu_setStateTo8
 	b loc_8133AE2
 loc_8133AB2:
 	mov r0, #0x1b
@@ -7598,7 +7598,7 @@ loc_8133AC6:
 	mov r0, #0x18
 	bl chatbox_runScript_803FD9C_on_eTextScript2028A20
 	mov r0, #4
-	bl sub_813175C
+	bl submenu_setUnk26
 	mov r0, #4
 	strb r0, [r5,#2]
 loc_8133AE2:
@@ -7647,7 +7647,7 @@ loc_8133B2C:
 	mov r0, #0
 	strb r0, [r5,#3]
 	mov r0, #0
-	bl sub_813175C
+	bl submenu_setUnk26
 loc_8133B4C:
 	bl battle_setFieldsFromObj_81340FC
 	bl entity_runAllUpdateHandlers_80465BC
@@ -17521,7 +17521,7 @@ off_813841C:
 off_8138420:
 	.word sub_8138600+1
 	.word sub_81386EC+1
-	.word sub_81386F0+1
+	.word object_countdownTimer+1
 	thumb_func_end sub_81383F4
 	thumb_local_start
 sub_813842C:
@@ -17910,7 +17910,7 @@ sub_81386CC:
 	strh r0, [r5,#6]
 	mov r0, #8
 	strb r0, [r5,#3]
-	bl sub_81386F0
+	bl object_countdownTimer
 	add r3, #2
 	str r3, [r5,#0x1c]
 	mov r0, #1
@@ -17934,9 +17934,9 @@ sub_81386EC:
 
 // symdb: Counts down a frame timer on an object's work area and clears a state/active byte flag when it reaches zero.
 // symdb: (r5 = object work struct) -> void; sets flags via the countdown compare
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81386F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_countdownTimer.yaml
 	thumb_local_start
-sub_81386F0:
+object_countdownTimer:
 	push {lr}
 	ldrh r0, [r5,#6]
 	sub r0, #1
@@ -17946,7 +17946,7 @@ sub_81386F0:
 	strb r0, [r5,#3]
 locret_81386FE:
 	pop {pc}
-	thumb_func_end sub_81386F0
+	thumb_func_end object_countdownTimer
 
 	thumb_local_start
 sub_8138700:
@@ -18076,7 +18076,7 @@ sub_81387D8:
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sub_80027F4
 	bl copy_8002668
-	bl sub_80303F2
+	bl t3_setMapTilesSize64
 
 	movflag EVENT_2
 	bl decompressCoordEventData_8030aa4 // (map_group: u8, map_number: u8) -> ()

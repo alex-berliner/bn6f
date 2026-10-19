@@ -10439,7 +10439,7 @@ int relatedToIsBattleOver_800A11C()
 
 
 // 0x800a142
-int sub_800A142()
+int battle_decEntityTimer()
 {
     int v0; // r5
     int v1; // r10
@@ -10587,7 +10587,7 @@ signed int __fastcall sub_800A29A(int a1)
 
 
 // 0x800a2d0
-int __fastcall sub_800A2D0(int result)
+int __fastcall battle_setStateFlags(int result)
 {
     int v1; // r10
 
@@ -12537,7 +12537,7 @@ int sub_800B484()
 
 
 // 0x800b49e
-void sub_800B49E()
+void battle_initLoopbackLinkPackets()
 {
     sub_802E45E(0, byte_203F4A4);
     sub_802E45E(1, byte_203F5A4);

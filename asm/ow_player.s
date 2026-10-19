@@ -2362,9 +2362,9 @@ ow_getPlayerPosition:
 
 // symdb: Returns three position fields (likely x/y/z) of the overworld player object.
 // symdb: () -> r0 = playerObj+0x20, r1 = playerObj+0x1c, r2 = playerObj+0x24; flags clobbered by loads
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E1CA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_overworldPlayerPosition.yaml
 	thumb_local_start
-sub_809E1CA:
+get_overworldPlayerPosition:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
 	ldr r3, [r3,#oGameState_OverworldPlayerObjectPtr]
@@ -2372,7 +2372,7 @@ sub_809E1CA:
 	ldr r1, [r3,#0x1c]
 	ldr r2, [r3,#0x24]
 	mov pc, lr
-	thumb_func_end sub_809E1CA
+	thumb_func_end get_overworldPlayerPosition
 
 	thumb_func_start owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8
 owPlayer_copyCoordsToNextCoordsAddOffsetToCoordsThenOffsetS200ace0Coords_809e1d8:
@@ -2613,15 +2613,15 @@ owPlayer_setS2000aa0_param0x0to0x2_809e2c8:
 // symdb: Getter returning the overworld player navi's horizontal/vertical compress values and rotation.
 // symdb: () -> r0 = oS2000aa0_OWPlayerNaviHorizontalCompress, r1 = vertical compress, r2 = rotation;
 // symdb: flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E2D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_owPlayerNaviCompressRotation.yaml
 	thumb_local_start
-sub_809E2D2:
+get_owPlayerNaviCompressRotation:
 	ldr r3, off_809E430 // =eStruct2000aa0
 	ldrb r0, [r3,#oS2000aa0_OWPlayerNaviHorizontalCompress]
 	ldrb r1, [r3,#oS2000aa0_OWPlayerNaviVerticalCompress] // (byte_2000AA1 - 0x2000aa0)
 	ldrb r2, [r3,#oS2000aa0_OWPlayerNaviRotation] // (byte_2000AA2 - 0x2000aa0)
 	mov pc, lr
-	thumb_func_end sub_809E2D2
+	thumb_func_end get_owPlayerNaviCompressRotation
 
 	thumb_func_start owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc
 owPlayer_offsetS2000aa0_param0x0to0x2_809e2dc:

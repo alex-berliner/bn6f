@@ -1529,7 +1529,7 @@ int sub_812D164()
             {
                 --*(v0 + 40);
             }
-            else if ( sub_803E8E4() != 12 )
+            else if ( getLinkState() != 12 )
             {
                 v7 = *(v0 + 31);
                 if ( v7 == 16 )

@@ -2817,7 +2817,7 @@ void sub_8049360()
 
 
 // 0x80493bc
-void sub_80493BC()
+void rfu_linkMenuStateStep()
 {
     int v0; // r5
     char v1; // zf

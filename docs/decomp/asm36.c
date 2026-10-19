@@ -1507,7 +1507,7 @@ int t3_setStateAndFadeScreen()
     *(v0 + 2) = 20;
     *(v0 + 38) = 0;
     *(v0 + 42) = -293;
-    sub_8131EE4();
+    t3_remapIdsViaLookupTable();
     return engine_setScreeneffect(12, 16);
 }
 
@@ -1903,7 +1903,7 @@ char *pet_setCurNaviHp()
 
 
 // 0x8131754
-MenuControl *sub_8131754()
+MenuControl *submenu_setStateTo8()
 {
     MenuControl *result; // r0
 
@@ -1914,7 +1914,7 @@ MenuControl *sub_8131754()
 
 
 // 0x813175c
-int __fastcall sub_813175C(int result)
+int __fastcall submenu_setUnk26(int result)
 {
     sSubmenu.unk_26 = result;
     return result;
@@ -2243,7 +2243,7 @@ int __fastcall sub_8131EB0(int a1, int a2, int a3, int a4)
 
 
 // 0x8131ee4
-int sub_8131EE4()
+int t3_remapIdsViaLookupTable()
 {
     signed int v0; // r4
     int result; // r0
@@ -4505,7 +4505,7 @@ int __fastcall sub_8133A68(int a1)
                     }
                     else
                     {
-                        sub_8131754();
+                        submenu_setStateTo8();
                     }
                 }
                 else
@@ -4513,7 +4513,7 @@ int __fastcall sub_8133A68(int a1)
                     sub_81207C4(word_202A020, &unk_2039AA0);
                     sub_8131588();
                     chatbox_runScript_803FD9C_on_eTextScript2028A20(24);
-                    sub_813175C(4);
+                    submenu_setUnk26(4);
                     v1[2] = 4;
                 }
             }
@@ -4559,7 +4559,7 @@ int __fastcall sub_8133B18(int a1)
             v1[1] = 4;
             v1[2] = 4;
             v1[3] = 0;
-            sub_813175C(0);
+            submenu_setUnk26(0);
         }
     }
     battle_setFieldsFromObj_81340FC();
@@ -10926,7 +10926,7 @@ signed int __fastcall sub_81386CC(int a1, int a2, int a3, int a4)
 
     *(v4 + 6) = *(a4 + 1);
     *(v4 + 3) = 8;
-    sub_81386F0();
+    object_countdownTimer();
     *(v4 + 28) = v5 + 2;
     return 1;
 }
@@ -10947,7 +10947,7 @@ void sub_81386EC()
 
 
 // 0x81386f0
-int sub_81386F0()
+int object_countdownTimer()
 {
     int v0; // r5
     int result; // r0
@@ -11077,7 +11077,7 @@ unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
     runSetupStepAndClearWorkArea_8005F6C();
     sub_80027F4();
     copy_8002668();
-    sub_80303F2();
+    t3_setMapTilesSize64();
     decompressCoordEventData_8030aa4(0, 2);
     camera_init_802FF4C(0, 0, 0, 208);
     sub_80301B2(0, v9);

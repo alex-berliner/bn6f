@@ -3831,7 +3831,7 @@ void ow_getPlayerPosition()
 
 
 // 0x809e1ca
-int sub_809E1CA()
+int get_overworldPlayerPosition()
 {
     int v0; // r10
     _DWORD *v1; // r3
@@ -4041,7 +4041,7 @@ signed __int64 sub_809E2C2()
 
 
 // 0x809e2d2
-int sub_809E2D2()
+int get_owPlayerNaviCompressRotation()
 {
     return byte_2000AA0;
 }

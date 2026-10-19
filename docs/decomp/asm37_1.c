@@ -483,7 +483,7 @@ int __fastcall clearScenarioEffectState(int a1, int a2, int a3, int a4)
 
 
 // 0x814214e
-int sub_814214E()
+int e_disableScenarioEffect()
 {
     byte_200078D = 0;
     return 0;
@@ -637,7 +637,7 @@ int sub_8142224()
 
 
 // 0x814223e
-int sub_814223E()
+int e_clearScenarioEffectStateFlag()
 {
     int result; // r0
 
@@ -2026,7 +2026,7 @@ int ow_crowLessonFlagCheck()
 
 
 // 0x81433e4
-int __fastcall sub_81433E4(int result)
+int __fastcall e_addByteSaturatingAt5(int result)
 {
     int v1; // r1
 

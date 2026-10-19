@@ -158,14 +158,14 @@ byte_8141958:
 
 // symdb: Getter returning the address of the field at offset 0x18 of the struct at 0x02001010 (eStruct2001010).
 // symdb: () -> r0 = &eStruct2001010 + 0x18; no flags set meaningfully (does not affect caller logic).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8141998.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_getField18Ptr.yaml
 	thumb_local_start
-sub_8141998:
+e_getField18Ptr:
 	push {r4-r7, lr}
 	ldr r0, off_8141B14 // =eStruct2001010
 	add r0, #0x18
 	pop {r4-r7, pc}
-	thumb_func_end sub_8141998
+	thumb_func_end e_getField18Ptr
 
 // symdb: Beast-SP Battle AI per-frame dispatch (init sub-mode, run AI, conditionally run sub-routines) returning 0.
 // symdb: (r10 = ToolkitPtr) -> r0 = 0 ; updates r4–r7/r8/r9/r12, calls many subsystems, may call
@@ -840,16 +840,16 @@ clearScenarioEffectState:
 
 // symdb: Clears the active/enable byte (offset 0xD) of the scenario effect state at 0x2000780 and returns 0.
 // symdb: () -> r0 = 0; no flags meaningful (values pushed/popped, clobbered by strb use of r0 only)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814214E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_disableScenarioEffect.yaml
 	thumb_local_start
-sub_814214E:
+e_disableScenarioEffect:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r0, #0
 	strb r0, [r5,#0xd] // (byte_200078D - 0x2000780)
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814214E
+	thumb_func_end e_disableScenarioEffect
 
 	thumb_local_start
 sub_814215A:
@@ -1059,15 +1059,15 @@ loc_8142238:
 // symdb: Clears a flag/counter field (offset 0x28) of the scenario effect state struct at 0x2000780.
 // symdb: () -> r0 = 0 (clobbered); writes 0 to byte_20007A8 (eScenarioEffectState2000780 + 0x28); no
 // symdb: flags of use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814223E.yaml
-	thumb_func_start sub_814223E
-sub_814223E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_clearScenarioEffectStateFlag.yaml
+	thumb_func_start e_clearScenarioEffectStateFlag
+e_clearScenarioEffectStateFlag:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r0, #0
 	str r0, [r5,#0x28] // (byte_20007A8 - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_814223E
+	thumb_func_end e_clearScenarioEffectStateFlag
 
 // symdb: Per-frame battle object update: clears a one-shot scenario flag, dispatches AI, and refreshes sprites.
 // symdb: () -> r0 = 0 (always returns 0)
@@ -3208,9 +3208,9 @@ ow_crowLessonFlagCheck:
 
 // symdb: Adds r0 to a byte in the eStruct2001010 struct and saturates the result at 5.
 // symdb: (r0 = amount to add) -> byte at eStruct2001010+9 clamped-increased; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433E4.yaml
-	thumb_func_start sub_81433E4
-sub_81433E4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_addByteSaturatingAt5.yaml
+	thumb_func_start e_addByteSaturatingAt5
+e_addByteSaturatingAt5:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	ldrb r1, [r5,#0x9] // (byte_2001019 - 0x2001010)
@@ -3221,7 +3221,7 @@ sub_81433E4:
 loc_81433F2:
 	strb r1, [r5,#0x9] // (byte_2001019 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81433E4
+	thumb_func_end e_addByteSaturatingAt5
 
 // symdb: Subtracts r0 from the crow-lesson counter at eStruct2001010+0x9, clamping the result at zero.
 // symdb: (r0 = amount to subtract) -> r0 preserved; counter at byte_2001019 becomes max(counter - r0, 0);

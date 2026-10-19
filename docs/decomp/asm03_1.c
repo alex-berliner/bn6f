@@ -7525,7 +7525,7 @@ void __noreturn sub_803A470()
 
 
 // 0x803a4d0
-void __noreturn sub_803A4D0()
+void __noreturn sprite_drawValuePairAndQueueOam()
 {
     int v0; // r5
     int v1; // r4
@@ -10148,7 +10148,7 @@ char *sub_803C458()
 
 
 // 0x803c48c
-signed int sub_803C48C()
+signed int rfu_getLinkStateByte()
 {
     signed int v0; // r4
     char v1; // zf
@@ -10167,7 +10167,7 @@ signed int sub_803C48C()
 
 
 // 0x803c4b0
-int sub_803C4B0()
+int rfu_setStateFlag10()
 {
     return rfu_orFlags(16);
 }
@@ -10205,7 +10205,7 @@ void sub_803C502()
 
 
 // 0x803c514
-signed int sub_803C514()
+signed int rfu_isStatus100Set()
 {
     signed int v0; // r4
     char v1; // zf
@@ -10244,7 +10244,7 @@ int sub_803C558()
 
 
 // 0x803c564
-int sub_803C564()
+int rfu_orFlags2()
 {
     return rfu_orFlags(2);
 }
@@ -10332,7 +10332,7 @@ int dispatch_803C620()
 
 
 // 0x803c6a8
-signed __int64 sub_803C6A8()
+signed __int64 rfu_disconnectLink()
 {
     sub_813D9A0(&dword_34);
     rfu_setLinkCommand(0);
@@ -10341,7 +10341,7 @@ signed __int64 sub_803C6A8()
 
 
 // 0x803c6c0
-signed __int64 sub_803C6C0()
+signed __int64 rfu_setWirelessFlags()
 {
     rfu_setStateEnded();
     rfu_orFlags(8);
@@ -10452,7 +10452,7 @@ int sub_803C7B4()
         result = sub_81467A0();
     if ( byte_2010288 )
     {
-        result = sub_803CB24();
+        result = rfu_getLinkState();
         if ( result != 255 )
         {
             *(v0 + 3) = 4;
@@ -10476,7 +10476,7 @@ void __fastcall sub_803C7E8(int a1)
     int v7; // r2
     int v8; // r3
 
-    v2 = sub_803CB24();
+    v2 = rfu_getLinkState();
     if ( v2 != 255 )
     {
         if ( v2 != 254 && (v3 = sub_8146808(v2), v3 != 4) )
@@ -10529,7 +10529,7 @@ __int64 sub_803C84A()
 
 
 // 0x803c85c
-__int64 sub_803C85C()
+__int64 rfu_setFlag2()
 {
     rfu_orFlags(2);
     return 0LL;
@@ -10698,7 +10698,7 @@ signed int sub_803CA10()
 
 
 // 0x803ca2c
-__int64 sub_803CA2C()
+__int64 rfu_stateStep()
 {
     int v0; // r7
 
@@ -10809,7 +10809,7 @@ void rfu_testStatusFlags()
 
 
 // 0x803cb24
-signed int sub_803CB24()
+signed int rfu_getLinkState()
 {
     int v0; // r7
     signed int v1; // r4
@@ -13010,7 +13010,7 @@ u32 sub_803E8DC()
 
 
 // 0x803e8e4
-int sub_803E8E4()
+int getLinkState()
 {
     return sCamera.unk_50;
 }
@@ -13206,7 +13206,7 @@ signed int net_isLinkConnected_803EA2C()
 
 
 // 0x803ea40
-int sub_803EA40()
+int e_getStruct200BC30Byte2()
 {
     return byte_200BC32;
 }
@@ -13436,7 +13436,7 @@ void resetAndInitStruct200BC30_803EBC8()
 
 
 // 0x803ebe4
-int __fastcall sub_803EBE4(int result)
+int __fastcall e_setJumpOffset(int result)
 {
     eStruct200BC30_JumpOffset05 = result;
     return result;
@@ -13675,7 +13675,7 @@ LABEL_13:
                                         sCamera.unk_50 = sCamera.unk_51;
                                         *sCamera.pad_5E = 2;
                                         *&sCamera.pad_78[8] = 0;
-                                        sub_803EBE4(4);
+                                        e_setJumpOffset(4);
                                         return 2;
                                     }
                                 }
@@ -13764,7 +13764,7 @@ int sub_803EE98()
 
 
 // 0x803ef48
-int __fastcall sub_803EF48(int result)
+int __fastcall e_setFlagBits(int result)
 {
     byte_200BC3D |= result;
     return result;
@@ -13934,7 +13934,7 @@ int __fastcall sub_803F0A4(_BYTE *a1, unsigned int a2, int a3, int a4)
     if ( !*a1 || !a1[12] )
     {
         v6 = a1;
-        sub_803EF48(1);
+        e_setFlagBits(1);
         a1 = v6;
     }
     v7 = *(v5 + 3);
@@ -14134,7 +14134,7 @@ int __fastcall sub_803F26C(int a1)
                 }
                 queue_pushRingEntry(v5, v6);
                 if ( *(v1 + 1) == *(v1 + 13) )
-                    sub_803F324();
+                    testAndClearWorkFlag();
                 result = (byte_200AC35 + 1) & 7;
                 byte_200AC35 = (byte_200AC35 + 1) & 7;
             }
@@ -14151,7 +14151,7 @@ int __fastcall sub_803F26C(int a1)
 
 
 // 0x803f324
-int sub_803F324()
+int testAndClearWorkFlag()
 {
     int result; // r0
 
@@ -14186,7 +14186,7 @@ int __fastcall sub_803F334(int a1, unsigned int a2)
         else
         {
             if ( v4 & 3 )
-                sub_803EF48(2);
+                e_setFlagBits(2);
             result = sub_803F0A4(v2, v3, &unk_200AC30, word_200A010);
         }
     }
@@ -14194,7 +14194,7 @@ int __fastcall sub_803F334(int a1, unsigned int a2)
     {
         sub_803F0A4(v2, v3, &byte_200AC20, byte_200BC70);
         sub_803F0A4(v2, v3, &unk_200AC30, word_200A010);
-        result = sub_803F324();
+        result = testAndClearWorkFlag();
     }
     return result;
 }

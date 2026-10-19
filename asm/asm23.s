@@ -1351,7 +1351,7 @@ sub_808999C:
 	bl ow_dealDamageToCurrentNavi
 	b loc_80899C2
 loc_80899B2:
-	bl sub_814223E
+	bl e_clearScenarioEffectStateFlag
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x54 

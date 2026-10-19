@@ -15120,7 +15120,7 @@ off_812A554:
 	.word off_812A558
 off_812A558:
 	.word sub_812A574+1
-	.word sub_812A5B4+1
+	.word ow_pollWirelessLinkState+1
 	.word sub_812A5F8+1
 	.word ow_beginScreenFadeUnlessFlagSet+1
 	.word sub_812A694+1
@@ -15162,9 +15162,9 @@ locret_812A5B2:
 // symdb: Overworld handler that polls RFU link status flags and writes the resulting connection state into an object's state byte
 // symdb: (r0 = ignored; r5 = pointer to an overworld/state struct with u8 state at +0xC and u16 counter
 // symdb: at +0x28) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A5B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_pollWirelessLinkState.yaml
 	thumb_local_start
-sub_812A5B4:
+ow_pollWirelessLinkState:
 	push {r4-r7,lr}
 	bl ow_checkJackInFlag
 	mov r4, r0
@@ -15198,7 +15198,7 @@ loc_812A5EE:
 locret_812A5F4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812A5B4
+	thumb_func_end ow_pollWirelessLinkState
 
 	thumb_local_start
 sub_812A5F8:

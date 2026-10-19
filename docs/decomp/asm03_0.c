@@ -190,7 +190,7 @@ unsigned __int64 __fastcall sub_80265FE(unsigned __int64 a1)
 
 
 // 0x802661c
-int sub_802661C()
+int battle_getObjectPanelXY()
 {
     int v0; // r5
     int result; // r0
@@ -9646,7 +9646,7 @@ int sub_802D15E()
 
 
 // 0x802d164
-int __fastcall sub_802D164(int result)
+int __fastcall addMoneyCapped(int result)
 {
     int v1; // r2
 
@@ -14175,7 +14175,7 @@ signed int mapTiles_ResetDimensionsToDefault_80303E8()
 
 
 // 0x80303f2
-signed int sub_80303F2()
+signed int t3_setMapTilesSize64()
 {
     signed int result; // r0
 

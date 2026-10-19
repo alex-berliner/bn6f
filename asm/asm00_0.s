@@ -2062,9 +2062,9 @@ sub_8001092:
 
 // symdb: Stashes the player's internet-area position, facing direction and map ID into the GameState for later restoration.
 // symdb: (r0 = x, r1 = y, r2 = z, r3 = facingDirection, r4 = mapId) -> void; no flags, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80010A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_saveInternetReturnPosition.yaml
 	thumb_local_start
-sub_80010A4:
+ow_saveInternetReturnPosition:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -2074,7 +2074,7 @@ sub_80010A4:
 	str r3, [r5,#oGameState_SavedInternetFacingDirection]
 	str r4, [r5,#oGameState_SavedInternetMapId]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80010A4
+	thumb_func_end ow_saveInternetReturnPosition
 
 
 // symdb: Returns the navi currently selected on the PET, leaving the game state pointer in r3.
@@ -2573,16 +2573,16 @@ battle_orStateFlags5c_8001382:
 
 // symdb: Clears the given bits in the current battle state's AlliancePermissionFlags field.
 // symdb: (r0 = bitmask of alliance permission flags to clear) -> r0 = undefined; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800138E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearAlliancePermissionFlags.yaml
 	thumb_local_start
-sub_800138E:
+battle_clearAlliancePermissionFlags:
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_BattleStatePtr]
 	ldr r2, [r1,#oBattleState_AlliancePermissionFlags]
 	bic r2, r0
 	str r2, [r1,#oBattleState_AlliancePermissionFlags]
 	mov pc, lr
-	thumb_func_end sub_800138E
+	thumb_func_end battle_clearAlliancePermissionFlags
 
 // symdb: Getter that returns the value of the battle state's Unk_5c field.
 // symdb: int battle_getStateUnk5c(void) — reads the toolkit pointer from r10 (caller's context), returns
@@ -5196,9 +5196,9 @@ off_80023B4:
 
 // symdb: Returns whether the given palette slot in the ePalette20097a0 array is flagged active.
 // symdb: (r0 = palette index) -> r0 = ActiveFlag byte of that palette entry, Z flag set from it
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80023B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_isPaletteActive.yaml
 	thumb_local_start
-sub_80023B8:
+sprite_isPaletteActive:
 	ldr r2, off_8002464 // =ePalette20097a0
 	mov r1, #oPalette20097a0_Size
 	mul r1, r0
@@ -5206,7 +5206,7 @@ sub_80023B8:
 	ldrb r0, [r2,#oPalette20097a0_ActiveFlag]
 	tst r0, r0
 	mov pc, lr
-	thumb_func_end sub_80023B8
+	thumb_func_end sprite_isPaletteActive
 
 	thumb_local_start
 sub_80023C6:

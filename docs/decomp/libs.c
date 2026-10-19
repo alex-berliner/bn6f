@@ -4142,7 +4142,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
             {
                 rfu_setLinkCommand(7);
             }
-            else if ( !sub_803C514() )
+            else if ( !rfu_isStatus100Set() )
             {
                 rfu_setLinkCommand(6);
             }

@@ -4950,7 +4950,7 @@ off_8049098:
 	.word sub_8049272+1
 	.word sub_8049290+1
 	.word sub_8049360+1
-	.word sub_80493BC+1
+	.word rfu_linkMenuStateStep+1
 	.word sub_80493FE+1
 	.word rfu_wirelessConnectStep+1
 	.word sub_804946E+1
@@ -5310,9 +5310,9 @@ loc_80493B2:
 // symdb: Advance one step of a wireless-link (RFU) menu/connection state machine, updating a state byte and RFU status flags.
 // symdb: (r5 = pointer to state struct, pre-set by caller; [r5+1] = state/next-state byte) -> r0 = last
 // symdb: call result; modifies RFU flags and [r5+1]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80493BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_linkMenuStateStep.yaml
 	thumb_local_start
-sub_80493BC:
+rfu_linkMenuStateStep:
 	push {r4-r7,lr}
 	mov r0, #0x40 
 	bl rfu_testStatusFlags
@@ -5341,7 +5341,7 @@ loc_80493F4:
 	bl sub_803A104
 	bl sub_8049BC0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80493BC
+	thumb_func_end rfu_linkMenuStateStep
 
 	thumb_local_start
 sub_80493FE:

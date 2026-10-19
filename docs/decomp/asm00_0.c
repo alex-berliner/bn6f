@@ -1282,7 +1282,7 @@ int __fastcall sub_8001092(int result, int a2, int a3, int a4)
 
 
 // 0x80010a4
-int __fastcall sub_80010A4(int result, int a2, int a3, int a4)
+int __fastcall ow_saveInternetReturnPosition(int result, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r10
@@ -1606,7 +1606,7 @@ int __fastcall battle_orStateFlags5c_8001382(int result)
 
 
 // 0x800138e
-int __fastcall sub_800138E(int result)
+int __fastcall battle_clearAlliancePermissionFlags(int result)
 {
     int v1; // r10
 
@@ -2817,7 +2817,7 @@ void __fastcall palette_clearEPalette20097a0_80023A8(int a1, int a2, int a3, int
 
 
 // 0x80023b8
-int __fastcall sub_80023B8(int a1)
+int __fastcall sprite_isPaletteActive(int a1)
 {
     return ePalette20097a0[12 * a1];
 }

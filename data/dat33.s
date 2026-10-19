@@ -1921,7 +1921,7 @@ loc_812D192::
 	strh r0, [r5,#0x28]
 	b loc_812D1C0
 loc_812D19E::
-	bl sub_803E8E4
+	bl getLinkState
 	cmp r0, #0xc
 	beq loc_812D1C0
 	ldrb r0, [r5,#0x1f]

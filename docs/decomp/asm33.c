@@ -8517,7 +8517,7 @@ void sub_812A574()
 
 
 // 0x812a5b4
-void __fastcall sub_812A5B4(int a1)
+void __fastcall ow_pollWirelessLinkState(int a1)
 {
     int v1; // r5
     char v2; // zf

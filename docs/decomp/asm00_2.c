@@ -1537,7 +1537,7 @@ char *__fastcall battle_getChipClassFromBattleObject(int a1)
 
 
 // 0x800fcfc
-int __fastcall sub_800FCFC(int a1)
+int __fastcall battle_mulTableLookup(int a1)
 {
     int v1; // r5
 
@@ -2268,7 +2268,7 @@ int __fastcall handleCustHPBug_80102AC(int a1)
 
 
 // 0x8010300
-int __fastcall sub_8010300(int a1, int a2)
+int __fastcall battle_testActorAiFlags(int a1, int a2)
 {
     int v2; // r10
 
@@ -3510,7 +3510,7 @@ int sub_8011200()
 
 
 // 0x8011212
-int sub_8011212()
+int battle_deleteRelatedObject2()
 {
     int v0; // r5
     int result; // r0
@@ -5408,7 +5408,7 @@ int sub_8012440()
 
 
 // 0x801244a
-signed int sub_801244A()
+signed int ai_setAttackVars()
 {
     int v0; // r7
 
@@ -21385,7 +21385,7 @@ int battle_initSceneStart_801E5F8()
 
 
 // 0x801e658
-int sub_801E658()
+int battle_clearHudFlag()
 {
     int result; // r0
 

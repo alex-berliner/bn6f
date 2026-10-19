@@ -4479,9 +4479,9 @@ loc_800D6FC:
 // symdb: Counts how many of the three indexed entries (indices 1-3) in a structure rooted at r0 have the byte at offset 3 equal to r1, returning the count.
 // symdb: (r0 = base pointer passed to object_getPanelDataOffset, r1 = value to match) -> r0 = count of
 // symdb: matching entries; flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D700.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_countPanelEntriesWithByte3.yaml
 	thumb_local_start
-sub_800D700:
+object_countPanelEntriesWithByte3:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r5, r1
@@ -4794,7 +4794,7 @@ byte_800D730:
 	.byte 0x22, 0x55, 0x22, 0x0, 0x22, 0x55, 0x22, 0x0, 0x22, 0x55
 	.byte 0x22, 0x0, 0x22, 0x2, 0x0, 0x0, 0x22, 0x2, 0x0, 0x0
 	.byte 0x22, 0x2, 0x0, 0x0
-	thumb_func_end sub_800D700
+	thumb_func_end object_countPanelEntriesWithByte3
 
 // symdb: Reads a battle object's pixel-space X/Y position and converts it to panel (grid) coordinates.
 // symdb: Next convertBattleObjectXYToPanelXY_800E24C(BattleObject* r5 obj); returns panel X in r0 and

@@ -2378,9 +2378,9 @@ battle_getChipClassFromBattleObject:
 // symdb: Returns tableA[r0] multiplied by tableB[battle object's Param1], a lookup-and-scale helper.
 // symdb: (r0 = index into byte_80212BB; r5 = battle object whose Param1 indexes byte_800FD5C) -> r0 =
 // symdb: byte_80212BB[r0] * byte_800FD5C[obj->Param1]; flags from mul
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FCFC.yaml
-	thumb_func_start sub_800FCFC
-sub_800FCFC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_mulTableLookup.yaml
+	thumb_func_start battle_mulTableLookup
+battle_mulTableLookup:
 	ldr r1, off_800FEDC // =byte_80212BB 
 	ldrb r0, [r1,r0]
 	ldrb r2, [r5,#oBattleObject_Param1]
@@ -2388,7 +2388,7 @@ sub_800FCFC:
 	ldrb r1, [r1,r2]
 	mul r0, r1
 	mov pc, lr
-	thumb_func_end sub_800FCFC
+	thumb_func_end battle_mulTableLookup
 
 // symdb: Compute a per-battle-actor beast-out cost multiplier (NaviStats 0x29 * mapping byte) for AI choice
 // symdb: (r5 = BattleObject) -> r0 = byte_80212BB[mapping_idx(NaviStats_0x29)] * cost_factor ; side
@@ -3327,9 +3327,9 @@ byte_80102F8:
 // symdb: ANDs a mask with the AI flags of the battle actor at the given index of the alive-actors list, returning the masked flags.
 // symdb: (r0 = flag mask, r1 = index into alive-battle-actors list) -> r0 = actorAIData.flags & mask;
 // symdb: flags preserved from caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010300.yaml
-	thumb_func_start sub_8010300
-sub_8010300:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_testActorAiFlags.yaml
+	thumb_func_start battle_testActorAiFlags
+battle_testActorAiFlags:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_BattleStatePtr]
 	lsl r1, r1, #2
@@ -3339,7 +3339,7 @@ sub_8010300:
 	ldr r1, [r1,#oAIData_Flags]
 	and r0, r1
 	mov pc, lr
-	thumb_func_end sub_8010300
+	thumb_func_end battle_testActorAiFlags
 
 // symdb: Sets one or more flag bits in a battle object's AI data word at offset 0x48 (read-modify-write with OR).
 // symdb: void SetAIDataUnk0x48Flag(u32 flagBits r0, BattleObject *obj r5); returns r1 = updated word, r3
@@ -5239,7 +5239,7 @@ off_80110F4:
 	.word nullsub_43+1
 	.word sub_8011256+1
 	.word nullsub_43+1
-	.word sub_8011212+1
+	.word battle_deleteRelatedObject2+1
 	.word sub_8011224+1
 	.word nullsub_43+1
 	.word nullsub_43+1
@@ -5343,9 +5343,9 @@ locret_8011210:
 
 // symdb: If this battle object has a RelatedObject2, deletes/frees it and clears the pointer.
 // symdb: (r5 = battle object) -> void; destroys r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011212.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_deleteRelatedObject2.yaml
 	thumb_local_start
-sub_8011212:
+battle_deleteRelatedObject2:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
@@ -5355,7 +5355,7 @@ sub_8011212:
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 locret_8011222:
 	pop {pc}
-	thumb_func_end sub_8011212
+	thumb_func_end battle_deleteRelatedObject2
 
 	thumb_local_start
 sub_8011224:
@@ -6359,7 +6359,7 @@ off_80117D4:
 	.word init_writeChipParamsA4+1 // 0x6a
 	.word sub_8012436+1 // 0x6b
 	.word sub_8012440+1 // 0x6c
-	.word sub_801244A+1 // 0x6d
+	.word ai_setAttackVars+1 // 0x6d
 	.word sub_801245A+1 // 0x6e
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x6f
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x70
@@ -8069,9 +8069,9 @@ sub_8012440:
 
 // symdb: Initializes an AI attack's parameter block (damage 20, extra damage 138, packed attack property 0x33C00) and returns 0x5E.
 // symdb: (r7 = pointer to oAIAttackVars struct) -> r0 = 0x5E; writes Damage, ExtraDamage, AttackBoost2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801244A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setAttackVars.yaml
 	thumb_local_start
-sub_801244A:
+ai_setAttackVars:
 	mov r0, #0x14
 	strh r0, [r7,#oAIAttackVars_Damage]
 	mov r0, #0x8a
@@ -8080,7 +8080,7 @@ sub_801244A:
 	str r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #0x5e 
 	mov pc, lr
-	thumb_func_end sub_801244A
+	thumb_func_end ai_setAttackVars
 
 	thumb_local_start
 sub_801245A:
@@ -32889,14 +32889,14 @@ dword_801E654:
 
 // symdb: Zeroes a single status byte in the battle-screen HUD state struct (eStruct2035280+0x1E).
 // symdb: () -> void; writes 0 to byte at eStruct2035280+0x1E, no return value, flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E658.yaml
-	thumb_func_start sub_801E658
-sub_801E658:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearHudFlag.yaml
+	thumb_func_start battle_clearHudFlag
+battle_clearHudFlag:
 	mov r0, #0
 	ldr r1, off_801E77C // =eStruct2035280
 	strb r0, [r1,#0x1e] // (byte_203529E - 0x2035280)
 	mov pc, lr
-	thumb_func_end sub_801E658
+	thumb_func_end battle_clearHudFlag
 
 	thumb_func_start sub_801E660
 sub_801E660:

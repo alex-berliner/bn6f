@@ -603,7 +603,7 @@ signed int __fastcall sub_808999C(int a1)
         }
         else
         {
-            sub_814223E();
+            e_clearScenarioEffectStateFlag();
             ai_setAIDataUnk18_8089CB0(30);
             *v1 = 84;
         }

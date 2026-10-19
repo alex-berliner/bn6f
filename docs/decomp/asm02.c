@@ -346,7 +346,7 @@ char *__fastcall incrementRecordCounterByte_8021D14(int a1, int a2)
 
 
 // 0x8021d2a
-int __fastcall sub_8021D2A(int a1, int a2)
+int __fastcall getByteInStructArray(int a1, int a2)
 {
     return byte_203A0A0[&byte_170 * a1 + a2];
 }

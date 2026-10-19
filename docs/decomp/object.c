@@ -2608,7 +2608,7 @@ signed int __fastcall battle_checkPanelGroupAlliance(int a1, int a2)
 
 
 // 0x800d700
-int __fastcall sub_800D700(int a1, int a2)
+int __fastcall object_countPanelEntriesWithByte3(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5

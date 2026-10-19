@@ -482,16 +482,16 @@ locret_8021D28:
 // symdb: Returns one byte from field r1 of record r0 in a table of 0x170-byte entries at 0x203A0A0.
 // symdb: (r0 = record index, r1 = byte offset within record) -> r0 = byte value; flags clobbered by
 // symdb: mul/add
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8021D2A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getByteInStructArray.yaml
 	thumb_local_start
-sub_8021D2A:
+getByteInStructArray:
 	ldr r2, off_8021D9C // =0x170
 	mul r2, r0
 	ldr r0, off_8021DA4 // =unk_203A0A0
 	add r0, r0, r2
 	ldrb r0, [r0,r1]
 	mov pc, lr
-	thumb_func_end sub_8021D2A
+	thumb_func_end getByteInStructArray
 
 // symdb: Initialize the chat/text-script buffers in WRAM by zeroing one region and copying four small template tables into it.
 // symdb: void sub_8021D36(void) // clobbers r0,r1,r2,lr; preserves r3; no inputs/outputs

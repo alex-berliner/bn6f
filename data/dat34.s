@@ -1802,7 +1802,7 @@ loc_812E8C6::
 	strh r0, [r5,#0x28]
 	b loc_812E8F4
 loc_812E8D2::
-	bl sub_803E8E4
+	bl getLinkState
 	cmp r0, #0xc
 	beq loc_812E8F4
 	ldrb r0, [r5,#0x1f]

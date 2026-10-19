@@ -170,7 +170,7 @@ loc_802656C:
 off_8026580:
 	.word jt_8026584
 jt_8026584:
-	.word sub_802661C+1
+	.word battle_getObjectPanelXY+1
 	.word sub_8026622+1
 	.word sub_8026650+1
 	.word sub_802665A+1
@@ -245,13 +245,13 @@ locret_802661A:
 // symdb: Returns a battle object's panel coordinates (x in r0, y in r1) from its oBattleObject struct.
 // symdb: (r5 = battle object pointer) -> r0 = oBattleObject_PanelX, r1 = oBattleObject_PanelY; flags
 // symdb: untouched
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802661C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getObjectPanelXY.yaml
 	thumb_local_start
-sub_802661C:
+battle_getObjectPanelXY:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	mov pc, lr
-	thumb_func_end sub_802661C
+	thumb_func_end battle_getObjectPanelXY
 
 	thumb_local_start
 sub_8026622:
@@ -15144,9 +15144,9 @@ sub_802D15E:
 // symdb: Adds an amount to a stored counter (likely zenny), clamping it at 999999.
 // symdb: (r0 = amount to add) -> r0 = unused (value not returned); flags set by final str/cmp sequence
 // symdb: are not meaningful, returns via bx lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D164.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/addMoneyCapped.yaml
 	thumb_local_start
-sub_802D164:
+addMoneyCapped:
 	ldr r1, off_802D228 // =dword_2006740
 	ldr r2, [r1]
 	add r2, r2, r0
@@ -15157,7 +15157,7 @@ sub_802D164:
 loc_802D172:
 	str r2, [r1]
 	mov pc, lr
-	thumb_func_end sub_802D164
+	thumb_func_end addMoneyCapped
 
 	thumb_local_start
 sub_802D176:
@@ -22380,15 +22380,15 @@ mapTiles_ResetDimensionsToDefault_80303E8:
 
 // symdb: Resets the map-tiles grid dimensions to 64x64 in the eMapTilesState buffer
 // symdb: () -> void; writes eMapTilesState200be70.MapWidth and .MapHeight = 0x40
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80303F2.yaml
-	thumb_func_start sub_80303F2
-sub_80303F2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_setMapTilesSize64.yaml
+	thumb_func_start t3_setMapTilesSize64
+t3_setMapTilesSize64:
 	ldr r1, off_80305E0 // =eMapTilesState200be70
 	mov r0, #0x40 
 	strb r0, [r1,#oMapTilesState200be70_MapWidth]
 	strb r0, [r1,#oMapTilesState200be70_MapHeight] // (byte_200BE71 - 0x200be70)
 	mov pc, lr
-	thumb_func_end sub_80303F2
+	thumb_func_end t3_setMapTilesSize64
 
 	thumb_func_start sub_80303FC
 sub_80303FC:
