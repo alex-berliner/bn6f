@@ -6938,6 +6938,10 @@ locret_81335EA:
 	pop {pc}
 	thumb_func_end sub_81335D8
 
+// symdb: Dispatches to one of six handler routines selected by the object's state field at [r5,#0x68].
+// symdb: (r5 = object struct, uses [r5,#0x68] as index) -> calls table handler, returns its result;
+// symdb: clobbers lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81335EC.yaml
 	thumb_local_start
 sub_81335EC:
 	push {lr}

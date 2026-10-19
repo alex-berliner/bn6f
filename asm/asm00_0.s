@@ -1732,6 +1732,10 @@ locret_8000EB4:
 	pop {r5,r6,pc}
 	thumb_func_end unused_8000E90
 
+// symdb: Compacts a fixed-length array of halfwords in place, dropping entries equal to 0xFFFF and refilling the tail with 0xFFFF so the array keeps its original length.
+// symdb: (r0 = halfword array, r1 = entry count) -> r0 unchanged; entries != 0xFFFF shifted to the front,
+// symdb: tail filled with 0xFFFF; r0-r7,lr clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000EB6.yaml
 	thumb_func_start sub_8000EB6
 sub_8000EB6:
 	push {r5-r7,lr}

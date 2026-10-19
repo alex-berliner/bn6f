@@ -3496,6 +3496,9 @@ battleObject_finishQueuedSpriteGroup_80049B0:
 	pop {pc}
 	thumb_func_end battleObject_finishQueuedSpriteGroup_80049B0
 
+// symdb: Clears the word at offset 0x64 of all 56 overworld map objects (likely a per-object counter/timer reset).
+// symdb: () -> void; no return value, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80049BA.yaml
 	thumb_local_start
 sub_80049BA:
 	mov r0, #0
@@ -11911,6 +11914,10 @@ locret_8008662:
 	pop {pc}
 	thumb_func_end sub_8008622
 
+// symdb: Dispatches an entity's per-frame update to one of four handlers selected by its state byte.
+// symdb: (r0 = arg? actually clobbered, r5 = entity struct pointer) -> tail-calls handler table[byte at
+// symdb: r5+2] with r0 = state index; returns to caller via saved lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008664.yaml
 	thumb_local_start
 sub_8008664:
 	push {lr}
@@ -12171,6 +12178,10 @@ locret_800883E:
 	pop {pc}
 	thumb_func_end sub_80087D8
 
+// symdb: Runs the next step of the battle intro/end state machine by dispatching the handler selected from a step table.
+// symdb: (r0 = state struct in r5, step id at [r5,#2]) -> jumps to handler table entry
+// symdb: (off_8008854[step]) which returns to this function's caller; r0 = step id on entry to handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008840.yaml
 	thumb_local_start
 sub_8008840:
 	push {lr}
@@ -13062,6 +13073,10 @@ byte_8008E74:
 	.byte 0x10, 0x0, 0x25, 0x33, 0x64, 0x0, 0x0, 0x0
 	thumb_func_end sub_8008DDC
 
+// symdb: Dispatches an update handler selected by the state byte at [r5+2] of a battle-scene context
+// symdb: (r5 = context struct, state id at +2) -> tail-calls handler table entry; returns whatever the
+// symdb: handler returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008E7C.yaml
 	thumb_local_start
 sub_8008E7C:
 	push {lr}
@@ -14932,6 +14947,10 @@ locret_8009AFA:
 	pop {pc}
 	thumb_func_end battle_stateCrossNetBattleIntroStep
 
+// symdb: battle sub-phase handler that waits 10 frames on entry, then advances the battle state to sub-phase 0xC
+// symdb: (r5 = battle state struct) -> r0 = leftover value (0 when phase advances); flags from the timer
+// symdb: decrement
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009AFC.yaml
 	thumb_local_start
 sub_8009AFC:
 	push {lr}

@@ -4482,6 +4482,9 @@ off_8146108:
 	.word dword_2010CB0
 	thumb_func_end rfu_handleDisconnectPacket
 
+// symdb: Advances the wireless-link state machine at eStruct200FE00 from state 1 to 2, saving the old timer/counter bytes and loading new values (0x10/0x11).
+// symdb: () -> void; no return value, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814610C.yaml
 	thumb_local_start
 sub_814610C:
 	push {lr}
@@ -5785,6 +5788,10 @@ sub_814692C:
 	.balign 4, 0x00
 	thumb_func_end sub_814692C
 
+// symdb: returns 1 when the current value in byte_2010280 no longer matches the state byte at offset +2 of the struct at dword_2010CC0, letting callers abort a wireless flow
+// symdb: () -> r0 = 1 if byte_2010280 != [dword_2010CC0]+2 (state changed/mismatch), 0 if equal; clobbers
+// symdb: r0-r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146938.yaml
 	thumb_func_start sub_8146938
 sub_8146938:
 	push {lr}
@@ -5937,6 +5944,10 @@ loc_8146A10:
 	.balign 4, 0x00
 	thumb_func_end sub_81469F0
 
+// symdb: Compares two buffers byte-by-byte for up to a given length (max 255) and returns 0 if they are identical, 1 at the first mismatch.
+// symdb: (r0 = buffer A, r1 = buffer B, r2 = byte count) -> r0 = 0 if all bytes equal, 1 on mismatch;
+// symdb: flags set by result mov
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146A18.yaml
 	thumb_local_start
 sub_8146A18:
 	push {r4,r5,lr}
@@ -23247,6 +23258,9 @@ sub_814EA84:
 	.byte 0, 0
 	thumb_func_end sub_814EA84
 
+// symdb: m4a StopAll: calls the stop routine on every one of the 0x20 music players in gMPlayTable
+// symdb: () -> r0 = destroyed; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EA90.yaml
 	thumb_local_start
 sub_814EA90:
 	push {r4,r5,lr}

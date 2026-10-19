@@ -4209,6 +4209,9 @@ off_813D75C:
 	.word eS200BC50
 	thumb_func_end sub_813D750
 
+// symdb: Clears the flag byte at offset 0x5 of the RFU link-state struct eS200BC50, resetting it after the wireless slots are torn down.
+// symdb: () -> void; writes byte_200BC55 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D760.yaml
 	thumb_func_start sub_813D760
 sub_813D760:
 	push {lr}
@@ -4236,6 +4239,10 @@ loc_813D782:
 	.balign 4, 0x00
 off_813D788:
 	.word byte_200AF80
+// symdb: ORs the per-index bit mask from a lookup table into the flags word (+0x1C) of a wireless lobby entry
+// symdb: (r0 = index into byte_813D7A0 bitmask table, r1 = entry struct ptr) -> r0 = destroyed;
+// symdb: entry->0x1C |= table[index]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D78C.yaml
 	thumb_func_start sub_813D78C
 sub_813D78C:
 	push {lr}

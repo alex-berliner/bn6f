@@ -20650,7 +20650,7 @@ locret_8017E24:
 	thumb_func_end sub_8017E0A
 
 // symdb: Dispatches a battle object's move-sub-state handler by jumping through a table indexed by oBattleObject_MoveSubState
-// symdb: (r5 = battle object) -> tail-calls handler from off_8017E38[substate]; returns to ai_dispatchMoveSubState's
+// symdb: (r5 = battle object) -> tail-calls handler from off_8017E38[substate]; returns to sub_8017E26's
 // symdb: caller via handler
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_dispatchMoveSubState.yaml
 	thumb_func_start ai_dispatchMoveSubState
@@ -20897,6 +20897,10 @@ locret_8018000:
 	pop {pc}
 	thumb_func_end object_decrementPhaseCountdown
 
+// symdb: Dispatches a battle object's animation/state handler selected by its PreventAnim index, via a 6-entry jump table.
+// symdb: (r0 = unused; r5 = battle object) -> r0 = whatever the selected handler returns; calls through
+// symdb: lr=pc into thumb handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018002.yaml
 	thumb_local_start
 sub_8018002:
 	push {lr}

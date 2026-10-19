@@ -2734,6 +2734,10 @@ byte_81430B0:
 	.byte 0x92, 0x0, 0x92, 0x1, 0x0, 0x0
 	thumb_func_end sub_8143088
 
+// symdb: Computes overworld event flag ID(s) for an index, using a per-area base table.
+// symdb: (r0 = flag index u8) -> r0 = flagId = areaBase[index] + flagIndex (and r1 = second flagId from
+// symdb: paired table entry); no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430B6.yaml
 	thumb_func_start sub_81430B6
 sub_81430B6:
 	push {r4-r7,lr}

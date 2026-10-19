@@ -2032,6 +2032,9 @@ locret_810D5CC::
 	pop {pc}
 	thumb_func_end sub_810D5A6
 
+// symdb: Per-frame think/update for a battle object: one-time init via ExtraVars, a common object tick, then a per-action handler skipped when CurAction is 6.
+// symdb: (r5 = battle object pointer, no args in r0-r3) -> r0 clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D5CE.yaml
 	thumb_local_start
 sub_810D5CE::
 	push {lr}

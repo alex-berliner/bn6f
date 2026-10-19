@@ -5664,8 +5664,8 @@ off_803B87C:
 	.word byte_2027200
 	thumb_func_end sub_803B814
 
-// symdb: Draws two 3-digit decimal numbers (from get_clampedCounterPair999's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
-// symdb: () -> void; internally r0/r1 = two values from get_clampedCounterPair999, each converted to packed BCD; no
+// symdb: Draws two 3-digit decimal numbers (from sub_803C398's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
+// symdb: () -> void; internally r0/r1 = two values from sub_803C398, each converted to packed BCD; no
 // symdb: meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawTwoBcdNumbers3Digit.yaml
 	thumb_local_start
@@ -6505,6 +6505,11 @@ off_803BFE0:
 	.word byte_803C238
 	thumb_func_end sub_803BFA0
 
+// symdb: Table-driven dispatcher: scans a 0xFF-terminated list of {matchFn, handlerFn} index pairs and runs the first handler whose match function accepts the halfword passed in r0.
+// symdb: (r0 = pointer to a halfword value, r1 = pointer to byte-pair list {matchIdx, handlerIdx}, 0xFF-
+// symdb: terminated) -> void; may modify the halfword in place via the matched handler; caller detects
+// symdb: change by comparing before/after
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BFE8.yaml
 	thumb_local_start
 sub_803BFE8:
 	push {r4-r7,lr}
@@ -7732,6 +7737,10 @@ sub_803C720:
 	pop {pc}
 	thumb_func_end sub_803C720
 
+// symdb: Wireless-link countdown: ticks a timer and, when it expires, switches the RFU link to phase 9 and reports completion.
+// symdb: (no args; r7 = RFU-related work struct) -> r0 = 1 when countdown finished and phase 9 set, 0
+// symdb: while still counting; r1 = 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C730.yaml
 	thumb_local_start
 sub_803C730:
 	push {lr}
@@ -11459,6 +11468,10 @@ dword_803E7D4:
 	.word 0x4FFFF02
 	thumb_func_end sub_803E7A4
 
+// symdb: Debounce state machine: only commits a value into a two-slot history after it has been passed unchanged for 8 consecutive calls (frames).
+// symdb: (r0 = value/key bit to track, r7 = state struct base) -> r0 clobbered; updates
+// symdb: r7+0x10/0x12/0x14/0x16/0x18
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E7D8.yaml
 	thumb_local_start
 sub_803E7D8:
 	push {r7,lr}
@@ -11511,6 +11524,11 @@ locret_803E826:
 	pop {r0-r7,pc}
 	thumb_func_end sub_803E80C
 
+// symdb: Updates the link-cable state (eLinkState) from a tracked object's two byte fields, entering state 0xC with an offset of max(field 0xe, field 0xf)+8 when either exceeds 5.
+// symdb: (r0 = object/struct pointer, copied to r5) -> r0 = 0xC on change (otherwise garbage from r1);
+// symdb: writes eLinkState+0x54 = max(unk_e, unk_f)+8 and eLinkState byte0 = 0xC when either field > 5;
+// symdb: clobbers r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E828.yaml
 	thumb_local_start
 sub_803E828:
 	push {r0-r2,r7,lr}
@@ -12796,6 +12814,9 @@ off_803EF9C:
 	.word unk_200F380
 	thumb_func_end sub_803EF90
 
+// symdb: Returns true if any of four halfword counters at word_2010420 has reached 0x168 (360); callers use it to trigger a state change (set byte 0xE=8 in eStruct200BC30 and return 4).
+// symdb: () -> r0 = 1 if any of word_2010420[0..3] >= 0x168 else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EFA0.yaml
 	thumb_local_start
 sub_803EFA0:
 	push {r4-r7,lr}
@@ -12941,6 +12962,10 @@ rfu_advanceTickCounter:
 	pop {r5,pc}
 	thumb_func_end rfu_advanceTickCounter
 
+// symdb: Reports the fill state of the wireless receive ring buffer at byte_200AC20: 2 = empty, 1 = two or more entries queued, 0 = one entry queued.
+// symdb: (void) -> r0 = r1 = fill state (0 = 1 entry, 1 = >=2 entries, 2 = empty); clobbers r0, r1, r3,
+// symdb: r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F06C.yaml
 	thumb_local_start
 sub_803F06C:
 	push {r5,lr}
@@ -13422,6 +13447,9 @@ locret_803F3A6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803F334
 
+// symdb: Returns 0 if the first two 12-byte entries of the selected 0x40-byte block in word_200A010 both hold the 0xFE empty marker, else 1.
+// symdb: () -> r0 = 0 if both entries are 0xFE (empty), else 1; r2-r4 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F3A8.yaml
 	thumb_local_start
 sub_803F3A8:
 	push {r4-r7,lr}

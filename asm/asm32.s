@@ -1455,6 +1455,10 @@ battle_throwObjectAway:
 	pop {r4,r6,pc}
 	thumb_func_end battle_throwObjectAway
 
+// symdb: Per-frame physics step for an AI-launched battle object that flies in an arc: moves X/Z by their velocities, applies gravity to Z velocity, and destroys the object when its step timer expires.
+// symdb: (r5 = battle object, r7 = oAIAttackVars) -> r0 = 0 (CUR_STATE_DESTROY) when timer ends; flags
+// symdb: updated on object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E54E.yaml
 	thumb_local_start
 sub_810E54E:
 	push {r4,lr}
@@ -22530,6 +22534,10 @@ sub_8118D54:
 	.byte 0, 0
 	thumb_func_end sub_8118D54
 
+// symdb: Dispatches the sSubmenu GUI-sprite state machine: calls the init, update, or third handler selected by the entry's state byte.
+// symdb: (r5 = sSubmenu entry, [r5,#8] = state index 0-2) -> calls handler in r6 context; no direct
+// symdb: return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118D60.yaml
 	thumb_func_start sub_8118D60
 sub_8118D60:
 	push {lr}
@@ -33928,6 +33936,10 @@ byte_811E6B8:
 	.byte 0x7C, 0x3C, 0x1C, 0xC, 0x4, 0x0, 0x0, 0x0
 	thumb_func_end sub_811E6A0
 
+// symdb: Dispatches one of three update handlers for eStruct2001010 based on the state byte at [r5,#8].
+// symdb: (r5 = object/work struct; r1 = state = [r5,#8]) -> tail-call via 'mov lr, pc; bx r0' into
+// symdb: off_811E6D4[r1]; sets r6 = eStruct2001010 for the handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E6C0.yaml
 	thumb_func_start sub_811E6C0
 sub_811E6C0:
 	push {lr}
@@ -34058,6 +34070,10 @@ byte_811E7A0:
 	.byte 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0x0, 0x0
 	thumb_func_end sub_811E744
 
+// symdb: Dispatches an entity's per-mode update routine, picking one of three handlers from a jump table using the entity's mode byte.
+// symdb: (r5 = entity struct, handler table indexed by [r5,#8]; r6 set = &eStruct2001010) -> tail-jumps
+// symdb: to handler; r5, r6 passed through
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E7D4.yaml
 	thumb_func_start sub_811E7D4
 sub_811E7D4:
 	push {lr}

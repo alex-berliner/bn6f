@@ -6965,6 +6965,10 @@ locret_80294DE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8029488
 
+// symdb: Puts the chips used this turn (discard stack) back into the empty 0xFFFF slots of eBattleFolder.
+// symdb: (implicit r5 = battle work struct: byte +0x5F = count, u16 array +0x60 = discarded chips) ->
+// symdb: void; no register args, no return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80294E0.yaml
 	thumb_local_start
 sub_80294E0:
 	push {r4,r6,r7,lr}
@@ -14258,6 +14262,10 @@ off_802CB74:
 	.word dword_203EAD0
 	thumb_func_end sub_802CB38
 
+// symdb: Runs one update tick of the battle sub-state machine at 203EAD0 and returns busy/advance flags that drive the battle-phase script.
+// symdb: () -> r0 = busy flag (nonzero = sub-state machine still running), r1 = advance flag (1 = caller
+// symdb: advances BattleState.PhaseStepIndex); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CB78.yaml
 	thumb_func_start sub_802CB78
 sub_802CB78:
 	push {r5,lr}
