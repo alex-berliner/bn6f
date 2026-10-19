@@ -1098,7 +1098,7 @@ char *battle_beastOutInit_80A5AF8()
         *(v0 + 6) = v2[7];
         *(v0 + 7) = 1;
         *(v0 + 36) = 0;
-        sub_80A5F84();
+        battle_beastOutCheckUnlockFlag();
         TestEventFlagFromImmediate(5, 242);
         if ( !v5 )
             sub_80A5FD0();
@@ -1174,7 +1174,7 @@ LABEL_24:
             if ( v6 )
             {
                 SetEventFlagFromImmediate(5, 243);
-                sub_80A5E8C();
+                e_setFlagFromIndexTable();
                 reqBBS_setFlag_e17b0f7_8140A00();
             }
             else
@@ -1483,7 +1483,7 @@ int sub_80A5E44()
 
 
 // 0x80a5e8c
-unsigned int sub_80A5E8C()
+unsigned int e_setFlagFromIndexTable()
 {
     int v0; // r5
 
@@ -1513,8 +1513,8 @@ int sub_80A5EC8()
     result = TestEventFlagFromImmediate(5, 241);
     if ( !v3 )
         return result;
-    if ( !sub_80A5F84() )
-        return sub_80A5E8C();
+    if ( !battle_beastOutCheckUnlockFlag() )
+        return e_setFlagFromIndexTable();
     if ( *(v0 + 7) )
     {
 LABEL_11:
@@ -1580,7 +1580,7 @@ int sub_80A5F68()
 
 
 // 0x80a5f84
-signed int sub_80A5F84()
+signed int battle_beastOutCheckUnlockFlag()
 {
     _BYTE *v0; // r5
     signed int v1; // r0
@@ -1595,7 +1595,7 @@ signed int sub_80A5F84()
     if ( !v3 )
     {
         *v0 = 1;
-        sub_80A5E8C();
+        e_setFlagFromIndexTable();
         v2 = 0;
         v0[7] = 0;
     }
@@ -1619,7 +1619,7 @@ signed int sub_80A5FD0()
     if ( !v3 )
     {
         *v0 = 1;
-        sub_80A5E8C();
+        e_setFlagFromIndexTable();
     }
     *(v0 + 6) = byte_2000EC0[v2 + 18];
     v1[34] = dword_2000F94;
@@ -2702,7 +2702,7 @@ int ow_facePlayerSetAnim()
     else
         v3 = *(v0 + 5);
     v4 = 2 * v3;
-    v5 = sub_80A7528();
+    v5 = ow_getMapDirAnimTableEntry();
     do
     {
         result = v5[v4];
@@ -2744,7 +2744,7 @@ int ow_setAnimFromDirTable()
     char v11; // r4
 
     v1 = *(v0 + 5);
-    v2 = sub_80A7528();
+    v2 = ow_getMapDirAnimTableEntry();
     v3 = v2;
     result = v2[2 * v1];
     v5 = v3[2 * v1 + 1];
@@ -2810,7 +2810,7 @@ char *sub_80A7514()
 
 
 // 0x80a7528
-char *sub_80A7528()
+char *ow_getMapDirAnimTableEntry()
 {
     int v0; // r5
     int v1; // r10
@@ -3075,7 +3075,7 @@ void __noreturn sub_80A77FC()
 
 
 // 0x80a7812
-int sub_80A7812()
+int ow_freeMapObject()
 {
     return FreeOverworldMapObject();
 }
@@ -3239,7 +3239,7 @@ int sub_80A79D4()
 
 
 // 0x80a79dc
-signed int __noreturn sub_80A79DC()
+signed int __noreturn object_startFacingStep()
 {
     int v0; // r5
     int v1; // r6
@@ -3892,7 +3892,7 @@ int sub_80A7F14()
 
 
 // 0x80a7f26
-int sub_80A7F26()
+int ow_objectFinishEventAndFree()
 {
     int v0; // r5
     int v1; // r7
@@ -3929,7 +3929,7 @@ signed int __noreturn sub_80A7F78()
     sub_8142204(*(v1 + 2));
     sub_8142990();
     sub_8142816(*(v0 + 12), *(v0 + 16));
-    v2 = sub_8142896();
+    v2 = getSoulWeaponCursorDir8();
     v3 = sub_80A8038(v2);
     *(v0 + 7) = v3;
     sprite_setAnimation(v0, v3);
@@ -4265,7 +4265,7 @@ void __noreturn npc_updateGuarded()
         *(v0 + 7) = 1;
     }
 LABEL_18:
-    sub_80A8644();
+    npc_syncScreenPosToCamera();
     sprite_update(v0);
 }
 
@@ -4485,7 +4485,7 @@ int npc_playerProximityEventTrigger()
 
 
 // 0x80a8644
-int sub_80A8644()
+int npc_syncScreenPosToCamera()
 {
     int v0; // r5
     int v1; // r6
@@ -4647,7 +4647,7 @@ void __noreturn sprite_applyFrameAttrMode8()
 
 
 // 0x80a87e8
-int sub_80A87E8()
+int ow_freeMapObjectThunk()
 {
     return FreeOverworldMapObject();
 }
@@ -6591,7 +6591,7 @@ void __noreturn ow_initSpriteObject()
     int v4; // r0
 
     *v0 = 1;
-    sub_809C890();
+    ow_applyCutsceneDirOffset();
     *(v0 + 12) = v1;
     *(v0 + 16) = v2;
     *(v0 + 20) = v3;
@@ -6610,12 +6610,12 @@ void __noreturn ow_initSpriteObject()
     *(v0 + 44) = 5825;
     *(v0 + 8) = 4;
     *(v0 + 9) = 0;
-    sub_80A9D86();
+    ow_spriteObjectUpdate();
 }
 
 
 // 0x80a9d86
-void sub_80A9D86()
+void ow_spriteObjectUpdate()
 {
     Battle *v0; // r5
 
@@ -6777,7 +6777,7 @@ void __noreturn ow_startLogoutEffect()
     int v6; // r2
 
     *v0 = 3;
-    sub_809C890();
+    ow_applyCutsceneDirOffset();
     *(v0 + 12) = v1;
     *(v0 + 16) = v2;
     *(v0 + 20) = v3;
@@ -6805,7 +6805,7 @@ void __noreturn sub_80A9F30()
 
 
 // 0x80a9f4e
-int sub_80A9F4E()
+int ow_releaseMapObject()
 {
     return FreeOverworldMapObject();
 }
@@ -6832,7 +6832,7 @@ void __noreturn ow_initObjectSprite()
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(*(v0 + 7));
     sprite_setPallete(0);
-    *(v0 + 20) = sub_80AA04C(*(v0 + 4));
+    *(v0 + 20) = ow_getApproachTarget(*(v0 + 4));
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
     ow_updateApproachObject();
@@ -6847,7 +6847,7 @@ void __noreturn ow_updateApproachObject()
     int v2; // r1
     signed int v3; // r4
 
-    v1 = sub_80AA04C(*(v0 + 4));
+    v1 = ow_getApproachTarget(*(v0 + 4));
     v2 = *(v0 + 20);
     if ( v1 != v2 )
     {
@@ -6883,7 +6883,7 @@ int __fastcall copyOamEntry_80AA004(int a1)
 
 
 // 0x80aa04c
-int __fastcall sub_80AA04C(int a1)
+int __fastcall ow_getApproachTarget(int a1)
 {
     return byte_2001130[a1] << 16;
 }
@@ -7510,7 +7510,7 @@ signed int alwaysTrue_80AA6E8()
 
 
 // 0x80aa6ec
-signed int sub_80AA6EC()
+signed int battle_checkVersionBossSpawn()
 {
     int v0; // r7
     signed int v1; // r6
@@ -7609,7 +7609,7 @@ signed int tryEvent214LuckyRoll_80AA78C()
 
 
 // 0x80aa7ac
-signed int sub_80AA7AC()
+signed int get_eventFlag215AsBool()
 {
     signed int v0; // r4
     char v1; // zf
@@ -7623,7 +7623,7 @@ signed int sub_80AA7AC()
 
 
 // 0x80aa7c0
-signed int sub_80AA7C0()
+signed int isEventFlag216Set()
 {
     signed int v0; // r4
     char v1; // zf

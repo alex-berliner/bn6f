@@ -361,9 +361,9 @@ byte_8123400:
 /// tags: "#copy, "
 // symdb: Reloads a saved copy of the submenu state from IWRAM into sSubmenu and resumes the submenu scene (main jumptable 0x28).
 // symdb: () -> void; sets the toolkit main-jumptable index to 0x28, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123408.yaml
-	thumb_func_start sub_8123408
-sub_8123408:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_restoreSnapshot.yaml
+	thumb_func_start submenu_restoreSnapshot
+submenu_restoreSnapshot:
 	push {r4,lr}
 
 	ldr r0, off_812342C // =unk_2037780 
@@ -393,7 +393,7 @@ off_812342C:
 	.word unk_2037780
 off_8123430:
 	.word sSubmenu
-	thumb_func_end sub_8123408
+	thumb_func_end submenu_restoreSnapshot
 
 // symdb: Dispatches the chip-folder menu's five-state machine by indexing a handler table with the state byte stored in the menu work area.
 // symdb: void HandleChipFolderMenu8123434(void *menu /* r5 */, uint32_t r2, void *r4, void *r6, void *r7,
@@ -9404,7 +9404,7 @@ battle_sceneReset_8127A1C:
 	strb r0, [r1]
 	mov r0, #4
 	strb r0, [r1,#0x1] // (byte_2000FE1 - 0x2000fe0)
-	bl sub_8128500
+	bl battle_fieldLockApply
 	bl palette_fillBufferWithFadeByte_8128260
 	bl sub_8127E9C
 	bl sub_8128008
@@ -9610,7 +9610,7 @@ loc_8127C1E:
 	eor r0, r1
 	strb r0, [r2,#0x1] // (byte_2000FE1 - 0x2000fe0)
 loc_8127C26:
-	bl sub_8128500
+	bl battle_fieldLockApply
 	bl sub_8128008
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	b loc_8127C46
@@ -10848,9 +10848,9 @@ off_81284FC:
 // symdb: (r5 = battle object/scene struct; args built internally: r0 = dword_2027590 context/table, r1 =
 // symdb: halfword [r5+0x1E], r2 = byte 2000FE0, r3 = byte 2000FE1) -> r0 =
 // symdb: battle_fieldLockDispatch_8120018 result; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128500.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fieldLockApply.yaml
 	thumb_local_start
-sub_8128500:
+battle_fieldLockApply:
 	push {lr}
 	ldr r0, off_8128514 // =byte_2000FE0 
 	ldrb r2, [r0]
@@ -10915,7 +10915,7 @@ byte_81286C4:
 	.byte 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59
 	.byte 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68
 	.byte 0x69, 0x6A, 0x6B
-	thumb_func_end sub_8128500
+	thumb_func_end battle_fieldLockApply
 
 // symdb: Dispatches the key-item menu to one of three step handlers based on the menu state byte at r5+1.
 // symdb: void HandleKeyItemMenu8128730(void) // r5 in; r5, r8, r9, r10, r11, r12 out; clobbers
@@ -11735,7 +11735,7 @@ sub_8128CD8:
 	ldr r0, off_8128DC8 // =byte_8128CB0
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	ldr r0, off_8128DB0 // =byte_201BDB8
-	bl sub_802B2A0
+	bl getEventFlagList
 	strh r0, [r5,#0x1e]
 	tst r0, r0
 	beq loc_8128D4A
@@ -14321,7 +14321,7 @@ off_8129FF0:
 	.word off_8129FF4
 off_8129FF4:
 	.word menu_subMenu_dispatchByIndex_812A008+1
-	.word sub_812A028+1
+	.word object_timerDialogueUpdate+1
 	.word sub_812A058+1
 	.word sub_812A14C+1
 	.word sub_812A0CC+1
@@ -14348,12 +14348,12 @@ menu_subMenu_dispatchByIndex_812A008:
 locret_812A026:
 	pop {pc}
 	thumb_func_end menu_subMenu_dispatchByIndex_812A008
-// symdb: Per-frame object update: draws the object's sprite if flagged, counts down a timer, and on expiry switches state and runs text script 0x5E; also checks sub_813D648 each frame to branch into an alternate state.
+// symdb: Per-frame object update: draws the object's sprite if flagged, counts down a timer, and on expiry switches state and runs text script 0x5E; also checks rfu_checkIdMatch each frame to branch into an alternate state.
 // symdb: (r5 = object state struct) -> void; sets [r5+1]/[r5+2] state bytes and [r5+0x10] substate when
 // symdb: timer expires, r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A028.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timerDialogueUpdate.yaml
 	thumb_local_start
-sub_812A028:
+object_timerDialogueUpdate:
 	push {lr}
 	bl sprite_drawIfFlagSet_812B504
 	ldrh r0, [r5,#0x28]
@@ -14369,7 +14369,7 @@ sub_812A028:
 	mov r0, #0x5e 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 loc_812A048:
-	bl sub_813D648
+	bl rfu_checkIdMatch
 	bne locret_812A056
 	mov r0, #0xc
 	strb r0, [r5,#1]
@@ -14377,7 +14377,7 @@ loc_812A048:
 	strb r0, [r5,#2]
 locret_812A056:
 	pop {pc}
-	thumb_func_end sub_812A028
+	thumb_func_end object_timerDialogueUpdate
 
 	thumb_local_start
 sub_812A058:
@@ -15353,7 +15353,7 @@ loc_812A7EC:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strb r0, [r5,#0x11]
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	cmp r0, #0x18
 	beq loc_812A814
 	cmp r0, #0x1c
@@ -15677,7 +15677,7 @@ loc_812AA68:
 	strh r1, [r5,#0x26]
 	b loc_812AAB6
 loc_812AA7E:
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	strb r0, [r5,#1]
 	cmp r0, #0x1c
 	bne loc_812AA90
@@ -15831,7 +15831,7 @@ loc_812ABA4:
 	beq loc_812ABE0
 	cmp r0, #4
 	bne loc_812ABE0
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	strb r0, [r5,#1]
 	mov r0, #0
 	strb r0, [r5,#2]
@@ -16704,14 +16704,14 @@ battle_runFrameUpdate:
 	thumb_func_end battle_runFrameUpdate
 
 // symdb: Entity step wrapper that polls a state value and runs the battle frame update with command 0x13 when the state is 0x18 or 0x1c, otherwise 0x12.
-// symdb: () -> r0 = command id (0x13 if sub_8132290()==0x18 or 0x1c else 0x12) passed to
+// symdb: () -> r0 = command id (0x13 if menu_dispatchStateHandler()==0x18 or 0x1c else 0x12) passed to
 // symdb: battle_runFrameUpdate; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepWaitForStateRunUpdate.yaml
 	thumb_local_start
 battle_stepWaitForStateRunUpdate:
 	push {r4,lr}
 	mov r4, #0x13
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	cmp r0, #0x18
 	beq loc_812B27E
 	cmp r0, #0x1c
@@ -17250,7 +17250,7 @@ sub_812B5C8:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	cmp r0, #0x1c
 	bne locret_812B5EC
 	bl entity_runAllUpdateHandlers_80465BC

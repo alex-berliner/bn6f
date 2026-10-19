@@ -1094,7 +1094,7 @@ signed int battle_lotteryStep_809AB20()
     if ( !v4 )
     {
         CopyWords(*(v2 + oToolkit_ChatboxPtr) + 76, &v15, 8u);
-        v7 = sub_813D41C(&v15);
+        v7 = ow_checkSecretCode(&v15);
         *(v1 + 120) = v0;
         if ( v7 == 1 )
         {
@@ -1533,7 +1533,7 @@ int sub_809B7A4()
 
 
 // 0x809b7ec
-int __fastcall sub_809B7EC(int a1)
+int __fastcall ow_storeFacingDir4to7(int a1)
 {
     int v1; // r5
 
@@ -1977,7 +1977,7 @@ int sub_809C870()
 
 
 // 0x809c890
-int sub_809C890()
+int ow_applyCutsceneDirOffset()
 {
     int v0; // r5
     unsigned int v1; // r1
@@ -2005,7 +2005,7 @@ unsigned int sub_809C940()
 
 
 // 0x809c954
-int sub_809C954()
+int e_setEventFlagFromStruct()
 {
     int v0; // r5
 

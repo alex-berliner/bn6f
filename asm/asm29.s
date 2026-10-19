@@ -1799,7 +1799,7 @@ battle_beastOutInit_80A5AF8:
 	strb r0, [r5,#7]
 	mov r0, #0
 	str r0, [r5,#0x24]
-	bl sub_80A5F84
+	bl battle_beastOutCheckUnlockFlag
 	movflag EVENT_5F2
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A5B64
@@ -1888,7 +1888,7 @@ loc_80A5BDA:
 	bne loc_80A5C18
 	movflag EVENT_5F3
 	bl SetEventFlagFromImmediate
-	bl sub_80A5E8C
+	bl e_setFlagFromIndexTable
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	b loc_80A5C62
 loc_80A5C18:
@@ -2251,9 +2251,9 @@ byte_80A5E84:
 
 // symdb: Sets a story/event flag whose ID is looked up from a word table using an index stored in the caller's struct.
 // symdb: (r5 = struct with u8 index at +4; r0 unused) -> r0 = SetEventFlag result; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setFlagFromIndexTable.yaml
 	thumb_local_start
-sub_80A5E8C:
+e_setFlagFromIndexTable:
 	push {r4,lr}
 	ldrb r0, [r5,#4]
 	lsl r0, r0, #2
@@ -2263,7 +2263,7 @@ sub_80A5E8C:
 	bl SetEventFlag
 	pop {r4,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A5E8C
+	thumb_func_end e_setFlagFromIndexTable
 
 	thumb_local_start
 sub_80A5EA0:
@@ -2289,10 +2289,10 @@ sub_80A5EC8:
 	movflag EVENT_5F1
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne locret_80A5F46
-	bl sub_80A5F84
+	bl battle_beastOutCheckUnlockFlag
 	cmp r0, #0
 	bne loc_80A5EE2
-	bl sub_80A5E8C
+	bl e_setFlagFromIndexTable
 	b locret_80A5F46
 loc_80A5EE2:
 	ldrb r0, [r5,#7]
@@ -2381,10 +2381,10 @@ sub_80A5F68:
 
 // symdb: Checks a story flag selected by a form index to gate whether a Beast Out transformation may activate.
 // symdb: (r5 = state struct ptr; field [r5,#6] = form/variant index) -> r0 = 1 if transformation not
-// symdb: allowed (flag clear), 0 if allowed; on allow sets [r5]=1, calls sub_80A5E8C, clears [r5,#7]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F84.yaml
+// symdb: allowed (flag clear), 0 if allowed; on allow sets [r5]=1, calls e_setFlagFromIndexTable, clears [r5,#7]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutCheckUnlockFlag.yaml
 	thumb_local_start
-sub_80A5F84:
+battle_beastOutCheckUnlockFlag:
 	push {r4,lr}
 	ldrb r0, [r5,#6]
 	cmp r0, #0x32 
@@ -2400,7 +2400,7 @@ loc_80A5F8E:
 	beq loc_80A5FAA
 	mov r0, #1
 	strb r0, [r5]
-	bl sub_80A5E8C
+	bl e_setFlagFromIndexTable
 	mov r4, #0
 	strb r4, [r5,#7]
 loc_80A5FAA:
@@ -2413,7 +2413,7 @@ byte_80A5FB4:
 	.byte 0xF5, 0x5, 0xF6, 0x5, 0xF7, 0x5, 0xF8, 0x5, 0xF9, 0x5, 0xFA
 	.byte 0x5, 0xFB, 0x5, 0xFC, 0x5, 0xFD, 0x5, 0xFE, 0x5, 0xC2, 0xF
 	.byte 0xC3, 0xF, 0xC4, 0xF, 0x0, 0x0
-	thumb_func_end sub_80A5F84
+	thumb_func_end battle_beastOutCheckUnlockFlag
 
 	thumb_local_start
 sub_80A5FD0:
@@ -2432,7 +2432,7 @@ sub_80A5FD0:
 	bne loc_80A5FF2
 	mov r0, #1
 	strb r0, [r5]
-	bl sub_80A5E8C
+	bl e_setFlagFromIndexTable
 loc_80A5FF2:
 	mov r1, #0x12
 	add r1, r1, r4
@@ -4314,7 +4314,7 @@ loc_80A746E:
 	sub r4, #1
 loc_80A7472:
 	lsl r4, r4, #1
-	bl sub_80A7528
+	bl ow_getMapDirAnimTableEntry
 	mov r7, r0
 loc_80A747A:
 	ldrb r0, [r7,r4]
@@ -4343,14 +4343,14 @@ locret_80A74A6:
 	thumb_func_end ow_facePlayerSetAnim
 
 // symdb: Overworld helper that picks an object's sprite animation from a per-direction table, defaulting to a facing computed toward the player when the entry is 0xFF.
-// symdb: (r0 = object ptr in r5 convention, table via sub_80A7528) -> r0 = ?; sets object anim, loads
+// symdb: (r0 = object ptr in r5 convention, table via ow_getMapDirAnimTableEntry) -> r0 = ?; sets object anim, loads
 // symdb: anim data, disables shadow
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setAnimFromDirTable.yaml
 	thumb_local_start
 ow_setAnimFromDirTable:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#5]
-	bl sub_80A7528
+	bl ow_getMapDirAnimTableEntry
 	mov r7, r0
 	mov r2, r4
 	lsl r2, r2, #1
@@ -4421,9 +4421,9 @@ sub_80A7514:
 
 // symdb: Returns a pointer into the current map's per-direction animation table for an overworld object, used by the face-player/set-anim helpers.
 // symdb: (implicit r5 = overworld object) -> r0 = pointer to tableBase + [r5+0x30]*8; clobbers r1-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7528.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getMapDirAnimTableEntry.yaml
 	thumb_local_start
-sub_80A7528:
+ow_getMapDirAnimTableEntry:
 	push {r4,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
@@ -4450,7 +4450,7 @@ off_80A754C:
 	.word byte_8140E6C
 	.word byte_8140FBC
 	.word byte_814122C
-	thumb_func_end sub_80A7528
+	thumb_func_end ow_getMapDirAnimTableEntry
 
 	thumb_local_start
 sub_80A755C:
@@ -4789,7 +4789,7 @@ off_80A77B8:
 off_80A77BC:
 	.word sprite_setupObjectSprite+1
 	.word sub_80A77FC+1
-	.word sub_80A7812+1
+	.word ow_freeMapObject+1
 	thumb_func_end sub_80A77A8
 
 // symdb: Initializes one step of an object's sprite: loads the sprite named by the object's fields, applies animation/palette/priority, hides the shadow, and advances the state machine.
@@ -4836,14 +4836,14 @@ loc_80A780C:
 // symdb: Trivial wrapper that frees an overworld map object via FreeOverworldMapObject, likely used as a callback/destructor hook.
 // symdb: (r0 = overworld map object slot/index) -> r0 = result of FreeOverworldMapObject; flags from
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7812.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeMapObject.yaml
 	thumb_local_start
-sub_80A7812:
+ow_freeMapObject:
 	push {lr}
 	bl FreeOverworldMapObject
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A7812
+	thumb_func_end ow_freeMapObject
 
 // symdb: Tail-calls one of three handlers chosen by BattleObject[+0x8]'s low byte (likely CurState or related).
 // symdb: (r0 = [r5,#8] selector used for jump table, r5 = object base, r10 = toolkit, lr = return) -> r0
@@ -5027,7 +5027,7 @@ loc_80A7920:
 off_80A794C:
 	.word off_80A7950
 off_80A7950:
-	.word sub_80A79DC+1
+	.word object_startFacingStep+1
 	.word sub_80A7A40+1
 	.word sub_80A7AA4+1
 	.word sub_80A7AD4+1
@@ -5094,9 +5094,9 @@ sub_80A79D4:
 // symdb: Sets an entity's sprite animation and initializes a linear move of param-scaled ±8 px toward the entity's facing direction over a param-length duration.
 // symdb: (r5 = entity/base struct, r6 = sprite/motion slot, r7 = params: [1]=anim id, [2]=duration
 // symdb: divisor, [3]=distance scalar) -> r0 = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A79DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_startFacingStep.yaml
 	thumb_local_start
-sub_80A79DC:
+object_startFacingStep:
 	push {r4-r7,lr}
 	ldrb r0, [r7,#1]
 	strb r0, [r6,#2]
@@ -5143,7 +5143,7 @@ off_80A7A34:
 	.word byte_80A7A38
 byte_80A7A38:
 	.byte 0x8, 0x0, 0x0, 0x8, 0xF8, 0x0, 0x0, 0xF8
-	thumb_func_end sub_80A79DC
+	thumb_func_end object_startFacingStep
 
 	thumb_local_start
 sub_80A7A40:
@@ -5850,7 +5850,7 @@ off_80A7EE8:
 off_80A7EEC:
 	.word sub_80A7EF8+1
 	.word sub_80A7F14+1
-	.word sub_80A7F26+1
+	.word ow_objectFinishEventAndFree+1
 	thumb_func_end battleObject_aiBeastOutStage_80A7EDA
 
 	thumb_local_start
@@ -5884,9 +5884,9 @@ locret_80A7F24:
 // symdb: Ends an overworld map object's event: clears state fields, sets the object's event flag plus a related flag at 0x1650+id, then releases the object's slot.
 // symdb: (r5 = map object struct with event id at +4; r7 = owner struct) -> r0 = freed; no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7F26.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_objectFinishEventAndFree.yaml
 	thumb_local_start
-sub_80A7F26:
+ow_objectFinishEventAndFree:
 	push {r4-r7,lr}
 	mov r0, #0
 	strh r0, [r7,#4]
@@ -5908,7 +5908,7 @@ sub_80A7F26:
 	.balign 4, 0
 dword_80A7F54:
 	.word 0x1650
-	thumb_func_end sub_80A7F26
+	thumb_func_end ow_objectFinishEventAndFree
 
 	thumb_local_start
 sub_80A7F58:
@@ -5939,7 +5939,7 @@ sub_80A7F78:
 	ldr r1, [r5,#0x10]
 	bl sub_8142816
 	mov r1, r4
-	bl sub_8142896
+	bl getSoulWeaponCursorDir8
 	bl sub_80A8038
 	strb r0, [r5,#7]
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -6424,7 +6424,7 @@ loc_80A8470:
 	bl sub_80A85B4
 	bl npc_playerProximityEventTrigger
 loc_80A8478:
-	bl sub_80A8644
+	bl npc_syncScreenPosToCamera
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -6683,9 +6683,9 @@ locret_80A8640:
 // symdb: Converts two 26.8 fixed-point source positions (likely the camera) into integer halfwords stored into the NPC actor's screen-offset fields, anchoring the actor to the viewport.
 // symdb: (r5 = source struct with fixed-point fields at +0xC and +0x10, r6 = destination actor struct) ->
 // symdb: stores halfwords at r6+0x16 and r6+0x18; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8644.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_syncScreenPosToCamera.yaml
 	thumb_local_start
-sub_80A8644:
+npc_syncScreenPosToCamera:
 	push {r4,lr}
 	ldr r0, [r5,#0xc]
 	ldr r1, [r5,#0x10]
@@ -6694,7 +6694,7 @@ sub_80A8644:
 	strh r0, [r6,#0x16]
 	strh r1, [r6,#0x18]
 	pop {r4,pc}
-	thumb_func_end sub_80A8644
+	thumb_func_end npc_syncScreenPosToCamera
 
 // symdb: Dispatches a battle object's per-action update by jumping through a small table keyed off its CurAction byte.
 // symdb: (r5 = BattleObject*, r2 = ?, lr = caller) -> r0 = 0x2f8, NZ set; side effects: tail-calls one of
@@ -6830,7 +6830,7 @@ off_80A8738:
 off_80A873C:
 	.word overworldObject_spawnFromScenarioEffectIndex_80A8748+1
 	.word sprite_applyFrameAttrMode8+1
-	.word sub_80A87E8+1
+	.word ow_freeMapObjectThunk+1
 	thumb_func_end sub_80A8728
 
 // symdb: Initialize/sync an overworld map object whose sprite depends on the current scenario/effect index (Beast/Link style); positions it relative to the player, plays an optional SFX, and runs one sprite update.
@@ -6915,13 +6915,13 @@ loc_80A87E2:
 // symdb: Thin wrapper that frees an overworld map object, preserving r4-r7 for its caller.
 // symdb: (r0 = map object slot/pointer, as taken by FreeOverworldMapObject) -> r0 =
 // symdb: FreeOverworldMapObject's return; r4-r7 preserved.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A87E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_freeMapObjectThunk.yaml
 	thumb_local_start
-sub_80A87E8:
+ow_freeMapObjectThunk:
 	push {r4-r7,lr}
 	bl FreeOverworldMapObject
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A87E8
+	thumb_func_end ow_freeMapObjectThunk
 
 	thumb_func_start sub_80A87F0
 sub_80A87F0:
@@ -9714,7 +9714,7 @@ off_80A9D20:
 	.word off_80A9D24
 off_80A9D24:
 	.word ow_initSpriteObject+1
-	.word sub_80A9D86+1
+	.word ow_spriteObjectUpdate+1
 	.word sub_80A9DB8+1
 	thumb_func_end sub_80A9D10
 
@@ -9727,7 +9727,7 @@ ow_initSpriteObject:
 	push {r4-r7,lr}
 	mov r0, #1
 	strb r0, [r5]
-	bl sub_809C890
+	bl ow_applyCutsceneDirOffset
 	str r1, [r5,#0xc]
 	str r2, [r5,#0x10]
 	str r3, [r5,#0x14]
@@ -9757,16 +9757,16 @@ ow_initSpriteObject:
 	strb r0, [r5,#8]
 	mov r0, #0
 	strb r0, [r5,#9]
-	bl sub_80A9D86
+	bl ow_spriteObjectUpdate
 	pop {r4-r7,pc}
 	thumb_func_end ow_initSpriteObject
 
 // symdb: Per-frame update for an overworld sprite object: dispatches to its type's handler via jump table, then runs sprite_update.
 // symdb: (r5 = overworld object struct, byte at +9 = type id) -> jumps to handler from off_80A9DA4, then
 // symdb: bl sprite_update; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9D86.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spriteObjectUpdate.yaml
 	thumb_local_start
-sub_80A9D86:
+ow_spriteObjectUpdate:
 	push {r4-r7,lr}
 	mov r4, r8
 	push {r4}
@@ -9788,7 +9788,7 @@ off_80A9DA4:
 	.word sub_80A9E48+1
 	.word e_decelRiseUpdate+1
 	.word sub_80A9EB6+1
-	thumb_func_end sub_80A9D86
+	thumb_func_end ow_spriteObjectUpdate
 
 	thumb_local_start
 sub_80A9DB8:
@@ -9971,11 +9971,11 @@ off_80A9EDC:
 off_80A9EE0:
 	.word ow_startLogoutEffect+1
 	.word sub_80A9F30+1
-	.word sub_80A9F4E+1
+	.word ow_releaseMapObject+1
 	thumb_func_end sub_80A9ECC
 
 // symdb: Initializes an overworld object as a log-out effect: sets its state, fetches position values, loads sprite 0x1C with animation 0 and no shadow, plays the LOG_OUT sound, and advances its state machine.
-// symdb: (r5 = object/actor struct, set by caller/global) -> void; calls sub_809C890 which returns
+// symdb: (r5 = object/actor struct, set by caller/global) -> void; calls ow_applyCutsceneDirOffset which returns
 // symdb: r1/r2/r3 stored into the object, then tail-calls sub_80A9F30
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startLogoutEffect.yaml
 	thumb_local_start
@@ -9983,7 +9983,7 @@ ow_startLogoutEffect:
 	push {r4-r7,lr}
 	mov r0, #3
 	strb r0, [r5]
-	bl sub_809C890
+	bl ow_applyCutsceneDirOffset
 	str r1, [r5,#0xc]
 	str r2, [r5,#0x10]
 	str r3, [r5,#0x14]
@@ -10028,14 +10028,14 @@ loc_80A9F44:
 // symdb: Thin wrapper that frees an overworld map object, likely used as a cleanup/destructor callback.
 // symdb: (r0 = overworld map object to free) -> r0 = FreeOverworldMapObject result; flags from
 // symdb: FreeOverworldMapObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F4E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_releaseMapObject.yaml
 	thumb_local_start
-sub_80A9F4E:
+ow_releaseMapObject:
 	push {r4-r7,lr}
 	bl FreeOverworldMapObject
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A9F4E
+	thumb_func_end ow_releaseMapObject
 
 	thumb_func_start sub_80A9F58
 sub_80A9F58:
@@ -10076,7 +10076,7 @@ ow_initObjectSprite:
 	mov r0, #0
 	bl sprite_setPalette // (int pallete) -> void
 	ldrb r0, [r5,#4]
-	bl sub_80AA04C
+	bl ow_getApproachTarget
 	str r0, [r5,#0x14]
 	mov r0, #0
 	str r0, [r5,#0x24]
@@ -10086,7 +10086,7 @@ ow_initObjectSprite:
 	pop {pc}
 	thumb_func_end ow_initObjectSprite
 
-// symdb: Per-frame map-object update: steps the object's 16.16 value at +0x14 by 1 toward a target from sub_80AA04C, and for object kind 8 sets event flag EVENT_1640 while the value's high word equals 0x20.
+// symdb: Per-frame map-object update: steps the object's 16.16 value at +0x14 by 1 toward a target from ow_getApproachTarget, and for object kind 8 sets event flag EVENT_1640 while the value's high word equals 0x20.
 // symdb: (r0 = object kind byte from [r5+4], r5 = object struct) -> r0 = sprite_update result; updates
 // symdb: [r5+0x14] and event flag EVENT_1640
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateApproachObject.yaml
@@ -10095,7 +10095,7 @@ ow_updateApproachObject:
 	push {lr}
 	mov r4, #1
 	ldrb r0, [r5,#4]
-	bl sub_80AA04C
+	bl ow_getApproachTarget
 	ldr r1, [r5,#0x14]
 	cmp r0, r1
 	beq loc_80A9FD8
@@ -10161,16 +10161,16 @@ byte_80AA01C:
 // symdb: Looks up an overworld object's approach target from a byte table and returns it as a 16.16 fixed-point value.
 // symdb: (r0 = index into byte_2001130 table) -> r0 = signed byte value << 16 (16.16); flags clobbered by
 // symdb: lsl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA04C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getApproachTarget.yaml
 	thumb_local_start
-sub_80AA04C:
+ow_getApproachTarget:
 	ldr r1, off_80AA054 // =byte_2001130 
 	ldrsb r0, [r1,r0]
 	lsl r0, r0, #0x10
 	mov pc, lr
 off_80AA054:
 	.word byte_2001130
-	thumb_func_end sub_80AA04C
+	thumb_func_end ow_getApproachTarget
 
 	thumb_func_start sub_80AA058
 sub_80AA058:
@@ -11081,13 +11081,13 @@ off_80AA6B4:
 	.word JumpTable80AA6B8
 JumpTable80AA6B8:
 	.word alwaysTrue_80AA6E8+1
-	.word sub_80AA6EC+1
+	.word battle_checkVersionBossSpawn+1
 	.word sub_80AA756+1
 	.word isEventFlag212Set_80AA764+1
 	.word sub_80AA778+1
 	.word tryEvent214LuckyRoll_80AA78C+1
-	.word sub_80AA7AC+1
-	.word sub_80AA7C0+1
+	.word get_eventFlag215AsBool+1
+	.word isEventFlag216Set+1
 	.word sub_80AA7D4+1
 	.word sub_80AA7E8+1
 	.word sub_80AA7FC+1
@@ -11106,9 +11106,9 @@ alwaysTrue_80AA6E8:
 // symdb: Scans the current battle's enemy spawn list for a version-specific boss-type enemy and returns 1 if a per-version threshold on it is met.
 // symdb: (r7 = some context struct whose +0xC holds a pointer to a 4-byte-per-entry enemy list) -> r0 = 1
 // symdb: if condition met, else 0; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA6EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkVersionBossSpawn.yaml
 	thumb_local_start
-sub_80AA6EC:
+battle_checkVersionBossSpawn:
 	push {r4-r7,lr}
 	mov r6, #0
 	movflag EVENT_1D8
@@ -11162,7 +11162,7 @@ off_80AA750:
 	.word word_80AA754
 word_80AA754:
 	.hword 0x2010
-	thumb_func_end sub_80AA6EC
+	thumb_func_end battle_checkVersionBossSpawn
 
 	thumb_local_start
 sub_80AA756:
@@ -11233,9 +11233,9 @@ loc_80AA7A8:
 // symdb: Returns 1 if story/event flag 215 is set, else 0.
 // symdb: () -> r0 = 1 if EVENT_215 set else 0; Z flag from TestEventFlagFromImmediate is clobbered,
 // symdb: returns via pop {r4,pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eventFlag215AsBool.yaml
 	thumb_local_start
-sub_80AA7AC:
+get_eventFlag215AsBool:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_215
@@ -11245,13 +11245,13 @@ sub_80AA7AC:
 loc_80AA7BC:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA7AC
+	thumb_func_end get_eventFlag215AsBool
 
 // symdb: Returns 1 if story/event flag EVENT_216 is set, else 0.
 // symdb: () -> r0 = 0 or 1 (EVENT_216 flag state as int)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/isEventFlag216Set.yaml
 	thumb_local_start
-sub_80AA7C0:
+isEventFlag216Set:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_216
@@ -11261,7 +11261,7 @@ sub_80AA7C0:
 loc_80AA7D0:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA7C0
+	thumb_func_end isEventFlag216Set
 
 	thumb_local_start
 sub_80AA7D4:

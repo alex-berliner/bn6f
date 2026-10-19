@@ -97,7 +97,7 @@ int __noreturn crt0_entry_trampoline_8000288()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_3005E2C();
+    init_installCommIntrHandlers();
     return v1;
 }
 

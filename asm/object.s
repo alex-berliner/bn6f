@@ -184,9 +184,9 @@ locret_800B97C:
 // symdb: Battle-object phase step that starts a screen fade and blocks the object's action until the fade finishes.
 // symdb: (r5 = battle object, no args) -> void; advances oBattleObject_CurAction by 4 and clears phase
 // symdb: state when the fade completes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B97E.yaml
-	thumb_func_start sub_800B97E
-sub_800B97E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitScreenFadeEnd.yaml
+	thumb_func_start battle_waitScreenFadeEnd
+battle_waitScreenFadeEnd:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -212,7 +212,7 @@ loc_800B996:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_800B9AE:
 	pop {pc}
-	thumb_func_end sub_800B97E
+	thumb_func_end battle_waitScreenFadeEnd
 
 // symdb: Draws the chip-name banner for a battle object on its first visit, then advances the object's action phase once the alliance is ready.
 // symdb: void object_drawChipName(u32 obj /* r5 */); /* inputs: r4 r5 r6 r7 r10 lr; outputs: r5 r8 r9 r10
@@ -1660,7 +1660,7 @@ off_800C4B8:
 
 // symdb: Builds the 5×8 player-side battle panel grid (ePanelData) and per-column active flags for a turn, then hands off to the grid finaliser.
 // symdb: void sub_800C4BC(u32 tableArg_r0, u32 colMask_r1, u32 passthrough_r2, u32 passthrough_r3);
-// symdb: returns via sub_800C67C -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
+// symdb: returns via battle_encodePanelRuns -> r2, r3, c, v; clobbers r0,r1,r2,r3,lr; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buildPlayerPanelGrid_800C4BC.yaml
 	thumb_local_start
 battle_buildPlayerPanelGrid_800C4BC:
@@ -1755,7 +1755,7 @@ loc_800C53C:
 	add r5, #1
 	cmp r5, #5
 	blt loc_800C504
-	bl sub_800C67C
+	bl battle_encodePanelRuns
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1864,9 +1864,9 @@ loc_800C672:
 
 // symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to byte_203F6B0.
 // symdb: () -> void; writes run records to byte_203F6B0 (4 bytes each, first byte 0xFF terminates)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C67C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_encodePanelRuns.yaml
 	thumb_local_start
-sub_800C67C:
+battle_encodePanelRuns:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	ldr r7, off_800C8D0 // =byte_203F6B0 
@@ -1913,7 +1913,7 @@ loc_800C6CE:
 	strb r0, [r7]
 	add sp, sp, #0xc
 	pop {r4-r7,pc}
-	thumb_func_end sub_800C67C
+	thumb_func_end battle_encodePanelRuns
 
 // symdb: Returns the address of record r0 in a 12-byte-per-entry table at byte_800D730.
 // symdb: int getTable12Record_800D730(int index); // r0 in: record index; r0 out: pointer to that 12-byte
@@ -5988,9 +5988,9 @@ sub_800EA0E:
 // symdb: Cancels an enemy's pending collision/hit entries and clears a set of ObjectFlags2 bits for the active battle object.
 // symdb: (r0 = none on entry path; uses caller's r5 = battle object) -> r0 = 0 clobbered; no meaningful
 // symdb: return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EA22.yaml
-	thumb_func_start sub_800EA22
-sub_800EA22:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearCollisionQueue.yaml
+	thumb_func_start battle_clearCollisionQueue
+battle_clearCollisionQueue:
 	push {lr}
 	ldr r0, dword_800ECDC // =0x300ee 
 	bl object_clearFlag2
@@ -6013,7 +6013,7 @@ loc_800EA38:
 	mov r3, #0x80
 	strh r1, [r2,r3]
 	pop {pc}
-	thumb_func_end sub_800EA22
+	thumb_func_end battle_clearCollisionQueue
 
 	thumb_local_start
 sub_800EA4E:

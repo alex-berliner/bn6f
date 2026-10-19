@@ -111,7 +111,7 @@ signed int sub_8123360()
 
 
 // 0x8123408
-signed int sub_8123408()
+signed int submenu_restoreSnapshot()
 {
     _BYTE **v0; // r10
     signed int result; // r0
@@ -5091,7 +5091,7 @@ void __noreturn sub_8127BE4()
                 byte_2000FE0 = v7;
                 byte_2000FE1 = 0;
             }
-            sub_8128500();
+            battle_fieldLockApply();
             sub_8128008();
             bg_ReloadBackgroundRegion_5_3_81281C0();
         }
@@ -5719,7 +5719,7 @@ __int64 battle_countFlaggedActions_81284B4()
 
 
 // 0x8128500
-signed int sub_8128500()
+signed int battle_fieldLockApply()
 {
     int v0; // r5
 
@@ -6231,7 +6231,7 @@ void __noreturn sub_8128CD8()
     sub_8129104(byte_201BB60, 36960);
     battle_resetEStructRecords_8046664();
     battle_spawnEStructRecordsFromTable_80465A0(byte_8128CB0);
-    v8 = sub_802B2A0(byte_201BDB8);
+    v8 = getEventFlagList(byte_201BDB8);
     *(v0 + 30) = v8;
     if ( v8 )
         sub_802B51C(byte_201BB60, 37076);
@@ -7986,7 +7986,7 @@ void __fastcall __noreturn menu_subMenu_dispatchByIndex_812A008(int a1)
 
 
 // 0x812a028
-int __fastcall sub_812A028(int a1)
+int __fastcall object_timerDialogueUpdate(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -8003,7 +8003,7 @@ int __fastcall sub_812A028(int a1)
         *(v1 + 16) = 5;
         chatbox_runScript_803FD9C_on_eTextScript201BA20(94);
     }
-    result = sub_813D648();
+    result = rfu_checkIdMatch();
     if ( v4 )
     {
         *(v1 + 1) = 12;
@@ -8803,7 +8803,7 @@ LABEL_29:
                         *(v0 + 1) = 20;
                         *(v0 + 2) = 0;
                         *(v0 + 17) = 0;
-                        v10 = sub_8132290();
+                        v10 = menu_dispatchStateHandler();
                         if ( v10 == 24 || v10 == 28 )
                         {
                             v11 = 0;
@@ -9014,7 +9014,7 @@ LABEL_47:
                     goto LABEL_47;
                 }
             }
-            v17 = sub_8132290();
+            v17 = menu_dispatchStateHandler();
             *(v0 + 1) = v17;
             if ( v17 == 28 )
                 engine_setScreeneffect(12, 16);
@@ -9105,7 +9105,7 @@ LABEL_31:
                         {
                             if ( v10 != 255 && v10 == 4 )
                             {
-                                *(v0 + 1) = sub_8132290();
+                                *(v0 + 1) = menu_dispatchStateHandler();
                                 *(v0 + 2) = 0;
                                 *(v0 + 3) = 0;
                                 if ( *(v0 + 1) >= 40 )
@@ -9652,7 +9652,7 @@ int battle_stepWaitForStateRunUpdate()
     int v1; // r0
 
     v0 = 19;
-    v1 = sub_8132290();
+    v1 = menu_dispatchStateHandler();
     if ( v1 != 24 && v1 != 28 )
         v0 = 18;
     return battle_runFrameUpdate(v0);
@@ -9929,7 +9929,7 @@ int sub_812B5C8()
 
     eStruct203F7D8[1] = sub_803EAE4();
     (*(&JumpTable812B5F4 + *(v0 + 2)))();
-    result = sub_8132290();
+    result = menu_dispatchStateHandler();
     if ( result == 28 )
     {
         entity_runAllUpdateHandlers_80465BC();

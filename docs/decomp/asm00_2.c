@@ -3298,7 +3298,7 @@ void nullsub_42()
 
 
 // 0x8010f6a
-int __fastcall sub_8010F6A(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnRelatedObject56Variant(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -3322,7 +3322,7 @@ int __fastcall sub_8010F7A(int a1, int a2, int a3, int a4)
 
 
 // 0x8010f86
-int __fastcall sub_8010F86(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnDelayedObject56(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -9028,7 +9028,7 @@ void nullsub_56()
 
 
 // 0x80145c2
-int sub_80145C2()
+int battle_clearObjectStatusUnlessPhase1()
 {
     int v0; // r10
     int result; // r0
@@ -9912,7 +9912,7 @@ int __cdecl battle_ai_attackVars_step3_8014E08(int a1, int a2, int a3)
         sprite_forceWhitePallete();
         v12 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v13 = sub_8013754(v12, 44, v12);
-        sub_80E11E0(v13, v14, v15, v16);
+        battle_spawnExtraVarsObject(v13, v14, v15, v16);
         v19 = PlaySoundEffect(256, v17, v18);
         v20 = sub_8013774(v19, 44);
         if ( v20 >= 1 && v20 <= 24 )
@@ -10124,7 +10124,7 @@ int sub_8015040()
         sprite_forceWhitePallete();
         v9 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v10 = sub_8013754(v9, 44, v9);
-        sub_80E11E0(v10, v11, v12, v13);
+        battle_spawnExtraVarsObject(v10, v11, v12, v13);
         v16 = PlaySoundEffect(256, v14, v15);
         v17 = sub_8013774(v16, 44);
         if ( v17 >= 1 && v17 <= 24 )
@@ -10355,7 +10355,7 @@ int sub_80152C8()
         sprite_forceWhitePallete();
         v9 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v10 = sub_8013754(v9, 44, v9);
-        sub_80E11E0(v10, v11, v12, v13);
+        battle_spawnExtraVarsObject(v10, v11, v12, v13);
         v16 = PlaySoundEffect(256, v14, v15);
         v17 = sub_8013774(v16, 44);
         if ( v17 >= 1 && v17 <= 24 )
@@ -15173,7 +15173,7 @@ int __fastcall object_setCollisionHitEffect(int result)
 
 
 // 0x801a146
-int sub_801A146()
+int battle_setCollisionHitEffectFromElement()
 {
     int v0; // r5
     int result; // r0
@@ -18834,7 +18834,7 @@ int battle_rollRareEvent()
     result = battle_getFlags();
     if ( !(result & 2) )
     {
-        result = sub_800A70C() << 14;
+        result = battle_getRareEventRoll() << 14;
         __asm { SVC         6 }
         *(v0 + 32) = result;
         if ( result == 0x4000 )

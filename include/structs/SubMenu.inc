@@ -6,7 +6,7 @@
 
   u8 idx_00 // loc=0x0
 
-  // sub_8123408 implies 0x80, but we only have this much space as implied by ewram.s
+  // submenu_restoreSnapshot implies 0x80, but we only have this much space as implied by ewram.s
   struct_org 0x50
   u0 Size // loc=0x80
 

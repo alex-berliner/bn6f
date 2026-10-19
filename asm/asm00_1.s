@@ -5347,7 +5347,7 @@ JumpTable8005948:
   // jack out warp
 	.word ow_startJackOutMapEnterCutscene+1 // (self: * GameState $r5) -> ()
   // levbus warp
-	.word sub_8005A00+1 // (self: * GameState $r5) -> ()
+	.word startBeastSpCutscene+1 // (self: * GameState $r5) -> ()
   // underground warp
 	.word sub_8005A0C+1 // (self: * GameState $r5) -> ()
   // todo check this one with sound. like 0x0, but has a delay + plays a hardcoded sound
@@ -5466,9 +5466,9 @@ ow_startJackOutMapEnterCutscene: // (self: * GameState $r5) -> ()
 // symdb: Launches one fixed cutscene (the script at 0x809b5ad) with parameter 0 on the current game state.
 // symdb: (nothing; caller's GameState in r5 is unused) -> r0 = result of StartCutscene; flags preserved
 // symdb: from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startBeastSpCutscene.yaml
 	thumb_local_start
-sub_8005A00: // (self: * GameState $r5) -> ()
+startBeastSpCutscene: // (self: * GameState $r5) -> ()
 	push {lr}
 
 	ldr r0, off_8005A84 // =CutsceneScript_809b5ad // CutsceneScript
@@ -5476,7 +5476,7 @@ sub_8005A00: // (self: * GameState $r5) -> ()
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 
 	pop {pc}
-	thumb_func_end sub_8005A00
+	thumb_func_end startBeastSpCutscene
 
 	thumb_local_start
 sub_8005A0C: // (self: * GameState $r5) -> ()
@@ -7373,13 +7373,13 @@ byte_80066E0:
 // symdb: Thin forwarding wrapper around the BIOS CpuSet word-copy helper (CopyWords), passing src/dest/size straight through.
 // symdb: (r0 = src *const u32, r1 = dest *mut u32, r2 = size in bytes) -> r0 = ? (CpuSet clobbers); no
 // symdb: meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80068E0.yaml
-	thumb_func_start sub_80068E0
-sub_80068E0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyWordsWrapper.yaml
+	thumb_func_start copyWordsWrapper
+copyWordsWrapper:
 	push {lr}
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {pc}
-	thumb_func_end sub_80068E0
+	thumb_func_end copyWordsWrapper
 
 	thumb_local_start
 sub_80068E8:
@@ -15864,7 +15864,7 @@ sub_800A1AA:
 	bl battle_isBattleOver
 	tst r0, r0
 	bne loc_800A1C8
-	bl sub_800A70C
+	bl battle_getRareEventRoll
 	ldr r1, off_800A1CC // =0x2d0
 	cmp r0, r1
 	blt loc_800A1C8
@@ -16692,14 +16692,14 @@ battle_getStateUnk40_800A704:
 
 // symdb: Getter returning the halfword the rare-event roll stored in battle state field 0x38.
 // symdb: () -> r0 = halfword at oBattleState_Unk_38; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A70C.yaml
-	thumb_func_start sub_800A70C
-sub_800A70C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getRareEventRoll.yaml
+	thumb_func_start battle_getRareEventRoll
+battle_getRareEventRoll:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrh r0, [r0,#oBattleState_Unk_38]
 	mov pc, lr
-	thumb_func_end sub_800A70C
+	thumb_func_end battle_getRareEventRoll
 
 	thumb_local_start
 sub_800A714:

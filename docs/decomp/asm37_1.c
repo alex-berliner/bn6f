@@ -50,7 +50,7 @@ int sub_81418CE()
 
 
 // 0x81418da
-int __fastcall sub_81418DA(int result, char a2)
+int __fastcall beast_setSpawnCoords(int result, char a2)
 {
     LOBYTE(dword_2001024) = result;
     BYTE1(dword_2001024) = a2;
@@ -357,7 +357,7 @@ unsigned int beast_spawnObjectsAndSetup_8141F7C()
         ++v7;
     }
     v13 = battle_getEnemyIndexFromMapGroup_8142080();
-    sub_81418DA(*(&dword_8142044 + v13), 15);
+    beast_setSpawnCoords(*(&dword_8142044 + v13), 15);
     v14 = battle_getEnemyIndexFromMapGroup_8142080();
     SpawnObjectsFromList(off_8141B24[v14]);
     TestEventFlagFromImmediate(7, 2);
@@ -407,7 +407,7 @@ int __fastcall battle_getAIDataPtr_8142068(int a1)
 // 0x8142072
 int sub_8142072()
 {
-    sub_81418DA(0, 15);
+    beast_setSpawnCoords(0, 15);
     return 0;
 }
 
@@ -499,7 +499,7 @@ int sub_814215A()
 
 
 // 0x8142166
-int __fastcall sub_8142166(int result)
+int __fastcall scenario_setEffectState0E(int result)
 {
     byte_200078E = result;
     return result;
@@ -748,7 +748,7 @@ int soulWeapons_apply_8142510()
             v4 = 0;
             sub_8142734();
         }
-        sub_8142166(0);
+        scenario_setEffectState0E(0);
         v5 = *(&off_814230C + GetSoulWeaponsMapIndex());
         v6 = byte_2006670;
         v7 = 0;
@@ -773,7 +773,7 @@ int soulWeapons_apply_8142510()
             v5 += 4;
         }
         reqBBS_setFlag_e17b0f7_8140A00();
-        sub_8036E86(33);
+        ow_setMapMusic(33);
         TestEventFlagFromImmediate(0, 40);
         if ( v3 && GetSoulWeaponsMapIndex() < 6 )
             (loc_80353EA)();
@@ -980,7 +980,7 @@ int GetSoulWeaponCursorCameraCoords()
 
 
 // 0x8142896
-unsigned int sub_8142896()
+unsigned int getSoulWeaponCursorDir8()
 {
     int v0; // r1
     int v1; // ST00_4
@@ -1249,7 +1249,7 @@ unsigned int sub_8142B58()
         {
             sub_8142990();
             v3 = *(v0 + 2);
-            return sub_8142896();
+            return getSoulWeaponCursorDir8();
         }
         v0 += 8;
         ++v1;
@@ -1272,7 +1272,7 @@ unsigned int sub_8142B58()
     }
     sub_8142990();
     v8 = *(v4 + 2);
-    return sub_8142896();
+    return getSoulWeaponCursorDir8();
 }
 
 

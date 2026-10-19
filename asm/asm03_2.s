@@ -4982,7 +4982,7 @@ sub_8049158:
 	thumb_local_start
 sub_8049164:
 	push {r4-r7,lr}
-	bl sub_813D648
+	bl rfu_checkIdMatch
 	beq loc_8049180
 	mov r0, #8
 	mov r1, #0x10
@@ -6689,7 +6689,7 @@ sub_8049E5C:
 	bl chatbox_8040818
 	ldr r0, off_8049E80 // =0x40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
-	bl sub_8123408
+	bl submenu_restoreSnapshot
 locret_8049E7E:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -6994,7 +6994,7 @@ sceneUpdate_804A078:
 	ldr r0, off_804A0A8 // =0x40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
 	bl chatbox_8040818
-	bl sub_8123408
+	bl submenu_restoreSnapshot
 	b locret_804A0A6
 loc_804A0A2:
 	bl sub_8049F70
@@ -10800,7 +10800,7 @@ sub_804C700:
 off_804C710:
 	.word off_804C714
 off_804C714:
-	.word sub_804C72C+1
+	.word battle_setupBackgroundGfx+1
 	.word battleObject_initBattleFieldTilesAndSfxTimer_804C770+1
 	thumb_func_end sub_804C700
 
@@ -10819,9 +10819,9 @@ sub_804C71C:
 // symdb: Loads battle background tile data into VRAM and stage-related palette data into an EWRAM buffer as one step of the battle scene's graphics init sequence.
 // symdb: (r0-r3 unused, relies on r5 = battle object, r10 = toolkit) -> r0 clobbered; r5+0x10 set to 4 as
 // symdb: a state/step marker
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C72C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundGfx.yaml
 	thumb_local_start
-sub_804C72C:
+battle_setupBackgroundGfx:
 	push {r4-r7,lr}
 	ldr r0, off_804C758 // =byte_86A2C00 
 	ldr r1, dword_804C75C // =0x600cf40 
@@ -10853,7 +10853,7 @@ off_804C768:
 	.word byte_3001B00
 dword_804C76C:
 	.word 0x1F09
-	thumb_func_end sub_804C72C
+	thumb_func_end battle_setupBackgroundGfx
 
 // symdb: Sets the BG3/BG2 viewport offset, dispatches a "post-init" callback chosen from r5+0xd, rolls a random ambient-SFX timer, and copies a 0x20×0x20 tile block to BG tile area 3.
 // symdb: (r5 = battle object pointer, r10 = toolkit ptr) -> side effects only (modifies RenderInfo, calls
@@ -11416,7 +11416,7 @@ battleObject_runCurAnimHandler_804CD20:
 off_804CD30:
 	.word off_804CD34
 off_804CD34:
-	.word battle_initBeastspBackground+1, sub_804CDCC+1
+	.word battle_initBeastspBackground+1, battle_initBeastspBgRenderLayer3+1
 	.byte 0xF0
 
 unk_804CD3D:
@@ -11466,7 +11466,7 @@ battle_initBeastspBackground:
 	bl battle_renderBgLayer3TilesAndHandleEvent_804CDD4
 	mov r0, #4
 	strb r0, [r5,#0x10]
-	bl sub_804CDCC
+	bl battle_initBeastspBgRenderLayer3
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804CDB0:
@@ -11485,13 +11485,13 @@ byte_804CDC4:
 
 // symdb: Thin wrapper that renders the battle background's BG layer-3 tile map and handles its story-flag event during beastsp background init.
 // symdb: () -> r0 = return value of battle_renderBgLayer3TilesAndHandleEvent_804CDD4; preserves r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CDCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBeastspBgRenderLayer3.yaml
 	thumb_local_start
-sub_804CDCC:
+battle_initBeastspBgRenderLayer3:
 	push {r4-r7,lr}
 	bl battle_renderBgLayer3TilesAndHandleEvent_804CDD4
 	pop {r4-r7,pc}
-	thumb_func_end sub_804CDCC
+	thumb_func_end battle_initBeastspBgRenderLayer3
 
 // symdb: Sets a BG layer 3 flag in RenderInfo, branches on a story flag (EVENT_BF0) to call a layout helper, then copies a 32x32 tile block from ROM into BG tile block 3 at (0,0).
 // symdb: (r5 = toolkit-related; r10 = ToolkitPtr) -> void ; side effects: writes to eRenderInfo (BG

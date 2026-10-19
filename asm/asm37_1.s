@@ -67,15 +67,15 @@ sub_81418CE:
 
 // symdb: Writes a pair of bytes (likely x/y coordinates) into the beast-spread struct eStruct2001010 at offsets 0x14/0x15.
 // symdb: (r0 = first byte, r1 = second byte) -> r0 = ?; no flags set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81418DA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beast_setSpawnCoords.yaml
 	thumb_local_start
-sub_81418DA:
+beast_setSpawnCoords:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
 	strb r0, [r5,#0x14] // (dword_2001024 - 0x2001010)
 	strb r1, [r5,#0x15] // (dword_2001024+1 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81418DA
+	thumb_func_end beast_setSpawnCoords
 
 // symdb: reads AIData.Version_15..Version_17 into r0..r2 from the EWRAM AIData struct
 // symdb: () -> r0 = AIData.Unk_15, r1 = AIData.Version_16, r2 = AIData.Version_14 ; no side effects
@@ -613,7 +613,7 @@ loc_8141FE4:
 	ldr r1, off_8142040 // =dword_8142044 
 	ldrb r0, [r1,r0]
 	mov r1, #0xf
-	bl sub_81418DA
+	bl beast_setSpawnCoords
 	bl battle_getEnemyIndexFromMapGroup_8142080
 	ldr r7, off_814203C // =off_8141B24 
 	lsl r0, r0, #2
@@ -694,7 +694,7 @@ sub_8142072:
 	push {r4-r7,lr}
 	mov r0, #0
 	mov r1, #0xf
-	bl sub_81418DA
+	bl beast_setSpawnCoords
 	mov r0, #0
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142072
@@ -847,14 +847,14 @@ sub_814215A:
 
 // symdb: Writes a one-byte value (likely a cutscene/scenario effect parameter) into the global scenario effect state, as part of Beast Out / Soul Unleash application.
 // symdb: (r0 = byte value to store) -> r0 = destroyed; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142166.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/scenario_setEffectState0E.yaml
 	thumb_local_start
-sub_8142166:
+scenario_setEffectState0E:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	strb r0, [r5,#0xe] // (byte_200078E - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142166
+	thumb_func_end scenario_setEffectState0E
 
 // symdb: returns true (r0=1 -> 7) while the per-battle scenario-effect state at eScenarioEffectState2000780+0xE is non-zero, serving as a guard for the scenario-effect handlers
 // symdb: () -> r0 = 1 if scenario-effect state+0xE != 0 else 0 ; sets NZ, clobbers r4, restores lr via
@@ -1223,7 +1223,7 @@ soulWeapons_apply_8142510:
 	bl sub_8142734
 loc_814253E:
 	mov r0, #0
-	bl sub_8142166
+	bl scenario_setEffectState0E
 	bl GetSoulWeaponsMapIndex
 	ldr r7, off_8142600 // =off_814230C 
 	lsl r0, r0, #2
@@ -1264,7 +1264,7 @@ loc_814258C:
 loc_8142594:
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	mov r0, #0x21 
-	bl sub_8036E86
+	bl ow_setMapMusic
 	movflag EVENT_28
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_81425B4
@@ -1634,9 +1634,9 @@ GetSoulWeaponCursorCameraCoords:
 // symdb: Returns one of 8 directions pointing from one soul-weapon cursor to another, from their camera-space coordinates.
 // symdb: (r0 = first cursor selector, r1 = second cursor selector) -> r0 = 8-way direction index 0..7
 // symdb: from first cursor to second; clobbers r1-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142896.yaml
-	thumb_func_start sub_8142896
-sub_8142896:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponCursorDir8.yaml
+	thumb_func_start getSoulWeaponCursorDir8
+getSoulWeaponCursorDir8:
 	push {r4-r7,lr}
 	mov r4, r1
 	bl GetSoulWeaponCursorCameraCoords
@@ -1656,7 +1656,7 @@ sub_8142896:
 	mov r1, #7
 	and r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142896
+	thumb_func_end getSoulWeaponCursorDir8
 
 // symdb: Returns a pointer to the nth BattleObject entry in the EWRAM `byte_2006670` array (8-byte stride).
 // symdb: (r0 = index) -> r0 = &byte_2006670[index*8] ; no side effects
@@ -2018,7 +2018,7 @@ loc_8142B60:
 	bne loc_8142B7E
 	bl sub_8142990
 	ldrh r1, [r5,#4]
-	bl sub_8142896
+	bl getSoulWeaponCursorDir8
 	mov r6, r0
 	b loc_8142BB2
 loc_8142B7E:
@@ -2038,7 +2038,7 @@ loc_8142B8A:
 	beq loc_8142BAA
 	bl sub_8142990
 	ldrh r1, [r5,#4]
-	bl sub_8142896
+	bl getSoulWeaponCursorDir8
 	mov r6, r0
 	b loc_8142BB2
 loc_8142BAA:

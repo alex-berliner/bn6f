@@ -150,7 +150,7 @@ signed int sub_808964C()
     {
         sub_81428D4(v1);
         sub_8142990();
-        v4 = sub_8142896();
+        v4 = getSoulWeaponCursorDir8();
         sub_809E2AE(v4);
         v5 = sub_809E2B8();
         sub_809E13C(byte_80896A8[v5]);
@@ -189,7 +189,7 @@ signed int sub_80896C4()
 
 
 // 0x80896d4
-signed int __fastcall sub_80896D4(int a1, int a2, int a3)
+signed int __fastcall battle_scenarioEffectInputStep(int a1, int a2, int a3)
 {
     _BYTE *v3; // r5
     signed int v4; // r0

@@ -2551,7 +2551,7 @@ int sub_8049164()
     int v0; // r5
     char v1; // zf
 
-    sub_813D648();
+    rfu_checkIdMatch();
     if ( v1 )
     {
         *(v0 + 1) = 12;
@@ -3820,7 +3820,7 @@ int sub_8049E5C()
         copyMemory_8001850();
         chatbox_8040818();
         SetRenderInfoLCDControl(&byte_40);
-        result = sub_8123408();
+        result = submenu_restoreSnapshot();
     }
     return result;
 }
@@ -4051,7 +4051,7 @@ int sceneUpdate_804A078()
     copyMemory_8001850();
     SetRenderInfoLCDControl(&byte_40);
     chatbox_8040818();
-    return sub_8123408();
+    return submenu_restoreSnapshot();
 }
 
 
@@ -6132,7 +6132,7 @@ int sub_804C71C()
 
 
 // 0x804c72c
-void sub_804C72C()
+void battle_setupBackgroundGfx()
 {
     int v0; // r5
     int v1; // r10
@@ -6485,12 +6485,12 @@ int battle_initBeastspBackground()
     SetDummyBGScrollCallbacks();
     battle_renderBgLayer3TilesAndHandleEvent_804CDD4();
     v0[16] = 4;
-    return sub_804CDCC(4);
+    return battle_initBeastspBgRenderLayer3(4);
 }
 
 
 // 0x804cdcc
-void __fastcall sub_804CDCC(int a1)
+void __fastcall battle_initBeastspBgRenderLayer3(int a1)
 {
     battle_renderBgLayer3TilesAndHandleEvent_804CDD4();
 }

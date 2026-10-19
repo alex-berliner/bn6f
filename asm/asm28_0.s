@@ -2431,7 +2431,7 @@ loc_809AB5A:
 	mov r2, #8
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, sp
-	bl sub_813D41C
+	bl ow_checkSecretCode
 	str r4, [r5,#0x78]
 	add sp, sp, #8
 	cmp r0, #1
@@ -3310,7 +3310,7 @@ byte_809B752:
 	cs_cutscene_end
 
 byte_809B764:
-	cs_call_native_with_return_value ptr1=sub_809B7EC+1
+	cs_call_native_with_return_value ptr1=ow_storeFacingDir4to7+1
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0x05 byte3=0xFF
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x10
 	cs_move_player_in_facing_direction byte1=0xFF byte2=0x08 signedhword3=0x0010
@@ -3368,9 +3368,9 @@ byte_809B7D4:
 
 // symdb: Reads the player's overworld facing direction, remaps it from 0-3 to 4-7, and stores it in a byte field of the object at r5.
 // symdb: (r5 = object struct, not passed in r0-r3) -> r0 = 0; writes byte at [r5,#5]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B7EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_storeFacingDir4to7.yaml
 	thumb_local_start
-sub_809B7EC:
+ow_storeFacingDir4to7:
 	push {r4-r7,lr}
 	bl GetOWPlayerFacingDirection
 	add r0, #4
@@ -3380,7 +3380,7 @@ sub_809B7EC:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809B7EC
+	thumb_func_end ow_storeFacingDir4to7
 
 	thumb_local_start
 sub_809B800:
@@ -4308,7 +4308,7 @@ byte_809C482:
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
-	cs_call_native_with_return_value ptr1=sub_809C954+1
+	cs_call_native_with_return_value ptr1=e_setEventFlagFromStruct+1
 	cs_spawn_ow_npc_objects_from_map
 	cs_kill_cutscene_process byte1=0x20
 	cs_free_all_ow_map_objects
@@ -4577,9 +4577,9 @@ byte_809C884:
 // symdb: Adds a cutscene-direction-dependent positional offset (32/64/96 pixels along one axis) to three coordinate values when initializing an overworld object.
 // symdb: (r0 = scratch, r1/r2/r3 = base coords (high halves), r5 = object struct) -> r0 = 0, r1/r2/r3 =
 // symdb: coords + offset; clobbers r4-r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C890.yaml
-	thumb_func_start sub_809C890
-sub_809C890:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_applyCutsceneDirOffset.yaml
+	thumb_func_start ow_applyCutsceneDirOffset
+ow_applyCutsceneDirOffset:
 	push {r4-r7,lr}
 	bl sub_809E1BC
 	lsr r1, r1, #0x10
@@ -4629,7 +4629,7 @@ byte_809C924:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0xA0, 0xFF, 0x0, 0x0, 0x0, 0x0
 off_809C93C:
 	.word eCutsceneState
-	thumb_func_end sub_809C890
+	thumb_func_end ow_applyCutsceneDirOffset
 
 	thumb_func_start sub_809C940
 sub_809C940:
@@ -4647,9 +4647,9 @@ off_809C950:
 
 // symdb: Sets one story/event flag whose ID is read from a field of a context structure.
 // symdb: (r5 = context struct pointer; no args in r0-r3) -> r0 = 0; clobbers r0-r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C954.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setEventFlagFromStruct.yaml
 	thumb_local_start
-sub_809C954:
+e_setEventFlagFromStruct:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x70]
 	mov r1, #0x10
@@ -4659,7 +4659,7 @@ sub_809C954:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809C954
+	thumb_func_end e_setEventFlagFromStruct
 
 // symdb: Overworld coord-interaction update: records a valid interaction coord (0x30–0x33) into the player object while EVENT_1B9 is clear, and otherwise drives a cutscene entry gated by key item count.
 // symdb: void sub_809C968(struct Toolkit *toolkit /* r10 */); // r2 produced (callee leftover from

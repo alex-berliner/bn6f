@@ -1992,7 +1992,7 @@ off_80272A0:
 	.word off_80272A4
 off_80272A4:
 	.word battle_loadObjTableEntryAndSetState4_80272B8+1
-	.word sub_80272D0+1
+	.word battle_tutorialRunScriptStep+1
 	.word chatbox_setState4IfFlag80Clear_8027320+1
 	.word sub_8027332+1
 	.word sub_8027394+1
@@ -2022,9 +2022,9 @@ off_80272CC:
 // symdb: Executes one two-byte step of the first-battle tutorial script: run a tutorial chatbox script, wait a fixed timer, or write a byte into the player's NaviStats.
 // symdb: (r4 = ptr to current tutorial opcode {u8 cmd, u8 arg}, r5 = tutorial controller struct) ->
 // symdb: updates r5+0x40 instruction pointer / r5+0x2 next-state; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80272D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tutorialRunScriptStep.yaml
 	thumb_local_start
-sub_80272D0:
+battle_tutorialRunScriptStep:
 	push {lr}
 	ldrb r0, [r4]
 	cmp r0, #0
@@ -2067,7 +2067,7 @@ locret_8027318:
 	.balign 4, 0
 off_802731C:
 	.word TextScriptFirstBattleTutorials
-	thumb_func_end sub_80272D0
+	thumb_func_end battle_tutorialRunScriptStep
 
 // symdb: If chatbox event flag 0x80 (eFlags2009F38) is clear, sets a chatbox state/halfword field to 4.
 // symdb: int sub_8027320(uint16_t *stateField /* r5: struct with u16 field at +2 */, int r1 /* unused */,
@@ -2178,7 +2178,7 @@ off_80273B4:
 	.word off_80273B8
 off_80273B8:
 	.word battle_object_SelectHandlerByMode_80273CC+1
-	.word sub_80272D0+1
+	.word battle_tutorialRunScriptStep+1
 	.word chatbox_setState4IfFlag80Clear_8027320+1
 	.word sub_8027332+1
 	.word sub_80273E4+1
@@ -4313,9 +4313,9 @@ nullsub_14:
 // symdb: (r1 = dest VRAM address set by caller; r4 = work struct, byte [r4,#7] selects variant) -> queues
 // symdb: GFX transfer of byte_86E79CC (flag==0) or byte_86E79CC+0x100 (flag!=0), 0x100 bytes; no return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80282AE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueGfxVariant.yaml
 	thumb_local_start
-sub_80282AE:
+battle_queueGfxVariant:
 	push {lr}
 	ldr r0, off_80283A0 // =byte_86E79CC
 	ldr r2, off_80283A4 // =0x100 
@@ -4326,7 +4326,7 @@ sub_80282AE:
 loc_80282BC:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {pc}
-	thumb_func_end sub_80282AE
+	thumb_func_end battle_queueGfxVariant
 
 	thumb_local_start
 sub_80282C2:
@@ -4441,7 +4441,7 @@ off_802836C:
 off_8028370:
 	.word chipSelect_QueueEntryIconGfx_8028284+1
 	.word nullsub_14+1
-	.word sub_80282AE+1
+	.word battle_queueGfxVariant+1
 	.word sub_80282C2+1
 	.word sub_80282D2+1
 	.word nullsub_14+1
@@ -9643,7 +9643,7 @@ sub_802A8A4:
 	ldr r2, dword_802A928 // =0x6009a80 
 	bl sub_802B51C
 	ldr r0, off_802A914 // =unk_2031000 
-	bl sub_802B2A0
+	bl getEventFlagList
 	strh r0, [r5,#0x1e]
 	mov r0, #0
 	ldr r1, off_802A90C // =dword_8129180 
@@ -9753,7 +9753,7 @@ off_802A988:
 	thumb_local_start
 sub_802A9B4:
 	push {lr}
-	bl sub_802AF6C
+	bl ow_scrollBg2LeftWriteTiles
 	bne locret_802A9CC
 	mov r0, #4
 	strb r0, [r5,#1]
@@ -10526,9 +10526,9 @@ sub_802AF42:
 // symdb: (r5 = state object, preloaded by caller; fields: +2 started flag byte, +38 scroll X word, +3c
 // symdb: step counter word) -> r0 = remaining scroll X (0 when finished); writes BG2ScrollX in toolkit
 // symdb: RenderInfo, plays sound, updates BG block 3 tiles
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_scrollBg2LeftWriteTiles.yaml
 	thumb_local_start
-sub_802AF6C:
+ow_scrollBg2LeftWriteTiles:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#2]
 	tst r0, r0
@@ -10582,7 +10582,7 @@ loc_802AFAE:
 	strh r0, [r1,#oRenderInfo_BG2ScrollX]
 	cmp r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_802AF6C
+	thumb_func_end ow_scrollBg2LeftWriteTiles
 
 	thumb_local_start
 sub_802AFD4:
@@ -10896,9 +10896,9 @@ off_802B29C:
 
 // symdb: Builds a halfword list (0xFF-filled) of which of 27 event flags (0x197..0x1B4 range) are set, storing flag-base+1 IDs and returning the count.
 // symdb: (r0 = u16 out buffer[27]) -> r0 = number of set flags written; flags from cmp/blt loop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B2A0.yaml
-	thumb_func_start sub_802B2A0
-sub_802B2A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getEventFlagList.yaml
+	thumb_func_start getEventFlagList
+getEventFlagList:
 	push {r4-r7,lr}
 	mov r7, r0
 	ldr r1, dword_802B350 // =0x1b 
@@ -10947,7 +10947,7 @@ dword_802B350:
 	.word 0x1B
 dword_802B354:
 	.word 0x197
-	thumb_func_end sub_802B2A0
+	thumb_func_end getEventFlagList
 
 	thumb_func_start sub_802B358
 sub_802B358:
@@ -14928,7 +14928,7 @@ sub_802D118:
 loc_802D138:
 	strb r1, [r7,#0x11]
 	strb r1, [r7,#0x10]
-	bl sub_800A70C
+	bl battle_getRareEventRoll
 	strh r0, [r7,#0x14]
 	pop {r6,r7,pc}
 	thumb_func_end sub_802D118

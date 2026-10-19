@@ -1293,7 +1293,7 @@ signed int battle_loadObjTableEntryAndSetState4_80272B8()
 
 
 // 0x80272d0
-void sub_80272D0()
+void battle_tutorialRunScriptStep()
 {
     unsigned __int8 *v0; // r4
     int v1; // r5
@@ -2842,7 +2842,7 @@ void nullsub_14()
 
 
 // 0x80282ae
-int __fastcall sub_80282AE(int a1, int a2)
+int __fastcall battle_queueGfxVariant(int a1, int a2)
 {
     int v2; // r4
     char *v3; // r0
@@ -6358,7 +6358,7 @@ void __noreturn sub_802A8A4()
     decomp_802B060();
     sub_802B4D4(&unk_2035000, 36976, 100699648, v1);
     sub_802B51C(&unk_2035000, 37076);
-    *(v0 + 30) = sub_802B2A0(word_2031000);
+    *(v0 + 30) = getEventFlagList(word_2031000);
     v2 = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
     *(v0 + 12) = v2;
     *(v0 + 13) = v3;
@@ -6419,7 +6419,7 @@ int __fastcall sub_802A9B4(int a1, int a2, int a3)
     char v5; // zf
     char v6; // r1
 
-    result = sub_802AF6C(a1, a2, a3);
+    result = ow_scrollBg2LeftWriteTiles(a1, a2, a3);
     if ( v5 )
     {
         v3[1] = 4;
@@ -6965,7 +6965,7 @@ int sub_802AF42()
 
 
 // 0x802af6c
-int __fastcall sub_802AF6C(int a1, int a2, int a3)
+int __fastcall ow_scrollBg2LeftWriteTiles(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -7184,7 +7184,7 @@ int *sub_802B298()
 
 
 // 0x802b2a0
-unsigned int __fastcall sub_802B2A0(u8 *a1)
+unsigned int __fastcall getEventFlagList(u8 *a1)
 {
     u8 *v1; // r7
     unsigned int v2; // r6
@@ -9602,7 +9602,7 @@ int __fastcall sub_802D118(int a1)
     }
     v1[17] = v3;
     v1[16] = v3;
-    result = sub_800A70C();
+    result = battle_getRareEventRoll();
     *(v1 + 10) = result;
     return result;
 }

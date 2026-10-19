@@ -2591,7 +2591,7 @@ void sub_8132194()
                         sSubmenu.jo_01 = 20;
                         sSubmenu.unk_02 = 0;
                         sSubmenu.unk_11 = 0;
-                        v7 = sub_8132290();
+                        v7 = menu_dispatchStateHandler();
                         if ( v7 == 24 || v7 == 28 )
                         {
                             v8 = 0;
@@ -2623,7 +2623,7 @@ void __fastcall chatbox_runScript_803FD9C_on_eTextScript201BA20(int a1)
 
 
 // 0x8132290
-int sub_8132290()
+int menu_dispatchStateHandler()
 {
     int v0; // r5
 
@@ -3000,7 +3000,7 @@ signed int sub_8132614()
 
     sub_803EBB8();
     v0[1] = 8;
-    v1 = sub_8132290();
+    v1 = menu_dispatchStateHandler();
     if ( v1 != 24 && v1 != 28 )
     {
         if ( v1 != 32 && v1 != 36 )
@@ -3970,7 +3970,7 @@ void submenu_handleConfirmOrExitInput()
 
 
 // 0x81335b8
-int sub_81335B8()
+int battle_confirmSpawnPanelWrap()
 {
     return battle_confirmSpawnPanel();
 }
@@ -6754,13 +6754,13 @@ int navicust_handleBoardInput()
         JoypadKeyPressed();
         if ( !v2 )
         {
-            sub_81367A0(v3, v4, v5);
+            navicust_boardCursorUp(v3, v4, v5);
             sub_8135F18();
         }
         v6 = *(v1 + oToolkit_JoypadPtr);
         if ( *v6 & 0x10 )
         {
-            sub_8136804(v6[1]);
+            beastsp_feedBoardCodeInput(v6[1]);
             goto LABEL_20;
         }
         *(v0 + 23) = 0;
@@ -6880,7 +6880,7 @@ int sub_8135968()
     {
         v0[2] = 8;
         sub_813BA80();
-        sub_8135D9C(v1, v2, v3, v4);
+        submenu_rebuildKeyItemList(v1, v2, v3, v4);
         v0[12] = 16;
         sub_813660C(1);
         navicust_drawBoardTilemap(1);
@@ -7021,7 +7021,7 @@ int sub_8135A44()
                 v5 = sub_813BA48(v3++);
             }
             while ( v3 < 25 );
-            sub_8135D9C(v5, v6, v7, v8);
+            submenu_rebuildKeyItemList(v5, v6, v7, v8);
             sub_813660C(1);
             navicust_drawBoardTilemap(1);
             if ( *(v0 + 22) != 4 )
@@ -7193,7 +7193,7 @@ signed int navicust_giveKeyItem14C()
 
 
 // 0x8135d9c
-int __fastcall sub_8135D9C(int a1, int a2, int a3, int a4)
+int __fastcall submenu_rebuildKeyItemList(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r1
@@ -7427,7 +7427,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
     v6 = &byte_81360AC[2 * *(v3 + 15)];
     if ( v5 & 8 )
     {
-        sub_81367A0(v6, 8, a3);
+        navicust_boardCursorUp(v6, 8, a3);
         sub_81360DC();
     }
     if ( v5 & 4 )
@@ -7554,7 +7554,7 @@ int __fastcall sub_813612C(int a1, int a2, int a3)
 
     v5 = *(*(v4 + oToolkit_JoypadPtr) + 2);
     if ( v5 & 1 )
-        return sub_8136450();
+        return navicust_confirmPartPlacement();
     if ( v5 & 2 )
         return sub_813640C(a1, 2, a3);
     v7 = &byte_8136210[2 * *(v3 + 15)];
@@ -7842,7 +7842,7 @@ int __fastcall sub_813640C(int a1, int a2, int a3)
 
 
 // 0x8136450
-int sub_8136450()
+int navicust_confirmPartPlacement()
 {
     int v0; // r5
     __int16 *v1; // r0
@@ -7911,7 +7911,7 @@ int __fastcall sub_81364E8(int a1)
     TestEventFlag(a1 + 9824);
     v3 = sub_813BA08(v2, *(v1 + 40), *(v1 + 44), *(v1 + 14));
     v4 = sub_813B950(v3, v2, *(v1 + 40), *(v1 + 44));
-    sub_8135D9C(v4, v5, v6, v7);
+    submenu_rebuildKeyItemList(v4, v5, v6, v7);
     *(v1 + 12) = 16;
     *(v1 + 2) = 8;
     result = *(v1 + 36);
@@ -8009,7 +8009,7 @@ signed int sub_813658C()
     sub_813BA48(v1);
     sub_813660C(1);
     v7 = navicust_drawBoardTilemap(1);
-    sub_8135D9C(v7, v8, v9, v10);
+    submenu_rebuildKeyItemList(v7, v8, v9, v10);
     *(v0 + 58) = sub_8135DF8(v3);
     *(v0 + 56) = 0;
     *(v0 + 2) = 32;
@@ -8182,7 +8182,7 @@ int sub_813677C()
 
 
 // 0x81367a0
-int __fastcall sub_81367A0(int a1, int a2, int a3)
+int __fastcall navicust_boardCursorUp(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r1
@@ -8233,7 +8233,7 @@ void sub_81367C0()
 
 
 // 0x8136804
-int __fastcall sub_8136804(int result)
+int __fastcall beastsp_feedBoardCodeInput(int result)
 {
     int v1; // r5
     __int16 *v2; // r0
@@ -8927,7 +8927,7 @@ int sub_81370C4()
 
 
 // 0x81370d4
-int sub_81370D4()
+int navicust_checkEquipDialogs()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -9251,7 +9251,7 @@ int sub_8137368()
 
 
 // 0x8137378
-int sub_8137378()
+int navicust_checkPiecePlacement()
 {
     int v0; // r5
     int v1; // r7
@@ -9371,7 +9371,7 @@ int sub_81374C4()
 
 
 // 0x81374d4
-int sub_81374D4()
+int navicust_dialogStateHandler()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -9554,7 +9554,7 @@ void __fastcall __noreturn sub_81375F4(int a1, int a2, int a3)
 
 
 // 0x8137618
-signed int sub_8137618()
+signed int navicust_countBeastOutUses()
 {
     int v0; // r5
     signed int v1; // r7

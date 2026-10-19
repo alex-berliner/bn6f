@@ -362,7 +362,7 @@ int __fastcall sub_808FCE4(int a1, int a2, int a3, int a4)
 
 
 // 0x808fcf0
-int __fastcall sub_808FCF0(int a1)
+int __fastcall ow_startBeastOutHit(int a1)
 {
     int v1; // r2
 

@@ -10950,7 +10950,7 @@ int m4aSoundInit()
     do
     {
         v2 = *v0;
-        sub_814F08C(*v0, v0[1], *(v0 + 8));
+        mplay_initPlayer(*v0, v0[1], *(v0 + 8));
         *(v2 + 11) = *(v0 + 5);
         *(v2 + 24) = byte_2010B90;
         v0 += 3;
@@ -11470,7 +11470,7 @@ int m4aSoundVSync()
 
 
 // 0x814f08c
-int __fastcall sub_814F08C(int a1, _BYTE *a2, unsigned __int8 a3)
+int __fastcall mplay_initPlayer(int a1, _BYTE *a2, unsigned __int8 a3)
 {
     int v3; // r7
     _BYTE *v4; // r6

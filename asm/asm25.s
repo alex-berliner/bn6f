@@ -639,9 +639,9 @@ sub_808FCE4:
 
 // symdb: Starts the player's Beast Out overworld strike: records the facing-derived hit direction and a 15-frame counter in the player's beast-attack struct and plays the hit sound.
 // symdb: (no args) -> r0 = 0; clobbers r0-r1, r5, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FCF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startBeastOutHit.yaml
 	thumb_local_start
-sub_808FCF0:
+ow_startBeastOutHit:
 	push {r5,lr}
 	ldr r5, off_808FD60 // =off_808F5D4 
 	ldr r5, [r5]
@@ -660,7 +660,7 @@ off_808FD10:
 	.word byte_808FD14
 byte_808FD14:
 	.byte 0x5, 0x5, 0x7, 0x7, 0x1, 0x1, 0x3, 0x3
-	thumb_func_end sub_808FCF0
+	thumb_func_end ow_startBeastOutHit
 
 	thumb_local_start
 sub_808FD1C:

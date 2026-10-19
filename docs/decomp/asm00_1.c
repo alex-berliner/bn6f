@@ -3098,7 +3098,7 @@ void *ow_startJackOutMapEnterCutscene()
 
 
 // 0x8005a00
-void *__fastcall sub_8005A00(int a1, int a2, int a3, int a4)
+void *__fastcall startBeastSpCutscene(int a1, int a2, int a3, int a4)
 {
     return StartCutscene(CutsceneScript_809b5ad, 0, a3, a4);
 }
@@ -4154,7 +4154,7 @@ _WORD *sub_8006580()
 
 
 // 0x80068e0
-void __fastcall sub_80068E0(int a1, int a2, unsigned int a3)
+void __fastcall copyWordsWrapper(int a1, int a2, unsigned int a3)
 {
     CopyWords(a1, a2, a3);
 }
@@ -10508,7 +10508,7 @@ BOOL sub_800A1AA()
     char v0; // zf
 
     battle_isTimeStop();
-    return v0 && !battle_isBattleOver() && sub_800A70C() >= &dword_2D0;
+    return v0 && !battle_isBattleOver() && battle_getRareEventRoll() >= &dword_2D0;
 }
 
 
@@ -11073,7 +11073,7 @@ int battle_getStateUnk40_800A704()
 
 
 // 0x800a70c
-int sub_800A70C()
+int battle_getRareEventRoll()
 {
     int v0; // r10
 
@@ -13057,7 +13057,7 @@ int object_dimScreen()
 
 
 // 0x800b97e
-int sub_800B97E()
+int battle_waitScreenFadeEnd()
 {
     int v0; // r5
     int result; // r0

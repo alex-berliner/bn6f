@@ -4875,7 +4875,7 @@ off_8010E18:
 	.word nullsub_43+1
 off_8010EA4:
 	.word nullsub_42+1
-	.word sub_8010F6A+1
+	.word battle_spawnRelatedObject56Variant+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
@@ -4883,7 +4883,7 @@ off_8010EA4:
 	.word sub_8010F7A+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_8010F86+1
+	.word battle_spawnDelayedObject56+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
@@ -4937,9 +4937,9 @@ nullsub_42:
 // symdb: Wrapper that spawns a battle object of type 0x56 linked to a owner with a modified third argument and stores the result in the owner's RelatedObject2Ptr field.
 // symdb: (r0 = owner object?, r1 = ?, r2 = 32-bit value) -> r0 = spawned object; result stored to [r5 +
 // symdb: oBattleObject_RelatedObject2Ptr]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010F6A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnRelatedObject56Variant.yaml
 	thumb_local_start
-sub_8010F6A:
+battle_spawnRelatedObject56Variant:
 	push {r4,lr}
 	mov r4, #2
 	lsl r2, r2, #0x10
@@ -4947,7 +4947,7 @@ sub_8010F6A:
 	bl battle_spawnObject56LinkedToOwner_80C44A8
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	pop {r4,pc}
-	thumb_func_end sub_8010F6A
+	thumb_func_end battle_spawnRelatedObject56Variant
 
 	thumb_local_start
 sub_8010F7A:
@@ -4961,9 +4961,9 @@ sub_8010F7A:
 // symdb: Spawns a battle object of type 0x56 linked to a battle object, passing a combined 32-bit parameter (delay << 16 | 0xB) and storing the new object in the owner's RelatedObject2Ptr field.
 // symdb: (r0 = owner battle object, r2 = 16-bit count/delay in low half) -> r0 = spawned object; also
 // symdb: stores it at [r5 + oBattleObject_RelatedObject2Ptr]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010F86.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnDelayedObject56.yaml
 	thumb_local_start
-sub_8010F86:
+battle_spawnDelayedObject56:
 	push {r4,lr}
 	mov r4, #0xb
 	lsl r2, r2, #0x10
@@ -4971,7 +4971,7 @@ sub_8010F86:
 	bl battle_spawnObject56LinkedToOwner_80C44A8
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	pop {r4,pc}
-	thumb_func_end sub_8010F86
+	thumb_func_end battle_spawnDelayedObject56
 
 	thumb_local_start
 sub_8010F96:
@@ -12935,7 +12935,7 @@ JumpTable8014550:
 	.word nullsub_54+1
 	.word nullsub_55+1
 	.word nullsub_56+1
-	.word sub_80145C2+1
+	.word battle_clearObjectStatusUnlessPhase1+1
 	.word SetObjectAirshoeFlag+1
 	.word SetObjectSuperArmorFlag+1
 	.word nullsub_4+1
@@ -12996,9 +12996,9 @@ nullsub_56:
 // symdb: Battle hook that clears an object's status/affliction flags and collision timers unless the battle is in phase 1 (likely the custom screen, where status timers should be frozen).
 // symdb: (r0 = battle object or state passed through implicitly via r10; no explicit args used) -> r0 =
 // symdb: result of battle_clearObjectStatusFlagsAndTimers; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80145C2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearObjectStatusUnlessPhase1.yaml
 	thumb_local_start
-sub_80145C2:
+battle_clearObjectStatusUnlessPhase1:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -13008,7 +13008,7 @@ sub_80145C2:
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 locret_80145D2:
 	pop {pc}
-	thumb_func_end sub_80145C2
+	thumb_func_end battle_clearObjectStatusUnlessPhase1
 
 	thumb_local_start
 SetObjectAirshoeFlag:
@@ -14213,7 +14213,7 @@ battle_ai_attackVars_step3_8014E08:
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r4, dword_8014F00 // =0x30e00 
-	bl sub_80E11E0
+	bl battle_spawnExtraVarsObject
 	mov r0, #1
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -14479,7 +14479,7 @@ sub_8015040:
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r4, dword_8015124 // =0x30e00 
-	bl sub_80E11E0
+	bl battle_spawnExtraVarsObject
 	mov r0, #1
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -14775,7 +14775,7 @@ sub_80152C8:
 	mov r2, r0
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r4, dword_80153AC // =0x30e00 
-	bl sub_80E11E0
+	bl battle_spawnExtraVarsObject
 	mov r0, #1
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -22616,16 +22616,16 @@ object_setCollisionHitEffect:
 
 // symdb: Copies the low nibble of a battle object's element field into its collision data's hit-effect byte.
 // symdb: (r5 = battle object) -> r0 = element&0xF stored to collisionData.hitEffect; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A146.yaml
-	thumb_func_start sub_801A146
-sub_801A146:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setCollisionHitEffectFromElement.yaml
+	thumb_func_start battle_setCollisionHitEffectFromElement
+battle_setCollisionHitEffectFromElement:
 	ldrb r0, [r5,#oBattleObject_Element]
 	mov r3, #0xf
 	and r0, r3
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
 	strb r0, [r3,#oCollisionData_HitEffect]
 	mov pc, lr
-	thumb_func_end sub_801A146
+	thumb_func_end battle_setCollisionHitEffectFromElement
 
 // (int a1) -> void
 // symdb: ORs the given flag bits into a battle object's CollisionData ObjectFlags1 word.
@@ -27736,7 +27736,7 @@ battle_rollRareEvent:
 	mov r1, #2
 	tst r0, r1
 	bne locret_801C4DA
-	bl sub_800A70C
+	bl battle_getRareEventRoll
 	ldr r1, dword_801C4DC // =0x4000 
 	mul r0, r1
 	ldr r1, off_801C4E0 // =0x2d0 

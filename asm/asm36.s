@@ -4139,7 +4139,7 @@ loc_81321F4:
 	mov r0, #0
 	strb r0, [r5,#0x2] // (sSubmenu.unk_02 - 0x2009a30)
 	strb r0, [r5,#0x11] // (sSubmenu.unk_11 - 0x2009a30)
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	cmp r0, #0x18
 	beq loc_813221C
 	cmp r0, #0x1c
@@ -4221,9 +4221,9 @@ off_813228C:
 // symdb: Menu state dispatcher: reads the menu record's current state and tail-trampolines into that state's handler, handing it the eLinkState pointer.
 // symdb: (r5 = menu record, r0/r1 = passthrough args) -> jumps to handler jt[r5.state]; r2 = eLinkState
 // symdb: ptr; returns to caller after handler via lr=pc trampoline
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132290.yaml
-	thumb_func_start sub_8132290
-sub_8132290:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_dispatchStateHandler.yaml
+	thumb_func_start menu_dispatchStateHandler
+menu_dispatchStateHandler:
 	push {lr}
 	bl sub_803E8F8
 	mov r2, r0
@@ -4237,7 +4237,7 @@ sub_8132290:
 	.balign 4, 0
 off_81322A8:
 	.word jt_81322AC
-	thumb_func_end sub_8132290
+	thumb_func_end menu_dispatchStateHandler
 
 jt_81322AC:
 	.word sub_81322B8+1
@@ -4811,7 +4811,7 @@ dword_8132610:
 	.word 0x1C1814
 	thumb_func_end sub_81325F4
 
-// symdb: Dispatches on sub_8132290's menu choice, sets a flag byte, picks a sub-state via lookup, and writes the next handler index into the menu record.
+// symdb: Dispatches on menu_dispatchStateHandler's menu choice, sets a flag byte, picks a sub-state via lookup, and writes the next handler index into the menu record.
 // symdb: void sub_8132614(struct MenuRecord *r5) * ; returns nz=1 in Z due to `mov r0,
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8132614.yaml
 	thumb_func_start sub_8132614
@@ -4820,7 +4820,7 @@ sub_8132614:
 	bl sub_803EBB8
 	mov r0, #8
 	strb r0, [r5,#1]
-	bl sub_8132290
+	bl menu_dispatchStateHandler
 	cmp r0, #0x18
 	beq loc_813262A
 	cmp r0, #0x1c
@@ -6713,7 +6713,7 @@ off_8133550:
 	.word off_8133554
 off_8133554:
 	.word submenu_handleConfirmOrExitInput+1
-	.word sub_81335B8+1
+	.word battle_confirmSpawnPanelWrap+1
 	.word sub_81335C0+1
 	.word sub_81335D8+1
 	thumb_func_end sub_8133540
@@ -6766,13 +6766,13 @@ locret_81335B6:
 // symdb: Trivial wrapper that immediately tail-calls the spawn-panel confirmation routine.
 // symdb: (r0 = spawn context/panel pick, r1 = secondary arg) -> r0 = passthrough result of
 // symdb: battle_confirmSpawnPanel; flags clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81335B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSpawnPanelWrap.yaml
 	thumb_local_start
-sub_81335B8:
+battle_confirmSpawnPanelWrap:
 	push {lr}
 	bl battle_confirmSpawnPanel
 	pop {pc}
-	thumb_func_end sub_81335B8
+	thumb_func_end battle_confirmSpawnPanelWrap
 
 	thumb_local_start
 sub_81335C0:
@@ -11322,7 +11322,7 @@ off_81356E8:
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
 // symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
-// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
+// symdb: sub_8135D8C / submenu_rebuildKeyItemList, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
@@ -11402,7 +11402,7 @@ battle_initNaviCustomizerScene_81356F4:
 	bl navicust_drawBoardTilemap
 	bl sub_81362F8
 	bl navicust_giveKeyItem14C
-	bl sub_8135D9C
+	bl submenu_rebuildKeyItemList
 	ldr r0, off_81357C0 // =byte_8135628
 	bl battle_spawnEStructRecordsFromTable_80465A0 // (void *a1) -> void
 	mov r0, #SONG_NAVI_CUSTOMIZER
@@ -11486,7 +11486,7 @@ loc_8135850:
 	mov r0, #JOYPAD_START
 	bl IsButtonPressed
 	beq loc_8135862
-	bl sub_81367A0
+	bl navicust_boardCursorUp
 	bl sub_8135F18
 	b loc_81358EE
 loc_8135862:
@@ -11497,7 +11497,7 @@ loc_8135862:
 	tst r0, r1
 	beq loc_8135876
 	ldrh r0, [r2,#2]
-	bl sub_8136804
+	bl beastsp_feedBoardCodeInput
 	b loc_81358EE
 loc_8135876:
 	mov r0, #0
@@ -11643,7 +11643,7 @@ sub_8135968:
 	mov r0, #8
 	strb r0, [r5,#2]
 	bl sub_813BA80
-	bl sub_8135D9C
+	bl submenu_rebuildKeyItemList
 	mov r0, #0x10
 	strb r0, [r5,#0xc]
 	mov r0, #1
@@ -11787,7 +11787,7 @@ loc_8135A74:
 	add r4, #1
 	cmp r4, #0x19
 	blt loc_8135A74
-	bl sub_8135D9C
+	bl submenu_rebuildKeyItemList
 	mov r0, #1
 	bl sub_813660C
 	mov r0, #1
@@ -12138,9 +12138,9 @@ off_8135D98:
 // symdb: Rebuilds the key-item/chip list buffer for a list menu (Navi Customizer screen context), then re-clamps the menu's cursor and scroll offsets to the new entry count.
 // symdb: (r5 = list-state struct, set by caller) -> r0 = entry count; list buffer word_201DA80 rewritten,
 // symdb: struct fields +0x1e/+0x20/+0x24/+0x38/+0x3a updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135D9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_rebuildKeyItemList.yaml
 	thumb_local_start
-sub_8135D9C:
+submenu_rebuildKeyItemList:
 	push {r4-r7,lr}
 	ldr r6, off_8135ECC // =word_201DA80 
 	// memBlock
@@ -12190,7 +12190,7 @@ loc_8135DEA:
 locret_8135DF4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8135D9C
+	thumb_func_end submenu_rebuildKeyItemList
 
 	thumb_local_start
 sub_8135DF8:
@@ -12476,7 +12476,7 @@ sub_8135FDC:
 	mov r1, #8
 	tst r4, r1
 	beq loc_8135FFC
-	bl sub_81367A0
+	bl navicust_boardCursorUp
 	bl sub_81360DC
 	b locret_81360A6
 loc_8135FFC:
@@ -12647,7 +12647,7 @@ sub_813612C:
 	mov r1, #1
 	tst r4, r1
 	beq loc_8136140
-	bl sub_8136450
+	bl navicust_confirmPartPlacement
 	b locret_8136200
 loc_8136140:
 	mov r1, #2
@@ -13062,9 +13062,9 @@ locret_813644C:
 // symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
 // symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
 // symdb: state struct) -> r0 = 0; flags from sub_81364BC choose valid vs invalid path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136450.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_confirmPartPlacement.yaml
 	thumb_local_start
-sub_8136450:
+navicust_confirmPartPlacement:
 	push {lr}
 	bl sub_81364BC
 	bne loc_81364B4
@@ -13108,7 +13108,7 @@ loc_81364B4:
 	bl PlaySoundEffect
 locret_81364BA:
 	pop {pc}
-	thumb_func_end sub_8136450
+	thumb_func_end navicust_confirmPartPlacement
 
 	thumb_local_start
 sub_81364BC:
@@ -13156,7 +13156,7 @@ loc_81364FC:
 	ldrh r2, [r5,#0x28]
 	ldrh r3, [r5,#0x2c]
 	bl sub_813B950
-	bl sub_8135D9C
+	bl submenu_rebuildKeyItemList
 	mov r0, #0x10
 	strb r0, [r5,#0xc]
 	mov r0, #8
@@ -13255,7 +13255,7 @@ sub_813658C:
 	bl sub_813660C
 	mov r0, #1
 	bl navicust_drawBoardTilemap
-	bl sub_8135D9C
+	bl submenu_rebuildKeyItemList
 	mov r0, r6
 	bl sub_8135DF8
 	strh r0, [r5,#0x3a]
@@ -13511,9 +13511,9 @@ off_813679C:
 // symdb: Board-screen cursor action: moves the Navi Customizer cursor/list up (with wrap/clamp), stores the new position fields, sets a state byte, and plays the menu-select sound.
 // symdb: (r5 = board-screen state object) -> r0 = sound-effect id passed on; writes halfwords [r5+0x24]
 // symdb: and [r5+0x20], byte [r5+0xc]; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81367A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_boardCursorUp.yaml
 	thumb_local_start
-sub_81367A0:
+navicust_boardCursorUp:
 	push {lr}
 	mov r1, #3
 	ldrh r0, [r5,#0x1e]
@@ -13530,7 +13530,7 @@ loc_81367AE:
 	bl PlaySoundEffect
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_81367A0
+	thumb_func_end navicust_boardCursorUp
 
 	thumb_local_start
 sub_81367C0:
@@ -13572,9 +13572,9 @@ locret_8136802:
 
 // symdb: On A/B/L/R presses during the Navi Customizer board, converts the selected cell's content into a code input and feeds it to the BeastSP secret-code checker.
 // symdb: (r0 = new key bitmask, r5 = board state) -> void; [r5+0x17] code-progress index updated in place
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136804.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_feedBoardCodeInput.yaml
 	thumb_local_start
-sub_8136804:
+beastsp_feedBoardCodeInput:
 	push {lr}
 	ldr r1, dword_8136824 // =0x303 
 	tst r0, r1
@@ -13606,7 +13606,7 @@ byte_8136844:
 	.byte 0x34, 0x32, 0x34, 0x32, 0x34, 0x32, 0x38, 0x32, 0x38
 	.byte 0x32, 0x38, 0x32, 0x38, 0x32, 0x38, 0x32, 0x38, 0x32
 	.byte 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_8136804
+	thumb_func_end beastsp_feedBoardCodeInput
 
 	thumb_local_start
 sub_813686C:
@@ -14363,7 +14363,7 @@ off_8136E2C:
 	.word sub_813709C+1
 	.word sub_81370AC+1
 	.word sub_81370C4+1
-	.word sub_81370D4+1
+	.word navicust_checkEquipDialogs+1
 	.word sub_8137160+1
 	.word sub_8137170+1
 	.word sub_81371A0+1
@@ -14376,11 +14376,11 @@ off_8136E2C:
 	.word sub_81372F4+1
 	.word sub_8137334+1
 	.word sub_8137368+1
-	.word sub_8137378+1
+	.word navicust_checkPiecePlacement+1
 	.word sub_813749C+1
 	.word sub_81374AC+1
 	.word sub_81374C4+1
-	.word sub_81374D4+1
+	.word navicust_dialogStateHandler+1
 	.word sub_8137528+1
 	.word sub_8137538+1
 	.word sub_8137550+1
@@ -14439,7 +14439,7 @@ sub_8136F0C:
 	mov r1, #0x40 
 	mov r2, #0
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8136F3C
@@ -14463,7 +14463,7 @@ sub_8136F40:
 	mov r1, #0x30 
 	mov r2, #1
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq locret_8136F70
@@ -14491,7 +14491,7 @@ navicust_runOnceDialog:
 	mov r1, #0x61 
 	mov r2, #0
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	beq locret_8136FA2
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -14680,9 +14680,9 @@ locret_81370D2:
 // symdb: NaviCust menu handler that validates the player's part setup, pops the matching warning dialog (script 0x10/0x11/0x12/0x14) and writes the next menu state (0x34/0x38) to [r5].
 // symdb: (r5 = state-out byte ptr, r7 = naviCust menu context) -> r0 = last dialog/param result; [r5] =
 // symdb: next state 0x34 or 0x38; no branch flags of use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81370D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkEquipDialogs.yaml
 	thumb_local_start
-sub_81370D4:
+navicust_checkEquipDialogs:
 	push {lr}
 	ldr r0, off_8137158 // =0x3f8 
 	bl sub_8137670
@@ -14746,7 +14746,7 @@ off_8137158:
 	.word 0x3F8
 dword_813715C:
 	.word 0x1
-	thumb_func_end sub_81370D4
+	thumb_func_end navicust_checkEquipDialogs
 
 	thumb_local_start
 sub_8137160:
@@ -14770,7 +14770,7 @@ sub_8137170:
 	mov r1, #0x40 
 	mov r2, #0
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	beq locret_813719E
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -14985,7 +14985,7 @@ sub_81372F4:
 	add r1, #0x1a
 	mov r2, #1
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	beq locret_8137332
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15009,7 +15009,7 @@ sub_8137334:
 	mov r1, #0x52 
 	mov r2, #0
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	beq locret_8137366
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15039,9 +15039,9 @@ locret_8137376:
 // symdb: (r5 = screen state struct, r7 = cursor/held-part struct; r0 momentarily 0x3f8 to sub_8137670) ->
 // symdb: r0 = status from last call; writes next-state byte [r5] (0x68 = stay, 0x6c = proceed) and
 // symdb: halfword [r5+0xe] = 0 on success
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137378.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPiecePlacement.yaml
 	thumb_local_start
-sub_8137378:
+navicust_checkPiecePlacement:
 	push {lr}
 	ldr r0, off_813748C // =0x3f8 
 	bl sub_8137670
@@ -15179,7 +15179,7 @@ off_8137494:
 	.word 0x90
 off_8137498:
 	.word 0x34
-	thumb_func_end sub_8137378
+	thumb_func_end navicust_checkPiecePlacement
 
 	thumb_local_start
 sub_813749C:
@@ -15224,9 +15224,9 @@ locret_81374D2:
 // symdb: Per-frame NaviCust dialog handler: waits for the dialog to be ready, then on state 4 or 8 triggers the next NaviCust text script (checking a toolkit part flag for state 8).
 // symdb: (r7 = dialog state object, r5 = out byte ptr; r0/r1 unused) -> r0 = script/text id side effect;
 // symdb: writes 0x7C or 0x78 to [r5]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81374D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_dialogStateHandler.yaml
 	thumb_local_start
-sub_81374D4:
+navicust_dialogStateHandler:
 	push {lr}
 	ldr r0, off_8137520 // =0x3f8 
 	bl sub_8137670
@@ -15266,7 +15266,7 @@ off_8137520:
 	.word 0x3F8
 dword_8137524:
 	.word 0x1
-	thumb_func_end sub_81374D4
+	thumb_func_end navicust_dialogStateHandler
 
 	thumb_local_start
 sub_8137528:
@@ -15328,7 +15328,7 @@ navicust_queueBeastOutDialog:
 	mov r1, #0x20 
 	mov r2, #0
 	bl sub_81375F4
-	bl sub_8137618
+	bl navicust_countBeastOutUses
 	beq locret_813759A
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15419,9 +15419,9 @@ dword_8137614:
 // symdb: Counts Beast Out uses in a NaviCust state struct and sets story flag EVENT_EF (returning 1) once the count passes a threshold while a condition holds.
 // symdb: (r0 = task state struct in r5, no args used) -> r0 = 1 if flag EVENT_EF was set this call, else
 // symdb: 0; counter byte at [r5+3] incremented and clamped to 0x4F
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137618.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_countBeastOutUses.yaml
 	thumb_local_start
-sub_8137618:
+navicust_countBeastOutUses:
 	push {r4-r7,lr}
 	mov r7, #0
 	ldrb r4, [r5,#3]
@@ -15446,7 +15446,7 @@ loc_813763E:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8137618
+	thumb_func_end navicust_countBeastOutUses
 
 	thumb_local_start
 sub_8137648:

@@ -483,7 +483,7 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
-	bl sub_8033D88
+	bl internet_tickAlertSoundTimer
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end sub_8033B30
@@ -498,7 +498,7 @@ internet_redrawOverworldUi: // (self: * S2011E30 $r5) -> ()
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
-	bl sub_8033D88
+	bl internet_tickAlertSoundTimer
 	bl RenderMapName_8033EE8
 	pop {pc}
 	thumb_func_end internet_redrawOverworldUi
@@ -751,9 +751,9 @@ dword_8033D84:
 // symdb: Decrements a repeating timer in the Internet-overworld UI state and plays SFX 0x9A (then reloads the timer) each time it reaches zero.
 // symdb: (r5 = UI/state struct, r0 unused on entry) -> r0 = scratch/return of PlaySoundEffect; no
 // symdb: meaningful flags; field [r5,#7] is the countdown byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033D88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/internet_tickAlertSoundTimer.yaml
 	thumb_local_start
-sub_8033D88:
+internet_tickAlertSoundTimer:
 	push {lr}
 	ldrb r0, [r5,#7]
 	sub r0, #1
@@ -767,7 +767,7 @@ loc_8033D9C:
 	strb r0, [r5,#7]
 locret_8033D9E:
 	pop {pc}
-	thumb_func_end sub_8033D88
+	thumb_func_end internet_tickAlertSoundTimer
 
 // symdb: Queues a 32-byte PET navi tileset DMA transfer into the VRAM staging area at 0x30016D0.
 // symdb: void queuePETNaviTileset_8033DA0(u32 baseAddr /* r0 */);

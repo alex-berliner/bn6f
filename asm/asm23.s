@@ -821,7 +821,7 @@ jt_80895C0:
 	.word sub_808964C+1
 	.word sub_80896B0+1
 	.word sub_80896C4+1
-	.word sub_80896D4+1
+	.word battle_scenarioEffectInputStep+1
 	.word sub_8089792+1
 	.word battleObject_beastOut_checkOrInit_80897A6+1
 	.word beastOverworldAi_decideTransformOrIdle_8089C16+1
@@ -874,7 +874,7 @@ loc_808966E:
 	mov r4, r0
 	bl sub_8142990
 	mov r1, r4
-	bl sub_8142896
+	bl getSoulWeaponCursorDir8
 	bl SetOWPlayerFacingDirection
 	bl GetOWPlayerFacingDirection
 	ldr r1, off_80896A4 // =byte_80896A8 
@@ -926,9 +926,9 @@ loc_80896D0:
 // symdb: State-machine step for the scenario effect screen: polls the chip-select input handler and either starts the camera script or advances the state byte to 0x10/0x18 depending on which button was pressed.
 // symdb: (no args; r5 = caller-set pointer to a state/state-machine byte) -> r0 = 1 always; no flags used
 // symdb: by caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80896D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scenarioEffectInputStep.yaml
 	thumb_local_start
-sub_80896D4:
+battle_scenarioEffectInputStep:
 	push {r4-r7,lr}
 	bl battleObject_scenarioEffectInputHandler_8089704
 	beq loc_8089700
@@ -952,7 +952,7 @@ loc_80896FA:
 loc_8089700:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80896D4
+	thumb_func_end battle_scenarioEffectInputStep
 
 // symdb: Battle custom-screen handler that maps joypad (A/B/L/R) inputs over the active scenario-effect slot in the chip-select state, playing the appropriate cue and returning a non-zero code on a successful change.
 // symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;

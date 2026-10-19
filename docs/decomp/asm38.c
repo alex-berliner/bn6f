@@ -170,7 +170,7 @@ int sub_3005E18()
 
 
 // 0x3005e2c
-int sub_3005E2C()
+int init_installCommIntrHandlers()
 {
     __int16 *v0; // r3
     __int16 v1; // r4
@@ -1542,7 +1542,7 @@ int __fastcall sub_3006CA8(int a1)
 
 
 // 0x3006cd0
-int __fastcall sub_3006CD0(int a1, int a2, int a3)
+int __fastcall chatbox_printNumber(int a1, int a2, int a3)
 {
     int v3; // r9
     int v4; // r10
@@ -2182,7 +2182,7 @@ int _object_removeCollisionData()
                 if ( !v7 )
                 {
                     _object_updatePanelParameters(v9, v8);
-                    sub_30075FC(v9, v8, v1);
+                    object_linkCollisionData(v9, v8, v1);
                     result = object_applyElementPanelRules_3007708(v9, v8, v1);
                 }
                 ++v9;
@@ -2208,7 +2208,7 @@ int _object_removeCollisionData()
             {
                 sub_3007880(v10, v11, v6);
                 _object_updatePanelParameters(v10, v11);
-                sub_30075FC(v10, v11, v1);
+                object_linkCollisionData(v10, v11, v1);
                 object_applyElementPanelRules_3007708(v10, v11, v1);
             }
             v3 += 2;
@@ -2219,7 +2219,7 @@ int _object_removeCollisionData()
 
 
 // 0x30075fc
-int __fastcall sub_30075FC(int a1, int a2, int a3)
+int __fastcall object_linkCollisionData(int a1, int a2, int a3)
 {
     int v3; // r10
     int result; // r0

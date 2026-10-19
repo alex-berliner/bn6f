@@ -208,7 +208,7 @@ loc_3005D44:
 	ldr r2, [r1,#0x10]
 	ldr r0, [r1,#4]
 	ldr r1, [r1,#0xc]
-	ldr r3, off_3005D74 // =sub_80068E0+1
+	ldr r3, off_3005D74 // =copyWordsWrapper+1
 	mov lr, pc
 	bx r3
 locret_3005D64:
@@ -221,7 +221,7 @@ off_3005D6C:
 dword_3005D70:
 	.word 0x80000000
 off_3005D74:
-	.word sub_80068E0+1
+	.word copyWordsWrapper+1
 	thumb_func_end sub_3005D24
 
 // symdb: The sound engine's VCount interrupt callback: m4aSoundVSync, then m4aSoundMain.
@@ -360,9 +360,9 @@ sub_3005E18:
 
 // symdb: Startup-time setup that installs the two communication/SIO interrupt callbacks and flags the comm system as initialized.
 // symdb: () -> void; preserves IME, sets dword_3001D60 = TRUE
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E2C.yaml
-	thumb_func_start sub_3005E2C
-sub_3005E2C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_installCommIntrHandlers.yaml
+	thumb_func_start init_installCommIntrHandlers
+init_installCommIntrHandlers:
 	push {r4,lr}
 	ldr r3, off_3005E54 // =InterruptMasterEnableRegister
 
@@ -394,7 +394,7 @@ off_3005E58:
 	.word InterruptEnableRegister
 off_3005E5C:
 	.word dword_3001D60
-	thumb_func_end sub_3005E2C
+	thumb_func_end init_installCommIntrHandlers
 
 	thumb_func_start sub_3005E60
 sub_3005E60:
@@ -2324,7 +2324,7 @@ off_3006B18:
 	.word sub_3006F24+1
 	.word 0x0
 	.word sub_3006F48+1
-	.word sub_3006CD0+1
+	.word chatbox_printNumber+1
 	.word 0x0
 	.word 0x0
 	.word sub_3006F5C+1
@@ -2536,9 +2536,9 @@ loc_3006CB6:
 // symdb: Text-engine formatter that prints a 16-bit game value as a decimal number with width, alignment and zero/space padding.
 // symdb: (r0 = text-state struct: +1 = source selector, +2 = format flags) -> r0 = small code (pad-flag +
 // symdb: 3); digits emitted via sub_3006C18
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006CD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_printNumber.yaml
 	thumb_local_start
-sub_3006CD0:
+chatbox_printNumber:
 	push {r3,lr}
 	push {r0,r2,r4-r6}
 	ldrb r1, [r0,#1]
@@ -2652,7 +2652,7 @@ off_3006D9C:
 	.word countHexDigits_8000C5C+1
 off_3006DA0:
 	.word off_8043C8C
-	thumb_func_end sub_3006CD0
+	thumb_func_end chatbox_printNumber
 
 	thumb_local_start
 sub_3006DA4:
@@ -3793,7 +3793,7 @@ loc_3007570:
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
 	mov r2, r5
-	bl sub_30075FC
+	bl object_linkCollisionData
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
 	mov r2, r5
@@ -3817,7 +3817,7 @@ loc_30075C0:
 	mov r0, r6
 	mov r1, r7
 	mov r2, r5
-	bl sub_30075FC
+	bl object_linkCollisionData
 	mov r0, r6
 	mov r1, r7
 	mov r2, r5
@@ -3840,9 +3840,9 @@ off_30075F8:
 // symdb: (r0 = battle object ptr, only used as arg to battle_isPaused, r1 = collision group index into
 // symdb: unk_2034F60, r2 = oCollisionData of the linking object) -> r0,r1,r2 preserved; returns via flags
 // symdb: from battle_isPaused (bne if paused/flag set)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30075FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_linkCollisionData.yaml
 	thumb_local_start
-sub_30075FC:
+object_linkCollisionData:
 	push {r4-r7,lr}
 	push {r0-r2}
 	ldr r0, off_30078A4 // =battle_isPaused+1
@@ -3888,7 +3888,7 @@ locret_300764A:
 	.balign 4, 0
 off_300764C:
 	.word unk_2034F60
-	thumb_func_end sub_30075FC
+	thumb_func_end object_linkCollisionData
 
 	thumb_local_start
 sub_3007650:

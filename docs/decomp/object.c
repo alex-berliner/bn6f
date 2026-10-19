@@ -521,7 +521,7 @@ int __fastcall battle_buildPlayerPanelGrid_800C4BC(int a1, unsigned int a2)
         ++v6;
     }
     while ( v6 < 5 );
-    return sub_800C67C();
+    return battle_encodePanelRuns();
 }
 
 
@@ -581,7 +581,7 @@ int updateBattlePanels_800C5E0()
 
 
 // 0x800c67c
-signed int sub_800C67C()
+signed int battle_encodePanelRuns()
 {
     char *v0; // r7
     int v1; // r4
@@ -3389,7 +3389,7 @@ void sub_800EA0E()
 
 
 // 0x800ea22
-int sub_800EA22()
+int battle_clearCollisionQueue()
 {
     int v0; // r5
     int v1; // r2

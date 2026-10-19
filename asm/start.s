@@ -243,7 +243,7 @@ crt0_start_800027C:
 	thumb_func_start crt0_entry_trampoline_8000288
 crt0_entry_trampoline_8000288:
 	push {lr}
-	ldr r1, off_8000298 // =sub_3005E2C+1 
+	ldr r1, off_8000298 // =init_installCommIntrHandlers+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
@@ -251,7 +251,7 @@ crt0_entry_trampoline_8000288:
 off_8000294:
 	.word sub_3005E18+1
 off_8000298:
-	.word sub_3005E2C+1
+	.word init_installCommIntrHandlers+1
 	thumb_func_end crt0_entry_trampoline_8000288
 
 	thumb_local_start

@@ -2553,15 +2553,15 @@ PlayMapMusic: // () -> ()
 
 // symdb: Sets the current map/overworld music track id in the S2001c04 state struct.
 // symdb: (r0 = music track id byte) -> void; flags clobbered by pop context only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8036E86.yaml
-	thumb_func_start sub_8036E86
-sub_8036E86:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setMapMusic.yaml
+	thumb_func_start ow_setMapMusic
+ow_setMapMusic:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_S2001c04_Ptr]
 	strb r0, [r1,#oS2001c04_MapMusic]
 	pop {r4-r7,pc}
-	thumb_func_end sub_8036E86
+	thumb_func_end ow_setMapMusic
 
 	thumb_func_start StartCutscene
 // r0 - cutscene script to run

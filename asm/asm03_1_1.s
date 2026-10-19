@@ -1997,7 +1997,7 @@ loc_8039ADE:
 	thumb_local_start
 sub_8039AE4:
 	push {r4-r7,lr}
-	bl sub_813D648
+	bl rfu_checkIdMatch
 	beq loc_8039B00
 	mov r0, #8
 	mov r1, #0x10

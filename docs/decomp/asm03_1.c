@@ -250,7 +250,7 @@ signed int sub_8033CF0()
 
 
 // 0x8033d88
-int __fastcall sub_8033D88(int a1, int a2, int a3)
+int __fastcall internet_tickAlertSoundTimer(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -2877,7 +2877,7 @@ int __fastcall sub_8036E78(int a1, int a2, int a3)
 
 
 // 0x8036e86
-int __fastcall sub_8036E86(int result)
+int __fastcall ow_setMapMusic(int result)
 {
     int v1; // r10
 
@@ -6477,7 +6477,7 @@ int sub_8039AE4()
     int v0; // r5
     char v1; // zf
 
-    sub_813D648();
+    rfu_checkIdMatch();
     if ( v1 )
     {
         *(v0 + 1) = 12;

@@ -16,7 +16,7 @@ int *__fastcall battleObject_getByIndex_813B780(int a1)
 
 
 // 0x813b790
-void *__fastcall sub_813B790(int a1)
+void *__fastcall ai_dispatchFromGlobalByte(int a1)
 {
     return battleObject_runAIDispatchTable_813B7A0(a1, byte_20096D8);
 }
@@ -174,7 +174,7 @@ __int64 __fastcall sub_813B84C(int a1)
     char *v27; // [sp+0h] [bp-28h]
     __int64 v28; // [sp+4h] [bp-24h]
 
-    v1 = sub_813B790(a1);
+    v1 = ai_dispatchFromGlobalByte(a1);
     v27 = v1;
     v2 = 0;
     v3 = 7;
@@ -318,7 +318,7 @@ int __fastcall sub_813B950(int a1, int a2, int a3, int a4)
     v14 = a1 + 1;
     v5 = a3;
     v6 = a4;
-    v7 = sub_813B790(a2);
+    v7 = ai_dispatchFromGlobalByte(a2);
     result = v14;
     v9 = v5 - 3;
     v10 = v6 - 3;
@@ -530,7 +530,7 @@ signed int __fastcall sub_813BB00(int a1, int a2, int a3, int a4)
     v5 = a3;
     v6 = a4;
     v12 = 1;
-    v7 = sub_813B790(a1);
+    v7 = ai_dispatchFromGlobalByte(a1);
     v8 = v4 + v5 + 2 + 15 * (v6 + 2);
     v9 = 0;
     result = 1;
@@ -577,7 +577,7 @@ signed int __fastcall sub_813BB68(int a1, int a2, int a3, int a4)
 
     v13 = a3;
     v5 = a4;
-    v6 = sub_813B790(a1);
+    v6 = ai_dispatchFromGlobalByte(a1);
     v7 = v5 - 3;
     v8 = *(v4 + oToolkit_Unk200414c_Ptr) + 7 * (v5 - 3) + v13 - 3;
     v9 = 0;
@@ -1048,7 +1048,7 @@ signed int __fastcall sub_813BF60(int a1, int a2, int a3)
 
     v3 = a2;
     v4 = a3;
-    v5 = sub_813B790(a1);
+    v5 = ai_dispatchFromGlobalByte(a1);
     v6 = v3 - 3;
     v7 = v4 - 3;
     v8 = 0;
@@ -1089,7 +1089,7 @@ signed int __fastcall sub_813BFB8(int a1, int a2, int a3)
 
     v3 = a2;
     v4 = a3;
-    v5 = sub_813B790(a1);
+    v5 = ai_dispatchFromGlobalByte(a1);
     v6 = v3 - 3;
     v7 = v4 - 3;
     v8 = 0;
@@ -2560,7 +2560,7 @@ int __fastcall sub_813CF8C(char a1)
 
 
 // 0x813d41c
-signed int __fastcall sub_813D41C(int a1)
+signed int __fastcall ow_checkSecretCode(int a1)
 {
     char *v1; // r7
     int v2; // r5
@@ -2803,7 +2803,7 @@ int sub_813D638()
 
 
 // 0x813d648
-int sub_813D648()
+int rfu_checkIdMatch()
 {
     return rfu_REQBN_softReset_and_checkID();
 }
@@ -3227,7 +3227,7 @@ int sub_813DADC()
     char v2; // zf
 
     v1 = 1;
-    sub_813D648();
+    rfu_checkIdMatch();
     if ( !v2 )
         v1 = 2;
     *(v0 + 2) = 8;

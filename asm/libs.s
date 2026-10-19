@@ -22829,7 +22829,7 @@ loc_814E8D2:
 	ldr r1, [r5,#4]
 	ldrb r2, [r5,#8]
 	mov r0, r4
-	bl sub_814F08C
+	bl mplay_initPlayer
 	ldrh r0, [r5,#0xa]
 	strb r0, [r4,#0xb]
 	ldr r0, off_814E914 // =byte_2010B90 
@@ -23981,9 +23981,9 @@ off_814F088:
 // symdb: m4a sound-engine helper that initialises a MusicPlayerInfo with its track array, resets each track, and links the player into the engine's MPlayMain dispatch chain.
 // symdb: (r0 = MusicPlayerInfo*, r1 = Track array pointer, r2 = u8 track count, clamped to <=0x10) -> r0
 // symdb: = clobbered; sets player status/ident, track count, and engine link fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F08C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mplay_initPlayer.yaml
 	thumb_local_start
-sub_814F08C:
+mplay_initPlayer:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r6, r1
@@ -24048,7 +24048,7 @@ dword_814F0FC:
 	.word 0x68736D53
 off_814F100:
 	.word MPlayMain+1
-	thumb_func_end sub_814F08C
+	thumb_func_end mplay_initPlayer
 
 	thumb_local_start
 sound_814F104: // (a0: *mut ?, a1: *const RomStructLike81B820C) -> ()

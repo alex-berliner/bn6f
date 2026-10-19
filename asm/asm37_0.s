@@ -36,9 +36,9 @@ off_813B78C:
 // symdb: Thin AI-dispatch wrapper: reads a global byte at 20096D8 and passes it as the dispatch argument to the battle AI dispatcher, leaving r0 untouched.
 // symdb: (r0 = battle object/actor pointer, preserved) -> r0 = dispatcher's return; tail-calls
 // symdb: battleObject_runAIDispatchTable_813B7A0 with r1 = byte_20096D8 value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B790.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_dispatchFromGlobalByte.yaml
 	thumb_local_start
-sub_813B790:
+ai_dispatchFromGlobalByte:
 	push {lr}
 	ldr r1, off_813B79C // =byte_20096D8 
 	ldrb r1, [r1]
@@ -47,7 +47,7 @@ sub_813B790:
 	.balign 4, 0
 off_813B79C:
 	.word byte_20096D8
-	thumb_func_end sub_813B790
+	thumb_func_end ai_dispatchFromGlobalByte
 
 // symdb: Battle AI dispatcher: looks up the caller's battle object, picks an AIData field (0x8 or 0xc) based on event flag 0x2660+actorIndex, then tail-calls through a 4-entry thunk table.
 // symdb: (r0 = actorIndex, r1 = dispatchId) -> r0 = unk_2009F00 ; side effects: reads battle object
@@ -167,7 +167,7 @@ loc_813B836:
 sub_813B84C:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	str r7, [sp]
 	mov r1, #0
@@ -344,7 +344,7 @@ sub_813B950:
 	str r2, [sp,#4]
 	str r3, [sp,#8]
 	mov r0, r1
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
@@ -621,7 +621,7 @@ sub_813BB00:
 	str r3, [sp,#0xc]
 	mov r1, #1
 	str r1, [sp,#0x10]
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	ldr r1, [sp,#4]
 	ldr r2, [sp,#8]
@@ -679,7 +679,7 @@ sub_813BB68:
 	str r1, [sp,#4]
 	str r2, [sp,#8]
 	str r3, [sp,#0xc]
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	ldr r1, [sp,#8]
 	ldr r2, [sp,#0xc]
@@ -1296,7 +1296,7 @@ sub_813BF60:
 	sub sp, sp, #8
 	str r1, [sp]
 	str r2, [sp,#4]
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	ldr r1, [sp]
 	ldr r2, [sp,#4]
@@ -1347,7 +1347,7 @@ sub_813BFB8:
 	sub sp, sp, #8
 	str r1, [sp]
 	str r2, [sp,#4]
-	bl sub_813B790
+	bl ai_dispatchFromGlobalByte
 	mov r7, r0
 	ldr r1, [sp]
 	ldr r2, [sp,#4]
@@ -3632,9 +3632,9 @@ byte_813D410:
 // symdb: Verifies an 8-byte player-entered code against a lookup table and, on first match, sets the corresponding story event flag.
 // symdb: (r0 = u8 code[8]) -> r0 = 1 (new match, r1 = entry id, r2 = entry halfword, r3 = entry byte1), 2
 // symdb: (match already claimed), 0 (no match); r4 = 0xFF on no-match/already-claimed paths
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D41C.yaml
-	thumb_func_start sub_813D41C
-sub_813D41C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_checkSecretCode.yaml
+	thumb_func_start ow_checkSecretCode
+ow_checkSecretCode:
 	push {r5-r7,lr}
 	ldr r7, off_813D480 // =byte_813CF9C 
 	ldr r6, off_813D484 // =byte_813D410 
@@ -3696,7 +3696,7 @@ off_813D484:
 	.word byte_813D410
 dword_813D488:
 	.word 0x2620
-	thumb_func_end sub_813D41C
+	thumb_func_end ow_checkSecretCode
 
 // symdb: Bug Frag trader tier roll: indexes a table, rolls GetRNG & 0xF and consults byte_813D500 (the tier table, all zero — so no special tier adjustment); costs are dword_813D4FC = {10, 20, 30, 50}.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D48C.yaml
@@ -3989,9 +3989,9 @@ off_813D644:
 
 // symdb: Wrapper that runs the RFU soft-reset/game-ID check and returns TRUE when the IDs match.
 // symdb: () -> r0 = 1 if rfu_REQBN_softReset_and_checkID returned 1 (ID check passed), else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D648.yaml
-	thumb_func_start sub_813D648
-sub_813D648:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_checkIdMatch.yaml
+	thumb_func_start rfu_checkIdMatch
+rfu_checkIdMatch:
 	push {lr}
 	bl rfu_REQBN_softReset_and_checkID
 	ldr r1, byte_813D654 // =0x1 
@@ -4000,7 +4000,7 @@ sub_813D648:
 	.balign 4, 0
 byte_813D654:
 	.byte 0x1, 0x80, 0x0, 0x0
-	thumb_func_end sub_813D648
+	thumb_func_end rfu_checkIdMatch
 
 	thumb_local_start
 dead_813D658:
@@ -4713,7 +4713,7 @@ sub_813DADC:
 	push {r4,r6,lr}
 	mov r4, #1
 	mov r6, #8
-	bl sub_813D648
+	bl rfu_checkIdMatch
 	beq loc_813DAEA
 	mov r4, #2
 loc_813DAEA:
